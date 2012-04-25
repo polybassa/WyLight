@@ -1,17 +1,25 @@
 //Nils Weiﬂ 
 //05.09.2011
 //Compiler CC5x/
-//HELLO GIT 
+
 #pragma sharedAllocation
 
-//Enumerationen definieren
+//*********************** ENUMERATIONS *********************************************
 #define TRUE  1
 #define FALSE 0
 
-#define STX 0xff
-#define SET_COLOR 0xfd
-#define SET_FADE 0xfc
-#define SET_RUN 0xfb
+#define STX 0xFF
+#define SET_COLOR 0xFD
+#define SET_FADE 0xFC
+#define SET_RUN 0xFB
+#define WAIT 0xFE
+#define SET_ON 0xFA
+#define SET_OFF 0xF9
+#define DELETE 0xF8
+
+// *** ERRORBITS
+#define crc_failure 0
+#define eeprom_failure 1
 
 #define FRAMELENGTH 16			// *** max length of one commandframe
 #define CmdPointerAddr 0xff		// *** Address at EERPOM, where the Commandpointer is saved
@@ -34,7 +42,9 @@ struct CommandBuffer{
     char crcH;
     char crcL;
 };
-static struct CommandBuffer gCmdBuf;	
+static struct CommandBuffer gCmdBuf;
+static char gEepromPointer;	
+static char gERROR;
 
 //*********************** INTERRUPTSERVICEROUTINE ************************************
 #pragma origin 4					//Adresse des Interrupts	
@@ -90,7 +100,7 @@ void init_all()
 	//PORTA.0 = 1;
     
     // *** load globals variables
-    
+    gERROR = 0;
     gCmdBuf.cmd_counter = 0;
     gCmdBuf.frame_counter = 0;
 	
@@ -111,7 +121,17 @@ void throw_errors()
 {
 	if(RingBufHasError) 
 	{
-		USARTsend_str("ERROR:Receivebuffer full");
+		USARTsend_str("ERROR: Receivebuffer full");
+	}
+	if(gERROR.crc_failure)
+	{
+		USARTsend_str("ERROR: CRC-Check failed");
+		gERROR.crc_failure = 0;
+	}
+	if(gERROR.eeprom_failure)
+	{
+		USARTsend_str("ERROR: EEPROM is full");
+		gERROR.eeprom_failure = 0;
 	}
 }
 
@@ -178,6 +198,14 @@ void read_commands()
                 if( (gCmdBuf.crcL == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 1]) &&
                     (gCmdBuf.crcH == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 2]) )
                 {
+					// *** check if the new command is a "delete EEPROM" command
+					if(gCmdBuf.cmd_buf[2] == DELETE)
+					{	
+						// *** Reset the Pointer in EEPROM
+						EEPROM_WR(CmdPointerAddr, 0);
+						return;
+					}
+					
                     // *** copy new command             
                     // !!!*** ATTENTION check value of cmd_counter after if statement. 
                     // *** cmd_counter should point to crcL to copy only the command 
@@ -194,6 +222,7 @@ void read_commands()
                     {
                         // *** EEPROM is full with commands
                         // *** Some errorhandling should be here
+						gERROR.eeprom_failure = 1;
                         return;
                     }
                         
@@ -207,6 +236,7 @@ void read_commands()
                 else
                 {
                     // *** Do some error handling in case of an CRC failure here
+					gERROR.crc_failure = 1;
                     return;
                 }
 			}
@@ -217,4 +247,7 @@ void read_commands()
 /** This function reads the pointer for commands in the EEPROM from a defined address 
 *** in the EEPROM. After this one by one command is executed by this function. 
 **/ 
-void execute_commands();
+void execute_commands()
+{
+	
+}

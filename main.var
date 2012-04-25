@@ -18,7 +18,7 @@ Size := number of bytes
  P  -  0x003      1  :  0:  STATUS
  P  -  0x003.0    0  : 17:  Carry
  P  -  0x003.1    0  :  0:  DC
- P  -  0x003.2    0  : 21:  Zero_
+ P  -  0x003.2    0  : 22:  Zero_
  P  -  0x003.3    0  :  0:  PD
  P  -  0x003.4    0  :  0:  TO
  P  -  0x004      2  : 18:  FSR0
@@ -99,26 +99,26 @@ Size := number of bytes
  P  0  0x01E.3    0  :  0:  CPSRNG1
  P  0  0x01E.7    0  :  0:  CPSON
  P  0  0x01F      1  :  0:  CPSCON1
- L  0  0x020      1  :  1:  temp_2
  L  0  0x020      1  :  2:  value
+ L  0  0x020      1  :  1:  temp_2
  L  0  0x021      1  :  3:  writeNext
+ L  0  0x022      1  :  6:  putstr
  L  0  0x022      1  : 10:  new_byte
  L  0  0x022      1  :  4:  i_6
- L  0  0x022      1  :  4:  putstr
- L  0  0x023      1  :  2:  temp_3
- L  0  0x023      1  :  5:  k
  L  0  0x023      1  :  5:  ps
+ L  0  0x023      1  :  5:  k
+ L  0  0x023      1  :  2:  temp_3
  L  0  0x024      1  :  3:  ci
- L  0  0x024      1  :  2:  ch
  L  0  0x024      1  :  4:  j
- L  0  0x025      1  :  5:  byte
- L  0  0x025      1  :  3:  p_crcH_2
+ L  0  0x024      1  :  2:  ch
  L  0  0x025      1  :  5:  CmdPointer
+ L  0  0x025      1  :  3:  p_crcH_2
  L  0  0x025      1  :  2:  result
+ L  0  0x025      1  :  5:  byte
  L  0  0x026      1  :  3:  adress_2
  L  0  0x026      1  :  3:  p_crcL_2
- L  0  0x026      1  :  4:  adress
  L  0  0x026      1  :  6:  p_crcH
+ L  0  0x026      1  :  5:  adress
  L  0  0x027      1  :  2:  data_2
  L  0  0x027      1  :  6:  p_crcL
  L  0  0x027      1  :  2:  data
@@ -127,38 +127,40 @@ Size := number of bytes
  L  0  0x029      1  :  6:  crcH
  L  0  0x02A      1  :  4:  crcL
  G  0  0x02B     19  : 15:  gRingBuf
- G  0  0x03E     20  : 23:  gCmdBuf
- G  0  0x052    192  :  1:  gLedBuf
- L  -  0x07F      1  :  1<> green
- L  -  0x07F      1  :  3<> i
- L  -  0x07F      1  :  4<> i_5
- L  -  0x07F      1  :  1<> length_4
- L  -  0x07F      1  :  2<> crcH_out
- L  -  0x07F      1  :  2<> crcL_out
+ G  0  0x03E     20  : 24:  gCmdBuf
+ G  0  0x052      1  :  0:  gEepromPointer
+ G  0  0x053      1  :  7:  gERROR
+ G  0  0x054    192  :  1:  gLedBuf
  L  -  0x07F      1  :  2<> blue
- L  -  0x07F      1  :  2<> length_5
- L  -  0x07F      1  :  2<> length_3
+ L  -  0x07F      1  :  2<> crcL_out
+ L  -  0x07F      1  :  3<> crcH_2
+ L  -  0x07F      1  :  3<> crcL_2
+ L  -  0x07F      1  :  1<> green
  L  -  0x07F      1  :  2<> byte_2
  L  -  0x07F      1  :  2<> data_3
  L  -  0x07F      1  :  1<> red
  L  -  0x07F      1  :  2<> data_4
  L  -  0x07F      1  :  2<> data_5
  L  -  0x07F      2  :  6<> array_4
- L  -  0x07F      1  :  2<> adress_4
- L  -  0x07F      1  :  3<> crcL_2
+ L  -  0x07F      1  :  2<> length_5
+ L  -  0x07F      1  :  4<> i_5
  L  -  0x07F      1  :  4<> i_3
  L  -  0x07F      1  :  2<> temp
- L  -  0x07F      1  :  3<> array
+ L  -  0x07F      1  :  1<> length_4
  L  -  0x07F      1  :  2<> length
- L  -  0x07F      1  :  2<> array_3
+ L  -  0x07F      1  :  3<> i
  L  -  0x07F      1  :  6<> k_2
  L  -  0x07F      1  :  5<> selector
  L  -  0x07F      1  :  3<> array_2
  L  -  0x07F      1  :  2<> adress_3
- L  -  0x07F      1  :  3<> crcH_2
  L  -  0x07F      1  :  2<> length_2
- L  -  0x07F      1  :  4<> i_4
  L  -  0x07F      1  :  3<> i_2
+ L  -  0x07F      1  :  4<> i_4
+ L  -  0x07F      1  :  3<> array
+ L  -  0x07F      1  :  2<> array_3
+ L  -  0x07F      1  :  2<> crcH_out
+ L  -  0x07F      1  :  2<> length_3
+ L  -  0x07F      1  :  2<> adress_4
  P  1  0x08C      1  :  0:  TRISA
  P  1  0x08D      1  :  0:  TRISB
  P  1  0x08E      1  :  5:  TRISC
@@ -312,19 +314,19 @@ Size := number of bytes
  P  2  0x11D.6    0  :  0:  CCP3SEL
  P  3  0x18C      1  :  0:  ANSELA
  P  3  0x18D      1  :  0:  ANSELB
- P  3  0x191      1  :  2:  EEADRL
- P  3  0x192      1  :  2:  EEADRH
- P  3  0x193      1  :  2:  EEDATL
- P  3  0x194      1  :  0:  EEDATH
+ P  3  0x191      1  :  3:  EEADRL
+ P  3  0x192      1  :  4:  EEADRH
+ P  3  0x193      1  :  4:  EEDATL
+ P  3  0x194      1  :  1:  EEDATH
  P  3  0x195      1  :  0:  EECON1
- P  3  0x195.0    0  :  1:  RD
+ P  3  0x195.0    0  :  2:  RD
  P  3  0x195.1    0  :  2:  WR
  P  3  0x195.2    0  :  2:  WREN
  P  3  0x195.3    0  :  0:  WRERR
  P  3  0x195.4    0  :  0:  FREE
  P  3  0x195.5    0  :  0:  LWLO
  P  3  0x195.6    0  :  2:  CFGS
- P  3  0x195.7    0  :  2:  EEPGD
+ P  3  0x195.7    0  :  3:  EEPGD
  P  3  0x196      1  :  2:  EECON2
  P  3  0x199      1  :  2:  RCREG
  P  3  0x19A      1  :  1:  TXREG
