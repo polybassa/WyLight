@@ -1,7 +1,7 @@
 
 ; CC5X Version 3.4E, Copyright (c) B Knudsen Data
 ; C compiler for the PICmicro family
-; ************  25. Apr 2012  16:52  *************
+; ************  25. Apr 2012  17:06  *************
 
 	processor  16F1936
 	radix  DEC
@@ -134,6 +134,7 @@ ci          EQU   0x24
 			;
 			;//#include "unused_files/RingBuf.h"
 			;//#include "RingBuf.h"
+			;
 			;
 			;#message Global variables are defined in RingBuf.c
 			;

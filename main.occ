@@ -1,7 +1,7 @@
 CC5X Version 3.4E, Copyright (c) B Knudsen Data, Norway 1992-2010
  --> FREE edition, 8-16 bit int, 24 bit float, 32k code, reduced optim.
 main.c:
- 25. Apr 2012  16:52
+ 25. Apr 2012  17:06
 Message: Global variables are defined in RingBuf.c
  Chip = 16F1936
 Warning[1] C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\main.c 220 : Local variables and parameters in uncalled functions are not allocated (30)
