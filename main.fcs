@@ -1,0 +1,107 @@
+
+CC5X Version 3.4E, Copyright (c) B Knudsen Data.
+* FUNCTION CALL STRUCTURE
+
+F: _const1                :#2  : p1
+
+F: RingBufInit            :#1  : p1 <- p0  *
+
+F: RingBufGet             :#1  : p1 <- p0  *
+
+F: RingBufPut             :#1  : p1 <- p0  *
+
+F: USARTinit              :#1  : p1 <- p0  *
+
+F: USARTsend              :#2  : p1
+
+F: USARTsend_str          :#1  : p1 <- p0  *
+    _const1               : #2  : p1 -> p1
+    USARTsend             : #2  : p1 -> p1
+    _const1               : #2  : p1 -> p1
+
+F: USARTsend_arr          :#0  : p1
+    USARTsend             : #2  : p1 -> p1
+
+F: EEPROM_WR              :#3  : p1
+
+F: EEPROM_RD              :#2  : p1
+
+F: EEPROM_WR_BLK          :#0  : p1
+    EEPROM_WR             : #3  : p1 -> p1
+
+F: EEPROM_RD_BLK          :#0  : p1
+    EEPROM_RD             : #2  : p1 -> p1
+
+F: addCRC                 :#4  : p1
+
+F: CRC                    :#0  : p1
+    addCRC                : #4  : p1 -> p1
+
+F: newCRC                 :#1  : p1 <- p0  *
+
+F: spi_init               :#1  : p1 <- p0  *
+
+F: spi_send               :#1  : p1 <- p1 
+
+F: spi_receive            :#0  : p1
+
+F: spi_send_arr           :#1  : p1 <- p1 
+    spi_send              : #1  : p1 -> p1
+
+F: ledstrip_init          :#1  : p1 <- p0  *
+
+F: ledstrip_set_color     :#0  : p1
+    spi_send_arr          : #1  : p1 -> p1
+
+F: InterruptRoutine       :#0  : p0
+    RingBufPut            : #1  : p0 -> p1 *
+
+F: main                   :#0  : p0
+    init_all              : #1  : p0 -> p0
+    throw_errors          : #1  : p0 -> p0
+    read_commands         : #1  : p0 -> p0
+
+F: init_all               :#1  : p0 <- p0 
+    RingBufInit           : #1  : p0 -> p1 *
+    USARTinit             : #1  : p0 -> p1 *
+    spi_init              : #1  : p0 -> p1 *
+    ledstrip_init         : #1  : p0 -> p1 *
+
+F: throw_errors           :#1  : p0 <- p0 
+    USARTsend_str         : #1  : p0 -> p1 *
+
+F: read_commands          :#1  : p0 <- p0 
+    RingBufGet            : #1  : p0 -> p1 *
+    newCRC                : #1  : p0 -> p1 *
+    addCRC                : #4  : p0 -> p1 *
+    addCRC                : #4  : p0 -> p1 *
+    addCRC                : #4  : p0 -> p1 *
+    EEPROM_RD             : #2  : p0 -> p1 *
+    EEPROM_WR             : #3  : p0 -> p1 *
+    EEPROM_WR             : #3  : p0 -> p1 *
+
+
+ L1  InterruptRoutine
+ L2    RingBufPut
+
+ L0  main
+ L1    init_all
+ L2      RingBufInit
+ L2      USARTinit
+ L2      spi_init
+ L2      ledstrip_init
+ L1    throw_errors
+ L2      USARTsend_str
+ L3        _const1
+ L3        USARTsend
+ L3        _const1
+ L1    read_commands
+ L2      RingBufGet
+ L2      newCRC
+ L2      addCRC
+ L2      addCRC
+ L2      addCRC
+ L2      EEPROM_RD
+ L2      EEPROM_WR
+ L2      EEPROM_WR
+
