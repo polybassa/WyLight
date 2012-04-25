@@ -1,11 +1,11 @@
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 1
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 1
 
 ADDR CODE  LINE SOURCE
 
            0001 
            0002 ; CC5X Version 3.4E, Copyright (c) B Knudsen Data
            0003 ; C compiler for the PICmicro family
-           0004 ; ************  25. Apr 2012  17:06  *************
+           0004 ; ************  25. Apr 2012  17:08  *************
            0005 
            0006 	processor  16F1936
            0007 	radix  DEC
@@ -62,7 +62,7 @@ ADDR CODE  LINE SOURCE
      0026  0058 adress      EQU   0x26
      0027  0059 data        EQU   0x27
      0000  0060 GIE_status  EQU   0
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 2
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 2
 
 ADDR CODE  LINE SOURCE
 
@@ -126,7 +126,7 @@ ADDR CODE  LINE SOURCE
            0118 			;#define TRUE  1
            0119 			;#define FALSE 0
            0120 			;
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 3
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 3
 
 ADDR CODE  LINE SOURCE
 
@@ -190,7 +190,7 @@ ADDR CODE  LINE SOURCE
 0820 346C  0178 	RETLW 108
 0821 3400  0179 	RETLW 0
            0180 RingBufInit
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 4
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 4
 
 ADDR CODE  LINE SOURCE
 
@@ -254,7 +254,7 @@ ADDR CODE  LINE SOURCE
 0844 2847  0238 	GOTO  m002
 0845 0020  0239 m001	MOVLB 0
 0846 143D  0240 	BSF   gRingBuf+18,0
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 5
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 5
 
 ADDR CODE  LINE SOURCE
 
@@ -318,7 +318,7 @@ ADDR CODE  LINE SOURCE
            0298 			;	while(!TXIF);
 085D 0020  0299 m003	MOVLB 0
 085E 1E11  0300 	BTFSS 0x11,TXIF
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 6
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 6
 
 ADDR CODE  LINE SOURCE
 
@@ -382,7 +382,7 @@ ADDR CODE  LINE SOURCE
            0358 			;	char i;
            0359 			;	for(i=0;i<length;i++)
 0880 01FF  0360 	CLRF  i
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 7
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 7
 
 ADDR CODE  LINE SOURCE
 
@@ -446,7 +446,7 @@ ADDR CODE  LINE SOURCE
 08A0 1428  0418 	BSF   0x28,GIE_status
            0419 			;    GIE=0;                  // Interrups verbieten
 08A1 138B  0420 	BCF   0x0B,GIE
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 8
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 8
 
 ADDR CODE  LINE SOURCE
 
@@ -510,7 +510,7 @@ ADDR CODE  LINE SOURCE
            0478 			;{
            0479 EEPROM_WR_BLK
 08C1 00FF  0480 	MOVWF length_2
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 9
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 9
 
 ADDR CODE  LINE SOURCE
 
@@ -574,7 +574,7 @@ ADDR CODE  LINE SOURCE
 08E6 077F  0538 	ADDWF array_3,W
 08E7 0084  0539 	MOVWF FSR0L
 08E8 0185  0540 	CLRF  FSR0H
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 10
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 10
 
 ADDR CODE  LINE SOURCE
 
@@ -638,7 +638,7 @@ ADDR CODE  LINE SOURCE
            0598 			;	
            0599 			;	MOVF(index,0);
 0900 0828  0600 	MOVF  index,W
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 11
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 11
 
 ADDR CODE  LINE SOURCE
 
@@ -702,7 +702,7 @@ ADDR CODE  LINE SOURCE
            0658 			;	crcH=0xff;
 0920 30FF  0659 	MOVLW 255
 0921 00FF  0660 	MOVWF crcH_2
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 12
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 12
 
 ADDR CODE  LINE SOURCE
 
@@ -766,7 +766,7 @@ ADDR CODE  LINE SOURCE
 094A 1903  0718 	BTFSC 0x03,Zero_
 094B 0008  0719 	RETURN
            0720 			;    *p_crcH = 0xff;
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 13
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 13
 
 ADDR CODE  LINE SOURCE
 
@@ -830,7 +830,7 @@ ADDR CODE  LINE SOURCE
            0778 spi_receive
 0967 00FF  0779 	MOVWF data_5
            0780 			;	SSPBUF = data;	
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 14
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 14
 
 ADDR CODE  LINE SOURCE
 
@@ -894,7 +894,7 @@ ADDR CODE  LINE SOURCE
            0838 			;char spi_receive(char data);
            0839 			;void spi_send_arr(char *array, char length);
            0840 			;
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 15
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 15
 
 ADDR CODE  LINE SOURCE
 
@@ -958,7 +958,7 @@ ADDR CODE  LINE SOURCE
 09A5 027F  0898 	SUBWF k_2,W
 09A6 1803  0899 	BTFSC 0x03,Carry
 09A7 29D6  0900 	GOTO  m026
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 16
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 16
 
 ADDR CODE  LINE SOURCE
 
@@ -1022,7 +1022,7 @@ ADDR CODE  LINE SOURCE
 09D1 087F  0958 	MOVF  blue,W
 09D2 0080  0959 	MOVWF INDF0
            0960 			;					selector = 0;
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 17
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 17
 
 ADDR CODE  LINE SOURCE
 
@@ -1086,7 +1086,7 @@ ADDR CODE  LINE SOURCE
            1018 			;{
            1019 InterruptRoutine
            1020 			;	if (RCIF)
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 18
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 18
 
 ADDR CODE  LINE SOURCE
 
@@ -1150,7 +1150,7 @@ ADDR CODE  LINE SOURCE
 001A 0099  1078 	MOVWF OSCCON
            1079 			;	RingBufInit();
 001B 3188  1080 	MOVLP 8
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 19
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 19
 
 ADDR CODE  LINE SOURCE
 
@@ -1214,7 +1214,7 @@ ADDR CODE  LINE SOURCE
 003A 0021  1138 m031	MOVLB 1
 003B 1691  1139 	BSF   0x91,RCIE
            1140 			;	PEIE=1;
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 20
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 20
 
 ADDR CODE  LINE SOURCE
 
@@ -1278,7 +1278,7 @@ ADDR CODE  LINE SOURCE
            1198 			;			if(new_byte == STX)
 0054 0F22  1199 	INCFSZ new_byte,W
 0055 286C  1200 	GOTO  m033
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 21
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 21
 
 ADDR CODE  LINE SOURCE
 
@@ -1342,7 +1342,7 @@ ADDR CODE  LINE SOURCE
            1258 			;                    // *** add new_byte to crc checksum
            1259 			;                    addCRC(new_byte, &gCmdBuf.crcH, &gCmdBuf.crcL);
 007B 0822  1260 	MOVF  new_byte,W
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 22
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 22
 
 ADDR CODE  LINE SOURCE
 
@@ -1406,7 +1406,7 @@ ADDR CODE  LINE SOURCE
 00A2 28D7  1318 	GOTO  m038
            1319 			;                    (gCmdBuf.crcH == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 2]) )
 00A3 303E  1320 	MOVLW 62
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 23
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 23
 
 ADDR CODE  LINE SOURCE
 
@@ -1470,7 +1470,7 @@ ADDR CODE  LINE SOURCE
 00C7 1803  1378 	BTFSC 0x03,Carry
 00C8 28D8  1379 	GOTO  m039
            1380 			;                    {	
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 24
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 24
 
 ADDR CODE  LINE SOURCE
 
@@ -1534,7 +1534,7 @@ ADDR CODE  LINE SOURCE
            1438 ; 0x095F P1    8 word(s)  0 % : spi_send
            1439 ; 0x0967 P1   10 word(s)  0 % : spi_receive
            1440 ; 0x0971 P1   22 word(s)  1 % : spi_send_arr
-CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:06   Page 25
+CC5X Version 3.4E,   File: main.c              25. Apr 2012  17:08   Page 25
 
 ADDR CODE  LINE SOURCE
 
