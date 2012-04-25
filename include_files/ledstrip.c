@@ -1,6 +1,6 @@
 //Nils Weiﬂ 
 //20.04.2012
-//Compiler CC5x
+//Compiler CC5x 
 
 static struct LedBuffer gLedBuf;
 
