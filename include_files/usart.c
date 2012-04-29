@@ -59,7 +59,7 @@ void USARTsend_arr(char *array, char length)
 	}
 }
 
-/*
+#ifdef TEST
 //*******  Sende-Zahl-als-String-Funktion  *************************************************
 void USARTsend_num(unsigned char input,unsigned char sign)
 {
@@ -95,7 +95,8 @@ void USARTsend_num(unsigned char input,unsigned char sign)
    USARTsend(e+0x30);
    USARTsend(sign); 	//Zeichen senden
 }
-
+#endif
+/*
 //SENDE BCD-Zahl als String
 void USARTsendTime(unsigned char input,unsigned char sign)
 {

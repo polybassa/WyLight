@@ -1,18 +1,18 @@
 CC5X Version 3.4E, Copyright (c) B Knudsen Data, Norway 1992-2010
  --> FREE edition, 8-16 bit int, 24 bit float, 32k code, reduced optim.
 main.c:
- 29. Apr 2012  15:46
+ 29. Apr 2012  23:35
 Message: Global variables are defined in RingBuf.c
  Chip = 16F1936
-Warning[1] C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\main.c 298 : Local variables and parameters in uncalled functions are not allocated (30)
+Warning[1] C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\main.c 306 : Local variables and parameters in uncalled functions are not allocated (21)
  (The application contains non-library functions that are not called. Local
  variables in these functions (option -wU) are not allocated to save space)
- RAM : -------- -------- -------- -------- ======== ===..... ........ ........
+ RAM : -------- -------- -------- -------- ======== ======== ........ ........
   40h: ........ ........ ........ ........ ........ ........ ******** ********
   80h: -....... ....---. ----.--- -------. ........ ........ ........ ........
   C0h: ........ ........ ........ ........ ........ ........ ........ ........
- Bank  0:0    1:0    2:0    3:76   4:80   5:80   6:16   bytes free
-RAM usage: 244 bytes (11 local), 268 bytes free
+ Bank  0:0    1:0    2:0    3:65   4:80   5:80   6:16   bytes free
+RAM usage: 255 bytes (16 local), 257 bytes free
  File 'main.fcs'
  Optimizing - removed 22 instructions (-2 %)
  File 'main.var'
@@ -20,10 +20,10 @@ RAM usage: 244 bytes (11 local), 268 bytes free
  File 'main.lst'
  File 'main.occ'
  File 'main.hex'
- Codepage 0 has  377 word(s) :  18 %
- Codepage 1 has  548 word(s) :  26 %
+ Codepage 0 has  342 word(s) :  16 %
+ Codepage 1 has  527 word(s) :  25 %
  Codepage 2 has    0 word(s) :   0 %
  Codepage 3 has    0 word(s) :   0 %
-Total of 925 code words (11 %)
- * Estimated CODE SIZE of full optimization: 889 code words (-3 %)
+Total of 869 code words (10 %)
+ * Estimated CODE SIZE of full optimization: 842 code words (-3 %)
 The licensed editions will save more code by using all enhanced instructions.

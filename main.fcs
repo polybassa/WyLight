@@ -12,15 +12,15 @@ F: RingBufPut             :#1  : p1 <- p0  *
 
 F: USARTinit              :#1  : p1 <- p0  *
 
-F: USARTsend              :#5  : p1
+F: USARTsend              :#2  : p1
 
-F: USARTsend_str          :#8  : p1
+F: USARTsend_str          :#3  : p1
     _const1               : #2  : p1 -> p1
-    USARTsend             : #5  : p1 -> p1
+    USARTsend             : #2  : p1 -> p1
     _const1               : #2  : p1 -> p1
 
 F: USARTsend_arr          :#0  : p1
-    USARTsend             : #5  : p1 -> p1
+    USARTsend             : #2  : p1 -> p1
 
 F: EEPROM_WR              :#6  : p1
 
@@ -51,7 +51,7 @@ F: spi_send_arr           :#2  : p1
 F: ledstrip_init          :#1  : p1 <- p0  *
     spi_send_arr          : #2  : p1 -> p1
 
-F: ledstrip_set_color     :#1  : p1 <- p0  *
+F: ledstrip_set_color     :#2  : p1
     spi_send_arr          : #2  : p1 -> p1
 
 F: InterruptRoutine       :#0  : p0
@@ -59,8 +59,10 @@ F: InterruptRoutine       :#0  : p0
 
 F: main                   :#0  : p0
     init_all              : #1  : p0 -> p0
+    ledstrip_set_color    : #2  : p0 -> p1 *
     throw_errors          : #1  : p0 -> p0
     read_commands         : #1  : p0 -> p0
+    execute_commands      : #1  : p0 -> p0
 
 F: init_all               :#1  : p0 <- p0 
     RingBufInit           : #1  : p0 -> p1 *
@@ -69,12 +71,11 @@ F: init_all               :#1  : p0 <- p0
     ledstrip_init         : #1  : p0 -> p1 *
     EEPROM_RD             : #8  : p0 -> p1 *
     EEPROM_WR             : #6  : p0 -> p1 *
-    USARTsend_str         : #8  : p0 -> p1 *
 
 F: throw_errors           :#1  : p0 <- p0 
-    USARTsend_str         : #8  : p0 -> p1 *
-    USARTsend_str         : #8  : p0 -> p1 *
-    USARTsend_str         : #8  : p0 -> p1 *
+    USARTsend_str         : #3  : p0 -> p1 *
+    USARTsend_str         : #3  : p0 -> p1 *
+    USARTsend_str         : #3  : p0 -> p1 *
 
 F: read_commands          :#1  : p0 <- p0 
     RingBufGet            : #1  : p0 -> p1 *
@@ -82,26 +83,19 @@ F: read_commands          :#1  : p0 <- p0
     addCRC                : #4  : p0 -> p1 *
     addCRC                : #4  : p0 -> p1 *
     addCRC                : #4  : p0 -> p1 *
-    USARTsend_str         : #8  : p0 -> p1 *
-    USARTsend_str         : #8  : p0 -> p1 *
-    USARTsend_str         : #8  : p0 -> p1 *
     EEPROM_WR             : #6  : p0 -> p1 *
     EEPROM_RD             : #8  : p0 -> p1 *
-    USARTsend             : #5  : p0 -> p1 *
     EEPROM_WR             : #6  : p0 -> p1 *
     EEPROM_WR             : #6  : p0 -> p1 *
-    USARTsend_str         : #8  : p0 -> p1 *
-    USARTsend             : #5  : p0 -> p1 *
-    USARTsend             : #5  : p0 -> p1 *
 
-F: execute_commands       :#0  : p0
+F: execute_commands       :#1  : p0 <- p0 
     EEPROM_RD             : #8  : p0 -> p1 *
     EEPROM_RD             : #8  : p0 -> p1 *
     EEPROM_RD             : #8  : p0 -> p1 *
     EEPROM_RD             : #8  : p0 -> p1 *
     EEPROM_RD             : #8  : p0 -> p1 *
     EEPROM_WR             : #6  : p0 -> p1 *
-    ledstrip_set_color    : #1  : p0 -> p1 *
+    ledstrip_set_color    : #2  : p0 -> p1 *
 
 
  L1  InterruptRoutine
@@ -117,12 +111,13 @@ F: execute_commands       :#0  : p0
  L3          spi_send
  L2      EEPROM_RD
  L2      EEPROM_WR
+ L1    ledstrip_set_color
+ L1      spi_send_arr [T-GOTO] ..
+ L1    throw_errors
  L2      USARTsend_str
  L3        _const1
  L3        USARTsend
  L3        _const1
- L1    throw_errors
- L2      USARTsend_str ..
  L2      USARTsend_str ..
  L2      USARTsend_str ..
  L1    read_commands
@@ -131,15 +126,17 @@ F: execute_commands       :#0  : p0
  L2      addCRC
  L2      addCRC
  L2      addCRC
- L2      USARTsend_str ..
- L2      USARTsend_str ..
- L2      USARTsend_str ..
  L2      EEPROM_WR
  L2      EEPROM_RD
- L2      USARTsend
  L2      EEPROM_WR
  L2      EEPROM_WR
- L2      USARTsend_str ..
- L2      USARTsend
- L2      USARTsend
+ L1    execute_commands
+ L2      EEPROM_RD
+ L2      EEPROM_RD
+ L2      EEPROM_RD
+ L2      EEPROM_RD
+ L2      EEPROM_RD
+ L2      EEPROM_WR
+ L2      ledstrip_set_color
+ L2        spi_send_arr [T-GOTO] ..
 

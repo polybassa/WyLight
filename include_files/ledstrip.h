@@ -7,7 +7,7 @@
 
 #include "include_files\spi.h"
 
-#define NUM_OF_LED 32
+#define NUM_OF_LED 33
 #define BUFFERSIZE (NUM_OF_LED*3)
 
 struct LedBuffer{

@@ -1,7 +1,7 @@
 //Nils Weiﬂ 
 //05.09.2011
 //Compiler CC5x/
-#define TEST
+//#define TEST
 
 #pragma sharedAllocation
 
@@ -74,10 +74,13 @@ void main(void)
 {
 	init_all();
 	
+	ledstrip_set_color(0x00,0xff,0x00);
+
     while(1)
     {	
         throw_errors();
 		read_commands();
+		execute_commands();
     }
 }
 //*********************** UNTERPROGRAMME **********************************************
@@ -96,6 +99,13 @@ void init_all()
 	// so I have to delet the pointer address
 	if (EEPROM_RD(CmdPointerAddr) == 0xff)
 	EEPROM_WR(CmdPointerAddr, 0);
+	
+#ifdef TEST
+	char l;
+	for(l=0;l<255;l++)
+	EEPROM_WR(l,0);
+	
+#endif
 	
 	//Ausgang f¸r FET initalisieren
 	TRISC.0 = 0;
@@ -232,11 +242,11 @@ void read_commands()
                     // !!!*** ATTENTION check value of cmd_counter after if statement. 
                     // *** cmd_counter should point to crcL to copy only the command 
                     // *** whitout crc, STX and framelength
-                    gCmdBuf.cmd_counter =- 2;
+                    gCmdBuf.cmd_counter = gCmdBuf.cmd_counter - 2;
                     
                     char CmdPointer = EEPROM_RD(CmdPointerAddr);
 #ifdef TEST			
-					USARTsend(CmdPointer);
+					USARTsend_num(CmdPointer,'#');
 #endif
                     if(CmdPointer < 241)
                     {
@@ -250,9 +260,7 @@ void read_commands()
                         // *** Some errorhandling should be here
 						gERROR.eeprom_failure = 1;
                         return;
-                    }
-                        
-                    
+                    }          
                     for(j = 2;j < gCmdBuf.cmd_counter; j++)
                     {	
                         EEPROM_WR(CmdPointer, gCmdBuf.cmd_buf[j]);
