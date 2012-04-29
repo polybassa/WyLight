@@ -12,6 +12,7 @@ void ledstrip_init(void)
 		gLedBuf.led_array[k] = 0;
 		gLedBuf.led_ctrl_array[k] = 0;
 	}
+	spi_send_arr(&gLedBuf.led_array[0], BUFFERSIZE);
 }
 
 void ledstrip_set_color(char red, char green, char blue)

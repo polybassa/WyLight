@@ -1,6 +1,7 @@
 //Nils Weiß 
 //05.09.2011
 //Compiler CC5x/
+#define TEST
 
 #pragma sharedAllocation
 
@@ -23,6 +24,7 @@
 
 #define FRAMELENGTH 16			// *** max length of one commandframe
 #define CmdPointerAddr 0xff		// *** Address at EERPOM, where the Commandpointer is saved
+#define CmdWidth 10				// *** Number of Bytes for one command
 
 //*********************** INCLUDEDATEIEN *********************************************
 #pragma codepage 1
@@ -89,6 +91,11 @@ void init_all()
 	USARTinit();
 	spi_init();
 	ledstrip_init();
+
+	//EEPROM contains FF in every Cell after inital start,
+	// so I have to delet the pointer address
+	if (EEPROM_RD(CmdPointerAddr) == 0xff)
+	EEPROM_WR(CmdPointerAddr, 0);
 	
 	//Ausgang für FET initalisieren
 	TRISC.0 = 0;
@@ -114,6 +121,10 @@ void init_all()
 	RCIE=1;
 	PEIE=1;
 	GIE=1;
+
+#ifdef TEST
+	USARTsend_str("initDone");
+#endif
 	
 }
 
@@ -121,16 +132,16 @@ void throw_errors()
 {
 	if(RingBufHasError) 
 	{
-		USARTsend_str("ERROR: Receivebuffer full");
+		USARTsend_str(" ERROR: Receivebuffer full");
 	}
 	if(gERROR.crc_failure)
 	{
-		USARTsend_str("ERROR: CRC-Check failed");
+		USARTsend_str(" ERROR: CRC-Check failed");
 		gERROR.crc_failure = 0;
 	}
 	if(gERROR.eeprom_failure)
 	{
-		USARTsend_str("ERROR: EEPROM is full");
+		USARTsend_str(" ERROR: EEPROM is full");
 		gERROR.eeprom_failure = 0;
 	}
 }
@@ -186,21 +197,32 @@ void read_commands()
 			// *** that I get until my framecounter is > 0
 			gCmdBuf.cmd_buf[gCmdBuf.cmd_counter] = new_byte;
 			gCmdBuf.cmd_counter++;
-			gCmdBuf.frame_counter--;
+			
             // *** add new_byte to crc checksum
+			if(gCmdBuf.frame_counter > 2)
             addCRC(new_byte, &gCmdBuf.crcH, &gCmdBuf.crcL);
+			gCmdBuf.frame_counter--;
 			// *** now I have to check if my framecounter is null.
 			// *** If it's null my string is complete 
 			// *** and I can give the string to the crc check function.
 			if(gCmdBuf.frame_counter == 0)
 			{
+#ifdef TEST
+				USARTsend_str("do_CRC_CHECK ");
+#endif
                 // *** verify crc checksum
                 if( (gCmdBuf.crcL == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 1]) &&
                     (gCmdBuf.crcH == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 2]) )
                 {
+#ifdef TEST
+				USARTsend_str("success");
+#endif
 					// *** check if the new command is a "delete EEPROM" command
 					if(gCmdBuf.cmd_buf[2] == DELETE)
 					{	
+#ifdef TEST
+						USARTsend_str("Delete EEPROM");
+#endif
 						// *** Reset the Pointer in EEPROM
 						EEPROM_WR(CmdPointerAddr, 0);
 						return;
@@ -213,10 +235,14 @@ void read_commands()
                     gCmdBuf.cmd_counter =- 2;
                     
                     char CmdPointer = EEPROM_RD(CmdPointerAddr);
+#ifdef TEST			
+					USARTsend(CmdPointer);
+#endif
                     if(CmdPointer < 241)
                     {
                         // *** calculate the next address for EEPROM write
-                        EEPROM_WR(CmdPointerAddr,CmdPointer + 10);
+						char temp = CmdPointer + CmdWidth;
+                        EEPROM_WR(CmdPointerAddr,temp);
                     }
                     else 
                     {
@@ -235,6 +261,11 @@ void read_commands()
                 }
                 else
                 {
+#ifdef TEST
+					USARTsend_str(" CRC_H_L:");
+					USARTsend(gCmdBuf.crcH);
+					USARTsend(gCmdBuf.crcL);
+#endif
                     // *** Do some error handling in case of an CRC failure here
 					gERROR.crc_failure = 1;
                     return;
@@ -249,5 +280,19 @@ void read_commands()
 **/ 
 void execute_commands()
 {
-	
+	char pointer = EEPROM_RD(CmdPointerAddr);
+	if(pointer != 0)
+	{
+		if(EEPROM_RD(pointer - 10) == SET_COLOR)
+		{
+			char r,g,b;
+			r = EEPROM_RD(pointer - 5);
+			g = EEPROM_RD(pointer - 4);
+			b = EEPROM_RD(pointer - 3);
+			EEPROM_WR(CmdPointerAddr, pointer - 10);
+			ledstrip_set_color(r,g,b);
+			
+		}
+	}
+		
 }
