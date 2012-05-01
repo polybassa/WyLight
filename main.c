@@ -216,53 +216,29 @@ void get_commands()
 			// *** and I can give the string to the crc check function.
 			if(gCmdBuf.frame_counter == 0)
 			{
-#ifdef TEST
-				USARTsend_str("do_CRC_CHECK ");
-#endif
                 // *** verify crc checksum
                 if( (gCmdBuf.crcL == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 1]) &&
                     (gCmdBuf.crcH == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 2]) )
                 {
-#ifdef TEST
-				USARTsend_str("success");
-#endif
 					// *** Execute the simple Commands
 					switch(gCmdBuf.cmd_buf[2])
 					{
 						case DELETE: 
 							{
 								EEPROM_WR(CmdPointerAddr,0);
-#ifdef TEST
-								USARTsend_str("DELETE");
-#endif
 								return;
 							}
 						case SET_ON: 
 							{
 								BCF(PORTC.0); 
-#ifdef TEST
-								USARTsend_str("ON");
-#endif
 								return;
 								}
 						case SET_OFF: 
 							{
-							BSF(PORTC.0); 
-#ifdef TEST
-							USARTsend_str("OFF");
-#endif
-							return;
+								BSF(PORTC.0); 
+								return;
 							}
 					}
-					/* OLD CODE, delete after testing the new code
-					// *** check if the new command is a "delete EEPROM" command
-					if(gCmdBuf.cmd_buf[2] == DELETE)
-					{	
-						// *** Reset the Pointer in EEPROM
-						EEPROM_WR(CmdPointerAddr, 0);
-						return;
-					}*/
-                    
                     char CmdPointer = EEPROM_RD(CmdPointerAddr);
 #ifdef TEST			
 					USARTsend_num(CmdPointer,'#');
@@ -282,14 +258,6 @@ void get_commands()
                     } 
 					// *** Write the new command without STX and CRC
 					EEPROM_WR_BLK(&gCmdBuf.cmd_buf[2], CmdPointer, (gCmdBuf.cmd_counter -4));
-/*					OLD ROUTINE	
-					gCmdBuf.cmd_counter = gCmdBuf.cmd_counter - 2;
-					
-                    for(j = 2;j < gCmdBuf.cmd_counter; j++)
-                    {	
-                        EEPROM_WR(CmdPointer, gCmdBuf.cmd_buf[j]);
-                        CmdPointer ++;
-                    }*/
                 }
                 else
                 {

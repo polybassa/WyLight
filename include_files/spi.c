@@ -6,7 +6,7 @@ void spi_init()
 	TRISC.3 = 0;        // Make port RC3 an output(SPI Clock)
     TRISC.4 = 1;        // Make port RC4 an input(SPI Data In)
     TRISC.5 = 0;        // Make port RC5 an output(SPI Data Out)
-	SSPM0 = 1;
+	SSPM0 = 0;
     /* 
 	SMP = 0;
 	CKP = 0;
