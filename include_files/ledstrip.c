@@ -15,8 +15,8 @@ void ledstrip_init(void)
 	spi_send_arr(&gLedBuf.led_array[0], BUFFERSIZE);
 }
 
-void ledstrip_set_color(char red, char green, char blue)
-{
+void ledstrip_set_color(char *address, char r, char g, char b)
+{				
 	char k,selector;
 	selector = 0;
 	for(k = 0; k < BUFFERSIZE; k++)
@@ -25,17 +25,17 @@ void ledstrip_set_color(char red, char green, char blue)
 		{
 			case 0: 
 				{
-					gLedBuf.led_array[k] = red;
+					gLedBuf.led_array[k] = r;
 					selector = 1;
 				} break;
 			case 1:
 				{	
-					gLedBuf.led_array[k] = green;
+					gLedBuf.led_array[k] = g;
 					selector = 2;
 				}break;
 			case 2:
 				{
-					gLedBuf.led_array[k] = blue;
+					gLedBuf.led_array[k] = b;
 					selector = 0;
 				}break;
 		}

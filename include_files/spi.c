@@ -6,6 +6,7 @@ void spi_init()
 	TRISC.3 = 0;        // Make port RC3 an output(SPI Clock)
     TRISC.4 = 1;        // Make port RC4 an input(SPI Data In)
     TRISC.5 = 0;        // Make port RC5 an output(SPI Data Out)
+	SSPM0 = 1;
     /* 
 	SMP = 0;
 	CKP = 0;
@@ -34,7 +35,7 @@ void spi_send_arr(char *array, char length)
 {
 	if(array == 0) return;
 	char i;
-	for(i = (length - 1); i > 0; i-- )
+	for(i = length; i > 0; i-- )
 	{
 		spi_send(array[i]);
 	} 

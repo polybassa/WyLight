@@ -45,7 +45,6 @@ struct CommandBuffer{
     char crcL;
 };
 static struct CommandBuffer gCmdBuf;
-static char gEepromPointer;	
 static char gERROR;
 
 //*********************** INTERRUPTSERVICEROUTINE ************************************
@@ -66,20 +65,18 @@ interrupt InterruptRoutine(void)
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void init_all();
 void throw_errors();
-void read_commands();
+void get_commands();
 void execute_commands();
+void sub_func_set_color(char *cmdPointer);
 
 //*********************** HAUPTPROGRAMM **********************************************
 void main(void)
 {
 	init_all();
-	
-	ledstrip_set_color(0x00,0xff,0x00);
-
     while(1)
     {	
         throw_errors();
-		read_commands();
+		get_commands();
 		execute_commands();
     }
 }
@@ -161,13 +158,15 @@ void throw_errors()
 *** if a frame is complete, the function save the frame as a new
 *** command in the internal EEPROM and calculate the Pointer for the next Command
 **/
-void read_commands()
+void get_commands()
 {	
 	if(RingBufIsNotEmpty)
 	{
 		// *** preload variables and 
 		// *** get new_byte from ringbuffer
 		char new_byte, temp, j;
+		temp = 0;
+		j = 0;
 		// *** get new byte
 		new_byte = RingBufGet();	
 		// *** do I wait for databytes?
@@ -177,7 +176,7 @@ void read_commands()
 			// *** Do I receive a Start_of_Text sign
 			if(new_byte == STX)
 			{
-				// *** Do some cleaning
+				// *** increse the cmd_counter
 				gCmdBuf.cmd_counter = 1;
 				// *** Write the startsign at the begin of the buffer
 				gCmdBuf.cmd_buf[0] = new_byte;
@@ -227,32 +226,52 @@ void read_commands()
 #ifdef TEST
 				USARTsend_str("success");
 #endif
+					// *** Execute the simple Commands
+					switch(gCmdBuf.cmd_buf[2])
+					{
+						case DELETE: 
+							{
+								EEPROM_WR(CmdPointerAddr,0);
+#ifdef TEST
+								USARTsend_str("DELETE");
+#endif
+								return;
+							}
+						case SET_ON: 
+							{
+								BCF(PORTC.0); 
+#ifdef TEST
+								USARTsend_str("ON");
+#endif
+								return;
+								}
+						case SET_OFF: 
+							{
+							BSF(PORTC.0); 
+#ifdef TEST
+							USARTsend_str("OFF");
+#endif
+							return;
+							}
+					}
+					/* OLD CODE, delete after testing the new code
 					// *** check if the new command is a "delete EEPROM" command
 					if(gCmdBuf.cmd_buf[2] == DELETE)
 					{	
-#ifdef TEST
-						USARTsend_str("Delete EEPROM");
-#endif
 						// *** Reset the Pointer in EEPROM
 						EEPROM_WR(CmdPointerAddr, 0);
 						return;
-					}
-					
-                    // *** copy new command             
-                    // !!!*** ATTENTION check value of cmd_counter after if statement. 
-                    // *** cmd_counter should point to crcL to copy only the command 
-                    // *** whitout crc, STX and framelength
-                    gCmdBuf.cmd_counter = gCmdBuf.cmd_counter - 2;
+					}*/
                     
                     char CmdPointer = EEPROM_RD(CmdPointerAddr);
 #ifdef TEST			
 					USARTsend_num(CmdPointer,'#');
 #endif
-                    if(CmdPointer < 241)
+					// *** check if there is enough space in the EEPROM for the next command
+                    if(CmdPointer < (CmdPointerAddr - CmdWidth))
                     {
                         // *** calculate the next address for EEPROM write
-						char temp = CmdPointer + CmdWidth;
-                        EEPROM_WR(CmdPointerAddr,temp);
+                        EEPROM_WR(CmdPointerAddr,(CmdPointer + CmdWidth));
                     }
                     else 
                     {
@@ -260,20 +279,20 @@ void read_commands()
                         // *** Some errorhandling should be here
 						gERROR.eeprom_failure = 1;
                         return;
-                    }          
+                    } 
+					// *** Write the new command without STX and CRC
+					EEPROM_WR_BLK(&gCmdBuf.cmd_buf[2], CmdPointer, (gCmdBuf.cmd_counter -4));
+/*					OLD ROUTINE	
+					gCmdBuf.cmd_counter = gCmdBuf.cmd_counter - 2;
+					
                     for(j = 2;j < gCmdBuf.cmd_counter; j++)
                     {	
                         EEPROM_WR(CmdPointer, gCmdBuf.cmd_buf[j]);
                         CmdPointer ++;
-                    }
+                    }*/
                 }
                 else
                 {
-#ifdef TEST
-					USARTsend_str(" CRC_H_L:");
-					USARTsend(gCmdBuf.crcH);
-					USARTsend(gCmdBuf.crcL);
-#endif
                     // *** Do some error handling in case of an CRC failure here
 					gERROR.crc_failure = 1;
                     return;
@@ -288,19 +307,42 @@ void read_commands()
 **/ 
 void execute_commands()
 {
+	// *** get the pointer to commands in the EEPROM
 	char pointer = EEPROM_RD(CmdPointerAddr);
+	// *** are there commands to execute?
 	if(pointer != 0)
 	{
-		if(EEPROM_RD(pointer - 10) == SET_COLOR)
-		{
-			char r,g,b;
-			r = EEPROM_RD(pointer - 5);
-			g = EEPROM_RD(pointer - 4);
-			b = EEPROM_RD(pointer - 3);
-			EEPROM_WR(CmdPointerAddr, pointer - 10);
-			ledstrip_set_color(r,g,b);
-			
+		// *** commands available, check what to do
+		switch(EEPROM_RD(pointer - CmdWidth)) 
+		{	
+			case SET_COLOR: 
+			{
+				sub_func_set_color(&pointer);
+				break;
+			}
+			case SET_FADE: {break;}
+			case SET_RUN: {break;}
 		}
+		// *** set commandpointer to the next command
+		EEPROM_WR(CmdPointerAddr, (pointer - CmdWidth));
 	}
-		
+}
+
+/** This function extracts the parameters for the set_color command
+*** from the EEPROM in relation to the CmdWidth and give the values 
+*** to the next function with controls the led's
+*/ 
+void sub_func_set_color(char *cmdPointer)
+{
+	char r,g,b,i, temp,address[4];
+	
+	r = EEPROM_RD(*cmdPointer - CmdWidth + 5);
+	g = EEPROM_RD(*cmdPointer - CmdWidth + 6);
+	b = EEPROM_RD(*cmdPointer - CmdWidth + 7);
+	for(i=0;i<4;i++)
+	{
+		temp = EEPROM_RD(*cmdPointer - CmdWidth + 1 + i);
+		address[i] = temp;
+	}
+	ledstrip_set_color(&address[0],r,g,b);
 }

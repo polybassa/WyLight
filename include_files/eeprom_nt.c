@@ -6,10 +6,10 @@
 
 //*********************** EEPROM BYTE SCHREIBEN  **********************************************
 
-void EEPROM_WR(int adress, char data)
+void EEPROM_WR(char adress, char data)
 {
 	bit GIE_status; 
-	EEADRH = (char)(adress<<8);
+	//EEADRH = (char)(adress<<8);
     EEADRL = (char)adress;        // Adresse in Adressregister übertragen
 	EEDATL = data;          // Daten in Datenregister übertragen
     CFGS = 0;
@@ -27,10 +27,10 @@ void EEPROM_WR(int adress, char data)
 
 //*********************** EEPROM BYTE LESEN  **********************************************
 
-char EEPROM_RD(int adress)
+char EEPROM_RD(char adress)
 {
     char data;
-    EEADRH = (char)(adress<<8);        // Adresse in Adressregister übertragen
+    //EEADRH = (char)(adress<<8);        // Adresse in Adressregister übertragen
     EEADRL = (char)(adress);
 	CFGS=0;
 	EEPGD=0;                // Auswahl: Programmspeicher lesen oder EEPROM
@@ -41,7 +41,7 @@ char EEPROM_RD(int adress)
 
 //*********************** EEPROM BYTEARRAY SCHREIBEN  **************************************
 
-void EEPROM_WR_BLK(char *array, int adress, char length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
+void EEPROM_WR_BLK(char *array, char adress, char length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
 {
 	if(!array) return;
 	char i;
@@ -55,7 +55,7 @@ void EEPROM_WR_BLK(char *array, int adress, char length)			//Zum Ausführen eines
 
 //*********************** EEPROM BYTEARRAY LESEN  **************************************
 
-void EEPROM_RD_BLK(char *array, int adress, char length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
+void EEPROM_RD_BLK(char *array, char adress, char length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
 {
 	if(!array) return;
 	char i, temp;
