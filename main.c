@@ -31,7 +31,7 @@
 #include "inline.h"
 #include "include_files\Ringbuf.h"
 #include "include_files\usart.h"
-#include "include_files\eeprom_nt.c"        // 2do* Check EEPROM routines for failure, I use new routines now
+#include "include_files\eeprom.h"        // 2do* Check EEPROM routines for failure, I use new routines now
 #include "include_files\crc.c"
 #include "include_files\spi.h"
 #include "include_files\ledstrip.h"

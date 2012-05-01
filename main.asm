@@ -1,7 +1,7 @@
 
 ; CC5X Version 3.4H, Copyright (c) B Knudsen Data
 ; C compiler for the PICmicro family
-; ************   1. May 2012  22:16  *************
+; ************   1. May 2012  23:09  *************
 
 	processor  16F1936
 	radix  DEC
@@ -45,7 +45,7 @@ SYNC        EQU   4
 TXEN        EQU   5
 TX9         EQU   6
 BRG16       EQU   3
-SSPM0       EQU   0
+SSPM1       EQU   1
 SSPEN       EQU   5
 gRingBuf    EQU   0x38
 result      EQU   0x25
@@ -597,11 +597,22 @@ m012	MOVF  length_3,W
 	INCF  i_3,1
 	GOTO  m012
 
-  ; FILE main.c
-			;#include "inline.h"
-			;#include "include_files\Ringbuf.h"
-			;#include "include_files\usart.h"
-			;#include "include_files\eeprom_nt.c"        // 2do* Check EEPROM routines for failure, I use new routines now
+  ; FILE include_files\eeprom.h
+			;#ifndef _EEPROM_H_
+			;#define _EEPROM_H_
+			;
+			;//Funktionen f¸r EEPROM-Zugriffe
+			;
+			;//Nils Weiﬂ 
+			;//05.09.2011
+			;//Compiler CC5x
+			;
+			;void EEPROM_WR(char adress, char data);
+			;char EEPROM_RD(char adress);
+			;void EEPROM_WR_BLK(char *array, char adress, char length);
+			;void EEPROM_RD_BLK(char *array, char adress, char length);
+			;
+			;#include "include_files\eeprom_nt.c"
 m013	RETURN
 
   ; FILE include_files\crc.c
@@ -798,9 +809,9 @@ spi_init
 	BSF   TRISC,4
 			;    TRISC.5 = 0;        // Make port RC5 an output(SPI Data Out)
 	BCF   TRISC,5
-			;	SSPM0 = 1;
+			;	SSPM1 = 1;
 	MOVLB 4
-	BSF   0x215,SSPM0
+	BSF   0x215,SSPM1
 			;    /* 
 			;	SMP = 0;
 			;	CKP = 0;
@@ -904,7 +915,7 @@ m019	RETURN
 			;//20.04.2012
 			;//Compiler CC5x 
 			;
-			;static struct LedBuffer gLedBuf;
+			;struct LedBuffer gLedBuf;
 			;
 			;void ledstrip_init(void)
 			;{
@@ -913,7 +924,7 @@ ledstrip_init
 			;	for(k = 0;k < BUFFERSIZE; k++)
 	MOVLB 0
 	CLRF  k
-m020	MOVLW 96
+m020	MOVLW 99
 	MOVLB 0
 	SUBWF k,W
 	BTFSC 0x03,Carry
@@ -931,7 +942,7 @@ m020	MOVLW 96
 			;		gLedBuf.led_ctrl_array[k] = 0;
 	MOVLW 32
 	MOVWF FSR0+1
-	MOVLW 160
+	MOVLW 163
 	ADDWF k,W
 	MOVWF FSR0
 	BTFSC 0x03,Carry
@@ -946,7 +957,7 @@ m021	MOVLW 64
 	MOVWF array_4
 	MOVLW 32
 	MOVWF array_4+1
-	MOVLW 96
+	MOVLW 99
 	GOTO  spi_send_arr
 			;}
 			;
@@ -960,7 +971,7 @@ ledstrip_set_color
 	CLRF  selector
 			;	for(k = 0; k < BUFFERSIZE; k++)
 	CLRF  k_2
-m022	MOVLW 96
+m022	MOVLW 99
 	MOVLB 0
 	SUBWF k_2,W
 	BTFSC 0x03,Carry
@@ -1041,7 +1052,7 @@ m027	MOVLW 64
 	MOVWF array_4
 	MOVLW 32
 	MOVWF array_4+1
-	MOVLW 96
+	MOVLW 99
 	GOTO  spi_send_arr
 
   ; FILE include_files\ledstrip.h
@@ -1055,8 +1066,8 @@ m027	MOVLW 64
 			;#include "include_files\spi.h"
 			;//#include "include_files\eeprom.h"
 			;
-			;#define NUM_OF_LED 32
-			;#define BUFFERSIZE (NUM_OF_LED*3)
+			;#define NUM_OF_LED 33
+			;#define BUFFERSIZE 99
 			;
 			;struct LedBuffer{
 			;	char led_array[BUFFERSIZE];
@@ -1070,6 +1081,10 @@ m027	MOVLW 64
 			;#include "include_files\ledstrip.c"
 
   ; FILE main.c
+			;#include "inline.h"
+			;#include "include_files\Ringbuf.h"
+			;#include "include_files\usart.h"
+			;#include "include_files\eeprom.h"        // 2do* Check EEPROM routines for failure, I use new routines now
 			;#include "include_files\crc.c"
 			;#include "include_files\spi.h"
 			;#include "include_files\ledstrip.h"
@@ -1451,9 +1466,6 @@ m039	MOVLB 0
 			;			if(gCmdBuf.frame_counter == 0)
 	GOTO  m047
 			;			{
-			;#ifdef TEST
-			;				USARTsend_str("do_CRC_CHECK ");
-			;#endif
 			;                // *** verify crc checksum
 			;                if( (gCmdBuf.crcL == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 1]) &&
 	MOVLW 76
@@ -1474,9 +1486,6 @@ m039	MOVLB 0
 	BTFSS 0x03,Zero_
 	GOTO  m046
 			;                {
-			;#ifdef TEST
-			;				USARTsend_str("success");
-			;#endif
 			;					// *** Execute the simple Commands
 			;					switch(gCmdBuf.cmd_buf[2])
 	MOVF  gCmdBuf+4,W
@@ -1501,9 +1510,6 @@ m040	MOVLW 255
 	MOVLP 8
 	CALL  EEPROM_WR
 	MOVLP 0
-			;#ifdef TEST
-			;								USARTsend_str("DELETE");
-			;#endif
 			;								return;
 	RETURN
 			;							}
@@ -1512,33 +1518,18 @@ m040	MOVLW 255
 			;								BCF(PORTC.0); 
 m041	MOVLB 0
 	BCF   PORTC,0
-			;#ifdef TEST
-			;								USARTsend_str("ON");
-			;#endif
 			;								return;
 	RETURN
 			;								}
 			;						case SET_OFF: 
 			;							{
-			;							BSF(PORTC.0); 
+			;								BSF(PORTC.0); 
 m042	MOVLB 0
 	BSF   PORTC,0
-			;#ifdef TEST
-			;							USARTsend_str("OFF");
-			;#endif
-			;							return;
+			;								return;
 	RETURN
 			;							}
 			;					}
-			;					/* OLD CODE, delete after testing the new code
-			;					// *** check if the new command is a "delete EEPROM" command
-			;					if(gCmdBuf.cmd_buf[2] == DELETE)
-			;					{	
-			;						// *** Reset the Pointer in EEPROM
-			;						EEPROM_WR(CmdPointerAddr, 0);
-			;						return;
-			;					}*/
-			;                    
 			;                    char CmdPointer = EEPROM_RD(CmdPointerAddr);
 m043	MOVLW 255
 	MOVLP 8
@@ -1589,14 +1580,6 @@ m045	MOVLW 79
 	MOVLP 8
 	CALL  EEPROM_WR_BLK
 	MOVLP 0
-			;/*					OLD ROUTINE	
-			;					gCmdBuf.cmd_counter = gCmdBuf.cmd_counter - 2;
-			;					
-			;                    for(j = 2;j < gCmdBuf.cmd_counter; j++)
-			;                    {	
-			;                        EEPROM_WR(CmdPointer, gCmdBuf.cmd_buf[j]);
-			;                        CmdPointer ++;
-			;                    }*/
 			;                }
 			;                else
 	GOTO  m047
@@ -1801,7 +1784,7 @@ m052	MOVLW 41
 ; 0x09AB P1   32 word(s)  1 % : ledstrip_init
 ; 0x09CB P1   66 word(s)  3 % : ledstrip_set_color
 
-; RAM usage: 256 bytes (24 local), 256 bytes free
+; RAM usage: 262 bytes (24 local), 250 bytes free
 ; Maximum call level: 4 (+2 for interrupt)
 ;  Codepage 0 has  374 word(s) :  18 %
 ;  Codepage 1 has  525 word(s) :  25 %

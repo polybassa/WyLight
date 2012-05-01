@@ -8,8 +8,8 @@
 #include "include_files\spi.h"
 //#include "include_files\eeprom.h"
 
-#define NUM_OF_LED 32
-#define BUFFERSIZE (NUM_OF_LED*3)
+#define NUM_OF_LED 33
+#define BUFFERSIZE 99
 
 struct LedBuffer{
 	char led_array[BUFFERSIZE];

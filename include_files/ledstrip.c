@@ -2,7 +2,7 @@
 //20.04.2012
 //Compiler CC5x 
 
-static struct LedBuffer gLedBuf;
+struct LedBuffer gLedBuf;
 
 void ledstrip_init(void)
 {

@@ -151,7 +151,7 @@ Size := number of bytes
  G  0  0x038     19  : 15:  gRingBuf
  G  0  0x04B     20  : 24:  gCmdBuf
  G  0  0x05F      1  :  7:  gERROR
- G  0  0x060    192  :  1:  gLedBuf
+ G  0  0x060    198  :  1:  gLedBuf
  L  -  0x07F      1  :  2<> byte_2
  L  -  0x07F      1  :  2<> length_3
  L  -  0x07F      1  :  4<> i_3
@@ -381,8 +381,8 @@ Size := number of bytes
  P  4  0x214.6    0  :  0:  CKE
  P  4  0x214.7    0  :  0:  SMP
  P  4  0x215      1  :  0:  SSPCON1
- P  4  0x215.0    0  :  1:  SSPM0
- P  4  0x215.1    0  :  0:  SSPM1
+ P  4  0x215.0    0  :  0:  SSPM0
+ P  4  0x215.1    0  :  1:  SSPM1
  P  4  0x215.2    0  :  0:  SSPM2
  P  4  0x215.3    0  :  0:  SSPM3
  P  4  0x215.4    0  :  0:  CKP
