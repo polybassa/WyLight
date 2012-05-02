@@ -1,7 +1,7 @@
 //Nils Weiﬂ 
 //05.09.2011
 //Compiler CC5x/
-//#define TEST
+#define TEST
 
 #pragma sharedAllocation
 
@@ -309,8 +309,18 @@ void sub_func_set_color(char *cmdPointer)
 	b = EEPROM_RD(*cmdPointer - CmdWidth + 7);
 	for(i=0;i<4;i++)
 	{
-		temp = EEPROM_RD(*cmdPointer - CmdWidth + 1 + i);
+		temp = EEPROM_RD(*cmdPointer - (CmdWidth + 1 + i));
 		address[i] = temp;
 	}
+	
+#ifdef TEST
+	USARTsend_num(address[0],'#');
+	USARTsend_num(address[1],'#');
+	USARTsend_num(address[2],'#');
+	USARTsend_num(address[3],'#');
+	USARTsend_num(r,'R');
+	USARTsend_num(g,'G');
+	USARTsend_num(b,'B');
+#endif	
 	ledstrip_set_color(&address[0],r,g,b);
 }

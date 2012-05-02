@@ -7,38 +7,40 @@ struct LedBuffer gLedBuf;
 void ledstrip_init(void)
 {
 	char k;
-	for(k = 0;k < BUFFERSIZE; k++)
+	for(k = 0;k < NUM_OF_LED; k++)
 	{
-		gLedBuf.led_array[k] = 0;
-		gLedBuf.led_ctrl_array[k] = 0;
+		gLedBuf.led_array_r[k] = 0;
+		spi_send(0);
+		gLedBuf.led_array_r[k] = 0;
+		spi_send(0);
+		gLedBuf.led_array_r[k] = 0;
+		spi_send(0);
 	}
-	spi_send_arr(&gLedBuf.led_array[0], BUFFERSIZE);
 }
 
 void ledstrip_set_color(char *address, char r, char g, char b)
-{				
-	char k,selector;
-	selector = 0;
-	for(k = 0; k < BUFFERSIZE; k++)
+{	
+	char k,mask;
+	mask = 0b00000001;
+	for(k = 0; k < NUM_OF_LED; k++)
 	{	
-		switch (selector)
+		if(*address && mask)
 		{
-			case 0: 
-				{
-					gLedBuf.led_array[k] = r;
-					selector = 1;
-				} break;
-			case 1:
-				{	
-					gLedBuf.led_array[k] = g;
-					selector = 2;
-				}break;
-			case 2:
-				{
-					gLedBuf.led_array[k] = b;
-					selector = 0;
-				}break;
+			spi_send(b);
+			spi_send(g);
+			spi_send(r);
+		}
+		else
+		{	
+			spi_send(0);
+			spi_send(0);
+			spi_send(0);
+		}
+		RLF(mask,1);
+		if(Carry == 1) 
+		{
+			address++;
+			mask= 0b00000001;
 		}
 	}
-	spi_send_arr(&gLedBuf.led_array[0], BUFFERSIZE);
 }

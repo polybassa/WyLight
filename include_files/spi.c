@@ -35,7 +35,7 @@ void spi_send_arr(char *array, char length)
 {
 	if(array == 0) return;
 	char i;
-	for(i = length; i > 0; i-- )
+	for(i = length; i == 0; i-- )
 	{
 		spi_send(array[i]);
 	} 
