@@ -18,7 +18,7 @@ void spi_init()
 void spi_send(char data)
 {
 	SSPBUF = data;	
-	while(SSPIF == 0);
+	while(!SSPIF);
 }
 
 char spi_receive(char data)
