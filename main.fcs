@@ -1,5 +1,5 @@
 
-CC5X Version 3.4H, Copyright (c) B Knudsen Data.
+CC5X Version 3.4E, Copyright (c) B Knudsen Data.
 * FUNCTION CALL STRUCTURE
 
 F: _const1                :#2  : p1
@@ -12,28 +12,22 @@ F: RingBufPut             :#1  : p1 <- p0  *
 
 F: USARTinit              :#1  : p1 <- p0  *
 
-F: USARTsend              :#6  : p1
+F: USARTsend              :#2  : p1
 
-F: USARTsend_str          :#4  : p1
+F: USARTsend_str          :#3  : p1
     _const1               : #2  : p1 -> p1
-    USARTsend             : #6  : p1 -> p1
+    USARTsend             : #2  : p1 -> p1
     _const1               : #2  : p1 -> p1
 
 F: USARTsend_arr          :#0  : p1
-    USARTsend             : #6  : p1 -> p1
+    USARTsend             : #2  : p1 -> p1
 
-F: USARTsend_num          :#8  : p1
-    USARTsend             : #6  : p1 -> p1
-    USARTsend             : #6  : p1 -> p1
-    USARTsend             : #6  : p1 -> p1
-    USARTsend             : #6  : p1 -> p1
-
-F: EEPROM_WR              :#6  : p1
+F: EEPROM_WR              :#5  : p1
 
 F: EEPROM_RD              :#9  : p1
 
 F: EEPROM_WR_BLK          :#1  : p1 <- p0  *
-    EEPROM_WR             : #6  : p1 -> p1
+    EEPROM_WR             : #5  : p1 -> p1
 
 F: EEPROM_RD_BLK          :#0  : p1
     EEPROM_RD             : #9  : p1 -> p1
@@ -47,25 +41,22 @@ F: newCRC                 :#1  : p1 <- p0  *
 
 F: spi_init               :#1  : p1 <- p0  *
 
-F: spi_send               :#10 : p1
+F: spi_send               :#1  : p1 <- p1 
 
-F: spi_receive            :#0  : p1
+F: spi_receive            :#3  : p1
 
 F: spi_send_arr           :#0  : p1
-    spi_send              : #10 : p1 -> p1
+    spi_send              : #1  : p1 -> p1
+
+F: spi_send_ledbuf        :#1  : p1 <- p1 
+    spi_receive           : #3  : p1 -> p1
+    spi_receive           : #3  : p1 -> p1
+    spi_receive           : #3  : p1 -> p1
 
 F: ledstrip_init          :#1  : p1 <- p0  *
-    spi_send              : #10 : p1 -> p1
-    spi_send              : #10 : p1 -> p1
-    spi_send              : #10 : p1 -> p1
 
 F: ledstrip_set_color     :#1  : p1 <- p0  *
-    spi_send              : #10 : p1 -> p1
-    spi_send              : #10 : p1 -> p1
-    spi_send              : #10 : p1 -> p1
-    spi_send              : #10 : p1 -> p1
-    spi_send              : #10 : p1 -> p1
-    spi_send              : #10 : p1 -> p1
+    spi_send_ledbuf       : #1  : p1 -> p1
 
 F: InterruptRoutine       :#0  : p0
     RingBufPut            : #1  : p0 -> p1 *
@@ -82,14 +73,12 @@ F: init_all               :#1  : p0 <- p0
     spi_init              : #1  : p0 -> p1 *
     ledstrip_init         : #1  : p0 -> p1 *
     EEPROM_RD             : #9  : p0 -> p1 *
-    EEPROM_WR             : #6  : p0 -> p1 *
-    EEPROM_WR             : #6  : p0 -> p1 *
-    USARTsend_str         : #4  : p0 -> p1 *
+    EEPROM_WR             : #5  : p0 -> p1 *
 
 F: throw_errors           :#1  : p0 <- p0 
-    USARTsend_str         : #4  : p0 -> p1 *
-    USARTsend_str         : #4  : p0 -> p1 *
-    USARTsend_str         : #4  : p0 -> p1 *
+    USARTsend_str         : #3  : p0 -> p1 *
+    USARTsend_str         : #3  : p0 -> p1 *
+    USARTsend_str         : #3  : p0 -> p1 *
 
 F: get_commands           :#1  : p0 <- p0 
     RingBufGet            : #1  : p0 -> p1 *
@@ -97,30 +86,22 @@ F: get_commands           :#1  : p0 <- p0
     addCRC                : #4  : p0 -> p1 *
     addCRC                : #4  : p0 -> p1 *
     addCRC                : #4  : p0 -> p1 *
-    EEPROM_WR             : #6  : p0 -> p1 *
+    EEPROM_WR             : #5  : p0 -> p1 *
     EEPROM_RD             : #9  : p0 -> p1 *
-    USARTsend_num         : #8  : p0 -> p1 *
-    EEPROM_WR             : #6  : p0 -> p1 *
+    EEPROM_WR             : #5  : p0 -> p1 *
     EEPROM_WR_BLK         : #1  : p0 -> p1 *
 
 F: execute_commands       :#1  : p0 <- p0 
     EEPROM_RD             : #9  : p0 -> p1 *
     EEPROM_RD             : #9  : p0 -> p1 *
     sub_func_set_color    : #1  : p0 -> p0
-    EEPROM_WR             : #6  : p0 -> p1 *
+    EEPROM_WR             : #5  : p0 -> p1 *
 
 F: sub_func_set_color     :#1  : p0 <- p0 
     EEPROM_RD             : #9  : p0 -> p1 *
     EEPROM_RD             : #9  : p0 -> p1 *
     EEPROM_RD             : #9  : p0 -> p1 *
     EEPROM_RD             : #9  : p0 -> p1 *
-    USARTsend_num         : #8  : p0 -> p1 *
-    USARTsend_num         : #8  : p0 -> p1 *
-    USARTsend_num         : #8  : p0 -> p1 *
-    USARTsend_num         : #8  : p0 -> p1 *
-    USARTsend_num         : #8  : p0 -> p1 *
-    USARTsend_num         : #8  : p0 -> p1 *
-    USARTsend_num         : #8  : p0 -> p1 *
     ledstrip_set_color    : #1  : p0 -> p1 *
 
 
@@ -133,18 +114,13 @@ F: sub_func_set_color     :#1  : p0 <- p0
  L2      USARTinit
  L2      spi_init
  L2      ledstrip_init
- L3        spi_send
- L3        spi_send
- L3        spi_send
  L2      EEPROM_RD
  L2      EEPROM_WR
- L2      EEPROM_WR
+ L1    throw_errors
  L2      USARTsend_str
  L3        _const1
  L3        USARTsend
  L3        _const1
- L1    throw_errors
- L2      USARTsend_str ..
  L2      USARTsend_str ..
  L2      USARTsend_str ..
  L1    get_commands
@@ -155,11 +131,6 @@ F: sub_func_set_color     :#1  : p0 <- p0
  L2      addCRC
  L2      EEPROM_WR
  L2      EEPROM_RD
- L2      USARTsend_num
- L3        USARTsend
- L3        USARTsend
- L3        USARTsend
- L2        USARTsend [T-GOTO]
  L2      EEPROM_WR
  L2      EEPROM_WR_BLK
  L3        EEPROM_WR
@@ -171,23 +142,10 @@ F: sub_func_set_color     :#1  : p0 <- p0
  L3        EEPROM_RD
  L3        EEPROM_RD
  L3        EEPROM_RD
- L3        USARTsend_num
- L4          USARTsend
- L4          USARTsend
- L4          USARTsend
- L3          USARTsend [T-GOTO]
- L3        USARTsend_num ..
- L3        USARTsend_num ..
- L3        USARTsend_num ..
- L3        USARTsend_num ..
- L3        USARTsend_num ..
- L3        USARTsend_num ..
  L3        ledstrip_set_color
- L4          spi_send
- L4          spi_send
- L4          spi_send
- L4          spi_send
- L4          spi_send
- L4          spi_send
+ L3          spi_send_ledbuf [T-GOTO]
+ L4            spi_receive
+ L4            spi_receive
+ L4            spi_receive
  L2      EEPROM_WR
 

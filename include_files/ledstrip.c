@@ -10,11 +10,8 @@ void ledstrip_init(void)
 	for(k = 0;k < NUM_OF_LED; k++)
 	{
 		gLedBuf.led_array_r[k] = 0;
-		spi_send(0);
 		gLedBuf.led_array_r[k] = 0;
-		spi_send(0);
 		gLedBuf.led_array_r[k] = 0;
-		spi_send(0);
 	}
 }
 
@@ -26,21 +23,32 @@ void ledstrip_set_color(char *address, char r, char g, char b)
 	{	
 		if(*address && mask)
 		{
-			spi_send(b);
-			spi_send(g);
-			spi_send(r);
+			gLedBuf.led_array_r[k] = r;
+			gLedBuf.led_array_g[k] = g;
+			gLedBuf.led_array_b[k] = b;
+#ifdef TEST
+			USARTsend_num(k,'K');
+			USARTsend_num(b,'B');
+			USARTsend_num(g,'G');
+			USARTsend_num(r,'R');
+			USARTsend(0x0A);
+#endif
 		}
 		else
 		{	
-			spi_send(0);
-			spi_send(0);
-			spi_send(0);
+			gLedBuf.led_array_r[k] = 0;
+			gLedBuf.led_array_g[k] = 0;
+			gLedBuf.led_array_b[k] = 0;
 		}
 		RLF(mask,1);
 		if(Carry == 1) 
 		{
+#ifdef TEST
+			USARTsend_str("Carry");
+#endif
 			address++;
 			mask= 0b00000001;
 		}
 	}
+	spi_send_ledbuf(&gLedBuf.led_array_r[0],&gLedBuf.led_array_g[0],&gLedBuf.led_array_b[0]);
 }

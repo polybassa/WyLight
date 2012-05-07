@@ -1,7 +1,7 @@
 //Nils Weiﬂ 
 //05.09.2011
 //Compiler CC5x/
-#define TEST
+//#define TEST
 
 #pragma sharedAllocation
 
@@ -33,9 +33,8 @@
 #include "include_files\usart.h"
 #include "include_files\eeprom.h"        // 2do* Check EEPROM routines for failure, I use new routines now
 #include "include_files\crc.c"
-#include "include_files\spi.h"
 #include "include_files\ledstrip.h"
-
+#include "include_files\spi.h"
 //*********************** GLOBAL VARIABLES *******************************************
 struct CommandBuffer{
     char cmd_counter;
@@ -84,8 +83,9 @@ void main(void)
 
 void init_all()
 {
+	
 	//OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
-	OSCCON = 0b01111010;		
+	OSCCON = 0b01110010;
 	RingBufInit();
 	//initialise UART interface
 	USARTinit();
@@ -258,6 +258,9 @@ void get_commands()
                     } 
 					// *** Write the new command without STX and CRC
 					EEPROM_WR_BLK(&gCmdBuf.cmd_buf[2], CmdPointer, (gCmdBuf.cmd_counter -4));
+#ifdef TEST
+					USARTsend_arr(&gCmdBuf.cmd_buf[2], (gCmdBuf.cmd_counter - 4));
+#endif
                 }
                 else
                 {
@@ -302,18 +305,21 @@ void execute_commands()
 */ 
 void sub_func_set_color(char *cmdPointer)
 {
-	char r,g,b,i, temp,address[4];
+	char r,g,b,i, temp,temp1,address[4];
 	
 	r = EEPROM_RD(*cmdPointer - CmdWidth + 5);
 	g = EEPROM_RD(*cmdPointer - CmdWidth + 6);
 	b = EEPROM_RD(*cmdPointer - CmdWidth + 7);
 	for(i=0;i<4;i++)
 	{
-		temp = EEPROM_RD(*cmdPointer - (CmdWidth + 1 + i));
+		temp1 = *cmdPointer;
+		temp1 = temp1 - CmdWidth + 1 + i;
+		temp = EEPROM_RD(temp1);
 		address[i] = temp;
 	}
 	
 #ifdef TEST
+	USARTsend_str("Command:");
 	USARTsend_num(address[0],'#');
 	USARTsend_num(address[1],'#');
 	USARTsend_num(address[2],'#');

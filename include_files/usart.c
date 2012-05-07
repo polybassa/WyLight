@@ -12,8 +12,8 @@ void USARTinit()
 	TRISC.6 = 0;
 
     BRGH=1;					// High Baudrate activated
-	BRG16=1;
-	SPBRGL=68;				// 57600 Bps @ 16 MHz Clock
+	BRG16=0;
+	SPBRGL=25;				// 19200 Bps @ 8 MHz Clock
 	SPBRGH=0;
     SPEN = 1;               // Set_Serial_Pins;
     SYNC = 0;               // Set_Async_Mode;

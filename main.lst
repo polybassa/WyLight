@@ -1,11 +1,11 @@
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 1
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 1
 
 ADDR CODE  LINE SOURCE
 
            0001 
-           0002 ; CC5X Version 3.4H, Copyright (c) B Knudsen Data
+           0002 ; CC5X Version 3.4E, Copyright (c) B Knudsen Data
            0003 ; C compiler for the PICmicro family
-           0004 ; ************   2. May 2012  10:07  *************
+           0004 ; ************   7. May 2012  17:52  *************
            0005 
            0006 	processor  16F1936
            0007 	radix  DEC
@@ -51,2117 +51,1990 @@ ADDR CODE  LINE SOURCE
      0003  0047 BRG16       EQU   3
      0001  0048 SSPM1       EQU   1
      0005  0049 SSPEN       EQU   5
-     0036  0050 gRingBuf    EQU   0x36
+     003C  0050 gRingBuf    EQU   0x3C
      0025  0051 result      EQU   0x25
      0020  0052 value       EQU   0x20
      0021  0053 writeNext   EQU   0x21
-     0033  0054 ch          EQU   0x33
-     0024  0055 putstr      EQU   0x24
-     0025  0056 ps          EQU   0x25
+     0024  0054 ch          EQU   0x24
+     0022  0055 putstr      EQU   0x22
+     0023  0056 ps          EQU   0x23
      007F  0057 array       EQU   0x7F
      007F  0058 length      EQU   0x7F
      007F  0059 i           EQU   0x7F
-     002D  0060 input       EQU   0x2D
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 2
+     002A  0060 adress      EQU   0x2A
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 2
 
 ADDR CODE  LINE SOURCE
 
-     002E  0061 sign        EQU   0x2E
-     002F  0062 temp        EQU   0x2F
-     0030  0063 h           EQU   0x30
-     0031  0064 z           EQU   0x31
-     0032  0065 e           EQU   0x32
-     0033  0066 C1cnt       EQU   0x33
-     0034  0067 C2tmp       EQU   0x34
-     0035  0068 C3rem       EQU   0x35
-     0033  0069 C4cnt       EQU   0x33
-     0034  0070 C5tmp       EQU   0x34
-     0033  0071 C6cnt       EQU   0x33
-     0034  0072 C7tmp       EQU   0x34
-     0035  0073 C8rem       EQU   0x35
-     002A  0074 adress      EQU   0x2A
-     002B  0075 data        EQU   0x2B
-     0000  0076 GIE_status  EQU   0
-     002D  0077 adress_2    EQU   0x2D
-     002E  0078 data_2      EQU   0x2E
-     0026  0079 array_2     EQU   0x26
-     0027  0080 adress_3    EQU   0x27
-     0028  0081 length_2    EQU   0x28
-     0029  0082 i_2         EQU   0x29
-     007F  0083 array_3     EQU   0x7F
-     007F  0084 adress_4    EQU   0x7F
-     007F  0085 length_3    EQU   0x7F
-     007F  0086 i_3         EQU   0x7F
-     007F  0087 temp_2      EQU   0x7F
-     0025  0088 byte        EQU   0x25
-     0026  0089 p_crcH      EQU   0x26
-     0027  0090 p_crcL      EQU   0x27
-     0028  0091 index       EQU   0x28
-     0029  0092 crcH        EQU   0x29
-     002A  0093 crcL        EQU   0x2A
-     007F  0094 data_3      EQU   0x7F
-     007F  0095 length_4    EQU   0x7F
-     007F  0096 crcH_out    EQU   0x7F
-     007F  0097 crcL_out    EQU   0x7F
-     007F  0098 crcH_2      EQU   0x7F
-     007F  0099 crcL_2      EQU   0x7F
-     007F  0100 i_4         EQU   0x7F
-     007F  0101 byte_2      EQU   0x7F
-     0025  0102 p_crcH_2    EQU   0x25
-     0026  0103 p_crcL_2    EQU   0x26
-     0033  0104 data_4      EQU   0x33
-     007F  0105 data_5      EQU   0x7F
-     007F  0106 array_4     EQU   0x7F
-     007F  0107 length_5    EQU   0x7F
-     007F  0108 i_5         EQU   0x7F
-     0024  0109 k           EQU   0x24
-     002D  0110 address     EQU   0x2D
-     002E  0111 r           EQU   0x2E
-     002F  0112 g           EQU   0x2F
-     0030  0113 b           EQU   0x30
-     0031  0114 k_2         EQU   0x31
-     0032  0115 mask        EQU   0x32
-     0049  0116 gCmdBuf     EQU   0x49
-     005D  0117 gERROR      EQU   0x5D
-     0020  0118 temp_3      EQU   0x20
-     0022  0119 l           EQU   0x22
-     0023  0120 i_6         EQU   0x23
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 3
+     002B  0061 data        EQU   0x2B
+     0000  0062 GIE_status  EQU   0
+     002E  0063 adress_2    EQU   0x2E
+     002F  0064 data_2      EQU   0x2F
+     0026  0065 array_2     EQU   0x26
+     0027  0066 adress_3    EQU   0x27
+     0028  0067 length_2    EQU   0x28
+     0029  0068 i_2         EQU   0x29
+     007F  0069 array_3     EQU   0x7F
+     007F  0070 adress_4    EQU   0x7F
+     007F  0071 length_3    EQU   0x7F
+     007F  0072 i_3         EQU   0x7F
+     007F  0073 temp        EQU   0x7F
+     0025  0074 byte        EQU   0x25
+     0026  0075 p_crcH      EQU   0x26
+     0027  0076 p_crcL      EQU   0x27
+     0028  0077 index       EQU   0x28
+     0029  0078 crcH        EQU   0x29
+     002A  0079 crcL        EQU   0x2A
+     007F  0080 data_3      EQU   0x7F
+     007F  0081 length_4    EQU   0x7F
+     007F  0082 crcH_out    EQU   0x7F
+     007F  0083 crcL_out    EQU   0x7F
+     007F  0084 crcH_2      EQU   0x7F
+     007F  0085 crcL_2      EQU   0x7F
+     007F  0086 i_4         EQU   0x7F
+     007F  0087 byte_2      EQU   0x7F
+     0025  0088 p_crcH_2    EQU   0x25
+     0026  0089 p_crcL_2    EQU   0x26
+     007F  0090 data_4      EQU   0x7F
+     003B  0091 data_5      EQU   0x3B
+     007F  0092 array_4     EQU   0x7F
+     007F  0093 length_5    EQU   0x7F
+     007F  0094 i_5         EQU   0x7F
+     0034  0095 array_r     EQU   0x34
+     0036  0096 array_g     EQU   0x36
+     0038  0097 array_b     EQU   0x38
+     003A  0098 k           EQU   0x3A
+     0023  0099 k_2         EQU   0x23
+     002E  0100 address     EQU   0x2E
+     002F  0101 r           EQU   0x2F
+     0030  0102 g           EQU   0x30
+     0031  0103 b           EQU   0x31
+     0032  0104 k_3         EQU   0x32
+     0033  0105 mask        EQU   0x33
+     004F  0106 gCmdBuf     EQU   0x4F
+     0063  0107 gERROR      EQU   0x63
+     0020  0108 temp_2      EQU   0x20
+     0022  0109 i_6         EQU   0x22
+     0022  0110 new_byte    EQU   0x22
+     0023  0111 temp_3      EQU   0x23
+     0024  0112 j           EQU   0x24
+     0025  0113 CmdPointer  EQU   0x25
+     0022  0114 pointer     EQU   0x22
+     0023  0115 cmdPointer  EQU   0x23
+     0024  0116 r_2         EQU   0x24
+     0025  0117 g_2         EQU   0x25
+     0026  0118 b_2         EQU   0x26
+     0027  0119 i_7         EQU   0x27
+     0028  0120 temp_4      EQU   0x28
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 3
 
 ADDR CODE  LINE SOURCE
 
-     0022  0121 new_byte    EQU   0x22
-     0023  0122 temp_4      EQU   0x23
-     0024  0123 j           EQU   0x24
-     0025  0124 CmdPointer  EQU   0x25
-     0022  0125 pointer     EQU   0x22
-     0023  0126 cmdPointer  EQU   0x23
-     0024  0127 r_2         EQU   0x24
-     0025  0128 g_2         EQU   0x25
-     0026  0129 b_2         EQU   0x26
-     0027  0130 i_7         EQU   0x27
-     0028  0131 temp_5      EQU   0x28
-     0029  0132 address_2   EQU   0x29
-     0026  0133 ci          EQU   0x26
-           0134 
-0000 2814  0135 	GOTO main
-           0136 
-           0137   ; FILE main.c
-           0138 			;//Nils Weiß 
-           0139 			;//05.09.2011
-           0140 			;//Compiler CC5x/
-           0141 			;#define TEST
-           0142 			;
-           0143 			;#pragma sharedAllocation
-           0144 			;
-           0145 			;//*********************** ENUMERATIONS *********************************************
-           0146 			;#define TRUE  1
-           0147 			;#define FALSE 0
-           0148 			;
-           0149 			;#define STX 0xFF
-           0150 			;#define SET_COLOR 0xFD
-           0151 			;#define SET_FADE 0xFC
-           0152 			;#define SET_RUN 0xFB
-           0153 			;#define WAIT 0xFE
-           0154 			;#define SET_ON 0xFA
-           0155 			;#define SET_OFF 0xF9
-           0156 			;#define DELETE 0xF8
-           0157 			;
-           0158 			;// *** ERRORBITS
-           0159 			;#define crc_failure 0
-           0160 			;#define eeprom_failure 1
-           0161 			;
-           0162 			;#define FRAMELENGTH 16			// *** max length of one commandframe
-           0163 			;#define CmdPointerAddr 0xff		// *** Address at EERPOM, where the Commandpointer is saved
-           0164 			;#define CmdWidth 10				// *** Number of Bytes for one command
-           0165 			;
-           0166 			;//*********************** INCLUDEDATEIEN *********************************************
-           0167 			;#pragma codepage 1
-     0000  0168 	ORG 0x0800
-           0169 
-           0170   ; FILE include_files\RingBuf.c
-           0171 			;
-           0172 			;//#include "unused_files/RingBuf.h"
-           0173 			;//#include "RingBuf.h"
-           0174 			;
-           0175 			;
-           0176 			;#message Global variables are defined in RingBuf.c
-           0177 			;
-           0178 			;struct RingBuffer gRingBuf;
-           0179 			;
-           0180 			;void RingBufInit(void)
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 4
+     0029  0121 temp1       EQU   0x29
+     0024  0122 ci          EQU   0x24
+           0123 
+0000 2814  0124 	GOTO main
+           0125 
+           0126   ; FILE main.c
+           0127 			;//Nils Weiß 
+           0128 			;//05.09.2011
+           0129 			;//Compiler CC5x/
+           0130 			;//#define TEST
+           0131 			;
+           0132 			;#pragma sharedAllocation
+           0133 			;
+           0134 			;//*********************** ENUMERATIONS *********************************************
+           0135 			;#define TRUE  1
+           0136 			;#define FALSE 0
+           0137 			;
+           0138 			;#define STX 0xFF
+           0139 			;#define SET_COLOR 0xFD
+           0140 			;#define SET_FADE 0xFC
+           0141 			;#define SET_RUN 0xFB
+           0142 			;#define WAIT 0xFE
+           0143 			;#define SET_ON 0xFA
+           0144 			;#define SET_OFF 0xF9
+           0145 			;#define DELETE 0xF8
+           0146 			;
+           0147 			;// *** ERRORBITS
+           0148 			;#define crc_failure 0
+           0149 			;#define eeprom_failure 1
+           0150 			;
+           0151 			;#define FRAMELENGTH 16			// *** max length of one commandframe
+           0152 			;#define CmdPointerAddr 0xff		// *** Address at EERPOM, where the Commandpointer is saved
+           0153 			;#define CmdWidth 10				// *** Number of Bytes for one command
+           0154 			;
+           0155 			;//*********************** INCLUDEDATEIEN *********************************************
+           0156 			;#pragma codepage 1
+     0000  0157 	ORG 0x0800
+           0158 
+           0159   ; FILE include_files\RingBuf.c
+           0160 			;
+           0161 			;//#include "unused_files/RingBuf.h"
+           0162 			;//#include "RingBuf.h"
+           0163 			;
+           0164 			;
+           0165 			;#message Global variables are defined in RingBuf.c
+           0166 			;
+           0167 			;struct RingBuffer gRingBuf;
+           0168 			;
+           0169 			;void RingBufInit(void)
+           0170 			;{
+           0171 _const1
+0800 0020  0172 	MOVLB 0
+0801 00A4  0173 	MOVWF ci
+0802 3008  0174 	MOVLW 8
+0803 0023  0175 	MOVLB 3
+0804 0092  0176 	MOVWF EEADRH
+0805 0020  0177 	MOVLB 0
+0806 0C24  0178 	RRF   ci,W
+0807 397F  0179 	ANDLW 127
+0808 3E1D  0180 	ADDLW 29
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 4
 
 ADDR CODE  LINE SOURCE
 
-           0181 			;{
-           0182 _const1
-0800 0020  0183 	MOVLB 0
-0801 00A6  0184 	MOVWF ci
-0802 3008  0185 	MOVLW 8
-0803 0023  0186 	MOVLB 3
-0804 0092  0187 	MOVWF EEADRH
-0805 0020  0188 	MOVLB 0
-0806 0C26  0189 	RRF   ci,W
-0807 397F  0190 	ANDLW 127
-0808 3E1D  0191 	ADDLW 29
-0809 0023  0192 	MOVLB 3
-080A 0091  0193 	MOVWF EEADRL
-080B 1803  0194 	BTFSC 0x03,Carry
-080C 0A92  0195 	INCF  EEADRH,1
-080D 0023  0196 	MOVLB 3
-080E 1795  0197 	BSF   0x195,EEPGD
-080F 1415  0198 	BSF   0x195,RD
-0810 0000  0199 	NOP  
-0811 0000  0200 	NOP  
-0812 0020  0201 	MOVLB 0
-0813 1826  0202 	BTFSC ci,0
-0814 2819  0203 	GOTO  m001
-0815 0023  0204 	MOVLB 3
-0816 0813  0205 	MOVF  EEDATL,W
-0817 397F  0206 	ANDLW 127
-0818 0008  0207 	RETURN
-0819 0023  0208 m001	MOVLB 3
-081A 0D13  0209 	RLF   EEDATL,W
-081B 0D14  0210 	RLF   EEDATH,W
-081C 0008  0211 	RETURN
-081D 3769  0212 	DW    0x3769
-081E 3A69  0213 	DW    0x3A69
-081F 37C4  0214 	DW    0x37C4
-0820 32EE  0215 	DW    0x32EE
-0821 1000  0216 	DW    0x1000
-0822 2945  0217 	DW    0x2945
-0823 27D2  0218 	DW    0x27D2
-0824 1D52  0219 	DW    0x1D52
-0825 2920  0220 	DW    0x2920
-0826 31E5  0221 	DW    0x31E5
-0827 34E5  0222 	DW    0x34E5
-0828 32F6  0223 	DW    0x32F6
-0829 3AE2  0224 	DW    0x3AE2
-082A 3366  0225 	DW    0x3366
-082B 3965  0226 	DW    0x3965
-082C 3320  0227 	DW    0x3320
-082D 3675  0228 	DW    0x3675
-082E 006C  0229 	DW    0x6C
-082F 22A0  0230 	DW    0x22A0
-0830 2952  0231 	DW    0x2952
-0831 294F  0232 	DW    0x294F
-0832 103A  0233 	DW    0x103A
-0833 2943  0234 	DW    0x2943
-0834 16C3  0235 	DW    0x16C3
-0835 3443  0236 	DW    0x3443
-0836 31E5  0237 	DW    0x31E5
-0837 106B  0238 	DW    0x106B
-0838 30E6  0239 	DW    0x30E6
-0839 3669  0240 	DW    0x3669
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 5
+0809 0023  0181 	MOVLB 3
+080A 0091  0182 	MOVWF EEADRL
+080B 1803  0183 	BTFSC 0x03,Carry
+080C 0A92  0184 	INCF  EEADRH,1
+080D 0023  0185 	MOVLB 3
+080E 1795  0186 	BSF   0x195,EEPGD
+080F 1415  0187 	BSF   0x195,RD
+0810 0000  0188 	NOP  
+0811 0000  0189 	NOP  
+0812 0020  0190 	MOVLB 0
+0813 1824  0191 	BTFSC ci,0
+0814 2819  0192 	GOTO  m001
+0815 0023  0193 	MOVLB 3
+0816 0813  0194 	MOVF  EEDATL,W
+0817 397F  0195 	ANDLW 127
+0818 0008  0196 	RETURN
+0819 0023  0197 m001	MOVLB 3
+081A 0D13  0198 	RLF   EEDATL,W
+081B 0D14  0199 	RLF   EEDATH,W
+081C 0008  0200 	RETURN
+081D 22A0  0201 	DW    0x22A0
+081E 2952  0202 	DW    0x2952
+081F 294F  0203 	DW    0x294F
+0820 103A  0204 	DW    0x103A
+0821 32D2  0205 	DW    0x32D2
+0822 32E3  0206 	DW    0x32E3
+0823 3B69  0207 	DW    0x3B69
+0824 3165  0208 	DW    0x3165
+0825 3375  0209 	DW    0x3375
+0826 32E6  0210 	DW    0x32E6
+0827 1072  0211 	DW    0x1072
+0828 3AE6  0212 	DW    0x3AE6
+0829 366C  0213 	DW    0x366C
+082A 1000  0214 	DW    0x1000
+082B 2945  0215 	DW    0x2945
+082C 27D2  0216 	DW    0x27D2
+082D 1D52  0217 	DW    0x1D52
+082E 21A0  0218 	DW    0x21A0
+082F 21D2  0219 	DW    0x21D2
+0830 21AD  0220 	DW    0x21AD
+0831 32E8  0221 	DW    0x32E8
+0832 35E3  0222 	DW    0x35E3
+0833 3320  0223 	DW    0x3320
+0834 34E1  0224 	DW    0x34E1
+0835 32EC  0225 	DW    0x32EC
+0836 0064  0226 	DW    0x64
+0837 22A0  0227 	DW    0x22A0
+0838 2952  0228 	DW    0x2952
+0839 294F  0229 	DW    0x294F
+083A 103A  0230 	DW    0x103A
+083B 22C5  0231 	DW    0x22C5
+083C 2950  0232 	DW    0x2950
+083D 26CF  0233 	DW    0x26CF
+083E 34A0  0234 	DW    0x34A0
+083F 1073  0235 	DW    0x1073
+0840 3AE6  0236 	DW    0x3AE6
+0841 366C  0237 	DW    0x366C
+0842 0000  0238 	DW    0x0
+           0239 RingBufInit
+           0240 			;	gRingBuf.read = 0;
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 5
 
 ADDR CODE  LINE SOURCE
 
-083A 3265  0241 	DW    0x3265
-083B 1000  0242 	DW    0x1000
-083C 2945  0243 	DW    0x2945
-083D 27D2  0244 	DW    0x27D2
-083E 1D52  0245 	DW    0x1D52
-083F 22A0  0246 	DW    0x22A0
-0840 2845  0247 	DW    0x2845
-0841 27D2  0248 	DW    0x27D2
-0842 104D  0249 	DW    0x104D
-0843 39E9  0250 	DW    0x39E9
-0844 3320  0251 	DW    0x3320
-0845 3675  0252 	DW    0x3675
-0846 006C  0253 	DW    0x6C
-           0254 RingBufInit
-           0255 			;	gRingBuf.read = 0;
-0847 0020  0256 	MOVLB 0
-0848 01C6  0257 	CLRF  gRingBuf+16
-           0258 			;	gRingBuf.write = 0;
-0849 01C7  0259 	CLRF  gRingBuf+17
-           0260 			;	gRingBuf.error_full = 0;
-084A 1048  0261 	BCF   gRingBuf+18,0
-           0262 			;}
-084B 0008  0263 	RETURN
-           0264 			;
-           0265 			;char RingBufGet(void)
-           0266 			;{
-           0267 RingBufGet
-           0268 			;	char result = gRingBuf.data[gRingBuf.read];
-084C 3036  0269 	MOVLW 54
-084D 0020  0270 	MOVLB 0
-084E 0746  0271 	ADDWF gRingBuf+16,W
-084F 0084  0272 	MOVWF FSR0L
-0850 0185  0273 	CLRF  FSR0H
-0851 0800  0274 	MOVF  INDF0,W
-0852 00A5  0275 	MOVWF result
-           0276 			;	gRingBuf.read = RingBufInc(gRingBuf.read);
-0853 0A46  0277 	INCF  gRingBuf+16,W
-0854 390F  0278 	ANDLW 15
-0855 00C6  0279 	MOVWF gRingBuf+16
-           0280 			;	return result;
-0856 0825  0281 	MOVF  result,W
-0857 0008  0282 	RETURN
-           0283 			;}
-           0284 			;
-           0285 			;void RingBufPut(char value)
-           0286 			;{
-           0287 RingBufPut
-0858 0020  0288 	MOVLB 0
-0859 00A0  0289 	MOVWF value
-           0290 			;	char writeNext = RingBufInc(gRingBuf.write);
-085A 0A47  0291 	INCF  gRingBuf+17,W
-085B 390F  0292 	ANDLW 15
-085C 00A1  0293 	MOVWF writeNext
-           0294 			;	if(writeNext != gRingBuf.read)
-085D 0821  0295 	MOVF  writeNext,W
-085E 0646  0296 	XORWF gRingBuf+16,W
-085F 1903  0297 	BTFSC 0x03,Zero_
-0860 286A  0298 	GOTO  m002
-           0299 			;	{
-           0300 			;		gRingBuf.data[gRingBuf.write] = value;
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 6
+0843 0020  0241 	MOVLB 0
+0844 01CC  0242 	CLRF  gRingBuf+16
+           0243 			;	gRingBuf.write = 0;
+0845 01CD  0244 	CLRF  gRingBuf+17
+           0245 			;	gRingBuf.error_full = 0;
+0846 104E  0246 	BCF   gRingBuf+18,0
+           0247 			;}
+0847 0008  0248 	RETURN
+           0249 			;
+           0250 			;char RingBufGet(void)
+           0251 			;{
+           0252 RingBufGet
+           0253 			;	char result = gRingBuf.data[gRingBuf.read];
+0848 303C  0254 	MOVLW 60
+0849 0020  0255 	MOVLB 0
+084A 074C  0256 	ADDWF gRingBuf+16,W
+084B 0084  0257 	MOVWF FSR0L
+084C 0185  0258 	CLRF  FSR0H
+084D 0800  0259 	MOVF  INDF0,W
+084E 00A5  0260 	MOVWF result
+           0261 			;	gRingBuf.read = RingBufInc(gRingBuf.read);
+084F 0A4C  0262 	INCF  gRingBuf+16,W
+0850 390F  0263 	ANDLW 15
+0851 00CC  0264 	MOVWF gRingBuf+16
+           0265 			;	return result;
+0852 0825  0266 	MOVF  result,W
+0853 0008  0267 	RETURN
+           0268 			;}
+           0269 			;
+           0270 			;void RingBufPut(char value)
+           0271 			;{
+           0272 RingBufPut
+0854 0020  0273 	MOVLB 0
+0855 00A0  0274 	MOVWF value
+           0275 			;	char writeNext = RingBufInc(gRingBuf.write);
+0856 0A4D  0276 	INCF  gRingBuf+17,W
+0857 390F  0277 	ANDLW 15
+0858 00A1  0278 	MOVWF writeNext
+           0279 			;	if(writeNext != gRingBuf.read)
+0859 0821  0280 	MOVF  writeNext,W
+085A 064C  0281 	XORWF gRingBuf+16,W
+085B 1903  0282 	BTFSC 0x03,Zero_
+085C 2866  0283 	GOTO  m002
+           0284 			;	{
+           0285 			;		gRingBuf.data[gRingBuf.write] = value;
+085D 303C  0286 	MOVLW 60
+085E 074D  0287 	ADDWF gRingBuf+17,W
+085F 0084  0288 	MOVWF FSR0L
+0860 0185  0289 	CLRF  FSR0H
+0861 0820  0290 	MOVF  value,W
+0862 0080  0291 	MOVWF INDF0
+           0292 			;		gRingBuf.write = writeNext;
+0863 0821  0293 	MOVF  writeNext,W
+0864 00CD  0294 	MOVWF gRingBuf+17
+           0295 			;	}
+           0296 			;	else gRingBuf.error_full = 1;
+0865 2868  0297 	GOTO  m003
+0866 0020  0298 m002	MOVLB 0
+0867 144E  0299 	BSF   gRingBuf+18,0
+           0300 			;}
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 6
 
 ADDR CODE  LINE SOURCE
 
-0861 3036  0301 	MOVLW 54
-0862 0747  0302 	ADDWF gRingBuf+17,W
-0863 0084  0303 	MOVWF FSR0L
-0864 0185  0304 	CLRF  FSR0H
-0865 0820  0305 	MOVF  value,W
-0866 0080  0306 	MOVWF INDF0
-           0307 			;		gRingBuf.write = writeNext;
-0867 0821  0308 	MOVF  writeNext,W
-0868 00C7  0309 	MOVWF gRingBuf+17
-           0310 			;	}
-           0311 			;	else gRingBuf.error_full = 1;
-0869 286C  0312 	GOTO  m003
-086A 0020  0313 m002	MOVLB 0
-086B 1448  0314 	BSF   gRingBuf+18,0
-           0315 			;}
-086C 0008  0316 m003	RETURN
-           0317 
-           0318   ; FILE include_files\usart.c
-           0319 			;// Include-Datei für Serielle Kommunikation über Hardwaremodul des Pic
-           0320 			; //
-           0321 			; //
-           0322 			; // Nils Weiß
-           0323 			; // 29.11.2010
-           0324 			; // Compiler CC5x
-           0325 			;
-           0326 			;//*******  Initialisierungs-Funktion  *************************************************
-           0327 			;void USARTinit()
-           0328 			;{
-           0329 USARTinit
-           0330 			;	//USART TX Pin als Ausgang
-           0331 			;	TRISC.6 = 0;
-086D 0021  0332 	MOVLB 1
-086E 130E  0333 	BCF   TRISC,6
-           0334 			;
-           0335 			;    BRGH=1;					// High Baudrate activated
-086F 0023  0336 	MOVLB 3
-0870 151E  0337 	BSF   0x19E,BRGH
-           0338 			;	BRG16=1;
-0871 159F  0339 	BSF   0x19F,BRG16
-           0340 			;	SPBRGL=68;				// 57600 Bps @ 16 MHz Clock
-0872 3044  0341 	MOVLW 68
-0873 009B  0342 	MOVWF SPBRGL
-           0343 			;	SPBRGH=0;
-0874 019C  0344 	CLRF  SPBRGH
-           0345 			;    SPEN = 1;               // Set_Serial_Pins;
-0875 179D  0346 	BSF   0x19D,SPEN
-           0347 			;    SYNC = 0;               // Set_Async_Mode;
-0876 121E  0348 	BCF   0x19E,SYNC
-           0349 			;    TX9 = 0;                // Set_8bit_Tx;
-0877 131E  0350 	BCF   0x19E,TX9
-           0351 			;    RX9 = 0;                // Set_8bit_Rx;
-0878 131D  0352 	BCF   0x19D,RX9
-           0353 			;    CREN = 1;               // Enable_Rx;
-0879 161D  0354 	BSF   0x19D,CREN
-           0355 			;    TXEN = 1;               // Enable_Tx;
-087A 169E  0356 	BSF   0x19E,TXEN
-           0357 			;    RCIE=1;                 // Rx Interrupt aus
-087B 0021  0358 	MOVLB 1
-087C 1691  0359 	BSF   0x91,RCIE
-           0360 			;	ADDEN=0;				// Disable Adressdetection
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 7
+0868 0008  0301 m003	RETURN
+           0302 
+           0303   ; FILE include_files\usart.c
+           0304 			;// Include-Datei für Serielle Kommunikation über Hardwaremodul des Pic
+           0305 			; //
+           0306 			; //
+           0307 			; // Nils Weiß
+           0308 			; // 29.11.2010
+           0309 			; // Compiler CC5x
+           0310 			;
+           0311 			;//*******  Initialisierungs-Funktion  *************************************************
+           0312 			;void USARTinit()
+           0313 			;{
+           0314 USARTinit
+           0315 			;	//USART TX Pin als Ausgang
+           0316 			;	TRISC.6 = 0;
+0869 0021  0317 	MOVLB 1
+086A 130E  0318 	BCF   TRISC,6
+           0319 			;
+           0320 			;    BRGH=1;					// High Baudrate activated
+086B 0023  0321 	MOVLB 3
+086C 151E  0322 	BSF   0x19E,BRGH
+           0323 			;	BRG16=0;
+086D 119F  0324 	BCF   0x19F,BRG16
+           0325 			;	SPBRGL=25;				// 19200 Bps @ 8 MHz Clock
+086E 3019  0326 	MOVLW 25
+086F 009B  0327 	MOVWF SPBRGL
+           0328 			;	SPBRGH=0;
+0870 019C  0329 	CLRF  SPBRGH
+           0330 			;    SPEN = 1;               // Set_Serial_Pins;
+0871 179D  0331 	BSF   0x19D,SPEN
+           0332 			;    SYNC = 0;               // Set_Async_Mode;
+0872 121E  0333 	BCF   0x19E,SYNC
+           0334 			;    TX9 = 0;                // Set_8bit_Tx;
+0873 131E  0335 	BCF   0x19E,TX9
+           0336 			;    RX9 = 0;                // Set_8bit_Rx;
+0874 131D  0337 	BCF   0x19D,RX9
+           0338 			;    CREN = 1;               // Enable_Rx;
+0875 161D  0339 	BSF   0x19D,CREN
+           0340 			;    TXEN = 1;               // Enable_Tx;
+0876 169E  0341 	BSF   0x19E,TXEN
+           0342 			;    RCIE=1;                 // Rx Interrupt aus
+0877 0021  0343 	MOVLB 1
+0878 1691  0344 	BSF   0x91,RCIE
+           0345 			;	ADDEN=0;				// Disable Adressdetection
+0879 0023  0346 	MOVLB 3
+087A 119D  0347 	BCF   0x19D,ADDEN
+           0348 			;}
+087B 0008  0349 	RETURN
+           0350 			;
+           0351 			;//*******  Sende-char-Funktion  *************************************************
+           0352 			;void USARTsend(unsigned char ch)
+           0353 			;{
+           0354 USARTsend
+087C 0020  0355 	MOVLB 0
+087D 00A4  0356 	MOVWF ch
+           0357 			;	while(!TXIF);
+087E 0020  0358 m004	MOVLB 0
+087F 1E11  0359 	BTFSS 0x11,TXIF
+0880 287E  0360 	GOTO  m004
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 7
 
 ADDR CODE  LINE SOURCE
 
-087D 0023  0361 	MOVLB 3
-087E 119D  0362 	BCF   0x19D,ADDEN
-           0363 			;}
-087F 0008  0364 	RETURN
-           0365 			;
-           0366 			;//*******  Sende-char-Funktion  *************************************************
-           0367 			;void USARTsend(unsigned char ch)
-           0368 			;{
-           0369 USARTsend
-0880 0020  0370 	MOVLB 0
-0881 00B3  0371 	MOVWF ch
-           0372 			;	while(!TXIF);
-0882 0020  0373 m004	MOVLB 0
-0883 1E11  0374 	BTFSS 0x11,TXIF
-0884 2882  0375 	GOTO  m004
-           0376 			;	TXREG=ch;
-0885 0020  0377 	MOVLB 0
-0886 0833  0378 	MOVF  ch,W
-0887 0023  0379 	MOVLB 3
-0888 009A  0380 	MOVWF TXREG
-           0381 			;}
-0889 0008  0382 	RETURN
-           0383 			;
-           0384 			;//*******  Sende-String-Funktion  *************************************************
-           0385 			;void USARTsend_str(const char *putstr)
-           0386 			;{
-           0387 USARTsend_str
-           0388 			; char ps;
-           0389 			; ps = *putstr;
-088A 0020  0390 	MOVLB 0
-088B 0824  0391 	MOVF  putstr,W
-088C 2000  0392 	CALL  _const1
-088D 0020  0393 	MOVLB 0
-088E 00A5  0394 	MOVWF ps
-           0395 			;
-           0396 			;  while(ps > 0)
-088F 0020  0397 m005	MOVLB 0
-0890 08A5  0398 	MOVF  ps,1
-0891 1903  0399 	BTFSC 0x03,Zero_
-0892 28A0  0400 	GOTO  m006
-           0401 			;   {
-           0402 			;    putstr++;
-0893 0AA4  0403 	INCF  putstr,1
-           0404 			;    if (ps == 0) break;
-0894 08A5  0405 	MOVF  ps,1
-0895 1903  0406 	BTFSC 0x03,Zero_
-0896 28A0  0407 	GOTO  m006
-           0408 			;   	USARTsend(ps);
-0897 0020  0409 	MOVLB 0
-0898 0825  0410 	MOVF  ps,W
-0899 2080  0411 	CALL  USARTsend
-           0412 			;    ps = *putstr;
-089A 0020  0413 	MOVLB 0
-089B 0824  0414 	MOVF  putstr,W
-089C 2000  0415 	CALL  _const1
-089D 0020  0416 	MOVLB 0
-089E 00A5  0417 	MOVWF ps
-           0418 			;   }
-089F 288F  0419 	GOTO  m005
-           0420 			;}
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 8
+           0361 			;	TXREG=ch;
+0881 0020  0362 	MOVLB 0
+0882 0824  0363 	MOVF  ch,W
+0883 0023  0364 	MOVLB 3
+0884 009A  0365 	MOVWF TXREG
+           0366 			;}
+0885 0008  0367 	RETURN
+           0368 			;
+           0369 			;//*******  Sende-String-Funktion  *************************************************
+           0370 			;void USARTsend_str(const char *putstr)
+           0371 			;{
+           0372 USARTsend_str
+           0373 			; char ps;
+           0374 			; ps = *putstr;
+0886 0020  0375 	MOVLB 0
+0887 0822  0376 	MOVF  putstr,W
+0888 2000  0377 	CALL  _const1
+0889 0020  0378 	MOVLB 0
+088A 00A3  0379 	MOVWF ps
+           0380 			;
+           0381 			;  while(ps > 0)
+088B 0020  0382 m005	MOVLB 0
+088C 08A3  0383 	MOVF  ps,1
+088D 1903  0384 	BTFSC 0x03,Zero_
+088E 289C  0385 	GOTO  m006
+           0386 			;   {
+           0387 			;    putstr++;
+088F 0AA2  0388 	INCF  putstr,1
+           0389 			;    if (ps == 0) break;
+0890 08A3  0390 	MOVF  ps,1
+0891 1903  0391 	BTFSC 0x03,Zero_
+0892 289C  0392 	GOTO  m006
+           0393 			;   	USARTsend(ps);
+0893 0020  0394 	MOVLB 0
+0894 0823  0395 	MOVF  ps,W
+0895 207C  0396 	CALL  USARTsend
+           0397 			;    ps = *putstr;
+0896 0020  0398 	MOVLB 0
+0897 0822  0399 	MOVF  putstr,W
+0898 2000  0400 	CALL  _const1
+0899 0020  0401 	MOVLB 0
+089A 00A3  0402 	MOVWF ps
+           0403 			;   }
+089B 288B  0404 	GOTO  m005
+           0405 			;}
+089C 0008  0406 m006	RETURN
+           0407 			;
+           0408 			;//*******  Sende-Array-Funktion  *************************************************
+           0409 			;void USARTsend_arr(char *array, char length)
+           0410 			;{
+           0411 USARTsend_arr
+089D 00FF  0412 	MOVWF length
+           0413 			;	if(array == 0) return;
+089E 08FF  0414 	MOVF  array,1
+089F 1903  0415 	BTFSC 0x03,Zero_
+08A0 0008  0416 	RETURN
+           0417 			;	char i;
+           0418 			;	for(i=0;i<length;i++)
+08A1 01FF  0419 	CLRF  i
+08A2 087F  0420 m007	MOVF  length,W
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 8
 
 ADDR CODE  LINE SOURCE
 
-08A0 0008  0421 m006	RETURN
-           0422 			;
-           0423 			;//*******  Sende-Array-Funktion  *************************************************
-           0424 			;void USARTsend_arr(char *array, char length)
-           0425 			;{
-           0426 USARTsend_arr
-08A1 00FF  0427 	MOVWF length
-           0428 			;	if(array == 0) return;
-08A2 08FF  0429 	MOVF  array,1
-08A3 1903  0430 	BTFSC 0x03,Zero_
-08A4 0008  0431 	RETURN
-           0432 			;	char i;
-           0433 			;	for(i=0;i<length;i++)
-08A5 01FF  0434 	CLRF  i
-08A6 087F  0435 m007	MOVF  length,W
-08A7 027F  0436 	SUBWF i,W
-08A8 1803  0437 	BTFSC 0x03,Carry
-08A9 28B2  0438 	GOTO  m008
-           0439 			;	{
-           0440 			;		USARTsend(*array);
-08AA 0185  0441 	CLRF  FSR0H
-08AB 087F  0442 	MOVF  array,W
-08AC 0084  0443 	MOVWF FSR0L
-08AD 0800  0444 	MOVF  INDF0,W
-08AE 2080  0445 	CALL  USARTsend
-           0446 			;		array++;
-08AF 0AFF  0447 	INCF  array,1
-           0448 			;	}
-08B0 0AFF  0449 	INCF  i,1
-08B1 28A6  0450 	GOTO  m007
-           0451 			;}
-08B2 0008  0452 m008	RETURN
-           0453 			;
-           0454 			;#ifdef TEST
-           0455 			;//*******  Sende-Zahl-als-String-Funktion  *************************************************
-           0456 			;void USARTsend_num(unsigned char input,unsigned char sign)
-           0457 			;{
-           0458 USARTsend_num
-08B3 0020  0459 	MOVLB 0
-08B4 00AE  0460 	MOVWF sign
-           0461 			;   char temp;
-           0462 			;   char h,z,e;
-           0463 			; 
-           0464 			;   h=0;
-08B5 01B0  0465 	CLRF  h
-           0466 			;   z=0;
-08B6 01B1  0467 	CLRF  z
-           0468 			;   e=0; 
-08B7 01B2  0469 	CLRF  e
-           0470 			;   
-           0471 			;   if (input>99)
-08B8 3064  0472 	MOVLW 100
-08B9 022D  0473 	SUBWF input,W
-08BA 1C03  0474 	BTFSS 0x03,Carry
-08BB 28E2  0475 	GOTO  m013
-           0476 			;   {
-           0477 			;      h=input/100;
-08BC 082D  0478 	MOVF  input,W
-08BD 00B4  0479 	MOVWF C2tmp
-08BE 01B5  0480 	CLRF  C3rem
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 9
+08A3 027F  0421 	SUBWF i,W
+08A4 1803  0422 	BTFSC 0x03,Carry
+08A5 28AE  0423 	GOTO  m008
+           0424 			;	{
+           0425 			;		USARTsend(*array);
+08A6 0185  0426 	CLRF  FSR0H
+08A7 087F  0427 	MOVF  array,W
+08A8 0084  0428 	MOVWF FSR0L
+08A9 0800  0429 	MOVF  INDF0,W
+08AA 207C  0430 	CALL  USARTsend
+           0431 			;		array++;
+08AB 0AFF  0432 	INCF  array,1
+           0433 			;	}
+08AC 0AFF  0434 	INCF  i,1
+08AD 28A2  0435 	GOTO  m007
+           0436 			;}
+08AE 0008  0437 m008	RETURN
+           0438 
+           0439   ; FILE include_files\eeprom_nt.c
+           0440 			;//Funktionen für EEPROM-Zugriffe
+           0441 			;
+           0442 			;//Nils Weiß 
+           0443 			;//05.09.2011
+           0444 			;//Compiler CC5x
+           0445 			;
+           0446 			;//*********************** EEPROM BYTE SCHREIBEN  **********************************************
+           0447 			;
+           0448 			;void EEPROM_WR(char adress, char data)
+           0449 			;{
+           0450 EEPROM_WR
+08AF 0020  0451 	MOVLB 0
+08B0 00AB  0452 	MOVWF data
+           0453 			;	bit GIE_status; 
+           0454 			;	//EEADRH = (char)(adress<<8);
+           0455 			;    EEADRL = (char)adress;        // Adresse in Adressregister übertragen
+08B1 082A  0456 	MOVF  adress,W
+08B2 0023  0457 	MOVLB 3
+08B3 0091  0458 	MOVWF EEADRL
+           0459 			;	EEDATL = data;          // Daten in Datenregister übertragen
+08B4 0020  0460 	MOVLB 0
+08B5 082B  0461 	MOVF  data,W
+08B6 0023  0462 	MOVLB 3
+08B7 0093  0463 	MOVWF EEDATL
+           0464 			;    CFGS = 0;
+08B8 1315  0465 	BCF   0x195,CFGS
+           0466 			;	EEPGD = 0;                // Auswahl: Programmspeicher lesen oder EEPROM
+08B9 1395  0467 	BCF   0x195,EEPGD
+           0468 			;    WREN = 1;                 // Schreiben ins EEPROM erlauben
+08BA 1515  0469 	BSF   0x195,WREN
+           0470 			;	GIE_status=GIE;			
+08BB 0020  0471 	MOVLB 0
+08BC 102C  0472 	BCF   0x2C,GIE_status
+08BD 1B8B  0473 	BTFSC 0x0B,GIE
+08BE 142C  0474 	BSF   0x2C,GIE_status
+           0475 			;    GIE=0;                  // Interrups verbieten
+08BF 138B  0476 	BCF   0x0B,GIE
+           0477 			;    EECON2 = 0x55;
+08C0 3055  0478 	MOVLW 85
+08C1 0023  0479 	MOVLB 3
+08C2 0096  0480 	MOVWF EECON2
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 9
 
 ADDR CODE  LINE SOURCE
 
-08BF 3008  0481 	MOVLW 8
-08C0 00B3  0482 	MOVWF C1cnt
-08C1 0020  0483 m009	MOVLB 0
-08C2 0DB4  0484 	RLF   C2tmp,1
-08C3 0DB5  0485 	RLF   C3rem,1
-08C4 3064  0486 	MOVLW 100
-08C5 0235  0487 	SUBWF C3rem,W
-08C6 1C03  0488 	BTFSS 0x03,Carry
-08C7 28CC  0489 	GOTO  m010
-08C8 3064  0490 	MOVLW 100
-08C9 0020  0491 	MOVLB 0
-08CA 02B5  0492 	SUBWF C3rem,1
-08CB 1403  0493 	BSF   0x03,Carry
-08CC 0020  0494 m010	MOVLB 0
-08CD 0DB0  0495 	RLF   h,1
-08CE 0BB3  0496 	DECFSZ C1cnt,1
-08CF 28C1  0497 	GOTO  m009
-           0498 			;      temp=0;
-08D0 01AF  0499 	CLRF  temp
-           0500 			;      temp=100*h;
-08D1 3064  0501 	MOVLW 100
-08D2 00B4  0502 	MOVWF C5tmp
-08D3 3008  0503 	MOVLW 8
-08D4 00B3  0504 	MOVWF C4cnt
-08D5 1003  0505 m011	BCF   0x03,Carry
-08D6 0020  0506 	MOVLB 0
-08D7 0DAF  0507 	RLF   temp,1
-08D8 0DB4  0508 	RLF   C5tmp,1
-08D9 1C03  0509 	BTFSS 0x03,Carry
-08DA 28DD  0510 	GOTO  m012
-08DB 0830  0511 	MOVF  h,W
-08DC 07AF  0512 	ADDWF temp,1
-08DD 0020  0513 m012	MOVLB 0
-08DE 0BB3  0514 	DECFSZ C4cnt,1
-08DF 28D5  0515 	GOTO  m011
-           0516 			;      input=input-temp; 
-08E0 082F  0517 	MOVF  temp,W
-08E1 02AD  0518 	SUBWF input,1
-           0519 			;   }
-           0520 			;
-           0521 			;   if (input>9)
-08E2 300A  0522 m013	MOVLW 10
-08E3 0020  0523 	MOVLB 0
-08E4 022D  0524 	SUBWF input,W
-08E5 1C03  0525 	BTFSS 0x03,Carry
-08E6 2905  0526 	GOTO  m016
-           0527 			;   {
-           0528 			;      z=input/10;
-08E7 082D  0529 	MOVF  input,W
-08E8 00B4  0530 	MOVWF C7tmp
-08E9 01B5  0531 	CLRF  C8rem
-08EA 3008  0532 	MOVLW 8
-08EB 00B3  0533 	MOVWF C6cnt
-08EC 0020  0534 m014	MOVLB 0
-08ED 0DB4  0535 	RLF   C7tmp,1
-08EE 0DB5  0536 	RLF   C8rem,1
-08EF 300A  0537 	MOVLW 10
-08F0 0235  0538 	SUBWF C8rem,W
-08F1 1C03  0539 	BTFSS 0x03,Carry
-08F2 28F7  0540 	GOTO  m015
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 10
+           0481 			;    EECON2 = 0xAA;
+08C3 30AA  0482 	MOVLW 170
+08C4 0096  0483 	MOVWF EECON2
+           0484 			;	WR=1; 					// Starten des Schreibens
+08C5 1495  0485 	BSF   0x195,WR
+           0486 			;    GIE=GIE_status;                  // Interrups erlauben
+08C6 0020  0487 	MOVLB 0
+08C7 1C2C  0488 	BTFSS 0x2C,GIE_status
+08C8 138B  0489 	BCF   0x0B,GIE
+08C9 182C  0490 	BTFSC 0x2C,GIE_status
+08CA 178B  0491 	BSF   0x0B,GIE
+           0492 			;	WREN=0;
+08CB 0023  0493 	MOVLB 3
+08CC 1115  0494 	BCF   0x195,WREN
+           0495 			;	while(WR);
+08CD 0023  0496 m009	MOVLB 3
+08CE 1895  0497 	BTFSC 0x195,WR
+08CF 28CD  0498 	GOTO  m009
+           0499 			;}
+08D0 0008  0500 	RETURN
+           0501 			;
+           0502 			;//*********************** EEPROM BYTE LESEN  **********************************************
+           0503 			;
+           0504 			;char EEPROM_RD(char adress)
+           0505 			;{
+           0506 EEPROM_RD
+08D1 0020  0507 	MOVLB 0
+08D2 00AE  0508 	MOVWF adress_2
+           0509 			;    char data;
+           0510 			;    //EEADRH = (char)(adress<<8);        // Adresse in Adressregister übertragen
+           0511 			;    EEADRL = (char)(adress);
+08D3 082E  0512 	MOVF  adress_2,W
+08D4 0023  0513 	MOVLB 3
+08D5 0091  0514 	MOVWF EEADRL
+           0515 			;	CFGS=0;
+08D6 1315  0516 	BCF   0x195,CFGS
+           0517 			;	EEPGD=0;                // Auswahl: Programmspeicher lesen oder EEPROM
+08D7 1395  0518 	BCF   0x195,EEPGD
+           0519 			;    RD=1;                   // Starten des Lesesn
+08D8 1415  0520 	BSF   0x195,RD
+           0521 			;    data = EEDATL;       // Daten aus Datenregister auslesen
+08D9 0813  0522 	MOVF  EEDATL,W
+08DA 0020  0523 	MOVLB 0
+08DB 00AF  0524 	MOVWF data_2
+           0525 			;    return data;
+08DC 082F  0526 	MOVF  data_2,W
+08DD 0008  0527 	RETURN
+           0528 			;}
+           0529 			;
+           0530 			;//*********************** EEPROM BYTEARRAY SCHREIBEN  **************************************
+           0531 			;
+           0532 			;void EEPROM_WR_BLK(char *array, char adress, char length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
+           0533 			;{
+           0534 EEPROM_WR_BLK
+08DE 0020  0535 	MOVLB 0
+08DF 00A8  0536 	MOVWF length_2
+           0537 			;	if(!array) return;
+08E0 08A6  0538 	MOVF  array_2,1
+08E1 1903  0539 	BTFSC 0x03,Zero_
+08E2 0008  0540 	RETURN
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 10
 
 ADDR CODE  LINE SOURCE
 
-08F3 300A  0541 	MOVLW 10
-08F4 0020  0542 	MOVLB 0
-08F5 02B5  0543 	SUBWF C8rem,1
-08F6 1403  0544 	BSF   0x03,Carry
-08F7 0020  0545 m015	MOVLB 0
-08F8 0DB1  0546 	RLF   z,1
-08F9 0BB3  0547 	DECFSZ C6cnt,1
-08FA 28EC  0548 	GOTO  m014
-           0549 			;      temp=0;
-08FB 01AF  0550 	CLRF  temp
-           0551 			;      temp=z*10;
-08FC 0831  0552 	MOVF  z,W
-08FD 00AF  0553 	MOVWF temp
-08FE 072F  0554 	ADDWF temp,W
-08FF 07AF  0555 	ADDWF temp,1
-0900 07AF  0556 	ADDWF temp,1
-0901 1003  0557 	BCF   0x03,Carry
-0902 0DAF  0558 	RLF   temp,1
-           0559 			;      input=input-temp;      
-0903 082F  0560 	MOVF  temp,W
-0904 02AD  0561 	SUBWF input,1
-           0562 			;   }
-           0563 			;
-           0564 			;   if (input<=9)
-0905 300A  0565 m016	MOVLW 10
-0906 0020  0566 	MOVLB 0
-0907 022D  0567 	SUBWF input,W
-0908 1803  0568 	BTFSC 0x03,Carry
-0909 290C  0569 	GOTO  m017
-           0570 			;   {
-           0571 			;      e=input;
-090A 082D  0572 	MOVF  input,W
-090B 00B2  0573 	MOVWF e
-           0574 			;   }
-           0575 			;   if(h!=0)USARTsend(h+0x30);
-090C 0020  0576 m017	MOVLB 0
-090D 08B0  0577 	MOVF  h,1
-090E 1903  0578 	BTFSC 0x03,Zero_
-090F 2913  0579 	GOTO  m018
-0910 3030  0580 	MOVLW 48
-0911 0730  0581 	ADDWF h,W
-0912 2080  0582 	CALL  USARTsend
-           0583 			;   USARTsend(z+0x30);
-0913 3030  0584 m018	MOVLW 48
-0914 0020  0585 	MOVLB 0
-0915 0731  0586 	ADDWF z,W
-0916 2080  0587 	CALL  USARTsend
-           0588 			;   USARTsend(e+0x30);
-0917 3030  0589 	MOVLW 48
-0918 0020  0590 	MOVLB 0
-0919 0732  0591 	ADDWF e,W
-091A 2080  0592 	CALL  USARTsend
-           0593 			;   USARTsend(sign); 	//Zeichen senden
-091B 0020  0594 	MOVLB 0
-091C 082E  0595 	MOVF  sign,W
-091D 2880  0596 	GOTO  USARTsend
-           0597 			;}
-           0598 
-           0599   ; FILE include_files\eeprom_nt.c
-           0600 			;//Funktionen für EEPROM-Zugriffe
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 11
+           0541 			;	char i;
+           0542 			;	for(i=0;i<length;i++)
+08E3 0020  0543 	MOVLB 0
+08E4 01A9  0544 	CLRF  i_2
+08E5 0020  0545 m010	MOVLB 0
+08E6 0828  0546 	MOVF  length_2,W
+08E7 0229  0547 	SUBWF i_2,W
+08E8 1803  0548 	BTFSC 0x03,Carry
+08E9 28F6  0549 	GOTO  m011
+           0550 			;	{
+           0551 			;		EEPROM_WR(adress,*array);
+08EA 0827  0552 	MOVF  adress_3,W
+08EB 00AA  0553 	MOVWF adress
+08EC 0185  0554 	CLRF  FSR0H
+08ED 0826  0555 	MOVF  array_2,W
+08EE 0084  0556 	MOVWF FSR0L
+08EF 0800  0557 	MOVF  INDF0,W
+08F0 20AF  0558 	CALL  EEPROM_WR
+           0559 			;		adress++;
+08F1 0020  0560 	MOVLB 0
+08F2 0AA7  0561 	INCF  adress_3,1
+           0562 			;		array++;
+08F3 0AA6  0563 	INCF  array_2,1
+           0564 			;	}
+08F4 0AA9  0565 	INCF  i_2,1
+08F5 28E5  0566 	GOTO  m010
+           0567 			;}
+08F6 0008  0568 m011	RETURN
+           0569 			;
+           0570 			;//*********************** EEPROM BYTEARRAY LESEN  **************************************
+           0571 			;
+           0572 			;void EEPROM_RD_BLK(char *array, char adress, char length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
+           0573 			;{
+           0574 EEPROM_RD_BLK
+08F7 00FF  0575 	MOVWF length_3
+           0576 			;	if(!array) return;
+08F8 08FF  0577 	MOVF  array_3,1
+08F9 1903  0578 	BTFSC 0x03,Zero_
+08FA 0008  0579 	RETURN
+           0580 			;	char i, temp;
+           0581 			;	for(i=0;i<length;i++)
+08FB 01FF  0582 	CLRF  i_3
+08FC 087F  0583 m012	MOVF  length_3,W
+08FD 027F  0584 	SUBWF i_3,W
+08FE 1803  0585 	BTFSC 0x03,Carry
+08FF 290C  0586 	GOTO  m013
+           0587 			;	{
+           0588 			;		temp = EEPROM_RD(adress);
+0900 087F  0589 	MOVF  adress_4,W
+0901 20D1  0590 	CALL  EEPROM_RD
+0902 00FF  0591 	MOVWF temp
+           0592 			;		array[i] = temp;
+0903 087F  0593 	MOVF  i_3,W
+0904 077F  0594 	ADDWF array_3,W
+0905 0084  0595 	MOVWF FSR0L
+0906 0185  0596 	CLRF  FSR0H
+0907 087F  0597 	MOVF  temp,W
+0908 0080  0598 	MOVWF INDF0
+           0599 			;		adress++;
+0909 0AFF  0600 	INCF  adress_4,1
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 11
 
 ADDR CODE  LINE SOURCE
 
-           0601 			;
-           0602 			;//Nils Weiß 
-           0603 			;//05.09.2011
-           0604 			;//Compiler CC5x
-           0605 			;
-           0606 			;//*********************** EEPROM BYTE SCHREIBEN  **********************************************
-           0607 			;
-           0608 			;void EEPROM_WR(char adress, char data)
-           0609 			;{
-           0610 EEPROM_WR
-091E 0020  0611 	MOVLB 0
-091F 00AB  0612 	MOVWF data
-           0613 			;	bit GIE_status; 
-           0614 			;	//EEADRH = (char)(adress<<8);
-           0615 			;    EEADRL = (char)adress;        // Adresse in Adressregister übertragen
-0920 082A  0616 	MOVF  adress,W
-0921 0023  0617 	MOVLB 3
-0922 0091  0618 	MOVWF EEADRL
-           0619 			;	EEDATL = data;          // Daten in Datenregister übertragen
-0923 0020  0620 	MOVLB 0
-0924 082B  0621 	MOVF  data,W
-0925 0023  0622 	MOVLB 3
-0926 0093  0623 	MOVWF EEDATL
-           0624 			;    CFGS = 0;
-0927 1315  0625 	BCF   0x195,CFGS
-           0626 			;	EEPGD = 0;                // Auswahl: Programmspeicher lesen oder EEPROM
-0928 1395  0627 	BCF   0x195,EEPGD
-           0628 			;    WREN = 1;                 // Schreiben ins EEPROM erlauben
-0929 1515  0629 	BSF   0x195,WREN
-           0630 			;	GIE_status=GIE;			
-092A 0020  0631 	MOVLB 0
-092B 102C  0632 	BCF   0x2C,GIE_status
-092C 1B8B  0633 	BTFSC 0x0B,GIE
-092D 142C  0634 	BSF   0x2C,GIE_status
-           0635 			;    GIE=0;                  // Interrups verbieten
-092E 138B  0636 	BCF   0x0B,GIE
-           0637 			;    EECON2 = 0x55;
-092F 3055  0638 	MOVLW 85
-0930 0023  0639 	MOVLB 3
-0931 0096  0640 	MOVWF EECON2
-           0641 			;    EECON2 = 0xAA;
-0932 30AA  0642 	MOVLW 170
-0933 0096  0643 	MOVWF EECON2
-           0644 			;	WR=1; 					// Starten des Schreibens
-0934 1495  0645 	BSF   0x195,WR
-           0646 			;    GIE=GIE_status;                  // Interrups erlauben
-0935 0020  0647 	MOVLB 0
-0936 1C2C  0648 	BTFSS 0x2C,GIE_status
-0937 138B  0649 	BCF   0x0B,GIE
-0938 182C  0650 	BTFSC 0x2C,GIE_status
-0939 178B  0651 	BSF   0x0B,GIE
-           0652 			;	WREN=0;
-093A 0023  0653 	MOVLB 3
-093B 1115  0654 	BCF   0x195,WREN
-           0655 			;	while(WR);
-093C 0023  0656 m019	MOVLB 3
-093D 1895  0657 	BTFSC 0x195,WR
-093E 293C  0658 	GOTO  m019
-           0659 			;}
-093F 0008  0660 	RETURN
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 12
+           0601 			;	}
+090A 0AFF  0602 	INCF  i_3,1
+090B 28FC  0603 	GOTO  m012
+           0604 
+           0605   ; FILE include_files\eeprom.h
+           0606 			;#ifndef _EEPROM_H_
+           0607 			;#define _EEPROM_H_
+           0608 			;
+           0609 			;//Funktionen fÂ¸r EEPROM-Zugriffe
+           0610 			;
+           0611 			;//Nils Weiï¬‚ 
+           0612 			;//05.09.2011
+           0613 			;//Compiler CC5x
+           0614 			;
+           0615 			;void EEPROM_WR(char adress, char data);
+           0616 			;char EEPROM_RD(char adress);
+           0617 			;void EEPROM_WR_BLK(char *array, char adress, char length);
+           0618 			;void EEPROM_RD_BLK(char *array, char adress, char length);
+           0619 			;
+           0620 			;#include "include_files\eeprom_nt.c"
+090C 0008  0621 m013	RETURN
+           0622 
+           0623   ; FILE include_files\crc.c
+           0624 			; // Include-Datei zum Erstellen von CRC Prüfsummen
+           0625 			; //
+           0626 			; //
+           0627 			; // Nils Weiß
+           0628 			; // 14.04.2012
+           0629 			; // Compiler CC5x
+           0630 			;
+           0631 			;// 16-bit CCIT CRC
+           0632 			;
+           0633 			;void addCRC(char byte, char* p_crcH, char* p_crcL)
+           0634 			;{
+           0635 addCRC
+           0636 			;	char index;
+           0637 			;	char crcH,crcL;
+           0638 			;	crcH = *p_crcH;
+090D 0185  0639 	CLRF  FSR0H
+090E 0020  0640 	MOVLB 0
+090F 0826  0641 	MOVF  p_crcH,W
+0910 0084  0642 	MOVWF FSR0L
+0911 0800  0643 	MOVF  INDF0,W
+0912 00A9  0644 	MOVWF crcH
+           0645 			;	crcL = *p_crcL;
+0913 0185  0646 	CLRF  FSR0H
+0914 0827  0647 	MOVF  p_crcL,W
+0915 0084  0648 	MOVWF FSR0L
+0916 0800  0649 	MOVF  INDF0,W
+0917 00AA  0650 	MOVWF crcL
+           0651 			;
+           0652 			;	MOVF(byte,0);
+0918 0825  0653 	MOVF  byte,W
+           0654 			;	
+           0655 			;	XORWF(crcH,0);
+0919 0629  0656 	XORWF crcH,W
+           0657 			;	MOVWF(index);
+091A 00A8  0658 	MOVWF index
+           0659 			;	ANDLW(0xf0);
+091B 39F0  0660 	ANDLW 240
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 12
 
 ADDR CODE  LINE SOURCE
 
-           0661 			;
-           0662 			;//*********************** EEPROM BYTE LESEN  **********************************************
-           0663 			;
-           0664 			;char EEPROM_RD(char adress)
-           0665 			;{
-           0666 EEPROM_RD
-0940 0020  0667 	MOVLB 0
-0941 00AD  0668 	MOVWF adress_2
-           0669 			;    char data;
-           0670 			;    //EEADRH = (char)(adress<<8);        // Adresse in Adressregister übertragen
-           0671 			;    EEADRL = (char)(adress);
-0942 082D  0672 	MOVF  adress_2,W
-0943 0023  0673 	MOVLB 3
-0944 0091  0674 	MOVWF EEADRL
-           0675 			;	CFGS=0;
-0945 1315  0676 	BCF   0x195,CFGS
-           0677 			;	EEPGD=0;                // Auswahl: Programmspeicher lesen oder EEPROM
-0946 1395  0678 	BCF   0x195,EEPGD
-           0679 			;    RD=1;                   // Starten des Lesesn
-0947 1415  0680 	BSF   0x195,RD
-           0681 			;    data = EEDATL;       // Daten aus Datenregister auslesen
-0948 0813  0682 	MOVF  EEDATL,W
-0949 0020  0683 	MOVLB 0
-094A 00AE  0684 	MOVWF data_2
-           0685 			;    return data;
-094B 082E  0686 	MOVF  data_2,W
-094C 0008  0687 	RETURN
-           0688 			;}
-           0689 			;
-           0690 			;//*********************** EEPROM BYTEARRAY SCHREIBEN  **************************************
-           0691 			;
-           0692 			;void EEPROM_WR_BLK(char *array, char adress, char length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
-           0693 			;{
-           0694 EEPROM_WR_BLK
-094D 0020  0695 	MOVLB 0
-094E 00A8  0696 	MOVWF length_2
-           0697 			;	if(!array) return;
-094F 08A6  0698 	MOVF  array_2,1
-0950 1903  0699 	BTFSC 0x03,Zero_
-0951 0008  0700 	RETURN
-           0701 			;	char i;
-           0702 			;	for(i=0;i<length;i++)
-0952 0020  0703 	MOVLB 0
-0953 01A9  0704 	CLRF  i_2
-0954 0020  0705 m020	MOVLB 0
-0955 0828  0706 	MOVF  length_2,W
-0956 0229  0707 	SUBWF i_2,W
-0957 1803  0708 	BTFSC 0x03,Carry
-0958 2965  0709 	GOTO  m021
-           0710 			;	{
-           0711 			;		EEPROM_WR(adress,*array);
-0959 0827  0712 	MOVF  adress_3,W
-095A 00AA  0713 	MOVWF adress
-095B 0185  0714 	CLRF  FSR0H
-095C 0826  0715 	MOVF  array_2,W
-095D 0084  0716 	MOVWF FSR0L
-095E 0800  0717 	MOVF  INDF0,W
-095F 211E  0718 	CALL  EEPROM_WR
-           0719 			;		adress++;
-0960 0020  0720 	MOVLB 0
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 13
+           0661 			;	SWAPF(index,1);
+091C 0EA8  0662 	SWAPF index,1
+           0663 			;	XORWF(index,1);
+091D 06A8  0664 	XORWF index,1
+           0665 			;	
+           0666 			;	MOVF(index,0);
+091E 0828  0667 	MOVF  index,W
+           0668 			;	ANDLW(0xf0);
+091F 39F0  0669 	ANDLW 240
+           0670 			;	XORWF(crcL,0);
+0920 062A  0671 	XORWF crcL,W
+           0672 			;	MOVWF(crcH);
+0921 00A9  0673 	MOVWF crcH
+           0674 			;	
+           0675 			;	RLF(index,0);
+0922 0D28  0676 	RLF   index,W
+           0677 			;	RLF(index,0);
+0923 0D28  0678 	RLF   index,W
+           0679 			;	XORWF(crcH,1);
+0924 06A9  0680 	XORWF crcH,1
+           0681 			;	ANDLW(0xe0);
+0925 39E0  0682 	ANDLW 224
+           0683 			;	XORWF(crcH,1);
+0926 06A9  0684 	XORWF crcH,1
+           0685 			;		
+           0686 			;	SWAPF(index,1);
+0927 0EA8  0687 	SWAPF index,1
+           0688 			;	XORWF(index,0);
+0928 0628  0689 	XORWF index,W
+           0690 			;	MOVWF(crcL);
+0929 00AA  0691 	MOVWF crcL
+           0692 			;
+           0693 			;	*p_crcH = crcH;
+092A 0185  0694 	CLRF  FSR0H
+092B 0826  0695 	MOVF  p_crcH,W
+092C 0084  0696 	MOVWF FSR0L
+092D 0829  0697 	MOVF  crcH,W
+092E 0080  0698 	MOVWF INDF0
+           0699 			;	*p_crcL = crcL;
+092F 0185  0700 	CLRF  FSR0H
+0930 0827  0701 	MOVF  p_crcL,W
+0931 0084  0702 	MOVWF FSR0L
+0932 082A  0703 	MOVF  crcL,W
+0933 0080  0704 	MOVWF INDF0
+           0705 			;
+           0706 			;}
+0934 0008  0707 	RETURN
+           0708 			;
+           0709 			;void CRC(char *data, char length, char* crcH_out, char* crcL_out)
+           0710 			;{
+           0711 CRC
+           0712 			;	if(!crcH_out)return;
+0935 08FF  0713 	MOVF  crcH_out,1
+0936 1903  0714 	BTFSC 0x03,Zero_
+0937 0008  0715 	RETURN
+           0716 			;	if(!crcL_out)return;
+0938 08FF  0717 	MOVF  crcL_out,1
+0939 1903  0718 	BTFSC 0x03,Zero_
+093A 0008  0719 	RETURN
+           0720 			;	if(!data)return;
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 13
 
 ADDR CODE  LINE SOURCE
 
-0961 0AA7  0721 	INCF  adress_3,1
-           0722 			;		array++;
-0962 0AA6  0723 	INCF  array_2,1
-           0724 			;	}
-0963 0AA9  0725 	INCF  i_2,1
-0964 2954  0726 	GOTO  m020
-           0727 			;}
-0965 0008  0728 m021	RETURN
-           0729 			;
-           0730 			;//*********************** EEPROM BYTEARRAY LESEN  **************************************
+093B 08FF  0721 	MOVF  data_3,1
+093C 1903  0722 	BTFSC 0x03,Zero_
+093D 0008  0723 	RETURN
+           0724 			;	char crcH,crcL,i,byte;
+           0725 			;	crcH=0xff;
+093E 30FF  0726 	MOVLW 255
+093F 00FF  0727 	MOVWF crcH_2
+           0728 			;	crcL=0xff;
+0940 30FF  0729 	MOVLW 255
+0941 00FF  0730 	MOVWF crcL_2
            0731 			;
-           0732 			;void EEPROM_RD_BLK(char *array, char adress, char length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
-           0733 			;{
-           0734 EEPROM_RD_BLK
-0966 00FF  0735 	MOVWF length_3
-           0736 			;	if(!array) return;
-0967 08FF  0737 	MOVF  array_3,1
-0968 1903  0738 	BTFSC 0x03,Zero_
-0969 0008  0739 	RETURN
-           0740 			;	char i, temp;
-           0741 			;	for(i=0;i<length;i++)
-096A 01FF  0742 	CLRF  i_3
-096B 087F  0743 m022	MOVF  length_3,W
-096C 027F  0744 	SUBWF i_3,W
-096D 1803  0745 	BTFSC 0x03,Carry
-096E 297B  0746 	GOTO  m023
-           0747 			;	{
-           0748 			;		temp = EEPROM_RD(adress);
-096F 087F  0749 	MOVF  adress_4,W
-0970 2140  0750 	CALL  EEPROM_RD
-0971 00FF  0751 	MOVWF temp_2
-           0752 			;		array[i] = temp;
-0972 087F  0753 	MOVF  i_3,W
-0973 077F  0754 	ADDWF array_3,W
-0974 0084  0755 	MOVWF FSR0L
-0975 0185  0756 	CLRF  FSR0H
-0976 087F  0757 	MOVF  temp_2,W
-0977 0080  0758 	MOVWF INDF0
-           0759 			;		adress++;
-0978 0AFF  0760 	INCF  adress_4,1
-           0761 			;	}
-0979 0AFF  0762 	INCF  i_3,1
-097A 296B  0763 	GOTO  m022
-           0764 
-           0765   ; FILE include_files\eeprom.h
-           0766 			;#ifndef _EEPROM_H_
-           0767 			;#define _EEPROM_H_
-           0768 			;
-           0769 			;//Funktionen fÂ¸r EEPROM-Zugriffe
-           0770 			;
-           0771 			;//Nils Weiï¬‚ 
-           0772 			;//05.09.2011
-           0773 			;//Compiler CC5x
-           0774 			;
-           0775 			;void EEPROM_WR(char adress, char data);
-           0776 			;char EEPROM_RD(char adress);
-           0777 			;void EEPROM_WR_BLK(char *array, char adress, char length);
-           0778 			;void EEPROM_RD_BLK(char *array, char adress, char length);
-           0779 			;
-           0780 			;#include "include_files\eeprom_nt.c"
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 14
+           0732 			;	for(i=0;i<length;i++)
+0942 01FF  0733 	CLRF  i_4
+0943 087F  0734 m014	MOVF  length_4,W
+0944 027F  0735 	SUBWF i_4,W
+0945 1803  0736 	BTFSC 0x03,Carry
+0946 2957  0737 	GOTO  m015
+           0738 			;	{
+           0739 			;		byte = data[i];
+0947 087F  0740 	MOVF  i_4,W
+0948 077F  0741 	ADDWF data_3,W
+0949 0084  0742 	MOVWF FSR0L
+094A 0185  0743 	CLRF  FSR0H
+094B 0800  0744 	MOVF  INDF0,W
+094C 00FF  0745 	MOVWF byte_2
+           0746 			;		addCRC(byte,&crcH,&crcL);
+094D 087F  0747 	MOVF  byte_2,W
+094E 0020  0748 	MOVLB 0
+094F 00A5  0749 	MOVWF byte
+0950 307F  0750 	MOVLW 127
+0951 00A6  0751 	MOVWF p_crcH
+0952 307F  0752 	MOVLW 127
+0953 00A7  0753 	MOVWF p_crcL
+0954 210D  0754 	CALL  addCRC
+           0755 			;	}
+0955 0AFF  0756 	INCF  i_4,1
+0956 2943  0757 	GOTO  m014
+           0758 			;	
+           0759 			;	*crcH_out = crcH;
+0957 0185  0760 m015	CLRF  FSR0H
+0958 087F  0761 	MOVF  crcH_out,W
+0959 0084  0762 	MOVWF FSR0L
+095A 087F  0763 	MOVF  crcH_2,W
+095B 0080  0764 	MOVWF INDF0
+           0765 			;	*crcL_out = crcL;
+095C 0185  0766 	CLRF  FSR0H
+095D 087F  0767 	MOVF  crcL_out,W
+095E 0084  0768 	MOVWF FSR0L
+095F 087F  0769 	MOVF  crcL_2,W
+0960 0080  0770 	MOVWF INDF0
+           0771 			;}
+0961 0008  0772 	RETURN
+           0773 			;
+           0774 			;void newCRC(char* p_crcH, char* p_crcL)
+           0775 			;{
+           0776 newCRC
+           0777 			;    if(!p_crcH) return;
+0962 0020  0778 	MOVLB 0
+0963 08A5  0779 	MOVF  p_crcH_2,1
+0964 1903  0780 	BTFSC 0x03,Zero_
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 14
 
 ADDR CODE  LINE SOURCE
 
-097B 0008  0781 m023	RETURN
-           0782 
-           0783   ; FILE include_files\crc.c
-           0784 			; // Include-Datei zum Erstellen von CRC Prüfsummen
-           0785 			; //
-           0786 			; //
-           0787 			; // Nils Weiß
-           0788 			; // 14.04.2012
-           0789 			; // Compiler CC5x
-           0790 			;
-           0791 			;// 16-bit CCIT CRC
-           0792 			;
-           0793 			;void addCRC(char byte, char* p_crcH, char* p_crcL)
-           0794 			;{
-           0795 addCRC
-           0796 			;	char index;
-           0797 			;	char crcH,crcL;
-           0798 			;	crcH = *p_crcH;
-097C 0185  0799 	CLRF  FSR0H
-097D 0020  0800 	MOVLB 0
-097E 0826  0801 	MOVF  p_crcH,W
-097F 0084  0802 	MOVWF FSR0L
-0980 0800  0803 	MOVF  INDF0,W
-0981 00A9  0804 	MOVWF crcH
-           0805 			;	crcL = *p_crcL;
-0982 0185  0806 	CLRF  FSR0H
-0983 0827  0807 	MOVF  p_crcL,W
-0984 0084  0808 	MOVWF FSR0L
-0985 0800  0809 	MOVF  INDF0,W
-0986 00AA  0810 	MOVWF crcL
-           0811 			;
-           0812 			;	MOVF(byte,0);
-0987 0825  0813 	MOVF  byte,W
-           0814 			;	
-           0815 			;	XORWF(crcH,0);
-0988 0629  0816 	XORWF crcH,W
-           0817 			;	MOVWF(index);
-0989 00A8  0818 	MOVWF index
-           0819 			;	ANDLW(0xf0);
-098A 39F0  0820 	ANDLW 240
-           0821 			;	SWAPF(index,1);
-098B 0EA8  0822 	SWAPF index,1
-           0823 			;	XORWF(index,1);
-098C 06A8  0824 	XORWF index,1
-           0825 			;	
-           0826 			;	MOVF(index,0);
-098D 0828  0827 	MOVF  index,W
-           0828 			;	ANDLW(0xf0);
-098E 39F0  0829 	ANDLW 240
-           0830 			;	XORWF(crcL,0);
-098F 062A  0831 	XORWF crcL,W
-           0832 			;	MOVWF(crcH);
-0990 00A9  0833 	MOVWF crcH
-           0834 			;	
-           0835 			;	RLF(index,0);
-0991 0D28  0836 	RLF   index,W
-           0837 			;	RLF(index,0);
-0992 0D28  0838 	RLF   index,W
-           0839 			;	XORWF(crcH,1);
-0993 06A9  0840 	XORWF crcH,1
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 15
+0965 0008  0781 	RETURN
+           0782 			;    if(!p_crcL) return;
+0966 0020  0783 	MOVLB 0
+0967 08A6  0784 	MOVF  p_crcL_2,1
+0968 1903  0785 	BTFSC 0x03,Zero_
+0969 0008  0786 	RETURN
+           0787 			;    *p_crcH = 0xff;
+096A 0185  0788 	CLRF  FSR0H
+096B 0020  0789 	MOVLB 0
+096C 0825  0790 	MOVF  p_crcH_2,W
+096D 0084  0791 	MOVWF FSR0L
+096E 30FF  0792 	MOVLW 255
+096F 0080  0793 	MOVWF INDF0
+           0794 			;    *p_crcL = 0xff;
+0970 0185  0795 	CLRF  FSR0H
+0971 0826  0796 	MOVF  p_crcL_2,W
+0972 0084  0797 	MOVWF FSR0L
+0973 30FF  0798 	MOVLW 255
+0974 0080  0799 	MOVWF INDF0
+           0800 			;}
+0975 0008  0801 	RETURN
+           0802 
+           0803   ; FILE include_files\spi.c
+           0804 			;//Nils Weiß 
+           0805 			;//20.04.2012
+           0806 			;//Compiler CC5x
+           0807 			;void spi_init()
+           0808 			;{
+           0809 spi_init
+           0810 			;	TRISC.3 = 0;        // Make port RC3 an output(SPI Clock)
+0976 0021  0811 	MOVLB 1
+0977 118E  0812 	BCF   TRISC,3
+           0813 			;    TRISC.4 = 1;        // Make port RC4 an input(SPI Data In)
+0978 160E  0814 	BSF   TRISC,4
+           0815 			;    TRISC.5 = 0;        // Make port RC5 an output(SPI Data Out)
+0979 128E  0816 	BCF   TRISC,5
+           0817 			;	SSPM1 = 0;
+097A 0024  0818 	MOVLB 4
+097B 1095  0819 	BCF   0x215,SSPM1
+           0820 			;    /* 
+           0821 			;	SMP = 0;
+           0822 			;	CKP = 0;
+           0823 			;	CKE = 0;
+           0824 			;	*/
+           0825 			;	SSPEN = 1;
+097C 1695  0826 	BSF   0x215,SSPEN
+           0827 			;}
+097D 0008  0828 	RETURN
+           0829 			;
+           0830 			;void spi_send(char data)
+           0831 			;{
+           0832 spi_send
+097E 00FF  0833 	MOVWF data_4
+           0834 			;	SSPBUF = data;	
+097F 087F  0835 	MOVF  data_4,W
+0980 0024  0836 	MOVLB 4
+0981 0091  0837 	MOVWF SSPBUF
+           0838 			;	while(!SSPIF);
+0982 0020  0839 m016	MOVLB 0
+0983 1D91  0840 	BTFSS 0x11,SSPIF
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 15
 
 ADDR CODE  LINE SOURCE
 
-           0841 			;	ANDLW(0xe0);
-0994 39E0  0842 	ANDLW 224
-           0843 			;	XORWF(crcH,1);
-0995 06A9  0844 	XORWF crcH,1
-           0845 			;		
-           0846 			;	SWAPF(index,1);
-0996 0EA8  0847 	SWAPF index,1
-           0848 			;	XORWF(index,0);
-0997 0628  0849 	XORWF index,W
-           0850 			;	MOVWF(crcL);
-0998 00AA  0851 	MOVWF crcL
-           0852 			;
-           0853 			;	*p_crcH = crcH;
-0999 0185  0854 	CLRF  FSR0H
-099A 0826  0855 	MOVF  p_crcH,W
-099B 0084  0856 	MOVWF FSR0L
-099C 0829  0857 	MOVF  crcH,W
-099D 0080  0858 	MOVWF INDF0
-           0859 			;	*p_crcL = crcL;
-099E 0185  0860 	CLRF  FSR0H
-099F 0827  0861 	MOVF  p_crcL,W
-09A0 0084  0862 	MOVWF FSR0L
-09A1 082A  0863 	MOVF  crcL,W
-09A2 0080  0864 	MOVWF INDF0
-           0865 			;
-           0866 			;}
-09A3 0008  0867 	RETURN
-           0868 			;
-           0869 			;void CRC(char *data, char length, char* crcH_out, char* crcL_out)
-           0870 			;{
-           0871 CRC
-           0872 			;	if(!crcH_out)return;
-09A4 08FF  0873 	MOVF  crcH_out,1
-09A5 1903  0874 	BTFSC 0x03,Zero_
-09A6 0008  0875 	RETURN
-           0876 			;	if(!crcL_out)return;
-09A7 08FF  0877 	MOVF  crcL_out,1
-09A8 1903  0878 	BTFSC 0x03,Zero_
-09A9 0008  0879 	RETURN
-           0880 			;	if(!data)return;
-09AA 08FF  0881 	MOVF  data_3,1
-09AB 1903  0882 	BTFSC 0x03,Zero_
-09AC 0008  0883 	RETURN
-           0884 			;	char crcH,crcL,i,byte;
-           0885 			;	crcH=0xff;
-09AD 30FF  0886 	MOVLW 255
-09AE 00FF  0887 	MOVWF crcH_2
-           0888 			;	crcL=0xff;
-09AF 30FF  0889 	MOVLW 255
-09B0 00FF  0890 	MOVWF crcL_2
-           0891 			;
-           0892 			;	for(i=0;i<length;i++)
-09B1 01FF  0893 	CLRF  i_4
-09B2 087F  0894 m024	MOVF  length_4,W
-09B3 027F  0895 	SUBWF i_4,W
-09B4 1803  0896 	BTFSC 0x03,Carry
-09B5 29C6  0897 	GOTO  m025
-           0898 			;	{
-           0899 			;		byte = data[i];
-09B6 087F  0900 	MOVF  i_4,W
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 16
+0984 2982  0841 	GOTO  m016
+           0842 			;}
+0985 0008  0843 	RETURN
+           0844 			;
+           0845 			;char spi_receive(char data)
+           0846 			;{
+           0847 spi_receive
+0986 0020  0848 	MOVLB 0
+0987 00BB  0849 	MOVWF data_5
+           0850 			;	SSPBUF = data;	
+0988 083B  0851 	MOVF  data_5,W
+0989 0024  0852 	MOVLB 4
+098A 0091  0853 	MOVWF SSPBUF
+           0854 			;	while(SSPIF == 0);
+098B 0020  0855 m017	MOVLB 0
+098C 1D91  0856 	BTFSS 0x11,SSPIF
+098D 298B  0857 	GOTO  m017
+           0858 			;	return SSPBUF;
+098E 0024  0859 	MOVLB 4
+098F 0811  0860 	MOVF  SSPBUF,W
+0990 0008  0861 	RETURN
+           0862 			;}
+           0863 			;/***
+           0864 			;**	This function sends the array to the LED controller(WS2801)
+           0865 			;**  it starts with the last byte to get a correct output
+           0866 			;***/
+           0867 			;void spi_send_arr(char *array, char length)
+           0868 			;{
+           0869 spi_send_arr
+0991 00FF  0870 	MOVWF length_5
+           0871 			;	if(array == 0) return;
+0992 08FF  0872 	MOVF  array_4,1
+0993 1903  0873 	BTFSC 0x03,Zero_
+0994 0008  0874 	RETURN
+           0875 			;	char i;
+           0876 			;	for(i = length; i == 0; i-- )
+0995 087F  0877 	MOVF  length_5,W
+0996 00FF  0878 	MOVWF i_5
+0997 08FF  0879 m018	MOVF  i_5,1
+0998 1D03  0880 	BTFSS 0x03,Zero_
+0999 29A2  0881 	GOTO  m019
+           0882 			;	{
+           0883 			;		spi_send(array[i]);
+099A 087F  0884 	MOVF  i_5,W
+099B 077F  0885 	ADDWF array_4,W
+099C 0084  0886 	MOVWF FSR0L
+099D 0185  0887 	CLRF  FSR0H
+099E 0800  0888 	MOVF  INDF0,W
+099F 217E  0889 	CALL  spi_send
+           0890 			;	} 
+09A0 03FF  0891 	DECF  i_5,1
+09A1 2997  0892 	GOTO  m018
+           0893 			;}
+09A2 0008  0894 m019	RETURN
+           0895 			;
+           0896 			;void spi_send_ledbuf(char *array_r, char *array_g, char *array_b)
+           0897 			;{
+           0898 spi_send_ledbuf
+           0899 			;	char k = 0;
+09A3 0020  0900 	MOVLB 0
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 16
 
 ADDR CODE  LINE SOURCE
 
-09B7 077F  0901 	ADDWF data_3,W
-09B8 0084  0902 	MOVWF FSR0L
-09B9 0185  0903 	CLRF  FSR0H
-09BA 0800  0904 	MOVF  INDF0,W
-09BB 00FF  0905 	MOVWF byte_2
-           0906 			;		addCRC(byte,&crcH,&crcL);
-09BC 087F  0907 	MOVF  byte_2,W
-09BD 0020  0908 	MOVLB 0
-09BE 00A5  0909 	MOVWF byte
-09BF 307F  0910 	MOVLW 127
-09C0 00A6  0911 	MOVWF p_crcH
-09C1 307F  0912 	MOVLW 127
-09C2 00A7  0913 	MOVWF p_crcL
-09C3 217C  0914 	CALL  addCRC
-           0915 			;	}
-09C4 0AFF  0916 	INCF  i_4,1
-09C5 29B2  0917 	GOTO  m024
-           0918 			;	
-           0919 			;	*crcH_out = crcH;
-09C6 0185  0920 m025	CLRF  FSR0H
-09C7 087F  0921 	MOVF  crcH_out,W
-09C8 0084  0922 	MOVWF FSR0L
-09C9 087F  0923 	MOVF  crcH_2,W
-09CA 0080  0924 	MOVWF INDF0
-           0925 			;	*crcL_out = crcL;
-09CB 0185  0926 	CLRF  FSR0H
-09CC 087F  0927 	MOVF  crcL_out,W
-09CD 0084  0928 	MOVWF FSR0L
-09CE 087F  0929 	MOVF  crcL_2,W
-09CF 0080  0930 	MOVWF INDF0
-           0931 			;}
-09D0 0008  0932 	RETURN
-           0933 			;
-           0934 			;void newCRC(char* p_crcH, char* p_crcL)
-           0935 			;{
-           0936 newCRC
-           0937 			;    if(!p_crcH) return;
-09D1 0020  0938 	MOVLB 0
-09D2 08A5  0939 	MOVF  p_crcH_2,1
-09D3 1903  0940 	BTFSC 0x03,Zero_
-09D4 0008  0941 	RETURN
-           0942 			;    if(!p_crcL) return;
-09D5 0020  0943 	MOVLB 0
-09D6 08A6  0944 	MOVF  p_crcL_2,1
-09D7 1903  0945 	BTFSC 0x03,Zero_
-09D8 0008  0946 	RETURN
-           0947 			;    *p_crcH = 0xff;
-09D9 0185  0948 	CLRF  FSR0H
-09DA 0020  0949 	MOVLB 0
-09DB 0825  0950 	MOVF  p_crcH_2,W
-09DC 0084  0951 	MOVWF FSR0L
-09DD 30FF  0952 	MOVLW 255
-09DE 0080  0953 	MOVWF INDF0
-           0954 			;    *p_crcL = 0xff;
-09DF 0185  0955 	CLRF  FSR0H
-09E0 0826  0956 	MOVF  p_crcL_2,W
-09E1 0084  0957 	MOVWF FSR0L
-09E2 30FF  0958 	MOVLW 255
-09E3 0080  0959 	MOVWF INDF0
-           0960 			;}
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 17
+09A4 01BA  0901 	CLRF  k
+           0902 			;	for(;k<NUM_OF_LED;k++)
+09A5 3020  0903 m020	MOVLW 32
+09A6 0020  0904 	MOVLB 0
+09A7 023A  0905 	SUBWF k,W
+09A8 1803  0906 	BTFSC 0x03,Carry
+09A9 29CA  0907 	GOTO  m021
+           0908 			;	{
+           0909 			;		spi_receive(*array_b);
+09AA 0839  0910 	MOVF  array_b+1,W
+09AB 0085  0911 	MOVWF FSR0H
+09AC 0838  0912 	MOVF  array_b,W
+09AD 0084  0913 	MOVWF FSR0L
+09AE 0800  0914 	MOVF  INDF0,W
+09AF 2186  0915 	CALL  spi_receive
+           0916 			;		spi_receive(*array_g);
+09B0 0020  0917 	MOVLB 0
+09B1 0837  0918 	MOVF  array_g+1,W
+09B2 0085  0919 	MOVWF FSR0H
+09B3 0836  0920 	MOVF  array_g,W
+09B4 0084  0921 	MOVWF FSR0L
+09B5 0800  0922 	MOVF  INDF0,W
+09B6 2186  0923 	CALL  spi_receive
+           0924 			;		spi_receive(*array_r);
+09B7 0020  0925 	MOVLB 0
+09B8 0835  0926 	MOVF  array_r+1,W
+09B9 0085  0927 	MOVWF FSR0H
+09BA 0834  0928 	MOVF  array_r,W
+09BB 0084  0929 	MOVWF FSR0L
+09BC 0800  0930 	MOVF  INDF0,W
+09BD 2186  0931 	CALL  spi_receive
+           0932 			;		array_b++;
+09BE 0020  0933 	MOVLB 0
+09BF 0AB8  0934 	INCF  array_b,1
+09C0 1903  0935 	BTFSC 0x03,Zero_
+09C1 0AB9  0936 	INCF  array_b+1,1
+           0937 			;		array_g++;
+09C2 0AB6  0938 	INCF  array_g,1
+09C3 1903  0939 	BTFSC 0x03,Zero_
+09C4 0AB7  0940 	INCF  array_g+1,1
+           0941 			;		array_r++;
+09C5 0AB4  0942 	INCF  array_r,1
+09C6 1903  0943 	BTFSC 0x03,Zero_
+09C7 0AB5  0944 	INCF  array_r+1,1
+           0945 			;	}
+09C8 0ABA  0946 	INCF  k,1
+09C9 29A5  0947 	GOTO  m020
+           0948 
+           0949   ; FILE include_files\spi.h
+           0950 			;#ifndef _SPI_H_
+           0951 			;#define _SPI_H_
+           0952 			;
+           0953 			;//Nils Weiß 
+           0954 			;//20.04.2012
+           0955 			;//Compiler CC5x
+           0956 			;
+           0957 			;
+           0958 			;void spi_init();
+           0959 			;void spi_send(char data);
+           0960 			;char spi_receive(char data);
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 17
 
 ADDR CODE  LINE SOURCE
 
-09E4 0008  0961 	RETURN
-           0962 
-           0963   ; FILE include_files\spi.c
-           0964 			;//Nils Weiß 
-           0965 			;//20.04.2012
-           0966 			;//Compiler CC5x
-           0967 			;void spi_init()
-           0968 			;{
-           0969 spi_init
-           0970 			;	TRISC.3 = 0;        // Make port RC3 an output(SPI Clock)
-09E5 0021  0971 	MOVLB 1
-09E6 118E  0972 	BCF   TRISC,3
-           0973 			;    TRISC.4 = 1;        // Make port RC4 an input(SPI Data In)
-09E7 160E  0974 	BSF   TRISC,4
-           0975 			;    TRISC.5 = 0;        // Make port RC5 an output(SPI Data Out)
-09E8 128E  0976 	BCF   TRISC,5
-           0977 			;	SSPM1 = 1;
-09E9 0024  0978 	MOVLB 4
-09EA 1495  0979 	BSF   0x215,SSPM1
-           0980 			;    /* 
-           0981 			;	SMP = 0;
-           0982 			;	CKP = 0;
-           0983 			;	CKE = 0;
-           0984 			;	*/
-           0985 			;	SSPEN = 1;
-09EB 1695  0986 	BSF   0x215,SSPEN
-           0987 			;}
-09EC 0008  0988 	RETURN
-           0989 			;
-           0990 			;void spi_send(char data)
-           0991 			;{
-           0992 spi_send
-09ED 0020  0993 	MOVLB 0
-09EE 00B3  0994 	MOVWF data_4
-           0995 			;	SSPBUF = data;	
-09EF 0833  0996 	MOVF  data_4,W
-09F0 0024  0997 	MOVLB 4
-09F1 0091  0998 	MOVWF SSPBUF
-           0999 			;	while(SSPIF == 0);
-09F2 0020  1000 m026	MOVLB 0
-09F3 1D91  1001 	BTFSS 0x11,SSPIF
-09F4 29F2  1002 	GOTO  m026
-           1003 			;}
-09F5 0008  1004 	RETURN
-           1005 			;
-           1006 			;char spi_receive(char data)
-           1007 			;{
-           1008 spi_receive
-09F6 00FF  1009 	MOVWF data_5
-           1010 			;	SSPBUF = data;	
-09F7 087F  1011 	MOVF  data_5,W
-09F8 0024  1012 	MOVLB 4
-09F9 0091  1013 	MOVWF SSPBUF
-           1014 			;	while(SSPIF == 0);
-09FA 0020  1015 m027	MOVLB 0
-09FB 1D91  1016 	BTFSS 0x11,SSPIF
-09FC 29FA  1017 	GOTO  m027
-           1018 			;	return SSPBUF;
-09FD 0024  1019 	MOVLB 4
-09FE 0811  1020 	MOVF  SSPBUF,W
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 18
+           0961 			;void spi_send_arr(char *array, char length);
+           0962 			;void spi_send_ledbuf(char *array_r, char *array_g, char *array_b);
+           0963 			;
+           0964 			;#include "include_files\spi.c"
+09CA 0008  0965 m021	RETURN
+           0966 
+           0967   ; FILE include_files\ledstrip.c
+           0968 			;//Nils Weiß 
+           0969 			;//20.04.2012
+           0970 			;//Compiler CC5x 
+           0971 			;
+           0972 			;struct LedBuffer gLedBuf;
+           0973 			;
+           0974 			;void ledstrip_init(void)
+           0975 			;{
+           0976 ledstrip_init
+           0977 			;	char k;
+           0978 			;	for(k = 0;k < NUM_OF_LED; k++)
+09CB 0020  0979 	MOVLB 0
+09CC 01A3  0980 	CLRF  k_2
+09CD 3020  0981 m022	MOVLW 32
+09CE 0020  0982 	MOVLB 0
+09CF 0223  0983 	SUBWF k_2,W
+09D0 1803  0984 	BTFSC 0x03,Carry
+09D1 29EC  0985 	GOTO  m023
+           0986 			;	{
+           0987 			;		gLedBuf.led_array_r[k] = 0;
+09D2 3020  0988 	MOVLW 32
+09D3 0085  0989 	MOVWF FSR0+1
+09D4 3044  0990 	MOVLW 68
+09D5 0723  0991 	ADDWF k_2,W
+09D6 0084  0992 	MOVWF FSR0
+09D7 1803  0993 	BTFSC 0x03,Carry
+09D8 0A85  0994 	INCF  FSR0+1,1
+09D9 0180  0995 	CLRF  INDF0
+           0996 			;		gLedBuf.led_array_r[k] = 0;
+09DA 3020  0997 	MOVLW 32
+09DB 0085  0998 	MOVWF FSR0+1
+09DC 3044  0999 	MOVLW 68
+09DD 0723  1000 	ADDWF k_2,W
+09DE 0084  1001 	MOVWF FSR0
+09DF 1803  1002 	BTFSC 0x03,Carry
+09E0 0A85  1003 	INCF  FSR0+1,1
+09E1 0180  1004 	CLRF  INDF0
+           1005 			;		gLedBuf.led_array_r[k] = 0;
+09E2 3020  1006 	MOVLW 32
+09E3 0085  1007 	MOVWF FSR0+1
+09E4 3044  1008 	MOVLW 68
+09E5 0723  1009 	ADDWF k_2,W
+09E6 0084  1010 	MOVWF FSR0
+09E7 1803  1011 	BTFSC 0x03,Carry
+09E8 0A85  1012 	INCF  FSR0+1,1
+09E9 0180  1013 	CLRF  INDF0
+           1014 			;	}
+09EA 0AA3  1015 	INCF  k_2,1
+09EB 29CD  1016 	GOTO  m022
+           1017 			;}
+09EC 0008  1018 m023	RETURN
+           1019 			;
+           1020 			;void ledstrip_set_color(char *address, char r, char g, char b)
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 18
 
 ADDR CODE  LINE SOURCE
 
-09FF 0008  1021 	RETURN
-           1022 			;}
-           1023 			;/***
-           1024 			;**	This function sends the array to the LED controller(WS2801)
-           1025 			;**  it starts with the last byte to get a correct output
-           1026 			;***/
-           1027 			;void spi_send_arr(char *array, char length)
-           1028 			;{
-           1029 spi_send_arr
-0A00 00FF  1030 	MOVWF length_5
-           1031 			;	if(array == 0) return;
-0A01 08FF  1032 	MOVF  array_4,1
-0A02 1903  1033 	BTFSC 0x03,Zero_
-0A03 0008  1034 	RETURN
-           1035 			;	char i;
-           1036 			;	for(i = length; i == 0; i-- )
-0A04 087F  1037 	MOVF  length_5,W
-0A05 00FF  1038 	MOVWF i_5
-0A06 08FF  1039 m028	MOVF  i_5,1
-0A07 1D03  1040 	BTFSS 0x03,Zero_
-0A08 2A11  1041 	GOTO  m029
-           1042 			;	{
-           1043 			;		spi_send(array[i]);
-0A09 087F  1044 	MOVF  i_5,W
-0A0A 077F  1045 	ADDWF array_4,W
-0A0B 0084  1046 	MOVWF FSR0L
-0A0C 0185  1047 	CLRF  FSR0H
-0A0D 0800  1048 	MOVF  INDF0,W
-0A0E 21ED  1049 	CALL  spi_send
-           1050 			;	} 
-0A0F 03FF  1051 	DECF  i_5,1
-0A10 2A06  1052 	GOTO  m028
-           1053 
-           1054   ; FILE include_files\spi.h
-           1055 			;#ifndef _SPI_H_
-           1056 			;#define _SPI_H_
-           1057 			;
-           1058 			;//Nils Weiß 
-           1059 			;//20.04.2012
-           1060 			;//Compiler CC5x
-           1061 			;
-           1062 			;void spi_init();
-           1063 			;void spi_send(char data);
-           1064 			;char spi_receive(char data);
-           1065 			;void spi_send_arr(char *array, char length);
-           1066 			;
-           1067 			;#include "include_files\spi.c"
-0A11 0008  1068 m029	RETURN
-           1069 
-           1070   ; FILE include_files\ledstrip.c
-           1071 			;//Nils Weiß 
-           1072 			;//20.04.2012
-           1073 			;//Compiler CC5x 
-           1074 			;
-           1075 			;struct LedBuffer gLedBuf;
-           1076 			;
-           1077 			;void ledstrip_init(void)
-           1078 			;{
-           1079 ledstrip_init
-           1080 			;	char k;
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 19
+           1021 			;{	
+           1022 ledstrip_set_color
+09ED 0020  1023 	MOVLB 0
+09EE 00B1  1024 	MOVWF b
+           1025 			;	char k,mask;
+           1026 			;	mask = 0b00000001;
+09EF 3001  1027 	MOVLW 1
+09F0 00B3  1028 	MOVWF mask
+           1029 			;	for(k = 0; k < NUM_OF_LED; k++)
+09F1 01B2  1030 	CLRF  k_3
+09F2 3020  1031 m024	MOVLW 32
+09F3 0020  1032 	MOVLB 0
+09F4 0232  1033 	SUBWF k_3,W
+09F5 1803  1034 	BTFSC 0x03,Carry
+09F6 2A3F  1035 	GOTO  m028
+           1036 			;	{	
+           1037 			;		if(*address && mask)
+09F7 0185  1038 	CLRF  FSR0H
+09F8 082E  1039 	MOVF  address,W
+09F9 0084  1040 	MOVWF FSR0L
+09FA 0800  1041 	MOVF  INDF0,W
+09FB 1903  1042 	BTFSC 0x03,Zero_
+09FC 2A1C  1043 	GOTO  m025
+09FD 08B3  1044 	MOVF  mask,1
+09FE 1903  1045 	BTFSC 0x03,Zero_
+09FF 2A1C  1046 	GOTO  m025
+           1047 			;		{
+           1048 			;			gLedBuf.led_array_r[k] = r;
+0A00 3020  1049 	MOVLW 32
+0A01 0085  1050 	MOVWF FSR0+1
+0A02 3044  1051 	MOVLW 68
+0A03 0732  1052 	ADDWF k_3,W
+0A04 0084  1053 	MOVWF FSR0
+0A05 1803  1054 	BTFSC 0x03,Carry
+0A06 0A85  1055 	INCF  FSR0+1,1
+0A07 082F  1056 	MOVF  r,W
+0A08 0080  1057 	MOVWF INDF0
+           1058 			;			gLedBuf.led_array_g[k] = g;
+0A09 3020  1059 	MOVLW 32
+0A0A 0085  1060 	MOVWF FSR0+1
+0A0B 3064  1061 	MOVLW 100
+0A0C 0732  1062 	ADDWF k_3,W
+0A0D 0084  1063 	MOVWF FSR0
+0A0E 1803  1064 	BTFSC 0x03,Carry
+0A0F 0A85  1065 	INCF  FSR0+1,1
+0A10 0830  1066 	MOVF  g,W
+0A11 0080  1067 	MOVWF INDF0
+           1068 			;			gLedBuf.led_array_b[k] = b;
+0A12 3020  1069 	MOVLW 32
+0A13 0085  1070 	MOVWF FSR0+1
+0A14 3084  1071 	MOVLW 132
+0A15 0732  1072 	ADDWF k_3,W
+0A16 0084  1073 	MOVWF FSR0
+0A17 1803  1074 	BTFSC 0x03,Carry
+0A18 0A85  1075 	INCF  FSR0+1,1
+0A19 0831  1076 	MOVF  b,W
+0A1A 0080  1077 	MOVWF INDF0
+           1078 			;#ifdef TEST
+           1079 			;			USARTsend_num(k,'K');
+           1080 			;			USARTsend_num(b,'B');
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 19
 
 ADDR CODE  LINE SOURCE
 
-           1081 			;	for(k = 0;k < NUM_OF_LED; k++)
-0A12 0020  1082 	MOVLB 0
-0A13 01A4  1083 	CLRF  k
-0A14 3020  1084 m030	MOVLW 32
-0A15 0020  1085 	MOVLB 0
-0A16 0224  1086 	SUBWF k,W
-0A17 1803  1087 	BTFSC 0x03,Carry
-0A18 2A3C  1088 	GOTO  m031
-           1089 			;	{
-           1090 			;		gLedBuf.led_array_r[k] = 0;
-0A19 3020  1091 	MOVLW 32
-0A1A 0085  1092 	MOVWF FSR0+1
-0A1B 303E  1093 	MOVLW 62
-0A1C 0724  1094 	ADDWF k,W
-0A1D 0084  1095 	MOVWF FSR0
-0A1E 1803  1096 	BTFSC 0x03,Carry
-0A1F 0A85  1097 	INCF  FSR0+1,1
-0A20 0180  1098 	CLRF  INDF0
-           1099 			;		spi_send(0);
-0A21 3000  1100 	MOVLW 0
-0A22 21ED  1101 	CALL  spi_send
-           1102 			;		gLedBuf.led_array_r[k] = 0;
-0A23 3020  1103 	MOVLW 32
-0A24 0085  1104 	MOVWF FSR0+1
-0A25 303E  1105 	MOVLW 62
-0A26 0020  1106 	MOVLB 0
-0A27 0724  1107 	ADDWF k,W
-0A28 0084  1108 	MOVWF FSR0
-0A29 1803  1109 	BTFSC 0x03,Carry
-0A2A 0A85  1110 	INCF  FSR0+1,1
-0A2B 0180  1111 	CLRF  INDF0
-           1112 			;		spi_send(0);
-0A2C 3000  1113 	MOVLW 0
-0A2D 21ED  1114 	CALL  spi_send
-           1115 			;		gLedBuf.led_array_r[k] = 0;
-0A2E 3020  1116 	MOVLW 32
-0A2F 0085  1117 	MOVWF FSR0+1
-0A30 303E  1118 	MOVLW 62
-0A31 0020  1119 	MOVLB 0
-0A32 0724  1120 	ADDWF k,W
-0A33 0084  1121 	MOVWF FSR0
-0A34 1803  1122 	BTFSC 0x03,Carry
-0A35 0A85  1123 	INCF  FSR0+1,1
-0A36 0180  1124 	CLRF  INDF0
-           1125 			;		spi_send(0);
-0A37 3000  1126 	MOVLW 0
-0A38 21ED  1127 	CALL  spi_send
-           1128 			;	}
-0A39 0020  1129 	MOVLB 0
-0A3A 0AA4  1130 	INCF  k,1
-0A3B 2A14  1131 	GOTO  m030
-           1132 			;}
-0A3C 0008  1133 m031	RETURN
-           1134 			;
-           1135 			;void ledstrip_set_color(char *address, char r, char g, char b)
-           1136 			;{	
-           1137 ledstrip_set_color
-0A3D 0020  1138 	MOVLB 0
-0A3E 00B0  1139 	MOVWF b
-           1140 			;	char k,mask;
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 20
+           1081 			;			USARTsend_num(g,'G');
+           1082 			;			USARTsend_num(r,'R');
+           1083 			;			USARTsend(0x0A);
+           1084 			;#endif
+           1085 			;		}
+           1086 			;		else
+0A1B 2A35  1087 	GOTO  m026
+           1088 			;		{	
+           1089 			;			gLedBuf.led_array_r[k] = 0;
+0A1C 3020  1090 m025	MOVLW 32
+0A1D 0085  1091 	MOVWF FSR0+1
+0A1E 3044  1092 	MOVLW 68
+0A1F 0020  1093 	MOVLB 0
+0A20 0732  1094 	ADDWF k_3,W
+0A21 0084  1095 	MOVWF FSR0
+0A22 1803  1096 	BTFSC 0x03,Carry
+0A23 0A85  1097 	INCF  FSR0+1,1
+0A24 0180  1098 	CLRF  INDF0
+           1099 			;			gLedBuf.led_array_g[k] = 0;
+0A25 3020  1100 	MOVLW 32
+0A26 0085  1101 	MOVWF FSR0+1
+0A27 3064  1102 	MOVLW 100
+0A28 0732  1103 	ADDWF k_3,W
+0A29 0084  1104 	MOVWF FSR0
+0A2A 1803  1105 	BTFSC 0x03,Carry
+0A2B 0A85  1106 	INCF  FSR0+1,1
+0A2C 0180  1107 	CLRF  INDF0
+           1108 			;			gLedBuf.led_array_b[k] = 0;
+0A2D 3020  1109 	MOVLW 32
+0A2E 0085  1110 	MOVWF FSR0+1
+0A2F 3084  1111 	MOVLW 132
+0A30 0732  1112 	ADDWF k_3,W
+0A31 0084  1113 	MOVWF FSR0
+0A32 1803  1114 	BTFSC 0x03,Carry
+0A33 0A85  1115 	INCF  FSR0+1,1
+0A34 0180  1116 	CLRF  INDF0
+           1117 			;		}
+           1118 			;		RLF(mask,1);
+0A35 0020  1119 m026	MOVLB 0
+0A36 0DB3  1120 	RLF   mask,1
+           1121 			;		if(Carry == 1) 
+0A37 1C03  1122 	BTFSS 0x03,Carry
+0A38 2A3C  1123 	GOTO  m027
+           1124 			;		{
+           1125 			;#ifdef TEST
+           1126 			;			USARTsend_str("Carry");
+           1127 			;#endif
+           1128 			;			address++;
+0A39 0AAE  1129 	INCF  address,1
+           1130 			;			mask= 0b00000001;
+0A3A 3001  1131 	MOVLW 1
+0A3B 00B3  1132 	MOVWF mask
+           1133 			;		}
+           1134 			;	}
+0A3C 0020  1135 m027	MOVLB 0
+0A3D 0AB2  1136 	INCF  k_3,1
+0A3E 29F2  1137 	GOTO  m024
+           1138 			;	spi_send_ledbuf(&gLedBuf.led_array_r[0],&gLedBuf.led_array_g[0],&gLedBuf.led_array_b[0]);
+0A3F 3044  1139 m028	MOVLW 68
+0A40 0020  1140 	MOVLB 0
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 20
 
 ADDR CODE  LINE SOURCE
 
-           1141 			;	mask = 0b00000001;
-0A3F 3001  1142 	MOVLW 1
-0A40 00B2  1143 	MOVWF mask
-           1144 			;	for(k = 0; k < NUM_OF_LED; k++)
-0A41 01B1  1145 	CLRF  k_2
-0A42 3020  1146 m032	MOVLW 32
-0A43 0020  1147 	MOVLB 0
-0A44 0231  1148 	SUBWF k_2,W
-0A45 1803  1149 	BTFSC 0x03,Carry
-0A46 2A69  1150 	GOTO  m036
-           1151 			;	{	
-           1152 			;		if(*address && mask)
-0A47 0185  1153 	CLRF  FSR0H
-0A48 082D  1154 	MOVF  address,W
-0A49 0084  1155 	MOVWF FSR0L
-0A4A 0800  1156 	MOVF  INDF0,W
-0A4B 1903  1157 	BTFSC 0x03,Zero_
-0A4C 2A59  1158 	GOTO  m033
-0A4D 08B2  1159 	MOVF  mask,1
-0A4E 1903  1160 	BTFSC 0x03,Zero_
-0A4F 2A59  1161 	GOTO  m033
-           1162 			;		{
-           1163 			;			spi_send(b);
-0A50 0830  1164 	MOVF  b,W
-0A51 21ED  1165 	CALL  spi_send
-           1166 			;			spi_send(g);
-0A52 0020  1167 	MOVLB 0
-0A53 082F  1168 	MOVF  g,W
-0A54 21ED  1169 	CALL  spi_send
-           1170 			;			spi_send(r);
-0A55 0020  1171 	MOVLB 0
-0A56 082E  1172 	MOVF  r,W
-0A57 21ED  1173 	CALL  spi_send
-           1174 			;		}
-           1175 			;		else
-0A58 2A5F  1176 	GOTO  m034
-           1177 			;		{	
-           1178 			;			spi_send(0);
-0A59 3000  1179 m033	MOVLW 0
-0A5A 21ED  1180 	CALL  spi_send
-           1181 			;			spi_send(0);
-0A5B 3000  1182 	MOVLW 0
-0A5C 21ED  1183 	CALL  spi_send
-           1184 			;			spi_send(0);
-0A5D 3000  1185 	MOVLW 0
-0A5E 21ED  1186 	CALL  spi_send
-           1187 			;		}
-           1188 			;		RLF(mask,1);
-0A5F 0020  1189 m034	MOVLB 0
-0A60 0DB2  1190 	RLF   mask,1
-           1191 			;		if(Carry == 1) 
-0A61 1C03  1192 	BTFSS 0x03,Carry
-0A62 2A66  1193 	GOTO  m035
-           1194 			;		{
-           1195 			;			address++;
-0A63 0AAD  1196 	INCF  address,1
-           1197 			;			mask= 0b00000001;
-0A64 3001  1198 	MOVLW 1
-0A65 00B2  1199 	MOVWF mask
-           1200 			;		}
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 21
+0A41 00B4  1141 	MOVWF array_r
+0A42 3020  1142 	MOVLW 32
+0A43 00B5  1143 	MOVWF array_r+1
+0A44 3064  1144 	MOVLW 100
+0A45 00B6  1145 	MOVWF array_g
+0A46 3020  1146 	MOVLW 32
+0A47 00B7  1147 	MOVWF array_g+1
+0A48 3084  1148 	MOVLW 132
+0A49 00B8  1149 	MOVWF array_b
+0A4A 3020  1150 	MOVLW 32
+0A4B 00B9  1151 	MOVWF array_b+1
+0A4C 29A3  1152 	GOTO  spi_send_ledbuf
+           1153 
+           1154   ; FILE include_files\ledstrip.h
+           1155 			;#ifndef _LEDSTRIP_H_
+           1156 			;#define _LEDSTRIP_H_
+           1157 			;
+           1158 			;//Nils Weiß 
+           1159 			;//20.04.2012
+           1160 			;//Compiler CC5x
+           1161 			;
+           1162 			;
+           1163 			;//#include "include_files\eeprom.h"
+           1164 			;
+           1165 			;#define NUM_OF_LED 32
+           1166 			;
+           1167 			;struct LedBuffer{
+           1168 			;	char led_array_r[NUM_OF_LED];
+           1169 			;	char led_array_g[NUM_OF_LED];
+           1170 			;	char led_array_b[NUM_OF_LED];
+           1171 			;	//char led_ctrl_array[BUFFERSIZE];
+           1172 			;	};
+           1173 			;extern struct LedBuffer gLedBuf;
+           1174 			;
+           1175 			;void ledstrip_init(void);
+           1176 			;void ledstrip_set_color(char *address,char r,char g,char b);
+           1177 			;
+           1178 			;#include "include_files\spi.h"
+           1179 			;#include "include_files\ledstrip.c"
+           1180 
+           1181   ; FILE main.c
+           1182 			;#include "inline.h"
+           1183 			;#include "include_files\Ringbuf.h"
+           1184 			;#include "include_files\usart.h"
+           1185 			;#include "include_files\eeprom.h"        // 2do* Check EEPROM routines for failure, I use new routines now
+           1186 			;#include "include_files\crc.c"
+           1187 			;#include "include_files\ledstrip.h"
+           1188 			;#include "include_files\spi.h"
+           1189 			;//*********************** GLOBAL VARIABLES *******************************************
+           1190 			;struct CommandBuffer{
+           1191 			;    char cmd_counter;
+           1192 			;    char frame_counter;
+           1193 			;    char cmd_buf[FRAMELENGTH];
+           1194 			;    char crcH;
+           1195 			;    char crcL;
+           1196 			;};
+           1197 			;static struct CommandBuffer gCmdBuf;
+           1198 			;static char gERROR;
+           1199 			;
+           1200 			;//*********************** INTERRUPTSERVICEROUTINE ************************************
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 21
 
 ADDR CODE  LINE SOURCE
 
-           1201 			;	}
-0A66 0020  1202 m035	MOVLB 0
-0A67 0AB1  1203 	INCF  k_2,1
-0A68 2A42  1204 	GOTO  m032
-           1205 
-           1206   ; FILE include_files\ledstrip.h
-           1207 			;#ifndef _LEDSTRIP_H_
-           1208 			;#define _LEDSTRIP_H_
-           1209 			;
-           1210 			;//Nils Weiß 
-           1211 			;//20.04.2012
-           1212 			;//Compiler CC5x
-           1213 			;
-           1214 			;#include "include_files\spi.h"
-           1215 			;//#include "include_files\eeprom.h"
-           1216 			;
-           1217 			;#define NUM_OF_LED 32
-           1218 			;
-           1219 			;struct LedBuffer{
-           1220 			;	char led_array_r[NUM_OF_LED];
-           1221 			;	char led_array_g[NUM_OF_LED];
-           1222 			;	char led_array_b[NUM_OF_LED];
-           1223 			;	//char led_ctrl_array[BUFFERSIZE];
-           1224 			;	};
-           1225 			;extern struct LedBuffer gLedBuf;
-           1226 			;
-           1227 			;void ledstrip_init(void);
-           1228 			;void ledstrip_set_color(char *address,char r,char g,char b);
-           1229 			;
-           1230 			;#include "include_files\ledstrip.c"
-0A69 0008  1231 m036	RETURN
-           1232 
-           1233   ; FILE main.c
-           1234 			;#include "inline.h"
-           1235 			;#include "include_files\Ringbuf.h"
-           1236 			;#include "include_files\usart.h"
-           1237 			;#include "include_files\eeprom.h"        // 2do* Check EEPROM routines for failure, I use new routines now
-           1238 			;#include "include_files\crc.c"
-           1239 			;#include "include_files\spi.h"
-           1240 			;#include "include_files\ledstrip.h"
-           1241 			;
-           1242 			;//*********************** GLOBAL VARIABLES *******************************************
-           1243 			;struct CommandBuffer{
-           1244 			;    char cmd_counter;
-           1245 			;    char frame_counter;
-           1246 			;    char cmd_buf[FRAMELENGTH];
-           1247 			;    char crcH;
-           1248 			;    char crcL;
-           1249 			;};
-           1250 			;static struct CommandBuffer gCmdBuf;
-           1251 			;static char gERROR;
-           1252 			;
-           1253 			;//*********************** INTERRUPTSERVICEROUTINE ************************************
-           1254 			;#pragma origin 4					//Adresse des Interrupts	
-     0000  1255 	ORG 0x0004
-           1256 			;interrupt InterruptRoutine(void)
-           1257 			;{
-           1258 InterruptRoutine
-           1259 			;	if (RCIF)
-0004 0020  1260 	MOVLB 0
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 22
+           1201 			;#pragma origin 4					//Adresse des Interrupts	
+     0000  1202 	ORG 0x0004
+           1203 			;interrupt InterruptRoutine(void)
+           1204 			;{
+           1205 InterruptRoutine
+           1206 			;	if (RCIF)
+0004 0020  1207 	MOVLB 0
+0005 1E91  1208 	BTFSS 0x11,RCIF
+0006 2813  1209 	GOTO  m030
+           1210 			;	{
+           1211 			;		if(!RingBufHasError) RingBufPut(RCREG);
+0007 184E  1212 	BTFSC gRingBuf+18,0
+0008 280F  1213 	GOTO  m029
+0009 0023  1214 	MOVLB 3
+000A 0819  1215 	MOVF  RCREG,W
+000B 3188  1216 	MOVLP 8
+000C 2054  1217 	CALL  RingBufPut
+000D 3180  1218 	MOVLP 0
+           1219 			;		else 
+000E 2813  1220 	GOTO  m030
+           1221 			;		{
+           1222 			;			//Register lesen um Schnittstellen Fehler zu vermeiden
+           1223 			;			char temp = RCREG;
+000F 0023  1224 m029	MOVLB 3
+0010 0819  1225 	MOVF  RCREG,W
+0011 0020  1226 	MOVLB 0
+0012 00A0  1227 	MOVWF temp_2
+           1228 			;		}
+           1229 			;	}
+           1230 			;}
+0013 0009  1231 m030	RETFIE
+           1232 			;
+           1233 			;//*********************** FUNKTIONSPROTOTYPEN ****************************************
+           1234 			;void init_all();
+           1235 			;void throw_errors();
+           1236 			;void get_commands();
+           1237 			;void execute_commands();
+           1238 			;void sub_func_set_color(char *cmdPointer);
+           1239 			;
+           1240 			;//*********************** HAUPTPROGRAMM **********************************************
+           1241 			;void main(void)
+           1242 			;{
+           1243 main
+           1244 			;	init_all();
+0014 2019  1245 	CALL  init_all
+           1246 			;    while(1)
+           1247 			;    {	
+           1248 			;        throw_errors();
+0015 204F  1249 m031	CALL  throw_errors
+           1250 			;		get_commands();
+0016 206B  1251 	CALL  get_commands
+           1252 			;		execute_commands();
+0017 2110  1253 	CALL  execute_commands
+           1254 			;    }
+0018 2815  1255 	GOTO  m031
+           1256 			;}
+           1257 			;//*********************** UNTERPROGRAMME **********************************************
+           1258 			;
+           1259 			;void init_all()
+           1260 			;{
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 22
 
 ADDR CODE  LINE SOURCE
 
-0005 1E91  1261 	BTFSS 0x11,RCIF
-0006 2813  1262 	GOTO  m038
-           1263 			;	{
-           1264 			;		if(!RingBufHasError) RingBufPut(RCREG);
-0007 1848  1265 	BTFSC gRingBuf+18,0
-0008 280F  1266 	GOTO  m037
-0009 0023  1267 	MOVLB 3
-000A 0819  1268 	MOVF  RCREG,W
-000B 3188  1269 	MOVLP 8
-000C 2058  1270 	CALL  RingBufPut
-000D 3180  1271 	MOVLP 0
-           1272 			;		else 
-000E 2813  1273 	GOTO  m038
-           1274 			;		{
-           1275 			;			//Register lesen um Schnittstellen Fehler zu vermeiden
-           1276 			;			char temp = RCREG;
-000F 0023  1277 m037	MOVLB 3
-0010 0819  1278 	MOVF  RCREG,W
-0011 0020  1279 	MOVLB 0
-0012 00A0  1280 	MOVWF temp_3
-           1281 			;		}
-           1282 			;	}
-           1283 			;}
-0013 0009  1284 m038	RETFIE
+           1261 init_all
+           1262 			;	
+           1263 			;	//OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
+           1264 			;	OSCCON = 0b01110010;
+0019 3072  1265 	MOVLW 114
+001A 0021  1266 	MOVLB 1
+001B 0099  1267 	MOVWF OSCCON
+           1268 			;	RingBufInit();
+001C 3188  1269 	MOVLP 8
+001D 2043  1270 	CALL  RingBufInit
+001E 3180  1271 	MOVLP 0
+           1272 			;	//initialise UART interface
+           1273 			;	USARTinit();
+001F 3188  1274 	MOVLP 8
+0020 2069  1275 	CALL  USARTinit
+0021 3180  1276 	MOVLP 0
+           1277 			;	spi_init();
+0022 3188  1278 	MOVLP 8
+0023 2176  1279 	CALL  spi_init
+0024 3180  1280 	MOVLP 0
+           1281 			;	ledstrip_init();
+0025 3188  1282 	MOVLP 8
+0026 21CB  1283 	CALL  ledstrip_init
+0027 3180  1284 	MOVLP 0
            1285 			;
-           1286 			;//*********************** FUNKTIONSPROTOTYPEN ****************************************
-           1287 			;void init_all();
-           1288 			;void throw_errors();
-           1289 			;void get_commands();
-           1290 			;void execute_commands();
-           1291 			;void sub_func_set_color(char *cmdPointer);
-           1292 			;
-           1293 			;//*********************** HAUPTPROGRAMM **********************************************
-           1294 			;void main(void)
-           1295 			;{
-           1296 main
-           1297 			;	init_all();
-0014 2019  1298 	CALL  init_all
-           1299 			;    while(1)
-           1300 			;    {	
-           1301 			;        throw_errors();
-0015 2063  1302 m039	CALL  throw_errors
-           1303 			;		get_commands();
-0016 2080  1304 	CALL  get_commands
-           1305 			;		execute_commands();
-0017 212C  1306 	CALL  execute_commands
-           1307 			;    }
-0018 2815  1308 	GOTO  m039
-           1309 			;}
-           1310 			;//*********************** UNTERPROGRAMME **********************************************
-           1311 			;
-           1312 			;void init_all()
-           1313 			;{
-           1314 init_all
-           1315 			;	//OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
-           1316 			;	OSCCON = 0b01111010;		
-0019 307A  1317 	MOVLW 122
-001A 0021  1318 	MOVLB 1
-001B 0099  1319 	MOVWF OSCCON
-           1320 			;	RingBufInit();
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 23
+           1286 			;	//EEPROM contains FF in every Cell after inital start,
+           1287 			;	// so I have to delet the pointer address
+           1288 			;	if (EEPROM_RD(CmdPointerAddr) == 0xff)
+0028 30FF  1289 	MOVLW 255
+0029 3188  1290 	MOVLP 8
+002A 20D1  1291 	CALL  EEPROM_RD
+002B 3180  1292 	MOVLP 0
+002C 3AFF  1293 	XORLW 255
+002D 1D03  1294 	BTFSS 0x03,Zero_
+002E 2836  1295 	GOTO  m032
+           1296 			;	EEPROM_WR(CmdPointerAddr, 0);
+002F 30FF  1297 	MOVLW 255
+0030 0020  1298 	MOVLB 0
+0031 00AA  1299 	MOVWF adress
+0032 3000  1300 	MOVLW 0
+0033 3188  1301 	MOVLP 8
+0034 20AF  1302 	CALL  EEPROM_WR
+0035 3180  1303 	MOVLP 0
+           1304 			;	
+           1305 			;#ifdef TEST
+           1306 			;	char l;
+           1307 			;	for(l=0;l<255;l++)
+           1308 			;	EEPROM_WR(l,0);
+           1309 			;	
+           1310 			;#endif
+           1311 			;	
+           1312 			;	//Ausgang für FET initalisieren
+           1313 			;	TRISC.0 = 0;
+0036 0021  1314 m032	MOVLB 1
+0037 100E  1315 	BCF   TRISC,0
+           1316 			;	//Spannungsversorgung für LED's einschalten
+           1317 			;	PORTC.0 = 0;
+0038 0020  1318 	MOVLB 0
+0039 100E  1319 	BCF   PORTC,0
+           1320 			;
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 23
 
 ADDR CODE  LINE SOURCE
 
-001C 3188  1321 	MOVLP 8
-001D 2047  1322 	CALL  RingBufInit
-001E 3180  1323 	MOVLP 0
-           1324 			;	//initialise UART interface
-           1325 			;	USARTinit();
-001F 3188  1326 	MOVLP 8
-0020 206D  1327 	CALL  USARTinit
-0021 3180  1328 	MOVLP 0
-           1329 			;	spi_init();
-0022 3188  1330 	MOVLP 8
-0023 21E5  1331 	CALL  spi_init
-0024 3180  1332 	MOVLP 0
-           1333 			;	ledstrip_init();
-0025 3188  1334 	MOVLP 8
-0026 2212  1335 	CALL  ledstrip_init
-0027 3180  1336 	MOVLP 0
-           1337 			;
-           1338 			;	//EEPROM contains FF in every Cell after inital start,
-           1339 			;	// so I have to delet the pointer address
-           1340 			;	if (EEPROM_RD(CmdPointerAddr) == 0xff)
-0028 30FF  1341 	MOVLW 255
-0029 3188  1342 	MOVLP 8
-002A 2140  1343 	CALL  EEPROM_RD
-002B 3180  1344 	MOVLP 0
-002C 3AFF  1345 	XORLW 255
-002D 1D03  1346 	BTFSS 0x03,Zero_
-002E 2836  1347 	GOTO  m040
-           1348 			;	EEPROM_WR(CmdPointerAddr, 0);
-002F 30FF  1349 	MOVLW 255
-0030 0020  1350 	MOVLB 0
-0031 00AA  1351 	MOVWF adress
-0032 3000  1352 	MOVLW 0
-0033 3188  1353 	MOVLP 8
-0034 211E  1354 	CALL  EEPROM_WR
-0035 3180  1355 	MOVLP 0
-           1356 			;	
-           1357 			;#ifdef TEST
-           1358 			;	char l;
-           1359 			;	for(l=0;l<255;l++)
-0036 0020  1360 m040	MOVLB 0
-0037 01A2  1361 	CLRF  l
-0038 0020  1362 m041	MOVLB 0
-0039 0A22  1363 	INCF  l,W
-003A 1903  1364 	BTFSC 0x03,Zero_
-003B 2845  1365 	GOTO  m042
-           1366 			;	EEPROM_WR(l,0);
-003C 0822  1367 	MOVF  l,W
-003D 00AA  1368 	MOVWF adress
-003E 3000  1369 	MOVLW 0
-003F 3188  1370 	MOVLP 8
-0040 211E  1371 	CALL  EEPROM_WR
-0041 3180  1372 	MOVLP 0
-0042 0020  1373 	MOVLB 0
-0043 0AA2  1374 	INCF  l,1
-0044 2838  1375 	GOTO  m041
-           1376 			;	
-           1377 			;#endif
-           1378 			;	
-           1379 			;	//Ausgang für FET initalisieren
-           1380 			;	TRISC.0 = 0;
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 24
+           1321 			;	//To Factory Restore WLAN Modul
+           1322 			;	//TRISA.0=0;
+           1323 			;	//PORTA.0 = 1;
+           1324 			;    
+           1325 			;    // *** load globals variables
+           1326 			;    gERROR = 0;
+003A 01E3  1327 	CLRF  gERROR
+           1328 			;    gCmdBuf.cmd_counter = 0;
+003B 01CF  1329 	CLRF  gCmdBuf
+           1330 			;    gCmdBuf.frame_counter = 0;
+003C 01D0  1331 	CLRF  gCmdBuf+1
+           1332 			;	
+           1333 			;	char i;
+           1334 			;	for(i=0;i<FRAMELENGTH;i++)
+003D 01A2  1335 	CLRF  i_6
+003E 3010  1336 m033	MOVLW 16
+003F 0020  1337 	MOVLB 0
+0040 0222  1338 	SUBWF i_6,W
+0041 1803  1339 	BTFSC 0x03,Carry
+0042 284A  1340 	GOTO  m034
+           1341 			;	{
+           1342 			;        gCmdBuf.cmd_buf[i] = 0;
+0043 3051  1343 	MOVLW 81
+0044 0722  1344 	ADDWF i_6,W
+0045 0084  1345 	MOVWF FSR0L
+0046 0185  1346 	CLRF  FSR0H
+0047 0180  1347 	CLRF  INDF0
+           1348 			;	}
+0048 0AA2  1349 	INCF  i_6,1
+0049 283E  1350 	GOTO  m033
+           1351 			;    
+           1352 			;	// *** allow interrupts
+           1353 			;	RCIE=1;
+004A 0021  1354 m034	MOVLB 1
+004B 1691  1355 	BSF   0x91,RCIE
+           1356 			;	PEIE=1;
+004C 170B  1357 	BSF   0x0B,PEIE
+           1358 			;	GIE=1;
+004D 178B  1359 	BSF   0x0B,GIE
+           1360 			;
+           1361 			;#ifdef TEST
+           1362 			;	USARTsend_str("initDone");
+           1363 			;#endif
+           1364 			;	
+           1365 			;}
+004E 0008  1366 	RETURN
+           1367 			;
+           1368 			;void throw_errors()
+           1369 			;{
+           1370 throw_errors
+           1371 			;	if(RingBufHasError) 
+004F 0020  1372 	MOVLB 0
+0050 1C4E  1373 	BTFSS gRingBuf+18,0
+0051 2856  1374 	GOTO  m035
+           1375 			;	{
+           1376 			;		USARTsend_str(" ERROR: Receivebuffer full");
+0052 01A2  1377 	CLRF  putstr
+0053 3188  1378 	MOVLP 8
+0054 2086  1379 	CALL  USARTsend_str
+0055 3180  1380 	MOVLP 0
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 24
 
 ADDR CODE  LINE SOURCE
 
-0045 0021  1381 m042	MOVLB 1
-0046 100E  1382 	BCF   TRISC,0
-           1383 			;	//Spannungsversorgung für LED's einschalten
-           1384 			;	PORTC.0 = 0;
-0047 0020  1385 	MOVLB 0
-0048 100E  1386 	BCF   PORTC,0
-           1387 			;
-           1388 			;	//To Factory Restore WLAN Modul
-           1389 			;	//TRISA.0=0;
-           1390 			;	//PORTA.0 = 1;
-           1391 			;    
-           1392 			;    // *** load globals variables
-           1393 			;    gERROR = 0;
-0049 01DD  1394 	CLRF  gERROR
-           1395 			;    gCmdBuf.cmd_counter = 0;
-004A 01C9  1396 	CLRF  gCmdBuf
-           1397 			;    gCmdBuf.frame_counter = 0;
-004B 01CA  1398 	CLRF  gCmdBuf+1
-           1399 			;	
-           1400 			;	char i;
-           1401 			;	for(i=0;i<FRAMELENGTH;i++)
-004C 01A3  1402 	CLRF  i_6
-004D 3010  1403 m043	MOVLW 16
-004E 0020  1404 	MOVLB 0
-004F 0223  1405 	SUBWF i_6,W
-0050 1803  1406 	BTFSC 0x03,Carry
-0051 2859  1407 	GOTO  m044
-           1408 			;	{
-           1409 			;        gCmdBuf.cmd_buf[i] = 0;
-0052 304B  1410 	MOVLW 75
-0053 0723  1411 	ADDWF i_6,W
-0054 0084  1412 	MOVWF FSR0L
-0055 0185  1413 	CLRF  FSR0H
-0056 0180  1414 	CLRF  INDF0
-           1415 			;	}
-0057 0AA3  1416 	INCF  i_6,1
-0058 284D  1417 	GOTO  m043
-           1418 			;    
-           1419 			;	// *** allow interrupts
-           1420 			;	RCIE=1;
-0059 0021  1421 m044	MOVLB 1
-005A 1691  1422 	BSF   0x91,RCIE
-           1423 			;	PEIE=1;
-005B 170B  1424 	BSF   0x0B,PEIE
-           1425 			;	GIE=1;
-005C 178B  1426 	BSF   0x0B,GIE
-           1427 			;
-           1428 			;#ifdef TEST
-           1429 			;	USARTsend_str("initDone");
-005D 0020  1430 	MOVLB 0
-005E 01A4  1431 	CLRF  putstr
-005F 3188  1432 	MOVLP 8
-0060 208A  1433 	CALL  USARTsend_str
-0061 3180  1434 	MOVLP 0
-           1435 			;#endif
-           1436 			;	
-           1437 			;}
-0062 0008  1438 	RETURN
-           1439 			;
-           1440 			;void throw_errors()
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 25
+           1381 			;	}
+           1382 			;	if(gERROR.crc_failure)
+0056 0020  1383 m035	MOVLB 0
+0057 1C63  1384 	BTFSS gERROR,0
+0058 2860  1385 	GOTO  m036
+           1386 			;	{
+           1387 			;		USARTsend_str(" ERROR: CRC-Check failed");
+0059 301B  1388 	MOVLW 27
+005A 00A2  1389 	MOVWF putstr
+005B 3188  1390 	MOVLP 8
+005C 2086  1391 	CALL  USARTsend_str
+005D 3180  1392 	MOVLP 0
+           1393 			;		gERROR.crc_failure = 0;
+005E 0020  1394 	MOVLB 0
+005F 1063  1395 	BCF   gERROR,0
+           1396 			;	}
+           1397 			;	if(gERROR.eeprom_failure)
+0060 0020  1398 m036	MOVLB 0
+0061 1CE3  1399 	BTFSS gERROR,1
+0062 286A  1400 	GOTO  m037
+           1401 			;	{
+           1402 			;		USARTsend_str(" ERROR: EEPROM is full");
+0063 3034  1403 	MOVLW 52
+0064 00A2  1404 	MOVWF putstr
+0065 3188  1405 	MOVLP 8
+0066 2086  1406 	CALL  USARTsend_str
+0067 3180  1407 	MOVLP 0
+           1408 			;		gERROR.eeprom_failure = 0;
+0068 0020  1409 	MOVLB 0
+0069 10E3  1410 	BCF   gERROR,1
+           1411 			;	}
+           1412 			;}
+006A 0008  1413 m037	RETURN
+           1414 			;
+           1415 			;/** This function reads one byte from the ringbuffer and check
+           1416 			;*** for framestart, framelength, or databyte 
+           1417 			;*** if a frame is complete, the function save the frame as a new
+           1418 			;*** command in the internal EEPROM and calculate the Pointer for the next Command
+           1419 			;**/
+           1420 			;void get_commands()
+           1421 			;{	
+           1422 get_commands
+           1423 			;	if(RingBufIsNotEmpty)
+006B 0020  1424 	MOVLB 0
+006C 084D  1425 	MOVF  gRingBuf+17,W
+006D 064C  1426 	XORWF gRingBuf+16,W
+006E 1903  1427 	BTFSC 0x03,Zero_
+006F 290F  1428 	GOTO  m048
+           1429 			;	{
+           1430 			;		// *** preload variables and 
+           1431 			;		// *** get new_byte from ringbuffer
+           1432 			;		char new_byte, temp, j;
+           1433 			;		temp = 0;
+0070 01A3  1434 	CLRF  temp_3
+           1435 			;		j = 0;
+0071 01A4  1436 	CLRF  j
+           1437 			;		// *** get new byte
+           1438 			;		new_byte = RingBufGet();	
+0072 3188  1439 	MOVLP 8
+0073 2048  1440 	CALL  RingBufGet
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 25
 
 ADDR CODE  LINE SOURCE
 
-           1441 			;{
-           1442 throw_errors
-           1443 			;	if(RingBufHasError) 
-0063 0020  1444 	MOVLB 0
-0064 1C48  1445 	BTFSS gRingBuf+18,0
-0065 286B  1446 	GOTO  m045
-           1447 			;	{
-           1448 			;		USARTsend_str(" ERROR: Receivebuffer full");
-0066 3009  1449 	MOVLW 9
-0067 00A4  1450 	MOVWF putstr
-0068 3188  1451 	MOVLP 8
-0069 208A  1452 	CALL  USARTsend_str
-006A 3180  1453 	MOVLP 0
-           1454 			;	}
-           1455 			;	if(gERROR.crc_failure)
-006B 0020  1456 m045	MOVLB 0
-006C 1C5D  1457 	BTFSS gERROR,0
-006D 2875  1458 	GOTO  m046
-           1459 			;	{
-           1460 			;		USARTsend_str(" ERROR: CRC-Check failed");
-006E 3024  1461 	MOVLW 36
-006F 00A4  1462 	MOVWF putstr
-0070 3188  1463 	MOVLP 8
-0071 208A  1464 	CALL  USARTsend_str
-0072 3180  1465 	MOVLP 0
-           1466 			;		gERROR.crc_failure = 0;
-0073 0020  1467 	MOVLB 0
-0074 105D  1468 	BCF   gERROR,0
-           1469 			;	}
-           1470 			;	if(gERROR.eeprom_failure)
-0075 0020  1471 m046	MOVLB 0
-0076 1CDD  1472 	BTFSS gERROR,1
-0077 287F  1473 	GOTO  m047
-           1474 			;	{
-           1475 			;		USARTsend_str(" ERROR: EEPROM is full");
-0078 303D  1476 	MOVLW 61
-0079 00A4  1477 	MOVWF putstr
-007A 3188  1478 	MOVLP 8
-007B 208A  1479 	CALL  USARTsend_str
-007C 3180  1480 	MOVLP 0
-           1481 			;		gERROR.eeprom_failure = 0;
-007D 0020  1482 	MOVLB 0
-007E 10DD  1483 	BCF   gERROR,1
-           1484 			;	}
-           1485 			;}
-007F 0008  1486 m047	RETURN
-           1487 			;
-           1488 			;/** This function reads one byte from the ringbuffer and check
-           1489 			;*** for framestart, framelength, or databyte 
-           1490 			;*** if a frame is complete, the function save the frame as a new
-           1491 			;*** command in the internal EEPROM and calculate the Pointer for the next Command
-           1492 			;**/
-           1493 			;void get_commands()
-           1494 			;{	
-           1495 get_commands
-           1496 			;	if(RingBufIsNotEmpty)
-0080 0020  1497 	MOVLB 0
-0081 0847  1498 	MOVF  gRingBuf+17,W
-0082 0646  1499 	XORWF gRingBuf+16,W
-0083 1903  1500 	BTFSC 0x03,Zero_
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 26
+0074 3180  1441 	MOVLP 0
+0075 0020  1442 	MOVLB 0
+0076 00A2  1443 	MOVWF new_byte
+           1444 			;		// *** do I wait for databytes?
+           1445 			;		if(gCmdBuf.frame_counter == 0)
+0077 08D0  1446 	MOVF  gCmdBuf+1,1
+0078 1D03  1447 	BTFSS 0x03,Zero_
+0079 28AB  1448 	GOTO  m039
+           1449 			;		{
+           1450 			;			// *** I don't wait for databytes
+           1451 			;			// *** Do I receive a Start_of_Text sign
+           1452 			;			if(new_byte == STX)
+007A 0F22  1453 	INCFSZ new_byte,W
+007B 2892  1454 	GOTO  m038
+           1455 			;			{
+           1456 			;				// *** increse the cmd_counter
+           1457 			;				gCmdBuf.cmd_counter = 1;
+007C 3001  1458 	MOVLW 1
+007D 00CF  1459 	MOVWF gCmdBuf
+           1460 			;				// *** Write the startsign at the begin of the buffer
+           1461 			;				gCmdBuf.cmd_buf[0] = new_byte;
+007E 0822  1462 	MOVF  new_byte,W
+007F 00D1  1463 	MOVWF gCmdBuf+2
+           1464 			;                // *** Reset crc Variables
+           1465 			;                newCRC(&gCmdBuf.crcH, &gCmdBuf.crcL);
+0080 3061  1466 	MOVLW 97
+0081 00A5  1467 	MOVWF p_crcH_2
+0082 3062  1468 	MOVLW 98
+0083 00A6  1469 	MOVWF p_crcL_2
+0084 3188  1470 	MOVLP 8
+0085 2162  1471 	CALL  newCRC
+0086 3180  1472 	MOVLP 0
+           1473 			;                // *** add new_byte to crc checksum
+           1474 			;                addCRC(new_byte, &gCmdBuf.crcH, &gCmdBuf.crcL);
+0087 0020  1475 	MOVLB 0
+0088 0822  1476 	MOVF  new_byte,W
+0089 00A5  1477 	MOVWF byte
+008A 3061  1478 	MOVLW 97
+008B 00A6  1479 	MOVWF p_crcH
+008C 3062  1480 	MOVLW 98
+008D 00A7  1481 	MOVWF p_crcL
+008E 3188  1482 	MOVLP 8
+008F 210D  1483 	CALL  addCRC
+0090 3180  1484 	MOVLP 0
+           1485 			;			}
+           1486 			;			else
+0091 290F  1487 	GOTO  m048
+           1488 			;			{	
+           1489 			;				// *** to avoid arrayoverflow
+           1490 			;				temp = FRAMELENGTH - 2;
+0092 300E  1491 m038	MOVLW 14
+0093 0020  1492 	MOVLB 0
+0094 00A3  1493 	MOVWF temp_3
+           1494 			;				// *** check if I get the framelength byte
+           1495 			;				if((new_byte < temp) && (gCmdBuf.cmd_counter == 1))
+0095 0823  1496 	MOVF  temp_3,W
+0096 0222  1497 	SUBWF new_byte,W
+0097 1803  1498 	BTFSC 0x03,Carry
+0098 290F  1499 	GOTO  m048
+0099 0B4F  1500 	DECFSZ gCmdBuf,W
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 26
 
 ADDR CODE  LINE SOURCE
 
-0084 292B  1501 	GOTO  m058
-           1502 			;	{
-           1503 			;		// *** preload variables and 
-           1504 			;		// *** get new_byte from ringbuffer
-           1505 			;		char new_byte, temp, j;
-           1506 			;		temp = 0;
-0085 01A3  1507 	CLRF  temp_4
-           1508 			;		j = 0;
-0086 01A4  1509 	CLRF  j
-           1510 			;		// *** get new byte
-           1511 			;		new_byte = RingBufGet();	
-0087 3188  1512 	MOVLP 8
-0088 204C  1513 	CALL  RingBufGet
-0089 3180  1514 	MOVLP 0
-008A 0020  1515 	MOVLB 0
-008B 00A2  1516 	MOVWF new_byte
-           1517 			;		// *** do I wait for databytes?
-           1518 			;		if(gCmdBuf.frame_counter == 0)
-008C 08CA  1519 	MOVF  gCmdBuf+1,1
-008D 1D03  1520 	BTFSS 0x03,Zero_
-008E 28C0  1521 	GOTO  m049
-           1522 			;		{
-           1523 			;			// *** I don't wait for databytes
-           1524 			;			// *** Do I receive a Start_of_Text sign
-           1525 			;			if(new_byte == STX)
-008F 0F22  1526 	INCFSZ new_byte,W
-0090 28A7  1527 	GOTO  m048
-           1528 			;			{
-           1529 			;				// *** increse the cmd_counter
-           1530 			;				gCmdBuf.cmd_counter = 1;
-0091 3001  1531 	MOVLW 1
-0092 00C9  1532 	MOVWF gCmdBuf
-           1533 			;				// *** Write the startsign at the begin of the buffer
-           1534 			;				gCmdBuf.cmd_buf[0] = new_byte;
-0093 0822  1535 	MOVF  new_byte,W
-0094 00CB  1536 	MOVWF gCmdBuf+2
-           1537 			;                // *** Reset crc Variables
-           1538 			;                newCRC(&gCmdBuf.crcH, &gCmdBuf.crcL);
-0095 305B  1539 	MOVLW 91
-0096 00A5  1540 	MOVWF p_crcH_2
-0097 305C  1541 	MOVLW 92
-0098 00A6  1542 	MOVWF p_crcL_2
-0099 3188  1543 	MOVLP 8
-009A 21D1  1544 	CALL  newCRC
-009B 3180  1545 	MOVLP 0
-           1546 			;                // *** add new_byte to crc checksum
-           1547 			;                addCRC(new_byte, &gCmdBuf.crcH, &gCmdBuf.crcL);
-009C 0020  1548 	MOVLB 0
-009D 0822  1549 	MOVF  new_byte,W
-009E 00A5  1550 	MOVWF byte
-009F 305B  1551 	MOVLW 91
-00A0 00A6  1552 	MOVWF p_crcH
-00A1 305C  1553 	MOVLW 92
-00A2 00A7  1554 	MOVWF p_crcL
-00A3 3188  1555 	MOVLP 8
-00A4 217C  1556 	CALL  addCRC
-00A5 3180  1557 	MOVLP 0
-           1558 			;			}
-           1559 			;			else
-00A6 292B  1560 	GOTO  m058
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 27
+009A 290F  1501 	GOTO  m048
+           1502 			;				{
+           1503 			;					gCmdBuf.frame_counter = new_byte;
+009B 0822  1504 	MOVF  new_byte,W
+009C 00D0  1505 	MOVWF gCmdBuf+1
+           1506 			;					gCmdBuf.cmd_buf[1] = new_byte;
+009D 0822  1507 	MOVF  new_byte,W
+009E 00D2  1508 	MOVWF gCmdBuf+3
+           1509 			;					gCmdBuf.cmd_counter = 2;
+009F 3002  1510 	MOVLW 2
+00A0 00CF  1511 	MOVWF gCmdBuf
+           1512 			;                    // *** add new_byte to crc checksum
+           1513 			;                    addCRC(new_byte, &gCmdBuf.crcH, &gCmdBuf.crcL);
+00A1 0822  1514 	MOVF  new_byte,W
+00A2 00A5  1515 	MOVWF byte
+00A3 3061  1516 	MOVLW 97
+00A4 00A6  1517 	MOVWF p_crcH
+00A5 3062  1518 	MOVLW 98
+00A6 00A7  1519 	MOVWF p_crcL
+00A7 3188  1520 	MOVLP 8
+00A8 210D  1521 	CALL  addCRC
+00A9 3180  1522 	MOVLP 0
+           1523 			;				}
+           1524 			;			}
+           1525 			;		}
+           1526 			;		else
+00AA 290F  1527 	GOTO  m048
+           1528 			;		{
+           1529 			;			// *** I wait for Databytes, so I save all bytes 
+           1530 			;			// *** that I get until my framecounter is > 0
+           1531 			;			gCmdBuf.cmd_buf[gCmdBuf.cmd_counter] = new_byte;
+00AB 3051  1532 m039	MOVLW 81
+00AC 0020  1533 	MOVLB 0
+00AD 074F  1534 	ADDWF gCmdBuf,W
+00AE 0084  1535 	MOVWF FSR0L
+00AF 0185  1536 	CLRF  FSR0H
+00B0 0822  1537 	MOVF  new_byte,W
+00B1 0080  1538 	MOVWF INDF0
+           1539 			;			gCmdBuf.cmd_counter++;
+00B2 0ACF  1540 	INCF  gCmdBuf,1
+           1541 			;			
+           1542 			;            // *** add new_byte to crc checksum
+           1543 			;			if(gCmdBuf.frame_counter > 2)
+00B3 3003  1544 	MOVLW 3
+00B4 0250  1545 	SUBWF gCmdBuf+1,W
+00B5 1C03  1546 	BTFSS 0x03,Carry
+00B6 28C0  1547 	GOTO  m040
+           1548 			;            addCRC(new_byte, &gCmdBuf.crcH, &gCmdBuf.crcL);
+00B7 0822  1549 	MOVF  new_byte,W
+00B8 00A5  1550 	MOVWF byte
+00B9 3061  1551 	MOVLW 97
+00BA 00A6  1552 	MOVWF p_crcH
+00BB 3062  1553 	MOVLW 98
+00BC 00A7  1554 	MOVWF p_crcL
+00BD 3188  1555 	MOVLP 8
+00BE 210D  1556 	CALL  addCRC
+00BF 3180  1557 	MOVLP 0
+           1558 			;			gCmdBuf.frame_counter--;
+00C0 0020  1559 m040	MOVLB 0
+00C1 0BD0  1560 	DECFSZ gCmdBuf+1,1
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 27
 
 ADDR CODE  LINE SOURCE
 
-           1561 			;			{	
-           1562 			;				// *** to avoid arrayoverflow
-           1563 			;				temp = FRAMELENGTH - 2;
-00A7 300E  1564 m048	MOVLW 14
-00A8 0020  1565 	MOVLB 0
-00A9 00A3  1566 	MOVWF temp_4
-           1567 			;				// *** check if I get the framelength byte
-           1568 			;				if((new_byte < temp) && (gCmdBuf.cmd_counter == 1))
-00AA 0823  1569 	MOVF  temp_4,W
-00AB 0222  1570 	SUBWF new_byte,W
-00AC 1803  1571 	BTFSC 0x03,Carry
-00AD 292B  1572 	GOTO  m058
-00AE 0B49  1573 	DECFSZ gCmdBuf,W
-00AF 292B  1574 	GOTO  m058
-           1575 			;				{
-           1576 			;					gCmdBuf.frame_counter = new_byte;
-00B0 0822  1577 	MOVF  new_byte,W
-00B1 00CA  1578 	MOVWF gCmdBuf+1
-           1579 			;					gCmdBuf.cmd_buf[1] = new_byte;
-00B2 0822  1580 	MOVF  new_byte,W
-00B3 00CC  1581 	MOVWF gCmdBuf+3
-           1582 			;					gCmdBuf.cmd_counter = 2;
-00B4 3002  1583 	MOVLW 2
-00B5 00C9  1584 	MOVWF gCmdBuf
-           1585 			;                    // *** add new_byte to crc checksum
-           1586 			;                    addCRC(new_byte, &gCmdBuf.crcH, &gCmdBuf.crcL);
-00B6 0822  1587 	MOVF  new_byte,W
-00B7 00A5  1588 	MOVWF byte
-00B8 305B  1589 	MOVLW 91
-00B9 00A6  1590 	MOVWF p_crcH
-00BA 305C  1591 	MOVLW 92
-00BB 00A7  1592 	MOVWF p_crcL
-00BC 3188  1593 	MOVLP 8
-00BD 217C  1594 	CALL  addCRC
-00BE 3180  1595 	MOVLP 0
-           1596 			;				}
-           1597 			;			}
-           1598 			;		}
-           1599 			;		else
-00BF 292B  1600 	GOTO  m058
-           1601 			;		{
-           1602 			;			// *** I wait for Databytes, so I save all bytes 
-           1603 			;			// *** that I get until my framecounter is > 0
-           1604 			;			gCmdBuf.cmd_buf[gCmdBuf.cmd_counter] = new_byte;
-00C0 304B  1605 m049	MOVLW 75
-00C1 0020  1606 	MOVLB 0
-00C2 0749  1607 	ADDWF gCmdBuf,W
-00C3 0084  1608 	MOVWF FSR0L
-00C4 0185  1609 	CLRF  FSR0H
-00C5 0822  1610 	MOVF  new_byte,W
-00C6 0080  1611 	MOVWF INDF0
-           1612 			;			gCmdBuf.cmd_counter++;
-00C7 0AC9  1613 	INCF  gCmdBuf,1
-           1614 			;			
-           1615 			;            // *** add new_byte to crc checksum
-           1616 			;			if(gCmdBuf.frame_counter > 2)
-00C8 3003  1617 	MOVLW 3
-00C9 024A  1618 	SUBWF gCmdBuf+1,W
-00CA 1C03  1619 	BTFSS 0x03,Carry
-00CB 28D5  1620 	GOTO  m050
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 28
+           1561 			;			// *** now I have to check if my framecounter is null.
+           1562 			;			// *** If it's null my string is complete 
+           1563 			;			// *** and I can give the string to the crc check function.
+           1564 			;			if(gCmdBuf.frame_counter == 0)
+00C2 290F  1565 	GOTO  m048
+           1566 			;			{
+           1567 			;                // *** verify crc checksum
+           1568 			;                if( (gCmdBuf.crcL == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 1]) &&
+00C3 3050  1569 	MOVLW 80
+00C4 074F  1570 	ADDWF gCmdBuf,W
+00C5 0084  1571 	MOVWF FSR0L
+00C6 0185  1572 	CLRF  FSR0H
+00C7 0862  1573 	MOVF  gCmdBuf+19,W
+00C8 0600  1574 	XORWF INDF0,W
+00C9 1D03  1575 	BTFSS 0x03,Zero_
+00CA 290C  1576 	GOTO  m047
+           1577 			;                    (gCmdBuf.crcH == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 2]) )
+00CB 304F  1578 	MOVLW 79
+00CC 074F  1579 	ADDWF gCmdBuf,W
+00CD 0084  1580 	MOVWF FSR0L
+00CE 0185  1581 	CLRF  FSR0H
+00CF 0861  1582 	MOVF  gCmdBuf+18,W
+00D0 0600  1583 	XORWF INDF0,W
+00D1 1D03  1584 	BTFSS 0x03,Zero_
+00D2 290C  1585 	GOTO  m047
+           1586 			;                {
+           1587 			;					// *** Execute the simple Commands
+           1588 			;					switch(gCmdBuf.cmd_buf[2])
+00D3 0853  1589 	MOVF  gCmdBuf+4,W
+00D4 3AF8  1590 	XORLW 248
+00D5 1903  1591 	BTFSC 0x03,Zero_
+00D6 28DE  1592 	GOTO  m041
+00D7 3A02  1593 	XORLW 2
+00D8 1903  1594 	BTFSC 0x03,Zero_
+00D9 28E6  1595 	GOTO  m042
+00DA 3A03  1596 	XORLW 3
+00DB 1903  1597 	BTFSC 0x03,Zero_
+00DC 28E9  1598 	GOTO  m043
+00DD 28EC  1599 	GOTO  m044
+           1600 			;					{
+           1601 			;						case DELETE: 
+           1602 			;							{
+           1603 			;								EEPROM_WR(CmdPointerAddr,0);
+00DE 30FF  1604 m041	MOVLW 255
+00DF 0020  1605 	MOVLB 0
+00E0 00AA  1606 	MOVWF adress
+00E1 3000  1607 	MOVLW 0
+00E2 3188  1608 	MOVLP 8
+00E3 20AF  1609 	CALL  EEPROM_WR
+00E4 3180  1610 	MOVLP 0
+           1611 			;								return;
+00E5 0008  1612 	RETURN
+           1613 			;							}
+           1614 			;						case SET_ON: 
+           1615 			;							{
+           1616 			;								BCF(PORTC.0); 
+00E6 0020  1617 m042	MOVLB 0
+00E7 100E  1618 	BCF   PORTC,0
+           1619 			;								return;
+00E8 0008  1620 	RETURN
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 28
 
 ADDR CODE  LINE SOURCE
 
-           1621 			;            addCRC(new_byte, &gCmdBuf.crcH, &gCmdBuf.crcL);
-00CC 0822  1622 	MOVF  new_byte,W
-00CD 00A5  1623 	MOVWF byte
-00CE 305B  1624 	MOVLW 91
-00CF 00A6  1625 	MOVWF p_crcH
-00D0 305C  1626 	MOVLW 92
-00D1 00A7  1627 	MOVWF p_crcL
-00D2 3188  1628 	MOVLP 8
-00D3 217C  1629 	CALL  addCRC
-00D4 3180  1630 	MOVLP 0
-           1631 			;			gCmdBuf.frame_counter--;
-00D5 0020  1632 m050	MOVLB 0
-00D6 0BCA  1633 	DECFSZ gCmdBuf+1,1
-           1634 			;			// *** now I have to check if my framecounter is null.
-           1635 			;			// *** If it's null my string is complete 
-           1636 			;			// *** and I can give the string to the crc check function.
-           1637 			;			if(gCmdBuf.frame_counter == 0)
-00D7 292B  1638 	GOTO  m058
-           1639 			;			{
-           1640 			;                // *** verify crc checksum
-           1641 			;                if( (gCmdBuf.crcL == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 1]) &&
-00D8 304A  1642 	MOVLW 74
-00D9 0749  1643 	ADDWF gCmdBuf,W
-00DA 0084  1644 	MOVWF FSR0L
-00DB 0185  1645 	CLRF  FSR0H
-00DC 085C  1646 	MOVF  gCmdBuf+19,W
-00DD 0600  1647 	XORWF INDF0,W
-00DE 1D03  1648 	BTFSS 0x03,Zero_
-00DF 2928  1649 	GOTO  m057
-           1650 			;                    (gCmdBuf.crcH == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 2]) )
-00E0 3049  1651 	MOVLW 73
-00E1 0749  1652 	ADDWF gCmdBuf,W
-00E2 0084  1653 	MOVWF FSR0L
-00E3 0185  1654 	CLRF  FSR0H
-00E4 085B  1655 	MOVF  gCmdBuf+18,W
-00E5 0600  1656 	XORWF INDF0,W
-00E6 1D03  1657 	BTFSS 0x03,Zero_
-00E7 2928  1658 	GOTO  m057
-           1659 			;                {
-           1660 			;					// *** Execute the simple Commands
-           1661 			;					switch(gCmdBuf.cmd_buf[2])
-00E8 084D  1662 	MOVF  gCmdBuf+4,W
-00E9 3AF8  1663 	XORLW 248
-00EA 1903  1664 	BTFSC 0x03,Zero_
-00EB 28F3  1665 	GOTO  m051
-00EC 3A02  1666 	XORLW 2
-00ED 1903  1667 	BTFSC 0x03,Zero_
-00EE 28FB  1668 	GOTO  m052
-00EF 3A03  1669 	XORLW 3
-00F0 1903  1670 	BTFSC 0x03,Zero_
-00F1 28FE  1671 	GOTO  m053
-00F2 2901  1672 	GOTO  m054
-           1673 			;					{
-           1674 			;						case DELETE: 
-           1675 			;							{
-           1676 			;								EEPROM_WR(CmdPointerAddr,0);
-00F3 30FF  1677 m051	MOVLW 255
-00F4 0020  1678 	MOVLB 0
-00F5 00AA  1679 	MOVWF adress
-00F6 3000  1680 	MOVLW 0
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 29
+           1621 			;								}
+           1622 			;						case SET_OFF: 
+           1623 			;							{
+           1624 			;								BSF(PORTC.0); 
+00E9 0020  1625 m043	MOVLB 0
+00EA 140E  1626 	BSF   PORTC,0
+           1627 			;								return;
+00EB 0008  1628 	RETURN
+           1629 			;							}
+           1630 			;					}
+           1631 			;                    char CmdPointer = EEPROM_RD(CmdPointerAddr);
+00EC 30FF  1632 m044	MOVLW 255
+00ED 3188  1633 	MOVLP 8
+00EE 20D1  1634 	CALL  EEPROM_RD
+00EF 3180  1635 	MOVLP 0
+00F0 0020  1636 	MOVLB 0
+00F1 00A5  1637 	MOVWF CmdPointer
+           1638 			;#ifdef TEST			
+           1639 			;					USARTsend_num(CmdPointer,'#');
+           1640 			;#endif
+           1641 			;					// *** check if there is enough space in the EEPROM for the next command
+           1642 			;                    if(CmdPointer < (CmdPointerAddr - CmdWidth))
+00F2 30F5  1643 	MOVLW 245
+00F3 0225  1644 	SUBWF CmdPointer,W
+00F4 1803  1645 	BTFSC 0x03,Carry
+00F5 28FE  1646 	GOTO  m045
+           1647 			;                    {
+           1648 			;                        // *** calculate the next address for EEPROM write
+           1649 			;                        EEPROM_WR(CmdPointerAddr,(CmdPointer + CmdWidth));
+00F6 30FF  1650 	MOVLW 255
+00F7 00AA  1651 	MOVWF adress
+00F8 300A  1652 	MOVLW 10
+00F9 0725  1653 	ADDWF CmdPointer,W
+00FA 3188  1654 	MOVLP 8
+00FB 20AF  1655 	CALL  EEPROM_WR
+00FC 3180  1656 	MOVLP 0
+           1657 			;                    }
+           1658 			;                    else 
+00FD 2901  1659 	GOTO  m046
+           1660 			;                    {
+           1661 			;                        // *** EEPROM is full with commands
+           1662 			;                        // *** Some errorhandling should be here
+           1663 			;						gERROR.eeprom_failure = 1;
+00FE 0020  1664 m045	MOVLB 0
+00FF 14E3  1665 	BSF   gERROR,1
+           1666 			;                        return;
+0100 0008  1667 	RETURN
+           1668 			;                    } 
+           1669 			;					// *** Write the new command without STX and CRC
+           1670 			;					EEPROM_WR_BLK(&gCmdBuf.cmd_buf[2], CmdPointer, (gCmdBuf.cmd_counter -4));
+0101 3053  1671 m046	MOVLW 83
+0102 0020  1672 	MOVLB 0
+0103 00A6  1673 	MOVWF array_2
+0104 0825  1674 	MOVF  CmdPointer,W
+0105 00A7  1675 	MOVWF adress_3
+0106 3004  1676 	MOVLW 4
+0107 024F  1677 	SUBWF gCmdBuf,W
+0108 3188  1678 	MOVLP 8
+0109 20DE  1679 	CALL  EEPROM_WR_BLK
+010A 3180  1680 	MOVLP 0
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 29
 
 ADDR CODE  LINE SOURCE
 
-00F7 3188  1681 	MOVLP 8
-00F8 211E  1682 	CALL  EEPROM_WR
-00F9 3180  1683 	MOVLP 0
-           1684 			;								return;
-00FA 0008  1685 	RETURN
-           1686 			;							}
-           1687 			;						case SET_ON: 
-           1688 			;							{
-           1689 			;								BCF(PORTC.0); 
-00FB 0020  1690 m052	MOVLB 0
-00FC 100E  1691 	BCF   PORTC,0
-           1692 			;								return;
-00FD 0008  1693 	RETURN
-           1694 			;								}
-           1695 			;						case SET_OFF: 
-           1696 			;							{
-           1697 			;								BSF(PORTC.0); 
-00FE 0020  1698 m053	MOVLB 0
-00FF 140E  1699 	BSF   PORTC,0
-           1700 			;								return;
-0100 0008  1701 	RETURN
-           1702 			;							}
-           1703 			;					}
-           1704 			;                    char CmdPointer = EEPROM_RD(CmdPointerAddr);
-0101 30FF  1705 m054	MOVLW 255
-0102 3188  1706 	MOVLP 8
-0103 2140  1707 	CALL  EEPROM_RD
-0104 3180  1708 	MOVLP 0
-0105 0020  1709 	MOVLB 0
-0106 00A5  1710 	MOVWF CmdPointer
-           1711 			;#ifdef TEST			
-           1712 			;					USARTsend_num(CmdPointer,'#');
-0107 0825  1713 	MOVF  CmdPointer,W
-0108 00AD  1714 	MOVWF input
-0109 3023  1715 	MOVLW 35
-010A 3188  1716 	MOVLP 8
-010B 20B3  1717 	CALL  USARTsend_num
-010C 3180  1718 	MOVLP 0
-           1719 			;#endif
-           1720 			;					// *** check if there is enough space in the EEPROM for the next command
-           1721 			;                    if(CmdPointer < (CmdPointerAddr - CmdWidth))
-010D 30F5  1722 	MOVLW 245
-010E 0020  1723 	MOVLB 0
-010F 0225  1724 	SUBWF CmdPointer,W
-0110 1803  1725 	BTFSC 0x03,Carry
-0111 291A  1726 	GOTO  m055
-           1727 			;                    {
-           1728 			;                        // *** calculate the next address for EEPROM write
-           1729 			;                        EEPROM_WR(CmdPointerAddr,(CmdPointer + CmdWidth));
-0112 30FF  1730 	MOVLW 255
-0113 00AA  1731 	MOVWF adress
-0114 300A  1732 	MOVLW 10
-0115 0725  1733 	ADDWF CmdPointer,W
-0116 3188  1734 	MOVLP 8
-0117 211E  1735 	CALL  EEPROM_WR
-0118 3180  1736 	MOVLP 0
-           1737 			;                    }
-           1738 			;                    else 
-0119 291D  1739 	GOTO  m056
-           1740 			;                    {
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 30
+           1681 			;#ifdef TEST
+           1682 			;					USARTsend_arr(&gCmdBuf.cmd_buf[2], (gCmdBuf.cmd_counter - 4));
+           1683 			;#endif
+           1684 			;                }
+           1685 			;                else
+010B 290F  1686 	GOTO  m048
+           1687 			;                {
+           1688 			;                    // *** Do some error handling in case of an CRC failure here
+           1689 			;					gERROR.crc_failure = 1;
+010C 0020  1690 m047	MOVLB 0
+010D 1463  1691 	BSF   gERROR,0
+           1692 			;                    return;
+010E 0008  1693 	RETURN
+           1694 			;                }
+           1695 			;			}
+           1696 			;		}
+           1697 			;	}
+           1698 			;}
+010F 0008  1699 m048	RETURN
+           1700 			;
+           1701 			;/** This function reads the pointer for commands in the EEPROM from a defined address 
+           1702 			;*** in the EEPROM. After this one by one command is executed by this function. 
+           1703 			;**/ 
+           1704 			;void execute_commands()
+           1705 			;{
+           1706 execute_commands
+           1707 			;	// *** get the pointer to commands in the EEPROM
+           1708 			;	char pointer = EEPROM_RD(CmdPointerAddr);
+0110 30FF  1709 	MOVLW 255
+0111 3188  1710 	MOVLP 8
+0112 20D1  1711 	CALL  EEPROM_RD
+0113 3180  1712 	MOVLP 0
+0114 0020  1713 	MOVLB 0
+0115 00A2  1714 	MOVWF pointer
+           1715 			;	// *** are there commands to execute?
+           1716 			;	if(pointer != 0)
+0116 08A2  1717 	MOVF  pointer,1
+0117 1903  1718 	BTFSC 0x03,Zero_
+0118 2934  1719 	GOTO  m051
+           1720 			;	{
+           1721 			;		// *** commands available, check what to do
+           1722 			;		switch(EEPROM_RD(pointer - CmdWidth)) 
+0119 300A  1723 	MOVLW 10
+011A 0222  1724 	SUBWF pointer,W
+011B 3188  1725 	MOVLP 8
+011C 20D1  1726 	CALL  EEPROM_RD
+011D 3180  1727 	MOVLP 0
+011E 3AFD  1728 	XORLW 253
+011F 1903  1729 	BTFSC 0x03,Zero_
+0120 2928  1730 	GOTO  m049
+0121 3A01  1731 	XORLW 1
+0122 1903  1732 	BTFSC 0x03,Zero_
+0123 292C  1733 	GOTO  m050
+0124 3A07  1734 	XORLW 7
+0125 1903  1735 	BTFSC 0x03,Zero_
+0126 292C  1736 	GOTO  m050
+0127 292C  1737 	GOTO  m050
+           1738 			;		{	
+           1739 			;			case SET_COLOR: 
+           1740 			;			{
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 30
 
 ADDR CODE  LINE SOURCE
 
-           1741 			;                        // *** EEPROM is full with commands
-           1742 			;                        // *** Some errorhandling should be here
-           1743 			;						gERROR.eeprom_failure = 1;
-011A 0020  1744 m055	MOVLB 0
-011B 14DD  1745 	BSF   gERROR,1
-           1746 			;                        return;
-011C 0008  1747 	RETURN
-           1748 			;                    } 
-           1749 			;					// *** Write the new command without STX and CRC
-           1750 			;					EEPROM_WR_BLK(&gCmdBuf.cmd_buf[2], CmdPointer, (gCmdBuf.cmd_counter -4));
-011D 304D  1751 m056	MOVLW 77
-011E 0020  1752 	MOVLB 0
-011F 00A6  1753 	MOVWF array_2
-0120 0825  1754 	MOVF  CmdPointer,W
-0121 00A7  1755 	MOVWF adress_3
-0122 3004  1756 	MOVLW 4
-0123 0249  1757 	SUBWF gCmdBuf,W
-0124 3188  1758 	MOVLP 8
-0125 214D  1759 	CALL  EEPROM_WR_BLK
-0126 3180  1760 	MOVLP 0
-           1761 			;                }
-           1762 			;                else
-0127 292B  1763 	GOTO  m058
-           1764 			;                {
-           1765 			;                    // *** Do some error handling in case of an CRC failure here
-           1766 			;					gERROR.crc_failure = 1;
-0128 0020  1767 m057	MOVLB 0
-0129 145D  1768 	BSF   gERROR,0
-           1769 			;                    return;
-012A 0008  1770 	RETURN
-           1771 			;                }
-           1772 			;			}
-           1773 			;		}
-           1774 			;	}
-           1775 			;}
-012B 0008  1776 m058	RETURN
-           1777 			;
-           1778 			;/** This function reads the pointer for commands in the EEPROM from a defined address 
-           1779 			;*** in the EEPROM. After this one by one command is executed by this function. 
-           1780 			;**/ 
-           1781 			;void execute_commands()
-           1782 			;{
-           1783 execute_commands
-           1784 			;	// *** get the pointer to commands in the EEPROM
-           1785 			;	char pointer = EEPROM_RD(CmdPointerAddr);
-012C 30FF  1786 	MOVLW 255
-012D 3188  1787 	MOVLP 8
-012E 2140  1788 	CALL  EEPROM_RD
-012F 3180  1789 	MOVLP 0
-0130 0020  1790 	MOVLB 0
-0131 00A2  1791 	MOVWF pointer
-           1792 			;	// *** are there commands to execute?
-           1793 			;	if(pointer != 0)
-0132 08A2  1794 	MOVF  pointer,1
-0133 1903  1795 	BTFSC 0x03,Zero_
-0134 2950  1796 	GOTO  m061
-           1797 			;	{
-           1798 			;		// *** commands available, check what to do
-           1799 			;		switch(EEPROM_RD(pointer - CmdWidth)) 
-0135 300A  1800 	MOVLW 10
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 31
+           1741 			;				sub_func_set_color(&pointer);
+0128 3022  1742 m049	MOVLW 34
+0129 0020  1743 	MOVLB 0
+012A 00A3  1744 	MOVWF cmdPointer
+012B 2135  1745 	CALL  sub_func_set_color
+           1746 			;				break;
+           1747 			;			}
+           1748 			;			case SET_FADE: {break;}
+           1749 			;			case SET_RUN: {break;}
+           1750 			;		}
+           1751 			;		// *** set commandpointer to the next command
+           1752 			;		EEPROM_WR(CmdPointerAddr, (pointer - CmdWidth));
+012C 30FF  1753 m050	MOVLW 255
+012D 0020  1754 	MOVLB 0
+012E 00AA  1755 	MOVWF adress
+012F 300A  1756 	MOVLW 10
+0130 0222  1757 	SUBWF pointer,W
+0131 3188  1758 	MOVLP 8
+0132 20AF  1759 	CALL  EEPROM_WR
+0133 3180  1760 	MOVLP 0
+           1761 			;	}
+           1762 			;}
+0134 0008  1763 m051	RETURN
+           1764 			;
+           1765 			;/** This function extracts the parameters for the set_color command
+           1766 			;*** from the EEPROM in relation to the CmdWidth and give the values 
+           1767 			;*** to the next function with controls the led's
+           1768 			;*/ 
+           1769 			;void sub_func_set_color(char *cmdPointer)
+           1770 			;{
+           1771 sub_func_set_color
+           1772 			;	char r,g,b,i, temp,temp1,address[4];
+           1773 			;	
+           1774 			;	r = EEPROM_RD(*cmdPointer - CmdWidth + 5);
+0135 0185  1775 	CLRF  FSR0H
+0136 0020  1776 	MOVLB 0
+0137 0823  1777 	MOVF  cmdPointer,W
+0138 0084  1778 	MOVWF FSR0L
+0139 3005  1779 	MOVLW 5
+013A 0200  1780 	SUBWF INDF0,W
+013B 3188  1781 	MOVLP 8
+013C 20D1  1782 	CALL  EEPROM_RD
+013D 3180  1783 	MOVLP 0
+013E 0020  1784 	MOVLB 0
+013F 00A4  1785 	MOVWF r_2
+           1786 			;	g = EEPROM_RD(*cmdPointer - CmdWidth + 6);
+0140 0185  1787 	CLRF  FSR0H
+0141 0823  1788 	MOVF  cmdPointer,W
+0142 0084  1789 	MOVWF FSR0L
+0143 3004  1790 	MOVLW 4
+0144 0200  1791 	SUBWF INDF0,W
+0145 3188  1792 	MOVLP 8
+0146 20D1  1793 	CALL  EEPROM_RD
+0147 3180  1794 	MOVLP 0
+0148 0020  1795 	MOVLB 0
+0149 00A5  1796 	MOVWF g_2
+           1797 			;	b = EEPROM_RD(*cmdPointer - CmdWidth + 7);
+014A 0185  1798 	CLRF  FSR0H
+014B 0823  1799 	MOVF  cmdPointer,W
+014C 0084  1800 	MOVWF FSR0L
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 31
 
 ADDR CODE  LINE SOURCE
 
-0136 0222  1801 	SUBWF pointer,W
-0137 3188  1802 	MOVLP 8
-0138 2140  1803 	CALL  EEPROM_RD
-0139 3180  1804 	MOVLP 0
-013A 3AFD  1805 	XORLW 253
-013B 1903  1806 	BTFSC 0x03,Zero_
-013C 2944  1807 	GOTO  m059
-013D 3A01  1808 	XORLW 1
-013E 1903  1809 	BTFSC 0x03,Zero_
-013F 2948  1810 	GOTO  m060
-0140 3A07  1811 	XORLW 7
-0141 1903  1812 	BTFSC 0x03,Zero_
-0142 2948  1813 	GOTO  m060
-0143 2948  1814 	GOTO  m060
-           1815 			;		{	
-           1816 			;			case SET_COLOR: 
-           1817 			;			{
-           1818 			;				sub_func_set_color(&pointer);
-0144 3022  1819 m059	MOVLW 34
-0145 0020  1820 	MOVLB 0
-0146 00A3  1821 	MOVWF cmdPointer
-0147 2151  1822 	CALL  sub_func_set_color
-           1823 			;				break;
-           1824 			;			}
-           1825 			;			case SET_FADE: {break;}
-           1826 			;			case SET_RUN: {break;}
-           1827 			;		}
-           1828 			;		// *** set commandpointer to the next command
-           1829 			;		EEPROM_WR(CmdPointerAddr, (pointer - CmdWidth));
-0148 30FF  1830 m060	MOVLW 255
-0149 0020  1831 	MOVLB 0
-014A 00AA  1832 	MOVWF adress
-014B 300A  1833 	MOVLW 10
-014C 0222  1834 	SUBWF pointer,W
-014D 3188  1835 	MOVLP 8
-014E 211E  1836 	CALL  EEPROM_WR
-014F 3180  1837 	MOVLP 0
-           1838 			;	}
-           1839 			;}
-0150 0008  1840 m061	RETURN
-           1841 			;
-           1842 			;/** This function extracts the parameters for the set_color command
-           1843 			;*** from the EEPROM in relation to the CmdWidth and give the values 
-           1844 			;*** to the next function with controls the led's
-           1845 			;*/ 
-           1846 			;void sub_func_set_color(char *cmdPointer)
-           1847 			;{
-           1848 sub_func_set_color
-           1849 			;	char r,g,b,i, temp,address[4];
-           1850 			;	
-           1851 			;	r = EEPROM_RD(*cmdPointer - CmdWidth + 5);
-0151 0185  1852 	CLRF  FSR0H
-0152 0020  1853 	MOVLB 0
-0153 0823  1854 	MOVF  cmdPointer,W
-0154 0084  1855 	MOVWF FSR0L
-0155 3005  1856 	MOVLW 5
-0156 0200  1857 	SUBWF INDF0,W
-0157 3188  1858 	MOVLP 8
-0158 2140  1859 	CALL  EEPROM_RD
-0159 3180  1860 	MOVLP 0
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 32
+014D 3003  1801 	MOVLW 3
+014E 0200  1802 	SUBWF INDF0,W
+014F 3188  1803 	MOVLP 8
+0150 20D1  1804 	CALL  EEPROM_RD
+0151 3180  1805 	MOVLP 0
+0152 0020  1806 	MOVLB 0
+0153 00A6  1807 	MOVWF b_2
+           1808 			;	for(i=0;i<4;i++)
+0154 01A7  1809 	CLRF  i_7
+0155 3004  1810 m052	MOVLW 4
+0156 0020  1811 	MOVLB 0
+0157 0227  1812 	SUBWF i_7,W
+0158 1803  1813 	BTFSC 0x03,Carry
+0159 2971  1814 	GOTO  m053
+           1815 			;	{
+           1816 			;		temp1 = *cmdPointer;
+015A 0185  1817 	CLRF  FSR0H
+015B 0823  1818 	MOVF  cmdPointer,W
+015C 0084  1819 	MOVWF FSR0L
+015D 0800  1820 	MOVF  INDF0,W
+015E 00A9  1821 	MOVWF temp1
+           1822 			;		temp1 = temp1 - CmdWidth + 1 + i;
+015F 3009  1823 	MOVLW 9
+0160 0229  1824 	SUBWF temp1,W
+0161 0727  1825 	ADDWF i_7,W
+0162 00A9  1826 	MOVWF temp1
+           1827 			;		temp = EEPROM_RD(temp1);
+0163 0829  1828 	MOVF  temp1,W
+0164 3188  1829 	MOVLP 8
+0165 20D1  1830 	CALL  EEPROM_RD
+0166 3180  1831 	MOVLP 0
+0167 0020  1832 	MOVLB 0
+0168 00A8  1833 	MOVWF temp_4
+           1834 			;		address[i] = temp;
+0169 302A  1835 	MOVLW 42
+016A 0727  1836 	ADDWF i_7,W
+016B 0084  1837 	MOVWF FSR0L
+016C 0185  1838 	CLRF  FSR0H
+016D 0828  1839 	MOVF  temp_4,W
+016E 0080  1840 	MOVWF INDF0
+           1841 			;	}
+016F 0AA7  1842 	INCF  i_7,1
+0170 2955  1843 	GOTO  m052
+           1844 			;	
+           1845 			;#ifdef TEST
+           1846 			;	USARTsend_str("Command:");
+           1847 			;	USARTsend_num(address[0],'#');
+           1848 			;	USARTsend_num(address[1],'#');
+           1849 			;	USARTsend_num(address[2],'#');
+           1850 			;	USARTsend_num(address[3],'#');
+           1851 			;	USARTsend_num(r,'R');
+           1852 			;	USARTsend_num(g,'G');
+           1853 			;	USARTsend_num(b,'B');
+           1854 			;#endif	
+           1855 			;	ledstrip_set_color(&address[0],r,g,b);
+0171 302A  1856 m053	MOVLW 42
+0172 0020  1857 	MOVLB 0
+0173 00AE  1858 	MOVWF address
+0174 0824  1859 	MOVF  r_2,W
+0175 00AF  1860 	MOVWF r
+CC5X Version 3.4E,   File: main.c               7. May 2012  17:52   Page 32
 
 ADDR CODE  LINE SOURCE
 
-015A 0020  1861 	MOVLB 0
-015B 00A4  1862 	MOVWF r_2
-           1863 			;	g = EEPROM_RD(*cmdPointer - CmdWidth + 6);
-015C 0185  1864 	CLRF  FSR0H
-015D 0823  1865 	MOVF  cmdPointer,W
-015E 0084  1866 	MOVWF FSR0L
-015F 3004  1867 	MOVLW 4
-0160 0200  1868 	SUBWF INDF0,W
-0161 3188  1869 	MOVLP 8
-0162 2140  1870 	CALL  EEPROM_RD
-0163 3180  1871 	MOVLP 0
-0164 0020  1872 	MOVLB 0
-0165 00A5  1873 	MOVWF g_2
-           1874 			;	b = EEPROM_RD(*cmdPointer - CmdWidth + 7);
-0166 0185  1875 	CLRF  FSR0H
-0167 0823  1876 	MOVF  cmdPointer,W
-0168 0084  1877 	MOVWF FSR0L
-0169 3003  1878 	MOVLW 3
-016A 0200  1879 	SUBWF INDF0,W
-016B 3188  1880 	MOVLP 8
-016C 2140  1881 	CALL  EEPROM_RD
-016D 3180  1882 	MOVLP 0
-016E 0020  1883 	MOVLB 0
-016F 00A6  1884 	MOVWF b_2
-           1885 			;	for(i=0;i<4;i++)
-0170 01A7  1886 	CLRF  i_7
-0171 3004  1887 m062	MOVLW 4
-0172 0020  1888 	MOVLB 0
-0173 0227  1889 	SUBWF i_7,W
-0174 1803  1890 	BTFSC 0x03,Carry
-0175 2989  1891 	GOTO  m063
-           1892 			;	{
-           1893 			;		temp = EEPROM_RD(*cmdPointer - (CmdWidth + 1 + i));
-0176 0185  1894 	CLRF  FSR0H
-0177 0823  1895 	MOVF  cmdPointer,W
-0178 0084  1896 	MOVWF FSR0L
-0179 300B  1897 	MOVLW 11
-017A 0727  1898 	ADDWF i_7,W
-017B 0200  1899 	SUBWF INDF0,W
-017C 3188  1900 	MOVLP 8
-017D 2140  1901 	CALL  EEPROM_RD
-017E 3180  1902 	MOVLP 0
-017F 0020  1903 	MOVLB 0
-0180 00A8  1904 	MOVWF temp_5
-           1905 			;		address[i] = temp;
-0181 3029  1906 	MOVLW 41
-0182 0727  1907 	ADDWF i_7,W
-0183 0084  1908 	MOVWF FSR0L
-0184 0185  1909 	CLRF  FSR0H
-0185 0828  1910 	MOVF  temp_5,W
-0186 0080  1911 	MOVWF INDF0
-           1912 			;	}
-0187 0AA7  1913 	INCF  i_7,1
-0188 2971  1914 	GOTO  m062
-           1915 			;	
-           1916 			;#ifdef TEST
-           1917 			;	USARTsend_num(address[0],'#');
-0189 0020  1918 m063	MOVLB 0
-018A 0829  1919 	MOVF  address_2,W
-018B 00AD  1920 	MOVWF input
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 33
-
-ADDR CODE  LINE SOURCE
-
-018C 3023  1921 	MOVLW 35
-018D 3188  1922 	MOVLP 8
-018E 20B3  1923 	CALL  USARTsend_num
-018F 3180  1924 	MOVLP 0
-           1925 			;	USARTsend_num(address[1],'#');
-0190 0020  1926 	MOVLB 0
-0191 082A  1927 	MOVF  address_2+1,W
-0192 00AD  1928 	MOVWF input
-0193 3023  1929 	MOVLW 35
-0194 3188  1930 	MOVLP 8
-0195 20B3  1931 	CALL  USARTsend_num
-0196 3180  1932 	MOVLP 0
-           1933 			;	USARTsend_num(address[2],'#');
-0197 0020  1934 	MOVLB 0
-0198 082B  1935 	MOVF  address_2+2,W
-0199 00AD  1936 	MOVWF input
-019A 3023  1937 	MOVLW 35
-019B 3188  1938 	MOVLP 8
-019C 20B3  1939 	CALL  USARTsend_num
-019D 3180  1940 	MOVLP 0
-           1941 			;	USARTsend_num(address[3],'#');
-019E 0020  1942 	MOVLB 0
-019F 082C  1943 	MOVF  address_2+3,W
-01A0 00AD  1944 	MOVWF input
-01A1 3023  1945 	MOVLW 35
-01A2 3188  1946 	MOVLP 8
-01A3 20B3  1947 	CALL  USARTsend_num
-01A4 3180  1948 	MOVLP 0
-           1949 			;	USARTsend_num(r,'R');
-01A5 0020  1950 	MOVLB 0
-01A6 0824  1951 	MOVF  r_2,W
-01A7 00AD  1952 	MOVWF input
-01A8 3052  1953 	MOVLW 82
-01A9 3188  1954 	MOVLP 8
-01AA 20B3  1955 	CALL  USARTsend_num
-01AB 3180  1956 	MOVLP 0
-           1957 			;	USARTsend_num(g,'G');
-01AC 0020  1958 	MOVLB 0
-01AD 0825  1959 	MOVF  g_2,W
-01AE 00AD  1960 	MOVWF input
-01AF 3047  1961 	MOVLW 71
-01B0 3188  1962 	MOVLP 8
-01B1 20B3  1963 	CALL  USARTsend_num
-01B2 3180  1964 	MOVLP 0
-           1965 			;	USARTsend_num(b,'B');
-01B3 0020  1966 	MOVLB 0
-01B4 0826  1967 	MOVF  b_2,W
-01B5 00AD  1968 	MOVWF input
-01B6 3042  1969 	MOVLW 66
-01B7 3188  1970 	MOVLP 8
-01B8 20B3  1971 	CALL  USARTsend_num
-01B9 3180  1972 	MOVLP 0
-           1973 			;#endif	
-           1974 			;	ledstrip_set_color(&address[0],r,g,b);
-01BA 3029  1975 	MOVLW 41
-01BB 0020  1976 	MOVLB 0
-01BC 00AD  1977 	MOVWF address
-01BD 0824  1978 	MOVF  r_2,W
-01BE 00AE  1979 	MOVWF r
-01BF 0825  1980 	MOVF  g_2,W
-CC5X Version 3.4H,   File: main.c               2. May 2012  10:07   Page 34
-
-ADDR CODE  LINE SOURCE
-
-01C0 00AF  1981 	MOVWF g
-01C1 0826  1982 	MOVF  b_2,W
-01C2 3188  1983 	MOVLP 8
-01C3 223D  1984 	CALL  ledstrip_set_color
-01C4 3180  1985 	MOVLP 0
-           1986 			;}
-01C5 0008  1987 	RETURN
-           1988 
-           1989 	END
-           1990 
-           1991 
-           1992 ; *** KEY INFO ***
-           1993 
-           1994 ; 0x0004 P0   16 word(s)  0 % : InterruptRoutine
-           1995 ; 0x0019 P0   74 word(s)  3 % : init_all
-           1996 ; 0x0063 P0   29 word(s)  1 % : throw_errors
-           1997 ; 0x0080 P0  172 word(s)  8 % : get_commands
-           1998 ; 0x012C P0   37 word(s)  1 % : execute_commands
-           1999 ; 0x0151 P0  117 word(s)  5 % : sub_func_set_color
-           2000 ; 0x0014 P0    5 word(s)  0 % : main
-           2001 
-           2002 ; 0x0847 P1    5 word(s)  0 % : RingBufInit
-           2003 ; 0x084C P1   12 word(s)  0 % : RingBufGet
-           2004 ; 0x0858 P1   21 word(s)  1 % : RingBufPut
-           2005 ; 0x086D P1   19 word(s)  0 % : USARTinit
-           2006 ; 0x0880 P1   10 word(s)  0 % : USARTsend
-           2007 ; 0x088A P1   23 word(s)  1 % : USARTsend_str
-           2008 ; 0x08A1 P1   18 word(s)  0 % : USARTsend_arr
-           2009 ; 0x0800 P1   71 word(s)  3 % : _const1
-           2010 ; 0x08B3 P1  107 word(s)  5 % : USARTsend_num
-           2011 ; 0x091E P1   34 word(s)  1 % : EEPROM_WR
-           2012 ; 0x0940 P1   13 word(s)  0 % : EEPROM_RD
-           2013 ; 0x094D P1   25 word(s)  1 % : EEPROM_WR_BLK
-           2014 ; 0x0966 P1   22 word(s)  1 % : EEPROM_RD_BLK
-           2015 ; 0x097C P1   40 word(s)  1 % : addCRC
-           2016 ; 0x09A4 P1   45 word(s)  2 % : CRC
-           2017 ; 0x09D1 P1   20 word(s)  0 % : newCRC
-           2018 ; 0x09E5 P1    8 word(s)  0 % : spi_init
-           2019 ; 0x09ED P1    9 word(s)  0 % : spi_send
-           2020 ; 0x09F6 P1   10 word(s)  0 % : spi_receive
-           2021 ; 0x0A00 P1   18 word(s)  0 % : spi_send_arr
-           2022 ; 0x0A12 P1   43 word(s)  2 % : ledstrip_init
-           2023 ; 0x0A3D P1   45 word(s)  2 % : ledstrip_set_color
-           2024 
-           2025 ; RAM usage: 158 bytes (22 local), 354 bytes free
-           2026 ; Maximum call level: 4 (+2 for interrupt)
-           2027 ;  Codepage 0 has  451 word(s) :  22 %
-           2028 ;  Codepage 1 has  618 word(s) :  30 %
-           2029 ;  Codepage 2 has    0 word(s) :   0 %
-           2030 ;  Codepage 3 has    0 word(s) :   0 %
-           2031 ; Total of 1069 code words (13 %)
+0176 0825  1861 	MOVF  g_2,W
+0177 00B0  1862 	MOVWF g
+0178 0826  1863 	MOVF  b_2,W
+0179 3188  1864 	MOVLP 8
+017A 21ED  1865 	CALL  ledstrip_set_color
+017B 3180  1866 	MOVLP 0
+           1867 			;}
+017C 0008  1868 	RETURN
+           1869 
+           1870 	END
+           1871 
+           1872 
+           1873 ; *** KEY INFO ***
+           1874 
+           1875 ; 0x0004 P0   16 word(s)  0 % : InterruptRoutine
+           1876 ; 0x0019 P0   54 word(s)  2 % : init_all
+           1877 ; 0x004F P0   28 word(s)  1 % : throw_errors
+           1878 ; 0x006B P0  165 word(s)  8 % : get_commands
+           1879 ; 0x0110 P0   37 word(s)  1 % : execute_commands
+           1880 ; 0x0135 P0   72 word(s)  3 % : sub_func_set_color
+           1881 ; 0x0014 P0    5 word(s)  0 % : main
+           1882 
+           1883 ; 0x0843 P1    5 word(s)  0 % : RingBufInit
+           1884 ; 0x0848 P1   12 word(s)  0 % : RingBufGet
+           1885 ; 0x0854 P1   21 word(s)  1 % : RingBufPut
+           1886 ; 0x0869 P1   19 word(s)  0 % : USARTinit
+           1887 ; 0x087C P1   10 word(s)  0 % : USARTsend
+           1888 ; 0x0886 P1   23 word(s)  1 % : USARTsend_str
+           1889 ; 0x089D P1   18 word(s)  0 % : USARTsend_arr
+           1890 ; 0x0800 P1   67 word(s)  3 % : _const1
+           1891 ; 0x08AF P1   34 word(s)  1 % : EEPROM_WR
+           1892 ; 0x08D1 P1   13 word(s)  0 % : EEPROM_RD
+           1893 ; 0x08DE P1   25 word(s)  1 % : EEPROM_WR_BLK
+           1894 ; 0x08F7 P1   22 word(s)  1 % : EEPROM_RD_BLK
+           1895 ; 0x090D P1   40 word(s)  1 % : addCRC
+           1896 ; 0x0935 P1   45 word(s)  2 % : CRC
+           1897 ; 0x0962 P1   20 word(s)  0 % : newCRC
+           1898 ; 0x09CB P1   34 word(s)  1 % : ledstrip_init
+           1899 ; 0x09ED P1   96 word(s)  4 % : ledstrip_set_color
+           1900 ; 0x0976 P1    8 word(s)  0 % : spi_init
+           1901 ; 0x097E P1    8 word(s)  0 % : spi_send
+           1902 ; 0x0986 P1   11 word(s)  0 % : spi_receive
+           1903 ; 0x0991 P1   18 word(s)  0 % : spi_send_arr
+           1904 ; 0x09A3 P1   40 word(s)  1 % : spi_send_ledbuf
+           1905 
+           1906 ; RAM usage: 164 bytes (28 local), 348 bytes free
+           1907 ; Maximum call level: 4 (+2 for interrupt)
+           1908 ;  Codepage 0 has  378 word(s) :  18 %
+           1909 ;  Codepage 1 has  589 word(s) :  28 %
+           1910 ;  Codepage 2 has    0 word(s) :   0 %
+           1911 ;  Codepage 3 has    0 word(s) :   0 %
+           1912 ; Total of 967 code words (11 %)
