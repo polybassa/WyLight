@@ -1,7 +1,7 @@
 
 ; CC5X Version 3.4E, Copyright (c) B Knudsen Data
 ; C compiler for the PICmicro family
-; ************   8. May 2012  17:28  *************
+; ************   8. May 2012  17:59  *************
 
 	processor  16F1936
 	radix  DEC
@@ -1225,8 +1225,7 @@ m029	MOVLW 42
 			;//20.04.2012
 			;//Compiler CC5x
 			;
-			;
-			;//#include "include_files\eeprom.h"
+			;#include "include_files\eeprom.h"
 			;
 			;#define NUM_OF_LED 32
 			;
@@ -1253,6 +1252,7 @@ m029	MOVLW 42
 			;#include "include_files\crc.c"
 			;#include "include_files\ledstrip.h"
 			;#include "include_files\spi.h"
+			;#include "include_files\timer.h"
 			;//*********************** GLOBAL VARIABLES *******************************************
 			;struct CommandBuffer{
 			;    char cmd_counter;
@@ -1722,7 +1722,6 @@ m045	MOVLW 255
 	MOVLP 8
 	CALL  EEPROM_WR
 	MOVLP 0
-			;						
 			;                    }
 			;                    else 
 	GOTO  m047

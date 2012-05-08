@@ -5,8 +5,7 @@
 //20.04.2012
 //Compiler CC5x
 
-
-//#include "include_files\eeprom.h"
+#include "include_files\eeprom.h"
 
 #define NUM_OF_LED 32
 

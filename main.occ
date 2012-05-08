@@ -1,9 +1,9 @@
 CC5X Version 3.4E, Copyright (c) B Knudsen Data, Norway 1992-2010
  --> FREE edition, 8-16 bit int, 24 bit float, 32k code, reduced optim.
 main.c:
-  8. May 2012  17:28
+  8. May 2012  17:59
 Message: Global variables are defined in RingBuf.c
-Warning[1] C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\main.c 220 : Condition (or parts of it) is always true
+Warning[1] C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\main.c 221 : Condition (or parts of it) is always true
  (This is superfluous code that can be removed - check for application bugs)
  Chip = 16F1936
 Warning[2] C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\main.c 307 : Local variables and parameters in uncalled functions are not allocated (20)
@@ -46,6 +46,8 @@ C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\include_files\crc.c
 WARNING: String limit in COD file exceeded (max 64 characters):
 C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\include_files\ledstrip.h
 WARNING: String limit in COD file exceeded (max 64 characters):
+C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\include_files\eeprom.h
+WARNING: String limit in COD file exceeded (max 64 characters):
 C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\include_files\spi.h
 WARNING: String limit in COD file exceeded (max 64 characters):
 C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\include_files\spi.c
@@ -53,6 +55,10 @@ WARNING: String limit in COD file exceeded (max 64 characters):
 C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\include_files\ledstrip.c
 WARNING: String limit in COD file exceeded (max 64 characters):
 C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\include_files\spi.h
+WARNING: String limit in COD file exceeded (max 64 characters):
+C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\include_files\timer.h
+WARNING: String limit in COD file exceeded (max 64 characters):
+C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\include_files\timer.c
 Total of 944 code words (11 %)
  * Estimated CODE SIZE of full optimization: 914 code words (-3 %)
 The licensed editions will save more code by using all enhanced instructions.

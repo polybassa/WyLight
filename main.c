@@ -38,6 +38,7 @@
 #include "include_files\crc.c"
 #include "include_files\ledstrip.h"
 #include "include_files\spi.h"
+#include "include_files\timer.h"
 //*********************** GLOBAL VARIABLES *******************************************
 struct CommandBuffer{
     char cmd_counter;
@@ -249,7 +250,6 @@ void get_commands()
                     {
                         // *** calculate the next address for EEPROM write
                         EEPROM_WR(CmdPointerAddr,(CmdPointer + CmdWidth));
-						
                     }
                     else 
                     {
