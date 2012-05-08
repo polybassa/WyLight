@@ -20,6 +20,7 @@ extern struct LedBuffer gLedBuf;
 
 void ledstrip_init(void);
 void ledstrip_set_color(char *address,char r,char g,char b);
+void sub_func_set_color(char *cmdPointer);
 
 #include "include_files\spi.h"
 #include "include_files\ledstrip.c"

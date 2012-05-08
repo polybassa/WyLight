@@ -22,11 +22,6 @@ void ledstrip_init(void)
 
 void ledstrip_set_color(char *address, char r, char g, char b)
 {	
-
-#ifdef TEST
-	USARTsend(0x0A);
-	USARTsend(0x0A);
-#endif
 	char k,mask;
 	mask = 0b00000001;
 	for(k = 0; k < NUM_OF_LED; k++)
@@ -36,13 +31,6 @@ void ledstrip_set_color(char *address, char r, char g, char b)
 			gLedBuf.led_array_r[k] = r;
 			gLedBuf.led_array_g[k] = g;
 			gLedBuf.led_array_b[k] = b;
-#ifdef TEST
-			USARTsend_num(k,'K');
-			USARTsend_num(b,'B');
-			USARTsend_num(g,'G');
-			USARTsend_num(r,'R');
-			USARTsend(0x0A);
-#endif
 		}
 		RLF(mask,1);
 		if(Carry == 1) 
@@ -52,4 +40,40 @@ void ledstrip_set_color(char *address, char r, char g, char b)
 		}
 	}
 	spi_send_ledbuf(&gLedBuf.led_array_r[0],&gLedBuf.led_array_g[0],&gLedBuf.led_array_b[0]);
+}
+
+/** This function extracts the parameters for the set_color command
+*** from the EEPROM in relation to the CmdWidth and give the values 
+*** to the next function with controls the led's
+
+*** BYTES according to Pointer: x=Commandpointer w=Commandwith
+							   x-w     x-w+1   x-w+2   x-w+3  x-w+4     x-w+5         x-w+6        x-w+7                                              x
+*** Example: EEPROM DATA: <SET_COLOR> <ADDR0> <ADDR1> <ADDR2> <ADDR3> <RED_VALUE> <GREEN_VALUE> <BLUE_VALUE> <not important> <not important> <SET_COLOR(nextCommand)>
+*/ 
+void sub_func_set_color(char *cmdPointer)
+{
+	char r,g,b,i, temp,temp1,address[4];
+	
+	r = EEPROM_RD(*cmdPointer - CmdWidth + 5);
+	g = EEPROM_RD(*cmdPointer - CmdWidth + 6);
+	b = EEPROM_RD(*cmdPointer - CmdWidth + 7);
+	for(i=0;i<4;i++)
+	{
+		temp1 = *cmdPointer;
+		temp1 = temp1 - CmdWidth + 1 + i;
+		temp = EEPROM_RD(temp1);
+		address[i] = temp;
+	}
+	
+#ifdef TEST
+	USARTsend_str("Command:");
+	USARTsend_num(address[0],'#');
+	USARTsend_num(address[1],'#');
+	USARTsend_num(address[2],'#');
+	USARTsend_num(address[3],'#');
+	USARTsend_num(r,'R');
+	USARTsend_num(g,'G');
+	USARTsend_num(b,'B');
+#endif	
+	ledstrip_set_color(&address[0],r,g,b);
 }

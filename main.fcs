@@ -55,8 +55,15 @@ F: spi_send_ledbuf        :#1  : p1 <- p1
 
 F: ledstrip_init          :#1  : p1 <- p0  *
 
-F: ledstrip_set_color     :#1  : p1 <- p0  *
+F: ledstrip_set_color     :#1  : p1 <- p1 
     spi_send_ledbuf       : #1  : p1 -> p1
+
+F: sub_func_set_color     :#1  : p1 <- p0  *
+    EEPROM_RD             : #9  : p1 -> p1
+    EEPROM_RD             : #9  : p1 -> p1
+    EEPROM_RD             : #9  : p1 -> p1
+    EEPROM_RD             : #9  : p1 -> p1
+    ledstrip_set_color    : #1  : p1 -> p1
 
 F: InterruptRoutine       :#0  : p0
     RingBufPut            : #1  : p0 -> p1 *
@@ -100,15 +107,8 @@ F: get_commands           :#1  : p0 <- p0
 F: execute_commands       :#1  : p0 <- p0 
     EEPROM_RD             : #9  : p0 -> p1 *
     EEPROM_RD             : #9  : p0 -> p1 *
-    sub_func_set_color    : #1  : p0 -> p0
+    sub_func_set_color    : #1  : p0 -> p1 *
     EEPROM_WR             : #6  : p0 -> p1 *
-
-F: sub_func_set_color     :#1  : p0 <- p0 
-    EEPROM_RD             : #9  : p0 -> p1 *
-    EEPROM_RD             : #9  : p0 -> p1 *
-    EEPROM_RD             : #9  : p0 -> p1 *
-    EEPROM_RD             : #9  : p0 -> p1 *
-    ledstrip_set_color    : #1  : p0 -> p1 *
 
 
  L1  InterruptRoutine
@@ -154,10 +154,10 @@ F: sub_func_set_color     :#1  : p0 <- p0
  L3        EEPROM_RD
  L3        EEPROM_RD
  L3        EEPROM_RD
- L3        ledstrip_set_color
- L3          spi_send_ledbuf [T-GOTO]
- L4            spi_receive
- L4            spi_receive
- L4            spi_receive
+ L2        ledstrip_set_color [T-GOTO]
+ L2          spi_send_ledbuf [T-GOTO]
+ L3            spi_receive
+ L3            spi_receive
+ L3            spi_receive
  L2      EEPROM_WR
 
