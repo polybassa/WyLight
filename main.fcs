@@ -12,22 +12,22 @@ F: RingBufPut             :#1  : p1 <- p0  *
 
 F: USARTinit              :#1  : p1 <- p0  *
 
-F: USARTsend              :#2  : p1
+F: USARTsend              :#7  : p1
 
 F: USARTsend_str          :#3  : p1
     _const1               : #2  : p1 -> p1
-    USARTsend             : #2  : p1 -> p1
+    USARTsend             : #7  : p1 -> p1
     _const1               : #2  : p1 -> p1
 
 F: USARTsend_arr          :#0  : p1
-    USARTsend             : #2  : p1 -> p1
+    USARTsend             : #7  : p1 -> p1
 
-F: EEPROM_WR              :#5  : p1
+F: EEPROM_WR              :#6  : p1
 
 F: EEPROM_RD              :#9  : p1
 
 F: EEPROM_WR_BLK          :#1  : p1 <- p0  *
-    EEPROM_WR             : #5  : p1 -> p1
+    EEPROM_WR             : #6  : p1 -> p1
 
 F: EEPROM_RD_BLK          :#0  : p1
     EEPROM_RD             : #9  : p1 -> p1
@@ -73,7 +73,11 @@ F: init_all               :#1  : p0 <- p0
     spi_init              : #1  : p0 -> p1 *
     ledstrip_init         : #1  : p0 -> p1 *
     EEPROM_RD             : #9  : p0 -> p1 *
-    EEPROM_WR             : #5  : p0 -> p1 *
+    EEPROM_WR             : #6  : p0 -> p1 *
+    EEPROM_WR             : #6  : p0 -> p1 *
+    USARTsend             : #7  : p0 -> p1 *
+    USARTsend             : #7  : p0 -> p1 *
+    USARTsend             : #7  : p0 -> p1 *
 
 F: throw_errors           :#1  : p0 <- p0 
     USARTsend_str         : #3  : p0 -> p1 *
@@ -86,16 +90,18 @@ F: get_commands           :#1  : p0 <- p0
     addCRC                : #4  : p0 -> p1 *
     addCRC                : #4  : p0 -> p1 *
     addCRC                : #4  : p0 -> p1 *
-    EEPROM_WR             : #5  : p0 -> p1 *
+    EEPROM_WR             : #6  : p0 -> p1 *
     EEPROM_RD             : #9  : p0 -> p1 *
-    EEPROM_WR             : #5  : p0 -> p1 *
+    EEPROM_WR             : #6  : p0 -> p1 *
     EEPROM_WR_BLK         : #1  : p0 -> p1 *
+    USARTsend             : #7  : p0 -> p1 *
+    USARTsend             : #7  : p0 -> p1 *
 
 F: execute_commands       :#1  : p0 <- p0 
     EEPROM_RD             : #9  : p0 -> p1 *
     EEPROM_RD             : #9  : p0 -> p1 *
     sub_func_set_color    : #1  : p0 -> p0
-    EEPROM_WR             : #5  : p0 -> p1 *
+    EEPROM_WR             : #6  : p0 -> p1 *
 
 F: sub_func_set_color     :#1  : p0 <- p0 
     EEPROM_RD             : #9  : p0 -> p1 *
@@ -116,6 +122,10 @@ F: sub_func_set_color     :#1  : p0 <- p0
  L2      ledstrip_init
  L2      EEPROM_RD
  L2      EEPROM_WR
+ L2      EEPROM_WR
+ L2      USARTsend
+ L2      USARTsend
+ L2      USARTsend
  L1    throw_errors
  L2      USARTsend_str
  L3        _const1
@@ -134,6 +144,8 @@ F: sub_func_set_color     :#1  : p0 <- p0
  L2      EEPROM_WR
  L2      EEPROM_WR_BLK
  L3        EEPROM_WR
+ L2      USARTsend
+ L2      USARTsend
  L1    execute_commands
  L2      EEPROM_RD
  L2      EEPROM_RD

@@ -3,6 +3,8 @@
 //Compiler CC5x/
 //#define TEST
 
+#define NO_CRC
+
 #pragma sharedAllocation
 
 //*********************** ENUMERATIONS *********************************************
@@ -23,7 +25,8 @@
 #define eeprom_failure 1
 
 #define FRAMELENGTH 16			// *** max length of one commandframe
-#define CmdPointerAddr 0xff		// *** Address at EERPOM, where the Commandpointer is saved
+#define CmdPointerAddr 0xff		// *** Address at EERPOM. Commandpointer indicates the nummer of commands
+#define CmdLoopPointerAddr 0xfd // *** Address at EEPROM. CommandLoopPointer indicates the next command. Used in Loop-Mode
 #define CmdWidth 10				// *** Number of Bytes for one command
 
 //*********************** INCLUDEDATEIEN *********************************************
@@ -31,7 +34,7 @@
 #include "inline.h"
 #include "include_files\Ringbuf.h"
 #include "include_files\usart.h"
-#include "include_files\eeprom.h"        // 2do* Check EEPROM routines for failure, I use new routines now
+#include "include_files\eeprom.h"        
 #include "include_files\crc.c"
 #include "include_files\ledstrip.h"
 #include "include_files\spi.h"
@@ -92,17 +95,13 @@ void init_all()
 	spi_init();
 	ledstrip_init();
 
-	//EEPROM contains FF in every Cell after inital start,
-	// so I have to delet the pointer address
+/** EEPROM contains FF in every Cell after inital start,
+*** so I have to delet the pointer address
+*** otherwise the PIC thinks he has the EEPROM full with commands
+**/
 	if (EEPROM_RD(CmdPointerAddr) == 0xff)
 	EEPROM_WR(CmdPointerAddr, 0);
-	
-#ifdef TEST
-	char l;
-	for(l=0;l<255;l++)
-	EEPROM_WR(l,0);
-	
-#endif
+	EEPROM_WR(CmdLoopPointerAddr, 0);
 	
 	//Ausgang für FET initalisieren
 	TRISC.0 = 0;
@@ -128,10 +127,11 @@ void init_all()
 	RCIE=1;
 	PEIE=1;
 	GIE=1;
+	// *** send ready after init
+	USARTsend('R');
+	USARTsend('D');
+	USARTsend('Y');
 
-#ifdef TEST
-	USARTsend_str("initDone");
-#endif
 	
 }
 
@@ -216,9 +216,13 @@ void get_commands()
 			// *** and I can give the string to the crc check function.
 			if(gCmdBuf.frame_counter == 0)
 			{
+#ifdef NO_CRC
+				if(1==1)
+#else
                 // *** verify crc checksum
                 if( (gCmdBuf.crcL == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 1]) &&
                     (gCmdBuf.crcH == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 2]) )
+#endif
                 {
 					// *** Execute the simple Commands
 					switch(gCmdBuf.cmd_buf[2])
@@ -240,14 +244,12 @@ void get_commands()
 							}
 					}
                     char CmdPointer = EEPROM_RD(CmdPointerAddr);
-#ifdef TEST			
-					USARTsend_num(CmdPointer,'#');
-#endif
 					// *** check if there is enough space in the EEPROM for the next command
                     if(CmdPointer < (CmdPointerAddr - CmdWidth))
                     {
                         // *** calculate the next address for EEPROM write
                         EEPROM_WR(CmdPointerAddr,(CmdPointer + CmdWidth));
+						
                     }
                     else 
                     {
@@ -258,6 +260,9 @@ void get_commands()
                     } 
 					// *** Write the new command without STX and CRC
 					EEPROM_WR_BLK(&gCmdBuf.cmd_buf[2], CmdPointer, (gCmdBuf.cmd_counter -4));
+					// *** Send a Message('G'et 'C'ommand) when a new Command is received successfull
+					USARTsend('G');
+					USARTsend('C');
 #ifdef TEST
 					USARTsend_arr(&gCmdBuf.cmd_buf[2], (gCmdBuf.cmd_counter - 4));
 #endif
@@ -302,6 +307,10 @@ void execute_commands()
 /** This function extracts the parameters for the set_color command
 *** from the EEPROM in relation to the CmdWidth and give the values 
 *** to the next function with controls the led's
+
+*** BYTES according to Pointer: x=Commandpointer w=Commandwith
+							   x-w     x-w+1   x-w+2   x-w+3  x-w+4     x-w+5         x-w+6        x-w+7                                              x
+*** Example: EEPROM DATA: <SET_COLOR> <ADDR0> <ADDR1> <ADDR2> <ADDR3> <RED_VALUE> <GREEN_VALUE> <BLUE_VALUE> <not important> <not important> <SET_COLOR(nextCommand)>
 */ 
 void sub_func_set_color(char *cmdPointer)
 {

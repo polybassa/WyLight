@@ -1,10 +1,12 @@
 CC5X Version 3.4E, Copyright (c) B Knudsen Data, Norway 1992-2010
  --> FREE edition, 8-16 bit int, 24 bit float, 32k code, reduced optim.
 main.c:
-  7. May 2012  17:52
+  8. May 2012  17:21
 Message: Global variables are defined in RingBuf.c
+Warning[1] C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\main.c 220 : Condition (or parts of it) is always true
+ (This is superfluous code that can be removed - check for application bugs)
  Chip = 16F1936
-Warning[1] C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\main.c 332 : Local variables and parameters in uncalled functions are not allocated (20)
+Warning[2] C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\main.c 341 : Local variables and parameters in uncalled functions are not allocated (20)
  (The application contains non-library functions that are not called. Local
  variables in these functions (option -wU) are not allocated to save space)
  RAM : -------- -------- -------- -------- ======== ======== ======== ====....
@@ -14,15 +16,15 @@ Warning[1] C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\main.c 332 : L
  Bank  0:0    1:0    2:76   3:80   4:80   5:80   6:16   bytes free
 RAM usage: 164 bytes (28 local), 348 bytes free
  File 'main.fcs'
- Optimizing - removed 22 instructions (-2 %)
+ Optimizing - removed 23 instructions (-2 %)
  File 'main.var'
  File 'main.asm'
  File 'main.lst'
  File 'main.cod'
  File 'main.occ'
  File 'main.hex'
- Codepage 0 has  378 word(s) :  18 %
- Codepage 1 has  589 word(s) :  28 %
+ Codepage 0 has  389 word(s) :  18 %
+ Codepage 1 has  564 word(s) :  27 %
  Codepage 2 has    0 word(s) :   0 %
  Codepage 3 has    0 word(s) :   0 %
 WARNING: String limit in COD file exceeded (max 64 characters):
@@ -51,6 +53,6 @@ WARNING: String limit in COD file exceeded (max 64 characters):
 C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\include_files\ledstrip.c
 WARNING: String limit in COD file exceeded (max 64 characters):
 C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\include_files\spi.h
-Total of 967 code words (11 %)
- * Estimated CODE SIZE of full optimization: 941 code words (-2 %)
+Total of 953 code words (11 %)
+ * Estimated CODE SIZE of full optimization: 919 code words (-3 %)
 The licensed editions will save more code by using all enhanced instructions.

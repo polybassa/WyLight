@@ -7,11 +7,9 @@ void spi_init()
     TRISC.4 = 1;        // Make port RC4 an input(SPI Data In)
     TRISC.5 = 0;        // Make port RC5 an output(SPI Data Out)
 	SSPM1 = 0;
-    /* 
 	SMP = 0;
-	CKP = 0;
+	CKP = 1;
 	CKE = 0;
-	*/
 	SSPEN = 1;
 }
 
@@ -44,7 +42,7 @@ void spi_send_arr(char *array, char length)
 void spi_send_ledbuf(char *array_r, char *array_g, char *array_b)
 {
 	char k = 0;
-	for(;k<NUM_OF_LED;k++)
+	for(;k < NUM_OF_LED;k++)
 	{
 		spi_receive(*array_b);
 		spi_receive(*array_g);
