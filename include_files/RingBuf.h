@@ -1,6 +1,10 @@
 #ifndef _RINGBUF_H_
 #define _RINGBUF_H_
 
+#ifdef X86
+typedef char bit;
+#endif /* #ifdef X86 */
+
 /**
  * We will use a 31+1 byte ringbuffer. We need one additional byte to distinguish
  * between an empty and a full buffer.
@@ -53,7 +57,4 @@ char RingBufGet(void);
  * If the buffer is already full, <g_error_ringbuff> is set.
  */
 void RingBufPut(char value);
-
-#include "include_files\RingBuf.c"
-
 #endif /* #ifndef _RINGBUF_H_ */

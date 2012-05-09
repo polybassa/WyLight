@@ -3,6 +3,9 @@
 //Compiler CC5x/
 //#define TEST
 
+
+#include "platform.h"
+
 #define NO_CRC
 
 #pragma sharedAllocation
@@ -20,24 +23,18 @@
 #define SET_OFF 0xF9
 #define DELETE 0xF8
 
-// *** ERRORBITS
-#define crc_failure 0
-#define eeprom_failure 1
-
 #define CmdPointerAddr 0xff		// *** Address at EERPOM. Commandpointer indicates the nummer of commands
 #define CmdLoopPointerAddr 0xfd // *** Address at EEPROM. CommandLoopPointer indicates the next command. Used in Loop-Mode
-#define CmdWidth 10				// *** Number of Bytes for one command
 
 //*********************** INCLUDEDATEIEN *********************************************
 #pragma codepage 1
-#include "inline.h"
-#include "include_files\Ringbuf.h"		//clean
-#include "include_files\usart.h"		//clean
-#include "include_files\eeprom.h"       //clean 
-#include "include_files\crc.c"			//clean
-#include "include_files\ledstrip.h"		//under construction
-#include "include_files\spi.h"			//clean
-#include "include_files\timer.h"
+#include "RingBuf.h"		//clean
+#include "usart.h"		//clean
+#include "eeprom.h"       //clean 
+#include "crc.h"			//clean
+#include "ledstrip.h"		//under construction
+#include "spi.h"			//clean
+#include "timer.h"
 //*********************** GLOBAL VARIABLES *******************************************
 #define FRAMELENGTH 16			// *** max length of one commandframe
 struct CommandBuffer{
@@ -48,8 +45,20 @@ struct CommandBuffer{
     char crcL;
 };
 static struct CommandBuffer gCmdBuf;
-static char gERROR;
 
+
+// forget this:
+// #define crc_failure 0
+// #define eeprom_failure 1
+// static char gERROR;
+// this is how bits are defined in Ansi-C
+// *** ERRORBITS
+static struct {
+		char crc_failure:1;
+		char eeprom_failure:1;
+}gERROR;
+
+#ifndef X86
 //*********************** INTERRUPTSERVICEROUTINE ************************************
 #pragma origin 4					//Adresse des Interrupts	
 interrupt InterruptRoutine(void)
@@ -64,6 +73,7 @@ interrupt InterruptRoutine(void)
 		}
 	}
 }
+#endif /* #ifndef X86 */
 
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void init_all();
@@ -86,9 +96,10 @@ void main(void)
 
 void init_all()
 {
-	
+#ifndef X86
 	//OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
 	OSCCON = 0b01110010;
+#endif /* #ifndef X86 */
 	RingBufInit();
 	//initialise UART interface
 	USARTinit();
@@ -103,17 +114,20 @@ void init_all()
 	EEPROM_WR(CmdPointerAddr, 0);
 	EEPROM_WR(CmdLoopPointerAddr, 0);
 	
+#ifndef X86
 	//Ausgang für FET initalisieren
 	TRISC.0 = 0;
 	//Spannungsversorgung für LED's einschalten
 	PORTC.0 = 0;
+#endif /* #ifndef X86 */
 
 	//To Factory Restore WLAN Modul
 	//TRISA.0=0;
 	//PORTA.0 = 1;
     
     // *** load globals variables
-    gERROR = 0;
+    gERROR.crc_failure = 0;
+    gERROR.eeprom_failure = 0;
     gCmdBuf.cmd_counter = 0;
     gCmdBuf.frame_counter = 0;
 	
@@ -122,11 +136,13 @@ void init_all()
 	{
         gCmdBuf.cmd_buf[i] = 0;
 	}
-    
+
+#ifndef X86
 	// *** allow interrupts
 	RCIE=1;
 	PEIE=1;
 	GIE=1;
+#endif /* #ifndef X86 */
 	// *** send ready after init
 	USARTsend('R');
 	USARTsend('D');
@@ -232,6 +248,7 @@ void get_commands()
 								EEPROM_WR(CmdPointerAddr,0);
 								return;
 							}
+#ifndef X86
 						case SET_ON: 
 							{
 								BCF(PORTC.0); 
@@ -242,6 +259,7 @@ void get_commands()
 								BSF(PORTC.0); 
 								return;
 							}
+#endif /* #ifndef X86 */
 					}
                     char CmdPointer = EEPROM_RD(CmdPointerAddr);
 					// *** check if there is enough space in the EEPROM for the next command
@@ -303,4 +321,13 @@ void execute_commands()
 	}
 }
 
-
+// cc5xfree is a bit stupid so we include the other implementation files here
+#ifndef X86
+#include "crc.c"
+#include "eeprom.c"
+#include "ledstrip.c"
+#include "RingBuf.c"
+#include "spi.c"
+#include "timer.c"
+#include "usart.c"
+#endif /* #ifndef X86 */

@@ -5,6 +5,10 @@
 //20.04.2012
 //Compiler CC5x
 
+
+#include "spi.h"
+#include "eeprom.h"
+
 #define NUM_OF_LED 32
 
 struct LedBuffer{
@@ -16,17 +20,4 @@ extern struct LedBuffer gLedBuf;
 void ledstrip_init(void);
 void ledstrip_set_color(char *address,char r,char g,char b);
 void sub_func_set_color(char *cmdPointer);
-
-#ifndef _SPI_H_
-#message !!! LEDSTRIP.H needs SPI.H --> SPI.H is include automatically now
-#include "include_files\spi.h"
-#endif
-
-#ifndef _EEPROM_H_
-#message !!! LEDSTRIP:H needs EEPROM.H --> EEPROM.H is include automatically now
-#include "include_files\eeprom.h"
-#endif
-
-#include "include_files\ledstrip.c"
-
 #endif
