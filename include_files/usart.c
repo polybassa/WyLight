@@ -5,6 +5,7 @@
  // 29.11.2010
  // Compiler CC5x
 
+#ifndef X86
 //*******  Initialisierungs-Funktion  *************************************************
 void USARTinit()
 {
@@ -31,6 +32,7 @@ void USARTsend(unsigned char ch)
 	while(!TXIF);
 	TXREG=ch;
 }
+#endif /* #ifndef X86 */
 
 //*******  Sende-String-Funktion  *************************************************
 void USARTsend_str(const char *string)

@@ -1,5 +1,9 @@
-#message Global variables are defined in RingBuf.c
 
+#include "RingBuf.h"
+
+#ifndef X86
+#message Global variables are defined in RingBuf.c
+#endif /* #ifndef X86 */
 struct RingBuffer gRingBuf;
 
 void RingBufInit(void)

@@ -4,6 +4,7 @@
 //05.09.2011
 //Compiler CC5x
 
+#ifndef X86
 //*********************** EEPROM BYTE SCHREIBEN  **********************************************
 
 void EEPROM_WR(char adress, char data)
@@ -38,6 +39,7 @@ char EEPROM_RD(char adress)
     data = EEDATL;       // Daten aus Datenregister auslesen
     return data;
 }
+#endif /* #ifndef X86 */
 
 //*********************** EEPROM BYTEARRAY SCHREIBEN  **************************************
 

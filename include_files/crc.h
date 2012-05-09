@@ -19,6 +19,4 @@ void CRC(char *data, char length, char* crcH_out, char* crcL_out);
 //set the CRC-Bytes to inital value
 void newCRC(char* p_crcH, char* p_crcL);
 
-#include "include_files\crc.c"
-
 #endif
