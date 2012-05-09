@@ -43,15 +43,13 @@ F: spi_init               :#1  : p1 <- p0  *
 
 F: spi_send               :#1  : p1 <- p1 
 
-F: spi_receive            :#3  : p1
+F: spi_receive            :#1  : p1 <- p1 
 
 F: spi_send_arr           :#0  : p1
     spi_send              : #1  : p1 -> p1
 
 F: spi_send_ledbuf        :#1  : p1 <- p1 
-    spi_receive           : #3  : p1 -> p1
-    spi_receive           : #3  : p1 -> p1
-    spi_receive           : #3  : p1 -> p1
+    spi_receive           : #1  : p1 -> p1
 
 F: ledstrip_init          :#1  : p1 <- p0  *
 
@@ -156,8 +154,6 @@ F: execute_commands       :#1  : p0 <- p0
  L3        EEPROM_RD
  L2        ledstrip_set_color [T-GOTO]
  L2          spi_send_ledbuf [T-GOTO]
- L3            spi_receive
- L3            spi_receive
  L3            spi_receive
  L2      EEPROM_WR
 

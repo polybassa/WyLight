@@ -38,7 +38,7 @@ void spi_send_arr(char *array, char length)
 		spi_send(array[i]);
 	} 
 }
-
+#ifdef OLD
 void spi_send_ledbuf(char *array_r, char *array_g, char *array_b)
 {
 	char k = 0;
@@ -52,3 +52,14 @@ void spi_send_ledbuf(char *array_r, char *array_g, char *array_b)
 		array_r++;
 	}
 }
+#else
+void spi_send_ledbuf(char *array)
+{
+	char* end;
+	end = array + (NUM_OF_LED * 3);
+	for(; array < end; array++)
+	{
+		spi_receive(*array);
+	}
+}
+#endif

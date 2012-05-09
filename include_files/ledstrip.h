@@ -9,12 +9,18 @@
 
 #define NUM_OF_LED 32
 
+#ifdef OLD
 struct LedBuffer{
 	char led_array_r[NUM_OF_LED];
 	char led_array_g[NUM_OF_LED];
 	char led_array_b[NUM_OF_LED];
 	//char led_ctrl_array[BUFFERSIZE];
 	};
+#else 
+struct LedBuffer{
+	char led_array[NUM_OF_LED*3];
+	};
+#endif
 extern struct LedBuffer gLedBuf;
 
 void ledstrip_init(void);

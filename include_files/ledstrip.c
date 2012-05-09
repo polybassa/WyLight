@@ -6,6 +6,7 @@ struct LedBuffer gLedBuf;
 
 void ledstrip_init(void)
 {
+	#ifdef OLD
 	char k;
 	for(k = 0;k < NUM_OF_LED; k++)
 	{
@@ -13,13 +14,20 @@ void ledstrip_init(void)
 		gLedBuf.led_array_g[k] = 0;
 		gLedBuf.led_array_b[k] = 0;
 	}
+	#else
+	char k;
+	for(k = 0;k < (NUM_OF_LED * 3); k++)
+	{	
+		gLedBuf.led_array[k] = 0;
+	}
+	#endif
 }
 
 /***
 *** This funktion sets the values of the global LedBuffer
 *** only Led's where the address bit is 1 will be set to the new color
 ***/
-
+#ifdef OLD
 void ledstrip_set_color(char *address, char r, char g, char b)
 {	
 	char k,mask;
@@ -41,6 +49,36 @@ void ledstrip_set_color(char *address, char r, char g, char b)
 	}
 	spi_send_ledbuf(&gLedBuf.led_array_r[0],&gLedBuf.led_array_g[0],&gLedBuf.led_array_b[0]);
 }
+#else
+void ledstrip_set_color(char *address, char r, char g, char b)
+{	
+	char k,mask;
+	mask = 0b00000001;
+	for(k = 0; k < (NUM_OF_LED * 3); k++)
+	{	
+		if(0 != (*address & mask))
+		{
+			gLedBuf.led_array[k] = b;
+			k++;
+			gLedBuf.led_array[k] = g;
+			k++;
+			gLedBuf.led_array[k] = r;
+		}
+		else 
+		{
+			k++;
+			k++;
+		}
+		RLF(mask,1);
+		if(Carry == 1) 
+		{
+			address++;
+			mask= 0b00000001;
+		}
+	}
+	spi_send_ledbuf(&gLedBuf.led_array[0]);
+}
+#endif
 
 /** This function extracts the parameters for the set_color command
 *** from the EEPROM in relation to the CmdWidth and give the values 
