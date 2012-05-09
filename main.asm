@@ -1,7 +1,7 @@
 
 ; CC5X Version 3.4E, Copyright (c) B Knudsen Data
 ; C compiler for the PICmicro family
-; ************   8. May 2012  17:59  *************
+; ************   9. May 2012  17:13  *************
 
 	processor  16F1936
 	radix  DEC

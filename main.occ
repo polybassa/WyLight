@@ -1,7 +1,7 @@
 CC5X Version 3.4E, Copyright (c) B Knudsen Data, Norway 1992-2010
  --> FREE edition, 8-16 bit int, 24 bit float, 32k code, reduced optim.
 main.c:
-  8. May 2012  17:59
+  9. May 2012  17:13
 Message: Global variables are defined in RingBuf.c
 Warning[1] C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\main.c 221 : Condition (or parts of it) is always true
  (This is superfluous code that can be removed - check for application bugs)
