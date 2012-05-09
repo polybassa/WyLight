@@ -33,17 +33,15 @@ void USARTsend(unsigned char ch)
 }
 
 //*******  Sende-String-Funktion  *************************************************
-void USARTsend_str(const char *putstr)
+void USARTsend_str(const char *string)
 {
  char ps;
- ps = *putstr;
-
-  while(ps > 0)
+ ps = *string;
+ while(ps > 0)
    {
-    putstr++;
-    if (ps == 0) break;
+    string++;
    	USARTsend(ps);
-    ps = *putstr;
+    ps = *string;
    }
 }
 

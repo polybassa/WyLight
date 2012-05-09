@@ -24,7 +24,6 @@
 #define crc_failure 0
 #define eeprom_failure 1
 
-#define FRAMELENGTH 16			// *** max length of one commandframe
 #define CmdPointerAddr 0xff		// *** Address at EERPOM. Commandpointer indicates the nummer of commands
 #define CmdLoopPointerAddr 0xfd // *** Address at EEPROM. CommandLoopPointer indicates the next command. Used in Loop-Mode
 #define CmdWidth 10				// *** Number of Bytes for one command
@@ -32,14 +31,15 @@
 //*********************** INCLUDEDATEIEN *********************************************
 #pragma codepage 1
 #include "inline.h"
-#include "include_files\Ringbuf.h"
-#include "include_files\usart.h"
-#include "include_files\eeprom.h"        
-#include "include_files\crc.c"
-#include "include_files\ledstrip.h"
-#include "include_files\spi.h"
+#include "include_files\Ringbuf.h"		//clean
+#include "include_files\usart.h"		//clean
+#include "include_files\eeprom.h"       //clean 
+#include "include_files\crc.c"			//clean
+#include "include_files\ledstrip.h"		//under construction
+#include "include_files\spi.h"			//clean
 #include "include_files\timer.h"
 //*********************** GLOBAL VARIABLES *******************************************
+#define FRAMELENGTH 16			// *** max length of one commandframe
 struct CommandBuffer{
     char cmd_counter;
     char frame_counter;
@@ -70,7 +70,6 @@ void init_all();
 void throw_errors();
 void get_commands();
 void execute_commands();
-void sub_func_set_color(char *cmdPointer);
 
 //*********************** HAUPTPROGRAMM **********************************************
 void main(void)

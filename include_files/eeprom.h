@@ -12,6 +12,6 @@ char EEPROM_RD(char adress);
 void EEPROM_WR_BLK(char *array, char adress, char length);
 void EEPROM_RD_BLK(char *array, char adress, char length);
 
-#include "include_files\eeprom_nt.c"
+#include "include_files\eeprom.c"
 
 #endif

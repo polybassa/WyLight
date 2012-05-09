@@ -13,13 +13,7 @@ void spi_init()
 	SSPEN = 1;
 }
 
-void spi_send(char data)
-{
-	SSPBUF = data;	
-	while(!SSPIF);
-}
-
-char spi_receive(char data)
+char spi_send(char data)
 {
 	SSPBUF = data;	
 	while(SSPIF == 0);
@@ -38,28 +32,17 @@ void spi_send_arr(char *array, char length)
 		spi_send(array[i]);
 	} 
 }
-#ifdef OLD
-void spi_send_ledbuf(char *array_r, char *array_g, char *array_b)
+
+void spi_send_ledbuf(char *array)//!!! CHECK if GIE=0 during the sendroutine improves the result
 {
-	char k = 0;
-	for(;k < NUM_OF_LED;k++)
-	{
-		spi_receive(*array_b);
-		spi_receive(*array_g);
-		spi_receive(*array_r);
-		array_b++;
-		array_g++;
-		array_r++;
-	}
-}
-#else
-void spi_send_ledbuf(char *array)
-{
+	//array must be the address of the first byte
 	char* end;
+	//calculate where the end is
 	end = array + (NUM_OF_LED * 3);
+	//send all
 	for(; array < end; array++)
 	{
-		spi_receive(*array);
+		spi_send(*array);
 	}
 }
-#endif
+

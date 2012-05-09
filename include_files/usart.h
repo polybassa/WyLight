@@ -15,7 +15,7 @@
 
 void USARTinit();
 void USARTsend(char ch);
-void USARTsend_str(const char *putstr);
+void USARTsend_str(const char *string);
 void USARTsend_arr(char *array, char length);
 
 #include "include_files\usart.c"

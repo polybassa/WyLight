@@ -1,7 +1,7 @@
 
 ; CC5X Version 3.4E, Copyright (c) B Knudsen Data
 ; C compiler for the PICmicro family
-; ************   9. May 2012  20:20  *************
+; ************   9. May 2012  21:39  *************
 
 	processor  16F1936
 	radix  DEC
@@ -55,7 +55,7 @@ result      EQU   0x25
 value       EQU   0x20
 writeNext   EQU   0x21
 ch          EQU   0x26
-putstr      EQU   0x22
+string      EQU   0x22
 ps          EQU   0x23
 array       EQU   0x7F
 length      EQU   0x7F
@@ -90,8 +90,7 @@ i_4         EQU   0x7F
 byte_2      EQU   0x7F
 p_crcH_2    EQU   0x25
 p_crcL_2    EQU   0x26
-data_4      EQU   0x7F
-data_5      EQU   0x38
+data_4      EQU   0x38
 array_4     EQU   0x7F
 length_5    EQU   0x7F
 i_5         EQU   0x7F
@@ -151,7 +150,6 @@ ci          EQU   0x24
 			;#define crc_failure 0
 			;#define eeprom_failure 1
 			;
-			;#define FRAMELENGTH 16			// *** max length of one commandframe
 			;#define CmdPointerAddr 0xff		// *** Address at EERPOM. Commandpointer indicates the nummer of commands
 			;#define CmdLoopPointerAddr 0xfd // *** Address at EEPROM. CommandLoopPointer indicates the next command. Used in Loop-Mode
 			;#define CmdWidth 10				// *** Number of Bytes for one command
@@ -161,11 +159,6 @@ ci          EQU   0x24
 	ORG 0x0800
 
   ; FILE include_files\RingBuf.c
-			;
-			;//#include "unused_files/RingBuf.h"
-			;//#include "RingBuf.h"
-			;
-			;
 			;#message Global variables are defined in RingBuf.c
 			;
 			;struct RingBuffer gRingBuf;
@@ -371,36 +364,30 @@ m004	MOVLB 0
 	RETURN
 			;
 			;//*******  Sende-String-Funktion  *************************************************
-			;void USARTsend_str(const char *putstr)
+			;void USARTsend_str(const char *string)
 			;{
 USARTsend_str
 			; char ps;
-			; ps = *putstr;
+			; ps = *string;
 	MOVLB 0
-	MOVF  putstr,W
+	MOVF  string,W
 	CALL  _const1
 	MOVLB 0
 	MOVWF ps
-			;
-			;  while(ps > 0)
+			; while(ps > 0)
 m005	MOVLB 0
 	MOVF  ps,1
 	BTFSC 0x03,Zero_
 	GOTO  m006
 			;   {
-			;    putstr++;
-	INCF  putstr,1
-			;    if (ps == 0) break;
-	MOVF  ps,1
-	BTFSC 0x03,Zero_
-	GOTO  m006
+			;    string++;
+	INCF  string,1
 			;   	USARTsend(ps);
-	MOVLB 0
 	MOVF  ps,W
 	CALL  USARTsend
-			;    ps = *putstr;
+			;    ps = *string;
 	MOVLB 0
-	MOVF  putstr,W
+	MOVF  string,W
 	CALL  _const1
 	MOVLB 0
 	MOVWF ps
@@ -440,7 +427,7 @@ m007	MOVF  length,W
 			;}
 m008	RETURN
 
-  ; FILE include_files\eeprom_nt.c
+  ; FILE include_files\eeprom.c
 			;//Funktionen für EEPROM-Zugriffe
 			;
 			;//Nils Weiß 
@@ -621,7 +608,7 @@ m012	MOVF  length_3,W
 			;void EEPROM_WR_BLK(char *array, char adress, char length);
 			;void EEPROM_RD_BLK(char *array, char adress, char length);
 			;
-			;#include "include_files\eeprom_nt.c"
+			;#include "include_files\eeprom.c"
 m013	RETURN
 
   ; FILE include_files\crc.c
@@ -832,34 +819,19 @@ spi_init
 			;}
 	RETURN
 			;
-			;void spi_send(char data)
+			;char spi_send(char data)
 			;{
 spi_send
+	MOVLB 0
 	MOVWF data_4
 			;	SSPBUF = data;	
 	MOVF  data_4,W
 	MOVLB 4
 	MOVWF SSPBUF
-			;	while(!SSPIF);
+			;	while(SSPIF == 0);
 m016	MOVLB 0
 	BTFSS 0x11,SSPIF
 	GOTO  m016
-			;}
-	RETURN
-			;
-			;char spi_receive(char data)
-			;{
-spi_receive
-	MOVLB 0
-	MOVWF data_5
-			;	SSPBUF = data;	
-	MOVF  data_5,W
-	MOVLB 4
-	MOVWF SSPBUF
-			;	while(SSPIF == 0);
-m017	MOVLB 0
-	BTFSS 0x11,SSPIF
-	GOTO  m017
 			;	return SSPBUF;
 	MOVLB 4
 	MOVF  SSPBUF,W
@@ -881,9 +853,9 @@ spi_send_arr
 			;	for(i = length; i == 0; i-- )
 	MOVF  length_5,W
 	MOVWF i_5
-m018	MOVF  i_5,1
+m017	MOVF  i_5,1
 	BTFSS 0x03,Zero_
-	GOTO  m019
+	GOTO  m018
 			;	{
 			;		spi_send(array[i]);
 	MOVF  i_5,W
@@ -894,28 +866,16 @@ m018	MOVF  i_5,1
 	CALL  spi_send
 			;	} 
 	DECF  i_5,1
-	GOTO  m018
+	GOTO  m017
 			;}
-m019	RETURN
-			;#ifdef OLD
-			;void spi_send_ledbuf(char *array_r, char *array_g, char *array_b)
-			;{
-			;	char k = 0;
-			;	for(;k < NUM_OF_LED;k++)
-			;	{
-			;		spi_receive(*array_b);
-			;		spi_receive(*array_g);
-			;		spi_receive(*array_r);
-			;		array_b++;
-			;		array_g++;
-			;		array_r++;
-			;	}
-			;}
-			;#else
-			;void spi_send_ledbuf(char *array)
+m018	RETURN
+			;
+			;void spi_send_ledbuf(char *array)//!!! CHECK if GIE=0 during the sendroutine improves the result
 			;{
 spi_send_ledbuf
+			;	//array must be the address of the first byte
 			;	char* end;
+			;	//calculate where the end is
 			;	end = array + (NUM_OF_LED * 3);
 	MOVLB 0
 	MOVF  array_5+1,W
@@ -925,35 +885,36 @@ spi_send_ledbuf
 	MOVWF end
 	BTFSC 0x03,Carry
 	INCF  end+1,1
+			;	//send all
 			;	for(; array < end; array++)
-m020	MOVLB 0
+m019	MOVLB 0
 	MOVF  end+1,W
 	SUBWF array_5+1,W
 	BTFSS 0x03,Carry
-	GOTO  m021
+	GOTO  m020
 	BTFSS 0x03,Zero_
-	GOTO  m022
+	GOTO  m021
 	MOVF  end,W
 	SUBWF array_5,W
 	BTFSC 0x03,Carry
-	GOTO  m022
+	GOTO  m021
 			;	{
-			;		spi_receive(*array);
-m021	MOVLB 0
+			;		spi_send(*array);
+m020	MOVLB 0
 	MOVF  array_5+1,W
 	MOVWF FSR0H
 	MOVF  array_5,W
 	MOVWF FSR0L
 	MOVF  INDF0,W
-	CALL  spi_receive
+	CALL  spi_send
 			;	}
 	MOVLB 0
 	INCF  array_5,1
 	BTFSC 0x03,Zero_
 	INCF  array_5+1,1
-	GOTO  m020
+	GOTO  m019
 			;}
-m022	RETURN
+m021	RETURN
 
   ; FILE include_files\ledstrip.c
 			;//Nils Weiß 
@@ -965,24 +926,15 @@ m022	RETURN
 			;void ledstrip_init(void)
 			;{
 ledstrip_init
-			;	#ifdef OLD
-			;	char k;
-			;	for(k = 0;k < NUM_OF_LED; k++)
-			;	{
-			;		gLedBuf.led_array_r[k] = 0;
-			;		gLedBuf.led_array_g[k] = 0;
-			;		gLedBuf.led_array_b[k] = 0;
-			;	}
-			;	#else
 			;	char k;
 			;	for(k = 0;k < (NUM_OF_LED * 3); k++)
 	MOVLB 0
 	CLRF  k
-m023	MOVLW 96
+m022	MOVLW 96
 	MOVLB 0
 	SUBWF k,W
 	BTFSC 0x03,Carry
-	GOTO  m024
+	GOTO  m023
 			;	{	
 			;		gLedBuf.led_array[k] = 0;
 	MOVLW 32
@@ -995,38 +947,15 @@ m023	MOVLW 96
 	CLRF  INDF0
 			;	}
 	INCF  k,1
-	GOTO  m023
-			;	#endif
+	GOTO  m022
 			;}
-m024	RETURN
+m023	RETURN
 			;
 			;/***
 			;*** This funktion sets the values of the global LedBuffer
 			;*** only Led's where the address bit is 1 will be set to the new color
 			;***/
-			;#ifdef OLD
-			;void ledstrip_set_color(char *address, char r, char g, char b)
-			;{	
-			;	char k,mask;
-			;	mask = 0b00000001;
-			;	for(k = 0; k < NUM_OF_LED; k++)
-			;	{	
-			;		if(0 != (*address & mask))
-			;		{
-			;			gLedBuf.led_array_r[k] = r;
-			;			gLedBuf.led_array_g[k] = g;
-			;			gLedBuf.led_array_b[k] = b;
-			;		}
-			;		RLF(mask,1);
-			;		if(Carry == 1) 
-			;		{
-			;			address++;
-			;			mask= 0b00000001;
-			;		}
-			;	}
-			;	spi_send_ledbuf(&gLedBuf.led_array_r[0],&gLedBuf.led_array_g[0],&gLedBuf.led_array_b[0]);
-			;}
-			;#else
+			;
 			;void ledstrip_set_color(char *address, char r, char g, char b)
 			;{	
 ledstrip_set_color
@@ -1038,11 +967,11 @@ ledstrip_set_color
 	MOVWF mask
 			;	for(k = 0; k < (NUM_OF_LED * 3); k++)
 	CLRF  k_2
-m025	MOVLW 96
+m024	MOVLW 96
 	MOVLB 0
 	SUBWF k_2,W
 	BTFSC 0x03,Carry
-	GOTO  m029
+	GOTO  m028
 			;	{	
 			;		if(0 != (*address & mask))
 	CLRF  FSR0H
@@ -1051,7 +980,7 @@ m025	MOVLW 96
 	MOVF  mask,W
 	ANDWF INDF0,W
 	BTFSC 0x03,Zero_
-	GOTO  m026
+	GOTO  m025
 			;		{
 			;			gLedBuf.led_array[k] = b;
 	MOVLW 32
@@ -1089,20 +1018,20 @@ m025	MOVLW 96
 	MOVWF INDF0
 			;		}
 			;		else 
-	GOTO  m027
+	GOTO  m026
 			;		{
 			;			k++;
-m026	MOVLB 0
+m025	MOVLB 0
 	INCF  k_2,1
 			;			k++;
 	INCF  k_2,1
 			;		}
 			;		RLF(mask,1);
-m027	MOVLB 0
+m026	MOVLB 0
 	RLF   mask,1
 			;		if(Carry == 1) 
 	BTFSS 0x03,Carry
-	GOTO  m028
+	GOTO  m027
 			;		{
 			;			address++;
 	INCF  address,1
@@ -1111,18 +1040,17 @@ m027	MOVLB 0
 	MOVWF mask
 			;		}
 			;	}
-m028	MOVLB 0
+m027	MOVLB 0
 	INCF  k_2,1
-	GOTO  m025
+	GOTO  m024
 			;	spi_send_ledbuf(&gLedBuf.led_array[0]);
-m029	MOVLW 65
+m028	MOVLW 65
 	MOVLB 0
 	MOVWF array_5
 	MOVLW 32
 	MOVWF array_5+1
 	GOTO  spi_send_ledbuf
 			;}
-			;#endif
 			;
 			;/** This function extracts the parameters for the set_color command
 			;*** from the EEPROM in relation to the CmdWidth and give the values 
@@ -1167,11 +1095,11 @@ sub_func_set_color
 	MOVWF b_2
 			;	for(i=0;i<4;i++)
 	CLRF  i_6
-m030	MOVLW 4
+m029	MOVLW 4
 	MOVLB 0
 	SUBWF i_6,W
 	BTFSC 0x03,Carry
-	GOTO  m031
+	GOTO  m030
 			;	{
 			;		temp1 = *cmdPointer;
 	CLRF  FSR0H
@@ -1198,7 +1126,7 @@ m030	MOVLW 4
 	MOVWF INDF0
 			;	}
 	INCF  i_6,1
-	GOTO  m030
+	GOTO  m029
 			;	
 			;#ifdef TEST
 			;	USARTsend_str("Command:");
@@ -1211,7 +1139,7 @@ m030	MOVLW 4
 			;	USARTsend_num(b,'B');
 			;#endif	
 			;	ledstrip_set_color(&address[0],r,g,b);
-m031	MOVLW 42
+m030	MOVLW 42
 	MOVLB 0
 	MOVWF address
 	MOVF  r_2,W
@@ -1229,41 +1157,41 @@ m031	MOVLW 42
 			;//20.04.2012
 			;//Compiler CC5x
 			;
-			;#include "include_files\eeprom.h"
-			;
 			;#define NUM_OF_LED 32
 			;
-			;#ifdef OLD
-			;struct LedBuffer{
-			;	char led_array_r[NUM_OF_LED];
-			;	char led_array_g[NUM_OF_LED];
-			;	char led_array_b[NUM_OF_LED];
-			;	//char led_ctrl_array[BUFFERSIZE];
-			;	};
-			;#else 
 			;struct LedBuffer{
 			;	char led_array[NUM_OF_LED*3];
 			;	};
-			;#endif
+			;
 			;extern struct LedBuffer gLedBuf;
 			;
 			;void ledstrip_init(void);
 			;void ledstrip_set_color(char *address,char r,char g,char b);
 			;void sub_func_set_color(char *cmdPointer);
 			;
+			;#ifndef _SPI_H_
+			;#message !!! LEDSTRIP.H needs SPI.H --> SPI.H is include automatically now
 			;#include "include_files\spi.h"
+			;#endif
+			;
+			;#ifndef _EEPROM_H_
+			;#message !!! LEDSTRIP:H needs EEPROM.H --> EEPROM.H is include automatically now
+			;#include "include_files\eeprom.h"
+			;#endif
+			;
 			;#include "include_files\ledstrip.c"
 
   ; FILE main.c
 			;#include "inline.h"
-			;#include "include_files\Ringbuf.h"
-			;#include "include_files\usart.h"
-			;#include "include_files\eeprom.h"        
-			;#include "include_files\crc.c"
-			;#include "include_files\ledstrip.h"
-			;#include "include_files\spi.h"
+			;#include "include_files\Ringbuf.h"		//clean
+			;#include "include_files\usart.h"		//clean
+			;#include "include_files\eeprom.h"       //clean 
+			;#include "include_files\crc.c"			//clean
+			;#include "include_files\ledstrip.h"		//under construction
+			;#include "include_files\spi.h"			//clean
 			;#include "include_files\timer.h"
 			;//*********************** GLOBAL VARIABLES *******************************************
+			;#define FRAMELENGTH 16			// *** max length of one commandframe
 			;struct CommandBuffer{
 			;    char cmd_counter;
 			;    char frame_counter;
@@ -1283,36 +1211,35 @@ InterruptRoutine
 			;	if (RCIF)
 	MOVLB 0
 	BTFSS 0x11,RCIF
-	GOTO  m033
+	GOTO  m032
 			;	{
 			;		if(!RingBufHasError) RingBufPut(RCREG);
 	BTFSC gRingBuf+18,0
-	GOTO  m032
+	GOTO  m031
 	MOVLB 3
 	MOVF  RCREG,W
 	MOVLP 8
 	CALL  RingBufPut
 	MOVLP 0
 			;		else 
-	GOTO  m033
+	GOTO  m032
 			;		{
 			;			//Register lesen um Schnittstellen Fehler zu vermeiden
 			;			char temp = RCREG;
-m032	MOVLB 3
+m031	MOVLB 3
 	MOVF  RCREG,W
 	MOVLB 0
 	MOVWF temp_3
 			;		}
 			;	}
 			;}
-m033	RETFIE
+m032	RETFIE
 			;
 			;//*********************** FUNKTIONSPROTOTYPEN ****************************************
 			;void init_all();
 			;void throw_errors();
 			;void get_commands();
 			;void execute_commands();
-			;void sub_func_set_color(char *cmdPointer);
 			;
 			;//*********************** HAUPTPROGRAMM **********************************************
 			;void main(void)
@@ -1323,13 +1250,13 @@ main
 			;    while(1)
 			;    {	
 			;        throw_errors();
-m034	CALL  throw_errors
+m033	CALL  throw_errors
 			;		get_commands();
 	CALL  get_commands
 			;		execute_commands();
 	CALL  execute_commands
 			;    }
-	GOTO  m034
+	GOTO  m033
 			;}
 			;//*********************** UNTERPROGRAMME **********************************************
 			;
@@ -1371,7 +1298,7 @@ init_all
 	MOVLP 0
 	XORLW 255
 	BTFSS 0x03,Zero_
-	GOTO  m035
+	GOTO  m034
 			;	EEPROM_WR(CmdPointerAddr, 0);
 	MOVLW 255
 	MOVLB 0
@@ -1381,7 +1308,7 @@ init_all
 	CALL  EEPROM_WR
 	MOVLP 0
 			;	EEPROM_WR(CmdLoopPointerAddr, 0);
-m035	MOVLW 253
+m034	MOVLW 253
 	MOVLB 0
 	MOVWF adress
 	MOVLW 0
@@ -1413,11 +1340,11 @@ m035	MOVLW 253
 			;	char i;
 			;	for(i=0;i<FRAMELENGTH;i++)
 	CLRF  i_7
-m036	MOVLW 16
+m035	MOVLW 16
 	MOVLB 0
 	SUBWF i_7,W
 	BTFSC 0x03,Carry
-	GOTO  m037
+	GOTO  m036
 			;	{
 			;        gCmdBuf.cmd_buf[i] = 0;
 	MOVLW 78
@@ -1427,11 +1354,11 @@ m036	MOVLW 16
 	CLRF  INDF0
 			;	}
 	INCF  i_7,1
-	GOTO  m036
+	GOTO  m035
 			;    
 			;	// *** allow interrupts
 			;	RCIE=1;
-m037	MOVLB 1
+m036	MOVLB 1
 	BSF   0x91,RCIE
 			;	PEIE=1;
 	BSF   0x0B,PEIE
@@ -1464,22 +1391,22 @@ throw_errors
 			;	if(RingBufHasError) 
 	MOVLB 0
 	BTFSS gRingBuf+18,0
-	GOTO  m038
+	GOTO  m037
 			;	{
 			;		USARTsend_str(" ERROR: Receivebuffer full");
-	CLRF  putstr
+	CLRF  string
 	MOVLP 8
 	CALL  USARTsend_str
 	MOVLP 0
 			;	}
 			;	if(gERROR.crc_failure)
-m038	MOVLB 0
+m037	MOVLB 0
 	BTFSS gERROR,0
-	GOTO  m039
+	GOTO  m038
 			;	{
 			;		USARTsend_str(" ERROR: CRC-Check failed");
 	MOVLW 27
-	MOVWF putstr
+	MOVWF string
 	MOVLP 8
 	CALL  USARTsend_str
 	MOVLP 0
@@ -1488,13 +1415,13 @@ m038	MOVLB 0
 	BCF   gERROR,0
 			;	}
 			;	if(gERROR.eeprom_failure)
-m039	MOVLB 0
+m038	MOVLB 0
 	BTFSS gERROR,1
-	GOTO  m040
+	GOTO  m039
 			;	{
 			;		USARTsend_str(" ERROR: EEPROM is full");
 	MOVLW 52
-	MOVWF putstr
+	MOVWF string
 	MOVLP 8
 	CALL  USARTsend_str
 	MOVLP 0
@@ -1503,7 +1430,7 @@ m039	MOVLB 0
 	BCF   gERROR,1
 			;	}
 			;}
-m040	RETURN
+m039	RETURN
 			;
 			;/** This function reads one byte from the ringbuffer and check
 			;*** for framestart, framelength, or databyte 
@@ -1518,7 +1445,7 @@ get_commands
 	MOVF  gRingBuf+17,W
 	XORWF gRingBuf+16,W
 	BTFSC 0x03,Zero_
-	GOTO  m050
+	GOTO  m049
 			;	{
 			;		// *** preload variables and 
 			;		// *** get new_byte from ringbuffer
@@ -1538,13 +1465,13 @@ get_commands
 			;		if(gCmdBuf.frame_counter == 0)
 	MOVF  gCmdBuf+1,1
 	BTFSS 0x03,Zero_
-	GOTO  m042
+	GOTO  m041
 			;		{
 			;			// *** I don't wait for databytes
 			;			// *** Do I receive a Start_of_Text sign
 			;			if(new_byte == STX)
 	INCFSZ new_byte,W
-	GOTO  m041
+	GOTO  m040
 			;			{
 			;				// *** increse the cmd_counter
 			;				gCmdBuf.cmd_counter = 1;
@@ -1577,11 +1504,11 @@ get_commands
 	MOVLP 0
 			;			}
 			;			else
-	GOTO  m050
+	GOTO  m049
 			;			{	
 			;				// *** to avoid arrayoverflow
 			;				temp = FRAMELENGTH - 2;
-m041	MOVLW 14
+m040	MOVLW 14
 	MOVLB 0
 	MOVWF temp_4
 			;				// *** check if I get the framelength byte
@@ -1589,9 +1516,9 @@ m041	MOVLW 14
 	MOVF  temp_4,W
 	SUBWF new_byte,W
 	BTFSC 0x03,Carry
-	GOTO  m050
+	GOTO  m049
 	DECFSZ gCmdBuf,W
-	GOTO  m050
+	GOTO  m049
 			;				{
 			;					gCmdBuf.frame_counter = new_byte;
 	MOVF  new_byte,W
@@ -1617,12 +1544,12 @@ m041	MOVLW 14
 			;			}
 			;		}
 			;		else
-	GOTO  m050
+	GOTO  m049
 			;		{
 			;			// *** I wait for Databytes, so I save all bytes 
 			;			// *** that I get until my framecounter is > 0
 			;			gCmdBuf.cmd_buf[gCmdBuf.cmd_counter] = new_byte;
-m042	MOVLW 78
+m041	MOVLW 78
 	MOVLB 0
 	ADDWF gCmdBuf,W
 	MOVWF FSR0L
@@ -1637,7 +1564,7 @@ m042	MOVLW 78
 	MOVLW 3
 	SUBWF gCmdBuf+1,W
 	BTFSS 0x03,Carry
-	GOTO  m043
+	GOTO  m042
 			;            addCRC(new_byte, &gCmdBuf.crcH, &gCmdBuf.crcL);
 	MOVF  new_byte,W
 	MOVWF byte
@@ -1649,13 +1576,13 @@ m042	MOVLW 78
 	CALL  addCRC
 	MOVLP 0
 			;			gCmdBuf.frame_counter--;
-m043	MOVLB 0
+m042	MOVLB 0
 	DECFSZ gCmdBuf+1,1
 			;			// *** now I have to check if my framecounter is null.
 			;			// *** If it's null my string is complete 
 			;			// *** and I can give the string to the crc check function.
 			;			if(gCmdBuf.frame_counter == 0)
-	GOTO  m050
+	GOTO  m049
 			;			{
 			;#ifdef NO_CRC
 			;				if(1==1)
@@ -1670,19 +1597,19 @@ m043	MOVLB 0
 	MOVF  gCmdBuf+4,W
 	XORLW 248
 	BTFSC 0x03,Zero_
-	GOTO  m044
+	GOTO  m043
 	XORLW 2
 	BTFSC 0x03,Zero_
-	GOTO  m045
+	GOTO  m044
 	XORLW 3
 	BTFSC 0x03,Zero_
+	GOTO  m045
 	GOTO  m046
-	GOTO  m047
 			;					{
 			;						case DELETE: 
 			;							{
 			;								EEPROM_WR(CmdPointerAddr,0);
-m044	MOVLW 255
+m043	MOVLW 255
 	MOVLB 0
 	MOVWF adress
 	MOVLW 0
@@ -1695,7 +1622,7 @@ m044	MOVLW 255
 			;						case SET_ON: 
 			;							{
 			;								BCF(PORTC.0); 
-m045	MOVLB 0
+m044	MOVLB 0
 	BCF   PORTC,0
 			;								return;
 	RETURN
@@ -1703,14 +1630,14 @@ m045	MOVLB 0
 			;						case SET_OFF: 
 			;							{
 			;								BSF(PORTC.0); 
-m046	MOVLB 0
+m045	MOVLB 0
 	BSF   PORTC,0
 			;								return;
 	RETURN
 			;							}
 			;					}
 			;                    char CmdPointer = EEPROM_RD(CmdPointerAddr);
-m047	MOVLW 255
+m046	MOVLW 255
 	MOVLP 8
 	CALL  EEPROM_RD
 	MOVLP 0
@@ -1721,7 +1648,7 @@ m047	MOVLW 255
 	MOVLW 245
 	SUBWF CmdPointer,W
 	BTFSC 0x03,Carry
-	GOTO  m048
+	GOTO  m047
 			;                    {
 			;                        // *** calculate the next address for EEPROM write
 			;                        EEPROM_WR(CmdPointerAddr,(CmdPointer + CmdWidth));
@@ -1734,19 +1661,19 @@ m047	MOVLW 255
 	MOVLP 0
 			;                    }
 			;                    else 
-	GOTO  m049
+	GOTO  m048
 			;                    {
 			;                        // *** EEPROM is full with commands
 			;                        // *** Some errorhandling should be here
 			;						gERROR.eeprom_failure = 1;
-m048	MOVLB 0
+m047	MOVLB 0
 	BSF   gERROR,1
 			;                        return;
 	RETURN
 			;                    } 
 			;					// *** Write the new command without STX and CRC
 			;					EEPROM_WR_BLK(&gCmdBuf.cmd_buf[2], CmdPointer, (gCmdBuf.cmd_counter -4));
-m049	MOVLW 80
+m048	MOVLW 80
 	MOVLB 0
 	MOVWF array_2
 	MOVF  CmdPointer,W
@@ -1772,7 +1699,7 @@ m049	MOVLW 80
 			;#endif
 			;                }
 			;                else
-	GOTO  m050
+	GOTO  m049
 			;                {
 			;                    // *** Do some error handling in case of an CRC failure here
 			;					gERROR.crc_failure = 1;
@@ -1785,7 +1712,7 @@ m049	MOVLW 80
 			;		}
 			;	}
 			;}
-m050	RETURN
+m049	RETURN
 			;
 			;/** This function reads the pointer for commands in the EEPROM from a defined address 
 			;*** in the EEPROM. After this one by one command is executed by this function. 
@@ -1805,7 +1732,7 @@ execute_commands
 			;	if(pointer != 0)
 	MOVF  pointer,1
 	BTFSC 0x03,Zero_
-	GOTO  m053
+	GOTO  m052
 			;	{
 			;		// *** commands available, check what to do
 			;		switch(EEPROM_RD(pointer - CmdWidth)) 
@@ -1816,19 +1743,19 @@ execute_commands
 	MOVLP 0
 	XORLW 253
 	BTFSC 0x03,Zero_
-	GOTO  m051
+	GOTO  m050
 	XORLW 1
 	BTFSC 0x03,Zero_
-	GOTO  m052
+	GOTO  m051
 	XORLW 7
 	BTFSC 0x03,Zero_
-	GOTO  m052
-	GOTO  m052
+	GOTO  m051
+	GOTO  m051
 			;		{	
 			;			case SET_COLOR: 
 			;			{
 			;				sub_func_set_color(&pointer);
-m051	MOVLW 34
+m050	MOVLW 34
 	MOVLB 0
 	MOVWF cmdPointer
 	MOVLP 8
@@ -1841,7 +1768,7 @@ m051	MOVLW 34
 			;		}
 			;		// *** set commandpointer to the next command
 			;		EEPROM_WR(CmdPointerAddr, (pointer - CmdWidth));
-m052	MOVLW 255
+m051	MOVLW 255
 	MOVLB 0
 	MOVWF adress
 	MOVLW 10
@@ -1851,7 +1778,7 @@ m052	MOVLW 255
 	MOVLP 0
 			;	}
 			;}
-m053	RETURN
+m052	RETURN
 
 	END
 
@@ -1870,29 +1797,28 @@ m053	RETURN
 ; 0x0854 P1   21 word(s)  1 % : RingBufPut
 ; 0x0869 P1   19 word(s)  0 % : USARTinit
 ; 0x087C P1   10 word(s)  0 % : USARTsend
-; 0x0886 P1   23 word(s)  1 % : USARTsend_str
-; 0x089D P1   18 word(s)  0 % : USARTsend_arr
+; 0x0886 P1   19 word(s)  0 % : USARTsend_str
+; 0x0899 P1   18 word(s)  0 % : USARTsend_arr
 ; 0x0800 P1   67 word(s)  3 % : _const1
-; 0x08AF P1   34 word(s)  1 % : EEPROM_WR
-; 0x08D1 P1   13 word(s)  0 % : EEPROM_RD
-; 0x08DE P1   25 word(s)  1 % : EEPROM_WR_BLK
-; 0x08F7 P1   22 word(s)  1 % : EEPROM_RD_BLK
-; 0x090D P1   40 word(s)  1 % : addCRC
-; 0x0935 P1   45 word(s)  2 % : CRC
-; 0x0962 P1   20 word(s)  0 % : newCRC
-; 0x09C6 P1   18 word(s)  0 % : ledstrip_init
-; 0x09D8 P1   66 word(s)  3 % : ledstrip_set_color
-; 0x0A1A P1   61 word(s)  2 % : sub_func_set_color
-; 0x0976 P1   11 word(s)  0 % : spi_init
-; 0x0981 P1    8 word(s)  0 % : spi_send
-; 0x0989 P1   11 word(s)  0 % : spi_receive
-; 0x0994 P1   18 word(s)  0 % : spi_send_arr
-; 0x09A6 P1   32 word(s)  1 % : spi_send_ledbuf
+; 0x08AB P1   34 word(s)  1 % : EEPROM_WR
+; 0x08CD P1   13 word(s)  0 % : EEPROM_RD
+; 0x08DA P1   25 word(s)  1 % : EEPROM_WR_BLK
+; 0x08F3 P1   22 word(s)  1 % : EEPROM_RD_BLK
+; 0x0909 P1   40 word(s)  1 % : addCRC
+; 0x0931 P1   45 word(s)  2 % : CRC
+; 0x095E P1   20 word(s)  0 % : newCRC
+; 0x09BA P1   18 word(s)  0 % : ledstrip_init
+; 0x09CC P1   66 word(s)  3 % : ledstrip_set_color
+; 0x0A0E P1   61 word(s)  2 % : sub_func_set_color
+; 0x0972 P1   11 word(s)  0 % : spi_init
+; 0x097D P1   11 word(s)  0 % : spi_send
+; 0x0988 P1   18 word(s)  0 % : spi_send_arr
+; 0x099A P1   32 word(s)  1 % : spi_send_ledbuf
 
 ; RAM usage: 161 bytes (25 local), 351 bytes free
 ; Maximum call level: 3 (+2 for interrupt)
 ;  Codepage 0 has  319 word(s) :  15 %
-;  Codepage 1 has  599 word(s) :  29 %
+;  Codepage 1 has  587 word(s) :  28 %
 ;  Codepage 2 has    0 word(s) :   0 %
 ;  Codepage 3 has    0 word(s) :   0 %
-; Total of 918 code words (11 %)
+; Total of 906 code words (11 %)

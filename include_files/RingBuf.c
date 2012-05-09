@@ -1,8 +1,3 @@
-
-//#include "unused_files/RingBuf.h"
-//#include "RingBuf.h"
-
-
 #message Global variables are defined in RingBuf.c
 
 struct RingBuffer gRingBuf;
