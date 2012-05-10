@@ -2,6 +2,8 @@
 //20.04.2012
 //Compiler CC5x 
 
+#include "ledstrip.h"
+
 struct LedBuffer gLedBuf;
 
 void ledstrip_init(void)
@@ -37,8 +39,13 @@ void ledstrip_set_color(char *address, char r, char g, char b)
 			k++;
 			k++;
 		}
+#ifdef X86
+		mask = mask << 1;
+		if(0 == mask)
+#else
 		RLF(mask,1);
 		if(Carry == 1) 
+#endif
 		{
 			address++;
 			mask= 0b00000001;

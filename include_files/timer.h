@@ -6,7 +6,4 @@
 //Compiler CC5x
 
 void timer_init();
-
-#include "include_files\timer.c"
-
 #endif

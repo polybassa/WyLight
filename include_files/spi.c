@@ -1,6 +1,10 @@
 //Nils Weiﬂ 
 //20.04.2012
 //Compiler CC5x
+
+#include "ledstrip.h"
+
+#ifndef X86
 void spi_init()
 {
 	TRISC.3 = 0;        // Make port RC3 an output(SPI Clock)
@@ -19,6 +23,8 @@ char spi_send(char data)
 	while(SSPIF == 0);
 	return SSPBUF;
 }
+#endif /* #ifndef X86 */
+
 /***
 **	This function sends the array to the LED controller(WS2801)
 **  it starts with the last byte to get a correct output
