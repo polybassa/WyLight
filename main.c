@@ -3,7 +3,7 @@
 //Compiler CC5x/
 //#define TEST
 
-
+#define MPLAB_IDE
 #include "platform.h"
 
 #define NO_CRC
@@ -29,8 +29,8 @@
 //*********************** INCLUDEDATEIEN *********************************************
 #pragma codepage 1
 #include "RingBuf.h"		//clean
-#include "usart.h"		//clean
-#include "eeprom.h"       //clean 
+#include "usart.h"			//clean
+#include "eeprom.h"       	//clean 
 #include "crc.h"			//clean
 #include "ledstrip.h"		//under construction
 #include "spi.h"			//clean
@@ -122,7 +122,7 @@ void init_all()
 #endif /* #ifndef X86 */
 
 	//To Factory Restore WLAN Modul
-	//TRISA.0=0;
+	//TRISA.0 = 0;
 	//PORTA.0 = 1;
     
     // *** load globals variables

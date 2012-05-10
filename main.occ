@@ -1,12 +1,12 @@
-CC5X Version 3.4H, Copyright (c) B Knudsen Data, Norway 1992-2012
+CC5X Version 3.4E, Copyright (c) B Knudsen Data, Norway 1992-2010
  --> FREE edition, 8-16 bit int, 24 bit float, 32k code, reduced optim.
 main.c:
- 10. May 2012   1:12
-Warning main.c 236: Condition (or parts of it) is always true
+ 10. May 2012  22:10
+Warning[1] C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\main.c 236 : Condition (or parts of it) is always true
  (This is superfluous code that can be removed - check for application bugs)
 Message: Global variables are defined in RingBuf.c
  Chip = 16F1936
-Warning main.c 333: Local variables and parameters in uncalled functions are not allocated (19)
+Warning[2] C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\main.c 333 : Local variables and parameters in uncalled functions are not allocated (19)
  (The application contains non-library functions that are not called. Local
  variables in these functions (option -wU) are not allocated to save space)
  RAM : -------- -------- -------- -------- ======== ======== ======== =.......
@@ -15,13 +15,38 @@ Warning main.c 333: Local variables and parameters in uncalled functions are not
   C0h: .------- -------- -------- -------- -------- -------- -------- --------
  Bank  0:0    1:0    2:79   3:80   4:80   5:80   6:16   bytes free
 RAM usage: 161 bytes (25 local), 351 bytes free
+ File 'main.fcs'
  Optimizing - removed 21 instructions (-2 %)
+ File 'main.var'
+ File 'main.asm'
+ File 'main.lst'
+ File 'main.cod'
  File 'main.occ'
  File 'main.hex'
  Codepage 0 has  847 word(s) :  41 %
  Codepage 1 has    0 word(s) :   0 %
  Codepage 2 has    0 word(s) :   0 %
  Codepage 3 has    0 word(s) :   0 %
+WARNING: String limit in COD file exceeded (max 64 characters):
+C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\16F1936.h
+WARNING: String limit in COD file exceeded (max 64 characters):
+C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\platform.h
+WARNING: String limit in COD file exceeded (max 64 characters):
+C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\RingBuf.h
+WARNING: String limit in COD file exceeded (max 64 characters):
+C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\ledstrip.h
+WARNING: String limit in COD file exceeded (max 64 characters):
+C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\ledstrip.h
+WARNING: String limit in COD file exceeded (max 64 characters):
+C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\ledstrip.c
+WARNING: String limit in COD file exceeded (max 64 characters):
+C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\ledstrip.h
+WARNING: String limit in COD file exceeded (max 64 characters):
+C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\RingBuf.c
+WARNING: String limit in COD file exceeded (max 64 characters):
+C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\RingBuf.h
+WARNING: String limit in COD file exceeded (max 64 characters):
+C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\ledstrip.h
 Total of 847 code words (10 %)
  * Estimated CODE SIZE of full optimization: 836 code words (-1 %)
 The licensed editions will save more code by using all enhanced instructions.
