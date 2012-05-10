@@ -58,7 +58,15 @@ static struct {
 		char eeprom_failure:1;
 }gERROR;
 
-#ifndef X86
+#ifdef X86
+void InterruptRoutine(void)
+{
+	for(;;)
+	{
+		if(!RingBufHasError) RingBufPut(getchar());
+	}
+}
+#else
 //*********************** INTERRUPTSERVICEROUTINE ************************************
 #pragma origin 4					//Adresse des Interrupts	
 interrupt InterruptRoutine(void)
@@ -73,7 +81,7 @@ interrupt InterruptRoutine(void)
 		}
 	}
 }
-#endif /* #ifndef X86 */
+#endif /* #ifdef X86 */
 
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void init_all();
@@ -85,6 +93,11 @@ void execute_commands();
 void main(void)
 {
 	init_all();
+#ifdef X86
+	#include <pthread.h>
+	pthread_t isrThread;
+	pthread_create(&isrThread, 0, InterruptRoutine, 0);
+#endif /* #ifdef X86 */
     while(1)
     {	
         throw_errors();
@@ -156,6 +169,7 @@ void throw_errors()
 	if(RingBufHasError) 
 	{
 		USARTsend_str(" ERROR: Receivebuffer full");
+		RingBufClearError;
 	}
 	if(gERROR.crc_failure)
 	{
@@ -184,7 +198,8 @@ void get_commands()
 		temp = 0;
 		j = 0;
 		// *** get new byte
-		new_byte = RingBufGet();	
+		new_byte = RingBufGet();
+		USARTsend(new_byte);
 		// *** do I wait for databytes?
 		if(gCmdBuf.frame_counter == 0)
 		{
