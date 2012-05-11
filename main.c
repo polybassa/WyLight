@@ -1,13 +1,12 @@
 //Nils Weiﬂ 
 //05.09.2011
 //Compiler CC5x/
+#define OLD_ROUTINE
 //#define TEST
-
-#define MPLAB_IDE
-#include "platform.h"
-
 #define NO_CRC
+#define MPLAB_IDE
 
+#include "platform.h"
 #pragma sharedAllocation
 
 //*********************** ENUMERATIONS *********************************************
@@ -46,17 +45,12 @@ struct CommandBuffer{
 };
 static struct CommandBuffer gCmdBuf;
 
-
-// forget this:
-// #define crc_failure 0
-// #define eeprom_failure 1
-// static char gERROR;
-// this is how bits are defined in Ansi-C
 // *** ERRORBITS
 static struct {
 		char crc_failure:1;
 		char eeprom_failure:1;
 }gERROR;
+static char gComState;
 
 #ifndef X86
 //*********************** INTERRUPTSERVICEROUTINE ************************************
@@ -106,7 +100,7 @@ void init_all()
 	spi_init();
 	ledstrip_init();
 
-/** EEPROM contains FF in every Cell after inital start,
+/** EEPROM contains FF in every cell after inital start,
 *** so I have to delet the pointer address
 *** otherwise the PIC thinks he has the EEPROM full with commands
 **/
@@ -130,6 +124,7 @@ void init_all()
     gERROR.eeprom_failure = 0;
     gCmdBuf.cmd_counter = 0;
     gCmdBuf.frame_counter = 0;
+	gComState = 0;
 	
 	char i;
 	for(i=0;i<FRAMELENGTH;i++)
@@ -169,7 +164,7 @@ void throw_errors()
 		gERROR.eeprom_failure = 0;
 	}
 }
-
+#ifdef OLD_ROUTINE
 /** This function reads one byte from the ringbuffer and check
 *** for framestart, framelength, or databyte 
 *** if a frame is complete, the function save the frame as a new
@@ -295,7 +290,166 @@ void get_commands()
 		}
 	}
 }
+#else
 
+/** This function reads one byte from the ringbuffer and check
+*** for framestart, framelength, or databyte 
+*** if a frame is complete, the function save the frame as a new
+*** command in the internal EEPROM and calculate the Pointer for the next Command
+**/
+//--------- Enumeration for statemachine ------------
+#define WAIT_FOR_STX 0
+#define WAIT_FOR_FRL 1
+#define WAIT_FOR_DATA 2
+#define DO_CRC_CHECK 3
+#define WRITE_COMMAND 4
+
+void get_commands()
+{
+	if(RingBufIsNotEmpty)
+	{
+	// *** Get next byte from Buffer
+	char new_byte = RingBufGet();
+#ifdef TEST
+	USARTsend_num(gComState,'ß');
+#endif
+	switch(gComState)
+	{
+		case WAIT_FOR_STX:			//-----------------WAIT_FOR_STX-----------------
+		{
+			// *** Do I receive a Start_of_Text sign
+			if(new_byte == STX)
+			{
+				// *** increse the cmd_counter
+				gCmdBuf.cmd_counter = 1;
+				// *** Write the startsign at the begin of the buffer
+				gCmdBuf.cmd_buf[0] = new_byte;
+                // *** Reset crc Variables
+                newCRC(&gCmdBuf.crcH, &gCmdBuf.crcL);
+                // *** add new_byte to crc checksum
+                addCRC(new_byte, &gCmdBuf.crcH, &gCmdBuf.crcL);
+				// *** change STATE
+				gComState = WAIT_FOR_FRL;
+			}
+			else
+			{
+				// *** Do some cleaning, maybe ist not necessary
+				// *** 2DO !!! CHECK if necessary
+				gCmdBuf.cmd_counter = 0;
+				gCmdBuf.frame_counter = 0;
+				gComState = WAIT_FOR_STX;
+			}
+		}break;
+		case WAIT_FOR_FRL:			//-----------------WAIT_FOR_FRL-----------------
+		{
+			// *** check if I get the framelength byte
+			// *** check the length, because frame should not be longer as the array
+			char temp = FRAMELENGTH-1;
+			if(new_byte < temp)
+			{
+				gCmdBuf.frame_counter = new_byte;
+				gCmdBuf.cmd_buf[1] = new_byte;
+				gCmdBuf.cmd_counter = 2;
+				// *** add new_byte to crc checksum
+				addCRC(new_byte, &gCmdBuf.crcH, &gCmdBuf.crcL);
+				// *** change STATE
+				gComState = WAIT_FOR_DATA;
+			}
+			else gComState = WAIT_FOR_STX;
+		}break;
+		case WAIT_FOR_DATA:			//-----------------WAIT_FOR_DATA-----------------
+		{
+			// *** I wait for Databytes, so I save all bytes 
+			// *** that I get until my framecounter is > 0
+			gCmdBuf.cmd_buf[gCmdBuf.cmd_counter] = new_byte;
+			gCmdBuf.cmd_counter++;			
+			// *** add new_byte to crc checksum
+			if(gCmdBuf.frame_counter > 2)
+				addCRC(new_byte, &gCmdBuf.crcH, &gCmdBuf.crcL);
+			gCmdBuf.frame_counter--;
+			// *** now I have to check if my framecounter is zero.
+			// *** If it's zero my string is complete 
+			// *** and I can give the string to the crc check function.
+			if(gCmdBuf.frame_counter == 0)
+				// *** change STATE
+#ifdef NO_CRC
+				gComState = WRITE_COMMAND;
+#else
+				gComState = DO_CRC_CHECK;
+#endif
+			else 
+				gComState = WAIT_FOR_DATA;
+		}break;
+		case DO_CRC_CHECK:			//-----------------DO_CRC_CHECK-----------------
+		{
+			// *** verify crc checksum
+			if( (gCmdBuf.crcL == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 1]) &&
+				(gCmdBuf.crcH == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 2]) )
+				gComState = WRITE_COMMAND;
+			else
+			{
+				// *** Do some error handling in case of an CRC failure here
+				gERROR.crc_failure = 1;
+				gComState = WAIT_FOR_STX;
+				return;
+            }
+		}break;
+		case WRITE_COMMAND:			//-----------------WRITE_COMMAND-----------------
+		{
+			// *** Execute the simple Commands
+			switch(gCmdBuf.cmd_buf[2])
+			{
+				case DELETE: 
+				{
+					EEPROM_WR(CmdPointerAddr,0);
+					gComState = WAIT_FOR_STX;
+					return;
+				}
+#ifndef X86
+				case SET_ON: 
+				{
+					BCF(PORTC.0);
+					gComState = WAIT_FOR_STX;
+					return;
+				}	
+				case SET_OFF: 
+				{
+					BSF(PORTC.0);
+					gComState = WAIT_FOR_STX;
+					return;
+				}
+#endif /* #ifndef X86 */
+			}
+			char CmdPointer = EEPROM_RD(CmdPointerAddr);
+			// *** check if there is enough space in the EEPROM for the next command
+            if(CmdPointer < (CmdPointerAddr - CmdWidth))
+            {
+                // *** calculate the next address for EEPROM write
+                EEPROM_WR(CmdPointerAddr,(CmdPointer + CmdWidth));
+            }
+            else 
+            {
+                // *** EEPROM is full with commands
+                // *** Some errorhandling should be here
+				gERROR.eeprom_failure = 1;
+				gComState = WAIT_FOR_STX;
+                return;
+            } 
+			// *** Write the new command without STX and CRC
+			EEPROM_WR_BLK(&gCmdBuf.cmd_buf[2], CmdPointer, (gCmdBuf.cmd_counter -4));
+			// *** Send a Message('G'et 'C'ommand) when a new Command is received successfull
+			USARTsend('G');
+			USARTsend('C');
+			gComState = WAIT_FOR_STX;
+#ifdef TEST
+			USARTsend_arr(&gCmdBuf.cmd_buf[2], (gCmdBuf.cmd_counter - 4));
+#endif
+		}break;
+		default: gComState = WAIT_FOR_STX;
+	}
+}}
+
+#endif /*old routine*/
 /** This function reads the pointer for commands in the EEPROM from a defined address 
 *** in the EEPROM. After this one by one command is executed by this function. 
 **/ 

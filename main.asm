@@ -1,7 +1,7 @@
 
 ; CC5X Version 3.4E, Copyright (c) B Knudsen Data
 ; C compiler for the PICmicro family
-; ************  11. May 2012  18:36  *************
+; ************  11. May 2012  20:18  *************
 
 	processor  16F1936
 	radix  DEC
@@ -53,6 +53,7 @@ SSPEN       EQU   5
 gRingBuf    EQU   0x39
 gCmdBuf     EQU   0x4C
 gERROR      EQU   0x60
+gComState   EQU   0x61
 temp        EQU   0x20
 i           EQU   0x22
 new_byte    EQU   0x22
@@ -127,13 +128,12 @@ ci          EQU   0x24
 			;//Nils Weiﬂ 
 			;//05.09.2011
 			;//Compiler CC5x/
+			;#define OLD_ROUTINE
 			;//#define TEST
-			;
-			;#define MPLAB_IDE
-			;#include "platform.h"
-			;
 			;#define NO_CRC
+			;#define MPLAB_IDE
 			;
+			;#include "platform.h"
 			;#pragma sharedAllocation
 			;
 			;//*********************** ENUMERATIONS *********************************************
@@ -175,17 +175,12 @@ ci          EQU   0x24
 			;};
 			;static struct CommandBuffer gCmdBuf;
 			;
-			;
-			;// forget this:
-			;// #define crc_failure 0
-			;// #define eeprom_failure 1
-			;// static char gERROR;
-			;// this is how bits are defined in Ansi-C
 			;// *** ERRORBITS
 			;static struct {
 			;		char crc_failure:1;
 			;		char eeprom_failure:1;
 			;}gERROR;
+			;static char gComState;
 			;
 			;#ifndef X86
 			;//*********************** INTERRUPTSERVICEROUTINE ************************************
@@ -333,7 +328,7 @@ init_all
 			;	ledstrip_init();
 	CALL  ledstrip_init
 			;
-			;/** EEPROM contains FF in every Cell after inital start,
+			;/** EEPROM contains FF in every cell after inital start,
 			;*** so I have to delet the pointer address
 			;*** otherwise the PIC thinks he has the EEPROM full with commands
 			;**/
@@ -380,6 +375,8 @@ m005	MOVLW 253
 	CLRF  gCmdBuf
 			;    gCmdBuf.frame_counter = 0;
 	CLRF  gCmdBuf+1
+			;	gComState = 0;
+	CLRF  gComState
 			;	
 			;	char i;
 			;	for(i=0;i<FRAMELENGTH;i++)
@@ -467,7 +464,7 @@ m009	MOVLB 0
 			;	}
 			;}
 m010	RETURN
-			;
+			;#ifdef OLD_ROUTINE
 			;/** This function reads one byte from the ringbuffer and check
 			;*** for framestart, framelength, or databyte 
 			;*** if a frame is complete, the function save the frame as a new
@@ -728,7 +725,166 @@ m019	MOVLW 80
 			;	}
 			;}
 m020	RETURN
+			;#else
 			;
+			;/** This function reads one byte from the ringbuffer and check
+			;*** for framestart, framelength, or databyte 
+			;*** if a frame is complete, the function save the frame as a new
+			;*** command in the internal EEPROM and calculate the Pointer for the next Command
+			;**/
+			;//--------- Enumeration for statemachine ------------
+			;#define WAIT_FOR_STX 0
+			;#define WAIT_FOR_FRL 1
+			;#define WAIT_FOR_DATA 2
+			;#define DO_CRC_CHECK 3
+			;#define WRITE_COMMAND 4
+			;
+			;void get_commands()
+			;{
+			;	if(RingBufIsNotEmpty)
+			;	{
+			;	// *** Get next byte from Buffer
+			;	char new_byte = RingBufGet();
+			;#ifdef TEST
+			;	USARTsend_num(gComState,'ß');
+			;#endif
+			;	switch(gComState)
+			;	{
+			;		case WAIT_FOR_STX:			//-----------------WAIT_FOR_STX-----------------
+			;		{
+			;			// *** Do I receive a Start_of_Text sign
+			;			if(new_byte == STX)
+			;			{
+			;				// *** increse the cmd_counter
+			;				gCmdBuf.cmd_counter = 1;
+			;				// *** Write the startsign at the begin of the buffer
+			;				gCmdBuf.cmd_buf[0] = new_byte;
+			;                // *** Reset crc Variables
+			;                newCRC(&gCmdBuf.crcH, &gCmdBuf.crcL);
+			;                // *** add new_byte to crc checksum
+			;                addCRC(new_byte, &gCmdBuf.crcH, &gCmdBuf.crcL);
+			;				// *** change STATE
+			;				gComState = WAIT_FOR_FRL;
+			;			}
+			;			else
+			;			{
+			;				// *** Do some cleaning, maybe ist not necessary
+			;				// *** 2DO !!! CHECK if necessary
+			;				gCmdBuf.cmd_counter = 0;
+			;				gCmdBuf.frame_counter = 0;
+			;				gComState = WAIT_FOR_STX;
+			;			}
+			;		}break;
+			;		case WAIT_FOR_FRL:			//-----------------WAIT_FOR_FRL-----------------
+			;		{
+			;			// *** check if I get the framelength byte
+			;			// *** check the length, because frame should not be longer as the array
+			;			char temp = FRAMELENGTH-1;
+			;			if(new_byte < temp)
+			;			{
+			;				gCmdBuf.frame_counter = new_byte;
+			;				gCmdBuf.cmd_buf[1] = new_byte;
+			;				gCmdBuf.cmd_counter = 2;
+			;				// *** add new_byte to crc checksum
+			;				addCRC(new_byte, &gCmdBuf.crcH, &gCmdBuf.crcL);
+			;				// *** change STATE
+			;				gComState = WAIT_FOR_DATA;
+			;			}
+			;			else gComState = WAIT_FOR_STX;
+			;		}break;
+			;		case WAIT_FOR_DATA:			//-----------------WAIT_FOR_DATA-----------------
+			;		{
+			;			// *** I wait for Databytes, so I save all bytes 
+			;			// *** that I get until my framecounter is > 0
+			;			gCmdBuf.cmd_buf[gCmdBuf.cmd_counter] = new_byte;
+			;			gCmdBuf.cmd_counter++;			
+			;			// *** add new_byte to crc checksum
+			;			if(gCmdBuf.frame_counter > 2)
+			;				addCRC(new_byte, &gCmdBuf.crcH, &gCmdBuf.crcL);
+			;			gCmdBuf.frame_counter--;
+			;			// *** now I have to check if my framecounter is zero.
+			;			// *** If it's zero my string is complete 
+			;			// *** and I can give the string to the crc check function.
+			;			if(gCmdBuf.frame_counter == 0)
+			;				// *** change STATE
+			;#ifdef NO_CRC
+			;				gComState = WRITE_COMMAND;
+			;#else
+			;				gComState = DO_CRC_CHECK;
+			;#endif
+			;			else 
+			;				gComState = WAIT_FOR_DATA;
+			;		}break;
+			;		case DO_CRC_CHECK:			//-----------------DO_CRC_CHECK-----------------
+			;		{
+			;			// *** verify crc checksum
+			;			if( (gCmdBuf.crcL == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 1]) &&
+			;				(gCmdBuf.crcH == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 2]) )
+			;				gComState = WRITE_COMMAND;
+			;			else
+			;			{
+			;				// *** Do some error handling in case of an CRC failure here
+			;				gERROR.crc_failure = 1;
+			;				gComState = WAIT_FOR_STX;
+			;				return;
+			;            }
+			;		}break;
+			;		case WRITE_COMMAND:			//-----------------WRITE_COMMAND-----------------
+			;		{
+			;			// *** Execute the simple Commands
+			;			switch(gCmdBuf.cmd_buf[2])
+			;			{
+			;				case DELETE: 
+			;				{
+			;					EEPROM_WR(CmdPointerAddr,0);
+			;					gComState = WAIT_FOR_STX;
+			;					return;
+			;				}
+			;#ifndef X86
+			;				case SET_ON: 
+			;				{
+			;					BCF(PORTC.0);
+			;					gComState = WAIT_FOR_STX;
+			;					return;
+			;				}	
+			;				case SET_OFF: 
+			;				{
+			;					BSF(PORTC.0);
+			;					gComState = WAIT_FOR_STX;
+			;					return;
+			;				}
+			;#endif /* #ifndef X86 */
+			;			}
+			;			char CmdPointer = EEPROM_RD(CmdPointerAddr);
+			;			// *** check if there is enough space in the EEPROM for the next command
+			;            if(CmdPointer < (CmdPointerAddr - CmdWidth))
+			;            {
+			;                // *** calculate the next address for EEPROM write
+			;                EEPROM_WR(CmdPointerAddr,(CmdPointer + CmdWidth));
+			;            }
+			;            else 
+			;            {
+			;                // *** EEPROM is full with commands
+			;                // *** Some errorhandling should be here
+			;				gERROR.eeprom_failure = 1;
+			;				gComState = WAIT_FOR_STX;
+			;                return;
+			;            } 
+			;			// *** Write the new command without STX and CRC
+			;			EEPROM_WR_BLK(&gCmdBuf.cmd_buf[2], CmdPointer, (gCmdBuf.cmd_counter -4));
+			;			// *** Send a Message('G'et 'C'ommand) when a new Command is received successfull
+			;			USARTsend('G');
+			;			USARTsend('C');
+			;			gComState = WAIT_FOR_STX;
+			;#ifdef TEST
+			;			USARTsend_arr(&gCmdBuf.cmd_buf[2], (gCmdBuf.cmd_counter - 4));
+			;#endif
+			;		}break;
+			;		default: gComState = WAIT_FOR_STX;
+			;	}
+			;}}
+			;
+			;#endif /*old routine*/
 			;/** This function reads the pointer for commands in the EEPROM from a defined address 
 			;*** in the EEPROM. After this one by one command is executed by this function. 
 			;**/ 
@@ -1162,7 +1318,7 @@ m031	MOVLW 96
 			;		gLedBuf.led_array[k] = 0;
 	MOVLW 32
 	MOVWF FSR0+1
-	MOVLW 65
+	MOVLW 66
 	ADDWF k,W
 	MOVWF FSR0
 	BTFSC 0x03,Carry
@@ -1208,7 +1364,7 @@ m033	MOVLW 96
 			;			gLedBuf.led_array[k] = b;
 	MOVLW 32
 	MOVWF FSR0+1
-	MOVLW 65
+	MOVLW 66
 	ADDWF k_2,W
 	MOVWF FSR0
 	BTFSC 0x03,Carry
@@ -1220,7 +1376,7 @@ m033	MOVLW 96
 			;			gLedBuf.led_array[k] = g;
 	MOVLW 32
 	MOVWF FSR0+1
-	MOVLW 65
+	MOVLW 66
 	ADDWF k_2,W
 	MOVWF FSR0
 	BTFSC 0x03,Carry
@@ -1232,7 +1388,7 @@ m033	MOVLW 96
 			;			gLedBuf.led_array[k] = r;
 	MOVLW 32
 	MOVWF FSR0+1
-	MOVLW 65
+	MOVLW 66
 	ADDWF k_2,W
 	MOVWF FSR0
 	BTFSC 0x03,Carry
@@ -1272,7 +1428,7 @@ m036	MOVLB 0
 	INCF  k_2,1
 	GOTO  m033
 			;	spi_send_ledbuf(&gLedBuf.led_array[0]);
-m037	MOVLW 65
+m037	MOVLW 66
 	MOVLB 0
 	MOVWF array_4
 	MOVLW 32
@@ -1721,39 +1877,39 @@ m052	RETURN
 
 ; *** KEY INFO ***
 
-; 0x02A4 P0    5 word(s)  0 % : RingBufInit
-; 0x02A9 P0   12 word(s)  0 % : RingBufGet
-; 0x02B5 P0   21 word(s)  1 % : RingBufPut
-; 0x0312 P0   19 word(s)  0 % : USARTinit
-; 0x0325 P0   10 word(s)  0 % : USARTsend
-; 0x032F P0   19 word(s)  0 % : USARTsend_str
-; 0x0342 P0   18 word(s)  0 % : USARTsend_arr
-; 0x01B5 P0   34 word(s)  1 % : EEPROM_WR
-; 0x01D7 P0   13 word(s)  0 % : EEPROM_RD
-; 0x01E4 P0   25 word(s)  1 % : EEPROM_WR_BLK
-; 0x01FD P0   22 word(s)  1 % : EEPROM_RD_BLK
-; 0x014C P0   40 word(s)  1 % : addCRC
-; 0x0174 P0   45 word(s)  2 % : CRC
-; 0x01A1 P0   20 word(s)  0 % : newCRC
-; 0x02CA P0   11 word(s)  0 % : spi_init
-; 0x02D5 P0   11 word(s)  0 % : spi_send
-; 0x02E0 P0   18 word(s)  0 % : spi_send_arr
-; 0x02F2 P0   32 word(s)  1 % : spi_send_ledbuf
-; 0x0213 P0   18 word(s)  0 % : ledstrip_init
-; 0x0225 P0   66 word(s)  3 % : ledstrip_set_color
-; 0x0267 P0   61 word(s)  2 % : sub_func_set_color
+; 0x02A5 P0    5 word(s)  0 % : RingBufInit
+; 0x02AA P0   12 word(s)  0 % : RingBufGet
+; 0x02B6 P0   21 word(s)  1 % : RingBufPut
+; 0x0313 P0   19 word(s)  0 % : USARTinit
+; 0x0326 P0   10 word(s)  0 % : USARTsend
+; 0x0330 P0   19 word(s)  0 % : USARTsend_str
+; 0x0343 P0   18 word(s)  0 % : USARTsend_arr
+; 0x01B6 P0   34 word(s)  1 % : EEPROM_WR
+; 0x01D8 P0   13 word(s)  0 % : EEPROM_RD
+; 0x01E5 P0   25 word(s)  1 % : EEPROM_WR_BLK
+; 0x01FE P0   22 word(s)  1 % : EEPROM_RD_BLK
+; 0x014D P0   40 word(s)  1 % : addCRC
+; 0x0175 P0   45 word(s)  2 % : CRC
+; 0x01A2 P0   20 word(s)  0 % : newCRC
+; 0x02CB P0   11 word(s)  0 % : spi_init
+; 0x02D6 P0   11 word(s)  0 % : spi_send
+; 0x02E1 P0   18 word(s)  0 % : spi_send_arr
+; 0x02F3 P0   32 word(s)  1 % : spi_send_ledbuf
+; 0x0214 P0   18 word(s)  0 % : ledstrip_init
+; 0x0226 P0   66 word(s)  3 % : ledstrip_set_color
+; 0x0268 P0   61 word(s)  2 % : sub_func_set_color
 ; 0x0004 P0   14 word(s)  0 % : InterruptRoutine
-; 0x005A P0   53 word(s)  2 % : init_all
-; 0x008F P0   24 word(s)  1 % : throw_errors
-; 0x00A7 P0  134 word(s)  6 % : get_commands
-; 0x012D P0   31 word(s)  1 % : execute_commands
+; 0x005A P0   54 word(s)  2 % : init_all
+; 0x0090 P0   24 word(s)  1 % : throw_errors
+; 0x00A8 P0  134 word(s)  6 % : get_commands
+; 0x012E P0   31 word(s)  1 % : execute_commands
 ; 0x0055 P0    5 word(s)  0 % : main
 ; 0x0012 P0   67 word(s)  3 % : _const1
 
-; RAM usage: 161 bytes (25 local), 351 bytes free
+; RAM usage: 162 bytes (25 local), 350 bytes free
 ; Maximum call level: 3 (+2 for interrupt)
-;  Codepage 0 has  849 word(s) :  41 %
+;  Codepage 0 has  850 word(s) :  41 %
 ;  Codepage 1 has    0 word(s) :   0 %
 ;  Codepage 2 has    0 word(s) :   0 %
 ;  Codepage 3 has    0 word(s) :   0 %
-; Total of 849 code words (10 %)
+; Total of 850 code words (10 %)
