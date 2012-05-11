@@ -1,7 +1,7 @@
 
 ; CC5X Version 3.4E, Copyright (c) B Knudsen Data
 ; C compiler for the PICmicro family
-; ************  10. May 2012  22:25  *************
+; ************  11. May 2012  18:36  *************
 
 	processor  16F1936
 	radix  DEC
@@ -435,6 +435,9 @@ throw_errors
 			;		USARTsend_str(" ERROR: Receivebuffer full");
 	CLRF  string
 	CALL  USARTsend_str
+			;		RingBufClearError;
+	MOVLB 0
+	BCF   gRingBuf+18,0
 			;	}
 			;	if(gERROR.crc_failure)
 m008	MOVLB 0
@@ -1718,39 +1721,39 @@ m052	RETURN
 
 ; *** KEY INFO ***
 
-; 0x02A2 P0    5 word(s)  0 % : RingBufInit
-; 0x02A7 P0   12 word(s)  0 % : RingBufGet
-; 0x02B3 P0   21 word(s)  1 % : RingBufPut
-; 0x0310 P0   19 word(s)  0 % : USARTinit
-; 0x0323 P0   10 word(s)  0 % : USARTsend
-; 0x032D P0   19 word(s)  0 % : USARTsend_str
-; 0x0340 P0   18 word(s)  0 % : USARTsend_arr
-; 0x01B3 P0   34 word(s)  1 % : EEPROM_WR
-; 0x01D5 P0   13 word(s)  0 % : EEPROM_RD
-; 0x01E2 P0   25 word(s)  1 % : EEPROM_WR_BLK
-; 0x01FB P0   22 word(s)  1 % : EEPROM_RD_BLK
-; 0x014A P0   40 word(s)  1 % : addCRC
-; 0x0172 P0   45 word(s)  2 % : CRC
-; 0x019F P0   20 word(s)  0 % : newCRC
-; 0x02C8 P0   11 word(s)  0 % : spi_init
-; 0x02D3 P0   11 word(s)  0 % : spi_send
-; 0x02DE P0   18 word(s)  0 % : spi_send_arr
-; 0x02F0 P0   32 word(s)  1 % : spi_send_ledbuf
-; 0x0211 P0   18 word(s)  0 % : ledstrip_init
-; 0x0223 P0   66 word(s)  3 % : ledstrip_set_color
-; 0x0265 P0   61 word(s)  2 % : sub_func_set_color
+; 0x02A4 P0    5 word(s)  0 % : RingBufInit
+; 0x02A9 P0   12 word(s)  0 % : RingBufGet
+; 0x02B5 P0   21 word(s)  1 % : RingBufPut
+; 0x0312 P0   19 word(s)  0 % : USARTinit
+; 0x0325 P0   10 word(s)  0 % : USARTsend
+; 0x032F P0   19 word(s)  0 % : USARTsend_str
+; 0x0342 P0   18 word(s)  0 % : USARTsend_arr
+; 0x01B5 P0   34 word(s)  1 % : EEPROM_WR
+; 0x01D7 P0   13 word(s)  0 % : EEPROM_RD
+; 0x01E4 P0   25 word(s)  1 % : EEPROM_WR_BLK
+; 0x01FD P0   22 word(s)  1 % : EEPROM_RD_BLK
+; 0x014C P0   40 word(s)  1 % : addCRC
+; 0x0174 P0   45 word(s)  2 % : CRC
+; 0x01A1 P0   20 word(s)  0 % : newCRC
+; 0x02CA P0   11 word(s)  0 % : spi_init
+; 0x02D5 P0   11 word(s)  0 % : spi_send
+; 0x02E0 P0   18 word(s)  0 % : spi_send_arr
+; 0x02F2 P0   32 word(s)  1 % : spi_send_ledbuf
+; 0x0213 P0   18 word(s)  0 % : ledstrip_init
+; 0x0225 P0   66 word(s)  3 % : ledstrip_set_color
+; 0x0267 P0   61 word(s)  2 % : sub_func_set_color
 ; 0x0004 P0   14 word(s)  0 % : InterruptRoutine
 ; 0x005A P0   53 word(s)  2 % : init_all
-; 0x008F P0   22 word(s)  1 % : throw_errors
-; 0x00A5 P0  134 word(s)  6 % : get_commands
-; 0x012B P0   31 word(s)  1 % : execute_commands
+; 0x008F P0   24 word(s)  1 % : throw_errors
+; 0x00A7 P0  134 word(s)  6 % : get_commands
+; 0x012D P0   31 word(s)  1 % : execute_commands
 ; 0x0055 P0    5 word(s)  0 % : main
 ; 0x0012 P0   67 word(s)  3 % : _const1
 
 ; RAM usage: 161 bytes (25 local), 351 bytes free
 ; Maximum call level: 3 (+2 for interrupt)
-;  Codepage 0 has  847 word(s) :  41 %
+;  Codepage 0 has  849 word(s) :  41 %
 ;  Codepage 1 has    0 word(s) :   0 %
 ;  Codepage 2 has    0 word(s) :   0 %
 ;  Codepage 3 has    0 word(s) :   0 %
-; Total of 847 code words (10 %)
+; Total of 849 code words (10 %)
