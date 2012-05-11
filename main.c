@@ -156,6 +156,7 @@ void throw_errors()
 	if(RingBufHasError) 
 	{
 		USARTsend_str(" ERROR: Receivebuffer full");
+		RingBufClearError;
 	}
 	if(gERROR.crc_failure)
 	{
