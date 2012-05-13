@@ -149,7 +149,7 @@ Size := number of bytes
  L  0  0x036      2  :  5:  end
  L  0  0x038      1  :  2:  data_4
  G  0  0x039     19  : 16:  gRingBuf
- G  0  0x04C     20  : 20:  gCmdBuf
+ G  0  0x04C     20  : 24:  gCmdBuf
  G  0  0x060      1  :  8:  gERROR
  G  0  0x061      1  :  1:  gComState
  G  0  0x062     96  :  1:  gLedBuf

@@ -14,7 +14,7 @@ F: main                   :#0  : p0
     execute_commands      : #1  : p0 -> p0
 
 F: init_all               :#1  : p0 <- p0 
-    RingBufInit           : #1  : p0 -> p0
+    RingBufInit           : #2  : p0 -> p0
     USARTinit             : #1  : p0 -> p0
     spi_init              : #1  : p0 -> p0
     ledstrip_init         : #1  : p0 -> p0
@@ -27,6 +27,7 @@ F: init_all               :#1  : p0 <- p0
 
 F: throw_errors           :#1  : p0 <- p0 
     USARTsend_str         : #3  : p0 -> p0
+    RingBufInit           : #2  : p0 -> p0
     USARTsend_str         : #3  : p0 -> p0
     USARTsend_str         : #3  : p0 -> p0
 
@@ -78,7 +79,7 @@ F: sub_func_set_color     :#1  : p0 <- p0
     EEPROM_RD             : #9  : p0 -> p0
     ledstrip_set_color    : #1  : p0 -> p0
 
-F: RingBufInit            :#1  : p0 <- p0 
+F: RingBufInit            :#2  : p0
 
 F: RingBufGet             :#1  : p0 <- p0 
 
@@ -127,6 +128,7 @@ F: USARTsend_arr          :#0  : p0
  L3        _const1
  L3        USARTsend
  L3        _const1
+ L2      RingBufInit
  L2      USARTsend_str ..
  L2      USARTsend_str ..
  L1    get_commands
