@@ -1,7 +1,7 @@
 //Nils Weiﬂ 
 //05.09.2011
 //Compiler CC5x/
-
+#define USE_UNION
 //#define TEST
 #define NO_CRC
 #define MPLAB_IDE
@@ -21,12 +21,15 @@
 #define SET_ON 0xFA
 #define SET_OFF 0xF9
 #define DELETE 0xF8
-
+#ifndef USE_UNION
 #define CmdPointerAddr 0xff		// *** Address at EERPOM. Commandpointer indicates the nummer of commands
 #define CmdLoopPointerAddr 0xfd // *** Address at EEPROM. CommandLoopPointer indicates the next command. Used in Loop-Mode
-
+#endif
 //*********************** INCLUDEDATEIEN *********************************************
 #pragma codepage 1
+#ifdef USE_UNION
+#include "commandstorage.h"
+#endif
 #include "RingBuf.h"		//clean
 #include "usart.h"			//clean
 #include "eeprom.h"       	//clean 
@@ -34,8 +37,9 @@
 #include "ledstrip.h"		//under construction
 #include "spi.h"			//clean
 #include "timer.h"
+
 //*********************** GLOBAL VARIABLES *******************************************
-#define FRAMELENGTH 16			// *** max length of one commandframe
+#define FRAMELENGTH (sizeof(struct led_cmd) + 5)			// *** max length of one commandframe
 struct CommandBuffer{
     char cmd_counter;
     char frame_counter;
@@ -162,7 +166,7 @@ void throw_errors()
 		// *** because the last byte was not saved. Commandstring is inconsistent
 		ClearCmdBuf;
 		USARTsend_str(" ERROR: Receivebuffer full");
-		// *** Re-init the Ringbuffer to get a consistent commandstring
+		// *** Re-init the Ringbuffer to get a consistent commandstring and reset error
 		RingBufInit();
 	}
 	if(gERROR.crc_failure)
@@ -276,6 +280,7 @@ void get_commands()
 							}
 #endif /* #ifndef X86 */
 					}
+#ifndef USE_UNION
                     char CmdPointer = EEPROM_RD(CmdPointerAddr);
 					// *** check if there is enough space in the EEPROM for the next command
                     if(CmdPointer < (CmdPointerAddr - CmdWidth))
@@ -291,10 +296,20 @@ void get_commands()
                         return;
                     } 
 					// *** Write the new command without STX and CRC
+
 					EEPROM_WR_BLK(&gCmdBuf.cmd_buf[2], CmdPointer, (gCmdBuf.cmd_counter -4));
 					// *** Send a Message('G'et 'C'ommand) when a new Command is received successfull
 					USARTsend('G');
 					USARTsend('C');
+#else				
+					if( commandstorage_write(&gCmdBuf.cmd_buf[2], (gCmdBuf.cmd_counter - 4)))
+					{
+						USARTsend('G');
+						USARTsend('C');
+					}
+					else 
+						gERROR.eeprom_failure = 1;
+#endif // use union
 #ifdef TEST
 					USARTsend_arr(&gCmdBuf.cmd_buf[2], (gCmdBuf.cmd_counter - 4));
 #endif
@@ -309,7 +324,7 @@ void get_commands()
 		}
 	}
 }
-
+#ifndef USE_UNION
 /** This function reads the pointer for commands in the EEPROM from a defined address 
 *** in the EEPROM. After this one by one command is executed by this function. 
 **/ 
@@ -335,6 +350,31 @@ void execute_commands()
 		EEPROM_WR(CmdPointerAddr, (pointer - CmdWidth));
 	}
 }
+#else
+void execute_commands()
+{
+	// *** get the pointer to commands in the EEPROM
+	struct led_cmd nextCmd;
+
+	// read next command from eeprom and move command pointer in eeprom to the next command (TRUE)
+	struct led_cmd *result = commandstorage_read(&nextCmd, TRUE);
+	if(0 != result)
+	{
+		// *** commands available, check what to do
+		switch(nextCmd.cmd) 
+		{	
+			case SET_COLOR: 
+			{
+				ledstrip_set_color(&nextCmd.data.set_color);
+				break;
+			}
+			case SET_FADE: {break;}
+			case SET_RUN: {break;}
+		}
+	}
+}
+
+#endif //USE_UNION
 
 // cc5xfree is a bit stupid so we include the other implementation files here
 #ifndef X86
@@ -345,4 +385,5 @@ void execute_commands()
 #include "spi.c"
 #include "timer.c"
 #include "usart.c"
+#include "commandstorage.c"
 #endif /* #ifndef X86 */
