@@ -1,7 +1,7 @@
 //Nils Weiﬂ 
 //05.09.2011
 //Compiler CC5x/
-#define USE_UNION
+//#define USE_UNION
 //#define TEST
 #define NO_CRC
 #define MPLAB_IDE
@@ -39,7 +39,12 @@
 #include "timer.h"
 
 //*********************** GLOBAL VARIABLES *******************************************
+#ifdef USE_UNION
 #define FRAMELENGTH (sizeof(struct led_cmd) + 5)			// *** max length of one commandframe
+#else
+#define FRAMELENGTH 15
+#endif
+
 struct CommandBuffer{
     char cmd_counter;
     char frame_counter;
@@ -385,5 +390,7 @@ void execute_commands()
 #include "spi.c"
 #include "timer.c"
 #include "usart.c"
+#ifdef USE_UNION
 #include "commandstorage.c"
+#endif
 #endif /* #ifndef X86 */
