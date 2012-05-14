@@ -10,15 +10,15 @@ F: _const1                :#2  : p0
 F: main                   :#0  : p0
     init_all              : #1  : p0 -> p0
     throw_errors          : #1  : p0 -> p0
-    get_commands          : #1  : p0 -> p0
-    execute_commands      : #1  : p0 -> p0
+    commandstorage_get_commands: #1  : p0 -> p0
+    commandstorage_execute_commands: #1  : p0 -> p0
 
 F: init_all               :#1  : p0 <- p0 
     RingBufInit           : #2  : p0 -> p0
     USARTinit             : #1  : p0 -> p0
     spi_init              : #1  : p0 -> p0
     ledstrip_init         : #1  : p0 -> p0
-    EEPROM_RD             : #9  : p0 -> p0
+    EEPROM_RD             : #4  : p0 -> p0
     EEPROM_WR             : #6  : p0 -> p0
     EEPROM_WR             : #6  : p0 -> p0
     USARTsend             : #7  : p0 -> p0
@@ -31,25 +31,6 @@ F: throw_errors           :#1  : p0 <- p0
     USARTsend_str         : #3  : p0 -> p0
     USARTsend_str         : #3  : p0 -> p0
 
-F: get_commands           :#1  : p0 <- p0 
-    RingBufGet            : #1  : p0 -> p0
-    newCRC                : #1  : p0 -> p0
-    addCRC                : #4  : p0 -> p0
-    addCRC                : #4  : p0 -> p0
-    addCRC                : #4  : p0 -> p0
-    EEPROM_WR             : #6  : p0 -> p0
-    EEPROM_RD             : #9  : p0 -> p0
-    EEPROM_WR             : #6  : p0 -> p0
-    EEPROM_WR_BLK         : #1  : p0 -> p0
-    USARTsend             : #7  : p0 -> p0
-    USARTsend             : #7  : p0 -> p0
-
-F: execute_commands       :#1  : p0 <- p0 
-    EEPROM_RD             : #9  : p0 -> p0
-    EEPROM_RD             : #9  : p0 -> p0
-    sub_func_set_color    : #1  : p0 -> p0
-    EEPROM_WR             : #6  : p0 -> p0
-
 F: addCRC                 :#4  : p0
 
 F: CRC                    :#0  : p0
@@ -59,25 +40,18 @@ F: newCRC                 :#1  : p0 <- p0
 
 F: EEPROM_WR              :#6  : p0
 
-F: EEPROM_RD              :#9  : p0
+F: EEPROM_RD              :#4  : p0
 
 F: EEPROM_WR_BLK          :#1  : p0 <- p0 
     EEPROM_WR             : #6  : p0 -> p0
 
-F: EEPROM_RD_BLK          :#0  : p0
-    EEPROM_RD             : #9  : p0 -> p0
+F: EEPROM_RD_BLK          :#1  : p0 <- p0 
+    EEPROM_RD             : #4  : p0 -> p0
 
 F: ledstrip_init          :#1  : p0 <- p0 
 
 F: ledstrip_set_color     :#1  : p0 <- p0 
     spi_send_ledbuf       : #1  : p0 -> p0
-
-F: sub_func_set_color     :#1  : p0 <- p0 
-    EEPROM_RD             : #9  : p0 -> p0
-    EEPROM_RD             : #9  : p0 -> p0
-    EEPROM_RD             : #9  : p0 -> p0
-    EEPROM_RD             : #9  : p0 -> p0
-    ledstrip_set_color    : #1  : p0 -> p0
 
 F: RingBufInit            :#2  : p0
 
@@ -107,6 +81,31 @@ F: USARTsend_str          :#3  : p0
 F: USARTsend_arr          :#0  : p0
     USARTsend             : #7  : p0 -> p0
 
+F: commandstorage_read    :#1  : p0 <- p0 
+    EEPROM_RD             : #4  : p0 -> p0
+    EEPROM_RD_BLK         : #1  : p0 -> p0
+    EEPROM_WR             : #6  : p0 -> p0
+
+F: commandstorage_write   :#1  : p0 <- p0 
+    EEPROM_RD             : #4  : p0 -> p0
+    EEPROM_WR             : #6  : p0 -> p0
+    EEPROM_WR_BLK         : #1  : p0 -> p0
+
+F: commandstorage_get_commands :#1  : p0 <- p0 
+    RingBufGet            : #1  : p0 -> p0
+    newCRC                : #1  : p0 -> p0
+    addCRC                : #4  : p0 -> p0
+    addCRC                : #4  : p0 -> p0
+    addCRC                : #4  : p0 -> p0
+    EEPROM_WR             : #6  : p0 -> p0
+    commandstorage_write  : #1  : p0 -> p0
+    USARTsend             : #7  : p0 -> p0
+    USARTsend             : #7  : p0 -> p0
+
+F: commandstorage_execute_commands :#1  : p0 <- p0 
+    commandstorage_read   : #1  : p0 -> p0
+    ledstrip_set_color    : #1  : p0 -> p0
+
 
  L1  InterruptRoutine
  L2    RingBufPut
@@ -131,29 +130,27 @@ F: USARTsend_arr          :#0  : p0
  L2      RingBufInit
  L2      USARTsend_str ..
  L2      USARTsend_str ..
- L1    get_commands
+ L1    commandstorage_get_commands
  L2      RingBufGet
  L2      newCRC
  L2      addCRC
  L2      addCRC
  L2      addCRC
  L1      EEPROM_WR [T-GOTO]
- L2      EEPROM_RD
- L2      EEPROM_WR
- L2      EEPROM_WR_BLK
+ L2      commandstorage_write
+ L3        EEPROM_RD
  L3        EEPROM_WR
+ L3        EEPROM_WR_BLK
+ L4          EEPROM_WR
  L2      USARTsend
  L2      USARTsend
- L1    execute_commands
- L2      EEPROM_RD
- L2      EEPROM_RD
- L2      sub_func_set_color
+ L1    commandstorage_execute_commands
+ L2      commandstorage_read
  L3        EEPROM_RD
- L3        EEPROM_RD
- L3        EEPROM_RD
- L3        EEPROM_RD
- L2        ledstrip_set_color [T-GOTO]
- L2          spi_send_ledbuf [T-GOTO]
- L3            spi_send
- L1      EEPROM_WR [T-GOTO]
+ L3        EEPROM_RD_BLK
+ L4          EEPROM_RD
+ L3        EEPROM_WR
+ L2      ledstrip_set_color
+ L2        spi_send_ledbuf [T-GOTO]
+ L3          spi_send
 

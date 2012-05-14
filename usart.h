@@ -18,7 +18,7 @@ void USARTsend(char ch);
 void USARTsend_str(const char *string);
 void USARTsend_arr(char *array, char length);
 #ifdef TEST
-void USARTsend_num(unsigned char input,unsigned char sign);
+void USARTsend_num(char input, char sign);
 #endif
 
 #endif

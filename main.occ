@@ -1,29 +1,29 @@
 CC5X Version 3.4E, Copyright (c) B Knudsen Data, Norway 1992-2010
  --> FREE edition, 8-16 bit int, 24 bit float, 32k code, reduced optim.
 main.c:
- 13. May 2012  14:11
-Warning[1] C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\main.c 260 : Condition (or parts of it) is always true
- (This is superfluous code that can be removed - check for application bugs)
+ 14. May 2012  11:53
 Message: Global variables are defined in RingBuf.c
+Warning[1] C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\commandstorage.c 110 : Condition (or parts of it) is always true
+ (This is superfluous code that can be removed - check for application bugs)
  Chip = 16F1936
-Warning[2] C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\main.c 396 : Local variables and parameters in uncalled functions are not allocated (19)
+Warning[2] C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\main.c 149 : Local variables and parameters in uncalled functions are not allocated (14)
  (The application contains non-library functions that are not called. Local
  variables in these functions (option -wU) are not allocated to save space)
  RAM : -------- -------- -------- -------- ======== ======== ======== =.......
   40h: ........ ........ ........ ........ ........ ........ ******** ********
   80h: -....... ....---. ----.--- -------. ........ ........ ........ ........
-  C0h: .------- -------- -------- -------- -------- -------- -------- --------
- Bank  0:0    1:0    2:79   3:80   4:80   5:80   6:16   bytes free
-RAM usage: 161 bytes (25 local), 351 bytes free
+  C0h: -------- -------- -------- -------- -------- -------- -------- --------
+ Bank  0:0    1:0    2:80   3:80   4:80   5:80   6:16   bytes free
+RAM usage: 160 bytes (25 local), 352 bytes free
  File 'main.fcs'
- Optimizing - removed 21 instructions (-2 %)
+ Optimizing - removed 23 instructions (-2 %)
  File 'main.var'
  File 'main.asm'
  File 'main.lst'
  File 'main.cod'
  File 'main.occ'
  File 'main.hex'
- Codepage 0 has  856 word(s) :  41 %
+ Codepage 0 has  846 word(s) :  41 %
  Codepage 1 has    0 word(s) :   0 %
  Codepage 2 has    0 word(s) :   0 %
  Codepage 3 has    0 word(s) :   0 %
@@ -31,6 +31,10 @@ WARNING: String limit in COD file exceeded (max 64 characters):
 C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\16F1936.h
 WARNING: String limit in COD file exceeded (max 64 characters):
 C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\platform.h
+WARNING: String limit in COD file exceeded (max 64 characters):
+C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\RingBuf.h
+WARNING: String limit in COD file exceeded (max 64 characters):
+C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\commandstorage.h
 WARNING: String limit in COD file exceeded (max 64 characters):
 C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\RingBuf.h
 WARNING: String limit in COD file exceeded (max 64 characters):
@@ -47,6 +51,8 @@ WARNING: String limit in COD file exceeded (max 64 characters):
 C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\RingBuf.h
 WARNING: String limit in COD file exceeded (max 64 characters):
 C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\ledstrip.h
-Total of 856 code words (10 %)
- * Estimated CODE SIZE of full optimization: 845 code words (-1 %)
+WARNING: String limit in COD file exceeded (max 64 characters):
+C:\Users\Administrator\Dropbox\Wifly_Light\Pic_program\commandstorage.c
+Total of 846 code words (10 %)
+ * Estimated CODE SIZE of full optimization: 836 code words (-1 %)
 The licensed editions will save more code by using all enhanced instructions.

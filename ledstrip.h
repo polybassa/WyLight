@@ -18,10 +18,6 @@ struct LedBuffer{
 extern struct LedBuffer gLedBuf;
 
 void ledstrip_init(void);
-#ifndef USE_UNION
-void ledstrip_set_color(char *address,char r,char g,char b);
-#else
 void ledstrip_set_color(struct cmd_set_color *pCmd);
-#endif
 void sub_func_set_color(char *cmdPointer);
 #endif

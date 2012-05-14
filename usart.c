@@ -61,7 +61,7 @@ void USARTsend_arr(char *array, char length)
 
 #ifdef TEST
 //*******  Sende-Zahl-als-String-Funktion  *************************************************
-void USARTsend_num(unsigned char input,unsigned char sign)
+void USARTsend_num(char input, char sign)
 {
    char temp;
    char h,z,e;

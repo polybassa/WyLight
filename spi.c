@@ -52,3 +52,4 @@ void spi_send_ledbuf(char *array)//!!! CHECK if GIE=0 during the sendroutine imp
 	}
 }
 
+
