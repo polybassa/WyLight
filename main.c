@@ -199,7 +199,6 @@ void get_commands()
 		j = 0;
 		// *** get new byte
 		new_byte = RingBufGet();
-		USARTsend(new_byte);
 		// *** do I wait for databytes?
 		if(gCmdBuf.frame_counter == 0)
 		{
