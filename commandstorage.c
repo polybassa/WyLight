@@ -3,6 +3,9 @@
  * - refactor functions to access and manage a buffer for led commands, which is stored in the eeprom
 **/
 
+#include "platform.h"
+#include "commandstorage.h"
+
 struct led_cmd* commandstorage_read(struct led_cmd *pDest, bit movePtr)
 {
 	//check parameter
@@ -13,7 +16,7 @@ struct led_cmd* commandstorage_read(struct led_cmd *pDest, bit movePtr)
 	if(0 == nextCmd) return 0;
 
 	//read command from eeprom
-	EEPROM_RD_BLK(pDest, (nextCmd - CmdWidth), CmdWidth);
+	EEPROM_RD_BLK((char*)pDest, (nextCmd - CmdWidth), CmdWidth);
 
 	//do we have to update the CmdPointer?
 	if(movePtr)

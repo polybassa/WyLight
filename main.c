@@ -3,14 +3,12 @@
 //Compiler CC5x/
 
 #define NO_CRC
-#define MPLAB_IDE
+#ifndef X86
+	#include "16F1936.h"
+#endif
 
 #include "platform.h"
 #pragma sharedAllocation
-
-//*********************** ENUMERATIONS *********************************************
-#define TRUE  1
-#define FALSE 0
 
 //*********************** INCLUDEDATEIEN *********************************************
 #include "RingBuf.h"		//clean
@@ -23,13 +21,9 @@
 #include "timer.h"
 
 //*********************** GLOBAL VARIABLES *******************************************
-static struct CommandBuffer gCmdBuf;
-static struct LedBuffer gLedBuf;
-// *** ERRORBITS
-static struct {
-		char crc_failure:1;
-		char eeprom_failure:1;
-}gERROR;
+struct CommandBuffer gCmdBuf;
+struct LedBuffer gLedBuf;
+struct ErrorBits gERROR;
 
 #ifndef X86
 //*********************** INTERRUPTSERVICEROUTINE ************************************
@@ -98,7 +92,8 @@ void init_all()
 #endif /* #ifndef X86 */
     
     // *** load globals variables
-    gERROR = 0;
+		gERROR.crc_failure = 0;
+    gERROR.eeprom_failure = 0;
 	ClearCmdBuf;
 	
 #ifndef X86

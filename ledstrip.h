@@ -5,7 +5,7 @@
 //20.04.2012
 //Compiler CC5x
 
-
+#include "commandstorage.h"
 #include "spi.h"
 #include "eeprom.h"
 
