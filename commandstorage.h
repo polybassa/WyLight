@@ -3,7 +3,8 @@
 
 #include "RingBuf.h"		
 #include "usart.h"			
-#include "eeprom.h"       	
+#include "eeprom.h"   
+#include "error.h"    	
 #include "crc.h"			
 
 #define CmdPointerAddr 0xff		// *** Address at EERPOM. Commandpointer indicates the nummer of commands
@@ -58,7 +59,7 @@ extern struct CommandBuffer gCmdBuf;
 
 //*********************** METHODS AND MACROS *********************************************
 #define CmdWidth sizeof(struct led_cmd)	// *** Number of Bytes for one command
-#define ClearCmdBuf  		\
+#define ClearCmdBuf(x)  		\
 {							\
 	gCmdBuf.cmd_counter = 0;\
 	gCmdBuf.frame_counter = 0; \
@@ -88,6 +89,11 @@ bit commandstorage_write(char *pSrc, char length);
 void commandstorage_get_commands();
 
 void commandstorage_execute_commands();
+
+/**
+*** Initialize commandstorage in eeprom
+**/
+void commandstorage_init();
 
 #endif /* #ifndef _COMMANDSTORAGE_H_ */
 

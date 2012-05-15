@@ -3,6 +3,9 @@
  * - refactor functions to access and manage a buffer for led commands, which is stored in the eeprom
 **/
 
+#include "platform.h"
+#include "commandstorage.h"
+
 struct led_cmd* commandstorage_read(struct led_cmd *pDest, bit movePtr)
 {
 	//check parameter
@@ -13,7 +16,7 @@ struct led_cmd* commandstorage_read(struct led_cmd *pDest, bit movePtr)
 	if(0 == nextCmd) return 0;
 
 	//read command from eeprom
-	EEPROM_RD_BLK(pDest, (nextCmd - CmdWidth), CmdWidth);
+	EEPROM_RD_BLK((char*)pDest, (nextCmd - CmdWidth), CmdWidth);
 
 	//do we have to update the CmdPointer?
 	if(movePtr)
@@ -47,7 +50,7 @@ void commandstorage_get_commands()
 	{
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
-		ClearCmdBuf;
+		ClearCmdBuf();
 	}
 
 	if(RingBufIsNotEmpty)
@@ -179,3 +182,17 @@ void commandstorage_execute_commands()
 		}
 	}
 }
+
+void commandstorage_init()
+{
+	/** EEPROM contains FF in every cell after inital start,
+	*** so I have to delete the pointer address
+	*** otherwise the PIC thinks he has the EEPROM full with commands
+	**/
+	if (EEPROM_RD(CmdPointerAddr) == 0xff)
+		EEPROM_WR(CmdPointerAddr, 0);
+
+	// set loop pointer address to start
+	EEPROM_WR(CmdLoopPointerAddr, 0);
+}
+

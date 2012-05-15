@@ -3,14 +3,12 @@
 //Compiler CC5x/
 
 #define NO_CRC
-#define MPLAB_IDE
+#ifndef X86
+	#include "16F1936.h"
+#endif
 
 #include "platform.h"
 #pragma sharedAllocation
-
-//*********************** ENUMERATIONS *********************************************
-#define TRUE  1
-#define FALSE 0
 
 //*********************** INCLUDEDATEIEN *********************************************
 #include "RingBuf.h"		//clean
@@ -23,13 +21,9 @@
 #include "timer.h"
 
 //*********************** GLOBAL VARIABLES *******************************************
-static struct CommandBuffer gCmdBuf;
-static struct LedBuffer gLedBuf;
-// *** ERRORBITS
-static struct {
-		char crc_failure:1;
-		char eeprom_failure:1;
-}gERROR;
+struct CommandBuffer gCmdBuf;
+struct LedBuffer gLedBuf;
+struct ErrorBits gERROR;
 
 #ifndef X86
 //*********************** INTERRUPTSERVICEROUTINE ************************************
@@ -50,96 +44,47 @@ interrupt InterruptRoutine(void)
 
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void init_all();
-void throw_errors();
-void execute_commands();
 
 //*********************** HAUPTPROGRAMM **********************************************
 void main(void)
 {
 	init_all();
-    while(1)
-    {	
-        throw_errors();
+	while(1)
+	{
+		throw_errors();
 		commandstorage_get_commands();
 		commandstorage_execute_commands();
-    }
+	}
 }
 //*********************** UNTERPROGRAMME **********************************************
 
 void init_all()
 {
-#ifndef X86
-	//OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
-	OSCCON = 0b01110010;
-#endif /* #ifndef X86 */
+	OsciInit();
 	RingBufInit();
-	//initialise UART interface
 	USARTinit();
 	spi_init();
 	ledstrip_init();
-
-/** EEPROM contains FF in every cell after inital start,
-*** so I have to delet the pointer address
-*** otherwise the PIC thinks he has the EEPROM full with commands
-**/
-	if (EEPROM_RD(CmdPointerAddr) == 0xff)
-	EEPROM_WR(CmdPointerAddr, 0);
-	EEPROM_WR(CmdLoopPointerAddr, 0);
-	
-#ifndef X86
-	//Ausgang für FET initalisieren
-	TRISC.0 = 0;
-	//Spannungsversorgung für LED's einschalten
-	PORTC.0 = 0;
-
-	//To Factory Restore WLAN Modul
-	//TRISA.0 = 0;
-	//PORTA.0 = 1;
-#endif /* #ifndef X86 */
+	commandstorage_init();
+	InitFET();
+	PowerOnLEDs();
+	//FactoryRestoreWLAN();
     
-    // *** load globals variables
-    gERROR = 0;
-	ClearCmdBuf;
+  ErrorInit();
+	ClearCmdBuf();	
+	AllowInterrupts();
 	
-#ifndef X86
-	// *** allow interrupts
-	RCIE=1;
-	PEIE=1;
-	GIE=1;
-#endif /* #ifndef X86 */
 	// *** send ready after init
 	USARTsend('R');
 	USARTsend('D');
 	USARTsend('Y');
 }
 
-void throw_errors()
-{
-	if(RingBufHasError) 
-	{
-		// *** if a RingBufError occure, I have to throw away the current command,
-		// *** because the last byte was not saved. Commandstring is inconsistent
-		ClearCmdBuf;
-		USARTsend_str(" ERROR: Receivebuffer full");
-		// *** Re-init the Ringbuffer to get a consistent commandstring and reset error
-		RingBufInit();
-	}
-	if(gERROR.crc_failure)
-	{
-		USARTsend_str(" ERROR: CRC-Check failed");
-		gERROR.crc_failure = 0;
-	}
-	if(gERROR.eeprom_failure)
-	{
-		USARTsend_str(" ERROR: EEPROM is full");
-		gERROR.eeprom_failure = 0;
-	}
-}
-
 // cc5xfree is a bit stupid so we include the other implementation files here
 #ifndef X86
 #include "crc.c"
 #include "eeprom.c"
+#include "error.c"
 #include "ledstrip.c"
 #include "RingBuf.c"
 #include "spi.c"
