@@ -25,7 +25,15 @@ struct CommandBuffer gCmdBuf;
 struct LedBuffer gLedBuf;
 struct ErrorBits gERROR;
 
-#ifndef X86
+#ifdef X86
+void InterruptRoutine(void)
+{
+	for(;;)
+	{
+		if(!RingBufHasError) RingBufPut(getchar());
+	}
+}
+#else
 //*********************** INTERRUPTSERVICEROUTINE ************************************
 #pragma origin 4					//Adresse des Interrupts	
 interrupt InterruptRoutine(void)
@@ -40,7 +48,7 @@ interrupt InterruptRoutine(void)
 		}
 	}
 }
-#endif /* #ifndef X86 */
+#endif /* #ifdef X86 */
 
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void init_all();
@@ -49,6 +57,12 @@ void init_all();
 void main(void)
 {
 	init_all();
+#ifdef X86
+	gl_start();
+	#include <pthread.h>
+	pthread_t isrThread;
+	pthread_create(&isrThread, 0, InterruptRoutine, 0);
+#endif /* #ifdef X86 */
 	while(1)
 	{
 		throw_errors();
