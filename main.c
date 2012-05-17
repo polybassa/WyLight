@@ -3,9 +3,6 @@
 //Compiler CC5x/
 
 #define NO_CRC
-#ifndef X86
-	#include "16F1936.h"
-#endif
 
 #include "platform.h"
 #pragma sharedAllocation
@@ -70,7 +67,7 @@ void init_all()
 	PowerOnLEDs();
 	//FactoryRestoreWLAN();
     
-  ErrorInit();
+	ErrorInit();
 	ClearCmdBuf();	
 	AllowInterrupts();
 	

@@ -128,12 +128,12 @@ void commandstorage_get_commands()
 #ifndef X86
 						case SET_ON: 
 							{
-								BCF(PORTC.0); 
+								PowerOnLEDs();
 								return;
 								}
 						case SET_OFF: 
 							{
-								BSF(PORTC.0); 
+								PowerOffLEDs();
 								return;
 							}
 #endif /* #ifndef X86 */

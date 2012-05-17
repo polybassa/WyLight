@@ -21,5 +21,6 @@
 	#define InitFET(x) TRISC.0 = 0; //Ausgang für FET initalisieren
 	#define OsciInit(x) OSCCON = 0b01110010; //OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
 	#define PowerOnLEDs(x) PORTC.0 = 0; //Spannungsversorgung für LED's einschalten
+	#define PowerOffLEDs(x) PORTC.0 = 1; //Spannungsversorgung für LED's ausschaltenP
 #endif
 #endif /* #ifndef _PLATFORM_H_ */

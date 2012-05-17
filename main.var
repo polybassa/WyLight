@@ -1,5 +1,5 @@
 
-CC5X Version 3.4E, Copyright (c) B Knudsen Data
+CC5X Version 3.4H, Copyright (c) B Knudsen Data
  * VARIABLE LIST FILE
 Source 'main.c'
 Chip = 16F1936
@@ -152,8 +152,8 @@ Size := number of bytes
  L  0  0x036      1  :  2:  data_3
  L  0  0x038      1  :  2:  data_4
  G  0  0x039     19  : 16:  gRingBuf
- G  0  0x04C     19  : 24:  gCmdBuf
- G  0  0x05F      1  :  7:  gERROR
+ G  0  0x04C      1  :  8:  gERROR
+ G  0  0x04D     19  : 24:  gCmdBuf
  G  0  0x060     96  :  1:  gLedBuf
  L  -  0x07F      1  :  2<> length_5
  L  -  0x07F      1  :  3<> array_5

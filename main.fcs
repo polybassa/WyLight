@@ -1,5 +1,5 @@
 
-CC5X Version 3.4E, Copyright (c) B Knudsen Data.
+CC5X Version 3.4H, Copyright (c) B Knudsen Data.
 * FUNCTION CALL STRUCTURE
 
 F: InterruptRoutine       :#0  : p0
@@ -18,18 +18,10 @@ F: init_all               :#1  : p0 <- p0
     USARTinit             : #1  : p0 -> p0
     spi_init              : #1  : p0 -> p0
     ledstrip_init         : #1  : p0 -> p0
-    EEPROM_RD             : #4  : p0 -> p0
-    EEPROM_WR             : #6  : p0 -> p0
-    EEPROM_WR             : #6  : p0 -> p0
+    commandstorage_init   : #1  : p0 -> p0
     USARTsend             : #7  : p0 -> p0
     USARTsend             : #7  : p0 -> p0
     USARTsend             : #7  : p0 -> p0
-
-F: throw_errors           :#1  : p0 <- p0 
-    USARTsend_str         : #3  : p0 -> p0
-    RingBufInit           : #2  : p0 -> p0
-    USARTsend_str         : #3  : p0 -> p0
-    USARTsend_str         : #3  : p0 -> p0
 
 F: addCRC                 :#4  : p0
 
@@ -47,6 +39,12 @@ F: EEPROM_WR_BLK          :#1  : p0 <- p0
 
 F: EEPROM_RD_BLK          :#1  : p0 <- p0 
     EEPROM_RD             : #4  : p0 -> p0
+
+F: throw_errors           :#1  : p0 <- p0 
+    USARTsend_str         : #3  : p0 -> p0
+    RingBufInit           : #2  : p0 -> p0
+    USARTsend_str         : #3  : p0 -> p0
+    USARTsend_str         : #3  : p0 -> p0
 
 F: ledstrip_init          :#1  : p0 <- p0 
 
@@ -106,6 +104,11 @@ F: commandstorage_execute_commands :#1  : p0 <- p0
     commandstorage_read   : #1  : p0 -> p0
     ledstrip_set_color    : #1  : p0 -> p0
 
+F: commandstorage_init    :#1  : p0 <- p0 
+    EEPROM_RD             : #4  : p0 -> p0
+    EEPROM_WR             : #6  : p0 -> p0
+    EEPROM_WR             : #6  : p0 -> p0
+
 
  L1  InterruptRoutine
  L2    RingBufPut
@@ -116,9 +119,10 @@ F: commandstorage_execute_commands :#1  : p0 <- p0
  L2      USARTinit
  L2      spi_init
  L2      ledstrip_init
- L2      EEPROM_RD
- L2      EEPROM_WR
- L2      EEPROM_WR
+ L2      commandstorage_init
+ L3        EEPROM_RD
+ L3        EEPROM_WR
+ L2        EEPROM_WR [T-GOTO]
  L2      USARTsend
  L2      USARTsend
  L1      USARTsend [T-GOTO]

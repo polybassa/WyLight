@@ -5,3 +5,5 @@ WiFly_Light.mcw.zip
 include_files/not_used
 Commands.txt
 main.cod
+main.hex
+main.occ
