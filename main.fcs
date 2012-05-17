@@ -1,5 +1,5 @@
 
-CC5X Version 3.4H, Copyright (c) B Knudsen Data.
+CC5X Version 3.4E, Copyright (c) B Knudsen Data.
 * FUNCTION CALL STRUCTURE
 
 F: InterruptRoutine       :#0  : p0
@@ -9,6 +9,7 @@ F: _const1                :#2  : p0
 
 F: main                   :#0  : p0
     init_all              : #1  : p0 -> p0
+    Rn171FactoryRestore   : #1  : p0 -> p0
     throw_errors          : #1  : p0 -> p0
     commandstorage_get_commands: #1  : p0 -> p0
     commandstorage_execute_commands: #1  : p0 -> p0
@@ -19,9 +20,9 @@ F: init_all               :#1  : p0 <- p0
     spi_init              : #1  : p0 -> p0
     ledstrip_init         : #1  : p0 -> p0
     commandstorage_init   : #1  : p0 -> p0
-    USARTsend             : #7  : p0 -> p0
-    USARTsend             : #7  : p0 -> p0
-    USARTsend             : #7  : p0 -> p0
+    USARTsend             : #10 : p0 -> p0
+    USARTsend             : #10 : p0 -> p0
+    USARTsend             : #10 : p0 -> p0
 
 F: addCRC                 :#4  : p0
 
@@ -41,10 +42,10 @@ F: EEPROM_RD_BLK          :#1  : p0 <- p0
     EEPROM_RD             : #4  : p0 -> p0
 
 F: throw_errors           :#1  : p0 <- p0 
-    USARTsend_str         : #3  : p0 -> p0
+    USARTsend_str         : #6  : p0 -> p0
     RingBufInit           : #2  : p0 -> p0
-    USARTsend_str         : #3  : p0 -> p0
-    USARTsend_str         : #3  : p0 -> p0
+    USARTsend_str         : #6  : p0 -> p0
+    USARTsend_str         : #6  : p0 -> p0
 
 F: ledstrip_init          :#1  : p0 <- p0 
 
@@ -69,15 +70,15 @@ F: spi_send_ledbuf        :#1  : p0 <- p0
 
 F: USARTinit              :#1  : p0 <- p0 
 
-F: USARTsend              :#7  : p0
+F: USARTsend              :#10 : p0
 
-F: USARTsend_str          :#3  : p0
+F: USARTsend_str          :#6  : p0
     _const1               : #2  : p0 -> p0
-    USARTsend             : #7  : p0 -> p0
+    USARTsend             : #10 : p0 -> p0
     _const1               : #2  : p0 -> p0
 
 F: USARTsend_arr          :#0  : p0
-    USARTsend             : #7  : p0 -> p0
+    USARTsend             : #10 : p0 -> p0
 
 F: commandstorage_read    :#1  : p0 <- p0 
     EEPROM_RD             : #4  : p0 -> p0
@@ -97,8 +98,8 @@ F: commandstorage_get_commands :#1  : p0 <- p0
     addCRC                : #4  : p0 -> p0
     EEPROM_WR             : #6  : p0 -> p0
     commandstorage_write  : #1  : p0 -> p0
-    USARTsend             : #7  : p0 -> p0
-    USARTsend             : #7  : p0 -> p0
+    USARTsend             : #10 : p0 -> p0
+    USARTsend             : #10 : p0 -> p0
 
 F: commandstorage_execute_commands :#1  : p0 <- p0 
     commandstorage_read   : #1  : p0 -> p0
@@ -108,6 +109,14 @@ F: commandstorage_init    :#1  : p0 <- p0
     EEPROM_RD             : #4  : p0 -> p0
     EEPROM_WR             : #6  : p0 -> p0
     EEPROM_WR             : #6  : p0 -> p0
+
+F: Rn171FactoryRestore    :#1  : p0 <- p0 
+    USARTsend             : #10 : p0 -> p0
+    USARTsend             : #10 : p0 -> p0
+    USARTsend             : #10 : p0 -> p0
+    USARTsend_str         : #6  : p0 -> p0
+    USARTsend_str         : #6  : p0 -> p0
+    USARTsend_str         : #6  : p0 -> p0
 
 
  L1  InterruptRoutine
@@ -126,11 +135,18 @@ F: commandstorage_init    :#1  : p0 <- p0
  L2      USARTsend
  L2      USARTsend
  L1      USARTsend [T-GOTO]
- L1    throw_errors
+ L1    Rn171FactoryRestore
+ L2      USARTsend
+ L2      USARTsend
+ L2      USARTsend
  L2      USARTsend_str
  L3        _const1
  L3        USARTsend
  L3        _const1
+ L2      USARTsend_str ..
+ L1      USARTsend_str [T-GOTO] ..
+ L1    throw_errors
+ L2      USARTsend_str ..
  L2      RingBufInit
  L2      USARTsend_str ..
  L2      USARTsend_str ..

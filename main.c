@@ -3,19 +3,19 @@
 //Compiler CC5x/
 
 #define NO_CRC
-
-#include "platform.h"
 #pragma sharedAllocation
 
 //*********************** INCLUDEDATEIEN *********************************************
+#include "platform.h"
 #include "RingBuf.h"		//clean
 #include "usart.h"			//clean
 #include "eeprom.h"       	//clean 
 #include "crc.h"			//clean
-#include "commandstorage.h"
+#include "commandstorage.h" //under construction
 #include "ledstrip.h"		//clean
 #include "spi.h"			//clean
-#include "timer.h"
+#include "timer.h"			//under construction
+#include "rn_171.h"
 
 //*********************** GLOBAL VARIABLES *******************************************
 struct CommandBuffer gCmdBuf;
@@ -46,6 +46,8 @@ void init_all();
 void main(void)
 {
 	init_all();
+	//FactoryRestoreWLAN();
+	//Rn171FactoryRestore();
 	while(1)
 	{
 		throw_errors();
@@ -65,7 +67,6 @@ void init_all()
 	commandstorage_init();
 	InitFET();
 	PowerOnLEDs();
-	//FactoryRestoreWLAN();
     
 	ErrorInit();
 	ClearCmdBuf();	
@@ -88,4 +89,5 @@ void init_all()
 #include "timer.c"
 #include "usart.c"
 #include "commandstorage.c"
+#include "rn_171.c"
 #endif /* #ifndef X86 */

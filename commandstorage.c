@@ -1,8 +1,3 @@
-/** Changelog
- * 2012-05-08 pb:
- * - refactor functions to access and manage a buffer for led commands, which is stored in the eeprom
-**/
-
 #include "platform.h"
 #include "commandstorage.h"
 

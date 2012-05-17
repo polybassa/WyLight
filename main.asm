@@ -1,7 +1,7 @@
 
-; CC5X Version 3.4H, Copyright (c) B Knudsen Data
+; CC5X Version 3.4E, Copyright (c) B Knudsen Data
 ; C compiler for the PICmicro family
-; ************  17. May 2012  10:30  *************
+; ************  17. May 2012  13:59  *************
 
 	processor  16F1936
 	radix  DEC
@@ -128,19 +128,19 @@ ci          EQU   0x24
 			;//Compiler CC5x/
 			;
 			;#define NO_CRC
-			;
-			;#include "platform.h"
 			;#pragma sharedAllocation
 			;
 			;//*********************** INCLUDEDATEIEN *********************************************
+			;#include "platform.h"
 			;#include "RingBuf.h"		//clean
 			;#include "usart.h"			//clean
 			;#include "eeprom.h"       	//clean 
 			;#include "crc.h"			//clean
-			;#include "commandstorage.h"
+			;#include "commandstorage.h" //under construction
 			;#include "ledstrip.h"		//clean
 			;#include "spi.h"			//clean
-			;#include "timer.h"
+			;#include "timer.h"			//under construction
+			;#include "rn_171.h"
 			;
 			;//*********************** GLOBAL VARIABLES *******************************************
 			;struct CommandBuffer gCmdBuf;
@@ -253,10 +253,27 @@ m003	MOVLB 3
 	DW    0x1073
 	DW    0x3AE6
 	DW    0x366C
-	DW    0x0
+	DW    0x3600
+	DW    0x30EF
+	DW    0x1064
+	DW    0x37E3
+	DW    0x336E
+	DW    0x33E9
+	DW    0x375F
+	DW    0x3669
+	DW    0x73
+	DW    0x30F3
+	DW    0x32F6
+	DW    0x3900
+	DW    0x3165
+	DW    0x37EF
+	DW    0x74
 main
 			;	init_all();
 	CALL  init_all
+			;	//FactoryRestoreWLAN();
+			;	Rn171FactoryRestore();
+	CALL  Rn171FactoryRestore
 			;	while(1)
 			;	{
 			;		throw_errors();
@@ -293,7 +310,6 @@ init_all
 			;	PowerOnLEDs();
 	MOVLB 0
 	BCF   PORTC,0
-			;	//FactoryRestoreWLAN();
 			;    
 			;	ErrorInit();
 	BCF   gERROR,0
@@ -1240,11 +1256,6 @@ m033	MOVF  length_5,W
 m034	RETURN
 
   ; FILE commandstorage.c
-			;/** Changelog
-			; * 2012-05-08 pb:
-			; * - refactor functions to access and manage a buffer for led commands, which is stored in the eeprom
-			;**/
-			;
 			;#include "platform.h"
 			;#include "commandstorage.h"
 			;
@@ -1671,46 +1682,88 @@ m050	MOVLW 253
 	GOTO  EEPROM_WR
 			;}
 
+  ; FILE rn_171.c
+			;#include "usart.h"
+			;#include "rn_171.h"
+			;
+			;void Rn171FactoryRestore()
+			;{
+Rn171FactoryRestore
+			;	USARTsend('$');
+	MOVLW 36
+	CALL  USARTsend
+			;	USARTsend('$');
+	MOVLW 36
+	CALL  USARTsend
+			;	USARTsend('$');
+	MOVLW 36
+	CALL  USARTsend
+			;	
+			;	USARTsend_str("load config_nils");
+	MOVLW 75
+	MOVLB 0
+	MOVWF string
+	CALL  USARTsend_str
+			;	USARTsend_str("save");
+	MOVLW 92
+	MOVLB 0
+	MOVWF string
+	CALL  USARTsend_str
+			;	USARTsend_str("reboot");
+	MOVLW 97
+	MOVLB 0
+	MOVWF string
+	GOTO  USARTsend_str
+
+  ; FILE main.c
+			;#include "RingBuf.c"
+			;#include "spi.c"
+			;#include "timer.c"
+			;#include "usart.c"
+			;#include "commandstorage.c"
+			;#include "rn_171.c"
+
 	END
 
 
 ; *** KEY INFO ***
 
-; 0x01BF P0    5 word(s)  0 % : RingBufInit
-; 0x01C4 P0   12 word(s)  0 % : RingBufGet
-; 0x01D0 P0   21 word(s)  1 % : RingBufPut
-; 0x022D P0   19 word(s)  0 % : USARTinit
-; 0x0240 P0   10 word(s)  0 % : USARTsend
-; 0x024A P0   19 word(s)  0 % : USARTsend_str
-; 0x025D P0   18 word(s)  0 % : USARTsend_arr
-; 0x00DD P0   34 word(s)  1 % : EEPROM_WR
-; 0x00FF P0   13 word(s)  0 % : EEPROM_RD
-; 0x010C P0   25 word(s)  1 % : EEPROM_WR_BLK
-; 0x0125 P0   26 word(s)  1 % : EEPROM_RD_BLK
-; 0x0074 P0   40 word(s)  1 % : addCRC
-; 0x009C P0   45 word(s)  2 % : CRC
-; 0x00C9 P0   20 word(s)  0 % : newCRC
-; 0x013F P0   25 word(s)  1 % : throw_errors
-; 0x026F P0   30 word(s)  1 % : commandstorage_read
-; 0x028D P0   32 word(s)  1 % : commandstorage_write
-; 0x02AD P0  125 word(s)  6 % : commandstorage_get_commands
-; 0x032A P0   26 word(s)  1 % : commandstorage_execute_commands
-; 0x0344 P0   15 word(s)  0 % : commandstorage_init
-; 0x01E5 P0   11 word(s)  0 % : spi_init
-; 0x01F0 P0   11 word(s)  0 % : spi_send
-; 0x01FB P0   18 word(s)  0 % : spi_send_arr
-; 0x020D P0   32 word(s)  1 % : spi_send_ledbuf
-; 0x0158 P0   18 word(s)  0 % : ledstrip_init
-; 0x016A P0   85 word(s)  4 % : ledstrip_set_color
+; 0x01CE P0    5 word(s)  0 % : RingBufInit
+; 0x01D3 P0   12 word(s)  0 % : RingBufGet
+; 0x01DF P0   21 word(s)  1 % : RingBufPut
+; 0x023C P0   19 word(s)  0 % : USARTinit
+; 0x024F P0   10 word(s)  0 % : USARTsend
+; 0x0259 P0   19 word(s)  0 % : USARTsend_str
+; 0x026C P0   18 word(s)  0 % : USARTsend_arr
+; 0x00EC P0   34 word(s)  1 % : EEPROM_WR
+; 0x010E P0   13 word(s)  0 % : EEPROM_RD
+; 0x011B P0   25 word(s)  1 % : EEPROM_WR_BLK
+; 0x0134 P0   26 word(s)  1 % : EEPROM_RD_BLK
+; 0x0083 P0   40 word(s)  1 % : addCRC
+; 0x00AB P0   45 word(s)  2 % : CRC
+; 0x00D8 P0   20 word(s)  0 % : newCRC
+; 0x014E P0   25 word(s)  1 % : throw_errors
+; 0x027E P0   30 word(s)  1 % : commandstorage_read
+; 0x029C P0   32 word(s)  1 % : commandstorage_write
+; 0x02BC P0  125 word(s)  6 % : commandstorage_get_commands
+; 0x0339 P0   26 word(s)  1 % : commandstorage_execute_commands
+; 0x0353 P0   15 word(s)  0 % : commandstorage_init
+; 0x01F4 P0   11 word(s)  0 % : spi_init
+; 0x01FF P0   11 word(s)  0 % : spi_send
+; 0x020A P0   18 word(s)  0 % : spi_send_arr
+; 0x021C P0   32 word(s)  1 % : spi_send_ledbuf
+; 0x0167 P0   18 word(s)  0 % : ledstrip_init
+; 0x0179 P0   85 word(s)  4 % : ledstrip_set_color
+; 0x0362 P0   18 word(s)  0 % : Rn171FactoryRestore
 ; 0x0004 P0   14 word(s)  0 % : InterruptRoutine
-; 0x005A P0   26 word(s)  1 % : init_all
-; 0x0055 P0    5 word(s)  0 % : main
-; 0x0012 P0   67 word(s)  3 % : _const1
+; 0x0069 P0   26 word(s)  1 % : init_all
+; 0x0063 P0    6 word(s)  0 % : main
+; 0x0012 P0   81 word(s)  3 % : _const1
 
 ; RAM usage: 160 bytes (25 local), 352 bytes free
 ; Maximum call level: 4 (+2 for interrupt)
-;  Codepage 0 has  848 word(s) :  41 %
+;  Codepage 0 has  881 word(s) :  43 %
 ;  Codepage 1 has    0 word(s) :   0 %
 ;  Codepage 2 has    0 word(s) :   0 %
 ;  Codepage 3 has    0 word(s) :   0 %
-; Total of 848 code words (10 %)
+; Total of 881 code words (10 %)
