@@ -19,9 +19,9 @@ F: init_all               :#1  : p0 <- p0
     spi_init              : #1  : p0 -> p0
     ledstrip_init         : #1  : p0 -> p0
     commandstorage_init   : #1  : p0 -> p0
-    USARTsend             : #10 : p0 -> p0
-    USARTsend             : #10 : p0 -> p0
-    USARTsend             : #10 : p0 -> p0
+    USARTsend             : #7  : p0 -> p0
+    USARTsend             : #7  : p0 -> p0
+    USARTsend             : #7  : p0 -> p0
 
 F: addCRC                 :#4  : p0
 
@@ -41,15 +41,50 @@ F: EEPROM_RD_BLK          :#1  : p0 <- p0
     EEPROM_RD             : #4  : p0 -> p0
 
 F: throw_errors           :#1  : p0 <- p0 
-    USARTsend_str         : #6  : p0 -> p0
+    USARTsend_str         : #3  : p0 -> p0
     RingBufInit           : #2  : p0 -> p0
-    USARTsend_str         : #6  : p0 -> p0
-    USARTsend_str         : #6  : p0 -> p0
+    USARTsend_str         : #3  : p0 -> p0
+    USARTsend_str         : #3  : p0 -> p0
+
+F: _mult8x8               :#1  : p0 <- p0 
+
+F: _multS8x8              :#0  : p0
+
+F: _multU16x8             :#0  : p0
+
+F: _mult16x16             :#0  : p0
+
+F: _divU16_8              :#2  : p0
+
+F: _divU16_16             :#0  : p0
+
+F: _divS16_8              :#0  : p0
+
+F: _divS16_16             :#0  : p0
+
+F: _remU16_8              :#0  : p0
+
+F: _remU16_16             :#0  : p0
+
+F: _remS16_8              :#0  : p0
+
+F: _remS16_16             :#0  : p0
 
 F: ledstrip_init          :#1  : p0 <- p0 
 
 F: ledstrip_set_color     :#1  : p0 <- p0 
     spi_send_ledbuf       : #1  : p0 -> p0
+
+F: ledstrip_set_fade      :#0  : p0
+    timer_config          : #1  : p0 -> p0
+    ledstrip_get_vect     : #3  : p0 -> p0
+    ledstrip_get_vect     : #3  : p0 -> p0
+    ledstrip_get_vect     : #3  : p0 -> p0
+
+F: ledstrip_get_vect      :#3  : p0
+    _divU16_8             : #2  : p0 -> p0
+    _divU16_8             : #2  : p0 -> p0
+    _mult8x8              : #1  : p0 -> p0
 
 F: RingBufInit            :#2  : p0
 
@@ -67,17 +102,21 @@ F: spi_send_arr           :#0  : p0
 F: spi_send_ledbuf        :#1  : p0 <- p0 
     spi_send              : #2  : p0 -> p0
 
+F: timer_init             :#0  : p0
+
+F: timer_config           :#1  : p0 <- p0 
+
 F: USARTinit              :#1  : p0 <- p0 
 
-F: USARTsend              :#10 : p0
+F: USARTsend              :#7  : p0
 
-F: USARTsend_str          :#6  : p0
+F: USARTsend_str          :#3  : p0
     _const1               : #2  : p0 -> p0
-    USARTsend             : #10 : p0 -> p0
+    USARTsend             : #7  : p0 -> p0
     _const1               : #2  : p0 -> p0
 
 F: USARTsend_arr          :#0  : p0
-    USARTsend             : #10 : p0 -> p0
+    USARTsend             : #7  : p0 -> p0
 
 F: commandstorage_read    :#1  : p0 <- p0 
     EEPROM_RD             : #4  : p0 -> p0
@@ -97,8 +136,8 @@ F: commandstorage_get_commands :#1  : p0 <- p0
     addCRC                : #4  : p0 -> p0
     EEPROM_WR             : #6  : p0 -> p0
     commandstorage_write  : #1  : p0 -> p0
-    USARTsend             : #10 : p0 -> p0
-    USARTsend             : #10 : p0 -> p0
+    USARTsend             : #7  : p0 -> p0
+    USARTsend             : #7  : p0 -> p0
 
 F: commandstorage_execute_commands :#1  : p0 <- p0 
     commandstorage_read   : #1  : p0 -> p0
@@ -108,14 +147,6 @@ F: commandstorage_init    :#1  : p0 <- p0
     EEPROM_RD             : #4  : p0 -> p0
     EEPROM_WR             : #6  : p0 -> p0
     EEPROM_WR             : #6  : p0 -> p0
-
-F: Rn171FactoryRestore    :#0  : p0
-    USARTsend             : #10 : p0 -> p0
-    USARTsend             : #10 : p0 -> p0
-    USARTsend             : #10 : p0 -> p0
-    USARTsend_str         : #6  : p0 -> p0
-    USARTsend_str         : #6  : p0 -> p0
-    USARTsend_str         : #6  : p0 -> p0
 
 
  L1  InterruptRoutine

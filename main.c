@@ -15,7 +15,6 @@
 #include "ledstrip.h"		//clean
 #include "spi.h"			//clean
 #include "timer.h"			//under construction
-#include "rn_171.h"
 
 //*********************** GLOBAL VARIABLES *******************************************
 struct CommandBuffer gCmdBuf;
@@ -52,7 +51,11 @@ void main(void)
 	{
 		throw_errors();
 		commandstorage_get_commands();
-		commandstorage_execute_commands();
+		if(gLedBuf.led_operation_running)
+			//routine for set color of fade operation
+			//or running light operation
+		else
+			commandstorage_execute_commands();
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************
@@ -89,5 +92,4 @@ void init_all()
 #include "timer.c"
 #include "usart.c"
 #include "commandstorage.c"
-#include "rn_171.c"
 #endif /* #ifndef X86 */

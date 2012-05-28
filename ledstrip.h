@@ -12,9 +12,10 @@
 #define NUM_OF_LED 32
 
 struct LedBuffer{
-	char led_array[NUM_OF_LED*3];
-	char led_vector[NUM_OF_LED*3];
-	char led_destination[NUM_OF_LED*3];
+	uns8 led_array[NUM_OF_LED*3];
+	int8 led_vector[NUM_OF_LED*3];
+	uns8 led_destination[NUM_OF_LED*3];
+	char led_operation_running:1;
 	};
 
 extern struct LedBuffer gLedBuf;

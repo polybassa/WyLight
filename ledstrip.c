@@ -3,6 +3,9 @@
 //Compiler CC5x 
 
 #include "ledstrip.h"
+#include "MATH16.H"
+//private function
+int8 ledstrip_get_vect(char destinationvalue, char currentvalue);
 
 void ledstrip_init(void)
 {
@@ -73,21 +76,33 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 	{	
 		if(0 != (*address & mask))
 		{
+			temp = gLedBuf.led_array[k];
+			temp = ledstrip_get_vect(b,temp);
+			gLedBuf.led_vector[k] = temp;
 			gLedBuf.led_destination[k] = b;
 			k++;
+			temp = gLedBuf.led_array[k];
+			temp = ledstrip_get_vect(g,temp);
+			gLedBuf.led_vector[k] = temp;
 			gLedBuf.led_destination[k] = g;
 			k++;
+			temp = gLedBuf.led_array[k];
+			temp = ledstrip_get_vect(r,temp);
+			gLedBuf.led_vector[k] = temp;
 			gLedBuf.led_destination[k] = r;
 		}
 		else 
 		{ 
 			temp = gLedBuf.led_array[k];
+			gLedBuf.led_vector[k] = 0;
 			gLedBuf.led_destination[k] = temp;
 			k++;
 			temp = gLedBuf.led_array[k];
+			gLedBuf.led_vector[k] = 0;
 			gLedBuf.led_destination[k] = temp;
 			k++;
 			temp = gLedBuf.led_array[k];
+			gLedBuf.led_vector[k] = 0;
 			gLedBuf.led_destination[k] = temp;
 		}
 #ifdef X86
@@ -102,4 +117,20 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 			mask= 0b00000001;
 		}
 	}
+	gLedBuf.led_operation_running = 1;
+}
+//This funktion returns a value between 1 - 15 that indicates how fast the color
+//from one led has to been changed during the fade operation
+//In bearbeitung, muss noch ausgefeilt werden.
+int8 ledstrip_get_vect(char destinationvalue, char currentvalue)
+{
+	char temp;
+	if(destinationvalue > currentvalue)
+	return temp = destinationvalue / currentvalue;
+	else
+	{
+		temp = currentvalue / destinationvalue;
+		return (-1 * temp);
+	}
+
 }
