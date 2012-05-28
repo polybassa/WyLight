@@ -6,4 +6,5 @@
 //Compiler CC5x
 
 void timer_init();
+void timer_config(char configvalues);
 #endif

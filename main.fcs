@@ -9,7 +9,6 @@ F: _const1                :#2  : p0
 
 F: main                   :#0  : p0
     init_all              : #1  : p0 -> p0
-    Rn171FactoryRestore   : #1  : p0 -> p0
     throw_errors          : #1  : p0 -> p0
     commandstorage_get_commands: #1  : p0 -> p0
     commandstorage_execute_commands: #1  : p0 -> p0
@@ -110,7 +109,7 @@ F: commandstorage_init    :#1  : p0 <- p0
     EEPROM_WR             : #6  : p0 -> p0
     EEPROM_WR             : #6  : p0 -> p0
 
-F: Rn171FactoryRestore    :#1  : p0 <- p0 
+F: Rn171FactoryRestore    :#0  : p0
     USARTsend             : #10 : p0 -> p0
     USARTsend             : #10 : p0 -> p0
     USARTsend             : #10 : p0 -> p0
@@ -135,18 +134,11 @@ F: Rn171FactoryRestore    :#1  : p0 <- p0
  L2      USARTsend
  L2      USARTsend
  L1      USARTsend [T-GOTO]
- L1    Rn171FactoryRestore
- L2      USARTsend
- L2      USARTsend
- L2      USARTsend
+ L1    throw_errors
  L2      USARTsend_str
  L3        _const1
  L3        USARTsend
  L3        _const1
- L2      USARTsend_str ..
- L1      USARTsend_str [T-GOTO] ..
- L1    throw_errors
- L2      USARTsend_str ..
  L2      RingBufInit
  L2      USARTsend_str ..
  L2      USARTsend_str ..
