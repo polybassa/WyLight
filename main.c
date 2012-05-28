@@ -15,7 +15,6 @@
 #include "ledstrip.h"		//clean
 #include "spi.h"			//clean
 #include "timer.h"			//under construction
-#include "rn_171.h"
 
 //*********************** GLOBAL VARIABLES *******************************************
 struct CommandBuffer gCmdBuf;
@@ -27,7 +26,7 @@ struct ErrorBits gERROR;
 #pragma origin 4					//Adresse des Interrupts	
 interrupt InterruptRoutine(void)
 {
-	if (RCIF)
+	if(RCIF)
 	{
 		if(!RingBufHasError) RingBufPut(RCREG);
 		else 
@@ -52,7 +51,10 @@ void main(void)
 	{
 		throw_errors();
 		commandstorage_get_commands();
-		commandstorage_execute_commands();
+		if(!(gLedBuf.led_fade_operation || gLedBuf.led_run_operation))
+			commandstorage_execute_commands();
+		if(TMR1IF)
+			if(gLedBuf.led_fade_operation)ledstrip_do_fade();
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************
@@ -89,5 +91,4 @@ void init_all()
 #include "timer.c"
 #include "usart.c"
 #include "commandstorage.c"
-#include "rn_171.c"
 #endif /* #ifndef X86 */
