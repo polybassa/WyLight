@@ -92,3 +92,4 @@ void init_all()
 #include "usart.c"
 #include "commandstorage.c"
 #endif /* #ifndef X86 */
+
