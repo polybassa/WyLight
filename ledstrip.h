@@ -13,7 +13,6 @@
 
 struct LedBuffer{
 	uns8 led_array[NUM_OF_LED*3];
-	int8 led_vector[NUM_OF_LED*3];
 	uns8 led_destination[NUM_OF_LED*3];
 	char led_fade_operation:1;
 	char led_run_operation:1;

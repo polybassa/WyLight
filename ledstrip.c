@@ -5,7 +5,7 @@
 #include "ledstrip.h"
 #include "MATH16.H"
 //private function
-int8 ledstrip_get_vect(char destinationvalue, char currentvalue);
+void ledstrip_get_distance(char destinationvalue, char currentvalue,char* max_distance);
 
 void ledstrip_init(void)
 {
@@ -59,8 +59,10 @@ void ledstrip_set_color(struct cmd_set_color *pCmd)
 	spi_send_ledbuf(&gLedBuf.led_array[0]);
 }
 /***
-* This funktion sets the destination color, the vector and configurates
+* This funktion sets the destination color configurates
 * the timer 1. If the settings are done, the bit led_fade_operation is 1.
+* To configurate the Timer the funktion calculates the maximal distance between
+* two values to calculate the time to fade by the maximal changens of one LED
 **/
 void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 {
@@ -68,41 +70,43 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 	char r = pCmd->red;
 	char g = pCmd->green;
 	char b = pCmd->blue;
-	timer_config(pCmd->timevalue);
 	
-	char k,mask,temp;
+	char k,mask,temp,max_distance;
+	//max_distance = 0;
 	mask = 0b00000001;
+	
 	for(k = 0; k < (NUM_OF_LED * 3); k++)
 	{	
 		if(0 != (*address & mask))
 		{
+#ifdef DEBUG
+			USARTsend('1');
+#endif
 			temp = gLedBuf.led_array[k];
-			temp = ledstrip_get_vect(b,temp);
-			gLedBuf.led_vector[k] = temp;
 			gLedBuf.led_destination[k] = b;
+			//ledstrip_get_distance(b,temp,&max_distance);
 			k++;
 			temp = gLedBuf.led_array[k];
-			temp = ledstrip_get_vect(g,temp);
-			gLedBuf.led_vector[k] = temp;
 			gLedBuf.led_destination[k] = g;
+			//ledstrip_get_distance(g,temp,&max_distance);
 			k++;
 			temp = gLedBuf.led_array[k];
-			temp = ledstrip_get_vect(r,temp);
-			gLedBuf.led_vector[k] = temp;
 			gLedBuf.led_destination[k] = r;
+			//ledstrip_get_distance(g,temp,&max_distance);
 		}
 		else 
 		{ 
+	#ifdef DEBUG
+	USARTsend('0');
+	#endif
+	// To Do finde lösung wie zwei fadeoperationen parallel laufen können
 			temp = gLedBuf.led_array[k];
-			gLedBuf.led_vector[k] = 0;
 			gLedBuf.led_destination[k] = temp;
 			k++;
 			temp = gLedBuf.led_array[k];
-			gLedBuf.led_vector[k] = 0;
 			gLedBuf.led_destination[k] = temp;
 			k++;
 			temp = gLedBuf.led_array[k];
-			gLedBuf.led_vector[k] = 0;
 			gLedBuf.led_destination[k] = temp;
 		}
 #ifdef X86
@@ -117,26 +121,57 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 			mask= 0b00000001;
 		}
 	}
+#ifdef DEBUG
+	USARTsend_str("timevalue:");
+	USARTsend_num(pCmd->timevalue,'#');
+#endif
+	timer_set_for_fade(pCmd->timevalue);
 	gLedBuf.led_fade_operation = 1;
 }
 
-//This funktion returns a value between 1 - 15 that indicates how fast the color
-//from one led has to been changed during the fade operation
-//In bearbeitung, muss noch ausgefeilt werden.
-int8 ledstrip_get_vect(char destinationvalue, char currentvalue)
+//This funktion calculates the distance between the current value of a Led and the 
+//destination value of a Led. Distance meens the steps to change. After calculation, 
+//check if there is a new maximal_value
+void ledstrip_get_distance(char destinationvalue, char currentvalue,char* max_distance)
 {
 	char temp;
 	if(destinationvalue > currentvalue)
-	return temp = destinationvalue / currentvalue;
+		temp = destinationvalue - currentvalue;
 	else
-	{
-		temp = currentvalue / destinationvalue;
-		return (-1 * temp);
-	}
-
+		temp = currentvalue - destinationvalue;
+		
+	if(temp > *max_distance) *max_distance = temp;
 }
 
 void ledstrip_do_fade()
 {
-
+	char fade_finish:1;
+	fade_finish = 1;
+	char temp_current,temp_destination;
+	
+	char i;
+	for(i = 0; i < (NUM_OF_LED*3);i++)
+	{
+		temp_current = gLedBuf.led_array[i];
+		temp_destination = gLedBuf.led_destination[i];
+		if(temp_current > temp_destination)
+		{
+			gLedBuf.led_array[i] = --temp_current;
+			fade_finish = 0;
+		}
+		else if(temp_current < temp_destination)	
+		{
+			gLedBuf.led_array[i] = ++temp_current;
+			fade_finish = 0;
+		}		
+	}	
+	if(fade_finish) 
+	{
+		gLedBuf.led_fade_operation = 0;
+		#ifdef DEBUG
+		USARTsend_str(" fade finish");
+		#endif
+	}
+	else 
+		spi_send_ledbuf(&gLedBuf.led_array[0]);
 }

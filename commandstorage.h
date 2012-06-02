@@ -65,9 +65,9 @@ extern struct CommandBuffer gCmdBuf;
 //*********************** METHODS AND MACROS *********************************************
 #define CmdWidth sizeof(struct led_cmd)	// *** Number of Bytes for one command
 #define ClearCmdBuf(x)  		\
-{							\
-	gCmdBuf.cmd_counter = 0;\
-	gCmdBuf.frame_counter = 0; \
+{								\
+	gCmdBuf.cmd_counter = 0;	\
+	gCmdBuf.frame_counter = 0;	\
 }
 
 /**

@@ -20,6 +20,7 @@ F: init_all               :#1  : p0 <- p0
     spi_init              : #1  : p0 -> p0
     ledstrip_init         : #1  : p0 -> p0
     commandstorage_init   : #1  : p0 -> p0
+    timer_init            : #1  : p0 -> p0
     USARTsend             : #7  : p0 -> p0
     USARTsend             : #7  : p0 -> p0
     USARTsend             : #7  : p0 -> p0
@@ -47,7 +48,7 @@ F: throw_errors           :#1  : p0 <- p0
     USARTsend_str         : #3  : p0 -> p0
     USARTsend_str         : #3  : p0 -> p0
 
-F: _mult8x8               :#1  : p0 <- p0 
+F: _mult8x8               :#0  : p0
 
 F: _multS8x8              :#0  : p0
 
@@ -55,7 +56,7 @@ F: _multU16x8             :#0  : p0
 
 F: _mult16x16             :#0  : p0
 
-F: _divU16_8              :#2  : p0
+F: _divU16_8              :#0  : p0
 
 F: _divU16_16             :#0  : p0
 
@@ -74,20 +75,15 @@ F: _remS16_16             :#0  : p0
 F: ledstrip_init          :#1  : p0 <- p0 
 
 F: ledstrip_set_color     :#1  : p0 <- p0 
-    spi_send_ledbuf       : #1  : p0 -> p0
+    spi_send_ledbuf       : #2  : p0 -> p0
 
-F: ledstrip_set_fade      :#0  : p0
-    timer_config          : #1  : p0 -> p0
-    ledstrip_get_vect     : #3  : p0 -> p0
-    ledstrip_get_vect     : #3  : p0 -> p0
-    ledstrip_get_vect     : #3  : p0 -> p0
+F: ledstrip_set_fade      :#1  : p0 <- p0 
+    timer_set_for_fade    : #1  : p0 -> p0
 
-F: ledstrip_get_vect      :#3  : p0
-    _divU16_8             : #2  : p0 -> p0
-    _divU16_8             : #2  : p0 -> p0
-    _mult8x8              : #1  : p0 -> p0
+F: ledstrip_get_distance  :#0  : p0
 
 F: ledstrip_do_fade       :#1  : p0 <- p0 
+    spi_send_ledbuf       : #2  : p0 -> p0
 
 F: RingBufInit            :#2  : p0
 
@@ -102,12 +98,12 @@ F: spi_send               :#2  : p0
 F: spi_send_arr           :#0  : p0
     spi_send              : #2  : p0 -> p0
 
-F: spi_send_ledbuf        :#1  : p0 <- p0 
+F: spi_send_ledbuf        :#2  : p0
     spi_send              : #2  : p0 -> p0
 
-F: timer_init             :#0  : p0
+F: timer_init             :#1  : p0 <- p0 
 
-F: timer_config           :#1  : p0 <- p0 
+F: timer_set_for_fade     :#1  : p0 <- p0 
 
 F: USARTinit              :#1  : p0 <- p0 
 
@@ -145,6 +141,7 @@ F: commandstorage_get_commands :#1  : p0 <- p0
 F: commandstorage_execute_commands :#1  : p0 <- p0 
     commandstorage_read   : #1  : p0 -> p0
     ledstrip_set_color    : #1  : p0 -> p0
+    ledstrip_set_fade     : #1  : p0 -> p0
 
 F: commandstorage_init    :#1  : p0 <- p0 
     EEPROM_RD             : #4  : p0 -> p0
@@ -165,6 +162,7 @@ F: commandstorage_init    :#1  : p0 <- p0
  L3        EEPROM_RD
  L3        EEPROM_WR
  L2        EEPROM_WR [T-GOTO]
+ L2      timer_init
  L2      USARTsend
  L2      USARTsend
  L1      USARTsend [T-GOTO]
@@ -199,5 +197,8 @@ F: commandstorage_init    :#1  : p0 <- p0
  L2      ledstrip_set_color
  L2        spi_send_ledbuf [T-GOTO]
  L3          spi_send
+ L2      ledstrip_set_fade
+ L3        timer_set_for_fade
  L1    ledstrip_do_fade
+ L1      spi_send_ledbuf [T-GOTO] ..
 

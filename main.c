@@ -20,6 +20,7 @@
 struct CommandBuffer gCmdBuf;
 struct LedBuffer gLedBuf;
 struct ErrorBits gERROR;
+char gTimecounter;
 
 #ifndef X86
 //*********************** INTERRUPTSERVICEROUTINE ************************************
@@ -34,6 +35,10 @@ interrupt InterruptRoutine(void)
 			//Register lesen um Schnittstellen Fehler zu vermeiden
 			char temp = RCREG;
 		}
+	}
+	if(TMR2IF)
+	{
+		Timerinterrupt();
 	}
 }
 #endif /* #ifndef X86 */
@@ -51,10 +56,12 @@ void main(void)
 	{
 		throw_errors();
 		commandstorage_get_commands();
-		if(!(gLedBuf.led_fade_operation || gLedBuf.led_run_operation))
-			commandstorage_execute_commands();
-		if(TMR1IF)
-			if(gLedBuf.led_fade_operation)ledstrip_do_fade();
+		commandstorage_execute_commands();
+		if(gTimecounter == 0)
+		{
+			if(gLedBuf.led_fade_operation)
+				ledstrip_do_fade();
+		}	
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************
@@ -67,6 +74,7 @@ void init_all()
 	spi_init();
 	ledstrip_init();
 	commandstorage_init();
+	timer_init();
 	InitFET();
 	PowerOnLEDs();
     

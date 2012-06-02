@@ -4,10 +4,11 @@
 
 void timer_init()
 {
-return;
+	T2CON = 0b00111110;
+	TMR2IE = 1;
 }
 
-void timer_config(char configvalues)
+void timer_set_for_fade(char value)
 {
-return;
+	PR2 = value;
 }

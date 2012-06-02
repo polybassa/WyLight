@@ -172,7 +172,18 @@ void commandstorage_execute_commands()
 				ledstrip_set_color(&nextCmd.data.set_color);
 				break;
 			}
-			case SET_FADE: {break;}
+			case SET_FADE:
+			{
+#ifdef DEBUG
+				USARTsend_num(nextCmd.data.set_fade.addr[0],'#');
+				USARTsend_num(nextCmd.data.set_fade.addr[1],'#');
+				USARTsend_num(nextCmd.data.set_fade.addr[2],'#');
+				USARTsend_num(nextCmd.data.set_fade.addr[3],'#');
+				USARTsend_num(nextCmd.data.set_fade.red,'r');
+#endif
+				ledstrip_set_fade(&nextCmd.data.set_fade);
+				break;
+			}
 			case SET_RUN: {break;}
 		}
 	}
