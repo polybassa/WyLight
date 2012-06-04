@@ -67,7 +67,7 @@ void commandstorage_get_commands()
 		{
 			// *** I don't wait for databytes
 			// *** Do I receive a Start_of_Text sign
-			if(new_byte == STX)
+			if((uns8)new_byte == STX)
 			{
 				// *** increse the cmd_counter
 				gCmdBuf.cmd_counter = 1;
@@ -125,18 +125,16 @@ void commandstorage_get_commands()
 								EEPROM_WR(CmdPointerAddr,0);
 								return;
 							}
-#ifndef X86
 						case SET_ON: 
 							{
-								BCF(PORTC.0); 
+								PowerOnLEDs(); 
 								return;
 								}
 						case SET_OFF: 
 							{
-								BSF(PORTC.0); 
+								PowerOffLEDs(); 
 								return;
 							}
-#endif /* #ifndef X86 */
 					}			
 					if( commandstorage_write(&gCmdBuf.cmd_buf[2], (gCmdBuf.cmd_counter - 4)))
 					{
