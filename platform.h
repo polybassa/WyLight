@@ -7,6 +7,7 @@
 
 #ifdef X86
 	typedef char bit;
+	typedef unsigned char uns8;
 
 	#define AllowInterrupts(x)
 	#define FactoryRestoreWLAN(x)

@@ -19,7 +19,7 @@ void ledstrip_init(void)
 ***/
 void ledstrip_set_color(struct cmd_set_color *pCmd)
 {	
-	char *address = &pCmd->addr;
+	char *address = pCmd->addr;
 	char r = pCmd->red;
 	char g = pCmd->green;
 	char b = pCmd->blue;

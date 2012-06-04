@@ -26,7 +26,7 @@ struct LedBuffer gLedBuf;
 struct ErrorBits gERROR;
 
 #ifdef X86
-void InterruptRoutine(void)
+void* InterruptRoutine(void* unused)
 {
 	for(;;)
 	{
