@@ -26,11 +26,36 @@ struct LedBuffer gLedBuf;
 struct ErrorBits gERROR;
 
 #ifdef X86
+void* gl_start(void* unused);
 void* InterruptRoutine(void* unused)
 {
+
+	char dummyData[] = {
+		STX, (uns8)sizeof(struct cmd_set_color) + 2,
+		SET_COLOR,
+		0xff, 0xff, 0xff, 0xff,
+		0, 128, 0,
+		0, 0,
+		0xDE, 0xAD};
+
+	uns8 i = 0;
 	for(;;)
 	{
-		if(!RingBufHasError) RingBufPut(getchar());
+		if(!RingBufHasError)
+		{
+			RingBufPut(dummyData[i]);
+		}
+	
+		i++;
+		if(i == sizeof(dummyData))
+		{
+			i = 0;
+			char temp = dummyData[7];
+			dummyData[7] = dummyData[8];
+			dummyData[8] = dummyData[9];
+			dummyData[9] = temp;
+			sleep(1);//sleep a second
+		}
 	}
 }
 #else
@@ -58,10 +83,12 @@ void main(void)
 {
 	init_all();
 #ifdef X86
-	gl_start();
 	#include <pthread.h>
 	pthread_t isrThread;
+	pthread_t glThread;
+	
 	pthread_create(&isrThread, 0, InterruptRoutine, 0);
+	pthread_create(&glThread, 0, gl_start, 0);
 #endif /* #ifdef X86 */
 	while(1)
 	{

@@ -40,7 +40,7 @@ struct cmd_set_run {
 };
 
 struct led_cmd {
-	unsigned cmd;
+	uns8 cmd;
 	union {
 		struct cmd_set_color set_color;
 		struct cmd_set_fade set_fade;

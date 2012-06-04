@@ -67,7 +67,7 @@ void commandstorage_get_commands()
 		{
 			// *** I don't wait for databytes
 			// *** Do I receive a Start_of_Text sign
-			if(new_byte == STX)
+			if((uns8)new_byte == STX)
 			{
 				// *** increse the cmd_counter
 				gCmdBuf.cmd_counter = 1;

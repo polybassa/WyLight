@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include "ledstrip.h"
 
-void addCRC(char byte, char* p_crcH, char* p_crcL)
-{
-}
+//prototypes
+void x86_led_recv(char data);
 
+void addCRC(char byte, char* p_crcH, char* p_crcL) {}
+void newCRC(char* p_crcH, char* p_crcL) {}
 void USARTinit() {}
 void USARTsend(char ch)
 {
@@ -14,7 +15,7 @@ void USARTsend(char ch)
 }
 
 
-static char gEEPROM[255];
+static uns8 gEEPROM[0x100];
 char EEPROM_RD(char adress)
 {
 	return gEEPROM[adress];
@@ -23,10 +24,11 @@ char EEPROM_RD(char adress)
 
 void EEPROM_WR(char adress, char data)
 {
-	gEEPROM[adress] = data;
+	gEEPROM[adress] = (uns8)data;
 }
 
 void spi_init() {}
+
 char spi_send(char data)
 {
 	x86_led_recv(data);
@@ -42,47 +44,14 @@ char spi_send(char data)
 
 
 
-static char g_led_status[NUM_OF_LED*3];
-
-void x86_led_init(void)
-{
-#if 1
-	char r = 0;
-	char g = 0;
-	char b = 0;
-	char i;
-	for(i = 0; i < NUM_OF_LED;i++)
-	{
-		g_led_status[3*i] = r;
-		g_led_status[3*i+1] = g;
-		g_led_status[3*i+2] = b;
-		r += 255/NUM_OF_LED/4;
-		g += 255/NUM_OF_LED/2;
-		b += 255/NUM_OF_LED;		
-	}
-
-struct cmd_set_color color;
-	color.addr[0] = 0xff;
-	color.addr[1] = 0x0;
-	color.addr[2] = 0x0;
-	color.addr[3] = 0x0;
-	color.red = 128;
-	color.green = 0;
-	color.blue = 128;
-	color.reserved0 = 0;
-	color.reserved1 = 0;
-	ledstrip_set_color(&color);
-#endif
-}
+static uns8 g_led_status[NUM_OF_LED*3];
 
 void x86_led_recv(char data)
 {
-	printf("x86_led_recv: 0x%02x\n", data);
-	char i = NUM_OF_LED - 1;
-	while(i > 0)
+	int i;
+	for(i = 3*NUM_OF_LED - 1; i > 0; i--)
 	{
 		g_led_status[i] = g_led_status[i-1];
-		i--;
 	}
 	g_led_status[0] = data;
 }
@@ -102,7 +71,7 @@ void gl_print_sphere(GLfloat x, GLfloat y, float r, float g, float b)
 {
 	glColor4f(r, g, b, 1.0);
 	glTranslatef(x, y, -50.0);
-	glutSolidSphere(1.0, 64, 64);
+	glutSolidSphere(1.0, 16, 16);
 	glTranslatef(-x, -y, +50.0);
 }	
 	 
@@ -112,25 +81,24 @@ void gl_display(void)
 	static unsigned long frames = 0;
 	static struct timespec lastTime;
 	static struct timespec nextTime;
-	clock_gettime(CLOCK_MONOTONIC, &nextTime);
+	clock_gettime(CLOCK_MONOTONIC, &lastTime);
 
 	for(;;) {
 		frames++;
 		glClear(GL_COLOR_BUFFER_BIT);
-	//	glPolygonMode(GL_FRONT, GL_LINE);
-	//	glPolygonMode(GL_BACK, GL_FILL);
 		glLoadIdentity();
-#if 0
-		gluLookAt(
-			0.0, 10.0, 10.0,
-			0.0,  0.0,  0.0,
-			0.0,  1.0,  0.0);
 
-		glColor4f(1.0, 0.0, 0.0, 1.0);
-		gl_print_text("HUHUHU", 5.0, 4.0);
-#endif
-		if( 0 == frames % 50)
-			printf("frame: %lu\n", frames);
+		// fps calculation
+		clock_gettime(CLOCK_MONOTONIC, &nextTime);
+		time_t seconds = nextTime.tv_sec - lastTime.tv_sec;
+		if(seconds > 0)
+		{
+			long nanos = nextTime.tv_nsec - lastTime.tv_nsec;
+			long millis = seconds*1000 + nanos/1000/1000;
+			lastTime = nextTime;
+			printf("%f fps\n", 1000.0f*frames/millis);
+			frames = 0;
+		}
 
 		unsigned int i;
 		for(i = 0; i < NUM_OF_LED; i++)
@@ -142,24 +110,22 @@ void gl_display(void)
 			float b = (float)g_led_status[3*i+2] / 255.0;
 			gl_print_sphere(x, y, r, g, b);
 		}
-			
 		glFlush();
 	}
 }
 
-void gl_start(void)
+void* gl_start(void* unused)
 {
 	int argc = 1;
-	x86_led_init();
 	glutInit(&argc, NULL);
 	glutInitWindowSize(300, 300);
 	glutInitWindowPosition(0, 0);
-	glutCreateWindow("Wifly_Light");
+	glutCreateWindow("Wifly_Light LED simulation");
 	glutDisplayFunc(gl_display);
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(45.0, 1.0, 0.1, 100.0);
+	gluPerspective(45.0, 1.0, 50.0, 100.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glViewport(0, 0, 300, 300);
