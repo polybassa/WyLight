@@ -45,6 +45,7 @@ char spi_send(char data)
 
 
 static uns8 g_led_status[NUM_OF_LED*3];
+bit g_led_off = 1;
 
 void x86_led_recv(char data)
 {
@@ -100,15 +101,18 @@ void gl_display(void)
 			frames = 0;
 		}
 
-		unsigned int i;
-		for(i = 0; i < NUM_OF_LED; i++)
+		if(!g_led_off)
 		{
-			float x = -16.0 + 2.0 * (i % 8);
-			float y = 2.0 * (i / 8);			
-			float r = (float)g_led_status[3*i] / 255.0;
-			float g = (float)g_led_status[3*i+1] / 255.0;
-			float b = (float)g_led_status[3*i+2] / 255.0;
-			gl_print_sphere(x, y, r, g, b);
+			unsigned int i;
+			for(i = 0; i < NUM_OF_LED; i++)
+			{
+				float x = -16.0 + 2.0 * (i % 8);
+				float y = 2.0 * (i / 8);			
+				float r = (float)g_led_status[3*i] / 255.0;
+				float g = (float)g_led_status[3*i+1] / 255.0;
+				float b = (float)g_led_status[3*i+2] / 255.0;
+				gl_print_sphere(x, y, r, g, b);
+			}
 		}
 		glFlush();
 	}
