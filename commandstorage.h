@@ -1,6 +1,7 @@
 #ifndef _COMMANDSTORAGE_H_
 #define _COMMANDSTORAGE_H_
 
+#include "platform.h"
 #include "RingBuf.h"		
 #include "usart.h"			
 #include "eeprom.h"   
@@ -39,7 +40,7 @@ struct cmd_set_run {
 };
 
 struct led_cmd {
-	unsigned cmd;
+	uns8 cmd;
 	union {
 		struct cmd_set_color set_color;
 		struct cmd_set_fade set_fade;
@@ -51,7 +52,7 @@ struct led_cmd {
 struct CommandBuffer{
     char cmd_counter;
     char frame_counter;
-    char cmd_buf[FRAMELENGTH];
+    uns8 cmd_buf[FRAMELENGTH];
     char crcH;
     char crcL;
 };
