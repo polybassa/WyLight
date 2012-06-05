@@ -1,8 +1,3 @@
-/** Changelog
- * 2012-05-08 pb:
- * - refactor functions to access and manage a buffer for led commands, which is stored in the eeprom
-**/
-
 #include "platform.h"
 #include "commandstorage.h"
 
@@ -127,12 +122,12 @@ void commandstorage_get_commands()
 							}
 						case SET_ON: 
 							{
-								PowerOnLEDs(); 
+								PowerOnLEDs();
 								return;
 								}
 						case SET_OFF: 
 							{
-								PowerOffLEDs(); 
+								PowerOffLEDs();
 								return;
 							}
 					}			
@@ -175,7 +170,18 @@ void commandstorage_execute_commands()
 				ledstrip_set_color(&nextCmd.data.set_color);
 				break;
 			}
-			case SET_FADE: {break;}
+			case SET_FADE:
+			{
+#ifdef DEBUG
+				USARTsend_num(nextCmd.data.set_fade.addr[0],'#');
+				USARTsend_num(nextCmd.data.set_fade.addr[1],'#');
+				USARTsend_num(nextCmd.data.set_fade.addr[2],'#');
+				USARTsend_num(nextCmd.data.set_fade.addr[3],'#');
+				USARTsend_num(nextCmd.data.set_fade.red,'r');
+#endif
+				ledstrip_set_fade(&nextCmd.data.set_fade);
+				break;
+			}
 			case SET_RUN: {break;}
 		}
 	}

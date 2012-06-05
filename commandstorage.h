@@ -32,7 +32,12 @@ struct cmd_set_color {
 };
 
 struct cmd_set_fade {
-	char dummy;
+	char addr[4];
+	char red;
+	char green;
+	char blue;
+	char timevalue;
+	char reserved0;
 };
 
 struct cmd_set_run {
@@ -61,9 +66,9 @@ extern struct CommandBuffer gCmdBuf;
 //*********************** METHODS AND MACROS *********************************************
 #define CmdWidth sizeof(struct led_cmd)	// *** Number of Bytes for one command
 #define ClearCmdBuf(x)  		\
-{							\
-	gCmdBuf.cmd_counter = 0;\
-	gCmdBuf.frame_counter = 0; \
+{								\
+	gCmdBuf.cmd_counter = 0;	\
+	gCmdBuf.frame_counter = 0;	\
 }
 
 /**
