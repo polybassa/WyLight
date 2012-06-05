@@ -175,3 +175,4 @@ void ledstrip_do_fade()
 	else 
 		spi_send_ledbuf(&gLedBuf.led_array[0]);
 }
+
