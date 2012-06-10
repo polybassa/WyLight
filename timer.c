@@ -4,7 +4,7 @@
 
 void timer_init()
 {
-	T2CON = 0b00111110;
+	T2CON = 0b01111101;
 	TMR2IE = 1;
 }
 

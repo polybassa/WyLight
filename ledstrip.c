@@ -4,8 +4,6 @@
 
 #include "ledstrip.h"
 #include "MATH16.H"
-//private function
-void ledstrip_get_distance(char destinationvalue, char currentvalue,char* max_distance);
 
 void ledstrip_init(void)
 {
@@ -34,35 +32,37 @@ void ledstrip_set_color(struct cmd_set_color *pCmd)
 		if(0 != (*address & mask))
 		{
 			gLedBuf.led_array[k] = b;
+			gLedBuf.led_destination[k] = b;
 			k++;
+			
 			gLedBuf.led_array[k] = g;
+			gLedBuf.led_destination[k] = g;
 			k++;
+			
 			gLedBuf.led_array[k] = r;
+			gLedBuf.led_destination[k] = r;
 		}
 		else 
 		{
 			k++;
 			k++;
 		}
-#ifdef X86
 		mask = mask << 1;
 		if(0 == mask)
-#else
-		RLF(mask,1);
-		if(Carry == 1) 
-#endif
 		{
 			address++;
 			mask= 0b00000001;
 		}
 	}
 	spi_send_ledbuf(&gLedBuf.led_array[0]);
+	// Laufende Operationen ausschalten
+	gLedBuf.led_fade_operation = 0;
+	gLedBuf.led_run_operation = 0;
 }
 /***
 * This funktion sets the destination color configurates
-* the timer 1. If the settings are done, the bit led_fade_operation is 1.
-* To configurate the Timer the funktion calculates the maximal distance between
-* two values to calculate the time to fade by the maximal changens of one LED
+* the timer 2 PR2 Register. If the settings are done, the bit led_fade_operation is 1.
+* 
 **/
 void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 {
@@ -71,77 +71,40 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 	char g = pCmd->green;
 	char b = pCmd->blue;
 	
-	char k,mask,temp,max_distance;
-	//max_distance = 0;
+	char k,mask,temp;
 	mask = 0b00000001;
 	
 	for(k = 0; k < (NUM_OF_LED * 3); k++)
 	{	
 		if(0 != (*address & mask))
 		{
-#ifdef DEBUG
-			USARTsend('1');
-#endif
 			temp = gLedBuf.led_array[k];
 			gLedBuf.led_destination[k] = b;
-			//ledstrip_get_distance(b,temp,&max_distance);
 			k++;
+			
 			temp = gLedBuf.led_array[k];
 			gLedBuf.led_destination[k] = g;
-			//ledstrip_get_distance(g,temp,&max_distance);
 			k++;
+			
 			temp = gLedBuf.led_array[k];
 			gLedBuf.led_destination[k] = r;
-			//ledstrip_get_distance(g,temp,&max_distance);
 		}
 		else 
 		{ 
-	#ifdef DEBUG
-	USARTsend('0');
-	#endif
-	// To Do finde lösung wie zwei fadeoperationen parallel laufen können
-			temp = gLedBuf.led_array[k];
-			gLedBuf.led_destination[k] = temp;
 			k++;
-			temp = gLedBuf.led_array[k];
-			gLedBuf.led_destination[k] = temp;
 			k++;
-			temp = gLedBuf.led_array[k];
-			gLedBuf.led_destination[k] = temp;
 		}
-#ifdef X86
 		mask = mask << 1;
 		if(0 == mask)
-#else
-		RLF(mask,1);
-		if(Carry == 1) 
-#endif
 		{
 			address++;
 			mask= 0b00000001;
 		}
 	}
-#ifdef DEBUG
-	USARTsend_str("timevalue:");
-	USARTsend_num(pCmd->timevalue,'#');
-#endif
 	timer_set_for_fade(pCmd->timevalue);
 	gLedBuf.led_fade_operation = 1;
 }
 
-//This funktion calculates the distance between the current value of a Led and the 
-//destination value of a Led. Distance meens the steps to change. After calculation, 
-//check if there is a new maximal_value
-void ledstrip_get_distance(char destinationvalue, char currentvalue,char* max_distance)
-{
-	char temp;
-	if(destinationvalue > currentvalue)
-		temp = destinationvalue - currentvalue;
-	else
-		temp = currentvalue - destinationvalue;
-		
-	if(temp > *max_distance) *max_distance = temp;
-}
 
 void ledstrip_do_fade()
 {
@@ -154,6 +117,7 @@ void ledstrip_do_fade()
 	{
 		temp_current = gLedBuf.led_array[i];
 		temp_destination = gLedBuf.led_destination[i];
+		
 		if(temp_current > temp_destination)
 		{
 			gLedBuf.led_array[i] = --temp_current;
@@ -168,9 +132,9 @@ void ledstrip_do_fade()
 	if(fade_finish) 
 	{
 		gLedBuf.led_fade_operation = 0;
-		#ifdef DEBUG
-		USARTsend_str(" fade finish");
-		#endif
+		//send Fade Done
+		USARTsend('F');
+		USARTsend('D');
 	}
 	else 
 		spi_send_ledbuf(&gLedBuf.led_array[0]);

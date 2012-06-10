@@ -21,9 +21,9 @@ F: init_all               :#1  : p0 <- p0
     ledstrip_init         : #1  : p0 -> p0
     commandstorage_init   : #1  : p0 -> p0
     timer_init            : #1  : p0 -> p0
-    USARTsend             : #7  : p0 -> p0
-    USARTsend             : #7  : p0 -> p0
-    USARTsend             : #7  : p0 -> p0
+    USARTsend             : #8  : p0 -> p0
+    USARTsend             : #8  : p0 -> p0
+    USARTsend             : #8  : p0 -> p0
 
 F: addCRC                 :#4  : p0
 
@@ -43,10 +43,11 @@ F: EEPROM_RD_BLK          :#1  : p0 <- p0
     EEPROM_RD             : #4  : p0 -> p0
 
 F: throw_errors           :#1  : p0 <- p0 
-    USARTsend_str         : #3  : p0 -> p0
+    USARTsend             : #8  : p0 -> p0
+    USARTsend_str         : #4  : p0 -> p0
     RingBufInit           : #2  : p0 -> p0
-    USARTsend_str         : #3  : p0 -> p0
-    USARTsend_str         : #3  : p0 -> p0
+    USARTsend_str         : #4  : p0 -> p0
+    USARTsend_str         : #4  : p0 -> p0
 
 F: _mult8x8               :#0  : p0
 
@@ -83,6 +84,7 @@ F: ledstrip_set_fade      :#1  : p0 <- p0
 F: ledstrip_get_distance  :#0  : p0
 
 F: ledstrip_do_fade       :#1  : p0 <- p0 
+    USARTsend_str         : #4  : p0 -> p0
     spi_send_ledbuf       : #2  : p0 -> p0
 
 F: RingBufInit            :#2  : p0
@@ -107,15 +109,15 @@ F: timer_set_for_fade     :#1  : p0 <- p0
 
 F: USARTinit              :#1  : p0 <- p0 
 
-F: USARTsend              :#7  : p0
+F: USARTsend              :#8  : p0
 
-F: USARTsend_str          :#3  : p0
+F: USARTsend_str          :#4  : p0
     _const1               : #2  : p0 -> p0
-    USARTsend             : #7  : p0 -> p0
+    USARTsend             : #8  : p0 -> p0
     _const1               : #2  : p0 -> p0
 
 F: USARTsend_arr          :#0  : p0
-    USARTsend             : #7  : p0 -> p0
+    USARTsend             : #8  : p0 -> p0
 
 F: commandstorage_read    :#1  : p0 <- p0 
     EEPROM_RD             : #4  : p0 -> p0
@@ -135,8 +137,8 @@ F: commandstorage_get_commands :#1  : p0 <- p0
     addCRC                : #4  : p0 -> p0
     EEPROM_WR             : #6  : p0 -> p0
     commandstorage_write  : #1  : p0 -> p0
-    USARTsend             : #7  : p0 -> p0
-    USARTsend             : #7  : p0 -> p0
+    USARTsend             : #8  : p0 -> p0
+    USARTsend             : #8  : p0 -> p0
 
 F: commandstorage_execute_commands :#1  : p0 <- p0 
     commandstorage_read   : #1  : p0 -> p0
@@ -167,6 +169,7 @@ F: commandstorage_init    :#1  : p0 <- p0
  L2      USARTsend
  L1      USARTsend [T-GOTO]
  L1    throw_errors
+ L2      USARTsend
  L2      USARTsend_str
  L3        _const1
  L3        USARTsend
@@ -195,10 +198,11 @@ F: commandstorage_init    :#1  : p0 <- p0
  L4          EEPROM_RD
  L3        EEPROM_WR
  L2      ledstrip_set_color
- L2        spi_send_ledbuf [T-GOTO]
- L3          spi_send
+ L3        spi_send_ledbuf
+ L4          spi_send
  L2      ledstrip_set_fade
  L3        timer_set_for_fade
  L1    ledstrip_do_fade
+ L2      USARTsend_str ..
  L1      spi_send_ledbuf [T-GOTO] ..
 

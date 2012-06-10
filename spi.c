@@ -11,9 +11,9 @@ void spi_init()
     TRISC.4 = 1;        // Make port RC4 an input(SPI Data In)
     TRISC.5 = 0;        // Make port RC5 an output(SPI Data Out)
 	SSPM1 = 0;
-	SMP = 0;
-	CKP = 1;
-	CKE = 0;
+	SMP = 1;
+	CKP = 0;
+	CKE = 1;
 	SSPEN = 1;
 }
 

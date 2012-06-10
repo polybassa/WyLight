@@ -138,9 +138,6 @@ void commandstorage_get_commands()
 					}
 					else 
 						gERROR.eeprom_failure = 1;
-#ifdef TEST
-					USARTsend_arr(&gCmdBuf.cmd_buf[2], (gCmdBuf.cmd_counter - 4));
-#endif
                 }
                 else
                 {
@@ -172,13 +169,6 @@ void commandstorage_execute_commands()
 			}
 			case SET_FADE:
 			{
-#ifdef DEBUG
-				USARTsend_num(nextCmd.data.set_fade.addr[0],'#');
-				USARTsend_num(nextCmd.data.set_fade.addr[1],'#');
-				USARTsend_num(nextCmd.data.set_fade.addr[2],'#');
-				USARTsend_num(nextCmd.data.set_fade.addr[3],'#');
-				USARTsend_num(nextCmd.data.set_fade.red,'r');
-#endif
 				ledstrip_set_fade(&nextCmd.data.set_fade);
 				break;
 			}
