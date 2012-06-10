@@ -3,6 +3,7 @@
 //Compiler CC5x/
 
 #define NO_CRC
+#define TEST
 #pragma sharedAllocation
 
 //*********************** INCLUDEDATEIEN *********************************************
@@ -71,7 +72,12 @@ interrupt InterruptRoutine(void)
 	}
 	if(TMR2IF)
 	{
-		Timerinterrupt();
+		Timer2interrupt();
+	}
+	if(TMR4IF)
+	{
+		Timer4interrupt();
+		commandstorage_wait_interrupt();
 	}
 }
 #endif /* #ifdef X86 */
@@ -113,9 +119,10 @@ void init_all()
 	RingBufInit();
 	USARTinit();
 	spi_init();
+	timer_init();
 	ledstrip_init();
 	commandstorage_init();
-	timer_init();
+	
 	InitFET();
 	PowerOnLEDs();
     

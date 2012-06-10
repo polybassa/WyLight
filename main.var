@@ -12,18 +12,18 @@ Size := number of bytes
 #AC  := number of direct accesses
 
  X  B  Address  Size  #AC   Name
- P  -  0x000      1  : 45:  INDF0
+ P  -  0x000      1  : 47:  INDF0
  P  -  0x001      1  :  0:  INDF1
  P  -  0x002      1  :  0:  PCL
  P  -  0x003      1  :  0:  STATUS
- P  -  0x003.0    0  : 42:  Carry
+ P  -  0x003.0    0  : 46:  Carry
  P  -  0x003.1    0  :  0:  DC
- P  -  0x003.2    0  : 32:  Zero_
+ P  -  0x003.2    0  : 40:  Zero_
  P  -  0x003.3    0  :  0:  PD
  P  -  0x003.4    0  :  0:  TO
  P  -  0x004      2  : 51:  FSR0
- P  -  0x004      1  : 28:  FSR0L
- P  -  0x005      1  : 28:  FSR0H
+ P  -  0x004      1  : 30:  FSR0L
+ P  -  0x005      1  : 30:  FSR0H
  P  -  0x006      2  :  0:  FSR1
  P  -  0x006      1  :  0:  FSR1L
  P  -  0x007      1  :  0:  FSR1H
@@ -63,7 +63,7 @@ Size := number of bytes
  P  0  0x012.6    0  :  0:  C2IF
  P  0  0x012.7    0  :  0:  OSFIF
  P  0  0x013      1  :  0:  PIR3
- P  0  0x013.1    0  :  0:  TMR4IF
+ P  0  0x013.1    0  :  2:  TMR4IF
  P  0  0x013.3    0  :  0:  TMR6IF
  P  0  0x013.4    0  :  0:  CCP3IF
  P  0  0x013.5    0  :  0:  CCP4IF
@@ -99,125 +99,123 @@ Size := number of bytes
  P  0  0x01E.3    0  :  0:  CPSRNG1
  P  0  0x01E.7    0  :  0:  CPSON
  P  0  0x01F      1  :  0:  CPSCON1
- L  0  0x020      1  :  1:  temp
  L  0  0x020      1  :  2:  value
+ L  0  0x020      1  :  1:  temp
  L  0  0x021      1  :  3:  writeNext
- L  0  0x022      1  : 10:  new_byte
- L  0  0x022      1  :  7:  temp_current
  L  0  0x022      1  :  4:  k
- L  0  0x022     10  :  4:  nextCmd_3
- L  0  0x023      1  :  3:  temp_5
+ L  0  0x022      1  :  7:  temp_current
+ L  0  0x022      1  : 10:  new_byte
+ L  0  0x022     10  :  5:  nextCmd_3
  L  0  0x023      1  :  3:  temp_destination
+ L  0  0x023      1  :  3:  temp_5
  L  0  0x024      1  :  7:  i_4
  L  0  0x024      1  :  1:  j
- L  0  0x025      1  :  2:  result
- L  0  0x025      1  :  5:  byte
  L  0  0x025      1  :  3:  p_crcH_2
  L  0  0x025      1  :  3:  pSrc
+ L  0  0x025      1  :  2:  result
+ L  0  0x025      1  :  5:  byte
  L  0  0x025.0    0  :  4:  fade_finish
- L  0  0x026      1  :  7:  string
- L  0  0x026      1  :  3:  p_crcL_2
- L  0  0x026      1  :  2:  length_6
  L  0  0x026      1  :  6:  p_crcH
- L  0  0x027      1  :  4:  ps
+ L  0  0x026      1  :  2:  length_6
+ L  0  0x026      1  :  3:  p_crcL_2
  L  0  0x027      1  :  6:  p_crcL
  L  0  0x027      1  :  4:  nextCmd_2
- L  0  0x028      1  :  3:  ci
  L  0  0x028      1  :  4:  array
- L  0  0x028      1  :  2:  ch
  L  0  0x028      1  :  8:  index
- L  0  0x029      1  :  6:  crcH
  L  0  0x029      1  :  3:  adress_3
- L  0  0x02A      1  :  2:  length_2
+ L  0  0x029      1  :  6:  crcH
  L  0  0x02A      1  :  4:  crcL
+ L  0  0x02A      1  :  2:  length_2
  L  0  0x02B      1  :  3:  i_2
  L  0  0x02C      1  :  2:  result_2
- L  0  0x02D      1  :  4:  pDest
- L  0  0x02D      1  :  6:  pCmd_2
  L  0  0x02D      1  :  5:  pCmd
+ L  0  0x02D      1  :  5:  pCmd_3
+ L  0  0x02D      1  :  6:  pCmd_2
+ L  0  0x02D      1  :  4:  pDest
+ L  0  0x02E      1  :  9:  nextCmd
  L  0  0x02E      1  :  3:  address
+ L  0  0x02E      1  : 10:  input
  L  0  0x02E      1  :  3:  address_2
- L  0  0x02E      1  :  4:  nextCmd
- L  0  0x02F      1  :  3:  r
+ L  0  0x02F      1  :  9:  adress
+ L  0  0x02F      1  :  8:  string
  L  0  0x02F      1  :  2:  r_2
- L  0  0x02F.0    0  :  2:  movePtr
+ L  0  0x02F      1  :  3:  array_2
+ L  0  0x02F      1  :  2:  sign_5
+ L  0  0x02F      1  :  3:  r
+ L  0  0x030      1  :  6:  temp_4
+ L  0  0x030      1  :  4:  ps
+ L  0  0x030      1  :  2:  data_2
  L  0  0x030      1  :  3:  g
- L  0  0x030      1  :  3:  array_2
- L  0  0x030      1  :  7:  adress
  L  0  0x030      1  :  2:  g_2
- L  0  0x031      1  :  3:  adress_4
- L  0  0x031      1  :  2:  data_2
- L  0  0x031      1  :  2:  b_2
+ L  0  0x030      1  :  3:  adress_4
  L  0  0x031      1  :  3:  b
- L  0  0x032      1  :  2:  length_3
+ L  0  0x031      1  :  5:  h
+ L  0  0x031      1  :  3:  ci
+ L  0  0x031      1  :  2:  length_3
+ L  0  0x031      1  :  2:  b_2
+ L  0  0x031.0    0  :  4:  GIE_status
+ L  0  0x032      1  :  4:  i_3
  L  0  0x032      1  : 13:  k_2
+ L  0  0x032      1  :  4:  z
  L  0  0x032      1  : 13:  k_3
- L  0  0x032.0    0  :  4:  GIE_status
- L  0  0x033      1  :  4:  i_3
  L  0  0x033      1  :  5:  mask_2
  L  0  0x033      1  :  5:  mask
- L  0  0x034      1  :  2:  temp_2
- L  0  0x034      2  : 12:  array_4
+ L  0  0x033      1  :  3:  e
+ L  0  0x033      1  :  2:  temp_2
+ L  0  0x034      1  :  2:  ch
+ L  0  0x034      1  :  3:  arg1
  L  0  0x034      1  :  3:  temp_3
- L  0  0x035      1  :  0:  max_distance
- L  0  0x035      1  :  2:  adress_2
+ L  0  0x034      2  : 12:  array_4
+ L  0  0x034      2  :  9:  arg1_5
+ L  0  0x034      1  :  2:  adress_2
+ L  0  0x035      1  :  2:  data_3
+ L  0  0x035      1  :  2:  arg2
+ L  0  0x035      1  :  2:  value_2
+ L  0  0x036      1  :  2:  arg2_5
  L  0  0x036      2  :  5:  end
- L  0  0x036      1  :  2:  value_2
- L  0  0x036      1  :  2:  data_3
+ L  0  0x036      2  :  7:  rval
+ L  0  0x037      1  :  4:  rm
  L  0  0x038      1  :  2:  data_4
- G  0  0x039     19  : 16:  gRingBuf
- G  0  0x04C      1  :  8:  gERROR
- G  0  0x04D     19  : 24:  gCmdBuf
- G  0  0x060      1  :  2:  gTimecounter
- G  0  0x061    193  :  6:  gLedBuf
- L  -  0x07F      2  :  0<> arg2_10
- L  -  0x07F      1  :  0<> counter_8
- L  -  0x07F      2  :  0<> arg2_6
- L  -  0x07F      2  :  0<> rm_2
- L  -  0x07F      2  :  0<> arg1_4
- L  -  0x07F      2  :  0<> arg1_7
- L  -  0x07F      1  :  0<> rvalH
- L  -  0x07F      1  :  4<> i_5
- L  -  0x07F      1  :  0<> counter_3
+ L  0  0x038      1  :  2:  counter_5
+ L  0  0x038      1  :  2:  counter
+ L  0  0x039      1  :  2:  tmp
+ G  0  0x03A     19  : 16:  gRingBuf
+ G  0  0x04D      1  :  8:  gERROR
+ G  0  0x04E      1  :  2:  gTimecounter
+ G  0  0x04F     22  : 46:  gCmdBuf
+ G  0  0x065    193  :  6:  gLedBuf
+ L  -  0x07F      2  :  0<> rval_3
+ L  -  0x07F      1  :  0<> counter_7
  L  -  0x07F      1  :  0<> sign
  L  -  0x07F      2  :  0<> arg1_8
- L  -  0x07F      2  :  0<> arg2_8
- L  -  0x07F      2  :  0<> rm_4
- L  -  0x07F      2  :  0<> arg1_3
- L  -  0x07F      1  :  0<> arg2_3
- L  -  0x07F      2  :  0<> rval_3
- L  -  0x07F      1  :  0<> counter_2
- L  -  0x07F      1  :  0<> tmpArg2
- L  -  0x07F      1  :  0<> counter_5
- L  -  0x07F      1  :  0<> tmp
  L  -  0x07F      2  :  0<> arg1_6
- L  -  0x07F      1  :  3<> destinationvalue
- L  -  0x07F      1  :  3<> currentvalue
- L  -  0x07F      1  :  2<> max_distance_2
- L  -  0x07F      1  :  4<> temp_4
+ L  -  0x07F      2  :  0<> arg2_6
+ L  -  0x07F      2  :  0<> arg2_4
+ L  -  0x07F      1  :  0<> counter_6
+ L  -  0x07F      2  :  0<> arg1_7
  L  -  0x07F      1  :  0<> arg2_7
  L  -  0x07F      1  :  0<> rm_3
- L  -  0x07F      1  :  0<> counter_7
- L  -  0x07F      1  :  0<> arg1
- L  -  0x07F      1  :  0<> arg2
- L  -  0x07F      2  :  0<> rval
- L  -  0x07F      1  :  0<> counter
- L  -  0x07F      1  :  2<> length_5
- L  -  0x07F      1  :  3<> i_6
- L  -  0x07F      1  :  0<> arg2_5
- L  -  0x07F      1  :  0<> counter_6
- L  -  0x07F      2  :  0<> rval_4
- L  -  0x07F      1  :  0<> sign_2
+ L  -  0x07F      1  :  2<> array_3
+ L  -  0x07F      1  :  2<> length_4
+ L  -  0x07F      1  :  4<> i_5
+ L  -  0x07F      2  :  0<> arg2_8
+ L  -  0x07F      1  :  0<> arg1_2
+ L  -  0x07F      1  :  0<> arg2_2
+ L  -  0x07F      2  :  0<> rval_2
+ L  -  0x07F      2  :  0<> rm_2
+ L  -  0x07F      2  :  0<> rm_4
+ L  -  0x07F      1  :  0<> counter_8
+ L  -  0x07F      1  :  3<> array_5
  L  -  0x07F      2  :  0<> arg1_9
  L  -  0x07F      1  :  0<> arg2_9
  L  -  0x07F      1  :  0<> rm_5
  L  -  0x07F      1  :  0<> counter_9
  L  -  0x07F      1  :  0<> tmp_2
  L  -  0x07F      2  :  0<> arg1_10
- L  -  0x07F      1  :  2<> array_3
- L  -  0x07F      1  :  2<> length_4
- L  -  0x07F      1  :  0<> arg1_2
- L  -  0x07F      1  :  0<> arg2_2
+ L  -  0x07F      2  :  0<> arg2_10
+ L  -  0x07F      1  :  0<> sign_2
+ L  -  0x07F      1  :  3<> i_6
+ L  -  0x07F      2  :  0<> rval_4
  L  -  0x07F      2  :  0<> rm_6
  L  -  0x07F      1  :  0<> counter_10
  L  -  0x07F      2  :  0<> arg1_11
@@ -238,12 +236,15 @@ Size := number of bytes
  L  -  0x07F      1  :  3<> crcL_2
  L  -  0x07F      1  :  4<> i
  L  -  0x07F      1  :  2<> byte_2
- L  -  0x07F      2  :  0<> arg2_4
- L  -  0x07F      2  :  0<> rval_2
+ L  -  0x07F      1  :  2<> length_5
+ L  -  0x07F      1  :  0<> tmpArg2
+ L  -  0x07F      2  :  0<> arg1_3
  L  -  0x07F      1  :  0<> counter_4
- L  -  0x07F      2  :  0<> arg1_5
- L  -  0x07F      1  :  3<> array_5
- L  -  0x07F      1  :  0<> rm
+ L  -  0x07F      2  :  0<> arg1_4
+ L  -  0x07F      1  :  0<> rvalH
+ L  -  0x07F      1  :  0<> counter_3
+ L  -  0x07F      1  :  0<> arg2_3
+ L  -  0x07F      1  :  0<> counter_2
  P  1  0x08C      1  :  0:  TRISA
  P  1  0x08D      1  :  0:  TRISB
  P  1  0x08E      1  :  5:  TRISC
@@ -266,7 +267,7 @@ Size := number of bytes
  P  1  0x092.6    0  :  0:  C2IE
  P  1  0x092.7    0  :  0:  OSFIE
  P  1  0x093      1  :  0:  PIE3
- P  1  0x093.1    0  :  0:  TMR4IE
+ P  1  0x093.1    0  :  1:  TMR4IE
  P  1  0x093.3    0  :  0:  TMR6IE
  P  1  0x093.4    0  :  0:  CCP3IE
  P  1  0x093.5    0  :  0:  CCP4IE
@@ -588,8 +589,8 @@ Size := number of bytes
  P  7  0x395      1  :  0:  IOCBN
  P  7  0x396      1  :  0:  IOCBF
  P  8  0x415      1  :  0:  TMR4
- P  8  0x416      1  :  0:  PR4
- P  8  0x417      1  :  0:  T4CON
+ P  8  0x416      1  :  1:  PR4
+ P  8  0x417      1  :  1:  T4CON
  P  8  0x417.0    0  :  0:  T4CKPS0
  P  8  0x417.1    0  :  0:  T4CKPS1
  P  8  0x417.2    0  :  0:  TMR4ON

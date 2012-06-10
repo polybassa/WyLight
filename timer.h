@@ -12,10 +12,15 @@ void timer_init();
 //Timers festgelegt. Wert kommt aus der berechnung einer anderen Funktion (fade oder run)
 void timer_set_for_fade(char value);
 
-#define Timerinterrupt(x)  			\
+#define Timer2interrupt(x)  		\
 {									\
 	TMR2IF = 0;						\
 	gTimecounter = ++gTimecounter;	\
+}
+
+#define Timer4interrupt(x)  		\
+{									\
+	TMR4IF = 0;						\
 }
 
 #endif
