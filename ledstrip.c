@@ -11,6 +11,9 @@ void ledstrip_init(void)
 	for(k = 0;k < (NUM_OF_LED * 3); k++)
 	{	
 		gLedBuf.led_array[k] = 0;
+		gLedBuf.led_destination[k] = 0;
+		gLedBuf.led_fade_operation = 0;
+		gLedBuf.led_run_operation = 0;
 	}
 }
 
