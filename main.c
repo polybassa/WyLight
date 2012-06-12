@@ -1,9 +1,10 @@
 //Nils Weiﬂ 
 //05.09.2011
 //Compiler CC5x/
-
+#ifndef X86
 #define NO_CRC
 #define TEST
+#endif
 #pragma sharedAllocation
 
 //*********************** INCLUDEDATEIEN *********************************************
@@ -101,6 +102,7 @@ void main(void)
     
 	while(1)
 	{
+		Check_INPUT();
 		throw_errors();
 		commandstorage_get_commands();
 		commandstorage_execute_commands();
@@ -147,5 +149,6 @@ void init_all()
 #include "timer.c"
 #include "usart.c"
 #include "commandstorage.c"
+#include "platform.c"
 #endif /* #ifndef X86 */
 

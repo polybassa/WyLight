@@ -16,5 +16,8 @@ pic_nils:
 x86:
 	gcc main.c commandstorage.c eeprom.c error.c ledstrip.c RingBuf.c spi.c usart.c x86_wrapper.c -DX86 -DNO_CRC -I${INC_DIR} -lpthread ${OPENGL_LIB}
 
+x86_nils:
+	gcc main.c commandstorage.c eeprom.c error.c ledstrip.c RingBuf.c spi.c usart.c x86_wrapper.c -DMACOSX -DX86 -DNO_CRC -I${INC_DIR} -lpthread ${OPENGL_LIB}
+
 clean:
 	rm *.hex *.occ *.txt *.out

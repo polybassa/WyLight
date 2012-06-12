@@ -1,10 +1,6 @@
 #ifndef _RINGBUF_H_
 #define _RINGBUF_H_
 
-#ifdef X86
-typedef char bit;
-#endif /* #ifdef X86 */
-
 /**
  * We will use a 31+1 byte ringbuffer. We need one additional byte to distinguish
  * between an empty and a full buffer.
@@ -22,7 +18,11 @@ struct RingBuffer{
 	char data[gRingBufSize + 1];
 	char read;
 	char write;
+#ifndef X86
 	bit error_full;
+#else
+	char error_full;
+#endif /* X68 */
 };
 extern struct RingBuffer gRingBuf;
 
