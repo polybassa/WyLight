@@ -9,6 +9,9 @@
 	typedef char bit;
 	typedef unsigned char uns8;
 
+	//global variables
+	bit g_led_off;
+
 	#define AllowInterrupts(x)
 	#define FactoryRestoreWLAN(x)
 	#define InitFET(x)
@@ -16,8 +19,6 @@
 	#define PowerOnLEDs(x) g_led_off = 0;
 	#define PowerOffLEDs(x) g_led_off = 1;
 
-	//global variables
-	bit g_led_off;
 #else
 	#include "inline.h"
 

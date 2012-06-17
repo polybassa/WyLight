@@ -1,8 +1,6 @@
 #include <stdio.h>
+#include <string.h>
 #include "ledstrip.h"
-
-//prototypes
-void x86_led_recv(char data);
 
 void addCRC(char byte, char* p_crcH, char* p_crcL) {}
 void newCRC(char* p_crcH, char* p_crcL) {}
@@ -27,27 +25,12 @@ void EEPROM_WR(char adress, char data)
 	gEEPROM[adress] = (uns8)data;
 }
 
-void spi_init() {}
 
-char spi_send(char data)
-{
-	x86_led_recv(data);
-	FILE* gSPI = fopen("out_spi.txt", "a+");
-	fprintf(gSPI, "%c", data);
-	fclose(gSPI);
-}
-
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
-#include <time.h>
-
-
-
-static uns8 g_led_status[NUM_OF_LED*3];
 bit g_led_off = 1;
+static uns8 g_led_status[NUM_OF_LED*3];
 
-void x86_led_recv(char data)
+void spi_init() {}
+char spi_send(char data)
 {
 	int i;
 	for(i = 3*NUM_OF_LED - 1; i > 0; i--)
@@ -57,6 +40,10 @@ void x86_led_recv(char data)
 	g_led_status[0] = data;
 }
 
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
+#include <time.h>
 void gl_print_text(char* text, GLfloat x, GLfloat y)
 {
 	glRasterPos3f(0, 0, 0.0);
@@ -74,8 +61,7 @@ void gl_print_sphere(GLfloat x, GLfloat y, float r, float g, float b)
 	glTranslatef(x, y, -50.0);
 	glutSolidSphere(1.0, 16, 16);
 	glTranslatef(-x, -y, +50.0);
-}	
-	 
+} 
 
 void gl_display(void)
 {
