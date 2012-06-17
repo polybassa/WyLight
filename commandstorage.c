@@ -1,29 +1,41 @@
-/** Changelog
- * 2012-05-08 pb:
- * - refactor functions to access and manage a buffer for led commands, which is stored in the eeprom
-**/
-
 #include "platform.h"
 #include "commandstorage.h"
 
-struct led_cmd* commandstorage_read(struct led_cmd *pDest, bit movePtr)
+struct led_cmd* commandstorage_read(struct led_cmd *pDest)
 {
-	//check parameter
-	if(0 == pDest) return 0;
+	// if the commandstorage is waiting
+	if(gCmdBuf.WaitValue == 0) 
+	{
+		//check parameter
+		if(0 == pDest) return 0;
 
-	//commands available in eeprom?
-	char nextCmd = EEPROM_RD(CmdPointerAddr);
-	if(0 == nextCmd) return 0;
+		//commands available in eeprom?
+		char nextCmd = EEPROM_RD(CmdPointerAddr);
+		if(0 == nextCmd) return 0;
+	
+		if(gCmdBuf.LoopMode)
+		{
+			nextCmd = EEPROM_RD(CmdLoopPointerAddr);
+			if(0 == nextCmd)
+				nextCmd = EEPROM_RD(CmdPointerAddr);
+				EEPROM_WR(CmdLoopPointerAddr, nextCmd);
+		}
 
-	//read command from eeprom
-	EEPROM_RD_BLK((char*)pDest, (nextCmd - CmdWidth), CmdWidth);
+		//read command from eeprom
+		EEPROM_RD_BLK((char*)pDest, (nextCmd - CmdWidth), CmdWidth);
 
-	//do we have to update the CmdPointer?
-	if(movePtr)
-	{		
-		EEPROM_WR(CmdPointerAddr, nextCmd - CmdWidth);
+		//update the CmdPointer?
+		if(gCmdBuf.LoopMode)
+			EEPROM_WR(CmdLoopPointerAddr, nextCmd - CmdWidth);		
+		else
+			EEPROM_WR(CmdPointerAddr, nextCmd - CmdWidth);
+			
+#ifdef TEST
+		USARTsend_str("Read_Done");
+#endif 
+		return pDest;
 	}
-	return pDest;
+	else return 0;
 }
 
 bit commandstorage_write(char *pSrc, char length)
@@ -123,29 +135,46 @@ void commandstorage_get_commands()
 						case DELETE: 
 							{
 								EEPROM_WR(CmdPointerAddr,0);
+								USARTsend('D');
 								return;
 							}
 						case SET_ON: 
 							{
-								PowerOnLEDs(); 
-								return;
-								}
-						case SET_OFF: 
-							{
-								PowerOffLEDs(); 
+								PowerOnLEDs();
 								return;
 							}
-					}			
-					if( commandstorage_write(&gCmdBuf.cmd_buf[2], (gCmdBuf.cmd_counter - 4)))
-					{
-						USARTsend('G');
-						USARTsend('C');
-					}
-					else 
-						gERROR.eeprom_failure = 1;
-#ifdef TEST
-					USARTsend_arr(&gCmdBuf.cmd_buf[2], (gCmdBuf.cmd_counter - 4));
-#endif
+						case SET_OFF: 
+							{
+								PowerOffLEDs();
+								return;
+							}
+						case LOOP_ON:
+							{	
+								gCmdBuf.LoopMode = 1;
+								USARTsend('L');
+								USARTsend('1');
+								return;
+							}
+						case LOOP_OFF:
+							{	
+								gCmdBuf.LoopMode = 0;
+								gCmdBuf.WaitValue = 0;
+								USARTsend('L');
+								USARTsend('0');
+								return;
+							}
+						default:
+							{
+								if( commandstorage_write(&gCmdBuf.cmd_buf[2], (gCmdBuf.cmd_counter - 4)))
+								{
+									USARTsend('G');
+									USARTsend('C');
+								}
+								else 
+									gERROR.eeprom_failure = 1;
+							}
+					}							
+					
                 }
                 else
                 {
@@ -164,9 +193,13 @@ void commandstorage_execute_commands()
 	struct led_cmd nextCmd;
 
 	// read next command from eeprom and move command pointer in eeprom to the next command (TRUE)
-	struct led_cmd *result = commandstorage_read(&nextCmd, TRUE);
+	struct led_cmd *result = commandstorage_read(&nextCmd);
+		
 	if(0 != result)
 	{
+#ifdef TEST
+USARTsend_str("executeCommand");
+#endif
 		// *** commands available, check what to do
 		switch(nextCmd.cmd) 
 		{	
@@ -175,11 +208,34 @@ void commandstorage_execute_commands()
 				ledstrip_set_color(&nextCmd.data.set_color);
 				break;
 			}
-			case SET_FADE: {break;}
+			case SET_FADE:
+			{
+				ledstrip_set_fade(&nextCmd.data.set_fade);
+				break;
+			}
+			case WAIT:
+			{
+				struct cmd_wait *pCmd = &nextCmd.data.wait;
+#ifdef TEST
+				USARTsend_num(pCmd->valueH,'H');
+				USARTsend_num(pCmd->valueL,'L');
+#endif
+				
+				gCmdBuf.WaitValue = pCmd->valueH;
+				gCmdBuf.WaitValue = gCmdBuf.WaitValue << 8;
+				gCmdBuf.WaitValue |= pCmd->valueL;
+				break;
+			}
 			case SET_RUN: {break;}
 		}
 	}
 }
+
+void commandstorage_wait_interrupt()
+{
+	if(gCmdBuf.WaitValue != 0) 
+		gCmdBuf.WaitValue = --gCmdBuf.WaitValue;					
+}	
 
 void commandstorage_init()
 {
@@ -189,6 +245,8 @@ void commandstorage_init()
 	**/
 	if (EEPROM_RD(CmdPointerAddr) == 0xff)
 		EEPROM_WR(CmdPointerAddr, 0);
+	gCmdBuf.LoopMode = 0;
+	gCmdBuf.WaitValue = 0;
 
 	// set loop pointer address to start
 	EEPROM_WR(CmdLoopPointerAddr, 0);

@@ -1,29 +1,28 @@
 //Nils Weiﬂ 
 //05.09.2011
 //Compiler CC5x/
-
-#define NO_CRC
 #ifndef X86
-	#include "16F1936.h"
+#define NO_CRC
+#define TEST
 #endif
-
-#include "platform.h"
 #pragma sharedAllocation
 
 //*********************** INCLUDEDATEIEN *********************************************
+#include "platform.h"
 #include "RingBuf.h"		//clean
 #include "usart.h"			//clean
 #include "eeprom.h"       	//clean 
 #include "crc.h"			//clean
-#include "commandstorage.h"
+#include "commandstorage.h" //under construction
 #include "ledstrip.h"		//clean
 #include "spi.h"			//clean
-#include "timer.h"
+#include "timer.h"			//under construction
 
 //*********************** GLOBAL VARIABLES *******************************************
 struct CommandBuffer gCmdBuf;
 struct LedBuffer gLedBuf;
 struct ErrorBits gERROR;
+char gTimecounter;
 
 #ifdef X86
 void* gl_start(void* unused);
@@ -64,7 +63,7 @@ void* InterruptRoutine(void* unused)
 #pragma origin 4					//Adresse des Interrupts	
 interrupt InterruptRoutine(void)
 {
-	if (RCIF)
+	if(RCIF)
 	{
 		if(!RingBufHasError) RingBufPut(RCREG);
 		else 
@@ -72,6 +71,15 @@ interrupt InterruptRoutine(void)
 			//Register lesen um Schnittstellen Fehler zu vermeiden
 			char temp = RCREG;
 		}
+	}
+	if(TMR2IF)
+	{
+		Timer2interrupt();
+	}
+	if(TMR4IF)
+	{
+		Timer4interrupt();
+		commandstorage_wait_interrupt();
 	}
 }
 #endif /* #ifdef X86 */
@@ -83,6 +91,7 @@ void init_all();
 void main(void)
 {
 	init_all();
+
 #ifdef X86
 	#include <pthread.h>
 	pthread_t isrThread;
@@ -91,11 +100,18 @@ void main(void)
 	pthread_create(&isrThread, 0, InterruptRoutine, 0);
 	pthread_create(&glThread, 0, gl_start, 0);
 #endif /* #ifdef X86 */
+    
 	while(1)
 	{
+		Check_INPUT();
 		throw_errors();
 		commandstorage_get_commands();
 		commandstorage_execute_commands();
+		if(gTimecounter == 0)
+		{
+			if(gLedBuf.led_fade_operation)
+				ledstrip_do_fade();
+		}	
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************
@@ -106,13 +122,14 @@ void init_all()
 	RingBufInit();
 	USARTinit();
 	spi_init();
+	timer_init();
 	ledstrip_init();
 	commandstorage_init();
+	
 	InitFET();
 	PowerOnLEDs();
-	//FactoryRestoreWLAN();
     
-  ErrorInit();
+	ErrorInit();
 	ClearCmdBuf();	
 	AllowInterrupts();
 	
@@ -133,4 +150,6 @@ void init_all()
 #include "timer.c"
 #include "usart.c"
 #include "commandstorage.c"
+#include "platform.c"
 #endif /* #ifndef X86 */
+

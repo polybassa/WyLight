@@ -12,12 +12,16 @@
 #define NUM_OF_LED 32
 
 struct LedBuffer{
-	char led_array[NUM_OF_LED*3];
+	uns8 led_array[NUM_OF_LED*3];
+	uns8 led_destination[NUM_OF_LED*3];
+	char led_fade_operation:1;
+	char led_run_operation:1;
 	};
 
 extern struct LedBuffer gLedBuf;
 
 void ledstrip_init(void);
 void ledstrip_set_color(struct cmd_set_color *pCmd);
-void sub_func_set_color(char *cmdPointer);
+void ledstrip_set_fade(struct cmd_set_fade *pCmd);
+void ledstrip_do_fade();
 #endif

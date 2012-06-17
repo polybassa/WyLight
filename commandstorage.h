@@ -6,10 +6,11 @@
 #include "usart.h"			
 #include "eeprom.h"   
 #include "error.h"    	
-#include "crc.h"			
+#include "crc.h"
+#include "timer.h"			
 
 #define CmdPointerAddr 0xff		// *** Address at EERPOM. Commandpointer indicates the nummer of commands
-#define CmdLoopPointerAddr 0xfd // *** Address at EEPROM. CommandLoopPointer indicates the next command. Used in Loop-Mode
+#define CmdLoopPointerAddr 0xfe // *** Address at EEPROM. CommandLoopPointer indicates the next command. Used in Loop-Mode
 
 //*********************** ENUMERATIONS *********************************************
 #define STX 0xFF
@@ -20,6 +21,8 @@
 #define SET_ON 0xFA
 #define SET_OFF 0xF9
 #define DELETE 0xF8
+#define LOOP_ON 0xF7
+#define LOOP_OFF 0xF6
 
 //*********************** STRUCT DECLARATION *********************************************
 struct cmd_set_color {
@@ -32,7 +35,18 @@ struct cmd_set_color {
 };
 
 struct cmd_set_fade {
-	char dummy;
+	char addr[4];
+	char red;
+	char green;
+	char blue;
+	char timevalue;
+	char reserved0;
+};
+
+struct cmd_wait {
+	char valueH;
+	char valueL;
+	char reserved[7];
 };
 
 struct cmd_set_run {
@@ -45,6 +59,7 @@ struct led_cmd {
 		struct cmd_set_color set_color;
 		struct cmd_set_fade set_fade;
 		struct cmd_set_run set_run;
+		struct cmd_wait wait;
 	}data;
 };
 
@@ -55,24 +70,25 @@ struct CommandBuffer{
     uns8 cmd_buf[FRAMELENGTH];
     char crcH;
     char crcL;
+	char LoopMode:1;
+	uns16 WaitValue;
 };
 extern struct CommandBuffer gCmdBuf;
 
 //*********************** METHODS AND MACROS *********************************************
 #define CmdWidth sizeof(struct led_cmd)	// *** Number of Bytes for one command
 #define ClearCmdBuf(x)  		\
-{							\
-	gCmdBuf.cmd_counter = 0;\
-	gCmdBuf.frame_counter = 0; \
+{								\
+	gCmdBuf.cmd_counter = 0;	\
+	gCmdBuf.frame_counter = 0;	\
 }
 
 /**
  * pDest: output buffer
- * movePtr: if set, the command pointer will be moved to the next command, after command was read
  * return: - 0, if no command available in buffer
  *         - pDest, if available command was written to pDest
 **/
-struct led_cmd* commandstorage_read(struct led_cmd *pDest, bit movePtr);
+struct led_cmd* commandstorage_read(struct led_cmd *pDest);
 
 /**
  * pSrc: command which should be written to eeprom
@@ -95,6 +111,8 @@ void commandstorage_execute_commands();
 *** Initialize commandstorage in eeprom
 **/
 void commandstorage_init();
+
+void commandstorage_wait_interrupt();
 
 #endif /* #ifndef _COMMANDSTORAGE_H_ */
 
