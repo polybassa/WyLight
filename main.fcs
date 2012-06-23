@@ -57,12 +57,19 @@ F: ledstrip_set_color     :#1  : p0 <- p0
     spi_send_ledbuf       : #2  : p0 -> p0
 
 F: ledstrip_set_fade      :#1  : p0 <- p0 
+    ledstrip_get_change   : #3  : p0 -> p0
+    ledstrip_get_change   : #3  : p0 -> p0
+    ledstrip_get_change   : #3  : p0 -> p0
     timer_set_for_fade    : #1  : p0 -> p0
 
 F: ledstrip_do_fade       :#1  : p0 <- p0 
     USARTsend             : #19 : p0 -> p0
     USARTsend             : #19 : p0 -> p0
     spi_send_ledbuf       : #2  : p0 -> p0
+
+F: ledstrip_get_change    :#3  : p0
+
+F: ledstrip_calc_change   :#0  : p0
 
 F: RingBufInit            :#2  : p0
 
@@ -217,6 +224,9 @@ F: Check_INPUT            :#1  : p0 <- p0
  L3        spi_send_ledbuf
  L4          spi_send
  L2      ledstrip_set_fade
+ L3        ledstrip_get_change
+ L3        ledstrip_get_change
+ L3        ledstrip_get_change
  L3        timer_set_for_fade
  L2      USARTsend_num
  L3        USARTsend

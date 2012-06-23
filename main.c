@@ -4,6 +4,7 @@
 #ifndef X86
 #define NO_CRC
 #define TEST
+#pragma optimize 1
 #endif
 #pragma sharedAllocation
 

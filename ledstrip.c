@@ -3,7 +3,17 @@
 //Compiler CC5x 
 
 #include "ledstrip.h"
-//#include "MATH16.H"
+//private struct
+struct max_changes_struct
+	{
+		uns8 red;
+		uns8 green;
+		uns8 blue;
+	};
+
+//private function
+uns8 ledstrip_get_change(uns8 destinationvalue, uns8 currentvalue);
+uns8 ledstrip_calc_change(uns8 *change_array,struct max_changes_struct maxChange );
 
 void ledstrip_init(void)
 {
@@ -23,10 +33,10 @@ void ledstrip_init(void)
 ***/
 void ledstrip_set_color(struct cmd_set_color *pCmd)
 {	
-	char *address = pCmd->addr;
-	char r = pCmd->red;
-	char g = pCmd->green;
-	char b = pCmd->blue;
+	uns8 *address = pCmd->addr;
+	uns8 r = pCmd->red;
+	uns8 g = pCmd->green;
+	uns8 b = pCmd->blue;
 	
 	char k,mask;
 	mask = 0x01;
@@ -58,7 +68,7 @@ void ledstrip_set_color(struct cmd_set_color *pCmd)
 		}
 	}
 	spi_send_ledbuf(&gLedBuf.led_array[0]);
-	// Laufende Operationen ausschalten
+	// Disable other functions
 	gLedBuf.led_fade_operation = 0;
 	gLedBuf.led_run_operation = 0;
 }
@@ -69,10 +79,13 @@ void ledstrip_set_color(struct cmd_set_color *pCmd)
 **/
 void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 {
-	char *address = pCmd->addr;
-	char r = pCmd->red;
-	char g = pCmd->green;
-	char b = pCmd->blue;
+	uns8 *address = pCmd->addr;
+	uns8 r = pCmd->red;
+	uns8 g = pCmd->green;
+	uns8 b = pCmd->blue;
+	
+	struct max_changes_struct maxChange;
+
 	
 	char k,mask,temp;
 	mask = 0x01;
@@ -83,14 +96,18 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 		{
 			temp = gLedBuf.led_array[k];
 			gLedBuf.led_destination[k] = b;
+			maxChange.blue = ledstrip_get_change(b,temp);
 			k++;
 			
 			temp = gLedBuf.led_array[k];
 			gLedBuf.led_destination[k] = g;
+			maxChange.green = ledstrip_get_change(g,temp);
 			k++;
 			
 			temp = gLedBuf.led_array[k];
 			gLedBuf.led_destination[k] = r;
+			maxChange.red = ledstrip_get_change(r,temp);
+			
 		}
 		else 
 		{ 
@@ -148,3 +165,25 @@ void ledstrip_do_fade()
 		spi_send_ledbuf(&gLedBuf.led_array[0]);
 }
 
+//This funktion returns the differenz between the currentvalue of a led and the destinationvalue
+
+uns8 ledstrip_get_change(uns8 destinationvalue, uns8 currentvalue)
+{
+	char temp;
+	if(destinationvalue > currentvalue)
+		return temp = destinationvalue - currentvalue;
+	else
+		return temp = currentvalue - destinationvalue;	
+}
+
+uns8 ledstrip_calc_change(uns8 *change_array,struct max_changes_struct maxChange )
+{
+/***
+* To Do... Teile alle drei werte durch 2 (>>) solange bis 
+- alle Werte kleiner als 16 sind
+- mindestens ein Wert 1 ist
+- ist ein Wert 1, dann Teile diesen nichtmehr
+- ist ein Wert null, führe ebenfalls keine operationen an diesem durch
+**/
+return 0;
+}
