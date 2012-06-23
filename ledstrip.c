@@ -3,7 +3,7 @@
 //Compiler CC5x 
 
 #include "ledstrip.h"
-#include "MATH16.H"
+//#include "MATH16.H"
 
 void ledstrip_init(void)
 {
@@ -29,7 +29,7 @@ void ledstrip_set_color(struct cmd_set_color *pCmd)
 	char b = pCmd->blue;
 	
 	char k,mask;
-	mask = 0b00000001;
+	mask = 0x01;
 	for(k = 0; k < (NUM_OF_LED * 3); k++)
 	{	
 		if(0 != (*address & mask))
@@ -54,7 +54,7 @@ void ledstrip_set_color(struct cmd_set_color *pCmd)
 		if(0 == mask)
 		{
 			address++;
-			mask= 0b00000001;
+			mask = 0x01;
 		}
 	}
 	spi_send_ledbuf(&gLedBuf.led_array[0]);
@@ -75,7 +75,7 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 	char b = pCmd->blue;
 	
 	char k,mask,temp;
-	mask = 0b00000001;
+	mask = 0x01;
 	
 	for(k = 0; k < (NUM_OF_LED * 3); k++)
 	{	
@@ -101,7 +101,7 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 		if(0 == mask)
 		{
 			address++;
-			mask= 0b00000001;
+			mask = 0x01;
 		}
 	}
 	timer_set_for_fade(pCmd->timevalue);
@@ -111,8 +111,13 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 
 void ledstrip_do_fade()
 {
+#ifndef X86
 	char fade_finish:1;
-	fade_finish = 1;
+	fade_finish = TRUE;
+#else
+	char fade_finish = TRUE;
+#endif	
+	
 	char temp_current,temp_destination;
 	
 	char i;
@@ -124,17 +129,17 @@ void ledstrip_do_fade()
 		if(temp_current > temp_destination)
 		{
 			gLedBuf.led_array[i] = --temp_current;
-			fade_finish = 0;
+			fade_finish = FALSE;
 		}
 		else if(temp_current < temp_destination)	
 		{
 			gLedBuf.led_array[i] = ++temp_current;
-			fade_finish = 0;
+			fade_finish = FALSE;
 		}		
 	}	
 	if(fade_finish) 
 	{
-		gLedBuf.led_fade_operation = 0;
+		gLedBuf.led_fade_operation = FALSE;
 		//send Fade Done
 		USARTsend('F');
 		USARTsend('D');

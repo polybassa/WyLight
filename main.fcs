@@ -10,6 +10,7 @@ F: _const1                :#2  : p0
 
 F: main                   :#0  : p0
     init_all              : #1  : p0 -> p0
+    Check_INPUT           : #1  : p0 -> p0
     throw_errors          : #1  : p0 -> p0
     commandstorage_get_commands: #1  : p0 -> p0
     commandstorage_execute_commands: #1  : p0 -> p0
@@ -49,30 +50,6 @@ F: throw_errors           :#1  : p0 <- p0
     RingBufInit           : #2  : p0 -> p0
     USARTsend_str         : #5  : p0 -> p0
     USARTsend_str         : #5  : p0 -> p0
-
-F: _mult8x8               :#2  : p0
-
-F: _multS8x8              :#0  : p0
-
-F: _multU16x8             :#0  : p0
-
-F: _mult16x16             :#0  : p0
-
-F: _divU16_8              :#2  : p0
-
-F: _divU16_16             :#0  : p0
-
-F: _divS16_8              :#0  : p0
-
-F: _divS16_16             :#0  : p0
-
-F: _remU16_8              :#0  : p0
-
-F: _remU16_16             :#0  : p0
-
-F: _remS16_8              :#0  : p0
-
-F: _remS16_16             :#0  : p0
 
 F: ledstrip_init          :#1  : p0 <- p0 
 
@@ -120,10 +97,6 @@ F: USARTsend_arr          :#0  : p0
     USARTsend             : #19 : p0 -> p0
 
 F: USARTsend_num          :#2  : p0
-    _divU16_8             : #2  : p0 -> p0
-    _mult8x8              : #2  : p0 -> p0
-    _divU16_8             : #2  : p0 -> p0
-    _mult8x8              : #2  : p0 -> p0
     USARTsend             : #19 : p0 -> p0
     USARTsend             : #19 : p0 -> p0
     USARTsend             : #19 : p0 -> p0
@@ -175,6 +148,8 @@ F: commandstorage_init    :#1  : p0 <- p0
     EEPROM_WR             : #8  : p0 -> p0
     EEPROM_WR             : #8  : p0 -> p0
 
+F: Check_INPUT            :#1  : p0 <- p0 
+
 
  L1  InterruptRoutine
  L2    RingBufPut
@@ -194,6 +169,7 @@ F: commandstorage_init    :#1  : p0 <- p0
  L2      USARTsend
  L2      USARTsend
  L1      USARTsend [T-GOTO]
+ L1    Check_INPUT
  L1    throw_errors
  L2      USARTsend
  L2      USARTsend_str
@@ -243,10 +219,6 @@ F: commandstorage_init    :#1  : p0 <- p0
  L2      ledstrip_set_fade
  L3        timer_set_for_fade
  L2      USARTsend_num
- L3        _divU16_8
- L3        _mult8x8
- L3        _divU16_8
- L3        _mult8x8
  L3        USARTsend
  L3        USARTsend
  L3        USARTsend
