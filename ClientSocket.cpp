@@ -24,8 +24,8 @@ int ClientSocket::Send(char* buf, size_t length)
 
 void colorLoop(ClientSocket& socket)
 {
-	static const size_t NUM_COLORS = 3;
-	char* buffer[NUM_COLORS] = {cmd_set_color_red, cmd_set_color_green, cmd_set_color_blue};
+	static const size_t NUM_COLORS = 4;
+	char* buffer[NUM_COLORS] = {cmd_set_color_red, cmd_set_fade_blue, cmd_set_color_green, cmd_set_color_blue};
 	for(int i = 0;;i++)
 	{
 		int bytesWritten = socket.Send(buffer[i % NUM_COLORS], sizeof(cmd_set_color_red));
