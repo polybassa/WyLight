@@ -127,7 +127,7 @@ void init_all()
 	
 	InitFET();
 	PowerOnLEDs();
-    
+    InitFactoryRestoreWLAN();
 	ErrorInit();
 	ClearCmdBuf();	
 	AllowInterrupts();
