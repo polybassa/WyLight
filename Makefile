@@ -1,13 +1,13 @@
-PIC_CC=/home/gpb/cc5xfree/CC5x.EXE
-PIC_CD=/Users/weitys1/Documents/cc5xfree/CC5X.EXE 
+#if [ -f "/home/gpb/cc5xfree/CC5X.EXE" ]
+PIC_CC=/home/gpb/cc5xfree/CC5X.EXE
+PIC_CD=/Users/weitys1/Documents/cc5xfree/CC5X.EXE
 
 INC_DIR=include_files
 OPENGL_LIB=-lGL -lGLU -lglut
 
 X86_SRC=main.c commandstorage.c eeprom.c error.c ledstrip.c RingBuf.c spi.c usart.c x86_wrapper.c
 
-all:
-	make pic
+all: pic x86_linux x86_client
 
 pic:
 	wine ${PIC_CC} main.c -CC -fINHX8M -p16F1936 -a -L -Q -V -FM

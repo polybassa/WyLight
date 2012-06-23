@@ -112,8 +112,7 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 void ledstrip_do_fade()
 {
 #ifndef X86
-	char fade_finish:1;
-	fade_finish = TRUE;
+	char fade_finish:1 = TRUE;
 #else
 	char fade_finish = TRUE;
 #endif	

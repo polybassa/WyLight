@@ -3,7 +3,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#include "commandstorage.h"
+#include "wifly_cmd.h"
 class ClientSocket
 {
 	private:
@@ -38,6 +38,14 @@ static char cmd_set_color_blue[] = {
 		0xff, 0xff, 0xff, 0xff,
 		0, 0, 128,
 		0, 0,
+		0xDE, 0xAD};
+
+static char cmd_set_fade_blue[] = {
+		STX, (uns8)sizeof(struct cmd_set_color) + 2,
+		SET_FADE,
+		0xff, 0xff, 0xff, 0xff,
+		0, 0, 128,
+		10, 0,
 		0xDE, 0xAD};
 #endif /* #ifndef _CLIENTSOCKET_H_ */
 
