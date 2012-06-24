@@ -13,39 +13,18 @@ class ClientSocket
 	public:
 		ClientSocket(long addr, short port);
 		~ClientSocket();
-		int Send(char* buf, size_t length);
+		int Send(struct cmd_frame* frame, size_t length) const;
 };
 
-static char cmd_set_color_red[] = {
-		STX, (uns8)sizeof(struct cmd_set_color) + 2,
-		SET_COLOR,
-		0xff, 0xff, 0xff, 0xff,
-		128, 0, 0,
-		0, 0,
-		0xDE, 0xAD};
-
-static char cmd_set_color_green[] = {
-		STX, (uns8)sizeof(struct cmd_set_color) + 2,
-		SET_COLOR,
-		0xff, 0xff, 0xff, 0xff,
-		0, 128, 0,
-		0, 0,
-		0xDE, 0xAD};
-
-static char cmd_set_color_blue[] = {
-		STX, (uns8)sizeof(struct cmd_set_color) + 2,
-		SET_COLOR,
-		0xff, 0xff, 0xff, 0xff,
-		0, 0, 128,
-		0, 0,
-		0xDE, 0xAD};
-
-static char cmd_set_fade_blue[] = {
-		STX, (uns8)sizeof(struct cmd_set_color) + 2,
-		SET_FADE,
-		0xff, 0xff, 0xff, 0xff,
-		0, 0, 128,
-		10, 0,
-		0xDE, 0xAD};
+class WiflyControl
+{
+	public:
+		const ClientSocket mSock;
+	private:
+		struct cmd_frame mCmdFrame;//[sizeof(led_cmd) + 4];
+	public:
+		WiflyControl();
+		void SetColor(char r, char g, char b);
+};
 #endif /* #ifndef _CLIENTSOCKET_H_ */
 

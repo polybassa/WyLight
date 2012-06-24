@@ -12,20 +12,14 @@
 	char b = pCmd->blue; \
 	char k,mask; \
 	mask = 0x01; \
-	for(k = 0; k < (NUM_OF_LED * 3); k++) \
-	{	\
-		if(0 != (*address & mask)) \
-		{ \
+	for(k = 0; k < (NUM_OF_LED * 3); k++) {	\
+		if(0 != (*address & mask)) { \
 			BLOCK \
-		} \
-		else \
-		{ \
-			k++; \
-			k++; \
+		} else { \
+			k++; k++; \
 		} \
 		mask = mask << 1; \
-		if(0 == mask) \
-		{ \
+		if(0 == mask) { \
 			address++; \
 			mask = 0x01; \
 		} \
@@ -49,7 +43,7 @@ void ledstrip_init(void)
 *** only Led's where the address bit is 1 will be set to the new color
 ***/
 void ledstrip_set_color(struct cmd_set_color *pCmd)
-{	
+{
 	FOR_EACH_MASKED_LED_DO(
 			gLedBuf.led_array[k] = b;
 			gLedBuf.led_destination[k] = b;

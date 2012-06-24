@@ -18,11 +18,10 @@
 //*********************** STRUCT DECLARATION *********************************************
 struct cmd_set_color {
 	char addr[4];
-	char red;
-	char green;
-	char blue;
-	char reserved0;
-	char reserved1;
+	uns8 red;
+	uns8 green;
+	uns8 blue;
+	char reserved[2];
 };
 
 struct cmd_set_fade {
@@ -52,6 +51,14 @@ struct led_cmd {
 		struct cmd_set_run set_run;
 		struct cmd_wait wait;
 	}data;
+};
+
+struct cmd_frame {
+	uns8 stx;
+	uns8 length;
+	struct led_cmd led;
+	uns8 crcHigh;
+	uns8 crcLow;
 };
 #define FRAMELENGTH (sizeof(struct led_cmd) + 5)			// *** max length of one commandframe
 #endif /* #ifndef _WIFLY_CMD_H_ */
