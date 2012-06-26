@@ -15,6 +15,27 @@ struct max_changes_struct
 uns8 ledstrip_get_change(uns8 destinationvalue, uns8 currentvalue);
 uns8 ledstrip_calc_change(uns8 *change_array,struct max_changes_struct maxChange );
 
+#define FOR_EACH_MASKED_LED_DO(BLOCK) { \
+	char *address = pCmd->addr; \
+	char r = pCmd->red; \
+	char g = pCmd->green; \
+	char b = pCmd->blue; \
+	char k,mask; \
+	mask = 0x01; \
+	for(k = 0; k < (NUM_OF_LED * 3); k++) {	\
+		if(0 != (*address & mask)) { \
+			BLOCK \
+		} else { \
+			k++; k++; \
+		} \
+		mask = mask << 1; \
+		if(0 == mask) { \
+			address++; \
+			mask = 0x01; \
+		} \
+	} \
+}
+
 void ledstrip_init(void)
 {
 	char k;
@@ -32,18 +53,8 @@ void ledstrip_init(void)
 *** only Led's where the address bit is 1 will be set to the new color
 ***/
 void ledstrip_set_color(struct cmd_set_color *pCmd)
-{	
-	uns8 *address = pCmd->addr;
-	uns8 r = pCmd->red;
-	uns8 g = pCmd->green;
-	uns8 b = pCmd->blue;
-	
-	char k,mask;
-	mask = 0x01;
-	for(k = 0; k < (NUM_OF_LED * 3); k++)
-	{	
-		if(0 != (*address & mask))
-		{
+{
+	FOR_EACH_MASKED_LED_DO(
 			gLedBuf.led_array[k] = b;
 			gLedBuf.led_destination[k] = b;
 			k++;
@@ -54,19 +65,7 @@ void ledstrip_set_color(struct cmd_set_color *pCmd)
 			
 			gLedBuf.led_array[k] = r;
 			gLedBuf.led_destination[k] = r;
-		}
-		else 
-		{
-			k++;
-			k++;
-		}
-		mask = mask << 1;
-		if(0 == mask)
-		{
-			address++;
-			mask = 0x01;
-		}
-	}
+	);
 	spi_send_ledbuf(&gLedBuf.led_array[0]);
 	// Disable other functions
 	gLedBuf.led_fade_operation = 0;
@@ -78,22 +77,10 @@ void ledstrip_set_color(struct cmd_set_color *pCmd)
 * 
 **/
 void ledstrip_set_fade(struct cmd_set_fade *pCmd)
-{
-	uns8 *address = pCmd->addr;
-	uns8 r = pCmd->red;
-	uns8 g = pCmd->green;
-	uns8 b = pCmd->blue;
-	
+{	
+	char temp;
 	struct max_changes_struct maxChange;
-
-	
-	char k,mask,temp;
-	mask = 0x01;
-	
-	for(k = 0; k < (NUM_OF_LED * 3); k++)
-	{	
-		if(0 != (*address & mask))
-		{
+	FOR_EACH_MASKED_LED_DO(
 			temp = gLedBuf.led_array[k];
 			gLedBuf.led_destination[k] = b;
 			maxChange.blue = ledstrip_get_change(b,temp);
@@ -107,20 +94,7 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 			temp = gLedBuf.led_array[k];
 			gLedBuf.led_destination[k] = r;
 			maxChange.red = ledstrip_get_change(r,temp);
-			
-		}
-		else 
-		{ 
-			k++;
-			k++;
-		}
-		mask = mask << 1;
-		if(0 == mask)
-		{
-			address++;
-			mask = 0x01;
-		}
-	}
+	);
 	timer_set_for_fade(pCmd->timevalue);
 	gLedBuf.led_fade_operation = 1;
 }
@@ -129,8 +103,7 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 void ledstrip_do_fade()
 {
 #ifndef X86
-	char fade_finish:1;
-	fade_finish = TRUE;
+	char fade_finish:1 = TRUE;
 #else
 	char fade_finish = TRUE;
 #endif	

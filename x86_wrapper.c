@@ -1,11 +1,11 @@
 #include <stdio.h>
+#include <string.h>
 #include "ledstrip.h"
-
-//prototypes
-void x86_led_recv(char data);
 
 void addCRC(char byte, char* p_crcH, char* p_crcL) {}
 void newCRC(char* p_crcH, char* p_crcL) {}
+void timer_init(){};
+void timer_set_for_fade(char value){};
 void USARTinit() {}
 void USARTsend(char ch)
 {
@@ -27,15 +27,20 @@ void EEPROM_WR(char adress, char data)
 	gEEPROM[adress] = (uns8)data;
 }
 
-void spi_init() {}
 
+bit g_led_off = 1;
+static uns8 g_led_status[NUM_OF_LED*3];
+void spi_init() {}
 char spi_send(char data)
 {
-	x86_led_recv(data);
-	FILE* gSPI = fopen("out_spi.txt", "a+");
-	fprintf(gSPI, "%c", data);
-	fclose(gSPI);
+	int i;
+	for(i = 3*NUM_OF_LED - 1; i > 0; i--)
+	{
+		g_led_status[i] = g_led_status[i-1];
+	}
+	g_led_status[0] = data;
 }
+
 #ifndef MACOSX
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -48,21 +53,6 @@ char spi_send(char data)
 #include <mach/mach.h>
 #endif /* MACOSX */
 #include <time.h>
-
-
-
-static uns8 g_led_status[NUM_OF_LED*3];
-bit g_led_off = 1;
-
-void x86_led_recv(char data)
-{
-	int i;
-	for(i = 3*NUM_OF_LED - 1; i > 0; i--)
-	{
-		g_led_status[i] = g_led_status[i-1];
-	}
-	g_led_status[0] = data;
-}
 
 void gl_print_text(char* text, GLfloat x, GLfloat y)
 {
@@ -81,8 +71,7 @@ void gl_print_sphere(GLfloat x, GLfloat y, float r, float g, float b)
 	glTranslatef(x, y, -50.0);
 	glutSolidSphere(1.0, 16, 16);
 	glTranslatef(-x, -y, +50.0);
-}	
-	 
+} 
 
 void gl_display(void)
 {
