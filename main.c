@@ -4,6 +4,7 @@
 #ifndef X86
 #define NO_CRC
 #define TEST
+#pragma optimize 1
 #endif
 #pragma sharedAllocation
 
@@ -128,7 +129,7 @@ void init_all()
 	
 	InitFET();
 	PowerOnLEDs();
-    
+    InitFactoryRestoreWLAN();
 	ErrorInit();
 	ClearCmdBuf();	
 	AllowInterrupts();

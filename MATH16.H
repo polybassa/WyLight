@@ -1,5 +1,5 @@
 // SIZE
-
+#pragma codepage 1
 #pragma library 1
 /*
 uns16 operator* _mult8x8( uns8 arg1, uns8 arg2);

@@ -12,8 +12,11 @@
 #define NUM_OF_LED 32
 
 struct LedBuffer{
-	uns8 led_array[NUM_OF_LED*3];
-	uns8 led_destination[NUM_OF_LED*3];
+	uns8 led_array[NUM_OF_LED*3];			// contains the current colorvalue for each led
+	uns8 led_destination[NUM_OF_LED*3];  	// contains the destination colorvalue for fade operations for each led 
+	uns8 led_changevalue[NUM_OF_LED*3]; 	// contains the steps for dec or inc by fadeoperations REASON: if you change the color for one LED you have different ranges for RED, GREEN and BLUE
+											// if you change all colors with the same steps ( always inc 1 oder dec 1) one LED reaches the destination value faster than a other led and the
+											// mixed color during the fade operation is not so nice
 	char led_fade_operation:1;
 	char led_run_operation:1;
 	};
