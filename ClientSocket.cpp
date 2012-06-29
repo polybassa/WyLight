@@ -92,7 +92,7 @@ void colorLoop(WiflyControl& control)
 
 #ifdef ANDROID
 extern "C" {
-void Java_biz_bruenn_Wifly_WiflyActivity_runClient(JNIEnv* env, jobject ref, jstring unused)
+void Java_biz_bruenn_WiflyLight_WiflyLightActivity_runClient(JNIEnv* env, jobject ref)
 {
 	WiflyControl control;
 	colorLoop(control);

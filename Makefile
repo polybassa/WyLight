@@ -1,7 +1,7 @@
 PIC_CC=/home/gpb/cc5xfree/CC5X.EXE
 PIC_CD=/Users/weitys1/Documents/cc5xfree/CC5X.EXE
 
-ANDROID_DIR=../Wifly
+ANDROID_DIR=./android/WiflyLight
 INC_DIR=include_files
 OPENGL_LIB=-lGL -lGLU -lglut
 OPENGL_LIB_OSX=-framework Carbon -framework OpenGL -framework GLUT
