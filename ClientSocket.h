@@ -3,7 +3,6 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#include "wifly_cmd.h"
 class ClientSocket
 {
 	private:
@@ -13,18 +12,7 @@ class ClientSocket
 	public:
 		ClientSocket(long addr, short port);
 		~ClientSocket();
-		int Send(struct cmd_frame* frame, size_t length) const;
-};
-
-class WiflyControl
-{
-	public:
-		const ClientSocket mSock;
-	private:
-		struct cmd_frame mCmdFrame;//[sizeof(led_cmd) + 4];
-	public:
-		WiflyControl();
-		void SetColor(char r, char g, char b);
+		int Send(char* frame, size_t length) const;
 };
 #endif /* #ifndef _CLIENTSOCKET_H_ */
 

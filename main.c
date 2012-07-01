@@ -26,6 +26,8 @@ struct ErrorBits gERROR;
 char gTimecounter;
 
 #ifdef X86
+bit g_led_off; //X86 replacement for PORTC.0
+
 void* gl_start(void* unused);
 
 #include <sys/socket.h>

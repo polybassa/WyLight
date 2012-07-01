@@ -11,7 +11,7 @@
 	typedef unsigned short uns16;
 
 	//global variables
-	bit g_led_off;
+	extern bit g_led_off;
 
 	#define AllowInterrupts(x)
 	#define InitFactoryRestoreWLAN(x)

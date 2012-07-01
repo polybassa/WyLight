@@ -28,9 +28,9 @@ android_client:
 	ndk-build -C $(ANDROID_DIR)
 
 linux_client:
-	g++ ClientSocket.cpp -DX86 -I${INC_DIR} -o client.bin -Wall
+	g++ ClientSocket.cpp WiflyControl.cpp WiflyControlCli.cpp -DX86 -I${INC_DIR} -o client.bin -Wall
 
 mac_client: linux_client
 
 clean:
-	rm *.hex *.occ *.txt *.out *.bin
+	rm *.hex *.occ *.bin
