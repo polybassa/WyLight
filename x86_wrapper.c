@@ -41,17 +41,9 @@ char spi_send(char data)
 	g_led_status[0] = data;
 }
 
-#ifndef MACOSX
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
-#else
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#include <GLUT/glut.h>
-#include <mach/clock.h>
-#include <mach/mach.h>
-#endif /* MACOSX */
 #include <time.h>
 
 void gl_print_text(char* text, GLfloat x, GLfloat y)
@@ -78,35 +70,16 @@ void gl_display(void)
 	static unsigned long frames = 0;
 	static struct timespec lastTime;
 	static struct timespec nextTime;
-#ifndef MACOSX
+
 	clock_gettime(CLOCK_MONOTONIC, &lastTime);
-#else
-	clock_serv_t cclock;
-	mach_timespec_t mts;
-	host_get_clock_service(mach_host_self(), CALENDAR_CLOCK, &cclock);
-	clock_get_time(cclock, &mts);
-	mach_port_deallocate(mach_task_self(), cclock);
-	lastTime.tv_sec = mts.tv_sec;
-	lastTime.tv_nsec = mts.tv_nsec;
-#endif
 
 	for(;;) {
 		frames++;
 		glClear(GL_COLOR_BUFFER_BIT);
 		glLoadIdentity();
 
-		// fps calculation
-#ifndef MACOSX
 		clock_gettime(CLOCK_MONOTONIC, &nextTime);
-#else
-		clock_serv_t cclock;
-		mach_timespec_t mts;
-		host_get_clock_service(mach_host_self(), CALENDAR_CLOCK, &cclock);
-		clock_get_time(cclock, &mts);
-		mach_port_deallocate(mach_task_self(), cclock);
-		nextTime.tv_sec = mts.tv_sec;
-		nextTime.tv_nsec = mts.tv_nsec;
-#endif
+
 		time_t seconds = nextTime.tv_sec - lastTime.tv_sec;
 		if(seconds > 0)
 		{
