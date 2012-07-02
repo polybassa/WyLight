@@ -27,55 +27,88 @@ WiflyControl::WiflyControl()
 {
 	mCmdFrame.stx = STX;
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;
-	mCmdFrame.led.cmd = SET_COLOR;
-	mCmdFrame.led.data.set_color.addr[0] = 0xff;
-	mCmdFrame.led.data.set_color.addr[1] = 0xff;
-	mCmdFrame.led.data.set_color.addr[2] = 0xff;
-	mCmdFrame.led.data.set_color.addr[3] = 0xff;
-	mCmdFrame.led.data.set_color.red = 128;
-	mCmdFrame.led.data.set_color.green = 0;
-	mCmdFrame.led.data.set_color.blue = 0;
-	mCmdFrame.led.data.set_color.reserved[0] = 0;
-	mCmdFrame.led.data.set_color.reserved[1] = 0;
 	mCmdFrame.crcHigh = 0xDE;
 	mCmdFrame.crcLow = 0xAD;
 }
 
-void WiflyControl::SetColor(char r, char g, char b)
+void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
 {
-	mCmdFrame.led.data.set_color.red = r;
-	mCmdFrame.led.data.set_color.green = g;
-	mCmdFrame.led.data.set_color.blue = b;
+	mCmdFrame.led.cmd = SET_COLOR;
+	// next line would be better, but mCmdFrame...addr is unaligned!
+	//*(unsigned long*)mCmdFrame.led.data.set_color.addr = htonl(addr);
+	mCmdFrame.led.data.set_color.addr[0] = (addr & 0xff000000) >> 24;
+	mCmdFrame.led.data.set_color.addr[1] = (addr & 0x00ff0000) >> 16;
+	mCmdFrame.led.data.set_color.addr[2] = (addr & 0x0000ff00) >> 8;
+	mCmdFrame.led.data.set_color.addr[3] = (addr & 0x000000ff);
+	mCmdFrame.led.data.set_color.red = (rgba & 0xff000000) >> 24;
+	mCmdFrame.led.data.set_color.green = (rgba & 0x00ff0000) >> 16;
+	mCmdFrame.led.data.set_color.blue = (rgba & 0x0000ff00) >> 8;
+	mCmdFrame.led.data.set_color.reserved[0] = 0;
+	mCmdFrame.led.data.set_color.reserved[1] = 0;
 	int bytesWritten = mSock.Send((char*)&mCmdFrame, sizeof(mCmdFrame));
+#ifdef DEBUG
 	std::cout << "Send " << bytesWritten << " bytes "
+		<< addr << " | "
+		<< (int)mCmdFrame.led.data.set_color.addr[0] << " "
+		<< (int)mCmdFrame.led.data.set_color.addr[1] << " "
+		<< (int)mCmdFrame.led.data.set_color.addr[2] << " "
+		<< (int)mCmdFrame.led.data.set_color.addr[3] << " : "
 		<< (int)mCmdFrame.led.data.set_color.red << " "
 		<< (int)mCmdFrame.led.data.set_color.green << " "
 		<< (int)mCmdFrame.led.data.set_color.blue
 		<< std::endl;
+#endif
 }
 
-void WiflyControl::SetColor(unsigned long rgba)
+void WiflyControl::SetColor(string& addr, std::string& color)
 {
-	char r = (rgba & 0xff000000) >> 24;
-	char g = (rgba & 0x00ff0000) >> 16;
-	char b = (rgba & 0x0000ff00) >> 8;
-	SetColor(r, g, b);
+	SetColor(ToRGBA(addr), ToRGBA(color) << 8);
 }
 
-void WiflyControl::SetColor(string& s)
+void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned char timevalue)
 {
-	SetColor(ToRGBA(s));
+	mCmdFrame.led.cmd = SET_FADE;
+	// next line would be better, but mCmdFrame...addr is unaligned!
+	//*(unsigned long*)mCmdFrame.led.data.set_color.addr = htonl(addr);
+	mCmdFrame.led.data.set_fade.addr[0] = (addr & 0xff000000) >> 24;
+	mCmdFrame.led.data.set_fade.addr[1] = (addr & 0x00ff0000) >> 16;
+	mCmdFrame.led.data.set_fade.addr[2] = (addr & 0x0000ff00) >> 8;
+	mCmdFrame.led.data.set_fade.addr[3] = (addr & 0x000000ff);
+	mCmdFrame.led.data.set_fade.red = (rgba & 0xff000000) >> 24;
+	mCmdFrame.led.data.set_fade.green = (rgba & 0x00ff0000) >> 16;
+	mCmdFrame.led.data.set_fade.blue = (rgba & 0x0000ff00) >> 8;
+	mCmdFrame.led.data.set_fade.timevalue = timevalue;
+	mCmdFrame.led.data.set_fade.reserved = 0;
+	int bytesWritten = mSock.Send((char*)&mCmdFrame, sizeof(mCmdFrame));
+#ifdef DEBUG
+	std::cout << "Send " << bytesWritten << " bytes "
+		<< addr << " | "
+		<< (int)mCmdFrame.led.data.set_fade.addr[0] << " "
+		<< (int)mCmdFrame.led.data.set_fade.addr[1] << " "
+		<< (int)mCmdFrame.led.data.set_fade.addr[2] << " "
+		<< (int)mCmdFrame.led.data.set_fade.addr[3] << " : "
+		<< (int)mCmdFrame.led.data.set_fade.red << " "
+		<< (int)mCmdFrame.led.data.set_fade.green << " "
+		<< (int)mCmdFrame.led.data.set_fade.blue << " : "
+		<< (int)mCmdFrame.led.data.set_fade.timevalue
+		<< std::endl;
+#endif
+}
+
+void WiflyControl::SetFade(string& addr, std::string& color, unsigned char timevalue)
+{
+	SetFade(ToRGBA(addr), ToRGBA(color) << 8, timevalue);
 }
 
 unsigned long WiflyControl::ToRGBA(string& s) const
 {
-	if(s.length() > 6) return 0;
+	if(s.length() > 8) return 0;
 
-	long rgba;
+	unsigned long rgba;
 	stringstream converter;
 	converter << std::hex << s;
 	converter >> rgba;
 	cout << rgba << "<" << endl;
-	return rgba << 8;
+	return rgba;
 }
 

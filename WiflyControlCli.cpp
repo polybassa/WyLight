@@ -29,8 +29,15 @@ WiflyControlCli::WiflyControlCli(void)
 void WiflyControlCli::run(void)
 {
 	string nextCmd;
-	string nextOption;
-	cout << "use 'exit' to terminate this cli" << endl;
+	cout << "Usage:" << endl;
+	cout << "'exit' - terminate cli" << endl;
+	cout << "'setcolor <addr> <rgb>'" << endl;
+	cout << "    <addr> hex bitmask, which leds should be set to the new color" << endl;
+	cout << "    <rgb> hex rgb value of the new color f.e. red: ff0000" << endl;
+	cout << "'setfade <addr> <rgb> <time>'" << endl;
+	cout << "    <addr> hex bitmask, which leds should be set to the new color" << endl;
+	cout << "    <rgb> hex rgb value of the new color f.e. red: ff0000" << endl;
+	cout << "    <time> the number of milliseconds the fade should take" << endl;
 	while(mRunning)
 	{
 		cout << "WiflyControlCli: ";
@@ -39,20 +46,18 @@ void WiflyControlCli::run(void)
 		if("exit" == nextCmd) {
 			return;
 		}
-		else if ("setcolor" == nextCmd) {
-			cin >> nextOption;
-			if("red" == nextOption) {
-				mControl.SetColor(0xFF000000);
-			}
-			else if ("green" == nextOption) {
-				mControl.SetColor(0x00FF0000);
-			}
-			else if ("blue" == nextOption) {
-				mControl.SetColor(0x0000FF00);
-			}
-			else {
-				mControl.SetColor(nextOption);
-			}
+		if ("setcolor" == nextCmd) {
+			string addr, color;
+			cin >> addr;
+			cin >> color;
+			mControl.SetColor(addr, color);
+		}	else if ("setfade" == nextCmd) {
+			string addr, color;
+			unsigned long timevalue;
+			cin >> addr;
+			cin >> color;
+			cin >> timevalue;
+			mControl.SetFade(addr, color, (unsigned char)timevalue);
 		}
 	}
 }

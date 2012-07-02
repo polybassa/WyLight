@@ -21,11 +21,6 @@
 #include <string>
 #include "WiflyControl.h"
 
-#define SET_COLOR_RED 128, 0, 0
-#define SET_COLOR_GREEN 0, 128, 0
-#define SET_COLOR_BLUE 0, 0, 128
-
-
 class WiflyControlCli
 {
 	private:

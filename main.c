@@ -99,9 +99,11 @@ void main(void)
 	#include <pthread.h>
 	pthread_t isrThread;
 	pthread_t glThread;
+	pthread_t timerThread;
 	
 	pthread_create(&isrThread, 0, InterruptRoutine, 0);
 	pthread_create(&glThread, 0, gl_start, 0);
+	pthread_create(&timerThread, 0, timer_interrupt, 0);
 #endif /* #ifdef X86 */
     
 	while(1)
@@ -110,11 +112,15 @@ void main(void)
 		throw_errors();
 		commandstorage_get_commands();
 		commandstorage_execute_commands();
+#if 0
 		if(gTimecounter == 0)
 		{
 			if(gLedBuf.led_fade_operation)
 				ledstrip_do_fade();
 		}	
+#else
+		ledstrip_do_fade();
+#endif
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************

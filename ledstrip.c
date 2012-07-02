@@ -3,6 +3,7 @@
 //Compiler CC5x 
 
 #include "ledstrip.h"
+#include "timer.h"
 //private struct
 struct max_changes_struct
 	{
@@ -42,9 +43,11 @@ void ledstrip_init(void)
 	for(k = 0;k < (NUM_OF_LED * 3); k++)
 	{	
 		gLedBuf.led_array[k] = 0;
+#if 0
 		gLedBuf.led_destination[k] = 0;
 		gLedBuf.led_fade_operation = 0;
 		gLedBuf.led_run_operation = 0;
+#endif
 	}
 }
 
@@ -56,21 +59,23 @@ void ledstrip_set_color(struct cmd_set_color *pCmd)
 {
 	FOR_EACH_MASKED_LED_DO(
 			gLedBuf.led_array[k] = b;
-			gLedBuf.led_destination[k] = b;
+//			gLedBuf.led_destination[k] = b;
 			k++;
 			
 			gLedBuf.led_array[k] = g;
-			gLedBuf.led_destination[k] = g;
+//			gLedBuf.led_destination[k] = g;
 			k++;
 			
 			gLedBuf.led_array[k] = r;
-			gLedBuf.led_destination[k] = r;
+//			gLedBuf.led_destination[k] = r;
 	);
 	spi_send_ledbuf(&gLedBuf.led_array[0]);
 	// Disable other functions
-	gLedBuf.led_fade_operation = 0;
-	gLedBuf.led_run_operation = 0;
+//	gLedBuf.led_fade_operation = 0;
+//	gLedBuf.led_run_operation = 0;
 }
+
+#if 0
 /***
 * This funktion sets the destination color configurates
 * the timer 2 PR2 Register. If the settings are done, the bit led_fade_operation is 1.
@@ -98,7 +103,6 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 	timer_set_for_fade(pCmd->timevalue);
 	gLedBuf.led_fade_operation = 1;
 }
-
 
 void ledstrip_do_fade()
 {
@@ -160,3 +164,68 @@ uns8 ledstrip_calc_change(uns8 *change_array,struct max_changes_struct maxChange
 **/
 return 0;
 }
+#else
+void ledstrip_do_fade(void)
+{
+	char step;
+	uns8 k;
+	for(k = 0; k < (NUM_OF_LED * 3); k++)
+	{
+		//active and triggered?
+		if((gLedBuf.delta[k] > 0) && (gLedBuf.cyclesLeft[k] == 0))
+		{
+			//reset timer
+			gLedBuf.delta[k]--;
+			gLedBuf.cyclesLeft[k] = gLedBuf.periodeLength[k];
+
+			//prepare fading
+			step = gLedBuf.step[k];
+
+			//do fading
+			gLedBuf.led_array[k] += step;		
+		}
+	}
+	//send LED status			
+	spi_send_ledbuf(&gLedBuf.led_array[0]);
+}
+
+void ledstrip_set_fade(struct cmd_set_fade *pCmd)
+{
+	uns8 k;
+	FOR_EACH_MASKED_LED_DO(
+		//blue
+		if(gLedBuf.led_array[k] > pCmd->blue) {
+			gLedBuf.delta[k] = gLedBuf.led_array[k] - pCmd->blue;
+			gLedBuf.step[k] = -1;
+		} else {
+			gLedBuf.delta[k] = pCmd->blue - gLedBuf.led_array[k];
+			gLedBuf.step[k] = 1;			
+		}
+		gLedBuf.cyclesLeft[k] = 0;
+		gLedBuf.periodeLength[k] = (0 == gLedBuf.delta[k]) ? 0 : 1000 * pCmd->timevalue / gLedBuf.delta[k];
+		k++;
+		//green
+		if(gLedBuf.led_array[k] > pCmd->green) {
+			gLedBuf.delta[k] = gLedBuf.led_array[k] - pCmd->green;
+			gLedBuf.step[k] = -1;
+		} else {
+			gLedBuf.delta[k] = pCmd->green - gLedBuf.led_array[k];
+			gLedBuf.step[k] = 1;			
+		}
+		gLedBuf.cyclesLeft[k] = 0;
+		gLedBuf.periodeLength[k] = (0 == gLedBuf.delta[k]) ? 0 : 1000 * pCmd->timevalue / gLedBuf.delta[k];
+		k++;
+		//red
+		if(gLedBuf.led_array[k] > pCmd->red) {
+			gLedBuf.delta[k] = gLedBuf.led_array[k] - pCmd->red;
+			gLedBuf.step[k] = -1;
+		} else {
+			gLedBuf.delta[k] = pCmd->red - gLedBuf.led_array[k];
+			gLedBuf.step[k] = 1;			
+		}
+		gLedBuf.cyclesLeft[k] = 0;
+		gLedBuf.periodeLength[k] = (0 == gLedBuf.delta[k]) ? 0 : 1000 * pCmd->timevalue / gLedBuf.delta[k];
+	);
+}
+#endif
+

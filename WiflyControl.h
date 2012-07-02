@@ -32,8 +32,14 @@ class WiflyControl
 		
 	public:
 		WiflyControl();
-		void SetColor(char r, char g, char b);
-		void SetColor(unsigned long rgba);
-		void SetColor(std::string& s);
+		/**
+			rgba is a 32 Bit rgb value with alpha channel. Alpha is unused, but easier to handle
+			f.e. red(255, 0, 0) is in rgba as: 0xff000000
+				 white(255, 255, 255) is in rgba as: 0xffffff00
+		**/
+		void SetColor(unsigned long addr, unsigned long rgba);
+		void SetColor(std::string& addr, std::string& color);
+		void SetFade(unsigned long addr, unsigned long rgba, unsigned char timevalue);
+		void SetFade(std::string& addr, std::string& color, unsigned char timevalue);
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */
