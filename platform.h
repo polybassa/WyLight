@@ -13,6 +13,7 @@
 	//global variables
 	extern bit g_led_off;
 
+	#define bank1
 	#define AllowInterrupts(x)
 	#define InitFactoryRestoreWLAN(x)
 	#define InitFET(x)

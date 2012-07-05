@@ -15,7 +15,7 @@ all_pat: pic_pat linux_simu linux_client android_client
 pic_nils:
 	wine ${PIC_CD} main.c -CC -fINHX8M -p16F1936 -a -L -Q -V -FM
 
-pic_pat:
+pic_pat: ledstrip.h
 	wine ${PIC_CC} main.c -CC -fINHX8M -p16F1936 -a -L -Q -V -FM
 
 linux_simu:

@@ -54,9 +54,10 @@ F: throw_errors           :#1  : p0 <- p0
 F: ledstrip_init          :#1  : p0 <- p0 
 
 F: ledstrip_set_color     :#1  : p0 <- p0 
-    spi_send_ledbuf       : #1  : p0 -> p0
+    spi_send_ledbuf       : #2  : p0 -> p0
 
 F: ledstrip_do_fade       :#1  : p0 <- p0 
+    spi_send_ledbuf       : #2  : p0 -> p0
 
 F: ledstrip_set_fade      :#1  : p0 <- p0 
 
@@ -73,7 +74,7 @@ F: spi_send               :#2  : p0
 F: spi_send_arr           :#0  : p0
     spi_send              : #2  : p0 -> p0
 
-F: spi_send_ledbuf        :#1  : p0 <- p0 
+F: spi_send_ledbuf        :#2  : p0
     spi_send              : #2  : p0 -> p0
 
 F: timer_init             :#1  : p0 <- p0 
@@ -210,8 +211,8 @@ F: Check_INPUT            :#1  : p0 <- p0
  L4          _const1
  L2      USARTsend_str ..
  L2      ledstrip_set_color
- L3        spi_send_ledbuf
- L4          spi_send
+ L2        spi_send_ledbuf [T-GOTO]
+ L3          spi_send
  L2      ledstrip_set_fade
  L2      USARTsend_num
  L3        USARTsend
@@ -220,4 +221,5 @@ F: Check_INPUT            :#1  : p0 <- p0
  L2        USARTsend [T-GOTO]
  L2      USARTsend_num ..
  L1    ledstrip_do_fade
+ L1      spi_send_ledbuf [T-GOTO] ..
 

@@ -9,7 +9,7 @@
 #include "spi.h"
 #include "eeprom.h"
 
-#define NUM_OF_LED 32
+#define NUM_OF_LED 24 //32
 
 struct LedBuffer{
 	uns8 led_array[NUM_OF_LED*3];			// contains the current colorvalue for each led
@@ -27,7 +27,7 @@ struct LedBuffer{
 #endif
 	};
 
-extern struct LedBuffer gLedBuf;
+extern bank1 struct LedBuffer gLedBuf;
 
 void ledstrip_init(void);
 void ledstrip_set_color(struct cmd_set_color *pCmd);

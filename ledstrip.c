@@ -18,9 +18,6 @@ uns8 ledstrip_calc_change(uns8 *change_array,struct max_changes_struct maxChange
 
 #define FOR_EACH_MASKED_LED_DO(BLOCK) { \
 	char *address = pCmd->addr; \
-	char r = pCmd->red; \
-	char g = pCmd->green; \
-	char b = pCmd->blue; \
 	char k,mask; \
 	mask = 0x01; \
 	for(k = 0; k < (NUM_OF_LED * 3); k++) {	\
@@ -36,6 +33,23 @@ uns8 ledstrip_calc_change(uns8 *change_array,struct max_changes_struct maxChange
 		} \
 	} \
 }
+
+#define CALC_COLOR oldColor = gLedBuf.led_array[k]; \
+		if(gLedBuf.led_array[k] > newColor) { \
+			gLedBuf.delta[k] = oldColor - newColor; \
+			gLedBuf.step[k] = -1; \
+		} else { \
+			gLedBuf.delta[k] = newColor - oldColor; \
+			gLedBuf.step[k] = 1; \
+		} \
+		gLedBuf.cyclesLeft[k] = 0; \
+		if((0 == gLedBuf.delta[k])) {\
+			gLedBuf.periodeLength[k] = 0; \
+		} else { \
+			delta = gLedBuf.delta[k]; \
+			timevalue = 1000 * pCmd->timevalue; \
+			gLedBuf.periodeLength[k] = timevalue / delta; \
+		}
 
 void ledstrip_init(void)
 {
@@ -57,6 +71,9 @@ void ledstrip_init(void)
 ***/
 void ledstrip_set_color(struct cmd_set_color *pCmd)
 {
+	char r = pCmd->red;
+	char g = pCmd->green;
+	char b = pCmd->blue;
 	FOR_EACH_MASKED_LED_DO(
 			gLedBuf.led_array[k] = b;
 //			gLedBuf.led_destination[k] = b;
@@ -169,6 +186,7 @@ void ledstrip_do_fade(void)
 {
 	char step;
 	uns8 k;
+	unsigned short periodeLength;
 	for(k = 0; k < (NUM_OF_LED * 3); k++)
 	{
 		//active and triggered?
@@ -176,7 +194,8 @@ void ledstrip_do_fade(void)
 		{
 			//reset timer
 			gLedBuf.delta[k]--;
-			gLedBuf.cyclesLeft[k] = gLedBuf.periodeLength[k];
+			periodeLength = gLedBuf.periodeLength[k];
+			gLedBuf.cyclesLeft[k] = periodeLength;
 
 			//prepare fading
 			step = gLedBuf.step[k];
@@ -192,39 +211,17 @@ void ledstrip_do_fade(void)
 void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 {
 	uns8 k;
+	uns8 delta, timevalue;
+	uns8 oldColor, newColor;
 	FOR_EACH_MASKED_LED_DO(
-		//blue
-		if(gLedBuf.led_array[k] > pCmd->blue) {
-			gLedBuf.delta[k] = gLedBuf.led_array[k] - pCmd->blue;
-			gLedBuf.step[k] = -1;
-		} else {
-			gLedBuf.delta[k] = pCmd->blue - gLedBuf.led_array[k];
-			gLedBuf.step[k] = 1;			
-		}
-		gLedBuf.cyclesLeft[k] = 0;
-		gLedBuf.periodeLength[k] = (0 == gLedBuf.delta[k]) ? 0 : 1000 * pCmd->timevalue / gLedBuf.delta[k];
+		newColor = pCmd->blue;
+		CALC_COLOR;
 		k++;
-		//green
-		if(gLedBuf.led_array[k] > pCmd->green) {
-			gLedBuf.delta[k] = gLedBuf.led_array[k] - pCmd->green;
-			gLedBuf.step[k] = -1;
-		} else {
-			gLedBuf.delta[k] = pCmd->green - gLedBuf.led_array[k];
-			gLedBuf.step[k] = 1;			
-		}
-		gLedBuf.cyclesLeft[k] = 0;
-		gLedBuf.periodeLength[k] = (0 == gLedBuf.delta[k]) ? 0 : 1000 * pCmd->timevalue / gLedBuf.delta[k];
+		newColor = pCmd->green;
+		CALC_COLOR;
 		k++;
-		//red
-		if(gLedBuf.led_array[k] > pCmd->red) {
-			gLedBuf.delta[k] = gLedBuf.led_array[k] - pCmd->red;
-			gLedBuf.step[k] = -1;
-		} else {
-			gLedBuf.delta[k] = pCmd->red - gLedBuf.led_array[k];
-			gLedBuf.step[k] = 1;			
-		}
-		gLedBuf.cyclesLeft[k] = 0;
-		gLedBuf.periodeLength[k] = (0 == gLedBuf.delta[k]) ? 0 : 1000 * pCmd->timevalue / gLedBuf.delta[k];
+		newColor = pCmd->red;
+		CALC_COLOR;
 	);
 }
 #endif
