@@ -108,6 +108,7 @@ void main(void)
     
 	while(1)
 	{
+		usleep(1000);
 		Check_INPUT();
 		throw_errors();
 		commandstorage_get_commands();
