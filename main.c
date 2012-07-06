@@ -108,20 +108,15 @@ void main(void)
     
 	while(1)
 	{
+#ifdef X86
 		usleep(1000);
+#endif
 		Check_INPUT();
 		throw_errors();
 		commandstorage_get_commands();
 		commandstorage_execute_commands();
-#if 0
-		if(gTimecounter == 0)
-		{
-			if(gLedBuf.led_fade_operation)
-				ledstrip_do_fade();
-		}	
-#else
+
 		ledstrip_do_fade();
-#endif
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************
