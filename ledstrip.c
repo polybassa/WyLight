@@ -31,17 +31,14 @@
 		oldColor = gLedBuf.led_array[k]; \
 		if(oldColor > newColor) { \
 			delta = oldColor - newColor; \
-			uns8 step = *stepaddress | mask; \
-			*stepaddress = step; \
+			gLedBuf.step[k] = 1; \
 		} else { \
 			delta = newColor - oldColor; \
-			uns8 step = *stepaddress & ( (uns8)~mask); \
-			*stepaddress = step; \
+			gLedBuf.step[k] = 0; \
 		} \
 		gLedBuf.cyclesLeft[k] = 0; \
 		gLedBuf.periodeLength[k] = 0; \
 		gLedBuf.delta[k] = delta; \
-		printf("delta: %d\n", delta); \
 		if((0 != delta)) {\
 			timevalue = 1000 * pCmd->timevalue; \
 			gLedBuf.periodeLength[k] = timevalue / delta; \
@@ -91,7 +88,8 @@ void ledstrip_do_fade(void)
 			periodeLength = gLedBuf.periodeLength[k];
 			gLedBuf.cyclesLeft[k] = periodeLength;
 
-			if(*stepaddress & stepmask) {
+			//if(*stepaddress & stepmask) {
+			if(gLedBuf.step[k]) {
 				gLedBuf.led_array[k]--;
 			} else {
 				gLedBuf.led_array[k]++;
@@ -116,10 +114,6 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 	for(k = 0; k < sizeof(gLedBuf.step); k++) {
 		gLedBuf.step[k] = 0;
 	}
-#include <stdio.h>
-	for(k = 0; k < 12; k++) {
-		printf("%x ", gLedBuf.step[k]);
-	} printf("\n");
 	stepmask = 0x01;
 	FOR_EACH_MASKED_LED_DO(
 		newColor = pCmd->blue;
@@ -131,11 +125,5 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 		newColor = pCmd->red;
 		CALC_COLOR;
 	);
-	for(k = 0; k < 12; k++) {
-		printf("%x ", gLedBuf.step[k]);
-	} printf("\n");
-	for(k = 0; k < 96; k++) {
-		printf("%02x ", gLedBuf.delta[k]);
-	} printf("\n");
 }
 
