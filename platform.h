@@ -12,6 +12,7 @@
 
 	//global variables
 	extern bit g_led_off;
+	extern bit timer_locked;
 
 	#define bank1
 	#define AllowInterrupts(x)

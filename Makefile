@@ -6,7 +6,7 @@ INC_DIR=include_files
 OPENGL_LIB=-lGL -lGLU -lglut
 OPENGL_LIB_OSX=-framework Carbon -framework OpenGL -framework GLUT
 
-X86_SRC=main.c commandstorage.c eeprom.c error.c ledstrip.c RingBuf.c spi.c timer.c usart.c x86_wrapper.c
+X86_SRC=main.c commandstorage.c eeprom.c error.c ledstrip.c RingBuf.c spi.c usart.c x86_wrapper.c
 
 all_nils: pic_nils mac_simu mac_client
 

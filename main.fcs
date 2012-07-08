@@ -51,15 +51,28 @@ F: throw_errors           :#1  : p0 <- p0
     USARTsend_str         : #5  : p0 -> p0
     USARTsend_str         : #5  : p0 -> p0
 
+F: SET_BIT_AT             :#3  : p0
+
+F: CLEAR_BIT_AT           :#3  : p0
+
+F: GET_BIT_AT             :#1  : p0 <- p0 
+
 F: ledstrip_init          :#1  : p0 <- p0 
 
 F: ledstrip_set_color     :#1  : p0 <- p0 
     spi_send_ledbuf       : #2  : p0 -> p0
 
 F: ledstrip_do_fade       :#1  : p0 <- p0 
+    GET_BIT_AT            : #1  : p0 -> p0
     spi_send_ledbuf       : #2  : p0 -> p0
 
 F: ledstrip_set_fade      :#1  : p0 <- p0 
+    SET_BIT_AT            : #3  : p0 -> p0
+    CLEAR_BIT_AT          : #3  : p0 -> p0
+    SET_BIT_AT            : #3  : p0 -> p0
+    CLEAR_BIT_AT          : #3  : p0 -> p0
+    SET_BIT_AT            : #3  : p0 -> p0
+    CLEAR_BIT_AT          : #3  : p0 -> p0
 
 F: RingBufInit            :#2  : p0
 
@@ -214,6 +227,12 @@ F: Check_INPUT            :#1  : p0 <- p0
  L2        spi_send_ledbuf [T-GOTO]
  L3          spi_send
  L2      ledstrip_set_fade
+ L3        SET_BIT_AT
+ L3        CLEAR_BIT_AT
+ L3        SET_BIT_AT
+ L3        CLEAR_BIT_AT
+ L3        SET_BIT_AT
+ L3        CLEAR_BIT_AT
  L2      USARTsend_num
  L3        USARTsend
  L3        USARTsend
@@ -221,5 +240,6 @@ F: Check_INPUT            :#1  : p0 <- p0
  L2        USARTsend [T-GOTO]
  L2      USARTsend_num ..
  L1    ledstrip_do_fade
+ L2      GET_BIT_AT
  L1      spi_send_ledbuf [T-GOTO] ..
 

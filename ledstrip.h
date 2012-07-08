@@ -17,7 +17,7 @@ struct LedBuffer{
 	unsigned short cyclesLeft[NUM_OF_LED*3];	// cycles left in current periode
 	unsigned short periodeLength[NUM_OF_LED*3];	// number of cycles in one periode
 	//uns8 step[NUM_OF_LED / 8* 3]; // if bit is set led_array is incremented each periode else decremented
-	uns8 step[NUM_OF_LED * 3]; // if bit is set led_array is incremented each periode else decremented  
+	uns8 step[NUM_OF_LED * 3]; // if bit is set led_array is incremented each periode else decremented
 };
 
 extern bank1 struct LedBuffer gLedBuf;

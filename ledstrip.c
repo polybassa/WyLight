@@ -13,6 +13,33 @@
 		MASK = 0x01; \
 	}
 
+void SET_BIT_AT(uns8* PTR, uns8 POSITION) {
+	uns8 bytePos = (POSITION) / 8; \
+	uns8 bitPos = (POSITION) - (bytePos * 8); \
+	uns8 value = PTR[POSITION]; \
+	uns8 mask = (1 << bitPos); \
+	value = value | mask; \
+	PTR[POSITION] = value; \
+	}
+
+void CLEAR_BIT_AT(uns8* PTR, uns8 POSITION) {
+	uns8 bytePos = (POSITION) / 8; \
+	uns8 bitPos = (POSITION) - (bytePos * 8); \
+	uns8 value = PTR[POSITION]; \
+	uns8 mask = (1 << bitPos); \
+	mask = ~mask; \
+	value = value & mask; \
+	PTR[POSITION] = value; \
+	}
+
+uns8 GET_BIT_AT(uns8* PTR, uns8 POSITION) {
+	uns8 bytePos = (POSITION) / 8;
+	uns8 bitPos = (POSITION) - (bytePos * 8);
+	uns8 value = PTR[POSITION];
+	uns8 mask = (1 << bitPos);
+	return value & mask;
+	}
+
 #define FOR_EACH_MASKED_LED_DO(BLOCK) { \
 	uns8 *address = pCmd->addr; \
 	char k,mask; \
@@ -31,10 +58,10 @@
 		oldColor = gLedBuf.led_array[k]; \
 		if(oldColor > newColor) { \
 			delta = oldColor - newColor; \
-			gLedBuf.step[k] = 1; \
+			gLedBuf.step[k] = 1;/*SET_BIT_AT(gLedBuf.step, k);*/ \
 		} else { \
 			delta = newColor - oldColor; \
-			gLedBuf.step[k] = 0; \
+			gLedBuf.step[k] = 0;/*CLEAR_BIT_AT(gLedBuf.step, k);*/ \
 		} \
 		gLedBuf.cyclesLeft[k] = 0; \
 		gLedBuf.periodeLength[k] = 0; \
@@ -88,8 +115,8 @@ void ledstrip_do_fade(void)
 			periodeLength = gLedBuf.periodeLength[k];
 			gLedBuf.cyclesLeft[k] = periodeLength;
 
-			//if(*stepaddress & stepmask) {
 			if(gLedBuf.step[k]) {
+			//if(GET_BIT_AT(gLedBuf.step, k)) {
 				gLedBuf.led_array[k]--;
 			} else {
 				gLedBuf.led_array[k]++;
@@ -107,6 +134,7 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 	uns8 delta, timevalue;
 	uns8 oldColor, newColor;
 	uns8* stepaddress = gLedBuf.step;
+	timer_locked = 1;
 	for(k = 0; k < NUM_OF_LED*3; k++) {
 		gLedBuf.delta[k] = 0;
 		gLedBuf.cyclesLeft[k] = 0;
@@ -125,5 +153,6 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 		newColor = pCmd->red;
 		CALC_COLOR;
 	);
+	timer_locked = 0;
 }
 
