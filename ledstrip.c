@@ -3,7 +3,6 @@
 //Compiler CC5x 
 
 #include "ledstrip.h"
-#include "timer.h"
 
 
 #define INC_BIT_COUNTER(PTR, MASK) \

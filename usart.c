@@ -63,6 +63,7 @@ void USARTsend_arr(char *array, char length)
 //*******  Sende-Zahl-als-String-Funktion  *************************************************
 void USARTsend_num(char input, char sign)
 {
+#pragma rambank 1
    char temp;
    char h,z,e;
  
@@ -95,6 +96,7 @@ void USARTsend_num(char input, char sign)
    USARTsend(e+0x30);
    USARTsend(sign); 	//Zeichen senden
 }
+#pragma rambank 0
 #endif
 /*
 //SENDE BCD-Zahl als String

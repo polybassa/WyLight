@@ -3,7 +3,7 @@
 //Compiler CC5x/
 #ifndef X86
 #define NO_CRC
-#define TEST
+//#define TEST
 #pragma optimize 1
 #endif
 #pragma sharedAllocation
