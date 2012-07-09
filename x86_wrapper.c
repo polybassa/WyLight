@@ -4,8 +4,18 @@
 
 void addCRC(char byte, char* p_crcH, char* p_crcL) {}
 void newCRC(char* p_crcH, char* p_crcL) {}
+
 void timer_init(){};
 void timer_set_for_fade(char value){};
+void* timer_interrupt(void* unused)
+{
+	for(;;)
+	{
+		usleep(1000);
+		g_timer_signaled++;
+	}
+}
+
 void USARTinit() {}
 void USARTsend(char ch)
 {
@@ -27,8 +37,9 @@ void EEPROM_WR(char adress, char data)
 	gEEPROM[adress] = (uns8)data;
 }
 
-
+#include <pthread.h>
 bit g_led_off = 1;
+pthread_mutex_t g_led_mutex = PTHREAD_MUTEX_INITIALIZER;
 static uns8 g_led_status[NUM_OF_LED*3];
 void spi_init() {}
 char spi_send(char data)
@@ -39,6 +50,22 @@ char spi_send(char data)
 		g_led_status[i] = g_led_status[i-1];
 	}
 	g_led_status[0] = data;
+}
+
+void spi_send_ledbuf(char *array)//!!! CHECK if GIE=0 during the sendroutine improves the result
+{
+	//array must be the address of the first byte
+	char* end;
+	//calculate where the end is
+	end = array + (NUM_OF_LED * 3);
+	//send all
+
+	pthread_mutex_lock(&g_led_mutex);
+	for(; array < end; array++)
+	{
+		spi_send(*array);
+	}
+	pthread_mutex_unlock(&g_led_mutex);
 }
 
 #include <GL/gl.h>
@@ -93,6 +120,7 @@ void gl_display(void)
 		if(!g_led_off)
 		{
 			unsigned int i;
+			pthread_mutex_lock(&g_led_mutex);
 			for(i = 0; i < NUM_OF_LED; i++)
 			{
 				float x = -16.0 + 2.0 * (i % 8);
@@ -102,6 +130,7 @@ void gl_display(void)
 				float b = (float)g_led_status[3*i+2] / 255.0;
 				gl_print_sphere(x, y, r, g, b);
 			}
+			pthread_mutex_unlock(&g_led_mutex);
 		}
 		glFlush();
 	}

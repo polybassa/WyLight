@@ -23,11 +23,15 @@
 
 //*********************** GLOBAL VARIABLES *******************************************
 struct CommandBuffer gCmdBuf;
-struct LedBuffer gLedBuf;
+bank1 struct LedBuffer gLedBuf;
 struct ErrorBits gERROR;
 char gTimecounter;
+unsigned short g_timer_signaled;	
 //*********************** X86 InterruptRoutine *******************************************
+
 #ifdef X86
+bit g_led_off; //X86 replacement for PORTC.0
+
 void* gl_start(void* unused);
 
 #include <sys/socket.h>
@@ -99,22 +103,28 @@ void main(void)
 	#include <pthread.h>
 	pthread_t isrThread;
 	pthread_t glThread;
+	pthread_t timerThread;
 	
 	pthread_create(&isrThread, 0, InterruptRoutine, 0);
 	pthread_create(&glThread, 0, gl_start, 0);
+	pthread_create(&timerThread, 0, timer_interrupt, 0);
 #endif /* #ifdef X86 */
     
 	while(1)
 	{
+#ifdef X86
+		usleep(1000);
+#endif
 		Check_INPUT();
 		throw_errors();
 		commandstorage_get_commands();
 		commandstorage_execute_commands();
-		if(gTimecounter == 0)
+
+		if(g_timer_signaled > 0)
 		{
-			if(gLedBuf.led_fade_operation)
-				ledstrip_do_fade();
-		}	
+			ledstripe_update_fade();
+			ledstrip_do_fade();
+		}
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************

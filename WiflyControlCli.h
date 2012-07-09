@@ -16,29 +16,19 @@
     You should have received a copy of the GNU General Public License
     along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "ClientSocket.h"
+#ifndef _WIFLYCONTROLCLI_H_
+#define _WIFLYCONTROLCLI_H_
+#include <string>
+#include "WiflyControl.h"
 
-#include <cstring>
-#include <iostream>
-
-ClientSocket::ClientSocket(long addr, short port)
-	: mSock(socket(AF_INET, SOCK_DGRAM, 0))
+class WiflyControlCli
 {
-	memset(&mSockAddr, 0, sizeof(mSockAddr));
-	mSockAddr.sin_family = AF_INET;
-	mSockAddr.sin_port = htons(port);
-	mSockAddr.sin_addr.s_addr = htonl(addr);
-}
+	private:
+		WiflyControl mControl;
+		bool mRunning;
 
-ClientSocket::~ClientSocket()
-{
-#ifndef ANDROID
-	close(mSock);
-#endif
-}
-
-int ClientSocket::Send(char* frame, size_t length) const
-{
-	return sendto(mSock, frame, length, 0, (struct sockaddr*)&mSockAddr, sizeof(mSockAddr));
-}
-
+	public:
+		WiflyControlCli(void);
+		void run(void);	
+};
+#endif /* #ifndef _WIFLYCONTROLCLI_H_ */

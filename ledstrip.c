@@ -1,53 +1,81 @@
-//Nils Weiß 
+//Nils Weiß, Patrick Brünn
 //20.04.2012
 //Compiler CC5x 
 
 #include "ledstrip.h"
 
-#define smallestChange 16
-//private struct
-struct max_changes_struct
-	{
-		uns8 red;
-		uns8 green;
-		uns8 blue;
-	};
 
-//private function
-uns8 ledstrip_get_change(uns8 destinationvalue, uns8 currentvalue);
-void ledstrip_calc_change(uns8 *change_array,struct max_changes_struct *Changestruct);
+#define INC_BIT_COUNTER(PTR, MASK) \
+	MASK = MASK << 1; \
+	if(0 == MASK) { \
+		PTR++; \
+		MASK = 0x01; \
+	}
+
+void SET_BIT_AT(uns8* PTR, uns8 POSITION) {
+	uns8 bytePos = (POSITION) / 8; \
+	uns8 bitPos = (POSITION) - (bytePos * 8); \
+	uns8 value = PTR[bytePos]; \
+	uns8 mask = (1 << bitPos); \
+	value = value | mask; \
+	PTR[bytePos] = value; \
+	}
+
+void CLEAR_BIT_AT(uns8* PTR, uns8 POSITION) {
+	uns8 bytePos = (POSITION) / 8; \
+	uns8 bitPos = (POSITION) - (bytePos * 8); \
+	uns8 value = PTR[bytePos]; \
+	uns8 mask = (1 << bitPos); \
+	mask = ~mask; \
+	value = value & mask; \
+	PTR[bytePos] = value; \
+	}
+
+uns8 GET_BIT_AT(uns8* PTR, uns8 POSITION) {
+	uns8 bytePos = (POSITION) / 8;
+	uns8 bitPos = (POSITION) - (bytePos * 8);
+	uns8 value = PTR[bytePos];
+	uns8 mask = (1 << bitPos);
+	return value & mask;
+	}
 
 #define FOR_EACH_MASKED_LED_DO(BLOCK) { \
-	char *address = pCmd->addr; 		\
-	char r = pCmd->red; 				\
-	char g = pCmd->green;	 			\
-	char b = pCmd->blue; 				\
-	char k,mask; 						\
-	mask = 0x01; 						\
+	uns8 *address = pCmd->addr; \
+	char k,mask; \
+	mask = 0x01; \
 	for(k = 0; k < (NUM_OF_LED * 3); k++) {	\
-		if(0 != (*address & mask)) { 	\
-			BLOCK 						\
-		} else { 						\
-			k++; k++; 					\
-		} 								\
-		mask = mask << 1; 				\
-		if(0 == mask) { 				\
-			address++; 					\
-			mask = 0x01; 				\
-		} 								\
-	} 									\
+		if(0 != (*address & mask)) { \
+			BLOCK \
+		} else { \
+			k++; k++; \
+		} \
+		INC_BIT_COUNTER(address, mask); \
+	} \
 }
+
+#define CALC_COLOR \
+		oldColor = gLedBuf.led_array[k]; \
+		if(oldColor > newColor) { \
+			delta = oldColor - newColor; \
+			SET_BIT_AT(gLedBuf.step, k); \
+		} else { \
+			delta = newColor - oldColor; \
+			CLEAR_BIT_AT(gLedBuf.step, k); \
+		} \
+		gLedBuf.cyclesLeft[k] = 0; \
+		gLedBuf.periodeLength[k] = 0; \
+		gLedBuf.delta[k] = delta; \
+		if((0 != delta)) {\
+			timevalue = 1000 * pCmd->timevalue; \
+			gLedBuf.periodeLength[k] = timevalue / delta; \
+		} \
 
 void ledstrip_init(void)
 {
-	char k;
-	for(k = 0;k < (NUM_OF_LED * 3); k++)
-	{	
-		gLedBuf.led_array[k] = 0;
-		gLedBuf.led_destination[k] = 0;
-		gLedBuf.led_fade_operation = 0;
-		gLedBuf.led_run_operation = 0;
-	}
+	uns8 k = (NUM_OF_LED * 3) - 1;
+	do {	
+		gLedBuf.led_array[k--] = 0;
+	} while(k != 0);
 }
 
 /***
@@ -56,183 +84,83 @@ void ledstrip_init(void)
 ***/
 void ledstrip_set_color(struct cmd_set_color *pCmd)
 {
+	char r = pCmd->red;
+	char g = pCmd->green;
+	char b = pCmd->blue;
 	FOR_EACH_MASKED_LED_DO(
 			gLedBuf.led_array[k] = b;
-			gLedBuf.led_destination[k] = b;
 			k++;
-			
 			gLedBuf.led_array[k] = g;
-			gLedBuf.led_destination[k] = g;
 			k++;
-			
 			gLedBuf.led_array[k] = r;
-			gLedBuf.led_destination[k] = r;
 	);
-	spi_send_ledbuf(&gLedBuf.led_array[0]);
-	// Disable other functions
-	gLedBuf.led_fade_operation = 0;
-	gLedBuf.led_run_operation = 0;
+	spi_send_ledbuf(gLedBuf.led_array);
 }
-/***
-* This funktion sets the destination color and configurates
-* the Timer 2 PR2 Register. If the settings are done, the bit led_fade_operation is 1.
-* 
-**/
+
+void ledstrip_do_fade(void)
+{
+	char step;
+	uns8 k, stepmask;
+	uns8* stepaddress = gLedBuf.step;
+	stepmask = 0x01;
+	unsigned short periodeLength;
+	for(k = 0; k < (NUM_OF_LED * 3); k++)
+	{
+		//active and triggered?
+		if((gLedBuf.delta[k] > 0) && (gLedBuf.cyclesLeft[k] == 0))
+		{
+			//reset timer
+			gLedBuf.delta[k]--;
+			periodeLength = gLedBuf.periodeLength[k];
+			gLedBuf.cyclesLeft[k] = periodeLength;
+
+			if(GET_BIT_AT(gLedBuf.step, k)) {
+				gLedBuf.led_array[k]--;
+			} else {
+				gLedBuf.led_array[k]++;
+			}
+		}
+		INC_BIT_COUNTER(stepaddress, stepmask); \
+	}
+	//send LED status
+	spi_send_ledbuf(gLedBuf.led_array);
+}
+
 void ledstrip_set_fade(struct cmd_set_fade *pCmd)
-{	
-	char temp;
-	struct max_changes_struct maxChange;
-	
+{
+	uns8 k, stepmask;
+	uns8 delta, timevalue;
+	uns8 oldColor, newColor;
+	uns8* stepaddress = gLedBuf.step;
+	for(k = 0; k < NUM_OF_LED*3; k++) {
+		gLedBuf.delta[k] = 0;
+		gLedBuf.cyclesLeft[k] = 0;
+	}
+	for(k = 0; k < sizeof(gLedBuf.step); k++) {
+		gLedBuf.step[k] = 0;
+	}
+	stepmask = 0x01;
 	FOR_EACH_MASKED_LED_DO(
-		temp = gLedBuf.led_array[k];
-		gLedBuf.led_destination[k] = b;
-		maxChange.blue = ledstrip_get_change(b,temp);
+		newColor = pCmd->blue;
+		CALC_COLOR;
 		k++;
-		
-		temp = gLedBuf.led_array[k];
-		gLedBuf.led_destination[k] = g;
-		maxChange.green = ledstrip_get_change(g,temp);
+		newColor = pCmd->green;
+		CALC_COLOR;
 		k++;
-			
-		temp = gLedBuf.led_array[k];
-		gLedBuf.led_destination[k] = r;
-		maxChange.red = ledstrip_get_change(r,temp);
-		
-		ledstrip_calc_change(&gLedBuf.led_changevalue[k], &maxChange);
+		newColor = pCmd->red;
+		CALC_COLOR;
 	);
-	timer_set_for_fade(pCmd->timevalue);
-	gLedBuf.led_fade_operation = 1;
 }
 
-
-void ledstrip_do_fade()
+void ledstripe_update_fade(void)
 {
-#ifndef X86
-	char fade_finish:1 = TRUE;
-#else
-	char fade_finish = TRUE;
-#endif	
-	
-	char temp_current,temp_destination,temp_value;
-	
-	char i;
-	for(i = 0; i < (NUM_OF_LED*3);i++)
+	uns8 i;
+	for(i = 0; i < NUM_OF_LED*3; i++)
 	{
-		temp_current = gLedBuf.led_array[i];
-		temp_destination = gLedBuf.led_destination[i];
-		//check if I have to add or sub
-		if(temp_current > temp_destination)
+		if((gLedBuf.delta[i] > 0) && (gLedBuf.cyclesLeft[i] > 0))
 		{
-			//if I'm in the near of 0 or 255 I have to check if I can add or sub again( to protect an overflow)
-			if(temp_current > gLedBuf.led_changevalue[i])
-				temp_value = temp_current - gLedBuf.led_changevalue[i];
-			else 
-				//I will get an overflow if i sub again, so set current value to the destination value
-				temp_value = temp_destination;
-			gLedBuf.led_array[i] = temp_value;
-			fade_finish = FALSE;
+			gLedBuf.cyclesLeft[i]--;		
 		}
-		else if(temp_current < temp_destination)	
-		{
-			temp_value = (255 - gLedBuf.led_changevalue[i]);
-			if(temp_current < temp_value)
-				temp_value = temp_current + gLedBuf.led_changevalue[i];
-			else 
-				temp_value = temp_destination;
-			gLedBuf.led_array[i] = temp_value;
-			fade_finish = FALSE;
-		}		
-	}	
-	if(fade_finish) 
-	{
-		gLedBuf.led_fade_operation = FALSE;
-		//send Fade Done
-		USARTsend('F');
-		USARTsend('D');
 	}
-	else 
-		spi_send_ledbuf(&gLedBuf.led_array[0]);
 }
 
-//This funktion returns the differenz between the currentvalue of a led and the destinationvalue
-uns8 ledstrip_get_change(uns8 destinationvalue, uns8 currentvalue)
-{
-	uns8 temp;
-	if(destinationvalue > currentvalue)
-		return temp = destinationvalue - currentvalue;
-	else
-		return temp = currentvalue - destinationvalue;			
-}
-
-/***
-* This function calculates a value for the steps by fading operations.
-* Reason: When you are fading two leds with different values, on led is normaly faster than
-* the other. So I calculate a value for the changes by one fading step. On led fades in bigger
-* steps and the other in a smaller.
-* Function: 
-* Always divide all three values by 2 (rotate right)
-* Don't divide a value if it's smaller than 1
-* If all values are smaller as the smallestChange-Define and one value must be 1, 
-* than write the calculated values in the change array
-**/
-void ledstrip_calc_change(uns8 *change_array,struct max_changes_struct *Changestruct)
-{
-	uns8 temp_red = Changestruct->red;
-	uns8 temp_green = Changestruct->green;
-	uns8 temp_blue = Changestruct->blue;
-	struct breakcondition
-	{
-		char red:1;
-		char green:1;
-		char blue:1;
-	} breakbits;
-	
-	while(TRUE)	
-	{
-		if( (temp_red == 0)&&
-			(temp_green == 0) &&
-			(temp_blue == 0))
-			break;
-	
-		breakbits.red = FALSE;
-		breakbits.green = FALSE;
-		breakbits.blue = FALSE;
-		
-		if(temp_red > 1) 
-		{
-			temp_red = temp_red >> 1;
-			breakbits.red = FALSE;
-		}
-		else 
-			breakbits.red = TRUE;
-		
-		if(temp_green > 1)
-		{
-			temp_green = temp_green >> 1;
-			breakbits.green = FALSE;
-		}
-		else 
-			breakbits.green = TRUE;
-	
-		if(temp_blue > 1) 
-		{
-			temp_blue = temp_blue >> 1;
-			breakbits.blue = FALSE;
-		}
-		else
-			breakbits.blue = TRUE;
-	// do the Final check if the calculation is finished
-		if( ( (temp_red < smallestChange) && (temp_green < smallestChange) && (temp_blue < smallestChange) ) &&
-			( breakbits.red || breakbits.green || breakbits.blue ) &&
-			( (temp_red == 1)||(temp_blue == 1)||(temp_green == 1) )
-			) 
-			break;
-	}
-	
-	// set the calculated values to the change-array
-	*change_array = temp_red;
-	change_array--;
-	*change_array = temp_green;
-	change_array--;
-	*change_array = temp_blue;
-}
