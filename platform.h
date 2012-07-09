@@ -11,8 +11,9 @@
 	typedef unsigned short uns16;
 
 	//global variables
-	bit g_led_off;
+	extern bit g_led_off;
 
+	#define bank1
 	#define AllowInterrupts(x)
 	#define InitFactoryRestoreWLAN(x)
 	#define InitFET(x)
@@ -31,6 +32,7 @@
 	#define PowerOffLEDs(x) BSF(PORTC.0); //Spannungsversorgung für LED's ausschalten
 	
 	void Check_INPUT();
-	
 #endif
+
+	extern unsigned short g_timer_signaled;
 #endif /* #ifndef _PLATFORM_H_ */

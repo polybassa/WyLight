@@ -23,7 +23,6 @@ char spi_send(char data)
 	while(SSPIF == 0);
 	return SSPBUF;
 }
-#endif /* #ifndef X86 */
 
 /***
 **	This function sends the array to the LED controller(WS2801)
@@ -51,5 +50,6 @@ void spi_send_ledbuf(char *array)//!!! CHECK if GIE=0 during the sendroutine imp
 		spi_send(*array);
 	}
 }
+#endif /* #ifndef X86 */
 
 

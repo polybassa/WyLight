@@ -5,7 +5,13 @@
 //08.05.2012
 //Compiler CC5x
 
+#include "platform.h"
+
 extern char gTimecounter;
+
+#if X86
+void* timer_interrupt(void* unused);
+#endif
 
 void timer_init();
 //To Do: Funktion bekommt einen Wert, anhand diese wertes wird die geschwindigkeit des

@@ -1,7 +1,7 @@
 PIC_CC=/home/gpb/cc5xfree/CC5X.EXE
 PIC_CD=/Users/weitys1/Documents/cc5xfree/CC5X.EXE
 
-ANDROID_DIR=../Wifly
+ANDROID_DIR=./android/WiflyLight
 INC_DIR=include_files
 OPENGL_LIB=-lGL -lGLU -lglut
 OPENGL_LIB_OSX=-framework Carbon -framework OpenGL -framework GLUT
@@ -15,7 +15,7 @@ all_pat: pic_pat linux_simu linux_client android_client
 pic_nils:
 	wine ${PIC_CD} main.c -CC -fINHX8M -p16F1936 -a -L -Q -V -FM
 
-pic_pat:
+pic_pat: ledstrip.h
 	wine ${PIC_CC} main.c -CC -fINHX8M -p16F1936 -a -L -Q -V -FM
 
 linux_simu:
@@ -28,9 +28,9 @@ android_client:
 	ndk-build -C $(ANDROID_DIR)
 
 linux_client:
-	g++ ClientSocket.cpp -DX86 -I${INC_DIR} -o client.bin -Wall
+	g++ ClientSocket.cpp WiflyControl.cpp WiflyControlCli.cpp -DX86 -DDEBUG -I${INC_DIR} -o client.bin -Wall
 
 mac_client: linux_client
 
 clean:
-	rm *.hex *.occ *.txt *.out *.bin
+	rm -rf *.asm *.bin *.cod *.fcs *.hex *.lst *.occ *.var out_usart.txt  .metadata/ android/.metadata ${ANDROID_DIR}/bin/ ${ANDROID_DIR}/gen/ ${ANDROID_DIR}/libs/ ${ANDROID_DIR}/obj/ ${ANDROID_DIR}Test/bin/ ${ANDROID_DIR}Test/gen/
