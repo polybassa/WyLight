@@ -215,7 +215,7 @@ USARTsend_str("executeCommand");
 			}
 			case WAIT:
 			{
-				struct cmd_wait *pCmd = &nextCmd.data;
+				struct cmd_wait *pCmd = &nextCmd.data.wait;
 #ifdef TEST
 				USARTsend_num(pCmd->valueH,'H');
 				USARTsend_num(pCmd->valueL,'L');

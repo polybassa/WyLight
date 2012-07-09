@@ -3,7 +3,10 @@
 //Compiler CC5x/
 #ifndef X86
 #define NO_CRC
-#define TEST
+//#define TEST
+#pragma optimize 0
+//#pragma resetVector 0x400
+//#pragma unlockISR
 #endif
 #pragma sharedAllocation
 
@@ -23,37 +26,38 @@ struct CommandBuffer gCmdBuf;
 struct LedBuffer gLedBuf;
 struct ErrorBits gERROR;
 char gTimecounter;
-
+//*********************** X86 InterruptRoutine *******************************************
 #ifdef X86
 void* gl_start(void* unused);
+
+#include <sys/socket.h>
+#include <netinet/in.h>
 void* InterruptRoutine(void* unused)
 {
+	#define PORT 12345
+	int udp_sock = socket(AF_INET, SOCK_DGRAM, 0);
+	if(-1 == udp_sock)
+		return;
 
-	char dummyData[] = {
-		STX, (uns8)sizeof(struct cmd_set_color) + 2,
-		SET_COLOR,
-		0xff, 0xff, 0xff, 0xff,
-		0, 128, 0,
-		0, 0,
-		0xDE, 0xAD};
+	struct sockaddr_in udp_sock_addr;
+  udp_sock_addr.sin_family = AF_INET;
+  udp_sock_addr.sin_port = htons(PORT);
+  udp_sock_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-	uns8 i = 0;
+  if (-1 == bind(udp_sock, (struct sockaddr*)&udp_sock_addr, sizeof(udp_sock_addr)))
+		return;
+
 	for(;;)
 	{
-		if(!RingBufHasError)
+		uns8 buf[1024];
+		int bytesRead = recvfrom(udp_sock, buf, sizeof(buf), 0, 0, 0);
+		int i;
+		for(i = 0; i < bytesRead; i++)
 		{
-			RingBufPut(dummyData[i]);
-		}
-	
-		i++;
-		if(i == sizeof(dummyData))
-		{
-			i = 0;
-			char temp = dummyData[7];
-			dummyData[7] = dummyData[8];
-			dummyData[8] = dummyData[9];
-			dummyData[9] = temp;
-			sleep(1);//sleep a second
+			if(!RingBufHasError)
+			{
+				RingBufPut(buf[i]);
+			}
 		}
 	}
 }
@@ -118,6 +122,7 @@ void main(void)
 void init_all()
 {
 	OsciInit();
+	InitInputs();
 	RingBufInit();
 	USARTinit();
 	spi_init();
@@ -140,6 +145,7 @@ void init_all()
 
 // cc5xfree is a bit stupid so we include the other implementation files here
 #ifndef X86
+//#pragma codepage 1
 #include "crc.c"
 #include "eeprom.c"
 #include "error.c"
@@ -151,4 +157,6 @@ void init_all()
 #include "commandstorage.c"
 #include "platform.c"
 #endif /* #ifndef X86 */
+
+
 

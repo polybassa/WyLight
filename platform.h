@@ -10,6 +10,9 @@
 	typedef unsigned char uns8;
 	typedef unsigned short uns16;
 
+	//global variables
+	bit g_led_off;
+
 	#define AllowInterrupts(x)
 	#define InitFactoryRestoreWLAN(x)
 	#define InitFET(x)
@@ -17,9 +20,6 @@
 	#define PowerOnLEDs(x) g_led_off = 0;
 	#define PowerOffLEDs(x) g_led_off = 1;
 	#define Check_INPUT(x)
-	
-	//global variables
-	bit g_led_off;
 #else
 	#include "inline.h"
 
@@ -29,6 +29,7 @@
 	#define OsciInit(x) OSCCON = 0b01110010; //OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
 	#define PowerOnLEDs(x) BCF(PORTC.0); //Spannungsversorgung für LED's einschalten
 	#define PowerOffLEDs(x) BSF(PORTC.0); //Spannungsversorgung für LED's ausschalten
+	#define InitInputs(x) CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); //Eingänge am PORTB initialisieren
 	
 	void Check_INPUT();
 	
