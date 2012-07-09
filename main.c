@@ -4,7 +4,9 @@
 #ifndef X86
 #define NO_CRC
 //#define TEST
-#pragma optimize 1
+#pragma optimize 0
+//#pragma resetVector 0x400
+//#pragma unlockISR
 #endif
 #pragma sharedAllocation
 
@@ -24,7 +26,7 @@ struct CommandBuffer gCmdBuf;
 struct LedBuffer gLedBuf;
 struct ErrorBits gERROR;
 char gTimecounter;
-
+//*********************** X86 InterruptRoutine *******************************************
 #ifdef X86
 void* gl_start(void* unused);
 
@@ -120,6 +122,7 @@ void main(void)
 void init_all()
 {
 	OsciInit();
+	InitInputs();
 	RingBufInit();
 	USARTinit();
 	spi_init();
@@ -142,6 +145,7 @@ void init_all()
 
 // cc5xfree is a bit stupid so we include the other implementation files here
 #ifndef X86
+//#pragma codepage 1
 #include "crc.c"
 #include "eeprom.c"
 #include "error.c"
@@ -153,4 +157,6 @@ void init_all()
 #include "commandstorage.c"
 #include "platform.c"
 #endif /* #ifndef X86 */
+
+
 
