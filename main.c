@@ -24,6 +24,7 @@ struct CommandBuffer gCmdBuf;
 bank1 struct LedBuffer gLedBuf;
 struct ErrorBits gERROR;
 char gTimecounter;
+unsigned short g_timer_signaled;	
 
 #ifdef X86
 bit g_led_off; //X86 replacement for PORTC.0
@@ -116,7 +117,11 @@ void main(void)
 		commandstorage_get_commands();
 		commandstorage_execute_commands();
 
-		ledstrip_do_fade();
+		if(g_timer_signaled > 0)
+		{
+			ledstripe_update_fade();
+			ledstrip_do_fade();
+		}
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************

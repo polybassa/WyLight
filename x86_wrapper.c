@@ -5,23 +5,14 @@
 void addCRC(char byte, char* p_crcH, char* p_crcL) {}
 void newCRC(char* p_crcH, char* p_crcL) {}
 
-bit timer_locked = 0;
 void timer_init(){};
 void timer_set_for_fade(char value){};
 void* timer_interrupt(void* unused)
 {
-	for(;;usleep(1000))
+	for(;;)
 	{
-		uns8 i;
-		if(!timer_locked) {
-			for(i = 0; i < NUM_OF_LED*3; i++)
-			{
-				if((gLedBuf.delta[i] > 0) && (gLedBuf.cyclesLeft[i] > 0))
-				{
-					gLedBuf.cyclesLeft[i]--;		
-				}
-			}
-		}
+		usleep(1000);
+		g_timer_signaled++;
 	}
 }
 

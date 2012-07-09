@@ -16,8 +16,7 @@ struct LedBuffer{
 	uns8 delta[NUM_OF_LED*3];			// delta until new fade color arrived, decremented each periode
 	unsigned short cyclesLeft[NUM_OF_LED*3];	// cycles left in current periode
 	unsigned short periodeLength[NUM_OF_LED*3];	// number of cycles in one periode
-	//uns8 step[NUM_OF_LED / 8* 3]; // if bit is set led_array is incremented each periode else decremented
-	uns8 step[NUM_OF_LED * 3]; // if bit is set led_array is incremented each periode else decremented
+	uns8 step[NUM_OF_LED / 8* 3]; // if bit is set led_array is incremented each periode else decremented
 };
 
 extern bank1 struct LedBuffer gLedBuf;
@@ -25,5 +24,6 @@ extern bank1 struct LedBuffer gLedBuf;
 void ledstrip_init(void);
 void ledstrip_set_color(struct cmd_set_color *pCmd);
 void ledstrip_set_fade(struct cmd_set_fade *pCmd);
-void ledstrip_do_fade();
+void ledstrip_do_fade(void);
+void ledstripe_update_fade(void);
 #endif

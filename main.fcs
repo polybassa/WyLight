@@ -14,6 +14,7 @@ F: main                   :#0  : p0
     throw_errors          : #1  : p0 -> p0
     commandstorage_get_commands: #1  : p0 -> p0
     commandstorage_execute_commands: #1  : p0 -> p0
+    ledstripe_update_fade : #1  : p0 -> p0
     ledstrip_do_fade      : #1  : p0 -> p0
 
 F: init_all               :#1  : p0 <- p0 
@@ -73,6 +74,8 @@ F: ledstrip_set_fade      :#1  : p0 <- p0
     CLEAR_BIT_AT          : #3  : p0 -> p0
     SET_BIT_AT            : #3  : p0 -> p0
     CLEAR_BIT_AT          : #3  : p0 -> p0
+
+F: ledstripe_update_fade  :#1  : p0 <- p0 
 
 F: RingBufInit            :#2  : p0
 
@@ -239,6 +242,7 @@ F: Check_INPUT            :#1  : p0 <- p0
  L3        USARTsend
  L2        USARTsend [T-GOTO]
  L2      USARTsend_num ..
+ L1    ledstripe_update_fade
  L1    ledstrip_do_fade
  L2      GET_BIT_AT
  L1      spi_send_ledbuf [T-GOTO] ..

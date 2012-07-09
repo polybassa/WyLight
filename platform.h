@@ -12,7 +12,6 @@
 
 	//global variables
 	extern bit g_led_off;
-	extern bit timer_locked;
 
 	#define bank1
 	#define AllowInterrupts(x)
@@ -33,6 +32,7 @@
 	#define PowerOffLEDs(x) BSF(PORTC.0); //Spannungsversorgung für LED's ausschalten
 	
 	void Check_INPUT();
-	
 #endif
+
+	extern unsigned short g_timer_signaled;
 #endif /* #ifndef _PLATFORM_H_ */
