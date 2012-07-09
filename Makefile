@@ -33,4 +33,4 @@ linux_client:
 mac_client: linux_client
 
 clean:
-	rm -rf *.hex *.occ *.bin out_usart.txt .metadata/ android/.metadata android/WiflyLight/bin/ android/WiflyLight/gen/ android/WiflyLight/libs/ android/WiflyLight/obj android/WiflyLightTest/bin/ android/WiflyLightTest/gen/
+	rm -rf *.asm *.bin *.cod *.fcs *.hex *.lst *.occ *.var out_usart.txt  .metadata/ android/.metadata ${ANDROID_DIR}/bin/ ${ANDROID_DIR}/gen/ ${ANDROID_DIR}/libs/ ${ANDROID_DIR}/obj/ ${ANDROID_DIR}Test/bin/ ${ANDROID_DIR}Test/gen/
