@@ -4,7 +4,6 @@
 
 #include "ledstrip.h"
 
-
 #define INC_BIT_COUNTER(PTR, MASK) \
 	MASK = MASK << 1; \
 	if(0 == MASK) { \
@@ -66,7 +65,7 @@ uns8 GET_BIT_AT(uns8* PTR, uns8 POSITION) {
 		gLedBuf.periodeLength[k] = 0; \
 		gLedBuf.delta[k] = delta; \
 		if((0 != delta)) {\
-			timevalue = 1000 * pCmd->timevalue; \
+			timevalue = 1000 / CYCLE_TMMS * pCmd->timevalue; \
 			gLedBuf.periodeLength[k] = timevalue / delta; \
 		} \
 
@@ -129,7 +128,8 @@ void ledstrip_do_fade(void)
 void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 {
 	uns8 k, stepmask;
-	uns8 delta, timevalue;
+	uns8 delta;
+	uns16 timevalue;
 	uns8 oldColor, newColor;
 	uns8* stepaddress = gLedBuf.step;
 	for(k = 0; k < NUM_OF_LED*3; k++) {
@@ -152,7 +152,7 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 	);
 }
 
-void ledstripe_update_fade(void)
+void ledstrip_update_fade(void)
 {
 	uns8 i;
 	for(i = 0; i < NUM_OF_LED*3; i++)

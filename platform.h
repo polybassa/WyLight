@@ -5,6 +5,8 @@
 #define TRUE  1
 #define FALSE 0
 
+#define CYCLE_TMMS 10		//cycle time in milliseconds
+
 #ifdef X86
 	typedef char bit;
 	typedef unsigned char uns8;
@@ -33,6 +35,4 @@
 	
 	void Check_INPUT();
 #endif
-
-	extern unsigned short g_timer_signaled;
 #endif /* #ifndef _PLATFORM_H_ */
