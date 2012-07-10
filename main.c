@@ -1,10 +1,28 @@
-//Nils Weiﬂ 
-//05.09.2011
-//Compiler CC5x/
+/**
+ Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ 
+ This file is part of Wifly_Light.
+ 
+ Wifly_Light is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ 
+ Wifly_Light is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License
+ along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
+
+
 #ifndef X86
 #define NO_CRC
 //#define TEST
-#pragma optimize 1
+#pragma optimize 0
+//#pragma resetVector 0x400
+//#pragma unlockISR
 #endif
 #pragma sharedAllocation
 
@@ -25,6 +43,7 @@ bank1 struct LedBuffer gLedBuf;
 struct ErrorBits gERROR;
 char gTimecounter;
 unsigned short g_timer_signaled;	
+//*********************** X86 InterruptRoutine *******************************************
 
 #ifdef X86
 bit g_led_off; //X86 replacement for PORTC.0
@@ -129,6 +148,7 @@ void main(void)
 void init_all()
 {
 	OsciInit();
+	InitInputs();
 	RingBufInit();
 	USARTinit();
 	spi_init();
@@ -151,6 +171,7 @@ void init_all()
 
 // cc5xfree is a bit stupid so we include the other implementation files here
 #ifndef X86
+//#pragma codepage 1
 #include "crc.c"
 #include "eeprom.c"
 #include "error.c"
@@ -162,4 +183,6 @@ void init_all()
 #include "commandstorage.c"
 #include "platform.c"
 #endif /* #ifndef X86 */
+
+
 
