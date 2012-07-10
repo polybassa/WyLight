@@ -10,3 +10,6 @@ main.occ
 main.asm
 main.lst
 main.var
+include_files/MATH16.H
+main.hxl
+main.fcs

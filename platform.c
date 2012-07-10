@@ -4,7 +4,7 @@
 void Check_INPUT()
 {
 //if INPUT is low, then FactoryReset the WLAN Interface
-	if(PORTB.1 == 0)
+	if(PORTB.1 == 1)
 		PORTA.0 = 0;
 	else 
 		PORTA.0 = 1;
