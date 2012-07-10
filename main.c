@@ -129,18 +129,14 @@ void main(void)
 	while(1)
 	{
 #ifdef X86
-		usleep(1000);
+		// give opengl thread a chance to run
+		usleep(10);
 #endif
 		Check_INPUT();
 		throw_errors();
 		commandstorage_get_commands();
 		commandstorage_execute_commands();
-
-		if(g_timer_signaled > 0)
-		{
-			ledstripe_update_fade();
-			ledstrip_do_fade();
-		}
+		ledstrip_do_fade();
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************
