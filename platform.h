@@ -23,6 +23,8 @@
 #define TRUE  1
 #define FALSE 0
 
+#define CYCLE_TMMS 10		//cycle time in milliseconds
+
 #ifdef X86
 	typedef char bit;
 	typedef unsigned char uns8;
@@ -35,23 +37,23 @@
 	#define AllowInterrupts(x)
 	#define InitFactoryRestoreWLAN(x)
 	#define InitFET(x)
+	#define InitInputs(x)	
 	#define OsciInit(x)
 	#define PowerOnLEDs(x) g_led_off = 0;
 	#define PowerOffLEDs(x) g_led_off = 1;
-	#define Check_INPUT(x)
+
+	#define Check_INPUT(x)	
 #else
 	#include "inline.h"
 
 	#define AllowInterrupts(x) RCIE=1;PEIE=1;GIE=1;
 	#define InitFactoryRestoreWLAN(x) TRISA.0 = 0; 
 	#define InitFET(x) TRISC.0 = 0; //Ausgang für FET initalisieren
+	#define InitInputs(x) CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); //Eingänge am PORTB initialisieren
 	#define OsciInit(x) OSCCON = 0b01110010; //OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
 	#define PowerOnLEDs(x) BCF(PORTC.0); //Spannungsversorgung für LED's einschalten
 	#define PowerOffLEDs(x) BSF(PORTC.0); //Spannungsversorgung für LED's ausschalten
-	#define InitInputs(x) CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); //Eingänge am PORTB initialisieren
 	
 	void Check_INPUT();
 #endif
-
-	extern unsigned short g_timer_signaled;
 #endif /* #ifndef _PLATFORM_H_ */
