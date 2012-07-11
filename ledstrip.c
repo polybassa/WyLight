@@ -77,16 +77,17 @@ uns8 GET_BIT_AT(uns8* PTR, uns8 POSITION) {
 		} \
 		gLedBuf.cyclesLeft[k] = 0; \
 		gLedBuf.periodeLength[k] = 0; \
-		gLedBuf.delta[k] = delta; \
 		if((0 != delta)) {\
 			timevalue = 1000 * pCmd->timevalue; \
-			if(timevalue > CYCLE_TMMS) { \
+			if(timevalue >= delta * CYCLE_TMMS) { \
 				timevalue = timevalue / CYCLE_TMMS; \
 				gLedBuf.periodeLength[k] = timevalue / delta; \
 				gLedBuf.stepSize[k] = 1; \
+				gLedBuf.delta[k] = delta; \
 			} else { \
 				gLedBuf.periodeLength[k] = 1; \
-				gLedBuf.stepSize[k] = delta / CYCLE_TMMS; \
+				gLedBuf.stepSize[k] = CYCLE_TMMS * delta / timevalue; \
+				gLedBuf.delta[k] = delta / gLedBuf.stepSize[k]; \
 			} \
 		} \
 
@@ -129,12 +130,13 @@ void ledstrip_do_fade(void)
 		//active and triggered?
 		if((gLedBuf.delta[k] > 0) && (gLedBuf.cyclesLeft[k] == 0))
 		{
+			uns8 stepSize = gLedBuf.stepSize[k];
+
 			//reset timer
 			gLedBuf.delta[k]--;
 			periodeLength = gLedBuf.periodeLength[k];
 			gLedBuf.cyclesLeft[k] = periodeLength;
 
-			uns8 stepSize = gLedBuf.stepSize[k];
 			if(GET_BIT_AT(gLedBuf.step, k)) {
 				gLedBuf.led_array[k] -= stepSize;
 			} else {
