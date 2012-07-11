@@ -19,7 +19,7 @@ pic_pat: ledstrip.h
 	wine ${PIC_CC} main.c -CC -fINHX8M -p16F1936 -a -L -Q -V -FM
 
 linux_simu:
-	gcc ${X86_SRC} -DX86 -DNO_CRC -I${INC_DIR} -lpthread ${OPENGL_LIB} -o server.bin
+	gcc ${X86_SRC} -DX86 -DNO_CRC -I${INC_DIR} -lpthread ${OPENGL_LIB} -o server.bin -Wall
 
 mac_simu:
 	gcc main.c commandstorage.c eeprom.c error.c ledstrip.c RingBuf.c spi.c usart.c x86_wrapper.c -DMACOSX -DX86 -DNO_CRC -I${INC_DIR} -lpthread ${OPENGL_LIB_OSX} -o server.bin
@@ -28,7 +28,7 @@ android_client:
 	ndk-build -C $(ANDROID_DIR)
 
 linux_client:
-	g++ ClientSocket.cpp WiflyControl.cpp WiflyControlCli.cpp -DX86 -DDEBUG -I${INC_DIR} -o client.bin -Wall
+	g++ ClientSocket.cpp WiflyControl.cpp WiflyControlCli.cpp -DX86 -DDEBUG -I${INC_DIR} -o client.bin -Wall -pedantic
 
 mac_client: linux_client
 

@@ -18,6 +18,7 @@
 
 #include "platform.h"
 #include "commandstorage.h"
+#include "ledstrip.h"
 
 struct led_cmd* commandstorage_read(struct led_cmd *pDest)
 {
@@ -40,7 +41,7 @@ struct led_cmd* commandstorage_read(struct led_cmd *pDest)
 		}
 
 		//read command from eeprom
-		EEPROM_RD_BLK((char*)pDest, (nextCmd - CmdWidth), CmdWidth);
+		EEPROM_RD_BLK((unsigned char*)pDest, (nextCmd - CmdWidth), CmdWidth);
 
 		//update the CmdPointer?
 		if(gCmdBuf.LoopMode)
@@ -56,7 +57,7 @@ struct led_cmd* commandstorage_read(struct led_cmd *pDest)
 	else return 0;
 }
 
-bit commandstorage_write(char *pSrc, char length)
+bit commandstorage_write(unsigned char *pSrc, unsigned char length)
 {
 	//check parameter
 	if(0 == pSrc) return FALSE;

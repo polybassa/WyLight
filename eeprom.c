@@ -16,6 +16,8 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
+#include "platform.h"
+
 #ifndef X86
 //*********************** EEPROM BYTE SCHREIBEN  **********************************************
 
@@ -51,6 +53,9 @@ char EEPROM_RD(char adress)
     data = EEDATL;       // Daten aus Datenregister auslesen
     return data;
 }
+#else
+void EEPROM_WR(char adress, char data);
+char EEPROM_RD(char adress);
 #endif /* #ifndef X86 */
 
 //*********************** EEPROM BYTEARRAY SCHREIBEN  **************************************
@@ -72,7 +77,7 @@ void EEPROM_WR_BLK(char *array, char adress, char length)			//Zum Ausführen eine
 void EEPROM_RD_BLK(char *array, char adress, char length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
 {
 	if(!array) return;
-	char i, temp;
+	uns8 i, temp;
 	for(i=0;i<length;i++)
 	{
 		temp = EEPROM_RD(adress);

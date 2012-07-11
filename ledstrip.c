@@ -54,7 +54,7 @@ uns8 GET_BIT_AT(uns8* PTR, uns8 POSITION) {
 
 #define FOR_EACH_MASKED_LED_DO(BLOCK) { \
 	uns8 *address = pCmd->addr; \
-	char k,mask; \
+	uns8 k,mask; \
 	mask = 0x01; \
 	for(k = 0; k < (NUM_OF_LED * 3); k++) {	\
 		if(0 != (*address & mask)) { \
@@ -81,12 +81,12 @@ uns8 GET_BIT_AT(uns8* PTR, uns8 POSITION) {
 		if((0 != delta)) {\
 			timevalue = 1000 * pCmd->timevalue; \
 			if(timevalue > CYCLE_TMMS) { \
-				timevalue = timevalue / CYCLE_TMMS; \
+				timevalue = timevalue >> CYCLE_TM_SHIFT; \
 				gLedBuf.periodeLength[k] = timevalue / delta; \
 				gLedBuf.stepSize[k] = 1; \
 			} else { \
 				gLedBuf.periodeLength[k] = 1; \
-				gLedBuf.stepSize[k] = delta / CYCLE_TMMS; \
+				gLedBuf.stepSize[k] = delta >> CYCLE_TM_SHIFT; \
 			} \
 		} \
 
@@ -119,7 +119,6 @@ void ledstrip_set_color(struct cmd_set_color *pCmd)
 
 void ledstrip_do_fade(void)
 {
-	char step;
 	uns8 k, stepmask;
 	uns8* stepaddress = gLedBuf.step;
 	stepmask = 0x01;
@@ -153,7 +152,6 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 	uns8 delta;
 	uns16 timevalue;
 	uns8 oldColor, newColor;
-	uns8* stepaddress = gLedBuf.step;
 	for(k = 0; k < NUM_OF_LED*3; k++) {
 		gLedBuf.delta[k] = 0;
 		gLedBuf.cyclesLeft[k] = 0;

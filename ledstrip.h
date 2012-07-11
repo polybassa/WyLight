@@ -40,5 +40,5 @@ void ledstrip_init(void);
 void ledstrip_set_color(struct cmd_set_color *pCmd);
 void ledstrip_set_fade(struct cmd_set_fade *pCmd);
 void ledstrip_do_fade(void);
-void ledstripe_update_fade(void);
+void ledstrip_update_fade(void);
 #endif
