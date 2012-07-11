@@ -18,6 +18,9 @@
 
 #include "ledstrip.h"
 
+
+#pragma codepage 1
+
 #define INC_BIT_COUNTER(PTR, MASK) \
 	MASK = MASK << 1; \
 	if(0 == MASK) { \
@@ -78,16 +81,18 @@ uns8 GET_BIT_AT(uns8* PTR, uns8 POSITION) {
 		gLedBuf.cyclesLeft[k] = 0; \
 		gLedBuf.periodeLength[k] = 0; \
 		if((0 != delta)) {\
-			timevalue = 1000 * pCmd->timevalue; \
-			if(timevalue >= delta * CYCLE_TMMS) { \
-				timevalue = timevalue / CYCLE_TMMS; \
-				gLedBuf.periodeLength[k] = timevalue / delta; \
+			temp16 = delta * CYCLE_TMMS; \
+			if(fadeTmms >= temp16) { \
+				temp16 = fadeTmms / CYCLE_TMMS; \
+				gLedBuf.periodeLength[k] = temp16 / delta; \
 				gLedBuf.stepSize[k] = 1; \
 				gLedBuf.delta[k] = delta; \
 			} else { \
 				gLedBuf.periodeLength[k] = 1; \
-				gLedBuf.stepSize[k] = CYCLE_TMMS * delta / timevalue; \
-				gLedBuf.delta[k] = delta / gLedBuf.stepSize[k]; \
+				temp16 = CYCLE_TMMS * delta; \
+				temp16 = temp16 / fadeTmms; \
+				gLedBuf.stepSize[k] = temp16; \
+				gLedBuf.delta[k] = delta / temp16; \
 			} \
 		} \
 
@@ -153,7 +158,8 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 {
 	uns8 k, stepmask;
 	uns8 delta;
-	uns16 timevalue;
+	uns16 temp16;
+	const uns16 fadeTmms = (uns16)pCmd->timevalue * 1000;
 	uns8 oldColor, newColor;
 	uns8* stepaddress = gLedBuf.step;
 	for(k = 0; k < NUM_OF_LED*3; k++) {

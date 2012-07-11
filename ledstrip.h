@@ -23,7 +23,7 @@
 #include "spi.h"
 #include "eeprom.h"
 
-#define NUM_OF_LED 24//32
+#define NUM_OF_LED 24
 
 struct LedBuffer{
 	uns8 led_array[NUM_OF_LED*3];			// contains the current colorvalue for each led
