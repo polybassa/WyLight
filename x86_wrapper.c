@@ -29,8 +29,8 @@ void* timer_interrupt(void* unused)
 {
 	for(;;)
 	{
-		usleep(1000);
-		g_timer_signaled++;
+		usleep(1000 * CYCLE_TMMS);
+		ledstrip_update_fade();
 	}
 }
 
