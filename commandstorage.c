@@ -140,9 +140,7 @@ void commandstorage_get_commands()
 			// *** and I can give the string to the crc check function.
 			if(gCmdBuf.frame_counter == 0)
 			{
-#ifdef NO_CRC
-				if(1==1)
-#else
+#ifndef NO_CRC
                 // *** verify crc checksum
                 if( (gCmdBuf.crcL == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 1]) &&
                     (gCmdBuf.crcH == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 2]) )
@@ -195,12 +193,14 @@ void commandstorage_get_commands()
 					}							
 					
                 }
+#ifndef NO_CRC
                 else
                 {
                     // *** Do some error handling in case of an CRC failure here
 					gERROR.crc_failure = 1;
                     return;
                 }
+#endif
 			}
 		}
 	}

@@ -181,5 +181,3 @@ void init_all()
 #include "platform.c"
 #endif /* #ifndef X86 */
 
-
-
