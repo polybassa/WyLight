@@ -79,8 +79,15 @@ uns8 GET_BIT_AT(uns8* PTR, uns8 POSITION) {
 		gLedBuf.periodeLength[k] = 0; \
 		gLedBuf.delta[k] = delta; \
 		if((0 != delta)) {\
-			timevalue = 1000 / CYCLE_TMMS * pCmd->timevalue; \
-			gLedBuf.periodeLength[k] = timevalue / delta; \
+			timevalue = 1000 * pCmd->timevalue; \
+			if(timevalue > CYCLE_TMMS) { \
+				timevalue = timevalue / CYCLE_TMMS; \
+				gLedBuf.periodeLength[k] = timevalue / delta; \
+				gLedBuf.stepSize[k] = 1; \
+			} else { \
+				gLedBuf.periodeLength[k] = 1; \
+				gLedBuf.stepSize[k] = delta / CYCLE_TMMS; \
+			} \
 		} \
 
 void ledstrip_init(void)
@@ -127,10 +134,11 @@ void ledstrip_do_fade(void)
 			periodeLength = gLedBuf.periodeLength[k];
 			gLedBuf.cyclesLeft[k] = periodeLength;
 
+			uns8 stepSize = gLedBuf.stepSize[k];
 			if(GET_BIT_AT(gLedBuf.step, k)) {
-				gLedBuf.led_array[k]--;
+				gLedBuf.led_array[k] -= stepSize;
 			} else {
-				gLedBuf.led_array[k]++;
+				gLedBuf.led_array[k] += stepSize;
 			}
 		}
 		INC_BIT_COUNTER(stepaddress, stepmask); \
