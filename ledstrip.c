@@ -69,13 +69,13 @@ uns8 GET_BIT_AT(uns8* PTR, uns8 POSITION) {
 	} \
 }
 
-#define CALC_COLOR \
-		oldColor = gLedBuf.led_array[k]; \
-		if(oldColor > newColor) { \
-			delta = oldColor - newColor; \
+#define CALC_COLOR(newColor) \
+		delta = gLedBuf.led_array[k]; \
+		if(delta > newColor) { \
+			delta -= newColor; \
 			SET_BIT_AT(gLedBuf.step, k); \
 		} else { \
-			delta = newColor - oldColor; \
+			delta = newColor - delta; \
 			CLEAR_BIT_AT(gLedBuf.step, k); \
 		} \
 		gLedBuf.cyclesLeft[k] = 0; \
@@ -152,28 +152,23 @@ void ledstrip_do_fade(void)
 
 void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 {
-	uns8 k, stepmask;
+	uns8 k;
 	uns8 delta;
 	uns16 temp16;
 	const uns16 fadeTmms = (uns16)pCmd->timevalue * 1000;
 	const uns16 fadeTmmsPerCycleTmms = fadeTmms / CYCLE_TMMS;
-	uns8 oldColor, newColor;
 	for(k = 0; k < NUM_OF_LED*3; k++) {
 		gLedBuf.delta[k] = 0;
 	}
 	for(k = 0; k < sizeof(gLedBuf.step); k++) {
 		gLedBuf.step[k] = 0;
 	}
-	stepmask = 0x01;
 	FOR_EACH_MASKED_LED_DO(
-		newColor = pCmd->blue;
-		CALC_COLOR;
+		CALC_COLOR(pCmd->blue);
 		k++;
-		newColor = pCmd->green;
-		CALC_COLOR;
+		CALC_COLOR(pCmd->green);
 		k++;
-		newColor = pCmd->red;
-		CALC_COLOR;
+		CALC_COLOR(pCmd->red);
 	);
 }
 
