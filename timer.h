@@ -45,7 +45,6 @@ void timer_set_for_fade(char value);
 #define Timer4interrupt(x)  		\
 {									\
 	TMR4IF = 0;						\
-	g_timer_signaled++;				\
 }
 
 #endif

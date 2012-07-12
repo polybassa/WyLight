@@ -33,7 +33,7 @@
 
 //*********************** STRUCT DECLARATION *********************************************
 struct CommandBuffer{
-    char cmd_counter;
+    uns8 cmd_counter;
     char frame_counter;
     uns8 cmd_buf[FRAMELENGTH];
     char crcH;
@@ -64,7 +64,7 @@ struct led_cmd* commandstorage_read(struct led_cmd *pDest);
  * return: - TRUE, if command was successfully written to buffer
  *         - FALSE, if not
 **/
-bit commandstorage_write(char *pSrc, char length);
+bit commandstorage_write(unsigned char *pSrc, unsigned char length);
 
 /** This function reads one byte from the ringbuffer and check
 *** for framestart, framelength, or databyte 

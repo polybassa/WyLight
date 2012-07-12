@@ -28,8 +28,6 @@ void timer_init()
 	TMR4IE = 1;
 	
 	PR4 = 0xff;
-
-	g_timer_signaled = 0;
 }
 
 void timer_set_for_fade(char value)
