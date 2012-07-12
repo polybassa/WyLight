@@ -82,8 +82,7 @@ uns8 GET_BIT_AT(uns8* PTR, uns8 POSITION) {
 		if((0 != delta)) {\
 			temp16 = delta * CYCLE_TMMS; \
 			if(fadeTmms >= temp16) { \
-				temp16 = fadeTmms / CYCLE_TMMS; \
-				gLedBuf.periodeLength[k] = temp16 / delta; \
+				gLedBuf.periodeLength[k] = fadeTmmsPerCycleTmms / delta; \
 				gLedBuf.stepSize[k] = 1; \
 				gLedBuf.delta[k] = delta; \
 			} else { \
@@ -157,6 +156,7 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 	uns8 delta;
 	uns16 temp16;
 	const uns16 fadeTmms = (uns16)pCmd->timevalue * 1000;
+	const uns16 fadeTmmsPerCycleTmms = fadeTmms / CYCLE_TMMS;
 	uns8 oldColor, newColor;
 	for(k = 0; k < NUM_OF_LED*3; k++) {
 		gLedBuf.delta[k] = 0;
