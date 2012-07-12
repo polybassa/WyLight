@@ -42,7 +42,6 @@ struct CommandBuffer gCmdBuf;
 bank1 struct LedBuffer gLedBuf;
 struct ErrorBits gERROR;
 char gTimecounter;
-unsigned short g_timer_signaled;	
 //*********************** X86 InterruptRoutine *******************************************
 
 #ifdef X86

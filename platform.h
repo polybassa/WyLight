@@ -23,7 +23,6 @@
 #define TRUE  1
 #define FALSE 0
 
-#define CYCLE_TM_SHIFT 6 // 64ms cycle time, shift used for division and multiplication
 #define CYCLE_TMMS 64		//cycle time in milliseconds
 
 #ifdef X86

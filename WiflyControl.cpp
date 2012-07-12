@@ -92,6 +92,14 @@ void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned char
 		<< (int)mCmdFrame.led.data.set_fade.blue << " : "
 		<< (int)mCmdFrame.led.data.set_fade.timevalue
 		<< std::endl;
+
+		do
+		{
+			std::cout << (int)--timevalue;
+			std::cout.flush();
+			sleep(1); 
+		}while(timevalue > 0);
+		std::cout << std::endl;
 #endif
 }
 
