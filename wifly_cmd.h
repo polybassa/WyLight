@@ -47,8 +47,7 @@ struct cmd_set_fade {
 	uns8 red;
 	uns8 green;
 	uns8 blue;
-	uns8 timevalue;
-	uns8 reserved;
+	uns16 fadeTmms; //fadetime in ms
 };
 
 struct cmd_wait {

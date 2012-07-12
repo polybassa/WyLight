@@ -26,6 +26,7 @@
 #define CYCLE_TMMS 64		//cycle time in milliseconds
 
 #ifdef X86
+	#include <arpa/inet.h>
 	typedef char bit;
 	typedef unsigned char uns8;
 	typedef unsigned short uns16;
@@ -45,6 +46,9 @@
 	#define Check_INPUT(x)	
 #else
 	#include "inline.h"
+
+	#define htons(X) (X)
+	#define ntohs(X) (X)
 
 	#define AllowInterrupts(x) RCIE=1;PEIE=1;GIE=1;
 	#define InitFactoryRestoreWLAN(x) TRISA.0 = 0; 

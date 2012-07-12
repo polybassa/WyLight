@@ -155,11 +155,12 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 	uns8 k;
 	uns8 delta;
 	uns16 temp16;
-	const uns16 fadeTmms = (uns16)pCmd->timevalue * 1000;
+	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
 	const uns16 fadeTmmsPerCycleTmms = fadeTmms / CYCLE_TMMS;
 	for(k = 0; k < NUM_OF_LED*3; k++) {
 		gLedBuf.delta[k] = 0;
 	}
+
 	for(k = 0; k < sizeof(gLedBuf.step); k++) {
 		gLedBuf.step[k] = 0;
 	}

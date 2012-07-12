@@ -65,7 +65,7 @@ void WiflyControl::SetColor(string& addr, std::string& color)
 	SetColor(ToRGBA(addr), ToRGBA(color) << 8);
 }
 
-void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned char timevalue)
+void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms)
 {
 	mCmdFrame.led.cmd = SET_FADE;
 	// next line would be better, but mCmdFrame...addr is unaligned!
@@ -77,8 +77,7 @@ void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned char
 	mCmdFrame.led.data.set_fade.red = (rgba & 0xff000000) >> 24;
 	mCmdFrame.led.data.set_fade.green = (rgba & 0x00ff0000) >> 16;
 	mCmdFrame.led.data.set_fade.blue = (rgba & 0x0000ff00) >> 8;
-	mCmdFrame.led.data.set_fade.timevalue = timevalue;
-	mCmdFrame.led.data.set_fade.reserved = 0;
+	mCmdFrame.led.data.set_fade.fadeTmms = htons(fadeTmms);
 	int bytesWritten = mSock.Send((char*)&mCmdFrame, sizeof(mCmdFrame));
 #ifdef DEBUG
 	std::cout << "Send " << bytesWritten << " bytes "
@@ -90,22 +89,21 @@ void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned char
 		<< (int)mCmdFrame.led.data.set_fade.red << " "
 		<< (int)mCmdFrame.led.data.set_fade.green << " "
 		<< (int)mCmdFrame.led.data.set_fade.blue << " : "
-		<< (int)mCmdFrame.led.data.set_fade.timevalue
-		<< std::endl;
+		<< (int)mCmdFrame.led.data.set_fade.fadeTmms << std::endl;
 
 		do
 		{
-			std::cout << (int)--timevalue;
+			std::cout << (int)--fadeTmms;
 			std::cout.flush();
 			sleep(1); 
-		}while(timevalue > 0);
+		}while(fadeTmms > 0);
 		std::cout << std::endl;
 #endif
 }
 
-void WiflyControl::SetFade(string& addr, std::string& color, unsigned char timevalue)
+void WiflyControl::SetFade(string& addr, std::string& color, unsigned short fadeTmms)
 {
-	SetFade(ToRGBA(addr), ToRGBA(color) << 8, timevalue);
+	SetFade(ToRGBA(addr), ToRGBA(color) << 8, fadeTmms);
 }
 
 unsigned long WiflyControl::ToRGBA(string& s) const
