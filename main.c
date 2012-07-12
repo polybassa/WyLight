@@ -42,7 +42,8 @@ struct CommandBuffer gCmdBuf;
 bank1 struct LedBuffer gLedBuf;
 struct ErrorBits gERROR;
 char gTimecounter;
-unsigned short g_timer_signaled;	
+//unsigned short g_timer_signaled;
+bit g_update_fade;	
 //*********************** X86 InterruptRoutine *******************************************
 
 #ifdef X86
@@ -98,10 +99,12 @@ interrupt InterruptRoutine(void)
 	if(TMR2IF)
 	{
 		Timer2interrupt();
+		gTimecounter = ++gTimecounter;
 	}
 	if(TMR4IF)
 	{
 		Timer4interrupt();
+		g_update_fade = 1;
 		commandstorage_wait_interrupt();
 	}
 }
@@ -113,6 +116,9 @@ void init_all();
 //*********************** HAUPTPROGRAMM **********************************************
 void main(void)
 {
+#ifndef X86
+	clearRAM();
+#endif
 	init_all();
 
 #ifdef X86
@@ -124,8 +130,7 @@ void main(void)
 	pthread_create(&isrThread, 0, InterruptRoutine, 0);
 	pthread_create(&glThread, 0, gl_start, 0);
 	pthread_create(&timerThread, 0, timer_interrupt, 0);
-#endif /* #ifdef X86 */
-    
+#endif /* #ifdef X86 */  
 	while(1)
 	{
 #ifdef X86
@@ -137,6 +142,12 @@ void main(void)
 		commandstorage_get_commands();
 		commandstorage_execute_commands();
 		ledstrip_do_fade();
+		
+		if(g_update_fade)
+		{
+			ledstrip_update_fade();
+			g_update_fade = 0;
+		}
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************
@@ -151,18 +162,19 @@ void init_all()
 	timer_init();
 	ledstrip_init();
 	commandstorage_init();
-	
 	InitFET();
 	PowerOnLEDs();
     InitFactoryRestoreWLAN();
 	ErrorInit();
-	ClearCmdBuf();	
-	AllowInterrupts();
+	ClearCmdBuf();
+	
 	
 	// *** send ready after init
 	USARTsend('R');
 	USARTsend('D');
 	USARTsend('Y');
+	
+	AllowInterrupts();
 }
 
 // cc5xfree is a bit stupid so we include the other implementation files here
