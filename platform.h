@@ -23,7 +23,7 @@
 #define TRUE  1
 #define FALSE 0
 
-#define CYCLE_TMMS 10		//cycle time in milliseconds
+#define CYCLE_TMMS 64		//cycle time in milliseconds
 
 #ifdef X86
 	typedef char bit;
