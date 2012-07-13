@@ -17,6 +17,7 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "ledstrip.h"
+#include "spi.h"
 
 /**
  * Since we often work with a rotating bitmask which is greater

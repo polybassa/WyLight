@@ -20,8 +20,6 @@
 #define _LEDSTRIP_H_
 
 #include "commandstorage.h"
-#include "spi.h"
-#include "eeprom.h"
 
 #define NUM_OF_LED 24
 
