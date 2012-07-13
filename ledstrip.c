@@ -19,6 +19,8 @@
 #include "ledstrip.h"
 #include "spi.h"
 
+bank1 struct LedBuffer gLedBuf;
+
 /**
  * Since we often work with a rotating bitmask which is greater
  * than 1 byte we use this macro to keep the mask and the bitfield
@@ -81,6 +83,10 @@
 
 void ledstrip_init(void)
 {
+	// initialize interface to ledstrip
+	spi_init();
+	
+	// initialize variables
 	memset(gLedBuf.led_array, 0, sizeof(gLedBuf.led_array));
 }
 
@@ -89,6 +95,7 @@ void ledstrip_set_color(struct cmd_set_color *pCmd)
 	char r = pCmd->red;
 	char g = pCmd->green;
 	char b = pCmd->blue;
+
 	FOR_EACH_MASKED_LED_DO(
 		{
 			gLedBuf.led_array[k] = b;
@@ -101,6 +108,7 @@ void ledstrip_set_color(struct cmd_set_color *pCmd)
 			k++;k++;
 		}
 	);
+	// write changes to ledstrip
 	spi_send_ledbuf(gLedBuf.led_array);
 }
 
@@ -112,16 +120,17 @@ void ledstrip_do_fade(void)
 	unsigned short periodeLength;
 	for(k = 0; k < (NUM_OF_LED * 3); k++)
 	{
-		// fade active on this led and triggered?
+		// fade active on this led and current periode is over?
 		if((gLedBuf.delta[k] > 0) && (gLedBuf.cyclesLeft[k] == 0))
 		{
 			uns8 stepSize = gLedBuf.stepSize[k];
 
-			//reset timer
+			// reset cycle counters
 			gLedBuf.delta[k]--;
 			periodeLength = gLedBuf.periodeLength[k];
 			gLedBuf.cyclesLeft[k] = periodeLength;
 
+			// update rgb value by one step
 			if(0 != ((*stepaddress) & stepmask)) {
 				gLedBuf.led_array[k] -= stepSize;
 			} else {
@@ -130,7 +139,7 @@ void ledstrip_do_fade(void)
 		}
 		INC_BIT_COUNTER(stepaddress, stepmask);
 	}
-	//send LED status
+	// write changes to ledstrip
 	spi_send_ledbuf(gLedBuf.led_array);
 }
 
@@ -140,9 +149,14 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
 	const uns16 fadeTmmsPerCycleTmms = fadeTmms / CYCLE_TMMS;
 
+	/** TODO this permits parallel fade operations
+	    to fix this issue we have to move this into the CALC_COLOR
+			macro, but CC5x is not able to handle this large macros :-( 
+	*/
 	memset(gLedBuf.delta, 0, sizeof(gLedBuf.delta));
 	memset(gLedBuf.step, 0, sizeof(gLedBuf.step));
 
+	// calc fade parameters for each led
 	uns8 delta;
 	uns16 temp16;
 	uns8* stepAddress = gLedBuf.step;
@@ -157,7 +171,7 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 			CALC_COLOR(pCmd->red);
 		},
 		{
-			// even if nothing to do, we have to increment all of our bitmask pointers and rotate the masks
+			// if led is not fade, we have to increment our pointers and rotate the mask
 			k++;k++;
 			INC_BIT_COUNTER(stepAddress, stepMask);
 			INC_BIT_COUNTER(stepAddress, stepMask);

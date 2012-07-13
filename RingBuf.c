@@ -18,6 +18,8 @@
 
 #include "RingBuf.h"
 
+struct RingBuffer gRingBuf;
+
 void RingBufInit(void)
 {
 	gRingBuf.read = 0;

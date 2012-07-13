@@ -20,6 +20,8 @@
 #include "commandstorage.h"
 #include "ledstrip.h"
 
+struct CommandBuffer gCmdBuf;
+
 struct led_cmd* commandstorage_read(struct led_cmd *pDest)
 {
 	// if the commandstorage is waiting

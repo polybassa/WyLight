@@ -41,7 +41,6 @@ struct LedBuffer{
 	uns8 step[NUM_OF_LED / 8* 3];
 	uns8 stepSize[NUM_OF_LED * 3];
 };
-extern bank1 struct LedBuffer gLedBuf;
 
 /**
  * Initialize the ledstrip and all associated variables
