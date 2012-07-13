@@ -1,6 +1,20 @@
-//Nils Weiﬂ 
-//20.04.2012
-//Compiler CC5x
+/**
+ Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ 
+ This file is part of Wifly_Light.
+ 
+ Wifly_Light is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ 
+ Wifly_Light is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License
+ along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "ledstrip.h"
 
@@ -23,7 +37,6 @@ char spi_send(char data)
 	while(SSPIF == 0);
 	return SSPBUF;
 }
-#endif /* #ifndef X86 */
 
 /***
 **	This function sends the array to the LED controller(WS2801)
@@ -51,5 +64,6 @@ void spi_send_ledbuf(char *array)//!!! CHECK if GIE=0 during the sendroutine imp
 		spi_send(*array);
 	}
 }
+#endif /* #ifndef X86 */
 
 

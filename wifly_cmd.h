@@ -1,3 +1,21 @@
+/**
+ Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ 
+ This file is part of Wifly_Light.
+ 
+ Wifly_Light is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ 
+ Wifly_Light is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License
+ along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
+
 #ifndef _WIFLY_CMD_H_
 #define _WIFLY_CMD_H_
 
@@ -17,30 +35,30 @@
 
 //*********************** STRUCT DECLARATION *********************************************
 struct cmd_set_color {
-	char addr[4];
+	uns8 addr[4];
 	uns8 red;
 	uns8 green;
 	uns8 blue;
-	char reserved[2];
+	uns8 reserved[2];
 };
 
 struct cmd_set_fade {
-	char addr[4];
-	char red;
-	char green;
-	char blue;
-	char timevalue;
-	char reserved0;
+	uns8 addr[4];
+	uns8 red;
+	uns8 green;
+	uns8 blue;
+	uns8 timevalue;
+	uns8 reserved;
 };
 
 struct cmd_wait {
-	char valueH;
-	char valueL;
-	char reserved[7];
+	uns8 valueH;
+	uns8 valueL;
+	uns8 reserved[7];
 };
 
 struct cmd_set_run {
-	char dummy;
+	uns8 dummy;
 };
 
 struct led_cmd {

@@ -20,11 +20,6 @@
 
 #include <cstring>
 #include <iostream>
-#include <unistd.h>
-
-#ifdef ANDROID
-#include <jni.h>
-#endif
 
 ClientSocket::ClientSocket(long addr, short port)
 	: mSock(socket(AF_INET, SOCK_DGRAM, 0))
@@ -37,72 +32,13 @@ ClientSocket::ClientSocket(long addr, short port)
 
 ClientSocket::~ClientSocket()
 {
+#ifndef ANDROID
 	close(mSock);
-}
-
-int ClientSocket::Send(struct cmd_frame* frame, size_t length) const
-{
-	return sendto(mSock, (char*)frame, length, 0, (struct sockaddr*)&mSockAddr, sizeof(mSockAddr));
-}
-
-WiflyControl::WiflyControl()
-: mSock(INADDR_ANY, 12345)
-{
-	mCmdFrame.stx = STX;
-	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;
-	mCmdFrame.led.cmd = SET_COLOR;
-	mCmdFrame.led.data.set_color.addr[0] = 0xff;
-	mCmdFrame.led.data.set_color.addr[1] = 0xff;
-	mCmdFrame.led.data.set_color.addr[2] = 0xff;
-	mCmdFrame.led.data.set_color.addr[3] = 0xff;
-	mCmdFrame.led.data.set_color.red = 128;
-	mCmdFrame.led.data.set_color.green = 0;
-	mCmdFrame.led.data.set_color.blue = 0;
-	mCmdFrame.led.data.set_color.reserved[0] = 0;
-	mCmdFrame.led.data.set_color.reserved[1] = 0;
-	mCmdFrame.crcHigh = 0xDE;
-	mCmdFrame.crcLow = 0xAD;
-}
-
-void WiflyControl::SetColor(char r, char g, char b)
-{
-	mCmdFrame.led.data.set_color.red = r;
-	mCmdFrame.led.data.set_color.green = g;
-	mCmdFrame.led.data.set_color.blue = b;
-	int bytesWritten = mSock.Send(&mCmdFrame, sizeof(mCmdFrame));
-	std::cout << "Send " << bytesWritten << " bytes "
-		<< (int)mCmdFrame.led.data.set_color.red << " "
-		<< (int)mCmdFrame.led.data.set_color.green << " "
-		<< (int)mCmdFrame.led.data.set_color.blue
-		<< std::endl;
-}
-
-void colorLoop(WiflyControl& control)
-{
-	for(;;)
-	{
-		control.SetColor(128, 0, 0);
-		sleep(1);
-		control.SetColor(0, 128, 0);
-		sleep(1);
-		control.SetColor(0, 0, 128);
-		sleep(1);
-	}
-}
-
-#ifdef ANDROID
-extern "C" {
-void Java_biz_bruenn_Wifly_WiflyActivity_runClient(JNIEnv* env, jobject ref, jstring unused)
-{
-	WiflyControl control;
-	colorLoop(control);
-}
-}
 #endif
-
-int main(int argc, const char* argv[])
-{
-	WiflyControl control;
-	colorLoop(control);
-	return 0;
 }
+
+int ClientSocket::Send(char* frame, size_t length) const
+{
+	return sendto(mSock, frame, length, 0, (struct sockaddr*)&mSockAddr, sizeof(mSockAddr));
+}
+

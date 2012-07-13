@@ -1,6 +1,22 @@
-//Nils Weiﬂ 
-//05.09.2011
-//Compiler CC5x/
+/**
+ Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ 
+ This file is part of Wifly_Light.
+ 
+ Wifly_Light is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ 
+ Wifly_Light is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License
+ along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
+
+
 #ifndef X86
 #define NO_CRC
 //#define TEST
@@ -23,11 +39,16 @@
 
 //*********************** GLOBAL VARIABLES *******************************************
 struct CommandBuffer gCmdBuf;
-struct LedBuffer gLedBuf;
+bank1 struct LedBuffer gLedBuf;
 struct ErrorBits gERROR;
 char gTimecounter;
+//unsigned short g_timer_signaled;
+char g_update_fade:1;	
 //*********************** X86 InterruptRoutine *******************************************
+
 #ifdef X86
+bit g_led_off; //X86 replacement for PORTC.0
+
 void* gl_start(void* unused);
 
 #include <sys/socket.h>
@@ -78,11 +99,14 @@ interrupt InterruptRoutine(void)
 	if(TMR2IF)
 	{
 		Timer2interrupt();
+		gTimecounter = ++gTimecounter;
+		commandstorage_wait_interrupt();
 	}
 	if(TMR4IF)
 	{
 		Timer4interrupt();
-		commandstorage_wait_interrupt();
+		g_update_fade = 1;
+		
 	}
 }
 #endif /* #ifdef X86 */
@@ -93,28 +117,38 @@ void init_all();
 //*********************** HAUPTPROGRAMM **********************************************
 void main(void)
 {
+#ifndef X86
+	clearRAM();
+#endif
 	init_all();
 
 #ifdef X86
 	#include <pthread.h>
 	pthread_t isrThread;
 	pthread_t glThread;
+	pthread_t timerThread;
 	
 	pthread_create(&isrThread, 0, InterruptRoutine, 0);
 	pthread_create(&glThread, 0, gl_start, 0);
-#endif /* #ifdef X86 */
-    
+	pthread_create(&timerThread, 0, timer_interrupt, 0);
+#endif /* #ifdef X86 */  
 	while(1)
 	{
+#ifdef X86
+		// give opengl thread a chance to run
+		usleep(10);
+#endif
 		Check_INPUT();
 		throw_errors();
 		commandstorage_get_commands();
 		commandstorage_execute_commands();
-		if(gTimecounter == 0)
+		ledstrip_do_fade();
+		
+		if(g_update_fade)
 		{
-			if(gLedBuf.led_fade_operation)
-				ledstrip_do_fade();
-		}	
+			ledstrip_update_fade();
+			g_update_fade = 0;
+		}
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************
@@ -129,18 +163,19 @@ void init_all()
 	timer_init();
 	ledstrip_init();
 	commandstorage_init();
-	
 	InitFET();
 	PowerOnLEDs();
     InitFactoryRestoreWLAN();
 	ErrorInit();
-	ClearCmdBuf();	
-	AllowInterrupts();
+	ClearCmdBuf();
+	
 	
 	// *** send ready after init
 	USARTsend('R');
 	USARTsend('D');
 	USARTsend('Y');
+	
+	AllowInterrupts();
 }
 
 // cc5xfree is a bit stupid so we include the other implementation files here
