@@ -55,7 +55,7 @@ uns8 GET_BIT_AT(uns8* PTR, uns8 POSITION) {
 	return value & mask;
 	}
 
-#define FOR_EACH_MASKED_LED_DO(BLOCK) { \
+#define FOR_EACH_MASKED_LED_DO(BLOCK, ELSE) { \
 	uns8 *address = pCmd->addr; \
 	uns8 k,mask; \
 	mask = 0x01; \
@@ -64,20 +64,25 @@ uns8 GET_BIT_AT(uns8* PTR, uns8 POSITION) {
 			BLOCK \
 		} else { \
 			k++; k++; \
+			ELSE \
 		} \
 		INC_BIT_COUNTER(address, mask); \
 	} \
 }
 
+#include <stdio.h>
 #define CALC_COLOR(newColor) \
 		delta = gLedBuf.led_array[k]; \
 		if(delta > newColor) { \
 			delta -= newColor; \
-			SET_BIT_AT(gLedBuf.step, k); \
+			*stepAddress |= stepMask; \
+			printf("-%02x:%d:%d ", *stepAddress, k, stepAddress - gLedBuf.step); \
 		} else { \
 			delta = newColor - delta; \
-			CLEAR_BIT_AT(gLedBuf.step, k); \
+			*stepAddress &= ~stepMask; \
+			printf("+%02x:%d:%d ", *stepAddress, k, stepAddress - gLedBuf.step); \
 		} \
+		INC_BIT_COUNTER(stepAddress, stepMask); \
 		gLedBuf.cyclesLeft[k] = 0; \
 		if((0 != delta)) {\
 			temp16 = delta * CYCLE_TMMS; \
@@ -110,12 +115,12 @@ void ledstrip_set_color(struct cmd_set_color *pCmd)
 	char r = pCmd->red;
 	char g = pCmd->green;
 	char b = pCmd->blue;
-	FOR_EACH_MASKED_LED_DO(
+	FOR_EACH_MASKED_LED_DO({
 			gLedBuf.led_array[k] = b;
 			k++;
 			gLedBuf.led_array[k] = g;
 			k++;
-			gLedBuf.led_array[k] = r;
+			gLedBuf.led_array[k] = r;},{}
 	);
 	spi_send_ledbuf(gLedBuf.led_array);
 }
@@ -138,13 +143,18 @@ void ledstrip_do_fade(void)
 			periodeLength = gLedBuf.periodeLength[k];
 			gLedBuf.cyclesLeft[k] = periodeLength;
 
-			if(GET_BIT_AT(gLedBuf.step, k)) {
+			//if(GET_BIT_AT(gLedBuf.step, k)) {
+			int s;
+			for(s = 0; s < NUM_OF_LED / 8* 3; s++) printf("%02x", gLedBuf.step[s]);
+			printf(":%02x:%d\n", stepmask, k);
+			if(0 != ((*stepaddress) & stepmask)) {
 				gLedBuf.led_array[k] -= stepSize;
+				printf("---");
 			} else {
 				gLedBuf.led_array[k] += stepSize;
 			}
 		}
-		INC_BIT_COUNTER(stepaddress, stepmask); \
+		INC_BIT_COUNTER(stepaddress, stepmask);
 	}
 	//send LED status
 	spi_send_ledbuf(gLedBuf.led_array);
@@ -157,6 +167,7 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 	uns16 temp16;
 	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
 	const uns16 fadeTmmsPerCycleTmms = fadeTmms / CYCLE_TMMS;
+
 	for(k = 0; k < NUM_OF_LED*3; k++) {
 		gLedBuf.delta[k] = 0;
 	}
@@ -164,12 +175,21 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 	for(k = 0; k < sizeof(gLedBuf.step); k++) {
 		gLedBuf.step[k] = 0;
 	}
-	FOR_EACH_MASKED_LED_DO(
+
+	uns8* stepAddress = gLedBuf.step;
+	uns8 stepMask;
+	stepMask = 0x01;
+	FOR_EACH_MASKED_LED_DO({
 		CALC_COLOR(pCmd->blue);
 		k++;
 		CALC_COLOR(pCmd->green);
 		k++;
 		CALC_COLOR(pCmd->red);
+		},{
+		INC_BIT_COUNTER(stepAddress, stepMask);
+		INC_BIT_COUNTER(stepAddress, stepMask);
+		INC_BIT_COUNTER(stepAddress, stepMask);
+		}
 	);
 }
 

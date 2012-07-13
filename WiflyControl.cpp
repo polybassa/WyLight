@@ -93,7 +93,8 @@ void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned shor
 
 		do
 		{
-			std::cout << (int)--fadeTmms;
+			fadeTmms -= 1000;
+			std::cout << (int)fadeTmms/1000;
 			std::cout.flush();
 			sleep(1); 
 		}while(fadeTmms > 0);
