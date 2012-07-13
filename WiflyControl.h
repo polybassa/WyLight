@@ -39,7 +39,7 @@ class WiflyControl
 		**/
 		void SetColor(unsigned long addr, unsigned long rgba);
 		void SetColor(std::string& addr, std::string& color);
-		void SetFade(unsigned long addr, unsigned long rgba, unsigned char timevalue);
-		void SetFade(std::string& addr, std::string& color, unsigned char timevalue);
+		void SetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms);
+		void SetFade(std::string& addr, std::string& color, unsigned short fadeTmms);
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */

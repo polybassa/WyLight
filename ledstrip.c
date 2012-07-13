@@ -21,41 +21,15 @@
 
 #pragma codepage 1
 
-#define INC_BIT_COUNTER(PTR, MASK) \
-	MASK = MASK << 1; \
+#define INC_BIT_COUNTER(PTR, MASK) { \
+	MASK <<= 1; \
 	if(0 == MASK) { \
 		PTR++; \
 		MASK = 0x01; \
-	}
+	} \
+}
 
-void SET_BIT_AT(uns8* PTR, uns8 POSITION) {
-	uns8 bytePos = (POSITION) / 8; \
-	uns8 bitPos = (POSITION) - (bytePos * 8); \
-	uns8 value = PTR[bytePos]; \
-	uns8 mask = (1 << bitPos); \
-	value = value | mask; \
-	PTR[bytePos] = value; \
-	}
-
-void CLEAR_BIT_AT(uns8* PTR, uns8 POSITION) {
-	uns8 bytePos = (POSITION) / 8; \
-	uns8 bitPos = (POSITION) - (bytePos * 8); \
-	uns8 value = PTR[bytePos]; \
-	uns8 mask = (1 << bitPos); \
-	mask = ~mask; \
-	value = value & mask; \
-	PTR[bytePos] = value; \
-	}
-
-uns8 GET_BIT_AT(uns8* PTR, uns8 POSITION) {
-	uns8 bytePos = (POSITION) / 8;
-	uns8 bitPos = (POSITION) - (bytePos * 8);
-	uns8 value = PTR[bytePos];
-	uns8 mask = (1 << bitPos);
-	return value & mask;
-	}
-
-#define FOR_EACH_MASKED_LED_DO(BLOCK) { \
+#define FOR_EACH_MASKED_LED_DO(BLOCK, ELSE) { \
 	uns8 *address = pCmd->addr; \
 	uns8 k,mask; \
 	mask = 0x01; \
@@ -63,38 +37,36 @@ uns8 GET_BIT_AT(uns8* PTR, uns8 POSITION) {
 		if(0 != (*address & mask)) { \
 			BLOCK \
 		} else { \
-			k++; k++; \
+			ELSE \
 		} \
 		INC_BIT_COUNTER(address, mask); \
 	} \
 }
 
-#define CALC_COLOR \
-		oldColor = gLedBuf.led_array[k]; \
-		if(oldColor > newColor) { \
-			delta = oldColor - newColor; \
-			SET_BIT_AT(gLedBuf.step, k); \
+#define CALC_COLOR(newColor) { \
+		delta = gLedBuf.led_array[k]; \
+		if(delta > newColor) { \
+			delta -= newColor; \
+			*(stepAddress) |= (stepMask); \
 		} else { \
-			delta = newColor - oldColor; \
-			CLEAR_BIT_AT(gLedBuf.step, k); \
-		} \
+			delta = newColor - delta; \
+		}; \
+		INC_BIT_COUNTER(stepAddress, stepMask); \
 		gLedBuf.cyclesLeft[k] = 0; \
-		gLedBuf.periodeLength[k] = 0; \
 		if((0 != delta)) {\
-			temp16 = delta * CYCLE_TMMS; \
+			temp16 = (uns16)delta * CYCLE_TMMS; \
 			if(fadeTmms >= temp16) { \
-				temp16 = fadeTmms / CYCLE_TMMS; \
-				gLedBuf.periodeLength[k] = temp16 / delta; \
+				gLedBuf.periodeLength[k] = fadeTmmsPerCycleTmms / delta; \
 				gLedBuf.stepSize[k] = 1; \
 				gLedBuf.delta[k] = delta; \
 			} else { \
 				gLedBuf.periodeLength[k] = 1; \
-				temp16 = CYCLE_TMMS * delta; \
 				temp16 = temp16 / fadeTmms; \
 				gLedBuf.stepSize[k] = temp16; \
 				gLedBuf.delta[k] = delta / temp16; \
 			} \
 		} \
+};
 
 void ledstrip_init(void)
 {
@@ -114,11 +86,16 @@ void ledstrip_set_color(struct cmd_set_color *pCmd)
 	char g = pCmd->green;
 	char b = pCmd->blue;
 	FOR_EACH_MASKED_LED_DO(
+		{
 			gLedBuf.led_array[k] = b;
 			k++;
 			gLedBuf.led_array[k] = g;
 			k++;
 			gLedBuf.led_array[k] = r;
+		},
+		{
+			k++;k++;
+		}
 	);
 	spi_send_ledbuf(gLedBuf.led_array);
 }
@@ -141,13 +118,13 @@ void ledstrip_do_fade(void)
 			periodeLength = gLedBuf.periodeLength[k];
 			gLedBuf.cyclesLeft[k] = periodeLength;
 
-			if(GET_BIT_AT(gLedBuf.step, k)) {
+			if(0 != ((*stepaddress) & stepmask)) {
 				gLedBuf.led_array[k] -= stepSize;
 			} else {
 				gLedBuf.led_array[k] += stepSize;
 			}
 		}
-		INC_BIT_COUNTER(stepaddress, stepmask); \
+		INC_BIT_COUNTER(stepaddress, stepmask);
 	}
 	//send LED status
 	spi_send_ledbuf(gLedBuf.led_array);
@@ -155,28 +132,37 @@ void ledstrip_do_fade(void)
 
 void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 {
-	uns8 k, stepmask;
+	uns8 k;
 	uns8 delta;
 	uns16 temp16;
-	const uns16 fadeTmms = (uns16)pCmd->timevalue * 1000;
-	uns8 oldColor, newColor;
+	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
+	const uns16 fadeTmmsPerCycleTmms = fadeTmms / CYCLE_TMMS;
+
 	for(k = 0; k < NUM_OF_LED*3; k++) {
 		gLedBuf.delta[k] = 0;
-		gLedBuf.cyclesLeft[k] = 0;
 	}
+
 	for(k = 0; k < sizeof(gLedBuf.step); k++) {
 		gLedBuf.step[k] = 0;
 	}
-	stepmask = 0x01;
+
+	uns8* stepAddress = gLedBuf.step;
+	uns8 stepMask;
+	stepMask = 0x01;
 	FOR_EACH_MASKED_LED_DO(
-		newColor = pCmd->blue;
-		CALC_COLOR;
-		k++;
-		newColor = pCmd->green;
-		CALC_COLOR;
-		k++;
-		newColor = pCmd->red;
-		CALC_COLOR;
+		{
+			CALC_COLOR(pCmd->blue);
+			k++;
+			CALC_COLOR(pCmd->green);
+			k++;
+			CALC_COLOR(pCmd->red);
+		},
+		{
+			k++;k++;
+			INC_BIT_COUNTER(stepAddress, stepMask);
+			INC_BIT_COUNTER(stepAddress, stepMask);
+			INC_BIT_COUNTER(stepAddress, stepMask);
+		}
 	);
 }
 
