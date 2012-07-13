@@ -241,7 +241,7 @@ USARTsend_str("executeCommand");
 				
 				gCmdBuf.WaitValue = pCmd->valueH;
 				gCmdBuf.WaitValue = gCmdBuf.WaitValue << 8;
-				gCmdBuf.WaitValue |= pCmd->valueL;
+				gCmdBuf.WaitValue += pCmd->valueL;
 				break;
 			}
 			case SET_RUN: {break;}

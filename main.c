@@ -43,7 +43,7 @@ bank1 struct LedBuffer gLedBuf;
 struct ErrorBits gERROR;
 char gTimecounter;
 //unsigned short g_timer_signaled;
-bit g_update_fade;	
+char g_update_fade:1;	
 //*********************** X86 InterruptRoutine *******************************************
 
 #ifdef X86
@@ -100,12 +100,13 @@ interrupt InterruptRoutine(void)
 	{
 		Timer2interrupt();
 		gTimecounter = ++gTimecounter;
+		commandstorage_wait_interrupt();
 	}
 	if(TMR4IF)
 	{
 		Timer4interrupt();
 		g_update_fade = 1;
-		commandstorage_wait_interrupt();
+		
 	}
 }
 #endif /* #ifdef X86 */

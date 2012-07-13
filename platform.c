@@ -27,13 +27,13 @@ void Check_INPUT()
 	else 
 		PORTA.0 = 1;
 	//Goto Bootloader if PORTB.0 is low
-	/*if(PORTB.5 == 0)
+	if(PORTB.5 == 0)
 	{
 		#asm
 		clrf PCLATH
 		clrf PCL
 		#endasm
-	}*/
+	}
 		
 }
 
