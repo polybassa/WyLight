@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -17,10 +17,15 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "ledstrip.h"
+#include "spi.h"
 
+bank1 struct LedBuffer gLedBuf;
 
-#pragma codepage 1
-
+/**
+ * Since we often work with a rotating bitmask which is greater
+ * than 1 byte we use this macro to keep the mask and the bitfield
+ * in sync.
+ */
 #define INC_BIT_COUNTER(PTR, MASK) { \
 	MASK <<= 1; \
 	if(0 == MASK) { \
@@ -29,6 +34,11 @@
 	} \
 }
 
+/**
+ * This macro is used to iterate over each led and each color.
+ * <BLOCK> is executed if the led color was selected in <pCmd->addr>
+ * <ELSE> is executed if not
+ */
 #define FOR_EACH_MASKED_LED_DO(BLOCK, ELSE) { \
 	uns8 *address = pCmd->addr; \
 	uns8 k,mask; \
@@ -43,6 +53,10 @@
 	} \
 }
 
+/**
+ * This is a sub-macro of <FOR_EACH_MASKED_LED_DO> used in fade precalculations
+ * to calculate the fading parameters(<periodeLength>, <stepSize> and <delta>) for <newColor>
+**/
 #define CALC_COLOR(newColor) { \
 		delta = gLedBuf.led_array[k]; \
 		if(delta > newColor) { \
@@ -61,30 +75,27 @@
 				gLedBuf.delta[k] = delta; \
 			} else { \
 				gLedBuf.periodeLength[k] = 1; \
-				temp16 = temp16 / fadeTmms; \
-				gLedBuf.stepSize[k] = temp16; \
-				gLedBuf.delta[k] = delta / temp16; \
+				gLedBuf.stepSize[k] = temp16 / fadeTmms; \
+				gLedBuf.delta[k] = fadeTmms / CYCLE_TMMS; \
 			} \
 		} \
 };
 
 void ledstrip_init(void)
 {
-	uns8 k = (NUM_OF_LED * 3) - 1;
-	do {	
-		gLedBuf.led_array[k--] = 0;
-	} while(k != 0);
+	// initialize interface to ledstrip
+	spi_init();
+	
+	// initialize variables
+	memset(gLedBuf.led_array, 0, sizeof(gLedBuf.led_array));
 }
 
-/***
-*** This funktion sets the values of the global LedBuffer
-*** only Led's where the address bit is 1 will be set to the new color
-***/
 void ledstrip_set_color(struct cmd_set_color *pCmd)
 {
 	char r = pCmd->red;
 	char g = pCmd->green;
 	char b = pCmd->blue;
+
 	FOR_EACH_MASKED_LED_DO(
 		{
 			gLedBuf.led_array[k] = b;
@@ -97,6 +108,7 @@ void ledstrip_set_color(struct cmd_set_color *pCmd)
 			k++;k++;
 		}
 	);
+	// write changes to ledstrip
 	spi_send_ledbuf(gLedBuf.led_array);
 }
 
@@ -108,16 +120,17 @@ void ledstrip_do_fade(void)
 	unsigned short periodeLength;
 	for(k = 0; k < (NUM_OF_LED * 3); k++)
 	{
-		//active and triggered?
+		// fade active on this led and current periode is over?
 		if((gLedBuf.delta[k] > 0) && (gLedBuf.cyclesLeft[k] == 0))
 		{
 			uns8 stepSize = gLedBuf.stepSize[k];
 
-			//reset timer
+			// reset cycle counters
 			gLedBuf.delta[k]--;
 			periodeLength = gLedBuf.periodeLength[k];
 			gLedBuf.cyclesLeft[k] = periodeLength;
 
+			// update rgb value by one step
 			if(0 != ((*stepaddress) & stepmask)) {
 				gLedBuf.led_array[k] -= stepSize;
 			} else {
@@ -126,26 +139,26 @@ void ledstrip_do_fade(void)
 		}
 		INC_BIT_COUNTER(stepaddress, stepmask);
 	}
-	//send LED status
+	// write changes to ledstrip
 	spi_send_ledbuf(gLedBuf.led_array);
 }
 
 void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 {
-	uns8 k;
-	uns8 delta;
-	uns16 temp16;
+	// constant for this fade used in CALC_COLOR
 	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
 	const uns16 fadeTmmsPerCycleTmms = fadeTmms / CYCLE_TMMS;
 
-	for(k = 0; k < NUM_OF_LED*3; k++) {
-		gLedBuf.delta[k] = 0;
-	}
+	/** TODO this permits parallel fade operations
+	    to fix this issue we have to move this into the CALC_COLOR
+			macro, but CC5x is not able to handle this large macros :-( 
+	*/
+	memset(gLedBuf.delta, 0, sizeof(gLedBuf.delta));
+	memset(gLedBuf.step, 0, sizeof(gLedBuf.step));
 
-	for(k = 0; k < sizeof(gLedBuf.step); k++) {
-		gLedBuf.step[k] = 0;
-	}
-
+	// calc fade parameters for each led
+	uns8 delta;
+	uns16 temp16;
 	uns8* stepAddress = gLedBuf.step;
 	uns8 stepMask;
 	stepMask = 0x01;
@@ -158,6 +171,7 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 			CALC_COLOR(pCmd->red);
 		},
 		{
+			// if led is not fade, we have to increment our pointers and rotate the mask
 			k++;k++;
 			INC_BIT_COUNTER(stepAddress, stepMask);
 			INC_BIT_COUNTER(stepAddress, stepMask);

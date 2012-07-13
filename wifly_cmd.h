@@ -78,5 +78,5 @@ struct cmd_frame {
 	uns8 crcHigh;
 	uns8 crcLow;
 };
-#define FRAMELENGTH (sizeof(struct led_cmd) + 5)			// *** max length of one commandframe
+#define FRAMELENGTH (sizeof(struct cmd_frame) + 1)			// *** max length of one commandframe
 #endif /* #ifndef _WIFLY_CMD_H_ */

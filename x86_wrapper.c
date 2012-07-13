@@ -21,6 +21,38 @@
 #include <unistd.h>
 #include "ledstrip.h"
 
+extern bit g_led_off; //X86 replacement for PORTC.0
+
+void* InterruptRoutine(void* unused)
+{
+	#define PORT 12345
+	int udp_sock = socket(AF_INET, SOCK_DGRAM, 0);
+	if(-1 == udp_sock)
+		return 0;
+
+	struct sockaddr_in udp_sock_addr;
+  udp_sock_addr.sin_family = AF_INET;
+  udp_sock_addr.sin_port = htons(PORT);
+  udp_sock_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+
+  if (-1 == bind(udp_sock, (struct sockaddr*)&udp_sock_addr, sizeof(udp_sock_addr)))
+		return 0;
+
+	for(;;)
+	{
+		uns8 buf[1024];
+		int bytesRead = recvfrom(udp_sock, buf, sizeof(buf), 0, 0, 0);
+		int i;
+		for(i = 0; i < bytesRead; i++)
+		{
+			if(!RingBufHasError)
+			{
+				RingBufPut(buf[i]);
+			}
+		}
+	}
+}
+
 void addCRC(char byte, char* p_crcH, char* p_crcL) {}
 void newCRC(char* p_crcH, char* p_crcL) {}
 
@@ -176,3 +208,13 @@ void* gl_start(void* unused)
 	return 0;
 }
 
+void init_x86(void)
+{
+	pthread_t isrThread;
+	pthread_t glThread;
+	pthread_t timerThread;
+	
+	pthread_create(&isrThread, 0, InterruptRoutine, 0);
+	pthread_create(&glThread, 0, gl_start, 0);
+	pthread_create(&timerThread, 0, timer_interrupt, 0);
+}
