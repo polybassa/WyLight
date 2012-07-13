@@ -10,3 +10,12 @@ main.occ
 main.asm
 main.lst
 main.var
+client.bin
+commandstorage.c.bak
+include_files/MATH16.H
+ledstrip.h.bak
+main.c.bak
+main.hxl
+platform.c.bak
+timer.c.bak
+timer.h.bak
