@@ -111,7 +111,7 @@ void ledstrip_do_fade(void)
 	unsigned short periodeLength;
 	for(k = 0; k < (NUM_OF_LED * 3); k++)
 	{
-		//active and triggered?
+		// fade active on this led and triggered?
 		if((gLedBuf.delta[k] > 0) && (gLedBuf.cyclesLeft[k] == 0))
 		{
 			uns8 stepSize = gLedBuf.stepSize[k];
@@ -135,20 +135,15 @@ void ledstrip_do_fade(void)
 
 void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 {
-	uns8 k;
-	uns8 delta;
-	uns16 temp16;
+	// constant for this fade used in CALC_COLOR
 	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
 	const uns16 fadeTmmsPerCycleTmms = fadeTmms / CYCLE_TMMS;
 
-	for(k = 0; k < NUM_OF_LED*3; k++) {
-		gLedBuf.delta[k] = 0;
-	}
+	memset(gLedBuf.delta, 0, sizeof(gLedBuf.delta));
+	memset(gLedBuf.step, 0, sizeof(gLedBuf.step));
 
-	for(k = 0; k < sizeof(gLedBuf.step); k++) {
-		gLedBuf.step[k] = 0;
-	}
-
+	uns8 delta;
+	uns16 temp16;
 	uns8* stepAddress = gLedBuf.step;
 	uns8 stepMask;
 	stepMask = 0x01;
@@ -161,6 +156,7 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 			CALC_COLOR(pCmd->red);
 		},
 		{
+			// even if nothing to do, we have to increment all of our bitmask pointers and rotate the masks
 			k++;k++;
 			INC_BIT_COUNTER(stepAddress, stepMask);
 			INC_BIT_COUNTER(stepAddress, stepMask);
