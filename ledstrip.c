@@ -61,9 +61,8 @@
 				gLedBuf.delta[k] = delta; \
 			} else { \
 				gLedBuf.periodeLength[k] = 1; \
-				temp16 = temp16 / fadeTmms; \
-				gLedBuf.stepSize[k] = temp16; \
-				gLedBuf.delta[k] = delta / temp16; \
+				gLedBuf.stepSize[k] = temp16 / fadeTmms; \
+				gLedBuf.delta[k] = fadeTmms / CYCLE_TMMS; \
 			} \
 		} \
 };
