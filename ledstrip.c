@@ -28,6 +28,12 @@
 		MASK = 0x01; \
 	}
 
+#define CLEAR_FLAGS(PTR, MASK) \
+	*(PTR) &= ~(MASK); \
+
+#define SET_FLAGS(PTR, MASK) \
+	*(PTR) |= (MASK); \
+
 void SET_BIT_AT(uns8* PTR, uns8 POSITION) {
 	uns8 bytePos = (POSITION) / 8; \
 	uns8 bitPos = (POSITION) - (bytePos * 8); \
@@ -73,10 +79,10 @@ uns8 GET_BIT_AT(uns8* PTR, uns8 POSITION) {
 		delta = gLedBuf.led_array[k]; \
 		if(delta > newColor) { \
 			delta -= newColor; \
-			*stepAddress |= stepMask; \
+			SET_FLAGS(stepAddress, stepMask); \
 		} else { \
 			delta = newColor - delta; \
-			*stepAddress &= ~stepMask; \
+			CLEAR_FLAGS(stepAddress, stepMask); \
 		} \
 		INC_BIT_COUNTER(stepAddress, stepMask); \
 		gLedBuf.cyclesLeft[k] = 0; \
