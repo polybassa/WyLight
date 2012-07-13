@@ -21,45 +21,13 @@
 
 #pragma codepage 1
 
-#define INC_BIT_COUNTER(PTR, MASK) \
-	MASK = MASK << 1; \
+#define INC_BIT_COUNTER(PTR, MASK) { \
+	MASK <<= 1; \
 	if(0 == MASK) { \
 		PTR++; \
 		MASK = 0x01; \
-	}
-
-#define CLEAR_FLAGS(PTR, MASK) \
-	*(PTR) &= ~(MASK); \
-
-#define SET_FLAGS(PTR, MASK) \
-	*(PTR) |= (MASK); \
-
-void SET_BIT_AT(uns8* PTR, uns8 POSITION) {
-	uns8 bytePos = (POSITION) / 8; \
-	uns8 bitPos = (POSITION) - (bytePos * 8); \
-	uns8 value = PTR[bytePos]; \
-	uns8 mask = (1 << bitPos); \
-	value = value | mask; \
-	PTR[bytePos] = value; \
-	}
-
-void CLEAR_BIT_AT(uns8* PTR, uns8 POSITION) {
-	uns8 bytePos = (POSITION) / 8; \
-	uns8 bitPos = (POSITION) - (bytePos * 8); \
-	uns8 value = PTR[bytePos]; \
-	uns8 mask = (1 << bitPos); \
-	mask = ~mask; \
-	value = value & mask; \
-	PTR[bytePos] = value; \
-	}
-
-uns8 GET_BIT_AT(uns8* PTR, uns8 POSITION) {
-	uns8 bytePos = (POSITION) / 8;
-	uns8 bitPos = (POSITION) - (bytePos * 8);
-	uns8 value = PTR[bytePos];
-	uns8 mask = (1 << bitPos);
-	return value & mask;
-	}
+	} \
+}
 
 #define FOR_EACH_MASKED_LED_DO(BLOCK, ELSE) { \
 	uns8 *address = pCmd->addr; \
@@ -75,19 +43,18 @@ uns8 GET_BIT_AT(uns8* PTR, uns8 POSITION) {
 	} \
 }
 
-#define CALC_COLOR(newColor) \
+#define CALC_COLOR(newColor) { \
 		delta = gLedBuf.led_array[k]; \
 		if(delta > newColor) { \
 			delta -= newColor; \
-			SET_FLAGS(stepAddress, stepMask); \
+			*(stepAddress) |= (stepMask); \
 		} else { \
 			delta = newColor - delta; \
-			CLEAR_FLAGS(stepAddress, stepMask); \
-		} \
+		}; \
 		INC_BIT_COUNTER(stepAddress, stepMask); \
 		gLedBuf.cyclesLeft[k] = 0; \
 		if((0 != delta)) {\
-			temp16 = delta * CYCLE_TMMS; \
+			temp16 = (uns16)delta * CYCLE_TMMS; \
 			if(fadeTmms >= temp16) { \
 				gLedBuf.periodeLength[k] = fadeTmmsPerCycleTmms / delta; \
 				gLedBuf.stepSize[k] = 1; \
@@ -99,6 +66,7 @@ uns8 GET_BIT_AT(uns8* PTR, uns8 POSITION) {
 				gLedBuf.delta[k] = delta / temp16; \
 			} \
 		} \
+};
 
 void ledstrip_init(void)
 {
