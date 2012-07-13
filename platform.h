@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -27,6 +27,8 @@
 
 #ifdef X86
 	#include <arpa/inet.h>
+	#include <string.h>
+
 	typedef char bit;
 	typedef unsigned char uns8;
 	typedef unsigned short uns16;
@@ -49,6 +51,13 @@
 
 	#define htons(X) (X)
 	#define ntohs(X) (X)
+
+	#define memset(PTR, VALUE, NUM_BYTES) { \
+		short k; \
+		for(k = NUM_BYTES - 1; k >= 0; k--) { \
+			PTR[k] = VALUE; \
+		} \
+	}
 
 	#define AllowInterrupts(x) RCIE=1;PEIE=1;GIE=1;
 	#define InitFactoryRestoreWLAN(x) TRISA.0 = 0; 

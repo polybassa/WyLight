@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -18,9 +18,11 @@
 
 #include "ledstrip.h"
 
-
-#pragma codepage 1
-
+/**
+ * Since we often work with a rotating bitmask which is greater
+ * than 1 byte we use this macro to keep the mask and the bitfield
+ * in sync.
+ */
 #define INC_BIT_COUNTER(PTR, MASK) { \
 	MASK <<= 1; \
 	if(0 == MASK) { \
@@ -29,6 +31,11 @@
 	} \
 }
 
+/**
+ * This macro is used to iterate over each led and each color.
+ * <BLOCK> is executed if the led color was selected in <pCmd->addr>
+ * <ELSE> is executed if not
+ */
 #define FOR_EACH_MASKED_LED_DO(BLOCK, ELSE) { \
 	uns8 *address = pCmd->addr; \
 	uns8 k,mask; \
@@ -43,6 +50,10 @@
 	} \
 }
 
+/**
+ * This is a sub-macro of <FOR_EACH_MASKED_LED_DO> used in fade precalculations
+ * to calculate the fading parameters(<periodeLength>, <stepSize> and <delta>) for <newColor>
+**/
 #define CALC_COLOR(newColor) { \
 		delta = gLedBuf.led_array[k]; \
 		if(delta > newColor) { \
@@ -69,16 +80,9 @@
 
 void ledstrip_init(void)
 {
-	uns8 k = (NUM_OF_LED * 3) - 1;
-	do {	
-		gLedBuf.led_array[k--] = 0;
-	} while(k != 0);
+	memset(gLedBuf.led_array, 0, sizeof(gLedBuf.led_array));
 }
 
-/***
-*** This funktion sets the values of the global LedBuffer
-*** only Led's where the address bit is 1 will be set to the new color
-***/
 void ledstrip_set_color(struct cmd_set_color *pCmd)
 {
 	char r = pCmd->red;

@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -38,27 +38,21 @@ struct RingBuffer{
 	uns8 data[gRingBufSize + 1];
 	uns8 read;
 	uns8 write;
-#ifndef X86
 	bit error_full;
-#else
-	char error_full;
-#endif /* X68 */
 };
 extern struct RingBuffer gRingBuf;
 
 /**
  * Some macros 
-**/
-
+ */
 #define RingBufInc(x) ((x + 1) & gRingBufSize)
 #define RingBufClearError gRingBuf.error_full = FALSE
 #define RingBufHasError (gRingBuf.error_full)
 #define RingBufIsNotEmpty (gRingBuf.write != gRingBuf.read)
 
-
 /**
  * Initialize the ring buffer and all associated variables
-**/
+ */
 void RingBufInit(void);
 
 /**
