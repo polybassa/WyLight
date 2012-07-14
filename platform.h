@@ -41,19 +41,16 @@
 	#define OsciInit(x)
 	#define PowerOnLEDs(x) g_led_off = 0;
 	#define PowerOffLEDs(x) g_led_off = 1;
-
 	#define Check_INPUT(x)	
+	
 #else
-	#include "inline.h"
 
-	#define AllowInterrupts(x) RCIE=1;PEIE=1;GIE=1;
+	#include "inline.h"
+	#define AllowInterrupts(x) RC1IE=1;PEIE=1;GIE=1;
 	#define InitFactoryRestoreWLAN(x) TRISA.0 = 0; 
-	#define InitFET(x) TRISC.0 = 0; //Ausgang für FET initalisieren
 	#define InitInputs(x) CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); //Eingänge am PORTB initialisieren
 	#define OsciInit(x) OSCCON = 0b01110010; //OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
-	#define PowerOnLEDs(x) BCF(PORTC.0); //Spannungsversorgung für LED's einschalten
-	#define PowerOffLEDs(x) BSF(PORTC.0); //Spannungsversorgung für LED's ausschalten
 	
-	void Check_INPUT();
+	void CheckInputs();
 #endif
 #endif /* #ifndef _PLATFORM_H_ */

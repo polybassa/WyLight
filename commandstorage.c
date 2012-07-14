@@ -158,12 +158,12 @@ void commandstorage_get_commands()
 							}
 						case SET_ON: 
 							{
-								PowerOnLEDs();
+								//Not Implement on PIC18 Board
 								return;
 							}
 						case SET_OFF: 
 							{
-								PowerOffLEDs();
+								//Not Implement on PIC18 Board
 								return;
 							}
 						case LOOP_ON:

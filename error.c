@@ -21,14 +21,13 @@
 #include "RingBuf.h"
 #include "usart.h"
 
-void throw_errors()
+void ThrowErrors()
 {
 	if(RingBufHasError) 
 	{
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
 		ClearCmdBuf();
-USARTsend('x');
 		USARTsend_str(" ERROR: Receivebuffer full");
 		// *** Re-init the Ringbuffer to get a consistent commandstring and reset error
 		RingBufInit();

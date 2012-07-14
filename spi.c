@@ -24,7 +24,6 @@ void spi_init()
 	TRISC.3 = 0;        // Make port RC3 an output(SPI Clock)
     TRISC.4 = 1;        // Make port RC4 an input(SPI Data In)
     TRISC.5 = 0;        // Make port RC5 an output(SPI Data Out)
-	SSPM1 = 0;
 	SMP = 1;
 	CKP = 0;
 	CKE = 1;
@@ -33,9 +32,9 @@ void spi_init()
 
 char spi_send(char data)
 {
-	SSPBUF = data;	
-	while(SSPIF == 0);
-	return SSPBUF;
+	SSP1BUF = data;	
+	while(SSP1IF == 0);
+	return SSP1BUF;
 }
 
 /***

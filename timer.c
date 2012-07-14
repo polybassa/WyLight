@@ -19,7 +19,7 @@
 #include "timer.h"
 #include "ledstrip.h"
 
-void timer_init()
+void TimerInit()
 {
 	T2CON = 0b01111101;
 	TMR2IE = 1;
@@ -31,7 +31,7 @@ void timer_init()
 //	g_timer_signaled = 0;
 }
 
-void timer_set_for_fade(char value)
+void TimerSetForFade(char value)
 {
 	PR2 = value;
 }

@@ -19,43 +19,46 @@
 #ifndef X86
 //*********************** EEPROM BYTE SCHREIBEN  **********************************************
 
-void EEPROM_WR(char adress, char data)
+void EEPROM_WR(uns16 adress, char data)
 {
 	bit GIE_status; 
-	//EEADRH = (char)(adress<<8);
-    EEADRL = (char)adress;        // Adresse in Adressregister übertragen
-	EEDATL = data;          // Daten in Datenregister übertragen
+	GIE_status = GIE;	
+	
+	EEADRH = (char)(adress << 8);
+    EEADR = (char)adress;        	// Adresse in Adressregister übertragen
+	EEDATA = data;          		// Daten in Datenregister übertragen
+	
     CFGS = 0;
-	EEPGD = 0;                // Auswahl: Programmspeicher lesen oder EEPROM
-    WREN = 1;                 // Schreiben ins EEPROM erlauben
-	GIE_status=GIE;			
-    GIE=0;                  // Interrups verbieten
+	EEPGD = 0;                		// Auswahl: Programmspeicher lesen oder EEPROM
+    WREN = 1;                 		// Schreiben ins EEPROM erlauben
+    GIE=0;                  		// Interrups verbieten
+	
     EECON2 = 0x55;
     EECON2 = 0xAA;
-	WR=1; 					// Starten des Schreibens
-    GIE=GIE_status;                  // Interrups erlauben
-	WREN=0;
+	WR = 1; 						// Starten des Schreibens
+    GIE = GIE_status;               // Interrups erlauben
+	WREN = 0;
 	while(WR);
 }
 
 //*********************** EEPROM BYTE LESEN  **********************************************
 
-char EEPROM_RD(char adress)
+char EEPROM_RD(uns16 adress)
 {
     char data;
-    //EEADRH = (char)(adress<<8);        // Adresse in Adressregister übertragen
-    EEADRL = (char)(adress);
-	CFGS=0;
-	EEPGD=0;                // Auswahl: Programmspeicher lesen oder EEPROM
-    RD=1;                   // Starten des Lesesn
-    data = EEDATL;       // Daten aus Datenregister auslesen
+    EEADRH = (char)(adress << 8);        // Adresse in Adressregister übertragen
+    EEADR = (char)(adress);
+	CFGS = 0;
+	EEPGD = 0;                			// Auswahl: Programmspeicher lesen oder EEPROM
+    RD = 1;                   			// Starten des Lesesn
+    data = EEDATA;       				// Daten aus Datenregister auslesen
     return data;
 }
 #endif /* #ifndef X86 */
 
 //*********************** EEPROM BYTEARRAY SCHREIBEN  **************************************
 
-void EEPROM_WR_BLK(char *array, char adress, char length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
+void EEPROM_WR_BLK(char *array, uns16 adress, char length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
 {
 	if(!array) return;
 	char i;
@@ -69,7 +72,7 @@ void EEPROM_WR_BLK(char *array, char adress, char length)			//Zum Ausführen eine
 
 //*********************** EEPROM BYTEARRAY LESEN  **************************************
 
-void EEPROM_RD_BLK(char *array, char adress, char length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
+void EEPROM_RD_BLK(char *array, uns16 adress, char length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
 {
 	if(!array) return;
 	char i, temp;

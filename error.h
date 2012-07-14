@@ -29,5 +29,5 @@ extern struct ErrorBits gERROR;
 	gERROR.crc_failure = 0; \
 	gERROR.eeprom_failure = 0;
 
-void throw_errors();
+void ThrowErrors();
 #endif /* #ifndef _ERROR_H_ */

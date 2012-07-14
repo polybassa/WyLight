@@ -24,8 +24,8 @@
 //Nils Weiﬂ 
 //05.09.2011
 //Compiler CC5x
-void EEPROM_WR(char adress, char data);
-char EEPROM_RD(char adress);
-void EEPROM_WR_BLK(char *array, char adress, char length);
-void EEPROM_RD_BLK(char *array, char adress, char length);
+void EEPROM_WR(uns16 adress, char data);
+char EEPROM_RD(uns16 adress);
+void EEPROM_WR_BLK(char *array, uns16 adress, char length);
+void EEPROM_RD_BLK(char *array, uns16 adress, char length);
 #endif

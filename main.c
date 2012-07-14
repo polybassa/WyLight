@@ -27,6 +27,7 @@
 #pragma sharedAllocation
 
 //*********************** INCLUDEDATEIEN *********************************************
+#include "int18XXX.h"
 #include "platform.h"
 #include "RingBuf.h"		//clean
 #include "usart.h"			//clean
@@ -84,35 +85,38 @@ void* InterruptRoutine(void* unused)
 }
 #else
 //*********************** INTERRUPTSERVICEROUTINE ************************************
-#pragma origin 4					//Adresse des Interrupts	
+#pragma origin 8					//Adresse des High Priority Interrupts	
 interrupt InterruptRoutine(void)
 {
-	if(RCIF)
+	uns16 sv_FSR0 = FSR0;
+	if(RC1IF)
 	{
-		if(!RingBufHasError) RingBufPut(RCREG);
+		if(!RingBufHasError) RingBufPut(RCREG1);
 		else 
 		{
 			//Register lesen um Schnittstellen Fehler zu vermeiden
-			char temp = RCREG;
+			char temp = RCREG1;
 		}
 	}
 	if(TMR2IF)
 	{
-		Timer2interrupt();
+		Timer2Interrupt();
 		gTimecounter = ++gTimecounter;
 		commandstorage_wait_interrupt();
 	}
 	if(TMR4IF)
 	{
-		Timer4interrupt();
+		Timer4Interrupt();
 		g_update_fade = 1;
 		
-	}
+	} 
+	FSR0 = sv_FSR0;
+	#pragma fastMode
 }
 #endif /* #ifdef X86 */
 
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
-void init_all();
+void InitAll();
 
 //*********************** HAUPTPROGRAMM **********************************************
 void main(void)
@@ -120,7 +124,7 @@ void main(void)
 #ifndef X86
 	clearRAM();
 #endif
-	init_all();
+	InitAll();
 
 #ifdef X86
 	#include <pthread.h>
@@ -138,8 +142,8 @@ void main(void)
 		// give opengl thread a chance to run
 		usleep(10);
 #endif
-		Check_INPUT();
-		throw_errors();
+		CheckInputs();
+		ThrowErrors();
 		commandstorage_get_commands();
 		commandstorage_execute_commands();
 		ledstrip_do_fade();
@@ -153,19 +157,16 @@ void main(void)
 }
 //*********************** UNTERPROGRAMME **********************************************
 
-void init_all()
+void InitAll()
 {
 	OsciInit();
 	InitInputs();
 	RingBufInit();
 	USARTinit();
 	spi_init();
-	timer_init();
+	TimerInit();
 	ledstrip_init();
 	commandstorage_init();
-	InitFET();
-	PowerOnLEDs();
-    InitFactoryRestoreWLAN();
 	ErrorInit();
 	ClearCmdBuf();
 	

@@ -19,7 +19,7 @@
 #include "platform.h"
 
 #ifndef X86
-void Check_INPUT()
+void CheckInputs()
 {
 //if INPUT is low, then FactoryReset the WLAN Interface
 	if(PORTB.1 == 1)

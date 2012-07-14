@@ -23,26 +23,27 @@ void USARTinit()
 {
 	//USART TX Pin als Ausgang
 	TRISC.6 = 0;
-
-    BRGH=1;					// High Baudrate activated
+	BRGH1=1;					// High Baudrate activated
 	BRG16=0;
-	SPBRGL=25;				// 19200 Bps @ 8 MHz Clock
-	SPBRGH=0;
-    SPEN = 1;               // Set_Serial_Pins;
-    SYNC = 0;               // Set_Async_Mode;
-    TX9 = 0;                // Set_8bit_Tx;
-    RX9 = 0;                // Set_8bit_Rx;
-    CREN = 1;               // Enable_Rx;
-    TXEN = 1;               // Enable_Tx;
-    RCIE=1;                 // Rx Interrupt aus
-	ADDEN=0;				// Disable Adressdetection
+	SPBRG1=25;				// 19200 Bps @ 8 MHz Clock
+	SPBRGH1=0;
+    SPEN1 = 1;               // Set_Serial_Pins;
+    SYNC1 = 0;               // Set_Async_Mode;
+    TX9_1 = 0;                // Set_8bit_Tx;
+    RX9_1 = 0;                // Set_8bit_Rx;
+    CREN1 = 1;               // Enable_Rx;
+    TXEN1 = 1;               // Enable_Tx;
+    RC1IE=1;                 // Rx Interrupt aus
+	ADDEN1=0;				// Disable Adressdetection
+
+
 }
 
 //*******  Sende-char-Funktion  *************************************************
 void USARTsend(unsigned char ch)
 {
-	while(!TXIF);
-	TXREG=ch;
+	while(!TX1IF);
+	TXREG1=ch;
 }
 #endif /* #ifndef X86 */
 

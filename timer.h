@@ -31,17 +31,17 @@ extern char gTimecounter;
 void* timer_interrupt(void* unused);
 #endif
 
-void timer_init();
+void TimerInit();
 //To Do: Funktion bekommt einen Wert, anhand diese wertes wird die geschwindigkeit des
 //Timers festgelegt. Wert kommt aus der berechnung einer anderen Funktion (fade oder run)
-void timer_set_for_fade(char value);
+void TimerSetForFade(char value);
 
-#define Timer2interrupt(x)  		\
+#define Timer2Interrupt(x)  		\
 {									\
 	TMR2IF = 0;						\
 }
 
-#define Timer4interrupt(x)  		\
+#define Timer4Interrupt(x)  		\
 {									\
 	TMR4IF = 0;						\
 }
