@@ -1,5 +1,5 @@
 /**
-		Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+		Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
 
@@ -23,7 +23,7 @@
 using namespace std;
 
 WiflyControl::WiflyControl()
-: mSock(INADDR_ANY, 12345)
+: mSock(INADDR_ANY, WIFLY_SERVER_PORT)
 {
 	mCmdFrame.stx = STX;
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;
@@ -111,6 +111,7 @@ unsigned long WiflyControl::ToRGBA(string& s) const
 {
 	if(s.length() > 8) return 0;
 
+	// use a stringstream to convert hex ascii string into machine bits
 	unsigned long rgba;
 	stringstream converter;
 	converter << std::hex << s;
