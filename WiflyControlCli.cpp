@@ -31,6 +31,12 @@ void WiflyControlCli::run(void)
 	string nextCmd;
 	cout << "Usage:" << endl;
 	cout << "'exit' - terminate cli" << endl;
+	cout << "'addcolor <addr> <rgb> <hour> <minute> <second>'" << endl;
+	cout << "    <addr> hex bitmask, which leds should be set to the new color" << endl;
+	cout << "    <rgb> hex rgb value of the new color f.e. red: ff0000" << endl;
+	cout << "    <hour> hour of date event" << endl;
+	cout << "    <minute> minute of date event" << endl;
+	cout << "    <second> second of date event" << endl;
 	cout << "'setcolor <addr> <rgb>'" << endl;
 	cout << "    <addr> hex bitmask, which leds should be set to the new color" << endl;
 	cout << "    <rgb> hex rgb value of the new color f.e. red: ff0000" << endl;
