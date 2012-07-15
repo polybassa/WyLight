@@ -5,7 +5,7 @@ ANDROID_DIR=./android/WiflyLight
 OPENGL_LIB=-lGL -lGLU -lglut
 OPENGL_LIB_OSX=-framework Carbon -framework OpenGL -framework GLUT
 
-X86_SRC=main.c commandstorage.c eeprom.c error.c ledstrip.c RingBuf.c spi.c usart.c x86_wrapper.c x86_gl.c
+X86_SRC=main.c commandstorage.c eeprom.c error.c ledstrip.c RingBuf.c spi.c timer.c usart.c x86_wrapper.c x86_gl.c
 
 all_nils: pic_nils mac_simu mac_client
 
@@ -15,7 +15,7 @@ pic_nils:
 	wine ${PIC_CD} main.c -CC -fINHX8M -p16F1936 -a -L -Q -V -FM
 
 pic_pat: ledstrip.h
-	wine ${PIC_CC} main.c -CC -fINHX8M -p16F1936 -a -L -Q -V -FM
+	wine ${PIC_CC} main.c -CC -fINHX8M -p16F1936 -a -L -Q -V -FM -mc2 -mr2
 
 linux_simu:
 	gcc ${X86_SRC} -DX86 -DNO_CRC -lpthread ${OPENGL_LIB} -o server.bin -Wall -DDEBUG

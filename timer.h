@@ -18,23 +18,30 @@
 
 #ifndef _TIMER_H_
 #define _TIMER_H_
-
-//Nils Weiﬂ 
-//08.05.2012
-//Compiler CC5x
-
 #include "platform.h"
+#include "wifly_cmd.h"
+
+// a day has 86400 seconds, we are updating our counter in 2 sec steps
+#define DATE_TIMER_DAY (unsigned short)43200
+
+#define NUM_DATE_EVENTS 1
+
+
+struct date_event {
+	unsigned short wakeup;
+	struct led_cmd cmd;
+};
 
 extern char gTimecounter;
-
-#if X86
-void* timer_interrupt(void* unused);
-#endif
 
 void timer_init();
 //To Do: Funktion bekommt einen Wert, anhand diese wertes wird die geschwindigkeit des
 //Timers festgelegt. Wert kommt aus der berechnung einer anderen Funktion (fade oder run)
 void timer_set_for_fade(char value);
+
+unsigned char date_timer_add_event(unsigned char hour, unsigned char minute, unsigned char second, struct led_cmd* pCmd);
+void date_timer_callback(void);
+void date_timer_do_events(void);
 
 #define Timer2interrupt(x)  		\
 {									\

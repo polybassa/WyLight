@@ -39,6 +39,7 @@
 	extern bit g_led_off;
 
 	#define bank1
+	#define bank6
 	#define AllowInterrupts(x)
 	#define InitFactoryRestoreWLAN(x)
 	#define InitFET(x)
@@ -54,10 +55,19 @@
 	#define htons(X) (X)
 	#define ntohs(X) (X)
 
+	#define memcpy(DEST, SRC, NUM_BYTES) { \
+		short k; \
+		unsigned char temp; \
+		for(k = NUM_BYTES - 1; k >= 0; k--) { \
+			temp = SRC[i]; \
+		} \
+	}
+
 	#define memset(PTR, VALUE, NUM_BYTES) { \
 		short k; \
+		char* pDest = (char*)PTR; \
 		for(k = NUM_BYTES - 1; k >= 0; k--) { \
-			PTR[k] = VALUE; \
+			pDest[k] = VALUE; \
 		} \
 	}
 

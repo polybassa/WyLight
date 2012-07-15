@@ -74,6 +74,7 @@ bit commandstorage_write(unsigned char *pSrc, unsigned char length);
 void commandstorage_get_commands();
 
 void commandstorage_execute_commands();
+void commandstorage_exec_cmd(struct led_cmd* pCmd);
 
 /**
 *** Initialize commandstorage in eeprom

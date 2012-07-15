@@ -79,6 +79,22 @@ void init_x86(void);
 void main(void)
 {
 	init_all();
+#ifndef TEST
+{
+	struct led_cmd dateCmd;
+	dateCmd.cmd = SET_COLOR;
+	dateCmd.data.set_color.addr[0] = 0xff;
+	dateCmd.data.set_color.addr[1] = 0xff;
+	dateCmd.data.set_color.addr[2] = 0xff;
+	dateCmd.data.set_color.addr[3] = 0xff;
+	dateCmd.data.set_color.red = 0xff;
+	dateCmd.data.set_color.green = 0;
+	dateCmd.data.set_color.blue = 0;
+	dateCmd.data.set_color.reserved[0] = 0;
+	dateCmd.data.set_color.reserved[1] = 0;
+	date_timer_add_event(0 , 0, 3, &dateCmd);
+}
+#endif /* #ifdef TEST */
     
 	while(1)
 	{
@@ -91,6 +107,7 @@ void main(void)
 		commandstorage_get_commands();
 		commandstorage_execute_commands();
 		ledstrip_do_fade();
+		date_timer_do_events();
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************
@@ -107,7 +124,7 @@ void init_all()
 	
 	InitFET();
 	PowerOnLEDs();
-    InitFactoryRestoreWLAN();
+	InitFactoryRestoreWLAN();
 	ErrorInit();
 	ClearCmdBuf();	
 	AllowInterrupts();
@@ -131,9 +148,10 @@ void init_all()
 #include "ledstrip.c"
 #include "RingBuf.c"
 #include "spi.c"
-#include "timer.c"
 #include "usart.c"
 #include "commandstorage.c"
 #include "platform.c"
+#pragma codepage 1
+#include "timer.c"
 #endif /* #ifndef X86 */
 

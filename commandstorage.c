@@ -218,38 +218,44 @@ void commandstorage_execute_commands()
 		
 	if(0 != result)
 	{
+		commandstorage_exec_cmd(&nextCmd);
+	}
+}
+
+void commandstorage_exec_cmd(struct led_cmd* pCmd)
+{
 #ifdef TEST
 USARTsend_str("executeCommand");
 #endif
 		// *** commands available, check what to do
-		switch(nextCmd.cmd) 
+
+		switch(pCmd->cmd) 
 		{	
 			case SET_COLOR: 
 			{
-				ledstrip_set_color(&nextCmd.data.set_color);
+				ledstrip_set_color(&pCmd->data.set_color);
 				break;
 			}
 			case SET_FADE:
 			{
-				ledstrip_set_fade(&nextCmd.data.set_fade);
+				ledstrip_set_fade(&pCmd->data.set_fade);
 				break;
 			}
 			case WAIT:
 			{
-				struct cmd_wait *pCmd = &nextCmd.data.wait;
 #ifdef TEST
 				USARTsend_num(pCmd->valueH,'H');
 				USARTsend_num(pCmd->valueL,'L');
 #endif
-				
-				gCmdBuf.WaitValue = pCmd->valueH;
+
+				//TODO There is a native function ".HIGH" in the PIC compiler we should use it				
+				gCmdBuf.WaitValue = pCmd->data.wait.valueH;
 				gCmdBuf.WaitValue = gCmdBuf.WaitValue << 8;
-				gCmdBuf.WaitValue |= pCmd->valueL;
+				gCmdBuf.WaitValue |= pCmd->data.wait.valueL;
 				break;
 			}
 			case SET_RUN: {break;}
 		}
-	}
 }
 
 void commandstorage_wait_interrupt()
