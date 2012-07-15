@@ -21,7 +21,7 @@ linux_simu:
 	gcc ${X86_SRC} -DX86 -DNO_CRC -lpthread ${OPENGL_LIB} -o server.bin -Wall -DDEBUG
 
 mac_simu:
-	gcc main.c commandstorage.c eeprom.c error.c ledstrip.c RingBuf.c spi.c usart.c x86_wrapper.c -DMACOSX -DX86 -DNO_CRC -I${INC_DIR} -lpthread ${OPENGL_LIB_OSX} -o server.bin
+	gcc ${X86_SRC} -DMACOSX -DX86 -DNO_CRC -lpthread ${OPENGL_LIB_OSX} -o server.bin
 
 android_client:
 	ndk-build -C $(ANDROID_DIR)
