@@ -79,20 +79,21 @@ void init_x86(void);
 void main(void)
 {
 	init_all();
-#ifndef TEST
+#ifdef TEST
 {
-	struct led_cmd dateCmd;
-	dateCmd.cmd = SET_COLOR;
-	dateCmd.data.set_color.addr[0] = 0xff;
-	dateCmd.data.set_color.addr[1] = 0xff;
-	dateCmd.data.set_color.addr[2] = 0xff;
-	dateCmd.data.set_color.addr[3] = 0xff;
-	dateCmd.data.set_color.red = 0xff;
-	dateCmd.data.set_color.green = 0;
-	dateCmd.data.set_color.blue = 0;
-	dateCmd.data.set_color.reserved[0] = 0;
-	dateCmd.data.set_color.reserved[1] = 0;
-	date_timer_add_event(0 , 0, 3, &dateCmd);
+	struct cmd_add_color dateCmd;
+/**TODO	dateCmd.data.add_color.addr[0] = 0xff;
+	dateCmd.data.add_color.addr[1] = 0xff;
+	dateCmd.data.add_color.addr[2] = 0xff;
+	dateCmd.data.add_color.addr[3] = 0xff;
+*/
+	dateCmd.red = 0xff;
+	dateCmd.green = 0;
+	dateCmd.blue = 0;
+//TODO	dateCmd.data.add_color.hour = 0xff;
+	dateCmd.minute = 0;
+	dateCmd.second = 3;
+	date_timer_add_event(&dateCmd);
 }
 #endif /* #ifdef TEST */
     

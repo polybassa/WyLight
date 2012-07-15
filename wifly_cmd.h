@@ -23,17 +23,29 @@
 
 //*********************** ENUMERATIONS *********************************************
 #define STX 0xFF
+#define WAIT 0xFE
 #define SET_COLOR 0xFD
 #define SET_FADE 0xFC
 #define SET_RUN 0xFB
-#define WAIT 0xFE
 #define SET_ON 0xFA
 #define SET_OFF 0xF9
 #define DELETE 0xF8
 #define LOOP_ON 0xF7
 #define LOOP_OFF 0xF6
+#define ADD_COLOR 0xF5
 
 //*********************** STRUCT DECLARATION *********************************************
+struct cmd_add_color {
+//TODO add this later, when we can handle longer cmd_frames
+//TODO	uns8 addr[4];
+	uns8 red;
+	uns8 green;
+	uns8 blue;
+//TODO uns8 hour;
+	uns8 minute;
+	uns8 second;
+};
+
 struct cmd_set_color {
 	uns8 addr[4];
 	uns8 red;
@@ -64,6 +76,7 @@ struct cmd_set_run {
 struct led_cmd {
 	uns8 cmd;
 	union {
+		struct cmd_add_color add_color;
 		struct cmd_set_color set_color;
 		struct cmd_set_fade set_fade;
 		struct cmd_set_run set_run;

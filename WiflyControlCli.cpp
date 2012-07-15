@@ -58,6 +58,16 @@ void WiflyControlCli::run(void)
 			cin >> color;
 			cin >> timevalue;
 			mControl.SetFade(addr, color, (unsigned short)timevalue * 1000);
+		}	else if ("addcolor" == nextCmd) {
+			string addr, color;
+			unsigned long hour, minute, second;
+			cin >> addr;
+			cin >> color;
+			cin >> hour;
+			cin >> minute;
+			cin >> second;
+			cout << addr << " " << color << " " << hour << " " << minute << " " << second << endl; 
+			mControl.AddColor(addr, color, hour, minute, second);
 		}
 	}
 }

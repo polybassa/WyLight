@@ -60,6 +60,7 @@
 		unsigned char temp; \
 		for(k = NUM_BYTES - 1; k >= 0; k--) { \
 			temp = SRC[i]; \
+			DEST[i] = temp; \
 		} \
 	}
 
