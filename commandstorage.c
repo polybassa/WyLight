@@ -228,7 +228,6 @@ void commandstorage_exec_cmd(struct led_cmd* pCmd)
 USARTsend_str("executeCommand");
 #endif
 		// *** commands available, check what to do
-
 		switch(pCmd->cmd) 
 		{	
 			case SET_COLOR: 
@@ -247,14 +246,18 @@ USARTsend_str("executeCommand");
 				USARTsend_num(pCmd->valueH,'H');
 				USARTsend_num(pCmd->valueL,'L');
 #endif
-
-				//TODO There is a native function ".HIGH" in the PIC compiler we should use it				
+				//TODO There is a native function ".HIGH" in the PIC compiler we should use it
 				gCmdBuf.WaitValue = pCmd->data.wait.valueH;
 				gCmdBuf.WaitValue = gCmdBuf.WaitValue << 8;
 				gCmdBuf.WaitValue |= pCmd->data.wait.valueL;
 				break;
 			}
 			case SET_RUN: {break;}
+			case ADD_COLOR:
+			{
+				date_timer_add_event(&pCmd->data.add_color);
+				break;
+			}
 		}
 }
 

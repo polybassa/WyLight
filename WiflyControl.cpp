@@ -31,6 +31,30 @@ WiflyControl::WiflyControl()
 	mCmdFrame.crcLow = 0xAD;
 }
 
+void WiflyControl::AddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second)
+{
+	mCmdFrame.led.cmd = ADD_COLOR;
+	// next line would be better, but mCmdFrame...addr is unaligned!
+	//*(unsigned long*)mCmdFrame.led.data.set_color.addr = htonl(addr);
+/**TODO mCmdFrame.led.data.add_color.addr[0] = (addr & 0xff000000) >> 24;
+	mCmdFrame.led.data.add_color.addr[1] = (addr & 0x00ff0000) >> 16;
+	mCmdFrame.led.data.add_color.addr[2] = (addr & 0x0000ff00) >> 8;
+	mCmdFrame.led.data.add_color.addr[3] = (addr & 0x000000ff);
+*/
+	mCmdFrame.led.data.add_color.red = (rgba & 0xff000000) >> 24;
+	mCmdFrame.led.data.add_color.green = (rgba & 0x00ff0000) >> 16;
+	mCmdFrame.led.data.add_color.blue = (rgba & 0x0000ff00) >> 8;
+//TODO	mCmdFrame.led.data.add_color.hour = hour;
+	mCmdFrame.led.data.add_color.minute = minute;
+	mCmdFrame.led.data.add_color.second = second;
+	int bytesWritten = mSock.Send((char*)&mCmdFrame, sizeof(mCmdFrame));
+}
+
+void WiflyControl::AddColor(std::string& addr, std::string& rgba, unsigned char hour, unsigned char minute, unsigned char second)
+{
+	AddColor(ToRGBA(addr), ToRGBA(rgba) << 8, hour, minute, second);
+}
+
 void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
 {
 	mCmdFrame.led.cmd = SET_COLOR;
@@ -60,9 +84,9 @@ void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
 #endif
 }
 
-void WiflyControl::SetColor(string& addr, std::string& color)
+void WiflyControl::SetColor(string& addr, std::string& rgba)
 {
-	SetColor(ToRGBA(addr), ToRGBA(color) << 8);
+	SetColor(ToRGBA(addr), ToRGBA(rgba) << 8);
 }
 
 void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms)
@@ -102,9 +126,9 @@ void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned shor
 #endif
 }
 
-void WiflyControl::SetFade(string& addr, std::string& color, unsigned short fadeTmms)
+void WiflyControl::SetFade(string& addr, std::string& rgba, unsigned short fadeTmms)
 {
-	SetFade(ToRGBA(addr), ToRGBA(color) << 8, fadeTmms);
+	SetFade(ToRGBA(addr), ToRGBA(rgba) << 8, fadeTmms);
 }
 
 unsigned long WiflyControl::ToRGBA(string& s) const

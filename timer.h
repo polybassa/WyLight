@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -23,9 +23,7 @@
 
 // a day has 86400 seconds, we are updating our counter in 2 sec steps
 #define DATE_TIMER_DAY (unsigned short)43200
-
 #define NUM_DATE_EVENTS 1
-
 
 struct date_event {
 	unsigned short wakeup;
@@ -35,11 +33,11 @@ struct date_event {
 extern char gTimecounter;
 
 void timer_init();
-//To Do: Funktion bekommt einen Wert, anhand diese wertes wird die geschwindigkeit des
+//TODO: Funktion bekommt einen Wert, anhand diese wertes wird die geschwindigkeit des
 //Timers festgelegt. Wert kommt aus der berechnung einer anderen Funktion (fade oder run)
 void timer_set_for_fade(char value);
 
-unsigned char date_timer_add_event(unsigned char hour, unsigned char minute, unsigned char second, struct led_cmd* pCmd);
+unsigned char date_timer_add_event(struct cmd_add_color* pCmd);
 void date_timer_callback(void);
 void date_timer_do_events(void);
 

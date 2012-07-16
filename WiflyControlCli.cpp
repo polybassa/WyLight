@@ -31,6 +31,12 @@ void WiflyControlCli::run(void)
 	string nextCmd;
 	cout << "Usage:" << endl;
 	cout << "'exit' - terminate cli" << endl;
+	cout << "'addcolor <addr> <rgb> <hour> <minute> <second>'" << endl;
+	cout << "    <addr> hex bitmask, which leds should be set to the new color" << endl;
+	cout << "    <rgb> hex rgb value of the new color f.e. red: ff0000" << endl;
+	cout << "    <hour> hour of date event" << endl;
+	cout << "    <minute> minute of date event" << endl;
+	cout << "    <second> second of date event" << endl;
 	cout << "'setcolor <addr> <rgb>'" << endl;
 	cout << "    <addr> hex bitmask, which leds should be set to the new color" << endl;
 	cout << "    <rgb> hex rgb value of the new color f.e. red: ff0000" << endl;
@@ -58,6 +64,16 @@ void WiflyControlCli::run(void)
 			cin >> color;
 			cin >> timevalue;
 			mControl.SetFade(addr, color, (unsigned short)timevalue * 1000);
+		}	else if ("addcolor" == nextCmd) {
+			string addr, color;
+			unsigned long hour, minute, second;
+			cin >> addr;
+			cin >> color;
+			cin >> hour;
+			cin >> minute;
+			cin >> second;
+			cout << addr << " " << color << " " << hour << " " << minute << " " << second << endl; 
+			mControl.AddColor(addr, color, hour, minute, second);
 		}
 	}
 }

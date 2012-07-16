@@ -66,6 +66,7 @@ interrupt InterruptRoutine(void)
 	if(TMR4IF)
 	{
 		Timer4interrupt();
+		ledstrip_update_fade();
 	}
 }
 #endif /* #ifndef X86 */
@@ -94,7 +95,6 @@ void main(void)
 		throw_errors();
 		commandstorage_get_commands();
 		commandstorage_execute_commands();
-		ledstrip_update_fade();
 		ledstrip_do_fade();
 		date_timer_do_events();
 	}

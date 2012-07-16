@@ -22,22 +22,32 @@
 unsigned short gDateTimer;
 bank6 struct date_event gDateEvents[NUM_DATE_EVENTS];
 
-unsigned char date_timer_add_event(uns8 hour, uns8 minute, uns8 second, struct led_cmd* pCmd)
+unsigned char date_timer_add_event(struct cmd_add_color* pCmd)
 {
 	int i;
 	for(i = 0; i < NUM_DATE_EVENTS; i++)
 	{
 		if(0xffff == gDateEvents[i].wakeup)
 		{
-			hour *= 1800;
-			minute *= 30;
-			second /= 2;
+//TODO			uns16 hour = (uns16)pCmd->hour * 1800;
+			uns16 minute = (uns16)pCmd->minute * 30;
+			uns16 second = pCmd->second / 2;
 			gDateEvents[i].wakeup = DATE_TIMER_DAY;
-			gDateEvents[i].wakeup -= hour;
+//TODO			gDateEvents[i].wakeup -= hour;
 			gDateEvents[i].wakeup -= minute;
 			gDateEvents[i].wakeup -= second;
 			gDateEvents[i].cmd.cmd = SET_COLOR;
-			memcpy((char*)&gDateEvents[i].cmd, (char*)pCmd, sizeof(struct led_cmd));
+//TODO memcpy((char*)&gDateEvents[i].cmd, (char*)pCmd, sizeof(struct led_cmd));
+			gDateEvents[i].cmd.data.set_color.addr[0] = 0xff;
+			gDateEvents[i].cmd.data.set_color.addr[1] = 0xff;
+			gDateEvents[i].cmd.data.set_color.addr[2] = 0xff;
+			gDateEvents[i].cmd.data.set_color.addr[3] = 0xff;
+			uns8 red = pCmd->red;
+			gDateEvents[i].cmd.data.set_color.red = red;
+			uns8 green = pCmd->green;
+			gDateEvents[i].cmd.data.set_color.green = green;
+			uns8 blue = pCmd->blue;
+			gDateEvents[i].cmd.data.set_color.blue = blue;
 			return TRUE;
 		}
 	}
