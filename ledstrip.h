@@ -23,7 +23,7 @@
 #include "spi.h"
 #include "eeprom.h"
 
-#define NUM_OF_LED 32
+#define NUM_OF_LED 24
 
 struct LedBuffer{
 	uns8 led_array[NUM_OF_LED*3];			// contains the current colorvalue for each led
@@ -31,6 +31,7 @@ struct LedBuffer{
 	unsigned short cyclesLeft[NUM_OF_LED*3];	// cycles left in current periode
 	unsigned short periodeLength[NUM_OF_LED*3];	// number of cycles in one periode
 	uns8 step[NUM_OF_LED / 8* 3]; // if bit is set led_array is decremented each periode else incremented
+	uns8 stepSize[NUM_OF_LED * 3]; // if bit is set led_array is decremented each periode else incremented
 };
 
 extern bank1 struct LedBuffer gLedBuf;

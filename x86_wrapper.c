@@ -18,13 +18,14 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 #include "ledstrip.h"
 
 void addCRC(char byte, char* p_crcH, char* p_crcL) {}
 void newCRC(char* p_crcH, char* p_crcL) {}
 
-void timer_init(){};
-void timer_set_for_fade(char value){};
+void timer_init(){}
+void timer_set_for_fade(char value){}
 void* timer_interrupt(void* unused)
 {
 	for(;;)
@@ -44,15 +45,15 @@ void USARTsend(char ch)
 
 
 static uns8 gEEPROM[0x100];
-char EEPROM_RD(char adress)
+char EEPROM_RD(uns8 adress)
 {
 	return gEEPROM[adress];
 }
 
 
-void EEPROM_WR(char adress, char data)
+void EEPROM_WR(uns8 adress, uns8 data)
 {
-	gEEPROM[adress] = (uns8)data;
+	gEEPROM[adress] = data;
 }
 
 #include <pthread.h>
@@ -68,12 +69,13 @@ char spi_send(char data)
 		g_led_status[i] = g_led_status[i-1];
 	}
 	g_led_status[0] = data;
+	return g_led_status[0];
 }
 
-void spi_send_ledbuf(char *array)//!!! CHECK if GIE=0 during the sendroutine improves the result
+void spi_send_ledbuf(uns8 *array)//!!! CHECK if GIE=0 during the sendroutine improves the result
 {
 	//array must be the address of the first byte
-	char* end;
+	uns8* end;
 	//calculate where the end is
 	end = array + (NUM_OF_LED * 3);
 	//send all
@@ -115,6 +117,7 @@ void gl_display(void)
 	static unsigned long frames = 0;
 	static struct timespec lastTime;
 	static struct timespec nextTime;
+	time_t seconds;
 
 	clock_gettime(CLOCK_MONOTONIC, &lastTime);
 
@@ -125,7 +128,7 @@ void gl_display(void)
 
 		clock_gettime(CLOCK_MONOTONIC, &nextTime);
 
-		time_t seconds = nextTime.tv_sec - lastTime.tv_sec;
+		seconds = nextTime.tv_sec - lastTime.tv_sec;
 		if(seconds > 0)
 		{
 			long nanos = nextTime.tv_nsec - lastTime.tv_nsec;
@@ -170,5 +173,6 @@ void* gl_start(void* unused)
 	glLoadIdentity();
 	glViewport(0, 0, 300, 300);
 	glutMainLoop();
+	return 0;
 }
 

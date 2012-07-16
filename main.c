@@ -42,7 +42,6 @@ struct CommandBuffer gCmdBuf;
 bank1 struct LedBuffer gLedBuf;
 struct ErrorBits gERROR;
 char gTimecounter;
-//unsigned short g_timer_signaled;
 char g_update_fade:1;	
 //*********************** X86 InterruptRoutine *******************************************
 
@@ -58,7 +57,7 @@ void* InterruptRoutine(void* unused)
 	#define PORT 12345
 	int udp_sock = socket(AF_INET, SOCK_DGRAM, 0);
 	if(-1 == udp_sock)
-		return;
+		return 0;
 
 	struct sockaddr_in udp_sock_addr;
   udp_sock_addr.sin_family = AF_INET;
@@ -66,7 +65,7 @@ void* InterruptRoutine(void* unused)
   udp_sock_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
   if (-1 == bind(udp_sock, (struct sockaddr*)&udp_sock_addr, sizeof(udp_sock_addr)))
-		return;
+		return 0;
 
 	for(;;)
 	{
@@ -124,6 +123,7 @@ void main(void)
 
 #ifdef X86
 	#include <pthread.h>
+	#include <unistd.h>
 	pthread_t isrThread;
 	pthread_t glThread;
 	pthread_t timerThread;
@@ -192,6 +192,4 @@ void init_all()
 #include "commandstorage.c"
 #include "platform.c"
 #endif /* #ifndef X86 */
-
-
 
