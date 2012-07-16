@@ -46,7 +46,6 @@ void date_timer_do_events(void);
 #define Timer2interrupt(x)  		\
 {									\
 	TMR2IF = 0;						\
-	gTimecounter = ++gTimecounter;	\
 }
 
 #define Timer4interrupt(x)  		\

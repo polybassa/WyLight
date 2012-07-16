@@ -60,11 +60,12 @@ interrupt InterruptRoutine(void)
 	if(TMR2IF)
 	{
 		Timer2interrupt();
+		gTimecounter = ++gTimecounter;
+		commandstorage_wait_interrupt();
 	}
 	if(TMR4IF)
 	{
 		Timer4interrupt();
-		commandstorage_wait_interrupt();
 	}
 }
 #endif /* #ifndef X86 */
@@ -78,24 +79,11 @@ void init_x86(void);
 //*********************** HAUPTPROGRAMM **********************************************
 void main(void)
 {
+#ifndef X86
+	clearRAM();
+#endif
 	init_all();
-#ifndef TEST
-{
-	struct led_cmd dateCmd;
-	dateCmd.cmd = SET_COLOR;
-	dateCmd.data.set_color.addr[0] = 0xff;
-	dateCmd.data.set_color.addr[1] = 0xff;
-	dateCmd.data.set_color.addr[2] = 0xff;
-	dateCmd.data.set_color.addr[3] = 0xff;
-	dateCmd.data.set_color.red = 0xff;
-	dateCmd.data.set_color.green = 0;
-	dateCmd.data.set_color.blue = 0;
-	dateCmd.data.set_color.reserved[0] = 0;
-	dateCmd.data.set_color.reserved[1] = 0;
-	date_timer_add_event(0 , 0, 3, &dateCmd);
-}
-#endif /* #ifdef TEST */
-    
+
 	while(1)
 	{
 #ifdef X86
@@ -106,6 +94,7 @@ void main(void)
 		throw_errors();
 		commandstorage_get_commands();
 		commandstorage_execute_commands();
+		ledstrip_update_fade();
 		ledstrip_do_fade();
 		date_timer_do_events();
 	}
@@ -121,13 +110,11 @@ void init_all()
 	timer_init();
 	ledstrip_init();
 	commandstorage_init();
-	
 	InitFET();
 	PowerOnLEDs();
 	InitFactoryRestoreWLAN();
 	ErrorInit();
-	ClearCmdBuf();	
-	AllowInterrupts();
+	ClearCmdBuf();
 
 #ifdef X86
 	init_x86();
@@ -137,6 +124,8 @@ void init_all()
 	USARTsend('R');
 	USARTsend('D');
 	USARTsend('Y');
+	
+	AllowInterrupts();
 }
 
 // cc5xfree is a bit stupid so we include the other implementation files here

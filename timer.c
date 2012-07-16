@@ -75,10 +75,9 @@ void timer_init()
 	T2CON = 0b01111101;
 	TMR2IE = 1;
 	
+	PR4 = 0xff;
 	T4CON = 0b00000101;
 	TMR4IE = 1;
-	
-	PR4 = 0xff;
 #endif
 
 	date_timer_init();
