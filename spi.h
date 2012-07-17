@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -28,6 +28,6 @@
 void spi_init();
 char spi_send(char data);
 void spi_send_arr(char *array, char length);
-void spi_send_ledbuf(char *array);
+void spi_send_ledbuf(uns8 *array);
 
 #endif

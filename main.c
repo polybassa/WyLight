@@ -35,55 +35,17 @@
 #include "crc.h"			//clean
 #include "commandstorage.h" //under construction
 #include "ledstrip.h"		//clean
-#include "spi.h"			//clean
 #include "timer.h"			//under construction
+#ifdef X86
+#include <unistd.h>
+#endif /* #ifdef X86 */
 
 //*********************** GLOBAL VARIABLES *******************************************
-struct CommandBuffer gCmdBuf;
-bank1 struct LedBuffer gLedBuf;
-struct ErrorBits gERROR;
-char gTimecounter;
-//unsigned short g_timer_signaled;
 char g_update_fade:1;	
 //*********************** X86 InterruptRoutine *******************************************
 
-#ifdef X86
-bit g_led_off; //X86 replacement for PORTC.0
 
-void* gl_start(void* unused);
-
-#include <sys/socket.h>
-#include <netinet/in.h>
-void* InterruptRoutine(void* unused)
-{
-	#define PORT 12345
-	int udp_sock = socket(AF_INET, SOCK_DGRAM, 0);
-	if(-1 == udp_sock)
-		return;
-
-	struct sockaddr_in udp_sock_addr;
-  udp_sock_addr.sin_family = AF_INET;
-  udp_sock_addr.sin_port = htons(PORT);
-  udp_sock_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-
-  if (-1 == bind(udp_sock, (struct sockaddr*)&udp_sock_addr, sizeof(udp_sock_addr)))
-		return;
-
-	for(;;)
-	{
-		uns8 buf[1024];
-		int bytesRead = recvfrom(udp_sock, buf, sizeof(buf), 0, 0, 0);
-		int i;
-		for(i = 0; i < bytesRead; i++)
-		{
-			if(!RingBufHasError)
-			{
-				RingBufPut(buf[i]);
-			}
-		}
-	}
-}
-#else
+#ifndef X86
 //*********************** INTERRUPTSERVICEROUTINE ************************************
 #pragma origin 8					//Adresse des High Priority Interrupts	
 interrupt InterruptRoutine(void)
@@ -113,10 +75,14 @@ interrupt InterruptRoutine(void)
 	FSR0 = sv_FSR0;
 	#pragma fastMode
 }
-#endif /* #ifdef X86 */
+#endif /* #ifndef X86 */
 
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void InitAll();
+
+#ifdef X86
+void init_x86(void);
+#endif /* #ifdef X86 */
 
 //*********************** HAUPTPROGRAMM **********************************************
 void main(void)
@@ -126,16 +92,6 @@ void main(void)
 #endif
 	InitAll();
 
-#ifdef X86
-	#include <pthread.h>
-	pthread_t isrThread;
-	pthread_t glThread;
-	pthread_t timerThread;
-	
-	pthread_create(&isrThread, 0, InterruptRoutine, 0);
-	pthread_create(&glThread, 0, gl_start, 0);
-	pthread_create(&timerThread, 0, timer_interrupt, 0);
-#endif /* #ifdef X86 */  
 	while(1)
 	{
 #ifdef X86
@@ -168,8 +124,12 @@ void InitAll()
 	ledstrip_init();
 	commandstorage_init();
 	ErrorInit();
-	ClearCmdBuf();
-	
+	ClearCmdBuf();	
+	AllowInterrupts();
+
+#ifdef X86
+	init_x86();
+#endif /* #ifdef X86 */
 	
 	// *** send ready after init
 	USARTsend('R');
@@ -193,6 +153,4 @@ void InitAll()
 #include "commandstorage.c"
 #include "platform.c"
 #endif /* #ifndef X86 */
-
-
 

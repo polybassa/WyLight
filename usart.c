@@ -45,6 +45,8 @@ void USARTsend(unsigned char ch)
 	while(!TX1IF);
 	TXREG1=ch;
 }
+#else
+void USARTsend(unsigned char ch);
 #endif /* #ifndef X86 */
 
 //*******  Sende-String-Funktion  *************************************************

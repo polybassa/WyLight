@@ -51,7 +51,7 @@ void spi_send_arr(char *array, char length)
 	} 
 }
 
-void spi_send_ledbuf(char *array)//!!! CHECK if GIE=0 during the sendroutine improves the result
+void spi_send_ledbuf(uns8 *array)//!!! CHECK if GIE=0 during the sendroutine improves the result
 {
 	//array must be the address of the first byte
 	char* end;

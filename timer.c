@@ -24,11 +24,12 @@ void TimerInit()
 	T2CON = 0b01111101;
 	TMR2IE = 1;
 	
-	PR4 = 0xff;
+    
 	T4CON = 0b00000101;
 	TMR4IE = 1;
 	
-//	g_timer_signaled = 0;
+	PR4 = 0xff;
+
 }
 
 void TimerSetForFade(char value)

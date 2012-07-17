@@ -18,6 +18,9 @@
 
 #include "platform.h"
 #include "commandstorage.h"
+#include "ledstrip.h"
+
+struct CommandBuffer gCmdBuf;
 
 struct led_cmd* commandstorage_read(struct led_cmd *pDest)
 {
@@ -40,7 +43,7 @@ struct led_cmd* commandstorage_read(struct led_cmd *pDest)
 		}
 
 		//read command from eeprom
-		EEPROM_RD_BLK((char*)pDest, (nextCmd - CmdWidth), CmdWidth);
+		EEPROM_RD_BLK((unsigned char*)pDest, (nextCmd - CmdWidth), CmdWidth);
 
 		//update the CmdPointer?
 		if(gCmdBuf.LoopMode)
@@ -56,7 +59,7 @@ struct led_cmd* commandstorage_read(struct led_cmd *pDest)
 	else return 0;
 }
 
-bit commandstorage_write(char *pSrc, char length)
+bit commandstorage_write(unsigned char *pSrc, unsigned char length)
 {
 	//check parameter
 	if(0 == pSrc) return FALSE;
@@ -139,9 +142,7 @@ void commandstorage_get_commands()
 			// *** and I can give the string to the crc check function.
 			if(gCmdBuf.frame_counter == 0)
 			{
-#ifdef NO_CRC
-				if(1==1)
-#else
+#ifndef NO_CRC
                 // *** verify crc checksum
                 if( (gCmdBuf.crcL == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 1]) &&
                     (gCmdBuf.crcH == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 2]) )
@@ -194,12 +195,14 @@ void commandstorage_get_commands()
 					}							
 					
                 }
+#ifndef NO_CRC
                 else
                 {
                     // *** Do some error handling in case of an CRC failure here
 					gERROR.crc_failure = 1;
                     return;
                 }
+#endif
 			}
 		}
 	}

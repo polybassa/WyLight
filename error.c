@@ -21,6 +21,8 @@
 #include "RingBuf.h"
 #include "usart.h"
 
+struct ErrorBits gERROR;
+
 void ThrowErrors()
 {
 	if(RingBufHasError) 

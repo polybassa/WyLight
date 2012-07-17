@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -18,9 +18,6 @@
 
 #include "RingBuf.h"
 
-#ifndef X86
-#message Global variables are defined in RingBuf.c
-#endif /* #ifndef X86 */
 struct RingBuffer gRingBuf;
 
 void RingBufInit(void)
