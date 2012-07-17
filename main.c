@@ -16,13 +16,10 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-
 #ifndef X86
 #define NO_CRC
 //#define TEST
 #pragma optimize 0
-//#pragma resetVector 0x400
-//#pragma unlockISR
 #endif
 #pragma sharedAllocation
 
@@ -38,10 +35,8 @@
 #ifdef X86
 #include <unistd.h>
 #endif /* #ifdef X86 */
-
-//*********************** GLOBAL VARIABLES *******************************************
-//TODO wird dieser noch verwendet???? 
-char gTimecounter;
+//*************************** GLOBAL VARIABLES ***************************************
+char do_update_fade;
 
 #ifndef X86
 //*********************** INTERRUPTSERVICEROUTINE ************************************
@@ -60,13 +55,12 @@ interrupt InterruptRoutine(void)
 	if(TMR2IF)
 	{
 		Timer2interrupt();
-		gTimecounter = ++gTimecounter;
 		commandstorage_wait_interrupt();
 	}
 	if(TMR4IF)
 	{
 		Timer4interrupt();
-		ledstrip_update_fade();
+		do_update_fade = 1;
 	}
 }
 #endif /* #ifndef X86 */
@@ -96,7 +90,15 @@ void main(void)
 		commandstorage_get_commands();
 		commandstorage_execute_commands();
 		ledstrip_do_fade();
+#ifdef with_TIMER
 		date_timer_do_events();
+#endif
+		if(do_update_fade)
+		{
+			do_update_fade = 0;
+			ledstrip_update_fade();
+		}
+		
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************

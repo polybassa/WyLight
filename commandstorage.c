@@ -249,10 +249,11 @@ USARTsend_str("executeCommand");
 				//TODO There is a native function ".HIGH" in the PIC compiler we should use it
 				gCmdBuf.WaitValue = pCmd->data.wait.valueH;
 				gCmdBuf.WaitValue = gCmdBuf.WaitValue << 8;
-				gCmdBuf.WaitValue |= pCmd->data.wait.valueL;
+				gCmdBuf.WaitValue += pCmd->data.wait.valueL;
 				break;
 			}
 			case SET_RUN: {break;}
+
 			case ADD_COLOR:
 			{
 				date_timer_add_event(&pCmd->data.add_color);

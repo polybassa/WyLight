@@ -89,14 +89,14 @@ void timer_init()
 	T4CON = 0b00000101;
 	TMR4IE = 1;
 #endif
-
 	date_timer_init();
+
 }
 
 void timer_set_for_fade(char value)
 {
 #ifndef X86
-	PR2 = value;
+    PR2 = value;
 #endif
 }
 

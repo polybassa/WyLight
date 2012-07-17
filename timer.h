@@ -30,8 +30,6 @@ struct date_event {
 	struct led_cmd cmd;
 };
 
-extern char gTimecounter;
-
 void timer_init();
 //TODO: Funktion bekommt einen Wert, anhand diese wertes wird die geschwindigkeit des
 //Timers festgelegt. Wert kommt aus der berechnung einer anderen Funktion (fade oder run)
