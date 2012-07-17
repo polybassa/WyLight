@@ -55,17 +55,17 @@
 	#define htons(X) (X)
 	#define ntohs(X) (X)
 
+	#define AllowInterrupts(x) RC1IE=1;PEIE=1;GIE=1;
+	#define InitFactoryRestoreWLAN(x) TRISA.0 = 0; 
+	#define InitInputs(x) CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); //Eingänge am PORTB initialisieren
+	#define OsciInit(x) OSCCON = 0b01110010; //OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
+	
 	#define memset(PTR, VALUE, NUM_BYTES) { \
 		short k; \
 		for(k = NUM_BYTES - 1; k >= 0; k--) { \
 			PTR[k] = VALUE; \
 		} \
 	}
-
-	#define AllowInterrupts(x) RCIE=1;PEIE=1;GIE=1;
-	#define InitFactoryRestoreWLAN(x) TRISA.0 = 0; 
-	#define InitInputs(x) CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); //Eingänge am PORTB initialisieren
-	#define OsciInit(x) OSCCON = 0b01110010; //OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
 	
 	void CheckInputs();
 #endif

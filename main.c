@@ -28,6 +28,7 @@
 
 //*********************** INCLUDEDATEIEN *********************************************
 #include "int18XXX.h"
+#include "spi.h"
 #include "platform.h"
 #include "RingBuf.h"		//clean
 #include "usart.h"			//clean
@@ -63,7 +64,6 @@ interrupt InterruptRoutine(void)
 	if(TMR2IF)
 	{
 		Timer2Interrupt();
-		gTimecounter = ++gTimecounter;
 		commandstorage_wait_interrupt();
 	}
 	if(TMR4IF)

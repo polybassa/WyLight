@@ -20,6 +20,7 @@
 #include "commandstorage.h"
 #include "ledstrip.h"
 
+//TODO Implement uns16 Commandpointer
 struct CommandBuffer gCmdBuf;
 
 struct led_cmd* commandstorage_read(struct led_cmd *pDest)
@@ -43,7 +44,7 @@ struct led_cmd* commandstorage_read(struct led_cmd *pDest)
 		}
 
 		//read command from eeprom
-		EEPROM_RD_BLK((unsigned char*)pDest, (nextCmd - CmdWidth), CmdWidth);
+		EEPROM_RD_BLK((unsigned char*)pDest,(uns16)nextCmd - CmdWidth, CmdWidth);
 
 		//update the CmdPointer?
 		if(gCmdBuf.LoopMode)
