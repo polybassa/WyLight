@@ -61,6 +61,10 @@ void ledstrip_set_color(struct cmd_set_color *pCmd);
  */
 void ledstrip_set_fade(struct cmd_set_fade *pCmd);
 
+#ifdef FAST_FADE
+void ledstrip_set_fade_fast(struct cmd_set_fade *pCmd);
+#endif
+
 /**
  * called by the main cycle
  * update the ledstrip accourding to the precalculated parameters in <gLedBuf>
