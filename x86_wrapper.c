@@ -22,6 +22,8 @@
 #include "x86_wrapper.h"
 #include "timer.h"
 
+extern unsigned char do_update_fade;
+
 bit g_led_off = 1; //X86 replacement for PORTC.0
 pthread_mutex_t g_led_mutex = PTHREAD_MUTEX_INITIALIZER;
 uns8 g_led_status[NUM_OF_LED*3];
@@ -63,7 +65,7 @@ void* cycle_timer_interrupt(void* unused)
 	for(;;)
 	{
 		usleep(1000 * CYCLE_TMMS);
-		ledstrip_update_fade();
+		do_update_fade = 1;//ledstrip_update_fade();
 	}
 }
 
