@@ -237,11 +237,7 @@ USARTsend_str("executeCommand");
 			}
 			case SET_FADE:
 			{
-#ifdef FAST_FADE
-				ledstrip_set_fade_fast(&pCmd->data.set_fade);
-#else
 				ledstrip_set_fade(&pCmd->data.set_fade);
-#endif
 				break;
 			}
 			case WAIT:

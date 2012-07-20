@@ -16,10 +16,6 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifdef X86
-#include <stdio.h>
-#endif
-
 #include "ledstrip.h"
 #include "spi.h"
 
@@ -83,43 +79,6 @@ bank1 struct LedBuffer gLedBuf;
 				gLedBuf.delta[k] = fadeTmms / CYCLE_TMMS; \
 			} \
 		} \
-};
-
-/**
- * This is a sub-macro of <FOR_EACH_MASKED_LED_DO> used in fast fade precalculations
- * to set the fading parameters(<periodeLength>, <stepSize> and <delta>) for <newColor>
-**/
-#define CALC_COLOR_FAST(DEC_STEP, PERIODE, STEP_SIZE, DELTA) { \
-	if(DEC_STEP) { \
-		*(stepAddress) |= (stepMask); \
-	} else { \
-		*(stepAddress) &= ~(stepMask); \
-	}; \
-	INC_BIT_COUNTER(stepAddress, stepMask); \
-	gLedBuf.periodeLength[k] = PERIODE; \
-	gLedBuf.stepSize[k] = STEP_SIZE; \
-	gLedBuf.delta[k] = DELTA; \
-};
-
-#define PRE_CALC_COLOR(NEW_COLOR, DELTA, DEC_STEP, PERIODE, STEP_SIZE) { \
-	if(DELTA > NEW_COLOR) { \
-		DELTA -= NEW_COLOR; \
-		DEC_STEP = 1; \
-	} else { \
-		DELTA = NEW_COLOR - DELTA; \
-		DEC_STEP = 0; \
-	}	\
-	if((0 != DELTA)) { \
-		unsigned short temp = (uns16)DELTA * CYCLE_TMMS; \
-		if(fadeTmms >= temp) { \
-			PERIODE = fadeTmmsPerCycleTmms / DELTA; \
-			STEP_SIZE = 1; \
-		} else { \
-			PERIODE = 1; \
-			STEP_SIZE = temp / fadeTmms; \
-			DELTA = fadeTmms / CYCLE_TMMS; \
-		} \
-	} \
 };
 
 void ledstrip_init(void)
@@ -220,64 +179,6 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 		}
 	);
 }
-#ifdef FAST_FADE
-void ledstrip_set_fade_fast(struct cmd_set_fade *pCmd)
-{
-	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
-	const uns16 fadeTmmsPerCycleTmms = fadeTmms / CYCLE_TMMS;
-
-	unsigned char Blue_delta;
-	unsigned short Blue_periodeLength;
-	unsigned char Blue_stepSize;
-	bit Blue_decStep;
-
-	unsigned char Green_delta;
-	unsigned short Green_periodeLength;
-	unsigned char Green_stepSize;
-	bit Green_decStep;
-
-	unsigned char Red_delta;
-	unsigned short Red_periodeLength;
-	unsigned char Red_stepSize;
-	bit Red_decStep;
-
-	// get initial values
-	FOR_EACH_MASKED_LED_DO(
-		{
-			Blue_delta = gLedBuf.led_array[k];
-			PRE_CALC_COLOR(pCmd->blue, Blue_delta, Blue_decStep, Blue_periodeLength, Blue_stepSize);
-			Green_delta = gLedBuf.led_array[++k];
-			PRE_CALC_COLOR(pCmd->green, Green_delta, Green_decStep, Green_periodeLength, Green_stepSize);
-			Red_delta = gLedBuf.led_array[++k];
-			PRE_CALC_COLOR(pCmd->red, Red_delta, Red_decStep, Red_periodeLength, Red_stepSize);
-			break;
-		},
-		{
-			k++;k++;
-		}
-	);
-
-	uns8* stepAddress = gLedBuf.step;
-	uns8 stepMask;
-	stepMask = 0x01;
-	FOR_EACH_MASKED_LED_DO(
-		{
-			CALC_COLOR_FAST(Blue_decStep, Blue_periodeLength, Blue_stepSize, Blue_delta);
-			k++;
-			CALC_COLOR_FAST(Green_decStep, Green_periodeLength, Green_stepSize, Green_delta);
-			k++;
-			CALC_COLOR_FAST(Red_decStep, Red_periodeLength, Red_stepSize, Red_delta);
-		},
-		{
-			// if led is not fade, we have to increment our pointers and rotate the mask
-			k++;k++;
-			INC_BIT_COUNTER(stepAddress, stepMask);
-			INC_BIT_COUNTER(stepAddress, stepMask);
-			INC_BIT_COUNTER(stepAddress, stepMask);
-		}
-	);
-}
-#endif /* #ifdef FAST_FADE */
 
 void ledstrip_update_fade(void)
 {
