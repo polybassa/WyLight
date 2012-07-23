@@ -42,7 +42,7 @@ struct cmd_set_color {
 	uns8 reserved[2];
 };
 
-#pragma pack(1)
+//#pragma pack(1)
 struct cmd_set_fade {
 	uns8 addr[4];
 	uns8 red;

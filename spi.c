@@ -21,13 +21,17 @@
 #ifndef X86
 void spi_init()
 {
+	ANSELC = 0;
 	TRISC.3 = 0;        // Make port RC3 an output(SPI Clock)
     TRISC.4 = 1;        // Make port RC4 an input(SPI Data In)
     TRISC.5 = 0;        // Make port RC5 an output(SPI Data Out)
-	SMP = 1;
-	CKP = 0;
-	CKE = 1;
-	SSPEN = 1;
+	SSP1STAT = 0b11000000;
+	//SMP = 1;
+	//CKP = 0;
+	//CKE = 1;
+	SSP1CON1 = 0b00100000;
+	//SSP1CON1 |= 0x02;	
+	//SSPEN = 1;
 }
 
 char spi_send(char data)

@@ -55,10 +55,9 @@
 	#define htons(X) (X)
 	#define ntohs(X) (X)
 
-	#define AllowInterrupts(x) RC1IE=1;PEIE=1;GIE=1;
-	#define InitFactoryRestoreWLAN(x) TRISA.0 = 0; 
+	#define AllowInterrupts(x) RC1IE=1; PEIE=1; GIE=1;
 	#define InitInputs(x) CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); //Eingänge am PORTB initialisieren
-	#define OsciInit(x) OSCCON = 0b01110010; //OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
+	#define OsciInit(x) OSCCON = 0b01110010; PLLEN = 1;//OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
 	
 	#define memset(PTR, VALUE, NUM_BYTES) { \
 		short k; \
@@ -68,5 +67,12 @@
 	}
 	
 	void CheckInputs();
+	
+	/*** This Function will Disable the Autostart to the Bootloader.
+	* At Startup, Bootloader checks the last EEPROM-Cell. If there is 
+	* 0x01 in the EEPROM-Cell, the Bootloader will go directly to the
+	* Application otherwise the Bootloader stays in Bootloader-Mode.
+	*/
+	void DisableBootloaderAutostart();
 #endif
 #endif /* #ifndef _PLATFORM_H_ */

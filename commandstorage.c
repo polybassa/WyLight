@@ -20,7 +20,23 @@
 #include "commandstorage.h"
 #include "ledstrip.h"
 
-//TODO Implement uns16 Commandpointer
+//*********************** PRIVATE FUNCTIONS *********************************************
+uns16 GetEepromPointer(uns16 PointerAddr)
+{
+	uns16 temp;
+	temp.low8 = EEPROM_RD(PointerAddr);
+	temp.high8 = EEPROM_RD(PointerAddr+1);
+
+	return temp;
+}
+
+void SetEepromPointer(uns16 PointerAddr, uns16 Value)
+{
+	EEPROM_WR(PointerAddr, Value.low8);
+	EEPROM_WR(PointerAddr+1, Value.high8);
+}
+//*********************** PUBLIC FUNCTIONS *********************************************
+
 struct CommandBuffer gCmdBuf;
 
 struct led_cmd* commandstorage_read(struct led_cmd *pDest)
@@ -32,25 +48,25 @@ struct led_cmd* commandstorage_read(struct led_cmd *pDest)
 		if(0 == pDest) return 0;
 
 		//commands available in eeprom?
-		char nextCmd = EEPROM_RD(CmdPointerAddr);
+		uns16 nextCmd = GetEepromPointer(CmdPointerAddr);
 		if(0 == nextCmd) return 0;
 	
 		if(gCmdBuf.LoopMode)
 		{
-			nextCmd = EEPROM_RD(CmdLoopPointerAddr);
+			nextCmd = GetEepromPointer(CmdLoopPointerAddr);
 			if(0 == nextCmd)
 				nextCmd = EEPROM_RD(CmdPointerAddr);
-				EEPROM_WR(CmdLoopPointerAddr, nextCmd);
+			SetEepromPointer(CmdLoopPointerAddr,nextCmd);
 		}
 
 		//read command from eeprom
-		EEPROM_RD_BLK((unsigned char*)pDest,(uns16)nextCmd - CmdWidth, CmdWidth);
+		EEPROM_RD_BLK((unsigned char*)pDest,nextCmd - CmdWidth, CmdWidth);
 
 		//update the CmdPointer?
 		if(gCmdBuf.LoopMode)
-			EEPROM_WR(CmdLoopPointerAddr, nextCmd - CmdWidth);		
+			SetEepromPointer(CmdLoopPointerAddr,nextCmd - CmdWidth);		
 		else
-			EEPROM_WR(CmdPointerAddr, nextCmd - CmdWidth);
+			SetEepromPointer(CmdPointerAddr,nextCmd - CmdWidth);
 			
 #ifdef TEST
 		USARTsend_str("Read_Done");
@@ -66,11 +82,12 @@ bit commandstorage_write(unsigned char *pSrc, unsigned char length)
 	if(0 == pSrc) return FALSE;
 	
 	//enought free space in eeprom?
-	char nextCmd = EEPROM_RD(CmdPointerAddr);
-	if(nextCmd >= (CmdPointerAddr - CmdWidth)) return FALSE;
+	uns16 nextCmd = GetEepromPointer(CmdPointerAddr);
+	if(nextCmd >= (CmdPointerAddr - CmdWidth + 1)) 
+		return FALSE;
 
 	//increase the command pointer in eeprom
-	EEPROM_WR(CmdPointerAddr,(nextCmd + CmdWidth));
+	SetEepromPointer(CmdPointerAddr,nextCmd + (uns16)CmdWidth);
 		
 	//write data to eeprom
 	EEPROM_WR_BLK(pSrc, nextCmd, length);
@@ -95,14 +112,26 @@ void commandstorage_get_commands()
 		temp = 0;
 		j = 0;
 		// *** get new byte
-		new_byte = RingBufGet();	
+		new_byte = RingBufGet();
+#ifdef TEST_COMMAND
+		USARTsend_str("BYTE:");
+		USARTsend_num(new_byte,'b');
+#endif
+
+#ifdef TEST_COMMAND
+			USARTsend_str("FRAMECOUNTER");
+			USARTsend_num(gCmdBuf.frame_counter,' ');
+#endif
 		// *** do I wait for databytes?
 		if(gCmdBuf.frame_counter == 0)
 		{
 			// *** I don't wait for databytes
 			// *** Do I receive a Start_of_Text sign
-			if((uns8)new_byte == STX)
+			if(new_byte == STX)
 			{
+#ifdef TEST_COMMAND
+				USARTsend_str("STX_detected  ");
+#endif
 				// *** increse the cmd_counter
 				gCmdBuf.cmd_counter = 1;
 				// *** Write the startsign at the begin of the buffer
@@ -119,6 +148,9 @@ void commandstorage_get_commands()
 				// *** check if I get the framelength byte
 				if((new_byte < temp) && (gCmdBuf.cmd_counter == 1))
 				{
+#ifdef TEST_COMMAND
+					USARTsend_str("FRAME_LEN_detected  ");
+#endif
 					gCmdBuf.frame_counter = new_byte;
 					gCmdBuf.cmd_buf[1] = new_byte;
 					gCmdBuf.cmd_counter = 2;
@@ -154,7 +186,8 @@ void commandstorage_get_commands()
 					{
 						case DELETE: 
 							{
-								EEPROM_WR(CmdPointerAddr,0);
+								SetEepromPointer(CmdPointerAddr,0);
+								SetEepromPointer(CmdLoopPointerAddr,0);
 								USARTsend('D');
 								return;
 							}
@@ -227,6 +260,16 @@ USARTsend_str("executeCommand");
 		{	
 			case SET_COLOR: 
 			{
+#ifdef TEST
+				USARTsend_str("SET_COLOR");
+				USARTsend_num(nextCmd.data.set_color.addr[0],'A');
+				USARTsend_num(nextCmd.data.set_color.addr[1],'A');
+				USARTsend_num(nextCmd.data.set_color.addr[2],'A');
+				USARTsend_num(nextCmd.data.set_color.addr[3],'A');
+				USARTsend_num(nextCmd.data.set_color.red,'R');
+				USARTsend_num(nextCmd.data.set_color.green,'G');
+				USARTsend_num(nextCmd.data.set_color.blue,'B');
+#endif
 				ledstrip_set_color(&nextCmd.data.set_color);
 				break;
 			}
@@ -243,9 +286,8 @@ USARTsend_str("executeCommand");
 				USARTsend_num(pCmd->valueL,'L');
 #endif
 				
-				gCmdBuf.WaitValue = pCmd->valueH;
-				gCmdBuf.WaitValue = gCmdBuf.WaitValue << 8;
-				gCmdBuf.WaitValue += pCmd->valueL;
+				gCmdBuf.WaitValue.high8 = pCmd->valueH;
+				gCmdBuf.WaitValue.low8 = pCmd->valueL;
 				break;
 			}
 			case SET_RUN: {break;}
@@ -265,12 +307,19 @@ void commandstorage_init()
 	*** so I have to delete the pointer address
 	*** otherwise the PIC thinks he has the EEPROM full with commands
 	**/
-	if (EEPROM_RD(CmdPointerAddr) == 0xff)
-		EEPROM_WR(CmdPointerAddr, 0);
+#ifndef TEST_COMMAND
+	if (GetEepromPointer(CmdPointerAddr) == 0xff)
+#endif
+		SetEepromPointer(CmdPointerAddr, 0);
+#ifdef TEST_COMMAND
+	uns16 cmdptr = GetEepromPointer(CmdPointerAddr);
+	USARTsend_num(cmdptr.high8, 'H');
+	USARTsend_num(cmdptr.low8, 'L');
+#endif
 	gCmdBuf.LoopMode = 0;
 	gCmdBuf.WaitValue = 0;
 
 	// set loop pointer address to start
-	EEPROM_WR(CmdLoopPointerAddr, 0);
+	SetEepromPointer(CmdLoopPointerAddr, 0);
 }
 

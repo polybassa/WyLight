@@ -18,7 +18,7 @@
 
 #include "RingBuf.h"
 
-struct RingBuffer gRingBuf;
+bank1 struct RingBuffer gRingBuf;
 
 void RingBufInit(void)
 {

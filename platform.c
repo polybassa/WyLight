@@ -21,20 +21,17 @@
 #ifndef X86
 void CheckInputs()
 {
-//if INPUT is low, then FactoryReset the WLAN Interface
-	if(PORTB.1 == 1)
-		PORTA.0 = 0;
-	else 
-		PORTA.0 = 1;
 	//Goto Bootloader if PORTB.0 is low
 	if(PORTB.5 == 0)
 	{
-		#asm
-		clrf PCLATH
-		clrf PCL
-		#endasm
+		softReset();
 	}
 		
+}
+
+void DisableBootloaderAutostart()
+{
+	EEPROM_WR(1023, 1);
 }
 
 #endif /* X86 */

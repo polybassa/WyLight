@@ -24,8 +24,8 @@ void USARTinit()
 	//USART TX Pin als Ausgang
 	TRISC.6 = 0;
 	BRGH1=1;					// High Baudrate activated
-	BRG16=0;
-	SPBRG1=25;				// 19200 Bps @ 8 MHz Clock
+	BRG16=1;
+	SPBRG1=34;				// 19200 Bps @ 8 MHz Clock
 	SPBRGH1=0;
     SPEN1 = 1;               // Set_Serial_Pins;
     SYNC1 = 0;               // Set_Async_Mode;
@@ -35,8 +35,6 @@ void USARTinit()
     TXEN1 = 1;               // Enable_Tx;
     RC1IE=1;                 // Rx Interrupt aus
 	ADDEN1=0;				// Disable Adressdetection
-
-
 }
 
 //*******  Sende-char-Funktion  *************************************************
@@ -78,7 +76,6 @@ void USARTsend_arr(char *array, char length)
 //*******  Sende-Zahl-als-String-Funktion  *************************************************
 void USARTsend_num(char input, char sign)
 {
-#pragma rambank 1
    char temp;
    char h,z,e;
  
@@ -111,7 +108,6 @@ void USARTsend_num(char input, char sign)
    USARTsend(e+0x30);
    USARTsend(sign); 	//Zeichen senden
 }
-#pragma rambank 0
 #endif
 /*
 //SENDE BCD-Zahl als String

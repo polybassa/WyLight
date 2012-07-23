@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -21,19 +21,18 @@
 
 void TimerInit()
 {
-	T2CON = 0b01111101;
-	TMR2IE = 1;
-	
-    
-	T4CON = 0b00000101;
+	T1CON = 0b00110111;
+	TMR1IE = 1;
+    //T4 Interrupt every 2 Millisecound if clock is 64MHz
+	//Calculation
+	//64000000 Hz / 4 / 16 / 200 / 10
+	T4CON = 0b01001111;
 	TMR4IE = 1;
-	
-	PR4 = 0xff;
-
+	PR4 = 200;
 }
 
 void TimerSetForFade(char value)
 {
-	PR2 = value;
+	//Not Implemented yet
 }
 

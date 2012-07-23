@@ -19,8 +19,8 @@
 
 #ifndef X86
 #define NO_CRC
-//#define TEST
-#pragma optimize 0
+#define TEST
+#pragma optimize 1
 //#pragma resetVector 0x400
 //#pragma unlockISR
 #endif
@@ -28,8 +28,8 @@
 
 //*********************** INCLUDEDATEIEN *********************************************
 #include "int18XXX.h"
-#include "spi.h"
 #include "platform.h"
+#include "spi.h"
 #include "RingBuf.h"		//clean
 #include "usart.h"			//clean
 #include "eeprom.h"       	//clean 
@@ -37,6 +37,7 @@
 #include "commandstorage.h" //under construction
 #include "ledstrip.h"		//clean
 #include "timer.h"			//under construction
+
 #ifdef X86
 #include <unistd.h>
 #endif /* #ifdef X86 */
@@ -44,7 +45,6 @@
 //*********************** GLOBAL VARIABLES *******************************************
 char g_update_fade:1;	
 //*********************** X86 InterruptRoutine *******************************************
-
 
 #ifndef X86
 //*********************** INTERRUPTSERVICEROUTINE ************************************
@@ -61,9 +61,9 @@ interrupt InterruptRoutine(void)
 			char temp = RCREG1;
 		}
 	}
-	if(TMR2IF)
+	if(TMR1IF)
 	{
-		Timer2Interrupt();
+		Timer1Interrupt();
 		commandstorage_wait_interrupt();
 	}
 	if(TMR4IF)
@@ -102,7 +102,7 @@ void main(void)
 		ThrowErrors();
 		commandstorage_get_commands();
 		commandstorage_execute_commands();
-		ledstrip_do_fade();
+		//ledstrip_do_fade();
 		
 		if(g_update_fade)
 		{
@@ -124,8 +124,7 @@ void InitAll()
 	ledstrip_init();
 	commandstorage_init();
 	ErrorInit();
-	ClearCmdBuf();	
-	AllowInterrupts();
+	ClearCmdBuf();
 
 #ifdef X86
 	init_x86();
@@ -137,6 +136,7 @@ void InitAll()
 	USARTsend('Y');
 	
 	AllowInterrupts();
+	DisableBootloaderAutostart();
 }
 
 // cc5xfree is a bit stupid so we include the other implementation files here
@@ -146,9 +146,9 @@ void InitAll()
 #include "eeprom.c"
 #include "error.c"
 #include "ledstrip.c"
-#include "RingBuf.c"
 #include "spi.c"
 #include "timer.c"
+#include "RingBuf.c"
 #include "usart.c"
 #include "commandstorage.c"
 #include "platform.c"

@@ -36,9 +36,9 @@ void TimerInit();
 //Timers festgelegt. Wert kommt aus der berechnung einer anderen Funktion (fade oder run)
 void TimerSetForFade(char value);
 
-#define Timer2Interrupt(x)  		\
+#define Timer1Interrupt(x)  		\
 {									\
-	TMR2IF = 0;						\
+	TMR1IF = 0;						\
 }
 
 #define Timer4Interrupt(x)  		\

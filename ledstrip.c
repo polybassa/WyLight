@@ -108,6 +108,9 @@ void ledstrip_set_color(struct cmd_set_color *pCmd)
 			k++;k++;
 		}
 	);
+#ifdef TEST
+	USARTsend_str("DoSETCOLOR");
+#endif
 	// write changes to ledstrip
 	spi_send_ledbuf(gLedBuf.led_array);
 }
