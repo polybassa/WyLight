@@ -21,7 +21,7 @@
 
 #include "commandstorage.h"
 
-#define NUM_OF_LED 24
+#define NUM_OF_LED 32
 
 /**
  * This structure is used for calculations to manipulate the ledstrip state

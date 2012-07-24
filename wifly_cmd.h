@@ -32,6 +32,7 @@
 #define DELETE 0xF8
 #define LOOP_ON 0xF7
 #define LOOP_OFF 0xF6
+#define START_BL 0xF5
 
 //*********************** STRUCT DECLARATION *********************************************
 struct cmd_set_color {

@@ -25,19 +25,25 @@ void spi_init()
 	TRISC.3 = 0;        // Make port RC3 an output(SPI Clock)
     TRISC.4 = 1;        // Make port RC4 an input(SPI Data In)
     TRISC.5 = 0;        // Make port RC5 an output(SPI Data Out)
-	SSP1STAT = 0b11000000;
-	//SMP = 1;
-	//CKP = 0;
-	//CKE = 1;
+	//SSP1STAT = 0b11000000;
+	SMP = 1;
+	CKP = 0;
+	CKE = 1;
 	SSP1CON1 = 0b00100000;
-	//SSP1CON1 |= 0x02;	
-	//SSPEN = 1;
+	//SSP1CON1 &= 0x02;	
+	SSPEN = 1;
 }
 
 char spi_send(char data)
 {
+	bit GIE_temp;
+	GIE_temp = GIE;
+	GIE = 0;
+	
 	SSP1BUF = data;	
 	while(SSP1IF == 0);
+	
+	GIE = GIE_temp;
 	return SSP1BUF;
 }
 
@@ -59,9 +65,11 @@ void spi_send_ledbuf(uns8 *array)//!!! CHECK if GIE=0 during the sendroutine imp
 {
 	//array must be the address of the first byte
 	char* end;
+	
 	//calculate where the end is
 	end = array + (NUM_OF_LED * 3);
 	//send all
+	
 	for(; array < end; array++)
 	{
 		spi_send(*array);

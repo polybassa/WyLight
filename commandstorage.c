@@ -216,6 +216,13 @@ void commandstorage_get_commands()
 								USARTsend('0');
 								return;
 							}
+						case START_BL:
+							{
+							#ifndef X86
+								EEPROM_WR(0x3ff, 0xff);
+								softReset();
+							#endif
+							}
 						default:
 							{
 								if( commandstorage_write(&gCmdBuf.cmd_buf[2], (gCmdBuf.cmd_counter - 4)))

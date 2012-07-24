@@ -37,6 +37,7 @@
 #include "commandstorage.h" //under construction
 #include "ledstrip.h"		//clean
 #include "timer.h"			//under construction
+#include "rtc.h"
 
 #ifdef X86
 #include <unistd.h>
@@ -91,6 +92,13 @@ void main(void)
 	clearRAM();
 #endif
 	InitAll();
+	
+#ifdef TEST
+	IICsend(RTC,0x00,0x00);
+	USARTsend_str("Control1Reg:");
+	USARTsend_num(IICrecv(RTC,0x00),' ');
+	
+#endif
 
 	while(1)
 	{
@@ -102,13 +110,18 @@ void main(void)
 		ThrowErrors();
 		commandstorage_get_commands();
 		commandstorage_execute_commands();
-		//ledstrip_do_fade();
+		ledstrip_do_fade();
 		
 		if(g_update_fade)
 		{
 			ledstrip_update_fade();
 			g_update_fade = 0;
+#ifdef TEST
+			USARTsend_num(IICrecv(RTC,0x02),';');
+#endif
 		}
+		
+
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************
@@ -120,6 +133,7 @@ void InitAll()
 	RingBufInit();
 	USARTinit();
 	spi_init();
+	IICinit();
 	TimerInit();
 	ledstrip_init();
 	commandstorage_init();
@@ -152,5 +166,6 @@ void InitAll()
 #include "usart.c"
 #include "commandstorage.c"
 #include "platform.c"
+#include "iic.c"
 #endif /* #ifndef X86 */
 
