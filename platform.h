@@ -38,6 +38,7 @@
 
 	//global variables
 	extern bit g_led_off;
+	extern unsigned char g_update_fade;	
 
 	#define bank1
 	#define AllowInterrupts(x)
@@ -47,8 +48,6 @@
 	#define InitFET(x)
 	#define InitInputs(x)	
 	#define OsciInit(x)
-	#define PowerOnLEDs(x) g_led_off = 0;
-	#define PowerOffLEDs(x) g_led_off = 1;
 	
 #else
 	#include "inline.h"

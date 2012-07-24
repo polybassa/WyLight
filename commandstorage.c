@@ -118,7 +118,7 @@ void commandstorage_get_commands()
 	{
 		// *** preload variables and 
 		// *** get new_byte from ringbuffer
-		char new_byte, temp, j;
+		unsigned char new_byte, temp, j;
 		temp = 0;
 		j = 0;
 		// *** get new byte

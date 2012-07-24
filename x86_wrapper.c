@@ -65,7 +65,7 @@ void* timer_interrupt(void* unused)
 	for(;;)
 	{
 		usleep(1000 * CYCLE_TMMS);
-		ledstrip_update_fade();
+		g_update_fade = 1;
 	}
 }
 
@@ -78,7 +78,7 @@ void USARTsend(char ch)
 }
 
 
-static uns8 gEEPROM[0x100];
+static uns8 gEEPROM[0x400];
 char EEPROM_RD(uns16 adress)
 {
 	return gEEPROM[adress];

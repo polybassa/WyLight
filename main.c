@@ -43,7 +43,7 @@
 #endif /* #ifdef X86 */
 
 //*********************** GLOBAL VARIABLES *******************************************
-char g_update_fade;	
+unsigned char g_update_fade;	
 //*********************** X86 InterruptRoutine *******************************************
 
 #ifndef X86
