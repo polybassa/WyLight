@@ -118,9 +118,8 @@ void commandstorage_get_commands()
 	{
 		// *** preload variables and 
 		// *** get new_byte from ringbuffer
-		unsigned char new_byte, temp, j;
+		unsigned char new_byte, temp;
 		temp = 0;
-		j = 0;
 		// *** get new byte
 		new_byte = RingBufGet();
 #ifdef TEST_COMMAND
@@ -185,9 +184,7 @@ void commandstorage_get_commands()
 			// *** and I can give the string to the crc check function.
 			if(gCmdBuf.frame_counter == 0)
 			{
-	printf("CRC");
 #ifndef NO_CRC
-	printf("active\n");
                 // *** verify crc checksum
                 if( (gCmdBuf.crcL == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 1]) &&
                     (gCmdBuf.crcH == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 2]) )
@@ -237,7 +234,6 @@ void commandstorage_get_commands()
 							}
 						default:
 							{
-								printf("HUHU\n");
 								if( commandstorage_write(&gCmdBuf.cmd_buf[2], (gCmdBuf.cmd_counter - 4)))
 								{
 									USARTsend('G');
@@ -280,7 +276,6 @@ USARTsend_str("executeCommand");
 		{	
 			case SET_COLOR: 
 			{
-				printf("SET_COLOR\n");
 #ifdef TEST
 				USARTsend_str("SET_COLOR");
 				USARTsend_num(nextCmd.data.set_color.addr[0],'A');
