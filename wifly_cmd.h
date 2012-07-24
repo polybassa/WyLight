@@ -63,6 +63,17 @@ struct cmd_set_fade {
 	uns16 fadeTmms; //fadetime in ms
 };
 
+struct cmd_loop_start {
+	uns8 counter;
+	uns8 numLoops;
+	uns8 depth;
+};
+
+struct cmd_loop_stop {
+	uns8 startIndex;
+	uns8 depth;
+};
+
 struct cmd_wait {
 	uns8 valueH;
 	uns8 valueL;
@@ -81,6 +92,8 @@ struct led_cmd {
 		struct cmd_set_fade set_fade;
 		struct cmd_set_run set_run;
 		struct cmd_wait wait;
+		struct cmd_loop_start loop_start;
+		struct cmd_loop_stop loop_stop;
 	}data;
 };
 
