@@ -54,10 +54,11 @@ void* InterruptRoutine(void* unused)
 	}
 }
 
-void addCRC(char byte, char* p_crcH, char* p_crcL) {}
-void newCRC(char* p_crcH, char* p_crcL) {}
+void addCRC(char byte, unsigned char* p_crcH, unsigned char* p_crcL) {}
+void newCRC(unsigned char* p_crcH, unsigned char* p_crcL) {}
 
-void timer_init(){}
+void IICinit(){}
+void TimerInit(){}
 void timer_set_for_fade(char value){}
 void* timer_interrupt(void* unused)
 {
@@ -78,13 +79,13 @@ void USARTsend(char ch)
 
 
 static uns8 gEEPROM[0x100];
-char EEPROM_RD(uns8 adress)
+char EEPROM_RD(uns16 adress)
 {
 	return gEEPROM[adress];
 }
 
 
-void EEPROM_WR(uns8 adress, uns8 data)
+void EEPROM_WR(uns16 adress, char data)
 {
 	gEEPROM[adress] = data;
 }

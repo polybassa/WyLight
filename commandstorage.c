@@ -24,16 +24,26 @@
 uns16 GetEepromPointer(uns16 PointerAddr)
 {
 	uns16 temp;
+#ifndef X86
 	temp.low8 = EEPROM_RD(PointerAddr);
 	temp.high8 = EEPROM_RD(PointerAddr+1);
+#else
+	temp = 0x00ff & EEPROM_RD(PointerAddr);
+	temp |= EEPROM_RD(PointerAddr+1) << 8;
+#endif
 
 	return temp;
 }
 
 void SetEepromPointer(uns16 PointerAddr, uns16 Value)
 {
+#ifndef X86
 	EEPROM_WR(PointerAddr, Value.low8);
 	EEPROM_WR(PointerAddr+1, Value.high8);
+#else
+	EEPROM_WR(PointerAddr, Value & 0x00ff);
+	EEPROM_WR(PointerAddr+1, (Value & 0xff00) >> 8);
+#endif
 }
 //*********************** PUBLIC FUNCTIONS *********************************************
 
@@ -175,7 +185,9 @@ void commandstorage_get_commands()
 			// *** and I can give the string to the crc check function.
 			if(gCmdBuf.frame_counter == 0)
 			{
+	printf("CRC");
 #ifndef NO_CRC
+	printf("active\n");
                 // *** verify crc checksum
                 if( (gCmdBuf.crcL == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 1]) &&
                     (gCmdBuf.crcH == gCmdBuf.cmd_buf[gCmdBuf.cmd_counter - 2]) )
@@ -225,6 +237,7 @@ void commandstorage_get_commands()
 							}
 						default:
 							{
+								printf("HUHU\n");
 								if( commandstorage_write(&gCmdBuf.cmd_buf[2], (gCmdBuf.cmd_counter - 4)))
 								{
 									USARTsend('G');
@@ -267,6 +280,7 @@ USARTsend_str("executeCommand");
 		{	
 			case SET_COLOR: 
 			{
+				printf("SET_COLOR\n");
 #ifdef TEST
 				USARTsend_str("SET_COLOR");
 				USARTsend_num(nextCmd.data.set_color.addr[0],'A');
@@ -292,9 +306,14 @@ USARTsend_str("executeCommand");
 				USARTsend_num(pCmd->valueH,'H');
 				USARTsend_num(pCmd->valueL,'L');
 #endif
-				
+
+#ifndef X86
 				gCmdBuf.WaitValue.high8 = pCmd->valueH;
 				gCmdBuf.WaitValue.low8 = pCmd->valueL;
+#else
+				gCmdBuf.WaitValue = pCmd->valueH << 8;
+				gCmdBuf.WaitValue |= 0x00ff & pCmd->valueL;
+#endif
 				break;
 			}
 			case SET_RUN: {break;}

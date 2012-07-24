@@ -28,6 +28,7 @@
 #define CYCLE_TMMS 64		//cycle time in milliseconds
 
 #ifdef X86
+	#include <stdio.h>
 	#include <arpa/inet.h>
 	#include <string.h>
 
@@ -40,17 +41,18 @@
 
 	#define bank1
 	#define AllowInterrupts(x)
+	#define CheckInputs(x)
+	#define DisableBootloaderAutostart(x)
 	#define InitFactoryRestoreWLAN(x)
 	#define InitFET(x)
 	#define InitInputs(x)	
 	#define OsciInit(x)
 	#define PowerOnLEDs(x) g_led_off = 0;
 	#define PowerOffLEDs(x) g_led_off = 1;
-	#define Check_INPUT(x)	
 	
 #else
-
 	#include "inline.h"
+	#include "int18XXX.h"
 
 	#define htons(X) (X)
 	#define ntohs(X) (X)
