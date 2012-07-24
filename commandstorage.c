@@ -24,16 +24,26 @@
 uns16 GetEepromPointer(uns16 PointerAddr)
 {
 	uns16 temp;
+#ifndef X86
 	temp.low8 = EEPROM_RD(PointerAddr);
 	temp.high8 = EEPROM_RD(PointerAddr+1);
+#else
+	temp = 0x00ff & EEPROM_RD(PointerAddr);
+	temp |= EEPROM_RD(PointerAddr+1) << 8;
+#endif
 
 	return temp;
 }
 
 void SetEepromPointer(uns16 PointerAddr, uns16 Value)
 {
+#ifndef X86
 	EEPROM_WR(PointerAddr, Value.low8);
 	EEPROM_WR(PointerAddr+1, Value.high8);
+#else
+	EEPROM_WR(PointerAddr, Value & 0x00ff);
+	EEPROM_WR(PointerAddr+1, (Value & 0xff00) >> 8);
+#endif
 }
 //*********************** PUBLIC FUNCTIONS *********************************************
 
@@ -108,9 +118,8 @@ void commandstorage_get_commands()
 	{
 		// *** preload variables and 
 		// *** get new_byte from ringbuffer
-		char new_byte, temp, j;
+		unsigned char new_byte, temp;
 		temp = 0;
-		j = 0;
 		// *** get new byte
 		new_byte = RingBufGet();
 #ifdef TEST_COMMAND
@@ -292,9 +301,14 @@ USARTsend_str("executeCommand");
 				USARTsend_num(pCmd->valueH,'H');
 				USARTsend_num(pCmd->valueL,'L');
 #endif
-				
+
+#ifndef X86
 				gCmdBuf.WaitValue.high8 = pCmd->valueH;
 				gCmdBuf.WaitValue.low8 = pCmd->valueL;
+#else
+				gCmdBuf.WaitValue = pCmd->valueH << 8;
+				gCmdBuf.WaitValue |= 0x00ff & pCmd->valueL;
+#endif
 				break;
 			}
 			case SET_RUN: {break;}

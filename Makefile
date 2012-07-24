@@ -1,4 +1,4 @@
-PIC_CC=/home/gpb/cc5xfree/CC5X.EXE
+PIC_CC=/home/gpb/cc8efree/CC8E.EXE
 PIC_CC8E=/Users/weitys1/Dropbox/Wifly_Light/CC8E/CC8E.EXE
 
 ANDROID_DIR=./android/WiflyLight
@@ -15,7 +15,7 @@ pic_nils:
 	wine ${PIC_CC8E} main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM
 
 pic_pat: ledstrip.h
-	wine ${PIC_CC} main.c -CC -fINHX8M -p16F1936 -a -L -Q -V -FM
+	wine ${PIC_CC} main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM
 
 linux_simu:
 	gcc ${X86_SRC} -DX86 -DNO_CRC -lpthread ${OPENGL_LIB} -o server.bin -Wall -DDEBUG

@@ -29,12 +29,12 @@
 // 16-bit CCIT CRC
 
 //adds one byte to the given crc checksum
-void addCRC(char byte, char* p_crcH, char* p_crcL);
+void addCRC(char byte, unsigned char* p_crcH, unsigned char* p_crcL);
 
 //do a complete crc calulation 
 void CRC(char *data, char length, char* crcH_out, char* crcL_out);
 
 //set the CRC-Bytes to inital value
-void newCRC(char* p_crcH, char* p_crcL);
+void newCRC(unsigned char* p_crcH, unsigned char* p_crcL);
 
 #endif
