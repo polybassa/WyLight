@@ -238,6 +238,16 @@ def run_app():
     send_data = bytearray()
     send_data.append(0x08)        
     s.send(build_send_str(send_data))
+    try:
+        recv_data = s.recv(BUFFER_SIZE)
+    except socket.timeout:
+        print "x"
+        recv_data = ""
+        
+        
+    if recv_data:
+        print "Response from PIC:", recv_data
+
 #++++++++++++++++ erase Device Flash++++++++++++++++++++
 def erase_flash():
     
