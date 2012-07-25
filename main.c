@@ -27,7 +27,6 @@
 #pragma sharedAllocation
 
 //*********************** INCLUDEDATEIEN *********************************************
-#include "int18XXX.h"
 #include "platform.h"
 #include "spi.h"
 #include "RingBuf.h"		//clean
@@ -44,7 +43,7 @@
 #endif /* #ifdef X86 */
 
 //*********************** GLOBAL VARIABLES *******************************************
-char g_update_fade:1;	
+unsigned char g_update_fade;	
 //*********************** X86 InterruptRoutine *******************************************
 
 #ifndef X86

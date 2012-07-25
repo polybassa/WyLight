@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick BrŸnn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -89,7 +89,7 @@ char EEPROM_RD(char adress);
 
 //*********************** EEPROM BYTEARRAY SCHREIBEN  **************************************
 
-void EEPROM_WR_BLK(char *array, uns16 adress, char length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
+void EEPROM_WR_BLK(unsigned char *array, uns16 adress, char length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
 {
 	if(!array) return;
 	char i;
@@ -103,7 +103,7 @@ void EEPROM_WR_BLK(char *array, uns16 adress, char length)			//Zum Ausführen ein
 
 //*********************** EEPROM BYTEARRAY LESEN  **************************************
 
-void EEPROM_RD_BLK(char *array, uns16 adress, char length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
+void EEPROM_RD_BLK(unsigned char *array, uns16 adress, char length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
 {
 	if(!array) return;
 	uns8 i, temp;
