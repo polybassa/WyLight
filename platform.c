@@ -19,7 +19,7 @@
 #include "platform.h"
 
 #ifndef X86
-void CheckInputs()
+void Platform_CheckInputs()
 {
 	//Goto Bootloader if PORTB.0 is low
 	if(PORTB.5 == 0)
@@ -29,9 +29,9 @@ void CheckInputs()
 		
 }
 
-void DisableBootloaderAutostart()
+void Platform_DisableBootloaderAutostart()
 {
-	EEPROM_WR(1023, 1);
+	Eeprom_Write(1023, 1);
 }
 
 #endif /* X86 */

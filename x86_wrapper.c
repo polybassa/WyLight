@@ -46,31 +46,31 @@ void* InterruptRoutine(void* unused)
 		int i;
 		for(i = 0; i < bytesRead; i++)
 		{
-			if(!RingBufHasError)
+			if(!RingBuf_HasError)
 			{
-				RingBufPut(buf[i]);
+				RingBuf_Put(buf[i]);
 			}
 		}
 	}
 }
 
-void addCRC(char byte, unsigned char* p_crcH, unsigned char* p_crcL) {}
-void newCRC(unsigned char* p_crcH, unsigned char* p_crcL) {}
+void Crc_AddCrc(char byte, unsigned char* p_Crc_BuildCrcH, unsigned char* p_Crc_BuildCrcL) {}
+void newCrc_BuildCrc(unsigned char* p_Crc_BuildCrcH, unsigned char* p_Crc_BuildCrcL) {}
 
-void IICinit(){}
-void TimerInit(){}
+void I2C_Init(){}
+void Timer_Init(){}
 void timer_set_for_fade(char value){}
 void* timer_interrupt(void* unused)
 {
 	for(;;)
 	{
 		usleep(1000 * CYCLE_TMMS);
-		g_update_fade = 1;
+		g_UpdateFade = 1;
 	}
 }
 
-void USARTinit() {}
-void USARTsend(char ch)
+void UART_Init() {}
+void UART_Send(char ch)
 {
 	FILE* gUSART = fopen("out_usart.txt", "a+");
 	fputc(ch, gUSART);
@@ -79,18 +79,18 @@ void USARTsend(char ch)
 
 
 static uns8 gEEPROM[0x400];
-char EEPROM_RD(uns16 adress)
+char Eeprom_Read(uns16 adress)
 {
 	return gEEPROM[adress];
 }
 
 
-void EEPROM_WR(uns16 adress, char data)
+void Eeprom_Write(uns16 adress, unsigned char data)
 {
 	gEEPROM[adress] = data;
 }
-void spi_init() {}
-char spi_send(char data)
+void SPI_Init() {}
+char SPI_Send(char data)
 {
 	int i;
 	for(i = 3*NUM_OF_LED - 1; i > 0; i--)
@@ -101,7 +101,7 @@ char spi_send(char data)
 	return g_led_status[0];
 }
 
-void spi_send_ledbuf(uns8 *array)//!!! CHECK if GIE=0 during the sendroutine improves the result
+void SPI_SendLedBuffer(uns8 *array)//!!! CHECK if GIE=0 during the sendroutine improves the result
 {
 	//array must be the address of the first byte
 	uns8* end;
@@ -112,7 +112,7 @@ void spi_send_ledbuf(uns8 *array)//!!! CHECK if GIE=0 during the sendroutine imp
 	pthread_mutex_lock(&g_led_mutex);
 	for(; array < end; array++)
 	{
-		spi_send(*array);
+		SPI_Send(*array);
 	}
 	pthread_mutex_unlock(&g_led_mutex);
 }

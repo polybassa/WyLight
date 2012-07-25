@@ -28,27 +28,27 @@
 #include "timer.h"
 #include "wifly_cmd.h"
 
-#define CmdPointerAddr 0x3fd		// *** Address at EERPOM. Commandpointer indicates the nummer of commands
-#define CmdLoopPointerAddr 0x3fb // *** Address at EEPROM. CommandLoopPointer indicates the next command. Used in Loop-Mode
+#define CMD_POINTER_ADDRESS 0x3fd		// *** Address at EERPOM. Commandpointer indicates the nummer of commands
+#define LOOP_POINTER_ADDRESS 0x3fb // *** Address at EEPROM. CommandLoopPointer indicates the next command. Used in Loop-Mode
 
 //*********************** STRUCT DECLARATION *********************************************
 struct CommandBuffer{
     uns8 cmd_counter;
     uns8 frame_counter;
     uns8 cmd_buf[FRAMELENGTH];
-    uns8 crcH;
-    uns8 crcL;
+    uns8 CrcH;
+    uns8 CrcL;
 	uns8 LoopMode:1;
 	uns16 WaitValue;
 };
-extern struct CommandBuffer gCmdBuf;
+extern struct CommandBuffer g_CmdBuf;
 
 //*********************** METHODS AND MACROS *********************************************
 #define CmdWidth sizeof(struct led_cmd)	// *** Number of Bytes for one command
-#define ClearCmdBuf(x)  		\
+#define Commandstorage_Clear(x)  		\
 {								\
-	gCmdBuf.cmd_counter = 0;	\
-	gCmdBuf.frame_counter = 0;	\
+	g_CmdBuf.cmd_counter = 0;	\
+	g_CmdBuf.frame_counter = 0;	\
 }
 
 /**
@@ -56,7 +56,7 @@ extern struct CommandBuffer gCmdBuf;
  * return: - 0, if no command available in buffer
  *         - pDest, if available command was written to pDest
 **/
-struct led_cmd* commandstorage_read(struct led_cmd *pDest);
+struct led_cmd* Commandstorage_Read(struct led_cmd *pDest);
 
 /**
  * pSrc: command which should be written to eeprom
@@ -64,23 +64,23 @@ struct led_cmd* commandstorage_read(struct led_cmd *pDest);
  * return: - TRUE, if command was successfully written to buffer
  *         - FALSE, if not
 **/
-bit commandstorage_write(unsigned char *pSrc, unsigned char length);
+bit Commandstorage_Write(unsigned char *pSrc, unsigned char length);
 
 /** This function reads one byte from the ringbuffer and check
 *** for framestart, framelength, or databyte 
 *** if a frame is complete, the function save the frame as a new
 *** command in the internal EEPROM and calculate the Pointer for the next Command
 **/
-void commandstorage_get_commands();
+void Commandstorage_GetCommands();
 
-void commandstorage_execute_commands();
+void Commandstorage_ExecuteCommands();
 
 /**
 *** Initialize commandstorage in eeprom
 **/
-void commandstorage_init();
+void Commandstorage_Init();
 
-void commandstorage_wait_interrupt();
+void Commandstorage_WaitInterrupt();
 
 #endif /* #ifndef _COMMANDSTORAGE_H_ */
 

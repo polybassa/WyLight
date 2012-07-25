@@ -38,16 +38,16 @@
 
 	//global variables
 	extern bit g_led_off;
-	extern unsigned char g_update_fade;	
+	extern unsigned char g_UpdateFade;	
 
 	#define bank1
-	#define AllowInterrupts(x)
-	#define CheckInputs(x)
-	#define DisableBootloaderAutostart(x)
+	#define Platform_AllowInterrupts(x)
+	#define Platform_CheckInputs(x)
+	#define Platform_DisableBootloaderAutostart(x)
 	#define InitFactoryRestoreWLAN(x)
 	#define InitFET(x)
-	#define InitInputs(x)	
-	#define OsciInit(x)
+	#define Platform_IOInit(x)	
+	#define Platform_OsciInit(x)
 	
 #else
 	#include "inline.h"
@@ -56,9 +56,9 @@
 	#define htons(X) (X)
 	#define ntohs(X) (X)
 
-	#define AllowInterrupts(x) RC1IE=1; PEIE=1; GIE=1;
-	#define InitInputs(x) CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); //Eingänge am PORTB initialisieren
-	#define OsciInit(x) OSCCON = 0b01110010; PLLEN = 1;//OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
+	#define Platform_AllowInterrupts(x) RC1IE=1; PEIE=1; GIE=1;
+	#define Platform_IOInit(x) CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); //Eingänge am PORTB initialisieren
+	#define Platform_OsciInit(x) OSCCON = 0b01110010; PLLEN = 1;//OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
 	
 	#define memset(PTR, VALUE, NUM_BYTES) { \
 		short k; \
@@ -67,13 +67,13 @@
 		} \
 	}
 	
-	void CheckInputs();
+	void Platform_CheckInputs();
 	
 	/*** This Function will Disable the Autostart to the Bootloader.
 	* At Startup, Bootloader checks the last EEPROM-Cell. If there is 
 	* 0x01 in the EEPROM-Cell, the Bootloader will go directly to the
 	* Application otherwise the Bootloader stays in Bootloader-Mode.
 	*/
-	void DisableBootloaderAutostart();
+	void Platform_DisableBootloaderAutostart();
 #endif
 #endif /* #ifndef _PLATFORM_H_ */

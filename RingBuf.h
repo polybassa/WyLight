@@ -40,20 +40,20 @@ struct RingBuffer{
 	uns8 write;
 	bit error_full;
 };
-extern bank1 struct RingBuffer gRingBuf;
+extern bank1 struct RingBuffer g_RingBuf;
 
 /**
  * Some macros 
  */
 #define RingBufInc(x) ((x + 1) & gRingBufSize)
-#define RingBufClearError gRingBuf.error_full = FALSE
-#define RingBufHasError (gRingBuf.error_full)
-#define RingBufIsNotEmpty (gRingBuf.write != gRingBuf.read)
+#define RingBufClearError g_RingBuf.error_full = FALSE
+#define RingBuf_HasError (g_RingBuf.error_full)
+#define RingBufIsNotEmpty (g_RingBuf.write != g_RingBuf.read)
 
 /**
  * Initialize the ring buffer and all associated variables
  */
-void RingBufInit(void);
+void RingBuf_Init(void);
 
 /**
  * This function will increment the read pointer of the
@@ -61,7 +61,7 @@ void RingBufInit(void);
  * WARNING: never call this function on an empty buffer!
  * Test with <RingBufIsNotEmpty> for data first!
  */
-char RingBufGet(void);
+char RingBuf_Get(void);
 
 /**
  * If the buffer is not full, value is added to the ring
@@ -70,5 +70,5 @@ char RingBufGet(void);
  * 
  * If the buffer is already full, <g_error_ringbuff> is set.
  */
-void RingBufPut(char value);
+void RingBuf_Put(char value);
 #endif /* #ifndef _RINGBUF_H_ */

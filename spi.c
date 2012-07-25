@@ -19,7 +19,7 @@
 #include "ledstrip.h"
 
 #ifndef X86
-void spi_init()
+void SPI_Init()
 {
 	ANSELC = 0;
 	TRISC.3 = 0;        // Make port RC3 an output(SPI Clock)
@@ -34,7 +34,7 @@ void spi_init()
 	SSPEN = 1;
 }
 
-char spi_send(char data)
+char SPI_Send(char data)
 {
 	bit GIE_temp;
 	GIE_temp = GIE;
@@ -51,17 +51,17 @@ char spi_send(char data)
 **	This function sends the array to the LED controller(WS2801)
 **  it starts with the last byte to get a correct output
 ***/
-void spi_send_arr(char *array, char length)
+void SPI_SendArray(char *array, char length)
 {
 	if(array == 0) return;
 	char i;
 	for(i = length; i == 0; i-- )
 	{
-		spi_send(array[i]);
+		SPI_Send(array[i]);
 	} 
 }
 
-void spi_send_ledbuf(uns8 *array)//!!! CHECK if GIE=0 during the sendroutine improves the result
+void SPI_SendLedBuffer(uns8 *array)//!!! CHECK if GIE=0 during the sendroutine improves the result
 {
 	//array must be the address of the first byte
 	char* end;
@@ -72,7 +72,7 @@ void spi_send_ledbuf(uns8 *array)//!!! CHECK if GIE=0 during the sendroutine imp
 	
 	for(; array < end; array++)
 	{
-		spi_send(*array);
+		SPI_Send(*array);
 	}
 }
 #endif /* #ifndef X86 */

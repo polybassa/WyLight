@@ -31,12 +31,12 @@
 
 //Funktionsprototypen
 
-void USARTinit();
-void USARTsend(char ch);
-void USARTsend_str(const char *string);
-void USARTsend_arr(char *array, char length);
+void UART_Init();
+void UART_Send(char ch);
+void UART_SendString(const char *string);
+void UART_SendArray(char *array, char length);
 #ifdef TEST
-void USARTsend_num(char input, char sign);
+void UART_SendNumber(char input, char sign);
 #endif
 
 #endif

@@ -16,25 +16,26 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef _CRC_H_
-#define _CRC_H_
+#ifndef _Crc_BuildCrc_H_
+#define _Crc_BuildCrc_H_
 
- // Include-Datei zum Erstellen von CRC Pr¸fsummen
+ // Include-Datei zum Erstellen von Crc Pruefsummen
  //
  //
  // Nils Weiﬂ
  // 14.04.2012
  // Compiler CC5x
 
-// 16-bit CCIT CRC
+// 16-bit CCIT crc
 
 //adds one byte to the given crc checksum
-void addCRC(char byte, unsigned char* p_crcH, unsigned char* p_crcL);
+void Crc_AddCrc(unsigned char byte,unsigned char* p_crcH,unsigned char* p_crcL);
 
 //do a complete crc calulation 
-void CRC(char *data, char length, char* crcH_out, char* crcL_out);
+void Crc_BuildCrc(unsigned char *data, unsigned char length, unsigned char* crcH_out, unsigned char* crcL_out);
 
-//set the CRC-Bytes to inital value
-void newCRC(unsigned char* p_crcH, unsigned char* p_crcL);
+
+//set the crc-Bytes to inital value
+void Crc_NewCrc(unsigned char* p_crcH, unsigned char* p_crcL);
 
 #endif

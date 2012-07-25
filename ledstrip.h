@@ -45,31 +45,31 @@ struct LedBuffer{
 /**
  * Initialize the ledstrip and all associated variables
  */
-void ledstrip_init(void);
+void Ledstrip_Init(void);
 
 /**
  * Callback if a "set_color" command is received.
  * ledstrip is updated according to the provided cmd_set_color
  * only Led's where the address bit is 1 will be set to the new color
  */
-void ledstrip_set_color(struct cmd_set_color *pCmd);
+void Ledstrip_SetColor(struct cmd_set_color *pCmd);
 
 /**
  * Callback if a "set_fade" command is received.
  * fading parameters are calculated and stored to be used in
- * ledstrip_do_fade() which is called in the main cycle
+ * Ledstrip_DoFade() which is called in the main cycle
  */
-void ledstrip_set_fade(struct cmd_set_fade *pCmd);
+void Ledstrip_SetFade(struct cmd_set_fade *pCmd);
 
 /**
  * called by the main cycle
  * update the ledstrip accourding to the precalculated parameters in <gLedBuf>
  */
-void ledstrip_do_fade(void);
+void Ledstrip_DoFade(void);
 
 /**
  * callback for the fadecycle timer
  * updates cyclesLeft part of the global <gLedBuf>
 **/
-void ledstrip_update_fade(void);
+void Ledstrip_UpdateFade(void);
 #endif

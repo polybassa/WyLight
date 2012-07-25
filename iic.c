@@ -17,13 +17,13 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
  
 //Befehle:
-//IICinit() zum initialisieren
+//I2C_Init() zum initialisieren
 //IICwrite(Slave-Adresse,Register-Adresse,Datenbyte) zum Schreiben eines Byte in einen Slave
 //IICread(Slave-Adresse,Register-Adresse) lieﬂt ein Byte von der angegebenen Adresse
 
 #include "iic.h"
 
-void IICinit()
+void I2C_Init()
 {	
 	ANSELB = 0;
 	SSP2ADD=39;				//Takt des IIC-Bus auf 400kHz einstellen
@@ -32,7 +32,7 @@ void IICinit()
 	SSPEN2=1;				//MSSP-Modul einschalten
 }
 
-void IICsend(uns8 slaveaddr,uns8 dataaddr, uns8 data)
+void I2C_Write(uns8 slaveaddr,uns8 dataaddr, uns8 data)
 {
 	//Writebit in Slaveadresse setzen
 	
@@ -65,7 +65,7 @@ void IICsend(uns8 slaveaddr,uns8 dataaddr, uns8 data)
 	SSP2IF=0;
 }
 
-uns8 IICrecv(uns8 slaveaddr,uns8 readaddr)
+uns8 I2C_Read(uns8 slaveaddr,uns8 readaddr)
 {
 	//Writebit in Slaveadresse setzen
 	uns8 _slaveaddr;

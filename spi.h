@@ -25,9 +25,9 @@
 
 #include "ledstrip.h"
 
-void spi_init();
-char spi_send(char data);
-void spi_send_arr(char *array, char length);
-void spi_send_ledbuf(uns8 *array);
+void SPI_Init();
+char SPI_Send(char data);
+void SPI_SendArray(char *array, char length);
+void SPI_SendLedBuffer(uns8 *array);
 
 #endif

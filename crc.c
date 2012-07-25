@@ -18,10 +18,10 @@
 
 // 16-bit CCIT CRC
 
-void addCRC(char byte, char* p_crcH, char* p_crcL)
+void Crc_AddCrc(unsigned char byte,unsigned char* p_crcH,unsigned char* p_crcL)
 {
-	char index;
-	char crcH,crcL;
+	unsigned char index;
+	unsigned char crcH,crcL;
 	crcH = *p_crcH;
 	crcL = *p_crcL;
 
@@ -53,26 +53,26 @@ void addCRC(char byte, char* p_crcH, char* p_crcL)
 
 }
 
-void CRC(char *data, char length, char* crcH_out, char* crcL_out)
+void Crc_BuildCrc(unsigned char *data, unsigned char length, unsigned char* crcH_out, unsigned char* crcL_out)
 {
 	if(!crcH_out)return;
 	if(!crcL_out)return;
 	if(!data)return;
-	char crcH,crcL,i,byte;
+	unsigned char crcH,crcL,i,byte;
 	crcH=0xff;
 	crcL=0xff;
 
 	for(i=0;i<length;i++)
 	{
 		byte = data[i];
-		addCRC(byte,&crcH,&crcL);
+		Crc_AddCrc(byte,&crcH,&crcL);
 	}
 	
 	*crcH_out = crcH;
 	*crcL_out = crcL;
 }
 
-void newCRC(char* p_crcH, char* p_crcL)
+void Crc_NewCrc(unsigned char* p_crcH, unsigned char* p_crcL)
 {
     if(!p_crcH) return;
     if(!p_crcL) return;

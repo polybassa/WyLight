@@ -19,7 +19,7 @@
 
 #ifndef X86
 //*******  Initialisierungs-Funktion  *************************************************
-void USARTinit()
+void UART_Init()
 {
 	//USART TX Pin als Ausgang
 	TRISC.6 = 0;
@@ -38,43 +38,43 @@ void USARTinit()
 }
 
 //*******  Sende-char-Funktion  *************************************************
-void USARTsend(unsigned char ch)
+void UART_Send(unsigned char ch)
 {
 	while(!TX1IF);
 	TXREG1=ch;
 }
 #else
-void USARTsend(unsigned char ch);
+void UART_Send(unsigned char ch);
 #endif /* #ifndef X86 */
 
 //*******  Sende-String-Funktion  *************************************************
-void USARTsend_str(const char *string)
+void UART_SendString(const char *string)
 {
  char ps;
  ps = *string;
  while(ps > 0)
    {
     string++;
-   	USARTsend(ps);
+   	UART_Send(ps);
     ps = *string;
    }
 }
 
 //*******  Sende-Array-Funktion  *************************************************
-void USARTsend_arr(char *array, char length)
+void UART_SendArray(char *array, char length)
 {
 	if(array == 0) return;
 	char i;
 	for(i=0;i<length;i++)
 	{
-		USARTsend(*array);
+		UART_Send(*array);
 		array++;
 	}
 }
 
 #ifdef TEST
 //*******  Sende-Zahl-als-String-Funktion  *************************************************
-void USARTsend_num(char input, char sign)
+void UART_SendNumber(char input, char sign)
 {
    char temp;
    char h,z,e;
@@ -103,15 +103,15 @@ void USARTsend_num(char input, char sign)
    {
       e=input;
    }
-   if(h!=0)USARTsend(h+0x30);
-   USARTsend(z+0x30);
-   USARTsend(e+0x30);
-   USARTsend(sign); 	//Zeichen senden
+   if(h!=0)UART_Send(h+0x30);
+   UART_Send(z+0x30);
+   UART_Send(e+0x30);
+   UART_Send(sign); 	//Zeichen senden
 }
 #endif
 /*
 //SENDE BCD-Zahl als String
-void USARTsendTime(unsigned char input,unsigned char sign)
+void UART_SendTime(unsigned char input,unsigned char sign)
 {
 	char 	temp;
 	char	z,e;
@@ -127,9 +127,9 @@ void USARTsendTime(unsigned char input,unsigned char sign)
 	
 	if(z>5)z=0;
 	
-	USARTsend(z+0x30);
-	USARTsend(e+0x30);
-	USARTsend(sign);
+	UART_Send(z+0x30);
+	UART_Send(e+0x30);
+	UART_Send(sign);
 }*/
 	
 

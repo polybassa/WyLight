@@ -24,8 +24,8 @@
 //Nils Weiﬂ 
 //05.09.2011
 //Compiler CC5x
-void EEPROM_WR(uns16 adress, char data);
-char EEPROM_RD(uns16 adress);
-void EEPROM_WR_BLK(unsigned char *array, uns16 adress, char length);
-void EEPROM_RD_BLK(unsigned char *array, uns16 adress, char length);
+void Eeprom_Write(uns16 adress, uns8 data);
+uns8 Eeprom_Read(uns16 adress);
+void Eeprom_WriteBlock(uns8 *array, uns16 adress, uns8 length);
+void Eeprom_ReadBlock(uns8 *array, uns16 adress, uns8 length);
 #endif

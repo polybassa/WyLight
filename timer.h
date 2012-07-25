@@ -25,16 +25,16 @@
 
 #include "platform.h"
 
-extern char gTimecounter;
+extern char g_TimeCounter;
 
 #if X86
 void* timer_interrupt(void* unused);
 #endif
 
-void TimerInit();
+void Timer_Init();
 //To Do: Funktion bekommt einen Wert, anhand diese wertes wird die geschwindigkeit des
 //Timers festgelegt. Wert kommt aus der berechnung einer anderen Funktion (fade oder run)
-void TimerSetForFade(char value);
+void Timer_SetForFade(char value);
 
 #define Timer1Interrupt(x)  		\
 {									\

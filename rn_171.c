@@ -21,11 +21,11 @@
 
 void Rn171FactoryRestore()
 {
-	USARTsend('$');
-	USARTsend('$');
-	USARTsend('$');
+	UART_Send('$');
+	UART_Send('$');
+	UART_Send('$');
 	
-	USARTsend_str("load config_nils");
-	USARTsend_str("save");
-	USARTsend_str("reboot");
+	UART_SendString("load config_nils");
+	UART_SendString("save");
+	UART_SendString("reboot");
 }

@@ -81,16 +81,16 @@ bank1 struct LedBuffer gLedBuf;
 		} \
 };
 
-void ledstrip_init(void)
+void Ledstrip_Init(void)
 {
 	// initialize interface to ledstrip
-	spi_init();
+	SPI_Init();
 	
 	// initialize variables
 	memset(gLedBuf.led_array, 0, sizeof(gLedBuf.led_array));
 }
 
-void ledstrip_set_color(struct cmd_set_color *pCmd)
+void Ledstrip_SetColor(struct cmd_set_color *pCmd)
 {
 	char r = pCmd->red;
 	char g = pCmd->green;
@@ -109,13 +109,13 @@ void ledstrip_set_color(struct cmd_set_color *pCmd)
 		}
 	);
 #ifdef TEST
-	USARTsend_str("DoSETCOLOR");
+	UART_SendString("DoSETCOLOR");
 #endif
 	// write changes to ledstrip
-	spi_send_ledbuf(gLedBuf.led_array);
+	SPI_SendLedBuffer(gLedBuf.led_array);
 }
 
-void ledstrip_do_fade(void)
+void Ledstrip_DoFade(void)
 {
 	uns8 k, stepmask;
 	uns8* stepaddress = gLedBuf.step;
@@ -143,10 +143,10 @@ void ledstrip_do_fade(void)
 		INC_BIT_COUNTER(stepaddress, stepmask);
 	}
 	// write changes to ledstrip
-	spi_send_ledbuf(gLedBuf.led_array);
+	SPI_SendLedBuffer(gLedBuf.led_array);
 }
 
-void ledstrip_set_fade(struct cmd_set_fade *pCmd)
+void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 {
 	// constant for this fade used in CALC_COLOR
 	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
@@ -183,7 +183,7 @@ void ledstrip_set_fade(struct cmd_set_fade *pCmd)
 	);
 }
 
-void ledstrip_update_fade(void)
+void Ledstrip_UpdateFade(void)
 {
 	uns8 i;
 	for(i = 0; i < NUM_OF_LED*3; i++)

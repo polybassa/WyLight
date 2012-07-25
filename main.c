@@ -19,8 +19,9 @@
 
 #ifndef X86
 #define NO_CRC
-#define TEST
-#pragma optimize 1
+//#define TEST
+//#define TEST_COMMAND
+#pragma optimize 0
 //#pragma resetVector 0x400
 //#pragma unlockISR
 #endif
@@ -43,7 +44,7 @@
 #endif /* #ifdef X86 */
 
 //*********************** GLOBAL VARIABLES *******************************************
-unsigned char g_update_fade;	
+unsigned char g_UpdateFade;	
 //*********************** X86 InterruptRoutine *******************************************
 
 #ifndef X86
@@ -54,22 +55,22 @@ interrupt InterruptRoutine(void)
 	uns16 sv_FSR0 = FSR0;
 	if(RC1IF)
 	{
-		if(!RingBufHasError) RingBufPut(RCREG1);
+		if(!RingBuf_HasError) RingBuf_Put(RCREG1);
 		else 
 		{
 			//Register lesen um Schnittstellen Fehler zu vermeiden
-			char temp = RCREG1;
+			unsigned char temp = RCREG1;
 		}
 	}
 	if(TMR1IF)
 	{
 		Timer1Interrupt();
-		commandstorage_wait_interrupt();
+		Commandstorage_WaitInterrupt();
 	}
 	if(TMR4IF)
 	{
 		Timer4Interrupt();
-		g_update_fade = 1;
+		g_UpdateFade = 1;
 		
 	} 
 	FSR0 = sv_FSR0;
@@ -92,32 +93,22 @@ void main(void)
 #endif
 	InitAll();
 	
-#ifdef TEST
-	IICsend(RTC,0x00,0x00);
-	USARTsend_str("Control1Reg:");
-	USARTsend_num(IICrecv(RTC,0x00),' ');
-	
-#endif
-
 	while(1)
 	{
 #ifdef X86
 		// give opengl thread a chance to run
 		usleep(10);
 #endif
-		CheckInputs();
-		ThrowErrors();
-		commandstorage_get_commands();
-		commandstorage_execute_commands();
-		ledstrip_do_fade();
+		Platform_CheckInputs();
+		Error_Throw();
+		Commandstorage_GetCommands();
+		Commandstorage_ExecuteCommands();
+		Ledstrip_DoFade();
 		
-		if(g_update_fade)
+		if(g_UpdateFade)
 		{
-			ledstrip_update_fade();
-			g_update_fade = 0;
-#ifdef TEST
-			USARTsend_num(IICrecv(RTC,0x02),';');
-#endif
+			Ledstrip_UpdateFade();
+			g_UpdateFade = 0;
 		}
 		
 
@@ -127,29 +118,29 @@ void main(void)
 
 void InitAll()
 {
-	OsciInit();
-	InitInputs();
-	RingBufInit();
-	USARTinit();
-	spi_init();
-	IICinit();
-	TimerInit();
-	ledstrip_init();
-	commandstorage_init();
-	ErrorInit();
-	ClearCmdBuf();
+	Platform_OsciInit();
+	Platform_IOInit();
+	RingBuf_Init();
+	UART_Init();
+	SPI_Init();
+	I2C_Init();
+	Timer_Init();
+	Ledstrip_Init();
+	Commandstorage_Init();
+	Error_Init();
+	Commandstorage_Clear();
 
 #ifdef X86
 	init_x86();
 #endif /* #ifdef X86 */
 	
 	// *** send ready after init
-	USARTsend('R');
-	USARTsend('D');
-	USARTsend('Y');
+	UART_Send('R');
+	UART_Send('D');
+	UART_Send('Y');
 	
-	AllowInterrupts();
-	DisableBootloaderAutostart();
+	Platform_AllowInterrupts();
+	Platform_DisableBootloaderAutostart();
 }
 
 // cc5xfree is a bit stupid so we include the other implementation files here

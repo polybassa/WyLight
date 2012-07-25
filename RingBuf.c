@@ -18,30 +18,30 @@
 
 #include "RingBuf.h"
 
-bank1 struct RingBuffer gRingBuf;
+bank1 struct RingBuffer g_RingBuf;
 
-void RingBufInit(void)
+void RingBuf_Init(void)
 {
-	gRingBuf.read = 0;
-	gRingBuf.write = 0;
-	gRingBuf.error_full = 0;
+	g_RingBuf.read = 0;
+	g_RingBuf.write = 0;
+	g_RingBuf.error_full = 0;
 }
 
-char RingBufGet(void)
+char RingBuf_Get(void)
 {
-	char result = gRingBuf.data[gRingBuf.read];
-	gRingBuf.read = RingBufInc(gRingBuf.read);
+	char result = g_RingBuf.data[g_RingBuf.read];
+	g_RingBuf.read = RingBufInc(g_RingBuf.read);
 	return result;
 }
 
-void RingBufPut(char value)
+void RingBuf_Put(char value)
 {
-	char writeNext = RingBufInc(gRingBuf.write);
-	if(writeNext != gRingBuf.read)
+	char writeNext = RingBufInc(g_RingBuf.write);
+	if(writeNext != g_RingBuf.read)
 	{
-		gRingBuf.data[gRingBuf.write] = value;
-		gRingBuf.write = writeNext;
+		g_RingBuf.data[g_RingBuf.write] = value;
+		g_RingBuf.write = writeNext;
 	}
-	else gRingBuf.error_full = 1;
+	else g_RingBuf.error_full = 1;
 }
 
