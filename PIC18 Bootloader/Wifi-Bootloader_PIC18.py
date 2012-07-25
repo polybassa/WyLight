@@ -79,6 +79,11 @@ def clean_data(string):
     str2 = bytearray()
     dle = bool()
     
+    ''' 
+    for c in string:
+        print "%#x" % ord(c)
+    '''
+    
     if ord(string[string.__len__()-3]) == 5:
         crc_offset = 4
     else:
@@ -254,6 +259,7 @@ def erase_flash():
     if get_bootloader_info() == -1:
         print "FAILURE"
         return -1
+    
     detect_bootloader()
     
     print "-----------------------------------------------"
@@ -276,6 +282,7 @@ def erase_flash():
         send_data.append(erase_step)
         
         s.send(build_send_str(send_data))
+        sleep(0.05)
         try:
             recv_data = s.recv(BUFFER_SIZE)
         except socket.timeout:
