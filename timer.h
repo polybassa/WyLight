@@ -32,9 +32,22 @@ void* timer_interrupt(void* unused);
 #endif
 
 void Timer_Init();
-//To Do: Funktion bekommt einen Wert, anhand diese wertes wird die geschwindigkeit des
-//Timers festgelegt. Wert kommt aus der berechnung einer anderen Funktion (fade oder run)
+
+/*To Do: Funktion bekommt einen Wert, anhand diese wertes wird die geschwindigkeit des
+Timers festgelegt. Wert kommt aus der berechnung einer anderen Funktion (fade oder run)*/
 void Timer_SetForFade(char value);
+
+
+/**
+** Function start the internal Stopwatch. It's realised with the Timer3 Modul.
+** The Range of the Stopwatch is from 0.5µSec to 32.7mSec
+**/
+void Timer_StartStopwatch(void);
+
+/**
+** Function terminates the Stopwatch and print out the measured Time over UART
+**/
+void Timer_StopStopwatch(void);
 
 #define Timer1Interrupt(x)  		\
 {									\
@@ -44,6 +57,11 @@ void Timer_SetForFade(char value);
 #define Timer4Interrupt(x)  		\
 {									\
 	TMR4IF = 0;						\
+}
+
+#define Timer2Interrupt(x)  		\
+{									\
+	TMR2IF = 0;						\
 }
 
 #endif

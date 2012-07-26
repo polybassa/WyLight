@@ -44,7 +44,7 @@
 #endif /* #ifdef X86 */
 
 //*********************** GLOBAL VARIABLES *******************************************
-unsigned char g_UpdateFade;	
+uns8 g_UpdateFade,g_DoFade;	
 //*********************** X86 InterruptRoutine *******************************************
 
 #ifndef X86
@@ -71,8 +71,12 @@ interrupt InterruptRoutine(void)
 	{
 		Timer4Interrupt();
 		g_UpdateFade = 1;
-		
 	} 
+	if(TMR2IF)
+	{
+		Timer2Interrupt();
+		g_DoFade = 1;
+	}
 	FSR0 = sv_FSR0;
 	#pragma fastMode
 }
@@ -103,11 +107,16 @@ void main(void)
 		Error_Throw();
 		Commandstorage_GetCommands();
 		Commandstorage_ExecuteCommands();
-		Ledstrip_DoFade();
-		
+		if(g_DoFade)
+		{
+			Ledstrip_DoFade();
+			g_DoFade = 0;
+		}
 		if(g_UpdateFade)
 		{
+			//Timer_StartStopwatch();
 			Ledstrip_UpdateFade();
+			//Timer_StopStopwatch();
 			g_UpdateFade = 0;
 		}
 		
