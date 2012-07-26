@@ -71,8 +71,8 @@ void UART_SendArray(char *array, char length)
 	}
 }
 
-//*******  Sende-Zahl-als-String-Funktion  *************************************************
 #ifdef TEST
+//*******  Sende-Zahl-als-String-Funktion  *************************************************
 void UART_SendNumber(char input, char sign)
 {
    char temp;
