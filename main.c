@@ -107,20 +107,15 @@ void main(void)
 		Error_Throw();
 		Commandstorage_GetCommands();
 		Commandstorage_ExecuteCommands();
-		if(g_DoFade)
-		{
-			Ledstrip_DoFade();
-			g_DoFade = 0;
-		}
+
 		if(g_UpdateFade)
 		{
 			//Timer_StartStopwatch();
 			Ledstrip_UpdateFade();
 			//Timer_StopStopwatch();
 			g_UpdateFade = 0;
+			Ledstrip_DoFade();
 		}
-		
-
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************
@@ -152,8 +147,7 @@ void InitAll()
 	Platform_DisableBootloaderAutostart();
 }
 
-// cc5xfree is a bit stupid so we include the other implementation files here
-#ifndef X86
+#ifdef __CC8E__
 //#pragma codepage 1
 #include "crc.c"
 #include "eeprom.c"
@@ -166,5 +160,5 @@ void InitAll()
 #include "commandstorage.c"
 #include "platform.c"
 #include "iic.c"
-#endif /* #ifndef X86 */
+#endif /* #ifdef __CC8E__ */
 
