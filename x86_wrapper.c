@@ -77,11 +77,9 @@ void* timer_interrupt(void* unused)
 }
 
 void UART_Init() {}
-void UART_Send(char ch)
+void UART_Send(unsigned char ch)
 {
-	FILE* gUSART = fopen("out_usart.txt", "a+");
-	fputc(ch, gUSART);
-	fclose(gUSART);
+	printf("%c", ch);
 }
 
 

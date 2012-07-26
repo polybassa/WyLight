@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -16,6 +16,7 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
+#include "usart.h"
 
 #ifndef X86
 //*******  Initialisierungs-Funktion  *************************************************
@@ -43,8 +44,6 @@ void UART_Send(unsigned char ch)
 	while(!TX1IF);
 	TXREG1=ch;
 }
-#else
-void UART_Send(unsigned char ch);
 #endif /* #ifndef X86 */
 
 //*******  Sende-String-Funktion  *************************************************
@@ -72,8 +71,10 @@ void UART_SendArray(char *array, char length)
 	}
 }
 
-#ifdef TEST
 //*******  Sende-Zahl-als-String-Funktion  *************************************************
+#ifndef TEST
+void UART_SendNumber(char input, char sign) {}
+#else
 void UART_SendNumber(char input, char sign)
 {
    char temp;

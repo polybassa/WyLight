@@ -107,15 +107,12 @@ void main(void)
 		Error_Throw();
 		Commandstorage_GetCommands();
 		Commandstorage_ExecuteCommands();
-		if(g_DoFade)
-		{
-			Ledstrip_DoFade();
-			g_DoFade = 0;
-		}
+
 		if(g_UpdateFade)
 		{
 			//Timer_StartStopwatch();
 			Ledstrip_UpdateFade();
+			Ledstrip_DoFade();
 			//Timer_StopStopwatch();
 			g_UpdateFade = 0;
 		}
