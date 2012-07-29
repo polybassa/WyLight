@@ -253,6 +253,35 @@ def run_app():
     if recv_data:
         print "Response from PIC:", recv_data
 
+#++++++++++++++++ KILL Application ++++++++++++++++++++
+def kill_app():
+    
+    print "--> Kill Application now"
+    print "-----------------------------------------------"
+    
+    send_data = bytearray()
+    send_data.append(0xff)
+    send_data.append(0x03)
+    send_data.append(0xf5)
+    
+    crc = crc16.crc16xmodem(str(send_data), 0xffff)
+    
+    send_data.append(crc >> 8 & 0xff)
+    send_data.append(crc >> 0 & 0xff)
+
+    
+    s.send(send_data)
+    try:
+        recv_data = s.recv(BUFFER_SIZE)
+    except socket.timeout:
+        print "x"
+        recv_data = ""
+    
+    
+    if recv_data:
+        print "Response from PIC:", recv_data
+
+
 #++++++++++++++++ erase Device Flash++++++++++++++++++++
 def erase_flash():
     
@@ -682,6 +711,7 @@ for arg in sys.argv:
         print "Parameter: erase_flash            --> Flash-Inhalt der Mikrocontrollers löschen"
         print "Parameter: write_flash:code.hex   --> Programmiert den Inhalt der angegebenen Datei"
         print "Parameter: run_app                --> Startet die Application und beendet den Bootloader"
+        print "Parameter: kill_app               --> Beendet die Application und startet den Bootloader"
         print "Parameter: set_IP:xxx.xxx.xxx.xxx --> Ändert die IP zur Kommunikation mit dem Bootloader"
         print ""
         print "Defaultparameter:"
@@ -742,4 +772,13 @@ for arg in sys.argv:
         s.settimeout(2)
         run_app()
         s.close()
+    #-----run_app ARG---
+    if (arg.find("kill_app")> -1):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((TCP_IP, TCP_PORT)) 
+        s.settimeout(2)
+        kill_app()
+        s.close()
+
+
     
