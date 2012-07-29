@@ -228,6 +228,7 @@ void Commandstorage_GetCommands()
 						case START_BL:
 							{
 							#ifndef X86
+								UART_SendString("Leaving Application --> Starting Bootloader");
 								Eeprom_Write(0x3ff, 0xff);
 								softReset();
 							#endif
