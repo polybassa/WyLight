@@ -92,27 +92,42 @@ void Ledstrip_Init(void)
 
 void Ledstrip_SetColor(struct cmd_set_color *pCmd)
 {
+	const uns16 fadeTmms = 1;
+	const uns16 fadeTmmsPerCycleTmms = fadeTmms / CYCLE_TMMS;
+	
 	char r = pCmd->red;
 	char g = pCmd->green;
 	char b = pCmd->blue;
-
+	
+	uns8 delta;
+	uns16 temp16;
+	uns8* stepAddress = gLedBuf.step;
+	uns8 stepMask;
+	stepMask = 0x01;
+	
 	FOR_EACH_MASKED_LED_DO(
 		{
 			gLedBuf.led_array[k] = b;
+			CALC_COLOR(b);
 			k++;
 			gLedBuf.led_array[k] = g;
+			CALC_COLOR(g);
 			k++;
 			gLedBuf.led_array[k] = r;
+			CALC_COLOR(r);
 		},
 		{
 			k++;k++;
+			INC_BIT_COUNTER(stepAddress, stepMask);
+			INC_BIT_COUNTER(stepAddress, stepMask);
+			INC_BIT_COUNTER(stepAddress, stepMask);
 		}
 	);
 #ifdef TEST
 	UART_SendString("DoSETCOLOR");
 #endif
 	// write changes to ledstrip
-	SPI_SendLedBuffer(gLedBuf.led_array);
+	//SPI_SendLedBuffer(gLedBuf.led_array);
 }
 
 void Ledstrip_DoFade(void)
