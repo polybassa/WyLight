@@ -26,13 +26,13 @@ void Timer_Init()
 	TMR1IE = 1;
 	
     /* 
-	** T4 Interrupt every 2 Millisecound if clock is 64MHz
+	** T4 Interrupt every 1 Millisecound if clock is 64MHz
 	** Calculation
-	** 64000000 Hz / 4 / 16 / 200 / 10
+	** 64000000 Hz / 4 / 16 / 100 / 10
 	*/
 	T4CON = 0b01001111;
 	TMR4IE = 1;
-	PR4 = 200;
+	PR4 = 100;
 	
 	/* 
 	** T2 Interrupt every 0.5 Millisecound if clock is 64MHz
@@ -69,9 +69,11 @@ void Timer_StartStopwatch(void)
 void Timer_StopStopwatch(void)
 {
 #ifndef X86
+/*
 	TMR3ON = 0;
 	uns16 measuredValue,tempValue;
-	uns8 value;
+	uns8 value[8],temp,i;
+	uns8* ptrValue;
 	measuredValue.low8 = TMR3L;
 	measuredValue.high8 = TMR3H;
 	
@@ -79,11 +81,25 @@ void Timer_StopStopwatch(void)
 	
 	tempValue = measuredValue >> 1;			//rotate right, so there are µS in tempValue
 	
-	if((tempValue & 0xf000) > 0)
+	ptrValue = &value[0];
+	while(!(ptrValue == &value[7]))
+	{
+		W = tempValue.low8;
+		W = decadj(W);
+		temp = W;
+		*ptrValue = temp & 0x0f;
+		ptrValue++;
+		*ptrValue = temp & 0xf0;
+		//Under Construction
+	}
+	
+	if((tempValue & 0xfF00) > 0)
 	{
 		value = (uns8)(tempValue >> 12);
 		value &= 0x0f;
-		value += '0';
+		W = value;
+		W = decadj(W);
+		value = W;
 		UART_Send(value);
 	}
 	if((tempValue & 0x0f00) > 0)
@@ -112,8 +128,10 @@ void Timer_StopStopwatch(void)
 	{
 		UART_Send('.');
 		UART_Send('5');
-		UART_SendString(" µSecounds in HEX");
+		UART_SendString(" µS in HEX ");
+		UART_Send(0x0d);
+		UART_Send(0x0a);
 	}
-	
+	*/
 #endif
 }

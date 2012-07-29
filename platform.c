@@ -29,6 +29,20 @@ void Platform_CheckInputs()
 		
 }
 
+void Platform_AllowInterrupts()
+{
+	IPEN = 1;
+	TMR1IP = 0;
+	TMR2IP = 0;
+	TMR3IP = 0;
+	TMR4IP = 0;
+	RC1IP = 1;
+	RC1IE = 1; 
+	PEIE = 1; 
+	GIEL = 1;
+	GIEH = 1;
+}
+
 void Platform_DisableBootloaderAutostart()
 {
 	Eeprom_Write(1023, 1);

@@ -21,9 +21,7 @@
 #define NO_CRC
 //#define TEST
 //#define TEST_COMMAND
-#pragma optimize 0
-//#pragma resetVector 0x400
-//#pragma unlockISR
+#pragma optimize 1
 #endif
 #pragma sharedAllocation
 
@@ -38,30 +36,44 @@
 #include "ledstrip.h"		//clean
 #include "timer.h"			//under construction
 #include "rtc.h"
+#include "int18XXX.h"
 
 #ifdef X86
 #include <unistd.h>
 #endif /* #ifdef X86 */
 
 //*********************** GLOBAL VARIABLES *******************************************
-uns8 g_UpdateFade,g_DoFade;	
-//*********************** X86 InterruptRoutine *******************************************
+
+//*********************** FUNKTIONSPROTOTYPEN ****************************************
+void InitAll();
+void HighPriorityInterruptFunction(void);
+#ifdef X86
+void init_x86(void);
+#endif /* #ifdef X86 */
 
 #ifndef X86
 //*********************** INTERRUPTSERVICEROUTINE ************************************
-#pragma origin 8					//Adresse des High Priority Interrupts	
-interrupt InterruptRoutine(void)
+#pragma origin 0x8					//Adresse des High Priority Interrupts	
+interrupt HighPriorityInterrupt(void)
 {
+	HighPriorityInterruptFunction();
+	#pragma fastMode
+}
+
+#pragma origin 0x18
+interrupt LowPriorityInterrupt(void)
+{
+	int_save_registers
 	uns16 sv_FSR0 = FSR0;
-	if(RC1IF)
-	{
-		if(!RingBuf_HasError) RingBuf_Put(RCREG1);
-		else 
-		{
-			//Register lesen um Schnittstellen Fehler zu vermeiden
-			unsigned char temp = RCREG1;
-		}
-	}
+	uns16 sv_FSR1 = FSR1;
+	uns16 sv_FSR2 = FSR2;
+	uns8 sv_PCLATH = PCLATH;
+	uns8 sv_PCLATU = PCLATU;
+	uns8 sv_PRODL = PRODL;
+	uns8 sv_PRODH = PRODH;
+	uns24 sv_TBLPTR = TBLPTR;
+	uns8 sv_TABLAT = TABLAT;
+
 	if(TMR1IF)
 	{
 		Timer1Interrupt();
@@ -70,24 +82,46 @@ interrupt InterruptRoutine(void)
 	if(TMR4IF)
 	{
 		Timer4Interrupt();
-		g_UpdateFade = 1;
+		Ledstrip_UpdateFade();
 	} 
 	if(TMR2IF)
 	{
 		Timer2Interrupt();
-		g_DoFade = 1;
+		Ledstrip_DoFade();
+	}
+	
+	FSR0 = sv_FSR0;
+	FSR1 = sv_FSR1;
+	FSR2 = sv_FSR2;
+	PCLATH = sv_PCLATH;
+	PCLATU = sv_PCLATU;
+	PRODL = sv_PRODL;
+	PRODH = sv_PRODH;
+	TBLPTR = sv_TBLPTR;
+	TABLAT = sv_TABLAT;
+
+	int_restore_registers
+}
+
+void HighPriorityInterruptFunction(void)
+{
+	uns16 sv_FSR0 = FSR0;
+	if(RC1IF)
+	{
+		if(!RingBuf_HasError) 
+		{
+			RingBuf_Put(RCREG1);
+		}
+		else 
+		{
+			//Register lesen um Schnittstellen Fehler zu vermeiden
+			unsigned char temp = RCREG1;
+		}
 	}
 	FSR0 = sv_FSR0;
-	#pragma fastMode
 }
 #endif /* #ifndef X86 */
 
-//*********************** FUNKTIONSPROTOTYPEN ****************************************
-void InitAll();
-
-#ifdef X86
-void init_x86(void);
-#endif /* #ifdef X86 */
 
 //*********************** HAUPTPROGRAMM **********************************************
 void main(void)
@@ -107,20 +141,6 @@ void main(void)
 		Error_Throw();
 		Commandstorage_GetCommands();
 		Commandstorage_ExecuteCommands();
-		if(g_DoFade)
-		{
-			Ledstrip_DoFade();
-			g_DoFade = 0;
-		}
-		if(g_UpdateFade)
-		{
-			//Timer_StartStopwatch();
-			Ledstrip_UpdateFade();
-			//Timer_StopStopwatch();
-			g_UpdateFade = 0;
-		}
-		
-
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************
@@ -154,7 +174,7 @@ void InitAll()
 
 // cc5xfree is a bit stupid so we include the other implementation files here
 #ifndef X86
-//#pragma codepage 1
+#pragma codepage 1
 #include "crc.c"
 #include "eeprom.c"
 #include "error.c"

@@ -56,7 +56,6 @@
 	#define htons(X) (X)
 	#define ntohs(X) (X)
 
-	#define Platform_AllowInterrupts(x) RC1IE=1; PEIE=1; GIE=1;
 	#define Platform_IOInit(x) CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); //Eingänge am PORTB initialisieren
 	#define Platform_OsciInit(x) OSCCON = 0b01110010; PLLEN = 1;//OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
 	
@@ -66,6 +65,8 @@
 			PTR[k] = VALUE; \
 		} \
 	}
+	
+	void Platform_AllowInterrupts();
 	
 	void Platform_CheckInputs();
 	
