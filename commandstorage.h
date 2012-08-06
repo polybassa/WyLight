@@ -33,13 +33,13 @@
 
 //*********************** STRUCT DECLARATION *********************************************
 struct CommandBuffer{
+	uns16 WaitValue;
     uns8 cmd_counter;
     uns8 frame_counter;
     uns8 cmd_buf[FRAMELENGTH];
     uns8 CrcH;
     uns8 CrcL;
 	uns8 LoopMode:1;
-	uns16 WaitValue;
 };
 extern struct CommandBuffer g_CmdBuf;
 

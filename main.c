@@ -172,9 +172,8 @@ void InitAll()
 	Platform_DisableBootloaderAutostart();
 }
 
-// cc5xfree is a bit stupid so we include the other implementation files here
-#ifndef X86
-#pragma codepage 1
+#ifdef __CC8E__
+//#pragma codepage 1
 #include "crc.c"
 #include "eeprom.c"
 #include "error.c"
@@ -186,5 +185,5 @@ void InitAll()
 #include "commandstorage.c"
 #include "platform.c"
 #include "iic.c"
-#endif /* #ifndef X86 */
+#endif /* #ifdef __CC8E__ */
 

@@ -19,12 +19,6 @@
 #ifndef _USART_H_
 #define _USART_H_
 // Include-Datei für Serielle Kommunikation über Hardwaremodul des Pic
- //
- //
- // Nils Weiß
- // 29.11.2010
- // Compiler CC5x
-
 //Befehle:
 //InitUSART() zum initialisieren
 //USARTstring("text") zum Senden von Zeichenstrings
@@ -32,7 +26,7 @@
 //Funktionsprototypen
 
 void UART_Init();
-void UART_Send(char ch);
+void UART_Send(unsigned char ch);
 void UART_SendString(const char *string);
 void UART_SendArray(char *array, char length);
 #ifdef TEST

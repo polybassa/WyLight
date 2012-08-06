@@ -19,6 +19,7 @@
 #include "platform.h"
 #include "commandstorage.h"
 #include "ledstrip.h"
+#include "trace.h"
 
 //*********************** PRIVATE FUNCTIONS *********************************************
 uns16 GetEepromPointer(uns16 PointerAddr)
@@ -77,10 +78,9 @@ struct led_cmd* Commandstorage_Read(struct led_cmd *pDest)
 			SetEepromPointer(LOOP_POINTER_ADDRESS,nextCmd - CmdWidth);		
 		else
 			SetEepromPointer(CMD_POINTER_ADDRESS,nextCmd - CmdWidth);
-			
-#ifdef TEST
+#ifdef TEST			
 		UART_SendString("Read_Done");
-#endif 
+#endif
 		return pDest;
 	}
 	else return 0;
@@ -122,10 +122,8 @@ void Commandstorage_GetCommands()
 		temp = 0;
 		// *** get new byte
 		new_byte = RingBuf_Get();
-#ifdef TEST_COMMAND
-		UART_SendString("BYTE:");
-		UART_SendNumber(new_byte,'b');
-#endif
+		TraceString("BYTE:");
+		TraceNumber(new_byte,'b');
 
 #ifdef TEST_COMMAND
 			UART_SendString("FRAMECOUNTER");

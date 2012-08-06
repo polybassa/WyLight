@@ -54,8 +54,15 @@ void* InterruptRoutine(void* unused)
 	}
 }
 
-void Crc_AddCrc(char byte, unsigned char* p_Crc_BuildCrcH, unsigned char* p_Crc_BuildCrcL) {}
+void Crc_AddCrc(unsigned char byte,unsigned char* p_crcH,unsigned char* p_crcL) {}
 void newCrc_BuildCrc(unsigned char* p_Crc_BuildCrcH, unsigned char* p_Crc_BuildCrcL) {}
+void Crc_NewCrc(unsigned char* p_crcH, unsigned char* p_crcL)
+{
+    if(!p_crcH) return;
+    if(!p_crcL) return;
+    *p_crcH = 0xff;
+    *p_crcL = 0xff;
+}
 
 void I2C_Init(){}
 void Timer_Init(){}
@@ -70,24 +77,22 @@ void* timer_interrupt(void* unused)
 }
 
 void UART_Init() {}
-void UART_Send(char ch)
+void UART_Send(unsigned char ch)
 {
-	FILE* gUSART = fopen("out_usart.txt", "a+");
-	fputc(ch, gUSART);
-	fclose(gUSART);
+	printf("%c", ch);
 }
 
 
-static uns8 gEEPROM[0x400];
-char Eeprom_Read(uns16 adress)
+static uns8 g_Eeprom[0x400];
+unsigned char Eeprom_Read(uns16 adress)
 {
-	return gEEPROM[adress];
+	return g_Eeprom[adress];
 }
 
 
 void Eeprom_Write(uns16 adress, unsigned char data)
 {
-	gEEPROM[adress] = data;
+	g_Eeprom[adress] = data;
 }
 void SPI_Init() {}
 char SPI_Send(char data)
