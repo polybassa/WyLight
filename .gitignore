@@ -12,3 +12,23 @@ main.fcs
 client.bin
 *.bak
 
+PIC18 Bootloader/crc16-0.1.1/CHANGES.txt
+PIC18 Bootloader/crc16-0.1.1/COPYING.txt
+PIC18 Bootloader/crc16-0.1.1/PKG-INFO
+PIC18 Bootloader/crc16-0.1.1/README.txt
+PIC18 Bootloader/crc16-0.1.1/build/lib.macosx-10.8-intel-2.7/crc16/__init__.py
+PIC18 Bootloader/crc16-0.1.1/build/lib.macosx-10.8-intel-2.7/crc16/_crc16.so
+PIC18 Bootloader/crc16-0.1.1/build/lib.macosx-10.8-intel-2.7/crc16/crc16pure.py
+PIC18 Bootloader/crc16-0.1.1/build/lib.macosx-10.8-intel-2.7/crc16/test.py
+PIC18 Bootloader/crc16-0.1.1/build/temp.macosx-10.8-intel-2.7/src/_crc16module.o
+PIC18 Bootloader/crc16-0.1.1/python25/crc16/__init__.py
+PIC18 Bootloader/crc16-0.1.1/python25/crc16/crc16pure.py
+PIC18 Bootloader/crc16-0.1.1/python25/crc16/test.py
+PIC18 Bootloader/crc16-0.1.1/python2x/crc16/__init__.py
+PIC18 Bootloader/crc16-0.1.1/python2x/crc16/crc16pure.py
+PIC18 Bootloader/crc16-0.1.1/python2x/crc16/test.py
+PIC18 Bootloader/crc16-0.1.1/python3x/crc16/__init__.py
+PIC18 Bootloader/crc16-0.1.1/python3x/crc16/crc16pure.py
+PIC18 Bootloader/crc16-0.1.1/python3x/crc16/test.py
+PIC18 Bootloader/crc16-0.1.1/setup.py
+PIC18 Bootloader/crc16-0.1.1/src/_crc16module.c
