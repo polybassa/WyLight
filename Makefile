@@ -18,7 +18,7 @@ pic_pat: ledstrip.h
 	wine ${PIC_CC} main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM
 
 linux_simu:
-	gcc ${X86_SRC} -DX86 -DNO_CRC -lpthread ${OPENGL_LIB} -o server.bin -Wall -DTEST
+	gcc ${X86_SRC} -DX86 -DNO_CRC -lpthread ${OPENGL_LIB} -o server.bin -Wall
 
 android_client:
 	ndk-build -C $(ANDROID_DIR)

@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -37,7 +37,9 @@
 #include "ledstrip.h"		//clean
 #include "timer.h"			//under construction
 #include "rtc.h"
+#ifdef __CC8E__
 #include "int18XXX.h"
+#endif /* #ifdef __CC8E__ */
 //#include "MATH16.h"
 
 #ifdef X86

@@ -19,9 +19,7 @@
 #include "platform.h"
 #include "commandstorage.h"
 #include "ledstrip.h"
-#ifdef X86
 #include "trace.h"
-#endif
 
 //*********************** PRIVATE FUNCTIONS *********************************************
 uns16 GetEepromPointer(uns16 PointerAddr)
@@ -124,10 +122,8 @@ void Commandstorage_GetCommands()
 		temp = 0;
 		// *** get new byte
 		new_byte = RingBuf_Get();
-#ifdef X86
-		TraceString("BYTE:");
-		TraceNumber(new_byte,'b');
-#endif
+		Trace_String("BYTE:");
+		Trace_Number(new_byte,'b');
 
 #ifdef TEST_COMMAND
 			UART_SendString("FRAMECOUNTER");
