@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -28,9 +28,8 @@
 void UART_Init();
 void UART_Send(unsigned char ch);
 void UART_SendString(const char *string);
-void UART_SendArray(char *array, char length);
-#ifdef TEST
-void UART_SendNumber(char input, char sign);
-#endif
+void UART_SendArray(uns8 *array, uns8 length);
+void UART_SendNumber(uns8 input, uns8 sign);
+
 
 #endif

@@ -26,7 +26,7 @@ void UART_Init()
 	TRISC.6 = 0;
 	BRGH1=1;					// High Baudrate activated
 	BRG16=1;
-	SPBRG1=34;				// 19200 Bps @ 8 MHz Clock
+	SPBRG1=34;				// 115200 Bps @ 64 MHz Clock
 	SPBRGH1=0;
     SPEN1 = 1;               // Set_Serial_Pins;
     SYNC1 = 0;               // Set_Async_Mode;
@@ -44,12 +44,13 @@ void UART_Send(unsigned char ch)
 	while(!TX1IF);
 	TXREG1=ch;
 }
+
 #endif /* #ifndef X86 */
 
 //*******  Sende-String-Funktion  *************************************************
 void UART_SendString(const char *string)
 {
- char ps;
+ uns8 ps;
  ps = *string;
  while(ps > 0)
    {
@@ -60,10 +61,10 @@ void UART_SendString(const char *string)
 }
 
 //*******  Sende-Array-Funktion  *************************************************
-void UART_SendArray(char *array, char length)
+void UART_SendArray(uns8 *array, uns8 length)
 {
 	if(array == 0) return;
-	char i;
+	uns8 i;
 	for(i=0;i<length;i++)
 	{
 		UART_Send(*array);
@@ -71,12 +72,11 @@ void UART_SendArray(char *array, char length)
 	}
 }
 
-#ifdef TEST
 //*******  Sende-Zahl-als-String-Funktion  *************************************************
-void UART_SendNumber(char input, char sign)
+void UART_SendNumber(uns8 input, uns8 sign)
 {
-   char temp;
-   char h,z,e;
+   uns8 temp;
+   uns8 h,z,e;
  
    h=0;
    z=0;
@@ -107,7 +107,7 @@ void UART_SendNumber(char input, char sign)
    UART_Send(e+0x30);
    UART_Send(sign); 	//Zeichen senden
 }
-#endif
+
 /*
 //SENDE BCD-Zahl als String
 void UART_SendTime(unsigned char input,unsigned char sign)
