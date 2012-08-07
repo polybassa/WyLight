@@ -56,15 +56,15 @@
 	#define htons(X) (X)
 	#define ntohs(X) (X)
 
-	#define Platform_IOInit(x) CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); //Eingänge am PORTB initialisieren
-	#define Platform_OsciInit(x) OSCCON = 0b01110010; PLLEN = 1;//OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
+	#define Platform_IOInit(x) do { CLRF(PORTB); CLRF(LATB); CLRF(ANSELB);} while(0) //Eingänge am PORTB initialisieren
+	#define Platform_OsciInit(x) do { OSCCON = 0b01110010; PLLEN = 1;} while(0) //OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
 	
-	#define memset(PTR, VALUE, NUM_BYTES) { \
+	#define memset(PTR, VALUE, NUM_BYTES) do { \
 		short k; \
 		for(k = NUM_BYTES - 1; k >= 0; k--) { \
 			PTR[k] = VALUE; \
 		} \
-	}
+	} while(0)
 	
 	void Platform_AllowInterrupts();
 	

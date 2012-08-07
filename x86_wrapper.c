@@ -72,7 +72,8 @@ void* timer_interrupt(void* unused)
 	for(;;)
 	{
 		usleep(1000 * CYCLE_TMMS);
-		g_UpdateFade = 1;
+		Ledstrip_UpdateFade();
+		Ledstrip_DoFade();
 	}
 }
 

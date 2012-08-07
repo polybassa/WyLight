@@ -20,11 +20,11 @@
 #define _TRACE_H_
 #ifdef TEST
 	#include "usart.h"
-	#define TraceString(str) do { UART_SendString(str); } while (0)
-	#define TraceNumber(input, sign) do { UART_SendNumber(input, sign); } while (0)
+	#define Trace_String(str) do { UART_SendString(str); } while (0)
+	#define Trace_Number(input, sign) do { UART_SendNumber(input, sign); } while (0)
 #else
-	#define TraceString(str)
-	#define TraceNumber(input, sign)
+	#define Trace_String(str)
+	#define Trace_Number(input, sign)
 #endif
 #endif /* #ifndef _TRACE_H_ */
 

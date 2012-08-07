@@ -1,5 +1,5 @@
 /**
-		Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+		Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
 
@@ -18,16 +18,17 @@
 
 #include "ClientSocket.h"
 
+#include <arpa/inet.h>
 #include <cstring>
 #include <iostream>
 
-ClientSocket::ClientSocket(long addr, short port)
+ClientSocket::ClientSocket(const char* pAddr, short port)
 	: mSock(socket(AF_INET, SOCK_DGRAM, 0))
 {
 	memset(&mSockAddr, 0, sizeof(mSockAddr));
 	mSockAddr.sin_family = AF_INET;
 	mSockAddr.sin_port = htons(port);
-	mSockAddr.sin_addr.s_addr = htonl(addr);
+	inet_pton(AF_INET, pAddr, &(mSockAddr.sin_addr));
 }
 
 ClientSocket::~ClientSocket()
