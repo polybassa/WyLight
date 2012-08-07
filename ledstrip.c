@@ -92,38 +92,29 @@ void Ledstrip_Init(void)
 
 void Ledstrip_SetColor(struct cmd_set_color *pCmd)
 {
-	const uns16 fadeTmms = 1;
-	const uns16 fadeTmmsPerCycleTmms = fadeTmms / CYCLE_TMMS;
-	
-	char r = pCmd->red;
-	char g = pCmd->green;
-	char b = pCmd->blue;
-	
-	uns8 delta;
-	uns16 temp16;
-	uns8* stepAddress = gLedBuf.step;
-	uns8 stepMask;
-	stepMask = 0x01;
+	uns8 r = pCmd->red;
+	uns8 g = pCmd->green;
+	uns8 b = pCmd->blue;
 	
 	FOR_EACH_MASKED_LED_DO(
 		{
 			gLedBuf.led_array[k] = b;
-			CALC_COLOR(b);
+			gLedBuf.cyclesLeft[k] = 0;
+			gLedBuf.delta[k] = 0;
 			k++;
 			gLedBuf.led_array[k] = g;
-			CALC_COLOR(g);
+			gLedBuf.cyclesLeft[k] = 0;
+			gLedBuf.delta[k] = 0;
 			k++;
 			gLedBuf.led_array[k] = r;
-			CALC_COLOR(r);
+			gLedBuf.cyclesLeft[k] = 0;
+			gLedBuf.delta[k] = 0;
 		},
 		{
 			k++;k++;
-			INC_BIT_COUNTER(stepAddress, stepMask);
-			INC_BIT_COUNTER(stepAddress, stepMask);
-			INC_BIT_COUNTER(stepAddress, stepMask);
 		}
 	);
-#ifdef TEST
+#ifdef TEST_LED
 	UART_SendString("DoSETCOLOR");
 #endif
 	// write changes to ledstrip
@@ -164,8 +155,23 @@ void Ledstrip_DoFade(void)
 void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 {
 	// constant for this fade used in CALC_COLOR
+#ifdef X86
 	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
+#else
+	const uns16 fadeTmms = pCmd->fadeTmms;
+#endif
+
 	const uns16 fadeTmmsPerCycleTmms = fadeTmms / CYCLE_TMMS;
+#ifdef TEST_LED
+	UART_SendString("DoSETFADE ");
+	UART_SendString("fadeTmms = ");
+	UART_SendNumber(fadeTmms.high8,'H');
+	UART_SendNumber(fadeTmms.low8,'L');
+	UART_SendString("fadeTmmsPerCycleTmms = ");
+	UART_SendNumber(fadeTmmsPerCycleTmms.high8,'H');
+	UART_SendNumber(fadeTmmsPerCycleTmms.low8,'L');
+#endif
+	
 
 	/** TODO this permits parallel fade operations
 	    to fix this issue we have to move this into the CALC_COLOR

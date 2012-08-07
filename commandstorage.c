@@ -294,6 +294,18 @@ void Commandstorage_ExecuteCommands()
 			}
 			case SET_FADE:
 			{
+#ifdef TEST
+				UART_SendString("SET_FADE");
+				UART_SendNumber(nextCmd.data.set_fade.addr[0],'A');
+				UART_SendNumber(nextCmd.data.set_fade.addr[1],'A');
+				UART_SendNumber(nextCmd.data.set_fade.addr[2],'A');
+				UART_SendNumber(nextCmd.data.set_fade.addr[3],'A');
+				UART_SendNumber(nextCmd.data.set_fade.red,'R');
+				UART_SendNumber(nextCmd.data.set_fade.green,'G');
+				UART_SendNumber(nextCmd.data.set_fade.blue,'B');
+				UART_SendNumber(nextCmd.data.set_fade.fadeTmms.high8,'H');
+				UART_SendNumber(nextCmd.data.set_fade.fadeTmms.low8,'L');
+#endif
 				Ledstrip_SetFade(&nextCmd.data.set_fade);
 				break;
 			}

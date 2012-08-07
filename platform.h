@@ -25,7 +25,7 @@
 
 //*********************** CONFIGURATION ********************************************
 #define WIFLY_SERVER_PORT 2000 // TCP/UDP Port of Wifly device
-#define CYCLE_TMMS 64		//cycle time in milliseconds
+#define CYCLE_TMMS 4		//cycle time in milliseconds
 
 #ifdef X86
 	#include <stdio.h>

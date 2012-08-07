@@ -21,7 +21,8 @@
 #define NO_CRC
 //#define TEST
 //#define TEST_COMMAND
-#pragma optimize 1
+//#define TEST_LED
+#pragma optimize 0
 #endif
 #pragma sharedAllocation
 
@@ -37,6 +38,7 @@
 #include "timer.h"			//under construction
 #include "rtc.h"
 #include "int18XXX.h"
+//#include "MATH16.h"
 
 #ifdef X86
 #include <unistd.h>
@@ -141,6 +143,7 @@ void main(void)
 		Error_Throw();
 		Commandstorage_GetCommands();
 		Commandstorage_ExecuteCommands();
+		
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************
