@@ -114,11 +114,6 @@ void Ledstrip_SetColor(struct cmd_set_color *pCmd)
 			k++;k++;
 		}
 	);
-#ifdef TEST_LED
-	UART_SendString("DoSETCOLOR");
-#endif
-	// write changes to ledstrip
-	//SPI_SendLedBuffer(gLedBuf.led_array);
 }
 
 void Ledstrip_DoFade(void)
@@ -127,6 +122,7 @@ void Ledstrip_DoFade(void)
 	uns8* stepaddress = gLedBuf.step;
 	stepmask = 0x01;
 	unsigned short periodeLength;
+	
 	for(k = 0; k < (NUM_OF_LED * 3); k++)
 	{
 		// fade active on this led and current periode is over?

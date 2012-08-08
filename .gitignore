@@ -32,3 +32,9 @@ PIC18 Bootloader/crc16-0.1.1/python3x/crc16/crc16pure.py
 PIC18 Bootloader/crc16-0.1.1/python3x/crc16/test.py
 PIC18 Bootloader/crc16-0.1.1/setup.py
 PIC18 Bootloader/crc16-0.1.1/src/_crc16module.c
+WiFly_Light.mcw.mcs
+PIC18 Bootloader/PIC18 Bootloader.O
+PIC18 Bootloader/PIC18 Bootloader.cof
+PIC18 Bootloader/PIC18 Bootloader.lst
+PIC18 Bootloader/PIC18 Bootloader.map
+PIC18 Bootloader/PIC18 Bootloader.mcs

@@ -23,6 +23,39 @@
  
  #define RTC 0xA2		//IIC-Address of RTC Clock IC
  
+ struct stTime{
+	uns8 hours;
+	uns8 minutes;
+	uns8 secounds;
+};
+
+struct stDate{
+	uns8 days;
+	uns8 weekdays;
+	uns8 months;
+	uns8 years;
+};
+
+struct DateTime{
+	struct stDate date;
+	struct stTime time;
+};
+
+extern struct DateTime g_DateTime;
+
+void Rtc_Init(void); 
  
- 
+void Rtc_GetTime(struct stTime *pTime);
+
+void Rtc_GetDate(struct stDate *pDate); 
+
+void Rtc_GetDateTime(struct DateTime *pDateTime);
+
+void Rtc_SetTime(struct stTime *pTime);
+
+void Rtc_SetDate(struct stDate *pDate); 
+
+void Rtc_SetDateTime(struct DateTime *pDateTime);
+
+
  #endif /*_RTC_H_*/

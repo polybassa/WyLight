@@ -19,20 +19,16 @@
 
 #ifndef X86
 #define NO_CRC
+//#define TEST_RTC
 //#define TEST
-//#define TEST_COMMAND
-//#define TEST_LED
 #pragma optimize 0
 #endif
 #pragma sharedAllocation
 
 //*********************** INCLUDEDATEIEN *********************************************
 #include "platform.h"
-#include "spi.h"
 #include "RingBuf.h"		//clean
 #include "usart.h"			//clean
-#include "eeprom.h"       	//clean 
-#include "crc.h"			//clean
 #include "commandstorage.h" //under construction
 #include "ledstrip.h"		//clean
 #include "timer.h"			//under construction
@@ -47,7 +43,9 @@
 #endif /* #ifdef X86 */
 
 //*********************** GLOBAL VARIABLES *******************************************
-
+#ifdef TEST_RTC
+uns8 g_Testvalue;
+#endif
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void InitAll();
 void HighPriorityInterruptFunction(void);
@@ -86,11 +84,15 @@ interrupt LowPriorityInterrupt(void)
 	if(TMR4IF)
 	{
 		Timer4Interrupt();
+#ifdef TEST_RTC
+		g_Testvalue += 1;
+#endif
 		Ledstrip_UpdateFade();
 	} 
 	if(TMR2IF)
 	{
 		Timer2Interrupt();
+
 		Ledstrip_DoFade();
 	}
 	
@@ -145,7 +147,17 @@ void main(void)
 		Error_Throw();
 		Commandstorage_GetCommands();
 		Commandstorage_ExecuteCommands();
-		
+#ifdef TEST_RTC		
+		if(g_Testvalue == 255)
+		{
+			Rtc_GetTime(&g_DateTime.time);
+			UART_SendNumber(g_DateTime.time.hours,'h');
+			UART_SendNumber(g_DateTime.time.minutes,'m');
+			UART_SendNumber(g_DateTime.time.secounds,'s');
+			UART_Send(0x0d);
+			UART_Send(0x0a);
+		}
+#endif
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************
@@ -156,13 +168,12 @@ void InitAll()
 	Platform_IOInit();
 	RingBuf_Init();
 	UART_Init();
-	SPI_Init();
-	I2C_Init();
 	Timer_Init();
 	Ledstrip_Init();
 	Commandstorage_Init();
 	Error_Init();
 	Commandstorage_Clear();
+	Rtc_Init();
 
 #ifdef X86
 	init_x86();
@@ -189,6 +200,7 @@ void InitAll()
 #include "usart.c"
 #include "commandstorage.c"
 #include "platform.c"
+#include "rtc.c"
 #include "iic.c"
 #endif /* #ifdef __CC8E__ */
 
