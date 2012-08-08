@@ -23,14 +23,28 @@
 
 class ClientSocket
 {
-	private:
+	protected:
 		const int mSock;
 		struct sockaddr_in mSockAddr;
 
 	public:
-		ClientSocket(const char* pAddr, short port);
-		~ClientSocket();
-		int Send(char* frame, size_t length) const;
+		ClientSocket(const char* pAddr, short port, int style);
+		virtual ~ClientSocket();
+		virtual int Send(char* frame, size_t length) const = 0;
+};
+
+class TcpSocket : public ClientSocket
+{
+	public:
+		TcpSocket(const char* pAddr, short port);
+		virtual int Send(char* frame, size_t length) const;
+};
+
+class UdpSocket : public ClientSocket
+{
+	public:
+		UdpSocket(const char* pAddr, short port);
+		virtual int Send(char* frame, size_t length) const;
 };
 #endif /* #ifndef _CLIENTSOCKET_H_ */
 

@@ -27,7 +27,11 @@ class WiflyControl
 {
 	private:
 		struct cmd_frame mCmdFrame;
-		const ClientSocket mSock;
+#ifdef USE_UDP
+		const UdpSocket mSock;
+#else
+		const TcpSocket mSock;
+#endif
 		unsigned long ToRGBA(std::string& s) const;
 		
 	public:
