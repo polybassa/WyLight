@@ -20,22 +20,25 @@
 #define _WIFLYCONTROL_H_
 
 #include <string>
+#include <pthread.h>
 #include "ClientSocket.h"
 #include "wifly_cmd.h"
 
 class WiflyControl
 {
 	private:
-		struct cmd_frame mCmdFrame;
 #ifdef USE_UDP
 		const UdpSocket mSock;
 #else
 		const TcpSocket mSock;
 #endif
+		pthread_t mRecvThread;
+		struct cmd_frame mCmdFrame;
 		unsigned long ToRGBA(std::string& s) const;
 		
 	public:
 		WiflyControl();
+		void Receiving(void) const;
 		/**
 			rgba is a 32 Bit rgb value with alpha channel. Alpha is unused, but easier to handle
 			f.e. red(255, 0, 0) is in rgba as: 0xff000000
