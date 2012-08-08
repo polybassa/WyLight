@@ -18,6 +18,7 @@
 
 #ifndef _USART_H_
 #define _USART_H_
+#include "platform.h"
 // Include-Datei für Serielle Kommunikation über Hardwaremodul des Pic
 //Befehle:
 //InitUSART() zum initialisieren

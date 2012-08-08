@@ -1,5 +1,5 @@
 /**
-		Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+		Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
 
@@ -28,7 +28,7 @@ class ClientSocket
 		struct sockaddr_in mSockAddr;
 
 	public:
-		ClientSocket(long addr, short port);
+		ClientSocket(const char* pAddr, short port);
 		~ClientSocket();
 		int Send(char* frame, size_t length) const;
 };

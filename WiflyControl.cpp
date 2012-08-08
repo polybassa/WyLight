@@ -23,7 +23,8 @@
 using namespace std;
 
 WiflyControl::WiflyControl()
-: mSock(INADDR_ANY, WIFLY_SERVER_PORT)
+//: mSock("127.0.0.1", 2000)
+: mSock("192.168.0.14", 2000)
 {
 	mCmdFrame.stx = STX;
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;
