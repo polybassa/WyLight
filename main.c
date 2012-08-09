@@ -46,6 +46,7 @@
 #ifdef TEST_RTC
 uns8 g_Testvalue;
 #endif
+uns8 g_TmmsCounter;
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void InitAll();
 void HighPriorityInterruptFunction(void);
@@ -87,13 +88,17 @@ interrupt LowPriorityInterrupt(void)
 #ifdef TEST_RTC
 		g_Testvalue += 1;
 #endif
-		Ledstrip_UpdateFade();
+		if(++g_TmmsCounter >= CYCLE_TMMS)
+		{
+			g_TmmsCounter = 0;
+			Ledstrip_UpdateFade();
+			Ledstrip_DoFade();
+		}
 	} 
 	if(TMR2IF)
 	{
 		Timer2Interrupt();
 
-		Ledstrip_DoFade();
 	}
 	
 	FSR0 = sv_FSR0;
@@ -136,6 +141,7 @@ void main(void)
 	clearRAM();
 #endif
 	InitAll();
+	g_TmmsCounter = 0;
 	
 	while(1)
 	{

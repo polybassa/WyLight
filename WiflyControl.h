@@ -37,7 +37,7 @@ class WiflyControl
 		unsigned long ToRGBA(std::string& s) const;
 		
 	public:
-		WiflyControl();
+		WiflyControl(const char* pAddr, short port);
 		void Receiving(void) const;
 		/**
 			rgba is a 32 Bit rgb value with alpha channel. Alpha is unused, but easier to handle

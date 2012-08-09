@@ -30,23 +30,23 @@ class ClientSocket
 	public:
 		ClientSocket(const char* pAddr, short port, int style);
 		virtual ~ClientSocket();
-		virtual int Recv(char* pBuffer, size_t length) const = 0;
+		virtual int Recv(unsigned char* pBuffer, size_t length) const = 0;
 		virtual int Send(unsigned char* frame, size_t length) const = 0;
 };
 
 class TcpSocket : public ClientSocket
 {
 	public:
-		TcpSocket(const char* pAddr = "127.0.0.1", short port = 2000);
-		virtual int Recv(char* pBuffer, size_t length) const;
+		TcpSocket(const char* pAddr, short port);
+		virtual int Recv(unsigned char* pBuffer, size_t length) const;
 		virtual int Send(unsigned char* frame, size_t length) const;
 };
 
 class UdpSocket : public ClientSocket
 {
 	public:
-		UdpSocket(const char* pAddr = "127.0.0.1", short port = 2000);
-		virtual int Recv(char* pBuffer, size_t length) const;
+		UdpSocket(const char* pAddr, short port);
+		virtual int Recv(unsigned char* pBuffer, size_t length) const;
 		virtual int Send(unsigned char* frame, size_t length) const;
 };
 #endif /* #ifndef _CLIENTSOCKET_H_ */

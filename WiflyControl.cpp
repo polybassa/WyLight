@@ -29,8 +29,8 @@ void* RunReceiving(void* pObj)
 	return NULL;
 }
 
-WiflyControl::WiflyControl()
-: mSock("192.168.0.14", 2000)
+WiflyControl::WiflyControl(const char* pAddr, short port)
+: mSock(pAddr, port)
 {
 	mCmdFrame.stx = STX;
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;
@@ -44,7 +44,7 @@ WiflyControl::WiflyControl()
 
 void WiflyControl::Receiving() const
 {
-	char buffer[2048];
+	unsigned char buffer[2048];
 	int bytesReceived;
 	for(;;)
 	{
