@@ -22,6 +22,13 @@
 
 using namespace std;
 
+void* RunReceiving(void* pObj)
+{
+	WiflyControl* pMe = reinterpret_cast<WiflyControl*>(pObj);
+	pMe->Receiving();
+	return NULL;
+}
+
 WiflyControl::WiflyControl()
 //: mSock("127.0.0.1", 2000)
 : mSock("192.168.0.14", 2000)
@@ -30,6 +37,20 @@ WiflyControl::WiflyControl()
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;
 	mCmdFrame.crcHigh = 0xDE;
 	mCmdFrame.crcLow = 0xAD;
+
+	pthread_create(&mRecvThread, 0, RunReceiving, this);
+}
+
+void WiflyControl::Receiving() const
+{
+	char buffer[2048];
+	int bytesReceived;
+	for(;;)
+	{
+		bytesReceived = mSock.Recv(buffer, sizeof(buffer) - 1);
+		buffer[sizeof(buffer) - 1] = '\0';
+		std::cout << "Trace " << bytesReceived << " bytes: >>" << buffer << "<<" << std::endl;
+	}
 }
 
 void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
@@ -46,7 +67,7 @@ void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
 	mCmdFrame.led.data.set_color.blue = (rgba & 0x0000ff00) >> 8;
 	mCmdFrame.led.data.set_color.reserved[0] = 0;
 	mCmdFrame.led.data.set_color.reserved[1] = 0;
-	int bytesWritten = mSock.Send((char*)&mCmdFrame, sizeof(mCmdFrame));
+	int bytesWritten = mSock.Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
 #ifdef DEBUG
 	std::cout << "Send " << bytesWritten << " bytes "
 		<< addr << " | "
@@ -79,7 +100,7 @@ void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned shor
 	mCmdFrame.led.data.set_fade.green = (rgba & 0x00ff0000) >> 16;
 	mCmdFrame.led.data.set_fade.blue = (rgba & 0x0000ff00) >> 8;
 	mCmdFrame.led.data.set_fade.fadeTmms = htons(fadeTmms);
-	int bytesWritten = mSock.Send((char*)&mCmdFrame, sizeof(mCmdFrame));
+	int bytesWritten = mSock.Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
 #ifdef DEBUG
 	std::cout << "Send " << bytesWritten << " bytes "
 		<< addr << " | "
