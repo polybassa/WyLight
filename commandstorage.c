@@ -78,9 +78,7 @@ struct led_cmd* Commandstorage_Read(struct led_cmd *pDest)
 			SetEepromPointer(LOOP_POINTER_ADDRESS,nextCmd - CmdWidth);		
 		else
 			SetEepromPointer(CMD_POINTER_ADDRESS,nextCmd - CmdWidth);
-#ifdef TEST			
-		UART_SendString("Read_Done");
-#endif
+		Trace_String("Read_Done");
 		return pDest;
 	}
 	else return 0;
@@ -125,10 +123,6 @@ void Commandstorage_GetCommands()
 		Trace_String("BYTE:");
 		Trace_Number(new_byte,'b');
 
-#ifdef TEST_COMMAND
-			UART_SendString("FRAMECOUNTER");
-			UART_SendNumber(g_CmdBuf.frame_counter,' ');
-#endif
 		// *** do I wait for databytes?
 		if(g_CmdBuf.frame_counter == 0)
 		{
@@ -136,9 +130,6 @@ void Commandstorage_GetCommands()
 			// *** Do I receive a Start_of_Text sign
 			if(new_byte == STX)
 			{
-#ifdef TEST_COMMAND
-				UART_SendString("STX_detected  ");
-#endif
 				// *** increse the cmd_counter
 				g_CmdBuf.cmd_counter = 1;
 				// *** Write the startsign at the begin of the buffer
@@ -155,9 +146,6 @@ void Commandstorage_GetCommands()
 				// *** check if I get the framelength byte
 				if((new_byte < temp) && (g_CmdBuf.cmd_counter == 1))
 				{
-#ifdef TEST_COMMAND
-					UART_SendString("FRAME_LEN_detected  ");
-#endif
 					g_CmdBuf.frame_counter = new_byte;
 					g_CmdBuf.cmd_buf[1] = new_byte;
 					g_CmdBuf.cmd_counter = 2;
@@ -231,6 +219,63 @@ void Commandstorage_GetCommands()
 								softReset();
 							#endif
 							}
+						case DISPLAY_RTC:
+							{
+								
+							#ifdef X86
+								//TO DO Stream für RTC erzeugen
+								int fd;
+							#else
+								uns8 fd;
+							#endif
+								ioctl(fd, RTC_RD_TIME, &g_RtcTime);
+								UART_SendNumber(g_RtcTime.tm_year,'Y');
+								UART_SendNumber(g_RtcTime.tm_mon,'M');
+								UART_SendNumber(g_RtcTime.tm_mday,'D');
+								UART_SendNumber(g_RtcTime.tm_wday,'W');
+								UART_SendNumber(g_RtcTime.tm_hour,'h');
+								UART_SendNumber(g_RtcTime.tm_min,'m');
+								UART_SendNumber(g_RtcTime.tm_sec,'s');
+								UART_Send(0x0d);
+								UART_Send(0x0a);
+								return;
+							}
+							case GET_RTC:
+							{
+							#ifdef X86
+								//TO DO Stream für RTC erzeugen
+								int fd;
+							#else
+								uns8 fd;
+							#endif
+								ioctl(fd, RTC_RD_TIME, &g_RtcTime);
+								UART_Send(g_RtcTime.tm_year);
+								UART_Send(g_RtcTime.tm_mon);
+								UART_Send(g_RtcTime.tm_mday);
+								UART_Send(g_RtcTime.tm_wday);
+								UART_Send(g_RtcTime.tm_hour);
+								UART_Send(g_RtcTime.tm_min);
+								UART_Send(g_RtcTime.tm_sec);
+								return;
+							}
+							case SET_RTC:
+							{
+							#ifdef X86
+								//TO DO Stream für RTC erzeugen
+								int fd;
+							#else
+								uns8 fd;
+							#endif
+								g_RtcTime.tm_year = g_CmdBuf.cmd_buf[3];
+								g_RtcTime.tm_mon = g_CmdBuf.cmd_buf[4];
+								g_RtcTime.tm_mday = g_CmdBuf.cmd_buf[5];
+								g_RtcTime.tm_wday = g_CmdBuf.cmd_buf[6];
+								g_RtcTime.tm_hour = g_CmdBuf.cmd_buf[7];
+								g_RtcTime.tm_min = g_CmdBuf.cmd_buf[8];
+								g_RtcTime.tm_sec = g_CmdBuf.cmd_buf[9];
+								ioctl(fd, RTC_SET_TIME, &g_RtcTime);
+								return;
+							}	
 						default:
 							{
 								if( Commandstorage_Write(&g_CmdBuf.cmd_buf[2], (g_CmdBuf.cmd_counter - 4)))
