@@ -30,7 +30,6 @@ void* RunReceiving(void* pObj)
 }
 
 WiflyControl::WiflyControl()
-//: mSock("127.0.0.1", 2000)
 : mSock("192.168.0.14", 2000)
 {
 	mCmdFrame.stx = STX;
@@ -38,7 +37,9 @@ WiflyControl::WiflyControl()
 	mCmdFrame.crcHigh = 0xDE;
 	mCmdFrame.crcLow = 0xAD;
 
+#ifndef USE_UDP
 	pthread_create(&mRecvThread, 0, RunReceiving, this);
+#endif
 }
 
 void WiflyControl::Receiving() const
