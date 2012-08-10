@@ -38,16 +38,21 @@ uns8 BcdToBin(uns8 BcdValue)
 
 uns8 BinToBcd(uns8 BinValue)
 {
-	uns8 retValue, tempValue;
+	uns8 onesValue, tensValue, tempValue;
+	
+	onesValue = 0x00;
+	tensValue = 0x00;
 	
 	if(BinValue > 9 )
 	{
-		tempValue = BinValue / 0x0a;
-		retValue = tempValue * 10;
-		BinValue -= retValue;
-		tempValue = tempValue << 4;
+		tensValue = BinValue / 0x0a;
+		tempValue = tensValue * 10;
+		BinValue -= tempValue;
 	}
-	return (tempValue | BinValue);
+	onesValue = BinValue;
+	tensValue = tensValue << 4;
+	
+	return tensValue + onesValue;
 }
 
 //*********************** PUBLIC FUNCTIONS *********************************************
@@ -81,6 +86,7 @@ uns8 ioctl(uns8 fd,enum RTC_request req,struct rtc_time *pRtcTime)
 			temp = BcdToBin( I2C_Read(RTC, 0x06) & 0b00000111);
 			pRtcTime->tm_wday = temp;
 			temp = BcdToBin( I2C_Read(RTC, 0x07) & 0b00011111);
+			temp -= 1;
 			pRtcTime->tm_mon = temp;
 			temp = BcdToBin( I2C_Read(RTC, 0x08) & 0b11111111);
 			pRtcTime->tm_year = temp;
@@ -88,19 +94,19 @@ uns8 ioctl(uns8 fd,enum RTC_request req,struct rtc_time *pRtcTime)
 		case RTC_SET_TIME:
 		{
 			temp = BinToBcd(pRtcTime->tm_sec);
-			I2C_Write(RTC,0x02,( temp & 0b01111111 ));
+			I2C_Write(RTC,0x02,( temp ));
 			temp = BinToBcd(pRtcTime->tm_min);
-			I2C_Write(RTC,0x03,( temp & 0b01111111 ));
+			I2C_Write(RTC,0x03,( temp ));
 			temp = BinToBcd(pRtcTime->tm_hour);
-			I2C_Write(RTC,0x04,( temp & 0b00111111 ));
+			I2C_Write(RTC,0x04,( temp ));
 			temp = BinToBcd(pRtcTime->tm_mday);
-			I2C_Write(RTC,0x05,( temp & 0b00111111 ));
+			I2C_Write(RTC,0x05,( temp ));
 			temp = BinToBcd(pRtcTime->tm_wday);
-			I2C_Write(RTC,0x06,( temp & 0b00000111 ));
-			temp = BinToBcd(pRtcTime->tm_mon);
-			I2C_Write(RTC,0x07,( temp & 0b00011111 ));
+			I2C_Write(RTC,0x06,( temp ));
+			temp = BinToBcd((pRtcTime->tm_mon + 1));
+			I2C_Write(RTC,0x07,( temp ));
 			temp = BinToBcd(pRtcTime->tm_year);
-			I2C_Write(RTC,0x08,( temp & 0b11111111 ));
+			I2C_Write(RTC,0x08,( temp ));
 		}break;
 	}
 	return 0x00;

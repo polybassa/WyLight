@@ -28,6 +28,8 @@
 
 #define Rtc_Init(x)
 
+struct rtc_time g_RtcTime;
+
 #else
 #define RTC 0xA2		/* IIC-Address of RTC Clock IC */
 
@@ -35,7 +37,7 @@ enum RTC_request{ RTC_SET_TIME, RTC_RD_TIME};
 
  /** *********************** rtc.h VARIABLES *********************************************/
  struct rtc_time{
-	uns8 tm_sec;    /* seconds after the minute (0 to 61) */
+	uns8 tm_sec;    /* seconds after the minute (0 to 59) */
 	uns8 tm_min;    /* minutes after the hour (0 to 59) */
 	uns8 tm_hour;   /* hours since midnight (0 to 23) */
 	uns8 tm_mday;   /* day of the month (1 to 31) */
