@@ -74,6 +74,10 @@ void SPI_SendLedBuffer(uns8 *array)//!!! CHECK if GIE=0 during the sendroutine i
 	{
 		SPI_Send(*array);
 	}
+/* If we really have to garantee a sleep after data was written to the LEDs, it should be added here.
+ * Other locations would be more attractive to avoid a waiting core, but here it is much clearer and easier
+ * to find for later optimization. In my opinion we should spend this 1ms waste here, before we make the main
+ * loop more complex. */
 }
 #endif /* #ifndef X86 */
 
