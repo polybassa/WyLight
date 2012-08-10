@@ -64,6 +64,7 @@ bank1 struct LedBuffer gLedBuf;
 			*(stepAddress) |= (stepMask); \
 		} else { \
 			delta = newColor - delta; \
+			*(stepAddress) &= ~(stepMask); \
 		}; \
 		INC_BIT_COUNTER(stepAddress, stepMask); \
 		gLedBuf.cyclesLeft[k] = 0; \
@@ -72,8 +73,8 @@ bank1 struct LedBuffer gLedBuf;
 			temp16 = fadeTmms / delta; \
 			gLedBuf.periodeLength[k] = temp16 / CYCLE_TMMS; \
 			gLedBuf.stepSize[k] = STEP_SIZE; \
-			gLedBuf.delta[k] = delta; \
 		} \
+		gLedBuf.delta[k] = delta; \
 };
 
 void Ledstrip_Init(void)
@@ -82,7 +83,11 @@ void Ledstrip_Init(void)
 	SPI_Init();
 	
 	// initialize variables
-	memset(gLedBuf.led_array, 0, sizeof(gLedBuf.led_array));
+	uns8 i = sizeof(gLedBuf.led_array);
+	do {
+		i--;
+		gLedBuf.led_array[i] = 0;
+	} while(0 != i);
 }
 
 void Ledstrip_SetColor(struct cmd_set_color *pCmd)
@@ -148,13 +153,6 @@ void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 {
 	// constant for this fade used in CALC_COLOR
 	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
-
-	/** TODO this permits parallel fade operations
-	    to fix this issue we have to move this into the CALC_COLOR
-			macro, but CC5x is not able to handle this large macros :-( 
-	*/
-	memset(gLedBuf.delta, 0, sizeof(gLedBuf.delta));
-	memset(gLedBuf.step, 0, sizeof(gLedBuf.step));
 
 	// calc fade parameters for each led
 	uns8 delta;
