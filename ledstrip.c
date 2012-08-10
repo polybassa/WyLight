@@ -19,6 +19,10 @@
 #include "ledstrip.h"
 #include "spi.h"
 
+#ifdef __CC8E__
+#include "MATH16.H"
+#endif /* #ifdef __CC8E__ */
+
 bank1 struct LedBuffer gLedBuf;
 
 /**
