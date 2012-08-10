@@ -67,17 +67,12 @@ bank1 struct LedBuffer gLedBuf;
 		}; \
 		INC_BIT_COUNTER(stepAddress, stepMask); \
 		gLedBuf.cyclesLeft[k] = 0; \
+		delta = delta / STEP_SIZE; \
 		if((0 != delta)) {\
-			temp16 = (uns16)delta * CYCLE_TMMS; \
-			if(fadeTmms >= temp16) { \
-				gLedBuf.periodeLength[k] = fadeTmmsPerCycleTmms / delta; \
-				gLedBuf.stepSize[k] = 1; \
-				gLedBuf.delta[k] = delta; \
-			} else { \
-				gLedBuf.periodeLength[k] = 1; \
-				gLedBuf.stepSize[k] = temp16 / fadeTmms; \
-				gLedBuf.delta[k] = fadeTmms / CYCLE_TMMS; \
-			} \
+			temp16 = fadeTmms / delta; \
+			gLedBuf.periodeLength[k] = temp16 / CYCLE_TMMS; \
+			gLedBuf.stepSize[k] = STEP_SIZE; \
+			gLedBuf.delta[k] = delta; \
 		} \
 };
 
@@ -144,6 +139,7 @@ void Ledstrip_DoFade(void)
 		}
 		INC_BIT_COUNTER(stepaddress, stepmask);
 	}
+
 	// write changes to ledstrip
 	SPI_SendLedBuffer(gLedBuf.led_array);
 }
@@ -151,23 +147,8 @@ void Ledstrip_DoFade(void)
 void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 {
 	// constant for this fade used in CALC_COLOR
-#ifdef X86
 	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
-#else
-	const uns16 fadeTmms = pCmd->fadeTmms;
-#endif
-
-	const uns16 fadeTmmsPerCycleTmms = fadeTmms / CYCLE_TMMS;
-#ifdef TEST_LED
-	UART_SendString("DoSETFADE ");
-	UART_SendString("fadeTmms = ");
-	UART_SendNumber(fadeTmms.high8,'H');
-	UART_SendNumber(fadeTmms.low8,'L');
-	UART_SendString("fadeTmmsPerCycleTmms = ");
-	UART_SendNumber(fadeTmmsPerCycleTmms.high8,'H');
-	UART_SendNumber(fadeTmmsPerCycleTmms.low8,'L');
-#endif
-	
+	const uns16 fadeTmmsPerCycleTmms = fadeTmms / CYCLE_TMMS;	
 
 	/** TODO this permits parallel fade operations
 	    to fix this issue we have to move this into the CALC_COLOR

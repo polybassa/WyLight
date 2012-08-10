@@ -58,7 +58,7 @@ void WiflyControlCli::run(void)
 			cin >> addr;
 			cin >> color;
 			cin >> timevalue;
-			mControl.SetFade(addr, color, (unsigned short)timevalue * 1000);
+			mControl.SetFade(addr, color, (unsigned short)timevalue * 1024);
 		}
 	}
 }
