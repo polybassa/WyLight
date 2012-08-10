@@ -148,7 +148,6 @@ void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 {
 	// constant for this fade used in CALC_COLOR
 	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
-	const uns16 fadeTmmsPerCycleTmms = fadeTmms / CYCLE_TMMS;	
 
 	/** TODO this permits parallel fade operations
 	    to fix this issue we have to move this into the CALC_COLOR

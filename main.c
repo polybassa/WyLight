@@ -88,12 +88,7 @@ interrupt LowPriorityInterrupt(void)
 #ifdef TEST_RTC
 		g_Testvalue += 1;
 #endif
-		if(++g_TmmsCounter >= CYCLE_TMMS)
-		{
-			g_TmmsCounter = 0;
-			Ledstrip_UpdateFade();
-			Ledstrip_DoFade();
-		}
+		g_TmmsCounter++;
 	} 
 	if(TMR2IF)
 	{
@@ -152,7 +147,13 @@ void main(void)
 		Platform_CheckInputs();
 		Error_Throw();
 		Commandstorage_GetCommands();
-		Commandstorage_ExecuteCommands();
+		Commandstorage_ExecuteCommands();		
+		if(g_TmmsCounter >= CYCLE_TMMS)
+		{
+			g_TmmsCounter -= CYCLE_TMMS;
+			Ledstrip_UpdateFade();
+			Ledstrip_DoFade();
+		}
 #ifdef TEST_RTC		
 		if(g_Testvalue == 255)
 		{
