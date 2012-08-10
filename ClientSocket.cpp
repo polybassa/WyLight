@@ -22,8 +22,10 @@
 #include <cstring>
 #include <iostream>
 
-ClientSocket::ClientSocket(const char* pAddr, short port)
-	: mSock(socket(AF_INET, SOCK_DGRAM, 0))
+#include <stdio.h>
+
+ClientSocket::ClientSocket(const char* pAddr, short port, int style)
+	: mSock(socket(AF_INET, style, 0))
 {
 	memset(&mSockAddr, 0, sizeof(mSockAddr));
 	mSockAddr.sin_family = AF_INET;
@@ -38,8 +40,39 @@ ClientSocket::~ClientSocket()
 #endif
 }
 
-int ClientSocket::Send(char* frame, size_t length) const
+
+TcpSocket::TcpSocket(const char* pAddr, short port)
+	: ClientSocket(pAddr, port, SOCK_STREAM)
+{
+	if(connect(mSock, reinterpret_cast<sockaddr*>(&mSockAddr), sizeof(mSockAddr)) < 0)
+	{
+		std::cout << "Connection to " << pAddr << ":" << port << " failed" << std::endl;
+	}
+}
+
+int TcpSocket::Recv(char* pBuffer, size_t length) const
+{
+	return recv(mSock, pBuffer, length, 0);
+}
+
+int TcpSocket::Send(unsigned char* frame, size_t length) const
+{
+	return send(mSock, frame, length, 0);
+}
+
+UdpSocket::UdpSocket(const char* pAddr, short port)
+	: ClientSocket(pAddr, port, SOCK_DGRAM)
+{
+}
+
+int UdpSocket::Send(unsigned char* frame, size_t length) const
 {
 	return sendto(mSock, frame, length, 0, (struct sockaddr*)&mSockAddr, sizeof(mSockAddr));
+}
+
+int UdpSocket::Recv(char* pBuffer, size_t length) const
+{
+	std::cout << __FILE__ << ":" << __LINE__ << " Not implemented" << std::endl;
+	return -1;
 }
 
