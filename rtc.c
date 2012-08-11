@@ -16,12 +16,12 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef X86
 #include "rtc.h"
 #include "trace.h"
 #include "iic.h"
+#ifndef X86
 #include "INLINE.H"
-
+#endif
 
 //*********************** PRIVATE FUNCTIONS *********************************************
 
@@ -112,4 +112,3 @@ uns8 ioctl(uns8 fd,enum RTC_request req,struct rtc_time *pRtcTime)
 	return 0x00;
 }
 
-#endif

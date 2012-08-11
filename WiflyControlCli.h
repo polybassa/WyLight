@@ -28,7 +28,7 @@ class WiflyControlCli
 		bool mRunning;
 
 	public:
-		WiflyControlCli(void);
+		WiflyControlCli(const char* pAddr, short port);
 		void run(void);	
 };
 #endif /* #ifndef _WIFLYCONTROLCLI_H_ */

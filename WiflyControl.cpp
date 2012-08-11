@@ -29,21 +29,22 @@ void* RunReceiving(void* pObj)
 	return NULL;
 }
 
-WiflyControl::WiflyControl()
-//: mSock("127.0.0.1", 2000)
-: mSock("192.168.0.14", 2000)
+WiflyControl::WiflyControl(const char* pAddr, short port)
+: mSock(pAddr, port)
 {
 	mCmdFrame.stx = STX;
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;
 	mCmdFrame.crcHigh = 0xDE;
 	mCmdFrame.crcLow = 0xAD;
 
+#ifndef USE_UDP
 	pthread_create(&mRecvThread, 0, RunReceiving, this);
+#endif
 }
 
 void WiflyControl::Receiving() const
 {
-	char buffer[2048];
+	unsigned char buffer[2048];
 	int bytesReceived;
 	for(;;)
 	{
@@ -113,13 +114,14 @@ void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned shor
 		<< (int)mCmdFrame.led.data.set_fade.blue << " : "
 		<< (int)mCmdFrame.led.data.set_fade.fadeTmms << std::endl;
 
+		unsigned int tempTmms = 0;
 		do
 		{
-			fadeTmms -= 1000;
-			std::cout << (int)fadeTmms/1000;
+			tempTmms += 1000;
+			std::cout << (int)tempTmms/1000;
 			std::cout.flush();
 			sleep(1); 
-		}while(fadeTmms > 0);
+		}while(tempTmms < fadeTmms);
 		std::cout << std::endl;
 #endif
 }

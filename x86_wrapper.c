@@ -24,6 +24,7 @@
 bit g_led_off = 1; //X86 replacement for PORTC.0
 pthread_mutex_t g_led_mutex = PTHREAD_MUTEX_INITIALIZER;
 uns8 g_led_status[NUM_OF_LED*3];
+extern uns8 g_TmmsCounter;
 
 void* InterruptRoutine(void* unused)
 {
@@ -65,15 +66,15 @@ void Crc_NewCrc(unsigned char* p_crcH, unsigned char* p_crcL)
 }
 
 void I2C_Init(){}
+
 void Timer_Init(){}
 void timer_set_for_fade(char value){}
 void* timer_interrupt(void* unused)
 {
 	for(;;)
 	{
-		usleep(1000 * CYCLE_TMMS);
-		Ledstrip_UpdateFade();
-		Ledstrip_DoFade();
+		usleep(1000);
+		g_TmmsCounter++;
 	}
 }
 
