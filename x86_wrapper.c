@@ -65,6 +65,7 @@ void Crc_NewCrc(unsigned char* p_crcH, unsigned char* p_crcL)
 }
 
 void I2C_Init(){}
+
 void Timer_Init(){}
 void timer_set_for_fade(char value){}
 void* timer_interrupt(void* unused)

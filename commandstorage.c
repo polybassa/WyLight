@@ -19,6 +19,7 @@
 #include "platform.h"
 #include "commandstorage.h"
 #include "ledstrip.h"
+#include "rtc.h"
 #include "trace.h"
 
 //*********************** PRIVATE FUNCTIONS *********************************************
