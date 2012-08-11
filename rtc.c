@@ -19,28 +19,46 @@
 #include "rtc.h"
 #include "trace.h"
 #include "iic.h"
+#ifndef X86
 #include "INLINE.H"
+#endif
 
 //*********************** PRIVATE FUNCTIONS *********************************************
-#ifndef X86
+
 uns8 BcdToBin(uns8 BcdValue)
 {
 	uns8 retValue = 0x00;
 	
 	retValue = BcdValue & 0x0f;
-	SWAPF(BcdValue,1);					//swap nipples
-	BcdValue &= 0b00001111;				//Mask high nipple and VL-Bit
-	BcdValue = BcdValue * 10;
+	BcdValue = BcdValue >> 4;
+	BcdValue = BcdValue * 0x0a;
 	
 	return retValue + BcdValue;
 }
 
-uns8 BinToBcd(uns8 BinValue);
-#endif
+uns8 BinToBcd(uns8 BinValue)
+{
+	uns8 onesValue, tensValue, tempValue;
+	
+	onesValue = 0x00;
+	tensValue = 0x00;
+	
+	if(BinValue > 9 )
+	{
+		tensValue = BinValue / 0x0a;
+		tempValue = tensValue * 10;
+		BinValue -= tempValue;
+	}
+	onesValue = BinValue;
+	tensValue = tensValue << 4;
+	
+	return tensValue + onesValue;
+}
+
 //*********************** PUBLIC FUNCTIONS *********************************************
 
 
-struct DateTime g_DateTime;
+struct rtc_time g_RtcTime;
 
 void Rtc_Init(void)
 {
@@ -50,18 +68,47 @@ void Rtc_Init(void)
 	I2C_Write(RTC,0x01,0x00);		//Disable Interrupts in the RTC-Device
 } 
 
-void Rtc_GetTime(struct stTime *pTime)
+uns8 ioctl(uns8 fd,enum RTC_request req,struct rtc_time *pRtcTime)
 {
 	uns8 temp;
-	
-	temp = BcdToBin( I2C_Read(RTC, 0x02) & 0b01111111);
-	pTime->secounds = temp;
-	temp = BcdToBin( I2C_Read(RTC, 0x03) & 0b01111111);
-	pTime->minutes = temp;
-	temp = BcdToBin( I2C_Read(RTC, 0x04) & 0b00111111);
-	pTime->hours = temp;				
+	switch(req)
+	{
+		case RTC_RD_TIME:
+		{
+			temp = BcdToBin( I2C_Read(RTC, 0x02) & 0b01111111);
+			pRtcTime->tm_sec = temp;
+			temp = BcdToBin( I2C_Read(RTC, 0x03) & 0b01111111);
+			pRtcTime->tm_min = temp;
+			temp = BcdToBin( I2C_Read(RTC, 0x04) & 0b00111111);
+			pRtcTime->tm_hour = temp;	
+			temp = BcdToBin( I2C_Read(RTC, 0x05) & 0b00111111);
+			pRtcTime->tm_mday = temp;
+			temp = BcdToBin( I2C_Read(RTC, 0x06) & 0b00000111);
+			pRtcTime->tm_wday = temp;
+			temp = BcdToBin( I2C_Read(RTC, 0x07) & 0b00011111);
+			temp -= 1;
+			pRtcTime->tm_mon = temp;
+			temp = BcdToBin( I2C_Read(RTC, 0x08) & 0b11111111);
+			pRtcTime->tm_year = temp;
+		}break;
+		case RTC_SET_TIME:
+		{
+			temp = BinToBcd(pRtcTime->tm_sec);
+			I2C_Write(RTC,0x02,( temp ));
+			temp = BinToBcd(pRtcTime->tm_min);
+			I2C_Write(RTC,0x03,( temp ));
+			temp = BinToBcd(pRtcTime->tm_hour);
+			I2C_Write(RTC,0x04,( temp ));
+			temp = BinToBcd(pRtcTime->tm_mday);
+			I2C_Write(RTC,0x05,( temp ));
+			temp = BinToBcd(pRtcTime->tm_wday);
+			I2C_Write(RTC,0x06,( temp ));
+			temp = BinToBcd((pRtcTime->tm_mon + 1));
+			I2C_Write(RTC,0x07,( temp ));
+			temp = BinToBcd(pRtcTime->tm_year);
+			I2C_Write(RTC,0x08,( temp ));
+		}break;
+	}
+	return 0x00;
 }
-
-void Rtc_GetDate(struct stDate *pDate); 
-
 

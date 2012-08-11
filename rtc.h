@@ -16,46 +16,45 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
  
- #ifndef _RTC_H_
- #define _RTC_H_
- 
- #include "iic.h"
- 
- #define RTC 0xA2		//IIC-Address of RTC Clock IC
- 
- struct stTime{
-	uns8 hours;
-	uns8 minutes;
-	uns8 secounds;
+#ifndef _RTC_H_
+#define _RTC_H_
+
+/** Have a look at: http://linux.die.net/man/4/rtc   **/
+
+
+#ifdef X86
+#include <linux/rtc.h>
+#include <sys/ioctl.h>
+
+#define Rtc_Init(x)
+
+struct rtc_time g_RtcTime;
+
+#else
+#define RTC 0xA2		/* IIC-Address of RTC Clock IC */
+
+enum RTC_request{ RTC_SET_TIME, RTC_RD_TIME};
+
+ /** *********************** rtc.h VARIABLES *********************************************/
+ struct rtc_time{
+	uns8 tm_sec;    /* seconds after the minute (0 to 59) */
+	uns8 tm_min;    /* minutes after the hour (0 to 59) */
+	uns8 tm_hour;   /* hours since midnight (0 to 23) */
+	uns8 tm_mday;   /* day of the month (1 to 31) */
+	uns8 tm_mon;    /* months since January (0 to 11) */
+	uns8 tm_year;   /* years since 1900 */
+	uns8 tm_wday;   /* days since Sunday (0 to 6 Sunday=0) */
+	uns8 tm_yday;   /** NOT SUPPORTED days since January 1 (0 to 365) */
+	uns8 tm_isdst;  /** NOT SUPPORTED Daylight Savings Time */
 };
 
-struct stDate{
-	uns8 days;
-	uns8 weekdays;
-	uns8 months;
-	uns8 years;
-};
 
-struct DateTime{
-	struct stDate date;
-	struct stTime time;
-};
-
-extern struct DateTime g_DateTime;
+/** *********************** FUNCTIONS *********************************************/
+extern struct rtc_time g_RtcTime;
 
 void Rtc_Init(void); 
- 
-void Rtc_GetTime(struct stTime *pTime);
 
-void Rtc_GetDate(struct stDate *pDate); 
+uns8 ioctl(uns8 fd,enum RTC_request req,struct rtc_time *pRtcTime);
 
-void Rtc_GetDateTime(struct DateTime *pDateTime);
-
-void Rtc_SetTime(struct stTime *pTime);
-
-void Rtc_SetDate(struct stDate *pDate); 
-
-void Rtc_SetDateTime(struct DateTime *pDateTime);
-
-
- #endif /*_RTC_H_*/
+#endif /* X86*/
+#endif /*_RTC_H_*/

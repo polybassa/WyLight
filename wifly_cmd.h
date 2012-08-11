@@ -33,6 +33,9 @@
 #define LOOP_ON 0xF7
 #define LOOP_OFF 0xF6
 #define START_BL 0xF5
+#define SET_RTC 0xF4 			/* FRAME: <STX><LEN><SET_RTC><YEAR><MONTH><DAY><WDAY><HOUR><MIN><SEC><CRC><CRC> */
+#define GET_RTC 0xF3
+#define DISPLAY_RTC 0xF2
 
 //*********************** STRUCT DECLARATION *********************************************
 struct cmd_set_color {

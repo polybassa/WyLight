@@ -19,7 +19,6 @@
 
 #ifndef X86
 #define NO_CRC
-//#define TEST_RTC
 //#define TEST
 #pragma optimize 0
 #endif
@@ -43,10 +42,7 @@
 #endif /* #ifdef X86 */
 
 //*********************** GLOBAL VARIABLES *******************************************
-#ifdef TEST_RTC
-uns8 g_Testvalue;
-#endif
-uns8 g_TmmsCounter;
+
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void InitAll();
 void HighPriorityInterruptFunction(void);
@@ -85,20 +81,12 @@ interrupt LowPriorityInterrupt(void)
 	if(TMR4IF)
 	{
 		Timer4Interrupt();
-#ifdef TEST_RTC
-		g_Testvalue += 1;
-#endif
-		if(++g_TmmsCounter >= CYCLE_TMMS)
-		{
-			g_TmmsCounter = 0;
-			Ledstrip_UpdateFade();
-			Ledstrip_DoFade();
-		}
+		Ledstrip_UpdateFade();
 	} 
 	if(TMR2IF)
 	{
 		Timer2Interrupt();
-
+		Ledstrip_DoFade();
 	}
 	
 	FSR0 = sv_FSR0;
@@ -141,7 +129,6 @@ void main(void)
 	clearRAM();
 #endif
 	InitAll();
-	g_TmmsCounter = 0;
 	
 	while(1)
 	{
@@ -153,17 +140,6 @@ void main(void)
 		Error_Throw();
 		Commandstorage_GetCommands();
 		Commandstorage_ExecuteCommands();
-#ifdef TEST_RTC		
-		if(g_Testvalue == 255)
-		{
-			Rtc_GetTime(&g_DateTime.time);
-			UART_SendNumber(g_DateTime.time.hours,'h');
-			UART_SendNumber(g_DateTime.time.minutes,'m');
-			UART_SendNumber(g_DateTime.time.secounds,'s');
-			UART_Send(0x0d);
-			UART_Send(0x0a);
-		}
-#endif
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************
