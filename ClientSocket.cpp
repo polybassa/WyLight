@@ -50,7 +50,7 @@ TcpSocket::TcpSocket(const char* pAddr, short port)
 	}
 }
 
-int TcpSocket::Recv(char* pBuffer, size_t length) const
+int TcpSocket::Recv(unsigned char* pBuffer, size_t length) const
 {
 	return recv(mSock, pBuffer, length, 0);
 }
@@ -65,14 +65,14 @@ UdpSocket::UdpSocket(const char* pAddr, short port)
 {
 }
 
-int UdpSocket::Send(unsigned char* frame, size_t length) const
-{
-	return sendto(mSock, frame, length, 0, (struct sockaddr*)&mSockAddr, sizeof(mSockAddr));
-}
-
-int UdpSocket::Recv(char* pBuffer, size_t length) const
+int UdpSocket::Recv(unsigned char* pBuffer, size_t length) const
 {
 	std::cout << __FILE__ << ":" << __LINE__ << " Not implemented" << std::endl;
 	return -1;
+}
+
+int UdpSocket::Send(unsigned char* frame, size_t length) const
+{
+	return sendto(mSock, frame, length, 0, (struct sockaddr*)&mSockAddr, sizeof(mSockAddr));
 }
 

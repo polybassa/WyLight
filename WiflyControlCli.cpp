@@ -18,11 +18,12 @@
 
 #include "WiflyControlCli.h"
 #include <iostream>
+#include <cstdlib>
 
 using namespace std;
 
-WiflyControlCli::WiflyControlCli(void)
-: mRunning(true)
+WiflyControlCli::WiflyControlCli(const char* pAddr, short port)
+: mControl(pAddr, port), mRunning(true)
 {
 }
 
@@ -57,7 +58,7 @@ void WiflyControlCli::run(void)
 			cin >> addr;
 			cin >> color;
 			cin >> timevalue;
-			mControl.SetFade(addr, color, (unsigned short)timevalue * 1000);
+			mControl.SetFade(addr, color, (unsigned short)timevalue * 1024);
 		}
 	}
 }
@@ -75,7 +76,17 @@ void Java_biz_bruenn_WiflyLight_WiflyLightActivity_runClient(JNIEnv* env, jobjec
 
 int main(int argc, const char* argv[])
 {
-	WiflyControlCli cli;
+	const char* pAddr = "127.0.0.1";
+	short port = 2000;
+	if(argc > 1)
+	{
+		pAddr = argv[1];
+		if(argc > 2)
+		{
+			port = (short)atoi(argv[2]);
+		}
+	}
+	WiflyControlCli cli(pAddr, port);
 	cli.run();
 	return 0;
 }

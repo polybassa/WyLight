@@ -25,7 +25,8 @@
 
 //*********************** CONFIGURATION ********************************************
 #define WIFLY_SERVER_PORT 2000 // TCP/UDP Port of Wifly device
-#define CYCLE_TMMS 4		//cycle time in milliseconds
+#define CYCLE_TMMS 64 //cycle time in milliseconds
+#define STEP_SIZE 16 //minimal stepSize while fading
 
 #ifdef X86
 	#include <stdio.h>
@@ -41,12 +42,13 @@
 	extern unsigned char g_UpdateFade;	
 
 	#define bank1
+	#define clearRAM(x)
 	#define Platform_AllowInterrupts(x)
 	#define Platform_CheckInputs(x)
 	#define Platform_DisableBootloaderAutostart(x)
 	#define InitFactoryRestoreWLAN(x)
 	#define InitFET(x)
-	#define Platform_IOInit(x)	
+	#define Platform_IOInit(x)
 	#define Platform_OsciInit(x)
 	
 #else
@@ -58,13 +60,6 @@
 
 	#define Platform_IOInit(x) do { CLRF(PORTB); CLRF(LATB); CLRF(ANSELB);} while(0) //Eingänge am PORTB initialisieren
 	#define Platform_OsciInit(x) do { OSCCON = 0b01110010; PLLEN = 1;} while(0) //OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
-	
-	#define memset(PTR, VALUE, NUM_BYTES) do { \
-		short k; \
-		for(k = NUM_BYTES - 1; k >= 0; k--) { \
-			PTR[k] = VALUE; \
-		} \
-	} while(0)
 	
 	void Platform_AllowInterrupts();
 	

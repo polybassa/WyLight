@@ -19,6 +19,7 @@
 #include "platform.h"
 #include "commandstorage.h"
 #include "ledstrip.h"
+#include "rtc.h"
 #include "trace.h"
 
 //*********************** PRIVATE FUNCTIONS *********************************************
@@ -371,12 +372,6 @@ void Commandstorage_ExecuteCommands()
 		}
 	}
 }
-
-void Commandstorage_WaitInterrupt()
-{
-	if(g_CmdBuf.WaitValue != 0) 
-		g_CmdBuf.WaitValue = --g_CmdBuf.WaitValue;					
-}	
 
 void Commandstorage_Init()
 {

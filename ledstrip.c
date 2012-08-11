@@ -19,6 +19,10 @@
 #include "ledstrip.h"
 #include "spi.h"
 
+#ifdef __CC8E__
+#include "MATH16.H"
+#endif /* #ifdef __CC8E__ */
+
 bank1 struct LedBuffer gLedBuf;
 
 /**
@@ -64,21 +68,17 @@ bank1 struct LedBuffer gLedBuf;
 			*(stepAddress) |= (stepMask); \
 		} else { \
 			delta = newColor - delta; \
+			*(stepAddress) &= ~(stepMask); \
 		}; \
 		INC_BIT_COUNTER(stepAddress, stepMask); \
 		gLedBuf.cyclesLeft[k] = 0; \
+		delta = delta / STEP_SIZE; \
 		if((0 != delta)) {\
-			temp16 = (uns16)delta * CYCLE_TMMS; \
-			if(fadeTmms >= temp16) { \
-				gLedBuf.periodeLength[k] = fadeTmmsPerCycleTmms / delta; \
-				gLedBuf.stepSize[k] = 1; \
-				gLedBuf.delta[k] = delta; \
-			} else { \
-				gLedBuf.periodeLength[k] = 1; \
-				gLedBuf.stepSize[k] = temp16 / fadeTmms; \
-				gLedBuf.delta[k] = fadeTmms / CYCLE_TMMS; \
-			} \
+			temp16 = fadeTmms / delta; \
+			gLedBuf.periodeLength[k] = temp16 / CYCLE_TMMS; \
+			gLedBuf.stepSize[k] = STEP_SIZE; \
 		} \
+		gLedBuf.delta[k] = delta; \
 };
 
 void Ledstrip_Init(void)
@@ -87,7 +87,11 @@ void Ledstrip_Init(void)
 	SPI_Init();
 	
 	// initialize variables
-	memset(gLedBuf.led_array, 0, sizeof(gLedBuf.led_array));
+	uns8 i = sizeof(gLedBuf.led_array);
+	do {
+		i--;
+		gLedBuf.led_array[i] = 0;
+	} while(0 != i);
 }
 
 void Ledstrip_SetColor(struct cmd_set_color *pCmd)
@@ -144,6 +148,7 @@ void Ledstrip_DoFade(void)
 		}
 		INC_BIT_COUNTER(stepaddress, stepmask);
 	}
+
 	// write changes to ledstrip
 	SPI_SendLedBuffer(gLedBuf.led_array);
 }
@@ -151,30 +156,7 @@ void Ledstrip_DoFade(void)
 void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 {
 	// constant for this fade used in CALC_COLOR
-#ifdef X86
 	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
-#else
-	const uns16 fadeTmms = pCmd->fadeTmms;
-#endif
-
-	const uns16 fadeTmmsPerCycleTmms = fadeTmms / CYCLE_TMMS;
-#ifdef TEST_LED
-	UART_SendString("DoSETFADE ");
-	UART_SendString("fadeTmms = ");
-	UART_SendNumber(fadeTmms.high8,'H');
-	UART_SendNumber(fadeTmms.low8,'L');
-	UART_SendString("fadeTmmsPerCycleTmms = ");
-	UART_SendNumber(fadeTmmsPerCycleTmms.high8,'H');
-	UART_SendNumber(fadeTmmsPerCycleTmms.low8,'L');
-#endif
-	
-
-	/** TODO this permits parallel fade operations
-	    to fix this issue we have to move this into the CALC_COLOR
-			macro, but CC5x is not able to handle this large macros :-( 
-	*/
-	memset(gLedBuf.delta, 0, sizeof(gLedBuf.delta));
-	memset(gLedBuf.step, 0, sizeof(gLedBuf.step));
 
 	// calc fade parameters for each led
 	uns8 delta;
