@@ -159,7 +159,7 @@ void InitAll()
 	Commandstorage_Init();
 	Error_Init();
 	Commandstorage_Clear();
-	//Rtc_Init();
+	Rtc_Init();
 
 	g_TmmsCounter = 0;
 
