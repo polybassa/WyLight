@@ -373,12 +373,6 @@ void Commandstorage_ExecuteCommands()
 	}
 }
 
-void Commandstorage_WaitInterrupt()
-{
-	if(g_CmdBuf.WaitValue != 0) 
-		g_CmdBuf.WaitValue = --g_CmdBuf.WaitValue;					
-}	
-
 void Commandstorage_Init()
 {
 	/** EEPROM contains FF in every cell after inital start,

@@ -42,6 +42,7 @@
 #endif /* #ifdef X86 */
 
 //*********************** GLOBAL VARIABLES *******************************************
+uns8 g_TmmsCounter;
 
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void InitAll();
@@ -81,12 +82,11 @@ interrupt LowPriorityInterrupt(void)
 	if(TMR4IF)
 	{
 		Timer4Interrupt();
-		Ledstrip_UpdateFade();
+		g_TmmsCounter++;
 	} 
 	if(TMR2IF)
 	{
 		Timer2Interrupt();
-		Ledstrip_DoFade();
 	}
 	
 	FSR0 = sv_FSR0;
@@ -125,9 +125,6 @@ void HighPriorityInterruptFunction(void)
 //*********************** HAUPTPROGRAMM **********************************************
 void main(void)
 {
-#ifndef X86
-	clearRAM();
-#endif
 	InitAll();
 	
 	while(1)
@@ -139,13 +136,20 @@ void main(void)
 		Platform_CheckInputs();
 		Error_Throw();
 		Commandstorage_GetCommands();
-		Commandstorage_ExecuteCommands();
+		Commandstorage_ExecuteCommands();		
+		if(g_TmmsCounter >= CYCLE_TMMS)
+		{
+			g_TmmsCounter -= CYCLE_TMMS;
+			Ledstrip_UpdateFade();
+			Ledstrip_DoFade();
+		}
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************
 
 void InitAll()
 {
+	clearRAM();
 	Platform_OsciInit();
 	Platform_IOInit();
 	RingBuf_Init();
@@ -156,6 +160,8 @@ void InitAll()
 	Error_Init();
 	Commandstorage_Clear();
 	//Rtc_Init();
+
+	g_TmmsCounter = 0;
 
 #ifdef X86
 	init_x86();
