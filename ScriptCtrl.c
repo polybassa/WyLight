@@ -17,70 +17,58 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "platform.h"
+#include "ScriptCtrl.h"
+#include "ledstrip.h"
 
-#define gScriptBufSize 15
-#define SCRIPT_LOOP_DEPTH_MAX 4
-struct ScriptBuf {
-	struct led_cmd cmd[gScriptBufSize];
-	uns8 loopStart[SCRIPT_LOOP_DEPTH_MAX];
-	uns8 loopDepth;
-	uns8 execute;
-	uns8 read;
-	uns8 write;
-	bit override;
-	bit loopSkip;
-};
 struct ScriptBuf gScriptBuf;
-
-#define ScriptBufInc(x) ((x + 1) & gScriptBufSize)
 
 void ScriptCtrl_Add(struct led_cmd* pCmd)
 {
-	if(LOOP_START == pCmd->cmd)
+	if(LOOP_ON == pCmd->cmd)
 	{
-		pCmd->loop_start.depth = gScript.loopDepth;
-		gScript.loopStart[gScript.loopDepth] = gScriptBuf.write;
-		gScript.loopDepth++;		
+		pCmd->data.loop_start.depth = gScriptBuf.loopDepth;
+		gScriptBuf.loopStart[gScriptBuf.loopDepth] = gScriptBuf.write;
+		gScriptBuf.loopDepth++;		
 	}
-	else if (LOOP_END)
+	else if (LOOP_OFF)
 	{
-		uns8 loopStart = gScript.loopStart[gScript.loopDepth]
-		pCmd->loop_stop.startIndex = loopStart;
-		pCmd->loop_stop.depth = gScript.loopDepth;
-		gScript.loopDepth--;
+		uns8 loopStart = gScriptBuf.loopStart[gScriptBuf.loopDepth];
+		pCmd->data.loop_stop.startIndex = loopStart;
+		pCmd->data.loop_stop.depth = gScriptBuf.loopDepth;
+		gScriptBuf.loopDepth--;
 	}
-	ScriptCtrl_WriteCmd(pCmd);
+	ScriptCtrl_Write(pCmd);
 }
 
-void ScriptCtrl_Run()
+void ScriptCtrl_Run(void)
 {
 	// cmd available?
 	if(gScriptBuf.execute == gScriptBuf.write) return;
 	
-	struct led_cmd* pCmd = &gScript.cmd[gScript.execute];
+	struct led_cmd* pCmd = &gScriptBuf.cmd[gScriptBuf.execute];
 	ScriptBufInc(gScriptBuf.execute);
 
 	switch(pCmd->cmd)
 	{
-		case LOOP_START:
+		case LOOP_ON:
 			if(1 == pCmd->data.loop_start.counter)
 			{
-				gScriptOverride = (1 == pCmd->data.loop_start.depth);
+				gScriptBuf.override = (1 == pCmd->data.loop_start.depth);
 				pCmd->data.loop_start.counter = pCmd->data.loop_start.numLoops,
-				gScript.loopSkip = TRUE;
+				gScriptBuf.loopSkip = TRUE;
 			}
 			break;
-		case LOOP_STOP:
-			if(!gScript.loopSkip)
+		case LOOP_OFF:
+			if(!gScriptBuf.loopSkip)
 			{
 				gScriptBuf.execute = pCmd->data.loop_stop.startIndex;
 			}
 			break;
 		case SET_COLOR:
-			ledstrip_set_color(&pCmd->data.set_color);
+			Ledstrip_SetColor(&pCmd->data.set_color);
 			break;
 		case SET_FADE:
-			ledstrip_set_fade(&pCmd->data.set_fade);
+			Ledstrip_SetFade(&pCmd->data.set_fade);
 			break;
 	}
 

@@ -11,7 +11,7 @@ endif
 
 ANDROID_DIR=./android/WiflyLight
 ANDROID_BIN=android/.metadata ${ANDROID_DIR}/bin/ ${ANDROID_DIR}/gen/ ${ANDROID_DIR}/libs/ ${ANDROID_DIR}/obj/ ${ANDROID_DIR}Test/bin/ ${ANDROID_DIR}Test/gen/
-X86_SRC=main.c commandstorage.c eeprom.c error.c ledstrip.c RingBuf.c spi.c timer.c usart.c x86_wrapper.c x86_gl.c
+X86_SRC=main.c commandstorage.c eeprom.c error.c ledstrip.c RingBuf.c ScriptCtrl.c spi.c timer.c usart.c x86_wrapper.c x86_gl.c
 
 all_nils: pic simu x86_client
 
@@ -27,7 +27,7 @@ android_client:
 	ndk-build -C $(ANDROID_DIR)
 
 x86_client:
-	g++ ClientSocket.cpp WiflyControl.cpp WiflyControlCli.cpp -DX86 -DDEBUG -lpthread -o client.bin -Wall -pedantic
+	g++ ClientSocket.cpp WiflyControl.cpp WiflyControlCli.cpp -DX86 -lpthread -o client.bin -Wall -pedantic
 
 clean:
 	rm -rf *.asm *.bin *.cod *.fcs *.hex *.lst *.occ *.var .metadata/ ${ANDROID_BIN}
