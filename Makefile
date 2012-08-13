@@ -26,9 +26,6 @@ android_client:
 linux_client:
 	g++ ClientSocket.cpp WiflyControl.cpp WiflyControlCli.cpp -DX86 -DDEBUG -lpthread -o client.bin -Wall -pedantic
 
-linux_client_udp:
-	g++ ClientSocket.cpp WiflyControl.cpp WiflyControlCli.cpp -DX86 -DDEBUG -DUSE_UDP -lpthread -o client.bin -Wall -pedantic
-
 mac_client: linux_client
 
 clean:

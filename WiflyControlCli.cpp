@@ -22,8 +22,8 @@
 
 using namespace std;
 
-WiflyControlCli::WiflyControlCli(const char* pAddr, short port)
-: mControl(pAddr, port), mRunning(true)
+WiflyControlCli::WiflyControlCli(const char* pAddr, short port, bool useTcp)
+: mControl(pAddr, port, useTcp), mRunning(true)
 {
 }
 
@@ -78,15 +78,20 @@ int main(int argc, const char* argv[])
 {
 	const char* pAddr = "127.0.0.1";
 	short port = 2000;
+	bool useTcp = false;
 	if(argc > 1)
 	{
 		pAddr = argv[1];
 		if(argc > 2)
 		{
 			port = (short)atoi(argv[2]);
+			if(argc > 3)
+			{
+				useTcp = (0 == strncmp(argv[3], "tcp", 3));
+			}
 		}
 	}
-	WiflyControlCli cli(pAddr, port);
+	WiflyControlCli cli(pAddr, port, useTcp);
 	cli.run();
 	return 0;
 }
