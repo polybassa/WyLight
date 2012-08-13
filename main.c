@@ -139,7 +139,10 @@ void main(void)
 		Commandstorage_ExecuteCommands();		
 		if(g_TmmsCounter >= CYCLE_TMMS)
 		{
+			Timer4InterruptLock();
 			g_TmmsCounter -= CYCLE_TMMS;
+			Timer4InterruptUnlock();
+
 			Ledstrip_UpdateFade();
 			Ledstrip_DoFade();
 		}
