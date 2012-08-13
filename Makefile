@@ -1,5 +1,6 @@
 PIC_CC8E_NILS=/Users/weitys1/Dropbox/Wifly_Light/CC8E/CC8E.EXE
 PIC_CC8E_PAT=/home/gpb/cc8efree/CC8E.EXE
+PIC_PARAMS=main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM
 
 ANDROID_DIR=./android/WiflyLight
 OPENGL_LIB=-lGL -lGLU -lglut
@@ -11,17 +12,11 @@ all_nils: pic_nils mac_client
 
 all_pat: pic_pat linux_simu linux_client android_client
 
-pic_nils:
-	wine ${PIC_CC8E} main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM
-
-pic_pat: ledstrip.h
-	wine ${PIC_CC} main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM
-
 pic:
 	@if [ -e ${PIC_CC8E_NILS} ]; then \
-		wine ${PIC_CC8E_NILS} main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM ; \
+		wine ${PIC_CC8E_NILS} ${PIC_PARAMS} ; \
 	elif [ -e ${PIC_CC8E_PAT} ]; then \
-		wine ${PIC_CC8E_PAT} main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM ; \
+		wine ${PIC_CC8E_PAT} ${PIC_PARAMS} ; \
 	else \
 		echo "cc8e not found" ; \
 	fi
