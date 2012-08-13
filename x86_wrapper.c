@@ -20,6 +20,9 @@
 #include <string.h>
 #include <unistd.h>
 #include "x86_wrapper.h"
+#include "timer.h"
+
+extern unsigned char do_update_fade;
 
 bit g_led_off = 1; //X86 replacement for PORTC.0
 pthread_mutex_t g_led_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -67,14 +70,21 @@ void Crc_NewCrc(unsigned char* p_crcH, unsigned char* p_crcL)
 
 void I2C_Init(){}
 
-void Timer_Init(){}
-void timer_set_for_fade(char value){}
 void* timer_interrupt(void* unused)
 {
 	for(;;)
 	{
 		usleep(1000);
 		g_TmmsCounter++;
+	}
+}
+
+void* date_timer_interrupt(void* unused)
+{
+	for(;;)
+	{
+		usleep(2000000);
+		date_timer_callback();
 	}
 }
 
@@ -129,8 +139,10 @@ void init_x86(void)
 	pthread_t isrThread;
 	pthread_t glThread;
 	pthread_t timerThread;
+	pthread_t dateTimerThread;
 	
 	pthread_create(&isrThread, 0, InterruptRoutine, 0);
 	pthread_create(&glThread, 0, gl_start, 0);
 	pthread_create(&timerThread, 0, timer_interrupt, 0);
+	pthread_create(&dateTimerThread, 0, date_timer_interrupt, 0);
 }

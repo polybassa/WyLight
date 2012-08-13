@@ -40,9 +40,11 @@ class WiflyControl
 			f.e. red(255, 0, 0) is in rgba as: 0xff000000
 				 white(255, 255, 255) is in rgba as: 0xffffff00
 		**/
+		void AddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second);
+		void AddColor(std::string& addr, std::string& rgba, unsigned char hour, unsigned char minute, unsigned char second);
 		void SetColor(unsigned long addr, unsigned long rgba);
-		void SetColor(std::string& addr, std::string& color);
+		void SetColor(std::string& addr, std::string& rgba);
 		void SetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms);
-		void SetFade(std::string& addr, std::string& color, unsigned short fadeTmms);
+		void SetFade(std::string& addr, std::string& rgba, unsigned short fadeTmms);
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */

@@ -16,7 +16,6 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-
 #ifndef X86
 #define NO_CRC
 //#define TEST
@@ -126,7 +125,7 @@ void HighPriorityInterruptFunction(void)
 void main(void)
 {
 	InitAll();
-	
+
 	while(1)
 	{
 #ifdef X86

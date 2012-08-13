@@ -18,14 +18,78 @@
 
 #include "timer.h"
 #include "ledstrip.h"
-#include "USART.h"
+#include "usart.h"
+
+unsigned short gDateTimer;
+bank6 struct date_event gDateEvents[NUM_DATE_EVENTS];
+
+unsigned char date_timer_add_event(struct cmd_add_color* pCmd)
+{
+	int i;
+	for(i = 0; i < NUM_DATE_EVENTS; i++)
+	{
+		if(0xffff == gDateEvents[i].wakeup)
+		{
+//TODO			uns16 hour = (uns16)pCmd->hour * 1800;
+			uns16 minute = (uns16)pCmd->minute * 30;
+			uns16 second = pCmd->second / 2;
+			gDateEvents[i].wakeup = DATE_TIMER_DAY;
+//TODO			gDateEvents[i].wakeup -= hour;
+			gDateEvents[i].wakeup -= minute;
+			gDateEvents[i].wakeup -= second;
+			gDateEvents[i].cmd.cmd = SET_COLOR;
+//TODO memcpy((char*)&gDateEvents[i].cmd, (char*)pCmd, sizeof(struct led_cmd));
+			gDateEvents[i].cmd.data.set_color.addr[0] = 0xff;
+			gDateEvents[i].cmd.data.set_color.addr[1] = 0xff;
+			gDateEvents[i].cmd.data.set_color.addr[2] = 0xff;
+			gDateEvents[i].cmd.data.set_color.addr[3] = 0xff;
+			uns8 red = pCmd->red;
+			gDateEvents[i].cmd.data.set_color.red = red;
+			uns8 green = pCmd->green;
+			gDateEvents[i].cmd.data.set_color.green = green;
+			uns8 blue = pCmd->blue;
+			gDateEvents[i].cmd.data.set_color.blue = blue;
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+		
+
+//this function has to be called each 2 seconds!
+void date_timer_callback(void)
+{
+	if(0 == --gDateTimer) gDateTimer = DATE_TIMER_DAY;
+}
+
+void date_timer_do_events(void)
+{
+	int i;
+	for(i = 0; i < NUM_DATE_EVENTS; i++)
+	{
+		if(gDateEvents[i].wakeup == gDateTimer)
+		{
+			Commandstorage_ExecuteCmd(&gDateEvents[i].cmd);
+		}
+	}
+}
+
+void date_timer_init(void)
+{
+	gDateTimer = DATE_TIMER_DAY;
+	uns8* ptr = (uns8*)gDateEvents;
+	uns8 i = sizeof(gDateEvents);
+	do 
+	{
+		i--;
+		ptr[i] = 0xff;
+	} while(0 != i);
+}
 
 void Timer_Init()
-{
-	T1CON = 0b00110111;
-	TMR1IE = 1;
-	
-    /* 
+{	
+#ifdef __CC8E__
+  /* 
 	** T4 Interrupt every 1 Millisecound if clock is 64MHz
 	** Calculation
 	** 64000000 Hz / 4 / 16 / 100 / 10
@@ -49,11 +113,8 @@ void Timer_Init()
 	** 64MHz / 4 / 8
 	*/
 	T3CON = 0b00110100;
-}
-
-void Timer_SetForFade(char value)
-{
-	//Not Implemented yet
+#endif /* #ifdef __CC8E__ */
+	date_timer_init();
 }
 
 void Timer_StartStopwatch(void)

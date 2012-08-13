@@ -23,10 +23,10 @@
 
 //*********************** ENUMERATIONS *********************************************
 #define STX 0xFF
+#define WAIT 0xFE
 #define SET_COLOR 0xFD
 #define SET_FADE 0xFC
 #define SET_RUN 0xFB
-#define WAIT 0xFE
 #define SET_ON 0xFA
 #define SET_OFF 0xF9
 #define DELETE 0xF8
@@ -36,8 +36,20 @@
 #define SET_RTC 0xF4 			/* FRAME: <STX><LEN><SET_RTC><YEAR><MONTH><DAY><WDAY><HOUR><MIN><SEC><CRC><CRC> */
 #define GET_RTC 0xF3
 #define DISPLAY_RTC 0xF2
+#define ADD_COLOR 0xF1
 
 //*********************** STRUCT DECLARATION *********************************************
+struct cmd_add_color {
+//TODO add this later, when we can handle longer cmd_frames
+//TODO	uns8 addr[4];
+	uns8 red;
+	uns8 green;
+	uns8 blue;
+//TODO uns8 hour;
+	uns8 minute;
+	uns8 second;
+};
+
 struct cmd_set_color {
 	uns8 addr[4];
 	uns8 red;
@@ -56,6 +68,17 @@ struct cmd_set_fade {
 	uns16 fadeTmms; //fadetime in ms
 };
 
+struct cmd_loop_start {
+	uns8 counter;
+	uns8 numLoops;
+	uns8 depth;
+};
+
+struct cmd_loop_stop {
+	uns8 startIndex;
+	uns8 depth;
+};
+
 struct cmd_wait {
 	uns8 valueH;
 	uns8 valueL;
@@ -69,10 +92,13 @@ struct cmd_set_run {
 struct led_cmd {
 	uns8 cmd;
 	union {
+		struct cmd_add_color add_color;
 		struct cmd_set_color set_color;
 		struct cmd_set_fade set_fade;
 		struct cmd_set_run set_run;
 		struct cmd_wait wait;
+		struct cmd_loop_start loop_start;
+		struct cmd_loop_stop loop_stop;
 	}data;
 };
 

@@ -313,11 +313,17 @@ void Commandstorage_ExecuteCommands()
 		
 	if(0 != result)
 	{
+		Commandstorage_ExecuteCmd(&nextCmd);
+	}
+}
+
+void Commandstorage_ExecuteCmd(struct led_cmd* pCmd)
+{
 #ifdef TEST
 		UART_SendString("executeCommand");
 #endif
 		// *** commands available, check what to do
-		switch(nextCmd.cmd) 
+		switch(pCmd->cmd) 
 		{	
 			case SET_COLOR: 
 			{
@@ -331,7 +337,7 @@ void Commandstorage_ExecuteCommands()
 				UART_SendNumber(nextCmd.data.set_color.green,'G');
 				UART_SendNumber(nextCmd.data.set_color.blue,'B');
 #endif
-				Ledstrip_SetColor(&nextCmd.data.set_color);
+				Ledstrip_SetColor(&pCmd->data.set_color);
 				break;
 			}
 			case SET_FADE:
@@ -348,29 +354,33 @@ void Commandstorage_ExecuteCommands()
 				UART_SendNumber(nextCmd.data.set_fade.fadeTmms.high8,'H');
 				UART_SendNumber(nextCmd.data.set_fade.fadeTmms.low8,'L');
 #endif
-				Ledstrip_SetFade(&nextCmd.data.set_fade);
+				Ledstrip_SetFade(&pCmd->data.set_fade);
 				break;
 			}
 			case WAIT:
 			{
-				struct cmd_wait *pCmd = &nextCmd.data.wait;
 #ifdef TEST
 				UART_SendNumber(pCmd->valueH,'H');
 				UART_SendNumber(pCmd->valueL,'L');
 #endif
 
 #ifndef X86
-				g_CmdBuf.WaitValue.high8 = pCmd->valueH;
-				g_CmdBuf.WaitValue.low8 = pCmd->valueL;
+				g_CmdBuf.WaitValue.high8 = pCmd->data.wait.valueH;
+				g_CmdBuf.WaitValue.low8 = pCmd->data.wait.valueL;
 #else
-				g_CmdBuf.WaitValue = pCmd->valueH << 8;
-				g_CmdBuf.WaitValue |= 0x00ff & pCmd->valueL;
+				g_CmdBuf.WaitValue = pCmd->data.wait.valueH << 8;
+				g_CmdBuf.WaitValue |= 0x00ff & pCmd->data.wait.valueL;
 #endif
 				break;
 			}
 			case SET_RUN: {break;}
+
+			case ADD_COLOR:
+			{
+				date_timer_add_event(&pCmd->data.add_color);
+				break;
+			}
 		}
-	}
 }
 
 void Commandstorage_Init()

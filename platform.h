@@ -42,6 +42,7 @@
 	extern unsigned char g_UpdateFade;	
 
 	#define bank1
+	#define bank6
 	#define clearRAM(x)
 	#define Platform_AllowInterrupts(x)
 	#define Platform_CheckInputs(x)
