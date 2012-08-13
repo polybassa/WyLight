@@ -30,7 +30,7 @@ WiflyControlCli::WiflyControlCli(const char* pAddr, short port, bool useTcp)
 void WiflyControlCli::run(void)
 {
 	string nextCmd;
-	cout << "Usage:" << endl;
+	cout << "Command reference:" << endl;
 	cout << "'exit' - terminate cli" << endl;
 	cout << "'setcolor <addr> <rgb>'" << endl;
 	cout << "    <addr> hex bitmask, which leds should be set to the new color" << endl;
@@ -76,6 +76,8 @@ void Java_biz_bruenn_WiflyLight_WiflyLightActivity_runClient(JNIEnv* env, jobjec
 
 int main(int argc, const char* argv[])
 {
+	cout << "Usage:   client.bin <ip> <port> [tcp]" << endl;
+	cout << "Default: client.bin 127.0.0.1 2000 --> udp connection to localhost" << endl;
 	const char* pAddr = "127.0.0.1";
 	short port = 2000;
 	bool useTcp = false;
