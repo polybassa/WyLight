@@ -1,5 +1,5 @@
-PIC_CC=/home/gpb/cc8efree/CC8E.EXE
-PIC_CC8E=/Users/weitys1/Dropbox/Wifly_Light/CC8E/CC8E.EXE
+PIC_CC8E_NILS=/Users/weitys1/Dropbox/Wifly_Light/CC8E/CC8E.EXE
+PIC_CC8E_PAT=/home/gpb/cc8efree/CC8E.EXE
 
 ANDROID_DIR=./android/WiflyLight
 OPENGL_LIB=-lGL -lGLU -lglut
@@ -16,6 +16,15 @@ pic_nils:
 
 pic_pat: ledstrip.h
 	wine ${PIC_CC} main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM
+
+pic:
+	@if [ -e ${PIC_CC8E_NILS} ]; then \
+		wine ${PIC_CC8E_NILS} main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM ; \
+	elif [ -e ${PIC_CC8E_PAT} ]; then \
+		wine ${PIC_CC8E_PAT} main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM ; \
+	else \
+		echo "cc8e not found" ; \
+	fi
 
 linux_simu:
 	gcc ${X86_SRC} -DX86 -DNO_CRC -lpthread ${OPENGL_LIB} -o server.bin -Wall
