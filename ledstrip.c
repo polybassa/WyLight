@@ -61,24 +61,36 @@ bank1 struct LedBuffer gLedBuf;
  * This is a sub-macro of <FOR_EACH_MASKED_LED_DO> used in fade precalculations
  * to calculate the fading parameters(<periodeLength>, <stepSize> and <delta>) for <newColor>
 **/
-#define CALC_COLOR(newColor) { \
+#define CALC_COLOR(newColor)  \
+		{\
 		delta = gLedBuf.led_array[k]; \
-		if(delta > newColor) { \
-			delta -= newColor; \
-			*(stepAddress) |= (stepMask); \
-		} else { \
-			delta = newColor - delta; \
-			*(stepAddress) &= ~(stepMask); \
-		}; \
-		INC_BIT_COUNTER(stepAddress, stepMask); \
-		gLedBuf.cyclesLeft[k] = 0; \
-		delta = delta / STEP_SIZE; \
-		if((0 != delta)) {\
-			temp16 = fadeTmms / delta; \
-			gLedBuf.periodeLength[k] = temp16 / CYCLE_TMMS; \
-			gLedBuf.stepSize[k] = STEP_SIZE; \
+		if(delta > newColor)  \
+		{ \
+			delta = delta - newColor;  \
+			*(stepAddress) |= (stepMask);  \
 		} \
-		gLedBuf.delta[k] = delta; \
+		else  \
+		{  \
+			delta = newColor - delta;  \
+			*(stepAddress) &= ~(stepMask); \
+		}  \
+		INC_BIT_COUNTER(stepAddress, stepMask); \
+		temp16 = 0; \
+		if((0 != delta))  \
+		{ \
+			temp16 = fadeTmms / delta;  \
+			gLedBuf.periodeLength[k] = temp16;  \
+		} \
+		if((temp16 == 0))  \
+		{ \
+			gLedBuf.led_array[k] = newColor;  \
+			gLedBuf.delta[k] = 0; \
+		}  \
+		else  \
+		{  \
+			gLedBuf.delta[k] = delta; \
+		}  \
+		gLedBuf.cyclesLeft[k] = temp16;  \
 };
 
 void Ledstrip_Init(void)
@@ -92,10 +104,26 @@ void Ledstrip_Init(void)
 		i--;
 		gLedBuf.led_array[i] = 0;
 	} while(0 != i);
+	i = sizeof(gLedBuf.delta);
+	do {
+		i--;
+		gLedBuf.delta[i] = 0;
+	} while(0 != i);
+	i = sizeof(gLedBuf.cyclesLeft);
+	do {
+		i--;
+		gLedBuf.cyclesLeft[i] = 0;
+	} while(0 != i);
+	i = sizeof(gLedBuf.periodeLength);
+	do {
+		i--;
+		gLedBuf.periodeLength[i] = 0;
+	} while(0 != i);
 }
 
 void Ledstrip_SetColor(struct cmd_set_color *pCmd)
 {
+	gLedBuf.processing_of_data = TRUE;
 	uns8 r = pCmd->red;
 	uns8 g = pCmd->green;
 	uns8 b = pCmd->blue;
@@ -118,22 +146,27 @@ void Ledstrip_SetColor(struct cmd_set_color *pCmd)
 			k++;k++;
 		}
 	);
+	gLedBuf.processing_of_data = FALSE;
 }
 
 void Ledstrip_DoFade(void)
 {
+	if(gLedBuf.processing_of_data)
+	{
+		return;
+	}
+	gLedBuf.processing_of_data = TRUE;
+	
 	uns8 k, stepmask;
-	uns8* stepaddress = gLedBuf.step;
+	uns8* stepaddress = &gLedBuf.step[0];
 	stepmask = 0x01;
-	unsigned short periodeLength;
+	uns16 periodeLength;
 	
 	for(k = 0; k < (NUM_OF_LED * 3); k++)
 	{
 		// fade active on this led and current periode is over?
 		if((gLedBuf.delta[k] > 0) && (gLedBuf.cyclesLeft[k] == 0))
 		{
-			uns8 stepSize = gLedBuf.stepSize[k];
-
 			// reset cycle counters
 			gLedBuf.delta[k]--;
 			periodeLength = gLedBuf.periodeLength[k];
@@ -141,9 +174,9 @@ void Ledstrip_DoFade(void)
 
 			// update rgb value by one step
 			if(0 != ((*stepaddress) & stepmask)) {
-				gLedBuf.led_array[k] -= stepSize;
+				gLedBuf.led_array[k] -= 1;
 			} else {
-				gLedBuf.led_array[k] += stepSize;
+				gLedBuf.led_array[k] += 1;
 			}
 		}
 		INC_BIT_COUNTER(stepaddress, stepmask);
@@ -151,26 +184,32 @@ void Ledstrip_DoFade(void)
 
 	// write changes to ledstrip
 	SPI_SendLedBuffer(gLedBuf.led_array);
+	gLedBuf.processing_of_data = FALSE;
 }
 
 void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 {
+	gLedBuf.processing_of_data = TRUE;
+	
 	// constant for this fade used in CALC_COLOR
 	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
 
-	// calc fade parameters for each led
-	uns8 delta;
-	uns16 temp16;
 	uns8* stepAddress = gLedBuf.step;
-	uns8 stepMask;
-	stepMask = 0x01;
+	uns8 stepMask = 0x01;
+	uns16 temp16;
+	uns8 red,green,blue,delta;
+	
+	red = pCmd->red;
+	green = pCmd->green;
+	blue = pCmd->blue;
+	// calc fade parameters for each led
 	FOR_EACH_MASKED_LED_DO(
 		{
-			CALC_COLOR(pCmd->blue);
+			CALC_COLOR(blue);
 			k++;
-			CALC_COLOR(pCmd->green);
+			CALC_COLOR(green);
 			k++;
-			CALC_COLOR(pCmd->red);
+			CALC_COLOR(red);
 		},
 		{
 			// if led is not fade, we have to increment our pointers and rotate the mask
@@ -180,17 +219,24 @@ void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 			INC_BIT_COUNTER(stepAddress, stepMask);
 		}
 	);
+	gLedBuf.processing_of_data = FALSE;
 }
 
 void Ledstrip_UpdateFade(void)
 {
+	if(gLedBuf.processing_of_data)
+	{
+		return;
+	}
+	gLedBuf.processing_of_data = TRUE;
 	uns8 i;
-	for(i = 0; i < NUM_OF_LED*3; i++)
+	for(i = 0; i < NUM_OF_LED * 3; i++)
 	{
 		if((gLedBuf.delta[i] > 0) && (gLedBuf.cyclesLeft[i] > 0))
 		{
 			gLedBuf.cyclesLeft[i]--;		
 		}
 	}
+	gLedBuf.processing_of_data = FALSE;
 }
 

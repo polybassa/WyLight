@@ -42,7 +42,7 @@
 #endif /* #ifdef X86 */
 
 //*********************** GLOBAL VARIABLES *******************************************
-uns8 g_TmmsCounter;
+uns8 g_UpdateLed;
 
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void InitAll();
@@ -82,7 +82,7 @@ interrupt LowPriorityInterrupt(void)
 	if(TMR4IF)
 	{
 		Timer4Interrupt();
-		g_TmmsCounter++;
+		g_UpdateLed = TRUE;
 	} 
 	if(TMR2IF)
 	{
@@ -137,11 +137,11 @@ void main(void)
 		Error_Throw();
 		Commandstorage_GetCommands();
 		Commandstorage_ExecuteCommands();		
-		if(g_TmmsCounter >= CYCLE_TMMS)
+		if(g_UpdateLed == TRUE)
 		{
-			g_TmmsCounter -= CYCLE_TMMS;
 			Ledstrip_UpdateFade();
 			Ledstrip_DoFade();
+			g_UpdateLed = FALSE;
 		}
 	}
 }
@@ -160,8 +160,6 @@ void InitAll()
 	Error_Init();
 	Commandstorage_Clear();
 	Rtc_Init();
-
-	g_TmmsCounter = 0;
 
 #ifdef X86
 	init_x86();

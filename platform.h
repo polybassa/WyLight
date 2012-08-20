@@ -25,8 +25,6 @@
 
 //*********************** CONFIGURATION ********************************************
 #define WIFLY_SERVER_PORT 2000 // TCP/UDP Port of Wifly device
-#define CYCLE_TMMS 64 //cycle time in milliseconds
-#define STEP_SIZE 16 //minimal stepSize while fading
 
 #ifdef X86
 	#include <stdio.h>

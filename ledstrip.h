@@ -36,10 +36,10 @@
 struct LedBuffer{
 	uns8 led_array[NUM_OF_LED * 3];
 	uns8 delta[NUM_OF_LED * 3];
-	unsigned short cyclesLeft[NUM_OF_LED * 3];
-	unsigned short periodeLength[NUM_OF_LED * 3];
+	uns16 cyclesLeft[NUM_OF_LED * 3];
+	uns16 periodeLength[NUM_OF_LED * 3];
 	uns8 step[NUM_OF_LED / 8 * 3];
-	uns8 stepSize[NUM_OF_LED * 3];
+	bit processing_of_data;
 };
 
 /**
