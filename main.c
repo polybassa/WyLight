@@ -78,6 +78,7 @@ interrupt LowPriorityInterrupt(void)
 	{
 		Timer1Interrupt();
 		Commandstorage_WaitInterrupt();
+		Ledstrip_TerminateRun();
 	}
 	if(TMR4IF)
 	{
@@ -140,6 +141,7 @@ void main(void)
 		if(g_UpdateLed == TRUE)
 		{
 			Ledstrip_UpdateFade();
+			Ledstrip_UpdateRun();
 			Ledstrip_DoFade();
 			g_UpdateLed = FALSE;
 		}

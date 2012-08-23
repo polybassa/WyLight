@@ -57,13 +57,15 @@ struct cmd_set_fade {
 };
 
 struct cmd_wait {
-	uns8 valueH;
-	uns8 valueL;
+	uns16 waitTmms;
 	uns8 reserved[7];
 };
 
 struct cmd_set_run {
-	uns8 dummy;
+	uns8 direction;
+	uns16 durationTmms;
+	uns16 fadeTmms;
+	uns8 reserved[4];
 };
 
 struct led_cmd {

@@ -35,11 +35,18 @@
  */
 struct LedBuffer{
 	uns8 led_array[NUM_OF_LED * 3];
+	uns8 carry_led[3];
 	uns8 delta[NUM_OF_LED * 3];
 	uns16 cyclesLeft[NUM_OF_LED * 3];
 	uns16 periodeLength[NUM_OF_LED * 3];
 	uns8 step[NUM_OF_LED / 8 * 3];
-	bit processing_of_data;
+	uns16 fadeTmms;
+	struct status_bits{
+		uns8 processing_of_data : 1;
+		uns8 run_aktiv : 1;
+		uns8 run_direction : 1;    // 1==left, 0==right
+		uns8 fade_aktiv : 1;
+	} flags;
 };
 
 /**
@@ -62,6 +69,14 @@ void Ledstrip_SetColor(struct cmd_set_color *pCmd);
 void Ledstrip_SetFade(struct cmd_set_fade *pCmd);
 
 /**
+ * Callback if a "set_run" command is received.
+ * fading parameters are calculated and stored to be used in
+ * Ledstrip_DoFade() which is called in the main cycle
+ * Duration is used to block the commandstorage
+ */
+void Ledstrip_SetRun(struct cmd_set_run *pCmd);
+
+/**
  * called by the main cycle
  * update the ledstrip accourding to the precalculated parameters in <gLedBuf>
  */
@@ -72,4 +87,8 @@ void Ledstrip_DoFade(void);
  * updates cyclesLeft part of the global <gLedBuf>
 **/
 void Ledstrip_UpdateFade(void);
+
+void Ledstrip_UpdateRun(void);
+
+void Ledstrip_TerminateRun(void);
 #endif

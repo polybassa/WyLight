@@ -313,62 +313,34 @@ void Commandstorage_ExecuteCommands()
 		
 	if(0 != result)
 	{
-#ifdef TEST
-		UART_SendString("executeCommand");
-#endif
 		// *** commands available, check what to do
 		switch(nextCmd.cmd) 
 		{	
 			case SET_COLOR: 
 			{
-#ifdef TEST
-				UART_SendString("SET_COLOR");
-				UART_SendNumber(nextCmd.data.set_color.addr[0],'A');
-				UART_SendNumber(nextCmd.data.set_color.addr[1],'A');
-				UART_SendNumber(nextCmd.data.set_color.addr[2],'A');
-				UART_SendNumber(nextCmd.data.set_color.addr[3],'A');
-				UART_SendNumber(nextCmd.data.set_color.red,'R');
-				UART_SendNumber(nextCmd.data.set_color.green,'G');
-				UART_SendNumber(nextCmd.data.set_color.blue,'B');
-#endif
 				Ledstrip_SetColor(&nextCmd.data.set_color);
 				break;
 			}
 			case SET_FADE:
 			{
-#ifdef TEST
-				UART_SendString("SET_FADE");
-				UART_SendNumber(nextCmd.data.set_fade.addr[0],'A');
-				UART_SendNumber(nextCmd.data.set_fade.addr[1],'A');
-				UART_SendNumber(nextCmd.data.set_fade.addr[2],'A');
-				UART_SendNumber(nextCmd.data.set_fade.addr[3],'A');
-				UART_SendNumber(nextCmd.data.set_fade.red,'R');
-				UART_SendNumber(nextCmd.data.set_fade.green,'G');
-				UART_SendNumber(nextCmd.data.set_fade.blue,'B');
-				UART_SendNumber(nextCmd.data.set_fade.fadeTmms.high8,'H');
-				UART_SendNumber(nextCmd.data.set_fade.fadeTmms.low8,'L');
-#endif
 				Ledstrip_SetFade(&nextCmd.data.set_fade);
 				break;
 			}
 			case WAIT:
 			{
 				struct cmd_wait *pCmd = &nextCmd.data.wait;
-#ifdef TEST
-				UART_SendNumber(pCmd->valueH,'H');
-				UART_SendNumber(pCmd->valueL,'L');
-#endif
-
-#ifndef X86
-				g_CmdBuf.WaitValue.high8 = pCmd->valueH;
-				g_CmdBuf.WaitValue.low8 = pCmd->valueL;
-#else
-				g_CmdBuf.WaitValue = pCmd->valueH << 8;
-				g_CmdBuf.WaitValue |= 0x00ff & pCmd->valueL;
-#endif
+				Trace_Number(pCmd->waitTmms.high8,'H');
+				Trace_Number(pCmd->waitTmms.low8,'L');
+				g_CmdBuf.WaitValue = pCmd->waitTmms;
 				break;
 			}
-			case SET_RUN: {break;}
+			case SET_RUN: 
+			{
+				struct cmd_set_run *pCmd = &nextCmd.data.set_run;
+				g_CmdBuf.WaitValue = pCmd->durationTmms;
+				Ledstrip_SetRun(&nextCmd.data.set_run);
+				break;
+			}
 		}
 	}
 }
