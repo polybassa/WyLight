@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -38,6 +38,8 @@
 #define DISPLAY_RTC 0xF2
 #define ADD_COLOR 0xF1
 
+#define LOOP_INFINITE 0xFF
+
 //*********************** STRUCT DECLARATION *********************************************
 struct cmd_add_color {
 //TODO add this later, when we can handle longer cmd_frames
@@ -69,9 +71,9 @@ struct cmd_set_fade {
 };
 
 struct cmd_loop_start {
-	uns8 counter;
-	uns8 numLoops;
-	uns8 depth;
+	uns8 counter; /* current loop counter, used due processing */
+	uns8 numLoops; /* number of programmed loops f.e. LOOP_INFINITE */
+	uns8 depth; /* number of recursions */
 };
 
 struct cmd_loop_stop {

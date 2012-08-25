@@ -30,7 +30,7 @@ void ScriptCtrl_Add(struct led_cmd* pCmd)
 		gScriptBuf.loopStart[gScriptBuf.loopDepth] = gScriptBuf.write;
 		gScriptBuf.loopDepth++;		
 	}
-	else if (LOOP_OFF)
+	else if (LOOP_OFF == pCmd->cmd)
 	{
 		uns8 loopStart = gScriptBuf.loopStart[gScriptBuf.loopDepth];
 		pCmd->data.loop_stop.startIndex = loopStart;
@@ -42,20 +42,48 @@ void ScriptCtrl_Add(struct led_cmd* pCmd)
 
 void ScriptCtrl_Run(void)
 {
-	// cmd available?
+	/* cmd available? */
 	if(gScriptBuf.execute == gScriptBuf.write) return;
-	
+
+	/* read next cmd from buffer */
 	struct led_cmd* pCmd = &gScriptBuf.cmd[gScriptBuf.execute];
-	ScriptBufInc(gScriptBuf.execute);
+	
+	/* increment execute pointer */
+	gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
 
 	switch(pCmd->cmd)
 	{
 		case LOOP_ON:
-			if(1 == pCmd->data.loop_start.counter)
+			if(LOOP_INFINITE == pCmd->data.loop_start.counter)
 			{
-				gScriptBuf.override = (1 == pCmd->data.loop_start.depth);
-				pCmd->data.loop_start.counter = pCmd->data.loop_start.numLoops,
-				gScriptBuf.loopSkip = TRUE;
+				/* loop forever */;
+			}
+			else if(0 == pCmd->data.loop_start.counter)
+			{
+				/* loop reached end, is it a top loop? */
+				if(1 == pCmd->data.loop_start.depth)
+				{
+					/* top loop reached end -> delete commands in loop body */
+					do
+					{
+						gScriptBuf.read = ScriptBufInc(gScriptBuf.read);
+					} while (gScriptBuf.read != gScriptBuf.execute);
+
+					/* set pointers to next valid command */
+					gScriptBuf.read = ScriptBufInc(gScriptBuf.read);
+					gScriptBuf.execute = gScriptBuf.read;
+				}
+				else
+				{
+					/* end of no top loop reached -> reinit counter for next iteration */
+					pCmd->data.loop_start.counter = pCmd->data.loop_start.numLoops,
+					gScriptBuf.loopSkip = TRUE;
+				}
+			}
+			else
+			{
+				/* normal loop iteration -> update counter */
+				pCmd->data.loop_start.counter--;
 			}
 			break;
 		case LOOP_OFF:
@@ -70,12 +98,6 @@ void ScriptCtrl_Run(void)
 		case SET_FADE:
 			Ledstrip_SetFade(&pCmd->data.set_fade);
 			break;
-	}
-
-	// delete command from buffer?	
-	if(gScriptBuf.override)
-	{
-		ScriptBufInc(gScriptBuf.read);
 	}	
 }
 

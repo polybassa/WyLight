@@ -24,7 +24,7 @@
 #define SCRIPTCTRL_NUM_CMD_MAX 15
 #define SCRIPTCTRL_LOOP_DEPTH_MAX 4
 
-#define ScriptBufInc(x) ((x) = ((x) + 1) & SCRIPTCTRL_NUM_CMD_MAX)
+#define ScriptBufInc(x) (((x) + 1) & SCRIPTCTRL_NUM_CMD_MAX)
 
 struct ScriptBuf {
 	struct led_cmd cmd[SCRIPTCTRL_NUM_CMD_MAX];
