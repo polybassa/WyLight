@@ -27,17 +27,13 @@
 class WiflyControl
 {
 	private:
-#ifdef USE_UDP
-		const UdpSocket mSock;
-#else
-		const TcpSocket mSock;
-#endif
+		const ClientSocket* mSock;
 		pthread_t mRecvThread;
 		struct cmd_frame mCmdFrame;
 		unsigned long ToRGBA(std::string& s) const;
 		
 	public:
-		WiflyControl(const char* pAddr, short port);
+		WiflyControl(const char* pAddr, short port, bool useTcp);
 		void Receiving(void) const;
 		/**
 			rgba is a 32 Bit rgb value with alpha channel. Alpha is unused, but easier to handle

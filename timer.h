@@ -18,18 +18,7 @@
 
 #ifndef _TIMER_H_
 #define _TIMER_H_
-
-//Nils Weiﬂ 
-//08.05.2012
-//Compiler CC5x
-
 #include "platform.h"
-
-extern char g_TimeCounter;
-
-#if X86
-void* timer_interrupt(void* unused);
-#endif
 
 void Timer_Init();
 
@@ -49,19 +38,17 @@ void Timer_StartStopwatch(void);
 **/
 void Timer_StopStopwatch(void);
 
-#define Timer1Interrupt(x)  		\
-{									\
-	TMR1IF = 0;						\
-}
-
-#define Timer4Interrupt(x)  		\
-{									\
-	TMR4IF = 0;						\
-}
-
-#define Timer2Interrupt(x)  		\
-{									\
-	TMR2IF = 0;						\
-}
-
+#ifdef __CC8E__
+#define Timer1Interrupt(x) TMR1IF = 0;
+#define Timer2Interrupt(x) TMR2IF = 0;
+#define Timer4Interrupt(x) TMR4IF = 0;
+#define Timer4InterruptLock(x) TMR4IE = 0;
+#define Timer4InterruptUnlock(x) TMR4IE = 1;
+#else
+#define Timer1Interrupt(x)
+#define Timer2Interrupt(x)
+#define Timer4Interrupt(x)
+#define Timer4InterruptLock(x)
+#define Timer4InterruptUnlock(x)
+#endif
 #endif
