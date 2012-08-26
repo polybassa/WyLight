@@ -47,5 +47,4 @@ void Platform_DisableBootloaderAutostart()
 {
 	Eeprom_Write(1023, 1);
 }
-
 #endif /* X86 */

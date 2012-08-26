@@ -19,6 +19,7 @@
 #include "WiflyControl.h"
 #include <iostream>
 #include <sstream>
+#include <cassert>
 
 using namespace std;
 
@@ -29,17 +30,25 @@ void* RunReceiving(void* pObj)
 	return NULL;
 }
 
-WiflyControl::WiflyControl(const char* pAddr, short port)
-: mSock(pAddr, port)
+WiflyControl::WiflyControl(const char* pAddr, short port, bool useTcp)
 {
 	mCmdFrame.stx = STX;
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;
 	mCmdFrame.crcHigh = 0xDE;
 	mCmdFrame.crcLow = 0xAD;
 
-#ifndef USE_UDP
-	pthread_create(&mRecvThread, 0, RunReceiving, this);
-#endif
+	if(useTcp)
+	{
+		mSock = new TcpSocket(pAddr, port);
+		assert(mSock);
+
+		pthread_create(&mRecvThread, 0, RunReceiving, this);
+	}
+	else
+	{
+		mSock = new UdpSocket(pAddr, port);
+		assert(mSock);
+	}
 }
 
 void WiflyControl::Receiving() const
@@ -48,7 +57,7 @@ void WiflyControl::Receiving() const
 	int bytesReceived;
 	for(;;)
 	{
-		bytesReceived = mSock.Recv(buffer, sizeof(buffer) - 1);
+		bytesReceived = mSock->Recv(buffer, sizeof(buffer) - 1);
 		buffer[sizeof(buffer) - 1] = '\0';
 		std::cout << "Trace " << bytesReceived << " bytes: >>" << buffer << "<<" << std::endl;
 	}
@@ -68,7 +77,7 @@ void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
 	mCmdFrame.led.data.set_color.blue = (rgba & 0x0000ff00) >> 8;
 	mCmdFrame.led.data.set_color.reserved[0] = 0;
 	mCmdFrame.led.data.set_color.reserved[1] = 0;
-	int bytesWritten = mSock.Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
+	int bytesWritten = mSock->Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
 #ifdef DEBUG
 	std::cout << "Send " << bytesWritten << " bytes "
 		<< addr << " | "
@@ -101,7 +110,7 @@ void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned shor
 	mCmdFrame.led.data.set_fade.green = (rgba & 0x00ff0000) >> 16;
 	mCmdFrame.led.data.set_fade.blue = (rgba & 0x0000ff00) >> 8;
 	mCmdFrame.led.data.set_fade.fadeTmms = htons(fadeTmms);
-	int bytesWritten = mSock.Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
+	int bytesWritten = mSock->Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
 #ifdef DEBUG
 	std::cout << "Send " << bytesWritten << " bytes "
 		<< addr << " | "
