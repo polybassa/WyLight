@@ -69,11 +69,9 @@ void Timer_StartStopwatch(void)
 void Timer_StopStopwatch(void)
 {
 #ifndef X86
-/*
+
 	TMR3ON = 0;
 	uns16 measuredValue,tempValue;
-	uns8 value[8],temp,i;
-	uns8* ptrValue;
 	measuredValue.low8 = TMR3L;
 	measuredValue.high8 = TMR3H;
 	
@@ -81,57 +79,16 @@ void Timer_StopStopwatch(void)
 	
 	tempValue = measuredValue >> 1;			//rotate right, so there are µS in tempValue
 	
-	ptrValue = &value[0];
-	while(!(ptrValue == &value[7]))
-	{
-		W = tempValue.low8;
-		W = decadj(W);
-		temp = W;
-		*ptrValue = temp & 0x0f;
-		ptrValue++;
-		*ptrValue = temp & 0xf0;
-		//Under Construction
-	}
-	
-	if((tempValue & 0xfF00) > 0)
-	{
-		value = (uns8)(tempValue >> 12);
-		value &= 0x0f;
-		W = value;
-		W = decadj(W);
-		value = W;
-		UART_Send(value);
-	}
-	if((tempValue & 0x0f00) > 0)
-	{
-		value = (uns8)(tempValue >> 8);
-		value &= 0x0f;
-		value += '0';
-		UART_Send(value);
-	}
-	if((tempValue & 0x00f0) > 0)
-	{
-		value = (uns8)(tempValue >> 4);
-		value &= 0x0f;
-		value += '0';
-		UART_Send(value);
-	}
-	if((tempValue & 0xf000) > 0)
-	{
-		value = (uns8)tempValue;
-		value &= 0x0f;
-		value += '0';
-		UART_Send(value);
-	}
+	UART_SendNumber(tempValue.high8,'H');
+	UART_SendNumber(tempValue.low8,'L');
 	
 	if((measuredValue & 0x0001) == 1) 		//check LSB if set
 	{
 		UART_Send('.');
 		UART_Send('5');
-		UART_SendString(" µS in HEX ");
-		UART_Send(0x0d);
-		UART_Send(0x0a);
 	}
-	*/
+	UART_SendString(" µS in HEX ");
+	UART_Send(0x0d);
+	UART_Send(0x0a);
 #endif
 }
