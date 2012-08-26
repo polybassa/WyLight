@@ -140,6 +140,10 @@ void main(void)
 		Commandstorage_ExecuteCommands();		
 		if(g_UpdateLed == TRUE)
 		{
+			Timer4InterruptLock();
+			g_TmmsCounter -= CYCLE_TMMS;
+			Timer4InterruptUnlock();
+
 			Ledstrip_UpdateFade();
 			Ledstrip_UpdateRun();
 			Ledstrip_DoFade();
