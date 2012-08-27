@@ -45,7 +45,6 @@ struct LedBuffer{
 		uns8 processing_of_data : 1;
 		uns8 run_aktiv : 1;
 		uns8 run_direction : 1;    // 1==left, 0==right
-		uns8 fade_aktiv : 1;
 	} flags;
 };
 
@@ -91,4 +90,9 @@ void Ledstrip_UpdateFade(void);
 void Ledstrip_UpdateRun(void);
 
 void Ledstrip_TerminateRun(void);
+/**
+ * returns a number of current running fades
+ * returns 0 if no fade is running
+ */
+uns8 Ledstrip_NumOfFades(void);
 #endif

@@ -93,6 +93,22 @@ bank1 struct LedBuffer gLedBuf;
 		gLedBuf.cyclesLeft[k] = temp16;  \
 };
 
+uns8 Ledstrip_NumOfFades(void)
+{
+	uns8 counter = 0;
+	uns8 i;
+	
+	for(i = 0; i < NUM_OF_LED * 3; i++)
+	{
+		if(gLedBuf.delta[i] > 0)
+		{
+			counter += 1;
+		}
+	}
+	return counter;
+}
+
+
 void Ledstrip_Init(void)
 {
 	// initialize interface to ledstrip
@@ -190,7 +206,6 @@ void Ledstrip_DoFade(void)
 void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 {
 	gLedBuf.flags.processing_of_data = TRUE;
-	gLedBuf.flags.fade_aktiv = TRUE;
 	
 	// constant for this fade used in CALC_COLOR
 	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
@@ -231,20 +246,16 @@ void Ledstrip_UpdateFade(void)
 	}
 	gLedBuf.flags.processing_of_data = TRUE;
 	uns8 i;
-	gLedBuf.flags.fade_aktiv = FALSE;
 	for(i = 0; i < NUM_OF_LED * 3; i++)
 	{
 		if((gLedBuf.delta[i] > 0) && (gLedBuf.cyclesLeft[i] > 0))
 		{
 			gLedBuf.cyclesLeft[i]--;		
 		}
-		if(gLedBuf.delta[i] > 0)
-		{
-			gLedBuf.flags.fade_aktiv = TRUE;
-		}
 	}
 	gLedBuf.flags.processing_of_data = FALSE;
 }
+
 
 void Ledstrip_SetRun(struct cmd_set_run *pCmd)
 {
@@ -271,13 +282,12 @@ void Ledstrip_UpdateRun(void)
 	{
 		return;
 	}
-	if(gLedBuf.flags.fade_aktiv == TRUE)
+	if(Ledstrip_NumOfFades() > 0)
 	{
 		return;
 	}
 	
 	gLedBuf.flags.processing_of_data = TRUE;
-	gLedBuf.flags.fade_aktiv = TRUE;
 	
 	const uns16 fadeTmms = gLedBuf.fadeTmms;
 	uns8* stepAddress = gLedBuf.step;

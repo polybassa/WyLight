@@ -43,7 +43,9 @@
 
 //*********************** GLOBAL VARIABLES *******************************************
 uns8 g_UpdateLed;
-
+#ifdef X86
+uns8 g_TmmsCounter;
+#endif /* #ifdef X86 */
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void InitAll();
 void HighPriorityInterruptFunction(void);
@@ -133,7 +135,7 @@ void main(void)
 #ifdef X86
 		// give opengl thread a chance to run
 		usleep(10);
-#endif
+#endif /* #ifdef X86 */
 		Platform_CheckInputs();
 		Error_Throw();
 		Commandstorage_GetCommands();
@@ -141,7 +143,9 @@ void main(void)
 		if(g_UpdateLed == TRUE)
 		{
 			Timer4InterruptLock();
+#ifdef X86
 			g_TmmsCounter -= CYCLE_TMMS;
+#endif /* #ifdef X86 */
 			Timer4InterruptUnlock();
 
 			Ledstrip_UpdateFade();
