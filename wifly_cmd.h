@@ -36,6 +36,7 @@
 #define SET_RTC 0xF4 			/* FRAME: <STX><LEN><SET_RTC><YEAR><MONTH><DAY><WDAY><HOUR><MIN><SEC><CRC><CRC> */
 #define GET_RTC 0xF3
 #define DISPLAY_RTC 0xF2
+#define SET_COLOR_DIRECT 0xF1
 
 //*********************** STRUCT DECLARATION *********************************************
 struct cmd_set_color {
@@ -45,6 +46,7 @@ struct cmd_set_color {
 	uns8 blue;
 	uns8 reserved[2];
 };
+
 #ifdef X86
 #pragma pack(1)
 #endif
@@ -85,5 +87,6 @@ struct cmd_frame {
 	uns8 crcHigh;
 	uns8 crcLow;
 };
-#define FRAMELENGTH (sizeof(struct cmd_frame) + 1)			// *** max length of one commandframe
+//#define FRAMELENGTH (sizeof(struct cmd_frame) + 1)			// *** max length of one commandframe
+#define FRAMELENGTH (NUM_OF_LED * 3 + 8)
 #endif /* #ifndef _WIFLY_CMD_H_ */

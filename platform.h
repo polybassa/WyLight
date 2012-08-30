@@ -25,6 +25,7 @@
 
 //*********************** CONFIGURATION ********************************************
 #define WIFLY_SERVER_PORT 2000 // TCP/UDP Port of Wifly device
+#define NUM_OF_LED 32
 
 #ifdef X86
 	#include <stdio.h>

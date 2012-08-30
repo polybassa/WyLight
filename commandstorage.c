@@ -117,8 +117,7 @@ void Commandstorage_GetCommands()
 	{
 		// *** preload variables and 
 		// *** get new_byte from ringbuffer
-		unsigned char new_byte, temp;
-		temp = 0;
+		unsigned char new_byte;
 		// *** get new byte
 		new_byte = RingBuf_Get();
 		Trace_String("BYTE:");
@@ -142,10 +141,8 @@ void Commandstorage_GetCommands()
 			}
 			else
 			{	
-				// *** to avoid arrayoverflow
-				temp = FRAMELENGTH - 2;
 				// *** check if I get the framelength byte
-				if((new_byte < temp) && (g_CmdBuf.cmd_counter == 1))
+				if((new_byte < (FRAMELENGTH - 2)) && (g_CmdBuf.cmd_counter == 1))
 				{
 					g_CmdBuf.frame_counter = new_byte;
 					g_CmdBuf.cmd_buf[1] = new_byte;
@@ -241,7 +238,7 @@ void Commandstorage_GetCommands()
 								UART_Send(0x0a);
 								return;
 							}
-							case GET_RTC:
+						case GET_RTC:
 							{
 							#ifdef X86
 								//TO DO Stream für RTC erzeugen
@@ -259,7 +256,7 @@ void Commandstorage_GetCommands()
 								UART_Send(g_RtcTime.tm_sec);
 								return;
 							}
-							case SET_RTC:
+						case SET_RTC:
 							{
 							#ifdef X86
 								//TO DO Stream für RTC erzeugen
@@ -276,7 +273,14 @@ void Commandstorage_GetCommands()
 								g_RtcTime.tm_sec = g_CmdBuf.cmd_buf[9];
 								ioctl(fd, RTC_SET_TIME, &g_RtcTime);
 								return;
-							}	
+							}
+						case SET_COLOR_DIRECT:
+							{
+								Ledstrip_SetColorDirect(&g_CmdBuf.cmd_buf[3]);
+								UART_Send('G');
+								UART_Send('V');
+								return;
+							}
 						default:
 							{
 								if( Commandstorage_Write(&g_CmdBuf.cmd_buf[2], (g_CmdBuf.cmd_counter - 4)))

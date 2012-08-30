@@ -21,8 +21,6 @@
 
 #include "commandstorage.h"
 
-#define NUM_OF_LED 32
-
 /**
  * This structure is used for calculations to manipulate the ledstrip state
  *
@@ -58,6 +56,14 @@ void Ledstrip_Init(void);
  * only Led's where the address bit is 1 will be set to the new color
  */
 void Ledstrip_SetColor(struct cmd_set_color *pCmd);
+
+/**
+ * Callback if a "set_color_direct" command is received.
+ * ledstrip is updated according to the provided values.
+ * *pValues indicates the start of the Value-Array.
+ * Length of the Array is always NUM_OF_LED * 3
+ */
+void Ledstrip_SetColorDirect(uns8 *pValues);
 
 /**
  * Callback if a "set_fade" command is received.

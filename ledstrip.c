@@ -135,6 +135,11 @@ void Ledstrip_Init(void)
 		i--;
 		gLedBuf.periodeLength[i] = 0;
 	} while(0 != i);
+	i = sizeof(gLedBuf.step);
+	do {
+		i--;
+		gLedBuf.step[i] = 0;
+	} while(0 != i);
 }
 
 void Ledstrip_SetColor(struct cmd_set_color *pCmd)
@@ -162,6 +167,21 @@ void Ledstrip_SetColor(struct cmd_set_color *pCmd)
 			k++;k++;
 		}
 	);
+	gLedBuf.flags.processing_of_data = FALSE;
+}
+
+void Ledstrip_SetColorDirect(uns8 *pValues)
+{
+	gLedBuf.flags.processing_of_data = TRUE;
+	uns8 k, temp;
+	for(k = 0; k < (NUM_OF_LED * 3); k++)
+	{
+		temp = *pValues;
+		gLedBuf.led_array[k] = temp;
+		pValues += 1;
+		gLedBuf.cyclesLeft[k] = 0;
+		gLedBuf.delta[k] = 0;
+	}
 	gLedBuf.flags.processing_of_data = FALSE;
 }
 
