@@ -294,6 +294,7 @@ void Ledstrip_UpdateRun(void)
 	uns8 stepMask = 0x01;
 	uns16 temp16;
 	uns8 red, green, blue, delta, k, temp_red, temp_green, temp_blue;
+	uns8 carry_led[3];
 	
 	for(k = 0; k < (NUM_OF_LED * 3); k++)
 	{
@@ -301,21 +302,18 @@ void Ledstrip_UpdateRun(void)
 		{
 			if(k < 3)
 			{
-				blue = gLedBuf.led_array[0];
-				green = gLedBuf.led_array[1];
-				red = gLedBuf.led_array[2];
-				gLedBuf.carry_led[0] = blue;
-				gLedBuf.carry_led[1] = green;
-				gLedBuf.carry_led[2] = red;
+				temp_blue = gLedBuf.led_array[0];
+				temp_green = gLedBuf.led_array[1];
+				temp_red = gLedBuf.led_array[2];
 				blue = gLedBuf.led_array[k + 3];
 				green = gLedBuf.led_array[k + 4];
 				red = gLedBuf.led_array[k + 5];
 			}
 			else if( (k + 3) == (NUM_OF_LED * 3) )
 			{
-				blue = gLedBuf.carry_led[0];
-				green = gLedBuf.carry_led[1];
-				red = gLedBuf.carry_led[2];
+				blue = temp_blue;
+				green = temp_green;
+				red = temp_red;
 			}
 			else
 			{
@@ -328,33 +326,27 @@ void Ledstrip_UpdateRun(void)
 		{
 			if(k < 3)
 			{
-				blue = gLedBuf.led_array[0];
-				green = gLedBuf.led_array[1];
-				red = gLedBuf.led_array[2];
-				gLedBuf.carry_led[0] = blue;
-				gLedBuf.carry_led[1] = green;
-				gLedBuf.carry_led[2] = red;
+				temp_blue = gLedBuf.led_array[0];
+				temp_green = gLedBuf.led_array[1];
+				temp_red = gLedBuf.led_array[2];
 				blue = gLedBuf.led_array[(NUM_OF_LED * 3) - 3];
 				green = gLedBuf.led_array[(NUM_OF_LED * 3) - 2];
 				red = gLedBuf.led_array[(NUM_OF_LED * 3) - 1];
 			}
 			else if( (k + 3) == (NUM_OF_LED * 3) )
 			{
-				blue = gLedBuf.carry_led[0];
-				green = gLedBuf.carry_led[1];
-				red = gLedBuf.carry_led[2];
+				blue = temp_blue;
+				green = temp_green;
+				red = temp_red;
 			}
 			else
 			{
-				blue = gLedBuf.carry_led[0];
-				green = gLedBuf.carry_led[1];
-				red = gLedBuf.carry_led[2];
+				blue = temp_blue;
+				green = temp_green;
+				red = temp_red;
 				temp_blue = gLedBuf.led_array[k];
 				temp_green = gLedBuf.led_array[k + 1];
 				temp_red = gLedBuf.led_array[k + 2];
-				gLedBuf.carry_led[0] = temp_blue;
-				gLedBuf.carry_led[1] = temp_green;
-				gLedBuf.carry_led[2] = temp_red;
 			}
 		}
 		CALC_COLOR(blue);

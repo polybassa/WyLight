@@ -35,7 +35,6 @@
  */
 struct LedBuffer{
 	uns8 led_array[NUM_OF_LED * 3];
-	uns8 carry_led[3];
 	uns8 delta[NUM_OF_LED * 3];
 	uns16 cyclesLeft[NUM_OF_LED * 3];
 	uns16 periodeLength[NUM_OF_LED * 3];
