@@ -38,7 +38,7 @@
 #define DISPLAY_RTC 0xF2
 #define ADD_COLOR 0xF1
 
-#define LOOP_INFINITE 0xFF
+#define LOOP_INFINITE 0
 
 //*********************** STRUCT DECLARATION *********************************************
 struct cmd_add_color {
@@ -70,15 +70,11 @@ struct cmd_set_fade {
 	uns16 fadeTmms; //fadetime in ms
 };
 
-struct cmd_loop_start {
+struct cmd_loop_end {
+	uns8 startIndex; /* pointer to the corresponding cmd_loop_start */
 	uns8 counter; /* current loop counter, used due processing */
 	uns8 numLoops; /* number of programmed loops f.e. LOOP_INFINITE */
 	uns8 depth; /* number of recursions */
-};
-
-struct cmd_loop_stop {
-	uns8 startIndex;
-	uns8 depth;
 };
 
 struct cmd_wait {
@@ -99,8 +95,7 @@ struct led_cmd {
 		struct cmd_set_fade set_fade;
 		struct cmd_set_run set_run;
 		struct cmd_wait wait;
-		struct cmd_loop_start loop_start;
-		struct cmd_loop_stop loop_stop;
+		struct cmd_loop_end loopEnd;
 	}data;
 };
 

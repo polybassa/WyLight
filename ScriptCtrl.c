@@ -19,25 +19,51 @@
 #include "platform.h"
 #include "ScriptCtrl.h"
 #include "ledstrip.h"
+#include "eeprom.h"
 
+/* private functions/ macros */
+#define ScriptBufAddr(x) (EEPROM_SCRIPTBUF_BASE + ((x)*sizeof(struct led_cmd)))
+#define ScriptBufInc(x) ((x + 1) & SCRIPTCTRL_NUM_CMD_MAX)
+#define ScriptBufSetInLoop(x) { \
+	Eeprom_Write(EEPROM_SCRIPTBUF_INLOOP, x); \
+	gScriptBuf.inLoop = x; \
+}
+#define ScriptBufSetRead(x) { \
+	Eeprom_WriteBlock((uns8*)&x, EEPROM_SCRIPTBUF_READ, sizeof(x)); \
+	gScriptBuf.read = x; \
+}
+#define ScriptBufSetWrite(x) { \
+	Eeprom_WriteBlock((uns8*)&x, EEPROM_SCRIPTBUF_WRITE, sizeof(x)); \
+	gScriptBuf.write = x; \
+}
+
+/* private globals */
 struct ScriptBuf gScriptBuf;
+struct led_cmd nextCmd;
 
 void ScriptCtrl_Add(struct led_cmd* pCmd)
 {
 	if(LOOP_ON == pCmd->cmd)
 	{
-		pCmd->data.loop_start.depth = gScriptBuf.loopDepth;
 		gScriptBuf.loopStart[gScriptBuf.loopDepth] = gScriptBuf.write;
-		gScriptBuf.loopDepth++;		
+		gScriptBuf.loopDepth++;
 	}
 	else if (LOOP_OFF == pCmd->cmd)
 	{
 		uns8 loopStart = gScriptBuf.loopStart[gScriptBuf.loopDepth];
-		pCmd->data.loop_stop.startIndex = loopStart;
-		pCmd->data.loop_stop.depth = gScriptBuf.loopDepth;
+		pCmd->data.loopEnd.startIndex = loopStart;
+		pCmd->data.loopEnd.depth = gScriptBuf.loopDepth;
 		gScriptBuf.loopDepth--;
 	}
 	ScriptCtrl_Write(pCmd);
+}
+
+void ScriptCtrl_Init(void)
+{
+	gScriptBuf.inLoop = Eeprom_Read(EEPROM_SCRIPTBUF_INLOOP);
+	Eeprom_ReadBlock((uns8*)&gScriptBuf.read, EEPROM_SCRIPTBUF_READ, sizeof(gScriptBuf.read));
+	Eeprom_ReadBlock((uns8*)&gScriptBuf.write, EEPROM_SCRIPTBUF_WRITE, sizeof(gScriptBuf.write));
+	gScriptBuf.execute = gScriptBuf.read;
 }
 
 void ScriptCtrl_Run(void)
@@ -46,57 +72,71 @@ void ScriptCtrl_Run(void)
 	if(gScriptBuf.execute == gScriptBuf.write) return;
 
 	/* read next cmd from buffer */
-	struct led_cmd* pCmd = &gScriptBuf.cmd[gScriptBuf.execute];
-	
-	/* increment execute pointer */
-	gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
+	uns16 tempAddress = ScriptBufAddr(gScriptBuf.execute);
+	Eeprom_ReadBlock((uns8*)&nextCmd, tempAddress, sizeof(nextCmd));
 
-	switch(pCmd->cmd)
+	switch(nextCmd.cmd)
 	{
 		case LOOP_ON:
-			if(LOOP_INFINITE == pCmd->data.loop_start.counter)
+			/* move execute pointer to the next command */
+			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
+			ScriptBufSetInLoop(TRUE);
+			break;
+		case LOOP_OFF:
+			if(LOOP_INFINITE == nextCmd.data.loopEnd.counter)
 			{
-				/* loop forever */;
+				/* move execute pointer to the top of this loop */
+				gScriptBuf.execute = nextCmd.data.loopEnd.startIndex;
 			}
-			else if(0 == pCmd->data.loop_start.counter)
+			else if(1 == nextCmd.data.loopEnd.counter)
 			{
-				/* loop reached end, is it a top loop? */
-				if(1 == pCmd->data.loop_start.depth)
+				/* loop reached end, is it the top loop? */
+				if(1 == nextCmd.data.loopEnd.depth)
 				{
-					/* top loop reached end -> delete commands in loop body */
-					do
-					{
-						gScriptBuf.read = ScriptBufInc(gScriptBuf.read);
-					} while (gScriptBuf.read != gScriptBuf.execute);
+					/* move execute pointer to the next command */
+					gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
 
-					/* set pointers to next valid command */
-					gScriptBuf.read = ScriptBufInc(gScriptBuf.read);
-					gScriptBuf.execute = gScriptBuf.read;
+					/* delete loop body from buffer */
+					ScriptBufSetRead(gScriptBuf.execute);
+					ScriptBufSetInLoop(FALSE);
 				}
 				else
 				{
 					/* end of no top loop reached -> reinit counter for next iteration */
-					pCmd->data.loop_start.counter = pCmd->data.loop_start.numLoops,
-					gScriptBuf.loopSkip = TRUE;
+					nextCmd.data.loopEnd.counter = nextCmd.data.loopEnd.numLoops;
+					uns16 tempAddress = ScriptBufAddr(gScriptBuf.execute);
+					Eeprom_WriteBlock((uns8*)&nextCmd, tempAddress, sizeof(struct led_cmd));
+
+					/* move execute pointer to the next command */
+					gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
 				}
 			}
 			else
 			{
-				/* normal loop iteration -> update counter */
-				pCmd->data.loop_start.counter--;
-			}
-			break;
-		case LOOP_OFF:
-			if(!gScriptBuf.loopSkip)
-			{
-				gScriptBuf.execute = pCmd->data.loop_stop.startIndex;
+				/* normal loop iteration -> update counter and set execute pointer to start of the loop */
+				nextCmd.data.loopEnd.counter--;
+
+				/* move execute pointer to the top of this loop */
+				gScriptBuf.execute = nextCmd.data.loopEnd.startIndex;
 			}
 			break;
 		case SET_COLOR:
-			Ledstrip_SetColor(&pCmd->data.set_color);
+			Ledstrip_SetColor(&nextCmd.data.set_color);
+			/* move execute pointer to the next command */
+			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
+			if(!gScriptBuf.inLoop)
+			{
+				ScriptBufSetRead(gScriptBuf.execute);
+			}
 			break;
 		case SET_FADE:
-			Ledstrip_SetFade(&pCmd->data.set_fade);
+			Ledstrip_SetFade(&nextCmd.data.set_fade);
+			/* move execute pointer to the next command */
+			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
+			if(!gScriptBuf.inLoop)
+			{
+				ScriptBufSetRead(gScriptBuf.execute);
+			}
 			break;
 	}	
 }
@@ -106,8 +146,9 @@ void ScriptCtrl_Write(struct led_cmd* pCmd)
 	uns8 writeNext = ScriptBufInc(gScriptBuf.write);
 	if(writeNext != gScriptBuf.read)
 	{
-		memcpy(&gScriptBuf.cmd[gScriptBuf.write], pCmd, sizeof(struct led_cmd));
-		gScriptBuf.write = writeNext;
+		uns16 tempAddress = ScriptBufAddr(gScriptBuf.write);
+		Eeprom_WriteBlock((uns8*)pCmd, tempAddress, sizeof(struct led_cmd));
+		ScriptBufSetWrite(writeNext);
 	}	
 }
 

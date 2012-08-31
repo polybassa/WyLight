@@ -31,6 +31,7 @@
 #include "ledstrip.h"		//clean
 #include "timer.h"			//under construction
 #include "rtc.h"
+#include "ScriptCtrl.h"
 #ifdef __CC8E__
 #include "int18XXX.h"
 #endif /* #ifdef __CC8E__ */
@@ -162,6 +163,7 @@ void InitAll()
 	Error_Init();
 	Commandstorage_Clear();
 	Rtc_Init();
+	ScriptCtrl_Init();
 
 	g_TmmsCounter = 0;
 
@@ -192,5 +194,6 @@ void InitAll()
 #include "platform.c"
 #include "rtc.c"
 #include "iic.c"
+#include "ScriptCtrl.c"
 #endif /* #ifdef __CC8E__ */
 
