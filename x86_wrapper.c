@@ -93,19 +93,6 @@ void UART_Send(unsigned char ch)
 {
 	printf("%c", ch);
 }
-
-
-static uns8 g_Eeprom[0x400];
-unsigned char Eeprom_Read(uns16 adress)
-{
-	return g_Eeprom[adress];
-}
-
-
-void Eeprom_Write(uns16 adress, unsigned char data)
-{
-	g_Eeprom[adress] = data;
-}
 void SPI_Init() {}
 char SPI_Send(char data)
 {

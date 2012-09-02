@@ -33,9 +33,18 @@ struct ScriptBuf {
 	uns8 inLoop;
 };
 
+/**
+ * Add new command to script
+ **/
 void ScriptCtrl_Add(struct led_cmd* pCmd);
-void ScriptCtrl_Init(void);
-void ScriptCtrl_Run(void);
-void ScriptCtrl_Write(struct led_cmd* pCmd);
 
+/**
+ * Initialize script controller.
+ */
+void ScriptCtrl_Init(void);
+
+/**
+ * Read next available command from eeprom and run it.
+ */
+void ScriptCtrl_Run(void);
 #endif /* #ifndef _SCRIPTCTRL_H_ */

@@ -20,22 +20,52 @@
 #include "ScriptCtrl.h"
 #include "ledstrip.h"
 #include "eeprom.h"
+#include "trace.h"
 
-/* private functions/ macros */
+/**************** private functions/ macros *****************/
+/**
+ * Helper to calculate an eeprom address from a command pointer
+ */
 #define ScriptBufAddr(x) (EEPROM_SCRIPTBUF_BASE + ((x)*sizeof(struct led_cmd)))
+
+/**
+ * Helper to increment a ScriptBuf pointer
+ */
 #define ScriptBufInc(x) ((x + 1) & SCRIPTCTRL_NUM_CMD_MAX)
+
+/**
+ * Setter for ScriptBuf.inLoop
+ */
 #define ScriptBufSetInLoop(x) { \
 	Eeprom_Write(EEPROM_SCRIPTBUF_INLOOP, x); \
 	gScriptBuf.inLoop = x; \
 }
+
+/**
+ * Setter for ScriptBuf.read
+ */
 #define ScriptBufSetRead(x) { \
-	Eeprom_WriteBlock((uns8*)&x, EEPROM_SCRIPTBUF_READ, sizeof(x)); \
+	Eeprom_Write(EEPROM_SCRIPTBUF_READ, x); \
 	gScriptBuf.read = x; \
 }
+
+/**
+ * Setter for ScriptBuf.write
+ */
 #define ScriptBufSetWrite(x) { \
-	Eeprom_WriteBlock((uns8*)&x, EEPROM_SCRIPTBUF_WRITE, sizeof(x)); \
+	Eeprom_Write(EEPROM_SCRIPTBUF_WRITE, x); \
 	gScriptBuf.write = x; \
 }
+
+/**
+ * Clear all command from buffer
+ */
+void ScriptCtrl_Clear(void);
+
+/**
+ * save command to eeprom
+ */
+void ScriptCtrl_Write(struct led_cmd* pCmd);
 
 /* private globals */
 struct ScriptBuf gScriptBuf;
@@ -43,26 +73,45 @@ struct led_cmd nextCmd;
 
 void ScriptCtrl_Add(struct led_cmd* pCmd)
 {
-	if(LOOP_ON == pCmd->cmd)
+	switch(pCmd->cmd)
 	{
-		gScriptBuf.loopStart[gScriptBuf.loopDepth] = gScriptBuf.write;
-		gScriptBuf.loopDepth++;
+		case DELETE:
+			ScriptCtrl_Clear();
+			break;
+		case LOOP_ON:
+			gScriptBuf.loopStart[gScriptBuf.loopDepth] = gScriptBuf.write;
+			gScriptBuf.loopDepth++;
+			ScriptCtrl_Write(pCmd);
+			break;
+		case LOOP_OFF:
+		{
+			uns8 loopStart = gScriptBuf.loopStart[gScriptBuf.loopDepth];
+			pCmd->data.loopEnd.startIndex = ScriptBufInc(loopStart);
+			pCmd->data.loopEnd.depth = gScriptBuf.loopDepth;
+			pCmd->data.loopEnd.counter = pCmd->data.loopEnd.numLoops;
+			gScriptBuf.loopDepth--;
+			ScriptCtrl_Write(pCmd);
+			break;
+		}
+		default:
+			ScriptCtrl_Write(pCmd);
+			break;		
 	}
-	else if (LOOP_OFF == pCmd->cmd)
-	{
-		uns8 loopStart = gScriptBuf.loopStart[gScriptBuf.loopDepth];
-		pCmd->data.loopEnd.startIndex = loopStart;
-		pCmd->data.loopEnd.depth = gScriptBuf.loopDepth;
-		gScriptBuf.loopDepth--;
-	}
-	ScriptCtrl_Write(pCmd);
+}
+
+void ScriptCtrl_Clear(void)
+{
+	ScriptBufSetInLoop(FALSE);
+	ScriptBufSetRead(EEPROM_SCRIPTBUF_BASE);
+	ScriptBufSetWrite(EEPROM_SCRIPTBUF_BASE);
+	gScriptBuf.execute = gScriptBuf.read;
 }
 
 void ScriptCtrl_Init(void)
 {
 	gScriptBuf.inLoop = Eeprom_Read(EEPROM_SCRIPTBUF_INLOOP);
-	Eeprom_ReadBlock((uns8*)&gScriptBuf.read, EEPROM_SCRIPTBUF_READ, sizeof(gScriptBuf.read));
-	Eeprom_ReadBlock((uns8*)&gScriptBuf.write, EEPROM_SCRIPTBUF_WRITE, sizeof(gScriptBuf.write));
+	gScriptBuf.read = Eeprom_Read(EEPROM_SCRIPTBUF_READ);
+	gScriptBuf.write = Eeprom_Read(EEPROM_SCRIPTBUF_WRITE);
 	gScriptBuf.execute = gScriptBuf.read;
 }
 
@@ -78,6 +127,7 @@ void ScriptCtrl_Run(void)
 	switch(nextCmd.cmd)
 	{
 		case LOOP_ON:
+			Trace_String("LOOP_ON\n");
 			/* move execute pointer to the next command */
 			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
 			ScriptBufSetInLoop(TRUE);
@@ -85,14 +135,27 @@ void ScriptCtrl_Run(void)
 		case LOOP_OFF:
 			if(LOOP_INFINITE == nextCmd.data.loopEnd.counter)
 			{
+				Trace_String("End of infinite loop reached\n");
 				/* move execute pointer to the top of this loop */
 				gScriptBuf.execute = nextCmd.data.loopEnd.startIndex;
 			}
-			else if(1 == nextCmd.data.loopEnd.counter)
+			else if(nextCmd.data.loopEnd.counter > 1)
+			{
+				Trace_String("normal loop iteration\n");
+				Trace_Hex(nextCmd.data.loopEnd.counter);
+				/* update counter and set execute pointer to start of the loop */
+				nextCmd.data.loopEnd.counter--;
+				Eeprom_WriteBlock((uns8*)&nextCmd, tempAddress, sizeof(struct led_cmd));
+
+				/* move execute pointer to the top of this loop */
+				gScriptBuf.execute = nextCmd.data.loopEnd.startIndex;
+			}
+			else
 			{
 				/* loop reached end, is it the top loop? */
 				if(1 == nextCmd.data.loopEnd.depth)
 				{
+					Trace_String("End of top loop reached\n");
 					/* move execute pointer to the next command */
 					gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
 
@@ -102,7 +165,8 @@ void ScriptCtrl_Run(void)
 				}
 				else
 				{
-					/* end of no top loop reached -> reinit counter for next iteration */
+					Trace_String("End of inner loop reached\n");
+					/* reinit counter for next iteration */
 					nextCmd.data.loopEnd.counter = nextCmd.data.loopEnd.numLoops;
 					uns16 tempAddress = ScriptBufAddr(gScriptBuf.execute);
 					Eeprom_WriteBlock((uns8*)&nextCmd, tempAddress, sizeof(struct led_cmd));
@@ -110,14 +174,6 @@ void ScriptCtrl_Run(void)
 					/* move execute pointer to the next command */
 					gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
 				}
-			}
-			else
-			{
-				/* normal loop iteration -> update counter and set execute pointer to start of the loop */
-				nextCmd.data.loopEnd.counter--;
-
-				/* move execute pointer to the top of this loop */
-				gScriptBuf.execute = nextCmd.data.loopEnd.startIndex;
 			}
 			break;
 		case SET_COLOR:

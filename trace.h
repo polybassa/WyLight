@@ -22,11 +22,16 @@
 	#include "usart.h"
 	#define Trace_String(str) do { UART_SendString(str); } while (0)
 	#define Trace_Number(input, sign) do { UART_SendNumber(input, sign); } while (0)
-    #define Trace_Hex(hex) do { UART_Send(hex); } while(0)
+	#define Trace_Hex(hex) do { UART_Send(hex); } while(0)
+#elif UNIT_TEST
+	#include "stdio.h"
+	#define Trace_String(str) do { printf("%s", str); } while (0)
+	#define Trace_Number(input, sign) do { printf("%03d%c", input, sign); } while (0)
+	#define Trace_Hex(hex) do { printf("0x%02x", hex); } while(0)
 #else
 	#define Trace_String(str)
 	#define Trace_Number(input, sign)
-    #define Trace_Hex(hex)
+	#define Trace_Hex(hex)
 #endif
 #endif /* #ifndef _TRACE_H_ */
 
