@@ -66,29 +66,33 @@ void Timer_StartStopwatch(void)
 #endif
 }
 
-void Timer_StopStopwatch(void)
+void Timer_StopStopwatch(uns16 *pTmax)
 {
 #ifndef X86
 
 	TMR3ON = 0;
-	uns16 measuredValue,tempValue;
+	uns16 measuredValue;
 	measuredValue.low8 = TMR3L;
 	measuredValue.high8 = TMR3H;
 	
-	UART_SendString("Measured Time:");
+	measuredValue = measuredValue >> 1;			//rotate right, so there are µS in tempValue
 	
-	tempValue = measuredValue >> 1;			//rotate right, so there are µS in tempValue
-	
-	UART_SendNumber(tempValue.high8,'H');
-	UART_SendNumber(tempValue.low8,'L');
-	
-	if((measuredValue & 0x0001) == 1) 		//check LSB if set
+	if(measuredValue > *pTmax)
 	{
-		UART_Send('.');
-		UART_Send('5');
+		*pTmax = measuredValue;
 	}
+	
+#endif
+}
+
+void Timer_PrintCycletime(uns16 *pTmax)
+{
+	uns16 temp16 = *pTmax;
+	UART_SendString("Measured Time:");
+	UART_SendNumber(temp16.high8,'H');
+	UART_SendNumber(temp16.low8,'L');
 	UART_SendString(" µS in HEX ");
 	UART_Send(0x0d);
 	UART_Send(0x0a);
-#endif
+	*pTmax = 0;
 }

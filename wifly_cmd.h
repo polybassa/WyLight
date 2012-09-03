@@ -37,6 +37,7 @@
 #define GET_RTC 0xF3
 #define DISPLAY_RTC 0xF2
 #define SET_COLOR_DIRECT 0xF1
+#define GET_CYCLETIME 0xF0
 
 //*********************** STRUCT DECLARATION *********************************************
 struct cmd_set_color {

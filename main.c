@@ -43,6 +43,7 @@
 
 //*********************** GLOBAL VARIABLES *******************************************
 uns8 g_UpdateLed;
+uns16 g_CycleTime;
 #ifdef X86
 uns8 g_TmmsCounter;
 #endif /* #ifdef X86 */
@@ -132,6 +133,7 @@ void main(void)
 	
 	while(1)
 	{
+		Timer_StartStopwatch();
 #ifdef X86
 		// give opengl thread a chance to run
 		usleep(10);
@@ -153,6 +155,7 @@ void main(void)
 			Ledstrip_DoFade();
 			g_UpdateLed = FALSE;
 		}
+		Timer_StopStopwatch(&g_CycleTime);
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************
@@ -170,6 +173,8 @@ void InitAll()
 	Error_Init();
 	Commandstorage_Clear();
 	Rtc_Init();
+	
+	g_CycleTime = 0;
 
 #ifdef X86
 	init_x86();

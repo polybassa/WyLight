@@ -36,7 +36,9 @@ void Timer_StartStopwatch(void);
 /**
 ** Function terminates the Stopwatch and print out the measured Time over UART
 **/
-void Timer_StopStopwatch(void);
+void Timer_StopStopwatch(uns16 *pTmax);
+
+void Timer_PrintCycletime(uns16 *pTmax);
 
 #ifdef __CC8E__
 #define Timer1Interrupt(x) TMR1IF = 0;

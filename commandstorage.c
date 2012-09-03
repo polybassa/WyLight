@@ -281,6 +281,11 @@ void Commandstorage_GetCommands()
 								UART_Send('V');
 								return;
 							}
+						case GET_CYCLETIME:
+							{
+								Timer_PrintCycletime(&g_CycleTime);
+								return;
+							}
 						default:
 							{
 								if( Commandstorage_Write(&g_CmdBuf.cmd_buf[2], (g_CmdBuf.cmd_counter - 4)))
