@@ -31,6 +31,7 @@ struct ScriptBuf {
 	uns8 read;
 	uns8 write;
 	uns8 inLoop;
+	bit isClearing;
 };
 
 /**

@@ -73,10 +73,16 @@ struct led_cmd nextCmd;
 
 void ScriptCtrl_Add(struct led_cmd* pCmd)
 {
+	/* We have to reject all commands until buffer was cleared completely */
+	if(gScriptBuf.isClearing)
+	{
+		return;
+	}
+
 	switch(pCmd->cmd)
 	{
 		case DELETE:
-			ScriptCtrl_Clear();
+			gScriptBuf.isClearing = TRUE;
 			break;
 		case LOOP_ON:
 			gScriptBuf.loopStart[gScriptBuf.loopDepth] = gScriptBuf.write;
@@ -85,11 +91,17 @@ void ScriptCtrl_Add(struct led_cmd* pCmd)
 			break;
 		case LOOP_OFF:
 		{
+			gScriptBuf.loopDepth--;
 			uns8 loopStart = gScriptBuf.loopStart[gScriptBuf.loopDepth];
 			pCmd->data.loopEnd.startIndex = ScriptBufInc(loopStart);
 			pCmd->data.loopEnd.depth = gScriptBuf.loopDepth;
 			pCmd->data.loopEnd.counter = pCmd->data.loopEnd.numLoops;
-			gScriptBuf.loopDepth--;
+			Trace_String("Add LOOP_OFF: ");
+			Trace_Hex(gScriptBuf.write);
+			Trace_Hex(pCmd->data.loopEnd.startIndex);
+			Trace_Hex(pCmd->data.loopEnd.depth);
+			Trace_Hex(pCmd->data.loopEnd.counter);
+			Trace_String("\n");
 			ScriptCtrl_Write(pCmd);
 			break;
 		}
@@ -105,6 +117,7 @@ void ScriptCtrl_Clear(void)
 	ScriptBufSetRead(EEPROM_SCRIPTBUF_BASE);
 	ScriptBufSetWrite(EEPROM_SCRIPTBUF_BASE);
 	gScriptBuf.execute = gScriptBuf.read;
+	gScriptBuf.isClearing = FALSE;
 }
 
 void ScriptCtrl_Init(void)
@@ -117,8 +130,17 @@ void ScriptCtrl_Init(void)
 
 void ScriptCtrl_Run(void)
 {
+	/* delete command was triggered? */
+	if(gScriptBuf.isClearing)
+	{
+		ScriptCtrl_Clear();
+	}
+
 	/* cmd available? */
-	if(gScriptBuf.execute == gScriptBuf.write) return;
+	if(gScriptBuf.execute == gScriptBuf.write)
+	{
+		return;
+	}
 
 	/* read next cmd from buffer */
 	uns16 tempAddress = ScriptBufAddr(gScriptBuf.execute);
@@ -141,8 +163,10 @@ void ScriptCtrl_Run(void)
 			}
 			else if(nextCmd.data.loopEnd.counter > 1)
 			{
-				Trace_String("normal loop iteration\n");
+				Trace_String("normal loop iteration");
 				Trace_Hex(nextCmd.data.loopEnd.counter);
+				Trace_Hex(nextCmd.data.loopEnd.depth);
+				Trace_String("\n");
 				/* update counter and set execute pointer to start of the loop */
 				nextCmd.data.loopEnd.counter--;
 				Eeprom_WriteBlock((uns8*)&nextCmd, tempAddress, sizeof(struct led_cmd));
@@ -152,8 +176,7 @@ void ScriptCtrl_Run(void)
 			}
 			else
 			{
-				/* loop reached end, is it the top loop? */
-				if(1 == nextCmd.data.loopEnd.depth)
+				if(0 == nextCmd.data.loopEnd.depth)
 				{
 					Trace_String("End of top loop reached\n");
 					/* move execute pointer to the next command */
