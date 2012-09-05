@@ -10,6 +10,7 @@
     Sourcecode für eine Qt-Applikation die über RS232 kommuniziert ist ebenfalls verfügbar
 '''
 
+
 import socket
 import crc16
 import sys
