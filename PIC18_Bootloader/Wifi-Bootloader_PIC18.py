@@ -1,9 +1,28 @@
 # -*- coding: utf-8 -*-
+
+##################Bootloader-Script zur Kommunikation mit dem PIC-Bootloader AN1310###################
+'''
+    Dieses Script kommuniziert mit dem Bootloader AN1310 aus der Microchip Application Note
+    Für genaue Details zum Bootloader Protokoll siehe:
+    
+        http://www.microchip.com/stellent/idcplg?IdcService=SS_GET_PAGE&nodeId=1824&appnote=en546974
+   
+    Sourcecode für eine Qt-Applikation die über RS232 kommuniziert ist ebenfalls verfügbar
+'''
+
 import socket
 import crc16
 import sys
 #import time
 from time import *
+
+
+#----------DEFINES----------------
+
+STX = 0x0f
+ETX = 0x04
+DLE = 0x05
+
 
 PIC16 = 0
 PIC18 = 1
@@ -32,7 +51,10 @@ if PIC18:
     
     write_blocksize = 64    #Words
     erase_blocksize = 64   #Words
-	
+
+
+
+#----------GLOBALE-VARIABLEN-------------
 bootadr = int()
 bootbytes = int()
 commandmask = int()
@@ -47,29 +69,36 @@ TCP_PORT = 2000
 BUFFER_SIZE = 1024
 
 #++++++++++++++ detect Bootloader+++++++++++++++++
+'''Funktion versucht eine Verbindung mit dem Bootloader
+    Aufzubauen. Dafür wird solange STX gesendet, 
+    bis der Bootloader STX zurücksendet
+'''
 def detect_bootloader():
     send_data = bytearray()
-    send_data.append(0x0f)
+    send_data.append(STX)
     
     loopcondition = bool()
-    loopcondition = 1
+    loopcondition = 1           #loopcondition ist der Merker, der beim Empfang von STX zurückgesetzt wird.
     
     #print "Try to detect Bootloader"
     
     while loopcondition:
         s.send(send_data)
         print "."
+        
         try:
             recv_data = s.recv(BUFFER_SIZE)
+        
         except socket.timeout:
             print "x"
             recv_data = ""
         
-        
         if recv_data: 
-            recv_data.find(chr(0x0f))
+            recv_data.find(chr(STX))
             print "--> Bootloader detected"
             loopcondition = 0
+
+
 #++++++++++++++ clean Receive DATA++++++++++++++++++
 #Saubert die Antwort des Mikrocontrollers, damit nurnoch die Rohdaten
 #vorhanden sind. Steuerzeichen und CRC werden entfernt
@@ -77,68 +106,86 @@ def clean_data(string):
 
     str1 = bytearray()
     str2 = bytearray()
-    dle = bool()
+    dle_flag = bool()
     
     ''' 
     for c in string:
         print "%#x" % ord(c)
     '''
+
     
-    if ord(string[string.__len__()-3]) == 5:
+    ''' Bitte lese die Protokollbeschreibung (01310a.pdf) Seite 19; Control Characters
+        Bevor die Daten 'gesäubert' werden können, muss festgestellt werden, wo die CRC Checksumme beginnt
+        Falls vor der CRC 'DLE' steht, muss die Länge um 1 erhöht werden, da DLE das Makierungszeichen für
+        Steuerzeichen ist '''
+    
+    if ord(string[string.__len__()-3]) == DLE:
         crc_offset = 4
     else:
         crc_offset = 3
 
     str_ende = string.__len__() - crc_offset
    
+    ''' Lade jetzt alle Byte die zu <DATA> gehören in den str1'''
+    
     for i in range(1,str_ende):
         str1.append(string[i])
 
+    ''' Filtere DLE aus dem DATA-String '''
+    
     for c in str1:
-        if c == 0x05:
-            if dle == 0:
-                dle = 1
+        if c == DLE:
+            if dle_flag == 0:
+                dle_flag = 1
             else:
                 str2.append(c)
-                dle = 0
+                dle_flag = 0
         else:
-            dle = 0
+            dle_flag = 0
             str2.append(c)
+
     return str(str2)
+
 #++++++++++++++ clean Receive DATA++++++++++++++++++
 #Saubert die Antwort des Mikrocontrollers, damit nurnoch die Rohdaten
-#vorhanden sind. Steuerzeichen und CRC werden entfernt
+#vorhanden sind. Steuerzeichen werden entfernt, CRC bleibt am vorhanden
 def clean_data_w_CRC(string):
     
     str1 = bytearray()
     str2 = bytearray()
-    dle = bool()
+    dle_flag = bool()
     
     for i in range(1,string.__len__()-1):
         str1.append(string[i])
     
     for c in str1:
-        if c == 0x05:
-            if dle == 0:
-                dle = 1
+        if c == DLE:
+            if dle_flag == 0:
+                dle_flag = 1
             else:
                 str2.append(c)
-                dle = 0
+                dle_flag = 0
         else:
-            dle = 0
+            dle_flag = 0
             str2.append(c)
     return str(str2)
+
 #++++++++++++++ get Bootloader info+++++++++++++++++
+'''
+    Funktion ruft die Booloader-Information von dem Bootloader ab
+    und wertet diese aus. Die Bootloaderinfo wird in den globalen
+    Variablen abgelegt und später von anderen Funktionen verwendet.
+'''
 def get_bootloader_info():
     
     detect_bootloader()
     
     send_data = bytearray()
-    send_data.append(0x0f)
+    send_data.append(STX)
     send_data.append(0x00)
     send_data.append(0x00)
     send_data.append(0x00)
-    send_data.append(0x04)
+    send_data.append(ETX)
     
     loopcondition = bool()
     loopcondition = 1
@@ -147,18 +194,18 @@ def get_bootloader_info():
     
     while loopcondition:
         s.send(send_data)
+        
         try:
             recv_data = s.recv(BUFFER_SIZE)
         except socket.timeout:
             print "x"
             recv_data = ""
         
-        
         if recv_data:
             if recv_data.__len__() > 12:
                 print "--> successfull"
-                #for c in recv_data:
-                    #print "%#x" % ord(c)
+                '''for c in recv_data:
+                    print "%#x" % ord(c)'''
                 loopcondition = 0
                 analyse_bootloader_info(recv_data)
                 return recv_data
@@ -168,7 +215,13 @@ def get_bootloader_info():
                 print "Received datalength:", recv_data.__len__()
                 loopcondition = 0
                 return -1
+
+
 #++++++++++++++ analyse Bootloader info+++++++++++++++++
+'''
+    Funktion filtert alle relevanten Informationen aus der Bootloader-Information 
+    und trägt diese Werte formatiert in die globalen Variablen ein
+'''
 def analyse_bootloader_info(string):
     string = clean_data(string)
 
@@ -210,7 +263,7 @@ def analyse_bootloader_info(string):
             print "FAILURE: Bootloaderscript is configurated for PIC 16. Please change in Script"
             return -1
 
-#++++++++++++++ get Bootloader info+++++++++++++++++
+#++++++++++++++ print Bootloader info+++++++++++++++++
 def print_bootloader_info(string):
     
     print ""
@@ -232,6 +285,8 @@ def print_bootloader_info(string):
         print "PIC18-Family"
 
     print "Bootloader at Address:", "%#x" %  bootadr
+
+
 #++++++++++++++++ Run Application ++++++++++++++++++++
 def run_app():
     
@@ -249,11 +304,15 @@ def run_app():
         print "x"
         recv_data = ""
         
-        
     if recv_data:
         print "Response from PIC:", recv_data
 
 #++++++++++++++++ KILL Application ++++++++++++++++++++
+'''
+    Diese Funktion kommuniziert nicht mit dem AN1310 Bootloader,
+    sondern mit dem WiFly-Light Programm auf dem Pic.
+    Hier wird ein anderes Kommunikationsprotokoll verwendet.
+'''
 def kill_app():
     
     print "--> Kill Application now"
@@ -282,7 +341,35 @@ def kill_app():
         print "Response from PIC:", recv_data
 
 
+#++++++++++++++++ receive Frame ++++++++++++++++++++++++
+def recv_frame():
+    
+    recv_data = bytearray()
+    etx_flag = bool()
+    etx_flag = 0
+    stx_flag = bool()
+    stx_flag = 0
+    while (recv_data.__len__() < 5) & (etx_flag == 0) & (stx_flag == 0):
+        try:
+            recv_data = s.recv(BUFFER_SIZE)
+        except socket.timeout:
+            print "x"
+            recv_data = ""
+        
+        if recv_data.__len__() > 2:
+            if (recv_data[recv_data.__len__() - 1] == ETX) & (recv_data[recv_data.__len__() - 2] != DLE):
+                etx_flag = 1
+            if recv_data[0] == STX:
+                stx_flag = 1
+
+    return recv_data
+
 #++++++++++++++++ erase Device Flash++++++++++++++++++++
+'''
+    Funktion löscht den kompletten Flash des Pic's bis auf den Bootloader-Bereich
+    Hierfür muss zuerst die Bootloaderinformation geholt werden, damit die 
+    Länge des Boot-Blocks und die Adresse des Bootblocks bekannt sind.
+'''
 def erase_flash():
     
     if get_bootloader_info() == -1:
@@ -311,17 +398,15 @@ def erase_flash():
         send_data.append(erase_step)
         
         s.send(build_send_str(send_data))
-        sleep(0.05)
-        try:
-            recv_data = s.recv(BUFFER_SIZE)
-        except socket.timeout:
-            print "x"
-            recv_data = ""
-        
+
+        recv_data = recv_frame()
+
         if recv_data:
             if check_crc(recv_data) == 0:
                 print "CRC FAILURE"
                 return -1
+                    
+    print "--> erase successful"
 #++++++++++++++++ read Device EEPROM++++++++++++++++++++
 def read_eeprom():
     
@@ -345,11 +430,8 @@ def read_eeprom():
         send_data.append(read_step >> 8 & 0xff)
     
         s.send(build_send_str(send_data))
-        try:
-            recv_data = s.recv(BUFFER_SIZE)
-        except socket.timeout:
-            print "x"
-            recv_data = ""
+        
+        recv_data = recv_frame()
         
         if recv_data:
             if check_crc(recv_data):
@@ -380,11 +462,8 @@ def enable_bl_autostart():
     send_data.append(0xff)
         
     s.send(build_send_str(send_data))
-    try:
-        recv_data = s.recv(BUFFER_SIZE)
-    except socket.timeout:
-        print "x"
-        recv_data = ""
+    
+    recv_data = recv_frame()
         
     if recv_data:
         if check_crc(recv_data) == 0:
@@ -401,6 +480,8 @@ def read_flash():
     print "READ DEVICE FLASH"
     print "-----------------------------------------------"
     
+    print " This function takes a little bit time (ca. 60 sec)"
+    
     flash_mem = bytearray()
     
     for i in range(0x0,flashsize*2,read_step):
@@ -415,13 +496,8 @@ def read_flash():
         send_data.append(read_step >> 8 & 0xff)
         
         s.send(build_send_str(send_data))
-        try:
-            recv_data = s.recv(BUFFER_SIZE)
-        except socket.timeout:
-            print "x"
-            recv_data = ""
         
- 
+        recv_data = recv_frame()
         
         if recv_data:
             if check_crc(recv_data):
@@ -668,11 +744,7 @@ def write_flash(address):
                 write_string = build_send_str(write_data)
                 s.send(write_string)
       
-                try:
-                    recv_data = s.recv(BUFFER_SIZE)
-                except socket.timeout:
-                    print "x"
-                    recv_data = ""
+                recv_data = recv_frame()
       
                 if recv_data:
                     if check_crc(recv_data) == 0:
