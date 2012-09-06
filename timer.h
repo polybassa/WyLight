@@ -20,6 +20,22 @@
 #define _TIMER_H_
 #include "platform.h"
 
+enum METHODE{
+	eMAIN,
+	eDO_FADE,
+	eSET_FADE,
+	eSET_COLOR,
+	eSET_RUN,
+	enumSIZE //!!! MUST be the last element of the enum
+} enumMethode;
+
+struct CycleTimeBuffer{
+	uns16 maxCycleTime[enumSIZE];
+	uns16 tempCycleTime[enumSIZE];
+};
+
+extern struct CycleTimeBuffer g_CycleTimeBuffer;
+
 void Timer_Init();
 
 /*To Do: Funktion bekommt einen Wert, anhand diese wertes wird die geschwindigkeit des
@@ -31,14 +47,14 @@ void Timer_SetForFade(char value);
 ** Function start the internal Stopwatch. It's realised with the Timer3 Modul.
 ** The Range of the Stopwatch is from 0.5µSec to 32.7mSec
 **/
-void Timer_StartStopwatch(void);
+void Timer_StartStopwatch(enum METHODE destMethode);
 
 /**
 ** Function terminates the Stopwatch and print out the measured Time over UART
 **/
-void Timer_StopStopwatch(uns16 *pTmax);
+void Timer_StopStopwatch(enum METHODE destMethode);
 
-void Timer_PrintCycletime(uns16 *pTmax);
+void Timer_PrintCycletime(void);
 
 #ifdef __CC8E__
 #define Timer1Interrupt(x) TMR1IF = 0;

@@ -20,6 +20,8 @@
 #include "ledstrip.h"
 #include "USART.h"
 
+struct CycleTimeBuffer g_CycleTimeBuffer;
+
 void Timer_Init()
 {
 	T1CON = 0b00110111;
@@ -48,7 +50,8 @@ void Timer_Init()
 	** Calculation:
 	** 64MHz / 4 / 8
 	*/
-	T3CON = 0b00110100;
+	T3CON = 0b00110110;
+	TMR3ON = 1;
 }
 
 void Timer_SetForFade(char value)
@@ -56,43 +59,55 @@ void Timer_SetForFade(char value)
 	//Not Implemented yet
 }
 
-void Timer_StartStopwatch(void)
+void Timer_StartStopwatch(enum METHODE destMethode)
 {
-#ifndef X86
-	TMR3H = 0;
-	TMR3L = 0;
+	uns16 tempTime;
 	
-	TMR3ON = 1;
-#endif
+	tempTime.low8 = TMR3L;
+	tempTime.high8 = TMR3H;
+	
+	g_CycleTimeBuffer.tempCycleTime[destMethode] = tempTime;
 }
 
-void Timer_StopStopwatch(uns16 *pTmax)
+void Timer_StopStopwatch(enum METHODE destMethode)
 {
-#ifndef X86
-
-	TMR3ON = 0;
-	uns16 measuredValue;
-	measuredValue.low8 = TMR3L;
-	measuredValue.high8 = TMR3H;
+	uns16 tempTime,temp16;
 	
-	measuredValue = measuredValue >> 1;			//rotate right, so there are µS in tempValue
+	tempTime.low8 = TMR3L;
+	tempTime.high8 = TMR3H;
 	
-	if(measuredValue > *pTmax)
+	if(g_CycleTimeBuffer.tempCycleTime[destMethode] < tempTime)
 	{
-		*pTmax = measuredValue;
+		tempTime = tempTime - g_CycleTimeBuffer.tempCycleTime[destMethode];
+	}
+	else
+	{
+		temp16 = 0xffff - g_CycleTimeBuffer.tempCycleTime[destMethode];
+		tempTime += temp16;
 	}
 	
-#endif
+	if(tempTime > g_CycleTimeBuffer.maxCycleTime[destMethode])
+	{
+		g_CycleTimeBuffer.maxCycleTime[destMethode] = tempTime;
+	}
+	g_CycleTimeBuffer.tempCycleTime[destMethode] = 0;
 }
 
-void Timer_PrintCycletime(uns16 *pTmax)
+void Timer_PrintCycletime(void)
 {
-	uns16 temp16 = *pTmax;
-	UART_SendString("Measured Time:");
-	UART_SendNumber(temp16.high8,'H');
-	UART_SendNumber(temp16.low8,'L');
-	UART_SendString(" µS in HEX ");
-	UART_Send(0x0d);
-	UART_Send(0x0a);
-	*pTmax = 0;
+	uns8 i;
+	uns16 temp16;
+	for(i = 0; i < enumSIZE; i++)
+	{
+		temp16 = g_CycleTimeBuffer.maxCycleTime[i]; 
+		UART_SendString("Zeitwert ");
+		UART_SendNumber(i,':');
+		UART_SendNumber(temp16.high8,'H');
+		UART_SendNumber(temp16.low8,'L');
+		UART_SendString(" µS in HEX ");
+		UART_Send(0x0d);
+		UART_Send(0x0a);
+		
+		g_CycleTimeBuffer.maxCycleTime[i] = 0;
+	}	
 }

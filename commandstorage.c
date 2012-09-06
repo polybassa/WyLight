@@ -283,7 +283,7 @@ void Commandstorage_GetCommands()
 							}
 						case GET_CYCLETIME:
 							{
-								Timer_PrintCycletime(&g_CycleTime);
+								Timer_PrintCycletime();
 								return;
 							}
 						default:
@@ -327,12 +327,16 @@ void Commandstorage_ExecuteCommands()
 		{	
 			case SET_COLOR: 
 			{
+				Timer_StartStopwatch(eSET_COLOR);
 				Ledstrip_SetColor(&nextCmd.data.set_color);
+				Timer_StopStopwatch(eSET_COLOR);
 				break;
 			}
 			case SET_FADE:
 			{
+				Timer_StartStopwatch(eSET_FADE);
 				Ledstrip_SetFade(&nextCmd.data.set_fade);
+				Timer_StopStopwatch(eSET_FADE);
 				break;
 			}
 			case WAIT:
@@ -346,8 +350,10 @@ void Commandstorage_ExecuteCommands()
 			case SET_RUN: 
 			{
 				struct cmd_set_run *pCmd = &nextCmd.data.set_run;
+				Timer_StartStopwatch(eSET_RUN);
 				g_CmdBuf.WaitValue = pCmd->durationTmms;
 				Ledstrip_SetRun(&nextCmd.data.set_run);
+				Timer_StopStopwatch(eSET_RUN);
 				break;
 			}
 		}
