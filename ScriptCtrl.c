@@ -26,7 +26,7 @@
 /**
  * Helper to calculate an eeprom address from a command pointer
  */
-#define ScriptBufAddr(x) (EEPROM_SCRIPTBUF_BASE + ((x)*sizeof(struct led_cmd)))
+#define ScriptBufAddr(x) ((uns16)EEPROM_SCRIPTBUF_BASE + ((uns16)(x)*(uns16)sizeof(struct led_cmd)))
 
 /**
  * Helper to increment a ScriptBuf pointer
@@ -65,7 +65,7 @@ void ScriptCtrl_Clear(void);
 /**
  * save command to eeprom
  */
-void ScriptCtrl_Write(struct led_cmd* pCmd);
+uns8 ScriptCtrl_Write(struct led_cmd* pCmd);
 
 /* private globals */
 struct ScriptBuf gScriptBuf;
@@ -83,33 +83,35 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 	{
 		case DELETE:
 			gScriptBuf.isClearing = TRUE;
-			break;
+			return TRUE;
 		case LOOP_ON:
 			gScriptBuf.loopStart[gScriptBuf.loopDepth] = gScriptBuf.write;
 			gScriptBuf.loopDepth++;
-			ScriptCtrl_Write(pCmd);
-			break;
+			return ScriptCtrl_Write(pCmd);
 		case LOOP_OFF:
 		{
 			gScriptBuf.loopDepth--;
 			uns8 loopStart = gScriptBuf.loopStart[gScriptBuf.loopDepth];
 			pCmd->data.loopEnd.startIndex = ScriptBufInc(loopStart);
 			pCmd->data.loopEnd.depth = gScriptBuf.loopDepth;
-			pCmd->data.loopEnd.counter = pCmd->data.loopEnd.numLoops;
+			uns8 numLoops = pCmd->data.loopEnd.numLoops;
+			pCmd->data.loopEnd.counter = numLoops;
 			Trace_String("Add LOOP_OFF: ");
 			Trace_Hex(gScriptBuf.write);
 			Trace_Hex(pCmd->data.loopEnd.startIndex);
 			Trace_Hex(pCmd->data.loopEnd.depth);
 			Trace_Hex(pCmd->data.loopEnd.counter);
 			Trace_String("\n");
-			ScriptCtrl_Write(pCmd);
-			break;
+			return ScriptCtrl_Write(pCmd);
 		}
-		default:
-			ScriptCtrl_Write(pCmd);
-			break;		
+		case START_BL:
+			Trace_String("Leaving Application --> Starting Bootloader");
+			Eeprom_Write(0x3ff, 0xff);
+			softReset();
+			/* never reach this */
+			return FALSE;
 	}
-	return TRUE;
+	return ScriptCtrl_Write(pCmd);
 }
 
 void ScriptCtrl_Clear(void)
@@ -221,7 +223,7 @@ void ScriptCtrl_Run(void)
 	}	
 }
 
-void ScriptCtrl_Write(struct led_cmd* pCmd)
+uns8 ScriptCtrl_Write(struct led_cmd* pCmd)
 {
 	uns8 writeNext = ScriptBufInc(gScriptBuf.write);
 	if(writeNext != gScriptBuf.read)
@@ -229,6 +231,8 @@ void ScriptCtrl_Write(struct led_cmd* pCmd)
 		uns16 tempAddress = ScriptBufAddr(gScriptBuf.write);
 		Eeprom_WriteBlock((uns8*)pCmd, tempAddress, sizeof(struct led_cmd));
 		ScriptBufSetWrite(writeNext);
-	}	
+		return TRUE;
+	}
+	return FALSE;
 }
 

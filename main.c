@@ -39,6 +39,7 @@
 
 #ifdef X86
 #include <unistd.h>
+jmp_buf g_ResetEnvironment;
 #endif /* #ifdef X86 */
 
 //*********************** GLOBAL VARIABLES *******************************************
@@ -125,6 +126,9 @@ void HighPriorityInterruptFunction(void)
 //*********************** HAUPTPROGRAMM **********************************************
 void main(void)
 {
+	/* softReset() on x86 will jump here! */
+	softResetJumpDestination();
+
 	InitAll();
 
 	while(1)
@@ -196,4 +200,3 @@ void InitAll()
 #include "iic.c"
 #include "ScriptCtrl.c"
 #endif /* #ifdef __CC8E__ */
-

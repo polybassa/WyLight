@@ -25,8 +25,11 @@ int gSetColorWasCalled;
 int gSetFadeWasCalled;
 
 /**************** includes and functions for wrapping ****************/
+#include "platform.h"
+jmp_buf g_ResetEnvironment;
+
 #include "ScriptCtrl.h"
-extern struct ScriptBuf gScriptBuf;
+struct ScriptBuf gScriptBuf;
 
 #include "ledstrip.h"
 void Ledstrip_SetColor(struct cmd_set_color *pCmd)
@@ -295,13 +298,35 @@ int ut_ScriptCtrl_FullBuffer(void)
 	ScriptCtrl_Add(&testCmd);
 
 	int i;
-	for(i = 0; i < 10240; i++)
+	for(i = 0; i < SCRIPTCTRL_NUM_CMD_MAX-3; i++)
 	{
 		/* add inner dummy command to buffer */
 		testCmd.cmd = SET_FADE;
 		Assert(ScriptCtrl_Add(&testCmd));
 	}
+
+	/* Buffer full */
+	Assert(!ScriptCtrl_Add(&testCmd));
 	return errors;
+}
+
+/* add clear command */
+int ut_ScriptCtrl_StartBootloader(void)
+{
+	struct led_cmd testCmd;
+
+	if(0 == softResetJumpDestination())
+	{
+		/* send START_BL */
+		testCmd.cmd = START_BL;
+		ScriptCtrl_Add(&testCmd);
+		
+		/* shouldn't reach this -> return error */
+		return 1;
+	}
+	
+	/* we just jumped to softResetJumpDestination() -> it worked */
+	return 0;
 }
 
 int main(int argc, const char* argv[])
@@ -316,6 +341,7 @@ int main(int argc, const char* argv[])
 	RunTest(ut_ScriptCtrl_InnerLoop);
 	RunTest(ut_ScriptCtrl_InfiniteLoop);
 	RunTest(ut_ScriptCtrl_FullBuffer);
+	RunTest(ut_ScriptCtrl_StartBootloader);
 	printf("run %d Tests with %d errors\n", numTests, numErrors);
 	return numErrors;
 }

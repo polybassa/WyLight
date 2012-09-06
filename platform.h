@@ -31,6 +31,7 @@
 #ifdef X86
 	#include <stdio.h>
 	#include <arpa/inet.h>
+	#include <setjmp.h>
 	#include <string.h>
 
 	typedef char bit;
@@ -39,7 +40,8 @@
 
 	//global variables
 	extern bit g_led_off;
-	extern unsigned char g_UpdateFade;	
+	extern unsigned char g_UpdateFade;
+	extern jmp_buf g_ResetEnvironment;
 
 	#define bank1
 	#define bank6
@@ -51,6 +53,8 @@
 	#define InitFET(x)
 	#define Platform_IOInit(x)
 	#define Platform_OsciInit(x)
+	#define softReset(x) longjmp(g_ResetEnvironment, 1)
+	#define softResetJumpDestination(x) setjmp(g_ResetEnvironment)
 	
 #else
 	#include "inline.h"
@@ -58,6 +62,8 @@
 
 	#define htons(X) (X)
 	#define ntohs(X) (X)
+	
+	#define softResetJumpDestination(x)
 
 	#define Platform_IOInit(x) do { CLRF(PORTB); CLRF(LATB); CLRF(ANSELB);} while(0) //Eingänge am PORTB initialisieren
 	#define Platform_OsciInit(x) do { OSCCON = 0b01110010; PLLEN = 1;} while(0) //OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
