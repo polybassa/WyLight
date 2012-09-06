@@ -29,10 +29,12 @@ android_client:
 x86_client:
 	g++ ClientSocket.cpp WiflyControl.cpp WiflyControlCli.cpp -DX86 -lpthread -o client.bin -Wall -pedantic
 
-ut_ScriptCtrl:
-	gcc ut_ScriptCtrl.c ScriptCtrl.c eeprom.c -DX86 -o ut_ScriptCtrl.bin -Wall
+#generic rule to build and run unittests
+%_ut.bin: %_ut.c $(subst _ut.c,.c,$<)
+	gcc $< $(subst _ut.c,.c,$<) eeprom.c -DX86 -o $@ -Wall
+	./$@
 
-test: ut_ScriptCtrl
+test: ScriptCtrl_ut.bin
 
 clean:
 	rm -rf *.asm *.bin *.cod *.fcs *.hex *.lst *.occ *.var .metadata/ ${ANDROID_BIN}

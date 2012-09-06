@@ -37,7 +37,7 @@ struct ScriptBuf {
 /**
  * Add new command to script
  **/
-void ScriptCtrl_Add(struct led_cmd* pCmd);
+uns8 ScriptCtrl_Add(struct led_cmd* pCmd);
 
 /**
  * Initialize script controller.

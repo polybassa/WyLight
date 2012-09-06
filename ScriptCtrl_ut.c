@@ -136,6 +136,43 @@ int ut_ScriptCtrl_SimpleLoop(void)
 	return errors;
 }
 
+int ut_ScriptCtrl_DoOuterInnerLoop(int loopCount)
+{
+	int errors = 0;
+	int i, j;
+	for(i = 0; i < loopCount; i++)
+	{
+		/* outer dummy command should be executed */
+		gSetColorWasCalled = FALSE;
+		ScriptCtrl_Run();
+		Assert(gSetColorWasCalled);
+
+		/* start inner loop should be read */
+		Assert(gScriptBuf.inLoop)
+		ScriptCtrl_Run();
+		Assert(gScriptBuf.inLoop);
+
+		for(j = 0; j < loopCount; j++)
+		{
+			/* outer dummy command should be executed */
+			gSetFadeWasCalled = FALSE;
+			ScriptCtrl_Run();
+			Assert(gSetFadeWasCalled);
+
+			/* now next inner loop should be called */
+			gSetColorWasCalled = FALSE;
+			ScriptCtrl_Run();
+			Assert(!gSetColorWasCalled);
+		}
+
+		/* now next outer loop should be called */
+		gSetColorWasCalled = FALSE;
+		ScriptCtrl_Run();
+		Assert(!gSetColorWasCalled);
+	}
+	return errors;
+}
+
 
 /* add inner loop */
 int ut_ScriptCtrl_InnerLoop(void)
@@ -174,37 +211,7 @@ int ut_ScriptCtrl_InnerLoop(void)
 	ScriptCtrl_Run();
 	Assert(gScriptBuf.inLoop);
 
-	int i, j;
-	for(i = 0; i < NUM_TEST_LOOPS; i++)
-	{
-		/* outer dummy command should be executed */
-		gSetColorWasCalled = FALSE;
-		ScriptCtrl_Run();
-		Assert(gSetColorWasCalled);
-
-		/* start inner loop should be read */
-		Assert(gScriptBuf.inLoop)
-		ScriptCtrl_Run();
-		Assert(gScriptBuf.inLoop);
-
-		for(j = 0; j < NUM_TEST_LOOPS; j++)
-		{
-			/* outer dummy command should be executed */
-			gSetFadeWasCalled = FALSE;
-			ScriptCtrl_Run();
-			Assert(gSetFadeWasCalled);
-
-			/* now next inner loop should be called */
-			gSetColorWasCalled = FALSE;
-			ScriptCtrl_Run();
-			Assert(!gSetColorWasCalled);
-		}
-
-		/* now next outer loop should be called */
-		gSetColorWasCalled = FALSE;
-		ScriptCtrl_Run();
-		Assert(!gSetColorWasCalled);
-	}
+	errors+= ut_ScriptCtrl_DoOuterInnerLoop(NUM_TEST_LOOPS);
 
 	/* no more command should be available */
 	gSetColorWasCalled = FALSE;
@@ -215,9 +222,87 @@ int ut_ScriptCtrl_InnerLoop(void)
 }
 
 /* add infinite loop */
+int ut_ScriptCtrl_InfiniteLoop(void)
+{
+	int errors = 0;
+	struct led_cmd testCmd;
+
+	/* add outer loop begin to buffer */
+	testCmd.cmd = LOOP_ON;
+	ScriptCtrl_Add(&testCmd);
+
+	/* add outer dummy command to buffer */
+	testCmd.cmd = SET_COLOR;
+	ScriptCtrl_Add(&testCmd);
+
+	/* add inner loop begin to buffer */
+	testCmd.cmd = LOOP_ON;
+	ScriptCtrl_Add(&testCmd);
+
+	/* add inner dummy command to buffer */
+	testCmd.cmd = SET_FADE;
+	ScriptCtrl_Add(&testCmd);
+
+	/* add inner loop end to buffer */
+	testCmd.cmd = LOOP_OFF;
+	testCmd.data.loopEnd.numLoops = NUM_TEST_LOOPS;
+	ScriptCtrl_Add(&testCmd);
+
+	/* add outer loop end to buffer */
+	testCmd.cmd = LOOP_OFF;
+	testCmd.data.loopEnd.numLoops = LOOP_INFINITE;
+	ScriptCtrl_Add(&testCmd);
+
+	/* start outer loop should be read */
+	Assert(!gScriptBuf.inLoop)
+	ScriptCtrl_Run();
+	Assert(gScriptBuf.inLoop);
+
+	/* multiple calls should be no problem since we are in an infinite loop */
+	errors+= ut_ScriptCtrl_DoOuterInnerLoop(NUM_TEST_LOOPS);
+	errors+= ut_ScriptCtrl_DoOuterInnerLoop(NUM_TEST_LOOPS);
+	errors+= ut_ScriptCtrl_DoOuterInnerLoop(NUM_TEST_LOOPS);
+
+	/* now terminate the loop */
+	testCmd.cmd = DELETE;
+	ScriptCtrl_Add(&testCmd);
+
+	/* buffer should be empty again */
+	gSetColorWasCalled = FALSE;
+	ScriptCtrl_Run();
+	Assert(!gSetColorWasCalled);
+
+	return errors;
+}
 
 /* write to full script buffer */
 /* write incomplete loop to full buffer */
+int ut_ScriptCtrl_FullBuffer(void)
+{
+	int errors = 0;
+	struct led_cmd testCmd;
+
+	/* add outer loop begin to buffer */
+	testCmd.cmd = LOOP_ON;
+	ScriptCtrl_Add(&testCmd);
+
+	/* add outer dummy command to buffer */
+	testCmd.cmd = SET_COLOR;
+	ScriptCtrl_Add(&testCmd);
+
+	/* add inner loop begin to buffer */
+	testCmd.cmd = LOOP_ON;
+	ScriptCtrl_Add(&testCmd);
+
+	int i;
+	for(i = 0; i < 10240; i++)
+	{
+		/* add inner dummy command to buffer */
+		testCmd.cmd = SET_FADE;
+		Assert(ScriptCtrl_Add(&testCmd));
+	}
+	return errors;
+}
 
 int main(int argc, const char* argv[])
 {
@@ -229,6 +314,8 @@ int main(int argc, const char* argv[])
 	RunTest(ut_ScriptCtrl_Clear);
 	RunTest(ut_ScriptCtrl_SimpleLoop);
 	RunTest(ut_ScriptCtrl_InnerLoop);
+	RunTest(ut_ScriptCtrl_InfiniteLoop);
+	RunTest(ut_ScriptCtrl_FullBuffer);
 	printf("run %d Tests with %d errors\n", numTests, numErrors);
 	return numErrors;
 }

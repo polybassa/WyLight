@@ -71,12 +71,12 @@ void ScriptCtrl_Write(struct led_cmd* pCmd);
 struct ScriptBuf gScriptBuf;
 struct led_cmd nextCmd;
 
-void ScriptCtrl_Add(struct led_cmd* pCmd)
+uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 {
 	/* We have to reject all commands until buffer was cleared completely */
 	if(gScriptBuf.isClearing)
 	{
-		return;
+		return FALSE;
 	}
 
 	switch(pCmd->cmd)
@@ -109,6 +109,7 @@ void ScriptCtrl_Add(struct led_cmd* pCmd)
 			ScriptCtrl_Write(pCmd);
 			break;		
 	}
+	return TRUE;
 }
 
 void ScriptCtrl_Clear(void)
