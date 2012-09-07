@@ -44,6 +44,12 @@ void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 	gSetFadeWasCalled = TRUE;
 }
 
+#include "timer.h"
+unsigned char date_timer_add_event(struct cmd_add_color* pCmd)
+{
+	return 0;
+}
+
 /**************** test functions ****************/
 /* add simple command and read back */
 int ut_ScriptCtrl_SimpleReadWrite(void)
@@ -329,6 +335,24 @@ int ut_ScriptCtrl_StartBootloader(void)
 	return 0;
 }
 
+/* test WAIT command */
+int ut_ScriptCtrl_Wait(void)
+{
+	return 1;
+}
+
+/* test ADD_COLOR command */
+int ut_ScriptCtrl_AddColor(void)
+{
+	return 1;
+}
+
+/* test ADD_COLOR command */
+int ut_ScriptCtrl_RtcCommands(void)
+{
+	return 1;
+}
+
 int main(int argc, const char* argv[])
 {
 	int numErrors;
@@ -342,6 +366,9 @@ int main(int argc, const char* argv[])
 	RunTest(ut_ScriptCtrl_InfiniteLoop);
 	RunTest(ut_ScriptCtrl_FullBuffer);
 	RunTest(ut_ScriptCtrl_StartBootloader);
+	RunTest(ut_ScriptCtrl_Wait);
+	RunTest(ut_ScriptCtrl_AddColor);
+	RunTest(ut_ScriptCtrl_RtcCommands);
 	printf("run %d Tests with %d errors\n", numTests, numErrors);
 	return numErrors;
 }

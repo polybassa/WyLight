@@ -110,6 +110,66 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 			softReset();
 			/* never reach this */
 			return FALSE;
+#ifndef X86
+/* TODO multiple things!
+ - DISPLAY_RTC is only a debug command, isn't it? -> remove or replace UART_Send with Trace_
+ - ioctl interface seems a little strange, fd is not necessary */
+		case DISPLAY_RTC:
+		{
+			uns8 fd;
+			ioctl(fd, RTC_RD_TIME, &g_RtcTime);
+			UART_SendNumber(g_RtcTime.tm_year,'Y');
+			UART_SendNumber(g_RtcTime.tm_mon,'M');
+			UART_SendNumber(g_RtcTime.tm_mday,'D');
+			UART_SendNumber(g_RtcTime.tm_wday,'W');
+			UART_SendNumber(g_RtcTime.tm_hour,'h');
+			UART_SendNumber(g_RtcTime.tm_min,'m');
+			UART_SendNumber(g_RtcTime.tm_sec,'s');
+			UART_Send(0x0d);
+			UART_Send(0x0a);
+			return FALSE;
+		}
+		case GET_RTC:
+		{
+			uns8 fd;
+			ioctl(fd, RTC_RD_TIME, &g_RtcTime);
+			UART_Send(g_RtcTime.tm_year);
+			UART_Send(g_RtcTime.tm_mon);
+			UART_Send(g_RtcTime.tm_mday);
+			UART_Send(g_RtcTime.tm_wday);
+			UART_Send(g_RtcTime.tm_hour);
+			UART_Send(g_RtcTime.tm_min);
+			UART_Send(g_RtcTime.tm_sec);
+			return FALSE;
+		}
+		case SET_RTC:
+		{
+			uns8 fd;
+			g_RtcTime.tm_year = g_CmdBuf.cmd_buf[3];
+			g_RtcTime.tm_mon = g_CmdBuf.cmd_buf[4];
+			g_RtcTime.tm_mday = g_CmdBuf.cmd_buf[5];
+			g_RtcTime.tm_wday = g_CmdBuf.cmd_buf[6];
+			g_RtcTime.tm_hour = g_CmdBuf.cmd_buf[7];
+			g_RtcTime.tm_min = g_CmdBuf.cmd_buf[8];
+			g_RtcTime.tm_sec = g_CmdBuf.cmd_buf[9];
+			ioctl(fd, RTC_SET_TIME, &g_RtcTime);
+			return TRUE;
+		}
+#endif /* #ifndef X86 */
+		case WAIT:
+		{
+			/* TODO wait.value should be defined as uns16 in wifly_cmd
+			 * and ntohs()/htons() functions should be used
+			 * this will avoid the ugly waitValue definition in ScriptBuf.h */
+			gScriptBuf.waitValue.high8 = pCmd->data.wait.valueH;
+			gScriptBuf.waitValue.low8 = pCmd->data.wait.valueL;
+			return TRUE;
+		}
+		case ADD_COLOR:
+		{
+			date_timer_add_event(&pCmd->data.add_color);
+			return TRUE;
+		}
 	}
 	return ScriptCtrl_Write(pCmd);
 }
@@ -152,12 +212,15 @@ void ScriptCtrl_Run(void)
 	switch(nextCmd.cmd)
 	{
 		case LOOP_ON:
+		{
 			Trace_String("LOOP_ON\n");
 			/* move execute pointer to the next command */
 			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
 			ScriptBufSetInLoop(TRUE);
 			break;
+		}
 		case LOOP_OFF:
+		{
 			if(LOOP_INFINITE == nextCmd.data.loopEnd.counter)
 			{
 				Trace_String("End of infinite loop reached\n");
@@ -202,7 +265,9 @@ void ScriptCtrl_Run(void)
 				}
 			}
 			break;
+		}
 		case SET_COLOR:
+		{
 			Ledstrip_SetColor(&nextCmd.data.set_color);
 			/* move execute pointer to the next command */
 			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
@@ -211,7 +276,9 @@ void ScriptCtrl_Run(void)
 				ScriptBufSetRead(gScriptBuf.execute);
 			}
 			break;
+		}
 		case SET_FADE:
+		{
 			Ledstrip_SetFade(&nextCmd.data.set_fade);
 			/* move execute pointer to the next command */
 			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
@@ -220,6 +287,7 @@ void ScriptCtrl_Run(void)
 				ScriptBufSetRead(gScriptBuf.execute);
 			}
 			break;
+		}
 	}	
 }
 

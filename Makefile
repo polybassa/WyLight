@@ -30,7 +30,7 @@ x86_client:
 	g++ ClientSocket.cpp WiflyControl.cpp WiflyControlCli.cpp -DX86 -lpthread -o client.bin -Wall -pedantic
 
 #generic rule to build and run unittests
-%_ut.bin: %_ut.c $(subst _ut.c,.c,$<)
+%_ut.bin: %_ut.c %.c
 	gcc $< $(subst _ut.c,.c,$<) eeprom.c -DX86 -o $@ -Wall
 	./$@
 

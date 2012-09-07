@@ -25,6 +25,14 @@
 #define SCRIPTCTRL_LOOP_DEPTH_MAX 4
 
 struct ScriptBuf {
+#ifdef X86
+	struct waitValue {
+	uns8 high8;
+	uns8 low8;
+	} waitValue;
+#else
+	uns16 waitValue;
+#endif
 	uns8 loopStart[SCRIPTCTRL_LOOP_DEPTH_MAX];
 	uns8 loopDepth;
 	uns8 execute;
