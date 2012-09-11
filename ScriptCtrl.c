@@ -58,11 +58,6 @@
 }
 
 /**
- * Clear all command from buffer
- */
-void ScriptCtrl_Clear(void);
-
-/**
  * save command to eeprom
  */
 uns8 ScriptCtrl_Write(struct led_cmd* pCmd);
@@ -113,7 +108,8 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 #ifndef X86
 /* TODO multiple things!
  - DISPLAY_RTC is only a debug command, isn't it? -> remove or replace UART_Send with Trace_
- - ioctl interface seems a little strange, fd is not necessary */
+ - ioctl interface seems a little strange, fd is not necessary 
+ - don't access anonymous bytes(cmd_buf[x]) -> add a struct to wifly_cmd.h and cmd_frame */
 		case DISPLAY_RTC:
 		{
 			uns8 fd;
@@ -156,15 +152,6 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 			return TRUE;
 		}
 #endif /* #ifndef X86 */
-		case WAIT:
-		{
-			/* TODO wait.value should be defined as uns16 in wifly_cmd
-			 * and ntohs()/htons() functions should be used
-			 * this will avoid the ugly waitValue definition in ScriptBuf.h */
-			gScriptBuf.waitValue.high8 = pCmd->data.wait.valueH;
-			gScriptBuf.waitValue.low8 = pCmd->data.wait.valueL;
-			return TRUE;
-		}
 		case ADD_COLOR:
 		{
 			date_timer_add_event(&pCmd->data.add_color);
@@ -286,6 +273,16 @@ void ScriptCtrl_Run(void)
 			{
 				ScriptBufSetRead(gScriptBuf.execute);
 			}
+			break;
+		}
+		case WAIT:
+		{
+			/* TODO wait.value should be defined as uns16 in wifly_cmd
+			 * and ntohs()/htons() functions should be used
+			 * this will avoid the ugly waitValue definition in ScriptBuf.h */
+			/* TODO we should disable interrupts while changing waitValue */
+			gScriptBuf.waitValue.high8 = nextCmd.data.wait.valueH;
+			gScriptBuf.waitValue.low8 = nextCmd.data.wait.valueL;
 			break;
 		}
 	}	

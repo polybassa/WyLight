@@ -57,7 +57,7 @@ int ut_ScriptCtrl_SimpleReadWrite(void)
 	int errors = 0;
 	struct led_cmd testCmd;
 	testCmd.cmd = SET_COLOR;
-	ScriptCtrl_Init();
+	ScriptCtrl_Clear();
 
 	/* read from empty script buffer */
 	gSetColorWasCalled = FALSE;
@@ -104,6 +104,7 @@ int ut_ScriptCtrl_SimpleLoop(void)
 {
 	int errors = 0;
 	struct led_cmd testCmd;
+	ScriptCtrl_Clear();
 
 	/* add loop begin to buffer */
 	testCmd.cmd = LOOP_ON;
@@ -188,6 +189,7 @@ int ut_ScriptCtrl_InnerLoop(void)
 {
 	int errors = 0;
 	struct led_cmd testCmd;
+	ScriptCtrl_Clear();
 
 	/* add outer loop begin to buffer */
 	testCmd.cmd = LOOP_ON;
@@ -235,6 +237,7 @@ int ut_ScriptCtrl_InfiniteLoop(void)
 {
 	int errors = 0;
 	struct led_cmd testCmd;
+	ScriptCtrl_Clear();
 
 	/* add outer loop begin to buffer */
 	testCmd.cmd = LOOP_ON;
@@ -290,6 +293,7 @@ int ut_ScriptCtrl_FullBuffer(void)
 {
 	int errors = 0;
 	struct led_cmd testCmd;
+	ScriptCtrl_Clear();
 
 	/* add outer loop begin to buffer */
 	testCmd.cmd = LOOP_ON;
@@ -320,6 +324,7 @@ int ut_ScriptCtrl_FullBuffer(void)
 int ut_ScriptCtrl_StartBootloader(void)
 {
 	struct led_cmd testCmd;
+	ScriptCtrl_Clear();
 
 	if(0 == softResetJumpDestination())
 	{
@@ -338,18 +343,34 @@ int ut_ScriptCtrl_StartBootloader(void)
 /* test WAIT command */
 int ut_ScriptCtrl_Wait(void)
 {
-	return 1;
+	int errors = 0;
+	struct led_cmd testCmd;
+	ScriptCtrl_Clear();
+
+	/* send wait command */
+	testCmd.cmd = WAIT;
+	testCmd.data.wait.valueH = 0xAF;
+	testCmd.data.wait.valueL = 0xFE;
+	ScriptCtrl_Add(&testCmd);
+
+	/* WAIT command should set the internal wait buffer */
+	ScriptCtrl_Run();
+	Assert(0xAF == gScriptBuf.waitValue.high8);
+	Assert(0xFE == gScriptBuf.waitValue.low8);
+	return errors;
 }
 
 /* test ADD_COLOR command */
 int ut_ScriptCtrl_AddColor(void)
 {
+	printf("Error: %s not implemented yet\n", __FUNCTION__);
 	return 1;
 }
 
-/* test ADD_COLOR command */
+/* test RTC commands */
 int ut_ScriptCtrl_RtcCommands(void)
 {
+	printf("Error: %s not implemented yet\n", __FUNCTION__);
 	return 1;
 }
 

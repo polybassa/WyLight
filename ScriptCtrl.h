@@ -48,6 +48,11 @@ struct ScriptBuf {
 uns8 ScriptCtrl_Add(struct led_cmd* pCmd);
 
 /**
+ * Clear all command from buffer
+ */
+void ScriptCtrl_Clear(void);
+
+/**
  * Initialize script controller.
  */
 void ScriptCtrl_Init(void);
