@@ -140,7 +140,7 @@ void main(void)
 		Platform_CheckInputs();
 		Error_Throw();
 		Commandstorage_GetCommands();
-		Commandstorage_ExecuteCommands();		
+		ScriptCtrl_Run();		
 		if(g_TmmsCounter >= CYCLE_TMMS)
 		{
 			Timer4InterruptLock();
@@ -163,7 +163,6 @@ void InitAll()
 	UART_Init();
 	Timer_Init();
 	Ledstrip_Init();
-	Commandstorage_Init();
 	Error_Init();
 	Commandstorage_Clear();
 	Rtc_Init();

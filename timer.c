@@ -18,6 +18,7 @@
 
 #include "timer.h"
 #include "ledstrip.h"
+#include "trace.h"
 #include "usart.h"
 
 unsigned short gDateTimer;
@@ -69,7 +70,18 @@ void date_timer_do_events(void)
 	{
 		if(gDateEvents[i].wakeup == gDateTimer)
 		{
-			Commandstorage_ExecuteCmd(&gDateEvents[i].cmd);
+			/* TODO implement a more generic function
+			 * maybe make led_cmd a class and add a function exec() or run() */
+			if(SET_COLOR == gDateEvents[i].cmd.cmd)
+			{
+				Ledstrip_SetColor(&gDateEvents[i].cmd.data.set_color);
+			}
+			else
+			{
+				Trace_String("Unsupported command in date event ");
+				Trace_Hex(gDateEvents[i].cmd.cmd);
+				Trace_String("\n");
+			}
 		}
 	}
 }
