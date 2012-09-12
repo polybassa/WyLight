@@ -16,7 +16,6 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-
 #ifndef X86
 #define NO_CRC
 //#define TEST
@@ -32,6 +31,7 @@
 #include "ledstrip.h"		//clean
 #include "timer.h"			//under construction
 #include "rtc.h"
+#include "ScriptCtrl.h"
 #ifdef __CC8E__
 #include "int18XXX.h"
 #endif /* #ifdef __CC8E__ */
@@ -39,6 +39,7 @@
 
 #ifdef X86
 #include <unistd.h>
+jmp_buf g_ResetEnvironment;
 #endif /* #ifdef X86 */
 
 //*********************** GLOBAL VARIABLES *******************************************
@@ -124,8 +125,11 @@ void HighPriorityInterruptFunction(void)
 //*********************** HAUPTPROGRAMM **********************************************
 void main(void)
 {
+	/* softReset() on x86 will jump here! */
+	softResetJumpDestination();
+
 	InitAll();
-	
+
 	while(1)
 	{
 		Timer_StartStopwatch(eMAIN);
@@ -136,7 +140,7 @@ void main(void)
 		Platform_CheckInputs();
 		Error_Throw();
 		Commandstorage_GetCommands();
-		Commandstorage_ExecuteCommands();		
+		ScriptCtrl_Run();
 		if(g_UpdateLed > 0)
 		{
 			Ledstrip_UpdateFade();
@@ -162,10 +166,10 @@ void InitAll()
 	UART_Init();
 	Timer_Init();
 	Ledstrip_Init();
-	Commandstorage_Init();
 	Error_Init();
 	Commandstorage_Clear();
 	Rtc_Init();
+	ScriptCtrl_Init();
 
 #ifdef X86
 	init_x86();
@@ -194,5 +198,5 @@ void InitAll()
 #include "platform.c"
 #include "rtc.c"
 #include "iic.c"
+#include "ScriptCtrl.c"
 #endif /* #ifdef __CC8E__ */
-

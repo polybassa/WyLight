@@ -18,6 +18,7 @@
 
 #include "platform.h"
 #include "commandstorage.h"
+#include "ScriptCtrl.h"
 #include "ledstrip.h"
 #include "rtc.h"
 #include "trace.h"
@@ -51,58 +52,6 @@ void SetEepromPointer(uns16 PointerAddr, uns16 Value)
 
 struct CommandBuffer g_CmdBuf;
 
-struct led_cmd* Commandstorage_Read(struct led_cmd *pDest)
-{
-	// if the commandstorage is waiting
-	if(g_CmdBuf.WaitValue == 0) 
-	{
-		//check parameter
-		if(0 == pDest) return 0;
-
-		//commands available in eeprom?
-		uns16 nextCmd = GetEepromPointer(CMD_POINTER_ADDRESS);
-		if(0 == nextCmd) return 0;
-	
-		if(g_CmdBuf.LoopMode)
-		{
-			nextCmd = GetEepromPointer(LOOP_POINTER_ADDRESS);
-			if(0 == nextCmd)
-				nextCmd = Eeprom_Read(CMD_POINTER_ADDRESS);
-			SetEepromPointer(LOOP_POINTER_ADDRESS,nextCmd);
-		}
-
-		//read command from eeprom
-		Eeprom_ReadBlock((unsigned char*)pDest,nextCmd - CmdWidth, CmdWidth);
-
-		//update the CmdPointer?
-		if(g_CmdBuf.LoopMode)
-			SetEepromPointer(LOOP_POINTER_ADDRESS,nextCmd - CmdWidth);		
-		else
-			SetEepromPointer(CMD_POINTER_ADDRESS,nextCmd - CmdWidth);
-		Trace_String("Read_Done");
-		return pDest;
-	}
-	else return 0;
-}
-
-bit Commandstorage_Write(unsigned char *pSrc, unsigned char length)
-{
-	//check parameter
-	if(0 == pSrc) return FALSE;
-	
-	//enought free space in eeprom?
-	uns16 nextCmd = GetEepromPointer(CMD_POINTER_ADDRESS);
-	if(nextCmd >= (CMD_POINTER_ADDRESS - CmdWidth + 1)) 
-		return FALSE;
-
-	//increase the command pointer in eeprom
-	SetEepromPointer(CMD_POINTER_ADDRESS,nextCmd + (uns16)CmdWidth);
-		
-	//write data to eeprom
-	Eeprom_WriteBlock(pSrc, nextCmd, length);
-		
-	return TRUE;
-}
 
 void Commandstorage_GetCommands()
 {	
@@ -174,130 +123,14 @@ void Commandstorage_GetCommands()
                     (g_CmdBuf.CrcH == g_CmdBuf.cmd_buf[g_CmdBuf.cmd_counter - 2]) )
 #endif
                 {
-					// *** Execute the simple Commands
-					switch(g_CmdBuf.cmd_buf[2])
+					if(ScriptCtrl_Add(&g_CmdBuf.cmd_buf[2]))
 					{
-						case DELETE: 
-							{
-								SetEepromPointer(CMD_POINTER_ADDRESS,0);
-								SetEepromPointer(LOOP_POINTER_ADDRESS,0);
-								UART_Send('D');
-								return;
-							}
-						case SET_ON: 
-							{
-								//Not Implement on PIC18 Board
-								return;
-							}
-						case SET_OFF: 
-							{
-								//Not Implement on PIC18 Board
-								return;
-							}
-						case LOOP_ON:
-							{	
-								g_CmdBuf.LoopMode = 1;
-								UART_Send('L');
-								UART_Send('1');
-								return;
-							}
-						case LOOP_OFF:
-							{	
-								g_CmdBuf.LoopMode = 0;
-								g_CmdBuf.WaitValue = 0;
-								UART_Send('L');
-								UART_Send('0');
-								return;
-							}
-						case START_BL:
-							{
-							#ifndef X86
-								UART_SendString("Leaving Application --> Starting Bootloader");
-								Eeprom_Write(0x3ff, 0xff);
-								softReset();
-							#endif
-							}
-						case DISPLAY_RTC:
-							{
-								
-							#ifdef X86
-								//TO DO Stream für RTC erzeugen
-								int fd;
-							#else
-								uns8 fd;
-							#endif
-								ioctl(fd, RTC_RD_TIME, &g_RtcTime);
-								UART_SendNumber(g_RtcTime.tm_year,'Y');
-								UART_SendNumber(g_RtcTime.tm_mon,'M');
-								UART_SendNumber(g_RtcTime.tm_mday,'D');
-								UART_SendNumber(g_RtcTime.tm_wday,'W');
-								UART_SendNumber(g_RtcTime.tm_hour,'h');
-								UART_SendNumber(g_RtcTime.tm_min,'m');
-								UART_SendNumber(g_RtcTime.tm_sec,'s');
-								UART_Send(0x0d);
-								UART_Send(0x0a);
-								return;
-							}
-						case GET_RTC:
-							{
-							#ifdef X86
-								//TO DO Stream für RTC erzeugen
-								int fd;
-							#else
-								uns8 fd;
-							#endif
-								ioctl(fd, RTC_RD_TIME, &g_RtcTime);
-								UART_Send(g_RtcTime.tm_year);
-								UART_Send(g_RtcTime.tm_mon);
-								UART_Send(g_RtcTime.tm_mday);
-								UART_Send(g_RtcTime.tm_wday);
-								UART_Send(g_RtcTime.tm_hour);
-								UART_Send(g_RtcTime.tm_min);
-								UART_Send(g_RtcTime.tm_sec);
-								return;
-							}
-						case SET_RTC:
-							{
-							#ifdef X86
-								//TO DO Stream für RTC erzeugen
-								int fd;
-							#else
-								uns8 fd;
-							#endif
-								g_RtcTime.tm_year = g_CmdBuf.cmd_buf[3];
-								g_RtcTime.tm_mon = g_CmdBuf.cmd_buf[4];
-								g_RtcTime.tm_mday = g_CmdBuf.cmd_buf[5];
-								g_RtcTime.tm_wday = g_CmdBuf.cmd_buf[6];
-								g_RtcTime.tm_hour = g_CmdBuf.cmd_buf[7];
-								g_RtcTime.tm_min = g_CmdBuf.cmd_buf[8];
-								g_RtcTime.tm_sec = g_CmdBuf.cmd_buf[9];
-								ioctl(fd, RTC_SET_TIME, &g_RtcTime);
-								return;
-							}
-						case SET_COLOR_DIRECT:
-							{
-								Ledstrip_SetColorDirect(&g_CmdBuf.cmd_buf[3]);
-								UART_Send('G');
-								UART_Send('V');
-								return;
-							}
-						case GET_CYCLETIME:
-							{
-								Timer_PrintCycletime();
-								return;
-							}
-						default:
-							{
-								if( Commandstorage_Write(&g_CmdBuf.cmd_buf[2], (g_CmdBuf.cmd_counter - 4)))
-								{
-									UART_Send('G');
-									UART_Send('C');
-								}
-								else 
-									g_ErrorBits.EepromFailure = 1;
-							}
-					}							
-					
+						Trace_String("GC");
+					}
+					else
+					{
+						g_ErrorBits.EepromFailure = 1;
+					}
                 }
 #ifndef NO_CRC
                 else
@@ -310,75 +143,5 @@ void Commandstorage_GetCommands()
 			}
 		}
 	}
-}
-
-void Commandstorage_ExecuteCommands()
-{
-	// *** get the pointer to commands in the EEPROM
-	struct led_cmd nextCmd;
-
-	// read next command from eeprom and move command pointer in eeprom to the next command (TRUE)
-	struct led_cmd *result = Commandstorage_Read(&nextCmd);
-		
-	if(0 != result)
-	{
-		// *** commands available, check what to do
-		switch(nextCmd.cmd) 
-		{	
-			case SET_COLOR: 
-			{
-				Timer_StartStopwatch(eSET_COLOR);
-				Ledstrip_SetColor(&nextCmd.data.set_color);
-				Timer_StopStopwatch(eSET_COLOR);
-				break;
-			}
-			case SET_FADE:
-			{
-				Timer_StartStopwatch(eSET_FADE);
-				Ledstrip_SetFade(&nextCmd.data.set_fade);
-				Timer_StopStopwatch(eSET_FADE);
-				break;
-			}
-			case WAIT:
-			{
-				struct cmd_wait *pCmd = &nextCmd.data.wait;
-				Trace_Number(pCmd->waitTmms.high8,'H');
-				Trace_Number(pCmd->waitTmms.low8,'L');
-				g_CmdBuf.WaitValue = pCmd->waitTmms;
-				break;
-			}
-			case SET_RUN: 
-			{
-				struct cmd_set_run *pCmd = &nextCmd.data.set_run;
-				Timer_StartStopwatch(eSET_RUN);
-				g_CmdBuf.WaitValue = pCmd->durationTmms;
-				Ledstrip_SetRun(&nextCmd.data.set_run);
-				Timer_StopStopwatch(eSET_RUN);
-				break;
-			}
-		}
-	}
-}
-
-void Commandstorage_Init()
-{
-	/** EEPROM contains FF in every cell after inital start,
-	*** so I have to delete the pointer address
-	*** otherwise the PIC thinks he has the EEPROM full with commands
-	**/
-#ifndef TEST_COMMAND
-	if (GetEepromPointer(CMD_POINTER_ADDRESS) == 0xff)
-#endif
-		SetEepromPointer(CMD_POINTER_ADDRESS, 0);
-#ifdef TEST_COMMAND
-	uns16 cmdptr = GetEepromPointer(CMD_POINTER_ADDRESS);
-	UART_SendNumber(cmdptr.high8, 'H');
-	UART_SendNumber(cmdptr.low8, 'L');
-#endif
-	g_CmdBuf.LoopMode = 0;
-	g_CmdBuf.WaitValue = 0;
-
-	// set loop pointer address to start
-	SetEepromPointer(LOOP_POINTER_ADDRESS, 0);
 }
 

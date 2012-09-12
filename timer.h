@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -19,6 +19,7 @@
 #ifndef _TIMER_H_
 #define _TIMER_H_
 #include "platform.h"
+#include "wifly_cmd.h"
 
 enum METHODE{
 	eMAIN,
@@ -37,11 +38,18 @@ struct CycleTimeBuffer{
 extern struct CycleTimeBuffer g_CycleTimeBuffer;
 
 void Timer_Init();
+// a day has 86400 seconds, we are updating our counter in 2 sec steps
+#define DATE_TIMER_DAY (unsigned short)43200
+#define NUM_DATE_EVENTS 1
 
-/*To Do: Funktion bekommt einen Wert, anhand diese wertes wird die geschwindigkeit des
-Timers festgelegt. Wert kommt aus der berechnung einer anderen Funktion (fade oder run)*/
-void Timer_SetForFade(char value);
+struct date_event {
+	unsigned short wakeup;
+	struct led_cmd cmd;
+};
 
+unsigned char date_timer_add_event(struct cmd_add_color* pCmd);
+void date_timer_callback(void);
+void date_timer_do_events(void);
 
 /**
 ** Function start the internal Stopwatch. It's realised with the Timer3 Modul.

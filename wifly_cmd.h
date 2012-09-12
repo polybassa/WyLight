@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -23,10 +23,10 @@
 
 //*********************** ENUMERATIONS *********************************************
 #define STX 0xFF
+#define WAIT 0xFE
 #define SET_COLOR 0xFD
 #define SET_FADE 0xFC
 #define SET_RUN 0xFB
-#define WAIT 0xFE
 #define SET_ON 0xFA
 #define SET_OFF 0xF9
 #define DELETE 0xF8
@@ -38,8 +38,22 @@
 #define DISPLAY_RTC 0xF2
 #define SET_COLOR_DIRECT 0xF1
 #define GET_CYCLETIME 0xF0
+#define ADD_COLOR 0xEF
+
+#define LOOP_INFINITE 0
 
 //*********************** STRUCT DECLARATION *********************************************
+struct cmd_add_color {
+//TODO add this later, when we can handle longer cmd_frames
+//TODO	uns8 addr[4];
+	uns8 red;
+	uns8 green;
+	uns8 blue;
+//TODO uns8 hour;
+	uns8 minute;
+	uns8 second;
+};
+
 struct cmd_set_color {
 	uns8 addr[4];
 	uns8 red;
@@ -59,6 +73,13 @@ struct cmd_set_fade {
 	uns16 fadeTmms; //fadetime in ms
 };
 
+struct cmd_loop_end {
+	uns8 startIndex; /* pointer to the corresponding cmd_loop_start */
+	uns8 counter; /* current loop counter, used due processing */
+	uns8 numLoops; /* number of programmed loops f.e. LOOP_INFINITE */
+	uns8 depth; /* number of recursions */
+};
+
 struct cmd_wait {
 	uns16 waitTmms;
 	uns8 reserved[7];
@@ -74,10 +95,12 @@ struct cmd_set_run {
 struct led_cmd {
 	uns8 cmd;
 	union {
+		struct cmd_add_color add_color;
 		struct cmd_set_color set_color;
 		struct cmd_set_fade set_fade;
 		struct cmd_set_run set_run;
 		struct cmd_wait wait;
+		struct cmd_loop_end loopEnd;
 	}data;
 };
 
@@ -88,6 +111,6 @@ struct cmd_frame {
 	uns8 crcHigh;
 	uns8 crcLow;
 };
-//#define FRAMELENGTH (sizeof(struct cmd_frame) + 1)			// *** max length of one commandframe
-#define FRAMELENGTH (NUM_OF_LED * 3 + 8)
+#define FRAMELENGTH (sizeof(struct cmd_frame) + 1)			// *** max length of one commandframe
+//TODO remove this line #define FRAMELENGTH (NUM_OF_LED * 3 + 8)
 #endif /* #ifndef _WIFLY_CMD_H_ */
