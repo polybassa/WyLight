@@ -18,16 +18,95 @@
 
 #include "timer.h"
 #include "ledstrip.h"
-#include "USART.h"
+#include "trace.h"
+#include "usart.h"
 
 struct CycleTimeBuffer g_CycleTimeBuffer;
 
-void Timer_Init()
+unsigned short gDateTimer;
+bank6 struct date_event gDateEvents[NUM_DATE_EVENTS];
+
+unsigned char date_timer_add_event(struct cmd_add_color* pCmd)
 {
+	int i;
+	for(i = 0; i < NUM_DATE_EVENTS; i++)
+	{
+		if(0xffff == gDateEvents[i].wakeup)
+		{
+//TODO			uns16 hour = (uns16)pCmd->hour * 1800;
+			uns16 minute = (uns16)pCmd->minute * 30;
+			uns16 second = pCmd->second / 2;
+			gDateEvents[i].wakeup = DATE_TIMER_DAY;
+//TODO			gDateEvents[i].wakeup -= hour;
+			gDateEvents[i].wakeup -= minute;
+			gDateEvents[i].wakeup -= second;
+			gDateEvents[i].cmd.cmd = SET_COLOR;
+//TODO memcpy((char*)&gDateEvents[i].cmd, (char*)pCmd, sizeof(struct led_cmd));
+			gDateEvents[i].cmd.data.set_color.addr[0] = 0xff;
+			gDateEvents[i].cmd.data.set_color.addr[1] = 0xff;
+			gDateEvents[i].cmd.data.set_color.addr[2] = 0xff;
+			gDateEvents[i].cmd.data.set_color.addr[3] = 0xff;
+			uns8 red = pCmd->red;
+			gDateEvents[i].cmd.data.set_color.red = red;
+			uns8 green = pCmd->green;
+			gDateEvents[i].cmd.data.set_color.green = green;
+			uns8 blue = pCmd->blue;
+			gDateEvents[i].cmd.data.set_color.blue = blue;
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+		
+
+//this function has to be called each 2 seconds!
+void date_timer_callback(void)
+{
+	if(0 == --gDateTimer) gDateTimer = DATE_TIMER_DAY;
+}
+
+void date_timer_do_events(void)
+{
+	int i;
+	for(i = 0; i < NUM_DATE_EVENTS; i++)
+	{
+		if(gDateEvents[i].wakeup == gDateTimer)
+		{
+			/* TODO implement a more generic function
+			 * maybe make led_cmd a class and add a function exec() or run() */
+			if(SET_COLOR == gDateEvents[i].cmd.cmd)
+			{
+				Ledstrip_SetColor(&gDateEvents[i].cmd.data.set_color);
+			}
+			else
+			{
+				Trace_String("Unsupported command in date event ");
+				Trace_Hex(gDateEvents[i].cmd.cmd);
+				Trace_String("\n");
+			}
+		}
+	}
+}
+
+void date_timer_init(void)
+{
+	gDateTimer = DATE_TIMER_DAY;
+	uns8* ptr = (uns8*)gDateEvents;
+	uns8 i = sizeof(gDateEvents);
+	do 
+	{
+		i--;
+		ptr[i] = 0xff;
+	} while(0 != i);
+}
+
+void Timer_Init()
+{	
+#ifdef __CC8E__
 	T1CON = 0b00110111;
 	TMR1IE = 1;
 	
-    /* 
+	/* 
 	** T4 Interrupt every 1 Millisecound if clock is 64MHz
 	** Calculation
 	** 64000000 Hz / 4 / 16 / 100 / 10
@@ -52,19 +131,14 @@ void Timer_Init()
 	*/
 	T3CON = 0b00110110;
 	TMR3ON = 1;
-}
-
-void Timer_SetForFade(char value)
-{
-	//Not Implemented yet
+#endif /* #ifdef __CC8E__ */
 }
 
 void Timer_StartStopwatch(enum METHODE destMethode)
 {
 	uns16 tempTime;
-	
-	tempTime.low8 = TMR3L;
-	tempTime.high8 = TMR3H;
+
+	Platform_ReadPerformanceCounter(tempTime);
 	
 	g_CycleTimeBuffer.tempCycleTime[destMethode] = tempTime;
 }
@@ -73,8 +147,7 @@ void Timer_StopStopwatch(enum METHODE destMethode)
 {
 	uns16 tempTime,temp16;
 	
-	tempTime.low8 = TMR3L;
-	tempTime.high8 = TMR3H;
+	Platform_ReadPerformanceCounter(tempTime);
 	
 	if(g_CycleTimeBuffer.tempCycleTime[destMethode] < tempTime)
 	{
@@ -102,8 +175,13 @@ void Timer_PrintCycletime(void)
 		temp16 = g_CycleTimeBuffer.maxCycleTime[i]; 
 		UART_SendString("Zeitwert ");
 		UART_SendNumber(i,':');
+#ifdef X86
+		UART_SendNumber((uns8)(temp16 >> 8),'H');
+		UART_SendNumber((uns8)(temp16 & 0xff),'L');
+#else
 		UART_SendNumber(temp16.high8,'H');
 		UART_SendNumber(temp16.low8,'L');
+#endif /* #ifdef X86_SRC */
 		UART_SendString(" µS in HEX ");
 		UART_Send(0x0d);
 		UART_Send(0x0a);

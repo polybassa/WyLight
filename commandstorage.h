@@ -74,6 +74,7 @@ bit Commandstorage_Write(unsigned char *pSrc, unsigned char length);
 void Commandstorage_GetCommands();
 
 void Commandstorage_ExecuteCommands();
+void Commandstorage_ExecuteCmd(struct led_cmd* pCmd);
 
 /**
 *** Initialize commandstorage in eeprom
@@ -83,7 +84,7 @@ void Commandstorage_Init();
 #define Commandstorage_WaitInterrupt(x) \
 		do { \
 			if(g_CmdBuf.WaitValue != 0) \
-				g_CmdBuf.WaitValue = --g_CmdBuf.WaitValue; \
+				g_CmdBuf.WaitValue--; \
 		} while(0) 
 
 #endif /* #ifndef _COMMANDSTORAGE_H_ */

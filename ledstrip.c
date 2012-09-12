@@ -302,6 +302,13 @@ void Ledstrip_UpdateRun(void)
 	{
 		return;
 	}
+	/* terminate run when wait is stopped */
+	if(g_CmdBuf.WaitValue == 0)
+	{
+		gLedBuf.flags.run_aktiv = FALSE;
+		return;
+	}
+
 	if(Ledstrip_NumOfFades() > 0)
 	{
 		return;
@@ -314,7 +321,6 @@ void Ledstrip_UpdateRun(void)
 	uns8 stepMask = 0x01;
 	uns16 temp16;
 	uns8 red, green, blue, delta, k, temp_red, temp_green, temp_blue;
-	uns8 carry_led[3];
 	
 	for(k = 0; k < (NUM_OF_LED * 3); k++)
 	{
@@ -378,10 +384,3 @@ void Ledstrip_UpdateRun(void)
 	gLedBuf.flags.processing_of_data = 0;
 }
 
-void Ledstrip_TerminateRun(void)
-{
-	if(g_CmdBuf.WaitValue == 0 && gLedBuf.flags.run_aktiv == 1)
-	{
-			gLedBuf.flags.run_aktiv = 0;
-	}
-}
