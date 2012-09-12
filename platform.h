@@ -49,6 +49,7 @@
 	#define InitFET(x)
 	#define Platform_IOInit(x)
 	#define Platform_OsciInit(x)
+	#define Platform_ReadPerformanceCounter(x) x = 0; /* TODO implement this on X86 */
 	
 #else
 	#include "inline.h"
@@ -59,6 +60,7 @@
 
 	#define Platform_IOInit(x) do { CLRF(PORTB); CLRF(LATB); CLRF(ANSELB);} while(0) //Eingänge am PORTB initialisieren
 	#define Platform_OsciInit(x) do { OSCCON = 0b01110010; PLLEN = 1;} while(0) //OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
+	#define Platform_ReadPerformanceCounter(x) {x.low8 = TMR3L; x.high8 = TMR3H;}
 	
 	void Platform_AllowInterrupts();
 	

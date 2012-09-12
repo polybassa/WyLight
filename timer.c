@@ -18,12 +18,13 @@
 
 #include "timer.h"
 #include "ledstrip.h"
-#include "USART.h"
+#include "usart.h"
 
 struct CycleTimeBuffer g_CycleTimeBuffer;
 
 void Timer_Init()
 {
+#ifdef __CC8E__
 	T1CON = 0b00110111;
 	TMR1IE = 1;
 	
@@ -52,6 +53,7 @@ void Timer_Init()
 	*/
 	T3CON = 0b00110110;
 	TMR3ON = 1;
+#endif /* #ifdef __CC8E__ */
 }
 
 void Timer_SetForFade(char value)
@@ -62,9 +64,8 @@ void Timer_SetForFade(char value)
 void Timer_StartStopwatch(enum METHODE destMethode)
 {
 	uns16 tempTime;
-	
-	tempTime.low8 = TMR3L;
-	tempTime.high8 = TMR3H;
+
+	Platform_ReadPerformanceCounter(tempTime);
 	
 	g_CycleTimeBuffer.tempCycleTime[destMethode] = tempTime;
 }
@@ -73,8 +74,7 @@ void Timer_StopStopwatch(enum METHODE destMethode)
 {
 	uns16 tempTime,temp16;
 	
-	tempTime.low8 = TMR3L;
-	tempTime.high8 = TMR3H;
+	Platform_ReadPerformanceCounter(tempTime);
 	
 	if(g_CycleTimeBuffer.tempCycleTime[destMethode] < tempTime)
 	{
@@ -102,8 +102,13 @@ void Timer_PrintCycletime(void)
 		temp16 = g_CycleTimeBuffer.maxCycleTime[i]; 
 		UART_SendString("Zeitwert ");
 		UART_SendNumber(i,':');
+#ifdef X86
+		UART_SendNumber((uns8)(temp16 >> 8),'H');
+		UART_SendNumber((uns8)(temp16 & 0xff),'L');
+#else
 		UART_SendNumber(temp16.high8,'H');
 		UART_SendNumber(temp16.low8,'L');
+#endif /* #ifdef X86_SRC */
 		UART_SendString(" µS in HEX ");
 		UART_Send(0x0d);
 		UART_Send(0x0a);

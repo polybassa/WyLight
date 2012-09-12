@@ -43,9 +43,6 @@
 
 //*********************** GLOBAL VARIABLES *******************************************
 uns8 g_UpdateLed;
-#ifdef X86
-uns8 g_TmmsCounter;
-#endif /* #ifdef X86 */
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void InitAll();
 void HighPriorityInterruptFunction(void);
@@ -80,7 +77,6 @@ interrupt LowPriorityInterrupt(void)
 	{
 		Timer1Interrupt();
 		Commandstorage_WaitInterrupt();
-		Ledstrip_TerminateRun();
 	}
 	if(TMR4IF)
 	{
@@ -141,20 +137,16 @@ void main(void)
 		Error_Throw();
 		Commandstorage_GetCommands();
 		Commandstorage_ExecuteCommands();		
-		if(g_UpdateLed == TRUE)
+		if(g_UpdateLed > 0)
 		{
-			Timer4InterruptLock();
-#ifdef X86
-			g_TmmsCounter -= CYCLE_TMMS;
-#endif /* #ifdef X86 */
-			Timer4InterruptUnlock();
-
 			Ledstrip_UpdateFade();
 			Ledstrip_UpdateRun();
 			Timer_StartStopwatch(eDO_FADE);
 			Ledstrip_DoFade();
 			Timer_StopStopwatch(eDO_FADE);
-			g_UpdateLed = FALSE;
+			Timer4InterruptLock();
+			g_UpdateLed--;
+			Timer4InterruptUnlock();
 		}
 		Timer_StopStopwatch(eMAIN);
 	}

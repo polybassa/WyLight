@@ -83,7 +83,7 @@ void Commandstorage_Init();
 #define Commandstorage_WaitInterrupt(x) \
 		do { \
 			if(g_CmdBuf.WaitValue != 0) \
-				g_CmdBuf.WaitValue = --g_CmdBuf.WaitValue; \
+				g_CmdBuf.WaitValue--; \
 		} while(0) 
 
 #endif /* #ifndef _COMMANDSTORAGE_H_ */

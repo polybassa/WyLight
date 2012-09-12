@@ -11,7 +11,7 @@ endif
 
 ANDROID_DIR=./android/WiflyLight
 ANDROID_BIN=android/.metadata ${ANDROID_DIR}/bin/ ${ANDROID_DIR}/gen/ ${ANDROID_DIR}/libs/ ${ANDROID_DIR}/obj/ ${ANDROID_DIR}Test/bin/ ${ANDROID_DIR}Test/gen/
-X86_SRC=main.c commandstorage.c eeprom.c error.c ledstrip.c RingBuf.c spi.c usart.c x86_wrapper.c x86_gl.c
+X86_SRC=main.c commandstorage.c eeprom.c error.c ledstrip.c RingBuf.c spi.c timer.c usart.c x86_wrapper.c x86_gl.c
 
 all_nils: pic simu x86_client
 
