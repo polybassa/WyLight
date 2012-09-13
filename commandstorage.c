@@ -23,35 +23,7 @@
 #include "rtc.h"
 #include "trace.h"
 
-//*********************** PRIVATE FUNCTIONS *********************************************
-uns16 GetEepromPointer(uns16 PointerAddr)
-{
-	uns16 temp;
-#ifndef X86
-	temp.low8 = Eeprom_Read(PointerAddr);
-	temp.high8 = Eeprom_Read(PointerAddr+1);
-#else
-	temp = 0x00ff & Eeprom_Read(PointerAddr);
-	temp |= Eeprom_Read(PointerAddr+1) << 8;
-#endif
-
-	return temp;
-}
-
-void SetEepromPointer(uns16 PointerAddr, uns16 Value)
-{
-#ifndef X86
-	Eeprom_Write(PointerAddr, Value.low8);
-	Eeprom_Write(PointerAddr+1, Value.high8);
-#else
-	Eeprom_Write(PointerAddr, Value & 0x00ff);
-	Eeprom_Write(PointerAddr+1, (Value & 0xff00) >> 8);
-#endif
-}
-//*********************** PUBLIC FUNCTIONS *********************************************
-
 struct CommandBuffer g_CmdBuf;
-
 
 void Commandstorage_GetCommands()
 {	
@@ -66,7 +38,7 @@ void Commandstorage_GetCommands()
 	{
 		// *** preload variables and 
 		// *** get new_byte from ringbuffer
-		unsigned char new_byte;
+		uns8 new_byte;
 		// *** get new byte
 		new_byte = RingBuf_Get();
 		Trace_String("BYTE:");

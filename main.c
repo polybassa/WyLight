@@ -114,7 +114,7 @@ void HighPriorityInterruptFunction(void)
 		else 
 		{
 			//Register lesen um Schnittstellen Fehler zu vermeiden
-			unsigned char temp = RCREG1;
+			uns8 temp = RCREG1;
 		}
 	}
 	FSR0 = sv_FSR0;
