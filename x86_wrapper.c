@@ -20,11 +20,14 @@
 #include <string.h>
 #include <unistd.h>
 #include "x86_wrapper.h"
+#include "timer.h"
+
+extern unsigned char do_update_fade;
 
 bit g_led_off = 1; //X86 replacement for PORTC.0
 pthread_mutex_t g_led_mutex = PTHREAD_MUTEX_INITIALIZER;
 uns8 g_led_status[NUM_OF_LED*3];
-extern uns8 g_TmmsCounter;
+extern uns8 g_UpdateLed;
 
 void* InterruptRoutine(void* unused)
 {
@@ -67,14 +70,21 @@ void Crc_NewCrc(unsigned char* p_crcH, unsigned char* p_crcL)
 
 void I2C_Init(){}
 
-void Timer_Init(){}
-void timer_set_for_fade(char value){}
 void* timer_interrupt(void* unused)
 {
 	for(;;)
 	{
 		usleep(1000);
-		g_TmmsCounter++;
+		g_UpdateLed++;
+	}
+}
+
+void* date_timer_interrupt(void* unused)
+{
+	for(;;)
+	{
+		usleep(2000000);
+		date_timer_callback();
 	}
 }
 
@@ -82,19 +92,6 @@ void UART_Init() {}
 void UART_Send(unsigned char ch)
 {
 	printf("%c", ch);
-}
-
-
-static uns8 g_Eeprom[0x400];
-unsigned char Eeprom_Read(uns16 adress)
-{
-	return g_Eeprom[adress];
-}
-
-
-void Eeprom_Write(uns16 adress, unsigned char data)
-{
-	g_Eeprom[adress] = data;
 }
 void SPI_Init() {}
 char SPI_Send(char data)
@@ -129,8 +126,10 @@ void init_x86(void)
 	pthread_t isrThread;
 	pthread_t glThread;
 	pthread_t timerThread;
+	pthread_t dateTimerThread;
 	
 	pthread_create(&isrThread, 0, InterruptRoutine, 0);
 	pthread_create(&glThread, 0, gl_start, 0);
 	pthread_create(&timerThread, 0, timer_interrupt, 0);
+	pthread_create(&dateTimerThread, 0, date_timer_interrupt, 0);
 }

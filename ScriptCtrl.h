@@ -16,22 +16,42 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef _TRACE_H_
-#define _TRACE_H_
-#ifdef TEST
-	#include "usart.h"
-	#define Trace_String(str) do { UART_SendString(str); } while (0)
-	#define Trace_Number(input, sign) do { UART_SendNumber(input, sign); } while (0)
-	#define Trace_Hex(hex) do { UART_Send(hex); } while(0)
-#elif UNIT_TEST
-	#include "stdio.h"
-	#define Trace_String(str) do { printf("%s", str); } while (0)
-	#define Trace_Number(input, sign) do { printf("%03d%c", input, sign); } while (0)
-	#define Trace_Hex(hex) do { printf("0x%02x", hex); } while(0)
-#else
-	#define Trace_String(str)
-	#define Trace_Number(input, sign)
-	#define Trace_Hex(hex)
-#endif
-#endif /* #ifndef _TRACE_H_ */
+#ifndef _SCRIPTCTRL_H_
+#define _SCRIPTCTRL_H_
 
+#include "wifly_cmd.h"
+
+#define SCRIPTCTRL_NUM_CMD_MAX 15
+#define SCRIPTCTRL_LOOP_DEPTH_MAX 4
+
+struct ScriptBuf {
+	uns16 waitValue;
+	uns8 loopStart[SCRIPTCTRL_LOOP_DEPTH_MAX];
+	uns8 loopDepth;
+	uns8 execute;
+	uns8 read;
+	uns8 write;
+	uns8 inLoop;
+	bit isClearing;
+};
+
+/**
+ * Add new command to script
+ **/
+uns8 ScriptCtrl_Add(struct led_cmd* pCmd);
+
+/**
+ * Clear all command from buffer
+ */
+void ScriptCtrl_Clear(void);
+
+/**
+ * Initialize script controller.
+ */
+void ScriptCtrl_Init(void);
+
+/**
+ * Read next available command from eeprom and run it.
+ */
+void ScriptCtrl_Run(void);
+#endif /* #ifndef _SCRIPTCTRL_H_ */

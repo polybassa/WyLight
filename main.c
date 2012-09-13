@@ -16,7 +16,6 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-
 #ifndef X86
 #define NO_CRC
 //#define TEST
@@ -32,6 +31,7 @@
 #include "ledstrip.h"		//clean
 #include "timer.h"			//under construction
 #include "rtc.h"
+#include "ScriptCtrl.h"
 #ifdef __CC8E__
 #include "int18XXX.h"
 #endif /* #ifdef __CC8E__ */
@@ -39,13 +39,11 @@
 
 #ifdef X86
 #include <unistd.h>
+jmp_buf g_ResetEnvironment;
 #endif /* #ifdef X86 */
 
 //*********************** GLOBAL VARIABLES *******************************************
 uns8 g_UpdateLed;
-#ifdef X86
-uns8 g_TmmsCounter;
-#endif /* #ifdef X86 */
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void InitAll();
 void HighPriorityInterruptFunction(void);
@@ -80,7 +78,6 @@ interrupt LowPriorityInterrupt(void)
 	{
 		Timer1Interrupt();
 		Commandstorage_WaitInterrupt();
-		Ledstrip_TerminateRun();
 	}
 	if(TMR4IF)
 	{
@@ -128,8 +125,11 @@ void HighPriorityInterruptFunction(void)
 //*********************** HAUPTPROGRAMM **********************************************
 void main(void)
 {
+	/* softReset() on x86 will jump here! */
+	softResetJumpDestination();
+
 	InitAll();
-	
+
 	while(1)
 	{
 		Timer_StartStopwatch(eMAIN);
@@ -140,21 +140,17 @@ void main(void)
 		Platform_CheckInputs();
 		Error_Throw();
 		Commandstorage_GetCommands();
-		Commandstorage_ExecuteCommands();		
-		if(g_UpdateLed == TRUE)
+		ScriptCtrl_Run();
+		if(g_UpdateLed > 0)
 		{
-			Timer4InterruptLock();
-#ifdef X86
-			g_TmmsCounter -= CYCLE_TMMS;
-#endif /* #ifdef X86 */
-			Timer4InterruptUnlock();
-
 			Ledstrip_UpdateFade();
 			Ledstrip_UpdateRun();
 			Timer_StartStopwatch(eDO_FADE);
 			Ledstrip_DoFade();
 			Timer_StopStopwatch(eDO_FADE);
-			g_UpdateLed = FALSE;
+			Timer4InterruptLock();
+			g_UpdateLed--;
+			Timer4InterruptUnlock();
 		}
 		Timer_StopStopwatch(eMAIN);
 	}
@@ -170,10 +166,10 @@ void InitAll()
 	UART_Init();
 	Timer_Init();
 	Ledstrip_Init();
-	Commandstorage_Init();
 	Error_Init();
 	Commandstorage_Clear();
 	Rtc_Init();
+	ScriptCtrl_Init();
 
 #ifdef X86
 	init_x86();
@@ -202,5 +198,5 @@ void InitAll()
 #include "platform.c"
 #include "rtc.c"
 #include "iic.c"
+#include "ScriptCtrl.c"
 #endif /* #ifdef __CC8E__ */
-

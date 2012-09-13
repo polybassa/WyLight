@@ -17,10 +17,21 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "platform.h"
+#include "eeprom.h"
 
-#ifndef X86
+#ifdef X86
+static uns8 g_Eeprom[0x400];
+unsigned char Eeprom_Read(uns16 adress)
+{
+	return g_Eeprom[adress];
+}
+
+void Eeprom_Write(uns16 adress, unsigned char data)
+{
+	g_Eeprom[adress] = data;
+}
+#else
 //*********************** EEPROM BYTE SCHREIBEN  **********************************************
-
 void Eeprom_Write(uns16 adress, uns8 data)
 {
 #ifdef TEST_EEPROM
@@ -82,10 +93,7 @@ uns8 Eeprom_Read(uns16 adress)
 #endif	
     return data;
 }
-#else
-void Eeprom_Write(char adress, char data);
-char Eeprom_Read(char adress);
-#endif /* #ifndef X86 */
+#endif /* #ifdef X86 */
 
 //*********************** EEPROM BYTEARRAY SCHREIBEN  **************************************
 
