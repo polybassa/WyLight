@@ -67,3 +67,6 @@ PIC18_Bootloader/crc16-0.1.1/python3x/crc16/test.py
 PIC18_Bootloader/crc16-0.1.1/setup.py
 PIC18_Bootloader/crc16-0.1.1/src/_crc16module.c
 
+MPLAB/Pic18.mcp
+MPLAB/Pic18.mcs
+MPLAB/Pic18.mcw
