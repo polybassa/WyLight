@@ -68,7 +68,7 @@ void Rtc_Init(void)
 	I2C_Write(RTC,0x01,0x00);		//Disable Interrupts in the RTC-Device
 } 
 
-uns8 ioctl(uns8 fd,enum RTC_request req,struct rtc_time *pRtcTime)
+void Rtc_Ctl(enum RTC_request req,struct rtc_time *pRtcTime)
 {
 	uns8 temp;
 	switch(req)
@@ -109,6 +109,5 @@ uns8 ioctl(uns8 fd,enum RTC_request req,struct rtc_time *pRtcTime)
 			I2C_Write(RTC,0x08,( temp ));
 		}break;
 	}
-	return 0x00;
 }
 

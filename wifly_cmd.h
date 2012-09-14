@@ -20,6 +20,7 @@
 #define _WIFLY_CMD_H_
 
 #include "platform.h"
+#include "rtc.h"
 
 //*********************** ENUMERATIONS *********************************************
 #define STX 0xFF
@@ -33,7 +34,7 @@
 #define LOOP_ON 0xF7
 #define LOOP_OFF 0xF6
 #define START_BL 0xF5
-#define SET_RTC 0xF4 			/* FRAME: <STX><LEN><SET_RTC><YEAR><MONTH><DAY><WDAY><HOUR><MIN><SEC><CRC><CRC> */
+#define SET_RTC 0xF4 			/* FRAME: <STX><LEN><SET_RTC><SEC><MIN><HOUR><DAY><MONTH><YEAR><WDAY><CRC><CRC> */
 #define GET_RTC 0xF3
 #define DISPLAY_RTC 0xF2
 #define SET_COLOR_DIRECT 0xF1
@@ -101,6 +102,7 @@ struct led_cmd {
 		struct cmd_set_run set_run;
 		struct cmd_wait wait;
 		struct cmd_loop_end loopEnd;
+		struct rtc_time set_rtc;
 	}data;
 };
 

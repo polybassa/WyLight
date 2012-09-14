@@ -100,20 +100,17 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 			return ScriptCtrl_Write(pCmd);
 		}
 		case START_BL:
-			Trace_String("Leaving Application --> Starting Bootloader");
+			UART_SendString("Leaving Application --> Starting Bootloader");
 			Eeprom_Write(0x3ff, 0xff);
 			softReset();
 			/* never reach this */
 			return FALSE;
 #ifndef X86
 /* TODO multiple things!
- - DISPLAY_RTC is only a debug command, isn't it? -> remove or replace UART_Send with Trace_
- - ioctl interface seems a little strange, fd is not necessary 
- - don't access anonymous bytes(cmd_buf[x]) -> add a struct to wifly_cmd.h and cmd_frame */
+ - DISPLAY_RTC is only a debug command, isn't it? -> remove or replace UART_Send with Trace_*/
 		case DISPLAY_RTC:
 		{
-			uns8 fd;
-			ioctl(fd, RTC_RD_TIME, &g_RtcTime);
+			Rtc_Ctl(RTC_RD_TIME, &g_RtcTime);
 			UART_SendNumber(g_RtcTime.tm_year,'Y');
 			UART_SendNumber(g_RtcTime.tm_mon,'M');
 			UART_SendNumber(g_RtcTime.tm_mday,'D');
@@ -123,32 +120,30 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 			UART_SendNumber(g_RtcTime.tm_sec,'s');
 			UART_Send(0x0d);
 			UART_Send(0x0a);
-			return FALSE;
+			return TRUE;
 		}
 		case GET_RTC:
 		{
-			uns8 fd;
-			ioctl(fd, RTC_RD_TIME, &g_RtcTime);
-			UART_Send(g_RtcTime.tm_year);
-			UART_Send(g_RtcTime.tm_mon);
-			UART_Send(g_RtcTime.tm_mday);
-			UART_Send(g_RtcTime.tm_wday);
-			UART_Send(g_RtcTime.tm_hour);
-			UART_Send(g_RtcTime.tm_min);
+			Rtc_Ctl(RTC_RD_TIME, &g_RtcTime);
 			UART_Send(g_RtcTime.tm_sec);
-			return FALSE;
+			UART_Send(g_RtcTime.tm_min);
+			UART_Send(g_RtcTime.tm_hour);
+			UART_Send(g_RtcTime.tm_mday);
+			UART_Send(g_RtcTime.tm_mon);
+			UART_Send(g_RtcTime.tm_year);
+			UART_Send(g_RtcTime.tm_wday);
+			return TRUE;
 		}
 		case SET_RTC:
 		{
-			uns8 fd;
-			g_RtcTime.tm_year = g_CmdBuf.cmd_buf[3];
-			g_RtcTime.tm_mon = g_CmdBuf.cmd_buf[4];
-			g_RtcTime.tm_mday = g_CmdBuf.cmd_buf[5];
-			g_RtcTime.tm_wday = g_CmdBuf.cmd_buf[6];
-			g_RtcTime.tm_hour = g_CmdBuf.cmd_buf[7];
-			g_RtcTime.tm_min = g_CmdBuf.cmd_buf[8];
-			g_RtcTime.tm_sec = g_CmdBuf.cmd_buf[9];
-			ioctl(fd, RTC_SET_TIME, &g_RtcTime);
+			g_RtcTime.tm_year = pCmd->data.set_rtc.tm_year;
+			g_RtcTime.tm_mon = pCmd->data.set_rtc.tm_mon;
+			g_RtcTime.tm_mday = pCmd->data.set_rtc.tm_mday;
+			g_RtcTime.tm_wday = pCmd->data.set_rtc.tm_wday;
+			g_RtcTime.tm_hour = pCmd->data.set_rtc.tm_hour;
+			g_RtcTime.tm_min = pCmd->data.set_rtc.tm_min;
+			g_RtcTime.tm_sec = pCmd->data.set_rtc.tm_sec;
+			Rtc_Ctl(RTC_SET_TIME, &g_RtcTime);
 			return TRUE;
 		}
 		case SET_COLOR_DIRECT:
