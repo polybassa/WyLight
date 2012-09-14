@@ -26,9 +26,10 @@ class WiflyControlCli
 	private:
 		WiflyControl mControl;
 		bool mRunning;
+		void PrintBlInfo(const BlInfo& info) const;
 
 	public:
 		WiflyControlCli(const char* pAddr, short port, bool useTcp);
-		void run(void);	
+		void Run(void);	
 };
 #endif /* #ifndef _WIFLYCONTROLCLI_H_ */

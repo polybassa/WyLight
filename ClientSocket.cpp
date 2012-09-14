@@ -50,12 +50,35 @@ TcpSocket::TcpSocket(const char* pAddr, short port)
 	}
 }
 
-int TcpSocket::Recv(unsigned char* pBuffer, size_t length) const
+int TcpSocket::Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms) const
 {
-	return recv(mSock, pBuffer, length, 0);
+	timeval timeout;
+	fd_set readSockets;
+	FD_ZERO(&readSockets);
+	FD_SET(mSock, &readSockets);
+
+	timeout.tv_sec = timeoutTmms / 1000;
+	timeout.tv_usec = timeoutTmms % 1000;
+	int numSocksReady = select(mSock + 1, &readSockets, NULL, NULL, &timeout);
+
+	switch(numSocksReady)
+	{
+		case 0: /* timeout */
+			return 0;
+		case 1: /* data available */
+			if(!FD_ISSET(mSock, &readSockets))
+			{
+				/* this should never happen */
+				return -1;
+			}
+			return recv(mSock, pBuffer, length, 0);
+		default:
+			/* error */
+			return -1;
+	}
 }
 
-int TcpSocket::Send(unsigned char* frame, size_t length) const
+int TcpSocket::Send(const unsigned char* frame, size_t length) const
 {
 	return send(mSock, frame, length, 0);
 }
@@ -65,13 +88,13 @@ UdpSocket::UdpSocket(const char* pAddr, short port)
 {
 }
 
-int UdpSocket::Recv(unsigned char* pBuffer, size_t length) const
+int UdpSocket::Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms) const
 {
 	std::cout << __FILE__ << ":" << __LINE__ << " Not implemented" << std::endl;
 	return -1;
 }
 
-int UdpSocket::Send(unsigned char* frame, size_t length) const
+int UdpSocket::Send(const unsigned char* frame, size_t length) const
 {
 	return sendto(mSock, frame, length, 0, (struct sockaddr*)&mSockAddr, sizeof(mSockAddr));
 }

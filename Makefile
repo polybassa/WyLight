@@ -28,7 +28,7 @@ android_client:
 	ndk-build -C $(ANDROID_DIR)
 
 x86_client:
-	g++ ClientSocket.cpp WiflyControl.cpp WiflyControlCli.cpp -DX86 -lpthread -o client.bin -Wall -pedantic
+	g++ ClientSocket.cpp WiflyControl.cpp WiflyControlCli.cpp -DX86 -DDEBUG -lpthread -o client.bin -Wall -pedantic
 
 #generic rule to build and run unittests
 %_ut.bin: %_ut.c %.c
