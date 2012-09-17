@@ -20,6 +20,7 @@
 #include <iostream>
 #include <sstream>
 #include <cassert>
+#include <stddef.h>
 
 using namespace std;
 
@@ -89,72 +90,30 @@ void WiflyControl::AddColor(std::string& addr, std::string& rgba, unsigned char 
 	AddColor(ToRGBA(addr), ToRGBA(rgba) << 8, hour, minute, second);
 }
 
-void WiflyControl::BlReadInfo(BlInfo& blInfo)
+size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize) const
 {
-	unsigned char buffer[255];
-	unsigned char* pStart = buffer;
-	int bytesReceived = BlSendCmd(BL_INFO_REQUEST, sizeof(BL_INFO_REQUEST), buffer, sizeof(buffer));	
-	const unsigned char* pEnd = buffer + bytesReceived;
+	BlProxy proxy(mSock);
+	unsigned char buffer[BL_MAX_RESPONSE_LENGTH];
+	size_t bytesReceived = proxy.Send(req, buffer, sizeof(buffer));
 
-	/* remove STX from the buffer */	
-	while((pStart < pEnd) && (BL_STX == *pStart))
+	if(responseSize == bytesReceived)
 	{
-		pStart++;
+		memcpy(pResponse, buffer, responseSize);
+		return responseSize;
 	}
-	
-	/* enough bytes received to fill a BlInfo structure? */
-	if((pStart < pEnd) && (static_cast<size_t>(pEnd - pStart) >= sizeof(blInfo)))
-	{ 
-		memcpy(&blInfo, pStart, sizeof(blInfo));
-	}
-	else
-	{
-		memset(&blInfo, 0, sizeof(blInfo));
-	}
+	return 0;
 }
 
-int WiflyControl::BlSendCmd(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, const size_t responseSize)
+size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int flashAddress, const size_t numBytes) const
 {
-	int numRetries = BL_MAX_RETRIES;
-	do
-	{
-		/* sync with bootloader */
-		mSock->Send(BL_SYNC, sizeof(BL_SYNC));
-		if(mSock->Recv(pResponse, responseSize, BL_RESPONSE_TIMEOUT_TMMS) > 0)
-		{
-			/* synchronized -> send request */
-			if(static_cast<int>(requestSize) != mSock->Send(pRequest, requestSize))
-			{
-				/* send failed */
-				return -1;
-			}
-			
-			/* receive response */
-			int bytesReceived = mSock->Recv(pResponse, responseSize, BL_RESPONSE_TIMEOUT_TMMS);
-			if(bytesReceived > 1)
-			{
-				/* remove DLE from message */
-				unsigned char* pCur = pResponse;
-				unsigned char* pNext = pCur;
-				const unsigned char* pEnd = pResponse + bytesReceived;
-				do
-				{
-					if(BL_DLE == *pNext)
-					{
-						pNext++;
-					}
-					*pCur = *pNext;
-					pCur++;
-					pNext++;
-				}while(pNext < pEnd);
-				bytesReceived -= pNext - pCur;
-				return bytesReceived;
-			}
-		}
-	}while(0 < --numRetries);
+	BlReadFlashRequest readFlashRequest(flashAddress, numBytes);
+	return BlRead(readFlashRequest, pBuffer, numBytes);
+}
 
-	/* to many retries */
-	return -1;	
+size_t WiflyControl::BlReadInfo(BlInfo& blInfo)
+{
+	BlReadInfoRequest request;
+	return BlRead(request, reinterpret_cast<unsigned char*>(&blInfo), sizeof(BlInfo));
 }
 
 void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)

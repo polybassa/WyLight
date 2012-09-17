@@ -20,7 +20,6 @@
 #define _WIFLY_CMD_H_
 
 #include "platform.h"
-#include "bootloader.h"
 
 //*********************** ENUMERATIONS *********************************************
 #define STX 0xFF

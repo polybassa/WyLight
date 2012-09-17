@@ -77,8 +77,14 @@ void WiflyControlCli::Run(void)
 			mControl.AddColor(addr, color, hour, minute, second);
 		} else if ("bl_info" == nextCmd) {
 			BlInfo info;
-			mControl.BlReadInfo(info);
-			PrintBlInfo(info);
+			if(sizeof(info) == mControl.BlReadInfo(info))
+			{
+				PrintBlInfo(info);
+			}
+			else
+			{
+				std::cout << "Read bootloader info failed" << endl;
+			}
 		}
 	}
 }

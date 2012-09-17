@@ -50,32 +50,31 @@ TcpSocket::TcpSocket(const char* pAddr, short port)
 	}
 }
 
-int TcpSocket::Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms) const
+size_t TcpSocket::Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms) const
 {
+	/* prepare timeout structure */
 	timeval timeout;
+	timeout.tv_sec = timeoutTmms / 1000;
+	timeout.tv_usec = timeoutTmms % 1000;
+
+	/* prepare socket set for select() */
 	fd_set readSockets;
 	FD_ZERO(&readSockets);
 	FD_SET(mSock, &readSockets);
-
-	timeout.tv_sec = timeoutTmms / 1000;
-	timeout.tv_usec = timeoutTmms % 1000;
-	int numSocksReady = select(mSock + 1, &readSockets, NULL, NULL, &timeout);
-
-	switch(numSocksReady)
+	
+	/* wait for receive data and check if socket was correct */
+	if((1 == select(mSock + 1, &readSockets, NULL, NULL, &timeout))
+	&& (FD_ISSET(mSock, &readSockets)))
 	{
-		case 0: /* timeout */
-			return 0;
-		case 1: /* data available */
-			if(!FD_ISSET(mSock, &readSockets))
-			{
-				/* this should never happen */
-				return -1;
-			}
-			return recv(mSock, pBuffer, length, 0);
-		default:
-			/* error */
-			return -1;
+		int bytesRead = recv(mSock, pBuffer, length, 0);
+		if(bytesRead > 0)
+		{
+			return static_cast<size_t>(bytesRead);
+		}
 	}
+	
+	/* some error occur */
+	return 0;
 }
 
 int TcpSocket::Send(const unsigned char* frame, size_t length) const
@@ -88,10 +87,10 @@ UdpSocket::UdpSocket(const char* pAddr, short port)
 {
 }
 
-int UdpSocket::Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms) const
+size_t UdpSocket::Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms) const
 {
 	std::cout << __FILE__ << ":" << __LINE__ << " Not implemented" << std::endl;
-	return -1;
+	return 0;
 }
 
 int UdpSocket::Send(const unsigned char* frame, size_t length) const
