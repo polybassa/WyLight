@@ -18,8 +18,8 @@
 
 #ifndef X86
 #define NO_CRC
-//#define TEST
-#pragma optimize 0
+#define TEST
+#pragma optimize 1
 #endif
 #pragma sharedAllocation
 
@@ -32,6 +32,7 @@
 #include "timer.h"			//under construction
 #include "rtc.h"
 #include "ScriptCtrl.h"
+#include "trace.h"
 #ifdef __CC8E__
 #include "int18XXX.h"
 #endif /* #ifdef __CC8E__ */
@@ -83,6 +84,10 @@ interrupt LowPriorityInterrupt(void)
 	{
 		Timer4Interrupt();
 		g_UpdateLed = TRUE;
+		if(!gScriptBuf.waitValue == 0)
+		{
+			gScriptBuf.waitValue = gScriptBuf.waitValue - 1;
+		}
 	} 
 	if(TMR2IF)
 	{
@@ -141,6 +146,7 @@ void main(void)
 		Error_Throw();
 		Commandstorage_GetCommands();
 		ScriptCtrl_Run();
+		
 		if(g_UpdateLed > 0)
 		{
 			Ledstrip_UpdateFade();

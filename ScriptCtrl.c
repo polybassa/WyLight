@@ -99,8 +99,12 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 			Trace_String("\n");
 			return ScriptCtrl_Write(pCmd);
 		}
+		case WAIT:
+		{
+			return ScriptCtrl_Write(pCmd);
+		}
 		case START_BL:
-			UART_SendString("Leaving Application --> Starting Bootloader");
+			Trace_String("Leaving Application --> Starting Bootloader");
 			Eeprom_Write(0x3ff, 0xff);
 			softReset();
 			/* never reach this */
@@ -190,6 +194,11 @@ void ScriptCtrl_Run(void)
 	if(gScriptBuf.isClearing)
 	{
 		ScriptCtrl_Clear();
+	}
+	
+	if(gScriptBuf.waitValue > 0)
+	{
+		return;
 	}
 
 	/* cmd available? */
@@ -296,6 +305,12 @@ void ScriptCtrl_Run(void)
 		{
 			/* TODO we should disable interrupts while changing waitValue */
 			gScriptBuf.waitValue = nextCmd.data.wait.waitTmms;
+			/* move execute pointer to the next command */
+			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
+			if(!gScriptBuf.inLoop)
+			{
+				ScriptBufSetRead(gScriptBuf.execute);
+			}
 			break;
 		}
 	}	

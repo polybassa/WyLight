@@ -35,6 +35,8 @@ struct ScriptBuf {
 	bit isClearing;
 };
 
+extern struct ScriptBuf gScriptBuf;
+
 /**
  * Add new command to script
  **/
