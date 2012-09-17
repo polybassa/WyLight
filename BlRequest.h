@@ -27,16 +27,16 @@
 #define BL_STX 0x0f
 #define BL_ETX 0x04
 #define BL_DLE 0x05
+#define IsCtrlChar(X) (((X)==BL_STX) || ((X)==BL_ETX) || ((X)==BL_DLE))
 
 static const unsigned int BL_MAX_RETRIES = 5;
-static const size_t BL_MAX_RESPONSE_LENGTH = 256;
+static const size_t BL_MAX_MESSAGE_LENGTH = 256;
 static const unsigned long BL_RESPONSE_TIMEOUT_TMMS = 1000;
 static const unsigned char BL_SYNC[] = {BL_STX, BL_STX};
 
-class BlRequest {
-	public:
-		virtual const unsigned char* GetData() const = 0;
-		virtual size_t GetSize() const = 0;
+struct BlRequest {
+	virtual const unsigned char* GetData() const = 0;
+	virtual size_t GetSize() const = 0;
 };
 
 class BlProxy {
@@ -44,63 +44,9 @@ class BlProxy {
 		const ClientSocket* const mSock;
 
 	public:
-		BlProxy(const ClientSocket* const pSock) : mSock(pSock) {};
-
-		int Send(BlRequest& req, unsigned char* pResponse, size_t responseSize) const
-		{
-			return Send(req.GetData(), req.GetSize(), pResponse, responseSize);
-		}
-
-		int Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize) const
-		{
-			int numRetries = BL_MAX_RETRIES;
-			do
-			{
-				/* sync with bootloader */
-				mSock->Send(BL_SYNC, sizeof(BL_SYNC));
-				if(0 != mSock->Recv(pResponse, responseSize, BL_RESPONSE_TIMEOUT_TMMS))
-				{
-					/* synchronized -> send request */
-					if(static_cast<int>(requestSize) != mSock->Send(pRequest, requestSize))
-					{
-						/* send failed */
-						return -1;
-					}
-			
-					/* receive response */
-					int bytesReceived = mSock->Recv(pResponse, responseSize, BL_RESPONSE_TIMEOUT_TMMS);
-					if(bytesReceived > 1)
-					{
-						/* remove STX and DLE from message */
-						unsigned char* pCur = pResponse;
-						unsigned char* pNext = pCur;
-						const unsigned char* pEnd = pResponse + bytesReceived;
-
-						/* remove STX from the buffer */	
-						while((pNext < pEnd) && (BL_STX == *pNext))
-						{
-							pNext++;
-						}
-
-						do
-						{
-							if(BL_DLE == *pNext)
-							{
-								pNext++;
-							}
-							*pCur = *pNext;
-							pCur++;
-							pNext++;
-						}while(pNext < pEnd);
-						bytesReceived -= pNext - pCur;
-						return bytesReceived;
-					}
-		 		}
-			}while(0 < --numRetries);
-
-			/* to many retries */
-			return -1;
-		};
+		BlProxy(const ClientSocket* const pSock);
+		int Send(BlRequest& req, unsigned char* pResponse, size_t responseSize) const;
+		int Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize) const;
 };
 
 struct BlInfo  {

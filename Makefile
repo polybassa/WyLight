@@ -28,14 +28,18 @@ android_client:
 	ndk-build -C $(ANDROID_DIR)
 
 x86_client:
-	g++ ClientSocket.cpp WiflyControl.cpp WiflyControlCli.cpp -DX86 -DDEBUG -lpthread -o client.bin -Wall -pedantic
+	g++ BlRequest.cpp ClientSocket.cpp WiflyControl.cpp WiflyControlCli.cpp -DX86 -DDEBUG -lpthread -o client.bin -Wall -pedantic
 
-#generic rule to build and run unittests
+#generic rule to build and run c unittests
 %_ut.bin: %_ut.c %.c
 	gcc $< $(subst _ut.c,.c,$<) eeprom.c -DX86 -o $@ -Wall
 	./$@
 
-test: ScriptCtrl_ut.bin
+BlRequest_ut.bin: BlRequest_ut.cpp BlRequest.cpp
+	g++ BlRequest_ut.cpp BlRequest.cpp -DX86 -o $@ -Wall -pedantic
+	./$@
+
+test: ScriptCtrl_ut.bin BlRequest_ut.bin
 
 clean:
 	rm -rf *.asm *.bin *.cod *.fcs *.hex *.lst *.occ *.var .metadata/ ${ANDROID_BIN}

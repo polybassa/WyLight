@@ -93,7 +93,7 @@ void WiflyControl::AddColor(std::string& addr, std::string& rgba, unsigned char 
 size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize) const
 {
 	BlProxy proxy(mSock);
-	unsigned char buffer[BL_MAX_RESPONSE_LENGTH];
+	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	size_t bytesReceived = proxy.Send(req, buffer, sizeof(buffer));
 
 	if(responseSize == bytesReceived)

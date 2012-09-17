@@ -16,11 +16,10 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include <stdio.h>
 #include "trace.h"
+#include "unittest.h"
 #define NUM_TEST_LOOPS 255
-#define Assert(EXPRESSION) if(!(EXPRESSION)) {errors++; printf("Assert(" #EXPRESSION ") failed\n");}
-#define RunTest(FUNC) { int errors= FUNC(); printf(#FUNC"() run with %d errors\n", errors); numErrors+= errors; numTests++;}  
+ 
 int gSetColorWasCalled;
 int gSetFadeWasCalled;
 
@@ -374,10 +373,7 @@ int ut_ScriptCtrl_RtcCommands(void)
 
 int main(int argc, const char* argv[])
 {
-	int numErrors;
-	int numTests;
-	numErrors = 0;
-	numTests = 0;
+	UnitTestMainBegin();
 	RunTest(ut_ScriptCtrl_SimpleReadWrite);
 	RunTest(ut_ScriptCtrl_Clear);
 	RunTest(ut_ScriptCtrl_SimpleLoop);
@@ -388,7 +384,6 @@ int main(int argc, const char* argv[])
 	RunTest(ut_ScriptCtrl_Wait);
 	RunTest(ut_ScriptCtrl_AddColor);
 	RunTest(ut_ScriptCtrl_RtcCommands);
-	printf("run %d Tests with %d errors\n", numTests, numErrors);
-	return numErrors;
+	UnitTestMainEnd();
 }
 

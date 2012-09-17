@@ -16,4 +16,85 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
+#include "BlRequest.h"
+
+BlProxy::BlProxy(const ClientSocket* const pSock)
+	: mSock(pSock)
+{
+}
+
+int BlProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize) const
+{
+	return Send(req.GetData(), req.GetSize(), pResponse, responseSize);
+}
+
+int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize) const
+{
+	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
+	unsigned char recvBuffer[BL_MAX_MESSAGE_LENGTH];
+	size_t bufferSize = 0;
+	unsigned char* pCur = buffer;
+	const unsigned char* pNext = pRequest;
+	const unsigned char* pEnd = pNext + requestSize;
+	/* mask control characters in request */
+	while((bufferSize < (BL_MAX_MESSAGE_LENGTH - 1)) && (pNext <= pEnd))
+	{
+		if(IsCtrlChar(*pNext))
+		{
+			*pCur = BL_DLE;
+			pCur++; bufferSize++;
+		}
+		*pCur = *pNext;	
+		pCur++; bufferSize++;
+		pNext++;
+	}	
+
+	int numRetries = BL_MAX_RETRIES;
+	do
+	{
+		/* sync with bootloader */
+		mSock->Send(BL_SYNC, sizeof(BL_SYNC));
+		if(0 != mSock->Recv(pResponse, responseSize, BL_RESPONSE_TIMEOUT_TMMS))
+		{
+			/* synchronized -> send request */
+			if(static_cast<int>(requestSize) != mSock->Send(pRequest, requestSize))
+			{
+				/* send failed */
+				return -1;
+			}
+		
+			/* receive response */
+			int bytesReceived = mSock->Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS);
+			if(bytesReceived > 1)
+			{
+				/* remove STX and DLE from message */
+				pCur = pResponse;
+				pNext = recvBuffer;
+				pEnd = recvBuffer + bytesReceived;
+
+				/* remove STX from buffer */	
+				while((pNext < pEnd) && (BL_STX == *pNext))
+				{
+					pNext++;
+				}
+
+				/* remove BL_DLE from buffer */
+				do
+				{
+					if(BL_DLE == *pNext)
+					{
+						pNext++;
+					}
+					*pCur = *pNext;
+					pCur++;
+					pNext++;
+				}while(pNext < pEnd);
+				return pCur - pResponse;
+			}
+ 		}
+	}while(0 < --numRetries);
+
+	/* to many retries */
+	return -1;
+}
 
