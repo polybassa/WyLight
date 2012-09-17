@@ -41,8 +41,8 @@ void Commandstorage_GetCommands()
 		uns8 new_byte;
 		// *** get new byte
 		new_byte = RingBuf_Get();
-		Trace_String("BYTE:");
-		Trace_Number(new_byte,'b');
+		/* Trace_String("BYTE:"); */
+		/* Trace_Number(new_byte,'b'); */
 
 		// *** do I wait for databytes?
 		if(g_CmdBuf.frame_counter == 0)

@@ -200,7 +200,14 @@ void ScriptCtrl_Run(void)
 	{
 		return;
 	}
-
+	if(Ledstrip_NumOfFades() > 0)
+	{
+		return;
+	}
+	
+	/* Normally this line is not necessary. Ledstrip_UpdateRun() is doing the same */
+	gLedBuf.flags.run_aktiv = 0;
+	
 	/* cmd available? */
 	if(gScriptBuf.execute == gScriptBuf.write)
 	{
@@ -295,9 +302,15 @@ void ScriptCtrl_Run(void)
 		case SET_RUN: 
 		{
 			Timer_StartStopwatch(eSET_RUN);
-			g_CmdBuf.WaitValue = nextCmd.data.set_run.durationTmms;
+			gScriptBuf.waitValue = nextCmd.data.set_run.durationTmms;
 			Ledstrip_SetRun(&nextCmd.data.set_run);
 			Timer_StopStopwatch(eSET_RUN);
+			/* move execute pointer to the next command */
+			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
+			if(!gScriptBuf.inLoop)
+			{
+				ScriptBufSetRead(gScriptBuf.execute);
+			}
 			break;
 		}
 #endif /* #ifndef X86 */

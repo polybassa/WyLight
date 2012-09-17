@@ -78,7 +78,6 @@ interrupt LowPriorityInterrupt(void)
 	if(TMR1IF)
 	{
 		Timer1Interrupt();
-		Commandstorage_WaitInterrupt();
 	}
 	if(TMR4IF)
 	{

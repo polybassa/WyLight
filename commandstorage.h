@@ -33,7 +33,6 @@
 
 //*********************** STRUCT DECLARATION *********************************************
 struct CommandBuffer{
-	uns16 WaitValue;
     uns8 cmd_counter;
     uns8 frame_counter;
     uns8 cmd_buf[FRAMELENGTH];
@@ -80,12 +79,6 @@ void Commandstorage_ExecuteCmd(struct led_cmd* pCmd);
 *** Initialize commandstorage in eeprom
 **/
 void Commandstorage_Init();
-
-#define Commandstorage_WaitInterrupt(x) \
-		do { \
-			if(g_CmdBuf.WaitValue != 0) \
-				g_CmdBuf.WaitValue--; \
-		} while(0) 
 
 #endif /* #ifndef _COMMANDSTORAGE_H_ */
 

@@ -303,7 +303,7 @@ void Ledstrip_UpdateRun(void)
 		return;
 	}
 	/* terminate run when wait is stopped */
-	if(g_CmdBuf.WaitValue == 0)
+	if(gScriptBuf.waitValue == 0)
 	{
 		gLedBuf.flags.run_aktiv = FALSE;
 		return;
