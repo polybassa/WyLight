@@ -24,13 +24,15 @@
 #define WORD(HIGH, LOW) (unsigned short)(((((unsigned short)(HIGH))<< 8) | (((unsigned short)(LOW)) & 0x00ff)))
 #define DWORD(HIGH, LOW) (unsigned int)(((((unsigned int)(HIGH))<< 16) | (((unsigned int)(LOW)) & 0x0000ffff)))
 
+
 #define BL_STX 0x0f
 #define BL_ETX 0x04
 #define BL_DLE 0x05
+#define BL_CRTL_CHAR_NUM 3
 #define IsCtrlChar(X) (((X)==BL_STX) || ((X)==BL_ETX) || ((X)==BL_DLE))
 
 static const unsigned int BL_MAX_RETRIES = 5;
-static const size_t BL_MAX_MESSAGE_LENGTH = 256;
+static const size_t BL_MAX_MESSAGE_LENGTH = 512;
 static const unsigned long BL_RESPONSE_TIMEOUT_TMMS = 1000;
 static const unsigned char BL_SYNC[] = {BL_STX, BL_STX};
 
@@ -45,8 +47,10 @@ class BlProxy {
 
 	public:
 		BlProxy(const ClientSocket* const pSock);
+		size_t MaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength) const;
 		int Send(BlRequest& req, unsigned char* pResponse, size_t responseSize) const;
 		int Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize) const;
+		size_t UnmaskControlCharacters(unsigned char* const pInput, size_t inputLength) const;
 };
 
 struct BlInfo  {
@@ -67,7 +71,6 @@ struct BlInfo  {
 #endif
 	unsigned char crcLow;
 	unsigned char crcHigh;
-	unsigned char etx;
 };
 
 struct BlReadFlashRequest : public BlRequest {
@@ -82,7 +85,7 @@ struct BlReadFlashRequest : public BlRequest {
 		};
 
 		const unsigned char* GetData(void) const { return &one; };
-		size_t GetSize(void) const {return 10; /*TODO*/};
+		size_t GetSize(void) const {return sizeof(BlReadFlashRequest)-sizeof(BlRequest);};
 
 		const unsigned char one;
 		unsigned char addressLow;
@@ -97,12 +100,12 @@ struct BlReadFlashRequest : public BlRequest {
 };
 
 struct BlReadInfoRequest : public BlRequest {
-	static const unsigned char zero = 0;
-	static const unsigned char crcLow = 0;
-	static const unsigned char crcHigh = 0;
-	static const unsigned char etx = BL_ETX;
+	BlReadInfoRequest() : zero(0), crcLow(0), crcHigh(0) {};
+	const unsigned char zero;
+	const unsigned char crcLow;
+	const unsigned char crcHigh;
 
-	const unsigned char* GetData(void) const { return zero; };
-	size_t GetSize(void) const { return sizeof(BlReadInfoRequest); /*TODO*/};
+	const unsigned char* GetData(void) const { return &zero; };
+	size_t GetSize(void) const { return 3;};//sizeof(BlReadInfoRequest) - sizeof(BlRequest);};
 };
 #endif /* #ifndef _BL_REQUEST_H_ */

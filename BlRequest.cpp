@@ -17,13 +17,53 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "BlRequest.h"
-#include "trace.h"
 
-#include "assert.h"
+#include <stdio.h>
+#include <string.h>
 
 BlProxy::BlProxy(const ClientSocket* const pSock)
 	: mSock(pSock)
 {
+}
+
+size_t BlProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength) const
+{
+	const unsigned char* const pInputEnd = pInput + inputLength;
+	size_t bytesWritten = 0;
+
+	while(pInput < pInputEnd)
+	{
+		if(IsCtrlChar(*pInput))
+		{		
+			if(++bytesWritten > outputLength) return 0;
+			*pOutput = BL_DLE;
+			pOutput++;
+		}
+		if(++bytesWritten > outputLength) return 0;
+		*pOutput = *pInput;
+		pOutput++;
+		pInput++;
+	}
+	return bytesWritten;
+}
+
+size_t BlProxy::UnmaskControlCharacters(unsigned char* const pInput, size_t inputLength) const
+{
+	const unsigned char* const pInputEnd = pInput + inputLength;
+	const unsigned char* pNext = pInput;
+	unsigned char* pCur = pInput;
+
+	while(pNext < pInputEnd)
+	{
+		if(*pNext == BL_DLE)
+		{
+			pNext++;
+		}
+		*pCur = *pNext;
+		pCur++;
+		pNext++;
+	}
+	return pCur - pInput;
 }
 
 int BlProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize) const
@@ -37,23 +77,20 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 	unsigned char recvBuffer[BL_MAX_MESSAGE_LENGTH];
 	size_t bufferSize = 0;
 	unsigned char* pCur = buffer;
-	const unsigned char* pNext = pRequest;
-	const unsigned char* pEnd = pNext + requestSize;
-	Trace_String("Masking..");
+	unsigned char* pNext;
+	const unsigned char* pEnd;;
+
 	/* mask control characters in request */
-	while((bufferSize < (BL_MAX_MESSAGE_LENGTH - 1)) && (pNext <= pEnd))
+	bufferSize = MaskControlCharacters(pRequest, requestSize, buffer, sizeof(buffer));
+	if((0 == bufferSize) || (bufferSize == sizeof(buffer)))
 	{
-		if(IsCtrlChar(*pNext))
-		{
-			*pCur = BL_DLE;
-			pCur++; bufferSize++;
-		}
-		*pCur = *pNext;	
-		pCur++; bufferSize++;
-		pNext++;
-	}	
-	assert(0);
-	Trace_String(" done\n");
+		return 0;
+	}
+
+	/* add BL_ETX to the end of buffer */
+	buffer[bufferSize] = BL_ETX;
+	bufferSize++;
+
 	int numRetries = BL_MAX_RETRIES;
 	do
 	{
@@ -62,39 +99,35 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 		if(0 != mSock->Recv(pResponse, responseSize, BL_RESPONSE_TIMEOUT_TMMS))
 		{
 			/* synchronized -> send request */
-			if(static_cast<int>(requestSize) != mSock->Send(pRequest, requestSize))
+			if(static_cast<int>(bufferSize) != mSock->Send(buffer, bufferSize))
 			{
 				/* send failed */
-				return -1;
+				return 0;
 			}
 		
 			/* receive response */
 			int bytesReceived = mSock->Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS);
+
 			if(bytesReceived > 1)
 			{
-				/* remove STX and DLE from message */
+				/* remove STX from message */
 				pCur = pResponse;
 				pNext = recvBuffer;
 				pEnd = recvBuffer + bytesReceived;
-
-				/* remove STX from buffer */	
 				while((pNext < pEnd) && (BL_STX == *pNext))
 				{
-					pNext++;
+					pNext++; bytesReceived--;
 				}
 
 				/* remove BL_DLE from buffer */
-				do
+				bytesReceived = UnmaskControlCharacters(pNext, bytesReceived);
+
+				/* remove BL_ETX from buffer */
+				if((0 < bytesReceived) && (bytesReceived - 1 <= responseSize))
 				{
-					if(BL_DLE == *pNext)
-					{
-						pNext++;
-					}
-					*pCur = *pNext;
-					pCur++;
-					pNext++;
-				}while(pNext < pEnd);
-				return pCur - pResponse;
+					memcpy(pResponse, pNext, bytesReceived - 1);
+					return bytesReceived - 1;
+				}
 			}
  		}
 	}while(0 < --numRetries);
