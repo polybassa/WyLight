@@ -32,11 +32,11 @@ x86_client:
 
 #generic rule to build and run c unittests
 %_ut.bin: %_ut.c %.c
-	gcc $< $(subst _ut.c,.c,$<) eeprom.c -DX86 -o $@ -Wall
+	gcc $< $(subst _ut.c,.c,$<) eeprom.c -DX86 -DUNIT_TEST -o $@ -Wall
 	./$@
 
 BlRequest_ut.bin: BlRequest_ut.cpp BlRequest.cpp
-	g++ BlRequest_ut.cpp BlRequest.cpp -DX86 -o $@ -Wall -pedantic
+	g++ BlRequest_ut.cpp BlRequest.cpp -DX86 -DUNIT_TEST -DDEBUG -o $@ -Wall -pedantic
 	./$@
 
 test: ScriptCtrl_ut.bin BlRequest_ut.bin

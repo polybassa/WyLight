@@ -49,5 +49,15 @@ class UdpSocket : public ClientSocket
 		virtual size_t Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms = 0) const;
 		virtual int Send(const unsigned char* frame, size_t length) const;
 };
+
+#ifdef UNIT_TEST
+class TestSocket : public ClientSocket
+{
+	public:
+		TestSocket(const char* pAddr, short port);
+		virtual size_t Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms = 0) const;
+		virtual int Send(const unsigned char* frame, size_t length) const;
+};
+#endif /* #ifndef UNIT_TEST */
 #endif /* #ifndef _CLIENTSOCKET_H_ */
 

@@ -17,6 +17,9 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "BlRequest.h"
+#include "trace.h"
+
+#include "assert.h"
 
 BlProxy::BlProxy(const ClientSocket* const pSock)
 	: mSock(pSock)
@@ -36,6 +39,7 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 	unsigned char* pCur = buffer;
 	const unsigned char* pNext = pRequest;
 	const unsigned char* pEnd = pNext + requestSize;
+	Trace_String("Masking..");
 	/* mask control characters in request */
 	while((bufferSize < (BL_MAX_MESSAGE_LENGTH - 1)) && (pNext <= pEnd))
 	{
@@ -48,7 +52,8 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 		pCur++; bufferSize++;
 		pNext++;
 	}	
-
+	assert(0);
+	Trace_String(" done\n");
 	int numRetries = BL_MAX_RETRIES;
 	do
 	{

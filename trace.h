@@ -23,7 +23,7 @@
 	#define Trace_String(str) do { UART_SendString(str); } while (0)
 	#define Trace_Number(input, sign) do { UART_SendNumber(input, sign); } while (0)
 	#define Trace_Hex(hex) do { UART_Send(hex); } while(0)
-#elif UNIT_TEST /*TODO replace with DEBUG */
+#elif DEBUG
 	#include "stdio.h"
 	#define Trace_String(str) do { printf("%s", str); } while (0)
 	#define Trace_Number(input, sign) do { printf("%03d%c", input, sign); } while (0)

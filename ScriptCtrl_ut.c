@@ -49,7 +49,7 @@ unsigned char date_timer_add_event(struct cmd_add_color* pCmd)
 	return 0;
 }
 
-/**************** test functions ****************/
+/******************************* test functions *******************************/
 /* add simple command and read back */
 int ut_ScriptCtrl_SimpleReadWrite(void)
 {
