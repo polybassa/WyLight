@@ -28,17 +28,15 @@
 #include "timer.h"
 #include "wifly_cmd.h"
 
-#define CMD_POINTER_ADDRESS 0x3fd		// *** Address at EERPOM. Commandpointer indicates the nummer of commands
-#define LOOP_POINTER_ADDRESS 0x3fb // *** Address at EEPROM. CommandLoopPointer indicates the next command. Used in Loop-Mode
+#define CMDFRAMELENGTH NUM_OF_LED*3+5
 
 //*********************** STRUCT DECLARATION *********************************************
 struct CommandBuffer{
     uns8 cmd_counter;
     uns8 frame_counter;
-    uns8 cmd_buf[FRAMELENGTH];
+    uns8 cmd_buf[CMDFRAMELENGTH];
     uns8 CrcH;
     uns8 CrcL;
-	uns8 LoopMode:1;
 };
 extern struct CommandBuffer g_CmdBuf;
 

@@ -63,7 +63,7 @@ void Commandstorage_GetCommands()
 			else
 			{	
 				// *** check if I get the framelength byte
-				if((new_byte < (FRAMELENGTH - 2)) && (g_CmdBuf.cmd_counter == 1))
+				if((new_byte < (CMDFRAMELENGTH - 2)) && (g_CmdBuf.cmd_counter == 1))
 				{
 					g_CmdBuf.frame_counter = new_byte;
 					g_CmdBuf.cmd_buf[1] = new_byte;

@@ -93,6 +93,10 @@ struct cmd_set_run {
 	uns8 reserved[4];
 };
 
+struct cmd_set_color_direct {
+	uns8 ptr_led_array;
+};
+
 struct led_cmd {
 	uns8 cmd;
 	union {
@@ -103,6 +107,7 @@ struct led_cmd {
 		struct cmd_wait wait;
 		struct cmd_loop_end loopEnd;
 		struct rtc_time set_rtc;
+		struct cmd_set_color_direct set_color_direct;
 	}data;
 };
 
