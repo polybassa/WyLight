@@ -31,12 +31,12 @@ x86_client:
 	g++ BlRequest.cpp ClientSocket.cpp WiflyControl.cpp WiflyControlCli.cpp -DX86 -DDEBUG -lpthread -o client.bin -Wall -pedantic
 
 #generic rule to build and run c unittests
-%_ut.bin: %_ut.c %.c
+%_ut.bin: %_ut.c %.c %.h
 	gcc $< $(subst _ut.c,.c,$<) eeprom.c -DX86 -DUNIT_TEST -o $@ -Wall
 	./$@
 
-BlRequest_ut.bin: BlRequest_ut.cpp BlRequest.cpp
-	g++ BlRequest_ut.cpp BlRequest.cpp -DX86 -DUNIT_TEST -o $@ -Wall -pedantic
+BlRequest_ut.bin: BlRequest_ut.cpp BlRequest.cpp BlRequest.h
+	g++ BlRequest_ut.cpp BlRequest.cpp -DX86 -DUNIT_TEST -DDEBUG -o $@ -Wall -pedantic
 	./$@
 
 test: ScriptCtrl_ut.bin BlRequest_ut.bin

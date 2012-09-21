@@ -76,27 +76,6 @@ struct BlInfo  {
 	unsigned char crcHigh;
 };
 
-struct BlFlashReadRequest : public BlRequest {
-		BlFlashReadRequest(unsigned int address, unsigned short numBytes)
-		: BlRequest(8, 0x01), zero(0x00)
-		{
-			addressLow = static_cast<unsigned char>(address & 0x000000FF);
-			addressHigh = static_cast<unsigned char>((address & 0x0000FF00) >> 8);
-			addressU = static_cast<unsigned char>((address & 0x00FF0000) >> 16);
-			bytesLow = static_cast<unsigned char>(address & 0x00FF);
-			bytesHigh = static_cast<unsigned char>((address & 0xFF00) >> 8);
-		};
-
-		unsigned char addressLow;
-		unsigned char addressHigh;
-		unsigned char addressU;
-		const unsigned char zero;
-		unsigned char bytesLow;
-		unsigned char bytesHigh;
-		unsigned char crcLow;
-		unsigned char crcHigh;
-};
-
 struct BlFlashCrc16Request : public BlRequest {
 		BlFlashCrc16Request(unsigned int address, unsigned short numBlocks)
 		: BlRequest(8, 0x02), zero(0x00)
@@ -118,8 +97,46 @@ struct BlFlashCrc16Request : public BlRequest {
 		unsigned char crcHigh;
 };
 
-struct BlReadInfoRequest : public BlRequest {
-	BlReadInfoRequest() : BlRequest(2, 0), crcLow(0), crcHigh(0) {};
+struct BlFlashEraseRequest : public BlRequest {
+		BlFlashEraseRequest(unsigned int endAddress, unsigned char numFlashPages)
+		: BlRequest(6, 0x03), numPages(numFlashPages)
+		{
+			endAddressLow = static_cast<unsigned char>(endAddress & 0x000000FF);
+			endAddressHigh = static_cast<unsigned char>((endAddress & 0x0000FF00) >> 8);
+			endAddressU = static_cast<unsigned char>((endAddress & 0x00FF0000) >> 16);
+		};
+
+		unsigned char endAddressLow;
+		unsigned char endAddressHigh;
+		unsigned char endAddressU;
+		unsigned char numPages;
+		unsigned char crcLow;
+		unsigned char crcHigh;
+};
+
+struct BlFlashReadRequest : public BlRequest {
+		BlFlashReadRequest(unsigned int address, unsigned short numBytes)
+		: BlRequest(8, 0x01), zero(0x00)
+		{
+			addressLow = static_cast<unsigned char>(address & 0x000000FF);
+			addressHigh = static_cast<unsigned char>((address & 0x0000FF00) >> 8);
+			addressU = static_cast<unsigned char>((address & 0x00FF0000) >> 16);
+			numBytesLow = static_cast<unsigned char>(numBytes & 0x00FF);
+			numBytesHigh = static_cast<unsigned char>((numBytes & 0xFF00) >> 8);
+		};
+
+		unsigned char addressLow;
+		unsigned char addressHigh;
+		unsigned char addressU;
+		const unsigned char zero;
+		unsigned char numBytesLow;
+		unsigned char numBytesHigh;
+		unsigned char crcLow;
+		unsigned char crcHigh;
+};
+
+struct BlInfoRequest : public BlRequest {
+	BlInfoRequest() : BlRequest(2, 0), crcLow(0), crcHigh(0) {};
 	const unsigned char crcLow;
 	const unsigned char crcHigh;
 };

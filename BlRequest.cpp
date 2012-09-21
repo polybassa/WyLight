@@ -28,8 +28,12 @@ size_t BlProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputL
 {
 	const unsigned char* const pInputEnd = pInput + inputLength;
 	size_t bytesWritten = 0;
-	Trace_Number(inputLength, '#');
-	Trace_String(" characters get masked\n");
+
+	/* skip first character since its the command type byte */
+	if(++bytesWritten > outputLength) return 0;
+	*pOutput = *pInput;
+	pOutput++;
+	pInput++;	
 
 	while(pInput < pInputEnd)
 	{
@@ -54,7 +58,13 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 		return 0;
 	}
 	const unsigned char* const pInputEnd = pInput + inputLength;
-	size_t bytesWritten = 0;
+
+	/* skip first character since its the command type byte */
+	size_t bytesWritten = 1;
+	*pOutput = *pInput;
+	pOutput++;
+	pInput++;
+
 
 	while(pInput < pInputEnd)
 	{
@@ -88,6 +98,7 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 	bufferSize = MaskControlCharacters(pRequest, requestSize, buffer, sizeof(buffer));
 	if((0 == bufferSize) || (bufferSize == sizeof(buffer)))
 	{
+		Trace_String("BlProxy::Send: MaskControlCharacters() failed\n");
 		return 0;
 	}
 
@@ -105,7 +116,7 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 			/* synchronized -> send request */
 			if(static_cast<int>(bufferSize) != mSock->Send(buffer, bufferSize))
 			{
-				Trace_String("Send failed\n");
+				Trace_String("BlProxy::Send: socket->Send() failed\n");
 				return 0;
 			}
 		
@@ -135,7 +146,7 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
  		}
 	}while(0 < --numRetries);
 
-	Trace_String("Too many retries\n");
+	Trace_String("BlProxy::Send: Too many retries\n");
 	return -1;
 }
 

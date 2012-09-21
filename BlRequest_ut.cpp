@@ -32,6 +32,8 @@ unsigned char dummyBlFlashReadResponseMasked[] = {BL_STX, 0xDE, 0xAD, BL_DLE, BL
 unsigned char dummyBlFlashReadResponsePure[] = {0xDE, 0xAD, BL_DLE, 0xEF, 0xCA, 0xCA};
 unsigned char dummyBlFlashCrc16ResponseMasked[] = {BL_STX, 0xDE, 0xAD, BL_DLE, BL_DLE, 0xEF, BL_ETX};
 unsigned char dummyBlFlashCrc16ResponsePure[] = {0xDE, 0xAD, BL_DLE, 0xEF};
+unsigned char dummyBlFlashEraseResponseMasked[] = {BL_STX, 0x03, 0xCA, 0xCA, BL_ETX};
+unsigned char dummyBlFlashEraseResponsePure[] = {0x03, 0xCA, 0xCA};
 
 unsigned char g_TestSocketRecvBuffer[10240];
 size_t g_TestSocketRecvBufferSize;
@@ -64,11 +66,11 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 		return length;
 	}
 
-	/* prepare response for BlReadInfoRequest */
+	/* prepare response for BlInfoRequest */
 	if((frame[0] == 0x00) && (frame[1] == 0) && (frame[2] == 0) && (frame[3] == BL_ETX))
 	{
 		size_t t = 0;
-		Trace_String("BlReadInfoRequest\n");
+		Trace_String("BlInfoRequest\n");
 		g_TestSocketRecvBuffer[t++] = BL_STX;
 		g_TestSocketRecvBuffer[t++] = BL_STX;
 		g_TestSocketRecvBuffer[t++] = BL_STX;
@@ -91,15 +93,6 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 		return length;
 	}
 
-	/* prepare response for BlFlashReadRequest */
-	if((frame[0] == 0x01) && (frame[length-1] == BL_ETX))
-	{
-		Trace_String("BlFlashReadRequest\n");
-		memcpy(g_TestSocketRecvBuffer, dummyBlFlashReadResponseMasked, sizeof(dummyBlFlashReadResponseMasked));
-		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashReadResponseMasked);
-		return length;
-	}
-
 	/* prepare response for BlFlashCrc16Request */
 	if((frame[0] == 0x02) && (frame[length-1] == BL_ETX))
 	{
@@ -109,6 +102,25 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 		return length;
 	}
 
+	/* prepare response for BlFlashEraseRequest */
+	if((frame[0] == 0x03) && (frame[length-1] == BL_ETX))
+	{
+		Trace_String("BlFlashEraseRequest\n");
+		memcpy(g_TestSocketRecvBuffer, dummyBlFlashEraseResponseMasked, sizeof(dummyBlFlashEraseResponseMasked));
+		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashEraseResponseMasked);
+		return length;
+	}
+
+	/* prepare response for BlFlashReadRequest */
+	if((frame[0] == 0x01) && (frame[length-1] == BL_ETX))
+	{
+		Trace_String("BlFlashReadRequest\n");
+		memcpy(g_TestSocketRecvBuffer, dummyBlFlashReadResponseMasked, sizeof(dummyBlFlashReadResponseMasked));
+		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashReadResponseMasked);
+		return length;
+	}
+
+	Trace_String("Unkown BlRequest\n");
 	return 0;
 }
 
@@ -132,39 +144,35 @@ int ut_BlProxy_MaskControlCharacters(void)
 
 	/* mask control characters */
 	bytesWritten = proxy.MaskControlCharacters(sendBuffer, sizeof(sendBuffer), recvBuffer, sizeof(recvBuffer));
-	assert(256 + BL_CRTL_CHAR_NUM == bytesWritten);
+	assert(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM == bytesWritten);
 
 	/* and unmask everything again */
 	bytesWritten = proxy.UnmaskControlCharacters(recvBuffer, bytesWritten, recvBuffer, sizeof(recvBuffer));
-	assert(256 == bytesWritten);
+	assert(sizeof(sendBuffer) == bytesWritten);
+
+	for(size_t i = 0; i < 6; i++)
+	{
+		Trace_Hex(sendBuffer[i]);
+		Trace_String("-");
+		Trace_Hex(recvBuffer[i]);
+		Trace_String("\n");
+	}
+
 	assert(0 == memcmp(sendBuffer, recvBuffer, 256));
 	
 	return 0;
 }
 
-int ut_BlProxy_BlReadInfoRequest(void)
+int ut_BlProxy_BlInfoRequest(void)
 {
 	TestSocket dummySocket(0, 0);
 	BlProxy proxy(&dummySocket);
 	unsigned char response[512];
 
-	BlReadInfoRequest infoRequest;
+	BlInfoRequest infoRequest;
 	size_t bytesReceived = proxy.Send(infoRequest, response, sizeof(response));
 	assert(sizeof(BlInfo) == bytesReceived);
 	assert(0 == memcmp(&dummyBlInfo, response, bytesReceived));
-	return 0;
-}
-
-int ut_BlProxy_BlFlashReadRequest(void)
-{
-	TestSocket dummySocket(0, 0);
-	BlProxy proxy(&dummySocket);
-	unsigned char response[512];
-
-	BlFlashReadRequest request(0xDA7ADA7A, sizeof(dummyBlFlashReadResponsePure));
-	size_t bytesReceived = proxy.Send(request, response, sizeof(response));
-	assert(sizeof(dummyBlFlashReadResponsePure) == bytesReceived);
-	assert(0 == memcmp(dummyBlFlashReadResponsePure, response, bytesReceived));
 	return 0;
 }
 
@@ -181,13 +189,41 @@ int ut_BlProxy_BlFlashCrc16Request(void)
 	return 0;
 }
 
+int ut_BlProxy_BlFlashEraseRequest(void)
+{
+	TestSocket dummySocket(0, 0);
+	BlProxy proxy(&dummySocket);
+	unsigned char response[512];
+
+	BlFlashEraseRequest request(0xDA7ADA7A, 2);
+	size_t bytesReceived = proxy.Send(request, response, sizeof(response));
+	assert(sizeof(dummyBlFlashEraseResponsePure) == bytesReceived);
+	assert(0 == memcmp(dummyBlFlashEraseResponsePure, response, bytesReceived));
+	return 0;
+}
+
+int ut_BlProxy_BlFlashReadRequest(void)
+{
+	TestSocket dummySocket(0, 0);
+	BlProxy proxy(&dummySocket);
+	unsigned char response[512];
+
+	BlFlashReadRequest request(0xDA7ADA7A, sizeof(dummyBlFlashReadResponsePure));
+	size_t bytesReceived = proxy.Send(request, response, sizeof(response));
+	assert(sizeof(dummyBlFlashReadResponsePure) == bytesReceived);
+	assert(0 == memcmp(dummyBlFlashReadResponsePure, response, bytesReceived));
+	return 0;
+}
+
 int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
-	RunTest(ut_BlProxy_MaskControlCharacters);
-	RunTest(ut_BlProxy_BlReadInfoRequest);
-	RunTest(ut_BlProxy_BlFlashReadRequest);
+/*	RunTest(ut_BlProxy_MaskControlCharacters);
+	RunTest(ut_BlProxy_BlInfoRequest);
 	RunTest(ut_BlProxy_BlFlashCrc16Request);
+	RunTest(ut_BlProxy_BlFlashReadRequest);	
+
+*/	RunTest(ut_BlProxy_BlFlashEraseRequest);
 	UnitTestMainEnd();
 }
 
