@@ -36,11 +36,6 @@ static const size_t BL_MAX_MESSAGE_LENGTH = 512;
 static const unsigned long BL_RESPONSE_TIMEOUT_TMMS = 1000;
 static const unsigned char BL_SYNC[] = {BL_STX, BL_STX};
 
-struct BlRequest {
-	virtual const unsigned char* GetData() const = 0;
-	virtual size_t GetSize() const = 0;
-};
-
 class BlProxy {
 	private:
 		const ClientSocket* const mSock;
@@ -50,7 +45,7 @@ class BlProxy {
 		size_t MaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength) const;
 		int Send(BlRequest& req, unsigned char* pResponse, size_t responseSize) const;
 		int Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize) const;
-		size_t UnmaskControlCharacters(unsigned char* const pInput, size_t inputLength) const;
+		size_t UnmaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength) const;
 };
 
 struct BlInfo  {
@@ -73,9 +68,17 @@ struct BlInfo  {
 	unsigned char crcHigh;
 };
 
+struct BlRequest {
+	BlRequest(size_t size, unsigned char cmd) : mSize(1 + size), mCmd(cmd) {};
+	const size_t mSize;
+	const unsigned char mCmd;
+	const unsigned char* GetData() const { return &mCmd; };
+	size_t GetSize() const { return mSize; };
+};
+
 struct BlReadFlashRequest : public BlRequest {
-		BlReadFlashRequest(unsigned int address, unsigned short bytes)
-		: one(0x01), zero(0x00), etx(BL_ETX)
+		BlReadFlashRequest(unsigned int address, unsigned short numBytes)
+		: BlRequest(9, 0x01), zero(0x00), etx(BL_ETX)
 		{
 			addressLow = static_cast<unsigned char>(address & 0x000000FF);
 			addressHigh = static_cast<unsigned char>((address & 0x0000FF00) >> 8);
@@ -84,10 +87,6 @@ struct BlReadFlashRequest : public BlRequest {
 			bytesHigh = static_cast<unsigned char>((address & 0xFF00) >> 8);
 		};
 
-		const unsigned char* GetData(void) const { return &one; };
-		size_t GetSize(void) const {return sizeof(BlReadFlashRequest)-sizeof(BlRequest);};
-
-		const unsigned char one;
 		unsigned char addressLow;
 		unsigned char addressHigh;
 		unsigned char addressU;
@@ -100,12 +99,8 @@ struct BlReadFlashRequest : public BlRequest {
 };
 
 struct BlReadInfoRequest : public BlRequest {
-	BlReadInfoRequest() : zero(0), crcLow(0), crcHigh(0) {};
-	const unsigned char zero;
+	BlReadInfoRequest() : BlRequest(2, 0), crcLow(0), crcHigh(0) {};
 	const unsigned char crcLow;
 	const unsigned char crcHigh;
-
-	const unsigned char* GetData(void) const { return &zero; };
-	size_t GetSize(void) const { return 3;};//sizeof(BlReadInfoRequest) - sizeof(BlRequest);};
 };
 #endif /* #ifndef _BL_REQUEST_H_ */

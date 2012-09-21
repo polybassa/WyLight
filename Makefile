@@ -36,7 +36,7 @@ x86_client:
 	./$@
 
 BlRequest_ut.bin: BlRequest_ut.cpp BlRequest.cpp
-	g++ BlRequest_ut.cpp BlRequest.cpp -DX86 -DUNIT_TEST -DDEBUG -o $@ -Wall -pedantic
+	g++ BlRequest_ut.cpp BlRequest.cpp -DX86 -DUNIT_TEST -o $@ -Wall -pedantic
 	./$@
 
 test: ScriptCtrl_ut.bin BlRequest_ut.bin

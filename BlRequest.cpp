@@ -17,9 +17,7 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "BlRequest.h"
-
-#include <stdio.h>
-#include <string.h>
+#include "trace.h"
 
 BlProxy::BlProxy(const ClientSocket* const pSock)
 	: mSock(pSock)
@@ -30,6 +28,8 @@ size_t BlProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputL
 {
 	const unsigned char* const pInputEnd = pInput + inputLength;
 	size_t bytesWritten = 0;
+	Trace_Number(inputLength, '#');
+	Trace_String(" characters get masked\n");
 
 	while(pInput < pInputEnd)
 	{
@@ -47,23 +47,27 @@ size_t BlProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputL
 	return bytesWritten;
 }
 
-size_t BlProxy::UnmaskControlCharacters(unsigned char* const pInput, size_t inputLength) const
+size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength) const
 {
-	const unsigned char* const pInputEnd = pInput + inputLength;
-	const unsigned char* pNext = pInput;
-	unsigned char* pCur = pInput;
-
-	while(pNext < pInputEnd)
+	if(outputLength < inputLength)
 	{
-		if(*pNext == BL_DLE)
-		{
-			pNext++;
-		}
-		*pCur = *pNext;
-		pCur++;
-		pNext++;
+		return 0;
 	}
-	return pCur - pInput;
+	const unsigned char* const pInputEnd = pInput + inputLength;
+	size_t bytesWritten = 0;
+
+	while(pInput < pInputEnd)
+	{
+		if(*pInput == BL_DLE)
+		{
+			pInput++;
+		}
+		*pOutput = *pInput;
+		pOutput++;
+		bytesWritten++;
+		pInput++;
+	}
+	return bytesWritten;
 }
 
 int BlProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize) const
@@ -101,7 +105,7 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 			/* synchronized -> send request */
 			if(static_cast<int>(bufferSize) != mSock->Send(buffer, bufferSize))
 			{
-				/* send failed */
+				Trace_String("Send failed\n");
 				return 0;
 			}
 		
@@ -120,19 +124,18 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 				}
 
 				/* remove BL_DLE from buffer */
-				bytesReceived = UnmaskControlCharacters(pNext, bytesReceived);
+				bytesReceived = UnmaskControlCharacters(pNext, bytesReceived, pResponse, responseSize);
 
 				/* remove BL_ETX from buffer */
-				if((0 < bytesReceived) && (bytesReceived - 1 <= responseSize))
+				if(0 < bytesReceived)
 				{
-					memcpy(pResponse, pNext, bytesReceived - 1);
 					return bytesReceived - 1;
 				}
 			}
  		}
 	}while(0 < --numRetries);
 
-	/* to many retries */
+	Trace_String("Too many retries\n");
 	return -1;
 }
 
