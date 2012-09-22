@@ -195,7 +195,7 @@ void ScriptCtrl_Run(void)
 	{
 		ScriptCtrl_Clear();
 	}
-	
+#ifndef X86	
 	if(gScriptBuf.waitValue > 0)
 	{
 		return;
@@ -204,10 +204,10 @@ void ScriptCtrl_Run(void)
 	{
 		return;
 	}
-	
+
 	/* Normally this line is not necessary. Ledstrip_UpdateRun() is doing the same */
 	gLedBuf.flags.run_aktiv = 0;
-	
+#endif /* #ifndef X86 */	
 	/* cmd available? */
 	if(gScriptBuf.execute == gScriptBuf.write)
 	{

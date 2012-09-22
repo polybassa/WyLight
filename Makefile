@@ -38,4 +38,4 @@ x86_client:
 test: ScriptCtrl_ut.bin
 
 clean:
-	rm -rf *.asm *.bin *.cod *.fcs *.hex *.lst *.occ *.var .metadata/ ${ANDROID_BIN}
+	rm -rf *.asm *.bin *.cod *.fcs *.hex *.lst *.occ *.var .metadata/ ${ANDROID_BIN}					
