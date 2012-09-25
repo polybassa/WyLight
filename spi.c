@@ -23,8 +23,8 @@ void SPI_Init()
 {
 	ANSELC = 0;
 	TRISC.3 = 0;        // Make port RC3 an output(SPI Clock)
-    TRISC.4 = 1;        // Make port RC4 an input(SPI Data In)
-    TRISC.5 = 0;        // Make port RC5 an output(SPI Data Out)
+	TRISC.4 = 1;        // Make port RC4 an input(SPI Data In)
+	TRISC.5 = 0;        // Make port RC5 an output(SPI Data Out)
 	//SSP1STAT = 0b11000000;
 	SMP = 1;
 	CKP = 0;
@@ -36,14 +36,9 @@ void SPI_Init()
 
 char SPI_Send(char data)
 {
-	bit GIE_temp;
-	GIE_temp = GIE;
-	GIE = 0;
-	
 	SSP1BUF = data;	
 	while(SSP1IF == 0);
 	
-	GIE = GIE_temp;
 	return SSP1BUF;
 }
 

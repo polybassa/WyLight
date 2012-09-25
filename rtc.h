@@ -21,16 +21,6 @@
 
 /** Have a look at: http://linux.die.net/man/4/rtc   **/
 
-
-#ifdef X86
-#include <linux/rtc.h>
-#include <sys/ioctl.h>
-
-#define Rtc_Init(x)
-
-struct rtc_time g_RtcTime;
-
-#else
 #define RTC 0xA2		/* IIC-Address of RTC Clock IC */
 
 enum RTC_request{ RTC_SET_TIME, RTC_RD_TIME};
@@ -56,5 +46,4 @@ void Rtc_Init(void);
 
 void Rtc_Ctl(enum RTC_request req,struct rtc_time *pRtcTime);
 
-#endif /* X86*/
 #endif /*_RTC_H_*/

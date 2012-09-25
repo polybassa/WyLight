@@ -18,8 +18,8 @@
 
 #ifndef X86
 #define NO_CRC
-#define TEST
-#pragma optimize 1
+//#define TEST
+#pragma optimize 0
 #endif
 #pragma sharedAllocation
 

@@ -113,7 +113,7 @@ void Timer_Init()
 	*/
 	T4CON = 0b01111111;
 	TMR4IE = 1;
-	PR4 = 250;
+	PR4 = 255;
 	
 	/* 
 	** T2 Interrupt every 0.5 Millisecound if clock is 64MHz
