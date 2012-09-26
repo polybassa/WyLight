@@ -96,7 +96,8 @@ void Ledstrip_UpdateFade(void);
 
 void Ledstrip_UpdateRun(void);
 
-void Ledstrip_TerminateRun(void);
+void Ledstrip_UpdateLed(void);
+
 /**
  * returns a number of current running fades
  * returns 0 if no fade is running

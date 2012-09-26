@@ -78,6 +78,7 @@ interrupt LowPriorityInterrupt(void)
 	if(TMR1IF)
 	{
 		Timer1Interrupt();
+		Ledstrip_UpdateLed();
 	}
 	if(TMR4IF)
 	{

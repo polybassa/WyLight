@@ -217,10 +217,13 @@ void Ledstrip_DoFade(void)
 		}
 		INC_BIT_COUNTER(stepaddress, stepmask);
 	}
+	gLedBuf.flags.processing_of_data = FALSE;
+}
 
+void Ledstrip_UpdateLed(void)
+{
 	// write changes to ledstrip
 	SPI_SendLedBuffer(gLedBuf.led_array);
-	gLedBuf.flags.processing_of_data = FALSE;
 }
 
 void Ledstrip_SetFade(struct cmd_set_fade *pCmd)

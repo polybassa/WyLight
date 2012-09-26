@@ -61,7 +61,6 @@ struct cmd_set_color {
 	uns8 red;
 	uns8 green;
 	uns8 blue;
-	uns8 reserved[2];
 };
 
 #ifdef X86
@@ -72,6 +71,7 @@ struct cmd_set_fade {
 	uns8 red;
 	uns8 green;
 	uns8 blue;
+	uns8 parallelFade;
 	uns16 fadeTmms; //fadetime in ms
 };
 

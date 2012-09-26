@@ -103,17 +103,27 @@ void date_timer_init(void)
 void Timer_Init()
 {	
 #ifdef __CC8E__
+	/*
+	 * T1 Interrupt every 10 Millisecounds if clock is 64MHz
+	 * Calculation
+	 * 64000000 Hz / 4 / 8 / (0xffff - 0xb1df)
+	 * 64000000 Hz / 4 / 8 / 20000
+	 * T1 Interrupt occures with a frequency of 100 Hz.
+	 * This is used to update the ledstrip with the current colorvalue
+	 */
+	/*TODO test Led-appearance at 30 Hz refreshing frequency */
 	T1CON = 0b00110111;
 	TMR1IE = 1;
-	
+	TMR1L = 0xdf;
+	TMR1H = 0xb1;
 	/* 
-	** T4 Interrupt every 4 Millisecound if clock is 64MHz
+	** T4 Interrupt every Millisecound if clock is 64MHz
 	** Calculation
-	** 64000000 Hz / 4 / 16 / 250 / 16
+	** 64000000 Hz / 4 / 16 / 100 / 10
 	*/
-	T4CON = 0b01111111;
+	T4CON = 0b01001111;
 	TMR4IE = 1;
-	PR4 = 255;
+	PR4 = 100;
 	
 	/* 
 	** T2 Interrupt every 0.5 Millisecound if clock is 64MHz

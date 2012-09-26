@@ -177,6 +177,7 @@ void ScriptCtrl_Clear(void)
 	ScriptBufSetRead(EEPROM_SCRIPTBUF_BASE);
 	ScriptBufSetWrite(EEPROM_SCRIPTBUF_BASE);
 	gScriptBuf.execute = gScriptBuf.read;
+	gScriptBuf.waitValue = 0;
 	gScriptBuf.isClearing = FALSE;
 }
 
@@ -200,13 +201,6 @@ void ScriptCtrl_Run(void)
 	{
 		return;
 	}
-	if(Ledstrip_NumOfFades() > 0)
-	{
-		return;
-	}
-
-	/* Normally this line is not necessary. Ledstrip_UpdateRun() is doing the same */
-	gLedBuf.flags.run_aktiv = 0;
 #endif /* #ifndef X86 */	
 	/* cmd available? */
 	if(gScriptBuf.execute == gScriptBuf.write)
@@ -289,6 +283,10 @@ void ScriptCtrl_Run(void)
 		case SET_FADE:
 		{
 			Ledstrip_SetFade(&nextCmd.data.set_fade);
+			if(nextCmd.data.set_fade.parallelFade == 0)
+			{
+				gScriptBuf.waitValue = nextCmd.data.set_fade.fadeTmms;
+			}
 			/* move execute pointer to the next command */
 			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
 			if(!gScriptBuf.inLoop)
