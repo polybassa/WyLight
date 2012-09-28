@@ -21,7 +21,9 @@
 
 //*********************** ENUMERATIONS *********************************************
 #define TRUE  1
+#define true TRUE
 #define FALSE 0
+#define false FALSE
 
 //*********************** CONFIGURATION ********************************************
 #define WIFLY_SERVER_PORT 2000 // TCP/UDP Port of Wifly device

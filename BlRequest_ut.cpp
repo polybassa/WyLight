@@ -93,6 +93,15 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 		return length;
 	}
 
+	/* prepare response for BlEepromRequest */
+	if((frame[0] == 0x02) && (frame[length-1] == BL_ETX))
+	{
+		Trace_String("BlFlashCrc16Request\n");
+		memcpy(g_TestSocketRecvBuffer, dummyBlFlashCrc16ResponseMasked, sizeof(dummyBlFlashCrc16ResponseMasked));
+		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashCrc16ResponseMasked);
+		return length;
+	}
+
 	/* prepare response for BlFlashCrc16Request */
 	if((frame[0] == 0x02) && (frame[length-1] == BL_ETX))
 	{
@@ -111,12 +120,23 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 		return length;
 	}
 
-	/* prepare response for BlFlashReadRequest */
-	if((frame[0] == 0x01) && (frame[length-1] == BL_ETX))
+	/* prepare response for BlEepromReadRequest or BlFlashReadRequest */
+	if((frame[0] == 0x01 || frame[0] == 0x05) && (frame[length-1] == BL_ETX))
 	{
 		Trace_String("BlFlashReadRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashReadResponseMasked, sizeof(dummyBlFlashReadResponseMasked));
 		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashReadResponseMasked);
+		return length;
+	}
+
+	/* there is no response for run app, but we set some marker for verification */
+	if((frame[0] == 0x08) && (frame[length-1] == BL_ETX))
+	{
+		Trace_String("BlRunAppRequest\n");
+		g_TestSocketRecvBuffer[0] = 'x';
+		g_TestSocketRecvBuffer[1] = 'x';
+		g_TestSocketRecvBuffer[2] = 'x';
+		g_TestSocketRecvBufferSize = 0;
 		return length;
 	}
 
@@ -163,17 +183,24 @@ int ut_BlProxy_MaskControlCharacters(void)
 	return 0;
 }
 
-int ut_BlProxy_BlInfoRequest(void)
+int ut_BlProxy_BlEepromReadRequest(void)
 {
 	TestSocket dummySocket(0, 0);
 	BlProxy proxy(&dummySocket);
 	unsigned char response[512];
 
-	BlInfoRequest infoRequest;
-	size_t bytesReceived = proxy.Send(infoRequest, response, sizeof(response));
-	assert(sizeof(BlInfo) == bytesReceived);
-	assert(0 == memcmp(&dummyBlInfo, response, bytesReceived));
+	BlEepromReadRequest request(0xDA7A, sizeof(dummyBlFlashReadResponsePure));
+	size_t bytesReceived = proxy.Send(request, response, sizeof(response));
+	assert(sizeof(dummyBlFlashReadResponsePure) == bytesReceived);
+	assert(0 == memcmp(dummyBlFlashReadResponsePure, response, bytesReceived));
 	return 0;
+}
+
+int ut_BlProxy_BlEepromWriteRequest(void)
+{
+	Trace_String(__FUNCTION__);
+	Trace_String(" not implemented\n");
+	return 1;
 }
 
 int ut_BlProxy_BlFlashCrc16Request(void)
@@ -215,15 +242,60 @@ int ut_BlProxy_BlFlashReadRequest(void)
 	return 0;
 }
 
+int ut_BlProxy_BlFlashWriteRequest(void)
+{
+	Trace_String(__FUNCTION__);
+	Trace_String(" not implemented\n");
+	return 1;
+}
+
+int ut_BlProxy_BlFuseWriteRequest(void)
+{
+	Trace_String(__FUNCTION__);
+	Trace_String(" not implemented\n");
+	return 1;
+}
+
+int ut_BlProxy_BlInfoRequest(void)
+{
+	TestSocket dummySocket(0, 0);
+	BlProxy proxy(&dummySocket);
+	unsigned char response[512];
+
+	BlInfoRequest infoRequest;
+	size_t bytesReceived = proxy.Send(infoRequest, response, sizeof(response));
+	assert(sizeof(BlInfo) == bytesReceived);
+	assert(0 == memcmp(&dummyBlInfo, response, bytesReceived));
+	return 0;
+}
+
+int ut_BlProxy_BlRunAppRequest(void)
+{
+	TestSocket dummySocket(0, 0);
+	BlProxy proxy(&dummySocket);
+
+	BlRunAppRequest request;
+	size_t bytesReceived = proxy.Send(request, 0, 0);
+	assert(0 == bytesReceived);
+	assert('x' == g_TestSocketRecvBuffer[0]);
+	assert('x' == g_TestSocketRecvBuffer[1]);
+	assert('x' == g_TestSocketRecvBuffer[2]);
+	return 0;
+}
+
 int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
-/*	RunTest(ut_BlProxy_MaskControlCharacters);
-	RunTest(ut_BlProxy_BlInfoRequest);
-	RunTest(ut_BlProxy_BlFlashCrc16Request);
-	RunTest(ut_BlProxy_BlFlashReadRequest);	
-
-*/	RunTest(ut_BlProxy_BlFlashEraseRequest);
+	RunTest(true, ut_BlProxy_MaskControlCharacters);
+	RunTest(true, ut_BlProxy_BlEepromReadRequest);
+	RunTest(false, ut_BlProxy_BlEepromWriteRequest);
+	RunTest(true, ut_BlProxy_BlFlashCrc16Request);
+	RunTest(true, ut_BlProxy_BlFlashEraseRequest);
+	RunTest(true, ut_BlProxy_BlFlashReadRequest);
+	RunTest(false, ut_BlProxy_BlFlashWriteRequest);
+	RunTest(false, ut_BlProxy_BlFuseWriteRequest);
+	RunTest(true, ut_BlProxy_BlInfoRequest);
+	RunTest(true, ut_BlProxy_BlRunAppRequest);
 	UnitTestMainEnd();
 }
 

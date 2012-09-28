@@ -111,7 +111,7 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 	{
 		/* sync with bootloader */
 		mSock->Send(BL_SYNC, sizeof(BL_SYNC));
-		if(0 != mSock->Recv(pResponse, responseSize, BL_RESPONSE_TIMEOUT_TMMS))
+		if(0 != mSock->Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS))
 		{
 			/* synchronized -> send request */
 			if(static_cast<int>(bufferSize) != mSock->Send(buffer, bufferSize))
@@ -119,7 +119,13 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 				Trace_String("BlProxy::Send: socket->Send() failed\n");
 				return 0;
 			}
-		
+
+			/* wait for a response? */
+			if((0 == pResponse) || (0 == responseSize))
+			{
+				return 0;
+			}
+
 			/* receive response */
 			int bytesReceived = mSock->Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS);
 

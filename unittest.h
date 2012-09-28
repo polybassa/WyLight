@@ -25,15 +25,19 @@
 #define Assert(EXPRESSION) if(!(EXPRESSION)) {errors++; printf("Assert(" #EXPRESSION ") failed\n");}
 #endif
 
-#define RunTest(FUNC) { \
-	int _errors= FUNC(); \
-	printf(#FUNC"() run with %d errors\n", _errors); \
-	numErrors+= _errors; numTests++; \
+#define RunTest(RUN, FUNC) { \
+	if(RUN) { \
+		int _errors= FUNC(); \
+		printf(#FUNC"() run with %d errors\n", _errors); \
+		numErrors+= _errors; numTests++; \
+	} else { \
+		numSkipped++; \
+	} \
 }
 
-#define UnitTestMainBegin(X) int numErrors = 0; int numTests = 0;
+#define UnitTestMainBegin(X) int numErrors = 0; int numSkipped = 0; int numTests = 0;
 #define UnitTestMainEnd(X) { \
-	printf("%s run %d Tests with %d errors\n", __FILE__, numTests, numErrors); \
+	printf("%s run %d Tests (%d skipped | %d errors)\n", __FILE__, numTests, numSkipped, numErrors); \
 	return numErrors; \
 }
 

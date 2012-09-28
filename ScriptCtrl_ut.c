@@ -374,16 +374,16 @@ int ut_ScriptCtrl_RtcCommands(void)
 int main(int argc, const char* argv[])
 {
 	UnitTestMainBegin();
-	RunTest(ut_ScriptCtrl_SimpleReadWrite);
-	RunTest(ut_ScriptCtrl_Clear);
-	RunTest(ut_ScriptCtrl_SimpleLoop);
-	RunTest(ut_ScriptCtrl_InnerLoop);
-	RunTest(ut_ScriptCtrl_InfiniteLoop);
-	RunTest(ut_ScriptCtrl_FullBuffer);
-	RunTest(ut_ScriptCtrl_StartBootloader);
-	RunTest(ut_ScriptCtrl_Wait);
-	RunTest(ut_ScriptCtrl_AddColor);
-	RunTest(ut_ScriptCtrl_RtcCommands);
+	RunTest(true, ut_ScriptCtrl_SimpleReadWrite);
+	RunTest(true, ut_ScriptCtrl_Clear);
+	RunTest(true, ut_ScriptCtrl_SimpleLoop);
+	RunTest(true, ut_ScriptCtrl_InnerLoop);
+	RunTest(true, ut_ScriptCtrl_InfiniteLoop);
+	RunTest(true, ut_ScriptCtrl_FullBuffer);
+	RunTest(true, ut_ScriptCtrl_StartBootloader);
+	RunTest(true, ut_ScriptCtrl_Wait);
+	RunTest(false, ut_ScriptCtrl_AddColor);
+	RunTest(false, ut_ScriptCtrl_RtcCommands);
 	UnitTestMainEnd();
 }
 

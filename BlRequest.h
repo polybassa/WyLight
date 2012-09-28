@@ -24,6 +24,7 @@
 #define WORD(HIGH, LOW) (unsigned short)(((((unsigned short)(HIGH))<< 8) | (((unsigned short)(LOW)) & 0x00ff)))
 #define DWORD(HIGH, LOW) (unsigned int)(((((unsigned int)(HIGH))<< 16) | (((unsigned int)(LOW)) & 0x0000ffff)))
 
+#define FLASH_WRITE_BLOCKSIZE 64
 #define FLASH_ERASE_BLOCKSIZE 64
 #define BL_STX 0x0f
 #define BL_ETX 0x04
@@ -76,6 +77,23 @@ struct BlInfo  {
 	unsigned char crcHigh;
 };
 
+struct BlEepromReadRequest : public BlRequest {
+		BlEepromReadRequest(unsigned short address, unsigned short numBytes)
+		: BlRequest(8, 0x05), zero(0)
+		{
+			addressLow = static_cast<unsigned char>(address & 0x00FF);
+			addressHigh = static_cast<unsigned char>((address & 0xFF00) >> 8);
+			numBytesLow = static_cast<unsigned char>(numBytes & 0x00FF);
+			numBytesHigh = static_cast<unsigned char>((numBytes & 0xFF00) >> 8);
+		};
+
+		unsigned char addressLow;
+		unsigned char addressHigh;
+		const unsigned short zero;
+		unsigned char numBytesLow;
+		unsigned char numBytesHigh;
+};
+
 struct BlFlashCrc16Request : public BlRequest {
 		BlFlashCrc16Request(unsigned int address, unsigned short numBlocks)
 		: BlRequest(8, 0x02), zero(0x00)
@@ -99,7 +117,7 @@ struct BlFlashCrc16Request : public BlRequest {
 
 struct BlFlashEraseRequest : public BlRequest {
 		BlFlashEraseRequest(unsigned int endAddress, unsigned char numFlashPages)
-		: BlRequest(6, 0x03), numPages(numFlashPages)
+		: BlRequest(6, 0x03), zero(0x00), numPages(numFlashPages)
 		{
 			endAddressLow = static_cast<unsigned char>(endAddress & 0x000000FF);
 			endAddressHigh = static_cast<unsigned char>((endAddress & 0x0000FF00) >> 8);
@@ -109,6 +127,7 @@ struct BlFlashEraseRequest : public BlRequest {
 		unsigned char endAddressLow;
 		unsigned char endAddressHigh;
 		unsigned char endAddressU;
+		const unsigned char zero;
 		unsigned char numPages;
 		unsigned char crcLow;
 		unsigned char crcHigh;
@@ -136,7 +155,13 @@ struct BlFlashReadRequest : public BlRequest {
 };
 
 struct BlInfoRequest : public BlRequest {
-	BlInfoRequest() : BlRequest(2, 0), crcLow(0), crcHigh(0) {};
+	BlInfoRequest() : BlRequest(2, 0x00), crcLow(0), crcHigh(0) {};
+	const unsigned char crcLow;
+	const unsigned char crcHigh;
+};
+
+struct BlRunAppRequest : public BlRequest {
+	BlRunAppRequest() : BlRequest(2, 0x08), crcLow(0), crcHigh(0) {};
 	const unsigned char crcLow;
 	const unsigned char crcHigh;
 };
