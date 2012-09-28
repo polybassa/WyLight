@@ -63,7 +63,7 @@
 uns8 ScriptCtrl_Write(struct led_cmd* pCmd);
 
 /* private globals */
-struct ScriptBuf gScriptBuf;
+bank5 struct ScriptBuf gScriptBuf;
 struct led_cmd nextCmd;
 
 uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
@@ -198,6 +198,10 @@ void ScriptCtrl_Run(void)
 	}
 #ifndef X86	
 	if(gScriptBuf.waitValue > 0)
+	{
+		return;
+	}
+	if(gLedBuf.flags.processing_of_data == TRUE)
 	{
 		return;
 	}

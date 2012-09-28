@@ -38,7 +38,7 @@ struct CommandBuffer{
     uns8 CrcH;
     uns8 CrcL;
 };
-extern struct CommandBuffer g_CmdBuf;
+extern bank7 struct CommandBuffer g_CmdBuf;
 
 //*********************** METHODS AND MACROS *********************************************
 #define CmdWidth sizeof(struct led_cmd)	// *** Number of Bytes for one command

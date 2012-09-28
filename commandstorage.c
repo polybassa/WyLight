@@ -23,7 +23,7 @@
 #include "rtc.h"
 #include "trace.h"
 
-struct CommandBuffer g_CmdBuf;
+bank7 struct CommandBuffer g_CmdBuf;
 
 void Commandstorage_GetCommands()
 {	

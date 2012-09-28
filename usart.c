@@ -72,6 +72,36 @@ void UART_SendArray(uns8 *array, uns8 length)
 	}
 }
 
+void UART_SendHex_8(uns8 input)
+{
+	uns8 temp4 = input & 0xf0;
+	temp4 = temp4 >> 4;
+	if(temp4 > 9)
+	{
+		temp4 -= 10;
+		UART_Send(temp4 + 'A');
+	}
+	else
+	{
+		UART_Send(temp4 + '0');
+	}
+	temp4 = input & 0x0f;
+	if(temp4 > 9)
+	{
+		temp4 -= 10;
+		UART_Send(temp4 + 'A');
+	}
+	else
+	{
+		UART_Send(temp4 + '0');
+	}
+}
+
+void UART_SendHex_16(uns16 input)
+{
+	UART_SendHex_8(input.high8);
+	UART_SendHex_8(input.low8);
+}
 //*******  Sende-Zahl-als-String-Funktion  *************************************************
 void UART_SendNumber(uns8 input, uns8 sign)
 {

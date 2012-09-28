@@ -27,6 +27,8 @@ enum METHODE{
 	eSET_FADE,
 	eSET_COLOR,
 	eSET_RUN,
+	eUPDATE_FADE,
+	eUPDATE_RUN,
 	enumSIZE //!!! MUST be the last element of the enum
 } enumMethode;
 
@@ -67,13 +69,17 @@ void Timer_PrintCycletime(void);
 #ifdef __CC8E__
 #define Timer1Interrupt(x) TMR1IF = 0;	TMR1L = 0xdf; TMR1H = 0xb1;
 #define Timer2Interrupt(x) TMR2IF = 0;
+#define Timer3Interrupt(x) TMR3IF = 0;
 #define Timer4Interrupt(x) TMR4IF = 0;
+#define Timer5Interrupt(x) TMR5IF = 0;
 #define Timer4InterruptLock(x) TMR4IE = 0;
 #define Timer4InterruptUnlock(x) TMR4IE = 1;
 #else
 #define Timer1Interrupt(x)
 #define Timer2Interrupt(x)
+#define Timer3Interrupt(x)
 #define Timer4Interrupt(x)
+#define Timer5Interrupt(x)
 #define Timer4InterruptLock(x)
 #define Timer4InterruptUnlock(x)
 #endif

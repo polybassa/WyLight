@@ -84,14 +84,12 @@ struct cmd_loop_end {
 
 struct cmd_wait {
 	uns16 waitTmms;
-	uns8 reserved[7];
 };
 
 struct cmd_set_run {
 	uns8 direction;
 	uns16 durationTmms;
 	uns16 fadeTmms;
-	uns8 reserved[4];
 };
 
 struct cmd_set_color_direct {

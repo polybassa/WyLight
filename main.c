@@ -18,7 +18,7 @@
 
 #ifndef X86
 #define NO_CRC
-//#define TEST
+#define TEST
 #pragma optimize 0
 #endif
 #pragma sharedAllocation
@@ -45,6 +45,7 @@ jmp_buf g_ResetEnvironment;
 
 //*********************** GLOBAL VARIABLES *******************************************
 uns8 g_UpdateLed;
+uns8 g_UpdateLedStrip;
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void InitAll();
 void HighPriorityInterruptFunction(void);
@@ -77,22 +78,18 @@ interrupt LowPriorityInterrupt(void)
 
 	if(TMR1IF)
 	{
+		g_UpdateLedStrip = TRUE;
 		Timer1Interrupt();
-		Ledstrip_UpdateLed();
 	}
 	if(TMR4IF)
 	{
-		Timer4Interrupt();
-		g_UpdateLed = TRUE;
+		g_UpdateLed += 1;
 		if(!gScriptBuf.waitValue == 0)
 		{
 			gScriptBuf.waitValue = gScriptBuf.waitValue - 1;
 		}
+		Timer4Interrupt();
 	} 
-	if(TMR2IF)
-	{
-		Timer2Interrupt();
-	}
 	
 	FSR0 = sv_FSR0;
 	FSR1 = sv_FSR1;
@@ -149,14 +146,26 @@ void main(void)
 		
 		if(g_UpdateLed > 0)
 		{
+			Timer_StartStopwatch(eUPDATE_FADE);
 			Ledstrip_UpdateFade();
+			Timer_StopStopwatch(eUPDATE_FADE);
+			
+			Timer_StartStopwatch(eUPDATE_RUN);
 			Ledstrip_UpdateRun();
+			Timer_StopStopwatch(eUPDATE_RUN);
+			
 			Timer_StartStopwatch(eDO_FADE);
 			Ledstrip_DoFade();
 			Timer_StopStopwatch(eDO_FADE);
+			
 			Timer4InterruptLock();
-			g_UpdateLed--;
+			g_UpdateLed = g_UpdateLed - 1;
 			Timer4InterruptUnlock();
+		}
+		if(g_UpdateLedStrip > 0)
+		{
+			Ledstrip_UpdateLed();
+			g_UpdateLedStrip = 0;
 		}
 		Timer_StopStopwatch(eMAIN);
 	}

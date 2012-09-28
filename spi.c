@@ -56,11 +56,10 @@ void SPI_SendArray(char *array, char length)
 	} 
 }
 
-void SPI_SendLedBuffer(uns8 *array)//!!! CHECK if GIE=0 during the sendroutine improves the result
+void SPI_SendLedBuffer(uns8 *array)
 {
 	//array must be the address of the first byte
 	char* end;
-	
 	//calculate where the end is
 	end = array + (NUM_OF_LED * 3);
 	//send all

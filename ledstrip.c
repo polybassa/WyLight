@@ -23,7 +23,7 @@
 #include "MATH16.H"
 #endif /* #ifdef __CC8E__ */
 
-bank1 struct LedBuffer gLedBuf;
+bank10 struct LedBuffer gLedBuf;
 
 /**
  * Since we often work with a rotating bitmask which is greater
@@ -187,7 +187,7 @@ void Ledstrip_SetColorDirect(uns8 *pValues)
 
 void Ledstrip_DoFade(void)
 {
-	if(gLedBuf.flags.processing_of_data)
+	if(gLedBuf.flags.processing_of_data == TRUE)
 	{
 		return;
 	}
@@ -222,6 +222,10 @@ void Ledstrip_DoFade(void)
 
 void Ledstrip_UpdateLed(void)
 {
+	if(gLedBuf.flags.processing_of_data == TRUE)
+	{
+		return;
+	}
 	// write changes to ledstrip
 	SPI_SendLedBuffer(gLedBuf.led_array);
 }
@@ -384,6 +388,6 @@ void Ledstrip_UpdateRun(void)
 		k++;
 		CALC_COLOR(red);
 	}
-	gLedBuf.flags.processing_of_data = 0;
+	gLedBuf.flags.processing_of_data = FALSE;
 }
 
