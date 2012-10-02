@@ -85,9 +85,9 @@ interrupt LowPriorityInterrupt(void)
 	if(TMR4IF)
 	{
 		g_UpdateLed++;
-		if(!gScriptBuf.waitValue == 0)
+		if(gScriptBuf.waitValue > 0 && g_UpdateLed > 2)
 		{
-			gScriptBuf.waitValue = gScriptBuf.waitValue - 1;
+		      gScriptBuf.waitValue = gScriptBuf.waitValue - 1;
 		}
 		Timer4Interrupt();
 	} 
@@ -158,7 +158,7 @@ void main(void)
 		Timer_StartStopwatch(eSCRIPTCTRL_RUN);
 		
 		if(g_UpdateLed > 2)
-		{
+		{		  
 			Timer_StartStopwatch(eUPDATE_RUN);
 			Ledstrip_UpdateRun();
 			Timer_StopStopwatch(eUPDATE_RUN);
@@ -174,6 +174,7 @@ void main(void)
 			Timer4InterruptLock();
 			g_UpdateLed = 0;
 			Timer4InterruptUnlock();
+			
 		}
 		if(g_UpdateLedStrip > 0)
 		{
@@ -214,6 +215,7 @@ void InitAll()
 	gScriptBuf.waitValue = 500;
 	while(!gScriptBuf.waitValue == 0)
 	{
+	      Platform_CheckInputs();
 	}
 	// *** send ready after init
 	UART_Send('R');
