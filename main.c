@@ -18,7 +18,7 @@
 
 #ifndef X86
 #define NO_CRC
-#define TEST
+//#define TEST
 #pragma optimize 0
 #endif
 #pragma sharedAllocation
@@ -78,12 +78,13 @@ interrupt LowPriorityInterrupt(void)
 
 	if(TMR1IF)
 	{
-		g_UpdateLedStrip = TRUE;
+		g_UpdateLedStrip++;
 		Timer1Interrupt();
+		Timer1Disable();
 	}
 	if(TMR4IF)
 	{
-		g_UpdateLed += 1;
+		g_UpdateLed++;
 		if(!gScriptBuf.waitValue == 0)
 		{
 			gScriptBuf.waitValue = gScriptBuf.waitValue - 1;
@@ -139,33 +140,48 @@ void main(void)
 		// give opengl thread a chance to run
 		usleep(10);
 #endif /* #ifdef X86 */
-		Platform_CheckInputs();
-		Error_Throw();
-		Commandstorage_GetCommands();
-		ScriptCtrl_Run();
 		
-		if(g_UpdateLed > 0)
+		Timer_StartStopwatch(ePLTFRM_CHK);
+		Platform_CheckInputs();
+		Timer_StopStopwatch(ePLTFRM_CHK);
+		
+		Timer_StartStopwatch(eERROR_THROW);
+		Error_Throw();
+		Timer_StopStopwatch(eERROR_THROW);
+		
+		Timer_StartStopwatch(eCMD_GETCMD);
+		Commandstorage_GetCommands();
+		Timer_StopStopwatch(eCMD_GETCMD);
+		
+		Timer_StartStopwatch(eSCRIPTCTRL_RUN);
+		ScriptCtrl_Run();
+		Timer_StartStopwatch(eSCRIPTCTRL_RUN);
+		
+		if(g_UpdateLed > 2)
 		{
-			Timer_StartStopwatch(eUPDATE_FADE);
-			Ledstrip_UpdateFade();
-			Timer_StopStopwatch(eUPDATE_FADE);
-			
 			Timer_StartStopwatch(eUPDATE_RUN);
 			Ledstrip_UpdateRun();
 			Timer_StopStopwatch(eUPDATE_RUN);
+		  
+			Timer_StartStopwatch(eUPDATE_FADE);
+			Ledstrip_UpdateFade();
+			Timer_StopStopwatch(eUPDATE_FADE);
 			
 			Timer_StartStopwatch(eDO_FADE);
 			Ledstrip_DoFade();
 			Timer_StopStopwatch(eDO_FADE);
 			
 			Timer4InterruptLock();
-			g_UpdateLed = g_UpdateLed - 1;
+			g_UpdateLed = 0;
 			Timer4InterruptUnlock();
 		}
 		if(g_UpdateLedStrip > 0)
 		{
+			Timer_StartStopwatch(eUPDATE_LED);
 			Ledstrip_UpdateLed();
+			Timer_StopStopwatch(eUPDATE_LED);
 			g_UpdateLedStrip = 0;
+			Timer1Enable();
 		}
 		Timer_StopStopwatch(eMAIN);
 	}
@@ -190,13 +206,19 @@ void InitAll()
 	init_x86();
 #endif /* #ifdef X86 */
 	
+	Platform_AllowInterrupts();
+	Platform_DisableBootloaderAutostart();
+	
+	/* Startup Wait-Time 2s
+	 * to protect Wifly-Modul from errors*/
+	gScriptBuf.waitValue = 500;
+	while(!gScriptBuf.waitValue == 0)
+	{
+	}
 	// *** send ready after init
 	UART_Send('R');
 	UART_Send('D');
 	UART_Send('Y');
-	
-	Platform_AllowInterrupts();
-	Platform_DisableBootloaderAutostart();
 }
 
 #ifdef __CC8E__

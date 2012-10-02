@@ -22,13 +22,19 @@
 #include "wifly_cmd.h"
 
 enum METHODE{
-	eMAIN,
-	eDO_FADE,
-	eSET_FADE,
-	eSET_COLOR,
-	eSET_RUN,
-	eUPDATE_FADE,
-	eUPDATE_RUN,
+	eMAIN,			//00
+	eDO_FADE,		//01
+	eSET_FADE,		//02
+	eSET_COLOR,		//03
+	eSET_RUN,		//04
+	eUPDATE_FADE,		//05
+	eUPDATE_RUN,		//06
+	eUPDATE_LED,		//07
+	eCMD_GETCMD,		//08
+	eSCRIPTCTRL_RUN,	//09
+	ePLTFRM_CHK,		//10
+	eERROR_THROW,		//11
+	eTIMER_WAIT,		//12
 	enumSIZE //!!! MUST be the last element of the enum
 } enumMethode;
 
@@ -72,6 +78,8 @@ void Timer_PrintCycletime(void);
 #define Timer3Interrupt(x) TMR3IF = 0;
 #define Timer4Interrupt(x) TMR4IF = 0;
 #define Timer5Interrupt(x) TMR5IF = 0;
+#define Timer1Enable(x) TMR1ON = 1;
+#define Timer1Disable(x) TMR1ON = 0;
 #define Timer4InterruptLock(x) TMR4IE = 0;
 #define Timer4InterruptUnlock(x) TMR4IE = 1;
 #else

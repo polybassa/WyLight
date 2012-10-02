@@ -17,6 +17,7 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "ledstrip.h"
+#include "timer.h"
 
 #ifndef X86
 void SPI_Init()

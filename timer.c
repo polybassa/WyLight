@@ -100,6 +100,7 @@ void date_timer_init(void)
 	} while(0 != i);
 }
 
+
 void Timer_Init()
 {	
 #ifdef __CC8E__
