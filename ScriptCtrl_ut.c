@@ -66,12 +66,12 @@ int ut_ScriptCtrl_SimpleReadWrite(void)
 	ScriptCtrl_Add(&testCmd);
 	gSetColorWasCalled = FALSE;
 	ScriptCtrl_Run();
-	Assert(gSetColorWasCalled);
+	assert(gSetColorWasCalled);
 
 	/* buffer should be empty again */
 	gSetColorWasCalled = FALSE;
 	ScriptCtrl_Run();
-	Assert(!gSetColorWasCalled);
+	assert(!gSetColorWasCalled);
 
 	return errors;
 }
@@ -93,7 +93,7 @@ int ut_ScriptCtrl_Clear(void)
 
 	/* buffer should be empty again */
 	ScriptCtrl_Run();
-	Assert(!gSetColorWasCalled);
+	assert(!gSetColorWasCalled);
 
 	return errors;
 }
@@ -119,9 +119,9 @@ int ut_ScriptCtrl_SimpleLoop(void)
 	ScriptCtrl_Add(&testCmd);
 
 	/* start loop should be read */
-	Assert(!gScriptBuf.inLoop)
+	assert(!gScriptBuf.inLoop)
 	ScriptCtrl_Run();
-	Assert(gScriptBuf.inLoop);
+	assert(gScriptBuf.inLoop);
 
 	int i;
 	for(i = 0; i < NUM_TEST_LOOPS; i++)
@@ -129,18 +129,18 @@ int ut_ScriptCtrl_SimpleLoop(void)
 		/* dummy command should be executed */
 		gSetColorWasCalled = FALSE;
 		ScriptCtrl_Run();
-		Assert(gSetColorWasCalled);
+		assert(gSetColorWasCalled);
 		
 		/* now next loop should be called */
 		gSetColorWasCalled = FALSE;
 		ScriptCtrl_Run();
-		Assert(!gSetColorWasCalled);
+		assert(!gSetColorWasCalled);
 	}
 
 	/* no more command should be available */
 	gSetColorWasCalled = FALSE;
 	ScriptCtrl_Run();
-	Assert(!gSetColorWasCalled);
+	assert(!gSetColorWasCalled);
 
 	return errors;
 }
@@ -154,30 +154,30 @@ int ut_ScriptCtrl_DoOuterInnerLoop(int loopCount)
 		/* outer dummy command should be executed */
 		gSetColorWasCalled = FALSE;
 		ScriptCtrl_Run();
-		Assert(gSetColorWasCalled);
+		assert(gSetColorWasCalled);
 
 		/* start inner loop should be read */
-		Assert(gScriptBuf.inLoop)
+		assert(gScriptBuf.inLoop)
 		ScriptCtrl_Run();
-		Assert(gScriptBuf.inLoop);
+		assert(gScriptBuf.inLoop);
 
 		for(j = 0; j < loopCount; j++)
 		{
 			/* outer dummy command should be executed */
 			gSetFadeWasCalled = FALSE;
 			ScriptCtrl_Run();
-			Assert(gSetFadeWasCalled);
+			assert(gSetFadeWasCalled);
 
 			/* now next inner loop should be called */
 			gSetColorWasCalled = FALSE;
 			ScriptCtrl_Run();
-			Assert(!gSetColorWasCalled);
+			assert(!gSetColorWasCalled);
 		}
 
 		/* now next outer loop should be called */
 		gSetColorWasCalled = FALSE;
 		ScriptCtrl_Run();
-		Assert(!gSetColorWasCalled);
+		assert(!gSetColorWasCalled);
 	}
 	return errors;
 }
@@ -217,16 +217,16 @@ int ut_ScriptCtrl_InnerLoop(void)
 	ScriptCtrl_Add(&testCmd);
 
 	/* start outer loop should be read */
-	Assert(!gScriptBuf.inLoop)
+	assert(!gScriptBuf.inLoop)
 	ScriptCtrl_Run();
-	Assert(gScriptBuf.inLoop);
+	assert(gScriptBuf.inLoop);
 
 	errors+= ut_ScriptCtrl_DoOuterInnerLoop(NUM_TEST_LOOPS);
 
 	/* no more command should be available */
 	gSetColorWasCalled = FALSE;
 	ScriptCtrl_Run();
-	Assert(!gSetColorWasCalled);
+	assert(!gSetColorWasCalled);
 
 	return errors;
 }
@@ -265,9 +265,9 @@ int ut_ScriptCtrl_InfiniteLoop(void)
 	ScriptCtrl_Add(&testCmd);
 
 	/* start outer loop should be read */
-	Assert(!gScriptBuf.inLoop)
+	assert(!gScriptBuf.inLoop)
 	ScriptCtrl_Run();
-	Assert(gScriptBuf.inLoop);
+	assert(gScriptBuf.inLoop);
 
 	/* multiple calls should be no problem since we are in an infinite loop */
 	errors+= ut_ScriptCtrl_DoOuterInnerLoop(NUM_TEST_LOOPS);
@@ -281,7 +281,7 @@ int ut_ScriptCtrl_InfiniteLoop(void)
 	/* buffer should be empty again */
 	gSetColorWasCalled = FALSE;
 	ScriptCtrl_Run();
-	Assert(!gSetColorWasCalled);
+	assert(!gSetColorWasCalled);
 
 	return errors;
 }
@@ -311,11 +311,11 @@ int ut_ScriptCtrl_FullBuffer(void)
 	{
 		/* add inner dummy command to buffer */
 		testCmd.cmd = SET_FADE;
-		Assert(ScriptCtrl_Add(&testCmd));
+		assert(ScriptCtrl_Add(&testCmd));
 	}
 
 	/* Buffer full */
-	Assert(!ScriptCtrl_Add(&testCmd));
+	assert(!ScriptCtrl_Add(&testCmd));
 	return errors;
 }
 
@@ -353,7 +353,7 @@ int ut_ScriptCtrl_Wait(void)
 
 	/* WAIT command should set the internal wait buffer */
 	ScriptCtrl_Run();
-	Assert(0xAFFE == gScriptBuf.waitValue);
+	assert(0xAFFE == gScriptBuf.waitValue);
 	return errors;
 }
 

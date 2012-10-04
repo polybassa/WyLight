@@ -294,6 +294,7 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_BlProxy_BlFlashReadRequest);
 	RunTest(false, ut_BlProxy_BlFlashWriteRequest);
 	RunTest(false, ut_BlProxy_BlFuseWriteRequest);
+
 	RunTest(true, ut_BlProxy_BlInfoRequest);
 	RunTest(true, ut_BlProxy_BlRunAppRequest);
 	UnitTestMainEnd();

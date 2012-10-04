@@ -18,6 +18,9 @@ all_nils: pic simu x86_client
 
 all_pat: pic simu x86_client android_client
 
+crc:
+	wine ${PIC_CC8E} reverse_crc.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM
+
 pic:
 	wine ${PIC_CC8E} main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM
 
@@ -32,14 +35,14 @@ x86_client:
 
 #generic rule to build and run c unittests
 %_ut.bin: %_ut.c %.c %.h
-	gcc $< $(subst _ut.c,.c,$<) eeprom.c -DX86 -DUNIT_TEST -o $@ -Wall
+	gcc $< $(subst _ut.c,.c,$<) eeprom.c -DX86 -DUNIT_TEST -DDEBUG -o $@ -Wall
 	./$@
 
 BlRequest_ut.bin: BlRequest_ut.cpp BlRequest.cpp BlRequest.h unittest.h
 	g++ BlRequest_ut.cpp BlRequest.cpp -DX86 -DUNIT_TEST -o $@ -Wall -pedantic
 	./$@
 
-test: ScriptCtrl_ut.bin BlRequest_ut.bin
+test: BlRequest_ut.bin crc_ut.bin ScriptCtrl_ut.bin
 
 clean:
 	rm -rf *.asm *.bin *.cod *.fcs *.hex *.lst *.occ *.var .metadata/ ${ANDROID_BIN}

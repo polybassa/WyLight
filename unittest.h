@@ -22,7 +22,7 @@
 #ifdef __cplusplus
 #include <assert.h>
 #else
-#define Assert(EXPRESSION) if(!(EXPRESSION)) {errors++; printf("Assert(" #EXPRESSION ") failed\n");}
+#define assert(EXPRESSION) if(!(EXPRESSION)) {errors++; printf("Assert(" #EXPRESSION ") failed\n");}
 #endif
 
 #define RunTest(RUN, FUNC) { \
