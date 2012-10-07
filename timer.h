@@ -73,13 +73,18 @@ void Timer_StopStopwatch(enum METHODE destMethode);
 void Timer_PrintCycletime(void);
 
 #ifdef __CC8E__
-#define Timer1Interrupt(x) TMR1IF = 0;	TMR1L = 0xc0; TMR1H = 0x63;
+#define Timer1Interrupt(x) TMR1IF = 0;
 #define Timer2Interrupt(x) TMR2IF = 0;
 #define Timer3Interrupt(x) TMR3IF = 0;
 #define Timer4Interrupt(x) TMR4IF = 0;
 #define Timer5Interrupt(x) TMR5IF = 0;
+
 #define Timer1Enable(x) TMR1ON = 1;
 #define Timer1Disable(x) TMR1ON = 0;
+
+#define Timer4Enable(x) TMR4ON = 1;
+#define Timer4Disable(x) TMR4ON = 0;
+
 #define Timer4InterruptLock(x) TMR4IE = 0;
 #define Timer4InterruptUnlock(x) TMR4IE = 1;
 #else

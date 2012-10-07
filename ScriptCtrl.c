@@ -201,10 +201,6 @@ void ScriptCtrl_Run(void)
 	{
 		return;
 	}
-	if(gLedBuf.flags.processing_of_data == TRUE)
-	{
-		return;
-	}
 #endif /* #ifndef X86 */	
 	/* cmd available? */
 	if(gScriptBuf.execute == gScriptBuf.write)

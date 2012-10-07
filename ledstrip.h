@@ -39,7 +39,7 @@ struct LedBuffer{
 	uns8 step[NUM_OF_LED / 8 * 3];
 	uns16 fadeTmms;
 	struct status_bits{
-		uns8 processing_of_data : 1;
+		uns8 update_necessary : 1;
 		uns8 run_aktiv : 1;
 		uns8 run_direction : 1;    // 1==left, 0==right
 	} flags;

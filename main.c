@@ -18,8 +18,8 @@
 
 #ifndef X86
 #define NO_CRC
-//#define TEST
-#pragma optimize 0
+#define TEST
+#pragma optimize 1
 #endif
 #pragma sharedAllocation
 
@@ -55,13 +55,14 @@ void init_x86(void);
 
 #ifndef X86
 //*********************** INTERRUPTSERVICEROUTINE ************************************
-#pragma origin 0x8					//Adresse des High Priority Interrupts	
+#pragma origin 0x8					
+//Adresse des High Priority Interrupts	
 interrupt HighPriorityInterrupt(void)
 {
 	HighPriorityInterruptFunction();
 	#pragma fastMode
 }
-
+/*
 #pragma origin 0x18
 interrupt LowPriorityInterrupt(void)
 {
@@ -76,21 +77,7 @@ interrupt LowPriorityInterrupt(void)
 	uns24 sv_TBLPTR = TBLPTR;
 	uns8 sv_TABLAT = TABLAT;
 
-	if(TMR1IF)
-	{
-		g_UpdateLedStrip++;
-		Timer1Interrupt();
-		Timer1Disable();
-	}
-	if(TMR4IF)
-	{
-		g_UpdateLed++;
-		if(gScriptBuf.waitValue > 0 && g_UpdateLed > 2)
-		{
-		      gScriptBuf.waitValue = gScriptBuf.waitValue - 1;
-		}
-		Timer4Interrupt();
-	} 
+	
 	
 	FSR0 = sv_FSR0;
 	FSR1 = sv_FSR1;
@@ -103,7 +90,7 @@ interrupt LowPriorityInterrupt(void)
 	TABLAT = sv_TABLAT;
 
 	int_restore_registers
-}
+}*/
 
 void HighPriorityInterruptFunction(void)
 {
@@ -141,6 +128,23 @@ void main(void)
 		usleep(10);
 #endif /* #ifdef X86 */
 		
+		if(TMR4IF)
+		{
+		      g_UpdateLed = g_UpdateLed + 1;
+		      if(gScriptBuf.waitValue > 0 && g_UpdateLed > 2)
+		      {
+			      gScriptBuf.waitValue = gScriptBuf.waitValue - 1;
+		      }
+		      Timer4Interrupt();
+		} 
+		
+		if(TMR1IF)
+		{
+		      g_UpdateLedStrip = g_UpdateLedStrip + 1;
+		      Timer1Interrupt();
+		      Timer1Disable();
+		}
+		
 		Timer_StartStopwatch(ePLTFRM_CHK);
 		Platform_CheckInputs();
 		Timer_StopStopwatch(ePLTFRM_CHK);
@@ -159,10 +163,7 @@ void main(void)
 		
 		if(g_UpdateLed > 2)
 		{		  
-			Timer_StartStopwatch(eUPDATE_RUN);
-			Ledstrip_UpdateRun();
-			Timer_StopStopwatch(eUPDATE_RUN);
-		  
+					  
 			Timer_StartStopwatch(eUPDATE_FADE);
 			Ledstrip_UpdateFade();
 			Timer_StopStopwatch(eUPDATE_FADE);
@@ -170,6 +171,10 @@ void main(void)
 			Timer_StartStopwatch(eDO_FADE);
 			Ledstrip_DoFade();
 			Timer_StopStopwatch(eDO_FADE);
+			
+			Timer_StartStopwatch(eUPDATE_RUN);
+			Ledstrip_UpdateRun();
+			Timer_StopStopwatch(eUPDATE_RUN);
 			
 			Timer4InterruptLock();
 			g_UpdateLed = 0;
@@ -210,14 +215,12 @@ void InitAll()
 	Platform_AllowInterrupts();
 	Platform_DisableBootloaderAutostart();
 	
+	UART_SendString("Wait");
+	
 	/* Startup Wait-Time 2s
 	 * to protect Wifly-Modul from errors*/
 	gScriptBuf.waitValue = 500;
-	while(!gScriptBuf.waitValue == 0)
-	{
-	      Platform_CheckInputs();
-	}
-	// *** send ready after init
+	
 	UART_Send('R');
 	UART_Send('D');
 	UART_Send('Y');

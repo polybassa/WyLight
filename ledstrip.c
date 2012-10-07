@@ -140,14 +140,19 @@ void Ledstrip_Init(void)
 		i--;
 		gLedBuf.step[i] = 0;
 	} while(0 != i);
+	gLedBuf.fadeTmms = 0;
+	gLedBuf.flags.run_aktiv = 0;
+	gLedBuf.flags.update_necessary = 0;
+	gLedBuf.flags.run_direction = 0;
 }
 
 void Ledstrip_SetColor(struct cmd_set_color *pCmd)
 {
-	gLedBuf.flags.processing_of_data = TRUE;
 	uns8 r = pCmd->red;
 	uns8 g = pCmd->green;
 	uns8 b = pCmd->blue;
+	
+	gLedBuf.flags.update_necessary = TRUE;
 	
 	FOR_EACH_MASKED_LED_DO(
 		{
@@ -167,12 +172,10 @@ void Ledstrip_SetColor(struct cmd_set_color *pCmd)
 			k++;k++;
 		}
 	);
-	gLedBuf.flags.processing_of_data = FALSE;
 }
 
 void Ledstrip_SetColorDirect(uns8 *pValues)
 {
-	gLedBuf.flags.processing_of_data = TRUE;
 	uns8 k, temp;
 	for(k = 0; k < (NUM_OF_LED * 3); k++)
 	{
@@ -182,17 +185,11 @@ void Ledstrip_SetColorDirect(uns8 *pValues)
 		gLedBuf.cyclesLeft[k] = 0;
 		gLedBuf.delta[k] = 0;
 	}
-	gLedBuf.flags.processing_of_data = FALSE;
+	gLedBuf.flags.update_necessary = TRUE;
 }
 
 void Ledstrip_DoFade(void)
 {
-	if(gLedBuf.flags.processing_of_data == TRUE)
-	{
-		return;
-	}
-	gLedBuf.flags.processing_of_data = TRUE;
-	
 	uns8 k, stepmask;
 	uns8* stepaddress = gLedBuf.step;
 	stepmask = 0x01;
@@ -217,23 +214,21 @@ void Ledstrip_DoFade(void)
 		}
 		INC_BIT_COUNTER(stepaddress, stepmask);
 	}
-	gLedBuf.flags.processing_of_data = FALSE;
+	gLedBuf.flags.update_necessary = TRUE;
 }
 
 void Ledstrip_UpdateLed(void)
 {
-	if(gLedBuf.flags.processing_of_data == TRUE)
+	if(gLedBuf.flags.update_necessary)
 	{
-		return;
+		SPI_SendLedBuffer(gLedBuf.led_array);
+		gLedBuf.flags.update_necessary = 0;
 	}
-	// write changes to ledstrip
-	SPI_SendLedBuffer(gLedBuf.led_array);
+	
 }
 
 void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 {
-	gLedBuf.flags.processing_of_data = TRUE;
-	
 	// constant for this fade used in CALC_COLOR
 	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
 
@@ -262,16 +257,10 @@ void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 			INC_BIT_COUNTER(stepAddress, stepMask);
 		}
 	);
-	gLedBuf.flags.processing_of_data = FALSE;
 }
 
 void Ledstrip_UpdateFade(void)
 {
-	if(gLedBuf.flags.processing_of_data)
-	{
-		return;
-	}
-	gLedBuf.flags.processing_of_data = TRUE;
 	uns8 i;
 	for(i = 0; i < NUM_OF_LED * 3; i++)
 	{
@@ -280,14 +269,11 @@ void Ledstrip_UpdateFade(void)
 			gLedBuf.cyclesLeft[i]--;		
 		}
 	}
-	gLedBuf.flags.processing_of_data = FALSE;
 }
 
 
 void Ledstrip_SetRun(struct cmd_set_run *pCmd)
 {
-	gLedBuf.flags.processing_of_data = TRUE;
-	
 	gLedBuf.fadeTmms = ntohs(pCmd->fadeTmms);
 	
 	if(pCmd->direction > 0)
@@ -300,7 +286,6 @@ void Ledstrip_SetRun(struct cmd_set_run *pCmd)
 	}
 	
 	gLedBuf.flags.run_aktiv = 1;
-	gLedBuf.flags.processing_of_data = 0;
 }
 
 void Ledstrip_UpdateRun(void)
@@ -320,9 +305,7 @@ void Ledstrip_UpdateRun(void)
 	{
 		return;
 	}
-	
-	gLedBuf.flags.processing_of_data = TRUE;
-	
+		
 	const uns16 fadeTmms = gLedBuf.fadeTmms;
 	uns8* stepAddress = gLedBuf.step;
 	uns8 stepMask = 0x01;
@@ -388,6 +371,5 @@ void Ledstrip_UpdateRun(void)
 		k++;
 		CALC_COLOR(red);
 	}
-	gLedBuf.flags.processing_of_data = FALSE;
 }
 
