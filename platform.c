@@ -39,7 +39,7 @@ void Platform_AllowInterrupts()
 	RC1IP = 1;
 	RC1IE = 1; 
 	PEIE = 1; 
-	GIEL = 0; // Low Priority Interrupts are disabled
+	GIEL = 1; // Low Priority Interrupts are disabled
 	GIEH = 1;
 }
 

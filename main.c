@@ -18,7 +18,7 @@
 
 #ifndef X86
 #define NO_CRC
-#define TEST
+//#define TEST
 #pragma optimize 1
 #endif
 #pragma sharedAllocation
@@ -46,6 +46,13 @@ jmp_buf g_ResetEnvironment;
 //*********************** GLOBAL VARIABLES *******************************************
 uns8 g_UpdateLed;
 uns8 g_UpdateLedStrip;
+
+//*********************** MACROS *****************************************************
+#define do_and_measure(METHOD) {\
+	Timer_StartStopwatch(e ## METHOD); \
+	METHOD ## (); \
+	Timer_StopStopwatch(e ## METHOD);}
+	
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void InitAll();
 void HighPriorityInterruptFunction(void);
@@ -62,7 +69,7 @@ interrupt HighPriorityInterrupt(void)
 	HighPriorityInterruptFunction();
 	#pragma fastMode
 }
-/*
+
 #pragma origin 0x18
 interrupt LowPriorityInterrupt(void)
 {
@@ -77,7 +84,24 @@ interrupt LowPriorityInterrupt(void)
 	uns24 sv_TBLPTR = TBLPTR;
 	uns8 sv_TABLAT = TABLAT;
 
-	
+	if(TMR4IF)
+	{
+	      g_UpdateLed = g_UpdateLed + 1;
+	      if(gScriptBuf.waitValue > 0 && g_UpdateLed > 2)
+	      {
+		      gScriptBuf.waitValue = gScriptBuf.waitValue - 1;
+	      }
+	      Timer4Interrupt();
+	} 
+		
+	if(TMR1IF)
+	{
+	      //g_UpdateLedStrip = g_UpdateLedStrip + 1;
+	      Timer1Disable();
+	      do_and_measure(Ledstrip_UpdateLed);
+	      Timer1Interrupt();
+	      Timer1Enable();
+	}
 	
 	FSR0 = sv_FSR0;
 	FSR1 = sv_FSR1;
@@ -90,7 +114,7 @@ interrupt LowPriorityInterrupt(void)
 	TABLAT = sv_TABLAT;
 
 	int_restore_registers
-}*/
+}
 
 void HighPriorityInterruptFunction(void)
 {
@@ -128,66 +152,26 @@ void main(void)
 		usleep(10);
 #endif /* #ifdef X86 */
 		
-		if(TMR4IF)
-		{
-		      g_UpdateLed = g_UpdateLed + 1;
-		      if(gScriptBuf.waitValue > 0 && g_UpdateLed > 2)
-		      {
-			      gScriptBuf.waitValue = gScriptBuf.waitValue - 1;
-		      }
-		      Timer4Interrupt();
-		} 
 		
-		if(TMR1IF)
-		{
-		      g_UpdateLedStrip = g_UpdateLedStrip + 1;
-		      Timer1Interrupt();
-		      Timer1Disable();
-		}
 		
-		Timer_StartStopwatch(ePLTFRM_CHK);
-		Platform_CheckInputs();
-		Timer_StopStopwatch(ePLTFRM_CHK);
-		
-		Timer_StartStopwatch(eERROR_THROW);
-		Error_Throw();
-		Timer_StopStopwatch(eERROR_THROW);
-		
-		Timer_StartStopwatch(eCMD_GETCMD);
-		Commandstorage_GetCommands();
-		Timer_StopStopwatch(eCMD_GETCMD);
-		
-		Timer_StartStopwatch(eSCRIPTCTRL_RUN);
-		ScriptCtrl_Run();
-		Timer_StartStopwatch(eSCRIPTCTRL_RUN);
-		
+		do_and_measure(Platform_CheckInputs);
+
+		do_and_measure(Error_Throw);
+	
+		do_and_measure(Commandstorage_GetCommands);
+				
+		do_and_measure(ScriptCtrl_Run);
+
 		if(g_UpdateLed > 2)
 		{		  
-					  
-			Timer_StartStopwatch(eUPDATE_FADE);
-			Ledstrip_UpdateFade();
-			Timer_StopStopwatch(eUPDATE_FADE);
+			do_and_measure(Ledstrip_DoFade);
 			
-			Timer_StartStopwatch(eDO_FADE);
-			Ledstrip_DoFade();
-			Timer_StopStopwatch(eDO_FADE);
-			
-			Timer_StartStopwatch(eUPDATE_RUN);
-			Ledstrip_UpdateRun();
-			Timer_StopStopwatch(eUPDATE_RUN);
+			do_and_measure(Ledstrip_UpdateRun);
 			
 			Timer4InterruptLock();
 			g_UpdateLed = 0;
 			Timer4InterruptUnlock();
 			
-		}
-		if(g_UpdateLedStrip > 0)
-		{
-			Timer_StartStopwatch(eUPDATE_LED);
-			Ledstrip_UpdateLed();
-			Timer_StopStopwatch(eUPDATE_LED);
-			g_UpdateLedStrip = 0;
-			Timer1Enable();
 		}
 		Timer_StopStopwatch(eMAIN);
 	}

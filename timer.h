@@ -22,19 +22,18 @@
 #include "wifly_cmd.h"
 
 enum METHODE{
-	eMAIN,			//00
-	eDO_FADE,		//01
-	eSET_FADE,		//02
-	eSET_COLOR,		//03
-	eSET_RUN,		//04
-	eUPDATE_FADE,		//05
-	eUPDATE_RUN,		//06
-	eUPDATE_LED,		//07
-	eCMD_GETCMD,		//08
-	eSCRIPTCTRL_RUN,	//09
-	ePLTFRM_CHK,		//10
-	eERROR_THROW,		//11
-	eTIMER_WAIT,		//12
+	eMAIN,				//00
+	eLedstrip_DoFade,		//01
+	eSET_FADE,			//02
+	eSET_COLOR,			//03
+	eSET_RUN,			//04
+	eLedstrip_UpdateRun,		//05
+	eLedstrip_UpdateLed,		//06
+	eCommandstorage_GetCommands,	//07
+	eScriptCtrl_Run,		//08
+	ePlatform_CheckInputs,		//09
+	eError_Throw,			//10
+	eTIMER_WAIT,			//11
 	enumSIZE //!!! MUST be the last element of the enum
 } enumMethode;
 
