@@ -56,20 +56,7 @@ static const unsigned short CRC16_XMODEM_TABLE[256] = {
 void Crc_AddCrc(unsigned char byte,unsigned char* p_crcH,unsigned char* p_crcL)
 {
 	unsigned char index;
-#if 1
-	unsigned short crc = *p_crcH << 8;
-	crc |= *p_crcL;
-	
-
-	index = *p_crcH ^ byte; // ((crc >> 8) ^ byte) & 0xff
-
-	unsigned short temp = *p_crcL << 8; // (crc << 8)
-	crc = (CRC16_XMODEM_TABLE[index] ^ temp);
-
-	*p_crcL = crc & 0xff;
-	crc >>= 8;
-	*p_crcH = crc & 0xff; //*p_crcH = (crc & 0xff00) >> 8;
-#else
+#ifdef __CC8E__
 	unsigned char crcH,crcL;
 	crcH = *p_crcH;
 	crcL = *p_crcL;
@@ -98,8 +85,18 @@ void Crc_AddCrc(unsigned char byte,unsigned char* p_crcH,unsigned char* p_crcL)
 	MOVWF(crcL);
 
 	*p_crcH = crcH;
-	*p_crcL = crcL;
-#endif
+	*p_crcL = crcL;1
+#else
+	unsigned short crc = *p_crcH << 8;
+	crc |= *p_crcL;
+	index = *p_crcH ^ byte; // ((crc >> 8) ^ byte) & 0xff
+
+	unsigned short temp = *p_crcL << 8; // (crc << 8)
+	crc = (CRC16_XMODEM_TABLE[index] ^ temp);
+	*p_crcL = crc & 0xff;
+	crc >>= 8;
+	*p_crcH = crc & 0xff; //*p_crcH = (crc & 0xff00) >> 8;
+#endif /* #ifdef __CC8E__ */
 }
 
 void Crc_BuildCrc(unsigned char *data, unsigned char length, unsigned char* crcH_out, unsigned char* crcL_out)
