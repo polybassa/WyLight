@@ -128,8 +128,6 @@ void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
 	mCmdFrame.led.data.set_color.red = (rgba & 0xff000000) >> 24;
 	mCmdFrame.led.data.set_color.green = (rgba & 0x00ff0000) >> 16;
 	mCmdFrame.led.data.set_color.blue = (rgba & 0x0000ff00) >> 8;
-	mCmdFrame.led.data.set_color.reserved[0] = 0;
-	mCmdFrame.led.data.set_color.reserved[1] = 0;
 	int bytesWritten = mSock->Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
 #ifdef DEBUG
 	std::cout << "Send " << bytesWritten << " bytes "

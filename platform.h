@@ -45,7 +45,10 @@
 	extern jmp_buf g_ResetEnvironment;
 
 	#define bank1
+	#define bank5
 	#define bank6
+	#define bank7
+	#define bank10
 	#define clearRAM(x)
 	#define Platform_AllowInterrupts(x)
 	#define Platform_CheckInputs(x)

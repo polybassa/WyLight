@@ -50,8 +50,9 @@ uns8 g_UpdateLedStrip;
 //*********************** MACROS *****************************************************
 #define do_and_measure(METHOD) {\
 	Timer_StartStopwatch(e ## METHOD); \
-	METHOD ## (); \
-	Timer_StopStopwatch(e ## METHOD);}
+	METHOD(); \
+	Timer_StopStopwatch(e ## METHOD); \
+}
 	
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void InitAll();
