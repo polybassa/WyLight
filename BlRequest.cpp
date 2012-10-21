@@ -17,7 +17,27 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "BlRequest.h"
+#include "crc.h"
 #include "trace.h"
+
+/**
+ * This makro is used in BlProxy::MaskControlCharacters and requires some
+ * implicit parameter:
+ * @param bytesWritten counter of bytes in output buffer
+ * @param outputLength size of output buffer
+ * @param pOutput output buffer
+ * @param _BYTE_ the byte we have to mask and writte to buffer
+ */
+#define MaskAndAddByteToOutput(_BYTE_) { \
+	if(IsCtrlChar(_BYTE_)) { \
+		if(++bytesWritten > outputLength) return 0; \
+		*pOutput = BL_DLE; \
+		pOutput++; \
+	} \
+	if(++bytesWritten > outputLength) return 0; \
+	*pOutput = _BYTE_; \
+	pOutput++; \
+}
 
 BlProxy::BlProxy(const ClientSocket* const pSock)
 	: mSock(pSock)
@@ -28,8 +48,9 @@ size_t BlProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputL
 {
 	const unsigned char* const pInputEnd = pInput + inputLength;
 	size_t bytesWritten = 0;
+	unsigned short crc = 0;
 
-	/* skip first character since its the command type byte */
+	/* skip first character since it is the command type byte */
 	if(++bytesWritten > outputLength) return 0;
 	*pOutput = *pInput;
 	pOutput++;
@@ -37,17 +58,14 @@ size_t BlProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputL
 
 	while(pInput < pInputEnd)
 	{
-		if(IsCtrlChar(*pInput))
-		{		
-			if(++bytesWritten > outputLength) return 0;
-			*pOutput = BL_DLE;
-			pOutput++;
-		}
-		if(++bytesWritten > outputLength) return 0;
-		*pOutput = *pInput;
-		pOutput++;
+		MaskAndAddByteToOutput(*pInput);
+		Crc_AddCrc16(*pInput, &crc);
 		pInput++;
 	}
+
+	// add crc to output
+	MaskAndAddByteToOutput((unsigned char)(crc & 0xff));
+	MaskAndAddByteToOutput((unsigned char)(crc >> 8));	
 	return bytesWritten;
 }
 
@@ -58,11 +76,31 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 		return 0;
 	}
 	const unsigned char* const pInputEnd = pInput + inputLength;
+	unsigned short crc = 0;
 
 	/* skip first character since its the command type byte */
 	size_t bytesWritten = 1;
 	*pOutput = *pInput;
 	pOutput++;
+	pInput++;
+
+	/* read two bytes ahead to find crc */
+	if(pInput >= pInputEnd) return 0;
+	if(*pInput == BL_DLE)
+	{
+		pInput++;
+	}
+	if(pInput >= pInputEnd) return 0;
+	unsigned char next = *pInput;
+	pInput++;
+
+	if(pInput >= pInputEnd) return 0;
+	if(*pInput == BL_DLE)
+	{
+		pInput++;
+	}
+	if(pInput >= pInputEnd) return 0;
+	unsigned char postNext = *pInput;
 	pInput++;
 
 
@@ -72,10 +110,25 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 		{
 			pInput++;
 		}
-		*pOutput = *pInput;
+		*pOutput = next;
 		pOutput++;
 		bytesWritten++;
+		Crc_AddCrc16(next, &crc);
+		next = postNext;
+		postNext = *pInput;
 		pInput++;
+	}
+
+	// check and remove crc
+	Trace_Hex(postNext);
+	Trace_Hex(next);
+	Trace_Hex(crc >> 8);
+	Trace_Hex(crc & 0xff);
+	if(crc != ((postNext << 8) | next))
+	{
+		Trace_String(__FUNCTION__);
+		Trace_String(" crc failed\n");
+		return 0;
 	}
 	return bytesWritten;
 }
@@ -94,7 +147,7 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 	unsigned char* pNext;
 	const unsigned char* pEnd;;
 
-	/* mask control characters in request */
+	/* mask control characters in request and add crc */
 	bufferSize = MaskControlCharacters(pRequest, requestSize, buffer, sizeof(buffer));
 	if((0 == bufferSize) || (bufferSize == sizeof(buffer)))
 	{
@@ -140,14 +193,15 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 					pNext++; bytesReceived--;
 				}
 
-				/* remove BL_DLE from buffer */
-				bytesReceived = UnmaskControlCharacters(pNext, bytesReceived, pResponse, responseSize);
-
 				/* remove BL_ETX from buffer */
-				if(0 < bytesReceived)
+				if(0 == bytesReceived)
 				{
-					return bytesReceived - 1;
+					return 0;
 				}
+				bytesReceived--;
+
+				/* remove BL_DLE and check crc from buffer */
+				return UnmaskControlCharacters(pNext, bytesReceived, pResponse, responseSize);
 			}
  		}
 	}while(0 < --numRetries);

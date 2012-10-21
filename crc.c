@@ -16,6 +16,7 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
+#include <stdio.h>
 
 static const unsigned short CRC16_XMODEM_TABLE[256] = {
         0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50a5, 0x60c6, 0x70e7,
@@ -85,7 +86,7 @@ void Crc_AddCrc(unsigned char byte,unsigned char* p_crcH,unsigned char* p_crcL)
 	MOVWF(crcL);
 
 	*p_crcH = crcH;
-	*p_crcL = crcL;1
+	*p_crcL = crcL;
 #else
 	unsigned short crc = *p_crcH << 8;
 	crc |= *p_crcL;
@@ -97,6 +98,18 @@ void Crc_AddCrc(unsigned char byte,unsigned char* p_crcH,unsigned char* p_crcL)
 	crc >>= 8;
 	*p_crcH = crc & 0xff; //*p_crcH = (crc & 0xff00) >> 8;
 #endif /* #ifdef __CC8E__ */
+}
+
+/**
+ * Wrapper for the Crc_AddCrc function with seperate parameter for high and low
+ * crc value. In a next refactoring step we should replace that other functions
+ * with this one.
+ */
+void Crc_AddCrc16(unsigned char byte, unsigned short* pCrc)
+{
+	Crc_AddCrc(byte, (unsigned char*)pCrc, ((unsigned char*)pCrc) + 1);
+	*pCrc ^= 0xffff;
+	printf("Crc16: %04x\n", *pCrc);
 }
 
 void Crc_BuildCrc(unsigned char *data, unsigned char length, unsigned char* crcH_out, unsigned char* crcL_out)

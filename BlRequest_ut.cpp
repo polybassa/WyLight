@@ -24,12 +24,14 @@
 #include "ClientSocket.h"
 #include "string.h"
 
+#define CRC_SIZE 2
+
 ClientSocket::ClientSocket(const char* pAddr, short port, int style) : mSock(0) {}
 ClientSocket::~ClientSocket(void) {}
 
 BlInfo dummyBlInfo = {0xDE, 0xAD, 0xAF, 0xFE, 0xFF, 0x4, 0x0, 0xB0, 0xB1, 0xE5, 0x00, 0xCA, 0xCA};
-unsigned char dummyBlFlashReadResponseMasked[] = {BL_STX, 0xDE, 0xAD, BL_DLE, BL_DLE, 0xEF, 0xCA, 0xCA, BL_ETX};
-unsigned char dummyBlFlashReadResponsePure[] = {0xDE, 0xAD, BL_DLE, 0xEF, 0xCA, 0xCA};
+unsigned char dummyBlFlashReadResponseMasked[] = {BL_STX, 0xDE, 0xAD, BL_DLE, BL_DLE, 0xEF, 0xa0, 0x06, BL_ETX};
+unsigned char dummyBlFlashReadResponsePure[] = {0xDE, 0xAD, BL_DLE, 0xEF};
 unsigned char dummyBlFlashCrc16ResponseMasked[] = {BL_STX, 0xDE, 0xAD, BL_DLE, BL_DLE, 0xEF, BL_ETX};
 unsigned char dummyBlFlashCrc16ResponsePure[] = {0xDE, 0xAD, BL_DLE, 0xEF};
 unsigned char dummyBlFlashEraseResponseMasked[] = {BL_STX, 0x03, 0xCA, 0xCA, BL_ETX};
@@ -60,7 +62,6 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	/* Sync */
 	if((sizeof(BL_SYNC) == length) && (0 == memcmp(BL_SYNC, frame, sizeof(BL_SYNC))))
 	{
-		Trace_String("BlSync\n");
 		g_TestSocketRecvBuffer[0] = BL_STX;
 		g_TestSocketRecvBufferSize = 1;
 		return length;
@@ -96,7 +97,7 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	/* prepare response for BlEepromRequest */
 	if((frame[0] == 0x02) && (frame[length-1] == BL_ETX))
 	{
-		Trace_String("BlFlashCrc16Request\n");
+		Trace_String("BlEepromRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashCrc16ResponseMasked, sizeof(dummyBlFlashCrc16ResponseMasked));
 		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashCrc16ResponseMasked);
 		return length;
@@ -150,7 +151,7 @@ int ut_BlProxy_MaskControlCharacters(void)
 	TestSocket dummySocket(0, 0);
 	BlProxy proxy(&dummySocket);
 	unsigned char sendBuffer[256];
-	unsigned char recvBuffer[sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + 1];
+	unsigned char recvBuffer[sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 + 1];
 
 	/* prepare send buffer with test data */
 	for(size_t i = 0; i < sizeof(sendBuffer); i++)
@@ -164,7 +165,8 @@ int ut_BlProxy_MaskControlCharacters(void)
 
 	/* mask control characters */
 	bytesWritten = proxy.MaskControlCharacters(sendBuffer, sizeof(sendBuffer), recvBuffer, sizeof(recvBuffer));
-	assert(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM == bytesWritten);
+	assert(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE <= bytesWritten);
+	assert(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= bytesWritten);
 
 	/* and unmask everything again */
 	bytesWritten = proxy.UnmaskControlCharacters(recvBuffer, bytesWritten, recvBuffer, sizeof(recvBuffer));
