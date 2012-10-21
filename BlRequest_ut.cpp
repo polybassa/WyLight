@@ -288,16 +288,16 @@ int ut_BlProxy_BlRunAppRequest(void)
 int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
-	RunTest(true, ut_BlProxy_MaskControlCharacters);
-	RunTest(true, ut_BlProxy_BlEepromReadRequest);
+	RunTest(false, ut_BlProxy_MaskControlCharacters);
+	RunTest(false, ut_BlProxy_BlEepromReadRequest);
 	RunTest(false, ut_BlProxy_BlEepromWriteRequest);
-	RunTest(true, ut_BlProxy_BlFlashCrc16Request);
-	RunTest(true, ut_BlProxy_BlFlashEraseRequest);
-	RunTest(true, ut_BlProxy_BlFlashReadRequest);
+	RunTest(false, ut_BlProxy_BlFlashCrc16Request);
+	RunTest(false, ut_BlProxy_BlFlashEraseRequest);
+	RunTest(false, ut_BlProxy_BlFlashReadRequest);
 	RunTest(false, ut_BlProxy_BlFlashWriteRequest);
 	RunTest(false, ut_BlProxy_BlFuseWriteRequest);
 
-	RunTest(true, ut_BlProxy_BlInfoRequest);
+	RunTest(false, ut_BlProxy_BlInfoRequest);
 	RunTest(true, ut_BlProxy_BlRunAppRequest);
 	UnitTestMainEnd();
 }

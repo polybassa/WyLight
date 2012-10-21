@@ -49,7 +49,7 @@ int ut_Crc_BuildCrc(void)
 	unsigned char crcHigh = 0xff;
 	unsigned char crcLow = 0xff;
 
-	Crc_BuildCrc(testString1, 21,  &crcHigh, &crcLow);
+	Crc_BuildCrc((unsigned char*)testString1, 21,  &crcHigh, &crcLow);
 	Trace_Hex(crcHigh);
 	Trace_Hex(crcLow);
 	assert(0x84 == crcHigh);
@@ -57,7 +57,7 @@ int ut_Crc_BuildCrc(void)
 
 	crcHigh =  0xff;
 	crcLow = 0xff;
-	Crc_BuildCrc(testString2, 3, &crcHigh, &crcLow);
+	Crc_BuildCrc((unsigned char*)testString2, 3, &crcHigh, &crcLow);
 	Trace_Hex(crcHigh);
 	Trace_Hex(crcLow);
 	assert(0x51 == crcHigh);
