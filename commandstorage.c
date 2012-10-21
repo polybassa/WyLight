@@ -23,35 +23,7 @@
 #include "rtc.h"
 #include "trace.h"
 
-//*********************** PRIVATE FUNCTIONS *********************************************
-uns16 GetEepromPointer(uns16 PointerAddr)
-{
-	uns16 temp;
-#ifndef X86
-	temp.low8 = Eeprom_Read(PointerAddr);
-	temp.high8 = Eeprom_Read(PointerAddr+1);
-#else
-	temp = 0x00ff & Eeprom_Read(PointerAddr);
-	temp |= Eeprom_Read(PointerAddr+1) << 8;
-#endif
-
-	return temp;
-}
-
-void SetEepromPointer(uns16 PointerAddr, uns16 Value)
-{
-#ifndef X86
-	Eeprom_Write(PointerAddr, Value.low8);
-	Eeprom_Write(PointerAddr+1, Value.high8);
-#else
-	Eeprom_Write(PointerAddr, Value & 0x00ff);
-	Eeprom_Write(PointerAddr+1, (Value & 0xff00) >> 8);
-#endif
-}
-//*********************** PUBLIC FUNCTIONS *********************************************
-
-struct CommandBuffer g_CmdBuf;
-
+bank7 struct CommandBuffer g_CmdBuf;
 
 void Commandstorage_GetCommands()
 {	
@@ -66,11 +38,11 @@ void Commandstorage_GetCommands()
 	{
 		// *** preload variables and 
 		// *** get new_byte from ringbuffer
-		unsigned char new_byte;
+		uns8 new_byte;
 		// *** get new byte
 		new_byte = RingBuf_Get();
-		Trace_String("BYTE:");
-		Trace_Number(new_byte,'b');
+		/* Trace_String("BYTE:"); */
+		/* Trace_Number(new_byte,'b'); */
 
 		// *** do I wait for databytes?
 		if(g_CmdBuf.frame_counter == 0)
@@ -91,7 +63,7 @@ void Commandstorage_GetCommands()
 			else
 			{	
 				// *** check if I get the framelength byte
-				if((new_byte < (FRAMELENGTH - 2)) && (g_CmdBuf.cmd_counter == 1))
+				if((new_byte < (CMDFRAMELENGTH - 2)) && (g_CmdBuf.cmd_counter == 1))
 				{
 					g_CmdBuf.frame_counter = new_byte;
 					g_CmdBuf.cmd_buf[1] = new_byte;
@@ -126,6 +98,9 @@ void Commandstorage_GetCommands()
 					if(ScriptCtrl_Add(&g_CmdBuf.cmd_buf[2]))
 					{
 						Trace_String("GC");
+#ifndef X86
+                            UART_SendString("GC");
+#endif
 					}
 					else
 					{

@@ -19,7 +19,7 @@
 #ifndef X86
 #define NO_CRC
 //#define TEST
-#pragma optimize 0
+#pragma optimize 1
 #endif
 #pragma sharedAllocation
 
@@ -32,6 +32,7 @@
 #include "timer.h"			//under construction
 #include "rtc.h"
 #include "ScriptCtrl.h"
+#include "trace.h"
 #ifdef __CC8E__
 #include "int18XXX.h"
 #endif /* #ifdef __CC8E__ */
@@ -44,6 +45,14 @@ jmp_buf g_ResetEnvironment;
 
 //*********************** GLOBAL VARIABLES *******************************************
 uns8 g_UpdateLed;
+uns8 g_UpdateLedStrip;
+
+//*********************** MACROS *****************************************************
+#define do_and_measure(METHOD) {\
+	Timer_StartStopwatch(e ## METHOD); \
+	METHOD ## (); \
+	Timer_StopStopwatch(e ## METHOD);}
+	
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void InitAll();
 void HighPriorityInterruptFunction(void);
@@ -53,7 +62,8 @@ void init_x86(void);
 
 #ifndef X86
 //*********************** INTERRUPTSERVICEROUTINE ************************************
-#pragma origin 0x8					//Adresse des High Priority Interrupts	
+#pragma origin 0x8					
+//Adresse des High Priority Interrupts	
 interrupt HighPriorityInterrupt(void)
 {
 	HighPriorityInterruptFunction();
@@ -74,19 +84,23 @@ interrupt LowPriorityInterrupt(void)
 	uns24 sv_TBLPTR = TBLPTR;
 	uns8 sv_TABLAT = TABLAT;
 
-	if(TMR1IF)
-	{
-		Timer1Interrupt();
-		Commandstorage_WaitInterrupt();
-	}
 	if(TMR4IF)
 	{
-		Timer4Interrupt();
-		g_UpdateLed = TRUE;
+	      g_UpdateLed = g_UpdateLed + 1;
+	      if(gScriptBuf.waitValue > 0 && g_UpdateLed > 2)
+	      {
+		      gScriptBuf.waitValue = gScriptBuf.waitValue - 1;
+	      }
+	      Timer4Interrupt();
 	} 
-	if(TMR2IF)
+		
+	if(TMR1IF)
 	{
-		Timer2Interrupt();
+	      //g_UpdateLedStrip = g_UpdateLedStrip + 1;
+	      Timer1Disable();
+	      do_and_measure(Ledstrip_UpdateLed);
+	      Timer1Interrupt();
+	      Timer1Enable();
 	}
 	
 	FSR0 = sv_FSR0;
@@ -114,7 +128,7 @@ void HighPriorityInterruptFunction(void)
 		else 
 		{
 			//Register lesen um Schnittstellen Fehler zu vermeiden
-			unsigned char temp = RCREG1;
+			uns8 temp = RCREG1;
 		}
 	}
 	FSR0 = sv_FSR0;
@@ -137,20 +151,27 @@ void main(void)
 		// give opengl thread a chance to run
 		usleep(10);
 #endif /* #ifdef X86 */
-		Platform_CheckInputs();
-		Error_Throw();
-		Commandstorage_GetCommands();
-		ScriptCtrl_Run();
-		if(g_UpdateLed > 0)
-		{
-			Ledstrip_UpdateFade();
-			Ledstrip_UpdateRun();
-			Timer_StartStopwatch(eDO_FADE);
-			Ledstrip_DoFade();
-			Timer_StopStopwatch(eDO_FADE);
+		
+		
+		
+		do_and_measure(Platform_CheckInputs);
+
+		do_and_measure(Error_Throw);
+	
+		do_and_measure(Commandstorage_GetCommands);
+				
+		do_and_measure(ScriptCtrl_Run);
+
+		if(g_UpdateLed > 2)
+		{		  
+			do_and_measure(Ledstrip_DoFade);
+			
+			do_and_measure(Ledstrip_UpdateRun);
+			
 			Timer4InterruptLock();
-			g_UpdateLed--;
+			g_UpdateLed = 0;
 			Timer4InterruptUnlock();
+			
 		}
 		Timer_StopStopwatch(eMAIN);
 	}
@@ -175,13 +196,18 @@ void InitAll()
 	init_x86();
 #endif /* #ifdef X86 */
 	
-	// *** send ready after init
+	Platform_AllowInterrupts();
+	Platform_DisableBootloaderAutostart();
+	
+	UART_SendString("Wait");
+	
+	/* Startup Wait-Time 2s
+	 * to protect Wifly-Modul from errors*/
+	gScriptBuf.waitValue = 500;
+	
 	UART_Send('R');
 	UART_Send('D');
 	UART_Send('Y');
-	
-	Platform_AllowInterrupts();
-	Platform_DisableBootloaderAutostart();
 }
 
 #ifdef __CC8E__

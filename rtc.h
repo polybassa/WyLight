@@ -21,16 +21,6 @@
 
 /** Have a look at: http://linux.die.net/man/4/rtc   **/
 
-
-#ifdef X86
-#include <linux/rtc.h>
-#include <sys/ioctl.h>
-
-#define Rtc_Init(x)
-
-struct rtc_time g_RtcTime;
-
-#else
 #define RTC 0xA2		/* IIC-Address of RTC Clock IC */
 
 enum RTC_request{ RTC_SET_TIME, RTC_RD_TIME};
@@ -44,8 +34,8 @@ enum RTC_request{ RTC_SET_TIME, RTC_RD_TIME};
 	uns8 tm_mon;    /* months since January (0 to 11) */
 	uns8 tm_year;   /* years since 1900 */
 	uns8 tm_wday;   /* days since Sunday (0 to 6 Sunday=0) */
-	uns8 tm_yday;   /** NOT SUPPORTED days since January 1 (0 to 365) */
-	uns8 tm_isdst;  /** NOT SUPPORTED Daylight Savings Time */
+//	uns8 tm_yday;   /** NOT SUPPORTED days since January 1 (0 to 365) */
+//	uns8 tm_isdst;  /** NOT SUPPORTED Daylight Savings Time */
 };
 
 
@@ -54,7 +44,6 @@ extern struct rtc_time g_RtcTime;
 
 void Rtc_Init(void); 
 
-uns8 ioctl(uns8 fd,enum RTC_request req,struct rtc_time *pRtcTime);
+void Rtc_Ctl(enum RTC_request req,struct rtc_time *pRtcTime);
 
-#endif /* X86*/
 #endif /*_RTC_H_*/

@@ -22,11 +22,18 @@
 #include "wifly_cmd.h"
 
 enum METHODE{
-	eMAIN,
-	eDO_FADE,
-	eSET_FADE,
-	eSET_COLOR,
-	eSET_RUN,
+	eMAIN,				//00
+	eLedstrip_DoFade,		//01
+	eSET_FADE,			//02
+	eSET_COLOR,			//03
+	eSET_RUN,			//04
+	eLedstrip_UpdateRun,		//05
+	eLedstrip_UpdateLed,		//06
+	eCommandstorage_GetCommands,	//07
+	eScriptCtrl_Run,		//08
+	ePlatform_CheckInputs,		//09
+	eError_Throw,			//10
+	eTIMER_WAIT,			//11
 	enumSIZE //!!! MUST be the last element of the enum
 } enumMethode;
 
@@ -67,13 +74,24 @@ void Timer_PrintCycletime(void);
 #ifdef __CC8E__
 #define Timer1Interrupt(x) TMR1IF = 0;
 #define Timer2Interrupt(x) TMR2IF = 0;
+#define Timer3Interrupt(x) TMR3IF = 0;
 #define Timer4Interrupt(x) TMR4IF = 0;
+#define Timer5Interrupt(x) TMR5IF = 0;
+
+#define Timer1Enable(x) TMR1ON = 1;
+#define Timer1Disable(x) TMR1ON = 0;
+
+#define Timer4Enable(x) TMR4ON = 1;
+#define Timer4Disable(x) TMR4ON = 0;
+
 #define Timer4InterruptLock(x) TMR4IE = 0;
 #define Timer4InterruptUnlock(x) TMR4IE = 1;
 #else
 #define Timer1Interrupt(x)
 #define Timer2Interrupt(x)
+#define Timer3Interrupt(x)
 #define Timer4Interrupt(x)
+#define Timer5Interrupt(x)
 #define Timer4InterruptLock(x)
 #define Timer4InterruptUnlock(x)
 #endif

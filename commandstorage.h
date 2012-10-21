@@ -28,20 +28,17 @@
 #include "timer.h"
 #include "wifly_cmd.h"
 
-#define CMD_POINTER_ADDRESS 0x3fd		// *** Address at EERPOM. Commandpointer indicates the nummer of commands
-#define LOOP_POINTER_ADDRESS 0x3fb // *** Address at EEPROM. CommandLoopPointer indicates the next command. Used in Loop-Mode
+#define CMDFRAMELENGTH NUM_OF_LED*3+5
 
 //*********************** STRUCT DECLARATION *********************************************
 struct CommandBuffer{
-	uns16 WaitValue;
     uns8 cmd_counter;
     uns8 frame_counter;
-    uns8 cmd_buf[FRAMELENGTH];
+    uns8 cmd_buf[CMDFRAMELENGTH];
     uns8 CrcH;
     uns8 CrcL;
-	uns8 LoopMode:1;
 };
-extern struct CommandBuffer g_CmdBuf;
+extern bank7 struct CommandBuffer g_CmdBuf;
 
 //*********************** METHODS AND MACROS *********************************************
 #define CmdWidth sizeof(struct led_cmd)	// *** Number of Bytes for one command
@@ -80,12 +77,6 @@ void Commandstorage_ExecuteCmd(struct led_cmd* pCmd);
 *** Initialize commandstorage in eeprom
 **/
 void Commandstorage_Init();
-
-#define Commandstorage_WaitInterrupt(x) \
-		do { \
-			if(g_CmdBuf.WaitValue != 0) \
-				g_CmdBuf.WaitValue--; \
-		} while(0) 
 
 #endif /* #ifndef _COMMANDSTORAGE_H_ */
 

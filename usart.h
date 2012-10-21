@@ -31,6 +31,8 @@ void UART_Send(unsigned char ch);
 void UART_SendString(const char *string);
 void UART_SendArray(uns8 *array, uns8 length);
 void UART_SendNumber(uns8 input, uns8 sign);
+void UART_SendHex_8(uns8 input);
+void UART_SendHex_16(uns16 input);
 
 
 #endif

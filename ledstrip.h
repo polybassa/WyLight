@@ -39,11 +39,12 @@ struct LedBuffer{
 	uns8 step[NUM_OF_LED / 8 * 3];
 	uns16 fadeTmms;
 	struct status_bits{
-		uns8 processing_of_data : 1;
 		uns8 run_aktiv : 1;
 		uns8 run_direction : 1;    // 1==left, 0==right
 	} flags;
 };
+
+extern bank10 struct LedBuffer gLedBuf;
 
 /**
  * Initialize the ledstrip and all associated variables
@@ -84,17 +85,16 @@ void Ledstrip_SetRun(struct cmd_set_run *pCmd);
  * called by the main cycle
  * update the ledstrip accourding to the precalculated parameters in <gLedBuf>
  */
-void Ledstrip_DoFade(void);
-
 /**
  * callback for the fadecycle timer
  * updates cyclesLeft part of the global <gLedBuf>
 **/
-void Ledstrip_UpdateFade(void);
+void Ledstrip_DoFade(void);
 
 void Ledstrip_UpdateRun(void);
 
-void Ledstrip_TerminateRun(void);
+void Ledstrip_UpdateLed(void);
+
 /**
  * returns a number of current running fades
  * returns 0 if no fade is running

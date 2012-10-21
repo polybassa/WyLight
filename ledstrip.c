@@ -23,7 +23,7 @@
 #include "MATH16.H"
 #endif /* #ifdef __CC8E__ */
 
-bank1 struct LedBuffer gLedBuf;
+bank10 struct LedBuffer gLedBuf;
 
 /**
  * Since we often work with a rotating bitmask which is greater
@@ -120,31 +120,38 @@ void Ledstrip_Init(void)
 		i--;
 		gLedBuf.led_array[i] = 0;
 	} while(0 != i);
+	
 	i = sizeof(gLedBuf.delta);
 	do {
 		i--;
 		gLedBuf.delta[i] = 0;
 	} while(0 != i);
+	
 	i = sizeof(gLedBuf.cyclesLeft);
 	do {
 		i--;
 		gLedBuf.cyclesLeft[i] = 0;
 	} while(0 != i);
+	
 	i = sizeof(gLedBuf.periodeLength);
 	do {
 		i--;
 		gLedBuf.periodeLength[i] = 0;
 	} while(0 != i);
+	
 	i = sizeof(gLedBuf.step);
 	do {
 		i--;
 		gLedBuf.step[i] = 0;
 	} while(0 != i);
+	
+	gLedBuf.fadeTmms = 0;
+	gLedBuf.flags.run_aktiv = 0;
+	gLedBuf.flags.run_direction = 0;
 }
 
 void Ledstrip_SetColor(struct cmd_set_color *pCmd)
 {
-	gLedBuf.flags.processing_of_data = TRUE;
 	uns8 r = pCmd->red;
 	uns8 g = pCmd->green;
 	uns8 b = pCmd->blue;
@@ -167,12 +174,10 @@ void Ledstrip_SetColor(struct cmd_set_color *pCmd)
 			k++;k++;
 		}
 	);
-	gLedBuf.flags.processing_of_data = FALSE;
 }
 
 void Ledstrip_SetColorDirect(uns8 *pValues)
 {
-	gLedBuf.flags.processing_of_data = TRUE;
 	uns8 k, temp;
 	for(k = 0; k < (NUM_OF_LED * 3); k++)
 	{
@@ -182,21 +187,24 @@ void Ledstrip_SetColorDirect(uns8 *pValues)
 		gLedBuf.cyclesLeft[k] = 0;
 		gLedBuf.delta[k] = 0;
 	}
-	gLedBuf.flags.processing_of_data = FALSE;
 }
 
 void Ledstrip_DoFade(void)
 {
-	if(gLedBuf.flags.processing_of_data)
-	{
-		return;
-	}
-	gLedBuf.flags.processing_of_data = TRUE;
-	
 	uns8 k, stepmask;
 	uns8* stepaddress = gLedBuf.step;
 	stepmask = 0x01;
 	uns16 periodeLength;
+	
+	/* Update cyclesLeft Value for all LED's */
+	
+	for(k = 0; k < NUM_OF_LED * 3; k++)
+	{
+		if((gLedBuf.delta[k] > 0) && (gLedBuf.cyclesLeft[k] > 0))
+		{
+			gLedBuf.cyclesLeft[k]--;	
+		}
+	}
 	
 	for(k = 0; k < (NUM_OF_LED * 3); k++)
 	{
@@ -217,16 +225,16 @@ void Ledstrip_DoFade(void)
 		}
 		INC_BIT_COUNTER(stepaddress, stepmask);
 	}
+	
+}
 
-	// write changes to ledstrip
+void Ledstrip_UpdateLed(void)
+{
 	SPI_SendLedBuffer(gLedBuf.led_array);
-	gLedBuf.flags.processing_of_data = FALSE;
 }
 
 void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 {
-	gLedBuf.flags.processing_of_data = TRUE;
-	
 	// constant for this fade used in CALC_COLOR
 	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
 
@@ -255,32 +263,10 @@ void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 			INC_BIT_COUNTER(stepAddress, stepMask);
 		}
 	);
-	gLedBuf.flags.processing_of_data = FALSE;
 }
-
-void Ledstrip_UpdateFade(void)
-{
-	if(gLedBuf.flags.processing_of_data)
-	{
-		return;
-	}
-	gLedBuf.flags.processing_of_data = TRUE;
-	uns8 i;
-	for(i = 0; i < NUM_OF_LED * 3; i++)
-	{
-		if((gLedBuf.delta[i] > 0) && (gLedBuf.cyclesLeft[i] > 0))
-		{
-			gLedBuf.cyclesLeft[i]--;		
-		}
-	}
-	gLedBuf.flags.processing_of_data = FALSE;
-}
-
 
 void Ledstrip_SetRun(struct cmd_set_run *pCmd)
 {
-	gLedBuf.flags.processing_of_data = TRUE;
-	
 	gLedBuf.fadeTmms = ntohs(pCmd->fadeTmms);
 	
 	if(pCmd->direction > 0)
@@ -293,7 +279,6 @@ void Ledstrip_SetRun(struct cmd_set_run *pCmd)
 	}
 	
 	gLedBuf.flags.run_aktiv = 1;
-	gLedBuf.flags.processing_of_data = 0;
 }
 
 void Ledstrip_UpdateRun(void)
@@ -303,7 +288,7 @@ void Ledstrip_UpdateRun(void)
 		return;
 	}
 	/* terminate run when wait is stopped */
-	if(g_CmdBuf.WaitValue == 0)
+	if(gScriptBuf.waitValue == 0)
 	{
 		gLedBuf.flags.run_aktiv = FALSE;
 		return;
@@ -313,9 +298,7 @@ void Ledstrip_UpdateRun(void)
 	{
 		return;
 	}
-	
-	gLedBuf.flags.processing_of_data = TRUE;
-	
+		
 	const uns16 fadeTmms = gLedBuf.fadeTmms;
 	uns8* stepAddress = gLedBuf.step;
 	uns8 stepMask = 0x01;
@@ -381,6 +364,5 @@ void Ledstrip_UpdateRun(void)
 		k++;
 		CALC_COLOR(red);
 	}
-	gLedBuf.flags.processing_of_data = 0;
 }
 

@@ -19,15 +19,12 @@
 #ifndef _SPI_H_
 #define _SPI_H_
 
-//Nils Weiﬂ 
-//20.04.2012
-//Compiler CC5x
 
 #include "ledstrip.h"
 
 void SPI_Init();
-char SPI_Send(char data);
-void SPI_SendArray(char *array, char length);
+uns8 SPI_Send(uns8 data);
+void SPI_SendArray(uns8 *array, uns8 length);
 void SPI_SendLedBuffer(uns8 *array);
 
 #endif

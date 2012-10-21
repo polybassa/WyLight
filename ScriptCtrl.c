@@ -63,7 +63,7 @@
 uns8 ScriptCtrl_Write(struct led_cmd* pCmd);
 
 /* private globals */
-struct ScriptBuf gScriptBuf;
+bank5 struct ScriptBuf gScriptBuf;
 struct led_cmd nextCmd;
 
 uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
@@ -99,6 +99,10 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 			Trace_String("\n");
 			return ScriptCtrl_Write(pCmd);
 		}
+		case WAIT:
+		{
+			return ScriptCtrl_Write(pCmd);
+		}
 		case START_BL:
 			Trace_String("Leaving Application --> Starting Bootloader");
 			Eeprom_Write(0x3ff, 0xff);
@@ -107,13 +111,10 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 			return FALSE;
 #ifndef X86
 /* TODO multiple things!
- - DISPLAY_RTC is only a debug command, isn't it? -> remove or replace UART_Send with Trace_
- - ioctl interface seems a little strange, fd is not necessary 
- - don't access anonymous bytes(cmd_buf[x]) -> add a struct to wifly_cmd.h and cmd_frame */
+ - DISPLAY_RTC is only a debug command, isn't it? -> remove or replace UART_Send with Trace_*/
 		case DISPLAY_RTC:
 		{
-			uns8 fd;
-			ioctl(fd, RTC_RD_TIME, &g_RtcTime);
+			Rtc_Ctl(RTC_RD_TIME, &g_RtcTime);
 			UART_SendNumber(g_RtcTime.tm_year,'Y');
 			UART_SendNumber(g_RtcTime.tm_mon,'M');
 			UART_SendNumber(g_RtcTime.tm_mday,'D');
@@ -123,37 +124,35 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 			UART_SendNumber(g_RtcTime.tm_sec,'s');
 			UART_Send(0x0d);
 			UART_Send(0x0a);
-			return FALSE;
+			return TRUE;
 		}
 		case GET_RTC:
 		{
-			uns8 fd;
-			ioctl(fd, RTC_RD_TIME, &g_RtcTime);
-			UART_Send(g_RtcTime.tm_year);
-			UART_Send(g_RtcTime.tm_mon);
-			UART_Send(g_RtcTime.tm_mday);
-			UART_Send(g_RtcTime.tm_wday);
-			UART_Send(g_RtcTime.tm_hour);
-			UART_Send(g_RtcTime.tm_min);
+			Rtc_Ctl(RTC_RD_TIME, &g_RtcTime);
 			UART_Send(g_RtcTime.tm_sec);
-			return FALSE;
+			UART_Send(g_RtcTime.tm_min);
+			UART_Send(g_RtcTime.tm_hour);
+			UART_Send(g_RtcTime.tm_mday);
+			UART_Send(g_RtcTime.tm_mon);
+			UART_Send(g_RtcTime.tm_year);
+			UART_Send(g_RtcTime.tm_wday);
+			return TRUE;
 		}
 		case SET_RTC:
 		{
-			uns8 fd;
-			g_RtcTime.tm_year = g_CmdBuf.cmd_buf[3];
-			g_RtcTime.tm_mon = g_CmdBuf.cmd_buf[4];
-			g_RtcTime.tm_mday = g_CmdBuf.cmd_buf[5];
-			g_RtcTime.tm_wday = g_CmdBuf.cmd_buf[6];
-			g_RtcTime.tm_hour = g_CmdBuf.cmd_buf[7];
-			g_RtcTime.tm_min = g_CmdBuf.cmd_buf[8];
-			g_RtcTime.tm_sec = g_CmdBuf.cmd_buf[9];
-			ioctl(fd, RTC_SET_TIME, &g_RtcTime);
+			g_RtcTime.tm_year = pCmd->data.set_rtc.tm_year;
+			g_RtcTime.tm_mon = pCmd->data.set_rtc.tm_mon;
+			g_RtcTime.tm_mday = pCmd->data.set_rtc.tm_mday;
+			g_RtcTime.tm_wday = pCmd->data.set_rtc.tm_wday;
+			g_RtcTime.tm_hour = pCmd->data.set_rtc.tm_hour;
+			g_RtcTime.tm_min = pCmd->data.set_rtc.tm_min;
+			g_RtcTime.tm_sec = pCmd->data.set_rtc.tm_sec;
+			Rtc_Ctl(RTC_SET_TIME, &g_RtcTime);
 			return TRUE;
 		}
 		case SET_COLOR_DIRECT:
 		{
-			Ledstrip_SetColorDirect(&g_CmdBuf.cmd_buf[3]);
+			Ledstrip_SetColorDirect(&pCmd->data.set_color_direct.ptr_led_array);
 			Trace_String("GV");
 			return TRUE;
 		}	
@@ -178,6 +177,7 @@ void ScriptCtrl_Clear(void)
 	ScriptBufSetRead(EEPROM_SCRIPTBUF_BASE);
 	ScriptBufSetWrite(EEPROM_SCRIPTBUF_BASE);
 	gScriptBuf.execute = gScriptBuf.read;
+	gScriptBuf.waitValue = 0;
 	gScriptBuf.isClearing = FALSE;
 }
 
@@ -196,7 +196,12 @@ void ScriptCtrl_Run(void)
 	{
 		ScriptCtrl_Clear();
 	}
-
+#ifndef X86	
+	if(gScriptBuf.waitValue > 0)
+	{
+		return;
+	}
+#endif /* #ifndef X86 */	
 	/* cmd available? */
 	if(gScriptBuf.execute == gScriptBuf.write)
 	{
@@ -278,6 +283,10 @@ void ScriptCtrl_Run(void)
 		case SET_FADE:
 		{
 			Ledstrip_SetFade(&nextCmd.data.set_fade);
+			if(nextCmd.data.set_fade.parallelFade == 0)
+			{
+				gScriptBuf.waitValue = nextCmd.data.set_fade.fadeTmms;
+			}
 			/* move execute pointer to the next command */
 			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
 			if(!gScriptBuf.inLoop)
@@ -291,9 +300,15 @@ void ScriptCtrl_Run(void)
 		case SET_RUN: 
 		{
 			Timer_StartStopwatch(eSET_RUN);
-			g_CmdBuf.WaitValue = nextCmd.data.set_run.durationTmms;
+			gScriptBuf.waitValue = nextCmd.data.set_run.durationTmms;
 			Ledstrip_SetRun(&nextCmd.data.set_run);
 			Timer_StopStopwatch(eSET_RUN);
+			/* move execute pointer to the next command */
+			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
+			if(!gScriptBuf.inLoop)
+			{
+				ScriptBufSetRead(gScriptBuf.execute);
+			}
 			break;
 		}
 #endif /* #ifndef X86 */
@@ -301,6 +316,12 @@ void ScriptCtrl_Run(void)
 		{
 			/* TODO we should disable interrupts while changing waitValue */
 			gScriptBuf.waitValue = nextCmd.data.wait.waitTmms;
+			/* move execute pointer to the next command */
+			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
+			if(!gScriptBuf.inLoop)
+			{
+				ScriptBufSetRead(gScriptBuf.execute);
+			}
 			break;
 		}
 	}	

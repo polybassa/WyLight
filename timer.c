@@ -100,20 +100,36 @@ void date_timer_init(void)
 	} while(0 != i);
 }
 
+
 void Timer_Init()
 {	
 #ifdef __CC8E__
-	T1CON = 0b00110111;
-	TMR1IE = 1;
+	/*
+	 * T1 Interrupt every 10 Millisecounds if clock is 64MHz
+	 * Calculation
+	 * 64000000 Hz / 4 / 8 / 65536
+	 * T1 Interrupt occures with a frequency of 30 Hz.
+	 * This is used to update the ledstrip with the current colorvalue
+	 */
+	T1CON = 0b00100111;
+	TMR1IE = TRUE;
 	
+	/*
+	 * T5 Interrupt every 30 Millisecounds if clock is 64MHz
+	 * Calculation
+	 * 64000000 Hz / 4 / 8 / (0xffff - 0xb1df)
+	 * 64000000 Hz / 4 / 4 / 65536
+	 */
+	T5CON = 0b00100111;
+	TMR5IE = 0;
 	/* 
-	** T4 Interrupt every 1 Millisecound if clock is 64MHz
+	** T4 Interrupt every 4 Millisecound if clock is 64MHz
 	** Calculation
-	** 64000000 Hz / 4 / 16 / 100 / 10
+	** 64000000 Hz / 4 / 16 / 250 / 16
 	*/
-	T4CON = 0b01001111;
-	TMR4IE = 1;
-	PR4 = 100;
+	T4CON = 0b01111111;
+	TMR4IE = TRUE;
+	PR4 = 250;
 	
 	/* 
 	** T2 Interrupt every 0.5 Millisecound if clock is 64MHz
@@ -121,11 +137,13 @@ void Timer_Init()
 	** 64000000 Hz / 4 / 16 / 75 / 10
 	*/
 	T2CON = 0b01001111;
-	TMR2IE = 1;
+	TMR2ON = 0;
+	TMR2IE = 0;
 	PR2 = 75;
 	
 	/*
 	** T3 Modul count with a frequency of 2MHz
+	** T3 is used as PerformanceCounter
 	** Calculation:
 	** 64MHz / 4 / 8
 	*/
@@ -170,17 +188,19 @@ void Timer_PrintCycletime(void)
 {
 	uns8 i;
 	uns16 temp16;
+	UART_Send(0x0d);
+	UART_Send(0x0a);
 	for(i = 0; i < enumSIZE; i++)
 	{
 		temp16 = g_CycleTimeBuffer.maxCycleTime[i]; 
+		temp16 = temp16 >> 1;
 		UART_SendString("Zeitwert ");
 		UART_SendNumber(i,':');
 #ifdef X86
 		UART_SendNumber((uns8)(temp16 >> 8),'H');
 		UART_SendNumber((uns8)(temp16 & 0xff),'L');
 #else
-		UART_SendNumber(temp16.high8,'H');
-		UART_SendNumber(temp16.low8,'L');
+		UART_SendHex_16(temp16);
 #endif /* #ifdef X86_SRC */
 		UART_SendString(" µS in HEX ");
 		UART_Send(0x0d);

@@ -42,4 +42,4 @@ BlRequest_ut.bin: BlRequest_ut.cpp BlRequest.cpp BlRequest.h unittest.h
 test: BlRequest_ut.bin crc_ut.bin ScriptCtrl_ut.bin
 
 clean:
-	rm -rf *.asm *.bin *.cod *.fcs *.hex *.lst *.occ *.var .metadata/ ${ANDROID_BIN}
+	rm -rf *.asm *.bin *.cod *.fcs *.hex *.lst *.occ *.var .metadata/ ${ANDROID_BIN}					

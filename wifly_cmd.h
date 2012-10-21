@@ -1,3 +1,4 @@
+
 /**
  Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
@@ -20,6 +21,7 @@
 #define _WIFLY_CMD_H_
 
 #include "platform.h"
+#include "rtc.h"
 
 //*********************** ENUMERATIONS *********************************************
 #define STX 0xFF
@@ -33,7 +35,7 @@
 #define LOOP_ON 0xF7
 #define LOOP_OFF 0xF6
 #define START_BL 0xF5
-#define SET_RTC 0xF4 			/* FRAME: <STX><LEN><SET_RTC><YEAR><MONTH><DAY><WDAY><HOUR><MIN><SEC><CRC><CRC> */
+#define SET_RTC 0xF4 			/* FRAME: <STX><LEN><SET_RTC><SEC><MIN><HOUR><DAY><MONTH><YEAR><WDAY><CRC><CRC> */
 #define GET_RTC 0xF3
 #define DISPLAY_RTC 0xF2
 #define SET_COLOR_DIRECT 0xF1
@@ -59,7 +61,6 @@ struct cmd_set_color {
 	uns8 red;
 	uns8 green;
 	uns8 blue;
-	uns8 reserved[2];
 };
 
 #ifdef X86
@@ -70,6 +71,7 @@ struct cmd_set_fade {
 	uns8 red;
 	uns8 green;
 	uns8 blue;
+	uns8 parallelFade;
 	uns16 fadeTmms; //fadetime in ms
 };
 
@@ -82,14 +84,16 @@ struct cmd_loop_end {
 
 struct cmd_wait {
 	uns16 waitTmms;
-	uns8 reserved[7];
 };
 
 struct cmd_set_run {
 	uns8 direction;
 	uns16 durationTmms;
 	uns16 fadeTmms;
-	uns8 reserved[4];
+};
+
+struct cmd_set_color_direct {
+	uns8 ptr_led_array;
 };
 
 struct led_cmd {
@@ -101,6 +105,8 @@ struct led_cmd {
 		struct cmd_set_run set_run;
 		struct cmd_wait wait;
 		struct cmd_loop_end loopEnd;
+		struct rtc_time set_rtc;
+		struct cmd_set_color_direct set_color_direct;
 	}data;
 };
 

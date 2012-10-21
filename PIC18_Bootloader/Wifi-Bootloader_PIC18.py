@@ -109,18 +109,12 @@ def clean_data(string):
     str2 = bytearray()
     dle_flag = bool()
     
-    ''' 
-    for c in string:
-        print "%#x" % ord(c)
-    '''
-
-    
     ''' Bitte lese die Protokollbeschreibung (01310a.pdf) Seite 19; Control Characters
         Bevor die Daten 'gesäubert' werden können, muss festgestellt werden, wo die CRC Checksumme beginnt
         Falls vor der CRC 'DLE' steht, muss die Länge um 1 erhöht werden, da DLE das Makierungszeichen für
         Steuerzeichen ist '''
     
-    if ord(string[string.__len__()-3]) == DLE:
+    if string[string.__len__()-3] == DLE:
         crc_offset = 4
     else:
         crc_offset = 3
@@ -346,22 +340,36 @@ def kill_app():
 def recv_frame():
     
     recv_data = bytearray()
+    temp_data = bytearray()
+    
     etx_flag = bool()
     etx_flag = 0
     stx_flag = bool()
     stx_flag = 0
-    while (recv_data.__len__() < 5) & (etx_flag == 0) & (stx_flag == 0):
+    
+    while (recv_data.__len__() < 4) & (etx_flag == 0) & (stx_flag == 0):
         try:
-            recv_data = s.recv(BUFFER_SIZE)
+            temp_data = s.recv(BUFFER_SIZE)
         except socket.timeout:
             print "x"
-            recv_data = ""
-        
-        if recv_data.__len__() > 2:
+            temp_data = ""
+        '''
+        print "Länge"
+        print temp_data.__len__()
+        '''
+        if temp_data.__len__() > 0:
+            for b in temp_data:
+                recv_data.append(b)
+
+        if recv_data.__len__() > 3:
             if (recv_data[recv_data.__len__() - 1] == ETX) & (recv_data[recv_data.__len__() - 2] != DLE):
                 etx_flag = 1
             if recv_data[0] == STX:
                 stx_flag = 1
+    '''
+    for b in recv_data:
+        print "%#x" % b
+    '''
 
     return recv_data
 
@@ -378,6 +386,7 @@ def erase_flash():
         return -1
     
     detect_bootloader()
+            #detect_bootloader()
     
     print "-----------------------------------------------"
     print "ERASE DEVICE FLASH"
@@ -544,15 +553,15 @@ def print_eeprom(flash_arr):
 #sowie die Checksumme enthalten. Unbearbeitete Mikrocontrollerantwort.
 #(Funktion clean_data darf auf diesem String noch nicht ausgeführt worden sein)
 def check_crc(string):
-    '''    
+    ''' 
     print "Komplette Daten:"
     for c in string:
         print "%#x" % ord(c)
     print "_________________________"
     print "Rohdaten:"
     for c in clean_data(string):
-        print "%#x" % ord(c)
-    '''
+        print "%#x" % ord(c) ''' 
+   
     
     crc = crc16.crc16xmodem(clean_data(string), 0x0000)    
     crc_arr = bytearray()
@@ -562,7 +571,8 @@ def check_crc(string):
     recv_str_w_CRC = clean_data_w_CRC(string)
     recv_crcH = recv_str_w_CRC[recv_str_w_CRC.__len__()-1]
     recv_crcL = recv_str_w_CRC[recv_str_w_CRC.__len__()-2]
-    '''    
+    
+    '''
     print "Empfangene CRC"
     print "%#x" % ord(recv_crcH)
     print "%#x" % ord(recv_crcL)
@@ -571,6 +581,7 @@ def check_crc(string):
     print "%#x" % crc_arr[0]
     print "%#x" % crc_arr[1]
     '''
+    
     if (crc_arr[0] == ord(recv_crcL)) & (crc_arr[1] == ord(recv_crcH)):
         return 1
     else:
@@ -586,27 +597,25 @@ def build_send_str(string):
     
     crc = crc16.crc16xmodem(str(string), 0x0000)
     
-    str_arr.append(0x0f)
+    str_arr.append(STX)
     
     for c in string:
-        if (c == 0x05)|(c == 0x0f)|(c == 0x04):
-            str_arr.append(0x05)
+        if (c == DLE)|(c == STX)|(c == ETX):
+            str_arr.append(DLE)
         str_arr.append(c)
     
     crcH = (crc >> 0 & 0xff)
     crcL = (crc >> 8 & 0xff) 
 
-    if (crcH == 0x05)|(crcH == 0x0f)|(crcH == 0x04):
-            str_arr.append(0x05)
+    if (crcH == DLE)|(crcH == STX)|(crcH == ETX):
+            str_arr.append(DLE)
     str_arr.append(crcH)
 
-    if (crcL == 0x05)|(crcL == 0x0f)|(crcL == 0x04):
-        str_arr.append(0x05)
+    if (crcL == DLE)|(crcL == STX)|(crcL == ETX):
+        str_arr.append(DLE)
     str_arr.append(crcL)
 
-
-
-    str_arr.append(0x04)
+    str_arr.append(ETX)
 
         #for c in str_arr:
             #print hex(c)
