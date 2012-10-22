@@ -42,7 +42,7 @@ struct CycleTimeBuffer{
 	uns16 tempCycleTime[enumSIZE];
 };
 
-extern struct CycleTimeBuffer g_CycleTimeBuffer;
+extern bank3 struct CycleTimeBuffer g_CycleTimeBuffer;
 
 void Timer_Init();
 // a day has 86400 seconds, we are updating our counter in 2 sec steps

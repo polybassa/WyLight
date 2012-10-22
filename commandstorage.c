@@ -23,7 +23,7 @@
 #include "rtc.h"
 #include "trace.h"
 
-bank7 struct CommandBuffer g_CmdBuf;
+bank2 struct CommandBuffer g_CmdBuf;
 
 void Commandstorage_GetCommands()
 {	
@@ -99,7 +99,7 @@ void Commandstorage_GetCommands()
 					{
 						Trace_String("GC");
 #ifndef X86
-                            UART_SendString("GC");
+						UART_SendString("GC");
 #endif
 					}
 					else

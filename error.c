@@ -30,18 +30,18 @@ void Error_Throw()
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
 		Commandstorage_Clear();
-		UART_SendString(" ERROR: Receivebuffer full");
+		UART_SendString("E:03; ERROR: Receivebuffer full");
 		// *** Re-init the Ringbuffer to get a consistent commandstring and reset error
 		RingBuf_Init();
 	}
 	if(g_ErrorBits.CrcFailure)
 	{
-		UART_SendString(" ERROR:Crc-Check failed");
+		UART_SendString("E:02; ERROR:Crc-Check failed");
 		g_ErrorBits.CrcFailure = 0;
 	}
 	if(g_ErrorBits.EepromFailure)
 	{
-		UART_SendString(" ERROR: EEPROM is full");
+		UART_SendString("E:01; ERROR: EEPROM is full");
 		g_ErrorBits.EepromFailure = 0;
 	}
 }

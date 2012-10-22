@@ -44,7 +44,7 @@ struct LedBuffer{
 	} flags;
 };
 
-extern bank10 struct LedBuffer gLedBuf;
+extern struct LedBuffer gLedBuf;
 
 /**
  * Initialize the ledstrip and all associated variables
