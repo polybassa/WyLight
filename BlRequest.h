@@ -73,8 +73,6 @@ struct BlInfo  {
 	unsigned char deviceIdLow;
 	unsigned char deviceIdHigh;
 #endif
-	unsigned char crcLow;
-	unsigned char crcHigh;
 };
 
 struct BlEepromReadRequest : public BlRequest {
@@ -96,7 +94,7 @@ struct BlEepromReadRequest : public BlRequest {
 
 struct BlFlashCrc16Request : public BlRequest {
 		BlFlashCrc16Request(unsigned int address, unsigned short numBlocks)
-		: BlRequest(8, 0x02), zero(0x00)
+		: BlRequest(6, 0x02), zero(0x00)
 		{
 			addressLow = static_cast<unsigned char>(address & 0x000000FF);
 			addressHigh = static_cast<unsigned char>((address & 0x0000FF00) >> 8);
@@ -111,13 +109,11 @@ struct BlFlashCrc16Request : public BlRequest {
 		const unsigned char zero;
 		unsigned char numBlockLow;
 		unsigned char numBlocksHigh;
-		unsigned char crcLow;
-		unsigned char crcHigh;
 };
 
 struct BlFlashEraseRequest : public BlRequest {
 		BlFlashEraseRequest(unsigned int endAddress, unsigned char numFlashPages)
-		: BlRequest(6, 0x03), zero(0x00), numPages(numFlashPages)
+		: BlRequest(5, 0x03), zero(0x00), numPages(numFlashPages)
 		{
 			endAddressLow = static_cast<unsigned char>(endAddress & 0x000000FF);
 			endAddressHigh = static_cast<unsigned char>((endAddress & 0x0000FF00) >> 8);
@@ -129,13 +125,11 @@ struct BlFlashEraseRequest : public BlRequest {
 		unsigned char endAddressU;
 		const unsigned char zero;
 		unsigned char numPages;
-		unsigned char crcLow;
-		unsigned char crcHigh;
 };
 
 struct BlFlashReadRequest : public BlRequest {
 		BlFlashReadRequest(unsigned int address, unsigned short numBytes)
-		: BlRequest(8, 0x01), zero(0x00)
+		: BlRequest(6, 0x01), zero(0x00)
 		{
 			addressLow = static_cast<unsigned char>(address & 0x000000FF);
 			addressHigh = static_cast<unsigned char>((address & 0x0000FF00) >> 8);
@@ -150,19 +144,13 @@ struct BlFlashReadRequest : public BlRequest {
 		const unsigned char zero;
 		unsigned char numBytesLow;
 		unsigned char numBytesHigh;
-		unsigned char crcLow;
-		unsigned char crcHigh;
 };
 
 struct BlInfoRequest : public BlRequest {
-	BlInfoRequest() : BlRequest(2, 0x00), crcLow(0), crcHigh(0) {};
-	const unsigned char crcLow;
-	const unsigned char crcHigh;
+	BlInfoRequest() : BlRequest(0, 0x00) {};
 };
 
 struct BlRunAppRequest : public BlRequest {
-	BlRunAppRequest() : BlRequest(2, 0x08), crcLow(0), crcHigh(0) {};
-	const unsigned char crcLow;
-	const unsigned char crcHigh;
+	BlRunAppRequest() : BlRequest(0, 0x08) {};
 };
 #endif /* #ifndef _BL_REQUEST_H_ */

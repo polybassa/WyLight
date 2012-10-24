@@ -56,12 +56,12 @@ void WiflyControl::Receiving() const
 {
 	unsigned char buffer[2048];
 	int bytesReceived;
-	std::cout << "Receiving..." << endl;
+	cout << "Receiving..." << endl;
 	for(;;)
 	{
 		bytesReceived = mSock->Recv(buffer, sizeof(buffer) - 1);
 		buffer[sizeof(buffer) - 1] = '\0';
-		std::cout << "Trace " << bytesReceived << " bytes: >>" << buffer << "<<" << std::endl;
+		cout << "Trace " << bytesReceived << " bytes: >>" << buffer << "<<" << endl;
 	}
 }
 
@@ -85,7 +85,7 @@ void WiflyControl::AddColor(unsigned long addr, unsigned long rgba, unsigned cha
 	assert(sizeof(mCmdFrame) == bytesWritten);
 }
 
-void WiflyControl::AddColor(std::string& addr, std::string& rgba, unsigned char hour, unsigned char minute, unsigned char second)
+void WiflyControl::AddColor(string& addr, string& rgba, unsigned char hour, unsigned char minute, unsigned char second)
 {
 	AddColor(ToRGBA(addr), ToRGBA(rgba) << 8, hour, minute, second);
 }
@@ -96,6 +96,7 @@ size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	size_t bytesReceived = proxy.Send(req, buffer, sizeof(buffer));
 
+	cout << __FILE__ << "::" << __FUNCTION__ << "(): " << bytesReceived << ":" << sizeof(BlInfo) << endl;
 	if(responseSize == bytesReceived)
 	{
 		memcpy(pResponse, buffer, responseSize);
@@ -130,7 +131,7 @@ void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
 	mCmdFrame.led.data.set_color.blue = (rgba & 0x0000ff00) >> 8;
 	int bytesWritten = mSock->Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
 #ifdef DEBUG
-	std::cout << "Send " << bytesWritten << " bytes "
+	cout << "Send " << bytesWritten << " bytes "
 		<< addr << " | "
 		<< (int)mCmdFrame.led.data.set_color.addr[0] << " "
 		<< (int)mCmdFrame.led.data.set_color.addr[1] << " "
@@ -139,13 +140,13 @@ void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
 		<< (int)mCmdFrame.led.data.set_color.red << " "
 		<< (int)mCmdFrame.led.data.set_color.green << " "
 		<< (int)mCmdFrame.led.data.set_color.blue
-		<< std::endl;
+		<< endl;
 #else
 	assert(sizeof(mCmdFrame) == bytesWritten);
 #endif
 }
 
-void WiflyControl::SetColor(string& addr, std::string& rgba)
+void WiflyControl::SetColor(string& addr, string& rgba)
 {
 	SetColor(ToRGBA(addr), ToRGBA(rgba) << 8);
 }
@@ -165,7 +166,7 @@ void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned shor
 	mCmdFrame.led.data.set_fade.fadeTmms = htons(fadeTmms);
 	int bytesWritten = mSock->Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
 #ifdef DEBUG
-	std::cout << "Send " << bytesWritten << " bytes "
+	cout << "Send " << bytesWritten << " bytes "
 		<< addr << " | "
 		<< (int)mCmdFrame.led.data.set_fade.addr[0] << " "
 		<< (int)mCmdFrame.led.data.set_fade.addr[1] << " "
@@ -174,23 +175,23 @@ void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned shor
 		<< (int)mCmdFrame.led.data.set_fade.red << " "
 		<< (int)mCmdFrame.led.data.set_fade.green << " "
 		<< (int)mCmdFrame.led.data.set_fade.blue << " : "
-		<< (int)mCmdFrame.led.data.set_fade.fadeTmms << std::endl;
+		<< (int)mCmdFrame.led.data.set_fade.fadeTmms << endl;
 
 		unsigned int tempTmms = 0;
 		do
 		{
 			tempTmms += 1000;
-			std::cout << (int)tempTmms/1000;
-			std::cout.flush();
+			cout << (int)tempTmms/1000;
+			cout.flush();
 			sleep(1); 
 		}while(tempTmms < fadeTmms);
-		std::cout << std::endl;
+		cout << endl;
 #else
 	assert(sizeof(mCmdFrame) == bytesWritten);
 #endif
 }
 
-void WiflyControl::SetFade(string& addr, std::string& rgba, unsigned short fadeTmms)
+void WiflyControl::SetFade(string& addr, string& rgba, unsigned short fadeTmms)
 {
 	SetFade(ToRGBA(addr), ToRGBA(rgba) << 8, fadeTmms);
 }
@@ -202,7 +203,7 @@ unsigned long WiflyControl::ToRGBA(string& s) const
 	// use a stringstream to convert hex ascii string into machine bits
 	unsigned long rgba;
 	stringstream converter;
-	converter << std::hex << s;
+	converter << hex << s;
 	converter >> rgba;
 	cout << rgba << "<" << endl;
 	return rgba;

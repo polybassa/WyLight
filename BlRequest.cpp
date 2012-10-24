@@ -53,6 +53,7 @@ size_t BlProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputL
 	/* skip first character since it is the command type byte */
 	if(++bytesWritten > outputLength) return 0;
 	*pOutput = *pInput;
+	Crc_AddCrc16(*pInput, &crc);
 	pOutput++;
 	pInput++;	
 
@@ -64,8 +65,9 @@ size_t BlProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputL
 	}
 
 	// add crc to output
+	//TODO this byte order should be wrong
+	MaskAndAddByteToOutput((unsigned char)(crc >> 8));
 	MaskAndAddByteToOutput((unsigned char)(crc & 0xff));
-	MaskAndAddByteToOutput((unsigned char)(crc >> 8));	
 	return bytesWritten;
 }
 
@@ -81,6 +83,7 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 	/* skip first character since its the command type byte */
 	size_t bytesWritten = 1;
 	*pOutput = *pInput;
+	Crc_AddCrc16(*pInput, &crc);
 	pOutput++;
 	pInput++;
 
@@ -120,13 +123,16 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 	}
 
 	// check and remove crc
-	Trace_Hex(postNext);
-	Trace_Hex(next);
-	Trace_Hex(crc >> 8);
-	Trace_Hex(crc & 0xff);
-	if(crc != ((postNext << 8) | next))
+	// TODO this switch should be wrong!
+	if(crc != (((unsigned short)next << 8) | (unsigned short)postNext))
+	//if(crc != (((unsigned short)postNext << 8) | (unsigned short)next))
 	{
 		Trace_String(__FUNCTION__);
+		Trace_String(" check crc: ");
+		Trace_Hex(next);
+		Trace_Hex(postNext);
+		Trace_Number(crc, ' ');
+		Trace_Number((((unsigned short)next << 8) | (unsigned short)postNext), ' ');
 		Trace_String(" crc failed\n");
 		return 0;
 	}
@@ -135,6 +141,9 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 
 int BlProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize) const
 {
+	Trace_String("BlProxy::Send: ");
+	Trace_Number(req.GetSize(), ' ');
+	Trace_String("pure bytes\n");
 	return Send(req.GetData(), req.GetSize(), pResponse, responseSize);
 }
 
@@ -146,6 +155,10 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 	unsigned char* pCur = buffer;
 	unsigned char* pNext;
 	const unsigned char* pEnd;;
+
+	/* add leading STX */
+	buffer[0] = BL_STX;
+	bufferSize++;
 
 	/* mask control characters in request and add crc */
 	bufferSize = MaskControlCharacters(pRequest, requestSize, buffer, sizeof(buffer));
@@ -163,6 +176,7 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 	do
 	{
 		/* sync with bootloader */
+		Trace_String("BlProxy::Send: SYNC...\n");
 		mSock->Send(BL_SYNC, sizeof(BL_SYNC));
 		if(0 != mSock->Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS))
 		{
@@ -176,6 +190,7 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 			/* wait for a response? */
 			if((0 == pResponse) || (0 == responseSize))
 			{
+				Trace_String("BlProxy::Send: waiting for no response-> exiting...\n");
 				return 0;
 			}
 
@@ -196,6 +211,7 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 				/* remove BL_ETX from buffer */
 				if(0 == bytesReceived)
 				{
+					Trace_String("BlProxy::Send: no bytes received\n");
 					return 0;
 				}
 				bytesReceived--;
@@ -203,6 +219,7 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 				/* remove BL_DLE and check crc from buffer */
 				return UnmaskControlCharacters(pNext, bytesReceived, pResponse, responseSize);
 			}
+			Trace_String("BlProxy::Send: response to short\n");
  		}
 	}while(0 < --numRetries);
 
