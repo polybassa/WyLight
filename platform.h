@@ -45,6 +45,8 @@
 	extern jmp_buf g_ResetEnvironment;
 
 	#define bank1
+	#define bank2
+	#define bank3
 	#define bank5
 	#define bank6
 	#define bank7
