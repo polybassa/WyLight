@@ -63,7 +63,7 @@
 uns8 ScriptCtrl_Write(struct led_cmd* pCmd);
 
 /* private globals */
-bank5 struct ScriptBuf gScriptBuf;
+struct ScriptBuf gScriptBuf;
 struct led_cmd nextCmd;
 
 uns8 ScriptCtrl_Add(struct led_cmd* pCmd)

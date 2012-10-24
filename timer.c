@@ -20,11 +20,12 @@
 #include "ledstrip.h"
 #include "trace.h"
 #include "usart.h"
+#include "ScriptCtrl.h"
 
-struct CycleTimeBuffer g_CycleTimeBuffer;
+bank3 struct CycleTimeBuffer g_CycleTimeBuffer;
 
 unsigned short gDateTimer;
-bank6 struct date_event gDateEvents[NUM_DATE_EVENTS];
+struct date_event gDateEvents[NUM_DATE_EVENTS];
 
 unsigned char date_timer_add_event(struct cmd_add_color* pCmd)
 {
@@ -207,5 +208,10 @@ void Timer_PrintCycletime(void)
 		UART_Send(0x0a);
 		
 		g_CycleTimeBuffer.maxCycleTime[i] = 0;
-	}	
+	}
+	
+	UART_SendString("WaitValue:");
+	UART_SendHex_16(gScriptBuf.waitValue);
+	UART_Send(0x0d);
+	UART_Send(0x0a);
 }

@@ -125,6 +125,7 @@ void HighPriorityInterruptFunction(void)
 		if(!RingBuf_HasError) 
 		{
 			RingBuf_Put(RCREG1);
+			//UART_Send(RCREG1+1);
 		}
 		else 
 		{

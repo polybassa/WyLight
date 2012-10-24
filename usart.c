@@ -28,13 +28,13 @@ void UART_Init()
 	BRG16=1;
 	SPBRG1=34;				// 115200 Bps @ 64 MHz Clock
 	SPBRGH1=0;
-    SPEN1 = 1;               // Set_Serial_Pins;
-    SYNC1 = 0;               // Set_Async_Mode;
-    TX9_1 = 0;                // Set_8bit_Tx;
-    RX9_1 = 0;                // Set_8bit_Rx;
-    CREN1 = 1;               // Enable_Rx;
-    TXEN1 = 1;               // Enable_Tx;
-    RC1IE=1;                 // Rx Interrupt aus
+	SPEN1 = 1;               // Set_Serial_Pins;
+	SYNC1 = 0;               // Set_Async_Mode;
+	TX9_1 = 0;                // Set_8bit_Tx;
+	RX9_1 = 0;                // Set_8bit_Rx;
+	CREN1 = 1;               // Enable_Rx;
+	TXEN1 = 1;               // Enable_Tx;
+	RC1IE=1;                 // Rx Interrupt aus
 	ADDEN1=0;				// Disable Adressdetection
 }
 

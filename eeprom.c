@@ -49,18 +49,18 @@ void Eeprom_Write(uns16 adress, uns8 data)
 	GIE_status = GIE;	
 	
 	EEADRH = adress.high8;
-    EEADR = adress.low8;        	// Adresse in Adressregister übertragen
+	EEADR = adress.low8;        	// Adresse in Adressregister übertragen
 	EEDATA = data;          		// Daten in Datenregister übertragen
 	
-    CFGS = 0;
+	CFGS = 0;
 	EEPGD = 0;                		// Auswahl: Programmspeicher lesen oder EEPROM
-    WREN = 1;                 		// Schreiben ins EEPROM erlauben
-    GIE=0;                  		// Interrups verbieten
+	WREN = 1;                 		// Schreiben ins EEPROM erlauben
+	GIE=0;                  		// Interrups verbieten
 	
-    EECON2 = 0x55;
-    EECON2 = 0xAA;
+	EECON2 = 0x55;
+	EECON2 = 0xAA;
 	WR = 1; 						// Starten des Schreibens
-    GIE = GIE_status;               // Interrups erlauben
+	GIE = GIE_status;               // Interrups erlauben
 	WREN = 0;
 	while(WR);
 }
@@ -80,13 +80,13 @@ uns8 Eeprom_Read(uns16 adress)
 	UART_SendNumber(adress.low8,'L');
 #endif
 
-    uns8 data;
-    EEADRH = adress.high8;        // Adresse in Adressregister übertragen
-    EEADR = adress.low8;
+	uns8 data;
+	EEADRH = adress.high8;        // Adresse in Adressregister übertragen
+	EEADR = adress.low8;
 	CFGS = 0;
 	EEPGD = 0;                			// Auswahl: Programmspeicher lesen oder EEPROM
-    RD = 1;                   			// Starten des Lesesn
-    data = EEDATA;       				// Daten aus Datenregister auslesen
+	RD = 1;                   			// Starten des Lesesn
+	data = EEDATA;       				// Daten aus Datenregister auslesen
 #ifdef TEST_EEPROM
 	UART_SendString("Data:");
 	UART_SendNumber(data,'D');
@@ -100,7 +100,7 @@ uns8 Eeprom_Read(uns16 adress)
 void Eeprom_WriteBlock(uns8 *array, uns16 adress, uns8 length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
 {
 	if(!array) return;
-	char i;
+	uns8 i;
 	for(i=0;i<length;i++)
 	{
 		Eeprom_Write(adress,*array);

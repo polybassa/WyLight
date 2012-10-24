@@ -24,7 +24,7 @@
 #include "MATH16.H"
 #endif /* #ifdef __CC8E__ */
 
-bank10 struct LedBuffer gLedBuf;
+struct LedBuffer gLedBuf;
 
 /**
  * Since we often work with a rotating bitmask which is greater
