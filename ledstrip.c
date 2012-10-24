@@ -17,6 +17,7 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "ledstrip.h"
+#include "ScriptCtrl.h"
 #include "spi.h"
 
 #ifdef __CC8E__

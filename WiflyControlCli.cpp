@@ -27,7 +27,7 @@ WiflyControlCli::WiflyControlCli(const char* pAddr, short port, bool useTcp)
 {
 }
 
-void WiflyControlCli::run(void)
+void WiflyControlCli::Run(void)
 {
 	string nextCmd;
 	cout << "Command reference:" << endl;
@@ -75,8 +75,42 @@ void WiflyControlCli::run(void)
 			cin >> second;
 			cout << addr << " " << color << " " << hour << " " << minute << " " << second << endl; 
 			mControl.AddColor(addr, color, hour, minute, second);
+		} else if ("bl_info" == nextCmd) {
+			BlInfo info;
+			if(sizeof(info) == mControl.BlReadInfo(info))
+			{
+				PrintBlInfo(info);
+			}
+			else
+			{
+				std::cout << "Read bootloader info failed" << endl;
+			}
 		}
 	}
+}
+
+void WiflyControlCli::PrintBlInfo(const BlInfo& info) const
+{
+	switch(info.familyId)
+	{
+		case 0x02:
+			printf("PIC16");
+#ifdef PIC16
+			printf("F%d", WORD(info.deviceIdHigh, info.deviceIdLow));
+#endif
+			break;
+		case 0x04:
+			printf("PIC18");
+			break;
+		default:
+			printf("unknown(0x%1x)", info.familyId);
+			break;
+	}
+	printf(" bootloader V%d.%d\n", info.versionMajor, info.versionMinor);
+	printf("Size: %d\n", WORD(info.sizeHigh, info.sizeLow));
+	printf("Startaddress: 0x%x\n", DWORD(WORD(info.zero, info.startU), WORD(info.startHigh, info.startLow)));
+	printf("CRC16: 0x%04x\n", WORD(info.crcHigh, info.crcLow));
+	printf("erase flash command %ssupported\n", ((0x02 == info.familyId) && (0x01 != info.cmdmaskHigh)) ? "not " : "");
 }
 
 #ifdef ANDROID
@@ -110,6 +144,6 @@ int main(int argc, const char* argv[])
 		}
 	}
 	WiflyControlCli cli(pAddr, port, useTcp);
-	cli.run();
+	cli.Run();
 	return 0;
 }

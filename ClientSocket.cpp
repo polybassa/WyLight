@@ -19,6 +19,7 @@
 #include "ClientSocket.h"
 
 #include <arpa/inet.h>
+#include <sys/select.h>
 #include <cstring>
 #include <iostream>
 
@@ -50,12 +51,34 @@ TcpSocket::TcpSocket(const char* pAddr, short port)
 	}
 }
 
-int TcpSocket::Recv(unsigned char* pBuffer, size_t length) const
+size_t TcpSocket::Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms) const
 {
-	return recv(mSock, pBuffer, length, 0);
+	/* prepare timeout structure */
+	timeval timeout;
+	timeout.tv_sec = timeoutTmms / 1000;
+	timeout.tv_usec = timeoutTmms % 1000;
+
+	/* prepare socket set for select() */
+	fd_set readSockets;
+	FD_ZERO(&readSockets);
+	FD_SET(mSock, &readSockets);
+	
+	/* wait for receive data and check if socket was correct */
+	if((1 == select(mSock + 1, &readSockets, NULL, NULL, &timeout))
+	&& (FD_ISSET(mSock, &readSockets)))
+	{
+		int bytesRead = recv(mSock, pBuffer, length, 0);
+		if(bytesRead > 0)
+		{
+			return static_cast<size_t>(bytesRead);
+		}
+	}
+	
+	/* some error occur */
+	return 0;
 }
 
-int TcpSocket::Send(unsigned char* frame, size_t length) const
+int TcpSocket::Send(const unsigned char* frame, size_t length) const
 {
 	return send(mSock, frame, length, 0);
 }
@@ -65,13 +88,13 @@ UdpSocket::UdpSocket(const char* pAddr, short port)
 {
 }
 
-int UdpSocket::Recv(unsigned char* pBuffer, size_t length) const
+size_t UdpSocket::Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms) const
 {
 	std::cout << __FILE__ << ":" << __LINE__ << " Not implemented" << std::endl;
-	return -1;
+	return 0;
 }
 
-int UdpSocket::Send(unsigned char* frame, size_t length) const
+int UdpSocket::Send(const unsigned char* frame, size_t length) const
 {
 	return sendto(mSock, frame, length, 0, (struct sockaddr*)&mSockAddr, sizeof(mSockAddr));
 }

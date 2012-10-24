@@ -21,7 +21,9 @@
 
 //*********************** ENUMERATIONS *********************************************
 #define TRUE  1
+#define true TRUE
 #define FALSE 0
+#define false FALSE
 
 //*********************** CONFIGURATION ********************************************
 #define WIFLY_SERVER_PORT 2000 // TCP/UDP Port of Wifly device
@@ -43,7 +45,10 @@
 	extern jmp_buf g_ResetEnvironment;
 
 	#define bank1
+	#define bank5
 	#define bank6
+	#define bank7
+	#define bank10
 	#define clearRAM(x)
 	#define Platform_AllowInterrupts(x)
 	#define Platform_CheckInputs(x)
