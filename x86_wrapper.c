@@ -88,6 +88,8 @@ void* date_timer_interrupt(void* unused)
 	}
 }
 
+void Rtc_Init() {}
+
 void UART_Init() {}
 void UART_Send(unsigned char ch)
 {

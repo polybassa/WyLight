@@ -20,6 +20,7 @@
 #include <iostream>
 #include <sstream>
 #include <cassert>
+#include <stddef.h>
 
 using namespace std;
 
@@ -42,7 +43,7 @@ WiflyControl::WiflyControl(const char* pAddr, short port, bool useTcp)
 		mSock = new TcpSocket(pAddr, port);
 		assert(mSock);
 
-		pthread_create(&mRecvThread, 0, RunReceiving, this);
+		//pthread_create(&mRecvThread, 0, RunReceiving, this);
 	}
 	else
 	{
@@ -55,6 +56,7 @@ void WiflyControl::Receiving() const
 {
 	unsigned char buffer[2048];
 	int bytesReceived;
+	std::cout << "Receiving..." << endl;
 	for(;;)
 	{
 		bytesReceived = mSock->Recv(buffer, sizeof(buffer) - 1);
@@ -80,11 +82,38 @@ void WiflyControl::AddColor(unsigned long addr, unsigned long rgba, unsigned cha
 	mCmdFrame.led.data.add_color.minute = minute;
 	mCmdFrame.led.data.add_color.second = second;
 	int bytesWritten = mSock->Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
+	assert(sizeof(mCmdFrame) == bytesWritten);
 }
 
 void WiflyControl::AddColor(std::string& addr, std::string& rgba, unsigned char hour, unsigned char minute, unsigned char second)
 {
 	AddColor(ToRGBA(addr), ToRGBA(rgba) << 8, hour, minute, second);
+}
+
+size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize) const
+{
+	BlProxy proxy(mSock);
+	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
+	size_t bytesReceived = proxy.Send(req, buffer, sizeof(buffer));
+
+	if(responseSize == bytesReceived)
+	{
+		memcpy(pResponse, buffer, responseSize);
+		return responseSize;
+	}
+	return 0;
+}
+
+size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int flashAddress, const size_t numBytes) const
+{
+	BlFlashReadRequest readFlashRequest(flashAddress, numBytes);
+	return BlRead(readFlashRequest, pBuffer, numBytes);
+}
+
+size_t WiflyControl::BlReadInfo(BlInfo& blInfo)
+{
+	BlInfoRequest request;
+	return BlRead(request, reinterpret_cast<unsigned char*>(&blInfo), sizeof(BlInfo));
 }
 
 void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
@@ -99,8 +128,6 @@ void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
 	mCmdFrame.led.data.set_color.red = (rgba & 0xff000000) >> 24;
 	mCmdFrame.led.data.set_color.green = (rgba & 0x00ff0000) >> 16;
 	mCmdFrame.led.data.set_color.blue = (rgba & 0x0000ff00) >> 8;
-	mCmdFrame.led.data.set_color.reserved[0] = 0;
-	mCmdFrame.led.data.set_color.reserved[1] = 0;
 	int bytesWritten = mSock->Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
 #ifdef DEBUG
 	std::cout << "Send " << bytesWritten << " bytes "
@@ -113,6 +140,8 @@ void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
 		<< (int)mCmdFrame.led.data.set_color.green << " "
 		<< (int)mCmdFrame.led.data.set_color.blue
 		<< std::endl;
+#else
+	assert(sizeof(mCmdFrame) == bytesWritten);
 #endif
 }
 
@@ -156,6 +185,8 @@ void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned shor
 			sleep(1); 
 		}while(tempTmms < fadeTmms);
 		std::cout << std::endl;
+#else
+	assert(sizeof(mCmdFrame) == bytesWritten);
 #endif
 }
 

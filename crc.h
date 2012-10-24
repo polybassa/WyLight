@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -30,6 +30,7 @@
 
 //adds one byte to the given crc checksum
 void Crc_AddCrc(unsigned char byte,unsigned char* p_crcH,unsigned char* p_crcL);
+void Crc_AddCrc16(unsigned char byte,unsigned short* pCrc);
 
 //do a complete crc calulation 
 void Crc_BuildCrc(unsigned char *data, unsigned char length, unsigned char* crcH_out, unsigned char* crcL_out);

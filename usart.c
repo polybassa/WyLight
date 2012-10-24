@@ -99,8 +99,13 @@ void UART_SendHex_8(uns8 input)
 
 void UART_SendHex_16(uns16 input)
 {
+#ifdef __CC8E__
 	UART_SendHex_8(input.high8);
 	UART_SendHex_8(input.low8);
+#else
+	UART_SendHex_8((input & 0xff00) >> 8);
+	UART_SendHex_8((unsigned char)(input & 0xff));
+#endif /* #ifdef __CC8E__ */
 }
 //*******  Sende-Zahl-als-String-Funktion  *************************************************
 void UART_SendNumber(uns8 input, uns8 sign)

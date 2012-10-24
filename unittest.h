@@ -16,22 +16,28 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef _TRACE_H_
-#define _TRACE_H_
-#ifdef TEST
-	#include "usart.h"
-	#define Trace_String(str) do { UART_SendString(str); } while (0)
-	#define Trace_Number(input, sign) do { UART_SendNumber(input, sign); } while (0)
-	#define Trace_Hex(hex) do { UART_Send(hex); } while(0)
-#elif DEBUG
-	#include "stdio.h"
-	#define Trace_String(str) do { printf("%s", str); } while (0)
-	#define Trace_Number(input, sign) do { printf("%03d%c", input, sign); } while (0)
-	#define Trace_Hex(hex) do { printf("%02x ", hex); } while(0)
+#include <stdio.h>
+#include "trace.h"
+
+#ifdef __cplusplus
+#include <assert.h>
 #else
-	#define Trace_String(str)
-	#define Trace_Number(input, sign)
-	#define Trace_Hex(hex)
+#define assert(EXPRESSION) if(!(EXPRESSION)) {errors++; printf("Assert(" #EXPRESSION ") failed\n");}
 #endif
-#endif /* #ifndef _TRACE_H_ */
+
+#define RunTest(RUN, FUNC) { \
+	if(RUN) { \
+		int _errors= FUNC(); \
+		printf(#FUNC"() run with %d errors\n", _errors); \
+		numErrors+= _errors; numTests++; \
+	} else { \
+		numSkipped++; \
+	} \
+}
+
+#define UnitTestMainBegin(X) int numErrors = 0; int numSkipped = 0; int numTests = 0;
+#define UnitTestMainEnd(X) { \
+	printf("%s run %d Tests (%d skipped | %d errors)\n", __FILE__, numTests, numSkipped, numErrors); \
+	return numErrors; \
+}
 
