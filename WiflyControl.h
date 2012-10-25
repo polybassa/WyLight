@@ -20,18 +20,22 @@
 #define _WIFLYCONTROL_H_
 
 #include <string>
+#include <pthread.h>
 #include "ClientSocket.h"
 #include "wifly_cmd.h"
+#include "BlRequest.h"
 
 class WiflyControl
 {
 	private:
+		const ClientSocket* mSock;
+		pthread_t mRecvThread;
 		struct cmd_frame mCmdFrame;
-		const ClientSocket mSock;
 		unsigned long ToRGBA(std::string& s) const;
 		
 	public:
-		WiflyControl();
+		WiflyControl(const char* pAddr, short port, bool useTcp);
+		void Receiving(void) const;
 		/**
 			rgba is a 32 Bit rgb value with alpha channel. Alpha is unused, but easier to handle
 			f.e. red(255, 0, 0) is in rgba as: 0xff000000
@@ -39,6 +43,10 @@ class WiflyControl
 		**/
 		void AddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second);
 		void AddColor(std::string& addr, std::string& rgba, unsigned char hour, unsigned char minute, unsigned char second);
+		size_t BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize) const;
+		size_t BlReadEeprom(unsigned char* pBuffer, unsigned int address, const size_t numBytes) const;
+		size_t BlReadFlash(unsigned char* pBuffer, unsigned int address, const size_t numBytes) const;
+		size_t BlReadInfo(BlInfo& info);
 		void SetColor(unsigned long addr, unsigned long rgba);
 		void SetColor(std::string& addr, std::string& rgba);
 		void SetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms);

@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick BrŸnn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -18,25 +18,21 @@
 
 #ifndef _USART_H_
 #define _USART_H_
+#include "platform.h"
 // Include-Datei für Serielle Kommunikation über Hardwaremodul des Pic
- //
- //
- // Nils Weiß
- // 29.11.2010
- // Compiler CC5x
-
 //Befehle:
 //InitUSART() zum initialisieren
 //USARTstring("text") zum Senden von Zeichenstrings
 
 //Funktionsprototypen
 
-void USARTinit();
-void USARTsend(char ch);
-void USARTsend_str(const char *string);
-void USARTsend_arr(char *array, char length);
-#ifdef TEST
-void USARTsend_num(char input, char sign);
-#endif
+void UART_Init();
+void UART_Send(unsigned char ch);
+void UART_SendString(const char *string);
+void UART_SendArray(uns8 *array, uns8 length);
+void UART_SendNumber(uns8 input, uns8 sign);
+void UART_SendHex_8(uns8 input);
+void UART_SendHex_16(uns16 input);
+
 
 #endif

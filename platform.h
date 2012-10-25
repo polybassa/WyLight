@@ -21,14 +21,18 @@
 
 //*********************** ENUMERATIONS *********************************************
 #define TRUE  1
+#define true TRUE
 #define FALSE 0
+#define false FALSE
 
 //*********************** CONFIGURATION ********************************************
 #define WIFLY_SERVER_PORT 2000 // TCP/UDP Port of Wifly device
-#define CYCLE_TMMS 64		//cycle time in milliseconds
+#define NUM_OF_LED 32
 
 #ifdef X86
+	#include <stdio.h>
 	#include <arpa/inet.h>
+	#include <setjmp.h>
 	#include <string.h>
 
 	typedef char bit;
@@ -37,49 +41,49 @@
 
 	//global variables
 	extern bit g_led_off;
+	extern unsigned char g_UpdateFade;
+	extern jmp_buf g_ResetEnvironment;
 
 	#define bank1
+	#define bank2
+	#define bank3
+	#define bank5
 	#define bank6
-	#define AllowInterrupts(x)
+	#define bank7
+	#define bank10
+	#define clearRAM(x)
+	#define Platform_AllowInterrupts(x)
+	#define Platform_CheckInputs(x)
+	#define Platform_DisableBootloaderAutostart(x)
 	#define InitFactoryRestoreWLAN(x)
 	#define InitFET(x)
-	#define InitInputs(x)	
-	#define OsciInit(x)
-	#define PowerOnLEDs(x) g_led_off = 0;
-	#define PowerOffLEDs(x) g_led_off = 1;
-
-	#define Check_INPUT(x)	
+	#define Platform_IOInit(x)
+	#define Platform_OsciInit(x)
+	#define Platform_ReadPerformanceCounter(x) x = 0; /* TODO implement this on X86 */
+	#define softReset(x) longjmp(g_ResetEnvironment, 1)
+	#define softResetJumpDestination(x) setjmp(g_ResetEnvironment)
 #else
 	#include "inline.h"
+	#include "int18XXX.h"
 
 	#define htons(X) (X)
 	#define ntohs(X) (X)
-
-	#define memcpy(DEST, SRC, NUM_BYTES) { \
-		short k; \
-		unsigned char temp; \
-		for(k = NUM_BYTES - 1; k >= 0; k--) { \
-			temp = SRC[i]; \
-			DEST[i] = temp; \
-		} \
-	}
-
-	#define memset(PTR, VALUE, NUM_BYTES) { \
-		short k; \
-		char* pDest = (char*)PTR; \
-		for(k = NUM_BYTES - 1; k >= 0; k--) { \
-			pDest[k] = VALUE; \
-		} \
-	}
-
-	#define AllowInterrupts(x) RCIE=1;PEIE=1;GIE=1;
-	#define InitFactoryRestoreWLAN(x) TRISA.0 = 0; 
-	#define InitFET(x) TRISC.0 = 0; //Ausgang für FET initalisieren
-	#define InitInputs(x) CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); //Eingänge am PORTB initialisieren
-	#define OsciInit(x) OSCCON = 0b01110010; //OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
-	#define PowerOnLEDs(x) BCF(PORTC.0); //Spannungsversorgung für LED's einschalten
-	#define PowerOffLEDs(x) BSF(PORTC.0); //Spannungsversorgung für LED's ausschalten
 	
-	void Check_INPUT();
+	#define softResetJumpDestination(x)
+
+	#define Platform_IOInit(x) do { CLRF(PORTB); CLRF(LATB); CLRF(ANSELB);} while(0) //Eingänge am PORTB initialisieren
+	#define Platform_OsciInit(x) do { OSCCON = 0b01110010; PLLEN = 1;} while(0) //OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
+	#define Platform_ReadPerformanceCounter(x) {x.low8 = TMR3L; x.high8 = TMR3H;}
+	
+	void Platform_AllowInterrupts();
+	
+	void Platform_CheckInputs();
+	
+	/*** This Function will Disable the Autostart to the Bootloader.
+	* At Startup, Bootloader checks the last EEPROM-Cell. If there is 
+	* 0x01 in the EEPROM-Cell, the Bootloader will go directly to the
+	* Application otherwise the Bootloader stays in Bootloader-Mode.
+	*/
+	void Platform_DisableBootloaderAutostart();
 #endif
 #endif /* #ifndef _PLATFORM_H_ */

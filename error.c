@@ -21,27 +21,27 @@
 #include "RingBuf.h"
 #include "usart.h"
 
-struct ErrorBits gERROR;
+struct ErrorBits g_ErrorBits;
 
-void throw_errors()
+void Error_Throw()
 {
-	if(RingBufHasError) 
+	if(RingBuf_HasError) 
 	{
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
-		ClearCmdBuf();
-		USARTsend_str(" ERROR: Receivebuffer full");
+		Commandstorage_Clear();
+		UART_SendString("E:03; ERROR: Receivebuffer full");
 		// *** Re-init the Ringbuffer to get a consistent commandstring and reset error
-		RingBufInit();
+		RingBuf_Init();
 	}
-	if(gERROR.crc_failure)
+	if(g_ErrorBits.CrcFailure)
 	{
-		USARTsend_str(" ERROR: CRC-Check failed");
-		gERROR.crc_failure = 0;
+		UART_SendString("E:02; ERROR:Crc-Check failed");
+		g_ErrorBits.CrcFailure = 0;
 	}
-	if(gERROR.eeprom_failure)
+	if(g_ErrorBits.EepromFailure)
 	{
-		USARTsend_str(" ERROR: EEPROM is full");
-		gERROR.eeprom_failure = 0;
+		UART_SendString("E:01; ERROR: EEPROM is full");
+		g_ErrorBits.EepromFailure = 0;
 	}
 }

@@ -19,13 +19,19 @@
 #include "usart.h"
 #include "rn_171.h"
 
+#define Send_CRLF(x) UART_Send(0x0d); UART_Send(0x0a);
+
 void Rn171FactoryRestore()
 {
-	USARTsend('$');
-	USARTsend('$');
-	USARTsend('$');
+	UART_Send('$');
+	UART_Send('$');
+	UART_Send('$');
+	Send_CRLF();
 	
-	USARTsend_str("load config_nils");
-	USARTsend_str("save");
-	USARTsend_str("reboot");
+	UART_SendString("load config_nils");
+	Send_CRLF();
+	UART_SendString("save");
+	Send_CRLF();
+	UART_SendString("reboot");
+	Send_CRLF();
 }

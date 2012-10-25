@@ -1,5 +1,6 @@
+
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -20,6 +21,7 @@
 #define _WIFLY_CMD_H_
 
 #include "platform.h"
+#include "rtc.h"
 
 //*********************** ENUMERATIONS *********************************************
 #define STX 0xFF
@@ -32,7 +34,15 @@
 #define DELETE 0xF8
 #define LOOP_ON 0xF7
 #define LOOP_OFF 0xF6
-#define ADD_COLOR 0xF5
+#define START_BL 0xF5
+#define SET_RTC 0xF4 			/* FRAME: <STX><LEN><SET_RTC><SEC><MIN><HOUR><DAY><MONTH><YEAR><WDAY><CRC><CRC> */
+#define GET_RTC 0xF3
+#define DISPLAY_RTC 0xF2
+#define SET_COLOR_DIRECT 0xF1
+#define GET_CYCLETIME 0xF0
+#define ADD_COLOR 0xEF
+
+#define LOOP_INFINITE 0
 
 //*********************** STRUCT DECLARATION *********************************************
 struct cmd_add_color {
@@ -51,26 +61,39 @@ struct cmd_set_color {
 	uns8 red;
 	uns8 green;
 	uns8 blue;
-	uns8 reserved[2];
 };
 
+#ifdef X86
 #pragma pack(1)
+#endif
 struct cmd_set_fade {
 	uns8 addr[4];
 	uns8 red;
 	uns8 green;
 	uns8 blue;
+	uns8 parallelFade;
 	uns16 fadeTmms; //fadetime in ms
 };
 
+struct cmd_loop_end {
+	uns8 startIndex; /* pointer to the corresponding cmd_loop_start */
+	uns8 counter; /* current loop counter, used due processing */
+	uns8 numLoops; /* number of programmed loops f.e. LOOP_INFINITE */
+	uns8 depth; /* number of recursions */
+};
+
 struct cmd_wait {
-	uns8 valueH;
-	uns8 valueL;
-	uns8 reserved[7];
+	uns16 waitTmms;
 };
 
 struct cmd_set_run {
-	uns8 dummy;
+	uns8 direction;
+	uns16 durationTmms;
+	uns16 fadeTmms;
+};
+
+struct cmd_set_color_direct {
+	uns8 ptr_led_array;
 };
 
 struct led_cmd {
@@ -81,6 +104,9 @@ struct led_cmd {
 		struct cmd_set_fade set_fade;
 		struct cmd_set_run set_run;
 		struct cmd_wait wait;
+		struct cmd_loop_end loopEnd;
+		struct rtc_time set_rtc;
+		struct cmd_set_color_direct set_color_direct;
 	}data;
 };
 
@@ -92,4 +118,5 @@ struct cmd_frame {
 	uns8 crcLow;
 };
 #define FRAMELENGTH (sizeof(struct cmd_frame) + 1)			// *** max length of one commandframe
+//TODO remove this line #define FRAMELENGTH (NUM_OF_LED * 3 + 8)
 #endif /* #ifndef _WIFLY_CMD_H_ */

@@ -27,6 +27,7 @@ extern unsigned char do_update_fade;
 bit g_led_off = 1; //X86 replacement for PORTC.0
 pthread_mutex_t g_led_mutex = PTHREAD_MUTEX_INITIALIZER;
 uns8 g_led_status[NUM_OF_LED*3];
+extern uns8 g_UpdateLed;
 
 void* InterruptRoutine(void* unused)
 {
@@ -49,23 +50,40 @@ void* InterruptRoutine(void* unused)
 		int i;
 		for(i = 0; i < bytesRead; i++)
 		{
-			if(!RingBufHasError)
+			if(!RingBuf_HasError)
 			{
-				RingBufPut(buf[i]);
+				RingBuf_Put(buf[i]);
 			}
 		}
 	}
 }
 
-void addCRC(char byte, char* p_crcH, char* p_crcL) {}
-void newCRC(char* p_crcH, char* p_crcL) {}
+void Crc_AddCrc(unsigned char byte,unsigned char* p_crcH,unsigned char* p_crcL) {}
+void newCrc_BuildCrc(unsigned char* p_Crc_BuildCrcH, unsigned char* p_Crc_BuildCrcL) {}
+void Crc_NewCrc(unsigned char* p_crcH, unsigned char* p_crcL)
+{
+    if(!p_crcH) return;
+    if(!p_crcL) return;
+    *p_crcH = 0xff;
+    *p_crcL = 0xff;
+}
 
-void* cycle_timer_interrupt(void* unused)
+void I2C_Init(){}
+
+void* timer1_interrupt(void* unused)
 {
 	for(;;)
 	{
-		usleep(1000 * CYCLE_TMMS);
-		do_update_fade = 1;//ledstrip_update_fade();
+		usleep(1000);
+		Ledstrip_UpdateLed();
+	}
+}
+void* timer4_interrupt(void* unused)
+{
+	for(;;)
+	{
+		usleep(1000);
+		g_UpdateLed++;
 	}
 }
 
@@ -78,28 +96,15 @@ void* date_timer_interrupt(void* unused)
 	}
 }
 
-void USARTinit() {}
-void USARTsend(char ch)
+void Rtc_Init() {}
+
+void UART_Init() {}
+void UART_Send(unsigned char ch)
 {
-	FILE* gUSART = fopen("out_usart.txt", "a+");
-	fputc(ch, gUSART);
-	fclose(gUSART);
+	printf("%c", ch);
 }
-
-
-static uns8 gEEPROM[0x100];
-char EEPROM_RD(uns8 adress)
-{
-	return gEEPROM[adress];
-}
-
-
-void EEPROM_WR(uns8 adress, uns8 data)
-{
-	gEEPROM[adress] = data;
-}
-void spi_init() {}
-char spi_send(char data)
+void SPI_Init() {}
+char SPI_Send(char data)
 {
 	int i;
 	for(i = 3*NUM_OF_LED - 1; i > 0; i--)
@@ -110,7 +115,7 @@ char spi_send(char data)
 	return g_led_status[0];
 }
 
-void spi_send_ledbuf(uns8 *array)//!!! CHECK if GIE=0 during the sendroutine improves the result
+void SPI_SendLedBuffer(uns8 *array)//!!! CHECK if GIE=0 during the sendroutine improves the result
 {
 	//array must be the address of the first byte
 	uns8* end;
@@ -121,7 +126,7 @@ void spi_send_ledbuf(uns8 *array)//!!! CHECK if GIE=0 during the sendroutine imp
 	pthread_mutex_lock(&g_led_mutex);
 	for(; array < end; array++)
 	{
-		spi_send(*array);
+		SPI_Send(*array);
 	}
 	pthread_mutex_unlock(&g_led_mutex);
 }
@@ -130,11 +135,13 @@ void init_x86(void)
 {
 	pthread_t isrThread;
 	pthread_t glThread;
-	pthread_t cycleTimerThread;
+	pthread_t timer1Thread;
+	pthread_t timer4Thread;
 	pthread_t dateTimerThread;
 	
 	pthread_create(&isrThread, 0, InterruptRoutine, 0);
 	pthread_create(&glThread, 0, gl_start, 0);
-	pthread_create(&cycleTimerThread, 0, cycle_timer_interrupt, 0);
+	pthread_create(&timer1Thread, 0, timer1_interrupt, 0);
+	pthread_create(&timer4Thread, 0, timer4_interrupt, 0);
 	pthread_create(&dateTimerThread, 0, date_timer_interrupt, 0);
 }

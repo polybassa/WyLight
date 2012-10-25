@@ -18,9 +18,14 @@
 
 #include "timer.h"
 #include "ledstrip.h"
+#include "trace.h"
+#include "usart.h"
+#include "ScriptCtrl.h"
+
+bank3 struct CycleTimeBuffer g_CycleTimeBuffer;
 
 unsigned short gDateTimer;
-bank6 struct date_event gDateEvents[NUM_DATE_EVENTS];
+struct date_event gDateEvents[NUM_DATE_EVENTS];
 
 unsigned char date_timer_add_event(struct cmd_add_color* pCmd)
 {
@@ -68,7 +73,18 @@ void date_timer_do_events(void)
 	{
 		if(gDateEvents[i].wakeup == gDateTimer)
 		{
-			commandstorage_exec_cmd(&gDateEvents[i].cmd);
+			/* TODO implement a more generic function
+			 * maybe make led_cmd a class and add a function exec() or run() */
+			if(SET_COLOR == gDateEvents[i].cmd.cmd)
+			{
+				Ledstrip_SetColor(&gDateEvents[i].cmd.data.set_color);
+			}
+			else
+			{
+				Trace_String("Unsupported command in date event ");
+				Trace_Hex(gDateEvents[i].cmd.cmd);
+				Trace_String("\n");
+			}
 		}
 	}
 }
@@ -76,27 +92,127 @@ void date_timer_do_events(void)
 void date_timer_init(void)
 {
 	gDateTimer = DATE_TIMER_DAY;
-	memset(gDateEvents, 0xff, sizeof(gDateEvents));
+	uns8* ptr = (uns8*)gDateEvents;
+	uns8 i = sizeof(gDateEvents);
+	do 
+	{
+		i--;
+		ptr[i] = 0xff;
+	} while(0 != i);
 }
 
-void timer_init()
-{
-#ifndef X86
-	T2CON = 0b01111101;
-	TMR2IE = 1;
+
+void Timer_Init()
+{	
+#ifdef __CC8E__
+	/*
+	 * T1 Interrupt every 10 Millisecounds if clock is 64MHz
+	 * Calculation
+	 * 64000000 Hz / 4 / 8 / 65536
+	 * T1 Interrupt occures with a frequency of 30 Hz.
+	 * This is used to update the ledstrip with the current colorvalue
+	 */
+	T1CON = 0b00100111;
+	TMR1IE = TRUE;
 	
-	PR4 = 0xff;
-	T4CON = 0b00000101;
-	TMR4IE = 1;
-#endif
-	date_timer_init();
-
+	/*
+	 * T5 Interrupt every 5 Millisecounds if clock is 64MHz
+	 * Calculation
+	 * 64000000 Hz / 8 / 40000
+	 */
+	T5CON = 0b01110111;
+	TMR5IE = TRUE;
+	TMR5H = 0x63;
+	TMR5L = 0xC0;
+	/* 
+	** T4 Interrupt every 4 Millisecound if clock is 64MHz
+	** Calculation
+	** 64000000 Hz / 4 / 16 / 250 / 16
+	*/
+	T4CON = 0b01111111;
+	TMR4IE = FALSE;
+	PR4 = 250;
+	
+	/* 
+	** T2 Interrupt every 0.5 Millisecound if clock is 64MHz
+	** Calculation
+	** 64000000 Hz / 4 / 16 / 75 / 10
+	*/
+	T2CON = 0b01001111;
+	TMR2ON = 0;
+	TMR2IE = 0;
+	PR2 = 75;
+	
+	/*
+	** T3 Modul count with a frequency of 2MHz
+	** T3 is used as PerformanceCounter
+	** Calculation:
+	** 64MHz / 4 / 8
+	*/
+	T3CON = 0b00110110;
+	TMR3ON = 1;
+#endif /* #ifdef __CC8E__ */
 }
 
-void timer_set_for_fade(char value)
+void Timer_StartStopwatch(enum METHODE destMethode)
 {
-#ifndef X86
-    PR2 = value;
-#endif
+	uns16 tempTime;
+
+	Platform_ReadPerformanceCounter(tempTime);
+	
+	g_CycleTimeBuffer.tempCycleTime[destMethode] = tempTime;
 }
 
+void Timer_StopStopwatch(enum METHODE destMethode)
+{
+	uns16 tempTime,temp16;
+	
+	Platform_ReadPerformanceCounter(tempTime);
+	
+	if(g_CycleTimeBuffer.tempCycleTime[destMethode] < tempTime)
+	{
+		tempTime = tempTime - g_CycleTimeBuffer.tempCycleTime[destMethode];
+	}
+	else
+	{
+		temp16 = 0xffff - g_CycleTimeBuffer.tempCycleTime[destMethode];
+		tempTime += temp16;
+	}
+	
+	if(tempTime > g_CycleTimeBuffer.maxCycleTime[destMethode])
+	{
+		g_CycleTimeBuffer.maxCycleTime[destMethode] = tempTime;
+	}
+	g_CycleTimeBuffer.tempCycleTime[destMethode] = 0;
+}
+
+void Timer_PrintCycletime(void)
+{
+	uns8 i;
+	uns16 temp16;
+	UART_Send(0x0d);
+	UART_Send(0x0a);
+	for(i = 0; i < enumSIZE; i++)
+	{
+		temp16 = g_CycleTimeBuffer.maxCycleTime[i]; 
+		temp16 = temp16 >> 1;
+		UART_SendString("Zeitwert ");
+		UART_SendNumber(i,':');
+#ifdef X86
+		UART_SendNumber((uns8)(temp16 >> 8),'H');
+		UART_SendNumber((uns8)(temp16 & 0xff),'L');
+#else
+		UART_SendHex_16(temp16);
+#endif /* #ifdef X86_SRC */
+		UART_SendString(" µS in HEX ");
+		UART_Send(0x0d);
+		UART_Send(0x0a);
+		
+		g_CycleTimeBuffer.maxCycleTime[i] = 0;
+	}
+	
+	UART_SendString("WaitValue:");
+	UART_SendHex_16(gScriptBuf.waitValue);
+	UART_Send(0x0d);
+	UART_Send(0x0a);
+}

@@ -17,52 +17,61 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "ledstrip.h"
+#include "timer.h"
 
 #ifndef X86
-void spi_init()
+void SPI_Init()
 {
-	TRISC.3 = 0;        // Make port RC3 an output(SPI Clock)
-    TRISC.4 = 1;        // Make port RC4 an input(SPI Data In)
-    TRISC.5 = 0;        // Make port RC5 an output(SPI Data Out)
-	SSPM1 = 0;
-	SMP = 1;
-	CKP = 0;
-	CKE = 1;
-	SSPEN = 1;
+	ANSELC = FALSE;		/* Set PORTC to digital IO */
+	TRISC.3 = FALSE;       /* Make port RC3 an output(SPI Clock) */
+	TRISC.4 = TRUE;        	/* Make port RC4 an input(SPI Data In) */
+	TRISC.5 = FALSE;       /* Make port RC5 an output(SPI Data Out) */
+
+	SMP = TRUE;		/* Input data sampeld at end of data output time */
+	CKP = FALSE;		/* Idle state for clock is low level */
+	CKE = TRUE;		/* Transmit occures on transition from active to Idle clock state */
+	SSP1CON1.0 = TRUE;	/* SPI MASTER mode, clock = Fosc/16 */
+	SSPEN = TRUE;		/* Enables the serial port and configures SCK, SDO, SDI */
 }
 
-char spi_send(char data)
+uns8 SPI_Send(uns8 data)
 {
-	SSPBUF = data;	
-	while(SSPIF == 0);
-	return SSPBUF;
+	SSP1IF = FALSE;		/* Reset interruptflag, that end of transmisson can be detected */
+	SSP1BUF = data;	
+	while(SSP1IF == 0);	/* Wait for end of transmission */
+	
+	return SSP1BUF;
 }
 
 /***
 **	This function sends the array to the LED controller(WS2801)
 **  it starts with the last byte to get a correct output
 ***/
-void spi_send_arr(char *array, char length)
+void SPI_SendArray(uns8 *array, uns8 length)
 {
 	if(array == 0) return;
-	char i;
+	uns8 i;
 	for(i = length; i == 0; i-- )
 	{
-		spi_send(array[i]);
+		SPI_Send(array[i]);
 	} 
 }
 
-void spi_send_ledbuf(uns8 *array)//!!! CHECK if GIE=0 during the sendroutine improves the result
+void SPI_SendLedBuffer(uns8 *array)
 {
-	//array must be the address of the first byte
-	char* end;
-	//calculate where the end is
-	end = array + (NUM_OF_LED * 3);
-	//send all
-	for(; array < end; array++)
+	
+	uns8* end;				/* array must be the address of the first byte*/
+	end = array + (NUM_OF_LED * 3); 	/* calculate where the end is */
+	
+	for(; array < end; array++)		/* send all data */
 	{
-		spi_send(*array);
+		SPI_Send(*array);
 	}
+	
+/* If we really have to garantee a sleep after data was written to the LEDs, it should be added here.
+ * Other locations would be more attractive to avoid a waiting core, but here it is much clearer and easier
+ * to find for later optimization. In my opinion we should spend this 1ms waste here, before we make the main
+ * loop more complex. */
 }
 #endif /* #ifndef X86 */
 

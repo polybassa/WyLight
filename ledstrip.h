@@ -21,8 +21,6 @@
 
 #include "commandstorage.h"
 
-#define NUM_OF_LED 24
-
 /**
  * This structure is used for calculations to manipulate the ledstrip state
  *
@@ -34,42 +32,72 @@
  * <stepSize> <led_array> is decremented/incremented by this value each periode
  */
 struct LedBuffer{
-	uns8 led_array[NUM_OF_LED*3];
-	uns8 delta[NUM_OF_LED*3];
-	unsigned short cyclesLeft[NUM_OF_LED*3];
-	unsigned short periodeLength[NUM_OF_LED*3];
-	uns8 step[NUM_OF_LED / 8* 3];
-	uns8 stepSize[NUM_OF_LED * 3];
+	uns8 led_array[NUM_OF_LED * 3];
+	uns8 delta[NUM_OF_LED * 3];
+	uns16 cyclesLeft[NUM_OF_LED * 3];
+	uns16 periodeLength[NUM_OF_LED * 3];
+	uns8 step[NUM_OF_LED / 8 * 3];
+	uns16 fadeTmms;
+	struct status_bits{
+		uns8 run_aktiv : 1;
+		uns8 run_direction : 1;    // 1==left, 0==right
+	} flags;
 };
+
+extern struct LedBuffer gLedBuf;
 
 /**
  * Initialize the ledstrip and all associated variables
  */
-void ledstrip_init(void);
+void Ledstrip_Init(void);
 
 /**
  * Callback if a "set_color" command is received.
  * ledstrip is updated according to the provided cmd_set_color
  * only Led's where the address bit is 1 will be set to the new color
  */
-void ledstrip_set_color(struct cmd_set_color *pCmd);
+void Ledstrip_SetColor(struct cmd_set_color *pCmd);
+
+/**
+ * Callback if a "set_color_direct" command is received.
+ * ledstrip is updated according to the provided values.
+ * *pValues indicates the start of the Value-Array.
+ * Length of the Array is always NUM_OF_LED * 3
+ */
+void Ledstrip_SetColorDirect(uns8 *pValues);
 
 /**
  * Callback if a "set_fade" command is received.
  * fading parameters are calculated and stored to be used in
- * ledstrip_do_fade() which is called in the main cycle
+ * Ledstrip_DoFade() which is called in the main cycle
  */
-void ledstrip_set_fade(struct cmd_set_fade *pCmd);
+void Ledstrip_SetFade(struct cmd_set_fade *pCmd);
+
+/**
+ * Callback if a "set_run" command is received.
+ * fading parameters are calculated and stored to be used in
+ * Ledstrip_DoFade() which is called in the main cycle
+ * Duration is used to block the commandstorage
+ */
+void Ledstrip_SetRun(struct cmd_set_run *pCmd);
 
 /**
  * called by the main cycle
  * update the ledstrip accourding to the precalculated parameters in <gLedBuf>
  */
-void ledstrip_do_fade(void);
-
 /**
  * callback for the fadecycle timer
  * updates cyclesLeft part of the global <gLedBuf>
 **/
-void ledstrip_update_fade(void);
+void Ledstrip_DoFade(void);
+
+void Ledstrip_UpdateRun(void);
+
+void Ledstrip_UpdateLed(void);
+
+/**
+ * returns a number of current running fades
+ * returns 0 if no fade is running
+ */
+uns8 Ledstrip_NumOfFades(void);
 #endif

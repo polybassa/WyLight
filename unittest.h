@@ -16,32 +16,28 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "RingBuf.h"
+#include <stdio.h>
+#include "trace.h"
 
-struct RingBuffer g_RingBuf;
+#ifdef __cplusplus
+#include <assert.h>
+#else
+#define assert(EXPRESSION) if(!(EXPRESSION)) {errors++; printf("Assert(" #EXPRESSION ") failed\n");}
+#endif
 
-void RingBuf_Init(void)
-{
-	g_RingBuf.read = 0;
-	g_RingBuf.write = 0;
-	g_RingBuf.error_full = 0;
+#define RunTest(RUN, FUNC) { \
+	if(RUN) { \
+		int _errors= FUNC(); \
+		printf(#FUNC"() run with %d errors\n", _errors); \
+		numErrors+= _errors; numTests++; \
+	} else { \
+		numSkipped++; \
+	} \
 }
 
-char RingBuf_Get(void)
-{
-	char result = g_RingBuf.data[g_RingBuf.read];
-	g_RingBuf.read = RingBufInc(g_RingBuf.read);
-	return result;
-}
-
-void RingBuf_Put(char value)
-{
-	char writeNext = RingBufInc(g_RingBuf.write);
-	if(writeNext != g_RingBuf.read)
-	{
-		g_RingBuf.data[g_RingBuf.write] = value;
-		g_RingBuf.write = writeNext;
-	}
-	else g_RingBuf.error_full = 1;
+#define UnitTestMainBegin(X) int numErrors = 0; int numSkipped = 0; int numTests = 0;
+#define UnitTestMainEnd(X) { \
+	printf("%s run %d Tests (%d skipped | %d errors)\n", __FILE__, numTests, numSkipped, numErrors); \
+	return numErrors; \
 }
 

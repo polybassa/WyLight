@@ -1,0 +1,29 @@
+/* Format Guideline */
+
+/* Module_Name */
+MyModule.h
+
+/* DEFINES */
+#define MYMODULE_GLOBAL_CONSTANT 1
+#define LOCAL_CONSTANT 1
+
+/* Variables */
+g_SomeGlobalVariable
+localVariable
+
+/* Functions */
+MyModule_FunctionName();
+LocalFunctionName();
+
+/* Function_Style */
+void MyModule_MyFunction()
+{
+	if(condition)
+	{
+		DoSomething();
+	}
+	else
+	{
+		DoSomethingElse();
+	}
+}

@@ -16,32 +16,44 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "RingBuf.h"
+#ifndef _SCRIPTCTRL_H_
+#define _SCRIPTCTRL_H_
 
-struct RingBuffer g_RingBuf;
+#include "wifly_cmd.h"
 
-void RingBuf_Init(void)
-{
-	g_RingBuf.read = 0;
-	g_RingBuf.write = 0;
-	g_RingBuf.error_full = 0;
-}
+#define SCRIPTCTRL_NUM_CMD_MAX 15
+#define SCRIPTCTRL_LOOP_DEPTH_MAX 4
 
-char RingBuf_Get(void)
-{
-	char result = g_RingBuf.data[g_RingBuf.read];
-	g_RingBuf.read = RingBufInc(g_RingBuf.read);
-	return result;
-}
+struct ScriptBuf {
+	uns16 waitValue;
+	uns8 loopStart[SCRIPTCTRL_LOOP_DEPTH_MAX];
+	uns8 loopDepth;
+	uns8 execute;
+	uns8 read;
+	uns8 write;
+	uns8 inLoop;
+	bit isClearing;
+};
 
-void RingBuf_Put(char value)
-{
-	char writeNext = RingBufInc(g_RingBuf.write);
-	if(writeNext != g_RingBuf.read)
-	{
-		g_RingBuf.data[g_RingBuf.write] = value;
-		g_RingBuf.write = writeNext;
-	}
-	else g_RingBuf.error_full = 1;
-}
+extern struct ScriptBuf gScriptBuf;
 
+/**
+ * Add new command to script
+ **/
+uns8 ScriptCtrl_Add(struct led_cmd* pCmd);
+
+/**
+ * Clear all command from buffer
+ */
+void ScriptCtrl_Clear(void);
+
+/**
+ * Initialize script controller.
+ */
+void ScriptCtrl_Init(void);
+
+/**
+ * Read next available command from eeprom and run it.
+ */
+void ScriptCtrl_Run(void);
+#endif /* #ifndef _SCRIPTCTRL_H_ */

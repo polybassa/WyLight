@@ -1,5 +1,5 @@
 /**
-		Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+		Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
 
@@ -17,33 +17,21 @@
     along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "WiflyControlCli.h"
+#include "WiflyControlCmd.h"
 #include <iostream>
+#include <cstdlib>
 
 using namespace std;
 
-WiflyControlCli::WiflyControlCli(void)
-: mRunning(true)
+WiflyControlCli::WiflyControlCli(const char* pAddr, short port, bool useTcp)
+: mControl(pAddr, port, useTcp), mRunning(true)
 {
 }
 
-void WiflyControlCli::run(void)
+void WiflyControlCli::Run(void)
 {
+	ShowHelp();
 	string nextCmd;
-	cout << "Usage:" << endl;
-	cout << "'exit' - terminate cli" << endl;
-	cout << "'addcolor <addr> <rgb> <hour> <minute> <second>'" << endl;
-	cout << "    <addr> hex bitmask, which leds should be set to the new color" << endl;
-	cout << "    <rgb> hex rgb value of the new color f.e. red: ff0000" << endl;
-	cout << "    <hour> hour of date event" << endl;
-	cout << "    <minute> minute of date event" << endl;
-	cout << "    <second> second of date event" << endl;
-	cout << "'setcolor <addr> <rgb>'" << endl;
-	cout << "    <addr> hex bitmask, which leds should be set to the new color" << endl;
-	cout << "    <rgb> hex rgb value of the new color f.e. red: ff0000" << endl;
-	cout << "'setfade <addr> <rgb> <time>'" << endl;
-	cout << "    <addr> hex bitmask, which leds should be set to the new color" << endl;
-	cout << "    <rgb> hex rgb value of the new color f.e. red: ff0000" << endl;
-	cout << "    <time> the number of milliseconds the fade should take" << endl;
 	while(mRunning)
 	{
 		cout << "WiflyControlCli: ";
@@ -52,30 +40,36 @@ void WiflyControlCli::run(void)
 		if("exit" == nextCmd) {
 			return;
 		}
-		if ("setcolor" == nextCmd) {
-			string addr, color;
-			cin >> addr;
-			cin >> color;
-			mControl.SetColor(addr, color);
-		}	else if ("setfade" == nextCmd) {
-			string addr, color;
-			unsigned long timevalue;
-			cin >> addr;
-			cin >> color;
-			cin >> timevalue;
-			mControl.SetFade(addr, color, (unsigned short)timevalue * 1000);
-		}	else if ("addcolor" == nextCmd) {
-			string addr, color;
-			unsigned long hour, minute, second;
-			cin >> addr;
-			cin >> color;
-			cin >> hour;
-			cin >> minute;
-			cin >> second;
-			cout << addr << " " << color << " " << hour << " " << minute << " " << second << endl; 
-			mControl.AddColor(addr, color, hour, minute, second);
+
+		if("?" == nextCmd) {
+			ShowHelp();
+		} else {
+			const WiflyControlCmd* pCmd = WiflyControlCmdBuilder::GetCmd(nextCmd);
+			if(NULL != pCmd) {
+				pCmd->Run(mControl);
+				delete pCmd;
+			}
 		}
 	}
+}
+
+void WiflyControlCli::ShowHelp(void) const
+{
+	ControlCmdAddColor addColor;
+	ControlCmdBlInfo blInfo;
+	ControlCmdReadEeprom readEeprom;
+	ControlCmdReadEeprom readFlash;
+	ControlCmdSetColor setColor;
+	ControlCmdSetFade setFade;
+	cout << "Command reference:" << endl;
+	cout << "'?' - this help" << endl;
+	cout << "'exit' - terminate cli" << endl;
+	cout << addColor << endl;
+	cout << blInfo << endl;
+	cout << readEeprom << endl;
+	cout << readFlash << endl;
+	cout << setColor << endl;
+	cout << setFade << endl;
 }
 
 #ifdef ANDROID
@@ -91,7 +85,24 @@ void Java_biz_bruenn_WiflyLight_WiflyLightActivity_runClient(JNIEnv* env, jobjec
 
 int main(int argc, const char* argv[])
 {
-	WiflyControlCli cli;
-	cli.run();
+	cout << "Usage:   client.bin <ip> <port> [tcp]" << endl;
+	cout << "Default: client.bin 127.0.0.1 2000 --> udp connection to localhost" << endl;
+	const char* pAddr = "127.0.0.1";
+	short port = 2000;
+	bool useTcp = false;
+	if(argc > 1)
+	{
+		pAddr = argv[1];
+		if(argc > 2)
+		{
+			port = (short)atoi(argv[2]);
+			if(argc > 3)
+			{
+				useTcp = (0 == strncmp(argv[3], "tcp", 3));
+			}
+		}
+	}
+	WiflyControlCli cli(pAddr, port, useTcp);
+	cli.Run();
 	return 0;
 }

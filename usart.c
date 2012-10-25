@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -16,70 +16,102 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
+#include "usart.h"
 
 #ifndef X86
 //*******  Initialisierungs-Funktion  *************************************************
-void USARTinit()
+void UART_Init()
 {
 	//USART TX Pin als Ausgang
 	TRISC.6 = 0;
-
-    BRGH=1;					// High Baudrate activated
-	BRG16=0;
-	SPBRGL=25;				// 19200 Bps @ 8 MHz Clock
-	SPBRGH=0;
-    SPEN = 1;               // Set_Serial_Pins;
-    SYNC = 0;               // Set_Async_Mode;
-    TX9 = 0;                // Set_8bit_Tx;
-    RX9 = 0;                // Set_8bit_Rx;
-    CREN = 1;               // Enable_Rx;
-    TXEN = 1;               // Enable_Tx;
-    RCIE=1;                 // Rx Interrupt aus
-	ADDEN=0;				// Disable Adressdetection
+	BRGH1=1;					// High Baudrate activated
+	BRG16=1;
+	SPBRG1=34;				// 115200 Bps @ 64 MHz Clock
+	SPBRGH1=0;
+	SPEN1 = 1;               // Set_Serial_Pins;
+	SYNC1 = 0;               // Set_Async_Mode;
+	TX9_1 = 0;                // Set_8bit_Tx;
+	RX9_1 = 0;                // Set_8bit_Rx;
+	CREN1 = 1;               // Enable_Rx;
+	TXEN1 = 1;               // Enable_Tx;
+	RC1IE=1;                 // Rx Interrupt aus
+	ADDEN1=0;				// Disable Adressdetection
 }
 
 //*******  Sende-char-Funktion  *************************************************
-void USARTsend(unsigned char ch)
+void UART_Send(unsigned char ch)
 {
-	while(!TXIF);
-	TXREG=ch;
+	while(!TX1IF);
+	TXREG1=ch;
 }
-#else
-void USARTsend(unsigned char ch);
+
 #endif /* #ifndef X86 */
 
 //*******  Sende-String-Funktion  *************************************************
-void USARTsend_str(const char *string)
+void UART_SendString(const char *string)
 {
- char ps;
+ uns8 ps;
  ps = *string;
  while(ps > 0)
    {
     string++;
-   	USARTsend(ps);
+   	UART_Send(ps);
     ps = *string;
    }
 }
 
 //*******  Sende-Array-Funktion  *************************************************
-void USARTsend_arr(char *array, char length)
+void UART_SendArray(uns8 *array, uns8 length)
 {
 	if(array == 0) return;
-	char i;
+	uns8 i;
 	for(i=0;i<length;i++)
 	{
-		USARTsend(*array);
+		UART_Send(*array);
 		array++;
 	}
 }
 
-#ifdef TEST
-//*******  Sende-Zahl-als-String-Funktion  *************************************************
-void USARTsend_num(char input, char sign)
+void UART_SendHex_8(uns8 input)
 {
-#pragma rambank 1
-   char temp;
-   char h,z,e;
+	uns8 temp4 = input & 0xf0;
+	temp4 = temp4 >> 4;
+	if(temp4 > 9)
+	{
+		temp4 -= 10;
+		UART_Send(temp4 + 'A');
+	}
+	else
+	{
+		UART_Send(temp4 + '0');
+	}
+	temp4 = input & 0x0f;
+	if(temp4 > 9)
+	{
+		temp4 -= 10;
+		UART_Send(temp4 + 'A');
+	}
+	else
+	{
+		UART_Send(temp4 + '0');
+	}
+}
+
+void UART_SendHex_16(uns16 input)
+{
+#ifdef __CC8E__
+	UART_SendHex_8(input.high8);
+	UART_SendHex_8(input.low8);
+#else
+	UART_SendHex_8((input & 0xff00) >> 8);
+	UART_SendHex_8((unsigned char)(input & 0xff));
+#endif /* #ifdef __CC8E__ */
+}
+//*******  Sende-Zahl-als-String-Funktion  *************************************************
+void UART_SendNumber(uns8 input, uns8 sign)
+{
+   uns8 temp;
+   uns8 h,z,e;
  
    h=0;
    z=0;
@@ -105,16 +137,15 @@ void USARTsend_num(char input, char sign)
    {
       e=input;
    }
-   if(h!=0)USARTsend(h+0x30);
-   USARTsend(z+0x30);
-   USARTsend(e+0x30);
-   USARTsend(sign); 	//Zeichen senden
+   if(h!=0)UART_Send(h+0x30);
+   UART_Send(z+0x30);
+   UART_Send(e+0x30);
+   UART_Send(sign); 	//Zeichen senden
 }
-#pragma rambank 0
-#endif
+
 /*
 //SENDE BCD-Zahl als String
-void USARTsendTime(unsigned char input,unsigned char sign)
+void UART_SendTime(unsigned char input,unsigned char sign)
 {
 	char 	temp;
 	char	z,e;
@@ -130,9 +161,9 @@ void USARTsendTime(unsigned char input,unsigned char sign)
 	
 	if(z>5)z=0;
 	
-	USARTsend(z+0x30);
-	USARTsend(e+0x30);
-	USARTsend(sign);
+	UART_Send(z+0x30);
+	UART_Send(e+0x30);
+	UART_Send(sign);
 }*/
 	
 

@@ -19,13 +19,15 @@
 #ifndef _EEPROM_H_
 #define _EEPROM_H_
 
-//Funktionen f¸r EEPROM-Zugriffe
+/* globals */
+#define EEPROM_SCRIPTBUF_BASE 0
+#define EEPROM_SCRIPTBUF_INLOOP 0x3fd
+#define EEPROM_SCRIPTBUF_READ 0x3fb
+#define EEPROM_SCRIPTBUF_WRITE 0x3f9
 
-//Nils Weiﬂ 
-//05.09.2011
-//Compiler CC5x
-void EEPROM_WR(unsigned char adress, uns8 data);
-char EEPROM_RD(unsigned char adress);
-void EEPROM_WR_BLK(unsigned char *array, unsigned char adress, unsigned char length);
-void EEPROM_RD_BLK(unsigned char *array, unsigned char adress, unsigned char length);
+/* eeprom access functions */
+void Eeprom_Write(uns16 adress, uns8 data);
+uns8 Eeprom_Read(uns16 adress);
+void Eeprom_WriteBlock(uns8 *array, uns16 adress, uns8 length);
+void Eeprom_ReadBlock(uns8 *array, uns16 adress, uns8 length);
 #endif

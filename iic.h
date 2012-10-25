@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -15,37 +15,13 @@
  
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
-
-#include "platform.h"
-
-#ifndef X86
-void Platform_CheckInputs()
-{
-	//Goto Bootloader if PORTB.0 is low
-	if(PORTB.5 == 0)
-	{
-		softReset();
-	}
-		
-}
-
-void Platform_AllowInterrupts()
-{
-	IPEN = 1;
-	TMR1IP = 0;
-	TMR2IP = 0;
-	TMR3IP = 0;
-	TMR4IP = 0;
-	TMR5IP = 0;
-	RC1IP = 1;
-	RC1IE = 1; 
-	PEIE = 1; 
-	GIEL = 1; 
-	GIEH = 1;
-}
-
-void Platform_DisableBootloaderAutostart()
-{
-	Eeprom_Write(1023, 1);
-}
-#endif /* X86 */
+ 
+ #ifndef _IIC_H_
+ #define _IIC_H_
+ 
+ void I2C_Init();
+ void I2C_Write(uns8 slaveaddr,uns8 dataaddr, uns8 data);
+ uns8 I2C_Read(uns8 slaveaddr,uns8 readaddr);
+ 
+ 
+ #endif /*_IIC_H_*/

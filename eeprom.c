@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -17,56 +17,93 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "platform.h"
+#include "eeprom.h"
 
-#ifndef X86
-//*********************** EEPROM BYTE SCHREIBEN  **********************************************
-
-void EEPROM_WR(char adress, char data)
+#ifdef X86
+static uns8 g_Eeprom[0x400];
+unsigned char Eeprom_Read(uns16 adress)
 {
+	return g_Eeprom[adress];
+}
+
+void Eeprom_Write(uns16 adress, unsigned char data)
+{
+	g_Eeprom[adress] = data;
+}
+#else
+//*********************** EEPROM BYTE SCHREIBEN  **********************************************
+void Eeprom_Write(uns16 adress, uns8 data)
+{
+#ifdef TEST_EEPROM
+	UART_SendString("Writing in EEPROM");
+	UART_Send(0x0a);
+	UART_Send(0x0d);
+	
+	UART_SendString("Addresse:");
+	UART_SendNumber(adress.high8,'H');
+	UART_SendNumber(adress.low8,'L');
+	UART_SendString("Data:");
+	UART_SendNumber(data,'D');
+#endif
 	bit GIE_status; 
-	//EEADRH = (char)(adress<<8);
-    EEADRL = (char)adress;        // Adresse in Adressregister ¸bertragen
-	EEDATL = data;          // Daten in Datenregister ¸bertragen
-    CFGS = 0;
-	EEPGD = 0;                // Auswahl: Programmspeicher lesen oder EEPROM
-    WREN = 1;                 // Schreiben ins EEPROM erlauben
-	GIE_status=GIE;			
-    GIE=0;                  // Interrups verbieten
-    EECON2 = 0x55;
-    EECON2 = 0xAA;
-	WR=1; 					// Starten des Schreibens
-    GIE=GIE_status;                  // Interrups erlauben
-	WREN=0;
+	GIE_status = GIE;	
+	
+	EEADRH = adress.high8;
+	EEADR = adress.low8;        	// Adresse in Adressregister ¸bertragen
+	EEDATA = data;          		// Daten in Datenregister ¸bertragen
+	
+	CFGS = 0;
+	EEPGD = 0;                		// Auswahl: Programmspeicher lesen oder EEPROM
+	WREN = 1;                 		// Schreiben ins EEPROM erlauben
+	GIE=0;                  		// Interrups verbieten
+	
+	EECON2 = 0x55;
+	EECON2 = 0xAA;
+	WR = 1; 						// Starten des Schreibens
+	GIE = GIE_status;               // Interrups erlauben
+	WREN = 0;
 	while(WR);
 }
 
 //*********************** EEPROM BYTE LESEN  **********************************************
 
-char EEPROM_RD(char adress)
+uns8 Eeprom_Read(uns16 adress)
 {
-    char data;
-    //EEADRH = (char)(adress<<8);        // Adresse in Adressregister ¸bertragen
-    EEADRL = (char)(adress);
-	CFGS=0;
-	EEPGD=0;                // Auswahl: Programmspeicher lesen oder EEPROM
-    RD=1;                   // Starten des Lesesn
-    data = EEDATL;       // Daten aus Datenregister auslesen
+
+#ifdef TEST_EEEPROM
+	UART_SendString("Reading in EEPROM");
+	UART_Send(0x0a);
+	UART_Send(0x0d);
+	
+	UART_SendString("Addresse:");
+	UART_SendNumber(adress.high8,'H');
+	UART_SendNumber(adress.low8,'L');
+#endif
+
+	uns8 data;
+	EEADRH = adress.high8;        // Adresse in Adressregister ¸bertragen
+	EEADR = adress.low8;
+	CFGS = 0;
+	EEPGD = 0;                			// Auswahl: Programmspeicher lesen oder EEPROM
+	RD = 1;                   			// Starten des Lesesn
+	data = EEDATA;       				// Daten aus Datenregister auslesen
+#ifdef TEST_EEPROM
+	UART_SendString("Data:");
+	UART_SendNumber(data,'D');
+#endif	
     return data;
 }
-#else
-void EEPROM_WR(char adress, char data);
-char EEPROM_RD(char adress);
-#endif /* #ifndef X86 */
+#endif /* #ifdef X86 */
 
 //*********************** EEPROM BYTEARRAY SCHREIBEN  **************************************
 
-void EEPROM_WR_BLK(char *array, char adress, char length)			//Zum Ausf¸hren eines beliebigen Befehls durch den Programmcode
+void Eeprom_WriteBlock(uns8 *array, uns16 adress, uns8 length)			//Zum Ausf¸hren eines beliebigen Befehls durch den Programmcode
 {
 	if(!array) return;
-	char i;
+	uns8 i;
 	for(i=0;i<length;i++)
 	{
-		EEPROM_WR(adress,*array);
+		Eeprom_Write(adress,*array);
 		adress++;
 		array++;
 	}
@@ -74,13 +111,13 @@ void EEPROM_WR_BLK(char *array, char adress, char length)			//Zum Ausf¸hren eine
 
 //*********************** EEPROM BYTEARRAY LESEN  **************************************
 
-void EEPROM_RD_BLK(char *array, char adress, char length)			//Zum Ausf¸hren eines beliebigen Befehls durch den Programmcode
+void Eeprom_ReadBlock(uns8 *array, uns16 adress, uns8 length)			//Zum Ausf¸hren eines beliebigen Befehls durch den Programmcode
 {
 	if(!array) return;
 	uns8 i, temp;
 	for(i=0;i<length;i++)
 	{
-		temp = EEPROM_RD(adress);
+		temp = Eeprom_Read(adress);
 		array[i] = temp;
 		adress++;
 	}

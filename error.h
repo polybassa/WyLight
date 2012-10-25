@@ -20,14 +20,14 @@
 #define _ERROR_H_
 // *** ERRORBITS
 struct ErrorBits {
-		char crc_failure:1;
-		char eeprom_failure:1;
+		char CrcFailure:1;
+		char EepromFailure:1;
 };
-extern struct ErrorBits gERROR;
+extern struct ErrorBits g_ErrorBits;
 
-#define ErrorInit(x) \
-	gERROR.crc_failure = 0; \
-	gERROR.eeprom_failure = 0;
+#define Error_Init(x) \
+	g_ErrorBits.CrcFailure = 0; \
+	g_ErrorBits.EepromFailure = 0;
 
-void throw_errors();
+void Error_Throw();
 #endif /* #ifndef _ERROR_H_ */

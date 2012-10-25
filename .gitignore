@@ -1,11 +1,7 @@
-*.mcw
-*.mcp
-*.mcs
-WiFly_Light.mcw.zip
 include_files/not_used
+main.hex
 Commands.txt
 main.cod
-main.hex
 main.occ
 main.asm
 main.lst
@@ -14,8 +10,67 @@ include_files/MATH16.H
 main.hxl
 main.fcs
 client.bin
-Testscript.py
-ledstrip.h.bak
-main.c.bak
-timer.h.bak
 *.bak
+
+PIC18 Bootloader/crc16-0.1.1/CHANGES.txt
+PIC18 Bootloader/crc16-0.1.1/COPYING.txt
+PIC18 Bootloader/crc16-0.1.1/PKG-INFO
+PIC18 Bootloader/crc16-0.1.1/README.txt
+PIC18 Bootloader/crc16-0.1.1/build/lib.macosx-10.8-intel-2.7/crc16/__init__.py
+PIC18 Bootloader/crc16-0.1.1/build/lib.macosx-10.8-intel-2.7/crc16/_crc16.so
+PIC18 Bootloader/crc16-0.1.1/build/lib.macosx-10.8-intel-2.7/crc16/crc16pure.py
+PIC18 Bootloader/crc16-0.1.1/build/lib.macosx-10.8-intel-2.7/crc16/test.py
+PIC18 Bootloader/crc16-0.1.1/build/temp.macosx-10.8-intel-2.7/src/_crc16module.o
+PIC18 Bootloader/crc16-0.1.1/python25/crc16/__init__.py
+PIC18 Bootloader/crc16-0.1.1/python25/crc16/crc16pure.py
+PIC18 Bootloader/crc16-0.1.1/python25/crc16/test.py
+PIC18 Bootloader/crc16-0.1.1/python2x/crc16/__init__.py
+PIC18 Bootloader/crc16-0.1.1/python2x/crc16/crc16pure.py
+PIC18 Bootloader/crc16-0.1.1/python2x/crc16/test.py
+PIC18 Bootloader/crc16-0.1.1/python3x/crc16/__init__.py
+PIC18 Bootloader/crc16-0.1.1/python3x/crc16/crc16pure.py
+PIC18 Bootloader/crc16-0.1.1/python3x/crc16/test.py
+PIC18 Bootloader/crc16-0.1.1/setup.py
+PIC18 Bootloader/crc16-0.1.1/src/_crc16module.c
+WiFly_Light.mcw.mcs
+PIC18 Bootloader/PIC18 Bootloader.O
+PIC18 Bootloader/PIC18 Bootloader.cof
+PIC18 Bootloader/PIC18 Bootloader.lst
+PIC18 Bootloader/PIC18 Bootloader.map
+PIC18 Bootloader/PIC18 Bootloader.mcs
+PIC18_Bootloader/PIC18 Bootloader.O
+PIC18_Bootloader/PIC18 Bootloader.cof
+PIC18_Bootloader/PIC18 Bootloader.err
+PIC18_Bootloader/PIC18 Bootloader.lst
+PIC18_Bootloader/PIC18 Bootloader.map
+PIC18_Bootloader/PIC18 Bootloader.mcp
+PIC18_Bootloader/PIC18 Bootloader.mcs
+PIC18_Bootloader/PIC18 Bootloader.mcw
+PIC18_Bootloader/crc16-0.1.1/CHANGES.txt
+PIC18_Bootloader/crc16-0.1.1/COPYING.txt
+PIC18_Bootloader/crc16-0.1.1/PKG-INFO
+PIC18_Bootloader/crc16-0.1.1/README.txt
+PIC18_Bootloader/crc16-0.1.1/build/lib.macosx-10.8-intel-2.7/crc16/__init__.py
+PIC18_Bootloader/crc16-0.1.1/build/lib.macosx-10.8-intel-2.7/crc16/_crc16.so
+PIC18_Bootloader/crc16-0.1.1/build/lib.macosx-10.8-intel-2.7/crc16/crc16pure.py
+PIC18_Bootloader/crc16-0.1.1/build/lib.macosx-10.8-intel-2.7/crc16/test.py
+PIC18_Bootloader/crc16-0.1.1/build/temp.macosx-10.8-intel-2.7/src/_crc16module.o
+PIC18_Bootloader/crc16-0.1.1/python25/crc16/__init__.py
+PIC18_Bootloader/crc16-0.1.1/python25/crc16/crc16pure.py
+PIC18_Bootloader/crc16-0.1.1/python25/crc16/test.py
+PIC18_Bootloader/crc16-0.1.1/python2x/crc16/__init__.py
+PIC18_Bootloader/crc16-0.1.1/python2x/crc16/crc16pure.py
+PIC18_Bootloader/crc16-0.1.1/python2x/crc16/test.py
+PIC18_Bootloader/crc16-0.1.1/python3x/crc16/__init__.py
+PIC18_Bootloader/crc16-0.1.1/python3x/crc16/crc16pure.py
+PIC18_Bootloader/crc16-0.1.1/python3x/crc16/test.py
+PIC18_Bootloader/crc16-0.1.1/setup.py
+PIC18_Bootloader/crc16-0.1.1/src/_crc16module.c
+
+MPLAB/Pic18.mcp
+MPLAB/Pic18.mcs
+MPLAB/Pic18.mcw
+PIC18_Bootloader/crc16-0.1.1/build/lib.linux-x86_64-2.7/crc16/__init__.py
+PIC18_Bootloader/crc16-0.1.1/build/lib.linux-x86_64-2.7/crc16/crc16pure.py
+PIC18_Bootloader/crc16-0.1.1/build/lib.linux-x86_64-2.7/crc16/test.py
+ScriptCtrl_ut.bin

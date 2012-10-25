@@ -1,5 +1,5 @@
 /**
-		Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+		Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
 
@@ -23,14 +23,41 @@
 
 class ClientSocket
 {
-	private:
+	protected:
 		const int mSock;
 		struct sockaddr_in mSockAddr;
 
 	public:
-		ClientSocket(long addr, short port);
-		~ClientSocket();
-		int Send(char* frame, size_t length) const;
+		ClientSocket(const char* pAddr, short port, int style);
+		virtual ~ClientSocket();
+		virtual size_t Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms = 0) const = 0;
+		virtual int Send(const unsigned char* frame, size_t length) const = 0;
 };
+
+class TcpSocket : public ClientSocket
+{
+	public:
+		TcpSocket(const char* pAddr, short port);
+		virtual size_t Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms = 0) const;
+		virtual int Send(const unsigned char* frame, size_t length) const;
+};
+
+class UdpSocket : public ClientSocket
+{
+	public:
+		UdpSocket(const char* pAddr, short port);
+		virtual size_t Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms = 0) const;
+		virtual int Send(const unsigned char* frame, size_t length) const;
+};
+
+#ifdef UNIT_TEST
+class TestSocket : public ClientSocket
+{
+	public:
+		TestSocket(const char* pAddr, short port);
+		virtual size_t Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms = 0) const;
+		virtual int Send(const unsigned char* frame, size_t length) const;
+};
+#endif /* #ifndef UNIT_TEST */
 #endif /* #ifndef _CLIENTSOCKET_H_ */
 
