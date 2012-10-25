@@ -26,7 +26,7 @@
 #elif DEBUG
 	#include "stdio.h"
 	#define Trace_String(str) do { printf("%s", str); } while (0)
-	#define Trace_Number(input, sign) do { printf("%03d%c", input, sign); } while (0)
+	#define Trace_Number(input, sign) do { printf("%04x%c", input, sign); } while (0)
 	#define Trace_Hex(hex) do { printf("%02x ", hex); } while(0)
 #else
 	#define Trace_String(str)
