@@ -70,7 +70,15 @@ void Crc_NewCrc(unsigned char* p_crcH, unsigned char* p_crcL)
 
 void I2C_Init(){}
 
-void* timer_interrupt(void* unused)
+void* timer1_interrupt(void* unused)
+{
+	for(;;)
+	{
+		usleep(1000);
+		Ledstrip_UpdateLed();
+	}
+}
+void* timer4_interrupt(void* unused)
 {
 	for(;;)
 	{
@@ -127,11 +135,13 @@ void init_x86(void)
 {
 	pthread_t isrThread;
 	pthread_t glThread;
-	pthread_t timerThread;
+	pthread_t timer1Thread;
+	pthread_t timer4Thread;
 	pthread_t dateTimerThread;
 	
 	pthread_create(&isrThread, 0, InterruptRoutine, 0);
 	pthread_create(&glThread, 0, gl_start, 0);
-	pthread_create(&timerThread, 0, timer_interrupt, 0);
+	pthread_create(&timer1Thread, 0, timer1_interrupt, 0);
+	pthread_create(&timer4Thread, 0, timer4_interrupt, 0);
 	pthread_create(&dateTimerThread, 0, date_timer_interrupt, 0);
 }

@@ -97,7 +97,6 @@ void Crc_AddCrc(unsigned char byte,unsigned char* p_crcH,unsigned char* p_crcL)
 void Crc_AddCrc16(unsigned char byte, unsigned short* pCrc)
 {
 	Crc_AddCrc(byte, (unsigned char*)pCrc, ((unsigned char*)pCrc) + 1);
-	*pCrc ^= 0xffff;
 }
 
 void Crc_BuildCrc(unsigned char *data, unsigned char length, unsigned char* crcH_out, unsigned char* crcL_out)

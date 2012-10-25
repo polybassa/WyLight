@@ -25,6 +25,7 @@
 
 #include <stdio.h>
 
+
 ClientSocket::ClientSocket(const char* pAddr, short port, int style)
 	: mSock(socket(AF_INET, style, 0))
 {
@@ -80,6 +81,14 @@ size_t TcpSocket::Recv(unsigned char* pBuffer, size_t length, unsigned long time
 
 int TcpSocket::Send(const unsigned char* frame, size_t length) const
 {
+#ifdef DEBUG
+	std::cout << __FILE__ << ":" << __FUNCTION__ << ": Sending " << length << " bytes: ";
+	for(size_t i = 0; i < length; i++)
+	{
+		std::cout << std::hex << int(frame[i]) << ' ';
+	}
+	std::cout << std::endl;
+#endif
 	return send(mSock, frame, length, 0);
 }
 
