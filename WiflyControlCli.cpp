@@ -30,26 +30,8 @@ WiflyControlCli::WiflyControlCli(const char* pAddr, short port, bool useTcp)
 
 void WiflyControlCli::Run(void)
 {
-	ControlCmdReadEeprom readEeprom;
-	ControlCmdReadEeprom readFlash;
+	ShowHelp();
 	string nextCmd;
-	cout << "Command reference:" << endl;
-	cout << "'exit' - terminate cli" << endl;
-	cout << "'bl_info' - read bootloader information" << endl;
-	cout << "'addcolor <addr> <rgb> <hour> <minute> <second>'" << endl;
-	cout << "    <addr> hex bitmask, which leds should be set to the new color" << endl;
-	cout << "    <rgb> hex rgb value of the new color f.e. red: ff0000" << endl;
-	cout << "    <hour> hour of date event" << endl;
-	cout << "    <minute> minute of date event" << endl;
-	cout << "    <second> second of date event" << endl;
-	cout << readEeprom << endl;
-	cout << readFlash << endl;
-	cout << "    <addr> hex bitmask, which leds should be set to the new color" << endl;
-	cout << "    <rgb> hex rgb value of the new color f.e. red: ff0000" << endl;
-	cout << "'setfade <addr> <rgb> <time>'" << endl;
-	cout << "    <addr> hex bitmask, which leds should be set to the new color" << endl;
-	cout << "    <rgb> hex rgb value of the new color f.e. red: ff0000" << endl;
-	cout << "    <time> the number of milliseconds the fade should take" << endl;
 	while(mRunning)
 	{
 		cout << "WiflyControlCli: ";
@@ -58,69 +40,36 @@ void WiflyControlCli::Run(void)
 		if("exit" == nextCmd) {
 			return;
 		}
-		if ("addcolor" == nextCmd) {
-			string addr, color;
-			unsigned long hour, minute, second;
-			cin >> addr;
-			cin >> color;
-			cin >> hour;
-			cin >> minute;
-			cin >> second;
-			cout << addr << " " << color << " " << hour << " " << minute << " " << second << endl; 
-			mControl.AddColor(addr, color, hour, minute, second);
-		} else if ("bl_info" == nextCmd) {
-			BlInfo info;
-			if(sizeof(info) == mControl.BlReadInfo(info))
-			{
-				PrintBlInfo(info);
-			}
-			else
-			{
-				std::cout << "Read bootloader info failed" << endl;
-			}
-		} else if ("setcolor" == nextCmd) {
-			string addr, color;
-			cin >> addr;
-			cin >> color;
-			mControl.SetColor(addr, color);
-		}	else if ("setfade" == nextCmd) {
-			string addr, color;
-			unsigned long timevalue;
-			cin >> addr;
-			cin >> color;
-			cin >> timevalue;
-			mControl.SetFade(addr, color, (unsigned short)timevalue * 1024);
-		} else
-		{
+
+		if("?" == nextCmd) {
+			ShowHelp();
+		} else {
 			const WiflyControlCmd* pCmd = WiflyControlCmdBuilder::GetCmd(nextCmd);
 			if(NULL != pCmd) {
 				pCmd->Run(mControl);
+				delete pCmd;
 			}
 		}
 	}
 }
 
-void WiflyControlCli::PrintBlInfo(const BlInfo& info) const
+void WiflyControlCli::ShowHelp(void) const
 {
-	switch(info.familyId)
-	{
-		case 0x02:
-			printf("PIC16");
-#ifdef PIC16
-			printf("F%d", WORD(info.deviceIdHigh, info.deviceIdLow));
-#endif
-			break;
-		case 0x04:
-			printf("PIC18");
-			break;
-		default:
-			printf("unknown(0x%1x)", info.familyId);
-			break;
-	}
-	printf(" bootloader V%d.%d\n", info.versionMajor, info.versionMinor);
-	printf("Size: %d\n", WORD(info.sizeHigh, info.sizeLow));
-	printf("Startaddress: 0x%x\n", DWORD(WORD(info.zero, info.startU), WORD(info.startHigh, info.startLow)));
-	printf("erase flash command %ssupported\n", ((0x02 == info.familyId) && (0x01 != info.cmdmaskHigh)) ? "not " : "");
+	ControlCmdAddColor addColor;
+	ControlCmdBlInfo blInfo;
+	ControlCmdReadEeprom readEeprom;
+	ControlCmdReadEeprom readFlash;
+	ControlCmdSetColor setColor;
+	ControlCmdSetFade setFade;
+	cout << "Command reference:" << endl;
+	cout << "'?' - this help" << endl;
+	cout << "'exit' - terminate cli" << endl;
+	cout << addColor << endl;
+	cout << blInfo << endl;
+	cout << readEeprom << endl;
+	cout << readFlash << endl;
+	cout << setColor << endl;
+	cout << setFade << endl;
 }
 
 #ifdef ANDROID
