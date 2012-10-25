@@ -105,10 +105,16 @@ size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size
 	return 0;
 }
 
-size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int flashAddress, const size_t numBytes) const
+size_t WiflyControl::BlReadEeprom(unsigned char* pBuffer, unsigned int address, const size_t numBytes) const
 {
-	BlFlashReadRequest readFlashRequest(flashAddress, numBytes);
-	return BlRead(readFlashRequest, pBuffer, numBytes);
+	BlEepromReadRequest readRequest(address, numBytes);
+	return BlRead(readRequest, pBuffer, numBytes);
+}
+
+size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, const size_t numBytes) const
+{
+	BlFlashReadRequest readRequest(address, numBytes);
+	return BlRead(readRequest, pBuffer, numBytes);
 }
 
 size_t WiflyControl::BlReadInfo(BlInfo& blInfo)
