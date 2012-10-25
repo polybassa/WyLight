@@ -17,6 +17,7 @@
     along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "WiflyControlCli.h"
+#include "WiflyControlCmd.h"
 #include <iostream>
 #include <cstdlib>
 
@@ -29,6 +30,8 @@ WiflyControlCli::WiflyControlCli(const char* pAddr, short port, bool useTcp)
 
 void WiflyControlCli::Run(void)
 {
+	ControlCmdReadEeprom readEeprom;
+	ControlCmdReadEeprom readFlash;
 	string nextCmd;
 	cout << "Command reference:" << endl;
 	cout << "'exit' - terminate cli" << endl;
@@ -39,10 +42,8 @@ void WiflyControlCli::Run(void)
 	cout << "    <hour> hour of date event" << endl;
 	cout << "    <minute> minute of date event" << endl;
 	cout << "    <second> second of date event" << endl;
-	cout << "'read_flash <addr> <numBytes>'" << endl;
-	cout << "    <addr> address where to start reading" << endl;
-	cout << "    <numBytes> number of bytes to read" << endl;
-	cout << "'setcolor <addr> <rgb>'" << endl;
+	cout << readEeprom << endl;
+	cout << readFlash << endl;
 	cout << "    <addr> hex bitmask, which leds should be set to the new color" << endl;
 	cout << "    <rgb> hex rgb value of the new color f.e. red: ff0000" << endl;
 	cout << "'setfade <addr> <rgb> <time>'" << endl;
@@ -77,24 +78,6 @@ void WiflyControlCli::Run(void)
 			{
 				std::cout << "Read bootloader info failed" << endl;
 			}
-		} else if("read_flash" == nextCmd) {
-			unsigned int flashAddress;
-			size_t numBytes;
-			cin >> flashAddress;
-			cin >> numBytes;
-			unsigned char buffer[0x10000];
-			size_t bytesRead = mControl.BlReadFlash(buffer, flashAddress, numBytes);
-			if(bytesRead != numBytes) {
-				cout << "Read flash failed" << endl;
-			} else {
-				for(size_t i = 0; i < bytesRead; i++) {
-					if(0 == (i % 16)) {
-						cout << endl << "0x" << hex << int(flashAddress+i) << ": ";
-					}
-					cout << hex << int(buffer[i]) << ' ';
-				}
-				cout << endl;
-			}
 		} else if ("setcolor" == nextCmd) {
 			string addr, color;
 			cin >> addr;
@@ -107,6 +90,12 @@ void WiflyControlCli::Run(void)
 			cin >> color;
 			cin >> timevalue;
 			mControl.SetFade(addr, color, (unsigned short)timevalue * 1024);
+		} else
+		{
+			const WiflyControlCmd* pCmd = WiflyControlCmdBuilder::GetCmd(nextCmd);
+			if(NULL != pCmd) {
+				pCmd->Run(mControl);
+			}
 		}
 	}
 }
