@@ -95,27 +95,28 @@ void Commandstorage_GetCommands()
                     (g_CmdBuf.CrcH == g_CmdBuf.cmd_buf[g_CmdBuf.cmd_counter - 2]) )
 #endif
                 {
-					if(ScriptCtrl_Add(&g_CmdBuf.cmd_buf[2]))
-					{
-						Trace_String("GC");
-#ifndef X86
-						UART_SendString("GC");
+			if(ScriptCtrl_Add(&g_CmdBuf.cmd_buf[2]))
+			{
+			      Trace_String("GC");
+#ifdef __CC8E__
+			      UART_SendString("GC");
 #endif
-					}
-					else
-					{
-						g_ErrorBits.EepromFailure = 1;
-					}
+			}
+			else
+			{
+			      g_ErrorBits.EepromFailure = 1;
+			}
                 }
 #ifndef NO_CRC
-                else
-                {
+			else
+			{
                     // *** Do some error handling in case of an Crc_BuildCrc failure here
 					g_ErrorBits.CrcFailure = 1;
                     return;
                 }
 #endif
 			}
+		  
 		}
 	}
 }

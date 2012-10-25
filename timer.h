@@ -76,7 +76,7 @@ void Timer_PrintCycletime(void);
 #define Timer2Interrupt(x) TMR2IF = 0;
 #define Timer3Interrupt(x) TMR3IF = 0;
 #define Timer4Interrupt(x) TMR4IF = 0;
-#define Timer5Interrupt(x) TMR5IF = 0;
+#define Timer5Interrupt(x) TMR5IF = 0; TMR5H = 0x63; TMR5L = 0xC0;
 
 #define Timer1Enable(x) TMR1ON = 1;
 #define Timer1Disable(x) TMR1ON = 0;
@@ -86,13 +86,22 @@ void Timer_PrintCycletime(void);
 
 #define Timer4InterruptLock(x) TMR4IE = 0;
 #define Timer4InterruptUnlock(x) TMR4IE = 1;
+
+#define Timer5InterruptLock(x) TMR5IE = 0;
+#define Timer5InterruptUnlock(x) TMR5IE = 1;
 #else
 #define Timer1Interrupt(x)
 #define Timer2Interrupt(x)
 #define Timer3Interrupt(x)
 #define Timer4Interrupt(x)
 #define Timer5Interrupt(x)
+#define Timer1Enable(x)
+#define Timer1Disable(x)
+#define Timer4Enable(x)
+#define Timer4Disable(x)
 #define Timer4InterruptLock(x)
 #define Timer4InterruptUnlock(x)
+#define Timer5InterruptLock(x) 
+#define Timer5InterruptUnlock(x) 
 #endif
 #endif

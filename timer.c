@@ -116,20 +116,21 @@ void Timer_Init()
 	TMR1IE = TRUE;
 	
 	/*
-	 * T5 Interrupt every 30 Millisecounds if clock is 64MHz
+	 * T5 Interrupt every 5 Millisecounds if clock is 64MHz
 	 * Calculation
-	 * 64000000 Hz / 4 / 8 / (0xffff - 0xb1df)
-	 * 64000000 Hz / 4 / 4 / 65536
+	 * 64000000 Hz / 8 / 40000
 	 */
-	T5CON = 0b00100111;
-	TMR5IE = 0;
+	T5CON = 0b01110111;
+	TMR5IE = TRUE;
+	TMR5H = 0x63;
+	TMR5L = 0xC0;
 	/* 
 	** T4 Interrupt every 4 Millisecound if clock is 64MHz
 	** Calculation
 	** 64000000 Hz / 4 / 16 / 250 / 16
 	*/
 	T4CON = 0b01111111;
-	TMR4IE = TRUE;
+	TMR4IE = FALSE;
 	PR4 = 250;
 	
 	/* 
