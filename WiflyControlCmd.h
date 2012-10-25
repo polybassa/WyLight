@@ -31,7 +31,7 @@ class WiflyControlCmd
 			stream << ref.m_CmdDescription;
 			return stream;
 		};
-		virtual void Run(const WiflyControl& control) const = 0;
+		virtual void Run(WiflyControl& control) const = 0;
 	protected:
 		const string m_CmdDescription;
 		void Print(const unsigned char* const pBuffer, const size_t size, const unsigned int address) const {
@@ -45,6 +45,49 @@ class WiflyControlCmd
 		}
 };
 
+class ControlCmdAddColor : public WiflyControlCmd
+{
+	public:
+		ControlCmdAddColor(void) : WiflyControlCmd(
+				string("'addcolor <addr> <rgb> <hour> <minute> <second>'\n")
+			+ string("    <addr> hex bitmask, which leds should be set to the new color\n")
+			+ string("    <rgb> hex rgb value of the new color f.e. red: ff0000\n")
+			+ string("    <hour> hour of date event\n")
+			+ string("    <minute> minute of date event\n")
+			+ string("    <second> second of date event")) {};
+
+		virtual void Run(WiflyControl& control) const {
+			string addr, color;
+			unsigned long hour, minute, second;
+			cin >> addr;
+			cin >> color;
+			cin >> hour;
+			cin >> minute;
+			cin >> second;
+			cout << addr << " " << color << " " << hour << " " << minute << " " << second << endl; 
+			control.AddColor(addr, color, hour, minute, second);
+		};
+};
+
+class ControlCmdBlInfo : public WiflyControlCmd
+{
+	public:
+		ControlCmdBlInfo(void) : WiflyControlCmd(
+				string("'bl_info' - read bootloader information")) {};
+
+		virtual void Run(WiflyControl& control) const {
+			BlInfo info;
+			if(sizeof(info) == control.BlReadInfo(info))
+			{
+				info.Print();
+			}
+			else
+			{
+				std::cout << "Read bootloader info failed" << endl;
+			}
+		};
+};
+
 class ControlCmdReadEeprom : public WiflyControlCmd
 {
 	public:
@@ -52,7 +95,8 @@ class ControlCmdReadEeprom : public WiflyControlCmd
 				string("'read_eeprom <addr> <numBytes>'\n")
 			+ string("    <addr> eeprom address where to start reading\n")
 			+ string("    <numBytes> number of bytes to read")) {};
-		virtual void Run(const WiflyControl& control) const {
+
+		virtual void Run(WiflyControl& control) const {
 			unsigned int address;
 			size_t numBytes;
 			cin >> address;
@@ -74,7 +118,8 @@ class ControlCmdReadFlash : public WiflyControlCmd
 				string("'read_flash <addr> <numBytes>'\n")
 			+ string("    <addr> flash address where to start reading\n")
 			+ string("    <numBytes> number of bytes to read")) {};
-		virtual void Run(const WiflyControl& control) const {
+
+		virtual void Run(WiflyControl& control) const {
 			unsigned int address;
 			size_t numBytes;
 			cin >> address;
@@ -89,15 +134,57 @@ class ControlCmdReadFlash : public WiflyControlCmd
 		};
 };
 
+class ControlCmdSetColor : public WiflyControlCmd
+{
+	public:
+		ControlCmdSetColor(void) : WiflyControlCmd(
+				string("'setcolor <addr> <rgb>'\n")
+			+ string("    <addr> hex bitmask, which leds should be set to the new color\n")
+			+ string("    <rgb> hex rgb value of the new color f.e. red: ff0000")) {};
+
+		virtual void Run(WiflyControl& control) const {
+			string addr, color;
+			cin >> addr;
+			cin >> color;
+			control.SetColor(addr, color);
+		};
+};
+
+class ControlCmdSetFade : public WiflyControlCmd
+{
+	public:
+		ControlCmdSetFade(void) : WiflyControlCmd(
+				string("'setfade <addr> <rgb> <time>'\n")
+			+ string("    <addr> hex bitmask, which leds should be set to the new color\n")
+			+ string("    <rgb> hex rgb value of the new color f.e. red: ff0000\n")
+			+ string("    <time> the number of milliseconds the fade should take")) {};
+
+		virtual void Run(WiflyControl& control) const {
+			string addr, color;
+			unsigned long timevalue;
+			cin >> addr;
+			cin >> color;
+			cin >> timevalue;
+			control.SetFade(addr, color, (unsigned short)timevalue * 1024);
+		};
+};
+
 class WiflyControlCmdBuilder
 {
 	public:
 		static const WiflyControlCmd* GetCmd(string name) {
-			if("read_eeprom" == name) {
+			if("addcolor" == name) {
+				return new ControlCmdAddColor();
+			} else if("bl_info" == name) {
+				return new ControlCmdBlInfo();
+			} else if("read_eeprom" == name) {
 				return new ControlCmdReadEeprom();
-			}
-			if("read_flash" == name) {
+			} else if("read_flash" == name) {
 				return new ControlCmdReadFlash();
+			} else if("setcolor" == name) {
+				return new ControlCmdSetColor();
+			 }else if("setfade" == name) {
+				return new ControlCmdSetFade();
 			}
 			return NULL;
 		}

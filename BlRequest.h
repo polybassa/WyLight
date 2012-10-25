@@ -20,6 +20,7 @@
 #define _BL_REQUEST_H_
 
 #include "ClientSocket.h"
+#include <stdio.h>
 
 #define WORD(HIGH, LOW) (unsigned short)(((((unsigned short)(HIGH))<< 8) | (((unsigned short)(LOW)) & 0x00ff)))
 #define DWORD(HIGH, LOW) (unsigned int)(((((unsigned int)(HIGH))<< 16) | (((unsigned int)(LOW)) & 0x0000ffff)))
@@ -73,6 +74,28 @@ struct BlInfo  {
 	unsigned char deviceIdLow;
 	unsigned char deviceIdHigh;
 #endif
+
+	void Print(void) const {
+		switch(familyId)
+		{
+			case 0x02:
+				printf("PIC16");
+	#ifdef PIC16
+				printf("F%d", WORD(deviceIdHigh, deviceIdLow));
+	#endif
+				break;
+			case 0x04:
+				printf("PIC18");
+				break;
+			default:
+				printf("unknown(0x%1x)", familyId);
+				break;
+		}
+		printf(" bootloader V%d.%d\n", versionMajor, versionMinor);
+		printf("Size: %d\n", WORD(sizeHigh, sizeLow));
+		printf("Startaddress: 0x%x\n", DWORD(WORD(zero, startU), WORD(startHigh, startLow)));
+		printf("erase flash command %ssupported\n", ((0x02 == familyId) && (0x01 != cmdmaskHigh)) ? "not " : "");
+	};
 };
 
 struct BlEepromReadRequest : public BlRequest {
