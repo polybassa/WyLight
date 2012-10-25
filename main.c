@@ -85,23 +85,21 @@ interrupt LowPriorityInterrupt(void)
 	uns24 sv_TBLPTR = TBLPTR;
 	uns8 sv_TABLAT = TABLAT;
 
-	if(TMR4IF)
+	if(TMR5IF)
 	{
 	      g_UpdateLed = g_UpdateLed + 1;
-	      if(gScriptBuf.waitValue > 0 && g_UpdateLed > 2)
+	      if(gScriptBuf.waitValue > 0)
 	      {
-		      gScriptBuf.waitValue = gScriptBuf.waitValue - 1;
+		    gScriptBuf.waitValue = gScriptBuf.waitValue - 1;
 	      }
-	      Timer4Interrupt();
+	      Timer5Interrupt();
 	} 
 		
 	if(TMR1IF)
 	{
-	      //g_UpdateLedStrip = g_UpdateLedStrip + 1;
+	      g_UpdateLedStrip = g_UpdateLedStrip + 1;
 	      Timer1Disable();
-	      do_and_measure(Ledstrip_UpdateLed);
 	      Timer1Interrupt();
-	      Timer1Enable();
 	}
 	
 	FSR0 = sv_FSR0;
@@ -164,16 +162,22 @@ void main(void)
 				
 		do_and_measure(ScriptCtrl_Run);
 
-		if(g_UpdateLed > 2)
+		if(g_UpdateLed > 0)
 		{		  
 			do_and_measure(Ledstrip_DoFade);
 			
 			do_and_measure(Ledstrip_UpdateRun);
 			
-			Timer4InterruptLock();
+			Timer5InterruptLock();
 			g_UpdateLed = 0;
-			Timer4InterruptUnlock();
+			Timer5InterruptUnlock();
 			
+		}
+		if(g_UpdateLedStrip > 0)
+		{
+			do_and_measure(Ledstrip_UpdateLed);
+			Timer1Enable();
+			g_UpdateLedStrip = 0;
 		}
 		Timer_StopStopwatch(eMAIN);
 	}

@@ -36,10 +36,11 @@ void Platform_AllowInterrupts()
 	TMR2IP = 0;
 	TMR3IP = 0;
 	TMR4IP = 0;
+	TMR5IP = 0;
 	RC1IP = 1;
 	RC1IE = 1; 
 	PEIE = 1; 
-	GIEL = 1; // Low Priority Interrupts are disabled
+	GIEL = 1; 
 	GIEH = 1;
 }
 

@@ -100,7 +100,7 @@ void WiflyControlCli::Run(void)
 			cin >> addr;
 			cin >> color;
 			mControl.SetColor(addr, color);
-		}	else if ("setfade" == nextCmd) {
+		}	else if ("setfade" == nextCmd)bl {
 			string addr, color;
 			unsigned long timevalue;
 			cin >> addr;

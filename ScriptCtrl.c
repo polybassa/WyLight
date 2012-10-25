@@ -104,7 +104,9 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 			return ScriptCtrl_Write(pCmd);
 		}
 		case START_BL:
-			Trace_String("Leaving Application --> Starting Bootloader");
+#ifdef __CC8E__
+			UART_SendString("Leaving Application --> Starting Bootloader");
+#endif
 			Eeprom_Write(0x3ff, 0xff);
 			softReset();
 			/* never reach this */
