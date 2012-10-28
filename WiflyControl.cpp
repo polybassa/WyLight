@@ -24,13 +24,6 @@
 
 using namespace std;
 
-void* RunReceiving(void* pObj)
-{
-	WiflyControl* pMe = reinterpret_cast<WiflyControl*>(pObj);
-	pMe->Receiving();
-	return NULL;
-}
-
 WiflyControl::WiflyControl(const char* pAddr, short port, bool useTcp)
 {
 	mCmdFrame.stx = STX;
@@ -41,28 +34,12 @@ WiflyControl::WiflyControl(const char* pAddr, short port, bool useTcp)
 	if(useTcp)
 	{
 		mSock = new TcpSocket(pAddr, port);
-		assert(mSock);
-
-		//pthread_create(&mRecvThread, 0, RunReceiving, this);
 	}
 	else
 	{
 		mSock = new UdpSocket(pAddr, port);
-		assert(mSock);
 	}
-}
-
-void WiflyControl::Receiving() const
-{
-	unsigned char buffer[2048];
-	int bytesReceived;
-	cout << "Receiving..." << endl;
-	for(;;)
-	{
-		bytesReceived = mSock->Recv(buffer, sizeof(buffer) - 1);
-		buffer[sizeof(buffer) - 1] = '\0';
-		cout << "Trace " << bytesReceived << " bytes: >>" << buffer << "<<" << endl;
-	}
+	assert(mSock);
 }
 
 void WiflyControl::AddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second)
