@@ -16,7 +16,7 @@ X86_SRC=main.c commandstorage.c eeprom.c error.c ledstrip.c RingBuf.c ScriptCtrl
 
 all_nils: pic simu x86_client
 
-all_pat: pic simu x86_client android_client
+all_pat: clean test pic simu x86_client android_client
 
 pic:
 	wine ${PIC_CC8E} main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM

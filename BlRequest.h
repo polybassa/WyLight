@@ -99,7 +99,13 @@ struct BlInfo
 	unsigned char deviceIdHigh;
 #endif
 
-	void Print(void) const {
+	unsigned int GetAddress(void) const
+	{
+		return DWORD(WORD(zero, startU), WORD(startHigh, startLow));
+	}
+
+	void Print(void) const
+	{
 		switch(familyId)
 		{
 			case 0x02:
@@ -117,7 +123,7 @@ struct BlInfo
 		}
 		printf(" bootloader V%d.%d\n", versionMajor, versionMinor);
 		printf("Size: %d\n", WORD(sizeHigh, sizeLow));
-		printf("Startaddress: 0x%x\n", DWORD(WORD(zero, startU), WORD(startHigh, startLow)));
+		printf("Startaddress: 0x%x\n", GetAddress());
 		printf("erase flash command %ssupported\n", ((0x02 == familyId) && (0x01 != cmdmaskHigh)) ? "not " : "");
 	};
 };
