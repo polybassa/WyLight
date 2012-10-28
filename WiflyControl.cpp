@@ -107,14 +107,41 @@ size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size
 
 size_t WiflyControl::BlReadEeprom(unsigned char* pBuffer, unsigned int address, const size_t numBytes) const
 {
-	BlEepromReadRequest readRequest(address, numBytes);
+	BlEepromReadRequest readRequest;
+	readRequest.SetAddressNumBytes(address, numBytes);
 	return BlRead(readRequest, pBuffer, numBytes);
 }
 
-size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, const size_t numBytes) const
+size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, size_t numBytes) const
 {
-	BlFlashReadRequest readRequest(address, numBytes);
-	return BlRead(readRequest, pBuffer, numBytes);
+	size_t bytesRead;
+	size_t sumBytesRead = 0;
+	BlFlashReadRequest readRequest;
+	while(numBytes > FLASH_READ_BLOCKSIZE)
+	{
+		readRequest.SetAddressNumBytes(address, FLASH_READ_BLOCKSIZE);
+		bytesRead = BlRead(readRequest, pBuffer, numBytes);
+		sumBytesRead += bytesRead;
+		if(FLASH_READ_BLOCKSIZE != bytesRead)
+		{
+			cout << __FILE__ << "::" << __FUNCTION__
+			<< "(): only " << bytesRead << " bytes read not " << FLASH_READ_BLOCKSIZE << endl;
+			return sumBytesRead;
+		}
+		address += FLASH_READ_BLOCKSIZE;
+		numBytes -= FLASH_READ_BLOCKSIZE;
+		pBuffer += FLASH_READ_BLOCKSIZE;
+	}
+
+	readRequest.SetAddressNumBytes(address, numBytes);
+	bytesRead = BlRead(readRequest, pBuffer, numBytes);
+	sumBytesRead += bytesRead;
+	if(numBytes != bytesRead)
+	{
+		cout << __FILE__ << "::" << __FUNCTION__
+		<< "(): only " << bytesRead << " bytes read not " << numBytes << endl;
+	}
+	return sumBytesRead;
 }
 
 size_t WiflyControl::BlReadInfo(BlInfo& blInfo)
