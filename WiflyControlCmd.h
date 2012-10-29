@@ -103,7 +103,8 @@ class ControlCmdBlEraseFlash : public WiflyControlCmd
 				return;
 			}
 
-			unsigned int address = info.GetAddress();
+			// bootloader is expected to reside at the end of the flash
+			unsigned int address = info.GetAddress() - 1;
 			size_t numPages = (address + FLASH_ERASE_BLOCKSIZE - 1) / FLASH_ERASE_BLOCKSIZE;
 			unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 			size_t bytesRead = control.BlFlashErase(buffer, address, numPages);
