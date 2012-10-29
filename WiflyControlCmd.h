@@ -88,36 +88,41 @@ class ControlCmdBlInfo : public WiflyControlCmd
 		};
 };
 
-class ControlCmdReadEeprom : public WiflyControlCmd
+class ControlCmdBlEraseFlash : public WiflyControlCmd
 {
 	public:
-		ControlCmdReadEeprom(void) : WiflyControlCmd(
-				string("'read_eeprom <addr> <numBytes>'\n")
-			+ string("    <addr> eeprom address where to start reading\n")
-			+ string("    <numBytes> number of bytes to read")) {};
+		ControlCmdBlEraseFlash(void) : WiflyControlCmd(
+				string("'erase_flash'")) {};
 
-		virtual void Run(WiflyControl& control) const {
-			unsigned int address;
-			size_t numBytes;
-			cin >> address;
-			cin >> numBytes;
-			unsigned char buffer[1024];
-			size_t bytesRead = control.BlReadEeprom(buffer, address, numBytes);
-			if(bytesRead != numBytes) {
-				cout << "Read eeprom failed" << endl;
-			} else {
-				Print(buffer, bytesRead, address);
+		virtual void Run(WiflyControl& control) const
+		{
+			BlInfo info;
+			if(sizeof(info) != control.BlReadInfo(info))
+			{
+				cout << "Erase flash failed, couldn't determine bootloader location" << endl;
+				return;
+			}
+
+			// bootloader is expected to reside at the end of the flash
+			unsigned int address = info.GetAddress() - 1;
+			size_t numPages = (address + FLASH_ERASE_BLOCKSIZE - 1) / FLASH_ERASE_BLOCKSIZE;
+			unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
+			size_t bytesRead = control.BlFlashErase(buffer, address, numPages);
+			if((bytesRead != 1) || (0x03 != buffer[0])) {
+				cout << "Erase flash failed, for " << numPages << " pages below 0x" << hex << address << endl;
 			}
 		};
 };
 
-class ControlCmdReadFlash : public WiflyControlCmd
+class ControlCmdBlRead : public WiflyControlCmd
 {
 	public:
-		ControlCmdReadFlash(void) : WiflyControlCmd(
-				string("'read_flash <addr> <numBytes>'\n")
-			+ string("    <addr> flash address where to start reading\n")
-			+ string("    <numBytes> number of bytes to read")) {};
+		ControlCmdBlRead(string name) : WiflyControlCmd(
+				string("'read_") + name + string(" <addr> <numBytes>'\n")
+			+ string("    <addr> address where to start reading\n")
+			+ string("    <numBytes> number of bytes to read")), m_Name(name) {};
+
+		const string m_Name;
 
 		virtual void Run(WiflyControl& control) const {
 			unsigned int address;
@@ -125,13 +130,37 @@ class ControlCmdReadFlash : public WiflyControlCmd
 			cin >> address;
 			cin >> numBytes;
 			unsigned char buffer[0x10000];
-			size_t bytesRead = control.BlReadFlash(buffer, address, numBytes);
+			if(sizeof(buffer) < numBytes)
+			{
+				cout << "Read " << m_Name << " failed. Too many bytes requested" << endl;
+				return;
+			}
+
+			size_t bytesRead = 0;
+			if("eeprom" == m_Name) {
+				bytesRead = control.BlReadEeprom(buffer, address, numBytes);
+			} else if("flash" == m_Name){
+				bytesRead = control.BlReadFlash(buffer, address, numBytes);
+			}
+
 			if(bytesRead != numBytes) {
-				cout << "Read flash failed" << endl;
+				cout << "Read " << m_Name << " failed" << endl;
 			} else {
 				Print(buffer, bytesRead, address);
 			}
 		};
+};
+
+class ControlCmdBlReadEeprom : public ControlCmdBlRead
+{
+	public:
+		ControlCmdBlReadEeprom(void) : ControlCmdBlRead("eeprom") {};
+};
+
+class ControlCmdBlReadFlash : public ControlCmdBlRead
+{
+	public:
+		ControlCmdBlReadFlash(void) : ControlCmdBlRead("flash") {};
 };
 
 class ControlCmdSetColor : public WiflyControlCmd
@@ -177,10 +206,12 @@ class WiflyControlCmdBuilder
 				return new ControlCmdAddColor();
 			} else if("bl_info" == name) {
 				return new ControlCmdBlInfo();
+			} else if("erase_flash" == name) {
+				return new ControlCmdBlEraseFlash();
 			} else if("read_eeprom" == name) {
-				return new ControlCmdReadEeprom();
+				return new ControlCmdBlReadEeprom();
 			} else if("read_flash" == name) {
-				return new ControlCmdReadFlash();
+				return new ControlCmdBlReadFlash();
 			} else if("setcolor" == name) {
 				return new ControlCmdSetColor();
 			 }else if("setfade" == name) {

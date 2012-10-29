@@ -25,8 +25,9 @@
 #define WORD(HIGH, LOW) (unsigned short)(((((unsigned short)(HIGH))<< 8) | (((unsigned short)(LOW)) & 0x00ff)))
 #define DWORD(HIGH, LOW) (unsigned int)(((((unsigned int)(HIGH))<< 16) | (((unsigned int)(LOW)) & 0x0000ffff)))
 
-#define FLASH_WRITE_BLOCKSIZE 64
 #define FLASH_ERASE_BLOCKSIZE 64
+#define FLASH_READ_BLOCKSIZE 64
+#define FLASH_WRITE_BLOCKSIZE 64
 #define BL_STX 0x0f
 #define BL_ETX 0x04
 #define BL_DLE 0x05
@@ -38,7 +39,8 @@ static const size_t BL_MAX_MESSAGE_LENGTH = 512;
 static const unsigned long BL_RESPONSE_TIMEOUT_TMMS = 1000;
 static const unsigned char BL_SYNC[] = {BL_STX, BL_STX};
 
-struct BlRequest {
+struct BlRequest
+{
 	BlRequest(size_t size, unsigned char cmd) : mSize(1 + size), mCmd(cmd) {};
 	const size_t mSize;
 	const unsigned char mCmd;
@@ -46,7 +48,28 @@ struct BlRequest {
 	size_t GetSize() const { return mSize; };
 };
 
-class BlProxy {
+struct BlReadRequest : public BlRequest
+{
+		BlReadRequest(size_t size, unsigned char cmd) : BlRequest(size + 6, cmd), zero(0x00) {};
+		void SetAddressNumBytes(unsigned int address, unsigned short numBytes)
+		{
+			addressLow = static_cast<unsigned char>(address & 0x000000FF);
+			addressHigh = static_cast<unsigned char>((address & 0x0000FF00) >> 8);
+			addressU = static_cast<unsigned char>((address & 0x00FF0000) >> 16);
+			numBytesLow = static_cast<unsigned char>(numBytes & 0x00FF);
+			numBytesHigh = static_cast<unsigned char>((numBytes & 0xFF00) >> 8);
+		};
+
+		unsigned char addressLow;
+		unsigned char addressHigh;
+		unsigned char addressU;
+		const unsigned char zero;
+		unsigned char numBytesLow;
+		unsigned char numBytesHigh;
+};
+
+class BlProxy
+{
 	private:
 		const ClientSocket* const mSock;
 
@@ -58,7 +81,8 @@ class BlProxy {
 		size_t UnmaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength) const;
 };
 
-struct BlInfo  {
+struct BlInfo
+{
 	unsigned char sizeLow;
 	unsigned char sizeHigh;
 	unsigned char versionMajor;
@@ -75,7 +99,13 @@ struct BlInfo  {
 	unsigned char deviceIdHigh;
 #endif
 
-	void Print(void) const {
+	unsigned int GetAddress(void) const
+	{
+		return DWORD(WORD(zero, startU), WORD(startHigh, startLow));
+	}
+
+	void Print(void) const
+	{
 		switch(familyId)
 		{
 			case 0x02:
@@ -93,29 +123,18 @@ struct BlInfo  {
 		}
 		printf(" bootloader V%d.%d\n", versionMajor, versionMinor);
 		printf("Size: %d\n", WORD(sizeHigh, sizeLow));
-		printf("Startaddress: 0x%x\n", DWORD(WORD(zero, startU), WORD(startHigh, startLow)));
+		printf("Startaddress: 0x%x\n", GetAddress());
 		printf("erase flash command %ssupported\n", ((0x02 == familyId) && (0x01 != cmdmaskHigh)) ? "not " : "");
 	};
 };
 
-struct BlEepromReadRequest : public BlRequest {
-		BlEepromReadRequest(unsigned short address, unsigned short numBytes)
-		: BlRequest(8, 0x05), zero(0)
-		{
-			addressLow = static_cast<unsigned char>(address & 0x00FF);
-			addressHigh = static_cast<unsigned char>((address & 0xFF00) >> 8);
-			numBytesLow = static_cast<unsigned char>(numBytes & 0x00FF);
-			numBytesHigh = static_cast<unsigned char>((numBytes & 0xFF00) >> 8);
-		};
-
-		unsigned char addressLow;
-		unsigned char addressHigh;
-		const unsigned short zero;
-		unsigned char numBytesLow;
-		unsigned char numBytesHigh;
+struct BlEepromReadRequest : public BlReadRequest
+{
+		BlEepromReadRequest() : BlReadRequest(0, 0x05) {};
 };
 
-struct BlFlashCrc16Request : public BlRequest {
+struct BlFlashCrc16Request : public BlRequest
+{
 		BlFlashCrc16Request(unsigned int address, unsigned short numBlocks)
 		: BlRequest(6, 0x02), zero(0x00)
 		{
@@ -134,7 +153,8 @@ struct BlFlashCrc16Request : public BlRequest {
 		unsigned char numBlocksHigh;
 };
 
-struct BlFlashEraseRequest : public BlRequest {
+struct BlFlashEraseRequest : public BlRequest
+{
 		BlFlashEraseRequest(unsigned int endAddress, unsigned char numFlashPages)
 		: BlRequest(5, 0x03), zero(0x00), numPages(numFlashPages)
 		{
@@ -150,30 +170,18 @@ struct BlFlashEraseRequest : public BlRequest {
 		unsigned char numPages;
 };
 
-struct BlFlashReadRequest : public BlRequest {
-		BlFlashReadRequest(unsigned int address, unsigned short numBytes)
-		: BlRequest(6, 0x01), zero(0x00)
-		{
-			addressLow = static_cast<unsigned char>(address & 0x000000FF);
-			addressHigh = static_cast<unsigned char>((address & 0x0000FF00) >> 8);
-			addressU = static_cast<unsigned char>((address & 0x00FF0000) >> 16);
-			numBytesLow = static_cast<unsigned char>(numBytes & 0x00FF);
-			numBytesHigh = static_cast<unsigned char>((numBytes & 0xFF00) >> 8);
-		};
-
-		unsigned char addressLow;
-		unsigned char addressHigh;
-		unsigned char addressU;
-		const unsigned char zero;
-		unsigned char numBytesLow;
-		unsigned char numBytesHigh;
+struct BlFlashReadRequest : public BlReadRequest
+{
+		BlFlashReadRequest() : BlReadRequest(0, 0x01) {};
 };
 
-struct BlInfoRequest : public BlRequest {
+struct BlInfoRequest : public BlRequest
+{
 	BlInfoRequest() : BlRequest(0, 0x00) {};
 };
 
-struct BlRunAppRequest : public BlRequest {
+struct BlRunAppRequest : public BlRequest
+{
 	BlRunAppRequest() : BlRequest(0, 0x08) {};
 };
 #endif /* #ifndef _BL_REQUEST_H_ */
