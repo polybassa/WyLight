@@ -57,8 +57,9 @@ void WiflyControlCli::ShowHelp(void) const
 {
 	ControlCmdAddColor addColor;
 	ControlCmdBlInfo blInfo;
-	ControlCmdReadEeprom readEeprom;
-	ControlCmdReadEeprom readFlash;
+	ControlCmdBlEraseFlash eraseFlash;
+	ControlCmdBlReadEeprom readEeprom;
+	ControlCmdBlReadFlash readFlash;
 	ControlCmdSetColor setColor;
 	ControlCmdSetFade setFade;
 	cout << "Command reference:" << endl;
@@ -66,6 +67,7 @@ void WiflyControlCli::ShowHelp(void) const
 	cout << "'exit' - terminate cli" << endl;
 	cout << addColor << endl;
 	cout << blInfo << endl;
+	cout << eraseFlash << endl;
 	cout << readEeprom << endl;
 	cout << readFlash << endl;
 	cout << setColor << endl;

@@ -191,7 +191,8 @@ int ut_BlProxy_BlEepromReadRequest(void)
 	BlProxy proxy(&dummySocket);
 	unsigned char response[512];
 
-	BlEepromReadRequest request(0xDA7A, sizeof(dummyBlFlashReadResponsePure));
+	BlEepromReadRequest request;
+	request.SetAddressNumBytes(0xDA7A, sizeof(dummyBlFlashReadResponsePure));
 	size_t bytesReceived = proxy.Send(request, response, sizeof(response));
 	assert(sizeof(dummyBlFlashReadResponsePure) == bytesReceived);
 	assert(0 == memcmp(dummyBlFlashReadResponsePure, response, bytesReceived));
@@ -237,7 +238,8 @@ int ut_BlProxy_BlFlashReadRequest(void)
 	BlProxy proxy(&dummySocket);
 	unsigned char response[512];
 
-	BlFlashReadRequest request(0xDA7ADA7A, sizeof(dummyBlFlashReadResponsePure));
+	BlFlashReadRequest request;
+	request.SetAddressNumBytes(0xDA7ADA7A, sizeof(dummyBlFlashReadResponsePure));
 	size_t bytesReceived = proxy.Send(request, response, sizeof(response));
 	assert(sizeof(dummyBlFlashReadResponsePure) == bytesReceived);
 	assert(0 == memcmp(dummyBlFlashReadResponsePure, response, bytesReceived));

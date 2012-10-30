@@ -24,13 +24,6 @@
 
 using namespace std;
 
-void* RunReceiving(void* pObj)
-{
-	WiflyControl* pMe = reinterpret_cast<WiflyControl*>(pObj);
-	pMe->Receiving();
-	return NULL;
-}
-
 WiflyControl::WiflyControl(const char* pAddr, short port, bool useTcp)
 {
 	mCmdFrame.stx = STX;
@@ -41,28 +34,12 @@ WiflyControl::WiflyControl(const char* pAddr, short port, bool useTcp)
 	if(useTcp)
 	{
 		mSock = new TcpSocket(pAddr, port);
-		assert(mSock);
-
-		//pthread_create(&mRecvThread, 0, RunReceiving, this);
 	}
 	else
 	{
 		mSock = new UdpSocket(pAddr, port);
-		assert(mSock);
 	}
-}
-
-void WiflyControl::Receiving() const
-{
-	unsigned char buffer[2048];
-	int bytesReceived;
-	cout << "Receiving..." << endl;
-	for(;;)
-	{
-		bytesReceived = mSock->Recv(buffer, sizeof(buffer) - 1);
-		buffer[sizeof(buffer) - 1] = '\0';
-		cout << "Trace " << bytesReceived << " bytes: >>" << buffer << "<<" << endl;
-	}
+	assert(mSock);
 }
 
 void WiflyControl::AddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second)
@@ -90,6 +67,13 @@ void WiflyControl::AddColor(string& addr, string& rgba, unsigned char hour, unsi
 	AddColor(ToRGBA(addr), ToRGBA(rgba) << 8, hour, minute, second);
 }
 
+size_t WiflyControl::BlFlashErase(unsigned char* pBuffer, unsigned int endAddress, const size_t numPages) const
+{
+	BlFlashEraseRequest request(endAddress, numPages);
+	// we expect only the one byte command code (0x03) as response
+	return BlRead(request, pBuffer, 1);
+}
+
 size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize) const
 {
 	BlProxy proxy(mSock);
@@ -107,14 +91,41 @@ size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size
 
 size_t WiflyControl::BlReadEeprom(unsigned char* pBuffer, unsigned int address, const size_t numBytes) const
 {
-	BlEepromReadRequest readRequest(address, numBytes);
+	BlEepromReadRequest readRequest;
+	readRequest.SetAddressNumBytes(address, numBytes);
 	return BlRead(readRequest, pBuffer, numBytes);
 }
 
-size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, const size_t numBytes) const
+size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, size_t numBytes) const
 {
-	BlFlashReadRequest readRequest(address, numBytes);
-	return BlRead(readRequest, pBuffer, numBytes);
+	size_t bytesRead;
+	size_t sumBytesRead = 0;
+	BlFlashReadRequest readRequest;
+	while(numBytes > FLASH_READ_BLOCKSIZE)
+	{
+		readRequest.SetAddressNumBytes(address, FLASH_READ_BLOCKSIZE);
+		bytesRead = BlRead(readRequest, pBuffer, numBytes);
+		sumBytesRead += bytesRead;
+		if(FLASH_READ_BLOCKSIZE != bytesRead)
+		{
+			cout << __FILE__ << "::" << __FUNCTION__
+			<< "(): only " << bytesRead << " bytes read not " << FLASH_READ_BLOCKSIZE << endl;
+			return sumBytesRead;
+		}
+		address += FLASH_READ_BLOCKSIZE;
+		numBytes -= FLASH_READ_BLOCKSIZE;
+		pBuffer += FLASH_READ_BLOCKSIZE;
+	}
+
+	readRequest.SetAddressNumBytes(address, numBytes);
+	bytesRead = BlRead(readRequest, pBuffer, numBytes);
+	sumBytesRead += bytesRead;
+	if(numBytes != bytesRead)
+	{
+		cout << __FILE__ << "::" << __FUNCTION__
+		<< "(): only " << bytesRead << " bytes read not " << numBytes << endl;
+	}
+	return sumBytesRead;
 }
 
 size_t WiflyControl::BlReadInfo(BlInfo& blInfo)
