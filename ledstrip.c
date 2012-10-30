@@ -76,21 +76,20 @@ struct LedBuffer gLedBuf;
 			*(stepAddress) &= ~(stepMask); \
 		}  \
 		INC_BIT_COUNTER(stepAddress, stepMask); \
+		stepSize = 0x01; \
 		temp16 = 0; \
 		if((0 != delta))  \
 		{ \
-			temp16 = fadeTmms / delta;  \
-			gLedBuf.periodeLength[k] = temp16;  \
+			do{ \
+			temp8 = delta / stepSize; \
+			temp16 = fadeTmms / temp8;  \
+			if(temp16 < 1) { \
+			      stepSize += 1; } \
+			} while(temp16 < 1); \
 		} \
-		if((temp16 == 0))  \
-		{ \
-			gLedBuf.led_array[k] = newColor;  \
-			gLedBuf.delta[k] = 0; \
-		}  \
-		else  \
-		{  \
-			gLedBuf.delta[k] = delta; \
-		}  \
+		gLedBuf.stepSize[k] = stepSize; \
+		gLedBuf.delta[k] = delta; \
+		gLedBuf.periodeLength[k] = temp16;  \
 		gLedBuf.cyclesLeft[k] = temp16;  \
 };
 
@@ -121,29 +120,35 @@ void Ledstrip_Init(void)
 		i--;
 		gLedBuf.led_array[i] = 0;
 	} while(0 != i);
-	
+	/*-------------------------------------*/
 	i = sizeof(gLedBuf.delta);
 	do {
 		i--;
 		gLedBuf.delta[i] = 0;
 	} while(0 != i);
-	
+	/*-------------------------------------*/
 	i = sizeof(gLedBuf.cyclesLeft);
 	do {
 		i--;
 		gLedBuf.cyclesLeft[i] = 0;
 	} while(0 != i);
-	
+	/*-------------------------------------*/
 	i = sizeof(gLedBuf.periodeLength);
 	do {
 		i--;
 		gLedBuf.periodeLength[i] = 0;
 	} while(0 != i);
-	
+	/*-------------------------------------*/
 	i = sizeof(gLedBuf.step);
 	do {
 		i--;
 		gLedBuf.step[i] = 0;
+	} while(0 != i);
+	/*-------------------------------------*/
+	i = sizeof(gLedBuf.stepSize);
+	do {
+		i--;
+		gLedBuf.stepSize[i] = 0;
 	} while(0 != i);
 	
 	gLedBuf.fadeTmms = 0;
@@ -192,7 +197,7 @@ void Ledstrip_SetColorDirect(uns8 *pValues)
 
 void Ledstrip_DoFade(void)
 {
-	uns8 k, stepmask;
+	uns8 k, stepmask, stepSize;
 	uns8* stepaddress = gLedBuf.step;
 	stepmask = 0x01;
 	uns16 periodeLength;
@@ -212,16 +217,27 @@ void Ledstrip_DoFade(void)
 		// fade active on this led and current periode is over?
 		if((gLedBuf.delta[k] > 0) && (gLedBuf.cyclesLeft[k] == 0))
 		{
+			stepSize = gLedBuf.stepSize[k];
 			// reset cycle counters
-			gLedBuf.delta[k]--;
+			if(gLedBuf.delta[k] < stepSize)
+			{
+			  stepSize = gLedBuf.delta[k];
+			  gLedBuf.delta[k] = 0;
+			}
+			else
+			{
+			  gLedBuf.delta[k] -= stepSize;
+			}
 			periodeLength = gLedBuf.periodeLength[k];
 			gLedBuf.cyclesLeft[k] = periodeLength;
 
 			// update rgb value by one step
-			if(0 != ((*stepaddress) & stepmask)) {
-				gLedBuf.led_array[k] -= 1;
-			} else {
-				gLedBuf.led_array[k] += 1;
+			if(0 != ((*stepaddress) & stepmask)) 
+			{
+				gLedBuf.led_array[k] -= stepSize;
+			} else 
+			{
+				gLedBuf.led_array[k] += stepSize;
 			}
 		}
 		INC_BIT_COUNTER(stepaddress, stepmask);
@@ -242,7 +258,7 @@ void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 	uns8* stepAddress = gLedBuf.step;
 	uns8 stepMask = 0x01;
 	uns16 temp16;
-	uns8 red,green,blue,delta;
+	uns8 red,green,blue,delta,stepSize,temp8;
 	
 	red = pCmd->red;
 	green = pCmd->green;
@@ -270,7 +286,7 @@ void Ledstrip_SetRun(struct cmd_set_run *pCmd)
 {
 	gLedBuf.fadeTmms = ntohs(pCmd->fadeTmms);
 	
-	if(pCmd->direction > 0)
+	if(pCmd->direction < 1)
 	{
 		gLedBuf.flags.run_direction = 1;
 	}
@@ -304,11 +320,11 @@ void Ledstrip_UpdateRun(void)
 	uns8* stepAddress = gLedBuf.step;
 	uns8 stepMask = 0x01;
 	uns16 temp16;
-	uns8 red, green, blue, delta, k, temp_red, temp_green, temp_blue;
+	uns8 red, green, blue, delta, k, temp_red, temp_green, temp_blue, stepSize, temp8;
 	
 	for(k = 0; k < (NUM_OF_LED * 3); k++)
 	{
-		if(gLedBuf.flags.run_direction == 1) //rechts
+		if(gLedBuf.flags.run_direction == 0) //rechts
 		{
 			if(k < 3)
 			{
