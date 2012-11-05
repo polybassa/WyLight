@@ -48,7 +48,8 @@ class WiflyControl
 		size_t BlReadCrcFlash(unsigned char* pBuffer, unsigned int address, const size_t numBytes) const;
 		size_t BlReadEeprom(unsigned char* pBuffer, unsigned int address, const size_t numBytes) const;
 		size_t BlReadFlash(unsigned char* pBuffer, unsigned int address, size_t numBytes) const;
-		size_t BlReadInfo(BlInfo& info);
+		size_t BlReadInfo(BlInfo& info) const;
+		bool BlRunApp(void) const;
 		void SetColor(unsigned long addr, unsigned long rgba);
 		void SetColor(std::string& addr, std::string& rgba);
 		void SetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms);

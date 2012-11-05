@@ -195,5 +195,6 @@ struct BlInfoRequest : public BlRequest
 struct BlRunAppRequest : public BlRequest
 {
 	BlRunAppRequest() : BlRequest(0, 0x08) {};
+	virtual bool CheckCrc() const { return false; };
 };
 #endif /* #ifndef _BL_REQUEST_H_ */

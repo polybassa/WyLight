@@ -134,10 +134,26 @@ size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address
 	return BlRead(request, pBuffer, numBlocks * 2);
 }
 
-size_t WiflyControl::BlReadInfo(BlInfo& blInfo)
+size_t WiflyControl::BlReadInfo(BlInfo& blInfo) const
 {
 	BlInfoRequest request;
 	return BlRead(request, reinterpret_cast<unsigned char*>(&blInfo), sizeof(BlInfo));
+}
+
+bool WiflyControl::BlRunApp(void) const
+{
+	BlRunAppRequest request;
+	unsigned char buffer[32];
+	size_t bytesRead = BlRead(request, buffer, sizeof(buffer));
+
+	/* we expect a "RDY" as lifesign of the application */
+	if((3 == bytesRead) && (0 != memcmp("RDY", buffer, bytesRead)))
+	{
+		return true;
+	}
+	cout << __FILE__ << "::" << __FUNCTION__
+		<< "(): " << bytesRead << " bytes read" << endl;
+	return false;
 }
 
 void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)

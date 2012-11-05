@@ -192,6 +192,18 @@ class ControlCmdBlReadFlash : public ControlCmdBlRead
 		};
 };
 
+class ControlCmdBlRunApp : public WiflyControlCmd
+{
+	public:
+		ControlCmdBlRunApp(void) : WiflyControlCmd(
+				string("'run_app' - start application and terminate bootloader")) {};
+
+		virtual void Run(WiflyControl& control) const {
+			cout << "Starting application... ";
+			cout << (control.BlRunApp() ? "done." : "failed!") << endl;
+		};
+};
+
 class ControlCmdSetColor : public WiflyControlCmd
 {
 	public:
@@ -243,6 +255,8 @@ class WiflyControlCmdBuilder
 				return new ControlCmdBlReadEeprom();
 			} else if("read_flash" == name) {
 				return new ControlCmdBlReadFlash();
+			} else if("run_app" == name) {
+				return new ControlCmdBlRunApp();
 			} else if("setcolor" == name) {
 				return new ControlCmdSetColor();
 			 }else if("setfade" == name) {
