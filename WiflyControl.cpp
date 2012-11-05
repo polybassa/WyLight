@@ -132,8 +132,6 @@ size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address
 {
 	BlFlashCrc16Request request(address, numBlocks);
 	return BlRead(request, pBuffer, numBlocks * 2);
-
-	return 0; //TODO implement this
 }
 
 size_t WiflyControl::BlReadInfo(BlInfo& blInfo)
