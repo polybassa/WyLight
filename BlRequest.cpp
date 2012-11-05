@@ -100,8 +100,14 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 		pInput++;
 	}
 
-	// check and remove crc	
-	if((2 > bytesWritten) || (0 != crc))
+	/* for responses without crc we can finish here */
+	if(!checkCrc)
+	{
+		return bytesWritten;
+	}
+
+	/* check and remove crc */
+	if((bytesWritten < 2) || (0 != crc))
 	{
 		Trace_String(__FUNCTION__);
 		Trace_String(" check crc: ");
