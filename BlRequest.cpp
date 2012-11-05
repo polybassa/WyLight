@@ -65,13 +65,12 @@ size_t BlProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputL
 	}
 
 	// add crc to output
-	//TODO this byte order should be wrong
-	MaskAndAddByteToOutput((unsigned char)(crc >> 8));
 	MaskAndAddByteToOutput((unsigned char)(crc & 0xff));
+	MaskAndAddByteToOutput((unsigned char)(crc >> 8));
 	return bytesWritten;
 }
 
-size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength) const
+size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength, bool checkCrc) const
 {
 	if(outputLength < inputLength)
 	{
@@ -106,7 +105,6 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 	unsigned char postNext = *pInput;
 	pInput++;
 
-
 	while(pInput < pInputEnd)
 	{
 		if(*pInput == BL_DLE)
@@ -122,10 +120,10 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 		pInput++;
 	}
 
-	// check and remove crc
-	// TODO this switch should be wrong!
-	if(crc != (((unsigned short)next << 8) | (unsigned short)postNext))
-	//if(crc != (((unsigned short)postNext << 8) | (unsigned short)next))
+	// check and remove crc	
+	Crc_AddCrc16(next, &crc);
+	Crc_AddCrc16(postNext, &crc);
+	if(0 != crc)
 	{
 		Trace_String(__FUNCTION__);
 		Trace_String(" check crc: ");
@@ -144,10 +142,10 @@ int BlProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize)
 	Trace_String("BlProxy::Send: ");
 	Trace_Number(req.GetSize(), ' ');
 	Trace_String("pure bytes\n");
-	return Send(req.GetData(), req.GetSize(), pResponse, responseSize);
+	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc());
 }
 
-int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize) const
+int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize, bool checkCrc) const
 {
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	unsigned char recvBuffer[BL_MAX_MESSAGE_LENGTH];
@@ -216,8 +214,8 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 				}
 				bytesReceived--;
 
-				/* remove BL_DLE and check crc from buffer */
-				return UnmaskControlCharacters(pNext, bytesReceived, pResponse, responseSize);
+				/* remove BL_DLE from buffer and check crc if requested */
+				return UnmaskControlCharacters(pNext, bytesReceived, pResponse, responseSize, checkCrc);
 			}
 			Trace_String("BlProxy::Send: response to short\n");
  		}

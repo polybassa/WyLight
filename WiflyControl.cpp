@@ -70,7 +70,7 @@ void WiflyControl::AddColor(string& addr, string& rgba, unsigned char hour, unsi
 size_t WiflyControl::BlFlashErase(unsigned char* pBuffer, unsigned int endAddress, const size_t numPages) const
 {
 	BlFlashEraseRequest request(endAddress, numPages);
-	// we expect only the one byte command code (0x03) as response
+	// we expect only one byte as response, the command code 0x03
 	return BlRead(request, pBuffer, 1);
 }
 
@@ -126,6 +126,14 @@ size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, s
 		<< "(): only " << bytesRead << " bytes read not " << numBytes << endl;
 	}
 	return sumBytesRead;
+}
+
+size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address, size_t numBlocks) const
+{
+	BlFlashCrc16Request request(address, numBlocks);
+	return BlRead(request, pBuffer, numBlocks * 2);
+
+	return 0; //TODO implement this
 }
 
 size_t WiflyControl::BlReadInfo(BlInfo& blInfo)

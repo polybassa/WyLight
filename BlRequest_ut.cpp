@@ -169,7 +169,7 @@ int ut_BlProxy_MaskControlCharacters(void)
 	assert(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= bytesWritten);
 
 	/* and unmask everything again */
-	bytesWritten = proxy.UnmaskControlCharacters(recvBuffer, bytesWritten, recvBuffer, sizeof(recvBuffer));
+	bytesWritten = proxy.UnmaskControlCharacters(recvBuffer, bytesWritten, recvBuffer, sizeof(recvBuffer), false);
 	assert(sizeof(sendBuffer) == bytesWritten);
 
 	for(size_t i = 0; i < 6; i++)
@@ -290,7 +290,7 @@ int ut_BlProxy_BlRunAppRequest(void)
 int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
-	RunTest(false, ut_BlProxy_MaskControlCharacters);
+	RunTest(true, ut_BlProxy_MaskControlCharacters);
 	RunTest(false, ut_BlProxy_BlEepromReadRequest);
 	RunTest(false, ut_BlProxy_BlEepromWriteRequest);
 	RunTest(false, ut_BlProxy_BlFlashCrc16Request);

@@ -46,6 +46,7 @@ struct BlRequest
 	const unsigned char mCmd;
 	const unsigned char* GetData() const { return &mCmd; };
 	size_t GetSize() const { return mSize; };
+	virtual bool CheckCrc() const { return true; };
 };
 
 struct BlReadRequest : public BlRequest
@@ -75,10 +76,18 @@ class BlProxy
 
 	public:
 		BlProxy(const ClientSocket* const pSock);
+
+		/**
+		 * Mask bytes of input buffer and add CRC16-CITT checksum to the end
+		 * @param pInput input buffer
+		 * @param inputLength number of bytes in input buffer
+		 * @param pOutput output buffer
+		 * @param outputLength size of the output buffer
+		 */
 		size_t MaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength) const;
 		int Send(BlRequest& req, unsigned char* pResponse, size_t responseSize) const;
-		int Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize) const;
-		size_t UnmaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength) const;
+		int Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize, bool checkCrc) const;
+		size_t UnmaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength, bool checkCrc) const;
 };
 
 struct BlInfo
@@ -151,6 +160,9 @@ struct BlFlashCrc16Request : public BlRequest
 		const unsigned char zero;
 		unsigned char numBlockLow;
 		unsigned char numBlocksHigh;
+
+		// this is a special command where no crc is generated for the response
+		virtual bool CheckCrc() const { return false; };
 };
 
 struct BlFlashEraseRequest : public BlRequest

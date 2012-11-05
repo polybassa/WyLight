@@ -88,6 +88,32 @@ class ControlCmdBlInfo : public WiflyControlCmd
 		};
 };
 
+class ControlCmdBlCrcFlash : public WiflyControlCmd
+{
+	public:
+		ControlCmdBlCrcFlash(void) : WiflyControlCmd("crc_flash") {};
+		virtual void Run(WiflyControl& control) const {
+			unsigned int address;
+			size_t numBlocks;
+			cin >> address;
+			cin >> numBlocks;
+			unsigned char buffer[0xffff / FLASH_READ_BLOCKSIZE * 2];
+			if(sizeof(buffer) / 2 < numBlocks)
+			{
+				cout << "Read CRC failed. Too many CRCs requested" << endl;
+				return;
+			}
+
+			size_t bytesRead = control.BlReadCrcFlash(buffer, address, numBlocks);
+			if(2 * numBlocks != bytesRead)
+			{
+				cout << "Read CRC failed" << endl;
+				return;
+			}
+			Print(buffer, bytesRead, 0);
+		};
+};
+
 class ControlCmdBlEraseFlash : public WiflyControlCmd
 {
 	public:
@@ -123,6 +149,8 @@ class ControlCmdBlRead : public WiflyControlCmd
 			+ string("    <numBytes> number of bytes to read")), m_Name(name) {};
 
 		const string m_Name;
+		
+		virtual size_t Read(WiflyControl& control, unsigned char* pBuffer, unsigned int address, const size_t numBytes) const = 0;
 
 		virtual void Run(WiflyControl& control) const {
 			unsigned int address;
@@ -136,12 +164,7 @@ class ControlCmdBlRead : public WiflyControlCmd
 				return;
 			}
 
-			size_t bytesRead = 0;
-			if("eeprom" == m_Name) {
-				bytesRead = control.BlReadEeprom(buffer, address, numBytes);
-			} else if("flash" == m_Name){
-				bytesRead = control.BlReadFlash(buffer, address, numBytes);
-			}
+			size_t bytesRead = Read(control, buffer, address, numBytes);
 
 			if(bytesRead != numBytes) {
 				cout << "Read " << m_Name << " failed" << endl;
@@ -155,12 +178,18 @@ class ControlCmdBlReadEeprom : public ControlCmdBlRead
 {
 	public:
 		ControlCmdBlReadEeprom(void) : ControlCmdBlRead("eeprom") {};
+		size_t Read(WiflyControl& control, unsigned char* pBuffer, unsigned int address, const size_t numBytes) const {
+			return control.BlReadEeprom(pBuffer, address, numBytes);
+		};
 };
 
 class ControlCmdBlReadFlash : public ControlCmdBlRead
 {
 	public:
 		ControlCmdBlReadFlash(void) : ControlCmdBlRead("flash") {};
+		size_t Read(WiflyControl& control, unsigned char* pBuffer, unsigned int address, const size_t numBytes) const {
+			return control.BlReadFlash(pBuffer, address, numBytes);
+		};
 };
 
 class ControlCmdSetColor : public WiflyControlCmd
@@ -206,6 +235,8 @@ class WiflyControlCmdBuilder
 				return new ControlCmdAddColor();
 			} else if("bl_info" == name) {
 				return new ControlCmdBlInfo();
+			} else if("crc_flash" == name) {
+				return new ControlCmdBlCrcFlash();
 			} else if("erase_flash" == name) {
 				return new ControlCmdBlEraseFlash();
 			} else if("read_eeprom" == name) {
