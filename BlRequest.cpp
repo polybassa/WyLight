@@ -86,55 +86,30 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 	pOutput++;
 	pInput++;
 
-	/* read two bytes ahead to find crc */
-	if(pInput >= pInputEnd) return 0;
-	if(*pInput == BL_DLE)
-	{
-		pInput++;
-	}
-	if(pInput >= pInputEnd) return 0;
-	unsigned char next = *pInput;
-	pInput++;
-
-	if(pInput >= pInputEnd) return 0;
-	if(*pInput == BL_DLE)
-	{
-		pInput++;
-	}
-	if(pInput >= pInputEnd) return 0;
-	unsigned char postNext = *pInput;
-	pInput++;
-
+	/* unmask input buffer and calculate crc */
 	while(pInput < pInputEnd)
 	{
 		if(*pInput == BL_DLE)
 		{
 			pInput++;
 		}
-		*pOutput = next;
+		*pOutput = *pInput;
+		Crc_AddCrc16(*pInput, &crc);
 		pOutput++;
 		bytesWritten++;
-		Crc_AddCrc16(next, &crc);
-		next = postNext;
-		postNext = *pInput;
 		pInput++;
 	}
 
 	// check and remove crc	
-	Crc_AddCrc16(next, &crc);
-	Crc_AddCrc16(postNext, &crc);
-	if(0 != crc)
+	if((2 > bytesWritten) || (0 != crc))
 	{
 		Trace_String(__FUNCTION__);
 		Trace_String(" check crc: ");
-		Trace_Hex(next);
-		Trace_Hex(postNext);
 		Trace_Number(crc, ' ');
-		Trace_Number((((unsigned short)next << 8) | (unsigned short)postNext), ' ');
 		Trace_String(" crc failed\n");
 		return 0;
 	}
-	return bytesWritten;
+	return bytesWritten - 2;
 }
 
 int BlProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize) const
