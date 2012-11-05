@@ -65,13 +65,12 @@ size_t BlProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputL
 	}
 
 	// add crc to output
-	//TODO this byte order should be wrong
-	MaskAndAddByteToOutput((unsigned char)(crc >> 8));
 	MaskAndAddByteToOutput((unsigned char)(crc & 0xff));
+	MaskAndAddByteToOutput((unsigned char)(crc >> 8));
 	return bytesWritten;
 }
 
-size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength) const
+size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength, bool checkCrc) const
 {
 	if(outputLength < inputLength)
 	{
@@ -87,56 +86,36 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 	pOutput++;
 	pInput++;
 
-	/* read two bytes ahead to find crc */
-	if(pInput >= pInputEnd) return 0;
-	if(*pInput == BL_DLE)
-	{
-		pInput++;
-	}
-	if(pInput >= pInputEnd) return 0;
-	unsigned char next = *pInput;
-	pInput++;
-
-	if(pInput >= pInputEnd) return 0;
-	if(*pInput == BL_DLE)
-	{
-		pInput++;
-	}
-	if(pInput >= pInputEnd) return 0;
-	unsigned char postNext = *pInput;
-	pInput++;
-
-
+	/* unmask input buffer and calculate crc */
 	while(pInput < pInputEnd)
 	{
 		if(*pInput == BL_DLE)
 		{
 			pInput++;
 		}
-		*pOutput = next;
+		*pOutput = *pInput;
+		Crc_AddCrc16(*pInput, &crc);
 		pOutput++;
 		bytesWritten++;
-		Crc_AddCrc16(next, &crc);
-		next = postNext;
-		postNext = *pInput;
 		pInput++;
 	}
 
-	// check and remove crc
-	// TODO this switch should be wrong!
-	if(crc != (((unsigned short)next << 8) | (unsigned short)postNext))
-	//if(crc != (((unsigned short)postNext << 8) | (unsigned short)next))
+	/* for responses without crc we can finish here */
+	if(!checkCrc)
+	{
+		return bytesWritten;
+	}
+
+	/* check and remove crc */
+	if((bytesWritten < 2) || (0 != crc))
 	{
 		Trace_String(__FUNCTION__);
 		Trace_String(" check crc: ");
-		Trace_Hex(next);
-		Trace_Hex(postNext);
 		Trace_Number(crc, ' ');
-		Trace_Number((((unsigned short)next << 8) | (unsigned short)postNext), ' ');
 		Trace_String(" crc failed\n");
 		return 0;
 	}
-	return bytesWritten;
+	return bytesWritten - 2;
 }
 
 int BlProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize) const
@@ -144,10 +123,10 @@ int BlProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize)
 	Trace_String("BlProxy::Send: ");
 	Trace_Number(req.GetSize(), ' ');
 	Trace_String("pure bytes\n");
-	return Send(req.GetData(), req.GetSize(), pResponse, responseSize);
+	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc());
 }
 
-int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize) const
+int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize, bool checkCrc) const
 {
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	unsigned char recvBuffer[BL_MAX_MESSAGE_LENGTH];
@@ -216,8 +195,8 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 				}
 				bytesReceived--;
 
-				/* remove BL_DLE and check crc from buffer */
-				return UnmaskControlCharacters(pNext, bytesReceived, pResponse, responseSize);
+				/* remove BL_DLE from buffer and check crc if requested */
+				return UnmaskControlCharacters(pNext, bytesReceived, pResponse, responseSize, checkCrc);
 			}
 			Trace_String("BlProxy::Send: response to short\n");
  		}

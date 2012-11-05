@@ -70,7 +70,7 @@ void WiflyControl::AddColor(string& addr, string& rgba, unsigned char hour, unsi
 size_t WiflyControl::BlFlashErase(unsigned char* pBuffer, unsigned int endAddress, const size_t numPages) const
 {
 	BlFlashEraseRequest request(endAddress, numPages);
-	// we expect only the one byte command code (0x03) as response
+	// we expect only one byte as response, the command code 0x03
 	return BlRead(request, pBuffer, 1);
 }
 
@@ -128,10 +128,32 @@ size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, s
 	return sumBytesRead;
 }
 
-size_t WiflyControl::BlReadInfo(BlInfo& blInfo)
+size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address, size_t numBlocks) const
+{
+	BlFlashCrc16Request request(address, numBlocks);
+	return BlRead(request, pBuffer, numBlocks * 2);
+}
+
+size_t WiflyControl::BlReadInfo(BlInfo& blInfo) const
 {
 	BlInfoRequest request;
 	return BlRead(request, reinterpret_cast<unsigned char*>(&blInfo), sizeof(BlInfo));
+}
+
+bool WiflyControl::BlRunApp(void) const
+{
+	BlRunAppRequest request;
+	unsigned char buffer[32];
+	size_t bytesRead = BlRead(request, buffer, sizeof(buffer));
+
+	/* we expect a "RDY" as lifesign of the application */
+	if((3 == bytesRead) && (0 != memcmp("RDY", buffer, bytesRead)))
+	{
+		return true;
+	}
+	cout << __FILE__ << "::" << __FUNCTION__
+		<< "(): " << bytesRead << " bytes read" << endl;
+	return false;
 }
 
 void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
