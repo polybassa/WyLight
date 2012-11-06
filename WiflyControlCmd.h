@@ -204,6 +204,19 @@ class ControlCmdBlRunApp : public WiflyControlCmd
 		};
 };
 
+class ControlCmdStartBl : public WiflyControlCmd
+{
+	public:
+		ControlCmdStartBl(void) : WiflyControlCmd(
+				  string("'start_bl' - start bootloader and terminate application")) {};
+				  
+		virtual void Run(WiflyControl& control) const {
+			cout << "Starting bootloader... ";
+			control.StartBl();
+		};
+  
+};
+
 class ControlCmdSetColor : public WiflyControlCmd
 {
 	public:
@@ -259,8 +272,10 @@ class WiflyControlCmdBuilder
 				return new ControlCmdBlRunApp();
 			} else if("setcolor" == name) {
 				return new ControlCmdSetColor();
-			 }else if("setfade" == name) {
+			} else if("setfade" == name) {
 				return new ControlCmdSetFade();
+			} else if("start_bl" == name) {
+				return new ControlCmdStartBl();
 			}
 			return NULL;
 		}

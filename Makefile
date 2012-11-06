@@ -29,6 +29,8 @@ android_client:
 
 x86_client:
 	g++ BlRequest.cpp ClientSocket.cpp WiflyControl.cpp WiflyControlCli.cpp crc.c -DX86 -lpthread -o client.bin -Wall -pedantic
+x86_client_debug:
+	g++ BlRequest.cpp ClientSocket.cpp WiflyControl.cpp WiflyControlCli.cpp crc.c -DDEBUG -DX86 -lpthread -o client.bin -Wall -pedantic
 
 #generic rule to build and run c unittests
 %_ut.bin: %_ut.c %.c %.h

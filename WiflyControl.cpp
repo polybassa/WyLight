@@ -156,6 +156,13 @@ bool WiflyControl::BlRunApp(void) const
 	return false;
 }
 
+void WiflyControl::StartBl(void)
+{
+	mCmdFrame.led.cmd = START_BL;
+	int bytesWritten = mSock->Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
+	assert(sizeof(mCmdFrame) == bytesWritten);
+}
+
 void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
 {
 	mCmdFrame.led.cmd = SET_COLOR;
