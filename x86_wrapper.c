@@ -50,9 +50,9 @@ void* InterruptRoutine(void* unused)
 		int i;
 		for(i = 0; i < bytesRead; i++)
 		{
-			if(!RingBuf_HasError)
+			if(!RingBuf_HasError(g_RingBuf))
 			{
-				RingBuf_Put(buf[i]);
+				RingBuf_Put(&g_RingBuf, buf[i]);
 			}
 		}
 	}

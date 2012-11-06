@@ -30,6 +30,7 @@ ClientSocket::ClientSocket(const char* pAddr, short port, int style) : mSock(0) 
 ClientSocket::~ClientSocket(void) {}
 
 BlInfo dummyBlInfo = {0xDE, 0xAD, 0xAF, 0xFE, 0xFF, 0x4, 0x0, 0xB0, 0xB1, 0xE5, 0x00};
+unsigned char exampleBlFlashRead[] = {0x01, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0xAD, 0xB5, 0x04};
 unsigned char dummyBlFlashReadResponseMasked[] = {BL_STX, 0xDE, 0xAD, BL_DLE, BL_DLE, 0xEF, 0xa0, 0x06, BL_ETX};
 unsigned char dummyBlFlashReadResponsePure[] = {0xDE, 0xAD, BL_DLE, 0xEF};
 unsigned char dummyBlFlashCrc16ResponseMasked[] = {BL_STX, 0xDE, 0xAD, BL_DLE, BL_DLE, 0xEF, BL_ETX};
@@ -121,10 +122,24 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 		return length;
 	}
 
-	/* prepare response for BlEepromReadRequest or BlFlashReadRequest */
-	if((frame[0] == 0x01 || frame[0] == 0x05) && (frame[length-1] == BL_ETX))
+	/* prepare response for BlFlashReadRequest */
+	if((frame[0] == 0x01) && (frame[length-1] == BL_ETX))
 	{
 		Trace_String("BlFlashReadRequest\n");
+		Trace_Number(sizeof(exampleBlFlashRead), ' ');
+		Trace_Number(length, ' ');
+		assert(sizeof(exampleBlFlashRead) == length);
+		assert(0 == memcmp(frame, exampleBlFlashRead, sizeof(exampleBlFlashRead)));
+		
+		memcpy(g_TestSocketRecvBuffer, dummyBlFlashReadResponseMasked, sizeof(dummyBlFlashReadResponseMasked));
+		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashReadResponseMasked);
+		return length;
+	}
+
+	/* prepare response for BlEepromReadRequest*/
+	if((frame[0] == 0x05) && (frame[length-1] == BL_ETX))
+	{
+		Trace_String("BlEepromReadRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashReadResponseMasked, sizeof(dummyBlFlashReadResponseMasked));
 		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashReadResponseMasked);
 		return length;
@@ -248,7 +263,8 @@ int ut_BlProxy_BlFlashReadRequest(void)
 	unsigned char response[512];
 
 	BlFlashReadRequest request;
-	request.SetAddressNumBytes(0xDA7ADA7A, sizeof(dummyBlFlashReadResponsePure));
+//	request.SetAddressNumBytes(0xDA7ADA7A, sizeof(dummyBlFlashReadResponsePure));
+	request.SetAddressNumBytes(0, 0x40);
 	size_t bytesReceived = proxy.Send(request, response, sizeof(response));
 	assert(sizeof(dummyBlFlashReadResponsePure) == bytesReceived);
 	assert(0 == memcmp(dummyBlFlashReadResponsePure, response, bytesReceived));
@@ -304,7 +320,7 @@ int main (int argc, const char* argv[])
 	RunTest(false, ut_BlProxy_BlEepromWriteRequest);
 	RunTest(false, ut_BlProxy_BlFlashCrc16Request);
 	RunTest(false, ut_BlProxy_BlFlashEraseRequest);
-	RunTest(false, ut_BlProxy_BlFlashReadRequest);
+	RunTest(true, ut_BlProxy_BlFlashReadRequest);
 	RunTest(false, ut_BlProxy_BlFlashWriteRequest);
 	RunTest(false, ut_BlProxy_BlFuseWriteRequest);
 
