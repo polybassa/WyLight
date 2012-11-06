@@ -120,9 +120,9 @@ void HighPriorityInterruptFunction(void)
 	uns16 sv_FSR0 = FSR0;
 	if(RC1IF)
 	{
-		if(!RingBuf_HasError) 
+		if(!RingBuf_HasError(g_RingBuf)) 
 		{
-			RingBuf_Put(RCREG1);
+			RingBuf_Put(&g_RingBuf, RCREG1);
 			//UART_Send(RCREG1+1);
 		}
 		else 
@@ -189,7 +189,7 @@ void InitAll()
 	clearRAM();
 	Platform_OsciInit();
 	Platform_IOInit();
-	RingBuf_Init();
+	RingBuf_Init(&g_RingBuf);
 	UART_Init();
 	Timer_Init();
 	Ledstrip_Init();

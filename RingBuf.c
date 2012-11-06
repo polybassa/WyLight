@@ -20,28 +20,30 @@
 
 struct RingBuffer g_RingBuf;
 
-void RingBuf_Init(void)
+void RingBuf_Init(struct RingBuffer *pBuf)
 {
-	g_RingBuf.read = 0;
-	g_RingBuf.write = 0;
-	g_RingBuf.error_full = 0;
+	pBuf->read = 0;
+	pBuf->write = 0;
+	pBuf->error_full = 0;
 }
 
-char RingBuf_Get(void)
+uns8 RingBuf_Get(struct RingBuffer *pBuf)
 {
-	char result = g_RingBuf.data[g_RingBuf.read];
-	g_RingBuf.read = RingBufInc(g_RingBuf.read);
+	uns8 read = pBuf->read;
+	uns8 result = pBuf->data[read];
+	pBuf->read = RingBufInc(read);
 	return result;
 }
 
-void RingBuf_Put(char value)
+void RingBuf_Put(struct RingBuffer *pBuf, uns8 value)
 {
-	char writeNext = RingBufInc(g_RingBuf.write);
-	if(writeNext != g_RingBuf.read)
+	uns8 writeNext = RingBufInc(pBuf->write);
+	if(writeNext != pBuf->read)
 	{
-		g_RingBuf.data[g_RingBuf.write] = value;
-		g_RingBuf.write = writeNext;
+		uns8 write = pBuf->write;
+		pBuf->data[write] = value;
+		pBuf->write = writeNext;
 	}
-	else g_RingBuf.error_full = 1;
+	else pBuf->error_full = 1;
 }
 
