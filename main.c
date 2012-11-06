@@ -18,7 +18,7 @@
 
 #ifndef X86
 #define NO_CRC
-//#define TEST
+#define TEST
 #pragma optimize 1
 #endif
 #pragma sharedAllocation
@@ -231,4 +231,7 @@ void InitAll()
 #include "rtc.c"
 #include "iic.c"
 #include "ScriptCtrl.c"
+#ifdef TEST
+#include "trace.c"
+#endif /* TEST */
 #endif /* #ifdef __CC8E__ */
