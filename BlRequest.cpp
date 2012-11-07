@@ -77,11 +77,21 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 		return 0;
 	}
 	const unsigned char* const pInputEnd = pInput + inputLength;
+	/* The bootloader sends the low byte of crc first, so we cannot just add
+	 * all bytes to the checksum and compare it to zero.
+	 * Now, our approach is to save the two latest crc's and parse the whole
+	 * input buffer. When everything was read prepreCrc contains the crc before
+	 * the first crc byte from data stream was added to crc.
+	 */
 	unsigned short crc = 0;
+	unsigned short preCrc = 0;
+	unsigned short prepreCrc = 0;
 
 	/* skip first character since its the command type byte */
 	size_t bytesWritten = 1;
 	*pOutput = *pInput;
+	prepreCrc = preCrc;
+	preCrc = crc;
 	Crc_AddCrc16(*pInput, &crc);
 	pOutput++;
 	pInput++;
@@ -94,6 +104,8 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 			pInput++;
 		}
 		*pOutput = *pInput;
+		prepreCrc = preCrc;
+		preCrc = crc;
 		Crc_AddCrc16(*pInput, &crc);
 		pOutput++;
 		bytesWritten++;
@@ -106,12 +118,30 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 		return bytesWritten;
 	}
 
-	/* check and remove crc */
-	if((bytesWritten < 2) || (0 != crc))
+	/* we should have read at least two crc bytes! */
+	if(bytesWritten < 2)
+	{
+		return 0;
+	}
+
+	/* know we have to take the last two bytes (which can be masked!) and compare
+	 * them to the calculated checksum, by adding them in reverse order and
+	 * comparing them with zero
+	 */
+	pInput--;
+	Crc_AddCrc16(*pInput, &prepreCrc);
+	pInput--;
+	if(BL_DLE == *pInput)
+	{
+		pInput--;
+	}
+	Crc_AddCrc16(*pInput, &prepreCrc);
+
+	if(0 != prepreCrc)
 	{
 		Trace_String(__FUNCTION__);
 		Trace_String(" check crc: ");
-		Trace_Number(crc, ' ');
+		Trace_Number(prepreCrc, ' ');
 		Trace_String(" crc failed\n");
 		return 0;
 	}

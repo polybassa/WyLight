@@ -46,9 +46,9 @@ extern struct RingBuffer g_RingBuf;
  * Some macros 
  */
 #define RingBufInc(x) ((x + 1) & RingBufferSize)
-#define RingBufClearError(BUF) BUF ## .error_full = FALSE
-#define RingBuf_HasError(BUF) (BUF ## .error_full)
-#define RingBufIsNotEmpty(BUF) (BUF ## .write != BUF ## .read)
+#define RingBufClearError(BUF) BUF.error_full = FALSE
+#define RingBuf_HasError(BUF) (BUF.error_full)
+#define RingBufIsNotEmpty(BUF) (BUF.write != BUF.read)
 
 /**
  * Initialize the ring buffer and all associated variables
