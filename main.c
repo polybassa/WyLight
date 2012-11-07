@@ -120,7 +120,7 @@ void HighPriorityInterruptFunction(void)
 	uns16 sv_FSR0 = FSR0;
 	if(RC1IF)
 	{
-		if(!RingBuf_HasError(g_RingBuf)) 
+		if(!RingBuf_HasError(&g_RingBuf)) 
 		{
 			RingBuf_Put(&g_RingBuf, RCREG1);
 			//UART_Send(RCREG1+1);
@@ -205,7 +205,7 @@ void InitAll()
 	Platform_AllowInterrupts();
 	Platform_DisableBootloaderAutostart();
 	
-	UART_SendString("Wait");
+	Trace_String("Wait");
 	
 	/* Startup Wait-Time 2s
 	 * to protect Wifly-Modul from errors*/

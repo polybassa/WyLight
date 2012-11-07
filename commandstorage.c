@@ -27,14 +27,14 @@ bank2 struct CommandBuffer g_CmdBuf;
 
 void Commandstorage_GetCommands()
 {	
-	if(RingBuf_HasError(g_RingBuf))
+	if(RingBuf_HasError(&g_RingBuf))
 	{
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
 		Commandstorage_Clear();
 	}
 
-	if(RingBufIsNotEmpty(g_RingBuf))
+	if(RingBuf_IsNotEmpty(&g_RingBuf))
 	{
 		// *** preload variables and 
 		// *** get new_byte from ringbuffer

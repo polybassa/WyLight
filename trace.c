@@ -97,7 +97,7 @@ void Trace_Print()
 {	
 	UART_Send(0x0d);UART_Send(0x0a);
 	UART_SendString("TRACEBUFFER:");
-	while(RingBufIsNotEmpty(g_TraceBuf))
+	while(RingBuf_IsNotEmpty(g_TraceBuf))
 	{
 	    UART_Send(RingBuf_Get(&g_TraceBuf));
 	}

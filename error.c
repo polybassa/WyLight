@@ -25,7 +25,7 @@ struct ErrorBits g_ErrorBits;
 
 void Error_Throw()
 {
-	if(RingBuf_HasError(g_RingBuf)) 
+	if(RingBuf_HasError(&g_RingBuf)) 
 	{
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
