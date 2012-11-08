@@ -21,7 +21,9 @@
 #define TEST
 #pragma optimize 1
 #endif
+#ifdef __CC8E__
 #pragma sharedAllocation
+#endif
 
 //*********************** INCLUDEDATEIEN *********************************************
 #include "platform.h"
@@ -75,6 +77,7 @@ interrupt HighPriorityInterrupt(void)
 interrupt LowPriorityInterrupt(void)
 {
 	int_save_registers
+#if 0
 	uns16 sv_FSR0 = FSR0;
 	uns16 sv_FSR1 = FSR1;
 	uns16 sv_FSR2 = FSR2;
@@ -84,6 +87,7 @@ interrupt LowPriorityInterrupt(void)
 	uns8 sv_PRODH = PRODH;
 	uns24 sv_TBLPTR = TBLPTR;
 	uns8 sv_TABLAT = TABLAT;
+#endif
 
 	if(TMR5IF)
 	{
@@ -101,7 +105,7 @@ interrupt LowPriorityInterrupt(void)
 	      Timer1Disable();
 	      Timer1Interrupt();
 	}
-	
+#if 0	
 	FSR0 = sv_FSR0;
 	FSR1 = sv_FSR1;
 	FSR2 = sv_FSR2;
@@ -111,7 +115,7 @@ interrupt LowPriorityInterrupt(void)
 	PRODH = sv_PRODH;
 	TBLPTR = sv_TBLPTR;
 	TABLAT = sv_TABLAT;
-
+#endif
 	int_restore_registers
 }
 
