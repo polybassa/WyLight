@@ -29,10 +29,11 @@ struct date_event gDateEvents[NUM_DATE_EVENTS];
 
 unsigned char date_timer_add_event(struct cmd_add_color* pCmd)
 {
+	static const unsigned short WAKEUP_UNUSED = 0xffff;
 	int i;
 	for(i = 0; i < NUM_DATE_EVENTS; i++)
 	{
-		if(0xffff == gDateEvents[i].wakeup)
+		if(WAKEUP_UNUSED == gDateEvents[i].wakeup)
 		{
 //TODO			uns16 hour = (uns16)pCmd->hour * 1800;
 			uns16 minute = (uns16)pCmd->minute * 30;
