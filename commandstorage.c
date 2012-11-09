@@ -97,10 +97,7 @@ void Commandstorage_GetCommands()
                 {
 			if(ScriptCtrl_Add(&g_CmdBuf.cmd_buf[2]))
 			{
-			      Trace_String("GC");
-#ifdef __CC8E__
 			      UART_SendString("GC");
-#endif
 			}
 			else
 			{
