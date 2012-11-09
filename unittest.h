@@ -16,14 +16,18 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "stdio.h"
+#include <stdio.h>
 #include "trace.h"
 
-#ifdef __cplusplus
-#include <assert.h>
-#else
-#define assert(EXPRESSION) if(!(EXPRESSION)) {errors++; printf("Assert(" #EXPRESSION ") failed\n");}
-#endif
+#define CHECK(EXPRESSION) if(!(EXPRESSION)) { \
+	errors++; \
+	printf("ERROR %s:%d: %s() CHECK(" #EXPRESSION ") failed\n", __FILE__, __LINE__, __FUNCTION__); \
+}
+
+#define NOT_IMPLEMENTED(X) { \
+	printf("ERROR %s:%d: %s() NOT IMPLEMENTED\n", __FILE__, __LINE__, __FUNCTION__); \
+	return 1; \
+}
 
 #define RunTest(RUN, FUNC) { \
 	if(RUN) { \
@@ -34,6 +38,9 @@
 		numSkipped++; \
 	} \
 }
+
+#define TestCaseBegin(X) int errors = 0;
+#define TestCaseEnd(X) return errors;
 
 #define UnitTestMainBegin(X) int numErrors = 0; int numSkipped = 0; int numTests = 0;
 #define UnitTestMainEnd(X) { \
