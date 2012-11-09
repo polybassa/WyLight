@@ -150,15 +150,15 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 	return bytesWritten - 2;
 }
 
-int BlProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize) const
+int BlProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize, bool doSync) const
 {
 	Trace_String("BlProxy::Send: ");
 	Trace_Number(req.GetSize(), ' ');
 	Trace_String("pure bytes\n");
-	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc());
+	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
 }
 
-int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize, bool checkCrc) const
+int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize, bool checkCrc, bool doSync) const
 {
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	unsigned char recvBuffer[BL_MAX_MESSAGE_LENGTH];
@@ -184,12 +184,22 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 	bufferSize++;
 
 	int numRetries = BL_MAX_RETRIES;
-	do
+
+	/* sync with bootloader */
+	if(doSync)
 	{
-		/* sync with bootloader */
-		Trace_String("BlProxy::Send: SYNC...\n");
-		mSock->Send(BL_SYNC, sizeof(BL_SYNC));
-		if(0 != mSock->Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS))
+		do
+		{
+			if(0 > --numRetries)
+			{
+				Trace_String("BlProxy::Send: Too many retries\n");
+				return -1;
+			}
+			Trace_String("BlProxy::Send: SYNC...\n");
+			mSock->Send(BL_SYNC, sizeof(BL_SYNC));
+		} while(0 == mSock->Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS));
+	}
+
 		{
 			/* synchronized -> send request */
 			if(static_cast<int>(bufferSize) != mSock->Send(buffer, bufferSize))
@@ -231,10 +241,7 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 				return UnmaskControlCharacters(pNext, bytesReceived, pResponse, responseSize, checkCrc);
 			}
 			Trace_String("BlProxy::Send: response to short\n");
+			return 0;
  		}
-	}while(0 < --numRetries);
-
-	Trace_String("BlProxy::Send: Too many retries\n");
-	return -1;
 }
 
