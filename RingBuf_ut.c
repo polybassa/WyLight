@@ -23,15 +23,15 @@
 /* test WAIT command */
 int ut_RingBuf_Init(void)
 {
-	int errors = 0;
+	TestCaseBegin();
 	struct RingBuffer testBuffer;
 	
 	RingBuf_Init(&testBuffer);
 	
-	assert(testBuffer.read == 0);
-	assert(testBuffer.write == 0);
-	assert(testBuffer.error_full == 0);
-	return errors;
+	CHECK(testBuffer.read == 0);
+	CHECK(testBuffer.write == 0);
+	CHECK(testBuffer.error_full == 0);
+	TestCaseEnd();
 }
 
 int main(int argc, const char* argv[])
