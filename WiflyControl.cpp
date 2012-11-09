@@ -104,7 +104,7 @@ size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, s
 	while(numBytes > FLASH_READ_BLOCKSIZE)
 	{
 		readRequest.SetAddressNumBytes(address, FLASH_READ_BLOCKSIZE);
-		bytesRead = BlRead(readRequest, pBuffer, numBytes);
+		bytesRead = BlRead(readRequest, pBuffer, FLASH_READ_BLOCKSIZE);
 		sumBytesRead += bytesRead;
 		if(FLASH_READ_BLOCKSIZE != bytesRead)
 		{
