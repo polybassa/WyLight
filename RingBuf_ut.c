@@ -16,32 +16,28 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef _TRACE_H_
-#define _TRACE_H_
-#ifdef TEST
-	#include "usart.h"
-	#include "RingBuf.h"
+#include "RingBuf.h"
+#include "unittest.h"
+
+
+/* test WAIT command */
+int ut_RingBuf_Init(void)
+{
+	TestCaseBegin();
+	struct RingBuffer testBuffer;
 	
-	extern struct RingBuffer g_TraceBuf;
+	RingBuf_Init(&testBuffer);
 	
-	void Trace_String(const char *string);
-	
-	void Trace_Number(uns8 input);
-	
-	void Trace_Hex(uns8 input);
-	
-	void Trace_Print();
-#elif DEBUG
-	#include "stdio.h"
-	#define Trace_String(str) do { printf("%s", str); } while (0)
-	#define Trace_Number(input, sign) do { printf("%04x%c", input, sign); } while (0)
-	#define Trace_Hex(hex) do { printf("%02x ", hex); } while(0)
-	#define Trace_Print(x)
-#else
-	#define Trace_String(str)
-	#define Trace_Number(input, sign)
-	#define Trace_Hex(hex)
-	#define Trace_Print(x)
-#endif
-#endif /* #ifndef _TRACE_H_ */
+	CHECK(testBuffer.read == 0);
+	CHECK(testBuffer.write == 0);
+	CHECK(testBuffer.error_full == 0);
+	TestCaseEnd();
+}
+
+int main(int argc, const char* argv[])
+{
+	UnitTestMainBegin();
+	RunTest(true, ut_RingBuf_Init);
+	UnitTestMainEnd();
+}
 

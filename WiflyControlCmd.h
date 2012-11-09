@@ -20,6 +20,7 @@
 #define _WIFLYCONTROLCMD_H_
 #include <iostream>
 #include <string>
+#include <iomanip>
 
 using namespace std;
 
@@ -37,9 +38,9 @@ class WiflyControlCmd
 		void Print(const unsigned char* const pBuffer, const size_t size, const unsigned int address) const {
 			for(size_t i = 0; i < size; i++) {
 				if(0 == (i % 16)) {
-					cout << endl << "0x" << hex << int(address+i) << ": ";
+					cout << endl << "0x" << setw(4) << setfill('0') << hex << int(address+i) << ": ";
 				}
-				cout << hex << int(pBuffer[i]) << ' ';
+				cout << setw(2) << setfill('0') << hex << int(pBuffer[i]) << ' ';
 			}
 			cout << endl;
 		}
@@ -88,36 +89,62 @@ class ControlCmdBlInfo : public WiflyControlCmd
 		};
 };
 
-class ControlCmdReadEeprom : public WiflyControlCmd
+class ControlCmdBlCrcFlash : public WiflyControlCmd
 {
 	public:
-		ControlCmdReadEeprom(void) : WiflyControlCmd(
-				string("'read_eeprom <addr> <numBytes>'\n")
-			+ string("    <addr> eeprom address where to start reading\n")
-			+ string("    <numBytes> number of bytes to read")) {};
-
+		ControlCmdBlCrcFlash(void) : WiflyControlCmd("'crc_flash'") {};
 		virtual void Run(WiflyControl& control) const {
 			unsigned int address;
-			size_t numBytes;
+			size_t numBlocks;
 			cin >> address;
-			cin >> numBytes;
-			unsigned char buffer[1024];
-			size_t bytesRead = control.BlReadEeprom(buffer, address, numBytes);
-			if(bytesRead != numBytes) {
-				cout << "Read eeprom failed" << endl;
-			} else {
-				Print(buffer, bytesRead, address);
+			cin >> numBlocks;
+			unsigned char buffer[0xffff / FLASH_READ_BLOCKSIZE * 2];
+			if(sizeof(buffer) / 2 < numBlocks)
+			{
+				cout << "Read CRC failed. Too many CRCs requested" << endl;
+				return;
 			}
+
+			size_t bytesRead = control.BlReadCrcFlash(buffer, address, numBlocks); 
+			if(2 * numBlocks != bytesRead)
+			{
+				cout << "Read CRC failed" << endl;
+				return;
+			}
+			Print(buffer, bytesRead, 0);
 		};
 };
 
-class ControlCmdReadFlash : public WiflyControlCmd
+class ControlCmdBlEraseFlash : public WiflyControlCmd
 {
 	public:
-		ControlCmdReadFlash(void) : WiflyControlCmd(
-				string("'read_flash <addr> <numBytes>'\n")
-			+ string("    <addr> flash address where to start reading\n")
-			+ string("    <numBytes> number of bytes to read")) {};
+		ControlCmdBlEraseFlash(void) : WiflyControlCmd(
+				string("'erase_flash'")) {};
+
+		virtual void Run(WiflyControl& control) const
+		{
+			if(control.BlFlashErase())
+			{
+			    cout << endl <<"Erase complete flash succesful"<<endl;
+			}
+			else
+			{
+			    cout << endl <<"Erase complete flash failed"<<endl;
+			}
+		}	
+};
+
+class ControlCmdBlRead : public WiflyControlCmd
+{
+	public:
+		ControlCmdBlRead(string name) : WiflyControlCmd(
+				string("'read_") + name + string(" <addr> <numBytes>'\n")
+			+ string("    <addr> address where to start reading\n")
+			+ string("    <numBytes> number of bytes to read")), m_Name(name) {};
+
+		const string m_Name;
+		
+		virtual size_t Read(WiflyControl& control, unsigned char* pBuffer, unsigned int address, const size_t numBytes) const = 0;
 
 		virtual void Run(WiflyControl& control) const {
 			unsigned int address;
@@ -125,13 +152,66 @@ class ControlCmdReadFlash : public WiflyControlCmd
 			cin >> address;
 			cin >> numBytes;
 			unsigned char buffer[0x10000];
-			size_t bytesRead = control.BlReadFlash(buffer, address, numBytes);
-			if(bytesRead != numBytes) {
-				cout << "Read flash failed" << endl;
-			} else {
+			if(sizeof(buffer) < numBytes)
+			{
+				cout << "Read " << m_Name << " failed. Too many bytes requested" << endl;
+				return;
+			}
+
+			size_t bytesRead = Read(control, buffer, address, numBytes);
+
+			if(bytesRead != numBytes) 
+			{
+				cout << "Read " << m_Name << " failed" << endl;
+			} 
+			else 
+			{
 				Print(buffer, bytesRead, address);
 			}
 		};
+};
+
+class ControlCmdBlReadEeprom : public ControlCmdBlRead
+{
+	public:
+		ControlCmdBlReadEeprom(void) : ControlCmdBlRead("eeprom") {};
+		size_t Read(WiflyControl& control, unsigned char* pBuffer, unsigned int address, const size_t numBytes) const {
+			return control.BlReadEeprom(pBuffer, address, numBytes);
+		};
+};
+
+class ControlCmdBlReadFlash : public ControlCmdBlRead
+{
+	public:
+		ControlCmdBlReadFlash(void) : ControlCmdBlRead("flash") {};
+		size_t Read(WiflyControl& control, unsigned char* pBuffer, unsigned int address, const size_t numBytes) const {
+			return control.BlReadFlash(pBuffer, address, numBytes);
+		};
+};
+
+class ControlCmdBlRunApp : public WiflyControlCmd
+{
+	public:
+		ControlCmdBlRunApp(void) : WiflyControlCmd(
+				string("'run_app' - start application and terminate bootloader")) {};
+
+		virtual void Run(WiflyControl& control) const {
+			cout << "Starting application... ";
+			cout << (control.BlRunApp() ? "done." : "failed!") << endl;
+		};
+};
+
+class ControlCmdStartBl : public WiflyControlCmd
+{
+	public:
+		ControlCmdStartBl(void) : WiflyControlCmd(
+				  string("'start_bl' - start bootloader and terminate application")) {};
+				  
+		virtual void Run(WiflyControl& control) const {
+			cout << "Starting bootloader... ";
+			control.StartBl();
+		};
+  
 };
 
 class ControlCmdSetColor : public WiflyControlCmd
@@ -177,14 +257,22 @@ class WiflyControlCmdBuilder
 				return new ControlCmdAddColor();
 			} else if("bl_info" == name) {
 				return new ControlCmdBlInfo();
+			} else if("crc_flash" == name) {
+				return new ControlCmdBlCrcFlash();
+			} else if("erase_flash" == name) {
+				return new ControlCmdBlEraseFlash();
 			} else if("read_eeprom" == name) {
-				return new ControlCmdReadEeprom();
+				return new ControlCmdBlReadEeprom();
 			} else if("read_flash" == name) {
-				return new ControlCmdReadFlash();
+				return new ControlCmdBlReadFlash();
+			} else if("run_app" == name) {
+				return new ControlCmdBlRunApp();
 			} else if("setcolor" == name) {
 				return new ControlCmdSetColor();
-			 }else if("setfade" == name) {
+			} else if("setfade" == name) {
 				return new ControlCmdSetFade();
+			} else if("start_bl" == name) {
+				return new ControlCmdStartBl();
 			}
 			return NULL;
 		}

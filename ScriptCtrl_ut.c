@@ -53,7 +53,7 @@ unsigned char date_timer_add_event(struct cmd_add_color* pCmd)
 /* add simple command and read back */
 int ut_ScriptCtrl_SimpleReadWrite(void)
 {
-	int errors = 0;
+	TestCaseBegin();
 	struct led_cmd testCmd;
 	testCmd.cmd = SET_COLOR;
 	ScriptCtrl_Clear();
@@ -66,20 +66,19 @@ int ut_ScriptCtrl_SimpleReadWrite(void)
 	ScriptCtrl_Add(&testCmd);
 	gSetColorWasCalled = FALSE;
 	ScriptCtrl_Run();
-	assert(gSetColorWasCalled);
+	CHECK(gSetColorWasCalled);
 
 	/* buffer should be empty again */
 	gSetColorWasCalled = FALSE;
 	ScriptCtrl_Run();
-	assert(!gSetColorWasCalled);
-
-	return errors;
+	CHECK(!gSetColorWasCalled);
+	TestCaseEnd();
 }
 
 /* add clear command */
 int ut_ScriptCtrl_Clear(void)
 {
-	int errors = 0;
+	TestCaseBegin();
 	struct led_cmd testCmd;
 	testCmd.cmd = SET_COLOR;
 
@@ -93,15 +92,14 @@ int ut_ScriptCtrl_Clear(void)
 
 	/* buffer should be empty again */
 	ScriptCtrl_Run();
-	assert(!gSetColorWasCalled);
-
-	return errors;
+	CHECK(!gSetColorWasCalled);
+	TestCaseEnd();
 }
 
 /* add simple loop */
 int ut_ScriptCtrl_SimpleLoop(void)
 {
-	int errors = 0;
+	TestCaseBegin();
 	struct led_cmd testCmd;
 	ScriptCtrl_Clear();
 
@@ -119,9 +117,9 @@ int ut_ScriptCtrl_SimpleLoop(void)
 	ScriptCtrl_Add(&testCmd);
 
 	/* start loop should be read */
-	assert(!gScriptBuf.inLoop)
+	CHECK(!gScriptBuf.inLoop)
 	ScriptCtrl_Run();
-	assert(gScriptBuf.inLoop);
+	CHECK(gScriptBuf.inLoop);
 
 	int i;
 	for(i = 0; i < NUM_TEST_LOOPS; i++)
@@ -129,64 +127,63 @@ int ut_ScriptCtrl_SimpleLoop(void)
 		/* dummy command should be executed */
 		gSetColorWasCalled = FALSE;
 		ScriptCtrl_Run();
-		assert(gSetColorWasCalled);
+		CHECK(gSetColorWasCalled);
 		
 		/* now next loop should be called */
 		gSetColorWasCalled = FALSE;
 		ScriptCtrl_Run();
-		assert(!gSetColorWasCalled);
+		CHECK(!gSetColorWasCalled);
 	}
 
 	/* no more command should be available */
 	gSetColorWasCalled = FALSE;
 	ScriptCtrl_Run();
-	assert(!gSetColorWasCalled);
-
-	return errors;
+	CHECK(!gSetColorWasCalled);
+	TestCaseEnd();
 }
 
 int ut_ScriptCtrl_DoOuterInnerLoop(int loopCount)
 {
-	int errors = 0;
+	TestCaseBegin();
 	int i, j;
 	for(i = 0; i < loopCount; i++)
 	{
 		/* outer dummy command should be executed */
 		gSetColorWasCalled = FALSE;
 		ScriptCtrl_Run();
-		assert(gSetColorWasCalled);
+		CHECK(gSetColorWasCalled);
 
 		/* start inner loop should be read */
-		assert(gScriptBuf.inLoop)
+		CHECK(gScriptBuf.inLoop)
 		ScriptCtrl_Run();
-		assert(gScriptBuf.inLoop);
+		CHECK(gScriptBuf.inLoop);
 
 		for(j = 0; j < loopCount; j++)
 		{
 			/* outer dummy command should be executed */
 			gSetFadeWasCalled = FALSE;
 			ScriptCtrl_Run();
-			assert(gSetFadeWasCalled);
+			CHECK(gSetFadeWasCalled);
 
 			/* now next inner loop should be called */
 			gSetColorWasCalled = FALSE;
 			ScriptCtrl_Run();
-			assert(!gSetColorWasCalled);
+			CHECK(!gSetColorWasCalled);
 		}
 
 		/* now next outer loop should be called */
 		gSetColorWasCalled = FALSE;
 		ScriptCtrl_Run();
-		assert(!gSetColorWasCalled);
+		CHECK(!gSetColorWasCalled);
 	}
-	return errors;
+	TestCaseEnd();
 }
 
 
 /* add inner loop */
 int ut_ScriptCtrl_InnerLoop(void)
 {
-	int errors = 0;
+	TestCaseBegin();
 	struct led_cmd testCmd;
 	ScriptCtrl_Clear();
 
@@ -217,24 +214,23 @@ int ut_ScriptCtrl_InnerLoop(void)
 	ScriptCtrl_Add(&testCmd);
 
 	/* start outer loop should be read */
-	assert(!gScriptBuf.inLoop)
+	CHECK(!gScriptBuf.inLoop)
 	ScriptCtrl_Run();
-	assert(gScriptBuf.inLoop);
+	CHECK(gScriptBuf.inLoop);
 
 	errors+= ut_ScriptCtrl_DoOuterInnerLoop(NUM_TEST_LOOPS);
 
 	/* no more command should be available */
 	gSetColorWasCalled = FALSE;
 	ScriptCtrl_Run();
-	assert(!gSetColorWasCalled);
-
-	return errors;
+	CHECK(!gSetColorWasCalled);
+	TestCaseEnd();
 }
 
 /* add infinite loop */
 int ut_ScriptCtrl_InfiniteLoop(void)
 {
-	int errors = 0;
+	TestCaseBegin();
 	struct led_cmd testCmd;
 	ScriptCtrl_Clear();
 
@@ -265,9 +261,9 @@ int ut_ScriptCtrl_InfiniteLoop(void)
 	ScriptCtrl_Add(&testCmd);
 
 	/* start outer loop should be read */
-	assert(!gScriptBuf.inLoop)
+	CHECK(!gScriptBuf.inLoop)
 	ScriptCtrl_Run();
-	assert(gScriptBuf.inLoop);
+	CHECK(gScriptBuf.inLoop);
 
 	/* multiple calls should be no problem since we are in an infinite loop */
 	errors+= ut_ScriptCtrl_DoOuterInnerLoop(NUM_TEST_LOOPS);
@@ -281,16 +277,15 @@ int ut_ScriptCtrl_InfiniteLoop(void)
 	/* buffer should be empty again */
 	gSetColorWasCalled = FALSE;
 	ScriptCtrl_Run();
-	assert(!gSetColorWasCalled);
-
-	return errors;
+	CHECK(!gSetColorWasCalled);
+	TestCaseEnd();
 }
 
 /* write to full script buffer */
 /* write incomplete loop to full buffer */
 int ut_ScriptCtrl_FullBuffer(void)
 {
-	int errors = 0;
+	TestCaseBegin();
 	struct led_cmd testCmd;
 	ScriptCtrl_Clear();
 
@@ -311,12 +306,12 @@ int ut_ScriptCtrl_FullBuffer(void)
 	{
 		/* add inner dummy command to buffer */
 		testCmd.cmd = SET_FADE;
-		assert(ScriptCtrl_Add(&testCmd));
+		CHECK(ScriptCtrl_Add(&testCmd));
 	}
 
 	/* Buffer full */
-	assert(!ScriptCtrl_Add(&testCmd));
-	return errors;
+	CHECK(!ScriptCtrl_Add(&testCmd));
+	TestCaseEnd();
 }
 
 /* add clear command */
@@ -342,7 +337,7 @@ int ut_ScriptCtrl_StartBootloader(void)
 /* test WAIT command */
 int ut_ScriptCtrl_Wait(void)
 {
-	int errors = 0;
+	TestCaseBegin();
 	struct led_cmd testCmd;
 	ScriptCtrl_Clear();
 
@@ -353,22 +348,20 @@ int ut_ScriptCtrl_Wait(void)
 
 	/* WAIT command should set the internal wait buffer */
 	ScriptCtrl_Run();
-	assert(0xAFFE == gScriptBuf.waitValue);
-	return errors;
+	CHECK(0xAFFE == gScriptBuf.waitValue);
+	TestCaseEnd();
 }
 
 /* test ADD_COLOR command */
 int ut_ScriptCtrl_AddColor(void)
 {
-	printf("Error: %s not implemented yet\n", __FUNCTION__);
-	return 1;
+	NOT_IMPLEMENTED();
 }
 
 /* test RTC commands */
 int ut_ScriptCtrl_RtcCommands(void)
 {
-	printf("Error: %s not implemented yet\n", __FUNCTION__);
-	return 1;
+	NOT_IMPLEMENTED();
 }
 
 int main(int argc, const char* argv[])

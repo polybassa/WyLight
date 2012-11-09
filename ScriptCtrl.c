@@ -105,7 +105,7 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 		}
 		case START_BL:
 #ifdef __CC8E__
-			UART_SendString("Leaving Application --> Starting Bootloader");
+			UART_SendString("EXIT: Leaving Application --> Starting Bootloader");
 #endif
 			Eeprom_Write(0x3ff, 0xff);
 			softReset();
@@ -161,6 +161,11 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 		case GET_CYCLETIME:
 		{
 			Timer_PrintCycletime();
+			return TRUE;
+		}
+		case GET_TRACE:
+		{
+			Trace_Print();
 			return TRUE;
 		}
 #endif /* #ifndef X86 */

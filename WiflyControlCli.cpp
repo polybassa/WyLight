@@ -57,17 +57,28 @@ void WiflyControlCli::ShowHelp(void) const
 {
 	ControlCmdAddColor addColor;
 	ControlCmdBlInfo blInfo;
-	ControlCmdReadEeprom readEeprom;
-	ControlCmdReadEeprom readFlash;
+	ControlCmdBlCrcFlash crcFlash;
+	ControlCmdBlEraseFlash eraseFlash;
+	ControlCmdBlReadEeprom readEeprom;
+	ControlCmdBlReadFlash readFlash;
+//TODO implement on demand	ControlCmdBlWriteEeprom writeEeprom;
+//TODO	ControlCmdBlWriteFlash writeFlash;
+//TODO implement on demand	ControlCmdBlWriteFuse writeFuse;
+	ControlCmdBlRunApp runApp;
 	ControlCmdSetColor setColor;
 	ControlCmdSetFade setFade;
+	ControlCmdStartBl startBl;
 	cout << "Command reference:" << endl;
 	cout << "'?' - this help" << endl;
 	cout << "'exit' - terminate cli" << endl;
 	cout << addColor << endl;
 	cout << blInfo << endl;
+	cout << crcFlash << endl;
+	cout << eraseFlash << endl;
 	cout << readEeprom << endl;
 	cout << readFlash << endl;
+	cout << runApp << endl;
+	cout << startBl << endl;
 	cout << setColor << endl;
 	cout << setFade << endl;
 }
@@ -85,11 +96,18 @@ void Java_biz_bruenn_WiflyLight_WiflyLightActivity_runClient(JNIEnv* env, jobjec
 
 int main(int argc, const char* argv[])
 {
-	cout << "Usage:   client.bin <ip> <port> [tcp]" << endl;
-	cout << "Default: client.bin 127.0.0.1 2000 --> udp connection to localhost" << endl;
-	const char* pAddr = "127.0.0.1";
 	short port = 2000;
+#if 0
+	const char* pAddr = "127.0.0.1";
 	bool useTcp = false;
+#else
+	const char* pAddr = "192.168.0.14";
+	bool useTcp = true;
+#endif
+
+	cout << "Usage:   client.bin <ip> <port> [tcp]" << endl;
+	cout << "Default: client.bin " << pAddr << " " << port << " --> " << (useTcp ? "tcp" : "udp");
+	cout << " connection to " << pAddr << " " << endl;
 	if(argc > 1)
 	{
 		pAddr = argv[1];

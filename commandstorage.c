@@ -27,20 +27,20 @@ bank2 struct CommandBuffer g_CmdBuf;
 
 void Commandstorage_GetCommands()
 {	
-	if(RingBuf_HasError)
+	if(RingBuf_HasError(&g_RingBuf))
 	{
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
 		Commandstorage_Clear();
 	}
 
-	if(RingBufIsNotEmpty)
+	if(RingBuf_IsNotEmpty(&g_RingBuf))
 	{
 		// *** preload variables and 
 		// *** get new_byte from ringbuffer
 		uns8 new_byte;
 		// *** get new byte
-		new_byte = RingBuf_Get();
+		new_byte = RingBuf_Get(&g_RingBuf);
 		/* Trace_String("BYTE:"); */
 		/* Trace_Number(new_byte,'b'); */
 
@@ -97,10 +97,7 @@ void Commandstorage_GetCommands()
                 {
 			if(ScriptCtrl_Add(&g_CmdBuf.cmd_buf[2]))
 			{
-			      Trace_String("GC");
-#ifdef __CC8E__
 			      UART_SendString("GC");
-#endif
 			}
 			else
 			{

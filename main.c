@@ -18,10 +18,12 @@
 
 #ifndef X86
 #define NO_CRC
-//#define TEST
+#define TEST
 #pragma optimize 1
 #endif
+#ifdef __CC8E__
 #pragma sharedAllocation
+#endif
 
 //*********************** INCLUDEDATEIEN *********************************************
 #include "platform.h"
@@ -75,6 +77,7 @@ interrupt HighPriorityInterrupt(void)
 interrupt LowPriorityInterrupt(void)
 {
 	int_save_registers
+#if 0
 	uns16 sv_FSR0 = FSR0;
 	uns16 sv_FSR1 = FSR1;
 	uns16 sv_FSR2 = FSR2;
@@ -84,6 +87,7 @@ interrupt LowPriorityInterrupt(void)
 	uns8 sv_PRODH = PRODH;
 	uns24 sv_TBLPTR = TBLPTR;
 	uns8 sv_TABLAT = TABLAT;
+#endif
 
 	if(TMR5IF)
 	{
@@ -101,7 +105,7 @@ interrupt LowPriorityInterrupt(void)
 	      Timer1Disable();
 	      Timer1Interrupt();
 	}
-	
+#if 0	
 	FSR0 = sv_FSR0;
 	FSR1 = sv_FSR1;
 	FSR2 = sv_FSR2;
@@ -111,7 +115,7 @@ interrupt LowPriorityInterrupt(void)
 	PRODH = sv_PRODH;
 	TBLPTR = sv_TBLPTR;
 	TABLAT = sv_TABLAT;
-
+#endif
 	int_restore_registers
 }
 
@@ -120,9 +124,9 @@ void HighPriorityInterruptFunction(void)
 	uns16 sv_FSR0 = FSR0;
 	if(RC1IF)
 	{
-		if(!RingBuf_HasError) 
+		if(!RingBuf_HasError(&g_RingBuf)) 
 		{
-			RingBuf_Put(RCREG1);
+			RingBuf_Put(&g_RingBuf, RCREG1);
 			//UART_Send(RCREG1+1);
 		}
 		else 
@@ -189,7 +193,7 @@ void InitAll()
 	clearRAM();
 	Platform_OsciInit();
 	Platform_IOInit();
-	RingBuf_Init();
+	RingBuf_Init(&g_RingBuf);
 	UART_Init();
 	Timer_Init();
 	Ledstrip_Init();
@@ -205,7 +209,7 @@ void InitAll()
 	Platform_AllowInterrupts();
 	Platform_DisableBootloaderAutostart();
 	
-	UART_SendString("Wait");
+	Trace_String("Wait");
 	
 	/* Startup Wait-Time 2s
 	 * to protect Wifly-Modul from errors*/
@@ -231,4 +235,7 @@ void InitAll()
 #include "rtc.c"
 #include "iic.c"
 #include "ScriptCtrl.c"
+#ifdef TEST
+#include "trace.c"
+#endif /* TEST */
 #endif /* #ifdef __CC8E__ */

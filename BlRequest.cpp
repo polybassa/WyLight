@@ -49,13 +49,18 @@ size_t BlProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputL
 	const unsigned char* const pInputEnd = pInput + inputLength;
 	size_t bytesWritten = 0;
 	unsigned short crc = 0;
-
+	
+#if 0
+	//TODO test this removal on real hardware unittest is working
+	/* TODO command type character must be masked with DLE if command
+	 *	character has the same value as DLE or ETX*/
 	/* skip first character since it is the command type byte */
 	if(++bytesWritten > outputLength) return 0;
 	*pOutput = *pInput;
 	Crc_AddCrc16(*pInput, &crc);
 	pOutput++;
 	pInput++;	
+#endif
 
 	while(pInput < pInputEnd)
 	{
@@ -65,89 +70,104 @@ size_t BlProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputL
 	}
 
 	// add crc to output
-	//TODO this byte order should be wrong
-	MaskAndAddByteToOutput((unsigned char)(crc >> 8));
 	MaskAndAddByteToOutput((unsigned char)(crc & 0xff));
+	MaskAndAddByteToOutput((unsigned char)(crc >> 8));
 	return bytesWritten;
 }
 
-size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength) const
+size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength, bool checkCrc) const
 {
 	if(outputLength < inputLength)
 	{
 		return 0;
 	}
 	const unsigned char* const pInputEnd = pInput + inputLength;
+	/* The bootloader sends the low byte of crc first, so we cannot just add
+	 * all bytes to the checksum and compare it to zero.
+	 * Now, our approach is to save the two latest crc's and parse the whole
+	 * input buffer. When everything was read prepreCrc contains the crc before
+	 * the first crc byte from data stream was added to crc.
+	 */
 	unsigned short crc = 0;
+	unsigned short preCrc = 0;
+	unsigned short prepreCrc = 0;
 
+#if 1
+	size_t bytesWritten = 0;
+#else
+	//This Implementation seems buggy crc calculation includes command byte!!!
+	//TODO remove this code when verified with real hardware
 	/* skip first character since its the command type byte */
 	size_t bytesWritten = 1;
 	*pOutput = *pInput;
+	prepreCrc = preCrc;
+	preCrc = crc;
 	Crc_AddCrc16(*pInput, &crc);
 	pOutput++;
 	pInput++;
+#endif
 
-	/* read two bytes ahead to find crc */
-	if(pInput >= pInputEnd) return 0;
-	if(*pInput == BL_DLE)
-	{
-		pInput++;
-	}
-	if(pInput >= pInputEnd) return 0;
-	unsigned char next = *pInput;
-	pInput++;
-
-	if(pInput >= pInputEnd) return 0;
-	if(*pInput == BL_DLE)
-	{
-		pInput++;
-	}
-	if(pInput >= pInputEnd) return 0;
-	unsigned char postNext = *pInput;
-	pInput++;
-
-
+	/* unmask input buffer and calculate crc */
 	while(pInput < pInputEnd)
 	{
 		if(*pInput == BL_DLE)
 		{
 			pInput++;
 		}
-		*pOutput = next;
+		*pOutput = *pInput;
+		prepreCrc = preCrc;
+		preCrc = crc;
+		Crc_AddCrc16(*pInput, &crc);
 		pOutput++;
 		bytesWritten++;
-		Crc_AddCrc16(next, &crc);
-		next = postNext;
-		postNext = *pInput;
 		pInput++;
 	}
 
-	// check and remove crc
-	// TODO this switch should be wrong!
-	if(crc != (((unsigned short)next << 8) | (unsigned short)postNext))
-	//if(crc != (((unsigned short)postNext << 8) | (unsigned short)next))
+	/* for responses without crc we can finish here */
+	if(!checkCrc)
+	{
+		return bytesWritten;
+	}
+
+	/* we should have read at least two crc bytes! */
+	if(bytesWritten < 2)
+	{
+		return 0;
+	}
+
+	/* know we have to take the last two bytes (which can be masked!) and compare
+	 * them to the calculated checksum, by adding them in reverse order and
+	 * comparing them with zero
+	 */
+	pInput--;
+	Crc_AddCrc16(*pInput, &prepreCrc);
+	pInput--;
+	if(BL_DLE == *pInput)
+	{
+		pInput--;
+	}
+	Crc_AddCrc16(*pInput, &prepreCrc);
+
+	if(0 != prepreCrc)
 	{
 		Trace_String(__FUNCTION__);
 		Trace_String(" check crc: ");
-		Trace_Hex(next);
-		Trace_Hex(postNext);
-		Trace_Number(crc, ' ');
-		Trace_Number((((unsigned short)next << 8) | (unsigned short)postNext), ' ');
+		Trace_Number(prepreCrc, ' ');
 		Trace_String(" crc failed\n");
 		return 0;
 	}
-	return bytesWritten;
+	return bytesWritten - 2;
 }
 
-int BlProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize) const
+int BlProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize, bool doSync) const
 {
 	Trace_String("BlProxy::Send: ");
 	Trace_Number(req.GetSize(), ' ');
 	Trace_String("pure bytes\n");
-	return Send(req.GetData(), req.GetSize(), pResponse, responseSize);
+	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
 }
 
-int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize) const
+int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize, bool checkCrc, bool doSync) const
 {
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	unsigned char recvBuffer[BL_MAX_MESSAGE_LENGTH];
@@ -173,12 +193,22 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 	bufferSize++;
 
 	int numRetries = BL_MAX_RETRIES;
-	do
+
+	/* sync with bootloader */
+	if(doSync)
 	{
-		/* sync with bootloader */
-		Trace_String("BlProxy::Send: SYNC...\n");
-		mSock->Send(BL_SYNC, sizeof(BL_SYNC));
-		if(0 != mSock->Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS))
+		do
+		{
+			if(0 > --numRetries)
+			{
+				Trace_String("BlProxy::Send: Too many retries\n");
+				return -1;
+			}
+			Trace_String("BlProxy::Send: SYNC...\n");
+			mSock->Send(BL_SYNC, sizeof(BL_SYNC));
+		} while(0 == mSock->Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS));
+	}
+
 		{
 			/* synchronized -> send request */
 			if(static_cast<int>(bufferSize) != mSock->Send(buffer, bufferSize))
@@ -196,7 +226,7 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 
 			/* receive response */
 			int bytesReceived = mSock->Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS);
-
+			
 			if(bytesReceived > 1)
 			{
 				/* remove STX from message */
@@ -216,14 +246,11 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 				}
 				bytesReceived--;
 
-				/* remove BL_DLE and check crc from buffer */
-				return UnmaskControlCharacters(pNext, bytesReceived, pResponse, responseSize);
+				/* remove BL_DLE from buffer and check crc if requested */
+				return UnmaskControlCharacters(pNext, bytesReceived, pResponse, responseSize, checkCrc);
 			}
 			Trace_String("BlProxy::Send: response to short\n");
+			return 0;
  		}
-	}while(0 < --numRetries);
-
-	Trace_String("BlProxy::Send: Too many retries\n");
-	return -1;
 }
 

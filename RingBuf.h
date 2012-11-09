@@ -32,10 +32,10 @@
  * f.e.: size = 31 -> realsize = 32 -> we want an index of 31++ to overflow to 0:
  * binary: (00011111 + 00000001) & 00011111 = 00100000 & 00011111 = 00000000
  */
-#define gRingBufSize 127
+#define RingBufferSize 255
 
 struct RingBuffer{
-	uns8 data[gRingBufSize + 1];
+	uns8 data[RingBufferSize + 1];
 	uns8 read;
 	uns8 write;
 	bit error_full;
@@ -45,15 +45,22 @@ extern struct RingBuffer g_RingBuf;
 /**
  * Some macros 
  */
-#define RingBufInc(x) ((x + 1) & gRingBufSize)
-#define RingBufClearError g_RingBuf.error_full = FALSE
-#define RingBuf_HasError (g_RingBuf.error_full)
-#define RingBufIsNotEmpty (g_RingBuf.write != g_RingBuf.read)
+#define RingBufInc(x) ((x + 1) & RingBufferSize)
+//#define RingBufClearError(BUF) (struct RingBuffer*)BUF->error_full = FALSE
+//#define RingBuf_HasError(BUF)  (struct RingBuffer*)BUF->error_full
+//#define RingBufIsNotEmpty(BUF) ((struct RingBuffer*)BUF->write != (struct RingBuffer*)BUF->read)
+
+void RingBufClearError(struct RingBuffer *pBuf);
+
+bit RingBuf_HasError(struct RingBuffer *pBuf);
+
+bit RingBuf_IsNotEmpty(struct RingBuffer *pBuf);
+
 
 /**
  * Initialize the ring buffer and all associated variables
  */
-void RingBuf_Init(void);
+void RingBuf_Init(struct RingBuffer *pBuf);
 
 /**
  * This function will increment the read pointer of the
@@ -61,7 +68,7 @@ void RingBuf_Init(void);
  * WARNING: never call this function on an empty buffer!
  * Test with <RingBufIsNotEmpty> for data first!
  */
-char RingBuf_Get(void);
+uns8 RingBuf_Get(struct RingBuffer *pBuf);
 
 /**
  * If the buffer is not full, value is added to the ring
@@ -70,5 +77,5 @@ char RingBuf_Get(void);
  * 
  * If the buffer is already full, <g_error_ringbuff> is set.
  */
-void RingBuf_Put(char value);
+void RingBuf_Put(struct RingBuffer *pBuf, uns8 value);
 #endif /* #ifndef _RINGBUF_H_ */

@@ -74,3 +74,5 @@ PIC18_Bootloader/crc16-0.1.1/build/lib.linux-x86_64-2.7/crc16/__init__.py
 PIC18_Bootloader/crc16-0.1.1/build/lib.linux-x86_64-2.7/crc16/crc16pure.py
 PIC18_Bootloader/crc16-0.1.1/build/lib.linux-x86_64-2.7/crc16/test.py
 ScriptCtrl_ut.bin
+BlRequest_ut.bin
+crc_ut.bin

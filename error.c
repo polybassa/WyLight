@@ -25,14 +25,14 @@ struct ErrorBits g_ErrorBits;
 
 void Error_Throw()
 {
-	if(RingBuf_HasError) 
+	if(RingBuf_HasError(&g_RingBuf)) 
 	{
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
 		Commandstorage_Clear();
 		UART_SendString("E:03; ERROR: Receivebuffer full");
 		// *** Re-init the Ringbuffer to get a consistent commandstring and reset error
-		RingBuf_Init();
+		RingBuf_Init(&g_RingBuf);
 	}
 	if(g_ErrorBits.CrcFailure)
 	{
