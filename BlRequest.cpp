@@ -49,7 +49,9 @@ size_t BlProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputL
 	const unsigned char* const pInputEnd = pInput + inputLength;
 	size_t bytesWritten = 0;
 	unsigned short crc = 0;
-
+	
+	/* TODO command type character must be masked with DLE if command
+	 *	character has the same value as DLE or ETX*/
 	/* skip first character since it is the command type byte */
 	if(++bytesWritten > outputLength) return 0;
 	*pOutput = *pInput;
@@ -205,7 +207,7 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 
 			/* receive response */
 			int bytesReceived = mSock->Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS);
-
+			
 			if(bytesReceived > 1)
 			{
 				/* remove STX from message */

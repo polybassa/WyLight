@@ -74,6 +74,40 @@ size_t WiflyControl::BlFlashErase(unsigned char* pBuffer, unsigned int endAddres
 	return BlRead(request, pBuffer, 1);
 }
 
+bool WiflyControl::BlFlashErase(void) const
+{
+	BlInfo info;
+	if(sizeof(info) != BlReadInfo(info))
+	{
+		cout << __FILE__ << "::" << __FUNCTION__
+		<< "(): Erase flash failed, couldn't determine bootloader location" << endl;
+		return FALSE;
+	}
+	unsigned int address = info.GetAddress() - 1;
+	
+	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
+	size_t bytesRead;
+	while(address > FLASH_ERASE_BLOCKSIZE)
+	{
+		 bytesRead = BlFlashErase(buffer, address, FLASH_ERASE_BLOCKSIZE);
+		 if((bytesRead != 1) || (0x03 != buffer[0])) 
+		 {
+			cout << __FILE__ << "::" << __FUNCTION__
+			<< "():Erase flash failed at address: " << hex << address << endl;
+			return FALSE; 
+		 }
+		 address -= FLASH_ERASE_BLOCKSIZE;
+	}
+	bytesRead = BlFlashErase(buffer, 0, address);
+	if((bytesRead != 1) || (0x03 != buffer[0])) 
+	{		    
+		  cout << __FILE__ << "::" << __FUNCTION__
+		  << "():Erase flash failed at address: " << hex << 0 << endl;
+		  return FALSE; 
+	}
+	return TRUE;
+}
+
 size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize) const
 {
 	BlProxy proxy(mSock);
@@ -104,7 +138,7 @@ size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, s
 	while(numBytes > FLASH_READ_BLOCKSIZE)
 	{
 		readRequest.SetAddressNumBytes(address, FLASH_READ_BLOCKSIZE);
-		bytesRead = BlRead(readRequest, pBuffer, numBytes);
+		bytesRead = BlRead(readRequest, pBuffer, FLASH_READ_BLOCKSIZE);
 		sumBytesRead += bytesRead;
 		if(FLASH_READ_BLOCKSIZE != bytesRead)
 		{
