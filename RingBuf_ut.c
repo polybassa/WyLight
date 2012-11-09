@@ -16,28 +16,28 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "stdio.h"
-#include "trace.h"
+#include "RingBuf.h"
+#include "unittest.h"
 
-#ifdef __cplusplus
-#include <assert.h>
-#else
-#define assert(EXPRESSION) if(!(EXPRESSION)) {errors++; printf("Assert(" #EXPRESSION ") failed\n");}
-#endif
 
-#define RunTest(RUN, FUNC) { \
-	if(RUN) { \
-		int _errors= FUNC(); \
-		printf(#FUNC"() run with %d errors\n", _errors); \
-		numErrors+= _errors; numTests++; \
-	} else { \
-		numSkipped++; \
-	} \
+/* test WAIT command */
+int ut_RingBuf_Init(void)
+{
+	int errors = 0;
+	struct RingBuffer testBuffer;
+	
+	RingBuf_Init(&testBuffer);
+	
+	assert(testBuffer.read == 0);
+	assert(testBuffer.write == 0);
+	assert(testBuffer.error_full == 0);
+	return errors;
 }
 
-#define UnitTestMainBegin(X) int numErrors = 0; int numSkipped = 0; int numTests = 0;
-#define UnitTestMainEnd(X) { \
-	printf("%s run %d Tests (%d skipped | %d errors)\n", __FILE__, numTests, numSkipped, numErrors); \
-	return numErrors; \
+int main(int argc, const char* argv[])
+{
+	UnitTestMainBegin();
+	RunTest(true, ut_RingBuf_Init);
+	UnitTestMainEnd();
 }
 
