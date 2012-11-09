@@ -50,6 +50,8 @@ size_t BlProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputL
 	size_t bytesWritten = 0;
 	unsigned short crc = 0;
 	
+#if 0
+	//TODO test this removal on real hardware unittest is working
 	/* TODO command type character must be masked with DLE if command
 	 *	character has the same value as DLE or ETX*/
 	/* skip first character since it is the command type byte */
@@ -58,6 +60,7 @@ size_t BlProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputL
 	Crc_AddCrc16(*pInput, &crc);
 	pOutput++;
 	pInput++;	
+#endif
 
 	while(pInput < pInputEnd)
 	{
@@ -89,6 +92,11 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 	unsigned short preCrc = 0;
 	unsigned short prepreCrc = 0;
 
+#if 1
+	size_t bytesWritten = 0;
+#else
+	//This Implementation seems buggy crc calculation includes command byte!!!
+	//TODO remove this code when verified with real hardware
 	/* skip first character since its the command type byte */
 	size_t bytesWritten = 1;
 	*pOutput = *pInput;
@@ -97,6 +105,7 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 	Crc_AddCrc16(*pInput, &crc);
 	pOutput++;
 	pInput++;
+#endif
 
 	/* unmask input buffer and calculate crc */
 	while(pInput < pInputEnd)
