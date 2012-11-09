@@ -51,22 +51,32 @@ struct BlRequest
 	virtual bool CheckCrc() const { return true; };
 };
 
-struct BlReadRequest : public BlRequest
+struct BlAddressRequest : public BlRequest
 {
-		BlReadRequest(size_t size, unsigned char cmd) : BlRequest(size + 6, cmd), zero(0x00) {};
-		void SetAddressNumBytes(unsigned int address, unsigned short numBytes)
+		BlAddressRequest(size_t size, unsigned char cmd) : BlRequest(size + 4, cmd), zero(0x00) {};
+		virtual void SetAddress(unsigned int address)
 		{
 			addressLow = static_cast<unsigned char>(address & 0x000000FF);
 			addressHigh = static_cast<unsigned char>((address & 0x0000FF00) >> 8);
 			addressU = static_cast<unsigned char>((address & 0x00FF0000) >> 16);
-			numBytesLow = static_cast<unsigned char>(numBytes & 0x00FF);
-			numBytesHigh = static_cast<unsigned char>((numBytes & 0xFF00) >> 8);
 		};
 
 		unsigned char addressLow;
 		unsigned char addressHigh;
 		unsigned char addressU;
 		const unsigned char zero;
+};
+
+struct BlReadRequest : public BlAddressRequest
+{
+		BlReadRequest(size_t size, unsigned char cmd) : BlAddressRequest(size + 2, cmd) {};
+		void SetAddressNumBytes(unsigned int address, unsigned short numBytes)
+		{
+			SetAddress(address);
+			numBytesLow = static_cast<unsigned char>(numBytes & 0x00FF);
+			numBytesHigh = static_cast<unsigned char>((numBytes & 0xFF00) >> 8);
+		};
+
 		unsigned char numBytesLow;
 		unsigned char numBytesHigh;
 };

@@ -44,7 +44,7 @@ BlRequest_ut.bin: BlRequest_ut.cpp BlRequest.cpp BlRequest.h unittest.h
 	g++ BlRequest_ut.cpp BlRequest.cpp crc.c -DX86 -DUNIT_TEST -o $@ -Wall -pedantic
 	./$@
 
-test: BlRequest_ut.bin crc_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin
+test: clean BlRequest_ut.bin crc_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin
 
 clean:
 	rm -rf *.asm *.bin *.cod *.fcs *.hex *.lst *.occ *.var .metadata/ ${ANDROID_BIN}					
