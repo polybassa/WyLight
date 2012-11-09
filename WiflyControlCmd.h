@@ -91,7 +91,7 @@ class ControlCmdBlInfo : public WiflyControlCmd
 class ControlCmdBlCrcFlash : public WiflyControlCmd
 {
 	public:
-		ControlCmdBlCrcFlash(void) : WiflyControlCmd("crc_flash") {};
+		ControlCmdBlCrcFlash(void) : WiflyControlCmd("'crc_flash'") {};
 		virtual void Run(WiflyControl& control) const {
 			unsigned int address;
 			size_t numBlocks;
@@ -104,7 +104,7 @@ class ControlCmdBlCrcFlash : public WiflyControlCmd
 				return;
 			}
 
-			size_t bytesRead = control.BlReadCrcFlash(buffer, address, numBlocks);
+			size_t bytesRead = control.BlReadCrcFlash(buffer, address, numBlocks); 
 			if(2 * numBlocks != bytesRead)
 			{
 				cout << "Read CRC failed" << endl;
@@ -122,22 +122,15 @@ class ControlCmdBlEraseFlash : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const
 		{
-			BlInfo info;
-			if(sizeof(info) != control.BlReadInfo(info))
+			if(control.BlFlashErase())
 			{
-				cout << "Erase flash failed, couldn't determine bootloader location" << endl;
-				return;
+			    cout << endl <<"Erase complete flash succesful"<<endl;
 			}
-
-			// bootloader is expected to reside at the end of the flash
-			unsigned int address = info.GetAddress() - 1;
-			size_t numPages = (address + FLASH_ERASE_BLOCKSIZE - 1) / FLASH_ERASE_BLOCKSIZE;
-			unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
-			size_t bytesRead = control.BlFlashErase(buffer, address, numPages);
-			if((bytesRead != 1) || (0x03 != buffer[0])) {
-				cout << "Erase flash failed, for " << numPages << " pages below 0x" << hex << address << endl;
+			else
+			{
+			    cout << endl <<"Erase complete flash failed"<<endl;
 			}
-		};
+		}	
 };
 
 class ControlCmdBlRead : public WiflyControlCmd
