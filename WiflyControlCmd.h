@@ -20,6 +20,7 @@
 #define _WIFLYCONTROLCMD_H_
 #include <iostream>
 #include <string>
+#include <iomanip>
 
 using namespace std;
 
@@ -37,9 +38,9 @@ class WiflyControlCmd
 		void Print(const unsigned char* const pBuffer, const size_t size, const unsigned int address) const {
 			for(size_t i = 0; i < size; i++) {
 				if(0 == (i % 16)) {
-					cout << endl << "0x" << hex << int(address+i) << ": ";
+					cout << endl << "0x" << setw(4) << setfill('0') << hex << int(address+i) << ": ";
 				}
-				cout << hex << int(pBuffer[i]) << ' ';
+				cout << setw(2) << setfill('0') << hex << int(pBuffer[i]) << ' ';
 			}
 			cout << endl;
 		}
@@ -159,9 +160,12 @@ class ControlCmdBlRead : public WiflyControlCmd
 
 			size_t bytesRead = Read(control, buffer, address, numBytes);
 
-			if(bytesRead != numBytes) {
+			if(bytesRead != numBytes) 
+			{
 				cout << "Read " << m_Name << " failed" << endl;
-			} else {
+			} 
+			else 
+			{
 				Print(buffer, bytesRead, address);
 			}
 		};
