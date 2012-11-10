@@ -241,6 +241,31 @@ bool WiflyControl::BlRunApp(void) const
 	return false;
 }
 
+bool WiflyControl::BlWriteFlash(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const
+{
+	BlFlashWriteRequest request;
+	unsigned char response;
+	
+	size_t bytesLeft = bufferLength;
+	while(bytesLeft > FLASH_WRITE_BLOCKSIZE)
+	{
+		request.SetData(address, pBuffer, FLASH_WRITE_BLOCKSIZE);
+
+		// we expect only the 0x04 command byte as response
+		if(1 != BlRead(request, &response, sizeof(response)))
+		{
+			return false;
+		}
+		
+		address += FLASH_WRITE_BLOCKSIZE;
+		pBuffer += FLASH_WRITE_BLOCKSIZE;
+		bytesLeft -= FLASH_WRITE_BLOCKSIZE;
+	}
+
+	request.SetData(address, pBuffer, bytesLeft);
+	return (1 == BlRead(request, &response, sizeof(response)));
+}
+
 void WiflyControl::StartBl(void)
 {
 	mCmdFrame.led.cmd = START_BL;
