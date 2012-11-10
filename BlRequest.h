@@ -91,6 +91,7 @@ struct BlFlashWriteRequest : public BlAddressRequest
 			SetAddress(address);
 			numBlocks = 0x01;
 			
+			/* Not really neccessary at this point, because WiflyControl handles the BlockSize */
 			if(numBytes > FLASH_WRITE_BLOCKSIZE) numBytes = FLASH_WRITE_BLOCKSIZE;
 			
 			unsigned char *data = new unsigned char[numBytes];
@@ -116,6 +117,7 @@ struct BlEepromWriteRequest : public BlAddressRequest
 			data = NULL;
 			SetAddress(address);
 			
+			/* Not really neccessary at this point, because WiflyControl handles the BlockSize */
 			if(numBytes > EEPROM_WRITE_BLOCKSIZE) numBytes = EEPROM_WRITE_BLOCKSIZE;
 			
 			numBytesLow = static_cast<unsigned char>(numBytes & 0x00FF);
