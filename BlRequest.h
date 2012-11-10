@@ -51,22 +51,32 @@ struct BlRequest
 	virtual bool CheckCrc() const { return true; };
 };
 
-struct BlReadRequest : public BlRequest
+struct BlAddressRequest : public BlRequest
 {
-		BlReadRequest(size_t size, unsigned char cmd) : BlRequest(size + 6, cmd), zero(0x00) {};
-		void SetAddressNumBytes(unsigned int address, unsigned short numBytes)
+		BlAddressRequest(size_t size, unsigned char cmd) : BlRequest(size + 4, cmd), zero(0x00) {};
+		virtual void SetAddress(unsigned int address)
 		{
 			addressLow = static_cast<unsigned char>(address & 0x000000FF);
 			addressHigh = static_cast<unsigned char>((address & 0x0000FF00) >> 8);
 			addressU = static_cast<unsigned char>((address & 0x00FF0000) >> 16);
-			numBytesLow = static_cast<unsigned char>(numBytes & 0x00FF);
-			numBytesHigh = static_cast<unsigned char>((numBytes & 0xFF00) >> 8);
 		};
 
 		unsigned char addressLow;
 		unsigned char addressHigh;
 		unsigned char addressU;
 		const unsigned char zero;
+};
+
+struct BlReadRequest : public BlAddressRequest
+{
+		BlReadRequest(size_t size, unsigned char cmd) : BlAddressRequest(size + 2, cmd) {};
+		void SetAddressNumBytes(unsigned int address, unsigned short numBytes)
+		{
+			SetAddress(address);
+			numBytesLow = static_cast<unsigned char>(numBytes & 0x00FF);
+			numBytesHigh = static_cast<unsigned char>((numBytes & 0xFF00) >> 8);
+		};
+
 		unsigned char numBytesLow;
 		unsigned char numBytesHigh;
 };
@@ -163,22 +173,16 @@ struct BlEepromReadRequest : public BlReadRequest
 		BlEepromReadRequest() : BlReadRequest(0, 0x05) {};
 };
 
-struct BlFlashCrc16Request : public BlRequest
+struct BlFlashCrc16Request : public BlAddressRequest
 {
 		BlFlashCrc16Request(unsigned int address, unsigned short numBlocks)
-		: BlRequest(6, 0x02), zero(0x00)
+		: BlAddressRequest(2, 0x02)
 		{
-			addressLow = static_cast<unsigned char>(address & 0x000000FF);
-			addressHigh = static_cast<unsigned char>((address & 0x0000FF00) >> 8);
-			addressU = static_cast<unsigned char>((address & 0x00FF0000) >> 16);
+			SetAddress(address);
 			numBlocks = static_cast<unsigned char>(address & 0x00FF);
 			numBlocks = static_cast<unsigned char>((address & 0xFF00) >> 8);
 		};
 
-		unsigned char addressLow;
-		unsigned char addressHigh;
-		unsigned char addressU;
-		const unsigned char zero;
 		unsigned char numBlockLow;
 		unsigned char numBlocksHigh;
 
@@ -186,21 +190,15 @@ struct BlFlashCrc16Request : public BlRequest
 		virtual bool CheckCrc() const { return false; };
 };
 
-struct BlFlashEraseRequest : public BlRequest
+struct BlFlashEraseRequest : public BlAddressRequest
 {
-		BlFlashEraseRequest(unsigned int endAddress, unsigned char numFlashPages)
-		: BlRequest(5, 0x03), zero(0x00), numPages(numFlashPages)
+		BlFlashEraseRequest(unsigned int address, unsigned char numFlashPages)
+		: BlAddressRequest(1, 0x03), numPages(numFlashPages)
 		{
-			endAddressLow = static_cast<unsigned char>(endAddress & 0x000000FF);
-			endAddressHigh = static_cast<unsigned char>((endAddress & 0x0000FF00) >> 8);
-			endAddressU = static_cast<unsigned char>((endAddress & 0x00FF0000) >> 16);
+			SetAddress(address);
 		};
 
-		unsigned char endAddressLow;
-		unsigned char endAddressHigh;
-		unsigned char endAddressU;
-		const unsigned char zero;
-		unsigned char numPages;
+		const unsigned char numPages;
 };
 
 struct BlFlashReadRequest : public BlReadRequest

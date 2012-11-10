@@ -30,7 +30,7 @@ ClientSocket::ClientSocket(const char* pAddr, short port, int style) : mSock(0) 
 ClientSocket::~ClientSocket(void) {}
 
 const BlInfo dummyBlInfo = {0xDE, 0xAD, 0xAF, 0xFE, 0xFF, 0x4, 0x0, 0xB0, 0xB1, 0xE5, 0x00};
-const unsigned char dummyBlInfoResponseMasked[] = {BL_STX, BL_STX, 0xDE, 0xAD, 0xAF, 0xFE, 0xFF, BL_DLE, 0x04, 0xB0, 0xB1, 0xE5, 0x00, 0xEA, 0x35, BL_ETX};
+const unsigned char dummyBlInfoMasked[] = {BL_STX, BL_STX, 0xDE, 0xAD, 0xAF, 0xFE, 0xFF, BL_DLE, 0x04, 0xB0, 0xB1, 0xE5, 0x00, 0xEA, 0x35, BL_ETX};
 const unsigned char exampleBlFlashRead[] = {0x01, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0xAD, 0xB5, 0x04};
 const unsigned char dummyBlFlashReadResponseMasked[] = {BL_STX, 0xDE, 0xAD, BL_DLE, BL_DLE, 0xEF, 0xa0, 0x06, BL_ETX};
 const unsigned char dummyBlFlashReadResponsePure[] = {0xDE, 0xAD, BL_DLE, 0xEF};
@@ -73,8 +73,8 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	if((frame[0] == 0x00) && (frame[1] == 0) && (frame[2] == 0) && (frame[3] == BL_ETX))
 	{
 		Trace_String("BlInfoRequest\n");
-		memcpy(g_TestSocketRecvBuffer, dummyBlInfoResponseMasked, sizeof(dummyBlInfoResponseMasked));
-		g_TestSocketRecvBufferSize = sizeof(dummyBlInfoResponseMasked);
+		memcpy(g_TestSocketRecvBuffer, dummyBlInfoMasked, sizeof(dummyBlInfoMasked));
+		g_TestSocketRecvBufferSize = sizeof(dummyBlInfoMasked);
 		return length;
 	}
 
