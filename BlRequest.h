@@ -71,6 +71,25 @@ struct BlReadRequest : public BlRequest
 		unsigned char numBytesHigh;
 };
 
+/*struct BlWriteRequest : public BlRequest
+{
+		BlWriteRequest(unsigned char cmd, unsigned int address, unsigned char *pData) : BlRequest(FLASH_WRITE_BLOCKSIZE + 5, cmd), zero(0x00), numBlocks(0x01)
+		{
+			addressLow = static_cast<unsigned char>(address & 0x000000FF);
+			addressHigh = static_cast<unsigned char>((address & 0x0000FF00) >> 8);
+			addressU = static_cast<unsigned char>((address & 0x00FF0000) >> 16);
+			for(int i = 0; i < FLASH_WRITE_BLOCKSIZE; i++, pData++)
+			   data[i] = *pData;
+		};
+
+		unsigned char addressLow;
+		unsigned char addressHigh;
+		unsigned char addressU;
+		const unsigned char zero;
+		unsigned char numBlocks;
+		unsigned char data[FLASH_WRITE_BLOCKSIZE];
+};*/
+
 class BlProxy
 {
 	private:
