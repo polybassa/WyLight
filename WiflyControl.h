@@ -47,7 +47,7 @@ class WiflyControl
 		bool BlFlashErase(void) const;
 		size_t BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync = true) const;
 		size_t BlReadCrcFlash(unsigned char* pBuffer, unsigned int address, const size_t numBytes) const;
-		size_t BlReadEeprom(unsigned char* pBuffer, unsigned int address, const size_t numBytes) const;
+		size_t BlReadEeprom(unsigned char* pBuffer, unsigned int address, size_t numBytes) const;
 		size_t BlReadFlash(unsigned char* pBuffer, unsigned int address, size_t numBytes) const;
 		size_t BlReadInfo(BlInfo& info) const;
 		bool BlRunApp(void) const;
