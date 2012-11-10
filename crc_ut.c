@@ -27,43 +27,42 @@
 /* test crc commands */
 int ut_Crc_AddCrc(void)
 {
-	int errors = 0;
+	TestCaseBegin();
 	unsigned char crcHigh = 0xff;
 	unsigned char crcLow = 0xff;
 	Crc_AddCrc('h', &crcHigh, &crcLow);
-	assert(0x0c == crcHigh);
-	assert(0x5e == crcLow);
+	CHECK(0x0c == crcHigh);
+	CHECK(0x5e == crcLow);
 
 	crcHigh = crcLow = 0xff;
 	Crc_AddCrc('7', &crcHigh, &crcLow);
-	assert(0xa7 == crcHigh);
-	assert(0x44 == crcLow);
-	return errors;
+	CHECK(0xa7 == crcHigh);
+	CHECK(0x44 == crcLow);
+	TestCaseEnd();
 }
 
 int ut_Crc_BuildCrc(void)
 {
+	TestCaseBegin();
 	static const char* testString1 = "Huhu unittest crc me!";
 	static const char* testString2 = "abc";
-	int errors = 0;
 	unsigned char crcHigh = 0xff;
 	unsigned char crcLow = 0xff;
 
 	Crc_BuildCrc((unsigned char*)testString1, 21,  &crcHigh, &crcLow);
 	Trace_Hex(crcHigh);
 	Trace_Hex(crcLow);
-	assert(0x84 == crcHigh);
-	assert(0xb8 == crcLow);
+	CHECK(0x84 == crcHigh);
+	CHECK(0xb8 == crcLow);
 
 	crcHigh =  0xff;
 	crcLow = 0xff;
 	Crc_BuildCrc((unsigned char*)testString2, 3, &crcHigh, &crcLow);
 	Trace_Hex(crcHigh);
 	Trace_Hex(crcLow);
-	assert(0x51 == crcHigh);
-	assert(0x4a == crcLow);
-	
-	return errors;
+	CHECK(0x51 == crcHigh);
+	CHECK(0x4a == crcLow);
+	TestCaseEnd();
 }
 
 int main(int argc, const char* argv[])
