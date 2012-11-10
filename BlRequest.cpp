@@ -50,6 +50,8 @@ size_t BlProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputL
 	size_t bytesWritten = 0;
 	unsigned short crc = 0;
 	
+#if 0
+	//TODO test this removal on real hardware unittest is working
 	/* TODO command type character must be masked with DLE if command
 	 *	character has the same value as DLE or ETX*/
 	/* skip first character since it is the command type byte */
@@ -58,6 +60,7 @@ size_t BlProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputL
 	Crc_AddCrc16(*pInput, &crc);
 	pOutput++;
 	pInput++;	
+#endif
 
 	while(pInput < pInputEnd)
 	{
@@ -89,6 +92,11 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 	unsigned short preCrc = 0;
 	unsigned short prepreCrc = 0;
 
+#if 1
+	size_t bytesWritten = 0;
+#else
+	//This Implementation seems buggy crc calculation includes command byte!!!
+	//TODO remove this code when verified with real hardware
 	/* skip first character since its the command type byte */
 	size_t bytesWritten = 1;
 	*pOutput = *pInput;
@@ -97,6 +105,7 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 	Crc_AddCrc16(*pInput, &crc);
 	pOutput++;
 	pInput++;
+#endif
 
 	/* unmask input buffer and calculate crc */
 	while(pInput < pInputEnd)
@@ -150,15 +159,15 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 	return bytesWritten - 2;
 }
 
-int BlProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize) const
+int BlProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize, bool doSync) const
 {
 	Trace_String("BlProxy::Send: ");
 	Trace_Number(req.GetSize(), ' ');
 	Trace_String("pure bytes\n");
-	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc());
+	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
 }
 
-int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize, bool checkCrc) const
+int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize, bool checkCrc, bool doSync) const
 {
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	unsigned char recvBuffer[BL_MAX_MESSAGE_LENGTH];
@@ -184,12 +193,22 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 	bufferSize++;
 
 	int numRetries = BL_MAX_RETRIES;
-	do
+
+	/* sync with bootloader */
+	if(doSync)
 	{
-		/* sync with bootloader */
-		Trace_String("BlProxy::Send: SYNC...\n");
-		mSock->Send(BL_SYNC, sizeof(BL_SYNC));
-		if(0 != mSock->Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS))
+		do
+		{
+			if(0 > --numRetries)
+			{
+				Trace_String("BlProxy::Send: Too many retries\n");
+				return -1;
+			}
+			Trace_String("BlProxy::Send: SYNC...\n");
+			mSock->Send(BL_SYNC, sizeof(BL_SYNC));
+		} while(0 == mSock->Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS));
+	}
+
 		{
 			/* synchronized -> send request */
 			if(static_cast<int>(bufferSize) != mSock->Send(buffer, bufferSize))
@@ -231,10 +250,7 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 				return UnmaskControlCharacters(pNext, bytesReceived, pResponse, responseSize, checkCrc);
 			}
 			Trace_String("BlProxy::Send: response to short\n");
+			return 0;
  		}
-	}while(0 < --numRetries);
-
-	Trace_String("BlProxy::Send: Too many retries\n");
-	return -1;
 }
 

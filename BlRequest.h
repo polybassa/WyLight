@@ -106,8 +106,8 @@ class BlProxy
 		 * @param outputLength size of the output buffer
 		 */
 		size_t MaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength) const;
-		int Send(BlRequest& req, unsigned char* pResponse, size_t responseSize) const;
-		int Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize, bool checkCrc) const;
+		int Send(BlRequest& req, unsigned char* pResponse, size_t responseSize, bool doSync = true) const;
+		int Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize, bool checkCrc, bool sync) const;
 		size_t UnmaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength, bool checkCrc) const;
 };
 

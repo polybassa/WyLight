@@ -67,11 +67,11 @@ void WiflyControl::AddColor(string& addr, string& rgba, unsigned char hour, unsi
 	AddColor(ToRGBA(addr), ToRGBA(rgba) << 8, hour, minute, second);
 }
 
-size_t WiflyControl::BlFlashErase(unsigned char* pBuffer, unsigned int endAddress, const size_t numPages) const
+size_t WiflyControl::BlFlashErase(unsigned char* pBuffer, unsigned int endAddress, const size_t numPages, bool doSync) const
 {
 	BlFlashEraseRequest request(endAddress, numPages);
 	// we expect only one byte as response, the command code 0x03
-	return BlRead(request, pBuffer, 1);
+	return BlRead(request, pBuffer, 1, doSync);
 }
 
 bool WiflyControl::BlFlashErase(void) const
@@ -83,13 +83,15 @@ bool WiflyControl::BlFlashErase(void) const
 		<< "(): Erase flash failed, couldn't determine bootloader location" << endl;
 		return FALSE;
 	}
-	unsigned int address = info.GetAddress() - 1;
+	const unsigned int firstAddress = info.GetAddress() - 1;
+	unsigned int address = firstAddress;
 	
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	size_t bytesRead;
 	while(address > FLASH_ERASE_BLOCKSIZE)
 	{
-		 bytesRead = BlFlashErase(buffer, address, FLASH_ERASE_BLOCKSIZE);
+		// force SYNC only for erase command
+		 bytesRead = BlFlashErase(buffer, address, FLASH_ERASE_BLOCKSIZE, (firstAddress == address));
 		 if((bytesRead != 1) || (0x03 != buffer[0])) 
 		 {
 			cout << __FILE__ << "::" << __FUNCTION__
@@ -98,7 +100,7 @@ bool WiflyControl::BlFlashErase(void) const
 		 }
 		 address -= FLASH_ERASE_BLOCKSIZE;
 	}
-	bytesRead = BlFlashErase(buffer, 0, address);
+	bytesRead = BlFlashErase(buffer, 0, address, false);
 	if((bytesRead != 1) || (0x03 != buffer[0])) 
 	{		    
 		  cout << __FILE__ << "::" << __FUNCTION__
@@ -108,11 +110,11 @@ bool WiflyControl::BlFlashErase(void) const
 	return TRUE;
 }
 
-size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize) const
+size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync) const
 {
 	BlProxy proxy(mSock);
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
-	size_t bytesReceived = proxy.Send(req, buffer, sizeof(buffer));
+	size_t bytesReceived = proxy.Send(req, buffer, sizeof(buffer), doSync);
 
 	cout << __FILE__ << "::" << __FUNCTION__ << "(): " << bytesReceived << ":" << sizeof(BlInfo) << endl;
 	if(responseSize == bytesReceived)
