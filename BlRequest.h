@@ -28,9 +28,10 @@
 #define FLASH_ERASE_BLOCKSIZE 64
 #define FLASH_READ_BLOCKSIZE 64
 #define FLASH_WRITE_BLOCKSIZE 64
-#define FLASH_SIZE 32768 * 2
+#define FLASH_SIZE 0x10000
+#define FLASH_CRC_BLOCKSIZE 252
 #define EEPROM_READ_BLOCKSIZE 16
-#define EEPROM_WRITE_BLOCKSIZE 1
+#define EEPROM_WRITE_BLOCKSIZE 1    //only for test... we should increase it later
 #define EEPROM_SIZE 1024
 #define BL_STX 0x0f
 #define BL_ETX 0x04
@@ -220,11 +221,11 @@ struct BlFlashCrc16Request : public BlAddressRequest
 		: BlAddressRequest(2, 0x02)
 		{
 			SetAddress(address);
-			numBlocks = static_cast<unsigned char>(address & 0x00FF);
-			numBlocks = static_cast<unsigned char>((address & 0xFF00) >> 8);
+			numBlocksLow = static_cast<unsigned char>(numBlocks & 0x00FF);
+			numBlocksHigh = static_cast<unsigned char>((numBlocks & 0xFF00) >> 8);
 		};
 
-		unsigned char numBlockLow;
+		unsigned char numBlocksLow;
 		unsigned char numBlocksHigh;
 
 		// this is a special command where no crc is generated for the response

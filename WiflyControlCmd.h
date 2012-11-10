@@ -44,6 +44,21 @@ class WiflyControlCmd
 			}
 			cout << endl;
 		}
+		void PrintCrc(const unsigned char* const pBuffer, const size_t size, const unsigned int address) const {
+			for(size_t i = 0; i < size; i++) {
+				if(0 == (i % 2)) {
+					cout << endl 
+					<< "0x" << setw(4) << setfill('0') << hex 
+					<< int(address+i * FLASH_ERASE_BLOCKSIZE) 
+					<< " - " 
+					<< "0x" << setw(4) << setfill('0') << hex 
+					<< int(address+ ((i+2) * FLASH_ERASE_BLOCKSIZE) -1) 
+					<< ": ";
+				}
+				cout << setw(2) << setfill('0') << hex << int(pBuffer[i]) << ' ';
+			}
+			cout << endl;
+		}
 };
 
 class ControlCmdAddColor : public WiflyControlCmd
@@ -98,7 +113,7 @@ class ControlCmdBlCrcFlash : public WiflyControlCmd
 			size_t numBlocks;
 			cin >> address;
 			cin >> numBlocks;
-			unsigned char buffer[0xffff / FLASH_READ_BLOCKSIZE * 2];
+			unsigned char buffer[(FLASH_SIZE / FLASH_ERASE_BLOCKSIZE) * 2];
 			if(sizeof(buffer) / 2 < numBlocks)
 			{
 				cout << "Read CRC failed. Too many CRCs requested" << endl;
@@ -111,7 +126,7 @@ class ControlCmdBlCrcFlash : public WiflyControlCmd
 				cout << "Read CRC failed" << endl;
 				return;
 			}
-			Print(buffer, bytesRead, 0);
+			PrintCrc(buffer, bytesRead, address);
 		};
 };
 
