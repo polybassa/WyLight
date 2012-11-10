@@ -30,6 +30,7 @@
 #define FLASH_WRITE_BLOCKSIZE 64
 #define FLASH_SIZE 32768 * 2
 #define EEPROM_READ_BLOCKSIZE 16
+#define EEPROM_WRITE_BLOCKSIZE 1
 #define EEPROM_SIZE 1024
 #define BL_STX 0x0f
 #define BL_ETX 0x04
@@ -82,24 +83,61 @@ struct BlReadRequest : public BlAddressRequest
 		unsigned char numBytesHigh;
 };
 
-/*struct BlWriteRequest : public BlRequest
+struct BlFlashWriteRequest : public BlAddressRequest
 {
-		BlWriteRequest(unsigned char cmd, unsigned int address, unsigned char *pData) : BlRequest(FLASH_WRITE_BLOCKSIZE + 5, cmd), zero(0x00), numBlocks(0x01)
-		{
-			addressLow = static_cast<unsigned char>(address & 0x000000FF);
-			addressHigh = static_cast<unsigned char>((address & 0x0000FF00) >> 8);
-			addressU = static_cast<unsigned char>((address & 0x00FF0000) >> 16);
-			for(int i = 0; i < FLASH_WRITE_BLOCKSIZE; i++, pData++)
-			   data[i] = *pData;
+		BlFlashWriteRequest(unsigned char *pDataIn, unsigned int address, unsigned short numBytes) : BlAddressRequest(numBytes + 1, 0x04) 
+		{ 
+			data = NULL;
+			SetAddress(address);
+			numBlocks = 0x01;
+			
+			if(numBytes > FLASH_WRITE_BLOCKSIZE) numBytes = FLASH_WRITE_BLOCKSIZE;
+			
+			unsigned char *data = new unsigned char[numBytes];
+			for (unsigned short i = 0; i < numBytes; i++, pDataIn++)
+			{
+				data[i] = *pDataIn;
+			}
+		  
 		};
-
-		unsigned char addressLow;
-		unsigned char addressHigh;
-		unsigned char addressU;
-		const unsigned char zero;
+		~BlFlashWriteRequest()
+		{
+			delete[] data;
+			data = NULL;
+		};
+		
 		unsigned char numBlocks;
-		unsigned char data[FLASH_WRITE_BLOCKSIZE];
-};*/
+		unsigned char *data;
+};
+struct BlEepromWriteRequest : public BlAddressRequest
+{
+		BlEepromWriteRequest(unsigned char *pDataIn, unsigned int address, unsigned short numBytes) : BlAddressRequest(numBytes + 2, 0x06) 
+		{ 
+			data = NULL;
+			SetAddress(address);
+			
+			if(numBytes > EEPROM_WRITE_BLOCKSIZE) numBytes = EEPROM_WRITE_BLOCKSIZE;
+			
+			numBytesLow = static_cast<unsigned char>(numBytes & 0x00FF);
+			numBytesHigh = static_cast<unsigned char>((numBytes & 0xFF00) >> 8);
+			
+			unsigned char *data = new unsigned char[numBytes];
+			for (unsigned short i = 0; i < numBytes; i++, pDataIn++)
+			{
+				data[i] = *pDataIn;
+			}
+		  
+		};
+		~BlEepromWriteRequest()
+		{
+			delete[] data;
+			data = NULL;
+		};
+		
+		unsigned char numBytesLow;
+		unsigned char numBytesHigh;
+		unsigned char *data;
+};
 
 class BlProxy
 {
