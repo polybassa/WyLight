@@ -57,6 +57,13 @@ void RingBuf_ClearError(struct RingBuffer *pBuf)
 	pBuf->error_full = FALSE;
 }
 
+bit RingBuf_IsEmpty(struct RingBuffer *pBuf)
+{
+	uns8 write = pBuf->write;
+	uns8 read = pBuf->read;
+	return write == read;
+}
+
 bit RingBuf_IsNotEmpty(struct RingBuffer *pBuf)
 {
 	uns8 write = pBuf->write;

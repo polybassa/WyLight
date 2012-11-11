@@ -32,8 +32,8 @@
 
 //*********************** STRUCT DECLARATION *********************************************
 struct CommandBuffer{
-    uns8 cmd_counter;
-    uns8 frame_counter;
+    uns8 cmd_counter;	// number of bytes in cmd_buf
+    uns8 frame_counter;	// number of bytes to read in the current frame
     uns8 cmd_buf[CMDFRAMELENGTH];
     uns8 CrcH;
     uns8 CrcL;

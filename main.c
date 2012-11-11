@@ -17,7 +17,7 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #ifndef X86
-#define NO_CRC
+//#define NO_CRC
 #define TEST
 #pragma optimize 1
 #endif

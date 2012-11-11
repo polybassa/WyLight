@@ -62,6 +62,7 @@ struct cmd_set_color {
 	uns8 red;
 	uns8 green;
 	uns8 blue;
+	uns8 reserved[3];
 };
 
 #ifdef X86

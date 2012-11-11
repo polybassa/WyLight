@@ -97,7 +97,7 @@ void Java_biz_bruenn_WiflyLight_WiflyLightActivity_runClient(JNIEnv* env, jobjec
 int main(int argc, const char* argv[])
 {
 	short port = 2000;
-#if 0
+#if 1
 	const char* pAddr = "127.0.0.1";
 	bool useTcp = false;
 #else

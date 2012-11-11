@@ -17,6 +17,8 @@
     along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "WiflyControl.h"
+#include "crc.h"
+
 #include <iostream>
 #include <sstream>
 #include <cassert>
@@ -285,18 +287,25 @@ void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
 	mCmdFrame.led.data.set_color.red = (rgba & 0xff000000) >> 24;
 	mCmdFrame.led.data.set_color.green = (rgba & 0x00ff0000) >> 16;
 	mCmdFrame.led.data.set_color.blue = (rgba & 0x0000ff00) >> 8;
+	memset(mCmdFrame.led.data.set_color.reserved, 0x00, sizeof(mCmdFrame.led.data.set_color.reserved));
+	mCmdFrame.length = sizeof(struct cmd_set_color) + 3;
+	Crc_BuildCrc(reinterpret_cast<unsigned char*>(&mCmdFrame), mCmdFrame.length, &mCmdFrame.crcHigh, &mCmdFrame.crcLow);
 	int bytesWritten = mSock->Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
 #ifdef DEBUG
-	cout << "Send " << bytesWritten << " bytes "
-		<< addr << " | "
-		<< (int)mCmdFrame.led.data.set_color.addr[0] << " "
-		<< (int)mCmdFrame.led.data.set_color.addr[1] << " "
-		<< (int)mCmdFrame.led.data.set_color.addr[2] << " "
-		<< (int)mCmdFrame.led.data.set_color.addr[3] << " : "
-		<< (int)mCmdFrame.led.data.set_color.red << " "
-		<< (int)mCmdFrame.led.data.set_color.green << " "
-		<< (int)mCmdFrame.led.data.set_color.blue
-		<< endl;
+	cout << "Send " << bytesWritten << " bytes: " << endl;
+	for(int i = 0; i < bytesWritten; i++)
+	{
+		cout << hex << (int)(reinterpret_cast<unsigned char*>(&mCmdFrame)[i]) << " ";
+	}
+	cout << endl;
+	unsigned char buffer[100];
+	bytesWritten = mSock->Recv(buffer, sizeof(buffer), 2000);
+	cout << "Received " << bytesWritten << " bytes: " << endl;
+	for(int i = 0; i < bytesWritten; i++)
+	{
+		cout << (buffer[i]) << " ";
+	}
+	cout << endl;
 #else
 	assert(sizeof(mCmdFrame) == bytesWritten);
 #endif

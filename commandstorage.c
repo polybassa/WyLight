@@ -34,15 +34,13 @@ void Commandstorage_GetCommands()
 		Commandstorage_Clear();
 	}
 
-	if(RingBuf_IsNotEmpty(&g_RingBuf))
+	if(RingBuf_IsEmpty(&g_RingBuf))
 	{
-		// *** preload variables and 
-		// *** get new_byte from ringbuffer
-		uns8 new_byte;
-		// *** get new byte
-		new_byte = RingBuf_Get(&g_RingBuf);
-		/* Trace_String("BYTE:"); */
-		/* Trace_Number(new_byte,'b'); */
+		return;
+	}
+
+	// *** get new_byte from ringbuffer
+	uns8 new_byte = RingBuf_Get(&g_RingBuf);
 
 		// *** do I wait for databytes?
 		if(g_CmdBuf.frame_counter == 0)
@@ -51,25 +49,25 @@ void Commandstorage_GetCommands()
 			// *** Do I receive a Start_of_Text sign
 			if(new_byte == STX)
 			{
-				// *** increse the cmd_counter
+				Trace_String("STX\n");
+				// *** increase the cmd_counter
 				g_CmdBuf.cmd_counter = 1;
 				// *** Write the startsign at the begin of the buffer
 				g_CmdBuf.cmd_buf[0] = new_byte;
-                // *** Reset crc Variables
-                Crc_NewCrc(&g_CmdBuf.CrcH, &g_CmdBuf.CrcL);
-                // *** add new_byte to Crc_BuildCrc checksum
-                Crc_AddCrc(new_byte, &g_CmdBuf.CrcH, &g_CmdBuf.CrcL);
+				// *** Reset crc Variables
+				Crc_NewCrc(&g_CmdBuf.CrcH, &g_CmdBuf.CrcL);
+				// *** add new_byte to Crc_BuildCrc checksum
+				Crc_AddCrc(new_byte, &g_CmdBuf.CrcH, &g_CmdBuf.CrcL);
 			}
 			else
-			{	
+			{
 				// *** check if I get the framelength byte
 				if((new_byte < (CMDFRAMELENGTH - 2)) && (g_CmdBuf.cmd_counter == 1))
 				{
 					g_CmdBuf.frame_counter = new_byte;
 					g_CmdBuf.cmd_buf[1] = new_byte;
 					g_CmdBuf.cmd_counter = 2;
-                    // *** add new_byte to Crc_BuildCrc checksum
-                    Crc_AddCrc(new_byte, &g_CmdBuf.CrcH, &g_CmdBuf.CrcL);
+					Crc_AddCrc(new_byte, &g_CmdBuf.CrcH, &g_CmdBuf.CrcL);
 				}
 			}
 		}
@@ -80,41 +78,56 @@ void Commandstorage_GetCommands()
 			g_CmdBuf.cmd_buf[g_CmdBuf.cmd_counter] = new_byte;
 			g_CmdBuf.cmd_counter++;
 			
-            // *** add new_byte to Crc_BuildCrc checksum
-			if(g_CmdBuf.frame_counter > 2)
-            Crc_AddCrc(new_byte, &g_CmdBuf.CrcH, &g_CmdBuf.CrcL);
+			// *** add new_byte to Crc_BuildCrc checksum
+      Crc_AddCrc(new_byte, &g_CmdBuf.CrcH, &g_CmdBuf.CrcL);
 			g_CmdBuf.frame_counter--;
-			// *** now I have to check if my framecounter is null.
-			// *** If it's null my string is complete 
-			// *** and I can give the string to the Crc_BuildCrc check function.
+
+			/**
+			 * if the frame_counter reaches zero, we already read all bytes of the
+			 * frame including the crc at the end. So our calculated crc should be
+			 * zero, now.
+			 */
 			if(g_CmdBuf.frame_counter == 0)
 			{
+				Trace_String("Read ");
+				Trace_Number(g_CmdBuf.cmd_counter);
+				Trace_String(" bytes: \n");
+				uns8 i;
+				for(i = 0; i <= g_CmdBuf.cmd_counter; i++)
+				{
+					Trace_Hex(g_CmdBuf.cmd_buf[i]);
+				}
+				Trace_String("\n");
 #ifndef NO_CRC
-                // *** verify Crc_BuildCrc checksum
-                if( (g_CmdBuf.CrcL == g_CmdBuf.cmd_buf[g_CmdBuf.cmd_counter - 1]) &&
-                    (g_CmdBuf.CrcH == g_CmdBuf.cmd_buf[g_CmdBuf.cmd_counter - 2]) )
+				// *** verify Crc_BuildCrc checksum
+				if((0 == g_CmdBuf.CrcL) && (0 == g_CmdBuf.CrcH))
 #endif
-                {
-			if(ScriptCtrl_Add(&g_CmdBuf.cmd_buf[2]))
-			{
-			      UART_SendString("GC");
-			}
-			else
-			{
-			      g_ErrorBits.EepromFailure = 1;
-			}
-                }
+					{
+						if(ScriptCtrl_Add(&g_CmdBuf.cmd_buf[2]))
+						{
+									UART_SendString("GC");
+						}
+						else
+						{
+									g_ErrorBits.EepromFailure = 1;
+						}
+					}
 #ifndef NO_CRC
 			else
 			{
-                    // *** Do some error handling in case of an Crc_BuildCrc failure here
-					g_ErrorBits.CrcFailure = 1;
-                    return;
-                }
+				// *** Do some error handling in case of an Crc_BuildCrc failure here
+				g_ErrorBits.CrcFailure = 1;
+				Trace_Hex(g_CmdBuf.CrcL);
+				Trace_Hex(g_CmdBuf.CrcH);
+				Trace_Hex(g_CmdBuf.cmd_buf[g_CmdBuf.cmd_counter - 1]);
+				Trace_Hex(g_CmdBuf.cmd_buf[g_CmdBuf.cmd_counter]);
+				Trace_String("\n");
+				return;
+			}
 #endif
 			}
 		  
 		}
-	}
+	
 }
 

@@ -54,6 +54,7 @@ void RingBufClearError(struct RingBuffer *pBuf);
 
 bit RingBuf_HasError(struct RingBuffer *pBuf);
 
+bit RingBuf_IsEmpty(struct RingBuffer *pBuf);
 bit RingBuf_IsNotEmpty(struct RingBuffer *pBuf);
 
 
