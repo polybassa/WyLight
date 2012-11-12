@@ -86,37 +86,6 @@ struct BlReadRequest : public BlAddressRequest
 		unsigned char numBytesHigh;
 };
 
-struct BlEepromWriteRequest : public BlAddressRequest
-{
-		BlEepromWriteRequest(unsigned char *pDataIn, unsigned int address, unsigned short numBytes) : BlAddressRequest(numBytes + 2, 0x06) 
-		{ 
-			data = NULL;
-			SetAddress(address);
-			
-			/* Not really neccessary at this point, because WiflyControl handles the BlockSize */
-			if(numBytes > EEPROM_WRITE_BLOCKSIZE) numBytes = EEPROM_WRITE_BLOCKSIZE;
-			
-			numBytesLow = static_cast<unsigned char>(numBytes & 0x00FF);
-			numBytesHigh = static_cast<unsigned char>((numBytes & 0xFF00) >> 8);
-			
-			unsigned char *data = new unsigned char[numBytes];
-			for (unsigned short i = 0; i < numBytes; i++, pDataIn++)
-			{
-				data[i] = *pDataIn;
-			}
-		  
-		};
-		~BlEepromWriteRequest()
-		{
-			delete[] data;
-			data = NULL;
-		};
-		
-		unsigned char numBytesLow;
-		unsigned char numBytesHigh;
-		unsigned char *data;
-};
-
 class BlProxy
 {
 	private:
@@ -188,6 +157,24 @@ struct BlInfo
 struct BlEepromReadRequest : public BlReadRequest
 {
 		BlEepromReadRequest() : BlReadRequest(0, 0x05) {};
+};
+
+struct BlEepromWriteRequest : public BlAddressRequest
+{
+		BlEepromWriteRequest() : BlAddressRequest(sizeof(payload) + 2, 0x06) {};
+
+		void SetData(unsigned int address, unsigned char* pData, size_t numBytes)
+		{
+			assert(numBytes <= sizeof(payload));
+			SetAddress(address);
+			memcpy(payload, pData, numBytes);
+			numBytesLow = static_cast<unsigned char>(numBytes & 0x00FF);
+			numBytesHigh = static_cast<unsigned char>((numBytes & 0xFF00) >> 8);
+		};
+		
+		unsigned char numBytesLow;
+		unsigned char numBytesHigh;
+		unsigned char payload[EEPROM_WRITE_BLOCKSIZE];
 };
 
 struct BlFlashCrc16Request : public BlAddressRequest

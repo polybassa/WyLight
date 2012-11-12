@@ -266,6 +266,31 @@ bool WiflyControl::BlWriteFlash(unsigned int address, unsigned char* pBuffer, si
 	return (1 == BlRead(request, &response, sizeof(response)));
 }
 
+bool WiflyControl::BlWriteEeprom(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const
+{
+	BlEepromWriteRequest request;
+	unsigned char response;
+	
+	size_t bytesLeft = bufferLength;
+	while(bytesLeft > EEPROM_WRITE_BLOCKSIZE)
+	{
+		request.SetData(address, pBuffer, EEPROM_WRITE_BLOCKSIZE);
+
+		// we expect only the 0x06 command byte as response
+		if(1 != BlRead(request, &response, sizeof(response)))
+		{
+			return false;
+		}
+		
+		address += EEPROM_WRITE_BLOCKSIZE;
+		pBuffer += EEPROM_WRITE_BLOCKSIZE;
+		bytesLeft -= EEPROM_WRITE_BLOCKSIZE;
+	}
+
+	request.SetData(address, pBuffer, bytesLeft);
+	return (1 == BlRead(request, &response, sizeof(response)));
+}
+
 void WiflyControl::StartBl(void)
 {
 	mCmdFrame.led.cmd = START_BL;
