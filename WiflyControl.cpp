@@ -26,14 +26,18 @@
 
 using namespace std;
 
+/**
+ * Macro to reduce code redundancy, while converting two 32 bit values into
+ * an address array and red, green, blue values. 
+ */
 #define SetAddrRgb(REF, ADDRESS, RGBA) { \
-	ref.addr[0] = (ADDRESS & 0xff000000) >> 24; \
-	ref.addr[1] = (ADDRESS & 0x00ff0000) >> 16; \
-	ref.addr[2] = (ADDRESS & 0x0000ff00) >> 8; \
-	ref.addr[3] = (ADDRESS & 0x000000ff); \
-	ref.red = (RGBA & 0xff000000) >> 24; \
-	ref.green = (RGBA & 0x00ff0000) >> 16; \
-	ref.blue = (RGBA & 0x0000ff00) >> 8; \
+	REF.addr[0] = (ADDRESS & 0xff000000) >> 24; \
+	REF.addr[1] = (ADDRESS & 0x00ff0000) >> 16; \
+	REF.addr[2] = (ADDRESS & 0x0000ff00) >> 8; \
+	REF.addr[3] = (ADDRESS & 0x000000ff); \
+	REF.red = (RGBA & 0xff000000) >> 24; \
+	REF.green = (RGBA & 0x00ff0000) >> 16; \
+	REF.blue = (RGBA & 0x0000ff00) >> 8; \
 }
 
 WiflyControl::WiflyControl(const char* pAddr, short port, bool useTcp)
@@ -56,13 +60,7 @@ void WiflyControl::AddColor(unsigned long addr, unsigned long rgba, unsigned cha
 {
 	mCmdFrame.length = sizeof(struct cmd_add_color) + 3;
 	mCmdFrame.led.cmd = ADD_COLOR;
-	mCmdFrame.led.data.add_color.addr[0] = (addr & 0xff000000) >> 24;
-	mCmdFrame.led.data.add_color.addr[1] = (addr & 0x00ff0000) >> 16;
-	mCmdFrame.led.data.add_color.addr[2] = (addr & 0x0000ff00) >> 8;
-	mCmdFrame.led.data.add_color.addr[3] = (addr & 0x000000ff);
-	mCmdFrame.led.data.add_color.red = (rgba & 0xff000000) >> 24;
-	mCmdFrame.led.data.add_color.green = (rgba & 0x00ff0000) >> 16;
-	mCmdFrame.led.data.add_color.blue = (rgba & 0x0000ff00) >> 8;
+	SetAddrRgb(mCmdFrame.led.data.add_color, addr, rgba);
 	mCmdFrame.led.data.add_color.hour = hour;
 	mCmdFrame.led.data.add_color.minute = minute;
 	mCmdFrame.led.data.add_color.second = second;
@@ -321,13 +319,7 @@ void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
 {
 	mCmdFrame.length = sizeof(struct cmd_set_color) + 3;
 	mCmdFrame.led.cmd = SET_COLOR;
-	mCmdFrame.led.data.set_color.addr[0] = (addr & 0xff000000) >> 24;
-	mCmdFrame.led.data.set_color.addr[1] = (addr & 0x00ff0000) >> 16;
-	mCmdFrame.led.data.set_color.addr[2] = (addr & 0x0000ff00) >> 8;
-	mCmdFrame.led.data.set_color.addr[3] = (addr & 0x000000ff);
-	mCmdFrame.led.data.set_color.red = (rgba & 0xff000000) >> 24;
-	mCmdFrame.led.data.set_color.green = (rgba & 0x00ff0000) >> 16;
-	mCmdFrame.led.data.set_color.blue = (rgba & 0x0000ff00) >> 8;
+	SetAddrRgb(mCmdFrame.led.data.set_color, addr, rgba);
 	FwSend(&mCmdFrame);
 }
 
@@ -340,13 +332,7 @@ void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned shor
 {
 	mCmdFrame.length = sizeof(cmd_set_fade) + 3;
 	mCmdFrame.led.cmd = SET_FADE;
-	mCmdFrame.led.data.set_fade.addr[0] = (addr & 0xff000000) >> 24;
-	mCmdFrame.led.data.set_fade.addr[1] = (addr & 0x00ff0000) >> 16;
-	mCmdFrame.led.data.set_fade.addr[2] = (addr & 0x0000ff00) >> 8;
-	mCmdFrame.led.data.set_fade.addr[3] = (addr & 0x000000ff);
-	mCmdFrame.led.data.set_fade.red = (rgba & 0xff000000) >> 24;
-	mCmdFrame.led.data.set_fade.green = (rgba & 0x00ff0000) >> 16;
-	mCmdFrame.led.data.set_fade.blue = (rgba & 0x0000ff00) >> 8;
+	SetAddrRgb(mCmdFrame.led.data.set_fade, addr, rgba);
 	mCmdFrame.led.data.set_fade.fadeTmms = htons(fadeTmms);
 	FwSend(&mCmdFrame);
 }
