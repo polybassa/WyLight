@@ -31,7 +31,7 @@
 #define SET_RUN 0xFB
 #define SET_ON 0xFA
 #define SET_OFF 0xF9
-#define DELETE 0xF8
+#define CLEAR_SCRIPT 0xF8
 #define LOOP_ON 0xF7
 #define LOOP_OFF 0xF6
 #define START_BL 0xF5
@@ -57,10 +57,6 @@ struct cmd_add_color {
 //TODO uns8 hour;
 	uns8 minute;
 	uns8 second;
-};
-
-struct cmd_clear_script {
-	uns8 reserved[10];
 };
 
 struct cmd_set_color {
@@ -107,7 +103,6 @@ struct led_cmd {
 	uns8 cmd;
 	union {
 		struct cmd_add_color add_color;
-		struct cmd_clear_script clear_script;
 		struct cmd_set_color set_color;
 		struct cmd_set_fade set_fade;
 		struct cmd_set_run set_run;

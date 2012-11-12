@@ -78,7 +78,7 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 
 	switch(pCmd->cmd)
 	{
-		case DELETE:
+		case CLEAR_SCRIPT:
 			Trace_String("Clearing script buffer\n");
 			gScriptBuf.isClearing = TRUE;
 			return TRUE;

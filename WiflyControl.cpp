@@ -270,29 +270,9 @@ bool WiflyControl::BlWriteFlash(unsigned int address, unsigned char* pBuffer, si
 
 void WiflyControl::ClearScript(void)
 {
-	mCmdFrame.led.cmd = DELETE;
-	mCmdFrame.length = sizeof(struct cmd_clear_script) + 3;
-	memset(mCmdFrame.led.data.clear_script.reserved, 0x00, sizeof(mCmdFrame.led.data.clear_script));
-	Crc_BuildCrc(reinterpret_cast<unsigned char*>(&mCmdFrame), mCmdFrame.length, &mCmdFrame.crcHigh, &mCmdFrame.crcLow);
-	int bytesWritten = mSock->Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
-#ifdef DEBUG
-	cout << "Send " << bytesWritten << " bytes: " << endl;
-	for(int i = 0; i < bytesWritten; i++)
-	{
-		cout << hex << (int)(reinterpret_cast<unsigned char*>(&mCmdFrame)[i]) << " ";
-	}
-	cout << endl;
-	unsigned char buffer[100];
-	bytesWritten = mSock->Recv(buffer, sizeof(buffer), 2000);
-	cout << "Received " << bytesWritten << " bytes: " << endl;
-	for(int i = 0; i < bytesWritten; i++)
-	{
-		cout << (buffer[i]) << " ";
-	}
-	cout << endl;
-#else
-	assert(sizeof(mCmdFrame) == bytesWritten);
-#endif
+	mCmdFrame.length = 3;
+	mCmdFrame.led.cmd = CLEAR_SCRIPT;
+	FwSend(&mCmdFrame);
 }
 
 bool WiflyControl::FwSend(const struct cmd_frame* pFrame) const
@@ -334,9 +314,8 @@ void WiflyControl::StartBl(void)
 
 void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
 {
+	mCmdFrame.length = sizeof(struct cmd_set_color) + 3;
 	mCmdFrame.led.cmd = SET_COLOR;
-	// next line would be better, but mCmdFrame...addr is unaligned!
-	//*(unsigned long*)mCmdFrame.led.data.set_color.addr = htonl(addr);
 	mCmdFrame.led.data.set_color.addr[0] = (addr & 0xff000000) >> 24;
 	mCmdFrame.led.data.set_color.addr[1] = (addr & 0x00ff0000) >> 16;
 	mCmdFrame.led.data.set_color.addr[2] = (addr & 0x0000ff00) >> 8;
@@ -344,12 +323,7 @@ void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
 	mCmdFrame.led.data.set_color.red = (rgba & 0xff000000) >> 24;
 	mCmdFrame.led.data.set_color.green = (rgba & 0x00ff0000) >> 16;
 	mCmdFrame.led.data.set_color.blue = (rgba & 0x0000ff00) >> 8;
-	mCmdFrame.length = sizeof(struct cmd_set_color) + 3;
-
-	if(!FwSend(&mCmdFrame))
-	{
-		cout << "Send " << __FUNCTION__ << " failed" << endl;
-	}
+	FwSend(&mCmdFrame);
 }
 
 void WiflyControl::SetColor(string& addr, string& rgba)
@@ -359,9 +333,8 @@ void WiflyControl::SetColor(string& addr, string& rgba)
 
 void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms)
 {
+	mCmdFrame.length = sizeof(cmd_set_fade) + 3;
 	mCmdFrame.led.cmd = SET_FADE;
-	// next line would be better, but mCmdFrame...addr is unaligned!
-	//*(unsigned long*)mCmdFrame.led.data.set_color.addr = htonl(addr);
 	mCmdFrame.led.data.set_fade.addr[0] = (addr & 0xff000000) >> 24;
 	mCmdFrame.led.data.set_fade.addr[1] = (addr & 0x00ff0000) >> 16;
 	mCmdFrame.led.data.set_fade.addr[2] = (addr & 0x0000ff00) >> 8;
@@ -370,31 +343,7 @@ void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned shor
 	mCmdFrame.led.data.set_fade.green = (rgba & 0x00ff0000) >> 16;
 	mCmdFrame.led.data.set_fade.blue = (rgba & 0x0000ff00) >> 8;
 	mCmdFrame.led.data.set_fade.fadeTmms = htons(fadeTmms);
-	int bytesWritten = mSock->Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
-#ifdef DEBUG
-	cout << "Send " << bytesWritten << " bytes "
-		<< addr << " | "
-		<< (int)mCmdFrame.led.data.set_fade.addr[0] << " "
-		<< (int)mCmdFrame.led.data.set_fade.addr[1] << " "
-		<< (int)mCmdFrame.led.data.set_fade.addr[2] << " "
-		<< (int)mCmdFrame.led.data.set_fade.addr[3] << " : "
-		<< (int)mCmdFrame.led.data.set_fade.red << " "
-		<< (int)mCmdFrame.led.data.set_fade.green << " "
-		<< (int)mCmdFrame.led.data.set_fade.blue << " : "
-		<< (int)mCmdFrame.led.data.set_fade.fadeTmms << endl;
-
-		unsigned int tempTmms = 0;
-		do
-		{
-			tempTmms += 1000;
-			cout << (int)tempTmms/1000;
-			cout.flush();
-			sleep(1); 
-		}while(tempTmms < fadeTmms);
-		cout << endl;
-#else
-	assert(sizeof(mCmdFrame) == bytesWritten);
-#endif
+	FwSend(&mCmdFrame);
 }
 
 void WiflyControl::SetFade(string& addr, string& rgba, unsigned short fadeTmms)
