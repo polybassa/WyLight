@@ -295,6 +295,36 @@ void WiflyControl::ClearScript(void)
 #endif
 }
 
+bool WiflyControl::FwSend(const struct cmd_frame* pFrame) const
+{
+	unsigned char buffer[FW_MAX_MESSAGE_LENGTH];
+	unsigned char* pCrcHigh = buffer + pFrame->length;
+	unsigned char* pCrcLow = pCrcHigh + 1;
+	const size_t numBytes = pFrame->length + 2;
+	memcpy(buffer, pFrame, pFrame->length);
+	Crc_BuildCrc(reinterpret_cast<const unsigned char*>(pFrame), pFrame->length, pCrcHigh, pCrcLow);
+	int bytesWritten = mSock->Send(buffer, numBytes);
+
+#ifdef DEBUG
+	cout << "Send " << bytesWritten << " bytes: " << endl;
+	for(int i = 0; i < bytesWritten; i++)
+	{
+		cout << hex << (int)(buffer[i]) << " ";
+	}
+	cout << endl;
+#if 0
+	bytesWritten = mSock->Recv(buffer, sizeof(buffer), 2000);
+	cout << "Received " << bytesWritten << " bytes: " << endl;
+	for(int i = 0; i < bytesWritten; i++)
+	{
+		cout << (buffer[i]) << " ";
+	}
+	cout << endl;
+#endif
+#endif
+	return (numBytes == bytesWritten);
+}
+
 void WiflyControl::StartBl(void)
 {
 	mCmdFrame.led.cmd = START_BL;
@@ -314,28 +344,12 @@ void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
 	mCmdFrame.led.data.set_color.red = (rgba & 0xff000000) >> 24;
 	mCmdFrame.led.data.set_color.green = (rgba & 0x00ff0000) >> 16;
 	mCmdFrame.led.data.set_color.blue = (rgba & 0x0000ff00) >> 8;
-	memset(mCmdFrame.led.data.set_color.reserved, 0x00, sizeof(mCmdFrame.led.data.set_color.reserved));
 	mCmdFrame.length = sizeof(struct cmd_set_color) + 3;
-	Crc_BuildCrc(reinterpret_cast<unsigned char*>(&mCmdFrame), mCmdFrame.length, &mCmdFrame.crcHigh, &mCmdFrame.crcLow);
-	int bytesWritten = mSock->Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
-#ifdef DEBUG
-	cout << "Send " << bytesWritten << " bytes: " << endl;
-	for(int i = 0; i < bytesWritten; i++)
+
+	if(!FwSend(&mCmdFrame))
 	{
-		cout << hex << (int)(reinterpret_cast<unsigned char*>(&mCmdFrame)[i]) << " ";
+		cout << "Send " << __FUNCTION__ << " failed" << endl;
 	}
-	cout << endl;
-	unsigned char buffer[100];
-	bytesWritten = mSock->Recv(buffer, sizeof(buffer), 2000);
-	cout << "Received " << bytesWritten << " bytes: " << endl;
-	for(int i = 0; i < bytesWritten; i++)
-	{
-		cout << (buffer[i]) << " ";
-	}
-	cout << endl;
-#else
-	assert(sizeof(mCmdFrame) == bytesWritten);
-#endif
 }
 
 void WiflyControl::SetColor(string& addr, string& rgba)

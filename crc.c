@@ -100,7 +100,7 @@ void Crc_AddCrc16(unsigned char byte, unsigned short* pCrc)
 	Crc_AddCrc(byte, ((unsigned char*)pCrc) + 1, (unsigned char*)pCrc);
 }
 
-void Crc_BuildCrc(unsigned char *data, unsigned char length, unsigned char* crcH_out, unsigned char* crcL_out)
+void Crc_BuildCrc(const unsigned char *data, unsigned char length, unsigned char* crcH_out, unsigned char* crcL_out)
 {
 	if(!crcH_out)return;
 	if(!crcL_out)return;

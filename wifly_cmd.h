@@ -45,6 +45,8 @@
 
 #define LOOP_INFINITE 0
 
+#define FW_MAX_MESSAGE_LENGTH 128
+
 //*********************** STRUCT DECLARATION *********************************************
 struct cmd_add_color {
 //TODO add this later, when we can handle longer cmd_frames
@@ -66,7 +68,6 @@ struct cmd_set_color {
 	uns8 red;
 	uns8 green;
 	uns8 blue;
-	uns8 reserved[3];
 };
 
 #ifdef X86
@@ -125,5 +126,4 @@ struct cmd_frame {
 	uns8 crcLow;
 };
 #define FRAMELENGTH (sizeof(struct cmd_frame) + 1)			// *** max length of one commandframe
-//TODO remove this line #define FRAMELENGTH (NUM_OF_LED * 3 + 8)
 #endif /* #ifndef _WIFLY_CMD_H_ */

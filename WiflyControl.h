@@ -32,6 +32,8 @@ class WiflyControl
 		pthread_t mRecvThread;
 		struct cmd_frame mCmdFrame;
 		unsigned long ToRGBA(std::string& s) const;
+		size_t BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync = true) const;
+		bool FwSend(const struct cmd_frame* pFrame) const;
 		
 	public:
 		WiflyControl(const char* pAddr, short port, bool useTcp);
@@ -45,7 +47,6 @@ class WiflyControl
 		void AddColor(std::string& addr, std::string& rgba, unsigned char hour, unsigned char minute, unsigned char second);
 		size_t BlFlashErase(unsigned char* pBuffer, unsigned int endAddress, const size_t numPages, bool doSync) const;
 		bool BlFlashErase(void) const;
-		size_t BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync = true) const;
 		size_t BlReadCrcFlash(unsigned char* pBuffer, unsigned int address, const size_t numBytes) const;
 		size_t BlReadEeprom(unsigned char* pBuffer, unsigned int address, size_t numBytes) const;
 		size_t BlReadFlash(unsigned char* pBuffer, unsigned int address, size_t numBytes) const;
