@@ -28,12 +28,12 @@
 #define DWORD(HIGH, LOW) (unsigned int)(((((unsigned int)(HIGH))<< 16) | (((unsigned int)(LOW)) & 0x0000ffff)))
 
 #define FLASH_ERASE_BLOCKSIZE 64
-#define FLASH_READ_BLOCKSIZE 64
+#define FLASH_READ_BLOCKSIZE 256
 #define FLASH_WRITE_BLOCKSIZE 64
 #define FLASH_SIZE 0x10000
 #define FLASH_CRC_BLOCKSIZE 252
-#define EEPROM_READ_BLOCKSIZE 16
-#define EEPROM_WRITE_BLOCKSIZE 1    //only for test... we should increase it later
+#define EEPROM_READ_BLOCKSIZE 256
+#define EEPROM_WRITE_BLOCKSIZE 256
 #define EEPROM_SIZE 1024
 #define BL_STX 0x0f
 #define BL_ETX 0x04

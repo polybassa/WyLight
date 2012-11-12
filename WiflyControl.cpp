@@ -291,6 +291,18 @@ bool WiflyControl::BlWriteEeprom(unsigned int address, unsigned char* pBuffer, s
 	return (1 == BlRead(request, &response, sizeof(response)));
 }
 
+bool WiflyControl::BlEepromErase(void) const
+{
+	unsigned char buffer[EEPROM_SIZE];
+	
+	for(unsigned int i = 0; i < sizeof(buffer); i++)
+	{
+	    buffer[i] = 0xff;
+	}
+	return BlWriteEeprom((unsigned int)0, &buffer[0], sizeof(buffer));
+	
+}
+
 void WiflyControl::StartBl(void)
 {
 	mCmdFrame.led.cmd = START_BL;

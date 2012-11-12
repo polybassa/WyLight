@@ -35,6 +35,7 @@ class WiflyControl
 		
 	public:
 		WiflyControl(const char* pAddr, short port, bool useTcp);
+		
 		void Receiving(void) const;
 		/**
 			rgba is a 32 Bit rgb value with alpha channel. Alpha is unused, but easier to handle
@@ -43,8 +44,10 @@ class WiflyControl
 		**/
 		void AddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second);
 		void AddColor(std::string& addr, std::string& rgba, unsigned char hour, unsigned char minute, unsigned char second);
+		
 		size_t BlFlashErase(unsigned char* pBuffer, unsigned int endAddress, const size_t numPages, bool doSync) const;
 		bool BlFlashErase(void) const;
+		bool BlEepromErase(void) const;
 		size_t BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync = true) const;
 		size_t BlReadCrcFlash(unsigned char* pBuffer, unsigned int address, const size_t numBytes) const;
 		size_t BlReadEeprom(unsigned char* pBuffer, unsigned int address, size_t numBytes) const;
@@ -53,6 +56,7 @@ class WiflyControl
 		bool BlRunApp(void) const;
 		bool BlWriteFlash(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
 		bool BlWriteEeprom(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
+		
 		void StartBl(void);
 		void SetColor(unsigned long addr, unsigned long rgba);
 		void SetColor(std::string& addr, std::string& rgba);

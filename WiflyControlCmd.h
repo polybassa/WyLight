@@ -149,6 +149,25 @@ class ControlCmdBlEraseFlash : public WiflyControlCmd
 		}	
 };
 
+class ControlCmdBlEraseEeprom : public WiflyControlCmd
+{
+	public:
+		ControlCmdBlEraseEeprom(void) : WiflyControlCmd(
+				string("'erase_eeprom'")) {};
+
+		virtual void Run(WiflyControl& control) const
+		{
+			if(control.BlEepromErase())
+			{
+			    cout << endl <<"Erase complete eeprom succesful"<<endl;
+			}
+			else
+			{
+			    cout << endl <<"Erase complete eeprom failed"<<endl;
+			}
+		}	
+};
+
 class ControlCmdBlRead : public WiflyControlCmd
 {
 	public:
@@ -288,6 +307,8 @@ class WiflyControlCmdBuilder
 				return new ControlCmdSetFade();
 			} else if("start_bl" == name) {
 				return new ControlCmdStartBl();
+			} else if("erase_eeprom" == name) {
+				return new ControlCmdBlEraseEeprom();
 			}
 			return NULL;
 		}
