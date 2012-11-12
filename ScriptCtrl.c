@@ -74,9 +74,12 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 		return FALSE;
 	}
 
+	Ledstrip_Test(WHITE);
+
 	switch(pCmd->cmd)
 	{
 		case DELETE:
+			Trace_String("Clearing script buffer\n");
 			gScriptBuf.isClearing = TRUE;
 			return TRUE;
 		case LOOP_ON:

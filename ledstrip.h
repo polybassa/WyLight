@@ -101,4 +101,10 @@ void Ledstrip_UpdateLed(void);
  * returns 0 if no fade is running
  */
 uns8 Ledstrip_NumOfFades(void);
+
+void Ledstrip_Test(unsigned int rgba);
+#define BLUE	0x0000ff00
+#define GREEN	0x00ff0000
+#define RED		0xff000000
+#define WHITE	0xffffff00
 #endif

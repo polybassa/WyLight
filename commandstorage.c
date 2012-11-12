@@ -41,6 +41,7 @@ void Commandstorage_GetCommands()
 
 	// *** get new_byte from ringbuffer
 	uns8 new_byte = RingBuf_Get(&g_RingBuf);
+	Ledstrip_Test(GREEN);
 
 		// *** do I wait for databytes?
 		if(g_CmdBuf.frame_counter == 0)
@@ -89,6 +90,8 @@ void Commandstorage_GetCommands()
 			 */
 			if(g_CmdBuf.frame_counter == 0)
 			{
+				
+				Ledstrip_Test(BLUE);
 				Trace_String("Read ");
 				Trace_Number(g_CmdBuf.cmd_counter);
 				Trace_String(" bytes: \n");
@@ -109,6 +112,7 @@ void Commandstorage_GetCommands()
 						}
 						else
 						{
+									Ledstrip_Test(GREEN);
 									g_ErrorBits.EepromFailure = 1;
 						}
 					}
@@ -117,6 +121,7 @@ void Commandstorage_GetCommands()
 			{
 				// *** Do some error handling in case of an Crc_BuildCrc failure here
 				g_ErrorBits.CrcFailure = 1;
+				Ledstrip_Test(RED);
 				Trace_Hex(g_CmdBuf.CrcL);
 				Trace_Hex(g_CmdBuf.CrcH);
 				Trace_Hex(g_CmdBuf.cmd_buf[g_CmdBuf.cmd_counter - 1]);

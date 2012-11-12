@@ -268,6 +268,33 @@ bool WiflyControl::BlWriteFlash(unsigned int address, unsigned char* pBuffer, si
 	return (1 == BlRead(request, &response, sizeof(response)));
 }
 
+void WiflyControl::ClearScript(void)
+{
+	mCmdFrame.led.cmd = DELETE;
+	mCmdFrame.length = sizeof(struct cmd_clear_script) + 3;
+	memset(mCmdFrame.led.data.clear_script.reserved, 0x00, sizeof(mCmdFrame.led.data.clear_script));
+	Crc_BuildCrc(reinterpret_cast<unsigned char*>(&mCmdFrame), mCmdFrame.length, &mCmdFrame.crcHigh, &mCmdFrame.crcLow);
+	int bytesWritten = mSock->Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
+#ifdef DEBUG
+	cout << "Send " << bytesWritten << " bytes: " << endl;
+	for(int i = 0; i < bytesWritten; i++)
+	{
+		cout << hex << (int)(reinterpret_cast<unsigned char*>(&mCmdFrame)[i]) << " ";
+	}
+	cout << endl;
+	unsigned char buffer[100];
+	bytesWritten = mSock->Recv(buffer, sizeof(buffer), 2000);
+	cout << "Received " << bytesWritten << " bytes: " << endl;
+	for(int i = 0; i < bytesWritten; i++)
+	{
+		cout << (buffer[i]) << " ";
+	}
+	cout << endl;
+#else
+	assert(sizeof(mCmdFrame) == bytesWritten);
+#endif
+}
+
 void WiflyControl::StartBl(void)
 {
 	mCmdFrame.led.cmd = START_BL;

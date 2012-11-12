@@ -65,6 +65,7 @@ void WiflyControlCli::ShowHelp(void) const
 //TODO	ControlCmdBlWriteFlash writeFlash;
 //TODO implement on demand	ControlCmdBlWriteFuse writeFuse;
 	ControlCmdBlRunApp runApp;
+	ControlCmdClearScript clearScript;
 	ControlCmdSetColor setColor;
 	ControlCmdSetFade setFade;
 	ControlCmdStartBl startBl;
@@ -78,6 +79,7 @@ void WiflyControlCli::ShowHelp(void) const
 	cout << readEeprom << endl;
 	cout << readFlash << endl;
 	cout << runApp << endl;
+	cout << clearScript << endl;
 	cout << startBl << endl;
 	cout << setColor << endl;
 	cout << setFade << endl;

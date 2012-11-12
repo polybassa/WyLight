@@ -383,3 +383,21 @@ void Ledstrip_UpdateRun(void)
 	}
 }
 
+void Ledstrip_Test(unsigned int rgba)
+{
+	uns8 k;
+	uns8 c;
+	for(c = 0; c < 3; c++)
+	{
+		uns8* temp = ((uns8*)&rgba) + 3;
+		uns8 color = *temp;
+		for(k = c; k < 9; k+= 3)
+		{
+			gLedBuf.led_array[k] = color;
+			gLedBuf.cyclesLeft[k] = 0;
+			gLedBuf.delta[k] = 0;
+		}
+	}
+	Ledstrip_UpdateLed();
+}
+
