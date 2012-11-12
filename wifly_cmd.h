@@ -49,12 +49,11 @@
 
 //*********************** STRUCT DECLARATION *********************************************
 struct cmd_add_color {
-//TODO add this later, when we can handle longer cmd_frames
-//TODO	uns8 addr[4];
+	uns8 addr[4];
 	uns8 red;
 	uns8 green;
 	uns8 blue;
-//TODO uns8 hour;
+	uns8 hour;
 	uns8 minute;
 	uns8 second;
 };
@@ -117,8 +116,6 @@ struct cmd_frame {
 	uns8 stx;
 	uns8 length;
 	struct led_cmd led;
-	uns8 crcHigh;
-	uns8 crcLow;
 };
 #define FRAMELENGTH (sizeof(struct cmd_frame) + 1)			// *** max length of one commandframe
 #endif /* #ifndef _WIFLY_CMD_H_ */

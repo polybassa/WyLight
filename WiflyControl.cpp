@@ -26,12 +26,20 @@
 
 using namespace std;
 
+#define SetAddrRgb(REF, ADDRESS, RGBA) { \
+	ref.addr[0] = (ADDRESS & 0xff000000) >> 24; \
+	ref.addr[1] = (ADDRESS & 0x00ff0000) >> 16; \
+	ref.addr[2] = (ADDRESS & 0x0000ff00) >> 8; \
+	ref.addr[3] = (ADDRESS & 0x000000ff); \
+	ref.red = (RGBA & 0xff000000) >> 24; \
+	ref.green = (RGBA & 0x00ff0000) >> 16; \
+	ref.blue = (RGBA & 0x0000ff00) >> 8; \
+}
+
 WiflyControl::WiflyControl(const char* pAddr, short port, bool useTcp)
 {
 	mCmdFrame.stx = STX;
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;
-	mCmdFrame.crcHigh = 0xDE;
-	mCmdFrame.crcLow = 0xAD;
 
 	if(useTcp)
 	{
@@ -46,22 +54,19 @@ WiflyControl::WiflyControl(const char* pAddr, short port, bool useTcp)
 
 void WiflyControl::AddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second)
 {
+	mCmdFrame.length = sizeof(struct cmd_add_color) + 3;
 	mCmdFrame.led.cmd = ADD_COLOR;
-	// next line would be better, but mCmdFrame...addr is unaligned!
-	//*(unsigned long*)mCmdFrame.led.data.set_color.addr = htonl(addr);
-/**TODO mCmdFrame.led.data.add_color.addr[0] = (addr & 0xff000000) >> 24;
+	mCmdFrame.led.data.add_color.addr[0] = (addr & 0xff000000) >> 24;
 	mCmdFrame.led.data.add_color.addr[1] = (addr & 0x00ff0000) >> 16;
 	mCmdFrame.led.data.add_color.addr[2] = (addr & 0x0000ff00) >> 8;
 	mCmdFrame.led.data.add_color.addr[3] = (addr & 0x000000ff);
-*/
 	mCmdFrame.led.data.add_color.red = (rgba & 0xff000000) >> 24;
 	mCmdFrame.led.data.add_color.green = (rgba & 0x00ff0000) >> 16;
 	mCmdFrame.led.data.add_color.blue = (rgba & 0x0000ff00) >> 8;
-//TODO	mCmdFrame.led.data.add_color.hour = hour;
+	mCmdFrame.led.data.add_color.hour = hour;
 	mCmdFrame.led.data.add_color.minute = minute;
 	mCmdFrame.led.data.add_color.second = second;
-	int bytesWritten = mSock->Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
-	assert(sizeof(mCmdFrame) == bytesWritten);
+	FwSend(&mCmdFrame);
 }
 
 void WiflyControl::AddColor(string& addr, string& rgba, unsigned char hour, unsigned char minute, unsigned char second)
