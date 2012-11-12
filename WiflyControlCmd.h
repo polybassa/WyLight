@@ -168,6 +168,26 @@ class ControlCmdBlEraseEeprom : public WiflyControlCmd
 		}	
 };
 
+class ControlCmdBlAutostartEnable : public WiflyControlCmd
+{
+	public:
+		ControlCmdBlAutostartEnable(void) : WiflyControlCmd(
+				string("'enable_bl_autostart'")) {};
+
+		virtual void Run(WiflyControl& control) const
+		{
+			if(control.BlEnableAutostart())
+			{
+			    cout << endl <<"Bootloader Autostart enabled!"<<endl;
+			}
+			else
+			{
+			    cout << endl <<"Bootloader Autostart not enabled!"<<endl;
+			}
+		}	
+};
+
+
 class ControlCmdBlRead : public WiflyControlCmd
 {
 	public:
@@ -309,6 +329,8 @@ class WiflyControlCmdBuilder
 				return new ControlCmdStartBl();
 			} else if("erase_eeprom" == name) {
 				return new ControlCmdBlEraseEeprom();
+			} else if("enable_bl_autostart" == name) {
+				return new ControlCmdBlAutostartEnable();
 			}
 			return NULL;
 		}

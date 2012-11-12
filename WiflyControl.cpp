@@ -303,6 +303,13 @@ bool WiflyControl::BlEepromErase(void) const
 	
 }
 
+bool WiflyControl::BlEnableAutostart(void) const
+{
+	unsigned char value = 0xff;
+	
+	return BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
+}
+
 void WiflyControl::StartBl(void)
 {
 	mCmdFrame.led.cmd = START_BL;
