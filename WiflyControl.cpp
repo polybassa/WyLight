@@ -127,6 +127,13 @@ size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size
 
 size_t WiflyControl::BlReadEeprom(unsigned char* pBuffer, unsigned int address, size_t numBytes) const
 {
+	if(numBytes + address > EEPROM_SIZE)
+	{
+		cout << __FILE__ << "::" << __FUNCTION__
+		<< "(): can not performe read outside the eeprom" << endl;
+		return NULL;
+	}
+	
 	size_t bytesRead;
 	size_t sumBytesRead = 0;
 	BlEepromReadRequest readRequest;
@@ -158,6 +165,13 @@ size_t WiflyControl::BlReadEeprom(unsigned char* pBuffer, unsigned int address, 
 
 size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, size_t numBytes) const
 {
+	if(numBytes + address > FLASH_SIZE)
+	{
+		cout << __FILE__ << "::" << __FUNCTION__
+		<< "(): can not performe read outside the flash" << endl;
+		return NULL;
+	}
+  
 	size_t bytesRead;
 	size_t sumBytesRead = 0;
 	BlFlashReadRequest readRequest;
@@ -190,6 +204,13 @@ size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, s
 
 size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address, size_t numBlocks) const
 {
+	if(numBlocks * FLASH_ERASE_BLOCKSIZE + address > FLASH_SIZE)
+	{
+		cout << __FILE__ << "::" << __FUNCTION__
+		<< "(): can not performe crc outside the flash" << endl;
+		return false;
+	}
+  
 	size_t bytesRead;
 	size_t sumBytesRead = 0;
 	while(numBlocks > FLASH_CRC_BLOCKSIZE)
@@ -243,6 +264,13 @@ bool WiflyControl::BlRunApp(void) const
 
 bool WiflyControl::BlWriteFlash(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const
 {
+	if(bufferLength + address > FLASH_SIZE)
+	{
+		cout << __FILE__ << "::" << __FUNCTION__
+		<< "(): can not performe write outside the flash" << endl;
+		return false;
+	}
+  
 	BlFlashWriteRequest request;
 	unsigned char response;
 	
@@ -268,6 +296,13 @@ bool WiflyControl::BlWriteFlash(unsigned int address, unsigned char* pBuffer, si
 
 bool WiflyControl::BlWriteEeprom(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const
 {
+	if(bufferLength + address > EEPROM_SIZE)
+	{
+		cout << __FILE__ << "::" << __FUNCTION__
+		<< "(): can not performe write outside the eeprom" << endl;
+		return false;
+	}
+      
 	BlEepromWriteRequest request;
 	unsigned char response;
 	
