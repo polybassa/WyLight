@@ -18,7 +18,7 @@ X86_CLIENT_BUILD=g++ BlRequest.cpp ClientSocket.cpp WiflyControl.cpp WiflyContro
 
 all_nils: pic simu x86_client
 
-all_pat: clean test pic simu x86_client android_client
+all_pat: test pic simu x86_client android_client
 
 pic:
 	wine ${PIC_CC8E} main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM

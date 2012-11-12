@@ -20,6 +20,8 @@
 #define _BL_REQUEST_H_
 
 #include "ClientSocket.h"
+#include <cassert>
+#include <cstring>
 #include <stdio.h>
 
 #define WORD(HIGH, LOW) (unsigned short)(((((unsigned short)(HIGH))<< 8) | (((unsigned short)(LOW)) & 0x00ff)))
@@ -84,33 +86,6 @@ struct BlReadRequest : public BlAddressRequest
 		unsigned char numBytesHigh;
 };
 
-struct BlFlashWriteRequest : public BlAddressRequest
-{
-		BlFlashWriteRequest(unsigned char *pDataIn, unsigned int address, unsigned short numBytes) : BlAddressRequest(numBytes + 1, 0x04) 
-		{ 
-			data = NULL;
-			SetAddress(address);
-			numBlocks = 0x01;
-			
-			/* Not really neccessary at this point, because WiflyControl handles the BlockSize */
-			if(numBytes > FLASH_WRITE_BLOCKSIZE) numBytes = FLASH_WRITE_BLOCKSIZE;
-			
-			unsigned char *data = new unsigned char[numBytes];
-			for (unsigned short i = 0; i < numBytes; i++, pDataIn++)
-			{
-				data[i] = *pDataIn;
-			}
-		  
-		};
-		~BlFlashWriteRequest()
-		{
-			delete[] data;
-			data = NULL;
-		};
-		
-		unsigned char numBlocks;
-		unsigned char *data;
-};
 struct BlEepromWriteRequest : public BlAddressRequest
 {
 		BlEepromWriteRequest(unsigned char *pDataIn, unsigned int address, unsigned short numBytes) : BlAddressRequest(numBytes + 2, 0x06) 
@@ -246,6 +221,21 @@ struct BlFlashEraseRequest : public BlAddressRequest
 struct BlFlashReadRequest : public BlReadRequest
 {
 		BlFlashReadRequest() : BlReadRequest(0, 0x01) {};
+};
+
+struct BlFlashWriteRequest : public BlAddressRequest
+{
+		BlFlashWriteRequest() : BlAddressRequest(sizeof(payload) + 1, 0x04), numBlocksLow(0x01) {};
+
+		void SetData(unsigned int address, unsigned char* pData, size_t numBytes)
+		{
+			assert(numBytes <= sizeof(payload));
+			SetAddress(address);
+			memcpy(payload, pData, numBytes);
+		};
+		
+		unsigned char numBlocksLow;
+		unsigned char payload[FLASH_WRITE_BLOCKSIZE];
 };
 
 struct BlInfoRequest : public BlRequest
