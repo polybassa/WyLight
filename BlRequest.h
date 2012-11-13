@@ -28,6 +28,7 @@
 #define DWORD(HIGH, LOW) (unsigned int)(((((unsigned int)(HIGH))<< 16) | (((unsigned int)(LOW)) & 0x0000ffff)))
 
 #define FLASH_ERASE_BLOCKSIZE 64
+#define FLASH_ERASE_BLOCKS 128		/* Blocks erased by one command */
 #define FLASH_READ_BLOCKSIZE 256
 #define FLASH_WRITE_BLOCKSIZE 64
 #define FLASH_SIZE 0x10000

@@ -88,20 +88,26 @@ bool WiflyControl::BlFlashErase(void) const
 	
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	size_t bytesRead;
-	while(address > FLASH_ERASE_BLOCKSIZE)
+	while(address > FLASH_ERASE_BLOCKSIZE * FLASH_ERASE_BLOCKS)
 	{
 		// force SYNC only for erase command
-		 bytesRead = BlFlashErase(buffer, address, FLASH_ERASE_BLOCKSIZE, (firstAddress == address));
-		 if((bytesRead != 1) || (0x03 != buffer[0])) 
+		bytesRead = BlFlashErase(&buffer[0], address, FLASH_ERASE_BLOCKS, true);
+#ifdef DEBUG
+		cout << __FILE__ << "::" << __FUNCTION__
+		 << "(): Erase at " << hex << address;
+#endif
+		 if((bytesRead < 1) || (0x03 != buffer[0])) 
 		 {
-			cout << __FILE__ << "::" << __FUNCTION__
-			<< "():Erase flash failed at address: " << hex << address << endl;
-			return FALSE; 
+		      cout << __FILE__ << "::" << __FUNCTION__
+		      << "():Erase flash failed at address: " << hex << address << endl;
+		      return FALSE; 
 		 }
-		 address -= FLASH_ERASE_BLOCKSIZE;
+		 address -= FLASH_ERASE_BLOCKSIZE * FLASH_ERASE_BLOCKS;
 	}
-	bytesRead = BlFlashErase(buffer, 0, address, false);
-	if((bytesRead != 1) || (0x03 != buffer[0])) 
+	/* now we erased everything until a part of the flash smaller than FLASH_ERASE_BLOCKS * FLASH_ERASE_BLOCKSIZE
+	 * so we set our startaddress at the beginning of this block and erase */
+	bytesRead = BlFlashErase(&buffer[0], (unsigned int)(FLASH_ERASE_BLOCKS * FLASH_ERASE_BLOCKSIZE -1), FLASH_ERASE_BLOCKS, true);
+	if((bytesRead < 1) || (0x03 != buffer[0])) 
 	{		    
 		  cout << __FILE__ << "::" << __FUNCTION__
 		  << "():Erase flash failed at address: " << hex << 0 << endl;
