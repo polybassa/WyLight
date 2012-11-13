@@ -106,7 +106,7 @@ bool WiflyControl::BlFlashErase(void) const
 	}
 	/* now we erased everything until a part of the flash smaller than FLASH_ERASE_BLOCKS * FLASH_ERASE_BLOCKSIZE
 	 * so we set our startaddress at the beginning of this block and erase */
-	bytesRead = BlFlashErase(&buffer[0], (unsigned int)(FLASH_ERASE_BLOCKS * FLASH_ERASE_BLOCKSIZE -1), FLASH_ERASE_BLOCKS, true);
+	bytesRead = BlFlashErase(&buffer[0], FLASH_ERASE_BLOCKS * FLASH_ERASE_BLOCKSIZE -1, FLASH_ERASE_BLOCKS, true);
 	if((bytesRead < 1) || (0x03 != buffer[0])) 
 	{		    
 		  cout << __FILE__ << "::" << __FUNCTION__
