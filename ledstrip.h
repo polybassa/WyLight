@@ -102,5 +102,5 @@ void Ledstrip_UpdateLed(void);
  */
 uns8 Ledstrip_NumOfFades(void);
 
-void Ledstrip_Test(unsigned int address);
+void Ledstrip_Test(unsigned char address);
 #endif

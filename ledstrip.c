@@ -383,7 +383,7 @@ void Ledstrip_UpdateRun(void)
 	}
 }
 
-void Ledstrip_Test(unsigned int address)
+void Ledstrip_Test(unsigned char address)
 {
 	unsigned int cur = 0x1;
 	uns8 color;
