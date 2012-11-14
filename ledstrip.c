@@ -383,20 +383,30 @@ void Ledstrip_UpdateRun(void)
 	}
 }
 
-void Ledstrip_Test(unsigned int rgba)
+void Ledstrip_Test(unsigned int address)
 {
-	uns8 k;
-	uns8 c;
-	for(c = 0; c < 3; c++)
+	unsigned int cur = 0x1;
+	uns8 color;
+	uns8 i;
+	for(i = 0; i < NUM_OF_LED; i++)
 	{
-		uns8* temp = ((uns8*)&rgba) + 3;
-		uns8 color = *temp;
-		for(k = c; k < 9; k+= 3)
-		{
-			gLedBuf.led_array[k] = color;
-			gLedBuf.cyclesLeft[k] = 0;
-			gLedBuf.delta[k] = 0;
+		if(address & cur) {
+			color = 0xff;
+		} else {
+			color = 0;
 		}
+		gLedBuf.led_array[i] = color;
+		gLedBuf.cyclesLeft[i] = 0;
+		gLedBuf.delta[i] = 0;
+		i++;
+		gLedBuf.led_array[i] = color;
+		gLedBuf.cyclesLeft[i] = 0;
+		gLedBuf.delta[i] = 0;
+		i++;
+		gLedBuf.led_array[i] = color;
+		gLedBuf.cyclesLeft[i] = 0;
+		gLedBuf.delta[i] = 0;
+		cur = cur << 1;
 	}
 	Ledstrip_UpdateLed();
 }

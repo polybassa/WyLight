@@ -41,7 +41,6 @@ void Commandstorage_GetCommands()
 
 	// *** get new_byte from ringbuffer
 	uns8 new_byte = RingBuf_Get(&g_RingBuf);
-	Ledstrip_Test(GREEN);
 
 		// *** do I wait for databytes?
 		if(g_CmdBuf.frame_counter == 0)
@@ -50,7 +49,8 @@ void Commandstorage_GetCommands()
 			// *** Do I receive a Start_of_Text sign
 			if(new_byte == STX)
 			{
-				Trace_String("STX\n");
+				Ledstrip_Test(7+2);
+				//Trace_String("STX\n");
 				// *** increase the cmd_counter
 				g_CmdBuf.cmd_counter = 1;
 				// *** Write the startsign at the begin of the buffer
@@ -62,9 +62,11 @@ void Commandstorage_GetCommands()
 			}
 			else
 			{
+				//Ledstrip_Test(7+3);
 				// *** check if I get the framelength byte
 				if((new_byte < (CMDFRAMELENGTH - 2)) && (g_CmdBuf.cmd_counter == 1))
 				{
+					Ledstrip_Test(7+4);
 					g_CmdBuf.frame_counter = new_byte;
 					g_CmdBuf.cmd_buf[1] = new_byte;
 					g_CmdBuf.cmd_counter = 2;
@@ -74,6 +76,7 @@ void Commandstorage_GetCommands()
 		}
 		else
 		{
+			//Ledstrip_Test(7+5);
 			// *** I wait for Databytes, so I save all bytes 
 			// *** that I get until my framecounter is > 0
 			g_CmdBuf.cmd_buf[g_CmdBuf.cmd_counter] = new_byte;
@@ -90,8 +93,7 @@ void Commandstorage_GetCommands()
 			 */
 			if(g_CmdBuf.frame_counter == 0)
 			{
-				
-				Ledstrip_Test(BLUE);
+				//Ledstrip_Test(2);
 				Trace_String("Read ");
 				Trace_Number(g_CmdBuf.cmd_counter);
 				Trace_String(" bytes: \n");
@@ -112,7 +114,7 @@ void Commandstorage_GetCommands()
 						}
 						else
 						{
-									Ledstrip_Test(GREEN);
+									Ledstrip_Test(3);
 									g_ErrorBits.EepromFailure = 1;
 						}
 					}
@@ -121,7 +123,7 @@ void Commandstorage_GetCommands()
 			{
 				// *** Do some error handling in case of an Crc_BuildCrc failure here
 				g_ErrorBits.CrcFailure = 1;
-				Ledstrip_Test(RED);
+				//Ledstrip_Test(4);
 				Trace_Hex(g_CmdBuf.CrcL);
 				Trace_Hex(g_CmdBuf.CrcH);
 				Trace_Hex(g_CmdBuf.cmd_buf[g_CmdBuf.cmd_counter - 1]);

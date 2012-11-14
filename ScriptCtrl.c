@@ -74,8 +74,6 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 		return FALSE;
 	}
 
-	Ledstrip_Test(WHITE);
-
 	switch(pCmd->cmd)
 	{
 		case CLEAR_SCRIPT:
