@@ -33,7 +33,7 @@ void Crc_AddCrc(unsigned char byte,unsigned char* p_crcH,unsigned char* p_crcL);
 void Crc_AddCrc16(unsigned char byte,unsigned short* pCrc);
 
 //do a complete crc calulation 
-void Crc_BuildCrc(unsigned char *data, unsigned char length, unsigned char* crcH_out, unsigned char* crcL_out);
+void Crc_BuildCrc(const unsigned char *data, unsigned char length, unsigned char* crcH_out, unsigned char* crcL_out);
 
 
 //set the crc-Bytes to inital value

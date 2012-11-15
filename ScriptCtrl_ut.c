@@ -86,8 +86,8 @@ int ut_ScriptCtrl_Clear(void)
 	ScriptCtrl_Add(&testCmd);
 	gSetColorWasCalled = FALSE;
 
-	/* send DELETE */
-	testCmd.cmd = DELETE;
+	/* send CLEAR_SCRIPT */
+	testCmd.cmd = CLEAR_SCRIPT;
 	ScriptCtrl_Add(&testCmd);
 
 	/* buffer should be empty again */
@@ -271,7 +271,7 @@ int ut_ScriptCtrl_InfiniteLoop(void)
 	errors+= ut_ScriptCtrl_DoOuterInnerLoop(NUM_TEST_LOOPS);
 
 	/* now terminate the loop */
-	testCmd.cmd = DELETE;
+	testCmd.cmd = CLEAR_SCRIPT;
 	ScriptCtrl_Add(&testCmd);
 
 	/* buffer should be empty again */

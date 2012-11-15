@@ -46,10 +46,12 @@ void gl_display(void)
 		seconds = nextTime.tv_sec - lastTime.tv_sec;
 		if(seconds > 0)
 		{
+#ifdef SHOW_FPS
 			long nanos = nextTime.tv_nsec - lastTime.tv_nsec;
 			long millis = seconds*1000 + nanos/1000/1000;
 			lastTime = nextTime;
 			printf("%f fps\n", 1000.0f*frames/millis);
+#endif
 			frames = 0;
 		}
 

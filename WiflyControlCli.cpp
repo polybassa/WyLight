@@ -65,6 +65,7 @@ void WiflyControlCli::ShowHelp(void) const
 //TODO	ControlCmdBlWriteFlash writeFlash;
 //TODO implement on demand	ControlCmdBlWriteFuse writeFuse;
 	ControlCmdBlRunApp runApp;
+	ControlCmdClearScript clearScript;
 	ControlCmdSetColor setColor;
 	ControlCmdSetFade setFade;
 	ControlCmdStartBl startBl;
@@ -82,6 +83,7 @@ void WiflyControlCli::ShowHelp(void) const
 	cout << readEeprom << endl;
 	cout << readFlash << endl;
 	cout << runApp << endl;
+	cout << clearScript << endl;
 	cout << startBl << endl;
 	cout << setColor << endl;
 	cout << setFade << endl;
@@ -101,7 +103,7 @@ void Java_biz_bruenn_WiflyLight_WiflyLightActivity_runClient(JNIEnv* env, jobjec
 int main(int argc, const char* argv[])
 {
 	short port = 2000;
-#if 0
+#if 1
 	const char* pAddr = "127.0.0.1";
 	bool useTcp = false;
 #else

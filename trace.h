@@ -34,12 +34,12 @@
 #elif DEBUG
 	#include "stdio.h"
 	#define Trace_String(str) do { printf("%s", str); } while (0)
-	#define Trace_Number(input, sign) do { printf("%04x%c", input, sign); } while (0)
+	#define Trace_Number(input) do { printf("%04x", input); } while (0)
 	#define Trace_Hex(hex) do { printf("%02x ", hex); } while(0)
 	#define Trace_Print(x)
 #else
 	#define Trace_String(str)
-	#define Trace_Number(input, sign)
+	#define Trace_Number(input)
 	#define Trace_Hex(hex)
 	#define Trace_Print(x)
 #endif
