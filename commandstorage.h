@@ -46,6 +46,7 @@ extern bank2 struct CommandBuffer g_CmdBuf;
 {								\
 	g_CmdBuf.cmd_counter = 0;	\
 	g_CmdBuf.frame_counter = 0;	\
+	Crc_NewCrc(&g_CmdBuf.CrcH, &g_CmdBuf.CrcL); \
 }
 
 /**

@@ -305,7 +305,7 @@ bool WiflyControl::FwSend(const struct cmd_frame* pFrame) const
 	cout << endl;
 #endif
 #endif
-	return (numBytes == bytesWritten);
+	return (0 <= bytesWritten) && (numBytes == static_cast<size_t>(bytesWritten));
 }
 
 void WiflyControl::StartBl(void)
