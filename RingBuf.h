@@ -32,7 +32,7 @@
  * f.e.: size = 31 -> realsize = 32 -> we want an index of 31++ to overflow to 0:
  * binary: (00011111 + 00000001) & 00011111 = 00100000 & 00011111 = 00000000
  */
-#define RingBufferSize 63
+#define RingBufferSize 255
 
 struct RingBuffer{
 	uns8 data[RingBufferSize + 1];
