@@ -17,6 +17,8 @@
     along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "WiflyControl.h"
+#include "crc.h"
+
 #include <iostream>
 #include <sstream>
 #include <cassert>
@@ -24,12 +26,24 @@
 
 using namespace std;
 
+/**
+ * Macro to reduce code redundancy, while converting two 32 bit values into
+ * an address array and red, green, blue values. 
+ */
+#define SetAddrRgb(REF, ADDRESS, RGBA) { \
+	REF.addr[0] = (ADDRESS & 0xff000000) >> 24; \
+	REF.addr[1] = (ADDRESS & 0x00ff0000) >> 16; \
+	REF.addr[2] = (ADDRESS & 0x0000ff00) >> 8; \
+	REF.addr[3] = (ADDRESS & 0x000000ff); \
+	REF.red = (RGBA & 0xff000000) >> 24; \
+	REF.green = (RGBA & 0x00ff0000) >> 16; \
+	REF.blue = (RGBA & 0x0000ff00) >> 8; \
+}
+
 WiflyControl::WiflyControl(const char* pAddr, short port, bool useTcp)
 {
 	mCmdFrame.stx = STX;
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;
-	mCmdFrame.crcHigh = 0xDE;
-	mCmdFrame.crcLow = 0xAD;
 
 	if(useTcp)
 	{
@@ -44,22 +58,13 @@ WiflyControl::WiflyControl(const char* pAddr, short port, bool useTcp)
 
 void WiflyControl::AddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second)
 {
+	mCmdFrame.length = sizeof(struct cmd_add_color) + 3;
 	mCmdFrame.led.cmd = ADD_COLOR;
-	// next line would be better, but mCmdFrame...addr is unaligned!
-	//*(unsigned long*)mCmdFrame.led.data.set_color.addr = htonl(addr);
-/**TODO mCmdFrame.led.data.add_color.addr[0] = (addr & 0xff000000) >> 24;
-	mCmdFrame.led.data.add_color.addr[1] = (addr & 0x00ff0000) >> 16;
-	mCmdFrame.led.data.add_color.addr[2] = (addr & 0x0000ff00) >> 8;
-	mCmdFrame.led.data.add_color.addr[3] = (addr & 0x000000ff);
-*/
-	mCmdFrame.led.data.add_color.red = (rgba & 0xff000000) >> 24;
-	mCmdFrame.led.data.add_color.green = (rgba & 0x00ff0000) >> 16;
-	mCmdFrame.led.data.add_color.blue = (rgba & 0x0000ff00) >> 8;
-//TODO	mCmdFrame.led.data.add_color.hour = hour;
+	SetAddrRgb(mCmdFrame.led.data.add_color, addr, rgba);
+	mCmdFrame.led.data.add_color.hour = hour;
 	mCmdFrame.led.data.add_color.minute = minute;
 	mCmdFrame.led.data.add_color.second = second;
-	int bytesWritten = mSock->Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
-	assert(sizeof(mCmdFrame) == bytesWritten);
+	FwSend(&mCmdFrame);
 }
 
 void WiflyControl::AddColor(string& addr, string& rgba, unsigned char hour, unsigned char minute, unsigned char second)
@@ -351,6 +356,43 @@ bool WiflyControl::BlEnableAutostart(void) const
 	return BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
 }
 
+void WiflyControl::ClearScript(void)
+{
+	mCmdFrame.length = 3;
+	mCmdFrame.led.cmd = CLEAR_SCRIPT;
+	FwSend(&mCmdFrame);
+}
+
+bool WiflyControl::FwSend(const struct cmd_frame* pFrame) const
+{
+	unsigned char buffer[FW_MAX_MESSAGE_LENGTH];
+	unsigned char* pCrcHigh = buffer + pFrame->length;
+	unsigned char* pCrcLow = pCrcHigh + 1;
+	const size_t numBytes = pFrame->length + 2;
+	memcpy(buffer, pFrame, pFrame->length);
+	Crc_BuildCrc(reinterpret_cast<const unsigned char*>(pFrame), pFrame->length, pCrcHigh, pCrcLow);
+	int bytesWritten = mSock->Send(buffer, numBytes);
+
+#ifdef DEBUG
+	cout << "Send " << bytesWritten << " bytes: " << endl;
+	for(int i = 0; i < bytesWritten; i++)
+	{
+		cout << hex << (int)(buffer[i]) << " ";
+	}
+	cout << endl;
+#if 0
+	bytesWritten = mSock->Recv(buffer, sizeof(buffer), 2000);
+	cout << "Received " << bytesWritten << " bytes: " << endl;
+	for(int i = 0; i < bytesWritten; i++)
+	{
+		cout << (buffer[i]) << " ";
+	}
+	cout << endl;
+#endif
+#endif
+	return (0 <= bytesWritten) && (numBytes == static_cast<size_t>(bytesWritten));
+}
+
 void WiflyControl::StartBl(void)
 {
 	mCmdFrame.led.cmd = START_BL;
@@ -360,31 +402,10 @@ void WiflyControl::StartBl(void)
 
 void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
 {
+	mCmdFrame.length = sizeof(struct cmd_set_color) + 3;
 	mCmdFrame.led.cmd = SET_COLOR;
-	// next line would be better, but mCmdFrame...addr is unaligned!
-	//*(unsigned long*)mCmdFrame.led.data.set_color.addr = htonl(addr);
-	mCmdFrame.led.data.set_color.addr[0] = (addr & 0xff000000) >> 24;
-	mCmdFrame.led.data.set_color.addr[1] = (addr & 0x00ff0000) >> 16;
-	mCmdFrame.led.data.set_color.addr[2] = (addr & 0x0000ff00) >> 8;
-	mCmdFrame.led.data.set_color.addr[3] = (addr & 0x000000ff);
-	mCmdFrame.led.data.set_color.red = (rgba & 0xff000000) >> 24;
-	mCmdFrame.led.data.set_color.green = (rgba & 0x00ff0000) >> 16;
-	mCmdFrame.led.data.set_color.blue = (rgba & 0x0000ff00) >> 8;
-	int bytesWritten = mSock->Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
-#ifdef DEBUG
-	cout << "Send " << bytesWritten << " bytes "
-		<< addr << " | "
-		<< (int)mCmdFrame.led.data.set_color.addr[0] << " "
-		<< (int)mCmdFrame.led.data.set_color.addr[1] << " "
-		<< (int)mCmdFrame.led.data.set_color.addr[2] << " "
-		<< (int)mCmdFrame.led.data.set_color.addr[3] << " : "
-		<< (int)mCmdFrame.led.data.set_color.red << " "
-		<< (int)mCmdFrame.led.data.set_color.green << " "
-		<< (int)mCmdFrame.led.data.set_color.blue
-		<< endl;
-#else
-	assert(sizeof(mCmdFrame) == bytesWritten);
-#endif
+	SetAddrRgb(mCmdFrame.led.data.set_color, addr, rgba);
+	FwSend(&mCmdFrame);
 }
 
 void WiflyControl::SetColor(string& addr, string& rgba)
@@ -394,42 +415,11 @@ void WiflyControl::SetColor(string& addr, string& rgba)
 
 void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms)
 {
+	mCmdFrame.length = sizeof(cmd_set_fade) + 3;
 	mCmdFrame.led.cmd = SET_FADE;
-	// next line would be better, but mCmdFrame...addr is unaligned!
-	//*(unsigned long*)mCmdFrame.led.data.set_color.addr = htonl(addr);
-	mCmdFrame.led.data.set_fade.addr[0] = (addr & 0xff000000) >> 24;
-	mCmdFrame.led.data.set_fade.addr[1] = (addr & 0x00ff0000) >> 16;
-	mCmdFrame.led.data.set_fade.addr[2] = (addr & 0x0000ff00) >> 8;
-	mCmdFrame.led.data.set_fade.addr[3] = (addr & 0x000000ff);
-	mCmdFrame.led.data.set_fade.red = (rgba & 0xff000000) >> 24;
-	mCmdFrame.led.data.set_fade.green = (rgba & 0x00ff0000) >> 16;
-	mCmdFrame.led.data.set_fade.blue = (rgba & 0x0000ff00) >> 8;
+	SetAddrRgb(mCmdFrame.led.data.set_fade, addr, rgba);
 	mCmdFrame.led.data.set_fade.fadeTmms = htons(fadeTmms);
-	int bytesWritten = mSock->Send(reinterpret_cast<unsigned char*>(&mCmdFrame), sizeof(mCmdFrame));
-#ifdef DEBUG
-	cout << "Send " << bytesWritten << " bytes "
-		<< addr << " | "
-		<< (int)mCmdFrame.led.data.set_fade.addr[0] << " "
-		<< (int)mCmdFrame.led.data.set_fade.addr[1] << " "
-		<< (int)mCmdFrame.led.data.set_fade.addr[2] << " "
-		<< (int)mCmdFrame.led.data.set_fade.addr[3] << " : "
-		<< (int)mCmdFrame.led.data.set_fade.red << " "
-		<< (int)mCmdFrame.led.data.set_fade.green << " "
-		<< (int)mCmdFrame.led.data.set_fade.blue << " : "
-		<< (int)mCmdFrame.led.data.set_fade.fadeTmms << endl;
-
-		unsigned int tempTmms = 0;
-		do
-		{
-			tempTmms += 1000;
-			cout << (int)tempTmms/1000;
-			cout.flush();
-			sleep(1); 
-		}while(tempTmms < fadeTmms);
-		cout << endl;
-#else
-	assert(sizeof(mCmdFrame) == bytesWritten);
-#endif
+	FwSend(&mCmdFrame);
 }
 
 void WiflyControl::SetFade(string& addr, string& rgba, unsigned short fadeTmms)

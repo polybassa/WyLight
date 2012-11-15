@@ -32,6 +32,9 @@ uns8 RingBuf_Get(struct RingBuffer *pBuf)
 	uns8 read = pBuf->read;
 	uns8 result = pBuf->data[read];
 	pBuf->read = RingBufInc(read);
+	
+	//TODO make this thread safe or remove flag!
+	pBuf->error_full = FALSE;
 	return result;
 }
 
@@ -52,14 +55,9 @@ bit RingBuf_HasError(struct RingBuffer *pBuf)
 	return pBuf->error_full;
 }
 
-void RingBuf_ClearError(struct RingBuffer *pBuf)
-{
-	pBuf->error_full = FALSE;
-}
-
-bit RingBuf_IsNotEmpty(struct RingBuffer *pBuf)
+bit RingBuf_IsEmpty(struct RingBuffer *pBuf)
 {
 	uns8 write = pBuf->write;
 	uns8 read = pBuf->read;
-	return write != read;
+	return write == read;
 }

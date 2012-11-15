@@ -268,6 +268,17 @@ class ControlCmdStartBl : public WiflyControlCmd
   
 };
 
+class ControlCmdClearScript : public WiflyControlCmd
+{
+	public:
+		ControlCmdClearScript(void) : WiflyControlCmd(
+				string("'clear' - clear script buffer")) {};
+
+		virtual void Run(WiflyControl& control) const {
+			control.ClearScript();
+		};
+};
+
 class ControlCmdSetColor : public WiflyControlCmd
 {
 	public:
@@ -311,6 +322,8 @@ class WiflyControlCmdBuilder
 				return new ControlCmdAddColor();
 			} else if("bl_info" == name) {
 				return new ControlCmdBlInfo();
+			} else if("clear" == name) {
+				return new ControlCmdClearScript();
 			} else if("crc_flash" == name) {
 				return new ControlCmdBlCrcFlash();
 			} else if("erase_flash" == name) {

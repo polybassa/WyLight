@@ -58,16 +58,6 @@ void* InterruptRoutine(void* unused)
 	}
 }
 
-void Crc_AddCrc(unsigned char byte,unsigned char* p_crcH,unsigned char* p_crcL) {}
-void newCrc_BuildCrc(unsigned char* p_Crc_BuildCrcH, unsigned char* p_Crc_BuildCrcL) {}
-void Crc_NewCrc(unsigned char* p_crcH, unsigned char* p_crcL)
-{
-    if(!p_crcH) return;
-    if(!p_crcL) return;
-    *p_crcH = 0xff;
-    *p_crcL = 0xff;
-}
-
 void I2C_Init(){}
 
 void* timer1_interrupt(void* unused)
