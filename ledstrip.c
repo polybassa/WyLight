@@ -383,6 +383,7 @@ void Ledstrip_UpdateRun(void)
 	}
 }
 
+#ifdef DEBUG
 void Ledstrip_Test(unsigned char address)
 {
 	unsigned int cur = 0x1;
@@ -410,4 +411,5 @@ void Ledstrip_Test(unsigned char address)
 	}
 	Ledstrip_UpdateLed();
 }
+#endif
 

@@ -102,5 +102,7 @@ void Ledstrip_UpdateLed(void);
  */
 uns8 Ledstrip_NumOfFades(void);
 
+#ifdef DEBUG
 void Ledstrip_Test(unsigned char address);
+#endif
 #endif

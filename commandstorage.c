@@ -49,8 +49,6 @@ void Commandstorage_GetCommands()
 			// *** Do I receive a Start_of_Text sign
 			if(new_byte == STX)
 			{
-				Ledstrip_Test(7+2);
-				//Trace_String("STX\n");
 				// *** increase the cmd_counter
 				g_CmdBuf.cmd_counter = 1;
 				// *** Write the startsign at the begin of the buffer
@@ -66,7 +64,6 @@ void Commandstorage_GetCommands()
 				// *** check if I get the framelength byte
 				if((new_byte < (CMDFRAMELENGTH - 2)) && (g_CmdBuf.cmd_counter == 1))
 				{
-					Ledstrip_Test(7+4);
 					g_CmdBuf.frame_counter = new_byte;
 					g_CmdBuf.cmd_buf[1] = new_byte;
 					g_CmdBuf.cmd_counter = 2;
@@ -114,7 +111,6 @@ void Commandstorage_GetCommands()
 						}
 						else
 						{
-									Ledstrip_Test(3);
 									g_ErrorBits.EepromFailure = 1;
 						}
 					}
