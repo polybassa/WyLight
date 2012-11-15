@@ -46,15 +46,9 @@ extern struct RingBuffer g_RingBuf;
  * Some macros 
  */
 #define RingBufInc(x) ((x + 1) & RingBufferSize)
-//#define RingBufClearError(BUF) (struct RingBuffer*)BUF->error_full = FALSE
-//#define RingBuf_HasError(BUF)  (struct RingBuffer*)BUF->error_full
-//#define RingBufIsNotEmpty(BUF) ((struct RingBuffer*)BUF->write != (struct RingBuffer*)BUF->read)
-
-void RingBufClearError(struct RingBuffer *pBuf);
 
 bit RingBuf_HasError(struct RingBuffer *pBuf);
-
-bit RingBuf_IsNotEmpty(struct RingBuffer *pBuf);
+bit RingBuf_IsEmpty(struct RingBuffer *pBuf);
 
 
 /**

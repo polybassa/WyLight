@@ -101,4 +101,8 @@ void Ledstrip_UpdateLed(void);
  * returns 0 if no fade is running
  */
 uns8 Ledstrip_NumOfFades(void);
+
+#ifdef DEBUG
+void Ledstrip_Test(unsigned char address);
+#endif
 #endif

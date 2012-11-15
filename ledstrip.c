@@ -383,3 +383,33 @@ void Ledstrip_UpdateRun(void)
 	}
 }
 
+#ifdef DEBUG
+void Ledstrip_Test(unsigned char address)
+{
+	unsigned int cur = 0x1;
+	uns8 color;
+	uns8 i;
+	for(i = 0; i < NUM_OF_LED; i++)
+	{
+		if(address & cur) {
+			color = 0xff;
+		} else {
+			color = 0;
+		}
+		gLedBuf.led_array[i] = color;
+		gLedBuf.cyclesLeft[i] = 0;
+		gLedBuf.delta[i] = 0;
+		i++;
+		gLedBuf.led_array[i] = color;
+		gLedBuf.cyclesLeft[i] = 0;
+		gLedBuf.delta[i] = 0;
+		i++;
+		gLedBuf.led_array[i] = color;
+		gLedBuf.cyclesLeft[i] = 0;
+		gLedBuf.delta[i] = 0;
+		cur = cur << 1;
+	}
+	Ledstrip_UpdateLed();
+}
+#endif
+

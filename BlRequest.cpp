@@ -152,7 +152,7 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 	{
 		Trace_String(__FUNCTION__);
 		Trace_String(" check crc: ");
-		Trace_Number(prepreCrc, ' ');
+		Trace_Number(prepreCrc);
 		Trace_String(" crc failed\n");
 		return 0;
 	}
@@ -162,7 +162,7 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 int BlProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize, bool doSync) const
 {
 	Trace_String("BlProxy::Send: ");
-	Trace_Number(req.GetSize(), ' ');
+	Trace_Number(req.GetSize());
 	Trace_String("pure bytes\n");
 	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
 }

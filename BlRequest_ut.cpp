@@ -109,8 +109,9 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	if((frame[0] == 0x01) && (frame[length-1] == BL_ETX))
 	{
 		Trace_String("BlFlashReadRequest\n");
-		Trace_Number(sizeof(exampleBlFlashRead), ' ');
-		Trace_Number(length, ' ');
+		Trace_Number(sizeof(exampleBlFlashRead));
+		Trace_String(":");
+		Trace_Number(length);
 		if(sizeof(exampleBlFlashRead) != length)
 			return 0;
 
@@ -278,8 +279,9 @@ int ut_BlProxy_BlInfoRequest(void)
 	BlInfoRequest infoRequest;
 	size_t bytesReceived = proxy.Send(infoRequest, response, sizeof(response));
 	Trace_String("--->: ");
-	Trace_Number(sizeof(BlInfo), ':');
-	Trace_Number(bytesReceived, ' ');
+	Trace_Number(sizeof(BlInfo));
+	Trace_String(":");
+	Trace_Number(bytesReceived);
 	CHECK(sizeof(BlInfo) == bytesReceived);
 
 	CHECK(0 == memcmp(&dummyBlInfo, response, bytesReceived));

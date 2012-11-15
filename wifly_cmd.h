@@ -31,7 +31,7 @@
 #define SET_RUN 0xFB
 #define SET_ON 0xFA
 #define SET_OFF 0xF9
-#define DELETE 0xF8
+#define CLEAR_SCRIPT 0xF8
 #define LOOP_ON 0xF7
 #define LOOP_OFF 0xF6
 #define START_BL 0xF5
@@ -45,14 +45,15 @@
 
 #define LOOP_INFINITE 0
 
+#define FW_MAX_MESSAGE_LENGTH 128
+
 //*********************** STRUCT DECLARATION *********************************************
 struct cmd_add_color {
-//TODO add this later, when we can handle longer cmd_frames
-//TODO	uns8 addr[4];
+	uns8 addr[4];
 	uns8 red;
 	uns8 green;
 	uns8 blue;
-//TODO uns8 hour;
+	uns8 hour;
 	uns8 minute;
 	uns8 second;
 };
@@ -115,9 +116,6 @@ struct cmd_frame {
 	uns8 stx;
 	uns8 length;
 	struct led_cmd led;
-	uns8 crcHigh;
-	uns8 crcLow;
 };
 #define FRAMELENGTH (sizeof(struct cmd_frame) + 1)			// *** max length of one commandframe
-//TODO remove this line #define FRAMELENGTH (NUM_OF_LED * 3 + 8)
 #endif /* #ifndef _WIFLY_CMD_H_ */
