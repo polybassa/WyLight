@@ -326,6 +326,17 @@ class ControlCmdSetFade : public WiflyControlCmd
 		};
 };
 
+class ControlCmdTest : public WiflyControlCmd
+{
+	public:
+		ControlCmdTest(void) : WiflyControlCmd(
+				string("test"),
+				string("' - run test loop")) {};
+
+		virtual void Run(WiflyControl& control) const {
+			control.FwTest();
+		};
+};
 
 static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdAddColor(),
@@ -341,6 +352,7 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdSetColor(),
 	new ControlCmdSetFade(),
 	new ControlCmdStartBl(),
+	new ControlCmdTest(),
 //TODO implement on demand	ControlCmdBlWriteEeprom writeEeprom;
 //TODO	ControlCmdBlWriteFlash writeFlash;
 //TODO implement on demand	ControlCmdBlWriteFuse writeFuse;
