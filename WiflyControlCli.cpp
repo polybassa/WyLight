@@ -30,6 +30,7 @@ WiflyControlCli::WiflyControlCli(const char* pAddr, short port, bool useTcp)
 
 void WiflyControlCli::Run(void)
 {
+	const WiflyControlCmd* pCmd;
 	ShowHelp();
 	string nextCmd;
 	while(mRunning)
@@ -37,17 +38,19 @@ void WiflyControlCli::Run(void)
 		cout << "WiflyControlCli: ";
 		cin >> nextCmd;
 
-		if("exit" == nextCmd) {
+		if("exit" == nextCmd)
+		{
 			return;
 		}
-
-		if("?" == nextCmd) {
+		else if("?" == nextCmd)
+		{
 			ShowHelp();
-		} else {
-			const WiflyControlCmd* pCmd = WiflyControlCmdBuilder::GetCmd(nextCmd);
+		}
+		else
+		{
+			pCmd = WiflyControlCmdBuilder::GetCmd(nextCmd);
 			if(NULL != pCmd) {
 				pCmd->Run(mControl);
-				delete pCmd;
 			}
 		}
 	}
@@ -55,38 +58,17 @@ void WiflyControlCli::Run(void)
 
 void WiflyControlCli::ShowHelp(void) const
 {
-	ControlCmdAddColor addColor;
-	ControlCmdBlInfo blInfo;
-	ControlCmdBlCrcFlash crcFlash;
-	ControlCmdBlEraseFlash eraseFlash;
-	ControlCmdBlReadEeprom readEeprom;
-	ControlCmdBlReadFlash readFlash;
-//TODO implement on demand	ControlCmdBlWriteEeprom writeEeprom;
-//TODO	ControlCmdBlWriteFlash writeFlash;
-//TODO implement on demand	ControlCmdBlWriteFuse writeFuse;
-	ControlCmdBlRunApp runApp;
-	ControlCmdClearScript clearScript;
-	ControlCmdSetColor setColor;
-	ControlCmdSetFade setFade;
-	ControlCmdStartBl startBl;
-	ControlCmdBlEraseEeprom eraseEeprom;
-	ControlCmdBlAutostartEnable autostartEnable;
 	cout << "Command reference:" << endl;
 	cout << "'?' - this help" << endl;
 	cout << "'exit' - terminate cli" << endl;
-	cout << addColor << endl;
-	cout << blInfo << endl;
-	cout << autostartEnable << endl;
-	cout << crcFlash << endl;
-	cout << eraseFlash << endl;
-	cout << eraseEeprom << endl;
-	cout << readEeprom << endl;
-	cout << readFlash << endl;
-	cout << runApp << endl;
-	cout << clearScript << endl;
-	cout << startBl << endl;
-	cout << setColor << endl;
-	cout << setFade << endl;
+
+	size_t i = 0;
+	const WiflyControlCmd* pCmd = WiflyControlCmdBuilder::GetCmd(i++);
+	while(pCmd != NULL) {
+		cout << *pCmd << endl;
+		pCmd = WiflyControlCmdBuilder::GetCmd(i++);
+	}
+	return;
 }
 
 #ifdef ANDROID
