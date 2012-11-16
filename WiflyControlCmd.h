@@ -27,14 +27,18 @@ using namespace std;
 class WiflyControlCmd
 {
 	public:
-		WiflyControlCmd(string description) : m_CmdDescription(description) {};
+		WiflyControlCmd(string name, string description = "' - missing description") : m_Name(name), m_Description(description) {};
+
 		friend ostream& operator<< (ostream& stream, const WiflyControlCmd& ref) {
-			stream << ref.m_CmdDescription;
+			stream << "'" << ref.m_Name << ref.m_Description;
 			return stream;
 		};
+
+		const string& GetName(void) const { return m_Name; };
 		virtual void Run(WiflyControl& control) const = 0;
 	protected:
-		const string m_CmdDescription;
+		const string m_Name;
+		const string m_Description;
 		void Print(const unsigned char* const pBuffer, const size_t size, const unsigned int address) const {
 			for(size_t i = 0; i < size; i++) {
 				if(0 == (i % 16)) {
@@ -65,7 +69,8 @@ class ControlCmdAddColor : public WiflyControlCmd
 {
 	public:
 		ControlCmdAddColor(void) : WiflyControlCmd(
-				string("'addcolor <addr> <rgb> <hour> <minute> <second>'\n")
+			string("addcolor"),
+				string(" <addr> <rgb> <hour> <minute> <second>'\n")
 			+ string("    <addr> hex bitmask, which leds should be set to the new color\n")
 			+ string("    <rgb> hex rgb value of the new color f.e. red: ff0000\n")
 			+ string("    <hour> hour of date event\n")
@@ -89,7 +94,8 @@ class ControlCmdBlInfo : public WiflyControlCmd
 {
 	public:
 		ControlCmdBlInfo(void) : WiflyControlCmd(
-				string("'bl_info' - read bootloader information")) {};
+				string("bl_info"), 
+				string("' - read bootloader information")) {};
 
 		virtual void Run(WiflyControl& control) const {
 			BlInfo info;
@@ -107,7 +113,7 @@ class ControlCmdBlInfo : public WiflyControlCmd
 class ControlCmdBlCrcFlash : public WiflyControlCmd
 {
 	public:
-		ControlCmdBlCrcFlash(void) : WiflyControlCmd("'crc_flash'") {};
+		ControlCmdBlCrcFlash(void) : WiflyControlCmd("crc_flash") {};
 		virtual void Run(WiflyControl& control) const {
 			unsigned int address;
 			size_t numBlocks;
@@ -134,7 +140,7 @@ class ControlCmdBlEraseFlash : public WiflyControlCmd
 {
 	public:
 		ControlCmdBlEraseFlash(void) : WiflyControlCmd(
-				string("'erase_flash'")) {};
+				string("erase_flash")) {};
 
 		virtual void Run(WiflyControl& control) const
 		{
@@ -153,7 +159,7 @@ class ControlCmdBlEraseEeprom : public WiflyControlCmd
 {
 	public:
 		ControlCmdBlEraseEeprom(void) : WiflyControlCmd(
-				string("'erase_eeprom'")) {};
+				string("erase_eeprom")) {};
 
 		virtual void Run(WiflyControl& control) const
 		{
@@ -172,7 +178,7 @@ class ControlCmdBlAutostartEnable : public WiflyControlCmd
 {
 	public:
 		ControlCmdBlAutostartEnable(void) : WiflyControlCmd(
-				string("'enable_bl_autostart'")) {};
+				string("enable_bl_autostart")) {};
 
 		virtual void Run(WiflyControl& control) const
 		{
@@ -192,7 +198,7 @@ class ControlCmdBlRead : public WiflyControlCmd
 {
 	public:
 		ControlCmdBlRead(string name) : WiflyControlCmd(
-				string("'read_") + name + string(" <addr> <numBytes>'\n")
+				string("read_") + name + string(" <addr> <numBytes>'\n")
 			+ string("    <addr> address where to start reading\n")
 			+ string("    <numBytes> number of bytes to read")), m_Name(name) {};
 
@@ -247,7 +253,9 @@ class ControlCmdBlRunApp : public WiflyControlCmd
 {
 	public:
 		ControlCmdBlRunApp(void) : WiflyControlCmd(
-				string("'run_app' - start application and terminate bootloader")) {};
+				string("run_app"),
+				string("' - start application and terminate bootloader"))
+		{};
 
 		virtual void Run(WiflyControl& control) const {
 			cout << "Starting application... ";
@@ -259,7 +267,8 @@ class ControlCmdStartBl : public WiflyControlCmd
 {
 	public:
 		ControlCmdStartBl(void) : WiflyControlCmd(
-				  string("'start_bl' - start bootloader and terminate application")) {};
+				  string("start_bl"),
+					string("' - start bootloader and terminate application")) {};
 				  
 		virtual void Run(WiflyControl& control) const {
 			cout << "Starting bootloader... ";
@@ -272,7 +281,8 @@ class ControlCmdClearScript : public WiflyControlCmd
 {
 	public:
 		ControlCmdClearScript(void) : WiflyControlCmd(
-				string("'clear' - clear script buffer")) {};
+				string("clear"),
+				string("' - clear script buffer")) {};
 
 		virtual void Run(WiflyControl& control) const {
 			control.ClearScript();
@@ -283,7 +293,8 @@ class ControlCmdSetColor : public WiflyControlCmd
 {
 	public:
 		ControlCmdSetColor(void) : WiflyControlCmd(
-				string("'setcolor <addr> <rgb>'\n")
+				string("setcolor"),
+				string(" <addr> <rgb>'\n")
 			+ string("    <addr> hex bitmask, which leds should be set to the new color\n")
 			+ string("    <rgb> hex rgb value of the new color f.e. red: ff0000")) {};
 
@@ -299,7 +310,8 @@ class ControlCmdSetFade : public WiflyControlCmd
 {
 	public:
 		ControlCmdSetFade(void) : WiflyControlCmd(
-				string("'setfade <addr> <rgb> <time>'\n")
+				string("setfade"),
+				string(" <addr> <rgb> <time>'\n")
 			+ string("    <addr> hex bitmask, which leds should be set to the new color\n")
 			+ string("    <rgb> hex rgb value of the new color f.e. red: ff0000\n")
 			+ string("    <time> the number of milliseconds the fade should take")) {};
@@ -314,36 +326,59 @@ class ControlCmdSetFade : public WiflyControlCmd
 		};
 };
 
+
+static const WiflyControlCmd* s_Cmds[] = {
+	new ControlCmdAddColor(),
+	new ControlCmdBlAutostartEnable(),
+	new ControlCmdBlInfo(),
+	new ControlCmdBlCrcFlash(),
+	new ControlCmdBlEraseEeprom(),
+	new ControlCmdBlEraseFlash(),
+	new ControlCmdBlReadEeprom(),
+	new ControlCmdBlReadFlash(),
+	new ControlCmdBlRunApp(),
+	new ControlCmdClearScript(),
+	new ControlCmdSetColor(),
+	new ControlCmdSetFade(),
+	new ControlCmdStartBl(),
+//TODO implement on demand	ControlCmdBlWriteEeprom writeEeprom;
+//TODO	ControlCmdBlWriteFlash writeFlash;
+//TODO implement on demand	ControlCmdBlWriteFuse writeFuse;
+};
+
+/**
+ * Class to provide easy access to all available control commands
+ */
 class WiflyControlCmdBuilder
 {
+		/**
+		 * Constant number of available control commands
+		 */
+		static const size_t s_NumCmds = sizeof(s_Cmds) / sizeof(s_Cmds[0]);
+
 	public:
-		static const WiflyControlCmd* GetCmd(string name) {
-			if("addcolor" == name) {
-				return new ControlCmdAddColor();
-			} else if("bl_info" == name) {
-				return new ControlCmdBlInfo();
-			} else if("clear" == name) {
-				return new ControlCmdClearScript();
-			} else if("crc_flash" == name) {
-				return new ControlCmdBlCrcFlash();
-			} else if("erase_flash" == name) {
-				return new ControlCmdBlEraseFlash();
-			} else if("read_eeprom" == name) {
-				return new ControlCmdBlReadEeprom();
-			} else if("read_flash" == name) {
-				return new ControlCmdBlReadFlash();
-			} else if("run_app" == name) {
-				return new ControlCmdBlRunApp();
-			} else if("setcolor" == name) {
-				return new ControlCmdSetColor();
-			} else if("setfade" == name) {
-				return new ControlCmdSetFade();
-			} else if("start_bl" == name) {
-				return new ControlCmdStartBl();
-			} else if("erase_eeprom" == name) {
-				return new ControlCmdBlEraseEeprom();
-			} else if("enable_bl_autostart" == name) {
-				return new ControlCmdBlAutostartEnable();
+		/**
+		 * Find command with the given name
+		 * @param name of the command
+		 * @return pointer to an command object for the given name or NULL in case of an error
+		 */
+		static const WiflyControlCmd* GetCmd(const string name) {
+			for(size_t i = 0; i < s_NumCmds; i++) {
+				if(0 == name.compare(s_Cmds[i]->GetName())) {
+					return s_Cmds[i];
+				}
+			}
+			return NULL;
+		}
+
+		/**
+		 * Use this function for iteration over all commands, which are available.
+		 * @param index of the command
+		 * @return pointer to an command object or NULL if index is out of range
+		 */
+		static const WiflyControlCmd* GetCmd(size_t index) {
+			if(index < s_NumCmds) {
+				return s_Cmds[index];
 			}
 			return NULL;
 		}
