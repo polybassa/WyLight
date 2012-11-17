@@ -400,15 +400,13 @@ void WiflyControl::FwTest(void)
 	static const unsigned long BLUE  = 0x0000FF00;
 	static const unsigned long WHITE = 0xFFFFFF00;
 	static const unsigned long BLACK = 0x00000000;
-	while(doRun)
-	{
-		SetColor(0xFFFFFFFFLU, BLACK);
-		SetColor(0xFF000000LU, RED);   sleep(1);
-		SetColor(0x00FF0000LU, GREEN); sleep(1);
-		SetColor(0x0000FF00LU, BLUE);  sleep(1);
-		SetColor(0x000000FFLU, WHITE); sleep(1);
-		SetFade (0xFFFFFFFFLU, 0x00000000LU, 5000);
-	}
+
+	SetColor(0xFFFFFFFFLU, BLACK);
+	SetColor(0xFF000000LU, RED);   sleep(1);
+	SetColor(0x00FF0000LU, GREEN); sleep(1);
+	SetColor(0x0000FF00LU, BLUE);  sleep(1);
+	SetColor(0x000000FFLU, WHITE); sleep(1);
+	SetFade (0xFFFFFFFFLU, 0x00000000LU, 5000);
 }
 
 void WiflyControl::StartBl(void)
