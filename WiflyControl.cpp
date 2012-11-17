@@ -360,10 +360,14 @@ bool WiflyControl::BlEnableAutostart(void) const
 	return BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
 }
 
-bool BlProgrammFlash(const char *pFilename)
+bool WiflyControl::BlProgramFlash(const char *pFilename) const
 {
-	std::ifstream intelHexInput;
+	ifstream intelHexInput;
 	intelhex mIntelHexObj;
+	
+#ifdef DEBUG
+	cout << endl << "in ProgramFlash function";
+#endif
 	
 	intelHexInput.open(pFilename, ifstream::in);
 	

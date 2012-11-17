@@ -174,6 +174,29 @@ class ControlCmdBlEraseEeprom : public WiflyControlCmd
 		}	
 };
 
+class ControlCmdBlProgramFlash : public WiflyControlCmd
+{
+	public:
+		ControlCmdBlProgramFlash(void) : WiflyControlCmd(
+				string("program_flash"),
+				string(" <hexFile>' \n ") + string("    <hexFile> path of hexfile to write")) {};
+
+		virtual void Run(WiflyControl& control) const
+		{
+		
+			const char path[] = "/Users/weitys1/Dropbox/Wifly_Light/Pic_program/main.hex";
+			
+			if(control.BlProgramFlash(&path[0]))
+			{
+			    cout << endl <<"Program device flash succesful"<<endl;
+			}
+			else
+			{
+			    cout << endl <<"Program device flash failed"<<endl;
+			}
+		}	
+};
+
 class ControlCmdBlAutostartEnable : public WiflyControlCmd
 {
 	public:
@@ -230,6 +253,7 @@ class ControlCmdBlRead : public WiflyControlCmd
 			}
 		};
 };
+
 
 class ControlCmdBlReadEeprom : public ControlCmdBlRead
 {
@@ -353,6 +377,7 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdSetFade(),
 	new ControlCmdStartBl(),
 	new ControlCmdTest(),
+	new ControlCmdBlProgramFlash(),
 //TODO implement on demand	ControlCmdBlWriteEeprom writeEeprom;
 //TODO	ControlCmdBlWriteFlash writeFlash;
 };
