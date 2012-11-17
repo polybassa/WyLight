@@ -59,6 +59,7 @@ class WiflyControl
 		bool BlWriteEeprom(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
 		bool BlEnableAutostart(void) const;		
 		void ClearScript(void);
+		void FwTest(void);
 		void StartBl(void);
 		void SetColor(unsigned long addr, unsigned long rgba);
 		void SetColor(std::string& addr, std::string& rgba);

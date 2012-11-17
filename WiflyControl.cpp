@@ -393,6 +393,24 @@ bool WiflyControl::FwSend(const struct cmd_frame* pFrame) const
 	return (0 <= bytesWritten) && (numBytes == static_cast<size_t>(bytesWritten));
 }
 
+void WiflyControl::FwTest(void)
+{
+	static const unsigned long RED   = 0xFF000000;
+	static const unsigned long GREEN = 0x00FF0000;
+	static const unsigned long BLUE  = 0x0000FF00;
+	static const unsigned long WHITE = 0xFFFFFF00;
+	static const unsigned long BLACK = 0x00000000;
+	while(doRun)
+	{
+		SetColor(0xFFFFFFFFLU, BLACK);
+		SetColor(0xFF000000LU, RED);   sleep(1);
+		SetColor(0x00FF0000LU, GREEN); sleep(1);
+		SetColor(0x0000FF00LU, BLUE);  sleep(1);
+		SetColor(0x000000FFLU, WHITE); sleep(1);
+		SetFade (0xFFFFFFFFLU, 0x00000000LU, 5000);
+	}
+}
+
 void WiflyControl::StartBl(void)
 {
 	mCmdFrame.led.cmd = START_BL;
