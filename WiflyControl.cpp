@@ -444,6 +444,7 @@ void WiflyControl::FwTest(void)
 	static const unsigned long BLUE  = 0x0000FF00;
 	static const unsigned long WHITE = 0xFFFFFF00;
 	static const unsigned long BLACK = 0x00000000;
+
 	while(doRun > 0)
 	{
 		SetColor(0xFFFFFFFFLU, BLACK);

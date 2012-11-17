@@ -37,7 +37,7 @@ struct LedBuffer{
 	uns16 cyclesLeft[NUM_OF_LED * 3];
 	uns16 periodeLength[NUM_OF_LED * 3];
 	uns8 step[NUM_OF_LED / 8 * 3];
-	uns8 stepSize[NUM_OF_LED];
+	uns8 stepSize[NUM_OF_LED * 3];
 	uns16 fadeTmms;
 	struct status_bits{
 		uns8 run_aktiv : 1;
