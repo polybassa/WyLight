@@ -26,7 +26,7 @@
 #include <fstream>
 #include <iomanip>
 #include <cstdlib>
-#include "Intel-HEX-Class-master/intelhex_class/intelhexclass.h"
+#include "intelhexclass.h"
 
 using namespace std;
 
@@ -373,7 +373,7 @@ bool BlProgrammFlash(const char *pFilename)
 	    return false;
 	}
 	
-	//intelHexInput >> mIntelHexObj;
+	intelHexInput >> mIntelHexObj;
 	
 	
 	cout << "Final address is 0x" << setw(4) << setfill('0') << uppercase << hex << mIntelHexObj.currentAddress() << endl;
@@ -437,26 +437,28 @@ bool WiflyControl::FwSend(const struct cmd_frame* pFrame) const
 
 void WiflyControl::FwTest(void)
 {
-	bool doRun = true;
+	int doRun = 5;
   
 	static const unsigned long RED   = 0xFF000000;
 	static const unsigned long GREEN = 0x00FF0000;
 	static const unsigned long BLUE  = 0x0000FF00;
 	static const unsigned long WHITE = 0xFFFFFF00;
 	static const unsigned long BLACK = 0x00000000;
-	while(doRun)
+	while(doRun > 0)
 	{
 		SetColor(0xFFFFFFFFLU, BLACK);
 		SetColor(0xFF000000LU, RED);   sleep(1);
 		SetColor(0x00FF0000LU, GREEN); sleep(1);
 		SetColor(0x0000FF00LU, BLUE);  sleep(1);
 		SetColor(0x000000FFLU, WHITE); sleep(1);
-		SetFade(0xFFFFFFFFLU, 0x00000000LU, 5000, false);
-		SetFade(0x000000FFLU, RED, 5000, true);
-		SetFade(0x0000FF00LU, GREEN, 5000, true);
-		SetFade(0x00FF0000LU, BLUE, 5000, true);
-		SetFade(0xFF000000LU, WHITE, 5000, false);
+		SetFade(0xFFFFFFFFLU, 0x00000000LU, 800, false);
 		sleep(20);
+		SetFade(0x000000FFLU, RED, 400, true);
+		SetFade(0x0000FF00LU, GREEN, 100, true);
+		SetFade(0x00FF0000LU, BLUE, 200, true);
+		SetFade(0xFF000000LU, WHITE, 300, false);
+		sleep(20);
+		doRun--;
 	}
 }
 
@@ -485,7 +487,7 @@ void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned shor
 	mCmdFrame.length = sizeof(cmd_set_fade) + 3;
 	mCmdFrame.led.cmd = SET_FADE;
 	SetAddrRgb(mCmdFrame.led.data.set_fade, addr, rgba);
-	mCmdFrame.led.data.set_fade.fadeTmms = htons(fadeTmms);
+	mCmdFrame.led.data.set_fade.fadeTmms = fadeTmms;
 	mCmdFrame.led.data.set_fade.parallelFade = parallelFade;
 	FwSend(&mCmdFrame);
 }

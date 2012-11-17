@@ -14,7 +14,7 @@ ANDROID_BIN=android/.metadata ${ANDROID_DIR}/bin/ ${ANDROID_DIR}/gen/ ${ANDROID_
 
 X86_SRC=main.c crc.c commandstorage.c eeprom.c error.c ledstrip.c RingBuf.c ScriptCtrl.c spi.c timer.c usart.c x86_wrapper.c x86_gl.c
 
-X86_CLIENT_BUILD=g++ BlRequest.cpp ClientSocket.cpp WiflyControl.cpp WiflyControlCli.cpp crc.c -DX86 -lpthread -o client.bin -Wall -pedantic
+X86_CLIENT_BUILD=g++ intelhexclass.cpp BlRequest.cpp ClientSocket.cpp WiflyControl.cpp WiflyControlCli.cpp crc.c -DX86 -lpthread -o client.bin -Wall -pedantic
 
 all_nils: pic simu x86_client
 
