@@ -448,6 +448,7 @@ void WiflyControl::FwTest(void)
 	static const unsigned long BLUE  = 0x0000FF00;
 	static const unsigned long WHITE = 0xFFFFFF00;
 	static const unsigned long BLACK = 0x00000000;
+
 	while(doRun > 0)
 	{
 		SetColor(0xFFFFFFFFLU, BLACK);
@@ -491,7 +492,7 @@ void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned shor
 	mCmdFrame.length = sizeof(cmd_set_fade) + 3;
 	mCmdFrame.led.cmd = SET_FADE;
 	SetAddrRgb(mCmdFrame.led.data.set_fade, addr, rgba);
-	mCmdFrame.led.data.set_fade.fadeTmms = fadeTmms;
+	mCmdFrame.led.data.set_fade.fadeTmms = htons(fadeTmms);
 	mCmdFrame.led.data.set_fade.parallelFade = parallelFade;
 	FwSend(&mCmdFrame);
 }
