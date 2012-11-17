@@ -113,6 +113,7 @@ void Commandstorage_GetCommands()
 						{
 									g_ErrorBits.EepromFailure = 1;
 						}
+						Commandstorage_Clear();
 					}
 #ifndef NO_CRC
 			else
@@ -125,6 +126,7 @@ void Commandstorage_GetCommands()
 				Trace_Hex(g_CmdBuf.cmd_buf[g_CmdBuf.cmd_counter - 1]);
 				Trace_Hex(g_CmdBuf.cmd_buf[g_CmdBuf.cmd_counter]);
 				Trace_String("\n");
+				Commandstorage_Clear();
 				return;
 			}
 #endif

@@ -322,7 +322,7 @@ class ControlCmdSetFade : public WiflyControlCmd
 			cin >> addr;
 			cin >> color;
 			cin >> timevalue;
-			control.SetFade(addr, color, (unsigned short)timevalue * 1024);
+			control.SetFade(addr, color, (unsigned short)timevalue * 1024, false);
 		};
 };
 
@@ -355,7 +355,6 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdTest(),
 //TODO implement on demand	ControlCmdBlWriteEeprom writeEeprom;
 //TODO	ControlCmdBlWriteFlash writeFlash;
-//TODO implement on demand	ControlCmdBlWriteFuse writeFuse;
 };
 
 /**

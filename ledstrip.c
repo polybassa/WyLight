@@ -180,6 +180,8 @@ void Ledstrip_SetColor(struct cmd_set_color *pCmd)
 			k++;k++;
 		}
 	);
+	
+	gLedBuf.flags.run_aktiv = 0;
 }
 
 void Ledstrip_SetColorDirect(uns8 *pValues)
@@ -280,6 +282,8 @@ void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 			INC_BIT_COUNTER(stepAddress, stepMask);
 		}
 	);
+	gLedBuf.flags.run_aktiv = 0;
+	
 }
 
 void Ledstrip_SetRun(struct cmd_set_run *pCmd)

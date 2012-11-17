@@ -40,7 +40,7 @@ struct RingBuffer{
 	uns8 write;
 	bit error_full;
 };
-extern struct RingBuffer g_RingBuf;
+extern bank7 struct RingBuffer g_RingBuf;
 
 /**
  * Some macros 

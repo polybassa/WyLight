@@ -53,6 +53,8 @@
 	#define bank10
 	#define clearRAM(x)
 	#define Platform_AllowInterrupts(x)
+	#define Platform_EnableAllInterrupts()
+	#define Platform_DisableAllInterrupts()
 	#define Platform_CheckInputs(x)
 	#define Platform_DisableBootloaderAutostart(x)
 	#define InitFactoryRestoreWLAN(x)
@@ -76,6 +78,9 @@
 	#define Platform_ReadPerformanceCounter(x) {x.low8 = TMR3L; x.high8 = TMR3H;}
 	
 	void Platform_AllowInterrupts();
+	
+	void Platform_EnableAllInterrupts();
+	void Platform_DisableAllInterrupts();
 	
 	void Platform_CheckInputs();
 	

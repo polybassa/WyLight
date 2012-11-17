@@ -295,6 +295,7 @@ void ScriptCtrl_Run(void)
 			{
 				gScriptBuf.waitValue = nextCmd.data.set_fade.fadeTmms;
 			}
+			
 			/* move execute pointer to the next command */
 			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
 			if(!gScriptBuf.inLoop)

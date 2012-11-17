@@ -97,10 +97,17 @@ void Trace_Print()
 {	
 	UART_Send(0x0d);UART_Send(0x0a);
 	UART_SendString("TRACEBUFFER:");
-	while(RingBuf_IsNotEmpty(g_TraceBuf))
+	
+	while(RingBuf_IsEmpty(&g_TraceBuf) == 0)
 	{
 	    UART_Send(RingBuf_Get(&g_TraceBuf));
 	}
+	UART_Send(0x0d);UART_Send(0x0a);
+	UART_SendString("Timevalues: ScriptBuf Waitvalue: ");
+	UART_SendHex_16(gScriptBuf.waitValue);
+	UART_Send(0x0d);UART_Send(0x0a);
+	UART_SendString("FadeTimeValue: ");
+	UART_SendHex_16(gLedBuf.fadeTmms);
 	UART_Send(0x0d);UART_Send(0x0a);
 }
 

@@ -23,6 +23,10 @@
 #include <sstream>
 #include <cassert>
 #include <stddef.h>
+#include <fstream>
+#include <iomanip>
+#include <cstdlib>
+#include "Intel-HEX-Class-master/intelhex_class/intelhexclass.h"
 
 using namespace std;
 
@@ -356,6 +360,44 @@ bool WiflyControl::BlEnableAutostart(void) const
 	return BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
 }
 
+bool BlProgrammFlash(const char *pFilename)
+{
+	std::ifstream intelHexInput;
+	intelhex mIntelHexObj;
+	
+	intelHexInput.open(pFilename, ifstream::in);
+	
+	if(!intelHexInput.good())
+	{
+	    cout << "Error: couldn't open " << *pFilename << endl;
+	    return false;
+	}
+	
+	//intelHexInput >> mIntelHexObj;
+	
+	
+	cout << "Final address is 0x" << setw(4) << setfill('0') << uppercase << hex << mIntelHexObj.currentAddress() << endl;
+	
+	cout << "File contained " << mIntelHexObj.getNoWarnings() << " warnings and " 
+	<< mIntelHexObj.getNoErrors() << "errors." << endl;
+	
+	while(mIntelHexObj.getNoErrors() > 0)
+	{
+	    string message;
+	    mIntelHexObj.popNextError(message);
+	    cout << message << endl;
+	}
+	
+	while(mIntelHexObj.getNoWarnings() > 0)
+	{
+	    string message;
+	    mIntelHexObj.popNextWarning(message);
+	    cout << message << endl;
+	}
+	
+	return true;
+}
+
 void WiflyControl::ClearScript(void)
 {
 	mCmdFrame.length = 3;
@@ -395,6 +437,8 @@ bool WiflyControl::FwSend(const struct cmd_frame* pFrame) const
 
 void WiflyControl::FwTest(void)
 {
+	bool doRun = true;
+  
 	static const unsigned long RED   = 0xFF000000;
 	static const unsigned long GREEN = 0x00FF0000;
 	static const unsigned long BLUE  = 0x0000FF00;
@@ -407,7 +451,12 @@ void WiflyControl::FwTest(void)
 		SetColor(0x00FF0000LU, GREEN); sleep(1);
 		SetColor(0x0000FF00LU, BLUE);  sleep(1);
 		SetColor(0x000000FFLU, WHITE); sleep(1);
-		SetFade (0xFFFFFFFFLU, 0x00000000LU, 5000);
+		SetFade(0xFFFFFFFFLU, 0x00000000LU, 5000, false);
+		SetFade(0x000000FFLU, RED, 5000, true);
+		SetFade(0x0000FF00LU, GREEN, 5000, true);
+		SetFade(0x00FF0000LU, BLUE, 5000, true);
+		SetFade(0xFF000000LU, WHITE, 5000, false);
+		sleep(20);
 	}
 }
 
@@ -431,18 +480,19 @@ void WiflyControl::SetColor(string& addr, string& rgba)
 	SetColor(ToRGBA(addr), ToRGBA(rgba) << 8);
 }
 
-void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms)
+void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade)
 {
 	mCmdFrame.length = sizeof(cmd_set_fade) + 3;
 	mCmdFrame.led.cmd = SET_FADE;
 	SetAddrRgb(mCmdFrame.led.data.set_fade, addr, rgba);
 	mCmdFrame.led.data.set_fade.fadeTmms = htons(fadeTmms);
+	mCmdFrame.led.data.set_fade.parallelFade = parallelFade;
 	FwSend(&mCmdFrame);
 }
 
-void WiflyControl::SetFade(string& addr, string& rgba, unsigned short fadeTmms)
+void WiflyControl::SetFade(string& addr, string& rgba, unsigned short fadeTmms, bool parallelFade)
 {
-	SetFade(ToRGBA(addr), ToRGBA(rgba) << 8, fadeTmms);
+	SetFade(ToRGBA(addr), ToRGBA(rgba) << 8, fadeTmms, parallelFade);
 }
 
 unsigned long WiflyControl::ToRGBA(string& s) const
@@ -454,7 +504,7 @@ unsigned long WiflyControl::ToRGBA(string& s) const
 	stringstream converter;
 	converter << hex << s;
 	converter >> rgba;
-	cout << rgba << "<" << endl;
+	cout << hex << rgba << "<" << endl;
 	return rgba;
 }
 

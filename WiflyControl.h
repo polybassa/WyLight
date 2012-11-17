@@ -20,7 +20,6 @@
 #define _WIFLYCONTROL_H_
 
 #include <string>
-#include <pthread.h>
 #include "ClientSocket.h"
 #include "wifly_cmd.h"
 #include "BlRequest.h"
@@ -57,13 +56,14 @@ class WiflyControl
 		bool BlRunApp(void) const;
 		bool BlWriteFlash(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
 		bool BlWriteEeprom(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
-		bool BlEnableAutostart(void) const;		
+		bool BlEnableAutostart(void) const;
+		bool BlProgrammFlash(const char* pFilename);
 		void ClearScript(void);
 		void FwTest(void);
 		void StartBl(void);
 		void SetColor(unsigned long addr, unsigned long rgba);
 		void SetColor(std::string& addr, std::string& rgba);
-		void SetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms);
-		void SetFade(std::string& addr, std::string& rgba, unsigned short fadeTmms);
+		void SetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade);
+		void SetFade(std::string& addr, std::string& rgba, unsigned short fadeTmms, bool parallelFade);
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */

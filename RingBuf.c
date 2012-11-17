@@ -18,7 +18,7 @@
 
 #include "RingBuf.h"
 
-struct RingBuffer g_RingBuf;
+bank7 struct RingBuffer g_RingBuf;
 
 void RingBuf_Init(struct RingBuffer *pBuf)
 {
@@ -29,17 +29,20 @@ void RingBuf_Init(struct RingBuffer *pBuf)
 
 uns8 RingBuf_Get(struct RingBuffer *pBuf)
 {
+	Platform_DisableAllInterrupts();
 	uns8 read = pBuf->read;
 	uns8 result = pBuf->data[read];
 	pBuf->read = RingBufInc(read);
 	
 	//TODO make this thread safe or remove flag!
 	pBuf->error_full = FALSE;
+	Platform_EnableAllInterrupts();
 	return result;
 }
 
 void RingBuf_Put(struct RingBuffer *pBuf, uns8 value)
 {
+	Platform_DisableAllInterrupts();
 	uns8 writeNext = RingBufInc(pBuf->write);
 	if(writeNext != pBuf->read)
 	{
@@ -48,6 +51,7 @@ void RingBuf_Put(struct RingBuffer *pBuf, uns8 value)
 		pBuf->write = writeNext;
 	}
 	else pBuf->error_full = 1;
+	Platform_EnableAllInterrupts();
 }
 
 bit RingBuf_HasError(struct RingBuffer *pBuf)
@@ -57,7 +61,9 @@ bit RingBuf_HasError(struct RingBuffer *pBuf)
 
 bit RingBuf_IsEmpty(struct RingBuffer *pBuf)
 {
+	Platform_DisableAllInterrupts();
 	uns8 write = pBuf->write;
 	uns8 read = pBuf->read;
+	Platform_EnableAllInterrupts();
 	return write == read;
 }
