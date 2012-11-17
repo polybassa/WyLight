@@ -183,10 +183,11 @@ class ControlCmdBlProgramFlash : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const
 		{
-		
-			const char path[] = "/Users/weitys1/Dropbox/Wifly_Light/Pic_program/main.hex";
+			string path;
 			
-			if(control.BlProgramFlash(&path[0]))
+			cin >> path;
+					  
+			if(control.BlProgramFlash(path))
 			{
 			    cout << endl <<"Program device flash succesful"<<endl;
 			}

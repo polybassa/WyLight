@@ -360,20 +360,22 @@ bool WiflyControl::BlEnableAutostart(void) const
 	return BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
 }
 
-bool WiflyControl::BlProgramFlash(const char *pFilename) const
+bool WiflyControl::BlProgramFlash(std::string& pFilename) const
 {
-	ifstream intelHexInput;
-	intelhex mIntelHexObj;
 	
 #ifdef DEBUG
 	cout << endl << "in ProgramFlash function";
-#endif
-	
-	intelHexInput.open(pFilename, ifstream::in);
+
+	cout << pFilename;
+#endif	
+	ifstream intelHexInput;
+	/*
+	//intelHexInput.open(pFilename, ifstream::in);
+	intelHexInput.open("/Users/weitys1/Dropbox/Wifly_Light/Pic_program/main.hex", ifstream::in);
 	
 	if(!intelHexInput.good())
 	{
-	    cout << "Error: couldn't open " << *pFilename << endl;
+	    //cout << "Error: couldn't open " << *pFilename << endl;
 	    return false;
 	}
 	
@@ -398,7 +400,7 @@ bool WiflyControl::BlProgramFlash(const char *pFilename) const
 	    mIntelHexObj.popNextWarning(message);
 	    cout << message << endl;
 	}
-	
+	*/
 	return true;
 }
 
