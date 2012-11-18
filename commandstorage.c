@@ -160,6 +160,7 @@ void Commandstorage_Init()
 {
     g_CmdBuf.counter = 0;
     g_CmdBuf.state = CS_WaitForSTX;
+    Crc_NewCrc(&g_CmdBuf.CrcH, &g_CmdBuf.CrcL);
 }
 
 /** STATEMACHINE FOR GetCommands:
@@ -187,7 +188,8 @@ void Commandstorage_Init()
  * 		read CHAR			--> new state = state 3, save CHAR to commandbuffer, increment counter
  * 		read DLE			--> new state = state 2
  * 		read STX			--> new state = state 1
- * 		read ETX			--> new state = state 0, do CRC-check, save dataframe
+ * 		read ETX			--> new state = state 0, do CRC-check, save dataframe 
+ * 
  * **/
 
 void Commandstorage_GetCommands()
@@ -221,7 +223,6 @@ void Commandstorage_GetCommands()
 	  case CS_DeleteBuffer:
 	  {
 	      Commandstorage_Init();
-	      Crc_NewCrc(&g_CmdBuf.CrcH, &g_CmdBuf.CrcL);
 	      
 	      if(new_byte == STX)
 	      {
@@ -268,7 +269,8 @@ void Commandstorage_GetCommands()
 
 		  if((0 == g_CmdBuf.CrcL) && (0 == g_CmdBuf.CrcH)) 	/* CRC Check */
 		  {
-			if(ScriptCtrl_Add(&g_CmdBuf.buffer[0]))	/* Save Command */
+#ifndef UNIT_TEST
+			if(ScriptCtrl_Add(&g_CmdBuf.buffer[0]))
 			{
 				UART_SendString("GC");
 			}
@@ -276,6 +278,7 @@ void Commandstorage_GetCommands()
 			{
 				g_ErrorBits.EepromFailure = 1;
 			}
+#endif
 		  }
 		  else
 		  {
