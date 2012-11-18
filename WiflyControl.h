@@ -58,7 +58,7 @@ class WiflyControl
 		bool BlWriteFlash(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
 		bool BlWriteEeprom(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
 		bool BlEnableAutostart(void) const;
-		bool BlProgramFlash(std::string& Filename) const;
+		bool BlProgramFlash(std::string& Filename);
 		void ClearScript(void);
 		void FwTest(void);
 		void StartBl(void);

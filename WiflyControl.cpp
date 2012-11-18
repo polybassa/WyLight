@@ -360,48 +360,9 @@ bool WiflyControl::BlEnableAutostart(void) const
 	return BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
 }
 
-bool WiflyControl::BlProgramFlash(std::string& pFilename) const
+bool WiflyControl::BlProgramFlash(std::string& pFilename)
 {
-	
-#ifdef DEBUG
-	cout << endl << "in ProgramFlash function";
-
-	cout << pFilename;
-#endif	
-	ifstream intelHexInput;
-	/*
-	//intelHexInput.open(pFilename, ifstream::in);
-	intelHexInput.open("/Users/weitys1/Dropbox/Wifly_Light/Pic_program/main.hex", ifstream::in);
-	
-	if(!intelHexInput.good())
-	{
-	    //cout << "Error: couldn't open " << *pFilename << endl;
-	    return false;
-	}
-	
-	intelHexInput >> mIntelHexObj;
-	
-	
-	cout << "Final address is 0x" << setw(4) << setfill('0') << uppercase << hex << mIntelHexObj.currentAddress() << endl;
-	
-	cout << "File contained " << mIntelHexObj.getNoWarnings() << " warnings and " 
-	<< mIntelHexObj.getNoErrors() << "errors." << endl;
-	
-	while(mIntelHexObj.getNoErrors() > 0)
-	{
-	    string message;
-	    mIntelHexObj.popNextError(message);
-	    cout << message << endl;
-	}
-	
-	while(mIntelHexObj.getNoWarnings() > 0)
-	{
-	    string message;
-	    mIntelHexObj.popNextWarning(message);
-	    cout << message << endl;
-	}
-	*/
-	return true;
+	return false;
 }
 
 void WiflyControl::ClearScript(void)
