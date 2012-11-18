@@ -32,8 +32,11 @@
 #define RunTest(RUN, FUNC) { \
 	if(RUN) { \
 		int _errors= FUNC(); \
-		printf(#FUNC"() run with %d errors\n", _errors); \
-		numErrors+= _errors; numTests++; \
+		if(_errors != 0) { \
+			printf(#FUNC"() run with %d errors\n", _errors); \
+			numErrors+= _errors; \
+		} \
+		numTests++; \
 	} else { \
 		numSkipped++; \
 	} \
@@ -44,7 +47,7 @@
 
 #define UnitTestMainBegin(X) int numErrors = 0; int numSkipped = 0; int numTests = 0;
 #define UnitTestMainEnd(X) { \
-	printf("%s run %d Tests (%d skipped | %d errors)\n", __FILE__, numTests, numSkipped, numErrors); \
+	printf("%20s run %d Tests (%d skipped | %d errors)\n", __FILE__, numTests, numSkipped, numErrors); \
 	return numErrors; \
 }
 

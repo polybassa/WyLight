@@ -37,14 +37,14 @@ x86_client_debug:
 
 #generic rule to build and run c unittests
 %_ut.bin: %_ut.c %.c %.h
-	gcc $< $(subst _ut.c,.c,$<) eeprom.c -DX86 -DUNIT_TEST -o $@ -Wall
-	./$@
+	@gcc $< $(subst _ut.c,.c,$<) eeprom.c -DX86 -DUNIT_TEST -o $@ -Wall
+	@./$@
 
 BlRequest_ut.bin: BlRequest_ut.cpp BlRequest.cpp BlRequest.h unittest.h
-	g++ BlRequest_ut.cpp BlRequest.cpp crc.c -DX86 -DUNIT_TEST -o $@ -Wall -pedantic
-	./$@
+	@g++ BlRequest_ut.cpp BlRequest.cpp crc.c -DX86 -DUNIT_TEST -o $@ -Wall -pedantic
+	@./$@
 
 test: clean BlRequest_ut.bin crc_ut.bin ledstrip_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin
 
 clean:
-	rm -rf *.asm *.bin *.cod *.fcs *.hex *.lst *.occ *.var .metadata/ ${ANDROID_BIN}					
+	@rm -rf *.asm *.bin *.cod *.fcs *.hex *.lst *.occ *.var .metadata/ ${ANDROID_BIN}

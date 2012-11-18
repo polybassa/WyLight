@@ -29,19 +29,64 @@ void SPI_SendLedBuffer(void) {};
 struct ScriptBuf gScriptBuf;
 
 
+struct LedBuffer gLedBuf;
 int ut_Ledstrip_Init(void)
 {
 	TestCaseBegin();
-
+	const char* pCur = (const char*)(&gLedBuf);
+	const char* const pEnd = pCur + sizeof(gLedBuf);	
+	Ledstrip_Init();
+	while(pCur < pEnd)
+	{
+		CHECK(0 == *pCur);
+		pCur++;
+	}
 	TestCaseEnd();
 }
 
+int ut_Ledstrip_SetColor(void)
+{
+	TestCaseBegin();
+	size_t i;
+	const uns8 red = 0xA5;
+	const uns8 green = 0x5A;
+	const uns8 blue = 3;
+	struct cmd_set_color testCmd = {{0xff, 0xff, 0xff, 0xff}, red, green, blue};
+	Ledstrip_SetColor(&testCmd);
+	for(i = 0; i < NUM_OF_LED;)
+	{
+		// colors are in reverse BGR because we shift the last byte as first to the led strip.
+		CHECK(blue == (gLedBuf.led_array[i++]));
+		CHECK(green == (gLedBuf.led_array[i++]));
+		CHECK(red == (gLedBuf.led_array[i++]));
+	}
+	TestCaseEnd();
+}
 
+int ut_Ledstrip_SetColorDirect(void)
+{
+	TestCaseBegin();
+	size_t i;
+	uns8 testCmd[NUM_OF_LED * 3];
+	for(i = 0; i < sizeof(testCmd); i++)
+	{
+		testCmd[i] = i;
+	}
+
+	Ledstrip_SetColorDirect(testCmd);
+	for(i = 0; i < NUM_OF_LED * 3; i++)
+	{
+		CHECK(i == (gLedBuf.led_array[i]));
+	}
+	TestCaseEnd();
+}
 
 int main(int argc, const char* argv[])
 {
 	UnitTestMainBegin();
 	RunTest(true, ut_Ledstrip_Init);
+	RunTest(true, ut_Ledstrip_SetColor);
+	RunTest(true, ut_Ledstrip_SetColorDirect);
 	UnitTestMainEnd();
 }
 
