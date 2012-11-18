@@ -199,7 +199,11 @@ void InitAll()
 	Timer_Init();
 	Ledstrip_Init();
 	Error_Init();
+#ifdef _old_commandstorage_
 	Commandstorage_Clear();
+#else
+	Commandstorage_Init();
+#endif
 	Rtc_Init();
 	ScriptCtrl_Init();
 

@@ -24,7 +24,14 @@
 #include "rtc.h"
 
 //*********************** ENUMERATIONS *********************************************
+#ifdef _old_commandstorage_
 #define STX 0xFF
+#else
+#define STX 0x0F
+#define DLE 0x05
+#define ETX 0x04
+#endif /* _old_commandstorage_ */
+
 #define WAIT 0xFE
 #define SET_COLOR 0xFD
 #define SET_FADE 0xFC
