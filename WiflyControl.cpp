@@ -360,39 +360,39 @@ bool WiflyControl::BlEnableAutostart(void) const
 	return BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
 }
 
-bool WiflyControl::BlProgramFlash(std::string& pFilename)
+bool WiflyControl::BlProgramFlash(const std::string& pFilename)
 {
-	
-#ifdef DEBUG
-	cout << endl << "in ProgramFlash function";
+	cout << endl << __FUNCTION__ << "(" << pFilename << ")" << endl;
+	cout << "opening '" << pFilename << "' ...";
 
-	cout << endl << pFilename;
-#endif	
-	ifstream intelHexInput;
-	
-	//intelHexInput.open(pFilename, ifstream::in);
-	intelHexInput.open("main.hex", ifstream::in);
-	
-	if(!intelHexInput.good())
+	ifstream hexFile("main.hex");
+	if(!hexFile.is_open())
 	{
-	    cout << "Error: couldn't open " << pFilename << endl;
-	    return false;
+		cout << "failed!" << endl;
+		return false;
 	}
-	
-	if(intelHexInput.is_open())
+	cout << "done." << endl;
+
+	size_t numBytes = 0;
+	char temp[10];
+	string line;
+	intelhex hexConverter();
+	istream in(hexFile);	
+	in >>	hexConverter;
+	//while(hexFile >> temp)
+	while(getline(hexFile, line))
 	{
-		cout << "offen";
+		numBytes += line.length();
+		cout << line;
+		//if(0 == memcmp(temp, ":00000001FF", 10)) break;
+		if(0 == line.compare(":00000001FF")) break;
 	}
-	else cout << "geschlossen";
+	cout << "->" << line << "<-" << endl;
+		numBytes += line.length();
+
+	cout << numBytes << " bytes read" << endl;
 	
-	
-	while(!intelHexInput.eof())
-	{
-		cout << (char)intelHexInput.get();
-	}
-	
-	intelHexInput.close();
-	
+	hexFile.close();
 	/*
 	intelhex mIntelHexObj;
 
@@ -529,7 +529,6 @@ unsigned long WiflyControl::ToRGBA(string& s) const
 	stringstream converter;
 	converter << hex << s;
 	converter >> rgba;
-	cout << hex << rgba << "<" << endl;
 	return rgba;
 }
 
