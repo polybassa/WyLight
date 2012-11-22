@@ -77,9 +77,6 @@ struct cmd_set_fade {
 	uns8 parallelFade;
 	uns16 fadeTmms; //fadetime in ms
 };
-#ifdef X86
-#pragma pack(pop)
-#endif
 
 struct cmd_loop_end {
 	uns8 startIndex; /* pointer to the corresponding cmd_loop_start */
@@ -121,5 +118,8 @@ struct cmd_frame {
 	uns8 length;
 	struct led_cmd led;
 };
+#ifdef X86
+#pragma pack(pop)
+#endif
 #define FRAMELENGTH (sizeof(struct cmd_frame) + 1)			// *** max length of one commandframe
 #endif /* #ifndef _WIFLY_CMD_H_ */
