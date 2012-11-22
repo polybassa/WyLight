@@ -360,63 +360,32 @@ bool WiflyControl::BlEnableAutostart(void) const
 	return BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
 }
 
-bool WiflyControl::BlProgramFlash(std::string& pFilename)
+bool WiflyControl::BlProgramFlash(const std::string& pFilename)
 {
-	
-#ifdef DEBUG
-	cout << endl << "in ProgramFlash function";
+	cout << endl << __FUNCTION__ << "(" << pFilename << ")" << endl;
+	cout << "opening '" << pFilename << "' ...";
 
-	cout << endl << pFilename;
-#endif	
-	ifstream intelHexInput;
-	
-	//intelHexInput.open(pFilename, ifstream::in);
-	intelHexInput.open("main.hex", ifstream::in);
-	
-	if(!intelHexInput.good())
+	std::ifstream hexFile;
+	hexFile.open("main.hex", ifstream::in);
+	if(!hexFile.good())
 	{
-	    cout << "Error: couldn't open " << pFilename << endl;
-	    return false;
+		cout << "failed!" << endl;
+		return false;
 	}
-	
-	if(intelHexInput.is_open())
-	{
-		cout << "offen";
-	}
-	else cout << "geschlossen";
-	
-	
-	while(!intelHexInput.eof())
-	{
-		cout << (char)intelHexInput.get();
-	}
-	
-	intelHexInput.close();
-	
-	/*
-	intelhex mIntelHexObj;
+	cout << "done." << endl;
 
-	intelHexInput >> mIntelHexObj;
-	
-	
-	cout << "Final address is 0x" << setw(4) << setfill('0') << uppercase << hex << mIntelHexObj.currentAddress() << endl;
-	
-	cout << "File contained " << mIntelHexObj.getNoWarnings() << " warnings and " 
-	<< mIntelHexObj.getNoErrors() << "errors." << endl;
-	
-	while(mIntelHexObj.getNoErrors() > 0)
-	{
-	    string message;
-	    mIntelHexObj.popNextError(message);
-	    cout << message << endl;
+	size_t numBytes = 0;
+	unsigned char nextByte;
+	intelhex hexConverter;
+	hexFile >> hexConverter;
+	hexConverter.begin();
+	while(hexConverter.getData(&nextByte)) {
+		cout << hex << (int)nextByte;
+		hexConverter.incrementAddress();
+		numBytes++;
 	}
-	
-	while(mIntelHexObj.getNoWarnings() > 0)
-	{
-	    string message;
-	    mIntelHexObj.popNextWarning(message);
-	    cout << message << endl;
-	}*/
+	cout << endl << dec << numBytes << " bytes read." << endl;
+	cout << "So den Bug hab ich gefixt, jetzt bist du wieder dran ich bin Müde!" << endl;
 	return true;
 }
 
@@ -529,7 +498,6 @@ unsigned long WiflyControl::ToRGBA(string& s) const
 	stringstream converter;
 	converter << hex << s;
 	converter >> rgba;
-	cout << hex << rgba << "<" << endl;
 	return rgba;
 }
 
