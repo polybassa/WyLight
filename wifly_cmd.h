@@ -66,6 +66,7 @@ struct cmd_set_color {
 };
 
 #ifdef X86
+#pragma pack(push)
 #pragma pack(1)
 #endif
 struct cmd_set_fade {
@@ -76,6 +77,9 @@ struct cmd_set_fade {
 	uns8 parallelFade;
 	uns16 fadeTmms; //fadetime in ms
 };
+#ifdef X86
+#pragma pack(pop)
+#endif
 
 struct cmd_loop_end {
 	uns8 startIndex; /* pointer to the corresponding cmd_loop_start */

@@ -365,8 +365,9 @@ bool WiflyControl::BlProgramFlash(const std::string& pFilename)
 	cout << endl << __FUNCTION__ << "(" << pFilename << ")" << endl;
 	cout << "opening '" << pFilename << "' ...";
 
-	ifstream hexFile("main.hex");
-	if(!hexFile.is_open())
+	std::ifstream hexFile;
+	hexFile.open("main.hex", ifstream::in);
+	if(!hexFile.good())
 	{
 		cout << "failed!" << endl;
 		return false;
@@ -374,49 +375,17 @@ bool WiflyControl::BlProgramFlash(const std::string& pFilename)
 	cout << "done." << endl;
 
 	size_t numBytes = 0;
-	char temp[10];
-	string line;
-	intelhex hexConverter();
-	istream in(hexFile);	
-	in >>	hexConverter;
-	//while(hexFile >> temp)
-	while(getline(hexFile, line))
-	{
-		numBytes += line.length();
-		cout << line;
-		//if(0 == memcmp(temp, ":00000001FF", 10)) break;
-		if(0 == line.compare(":00000001FF")) break;
+	unsigned char nextByte;
+	intelhex hexConverter;
+	hexFile >> hexConverter;
+	hexConverter.begin();
+	while(hexConverter.getData(&nextByte)) {
+		cout << hex << (int)nextByte;
+		hexConverter.incrementAddress();
+		numBytes++;
 	}
-	cout << "->" << line << "<-" << endl;
-		numBytes += line.length();
-
-	cout << numBytes << " bytes read" << endl;
-	
-	hexFile.close();
-	/*
-	intelhex mIntelHexObj;
-
-	intelHexInput >> mIntelHexObj;
-	
-	
-	cout << "Final address is 0x" << setw(4) << setfill('0') << uppercase << hex << mIntelHexObj.currentAddress() << endl;
-	
-	cout << "File contained " << mIntelHexObj.getNoWarnings() << " warnings and " 
-	<< mIntelHexObj.getNoErrors() << "errors." << endl;
-	
-	while(mIntelHexObj.getNoErrors() > 0)
-	{
-	    string message;
-	    mIntelHexObj.popNextError(message);
-	    cout << message << endl;
-	}
-	
-	while(mIntelHexObj.getNoWarnings() > 0)
-	{
-	    string message;
-	    mIntelHexObj.popNextWarning(message);
-	    cout << message << endl;
-	}*/
+	cout << endl << dec << numBytes << " bytes read." << endl;
+	cout << "So den Bug hab ich gefixt, jetzt bist du wieder dran ich bin Müde!" << endl;
 	return true;
 }
 
