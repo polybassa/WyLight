@@ -202,9 +202,9 @@ class ControlCmdBlProgramFlash : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const
 		{
-			string path("main.hex");
+			string path;
 			
-			//cin >> path;
+			cin >> path;
 					  
 			if(control.BlProgramFlash(path))
 			{
@@ -221,9 +221,9 @@ class ControlCmdBlRead : public WiflyControlCmd
 {
 	public:
 		ControlCmdBlRead(string name) : WiflyControlCmd(
-				string("read_") + name + string(" <addr> <numBytes>'\n")
+				string("read_") + name, string(" <addr> <numBytes>'\n")
 			+ string("    <addr> address where to start reading\n")
-			+ string("    <numBytes> number of bytes to read")), m_Name(name) {};
+			+ string("    <numBytes> number of bytes to read")) {};
 
 		const string m_Name;
 		
