@@ -154,7 +154,7 @@ void writeByte(uns8 byte)
     if(g_CmdBuf.counter < CMDFRAMELENGTH)
     {
 	  g_CmdBuf.buffer[g_CmdBuf.counter] = byte;
-	  g_CmdBuf.counter++;
+	  g_CmdBuf.counter = g_CmdBuf.counter + 1;
 	  Crc_AddCrc(byte, &g_CmdBuf.CrcH, &g_CmdBuf.CrcL);
     }
     else
@@ -163,12 +163,20 @@ void writeByte(uns8 byte)
     }
 }
 
-void Commandstorage_Init()
+void DeleteBuffer()
 {
     g_CmdBuf.counter = 0;
-    g_CmdBuf.state = CS_WaitForSTX;
     Crc_NewCrc(&g_CmdBuf.CrcH, &g_CmdBuf.CrcL);
 }
+
+
+void Commandstorage_Init()
+{ 
+    g_CmdBuf.state = CS_WaitForSTX;
+    DeleteBuffer();
+}
+
+
 
 /** STATEMACHINE FOR GetCommands:
  * All ASCII-Chars are seperatet in 4 Groups
@@ -201,7 +209,7 @@ void Commandstorage_Init()
 
 void Commandstorage_GetCommands()
 {	
-	if(g_ErrorBits.CmdBufOverflow == TRUE)
+	if(g_ErrorBits.CmdBufOverflow)
 	{
 		return;
 	}
@@ -234,7 +242,7 @@ void Commandstorage_GetCommands()
 	  }
 	  case CS_DeleteBuffer:
 	  {
-	      Commandstorage_Init();
+	      DeleteBuffer();
 	      
 	      if(new_byte == STX)
 	      {
