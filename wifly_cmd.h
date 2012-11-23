@@ -73,6 +73,7 @@ struct cmd_set_color {
 };
 
 #ifdef X86
+#pragma pack(push)
 #pragma pack(1)
 #endif
 struct cmd_set_fade {
@@ -124,5 +125,8 @@ struct cmd_frame {
 	uns8 length;
 	struct led_cmd led;
 };
+#ifdef X86
+#pragma pack(pop)
+#endif
 #define FRAMELENGTH (sizeof(struct cmd_frame) + 1)			// *** max length of one commandframe
 #endif /* #ifndef _WIFLY_CMD_H_ */

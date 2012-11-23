@@ -360,9 +360,33 @@ bool WiflyControl::BlEnableAutostart(void) const
 	return BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
 }
 
-bool WiflyControl::BlProgramFlash(std::string& pFilename)
+bool WiflyControl::BlProgramFlash(const std::string& pFilename)
 {
-	return false;
+	cout << endl << __FUNCTION__ << "(" << pFilename << ")" << endl;
+	cout << "opening '" << pFilename << "' ...";
+
+	std::ifstream hexFile;
+	hexFile.open("main.hex", ifstream::in);
+	if(!hexFile.good())
+	{
+		cout << "failed!" << endl;
+		return false;
+	}
+	cout << "done." << endl;
+
+	size_t numBytes = 0;
+	unsigned char nextByte;
+	intelhex hexConverter;
+	hexFile >> hexConverter;
+	hexConverter.begin();
+	while(hexConverter.getData(&nextByte)) {
+		cout << hex << (int)nextByte;
+		hexConverter.incrementAddress();
+		numBytes++;
+	}
+	cout << endl << dec << numBytes << " bytes read." << endl;
+	cout << "So den Bug hab ich gefixt, jetzt bist du wieder dran ich bin Müde!" << endl;
+	return true;
 }
 
 void WiflyControl::ClearScript(void)
@@ -474,7 +498,6 @@ unsigned long WiflyControl::ToRGBA(string& s) const
 	stringstream converter;
 	converter << hex << s;
 	converter >> rgba;
-	cout << hex << rgba << "<" << endl;
 	return rgba;
 }
 
