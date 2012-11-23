@@ -90,6 +90,25 @@ class ControlCmdAddColor : public WiflyControlCmd
 		};
 };
 
+class ControlCmdBlAutostartEnable : public WiflyControlCmd
+{
+	public:
+		ControlCmdBlAutostartEnable(void) : WiflyControlCmd(
+				string("enable_bl_autostart")) {};
+
+		virtual void Run(WiflyControl& control) const
+		{
+			if(control.BlEnableAutostart())
+			{
+			    cout << endl <<"Bootloader Autostart enabled!"<<endl;
+			}
+			else
+			{
+			    cout << endl <<"Bootloader Autostart not enabled!"<<endl;
+			}
+		}	
+};
+
 class ControlCmdBlInfo : public WiflyControlCmd
 {
 	public:
@@ -183,9 +202,9 @@ class ControlCmdBlProgramFlash : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const
 		{
-			string path;
+			string path("main.hex");
 			
-			cin >> path;
+			//cin >> path;
 					  
 			if(control.BlProgramFlash(path))
 			{
@@ -197,26 +216,6 @@ class ControlCmdBlProgramFlash : public WiflyControlCmd
 			}
 		}	
 };
-
-class ControlCmdBlAutostartEnable : public WiflyControlCmd
-{
-	public:
-		ControlCmdBlAutostartEnable(void) : WiflyControlCmd(
-				string("enable_bl_autostart")) {};
-
-		virtual void Run(WiflyControl& control) const
-		{
-			if(control.BlEnableAutostart())
-			{
-			    cout << endl <<"Bootloader Autostart enabled!"<<endl;
-			}
-			else
-			{
-			    cout << endl <<"Bootloader Autostart not enabled!"<<endl;
-			}
-		}	
-};
-
 
 class ControlCmdBlRead : public WiflyControlCmd
 {
@@ -370,6 +369,7 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdBlCrcFlash(),
 	new ControlCmdBlEraseEeprom(),
 	new ControlCmdBlEraseFlash(),
+	new ControlCmdBlProgramFlash(),
 	new ControlCmdBlReadEeprom(),
 	new ControlCmdBlReadFlash(),
 	new ControlCmdBlRunApp(),
@@ -378,7 +378,6 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdSetFade(),
 	new ControlCmdStartBl(),
 	new ControlCmdTest(),
-	new ControlCmdBlProgramFlash(),
 //TODO implement on demand	ControlCmdBlWriteEeprom writeEeprom;
 //TODO	ControlCmdBlWriteFlash writeFlash;
 };
