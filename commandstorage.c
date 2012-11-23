@@ -151,9 +151,16 @@ bank2 struct CommandBuffer g_CmdBuf;
 
 void writeByte(uns8 byte)
 {
-    g_CmdBuf.buffer[g_CmdBuf.counter] = byte;
-    g_CmdBuf.counter++;
-    Crc_AddCrc(byte, &g_CmdBuf.CrcH, &g_CmdBuf.CrcL);
+    if(g_CmdBuf.counter < CMDFRAMELENGTH)
+    {
+	  g_CmdBuf.buffer[g_CmdBuf.counter] = byte;
+	  g_CmdBuf.counter++;
+	  Crc_AddCrc(byte, &g_CmdBuf.CrcH, &g_CmdBuf.CrcL);
+    }
+    else
+    {
+	  g_ErrorBits.CmdBufOverflow = TRUE;
+    }
 }
 
 void Commandstorage_Init()
@@ -194,6 +201,11 @@ void Commandstorage_Init()
 
 void Commandstorage_GetCommands()
 {	
+	if(g_ErrorBits.CmdBufOverflow == TRUE)
+	{
+		return;
+	}
+  
 	if(RingBuf_HasError(&g_RingBuf))
 	{
 		// *** if a RingBufError occure, I have to throw away the current command,
