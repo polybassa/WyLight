@@ -18,7 +18,7 @@
 
 #include "unittest.h"
 
-#include "BlRequest.h"
+#include "ComProxy.h"
 
 /**************** includes, classes and functions for wrapping ****************/
 #include "ClientSocket.h"

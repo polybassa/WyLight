@@ -18,6 +18,7 @@
 
 #include "WiflyControl.h"
 #include "crc.h"
+#include "ComProxy.h"
 
 #include <iostream>
 #include <sstream>
