@@ -18,7 +18,7 @@
 
 #include "platform.h"
 
-#ifndef X86
+#ifdef __CC8E__
 void Platform_CheckInputs()
 {
 	//Goto Bootloader if PORTB.0 is low
@@ -60,4 +60,4 @@ void Platform_DisableBootloaderAutostart()
 {
 	Eeprom_Write(1023, 1);
 }
-#endif /* X86 */
+#endif /* __CC8E__ */

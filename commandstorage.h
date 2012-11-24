@@ -19,8 +19,6 @@
 #ifndef _COMMANDSTORAGE_H_
 #define _COMMANDSTORAGE_H_
 
-//#define _old_commandstorage_
-
 #ifdef _old_commandstorage_
 
 #include "platform.h"

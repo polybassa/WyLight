@@ -16,11 +16,12 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef X86
-//#define NO_CRC
-#define TEST
+#define _old_commandstorage_
 
+#ifndef X86
+#define TEST
 #endif
+
 #ifdef __CC8E__
 #pragma optimize 1
 #pragma sharedAllocation
@@ -28,11 +29,11 @@
 
 //*********************** INCLUDEDATEIEN *********************************************
 #include "platform.h"
-#include "RingBuf.h"		//clean
-#include "usart.h"			//clean
-#include "commandstorage.h" //under construction
-#include "ledstrip.h"		//clean
-#include "timer.h"			//under construction
+#include "RingBuf.h"		
+#include "usart.h"			
+#include "commandstorage.h" 
+#include "ledstrip.h"		
+#include "timer.h"	
 #include "rtc.h"
 #include "ScriptCtrl.h"
 #include "trace.h"
