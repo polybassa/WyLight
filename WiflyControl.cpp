@@ -128,7 +128,7 @@ bool WiflyControl::BlFlashErase(void) const
 
 size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync) const
 {
-	BlProxy proxy(mSock);
+	ComProxy proxy(mSock);
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	size_t bytesReceived = proxy.Send(req, buffer, sizeof(buffer), doSync);
 
