@@ -49,18 +49,6 @@ size_t ComProxy::MaskControlCharacters(const unsigned char* pInput, size_t input
 	const unsigned char* const pInputEnd = pInput + inputLength;
 	size_t bytesWritten = 0;
 	unsigned short crc = 0;
-	
-#if 0
-	//TODO test this removal on real hardware unittest is working
-	/* TODO command type character must be masked with DLE if command
-	 *	character has the same value as DLE or ETX*/
-	/* skip first character since it is the command type byte */
-	if(++bytesWritten > outputLength) return 0;
-	*pOutput = *pInput;
-	Crc_AddCrc16(*pInput, &crc);
-	pOutput++;
-	pInput++;	
-#endif
 
 	while(pInput < pInputEnd)
 	{
