@@ -44,7 +44,7 @@ ComProxy::ComProxy(const ClientSocket* const pSock)
 {
 }
 
-size_t ComProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength) const
+size_t ComProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength, bool crcInLittleEndian) const
 {
 	const unsigned char* const pInputEnd = pInput + inputLength;
 	size_t bytesWritten = 0;
@@ -58,12 +58,20 @@ size_t ComProxy::MaskControlCharacters(const unsigned char* pInput, size_t input
 	}
 
 	// add crc to output
-	MaskAndAddByteToOutput((unsigned char)(crc & 0xff));
-	MaskAndAddByteToOutput((unsigned char)(crc >> 8));
+	if(crcInLittleEndian)
+	{
+		MaskAndAddByteToOutput((unsigned char)(crc & 0xff));
+		MaskAndAddByteToOutput((unsigned char)(crc >> 8));
+	}
+	else
+	{
+		MaskAndAddByteToOutput((unsigned char)(crc >> 8));
+		MaskAndAddByteToOutput((unsigned char)(crc & 0xff));
+	}
 	return bytesWritten;
 }
 
-size_t ComProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength, bool checkCrc) const
+size_t ComProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength, bool checkCrc, bool crcInLittleEndian) const
 {
 	if(outputLength < inputLength)
 	{
@@ -109,20 +117,24 @@ size_t ComProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inp
 		return 0;
 	}
 
-	/* know we have to take the last two bytes (which can be masked!) and compare
-	 * them to the calculated checksum, by adding them in reverse order and
-	 * comparing them with zero
-	 */
-	pInput--;
-	Crc_AddCrc16(*pInput, &prepreCrc);
-	pInput--;
-	if(BL_DLE == *pInput)
+	if(crcInLittleEndian)
 	{
+		/* know we have to take the last two bytes (which can be masked!) and compare
+		 * them to the calculated checksum, by adding them in reverse order and
+		 * comparing them with zero
+		 */
 		pInput--;
+		Crc_AddCrc16(*pInput, &prepreCrc);
+		pInput--;
+		if(BL_DLE == *pInput)
+		{
+			pInput--;
+		}
+		Crc_AddCrc16(*pInput, &prepreCrc);
+		crc = prepreCrc;
 	}
-	Crc_AddCrc16(*pInput, &prepreCrc);
 
-	if(0 != prepreCrc)
+	if(0 != crc)
 	{
 		Trace_String(__FUNCTION__);
 		Trace_String(" check crc: ");
