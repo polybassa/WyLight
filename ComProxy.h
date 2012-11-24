@@ -22,13 +22,13 @@
 #include "BlRequest.h"
 #include "ClientSocket.h"
 
-class BlProxy
+class ComProxy
 {
 	private:
 		const ClientSocket* const mSock;
 
 	public:
-		BlProxy(const ClientSocket* const pSock);
+		ComProxy(const ClientSocket* const pSock);
 
 		/**
 		 * Mask bytes of input buffer and add CRC16-CITT checksum to the end

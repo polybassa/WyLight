@@ -21,7 +21,7 @@
 #include "trace.h"
 
 /**
- * This makro is used in BlProxy::MaskControlCharacters and requires some
+ * This makro is used in ComProxy::MaskControlCharacters and requires some
  * implicit parameter:
  * @param bytesWritten counter of bytes in output buffer
  * @param outputLength size of output buffer
@@ -39,12 +39,12 @@
 	pOutput++; \
 }
 
-BlProxy::BlProxy(const ClientSocket* const pSock)
+ComProxy::ComProxy(const ClientSocket* const pSock)
 	: mSock(pSock)
 {
 }
 
-size_t BlProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength) const
+size_t ComProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength) const
 {
 	const unsigned char* const pInputEnd = pInput + inputLength;
 	size_t bytesWritten = 0;
@@ -75,7 +75,7 @@ size_t BlProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputL
 	return bytesWritten;
 }
 
-size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength, bool checkCrc) const
+size_t ComProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength, bool checkCrc) const
 {
 	if(outputLength < inputLength)
 	{
@@ -159,15 +159,15 @@ size_t BlProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inpu
 	return bytesWritten - 2;
 }
 
-int BlProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize, bool doSync) const
+int ComProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize, bool doSync) const
 {
-	Trace_String("BlProxy::Send: ");
+	Trace_String("ComProxy::Send: ");
 	Trace_Number(req.GetSize());
 	Trace_String("pure bytes\n");
 	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
 }
 
-int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize, bool checkCrc, bool doSync) const
+int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize, bool checkCrc, bool doSync) const
 {
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	unsigned char recvBuffer[BL_MAX_MESSAGE_LENGTH];
@@ -184,7 +184,7 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 	bufferSize = MaskControlCharacters(pRequest, requestSize, buffer, sizeof(buffer));
 	if((0 == bufferSize) || (bufferSize == sizeof(buffer)))
 	{
-		Trace_String("BlProxy::Send: MaskControlCharacters() failed\n");
+		Trace_String("ComProxy::Send: MaskControlCharacters() failed\n");
 		return 0;
 	}
 
@@ -201,10 +201,10 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 		{
 			if(0 > --numRetries)
 			{
-				Trace_String("BlProxy::Send: Too many retries\n");
+				Trace_String("ComProxy::Send: Too many retries\n");
 				return -1;
 			}
-			Trace_String("BlProxy::Send: SYNC...\n");
+			Trace_String("ComProxy::Send: SYNC...\n");
 			mSock->Send(BL_SYNC, sizeof(BL_SYNC));
 		} while(0 == mSock->Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS));
 	}
@@ -213,14 +213,14 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 			/* synchronized -> send request */
 			if(static_cast<int>(bufferSize) != mSock->Send(buffer, bufferSize))
 			{
-				Trace_String("BlProxy::Send: socket->Send() failed\n");
+				Trace_String("ComProxy::Send: socket->Send() failed\n");
 				return 0;
 			}
 
 			/* wait for a response? */
 			if((0 == pResponse) || (0 == responseSize))
 			{
-				Trace_String("BlProxy::Send: waiting for no response-> exiting...\n");
+				Trace_String("ComProxy::Send: waiting for no response-> exiting...\n");
 				return 0;
 			}
 
@@ -241,7 +241,7 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 				/* remove BL_ETX from buffer */
 				if(0 == bytesReceived)
 				{
-					Trace_String("BlProxy::Send: no bytes received\n");
+					Trace_String("ComProxy::Send: no bytes received\n");
 					return 0;
 				}
 				bytesReceived--;
@@ -249,7 +249,7 @@ int BlProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsig
 				/* remove BL_DLE from buffer and check crc if requested */
 				return UnmaskControlCharacters(pNext, bytesReceived, pResponse, responseSize, checkCrc);
 			}
-			Trace_String("BlProxy::Send: response to short\n");
+			Trace_String("ComProxy::Send: response to short\n");
 			return 0;
  		}
 }

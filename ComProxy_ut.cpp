@@ -148,11 +148,11 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 }
 
 /******************************* test functions *******************************/
-int ut_BlProxy_MaskControlCharacters(void)
+int ut_ComProxy_MaskControlCharacters(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
-	BlProxy proxy(&dummySocket);
+	ComProxy proxy(&dummySocket);
 	unsigned char sendBuffer[256];
 	unsigned char recvBuffer[sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 + 1];
 
@@ -195,11 +195,11 @@ int ut_BlProxy_MaskControlCharacters(void)
 	TestCaseEnd();
 }
 
-int ut_BlProxy_BlEepromReadRequest(void)
+int ut_ComProxy_BlEepromReadRequest(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
-	BlProxy proxy(&dummySocket);
+	ComProxy proxy(&dummySocket);
 	unsigned char response[512];
 
 	BlEepromReadRequest request;
@@ -210,16 +210,16 @@ int ut_BlProxy_BlEepromReadRequest(void)
 	TestCaseEnd();
 }
 
-int ut_BlProxy_BlEepromWriteRequest(void)
+int ut_ComProxy_BlEepromWriteRequest(void)
 {
 	NOT_IMPLEMENTED();
 }
 
-int ut_BlProxy_BlFlashCrc16Request(void)
+int ut_ComProxy_BlFlashCrc16Request(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
-	BlProxy proxy(&dummySocket);
+	ComProxy proxy(&dummySocket);
 	unsigned char response[512];
 
 	BlFlashCrc16Request request(0xDA7ADA7A, 2);
@@ -229,11 +229,11 @@ int ut_BlProxy_BlFlashCrc16Request(void)
 	TestCaseEnd();
 }
 
-int ut_BlProxy_BlFlashEraseRequest(void)
+int ut_ComProxy_BlFlashEraseRequest(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
-	BlProxy proxy(&dummySocket);
+	ComProxy proxy(&dummySocket);
 	unsigned char response[512];
 
 	BlFlashEraseRequest request(0xDA7ADA7A, 2);
@@ -243,11 +243,11 @@ int ut_BlProxy_BlFlashEraseRequest(void)
 	TestCaseEnd();
 }
 
-int ut_BlProxy_BlFlashReadRequest(void)
+int ut_ComProxy_BlFlashReadRequest(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
-	BlProxy proxy(&dummySocket);
+	ComProxy proxy(&dummySocket);
 	unsigned char response[512];
 
 	BlFlashReadRequest request;
@@ -259,21 +259,21 @@ int ut_BlProxy_BlFlashReadRequest(void)
 	TestCaseEnd();
 }
 
-int ut_BlProxy_BlFlashWriteRequest(void)
+int ut_ComProxy_BlFlashWriteRequest(void)
 {
 	NOT_IMPLEMENTED();
 }
 
-int ut_BlProxy_BlFuseWriteRequest(void)
+int ut_ComProxy_BlFuseWriteRequest(void)
 {
 	NOT_IMPLEMENTED();
 }
 
-int ut_BlProxy_BlInfoRequest(void)
+int ut_ComProxy_BlInfoRequest(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
-	BlProxy proxy(&dummySocket);
+	ComProxy proxy(&dummySocket);
 	unsigned char response[512];
 
 	BlInfoRequest infoRequest;
@@ -288,11 +288,11 @@ int ut_BlProxy_BlInfoRequest(void)
 	TestCaseEnd();
 }
 
-int ut_BlProxy_BlRunAppRequest(void)
+int ut_ComProxy_BlRunAppRequest(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
-	BlProxy proxy(&dummySocket);
+	ComProxy proxy(&dummySocket);
 
 	BlRunAppRequest request;
 	size_t bytesReceived = proxy.Send(request, 0, 0);
@@ -306,17 +306,17 @@ int ut_BlProxy_BlRunAppRequest(void)
 int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
-	RunTest(true, ut_BlProxy_MaskControlCharacters);
-	RunTest(true, ut_BlProxy_BlEepromReadRequest);
-	RunTest(false, ut_BlProxy_BlEepromWriteRequest);
-	RunTest(true, ut_BlProxy_BlFlashCrc16Request);
-	RunTest(true, ut_BlProxy_BlFlashEraseRequest);
-	RunTest(true, ut_BlProxy_BlFlashReadRequest);
-	RunTest(false, ut_BlProxy_BlFlashWriteRequest);
-	RunTest(false, ut_BlProxy_BlFuseWriteRequest);
+	RunTest(true, ut_ComProxy_MaskControlCharacters);
+	RunTest(true, ut_ComProxy_BlEepromReadRequest);
+	RunTest(false, ut_ComProxy_BlEepromWriteRequest);
+	RunTest(true, ut_ComProxy_BlFlashCrc16Request);
+	RunTest(true, ut_ComProxy_BlFlashEraseRequest);
+	RunTest(true, ut_ComProxy_BlFlashReadRequest);
+	RunTest(false, ut_ComProxy_BlFlashWriteRequest);
+	RunTest(false, ut_ComProxy_BlFuseWriteRequest);
 
-	RunTest(true, ut_BlProxy_BlInfoRequest);
-	RunTest(true, ut_BlProxy_BlRunAppRequest);
+	RunTest(true, ut_ComProxy_BlInfoRequest);
+	RunTest(true, ut_ComProxy_BlRunAppRequest);
 	UnitTestMainEnd();
 }
 
