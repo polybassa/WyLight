@@ -19,6 +19,10 @@
 #ifndef _LEDSTRIP_H_
 #define _LEDSTRIP_H_
 
+#include "platform.h"
+#include "ScriptCtrl.h"
+#include "wifly_cmd.h"
+
 /**
  * This structure is used for calculations to manipulate the ledstrip state
  *

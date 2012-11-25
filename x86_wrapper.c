@@ -20,6 +20,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "x86_wrapper.h"
+#include "RingBuf.h"
 #include "timer.h"
 
 extern unsigned char do_update_fade;
