@@ -19,6 +19,7 @@
 #include "ComProxy.h"
 #include "crc.h"
 #include "trace.h"
+#include "wifly_cmd.h"
 
 /**
  * This makro is used in ComProxy::MaskControlCharacters and requires some
@@ -147,13 +148,19 @@ size_t ComProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inp
 
 int ComProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize, bool doSync) const
 {
-	Trace_String("ComProxy::Send: ");
+	Trace_String("ComProxy::Send(BlRequest&): ");
 	Trace_Number(req.GetSize());
 	Trace_String("pure bytes\n");
 	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
 }
 
-int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize, bool checkCrc, bool doSync) const
+int ComProxy::Send(const struct cmd_frame* pFrame, unsigned char* pResponse, size_t responseSize, bool doSync) const
+{
+	Trace_String("ComProxy::Send(const struct cmd_frame*): ");	
+	return Send(reinterpret_cast<const unsigned char*>(pFrame), pFrame->length + 2, pResponse, responseSize, true, doSync, false);
+}
+
+int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const
 {
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	unsigned char recvBuffer[BL_MAX_MESSAGE_LENGTH];
@@ -167,7 +174,7 @@ int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsi
 	bufferSize++;
 
 	/* mask control characters in request and add crc */
-	bufferSize = MaskControlCharacters(pRequest, requestSize, buffer, sizeof(buffer));
+	bufferSize = MaskControlCharacters(pRequest, requestSize, buffer, sizeof(buffer), crcInLittleEndian);
 	if((0 == bufferSize) || (bufferSize == sizeof(buffer)))
 	{
 		Trace_String("ComProxy::Send: MaskControlCharacters() failed\n");

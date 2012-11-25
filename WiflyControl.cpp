@@ -423,15 +423,6 @@ bool WiflyControl::FwSend(const struct cmd_frame* pFrame) const
 		cout << hex << (int)(buffer[i]) << " ";
 	}
 	cout << endl;
-#if 0
-	bytesWritten = mSock->Recv(buffer, sizeof(buffer), 2000);
-	cout << "Received " << bytesWritten << " bytes: " << endl;
-	for(int i = 0; i < bytesWritten; i++)
-	{
-		cout << (buffer[i]) << " ";
-	}
-	cout << endl;
-#endif
 #endif
 	return (0 <= bytesWritten) && (numBytes == static_cast<size_t>(bytesWritten));
 }
@@ -476,7 +467,17 @@ void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
 	mCmdFrame.length = sizeof(struct cmd_set_color) + 3;
 	mCmdFrame.led.cmd = SET_COLOR;
 	SetAddrRgb(mCmdFrame.led.data.set_color, addr, rgba);
+
+#if 1
+	//TODO we should use BlRead later, when we know the length of the answer
+	//TODO make replace mSock with a ComProxy member!	
+	unsigned char response[1024];
+	ComProxy proxy(mSock);
+	int bytesRead = proxy.Send(&mCmdFrame, response, sizeof(response), false);
+	cout << __FUNCTION__ << ": We got " << bytesRead << " bytes response" << endl;
+#else
 	FwSend(&mCmdFrame);
+#endif
 }
 
 void WiflyControl::SetColor(string& addr, string& rgba)
