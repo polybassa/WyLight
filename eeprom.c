@@ -34,17 +34,6 @@ void Eeprom_Write(uns16 adress, unsigned char data)
 //*********************** EEPROM BYTE SCHREIBEN  **********************************************
 void Eeprom_Write(uns16 adress, uns8 data)
 {
-#ifdef TEST_EEPROM
-	UART_SendString("Writing in EEPROM");
-	UART_Send(0x0a);
-	UART_Send(0x0d);
-	
-	UART_SendString("Addresse:");
-	UART_SendNumber(adress.high8,'H');
-	UART_SendNumber(adress.low8,'L');
-	UART_SendString("Data:");
-	UART_SendNumber(data,'D');
-#endif
 	bit GIE_status; 
 	GIE_status = GIE;	
 	
@@ -69,17 +58,6 @@ void Eeprom_Write(uns16 adress, uns8 data)
 
 uns8 Eeprom_Read(uns16 adress)
 {
-
-#ifdef TEST_EEEPROM
-	UART_SendString("Reading in EEPROM");
-	UART_Send(0x0a);
-	UART_Send(0x0d);
-	
-	UART_SendString("Addresse:");
-	UART_SendNumber(adress.high8,'H');
-	UART_SendNumber(adress.low8,'L');
-#endif
-
 	uns8 data;
 	EEADRH = adress.high8;        // Adresse in Adressregister übertragen
 	EEADR = adress.low8;
@@ -87,11 +65,7 @@ uns8 Eeprom_Read(uns16 adress)
 	EEPGD = 0;                			// Auswahl: Programmspeicher lesen oder EEPROM
 	RD = 1;                   			// Starten des Lesesn
 	data = EEDATA;       				// Daten aus Datenregister auslesen
-#ifdef TEST_EEPROM
-	UART_SendString("Data:");
-	UART_SendNumber(data,'D');
-#endif	
-    return data;
+	return data;
 }
 #endif /* #ifdef X86 */
 
