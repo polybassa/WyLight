@@ -20,8 +20,6 @@
 
 #include "commandstorage.h"
 
-#ifndef _old_commandstorage_
-
 #include "unittest.h"
 #include "platform.h"
 
@@ -180,4 +178,3 @@ int main(int argc, const char* argv[])
 	UnitTestMainEnd();
 }
 
-#endif /* _old_commandstorage_ */

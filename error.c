@@ -39,11 +39,7 @@ void Error_Throw()
 	if(g_ErrorBits.CmdBufOverflow)
 	{
 		UART_SendString("E:04; ERROR: Commandbuffer full");
-#ifdef _old_commandstorage_
-		Commandstorage_Clear();
-#else
 		Commandstorage_Init();
-#endif
 		g_ErrorBits.CmdBufOverflow = 0;
 	}
 	
@@ -51,11 +47,7 @@ void Error_Throw()
 	{
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
-#ifdef _old_commandstorage_
-		Commandstorage_Clear();
-#else
 		Commandstorage_Init();
-#endif
 		UART_SendString("E:03; ERROR: Receivebuffer full");
 		// *** Re-init the Ringbuffer to get a consistent commandstring and reset error
 		RingBuf_Init(&g_RingBuf);
