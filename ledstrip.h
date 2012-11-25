@@ -19,8 +19,6 @@
 #ifndef _LEDSTRIP_H_
 #define _LEDSTRIP_H_
 
-#include "commandstorage.h"
-
 /**
  * This structure is used for calculations to manipulate the ledstrip state
  *

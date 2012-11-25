@@ -39,7 +39,11 @@ void Error_Throw()
 	if(g_ErrorBits.CmdBufOverflow)
 	{
 		UART_SendString("E:04; ERROR: Commandbuffer full");
+#ifdef _old_commandstorage_
+		Commandstorage_Clear();
+#else
 		Commandstorage_Init();
+#endif
 		g_ErrorBits.CmdBufOverflow = 0;
 	}
 	

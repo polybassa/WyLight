@@ -215,3 +215,5 @@ Intel-HEX-Class-master/utilities/ihStat/ihStat.cpp
 Intel-HEX-Class-master/utilities/makefile
 commandstorage_ut.bin
 RingBuf_ut.bin
+.intelhexclass.h.kate-swp
+client.bin.dSYM/Contents/Info.plist
