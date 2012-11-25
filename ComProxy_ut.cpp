@@ -31,7 +31,7 @@ ClientSocket::~ClientSocket(void) {}
 
 const BlInfo dummyBlInfo = {0xDE, 0xAD, 0xAF, 0xFE, 0xFF, 0x4, 0x0, 0xB0, 0xB1, 0xE5, 0x00};
 const unsigned char dummyBlInfoMasked[] = {BL_STX, BL_STX, 0xDE, 0xAD, 0xAF, 0xFE, 0xFF, BL_DLE, 0x04, 0xB0, 0xB1, 0xE5, 0x00, 0xEA, 0x35, BL_ETX};
-const unsigned char exampleBlFlashRead[] = {0x01, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0xAD, 0xB5, 0x04};
+const unsigned char exampleBlFlashRead[] = {BL_STX, 0x01, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0xAD, 0xB5, 0x04};
 const unsigned char dummyBlFlashReadResponseMasked[] = {BL_STX, 0xDE, 0xAD, BL_DLE, BL_DLE, 0xEF, 0xa0, 0x06, BL_ETX};
 const unsigned char dummyBlFlashReadResponsePure[] = {0xDE, 0xAD, BL_DLE, 0xEF};
 const unsigned char dummyBlFlashCrc16ResponseMasked[] = {BL_STX, 0xDE, 0xAD, BL_DLE, BL_DLE, 0xEF, BL_ETX};
@@ -70,7 +70,7 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	}
 
 	/* prepare response for BlInfoRequest */
-	if((frame[0] == 0x00) && (frame[1] == 0) && (frame[2] == 0) && (frame[3] == BL_ETX))
+	if((frame[1] == 0x00) && (frame[2] == 0) && (frame[3] == 0) && (frame[4] == BL_ETX))
 	{
 		Trace_String("BlInfoRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlInfoMasked, sizeof(dummyBlInfoMasked));
@@ -79,7 +79,7 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	}
 
 	/* prepare response for BlEepromRequest */
-	if((frame[0] == 0x02) && (frame[length-1] == BL_ETX))
+	if((frame[1] == 0x02) && (frame[length-1] == BL_ETX))
 	{
 		Trace_String("BlEepromRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashCrc16ResponseMasked, sizeof(dummyBlFlashCrc16ResponseMasked));
@@ -88,7 +88,7 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	}
 
 	/* prepare response for BlFlashCrc16Request */
-	if((frame[0] == 0x02) && (frame[length-1] == BL_ETX))
+	if((frame[1] == 0x02) && (frame[length-1] == BL_ETX))
 	{
 		Trace_String("BlFlashCrc16Request\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashCrc16ResponseMasked, sizeof(dummyBlFlashCrc16ResponseMasked));
@@ -97,7 +97,7 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	}
 
 	/* prepare response for BlFlashEraseRequest */
-	if((frame[0] == 0x03) && (frame[length-1] == BL_ETX))
+	if((frame[1] == 0x03) && (frame[length-1] == BL_ETX))
 	{
 		Trace_String("BlFlashEraseRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashEraseResponseMasked, sizeof(dummyBlFlashEraseResponseMasked));
@@ -106,25 +106,16 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	}
 
 	/* prepare response for BlFlashReadRequest */
-	if((frame[0] == 0x01) && (frame[length-1] == BL_ETX))
+	if(0 == memcmp(frame, exampleBlFlashRead, sizeof(exampleBlFlashRead)))
 	{
 		Trace_String("BlFlashReadRequest\n");
-		Trace_Number(sizeof(exampleBlFlashRead));
-		Trace_String(":");
-		Trace_Number(length);
-		if(sizeof(exampleBlFlashRead) != length)
-			return 0;
-
-		if(0 != memcmp(frame, exampleBlFlashRead, sizeof(exampleBlFlashRead)))
-			return 0;
-		
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashReadResponseMasked, sizeof(dummyBlFlashReadResponseMasked));
 		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashReadResponseMasked);
 		return length;
 	}
 
 	/* prepare response for BlEepromReadRequest*/
-	if((frame[0] == 0x05) && (frame[length-1] == BL_ETX))
+	if((frame[1] == 0x05) && (frame[length-1] == BL_ETX))
 	{
 		Trace_String("BlEepromReadRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashReadResponseMasked, sizeof(dummyBlFlashReadResponseMasked));
@@ -133,7 +124,7 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	}
 
 	/* there is no response for run app, but we set some marker for verification */
-	if((frame[0] == 0x08) && (frame[length-1] == BL_ETX))
+	if((frame[1] == 0x08) && (frame[length-1] == BL_ETX))
 	{
 		Trace_String("BlRunAppRequest\n");
 		g_TestSocketRecvBuffer[0] = 'x';

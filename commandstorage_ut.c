@@ -47,8 +47,8 @@ int ut_Commandstorage_Init(void)
 	
 	CHECK(0 == g_CmdBuf.counter);
 	CHECK(CS_WaitForSTX == g_CmdBuf.state);
-	CHECK(0xff == g_CmdBuf.CrcL);
-	CHECK(0xff == g_CmdBuf.CrcH);
+	CHECK(0 == g_CmdBuf.CrcL);
+	CHECK(0 == g_CmdBuf.CrcH);
 	
 	TestCaseEnd();
 }
@@ -71,8 +71,8 @@ int ut_Commandstorage_WaitForSTX(void)
 	  Commandstorage_GetCommands();
 	  CHECK(0 == g_CmdBuf.counter);
 	  CHECK(CS_WaitForSTX == g_CmdBuf.state);
-	  CHECK(0xff == g_CmdBuf.CrcL);
-	  CHECK(0xff == g_CmdBuf.CrcH);
+	  CHECK(0 == g_CmdBuf.CrcL);
+	  CHECK(0 == g_CmdBuf.CrcH);
 	}
 	TestCaseEnd();
 }

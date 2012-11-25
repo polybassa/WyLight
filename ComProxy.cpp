@@ -156,8 +156,8 @@ int ComProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize
 
 int ComProxy::Send(const struct cmd_frame* pFrame, unsigned char* pResponse, size_t responseSize, bool doSync) const
 {
-	Trace_String("ComProxy::Send(const struct cmd_frame*): ");	
-	return Send(reinterpret_cast<const unsigned char*>(pFrame), pFrame->length + 2, pResponse, responseSize, true, doSync, false);
+	Trace_String("ComProxy::Send(const struct cmd_frame*): ");
+	return Send(reinterpret_cast<const unsigned char*>(pFrame), pFrame->length, pResponse, responseSize, true, doSync, false);
 }
 
 int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const
@@ -174,8 +174,8 @@ int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsi
 	bufferSize++;
 
 	/* mask control characters in request and add crc */
-	bufferSize = MaskControlCharacters(pRequest, requestSize, buffer, sizeof(buffer), crcInLittleEndian);
-	if((0 == bufferSize) || (bufferSize == sizeof(buffer)))
+	bufferSize += MaskControlCharacters(pRequest, requestSize, buffer + 1, sizeof(buffer) + 1, crcInLittleEndian);
+	if(1 == bufferSize)
 	{
 		Trace_String("ComProxy::Send: MaskControlCharacters() failed\n");
 		return 0;

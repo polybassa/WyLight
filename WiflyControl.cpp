@@ -47,7 +47,7 @@ using namespace std;
 
 WiflyControl::WiflyControl(const char* pAddr, short port, bool useTcp)
 {
-	mCmdFrame.stx = STX;
+	//TODO remove length
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;
 
 	if(useTcp)
@@ -583,16 +583,13 @@ void WiflyControl::SetColor(unsigned long addr, unsigned long rgba)
 	mCmdFrame.led.cmd = SET_COLOR;
 	SetAddrRgb(mCmdFrame.led.data.set_color, addr, rgba);
 
-#if 1
 	//TODO we should use BlRead later, when we know the length of the answer
-	//TODO make replace mSock with a ComProxy member!	
+	//TODO make replace mSock with a ComProxy member!
 	unsigned char response[1024];
 	ComProxy proxy(mSock);
+	mCmdFrame.length = sizeof(struct cmd_set_color) + 2;
 	int bytesRead = proxy.Send(&mCmdFrame, response, sizeof(response), false);
 	cout << __FUNCTION__ << ": We got " << bytesRead << " bytes response" << endl;
-#else
-	FwSend(&mCmdFrame);
-#endif
 }
 
 void WiflyControl::SetColor(string& addr, string& rgba)

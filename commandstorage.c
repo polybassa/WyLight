@@ -211,6 +211,7 @@ void Commandstorage_GetCommands()
 {	
 	if(g_ErrorBits.CmdBufOverflow)
 	{
+		Trace_String("Commandstorage_GetCommands(): CmdBufOverflow\n");
 		return;
 	}
   
@@ -218,6 +219,7 @@ void Commandstorage_GetCommands()
 	{
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
+		Trace_String("Commandstorage_GetCommands(): RingBuf has error\n");
 		Commandstorage_Init();
 		return;
 	}
@@ -229,14 +231,13 @@ void Commandstorage_GetCommands()
 	
 	// *** get new_byte from ringbuffer
 	uns8 new_byte = RingBuf_Get(&g_RingBuf);
-	
 	switch(g_CmdBuf.state)
 	{
 	  case CS_WaitForSTX:
 	  {
 	      if(new_byte == STX)
 	      {
-		  g_CmdBuf.state = CS_DeleteBuffer;
+					g_CmdBuf.state = CS_DeleteBuffer;
 	      }
 	      break;
 	  }
@@ -290,7 +291,8 @@ void Commandstorage_GetCommands()
 		  if((0 == g_CmdBuf.CrcL) && (0 == g_CmdBuf.CrcH)) 	/* CRC Check */
 		  {
 #ifndef UNIT_TEST
-			if(ScriptCtrl_Add(&g_CmdBuf.buffer[0]))
+			// [0] contains cmd_frame->length so we send [1]
+			if(ScriptCtrl_Add(&g_CmdBuf.buffer[1]))
 			{
 				UART_SendString("GC");
 			}
@@ -302,13 +304,13 @@ void Commandstorage_GetCommands()
 		  }
 		  else
 		  {
-			g_ErrorBits.CrcFailure = 1;
-
-			Trace_Hex(g_CmdBuf.CrcL);
-			Trace_Hex(g_CmdBuf.CrcH);
-			Trace_Hex(g_CmdBuf.buffer[g_CmdBuf.counter - 1]);
-			Trace_Hex(g_CmdBuf.buffer[g_CmdBuf.counter]);
-			Trace_String("\n");
+				g_ErrorBits.CrcFailure = 1;
+				Trace_String("Crc error: ");
+				Trace_Hex(g_CmdBuf.CrcL);
+				Trace_Hex(g_CmdBuf.CrcH);
+				Trace_Hex(g_CmdBuf.buffer[g_CmdBuf.counter - 2]);
+				Trace_Hex(g_CmdBuf.buffer[g_CmdBuf.counter - 1]);
+				Trace_String("\n");
 		  }
 		  break;
 	      }

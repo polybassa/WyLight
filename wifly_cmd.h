@@ -55,6 +55,10 @@
 #define FW_MAX_MESSAGE_LENGTH 128
 
 //*********************** STRUCT DECLARATION *********************************************
+#ifdef X86
+#pragma pack(push)
+#pragma pack(1)
+#endif
 struct cmd_add_color {
 	uns8 addr[4];
 	uns8 red;
@@ -72,10 +76,6 @@ struct cmd_set_color {
 	uns8 blue;
 };
 
-#ifdef X86
-#pragma pack(push)
-#pragma pack(1)
-#endif
 struct cmd_set_fade {
 	uns8 addr[4];
 	uns8 red;
@@ -121,7 +121,7 @@ struct led_cmd {
 };
 
 struct cmd_frame {
-	uns8 stx;
+	//TODO remove length
 	uns8 length;
 	struct led_cmd led;
 };
