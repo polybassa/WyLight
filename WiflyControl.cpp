@@ -361,39 +361,154 @@ bool WiflyControl::BlEnableAutostart(void) const
 	return BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
 }
 
-bool BlProgrammFlash(const char *pFilename)
+bool WiflyControl::BlProgramFlash(const std::string& pFilename)
 {
-	std::ifstream intelHexInput;
-	intelhex mIntelHexObj;
+	cout << endl << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")" << endl;
+	cout << "opening '" << pFilename << "' ...";
+
+	std::ifstream hexFile;
+	hexFile.open(const_cast<char*>(pFilename.c_str()), ifstream::in);
 	
-	intelHexInput.open(pFilename, ifstream::in);
-	
-	if(!intelHexInput.good())
+	if(!hexFile.good())
 	{
-	    cout << "Error: couldn't open " << *pFilename << endl;
+		cout << "failed!" << endl;
+		return false;
+	}
+	cout << "done." << endl;
+
+	
+	intelhex hexConverter;
+	hexFile >> hexConverter;
+	
+	BlInfo info;
+	if(sizeof(info) != BlReadInfo(info))
+	{
+		cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
+		<< ": can not read bootloader info from traget device" << endl;
+		return false;
+	}
+	
+	/*Check if last address of programmcode is not in the bootblock */
+	
+	unsigned long endAddress;
+	
+	if(hexConverter.endAddress(&endAddress))
+	{
+	    if(endAddress >= (unsigned long)(info.GetAddress()))
+	    {
+		  cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
+		  << ": endaddress of program code is in bootloader area of the target device flash" << endl;
+		  return false;
+	    }
+	}
+	else
+	{
+	    cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
+	    << ": can not read endAddress from hexConverter" << endl;
 	    return false;
 	}
 	
-	intelHexInput >> mIntelHexObj;
+	unsigned short word1, word2;
+	unsigned int bootAddress;
+	unsigned char resetVector[4];
+	unsigned char appVector[4];
 	
+	/* Calculate the resetVector */
+	bootAddress = (info.GetAddress() + 2) / 2;
 	
-	cout << "Final address is 0x" << setw(4) << setfill('0') << uppercase << hex << mIntelHexObj.currentAddress() << endl;
+	word1 = 0xEF00 | (bootAddress & 0xff);
+	word2 = 0xF000 | ((bootAddress >> 8) & 0x0FFF);
 	
-	cout << "File contained " << mIntelHexObj.getNoWarnings() << " warnings and " 
-	<< mIntelHexObj.getNoErrors() << "errors." << endl;
+	resetVector[0] = (unsigned char)word1;
+	resetVector[1] = (unsigned char)(word1 >> 8);
+	resetVector[2] = (unsigned char)word2;
+	resetVector[3] = (unsigned char)(word2 >> 8);
 	
-	while(mIntelHexObj.getNoErrors() > 0)
+	/*Put AppVektor from the beginning of hexfile at the startaddress of the bootloader */
+	
+	hexConverter.begin();
+	if(hexConverter.currentAddress() != 0)
 	{
-	    string message;
-	    mIntelHexObj.popNextError(message);
-	    cout << message << endl;
+		cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
+		<< ": program code does not start at address 0x0000" << endl;
+		return false;
 	}
 	
-	while(mIntelHexObj.getNoWarnings() > 0)
+	for(unsigned int i = 0; i < sizeof(appVector); i++)
 	{
-	    string message;
-	    mIntelHexObj.popNextWarning(message);
-	    cout << message << endl;
+		if(!hexConverter.getData(&appVector[i],(unsigned long)i))
+		{
+		    cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
+		    << ": can not read data at address 0x" << hexConverter.currentAddress() << endl;
+		    return false;
+		}
+	}
+	
+	if(!BlEnableAutostart())
+	{
+		cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
+		<< ": can not enable bootloader autostart!" << endl;
+		return false;
+	}
+	
+	if(!BlFlashErase())
+	{
+		cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
+		<< ": can not erase target device flash!" << endl;
+		return false;
+	}
+	
+	unsigned int writeAddress = 0;
+	unsigned char flashBuffer[FLASH_SIZE];
+	unsigned char nextByte;
+	
+	if(endAddress > FLASH_SIZE)
+	{
+		cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
+		<< ": endaddress of program code is outside the target device flash" << endl;
+		return false;
+	}
+	
+	/* Write the resetVector to temporary flashBuffer*/
+	memcpy(&flashBuffer[0], &resetVector[0], sizeof(resetVector));
+	
+	writeAddress += sizeof(resetVector);
+	
+	for(;writeAddress <= (unsigned int)endAddress; writeAddress++)
+	{
+		if(hexConverter.getData(&nextByte, writeAddress))
+		{
+		    flashBuffer[writeAddress] = nextByte;
+		}
+		else
+		{
+		    flashBuffer[writeAddress] = 0xff;	
+		} 
+	}
+	if(!BlWriteFlash(0, &flashBuffer[0], (size_t)endAddress+1))
+	{
+		cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
+		<< ": writing program code to target device flash failed!" << endl;
+		return false;
+	}
+	
+	/* we always have to write a FLASH_WRITE Block when we wanna write to device flash,
+	 * so we have to pack the appVector at the end of a Block of data */
+	
+	unsigned char appVecBuf[FLASH_WRITE_BLOCKSIZE];
+	
+	for(int i = 0; i < FLASH_WRITE_BLOCKSIZE; i++)
+	{
+		appVecBuf[i] = 0xff;
+	}
+	
+	memcpy(&appVecBuf[sizeof(appVecBuf) - sizeof(appVector)], &appVector[0], sizeof(appVector)); 
+	
+	if(!BlWriteFlash(info.GetAddress() - FLASH_WRITE_BLOCKSIZE, &appVecBuf[0], FLASH_WRITE_BLOCKSIZE))
+	{
+		cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
+		<< ": writing application startvector to target device flash failed!" << endl;
+		return false;
 	}
 	
 	return true;
@@ -509,7 +624,6 @@ unsigned long WiflyControl::ToRGBA(string& s) const
 	stringstream converter;
 	converter << hex << s;
 	converter >> rgba;
-	cout << hex << rgba << "<" << endl;
 	return rgba;
 }
 

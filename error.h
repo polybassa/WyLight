@@ -22,6 +22,7 @@
 struct ErrorBits {
 		char CrcFailure:1;
 		char EepromFailure:1;
+		char CmdBufOverflow:1;
 };
 extern struct ErrorBits g_ErrorBits;
 

@@ -198,6 +198,12 @@ struct BlFlashWriteRequest : public BlAddressRequest
 		{
 			assert(numBytes <= sizeof(payload));
 			SetAddress(address);
+			
+			for(unsigned int i = 0; i < sizeof(payload); i++)
+			{
+			    payload[i] = 0xff;
+			}
+			
 			memcpy(payload, pData, numBytes);
 		};
 		

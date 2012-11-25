@@ -19,6 +19,10 @@
 #ifndef _COMMANDSTORAGE_H_
 #define _COMMANDSTORAGE_H_
 
+//#define _old_commandstorage_
+
+#ifdef _old_commandstorage_
+
 #include "platform.h"
 #include "RingBuf.h"		
 #include "usart.h"			
@@ -49,20 +53,6 @@ extern bank2 struct CommandBuffer g_CmdBuf;
 	Crc_NewCrc(&g_CmdBuf.CrcH, &g_CmdBuf.CrcL); \
 }
 
-/**
- * pDest: output buffer
- * return: - 0, if no command available in buffer
- *         - pDest, if available command was written to pDest
-**/
-struct led_cmd* Commandstorage_Read(struct led_cmd *pDest);
-
-/**
- * pSrc: command which should be written to eeprom
- * length: of the payload data in pSrc
- * return: - TRUE, if command was successfully written to buffer
- *         - FALSE, if not
-**/
-bit Commandstorage_Write(unsigned char *pSrc, unsigned char length);
 
 /** This function reads one byte from the ringbuffer and check
 *** for framestart, framelength, or databyte 
@@ -71,13 +61,36 @@ bit Commandstorage_Write(unsigned char *pSrc, unsigned char length);
 **/
 void Commandstorage_GetCommands();
 
-void Commandstorage_ExecuteCommands();
-void Commandstorage_ExecuteCmd(struct led_cmd* pCmd);
+#else
 
-/**
-*** Initialize commandstorage in eeprom
-**/
-void Commandstorage_Init();
+#include "platform.h"
+#include "RingBuf.h"
+#include "crc.h"
+#include "error.h"
+#include "wifly_cmd.h"
+
+#define CMDFRAMELENGTH NUM_OF_LED*3+5
+
+/** Statemachine STATES **/
+#define CS_WaitForSTX 0
+#define	CS_DeleteBuffer 1
+#define	CS_UnMaskChar 2
+#define CS_SaveChar 3
+
+struct CommandBuffer{
+    uns8 buffer[CMDFRAMELENGTH];
+    uns8 counter;
+    uns8 state;
+    uns8 CrcH;
+    uns8 CrcL;
+};
+extern bank2 struct CommandBuffer g_CmdBuf;
+
+void Commandstorage_Init(); 
+
+void Commandstorage_GetCommands();
+
+#endif /* #ifdef _old_commandstorage_ */
 
 #endif /* #ifndef _COMMANDSTORAGE_H_ */
 

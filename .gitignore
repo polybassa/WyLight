@@ -213,3 +213,5 @@ Intel-HEX-Class-master/utilities/ihStat/ihStat-win/ihStat-win/ihStat-win.vcxproj
 Intel-HEX-Class-master/utilities/ihStat/ihStat-win/ihStat-win/ihStat-win.vcxproj.user
 Intel-HEX-Class-master/utilities/ihStat/ihStat.cpp
 Intel-HEX-Class-master/utilities/makefile
+commandstorage_ut.bin
+RingBuf_ut.bin

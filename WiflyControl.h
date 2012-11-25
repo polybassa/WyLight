@@ -23,6 +23,8 @@
 #include "ClientSocket.h"
 #include "wifly_cmd.h"
 #include "BlRequest.h"
+#include "intelhexclass.h"
+
 
 class WiflyControl
 {
@@ -57,7 +59,7 @@ class WiflyControl
 		bool BlWriteFlash(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
 		bool BlWriteEeprom(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
 		bool BlEnableAutostart(void) const;
-		bool BlProgrammFlash(const char* pFilename);
+		bool BlProgramFlash(const std::string& Filename);
 		void ClearScript(void);
 		void FwTest(void);
 		void StartBl(void);

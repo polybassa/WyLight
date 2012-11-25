@@ -90,6 +90,25 @@ class ControlCmdAddColor : public WiflyControlCmd
 		};
 };
 
+class ControlCmdBlAutostartEnable : public WiflyControlCmd
+{
+	public:
+		ControlCmdBlAutostartEnable(void) : WiflyControlCmd(
+				string("enable_bl_autostart")) {};
+
+		virtual void Run(WiflyControl& control) const
+		{
+			if(control.BlEnableAutostart())
+			{
+			    cout << endl <<"Bootloader Autostart enabled!"<<endl;
+			}
+			else
+			{
+			    cout << endl <<"Bootloader Autostart not enabled!"<<endl;
+			}
+		}	
+};
+
 class ControlCmdBlInfo : public WiflyControlCmd
 {
 	public:
@@ -174,33 +193,37 @@ class ControlCmdBlEraseEeprom : public WiflyControlCmd
 		}	
 };
 
-class ControlCmdBlAutostartEnable : public WiflyControlCmd
+class ControlCmdBlProgramFlash : public WiflyControlCmd
 {
 	public:
-		ControlCmdBlAutostartEnable(void) : WiflyControlCmd(
-				string("enable_bl_autostart")) {};
+		ControlCmdBlProgramFlash(void) : WiflyControlCmd(
+				string("program_flash"),
+				string(" <hexFile>' \n ") + string("    <hexFile> path of hexfile to write")) {};
 
 		virtual void Run(WiflyControl& control) const
 		{
-			if(control.BlEnableAutostart())
+			string path;
+			
+			cin >> path;
+					  
+			if(control.BlProgramFlash(path))
 			{
-			    cout << endl <<"Bootloader Autostart enabled!"<<endl;
+			    cout << endl <<"Program device flash succesful"<<endl;
 			}
 			else
 			{
-			    cout << endl <<"Bootloader Autostart not enabled!"<<endl;
+			    cout << endl <<"Program device flash failed"<<endl;
 			}
 		}	
 };
-
 
 class ControlCmdBlRead : public WiflyControlCmd
 {
 	public:
 		ControlCmdBlRead(string name) : WiflyControlCmd(
-				string("read_") + name + string(" <addr> <numBytes>'\n")
+				string("read_") + name, string(" <addr> <numBytes>'\n")
 			+ string("    <addr> address where to start reading\n")
-			+ string("    <numBytes> number of bytes to read")), m_Name(name) {};
+			+ string("    <numBytes> number of bytes to read")) {};
 
 		const string m_Name;
 		
@@ -230,6 +253,7 @@ class ControlCmdBlRead : public WiflyControlCmd
 			}
 		};
 };
+
 
 class ControlCmdBlReadEeprom : public ControlCmdBlRead
 {
@@ -345,6 +369,7 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdBlCrcFlash(),
 	new ControlCmdBlEraseEeprom(),
 	new ControlCmdBlEraseFlash(),
+	new ControlCmdBlProgramFlash(),
 	new ControlCmdBlReadEeprom(),
 	new ControlCmdBlReadFlash(),
 	new ControlCmdBlRunApp(),
