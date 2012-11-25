@@ -24,13 +24,6 @@ void Crc_AddCrc(unsigned char byte,unsigned char* p_crcH,unsigned char* p_crcL)
 	unsigned char index, crcH, crcL;
 	crcH = *p_crcH;
 	crcL = *p_crcL;
-#ifndef __CC8E__
-	Trace_String("Crc before: 0x");
-	Trace_Hex(crcH);
-	Trace_Hex(crcL);
-	Trace_String("\n");
-#endif
-
 #ifdef __CC8E__
 	MOVF(byte,0);
 	
@@ -86,12 +79,6 @@ void Crc_AddCrc(unsigned char byte,unsigned char* p_crcH,unsigned char* p_crcL)
 #endif /* #ifdef __CC8E__ */
 	*p_crcH = crcH;
 	*p_crcL = crcL;
-#ifndef __CC8E__
-	Trace_String("Crc after: 0x");
-	Trace_Hex(crcH);
-	Trace_Hex(crcL);
-	Trace_String("\n");
-#endif
 }
 
 /**
@@ -127,6 +114,7 @@ void Crc_NewCrc(unsigned char* p_crcH, unsigned char* p_crcL)
 {
     if(!p_crcH) return;
     if(!p_crcL) return;
-    *p_crcH = 0xff;
-    *p_crcL = 0xff;
+		// bootloader is using 0x0000 as initial crc not 0xFFFF
+    *p_crcH = 0x00;
+    *p_crcL = 0x00;
 }

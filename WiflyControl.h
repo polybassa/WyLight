@@ -20,7 +20,7 @@
 #define _WIFLYCONTROL_H_
 
 #include <string>
-#include "ClientSocket.h"
+#include "ComProxy.h"
 #include "wifly_cmd.h"
 #include "BlRequest.h"
 #include "intelhexclass.h"
@@ -29,12 +29,12 @@
 class WiflyControl
 {
 	private:
-		const ClientSocket* mSock;
+		const ComProxy m_Proxy;
 		pthread_t mRecvThread;
 		struct cmd_frame mCmdFrame;
 		unsigned long ToRGBA(std::string& s) const;
 		size_t BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync = true) const;
-		bool FwSend(const struct cmd_frame* pFrame) const;
+		int FwSend(struct cmd_frame* pFrame, size_t length) const;
 		
 	public:
 		WiflyControl(const char* pAddr, short port, bool useTcp);

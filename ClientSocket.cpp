@@ -105,6 +105,14 @@ size_t UdpSocket::Recv(unsigned char* pBuffer, size_t length, unsigned long time
 
 int UdpSocket::Send(const unsigned char* frame, size_t length) const
 {
+#ifdef DEBUG
+	std::cout << __FILE__ << ":" << __FUNCTION__ << ": Sending " << length << " bytes: ";
+	for(size_t i = 0; i < length; i++)
+	{
+		std::cout << std::hex << int(frame[i]) << ' ';
+	}
+	std::cout << std::endl;
+#endif
 	return sendto(mSock, frame, length, 0, (struct sockaddr*)&mSockAddr, sizeof(mSockAddr));
 }
 
