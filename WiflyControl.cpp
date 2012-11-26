@@ -96,7 +96,7 @@ bool WiflyControl::BlFlashErase(void) const
 		bytesRead = BlFlashErase(&buffer[0], address, FLASH_ERASE_BLOCKS, true);
 #ifdef DEBUG
 		cout << __FILE__ << "::" << __FUNCTION__
-		 << "(): Erase at " << hex << address;
+		 << "(): Erase at " << hex << address << endl;
 #endif
 		 if((bytesRead < 1) || (0x03 != buffer[0])) 
 		 {
