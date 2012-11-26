@@ -19,48 +19,6 @@
 #ifndef _COMMANDSTORAGE_H_
 #define _COMMANDSTORAGE_H_
 
-#ifdef _old_commandstorage_
-
-#include "platform.h"
-#include "RingBuf.h"		
-#include "usart.h"			
-#include "eeprom.h"   
-#include "error.h"    	
-#include "crc.h"
-#include "timer.h"
-#include "wifly_cmd.h"
-
-#define CMDFRAMELENGTH NUM_OF_LED*3+5
-
-//*********************** STRUCT DECLARATION *********************************************
-struct CommandBuffer{
-    uns8 cmd_counter;	// number of bytes in cmd_buf
-    uns8 frame_counter;	// number of bytes to read in the current frame
-    uns8 cmd_buf[CMDFRAMELENGTH];
-    uns8 CrcH;
-    uns8 CrcL;
-};
-extern bank2 struct CommandBuffer g_CmdBuf;
-
-//*********************** METHODS AND MACROS *********************************************
-#define CmdWidth sizeof(struct led_cmd)	// *** Number of Bytes for one command
-#define Commandstorage_Clear(x)  		\
-{								\
-	g_CmdBuf.cmd_counter = 0;	\
-	g_CmdBuf.frame_counter = 0;	\
-	Crc_NewCrc(&g_CmdBuf.CrcH, &g_CmdBuf.CrcL); \
-}
-
-
-/** This function reads one byte from the ringbuffer and check
-*** for framestart, framelength, or databyte 
-*** if a frame is complete, the function save the frame as a new
-*** command in the internal EEPROM and calculate the Pointer for the next Command
-**/
-void Commandstorage_GetCommands();
-
-#else
-
 #include "platform.h"
 #include "RingBuf.h"
 #include "crc.h"
@@ -87,8 +45,6 @@ extern bank2 struct CommandBuffer g_CmdBuf;
 void Commandstorage_Init(); 
 
 void Commandstorage_GetCommands();
-
-#endif /* #ifdef _old_commandstorage_ */
 
 #endif /* #ifndef _COMMANDSTORAGE_H_ */
 

@@ -20,6 +20,7 @@
 #include "ScriptCtrl.h"
 #include "ledstrip.h"
 #include "eeprom.h"
+#include "timer.h"
 #include "trace.h"
 
 /**************** private functions/ macros *****************/

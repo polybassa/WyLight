@@ -16,8 +16,6 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#define _old_commandstorage_
-
 #ifndef X86
 #define TEST
 #endif
@@ -200,11 +198,7 @@ void InitAll()
 	Timer_Init();
 	Ledstrip_Init();
 	Error_Init();
-#ifdef _old_commandstorage_
-	Commandstorage_Clear();
-#else
 	Commandstorage_Init();
-#endif
 	Rtc_Init();
 	ScriptCtrl_Init();
 

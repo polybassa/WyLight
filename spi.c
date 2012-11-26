@@ -43,20 +43,6 @@ uns8 SPI_Send(uns8 data)
 	return SSP1BUF;
 }
 
-/***
-**	This function sends the array to the LED controller(WS2801)
-**  it starts with the last byte to get a correct output
-***/
-void SPI_SendArray(uns8 *array, uns8 length)
-{
-	if(array == 0) return;
-	uns8 i;
-	for(i = length; i == 0; i-- )
-	{
-		SPI_Send(array[i]);
-	} 
-}
-
 void SPI_SendLedBuffer(uns8 *array)
 {
 	

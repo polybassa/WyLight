@@ -14,7 +14,7 @@ ANDROID_BIN=android/.metadata ${ANDROID_DIR}/bin/ ${ANDROID_DIR}/gen/ ${ANDROID_
 
 X86_SRC=main.c crc.c commandstorage.c eeprom.c error.c ledstrip.c RingBuf.c ScriptCtrl.c spi.c timer.c usart.c x86_wrapper.c x86_gl.c
 
-X86_CLIENT_BUILD=g++ BlRequest.cpp ClientSocket.cpp intelhexclass.cpp WiflyControl.cpp WiflyControlCli.cpp crc.c -DX86 -lpthread -o client.bin -Wall -pedantic -g
+X86_CLIENT_BUILD=g++ ClientSocket.cpp ComProxy.cpp intelhexclass.cpp WiflyControl.cpp WiflyControlCli.cpp crc.c -DX86 -lpthread -o client.bin -Wall -pedantic
 
 all_nils: pic simu x86_client
 
@@ -33,19 +33,18 @@ x86_client:
 	${X86_CLIENT_BUILD}
 
 x86_client_debug:
-	${X86_CLIENT_BUILD} -DDEBUG
+	${X86_CLIENT_BUILD} -DDEBUG -g
 
 #generic rule to build and run c unittests
 %_ut.bin: %_ut.c %.c %.h
-	gcc $< $(subst _ut.c,.c,$<) eeprom.c -DX86 -DUNIT_TEST -o $@ -Wall
-	./$@
+	@gcc $< $(subst _ut.c,.c,$<) eeprom.c -DX86 -DUNIT_TEST -o $@ -Wall
+	@./$@
 
-BlRequest_ut.bin: BlRequest_ut.cpp BlRequest.cpp BlRequest.h unittest.h
-	g++ BlRequest_ut.cpp BlRequest.cpp crc.c -DX86 -DUNIT_TEST -o $@ -Wall -pedantic
-	./$@
+ComProxy_ut.bin: ComProxy_ut.cpp ComProxy.cpp ComProxy.h BlRequest.h unittest.h
+	@g++ ComProxy_ut.cpp ComProxy.cpp crc.c -DX86 -DUNIT_TEST -o $@ -Wall -pedantic
+	@./$@
 
-
-test: clean BlRequest_ut.bin commandstorage_ut.bin crc_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin
+test: clean commandstorage_ut.bin ComProxy_ut.bin crc_ut.bin ledstrip_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin
 
 clean:
-	rm -rf *.asm *.bin *.cod *.fcs *.hex *.lst *.occ *.var .metadata/ ${ANDROID_BIN}					
+	@rm -rf *.asm *.bin *.cod *.fcs *.hex *.lst *.occ *.var .metadata/ ${ANDROID_BIN}
