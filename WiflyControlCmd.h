@@ -346,7 +346,7 @@ class ControlCmdSetFade : public WiflyControlCmd
 			cin >> addr;
 			cin >> color;
 			cin >> timevalue;
-			control.SetFade(addr, color, (unsigned short)timevalue * 1024, false);
+			control.SetFade(addr, color, (unsigned short)timevalue, false);
 		};
 };
 

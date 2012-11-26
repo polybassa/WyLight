@@ -294,7 +294,7 @@ void ScriptCtrl_Run(void)
 			Ledstrip_SetFade(&nextCmd.data.set_fade);
 			if(nextCmd.data.set_fade.parallelFade == 0)
 			{
-				gScriptBuf.waitValue = nextCmd.data.set_fade.fadeTmms;
+				gScriptBuf.waitValue = ntohs(nextCmd.data.set_fade.fadeTmms);
 			}
 			
 			/* move execute pointer to the next command */
@@ -310,7 +310,7 @@ void ScriptCtrl_Run(void)
 		case SET_RUN: 
 		{
 			Timer_StartStopwatch(eSET_RUN);
-			gScriptBuf.waitValue = nextCmd.data.set_run.durationTmms;
+			gScriptBuf.waitValue = ntohs(nextCmd.data.set_run.durationTmms);
 			Ledstrip_SetRun(&nextCmd.data.set_run);
 			Timer_StopStopwatch(eSET_RUN);
 			/* move execute pointer to the next command */
@@ -325,7 +325,7 @@ void ScriptCtrl_Run(void)
 		case WAIT:
 		{
 			/* TODO we should disable interrupts while changing waitValue */
-			gScriptBuf.waitValue = nextCmd.data.wait.waitTmms;
+			gScriptBuf.waitValue = ntohs(nextCmd.data.wait.waitTmms);
 			/* move execute pointer to the next command */
 			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
 			if(!gScriptBuf.inLoop)

@@ -534,12 +534,12 @@ void WiflyControl::FwTest(void)
 		SetColor(0x00FF0000LU, GREEN); sleep(1);
 		SetColor(0x0000FF00LU, BLUE);  sleep(1);
 		SetColor(0x000000FFLU, WHITE); sleep(1);
-		SetFade(0xFFFFFFFFLU, 0x00000000LU, 800, false);
+		SetFade(0xFFFFFFFFLU, 0x00000000LU, (unsigned short)5000, false);
 		sleep(20);
-		SetFade(0x000000FFLU, RED, 400, true);
-		SetFade(0x0000FF00LU, GREEN, 100, true);
-		SetFade(0x00FF0000LU, BLUE, 200, true);
-		SetFade(0xFF000000LU, WHITE, 300, false);
+		SetFade(0x000000FFLU, RED,  4000, true);
+		SetFade(0x0000FF00LU, GREEN,1000, true);
+		SetFade(0x00FF0000LU, BLUE, 2000, true);
+		SetFade(0xFF000000LU, WHITE,3000, false);
 		sleep(20);
 		doRun--;
 	}
@@ -571,7 +571,7 @@ void WiflyControl::SetFade(unsigned long addr, unsigned long rgba, unsigned shor
 {
 	mCmdFrame.led.cmd = SET_FADE;
 	SetAddrRgb(mCmdFrame.led.data.set_fade, addr, rgba);
-	mCmdFrame.led.data.set_fade.fadeTmms = htons(fadeTmms);
+	mCmdFrame.led.data.set_fade.fadeTmms = htons((unsigned short)(fadeTmms / 10));
 	mCmdFrame.led.data.set_fade.parallelFade = parallelFade;
 
 	int bytesRead = FwSend(&mCmdFrame, sizeof(cmd_set_fade));

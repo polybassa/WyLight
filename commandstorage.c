@@ -170,7 +170,11 @@ void Commandstorage_GetCommands()
 			// [0] contains cmd_frame->length so we send [1]
 			if(ScriptCtrl_Add(&g_CmdBuf.buffer[1]))
 			{
+				UART_Send(STX);
 				UART_SendString("GC");
+				UART_Send(0xf1);
+				UART_Send(0xf3);
+				UART_Send(ETX);
 			}
 			else
 			{

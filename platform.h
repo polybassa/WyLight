@@ -67,9 +67,8 @@
 #else
 	#include "inline.h"
 	#include "int18XXX.h"
-
-	#define htons(X) (X)
-	#define ntohs(X) (X)
+	
+	
 	
 	#define softResetJumpDestination(x)
 
@@ -83,6 +82,9 @@
 	void Platform_DisableAllInterrupts();
 	
 	void Platform_CheckInputs();
+	
+	uns16 htons(uns16 hostShort);
+	uns16 ntohs(uns16 networkShort);
 	
 	/*** This Function will Disable the Autostart to the Bootloader.
 	* At Startup, Bootloader checks the last EEPROM-Cell. If there is 

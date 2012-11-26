@@ -60,4 +60,21 @@ void Platform_DisableBootloaderAutostart()
 {
 	Eeprom_Write(1023, 1);
 }
+
+uns16 htons(uns16 hostShort)
+{
+	uns16 retval;
+	retval.low8 = hostShort.high8;
+	retval.high8 = hostShort.low8;
+	return retval;
+}
+
+uns16 ntohs(uns16 networkShort)
+{
+	uns16 retval;
+	retval.low8 = networkShort.high8;
+	retval.high8 = networkShort.low8;
+	return retval;
+}
+
 #endif /* __CC8E__ */
