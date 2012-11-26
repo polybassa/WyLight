@@ -33,7 +33,7 @@
 #define FLASH_SIZE 0x10000
 #define FLASH_CRC_BLOCKSIZE 252
 #define EEPROM_READ_BLOCKSIZE 256
-#define EEPROM_WRITE_BLOCKSIZE 256
+#define EEPROM_WRITE_BLOCKSIZE 1
 #define EEPROM_SIZE 1024
 #define BL_AUTOSTART_ADDRESS 0x3ff
 #define BL_STX 0x0f
@@ -44,7 +44,7 @@
 
 static const unsigned int BL_MAX_RETRIES = 5;
 static const size_t BL_MAX_MESSAGE_LENGTH = 512;
-static const unsigned long BL_RESPONSE_TIMEOUT_TMMS = 1000;
+static const unsigned long BL_RESPONSE_TIMEOUT_TMMS = 3000;
 static const unsigned char BL_SYNC[] = {BL_STX, BL_STX};
 
 struct BlRequest
@@ -147,6 +147,10 @@ struct BlEepromWriteRequest : public BlAddressRequest
 		{
 			assert(numBytes <= sizeof(payload));
 			SetAddress(address);
+			for(unsigned int i = 0; i < sizeof(payload); i++)
+			{
+			    payload[i] = 0xff;
+			}
 			memcpy(payload, pData, numBytes);
 			numBytesLow = static_cast<unsigned char>(numBytes & 0x00FF);
 			numBytesHigh = static_cast<unsigned char>((numBytes & 0xFF00) >> 8);
