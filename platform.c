@@ -58,7 +58,12 @@ void Platform_DisableAllInterrupts()
 
 void Platform_DisableBootloaderAutostart()
 {
-	Eeprom_Write(1023, 1);
+	Eeprom_Write(0x3ff, 1);
+}
+
+void Platform_EnableBootloaderAutostart()
+{
+	Eeprom_Write(0x3ff, 0xff);
 }
 
 uns16 htons(uns16 hostShort)

@@ -57,6 +57,7 @@
 	#define Platform_DisableAllInterrupts()
 	#define Platform_CheckInputs(x)
 	#define Platform_DisableBootloaderAutostart(x)
+  	#define Platform_EnableBootloaderAutostart(x)
 	#define InitFactoryRestoreWLAN(x)
 	#define InitFET(x)
 	#define Platform_IOInit(x)
@@ -92,5 +93,6 @@
 	* Application otherwise the Bootloader stays in Bootloader-Mode.
 	*/
 	void Platform_DisableBootloaderAutostart();
+	void Platform_EnableBootloaderAutostart();
 #endif
 #endif /* #ifndef _PLATFORM_H_ */
