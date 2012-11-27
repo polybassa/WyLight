@@ -86,7 +86,7 @@ class ControlCmdAddColor : public WiflyControlCmd
 			cin >> minute;
 			cin >> second;
 			cout << addr << " " << color << " " << hour << " " << minute << " " << second << endl; 
-			control.AddColor(addr, color, hour, minute, second);
+			control.FwAddColor(addr, color, hour, minute, second);
 		};
 };
 
@@ -296,7 +296,7 @@ class ControlCmdStartBl : public WiflyControlCmd
 				  
 		virtual void Run(WiflyControl& control) const {
 			cout << "Starting bootloader... ";
-			control.StartBl();
+			control.FwStartBl();
 		};
   
 };
@@ -309,7 +309,7 @@ class ControlCmdClearScript : public WiflyControlCmd
 				string("' - clear script buffer")) {};
 
 		virtual void Run(WiflyControl& control) const {
-			control.ClearScript();
+			control.FwClearScript();
 		};
 };
 
@@ -326,7 +326,7 @@ class ControlCmdSetColor : public WiflyControlCmd
 			string addr, color;
 			cin >> addr;
 			cin >> color;
-			control.SetColor(addr, color);
+			control.FwSetColor(addr, color);
 		};
 };
 
@@ -346,7 +346,7 @@ class ControlCmdSetFade : public WiflyControlCmd
 			cin >> addr;
 			cin >> color;
 			cin >> timevalue;
-			control.SetFade(addr, color, (unsigned short)timevalue, false);
+			control.FwSetFade(addr, color, (unsigned short)timevalue, false);
 		};
 };
 
