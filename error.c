@@ -20,6 +20,7 @@
 #include "error.h"
 #include "RingBuf.h"
 #include "usart.h"
+#include "wifly_cmd.h"
 
 struct ErrorBits g_ErrorBits;
 
@@ -30,7 +31,11 @@ void Error_Throw()
 	{
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
+		UART_Send(STX);
 		UART_SendString("E:05; ERROR: Tracebuffer full");
+		UART_Send(0x89);	/* Precalculated CRC */
+		UART_Send(0x65);
+		UART_Send(ETX);
 		// *** Re-init the Ringbuffer to get a consistent commandstring and reset error
 		RingBuf_Init(&g_TraceBuf);
 	}
@@ -38,7 +43,11 @@ void Error_Throw()
 	
 	if(g_ErrorBits.CmdBufOverflow)
 	{
+		UART_Send(STX);
 		UART_SendString("E:04; ERROR: Commandbuffer full");
+		UART_Send(0x09);	/* Precalculated CRC */
+		UART_Send(0x0C);
+		UART_Send(ETX);
 		Commandstorage_Init();
 		g_ErrorBits.CmdBufOverflow = 0;
 	}
@@ -48,18 +57,31 @@ void Error_Throw()
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
 		Commandstorage_Init();
+		
+		UART_Send(STX);
 		UART_SendString("E:03; ERROR: Receivebuffer full");
+		UART_Send(0x74);	/* Precalculated CRC */
+		UART_Send(0x54);
+		UART_Send(ETX);
 		// *** Re-init the Ringbuffer to get a consistent commandstring and reset error
 		RingBuf_Init(&g_RingBuf);
 	}
 	if(g_ErrorBits.CrcFailure)
 	{
-		UART_SendString("E:02; ERROR:Crc-Check failed");
+		UART_Send(STX);
+		UART_SendString("E:02; ERROR: Crc-Check failed");
+		UART_Send(0x3d);	/* Precalculated CRC */
+		UART_Send(0x90);
+		UART_Send(ETX);
 		g_ErrorBits.CrcFailure = 0;
 	}
 	if(g_ErrorBits.EepromFailure)
 	{
+		UART_Send(STX);
 		UART_SendString("E:01; ERROR: EEPROM is full");
+		UART_Send(0x40);	/* Precalculated CRC */
+		UART_Send(0x97);
+		UART_Send(ETX);
 		g_ErrorBits.EepromFailure = 0;
 	}
 }
