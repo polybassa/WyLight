@@ -209,6 +209,7 @@ void ScriptCtrl_Init(void)
 	gScriptBuf.write = Eeprom_Read(EEPROM_SCRIPTBUF_WRITE);
 	gScriptBuf.execute = gScriptBuf.read;
 }
+//TODO Add a Methode to test the Errorbits and there responses
 
 void ScriptCtrl_Run(void)
 {
