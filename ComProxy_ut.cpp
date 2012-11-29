@@ -40,17 +40,23 @@ const unsigned char dummyBlFlashEraseResponseMasked[] = {BL_STX, 0x03, 0x63, 0x3
 const unsigned char dummyBlFlashEraseResponsePure[] = {0x03};
 
 unsigned char g_TestSocketRecvBuffer[10240];
-size_t g_TestSocketRecvBufferSize;
+size_t g_TestSocketRecvBufferPos = 0;
+size_t g_TestSocketRecvBufferSize = 0;
 unsigned char g_TestSocketSendBuffer[10240];
 size_t g_TestSocketSendBufferSize;
 TestSocket::TestSocket(const char* pAddr, short port) : ClientSocket(pAddr, port, 0) {}
 
+/**
+ * For each call to Recv() we only return one byte of data to simulate a very
+ * fragmented response from pic.
+ */
 size_t TestSocket::Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms) const
 {
-	if(length >= g_TestSocketRecvBufferSize)
+	if(g_TestSocketRecvBufferPos < g_TestSocketRecvBufferSize)
 	{
-		memcpy(pBuffer, g_TestSocketRecvBuffer, length);
-		return g_TestSocketRecvBufferSize;
+		*pBuffer = g_TestSocketRecvBuffer[g_TestSocketRecvBufferPos];
+		g_TestSocketRecvBufferPos++;
+		return 1;
 	}
 	return 0;
 }
@@ -64,7 +70,9 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	/* Sync */
 	if((sizeof(BL_SYNC) == length) && (0 == memcmp(BL_SYNC, frame, sizeof(BL_SYNC))))
 	{
+		Trace_String("Reply to SYNC\n");
 		g_TestSocketRecvBuffer[0] = BL_STX;
+		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = 1;
 		return length;
 	}
@@ -74,6 +82,7 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	{
 		Trace_String("BlInfoRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlInfoMasked, sizeof(dummyBlInfoMasked));
+		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = sizeof(dummyBlInfoMasked);
 		return length;
 	}
@@ -83,6 +92,7 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	{
 		Trace_String("BlEepromRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashCrc16ResponseMasked, sizeof(dummyBlFlashCrc16ResponseMasked));
+		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashCrc16ResponseMasked);
 		return length;
 	}
@@ -92,6 +102,7 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	{
 		Trace_String("BlFlashCrc16Request\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashCrc16ResponseMasked, sizeof(dummyBlFlashCrc16ResponseMasked));
+		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashCrc16ResponseMasked);
 		return length;
 	}
@@ -101,6 +112,7 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	{
 		Trace_String("BlFlashEraseRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashEraseResponseMasked, sizeof(dummyBlFlashEraseResponseMasked));
+		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashEraseResponseMasked);
 		return length;
 	}
@@ -110,6 +122,7 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	{
 		Trace_String("BlFlashReadRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashReadResponseMasked, sizeof(dummyBlFlashReadResponseMasked));
+		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashReadResponseMasked);
 		return length;
 	}
@@ -119,6 +132,7 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	{
 		Trace_String("BlEepromReadRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashReadResponseMasked, sizeof(dummyBlFlashReadResponseMasked));
+		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashReadResponseMasked);
 		return length;
 	}
@@ -130,6 +144,7 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 		g_TestSocketRecvBuffer[0] = 'x';
 		g_TestSocketRecvBuffer[1] = 'x';
 		g_TestSocketRecvBuffer[2] = 'x';
+		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = 0;
 		return length;
 	}

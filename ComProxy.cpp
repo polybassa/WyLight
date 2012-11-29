@@ -27,7 +27,7 @@
  * @param bytesWritten counter of bytes in output buffer
  * @param outputLength size of output buffer
  * @param pOutput output buffer
- * @param _BYTE_ the byte we have to mask and writte to buffer
+ * @param _BYTE_ the byte we have to mask and write to buffer
  */
 #define MaskAndAddByteToOutput(_BYTE_) { \
 	if(IsCtrlChar(_BYTE_)) { \
@@ -160,14 +160,76 @@ int ComProxy::Send(const struct cmd_frame* pFrame, unsigned char* pResponse, siz
 	return Send(reinterpret_cast<const unsigned char*>(pFrame), pFrame->length, pResponse, responseSize, true, doSync, false);
 }
 
+//TODO implement timeout!!!
+size_t ComProxy::Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms, bool checkCrc, bool crcInLittleEndian) const
+{
+	unsigned char* const pBufferBegin = pBuffer;
+	unsigned short crc = 0;
+	unsigned short preCrc = 0;
+	unsigned short prepreCrc = 0;
+	bool lastWasDLE = false;
+
+	do {
+		size_t bytesMasked = mSock->Recv(pBuffer, length, timeoutTmms);
+		unsigned char* pInput = pBuffer;
+		while(bytesMasked-- > 0)
+		{
+			if(lastWasDLE)
+			{
+				lastWasDLE = false;
+				prepreCrc = preCrc;
+				preCrc = crc;
+				Crc_AddCrc16(*pInput, &crc);
+				*pBuffer = *pInput;
+				pBuffer++;
+				length--;
+			}
+			else
+			{
+				if(BL_DLE == *pInput)
+				{
+					lastWasDLE = true;
+				}
+				else if (BL_ETX == *pInput)
+				{
+					if(!checkCrc)
+					{
+						return pBuffer - pBufferBegin;
+					}
+
+					if(crcInLittleEndian)
+					{
+						Crc_AddCrc16(pBuffer[-1], &prepreCrc);
+						Crc_AddCrc16(pBuffer[-2], &prepreCrc);
+						crc = prepreCrc;
+					}
+					return (0 != crc) ? 0 : (pBuffer - 2) - pBufferBegin;
+				}
+				else if (BL_STX == *pInput)
+				{
+					pBuffer = pBufferBegin;
+				}
+				else
+				{
+					prepreCrc = preCrc;
+					preCrc = crc;
+					Crc_AddCrc16(*pInput, &crc);
+					*pBuffer = *pInput;
+					pBuffer++;
+					length--;
+				}
+			}
+			pInput++;
+		}
+	}	while((0 == timeoutTmms) || (true));
+	return 0;
+}
+
 int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const
 {
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	unsigned char recvBuffer[BL_MAX_MESSAGE_LENGTH];
 	size_t bufferSize = 0;
-	unsigned char* pCur = buffer;
-	unsigned char* pNext;
-	const unsigned char* pEnd;;
 
 	/* add leading STX */
 	buffer[0] = BL_STX;
@@ -218,32 +280,9 @@ int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsi
 			}
 
 			/* receive response */
-			int bytesReceived = mSock->Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS);
-			
-			if(bytesReceived > 1)
-			{
-				/* remove STX from message */
-				pCur = pResponse;
-				pNext = recvBuffer;
-				pEnd = recvBuffer + bytesReceived;
-				while((pNext < pEnd) && (BL_STX == *pNext))
-				{
-					pNext++; bytesReceived--;
-				}
-
-				/* remove BL_ETX from buffer */
-				if(0 == bytesReceived)
-				{
-					Trace_String("ComProxy::Send: no bytes received\n");
-					return 0;
-				}
-				bytesReceived--;
-
-				/* remove BL_DLE from buffer and check crc if requested */
-				return UnmaskControlCharacters(pNext, bytesReceived, pResponse, responseSize, checkCrc);
-			}
-			Trace_String("ComProxy::Send: response to short\n");
-			return 0;
+			size_t bytesReceived = Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS, checkCrc, crcInLittleEndian);
+			memcpy(pResponse, recvBuffer, bytesReceived);
+			return bytesReceived;
  		}
 }
 
