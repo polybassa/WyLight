@@ -21,6 +21,10 @@
 #include "trace.h"
 #include "wifly_cmd.h"
 
+#include <sys/time.h>
+
+static timeval RESPONSE_TIMEOUT = {1, 0}; // one second
+
 /**
  * This makro is used in ComProxy::MaskControlCharacters and requires some
  * implicit parameter:
@@ -38,6 +42,31 @@
 	if(++bytesWritten > outputLength) return 0; \
 	*pOutput = _BYTE_; \
 	pOutput++; \
+}
+
+bool operator< (timeval& a, timeval& b)
+{
+	if(a.tv_sec < b.tv_sec)
+		return true;
+	if(a.tv_sec > b.tv_sec)
+		return false;
+	return a.tv_usec < b.tv_usec;
+}
+
+timeval& operator- (timeval& a, timeval& b)
+{
+	assert(b < a);
+	if(a.tv_usec < b.tv_usec)
+	{
+		a.tv_usec = 1000000 - (b.tv_usec - a.tv_usec);
+		a.tv_sec -= b.tv_sec + 1;
+	}
+	else
+	{
+		a.tv_usec -= b.tv_usec;
+		a.tv_sec -= b.tv_sec;
+	}
+	return a;
 }
 
 ComProxy::ComProxy(const ClientSocket* const pSock)
@@ -160,9 +189,11 @@ int ComProxy::Send(const struct cmd_frame* pFrame, unsigned char* pResponse, siz
 	return Send(reinterpret_cast<const unsigned char*>(pFrame), pFrame->length, pResponse, responseSize, true, doSync, false);
 }
 
-//TODO implement timeout!!!
-size_t ComProxy::Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms, bool checkCrc, bool crcInLittleEndian) const
+size_t ComProxy::Recv(unsigned char* pBuffer, size_t length, timeval* timeout, bool checkCrc, bool crcInLittleEndian) const
 {
+	timeval now;
+	timeval startTime;
+	gettimeofday(&startTime, NULL);
 	unsigned char* const pBufferBegin = pBuffer;
 	unsigned short crc = 0;
 	unsigned short preCrc = 0;
@@ -170,7 +201,7 @@ size_t ComProxy::Recv(unsigned char* pBuffer, size_t length, unsigned long timeo
 	bool lastWasDLE = false;
 
 	do {
-		size_t bytesMasked = mSock->Recv(pBuffer, length, timeoutTmms);
+		size_t bytesMasked = mSock->Recv(pBuffer, length, timeout);
 		unsigned char* pInput = pBuffer;
 		while(bytesMasked-- > 0)
 		{
@@ -221,7 +252,9 @@ size_t ComProxy::Recv(unsigned char* pBuffer, size_t length, unsigned long timeo
 			}
 			pInput++;
 		}
-	}	while((0 == timeoutTmms) || (true));
+		gettimeofday(&now, NULL);
+		now = now - startTime;
+	}	while((NULL == timeout) || (now < *timeout));
 	return 0;
 }
 
@@ -261,7 +294,7 @@ int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsi
 			}
 			Trace_String("ComProxy::Send: SYNC...\n");
 			mSock->Send(BL_SYNC, sizeof(BL_SYNC));
-		} while(0 == mSock->Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS));
+		} while(0 == mSock->Recv(recvBuffer, sizeof(recvBuffer), &RESPONSE_TIMEOUT));
 	}
 
 		{
@@ -280,7 +313,7 @@ int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsi
 			}
 
 			/* receive response */
-			size_t bytesReceived = Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS, checkCrc, crcInLittleEndian);
+			size_t bytesReceived = Recv(recvBuffer, sizeof(recvBuffer), &RESPONSE_TIMEOUT, checkCrc, crcInLittleEndian);
 			memcpy(pResponse, recvBuffer, bytesReceived);
 			return bytesReceived;
  		}

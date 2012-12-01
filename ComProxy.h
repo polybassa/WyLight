@@ -26,7 +26,7 @@ class ComProxy
 {
 	private:
 		const ClientSocket* const mSock;
-		size_t Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms = 0, bool checkCrc = true, bool crcInLittleEndian = true) const;
+		size_t Recv(unsigned char* pBuffer, size_t length, timeval* timeout = NULL, bool checkCrc = true, bool crcInLittleEndian = true) const;
 
 	public:
 		ComProxy(const ClientSocket* const pSock);

@@ -44,7 +44,6 @@
 
 static const unsigned int BL_MAX_RETRIES = 5;
 static const size_t BL_MAX_MESSAGE_LENGTH = 512;
-static const unsigned long BL_RESPONSE_TIMEOUT_TMMS = 1000;
 static const unsigned char BL_SYNC[] = {BL_STX, BL_STX};
 
 struct BlRequest

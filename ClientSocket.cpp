@@ -52,20 +52,15 @@ TcpSocket::TcpSocket(const char* pAddr, short port)
 	}
 }
 
-size_t TcpSocket::Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms) const
+size_t TcpSocket::Recv(unsigned char* pBuffer, size_t length, timeval* timeout) const
 {
-	/* prepare timeout structure */
-	timeval timeout;
-	timeout.tv_sec = timeoutTmms / 1000;
-	timeout.tv_usec = timeoutTmms % 1000;
-
 	/* prepare socket set for select() */
 	fd_set readSockets;
 	FD_ZERO(&readSockets);
 	FD_SET(mSock, &readSockets);
 	
 	/* wait for receive data and check if socket was correct */
-	if((1 == select(mSock + 1, &readSockets, NULL, NULL, &timeout))
+	if((1 == select(mSock + 1, &readSockets, NULL, NULL, timeout))
 	&& (FD_ISSET(mSock, &readSockets)))
 	{
 		int bytesRead = recv(mSock, pBuffer, length, 0);
@@ -97,7 +92,7 @@ UdpSocket::UdpSocket(const char* pAddr, short port)
 {
 }
 
-size_t UdpSocket::Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms) const
+size_t UdpSocket::Recv(unsigned char* pBuffer, size_t length, timeval* timeout) const
 {
 	std::cout << __FILE__ << ":" << __LINE__ << " Not implemented" << std::endl;
 	return 0;
