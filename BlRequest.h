@@ -146,6 +146,10 @@ struct BlEepromWriteRequest : public BlAddressRequest
 		{
 			assert(numBytes <= sizeof(payload));
 			SetAddress(address);
+			for(unsigned int i = 0; i < sizeof(payload); i++)
+			{
+			    payload[i] = 0xff;
+			}
 			memcpy(payload, pData, numBytes);
 			numBytesLow = static_cast<unsigned char>(numBytes & 0x00FF);
 			numBytesHigh = static_cast<unsigned char>((numBytes & 0xFF00) >> 8);

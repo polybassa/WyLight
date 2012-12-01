@@ -17,6 +17,8 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "trace.h"
+#include "wifly_cmd.h"
+#include "crc.h"
 
 #ifdef TEST
 
@@ -95,20 +97,27 @@ void Trace_Hex(uns8 input)
 	
 void Trace_Print()
 {	
-	UART_Send(0x0d);UART_Send(0x0a);
-	UART_SendString("TRACEBUFFER:");
+	uns8 crcH, crcL, tempByte;
 	
+	Crc_NewCrc(&crcH, &crcL);
+  
+	UART_Send(STX);
 	while(RingBuf_IsEmpty(&g_TraceBuf) == 0)
 	{
-	    UART_Send(RingBuf_Get(&g_TraceBuf));
+	    tempByte = RingBuf_Get(&g_TraceBuf);
+	    Crc_AddCrc(tempByte, &crcH, &crcL);
 	}
-	UART_Send(0x0d);UART_Send(0x0a);
-	UART_SendString("Timevalues: ScriptBuf Waitvalue: ");
-	UART_SendHex_16(gScriptBuf.waitValue);
-	UART_Send(0x0d);UART_Send(0x0a);
-	UART_SendString("FadeTimeValue: ");
-	UART_SendHex_16(gLedBuf.fadeTmms);
-	UART_Send(0x0d);UART_Send(0x0a);
+	if(crcL == STX || crcL == DLE || crcL == ETX)	
+	{
+	    UART_Send(DLE);
+	}
+	UART_Send(crcL);
+	if(crcH == STX || crcH == DLE || crcH == ETX)	
+	{
+	    UART_Send(DLE);
+	}
+	UART_Send(crcH);
+	UART_Send(ETX);
 }
 
 #endif 

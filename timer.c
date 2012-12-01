@@ -187,6 +187,7 @@ void Timer_StopStopwatch(enum METHODE destMethode)
 	g_CycleTimeBuffer.tempCycleTime[destMethode] = 0;
 }
 
+//TODO Print Cycletime via Tracebuffer or in a complete Packet
 void Timer_PrintCycletime(void)
 {
 	uns8 i;

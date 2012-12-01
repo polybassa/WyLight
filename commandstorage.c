@@ -20,6 +20,7 @@
 #include "commandstorage.h"
 #include "ScriptCtrl.h"
 #include "trace.h"
+#include "usart.h"
 
 bank2 struct CommandBuffer g_CmdBuf;
 
@@ -170,7 +171,11 @@ void Commandstorage_GetCommands()
 			// [0] contains cmd_frame->length so we send [1]
 			if(ScriptCtrl_Add(&g_CmdBuf.buffer[1]))
 			{
+				UART_Send(STX);
 				UART_SendString("GC");
+				UART_Send(0xFC);
+				UART_Send(0xEC);
+				UART_Send(ETX);
 			}
 			else
 			{

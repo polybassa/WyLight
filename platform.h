@@ -57,6 +57,7 @@
 	#define Platform_DisableAllInterrupts()
 	#define Platform_CheckInputs(x)
 	#define Platform_DisableBootloaderAutostart(x)
+  	#define Platform_EnableBootloaderAutostart(x)
 	#define InitFactoryRestoreWLAN(x)
 	#define InitFET(x)
 	#define Platform_IOInit(x)
@@ -67,9 +68,8 @@
 #else
 	#include "inline.h"
 	#include "int18XXX.h"
-
-	#define htons(X) (X)
-	#define ntohs(X) (X)
+	
+	
 	
 	#define softResetJumpDestination(x)
 
@@ -84,11 +84,15 @@
 	
 	void Platform_CheckInputs();
 	
+	uns16 htons(uns16 hostShort);
+	uns16 ntohs(uns16 networkShort);
+	
 	/*** This Function will Disable the Autostart to the Bootloader.
 	* At Startup, Bootloader checks the last EEPROM-Cell. If there is 
 	* 0x01 in the EEPROM-Cell, the Bootloader will go directly to the
 	* Application otherwise the Bootloader stays in Bootloader-Mode.
 	*/
 	void Platform_DisableBootloaderAutostart();
+	void Platform_EnableBootloaderAutostart();
 #endif
 #endif /* #ifndef _PLATFORM_H_ */

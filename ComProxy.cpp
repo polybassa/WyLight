@@ -23,7 +23,7 @@
 
 #include <sys/time.h>
 
-static timeval RESPONSE_TIMEOUT = {1, 0}; // one second
+static timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for framented responses from pic
 
 /**
  * This makro is used in ComProxy::MaskControlCharacters and requires some

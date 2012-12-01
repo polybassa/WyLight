@@ -107,39 +107,51 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 		}
 		case START_BL:
 #ifdef __CC8E__
+			UART_Send(STX);
 			UART_SendString("EXIT: Leaving Application --> Starting Bootloader");
+			UART_Send(0xFC);
+			UART_Send(0x3A);
+			UART_Send(ETX);
 #endif
-			Eeprom_Write(0x3ff, 0xff);
+			Platform_EnableBootloaderAutostart();
 			softReset();
 			/* never reach this */
 			return FALSE;
 #ifndef X86
-/* TODO multiple things!
- - DISPLAY_RTC is only a debug command, isn't it? -> remove or replace UART_Send with Trace_*/
 		case DISPLAY_RTC:
 		{
 			Rtc_Ctl(RTC_RD_TIME, &g_RtcTime);
-			UART_SendNumber(g_RtcTime.tm_year,'Y');
-			UART_SendNumber(g_RtcTime.tm_mon,'M');
-			UART_SendNumber(g_RtcTime.tm_mday,'D');
-			UART_SendNumber(g_RtcTime.tm_wday,'W');
-			UART_SendNumber(g_RtcTime.tm_hour,'h');
-			UART_SendNumber(g_RtcTime.tm_min,'m');
-			UART_SendNumber(g_RtcTime.tm_sec,'s');
-			UART_Send(0x0d);
-			UART_Send(0x0a);
+			Trace_String("TIME:");
+			Trace_Number(g_RtcTime.tm_year);
+			Trace_String("Y ");
+			Trace_Number(g_RtcTime.tm_mon);
+			Trace_String("M ");
+			Trace_Number(g_RtcTime.tm_mday);
+			Trace_String("D ");
+			Trace_Number(g_RtcTime.tm_wday);
+			Trace_String("W, ");
+			Trace_Number(g_RtcTime.tm_hour);
+			Trace_String(":");
+			Trace_Number(g_RtcTime.tm_min);
+			Trace_String("_");
+			Trace_Number(g_RtcTime.tm_sec);
+			Trace_Hex(0x0d);
+			Trace_Hex(0x0a);
 			return TRUE;
 		}
 		case GET_RTC:
 		{
 			Rtc_Ctl(RTC_RD_TIME, &g_RtcTime);
-			UART_Send(g_RtcTime.tm_sec);
-			UART_Send(g_RtcTime.tm_min);
-			UART_Send(g_RtcTime.tm_hour);
-			UART_Send(g_RtcTime.tm_mday);
-			UART_Send(g_RtcTime.tm_mon);
-			UART_Send(g_RtcTime.tm_year);
-			UART_Send(g_RtcTime.tm_wday);
+			Trace_String("GET_TIME:");
+			Trace_Hex(g_RtcTime.tm_sec);
+			Trace_Hex(g_RtcTime.tm_min);
+			Trace_Hex(g_RtcTime.tm_hour);
+			Trace_Hex(g_RtcTime.tm_mday);
+			Trace_Hex(g_RtcTime.tm_mon);
+			Trace_Hex(g_RtcTime.tm_year);
+			Trace_Hex(g_RtcTime.tm_wday);
+			Trace_Hex(0x0d);
+			Trace_Hex(0x0a);
 			return TRUE;
 		}
 		case SET_RTC:
@@ -197,6 +209,7 @@ void ScriptCtrl_Init(void)
 	gScriptBuf.write = Eeprom_Read(EEPROM_SCRIPTBUF_WRITE);
 	gScriptBuf.execute = gScriptBuf.read;
 }
+//TODO Add a Methode to test the Errorbits and there responses
 
 void ScriptCtrl_Run(void)
 {
@@ -294,7 +307,7 @@ void ScriptCtrl_Run(void)
 			Ledstrip_SetFade(&nextCmd.data.set_fade);
 			if(nextCmd.data.set_fade.parallelFade == 0)
 			{
-				gScriptBuf.waitValue = nextCmd.data.set_fade.fadeTmms;
+				gScriptBuf.waitValue = ntohs(nextCmd.data.set_fade.fadeTmms);
 			}
 			
 			/* move execute pointer to the next command */
@@ -310,7 +323,7 @@ void ScriptCtrl_Run(void)
 		case SET_RUN: 
 		{
 			Timer_StartStopwatch(eSET_RUN);
-			gScriptBuf.waitValue = nextCmd.data.set_run.durationTmms;
+			gScriptBuf.waitValue = ntohs(nextCmd.data.set_run.durationTmms);
 			Ledstrip_SetRun(&nextCmd.data.set_run);
 			Timer_StopStopwatch(eSET_RUN);
 			/* move execute pointer to the next command */
@@ -325,7 +338,7 @@ void ScriptCtrl_Run(void)
 		case WAIT:
 		{
 			/* TODO we should disable interrupts while changing waitValue */
-			gScriptBuf.waitValue = nextCmd.data.wait.waitTmms;
+			gScriptBuf.waitValue = ntohs(nextCmd.data.wait.waitTmms);
 			/* move execute pointer to the next command */
 			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
 			if(!gScriptBuf.inLoop)

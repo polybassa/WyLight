@@ -66,6 +66,9 @@ size_t TcpSocket::Recv(unsigned char* pBuffer, size_t length, timeval* timeout) 
 		int bytesRead = recv(mSock, pBuffer, length, 0);
 		if(bytesRead > 0)
 		{
+#ifdef DEBUG
+			std::cout << __FILE__ << ":" << __FUNCTION__ << ": Receiving " << bytesRead << " bytes: " << std::endl;
+#endif
 			return static_cast<size_t>(bytesRead);
 		}
 	}

@@ -127,7 +127,6 @@ void HighPriorityInterruptFunction(void)
 		if(!RingBuf_HasError(&g_RingBuf)) 
 		{
 			RingBuf_Put(&g_RingBuf, RCREG1);
-			//UART_Send(RCREG1+1);
 		}
 		else 
 		{
@@ -214,10 +213,13 @@ void InitAll()
 	/* Startup Wait-Time 2s
 	 * to protect Wifly-Modul from errors*/
 	gScriptBuf.waitValue = 500;
-	
+	UART_Send(STX);
 	UART_Send('R');
 	UART_Send('D');
 	UART_Send('Y');
+	UART_Send(0x7a);	/* Precalculated CRC */
+	UART_Send(0x3a);
+	UART_Send(ETX);
 }
 
 #ifdef __CC8E__

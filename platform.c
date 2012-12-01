@@ -58,6 +58,28 @@ void Platform_DisableAllInterrupts()
 
 void Platform_DisableBootloaderAutostart()
 {
-	Eeprom_Write(1023, 1);
+	Eeprom_Write(0x3ff, 1);
 }
+
+void Platform_EnableBootloaderAutostart()
+{
+	Eeprom_Write(0x3ff, 0xff);
+}
+
+uns16 htons(uns16 hostShort)
+{
+	uns16 retval;
+	retval.low8 = hostShort.high8;
+	retval.high8 = hostShort.low8;
+	return retval;
+}
+
+uns16 ntohs(uns16 networkShort)
+{
+	uns16 retval;
+	retval.low8 = networkShort.high8;
+	retval.high8 = networkShort.low8;
+	return retval;
+}
+
 #endif /* __CC8E__ */

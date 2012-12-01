@@ -34,7 +34,7 @@ class WiflyControl
 		struct cmd_frame mCmdFrame;
 		unsigned long ToRGBA(std::string& s) const;
 		size_t BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync = true) const;
-		int FwSend(struct cmd_frame* pFrame, size_t length) const;
+		int FwSend(struct cmd_frame* pFrame, size_t length, unsigned char* pResponse, size_t responseSize) const;
 		
 	public:
 		WiflyControl(const char* pAddr, short port, bool useTcp);
@@ -45,8 +45,8 @@ class WiflyControl
 			f.e. red(255, 0, 0) is in rgba as: 0xff000000
 				 white(255, 255, 255) is in rgba as: 0xffffff00
 		**/
-		void AddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second);
-		void AddColor(std::string& addr, std::string& rgba, unsigned char hour, unsigned char minute, unsigned char second);
+		void FwAddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second);
+		void FwAddColor(std::string& addr, std::string& rgba, unsigned char hour, unsigned char minute, unsigned char second);
 		
 		size_t BlFlashErase(unsigned char* pBuffer, unsigned int endAddress, const size_t numPages, bool doSync) const;
 		bool BlFlashErase(void) const;
@@ -60,12 +60,12 @@ class WiflyControl
 		bool BlWriteEeprom(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
 		bool BlEnableAutostart(void) const;
 		bool BlProgramFlash(const std::string& Filename);
-		void ClearScript(void);
+		void FwClearScript(void);
 		void FwTest(void);
-		void StartBl(void);
-		void SetColor(unsigned long addr, unsigned long rgba);
-		void SetColor(std::string& addr, std::string& rgba);
-		void SetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade);
-		void SetFade(std::string& addr, std::string& rgba, unsigned short fadeTmms, bool parallelFade);
+		void FwStartBl(void);
+		void FwSetColor(unsigned long addr, unsigned long rgba);
+		void FwSetColor(std::string& addr, std::string& rgba);
+		void FwSetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade);
+		void FwSetFade(std::string& addr, std::string& rgba, unsigned short fadeTmms, bool parallelFade);
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */
