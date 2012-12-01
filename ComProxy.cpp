@@ -200,6 +200,7 @@ size_t ComProxy::Recv(unsigned char* pBuffer, size_t length, timeval* timeout, b
 	unsigned short prepreCrc = 0;
 	bool lastWasDLE = false;
 
+	// TODO refactor this with code in commandstorage. It should be identical to the fw receive implementation
 	do {
 		size_t bytesMasked = mSock->Recv(pBuffer, length, timeout);
 		unsigned char* pInput = pBuffer;
