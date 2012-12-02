@@ -20,6 +20,7 @@
 #define _WIFLYCONTROL_H_
 
 #include <string>
+#include "BroadcastReceiver.h"
 #include "ComProxy.h"
 #include "wifly_cmd.h"
 #include "BlRequest.h"
@@ -29,7 +30,8 @@
 class WiflyControl
 {
 	private:
-		const ComProxy m_Proxy;
+		const ComProxy mProxy;
+		BroadcastReceiver mBroadcastReceiver;
 		pthread_t mRecvThread;
 		struct cmd_frame mCmdFrame;
 		unsigned long ToRGBA(std::string& s) const;

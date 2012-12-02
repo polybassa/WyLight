@@ -93,6 +93,12 @@ int TcpSocket::Send(const unsigned char* frame, size_t length) const
 UdpSocket::UdpSocket(const char* pAddr, short port)
 	: ClientSocket(pAddr, port, SOCK_DGRAM)
 {
+	if(0 != bind(mSock, reinterpret_cast<struct sockaddr *>(&mSockAddr), sizeof(struct sockaddr)))
+	{
+	      std::cout << __FILE__ << ":" << __FUNCTION__ << ": Bind failure! ";
+	      pthread_exit(NULL);
+	      return;
+	}
 }
 
 size_t UdpSocket::Recv(unsigned char* pBuffer, size_t length, timeval* timeout) const

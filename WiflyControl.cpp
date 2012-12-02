@@ -45,7 +45,7 @@ using namespace std;
 }
 
 WiflyControl::WiflyControl(const char* pAddr, short port, bool useTcp)
-: m_Proxy(useTcp ? (reinterpret_cast<const ClientSocket*>(new TcpSocket(pAddr, port))) : (reinterpret_cast<const ClientSocket*>(new UdpSocket(pAddr, port))))
+: mProxy(useTcp ? (reinterpret_cast<const ClientSocket*>(new TcpSocket(pAddr, port))) : (reinterpret_cast<const ClientSocket*>(new UdpSocket(pAddr, port))))
 {
 	//TODO remove length
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;
@@ -123,7 +123,7 @@ bool WiflyControl::BlFlashErase(void) const
 size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync) const
 {
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
-	size_t bytesReceived = m_Proxy.Send(req, buffer, sizeof(buffer), doSync);
+	size_t bytesReceived = mProxy.Send(req, buffer, sizeof(buffer), doSync);
 
 	cout << __FILE__ << "::" << __FUNCTION__ << "(): " << bytesReceived << ":" << sizeof(BlInfo) << endl;
 	if(responseSize == bytesReceived)
@@ -520,7 +520,7 @@ int WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, unsigned char*
 	int retval;
 	
 	pFrame->length = length + 2; //add cmd and length byte
-	retval =  m_Proxy.Send(&mCmdFrame, pResponse, responseSize, false);
+	retval =  mProxy.Send(&mCmdFrame, pResponse, responseSize, false);
 	
 #ifdef DEBUG
 	cout << endl << __FILE__ << "::" << __FUNCTION__
