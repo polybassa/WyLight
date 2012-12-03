@@ -26,6 +26,7 @@
 #include <fstream>
 #include <iomanip>
 #include <cstdlib>
+#include <unistd.h>
 #include "intelhexclass.h"
 
 using namespace std;
@@ -140,7 +141,7 @@ size_t WiflyControl::BlReadEeprom(unsigned char* pBuffer, unsigned int address, 
 	{
 		cout << __FILE__ << "::" << __FUNCTION__
 		<< "(): can not performe read outside the eeprom" << endl;
-		return NULL;
+		return 0;
 	}
 	
 	size_t bytesRead;
@@ -178,7 +179,7 @@ size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, s
 	{
 		cout << __FILE__ << "::" << __FUNCTION__
 		<< "(): can not performe read outside the flash" << endl;
-		return NULL;
+		return 0;
 	}
   
 	size_t bytesRead;

@@ -20,6 +20,7 @@
 
 #include <arpa/inet.h>
 #include <sys/select.h>
+#include <unistd.h>
 #include <cstring>
 #include <iostream>
 
@@ -68,7 +69,7 @@ void BroadcastReceiver::Run(void)
 	      
 	      if(numBytes > BROADCAST_MSG_LENGTH && 0 == memcmp(&buffer, BROADCAST_MSG, BROADCAST_MSG_LENGTH))
 	      {
-					mIpTable.add(remoteAddr.sin_addr, std::string(inet_ntoa(remoteAddr.sin_addr)));
+					mIpTable.insert(std::pair<unsigned long, std::string>(remoteAddr.sin_addr.s_addr, std::string(inet_ntoa(remoteAddr.sin_addr))));
 	      }
 	}
 }
@@ -76,14 +77,13 @@ void BroadcastReceiver::Run(void)
 size_t BroadcastReceiver::GetIpTable(std::vector<std::string>& outputVector) const
 {
 	size_t numElements = 0;
-	std::map<unsigned long, std::string>::iterator it = mIpTable.begin;
+	std::map<unsigned long, std::string>::const_iterator it;
 
-	while(it <= mIpTable.end)
+	for(it = mIpTable.begin(); it != mIpTable.end(); it++)
 	{
-		outputVector.push((*it).second);
+		outputVector.push_back((*it).second);
 		numElements++;
-		it++;
 	}
 	return numElements;
 }
-#endif
+
