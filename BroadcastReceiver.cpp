@@ -17,6 +17,7 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "BroadcastReceiver.h"
+#include "BlRequest.h"
 
 #include <arpa/inet.h>
 #include <sys/select.h>
@@ -58,7 +59,7 @@ BroadcastReceiver::~BroadcastReceiver(void)
 
 void BroadcastReceiver::Run(void)
 {
-	char buffer[512];
+	char buffer[BL_MAX_MESSAGE_LENGTH];
 	struct sockaddr_in remoteAddr;
 	socklen_t remoteAddrLength = sizeof(remoteAddr);
 	int numBytes;

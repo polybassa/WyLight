@@ -17,6 +17,7 @@
     along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "WiflyControlCli.h"
+#include "BroadcastReceiver.h"
 #include "WiflyControlCmd.h"
 #include <iostream>
 #include <cstdlib>
@@ -85,6 +86,7 @@ void Java_biz_bruenn_WiflyLight_WiflyLightActivity_runClient(JNIEnv* env, jobjec
 int main(int argc, const char* argv[])
 {
 	short port = 2000;
+	BroadcastReceiver broadcastReceiver;
 #if 1
 	const char* pAddr = "127.0.0.1";
 	bool useTcp = false;
