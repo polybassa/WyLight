@@ -17,13 +17,28 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "BroadcastReceiver.h"
+#include "BlRequest.h"
 
 #include <arpa/inet.h>
 #include <sys/select.h>
+#include <unistd.h>
 #include <cstring>
 #include <iostream>
 
 #include <stdio.h>
+
+static const char* BROADCAST_MSG = "WiFly_Light";
+static const int BROADCAST_MSG_LENGTH = sizeof(BROADCAST_MSG);
+
+void* Run(void* ptr)
+{
+	if(NULL != ptr)
+	{
+		BroadcastReceiver* pObj = reinterpret_cast<BroadcastReceiver*>(ptr);
+		pObj->Run();
+	}
+	return NULL;
+}
 
 BroadcastReceiver::BroadcastReceiver(void) : mSock(socket(AF_INET, SOCK_DGRAM, 0))
 {
@@ -31,10 +46,10 @@ BroadcastReceiver::BroadcastReceiver(void) : mSock(socket(AF_INET, SOCK_DGRAM, 0
 	mSockAddr.sin_family = AF_INET;
 	mSockAddr.sin_port = htons(BROADCAST_PORT);
 	mSockAddr.sin_addr.s_addr = INADDR_ANY;	
-	pthread_create(&mBroadcastReceiverThread, NULL, startBroadcastReceiver, NULL);
+	pthread_create(&mBroadcastReceiverThread, NULL, ::Run, NULL);
 }
 
-BroadcastReceiver::~BroadcastReceiver()
+BroadcastReceiver::~BroadcastReceiver(void)
 {
     
 	pthread_cancel(mBroadcastReceiverThread);
@@ -42,40 +57,34 @@ BroadcastReceiver::~BroadcastReceiver()
 	close(mSock);
 }
 
-void* BroadcastReceiver::startBroadcastReceiver(void*)
-{	
-	if( bind(mSock, (struct sockaddr *)&mSockAddr, sizeof(struct sockaddr)) == -1)
-	{
-	      std::cout << __FILE__ << ":" << __FUNCTION__ << ": Bind failure! ";
-	      pthread_exit(NULL);
-	      return;
-	}
-	char buffer[512];
-	struct sockaddr_in connectorAddr;
+void BroadcastReceiver::Run(void)
+{
+	char buffer[BL_MAX_MESSAGE_LENGTH];
+	struct sockaddr_in remoteAddr;
+	socklen_t remoteAddrLength = sizeof(remoteAddr);
 	int numBytes;
-	socklen_t addrLength = sizeof(struct sockaddr);
 
 	while(true)
 	{
-	      numBytes = recvfrom(mSock, buffer, sizeof(buffer) - 1, 0, (struct sockaddr *)&connectorAddr, &addrLength);
+	      numBytes = recvfrom(mSock, buffer, sizeof(buffer) - 1, 0, (struct sockaddr *)&remoteAddr, &remoteAddrLength);
 	      
-	      if(numBytes > 100 && 0 == memcmp(&buffer, "WiFly_Light", numBytes))
+	      if(numBytes > BROADCAST_MSG_LENGTH && 0 == memcmp(&buffer, BROADCAST_MSG, BROADCAST_MSG_LENGTH))
 	      {
-		    strcpy(&mIpTable[0][0],inet_ntoa(connectorAddr.sin_addr));
+					mIpTable.insert(std::pair<unsigned long, std::string>(remoteAddr.sin_addr.s_addr, std::string(inet_ntoa(remoteAddr.sin_addr))));
 	      }
 	}
 }
 
-size_t BroadcastReceiver::getIpTable(char pTable[][], size_t numRows, size_t numColumns) const
+size_t BroadcastReceiver::GetIpTable(std::vector<std::string>& outputVector) const
 {
-	if(numRows >= IP_TABLE_ROWS) numRows = IP_TABLE_ROWS;
-	if(numColumns >= IP_TABLE_COLUMNS) numColumns = IP_TABLE_COLUMNS;
-	for(int i = 0; i < (int) numRows; i++)
+	size_t numElements = 0;
+	std::map<unsigned long, std::string>::const_iterator it;
+
+	for(it = mIpTable.begin(); it != mIpTable.end(); it++)
 	{
-	    for(int j = 0; j < (int) numColumns; j++)
-	    {
-		pTable[i][j] = mIpTable[i][j];
-	    }
+		outputVector.push_back((*it).second);
+		numElements++;
 	}
-	return 1;
+	return numElements;
 }
+

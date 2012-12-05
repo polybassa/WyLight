@@ -27,3 +27,14 @@ void MyModule_MyFunction()
 		DoSomethingElse();
 	}
 }
+
+/* Classes and members *
+class MyClass
+{
+	private:
+		mMyMember;
+
+	public:
+		void MyFunction(type param) const;
+};
+

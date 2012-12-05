@@ -17,8 +17,8 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "unittest.h"
-
 #include "ComProxy.h"
+#include <unistd.h>
 
 /**************** includes, classes and functions for wrapping ****************/
 #include "ClientSocket.h"
@@ -40,17 +40,28 @@ const unsigned char dummyBlFlashEraseResponseMasked[] = {BL_STX, 0x03, 0x63, 0x3
 const unsigned char dummyBlFlashEraseResponsePure[] = {0x03};
 
 unsigned char g_TestSocketRecvBuffer[10240];
-size_t g_TestSocketRecvBufferSize;
+size_t g_TestSocketRecvBufferPos = 0;
+size_t g_TestSocketRecvBufferSize = 0;
 unsigned char g_TestSocketSendBuffer[10240];
 size_t g_TestSocketSendBufferSize;
-TestSocket::TestSocket(const char* pAddr, short port) : ClientSocket(pAddr, port, 0) {}
-
-size_t TestSocket::Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms) const
+TestSocket::TestSocket(const char* pAddr, short port) : ClientSocket(pAddr, port, 0)
 {
-	if(length >= g_TestSocketRecvBufferSize)
+	m_Delay.tv_sec = 0;
+	m_Delay.tv_nsec = 0;
+}
+
+/**
+ * For each call to Recv() we only return one byte of data to simulate a very
+ * fragmented response from pic.
+ */
+size_t TestSocket::Recv(unsigned char* pBuffer, size_t length, timeval* timeout) const
+{
+	nanosleep(&m_Delay, NULL);
+	if(g_TestSocketRecvBufferPos < g_TestSocketRecvBufferSize)
 	{
-		memcpy(pBuffer, g_TestSocketRecvBuffer, length);
-		return g_TestSocketRecvBufferSize;
+		*pBuffer = g_TestSocketRecvBuffer[g_TestSocketRecvBufferPos];
+		g_TestSocketRecvBufferPos++;
+		return 1;
 	}
 	return 0;
 }
@@ -64,7 +75,9 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	/* Sync */
 	if((sizeof(BL_SYNC) == length) && (0 == memcmp(BL_SYNC, frame, sizeof(BL_SYNC))))
 	{
+		Trace_String("Reply to SYNC\n");
 		g_TestSocketRecvBuffer[0] = BL_STX;
+		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = 1;
 		return length;
 	}
@@ -74,6 +87,7 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	{
 		Trace_String("BlInfoRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlInfoMasked, sizeof(dummyBlInfoMasked));
+		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = sizeof(dummyBlInfoMasked);
 		return length;
 	}
@@ -83,6 +97,7 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	{
 		Trace_String("BlEepromRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashCrc16ResponseMasked, sizeof(dummyBlFlashCrc16ResponseMasked));
+		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashCrc16ResponseMasked);
 		return length;
 	}
@@ -92,6 +107,7 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	{
 		Trace_String("BlFlashCrc16Request\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashCrc16ResponseMasked, sizeof(dummyBlFlashCrc16ResponseMasked));
+		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashCrc16ResponseMasked);
 		return length;
 	}
@@ -101,6 +117,7 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	{
 		Trace_String("BlFlashEraseRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashEraseResponseMasked, sizeof(dummyBlFlashEraseResponseMasked));
+		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashEraseResponseMasked);
 		return length;
 	}
@@ -110,6 +127,7 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	{
 		Trace_String("BlFlashReadRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashReadResponseMasked, sizeof(dummyBlFlashReadResponseMasked));
+		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashReadResponseMasked);
 		return length;
 	}
@@ -119,6 +137,7 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 	{
 		Trace_String("BlEepromReadRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashReadResponseMasked, sizeof(dummyBlFlashReadResponseMasked));
+		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashReadResponseMasked);
 		return length;
 	}
@@ -130,12 +149,19 @@ int TestSocket::Send(const unsigned char* frame, size_t length) const
 		g_TestSocketRecvBuffer[0] = 'x';
 		g_TestSocketRecvBuffer[1] = 'x';
 		g_TestSocketRecvBuffer[2] = 'x';
+		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = 0;
 		return length;
 	}
 
 	Trace_String("Unkown BlRequest\n");
 	return 0;
+}
+
+void TestSocket::SetDelay(timeval& delay)
+{
+	m_Delay.tv_sec = delay.tv_sec;
+	m_Delay.tv_nsec = delay.tv_usec * 1000;
 }
 
 /******************************* test functions *******************************/
@@ -219,6 +245,22 @@ int ut_ComProxy_BlEepromReadRequest(void)
 	TestCaseEnd();
 }
 
+int ut_ComProxy_BlEepromReadRequestTimeout(void)
+{
+	TestCaseBegin();
+	TestSocket dummySocket(0, 0);
+	ComProxy proxy(&dummySocket);
+	unsigned char response[512];
+	timeval delay = {1, 0};
+	dummySocket.SetDelay(delay);
+
+	BlEepromReadRequest request;
+	request.SetAddressNumBytes(0xDA7A, sizeof(dummyBlFlashReadResponsePure));
+	size_t bytesReceived = proxy.Send(request, response, sizeof(response));
+	CHECK(0 == bytesReceived);
+	TestCaseEnd();
+}
+
 int ut_ComProxy_BlEepromWriteRequest(void)
 {
 	NOT_IMPLEMENTED();
@@ -260,11 +302,12 @@ int ut_ComProxy_BlFlashReadRequest(void)
 	unsigned char response[512];
 
 	BlFlashReadRequest request;
-//	request.SetAddressNumBytes(0xDA7ADA7A, sizeof(dummyBlFlashReadResponsePure));
 	request.SetAddressNumBytes(0, 0x40);
 	size_t bytesReceived = proxy.Send(request, response, sizeof(response));
 	CHECK(sizeof(dummyBlFlashReadResponsePure) == bytesReceived);
 	CHECK(0 == memcmp(dummyBlFlashReadResponsePure, response, bytesReceived));
+
+	
 	TestCaseEnd();
 }
 
@@ -317,6 +360,7 @@ int main (int argc, const char* argv[])
 	UnitTestMainBegin();
 	RunTest(true, ut_ComProxy_MaskControlCharacters);
 	RunTest(true, ut_ComProxy_BlEepromReadRequest);
+	RunTest(true, ut_ComProxy_BlEepromReadRequestTimeout);
 	RunTest(false, ut_ComProxy_BlEepromWriteRequest);
 	RunTest(true, ut_ComProxy_BlFlashCrc16Request);
 	RunTest(true, ut_ComProxy_BlFlashEraseRequest);

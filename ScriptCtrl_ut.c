@@ -343,7 +343,7 @@ int ut_ScriptCtrl_Wait(void)
 
 	/* send wait command */
 	testCmd.cmd = WAIT;
-	testCmd.data.wait.waitTmms = 0xAFFE;
+	testCmd.data.wait.waitTmms = htons(0xAFFE);
 	ScriptCtrl_Add(&testCmd);
 
 	/* WAIT command should set the internal wait buffer */

@@ -21,9 +21,10 @@
 
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <map>
+#include <string>
+#include <vector>
 
-#define IP_TABLE_ROWS 128
-#define IP_TABLE_COLUMNS 16
 #define BROADCAST_PORT 55555
 
 class BroadcastReceiver
@@ -31,20 +32,20 @@ class BroadcastReceiver
 	private:
 		const int mSock;
 		struct sockaddr_in mSockAddr;
-		char mIpTable[IP_TABLE_ROWS][IP_TABLE_COLUMNS];
+		std::map<unsigned long, std::string> mIpTable;
 		pthread_t mBroadcastReceiverThread;
-		void* startBroadcastReceiver(void*);
 
 	public:
 		BroadcastReceiver(void);
 		~BroadcastReceiver(void);
+		void Run(void);
 
 		/**
-		 * Returns a table of ipAddresses as const char* string from available Wifly_Lights
-		 * Return Value is the number of available Wifly_Lights
+		 * Returns a list of IP address strings from available Wifly_Lights
+		 * @param outputVector a vector to add the strings to
+		 * @return number of IP address strings added to <outputVector>
 		 */
-		
-		size_t getIpTable(char pTable[][], size_t numRows, size_t numColumns) const;
+		size_t GetIpTable(std::vector<std::string>& outputVector) const;
 };
 
 #endif /* #ifndef _BROADCAST_RECEIVER_H_ */

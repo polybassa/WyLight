@@ -21,13 +21,17 @@
 #include "trace.h"
 #include "wifly_cmd.h"
 
+#include <sys/time.h>
+
+static timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for framented responses from pic
+
 /**
  * This makro is used in ComProxy::MaskControlCharacters and requires some
  * implicit parameter:
  * @param bytesWritten counter of bytes in output buffer
  * @param outputLength size of output buffer
  * @param pOutput output buffer
- * @param _BYTE_ the byte we have to mask and writte to buffer
+ * @param _BYTE_ the byte we have to mask and write to buffer
  */
 #define MaskAndAddByteToOutput(_BYTE_) { \
 	if(IsCtrlChar(_BYTE_)) { \
@@ -38,6 +42,31 @@
 	if(++bytesWritten > outputLength) return 0; \
 	*pOutput = _BYTE_; \
 	pOutput++; \
+}
+
+bool operator< (timeval& a, timeval& b)
+{
+	if(a.tv_sec < b.tv_sec)
+		return true;
+	if(a.tv_sec > b.tv_sec)
+		return false;
+	return a.tv_usec < b.tv_usec;
+}
+
+timeval& operator- (timeval& a, timeval& b)
+{
+	assert(b < a);
+	if(a.tv_usec < b.tv_usec)
+	{
+		a.tv_usec = 1000000 - (b.tv_usec - a.tv_usec);
+		a.tv_sec -= b.tv_sec + 1;
+	}
+	else
+	{
+		a.tv_usec -= b.tv_usec;
+		a.tv_sec -= b.tv_sec;
+	}
+	return a;
 }
 
 ComProxy::ComProxy(const ClientSocket* const pSock)
@@ -160,14 +189,81 @@ int ComProxy::Send(const struct cmd_frame* pFrame, unsigned char* pResponse, siz
 	return Send(reinterpret_cast<const unsigned char*>(pFrame), pFrame->length, pResponse, responseSize, true, doSync, false);
 }
 
+size_t ComProxy::Recv(unsigned char* pBuffer, size_t length, timeval* timeout, bool checkCrc, bool crcInLittleEndian) const
+{
+	timeval now;
+	timeval startTime;
+	gettimeofday(&startTime, NULL);
+	unsigned char* const pBufferBegin = pBuffer;
+	unsigned short crc = 0;
+	unsigned short preCrc = 0;
+	unsigned short prepreCrc = 0;
+	bool lastWasDLE = false;
+
+	// TODO refactor this with code in commandstorage. It should be identical to the fw receive implementation
+	do {
+		size_t bytesMasked = mSock->Recv(pBuffer, length, timeout);
+		unsigned char* pInput = pBuffer;
+		while(bytesMasked-- > 0)
+		{
+			if(lastWasDLE)
+			{
+				lastWasDLE = false;
+				prepreCrc = preCrc;
+				preCrc = crc;
+				Crc_AddCrc16(*pInput, &crc);
+				*pBuffer = *pInput;
+				pBuffer++;
+				length--;
+			}
+			else
+			{
+				if(BL_DLE == *pInput)
+				{
+					lastWasDLE = true;
+				}
+				else if (BL_ETX == *pInput)
+				{
+					if(!checkCrc)
+					{
+						return pBuffer - pBufferBegin;
+					}
+
+					if(crcInLittleEndian)
+					{
+						Crc_AddCrc16(pBuffer[-1], &prepreCrc);
+						Crc_AddCrc16(pBuffer[-2], &prepreCrc);
+						crc = prepreCrc;
+					}
+					return (0 != crc) ? 0 : (pBuffer - 2) - pBufferBegin;
+				}
+				else if (BL_STX == *pInput)
+				{
+					pBuffer = pBufferBegin;
+				}
+				else
+				{
+					prepreCrc = preCrc;
+					preCrc = crc;
+					Crc_AddCrc16(*pInput, &crc);
+					*pBuffer = *pInput;
+					pBuffer++;
+					length--;
+				}
+			}
+			pInput++;
+		}
+		gettimeofday(&now, NULL);
+		now = now - startTime;
+	}	while((NULL == timeout) || (now < *timeout));
+	return 0;
+}
+
 int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const
 {
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	unsigned char recvBuffer[BL_MAX_MESSAGE_LENGTH];
 	size_t bufferSize = 0;
-	unsigned char* pCur = buffer;
-	unsigned char* pNext;
-	const unsigned char* pEnd;;
 
 	/* add leading STX */
 	buffer[0] = BL_STX;
@@ -199,7 +295,7 @@ int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsi
 			}
 			Trace_String("ComProxy::Send: SYNC...\n");
 			mSock->Send(BL_SYNC, sizeof(BL_SYNC));
-		} while(0 == mSock->Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS));
+		} while(0 == mSock->Recv(recvBuffer, sizeof(recvBuffer), &RESPONSE_TIMEOUT));
 	}
 
 		{
@@ -218,32 +314,9 @@ int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsi
 			}
 
 			/* receive response */
-			int bytesReceived = mSock->Recv(recvBuffer, sizeof(recvBuffer), BL_RESPONSE_TIMEOUT_TMMS);
-			
-			if(bytesReceived > 1)
-			{
-				/* remove STX from message */
-				pCur = pResponse;
-				pNext = recvBuffer;
-				pEnd = recvBuffer + bytesReceived;
-				while((pNext < pEnd) && (BL_STX == *pNext))
-				{
-					pNext++; bytesReceived--;
-				}
-
-				/* remove BL_ETX from buffer */
-				if(0 == bytesReceived)
-				{
-					Trace_String("ComProxy::Send: no bytes received\n");
-					return 0;
-				}
-				bytesReceived--;
-
-				/* remove BL_DLE from buffer and check crc if requested */
-				return UnmaskControlCharacters(pNext, bytesReceived, pResponse, responseSize, checkCrc);
-			}
-			Trace_String("ComProxy::Send: response to short\n");
-			return 0;
+			size_t bytesReceived = Recv(recvBuffer, sizeof(recvBuffer), &RESPONSE_TIMEOUT, checkCrc, crcInLittleEndian);
+			memcpy(pResponse, recvBuffer, bytesReceived);
+			return bytesReceived;
  		}
 }
 
