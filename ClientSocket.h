@@ -20,6 +20,8 @@
 #define _CLIENTSOCKET_H_
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <stddef.h>
+#include <time.h>
 
 class ClientSocket
 {
@@ -30,7 +32,7 @@ class ClientSocket
 	public:
 		ClientSocket(const char* pAddr, short port, int style);
 		virtual ~ClientSocket();
-		virtual size_t Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms = 0) const = 0;
+		virtual size_t Recv(unsigned char* pBuffer, size_t length, timeval* timeout = NULL) const = 0;
 		virtual int Send(const unsigned char* frame, size_t length) const = 0;
 };
 
@@ -38,7 +40,7 @@ class TcpSocket : public ClientSocket
 {
 	public:
 		TcpSocket(const char* pAddr, short port);
-		virtual size_t Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms = 0) const;
+		virtual size_t Recv(unsigned char* pBuffer, size_t length, timeval* timeout = NULL) const;
 		virtual int Send(const unsigned char* frame, size_t length) const;
 };
 
@@ -46,17 +48,20 @@ class UdpSocket : public ClientSocket
 {
 	public:
 		UdpSocket(const char* pAddr, short port);
-		virtual size_t Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms = 0) const;
+		virtual size_t Recv(unsigned char* pBuffer, size_t length, timeval* timeout = NULL) const;
 		virtual int Send(const unsigned char* frame, size_t length) const;
 };
 
 #ifdef UNIT_TEST
 class TestSocket : public ClientSocket
 {
+	private:
+		timespec m_Delay;
 	public:
 		TestSocket(const char* pAddr, short port);
-		virtual size_t Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms = 0) const;
+		virtual size_t Recv(unsigned char* pBuffer, size_t length, timeval* timeout = NULL) const;
 		virtual int Send(const unsigned char* frame, size_t length) const;
+		void SetDelay(timeval& delay);
 };
 #endif /* #ifndef UNIT_TEST */
 #endif /* #ifndef _CLIENTSOCKET_H_ */

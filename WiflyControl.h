@@ -29,7 +29,7 @@
 class WiflyControl
 {
 	private:
-		const ComProxy m_Proxy;
+		const ComProxy mProxy;
 		pthread_t mRecvThread;
 		struct cmd_frame mCmdFrame;
 		unsigned long ToRGBA(std::string& s) const;

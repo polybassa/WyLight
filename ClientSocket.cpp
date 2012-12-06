@@ -22,6 +22,7 @@
 #include <sys/select.h>
 #include <cstring>
 #include <iostream>
+#include <unistd.h>
 
 #include <stdio.h>
 
@@ -52,20 +53,15 @@ TcpSocket::TcpSocket(const char* pAddr, short port)
 	}
 }
 
-size_t TcpSocket::Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms) const
+size_t TcpSocket::Recv(unsigned char* pBuffer, size_t length, timeval* timeout) const
 {
-	/* prepare timeout structure */
-	timeval timeout;
-	timeout.tv_sec = timeoutTmms / 1000;
-	timeout.tv_usec = timeoutTmms % 1000;
-
 	/* prepare socket set for select() */
 	fd_set readSockets;
 	FD_ZERO(&readSockets);
 	FD_SET(mSock, &readSockets);
 	
 	/* wait for receive data and check if socket was correct */
-	if((1 == select(mSock + 1, &readSockets, NULL, NULL, &timeout))
+	if((1 == select(mSock + 1, &readSockets, NULL, NULL, timeout))
 	&& (FD_ISSET(mSock, &readSockets)))
 	{
 		int bytesRead = recv(mSock, pBuffer, length, 0);
@@ -98,9 +94,15 @@ int TcpSocket::Send(const unsigned char* frame, size_t length) const
 UdpSocket::UdpSocket(const char* pAddr, short port)
 	: ClientSocket(pAddr, port, SOCK_DGRAM)
 {
+	if(0 != bind(mSock, reinterpret_cast<struct sockaddr *>(&mSockAddr), sizeof(struct sockaddr)))
+	{
+	      std::cout << __FILE__ << ":" << __FUNCTION__ << ": Bind failure! ";
+	      pthread_exit(NULL);
+	      return;
+	}
 }
 
-size_t UdpSocket::Recv(unsigned char* pBuffer, size_t length, unsigned long timeoutTmms) const
+size_t UdpSocket::Recv(unsigned char* pBuffer, size_t length, timeval* timeout) const
 {
 	std::cout << __FILE__ << ":" << __LINE__ << " Not implemented" << std::endl;
 	return 0;

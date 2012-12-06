@@ -20,6 +20,7 @@
 #include "commandstorage.h"
 #include "ScriptCtrl.h"
 #include "trace.h"
+#include "usart.h"
 
 bank2 struct CommandBuffer g_CmdBuf;
 
