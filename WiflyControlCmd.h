@@ -301,6 +301,21 @@ class ControlCmdStartBl : public WiflyControlCmd
   
 };
 
+class ControlCmdReadTracebuffer : public WiflyControlCmd
+{
+	public:
+		ControlCmdReadTracebuffer(void) : WiflyControlCmd(
+				  string("read_trace"),
+					string("' - displays content of tracebuffer from pic")) {};
+				  
+		virtual void Run(WiflyControl& control) const {
+			cout << "Reading tracebuffer... ";
+			control.FwReadTracebuffer();
+		};
+  
+};
+
+
 class ControlCmdClearScript : public WiflyControlCmd
 {
 	public:
@@ -309,7 +324,9 @@ class ControlCmdClearScript : public WiflyControlCmd
 				string("' - clear script buffer")) {};
 
 		virtual void Run(WiflyControl& control) const {
-			control.FwClearScript();
+			cout << "Clearing script buffer... ";
+			cout << (control.FwClearScript() ? "done." : "failed!") << endl;
+
 		};
 };
 
@@ -326,7 +343,8 @@ class ControlCmdSetColor : public WiflyControlCmd
 			string addr, color;
 			cin >> addr;
 			cin >> color;
-			control.FwSetColor(addr, color);
+			cout << "Transmitting command set color... ";
+			cout << (control.FwSetColor(addr, color) ? "done." : "failed!") << endl;
 		};
 };
 
@@ -346,7 +364,8 @@ class ControlCmdSetFade : public WiflyControlCmd
 			cin >> addr;
 			cin >> color;
 			cin >> timevalue;
-			control.FwSetFade(addr, color, (unsigned short)timevalue, false);
+			cout << "Transmitting command set fade... ";
+			cout << (control.FwSetFade(addr, color, (unsigned short)timevalue, false) ? "done." : "failed!") << endl;
 		};
 };
 
@@ -378,6 +397,7 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdSetFade(),
 	new ControlCmdStartBl(),
 	new ControlCmdTest(),
+	new ControlCmdReadTracebuffer(),
 //TODO implement on demand	ControlCmdBlWriteEeprom writeEeprom;
 //TODO	ControlCmdBlWriteFlash writeFlash;
 };
