@@ -217,8 +217,8 @@ void InitAll()
 	UART_Send('R');
 	UART_Send('D');
 	UART_Send('Y');
-	UART_Send(0x7a);	/* Precalculated CRC */
 	UART_Send(0x3a);
+	UART_Send(0x7a);	/* Precalculated CRC */
 	UART_Send(ETX);
 }
 
