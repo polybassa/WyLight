@@ -21,7 +21,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <stddef.h>
-#include <time.h>
+#include <sys/time.h>
 
 class ClientSocket
 {
