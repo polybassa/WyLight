@@ -296,7 +296,7 @@ class ControlCmdStartBl : public WiflyControlCmd
 				  
 		virtual void Run(WiflyControl& control) const {
 			cout << "Starting bootloader... ";
-			control.FwStartBl();
+			cout << (control.FwStartBl() ? "done." : "failed!") << endl;
 		};
   
 };

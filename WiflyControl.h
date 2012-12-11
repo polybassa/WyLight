@@ -62,7 +62,7 @@ class WiflyControl
 		bool BlProgramFlash(const std::string& Filename);
 		void FwClearScript(void);
 		void FwTest(void);
-		void FwStartBl(void);
+		bool FwStartBl(void);
 		void FwSetColor(unsigned long addr, unsigned long rgba);
 		void FwSetColor(std::string& addr, std::string& rgba);
 		void FwSetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade);

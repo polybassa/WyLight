@@ -565,16 +565,28 @@ void WiflyControl::FwTest(void)
 	}
 }
 
-void WiflyControl::FwStartBl(void)
+bool WiflyControl::FwStartBl(void)
 {
 	unsigned char buffer[512];
+	char str[32] = {0};
+	char* pStrResult = {NULL};
+	
       
 	mCmdFrame.led.cmd = START_BL;
 	
 	int bytesRead = FwSend(&mCmdFrame, 0, &buffer[0], sizeof(buffer));
 	cout << __FUNCTION__ << ": We got " << bytesRead << " bytes response, Message: ";
 	for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
-	cout << endl;	
+	cout << endl;
+	
+	if(3 <= bytesRead)
+	{
+		buffer[bytesRead] = 0x00;
+		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "EXIT");
+		if(pStrResult != NULL)
+			return true;
+	}
+	return false;
 }
 
 void WiflyControl::FwSetColor(unsigned long addr, unsigned long rgba)
