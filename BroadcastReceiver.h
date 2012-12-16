@@ -24,28 +24,44 @@
 #include <map>
 #include <string>
 #include <vector>
-
-#define BROADCAST_PORT 55555
+#include <boost/asio.hpp>
+using boost::asio::ip::udp;
+#include <boost/thread.hpp>
 
 class BroadcastReceiver
 {
 	private:
-		const int mSock;
-		struct sockaddr_in mSockAddr;
+		static const unsigned short BROADCAST_PORT = 55555;
+		static const char BROADCAST_MSG[];
+		static const size_t BROADCAST_MSG_LENGTH;
+		static const char STOP_MSG[];
+		static const size_t STOP_MSG_LENGTH;
+		const unsigned short mPort;
+
 		std::map<unsigned long, std::string> mIpTable;
-		pthread_t mBroadcastReceiverThread;
+		boost::thread mThread;
+		boost::mutex mMutex;
 
 	public:
-		BroadcastReceiver(void);
+		BroadcastReceiver(unsigned short port);
 		~BroadcastReceiver(void);
-		void Run(void);
+
+		/**
+		 * Main loop wait for wifly broadcast messages and save them to the known IP list
+		 */
+		void operator()(void);
 
 		/**
 		 * Returns a list of IP address strings from available Wifly_Lights
 		 * @param outputVector a vector to add the strings to
 		 * @return number of IP address strings added to <outputVector>
 		 */
-		size_t GetIpTable(std::vector<std::string>& outputVector) const;
+		size_t GetIpTable(std::vector<std::string>& outputVector);
+
+		/**
+		 * Sends a stop event to terminate execution of operator()
+		 */
+		void Stop(void);
 };
 
 #endif /* #ifndef _BROADCAST_RECEIVER_H_ */

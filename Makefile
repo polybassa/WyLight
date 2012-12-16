@@ -40,11 +40,15 @@ x86_client_debug:
 	@gcc $< $(subst _ut.c,.c,$<) eeprom.c -DX86 -DUNIT_TEST -o $@ -Wall
 	@./$@
 
+BroadcastReceiver_ut.bin: BroadcastReceiver_ut.cpp BroadcastReceiver.cpp BroadcastReceiver.h unittest.h
+	@g++ BroadcastReceiver_ut.cpp BroadcastReceiver.cpp -DX86 -DUNIT_TEST -lpthread -lboost_system -lboost_thread -o $@ -Wall
+	@./$@
+
 ComProxy_ut.bin: ComProxy_ut.cpp ComProxy.cpp ComProxy.h BlRequest.h unittest.h
 	@g++ ComProxy_ut.cpp ComProxy.cpp crc.c -DX86 -DUNIT_TEST -o $@ -Wall -pedantic
 	@./$@
 
-test: clean commandstorage_ut.bin ComProxy_ut.bin crc_ut.bin ledstrip_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin
+test: clean BroadcastReceiver_ut.bin commandstorage_ut.bin ComProxy_ut.bin crc_ut.bin ledstrip_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin
 
 clean:
 	@rm -rf *.asm *.bin *.cod *.fcs *.hex *.lst *.occ *.var .metadata/ ${ANDROID_BIN}
