@@ -27,7 +27,7 @@ using boost::asio::ip::udp;
 int ut_BroadcastReceiver_TestEmpty(void)
 {
 	TestCaseBegin();
-	BroadcastReceiver dummyReceiver(55554);
+	BroadcastReceiver dummyReceiver(55555);
 	vector<std::string> ipTable;
 	CHECK(0 == dummyReceiver.GetIpTable(ipTable));
 	CHECK(0 == ipTable.size());
@@ -41,18 +41,15 @@ int ut_BroadcastReceiver_TestSimple(void)
 		boost::asio::io_service io_service;
 		udp::socket sock(io_service, udp::endpoint(udp::v4(), 0));
 		udp::resolver resolver(io_service);
-		udp::resolver::query query(udp::v4(), "127.0.0.1", "55554");
+		udp::resolver::query query(udp::v4(), "127.0.0.1", "55555");
 		udp::resolver::iterator it = resolver.resolve(query);
-		BroadcastReceiver dummyReceiver(55554);
-sleep(1);
+		BroadcastReceiver dummyReceiver(55555);
+		sleep(1);
 		sock.send_to(boost::asio::buffer("WiFly_Light", 12), *it);
 		dummyReceiver.Stop();
 
-
-
 		vector<std::string> ipTable;
 		size_t numElements = dummyReceiver.GetIpTable(ipTable);
-		std::cout << numElements;
 		CHECK(1 == numElements);
 		CHECK(ipTable.size() == numElements);
 	} catch (std::exception& e) {

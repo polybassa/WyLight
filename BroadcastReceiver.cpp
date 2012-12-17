@@ -45,25 +45,25 @@ void BroadcastReceiver::operator()(void)
 	for(;;)
 	{
 		char inputBuffer[32];
-		udp::endpoint remoteEndpoint;
-		size_t bytesRead = sock.receive_from(boost::asio::buffer(inputBuffer, sizeof(inputBuffer)), remoteEndpoint);
+		udp::endpoint remote;
+		size_t bytesRead = sock.receive_from(boost::asio::buffer(inputBuffer, sizeof(inputBuffer)), remote);
 
 		// received a Wifly broadcast?
 		if((BROADCAST_MSG_LENGTH == bytesRead) && (0 == memcmp(inputBuffer, BROADCAST_MSG, bytesRead)))
 		{
 			mMutex.lock();
-			//TODO read address from endpoint!
-			mIpTable.insert(std::pair<unsigned long, std::string>(0x7f000001, std::string("127.0.0.1")));
+			unsigned long asLong = remote.address().to_v4().to_ulong();
+			std::string asString = remote.address().to_string();
+			mIpTable.insert(std::pair<unsigned long, std::string>(asLong, asString));
 			mMutex.unlock();
 		}
 		// received a stop event?
-		else
-		{
-			if((STOP_MSG_LENGTH == bytesRead) && (0 == memcmp(inputBuffer, STOP_MSG, bytesRead))
-						/*TODO && (remoteEndpoint.isLocalhost())*/)
+		else if(/*TODO remote.address().is_loopback()
+					&&*/ (STOP_MSG_LENGTH == bytesRead) 
+					&& (0 == memcmp(inputBuffer, STOP_MSG, bytesRead)))
 		{
 			return;
-		}}
+		}
 	}
 }
 
