@@ -45,9 +45,7 @@ class WiflyControl
 			f.e. red(255, 0, 0) is in rgba as: 0xff000000
 				 white(255, 255, 255) is in rgba as: 0xffffff00
 		**/
-		void FwAddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second);
-		void FwAddColor(std::string& addr, std::string& rgba, unsigned char hour, unsigned char minute, unsigned char second);
-		
+				
 		size_t BlFlashErase(unsigned char* pBuffer, unsigned int endAddress, const size_t numPages, bool doSync) const;
 		bool BlFlashErase(void) const;
 		bool BlEepromErase(void) const;
@@ -60,12 +58,17 @@ class WiflyControl
 		bool BlWriteEeprom(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
 		bool BlEnableAutostart(void) const;
 		bool BlProgramFlash(const std::string& Filename);
-		void FwClearScript(void);
+		
+		bool FwClearScript(void);
 		void FwTest(void);
-		void FwStartBl(void);
-		void FwSetColor(unsigned long addr, unsigned long rgba);
-		void FwSetColor(std::string& addr, std::string& rgba);
-		void FwSetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade);
-		void FwSetFade(std::string& addr, std::string& rgba, unsigned short fadeTmms, bool parallelFade);
+		void FwReadTracebuffer(void);
+		bool FwStartBl(void);
+		bool FwSetColor(unsigned long addr, unsigned long rgba);
+		bool FwSetColor(std::string& addr, std::string& rgba);
+		bool FwSetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade);
+		bool FwSetFade(std::string& addr, std::string& rgba, unsigned short fadeTmms, bool parallelFade);
+		void FwAddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second);
+		void FwAddColor(std::string& addr, std::string& rgba, unsigned char hour, unsigned char minute, unsigned char second);
+
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */

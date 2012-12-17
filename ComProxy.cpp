@@ -20,7 +20,9 @@
 #include "crc.h"
 #include "trace.h"
 #include "wifly_cmd.h"
-
+#ifdef DEBUG
+#include <iostream>
+#endif /* DEBUG */
 #include <sys/time.h>
 
 static timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for framented responses from pic
@@ -180,13 +182,15 @@ int ComProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize
 	Trace_String("ComProxy::Send(BlRequest&): ");
 	Trace_Number(req.GetSize());
 	Trace_String("pure bytes\n");
-	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
+	int retval = Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
+	return retval;
 }
 
 int ComProxy::Send(const struct cmd_frame* pFrame, unsigned char* pResponse, size_t responseSize, bool doSync) const
 {
 	Trace_String("ComProxy::Send(const struct cmd_frame*): ");
-	return Send(reinterpret_cast<const unsigned char*>(pFrame), pFrame->length, pResponse, responseSize, true, doSync, false);
+	int retval = Send(reinterpret_cast<const unsigned char*>(pFrame), pFrame->length, pResponse, responseSize, true, doSync, false);
+	return retval;
 }
 
 size_t ComProxy::Recv(unsigned char* pBuffer, size_t length, timeval* timeout, bool checkCrc, bool crcInLittleEndian) const
@@ -203,6 +207,11 @@ size_t ComProxy::Recv(unsigned char* pBuffer, size_t length, timeval* timeout, b
 	// TODO refactor this with code in commandstorage. It should be identical to the fw receive implementation
 	do {
 		size_t bytesMasked = mSock->Recv(pBuffer, length, timeout);
+#ifdef DEBUG
+		std::cout << std::endl << __FILE__ << "::" << __FUNCTION__
+		<< "(): Bytes masked: " << bytesMasked;
+		std::cout << std::endl;
+#endif
 		unsigned char* pInput = pBuffer;
 		while(bytesMasked-- > 0)
 		{
@@ -224,6 +233,11 @@ size_t ComProxy::Recv(unsigned char* pBuffer, size_t length, timeval* timeout, b
 				}
 				else if (BL_ETX == *pInput)
 				{
+#ifdef DEBUG
+					std::cout << std::endl << __FILE__ << "::" << __FUNCTION__
+					<< "(): Detect ETX ";
+					std::cout << std::endl;
+#endif
 					if(!checkCrc)
 					{
 						return pBuffer - pBufferBegin;
@@ -235,11 +249,21 @@ size_t ComProxy::Recv(unsigned char* pBuffer, size_t length, timeval* timeout, b
 						Crc_AddCrc16(pBuffer[-2], &prepreCrc);
 						crc = prepreCrc;
 					}
+#ifdef DEBUG
+					std::cout << std::endl << __FILE__ << "::" << __FUNCTION__
+					<< "(): Crc: " << std::hex << crc << " Returnvalue: " <<  (pBuffer - 2) - pBufferBegin;
+					std::cout << std::endl;
+#endif
 					return (0 != crc) ? 0 : (pBuffer - 2) - pBufferBegin;
 				}
 				else if (BL_STX == *pInput)
 				{
 					pBuffer = pBufferBegin;
+#ifdef DEBUG
+					std::cout << std::endl << __FILE__ << "::" << __FUNCTION__
+					<< "(): Detect STX ";
+					std::cout << std::endl;
+#endif
 				}
 				else
 				{
@@ -312,7 +336,6 @@ int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsi
 				Trace_String("ComProxy::Send: waiting for no response-> exiting...\n");
 				return 0;
 			}
-
 			/* receive response */
 			size_t bytesReceived = Recv(recvBuffer, sizeof(recvBuffer), &RESPONSE_TIMEOUT, checkCrc, crcInLittleEndian);
 			memcpy(pResponse, recvBuffer, bytesReceived);

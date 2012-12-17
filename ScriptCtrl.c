@@ -109,8 +109,8 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 #ifdef __CC8E__
 			UART_Send(STX);
 			UART_SendString("EXIT: Leaving Application --> Starting Bootloader");
-			UART_Send(0xFC);
-			UART_Send(0x3A);
+			UART_Send(0x25);
+			UART_Send(0x15);
 			UART_Send(ETX);
 #endif
 			Platform_EnableBootloaderAutostart();

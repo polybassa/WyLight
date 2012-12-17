@@ -173,8 +173,8 @@ void Commandstorage_GetCommands()
 			{
 				UART_Send(STX);
 				UART_SendString("GC");
-				UART_Send(0xFC);
 				UART_Send(0xEC);
+				UART_Send(0xFC);
 				UART_Send(ETX);
 			}
 			else
