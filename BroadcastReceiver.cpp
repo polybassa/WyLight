@@ -17,74 +17,100 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "BroadcastReceiver.h"
-#include "BlRequest.h"
 
-#include <arpa/inet.h>
-#include <sys/select.h>
-#include <unistd.h>
 #include <cstring>
 #include <iostream>
-
 #include <stdio.h>
+#include <sstream>
 
-static const char* BROADCAST_MSG = "WiFly_Light";
-static const int BROADCAST_MSG_LENGTH = sizeof(BROADCAST_MSG);
+const char BroadcastReceiver::BROADCAST_DEVICE_ID[] = "WiFly-";
+const char BroadcastReceiver::STOP_MSG[] = "StopThread";
+const size_t BroadcastReceiver::STOP_MSG_LENGTH = sizeof(STOP_MSG);
 
-void* Run(void* ptr)
+BroadcastReceiver::BroadcastReceiver(unsigned short port) : mPort(port), mThread(boost::ref(*this))
 {
-	if(NULL != ptr)
-	{
-		BroadcastReceiver* pObj = reinterpret_cast<BroadcastReceiver*>(ptr);
-		pObj->Run();
-	}
-	return NULL;
-}
-
-BroadcastReceiver::BroadcastReceiver(void) : mSock(socket(AF_INET, SOCK_DGRAM, 0))
-{
-	memset(&mSockAddr, 0, sizeof(mSockAddr));
-	mSockAddr.sin_family = AF_INET;
-	mSockAddr.sin_port = htons(BROADCAST_PORT);
-	mSockAddr.sin_addr.s_addr = INADDR_ANY;	
-	pthread_create(&mBroadcastReceiverThread, NULL, ::Run, NULL);
 }
 
 BroadcastReceiver::~BroadcastReceiver(void)
 {
-    
-	pthread_cancel(mBroadcastReceiverThread);
-	pthread_join(mBroadcastReceiverThread, NULL);
-	close(mSock);
+	Stop();
 }
 
-void BroadcastReceiver::Run(void)
+void BroadcastReceiver::operator()(void)
 {
-	char buffer[BL_MAX_MESSAGE_LENGTH];
-	struct sockaddr_in remoteAddr;
-	socklen_t remoteAddrLength = sizeof(remoteAddr);
-	int numBytes;
-
-	while(true)
+	boost::asio::io_service io_service;
+	udp::socket sock(io_service, udp::endpoint(udp::v4(), mPort));
+	
+	for(;;)
 	{
-	      numBytes = recvfrom(mSock, buffer, sizeof(buffer) - 1, 0, (struct sockaddr *)&remoteAddr, &remoteAddrLength);
-	      
-	      if(numBytes > BROADCAST_MSG_LENGTH && 0 == memcmp(&buffer, BROADCAST_MSG, BROADCAST_MSG_LENGTH))
-	      {
-					mIpTable.insert(std::pair<unsigned long, std::string>(remoteAddr.sin_addr.s_addr, std::string(inet_ntoa(remoteAddr.sin_addr))));
-	      }
+		BroadcastMessage msg;
+		udp::endpoint remote;
+		size_t bytesRead = sock.receive_from(boost::asio::buffer(&msg, sizeof(msg)), remote);
+#ifdef DEBUG
+		std::cout <<"========\n" << remote << '\n';
+#endif
+		// received a Wifly broadcast?
+		if((sizeof(msg) == bytesRead) && (0 == memcmp(msg.deviceId, BROADCAST_DEVICE_ID, 6)))
+		{
+#ifdef DEBUG
+			msg.NetworkToHost();
+			msg.Print(std::cout);	
+#endif
+			mMutex.lock();
+			mIpTable.push_back(remote);
+			mMutex.unlock();
+		}
+		// received a stop event?
+		else if(/*TODO remote.address().is_loopback()
+					&&*/ (STOP_MSG_LENGTH == bytesRead) 
+					&& (0 == memcmp(&msg, STOP_MSG, bytesRead)))
+		{
+			return;
+		}
 	}
 }
 
-size_t BroadcastReceiver::GetIpTable(std::vector<std::string>& outputVector) const
+unsigned long BroadcastReceiver::GetIp(size_t index) const
 {
-	size_t numElements = 0;
-	std::map<unsigned long, std::string>::const_iterator it;
+	return mIpTable[index].address().to_v4().to_ulong();
+}
 
-	for(it = mIpTable.begin(); it != mIpTable.end(); it++)
-	{
-		outputVector.push_back((*it).second);
-		numElements++;
+unsigned short BroadcastReceiver::GetPort(size_t index) const
+{
+	return mIpTable[index].port();
+}
+
+size_t BroadcastReceiver::NumRemotes(void) const
+{
+	return mIpTable.size();
+}
+
+void Print(boost::asio::ip::udp::endpoint remote)
+{
+	static size_t i = 0;
+	std::cout << i << ':' << remote << '\n';
+}
+
+void BroadcastReceiver::ShowRemotes(std::ostream& out) const
+{
+	
+	for_each(mIpTable.begin(), mIpTable.end(), Print);
+}
+
+void BroadcastReceiver::Stop(void)
+{
+	try {
+		std::ostringstream converter;
+		converter << mPort;
+		boost::asio::io_service io_service;
+		udp::socket sock(io_service, udp::endpoint(udp::v4(), 0));
+		udp::resolver resolver(io_service);
+		udp::resolver::query query(udp::v4(), "127.0.0.1", converter.str());
+		udp::resolver::iterator it = resolver.resolve(query);
+		sock.send_to(boost::asio::buffer(STOP_MSG, STOP_MSG_LENGTH), *it);
+		mThread.join();
+	} catch (std::exception& e) {
+		std::cout << __FUNCTION__ << ':' <<  e.what() << '\n';
 	}
-	return numElements;
 }
 
