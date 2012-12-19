@@ -19,6 +19,7 @@
 #include "unittest.h"
 #include "ComProxy.h"
 #include <unistd.h>
+#include <time.h>
 
 /**************** includes, classes and functions for wrapping ****************/
 #include "ClientSocket.h"

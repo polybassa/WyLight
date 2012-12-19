@@ -26,14 +26,13 @@
 
 #include <stdio.h>
 
-
-ClientSocket::ClientSocket(const char* pAddr, short port, int style)
+ClientSocket::ClientSocket(unsigned long addr, unsigned short port, int style)
 	: mSock(socket(AF_INET, style, 0))
 {
 	memset(&mSockAddr, 0, sizeof(mSockAddr));
 	mSockAddr.sin_family = AF_INET;
 	mSockAddr.sin_port = htons(port);
-	inet_pton(AF_INET, pAddr, &(mSockAddr.sin_addr));
+	mSockAddr.sin_addr.s_addr = htonl(addr);
 }
 
 ClientSocket::~ClientSocket()
@@ -43,13 +42,12 @@ ClientSocket::~ClientSocket()
 #endif
 }
 
-
-TcpSocket::TcpSocket(const char* pAddr, short port)
-	: ClientSocket(pAddr, port, SOCK_STREAM)
+TcpSocket::TcpSocket(unsigned long addr, unsigned short port)
+	: ClientSocket(addr, port, SOCK_STREAM)
 {
 	if(connect(mSock, reinterpret_cast<sockaddr*>(&mSockAddr), sizeof(mSockAddr)) < 0)
 	{
-		std::cout << "Connection to " << pAddr << ":" << port << " failed" << std::endl;
+		std::cout << "Connection to " << addr << ":" << port << " failed" << std::endl;
 	}
 }
 
@@ -91,8 +89,8 @@ int TcpSocket::Send(const unsigned char* frame, size_t length) const
 	return send(mSock, frame, length, 0);
 }
 
-UdpSocket::UdpSocket(const char* pAddr, short port)
-	: ClientSocket(pAddr, port, SOCK_DGRAM)
+UdpSocket::UdpSocket(unsigned long addr, unsigned short port)
+	: ClientSocket(addr, port, SOCK_DGRAM)
 {
 	if(0 != bind(mSock, reinterpret_cast<struct sockaddr *>(&mSockAddr), sizeof(struct sockaddr)))
 	{

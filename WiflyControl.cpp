@@ -45,12 +45,11 @@ using namespace std;
 	REF.blue = (RGBA & 0x0000ff00) >> 8; \
 }
 
-WiflyControl::WiflyControl(const char* pAddr, short port, bool useTcp)
-: mProxy(useTcp ? (reinterpret_cast<const ClientSocket*>(new TcpSocket(pAddr, port))) : (reinterpret_cast<const ClientSocket*>(new UdpSocket(pAddr, port))))
+WiflyControl::WiflyControl(unsigned long addr, unsigned short port, bool useTcp)
+: mProxy(useTcp ? (reinterpret_cast<const ClientSocket*>(new TcpSocket(addr, port))) : (reinterpret_cast<const ClientSocket*>(new UdpSocket(addr, port))))
 {
 	//TODO remove length
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;
-
 }
 
 void WiflyControl::FwAddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second)

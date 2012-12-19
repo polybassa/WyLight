@@ -37,7 +37,7 @@ class WiflyControl
 		int FwSend(struct cmd_frame* pFrame, size_t length, unsigned char* pResponse, size_t responseSize) const;
 		
 	public:
-		WiflyControl(const char* pAddr, short port, bool useTcp);
+		WiflyControl(unsigned long addr, unsigned short port, bool useTcp);
 		
 		void Receiving(void) const;
 		/**

@@ -17,15 +17,17 @@
     along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "WiflyControlCli.h"
-#include "BroadcastReceiver.h"
 #include "WiflyControlCmd.h"
-#include <iostream>
+#include "BroadcastReceiver.h"
+#include <algorithm>
 #include <cstdlib>
+#include <iostream>
+#include <vector>
 
-using namespace std;
+using std::cout;
 
-WiflyControlCli::WiflyControlCli(const char* pAddr, short port, bool useTcp)
-: mControl(pAddr, port, useTcp), mRunning(true)
+WiflyControlCli::WiflyControlCli(unsigned long addr, unsigned short port, bool useTcp)
+: mControl(addr, port, useTcp), mRunning(true)
 {
 }
 
@@ -85,32 +87,23 @@ void Java_biz_bruenn_WiflyLight_WiflyLightActivity_runClient(JNIEnv* env, jobjec
 
 int main(int argc, const char* argv[])
 {
-	short port = 2000;
-	BroadcastReceiver broadcastReceiver;
-#if 1
-	const char* pAddr = "127.0.0.1";
-	bool useTcp = false;
-#else
-	const char* pAddr = "192.168.0.14";
-	bool useTcp = true;
-#endif
-
-	cout << "Usage:   client.bin <ip> <port> [tcp]" << endl;
-	cout << "Default: client.bin " << pAddr << " " << port << " --> " << (useTcp ? "tcp" : "udp");
-	cout << " connection to " << pAddr << " " << endl;
-	if(argc > 1)
-	{
-		pAddr = argv[1];
-		if(argc > 2)
-		{
-			port = (short)atoi(argv[2]);
-			if(argc > 3)
-			{
-				useTcp = (0 == strncmp(argv[3], "tcp", 3));
-			}
-		}
+	BroadcastReceiver receiver(55555);
+	cout << "please wait, scanning for remotes...";
+	for(size_t timeout = 9; timeout > 0; timeout--) {
+		(cout << timeout << ' ').flush();
+		sleep(1);
 	}
-	WiflyControlCli cli(pAddr, port, useTcp);
+	cout << '\n';
+	receiver.Stop();
+	receiver.ShowRemotes(std::cout);
+
+	// wait for user input
+	size_t selection;
+	std::cin >> selection;
+	if(receiver.NumRemotes() < selection) {
+		cout << selection << " is an invalid value\n";
+		return EXIT_FAILURE;
+	}
+	WiflyControlCli cli(receiver.GetIp(selection), receiver.GetPort(selection), true);
 	cli.Run();
-	return 0;
 }

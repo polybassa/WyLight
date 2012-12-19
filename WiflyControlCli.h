@@ -29,7 +29,7 @@ class WiflyControlCli
 		void ShowHelp(void) const;
 
 	public:
-		WiflyControlCli(const char* pAddr, short port, bool useTcp);
+		WiflyControlCli(unsigned long addr, unsigned short port, bool useTcp);
 		void Run(void);	
 };
 #endif /* #ifndef _WIFLYCONTROLCLI_H_ */
