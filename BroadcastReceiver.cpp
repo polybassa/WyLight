@@ -46,16 +46,19 @@ void BroadcastReceiver::operator()(void)
 		BroadcastMessage msg;
 		udp::endpoint remote;
 		size_t bytesRead = sock.receive_from(boost::asio::buffer(&msg, sizeof(msg)), remote);
+#ifdef DEBUG
 		std::cout <<"========\n" << remote << '\n';
+#endif
 		// received a Wifly broadcast?
 		if((sizeof(msg) == bytesRead) && (0 == memcmp(msg.deviceId, BROADCAST_DEVICE_ID, 6)))
 		{
 			mMutex.lock();
 			unsigned long asLong = remote.address().to_v4().to_ulong();
-			std::string asString = remote.address().to_string();
+#ifdef DEBUG
 			msg.NetworkToHost();
 			msg.Print(std::cout);	
-			mIpTable.insert(std::pair<unsigned long, std::string>(asLong, asString));
+#endif
+			mIpTable.insert(std::pair<unsigned long, boost::asio::ip::udp::endpoint>(asLong, remote));
 			mMutex.unlock();
 		}
 		// received a stop event?
@@ -68,10 +71,10 @@ void BroadcastReceiver::operator()(void)
 	}
 }
 
-size_t BroadcastReceiver::GetIpTable(std::vector<std::string>& outputVector)
+size_t BroadcastReceiver::GetIpTable(std::vector<boost::asio::ip::udp::endpoint>& outputVector)
 {
 	size_t numElements = 0;
-	std::map<unsigned long, std::string>::const_iterator it;
+	std::map<unsigned long, boost::asio::ip::udp::endpoint>::const_iterator it;
 	mMutex.lock();
 	for(it = mIpTable.begin(); it != mIpTable.end(); it++)
 	{

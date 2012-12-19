@@ -98,7 +98,7 @@ class BroadcastReceiver
 		 * @param outputVector a vector to add the strings to
 		 * @return number of IP address strings added to <outputVector>
 		 */
-		size_t GetIpTable(std::vector<std::string>& outputVector);
+		size_t GetIpTable(std::vector<boost::asio::ip::udp::endpoint>& outputVector);
 
 		/**
 		 * Sends a stop event to terminate execution of operator()
@@ -106,7 +106,7 @@ class BroadcastReceiver
 		void Stop(void);
 
 	private:
-		std::map<unsigned long, std::string> mIpTable;
+		std::map<unsigned long, boost::asio::ip::udp::endpoint> mIpTable;
 		boost::thread mThread;
 		boost::mutex mMutex;
 };
