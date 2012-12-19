@@ -27,7 +27,7 @@
 
 #define CRC_SIZE 2
 
-ClientSocket::ClientSocket(const char* pAddr, short port, int style) : mSock(0) {}
+ClientSocket::ClientSocket(unsigned long addr, unsigned short port, int style) : mSock(0) {}
 ClientSocket::~ClientSocket(void) {}
 
 const BlInfo dummyBlInfo = {0xDE, 0xAD, 0xAF, 0xFE, 0xFF, 0x4, 0x0, 0xB0, 0xB1, 0xE5, 0x00};
@@ -45,7 +45,7 @@ size_t g_TestSocketRecvBufferPos = 0;
 size_t g_TestSocketRecvBufferSize = 0;
 unsigned char g_TestSocketSendBuffer[10240];
 size_t g_TestSocketSendBufferSize;
-TestSocket::TestSocket(const char* pAddr, short port) : ClientSocket(pAddr, port, 0)
+TestSocket::TestSocket(unsigned long addr, unsigned short port) : ClientSocket(addr, port, 0)
 {
 	m_Delay.tv_sec = 0;
 	m_Delay.tv_nsec = 0;

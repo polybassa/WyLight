@@ -48,7 +48,7 @@ ComProxy_ut.bin: ComProxy_ut.cpp ComProxy.cpp ComProxy.h BlRequest.h unittest.h
 	@g++ ComProxy_ut.cpp ComProxy.cpp crc.c -DX86 -DUNIT_TEST -o $@ -Wall -pedantic
 	@./$@
 
-test: clean BroadcastReceiver_ut.bin commandstorage_ut.bin ComProxy_ut.bin crc_ut.bin ledstrip_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin
+test: BroadcastReceiver_ut.bin commandstorage_ut.bin ComProxy_ut.bin crc_ut.bin ledstrip_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin
 
 clean:
 	@rm -rf *.asm *.bin *.cod *.fcs *.hex *.lst *.occ *.var .metadata/ ${ANDROID_BIN}
