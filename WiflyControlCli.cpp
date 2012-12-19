@@ -26,8 +26,8 @@
 
 using std::cout;
 
-WiflyControlCli::WiflyControlCli(const char* pAddr, short port, bool useTcp)
-: mControl(pAddr, port, useTcp), mRunning(true)
+WiflyControlCli::WiflyControlCli(unsigned long addr, unsigned short port, bool useTcp)
+: mControl(addr, port, useTcp), mRunning(true)
 {
 }
 
@@ -85,23 +85,8 @@ void Java_biz_bruenn_WiflyLight_WiflyLightActivity_runClient(JNIEnv* env, jobjec
 }
 #endif
 
-void Print(boost::asio::ip::udp::endpoint& s)
-{
-	static size_t i = 0;
-	cout << i << ':' << s << '\n';
-}
-
 int main(int argc, const char* argv[])
 {
-	short port = 2000;
-#if 1
-	const char* pAddr = "127.0.0.1";
-	bool useTcp = false;
-#else
-	const char* pAddr = "192.168.0.14";
-	bool useTcp = true;
-#endif
-
 	BroadcastReceiver receiver(55555);
 	cout << "please wait, scanning for remotes...";
 	for(size_t timeout = 9; timeout > 0; timeout--) {
@@ -110,33 +95,15 @@ int main(int argc, const char* argv[])
 	}
 	cout << '\n';
 	receiver.Stop();
-	std::vector<boost::asio::ip::udp::endpoint> v;
-	receiver.GetIpTable(v);
-	cout << "Select remote:\n";
-	for_each(v.begin(), v.end(), Print);
+	receiver.ShowRemotes(std::cout);
 
+	// wait for user input
 	size_t selection;
 	std::cin >> selection;
-
-	if(selection < v.size()) {
-		cout << "You selected number: " << selection << '\n';
-	} else {
+	if(receiver.NumRemotes() < selection) {
 		cout << selection << " is an invalid value\n";
+		return EXIT_FAILURE;
 	}
-	return 0;
-	if(argc > 1)
-	{
-		pAddr = argv[1];
-		if(argc > 2)
-		{
-			port = (short)atoi(argv[2]);
-			if(argc > 3)
-			{
-				useTcp = (0 == strncmp(argv[3], "tcp", 3));
-			}
-		}
-	}
-	WiflyControlCli cli(pAddr, port, useTcp);
+	WiflyControlCli cli(receiver.GetIp(selection), receiver.GetPort(selection), true);
 	cli.Run();
-	return 0;
 }

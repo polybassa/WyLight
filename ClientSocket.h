@@ -30,7 +30,7 @@ class ClientSocket
 		struct sockaddr_in mSockAddr;
 
 	public:
-		ClientSocket(const char* pAddr, short port, int style);
+		ClientSocket(unsigned long addr, unsigned short port, int style);
 		virtual ~ClientSocket();
 		virtual size_t Recv(unsigned char* pBuffer, size_t length, timeval* timeout = NULL) const = 0;
 		virtual int Send(const unsigned char* frame, size_t length) const = 0;
@@ -39,7 +39,7 @@ class ClientSocket
 class TcpSocket : public ClientSocket
 {
 	public:
-		TcpSocket(const char* pAddr, short port);
+		TcpSocket(unsigned long Addr, unsigned short port);
 		virtual size_t Recv(unsigned char* pBuffer, size_t length, timeval* timeout = NULL) const;
 		virtual int Send(const unsigned char* frame, size_t length) const;
 };
@@ -47,7 +47,7 @@ class TcpSocket : public ClientSocket
 class UdpSocket : public ClientSocket
 {
 	public:
-		UdpSocket(const char* pAddr, short port);
+		UdpSocket(unsigned long addr, unsigned short port);
 		virtual size_t Recv(unsigned char* pBuffer, size_t length, timeval* timeout = NULL) const;
 		virtual int Send(const unsigned char* frame, size_t length) const;
 };

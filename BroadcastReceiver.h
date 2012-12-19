@@ -93,12 +93,10 @@ class BroadcastReceiver
 		 */
 		void operator()(void);
 
-		/**
-		 * Returns a list of IP address strings from available Wifly_Lights
-		 * @param outputVector a vector to add the strings to
-		 * @return number of IP address strings added to <outputVector>
-		 */
-		size_t GetIpTable(std::vector<boost::asio::ip::udp::endpoint>& outputVector);
+		unsigned long GetIp(size_t index) const;
+		unsigned short GetPort(size_t index) const;
+		size_t NumRemotes(void) const;
+		void ShowRemotes(std::ostream& out) const;
 
 		/**
 		 * Sends a stop event to terminate execution of operator()
@@ -106,7 +104,7 @@ class BroadcastReceiver
 		void Stop(void);
 
 	private:
-		std::map<unsigned long, boost::asio::ip::udp::endpoint> mIpTable;
+		std::vector<boost::asio::ip::udp::endpoint> mIpTable;
 		boost::thread mThread;
 		boost::mutex mMutex;
 };
