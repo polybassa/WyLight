@@ -28,21 +28,63 @@
 using boost::asio::ip::udp;
 #include <boost/thread.hpp>
 
+
+#pragma pack(push)
+#pragma pack(1)
+struct BroadcastMessage
+{
+	unsigned char mac[6];
+	unsigned char channel;
+	unsigned char rssi;
+	unsigned short port;
+	unsigned long rtc;
+	unsigned short bat_mV;
+	unsigned short gpioValue;
+	char asciiTime[13+1];
+	char version[26+1+1];// this seems a little strange. bug in wifly fw?
+	char deviceId[32];
+	unsigned short bootTmms;
+	unsigned short sensor[8];
+
+	void NetworkToHost(void) {
+		port = ntohs(port);
+		rtc = ntohl(rtc);
+		bat_mV = ntohs(bat_mV);
+		gpioValue = ntohs(gpioValue);
+		bootTmms = ntohs(bootTmms);
+		for(size_t i = 0; i < sizeof(sensor)/sizeof(sensor[0]); i++) {
+			sensor[i] = ntohs(sensor[i]);
+		}
+	};
+
+	void Print(std::ostream& out) const {
+
+		out << "MAC:        "	<< std::hex
+		<< (int) mac[0] << ' ' << (int) mac[1] << ' ' << (int) mac[2] << ' '
+		<< (int) mac[3] << ' ' << (int) mac[4] << ' ' << (int) mac[5]
+		<< "\nChannel:  " << std::dec << (int)channel
+		<< "\nRssi:     " << (int)rssi
+		<< "%\nPort:     " << port 
+		<< "\nRTC:      0x" << std::hex << rtc
+		<< "\nBat:      " << std::dec << bat_mV
+		<< "mV\nGPIO:     0x" << std::hex << gpioValue
+		<< "\nTime:     " << asciiTime
+		<< "\nVersion:  " << version
+		<< "\nDeviceID: " << deviceId
+		<< "\nBoottime: " << std::dec << bootTmms << "ms\n";
+	};
+};
+#pragma pack(pop)
+
 class BroadcastReceiver
 {
-	private:
+	public:
 		static const unsigned short BROADCAST_PORT = 55555;
-		static const char BROADCAST_MSG[];
-		static const size_t BROADCAST_MSG_LENGTH;
+		static const char BROADCAST_DEVICE_ID[7];
 		static const char STOP_MSG[];
 		static const size_t STOP_MSG_LENGTH;
 		const unsigned short mPort;
 
-		std::map<unsigned long, std::string> mIpTable;
-		boost::thread mThread;
-		boost::mutex mMutex;
-
-	public:
 		BroadcastReceiver(unsigned short port);
 		~BroadcastReceiver(void);
 
@@ -62,6 +104,11 @@ class BroadcastReceiver
 		 * Sends a stop event to terminate execution of operator()
 		 */
 		void Stop(void);
+
+	private:
+		std::map<unsigned long, std::string> mIpTable;
+		boost::thread mThread;
+		boost::mutex mMutex;
 };
 
 #endif /* #ifndef _BROADCAST_RECEIVER_H_ */

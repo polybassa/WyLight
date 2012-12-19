@@ -23,8 +23,7 @@
 #include <stdio.h>
 #include <sstream>
 
-const char BroadcastReceiver::BROADCAST_MSG[] = "WiFly_Light";
-const size_t BroadcastReceiver::BROADCAST_MSG_LENGTH = sizeof(BROADCAST_MSG);
+const char BroadcastReceiver::BROADCAST_DEVICE_ID[] = "WiFly-";
 const char BroadcastReceiver::STOP_MSG[] = "StopThread";
 const size_t BroadcastReceiver::STOP_MSG_LENGTH = sizeof(STOP_MSG);
 
@@ -44,23 +43,25 @@ void BroadcastReceiver::operator()(void)
 	
 	for(;;)
 	{
-		char inputBuffer[32];
+		BroadcastMessage msg;
 		udp::endpoint remote;
-		size_t bytesRead = sock.receive_from(boost::asio::buffer(inputBuffer, sizeof(inputBuffer)), remote);
-
+		size_t bytesRead = sock.receive_from(boost::asio::buffer(&msg, sizeof(msg)), remote);
+		std::cout <<"========\n" << remote << '\n';
 		// received a Wifly broadcast?
-		if((BROADCAST_MSG_LENGTH == bytesRead) && (0 == memcmp(inputBuffer, BROADCAST_MSG, bytesRead)))
+		if((sizeof(msg) == bytesRead) && (0 == memcmp(msg.deviceId, BROADCAST_DEVICE_ID, 6)))
 		{
 			mMutex.lock();
 			unsigned long asLong = remote.address().to_v4().to_ulong();
 			std::string asString = remote.address().to_string();
+			msg.NetworkToHost();
+			msg.Print(std::cout);	
 			mIpTable.insert(std::pair<unsigned long, std::string>(asLong, asString));
 			mMutex.unlock();
 		}
 		// received a stop event?
 		else if(/*TODO remote.address().is_loopback()
 					&&*/ (STOP_MSG_LENGTH == bytesRead) 
-					&& (0 == memcmp(inputBuffer, STOP_MSG, bytesRead)))
+					&& (0 == memcmp(&msg, STOP_MSG, bytesRead)))
 		{
 			return;
 		}
