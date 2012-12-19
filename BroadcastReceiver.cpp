@@ -101,14 +101,9 @@ void BroadcastReceiver::ShowRemotes(std::ostream& out) const
 void BroadcastReceiver::Stop(void)
 {
 	try {
-		std::ostringstream converter;
-		converter << mPort;
 		boost::asio::io_service io_service;
 		udp::socket sock(io_service, udp::endpoint(udp::v4(), 0));
-		udp::resolver resolver(io_service);
-		udp::resolver::query query(udp::v4(), "127.0.0.1", converter.str());
-		udp::resolver::iterator it = resolver.resolve(query);
-		sock.send_to(boost::asio::buffer(STOP_MSG, STOP_MSG_LENGTH), *it);
+		sock.send_to(boost::asio::buffer(STOP_MSG, STOP_MSG_LENGTH), udp::endpoint(udp::v4(), mPort));
 		mThread.join();
 	} catch (std::exception& e) {
 		std::cout << __FUNCTION__ << ':' <<  e.what() << '\n';
