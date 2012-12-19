@@ -58,7 +58,7 @@ class TestSocket : public ClientSocket
 	private:
 		timespec m_Delay;
 	public:
-		TestSocket(const char* pAddr, short port);
+		TestSocket(unsigned long addr, unsigned short port);
 		virtual size_t Recv(unsigned char* pBuffer, size_t length, timeval* timeout = NULL) const;
 		virtual int Send(const unsigned char* frame, size_t length) const;
 		void SetDelay(timeval& delay);
