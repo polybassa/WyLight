@@ -25,9 +25,10 @@
 #include <string>
 #include <vector>
 #include <boost/asio.hpp>
-using boost::asio::ip::udp;
 #include <boost/thread.hpp>
 
+using std::vector;
+using boost::asio::ip::udp;
 
 #pragma pack(push)
 #pragma pack(1)
@@ -105,7 +106,7 @@ class BroadcastReceiver
 		void Stop(void);
 
 	private:
-		std::vector<boost::asio::ip::udp::endpoint> mIpTable;
+		vector<udp::endpoint> mIpTable;
 		boost::thread mThread;
 		boost::mutex mMutex;
 };

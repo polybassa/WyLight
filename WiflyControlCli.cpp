@@ -95,15 +95,20 @@ int main(int argc, const char* argv[])
 	}
 	cout << '\n';
 	receiver.Stop();
+	if(0 == receiver.NumRemotes()) {
+		std::cout << "No remote found, exiting...\n";
+		return EXIT_FAILURE;
+	}
+
 	receiver.ShowRemotes(std::cout);
 
 	// wait for user input
 	size_t selection;
-	std::cin >> selection;
-	if(receiver.NumRemotes() < selection) {
-		cout << selection << " is an invalid value\n";
-		return EXIT_FAILURE;
-	}
+	do
+	{
+		std::cin >> selection;
+	} while(selection >= receiver.NumRemotes());
+
 	WiflyControlCli cli(receiver.GetIp(selection), receiver.GetPort(selection), true);
 	cli.Run();
 }

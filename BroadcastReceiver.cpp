@@ -19,6 +19,7 @@
 #include "BroadcastReceiver.h"
 
 #include <cstring>
+#include <functional>
 #include <iostream>
 #include <stdio.h>
 #include <sstream>
@@ -86,16 +87,13 @@ size_t BroadcastReceiver::NumRemotes(void) const
 	return mIpTable.size();
 }
 
-void Print(boost::asio::ip::udp::endpoint remote)
-{
-	static size_t i = 0;
-	std::cout << i << ':' << remote << '\n';
-}
-
 void BroadcastReceiver::ShowRemotes(std::ostream& out) const
 {
-	
-	for_each(mIpTable.begin(), mIpTable.end(), Print);
+	size_t index = 0;
+	for(vector<udp::endpoint>::const_iterator it = mIpTable.begin(); it != mIpTable.end(); *it++, index++)
+	{
+		out << index << ':' << *it << '\n';
+	}
 }
 
 void BroadcastReceiver::Stop(void)
