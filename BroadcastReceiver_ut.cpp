@@ -46,9 +46,7 @@ int ut_BroadcastReceiver_TestEmpty(void)
 {
 	TestCaseBegin();
 	BroadcastReceiver dummyReceiver(55555);
-	vector<std::string> ipTable;
-	CHECK(0 == dummyReceiver.GetIpTable(ipTable));
-	CHECK(0 == ipTable.size());
+	CHECK(0 == dummyReceiver.NumRemotes());
 	TestCaseEnd();
 }
 
@@ -66,10 +64,7 @@ int ut_BroadcastReceiver_TestSimple(void)
 		sock.send_to(boost::asio::buffer(capturedBroadcastMessage, sizeof(capturedBroadcastMessage)), *it);
 		dummyReceiver.Stop();
 
-		vector<std::string> ipTable;
-		size_t numElements = dummyReceiver.GetIpTable(ipTable);
-		CHECK(1 == numElements);
-		CHECK(ipTable.size() == numElements);
+		CHECK(1 == dummyReceiver.NumRemotes());
 	} catch (std::exception& e) {
 		std::cout << __FUNCTION__ << ':' <<  e.what() << '\n';
 		errors++;

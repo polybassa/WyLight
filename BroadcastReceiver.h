@@ -80,7 +80,8 @@ class BroadcastReceiver
 {
 	public:
 		static const unsigned short BROADCAST_PORT = 55555;
-		static const char BROADCAST_DEVICE_ID[7];
+		static const char BROADCAST_DEVICE_ID[];
+		static const size_t BROADCAST_DEVICE_ID_LENGTH;
 		static const char STOP_MSG[];
 		static const size_t STOP_MSG_LENGTH;
 		const unsigned short mPort;

@@ -23,7 +23,8 @@
 #include <stdio.h>
 #include <sstream>
 
-const char BroadcastReceiver::BROADCAST_DEVICE_ID[] = "WiFly-";
+const char BroadcastReceiver::BROADCAST_DEVICE_ID[] = "WiFly";
+const size_t BroadcastReceiver::BROADCAST_DEVICE_ID_LENGTH = 5;
 const char BroadcastReceiver::STOP_MSG[] = "StopThread";
 const size_t BroadcastReceiver::STOP_MSG_LENGTH = sizeof(STOP_MSG);
 
@@ -50,7 +51,7 @@ void BroadcastReceiver::operator()(void)
 		std::cout <<"========\n" << remote << '\n';
 #endif
 		// received a Wifly broadcast?
-		if((sizeof(msg) == bytesRead) && (0 == memcmp(msg.deviceId, BROADCAST_DEVICE_ID, 6)))
+		if((sizeof(msg) == bytesRead) && (0 == memcmp(msg.deviceId, BROADCAST_DEVICE_ID, BROADCAST_DEVICE_ID_LENGTH)))
 		{
 #ifdef DEBUG
 			msg.NetworkToHost();
