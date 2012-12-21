@@ -88,7 +88,7 @@ class BroadcastReceiver
 		static const size_t STOP_MSG_LENGTH;
 		const uint16_t mPort;
 
-		BroadcastReceiver(uint16_t port);
+		BroadcastReceiver(uint16_t port = BROADCAST_PORT);
 		~BroadcastReceiver(void);
 
 		/**

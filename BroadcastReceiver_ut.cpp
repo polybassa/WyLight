@@ -45,7 +45,7 @@ unsigned char capturedBroadcastMessage[110] = {
 int ut_BroadcastReceiver_TestEmpty(void)
 {
 	TestCaseBegin();
-	BroadcastReceiver dummyReceiver(55555);
+	BroadcastReceiver dummyReceiver;
 	CHECK(0 == dummyReceiver.NumRemotes());
 	TestCaseEnd();
 }
@@ -56,12 +56,10 @@ int ut_BroadcastReceiver_TestSimple(void)
 	try {
 		boost::asio::io_service io_service;
 		udp::socket sock(io_service, udp::endpoint(udp::v4(), 0));
-		udp::resolver resolver(io_service);
-		udp::resolver::query query(udp::v4(), "127.0.0.1", "55555");
-		udp::resolver::iterator it = resolver.resolve(query);
-		BroadcastReceiver dummyReceiver(55555);
+		udp::endpoint remote(udp::v4(), BroadcastReceiver::BROADCAST_PORT);
+		BroadcastReceiver dummyReceiver;
 		sleep(1);
-		sock.send_to(boost::asio::buffer(capturedBroadcastMessage, sizeof(capturedBroadcastMessage)), *it);
+		sock.send_to(boost::asio::buffer(capturedBroadcastMessage, sizeof(capturedBroadcastMessage)), remote);
 		dummyReceiver.Stop();
 
 		CHECK(1 == dummyReceiver.NumRemotes());
