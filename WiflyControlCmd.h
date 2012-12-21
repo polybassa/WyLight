@@ -330,6 +330,52 @@ class ControlCmdClearScript : public WiflyControlCmd
 		};
 };
 
+class ControlCmdLoopOn : public WiflyControlCmd
+{
+	public:
+		ControlCmdLoopOn(void) : WiflyControlCmd(
+				string("loopon"),
+				string("' - indicates the start of a loop")) {};
+
+		virtual void Run(WiflyControl& control) const {
+			cout << "Transmitting command loop on... ";
+			cout << (control.FwLoopOn() ? "done." : "failed!") << endl;
+
+		};
+};
+
+class ControlCmdLoopOff : public WiflyControlCmd
+{
+	public:
+		ControlCmdLoopOff(void) : WiflyControlCmd(
+				string("loopoff"),
+				string(" <numLoops>'\n")
+			+ string("    <numLoops> number of executions for the loop. Enter 0 for infinity loop. Maximum 255")) {};
+
+		virtual void Run(WiflyControl& control) const {
+			int numLoops;
+			cin >> numLoops;
+			cout << "Transmitting command loop off... ";
+			cout << (control.FwLoopOff( (unsigned char)numLoops ) ? "done." : "failed!") << endl;
+		};
+};
+
+class ControlCmdWait : public WiflyControlCmd
+{
+	public:
+		ControlCmdWait(void) : WiflyControlCmd(
+				string("wait"),
+				string(" <time>'\n")
+			+ string("    <time> the number of milliseconds the wait should take")) {};
+
+		virtual void Run(WiflyControl& control) const {
+			unsigned short waitTmms;
+			cin >> waitTmms;
+			cout << "Transmitting command wait... ";
+			cout << (control.FwSetWait( waitTmms ) ? "done." : "failed!") << endl;
+		};
+};
+
 class ControlCmdSetColor : public WiflyControlCmd
 {
 	public:
@@ -398,6 +444,9 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdStartBl(),
 	new ControlCmdTest(),
 	new ControlCmdReadTracebuffer(),
+	new ControlCmdLoopOn(),
+	new ControlCmdLoopOff(),
+	new ControlCmdWait(),
 //TODO implement on demand	ControlCmdBlWriteEeprom writeEeprom;
 //TODO	ControlCmdBlWriteFlash writeFlash;
 };

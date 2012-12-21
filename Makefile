@@ -14,7 +14,7 @@ ANDROID_BIN=android/.metadata ${ANDROID_DIR}/bin/ ${ANDROID_DIR}/gen/ ${ANDROID_
 
 X86_SRC=main.c crc.c commandstorage.c eeprom.c error.c ledstrip.c RingBuf.c ScriptCtrl.c spi.c timer.c usart.c x86_wrapper.c x86_gl.c
 
-X86_CLIENT_BUILD=g++ BroadcastReceiver.cpp ClientSocket.cpp ComProxy.cpp intelhexclass.cpp WiflyControl.cpp WiflyControlCli.cpp crc.c -DX86 -lpthread -lboost_system -lboost_thread -o client.bin -Wall -pedantic
+X86_CLIENT_BUILD=g++ -L/opt/local/lib/ -I/opt/local/include/ BroadcastReceiver.cpp ClientSocket.cpp ComProxy.cpp intelhexclass.cpp WiflyControl.cpp WiflyControlCli.cpp crc.c -DX86 -lpthread -lboost_system-mt -lboost_thread-mt -o client.bin -Wall -pedantic 
 
 all_nils: pic simu x86_client
 
@@ -41,7 +41,7 @@ x86_client_debug:
 	@./$@
 
 BroadcastReceiver_ut.bin: BroadcastReceiver_ut.cpp BroadcastReceiver.cpp BroadcastReceiver.h unittest.h
-	@g++ BroadcastReceiver_ut.cpp BroadcastReceiver.cpp -DX86 -DUNIT_TEST -lpthread -lboost_system -lboost_thread -o $@ -Wall
+	@g++ -L/opt/local/lib/ -I/opt/local/include/ BroadcastReceiver_ut.cpp BroadcastReceiver.cpp -DX86 -DUNIT_TEST -lpthread -lboost_system-mt -lboost_thread-mt -o $@ -Wall 
 	@./$@
 
 ComProxy_ut.bin: ComProxy_ut.cpp ComProxy.cpp ComProxy.h BlRequest.h unittest.h

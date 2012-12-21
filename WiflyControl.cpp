@@ -553,6 +553,40 @@ bool WiflyControl::FwClearScript(void)
 	return false;
 }
 
+bool WiflyControl::FwLoopOn(void)
+{
+	mCmdFrame.led.cmd = LOOP_ON;
+	unsigned char buffer[512];
+	char str[512] = {0};
+	char* pStrResult = {NULL};
+	
+	int bytesRead = FwSend(&mCmdFrame, 0, &buffer[0], sizeof(buffer));
+	
+#ifdef DEBUG
+	cout << __FUNCTION__ << ": We got " << bytesRead << " bytes response, Message: ";
+	for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
+	cout << endl;
+#endif
+
+	if(2 <= bytesRead)
+	{
+		buffer[bytesRead] = 0x00;
+		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "ERROR");
+		if(pStrResult != NULL)
+		{
+			for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
+			cout << endl;
+			return false;
+		}
+		pStrResult = NULL;
+		
+		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "GC");
+		if(pStrResult != NULL)
+			return true;
+	}
+	return false;
+}
+
 void WiflyControl::FwReadTracebuffer(void)
 {
 	mCmdFrame.led.cmd = GET_TRACE;
@@ -637,6 +671,41 @@ bool WiflyControl::FwStartBl(void)
 	return false;
 }
 
+bool WiflyControl::FwLoopOff(unsigned char numLoops)
+{
+	mCmdFrame.led.cmd = LOOP_OFF;
+	mCmdFrame.led.data.loopEnd.numLoops = numLoops;
+
+	unsigned char buffer[512];
+	char str[512] = {0};
+	char* pStrResult = {NULL};
+	
+	int bytesRead = FwSend(&mCmdFrame, sizeof(struct cmd_set_color),&buffer[0], sizeof(buffer));
+#ifdef DEBUG
+	cout << __FUNCTION__ << ": We got " << bytesRead << " bytes response, Message: ";
+	for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
+	cout << endl;
+#endif
+
+	if(2 <= bytesRead)
+	{
+		buffer[bytesRead] = 0x00;
+		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "ERROR");
+		if(pStrResult != NULL)
+		{
+			for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
+			cout << endl;
+			return false;
+		}
+		pStrResult = NULL;
+		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "GC");
+		if(pStrResult != NULL)
+			return true;
+	}
+	return false;
+}
+
+
 bool WiflyControl::FwSetColor(unsigned long addr, unsigned long rgba)
 {
 	mCmdFrame.led.cmd = SET_COLOR;
@@ -717,6 +786,42 @@ bool WiflyControl::FwSetFade(unsigned long addr, unsigned long rgba, unsigned sh
 bool WiflyControl::FwSetFade(string& addr, string& rgba, unsigned short fadeTmms, bool parallelFade)
 {
 	return FwSetFade(ToRGBA(addr), ToRGBA(rgba) << 8, fadeTmms, parallelFade);
+}
+
+bool WiflyControl::FwSetWait(unsigned short waitTmms)
+{
+	mCmdFrame.led.cmd = WAIT;
+	mCmdFrame.led.data.wait.waitTmms = htons((unsigned short)(waitTmms / 10));
+	
+	unsigned char buffer[512];
+	char str[512] = {0};
+	char* pStrResult = {NULL};
+
+	int bytesRead = FwSend(&mCmdFrame, sizeof(cmd_set_fade), &buffer[0], sizeof(buffer));
+#ifdef DEBUG	
+	cout << __FUNCTION__ << ": We got " << bytesRead << " bytes response, Message: ";
+	for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
+	cout << endl;
+#endif
+
+	if(2 <= bytesRead)
+	{
+		buffer[bytesRead] = 0x00;
+		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "ERROR");
+		if(pStrResult != NULL)
+		{
+			for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
+			cout << endl;
+			return false;
+		}
+		pStrResult = NULL;
+		
+		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "GC");
+		if(pStrResult != NULL)
+			return true;
+	}
+	return false;
+
 }
 
 unsigned long WiflyControl::ToRGBA(string& s) const

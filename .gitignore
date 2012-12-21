@@ -228,3 +228,11 @@ Intel-HEX-Class-master/ihclassTest/test.hex
 WiflyControlCli
 broadcastreceiver.bin
 ledstrip_ut.bin
+BroadcastReceiver.o
+BroadcastReceiver_ut.bin
+ClientSocket.o
+ComProxy.o
+WiflyControl.o
+WiflyControlCli.o
+crc.o
+intelhexclass.o
