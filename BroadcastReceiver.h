@@ -92,13 +92,23 @@ class BroadcastReceiver
 		~BroadcastReceiver(void);
 
 		/**
-		 * Main loop wait for wifly broadcast messages and save them to the known IP list
+		 * Endless loop collecting wifly broadcast messages and save them to the
+		 * known IP list. Terminate execution by calling <Stop()>
 		 */
 		void operator()(void);
 
 		uint32_t GetIp(size_t index) const;
 		uint16_t GetPort(size_t index) const;
+
+		/**
+		 * @return number of known IP addresses
+		 */
 		size_t NumRemotes(void) const;
+
+		/**
+		 * Print remote list to outputstream
+		 * @param out outputstream
+		 */
 		void ShowRemotes(std::ostream& out) const;
 
 		/**
