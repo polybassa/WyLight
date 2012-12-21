@@ -72,12 +72,12 @@ void BroadcastReceiver::operator()(void)
 	}
 }
 
-unsigned long BroadcastReceiver::GetIp(size_t index) const
+uint32_t BroadcastReceiver::GetIp(size_t index) const
 {
 	return mIpTable[index].address().to_v4().to_ulong();
 }
 
-unsigned short BroadcastReceiver::GetPort(size_t index) const
+uint16_t BroadcastReceiver::GetPort(size_t index) const
 {
 	return mIpTable[index].port();
 }

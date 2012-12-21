@@ -26,6 +26,7 @@
 #include <vector>
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
+#include <stdint.h> //TODO use "cstdint" if c++11 compiler is available
 
 using std::vector;
 using boost::asio::ip::udp;
@@ -34,18 +35,18 @@ using boost::asio::ip::udp;
 #pragma pack(1)
 struct BroadcastMessage
 {
-	unsigned char mac[6];
-	unsigned char channel;
-	unsigned char rssi;
-	unsigned short port;
-	unsigned long rtc;
-	unsigned short bat_mV;
-	unsigned short gpioValue;
+	uint8_t mac[6];
+	uint8_t channel;
+	uint8_t rssi;
+	uint16_t port;
+	uint32_t rtc;
+	uint16_t bat_mV;
+	uint16_t gpioValue;
 	char asciiTime[13+1];
 	char version[26+1+1];// this seems a little strange. bug in wifly fw?
 	char deviceId[32];
-	unsigned short bootTmms;
-	unsigned short sensor[8];
+	uint16_t bootTmms;
+	uint16_t sensor[8];
 
 	void NetworkToHost(void) {
 		port = ntohs(port);
@@ -80,14 +81,14 @@ struct BroadcastMessage
 class BroadcastReceiver
 {
 	public:
-		static const unsigned short BROADCAST_PORT = 55555;
+		static const uint16_t BROADCAST_PORT = 55555;
 		static const char BROADCAST_DEVICE_ID[];
 		static const size_t BROADCAST_DEVICE_ID_LENGTH;
 		static const char STOP_MSG[];
 		static const size_t STOP_MSG_LENGTH;
-		const unsigned short mPort;
+		const uint16_t mPort;
 
-		BroadcastReceiver(unsigned short port);
+		BroadcastReceiver(uint16_t port);
 		~BroadcastReceiver(void);
 
 		/**
@@ -95,8 +96,8 @@ class BroadcastReceiver
 		 */
 		void operator()(void);
 
-		unsigned long GetIp(size_t index) const;
-		unsigned short GetPort(size_t index) const;
+		uint32_t GetIp(size_t index) const;
+		uint16_t GetPort(size_t index) const;
 		size_t NumRemotes(void) const;
 		void ShowRemotes(std::ostream& out) const;
 
