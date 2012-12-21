@@ -217,3 +217,14 @@ commandstorage_ut.bin
 RingBuf_ut.bin
 .intelhexclass.h.kate-swp
 client.bin.dSYM/Contents/Info.plist
+BroadcastClient/BroadcastReceiver.h
+BroadcastClient/Makefile
+BroadcastClient/broadcast.bin
+BroadcastClient/main1.cpp
+BroadcastClient/mkaddr.c
+ComProxy_ut.bin
+Intel-HEX-Class-master/ihclassTest/intelhextest.bin
+Intel-HEX-Class-master/ihclassTest/test.hex
+WiflyControlCli
+broadcastreceiver.bin
+ledstrip_ut.bin

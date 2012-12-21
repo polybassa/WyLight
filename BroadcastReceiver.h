@@ -21,6 +21,7 @@
 
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <stdint.h>
 #include <map>
 #include <string>
 #include <vector>
@@ -37,7 +38,7 @@ struct BroadcastMessage
 	unsigned char channel;
 	unsigned char rssi;
 	unsigned short port;
-	unsigned long rtc;
+	uint32_t rtc;
 	unsigned short bat_mV;
 	unsigned short gpioValue;
 	char asciiTime[13+1];
