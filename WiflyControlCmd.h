@@ -330,6 +330,20 @@ class ControlCmdClearScript : public WiflyControlCmd
 		};
 };
 
+class ControlCmdPrintCycletime : public WiflyControlCmd
+{
+	public:
+		ControlCmdPrintCycletime(void) : WiflyControlCmd(
+				string("printcycletime"),
+				string("' - prints all timevalues of internal methode execution times")) {};
+
+		virtual void Run(WiflyControl& control) const {
+			cout << "Transmitting command print cycletime... ";
+			cout << (control.FwPrintCycletime() ? "done." : "failed!") << endl;
+
+		};
+};
+
 class ControlCmdLoopOn : public WiflyControlCmd
 {
 	public:
@@ -444,6 +458,7 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdStartBl(),
 	new ControlCmdTest(),
 	new ControlCmdReadTracebuffer(),
+	new ControlCmdPrintCycletime(),
 	new ControlCmdLoopOn(),
 	new ControlCmdLoopOff(),
 	new ControlCmdWait(),

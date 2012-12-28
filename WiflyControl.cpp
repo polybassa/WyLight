@@ -587,6 +587,43 @@ bool WiflyControl::FwLoopOn(void)
 	return false;
 }
 
+bool WiflyControl::FwPrintCycletime(void)
+{
+	mCmdFrame.led.cmd = GET_CYCLETIME;
+	unsigned char buffer[512];
+	char str[512] = {0};
+	char* pStrResult = {NULL};
+	
+	int bytesRead = FwSend(&mCmdFrame, 0, &buffer[0], sizeof(buffer));
+	
+#ifdef DEBUG
+	cout << __FUNCTION__ << ": We got " << bytesRead << " bytes response, Message: ";
+	for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
+	cout << endl;
+#endif
+
+	if(2 <= bytesRead)
+	{
+		buffer[bytesRead] = 0x00;
+		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "ERROR");
+		if(pStrResult != NULL)
+		{
+			for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
+			cout << endl;
+			return false;
+		}
+		pStrResult = NULL;
+		
+		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "GC");
+		if(pStrResult != NULL)
+		{
+			FwReadTracebuffer();
+			return true;
+		}
+	}
+	return false;
+}
+
 void WiflyControl::FwReadTracebuffer(void)
 {
 	mCmdFrame.led.cmd = GET_TRACE;

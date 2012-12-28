@@ -63,6 +63,7 @@ class WiflyControl
 		bool FwLoopOn(void);
 		bool FwLoopOff(unsigned char numLoops);
 		void FwTest(void);
+		bool FwPrintCycletime(void);
 		void FwReadTracebuffer(void);
 		bool FwStartBl(void);
 		bool FwSetColor(unsigned long addr, unsigned long rgba);
