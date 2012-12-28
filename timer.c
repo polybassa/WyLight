@@ -187,34 +187,20 @@ void Timer_StopStopwatch(enum METHODE destMethode)
 	g_CycleTimeBuffer.tempCycleTime[destMethode] = 0;
 }
 
-//TODO Print Cycletime via Tracebuffer or in a complete Packet
 void Timer_PrintCycletime(void)
 {
 	uns8 i;
 	uns16 temp16;
-	UART_Send(0x0d);
-	UART_Send(0x0a);
 	for(i = 0; i < enumSIZE; i++)
 	{
 		temp16 = g_CycleTimeBuffer.maxCycleTime[i]; 
 		temp16 = temp16 >> 1;
-		UART_SendString("Zeitwert ");
-		UART_SendNumber(i,':');
-#ifdef X86
-		UART_SendNumber((uns8)(temp16 >> 8),'H');
-		UART_SendNumber((uns8)(temp16 & 0xff),'L');
-#else
-		UART_SendHex_16(temp16);
-#endif /* #ifdef X86_SRC */
-		UART_SendString(" µS in HEX ");
-		UART_Send(0x0d);
-		UART_Send(0x0a);
+		Trace_String("Zeitwert ");
+		Trace_Number(i);
+		Trace_Char(':');
+		Trace_Hex16(temp16);
+		Trace_String(" µS in HEX ");
 		
 		g_CycleTimeBuffer.maxCycleTime[i] = 0;
 	}
-	
-	UART_SendString("WaitValue:");
-	UART_SendHex_16(gScriptBuf.waitValue);
-	UART_Send(0x0d);
-	UART_Send(0x0a);
 }
