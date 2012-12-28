@@ -35,6 +35,11 @@ void Trace_String(const char *string)
     ps = *string;
    }
 }
+
+void Trace_Char(uns8 input)
+{
+    RingBuf_Put(&g_TraceBuf, input);
+}
 	
 void Trace_Number(uns8 input)
 {
@@ -93,6 +98,17 @@ void Trace_Hex(uns8 input)
 	{
 		RingBuf_Put(&g_TraceBuf,temp4 + '0');
 	}
+}
+
+void Trace_Hex16(uns16 input)
+{
+#ifdef X86
+      Trace_Hex((uns8)(temp16 >> 8));
+      Trace_Hex((uns8)(temp16 & 0xff));
+#else
+      Trace_Hex(input.high8);
+      Trace_Hex(input.low8);
+#endif
 }
 	
 void Trace_Print()

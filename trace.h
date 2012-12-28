@@ -30,18 +30,26 @@
 	
 	void Trace_Hex(uns8 input);
 	
+	void Trace_Hex16(uns16 input);
+	
+	void Trace_Char(uns8 input);
+	
 	void Trace_Print();
 #elif DEBUG
 	#include "stdio.h"
 	#define Trace_String(str) do { printf("%s", str); } while (0)
 	#define Trace_Number(input) do { printf("%04x", input); } while (0)
 	#define Trace_Hex(hex) do { printf("%02x ", hex); } while(0)
+	#define Trace_Hex16(hex) do { printf("%04x ", hex); } while(0)
 	#define Trace_Print(x)
+	#define Trace_Char(input) do { printf("%s", input); } while (0)
 #else
 	#define Trace_String(str)
 	#define Trace_Number(input)
 	#define Trace_Hex(hex)
+	#define Trace_Hex16(hex)
 	#define Trace_Print(x)
+	#define Trace_Char(x)
 #endif
 #endif /* #ifndef _TRACE_H_ */
 
