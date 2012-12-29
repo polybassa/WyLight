@@ -45,34 +45,45 @@ class WiflyControl
 			f.e. red(255, 0, 0) is in rgba as: 0xff000000
 				 white(255, 255, 255) is in rgba as: 0xffffff00
 		**/
-				
+		
+		
+		/** ----------------------------- BOOTLOADER METHODES ----------------------------- **/
 		size_t BlFlashErase(unsigned char* pBuffer, unsigned int endAddress, const size_t numPages, bool doSync) const;
 		bool BlFlashErase(void) const;
 		bool BlEepromErase(void) const;
+		
 		size_t BlReadCrcFlash(unsigned char* pBuffer, unsigned int address, const size_t numBytes) const;
 		size_t BlReadEeprom(unsigned char* pBuffer, unsigned int address, size_t numBytes) const;
 		size_t BlReadFlash(unsigned char* pBuffer, unsigned int address, size_t numBytes) const;
 		size_t BlReadInfo(BlInfo& info) const;
-		bool BlRunApp(void) const;
+		
 		bool BlWriteFlash(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
 		bool BlWriteEeprom(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
-		bool BlEnableAutostart(void) const;
-		bool BlProgramFlash(const std::string& Filename);
 		
+		bool BlProgramFlash(const std::string& Filename);
+		bool BlRunApp(void) const;
+		bool BlEnableAutostart(void) const;
+		
+		
+		/** ------------------------------ FIRMWARE METHODES ------------------------------ **/
 		bool FwClearScript(void);
 		bool FwLoopOn(void);
 		bool FwLoopOff(unsigned char numLoops);
+		
+		bool FwSetColor(unsigned long addr, unsigned long rgba);
+		bool FwSetColor(std::string& addr, std::string& rgba);
+		
+		bool FwSetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade);
+		bool FwSetFade(std::string& addr, std::string& rgba, unsigned short fadeTmms, bool parallelFade);
+		
+		bool FwSetWait(unsigned short waitTmms);
+		
+		void FwAddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second);
+		void FwAddColor(std::string& addr, std::string& rgba, unsigned char hour, unsigned char minute, unsigned char second);
+		
 		void FwTest(void);
 		bool FwPrintCycletime(std::ostream& out);
 		void FwReadTracebuffer(std::ostream& out);
 		bool FwStartBl(void);
-		bool FwSetColor(unsigned long addr, unsigned long rgba);
-		bool FwSetColor(std::string& addr, std::string& rgba);
-		bool FwSetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade);
-		bool FwSetFade(std::string& addr, std::string& rgba, unsigned short fadeTmms, bool parallelFade);
-		bool FwSetWait(unsigned short waitTmms);
-		void FwAddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second);
-		void FwAddColor(std::string& addr, std::string& rgba, unsigned char hour, unsigned char minute, unsigned char second);
-
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */
