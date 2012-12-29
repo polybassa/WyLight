@@ -40,7 +40,10 @@ x86_client_debug:
 	@gcc $< $(subst _ut.c,.c,$<) eeprom.c -DX86 -DUNIT_TEST -o $@ -Wall
 	@./$@
 
-BroadcastReceiver_ut.bin: BroadcastReceiver_ut.cpp BroadcastReceiver.cpp BroadcastReceiver.h unittest.h
+%.o: %.cpp %.h
+	g++ $< $(subst .o,.cpp,$<) -DX86 -o $@ -Wall
+
+BroadcastReceiver_ut.bin: BroadcastReceiver_ut.cpp BroadcastReceiver.cpp BroadcastReceiver.h ClientSocket.cpp ClientSocket.h unittest.h
 	@g++ BroadcastReceiver_ut.cpp BroadcastReceiver.cpp ClientSocket.cpp -DX86 -DUNIT_TEST -lpthread -lboost_system -lboost_thread -o $@ -Wall
 	@./$@
 

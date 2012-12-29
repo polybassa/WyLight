@@ -106,6 +106,11 @@ size_t UdpSocket::Recv(unsigned char* pBuffer, size_t length, timeval* timeout) 
 	return 0;
 }
 
+size_t UdpSocket::RecvFrom(unsigned char* pBuffer, size_t length, timeval* timeout, struct sockaddr* remoteAddr, size_t* remoteAddrLength) const
+{
+	return recvfrom(mSock, pBuffer, length, 0, remoteAddr, remoteAddrLength);
+}
+
 int UdpSocket::Send(const unsigned char* frame, size_t length) const
 {
 #ifdef DEBUG

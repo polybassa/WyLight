@@ -40,26 +40,24 @@ BroadcastReceiver::~BroadcastReceiver(void)
 
 void BroadcastReceiver::operator()(void)
 {
-	boost::asio::io_service io_service;
-	udp::socket sock(io_service, udp::endpoint(udp::v4(), mPort));
+	UdpSocket udpSock(0x7f000001, mPort, true);
+	sockaddr_storage remoteAddr;
+	size_t remoteAddrLength = sizeof(remoteAddr);
 	
 	for(;;)
 	{
 		BroadcastMessage msg;
-		udp::endpoint remote;
-		size_t bytesRead = sock.receive_from(boost::asio::buffer(&msg, sizeof(msg)), remote);
-#ifdef DEBUG
-		std::cout <<"========\n" << remote << '\n';
-#endif
+		size_t bytesRead = udpSock.RecvFrom((unsigned char*)&msg, sizeof(msg), NULL, (sockaddr*)&remoteAddr, &remoteAddrLength);
 		// received a Wifly broadcast?
 		if((sizeof(msg) == bytesRead) && (0 == memcmp(msg.deviceId, BROADCAST_DEVICE_ID, BROADCAST_DEVICE_ID_LENGTH)))
 		{
 #ifdef DEBUG
 			msg.NetworkToHost();
-			msg.Print(std::cout);	
+			msg.Print(std::cout);
+			std::cout << std::hex << ntohl(((sockaddr_in*)&remoteAddr)->sin_addr.s_addr) << '\n';
 #endif
 			mMutex.lock();
-			mIpTable.push_back(remote);
+			mIpTable.push_back(new Endpoint(remoteAddr, remoteAddrLength));
 			mMutex.unlock();
 		}
 		// received a stop event?
@@ -74,12 +72,12 @@ void BroadcastReceiver::operator()(void)
 
 uint32_t BroadcastReceiver::GetIp(size_t index) const
 {
-	return mIpTable[index].address().to_v4().to_ulong();
+	return mIpTable[index]->m_Addr;
 }
 
 uint16_t BroadcastReceiver::GetPort(size_t index) const
 {
-	return mIpTable[index].port();
+	return mIpTable[index]->m_Port;
 }
 
 size_t BroadcastReceiver::NumRemotes(void) const
@@ -90,21 +88,17 @@ size_t BroadcastReceiver::NumRemotes(void) const
 void BroadcastReceiver::ShowRemotes(std::ostream& out) const
 {
 	size_t index = 0;
-	for(vector<udp::endpoint>::const_iterator it = mIpTable.begin(); it != mIpTable.end(); *it++, index++)
+	for(vector<Endpoint*>::const_iterator it = mIpTable.begin(); it != mIpTable.end(); *it++, index++)
 	{
-		out << index << ':' << *it << '\n';
+		out << index << ':' << std::hex << (*it)->m_Addr << '\n';
 	}
 }
 
 void BroadcastReceiver::Stop(void)
 {
-	try {
-		boost::asio::io_service io_service;
-		udp::socket sock(io_service, udp::endpoint(udp::v4(), 0));
-		sock.send_to(boost::asio::buffer(STOP_MSG, STOP_MSG_LENGTH), udp::endpoint(udp::v4(), mPort));
-		mThread.join();
-	} catch (std::exception& e) {
-		std::cout << __FUNCTION__ << ':' <<  e.what() << '\n';
-	}
+	UdpSocket sock(0x7F000001, mPort, false);
+	sock.Send((unsigned char const*)STOP_MSG, STOP_MSG_LENGTH);
+	mThread.join();
+	return;
 }
 

@@ -19,13 +19,12 @@
 #ifndef _BROADCAST_RECEIVER_H_
 #define _BROADCAST_RECEIVER_H_
 
+#include "ClientSocket.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <map>
 #include <string>
 #include <vector>
-#include <boost/asio.hpp>
-using boost::asio::ip::udp;
 
 #include <boost/thread.hpp>
 #include <stdint.h> //TODO use "cstdint" if c++11 compiler is available
@@ -118,7 +117,7 @@ class BroadcastReceiver
 		void Stop(void);
 
 	private:
-		vector<udp::endpoint> mIpTable;
+		vector<Endpoint*> mIpTable;
 		boost::thread mThread;
 		boost::mutex mMutex;
 };

@@ -60,6 +60,7 @@ int ut_BroadcastReceiver_TestSimple(void)
 	dummyReceiver.Stop();
 
 	CHECK(1 == dummyReceiver.NumRemotes());
+	CHECK(0x7F000001 == dummyReceiver.GetIp(0));
 	TestCaseEnd();
 }
 
