@@ -254,7 +254,6 @@ class ControlCmdBlRead : public WiflyControlCmd
 		};
 };
 
-
 class ControlCmdBlReadEeprom : public ControlCmdBlRead
 {
 	public:
@@ -310,11 +309,10 @@ class ControlCmdReadTracebuffer : public WiflyControlCmd
 				  
 		virtual void Run(WiflyControl& control) const {
 			cout << "Reading tracebuffer... ";
-			control.FwReadTracebuffer();
+			control.FwReadTracebuffer(std::cout);
 		};
   
 };
-
 
 class ControlCmdClearScript : public WiflyControlCmd
 {
@@ -339,7 +337,7 @@ class ControlCmdPrintCycletime : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const {
 			cout << "Transmitting command print cycletime... ";
-			cout << (control.FwPrintCycletime() ? "done." : "failed!") << endl;
+			cout << (control.FwPrintCycletime(std::cout) ? "done." : "failed!") << endl;
 
 		};
 };

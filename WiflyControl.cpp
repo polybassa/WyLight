@@ -587,7 +587,7 @@ bool WiflyControl::FwLoopOn(void)
 	return false;
 }
 
-bool WiflyControl::FwPrintCycletime(void)
+bool WiflyControl::FwPrintCycletime(std::ostream& out)
 {
 	mCmdFrame.led.cmd = GET_CYCLETIME;
 	unsigned char buffer[512];
@@ -617,24 +617,22 @@ bool WiflyControl::FwPrintCycletime(void)
 		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "GC");
 		if(pStrResult != NULL)
 		{
-			FwReadTracebuffer();
+			FwReadTracebuffer(out);
 			return true;
 		}
 	}
 	return false;
 }
 
-void WiflyControl::FwReadTracebuffer(void)
+void WiflyControl::FwReadTracebuffer(std::ostream& out)
 {
 	mCmdFrame.led.cmd = GET_TRACE;
 	unsigned char buffer[512];
 			
 	int bytesRead = FwSend(&mCmdFrame, 0, &buffer[0], sizeof(buffer));
 		
-	cout << __FUNCTION__ << ": Tracebuffercontent: ";
-	for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
-	cout << endl;
-
+	out << __FUNCTION__ << ": Tracebuffercontent: ";
+	for(int i = 0; i < bytesRead; i++ ) out << buffer[i];
 }
 
 int WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, unsigned char* pResponse, size_t responseSize) const
@@ -741,7 +739,6 @@ bool WiflyControl::FwLoopOff(unsigned char numLoops)
 	}
 	return false;
 }
-
 
 bool WiflyControl::FwSetColor(unsigned long addr, unsigned long rgba)
 {
