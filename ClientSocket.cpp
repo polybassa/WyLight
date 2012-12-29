@@ -89,10 +89,10 @@ int TcpSocket::Send(const unsigned char* frame, size_t length) const
 	return send(mSock, frame, length, 0);
 }
 
-UdpSocket::UdpSocket(unsigned long addr, unsigned short port)
+UdpSocket::UdpSocket(unsigned long addr, unsigned short port, bool doBind)
 	: ClientSocket(addr, port, SOCK_DGRAM)
 {
-	if(0 != bind(mSock, reinterpret_cast<struct sockaddr *>(&mSockAddr), sizeof(struct sockaddr)))
+	if(doBind && 0 != bind(mSock, reinterpret_cast<struct sockaddr *>(&mSockAddr), sizeof(struct sockaddr)))
 	{
 	      std::cout << __FILE__ << ":" << __FUNCTION__ << ": Bind failure! ";
 	      pthread_exit(NULL);

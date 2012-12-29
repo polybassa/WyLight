@@ -18,11 +18,10 @@
 
 #include "unittest.h"
 #include "BroadcastReceiver.h"
-#include <boost/asio.hpp>
+#include "ClientSocket.h"
 #include <vector>
 #include <iostream>
 using std::vector;
-using boost::asio::ip::udp;
 
 unsigned char capturedBroadcastMessage[110] = {
 0x00, 0x0f, 0xb5, 0xb2, 0x57, 0xfa, //MAC
@@ -53,20 +52,14 @@ int ut_BroadcastReceiver_TestEmpty(void)
 int ut_BroadcastReceiver_TestSimple(void)
 {
 	TestCaseBegin();
-	try {
-		boost::asio::io_service io_service;
-		udp::socket sock(io_service, udp::endpoint(udp::v4(), 0));
-		udp::endpoint remote(udp::v4(), BroadcastReceiver::BROADCAST_PORT);
-		BroadcastReceiver dummyReceiver;
-		sleep(1);
-		sock.send_to(boost::asio::buffer(capturedBroadcastMessage, sizeof(capturedBroadcastMessage)), remote);
-		dummyReceiver.Stop();
 
-		CHECK(1 == dummyReceiver.NumRemotes());
-	} catch (std::exception& e) {
-		std::cout << __FUNCTION__ << ':' <<  e.what() << '\n';
-		errors++;
-	}
+	UdpSocket udpSock(0x7f000001, BroadcastReceiver::BROADCAST_PORT, false);
+	BroadcastReceiver dummyReceiver;
+	sleep(1);
+	udpSock.Send(capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
+	dummyReceiver.Stop();
+
+	CHECK(1 == dummyReceiver.NumRemotes());
 	TestCaseEnd();
 }
 

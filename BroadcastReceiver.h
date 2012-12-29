@@ -25,11 +25,12 @@
 #include <string>
 #include <vector>
 #include <boost/asio.hpp>
+using boost::asio::ip::udp;
+
 #include <boost/thread.hpp>
 #include <stdint.h> //TODO use "cstdint" if c++11 compiler is available
 
 using std::vector;
-using boost::asio::ip::udp;
 
 #pragma pack(push)
 #pragma pack(1)
