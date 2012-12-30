@@ -86,10 +86,16 @@ void Crc_AddCrc(unsigned char byte,unsigned char* p_crcH,unsigned char* p_crcL)
  * crc value. In a next refactoring step we should replace that other functions
  * with this one.
  */
+#ifdef __cplusplus
+extern "C" {
+#endif
 void Crc_AddCrc16(unsigned char byte, unsigned short* pCrc)
 {
 	Crc_AddCrc(byte, ((unsigned char*)pCrc) + 1, (unsigned char*)pCrc);
 }
+#ifdef __cplusplus
+}
+#endif
 
 void Crc_BuildCrc(const unsigned char *data, unsigned char length, unsigned char* crcH_out, unsigned char* crcL_out)
 {

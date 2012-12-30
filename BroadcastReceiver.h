@@ -19,33 +19,35 @@
 #ifndef _BROADCAST_RECEIVER_H_
 #define _BROADCAST_RECEIVER_H_
 
+#include "ClientSocket.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <stdint.h>
 #include <map>
+#include <ostream>
 #include <string>
 #include <vector>
-#include <boost/asio.hpp>
-using boost::asio::ip::udp;
-#include <boost/thread.hpp>
+#include <pthread.h>
+#include <stdint.h> //TODO use "cstdint" if c++11 compiler is available
 
+using std::vector;
 
 #pragma pack(push)
 #pragma pack(1)
 struct BroadcastMessage
 {
-	unsigned char mac[6];
-	unsigned char channel;
-	unsigned char rssi;
-	unsigned short port;
+	uint8_t mac[6];
+	uint8_t channel;
+	uint8_t rssi;
+	uint16_t port;
 	uint32_t rtc;
-	unsigned short bat_mV;
-	unsigned short gpioValue;
+	uint16_t bat_mV;
+	uint16_t gpioValue;
 	char asciiTime[13+1];
 	char version[26+1+1];// this seems a little strange. bug in wifly fw?
 	char deviceId[32];
-	unsigned short bootTmms;
-	unsigned short sensor[8];
+	uint16_t bootTmms;
+	uint16_t sensor[8];
 
 	void NetworkToHost(void) {
 		port = ntohs(port);
@@ -80,24 +82,34 @@ struct BroadcastMessage
 class BroadcastReceiver
 {
 	public:
-		static const unsigned short BROADCAST_PORT = 55555;
+		static const uint16_t BROADCAST_PORT = 55555;
 		static const char BROADCAST_DEVICE_ID[];
 		static const size_t BROADCAST_DEVICE_ID_LENGTH;
 		static const char STOP_MSG[];
 		static const size_t STOP_MSG_LENGTH;
-		const unsigned short mPort;
+		const uint16_t mPort;
 
-		BroadcastReceiver(unsigned short port);
+		BroadcastReceiver(uint16_t port = BROADCAST_PORT);
 		~BroadcastReceiver(void);
 
 		/**
-		 * Main loop wait for wifly broadcast messages and save them to the known IP list
+		 * Endless loop collecting wifly broadcast messages and save them to the
+		 * known IP list. Terminate execution by calling <Stop()>
 		 */
 		void operator()(void);
 
-		unsigned long GetIp(size_t index) const;
-		unsigned short GetPort(size_t index) const;
+		uint32_t GetIp(size_t index) const;
+		uint16_t GetPort(size_t index) const;
+
+		/**
+		 * @return number of known IP addresses
+		 */
 		size_t NumRemotes(void) const;
+
+		/**
+		 * Print remote list to outputstream
+		 * @param out outputstream
+		 */
 		void ShowRemotes(std::ostream& out) const;
 
 		/**
@@ -106,9 +118,9 @@ class BroadcastReceiver
 		void Stop(void);
 
 	private:
-		std::vector<boost::asio::ip::udp::endpoint> mIpTable;
-		boost::thread mThread;
-		boost::mutex mMutex;
+		vector<Endpoint*> mIpTable;
+		pthread_t mThread;
+		pthread_mutex_t mMutex;
 };
 
 #endif /* #ifndef _BROADCAST_RECEIVER_H_ */
