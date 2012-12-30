@@ -21,45 +21,51 @@
 #include <cstring>
 #include <iostream>
 #include <stdio.h>
-#include <sstream>
 
 const char BroadcastReceiver::BROADCAST_DEVICE_ID[] = "WiFly";
 const size_t BroadcastReceiver::BROADCAST_DEVICE_ID_LENGTH = 5;
 const char BroadcastReceiver::STOP_MSG[] = "StopThread";
 const size_t BroadcastReceiver::STOP_MSG_LENGTH = sizeof(STOP_MSG);
 
-BroadcastReceiver::BroadcastReceiver(unsigned short port) : mPort(port), mThread(boost::ref(*this))
+void* Run(void* ptr)
 {
+	BroadcastReceiver* pObj = reinterpret_cast<BroadcastReceiver*>(ptr);
+	(*pObj)();
+	return NULL;
+}
+
+BroadcastReceiver::BroadcastReceiver(unsigned short port) : mPort(port), mMutex(PTHREAD_MUTEX_INITIALIZER)
+{
+	pthread_create(&mThread, NULL, Run, this);
 }
 
 BroadcastReceiver::~BroadcastReceiver(void)
 {
 	Stop();
+	//TODO cleanup mIpTable
 }
 
 void BroadcastReceiver::operator()(void)
 {
-	boost::asio::io_service io_service;
-	udp::socket sock(io_service, udp::endpoint(udp::v4(), mPort));
+	UdpSocket udpSock(0x7f000001, mPort, true);
+	sockaddr_storage remoteAddr;
+	socklen_t remoteAddrLength = sizeof(remoteAddr);
 	
 	for(;;)
 	{
 		BroadcastMessage msg;
-		udp::endpoint remote;
-		size_t bytesRead = sock.receive_from(boost::asio::buffer(&msg, sizeof(msg)), remote);
-#ifdef DEBUG
-		std::cout <<"========\n" << remote << '\n';
-#endif
+		size_t bytesRead = udpSock.RecvFrom((unsigned char*)&msg, sizeof(msg), NULL, (sockaddr*)&remoteAddr, &remoteAddrLength);
 		// received a Wifly broadcast?
 		if((sizeof(msg) == bytesRead) && (0 == memcmp(msg.deviceId, BROADCAST_DEVICE_ID, BROADCAST_DEVICE_ID_LENGTH)))
 		{
 #ifdef DEBUG
 			msg.NetworkToHost();
-			msg.Print(std::cout);	
+			msg.Print(std::cout);
+			std::cout << std::hex << ntohl(((sockaddr_in*)&remoteAddr)->sin_addr.s_addr) << '\n';
 #endif
-			mMutex.lock();
-			mIpTable.push_back(remote);
-			mMutex.unlock();
+			pthread_mutex_lock(&mMutex);
+			mIpTable.push_back(new Endpoint(remoteAddr, remoteAddrLength));
+			pthread_mutex_unlock(&mMutex);
 		}
 		// received a stop event?
 		else if(/*TODO remote.address().is_loopback()
@@ -71,14 +77,14 @@ void BroadcastReceiver::operator()(void)
 	}
 }
 
-unsigned long BroadcastReceiver::GetIp(size_t index) const
+uint32_t BroadcastReceiver::GetIp(size_t index) const
 {
-	return mIpTable[index].address().to_v4().to_ulong();
+	return mIpTable[index]->m_Addr;
 }
 
-unsigned short BroadcastReceiver::GetPort(size_t index) const
+uint16_t BroadcastReceiver::GetPort(size_t index) const
 {
-	return mIpTable[index].port();
+	return mIpTable[index]->m_Port;
 }
 
 size_t BroadcastReceiver::NumRemotes(void) const
@@ -86,32 +92,20 @@ size_t BroadcastReceiver::NumRemotes(void) const
 	return mIpTable.size();
 }
 
-void Print(boost::asio::ip::udp::endpoint remote)
-{
-	static size_t i = 0;
-	std::cout << i << ':' << remote << '\n';
-}
-
 void BroadcastReceiver::ShowRemotes(std::ostream& out) const
 {
-	
-	for_each(mIpTable.begin(), mIpTable.end(), Print);
+	size_t index = 0;
+	for(vector<Endpoint*>::const_iterator it = mIpTable.begin(); it != mIpTable.end(); *it++, index++)
+	{
+		out << index << ':' << std::hex << (*it)->m_Addr << '\n';
+	}
 }
 
 void BroadcastReceiver::Stop(void)
 {
-	try {
-		std::ostringstream converter;
-		converter << mPort;
-		boost::asio::io_service io_service;
-		udp::socket sock(io_service, udp::endpoint(udp::v4(), 0));
-		udp::resolver resolver(io_service);
-		udp::resolver::query query(udp::v4(), "127.0.0.1", converter.str());
-		udp::resolver::iterator it = resolver.resolve(query);
-		sock.send_to(boost::asio::buffer(STOP_MSG, STOP_MSG_LENGTH), *it);
-		mThread.join();
-	} catch (std::exception& e) {
-		std::cout << __FUNCTION__ << ':' <<  e.what() << '\n';
-	}
+	UdpSocket sock(0x7F000001, mPort, false);
+	sock.Send((unsigned char const*)STOP_MSG, STOP_MSG_LENGTH);
+	pthread_join(mThread, NULL);
+	return;
 }
 
