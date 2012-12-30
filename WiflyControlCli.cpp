@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>
+#include <unistd.h>
 #include <vector>
 
 using std::cout;
