@@ -37,9 +37,7 @@ ClientSocket::ClientSocket(unsigned long addr, unsigned short port, int style)
 
 ClientSocket::~ClientSocket()
 {
-#ifndef ANDROID
 	close(mSock);
-#endif
 }
 
 TcpSocket::TcpSocket(unsigned long addr, unsigned short port)
@@ -89,10 +87,10 @@ int TcpSocket::Send(const unsigned char* frame, size_t length) const
 	return send(mSock, frame, length, 0);
 }
 
-UdpSocket::UdpSocket(unsigned long addr, unsigned short port)
+UdpSocket::UdpSocket(unsigned long addr, unsigned short port, bool doBind)
 	: ClientSocket(addr, port, SOCK_DGRAM)
 {
-	if(0 != bind(mSock, reinterpret_cast<struct sockaddr *>(&mSockAddr), sizeof(struct sockaddr)))
+	if(doBind && 0 != bind(mSock, reinterpret_cast<struct sockaddr *>(&mSockAddr), sizeof(struct sockaddr)))
 	{
 	      std::cout << __FILE__ << ":" << __FUNCTION__ << ": Bind failure! ";
 	      pthread_exit(NULL);
@@ -104,6 +102,11 @@ size_t UdpSocket::Recv(unsigned char* pBuffer, size_t length, timeval* timeout) 
 {
 	std::cout << __FILE__ << ":" << __LINE__ << " Not implemented" << std::endl;
 	return 0;
+}
+
+size_t UdpSocket::RecvFrom(unsigned char* pBuffer, size_t length, timeval* timeout, struct sockaddr* remoteAddr, socklen_t* remoteAddrLength) const
+{
+	return recvfrom(mSock, pBuffer, length, 0, remoteAddr, remoteAddrLength);
 }
 
 int UdpSocket::Send(const unsigned char* frame, size_t length) const

@@ -18,10 +18,24 @@
 
 #ifndef _CLIENTSOCKET_H_
 #define _CLIENTSOCKET_H_
+#include <cassert>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <stddef.h>
 #include <sys/time.h>
+
+class Endpoint
+{
+	public:
+		Endpoint(sockaddr_storage& addr, const size_t size) {
+			assert(sizeof(sockaddr_in) == size);
+			m_Addr = ntohl(((sockaddr_in&)addr).sin_addr.s_addr);
+			m_Port = ntohs(((sockaddr_in&)addr).sin_port);
+		};
+		Endpoint(uint32_t addr, uint16_t port) : m_Addr(addr), m_Port(port) {};
+		uint32_t m_Addr;
+		uint16_t m_Port;
+};
 
 class ClientSocket
 {
@@ -47,8 +61,9 @@ class TcpSocket : public ClientSocket
 class UdpSocket : public ClientSocket
 {
 	public:
-		UdpSocket(unsigned long addr, unsigned short port);
+		UdpSocket(unsigned long addr, unsigned short port, bool doBind = true);
 		virtual size_t Recv(unsigned char* pBuffer, size_t length, timeval* timeout = NULL) const;
+		virtual size_t RecvFrom(unsigned char* pBuffer, size_t length, timeval* timeout = NULL, struct sockaddr* remoteAddr = NULL, socklen_t* remoteAddrLength = NULL) const;
 		virtual int Send(const unsigned char* frame, size_t length) const;
 };
 
