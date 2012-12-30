@@ -37,9 +37,7 @@ ClientSocket::ClientSocket(unsigned long addr, unsigned short port, int style)
 
 ClientSocket::~ClientSocket()
 {
-#ifndef ANDROID
 	close(mSock);
-#endif
 }
 
 TcpSocket::TcpSocket(unsigned long addr, unsigned short port)

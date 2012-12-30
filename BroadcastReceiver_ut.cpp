@@ -21,6 +21,8 @@
 #include "ClientSocket.h"
 #include <vector>
 #include <iostream>
+#include <unistd.h>
+
 using std::vector;
 
 unsigned char capturedBroadcastMessage[110] = {
@@ -46,6 +48,7 @@ int ut_BroadcastReceiver_TestEmpty(void)
 	TestCaseBegin();
 	BroadcastReceiver dummyReceiver;
 	CHECK(0 == dummyReceiver.NumRemotes());
+	sleep(1);
 	TestCaseEnd();
 }
 

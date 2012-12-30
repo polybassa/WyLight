@@ -19,23 +19,30 @@
 #include "BroadcastReceiver.h"
 
 #include <cstring>
-#include <functional>
 #include <iostream>
 #include <stdio.h>
-#include <sstream>
 
 const char BroadcastReceiver::BROADCAST_DEVICE_ID[] = "WiFly";
 const size_t BroadcastReceiver::BROADCAST_DEVICE_ID_LENGTH = 5;
 const char BroadcastReceiver::STOP_MSG[] = "StopThread";
 const size_t BroadcastReceiver::STOP_MSG_LENGTH = sizeof(STOP_MSG);
 
-BroadcastReceiver::BroadcastReceiver(unsigned short port) : mPort(port), mThread(boost::ref(*this))
+void* Run(void* ptr)
 {
+	BroadcastReceiver* pObj = reinterpret_cast<BroadcastReceiver*>(ptr);
+	(*pObj)();
+	return NULL;
+}
+
+BroadcastReceiver::BroadcastReceiver(unsigned short port) : mPort(port), mMutex(PTHREAD_MUTEX_INITIALIZER)
+{
+	pthread_create(&mThread, NULL, Run, this);
 }
 
 BroadcastReceiver::~BroadcastReceiver(void)
 {
 	Stop();
+	//TODO cleanup mIpTable
 }
 
 void BroadcastReceiver::operator()(void)
@@ -56,9 +63,9 @@ void BroadcastReceiver::operator()(void)
 			msg.Print(std::cout);
 			std::cout << std::hex << ntohl(((sockaddr_in*)&remoteAddr)->sin_addr.s_addr) << '\n';
 #endif
-			mMutex.lock();
+			pthread_mutex_lock(&mMutex);
 			mIpTable.push_back(new Endpoint(remoteAddr, remoteAddrLength));
-			mMutex.unlock();
+			pthread_mutex_unlock(&mMutex);
 		}
 		// received a stop event?
 		else if(/*TODO remote.address().is_loopback()
@@ -98,7 +105,7 @@ void BroadcastReceiver::Stop(void)
 {
 	UdpSocket sock(0x7F000001, mPort, false);
 	sock.Send((unsigned char const*)STOP_MSG, STOP_MSG_LENGTH);
-	mThread.join();
+	pthread_join(mThread, NULL);
 	return;
 }
 

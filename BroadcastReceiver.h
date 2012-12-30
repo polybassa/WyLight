@@ -23,10 +23,10 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <map>
+#include <ostream>
 #include <string>
 #include <vector>
-
-#include <boost/thread.hpp>
+#include <pthread.h>
 #include <stdint.h> //TODO use "cstdint" if c++11 compiler is available
 
 using std::vector;
@@ -118,8 +118,8 @@ class BroadcastReceiver
 
 	private:
 		vector<Endpoint*> mIpTable;
-		boost::thread mThread;
-		boost::mutex mMutex;
+		pthread_t mThread;
+		pthread_mutex_t mMutex;
 };
 
 #endif /* #ifndef _BROADCAST_RECEIVER_H_ */
