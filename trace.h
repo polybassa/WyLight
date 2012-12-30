@@ -42,7 +42,7 @@
 	#define Trace_Hex(hex) do { printf("%02x ", hex); } while(0)
 	#define Trace_Hex16(hex) do { printf("%04x ", hex); } while(0)
 	#define Trace_Print(x)
-	#define Trace_Char(input) do { printf("%s", input); } while (0)
+	#define Trace_Char(input) do { printf("%c", input); } while (0)
 #else
 	#define Trace_String(str)
 	#define Trace_Number(input)

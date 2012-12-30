@@ -30,6 +30,43 @@ pthread_mutex_t g_led_mutex = PTHREAD_MUTEX_INITIALIZER;
 uns8 g_led_status[NUM_OF_LED*3];
 extern uns8 g_UpdateLed;
 
+unsigned char capturedBroadcastMessage[110] = {
+0x00, 0x0f, 0xb5, 0xb2, 0x57, 0xfa, //MAC
+0x07, //channel
+0x3f, //rssi
+0x07, 0xd0, //port
+0x00, 0x00, 0x24, 0xb1, //rtc
+0x0b, 0xff, //battery
+0x0d, 0x11, //gpio
+0x54, 0x69, 0x6d, 0x65, 0x20, 0x4e, 0x4f, 0x54, 0x20, 0x53, 0x45, 0x54, 0x00, 0x00, //time
+0x57, 0x69, 0x46, 0x6c, 0x79, 0x20, 0x56, 0x65, 0x72, 0x20, 0x32, 0x2e, 0x33, 0x36,
+0x2c, 0x20, 0x30, 0x38, 0x2d, 0x32, 0x32, 0x2d, 0x32, 0x30, 0x31, 0x32, 0x00, 0x00, //version
+'W', 'i', 'F', 'l', 'y', '-', 'E', 'Z', 'X',
+'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+'1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '1', '2', '3', //deviceid
+0x4e, 0x00, //boottime
+0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 //sensors
+};
+
+void* BroadcastLoop(void* unused)
+{
+	int udpSocket = socket(AF_INET, SOCK_DGRAM, 0);
+	if(-1 == udpSocket)
+		return NULL;
+
+	struct sockaddr_in broadcastAddress;
+  broadcastAddress.sin_family = AF_INET;
+  broadcastAddress.sin_port = htons(55555);
+  broadcastAddress.sin_addr.s_addr = htonl(INADDR_ANY);
+
+	for(;;)
+	{
+		sleep(1);
+		sendto(udpSocket, capturedBroadcastMessage, sizeof(capturedBroadcastMessage), 0, (struct sockaddr*)&broadcastAddress, sizeof(broadcastAddress));
+	}	
+	return NULL;
+}
+
 void* InterruptRoutine(void* unused)
 {
 	int udp_sock = socket(AF_INET, SOCK_DGRAM, 0);
@@ -124,12 +161,14 @@ void SPI_SendLedBuffer(uns8 *array)//!!! CHECK if GIE=0 during the sendroutine i
 
 void init_x86(void)
 {
+	pthread_t broadcastThread;
 	pthread_t isrThread;
 	pthread_t glThread;
 	pthread_t timer1Thread;
 	pthread_t timer4Thread;
 	pthread_t dateTimerThread;
 	
+	pthread_create(&broadcastThread, 0, BroadcastLoop, 0);
 	pthread_create(&isrThread, 0, InterruptRoutine, 0);
 	pthread_create(&glThread, 0, gl_start, 0);
 	pthread_create(&timer1Thread, 0, timer1_interrupt, 0);
