@@ -49,7 +49,7 @@ void BroadcastReceiver::operator()(void)
 {
 	UdpSocket udpSock(0x7f000001, mPort, true);
 	sockaddr_storage remoteAddr;
-	size_t remoteAddrLength = sizeof(remoteAddr);
+	socklen_t remoteAddrLength = sizeof(remoteAddr);
 	
 	for(;;)
 	{
