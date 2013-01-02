@@ -11,5 +11,6 @@ LOCAL_SRC_FILES += $(DIR)ComProxy.cpp
 LOCAL_SRC_FILES += $(DIR)crc.c
 LOCAL_SRC_FILES += $(DIR)intelhexclass.cpp
 LOCAL_SRC_FILES += $(DIR)WiflyControl.cpp
+LOCAL_SRC_FILES += $(DIR)WiflyControlJni.cpp
 
 include $(BUILD_SHARED_LIBRARY)
