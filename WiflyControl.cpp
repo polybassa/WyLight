@@ -809,6 +809,7 @@ bool WiflyControl::FwPrintCycletime(std::ostream& out)
 		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "GC");
 		if(pStrResult != NULL)
 		{
+			sleep(1);
 			FwReadTracebuffer(out);
 			return true;
 		}
@@ -823,8 +824,9 @@ void WiflyControl::FwReadTracebuffer(std::ostream& out)
 			
 	int bytesRead = FwSend(&mCmdFrame, 0, &buffer[0], sizeof(buffer));
 		
-	out << __FUNCTION__ << ": Tracebuffercontent: ";
+	out << __FUNCTION__ << ": --> Tracebuffercontent: " << endl;
 	for(int i = 0; i < bytesRead; i++ ) out << buffer[i];
+	out << endl;
 }
 
 bool WiflyControl::FwStartBl(void)

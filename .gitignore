@@ -236,3 +236,4 @@ WiflyControl.o
 WiflyControlCli.o
 crc.o
 intelhexclass.o
+server.bin

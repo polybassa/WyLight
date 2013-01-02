@@ -58,6 +58,8 @@ unsigned char date_timer_add_event(struct cmd_add_color* pCmd);
 void date_timer_callback(void);
 void date_timer_do_events(void);
 
+#ifdef TEST   /*if we are not in TEST-Mode we can't print the output to the tracebuffer, so this methodes are superfluous */
+
 /**
 ** Function start the internal Stopwatch. It's realised with the Timer3 Modul.
 ** The Range of the Stopwatch is from 0.5µSec to 32.7mSec
@@ -70,6 +72,14 @@ void Timer_StartStopwatch(enum METHODE destMethode);
 void Timer_StopStopwatch(enum METHODE destMethode);
 
 void Timer_PrintCycletime(void);
+
+#else
+
+#define Timer_StartStopwatch(x)
+#define Timer_StopStopwatch(x)
+#define Timer_PrintCycletime(x)
+
+#endif /*TEST*/
 
 #ifdef __CC8E__
 #define Timer1Interrupt(x) TMR1IF = 0;

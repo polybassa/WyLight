@@ -155,6 +155,7 @@ void Timer_Init()
 #endif /* #ifdef __CC8E__ */
 }
 
+#ifdef TEST
 void Timer_StartStopwatch(enum METHODE destMethode)
 {
 	uns16 tempTime;
@@ -195,12 +196,12 @@ void Timer_PrintCycletime(void)
 	{
 		temp16 = g_CycleTimeBuffer.maxCycleTime[i]; 
 		temp16 = temp16 >> 1;
-		Trace_String("Zeitwert ");
+		Trace_String(" Z");
 		Trace_Number(i);
 		Trace_Char(':');
 		Trace_Hex16(temp16);
-		Trace_String(" µS in HEX ");
 		
 		g_CycleTimeBuffer.maxCycleTime[i] = 0;
 	}
 }
+#endif /*TEST*/
