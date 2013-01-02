@@ -61,7 +61,10 @@ class TcpSocket : public ClientSocket
 class UdpSocket : public ClientSocket
 {
 	public:
-		UdpSocket(unsigned long addr, unsigned short port, bool doBind = true);
+		/**
+		 * @param enableBroadcast use 1 to enable broadcast else set 0
+		 */
+		UdpSocket(unsigned long addr, unsigned short port, bool doBind = true, int enableBroadcast = 0);
 		virtual size_t Recv(unsigned char* pBuffer, size_t length, timeval* timeout = NULL) const;
 		virtual size_t RecvFrom(unsigned char* pBuffer, size_t length, timeval* timeout = NULL, struct sockaddr* remoteAddr = NULL, socklen_t* remoteAddrLength = NULL) const;
 		virtual int Send(const unsigned char* frame, size_t length) const;

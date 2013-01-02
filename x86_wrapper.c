@@ -30,6 +30,7 @@ pthread_mutex_t g_led_mutex = PTHREAD_MUTEX_INITIALIZER;
 uns8 g_led_status[NUM_OF_LED*3];
 extern uns8 g_UpdateLed;
 
+const unsigned short BROADCAST_PORT = 55555;
 unsigned char capturedBroadcastMessage[110] = {
 0x00, 0x0f, 0xb5, 0xb2, 0x57, 0xfa, //MAC
 0x07, //channel
@@ -55,9 +56,11 @@ void* BroadcastLoop(void* unused)
 		return NULL;
 
 	struct sockaddr_in broadcastAddress;
-  broadcastAddress.sin_family = AF_INET;
-  broadcastAddress.sin_port = htons(55555);
-  broadcastAddress.sin_addr.s_addr = htonl(INADDR_ANY);
+	broadcastAddress.sin_family = AF_INET;
+	broadcastAddress.sin_port = htons(BROADCAST_PORT);
+	broadcastAddress.sin_addr.s_addr = htonl(INADDR_NONE);
+	int val = 1;
+	setsockopt(udpSocket, SOL_SOCKET, SO_BROADCAST, &val, sizeof(val));
 
 	for(;;)
 	{
