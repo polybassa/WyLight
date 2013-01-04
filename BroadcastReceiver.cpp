@@ -47,7 +47,7 @@ BroadcastReceiver::~BroadcastReceiver(void)
 
 void BroadcastReceiver::operator()(void)
 {
-	UdpSocket udpSock(0x7f000001, mPort, true);
+	UdpSocket udpSock(INADDR_ANY, mPort, true);
 	sockaddr_storage remoteAddr;
 	socklen_t remoteAddrLength = sizeof(remoteAddr);
 	
@@ -55,7 +55,7 @@ void BroadcastReceiver::operator()(void)
 	{
 		BroadcastMessage msg;
 		size_t bytesRead = udpSock.RecvFrom((unsigned char*)&msg, sizeof(msg), NULL, (sockaddr*)&remoteAddr, &remoteAddrLength);
-		// received a Wifly broadcast?
+		// received a Wifly broadcast? 
 		if((sizeof(msg) == bytesRead) && (0 == memcmp(msg.deviceId, BROADCAST_DEVICE_ID, BROADCAST_DEVICE_ID_LENGTH)))
 		{
 #ifdef DEBUG
