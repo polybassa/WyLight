@@ -300,16 +300,16 @@ class ControlCmdStartBl : public WiflyControlCmd
   
 };
 
-class ControlCmdReadTracebuffer : public WiflyControlCmd
+class ControlCmdPrintTracebuffer : public WiflyControlCmd
 {
 	public:
-		ControlCmdReadTracebuffer(void) : WiflyControlCmd(
-				  string("read_trace"),
-					string("' - displays content of tracebuffer from pic")) {};
+		ControlCmdPrintTracebuffer(void) : WiflyControlCmd(
+				  string("print_tracebuffer"),
+					string("' - displays content in tracebuffer of pic")) {};
 				  
 		virtual void Run(WiflyControl& control) const {
 			cout << "Reading tracebuffer... ";
-			control.FwReadTracebuffer(std::cout);
+			control.FwPrintTracebuffer(std::cout);
 		};
   
 };
@@ -332,7 +332,7 @@ class ControlCmdPrintCycletime : public WiflyControlCmd
 {
 	public:
 		ControlCmdPrintCycletime(void) : WiflyControlCmd(
-				string("printcycletime"),
+				string("print_cycletime"),
 				string("' - prints all timevalues of internal methode execution times")) {};
 
 		virtual void Run(WiflyControl& control) const {
@@ -455,7 +455,7 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdSetFade(),
 	new ControlCmdStartBl(),
 	new ControlCmdTest(),
-	new ControlCmdReadTracebuffer(),
+	new ControlCmdPrintTracebuffer(),
 	new ControlCmdPrintCycletime(),
 	new ControlCmdLoopOn(),
 	new ControlCmdLoopOff(),

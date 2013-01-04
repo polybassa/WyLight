@@ -25,7 +25,6 @@
 #include "BlRequest.h"
 #include "intelhexclass.h"
 
-
 class WiflyControl
 {
 	private:
@@ -83,7 +82,10 @@ class WiflyControl
 		
 		void FwTest(void);
 		bool FwPrintCycletime(std::ostream& out);
-		void FwReadTracebuffer(std::ostream& out);
+		void FwPrintTracebuffer(std::ostream& out);
 		bool FwStartBl(void);
+		
+		bool FwSetRtc(void);
+		bool FwPrintRtc(std::ostream& out);
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */

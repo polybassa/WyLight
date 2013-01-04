@@ -810,14 +810,14 @@ bool WiflyControl::FwPrintCycletime(std::ostream& out)
 		if(pStrResult != NULL)
 		{
 			sleep(1);
-			FwReadTracebuffer(out);
+			FwPrintTracebuffer(out);
 			return true;
 		}
 	}
 	return false;
 }
 
-void WiflyControl::FwReadTracebuffer(std::ostream& out)
+void WiflyControl::FwPrintTracebuffer(std::ostream& out)
 {
 	mCmdFrame.led.cmd = GET_TRACE;
 	unsigned char buffer[512];
