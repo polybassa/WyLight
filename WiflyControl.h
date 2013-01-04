@@ -20,6 +20,7 @@
 #define _WIFLYCONTROL_H_
 
 #include <string>
+#include <time.h>
 #include "ComProxy.h"
 #include "wifly_cmd.h"
 #include "BlRequest.h"
@@ -85,7 +86,8 @@ class WiflyControl
 		void FwPrintTracebuffer(std::ostream& out);
 		bool FwStartBl(void);
 		
-		bool FwSetRtc(void);
+		bool FwSetRtc(struct tm* timeValue);
+		bool FwGetRtc(struct tm* timeValue);
 		bool FwPrintRtc(std::ostream& out);
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */

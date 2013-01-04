@@ -135,23 +135,19 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 			Trace_Number(g_RtcTime.tm_min);
 			Trace_String("_");
 			Trace_Number(g_RtcTime.tm_sec);
-			Trace_Hex(0x0d);
-			Trace_Hex(0x0a);
 			return TRUE;
 		}
 		case GET_RTC:
 		{
 			Rtc_Ctl(RTC_RD_TIME, &g_RtcTime);
-			Trace_String("GET_TIME:");
-			Trace_Hex(g_RtcTime.tm_sec);
-			Trace_Hex(g_RtcTime.tm_min);
-			Trace_Hex(g_RtcTime.tm_hour);
-			Trace_Hex(g_RtcTime.tm_mday);
-			Trace_Hex(g_RtcTime.tm_mon);
-			Trace_Hex(g_RtcTime.tm_year);
-			Trace_Hex(g_RtcTime.tm_wday);
-			Trace_Hex(0x0d);
-			Trace_Hex(0x0a);
+			Trace_String("TIME@");
+			Trace_Char(g_RtcTime.tm_sec);
+			Trace_Char(g_RtcTime.tm_min);
+			Trace_Char(g_RtcTime.tm_hour);
+			Trace_Char(g_RtcTime.tm_mday);
+			Trace_Char(g_RtcTime.tm_mon);
+			Trace_Char(g_RtcTime.tm_year);
+			Trace_Char(g_RtcTime.tm_wday);
 			return TRUE;
 		}
 		case SET_RTC:

@@ -21,6 +21,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <time.h>
 
 using namespace std;
 
@@ -342,6 +343,20 @@ class ControlCmdPrintCycletime : public WiflyControlCmd
 		};
 };
 
+class ControlCmdPrintRtc : public WiflyControlCmd
+{
+	public:
+		ControlCmdPrintRtc(void) : WiflyControlCmd(
+				string("print_rtc"),
+				string("' - prints the current time of realtime-clock modul on target")) {};
+
+		virtual void Run(WiflyControl& control) const {
+			cout << "Transmitting command print rtc... ";
+			cout << (control.FwPrintRtc(std::cout) ? "done." : "failed!") << endl;
+
+		};
+};
+
 class ControlCmdLoopOn : public WiflyControlCmd
 {
 	public:
@@ -427,6 +442,49 @@ class ControlCmdSetFade : public WiflyControlCmd
 		};
 };
 
+class ControlCmdSetRtc : public WiflyControlCmd
+{
+	public:
+		ControlCmdSetRtc(void) : WiflyControlCmd(
+				string("setrtc"),
+				string("' - set time of rtc in target to current systemtime")){};
+
+		virtual void Run(WiflyControl& control) const {
+			struct tm* timeinfo;
+			time_t rawtime;
+			
+			
+			rawtime = time(NULL);
+			timeinfo = localtime(&rawtime);
+			
+			cout << "Transmitting current time... ";
+			cout << (control.FwSetRtc(timeinfo) ? "done." : "failed!") << endl;
+		};
+};
+
+class ControlCmdGetRtc : public WiflyControlCmd
+{
+	public:
+		ControlCmdGetRtc(void) : WiflyControlCmd(
+				string("getrtc"),
+				string("' - get time of rtc in target")){};
+
+		virtual void Run(WiflyControl& control) const {
+			struct tm timeinfo;
+			
+			cout << "Getting target time... ";
+			if(control.FwGetRtc(&timeinfo))
+			{
+			  cout << "done." << endl;
+			  cout << "Current time at target device is: " << asctime(&timeinfo) << endl;
+			}
+			else 
+			{			  
+			  cout << "failed!" << endl;
+			}
+		};
+};
+
 class ControlCmdTest : public WiflyControlCmd
 {
 	public:
@@ -457,6 +515,9 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdTest(),
 	new ControlCmdPrintTracebuffer(),
 	new ControlCmdPrintCycletime(),
+	new ControlCmdPrintRtc(),
+	new ControlCmdSetRtc(),
+	new ControlCmdGetRtc(),
 	new ControlCmdLoopOn(),
 	new ControlCmdLoopOff(),
 	new ControlCmdWait(),
