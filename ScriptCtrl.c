@@ -165,7 +165,6 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 		case SET_COLOR_DIRECT:
 		{
 			Ledstrip_SetColorDirect(&pCmd->data.set_color_direct.ptr_led_array);
-			Trace_String("GV");
 			return TRUE;
 		}	
 		case GET_CYCLETIME:

@@ -72,6 +72,7 @@ class WiflyControl
 		
 		bool FwSetColor(unsigned long addr, unsigned long rgba);
 		bool FwSetColor(std::string& addr, std::string& rgba);
+		bool FwSetColorDirect(unsigned char* pBuffer, size_t bufferLength);
 		
 		bool FwSetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade);
 		bool FwSetFade(std::string& addr, std::string& rgba, unsigned short fadeTmms, bool parallelFade);

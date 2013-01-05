@@ -651,6 +651,49 @@ bool WiflyControl::FwSetColor(string& addr, string& rgba)
 	return FwSetColor(ToRGBA(addr), ToRGBA(rgba) << 8);
 }
 
+bool WiflyControl::FwSetColorDirect(unsigned char* pBuffer, size_t bufferLength)
+{
+	mCmdFrame.led.cmd = SET_COLOR_DIRECT;
+	for(unsigned int i = 0; i < NUM_OF_LED * 3; i++)
+	{
+	    if(i < bufferLength)
+	    {
+		mCmdFrame.led.data.set_color_direct.ptr_led_array[i] = *pBuffer++;
+	    }
+	    else
+	    {
+		mCmdFrame.led.data.set_color_direct.ptr_led_array[i] = 0;
+	    }
+	}
+	unsigned char buffer[512];
+	char str[512] = {0};
+	char* pStrResult = {NULL};
+	
+	int bytesRead = FwSend(&mCmdFrame, sizeof(struct cmd_set_color_direct),&buffer[0], sizeof(buffer));
+#ifdef DEBUG
+	cout << __FUNCTION__ << ": We got " << bytesRead << " bytes response, Message: ";
+	for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
+	cout << endl;
+#endif
+
+	if(2 <= bytesRead)
+	{
+		buffer[bytesRead] = 0x00;
+		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "ERROR");
+		if(pStrResult != NULL)
+		{
+			for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
+			cout << endl;
+			return false;
+		}
+		pStrResult = NULL;
+		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "GC");
+		if(pStrResult != NULL)
+			return true;
+	}
+	return false;
+}
+
 bool WiflyControl::FwSetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade)
 {
 	mCmdFrame.led.cmd = SET_FADE;
@@ -753,7 +796,23 @@ void WiflyControl::FwAddColor(string& addr, string& rgba, unsigned char hour, un
 
 void WiflyControl::FwTest(void)
 {
-	int doRun = 5;
+	unsigned char ledArray[NUM_OF_LED * 3] = {0};
+	
+	for(unsigned int j = 0; j < 100; j++)
+	{
+	  
+	  for(unsigned int i = 0; i < NUM_OF_LED * 3 - 3 ;  i = i + 3)
+	  {
+		ledArray[i] = 0xff;
+		ledArray[i+1] = j;
+		ledArray[i+2] = (unsigned char)i * j;
+	  }
+	  if(!FwSetColorDirect(&ledArray[0], sizeof(ledArray))) break;
+		
+	  sleep(0.5);
+	}
+
+	int doRun = 1;
   
 	static const unsigned long RED   = 0xFF000000;
 	static const unsigned long GREEN = 0x00FF0000;
@@ -768,12 +827,12 @@ void WiflyControl::FwTest(void)
 		FwSetColor(0x00FF0000LU, GREEN); sleep(1);
 		FwSetColor(0x0000FF00LU, BLUE);  sleep(1);
 		FwSetColor(0x000000FFLU, WHITE); sleep(1);
-		FwSetFade(0xFFFFFFFFLU, 0x00000000LU, (unsigned short)5000, false);
+		FwSetFade(0xFFFFFFFFLU, 0x00000000LU, (unsigned short)10000, false);
 		sleep(20);
 		FwSetFade(0x000000FFLU, RED,  400, true);
 		FwSetFade(0x0000FF00LU, GREEN,10000, true);
 		FwSetFade(0x00FF0000LU, BLUE, 2000, true);
-		FwSetFade(0xFF000000LU, WHITE,6000, false);
+		FwSetFade(0xFF000000LU, WHITE,30000, false);
 		sleep(20);
 		doRun--;
 	}
