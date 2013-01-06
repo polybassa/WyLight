@@ -809,7 +809,7 @@ void WiflyControl::FwTest(void)
 	  }
 	  if(!FwSetColorDirect(&ledArray[0], sizeof(ledArray))) break;
 		
-	  sleep(0.5);
+	  sleep(1);
 	}
 
 	int doRun = 1;

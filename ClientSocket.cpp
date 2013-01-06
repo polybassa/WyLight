@@ -87,9 +87,10 @@ int TcpSocket::Send(const unsigned char* frame, size_t length) const
 	return send(mSock, frame, length, 0);
 }
 
-UdpSocket::UdpSocket(unsigned long addr, unsigned short port, bool doBind)
+UdpSocket::UdpSocket(unsigned long addr, unsigned short port, bool doBind, int enableBroadcast)
 	: ClientSocket(addr, port, SOCK_DGRAM)
 {
+	setsockopt(mSock, SOL_SOCKET, SO_BROADCAST, &enableBroadcast, sizeof(enableBroadcast));
 	if(doBind && 0 != bind(mSock, reinterpret_cast<struct sockaddr *>(&mSockAddr), sizeof(struct sockaddr)))
 	{
 	      std::cout << __FILE__ << ":" << __FUNCTION__ << ": Bind failure! ";

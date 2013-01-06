@@ -47,7 +47,8 @@ BroadcastReceiver::~BroadcastReceiver(void)
 
 void BroadcastReceiver::operator()(void)
 {
-	UdpSocket udpSock(INADDR_ANY, mPort, true);
+
+	UdpSocket udpSock(INADDR_ANY, mPort, true, true);
 	sockaddr_storage remoteAddr;
 	socklen_t remoteAddrLength = sizeof(remoteAddr);
 	
@@ -103,7 +104,7 @@ void BroadcastReceiver::ShowRemotes(std::ostream& out) const
 
 void BroadcastReceiver::Stop(void)
 {
-	UdpSocket sock(0x7F000001, mPort, false);
+	UdpSocket sock(INADDR_LOOPBACK, mPort, false);
 	sock.Send((unsigned char const*)STOP_MSG, STOP_MSG_LENGTH);
 	pthread_join(mThread, NULL);
 	return;

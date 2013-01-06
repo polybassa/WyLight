@@ -39,14 +39,6 @@ class WiflyControl
 	public:
 		WiflyControl(unsigned long addr, unsigned short port, bool useTcp);
 		
-		void Receiving(void) const;
-		/**
-			rgba is a 32 Bit rgb value with alpha channel. Alpha is unused, but easier to handle
-			f.e. red(255, 0, 0) is in rgba as: 0xff000000
-				 white(255, 255, 255) is in rgba as: 0xffffff00
-		**/
-		
-		
 		/** ----------------------------- BOOTLOADER METHODES ----------------------------- **/
 		size_t BlFlashErase(unsigned char* pBuffer, unsigned int endAddress, const size_t numPages, bool doSync) const;
 		bool BlFlashErase(void) const;
@@ -70,6 +62,12 @@ class WiflyControl
 		bool FwLoopOn(void);
 		bool FwLoopOff(unsigned char numLoops);
 		
+
+		/**
+			rgba is a 32 Bit rgb value with alpha channel. Alpha is unused, but easier to handle
+			f.e. red(255, 0, 0) is in rgba as: 0xff000000
+				 white(255, 255, 255) is in rgba as: 0xffffff00
+		**/
 		bool FwSetColor(unsigned long addr, unsigned long rgba);
 		bool FwSetColor(std::string& addr, std::string& rgba);
 		bool FwSetColorDirect(unsigned char* pBuffer, size_t bufferLength);
