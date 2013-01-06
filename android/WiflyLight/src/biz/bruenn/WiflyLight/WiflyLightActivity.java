@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 public class WiflyLightActivity extends Activity {
-	private native long getNumRemotes();
+	private native long createBroadcastReceiver();
+	private native long getNumRemotes(long pNative);
+	private native void releaseBroadcastReceiver(long pNative);
 	
 	static {
 		System.loadLibrary("wifly");
@@ -30,7 +32,9 @@ public class WiflyLightActivity extends Activity {
 	        NetworkInfo info = connMgr.getActiveNetworkInfo();
 	        TextView debug = (TextView)findViewById(R.id.debugOutput);
 	        if(null != info && info.isConnected()) {
-	        	debug.setText("y " + String.valueOf(getNumRemotes()));
+	        	long pNative = createBroadcastReceiver();
+	        	debug.setText("b " + String.valueOf(getNumRemotes(pNative)));
+	        	releaseBroadcastReceiver(pNative);
 	        } else {
 	        	debug.setText("no network connection found");
 	        }
