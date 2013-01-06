@@ -1,11 +1,14 @@
 package biz.bruenn.WiflyLight;
 
+import biz.bruenn.WiflyLight.R.id;
 import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class WiflyLightActivity extends Activity {
@@ -22,23 +25,32 @@ public class WiflyLightActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-   
-        WifiManager wifiMgr = (WifiManager)getSystemService(Context.WIFI_SERVICE);
-        if(wifiMgr != null) {
-        	WifiManager.MulticastLock lock = wifiMgr.createMulticastLock("WiflyLight_MulticastLock");
-        	lock.acquire();
+        
+        Button scanBtn = (Button)findViewById(id.scan);
+        scanBtn.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				WifiManager wifiMgr = (WifiManager)getSystemService(Context.WIFI_SERVICE);
+				if(wifiMgr != null) {
+					WifiManager.MulticastLock lock = wifiMgr.createMulticastLock("WiflyLight_MulticastLock");
+					lock.acquire();
 
-	        ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-	        NetworkInfo info = connMgr.getActiveNetworkInfo();
-	        TextView debug = (TextView)findViewById(R.id.debugOutput);
-	        if(null != info && info.isConnected()) {
-	        	long pNative = createBroadcastReceiver();
-	        	debug.setText("b " + String.valueOf(getNumRemotes(pNative)));
-	        	releaseBroadcastReceiver(pNative);
-	        } else {
-	        	debug.setText("no network connection found");
-	        }
-	        lock.release();
-        }
+					ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+					NetworkInfo info = connMgr.getActiveNetworkInfo();
+					TextView debug = (TextView)findViewById(R.id.debugOutput);
+					if(null != info && info.isConnected()) {
+						long pNative = createBroadcastReceiver();
+						debug.setText("b " + String.valueOf(getNumRemotes(pNative)));
+						releaseBroadcastReceiver(pNative);
+					} else {
+						debug.setText("no network connection found");
+					}
+					lock.release();
+				}
+			}
+		});
+   
+        
     }
 }
