@@ -3,6 +3,7 @@
 
     <string name="app_name">WiflyLight</string>
     <string name="hello">Hello World, WiflyLightActivity!</string>
-    <string name="scan">Scan...</string>
+    <string name="scan">Scan</string>
+    <string name="scanning">Scanning...</string>
 
 </resources>
