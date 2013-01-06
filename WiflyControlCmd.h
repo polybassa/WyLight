@@ -21,6 +21,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <time.h>
 
 using namespace std;
 
@@ -300,16 +301,16 @@ class ControlCmdStartBl : public WiflyControlCmd
   
 };
 
-class ControlCmdReadTracebuffer : public WiflyControlCmd
+class ControlCmdPrintTracebuffer : public WiflyControlCmd
 {
 	public:
-		ControlCmdReadTracebuffer(void) : WiflyControlCmd(
-				  string("read_trace"),
-					string("' - displays content of tracebuffer from pic")) {};
+		ControlCmdPrintTracebuffer(void) : WiflyControlCmd(
+				  string("print_tracebuffer"),
+					string("' - displays content in tracebuffer of pic")) {};
 				  
 		virtual void Run(WiflyControl& control) const {
 			cout << "Reading tracebuffer... ";
-			control.FwReadTracebuffer(std::cout);
+			control.FwPrintTracebuffer(std::cout);
 		};
   
 };
@@ -332,12 +333,26 @@ class ControlCmdPrintCycletime : public WiflyControlCmd
 {
 	public:
 		ControlCmdPrintCycletime(void) : WiflyControlCmd(
-				string("printcycletime"),
+				string("print_cycletime"),
 				string("' - prints all timevalues of internal methode execution times")) {};
 
 		virtual void Run(WiflyControl& control) const {
 			cout << "Transmitting command print cycletime... ";
 			cout << (control.FwPrintCycletime(std::cout) ? "done." : "failed!") << endl;
+
+		};
+};
+
+class ControlCmdPrintRtc : public WiflyControlCmd
+{
+	public:
+		ControlCmdPrintRtc(void) : WiflyControlCmd(
+				string("print_rtc"),
+				string("' - prints the current time of realtime-clock modul on target")) {};
+
+		virtual void Run(WiflyControl& control) const {
+			cout << "Transmitting command print rtc... ";
+			cout << (control.FwPrintRtc(std::cout) ? "done." : "failed!") << endl;
 
 		};
 };
@@ -427,6 +442,49 @@ class ControlCmdSetFade : public WiflyControlCmd
 		};
 };
 
+class ControlCmdSetRtc : public WiflyControlCmd
+{
+	public:
+		ControlCmdSetRtc(void) : WiflyControlCmd(
+				string("setrtc"),
+				string("' - set time of rtc in target to current systemtime")){};
+
+		virtual void Run(WiflyControl& control) const {
+			struct tm* timeinfo;
+			time_t rawtime;
+			
+			
+			rawtime = time(NULL);
+			timeinfo = localtime(&rawtime);
+			
+			cout << "Transmitting current time... ";
+			cout << (control.FwSetRtc(timeinfo) ? "done." : "failed!") << endl;
+		};
+};
+
+class ControlCmdGetRtc : public WiflyControlCmd
+{
+	public:
+		ControlCmdGetRtc(void) : WiflyControlCmd(
+				string("getrtc"),
+				string("' - get time of rtc in target")){};
+
+		virtual void Run(WiflyControl& control) const {
+			struct tm timeinfo;
+			
+			cout << "Getting target time... ";
+			if(control.FwGetRtc(&timeinfo))
+			{
+			  cout << "done." << endl;
+			  cout << "Current time at target device is: " << asctime(&timeinfo) << endl;
+			}
+			else 
+			{			  
+			  cout << "failed!" << endl;
+			}
+		};
+};
+
 class ControlCmdTest : public WiflyControlCmd
 {
 	public:
@@ -455,8 +513,11 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdSetFade(),
 	new ControlCmdStartBl(),
 	new ControlCmdTest(),
-	new ControlCmdReadTracebuffer(),
+	new ControlCmdPrintTracebuffer(),
 	new ControlCmdPrintCycletime(),
+	new ControlCmdPrintRtc(),
+	new ControlCmdSetRtc(),
+	new ControlCmdGetRtc(),
 	new ControlCmdLoopOn(),
 	new ControlCmdLoopOff(),
 	new ControlCmdWait(),

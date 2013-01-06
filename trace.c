@@ -122,7 +122,11 @@ void Trace_Print()
 	{
 	    tempByte = RingBuf_Get(&g_TraceBuf);
 	    Crc_AddCrc(tempByte, &crcH, &crcL);
-		UART_Send(tempByte);
+	    if(tempByte == STX || tempByte == DLE || tempByte == ETX)
+	    {
+		UART_Send(DLE);	
+	    }
+	    UART_Send(tempByte);
 	}
 	if(crcH == STX || crcH == DLE || crcH == ETX)
 	{

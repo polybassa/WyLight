@@ -20,11 +20,11 @@
 #define _WIFLYCONTROL_H_
 
 #include <string>
+#include <time.h>
 #include "ComProxy.h"
 #include "wifly_cmd.h"
 #include "BlRequest.h"
 #include "intelhexclass.h"
-
 
 class WiflyControl
 {
@@ -70,6 +70,7 @@ class WiflyControl
 		**/
 		bool FwSetColor(unsigned long addr, unsigned long rgba);
 		bool FwSetColor(std::string& addr, std::string& rgba);
+		bool FwSetColorDirect(unsigned char* pBuffer, size_t bufferLength);
 		
 		bool FwSetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade);
 		bool FwSetFade(std::string& addr, std::string& rgba, unsigned short fadeTmms, bool parallelFade);
@@ -81,7 +82,11 @@ class WiflyControl
 		
 		void FwTest(void);
 		bool FwPrintCycletime(std::ostream& out);
-		void FwReadTracebuffer(std::ostream& out);
+		void FwPrintTracebuffer(std::ostream& out);
 		bool FwStartBl(void);
+		
+		bool FwSetRtc(struct tm* timeValue);
+		bool FwGetRtc(struct tm* timeValue);
+		bool FwPrintRtc(std::ostream& out);
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */

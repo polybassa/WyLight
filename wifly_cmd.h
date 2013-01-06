@@ -32,8 +32,6 @@
 #define SET_COLOR 0xFD
 #define SET_FADE 0xFC
 #define SET_RUN 0xFB
-#define SET_ON 0xFA
-#define SET_OFF 0xF9
 #define CLEAR_SCRIPT 0xF8
 #define LOOP_ON 0xF7
 #define LOOP_OFF 0xF6
@@ -99,7 +97,12 @@ struct cmd_set_run {
 };
 
 struct cmd_set_color_direct {
+#ifdef __CC8E__
 	uns8 ptr_led_array;
+#endif
+#ifdef X86
+	uns8 ptr_led_array[NUM_OF_LED * 3];
+#endif
 };
 
 struct led_cmd {

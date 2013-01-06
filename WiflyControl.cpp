@@ -651,6 +651,49 @@ bool WiflyControl::FwSetColor(string& addr, string& rgba)
 	return FwSetColor(ToRGBA(addr), ToRGBA(rgba) << 8);
 }
 
+bool WiflyControl::FwSetColorDirect(unsigned char* pBuffer, size_t bufferLength)
+{
+	mCmdFrame.led.cmd = SET_COLOR_DIRECT;
+	for(unsigned int i = 0; i < NUM_OF_LED * 3; i++)
+	{
+	    if(i < bufferLength)
+	    {
+		mCmdFrame.led.data.set_color_direct.ptr_led_array[i] = *pBuffer++;
+	    }
+	    else
+	    {
+		mCmdFrame.led.data.set_color_direct.ptr_led_array[i] = 0;
+	    }
+	}
+	unsigned char buffer[512];
+	char str[512] = {0};
+	char* pStrResult = {NULL};
+	
+	int bytesRead = FwSend(&mCmdFrame, sizeof(struct cmd_set_color_direct),&buffer[0], sizeof(buffer));
+#ifdef DEBUG
+	cout << __FUNCTION__ << ": We got " << bytesRead << " bytes response, Message: ";
+	for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
+	cout << endl;
+#endif
+
+	if(2 <= bytesRead)
+	{
+		buffer[bytesRead] = 0x00;
+		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "ERROR");
+		if(pStrResult != NULL)
+		{
+			for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
+			cout << endl;
+			return false;
+		}
+		pStrResult = NULL;
+		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "GC");
+		if(pStrResult != NULL)
+			return true;
+	}
+	return false;
+}
+
 bool WiflyControl::FwSetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade)
 {
 	mCmdFrame.led.cmd = SET_FADE;
@@ -753,7 +796,23 @@ void WiflyControl::FwAddColor(string& addr, string& rgba, unsigned char hour, un
 
 void WiflyControl::FwTest(void)
 {
-	int doRun = 5;
+	unsigned char ledArray[NUM_OF_LED * 3] = {0};
+	
+	for(unsigned int j = 0; j < 100; j++)
+	{
+	  
+	  for(unsigned int i = 0; i < NUM_OF_LED * 3 - 3 ;  i = i + 3)
+	  {
+		ledArray[i] = 0xff;
+		ledArray[i+1] = j;
+		ledArray[i+2] = (unsigned char)i * j;
+	  }
+	  if(!FwSetColorDirect(&ledArray[0], sizeof(ledArray))) break;
+		
+	  sleep(1);
+	}
+
+	int doRun = 1;
   
 	static const unsigned long RED   = 0xFF000000;
 	static const unsigned long GREEN = 0x00FF0000;
@@ -768,12 +827,12 @@ void WiflyControl::FwTest(void)
 		FwSetColor(0x00FF0000LU, GREEN); sleep(1);
 		FwSetColor(0x0000FF00LU, BLUE);  sleep(1);
 		FwSetColor(0x000000FFLU, WHITE); sleep(1);
-		FwSetFade(0xFFFFFFFFLU, 0x00000000LU, (unsigned short)5000, false);
+		FwSetFade(0xFFFFFFFFLU, 0x00000000LU, (unsigned short)10000, false);
 		sleep(20);
 		FwSetFade(0x000000FFLU, RED,  400, true);
 		FwSetFade(0x0000FF00LU, GREEN,10000, true);
 		FwSetFade(0x00FF0000LU, BLUE, 2000, true);
-		FwSetFade(0xFF000000LU, WHITE,6000, false);
+		FwSetFade(0xFF000000LU, WHITE,30000, false);
 		sleep(20);
 		doRun--;
 	}
@@ -809,15 +868,15 @@ bool WiflyControl::FwPrintCycletime(std::ostream& out)
 		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "GC");
 		if(pStrResult != NULL)
 		{
-			sleep(1);
-			FwReadTracebuffer(out);
+			sleep(0.2);
+			FwPrintTracebuffer(out);
 			return true;
 		}
 	}
 	return false;
 }
 
-void WiflyControl::FwReadTracebuffer(std::ostream& out)
+void WiflyControl::FwPrintTracebuffer(std::ostream& out)
 {
 	mCmdFrame.led.cmd = GET_TRACE;
 	unsigned char buffer[512];
@@ -858,6 +917,164 @@ bool WiflyControl::FwStartBl(void)
 		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "EXIT");
 		if(pStrResult != NULL)
 			return true;
+	}
+	return false;
+}
+
+bool WiflyControl::FwSetRtc(struct tm* timeValue)
+{
+  	mCmdFrame.led.cmd = SET_RTC;
+	mCmdFrame.led.data.set_rtc.tm_sec  = (uns8) timeValue->tm_sec;
+	mCmdFrame.led.data.set_rtc.tm_min  = (uns8) timeValue->tm_min;
+	mCmdFrame.led.data.set_rtc.tm_hour = (uns8) timeValue->tm_hour;
+	mCmdFrame.led.data.set_rtc.tm_mday = (uns8) timeValue->tm_mday;
+	mCmdFrame.led.data.set_rtc.tm_mon  = (uns8) timeValue->tm_mon;
+	mCmdFrame.led.data.set_rtc.tm_year = (uns8) timeValue->tm_year;
+	mCmdFrame.led.data.set_rtc.tm_wday = (uns8) timeValue->tm_wday;
+
+	unsigned char buffer[512];
+	char str[512] = {0};
+	char* pStrResult = {NULL};
+	
+	int bytesRead = FwSend(&mCmdFrame, sizeof(struct rtc_time),&buffer[0], sizeof(buffer));
+#ifdef DEBUG
+	cout << __FUNCTION__ << ": We got " << bytesRead << " bytes response, Message: ";
+	for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
+	cout << endl;
+#endif
+
+	if(2 <= bytesRead)
+	{
+		buffer[bytesRead] = 0x00;
+		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "ERROR");
+		if(pStrResult != NULL)
+		{
+			for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
+			cout << endl;
+			return false;
+		}
+		pStrResult = NULL;
+		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "GC");
+		if(pStrResult != NULL)
+			return true;
+	}
+	return false;
+}
+
+bool WiflyControl::FwGetRtc(struct tm* timeValue)
+{
+	mCmdFrame.led.cmd = GET_RTC;
+	unsigned char buffer[512];
+	char str[512] = {0};
+	char* pStrResult = {NULL};
+	stringstream ioStr(stringstream::in | stringstream::out);
+	char c;
+	
+	int bytesRead = FwSend(&mCmdFrame, 0, &buffer[0], sizeof(buffer));
+	
+#ifdef DEBUG
+	cout << __FUNCTION__ << ": We got " << bytesRead << " bytes response, Message: ";
+	for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
+	cout << endl;
+#endif
+
+	if(2 <= bytesRead)
+	{
+		buffer[bytesRead] = 0x00;
+		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "ERROR");
+		if(pStrResult != NULL)
+		{
+			for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
+			cout << endl;
+			return false;
+		}
+		pStrResult = NULL;
+		
+		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "GC");
+		if(pStrResult != NULL)
+		{
+			sleep(0.2);
+			FwPrintTracebuffer(ioStr);
+
+			while(ioStr.good())
+			{
+			      c = ioStr.get();
+			      if(c == '@')
+			      {
+				  if(!ioStr.good()) return false;
+				  c = ioStr.get();
+				  timeValue->tm_sec = c;
+				  
+				  if(!ioStr.good()) return false;
+				  c = ioStr.get();
+				  timeValue->tm_min = c;
+				  
+				  if(!ioStr.good()) return false;
+				  c = ioStr.get();
+				  timeValue->tm_hour = c;
+				  
+				  if(!ioStr.good()) return false;
+				  c = ioStr.get();
+				  timeValue->tm_mday = c;
+				  
+				  if(!ioStr.good()) return false;
+				  c = ioStr.get();
+				  timeValue->tm_mon = c;
+				  
+				  if(!ioStr.good()) return false;
+				  c = ioStr.get();
+				  timeValue->tm_year = c;
+				  
+				  if(!ioStr.good()) return false;
+				  c = ioStr.get();
+				  timeValue->tm_wday = c;
+				  
+				  timeValue->tm_yday = 0;
+				  timeValue->tm_isdst = 0;
+				  return true;
+			      }
+			}
+			
+			return false;
+		}
+	}
+	return false;
+}
+
+bool WiflyControl::FwPrintRtc(std::ostream& out)
+{
+	mCmdFrame.led.cmd = DISPLAY_RTC;
+	unsigned char buffer[512];
+	char str[512] = {0};
+	char* pStrResult = {NULL};
+	
+	int bytesRead = FwSend(&mCmdFrame, 0, &buffer[0], sizeof(buffer));
+	
+#ifdef DEBUG
+	cout << __FUNCTION__ << ": We got " << bytesRead << " bytes response, Message: ";
+	for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
+	cout << endl;
+#endif
+
+	if(2 <= bytesRead)
+	{
+		buffer[bytesRead] = 0x00;
+		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "ERROR");
+		if(pStrResult != NULL)
+		{
+			for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
+			cout << endl;
+			return false;
+		}
+		pStrResult = NULL;
+		
+		pStrResult = strstr(strcpy(&str[0],static_cast<const char*>((char*)&buffer[0])) , "GC");
+		if(pStrResult != NULL)
+		{
+			sleep(0.2);
+			FwPrintTracebuffer(out);
+			return true;
+		}
 	}
 	return false;
 }
