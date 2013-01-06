@@ -32,6 +32,51 @@
 
 using std::vector;
 
+class BroadcastReceiver
+{
+	public:
+		static const uint16_t BROADCAST_PORT = 55555;
+		static const char BROADCAST_DEVICE_ID[];
+		static const size_t BROADCAST_DEVICE_ID_LENGTH;
+		static const char STOP_MSG[];
+		static const size_t STOP_MSG_LENGTH;
+		const uint16_t mPort;
+
+		BroadcastReceiver(uint16_t port = BROADCAST_PORT);
+		~BroadcastReceiver(void);
+
+		/**
+		 * Endless loop collecting wifly broadcast messages and save them to the
+		 * known IP list. Terminate execution by calling <Stop()>
+		 */
+		void operator()(void);
+
+		uint32_t GetIp(size_t index) const;
+		uint32_t GetNextRemote(void);
+		uint16_t GetPort(size_t index) const;
+
+		/**
+		 * @return number of known IP addresses
+		 */
+		size_t NumRemotes(void) const;
+
+		/**
+		 * Print remote list to outputstream
+		 * @param out outputstream
+		 */
+		void ShowRemotes(std::ostream& out) const;
+
+		/**
+		 * Sends a stop event to terminate execution of operator()
+		 */
+		void Stop(void);
+
+	private:
+		vector<Endpoint*> mIpTable;
+		pthread_t mThread;
+		pthread_mutex_t mMutex;
+};
+
 #pragma pack(push)
 #pragma pack(1)
 struct BroadcastMessage
@@ -49,6 +94,13 @@ struct BroadcastMessage
 	uint16_t bootTmms;
 	uint16_t sensor[8];
 
+	bool IsWiflyBroadcast(size_t length) {
+		return ((sizeof(BroadcastMessage) == length) && (0 == memcmp(deviceId,	BroadcastReceiver::BROADCAST_DEVICE_ID, BroadcastReceiver::BROADCAST_DEVICE_ID_LENGTH)));
+	};
+
+// was used only for debugging
+// deactivated because of possible byte order issues using IsWiflyBroadcast()
+#if 0 
 	void NetworkToHost(void) {
 		port = ntohs(port);
 		rtc = ntohl(rtc);
@@ -76,51 +128,7 @@ struct BroadcastMessage
 		<< "\nDeviceID: " << deviceId
 		<< "\nBoottime: " << std::dec << bootTmms << "ms\n";
 	};
+#endif
 };
 #pragma pack(pop)
-
-class BroadcastReceiver
-{
-	public:
-		static const uint16_t BROADCAST_PORT = 55555;
-		static const char BROADCAST_DEVICE_ID[];
-		static const size_t BROADCAST_DEVICE_ID_LENGTH;
-		static const char STOP_MSG[];
-		static const size_t STOP_MSG_LENGTH;
-		const uint16_t mPort;
-
-		BroadcastReceiver(uint16_t port = BROADCAST_PORT);
-		~BroadcastReceiver(void);
-
-		/**
-		 * Endless loop collecting wifly broadcast messages and save them to the
-		 * known IP list. Terminate execution by calling <Stop()>
-		 */
-		void operator()(void);
-
-		uint32_t GetIp(size_t index) const;
-		uint16_t GetPort(size_t index) const;
-
-		/**
-		 * @return number of known IP addresses
-		 */
-		size_t NumRemotes(void) const;
-
-		/**
-		 * Print remote list to outputstream
-		 * @param out outputstream
-		 */
-		void ShowRemotes(std::ostream& out) const;
-
-		/**
-		 * Sends a stop event to terminate execution of operator()
-		 */
-		void Stop(void);
-
-	private:
-		vector<Endpoint*> mIpTable;
-		pthread_t mThread;
-		pthread_mutex_t mMutex;
-};
-
 #endif /* #ifndef _BROADCAST_RECEIVER_H_ */

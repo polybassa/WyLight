@@ -36,12 +36,12 @@ void* Run(void* ptr)
 
 BroadcastReceiver::BroadcastReceiver(unsigned short port) : mPort(port), mMutex(PTHREAD_MUTEX_INITIALIZER)
 {
-	pthread_create(&mThread, NULL, Run, this);
+	//pthread_create(&mThread, NULL, Run, this);
 }
 
 BroadcastReceiver::~BroadcastReceiver(void)
 {
-	Stop();
+	//Stop();
 	//TODO cleanup mIpTable
 }
 
@@ -56,13 +56,8 @@ void BroadcastReceiver::operator()(void)
 		BroadcastMessage msg;
 		size_t bytesRead = udpSock.RecvFrom((unsigned char*)&msg, sizeof(msg), NULL, (sockaddr*)&remoteAddr, &remoteAddrLength);
 		// received a Wifly broadcast?
-		if((sizeof(msg) == bytesRead) && (0 == memcmp(msg.deviceId, BROADCAST_DEVICE_ID, BROADCAST_DEVICE_ID_LENGTH)))
+		if(msg.IsWiflyBroadcast(bytesRead))
 		{
-#ifdef DEBUG
-			msg.NetworkToHost();
-			msg.Print(std::cout);
-			std::cout << std::hex << ntohl(((sockaddr_in*)&remoteAddr)->sin_addr.s_addr) << '\n';
-#endif
 			pthread_mutex_lock(&mMutex);
 			mIpTable.push_back(new Endpoint(remoteAddr, remoteAddrLength));
 			pthread_mutex_unlock(&mMutex);
@@ -80,6 +75,27 @@ void BroadcastReceiver::operator()(void)
 uint32_t BroadcastReceiver::GetIp(size_t index) const
 {
 	return mIpTable[index]->m_Addr;
+}
+
+uint32_t BroadcastReceiver::GetNextRemote(void)
+{
+	UdpSocket udpSock(INADDR_ANY, mPort, true, true);
+	sockaddr_storage remoteAddr;
+	socklen_t remoteAddrLength = sizeof(remoteAddr);
+	
+	for(;;)
+	{
+		BroadcastMessage msg;
+		size_t bytesRead = udpSock.RecvFrom((unsigned char*)&msg, sizeof(msg), NULL, (sockaddr*)&remoteAddr, &remoteAddrLength);
+		if(msg.IsWiflyBroadcast(bytesRead))
+		{
+			Endpoint* newRemote = new Endpoint(remoteAddr, remoteAddrLength);
+			pthread_mutex_lock(&mMutex);
+			mIpTable.push_back(newRemote);
+			pthread_mutex_unlock(&mMutex);
+			return newRemote->m_Addr;
+		}
+	}
 }
 
 uint16_t BroadcastReceiver::GetPort(size_t index) const
