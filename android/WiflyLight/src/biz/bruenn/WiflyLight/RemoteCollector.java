@@ -19,7 +19,6 @@ public class RemoteCollector extends AsyncTask<Long, Void, Void> {
 	private WifiManager.MulticastLock mMulticastLock; 
 	private long mNative = 0;
 	private Button mScanBtn;
-	protected RemoteCollector mMe = this;
 	
 	public RemoteCollector(WifiManager wifiMgr, ArrayList<String> remoteArray, ArrayAdapter<String> remoteArrayAdapter, Button scanBtn) {
 		mMulticastLock = wifiMgr.createMulticastLock("WiflyLight_MulticastLock");

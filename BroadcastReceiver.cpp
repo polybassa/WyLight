@@ -18,7 +18,6 @@
 
 #include "BroadcastReceiver.h"
 
-#include <cstring>
 #include <iostream>
 #include <stdio.h>
 
@@ -27,16 +26,9 @@ const size_t BroadcastReceiver::BROADCAST_DEVICE_ID_LENGTH = 5;
 const char BroadcastReceiver::STOP_MSG[] = "StopThread";
 const size_t BroadcastReceiver::STOP_MSG_LENGTH = sizeof(STOP_MSG);
 
-void* Run(void* ptr)
+BroadcastReceiver::BroadcastReceiver(unsigned short port)
+	: mPort(port), mMutex(PTHREAD_MUTEX_INITIALIZER)
 {
-	BroadcastReceiver* pObj = reinterpret_cast<BroadcastReceiver*>(ptr);
-	(*pObj)();
-	return NULL;
-}
-
-BroadcastReceiver::BroadcastReceiver(unsigned short port) : mPort(port), mMutex(PTHREAD_MUTEX_INITIALIZER)
-{
-	//pthread_create(&mThread, NULL, Run, this);
 }
 
 BroadcastReceiver::~BroadcastReceiver(void)
@@ -45,31 +37,16 @@ BroadcastReceiver::~BroadcastReceiver(void)
 	//TODO cleanup mIpTable
 }
 
-void BroadcastReceiver::operator()(void)
+void BroadcastReceiver::operator() (std::ostream& out, unsigned short timeout)
 {
-	UdpSocket udpSock(INADDR_ANY, mPort, true, true);
-	sockaddr_storage remoteAddr;
-	socklen_t remoteAddrLength = sizeof(remoteAddr);
-	
-	for(;;)
+	size_t numRemotes = 0;
+	time_t endTime = time(NULL) + timeout;
+	do
 	{
-		BroadcastMessage msg;
-		size_t bytesRead = udpSock.RecvFrom((unsigned char*)&msg, sizeof(msg), NULL, (sockaddr*)&remoteAddr, &remoteAddrLength);
-		// received a Wifly broadcast?
-		if(msg.IsWiflyBroadcast(bytesRead))
-		{
-			pthread_mutex_lock(&mMutex);
-			mIpTable.push_back(new Endpoint(remoteAddr, remoteAddrLength));
-			pthread_mutex_unlock(&mMutex);
-		}
-		// received a stop event?
-		else if(/*TODO remote.address().is_loopback()
-					&&*/ (STOP_MSG_LENGTH == bytesRead) 
-					&& (0 == memcmp(&msg, STOP_MSG, bytesRead)))
-		{
-			return;
-		}
-	}
+		uint32_t remote = GetNextRemote();
+		out << numRemotes << ':' << std::hex << remote << std::endl;
+		numRemotes++;
+	} while(time(NULL) < endTime);
 }
 
 uint32_t BroadcastReceiver::GetIp(size_t index) const

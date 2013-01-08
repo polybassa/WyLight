@@ -20,15 +20,15 @@
 #define _BROADCAST_RECEIVER_H_
 
 #include "ClientSocket.h"
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <stdint.h>
+#include <cstdint>
+#include <cstring>
 #include <map>
 #include <ostream>
+#include <pthread.h>
 #include <string>
 #include <vector>
-#include <pthread.h>
-#include <stdint.h> //TODO use "cstdint" if c++11 compiler is available
+#include <netinet/in.h>
+#include <sys/socket.h>
 
 using std::vector;
 
@@ -46,10 +46,11 @@ class BroadcastReceiver
 		~BroadcastReceiver(void);
 
 		/**
-		 * Endless loop collecting wifly broadcast messages and save them to the
-		 * known IP list. Terminate execution by calling <Stop()>
+		 * Wait for broadcasts and print them to a stream
+		 * @param out stream to print collected remotes on
+		 * @param timeout in seconds, until execution is terminated
 		 */
-		void operator()(void);
+		void operator() (std::ostream& out, unsigned short timeout);
 
 		uint32_t GetIp(size_t index) const;
 		uint32_t GetNextRemote(void);

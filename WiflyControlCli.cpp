@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>
+#include <thread>
 #include <unistd.h>
 #include <vector>
 
@@ -75,34 +76,13 @@ void WiflyControlCli::ShowHelp(void) const
 	return;
 }
 
-#ifdef ANDROID
-#include <jni.h>
-extern "C" {
-void Java_biz_bruenn_WiflyLight_WiflyLightActivity_runClient(JNIEnv* env, jobject ref)
-{
-	WiflyControl control;
-	colorLoop(control);
-}
-}
-#endif
-
 int main(int argc, const char* argv[])
 {
 	BroadcastReceiver receiver(55555);
-	cout << "please wait, scanning for remotes...";
-	for(size_t timeout = 9; timeout > 0; timeout--) {
-		(cout << timeout << ' ').flush();
-		sleep(1);
-	}
-	cout << '\n';
-	receiver.Stop();
-	if(0 == receiver.NumRemotes()) {
-		std::cout << "No remote found, exiting...\n";
-		return EXIT_FAILURE;
-	}
+	std::thread t(receiver, std::ref(cout), 3);
 
-	receiver.ShowRemotes(std::cout);
-
+	t.join();
+#if 0
 	// wait for user input
 	size_t selection;
 	do
@@ -112,4 +92,5 @@ int main(int argc, const char* argv[])
 
 	WiflyControlCli cli(receiver.GetIp(selection), receiver.GetPort(selection), true);
 	cli.Run();
+#endif
 }
