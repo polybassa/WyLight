@@ -20,9 +20,11 @@
 #define _BROADCAST_RECEIVER_H_
 
 #include "ClientSocket.h"
+#include <atomic>
 #include <cstdint>
 #include <cstring>
 #include <map>
+#include <mutex>
 #include <ostream>
 #include <pthread.h>
 #include <string>
@@ -74,8 +76,8 @@ class BroadcastReceiver
 
 	private:
 		vector<Endpoint*> mIpTable;
-		pthread_t mThread;
-		pthread_mutex_t mMutex;
+		std::atomic<int> mNumInstances;
+		std::mutex mMutex;
 };
 
 #pragma pack(push)
@@ -97,6 +99,11 @@ struct BroadcastMessage
 
 	bool IsWiflyBroadcast(size_t length) {
 		return ((sizeof(BroadcastMessage) == length) && (0 == memcmp(deviceId,	BroadcastReceiver::BROADCAST_DEVICE_ID, BroadcastReceiver::BROADCAST_DEVICE_ID_LENGTH)));
+	};
+
+	bool IsStop(size_t length) {
+		return ((BroadcastReceiver::STOP_MSG_LENGTH == length)
+						&& (0 == memcmp(&mac, BroadcastReceiver::STOP_MSG, BroadcastReceiver::STOP_MSG_LENGTH)));
 	};
 
 // was used only for debugging

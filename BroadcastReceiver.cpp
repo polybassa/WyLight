@@ -17,7 +17,6 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "BroadcastReceiver.h"
-
 #include <iostream>
 #include <stdio.h>
 
@@ -27,7 +26,7 @@ const char BroadcastReceiver::STOP_MSG[] = "StopThread";
 const size_t BroadcastReceiver::STOP_MSG_LENGTH = sizeof(STOP_MSG);
 
 BroadcastReceiver::BroadcastReceiver(unsigned short port)
-	: mPort(port), mMutex(PTHREAD_MUTEX_INITIALIZER)
+	: mPort(port), mNumInstances(0)
 {
 }
 
@@ -39,14 +38,21 @@ BroadcastReceiver::~BroadcastReceiver(void)
 
 void BroadcastReceiver::operator() (std::ostream& out, unsigned short timeout)
 {
-	size_t numRemotes = 0;
-	time_t endTime = time(NULL) + timeout;
-	do
+	// only one thread allowed per instance
+	if(0 == std::atomic_fetch_add(&mNumInstances, 1))
 	{
-		uint32_t remote = GetNextRemote();
-		out << numRemotes << ':' << std::hex << remote << std::endl;
-		numRemotes++;
-	} while(time(NULL) < endTime);
+		size_t numRemotes = 0;
+		time_t endTime = time(NULL) + timeout;
+		uint32_t remote;
+		do
+		{
+			remote = GetNextRemote();
+			out << numRemotes << ':' << std::hex << remote << std::endl;
+			numRemotes++;
+		} while((0 != remote) && (time(NULL) < endTime));
+	}
+	std::atomic_fetch_sub(&mNumInstances, 1);
+	out << "exit" << std::endl;
 }
 
 uint32_t BroadcastReceiver::GetIp(size_t index) const
@@ -67,10 +73,15 @@ uint32_t BroadcastReceiver::GetNextRemote(void)
 		if(msg.IsWiflyBroadcast(bytesRead))
 		{
 			Endpoint* newRemote = new Endpoint(remoteAddr, remoteAddrLength);
-			pthread_mutex_lock(&mMutex);
+			mMutex.lock();
 			mIpTable.push_back(newRemote);
-			pthread_mutex_unlock(&mMutex);
+			std::cout << "HUHU " << mIpTable.size() << ':' << NumRemotes() << '\n';
+			mMutex.unlock();
 			return newRemote->m_Addr;
+		}
+		else if(msg.IsStop(bytesRead))
+		{
+			return 0;
 		}
 	}
 }
@@ -98,7 +109,6 @@ void BroadcastReceiver::Stop(void)
 {
 	UdpSocket sock(INADDR_LOOPBACK, mPort, false);
 	sock.Send((unsigned char const*)STOP_MSG, STOP_MSG_LENGTH);
-	pthread_join(mThread, NULL);
 	return;
 }
 

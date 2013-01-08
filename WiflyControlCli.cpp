@@ -31,6 +31,7 @@ using std::cout;
 WiflyControlCli::WiflyControlCli(unsigned long addr, unsigned short port, bool useTcp)
 : mControl(addr, port, useTcp), mRunning(true)
 {
+	cout << "Connecting to " << std::hex << addr << ':' << port << std::endl;
 }
 
 void WiflyControlCli::Run(void)
@@ -79,18 +80,18 @@ void WiflyControlCli::ShowHelp(void) const
 int main(int argc, const char* argv[])
 {
 	BroadcastReceiver receiver(55555);
-	std::thread t(receiver, std::ref(cout), 3);
+	std::thread t(std::ref(receiver), std::ref(cout), 10);
 
-	t.join();
-#if 0
 	// wait for user input
 	size_t selection;
 	do
 	{
 		std::cin >> selection;
+		cout << selection << " of " << receiver.NumRemotes() << '\n';
 	} while(selection >= receiver.NumRemotes());
 
+	receiver.Stop();
+	t.join();
 	WiflyControlCli cli(receiver.GetIp(selection), receiver.GetPort(selection), true);
 	cli.Run();
-#endif
 }
