@@ -32,7 +32,7 @@ BroadcastReceiver::BroadcastReceiver(unsigned short port)
 
 BroadcastReceiver::~BroadcastReceiver(void)
 {
-	//Stop();
+	Stop();
 	//TODO cleanup mIpTable
 }
 
