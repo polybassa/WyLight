@@ -94,7 +94,7 @@ uint32_t BroadcastReceiver::GetNextRemote(void)
 
 uint16_t BroadcastReceiver::GetPort(size_t index) const
 {
-	return mIpTable[index]->m_Port;
+	return 2000;//mIpTable[index]->m_Port;
 }
 
 size_t BroadcastReceiver::NumRemotes(void) const
