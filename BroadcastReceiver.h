@@ -20,17 +20,16 @@
 #define _BROADCAST_RECEIVER_H_
 
 #include "ClientSocket.h"
-#include <atomic>
 #include <cstdint>
 #include <cstring>
-#include <map>
-#include <mutex>
 #include <ostream>
-#include <pthread.h>
 #include <string>
 #include <vector>
-#include <netinet/in.h>
-#include <sys/socket.h>
+
+#ifndef OS_ANDROID
+#include <atomic>
+#include <mutex>
+#endif /* #ifndef OS_ANDROID */
 
 using std::vector;
 
@@ -47,12 +46,14 @@ class BroadcastReceiver
 		BroadcastReceiver(uint16_t port = BROADCAST_PORT);
 		~BroadcastReceiver(void);
 
+#ifndef OS_ANDROID
 		/**
 		 * Wait for broadcasts and print them to a stream
 		 * @param out stream to print collected remotes on
 		 * @param timeout in seconds, until execution is terminated
 		 */
 		void operator() (std::ostream& out, unsigned short timeout);
+#endif /* #ifndef OS_ANDROID */
 
 		uint32_t GetIp(size_t index) const;
 		uint32_t GetNextRemote(void);
@@ -76,8 +77,12 @@ class BroadcastReceiver
 
 	private:
 		vector<Endpoint*> mIpTable;
+#ifndef OS_ANDROID
 		std::atomic<int> mNumInstances;
 		std::mutex mMutex;
+#else
+		int mNumInstances;
+#endif /* #ifndef OS_ANDROID */
 };
 
 #pragma pack(push)

@@ -36,6 +36,7 @@ BroadcastReceiver::~BroadcastReceiver(void)
 	//TODO cleanup mIpTable
 }
 
+#ifndef OS_ANDROID
 void BroadcastReceiver::operator() (std::ostream& out, unsigned short timeout)
 {
 	// only one thread allowed per instance
@@ -54,6 +55,7 @@ void BroadcastReceiver::operator() (std::ostream& out, unsigned short timeout)
 	std::atomic_fetch_sub(&mNumInstances, 1);
 	out << "exit" << std::endl;
 }
+#endif /* #ifndef OS_ANDROID */
 
 uint32_t BroadcastReceiver::GetIp(size_t index) const
 {
@@ -73,10 +75,13 @@ uint32_t BroadcastReceiver::GetNextRemote(void)
 		if(msg.IsWiflyBroadcast(bytesRead))
 		{
 			Endpoint* newRemote = new Endpoint(remoteAddr, remoteAddrLength);
+#ifndef OS_ANDROID
 			mMutex.lock();
 			mIpTable.push_back(newRemote);
-			std::cout << "HUHU " << mIpTable.size() << ':' << NumRemotes() << '\n';
 			mMutex.unlock();
+#else
+			mIpTable.push_back(newRemote);
+#endif /* #ifndef OS_ANDROID */
 			return newRemote->m_Addr;
 		}
 		else if(msg.IsStop(bytesRead))

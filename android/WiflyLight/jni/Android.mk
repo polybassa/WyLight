@@ -3,7 +3,7 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 DIR := ../../../
 LOCAL_LDLIBS := -llog
-LOCAL_CFLAGS := -DX86 -DANDROID
+LOCAL_CFLAGS := -DX86 -DOS_ANDROID
 LOCAL_MODULE := wifly
 LOCAL_SRC_FILES := $(DIR)BroadcastReceiver.cpp
 LOCAL_SRC_FILES += $(DIR)ClientSocket.cpp

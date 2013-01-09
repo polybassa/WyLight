@@ -87,7 +87,6 @@ int main(int argc, const char* argv[])
 	do
 	{
 		std::cin >> selection;
-		cout << selection << " of " << receiver.NumRemotes() << '\n';
 	} while(selection >= receiver.NumRemotes());
 
 	receiver.Stop();
