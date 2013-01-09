@@ -21,20 +21,25 @@
 #include <jni.h>
 
 extern "C" {
-jlong Java_biz_bruenn_WiflyLight_WiflyLightActivity_getNumRemotes(JNIEnv* env, jobject ref, jlong pNative)
+jlong Java_biz_bruenn_WiflyLight_RemoteCollector_getNumRemotes(JNIEnv* env, jobject ref, jlong pNative)
 {
-	sleep(5);
+	//sleep(2);
 	return ((BroadcastReceiver*)pNative)->NumRemotes();
 }
 
-jlong Java_biz_bruenn_WiflyLight_WiflyLightActivity_createBroadcastReceiver(JNIEnv* env, jobject ref)
+jlong Java_biz_bruenn_WiflyLight_RemoteCollector_createBroadcastReceiver(JNIEnv* env, jobject ref)
 {
 	return (jlong) new BroadcastReceiver(BroadcastReceiver::BROADCAST_PORT);
 }
 
-void Java_biz_bruenn_WiflyLight_WiflyLightActivity_releaseBroadcastReceiver(JNIEnv* env, jobject ref, jlong pNative)
+void Java_biz_bruenn_WiflyLight_RemoteCollector_releaseBroadcastReceiver(JNIEnv* env, jobject ref, jlong pNative)
 {
 	delete (BroadcastReceiver*)pNative;
+}
+
+jlong Java_biz_bruenn_WiflyLight_RemoteCollector_getNextRemote(JNIEnv* env, jobject ref, jlong pNative)
+{
+	return ((BroadcastReceiver*)pNative)->GetNextRemote();
 }
 }
 

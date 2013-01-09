@@ -4,10 +4,19 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
+	<Button
+        android:id="@+id/scan"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/scan" />
     <TextView
         android:id="@+id/debugOutput"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/hello" />
+    <ListView
+        android:id="@+id/remoteList"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 
 </LinearLayout>
