@@ -65,12 +65,6 @@ class BroadcastReceiver
 		size_t NumRemotes(void) const;
 
 		/**
-		 * Print remote list to outputstream
-		 * @param out outputstream
-		 */
-		void ShowRemotes(std::ostream& out) const;
-
-		/**
 		 * Sends a stop event to terminate execution of operator()
 		 */
 		void Stop(void);

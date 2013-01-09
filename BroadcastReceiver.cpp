@@ -101,15 +101,6 @@ size_t BroadcastReceiver::NumRemotes(void) const
 	return mIpTable.size();
 }
 
-void BroadcastReceiver::ShowRemotes(std::ostream& out) const
-{
-	size_t index = 0;
-	for(vector<Endpoint*>::const_iterator it = mIpTable.begin(); it != mIpTable.end(); *it++, index++)
-	{
-		out << index << ':' << std::hex << (*it)->m_Addr << '\n';
-	}
-}
-
 void BroadcastReceiver::Stop(void)
 {
 	UdpSocket sock(INADDR_LOOPBACK, mPort, false);
