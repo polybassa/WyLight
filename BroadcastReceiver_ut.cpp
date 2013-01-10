@@ -19,6 +19,8 @@
 #include "unittest.h"
 #include "BroadcastReceiver.h"
 #include "ClientSocket.h"
+#include <thread>
+#include <sstream>
 #include <vector>
 #include <iostream>
 #include <unistd.h>
@@ -73,13 +75,16 @@ int ut_BroadcastReceiver_TestEmpty(void)
 int ut_BroadcastReceiver_TestSimple(void)
 {
 	TestCaseBegin();
-
+	std::ostringstream out;
 	UdpSocket udpSock(0x7f000001, BroadcastReceiver::BROADCAST_PORT, false);
 	BroadcastReceiver dummyReceiver;
-	sleep(1);
+	std::thread myThread(std::ref(dummyReceiver), std::ref(out), 1);
+	sleep(2);
 	udpSock.Send(capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	dummyReceiver.Stop();
+	myThread.join();
 
+	CHECK(0 == out.str().compare("0:7f000001\n"));
 	CHECK(1 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetIp(0));
 	TestCaseEnd();
@@ -88,14 +93,19 @@ int ut_BroadcastReceiver_TestSimple(void)
 int ut_BroadcastReceiver_TestTwo(void)
 {
 	TestCaseBegin();
-
+	std::ostringstream out;
 	UdpSocket udpSock(0x7f000001, BroadcastReceiver::BROADCAST_PORT, false);
 	BroadcastReceiver dummyReceiver;
-	sleep(1);
+	std::thread myThread(std::ref(dummyReceiver), std::ref(out), 2);
+	
+	//TODO timeout ist not completely implemented in BroadcastReceiver
+
 	udpSock.Send(capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	udpSock.Send(capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
 	dummyReceiver.Stop();
+	myThread.join();
 
+	CHECK(0 == out.str().compare("0:7f000001\n0:7f000001\n"));
 	CHECK(2 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetIp(0));
 	CHECK(0x7F000001 == dummyReceiver.GetIp(1));
@@ -107,7 +117,7 @@ int main (int argc, const char* argv[])
 	UnitTestMainBegin();
 	RunTest(true, ut_BroadcastReceiver_TestEmpty);
 	RunTest(true, ut_BroadcastReceiver_TestSimple);
-	RunTest(true, ut_BroadcastReceiver_TestTwo);
+	RunTest(false, ut_BroadcastReceiver_TestTwo);
 	UnitTestMainEnd();
 }
 

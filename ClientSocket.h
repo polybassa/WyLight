@@ -27,10 +27,10 @@
 class Endpoint
 {
 	public:
-		Endpoint(sockaddr_storage& addr, const size_t size) {
+		Endpoint(sockaddr_storage& addr, const size_t size, unsigned short port) {
 			assert(sizeof(sockaddr_in) == size);
 			m_Addr = ntohl(((sockaddr_in&)addr).sin_addr.s_addr);
-			m_Port = ntohs(((sockaddr_in&)addr).sin_port);
+			m_Port = ntohs(port);
 		};
 		Endpoint(uint32_t addr, uint16_t port) : m_Addr(addr), m_Port(port) {};
 		uint32_t m_Addr;
