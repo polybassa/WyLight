@@ -39,7 +39,7 @@ void Java_biz_bruenn_WiflyLight_RemoteCollector_releaseBroadcastReceiver(JNIEnv*
 
 jlong Java_biz_bruenn_WiflyLight_RemoteCollector_getNextRemote(JNIEnv* env, jobject ref, jlong pNative)
 {
-	return ((BroadcastReceiver*)pNative)->GetNextRemote();
+	return ((BroadcastReceiver*)pNative)->GetNextRemote(NULL);
 }
 }
 

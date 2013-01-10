@@ -38,10 +38,10 @@ public class RemoteCollector extends AsyncTask<Long, Void, Void> {
 	@Override
 	protected Void doInBackground(Long... params) {
 		long timeoutTmms = params[0];
-		final long endTime = timeoutTmms + System.currentTimeMillis();
+		final long endTime = 1000000*timeoutTmms + System.nanoTime();
 		
 		mMulticastLock.acquire();
-		while(!isCancelled() && System.currentTimeMillis() < endTime) {
+		while(!isCancelled() && System.nanoTime() < endTime) {
 			mRemoteArray.add(String.valueOf(getNextRemote(mNative)));
 			publishProgress();
 		}
