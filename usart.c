@@ -18,7 +18,7 @@
 
 #include "usart.h"
 
-#ifndef X86
+#ifdef __CC8E__
 //*******  Initialisierungs-Funktion  *************************************************
 void UART_Init()
 {
@@ -45,7 +45,7 @@ void UART_Send(unsigned char ch)
 	TXREG1=ch;
 }
 
-#endif /* #ifndef X86 */
+#endif /* #ifndef CC8E */
 
 //*******  Sende-String-Funktion  *************************************************
 void UART_SendString(const char *string)

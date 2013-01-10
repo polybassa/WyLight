@@ -653,6 +653,8 @@ bool WiflyControl::FwSetColor(string& addr, string& rgba)
 
 bool WiflyControl::FwSetColorDirect(unsigned char* pBuffer, size_t bufferLength)
 {
+	if(pBuffer == NULL) return false;
+  
 	mCmdFrame.led.cmd = SET_COLOR_DIRECT;
 	for(unsigned int i = 0; i < NUM_OF_LED * 3; i++)
 	{
@@ -803,13 +805,13 @@ void WiflyControl::FwTest(void)
 	  
 	  for(unsigned int i = 0; i < NUM_OF_LED * 3 - 3 ;  i = i + 3)
 	  {
-		ledArray[i] = 0xff;
-		ledArray[i+1] = j;
-		ledArray[i+2] = (unsigned char)i * j;
+		ledArray[i] = 0;
+		ledArray[i+1] = j + (unsigned char)0xff - (i * (100/(NUM_OF_LED * 3)));
+		ledArray[i+2] = j + (unsigned char)i * (100/(NUM_OF_LED*3));
 	  }
-	  if(!FwSetColorDirect(&ledArray[0], sizeof(ledArray))) break;
+	  if(!FwSetColorDirect(&ledArray[0], sizeof(ledArray))) sleep(0.2);
 		
-	  sleep(1);
+	  sleep(0.3);
 	}
 
 	int doRun = 1;
@@ -923,6 +925,8 @@ bool WiflyControl::FwStartBl(void)
 
 bool WiflyControl::FwSetRtc(struct tm* timeValue)
 {
+	if(timeValue == NULL) return false;
+  
   	mCmdFrame.led.cmd = SET_RTC;
 	mCmdFrame.led.data.set_rtc.tm_sec  = (uns8) timeValue->tm_sec;
 	mCmdFrame.led.data.set_rtc.tm_min  = (uns8) timeValue->tm_min;
@@ -963,6 +967,8 @@ bool WiflyControl::FwSetRtc(struct tm* timeValue)
 
 bool WiflyControl::FwGetRtc(struct tm* timeValue)
 {
+	if(timeValue == NULL) return false;
+    
 	mCmdFrame.led.cmd = GET_RTC;
 	unsigned char buffer[512];
 	char str[512] = {0};
