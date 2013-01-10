@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, WiflyLightActivity!</string>
     <string name="app_name">WiflyLight</string>
+    <string name="hello">Hello World, WiflyLightActivity!</string>
+    <string name="scan">Scan</string>
+    <string name="scanning">Scanning...</string>
 
 </resources>

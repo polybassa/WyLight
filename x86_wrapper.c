@@ -31,6 +31,7 @@ uns8 g_led_status[NUM_OF_LED*3];
 extern uns8 g_UpdateLed;
 
 const unsigned short BROADCAST_PORT = 55555;
+const unsigned short WIFLY_SERVER_PORT = 2000;
 unsigned char capturedBroadcastMessage[110] = {
 0x00, 0x0f, 0xb5, 0xb2, 0x57, 0xfa, //MAC
 0x07, //channel
@@ -72,30 +73,48 @@ void* BroadcastLoop(void* unused)
 
 void* InterruptRoutine(void* unused)
 {
-	int udp_sock = socket(AF_INET, SOCK_DGRAM, 0);
-	if(-1 == udp_sock)
+	int listenSocket = socket(AF_INET, SOCK_STREAM, 0);
+	if(-1 == listenSocket) {
+		printf("%s:%d %s: create socket failed\n", __FILE__, __LINE__, __FUNCTION__);
 		return 0;
+	}
 
 	struct sockaddr_in udp_sock_addr;
   udp_sock_addr.sin_family = AF_INET;
   udp_sock_addr.sin_port = htons(WIFLY_SERVER_PORT);
   udp_sock_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-  if (-1 == bind(udp_sock, (struct sockaddr*)&udp_sock_addr, sizeof(udp_sock_addr)))
+  if (0 != bind(listenSocket, (struct sockaddr*)&udp_sock_addr, sizeof(udp_sock_addr))) {
+		printf("%s:%d %s: bind() failed\n", __FILE__, __LINE__, __FUNCTION__);
 		return 0;
+	}
 
+  if (0 != listen(listenSocket, 0)) {
+		printf("%s:%d %s: listen() failed\n", __FILE__, __LINE__, __FUNCTION__);
+		return 0;
+	}
+
+	int tcpSocket = accept(listenSocket, NULL, NULL);
 	for(;;)
 	{
-		uns8 buf[1024];
-		int bytesRead = recvfrom(udp_sock, buf, sizeof(buf), 0, 0, 0);
-		int i;
-		for(i = 0; i < bytesRead; i++)
+		int bytesRead;
+		do
 		{
-			if(!RingBuf_HasError(&g_RingBuf))
+			uns8 buf[1024];
+			bytesRead = recv(tcpSocket, buf, sizeof(buf), 0);
+			printf("%d bytesRead\n", bytesRead);
+			int i;
+			for(i = 0; i < bytesRead; i++)
 			{
-				RingBuf_Put(&g_RingBuf, buf[i]);
+				if(!RingBuf_HasError(&g_RingBuf))
+				{
+					RingBuf_Put(&g_RingBuf, buf[i]);
+				}
 			}
-		}
+		} while(bytesRead > 0);
+		// don't allow immediate reconnection
+		sleep(1);
+		tcpSocket = accept(listenSocket, NULL, NULL);
 	}
 }
 
