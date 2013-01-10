@@ -56,7 +56,7 @@ class BroadcastReceiver
 #endif /* #ifndef OS_ANDROID */
 
 		uint32_t GetIp(size_t index) const;
-		uint32_t GetNextRemote(void);
+		uint32_t GetNextRemote(timeval* timeout);
 		uint16_t GetPort(size_t index) const;
 
 		/**

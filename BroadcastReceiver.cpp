@@ -43,14 +43,17 @@ void BroadcastReceiver::operator() (std::ostream& out, unsigned short timeout)
 	if(0 == std::atomic_fetch_add(&mNumInstances, 1))
 	{
 		size_t numRemotes = 0;
-		time_t endTime = time(NULL) + timeout;
+		const time_t endTime = time(NULL) + timeout;
 		uint32_t remote;
 		do
 		{
-			remote = GetNextRemote();
-			out << numRemotes << ':' << std::hex << remote << std::endl;
-			numRemotes++;
-		} while((0 != remote) && (time(NULL) < endTime));
+			timeval timeleft = {endTime - time(NULL), 0};
+			remote = GetNextRemote(&timeleft);
+			if(remote != 0) {
+				out << numRemotes << ':' << std::hex << remote << std::endl;
+				numRemotes++;
+			}
+		} while(time(NULL) < endTime);
 	}
 	std::atomic_fetch_sub(&mNumInstances, 1);
 }
@@ -61,17 +64,14 @@ uint32_t BroadcastReceiver::GetIp(size_t index) const
 	return mIpTable[index]->m_Addr;
 }
 
-uint32_t BroadcastReceiver::GetNextRemote(void)
+uint32_t BroadcastReceiver::GetNextRemote(timeval* timeout)
 {
-
 	UdpSocket udpSock(INADDR_ANY, mPort, true, true);
 	sockaddr_storage remoteAddr;
 	socklen_t remoteAddrLength = sizeof(remoteAddr);
 	
-	for(;;)
-	{
 		BroadcastMessage msg;
-		size_t bytesRead = udpSock.RecvFrom((unsigned char*)&msg, sizeof(msg), NULL, (sockaddr*)&remoteAddr, &remoteAddrLength);
+		size_t bytesRead = udpSock.RecvFrom((unsigned char*)&msg, sizeof(msg), timeout, (sockaddr*)&remoteAddr, &remoteAddrLength);
 		if(msg.IsWiflyBroadcast(bytesRead))
 		{
 			Endpoint* newRemote = new Endpoint(remoteAddr, remoteAddrLength, msg.port);
@@ -84,11 +84,10 @@ uint32_t BroadcastReceiver::GetNextRemote(void)
 #endif /* #ifndef OS_ANDROID */
 			return newRemote->m_Addr;
 		}
-		else if(msg.IsStop(bytesRead))
+		//else if(msg.IsStop(bytesRead))
 		{
 			return 0;
 		}
-	}
 }
 
 uint16_t BroadcastReceiver::GetPort(size_t index) const

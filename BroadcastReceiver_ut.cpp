@@ -78,8 +78,8 @@ int ut_BroadcastReceiver_TestSimple(void)
 	std::ostringstream out;
 	UdpSocket udpSock(0x7f000001, BroadcastReceiver::BROADCAST_PORT, false);
 	BroadcastReceiver dummyReceiver;
-	std::thread myThread(std::ref(dummyReceiver), std::ref(out), 1);
-	sleep(2);
+	std::thread myThread(std::ref(dummyReceiver), std::ref(out), 2);
+	sleep(1);
 	udpSock.Send(capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	dummyReceiver.Stop();
 	myThread.join();
@@ -96,16 +96,15 @@ int ut_BroadcastReceiver_TestTwo(void)
 	std::ostringstream out;
 	UdpSocket udpSock(0x7f000001, BroadcastReceiver::BROADCAST_PORT, false);
 	BroadcastReceiver dummyReceiver;
-	std::thread myThread(std::ref(dummyReceiver), std::ref(out), 2);
-	
-	//TODO timeout ist not completely implemented in BroadcastReceiver
-
+	std::thread myThread(std::ref(dummyReceiver), std::ref(out), 3);
+	sleep(1);
 	udpSock.Send(capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
+	sleep(1);
 	udpSock.Send(capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
 	dummyReceiver.Stop();
 	myThread.join();
 
-	CHECK(0 == out.str().compare("0:7f000001\n0:7f000001\n"));
+	CHECK(0 == out.str().compare("0:7f000001\n1:7f000001\n"));
 	CHECK(2 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetIp(0));
 	CHECK(0x7F000001 == dummyReceiver.GetIp(1));
@@ -117,7 +116,7 @@ int main (int argc, const char* argv[])
 	UnitTestMainBegin();
 	RunTest(true, ut_BroadcastReceiver_TestEmpty);
 	RunTest(true, ut_BroadcastReceiver_TestSimple);
-	RunTest(false, ut_BroadcastReceiver_TestTwo);
+	RunTest(true, ut_BroadcastReceiver_TestTwo);
 	UnitTestMainEnd();
 }
 
