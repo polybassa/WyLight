@@ -17,8 +17,6 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "BroadcastReceiver.h"
-
-#include <cstring>
 #include <iostream>
 #include <stdio.h>
 
@@ -27,16 +25,9 @@ const size_t BroadcastReceiver::BROADCAST_DEVICE_ID_LENGTH = 5;
 const char BroadcastReceiver::STOP_MSG[] = "StopThread";
 const size_t BroadcastReceiver::STOP_MSG_LENGTH = sizeof(STOP_MSG);
 
-void* Run(void* ptr)
+BroadcastReceiver::BroadcastReceiver(unsigned short port)
+	: mPort(port), mNumInstances(0)
 {
-	BroadcastReceiver* pObj = reinterpret_cast<BroadcastReceiver*>(ptr);
-	(*pObj)();
-	return NULL;
-}
-
-BroadcastReceiver::BroadcastReceiver(unsigned short port) : mPort(port), mMutex(PTHREAD_MUTEX_INITIALIZER)
-{
-	pthread_create(&mThread, NULL, Run, this);
 }
 
 BroadcastReceiver::~BroadcastReceiver(void)
@@ -45,7 +36,32 @@ BroadcastReceiver::~BroadcastReceiver(void)
 	//TODO cleanup mIpTable
 }
 
-void BroadcastReceiver::operator()(void)
+#ifndef OS_ANDROID
+void BroadcastReceiver::operator() (std::ostream& out, unsigned short timeout)
+{
+	// only one thread allowed per instance
+	if(0 == std::atomic_fetch_add(&mNumInstances, 1))
+	{
+		size_t numRemotes = 0;
+		time_t endTime = time(NULL) + timeout;
+		uint32_t remote;
+		do
+		{
+			remote = GetNextRemote();
+			out << numRemotes << ':' << std::hex << remote << std::endl;
+			numRemotes++;
+		} while((0 != remote) && (time(NULL) < endTime));
+	}
+	std::atomic_fetch_sub(&mNumInstances, 1);
+}
+#endif /* #ifndef OS_ANDROID */
+
+uint32_t BroadcastReceiver::GetIp(size_t index) const
+{
+	return mIpTable[index]->m_Addr;
+}
+
+uint32_t BroadcastReceiver::GetNextRemote(void)
 {
 
 	UdpSocket udpSock(INADDR_ANY, mPort, true, true);
@@ -56,31 +72,23 @@ void BroadcastReceiver::operator()(void)
 	{
 		BroadcastMessage msg;
 		size_t bytesRead = udpSock.RecvFrom((unsigned char*)&msg, sizeof(msg), NULL, (sockaddr*)&remoteAddr, &remoteAddrLength);
-		// received a Wifly broadcast? 
-		if((sizeof(msg) == bytesRead) && (0 == memcmp(msg.deviceId, BROADCAST_DEVICE_ID, BROADCAST_DEVICE_ID_LENGTH)))
+		if(msg.IsWiflyBroadcast(bytesRead))
 		{
-#ifdef DEBUG
-			msg.NetworkToHost();
-			msg.Print(std::cout);
-			std::cout << std::hex << ntohl(((sockaddr_in*)&remoteAddr)->sin_addr.s_addr) << '\n';
-#endif
-			pthread_mutex_lock(&mMutex);
-			mIpTable.push_back(new Endpoint(remoteAddr, remoteAddrLength));
-			pthread_mutex_unlock(&mMutex);
+			Endpoint* newRemote = new Endpoint(remoteAddr, remoteAddrLength, msg.port);
+#ifndef OS_ANDROID
+			mMutex.lock();
+			mIpTable.push_back(newRemote);
+			mMutex.unlock();
+#else
+			mIpTable.push_back(newRemote);
+#endif /* #ifndef OS_ANDROID */
+			return newRemote->m_Addr;
 		}
-		// received a stop event?
-		else if(/*TODO remote.address().is_loopback()
-					&&*/ (STOP_MSG_LENGTH == bytesRead) 
-					&& (0 == memcmp(&msg, STOP_MSG, bytesRead)))
+		else if(msg.IsStop(bytesRead))
 		{
-			return;
+			return 0;
 		}
 	}
-}
-
-uint32_t BroadcastReceiver::GetIp(size_t index) const
-{
-	return mIpTable[index]->m_Addr;
 }
 
 uint16_t BroadcastReceiver::GetPort(size_t index) const
@@ -93,20 +101,10 @@ size_t BroadcastReceiver::NumRemotes(void) const
 	return mIpTable.size();
 }
 
-void BroadcastReceiver::ShowRemotes(std::ostream& out) const
-{
-	size_t index = 0;
-	for(vector<Endpoint*>::const_iterator it = mIpTable.begin(); it != mIpTable.end(); *it++, index++)
-	{
-		out << index << ':' << std::hex << (*it)->m_Addr << '\n';
-	}
-}
-
 void BroadcastReceiver::Stop(void)
 {
 	UdpSocket sock(INADDR_LOOPBACK, mPort, false);
 	sock.Send((unsigned char const*)STOP_MSG, STOP_MSG_LENGTH);
-	pthread_join(mThread, NULL);
 	return;
 }
 
