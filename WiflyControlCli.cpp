@@ -28,8 +28,8 @@
 
 using std::cout;
 
-WiflyControlCli::WiflyControlCli(unsigned long addr, unsigned short port, bool useTcp)
-: mControl(addr, port, useTcp), mRunning(true)
+WiflyControlCli::WiflyControlCli(unsigned long addr, unsigned short port)
+: mControl(addr, port), mRunning(true)
 {
 	cout << "Connecting to " << std::hex << addr << ':' << port << std::endl;
 }
@@ -91,6 +91,6 @@ int main(int argc, const char* argv[])
 
 	receiver.Stop();
 	t.join();
-	WiflyControlCli cli(receiver.GetIp(selection), receiver.GetPort(selection), true);
+	WiflyControlCli cli(receiver.GetIp(selection), receiver.GetPort(selection));
 	cli.Run();
 }

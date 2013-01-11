@@ -45,8 +45,8 @@ using namespace std;
 	REF.blue = (RGBA & 0x0000ff00) >> 8; \
 }
 
-WiflyControl::WiflyControl(unsigned long addr, unsigned short port, bool useTcp)
-: mProxy(useTcp ? (reinterpret_cast<const ClientSocket*>(new TcpSocket(addr, port))) : (reinterpret_cast<const ClientSocket*>(new UdpSocket(addr, port))))
+WiflyControl::WiflyControl(unsigned long addr, unsigned short port)
+: mProxy(new TcpSocket(addr, port))
 {
 	//TODO remove length
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;

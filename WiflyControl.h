@@ -37,7 +37,7 @@ class WiflyControl
 		int FwSend(struct cmd_frame* pFrame, size_t length, unsigned char* pResponse, size_t responseSize) const;
 		
 	public:
-		WiflyControl(unsigned long addr, unsigned short port, bool useTcp);
+		WiflyControl(unsigned long addr, unsigned short port);
 		
 		/** ----------------------------- BOOTLOADER METHODES ----------------------------- **/
 		size_t BlFlashErase(unsigned char* pBuffer, unsigned int endAddress, const size_t numPages, bool doSync) const;
