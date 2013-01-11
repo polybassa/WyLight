@@ -37,9 +37,12 @@ void Java_biz_bruenn_WiflyLight_RemoteCollector_releaseBroadcastReceiver(JNIEnv*
 	delete (BroadcastReceiver*)pNative;
 }
 
-jlong Java_biz_bruenn_WiflyLight_RemoteCollector_getNextRemote(JNIEnv* env, jobject ref, jlong pNative)
+jlong Java_biz_bruenn_WiflyLight_RemoteCollector_getNextRemote(JNIEnv* env, jobject ref, jlong pNative, jlong timeoutNanos)
 {
-	return ((BroadcastReceiver*)pNative)->GetNextRemote(NULL);
+	timeval timeout;
+	timeout.tv_sec = timeoutNanos / 1000000000L;
+	timeout.tv_usec = (timeoutNanos % 1000000000L) / 1000L;
+	return ((BroadcastReceiver*)pNative)->GetNextRemote(&timeout);
 }
 }
 

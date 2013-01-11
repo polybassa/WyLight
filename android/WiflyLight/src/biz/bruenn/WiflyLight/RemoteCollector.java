@@ -11,7 +11,7 @@ import android.widget.Button;
 public class RemoteCollector extends AsyncTask<Long, Void, Void> {
 	private native long createBroadcastReceiver();
 	private native long getNumRemotes(long pNative);
-	private native long getNextRemote(long pNative);
+	private native long getNextRemote(long pNative, long timeoutNanos);
 	private native void releaseBroadcastReceiver(long pNative);
 	
 	private ArrayAdapter<String> mRemoteArrayAdapter;
@@ -37,13 +37,18 @@ public class RemoteCollector extends AsyncTask<Long, Void, Void> {
 
 	@Override
 	protected Void doInBackground(Long... params) {
-		long timeoutTmms = params[0];
-		final long endTime = 1000000*timeoutTmms + System.nanoTime();
+		long timeoutNanos = params[0];
+		final long endTime = System.nanoTime() + timeoutNanos;
 		
 		mMulticastLock.acquire();
-		while(!isCancelled() && System.nanoTime() < endTime) {
-			mRemoteArray.add(String.valueOf(getNextRemote(mNative)));
-			publishProgress();
+		while(!isCancelled() && (timeoutNanos > 0)) {
+			long remote = getNextRemote(mNative, timeoutNanos);
+			if(0 != remote)
+			{
+				mRemoteArray.add(String.valueOf(remote));
+				publishProgress();
+			}
+			timeoutNanos = endTime - System.nanoTime();
 		}
 		mMulticastLock.release();
 		return null;
