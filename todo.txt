@@ -1,6 +1,5 @@
 
 Bug:
-- Memory leak in WiflyControl constructor socket is newer deleted
 
 
 Refactoring:

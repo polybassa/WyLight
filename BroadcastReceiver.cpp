@@ -17,6 +17,7 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "BroadcastReceiver.h"
+#include "timeval.h"
 #include <iostream>
 #include <stdio.h>
 
@@ -24,31 +25,6 @@ const char BroadcastReceiver::BROADCAST_DEVICE_ID[] = "WiFly";
 const size_t BroadcastReceiver::BROADCAST_DEVICE_ID_LENGTH = 5;
 const char BroadcastReceiver::STOP_MSG[] = "StopThread";
 const size_t BroadcastReceiver::STOP_MSG_LENGTH = sizeof(STOP_MSG);
-
-void timeval_add(timeval* ref, const timeval* diff)
-{
-	if(!diff) return;
-	ref->tv_usec += diff->tv_usec;
-	ref->tv_sec += diff->tv_sec;
-	ref->tv_sec += ref->tv_usec / 1000000;
-	ref->tv_usec = ref->tv_usec % 1000000;
-}
-
-/**
- * @param a should be >= than <b>
- * @param b should be <= than <a>
- * @param result if not NULL result will be a-b
- * @return true if result == NULL or a >= b
- */
-bool timeval_sub(const timeval* a, const timeval* b, timeval* result)
-{
-	if(!result) return true;
-
-	long long micros = (a->tv_sec - b->tv_sec) * 1000000 + a->tv_usec - b->tv_usec;
-	result->tv_sec = micros / 1000000;
-	result->tv_usec = micros % 1000000;
-	return micros >= 0;
-}
 
 BroadcastReceiver::BroadcastReceiver(unsigned short port)
 	: mPort(port), mIsRunning(true), mNumInstances(0)
