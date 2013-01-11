@@ -27,6 +27,9 @@
 
 using std::vector;
 
+
+static const timespec NANOSLEEP_TIME = {0, 100000};
+
 unsigned char capturedBroadcastMessage[110] = {
 0x00, 0x0f, 0xb5, 0xb2, 0x57, 0xfa, //MAC
 0x07, //channel
@@ -68,7 +71,6 @@ int ut_BroadcastReceiver_TestEmpty(void)
 	TestCaseBegin();
 	BroadcastReceiver dummyReceiver;
 	CHECK(0 == dummyReceiver.NumRemotes());
-	sleep(1);
 	TestCaseEnd();
 }
 
@@ -80,7 +82,7 @@ int ut_BroadcastReceiver_TestSimple(void)
 	BroadcastReceiver dummyReceiver;
 	timeval timeout = {2, 0};
 	std::thread myThread(std::ref(dummyReceiver), std::ref(out), &timeout);
-	sleep(1);
+	nanosleep(&NANOSLEEP_TIME, NULL);
 	udpSock.Send(capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	dummyReceiver.Stop();
 	myThread.join();
@@ -99,9 +101,9 @@ int ut_BroadcastReceiver_TestTwo(void)
 	BroadcastReceiver dummyReceiver;
 	timeval timeout = {3, 0};
 	std::thread myThread(std::ref(dummyReceiver), std::ref(out), &timeout);
-	sleep(1);
+	nanosleep(&NANOSLEEP_TIME, NULL);
 	udpSock.Send(capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
-	sleep(1);
+	nanosleep(&NANOSLEEP_TIME, NULL);
 	udpSock.Send(capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
 	dummyReceiver.Stop();
 	myThread.join();
@@ -120,9 +122,9 @@ int ut_BroadcastReceiver_TestNoTimeout(void)
 	UdpSocket udpSock(0x7f000001, BroadcastReceiver::BROADCAST_PORT, false);
 	BroadcastReceiver dummyReceiver;
 	std::thread myThread(std::ref(dummyReceiver), std::ref(out), reinterpret_cast<timeval*>(NULL));
-	sleep(1);
+	nanosleep(&NANOSLEEP_TIME, NULL);
 	udpSock.Send(capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
-	sleep(1);
+	nanosleep(&NANOSLEEP_TIME, NULL);
 	udpSock.Send(capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
 	dummyReceiver.Stop();
 	myThread.join();
