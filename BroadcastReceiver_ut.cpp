@@ -113,12 +113,34 @@ int ut_BroadcastReceiver_TestTwo(void)
 	TestCaseEnd();
 }
 
+int ut_BroadcastReceiver_TestNoTimeout(void)
+{
+	TestCaseBegin();
+	std::ostringstream out;
+	UdpSocket udpSock(0x7f000001, BroadcastReceiver::BROADCAST_PORT, false);
+	BroadcastReceiver dummyReceiver;
+	std::thread myThread(std::ref(dummyReceiver), std::ref(out), reinterpret_cast<timeval*>(NULL));
+	sleep(1);
+	udpSock.Send(capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
+	sleep(1);
+	udpSock.Send(capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
+	dummyReceiver.Stop();
+	myThread.join();
+
+	CHECK(0 == out.str().compare("0:7f000001\n1:7f000001\n"));
+	CHECK(2 == dummyReceiver.NumRemotes());
+	CHECK(0x7F000001 == dummyReceiver.GetIp(0));
+	CHECK(0x7F000001 == dummyReceiver.GetIp(1));
+	TestCaseEnd();
+}
+
 int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
 	RunTest(true, ut_BroadcastReceiver_TestEmpty);
 	RunTest(true, ut_BroadcastReceiver_TestSimple);
 	RunTest(true, ut_BroadcastReceiver_TestTwo);
+	RunTest(true, ut_BroadcastReceiver_TestNoTimeout);
 	UnitTestMainEnd();
 }
 
