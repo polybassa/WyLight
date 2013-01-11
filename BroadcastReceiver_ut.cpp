@@ -28,7 +28,7 @@
 using std::vector;
 
 
-static const timespec NANOSLEEP_TIME = {0, 100000};
+static const timespec NANOSLEEP_TIME = {0, 5000000};
 
 unsigned char capturedBroadcastMessage[110] = {
 0x00, 0x0f, 0xb5, 0xb2, 0x57, 0xfa, //MAC
