@@ -25,6 +25,25 @@ const size_t BroadcastReceiver::BROADCAST_DEVICE_ID_LENGTH = 5;
 const char BroadcastReceiver::STOP_MSG[] = "StopThread";
 const size_t BroadcastReceiver::STOP_MSG_LENGTH = sizeof(STOP_MSG);
 
+void timeval_add(timeval* ref, const timeval* diff)
+{
+	ref->tv_usec += diff->tv_usec;
+	ref->tv_sec += diff->tv_sec;
+	ref->tv_sec += ref->tv_usec / 1000000;
+	ref->tv_usec = ref->tv_usec % 1000000;
+}
+
+/**
+ * @return a >= b and the result=a-b
+ */
+bool timeval_sub(const timeval* a, const timeval* b, timeval* result)
+{
+	long long micros = (a->tv_sec - b->tv_sec) * 1000000 + a->tv_usec - b->tv_usec;
+	result->tv_sec = micros / 1000000;
+	result->tv_usec = micros % 1000000;
+	return micros >= 0;
+}
+
 BroadcastReceiver::BroadcastReceiver(unsigned short port)
 	: mPort(port), mIsRunning(true), mNumInstances(0)
 {
@@ -37,23 +56,25 @@ BroadcastReceiver::~BroadcastReceiver(void)
 }
 
 #ifndef OS_ANDROID
-void BroadcastReceiver::operator() (std::ostream& out, unsigned short timeout)
+void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 {
 	// only one thread allowed per instance
 	if(0 == std::atomic_fetch_add(&mNumInstances, 1))
 	{
 		size_t numRemotes = 0;
-		const time_t endTime = time(NULL) + timeout;
+		timeval endTime, now;
+		gettimeofday(&endTime, NULL);
+		timeval_add(&endTime, pTimeout);
 		uint32_t remote;
 		do
 		{
-			timeval timeleft = {endTime - time(NULL), 0};
-			remote = GetNextRemote(&timeleft);
+			remote = GetNextRemote(pTimeout);
 			if(remote != 0) {
 				out << numRemotes << ':' << std::hex << remote << std::endl;
 				numRemotes++;
 			}
-		} while(mIsRunning && (time(NULL) < endTime));
+			gettimeofday(&now, NULL);
+		} while(mIsRunning && timeval_sub(&endTime, &now, pTimeout));
 	}
 	std::atomic_fetch_sub(&mNumInstances, 1);
 }

@@ -78,7 +78,8 @@ int ut_BroadcastReceiver_TestSimple(void)
 	std::ostringstream out;
 	UdpSocket udpSock(0x7f000001, BroadcastReceiver::BROADCAST_PORT, false);
 	BroadcastReceiver dummyReceiver;
-	std::thread myThread(std::ref(dummyReceiver), std::ref(out), 2);
+	timeval timeout = {2, 0};
+	std::thread myThread(std::ref(dummyReceiver), std::ref(out), &timeout);
 	sleep(1);
 	udpSock.Send(capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	dummyReceiver.Stop();
@@ -96,7 +97,8 @@ int ut_BroadcastReceiver_TestTwo(void)
 	std::ostringstream out;
 	UdpSocket udpSock(0x7f000001, BroadcastReceiver::BROADCAST_PORT, false);
 	BroadcastReceiver dummyReceiver;
-	std::thread myThread(std::ref(dummyReceiver), std::ref(out), 3);
+	timeval timeout = {3, 0};
+	std::thread myThread(std::ref(dummyReceiver), std::ref(out), &timeout);
 	sleep(1);
 	udpSock.Send(capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	sleep(1);

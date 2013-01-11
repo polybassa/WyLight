@@ -52,7 +52,7 @@ class BroadcastReceiver
 		 * @param out stream to print collected remotes on
 		 * @param timeout in seconds, until execution is terminated
 		 */
-		void operator() (std::ostream& out, unsigned short timeout);
+		void operator() (std::ostream& out, timeval* timeout);
 #endif /* #ifndef OS_ANDROID */
 
 		uint32_t GetIp(size_t index) const;
