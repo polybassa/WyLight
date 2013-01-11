@@ -71,6 +71,7 @@ class BroadcastReceiver
 
 	private:
 		vector<Endpoint*> mIpTable;
+		volatile bool mIsRunning;
 #ifndef OS_ANDROID
 		std::atomic<int> mNumInstances;
 		std::mutex mMutex;

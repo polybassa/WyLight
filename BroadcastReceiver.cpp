@@ -26,7 +26,7 @@ const char BroadcastReceiver::STOP_MSG[] = "StopThread";
 const size_t BroadcastReceiver::STOP_MSG_LENGTH = sizeof(STOP_MSG);
 
 BroadcastReceiver::BroadcastReceiver(unsigned short port)
-	: mPort(port), mNumInstances(0)
+	: mPort(port), mIsRunning(true), mNumInstances(0)
 {
 }
 
@@ -53,7 +53,7 @@ void BroadcastReceiver::operator() (std::ostream& out, unsigned short timeout)
 				out << numRemotes << ':' << std::hex << remote << std::endl;
 				numRemotes++;
 			}
-		} while(time(NULL) < endTime);
+		} while(mIsRunning && (time(NULL) < endTime));
 	}
 	std::atomic_fetch_sub(&mNumInstances, 1);
 }
@@ -84,10 +84,7 @@ uint32_t BroadcastReceiver::GetNextRemote(timeval* timeout)
 #endif /* #ifndef OS_ANDROID */
 			return newRemote->m_Addr;
 		}
-		//else if(msg.IsStop(bytesRead))
-		{
-			return 0;
-		}
+		return 0;
 }
 
 uint16_t BroadcastReceiver::GetPort(size_t index) const
@@ -102,8 +99,6 @@ size_t BroadcastReceiver::NumRemotes(void) const
 
 void BroadcastReceiver::Stop(void)
 {
-	UdpSocket sock(INADDR_LOOPBACK, mPort, false);
-	//sock.Send((unsigned char const*)STOP_MSG, STOP_MSG_LENGTH);
-	return;
+	mIsRunning = false;
 }
 
