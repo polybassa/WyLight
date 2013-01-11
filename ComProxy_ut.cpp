@@ -237,12 +237,13 @@ int ut_ComProxy_BlEepromReadRequest(void)
 	TestSocket dummySocket(0, 0);
 	ComProxy proxy(dummySocket);
 	unsigned char response[512];
+	memset(response, 0, sizeof(response));
 
 	BlEepromReadRequest request;
 	request.SetAddressNumBytes(0xDA7A, sizeof(dummyBlFlashReadResponsePure));
 	size_t bytesReceived = proxy.Send(request, response, sizeof(response));
 	CHECK(sizeof(dummyBlFlashReadResponsePure) == bytesReceived);
-	CHECK(0 == memcmp(dummyBlFlashReadResponsePure, response, bytesReceived));
+	CHECK(0 == memcmp(dummyBlFlashReadResponsePure, response, sizeof(dummyBlFlashReadResponsePure)));
 	TestCaseEnd();
 }
 
@@ -252,6 +253,7 @@ int ut_ComProxy_BlEepromReadRequestTimeout(void)
 	TestSocket dummySocket(0, 0);
 	ComProxy proxy(dummySocket);
 	unsigned char response[512];
+	memset(response, 0, sizeof(response));
 	timeval delay = {1, 0};
 	dummySocket.SetDelay(delay);
 
@@ -273,11 +275,12 @@ int ut_ComProxy_BlFlashCrc16Request(void)
 	TestSocket dummySocket(0, 0);
 	ComProxy proxy(dummySocket);
 	unsigned char response[512];
+	memset(response, 0, sizeof(response));
 
 	BlFlashCrc16Request request(0xDA7ADA7A, 2);
 	size_t bytesReceived = proxy.Send(request, response, sizeof(response));
 	CHECK(sizeof(dummyBlFlashCrc16ResponsePure) == bytesReceived);
-	CHECK(0 == memcmp(dummyBlFlashCrc16ResponsePure, response, bytesReceived));
+	CHECK(0 == memcmp(dummyBlFlashCrc16ResponsePure, response, sizeof(dummyBlFlashCrc16ResponsePure)));
 	TestCaseEnd();
 }
 
@@ -287,11 +290,12 @@ int ut_ComProxy_BlFlashEraseRequest(void)
 	TestSocket dummySocket(0, 0);
 	ComProxy proxy(dummySocket);
 	unsigned char response[512];
+	memset(response, 0, sizeof(response));
 
 	BlFlashEraseRequest request(0xDA7ADA7A, 2);
 	size_t bytesReceived = proxy.Send(request, response, sizeof(response));
 	CHECK(sizeof(dummyBlFlashEraseResponsePure) == bytesReceived);
-	CHECK(0 == memcmp(dummyBlFlashEraseResponsePure, response, bytesReceived));
+	CHECK(0 == memcmp(dummyBlFlashEraseResponsePure, response, sizeof(dummyBlFlashEraseResponsePure)));
 	TestCaseEnd();
 }
 
@@ -301,12 +305,13 @@ int ut_ComProxy_BlFlashReadRequest(void)
 	TestSocket dummySocket(0, 0);
 	ComProxy proxy(dummySocket);
 	unsigned char response[512];
+	memset(response, 0, sizeof(response));
 
 	BlFlashReadRequest request;
 	request.SetAddressNumBytes(0, 0x40);
 	size_t bytesReceived = proxy.Send(request, response, sizeof(response));
 	CHECK(sizeof(dummyBlFlashReadResponsePure) == bytesReceived);
-	CHECK(0 == memcmp(dummyBlFlashReadResponsePure, response, bytesReceived));
+	CHECK(0 == memcmp(dummyBlFlashReadResponsePure, response, sizeof(dummyBlFlashReadResponsePure)));
 
 	
 	TestCaseEnd();
@@ -328,6 +333,7 @@ int ut_ComProxy_BlInfoRequest(void)
 	TestSocket dummySocket(0, 0);
 	ComProxy proxy(dummySocket);
 	unsigned char response[512];
+	memset(response, 0, sizeof(response));
 
 	BlInfoRequest infoRequest;
 	size_t bytesReceived = proxy.Send(infoRequest, response, sizeof(response));
@@ -337,7 +343,7 @@ int ut_ComProxy_BlInfoRequest(void)
 	Trace_Number(bytesReceived);
 	CHECK(sizeof(BlInfo) == bytesReceived);
 
-	CHECK(0 == memcmp(&dummyBlInfo, response, bytesReceived));
+	CHECK(0 == memcmp(&dummyBlInfo, response, sizeof(BlInfo)));
 	TestCaseEnd();
 }
 
