@@ -1,3 +1,11 @@
 
+Bug:
+- Memory leak in WiflyControl constructor socket is newer deleted
+
+
+Refactoring:
+- make extract timeval functions from ComProxy and BroadcastReceiver
+
+
 Improvement: fix rules in Makefile
 - build objects end dependencies

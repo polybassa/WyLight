@@ -29,6 +29,7 @@
 class WiflyControl
 {
 	private:
+		const TcpSocket mSock;
 		const ComProxy mProxy;
 		pthread_t mRecvThread;
 		struct cmd_frame mCmdFrame;

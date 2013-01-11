@@ -71,8 +71,8 @@ timeval& operator- (timeval& a, timeval& b)
 	return a;
 }
 
-ComProxy::ComProxy(const ClientSocket* const pSock)
-	: mSock(pSock)
+ComProxy::ComProxy(const ClientSocket& sock)
+	: mSock(sock)
 {
 }
 
@@ -206,7 +206,7 @@ size_t ComProxy::Recv(unsigned char* pBuffer, size_t length, timeval* timeout, b
 
 	// TODO refactor this with code in commandstorage. It should be identical to the fw receive implementation
 	do {
-		size_t bytesMasked = mSock->Recv(pBuffer, length, timeout);
+		size_t bytesMasked = mSock.Recv(pBuffer, length, timeout);
 #ifdef DEBUG
 		std::cout << std::endl << __FILE__ << "::" << __FUNCTION__
 		<< "(): Bytes masked: " << bytesMasked;
@@ -318,13 +318,13 @@ int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsi
 				return -1;
 			}
 			Trace_String("ComProxy::Send: SYNC...\n");
-			mSock->Send(BL_SYNC, sizeof(BL_SYNC));
-		} while(0 == mSock->Recv(recvBuffer, sizeof(recvBuffer), &RESPONSE_TIMEOUT));
+			mSock.Send(BL_SYNC, sizeof(BL_SYNC));
+		} while(0 == mSock.Recv(recvBuffer, sizeof(recvBuffer), &RESPONSE_TIMEOUT));
 	}
 
 		{
 			/* synchronized -> send request */
-			if(static_cast<int>(bufferSize) != mSock->Send(buffer, bufferSize))
+			if(static_cast<int>(bufferSize) != mSock.Send(buffer, bufferSize))
 			{
 				Trace_String("ComProxy::Send: socket->Send() failed\n");
 				return 0;

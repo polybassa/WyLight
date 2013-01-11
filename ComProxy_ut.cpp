@@ -170,7 +170,7 @@ int ut_ComProxy_MaskControlCharacters(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
-	ComProxy proxy(&dummySocket);
+	ComProxy proxy(dummySocket);
 	unsigned char sendBuffer[256];
 	unsigned char recvBuffer[sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 + 1];
 
@@ -235,7 +235,7 @@ int ut_ComProxy_BlEepromReadRequest(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
-	ComProxy proxy(&dummySocket);
+	ComProxy proxy(dummySocket);
 	unsigned char response[512];
 
 	BlEepromReadRequest request;
@@ -250,7 +250,7 @@ int ut_ComProxy_BlEepromReadRequestTimeout(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
-	ComProxy proxy(&dummySocket);
+	ComProxy proxy(dummySocket);
 	unsigned char response[512];
 	timeval delay = {1, 0};
 	dummySocket.SetDelay(delay);
@@ -271,7 +271,7 @@ int ut_ComProxy_BlFlashCrc16Request(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
-	ComProxy proxy(&dummySocket);
+	ComProxy proxy(dummySocket);
 	unsigned char response[512];
 
 	BlFlashCrc16Request request(0xDA7ADA7A, 2);
@@ -285,7 +285,7 @@ int ut_ComProxy_BlFlashEraseRequest(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
-	ComProxy proxy(&dummySocket);
+	ComProxy proxy(dummySocket);
 	unsigned char response[512];
 
 	BlFlashEraseRequest request(0xDA7ADA7A, 2);
@@ -299,7 +299,7 @@ int ut_ComProxy_BlFlashReadRequest(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
-	ComProxy proxy(&dummySocket);
+	ComProxy proxy(dummySocket);
 	unsigned char response[512];
 
 	BlFlashReadRequest request;
@@ -326,7 +326,7 @@ int ut_ComProxy_BlInfoRequest(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
-	ComProxy proxy(&dummySocket);
+	ComProxy proxy(dummySocket);
 	unsigned char response[512];
 
 	BlInfoRequest infoRequest;
@@ -345,7 +345,7 @@ int ut_ComProxy_BlRunAppRequest(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
-	ComProxy proxy(&dummySocket);
+	ComProxy proxy(dummySocket);
 
 	BlRunAppRequest request;
 	size_t bytesReceived = proxy.Send(request, 0, 0);

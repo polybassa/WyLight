@@ -46,7 +46,7 @@ using namespace std;
 }
 
 WiflyControl::WiflyControl(unsigned long addr, unsigned short port)
-: mProxy(new TcpSocket(addr, port))
+: mSock(addr, port), mProxy(mSock)
 {
 	//TODO remove length
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;
