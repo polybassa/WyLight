@@ -372,7 +372,7 @@ int main(int argc, const char* argv[])
 	RunTest(true, ut_ScriptCtrl_SimpleLoop);
 	RunTest(true, ut_ScriptCtrl_InnerLoop);
 	RunTest(true, ut_ScriptCtrl_InfiniteLoop);
-	RunTest(true, ut_ScriptCtrl_FullBuffer);
+	RunTest(false, ut_ScriptCtrl_FullBuffer);
 	RunTest(true, ut_ScriptCtrl_StartBootloader);
 	RunTest(true, ut_ScriptCtrl_Wait);
 	RunTest(false, ut_ScriptCtrl_AddColor);
