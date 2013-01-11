@@ -30,6 +30,7 @@ pthread_mutex_t g_led_mutex = PTHREAD_MUTEX_INITIALIZER;
 uns8 g_led_status[NUM_OF_LED*3];
 extern uns8 g_UpdateLed;
 
+int g_uartSocket = -1;
 const unsigned short BROADCAST_PORT = 55555;
 const unsigned short WIFLY_SERVER_PORT = 2000;
 unsigned char capturedBroadcastMessage[110] = {
@@ -94,14 +95,14 @@ void* InterruptRoutine(void* unused)
 		return 0;
 	}
 
-	int tcpSocket = accept(listenSocket, NULL, NULL);
+	g_uartSocket = accept(listenSocket, NULL, NULL);
 	for(;;)
 	{
 		int bytesRead;
 		do
 		{
 			uns8 buf[1024];
-			bytesRead = recv(tcpSocket, buf, sizeof(buf), 0);
+			bytesRead = recv(g_uartSocket, buf, sizeof(buf), 0);
 			printf("%d bytesRead\n", bytesRead);
 			int i;
 			for(i = 0; i < bytesRead; i++)
@@ -114,7 +115,7 @@ void* InterruptRoutine(void* unused)
 		} while(bytesRead > 0);
 		// don't allow immediate reconnection
 		sleep(1);
-		tcpSocket = accept(listenSocket, NULL, NULL);
+		g_uartSocket = accept(listenSocket, NULL, NULL);
 	}
 }
 
@@ -152,6 +153,7 @@ void UART_Init() {}
 void UART_Send(unsigned char ch)
 {
 	printf("%c", ch);
+	send(g_uartSocket, &ch, sizeof(ch), 0);
 }
 void SPI_Init() {}
 char SPI_Send(char data)

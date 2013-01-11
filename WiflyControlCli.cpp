@@ -1,5 +1,5 @@
 /**
-		Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+		Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
 
@@ -28,8 +28,8 @@
 
 using std::cout;
 
-WiflyControlCli::WiflyControlCli(unsigned long addr, unsigned short port, bool useTcp)
-: mControl(addr, port, useTcp), mRunning(true)
+WiflyControlCli::WiflyControlCli(unsigned long addr, unsigned short port)
+: mControl(addr, port), mRunning(true)
 {
 	cout << "Connecting to " << std::hex << addr << ':' << port << std::endl;
 }
@@ -80,7 +80,7 @@ void WiflyControlCli::ShowHelp(void) const
 int main(int argc, const char* argv[])
 {
 	BroadcastReceiver receiver(55555);
-	std::thread t(std::ref(receiver), std::ref(cout), 10);
+	std::thread t(std::ref(receiver), std::ref(cout));
 
 	// wait for user input
 	size_t selection;
@@ -91,6 +91,6 @@ int main(int argc, const char* argv[])
 
 	receiver.Stop();
 	t.join();
-	WiflyControlCli cli(receiver.GetIp(selection), receiver.GetPort(selection), true);
+	WiflyControlCli cli(receiver.GetIp(selection), receiver.GetPort(selection));
 	cli.Run();
 }

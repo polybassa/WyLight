@@ -1,5 +1,5 @@
 /**
-		Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+		Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
 
@@ -45,8 +45,8 @@ using namespace std;
 	REF.blue = (RGBA & 0x0000ff00) >> 8; \
 }
 
-WiflyControl::WiflyControl(unsigned long addr, unsigned short port, bool useTcp)
-: mProxy(useTcp ? (reinterpret_cast<const ClientSocket*>(new TcpSocket(addr, port))) : (reinterpret_cast<const ClientSocket*>(new UdpSocket(addr, port))))
+WiflyControl::WiflyControl(unsigned long addr, unsigned short port)
+: mSock(addr, port), mProxy(mSock)
 {
 	//TODO remove length
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;

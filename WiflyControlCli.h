@@ -1,5 +1,5 @@
 /**
-		Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+		Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
 
@@ -29,7 +29,7 @@ class WiflyControlCli
 		void ShowHelp(void) const;
 
 	public:
-		WiflyControlCli(unsigned long addr, unsigned short port, bool useTcp);
+		WiflyControlCli(unsigned long addr, unsigned short port);
 		void Run(void);	
 };
 #endif /* #ifndef _WIFLYCONTROLCLI_H_ */

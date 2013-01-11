@@ -1,5 +1,5 @@
 /**
-		Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+		Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
 
@@ -107,7 +107,14 @@ size_t UdpSocket::Recv(unsigned char* pBuffer, size_t length, timeval* timeout) 
 
 size_t UdpSocket::RecvFrom(unsigned char* pBuffer, size_t length, timeval* timeout, struct sockaddr* remoteAddr, socklen_t* remoteAddrLength) const
 {
-	return recvfrom(mSock, pBuffer, length, 0, remoteAddr, remoteAddrLength);
+	fd_set readSet;
+	FD_ZERO(&readSet);
+	FD_SET(mSock, &readSet);
+	if(0 < select(mSock+1, &readSet, NULL, NULL, timeout))
+	{
+		return recvfrom(mSock, pBuffer, length, 0, remoteAddr, remoteAddrLength);
+	}
+	return 0;
 }
 
 int UdpSocket::Send(const unsigned char* frame, size_t length) const

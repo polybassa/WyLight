@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+ Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -52,11 +52,11 @@ class BroadcastReceiver
 		 * @param out stream to print collected remotes on
 		 * @param timeout in seconds, until execution is terminated
 		 */
-		void operator() (std::ostream& out, unsigned short timeout);
+		void operator() (std::ostream& out, timeval* timeout = NULL);
 #endif /* #ifndef OS_ANDROID */
 
 		uint32_t GetIp(size_t index) const;
-		uint32_t GetNextRemote(void);
+		uint32_t GetNextRemote(timeval* timeout);
 		uint16_t GetPort(size_t index) const;
 
 		/**
@@ -71,6 +71,7 @@ class BroadcastReceiver
 
 	private:
 		vector<Endpoint*> mIpTable;
+		volatile bool mIsRunning;
 #ifndef OS_ANDROID
 		std::atomic<int> mNumInstances;
 		std::mutex mMutex;
