@@ -121,7 +121,7 @@ int ut_BroadcastReceiver_TestNoTimeout(void)
 	std::ostringstream out;
 	UdpSocket udpSock(0x7f000001, BroadcastReceiver::BROADCAST_PORT, false);
 	BroadcastReceiver dummyReceiver;
-	std::thread myThread(std::ref(dummyReceiver), std::ref(out), reinterpret_cast<timeval*>(NULL));
+	std::thread myThread(std::ref(dummyReceiver), std::ref(out));
 	nanosleep(&NANOSLEEP_TIME, NULL);
 	udpSock.Send(capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	nanosleep(&NANOSLEEP_TIME, NULL);

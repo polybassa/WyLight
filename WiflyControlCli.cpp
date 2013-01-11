@@ -80,7 +80,7 @@ void WiflyControlCli::ShowHelp(void) const
 int main(int argc, const char* argv[])
 {
 	BroadcastReceiver receiver(55555);
-	std::thread t(std::ref(receiver), std::ref(cout), 10);
+	std::thread t(std::ref(receiver), std::ref(cout));
 
 	// wait for user input
 	size_t selection;
