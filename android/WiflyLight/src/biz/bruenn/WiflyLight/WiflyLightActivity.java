@@ -42,7 +42,7 @@ public class WiflyLightActivity extends Activity {
 				new RemoteCollector((WifiManager)getSystemService(Context.WIFI_SERVICE), 
 						mRemoteArray,
 						mRemoteArrayAdapter,
-						btn).execute(Long.valueOf(3000));
+						btn).execute(Long.valueOf(3000000000L));
 			}
 		});
     }

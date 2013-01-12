@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+ Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -17,6 +17,7 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "BroadcastReceiver.h"
+#include "timeval.h"
 #include <iostream>
 #include <stdio.h>
 
@@ -26,7 +27,7 @@ const char BroadcastReceiver::STOP_MSG[] = "StopThread";
 const size_t BroadcastReceiver::STOP_MSG_LENGTH = sizeof(STOP_MSG);
 
 BroadcastReceiver::BroadcastReceiver(unsigned short port)
-	: mPort(port), mNumInstances(0)
+	: mPort(port), mIsRunning(true), mNumInstances(0)
 {
 }
 
@@ -37,20 +38,25 @@ BroadcastReceiver::~BroadcastReceiver(void)
 }
 
 #ifndef OS_ANDROID
-void BroadcastReceiver::operator() (std::ostream& out, unsigned short timeout)
+void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 {
 	// only one thread allowed per instance
 	if(0 == std::atomic_fetch_add(&mNumInstances, 1))
 	{
 		size_t numRemotes = 0;
-		time_t endTime = time(NULL) + timeout;
+		timeval endTime, now;
+		gettimeofday(&endTime, NULL);
+		timeval_add(&endTime, pTimeout);
 		uint32_t remote;
 		do
 		{
-			remote = GetNextRemote();
-			out << numRemotes << ':' << std::hex << remote << std::endl;
-			numRemotes++;
-		} while((0 != remote) && (time(NULL) < endTime));
+			remote = GetNextRemote(pTimeout);
+			if(remote != 0) {
+				out << numRemotes << ':' << std::hex << remote << std::endl;
+				numRemotes++;
+			}
+			gettimeofday(&now, NULL);
+		} while(mIsRunning && timeval_sub(&endTime, &now, pTimeout));
 	}
 	std::atomic_fetch_sub(&mNumInstances, 1);
 }
@@ -61,17 +67,14 @@ uint32_t BroadcastReceiver::GetIp(size_t index) const
 	return mIpTable[index]->m_Addr;
 }
 
-uint32_t BroadcastReceiver::GetNextRemote(void)
+uint32_t BroadcastReceiver::GetNextRemote(timeval* timeout)
 {
-
 	UdpSocket udpSock(INADDR_ANY, mPort, true, true);
 	sockaddr_storage remoteAddr;
 	socklen_t remoteAddrLength = sizeof(remoteAddr);
 	
-	for(;;)
-	{
 		BroadcastMessage msg;
-		size_t bytesRead = udpSock.RecvFrom((unsigned char*)&msg, sizeof(msg), NULL, (sockaddr*)&remoteAddr, &remoteAddrLength);
+		size_t bytesRead = udpSock.RecvFrom((unsigned char*)&msg, sizeof(msg), timeout, (sockaddr*)&remoteAddr, &remoteAddrLength);
 		if(msg.IsWiflyBroadcast(bytesRead))
 		{
 			Endpoint* newRemote = new Endpoint(remoteAddr, remoteAddrLength, msg.port);
@@ -84,11 +87,7 @@ uint32_t BroadcastReceiver::GetNextRemote(void)
 #endif /* #ifndef OS_ANDROID */
 			return newRemote->m_Addr;
 		}
-		else if(msg.IsStop(bytesRead))
-		{
-			return 0;
-		}
-	}
+		return 0;
 }
 
 uint16_t BroadcastReceiver::GetPort(size_t index) const
@@ -103,8 +102,6 @@ size_t BroadcastReceiver::NumRemotes(void) const
 
 void BroadcastReceiver::Stop(void)
 {
-	UdpSocket sock(INADDR_LOOPBACK, mPort, false);
-	sock.Send((unsigned char const*)STOP_MSG, STOP_MSG_LENGTH);
-	return;
+	mIsRunning = false;
 }
 

@@ -1,5 +1,5 @@
 /**
-		Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+		Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
 
@@ -30,6 +30,7 @@
 class WiflyControl
 {
 	private:
+		const TcpSocket mSock;
 		const ComProxy mProxy;
 		pthread_t mRecvThread;
 		struct cmd_frame mCmdFrame;
@@ -38,7 +39,7 @@ class WiflyControl
 		int FwSend(struct cmd_frame* pFrame, size_t length, unsigned char* pResponse, size_t responseSize) const;
 		
 	public:
-		WiflyControl(unsigned long addr, unsigned short port, bool useTcp);
+		WiflyControl(unsigned long addr, unsigned short port);
 		
 		/** ----------------------------- BOOTLOADER METHODES ----------------------------- **/
 		size_t BlFlashErase(unsigned char* pBuffer, unsigned int endAddress, const size_t numPages, bool doSync) const;
