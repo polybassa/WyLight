@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+ Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -26,6 +26,9 @@
 #include <unistd.h>
 
 using std::vector;
+
+
+static const timespec NANOSLEEP_TIME = {0, 5000000};
 
 unsigned char capturedBroadcastMessage[110] = {
 0x00, 0x0f, 0xb5, 0xb2, 0x57, 0xfa, //MAC
@@ -68,7 +71,6 @@ int ut_BroadcastReceiver_TestEmpty(void)
 	TestCaseBegin();
 	BroadcastReceiver dummyReceiver;
 	CHECK(0 == dummyReceiver.NumRemotes());
-	sleep(1);
 	TestCaseEnd();
 }
 
@@ -78,8 +80,9 @@ int ut_BroadcastReceiver_TestSimple(void)
 	std::ostringstream out;
 	UdpSocket udpSock(0x7f000001, BroadcastReceiver::BROADCAST_PORT, false);
 	BroadcastReceiver dummyReceiver;
-	std::thread myThread(std::ref(dummyReceiver), std::ref(out), 1);
-	sleep(2);
+	timeval timeout = {2, 0};
+	std::thread myThread(std::ref(dummyReceiver), std::ref(out), &timeout);
+	nanosleep(&NANOSLEEP_TIME, NULL);
 	udpSock.Send(capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	dummyReceiver.Stop();
 	myThread.join();
@@ -96,16 +99,37 @@ int ut_BroadcastReceiver_TestTwo(void)
 	std::ostringstream out;
 	UdpSocket udpSock(0x7f000001, BroadcastReceiver::BROADCAST_PORT, false);
 	BroadcastReceiver dummyReceiver;
-	std::thread myThread(std::ref(dummyReceiver), std::ref(out), 2);
-	
-	//TODO timeout ist not completely implemented in BroadcastReceiver
-
+	timeval timeout = {3, 0};
+	std::thread myThread(std::ref(dummyReceiver), std::ref(out), &timeout);
+	nanosleep(&NANOSLEEP_TIME, NULL);
 	udpSock.Send(capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
+	nanosleep(&NANOSLEEP_TIME, NULL);
 	udpSock.Send(capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
 	dummyReceiver.Stop();
 	myThread.join();
 
-	CHECK(0 == out.str().compare("0:7f000001\n0:7f000001\n"));
+	CHECK(0 == out.str().compare("0:7f000001\n1:7f000001\n"));
+	CHECK(2 == dummyReceiver.NumRemotes());
+	CHECK(0x7F000001 == dummyReceiver.GetIp(0));
+	CHECK(0x7F000001 == dummyReceiver.GetIp(1));
+	TestCaseEnd();
+}
+
+int ut_BroadcastReceiver_TestNoTimeout(void)
+{
+	TestCaseBegin();
+	std::ostringstream out;
+	UdpSocket udpSock(0x7f000001, BroadcastReceiver::BROADCAST_PORT, false);
+	BroadcastReceiver dummyReceiver;
+	std::thread myThread(std::ref(dummyReceiver), std::ref(out));
+	nanosleep(&NANOSLEEP_TIME, NULL);
+	udpSock.Send(capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
+	nanosleep(&NANOSLEEP_TIME, NULL);
+	udpSock.Send(capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
+	dummyReceiver.Stop();
+	myThread.join();
+
+	CHECK(0 == out.str().compare("0:7f000001\n1:7f000001\n"));
 	CHECK(2 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetIp(0));
 	CHECK(0x7F000001 == dummyReceiver.GetIp(1));
@@ -117,7 +141,8 @@ int main (int argc, const char* argv[])
 	UnitTestMainBegin();
 	RunTest(true, ut_BroadcastReceiver_TestEmpty);
 	RunTest(true, ut_BroadcastReceiver_TestSimple);
-	RunTest(false, ut_BroadcastReceiver_TestTwo);
+	RunTest(true, ut_BroadcastReceiver_TestTwo);
+	RunTest(true, ut_BroadcastReceiver_TestNoTimeout);
 	UnitTestMainEnd();
 }
 

@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+ Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -18,14 +18,14 @@
 
 #include "ComProxy.h"
 #include "crc.h"
+#include "timeval.h"
 #include "trace.h"
 #include "wifly_cmd.h"
 #ifdef DEBUG
 #include <iostream>
 #endif /* DEBUG */
-#include <sys/time.h>
 
-static timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for framented responses from pic
+static const timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for framented responses from pic
 
 /**
  * This makro is used in ComProxy::MaskControlCharacters and requires some
@@ -46,33 +46,8 @@ static timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for framented
 	pOutput++; \
 }
 
-bool operator< (timeval& a, timeval& b)
-{
-	if(a.tv_sec < b.tv_sec)
-		return true;
-	if(a.tv_sec > b.tv_sec)
-		return false;
-	return a.tv_usec < b.tv_usec;
-}
-
-timeval& operator- (timeval& a, timeval& b)
-{
-	assert(b < a);
-	if(a.tv_usec < b.tv_usec)
-	{
-		a.tv_usec = 1000000 - (b.tv_usec - a.tv_usec);
-		a.tv_sec -= b.tv_sec + 1;
-	}
-	else
-	{
-		a.tv_usec -= b.tv_usec;
-		a.tv_sec -= b.tv_sec;
-	}
-	return a;
-}
-
-ComProxy::ComProxy(const ClientSocket* const pSock)
-	: mSock(pSock)
+ComProxy::ComProxy(const ClientSocket& sock)
+	: mSock(sock)
 {
 }
 
@@ -193,11 +168,11 @@ int ComProxy::Send(const struct cmd_frame* pFrame, unsigned char* pResponse, siz
 	return retval;
 }
 
-size_t ComProxy::Recv(unsigned char* pBuffer, size_t length, timeval* timeout, bool checkCrc, bool crcInLittleEndian) const
+size_t ComProxy::Recv(unsigned char* pBuffer, size_t length, timeval* pTimeout, bool checkCrc, bool crcInLittleEndian) const
 {
-	timeval now;
-	timeval startTime;
-	gettimeofday(&startTime, NULL);
+	timeval endTime, now;
+	gettimeofday(&endTime, NULL);
+	timeval_add(&endTime, pTimeout);
 	unsigned char* const pBufferBegin = pBuffer;
 	unsigned short crc = 0;
 	unsigned short preCrc = 0;
@@ -206,7 +181,7 @@ size_t ComProxy::Recv(unsigned char* pBuffer, size_t length, timeval* timeout, b
 
 	// TODO refactor this with code in commandstorage. It should be identical to the fw receive implementation
 	do {
-		size_t bytesMasked = mSock->Recv(pBuffer, length, timeout);
+		size_t bytesMasked = mSock.Recv(pBuffer, length, pTimeout);
 #ifdef DEBUG
 		std::cout << std::endl << __FILE__ << "::" << __FUNCTION__
 		<< "(): Bytes masked: " << bytesMasked;
@@ -278,8 +253,7 @@ size_t ComProxy::Recv(unsigned char* pBuffer, size_t length, timeval* timeout, b
 			pInput++;
 		}
 		gettimeofday(&now, NULL);
-		now = now - startTime;
-	}	while((NULL == timeout) || (now < *timeout));
+	} while(timeval_sub(&endTime, &now, pTimeout));
 	return 0;
 }
 
@@ -310,6 +284,7 @@ int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsi
 	/* sync with bootloader */
 	if(doSync)
 	{
+		timeval timeout;
 		do
 		{
 			if(0 > --numRetries)
@@ -318,13 +293,14 @@ int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsi
 				return -1;
 			}
 			Trace_String("ComProxy::Send: SYNC...\n");
-			mSock->Send(BL_SYNC, sizeof(BL_SYNC));
-		} while(0 == mSock->Recv(recvBuffer, sizeof(recvBuffer), &RESPONSE_TIMEOUT));
+			mSock.Send(BL_SYNC, sizeof(BL_SYNC));
+			timeout = RESPONSE_TIMEOUT;
+		} while(0 == mSock.Recv(recvBuffer, sizeof(recvBuffer), &timeout));
 	}
 
 		{
 			/* synchronized -> send request */
-			if(static_cast<int>(bufferSize) != mSock->Send(buffer, bufferSize))
+			if(static_cast<int>(bufferSize) != mSock.Send(buffer, bufferSize))
 			{
 				Trace_String("ComProxy::Send: socket->Send() failed\n");
 				return 0;
@@ -337,7 +313,8 @@ int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsi
 				return 0;
 			}
 			/* receive response */
-			size_t bytesReceived = Recv(recvBuffer, sizeof(recvBuffer), &RESPONSE_TIMEOUT, checkCrc, crcInLittleEndian);
+			timeval timeout = RESPONSE_TIMEOUT;
+			size_t bytesReceived = Recv(recvBuffer, sizeof(recvBuffer), &timeout, checkCrc, crcInLittleEndian);
 			memcpy(pResponse, recvBuffer, bytesReceived);
 			return bytesReceived;
  		}
