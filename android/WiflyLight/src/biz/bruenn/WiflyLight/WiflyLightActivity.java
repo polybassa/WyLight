@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class WiflyLightActivity extends Activity {
 	private ListView mRemoteList;
@@ -40,14 +39,9 @@ public class WiflyLightActivity extends Activity {
 					long arg3) {
 				mRemoteArrayAdapter.getItem(arg2);
 				Intent i = new Intent(v.getContext(), WiflyControlActivity.class);
-				i.putExtra("IpAddress", 0x0A000202);
-				i.putExtra("Port", (short)2000);
+				i.putExtra(WiflyControlActivity.EXTRA_IP, 0x0A000202);
+				i.putExtra(WiflyControlActivity.EXTRA_PORT, (short)2000);
 				startActivityForResult(i, 0);
-				/*
-				WiflyControl ctrl = new WiflyControl(0x0A000202, (short)2000);
-				boolean done = ctrl.fwSetColor(0xffffffff, 0xff000000);
-				Toast.makeText(getApplicationContext(), String.valueOf(done), Toast.LENGTH_SHORT).show();
-				*/
 			}
 		});
         
