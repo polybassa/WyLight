@@ -21,7 +21,7 @@
 
 #include "wifly_cmd.h"
 
-#define SCRIPTCTRL_NUM_CMD_MAX 85
+#define SCRIPTCTRL_NUM_CMD_MAX 15
 #define SCRIPTCTRL_LOOP_DEPTH_MAX 4
 
 struct ScriptBuf {

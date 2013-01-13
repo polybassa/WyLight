@@ -6,9 +6,11 @@ import biz.bruenn.WiflyLight.R.id;
 import biz.bruenn.WiflyLight.R.string;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -31,6 +33,17 @@ public class WiflyLightActivity extends Activity {
         mRemoteList = (ListView)findViewById(id.remoteList);
         mRemoteArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mRemoteArray);
         mRemoteList.setAdapter(mRemoteArrayAdapter);
+        mRemoteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> arg0, View v, int arg2,
+					long arg3) {
+				mRemoteArrayAdapter.getItem(arg2);
+				Intent i = new Intent(v.getContext(), WiflyControlActivity.class);
+				i.putExtra(WiflyControlActivity.EXTRA_IP, 0x0A000202);
+				i.putExtra(WiflyControlActivity.EXTRA_PORT, (short)2000);
+				startActivityForResult(i, 0);
+			}
+		});
         
         Button scanBtn = (Button)findViewById(id.scan);
         scanBtn.setOnClickListener(new View.OnClickListener() {
