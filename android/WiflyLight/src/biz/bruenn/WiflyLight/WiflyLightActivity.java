@@ -6,6 +6,7 @@ import biz.bruenn.WiflyLight.R.id;
 import biz.bruenn.WiflyLight.R.string;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
@@ -35,11 +36,18 @@ public class WiflyLightActivity extends Activity {
         mRemoteList.setAdapter(mRemoteArrayAdapter);
         mRemoteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+			public void onItemClick(AdapterView<?> arg0, View v, int arg2,
 					long arg3) {
+				mRemoteArrayAdapter.getItem(arg2);
+				Intent i = new Intent(v.getContext(), WiflyControlActivity.class);
+				i.putExtra("IpAddress", 0x0A000202);
+				i.putExtra("Port", (short)2000);
+				startActivityForResult(i, 0);
+				/*
 				WiflyControl ctrl = new WiflyControl(0x0A000202, (short)2000);
 				boolean done = ctrl.fwSetColor(0xffffffff, 0xff000000);
 				Toast.makeText(getApplicationContext(), String.valueOf(done), Toast.LENGTH_SHORT).show();
+				*/
 			}
 		});
         
