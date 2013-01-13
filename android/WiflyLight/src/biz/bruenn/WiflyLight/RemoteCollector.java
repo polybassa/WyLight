@@ -10,7 +10,6 @@ import android.widget.Button;
 
 public class RemoteCollector extends AsyncTask<Long, Void, Void> {
 	private native long createBroadcastReceiver();
-	private native long getNumRemotes(long pNative);
 	private native long getNextRemote(long pNative, long timeoutNanos);
 	private native void releaseBroadcastReceiver(long pNative);
 	
