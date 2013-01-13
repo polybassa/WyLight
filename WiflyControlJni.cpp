@@ -40,17 +40,17 @@ jlong Java_biz_bruenn_WiflyLight_RemoteCollector_getNextRemote(JNIEnv* env, jobj
 	return ((BroadcastReceiver*)pNative)->GetNextRemote(&timeout);
 }
 
-jlong Java_biz_bruenn_WiflyLight_WiflyLightActivity_createWiflyControl(JNIEnv* env, jobject ref, jint ipv4Addr, jshort port)
+jlong Java_biz_bruenn_WiflyLight_WiflyControl_create(JNIEnv* env, jobject ref, jint ipv4Addr, jshort port)
 {
 	return (jlong) new WiflyControl(ipv4Addr, port);
 }
 
-jboolean Java_biz_bruenn_WiflyLight_WiflyLightActivity_FwSetColor(JNIEnv* env, jobject ref, jlong pNative, jint addr, jint rgba)
+jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwSetColor(JNIEnv* env, jobject ref, jlong pNative, jint addr, jint rgba)
 {
 	return reinterpret_cast<WiflyControl*>(pNative)->FwSetColor(addr, rgba);
 }
 
-void Java_biz_bruenn_WiflyLight_WiflyLightActivity_releaseWiflyControl(JNIEnv* env, jobject ref, jlong pNative)
+void Java_biz_bruenn_WiflyLight_WiflyControl_release(JNIEnv* env, jobject ref, jlong pNative)
 {
 	delete (WiflyControl*)pNative;
 }
