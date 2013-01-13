@@ -26,6 +26,7 @@
 #include "BlRequest.h"
 #include "intelhexclass.h"
 
+
 class WiflyControl
 {
 	private:

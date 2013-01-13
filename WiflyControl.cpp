@@ -29,6 +29,8 @@
 #include <unistd.h>
 #include "intelhexclass.h"
 
+#include "WiflyControlColorClass.h"
+
 using namespace std;
 
 /**
@@ -795,25 +797,12 @@ void WiflyControl::FwAddColor(string& addr, string& rgba, unsigned char hour, un
 {
 	FwAddColor(ToRGBA(addr), ToRGBA(rgba) << 8, hour, minute, second);
 }
-
+ 
 void WiflyControl::FwTest(void)
 {
-	unsigned char ledArray[NUM_OF_LED * 3] = {0};
-	
-	for(unsigned int j = 0; j < 100; j++)
-	{
-	  
-	  for(unsigned int i = 0; i < NUM_OF_LED * 3 - 3 ;  i = i + 3)
-	  {
-		ledArray[i] = 0;
-		ledArray[i+1] = j + (unsigned char)0xff - (i * (100/(NUM_OF_LED * 3)));
-		ledArray[i+2] = j + (unsigned char)i * (100/(NUM_OF_LED*3));
-	  }
-	  if(!FwSetColorDirect(&ledArray[0], sizeof(ledArray))) sleep(0.2);
-		
-	  sleep(0.3);
-	}
-
+	uint32_t bitMask = 0x01;
+	WiflyControlColorClass LedColor = WiflyControlColorClass(0xffffffff);
+    
 	int doRun = 1;
   
 	static const unsigned long RED   = 0xFF000000;
@@ -821,7 +810,42 @@ void WiflyControl::FwTest(void)
 	static const unsigned long BLUE  = 0x0000FF00;
 	static const unsigned long WHITE = 0xFFFFFF00;
 	static const unsigned long BLACK = 0x00000000;
-
+	
+	FwClearScript();
+	sleep(1);
+	FwLoopOn();
+	sleep(1);
+	FwSetFade(0xFFFFFFFFLU, RED, 20000, false); 
+	sleep(40);
+	
+	for(unsigned int i = 0; i < NUM_OF_LED; i++)
+	{
+		LedColor.red((uint8_t)((0xff / NUM_OF_LED) * i));
+		LedColor.green((uint8_t)((0xff / NUM_OF_LED) * i));
+		LedColor.blue(0xff);
+		if(!FwSetFade(htonl(bitMask), LedColor.rgba(), 20000, true)) FwSetFade(htonl(bitMask), LedColor.rgba(), 20000, true);
+		sleep(1);
+		bitMask = bitMask << 1;
+	}
+	FwSetWait(20000);
+	sleep(1);
+	FwSetFade(0xFFFFFFFFLU, GREEN,20000, false);
+	bitMask = 0x80000000;
+	sleep(40);
+	
+	for(unsigned int i = 0; i < NUM_OF_LED; i++)
+	{
+		LedColor.red((uint8_t)((0xff / NUM_OF_LED) * i));
+		LedColor.green((uint8_t)((0xff / NUM_OF_LED) * i));		LedColor.blue(0xff);
+		if(!FwSetFade(htonl(bitMask), LedColor.rgba(), 20000, true)) FwSetFade(htonl(bitMask), LedColor.rgba(), 20000, true);
+		sleep(1);
+		bitMask = bitMask >> 1;
+	}
+	FwSetWait(20000);
+	sleep(1);
+	FwLoopOff(4);
+	sleep(30);
+	/*
 	while(doRun > 0)
 	{
 		FwSetColor(0xFFFFFFFFLU, BLACK);
@@ -838,6 +862,7 @@ void WiflyControl::FwTest(void)
 		sleep(20);
 		doRun--;
 	}
+	*/
 }
 
 bool WiflyControl::FwPrintCycletime(std::ostream& out)
