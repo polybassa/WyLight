@@ -17,6 +17,7 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "trace.h"
+#include "crc.h"
 
 // 16-bit CCIT CRC
 void Crc_AddCrc(unsigned char byte,unsigned char* p_crcH,unsigned char* p_crcL)

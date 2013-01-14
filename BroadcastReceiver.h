@@ -20,7 +20,7 @@
 #define _BROADCAST_RECEIVER_H_
 
 #include "ClientSocket.h"
-#include <cstdint>
+#include <stdint.h>
 #include <cstring>
 #include <ostream>
 #include <string>

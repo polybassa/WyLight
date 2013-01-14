@@ -19,7 +19,7 @@
 #ifndef _WIFLYCONTROL_LEDCOLOR_H_
 #define _WIFLYCONTROL_LEDCOLOR_H_
 
-#include <cstdint>
+#include <stdint.h>
 #include <netinet/in.h>
 
 class WiflyControlColorClass

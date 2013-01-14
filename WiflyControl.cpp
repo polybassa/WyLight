@@ -823,7 +823,7 @@ void WiflyControl::FwTest(void)
 		LedColor.red((uint8_t)((0xff / NUM_OF_LED) * i));
 		LedColor.green((uint8_t)((0xff / NUM_OF_LED) * i));
 		LedColor.blue(0xff);
-		if(!FwSetFade(htonl(bitMask), LedColor.rgba(), 20000, true)) FwSetFade(htonl(bitMask), LedColor.rgba(), 20000, true);
+		if(!FwSetFade(htonl(bitMask), LedColor.rgba(), 20000, true)) FwSetFade(htonl(bitMask), LedColor.rgba(), 20000 + i * 200, true);
 		sleep(1);
 		bitMask = bitMask << 1;
 	}
@@ -837,13 +837,13 @@ void WiflyControl::FwTest(void)
 	{
 		LedColor.red((uint8_t)((0xff / NUM_OF_LED) * i));
 		LedColor.green((uint8_t)((0xff / NUM_OF_LED) * i));		LedColor.blue(0xff);
-		if(!FwSetFade(htonl(bitMask), LedColor.rgba(), 20000, true)) FwSetFade(htonl(bitMask), LedColor.rgba(), 20000, true);
+		if(!FwSetFade(htonl(bitMask), LedColor.rgba(), 20000, true)) FwSetFade(htonl(bitMask), LedColor.rgba(), 20000 + i * 200, true);
 		sleep(1);
 		bitMask = bitMask >> 1;
 	}
 	FwSetWait(20000);
 	sleep(1);
-	FwLoopOff(4);
+	FwLoopOff(0);
 	sleep(30);
 	/*
 	while(doRun > 0)
