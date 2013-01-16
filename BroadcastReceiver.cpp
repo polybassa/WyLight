@@ -73,10 +73,6 @@ uint64_t BroadcastReceiver::GetNextRemote(timeval* timeout)
 	sockaddr_storage remoteAddr;
 	socklen_t remoteAddrLength = sizeof(remoteAddr);
 
-	//TODO remove this debugging lines
-	//const Endpoint ep(0x10000202, 0x07D0);
-	//return ep.AsUint64();
-
 		BroadcastMessage msg;
 		size_t bytesRead = udpSock.RecvFrom((unsigned char*)&msg, sizeof(msg), timeout, (sockaddr*)&remoteAddr, &remoteAddrLength);
 		if(msg.IsWiflyBroadcast(bytesRead))

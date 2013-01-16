@@ -3,7 +3,7 @@ Bug:
 
 
 Refactoring:
-- make extract timeval functions from ComProxy and BroadcastReceiver
+
 
 
 Improvement: fix rules in Makefile

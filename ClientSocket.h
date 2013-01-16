@@ -36,7 +36,7 @@ class Endpoint
 		Endpoint(uint32_t addr, uint16_t port) : m_Addr(addr), m_Port(port) {};
 
 		/* 
-		 * @return ipv4 address(A) and port(P) as a combined 64 bit value 0xAAAAAAAA00PP
+		 * @return ipv4 address(A) and port(P) as a combined 64 bit value 0xAAAAAAAA0000PPPP
 		 */
 		uint64_t AsUint64() const {
 			return ((uint64_t)m_Addr << 32) | m_Port; 
