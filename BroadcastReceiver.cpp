@@ -46,12 +46,11 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 		timeval endTime, now;
 		gettimeofday(&endTime, NULL);
 		timeval_add(&endTime, pTimeout);
-		uint32_t remote;
 		do
 		{
-			remote = GetNextRemote(pTimeout);
-			if(remote != 0) {
-				out << numRemotes << ':' << std::hex << remote << std::endl;
+			Endpoint remote = GetNextRemote(pTimeout);
+			if(remote.IsValid()) {
+				out << numRemotes << ':' << remote << '\n';
 				numRemotes++;
 			}
 			gettimeofday(&now, NULL);
@@ -62,10 +61,10 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 
 uint32_t BroadcastReceiver::GetIp(size_t index) const
 {
-	return mIpTable[index]->m_Addr;
+	return mIpTable[index].m_Addr;
 }
 
-uint64_t BroadcastReceiver::GetNextRemote(timeval* timeout)
+Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout)
 {
 	UdpSocket udpSock(INADDR_ANY, mPort, true, true);
 	sockaddr_storage remoteAddr;
@@ -75,18 +74,18 @@ uint64_t BroadcastReceiver::GetNextRemote(timeval* timeout)
 	size_t bytesRead = udpSock.RecvFrom((unsigned char*)&msg, sizeof(msg), timeout, (sockaddr*)&remoteAddr, &remoteAddrLength);
 	if(msg.IsWiflyBroadcast(bytesRead))
 	{
-		Endpoint* newRemote = new Endpoint(remoteAddr, remoteAddrLength, msg.port);
+		Endpoint newRemote(remoteAddr, remoteAddrLength, msg.port);
 		mMutex.lock();
 		mIpTable.push_back(newRemote);
 		mMutex.unlock();
-		return newRemote->AsUint64();
+		return newRemote;
 	}
-	return 0;
+	return Endpoint();
 }
 
 uint16_t BroadcastReceiver::GetPort(size_t index) const
 {
-	return mIpTable[index]->m_Port;
+	return mIpTable[index].m_Port;
 }
 
 size_t BroadcastReceiver::NumRemotes(void) const

@@ -37,7 +37,7 @@ jlong Java_biz_bruenn_WiflyLight_RemoteCollector_getNextRemote(JNIEnv* env, jobj
 	timeval timeout;
 	timeout.tv_sec = timeoutNanos / 1000000000L;
 	timeout.tv_usec = (timeoutNanos % 1000000000L) / 1000L;
-	return ((BroadcastReceiver*)pNative)->GetNextRemote(&timeout);
+	return ((BroadcastReceiver*)pNative)->GetNextRemote(&timeout).AsUint64();
 }
 
 jlong Java_biz_bruenn_WiflyLight_WiflyControl_create(JNIEnv* env, jobject ref, jint ipv4Addr, jshort port)

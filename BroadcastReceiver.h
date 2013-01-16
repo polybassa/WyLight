@@ -49,7 +49,7 @@ class BroadcastReceiver
 		void operator() (std::ostream& out, timeval* timeout = NULL);
 
 		uint32_t GetIp(size_t index) const;
-		uint64_t GetNextRemote(timeval* timeout);
+		Endpoint GetNextRemote(timeval* timeout);
 		uint16_t GetPort(size_t index) const;
 
 		/**
@@ -63,7 +63,7 @@ class BroadcastReceiver
 		void Stop(void);
 
 	private:
-		std::vector<Endpoint*> mIpTable;
+		std::vector<Endpoint> mIpTable;
 		volatile bool mIsRunning;
 		std::atomic<int> mNumInstances;
 		std::mutex mMutex;
