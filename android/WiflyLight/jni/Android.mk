@@ -13,5 +13,6 @@ LOCAL_SRC_FILES += $(DIR)intelhexclass.cpp
 LOCAL_SRC_FILES += $(DIR)WiflyControl.cpp
 LOCAL_SRC_FILES += $(DIR)WiflyControlColorClass.cpp
 LOCAL_SRC_FILES += $(DIR)WiflyControlJni.cpp
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/$(DIR)/c++11_wrapper
 
 include $(BUILD_SHARED_LIBRARY)
