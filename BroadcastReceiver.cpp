@@ -73,21 +73,21 @@ uint64_t BroadcastReceiver::GetNextRemote(timeval* timeout)
 	sockaddr_storage remoteAddr;
 	socklen_t remoteAddrLength = sizeof(remoteAddr);
 
-		BroadcastMessage msg;
-		size_t bytesRead = udpSock.RecvFrom((unsigned char*)&msg, sizeof(msg), timeout, (sockaddr*)&remoteAddr, &remoteAddrLength);
-		if(msg.IsWiflyBroadcast(bytesRead))
-		{
-			Endpoint* newRemote = new Endpoint(remoteAddr, remoteAddrLength, msg.port);
+	BroadcastMessage msg;
+	size_t bytesRead = udpSock.RecvFrom((unsigned char*)&msg, sizeof(msg), timeout, (sockaddr*)&remoteAddr, &remoteAddrLength);
+	if(msg.IsWiflyBroadcast(bytesRead))
+	{
+		Endpoint* newRemote = new Endpoint(remoteAddr, remoteAddrLength, msg.port);
 #ifndef OS_ANDROID
-			mMutex.lock();
-			mIpTable.push_back(newRemote);
-			mMutex.unlock();
+		mMutex.lock();
+		mIpTable.push_back(newRemote);
+		mMutex.unlock();
 #else
-			mIpTable.push_back(newRemote);
+		mIpTable.push_back(newRemote);
 #endif /* #ifndef OS_ANDROID */
-			return newRemote->AsUint64();
-		}
-		return 0;
+		return newRemote->AsUint64();
+	}
+	return 0;
 }
 
 uint16_t BroadcastReceiver::GetPort(size_t index) const
