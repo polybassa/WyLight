@@ -1,0 +1,41 @@
+/**
+ Copyright (C) 2013 Nils Weiss, Patrick Bruenn.
+ 
+ This file is part of Wifly_Light.
+ 
+ Wifly_Light is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ 
+ Wifly_Light is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License
+ along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
+
+#if defined(__cplusplus) && (__cplusplus < 201103L)
+#warning "Check for a newer compiler to avoid using this C++11 wrapper file"
+#ifndef _CPP11_WRAPPER_MUTEX_
+#define _CPP11_WRAPPER_MUTEX_
+#include <pthread.h>
+namespace std {
+class mutex {
+	pthread_mutex_t mMutex;
+	public:
+		mutex(void) : mMutex(PTHREAD_MUTEX_INITIALIZER) {};
+
+		void lock(void) {
+			pthread_mutex_lock(&mMutex);
+		};
+
+		void unlock(void) {
+			pthread_mutex_unlock(&mMutex);
+		};
+};
+} /* namespace std { */
+#endif /* #ifndef _CPP11_WRAPPER_MUTEX_ */
+#endif /* #if defined(__cplusplus) && (__cplusplus < 201103L) */
+
