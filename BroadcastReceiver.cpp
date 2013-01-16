@@ -67,12 +67,16 @@ uint32_t BroadcastReceiver::GetIp(size_t index) const
 	return mIpTable[index]->m_Addr;
 }
 
-uint32_t BroadcastReceiver::GetNextRemote(timeval* timeout)
+uint64_t BroadcastReceiver::GetNextRemote(timeval* timeout)
 {
 	UdpSocket udpSock(INADDR_ANY, mPort, true, true);
 	sockaddr_storage remoteAddr;
 	socklen_t remoteAddrLength = sizeof(remoteAddr);
-	
+
+	//TODO remove this debugging lines
+	//const Endpoint ep(0x10000202, 0x07D0);
+	//return ep.AsUint64();
+
 		BroadcastMessage msg;
 		size_t bytesRead = udpSock.RecvFrom((unsigned char*)&msg, sizeof(msg), timeout, (sockaddr*)&remoteAddr, &remoteAddrLength);
 		if(msg.IsWiflyBroadcast(bytesRead))
@@ -85,7 +89,7 @@ uint32_t BroadcastReceiver::GetNextRemote(timeval* timeout)
 #else
 			mIpTable.push_back(newRemote);
 #endif /* #ifndef OS_ANDROID */
-			return newRemote->m_Addr;
+			return newRemote->AsUint64();
 		}
 		return 0;
 }

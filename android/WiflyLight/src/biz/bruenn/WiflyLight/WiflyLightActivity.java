@@ -17,8 +17,8 @@ import android.widget.ListView;
 
 public class WiflyLightActivity extends Activity {
 	private ListView mRemoteList;
-	private ArrayList<String> mRemoteArray = new ArrayList<String>();
-	ArrayAdapter<String> mRemoteArrayAdapter;
+	private ArrayList<Endpoint> mRemoteArray = new ArrayList<Endpoint>();
+	ArrayAdapter<Endpoint> mRemoteArrayAdapter;
 	
 	static {
 		System.loadLibrary("wifly");
@@ -31,16 +31,16 @@ public class WiflyLightActivity extends Activity {
         setContentView(R.layout.main);
 
         mRemoteList = (ListView)findViewById(id.remoteList);
-        mRemoteArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mRemoteArray);
+        mRemoteArrayAdapter = new ArrayAdapter<Endpoint>(this, android.R.layout.simple_list_item_1, mRemoteArray);
         mRemoteList.setAdapter(mRemoteArrayAdapter);
         mRemoteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> arg0, View v, int arg2,
 					long arg3) {
-				mRemoteArrayAdapter.getItem(arg2);
+				Endpoint e = mRemoteArrayAdapter.getItem(arg2);
 				Intent i = new Intent(v.getContext(), WiflyControlActivity.class);
-				i.putExtra(WiflyControlActivity.EXTRA_IP, 0x0A000202);
-				i.putExtra(WiflyControlActivity.EXTRA_PORT, (short)2000);
+				i.putExtra(WiflyControlActivity.EXTRA_IP, e.getAddr());
+				i.putExtra(WiflyControlActivity.EXTRA_PORT, e.getPort());
 				startActivityForResult(i, 0);
 			}
 		});

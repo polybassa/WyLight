@@ -32,7 +32,16 @@ class Endpoint
 			m_Addr = ntohl(((sockaddr_in&)addr).sin_addr.s_addr);
 			m_Port = ntohs(port);
 		};
+
 		Endpoint(uint32_t addr, uint16_t port) : m_Addr(addr), m_Port(port) {};
+
+		/* 
+		 * @return ipv4 address(A) and port(P) as a combined 64 bit value 0xAAAAAAAA00PP
+		 */
+		uint64_t AsUint64() const {
+			return ((uint64_t)m_Addr << 32) | m_Port; 
+		};
+
 		uint32_t m_Addr;
 		uint16_t m_Port;
 };
