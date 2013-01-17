@@ -1,9 +1,8 @@
-package biz.bruenn.WiflyLight.View;
+package biz.bruenn.WiflyLight.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.RectShape;
 import android.util.AttributeSet;
 import android.view.MotionEvent;

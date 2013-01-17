@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Toast;
 import biz.bruenn.WiflyLight.R.id;
-import biz.bruenn.WiflyLight.View.ColorPicker;
+import biz.bruenn.WiflyLight.widget.ColorPicker;
 
 public class WiflyControlActivity extends Activity {
 	public static final String EXTRA_IP = "IpAddress";
