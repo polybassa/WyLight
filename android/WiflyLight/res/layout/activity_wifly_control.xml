@@ -33,4 +33,10 @@
         android:layout_marginRight="28dp"
         android:text="@string/set_color" />
 
+    <biz.bruenn.WiflyLight.View.ColorPickerView
+        android:id="@+id/colorPicker"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/setColor" />
+
 </RelativeLayout>

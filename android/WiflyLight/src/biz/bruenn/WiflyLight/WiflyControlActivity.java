@@ -3,11 +3,14 @@ package biz.bruenn.WiflyLight;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Toast;
+import biz.bruenn.WiflyLight.R.id;
+import biz.bruenn.WiflyLight.View.ColorPickerView;
 
 public class WiflyControlActivity extends Activity {
 	public static final String EXTRA_IP = "IpAddress";
@@ -77,6 +80,16 @@ public class WiflyControlActivity extends Activity {
 					boolean fromUser) {
 				mColor = (mColor & 0xffffff00) | (progress);
 				mSetColorBtn.setBackgroundColor(mColor);
+			}
+		});
+		
+		ColorPickerView colorPicker = (ColorPickerView)findViewById(id.colorPicker);
+		colorPicker.setOnColorChangeListener(new ColorPickerView.OnColorChangeListener() {
+			
+			public void onColorChange(int red) {
+				mColor = Color.rgb(red, 0, 0);
+				mSetColorBtn.setBackgroundColor(mColor);
+				mSetColorBtn.setText(String.valueOf(red));
 			}
 		});
 	}
