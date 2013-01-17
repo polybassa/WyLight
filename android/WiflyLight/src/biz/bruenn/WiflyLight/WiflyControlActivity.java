@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Toast;
 import biz.bruenn.WiflyLight.R.id;
-import biz.bruenn.WiflyLight.View.ColorPickerView;
+import biz.bruenn.WiflyLight.View.ColorPicker;
 
 public class WiflyControlActivity extends Activity {
 	public static final String EXTRA_IP = "IpAddress";
@@ -83,8 +83,8 @@ public class WiflyControlActivity extends Activity {
 			}
 		});
 		
-		ColorPickerView colorPicker = (ColorPickerView)findViewById(id.colorPicker);
-		colorPicker.setOnColorChangeListener(new ColorPickerView.OnColorChangeListener() {
+		ColorPicker colorPicker = (ColorPicker)findViewById(id.colorPicker);
+		colorPicker.setOnColorChangeListener(new ColorPicker.OnColorChangeListener() {
 			
 			public void onColorChange(int red) {
 				mColor = Color.rgb(red, 0, 0);

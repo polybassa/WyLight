@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class ColorPickerView extends View {
+public class ColorPicker extends View {
 	public interface OnColorChangeListener {
 		public void onColorChange(int red);
 	};
@@ -17,7 +17,7 @@ public class ColorPickerView extends View {
 	private ShapeDrawable mDrawable;
 	private OnColorChangeListener mOnColorChangeListener;
 
-	public ColorPickerView(Context context, AttributeSet attrs) {
+	public ColorPicker(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
 		int x = 0;
