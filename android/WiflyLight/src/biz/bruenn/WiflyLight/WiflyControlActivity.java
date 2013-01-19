@@ -86,10 +86,10 @@ public class WiflyControlActivity extends Activity {
 		ColorPicker colorPicker = (ColorPicker)findViewById(id.colorPicker);
 		colorPicker.setOnColorChangeListener(new ColorPicker.OnColorChangeListener() {
 			
-			public void onColorChange(int red) {
-				mColor = Color.rgb(red, 0, 0);
-				mSetColorBtn.setBackgroundColor(mColor);
-				mSetColorBtn.setText(String.valueOf(red));
+			public void onColorChange(int argb) {
+				mColor = argb;
+				mSetColorBtn.setBackgroundColor(argb);
+				mSetColorBtn.setText(Integer.toHexString(mColor));
 			}
 		});
 	}

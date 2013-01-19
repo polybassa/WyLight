@@ -33,7 +33,7 @@
         android:layout_marginRight="28dp"
         android:text="@string/set_color" />
 
-    <biz.bruenn.WiflyLight.View.ColorPicker
+    <biz.bruenn.WiflyLight.widget.ColorPicker
         android:id="@+id/colorPicker"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
