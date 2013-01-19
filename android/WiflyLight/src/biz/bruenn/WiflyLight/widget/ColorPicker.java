@@ -1,5 +1,7 @@
 package biz.bruenn.WiflyLight.widget;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,9 +18,12 @@ public class ColorPicker extends View {
 	public interface OnColorChangeListener {
 		public void onColorChange(int red);
 	};
+
+	private static final int SECTOR_NUM = 3; 
+	private static final int SECTOR_WIDTH = 50; 
 	
 	private ShapeDrawable mDrawable;
-	private LinearGradient mGradient;
+	private ArrayList<LinearGradient> mGradient;
 	private LinearGradient mGradient_2;
 	private LinearGradient mGradient_3;
 	private OnColorChangeListener mOnColorChangeListener;
@@ -26,6 +31,7 @@ public class ColorPicker extends View {
 	public ColorPicker(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
+		mGradient = new ArrayList<LinearGradient>(SECTOR_NUM);
 		int x = 0;
 		int y = 0;
 		int width = 200;
@@ -33,14 +39,15 @@ public class ColorPicker extends View {
 		mDrawable = new ShapeDrawable(new RectShape());
 		mDrawable.getPaint().setARGB(0xff, 0xff, 0, 0);
 		mDrawable.setBounds(x, y, x+width, y + height);
-		final int sectorWidth = width /6;
+		
 
-		mGradient = new LinearGradient(0, y, 50, y,
-				new int[]{0xffff0000, 0xffff00ff}, null, Shader.TileMode.CLAMP);
-		mGradient_2 = new LinearGradient(50, y, 100, y,
-				new int[]{0xffff00ff, 0xff00ffff}, null, Shader.TileMode.CLAMP);
-		mGradient_3 = new LinearGradient(100, y, 150, y,
-				new int[]{0xff00ffff, 0xff00ff00}, null, Shader.TileMode.CLAMP);
+		mGradient.add(new LinearGradient(0, y, 50, y,
+				new int[]{0xffff0000, 0xffff00ff}, null, Shader.TileMode.CLAMP));
+		
+		mGradient.add(new LinearGradient(50, y, 100, y,
+				new int[]{0xffff00ff, 0xff00ffff}, null, Shader.TileMode.CLAMP));
+		mGradient.add(new LinearGradient(100, y, 150, y,
+				new int[]{0xff00ffff, 0xff00ff00}, null, Shader.TileMode.CLAMP));
 
 		this.setOnTouchListener(new View.OnTouchListener() {
 			//TODO make this static
@@ -78,14 +85,13 @@ public class ColorPicker extends View {
 	
 	protected void onDraw(Canvas canvas) {
 		Paint p = new Paint();
-		p.setShader(mGradient);
+		
+		p.setShader(mGradient.get(0));
 		canvas.drawRect(0, 0, 50, 200, p);
-		p.setShader(mGradient_2);
+		p.setShader(mGradient.get(1));
 		canvas.drawRect(50, 0, 100, 200, p);
-		p.setShader(mGradient_3);
+		p.setShader(mGradient.get(2));
 		canvas.drawRect(100, 0, 150, 200, p);
-		//mDrawable.draw(canvas);
-		//this.mGradient.
 	}
 	
 	public void setOnColorChangeListener(OnColorChangeListener l) {
