@@ -1,4 +1,4 @@
-+UNAME := $(shell uname)
+UNAME := $(shell uname)
 #Linux detected -> use configuration of pat
 ifeq ($(UNAME),Linux)
 	PIC_CC8E=/home/gpb/cc8efree/CC8E.EXE
