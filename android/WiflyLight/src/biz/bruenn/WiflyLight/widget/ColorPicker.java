@@ -19,6 +19,8 @@ public class ColorPicker extends View {
 	
 	private ShapeDrawable mDrawable;
 	private LinearGradient mGradient;
+	private LinearGradient mGradient_2;
+	private LinearGradient mGradient_3;
 	private OnColorChangeListener mOnColorChangeListener;
 
 	public ColorPicker(Context context, AttributeSet attrs) {
@@ -33,8 +35,12 @@ public class ColorPicker extends View {
 		mDrawable.setBounds(x, y, x+width, y + height);
 		final int sectorWidth = width /6;
 
-		mGradient = new LinearGradient(x, y, x+sectorWidth, y,
-				new int[]{0xffff0000, 0xffffff00}, null, Shader.TileMode.CLAMP);
+		mGradient = new LinearGradient(0, y, 50, y,
+				new int[]{0xffff0000, 0xffff00ff}, null, Shader.TileMode.CLAMP);
+		mGradient_2 = new LinearGradient(50, y, 100, y,
+				new int[]{0xffff00ff, 0xff00ffff}, null, Shader.TileMode.CLAMP);
+		mGradient_3 = new LinearGradient(100, y, 150, y,
+				new int[]{0xff00ffff, 0xff00ff00}, null, Shader.TileMode.CLAMP);
 
 		this.setOnTouchListener(new View.OnTouchListener() {
 			//TODO make this static
@@ -73,8 +79,11 @@ public class ColorPicker extends View {
 	protected void onDraw(Canvas canvas) {
 		Paint p = new Paint();
 		p.setShader(mGradient);
-		//canvas.drawPaint(p);
 		canvas.drawRect(0, 0, 50, 200, p);
+		p.setShader(mGradient_2);
+		canvas.drawRect(50, 0, 100, 200, p);
+		p.setShader(mGradient_3);
+		canvas.drawRect(100, 0, 150, 200, p);
 		//mDrawable.draw(canvas);
 		//this.mGradient.
 	}
