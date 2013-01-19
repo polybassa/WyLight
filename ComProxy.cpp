@@ -155,7 +155,7 @@ size_t ComProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inp
 int ComProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize, bool doSync) const
 {
 	Trace_String("ComProxy::Send(BlRequest&): ");
-	Trace_Number(req.GetSize());
+	Trace_Number((unsigned int)req.GetSize());
 	Trace_String("pure bytes\n");
 	int retval = Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
 	return retval;

@@ -8,6 +8,9 @@
 
 #import "NWAppDelegate.h"
 #import "WiflyControl.h"
+#import "BroadcastReceiver.h"
+
+
 
 @implementation NWAppDelegate
 
@@ -44,6 +47,32 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
 	// Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+	NSLog(@"Here we go");
+	BroadcastReceiver *mRecv = new BroadcastReceiver();
+	
+	struct timeval mTime = {0};
+	
+	mTime.tv_sec = 100;
+	uint32_t ipRecvd;
+	
+	while (true)
+	{
+		ipRecvd = mRecv->GetNextRemote(&mTime);
+		
+		if(ipRecvd > 0)
+		{
+			mRecv->Stop();
+			NSLog(@"Woho.. some ip's");
+			NSLog(@"This is the ip: %08x", mRecv->GetIp(0));
+			break;
+		}
+	}
+	
+	WiflyControl *mControl = new WiflyControl((long)ipRecvd,2000);
+	[NSThread sleepForTimeInterval:2];
+	
+	mControl->FwSetColor(0x00ff00ff, 0x00ff2200);
+	
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

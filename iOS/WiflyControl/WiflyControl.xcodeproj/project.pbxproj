@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C053E3C16A4BCB800633C11 /* BroadcastReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C053E3A16A4BCB800633C11 /* BroadcastReceiver.cpp */; };
 		5C31415316A4266B00F95BF2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C31415216A4266B00F95BF2 /* UIKit.framework */; };
 		5C31415516A4266B00F95BF2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C31415416A4266B00F95BF2 /* Foundation.framework */; };
 		5C31415716A4266B00F95BF2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C31415616A4266B00F95BF2 /* CoreGraphics.framework */; };
@@ -24,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5C053E3A16A4BCB800633C11 /* BroadcastReceiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BroadcastReceiver.cpp; path = ../../BroadcastReceiver.cpp; sourceTree = "<group>"; };
+		5C053E3B16A4BCB800633C11 /* BroadcastReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BroadcastReceiver.h; path = ../../BroadcastReceiver.h; sourceTree = "<group>"; };
 		5C31414E16A4266B00F95BF2 /* WiflyControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WiflyControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C31415216A4266B00F95BF2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5C31415416A4266B00F95BF2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -90,6 +93,8 @@
 		5C31415116A4266B00F95BF2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5C053E3A16A4BCB800633C11 /* BroadcastReceiver.cpp */,
+				5C053E3B16A4BCB800633C11 /* BroadcastReceiver.h */,
 				5C31416E16A426EC00F95BF2 /* BlRequest.h */,
 				5C31417116A426EC00F95BF2 /* ClientSocket.cpp */,
 				5C31417216A426EC00F95BF2 /* ClientSocket.h */,
@@ -209,6 +214,7 @@
 				5C31418516A426EC00F95BF2 /* intelhexclass.cpp in Sources */,
 				5C31418616A426EC00F95BF2 /* WiflyControl.cpp in Sources */,
 				5C31418716A426EC00F95BF2 /* WiflyControlColorClass.cpp in Sources */,
+				5C053E3C16A4BCB800633C11 /* BroadcastReceiver.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,6 +249,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 					X86,
+					OS_ANDROID,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -266,8 +273,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = X86;
-				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = X86;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					X86,
+					OS_ANDROID,
+				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -321,6 +330,7 @@
 				5C31416D16A4266B00F95BF2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
