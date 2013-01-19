@@ -22,16 +22,10 @@
 #include "ClientSocket.h"
 #include <stdint.h>
 #include <cstring>
+#include <mutex>
 #include <ostream>
 #include <string>
 #include <vector>
-
-#ifndef OS_ANDROID
-#include <atomic>
-#include <mutex>
-#endif /* #ifndef OS_ANDROID */
-
-using std::vector;
 
 class BroadcastReceiver
 {
@@ -46,17 +40,15 @@ class BroadcastReceiver
 		BroadcastReceiver(uint16_t port = BROADCAST_PORT);
 		~BroadcastReceiver(void);
 
-#ifndef OS_ANDROID
 		/**
 		 * Wait for broadcasts and print them to a stream
 		 * @param out stream to print collected remotes on
 		 * @param timeout in seconds, until execution is terminated
 		 */
 		void operator() (std::ostream& out, timeval* timeout = NULL);
-#endif /* #ifndef OS_ANDROID */
 
 		uint32_t GetIp(size_t index) const;
-		uint32_t GetNextRemote(timeval* timeout);
+		Endpoint GetNextRemote(timeval* timeout);
 		uint16_t GetPort(size_t index) const;
 
 		/**
@@ -70,14 +62,10 @@ class BroadcastReceiver
 		void Stop(void);
 
 	private:
-		vector<Endpoint*> mIpTable;
+		std::vector<Endpoint> mIpTable;
 		volatile bool mIsRunning;
-#ifndef OS_ANDROID
 		std::atomic<int> mNumInstances;
 		std::mutex mMutex;
-#else
-		int mNumInstances;
-#endif /* #ifndef OS_ANDROID */
 };
 
 #pragma pack(push)

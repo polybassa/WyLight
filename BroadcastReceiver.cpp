@@ -37,7 +37,6 @@ BroadcastReceiver::~BroadcastReceiver(void)
 	//TODO cleanup mIpTable
 }
 
-#ifndef OS_ANDROID
 void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 {
 	// only one thread allowed per instance
@@ -47,12 +46,11 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 		timeval endTime, now;
 		gettimeofday(&endTime, NULL);
 		timeval_add(&endTime, pTimeout);
-		uint32_t remote;
 		do
 		{
-			remote = GetNextRemote(pTimeout);
-			if(remote != 0) {
-				out << numRemotes << ':' << std::hex << remote << std::endl;
+			Endpoint remote = GetNextRemote(pTimeout);
+			if(remote.IsValid()) {
+				out << numRemotes << ':' << remote << '\n';
 				numRemotes++;
 			}
 			gettimeofday(&now, NULL);
@@ -60,39 +58,34 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 	}
 	std::atomic_fetch_sub(&mNumInstances, 1);
 }
-#endif /* #ifndef OS_ANDROID */
 
 uint32_t BroadcastReceiver::GetIp(size_t index) const
 {
-	return mIpTable[index]->m_Addr;
+	return mIpTable[index].m_Addr;
 }
 
-uint32_t BroadcastReceiver::GetNextRemote(timeval* timeout)
+Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout)
 {
 	UdpSocket udpSock(INADDR_ANY, mPort, true, true);
 	sockaddr_storage remoteAddr;
 	socklen_t remoteAddrLength = sizeof(remoteAddr);
-	
-		BroadcastMessage msg;
-		size_t bytesRead = udpSock.RecvFrom((unsigned char*)&msg, sizeof(msg), timeout, (sockaddr*)&remoteAddr, &remoteAddrLength);
-		if(msg.IsWiflyBroadcast(bytesRead))
-		{
-			Endpoint* newRemote = new Endpoint(remoteAddr, remoteAddrLength, msg.port);
-#ifndef OS_ANDROID
-			mMutex.lock();
-			mIpTable.push_back(newRemote);
-			mMutex.unlock();
-#else
-			mIpTable.push_back(newRemote);
-#endif /* #ifndef OS_ANDROID */
-			return newRemote->m_Addr;
-		}
-		return 0;
+
+	BroadcastMessage msg;
+	size_t bytesRead = udpSock.RecvFrom((unsigned char*)&msg, sizeof(msg), timeout, (sockaddr*)&remoteAddr, &remoteAddrLength);
+	if(msg.IsWiflyBroadcast(bytesRead))
+	{
+		Endpoint newRemote(remoteAddr, remoteAddrLength, msg.port);
+		mMutex.lock();
+		mIpTable.push_back(newRemote);
+		mMutex.unlock();
+		return newRemote;
+	}
+	return Endpoint();
 }
 
 uint16_t BroadcastReceiver::GetPort(size_t index) const
 {
-	return mIpTable[index]->m_Port;
+	return mIpTable[index].m_Port;
 }
 
 size_t BroadcastReceiver::NumRemotes(void) const
