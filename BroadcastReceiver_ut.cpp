@@ -87,7 +87,7 @@ int ut_BroadcastReceiver_TestSimple(void)
 	dummyReceiver.Stop();
 	myThread.join();
 
-	CHECK(0 == out.str().compare("0:7f000001\n"));
+	CHECK(0 == out.str().compare("0:7f000001:2000\n"));
 	CHECK(1 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetIp(0));
 	TestCaseEnd();
@@ -108,7 +108,7 @@ int ut_BroadcastReceiver_TestTwo(void)
 	dummyReceiver.Stop();
 	myThread.join();
 
-	CHECK(0 == out.str().compare("0:7f000001\n1:7f000001\n"));
+	CHECK(0 == out.str().compare("0:7f000001:2000\n1:7f000001:2000\n"));
 	CHECK(2 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetIp(0));
 	CHECK(0x7F000001 == dummyReceiver.GetIp(1));
@@ -129,7 +129,7 @@ int ut_BroadcastReceiver_TestNoTimeout(void)
 	dummyReceiver.Stop();
 	myThread.join();
 
-	CHECK(0 == out.str().compare("0:7f000001\n1:7f000001\n"));
+	CHECK(0 == out.str().compare("0:7f000001:2000\n1:7f000001:2000\n"));
 	CHECK(2 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetIp(0));
 	CHECK(0x7F000001 == dummyReceiver.GetIp(1));
