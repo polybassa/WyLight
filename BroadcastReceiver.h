@@ -23,6 +23,7 @@
 #include <stdint.h>
 #include <cstring>
 #include <mutex>
+#include <atomic>
 #include <ostream>
 #include <string>
 #include <vector>
