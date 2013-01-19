@@ -17,14 +17,8 @@ public class ColorPicker extends View {
 		public void onColorChange(int red);
 	};
 
-	private static final int SECTOR_NUM = 6; 
-	private final int mSectorWidth; 
-	
-	private ArrayList<LinearGradient> mGradient = new ArrayList<LinearGradient>(SECTOR_NUM);
-	private Paint mPaint = new Paint();
-	private ArrayList<Rect> mRect = new ArrayList<Rect>(SECTOR_NUM);
-	private OnColorChangeListener mOnColorChangeListener;
-	private int mSectorBasecolor[] = {
+	private static final int SECTOR_NUM = 6;
+	private static final int mSectorBasecolor[] = {
 			0xffff0000,
 			0xffff00ff, 
 			0xff0000ff,
@@ -32,18 +26,14 @@ public class ColorPicker extends View {
 			0xff00ff00,
 			0xffffff00,
 			0xffff0000};
+	
+	private ArrayList<LinearGradient> mGradient;
+	private Paint mPaint = new Paint();
+	private ArrayList<Rect> mRect;
+	private OnColorChangeListener mOnColorChangeListener;
 
 	public ColorPicker(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		
-		mSectorWidth = 50;//this.getWidth() / SECTOR_NUM;
-		final int y = 0;
-		for(int sector = 0; sector < SECTOR_NUM; sector++) {
-			final int x = sector*mSectorWidth;
-			mGradient.add(new LinearGradient(x, y, x + mSectorWidth, y,
-					new int[]{mSectorBasecolor[sector], mSectorBasecolor[sector+1]}, null, Shader.TileMode.CLAMP));
-			mRect.add(new Rect(x, 0, x + mSectorWidth, 200));
-		}
 
 		this.setOnTouchListener(new View.OnTouchListener() {			
 			public boolean onTouch(View v, MotionEvent event) {
@@ -69,6 +59,20 @@ public class ColorPicker extends View {
 		});
 	}
 	
+	@Override
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		mGradient = new ArrayList<LinearGradient>(SECTOR_NUM);
+		mRect = new ArrayList<Rect>(SECTOR_NUM);
+
+		final int sectorWidth = w / SECTOR_NUM;
+		for(int sector = 0; sector < SECTOR_NUM; sector++) {
+			final int x = sector*sectorWidth;
+			mGradient.add(new LinearGradient(x, 0, x + sectorWidth, 0,
+					new int[]{mSectorBasecolor[sector], mSectorBasecolor[sector+1]}, null, Shader.TileMode.CLAMP));
+			mRect.add(new Rect(x, 0, x + sectorWidth, h));
+		}	
+	}
+	
 	protected void onDraw(Canvas canvas) {
 		int index = 0;
 		for(LinearGradient lg: mGradient) {
@@ -82,3 +86,4 @@ public class ColorPicker extends View {
 		mOnColorChangeListener = l;
 	}
 }
+
