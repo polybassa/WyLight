@@ -49,6 +49,10 @@ public class WiflyLightActivity extends Activity {
         scanBtn.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
+				Intent i = new Intent(v.getContext(), WiflyControlActivity.class);
+				i.putExtra(WiflyControlActivity.EXTRA_IP, 0x0A000202);
+				i.putExtra(WiflyControlActivity.EXTRA_PORT, (short)2000);
+				startActivityForResult(i, 0);
 				Button btn = (Button)v;
 				btn.setClickable(false);
 				btn.setText(string.scanning);

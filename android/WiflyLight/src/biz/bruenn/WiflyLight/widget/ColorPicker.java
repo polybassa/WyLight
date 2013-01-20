@@ -17,6 +17,7 @@ public class ColorPicker extends View {
 		public void onColorChange(int red);
 	};
 
+	private static final int RECT_NUM = 20;
 	private static final int SECTOR_NUM = 6;
 	private static final int SECTOR_SHIFT[] = {0, 16, 8};
 	private static final int SECTOR_BASECOLOR[] = {
@@ -58,15 +59,14 @@ public class ColorPicker extends View {
 	
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		mGradient = new ArrayList<LinearGradient>(SECTOR_NUM);
-		mRect = new ArrayList<Rect>(SECTOR_NUM);
-
+		mGradient = new ArrayList<LinearGradient>(RECT_NUM);
+		mRect = new ArrayList<Rect>(RECT_NUM);
 		mSectorWidth = (w / SECTOR_NUM) + 1;
-		for(int sector = 0; sector < SECTOR_NUM; sector++) {
-			final int x = sector*mSectorWidth;
-			mGradient.add(new LinearGradient(x, 0, x + mSectorWidth, 0,
-					new int[]{SECTOR_BASECOLOR[sector], SECTOR_BASECOLOR[sector+1]}, null, Shader.TileMode.CLAMP));
-			mRect.add(new Rect(x, 0, x + mSectorWidth, h));
+		int mRectHeight = h / RECT_NUM;
+
+		for(int rect = 0; rect < RECT_NUM; rect++) {
+			mGradient.add(new LinearGradient(0, 0, w, 0, SECTOR_BASECOLOR, null, Shader.TileMode.CLAMP));
+			mRect.add(new Rect(0, rect*mRectHeight, w, (rect+1)*mRectHeight));
 		}	
 	}
 	
