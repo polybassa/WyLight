@@ -18,7 +18,8 @@ public class ColorPicker extends View {
 	};
 
 	private static final int SECTOR_NUM = 6;
-	private static final int mSectorBasecolor[] = {
+	private static final int SECTOR_SHIFT[] = {0, 16, 8};
+	private static final int SECTOR_BASECOLOR[] = {
 			0xffff0000,
 			0xffff00ff, 
 			0xff0000ff,
@@ -26,10 +27,11 @@ public class ColorPicker extends View {
 			0xff00ff00,
 			0xffffff00,
 			0xffff0000};
-	
+
 	private ArrayList<LinearGradient> mGradient;
 	private Paint mPaint = new Paint();
 	private ArrayList<Rect> mRect;
+	private int mSectorWidth;
 	private OnColorChangeListener mOnColorChangeListener;
 
 	public ColorPicker(Context context, AttributeSet attrs) {
@@ -37,22 +39,17 @@ public class ColorPicker extends View {
 
 		this.setOnTouchListener(new View.OnTouchListener() {			
 			public boolean onTouch(View v, MotionEvent event) {
-				final int sectorWidth = (v.getWidth() / 6) + 1;
 				final int pixelX = (int)event.getX();
-				final int sector = pixelX / sectorWidth;
-				int sectorOffset = pixelX % sectorWidth;
-				int color;
-				if(sector < 0 || sector >= 6) {
-					return false;
-				}
-				final int shift[] = {0, 16, 8};
-				
+				final int sector = pixelX / mSectorWidth;
+				final int sectorOffset = (int)(pixelX % mSectorWidth * (255f/mSectorWidth));
+
+				final int color;
 				if(0 == sector % 2) {
-					color = mSectorBasecolor[sector] + (sectorOffset << shift[sector % 3]);
+					color = SECTOR_BASECOLOR[sector] + (sectorOffset << SECTOR_SHIFT[sector % 3]);
 				} else {
-					color = mSectorBasecolor[sector] - (sectorOffset << shift[sector % 3]);
+					color = SECTOR_BASECOLOR[sector] - (sectorOffset << SECTOR_SHIFT[sector % 3]);
 				}
-				float y = event.getY();
+				
 				mOnColorChangeListener.onColorChange(color);
 				return true;
 			}
@@ -64,12 +61,12 @@ public class ColorPicker extends View {
 		mGradient = new ArrayList<LinearGradient>(SECTOR_NUM);
 		mRect = new ArrayList<Rect>(SECTOR_NUM);
 
-		final int sectorWidth = w / SECTOR_NUM;
+		mSectorWidth = (w / SECTOR_NUM) + 1;
 		for(int sector = 0; sector < SECTOR_NUM; sector++) {
-			final int x = sector*sectorWidth;
-			mGradient.add(new LinearGradient(x, 0, x + sectorWidth, 0,
-					new int[]{mSectorBasecolor[sector], mSectorBasecolor[sector+1]}, null, Shader.TileMode.CLAMP));
-			mRect.add(new Rect(x, 0, x + sectorWidth, h));
+			final int x = sector*mSectorWidth;
+			mGradient.add(new LinearGradient(x, 0, x + mSectorWidth, 0,
+					new int[]{SECTOR_BASECOLOR[sector], SECTOR_BASECOLOR[sector+1]}, null, Shader.TileMode.CLAMP));
+			mRect.add(new Rect(x, 0, x + mSectorWidth, h));
 		}	
 	}
 	
