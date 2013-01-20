@@ -17,7 +17,6 @@ public class ColorPicker extends View {
 		public void onColorChange(int red);
 	};
 
-	private static final int RECT_NUM = 20;
 	private static final int SECTOR_NUM = 6;
 	private static final int SECTOR_SHIFT[] = {0, 16, 8};
 	private static final int SECTOR_BASECOLOR[] = {
@@ -29,9 +28,9 @@ public class ColorPicker extends View {
 			0xffffff00,
 			0xffff0000};
 
-	private ArrayList<LinearGradient> mGradient;
+	private LinearGradient mGradient;
 	private Paint mPaint = new Paint();
-	private ArrayList<Rect> mRect;
+	private Rect mRect;
 	private int mSectorWidth;
 	private OnColorChangeListener mOnColorChangeListener;
 
@@ -59,24 +58,14 @@ public class ColorPicker extends View {
 	
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		mGradient = new ArrayList<LinearGradient>(RECT_NUM);
-		mRect = new ArrayList<Rect>(RECT_NUM);
 		mSectorWidth = (w / SECTOR_NUM) + 1;
-		int mRectHeight = h / RECT_NUM;
-
-		for(int rect = 0; rect < RECT_NUM; rect++) {
-			mGradient.add(new LinearGradient(0, 0, w, 0, SECTOR_BASECOLOR, null, Shader.TileMode.CLAMP));
-			mRect.add(new Rect(0, rect*mRectHeight, w, (rect+1)*mRectHeight));
-		}	
+		mGradient = new LinearGradient(0, 0, w, 0, SECTOR_BASECOLOR, null, Shader.TileMode.CLAMP);
+		mRect = new Rect(0, 0, w, h);
 	}
 	
 	protected void onDraw(Canvas canvas) {
-		int index = 0;
-		for(LinearGradient lg: mGradient) {
-			mPaint.setShader(lg);
-			canvas.drawRect(mRect.get(index), mPaint);
-			index++;
-		}		
+			mPaint.setShader(mGradient);
+			canvas.drawRect(mRect, mPaint);
 	}
 	
 	public void setOnColorChangeListener(OnColorChangeListener l) {
