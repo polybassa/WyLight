@@ -20,7 +20,6 @@
 #define _LEDSTRIP_H_
 
 #include "platform.h"
-#include "ScriptCtrl.h"
 #include "wifly_cmd.h"
 
 /**
@@ -77,14 +76,6 @@ void Ledstrip_SetColorDirect(uns8 *pValues);
 void Ledstrip_SetFade(struct cmd_set_fade *pCmd);
 
 /**
- * Callback if a "set_run" command is received.
- * fading parameters are calculated and stored to be used in
- * Ledstrip_DoFade() which is called in the main cycle
- * Duration is used to block the commandstorage
- */
-void Ledstrip_SetRun(struct cmd_set_run *pCmd);
-
-/**
  * called by the main cycle
  * update the ledstrip accourding to the precalculated parameters in <gLedBuf>
  */
@@ -93,8 +84,6 @@ void Ledstrip_SetRun(struct cmd_set_run *pCmd);
  * updates cyclesLeft part of the global <gLedBuf>
 **/
 void Ledstrip_DoFade(void);
-
-void Ledstrip_UpdateRun(void);
 
 void Ledstrip_UpdateLed(void);
 

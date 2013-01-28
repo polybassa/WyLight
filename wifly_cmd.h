@@ -31,7 +31,6 @@
 #define WAIT 0xFE
 #define SET_COLOR 0xFD
 #define SET_FADE 0xFC
-#define SET_RUN 0xFB
 #define CLEAR_SCRIPT 0xF8
 #define LOOP_ON 0xF7
 #define LOOP_OFF 0xF6

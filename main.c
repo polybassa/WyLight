@@ -154,10 +154,10 @@ void main(void)
 	while(1)
 	{
 		Timer_StartStopwatch(eMAIN);
-#ifdef X86
+#ifndef __CC8E__
 		// give opengl thread a chance to run
 		usleep(10);
-#endif /* #ifdef X86 */
+#endif /* #ifndef __CC8E__ */
 		
 		
 		
@@ -172,8 +172,6 @@ void main(void)
 		if(g_UpdateLed > 0)
 		{		  
 			do_and_measure(Ledstrip_DoFade);
-			
-			do_and_measure(Ledstrip_UpdateRun);
 			
 			Timer5InterruptLock();
 			g_UpdateLed = 0;
@@ -205,9 +203,9 @@ void InitAll()
 	Rtc_Init();
 	ScriptCtrl_Init();
 
-#ifdef X86
+#ifndef __CC8E__
 	init_x86();
-#endif /* #ifdef X86 */
+#endif /* #ifndef CC8E */
 	
 	Platform_AllowInterrupts();
 	Platform_DisableBootloaderAutostart();

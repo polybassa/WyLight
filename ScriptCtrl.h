@@ -19,6 +19,7 @@
 #ifndef _SCRIPTCTRL_H_
 #define _SCRIPTCTRL_H_
 
+#include "platform.h"
 #include "wifly_cmd.h"
 
 #define SCRIPTCTRL_NUM_CMD_MAX 63			/*BITMASK */

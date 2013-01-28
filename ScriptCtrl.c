@@ -16,7 +16,6 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "platform.h"
 #include "ScriptCtrl.h"
 #include "ledstrip.h"
 #include "eeprom.h"
@@ -117,7 +116,7 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 			softReset();
 			/* never reach this */
 			return FALSE;
-#ifndef X86
+#ifdef __CC8E__
 		case DISPLAY_RTC:
 		{
 			Rtc_Ctl(RTC_RD_TIME, &g_RtcTime);
@@ -177,7 +176,7 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 			Trace_Print();
 			return TRUE;
 		}
-#endif /* #ifndef X86 */
+#endif /* #ifndef CC8E */
 		case ADD_COLOR:
 		{
 			date_timer_add_event(&pCmd->data.add_color);
@@ -213,12 +212,12 @@ void ScriptCtrl_Run(void)
 	{
 		ScriptCtrl_Clear();
 	}
-#ifndef X86	
+#ifdef __CC8E__
 	if(gScriptBuf.waitValue > 0)
 	{
 		return;
 	}
-#endif /* #ifndef X86 */	
+#endif /* #ifdef CC8E */	
 	/* cmd available? */
 	if(gScriptBuf.execute == gScriptBuf.write)
 	{
@@ -313,23 +312,6 @@ void ScriptCtrl_Run(void)
 			}
 			break;
 		}
-#ifndef X86
-		/* TODO implement this for X86 */
-		case SET_RUN: 
-		{
-			Timer_StartStopwatch(eSET_RUN);
-			gScriptBuf.waitValue = ntohs(nextCmd.data.set_run.durationTmms);
-			Ledstrip_SetRun(&nextCmd.data.set_run);
-			Timer_StopStopwatch(eSET_RUN);
-			/* move execute pointer to the next command */
-			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
-			if(!gScriptBuf.inLoop)
-			{
-				ScriptBufSetRead(gScriptBuf.execute);
-			}
-			break;
-		}
-#endif /* #ifndef X86 */
 		case WAIT:
 		{
 			/* TODO we should disable interrupts while changing waitValue */

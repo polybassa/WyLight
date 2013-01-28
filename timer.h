@@ -27,7 +27,7 @@ enum METHODE{
 	eSET_FADE,			//02
 	eSET_COLOR,			//03
 	eSET_RUN,			//04
-	eLedstrip_UpdateRun,		//05
+	e_EMPTY_METHODE_,		//05
 	eLedstrip_UpdateLed,		//06
 	eCommandstorage_GetCommands,	//07
 	eScriptCtrl_Run,		//08
