@@ -17,9 +17,8 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "rtc.h"
-#include "trace.h"
 #include "iic.h"
-#ifndef X86
+#ifdef __CC8E__
 #include "INLINE.H"
 #endif
 
@@ -63,7 +62,6 @@ struct rtc_time g_RtcTime;
 void Rtc_Init(void)
 {
 	I2C_Init();
-	
 	I2C_Write(RTC,0x00,0x00);		//Make sure that the TEST-Bits in the RTC-Device are set to zero
 	I2C_Write(RTC,0x01,0x00);		//Disable Interrupts in the RTC-Device
 } 

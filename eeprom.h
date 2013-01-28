@@ -19,6 +19,8 @@
 #ifndef _EEPROM_H_
 #define _EEPROM_H_
 
+#include "platform.h"
+
 /* globals */
 #define EEPROM_SCRIPTBUF_BASE 0
 #define EEPROM_SCRIPTBUF_INLOOP 0x3fd
