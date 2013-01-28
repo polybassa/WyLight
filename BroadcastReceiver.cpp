@@ -21,12 +21,12 @@
 #include <iostream>
 #include <stdio.h>
 
-const char BroadcastReceiver::BROADCAST_DEVICE_ID[] = "WiFly";
+const int8_t BroadcastReceiver::BROADCAST_DEVICE_ID[] = "WiFly";
 const size_t BroadcastReceiver::BROADCAST_DEVICE_ID_LENGTH = 5;
-const char BroadcastReceiver::STOP_MSG[] = "StopThread";
+const int8_t BroadcastReceiver::STOP_MSG[] = "StopThread";
 const size_t BroadcastReceiver::STOP_MSG_LENGTH = sizeof(STOP_MSG);
 
-BroadcastReceiver::BroadcastReceiver(unsigned short port)
+BroadcastReceiver::BroadcastReceiver(uint16_t port)
 	: mPort(port), mIsRunning(true), mNumInstances(0)
 {
 }
@@ -71,7 +71,7 @@ Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout)
 	socklen_t remoteAddrLength = sizeof(remoteAddr);
 
 	BroadcastMessage msg;
-	size_t bytesRead = udpSock.RecvFrom((unsigned char*)&msg, sizeof(msg), timeout, (sockaddr*)&remoteAddr, &remoteAddrLength);
+	size_t bytesRead = udpSock.RecvFrom((uint8_t*)&msg, sizeof(msg), timeout, (sockaddr*)&remoteAddr, &remoteAddrLength);
 	if(msg.IsWiflyBroadcast(bytesRead))
 	{
 		Endpoint newRemote(remoteAddr, remoteAddrLength, msg.port);

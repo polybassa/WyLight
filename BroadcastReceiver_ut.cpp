@@ -30,7 +30,7 @@ using std::vector;
 
 static const timespec NANOSLEEP_TIME = {0, 5000000};
 
-unsigned char capturedBroadcastMessage[110] = {
+uint8_t capturedBroadcastMessage[110] = {
 0x00, 0x0f, 0xb5, 0xb2, 0x57, 0xfa, //MAC
 0x07, //channel
 0x3f, //rssi
@@ -48,7 +48,7 @@ unsigned char capturedBroadcastMessage[110] = {
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 //sensors
 };
 
-unsigned char capturedBroadcastMessage_2[110] = {
+uint8_t capturedBroadcastMessage_2[110] = {
 0xbc, 0x14, 0x01, 0x97, 0xf2, 0xa8, //MAC
 0x07, //channel
 0x3b, //rssi
@@ -66,7 +66,7 @@ unsigned char capturedBroadcastMessage_2[110] = {
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 //sensors
 };
 
-int ut_BroadcastReceiver_TestEmpty(void)
+int32_t ut_BroadcastReceiver_TestEmpty(void)
 {
 	TestCaseBegin();
 	BroadcastReceiver dummyReceiver;
@@ -74,7 +74,7 @@ int ut_BroadcastReceiver_TestEmpty(void)
 	TestCaseEnd();
 }
 
-int ut_BroadcastReceiver_TestSimple(void)
+int32_t ut_BroadcastReceiver_TestSimple(void)
 {
 	TestCaseBegin();
 	std::ostringstream out;
@@ -93,7 +93,7 @@ int ut_BroadcastReceiver_TestSimple(void)
 	TestCaseEnd();
 }
 
-int ut_BroadcastReceiver_TestTwo(void)
+int32_t ut_BroadcastReceiver_TestTwo(void)
 {
 	TestCaseBegin();
 	std::ostringstream out;
@@ -115,7 +115,7 @@ int ut_BroadcastReceiver_TestTwo(void)
 	TestCaseEnd();
 }
 
-int ut_BroadcastReceiver_TestNoTimeout(void)
+int32_t ut_BroadcastReceiver_TestNoTimeout(void)
 {
 	TestCaseBegin();
 	std::ostringstream out;

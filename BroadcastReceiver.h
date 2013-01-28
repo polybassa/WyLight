@@ -32,9 +32,9 @@ class BroadcastReceiver
 {
 	public:
 		static const uint16_t BROADCAST_PORT = 55555;
-		static const char BROADCAST_DEVICE_ID[];
+		static const int8_t BROADCAST_DEVICE_ID[];
 		static const size_t BROADCAST_DEVICE_ID_LENGTH;
-		static const char STOP_MSG[];
+		static const int8_t STOP_MSG[];
 		static const size_t STOP_MSG_LENGTH;
 		const uint16_t mPort;
 
@@ -65,7 +65,7 @@ class BroadcastReceiver
 	private:
 		std::vector<Endpoint> mIpTable;
 		volatile bool mIsRunning;
-		std::atomic<int> mNumInstances;
+		std::atomic<int32_t> mNumInstances;
 		std::mutex mMutex;
 };
 
@@ -80,9 +80,9 @@ struct BroadcastMessage
 	uint32_t rtc;
 	uint16_t bat_mV;
 	uint16_t gpioValue;
-	char asciiTime[13+1];
-	char version[26+1+1];// this seems a little strange. bug in wifly fw?
-	char deviceId[32];
+	int8_t asciiTime[13+1];
+	int8_t version[26+1+1];// this seems a little strange. bug in wifly fw?
+	int8_t deviceId[32];
 	uint16_t bootTmms;
 	uint16_t sensor[8];
 
@@ -112,10 +112,10 @@ struct BroadcastMessage
 	void Print(std::ostream& out) const {
 
 		out << "MAC:        "	<< std::hex
-		<< (int) mac[0] << ' ' << (int) mac[1] << ' ' << (int) mac[2] << ' '
-		<< (int) mac[3] << ' ' << (int) mac[4] << ' ' << (int) mac[5]
-		<< "\nChannel:  " << std::dec << (int)channel
-		<< "\nRssi:     " << (int)rssi
+		<< (int32_t) mac[0] << ' ' << (int32_t) mac[1] << ' ' << (int32_t) mac[2] << ' '
+		<< (int32_t) mac[3] << ' ' << (int32_t) mac[4] << ' ' << (int32_t) mac[5]
+		<< "\nChannel:  " << std::dec << (int32_t)channel
+		<< "\nRssi:     " << (int32_t)rssi
 		<< "%\nPort:     " << port 
 		<< "\nRTC:      0x" << std::hex << rtc
 		<< "\nBat:      " << std::dec << bat_mV
