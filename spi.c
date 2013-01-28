@@ -33,7 +33,7 @@ void SPI_Init()
 	SSPEN = TRUE;		/* Enables the serial port and configures SCK, SDO, SDI */
 }
 
-uns8 SPI_Send(uns8 data)
+uns8 SPI_Send(const uns8 data)
 {
 	SSP1IF = FALSE;		/* Reset interruptflag, that end of transmisson can be detected */
 	SSP1BUF = data;	
@@ -42,11 +42,10 @@ uns8 SPI_Send(uns8 data)
 	return SSP1BUF;
 }
 
-void SPI_SendLedBuffer(uns8 *array)
+void SPI_SendLedBuffer(const uns8 *array)
 {
-	
-	uns8* pCurrent;				/* array must be the address of the first byte*/
-	pCurrent = array + (NUM_OF_LED * 3); 	/* calculate where the end is */
+															/* array must be the address of the first byte*/
+	uns8* pCurrent =(uns8*)( array + (NUM_OF_LED * 3)); 	/* calculate where the end is */
 	
 	for(; array <= pCurrent; pCurrent--)		/* send all data */
 	{

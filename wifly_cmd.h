@@ -48,7 +48,7 @@
 #define FW_MAX_MESSAGE_LENGTH 128
 
 //*********************** STRUCT DECLARATION *********************************************
-#ifdef X86
+#ifndef __CC8E__
 #pragma pack(push)
 #pragma pack(1)
 #endif
@@ -98,8 +98,7 @@ struct cmd_set_run {
 struct cmd_set_color_direct {
 #ifdef __CC8E__
 	uns8 ptr_led_array;
-#endif
-#ifdef X86
+#else
 	uns8 ptr_led_array[NUM_OF_LED * 3];
 #endif
 };
@@ -123,7 +122,7 @@ struct cmd_frame {
 	uns8 length;
 	struct led_cmd led;
 };
-#ifdef X86
+#ifndef __CC8E__
 #pragma pack(pop)
 #endif
 #define FRAMELENGTH (sizeof(struct cmd_frame) + 1)			// *** max length of one commandframe

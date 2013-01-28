@@ -24,7 +24,7 @@
 
 //*********************** PRIVATE FUNCTIONS *********************************************
 
-uns8 BcdToBin(uns8 BcdValue)
+uns8 BcdToBin(const uns8 BcdValue)
 {
 	uns8 retValue = 0x00;
 	
@@ -35,7 +35,7 @@ uns8 BcdToBin(uns8 BcdValue)
 	return retValue + BcdValue;
 }
 
-uns8 BinToBcd(uns8 BinValue)
+uns8 BinToBcd(const uns8 BinValue)
 {
 	uns8 onesValue, tensValue, tempValue;
 	

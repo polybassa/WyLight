@@ -20,7 +20,7 @@
 
 #ifdef __CC8E__
 //*********************** EEPROM BYTE SCHREIBEN  **********************************************
-void Eeprom_Write(uns16 adress, uns8 data)
+void Eeprom_Write(const uns16 adress, const uns8 data)
 {
 	bit GIE_status; 
 	GIE_status = GIE;	
@@ -44,7 +44,7 @@ void Eeprom_Write(uns16 adress, uns8 data)
 
 //*********************** EEPROM BYTE LESEN  **********************************************
 
-uns8 Eeprom_Read(uns16 adress)
+uns8 Eeprom_Read(const uns16 adress)
 {
 	uns8 data;
 	EEADRH = adress.high8;        // Adresse in Adressregister übertragen
@@ -60,12 +60,12 @@ uns8 Eeprom_Read(uns16 adress)
 
 static uns8 g_Eeprom[0x400];
 
-unsigned char Eeprom_Read(uns16 adress)
+uns8 Eeprom_Read(const uns16 adress)
 {
 	return g_Eeprom[adress];
 }
 
-void Eeprom_Write(uns16 adress, uns8 data)
+void Eeprom_Write(const uns16 adress,const uns8 data)
 {
 	g_Eeprom[adress] = data;
 }
@@ -74,7 +74,7 @@ void Eeprom_Write(uns16 adress, uns8 data)
 
 //*********************** EEPROM BYTEARRAY SCHREIBEN  **************************************
 
-void Eeprom_WriteBlock(uns8 *array, uns16 adress, uns8 length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
+void Eeprom_WriteBlock(uns8 *array, uns16 adress,const uns8 length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
 {
 	if(!array) return;
 	uns8 i;
@@ -88,7 +88,7 @@ void Eeprom_WriteBlock(uns8 *array, uns16 adress, uns8 length)			//Zum Ausführen
 
 //*********************** EEPROM BYTEARRAY LESEN  **************************************
 
-void Eeprom_ReadBlock(uns8 *array, uns16 adress, uns8 length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
+void Eeprom_ReadBlock(uns8 *array, uns16 adress, const uns8 length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
 {
 	if(!array) return;
 	uns8 i, temp;

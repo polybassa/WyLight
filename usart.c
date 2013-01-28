@@ -39,7 +39,7 @@ void UART_Init()
 }
 
 //*******  Sende-char-Funktion  *************************************************
-void UART_Send(unsigned char ch)
+void UART_Send(const uns8 ch)
 {
 	while(!TX1IF);
 	TXREG1=ch;
@@ -48,7 +48,7 @@ void UART_Send(unsigned char ch)
 #endif /* #ifndef CC8E */
 
 //*******  Sende-String-Funktion  *************************************************
-void UART_SendString(const char *string)
+void UART_SendString(const uns8 *string)
 {
  uns8 ps;
  ps = *string;
@@ -61,7 +61,7 @@ void UART_SendString(const char *string)
 }
 
 //*******  Sende-Array-Funktion  *************************************************
-void UART_SendArray(uns8 *array, uns8 length)
+void UART_SendArray(const uns8 *array,const uns8 length)
 {
 	if(array == 0) return;
 	uns8 i;
@@ -72,7 +72,7 @@ void UART_SendArray(uns8 *array, uns8 length)
 	}
 }
 
-void UART_SendHex_8(uns8 input)
+void UART_SendHex_8(const uns8 input)
 {
 	uns8 temp4 = input & 0xf0;
 	temp4 = temp4 >> 4;
@@ -97,7 +97,7 @@ void UART_SendHex_8(uns8 input)
 	}
 }
 
-void UART_SendHex_16(uns16 input)
+void UART_SendHex_16(const uns16 input)
 {
 #ifdef __CC8E__
 	UART_SendHex_8(input.high8);
@@ -108,7 +108,7 @@ void UART_SendHex_16(uns16 input)
 #endif /* #ifdef __CC8E__ */
 }
 //*******  Sende-Zahl-als-String-Funktion  *************************************************
-void UART_SendNumber(uns8 input, uns8 sign)
+void UART_SendNumber(const uns8 input,const uns8 sign)
 {
    uns8 temp;
    uns8 h,z,e;

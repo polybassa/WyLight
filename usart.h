@@ -19,20 +19,14 @@
 #ifndef _USART_H_
 #define _USART_H_
 #include "platform.h"
-// Include-Datei für Serielle Kommunikation über Hardwaremodul des Pic
-//Befehle:
-//InitUSART() zum initialisieren
-//USARTstring("text") zum Senden von Zeichenstrings
-
-//Funktionsprototypen
 
 void UART_Init();
-void UART_Send(unsigned char ch);
-void UART_SendString(const char *string);
-void UART_SendArray(uns8 *array, uns8 length);
-void UART_SendNumber(uns8 input, uns8 sign);
-void UART_SendHex_8(uns8 input);
-void UART_SendHex_16(uns16 input);
+void UART_Send(const uns8 ch);
+void UART_SendString(const uns8 *string);
+void UART_SendArray(const uns8 *array, const uns8 length);
+void UART_SendNumber(const uns8 input, const uns8 sign);
+void UART_SendHex_8(const uns8 input);
+void UART_SendHex_16(const uns16 input);
 
 
 #endif
