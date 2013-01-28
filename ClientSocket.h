@@ -28,7 +28,7 @@
 class Endpoint
 {
 	public:
-		Endpoint(sockaddr_storage& addr, const size_t size, unsigned short port) {
+		Endpoint(sockaddr_storage& addr, const size_t size, uint16_t port) {
 			assert(sizeof(sockaddr_in) == size);
 			m_Addr = ntohl(((sockaddr_in&)addr).sin_addr.s_addr);
 			m_Port = ntohs(port);
@@ -59,22 +59,22 @@ class Endpoint
 class ClientSocket
 {
 	protected:
-		const int mSock;
+		const int32_t mSock;
 		struct sockaddr_in mSockAddr;
 
 	public:
-		ClientSocket(unsigned long addr, unsigned short port, int style);
+		ClientSocket(uint64_t addr, uint16_t port, int32_t style);
 		virtual ~ClientSocket();
-		virtual size_t Recv(unsigned char* pBuffer, size_t length, timeval* timeout = NULL) const = 0;
-		virtual int Send(const unsigned char* frame, size_t length) const = 0;
+		virtual size_t Recv(uint8_t* pBuffer, size_t length, timeval* timeout = NULL) const = 0;
+		virtual int32_t Send(const uint8_t* frame, size_t length) const = 0;
 };
 
 class TcpSocket : public ClientSocket
 {
 	public:
-		TcpSocket(unsigned long Addr, unsigned short port);
-		virtual size_t Recv(unsigned char* pBuffer, size_t length, timeval* timeout = NULL) const;
-		virtual int Send(const unsigned char* frame, size_t length) const;
+		TcpSocket(uint64_t Addr, uint16_t port);
+		virtual size_t Recv(uint8_t* pBuffer, size_t length, timeval* timeout = NULL) const;
+		virtual int32_t Send(const uint8_t* frame, size_t length) const;
 };
 
 class UdpSocket : public ClientSocket
@@ -83,10 +83,10 @@ class UdpSocket : public ClientSocket
 		/**
 		 * @param enableBroadcast use 1 to enable broadcast else set 0
 		 */
-		UdpSocket(unsigned long addr, unsigned short port, bool doBind = true, int enableBroadcast = 0);
-		virtual size_t Recv(unsigned char* pBuffer, size_t length, timeval* timeout = NULL) const;
-		virtual size_t RecvFrom(unsigned char* pBuffer, size_t length, timeval* timeout = NULL, struct sockaddr* remoteAddr = NULL, socklen_t* remoteAddrLength = NULL) const;
-		virtual int Send(const unsigned char* frame, size_t length) const;
+		UdpSocket(uint64_t addr, uint16_t port, bool doBind = true, int32_t enableBroadcast = 0);
+		virtual size_t Recv(uint8_t* pBuffer, size_t length, timeval* timeout = NULL) const;
+		virtual size_t RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout = NULL, struct sockaddr* remoteAddr = NULL, socklen_t* remoteAddrLength = NULL) const;
+		virtual int32_t Send(const uint8_t* frame, size_t length) const;
 };
 
 #ifdef UNIT_TEST
@@ -95,9 +95,9 @@ class TestSocket : public ClientSocket
 	private:
 		timespec m_Delay;
 	public:
-		TestSocket(unsigned long addr, unsigned short port);
-		virtual size_t Recv(unsigned char* pBuffer, size_t length, timeval* timeout = NULL) const;
-		virtual int Send(const unsigned char* frame, size_t length) const;
+		TestSocket(uint64_t addr, uint16_t port);
+		virtual size_t Recv(uint8_t* pBuffer, size_t length, timeval* timeout = NULL) const;
+		virtual int32_t Send(const uint8_t* frame, size_t length) const;
 		void SetDelay(timeval& delay);
 };
 #endif /* #ifndef UNIT_TEST */

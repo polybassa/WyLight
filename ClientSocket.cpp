@@ -26,7 +26,7 @@
 
 #include <stdio.h>
 
-ClientSocket::ClientSocket(unsigned long addr, unsigned short port, int style)
+ClientSocket::ClientSocket(uint64_t addr, uint16_t port, int32_t style)
 	: mSock(socket(AF_INET, style, 0))
 {
 	memset(&mSockAddr, 0, sizeof(mSockAddr));
@@ -40,7 +40,7 @@ ClientSocket::~ClientSocket()
 	close(mSock);
 }
 
-TcpSocket::TcpSocket(unsigned long addr, unsigned short port)
+TcpSocket::TcpSocket(uint64_t addr, uint16_t port)
 	: ClientSocket(addr, port, SOCK_STREAM)
 {
 	if(connect(mSock, reinterpret_cast<sockaddr*>(&mSockAddr), sizeof(mSockAddr)) < 0)
@@ -49,7 +49,7 @@ TcpSocket::TcpSocket(unsigned long addr, unsigned short port)
 	}
 }
 
-size_t TcpSocket::Recv(unsigned char* pBuffer, size_t length, timeval* timeout) const
+size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 {
 	/* prepare socket set for select() */
 	fd_set readSockets;
@@ -60,7 +60,7 @@ size_t TcpSocket::Recv(unsigned char* pBuffer, size_t length, timeval* timeout) 
 	if((1 == select(mSock + 1, &readSockets, NULL, NULL, timeout))
 	&& (FD_ISSET(mSock, &readSockets)))
 	{
-		int bytesRead = recv(mSock, pBuffer, length, 0);
+		int32_t bytesRead = recv(mSock, pBuffer, length, 0);
 		if(bytesRead > 0)
 		{
 #ifdef DEBUG
@@ -74,20 +74,20 @@ size_t TcpSocket::Recv(unsigned char* pBuffer, size_t length, timeval* timeout) 
 	return 0;
 }
 
-int TcpSocket::Send(const unsigned char* frame, size_t length) const
+int32_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 {
 #ifdef DEBUG
 	std::cout << __FILE__ << ":" << __FUNCTION__ << ": Sending " << length << " bytes: ";
 	for(size_t i = 0; i < length; i++)
 	{
-		std::cout << std::hex << int(frame[i]) << ' ';
+		std::cout << std::hex << int32_t(frame[i]) << ' ';
 	}
 	std::cout << std::endl;
 #endif
 	return send(mSock, frame, length, 0);
 }
 
-UdpSocket::UdpSocket(unsigned long addr, unsigned short port, bool doBind, int enableBroadcast)
+UdpSocket::UdpSocket(uint64_t addr, uint16_t port, bool doBind, int32_t enableBroadcast)
 	: ClientSocket(addr, port, SOCK_DGRAM)
 {
 	setsockopt(mSock, SOL_SOCKET, SO_BROADCAST, &enableBroadcast, sizeof(enableBroadcast));
@@ -99,13 +99,13 @@ UdpSocket::UdpSocket(unsigned long addr, unsigned short port, bool doBind, int e
 	}
 }
 
-size_t UdpSocket::Recv(unsigned char* pBuffer, size_t length, timeval* timeout) const
+size_t UdpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 {
 	std::cout << __FILE__ << ":" << __LINE__ << " Not implemented" << std::endl;
 	return 0;
 }
 
-size_t UdpSocket::RecvFrom(unsigned char* pBuffer, size_t length, timeval* timeout, struct sockaddr* remoteAddr, socklen_t* remoteAddrLength) const
+size_t UdpSocket::RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout, struct sockaddr* remoteAddr, socklen_t* remoteAddrLength) const
 {
 	fd_set readSet;
 	FD_ZERO(&readSet);
@@ -117,13 +117,13 @@ size_t UdpSocket::RecvFrom(unsigned char* pBuffer, size_t length, timeval* timeo
 	return 0;
 }
 
-int UdpSocket::Send(const unsigned char* frame, size_t length) const
+int32_t UdpSocket::Send(const uint8_t* frame, size_t length) const
 {
 #ifdef DEBUG
 	std::cout << __FILE__ << ":" << __FUNCTION__ << ": Sending " << length << " bytes: ";
 	for(size_t i = 0; i < length; i++)
 	{
-		std::cout << std::hex << int(frame[i]) << ' ';
+		std::cout << std::hex << int32_t(frame[i]) << ' ';
 	}
 	std::cout << std::endl;
 #endif
