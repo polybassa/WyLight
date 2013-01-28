@@ -16,13 +16,12 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "trace.h"
 #include "crc.h"
 
 // 16-bit CCIT CRC
-void Crc_AddCrc(unsigned char byte,unsigned char* p_crcH,unsigned char* p_crcL)
+void Crc_AddCrc(uns8 byte,uns8* p_crcH,uns8* p_crcL)
 {
-	unsigned char index, crcH, crcL;
+	uns8 index, crcH, crcL;
 	crcH = *p_crcH;
 	crcL = *p_crcL;
 #ifdef __CC8E__
@@ -49,7 +48,7 @@ void Crc_AddCrc(unsigned char byte,unsigned char* p_crcH,unsigned char* p_crcL)
 	XORWF(index,0);
 	MOVWF(crcL);
 #else
-	unsigned char work, temp;
+	uns8 work, temp;
 	
 	work = byte;			//MOVF(byte,0);
 	
@@ -88,22 +87,22 @@ void Crc_AddCrc(unsigned char byte,unsigned char* p_crcH,unsigned char* p_crcL)
  * with this one.
  */
 #ifdef __cplusplus
-extern "C" {
+	extern "C" {
 #endif
-void Crc_AddCrc16(unsigned char byte, unsigned short* pCrc)
-{
-	Crc_AddCrc(byte, ((unsigned char*)pCrc) + 1, (unsigned char*)pCrc);
-}
+	void Crc_AddCrc16(uns8 byte, uns16* pCrc)
+	{
+		Crc_AddCrc(byte, ((uns8*)pCrc) + 1, (uns8*)pCrc);
+	}
 #ifdef __cplusplus
-}
+	}
 #endif
 
-void Crc_BuildCrc(const unsigned char *data, unsigned char length, unsigned char* crcH_out, unsigned char* crcL_out)
+void Crc_BuildCrc(const uns8 *data, uns8 length, uns8* crcH_out, uns8* crcL_out)
 {
-	if(!crcH_out)return;
-	if(!crcL_out)return;
-	if(!data)return;
-	unsigned char crcH,crcL,i,byte;
+	if(!crcH_out) return;
+	if(!crcL_out) return;
+	if(!data) return;
+	uns8 crcH,crcL,i,byte;
 	crcH=0xff;
 	crcL=0xff;
 
@@ -117,7 +116,7 @@ void Crc_BuildCrc(const unsigned char *data, unsigned char length, unsigned char
 	*crcL_out = crcL;
 }
 
-void Crc_NewCrc(unsigned char* p_crcH, unsigned char* p_crcL)
+void Crc_NewCrc(uns8* p_crcH, uns8* p_crcL)
 {
     if(!p_crcH) return;
     if(!p_crcL) return;

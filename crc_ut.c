@@ -17,19 +17,15 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "platform.h"
-#include "trace.h"
 #include "unittest.h"
-
 #include "crc.h"
-
-#include "stdio.h"
 
 /* test crc commands */
 int ut_Crc_AddCrc(void)
 {
 	TestCaseBegin();
-	unsigned char crcHigh = 0xff;
-	unsigned char crcLow = 0xff;
+	uns8 crcHigh = 0xff;
+	uns8 crcLow = 0xff;
 	Crc_AddCrc('h', &crcHigh, &crcLow);
 	CHECK(0x0c == crcHigh);
 	CHECK(0x5e == crcLow);
@@ -46,10 +42,10 @@ int ut_Crc_BuildCrc(void)
 	TestCaseBegin();
 	static const char* testString1 = "Huhu unittest crc me!";
 	static const char* testString2 = "abc";
-	unsigned char crcHigh = 0xff;
-	unsigned char crcLow = 0xff;
+	uns8 crcHigh = 0xff;
+	uns8 crcLow = 0xff;
 
-	Crc_BuildCrc((unsigned char*)testString1, 21,  &crcHigh, &crcLow);
+	Crc_BuildCrc((uns8*)testString1, 21,  &crcHigh, &crcLow);
 	Trace_Hex(crcHigh);
 	Trace_Hex(crcLow);
 	CHECK(0x84 == crcHigh);
@@ -57,7 +53,7 @@ int ut_Crc_BuildCrc(void)
 
 	crcHigh =  0xff;
 	crcLow = 0xff;
-	Crc_BuildCrc((unsigned char*)testString2, 3, &crcHigh, &crcLow);
+	Crc_BuildCrc((uns8*)testString2, 3, &crcHigh, &crcLow);
 	Trace_Hex(crcHigh);
 	Trace_Hex(crcLow);
 	CHECK(0x51 == crcHigh);
