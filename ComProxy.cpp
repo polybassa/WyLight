@@ -51,11 +51,11 @@ ComProxy::ComProxy(const ClientSocket& sock)
 {
 }
 
-size_t ComProxy::MaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength, bool crcInLittleEndian) const
+size_t ComProxy::MaskControlCharacters(const uint8_t* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool crcInLittleEndian) const
 {
-	const unsigned char* const pInputEnd = pInput + inputLength;
+	const uint8_t* const pInputEnd = pInput + inputLength;
 	size_t bytesWritten = 0;
-	unsigned short crc = 0;
+	uint16_t crc = 0;
 
 	while(pInput < pInputEnd)
 	{
@@ -67,33 +67,33 @@ size_t ComProxy::MaskControlCharacters(const unsigned char* pInput, size_t input
 	// add crc to output
 	if(crcInLittleEndian)
 	{
-		MaskAndAddByteToOutput((unsigned char)(crc & 0xff));
-		MaskAndAddByteToOutput((unsigned char)(crc >> 8));
+		MaskAndAddByteToOutput((uint8_t)(crc & 0xff));
+		MaskAndAddByteToOutput((uint8_t)(crc >> 8));
 	}
 	else
 	{
-		MaskAndAddByteToOutput((unsigned char)(crc >> 8));
-		MaskAndAddByteToOutput((unsigned char)(crc & 0xff));
+		MaskAndAddByteToOutput((uint8_t)(crc >> 8));
+		MaskAndAddByteToOutput((uint8_t)(crc & 0xff));
 	}
 	return bytesWritten;
 }
 
-size_t ComProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength, bool checkCrc, bool crcInLittleEndian) const
+size_t ComProxy::UnmaskControlCharacters(const uint8_t* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool checkCrc, bool crcInLittleEndian) const
 {
 	if(outputLength < inputLength)
 	{
 		return 0;
 	}
-	const unsigned char* const pInputEnd = pInput + inputLength;
+	const uint8_t* const pInputEnd = pInput + inputLength;
 	/* The bootloader sends the low byte of crc first, so we cannot just add
 	 * all bytes to the checksum and compare it to zero.
 	 * Now, our approach is to save the two latest crc's and parse the whole
 	 * input buffer. When everything was read prepreCrc contains the crc before
 	 * the first crc byte from data stream was added to crc.
 	 */
-	unsigned short crc = 0;
-	unsigned short preCrc = 0;
-	unsigned short prepreCrc = 0;
+	uint16_t crc = 0;
+	uint16_t preCrc = 0;
+	uint16_t prepreCrc = 0;
 	size_t bytesWritten = 0;
 
 	/* unmask input buffer and calculate crc */
@@ -152,31 +152,31 @@ size_t ComProxy::UnmaskControlCharacters(const unsigned char* pInput, size_t inp
 	return bytesWritten - 2;
 }
 
-int ComProxy::Send(BlRequest& req, unsigned char* pResponse, size_t responseSize, bool doSync) const
+int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const
 {
 	Trace_String("ComProxy::Send(BlRequest&): ");
-	Trace_Number((unsigned int)req.GetSize());
+	Trace_Number((uint32_t)req.GetSize());
 	Trace_String("pure bytes\n");
-	int retval = Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
+	int32_t retval = Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
 	return retval;
 }
 
-int ComProxy::Send(const struct cmd_frame* pFrame, unsigned char* pResponse, size_t responseSize, bool doSync) const
+int32_t ComProxy::Send(const struct cmd_frame* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const
 {
 	Trace_String("ComProxy::Send(const struct cmd_frame*): ");
-	int retval = Send(reinterpret_cast<const unsigned char*>(pFrame), pFrame->length, pResponse, responseSize, true, doSync, false);
+	int32_t retval = Send(reinterpret_cast<const uint8_t*>(pFrame), pFrame->length, pResponse, responseSize, true, doSync, false);
 	return retval;
 }
 
-size_t ComProxy::Recv(unsigned char* pBuffer, size_t length, timeval* pTimeout, bool checkCrc, bool crcInLittleEndian) const
+size_t ComProxy::Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout, bool checkCrc, bool crcInLittleEndian) const
 {
 	timeval endTime, now;
 	gettimeofday(&endTime, NULL);
 	timeval_add(&endTime, pTimeout);
-	unsigned char* const pBufferBegin = pBuffer;
-	unsigned short crc = 0;
-	unsigned short preCrc = 0;
-	unsigned short prepreCrc = 0;
+	uint8_t* const pBufferBegin = pBuffer;
+	uint16_t crc = 0;
+	uint16_t preCrc = 0;
+	uint16_t prepreCrc = 0;
 	bool lastWasDLE = false;
 
 	// TODO refactor this with code in commandstorage. It should be identical to the fw receive implementation
@@ -187,7 +187,7 @@ size_t ComProxy::Recv(unsigned char* pBuffer, size_t length, timeval* pTimeout, 
 		<< "(): Bytes masked: " << bytesMasked;
 		std::cout << std::endl;
 #endif
-		unsigned char* pInput = pBuffer;
+		uint8_t* pInput = pBuffer;
 		while(bytesMasked-- > 0)
 		{
 			if(lastWasDLE)
@@ -257,10 +257,10 @@ size_t ComProxy::Recv(unsigned char* pBuffer, size_t length, timeval* pTimeout, 
 	return 0;
 }
 
-int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const
+int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const
 {
-	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
-	unsigned char recvBuffer[BL_MAX_MESSAGE_LENGTH];
+	uint8_t buffer[BL_MAX_MESSAGE_LENGTH];
+	uint8_t recvBuffer[BL_MAX_MESSAGE_LENGTH];
 	size_t bufferSize = 0;
 
 	/* add leading STX */
@@ -300,7 +300,7 @@ int ComProxy::Send(const unsigned char* pRequest, const size_t requestSize, unsi
 
 		{
 			/* synchronized -> send request */
-			if(static_cast<int>(bufferSize) != mSock.Send(buffer, bufferSize))
+			if(static_cast<int32_t>(bufferSize) != mSock.Send(buffer, bufferSize))
 			{
 				Trace_String("ComProxy::Send: socket->Send() failed\n");
 				return 0;

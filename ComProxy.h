@@ -26,7 +26,7 @@ class ComProxy
 {
 	private:
 		const ClientSocket& mSock;
-		size_t Recv(unsigned char* pBuffer, size_t length, timeval* pTimeout = NULL, bool checkCrc = true, bool crcInLittleEndian = true) const;
+		size_t Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout = NULL, bool checkCrc = true, bool crcInLittleEndian = true) const;
 
 	public:
 		ComProxy(const ClientSocket& sock);
@@ -38,11 +38,11 @@ class ComProxy
 		 * @param pOutput output buffer
 		 * @param outputLength size of the output buffer
 		 */
-		size_t MaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength, bool crcInLittleEndian = true) const;
-		int Send(BlRequest& req, unsigned char* pResponse, size_t responseSize, bool doSync = true) const;
-		int Send(const struct cmd_frame* pFrame, unsigned char* pResponse, size_t responseSize, bool doSync) const;
-		int Send(const unsigned char* pRequest, const size_t requestSize, unsigned char* pResponse, size_t responseSize, bool checkCrc, bool sync, bool crcInLittleEndian = true) const;
-		size_t UnmaskControlCharacters(const unsigned char* pInput, size_t inputLength, unsigned char* pOutput, size_t outputLength, bool checkCrc, bool crcInLittleEndian = true) const;
+		size_t MaskControlCharacters(const uint8_t* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool crcInLittleEndian = true) const;
+		int32_t Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync = true) const;
+		int32_t Send(const struct cmd_frame* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const;
+		int32_t Send(const uint8_t* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool sync, bool crcInLittleEndian = true) const;
+		size_t UnmaskControlCharacters(const uint8_t* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool checkCrc, bool crcInLittleEndian = true) const;
 };
 
 #endif /* #ifndef _COM_PROXY_H_ */

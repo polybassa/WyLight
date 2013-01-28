@@ -27,25 +27,25 @@
 
 #define CRC_SIZE 2
 
-ClientSocket::ClientSocket(unsigned long addr, unsigned short port, int style) : mSock(0) {}
+ClientSocket::ClientSocket(uint64_t addr, uint16_t port, int32_t style) : mSock(0) {}
 ClientSocket::~ClientSocket(void) {}
 
 const BlInfo dummyBlInfo = {0xDE, 0xAD, 0xAF, 0xFE, 0xFF, 0x4, 0x0, 0xB0, 0xB1, 0xE5, 0x00};
-const unsigned char dummyBlInfoMasked[] = {BL_STX, BL_STX, 0xDE, 0xAD, 0xAF, 0xFE, 0xFF, BL_DLE, 0x04, 0xB0, 0xB1, 0xE5, 0x00, 0xEA, 0x35, BL_ETX};
-const unsigned char exampleBlFlashRead[] = {BL_STX, 0x01, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0xAD, 0xB5, 0x04};
-const unsigned char dummyBlFlashReadResponseMasked[] = {BL_STX, 0xDE, 0xAD, BL_DLE, BL_DLE, 0xEF, 0xa0, 0x06, BL_ETX};
-const unsigned char dummyBlFlashReadResponsePure[] = {0xDE, 0xAD, BL_DLE, 0xEF};
-const unsigned char dummyBlFlashCrc16ResponseMasked[] = {BL_STX, 0xDE, 0xAD, BL_DLE, BL_DLE, 0xEF, BL_ETX};
-const unsigned char dummyBlFlashCrc16ResponsePure[] = {0xDE, 0xAD, BL_DLE, 0xEF};
-const unsigned char dummyBlFlashEraseResponseMasked[] = {BL_STX, 0x03, 0x63, 0x30, BL_ETX};
-const unsigned char dummyBlFlashEraseResponsePure[] = {0x03};
+const uint8_t dummyBlInfoMasked[] = {BL_STX, BL_STX, 0xDE, 0xAD, 0xAF, 0xFE, 0xFF, BL_DLE, 0x04, 0xB0, 0xB1, 0xE5, 0x00, 0xEA, 0x35, BL_ETX};
+const uint8_t exampleBlFlashRead[] = {BL_STX, 0x01, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0xAD, 0xB5, 0x04};
+const uint8_t dummyBlFlashReadResponseMasked[] = {BL_STX, 0xDE, 0xAD, BL_DLE, BL_DLE, 0xEF, 0xa0, 0x06, BL_ETX};
+const uint8_t dummyBlFlashReadResponsePure[] = {0xDE, 0xAD, BL_DLE, 0xEF};
+const uint8_t dummyBlFlashCrc16ResponseMasked[] = {BL_STX, 0xDE, 0xAD, BL_DLE, BL_DLE, 0xEF, BL_ETX};
+const uint8_t dummyBlFlashCrc16ResponsePure[] = {0xDE, 0xAD, BL_DLE, 0xEF};
+const uint8_t dummyBlFlashEraseResponseMasked[] = {BL_STX, 0x03, 0x63, 0x30, BL_ETX};
+const uint8_t dummyBlFlashEraseResponsePure[] = {0x03};
 
-unsigned char g_TestSocketRecvBuffer[10240];
+uint8_t g_TestSocketRecvBuffer[10240];
 size_t g_TestSocketRecvBufferPos = 0;
 size_t g_TestSocketRecvBufferSize = 0;
-unsigned char g_TestSocketSendBuffer[10240];
+uint8_t g_TestSocketSendBuffer[10240];
 size_t g_TestSocketSendBufferSize;
-TestSocket::TestSocket(unsigned long addr, unsigned short port) : ClientSocket(addr, port, 0)
+TestSocket::TestSocket(uint64_t	addr, uint16_t port) : ClientSocket(addr, port, 0)
 {
 	m_Delay.tv_sec = 0;
 	m_Delay.tv_nsec = 0;
@@ -55,7 +55,7 @@ TestSocket::TestSocket(unsigned long addr, unsigned short port) : ClientSocket(a
  * For each call to Recv() we only return one byte of data to simulate a very
  * fragmented response from pic.
  */
-size_t TestSocket::Recv(unsigned char* pBuffer, size_t length, timeval* timeout) const
+size_t TestSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 {
 	nanosleep(&m_Delay, NULL);
 	if(g_TestSocketRecvBufferPos < g_TestSocketRecvBufferSize)
@@ -67,7 +67,7 @@ size_t TestSocket::Recv(unsigned char* pBuffer, size_t length, timeval* timeout)
 	return 0;
 }
 
-int TestSocket::Send(const unsigned char* frame, size_t length) const
+int32_t TestSocket::Send(const uint8_t* frame, size_t length) const
 {
 	Trace_String("Send: ");
 	for(size_t i = 0; i < length; i++) Trace_Hex(frame[i]);
@@ -166,13 +166,13 @@ void TestSocket::SetDelay(timeval& delay)
 }
 
 /******************************* test functions *******************************/
-int ut_ComProxy_MaskControlCharacters(void)
+int32_t ut_ComProxy_MaskControlCharacters(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
 	ComProxy proxy(dummySocket);
-	unsigned char sendBuffer[256];
-	unsigned char recvBuffer[sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 + 1];
+	uint8_t sendBuffer[256];
+	uint8_t recvBuffer[sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 + 1];
 
 	/* prepare send buffer with test data */
 	for(size_t i = 0; i < sizeof(sendBuffer); i++)
@@ -231,12 +231,12 @@ int ut_ComProxy_MaskControlCharacters(void)
 	TestCaseEnd();
 }
 
-int ut_ComProxy_BlEepromReadRequest(void)
+int32_t ut_ComProxy_BlEepromReadRequest(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
 	ComProxy proxy(dummySocket);
-	unsigned char response[512];
+	uint8_t response[512];
 	memset(response, 0, sizeof(response));
 
 	BlEepromReadRequest request;
@@ -247,12 +247,12 @@ int ut_ComProxy_BlEepromReadRequest(void)
 	TestCaseEnd();
 }
 
-int ut_ComProxy_BlEepromReadRequestTimeout(void)
+int32_t ut_ComProxy_BlEepromReadRequestTimeout(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
 	ComProxy proxy(dummySocket);
-	unsigned char response[512];
+	uint8_t response[512];
 	memset(response, 0, sizeof(response));
 	timeval delay = {1, 0};
 	dummySocket.SetDelay(delay);
@@ -264,17 +264,17 @@ int ut_ComProxy_BlEepromReadRequestTimeout(void)
 	TestCaseEnd();
 }
 
-int ut_ComProxy_BlEepromWriteRequest(void)
+int32_t ut_ComProxy_BlEepromWriteRequest(void)
 {
 	NOT_IMPLEMENTED();
 }
 
-int ut_ComProxy_BlFlashCrc16Request(void)
+int32_t ut_ComProxy_BlFlashCrc16Request(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
 	ComProxy proxy(dummySocket);
-	unsigned char response[512];
+	uint8_t response[512];
 	memset(response, 0, sizeof(response));
 
 	BlFlashCrc16Request request(0xDA7ADA7A, 2);
@@ -284,12 +284,12 @@ int ut_ComProxy_BlFlashCrc16Request(void)
 	TestCaseEnd();
 }
 
-int ut_ComProxy_BlFlashEraseRequest(void)
+int32_t ut_ComProxy_BlFlashEraseRequest(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
 	ComProxy proxy(dummySocket);
-	unsigned char response[512];
+	uint8_t response[512];
 	memset(response, 0, sizeof(response));
 
 	BlFlashEraseRequest request(0xDA7ADA7A, 2);
@@ -299,12 +299,12 @@ int ut_ComProxy_BlFlashEraseRequest(void)
 	TestCaseEnd();
 }
 
-int ut_ComProxy_BlFlashReadRequest(void)
+int32_t ut_ComProxy_BlFlashReadRequest(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
 	ComProxy proxy(dummySocket);
-	unsigned char response[512];
+	uint8_t response[512];
 	memset(response, 0, sizeof(response));
 
 	BlFlashReadRequest request;
@@ -317,22 +317,22 @@ int ut_ComProxy_BlFlashReadRequest(void)
 	TestCaseEnd();
 }
 
-int ut_ComProxy_BlFlashWriteRequest(void)
+int32_t ut_ComProxy_BlFlashWriteRequest(void)
 {
 	NOT_IMPLEMENTED();
 }
 
-int ut_ComProxy_BlFuseWriteRequest(void)
+int32_t ut_ComProxy_BlFuseWriteRequest(void)
 {
 	NOT_IMPLEMENTED();
 }
 
-int ut_ComProxy_BlInfoRequest(void)
+int32_t ut_ComProxy_BlInfoRequest(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
 	ComProxy proxy(dummySocket);
-	unsigned char response[512];
+	uint8_t response[512];
 	memset(response, 0, sizeof(response));
 
 	BlInfoRequest infoRequest;
@@ -347,7 +347,7 @@ int ut_ComProxy_BlInfoRequest(void)
 	TestCaseEnd();
 }
 
-int ut_ComProxy_BlRunAppRequest(void)
+int32_t ut_ComProxy_BlRunAppRequest(void)
 {
 	TestCaseBegin();
 	TestSocket dummySocket(0, 0);
