@@ -19,8 +19,7 @@
 #ifndef _SPI_H_
 #define _SPI_H_
 
-
-#include "ledstrip.h"
+#include "platform.h"
 
 void SPI_Init();
 uns8 SPI_Send(uns8 data);

@@ -16,10 +16,9 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "ledstrip.h"
-#include "timer.h"
+#include "spi.h"
 
-#ifndef X86
+#ifdef __CC8E__
 void SPI_Init()
 {
 	ANSELC = FALSE;		/* Set PORTC to digital IO */
@@ -59,6 +58,6 @@ void SPI_SendLedBuffer(uns8 *array)
  * to find for later optimization. In my opinion we should spend this 1ms waste here, before we make the main
  * loop more complex. */
 }
-#endif /* #ifndef X86 */
+#endif /* #ifdef CC8E */
 
 
