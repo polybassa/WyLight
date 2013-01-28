@@ -28,47 +28,9 @@
 //*********************** CONFIGURATION ********************************************
 #define NUM_OF_LED 32
 
-#ifdef X86
-	#include <stdio.h>
-	#include <arpa/inet.h>
-	#include <setjmp.h>
-	#include <string.h>
-
-	typedef char bit;
-	typedef unsigned char uns8;
-	typedef unsigned short uns16;
-
-	//global variables
-	extern bit g_led_off;
-	extern unsigned char g_UpdateFade;
-	extern jmp_buf g_ResetEnvironment;
-
-	#define bank1
-	#define bank2
-	#define bank3
-	#define bank5
-	#define bank6
-	#define bank7
-	#define bank10
-	#define clearRAM(x)
-	#define Platform_AllowInterrupts(x)
-	#define Platform_EnableAllInterrupts()
-	#define Platform_DisableAllInterrupts()
-	#define Platform_CheckInputs(x)
-	#define Platform_DisableBootloaderAutostart(x)
-  	#define Platform_EnableBootloaderAutostart(x)
-	#define InitFactoryRestoreWLAN(x)
-	#define InitFET(x)
-	#define Platform_IOInit(x)
-	#define Platform_OsciInit(x)
-	#define Platform_ReadPerformanceCounter(x) x = 0; /* TODO implement this on X86 */
-	#define softReset(x) longjmp(g_ResetEnvironment, 1)
-	#define softResetJumpDestination(x) setjmp(g_ResetEnvironment)
-#else
+#ifdef __CC8E__
 	#include "inline.h"
 	#include "int18XXX.h"
-	
-	
 	
 	#define softResetJumpDestination(x)
 
@@ -77,7 +39,6 @@
 	#define Platform_ReadPerformanceCounter(x) {x.low8 = TMR3L; x.high8 = TMR3H;}
 	
 	void Platform_AllowInterrupts();
-	
 	void Platform_EnableAllInterrupts();
 	void Platform_DisableAllInterrupts();
 	
@@ -93,5 +54,45 @@
 	*/
 	void Platform_DisableBootloaderAutostart();
 	void Platform_EnableBootloaderAutostart();
+
+#else
+	#include <stdint.h>
+	#include <stdio.h>
+	#include <arpa/inet.h>
+	#include <setjmp.h>
+	#include <string.h>
+
+	typedef int8_t bit;
+	typedef uint8_t uns8;
+	typedef uint16_t uns16;
+
+	//global variables
+	extern bit g_led_off;
+	extern uns8 g_UpdateFade;
+	extern jmp_buf g_ResetEnvironment;
+
+	#define bank1
+	#define bank2
+	#define bank3
+	#define bank5
+	#define bank6
+	#define bank7
+	#define bank10
+	#define clearRAM(x)
+	#define Platform_AllowInterrupts(x)
+	#define Platform_EnableAllInterrupts()
+	#define Platform_DisableAllInterrupts()
+	#define Platform_CheckInputs(x)
+	#define Platform_DisableBootloaderAutostart(x)
+	#define Platform_EnableBootloaderAutostart(x)
+	#define InitFactoryRestoreWLAN(x)
+	#define InitFET(x)
+	#define Platform_IOInit(x)
+	#define Platform_OsciInit(x)
+	#define Platform_ReadPerformanceCounter(x) x = 0; /* TODO implement this on X86 */
+	#define softReset(x) longjmp(g_ResetEnvironment, 1)
+	#define softResetJumpDestination(x) setjmp(g_ResetEnvironment)
+
+
 #endif
 #endif /* #ifndef _PLATFORM_H_ */
