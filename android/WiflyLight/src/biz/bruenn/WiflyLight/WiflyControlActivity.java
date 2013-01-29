@@ -3,11 +3,15 @@ package biz.bruenn.WiflyLight;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.SeekBar;
+import android.widget.ImageView;
 import android.widget.Toast;
+import biz.bruenn.WiflyLight.R.id;
 
 public class WiflyControlActivity extends Activity {
 	public static final String EXTRA_IP = "IpAddress";
@@ -16,9 +20,6 @@ public class WiflyControlActivity extends Activity {
 	
 	private WiflyControl mCtrl;
 	private Button mSetColorBtn;
-	private SeekBar mRed;
-	private SeekBar mGreen;
-	private SeekBar mBlue;
 	private int mColor = 0xff000000;
 
 	@Override
@@ -39,44 +40,16 @@ public class WiflyControlActivity extends Activity {
 			}
 		});
 		
-
-		mRed = (SeekBar)findViewById(R.id.red);
-		mRed.setMax(255);
-		mRed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-			public void onStopTrackingTouch(SeekBar seekBar) {
-			}
-			public void onStartTrackingTouch(SeekBar seekBar) {	
-			}
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
-				mColor = (mColor & 0xff00ffff) | (progress << 16);
+		ImageView colorPicker = (ImageView)findViewById(id.colorPicker);
+		colorPicker.setOnTouchListener(new View.OnTouchListener() {	
+			public boolean onTouch(View v, MotionEvent event) {
+				Bitmap b = ((BitmapDrawable)((ImageView)v).getDrawable()).getBitmap();
+				int x = Math.max(0, Math.min(b.getWidth()-1, (int)event.getX()));
+				int y = Math.max(0, Math.min(b.getHeight()-1, (int)event.getY()));
+				mColor = b.getPixel(x, y);
 				mSetColorBtn.setBackgroundColor(mColor);
-			}
-		});
-		mGreen = (SeekBar)findViewById(R.id.green);
-		mGreen.setMax(255);
-		mGreen.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-			public void onStopTrackingTouch(SeekBar seekBar) {
-			}
-			public void onStartTrackingTouch(SeekBar seekBar) {	
-			}
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
-				mColor = (mColor & 0xffff00ff) | (progress << 8);
-				mSetColorBtn.setBackgroundColor(mColor);
-			}
-		});
-		mBlue = (SeekBar)findViewById(R.id.blue);
-		mBlue.setMax(255);
-		mBlue.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-			public void onStopTrackingTouch(SeekBar seekBar) {
-			}
-			public void onStartTrackingTouch(SeekBar seekBar) {	
-			}
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
-				mColor = (mColor & 0xffffff00) | (progress);
-				mSetColorBtn.setBackgroundColor(mColor);
+				mSetColorBtn.setText(Integer.toHexString(mColor));
+				return true;
 			}
 		});
 	}

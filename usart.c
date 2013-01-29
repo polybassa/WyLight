@@ -48,10 +48,10 @@ void UART_Send(const uns8 ch)
 #endif /* #ifndef CC8E */
 
 //*******  Sende-String-Funktion  *************************************************
-void UART_SendString(const uns8 *string)
+void UART_SendString(const char *string)
 {
  uns8 ps;
- ps = *string;
+ ps = (uns8)*string;
  while(ps > 0)
    {
     string++;
@@ -108,7 +108,7 @@ void UART_SendHex_16(const uns16 input)
 #endif /* #ifdef __CC8E__ */
 }
 //*******  Sende-Zahl-als-String-Funktion  *************************************************
-void UART_SendNumber(const uns8 input,const uns8 sign)
+void UART_SendNumber(uns8 input,const uns8 sign)
 {
    uns8 temp;
    uns8 h,z,e;
