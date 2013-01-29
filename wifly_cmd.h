@@ -22,6 +22,7 @@
 
 #include "platform.h"
 #include "rtc.h"
+#include "RingBuf.h"
 
 //*********************** ENUMERATIONS *********************************************
 #define STX 0x0F
@@ -101,6 +102,15 @@ struct cmd_set_color_direct {
 #else
 	uns8 ptr_led_array[NUM_OF_LED * 3];
 #endif
+};
+
+enum responseState {
+	SaveCommand,
+	ErrorEepromFull,
+	ErrorCrcCheckFail,
+	ErrorRecvBufFull,
+	ErrorCmdBufFull,
+	ErrorTraceBufFull
 };
 
 struct led_cmd {
