@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -51,6 +52,13 @@ public class WiflyControlActivity extends Activity {
 				return true;
 			}
 		});
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_wifly_control, menu);
+		return true;
 	}
 	
 	@Override
