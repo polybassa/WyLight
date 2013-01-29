@@ -3,7 +3,6 @@ package biz.bruenn.WiflyLight;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -79,13 +78,6 @@ public class WiflyControlActivity extends Activity {
 				mSetColorBtn.setBackgroundColor(mColor);
 			}
 		});
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_wifly_control, menu);
-		return true;
 	}
 	
 	@Override
