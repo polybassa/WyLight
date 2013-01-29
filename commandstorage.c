@@ -16,11 +16,13 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "platform.h"
 #include "commandstorage.h"
 #include "ScriptCtrl.h"
 #include "trace.h"
 #include "usart.h"
+#include "RingBuf.h"
+#include "crc.h"
+#include "error.h"
 
 bank2 struct CommandBuffer g_CmdBuf;
 
@@ -167,12 +169,16 @@ void Commandstorage_GetCommands()
 
 		  if((0 == g_CmdBuf.CrcL) && (0 == g_CmdBuf.CrcH)) 	/* CRC Check */
 		  {
-#ifndef UNIT_TEST
 			// [0] contains cmd_frame->length so we send [1]
+#ifdef UNIT_TEST
+			if(ScriptCtrl_Add((struct led_cmd*)&g_CmdBuf.buffer[1]))
+#else
 			if(ScriptCtrl_Add(&g_CmdBuf.buffer[1]))
+#endif
 			{
 				UART_Send(STX);
-				UART_SendString("GC");
+				UART_Send('G');
+				UART_Send('C');
 				UART_Send(0xEC);
 				UART_Send(0xFC);
 				UART_Send(ETX);
@@ -181,7 +187,6 @@ void Commandstorage_GetCommands()
 			{
 				g_ErrorBits.EepromFailure = 1;
 			}
-#endif
 		  }
 		  else
 		  {

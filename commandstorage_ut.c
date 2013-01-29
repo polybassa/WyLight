@@ -16,27 +16,42 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-
-
 #include "commandstorage.h"
-
 #include "unittest.h"
-#include "platform.h"
-
 #include "crc.c"
+#include "crc.h"
 #include "RingBuf.c"
+#include "RingBuf.h"
+#include "error.h"
+#include "wifly_cmd.h"
 
 #define NUM_TEST_LOOPS 255
 
 struct ErrorBits g_ErrorBits;
 
-const unsigned char dummyFrame_noSTX[] = { 0xff, DLE, ETX, 0x00, 0x14, 0xAF, ETX, 0x05, 0x04, 0x00 };
-const unsigned char dummyFrame_completeFrame[] = { DLE, ETX, STX, 0x01, 0x02, 0x03, DLE, 0x04, DLE, 0x05, ETX };
-const unsigned char dummyFrame_completeFramePure[] = { 0x01, 0x02, 0x03, 0x04,0x05 };
-const unsigned char dummyFrame_twoFrames_1[] = { STX, STX, STX, DLE, DLE, DLE, ETX, DLE, STX, DLE, ETX, ETX, DLE, STX, DLE, DLE, DLE, STX, ETX };
-const unsigned char dummyFrame_twoFrames_2[] = { STX, STX, STX, DLE, DLE, DLE, ETX, DLE, STX, DLE, ETX, ETX, STX, DLE, DLE, DLE, STX, ETX };
-const unsigned char dummyFrame_twoFramesPure_1[] = { DLE, ETX, STX, ETX };
-const unsigned char dummyFrame_twoFramesPure_2[] = { DLE, STX };
+const uns8 dummyFrame_noSTX[] = { 0xff, DLE, ETX, 0x00, 0x14, 0xAF, ETX, 0x05, 0x04, 0x00 };
+const uns8 dummyFrame_completeFrame[] = { DLE, ETX, STX, 0x01, 0x02, 0x03, DLE, 0x04, DLE, 0x05, ETX };
+const uns8 dummyFrame_completeFramePure[] = { 0x01, 0x02, 0x03, 0x04,0x05 };
+const uns8 dummyFrame_twoFrames_1[] = { STX, STX, STX, DLE, DLE, DLE, ETX, DLE, STX, DLE, ETX, ETX, DLE, STX, DLE, DLE, DLE, STX, ETX };
+const uns8 dummyFrame_twoFrames_2[] = { STX, STX, STX, DLE, DLE, DLE, ETX, DLE, STX, DLE, ETX, ETX, STX, DLE, DLE, DLE, STX, ETX };
+const uns8 dummyFrame_twoFramesPure_1[] = { DLE, ETX, STX, ETX };
+const uns8 dummyFrame_twoFramesPure_2[] = { DLE, STX };
+
+/* X86 function wrappers */
+void UART_Init() {}
+void UART_Send(const uns8 ch)
+{
+	printf("%c", ch);
+}
+void UART_SendString(const uns8 *string)
+{
+	printf("%s", string);
+}
+uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
+{
+	return 1;
+}
+
 
 int ut_Commandstorage_Init(void)
 {

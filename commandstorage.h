@@ -20,10 +20,6 @@
 #define _COMMANDSTORAGE_H_
 
 #include "platform.h"
-#include "RingBuf.h"
-#include "crc.h"
-#include "error.h"
-#include "wifly_cmd.h"
 
 #define CMDFRAMELENGTH NUM_OF_LED*3+5
 
