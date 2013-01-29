@@ -19,9 +19,8 @@
 #ifndef _TIMER_H_
 #define _TIMER_H_
 #include "platform.h"
-#include "wifly_cmd.h"
 
-enum METHODE{
+enum CYCLETIME_METHODE{
 	eMAIN,				//00
 	eLedstrip_DoFade,		//01
 	eSET_FADE,			//02
@@ -34,17 +33,19 @@ enum METHODE{
 	ePlatform_CheckInputs,		//09
 	eError_Throw,			//10
 	eTIMER_WAIT,			//11
-	enumSIZE //!!! MUST be the last element of the enum
+	CYCLETIME_METHODE_ENUM_SIZE //!!! MUST be the last element of the enum
 } enumMethode;
 
 struct CycleTimeBuffer{
-	uns16 maxCycleTime[enumSIZE];
-	uns16 tempCycleTime[enumSIZE];
+	uns16 maxCycleTime[CYCLETIME_METHODE_ENUM_SIZE];
+	uns16 tempCycleTime[CYCLETIME_METHODE_ENUM_SIZE];
 };
 
 extern bank3 struct CycleTimeBuffer g_CycleTimeBuffer;
 
 void Timer_Init();
+
+#ifdef ALARMCLOCK
 // a day has 86400 seconds, we are updating our counter in 2 sec steps
 #define DATE_TIMER_DAY (unsigned short)43200
 #define NUM_DATE_EVENTS 1
@@ -58,18 +59,21 @@ unsigned char date_timer_add_event(struct cmd_add_color* pCmd);
 void date_timer_callback(void);
 void date_timer_do_events(void);
 
+#endif /*ALARMCLOCK*/
+
+
 #ifdef TEST   /*if we are not in TEST-Mode we can't print the output to the tracebuffer, so this methodes are superfluous */
 
 /**
 ** Function start the internal Stopwatch. It's realised with the Timer3 Modul.
 ** The Range of the Stopwatch is from 0.5µSec to 32.7mSec
 **/
-void Timer_StartStopwatch(enum METHODE destMethode);
+void Timer_StartStopwatch(enum CYCLETIME_METHODE destMethode);
 
 /**
 ** Function terminates the Stopwatch and print out the measured Time over UART
 **/
-void Timer_StopStopwatch(enum METHODE destMethode);
+void Timer_StopStopwatch(enum CYCLETIME_METHODE destMethode);
 
 void Timer_PrintCycletime(void);
 

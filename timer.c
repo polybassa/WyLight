@@ -24,6 +24,7 @@
 
 bank3 struct CycleTimeBuffer g_CycleTimeBuffer;
 
+#ifdef ALARMCLOCK
 unsigned short gDateTimer;
 struct date_event gDateEvents[NUM_DATE_EVENTS];
 
@@ -74,8 +75,8 @@ void date_timer_do_events(void)
 	{
 		if(gDateEvents[i].wakeup == gDateTimer)
 		{
-			/* TODO implement a more generic function
-			 * maybe make led_cmd a class and add a function exec() or run() */
+			// TODO implement a more generic function
+			 / maybe make led_cmd a class and add a function exec() or run() 
 			if(SET_COLOR == gDateEvents[i].cmd.cmd)
 			{
 				Ledstrip_SetColor(&gDateEvents[i].cmd.data.set_color);
@@ -101,7 +102,7 @@ void date_timer_init(void)
 		ptr[i] = 0xff;
 	} while(0 != i);
 }
-
+#endif /*ALARMCLOCK*/
 
 void Timer_Init()
 {	
@@ -156,7 +157,7 @@ void Timer_Init()
 }
 
 #ifdef TEST
-void Timer_StartStopwatch(enum METHODE destMethode)
+void Timer_StartStopwatch(enum CYCLETIME_METHODE destMethode)
 {
 	uns16 tempTime;
 
@@ -165,7 +166,7 @@ void Timer_StartStopwatch(enum METHODE destMethode)
 	g_CycleTimeBuffer.tempCycleTime[destMethode] = tempTime;
 }
 
-void Timer_StopStopwatch(enum METHODE destMethode)
+void Timer_StopStopwatch(enum CYCLETIME_METHODE destMethode)
 {
 	uns16 tempTime,temp16;
 	
@@ -192,7 +193,7 @@ void Timer_PrintCycletime(void)
 {
 	uns8 i;
 	uns16 temp16;
-	for(i = 0; i < enumSIZE; i++)
+	for(i = 0; i < CYCLETIME_METHODE_ENUM_SIZE; i++)
 	{
 		temp16 = g_CycleTimeBuffer.maxCycleTime[i]; 
 		temp16 = temp16 >> 1;

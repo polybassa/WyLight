@@ -179,7 +179,9 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 #endif /* #ifndef CC8E */
 		case ADD_COLOR:
 		{
+#ifdef ALARMCLOCK
 			date_timer_add_event(&pCmd->data.add_color);
+#endif /* ALARMCLOCK */
 			return TRUE;
 		}
 	}
