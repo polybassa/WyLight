@@ -26,7 +26,6 @@ void Platform_CheckInputs()
 	{
 		softReset();
 	}
-		
 }
 
 void Platform_AllowInterrupts()

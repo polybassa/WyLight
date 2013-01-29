@@ -23,6 +23,6 @@
 
 void SPI_Init();
 uns8 SPI_Send(const uns8 data);
-void SPI_SendLedBuffer(const uns8 *array);
+void SPI_SendLedBuffer(uns8 *array);
 
 #endif

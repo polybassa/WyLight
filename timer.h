@@ -99,6 +99,7 @@ void Timer_PrintCycletime(void);
 
 #define Timer5InterruptLock(x) TMR5IE = 0;
 #define Timer5InterruptUnlock(x) TMR5IE = 1;
+
 #else
 #define Timer1Interrupt(x)
 #define Timer2Interrupt(x)

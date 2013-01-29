@@ -35,6 +35,7 @@
 #include "rtc.h"
 #include "ScriptCtrl.h"
 #include "trace.h"
+#include "error.h"
 #ifdef __CC8E__
 #include "int18XXX.h"
 #endif /* #ifdef __CC8E__ */

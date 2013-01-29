@@ -42,14 +42,13 @@ uns8 SPI_Send(const uns8 data)
 	return SSP1BUF;
 }
 
-void SPI_SendLedBuffer(const uns8 *array)
+void SPI_SendLedBuffer(uns8 *array)
 {
-															/* array must be the address of the first byte*/
-	uns8* pCurrent =(uns8*)( array + (NUM_OF_LED * 3)); 	/* calculate where the end is */
-	
-	for(; array <= pCurrent; pCurrent--)		/* send all data */
+	const uns8* end = (uns8*) (array + (NUM_OF_LED * 3));				/* array must be the address of the first byte*/
+																		/* calculate where the end is */
+	for(; array < end; array++)		/* send all data */
 	{
-		SPI_Send(*pCurrent);
+		SPI_Send(*array);
 	}
 	
 /* If we really have to garantee a sleep after data was written to the LEDs, it should be added here.
