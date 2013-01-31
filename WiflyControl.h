@@ -30,7 +30,6 @@
 class WiflyControl
 {
 	private:
-		const TcpSocket mSock;
 		const ComProxy mProxy;
 		pthread_t mRecvThread;
 		struct cmd_frame mCmdFrame;
@@ -90,5 +89,7 @@ class WiflyControl
 		bool FwSetRtc(struct tm* timeValue);
 		bool FwGetRtc(struct tm* timeValue);
 		bool FwPrintRtc(std::ostream& out);
+
+		bool WlanSetJoin(void) const;
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */

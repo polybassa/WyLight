@@ -26,7 +26,7 @@
 
 #include <stdio.h>
 
-ClientSocket::ClientSocket(uint64_t addr, uint16_t port, int32_t style)
+ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style)
 	: mSock(socket(AF_INET, style, 0))
 {
 	memset(&mSockAddr, 0, sizeof(mSockAddr));
@@ -40,7 +40,7 @@ ClientSocket::~ClientSocket()
 	close(mSock);
 }
 
-TcpSocket::TcpSocket(uint64_t addr, uint16_t port)
+TcpSocket::TcpSocket(uint32_t addr, uint16_t port)
 	: ClientSocket(addr, port, SOCK_STREAM)
 {
 	if(connect(mSock, reinterpret_cast<sockaddr*>(&mSockAddr), sizeof(mSockAddr)) < 0)
@@ -60,7 +60,7 @@ size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 	if((1 == select(mSock + 1, &readSockets, NULL, NULL, timeout))
 	&& (FD_ISSET(mSock, &readSockets)))
 	{
-		int32_t bytesRead = recv(mSock, pBuffer, length, 0);
+		size_t bytesRead = recv(mSock, pBuffer, length, 0);
 		if(bytesRead > 0)
 		{
 #ifdef DEBUG
@@ -74,7 +74,7 @@ size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 	return 0;
 }
 
-int32_t TcpSocket::Send(const uint8_t* frame, size_t length) const
+size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 {
 #ifdef DEBUG
 	std::cout << __FILE__ << ":" << __FUNCTION__ << ": Sending " << length << " bytes: ";
@@ -87,7 +87,7 @@ int32_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 	return send(mSock, frame, length, 0);
 }
 
-UdpSocket::UdpSocket(uint64_t addr, uint16_t port, bool doBind, int32_t enableBroadcast)
+UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast)
 	: ClientSocket(addr, port, SOCK_DGRAM)
 {
 	setsockopt(mSock, SOL_SOCKET, SO_BROADCAST, &enableBroadcast, sizeof(enableBroadcast));
@@ -117,7 +117,7 @@ size_t UdpSocket::RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout, st
 	return 0;
 }
 
-int32_t UdpSocket::Send(const uint8_t* frame, size_t length) const
+size_t UdpSocket::Send(const uint8_t* frame, size_t length) const
 {
 #ifdef DEBUG
 	std::cout << __FILE__ << ":" << __FUNCTION__ << ": Sending " << length << " bytes: ";

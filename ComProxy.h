@@ -25,11 +25,11 @@
 class ComProxy
 {
 	private:
-		const ClientSocket& mSock;
+		const TcpSocket mSock;
 		size_t Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout = NULL, bool checkCrc = true, bool crcInLittleEndian = true) const;
 
 	public:
-		ComProxy(const ClientSocket& sock);
+		ComProxy(uint32_t addr, uint16_t port);
 
 		/**
 		 * Mask bytes of input buffer and add CRC16-CITT checksum to the end

@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+ Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -31,23 +31,23 @@ class WiflyControlColorClass
 		      uint32_t	rgbaLong;
 		}data;
 	public:
-		WiflyControlColorClass(const uint32_t& newValue = 0x00);
+		WiflyControlColorClass(const uint32_t newValue = 0);
 		~WiflyControlColorClass(void);
 	  
-		const uint8_t red() const;
-		void red(const uint8_t& newColor);
+		uint8_t red() const;
+		void red(const uint8_t newColor);
 		
-		const uint8_t green() const;
-		void green(const uint8_t& newColor);
+		uint8_t green() const;
+		void green(const uint8_t newColor);
 		
-		const uint8_t blue() const;
-		void blue(const uint8_t& newColor);
+		uint8_t blue() const;
+		void blue(const uint8_t newColor);
 		
-		const uint8_t alpha() const;
-		void alpha(const uint8_t& newColor);
+		uint8_t alpha() const;
+		void alpha(const uint8_t newColor);
 		
-		const uint32_t rgba() const;
-		void rgba(const uint32_t& newValue);
+		uint32_t rgba() const;
+		void rgba(const uint32_t newValue);
 };
 
 #endif /* _WIFLYCONTROL_LEDCOLOR_H_*/

@@ -27,7 +27,7 @@
 
 #define CRC_SIZE 2
 
-ClientSocket::ClientSocket(uint64_t addr, uint16_t port, int32_t style) : mSock(0) {}
+ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) : mSock(0) {}
 ClientSocket::~ClientSocket(void) {}
 
 const BlInfo dummyBlInfo = {0xDE, 0xAD, 0xAF, 0xFE, 0xFF, 0x4, 0x0, 0xB0, 0xB1, 0xE5, 0x00};
@@ -45,19 +45,27 @@ size_t g_TestSocketRecvBufferPos = 0;
 size_t g_TestSocketRecvBufferSize = 0;
 uint8_t g_TestSocketSendBuffer[10240];
 size_t g_TestSocketSendBufferSize;
-TestSocket::TestSocket(uint64_t	addr, uint16_t port) : ClientSocket(addr, port, 0)
+timespec g_TestSocketSendDelay;
+
+void SetDelay(timeval& delay)
 {
-	m_Delay.tv_sec = 0;
-	m_Delay.tv_nsec = 0;
+	g_TestSocketSendDelay.tv_sec = delay.tv_sec;
+	g_TestSocketSendDelay.tv_nsec = delay.tv_usec * 1000;
+}
+
+TcpSocket::TcpSocket(uint32_t	addr, uint16_t port) : ClientSocket(addr, port, 0)
+{
+	g_TestSocketSendDelay.tv_sec = 0;
+	g_TestSocketSendDelay.tv_nsec = 0;
 }
 
 /**
  * For each call to Recv() we only return one byte of data to simulate a very
  * fragmented response from pic.
  */
-size_t TestSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
+size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 {
-	nanosleep(&m_Delay, NULL);
+	nanosleep(&g_TestSocketSendDelay, NULL);
 	if(g_TestSocketRecvBufferPos < g_TestSocketRecvBufferSize)
 	{
 		*pBuffer = g_TestSocketRecvBuffer[g_TestSocketRecvBufferPos];
@@ -67,7 +75,7 @@ size_t TestSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 	return 0;
 }
 
-int32_t TestSocket::Send(const uint8_t* frame, size_t length) const
+size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 {
 	Trace_String("Send: ");
 	for(size_t i = 0; i < length; i++) Trace_Hex(frame[i]);
@@ -159,18 +167,11 @@ int32_t TestSocket::Send(const uint8_t* frame, size_t length) const
 	return 0;
 }
 
-void TestSocket::SetDelay(timeval& delay)
-{
-	m_Delay.tv_sec = delay.tv_sec;
-	m_Delay.tv_nsec = delay.tv_usec * 1000;
-}
-
 /******************************* test functions *******************************/
 int32_t ut_ComProxy_MaskControlCharacters(void)
 {
 	TestCaseBegin();
-	TestSocket dummySocket(0, 0);
-	ComProxy proxy(dummySocket);
+	ComProxy proxy(0, 0);
 	uint8_t sendBuffer[256];
 	uint8_t recvBuffer[sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 + 1];
 
@@ -234,8 +235,7 @@ int32_t ut_ComProxy_MaskControlCharacters(void)
 int32_t ut_ComProxy_BlEepromReadRequest(void)
 {
 	TestCaseBegin();
-	TestSocket dummySocket(0, 0);
-	ComProxy proxy(dummySocket);
+	ComProxy proxy(0, 0);
 	uint8_t response[512];
 	memset(response, 0, sizeof(response));
 
@@ -250,12 +250,11 @@ int32_t ut_ComProxy_BlEepromReadRequest(void)
 int32_t ut_ComProxy_BlEepromReadRequestTimeout(void)
 {
 	TestCaseBegin();
-	TestSocket dummySocket(0, 0);
-	ComProxy proxy(dummySocket);
+	ComProxy proxy(0, 0);
 	uint8_t response[512];
 	memset(response, 0, sizeof(response));
 	timeval delay = {1, 0};
-	dummySocket.SetDelay(delay);
+	SetDelay(delay);
 
 	BlEepromReadRequest request;
 	request.SetAddressNumBytes(0xDA7A, sizeof(dummyBlFlashReadResponsePure));
@@ -272,8 +271,7 @@ int32_t ut_ComProxy_BlEepromWriteRequest(void)
 int32_t ut_ComProxy_BlFlashCrc16Request(void)
 {
 	TestCaseBegin();
-	TestSocket dummySocket(0, 0);
-	ComProxy proxy(dummySocket);
+	ComProxy proxy(0, 0);
 	uint8_t response[512];
 	memset(response, 0, sizeof(response));
 
@@ -287,8 +285,7 @@ int32_t ut_ComProxy_BlFlashCrc16Request(void)
 int32_t ut_ComProxy_BlFlashEraseRequest(void)
 {
 	TestCaseBegin();
-	TestSocket dummySocket(0, 0);
-	ComProxy proxy(dummySocket);
+	ComProxy proxy(0, 0);
 	uint8_t response[512];
 	memset(response, 0, sizeof(response));
 
@@ -302,8 +299,7 @@ int32_t ut_ComProxy_BlFlashEraseRequest(void)
 int32_t ut_ComProxy_BlFlashReadRequest(void)
 {
 	TestCaseBegin();
-	TestSocket dummySocket(0, 0);
-	ComProxy proxy(dummySocket);
+	ComProxy proxy(0, 0);
 	uint8_t response[512];
 	memset(response, 0, sizeof(response));
 
@@ -330,8 +326,7 @@ int32_t ut_ComProxy_BlFuseWriteRequest(void)
 int32_t ut_ComProxy_BlInfoRequest(void)
 {
 	TestCaseBegin();
-	TestSocket dummySocket(0, 0);
-	ComProxy proxy(dummySocket);
+	ComProxy proxy(0, 0);
 	uint8_t response[512];
 	memset(response, 0, sizeof(response));
 
@@ -350,8 +345,7 @@ int32_t ut_ComProxy_BlInfoRequest(void)
 int32_t ut_ComProxy_BlRunAppRequest(void)
 {
 	TestCaseBegin();
-	TestSocket dummySocket(0, 0);
-	ComProxy proxy(dummySocket);
+	ComProxy proxy(0, 0);
 
 	BlRunAppRequest request;
 	size_t bytesReceived = proxy.Send(request, 0, 0);

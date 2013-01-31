@@ -59,22 +59,22 @@ class Endpoint
 class ClientSocket
 {
 	protected:
-		const int32_t mSock;
+		const int mSock;
 		struct sockaddr_in mSockAddr;
 
 	public:
-		ClientSocket(uint64_t addr, uint16_t port, int32_t style);
+		ClientSocket(uint32_t addr, uint16_t port, int style);
 		virtual ~ClientSocket();
 		virtual size_t Recv(uint8_t* pBuffer, size_t length, timeval* timeout = NULL) const = 0;
-		virtual int32_t Send(const uint8_t* frame, size_t length) const = 0;
+		virtual size_t Send(const uint8_t* frame, size_t length) const = 0;
 };
 
 class TcpSocket : public ClientSocket
 {
 	public:
-		TcpSocket(uint64_t Addr, uint16_t port);
+		TcpSocket(uint32_t Addr, uint16_t port);
 		virtual size_t Recv(uint8_t* pBuffer, size_t length, timeval* timeout = NULL) const;
-		virtual int32_t Send(const uint8_t* frame, size_t length) const;
+		virtual size_t Send(const uint8_t* frame, size_t length) const;
 };
 
 class UdpSocket : public ClientSocket
@@ -83,23 +83,10 @@ class UdpSocket : public ClientSocket
 		/**
 		 * @param enableBroadcast use 1 to enable broadcast else set 0
 		 */
-		UdpSocket(uint64_t addr, uint16_t port, bool doBind = true, int32_t enableBroadcast = 0);
+		UdpSocket(uint32_t addr, uint16_t port, bool doBind = true, int enableBroadcast = 0);
 		virtual size_t Recv(uint8_t* pBuffer, size_t length, timeval* timeout = NULL) const;
 		virtual size_t RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout = NULL, struct sockaddr* remoteAddr = NULL, socklen_t* remoteAddrLength = NULL) const;
-		virtual int32_t Send(const uint8_t* frame, size_t length) const;
+		virtual size_t Send(const uint8_t* frame, size_t length) const;
 };
-
-#ifdef UNIT_TEST
-class TestSocket : public ClientSocket
-{
-	private:
-		timespec m_Delay;
-	public:
-		TestSocket(uint64_t addr, uint16_t port);
-		virtual size_t Recv(uint8_t* pBuffer, size_t length, timeval* timeout = NULL) const;
-		virtual int32_t Send(const uint8_t* frame, size_t length) const;
-		void SetDelay(timeval& delay);
-};
-#endif /* #ifndef UNIT_TEST */
 #endif /* #ifndef _CLIENTSOCKET_H_ */
 

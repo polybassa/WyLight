@@ -48,7 +48,7 @@ using namespace std;
 }
 
 WiflyControl::WiflyControl(unsigned long addr, unsigned short port)
-: mSock(addr, port), mProxy(mSock)
+: mProxy(addr, port)
 {
 	//TODO remove length
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;
@@ -1107,6 +1107,12 @@ bool WiflyControl::FwPrintRtc(std::ostream& out)
 			return true;
 		}
 	}
+	return false;
+}
+
+bool WiflyControl::WlanSetJoin(void) const
+{
+	
 	return false;
 }
 

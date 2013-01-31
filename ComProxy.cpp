@@ -46,8 +46,8 @@ static const timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for fra
 	pOutput++; \
 }
 
-ComProxy::ComProxy(const ClientSocket& sock)
-	: mSock(sock)
+ComProxy::ComProxy(uint32_t addr, uint16_t port)
+	: mSock(addr, port)
 {
 }
 
@@ -300,7 +300,7 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 
 		{
 			/* synchronized -> send request */
-			if(static_cast<int32_t>(bufferSize) != mSock.Send(buffer, bufferSize))
+			if(bufferSize != mSock.Send(buffer, bufferSize))
 			{
 				Trace_String("ComProxy::Send: socket->Send() failed\n");
 				return 0;
