@@ -30,7 +30,7 @@ class WiflyControlCli
 		void ShowHelp(void) const;
 
 	public:
-		WiflyControlCli(uint64_t addr, uint16_t port);
+		WiflyControlCli(uint32_t addr, uint16_t port);
 		void Run(void);	
 };
 #endif /* #ifndef _WIFLYCONTROLCLI_H_ */

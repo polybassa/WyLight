@@ -81,7 +81,7 @@ class ControlCmdAddColor : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const {
 			string addr, color;
-			uint64_t hour, minute, second;
+			uint32_t hour, minute, second;
 			cin >> addr;
 			cin >> color;
 			cin >> hour;
@@ -434,7 +434,7 @@ class ControlCmdSetFade : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const {
 			string addr, color;
-			uint64_t timevalue;
+			unsigned long timevalue;
 			cin >> addr;
 			cin >> color;
 			cin >> timevalue;

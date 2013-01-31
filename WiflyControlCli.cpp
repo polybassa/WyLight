@@ -28,7 +28,7 @@
 
 using std::cout;
 
-WiflyControlCli::WiflyControlCli(uint64_t addr, uint16_t port)
+WiflyControlCli::WiflyControlCli(uint32_t addr, uint16_t port)
 : mControl(addr, port), mRunning(true)
 {
 	cout << "Connecting to " << std::hex << addr << ':' << port << std::endl;
