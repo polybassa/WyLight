@@ -150,13 +150,13 @@ void* date_timer_interrupt(void* unused)
 void Rtc_Init() {}
 
 void UART_Init() {}
-void UART_Send(unsigned char ch)
+void UART_Send(uns8 ch)
 {
 	printf("%c", ch);
 	send(g_uartSocket, &ch, sizeof(ch), 0);
 }
 void SPI_Init() {}
-char SPI_Send(char data)
+char SPI_Send(uns8 data)
 {
 	int i;
 	for(i = 3*NUM_OF_LED - 1; i > 0; i--)

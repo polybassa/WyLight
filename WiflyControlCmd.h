@@ -22,6 +22,7 @@
 #include <string>
 #include <iomanip>
 #include <time.h>
+#include <stdint.h>
 
 using namespace std;
 
@@ -40,7 +41,7 @@ class WiflyControlCmd
 	protected:
 		const string m_Name;
 		const string m_Description;
-		void Print(const unsigned char* const pBuffer, const size_t size, const unsigned int address) const {
+		void Print(const unsigned char* const pBuffer, const size_t size, const uint32_t address) const {
 			for(size_t i = 0; i < size; i++) {
 				if(0 == (i % 16)) {
 					cout << endl << "0x" << setw(4) << setfill('0') << hex << int(address+i) << ": ";
@@ -49,7 +50,7 @@ class WiflyControlCmd
 			}
 			cout << endl;
 		}
-		void PrintCrc(const unsigned char* const pBuffer, const size_t size, const unsigned int address) const {
+		void PrintCrc(const unsigned char* const pBuffer, const size_t size, const uint32_t address) const {
 			for(size_t i = 0; i < size; i++) {
 				if(0 == (i % 2)) {
 					cout << endl 
@@ -80,7 +81,7 @@ class ControlCmdAddColor : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const {
 			string addr, color;
-			unsigned long hour, minute, second;
+			uint64_t hour, minute, second;
 			cin >> addr;
 			cin >> color;
 			cin >> hour;
@@ -135,7 +136,7 @@ class ControlCmdBlCrcFlash : public WiflyControlCmd
 	public:
 		ControlCmdBlCrcFlash(void) : WiflyControlCmd("crc_flash") {};
 		virtual void Run(WiflyControl& control) const {
-			unsigned int address;
+			uint32_t address;
 			size_t numBlocks;
 			cin >> address;
 			cin >> numBlocks;
@@ -228,10 +229,10 @@ class ControlCmdBlRead : public WiflyControlCmd
 
 		const string m_Name;
 		
-		virtual size_t Read(WiflyControl& control, unsigned char* pBuffer, unsigned int address, const size_t numBytes) const = 0;
+		virtual size_t Read(WiflyControl& control, unsigned char* pBuffer, uint32_t address, const size_t numBytes) const = 0;
 
 		virtual void Run(WiflyControl& control) const {
-			unsigned int address;
+			uint32_t address;
 			size_t numBytes;
 			cin >> address;
 			cin >> numBytes;
@@ -259,7 +260,7 @@ class ControlCmdBlReadEeprom : public ControlCmdBlRead
 {
 	public:
 		ControlCmdBlReadEeprom(void) : ControlCmdBlRead("eeprom") {};
-		size_t Read(WiflyControl& control, unsigned char* pBuffer, unsigned int address, const size_t numBytes) const {
+		size_t Read(WiflyControl& control, unsigned char* pBuffer, uint32_t address, const size_t numBytes) const {
 			return control.BlReadEeprom(pBuffer, address, numBytes);
 		};
 };
@@ -268,7 +269,7 @@ class ControlCmdBlReadFlash : public ControlCmdBlRead
 {
 	public:
 		ControlCmdBlReadFlash(void) : ControlCmdBlRead("flash") {};
-		size_t Read(WiflyControl& control, unsigned char* pBuffer, unsigned int address, const size_t numBytes) const {
+		size_t Read(WiflyControl& control, unsigned char* pBuffer, uint32_t address, const size_t numBytes) const {
 			return control.BlReadFlash(pBuffer, address, numBytes);
 		};
 };
@@ -396,7 +397,7 @@ class ControlCmdWait : public WiflyControlCmd
 			+ string("    <time> the number of milliseconds the wait should take")) {};
 
 		virtual void Run(WiflyControl& control) const {
-			unsigned short waitTmms;
+			uint16_t waitTmms;
 			cin >> waitTmms;
 			cout << "Transmitting command wait... ";
 			cout << (control.FwSetWait( waitTmms ) ? "done." : "failed!") << endl;
@@ -433,12 +434,12 @@ class ControlCmdSetFade : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const {
 			string addr, color;
-			unsigned long timevalue;
+			uint64_t timevalue;
 			cin >> addr;
 			cin >> color;
 			cin >> timevalue;
 			cout << "Transmitting command set fade... ";
-			cout << (control.FwSetFade(addr, color, (unsigned short)timevalue, false) ? "done." : "failed!") << endl;
+			cout << (control.FwSetFade(addr, color, (uint16_t)timevalue, false) ? "done." : "failed!") << endl;
 		};
 };
 
