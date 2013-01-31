@@ -22,6 +22,8 @@
 
 #include "platform.h"
 #include "rtc.h"
+#include "RingBuf.h"
+#include "timer.h"
 
 //*********************** ENUMERATIONS *********************************************
 #define STX 0x0F
@@ -42,6 +44,7 @@
 #define GET_CYCLETIME 0xF0
 #define ADD_COLOR 0xEF
 #define GET_TRACE 0xEE
+#define GET_FW_VERSION 0xED
 
 #define LOOP_INFINITE 0
 
@@ -101,6 +104,38 @@ struct cmd_set_color_direct {
 #else
 	uns8 ptr_led_array[NUM_OF_LED * 3];
 #endif
+};
+
+struct cmd_get_fw_version {
+	uns8 major;
+	uns8 minor;
+};
+
+enum response_state {
+	SaveCommand,
+	ErrorEepromFull,
+	ErrorCrcCheckFail,
+	ErrorRecvBufFull,
+	ErrorCmdBufFull,
+	ErrorTraceBufFull
+};
+
+struct response_frame {
+	uns8 cmd;
+	enum response_state state;
+	union {
+		struct rtc_time get_rtc;
+		struct cmd_get_fw_version version;
+#ifdef __CC8E__						/*  for the pic - fw, these variables are only placeholders
+									    to safe RAM, the data-payload is copied just in time from
+									    the static ram source */
+		uns8 get_trace_string;
+		uns16 get_max_cycle_times;
+#else
+		uns8 get_trace_string[RingBufferSize];
+		uns16 get_max_cycle_times[CYCLETIME_METHODE_ENUM_SIZE];
+#endif
+	}data;
 };
 
 struct led_cmd {

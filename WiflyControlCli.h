@@ -20,6 +20,7 @@
 #define _WIFLYCONTROLCLI_H_
 #include <string>
 #include "WiflyControl.h"
+#include <stdint.h>
 
 class WiflyControlCli
 {
@@ -29,7 +30,7 @@ class WiflyControlCli
 		void ShowHelp(void) const;
 
 	public:
-		WiflyControlCli(unsigned long addr, unsigned short port);
+		WiflyControlCli(uint32_t addr, uint16_t port);
 		void Run(void);	
 };
 #endif /* #ifndef _WIFLYCONTROLCLI_H_ */

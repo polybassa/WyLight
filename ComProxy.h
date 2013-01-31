@@ -39,10 +39,10 @@ class ComProxy
 		 * @param outputLength size of the output buffer
 		 */
 		size_t MaskControlCharacters(const uint8_t* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool crcInLittleEndian = true) const;
+		bool Send(std::string const& telnetMessage) const;
 		int32_t Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync = true) const;
 		int32_t Send(struct cmd_frame const* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const;
 		int32_t Send(uint8_t const* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool sync, bool crcInLittleEndian = true) const;
-		bool Send(std::string const& telnetMessage) const;
 		size_t UnmaskControlCharacters(uint8_t const* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool checkCrc, bool crcInLittleEndian = true) const;
 };
 

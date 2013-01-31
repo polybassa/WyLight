@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:BroadcastReceiver_ut.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:BroadcastReceiver.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:BroadcastReceiver.h">
+   </FileRef>
+   <FileRef
+      location = "group:ClientSocket.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:ClientSocket.h">
+   </FileRef>
+   <FileRef
+      location = "group:commandstorage_ut.c">
+   </FileRef>
+   <FileRef
+      location = "group:commandstorage.c">
+   </FileRef>
+   <FileRef
+      location = "group:commandstorage.h">
+   </FileRef>
+   <FileRef
+      location = "group:ComProxy_ut.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:ComProxy.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:ComProxy.h">
+   </FileRef>
+   <FileRef
+      location = "group:crc_ut.c">
+   </FileRef>
+   <FileRef
+      location = "group:crc.c">
+   </FileRef>
+   <FileRef
+      location = "group:crc.h">
+   </FileRef>
+   <FileRef
+      location = "group:eeprom.c">
+   </FileRef>
+   <FileRef
+      location = "group:eeprom.h">
+   </FileRef>
+   <FileRef
+      location = "group:error.c">
+   </FileRef>
+   <FileRef
+      location = "group:error.h">
+   </FileRef>
+   <FileRef
+      location = "group:iic.c">
+   </FileRef>
+   <FileRef
+      location = "group:iic.h">
+   </FileRef>
+   <FileRef
+      location = "group:INLINE.H">
+   </FileRef>
+   <FileRef
+      location = "group:INT18XXX.H">
+   </FileRef>
+   <FileRef
+      location = "group:intelhexclass.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:intelhexclass.h">
+   </FileRef>
+   <FileRef
+      location = "group:ledstrip_ut.c">
+   </FileRef>
+   <FileRef
+      location = "group:ledstrip.c">
+   </FileRef>
+   <FileRef
+      location = "group:ledstrip.h">
+   </FileRef>
+   <FileRef
+      location = "group:main.c">
+   </FileRef>
+   <FileRef
+      location = "group:MATH16.H">
+   </FileRef>
+   <FileRef
+      location = "group:platform.c">
+   </FileRef>
+   <FileRef
+      location = "group:platform.h">
+   </FileRef>
+   <FileRef
+      location = "group:RingBuf_ut.c">
+   </FileRef>
+   <FileRef
+      location = "group:RingBuf.c">
+   </FileRef>
+   <FileRef
+      location = "group:RingBuf.h">
+   </FileRef>
+   <FileRef
+      location = "group:rn_171.c">
+   </FileRef>
+   <FileRef
+      location = "group:rn_171.h">
+   </FileRef>
+   <FileRef
+      location = "group:rtc.c">
+   </FileRef>
+   <FileRef
+      location = "group:rtc.h">
+   </FileRef>
+   <FileRef
+      location = "group:ScriptCtrl_ut.c">
+   </FileRef>
+   <FileRef
+      location = "group:ScriptCtrl.c">
+   </FileRef>
+   <FileRef
+      location = "group:ScriptCtrl.h">
+   </FileRef>
+   <FileRef
+      location = "group:spi.c">
+   </FileRef>
+   <FileRef
+      location = "group:spi.h">
+   </FileRef>
+   <FileRef
+      location = "group:timer.c">
+   </FileRef>
+   <FileRef
+      location = "group:timer.h">
+   </FileRef>
+   <FileRef
+      location = "group:timeval.h">
+   </FileRef>
+   <FileRef
+      location = "group:trace.c">
+   </FileRef>
+   <FileRef
+      location = "group:trace.h">
+   </FileRef>
+   <FileRef
+      location = "group:unittest.h">
+   </FileRef>
+   <FileRef
+      location = "group:usart.c">
+   </FileRef>
+   <FileRef
+      location = "group:usart.h">
+   </FileRef>
+   <FileRef
+      location = "group:wifly_cmd.h">
+   </FileRef>
+   <FileRef
+      location = "group:WiflyControl.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:WiflyControl.h">
+   </FileRef>
+   <FileRef
+      location = "group:WiflyControlCli.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:WiflyControlCli.h">
+   </FileRef>
+   <FileRef
+      location = "group:WiflyControlCmd.h">
+   </FileRef>
+   <FileRef
+      location = "group:WiflyControlColorClass.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:WiflyControlColorClass.h">
+   </FileRef>
+   <FileRef
+      location = "group:WiflyControlJni.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:x86_gl.c">
+   </FileRef>
+   <FileRef
+      location = "group:x86_wrapper.c">
+   </FileRef>
+   <FileRef
+      location = "group:x86_wrapper.h">
+   </FileRef>
+   <FileRef
+      location = "group:18F26K22.h">
+   </FileRef>
+   <FileRef
+      location = "group:BlRequest.h">
+   </FileRef>
+</Workspace>

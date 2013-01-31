@@ -237,3 +237,4 @@ WiflyControlCli.o
 crc.o
 intelhexclass.o
 server.bin
+UserInterfaceState.xcuserstate

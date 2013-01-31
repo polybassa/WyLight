@@ -138,25 +138,16 @@ void* timer4_interrupt(void* unused)
 	}
 }
 
-void* date_timer_interrupt(void* unused)
-{
-	for(;;)
-	{
-		usleep(2000000);
-		date_timer_callback();
-	}
-}
-
 void Rtc_Init() {}
 
 void UART_Init() {}
-void UART_Send(unsigned char ch)
+void UART_Send(uns8 ch)
 {
 	printf("%c", ch);
 	send(g_uartSocket, &ch, sizeof(ch), 0);
 }
 void SPI_Init() {}
-char SPI_Send(char data)
+char SPI_Send(uns8 data)
 {
 	int i;
 	for(i = 3*NUM_OF_LED - 1; i > 0; i--)
@@ -190,12 +181,10 @@ void init_x86(void)
 	pthread_t glThread;
 	pthread_t timer1Thread;
 	pthread_t timer4Thread;
-	pthread_t dateTimerThread;
 	
 	pthread_create(&broadcastThread, 0, BroadcastLoop, 0);
 	pthread_create(&isrThread, 0, InterruptRoutine, 0);
 	pthread_create(&glThread, 0, gl_start, 0);
 	pthread_create(&timer1Thread, 0, timer1_interrupt, 0);
 	pthread_create(&timer4Thread, 0, timer4_interrupt, 0);
-	pthread_create(&dateTimerThread, 0, date_timer_interrupt, 0);
 }

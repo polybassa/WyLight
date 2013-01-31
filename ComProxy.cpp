@@ -152,22 +152,6 @@ size_t ComProxy::UnmaskControlCharacters(const uint8_t* pInput, size_t inputLeng
 	return bytesWritten - 2;
 }
 
-int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const
-{
-	Trace_String("ComProxy::Send(BlRequest&): ");
-	Trace_Number((uint32_t)req.GetSize());
-	Trace_String("pure bytes\n");
-	int32_t retval = Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
-	return retval;
-}
-
-int32_t ComProxy::Send(const struct cmd_frame* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const
-{
-	Trace_String("ComProxy::Send(const struct cmd_frame*): ");
-	int32_t retval = Send(reinterpret_cast<const uint8_t*>(pFrame), pFrame->length, pResponse, responseSize, true, doSync, false);
-	return retval;
-}
-
 size_t ComProxy::Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout, bool checkCrc, bool crcInLittleEndian) const
 {
 	timeval endTime, now;
@@ -257,6 +241,22 @@ size_t ComProxy::Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout, bool c
 	return 0;
 }
 
+int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const
+{
+	Trace_String("ComProxy::Send(BlRequest&): ");
+	Trace_Number((uint32_t)req.GetSize());
+	Trace_String("pure bytes\n");
+	int32_t retval = Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
+	return retval;
+}
+
+int32_t ComProxy::Send(const struct cmd_frame* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const
+{
+	Trace_String("ComProxy::Send(const struct cmd_frame*): ");
+	int32_t retval = Send(reinterpret_cast<const uint8_t*>(pFrame), pFrame->length, pResponse, responseSize, true, doSync, false);
+	return retval;
+}
+
 int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const
 {
 	uint8_t buffer[BL_MAX_MESSAGE_LENGTH];
@@ -318,5 +318,11 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 			memcpy(pResponse, recvBuffer, bytesReceived);
 			return bytesReceived;
  		}
+}
+
+bool ComProxy::Send(std::string const& telnetMessage) const
+{
+	//TODO implement this
+	return false;
 }
 
