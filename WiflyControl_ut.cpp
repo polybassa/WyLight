@@ -69,19 +69,11 @@ size_t ut_WiflyControl_WlanSetRate(void)
 	TestBufferInit();
 	CHECK(!testControl.WlanSetRate(-1));
 	CHECK(TestBufferEquals(string()));
-	TestBufferInit();
-	CHECK(!testControl.WlanSetRate(4));
-	CHECK(TestBufferEquals(string()));
-	TestBufferInit();
-	CHECK(!testControl.WlanSetRate(5));
-	CHECK(TestBufferEquals(string()));
-	TestBufferInit();
-	CHECK(!testControl.WlanSetRate(6));
-	CHECK(TestBufferEquals(string()));
-	TestBufferInit();
-	CHECK(!testControl.WlanSetRate(7));
-	CHECK(TestBufferEquals(string()));
-	TestBufferInit();
+	for(size_t i = 4; i <= 7; i++) {
+		TestBufferInit();
+		CHECK(!testControl.WlanSetRate(i));
+		CHECK(TestBufferEquals(string()));
+	}
 	CHECK(!testControl.WlanSetRate(16));
 	CHECK(TestBufferEquals(string()));
 
