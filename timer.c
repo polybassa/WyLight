@@ -23,6 +23,7 @@
 #include "ScriptCtrl.h"
 
 bank3 struct CycleTimeBuffer g_CycleTimeBuffer;
+enum CYCLETIME_METHODE enumMethode;
 
 #ifdef ALARMCLOCK
 unsigned short gDateTimer;

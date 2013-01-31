@@ -34,7 +34,9 @@ enum CYCLETIME_METHODE{
 	eError_Throw,			//10
 	eTIMER_WAIT,			//11
 	CYCLETIME_METHODE_ENUM_SIZE //!!! MUST be the last element of the enum
-} enumMethode;
+};
+
+extern enum CYCLETIME_METHODE enumMethode;
 
 struct CycleTimeBuffer{
 	uns16 maxCycleTime[CYCLETIME_METHODE_ENUM_SIZE];
