@@ -74,6 +74,7 @@ size_t ut_WiflyControl_WlanSetRate(void)
 		CHECK(!testControl.WlanSetRate(i));
 		CHECK(TestBufferEquals(string()));
 	}
+	TestBufferInit();
 	CHECK(!testControl.WlanSetRate(16));
 	CHECK(TestBufferEquals(string()));
 
