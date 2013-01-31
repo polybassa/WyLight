@@ -63,7 +63,7 @@ class ClientSocket
 		struct sockaddr_in mSockAddr;
 
 	public:
-		ClientSocket(uint64_t addr, uint16_t port, int32_t style);
+		ClientSocket(uint32_t addr, uint16_t port, int32_t style);
 		virtual ~ClientSocket();
 		virtual size_t Recv(uint8_t* pBuffer, size_t length, timeval* timeout = NULL) const = 0;
 		virtual int32_t Send(const uint8_t* frame, size_t length) const = 0;
@@ -72,7 +72,7 @@ class ClientSocket
 class TcpSocket : public ClientSocket
 {
 	public:
-		TcpSocket(uint64_t Addr, uint16_t port);
+		TcpSocket(uint32_t Addr, uint16_t port);
 		virtual size_t Recv(uint8_t* pBuffer, size_t length, timeval* timeout = NULL) const;
 		virtual int32_t Send(const uint8_t* frame, size_t length) const;
 };
@@ -83,7 +83,7 @@ class UdpSocket : public ClientSocket
 		/**
 		 * @param enableBroadcast use 1 to enable broadcast else set 0
 		 */
-		UdpSocket(uint64_t addr, uint16_t port, bool doBind = true, int32_t enableBroadcast = 0);
+		UdpSocket(uint32_t addr, uint16_t port, bool doBind = true, int32_t enableBroadcast = 0);
 		virtual size_t Recv(uint8_t* pBuffer, size_t length, timeval* timeout = NULL) const;
 		virtual size_t RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout = NULL, struct sockaddr* remoteAddr = NULL, socklen_t* remoteAddrLength = NULL) const;
 		virtual int32_t Send(const uint8_t* frame, size_t length) const;
@@ -95,7 +95,7 @@ class TestSocket : public ClientSocket
 	private:
 		timespec m_Delay;
 	public:
-		TestSocket(uint64_t addr, uint16_t port);
+		TestSocket(uint32_t addr, uint16_t port);
 		virtual size_t Recv(uint8_t* pBuffer, size_t length, timeval* timeout = NULL) const;
 		virtual int32_t Send(const uint8_t* frame, size_t length) const;
 		void SetDelay(timeval& delay);
