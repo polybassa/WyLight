@@ -91,5 +91,6 @@ class WiflyControl
 		bool FwPrintRtc(std::ostream& out);
 
 		bool WlanSetJoin(void) const;
+		bool WlanSetRate(size_t rate) const;
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */

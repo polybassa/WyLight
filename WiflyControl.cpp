@@ -1110,12 +1110,6 @@ bool WiflyControl::FwPrintRtc(std::ostream& out)
 	return false;
 }
 
-bool WiflyControl::WlanSetJoin(void) const
-{
-	
-	return false;
-}
-
 unsigned long WiflyControl::ToRGBA(string& s) const
 {
 	if(s.length() > 8) return 0;
@@ -1126,5 +1120,21 @@ unsigned long WiflyControl::ToRGBA(string& s) const
 	converter << hex << s;
 	converter >> rgba;
 	return rgba;
+}
+
+bool WiflyControl::WlanSetJoin(void) const
+{
+	const std::string cmd("set wlan join 1");
+	return mProxy.Send(cmd);
+}
+
+bool WiflyControl::WlanSetRate(size_t rate) const
+{
+	if((rate >= 4 && rate <= 7) || (rate >= 16))
+		return false;
+
+	stringstream cmd;
+	cmd << "set wlan rate " << rate;
+	return mProxy.Send(cmd.str());
 }
 
