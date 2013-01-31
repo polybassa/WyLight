@@ -21,9 +21,6 @@
 #include "timeval.h"
 #include "trace.h"
 #include "wifly_cmd.h"
-#ifdef DEBUG
-#include <iostream>
-#endif /* DEBUG */
 
 static const timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for framented responses from pic
 
@@ -46,8 +43,8 @@ static const timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for fra
 	pOutput++; \
 }
 
-ComProxy::ComProxy(const ClientSocket& sock)
-	: mSock(sock)
+ComProxy::ComProxy(uint32_t addr, uint16_t port)
+	: mSock(addr, port)
 {
 }
 
@@ -152,22 +149,6 @@ size_t ComProxy::UnmaskControlCharacters(const uint8_t* pInput, size_t inputLeng
 	return bytesWritten - 2;
 }
 
-int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const
-{
-	Trace_String("ComProxy::Send(BlRequest&): ");
-	Trace_Number((uint32_t)req.GetSize());
-	Trace_String("pure bytes\n");
-	int32_t retval = Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
-	return retval;
-}
-
-int32_t ComProxy::Send(const struct cmd_frame* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const
-{
-	Trace_String("ComProxy::Send(const struct cmd_frame*): ");
-	int32_t retval = Send(reinterpret_cast<const uint8_t*>(pFrame), pFrame->length, pResponse, responseSize, true, doSync, false);
-	return retval;
-}
-
 size_t ComProxy::Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout, bool checkCrc, bool crcInLittleEndian) const
 {
 	timeval endTime, now;
@@ -257,6 +238,22 @@ size_t ComProxy::Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout, bool c
 	return 0;
 }
 
+int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const
+{
+	Trace_String("ComProxy::Send(BlRequest&): ");
+	Trace_Number((uint32_t)req.GetSize());
+	Trace_String("pure bytes\n");
+	int32_t retval = Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
+	return retval;
+}
+
+int32_t ComProxy::Send(const struct cmd_frame* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const
+{
+	Trace_String("ComProxy::Send(const struct cmd_frame*): ");
+	int32_t retval = Send(reinterpret_cast<const uint8_t*>(pFrame), pFrame->length, pResponse, responseSize, true, doSync, false);
+	return retval;
+}
+
 int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const
 {
 	uint8_t buffer[BL_MAX_MESSAGE_LENGTH];
@@ -300,7 +297,7 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 
 		{
 			/* synchronized -> send request */
-			if(static_cast<int32_t>(bufferSize) != mSock.Send(buffer, bufferSize))
+			if(bufferSize != mSock.Send(buffer, bufferSize))
 			{
 				Trace_String("ComProxy::Send: socket->Send() failed\n");
 				return 0;
@@ -318,5 +315,23 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 			memcpy(pResponse, recvBuffer, bytesReceived);
 			return bytesReceived;
  		}
+}
+
+bool ComProxy::Send(std::string const& telnetMessage) const
+{
+	static const timespec NANOSLEEP_TIME = {0, 500000000};
+	static const unsigned char ENTER_CMD_MODE[] = {'$', '$', '$'}; 
+	static const unsigned char EXIT_CMD_MODE[] = {'e', 'x', 'i', 't', '\n'};
+
+	if(sizeof(ENTER_CMD_MODE) != mSock.Send(ENTER_CMD_MODE, sizeof(ENTER_CMD_MODE)))
+		return false;
+	// we need to wait at least 250ms after "$$$" to enter command mode
+	nanosleep(&NANOSLEEP_TIME, NULL);
+
+	if(telnetMessage.size() != mSock.Send(reinterpret_cast<const unsigned char*>(telnetMessage.data()), telnetMessage.size()))
+		return false;
+
+	return sizeof(EXIT_CMD_MODE) == mSock.Send(EXIT_CMD_MODE, sizeof(EXIT_CMD_MODE));
+
 }
 
