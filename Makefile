@@ -48,8 +48,8 @@ ComProxy_ut.bin: ComProxy_ut.cpp ComProxy.cpp ComProxy.h BlRequest.h unittest.h
 	@g++ ComProxy_ut.cpp ComProxy.cpp crc.c -DUNIT_TEST -o $@ -Wall -pedantic -std=c++11
 	@./$@
 
-WiflyControl_ut.bin: WiflyControl_ut.cpp WiflyControl.cpp WiflyControlColorClass.h WiflyControlColorClass.cpp WiflyControl.h unittest.h
-	@g++ WiflyControl_ut.cpp WiflyControl.cpp WiflyControlColorClass.cpp -DUNIT_TEST -o $@ -Wall -pedantic -std=c++11
+WiflyControl_ut.bin: WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp intelhexclass.h WiflyControlColorClass.h WiflyControlColorClass.cpp WiflyControl.h unittest.h
+	@g++ WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp WiflyControlColorClass.cpp -DUNIT_TEST -o $@ -Wall -pedantic -std=c++11
 	@./$@
 
 test: clean BroadcastReceiver_ut.bin commandstorage_ut.bin ComProxy_ut.bin crc_ut.bin ledstrip_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin WiflyControl_ut.bin
