@@ -25,11 +25,11 @@
 class ComProxy
 {
 	private:
-		const ClientSocket& mSock;
+		const TcpSocket mSock;
 		size_t Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout = NULL, bool checkCrc = true, bool crcInLittleEndian = true) const;
 
 	public:
-		ComProxy(const ClientSocket& sock);
+		ComProxy(uint32_t addr, uint16_t port);
 
 		/**
 		 * Mask bytes of input buffer and add CRC16-CITT checksum to the end
@@ -39,10 +39,11 @@ class ComProxy
 		 * @param outputLength size of the output buffer
 		 */
 		size_t MaskControlCharacters(const uint8_t* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool crcInLittleEndian = true) const;
+		bool Send(std::string const& telnetMessage) const;
 		int32_t Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync = true) const;
-		int32_t Send(const struct cmd_frame* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const;
-		int32_t Send(const uint8_t* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool sync, bool crcInLittleEndian = true) const;
-		size_t UnmaskControlCharacters(const uint8_t* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool checkCrc, bool crcInLittleEndian = true) const;
+		int32_t Send(struct cmd_frame const* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const;
+		int32_t Send(uint8_t const* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool sync, bool crcInLittleEndian = true) const;
+		size_t UnmaskControlCharacters(uint8_t const* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool checkCrc, bool crcInLittleEndian = true) const;
 };
 
 #endif /* #ifndef _COM_PROXY_H_ */
