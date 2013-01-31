@@ -21,9 +21,6 @@
 #include "timeval.h"
 #include "trace.h"
 #include "wifly_cmd.h"
-#ifdef DEBUG
-#include <iostream>
-#endif /* DEBUG */
 
 static const timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for framented responses from pic
 
@@ -322,7 +319,19 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 
 bool ComProxy::Send(std::string const& telnetMessage) const
 {
-	//TODO implement this
-	return false;
+	static const timespec NANOSLEEP_TIME = {0, 500000000};
+	static const unsigned char ENTER_CMD_MODE[] = {'$', '$', '$'}; 
+	static const unsigned char EXIT_CMD_MODE[] = {'e', 'x', 'i', 't', '\n'};
+
+	if(sizeof(ENTER_CMD_MODE) != mSock.Send(ENTER_CMD_MODE, sizeof(ENTER_CMD_MODE)))
+		return false;
+	// we need to wait at least 250ms after "$$$" to enter command mode
+	nanosleep(&NANOSLEEP_TIME, NULL);
+
+	if(telnetMessage.size() != mSock.Send(reinterpret_cast<const unsigned char*>(telnetMessage.data()), telnetMessage.size()))
+		return false;
+
+	return sizeof(EXIT_CMD_MODE) == mSock.Send(EXIT_CMD_MODE, sizeof(EXIT_CMD_MODE));
+
 }
 

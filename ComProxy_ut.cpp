@@ -44,7 +44,7 @@ uint8_t g_TestSocketRecvBuffer[10240];
 size_t g_TestSocketRecvBufferPos = 0;
 size_t g_TestSocketRecvBufferSize = 0;
 uint8_t g_TestSocketSendBuffer[10240];
-size_t g_TestSocketSendBufferSize;
+uint8_t* g_TestSocketSendBufferPos = g_TestSocketSendBuffer;
 timespec g_TestSocketSendDelay;
 
 void SetDelay(timeval& delay)
@@ -163,12 +163,14 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 		return length;
 	}
 
-	Trace_String("Unkown BlRequest\n");
-	return 0;
+	Trace_String("Unkown BlRequest => should be a telnet telegram\n");
+	memcpy(g_TestSocketSendBufferPos, frame, length);
+	g_TestSocketSendBufferPos += length;
+	return length;
 }
 
 /******************************* test functions *******************************/
-int32_t ut_ComProxy_MaskControlCharacters(void)
+size_t ut_ComProxy_MaskControlCharacters(void)
 {
 	TestCaseBegin();
 	ComProxy proxy(0, 0);
@@ -232,7 +234,7 @@ int32_t ut_ComProxy_MaskControlCharacters(void)
 	TestCaseEnd();
 }
 
-int32_t ut_ComProxy_BlEepromReadRequest(void)
+size_t ut_ComProxy_BlEepromReadRequest(void)
 {
 	TestCaseBegin();
 	ComProxy proxy(0, 0);
@@ -247,7 +249,7 @@ int32_t ut_ComProxy_BlEepromReadRequest(void)
 	TestCaseEnd();
 }
 
-int32_t ut_ComProxy_BlEepromReadRequestTimeout(void)
+size_t ut_ComProxy_BlEepromReadRequestTimeout(void)
 {
 	TestCaseBegin();
 	ComProxy proxy(0, 0);
@@ -263,12 +265,12 @@ int32_t ut_ComProxy_BlEepromReadRequestTimeout(void)
 	TestCaseEnd();
 }
 
-int32_t ut_ComProxy_BlEepromWriteRequest(void)
+size_t ut_ComProxy_BlEepromWriteRequest(void)
 {
 	NOT_IMPLEMENTED();
 }
 
-int32_t ut_ComProxy_BlFlashCrc16Request(void)
+size_t ut_ComProxy_BlFlashCrc16Request(void)
 {
 	TestCaseBegin();
 	ComProxy proxy(0, 0);
@@ -282,7 +284,7 @@ int32_t ut_ComProxy_BlFlashCrc16Request(void)
 	TestCaseEnd();
 }
 
-int32_t ut_ComProxy_BlFlashEraseRequest(void)
+size_t ut_ComProxy_BlFlashEraseRequest(void)
 {
 	TestCaseBegin();
 	ComProxy proxy(0, 0);
@@ -296,7 +298,7 @@ int32_t ut_ComProxy_BlFlashEraseRequest(void)
 	TestCaseEnd();
 }
 
-int32_t ut_ComProxy_BlFlashReadRequest(void)
+size_t ut_ComProxy_BlFlashReadRequest(void)
 {
 	TestCaseBegin();
 	ComProxy proxy(0, 0);
@@ -313,17 +315,17 @@ int32_t ut_ComProxy_BlFlashReadRequest(void)
 	TestCaseEnd();
 }
 
-int32_t ut_ComProxy_BlFlashWriteRequest(void)
+size_t ut_ComProxy_BlFlashWriteRequest(void)
 {
 	NOT_IMPLEMENTED();
 }
 
-int32_t ut_ComProxy_BlFuseWriteRequest(void)
+size_t ut_ComProxy_BlFuseWriteRequest(void)
 {
 	NOT_IMPLEMENTED();
 }
 
-int32_t ut_ComProxy_BlInfoRequest(void)
+size_t ut_ComProxy_BlInfoRequest(void)
 {
 	TestCaseBegin();
 	ComProxy proxy(0, 0);
@@ -342,7 +344,7 @@ int32_t ut_ComProxy_BlInfoRequest(void)
 	TestCaseEnd();
 }
 
-int32_t ut_ComProxy_BlRunAppRequest(void)
+size_t ut_ComProxy_BlRunAppRequest(void)
 {
 	TestCaseBegin();
 	ComProxy proxy(0, 0);
@@ -353,6 +355,20 @@ int32_t ut_ComProxy_BlRunAppRequest(void)
 	CHECK('x' == g_TestSocketRecvBuffer[0]);
 	CHECK('x' == g_TestSocketRecvBuffer[1]);
 	CHECK('x' == g_TestSocketRecvBuffer[2]);
+	TestCaseEnd();
+}
+
+size_t ut_ComProxy_SendTelnetMesssage(void)
+{
+	TestCaseBegin();
+	static const std::string testCmd("> <$$$-	m\n");
+	static const uint8_t buffer[] = {'$', '$', '$', '>', ' ', '<', '$', '$', '$', '-', '	', 'm', '\n', 'e', 'x', 'i', 't', '\n'};
+	ComProxy proxy(0, 0);
+
+	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
+	g_TestSocketSendBufferPos = g_TestSocketSendBuffer;
+	CHECK(proxy.Send(testCmd));
+	CHECK(0 == memcmp(g_TestSocketSendBuffer, buffer, sizeof(buffer)));
 	TestCaseEnd();
 }
 
@@ -368,9 +384,9 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_ComProxy_BlFlashReadRequest);
 	RunTest(false, ut_ComProxy_BlFlashWriteRequest);
 	RunTest(false, ut_ComProxy_BlFuseWriteRequest);
-
 	RunTest(true, ut_ComProxy_BlInfoRequest);
 	RunTest(true, ut_ComProxy_BlRunAppRequest);
+	RunTest(true, ut_ComProxy_SendTelnetMesssage);
 	UnitTestMainEnd();
 }
 
