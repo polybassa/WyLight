@@ -48,7 +48,7 @@ using namespace std;
 }
 
 WiflyControl::WiflyControl(unsigned long addr, unsigned short port)
-: mSock(addr, port), mProxy(mSock)
+: mProxy(addr, port)
 {
 	//TODO remove length
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;
@@ -1120,5 +1120,21 @@ unsigned long WiflyControl::ToRGBA(string& s) const
 	converter << hex << s;
 	converter >> rgba;
 	return rgba;
+}
+
+bool WiflyControl::WlanSetJoin(void) const
+{
+	const std::string cmd("set wlan join 1");
+	return mProxy.Send(cmd);
+}
+
+bool WiflyControl::WlanSetRate(size_t rate) const
+{
+	if((rate >= 4 && rate <= 7) || (rate >= 16))
+		return false;
+
+	stringstream cmd;
+	cmd << "set wlan rate " << rate;
+	return mProxy.Send(cmd.str());
 }
 
