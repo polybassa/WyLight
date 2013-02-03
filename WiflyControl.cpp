@@ -31,7 +31,10 @@
 
 #include "WiflyControlColorClass.h"
 
-using namespace std;
+using std::cout;
+using std::ifstream;
+using std::hex;
+using std::stringstream;
 
 /**
  * Macro to reduce code redundancy, while converting two 32 bit values into
@@ -501,7 +504,32 @@ bool WiflyControl::BlEnableAutostart(void) const
 	return BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
 }
 
-/** ---------------------------------------- FIRMWARE METHODES ---------------------------------------- **/
+bool WiflyControl::ConfSetWlanChannel(size_t channel) const
+{
+	if(channel >= 14)
+		return false;
+
+	stringstream cmd;
+	cmd << "set wlan channel " << channel << '\n';
+	return mProxy.Send(cmd.str());
+}
+
+bool WiflyControl::ConfSetWlanJoin(void) const
+{
+	const std::string cmd("set wlan join 1");
+	return mProxy.Send(cmd);
+}
+
+bool WiflyControl::ConfSetWlanRate(size_t rate) const
+{
+	if((rate >= 4 && rate <= 7) || (rate >= 16))
+		return false;
+
+	stringstream cmd;
+	cmd << "set wlan rate " << rate;
+	return mProxy.Send(cmd.str());
+}
+
 int WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, unsigned char* pResponse, size_t responseSize) const
 {
 	int retval;
@@ -802,14 +830,12 @@ void WiflyControl::FwTest(void)
 {
 	uint32_t bitMask = 0x01;
 	WiflyControlColorClass LedColor = WiflyControlColorClass(0xffffffff);
-    
-	int doRun = 1;
-  
+      
 	static const unsigned long RED   = 0xFF000000;
 	static const unsigned long GREEN = 0x00FF0000;
-	static const unsigned long BLUE  = 0x0000FF00;
-	static const unsigned long WHITE = 0xFFFFFF00;
-	static const unsigned long BLACK = 0x00000000;
+//	static const unsigned long BLUE  = 0x0000FF00;
+//	static const unsigned long WHITE = 0xFFFFFF00;
+//	static const unsigned long BLACK = 0x00000000;
 	
 	FwClearScript();
 	sleep(1);
@@ -846,7 +872,7 @@ void WiflyControl::FwTest(void)
 	FwLoopOff(0);
 	sleep(30);
 	/*
-	while(doRun > 0)
+	for(int doRun = 1; doRun > 0; doRun--)
 	{
 		FwSetColor(0xFFFFFFFFLU, BLACK);
 		FwSetColor(0xFF000000LU, RED);   sleep(1);
@@ -860,7 +886,6 @@ void WiflyControl::FwTest(void)
 		FwSetFade(0x00FF0000LU, BLUE, 2000, true);
 		FwSetFade(0xFF000000LU, WHITE,30000, false);
 		sleep(20);
-		doRun--;
 	}
 	*/
 }
@@ -948,7 +973,7 @@ bool WiflyControl::FwStartBl(void)
 	return false;
 }
 
-bool WiflyControl::FwSetRtc(struct tm* timeValue)
+bool WiflyControl::FwSetRtc(struct tm const* timeValue)
 {
 	if(timeValue == NULL) return false;
   
@@ -1120,21 +1145,5 @@ unsigned long WiflyControl::ToRGBA(string& s) const
 	converter << hex << s;
 	converter >> rgba;
 	return rgba;
-}
-
-bool WiflyControl::WlanSetJoin(void) const
-{
-	const std::string cmd("set wlan join 1");
-	return mProxy.Send(cmd);
-}
-
-bool WiflyControl::WlanSetRate(size_t rate) const
-{
-	if((rate >= 4 && rate <= 7) || (rate >= 16))
-		return false;
-
-	stringstream cmd;
-	cmd << "set wlan rate " << rate;
-	return mProxy.Send(cmd.str());
 }
 

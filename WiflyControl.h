@@ -26,7 +26,6 @@
 #include "BlRequest.h"
 #include "intelhexclass.h"
 
-
 class WiflyControl
 {
 	private:
@@ -57,6 +56,11 @@ class WiflyControl
 		bool BlRunApp(void) const;
 		bool BlEnableAutostart(void) const;
 		
+		/** ----------------------------- Telnet METHODES ----------------------------- **/
+		bool ConfSetWlanChannel(size_t channel) const;
+		bool ConfSetWlanJoin(void) const;
+		bool ConfSetWlanRate(size_t rate) const;
+		
 		
 		/** ------------------------------ FIRMWARE METHODES ------------------------------ **/
 		bool FwClearScript(void);
@@ -86,11 +90,8 @@ class WiflyControl
 		void FwPrintTracebuffer(std::ostream& out);
 		bool FwStartBl(void);
 		
-		bool FwSetRtc(struct tm* timeValue);
+		bool FwSetRtc(struct tm const* timeValue);
 		bool FwGetRtc(struct tm* timeValue);
 		bool FwPrintRtc(std::ostream& out);
-
-		bool WlanSetJoin(void) const;
-		bool WlanSetRate(size_t rate) const;
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */

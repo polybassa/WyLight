@@ -24,7 +24,12 @@
 #include <time.h>
 #include <stdint.h>
 
-using namespace std;
+//TODO remove this dependencies!!!
+using std::cin;
+using std::cout;
+using std::hex;
+using std::setfill;
+using std::setw;
 
 class WiflyControlCmd
 {
@@ -288,6 +293,19 @@ class ControlCmdBlRunApp : public WiflyControlCmd
 		};
 };
 
+class ControlCmdConfSetDefaults : public WiflyControlCmd
+{
+	public:
+		ControlCmdConfSetDefaults(void) : WiflyControlCmd(
+					string("wlan_defaults"),
+					string("' - set connection parameters to default"))
+		{};
+
+		virtual void Run(WiflyControl& control) const {
+			control.ConfSetWlanChannel(0);
+		};
+};
+
 class ControlCmdStartBl : public WiflyControlCmd
 {
 	public:
@@ -509,6 +527,7 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdBlReadEeprom(),
 	new ControlCmdBlReadFlash(),
 	new ControlCmdBlRunApp(),
+	new ControlCmdConfSetDefaults(),
 	new ControlCmdClearScript(),
 	new ControlCmdSetColor(),
 	new ControlCmdSetFade(),
