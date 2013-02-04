@@ -38,14 +38,15 @@ using namespace std;
  * an address array and red, green, blue values. 
  */
 #define SetAddrRgb(REF, ADDRESS, RGBA) { \
-	REF.addr[0] = (htonl(ADDRESS) & 0xff000000) >> 24; \
-	REF.addr[1] = (htonl(ADDRESS) & 0x00ff0000) >> 16; \
-	REF.addr[2] = (htonl(ADDRESS) & 0x0000ff00) >> 8; \
-	REF.addr[3] = (htonl(ADDRESS) & 0x000000ff); \
-	REF.red = (htonl(RGBA) & 0x000000ff) >> 0; \
-	REF.green = (htonl(RGBA) & 0x0000ff00) >> 8; \
-	REF.blue = (htonl(RGBA) & 0x00ff0000) >> 16; \
+	REF.addr[3] = (ADDRESS & 0xff000000) >> 24; \
+	REF.addr[2] = (ADDRESS & 0x00ff0000) >> 16; \
+	REF.addr[1] = (ADDRESS & 0x0000ff00) >> 8; \
+	REF.addr[0] = (ADDRESS & 0x000000ff); \
+	REF.red = (RGBA & 0xff000000) >> 24; \
+	REF.green = (RGBA & 0x00ff0000) >> 16; \
+	REF.blue = (RGBA & 0x0000ff00) >> 8; \
 }
+
 
 WiflyControl::WiflyControl(unsigned long addr, unsigned short port)
 : mProxy(addr, port)
