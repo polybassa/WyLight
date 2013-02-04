@@ -44,7 +44,7 @@ using namespace std;
 	REF.addr[3] = (htonl(ADDRESS) & 0x000000ff); \
 	REF.red = (htonl(RGBA) & 0x000000ff) >> 0; \
 	REF.green = (htonl(RGBA) & 0x0000ff00) >> 8; \
-	REF.blue = (htonl(RGBA) & 0x00ff000) >> 16; \
+	REF.blue = (htonl(RGBA) & 0x00ff0000) >> 16; \
 }
 
 WiflyControl::WiflyControl(unsigned long addr, unsigned short port)
@@ -827,6 +827,7 @@ void WiflyControl::FwTest(void)
 	FwSetFade(0x0000FF00LU, GREEN,2000, true);
 	FwSetFade(0x00FF0000LU, BLUE, 2000, true);
 	FwSetFade(0xFF000000LU, WHITE,2000, false);
+	FwSetWait(2000);
 	FwSetFade(0xFFFFFFFFLU, BLACK,2000, false);
 	FwLoopOff(0);
 }
