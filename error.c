@@ -20,9 +20,19 @@
 #include "error.h"
 #include "RingBuf.h"
 #include "usart.h"
-#include "wifly_cmd.h"
+#include "trace.h"
 
 struct ErrorBits g_ErrorBits;
+
+uns8 Error_GetState()
+{
+	if(RingBuf_HasError(&g_TraceBuf)) return ErrorTraceBufFull;
+	else if(g_ErrorBits.CmdBufOverflow) return ErrorCmdBufFull;
+	else if(RingBuf_HasError(&g_RingBuf)) return ErrorRecvBufFull;
+	else if(g_ErrorBits.CrcFailure) return ErrorCrcCheckFail;
+	else if(g_ErrorBits.EepromFailure) return ErrorEepromFull;
+	else return NoError;
+}
 
 void Error_Throw()
 {
@@ -31,11 +41,7 @@ void Error_Throw()
 	{
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
-		UART_Send(STX);
-		UART_SendString("E:05; ERROR: Tracebuffer full");
-		UART_Send(0x65);
-		UART_Send(0x89);	/* Precalculated CRC */
-		UART_Send(ETX);
+		Trace_String("E:05; ERROR: Tracebuffer full");
 		// *** Re-init the Ringbuffer to get a consistent commandstring and reset error
 		RingBuf_Init(&g_TraceBuf);
 	}
@@ -43,11 +49,7 @@ void Error_Throw()
 	
 	if(g_ErrorBits.CmdBufOverflow)
 	{
-		UART_Send(STX);
-		UART_SendString("E:04; ERROR: Commandbuffer full");
-		UART_Send(0x0C);
-		UART_Send(0x09);	/* Precalculated CRC */
-		UART_Send(ETX);
+		Trace_String("E:04; ERROR: Commandbuffer full");
 		CommandIO_Init();
 		g_ErrorBits.CmdBufOverflow = 0;
 	}
@@ -57,31 +59,18 @@ void Error_Throw()
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
 		CommandIO_Init();
-		
-		UART_Send(STX);
-		UART_SendString("E:03; ERROR: Receivebuffer full");
-		UART_Send(0x54);
-		UART_Send(0x74);	/* Precalculated CRC */
-		UART_Send(ETX);
+		Trace_String("E:03; ERROR: Receivebuffer full");
 		// *** Re-init the Ringbuffer to get a consistent commandstring and reset error
 		RingBuf_Init(&g_RingBuf);
 	}
 	if(g_ErrorBits.CrcFailure)
 	{
-		UART_Send(STX);
-		UART_SendString("E:02; ERROR: Crc-Check failed");
-		UART_Send(0x90);
-		UART_Send(0x3d);	/* Precalculated CRC */
-		UART_Send(ETX);
+		Trace_String("E:02; ERROR: Crc-Check failed");
 		g_ErrorBits.CrcFailure = 0;
 	}
 	if(g_ErrorBits.EepromFailure)
 	{
-		UART_Send(STX);
-		UART_SendString("E:01; ERROR: EEPROM is full");
-		UART_Send(0x97);
-		UART_Send(0x40);	/* Precalculated CRC */
-		UART_Send(ETX);
+		Trace_String("E:01; ERROR: EEPROM is full");
 		g_ErrorBits.EepromFailure = 0;
 	}
 }

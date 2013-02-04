@@ -18,6 +18,7 @@
 
 #ifndef _ERROR_H_
 #define _ERROR_H_
+
 // *** ERRORBITS
 struct ErrorBits {
 		char CrcFailure:1;
@@ -26,9 +27,20 @@ struct ErrorBits {
 };
 extern struct ErrorBits g_ErrorBits;
 
+enum error_state {
+	NoError,
+	ErrorEepromFull,
+	ErrorCrcCheckFail,
+	ErrorRecvBufFull,
+	ErrorCmdBufFull,
+	ErrorTraceBufFull
+};
+
 #define Error_Init(x) \
 	g_ErrorBits.CrcFailure = 0; \
 	g_ErrorBits.EepromFailure = 0;
 
 void Error_Throw();
+
+uns8 Error_GetState();
 #endif /* #ifndef _ERROR_H_ */
