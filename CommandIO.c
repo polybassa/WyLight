@@ -206,36 +206,11 @@ void CommandIO_GetCommands()
 	  }
 	}
 }
-/*
-void CommandIO_SendResponse(uns8 cmd)
-{
-	struct response_frame mFrame;
-	mFrame.cmd = cmd;
-	mFrame.state = Error_GetState();
-	
-	switch (cmd) {
-		case GET_RTC:
-			
-			break;
-		
-		case GET_CYCLETIME:
 
-			break;
-		
-		case GET_TRACE:
-			
-			break;
-			
-		case GET_FW_VERSION
-			
-		default:
-			break;
-	}
+
+void CommandIO_SendResponse(struct response_frame *pFrame)
+{
+	
+	
 }
-
-void CommandIO_Send(struct response_frame *pFrame)
-{
-	
-	
-}*/
 

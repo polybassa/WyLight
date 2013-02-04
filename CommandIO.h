@@ -20,6 +20,7 @@
 #define _COMMANDIO_H_
 
 #include "platform.h"
+#include "wifly_cmd.h"
 
 #define CMDFRAMELENGTH NUM_OF_LED*3+5
 
@@ -42,7 +43,7 @@ void CommandIO_Init();
 
 void CommandIO_GetCommands();
 
-void CommandIO_SendResponse(uns8 cmd);
+void CommandIO_SendResponse(struct response_frame *pFrame);
 
 #endif /* #ifndef _COMMANDSTORAGE_H_ */
 
