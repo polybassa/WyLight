@@ -16,7 +16,7 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "commandIO.h"
+#include "CommandIO.h"
 #include "error.h"
 #include "RingBuf.h"
 #include "usart.h"

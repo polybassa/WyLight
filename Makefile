@@ -12,7 +12,7 @@ endif
 ANDROID_DIR=./android/WiflyLight
 ANDROID_BIN=android/.metadata ${ANDROID_DIR}/bin/ ${ANDROID_DIR}/gen/ ${ANDROID_DIR}/libs/ ${ANDROID_DIR}/obj/ ${ANDROID_DIR}Test/bin/ ${ANDROID_DIR}Test/gen/
 
-X86_SRC=main.c crc.c commandIO.c eeprom.c error.c ledstrip.c RingBuf.c ScriptCtrl.c spi.c timer.c usart.c x86_wrapper.c x86_gl.c
+X86_SRC=main.c crc.c CommandIO.c eeprom.c error.c ledstrip.c RingBuf.c ScriptCtrl.c spi.c timer.c usart.c x86_wrapper.c x86_gl.c
 
 X86_CLIENT_BUILD=g++ WiflyControlColorClass.cpp BroadcastReceiver.cpp ClientSocket.cpp ComProxy.cpp crc.c intelhexclass.cpp WiflyControl.cpp WiflyControlCli.cpp -DX86 -lpthread -o client.bin -Wall -pedantic -std=c++0x
 
@@ -52,7 +52,7 @@ WiflyControl_ut.bin: WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp inte
 	@g++ WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp WiflyControlColorClass.cpp -DUNIT_TEST -o $@ -Wall -pedantic -std=c++11
 	@./$@
 
-test: clean BroadcastReceiver_ut.bin commandIO_ut.bin ComProxy_ut.bin crc_ut.bin ledstrip_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin WiflyControl_ut.bin
+test: clean BroadcastReceiver_ut.bin CommandIO_ut.bin ComProxy_ut.bin crc_ut.bin ledstrip_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin WiflyControl_ut.bin
 
 clean:
 	@rm -rf *.asm *.bin *.cod *.fcs *.hex *.lst *.occ *.var .metadata/ ${ANDROID_BIN}

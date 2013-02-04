@@ -16,13 +16,14 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "commandIO.h"
+#include "CommandIO.h"
 #include "ScriptCtrl.h"
 #include "trace.h"
 #include "usart.h"
 #include "RingBuf.h"
 #include "crc.h"
 #include "error.h"
+#include "wifly_cmd.h"
 
 bank2 struct CommandBuffer g_CmdBuf;
 
@@ -205,4 +206,36 @@ void CommandIO_GetCommands()
 	  }
 	}
 }
+/*
+void CommandIO_SendResponse(uns8 cmd)
+{
+	struct response_frame mFrame;
+	mFrame.cmd = cmd;
+	mFrame.state = Error_GetState();
+	
+	switch (cmd) {
+		case GET_RTC:
+			
+			break;
+		
+		case GET_CYCLETIME:
+
+			break;
+		
+		case GET_TRACE:
+			
+			break;
+			
+		case GET_FW_VERSION
+			
+		default:
+			break;
+	}
+}
+
+void CommandIO_Send(struct response_frame *pFrame)
+{
+	
+	
+}*/
 
