@@ -18,7 +18,9 @@
 
 #ifndef _TRACE_H_
 #define _TRACE_H_
-#ifdef TEST
+#ifdef DEBUG
+
+#ifdef __CC8E__
 	#include "usart.h"
 	#include "RingBuf.h"
 	
@@ -34,21 +36,23 @@
 	
 	void Trace_Char(uns8 input);
 	
-	void Trace_Print();
-#elif DEBUG
+	void Trace_Print(uns8 *pArray, uns8 arraySize);
+#else 
 	#include "stdio.h"
 	#define Trace_String(str) do { printf("%s", str); } while (0)
 	#define Trace_Number(input) do { printf("%04x", input); } while (0)
 	#define Trace_Hex(hex) do { printf("%02x ", hex); } while(0)
 	#define Trace_Hex16(hex) do { printf("%04x ", hex); } while(0)
-	#define Trace_Print(x)
+	#define Trace_Print(x, y)
 	#define Trace_Char(input) do { printf("%c", input); } while (0)
+#endif /*__CC8E__*/
+
 #else
 	#define Trace_String(str)
 	#define Trace_Number(input)
 	#define Trace_Hex(hex)
 	#define Trace_Hex16(hex)
-	#define Trace_Print(x)
+	#define Trace_Print(x, y)
 	#define Trace_Char(x)
 #endif
 #endif /* #ifndef _TRACE_H_ */

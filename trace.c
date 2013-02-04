@@ -20,7 +20,8 @@
 #include "wifly_cmd.h"
 #include "crc.h"
 
-#ifdef TEST
+#ifdef DEBUG
+#ifdef __CC8E__
 
 struct RingBuffer g_TraceBuf;
 	
@@ -102,7 +103,7 @@ void Trace_Hex(uns8 input)
 
 void Trace_Hex16(uns16 input)
 {
-#ifdef X86
+#ifndef __CC8E__
       Trace_Hex((uns8)(temp16 >> 8));
       Trace_Hex((uns8)(temp16 & 0xff));
 #else
@@ -111,9 +112,17 @@ void Trace_Hex16(uns16 input)
 #endif
 }
 	
-void Trace_Print()
-{	
-	uns8 crcH, crcL, tempByte;
+void Trace_Print(uns8 *pArray, uns8 arraySize)
+{
+	uns8 i = 0;
+	uns8 tempByte;
+	while(RingBuf_IsEmpty(&g_TraceBuf) == 0 && i < arraySize)
+	{
+	    tempByte = RingBuf_Get(&g_TraceBuf);
+		*pArray = tempByte;
+		pArray++;
+	}
+	/*uns8 crcH, crcL, tempByte;
 	
 	Crc_NewCrc(&crcH, &crcL);
   
@@ -139,6 +148,7 @@ void Trace_Print()
 	}
 	UART_Send(crcL);
 	UART_Send(ETX);
+	 */
 }
-
-#endif 
+#endif /*__CC8E__*/
+#endif /* DEBUG */
