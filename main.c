@@ -18,6 +18,7 @@
 
 #ifndef X86
 #define TEST
+#define DEBUG
 #endif
 
 #ifdef __CC8E__
@@ -49,16 +50,17 @@ jmp_buf g_ResetEnvironment;
 //*********************** GLOBAL VARIABLES *******************************************
 uns8 g_UpdateLed;
 uns8 g_UpdateLedStrip;
+const struct cmd_get_fw_version g_Version = {0, 1};
 
 //*********************** MACROS *****************************************************
-#ifdef TEST
+#ifdef DEBUG
 #define do_and_measure(METHOD) {\
 	Timer_StartStopwatch(e ## METHOD); \
 	METHOD(); \
 	Timer_StopStopwatch(e ## METHOD);}
 #else
 #define do_and_measure(METHOD) METHOD();
-#endif /*#ifdef TEST */
+#endif /*#ifdef DEBUG */
 
 	
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
