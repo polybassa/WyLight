@@ -64,7 +64,7 @@ void date_timer_do_events(void);
 #endif /*ALARMCLOCK*/
 
 
-#ifdef TEST   /*if we are not in TEST-Mode we can't print the output to the tracebuffer, so this methodes are superfluous */
+#ifdef DEBUG   /*if we are not in TEST-Mode we can't print the output to the tracebuffer, so this methodes are superfluous */
 
 /**
 ** Function start the internal Stopwatch. It's realised with the Timer3 Modul.
@@ -77,15 +77,15 @@ void Timer_StartStopwatch(enum CYCLETIME_METHODE destMethode);
 **/
 void Timer_StopStopwatch(enum CYCLETIME_METHODE destMethode);
 
-void Timer_PrintCycletime(void);
+void Timer_PrintCycletime(uns16 *pArray, uns8 arraySize);
 
 #else
 
 #define Timer_StartStopwatch(x)
 #define Timer_StopStopwatch(x)
-#define Timer_PrintCycletime(x)
+#define Timer_PrintCycletime(x, y)
 
-#endif /*TEST*/
+#endif /*DEBUG*/
 
 #ifdef __CC8E__
 #define Timer1Interrupt(x) TMR1IF = 0;

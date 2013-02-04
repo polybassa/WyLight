@@ -157,7 +157,7 @@ void Timer_Init()
 #endif /* #ifdef __CC8E__ */
 }
 
-#ifdef TEST
+#ifdef DEBUG
 void Timer_StartStopwatch(enum CYCLETIME_METHODE destMethode)
 {
 	uns16 tempTime;
@@ -190,19 +190,15 @@ void Timer_StopStopwatch(enum CYCLETIME_METHODE destMethode)
 	g_CycleTimeBuffer.tempCycleTime[destMethode] = 0;
 }
 
-void Timer_PrintCycletime(void)
+void Timer_PrintCycletime(uns16 *pArray, uns8 arraySize)
 {
 	uns8 i;
 	uns16 temp16;
-	for(i = 0; i < CYCLETIME_METHODE_ENUM_SIZE; i++)
+	for(i = 0; i < CYCLETIME_METHODE_ENUM_SIZE && i < arraySize; i++)
 	{
 		temp16 = g_CycleTimeBuffer.maxCycleTime[i]; 
-		temp16 = temp16 >> 1;
-		Trace_String(" Z");
-		Trace_Number(i);
-		Trace_Char(':');
-		Trace_Hex16(temp16);
-		
+		*pArray = temp16;
+		pArray++;
 		g_CycleTimeBuffer.maxCycleTime[i] = 0;
 	}
 }
