@@ -29,7 +29,7 @@
 #include "platform.h"
 #include "RingBuf.h"		
 #include "usart.h"			
-#include "commandstorage.h" 
+#include "commandIO.h"
 #include "ledstrip.h"		
 #include "timer.h"	
 #include "rtc.h"
@@ -166,7 +166,7 @@ void main(void)
 
 		do_and_measure(Error_Throw);
 	
-		do_and_measure(Commandstorage_GetCommands);
+		do_and_measure(CommandIO_GetCommands);
 				
 		do_and_measure(ScriptCtrl_Run);
 
@@ -200,7 +200,7 @@ void InitAll()
 	Timer_Init();
 	Ledstrip_Init();
 	Error_Init();
-	Commandstorage_Init();
+	CommandIO_Init();
 	Rtc_Init();
 	ScriptCtrl_Init();
 
@@ -235,7 +235,7 @@ void InitAll()
 #include "timer.c"
 #include "RingBuf.c"
 #include "usart.c"
-#include "commandstorage.c"
+#include "commandIO.c"
 #include "platform.c"
 #include "rtc.c"
 #include "iic.c"

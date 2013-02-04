@@ -16,7 +16,7 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "commandstorage.h"
+#include "commandIO.h"
 #include "error.h"
 #include "RingBuf.h"
 #include "usart.h"
@@ -48,7 +48,7 @@ void Error_Throw()
 		UART_Send(0x0C);
 		UART_Send(0x09);	/* Precalculated CRC */
 		UART_Send(ETX);
-		Commandstorage_Init();
+		CommandIO_Init();
 		g_ErrorBits.CmdBufOverflow = 0;
 	}
 	
@@ -56,7 +56,7 @@ void Error_Throw()
 	{
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
-		Commandstorage_Init();
+		CommandIO_Init();
 		
 		UART_Send(STX);
 		UART_SendString("E:03; ERROR: Receivebuffer full");

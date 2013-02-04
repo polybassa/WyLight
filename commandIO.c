@@ -16,7 +16,7 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "commandstorage.h"
+#include "commandIO.h"
 #include "ScriptCtrl.h"
 #include "trace.h"
 #include "usart.h"
@@ -49,7 +49,7 @@ void DeleteBuffer()
 }
 
 
-void Commandstorage_Init()
+void CommandIO_Init()
 { 
     g_CmdBuf.state = CS_WaitForSTX;
     DeleteBuffer();
@@ -86,11 +86,11 @@ void Commandstorage_Init()
  * 
  * **/
 
-void Commandstorage_GetCommands()
+void CommandIO_GetCommands()
 {	
 	if(g_ErrorBits.CmdBufOverflow)
 	{
-		Trace_String("Commandstorage_GetCommands(): CmdBufOverflow\n");
+		Trace_String("CommandIO_GetCommands(): CmdBufOverflow\n");
 		return;
 	}
   
@@ -98,8 +98,8 @@ void Commandstorage_GetCommands()
 	{
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
-		Trace_String("Commandstorage_GetCommands(): RingBuf has error\n");
-		Commandstorage_Init();
+		Trace_String("CommandIO_GetCommands(): RingBuf has error\n");
+		CommandIO_Init();
 		return;
 	}
 	

@@ -28,7 +28,7 @@ enum CYCLETIME_METHODE{
 	eSET_RUN,			//04
 	e_EMPTY_METHODE_,		//05
 	eLedstrip_UpdateLed,		//06
-	eCommandstorage_GetCommands,	//07
+	eCommandIO_GetCommands,	//07
 	eScriptCtrl_Run,		//08
 	ePlatform_CheckInputs,		//09
 	eError_Throw,			//10

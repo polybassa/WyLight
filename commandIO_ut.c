@@ -16,7 +16,7 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "commandstorage.h"
+#include "commandIO.h"
 #include "unittest.h"
 #include "crc.c"
 #include "crc.h"
@@ -53,11 +53,11 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 }
 
 
-int ut_Commandstorage_Init(void)
+int ut_CommandIO_Init(void)
 {
 	TestCaseBegin();
 	
-	Commandstorage_Init();
+	CommandIO_Init();
 	
 	CHECK(0 == g_CmdBuf.counter);
 	CHECK(CS_WaitForSTX == g_CmdBuf.state);
@@ -67,11 +67,11 @@ int ut_Commandstorage_Init(void)
 	TestCaseEnd();
 }
 
-int ut_Commandstorage_WaitForSTX(void)
+int ut_CommandIO_WaitForSTX(void)
 {
 	TestCaseBegin();
 	
-	Commandstorage_Init();
+	CommandIO_Init();
 	
 	int i;
 	
@@ -82,7 +82,7 @@ int ut_Commandstorage_WaitForSTX(void)
 	
 	for(i = 0; i < sizeof(dummyFrame_noSTX) + 1; i++)
 	{
-	  Commandstorage_GetCommands();
+	  CommandIO_GetCommands();
 	  CHECK(0 == g_CmdBuf.counter);
 	  CHECK(CS_WaitForSTX == g_CmdBuf.state);
 	  CHECK(0 == g_CmdBuf.CrcL);
@@ -91,11 +91,11 @@ int ut_Commandstorage_WaitForSTX(void)
 	TestCaseEnd();
 }
 
-int ut_Commandstorage_ReadCompleteFrame(void)
+int ut_CommandIO_ReadCompleteFrame(void)
 {
 	TestCaseBegin();
 	
-	Commandstorage_Init();
+	CommandIO_Init();
 	
 	int i;
 	
@@ -106,7 +106,7 @@ int ut_Commandstorage_ReadCompleteFrame(void)
 	
 	for(i = 0; i < sizeof(dummyFrame_completeFrame) + 1; i++)
 	{
-	  Commandstorage_GetCommands();
+	  CommandIO_GetCommands();
 	}
 	CHECK(0 == memcmp(dummyFrame_completeFramePure, g_CmdBuf.buffer , g_CmdBuf.counter));
 	CHECK(CS_WaitForSTX == g_CmdBuf.state);
@@ -114,11 +114,11 @@ int ut_Commandstorage_ReadCompleteFrame(void)
 	TestCaseEnd();
 }
 
-int ut_Commandstorage_ReadTwoFrames_1(void)
+int ut_CommandIO_ReadTwoFrames_1(void)
 {
 	TestCaseBegin();
 	
-	Commandstorage_Init();
+	CommandIO_Init();
 	
 	int i;
 	
@@ -129,7 +129,7 @@ int ut_Commandstorage_ReadTwoFrames_1(void)
 	
 	for(i = 0; i < sizeof(dummyFrame_twoFrames_1) - 1; i++)
 	{
-	  Commandstorage_GetCommands();
+	  CommandIO_GetCommands();
 	  
 	  if(g_ErrorBits.CrcFailure == 1)
 	  {
@@ -138,9 +138,9 @@ int ut_Commandstorage_ReadTwoFrames_1(void)
 	      CHECK(CS_WaitForSTX == g_CmdBuf.state);
 	  }
 	}
-	Commandstorage_GetCommands();
-	Commandstorage_GetCommands();
-	Commandstorage_GetCommands();
+	CommandIO_GetCommands();
+	CommandIO_GetCommands();
+	CommandIO_GetCommands();
 	
 	CHECK(0 == memcmp(dummyFrame_twoFramesPure_2, g_CmdBuf.buffer , g_CmdBuf.counter));
 	CHECK(CS_WaitForSTX == g_CmdBuf.state);
@@ -148,11 +148,11 @@ int ut_Commandstorage_ReadTwoFrames_1(void)
 	TestCaseEnd();
 }
 
-int ut_Commandstorage_ReadTwoFrames_2(void)
+int ut_CommandIO_ReadTwoFrames_2(void)
 {
 	TestCaseBegin();
 	
-	Commandstorage_Init();
+	CommandIO_Init();
 	
 	int i;
 	
@@ -163,7 +163,7 @@ int ut_Commandstorage_ReadTwoFrames_2(void)
 	
 	for(i = 0; i < sizeof(dummyFrame_twoFrames_2) - 1; i++)
 	{
-	  Commandstorage_GetCommands();
+	  CommandIO_GetCommands();
 	  
 	  if(g_ErrorBits.CrcFailure == 1)
 	  {
@@ -172,9 +172,9 @@ int ut_Commandstorage_ReadTwoFrames_2(void)
 	      CHECK(CS_WaitForSTX == g_CmdBuf.state);
 	  }
 	}
-	Commandstorage_GetCommands();
-	Commandstorage_GetCommands();
-	Commandstorage_GetCommands();
+	CommandIO_GetCommands();
+	CommandIO_GetCommands();
+	CommandIO_GetCommands();
 	
 	CHECK(0 == memcmp(dummyFrame_twoFramesPure_2, g_CmdBuf.buffer , g_CmdBuf.counter));
 	CHECK(CS_WaitForSTX == g_CmdBuf.state);
@@ -185,11 +185,11 @@ int ut_Commandstorage_ReadTwoFrames_2(void)
 int main(int argc, const char* argv[])
 {
 	UnitTestMainBegin();
-	RunTest(true, ut_Commandstorage_Init);
-	RunTest(true, ut_Commandstorage_WaitForSTX);
-	RunTest(true, ut_Commandstorage_ReadCompleteFrame);
-	RunTest(true, ut_Commandstorage_ReadTwoFrames_1);
-	RunTest(true, ut_Commandstorage_ReadTwoFrames_2);
+	RunTest(true, ut_CommandIO_Init);
+	RunTest(true, ut_CommandIO_WaitForSTX);
+	RunTest(true, ut_CommandIO_ReadCompleteFrame);
+	RunTest(true, ut_CommandIO_ReadTwoFrames_1);
+	RunTest(true, ut_CommandIO_ReadTwoFrames_2);
 	UnitTestMainEnd();
 }
 

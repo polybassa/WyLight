@@ -16,8 +16,8 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef _COMMANDSTORAGE_H_
-#define _COMMANDSTORAGE_H_
+#ifndef _COMMANDIO_H_
+#define _COMMANDIO_H_
 
 #include "platform.h"
 
@@ -38,9 +38,11 @@ struct CommandBuffer{
 };
 extern bank2 struct CommandBuffer g_CmdBuf;
 
-void Commandstorage_Init(); 
+void CommandIO_Init();
 
-void Commandstorage_GetCommands();
+void CommandIO_GetCommands();
+
+void CommandIO_SendResponse(uns8 cmd);
 
 #endif /* #ifndef _COMMANDSTORAGE_H_ */
 
