@@ -37,6 +37,8 @@ struct ScriptBuf {
 };
 
 extern struct ScriptBuf gScriptBuf;
+extern struct response_frame gResponse;
+extern struct cmd_get_fw_version g_Version;
 
 /**
  * Add new command to script
@@ -57,4 +59,9 @@ void ScriptCtrl_Init(void);
  * Read next available command from eeprom and run it.
  */
 void ScriptCtrl_Run(void);
+
+/**
+ * Fills a struct response_frame with data.
+ */
+void ScriptCtrl_CreateResponse(struct response_frame *mFrame, uns8 cmd);
 #endif /* #ifndef _SCRIPTCTRL_H_ */

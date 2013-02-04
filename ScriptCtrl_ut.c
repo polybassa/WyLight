@@ -27,6 +27,8 @@ int gSetFadeWasCalled;
 #include "platform.h"
 jmp_buf g_ResetEnvironment;
 
+struct cmd_get_fw_version g_Version;
+
 #include "ScriptCtrl.h"
 struct ScriptBuf gScriptBuf;
 
@@ -42,6 +44,19 @@ void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 	Trace_String("Ledstrip_SetFade was called\n");
 	gSetFadeWasCalled = TRUE;
 }
+
+#include "error.h"
+uns8 Error_GetState()
+{
+	return 0;
+}
+
+#include "rtc.h"
+void Rtc_Ctl(enum RTC_request req, struct rtc_time *pRtcTime)
+{
+	
+}
+
 
 #include "timer.h"
 unsigned char date_timer_add_event(struct cmd_add_color* pCmd)
@@ -364,6 +379,16 @@ int ut_ScriptCtrl_RtcCommands(void)
 	NOT_IMPLEMENTED();
 }
 
+int ut_ScriptCtrl_CreateResponse(void)
+{
+	TestCaseBegin();
+	struct response_frame mFrame;
+	
+	ScriptCtrl_CreateResponse(&mFrame, SET_FADE);
+	CHECK(SET_FADE == mFrame.cmd);
+	TestCaseEnd();
+}
+
 int main(int argc, const char* argv[])
 {
 	UnitTestMainBegin();
@@ -377,6 +402,7 @@ int main(int argc, const char* argv[])
 	RunTest(true, ut_ScriptCtrl_Wait);
 	RunTest(false, ut_ScriptCtrl_AddColor);
 	RunTest(false, ut_ScriptCtrl_RtcCommands);
+	RunTest(false, ut_ScriptCtrl_CreateResponse);
 	UnitTestMainEnd();
 }
 
