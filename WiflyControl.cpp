@@ -38,13 +38,13 @@ using namespace std;
  * an address array and red, green, blue values. 
  */
 #define SetAddrRgb(REF, ADDRESS, RGBA) { \
-	REF.addr[0] = (ADDRESS & 0xff000000) >> 24; \
-	REF.addr[1] = (ADDRESS & 0x00ff0000) >> 16; \
-	REF.addr[2] = (ADDRESS & 0x0000ff00) >> 8; \
-	REF.addr[3] = (ADDRESS & 0x000000ff); \
-	REF.red = (RGBA & 0xff000000) >> 24; \
-	REF.green = (RGBA & 0x00ff0000) >> 16; \
-	REF.blue = (RGBA & 0x0000ff00) >> 8; \
+	REF.addr[0] = (htonl(ADDRESS) & 0xff000000) >> 24; \
+	REF.addr[1] = (htonl(ADDRESS) & 0x00ff0000) >> 16; \
+	REF.addr[2] = (htonl(ADDRESS) & 0x0000ff00) >> 8; \
+	REF.addr[3] = (htonl(ADDRESS) & 0x000000ff); \
+	REF.red = (htonl(RGBA) & 0x000000ff) >> 0; \
+	REF.green = (htonl(RGBA) & 0x0000ff00) >> 8; \
+	REF.blue = (htonl(RGBA) & 0x00ff000) >> 16; \
 }
 
 WiflyControl::WiflyControl(unsigned long addr, unsigned short port)
@@ -802,9 +802,7 @@ void WiflyControl::FwTest(void)
 {
 	uint32_t bitMask = 0x01;
 	WiflyControlColorClass LedColor = WiflyControlColorClass(0xffffffff);
-    
-	int doRun = 1;
-  
+      
 	static const unsigned long RED   = 0xFF000000;
 	static const unsigned long GREEN = 0x00FF0000;
 	static const unsigned long BLUE  = 0x0000FF00;
@@ -812,57 +810,25 @@ void WiflyControl::FwTest(void)
 	static const unsigned long BLACK = 0x00000000;
 	
 	FwClearScript();
-	sleep(1);
 	FwLoopOn();
-	sleep(1);
-	FwSetFade(0xFFFFFFFFLU, RED, 20000, false); 
-	sleep(40);
+	FwSetFade(0xFFFFFFFFLU, RED, 2000, false); 
 	
 	for(unsigned int i = 0; i < NUM_OF_LED; i++)
 	{
 		LedColor.red((uint8_t)((0xff / NUM_OF_LED) * i));
 		LedColor.green((uint8_t)((0xff / NUM_OF_LED) * i));
 		LedColor.blue(0xff);
-		if(!FwSetFade(htonl(bitMask), LedColor.rgba(), 20000, true)) FwSetFade(htonl(bitMask), LedColor.rgba(), 20000 + i * 200, true);
-		sleep(1);
+		if(!FwSetFade(bitMask, LedColor.rgba(), 20000 + i * 200, true)) FwSetFade(bitMask, LedColor.rgba(), 20000 + i * 200, true);
 		bitMask = bitMask << 1;
 	}
-	FwSetWait(20000);
-	sleep(1);
-	FwSetFade(0xFFFFFFFFLU, GREEN,20000, false);
-	bitMask = 0x80000000;
-	sleep(40);
-	
-	for(unsigned int i = 0; i < NUM_OF_LED; i++)
-	{
-		LedColor.red((uint8_t)((0xff / NUM_OF_LED) * i));
-		LedColor.green((uint8_t)((0xff / NUM_OF_LED) * i));		LedColor.blue(0xff);
-		if(!FwSetFade(htonl(bitMask), LedColor.rgba(), 20000, true)) FwSetFade(htonl(bitMask), LedColor.rgba(), 20000 + i * 200, true);
-		sleep(1);
-		bitMask = bitMask >> 1;
-	}
-	FwSetWait(20000);
-	sleep(1);
+	FwSetWait(40000);
+	FwSetFade(0xFFFFFFFFLU, GREEN,2000, false);
+	FwSetFade(0x000000FFLU, RED,  2000, true);
+	FwSetFade(0x0000FF00LU, GREEN,2000, true);
+	FwSetFade(0x00FF0000LU, BLUE, 2000, true);
+	FwSetFade(0xFF000000LU, WHITE,2000, false);
+	FwSetFade(0xFFFFFFFFLU, BLACK,2000, false);
 	FwLoopOff(0);
-	sleep(30);
-	/*
-	while(doRun > 0)
-	{
-		FwSetColor(0xFFFFFFFFLU, BLACK);
-		FwSetColor(0xFF000000LU, RED);   sleep(1);
-		FwSetColor(0x00FF0000LU, GREEN); sleep(1);
-		FwSetColor(0x0000FF00LU, BLUE);  sleep(1);
-		FwSetColor(0x000000FFLU, WHITE); sleep(1);
-		FwSetFade(0xFFFFFFFFLU, 0x00000000LU, (unsigned short)10000, false);
-		sleep(20);
-		FwSetFade(0x000000FFLU, RED,  400, true);
-		FwSetFade(0x0000FF00LU, GREEN,10000, true);
-		FwSetFade(0x00FF0000LU, BLUE, 2000, true);
-		FwSetFade(0xFF000000LU, WHITE,30000, false);
-		sleep(20);
-		doRun--;
-	}
-	*/
 }
 
 bool WiflyControl::FwPrintCycletime(std::ostream& out)
