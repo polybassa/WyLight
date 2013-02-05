@@ -38,12 +38,17 @@ struct CommandBuffer{
     uns8 CrcL;
 };
 extern bank2 struct CommandBuffer g_CmdBuf;
+extern const struct cmd_get_fw_version g_Version;
+extern struct response_frame g_ResponseBuf;
+
 
 void CommandIO_Init();
 
 void CommandIO_GetCommands();
 
-void CommandIO_SendResponse(struct response_frame *pFrame);
+void CommandIO_SendResponse(struct response_frame *mFrame);
+
+void CommandIO_CreateResponse(struct response_frame *mFrame, uns8 cmd);
 
 #endif /* #ifndef _COMMANDSTORAGE_H_ */
 
