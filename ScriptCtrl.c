@@ -65,7 +65,6 @@ uns8 ScriptCtrl_Write(struct led_cmd* pCmd);
 /* private globals */
 struct ScriptBuf gScriptBuf;
 struct led_cmd nextCmd;
-struct response_frame gResponseBuf;
 
 uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 {
@@ -106,7 +105,7 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 			return ScriptCtrl_Write(pCmd);
 		}
 		case START_BL:
-#ifdef __CC8E__
+#ifdef __CC8E__			//TODO: Find solution to send response befor resetting pic
 			UART_Send(STX);
 			UART_SendString("EXIT: Leaving Application --> Starting Bootloader");
 			UART_Send(0x25);
@@ -341,48 +340,5 @@ uns8 ScriptCtrl_Write(struct led_cmd* pCmd)
 		return TRUE;
 	}
 	return FALSE;
-}
-
-void ScriptCtrl_CreateResponse(struct response_frame *mFrame, uns8 cmd)
-{
-	mFrame->cmd = cmd;
-	uns8 tempErrorState = Error_GetState();
-	mFrame->state = tempErrorState;
-	
-	switch (cmd) {
-		case GET_RTC:
-		{
-			Rtc_Ctl(RTC_RD_TIME, &mFrame->data.get_rtc);
-			/*mFrame->data.get_rtc.tm_year = g_RtcTime.tm_year;
-			mFrame->data.get_rtc.tm_mon = g_RtcTime.tm_mon;
-			mFrame->data.get_rtc.tm_mday = g_RtcTime.tm_mday;
-			mFrame->data.get_rtc.tm_wday = g_RtcTime.tm_wday;
-			mFrame->data.get_rtc.tm_hour = g_RtcTime.tm_hour;
-			mFrame->data.get_rtc.tm_min = g_RtcTime.tm_min;
-			mFrame->data.get_rtc.tm_sec = g_RtcTime.tm_sec;*/
-			break;
-		};
-		case GET_CYCLETIME:
-		{
-			Timer_PrintCycletime(&mFrame->data->get_max_cycle_times[0], sizeof(struct response_frame) - 2);
-			break;
-		};
-		case GET_TRACE:
-		{
-			Trace_Print(&mFrame->data->get_trace_string[0], sizeof(struct response_frame) - 2);
-			break;
-		};
-		case GET_FW_VERSION:
-		{
-			uns8 temp8;
-			temp8 = g_Version.major;
-			mFrame->data.version.major = temp8;
-			temp8 = g_Version.minor;
-			mFrame->data.version.minor = temp8;
-			break;
-		}
-		default:
-			break;
-	}
 }
 
