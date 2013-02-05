@@ -190,16 +190,35 @@ void Timer_StopStopwatch(enum CYCLETIME_METHODE destMethode)
 	g_CycleTimeBuffer.tempCycleTime[destMethode] = 0;
 }
 
-void Timer_PrintCycletime(uns16 *pArray, uns8 arraySize)
+uns8 Timer_PrintCycletime(uns16 *pArray, uns16 arraySize)
 {
-	uns8 i;
-	uns16 temp16;
+	uns16 i, temp16;
 	for(i = 0; i < CYCLETIME_METHODE_ENUM_SIZE && i < arraySize; i++)
 	{
-		temp16 = g_CycleTimeBuffer.maxCycleTime[i]; 
+		temp16 = g_CycleTimeBuffer.maxCycleTime[i];
+		temp16 = htons(temp16);
 		*pArray = temp16;
 		pArray++;
 		g_CycleTimeBuffer.maxCycleTime[i] = 0;
 	}
+	return i + i;
 }
-#endif /*TEST*/
+#else
+
+void Timer_StartStopwatch(enum CYCLETIME_METHODE destMethode)
+{
+	
+}
+
+void Timer_StopStopwatch(enum CYCLETIME_METHODE destMethode)
+{
+	
+}
+
+uns8 Timer_PrintCycletime(uns16 *pArray, uns8 arraySize)
+{
+	return 0;
+}
+
+
+#endif
