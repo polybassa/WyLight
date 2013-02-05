@@ -56,6 +56,7 @@
 #pragma pack(push)
 #pragma pack(1)
 #endif
+
 struct cmd_add_color {
 	uns8 addr[4];
 	uns8 red;
@@ -113,8 +114,9 @@ struct cmd_get_fw_version {
 };
 
 struct response_frame {
+	uns16 length;		/* only for Firmware, do not use in Client */
 	uns8 cmd;
-	enum error_state state;
+	uns8 state;			/* get the value of a enum error_state */
 	union {
 		struct rtc_time get_rtc;
 		struct cmd_get_fw_version version;
