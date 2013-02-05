@@ -112,43 +112,23 @@ void Trace_Hex16(uns16 input)
 #endif
 }
 	
-void Trace_Print(uns8 *pArray, uns8 arraySize)
+uns8 Trace_Print(uns8 *pArray, uns16 arraySize)
 {
-	uns8 i = 0;
+	uns16 i = 0;
 	uns8 tempByte;
 	while(RingBuf_IsEmpty(&g_TraceBuf) == 0 && i < arraySize)
 	{
 	    tempByte = RingBuf_Get(&g_TraceBuf);
 		*pArray = tempByte;
 		pArray++;
+		i++;
 	}
-	/*uns8 crcH, crcL, tempByte;
-	
-	Crc_NewCrc(&crcH, &crcL);
-  
-	UART_Send(STX);
-	while(RingBuf_IsEmpty(&g_TraceBuf) == 0)
-	{
-	    tempByte = RingBuf_Get(&g_TraceBuf);
-	    Crc_AddCrc(tempByte, &crcH, &crcL);
-	    if(tempByte == STX || tempByte == DLE || tempByte == ETX)
-	    {
-		UART_Send(DLE);	
-	    }
-	    UART_Send(tempByte);
-	}
-	if(crcH == STX || crcH == DLE || crcH == ETX)
-	{
-	    UART_Send(DLE);	
-	}
-	UART_Send(crcH);
-	if(crcL == STX || crcL == DLE || crcL == ETX)
-	{
-	    UART_Send(DLE);
-	}
-	UART_Send(crcL);
-	UART_Send(ETX);
-	 */
+	return i;
 }
 #endif /*__CC8E__*/
-#endif /* DEBUG */
+#else /* DEBUG */
+	uns8 Trace_Print(uns8 *pArray, uns16 arraySize)
+{
+	
+}
+#endif

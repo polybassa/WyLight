@@ -18,6 +18,8 @@
 
 #ifndef _TRACE_H_
 #define _TRACE_H_
+
+#include "platform.h"
 #ifdef DEBUG
 
 #ifdef __CC8E__
@@ -36,7 +38,7 @@
 	
 	void Trace_Char(uns8 input);
 	
-	void Trace_Print(uns8 *pArray, uns8 arraySize);
+	uns8 Trace_Print(uns8 *pArray, uns16 arraySize);
 #else 
 	#include "stdio.h"
 	#define Trace_String(str) do { printf("%s", str); } while (0)
@@ -52,7 +54,7 @@
 	#define Trace_Number(input)
 	#define Trace_Hex(hex)
 	#define Trace_Hex16(hex)
-	#define Trace_Print(x, y)
+	uns8 Trace_Print(uns8 *pArray, uns16 arraySize);
 	#define Trace_Char(x)
 #endif
 #endif /* #ifndef _TRACE_H_ */
