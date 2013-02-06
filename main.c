@@ -218,13 +218,8 @@ void InitAll()
 	/* Startup Wait-Time 2s
 	 * to protect Wifly-Modul from errors*/
 	gScriptBuf.waitValue = 500;
-	UART_Send(STX);
-	UART_Send('R');
-	UART_Send('D');
-	UART_Send('Y');
-	UART_Send(0x3a);
-	UART_Send(0x7a);	/* Precalculated CRC */
-	UART_Send(ETX);
+	CommandIO_CreateResponse(&g_ResponseBuf, FW_STARTED);
+	CommandIO_SendResponse(&g_ResponseBuf);
 }
 
 #ifdef __CC8E__

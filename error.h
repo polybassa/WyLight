@@ -27,13 +27,15 @@ struct ErrorBits {
 };
 extern struct ErrorBits g_ErrorBits;
 
-enum error_state {
+enum ERROR_CODE {
 	NoError,
 	ErrorEepromFull,
 	ErrorCrcCheckFail,
 	ErrorRecvBufFull,
 	ErrorCmdBufFull,
-	ErrorTraceBufFull
+	ErrorTraceBufFull,
+	NoResponse,					/* used in client */
+	ParameterFailure			/* used in client */
 };
 
 #define Error_Init(x) \

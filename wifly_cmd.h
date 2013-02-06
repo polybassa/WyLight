@@ -40,12 +40,12 @@
 #define START_BL 0xF5
 #define SET_RTC 0xF4 			/* FRAME: <STX><LEN><SET_RTC><SEC><MIN><HOUR><DAY><MONTH><YEAR><WDAY><CRC><CRC> */
 #define GET_RTC 0xF3
-#define DISPLAY_RTC 0xF2	//TODO: REMOVE
 #define SET_COLOR_DIRECT 0xF1
 #define GET_CYCLETIME 0xF0
 #define ADD_COLOR 0xEF
 #define GET_TRACE 0xEE
 #define GET_FW_VERSION 0xED
+#define FW_STARTED 0xEC
 
 #define LOOP_INFINITE 0
 
@@ -116,7 +116,7 @@ struct cmd_get_fw_version {
 struct response_frame {
 	uns16 length;		/* only for Firmware, do not use in Client */
 	uns8 cmd;
-	uns8 state;			/* get the value of a enum error_state */
+	uns8 state;			/* get the value of a enum ERROR_CODE */
 	union {
 		struct rtc_time get_rtc;
 		struct cmd_get_fw_version version;
