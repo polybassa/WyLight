@@ -21,6 +21,9 @@
 #include "timeval.h"
 #include "trace.h"
 #include "wifly_cmd.h"
+#ifdef DEBUG
+#include <iostream>
+#endif
 
 static const timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for framented responses from pic
 
