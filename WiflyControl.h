@@ -25,6 +25,7 @@
 #include "wifly_cmd.h"
 #include "BlRequest.h"
 #include "intelhexclass.h"
+#include "error.h"
 
 
 class WiflyControl
@@ -54,14 +55,14 @@ class WiflyControl
 		bool BlWriteEeprom(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
 		
 		bool BlProgramFlash(const std::string& Filename);
-		bool BlRunApp(void) const;
+		ERROR_CODE BlRunApp(void) const;
 		bool BlEnableAutostart(void) const;
 		
 		
 		/** ------------------------------ FIRMWARE METHODES ------------------------------ **/
-		bool FwClearScript(void);
-		bool FwLoopOn(void);
-		bool FwLoopOff(unsigned char numLoops);
+		ERROR_CODE FwClearScript(void);
+		ERROR_CODE FwLoopOn(void);
+		ERROR_CODE FwLoopOff(unsigned char numLoops);
 		
 
 		/**
@@ -69,27 +70,24 @@ class WiflyControl
 			f.e. red(255, 0, 0) is in rgba as: 0xff000000
 				 white(255, 255, 255) is in rgba as: 0xffffff00
 		**/
-		bool FwSetColor(unsigned long addr, unsigned long rgba);
-		bool FwSetColor(std::string& addr, std::string& rgba);
-		bool FwSetColorDirect(unsigned char* pBuffer, size_t bufferLength);
+		ERROR_CODE FwSetColorDirect(unsigned char* pBuffer, size_t bufferLength);
 		
-		bool FwSetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade);
-		bool FwSetFade(std::string& addr, std::string& rgba, unsigned short fadeTmms, bool parallelFade);
+		ERROR_CODE FwSetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade);
+		ERROR_CODE FwSetFade(std::string& addr, std::string& rgba, unsigned short fadeTmms, bool parallelFade);
 		
-		bool FwSetWait(unsigned short waitTmms);
+		ERROR_CODE FwSetWait(unsigned short waitTmms);
 		
-		void FwAddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second);
-		void FwAddColor(std::string& addr, std::string& rgba, unsigned char hour, unsigned char minute, unsigned char second);
+		ERROR_CODE FwAddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second);
+		ERROR_CODE FwAddColor(std::string& addr, std::string& rgba, unsigned char hour, unsigned char minute, unsigned char second);
 		
 		void FwTest(void);
-		bool FwPrintCycletime(std::ostream& out);
-		void FwPrintTracebuffer(std::ostream& out);
-		bool FwStartBl(void);
+		ERROR_CODE FwPrintCycletime(std::ostream& out);
+		ERROR_CODE FwPrintTracebuffer(std::ostream& out);
+		ERROR_CODE FwStartBl(void);
 		
-		bool FwSetRtc(struct tm* timeValue);
-		bool FwGetRtc(struct tm* timeValue);
-		bool FwPrintRtc(std::ostream& out);
-
+		ERROR_CODE FwSetRtc(struct tm* timeValue);
+		ERROR_CODE FwGetRtc(struct tm* timeValue);
+		
 		bool WlanSetJoin(void) const;
 		bool WlanSetRate(size_t rate) const;
 };
