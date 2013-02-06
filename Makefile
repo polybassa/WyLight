@@ -41,18 +41,18 @@ x86_client_debug:
 	@./$@
 
 BroadcastReceiver_ut.bin: BroadcastReceiver_ut.cpp BroadcastReceiver.cpp BroadcastReceiver.h ClientSocket.cpp ClientSocket.h unittest.h
-	@g++ BroadcastReceiver_ut.cpp BroadcastReceiver.cpp ClientSocket.cpp -DX86 -DUNIT_TEST -lpthread -o $@ -Wall -std=c++11
+	@g++ BroadcastReceiver_ut.cpp BroadcastReceiver.cpp ClientSocket.cpp -DX86 -DUNIT_TEST -lpthread -o $@ -Wall -std=c++0x
 	@./$@
 
 ComProxy_ut.bin: ComProxy_ut.cpp ComProxy.cpp ComProxy.h BlRequest.h unittest.h
-	@g++ ComProxy_ut.cpp ComProxy.cpp crc.c -DUNIT_TEST -o $@ -Wall -pedantic -std=c++11
+	@g++ ComProxy_ut.cpp ComProxy.cpp crc.c -DUNIT_TEST -o $@ -Wall -pedantic -std=c++0x
 	@./$@
 
 WiflyControl_ut.bin: WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp intelhexclass.h WiflyControlColorClass.h WiflyControlColorClass.cpp WiflyControl.h unittest.h
-	@g++ WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp WiflyControlColorClass.cpp -DUNIT_TEST -o $@ -Wall -pedantic -std=c++11
+	@g++ WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp WiflyControlColorClass.cpp -DUNIT_TEST -o $@ -Wall -pedantic -std=c++0x
 	@./$@
 
-test: clean BroadcastReceiver_ut.bin CommandIO_ut.bin ComProxy_ut.bin crc_ut.bin ledstrip_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin WiflyControl_ut.bin
+test: clean CommandIO_ut.bin BroadcastReceiver_ut.bin ComProxy_ut.bin crc_ut.bin ledstrip_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin WiflyControl_ut.bin
 
 clean:
 	@rm -rf *.asm *.bin *.cod *.fcs *.hex *.lst *.occ *.var .metadata/ ${ANDROID_BIN}

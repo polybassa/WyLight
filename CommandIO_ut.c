@@ -79,7 +79,7 @@ uns8 Timer_PrintCycletime(uns16 *pArray, uns16 arraySize)
 {
 	int i;
 	uns8 *pData = (uns8*)pArray;
-	for(i = 0; i < arraySize * 2; i++)
+	for(i = 0; i < arraySize; i++)
 	{
 		*pData++ = g_RandomDataPool[i];
 	}
@@ -297,6 +297,123 @@ int ut_CommandIO_CreateResponse_RTC(void)
 	TestCaseEnd();
 }
 
+int ut_CommandIO_CreateResponse_CYCLETIME(void)
+{
+	TestCaseBegin();
+	/* init random seed */
+	srand(time(NULL));
+	
+	/* fill gloabal random data pool */
+	int i;
+	for(i = 0; i < sizeof(g_RandomDataPool); i++) g_RandomDataPool[i] = (uns8) rand() % 255;
+	
+	struct response_frame mFrame;
+	
+	CommandIO_CreateResponse(&mFrame, GET_CYCLETIME);
+	CHECK(0 == memcmp((void*)&(mFrame.data), (void*)&g_RandomDataPool[0], sizeof(struct response_frame) - 4));
+	CHECK(mFrame.cmd == GET_CYCLETIME);
+	
+	CHECK(mFrame.length == sizeof(struct response_frame));
+	CHECK(mFrame.state == 0xff);
+	
+	TestCaseEnd();
+}
+
+int ut_CommandIO_CreateResponse_TRACE(void)
+{
+	TestCaseBegin();
+	/* init random seed */
+	srand(time(NULL));
+	
+	/* fill gloabal random data pool */
+	int i;
+	for(i = 0; i < sizeof(g_RandomDataPool); i++) g_RandomDataPool[i] = (uns8) rand() % 255;
+	
+	struct response_frame mFrame;
+	
+	CommandIO_CreateResponse(&mFrame, GET_TRACE);
+	CHECK(0 == memcmp((void*)&(mFrame.data), (void*)&g_RandomDataPool[0], sizeof(struct response_frame) - 4));
+	CHECK(mFrame.cmd == GET_TRACE);
+	
+	CHECK(mFrame.length == sizeof(struct response_frame));
+	CHECK(mFrame.state == 0xff);
+	
+	TestCaseEnd();
+}
+
+int ut_CommandIO_CreateResponse_FW_VERSION(void)
+{
+	TestCaseBegin();
+	struct response_frame mFrame;
+	
+	CommandIO_CreateResponse(&mFrame, GET_FW_VERSION);
+	CHECK(0 == memcmp((void*)&(mFrame.data), (void*)&g_Version, sizeof(struct cmd_get_fw_version)));
+	CHECK(mFrame.cmd == GET_FW_VERSION);
+	CHECK(mFrame.length == 6);
+	CHECK(mFrame.state == 0xff);
+	
+	TestCaseEnd();
+}
+
+int ut_CommandIO_CreateResponse_SET_FADE(void)
+{
+	TestCaseBegin();
+	struct response_frame mFrame;
+	
+	CommandIO_CreateResponse(&mFrame, SET_FADE);
+	CHECK(mFrame.cmd == SET_FADE);
+	CHECK(mFrame.length == 4);
+	CHECK(mFrame.state == 0xff);
+	
+	TestCaseEnd();
+}
+
+int ut_CommandIO_Create_n_Send(void)
+{
+	TestCaseBegin();
+	/* init random seed */
+	srand(time(NULL));
+	
+	/* fill gloabal random data pool */
+	int i;
+	for(i = 0; i < sizeof(g_RandomDataPool); i++) g_RandomDataPool[i] = (uns8) rand() % 255;
+	
+	struct response_frame mFrame;
+	
+	CommandIO_CreateResponse(&mFrame, GET_RTC);
+	
+	/* init everything, g_RingBufResponse is used to save all send data from UART_send */
+	RingBuf_Init(&g_RingBufResponse);
+	CommandIO_Init();
+	RingBuf_Init(&g_RingBuf);
+	
+	/* send data */
+	CommandIO_SendResponse(&mFrame);
+	
+	/* swap data from one ringbuf to the other, to scan data with CommandIO_GetCommands */
+	while(RingBuf_IsEmpty(&g_RingBufResponse) == 0)
+	{
+		RingBuf_Put(&g_RingBuf, RingBuf_Get(&g_RingBufResponse));
+	}
+	
+	for (i = 0; i < 100; i++)
+	{
+		CommandIO_GetCommands();
+	}
+	
+	struct response_frame *rFrame;
+	
+	rFrame = (void*)&g_CmdBuf.buffer;
+	
+	CHECK(0 == memcmp((void*)&(rFrame->data), (void*)&g_RandomDataPool[0], sizeof(struct rtc_time)));
+	CHECK(rFrame->cmd == GET_RTC);
+	CHECK(rFrame->length == sizeof(struct rtc_time) + sizeof(uns8)*2 + sizeof(uns16));
+	CHECK(rFrame->state == 0xff);
+	
+	
+	TestCaseEnd();
+}
+
 
 int main(int argc, const char* argv[])
 {
@@ -308,6 +425,11 @@ int main(int argc, const char* argv[])
 	RunTest(true, ut_CommandIO_ReadTwoFrames_2);
 	RunTest(true, ut_CommandIO_SendResponse);
 	RunTest(true, ut_CommandIO_CreateResponse_RTC);
+	RunTest(true, ut_CommandIO_CreateResponse_CYCLETIME);
+	RunTest(true, ut_CommandIO_CreateResponse_TRACE);
+	RunTest(true, ut_CommandIO_CreateResponse_FW_VERSION);
+	RunTest(true, ut_CommandIO_CreateResponse_SET_FADE);
+	RunTest(true, ut_CommandIO_Create_n_Send);
 	UnitTestMainEnd();
 }
 
