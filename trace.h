@@ -20,12 +20,9 @@
 #define _TRACE_H_
 
 #include "platform.h"
-#ifdef DEBUG
 
+#ifdef DEBUG 
 #ifdef __CC8E__
-	#include "usart.h"
-	#include "RingBuf.h"
-	
 	extern struct RingBuffer g_TraceBuf;
 	
 	void Trace_String(const char *string);
@@ -47,8 +44,7 @@
 	#define Trace_Hex16(hex) do { printf("%04x ", hex); } while(0)
 	#define Trace_Print(x, y)
 	#define Trace_Char(input) do { printf("%c", input); } while (0)
-#endif /*__CC8E__*/
-
+#endif
 #else
 	#define Trace_String(str)
 	#define Trace_Number(input)

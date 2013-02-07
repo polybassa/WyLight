@@ -17,10 +17,8 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "trace.h"
-#include "wifly_cmd.h"
-#include "crc.h"
 
-#ifdef DEBUG
+#ifdef DEBUG 
 #ifdef __CC8E__
 
 struct RingBuffer g_TraceBuf;
@@ -103,13 +101,8 @@ void Trace_Hex(uns8 input)
 
 void Trace_Hex16(uns16 input)
 {
-#ifndef __CC8E__
-      Trace_Hex((uns8)(temp16 >> 8));
-      Trace_Hex((uns8)(temp16 & 0xff));
-#else
-      Trace_Hex(input.high8);
-      Trace_Hex(input.low8);
-#endif
+	Trace_Hex(input.high8);
+    Trace_Hex(input.low8);
 }
 	
 uns8 Trace_Print(uns8 *pArray, uns16 arraySize)
@@ -125,10 +118,10 @@ uns8 Trace_Print(uns8 *pArray, uns16 arraySize)
 	}
 	return i;
 }
-#endif /*__CC8E__*/
-#else /* DEBUG */
-	uns8 Trace_Print(uns8 *pArray, uns16 arraySize)
+#endif
+#else /* DEBUG && __CC8E__ */
+uns8 Trace_Print(uns8 *pArray, uns16 arraySize)
 {
-	
+	return 0;
 }
 #endif
