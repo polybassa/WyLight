@@ -485,7 +485,7 @@ ERROR_CODE WiflyControl::BlRunApp(void) const
 	if(4 <= bytesRead)
 	{
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
-		if(pResponse->cmd == FW_STARTED) return (ERROR_CODE)pResponse->state;
+		if(pResponse->cmd == FW_STARTED) return pResponse->state;
 	}
 	return NoResponse;
 }
@@ -523,7 +523,7 @@ ERROR_CODE WiflyControl::FwClearScript(void)
 	if(4 <= bytesRead)
 	{
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
-		if(pResponse->cmd == CLEAR_SCRIPT) return (ERROR_CODE)pResponse->state;
+		if(pResponse->cmd == CLEAR_SCRIPT) return pResponse->state;
 	}
 	return NoResponse;
 }
@@ -543,7 +543,7 @@ ERROR_CODE WiflyControl::FwLoopOn(void)
 	if(4 <= bytesRead)
 	{
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
-		if(pResponse->cmd == LOOP_ON) return (ERROR_CODE)pResponse->state;
+		if(pResponse->cmd == LOOP_ON) return pResponse->state;
 	}
 	return NoResponse;
 }
@@ -565,7 +565,7 @@ ERROR_CODE WiflyControl::FwLoopOff(unsigned char numLoops)
 	if(4 <= bytesRead)
 	{
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
-		if(pResponse->cmd == LOOP_OFF) return (ERROR_CODE)pResponse->state;
+		if(pResponse->cmd == LOOP_OFF) return pResponse->state;
 	}
 	return NoResponse;
 }
@@ -598,7 +598,7 @@ ERROR_CODE WiflyControl::FwSetColorDirect(unsigned char* pBuffer, size_t bufferL
 	if(4 <= bytesRead)
 	{
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
-		if(pResponse->cmd == SET_COLOR_DIRECT) return (ERROR_CODE)pResponse->state;
+		if(pResponse->cmd == SET_COLOR_DIRECT) return pResponse->state;
 	}
 	return NoResponse;
 }
@@ -626,7 +626,7 @@ ERROR_CODE WiflyControl::FwSetFade(unsigned long addr, unsigned long rgba, unsig
 	if(4 <= bytesRead)
 	{
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
-		if(pResponse->cmd == SET_FADE) return (ERROR_CODE)pResponse->state;
+		if(pResponse->cmd == SET_FADE) return pResponse->state;
 	}
 	return NoResponse;
 }
@@ -653,7 +653,7 @@ ERROR_CODE WiflyControl::FwSetWait(unsigned short waitTmms)
 	if(4 <= bytesRead)
 	{
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
-		if(pResponse->cmd == WAIT) return (ERROR_CODE)pResponse->state;
+		if(pResponse->cmd == WAIT) return pResponse->state;
 	}
 	return NoResponse;
 }
@@ -701,10 +701,10 @@ void WiflyControl::FwTest(void)
 		LedColor.red((uint8_t)((0xff / NUM_OF_LED) * i));
 		LedColor.green((uint8_t)((0xff / NUM_OF_LED) * i));
 		LedColor.blue(0xff);
-		if(!FwSetFade(bitMask, LedColor.rgba(), 20000 + i * 200, true)) FwSetFade(bitMask, LedColor.rgba(), 20000 + i * 200, true);
+		if(FwSetFade(bitMask, LedColor.rgba(), 20000 + i * 200, true)) FwSetFade(bitMask, LedColor.rgba(), 20000 + i * 200, true);
 		bitMask = bitMask << 1;
 	}
-	FwSetWait(40000);
+	FwSetWait(30000);
 	FwSetFade(0xFFFFFFFFLU, GREEN,2000, false);
 	FwSetFade(0x000000FFLU, RED,  2000, true);
 	FwSetFade(0x0000FF00LU, GREEN,2000, true);
@@ -734,11 +734,11 @@ ERROR_CODE WiflyControl::FwPrintCycletime(std::ostream& out)
 		if(pResponse->cmd == GET_CYCLETIME)
 		{
 			cout << endl << "Cycletimes: " << endl;
-			for( unsigned int i = 0; i < bytesRead/sizeof(uns16); i++)
+			for( unsigned int i = 0; i < CYCLETIME_METHODE_ENUM_SIZE; i++)
 			{
-				out << i + 1 << ": " << ntohs(pResponse->data.get_max_cycle_times[i]) << endl;
+				out << setw(3) << dec << i + 1 << ": " << setw(8) << dec << ntohs(pResponse->data.get_max_cycle_times[i]) << " us" << endl;
 			}
-			return (ERROR_CODE)pResponse->state;
+			return pResponse->state;
 		}
 	}
 	return NoResponse;
@@ -768,7 +768,8 @@ ERROR_CODE WiflyControl::FwPrintTracebuffer(std::ostream& out)
 			{
 				out << pResponse->data.get_trace_string[i];
 			}
-			return (ERROR_CODE)pResponse->state;
+			out << endl;
+			return pResponse->state;
 		}
 	}
 	return NoResponse;
@@ -788,7 +789,7 @@ ERROR_CODE WiflyControl::FwStartBl(void)
 	if(4 <= bytesRead)
 	{
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
-		if(pResponse->cmd == START_BL) return (ERROR_CODE)pResponse->state;
+		if(pResponse->cmd == START_BL) return pResponse->state;
 	}
 	return NoResponse;
 }
@@ -818,7 +819,7 @@ ERROR_CODE WiflyControl::FwSetRtc(struct tm* timeValue)
 	if(4 <= bytesRead)
 	{
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
-		if(pResponse->cmd == SET_RTC) return (ERROR_CODE)pResponse->state;
+		if(pResponse->cmd == SET_RTC) return pResponse->state;
 	}
 	return NoResponse;
 }
@@ -850,7 +851,7 @@ ERROR_CODE WiflyControl::FwGetRtc(struct tm* timeValue)
 			timeValue->tm_wday = pResponse->data.get_rtc.tm_wday;
 			timeValue->tm_mon = pResponse->data.get_rtc.tm_mon;
 			
-			return (ERROR_CODE)pResponse->state;
+			return pResponse->state;
 		}
 	}
 	return NoResponse;
