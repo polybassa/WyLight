@@ -16,10 +16,7 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef X86
-#define TEST
 #define DEBUG
-#endif
 
 #ifdef __CC8E__
 #pragma optimize 1
@@ -42,10 +39,10 @@
 #endif /* #ifdef __CC8E__ */
 //#include "MATH16.h"
 
-#ifdef X86
+#ifndef __CC8E__
 #include <unistd.h>
 jmp_buf g_ResetEnvironment;
-#endif /* #ifdef X86 */
+#endif /* #ifndef CC8E */
 
 //*********************** GLOBAL VARIABLES *******************************************
 uns8 g_UpdateLed;
@@ -237,7 +234,5 @@ void InitAll()
 #include "rtc.c"
 #include "iic.c"
 #include "ScriptCtrl.c"
-#ifdef TEST
 #include "trace.c"
-#endif /* TEST */
 #endif /* #ifdef __CC8E__ */
