@@ -22,11 +22,13 @@
 
 void UART_Init();
 void UART_Send(const uns8 ch);
-void UART_SendString(const char *string);
+
+/* UNUSED FUNCTIONS: REMOVE IF WE DON'T NEED THEM ANYMORE */
+/*void UART_SendString(const char *string);
 void UART_SendArray(const uns8 *array, const uns8 length);
 void UART_SendNumber(uns8 input, const uns8 sign);
 void UART_SendHex_8(const uns8 input);
 void UART_SendHex_16(const uns16 input);
-
+*/
 
 #endif
