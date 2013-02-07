@@ -17,10 +17,7 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "timer.h"
-#include "ledstrip.h"
 #include "trace.h"
-#include "usart.h"
-#include "ScriptCtrl.h"
 
 bank3 struct CycleTimeBuffer g_CycleTimeBuffer;
 enum CYCLETIME_METHODE enumMethode;
@@ -215,10 +212,9 @@ void Timer_StopStopwatch(enum CYCLETIME_METHODE destMethode)
 	
 }
 
-uns8 Timer_PrintCycletime(uns16 *pArray, uns8 arraySize)
+uns8 Timer_PrintCycletime(uns16 *pArray, uns16 arraySize)
 {
 	return 0;
 }
 
-
-#endif
+#endif /*DEBUG*/
