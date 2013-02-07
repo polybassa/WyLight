@@ -155,34 +155,6 @@ void Ledstrip_Init(void)
 	gLedBuf.flags.run_direction = 0;
 }
 
-void Ledstrip_SetColor(struct cmd_set_color *pCmd)
-{
-	uns8 r = pCmd->red;
-	uns8 g = pCmd->green;
-	uns8 b = pCmd->blue;
-	
-	FOR_EACH_MASKED_LED_DO(
-		{
-			gLedBuf.led_array[k] = b;
-			gLedBuf.cyclesLeft[k] = 0;
-			gLedBuf.delta[k] = 0;
-			k++;
-			gLedBuf.led_array[k] = g;
-			gLedBuf.cyclesLeft[k] = 0;
-			gLedBuf.delta[k] = 0;
-			k++;
-			gLedBuf.led_array[k] = r;
-			gLedBuf.cyclesLeft[k] = 0;
-			gLedBuf.delta[k] = 0;
-		},
-		{
-			k++;k++;
-		}
-	);
-	
-	gLedBuf.flags.run_aktiv = 0;
-}
-
 void Ledstrip_SetColorDirect(uns8 *pValues)
 {
 	uns8 k, temp;
@@ -286,6 +258,7 @@ void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 }
 
 #ifdef DEBUG
+#ifndef __CC8E__
 void Ledstrip_Test(unsigned char address)
 {
 	unsigned int cur = 0x1;
@@ -313,5 +286,6 @@ void Ledstrip_Test(unsigned char address)
 	}
 	Ledstrip_UpdateLed();
 }
+#endif
 #endif
 

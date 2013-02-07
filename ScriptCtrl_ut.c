@@ -20,7 +20,6 @@
 #include "unittest.h"
 #define NUM_TEST_LOOPS 255
  
-int gSetColorWasCalled;
 int gSetFadeWasCalled;
 
 /**************** includes and functions for wrapping ****************/
@@ -31,12 +30,6 @@ jmp_buf g_ResetEnvironment;
 struct ScriptBuf gScriptBuf;
 
 #include "ledstrip.h"
-void Ledstrip_SetColor(struct cmd_set_color *pCmd)
-{
-	Trace_String("Ledstrip_SetColor was called\n");
-	gSetColorWasCalled = TRUE;
-}
-
 void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 {
 	Trace_String("Ledstrip_SetFade was called\n");
@@ -55,23 +48,23 @@ int ut_ScriptCtrl_SimpleReadWrite(void)
 {
 	TestCaseBegin();
 	struct led_cmd testCmd;
-	testCmd.cmd = SET_COLOR;
+	testCmd.cmd = SET_FADE;
 	ScriptCtrl_Clear();
 
 	/* read from empty script buffer */
-	gSetColorWasCalled = FALSE;
+	gSetFadeWasCalled = FALSE;
 	ScriptCtrl_Run();
 
 	/* add simple command and read back */
 	ScriptCtrl_Add(&testCmd);
-	gSetColorWasCalled = FALSE;
+	gSetFadeWasCalled = FALSE;
 	ScriptCtrl_Run();
-	CHECK(gSetColorWasCalled);
+	CHECK(gSetFadeWasCalled);
 
 	/* buffer should be empty again */
-	gSetColorWasCalled = FALSE;
+	gSetFadeWasCalled = FALSE;
 	ScriptCtrl_Run();
-	CHECK(!gSetColorWasCalled);
+	CHECK(!gSetFadeWasCalled);
 	TestCaseEnd();
 }
 
@@ -80,11 +73,11 @@ int ut_ScriptCtrl_Clear(void)
 {
 	TestCaseBegin();
 	struct led_cmd testCmd;
-	testCmd.cmd = SET_COLOR;
+	testCmd.cmd = SET_FADE;
 
 	/* add dummy command to buffer */
 	ScriptCtrl_Add(&testCmd);
-	gSetColorWasCalled = FALSE;
+	gSetFadeWasCalled = FALSE;
 
 	/* send CLEAR_SCRIPT */
 	testCmd.cmd = CLEAR_SCRIPT;
@@ -92,7 +85,7 @@ int ut_ScriptCtrl_Clear(void)
 
 	/* buffer should be empty again */
 	ScriptCtrl_Run();
-	CHECK(!gSetColorWasCalled);
+	CHECK(!gSetFadeWasCalled);
 	TestCaseEnd();
 }
 
@@ -108,7 +101,7 @@ int ut_ScriptCtrl_SimpleLoop(void)
 	ScriptCtrl_Add(&testCmd);
 
 	/* add dummy command to buffer */
-	testCmd.cmd = SET_COLOR;
+	testCmd.cmd = SET_FADE;
 	ScriptCtrl_Add(&testCmd);
 
 	/* add loop end to buffer */
@@ -125,20 +118,20 @@ int ut_ScriptCtrl_SimpleLoop(void)
 	for(i = 0; i < NUM_TEST_LOOPS; i++)
 	{
 		/* dummy command should be executed */
-		gSetColorWasCalled = FALSE;
+		gSetFadeWasCalled = FALSE;
 		ScriptCtrl_Run();
-		CHECK(gSetColorWasCalled);
+		CHECK(gSetFadeWasCalled);
 		
 		/* now next loop should be called */
-		gSetColorWasCalled = FALSE;
+		gSetFadeWasCalled = FALSE;
 		ScriptCtrl_Run();
-		CHECK(!gSetColorWasCalled);
+		CHECK(!gSetFadeWasCalled);
 	}
 
 	/* no more command should be available */
-	gSetColorWasCalled = FALSE;
+	gSetFadeWasCalled = FALSE;
 	ScriptCtrl_Run();
-	CHECK(!gSetColorWasCalled);
+	CHECK(!gSetFadeWasCalled);
 	TestCaseEnd();
 }
 
@@ -149,9 +142,9 @@ int ut_ScriptCtrl_DoOuterInnerLoop(int loopCount)
 	for(i = 0; i < loopCount; i++)
 	{
 		/* outer dummy command should be executed */
-		gSetColorWasCalled = FALSE;
+		gSetFadeWasCalled = FALSE;
 		ScriptCtrl_Run();
-		CHECK(gSetColorWasCalled);
+		CHECK(gSetFadeWasCalled);
 
 		/* start inner loop should be read */
 		CHECK(gScriptBuf.inLoop)
@@ -166,15 +159,15 @@ int ut_ScriptCtrl_DoOuterInnerLoop(int loopCount)
 			CHECK(gSetFadeWasCalled);
 
 			/* now next inner loop should be called */
-			gSetColorWasCalled = FALSE;
+			gSetFadeWasCalled = FALSE;
 			ScriptCtrl_Run();
-			CHECK(!gSetColorWasCalled);
+			CHECK(!gSetFadeWasCalled);
 		}
 
 		/* now next outer loop should be called */
-		gSetColorWasCalled = FALSE;
+		gSetFadeWasCalled = FALSE;
 		ScriptCtrl_Run();
-		CHECK(!gSetColorWasCalled);
+		CHECK(!gSetFadeWasCalled);
 	}
 	TestCaseEnd();
 }
@@ -192,7 +185,7 @@ int ut_ScriptCtrl_InnerLoop(void)
 	ScriptCtrl_Add(&testCmd);
 
 	/* add outer dummy command to buffer */
-	testCmd.cmd = SET_COLOR;
+	testCmd.cmd = SET_FADE;
 	ScriptCtrl_Add(&testCmd);
 
 	/* add inner loop begin to buffer */
@@ -221,9 +214,9 @@ int ut_ScriptCtrl_InnerLoop(void)
 	errors+= ut_ScriptCtrl_DoOuterInnerLoop(NUM_TEST_LOOPS);
 
 	/* no more command should be available */
-	gSetColorWasCalled = FALSE;
+	gSetFadeWasCalled = FALSE;
 	ScriptCtrl_Run();
-	CHECK(!gSetColorWasCalled);
+	CHECK(!gSetFadeWasCalled);
 	TestCaseEnd();
 }
 
@@ -239,7 +232,7 @@ int ut_ScriptCtrl_InfiniteLoop(void)
 	ScriptCtrl_Add(&testCmd);
 
 	/* add outer dummy command to buffer */
-	testCmd.cmd = SET_COLOR;
+	testCmd.cmd = SET_FADE;
 	ScriptCtrl_Add(&testCmd);
 
 	/* add inner loop begin to buffer */
@@ -275,9 +268,9 @@ int ut_ScriptCtrl_InfiniteLoop(void)
 	ScriptCtrl_Add(&testCmd);
 
 	/* buffer should be empty again */
-	gSetColorWasCalled = FALSE;
+	gSetFadeWasCalled = FALSE;
 	ScriptCtrl_Run();
-	CHECK(!gSetColorWasCalled);
+	CHECK(!gSetFadeWasCalled);
 	TestCaseEnd();
 }
 
@@ -294,7 +287,7 @@ int ut_ScriptCtrl_FullBuffer(void)
 	ScriptCtrl_Add(&testCmd);
 
 	/* add outer dummy command to buffer */
-	testCmd.cmd = SET_COLOR;
+	testCmd.cmd = SET_FADE;
 	ScriptCtrl_Add(&testCmd);
 
 	/* add inner loop begin to buffer */

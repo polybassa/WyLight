@@ -19,7 +19,6 @@
 #include "ScriptCtrl.h"
 #include "ledstrip.h"
 #include "eeprom.h"
-#include "timer.h"
 #include "trace.h"
 
 /**************** private functions/ macros *****************/
@@ -253,17 +252,6 @@ void ScriptCtrl_Run(void)
 					/* move execute pointer to the next command */
 					gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
 				}
-			}
-			break;
-		}
-		case SET_COLOR:
-		{
-			Ledstrip_SetColor(&nextCmd.data.set_color);
-			/* move execute pointer to the next command */
-			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
-			if(!gScriptBuf.inLoop)
-			{
-				ScriptBufSetRead(gScriptBuf.execute);
 			}
 			break;
 		}
