@@ -27,7 +27,11 @@ struct ErrorBits {
 };
 extern struct ErrorBits g_ErrorBits;
 
-enum ERROR_CODE {
+#ifdef __CC8E__
+typedef enum {
+#else /* For GCC or CLANG on X86, ARM */
+typedef enum __attribute__ ((__packed__)) {
+#endif 
 	NoError,
 	ErrorEepromFull,
 	ErrorCrcCheckFail,
@@ -36,7 +40,7 @@ enum ERROR_CODE {
 	ErrorTraceBufFull,
 	NoResponse,					/* used in client */
 	ParameterFailure			/* used in client */
-};
+} ERROR_CODE;
 
 #define Error_Init(x) \
 	g_ErrorBits.CrcFailure = 0; \
@@ -44,5 +48,5 @@ enum ERROR_CODE {
 
 void Error_Throw();
 
-uns8 Error_GetState();
+ERROR_CODE Error_GetState();
 #endif /* #ifndef _ERROR_H_ */

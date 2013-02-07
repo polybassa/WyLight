@@ -16,18 +16,19 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "CommandIO.h"
 #include "error.h"
+#include "CommandIO.h"
 #include "RingBuf.h"
-#include "usart.h"
 #include "trace.h"
 
 struct ErrorBits g_ErrorBits;
 
-uns8 Error_GetState()
+ERROR_CODE Error_GetState()
 {
-	if(RingBuf_HasError(&g_TraceBuf)) return ErrorTraceBufFull;
-	else if(g_ErrorBits.CmdBufOverflow) return ErrorCmdBufFull;
+	if(g_ErrorBits.CmdBufOverflow) return ErrorCmdBufFull;
+#ifdef DEBUG
+	else if(RingBuf_HasError(&g_TraceBuf)) return ErrorTraceBufFull;
+#endif
 	else if(RingBuf_HasError(&g_RingBuf)) return ErrorRecvBufFull;
 	else if(g_ErrorBits.CrcFailure) return ErrorCrcCheckFail;
 	else if(g_ErrorBits.EepromFailure) return ErrorEepromFull;
@@ -36,7 +37,7 @@ uns8 Error_GetState()
 
 void Error_Throw()
 {
-#ifdef TEST
+#ifdef DEBUG
 	if(RingBuf_HasError(&g_TraceBuf)) 
 	{
 		// *** if a RingBufError occure, I have to throw away the current command,

@@ -58,7 +58,7 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 	return 1;
 }
 
-uns8 Error_GetState()
+ERROR_CODE Error_GetState()
 {
 	return 0xff;
 }
@@ -416,7 +416,7 @@ int ut_CommandIO_Create_n_Send(void)
 
 
 int main(int argc, const char* argv[])
-{
+{	
 	UnitTestMainBegin();
 	RunTest(true, ut_CommandIO_Init);
 	RunTest(true, ut_CommandIO_WaitForSTX);
