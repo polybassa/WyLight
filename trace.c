@@ -22,90 +22,104 @@
 #ifdef __CC8E__
 
 struct RingBuffer g_TraceBuf;
+
+void PutToBuf(const uns8 Byte)
+{
+	if(RingBuf_HasError(&g_TraceBuf)) return;
+	RingBuf_Put(&g_TraceBuf, Byte);
+}
 	
 void Trace_String(const char *string)
 {
- uns8 ps;
- ps = *string;
- while(ps > 0)
-   {
-    string++;
-   	RingBuf_Put(&g_TraceBuf,ps);
-    ps = *string;
+	if(RingBuf_HasError(&g_TraceBuf)) return;
+	uns8 ps;
+	ps = *string;
+	while(ps > 0)
+	{
+		string++;
+		PutToBuf(ps);
+		ps = *string;
    }
 }
 
-void Trace_Char(uns8 input)
+void Trace_Char(const uns8 input)
 {
-    RingBuf_Put(&g_TraceBuf, input);
+	PutToBuf(input);
 }
 	
-void Trace_Number(uns8 input)
+void Trace_Number(const uns8 input)
 {
-   uns8 temp;
-   uns8 h,z,e;
+	if(RingBuf_HasError(&g_TraceBuf)) return;
+	uns8 temp;
+	uns8 h,z,e;
  
-   h=0;
-   z=0;
-   e=0; 
+	h = 0;
+	z = 0;
+	e = 0;
    
-   if (input>99)
-   {
-      h=input/100;
-      temp=0;
-      temp=100*h;
-      input=input-temp; 
-   }
+	if (input > 99)
+	{
+		h = input / 100;
+		temp = 0;
+		temp = 100 * h;
+		input = input - temp;
+	}
 
-   if (input>9)
-   {
-      z=input/10;
-      temp=0;
-      temp=z*10;
-      input=input-temp;      
-   }
+	if (input > 9)
+	{
+		z = input / 10;
+		temp = 0;
+		temp = z * 10;
+		input = input - temp;
+	}
 
-   if (input<=9)
-   {
-      e=input;
-   }
-   if(h!=0) RingBuf_Put(&g_TraceBuf, h+0x30);
-   RingBuf_Put(&g_TraceBuf, z+0x30);
-   RingBuf_Put(&g_TraceBuf, e+0x30);
+	if (input <= 9)
+	{
+		e = input;
+	}
+	   
+	if(h != 0) PutToBuf(h + 0x30);
+	
+	PutToBuf(z + 0x30);
+    
+	PutToBuf(e + 0x30);
 }
 	
-void Trace_Hex(uns8 input)
+void Trace_Hex(const uns8 input)
 {
+	if(RingBuf_HasError(&g_TraceBuf)) return;
+	
 	uns8 temp4 = input & 0xf0;
 	temp4 = temp4 >> 4;
 	if(temp4 > 9)
 	{
 		temp4 -= 10;
-		RingBuf_Put(&g_TraceBuf,temp4 + 'A');
+		PutToBuf(temp4 + 'A');
 	}
 	else
 	{
-		RingBuf_Put(&g_TraceBuf,temp4 + '0');
+		PutToBuf(temp4 + '0');
 	}
+	
 	temp4 = input & 0x0f;
 	if(temp4 > 9)
 	{
 		temp4 -= 10;
-		RingBuf_Put(&g_TraceBuf,temp4 + 'A');
+		PutToBuf(temp4 + 'A');
 	}
 	else
 	{
-		RingBuf_Put(&g_TraceBuf,temp4 + '0');
+		PutToBuf(temp4 + '0');
 	}
 }
 
-void Trace_Hex16(uns16 input)
+void Trace_Hex16(const uns16 input)
 {
 	Trace_Hex(input.high8);
     Trace_Hex(input.low8);
 }
 	
-uns8 Trace_Print(uns8 *pArray, uns16 arraySize)
+uns8 Trace_Print(uns8 *pArray, const uns16 arraySize)
 {
 	uns16 i = 0;
 	uns8 tempByte;
@@ -120,7 +134,7 @@ uns8 Trace_Print(uns8 *pArray, uns16 arraySize)
 }
 #endif
 #else /* DEBUG && __CC8E__ */
-uns8 Trace_Print(uns8 *pArray, uns16 arraySize)
+uns8 Trace_Print(uns8 *pArray, const uns16 arraySize)
 {
 	return 0;
 }

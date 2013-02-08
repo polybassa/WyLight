@@ -27,15 +27,15 @@
 	
 	void Trace_String(const char *string);
 	
-	void Trace_Number(uns8 input);
+	void Trace_Number(const uns8 input);
 	
-	void Trace_Hex(uns8 input);
+	void Trace_Hex(const uns8 input);
 	
-	void Trace_Hex16(uns16 input);
+	void Trace_Hex16(const uns16 input);
 	
-	void Trace_Char(uns8 input);
+	void Trace_Char(const uns8 input);
 	
-	uns8 Trace_Print(uns8 *pArray, uns16 arraySize);
+	uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
 #else 
 	#include "stdio.h"
 	#define Trace_String(str) do { printf("%s", str); } while (0)
@@ -50,7 +50,7 @@
 	#define Trace_Number(input)
 	#define Trace_Hex(hex)
 	#define Trace_Hex16(hex)
-	uns8 Trace_Print(uns8 *pArray, uns16 arraySize);
+	uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
 	#define Trace_Char(x)
 #endif
 #endif /* #ifndef _TRACE_H_ */

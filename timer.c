@@ -155,7 +155,7 @@ void Timer_Init()
 }
 
 #ifdef DEBUG
-void Timer_StartStopwatch(enum CYCLETIME_METHODE destMethode)
+void Timer_StartStopwatch(const enum CYCLETIME_METHODE destMethode)
 {
 	uns16 tempTime;
 
@@ -164,7 +164,7 @@ void Timer_StartStopwatch(enum CYCLETIME_METHODE destMethode)
 	g_CycleTimeBuffer.tempCycleTime[destMethode] = tempTime;
 }
 
-void Timer_StopStopwatch(enum CYCLETIME_METHODE destMethode)
+void Timer_StopStopwatch(const enum CYCLETIME_METHODE destMethode)
 {
 	uns16 tempTime,temp16;
 	
@@ -187,7 +187,7 @@ void Timer_StopStopwatch(enum CYCLETIME_METHODE destMethode)
 	g_CycleTimeBuffer.tempCycleTime[destMethode] = 0;
 }
 
-uns8 Timer_PrintCycletime(uns16 *pArray, uns16 arraySize)
+uns8 Timer_PrintCycletime(uns16 *pArray, const uns16 arraySize)
 {
 	uns16 i, temp16;
 	for(i = 0; i < CYCLETIME_METHODE_ENUM_SIZE && i < arraySize; i++)
@@ -212,7 +212,7 @@ void Timer_StopStopwatch(enum CYCLETIME_METHODE destMethode)
 	
 }
 
-uns8 Timer_PrintCycletime(uns16 *pArray, uns16 arraySize)
+uns8 Timer_PrintCycletime(uns16 *pArray, const uns16 arraySize)
 {
 	return 0;
 }

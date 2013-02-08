@@ -69,14 +69,14 @@ void date_timer_do_events(void);
 ** Function start the internal Stopwatch. It's realised with the Timer3 Modul.
 ** The Range of the Stopwatch is from 0.5µSec to 32.7mSec
 **/
-void Timer_StartStopwatch(enum CYCLETIME_METHODE destMethode);
+void Timer_StartStopwatch(const enum CYCLETIME_METHODE destMethode);
 
 /**
 ** Function terminates the Stopwatch and print out the measured Time over UART
 **/
-void Timer_StopStopwatch(enum CYCLETIME_METHODE destMethode);
+void Timer_StopStopwatch(const enum CYCLETIME_METHODE destMethode);
 
-uns8 Timer_PrintCycletime(uns16 *pArray, uns16 arraySize);
+uns8 Timer_PrintCycletime(uns16 *pArray, const uns16 arraySize);
 
 #ifdef __CC8E__
 #define Timer1Interrupt(x) TMR1IF = 0;
