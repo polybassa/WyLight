@@ -23,7 +23,7 @@
 #include "wifly_cmd.h"
 
 #include <iostream>
-static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING;
+static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;
 
 static const timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for framented responses from pic
 
@@ -298,16 +298,19 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 
 void ComProxy::TelnetClearResponse(void) const
 {
-	timeval timeout{1, 0};
+	timeval timeout{0, 1};
 	uint8_t response[64];
 	while(sizeof(response) <= mSock.Recv(response, sizeof(response), &timeout));
 }
 
 bool ComProxy::TelnetClose(void) const
 {
-	if(!TelnetSend(std::string("save\r\n"), std::string("\r\nStoring in config\r\n")))
+	if(!TelnetSend("save\r\n", "\r\nStoring in config\r\n"))
+	{
+		Trace(ZONE_ERROR, "saving changes failed\n");
 		return false;
-	return TelnetSend(std::string("exit\r\n"), std::string("\r\nEXIT\r\n"));
+	}
+	return TelnetSend("exit\r\n", "\r\nEXIT\r\n");
 }
 
 bool ComProxy::TelnetOpen(void) const
@@ -318,29 +321,31 @@ bool ComProxy::TelnetOpen(void) const
 	TelnetClearResponse();
 	if(sizeof(ENTER_CMD_MODE) != mSock.Send(ENTER_CMD_MODE, sizeof(ENTER_CMD_MODE)))
 	{
+		Trace(ZONE_ERROR, "send $$$ sequence failed\n");
 		return false;
 	}
-	nanosleep(&_300_TMMS, NULL);// after "$$$" we need to wait at least 250ms to enter command mode
+	
+	// after "$$$" we need to wait at least 250ms to enter command mode
+	nanosleep(&_300_TMMS, NULL);
 
-	TelnetResponse response;
-	timeval timeout{5, 0};
-	response.Recv(mSock, &timeout);
-	if(!response.IsCmdAck())
+	if(!TelnetRecv(mSock, "CMD\r\n"))
 	{
+		Trace(ZONE_ERROR, "start telnet console mode failed\n");
 		return false;
 	}
 	
 	// send carriage return to start telnet console mode
-	uint8_t cr = '\n';
-	if(1 != mSock.Send(&cr, 1))
-	{
-		return false;
-	}
+	return TelnetSend("\r\n", "\r\n");
+}
 
-	timeout = {5, 0};
-	response.Recv(mSock, &timeout);
-	return true;
-
+bool ComProxy::TelnetRecv(const TcpSocket& sock, const std::string& expectedResponse) const
+{
+	timeval timeout = {5, 0};
+	uint8_t buffer[64];
+	size_t bufferLength = sock.Recv(buffer, sizeof(buffer), &timeout);
+	TraceBuffer(ZONE_INFO, buffer, bufferLength, "%c", "%u bytes received: ", bufferLength);
+	Trace(ZONE_INFO, "%u:%u\n", bufferLength, expectedResponse.size());
+	return 0 == memcmp(expectedResponse.data(), buffer, expectedResponse.size());
 }
 
 bool ComProxy::TelnetSend(std::string const& telnetMessage, std::string const& expectedResponse) const
@@ -352,17 +357,11 @@ bool ComProxy::TelnetSend(std::string const& telnetMessage, std::string const& e
 		return false;
 	}
 
-	TelnetResponse response;
-	timeval timeout = {5, 0};
-	response.Recv(mSock, &timeout);
-	if(!response.Equals(telnetMessage))
+	if(!TelnetRecv(mSock, telnetMessage))
 	{
-		Trace(ZONE_ERROR, "echo failed\n");
+		Trace(ZONE_ERROR, "receive echo failed\n");
 		return false;
 	}
-
-	timeout = {5, 0};
-	response.Recv(mSock, &timeout);
-	return response.Equals(expectedResponse);
+	return TelnetRecv(mSock, expectedResponse);
 }
 
