@@ -1,5 +1,5 @@
 /**
-		Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+		Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
 
@@ -302,7 +302,7 @@ class ControlCmdConfSetDefaults : public WiflyControlCmd
 		{};
 
 		virtual void Run(WiflyControl& control) const {
-			control.ConfSetWlanChannel(0);
+			control.ConfSetDefaults();
 		};
 };
 

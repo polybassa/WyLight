@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+ Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -18,6 +18,9 @@
 
 #ifndef _TRACE_H_
 #define _TRACE_H_
+#define ZONE_ERROR   0x00000001
+#define ZONE_WARNING 0x00000002
+#define ZONE_INFO    0x00000004
 #ifdef TEST
 	#include "usart.h"
 	#include "RingBuf.h"
@@ -51,5 +54,22 @@
 	#define Trace_Print(x)
 	#define Trace_Char(x)
 #endif
+	#define TraceBuffer(ZONE, BUFFER, LENGTH, ...) do { \
+		if(g_DebugZones & (ZONE)) { \
+			printf("%s:%u:%s(): ", __FILE__, __LINE__, __FUNCTION__); \
+			printf(__VA_ARGS__); \
+			for(size_t i = 0; i < LENGTH; i++) { \
+				printf("%02x ", BUFFER[i]); \
+			} \
+			printf("\n"); \
+		} \
+	} while(0)
+
+	#define Trace(ZONE, ...) do { \
+		if(g_DebugZones & (ZONE)) { \
+			printf("%s:%u:%s(): ", __FILE__, __LINE__, __FUNCTION__); \
+			printf(__VA_ARGS__); \
+		} \
+	} while(0)
 #endif /* #ifndef _TRACE_H_ */
 

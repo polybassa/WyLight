@@ -18,6 +18,7 @@
 
 #include "WiflyControl.h"
 #include "crc.h"
+#include "trace.h"
 
 #include <iostream>
 #include <sstream>
@@ -35,6 +36,8 @@ using std::cout;
 using std::ifstream;
 using std::hex;
 using std::stringstream;
+
+static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;
 
 /**
  * Macro to reduce code redundancy, while converting two 32 bit values into
@@ -504,30 +507,21 @@ bool WiflyControl::BlEnableAutostart(void) const
 	return BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
 }
 
-bool WiflyControl::ConfSetWlanChannel(size_t channel) const
+bool WiflyControl::ConfSetDefaults(void) const
 {
-	if(channel >= 14)
+	if(!mProxy.TelnetOpen())
+	{
+		Trace(ZONE_ERROR, "open telnet connection failed\n");
 		return false;
-
-	stringstream cmd;
-	cmd << "set wlan channel " << channel << '\n';
-	return mProxy.Send(cmd.str());
-}
-
-bool WiflyControl::ConfSetWlanJoin(void) const
-{
-	const std::string cmd("set wlan join 1");
-	return mProxy.Send(cmd);
-}
-
-bool WiflyControl::ConfSetWlanRate(size_t rate) const
-{
-	if((rate >= 4 && rate <= 7) || (rate >= 16))
+	}
+	
+	if(!mProxy.TelnetSend("set wlan channel 0\r\n", "\r\nAOK\r\n"))
+	{
+		Trace(ZONE_ERROR, "'set wlan channel 0' failed\n");
 		return false;
+	}
 
-	stringstream cmd;
-	cmd << "set wlan rate " << rate;
-	return mProxy.Send(cmd.str());
+	return mProxy.TelnetClose();
 }
 
 int WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, unsigned char* pResponse, size_t responseSize) const

@@ -22,6 +22,9 @@
 #include "trace.h"
 #include "wifly_cmd.h"
 
+#include <iostream>
+static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING;
+
 static const timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for framented responses from pic
 
 /**
@@ -140,10 +143,7 @@ size_t ComProxy::UnmaskControlCharacters(const uint8_t* pInput, size_t inputLeng
 
 	if(0 != crc)
 	{
-		Trace_String(__FUNCTION__);
-		Trace_String(" check crc: ");
-		Trace_Number(prepreCrc);
-		Trace_String(" crc failed\n");
+		Trace(ZONE_WARNING, "check crc: 0x%04x crc failed\n", prepreCrc);
 		return 0;
 	}
 	return bytesWritten - 2;
@@ -163,11 +163,7 @@ size_t ComProxy::Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout, bool c
 	// TODO refactor this with code in commandstorage. It should be identical to the fw receive implementation
 	do {
 		size_t bytesMasked = mSock.Recv(pBuffer, length, pTimeout);
-#ifdef DEBUG
-		std::cout << std::endl << __FILE__ << "::" << __FUNCTION__
-		<< "(): Bytes masked: " << bytesMasked;
-		std::cout << std::endl;
-#endif
+		Trace(ZONE_INFO, "Bytes masked: %u", bytesMasked);
 		uint8_t* pInput = pBuffer;
 		while(bytesMasked-- > 0)
 		{
@@ -189,11 +185,7 @@ size_t ComProxy::Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout, bool c
 				}
 				else if (BL_ETX == *pInput)
 				{
-#ifdef DEBUG
-					std::cout << std::endl << __FILE__ << "::" << __FUNCTION__
-					<< "(): Detect ETX ";
-					std::cout << std::endl;
-#endif
+					Trace(ZONE_INFO, "Detect ETX\n");
 					if(!checkCrc)
 					{
 						return pBuffer - pBufferBegin;
@@ -205,21 +197,13 @@ size_t ComProxy::Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout, bool c
 						Crc_AddCrc16(pBuffer[-2], &prepreCrc);
 						crc = prepreCrc;
 					}
-#ifdef DEBUG
-					std::cout << std::endl << __FILE__ << "::" << __FUNCTION__
-					<< "(): Crc: " << std::hex << crc << " Returnvalue: " <<  (pBuffer - 2) - pBufferBegin;
-					std::cout << std::endl;
-#endif
+					Trace(ZONE_INFO, "Crc: 0x%04x Returnvalue: %u\n", crc, (pBuffer - 2) - pBufferBegin);
 					return (0 != crc) ? 0 : (pBuffer - 2) - pBufferBegin;
 				}
 				else if (BL_STX == *pInput)
 				{
 					pBuffer = pBufferBegin;
-#ifdef DEBUG
-					std::cout << std::endl << __FILE__ << "::" << __FUNCTION__
-					<< "(): Detect STX ";
-					std::cout << std::endl;
-#endif
+					Trace(ZONE_INFO, "Detect STX\n");
 				}
 				else
 				{
@@ -240,18 +224,13 @@ size_t ComProxy::Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout, bool c
 
 int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const
 {
-	Trace_String("ComProxy::Send(BlRequest&): ");
-	Trace_Number((uint32_t)req.GetSize());
-	Trace_String("pure bytes\n");
-	int32_t retval = Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
-	return retval;
+	Trace(ZONE_INFO, "%u pure bytes\n", req.GetSize());
+	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
 }
 
 int32_t ComProxy::Send(const struct cmd_frame* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const
 {
-	Trace_String("ComProxy::Send(const struct cmd_frame*): ");
-	int32_t retval = Send(reinterpret_cast<const uint8_t*>(pFrame), pFrame->length, pResponse, responseSize, true, doSync, false);
-	return retval;
+	return Send(reinterpret_cast<const uint8_t*>(pFrame), pFrame->length, pResponse, responseSize, true, doSync, false);
 }
 
 int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const
@@ -268,7 +247,7 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 	bufferSize += MaskControlCharacters(pRequest, requestSize, buffer + 1, sizeof(buffer) + 1, crcInLittleEndian);
 	if(1 == bufferSize)
 	{
-		Trace_String("ComProxy::Send: MaskControlCharacters() failed\n");
+		Trace(ZONE_ERROR, "MaskControlCharacters() failed\n");
 		return 0;
 	}
 
@@ -286,10 +265,10 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 		{
 			if(0 > --numRetries)
 			{
-				Trace_String("ComProxy::Send: Too many retries\n");
+				Trace(ZONE_WARNING, "Too many retries\n");
 				return -1;
 			}
-			Trace_String("ComProxy::Send: SYNC...\n");
+			Trace(ZONE_INFO, "SYNC...\n");
 			mSock.Send(BL_SYNC, sizeof(BL_SYNC));
 			timeout = RESPONSE_TIMEOUT;
 		} while(0 == mSock.Recv(recvBuffer, sizeof(recvBuffer), &timeout));
@@ -299,14 +278,14 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 			/* synchronized -> send request */
 			if(bufferSize != mSock.Send(buffer, bufferSize))
 			{
-				Trace_String("ComProxy::Send: socket->Send() failed\n");
+				Trace(ZONE_ERROR, "socket->Send() failed\n");
 				return 0;
 			}
 
 			/* wait for a response? */
 			if((0 == pResponse) || (0 == responseSize))
 			{
-				Trace_String("ComProxy::Send: waiting for no response-> exiting...\n");
+				Trace(ZONE_INFO, "waiting for no response-> exiting...\n");
 				return 0;
 			}
 			/* receive response */
@@ -317,21 +296,77 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
  		}
 }
 
-bool ComProxy::Send(std::string const& telnetMessage) const
+void ComProxy::TelnetClearResponse(void) const
 {
-	static const timespec NANOSLEEP_TIME = {0, 500000000};
-	static const unsigned char ENTER_CMD_MODE[] = {'$', '$', '$'}; 
-	static const unsigned char EXIT_CMD_MODE[] = {'e', 'x', 'i', 't', '\n'};
+	timeval timeout{1, 0};
+	uint8_t response[64];
+	while(sizeof(response) <= mSock.Recv(response, sizeof(response), &timeout));
+}
 
+bool ComProxy::TelnetClose(void) const
+{
+	if(!TelnetSend(std::string("save\r\n"), std::string("\r\nStoring in config\r\n")))
+		return false;
+	return TelnetSend(std::string("exit\r\n"), std::string("\r\nEXIT\r\n"));
+}
+
+bool ComProxy::TelnetOpen(void) const
+{
+	static const timespec _300_TMMS = {0, 300000000};
+	static const uint8_t ENTER_CMD_MODE[] = {'$', '$', '$'}; 
+
+	TelnetClearResponse();
 	if(sizeof(ENTER_CMD_MODE) != mSock.Send(ENTER_CMD_MODE, sizeof(ENTER_CMD_MODE)))
+	{
 		return false;
-	// we need to wait at least 250ms after "$$$" to enter command mode
-	nanosleep(&NANOSLEEP_TIME, NULL);
+	}
+	nanosleep(&_300_TMMS, NULL);// after "$$$" we need to wait at least 250ms to enter command mode
 
-	if(telnetMessage.size() != mSock.Send(reinterpret_cast<const unsigned char*>(telnetMessage.data()), telnetMessage.size()))
+	TelnetResponse response;
+	timeval timeout{5, 0};
+	response.Recv(mSock, &timeout);
+	response.Print(std::cout);
+	if(!response.IsCmdAck())
+	{
 		return false;
+	}
+	
+	// send carriage return to start telnet console mode
+	uint8_t cr = '\n';
+	if(1 != mSock.Send(&cr, 1))
+	{
+		return false;
+	}
 
-	return sizeof(EXIT_CMD_MODE) == mSock.Send(EXIT_CMD_MODE, sizeof(EXIT_CMD_MODE));
+	timeout = {5, 0};
+	response.Recv(mSock, &timeout);
+	return true;
 
+}
+
+bool ComProxy::TelnetSend(std::string const& telnetMessage, std::string const& telnetResponse) const
+{
+	Trace(ZONE_INFO, "%s:%s\n", telnetMessage.data(), telnetResponse.data());
+	if(telnetMessage.size() != mSock.Send((uint8_t*)telnetMessage.data(), telnetMessage.size()))
+	{
+		Trace(ZONE_ERROR, "Send telnetMessage >>%s<< failed\n", telnetMessage.data());
+		return false;
+	}
+
+	TelnetResponse response;
+	timeval timeout = {5, 0};
+	response.Recv(mSock, &timeout);
+	response.Print(std::cout);
+	if(!response.Equals(telnetMessage))
+	{
+		Trace(ZONE_ERROR, "echo failed\n");
+		return false;
+	}
+
+	timeout = {5, 0};
+	response.Recv(mSock, &timeout);
+	response.Print(std::cout);
+	return response.Equals(telnetResponse);
+	return true;
 }
 

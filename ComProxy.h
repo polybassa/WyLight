@@ -21,6 +21,48 @@
 
 #include "BlRequest.h"
 #include "ClientSocket.h"
+#include <iostream>
+
+class TelnetResponse
+{
+	public:
+		uint8_t mBuffer[256];
+		size_t mBufferLength;
+	
+	public:
+		TelnetResponse(void) : mBufferLength(0) {};
+		uint8_t* GetBuffer(void) {return mBuffer;};
+		size_t GetCapacity(void) const {return sizeof(mBuffer);};
+		size_t GetSize(void) const {return mBufferLength;};
+
+		void Recv(TcpSocket const& sock, timeval* timeout) {
+			mBufferLength = sock.Recv(mBuffer, sizeof(mBuffer), timeout);
+		};
+
+		bool Equals(std::string const& expected) const {
+			return 0 == memcmp(expected.data(), mBuffer, expected.size());
+		};
+
+		bool IsCmdAck(void) const {
+			static const uint8_t CMD_MODE_ACK[] {'C', 'M', 'D', '\r', '\n'};
+			return (sizeof(CMD_MODE_ACK) == mBufferLength) && (0 == memcmp(CMD_MODE_ACK, mBuffer, sizeof(CMD_MODE_ACK)));
+		};
+
+		bool IsAok(std::string const& msg) const {
+			static const uint8_t AOK[] {'\r', '\n', 'A', 'O', 'K', '\r', '\n'};
+			if(0 != memcmp(msg.data(), mBuffer, msg.size()))
+				return false;
+			return (0 == memcmp(AOK, mBuffer + msg.size(), sizeof(AOK)));
+		};
+
+		void Print(std::ostream& out) const {
+			out << mBufferLength << " >>";
+			for(size_t i = 0; i < mBufferLength; i++) {
+				out << mBuffer[i];
+			}
+			out << "<<\n";
+		};
+};
 
 class ComProxy
 {
@@ -39,10 +81,14 @@ class ComProxy
 		 * @param outputLength size of the output buffer
 		 */
 		size_t MaskControlCharacters(const uint8_t* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool crcInLittleEndian = true) const;
-		bool Send(std::string const& telnetMessage) const;
 		int32_t Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync = true) const;
 		int32_t Send(struct cmd_frame const* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const;
 		int32_t Send(uint8_t const* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool sync, bool crcInLittleEndian = true) const;
+
+		void TelnetClearResponse(void) const;
+		bool TelnetClose(void) const;
+		bool TelnetOpen(void) const;
+		bool TelnetSend(std::string const& telnetMessage, std::string const& telnetResponse) const;		
 		size_t UnmaskControlCharacters(uint8_t const* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool checkCrc, bool crcInLittleEndian = true) const;
 };
 

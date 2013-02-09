@@ -57,9 +57,7 @@ class WiflyControl
 		bool BlEnableAutostart(void) const;
 		
 		/** ----------------------------- Telnet METHODES ----------------------------- **/
-		bool ConfSetWlanChannel(size_t channel) const;
-		bool ConfSetWlanJoin(void) const;
-		bool ConfSetWlanRate(size_t rate) const;
+		bool ConfSetDefaults(void) const;
 		
 		
 		/** ------------------------------ FIRMWARE METHODES ------------------------------ **/

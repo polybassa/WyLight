@@ -17,6 +17,7 @@
     along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "ClientSocket.h"
+#include "trace.h"
 
 #include <arpa/inet.h>
 #include <sys/select.h>
@@ -25,6 +26,8 @@
 #include <unistd.h>
 
 #include <stdio.h>
+
+static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING;
 
 ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style)
 	: mSock(socket(AF_INET, style, 0))
@@ -45,7 +48,7 @@ TcpSocket::TcpSocket(uint32_t addr, uint16_t port)
 {
 	if(connect(mSock, reinterpret_cast<sockaddr*>(&mSockAddr), sizeof(mSockAddr)) < 0)
 	{
-		std::cout << "Connection to " << addr << ":" << port << " failed" << std::endl;
+		Trace(ZONE_ERROR, "Connection to 0x%08x:%05u failed\n", addr, port);
 	}
 }
 
@@ -63,9 +66,7 @@ size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 		size_t bytesRead = recv(mSock, pBuffer, length, 0);
 		if(bytesRead > 0)
 		{
-#ifdef DEBUG
-			std::cout << __FILE__ << ":" << __FUNCTION__ << ": Receiving " << bytesRead << " bytes: " << std::endl;
-#endif
+			Trace(ZONE_INFO, "Receiving %u bytes\n", bytesRead);
 			return static_cast<size_t>(bytesRead);
 		}
 	}
@@ -76,14 +77,7 @@ size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 
 size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 {
-#ifdef DEBUG
-	std::cout << __FILE__ << ":" << __FUNCTION__ << ": Sending " << length << " bytes: ";
-	for(size_t i = 0; i < length; i++)
-	{
-		std::cout << std::hex << int32_t(frame[i]) << ' ';
-	}
-	std::cout << std::endl;
-#endif
+	TraceBuffer(ZONE_INFO, frame, length, "Sending %u bytes: ", length);
 	return send(mSock, frame, length, 0);
 }
 
@@ -93,7 +87,7 @@ UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadc
 	setsockopt(mSock, SOL_SOCKET, SO_BROADCAST, &enableBroadcast, sizeof(enableBroadcast));
 	if(doBind && 0 != bind(mSock, reinterpret_cast<struct sockaddr *>(&mSockAddr), sizeof(struct sockaddr)))
 	{
-	      std::cout << __FILE__ << ":" << __FUNCTION__ << ": Bind failure! ";
+				Trace(ZONE_ERROR, "Bind failure!\n");
 	      pthread_exit(NULL);
 	      return;
 	}
@@ -101,7 +95,7 @@ UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadc
 
 size_t UdpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 {
-	std::cout << __FILE__ << ":" << __LINE__ << " Not implemented" << std::endl;
+	Trace(ZONE_ERROR, "Not implemented\n");
 	return 0;
 }
 
@@ -119,14 +113,7 @@ size_t UdpSocket::RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout, st
 
 size_t UdpSocket::Send(const uint8_t* frame, size_t length) const
 {
-#ifdef DEBUG
-	std::cout << __FILE__ << ":" << __FUNCTION__ << ": Sending " << length << " bytes: ";
-	for(size_t i = 0; i < length; i++)
-	{
-		std::cout << std::hex << int32_t(frame[i]) << ' ';
-	}
-	std::cout << std::endl;
-#endif
+	TraceBuffer(ZONE_INFO, frame, length, "Sending %u bytes: ", length);
 	return sendto(mSock, frame, length, 0, (struct sockaddr*)&mSockAddr, sizeof(mSockAddr));
 }
 
