@@ -328,7 +328,7 @@ bool ComProxy::TelnetOpen(void) const
 	// after "$$$" we need to wait at least 250ms to enter command mode
 	nanosleep(&_300_TMMS, NULL);
 
-	if(!TelnetRecv(mSock, "CMD\r\n"))
+	if(!TelnetRecv("CMD\r\n"))
 	{
 		Trace(ZONE_ERROR, "start telnet console mode failed\n");
 		return false;
@@ -338,11 +338,11 @@ bool ComProxy::TelnetOpen(void) const
 	return TelnetSend("\r\n", "\r\n");
 }
 
-bool ComProxy::TelnetRecv(const TcpSocket& sock, const std::string& expectedResponse) const
+bool ComProxy::TelnetRecv(const std::string& expectedResponse) const
 {
 	timeval timeout = {5, 0};
 	uint8_t buffer[64];
-	size_t bufferLength = sock.Recv(buffer, sizeof(buffer), &timeout);
+	size_t bufferLength = mSock.Recv(buffer, sizeof(buffer), &timeout);
 	TraceBuffer(ZONE_INFO, buffer, bufferLength, "%c", "%u bytes received: ", bufferLength);
 	Trace(ZONE_INFO, "%u:%u\n", bufferLength, expectedResponse.size());
 	return 0 == memcmp(expectedResponse.data(), buffer, expectedResponse.size());
@@ -350,18 +350,17 @@ bool ComProxy::TelnetRecv(const TcpSocket& sock, const std::string& expectedResp
 
 bool ComProxy::TelnetSend(std::string const& telnetMessage, std::string const& expectedResponse) const
 {
-	Trace(ZONE_INFO, "%s:%s\n", telnetMessage.data(), expectedResponse.data());
 	if(telnetMessage.size() != mSock.Send((uint8_t*)telnetMessage.data(), telnetMessage.size()))
 	{
 		Trace(ZONE_ERROR, "Send telnetMessage >>%s<< failed\n", telnetMessage.data());
 		return false;
 	}
 
-	if(!TelnetRecv(mSock, telnetMessage))
+	if(!TelnetRecv(telnetMessage))
 	{
 		Trace(ZONE_ERROR, "receive echo failed\n");
 		return false;
 	}
-	return TelnetRecv(mSock, expectedResponse);
+	return TelnetRecv(expectedResponse);
 }
 

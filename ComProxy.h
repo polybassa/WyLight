@@ -51,7 +51,7 @@ class ComProxy
 		void TelnetClearResponse(void) const;
 		bool TelnetClose(void) const;
 		bool TelnetOpen(void) const;
-		bool TelnetRecv(const TcpSocket& sock, const std::string& expectedResponse) const;
+		bool TelnetRecv(const std::string& expectedResponse) const;
 		bool TelnetSend(std::string const& telnetMessage, std::string const& expectedResponse = AOK) const;		
 		size_t UnmaskControlCharacters(uint8_t const* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool checkCrc, bool crcInLittleEndian = true) const;
 };
