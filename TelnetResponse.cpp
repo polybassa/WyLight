@@ -23,22 +23,38 @@
 
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;
 
-TelnetResponse::TelnetResponse(void) : mBufferLength(0) {}
+TelnetResponse::TelnetResponse(void) : mBufferLength(0)
+{
+}
 
-bool TelnetResponse::Equals(std::string const& expected) const {
+bool TelnetResponse::Equals(std::string const& expected) const
+{
 	return 0 == memcmp(expected.data(), mBuffer, expected.size());
 }
 
-uint8_t* TelnetResponse::GetBuffer(void) {return mBuffer;}
-size_t TelnetResponse::GetCapacity(void) const {return sizeof(mBuffer);}
-size_t TelnetResponse::GetSize(void) const {return mBufferLength;}
+uint8_t* TelnetResponse::GetBuffer(void)
+{
+	return mBuffer;
+}
 
-bool TelnetResponse::IsCmdAck(void) const {
+size_t TelnetResponse::GetCapacity(void) const
+{
+	return sizeof(mBuffer);
+}
+
+size_t TelnetResponse::GetSize(void) const
+{
+	return mBufferLength;
+}
+
+bool TelnetResponse::IsCmdAck(void) const
+{
 	static const uint8_t CMD_MODE_ACK[] {'C', 'M', 'D', '\r', '\n'};
 	return (sizeof(CMD_MODE_ACK) == mBufferLength) && (0 == memcmp(CMD_MODE_ACK, mBuffer, sizeof(CMD_MODE_ACK)));
 }
 
-void TelnetResponse::Recv(TcpSocket const& sock, timeval* timeout) {
+void TelnetResponse::Recv(TcpSocket const& sock, timeval* timeout)
+{
 	mBufferLength = sock.Recv(mBuffer, sizeof(mBuffer), timeout);
 	TraceBuffer(ZONE_INFO, mBuffer, mBufferLength, "%c", "%u bytes received: ", mBufferLength);				
 }

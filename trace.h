@@ -46,18 +46,10 @@
 	#define Trace_Hex16(hex) do { printf("%04x ", hex); } while(0)
 	#define Trace_Print(x)
 	#define Trace_Char(input) do { printf("%c", input); } while (0)
-#else
-	#define Trace_String(str)
-	#define Trace_Number(input)
-	#define Trace_Hex(hex)
-	#define Trace_Hex16(hex)
-	#define Trace_Print(x)
-	#define Trace_Char(x)
-#endif
+
 	#define TraceBuffer(ZONE, BUFFER, LENGTH, BUFFER_FORMAT, ...) do { \
 		if(g_DebugZones & (ZONE)) { \
-			printf("%s:%u:%s(): ", __FILE__, __LINE__, __FUNCTION__); \
-			printf(__VA_ARGS__); \
+			Trace(ZONE, __VA_ARGS__); \
 			for(size_t i = 0; i < LENGTH; i++) { \
 				printf(BUFFER_FORMAT, BUFFER[i]); \
 			} \
@@ -71,5 +63,15 @@
 			printf(__VA_ARGS__); \
 		} \
 	} while(0)
+#else
+	#define Trace_String(str)
+	#define Trace_Number(input)
+	#define Trace_Hex(hex)
+	#define Trace_Hex16(hex)
+	#define Trace_Print(x)
+	#define Trace_Char(x)
+	#define TraceBuffer(ZONE, BUFFER, LENGTH, BUFFER_FORMAT, ...)
+	#define Trace(ZONE, ...)
+#endif
 #endif /* #ifndef _TRACE_H_ */
 
