@@ -54,12 +54,12 @@
 	#define Trace_Print(x)
 	#define Trace_Char(x)
 #endif
-	#define TraceBuffer(ZONE, BUFFER, LENGTH, ...) do { \
+	#define TraceBuffer(ZONE, BUFFER, LENGTH, BUFFER_FORMAT, ...) do { \
 		if(g_DebugZones & (ZONE)) { \
 			printf("%s:%u:%s(): ", __FILE__, __LINE__, __FUNCTION__); \
 			printf(__VA_ARGS__); \
 			for(size_t i = 0; i < LENGTH; i++) { \
-				printf("%02x ", BUFFER[i]); \
+				printf(BUFFER_FORMAT, BUFFER[i]); \
 			} \
 			printf("\n"); \
 		} \

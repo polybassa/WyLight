@@ -77,7 +77,7 @@ size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 
 size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 {
-	TraceBuffer(ZONE_INFO, frame, length, "Sending %u bytes: ", length);
+	TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending %u bytes: ", length);
 	return send(mSock, frame, length, 0);
 }
 
@@ -113,7 +113,7 @@ size_t UdpSocket::RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout, st
 
 size_t UdpSocket::Send(const uint8_t* frame, size_t length) const
 {
-	TraceBuffer(ZONE_INFO, frame, length, "Sending %u bytes: ", length);
+	TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending %u bytes: ", length);
 	return sendto(mSock, frame, length, 0, (struct sockaddr*)&mSockAddr, sizeof(mSockAddr));
 }
 

@@ -23,7 +23,7 @@
 #include "wifly_cmd.h"
 
 #include <iostream>
-static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING;
+static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING;
 
 static const timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for framented responses from pic
 
@@ -325,7 +325,6 @@ bool ComProxy::TelnetOpen(void) const
 	TelnetResponse response;
 	timeval timeout{5, 0};
 	response.Recv(mSock, &timeout);
-	response.Print(std::cout);
 	if(!response.IsCmdAck())
 	{
 		return false;
@@ -344,9 +343,9 @@ bool ComProxy::TelnetOpen(void) const
 
 }
 
-bool ComProxy::TelnetSend(std::string const& telnetMessage, std::string const& telnetResponse) const
+bool ComProxy::TelnetSend(std::string const& telnetMessage, std::string const& expectedResponse) const
 {
-	Trace(ZONE_INFO, "%s:%s\n", telnetMessage.data(), telnetResponse.data());
+	Trace(ZONE_INFO, "%s:%s\n", telnetMessage.data(), expectedResponse.data());
 	if(telnetMessage.size() != mSock.Send((uint8_t*)telnetMessage.data(), telnetMessage.size()))
 	{
 		Trace(ZONE_ERROR, "Send telnetMessage >>%s<< failed\n", telnetMessage.data());
@@ -356,7 +355,6 @@ bool ComProxy::TelnetSend(std::string const& telnetMessage, std::string const& t
 	TelnetResponse response;
 	timeval timeout = {5, 0};
 	response.Recv(mSock, &timeout);
-	response.Print(std::cout);
 	if(!response.Equals(telnetMessage))
 	{
 		Trace(ZONE_ERROR, "echo failed\n");
@@ -365,8 +363,6 @@ bool ComProxy::TelnetSend(std::string const& telnetMessage, std::string const& t
 
 	timeout = {5, 0};
 	response.Recv(mSock, &timeout);
-	response.Print(std::cout);
-	return response.Equals(telnetResponse);
-	return true;
+	return response.Equals(expectedResponse);
 }
 

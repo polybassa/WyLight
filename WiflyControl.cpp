@@ -515,7 +515,7 @@ bool WiflyControl::ConfSetDefaults(void) const
 		return false;
 	}
 	
-	if(!mProxy.TelnetSend("set wlan channel 0\r\n", "\r\nAOK\r\n"))
+	if(!mProxy.TelnetSend("set wlan channel 0\r\n"))
 	{
 		Trace(ZONE_ERROR, "'set wlan channel 0' failed\n");
 		return false;
