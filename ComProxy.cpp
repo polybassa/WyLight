@@ -358,9 +358,15 @@ bool ComProxy::TelnetSend(std::string const& telnetMessage, std::string const& e
 
 	if(!TelnetRecv(telnetMessage))
 	{
-		Trace(ZONE_ERROR, "receive echo failed\n");
+		Trace(ZONE_ERROR, ">>%s<< receive echo failed\n", telnetMessage.data());
 		return false;
 	}
-	return TelnetRecv(expectedResponse);
+	
+	if(!TelnetRecv(expectedResponse))
+	{
+		Trace(ZONE_ERROR, ">>%s<< receive acknowledgment failed\n", telnetMessage.data());
+		return false;
+	}
+	return true;
 }
 

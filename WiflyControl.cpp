@@ -515,9 +515,27 @@ bool WiflyControl::ConfSetDefaults(void) const
 		return false;
 	}
 	
-	if(!mProxy.TelnetSend("set wlan channel 0\r\n"))
+	if(!mProxy.TelnetSend("set broadcast interval 1\r\n"))
 	{
-		Trace(ZONE_ERROR, "'set wlan channel 0' failed\n");
+		Trace(ZONE_ERROR, "'set broadcast interval 1' failed\n");
+		return false;
+	}
+	
+	if(!mProxy.TelnetSend("set uart baud 115200\r\n"))
+	{
+		Trace(ZONE_ERROR, "'set uart baud 115200' failed\n");
+		return false;
+	}
+	
+	if(!mProxy.TelnetSend("set uart flow 0\r\n"))
+	{
+		Trace(ZONE_ERROR, "'set uart flow 0' failed\n");
+		return false;
+	}
+	
+	if(!mProxy.TelnetSend("set uart mode 0\r\n"))
+	{
+		Trace(ZONE_ERROR, "'set uart mode 0' failed\n");
 		return false;
 	}
 
