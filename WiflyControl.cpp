@@ -510,10 +510,11 @@ bool WiflyControl::BlEnableAutostart(void) const
 bool WiflyControl::ConfSetDefaults(void) const
 {
 	static const std::string commands[] = {
-		"set broadcast interval 1\r\n",
-		"set uart baud 115200\r\n",
-		"set uart flow 0\r\n",
-		"set uart mode 0\r\n",
+		"set broadcast interval 1\r\n",   // to support fast broadcast recognition
+		"set uart baud 115200\r\n",       // PIC uart parameter
+		"set uart flow 0\r\n",            // PIC uart parameter
+		"set uart mode 0\r\n",            // PIC uart parameter
+		"set wlan rate 0\r\n",            // slowest datarate but highest range
 	};
 
 	if(!mProxy.TelnetOpen())

@@ -31,101 +31,65 @@ int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, 
 int32_t ComProxy::Send(cmd_frame const* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const {	return -1; }
 
 // wrapper to test WiflyControl
-std::string g_TestBuffer;
+std::list<std::string> g_TestBuffer;
 
 bool TestBufferEquals(const std::string msg)
 {
-	return 0 == g_TestBuffer.compare(msg);
+	return false;
 }
 
-void TestBufferInit(void)
-{
-	g_TestBuffer = std::string();
-}
+static bool g_ProxySaved = false;
+static bool g_ProxyConnected = false;
 
-bool ComProxy::Send(std::string const& telnetMessage) const
+bool ComProxy::TelnetClose(bool doSave) const
 {
-	g_TestBuffer = telnetMessage;
+	g_ProxySaved = doSave;
+	g_ProxyConnected = false;
 	return true;
 }
 
+bool ComProxy::TelnetOpen(void) const
+{
+	return g_ProxyConnected = true;
+}
+
+bool ComProxy::TelnetSend(const std::string& message, const std::string& expectedResponse) const
+{
+	g_TestBuffer.push_back(message);
+	return g_ProxyConnected;
+}
 
 
 // Testcases
-size_t ut_WiflyControl_ConfSetWlanChannel(void)
+size_t ut_WiflyControl_ConfSetDefaults(void)
 {
 	TestCaseBegin();
 	WiflyControl testControl(0, 0);
 
-	// test channels 0 - 9
-	for(char i = 0; i <= 9; i++) {
-		string command("set wlan channel ");
-		command.append(1, i + '0');
-		command.append(1, '\n');
-		TestBufferInit();
-		CHECK(testControl.ConfSetWlanChannel(i));
-		CHECK(TestBufferEquals(command));
+	g_TestBuffer.clear();
+	CHECK(testControl.ConfSetDefaults());
+	CHECK(!g_ProxyConnected);
+
+	static const std::string commands[] = {
+		"set broadcast interval 1\r\n",   // to support fast broadcast recognition
+		"set uart baud 115200\r\n",       // PIC uart parameter
+		"set uart flow 0\r\n",            // PIC uart parameter
+		"set uart mode 0\r\n",            // PIC uart parameter
+		"set wlan rate 0\r\n",            // slowest datarate but highest range
+	};
+
+	for(size_t i = 0; i < sizeof(commands) / sizeof(commands[0]); i++)
+	{
+		CHECK(0 == commands[i].compare(g_TestBuffer.front()));
+		g_TestBuffer.pop_front();
+		
 	}
-
-	// test channels 10 - 13
-	for(char i = 10; i <= 13; i++) {
-		string command("set wlan channel 1");
-		command.append(1, (i%10) + '0');
-		command.append(1, '\n');
-		TestBufferInit();
-		CHECK(testControl.ConfSetWlanChannel(i));
-		CHECK(TestBufferEquals(command));
-	}
-
-	// test invalid channels
-	TestBufferInit();
-	CHECK(!testControl.ConfSetWlanChannel(-1));
-	CHECK(TestBufferEquals(string()));
-	TestBufferInit();
-	CHECK(!testControl.ConfSetWlanChannel(14));
-	CHECK(TestBufferEquals(string()));
-	TestCaseEnd();
-}
-
-size_t ut_WiflyControl_ConfSetWlanJoin(void)
-{
-	TestCaseBegin();
-	WiflyControl testControl(0, 0);
-	CHECK(testControl.ConfSetWlanJoin());
-	CHECK(TestBufferEquals(string("set wlan join 1")));
 	TestCaseEnd();
 }
 
 size_t ut_WiflyControl_ConfSetWlanPhrase(void)
 {
 	NOT_IMPLEMENTED();
-}
-
-size_t ut_WiflyControl_ConfSetWlanRate(void)
-{
-	TestCaseBegin();
-	WiflyControl testControl(0, 0);
-	// bad cases
-	TestBufferInit();
-	CHECK(!testControl.ConfSetWlanRate(-1));
-	CHECK(TestBufferEquals(string()));
-	for(size_t i = 4; i <= 7; i++) {
-		TestBufferInit();
-		CHECK(!testControl.ConfSetWlanRate(i));
-		CHECK(TestBufferEquals(string()));
-	}
-	TestBufferInit();
-	CHECK(!testControl.ConfSetWlanRate(16));
-	CHECK(TestBufferEquals(string()));
-
-	// good cases
-	TestBufferInit();
-	CHECK(testControl.ConfSetWlanRate(0));
-	CHECK(TestBufferEquals(string("set wlan rate 0")));
-	TestBufferInit();
-	CHECK(testControl.ConfSetWlanRate(15));
-	CHECK(TestBufferEquals(string("set wlan rate 15")));
-	TestCaseEnd();
 }
 
 size_t ut_WiflyControl_ConfSetWlanSsid(void)
@@ -136,10 +100,8 @@ size_t ut_WiflyControl_ConfSetWlanSsid(void)
 int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
-	RunTest(true, ut_WiflyControl_ConfSetWlanChannel);
-	RunTest(true, ut_WiflyControl_ConfSetWlanJoin);
+	RunTest(true, ut_WiflyControl_ConfSetDefaults);
 	RunTest(true, ut_WiflyControl_ConfSetWlanPhrase);
-	RunTest(true, ut_WiflyControl_ConfSetWlanRate);
 	RunTest(true, ut_WiflyControl_ConfSetWlanSsid);
 	UnitTestMainEnd();
 }
