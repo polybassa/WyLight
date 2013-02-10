@@ -37,19 +37,19 @@ x86_client_debug:
 
 #generic rule to build and run c unittests
 %_ut.bin: %_ut.c %.c %.h
-	@gcc $< $(subst _ut.c,.c,$<) eeprom.c -DUNIT_TEST -o $@ -Wall
+	@gcc $< $(subst _ut.c,.c,$<) eeprom.c -o $@ -Wall
 	@./$@
 
 BroadcastReceiver_ut.bin: BroadcastReceiver_ut.cpp BroadcastReceiver.cpp BroadcastReceiver.h ClientSocket.cpp ClientSocket.h unittest.h
-	@g++ BroadcastReceiver_ut.cpp BroadcastReceiver.cpp ClientSocket.cpp -DX86 -DUNIT_TEST -lpthread -o $@ -Wall -std=c++11
+	@g++ BroadcastReceiver_ut.cpp BroadcastReceiver.cpp ClientSocket.cpp -DX86 -lpthread -o $@ -Wall -std=c++11
 	@./$@
 
 ComProxy_ut.bin: ComProxy_ut.cpp ComProxy.cpp ComProxy.h BlRequest.h unittest.h
-	@g++ ComProxy_ut.cpp ComProxy.cpp crc.c -DUNIT_TEST -o $@ -Wall -pedantic -std=c++11
+	@g++ ComProxy_ut.cpp ComProxy.cpp crc.c -o $@ -Wall -pedantic -std=c++11
 	@./$@
 
 WiflyControl_ut.bin: WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp intelhexclass.h WiflyControlColorClass.h WiflyControlColorClass.cpp WiflyControl.h unittest.h
-	@g++ WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp WiflyControlColorClass.cpp -DUNIT_TEST -o $@ -Wall -pedantic -std=c++11
+	@g++ WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp WiflyControlColorClass.cpp -o $@ -Wall -pedantic -std=c++11
 	@./$@
 
 test: clean BroadcastReceiver_ut.bin commandstorage_ut.bin ComProxy_ut.bin crc_ut.bin ledstrip_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin WiflyControl_ut.bin

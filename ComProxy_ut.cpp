@@ -26,6 +26,7 @@
 #include "string.h"
 
 #define CRC_SIZE 2
+static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;
 
 ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) : mSock(0) {}
 ClientSocket::~ClientSocket(void) {}
@@ -334,10 +335,7 @@ size_t ut_ComProxy_BlInfoRequest(void)
 
 	BlInfoRequest infoRequest;
 	size_t bytesReceived = proxy.Send(infoRequest, response, sizeof(response));
-	Trace_String("--->: ");
-	Trace_Number(sizeof(BlInfo));
-	Trace_String(":");
-	Trace_Number(bytesReceived);
+	Trace(ZONE_INFO, "--->: %u:%u\n", sizeof(BlInfo), bytesReceived);
 	CHECK(sizeof(BlInfo) == bytesReceived);
 
 	CHECK(0 == memcmp(&dummyBlInfo, response, sizeof(BlInfo)));
@@ -358,17 +356,17 @@ size_t ut_ComProxy_BlRunAppRequest(void)
 	TestCaseEnd();
 }
 
-size_t ut_ComProxy_SendTelnetMesssage(void)
+size_t ut_ComProxy_TelnetRecv(void)
 {
 	TestCaseBegin();
-	static const std::string testCmd("> <$$$-	m\n");
-	static const uint8_t buffer[] = {'$', '$', '$', '>', ' ', '<', '$', '$', '$', '-', '	', 'm', '\n', 'e', 'x', 'i', 't', '\n'};
-	ComProxy proxy(0, 0);
+	ComProxy dummy{0, 0};
+	CHECK(dummy.TelnetRecv(""));
 
-	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
-	g_TestSocketSendBufferPos = g_TestSocketSendBuffer;
-	CHECK(proxy.Send(testCmd));
-	CHECK(0 == memcmp(g_TestSocketSendBuffer, buffer, sizeof(buffer)));
+	memcpy(g_TestSocketRecvBuffer, "Test", 4);
+	g_TestSocketRecvBufferPos = 0;
+	g_TestSocketRecvBufferSize = 4;
+	TraceBuffer(ZONE_INFO, g_TestSocketRecvBuffer, g_TestSocketRecvBufferSize, "%c", "Waaaa: ");
+	CHECK(dummy.TelnetRecv("Test"));
 	TestCaseEnd();
 }
 
@@ -386,7 +384,7 @@ int main (int argc, const char* argv[])
 	RunTest(false, ut_ComProxy_BlFuseWriteRequest);
 	RunTest(true, ut_ComProxy_BlInfoRequest);
 	RunTest(true, ut_ComProxy_BlRunAppRequest);
-	RunTest(true, ut_ComProxy_SendTelnetMesssage);
+	RunTest(true, ut_ComProxy_TelnetRecv);
 	UnitTestMainEnd();
 }
 

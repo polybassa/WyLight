@@ -163,7 +163,7 @@ size_t ComProxy::Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout, bool c
 	// TODO refactor this with code in commandstorage. It should be identical to the fw receive implementation
 	do {
 		size_t bytesMasked = mSock.Recv(pBuffer, length, pTimeout);
-		Trace(ZONE_INFO, "Bytes masked: %u", bytesMasked);
+		Trace(ZONE_INFO, "Bytes masked: %u\n", bytesMasked);
 		uint8_t* pInput = pBuffer;
 		while(bytesMasked-- > 0)
 		{
@@ -356,7 +356,7 @@ bool ComProxy::TelnetRecv(const std::string& expectedResponse) const
 	do	
 	{
 		bytesRead += mSock.Recv(pBufferPos, expectedResponse.size() - bytesRead, &timeout);
-		pBufferPos += bytesRead;
+		pBufferPos = buffer + bytesRead;
 		gettimeofday(&now, NULL);
 	} while((bytesRead < expectedResponse.size()) && timeval_sub(&endTime, &now, &timeout));
 	TraceBuffer(ZONE_INFO, buffer, bytesRead, "%c", "%u bytes received: ", bytesRead);
