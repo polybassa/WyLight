@@ -171,7 +171,7 @@ void CommandIO_GetCommands()
 		  if((0 == g_CmdBuf.CrcL) && (0 == g_CmdBuf.CrcH)) 	/* CRC Check */
 		  {
 			// [0] contains cmd_frame->length so we send [1]
-#ifdef UNIT_TEST
+#ifndef __CC8E__
 			if(ScriptCtrl_Add((struct led_cmd*)&g_CmdBuf.buffer[1]))
 #else
 			if(ScriptCtrl_Add(&g_CmdBuf.buffer[1]))

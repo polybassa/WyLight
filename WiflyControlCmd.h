@@ -1,5 +1,5 @@
 /**
-		Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+		Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
 
@@ -24,7 +24,12 @@
 #include <time.h>
 #include <stdint.h>
 
-using namespace std;
+//TODO remove this dependencies!!!
+using std::cin;
+using std::cout;
+using std::hex;
+using std::setfill;
+using std::setw;
 
 class WiflyControlCmd
 {
@@ -288,6 +293,20 @@ class ControlCmdBlRunApp : public WiflyControlCmd
 		};
 };
 
+class ControlCmdConfSetDefaults : public WiflyControlCmd
+{
+	public:
+		ControlCmdConfSetDefaults(void) : WiflyControlCmd(
+					string("wlan_defaults"),
+					string("' - set connection parameters to default"))
+		{};
+
+		virtual void Run(WiflyControl& control) const {
+			cout << "Setting wifly configuration to defaults... ";
+			cout << (control.ConfSetDefaults() ? "done.\n" : "failed!\n");
+		};
+};
+
 class ControlCmdStartBl : public WiflyControlCmd
 {
 	public:
@@ -297,7 +316,7 @@ class ControlCmdStartBl : public WiflyControlCmd
 				  
 		virtual void Run(WiflyControl& control) const {
 			cout << "Starting bootloader... ";
-			cout << (control.FwStartBl() ? "done." : "failed!") << endl;
+			cout << (control.FwStartBl() ? "done.\n" : "failed!\n");
 		};
   
 };
@@ -509,6 +528,7 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdBlReadEeprom(),
 	new ControlCmdBlReadFlash(),
 	new ControlCmdBlRunApp(),
+	new ControlCmdConfSetDefaults(),
 	new ControlCmdClearScript(),
 	new ControlCmdSetColor(),
 	new ControlCmdSetFade(),

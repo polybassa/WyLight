@@ -64,7 +64,13 @@
 *                                    DEFINES
 *******************************************************************************/
 
-using namespace std;
+using std::endl;
+using std::istream;
+using std::list;
+using std::map;
+using std::ostream;
+using std::pair;
+using std::string;
 
 /******************************************************************************/
 /*! \cond

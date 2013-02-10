@@ -26,6 +26,7 @@
 #include "string.h"
 
 #define CRC_SIZE 2
+static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;
 
 ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) : mSock(0) {}
 ClientSocket::~ClientSocket(void) {}
@@ -44,7 +45,7 @@ uint8_t g_TestSocketRecvBuffer[10240];
 size_t g_TestSocketRecvBufferPos = 0;
 size_t g_TestSocketRecvBufferSize = 0;
 uint8_t g_TestSocketSendBuffer[10240];
-uint8_t* g_TestSocketSendBufferPos = g_TestSocketSendBuffer;
+size_t g_TestSocketSendBufferPos = 0;
 timespec g_TestSocketSendDelay;
 
 void SetDelay(timeval& delay)
@@ -66,6 +67,7 @@ TcpSocket::TcpSocket(uint32_t	addr, uint16_t port) : ClientSocket(addr, port, 0)
 size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 {
 	nanosleep(&g_TestSocketSendDelay, NULL);
+	Trace(ZONE_INFO, "%p %u of %u wait for %u\n", pBuffer, g_TestSocketRecvBufferPos, g_TestSocketRecvBufferSize, length);
 	if(g_TestSocketRecvBufferPos < g_TestSocketRecvBufferSize)
 	{
 		*pBuffer = g_TestSocketRecvBuffer[g_TestSocketRecvBufferPos];
@@ -164,8 +166,16 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 	}
 
 	Trace_String("Unkown BlRequest => should be a telnet telegram\n");
-	memcpy(g_TestSocketSendBufferPos, frame, length);
+	memcpy(g_TestSocketSendBuffer + g_TestSocketSendBufferPos, frame, length);
 	g_TestSocketSendBufferPos += length;
+
+	if((frame[0] == '$') && (frame[1] == '$') && (frame[2] == '$'))
+	{
+		static const std::string RESPONSE("CMD\r\n\r\n\r\n<2.31> ");
+		g_TestSocketRecvBufferPos = 0;
+		g_TestSocketRecvBufferSize = RESPONSE.size();
+		memcpy(g_TestSocketRecvBuffer, RESPONSE.data(), g_TestSocketRecvBufferSize);
+	}
 	return length;
 }
 
@@ -334,10 +344,7 @@ size_t ut_ComProxy_BlInfoRequest(void)
 
 	BlInfoRequest infoRequest;
 	size_t bytesReceived = proxy.Send(infoRequest, response, sizeof(response));
-	Trace_String("--->: ");
-	Trace_Number(sizeof(BlInfo));
-	Trace_String(":");
-	Trace_Number(bytesReceived);
+	Trace(ZONE_INFO, "--->: %u:%u\n", sizeof(BlInfo), bytesReceived);
 	CHECK(sizeof(BlInfo) == bytesReceived);
 
 	CHECK(0 == memcmp(&dummyBlInfo, response, sizeof(BlInfo)));
@@ -358,17 +365,114 @@ size_t ut_ComProxy_BlRunAppRequest(void)
 	TestCaseEnd();
 }
 
-size_t ut_ComProxy_SendTelnetMesssage(void)
+size_t ut_ComProxy_TelnetCloseAndSave(void)
+{
+	static const std::string CLOSE_CMD("save\r\nexit\r\n");
+	static const std::string RESPONSE("save\r\n\r\nStoring in config\r\n<2.31> exit\r\n\r\nEXIT\r\n");
+	TestCaseBegin();
+	ComProxy dummy{0, 0};
+
+	//test with save
+	g_TestSocketRecvBufferPos = 0;
+	g_TestSocketRecvBufferSize = RESPONSE.size();
+	memcpy(g_TestSocketRecvBuffer, RESPONSE.data(), g_TestSocketRecvBufferSize);
+	g_TestSocketSendBufferPos = 0;
+	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
+	CHECK(dummy.TelnetClose(true));
+	CHECK(CLOSE_CMD.size() == g_TestSocketSendBufferPos);
+	CHECK(0 == memcmp(g_TestSocketSendBuffer, CLOSE_CMD.data(), CLOSE_CMD.size()));
+	TestCaseEnd();
+}
+
+size_t ut_ComProxy_TelnetCloseWithoutSave(void)
+{
+	static const std::string CLOSE_CMD("exit\r\n");
+	static const std::string RESPONSE("exit\r\n\r\nEXIT\r\n");
+	TestCaseBegin();
+	ComProxy dummy{0, 0};
+
+	//test with save
+	g_TestSocketRecvBufferPos = 0;
+	g_TestSocketRecvBufferSize = RESPONSE.size();
+	memcpy(g_TestSocketRecvBuffer, RESPONSE.data(), g_TestSocketRecvBufferSize);
+	g_TestSocketSendBufferPos = 0;
+	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
+	CHECK(dummy.TelnetClose(false));
+	CHECK(CLOSE_CMD.size() == g_TestSocketSendBufferPos);
+	CHECK(0 == memcmp(g_TestSocketSendBuffer, CLOSE_CMD.data(), CLOSE_CMD.size()));
+	TestCaseEnd();
+}
+
+size_t ut_ComProxy_TelnetOpen(void)
+{
+	static const std::string OPEN_CMD("$$$\r\n");
+	TestCaseBegin();
+	ComProxy dummy{0, 0};
+
+	g_TestSocketSendBufferPos = 0;
+	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
+	CHECK(dummy.TelnetOpen());
+	CHECK(OPEN_CMD.size() == g_TestSocketSendBufferPos);
+	CHECK(0 == memcmp(g_TestSocketSendBuffer, OPEN_CMD.data(), OPEN_CMD.size()));
+	TestCaseEnd();
+}
+
+size_t ut_ComProxy_TelnetRecv(void)
 {
 	TestCaseBegin();
-	static const std::string testCmd("> <$$$-	m\n");
-	static const uint8_t buffer[] = {'$', '$', '$', '>', ' ', '<', '$', '$', '$', '-', '	', 'm', '\n', 'e', 'x', 'i', 't', '\n'};
-	ComProxy proxy(0, 0);
+	ComProxy dummy{0, 0};
+	// test empty recv
+	CHECK(dummy.TelnetRecv(""));
 
+	// test recv something
+	g_TestSocketRecvBufferPos = 0;
+	g_TestSocketRecvBufferSize = 4;
+	memcpy(g_TestSocketRecvBuffer, "Test", g_TestSocketRecvBufferSize);
+	CHECK(dummy.TelnetRecv("Test"));
+	TestCaseEnd();
+}
+
+size_t ut_ComProxy_TelnetSend(void)
+{
+	const std::string TEST_CMD("FOO\r\n");
+	TestCaseBegin();
+	ComProxy dummy{0, 0};
+	// test wrong echo
+	g_TestSocketRecvBufferPos = 0;
+	g_TestSocketRecvBufferSize = 19;
+	memcpy(g_TestSocketRecvBuffer, "BAR\r\n\r\nAOK\r\n<2.31> ", g_TestSocketRecvBufferSize);
+	g_TestSocketSendBufferPos = 0;
 	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
-	g_TestSocketSendBufferPos = g_TestSocketSendBuffer;
-	CHECK(proxy.Send(testCmd));
-	CHECK(0 == memcmp(g_TestSocketSendBuffer, buffer, sizeof(buffer)));
+	CHECK(!dummy.TelnetSend(TEST_CMD));
+	CHECK(TEST_CMD.size() == g_TestSocketSendBufferPos);
+	CHECK(0 == memcmp(g_TestSocketSendBuffer, TEST_CMD.data(), TEST_CMD.size()));
+
+	// test wrong implicit AOK response
+	g_TestSocketRecvBufferPos = 0;
+	memcpy(g_TestSocketRecvBuffer, "FOO\r\n\r\nERR\r\n<2.31> ", g_TestSocketRecvBufferSize);
+	g_TestSocketSendBufferPos = 0;
+	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
+	CHECK(!dummy.TelnetSend(TEST_CMD));
+	CHECK(TEST_CMD.size() == g_TestSocketSendBufferPos);
+	CHECK(0 == memcmp(g_TestSocketSendBuffer, TEST_CMD.data(), TEST_CMD.size()));
+
+	// test implicit AOK response
+	g_TestSocketRecvBufferPos = 0;
+	memcpy(g_TestSocketRecvBuffer, "FOO\r\n\r\nAOK\r\n<2.31> ", g_TestSocketRecvBufferSize);
+	g_TestSocketSendBufferPos = 0;
+	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
+	CHECK(dummy.TelnetSend(TEST_CMD));
+	CHECK(TEST_CMD.size() == g_TestSocketSendBufferPos);
+	CHECK(0 == memcmp(g_TestSocketSendBuffer, TEST_CMD.data(), TEST_CMD.size()));
+
+	// test good
+	g_TestSocketRecvBufferPos = 0;
+	memcpy(g_TestSocketRecvBuffer, "FOO\r\n\r\nBAR\r\n<2.31> ", g_TestSocketRecvBufferSize);
+	g_TestSocketSendBufferPos = 0;
+	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
+	CHECK(dummy.TelnetSend(TEST_CMD, "\r\nBAR\r\n<2.31> "));
+	CHECK(TEST_CMD.size() == g_TestSocketSendBufferPos);
+	CHECK(0 == memcmp(g_TestSocketSendBuffer, TEST_CMD.data(), TEST_CMD.size()));
 	TestCaseEnd();
 }
 
@@ -386,7 +490,11 @@ int main (int argc, const char* argv[])
 	RunTest(false, ut_ComProxy_BlFuseWriteRequest);
 	RunTest(true, ut_ComProxy_BlInfoRequest);
 	RunTest(true, ut_ComProxy_BlRunAppRequest);
-	RunTest(true, ut_ComProxy_SendTelnetMesssage);
+	RunTest(true, ut_ComProxy_TelnetRecv);
+	RunTest(true, ut_ComProxy_TelnetSend);
+	RunTest(true, ut_ComProxy_TelnetCloseAndSave);
+	RunTest(true, ut_ComProxy_TelnetCloseWithoutSave);
+	RunTest(true, ut_ComProxy_TelnetOpen);
 	UnitTestMainEnd();
 }
 

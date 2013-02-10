@@ -18,6 +18,7 @@
 
 #include "WiflyControl.h"
 #include "crc.h"
+#include "trace.h"
 
 #include <iostream>
 #include <sstream>
@@ -31,7 +32,12 @@
 
 #include "WiflyControlColorClass.h"
 
-using namespace std;
+using std::cout;
+using std::ifstream;
+using std::hex;
+using std::stringstream;
+
+static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;
 
 /**
  * Macro to reduce code redundancy, while converting two 32 bit values into
@@ -502,7 +508,59 @@ bool WiflyControl::BlEnableAutostart(void) const
 	return BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
 }
 
-/** ---------------------------------------- FIRMWARE METHODES ---------------------------------------- **/
+bool WiflyControl::ConfSetDefaults(void) const
+{
+	static const std::string commands[] = {
+		"set broadcast interval 1\r\n",   // to support fast broadcast recognition
+		"set uart baud 115200\r\n",       // PIC uart parameter
+		"set uart flow 0\r\n",            // PIC uart parameter
+		"set uart mode 0\r\n",            // PIC uart parameter
+		"set wlan rate 0\r\n",            // slowest datarate but highest range
+	};
+
+	if(!mProxy.TelnetOpen())
+	{
+		Trace(ZONE_ERROR, "open telnet connection failed\n");
+		return false;
+	}
+#if 1
+	//TODO test this code on hardware and then remove old implementation
+	for(size_t i = 0; i < sizeof(commands) / sizeof(commands[0]); i++)
+	{
+		if(!mProxy.TelnetSend(commands[i]))
+		{
+			Trace(ZONE_ERROR, "command: '%s' failed -> exit without saving\n", commands[i].data());
+			return mProxy.TelnetClose(false);
+		} 
+	}
+#else
+	if(!mProxy.TelnetSend("set broadcast interval 1\r\n"))
+	{
+		Trace(ZONE_ERROR, "'set broadcast interval 1' failed\n");
+		return false;
+	}
+	
+	if(!mProxy.TelnetSend("set uart baud 115200\r\n"))
+	{
+		Trace(ZONE_ERROR, "'set uart baud 115200' failed\n");
+		return false;
+	}
+	
+	if(!mProxy.TelnetSend("set uart flow 0\r\n"))
+	{
+		Trace(ZONE_ERROR, "'set uart flow 0' failed\n");
+		return false;
+	}
+	
+	if(!mProxy.TelnetSend("set uart mode 0\r\n"))
+	{
+		Trace(ZONE_ERROR, "'set uart mode 0' failed\n");
+		return false;
+	}
+#endif
+	return mProxy.TelnetClose(true);
+}
+
 int WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, unsigned char* pResponse, size_t responseSize) const
 {
 	int retval;
@@ -916,7 +974,7 @@ bool WiflyControl::FwStartBl(void)
 	return false;
 }
 
-bool WiflyControl::FwSetRtc(struct tm* timeValue)
+bool WiflyControl::FwSetRtc(struct tm const* timeValue)
 {
 	if(timeValue == NULL) return false;
   
@@ -1088,21 +1146,5 @@ unsigned long WiflyControl::ToRGBA(string& s) const
 	converter << hex << s;
 	converter >> rgba;
 	return rgba;
-}
-
-bool WiflyControl::WlanSetJoin(void) const
-{
-	const std::string cmd("set wlan join 1");
-	return mProxy.Send(cmd);
-}
-
-bool WiflyControl::WlanSetRate(size_t rate) const
-{
-	if((rate >= 4 && rate <= 7) || (rate >= 16))
-		return false;
-
-	stringstream cmd;
-	cmd << "set wlan rate " << rate;
-	return mProxy.Send(cmd.str());
 }
 

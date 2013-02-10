@@ -31,68 +31,74 @@ int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, 
 int32_t ComProxy::Send(cmd_frame const* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const {	return -1; }
 
 // wrapper to test WiflyControl
-std::string g_TestBuffer;
+static std::list<std::string> g_TestBuffer;
+static bool g_ProxySaved = false;
+static bool g_ProxyConnected = false;
 
-bool TestBufferEquals(const std::string msg)
+bool ComProxy::TelnetClose(bool doSave) const
 {
-	return 0 == g_TestBuffer.compare(msg);
-}
-
-void TestBufferInit(void)
-{
-	g_TestBuffer = std::string();
-}
-
-bool ComProxy::Send(std::string const& telnetMessage) const
-{
-	g_TestBuffer = telnetMessage;
+	g_ProxySaved = doSave;
+	g_ProxyConnected = false;
 	return true;
 }
 
+bool ComProxy::TelnetOpen(void) const
+{
+	return g_ProxyConnected = true;
+}
+
+bool ComProxy::TelnetSend(const std::string& message, const std::string& expectedResponse) const
+{
+	g_TestBuffer.push_back(message);
+	return g_ProxyConnected;
+}
 
 
 // Testcases
-size_t ut_WiflyControl_WlanSetJoin(void)
+size_t ut_WiflyControl_ConfSetDefaults(void)
 {
 	TestCaseBegin();
+	static const std::string commands[] = {
+		"set broadcast interval 1\r\n",   // to support fast broadcast recognition
+		"set uart baud 115200\r\n",       // PIC uart parameter
+		"set uart flow 0\r\n",            // PIC uart parameter
+		"set uart mode 0\r\n",            // PIC uart parameter
+		"set wlan rate 0\r\n",            // slowest datarate but highest range
+	};
+	static const size_t numCommands = sizeof(commands) / sizeof(commands[0]);
+
 	WiflyControl testControl(0, 0);
-	CHECK(testControl.WlanSetJoin());
-	CHECK(TestBufferEquals(string("set wlan join 1")));
+
+	g_TestBuffer.clear();
+	CHECK(testControl.ConfSetDefaults());
+	CHECK(!g_ProxyConnected);
+	CHECK(g_ProxySaved);
+	CHECK(numCommands == g_TestBuffer.size());
+	for(size_t i = 0; i < numCommands; i++)
+	{
+		CHECK(0 == commands[i].compare(g_TestBuffer.front()));
+		g_TestBuffer.pop_front();
+		
+	}
 	TestCaseEnd();
 }
 
-size_t ut_WiflyControl_WlanSetRate(void)
+size_t ut_WiflyControl_ConfSetWlanPhrase(void)
 {
-	TestCaseBegin();
-	WiflyControl testControl(0, 0);
-	// bad cases
-	TestBufferInit();
-	CHECK(!testControl.WlanSetRate(-1));
-	CHECK(TestBufferEquals(string()));
-	for(size_t i = 4; i <= 7; i++) {
-		TestBufferInit();
-		CHECK(!testControl.WlanSetRate(i));
-		CHECK(TestBufferEquals(string()));
-	}
-	TestBufferInit();
-	CHECK(!testControl.WlanSetRate(16));
-	CHECK(TestBufferEquals(string()));
+	NOT_IMPLEMENTED();
+}
 
-	// good cases
-	TestBufferInit();
-	CHECK(testControl.WlanSetRate(0));
-	CHECK(TestBufferEquals(string("set wlan rate 0")));
-	TestBufferInit();
-	CHECK(testControl.WlanSetRate(15));
-	CHECK(TestBufferEquals(string("set wlan rate 15")));
-	TestCaseEnd();
+size_t ut_WiflyControl_ConfSetWlanSsid(void)
+{
+	NOT_IMPLEMENTED();
 }
 
 int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
-	RunTest(true, ut_WiflyControl_WlanSetJoin);
-	RunTest(true, ut_WiflyControl_WlanSetRate);
+	RunTest(true, ut_WiflyControl_ConfSetDefaults);
+	RunTest(true, ut_WiflyControl_ConfSetWlanPhrase);
+	RunTest(true, ut_WiflyControl_ConfSetWlanSsid);
 	UnitTestMainEnd();
 }
 
