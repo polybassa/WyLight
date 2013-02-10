@@ -509,12 +509,29 @@ bool WiflyControl::BlEnableAutostart(void) const
 
 bool WiflyControl::ConfSetDefaults(void) const
 {
+	static const std::string commands[] = {
+		"set broadcast interval 1\r\n",
+		"set uart baud 115200\r\n",
+		"set uart flow 0\r\n",
+		"set uart mode 0\r\n",
+	};
+
 	if(!mProxy.TelnetOpen())
 	{
 		Trace(ZONE_ERROR, "open telnet connection failed\n");
 		return false;
 	}
-	
+#if 1
+	//TODO test this code on hardware and then remove old implementation
+	for(size_t i = 0; i < sizeof(commands) / sizeof(commands[0]); i++)
+	{
+		if(!mProxy.TelnetSend(commands[i]))
+		{
+			Trace(ZONE_ERROR, "command: '%s' failed -> exit without saving\n", commands[i].data());
+			return mProxy.TelnetClose(false);
+		} 
+	}
+#else
 	if(!mProxy.TelnetSend("set broadcast interval 1\r\n"))
 	{
 		Trace(ZONE_ERROR, "'set broadcast interval 1' failed\n");
@@ -538,8 +555,8 @@ bool WiflyControl::ConfSetDefaults(void) const
 		Trace(ZONE_ERROR, "'set uart mode 0' failed\n");
 		return false;
 	}
-
-	return mProxy.TelnetClose();
+#endif
+	return mProxy.TelnetClose(true);
 }
 
 int WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, unsigned char* pResponse, size_t responseSize) const

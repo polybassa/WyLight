@@ -49,7 +49,7 @@ class ComProxy
 		int32_t Send(uint8_t const* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool sync, bool crcInLittleEndian = true) const;
 
 		void TelnetClearResponse(void) const;
-		bool TelnetClose(void) const;
+		bool TelnetClose(bool doSave) const;
 		bool TelnetOpen(void) const;
 		bool TelnetRecv(const std::string& expectedResponse) const;
 		bool TelnetSend(std::string const& telnetMessage, std::string const& expectedResponse = AOK) const;		

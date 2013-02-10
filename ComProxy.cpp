@@ -303,9 +303,9 @@ void ComProxy::TelnetClearResponse(void) const
 	while(sizeof(response) <= mSock.Recv(response, sizeof(response), &timeout));
 }
 
-bool ComProxy::TelnetClose(void) const
+bool ComProxy::TelnetClose(bool doSave) const
 {
-	if(!TelnetSend("save\r\n", "\r\nStoring in config\r\n<2.31> "))
+	if(doSave && !TelnetSend("save\r\n", "\r\nStoring in config\r\n<2.31> "))
 	{
 		Trace(ZONE_ERROR, "saving changes failed\n");
 		return false;
