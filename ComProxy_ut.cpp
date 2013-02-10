@@ -360,13 +360,41 @@ size_t ut_ComProxy_TelnetRecv(void)
 {
 	TestCaseBegin();
 	ComProxy dummy{0, 0};
+	// test empty recv
 	CHECK(dummy.TelnetRecv(""));
 
-	memcpy(g_TestSocketRecvBuffer, "Test", 4);
+	// test recv something
 	g_TestSocketRecvBufferPos = 0;
 	g_TestSocketRecvBufferSize = 4;
-	TraceBuffer(ZONE_INFO, g_TestSocketRecvBuffer, g_TestSocketRecvBufferSize, "%c", "Waaaa: ");
+	memcpy(g_TestSocketRecvBuffer, "Test", g_TestSocketRecvBufferSize);
 	CHECK(dummy.TelnetRecv("Test"));
+	TestCaseEnd();
+}
+
+size_t ut_ComProxy_TelnetSend(void)
+{
+	TestCaseBegin();
+	ComProxy dummy{0, 0};
+	// test wrong echo
+	g_TestSocketRecvBufferPos = 0;
+	g_TestSocketRecvBufferSize = 19;
+	memcpy(g_TestSocketRecvBuffer, "BAR\r\n\r\nAOK\r\n<2.31> ", g_TestSocketRecvBufferSize);
+	CHECK(!dummy.TelnetSend("FOO\r\n"));
+
+	// test wrong implicit AOK response
+	g_TestSocketRecvBufferPos = 0;
+	memcpy(g_TestSocketRecvBuffer, "FOO\r\n\r\nERR\r\n<2.31> ", g_TestSocketRecvBufferSize);
+	CHECK(!dummy.TelnetSend("FOO\r\n"));
+
+	// test implicit AOK response
+	g_TestSocketRecvBufferPos = 0;
+	memcpy(g_TestSocketRecvBuffer, "FOO\r\n\r\nAOK\r\n<2.31> ", g_TestSocketRecvBufferSize);
+	CHECK(dummy.TelnetSend("FOO\r\n"));
+
+	// test good
+	g_TestSocketRecvBufferPos = 0;
+	memcpy(g_TestSocketRecvBuffer, "FOO\r\n\r\nBAR\r\n<2.31> ", g_TestSocketRecvBufferSize);
+	CHECK(dummy.TelnetSend("FOO\r\n", "\r\nBAR\r\n<2.31> "));
 	TestCaseEnd();
 }
 
@@ -385,6 +413,7 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_ComProxy_BlInfoRequest);
 	RunTest(true, ut_ComProxy_BlRunAppRequest);
 	RunTest(true, ut_ComProxy_TelnetRecv);
+	RunTest(true, ut_ComProxy_TelnetSend);
 	UnitTestMainEnd();
 }
 
