@@ -67,6 +67,7 @@ TcpSocket::TcpSocket(uint32_t	addr, uint16_t port) : ClientSocket(addr, port, 0)
 size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 {
 	nanosleep(&g_TestSocketSendDelay, NULL);
+	Trace(ZONE_INFO, "%p %u of %u wait for %u\n", pBuffer, g_TestSocketRecvBufferPos, g_TestSocketRecvBufferSize, length);
 	if(g_TestSocketRecvBufferPos < g_TestSocketRecvBufferSize)
 	{
 		*pBuffer = g_TestSocketRecvBuffer[g_TestSocketRecvBufferPos];
@@ -167,6 +168,14 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 	Trace_String("Unkown BlRequest => should be a telnet telegram\n");
 	memcpy(g_TestSocketSendBuffer + g_TestSocketSendBufferPos, frame, length);
 	g_TestSocketSendBufferPos += length;
+
+	if((frame[0] == '$') && (frame[1] == '$') && (frame[2] == '$'))
+	{
+		static const std::string RESPONSE("CMD\r\n\r\n\r\n<2.31> ");
+		g_TestSocketRecvBufferPos = 0;
+		g_TestSocketRecvBufferSize = RESPONSE.size();
+		memcpy(g_TestSocketRecvBuffer, RESPONSE.data(), g_TestSocketRecvBufferSize);
+	}
 	return length;
 }
 
@@ -356,6 +365,20 @@ size_t ut_ComProxy_BlRunAppRequest(void)
 	TestCaseEnd();
 }
 
+size_t ut_ComProxy_TelnetOpen(void)
+{
+	static const std::string OPEN_CMD("$$$\r\n");
+	TestCaseBegin();
+	ComProxy dummy{0, 0};
+
+	g_TestSocketSendBufferPos = 0;
+	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
+	CHECK(dummy.TelnetOpen());
+	CHECK(OPEN_CMD.size() == g_TestSocketSendBufferPos);
+	CHECK(0 == memcmp(g_TestSocketSendBuffer, OPEN_CMD.data(), OPEN_CMD.size()));
+	TestCaseEnd();
+}
+
 size_t ut_ComProxy_TelnetRecv(void)
 {
 	TestCaseBegin();
@@ -431,6 +454,7 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_ComProxy_BlRunAppRequest);
 	RunTest(true, ut_ComProxy_TelnetRecv);
 	RunTest(true, ut_ComProxy_TelnetSend);
+	RunTest(true, ut_ComProxy_TelnetOpen);
 	UnitTestMainEnd();
 }
 

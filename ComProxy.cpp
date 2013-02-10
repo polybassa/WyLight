@@ -342,7 +342,6 @@ bool ComProxy::TelnetRecv(const std::string& expectedResponse) const
 {
 	timeval timeout = {5, 0};
 	uint8_t buffer[64];
-	uint8_t* pBufferPos = buffer;
 	if(sizeof(buffer) < expectedResponse.size())
 	{
 		Trace(ZONE_ERROR, "expected response to long!\n");
@@ -355,8 +354,8 @@ bool ComProxy::TelnetRecv(const std::string& expectedResponse) const
 	size_t bytesRead = 0;
 	do	
 	{
+		uint8_t* const pBufferPos = buffer + bytesRead;
 		bytesRead += mSock.Recv(pBufferPos, expectedResponse.size() - bytesRead, &timeout);
-		pBufferPos = buffer + bytesRead;
 		gettimeofday(&now, NULL);
 	} while((bytesRead < expectedResponse.size()) && timeval_sub(&endTime, &now, &timeout));
 	TraceBuffer(ZONE_INFO, buffer, bytesRead, "%c", "%u bytes received: ", bytesRead);
