@@ -31,13 +31,7 @@ int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, 
 int32_t ComProxy::Send(cmd_frame const* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const {	return -1; }
 
 // wrapper to test WiflyControl
-std::list<std::string> g_TestBuffer;
-
-bool TestBufferEquals(const std::string msg)
-{
-	return false;
-}
-
+static std::list<std::string> g_TestBuffer;
 static bool g_ProxySaved = false;
 static bool g_ProxyConnected = false;
 
@@ -64,12 +58,6 @@ bool ComProxy::TelnetSend(const std::string& message, const std::string& expecte
 size_t ut_WiflyControl_ConfSetDefaults(void)
 {
 	TestCaseBegin();
-	WiflyControl testControl(0, 0);
-
-	g_TestBuffer.clear();
-	CHECK(testControl.ConfSetDefaults());
-	CHECK(!g_ProxyConnected);
-
 	static const std::string commands[] = {
 		"set broadcast interval 1\r\n",   // to support fast broadcast recognition
 		"set uart baud 115200\r\n",       // PIC uart parameter
@@ -77,8 +65,16 @@ size_t ut_WiflyControl_ConfSetDefaults(void)
 		"set uart mode 0\r\n",            // PIC uart parameter
 		"set wlan rate 0\r\n",            // slowest datarate but highest range
 	};
+	static const size_t numCommands = sizeof(commands) / sizeof(commands[0]);
 
-	for(size_t i = 0; i < sizeof(commands) / sizeof(commands[0]); i++)
+	WiflyControl testControl(0, 0);
+
+	g_TestBuffer.clear();
+	CHECK(testControl.ConfSetDefaults());
+	CHECK(!g_ProxyConnected);
+	CHECK(g_ProxySaved);
+	CHECK(numCommands == g_TestBuffer.size());
+	for(size_t i = 0; i < numCommands; i++)
 	{
 		CHECK(0 == commands[i].compare(g_TestBuffer.front()));
 		g_TestBuffer.pop_front();
