@@ -45,7 +45,7 @@ uint8_t g_TestSocketRecvBuffer[10240];
 size_t g_TestSocketRecvBufferPos = 0;
 size_t g_TestSocketRecvBufferSize = 0;
 uint8_t g_TestSocketSendBuffer[10240];
-uint8_t* g_TestSocketSendBufferPos = g_TestSocketSendBuffer;
+size_t g_TestSocketSendBufferPos = 0;
 timespec g_TestSocketSendDelay;
 
 void SetDelay(timeval& delay)
@@ -165,7 +165,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 	}
 
 	Trace_String("Unkown BlRequest => should be a telnet telegram\n");
-	memcpy(g_TestSocketSendBufferPos, frame, length);
+	memcpy(g_TestSocketSendBuffer + g_TestSocketSendBufferPos, frame, length);
 	g_TestSocketSendBufferPos += length;
 	return length;
 }
@@ -373,28 +373,45 @@ size_t ut_ComProxy_TelnetRecv(void)
 
 size_t ut_ComProxy_TelnetSend(void)
 {
+	const std::string TEST_CMD("FOO\r\n");
 	TestCaseBegin();
 	ComProxy dummy{0, 0};
 	// test wrong echo
 	g_TestSocketRecvBufferPos = 0;
 	g_TestSocketRecvBufferSize = 19;
 	memcpy(g_TestSocketRecvBuffer, "BAR\r\n\r\nAOK\r\n<2.31> ", g_TestSocketRecvBufferSize);
-	CHECK(!dummy.TelnetSend("FOO\r\n"));
+	g_TestSocketSendBufferPos = 0;
+	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
+	CHECK(!dummy.TelnetSend(TEST_CMD));
+	CHECK(TEST_CMD.size() == g_TestSocketSendBufferPos);
+	CHECK(0 == memcmp(g_TestSocketSendBuffer, TEST_CMD.data(), TEST_CMD.size()));
 
 	// test wrong implicit AOK response
 	g_TestSocketRecvBufferPos = 0;
 	memcpy(g_TestSocketRecvBuffer, "FOO\r\n\r\nERR\r\n<2.31> ", g_TestSocketRecvBufferSize);
-	CHECK(!dummy.TelnetSend("FOO\r\n"));
+	g_TestSocketSendBufferPos = 0;
+	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
+	CHECK(!dummy.TelnetSend(TEST_CMD));
+	CHECK(TEST_CMD.size() == g_TestSocketSendBufferPos);
+	CHECK(0 == memcmp(g_TestSocketSendBuffer, TEST_CMD.data(), TEST_CMD.size()));
 
 	// test implicit AOK response
 	g_TestSocketRecvBufferPos = 0;
 	memcpy(g_TestSocketRecvBuffer, "FOO\r\n\r\nAOK\r\n<2.31> ", g_TestSocketRecvBufferSize);
-	CHECK(dummy.TelnetSend("FOO\r\n"));
+	g_TestSocketSendBufferPos = 0;
+	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
+	CHECK(dummy.TelnetSend(TEST_CMD));
+	CHECK(TEST_CMD.size() == g_TestSocketSendBufferPos);
+	CHECK(0 == memcmp(g_TestSocketSendBuffer, TEST_CMD.data(), TEST_CMD.size()));
 
 	// test good
 	g_TestSocketRecvBufferPos = 0;
 	memcpy(g_TestSocketRecvBuffer, "FOO\r\n\r\nBAR\r\n<2.31> ", g_TestSocketRecvBufferSize);
-	CHECK(dummy.TelnetSend("FOO\r\n", "\r\nBAR\r\n<2.31> "));
+	g_TestSocketSendBufferPos = 0;
+	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
+	CHECK(dummy.TelnetSend(TEST_CMD, "\r\nBAR\r\n<2.31> "));
+	CHECK(TEST_CMD.size() == g_TestSocketSendBufferPos);
+	CHECK(0 == memcmp(g_TestSocketSendBuffer, TEST_CMD.data(), TEST_CMD.size()));
 	TestCaseEnd();
 }
 
