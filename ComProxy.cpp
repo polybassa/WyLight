@@ -305,7 +305,7 @@ void ComProxy::TelnetClearResponse(void) const
 
 bool ComProxy::TelnetClose(void) const
 {
-	if(!TelnetSend("save\r\n", "\r\nStoring in config\r\n"))
+	if(!TelnetSend("save\r\n", "\r\nStoring in config\r\n<2.31> "))
 	{
 		Trace(ZONE_ERROR, "saving changes failed\n");
 		return false;
@@ -335,16 +335,32 @@ bool ComProxy::TelnetOpen(void) const
 	}
 	
 	// send carriage return to start telnet console mode
-	return TelnetSend("\r\n", "\r\n");
+	return TelnetSend("\r\n", "\r\n<2.31> ");
 }
 
 bool ComProxy::TelnetRecv(const std::string& expectedResponse) const
 {
 	timeval timeout = {5, 0};
 	uint8_t buffer[64];
-	size_t bufferLength = mSock.Recv(buffer, sizeof(buffer), &timeout);
-	TraceBuffer(ZONE_INFO, buffer, bufferLength, "%c", "%u bytes received: ", bufferLength);
-	Trace(ZONE_INFO, "%u:%u\n", bufferLength, expectedResponse.size());
+	uint8_t* pBufferPos = buffer;
+	if(sizeof(buffer) < expectedResponse.size())
+	{
+		Trace(ZONE_ERROR, "expected response to long!\n");
+		return false;
+	}
+
+	timeval endTime, now;
+	gettimeofday(&endTime, NULL);
+	timeval_add(&endTime, &timeout);
+	size_t bytesRead = 0;
+	do	
+	{
+		bytesRead += mSock.Recv(pBufferPos, expectedResponse.size() - bytesRead, &timeout);
+		pBufferPos += bytesRead;
+		gettimeofday(&now, NULL);
+	} while((bytesRead < expectedResponse.size()) && timeval_sub(&endTime, &now, &timeout));
+	TraceBuffer(ZONE_INFO, buffer, bytesRead, "%c", "%u bytes received: ", bytesRead);
+	Trace(ZONE_INFO, "%u:%u\n", bytesRead, expectedResponse.size());
 	return 0 == memcmp(expectedResponse.data(), buffer, expectedResponse.size());
 }
 

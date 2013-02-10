@@ -25,7 +25,7 @@
 #include <iostream>
 
 
-#define AOK "\r\nAOK\r\n"
+#define AOK "\r\nAOK\r\n<2.31> "
 
 class ComProxy
 {

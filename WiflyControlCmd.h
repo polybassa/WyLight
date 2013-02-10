@@ -302,7 +302,8 @@ class ControlCmdConfSetDefaults : public WiflyControlCmd
 		{};
 
 		virtual void Run(WiflyControl& control) const {
-			control.ConfSetDefaults();
+			cout << "Setting wifly configuration to defaults... ";
+			cout << (control.ConfSetDefaults() ? "done.\n" : "failed!\n");
 		};
 };
 
@@ -315,7 +316,7 @@ class ControlCmdStartBl : public WiflyControlCmd
 				  
 		virtual void Run(WiflyControl& control) const {
 			cout << "Starting bootloader... ";
-			cout << (control.FwStartBl() ? "done." : "failed!") << endl;
+			cout << (control.FwStartBl() ? "done.\n" : "failed!\n");
 		};
   
 };
