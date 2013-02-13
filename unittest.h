@@ -24,6 +24,11 @@
 	printf("ERROR %s:%d: %s() CHECK(" #EXPRESSION ") failed\n", __FILE__, __LINE__, __FUNCTION__); \
 }
 
+#define CHECK_MEMCMP(BUFFER, REF_DATA, REF_SIZE) { \
+	CHECK(0 == memcmp(BUFFER, REF_DATA, REF_SIZE)); \
+	BUFFER += REF_SIZE; \
+}
+
 #define NOT_IMPLEMENTED(X) { \
 	printf("ERROR %s:%d: %s() NOT IMPLEMENTED\n", __FILE__, __LINE__, __FUNCTION__); \
 	return 1; \

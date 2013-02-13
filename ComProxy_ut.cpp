@@ -28,7 +28,7 @@
 #include "string.h"
 
 #define CRC_SIZE 2
-static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;
+static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 static const std::string AOK_STRING(AOK);
 
 ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) : mSock(0) {}
@@ -87,7 +87,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 	/* Sync */
 	if((sizeof(BL_SYNC) == length) && (0 == memcmp(BL_SYNC, frame, sizeof(BL_SYNC))))
 	{
-		Trace_String("Reply to SYNC\n");
+		Trace(ZONE_INFO, "Reply to SYNC\n");
 		g_TestSocketRecvBuffer[0] = BL_STX;
 		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = 1;
@@ -97,7 +97,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 	/* prepare response for BlInfoRequest */
 	if((frame[1] == 0x00) && (frame[2] == 0) && (frame[3] == 0) && (frame[4] == BL_ETX))
 	{
-		Trace_String("BlInfoRequest\n");
+		Trace(ZONE_INFO,"BlInfoRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlInfoMasked, sizeof(dummyBlInfoMasked));
 		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = sizeof(dummyBlInfoMasked);
@@ -107,7 +107,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 	/* prepare response for BlEepromRequest */
 	if((frame[1] == 0x02) && (frame[length-1] == BL_ETX))
 	{
-		Trace_String("BlEepromRequest\n");
+		Trace(ZONE_INFO,"BlEepromRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashCrc16ResponseMasked, sizeof(dummyBlFlashCrc16ResponseMasked));
 		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashCrc16ResponseMasked);
@@ -117,7 +117,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 	/* prepare response for BlFlashCrc16Request */
 	if((frame[1] == 0x02) && (frame[length-1] == BL_ETX))
 	{
-		Trace_String("BlFlashCrc16Request\n");
+		Trace(ZONE_INFO,"BlFlashCrc16Request\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashCrc16ResponseMasked, sizeof(dummyBlFlashCrc16ResponseMasked));
 		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashCrc16ResponseMasked);
@@ -127,7 +127,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 	/* prepare response for BlFlashEraseRequest */
 	if((frame[1] == 0x03) && (frame[length-1] == BL_ETX))
 	{
-		Trace_String("BlFlashEraseRequest\n");
+		Trace(ZONE_INFO,"BlFlashEraseRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashEraseResponseMasked, sizeof(dummyBlFlashEraseResponseMasked));
 		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashEraseResponseMasked);
@@ -137,7 +137,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 	/* prepare response for BlFlashReadRequest */
 	if(0 == memcmp(frame, exampleBlFlashRead, sizeof(exampleBlFlashRead)))
 	{
-		Trace_String("BlFlashReadRequest\n");
+		Trace(ZONE_INFO,"BlFlashReadRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashReadResponseMasked, sizeof(dummyBlFlashReadResponseMasked));
 		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashReadResponseMasked);
@@ -147,7 +147,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 	/* prepare response for BlEepromReadRequest*/
 	if((frame[1] == 0x05) && (frame[length-1] == BL_ETX))
 	{
-		Trace_String("BlEepromReadRequest\n");
+		Trace(ZONE_INFO,"BlEepromReadRequest\n");
 		memcpy(g_TestSocketRecvBuffer, dummyBlFlashReadResponseMasked, sizeof(dummyBlFlashReadResponseMasked));
 		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = sizeof(dummyBlFlashReadResponseMasked);
@@ -157,7 +157,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 	/* there is no response for run app, but we set some marker for verification */
 	if((frame[1] == 0x08) && (frame[length-1] == BL_ETX))
 	{
-		Trace_String("BlRunAppRequest\n");
+		Trace(ZONE_INFO,"BlRunAppRequest\n");
 		g_TestSocketRecvBuffer[0] = 'x';
 		g_TestSocketRecvBuffer[1] = 'x';
 		g_TestSocketRecvBuffer[2] = 'x';
@@ -166,7 +166,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 		return length;
 	}
 
-	Trace_String("Unkown BlRequest => should be a telnet telegram -> echo back\n");
+	Trace(ZONE_INFO, "Unkown BlRequest => should be a telnet telegram -> echo back\n");
 	memcpy(g_TestSocketSendBuffer + g_TestSocketSendBufferPos, frame, length);
 	g_TestSocketSendBufferPos += length;
 
@@ -246,10 +246,7 @@ size_t ut_ComProxy_MaskControlCharacters(void)
 
 	for(size_t i = 0; i < 6; i++)
 	{
-		Trace_Hex(sendBuffer[i]);
-		Trace_String("-");
-		Trace_Hex(recvBuffer[i]);
-		Trace_String("\n");
+		Trace(ZONE_INFO, "%02x - %02x\n", sendBuffer[i], recvBuffer[i]);
 	}
 	CHECK(0 == memcmp(sendBuffer, recvBuffer, 256));
 	TestCaseEnd();
@@ -526,18 +523,13 @@ size_t ut_ComProxy_TelnetSendString(void)
 		CHECK(dummy.TelnetSendString(cmd, value));
 		CHECK(cmdSetOptReplace.size() + 1 + CRLF.size() + cmd.size() + replacedValue.size() + CRLF.size() + cmdSetOptReplace.size() + 1 + CRLF.size() == g_TestSocketSendBufferPos);
 		const uint8_t* pPos = g_TestSocketSendBuffer;
-		CHECK(0 == memcmp(pPos, cmdSetOptReplace.data(), cmdSetOptReplace.size()));
-		pPos += cmdSetOptReplace.size();
-		CHECK(*pPos == replacement);
-		pPos++;
-		CHECK(0 == memcmp(pPos, CRLF.data(), CRLF.size()));
-		pPos += CRLF.size();
-		CHECK(0 == memcmp(pPos, cmd.data(), cmd.size()));
-		pPos += cmd.size();
-		CHECK(0 == memcmp(pPos, replacedValue.data(), replacedValue.size()));
-		pPos += replacedValue.size();
+		CHECK_MEMCMP(pPos, cmdSetOptReplace.data(), cmdSetOptReplace.size());
+		CHECK_MEMCMP(pPos, &replacement, sizeof(replacement));
+		CHECK_MEMCMP(pPos, CRLF.data(), CRLF.size());
+		CHECK_MEMCMP(pPos, cmd.data(), cmd.size());
+		CHECK_MEMCMP(pPos, replacedValue.data(), replacedValue.size());
 		std::rotate(value.begin(), value.begin()+1, value.end());
-	} while(false && ' ' != replacement);
+	} while(' ' != value.back());
 	
 
 	g_TestSocketRecvBufferPos = 0;
@@ -553,7 +545,6 @@ size_t ut_ComProxy_TelnetSendString(void)
 int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
-#if 1
 	RunTest(true, ut_ComProxy_MaskControlCharacters);
 	RunTest(true, ut_ComProxy_BlEepromReadRequest);
 	RunTest(true, ut_ComProxy_BlEepromReadRequestTimeout);
@@ -567,13 +558,10 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_ComProxy_BlRunAppRequest);
 	RunTest(true, ut_ComProxy_TelnetRecv);
 	RunTest(true, ut_ComProxy_TelnetSend);
-#endif
 	RunTest(true, ut_ComProxy_TelnetSendString);
-#if 1
 	RunTest(true, ut_ComProxy_TelnetCloseAndSave);
 	RunTest(true, ut_ComProxy_TelnetCloseWithoutSave);
 	RunTest(true, ut_ComProxy_TelnetOpen);
-#endif
 	UnitTestMainEnd();
 }
 

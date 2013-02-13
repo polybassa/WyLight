@@ -60,7 +60,7 @@
 
 	#define Trace(ZONE, ...) do { \
 		if(g_DebugZones & (ZONE)) { \
-			printf("%s:%u:%s(): ", __FILE__, __LINE__, __FUNCTION__); \
+			printf("%s:%u: ", __FILE__, __LINE__); \
 			printf(__VA_ARGS__); \
 		} \
 	} while(0)

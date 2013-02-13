@@ -25,7 +25,7 @@
 #include <algorithm>
 #include <cctype>
 
-static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;
+static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 static const timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for framented responses from pic
 
@@ -408,7 +408,6 @@ bool ComProxy::TelnetSendString(const std::string& command, std::string value) c
 
 	const char replacement = REPLACE[pos];
 	std::replace_if(value.begin(), value.end(), isblank, replacement);
-
 	if(!TelnetSetReplaceChar(replacement))
 	{
 		Trace(ZONE_ERROR, "set replacement character failed\n");
