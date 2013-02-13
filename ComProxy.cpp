@@ -22,7 +22,9 @@
 #include "trace.h"
 #include "wifly_cmd.h"
 
-#include <iostream>
+#include <algorithm>
+#include <cctype>
+
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;
 
 static const timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for framented responses from pic
@@ -363,7 +365,7 @@ bool ComProxy::TelnetRecv(const std::string& expectedResponse) const
 	return 0 == memcmp(expectedResponse.data(), buffer, expectedResponse.size());
 }
 
-bool ComProxy::TelnetSend(std::string const& telnetMessage, std::string const& expectedResponse) const
+bool ComProxy::TelnetSend(const std::string& telnetMessage, const std::string& expectedResponse) const
 {
 	if(telnetMessage.size() != mSock.Send((uint8_t*)telnetMessage.data(), telnetMessage.size()))
 	{
@@ -383,5 +385,33 @@ bool ComProxy::TelnetSend(std::string const& telnetMessage, std::string const& e
 		return false;
 	}
 	return true;
+}
+
+bool ComProxy::TelnetSendString(const std::string& command, std::string value) const
+{
+	static const std::string REPLACE("\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2A\x2B\x2C\x2D\x2E\x2F\x3A\x3B\x3C\x3D\x3E\x3F\x40\x5B\x5C\x5D\x5E\x5F\x60\x7B\x7C\x7D\x7E\n");
+
+	// do we need to replace anything?
+	if(std::string::npos != value.find_first_of(' ', 0))
+	{
+		const size_t pos = REPLACE.find_first_not_of(value, 0);
+		if(std::string::npos == pos)
+		{
+			Trace(ZONE_ERROR, "No replacement character available to replace spaces in string\n");
+			return false;
+		}
+
+		const char replacement = REPLACE[pos];
+		std::replace_if(value.begin(), value.end(), isblank, replacement);
+
+		TelnetSetReplaceChar(replacement);
+		TelnetSetReplaceChar();
+	}
+	return TelnetSend(value.insert(0, command).append("\r\n"));
+}
+
+bool ComProxy::TelnetSetReplaceChar(const char replace) const
+{
+	return false;
 }
 

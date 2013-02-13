@@ -97,8 +97,8 @@ int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
 	RunTest(true, ut_WiflyControl_ConfSetDefaults);
-	RunTest(true, ut_WiflyControl_ConfSetWlanPhrase);
-	RunTest(true, ut_WiflyControl_ConfSetWlanSsid);
+	RunTest(false, ut_WiflyControl_ConfSetWlanPhrase);
+	RunTest(false, ut_WiflyControl_ConfSetWlanSsid);
 	UnitTestMainEnd();
 }
 
