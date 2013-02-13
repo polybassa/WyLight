@@ -529,16 +529,13 @@ size_t ut_ComProxy_TelnetSendString(void)
 		CHECK_MEMCMP(pPos, cmd.data(), cmd.size());
 		CHECK_MEMCMP(pPos, replacedValue.data(), replacedValue.size());
 		std::rotate(value.begin(), value.begin()+1, value.end());
-	} while(' ' != value.back());
-	
-
-	g_TestSocketRecvBufferPos = 0;
-	g_TestSocketRecvBufferSize = 0;
-	g_TestSocketSendBufferPos = 0;
-
+	} while(value.back() != ' ');
 
 	// test with no replacement char available
-
+	g_TestSocketSendBufferPos = 0;
+	value.append(1, replacement);
+	CHECK(!dummy.TelnetSendString(cmd, value));
+	CHECK(0 == g_TestSocketSendBufferPos);
 	TestCaseEnd();
 }
 
