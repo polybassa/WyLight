@@ -297,7 +297,7 @@ class ControlCmdConfSetDefaults : public WiflyControlCmd
 {
 	public:
 		ControlCmdConfSetDefaults(void) : WiflyControlCmd(
-					string("wlan_defaults"),
+					string("conf_defaults"),
 					string("' - set connection parameters to default"))
 		{};
 
@@ -307,11 +307,29 @@ class ControlCmdConfSetDefaults : public WiflyControlCmd
 		};
 };
 
+class ControlCmdConfSetWlan : public WiflyControlCmd
+{
+	public:
+		ControlCmdConfSetWlan(void) : WiflyControlCmd(
+				string("conf_wlan"),
+				string(" <passphrase> <ssid>'\n")
+			+ string("    <passphrase> wpa passphrase 1-63 characters\n")
+			+ string("    <ssid> wlan ssid 1-32 characters")) {};
+
+		virtual void Run(WiflyControl& control) const {
+			string phrase, ssid;
+			cin >> phrase;
+			cin >> ssid;
+			cout << "Setting passphrase '" << phrase << "' and ssid '" << ssid << "'... ";
+			cout << (control.ConfSetWlan(phrase, ssid) ? "done.\n" : "failed!\n");
+		};
+};
+
 class ControlCmdStartBl : public WiflyControlCmd
 {
 	public:
 		ControlCmdStartBl(void) : WiflyControlCmd(
-				  string("start_bl"),
+				 string("start_bl"),
 					string("' - start bootloader and terminate application")) {};
 				  
 		virtual void Run(WiflyControl& control) const {
@@ -529,6 +547,7 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdBlReadFlash(),
 	new ControlCmdBlRunApp(),
 	new ControlCmdConfSetDefaults(),
+	new ControlCmdConfSetWlan(),
 	new ControlCmdClearScript(),
 	new ControlCmdSetColor(),
 	new ControlCmdSetFade(),
