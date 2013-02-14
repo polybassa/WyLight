@@ -20,9 +20,10 @@
 #include "crc.h"
 #include "trace.h"
 
+#include <algorithm>
+#include <cctype>
 #include <iostream>
 #include <sstream>
-#include <cassert>
 #include <stddef.h>
 #include <fstream>
 #include <iomanip>
@@ -523,8 +524,7 @@ bool WiflyControl::ConfSetDefaults(void) const
 		Trace(ZONE_ERROR, "open telnet connection failed\n");
 		return false;
 	}
-#if 1
-	//TODO test this code on hardware and then remove old implementation
+
 	for(size_t i = 0; i < sizeof(commands) / sizeof(commands[0]); i++)
 	{
 		if(!mProxy.TelnetSend(commands[i]))
@@ -533,42 +533,52 @@ bool WiflyControl::ConfSetDefaults(void) const
 			return mProxy.TelnetClose(false);
 		} 
 	}
-#else
-	if(!mProxy.TelnetSend("set broadcast interval 1\r\n"))
+	return mProxy.TelnetClose(true);
+}
+
+bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssid) const
+{
+	static const size_t PHRASE_MAX = 63;
+	static const size_t SSID_MAX = 32;
+
+	if((phrase.size() < 1) || (phrase.size() > PHRASE_MAX) || 0 != std::count_if(phrase.begin(), phrase.end(), iscntrl))
 	{
-		Trace(ZONE_ERROR, "'set broadcast interval 1' failed\n");
+		Trace(ZONE_WARNING, "Invalid wlan passphrase '%s'\n", phrase.data());
 		return false;
 	}
 	
-	if(!mProxy.TelnetSend("set uart baud 115200\r\n"))
+	if((ssid.size() < 1) || (ssid.size() > SSID_MAX))
 	{
-		Trace(ZONE_ERROR, "'set uart baud 115200' failed\n");
+		Trace(ZONE_WARNING, "Invalid wlan ssid '%s'\n", phrase.data());
 		return false;
 	}
-	
-	if(!mProxy.TelnetSend("set uart flow 0\r\n"))
+
+	if(!mProxy.TelnetOpen())
 	{
-		Trace(ZONE_ERROR, "'set uart flow 0' failed\n");
+		Trace(ZONE_ERROR, "open telnet connection failed\n");
 		return false;
 	}
-	
-	if(!mProxy.TelnetSend("set uart mode 0\r\n"))
+
+	if(!mProxy.TelnetSendString("set wlan phrase ", phrase))
 	{
-		Trace(ZONE_ERROR, "'set uart mode 0' failed\n");
+		Trace(ZONE_ERROR, "set wlan phrase to '%s' failed\n", phrase.data());
+		mProxy.TelnetClose(false);
 		return false;
 	}
-#endif
+
+	if(!mProxy.TelnetSendString("set wlan ssid ", ssid))
+	{
+		Trace(ZONE_ERROR, "set wlan ssid to '%s' failed\n", ssid.data());
+		mProxy.TelnetClose(false);
+		return false;
+	}
 	return mProxy.TelnetClose(true);
 }
 
 int WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, unsigned char* pResponse, size_t responseSize) const
 {
-	int retval;
-	
 	pFrame->length = length + 2; //add cmd and length byte
-	retval =  mProxy.Send(&mCmdFrame, pResponse, responseSize, false);
-	return retval;
-	
+	return mProxy.Send(&mCmdFrame, pResponse, responseSize, false);
 }
 
 bool WiflyControl::FwClearScript(void)

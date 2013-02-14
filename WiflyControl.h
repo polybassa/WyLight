@@ -58,6 +58,7 @@ class WiflyControl
 		
 		/** ----------------------------- Telnet METHODES ----------------------------- **/
 		bool ConfSetDefaults(void) const;
+		bool ConfSetWlan(const std::string& phrase, const std::string& ssid) const;
 		
 		
 		/** ------------------------------ FIRMWARE METHODES ------------------------------ **/
