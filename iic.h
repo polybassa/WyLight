@@ -20,8 +20,8 @@
  #define _IIC_H_
  
  void I2C_Init();
- void I2C_Write(uns8 slaveaddr,uns8 dataaddr, uns8 data);
- uns8 I2C_Read(uns8 slaveaddr,uns8 readaddr);
+ void I2C_Write(const uns8 slaveaddr, const uns8 dataaddr, const uns8 data);
+ uns8 I2C_Read(const uns8 slaveaddr, const uns8 readaddr);
  
  
  #endif /*_IIC_H_*/

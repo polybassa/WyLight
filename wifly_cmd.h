@@ -24,6 +24,7 @@
 #include "rtc.h"
 #include "RingBuf.h"
 #include "timer.h"
+#include "error.h"
 
 //*********************** ENUMERATIONS *********************************************
 #define STX 0x0F
@@ -31,20 +32,19 @@
 #define ETX 0x04
 
 #define WAIT 0xFE
-#define SET_COLOR 0xFD
 #define SET_FADE 0xFC
 #define CLEAR_SCRIPT 0xF8
 #define LOOP_ON 0xF7
 #define LOOP_OFF 0xF6
 #define START_BL 0xF5
-#define SET_RTC 0xF4 			/* FRAME: <STX><LEN><SET_RTC><SEC><MIN><HOUR><DAY><MONTH><YEAR><WDAY><CRC><CRC> */
+#define SET_RTC 0xF4 	
 #define GET_RTC 0xF3
-#define DISPLAY_RTC 0xF2	//TODO: REMOVE
 #define SET_COLOR_DIRECT 0xF1
 #define GET_CYCLETIME 0xF0
 #define ADD_COLOR 0xEF
 #define GET_TRACE 0xEE
 #define GET_FW_VERSION 0xED
+#define FW_STARTED 0xEC
 
 #define LOOP_INFINITE 0
 
@@ -55,6 +55,7 @@
 #pragma pack(push)
 #pragma pack(1)
 #endif
+
 struct cmd_add_color {
 	uns8 addr[4];
 	uns8 red;
@@ -111,30 +112,15 @@ struct cmd_get_fw_version {
 	uns8 minor;
 };
 
-enum response_state {
-	SaveCommand,
-	ErrorEepromFull,
-	ErrorCrcCheckFail,
-	ErrorRecvBufFull,
-	ErrorCmdBufFull,
-	ErrorTraceBufFull
-};
-
 struct response_frame {
+	uns16 length;		/* only for Firmware, do not use in Client */
 	uns8 cmd;
-	enum response_state state;
+	ERROR_CODE state;
 	union {
 		struct rtc_time get_rtc;
 		struct cmd_get_fw_version version;
-#ifdef __CC8E__						/*  for the pic - fw, these variables are only placeholders
-									    to safe RAM, the data-payload is copied just in time from
-									    the static ram source */
-		uns8 get_trace_string;
-		uns16 get_max_cycle_times;
-#else
 		uns8 get_trace_string[RingBufferSize];
 		uns16 get_max_cycle_times[CYCLETIME_METHODE_ENUM_SIZE];
-#endif
 	}data;
 };
 

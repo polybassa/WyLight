@@ -17,10 +17,7 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "timer.h"
-#include "ledstrip.h"
 #include "trace.h"
-#include "usart.h"
-#include "ScriptCtrl.h"
 
 bank3 struct CycleTimeBuffer g_CycleTimeBuffer;
 enum CYCLETIME_METHODE enumMethode;
@@ -157,8 +154,8 @@ void Timer_Init()
 #endif /* #ifdef __CC8E__ */
 }
 
-#ifdef TEST
-void Timer_StartStopwatch(enum CYCLETIME_METHODE destMethode)
+#ifdef DEBUG
+void Timer_StartStopwatch(const enum CYCLETIME_METHODE destMethode)
 {
 	uns16 tempTime;
 
@@ -167,7 +164,7 @@ void Timer_StartStopwatch(enum CYCLETIME_METHODE destMethode)
 	g_CycleTimeBuffer.tempCycleTime[destMethode] = tempTime;
 }
 
-void Timer_StopStopwatch(enum CYCLETIME_METHODE destMethode)
+void Timer_StopStopwatch(const enum CYCLETIME_METHODE destMethode)
 {
 	uns16 tempTime,temp16;
 	
@@ -190,20 +187,34 @@ void Timer_StopStopwatch(enum CYCLETIME_METHODE destMethode)
 	g_CycleTimeBuffer.tempCycleTime[destMethode] = 0;
 }
 
-void Timer_PrintCycletime(void)
+uns8 Timer_PrintCycletime(uns16 *pArray, const uns16 arraySize)
 {
-	uns8 i;
-	uns16 temp16;
-	for(i = 0; i < CYCLETIME_METHODE_ENUM_SIZE; i++)
+	uns16 i, temp16;
+	for(i = 0; i < CYCLETIME_METHODE_ENUM_SIZE && i < arraySize; i++)
 	{
-		temp16 = g_CycleTimeBuffer.maxCycleTime[i]; 
-		temp16 = temp16 >> 1;
-		Trace_String(" Z");
-		Trace_Number(i);
-		Trace_Char(':');
-		Trace_Hex16(temp16);
-		
+		temp16 = g_CycleTimeBuffer.maxCycleTime[i];
+		temp16 = htons(temp16);
+		*pArray = temp16;
+		pArray++;
 		g_CycleTimeBuffer.maxCycleTime[i] = 0;
 	}
+	return i + i;
 }
-#endif /*TEST*/
+#else
+
+void Timer_StartStopwatch(enum CYCLETIME_METHODE destMethode)
+{
+	
+}
+
+void Timer_StopStopwatch(enum CYCLETIME_METHODE destMethode)
+{
+	
+}
+
+uns8 Timer_PrintCycletime(uns16 *pArray, const uns16 arraySize)
+{
+	return 0;
+}
+
+#endif /*DEBUG*/

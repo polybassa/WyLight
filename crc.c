@@ -19,7 +19,7 @@
 #include "crc.h"
 
 // 16-bit CCIT CRC
-void Crc_AddCrc(uns8 byte,uns8* p_crcH,uns8* p_crcL)
+void Crc_AddCrc(const uns8 byte,uns8* p_crcH,uns8* p_crcL)
 {
 	uns8 index, crcH, crcL;
 	crcH = *p_crcH;
@@ -89,7 +89,7 @@ void Crc_AddCrc(uns8 byte,uns8* p_crcH,uns8* p_crcL)
 #ifdef __cplusplus
 	extern "C" {
 #endif
-	void Crc_AddCrc16(uns8 byte, uns16* pCrc)
+	void Crc_AddCrc16(const uns8 byte, uns16* pCrc)
 	{
 		Crc_AddCrc(byte, ((uns8*)pCrc) + 1, (uns8*)pCrc);
 	}
@@ -97,7 +97,7 @@ void Crc_AddCrc(uns8 byte,uns8* p_crcH,uns8* p_crcL)
 	}
 #endif
 
-void Crc_BuildCrc(const uns8 *data, uns8 length, uns8* crcH_out, uns8* crcL_out)
+void Crc_BuildCrc(const uns8 *data, const uns8 length, uns8* crcH_out, uns8* crcL_out)
 {
 	if(!crcH_out) return;
 	if(!crcL_out) return;

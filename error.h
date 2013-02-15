@@ -18,6 +18,7 @@
 
 #ifndef _ERROR_H_
 #define _ERROR_H_
+
 // *** ERRORBITS
 struct ErrorBits {
 		char CrcFailure:1;
@@ -26,9 +27,26 @@ struct ErrorBits {
 };
 extern struct ErrorBits g_ErrorBits;
 
+#ifdef __CC8E__
+typedef enum {
+#else /* For GCC or CLANG on X86, ARM */
+typedef enum __attribute__ ((__packed__)) {
+#endif 
+	NoError,
+	ErrorEepromFull,
+	ErrorCrcCheckFail,
+	ErrorRecvBufFull,
+	ErrorCmdBufFull,
+	ErrorTraceBufFull,
+	NoResponse,					/* used in client */
+	ParameterFailure			/* used in client */
+} ERROR_CODE;
+
 #define Error_Init(x) \
 	g_ErrorBits.CrcFailure = 0; \
 	g_ErrorBits.EepromFailure = 0;
 
 void Error_Throw();
+
+ERROR_CODE Error_GetState();
 #endif /* #ifndef _ERROR_H_ */

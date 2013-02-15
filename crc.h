@@ -22,18 +22,18 @@
 #include "platform.h"
 
 //adds one byte to the given crc checksum
-void Crc_AddCrc(uns8 byte, uns8* p_crcH, uns8* p_crcL);
+void Crc_AddCrc(const uns8 byte, uns8* p_crcH, uns8* p_crcL);
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-void Crc_AddCrc16(uns8 byte, uns16* pCrc);
+void Crc_AddCrc16(const uns8 byte, uns16* pCrc);
 #ifdef __cplusplus
 }
 #endif
 
 //do a complete crc calulation 
-void Crc_BuildCrc(const uns8 *data, uns8 length, uns8* crcH_out, uns8* crcL_out);
+void Crc_BuildCrc(const uns8 *data, const uns8 length, uns8* crcH_out, uns8* crcL_out);
 
 
 //set the crc-Bytes to inital value

@@ -48,7 +48,7 @@ extern bank7 struct RingBuffer g_RingBuf;
 #define RingBufInc(x) ((x + 1) & RingBufferSize)
 
 bit RingBuf_HasError(struct RingBuffer *pBuf);
-bit RingBuf_IsEmpty(struct RingBuffer *pBuf);
+bit RingBuf_IsEmpty(const struct RingBuffer *pBuf);
 
 
 /**
@@ -71,5 +71,5 @@ uns8 RingBuf_Get(struct RingBuffer *pBuf);
  * 
  * If the buffer is already full, <g_error_ringbuff> is set.
  */
-void RingBuf_Put(struct RingBuffer *pBuf, uns8 value);
+void RingBuf_Put(struct RingBuffer *pBuf, const uns8 value);
 #endif /* #ifndef _RINGBUF_H_ */

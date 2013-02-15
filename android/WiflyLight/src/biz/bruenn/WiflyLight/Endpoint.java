@@ -13,7 +13,7 @@ public class Endpoint {
 		return mAddr;
 	}
 	
-	public int getPort() {
+	public short getPort() {
 		return mPort;
 	}
 	

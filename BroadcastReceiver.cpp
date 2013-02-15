@@ -96,5 +96,7 @@ size_t BroadcastReceiver::NumRemotes(void) const
 void BroadcastReceiver::Stop(void)
 {
 	mIsRunning = false;
+	UdpSocket sock(INADDR_LOOPBACK, mPort, false);
+	sock.Send((unsigned char const*)STOP_MSG, STOP_MSG_LENGTH);
 }
 

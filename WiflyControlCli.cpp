@@ -26,6 +26,7 @@
 #include <unistd.h>
 #include <vector>
 
+using std::cin;
 using std::cout;
 
 WiflyControlCli::WiflyControlCli(uint32_t addr, uint16_t port)

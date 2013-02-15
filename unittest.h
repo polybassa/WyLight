@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+ Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -24,6 +24,11 @@
 	printf("ERROR %s:%d: %s() CHECK(" #EXPRESSION ") failed\n", __FILE__, __LINE__, __FUNCTION__); \
 }
 
+#define CHECK_MEMCMP(BUFFER, REF_DATA, REF_SIZE) { \
+	CHECK(0 == memcmp(BUFFER, REF_DATA, REF_SIZE)); \
+	BUFFER += REF_SIZE; \
+}
+
 #define NOT_IMPLEMENTED(X) { \
 	printf("ERROR %s:%d: %s() NOT IMPLEMENTED\n", __FILE__, __LINE__, __FUNCTION__); \
 	return 1; \
@@ -33,7 +38,7 @@
 	if(RUN) { \
 		int _errors= FUNC(); \
 		if(_errors != 0) { \
-			printf(#FUNC"() run with %d errors\n", _errors); \
+			printf(#FUNC"() run with %d errors\n", (int)_errors); \
 			numErrors+= _errors; \
 		} \
 		numTests++; \
@@ -47,7 +52,7 @@
 
 #define UnitTestMainBegin(X) size_t numErrors = 0; size_t numSkipped = 0; size_t numTests = 0;
 #define UnitTestMainEnd(X) { \
-	printf("%25s run %d Tests (%d skipped | %d errors)\n", __FILE__, numTests, numSkipped, numErrors); \
+	printf("%25s run %2u Tests (%2u skipped | %2u errors)\n", __FILE__, numTests, numSkipped, numErrors); \
 	return numErrors; \
 }
 
