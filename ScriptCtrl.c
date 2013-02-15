@@ -17,9 +17,9 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "ScriptCtrl.h"
+#include "CommandIO.h"
 #include "ledstrip.h"
 #include "eeprom.h"
-#include "timer.h"
 #include "trace.h"
 
 /**************** private functions/ macros *****************/
@@ -105,48 +105,17 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 			return ScriptCtrl_Write(pCmd);
 		}
 		case START_BL:
-#ifdef __CC8E__
-			UART_Send(STX);
-			UART_SendString("EXIT: Leaving Application --> Starting Bootloader");
-			UART_Send(0x25);
-			UART_Send(0x15);
-			UART_Send(ETX);
-#endif
+		{
+			CommandIO_CreateResponse(&g_ResponseBuf, START_BL);
+			CommandIO_SendResponse(&g_ResponseBuf);
 			Platform_EnableBootloaderAutostart();
 			softReset();
 			/* never reach this */
 			return FALSE;
-#ifdef __CC8E__
-		case DISPLAY_RTC:
-		{
-			Rtc_Ctl(RTC_RD_TIME, &g_RtcTime);
-			Trace_String("TIME:");
-			Trace_Number(g_RtcTime.tm_year);
-			Trace_String("Y ");
-			Trace_Number(g_RtcTime.tm_mon);
-			Trace_String("M ");
-			Trace_Number(g_RtcTime.tm_mday);
-			Trace_String("D ");
-			Trace_Number(g_RtcTime.tm_wday);
-			Trace_String("W, ");
-			Trace_Number(g_RtcTime.tm_hour);
-			Trace_String(":");
-			Trace_Number(g_RtcTime.tm_min);
-			Trace_String("_");
-			Trace_Number(g_RtcTime.tm_sec);
-			return TRUE;
 		}
+#ifdef __CC8E__
 		case GET_RTC:
 		{
-			Rtc_Ctl(RTC_RD_TIME, &g_RtcTime);
-			Trace_String("TIME@");
-			Trace_Char(g_RtcTime.tm_sec);
-			Trace_Char(g_RtcTime.tm_min);
-			Trace_Char(g_RtcTime.tm_hour);
-			Trace_Char(g_RtcTime.tm_mday);
-			Trace_Char(g_RtcTime.tm_mon);
-			Trace_Char(g_RtcTime.tm_year);
-			Trace_Char(g_RtcTime.tm_wday);
 			return TRUE;
 		}
 		case SET_RTC:
@@ -168,12 +137,10 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 		}	
 		case GET_CYCLETIME:
 		{
-			Timer_PrintCycletime();
 			return TRUE;
 		}
 		case GET_TRACE:
 		{
-			Trace_Print();
 			return TRUE;
 		}
 #endif /* #ifndef CC8E */
@@ -284,17 +251,6 @@ void ScriptCtrl_Run(void)
 					/* move execute pointer to the next command */
 					gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
 				}
-			}
-			break;
-		}
-		case SET_COLOR:
-		{
-			Ledstrip_SetColor(&nextCmd.data.set_color);
-			/* move execute pointer to the next command */
-			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
-			if(!gScriptBuf.inLoop)
-			{
-				ScriptBufSetRead(gScriptBuf.execute);
 			}
 			break;
 		}

@@ -16,9 +16,12 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
+#include "trace.h"
 #include "unittest.h"
 #include "WiflyControl.h"
 #include <string>
+
+static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 // empty wrappers to satisfy the linker
 ClientSocket::ClientSocket(uint32_t, uint16_t, int) : mSock(0) {}
@@ -31,68 +34,102 @@ int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, 
 int32_t ComProxy::Send(cmd_frame const* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const {	return -1; }
 
 // wrapper to test WiflyControl
-std::string g_TestBuffer;
+static std::list<std::string> g_TestBuffer;
+static bool g_ProxySaved = false;
+static bool g_ProxyConnected = false;
 
-bool TestBufferEquals(const std::string msg)
+bool ComProxy::TelnetClose(bool doSave) const
 {
-	return 0 == g_TestBuffer.compare(msg);
-}
-
-void TestBufferInit(void)
-{
-	g_TestBuffer = std::string();
-}
-
-bool ComProxy::Send(std::string const& telnetMessage) const
-{
-	g_TestBuffer = telnetMessage;
+	g_ProxySaved = doSave;
+	g_ProxyConnected = false;
 	return true;
 }
 
+bool ComProxy::TelnetOpen(void) const
+{
+	return g_ProxyConnected = true;
+}
+
+bool ComProxy::TelnetSend(const std::string& message, const std::string& expectedResponse) const
+{
+	g_TestBuffer.push_back(message);
+	return g_ProxyConnected;
+}
+
+bool ComProxy::TelnetSendString(const std::string& command, std::string value) const
+{
+	g_TestBuffer.push_back(command);
+	g_TestBuffer.push_back(value);
+	return g_ProxyConnected;
+}
 
 
 // Testcases
-size_t ut_WiflyControl_WlanSetJoin(void)
+size_t ut_WiflyControl_ConfSetDefaults(void)
 {
 	TestCaseBegin();
-	WiflyControl testControl(0, 0);
-	CHECK(testControl.WlanSetJoin());
-	CHECK(TestBufferEquals(string("set wlan join 1")));
+	static const std::string commands[] = {
+		"set broadcast interval 1\r\n",   // to support fast broadcast recognition
+		"set uart baud 115200\r\n",       // PIC uart parameter
+		"set uart flow 0\r\n",            // PIC uart parameter
+		"set uart mode 0\r\n",            // PIC uart parameter
+		"set wlan rate 0\r\n",            // slowest datarate but highest range
+	};
+	static const size_t numCommands = sizeof(commands) / sizeof(commands[0]);
+
+	WiflyControl testee(0, 0);
+
+	g_TestBuffer.clear();
+	CHECK(testee.ConfSetDefaults());
+	CHECK(!g_ProxyConnected);
+	CHECK(g_ProxySaved);
+	CHECK(numCommands == g_TestBuffer.size());
+	for(size_t i = 0; i < numCommands; i++)
+	{
+		CHECK(0 == commands[i].compare(g_TestBuffer.front()));
+		g_TestBuffer.pop_front();
+		
+	}
 	TestCaseEnd();
 }
 
-size_t ut_WiflyControl_WlanSetRate(void)
+size_t ut_WiflyControl_ConfSetWlan(void)
 {
 	TestCaseBegin();
-	WiflyControl testControl(0, 0);
-	// bad cases
-	TestBufferInit();
-	CHECK(!testControl.WlanSetRate(-1));
-	CHECK(TestBufferEquals(string()));
-	for(size_t i = 4; i <= 7; i++) {
-		TestBufferInit();
-		CHECK(!testControl.WlanSetRate(i));
-		CHECK(TestBufferEquals(string()));
-	}
-	TestBufferInit();
-	CHECK(!testControl.WlanSetRate(16));
-	CHECK(TestBufferEquals(string()));
+	static const std::string phraseBase("12345678911234567892123456789312345678941234567895123456789612");
+	static const std::string phraseContainsNonAlNum(phraseBase + "\x1f");
+	static const std::string phrase(phraseBase + "3");
+	static const std::string phraseToLong(phrase + " ");
+	static const std::string ssid      ("12345678911234567892123456789312");
+	static const std::string ssidToLong(ssid + " ");
+	WiflyControl testee(0, 0);
+	
+	// passphrase to short
+	CHECK(!testee.ConfSetWlan("", ssid));
 
-	// good cases
-	TestBufferInit();
-	CHECK(testControl.WlanSetRate(0));
-	CHECK(TestBufferEquals(string("set wlan rate 0")));
-	TestBufferInit();
-	CHECK(testControl.WlanSetRate(15));
-	CHECK(TestBufferEquals(string("set wlan rate 15")));
+	// passphrase to long
+	CHECK(!testee.ConfSetWlan(phraseToLong, ssid));
+
+	// passphrase contains not only alphanumeric characters
+	CHECK(!testee.ConfSetWlan(phraseContainsNonAlNum, ssid));
+
+	// ssid to short
+	CHECK(!testee.ConfSetWlan(phrase, ""));
+
+	// ssid to long
+	CHECK(!testee.ConfSetWlan(phrase, ssidToLong));
+
+	// valid passphrase and ssid
+	CHECK(testee.ConfSetWlan(phrase, ssid));
+	
 	TestCaseEnd();
 }
 
 int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
-	RunTest(true, ut_WiflyControl_WlanSetJoin);
-	RunTest(true, ut_WiflyControl_WlanSetRate);
+	RunTest(true, ut_WiflyControl_ConfSetDefaults);
+	RunTest(true, ut_WiflyControl_ConfSetWlan);
 	UnitTestMainEnd();
 }
 

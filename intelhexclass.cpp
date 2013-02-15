@@ -73,7 +73,8 @@
 
 #include "intelhexclass.h"
 
-using namespace std;
+using std::cout;
+using std::vector;
 
 /******************************************************************************/
 /*! Possible record types for Intel HEX file.

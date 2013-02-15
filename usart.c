@@ -47,6 +47,8 @@ void UART_Send(const uns8 ch)
 
 #endif /* #ifndef CC8E */
 
+#if 0
+/* NOT USED CODE ----- REMOVE IF WE DON'T NEED IT ANYMORE */
 //*******  Sende-String-Funktion  *************************************************
 void UART_SendString(const char *string)
 {
@@ -105,8 +107,9 @@ void UART_SendHex_16(const uns16 input)
 #else
 	UART_SendHex_8((input & 0xff00) >> 8);
 	UART_SendHex_8((unsigned char)(input & 0xff));
-#endif /* #ifdef __CC8E__ */
+#endif 
 }
+ 
 //*******  Sende-Zahl-als-String-Funktion  *************************************************
 void UART_SendNumber(uns8 input,const uns8 sign)
 {
@@ -143,7 +146,6 @@ void UART_SendNumber(uns8 input,const uns8 sign)
    UART_Send(sign); 	//Zeichen senden
 }
 
-/*
 //SENDE BCD-Zahl als String
 void UART_SendTime(unsigned char input,unsigned char sign)
 {
@@ -164,6 +166,6 @@ void UART_SendTime(unsigned char input,unsigned char sign)
 	UART_Send(z+0x30);
 	UART_Send(e+0x30);
 	UART_Send(sign);
-}*/
-	
+}
+#endif	
 

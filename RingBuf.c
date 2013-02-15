@@ -40,7 +40,7 @@ uns8 RingBuf_Get(struct RingBuffer *pBuf)
 	return result;
 }
 
-void RingBuf_Put(struct RingBuffer *pBuf, uns8 value)
+void RingBuf_Put(struct RingBuffer *pBuf,const uns8 value)
 {
 	Platform_DisableAllInterrupts();
 	uns8 writeNext = RingBufInc(pBuf->write);
@@ -59,7 +59,7 @@ bit RingBuf_HasError(struct RingBuffer *pBuf)
 	return pBuf->error_full;
 }
 
-bit RingBuf_IsEmpty(struct RingBuffer *pBuf)
+bit RingBuf_IsEmpty(const struct RingBuffer *pBuf)
 {
 	Platform_DisableAllInterrupts();
 	uns8 write = pBuf->write;
