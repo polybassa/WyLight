@@ -47,8 +47,8 @@ void UART_Send(const uns8 ch)
 
 #endif /* #ifndef CC8E */
 
+#if 0
 /* NOT USED CODE ----- REMOVE IF WE DON'T NEED IT ANYMORE */
-/*
 //*******  Sende-String-Funktion  *************************************************
 void UART_SendString(const char *string)
 {
@@ -166,6 +166,6 @@ void UART_SendTime(unsigned char input,unsigned char sign)
 	UART_Send(z+0x30);
 	UART_Send(e+0x30);
 	UART_Send(sign);
-}*/
-	
+}
+#endif	
 

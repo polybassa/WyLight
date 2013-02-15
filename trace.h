@@ -25,10 +25,9 @@
 
 #include "platform.h"
 
-#ifdef DEBUG 
+#ifdef DEBUG
+extern struct RingBuffer g_TraceBuf;
 #ifdef __CC8E__
-	extern struct RingBuffer g_TraceBuf;
-	
 	void Trace_String(const char *string);
 	
 	void Trace_Number(const uns8 input);

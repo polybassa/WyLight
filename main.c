@@ -16,9 +16,8 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#define DEBUG
-
 #ifdef __CC8E__
+#define DEBUG
 #pragma optimize 1
 #pragma sharedAllocation
 #endif
@@ -144,7 +143,11 @@ void HighPriorityInterruptFunction(void)
 
 
 //*********************** HAUPTPROGRAMM **********************************************
+#ifdef __CC8E__
 void main(void)
+#else
+int main(void)
+#endif
 {
 	/* softReset() on x86 will jump here! */
 	softResetJumpDestination();

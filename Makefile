@@ -12,7 +12,7 @@ endif
 ANDROID_DIR=./android/WiflyLight
 ANDROID_BIN=android/.metadata ${ANDROID_DIR}/bin/ ${ANDROID_DIR}/gen/ ${ANDROID_DIR}/libs/ ${ANDROID_DIR}/obj/ ${ANDROID_DIR}Test/bin/ ${ANDROID_DIR}Test/gen/
 
-X86_SRC=main.c crc.c CommandIO.c eeprom.c error.c ledstrip.c RingBuf.c ScriptCtrl.c spi.c timer.c usart.c x86_wrapper.c x86_gl.c
+X86_SRC=main.c crc.c CommandIO.c eeprom.c error.c ledstrip.c RingBuf.c ScriptCtrl.c spi.c timer.c trace.c usart.c x86_wrapper.c x86_gl.c
 
 X86_CLIENT_BUILD=g++ WiflyControlColorClass.cpp BroadcastReceiver.cpp ClientSocket.cpp ComProxy.cpp crc.c intelhexclass.cpp WiflyControl.cpp WiflyControlCli.cpp -DX86 -lpthread -o client.bin -Wall -pedantic -std=c++0x
 

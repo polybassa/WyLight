@@ -30,6 +30,8 @@ pthread_mutex_t g_led_mutex = PTHREAD_MUTEX_INITIALIZER;
 uns8 g_led_status[NUM_OF_LED*3];
 extern uns8 g_UpdateLed;
 
+struct RingBuffer g_TraceBuf;
+
 int g_uartSocket = -1;
 const unsigned short BROADCAST_PORT = 55555;
 const unsigned short WIFLY_SERVER_PORT = 2000;
@@ -139,6 +141,7 @@ void* timer4_interrupt(void* unused)
 }
 
 void Rtc_Init() {}
+void Rtc_Ctl(enum RTC_request req,struct rtc_time *pRtcTime) {}
 
 void UART_Init() {}
 void UART_Send(uns8 ch)
@@ -172,6 +175,11 @@ void SPI_SendLedBuffer(uns8 *array)//!!! CHECK if GIE=0 during the sendroutine i
 		SPI_Send(*array);
 	}
 	pthread_mutex_unlock(&g_led_mutex);
+}
+
+uns8 Trace_Print(uns8 *pArray, const uns16 arraySize)
+{
+	return 0;
 }
 
 void init_x86(void)

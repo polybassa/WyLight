@@ -18,9 +18,7 @@
 
 #include "trace.h"
 
-#ifdef DEBUG 
-#ifdef __CC8E__
-
+#if defined(DEBUG) && defined(__CC8E__)
 struct RingBuffer g_TraceBuf;
 
 void PutToBuf(const uns8 Byte)
@@ -131,11 +129,5 @@ uns8 Trace_Print(uns8 *pArray, const uns16 arraySize)
 		i++;
 	}
 	return i;
-}
-#endif
-#else /* DEBUG && __CC8E__ */
-uns8 Trace_Print(uns8 *pArray, const uns16 arraySize)
-{
-	return 0;
 }
 #endif
