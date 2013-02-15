@@ -24,10 +24,18 @@
 #include "RingBuf.h"
 #include "error.h"
 #include "wifly_cmd.h"
+#include <stdbool.h>
+#include <stdlib.h>
+#include <time.h>
+#include <stdio.h>
 
 #define NUM_TEST_LOOPS 255
 
+static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;
+
 struct ErrorBits g_ErrorBits;
+struct RingBuffer g_RingBufResponse;
+uns8 g_RandomDataPool[500];
 
 const uns8 dummyFrame_noSTX[] = { 0xff, DLE, ETX, 0x00, 0x14, 0xAF, ETX, 0x05, 0x04, 0x00 };
 const uns8 dummyFrame_completeFrame[] = { DLE, ETX, STX, 0x01, 0x02, 0x03, DLE, 0x04, DLE, 0x05, ETX };
@@ -41,7 +49,8 @@ const uns8 dummyFrame_twoFramesPure_2[] = { DLE, STX };
 void UART_Init() {}
 void UART_Send(const uns8 ch)
 {
-	printf("%c", ch);
+	//printf("%x", ch);
+	RingBuf_Put(&g_RingBufResponse, ch);
 }
 void UART_SendString(const uns8 *string)
 {
@@ -51,6 +60,48 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 {
 	return 1;
 }
+
+ERROR_CODE Error_GetState()
+{
+	return 0xff;
+}
+
+const struct cmd_get_fw_version g_Version = {99, 99};
+
+void Rtc_Ctl(enum RTC_request req,struct rtc_time *pRtcTime)
+{
+	int i;
+	uns8 *pData = (uns8*)pRtcTime;
+	for(i = 0; i < sizeof(struct rtc_time); i++)
+	{
+		*pData++ = g_RandomDataPool[i];
+	}
+}
+
+uns8 Timer_PrintCycletime(uns16 *pArray, uns16 arraySize)
+{
+	int i;
+	uns8 *pData = (uns8*)pArray;
+	for(i = 0; i < arraySize; i++)
+	{
+		*pData++ = g_RandomDataPool[i];
+	}
+	return i;
+
+}
+
+uns8 Trace_Print(uns8 *pArray, uns16 arraySize)
+{
+	int i;
+	uns8 *pData = (uns8*)pArray;
+	for(i = 0; i < arraySize; i++)
+	{
+		*pData++ = g_RandomDataPool[i];
+	}
+	return i;
+}
+
+/*--------------- TEST FUNCTIONS----------------*/
 
 
 int ut_CommandIO_Init(void)
@@ -182,14 +233,214 @@ int ut_CommandIO_ReadTwoFrames_2(void)
 	TestCaseEnd();
 }
 
-int main(int argc, const char* argv[])
+int ut_CommandIO_SendResponse(void)
 {
+	TestCaseBegin();
+	
+	/* init random seed */
+	srand(time(NULL));
+	
+	/* generate a default frame with maximal length of commandbuffer */
+	struct response_frame mFrame;
+	mFrame.length = CMDFRAMELENGTH - 3;
+	
+	/* get a pointer to start of payload */
+	uns8 *pPayload;
+	pPayload =(uns8*)&(mFrame.cmd);
+	
+	/* fill payload with random data */
+	int i;
+	for(i = 0; i < mFrame.length - 2; i++, pPayload++)
+	{
+		*pPayload =(uns8) rand() % 255;
+	}
+	
+#ifdef DEBUG
+	/* to find out which randomData kills the test */
+	const struct response_frame randomData = mFrame;
+#endif
+	
+	/* init everything, g_RingBufResponse is used to save all send data from UART_send */
+	RingBuf_Init(&g_RingBufResponse);
+	CommandIO_Init();
+	RingBuf_Init(&g_RingBuf);
+	
+	/* send data */
+	CommandIO_SendResponse(&mFrame);
+	
+	/* swap data from one ringbuf to the other, to scan data with CommandIO_GetCommands */
+	while(RingBuf_IsEmpty(&g_RingBufResponse) == 0)
+	{
+		RingBuf_Put(&g_RingBuf, RingBuf_Get(&g_RingBufResponse));
+	}
+
+	for (i = 0; i < 100; i++)
+	{
+		CommandIO_GetCommands();
+	}
+	
+	/* in the inputbuffer of g_CmdBuf must be the same data as in mFrame now */
+	const bool success = (0 == memcmp((void*)&mFrame, (void*)&g_CmdBuf.buffer, mFrame.length));
+	if(!success) TraceBuffer(ZONE_INFO, (uint8_t*)&randomData, sizeof(randomData), "%02x ", "this random data killed the test:\n");
+	CHECK(success);
+	
+	TestCaseEnd();
+}
+
+int ut_CommandIO_CreateResponse_RTC(void)
+{
+	TestCaseBegin();
+	/* init random seed */
+	srand(time(NULL));
+	
+	/* fill gloabal random data pool */
+	int i;
+	for(i = 0; i < sizeof(g_RandomDataPool); i++) g_RandomDataPool[i] = (uns8) rand() % 255;
+	
+	struct response_frame mFrame;
+	
+	CommandIO_CreateResponse(&mFrame, GET_RTC);
+	CHECK(0 == memcmp((void*)&(mFrame.data), (void*)&g_RandomDataPool[0], sizeof(struct rtc_time)));
+	CHECK(mFrame.cmd == GET_RTC);
+	CHECK(mFrame.length == sizeof(struct rtc_time) + sizeof(uns8)*2 + sizeof(uns16));
+	CHECK(mFrame.state == 0xff);
+	
+	TestCaseEnd();
+}
+
+int ut_CommandIO_CreateResponse_CYCLETIME(void)
+{
+	TestCaseBegin();
+	/* init random seed */
+	srand(time(NULL));
+	
+	/* fill gloabal random data pool */
+	int i;
+	for(i = 0; i < sizeof(g_RandomDataPool); i++) g_RandomDataPool[i] = (uns8) rand() % 255;
+	
+	struct response_frame mFrame;
+	
+	CommandIO_CreateResponse(&mFrame, GET_CYCLETIME);
+	CHECK(0 == memcmp((void*)&(mFrame.data), (void*)&g_RandomDataPool[0], sizeof(struct response_frame) - 4));
+	CHECK(mFrame.cmd == GET_CYCLETIME);
+	
+	CHECK(mFrame.length == sizeof(struct response_frame));
+	CHECK(mFrame.state == 0xff);
+	
+	TestCaseEnd();
+}
+
+int ut_CommandIO_CreateResponse_TRACE(void)
+{
+	TestCaseBegin();
+	/* init random seed */
+	srand(time(NULL));
+	
+	/* fill gloabal random data pool */
+	int i;
+	for(i = 0; i < sizeof(g_RandomDataPool); i++) g_RandomDataPool[i] = (uns8) rand() % 255;
+	
+	struct response_frame mFrame;
+	
+	CommandIO_CreateResponse(&mFrame, GET_TRACE);
+	CHECK(0 == memcmp((void*)&(mFrame.data), (void*)&g_RandomDataPool[0], sizeof(struct response_frame) - 4));
+	CHECK(mFrame.cmd == GET_TRACE);
+	
+	CHECK(mFrame.length == sizeof(struct response_frame));
+	CHECK(mFrame.state == 0xff);
+	
+	TestCaseEnd();
+}
+
+int ut_CommandIO_CreateResponse_FW_VERSION(void)
+{
+	TestCaseBegin();
+	struct response_frame mFrame;
+	
+	CommandIO_CreateResponse(&mFrame, GET_FW_VERSION);
+	CHECK(0 == memcmp((void*)&(mFrame.data), (void*)&g_Version, sizeof(struct cmd_get_fw_version)));
+	CHECK(mFrame.cmd == GET_FW_VERSION);
+	CHECK(mFrame.length == 6);
+	CHECK(mFrame.state == 0xff);
+	
+	TestCaseEnd();
+}
+
+int ut_CommandIO_CreateResponse_SET_FADE(void)
+{
+	TestCaseBegin();
+	struct response_frame mFrame;
+	
+	CommandIO_CreateResponse(&mFrame, SET_FADE);
+	CHECK(mFrame.cmd == SET_FADE);
+	CHECK(mFrame.length == 4);
+	CHECK(mFrame.state == 0xff);
+	
+	TestCaseEnd();
+}
+
+int ut_CommandIO_Create_n_Send(void)
+{
+	TestCaseBegin();
+	/* init random seed */
+	srand(time(NULL));
+	
+	/* fill gloabal random data pool */
+	int i;
+	for(i = 0; i < sizeof(g_RandomDataPool); i++) g_RandomDataPool[i] = (uns8) rand() % 255;
+	
+	struct response_frame mFrame;
+	
+	CommandIO_CreateResponse(&mFrame, GET_RTC);
+	
+	/* init everything, g_RingBufResponse is used to save all send data from UART_send */
+	RingBuf_Init(&g_RingBufResponse);
+	CommandIO_Init();
+	RingBuf_Init(&g_RingBuf);
+	
+	/* send data */
+	CommandIO_SendResponse(&mFrame);
+	
+	/* swap data from one ringbuf to the other, to scan data with CommandIO_GetCommands */
+	while(RingBuf_IsEmpty(&g_RingBufResponse) == 0)
+	{
+		RingBuf_Put(&g_RingBuf, RingBuf_Get(&g_RingBufResponse));
+	}
+	
+	for (i = 0; i < 100; i++)
+	{
+		CommandIO_GetCommands();
+	}
+	
+	struct response_frame *rFrame;
+	
+	rFrame = (void*)&g_CmdBuf.buffer;
+	
+	CHECK(0 == memcmp((void*)&(rFrame->data), (void*)&g_RandomDataPool[0], sizeof(struct rtc_time)));
+	CHECK(rFrame->cmd == GET_RTC);
+	CHECK(rFrame->length == sizeof(struct rtc_time) + sizeof(uns8)*2 + sizeof(uns16));
+	CHECK(rFrame->state == 0xff);
+	
+	
+	TestCaseEnd();
+}
+
+
+int main(int argc, const char* argv[])
+{	
 	UnitTestMainBegin();
 	RunTest(true, ut_CommandIO_Init);
 	RunTest(true, ut_CommandIO_WaitForSTX);
 	RunTest(true, ut_CommandIO_ReadCompleteFrame);
 	RunTest(true, ut_CommandIO_ReadTwoFrames_1);
 	RunTest(true, ut_CommandIO_ReadTwoFrames_2);
+	RunTest(true, ut_CommandIO_SendResponse);
+	RunTest(true, ut_CommandIO_CreateResponse_RTC);
+	RunTest(true, ut_CommandIO_CreateResponse_CYCLETIME);
+	RunTest(true, ut_CommandIO_CreateResponse_TRACE);
+	RunTest(true, ut_CommandIO_CreateResponse_FW_VERSION);
+	RunTest(true, ut_CommandIO_CreateResponse_SET_FADE);
+	RunTest(true, ut_CommandIO_Create_n_Send);
 	UnitTestMainEnd();
 }
 

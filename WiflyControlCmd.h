@@ -289,7 +289,7 @@ class ControlCmdBlRunApp : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const {
 			cout << "Starting application... ";
-			cout << (control.BlRunApp() ? "done." : "failed!") << endl;
+			cout << (control.BlRunApp() ? "failed!" : "done.") << endl;
 		};
 };
 
@@ -334,7 +334,7 @@ class ControlCmdStartBl : public WiflyControlCmd
 				  
 		virtual void Run(WiflyControl& control) const {
 			cout << "Starting bootloader... ";
-			cout << (control.FwStartBl() ? "done.\n" : "failed!\n");
+			cout << (control.FwStartBl() ? "failed!" : "done.") << endl;
 		};
   
 };
@@ -362,7 +362,7 @@ class ControlCmdClearScript : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const {
 			cout << "Clearing script buffer... ";
-			cout << (control.FwClearScript() ? "done." : "failed!") << endl;
+			cout << (control.FwClearScript() ? "failed!" : "done.") << endl;
 
 		};
 };
@@ -376,21 +376,7 @@ class ControlCmdPrintCycletime : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const {
 			cout << "Transmitting command print cycletime... ";
-			cout << (control.FwPrintCycletime(std::cout) ? "done." : "failed!") << endl;
-
-		};
-};
-
-class ControlCmdPrintRtc : public WiflyControlCmd
-{
-	public:
-		ControlCmdPrintRtc(void) : WiflyControlCmd(
-				string("print_rtc"),
-				string("' - prints the current time of realtime-clock modul on target")) {};
-
-		virtual void Run(WiflyControl& control) const {
-			cout << "Transmitting command print rtc... ";
-			cout << (control.FwPrintRtc(std::cout) ? "done." : "failed!") << endl;
+			cout << (control.FwPrintCycletime(std::cout) ? "failed!" : "done.") << endl;
 
 		};
 };
@@ -404,7 +390,7 @@ class ControlCmdLoopOn : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const {
 			cout << "Transmitting command loop on... ";
-			cout << (control.FwLoopOn() ? "done." : "failed!") << endl;
+			cout << (control.FwLoopOn() ? "failed!" : "done.") << endl;
 
 		};
 };
@@ -421,7 +407,7 @@ class ControlCmdLoopOff : public WiflyControlCmd
 			int numLoops;
 			cin >> numLoops;
 			cout << "Transmitting command loop off... ";
-			cout << (control.FwLoopOff( (unsigned char)numLoops ) ? "done." : "failed!") << endl;
+			cout << (control.FwLoopOff( (unsigned char)numLoops ) ? "failed!" : "done.") << endl;
 		};
 };
 
@@ -437,25 +423,7 @@ class ControlCmdWait : public WiflyControlCmd
 			uint16_t waitTmms;
 			cin >> waitTmms;
 			cout << "Transmitting command wait... ";
-			cout << (control.FwSetWait( waitTmms ) ? "done." : "failed!") << endl;
-		};
-};
-
-class ControlCmdSetColor : public WiflyControlCmd
-{
-	public:
-		ControlCmdSetColor(void) : WiflyControlCmd(
-				string("setcolor"),
-				string(" <addr> <rgb>'\n")
-			+ string("    <addr> hex bitmask, which leds should be set to the new color\n")
-			+ string("    <rgb> hex rgb value of the new color f.e. red: ff0000")) {};
-
-		virtual void Run(WiflyControl& control) const {
-			string addr, color;
-			cin >> addr;
-			cin >> color;
-			cout << "Transmitting command set color... ";
-			cout << (control.FwSetColor(addr, color) ? "done." : "failed!") << endl;
+			cout << (control.FwSetWait( waitTmms ) ? "failed!" : "done.") << endl;
 		};
 };
 
@@ -476,7 +444,7 @@ class ControlCmdSetFade : public WiflyControlCmd
 			cin >> color;
 			cin >> timevalue;
 			cout << "Transmitting command set fade... ";
-			cout << (control.FwSetFade(addr, color, (uint16_t)timevalue, false) ? "done." : "failed!") << endl;
+			cout << (control.FwSetFade(addr, color, (uint16_t)timevalue, false) ? "failed!" : "done.") << endl;
 		};
 };
 
@@ -496,7 +464,7 @@ class ControlCmdSetRtc : public WiflyControlCmd
 			timeinfo = localtime(&rawtime);
 			
 			cout << "Transmitting current time... ";
-			cout << (control.FwSetRtc(timeinfo) ? "done." : "failed!") << endl;
+			cout << (control.FwSetRtc(timeinfo) ? "failed!" : "done.") << endl;
 		};
 };
 
@@ -513,12 +481,12 @@ class ControlCmdGetRtc : public WiflyControlCmd
 			cout << "Getting target time... ";
 			if(control.FwGetRtc(&timeinfo))
 			{
-			  cout << "done." << endl;
-			  cout << "Current time at target device is: " << asctime(&timeinfo) << endl;
+				cout << "failed!" << endl;
 			}
-			else 
-			{			  
-			  cout << "failed!" << endl;
+			else
+			{
+				cout << "done." << endl;
+				cout << "Current time at target device is: " << asctime(&timeinfo) << endl;
 			}
 		};
 };
@@ -549,13 +517,11 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdConfSetDefaults(),
 	new ControlCmdConfSetWlan(),
 	new ControlCmdClearScript(),
-	new ControlCmdSetColor(),
 	new ControlCmdSetFade(),
 	new ControlCmdStartBl(),
 	new ControlCmdTest(),
 	new ControlCmdPrintTracebuffer(),
 	new ControlCmdPrintCycletime(),
-	new ControlCmdPrintRtc(),
 	new ControlCmdSetRtc(),
 	new ControlCmdGetRtc(),
 	new ControlCmdLoopOn(),

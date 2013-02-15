@@ -54,13 +54,6 @@ extern struct LedBuffer gLedBuf;
 void Ledstrip_Init(void);
 
 /**
- * Callback if a "set_color" command is received.
- * ledstrip is updated according to the provided cmd_set_color
- * only Led's where the address bit is 1 will be set to the new color
- */
-void Ledstrip_SetColor(struct cmd_set_color *pCmd);
-
-/**
  * Callback if a "set_color_direct" command is received.
  * ledstrip is updated according to the provided values.
  * *pValues indicates the start of the Value-Array.
@@ -94,6 +87,8 @@ void Ledstrip_UpdateLed(void);
 uns8 Ledstrip_NumOfFades(void);
 
 #ifdef DEBUG
+#ifndef __CC8E__
 void Ledstrip_Test(unsigned char address);
+#endif
 #endif
 #endif

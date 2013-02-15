@@ -24,8 +24,11 @@
 #include "crc.h"
 #include "error.h"
 #include "wifly_cmd.h"
+#include "rtc.h"
 
 bank2 struct CommandBuffer g_CmdBuf;
+struct response_frame g_ResponseBuf;
+
 
 /** PRIVATE METHODE **/
 
@@ -156,86 +159,129 @@ void CommandIO_GetCommands()
 	  {
 	      if(new_byte == DLE)
 	      {
-		  g_CmdBuf.state = CS_UnMaskChar;
-		  break;
+			  g_CmdBuf.state = CS_UnMaskChar;
+			  break;
 	      }
 	      if(new_byte == STX)
 	      {
-		  g_CmdBuf.state = CS_DeleteBuffer;
-		  break;
+			  g_CmdBuf.state = CS_DeleteBuffer;
+			  break;
 	      }
 	      if(new_byte == ETX)
-	      {
-		  g_CmdBuf.state = CS_WaitForSTX;
+		  {
+			g_CmdBuf.state = CS_WaitForSTX;
 
-		  if((0 == g_CmdBuf.CrcL) && (0 == g_CmdBuf.CrcH)) 	/* CRC Check */
-		  {
-			// [0] contains cmd_frame->length so we send [1]
+			  if((0 == g_CmdBuf.CrcL) && (0 == g_CmdBuf.CrcH)) 	/* CRC Check */
+			  {
+				  // [0] contains cmd_frame->length so we send [1]
 #ifndef __CC8E__
-			if(ScriptCtrl_Add((struct led_cmd*)&g_CmdBuf.buffer[1]))
+				if(!ScriptCtrl_Add((struct led_cmd*)&g_CmdBuf.buffer[1]))
 #else
-			if(ScriptCtrl_Add(&g_CmdBuf.buffer[1]))
+				if(!ScriptCtrl_Add(&g_CmdBuf.buffer[1]))
 #endif
-			{
-				UART_Send(STX);
-				UART_Send('G');
-				UART_Send('C');
-				UART_Send(0xEC);
-				UART_Send(0xFC);
-				UART_Send(ETX);
-			}
-			else
-			{
-				g_ErrorBits.EepromFailure = 1;
-			}
-		  }
-		  else
-		  {
-				g_ErrorBits.CrcFailure = 1;
-				Trace_String("Crc error: ");
-				Trace_Hex(g_CmdBuf.CrcL);
-				Trace_Hex(g_CmdBuf.CrcH);
-				Trace_Hex(g_CmdBuf.buffer[g_CmdBuf.counter - 2]);
-				Trace_Hex(g_CmdBuf.buffer[g_CmdBuf.counter - 1]);
-				Trace_String("\n");
-		  }
-		  break;
+				{
+					g_ErrorBits.EepromFailure = 1;
+				}
+			  }
+			  else
+			  {
+				  g_ErrorBits.CrcFailure = 1;
+				  Trace_String("Crc error: ");
+				  Trace_Hex(g_CmdBuf.CrcL);
+				  Trace_Hex(g_CmdBuf.CrcH);
+				  Trace_Hex(g_CmdBuf.buffer[g_CmdBuf.counter - 2]);
+				  Trace_Hex(g_CmdBuf.buffer[g_CmdBuf.counter - 1]);
+				  Trace_String("\n");
+			  }
+			  
+			  CommandIO_CreateResponse(&g_ResponseBuf, g_CmdBuf.buffer[1]);
+			  CommandIO_SendResponse(&g_ResponseBuf);
+			  
+			  break;
 	      }
 	      writeByte(new_byte);
 	      break;
 	  }
 	}
 }
-/*
-void CommandIO_SendResponse(uns8 cmd)
+
+
+void CommandIO_SendResponse(struct response_frame *mFrame)
 {
-	struct response_frame mFrame;
-	mFrame.cmd = cmd;
-	mFrame.state = Error_GetState();
+	uns8 crcH, crcL, tempByte, *pData;
+	uns16 frameLength;
+		
+	frameLength = mFrame->length;
+	
+	pData = (uns8*)mFrame;
+	 
+	Crc_NewCrc(&crcH, &crcL);
+	 
+	UART_Send(STX);
+	
+	while(frameLength > 0)
+	{
+		frameLength--;
+		tempByte = *pData++;
+		Crc_AddCrc(tempByte, &crcH, &crcL);
+		if(tempByte == STX || tempByte == DLE || tempByte == ETX)
+		{
+			UART_Send(DLE);
+		}
+		UART_Send(tempByte);
+	}
+	if(crcH == STX || crcH == DLE || crcH == ETX)
+	{
+		UART_Send(DLE);
+	}
+	UART_Send(crcH);
+	if(crcL == STX || crcL == DLE || crcL == ETX)
+	{
+		UART_Send(DLE);
+	}
+	UART_Send(crcL);
+	UART_Send(ETX);
+}
+
+void CommandIO_CreateResponse(struct response_frame *mFrame, uns8 cmd)
+{
+	mFrame->cmd = cmd;
+	uns8 tempErrorState = (uns8)Error_GetState();
+	mFrame->state = tempErrorState;
+	mFrame->length = sizeof(uns8) + sizeof(ERROR_CODE) + sizeof(uns16);
 	
 	switch (cmd) {
 		case GET_RTC:
-			
+		{
+			Rtc_Ctl(RTC_RD_TIME, &mFrame->data.get_rtc);
+			mFrame->length += sizeof(struct rtc_time);
 			break;
-		
+		};
 		case GET_CYCLETIME:
-
+		{
+			uns8 bytesPrint = Timer_PrintCycletime(&(mFrame->data.get_max_cycle_times[0]), sizeof(struct response_frame) - 4);
+			mFrame->length += bytesPrint;
 			break;
-		
+		};
 		case GET_TRACE:
-			
+		{
+			uns8 bytesPrint = Trace_Print(&(mFrame->data.get_trace_string[0]), sizeof(struct response_frame) - 4);
+			mFrame->length += bytesPrint;
 			break;
-			
-		case GET_FW_VERSION
-			
+		};
+		case GET_FW_VERSION:
+		{
+			uns8 temp8;
+			temp8 = g_Version.major;
+			mFrame->data.version.major = temp8;
+			temp8 = g_Version.minor;
+			mFrame->data.version.minor = temp8;
+			mFrame->length += sizeof(struct cmd_get_fw_version);
+			break;
+		}
 		default:
 			break;
 	}
 }
 
-void CommandIO_Send(struct response_frame *pFrame)
-{
-	
-	
-}*/
 

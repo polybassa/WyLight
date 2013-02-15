@@ -16,9 +16,7 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef X86
-#define TEST
-#endif
+#define DEBUG
 
 #ifdef __CC8E__
 #pragma optimize 1
@@ -41,24 +39,25 @@
 #endif /* #ifdef __CC8E__ */
 //#include "MATH16.h"
 
-#ifdef X86
+#ifndef __CC8E__
 #include <unistd.h>
 jmp_buf g_ResetEnvironment;
-#endif /* #ifdef X86 */
+#endif /* #ifndef CC8E */
 
 //*********************** GLOBAL VARIABLES *******************************************
 uns8 g_UpdateLed;
 uns8 g_UpdateLedStrip;
+const struct cmd_get_fw_version g_Version = {0, 1};
 
 //*********************** MACROS *****************************************************
-#ifdef TEST
+#ifdef DEBUG
 #define do_and_measure(METHOD) {\
 	Timer_StartStopwatch(e ## METHOD); \
 	METHOD(); \
 	Timer_StopStopwatch(e ## METHOD);}
 #else
 #define do_and_measure(METHOD) METHOD();
-#endif /*#ifdef TEST */
+#endif /*#ifdef DEBUG */
 
 	
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
@@ -216,13 +215,8 @@ void InitAll()
 	/* Startup Wait-Time 2s
 	 * to protect Wifly-Modul from errors*/
 	gScriptBuf.waitValue = 500;
-	UART_Send(STX);
-	UART_Send('R');
-	UART_Send('D');
-	UART_Send('Y');
-	UART_Send(0x3a);
-	UART_Send(0x7a);	/* Precalculated CRC */
-	UART_Send(ETX);
+	CommandIO_CreateResponse(&g_ResponseBuf, FW_STARTED);
+	CommandIO_SendResponse(&g_ResponseBuf);
 }
 
 #ifdef __CC8E__
@@ -240,7 +234,5 @@ void InitAll()
 #include "rtc.c"
 #include "iic.c"
 #include "ScriptCtrl.c"
-#ifdef TEST
 #include "trace.c"
-#endif /* TEST */
 #endif /* #ifdef __CC8E__ */

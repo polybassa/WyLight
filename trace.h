@@ -22,37 +22,38 @@
 #define ZONE_WARNING 0x00000002
 #define ZONE_INFO    0x00000004
 #define ZONE_VERBOSE 0x00000008
-#ifdef TEST
-	#include "usart.h"
-	#include "RingBuf.h"
-	
+
+#include "platform.h"
+
+#ifdef DEBUG 
+#ifdef __CC8E__
 	extern struct RingBuffer g_TraceBuf;
 	
 	void Trace_String(const char *string);
 	
-	void Trace_Number(uns8 input);
+	void Trace_Number(const uns8 input);
 	
-	void Trace_Hex(uns8 input);
+	void Trace_Hex(const uns8 input);
 	
-	void Trace_Hex16(uns16 input);
+	void Trace_Hex16(const uns16 input);
 	
-	void Trace_Char(uns8 input);
+	void Trace_Char(const uns8 input);
 	
-	void Trace_Print();
-#elif DEBUG
+	uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
+#else 
 	#include "stdio.h"
 	#define Trace_String(str) do { printf("%s", str); } while (0)
 	#define Trace_Number(input) do { printf("%04x", input); } while (0)
 	#define Trace_Hex(hex) do { printf("%02x ", hex); } while(0)
 	#define Trace_Hex16(hex) do { printf("%04x ", hex); } while(0)
-	#define Trace_Print(x)
+	uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
 	#define Trace_Char(input) do { printf("%c", input); } while (0)
 
 	#define TraceBuffer(ZONE, BUFFER, LENGTH, BUFFER_FORMAT, ...) do { \
 		if(g_DebugZones & (ZONE)) { \
 			Trace(ZONE, __VA_ARGS__); \
-			for(size_t i = 0; i < LENGTH; i++) { \
-				printf(BUFFER_FORMAT, BUFFER[i]); \
+			for(size_t i = 0; i < (LENGTH); i++) { \
+				printf(BUFFER_FORMAT, (BUFFER)[i]); \
 			} \
 			printf("\n"); \
 		} \
@@ -64,12 +65,13 @@
 			printf(__VA_ARGS__); \
 		} \
 	} while(0)
+#endif
 #else
 	#define Trace_String(str)
 	#define Trace_Number(input)
 	#define Trace_Hex(hex)
 	#define Trace_Hex16(hex)
-	#define Trace_Print(x)
+	uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
 	#define Trace_Char(x)
 	#define TraceBuffer(ZONE, BUFFER, LENGTH, BUFFER_FORMAT, ...)
 	#define Trace(ZONE, ...)
