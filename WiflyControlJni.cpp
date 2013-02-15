@@ -45,6 +45,11 @@ jlong Java_biz_bruenn_WiflyLight_WiflyControl_create(JNIEnv* env, jobject ref, j
 	return (jlong) new WiflyControl(ipv4Addr, port);
 }
 
+jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwSetColor(JNIEnv* env, jobject ref, jlong pNative, jint addr, jint rgba)
+{
+	return reinterpret_cast<WiflyControl*>(pNative)->FwSetColor(addr, rgba);
+}
+
 void Java_biz_bruenn_WiflyLight_WiflyControl_release(JNIEnv* env, jobject ref, jlong pNative)
 {
 	delete (WiflyControl*)pNative;

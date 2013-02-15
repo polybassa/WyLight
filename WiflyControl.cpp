@@ -638,6 +638,11 @@ ERROR_CODE WiflyControl::FwLoopOff(unsigned char numLoops)
 	return NoResponse;
 }
 
+ERROR_CODE WiflyControl::FwSetColor(unsigned long addr, unsigned long rgba)
+{
+	return FwSetFade(addr, rgba, 0, false);
+}
+
 ERROR_CODE WiflyControl::FwSetColorDirect(unsigned char* pBuffer, size_t bufferLength)
 {
 	if(pBuffer == NULL) return ParameterFailure;

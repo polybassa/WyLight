@@ -73,6 +73,7 @@ class WiflyControl
 			f.e. red(255, 0, 0) is in rgba as: 0xff000000
 				 white(255, 255, 255) is in rgba as: 0xffffff00
 		**/
+		ERROR_CODE FwSetColor(unsigned long addr, unsigned long rgba);
 		ERROR_CODE FwSetColorDirect(unsigned char* pBuffer, size_t bufferLength);
 		
 		ERROR_CODE FwSetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade);
