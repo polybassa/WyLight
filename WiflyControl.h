@@ -26,11 +26,14 @@
 #include "BlRequest.h"
 #include "intelhexclass.h"
 #include "error.h"
+#include "TelnetProxy.h"
 
 class WiflyControl
 {
 	private:
+		const TcpSocket mSock;
 		const ComProxy mProxy;
+		const TelnetProxy mTelnet;
 		pthread_t mRecvThread;
 		struct cmd_frame mCmdFrame;
 		unsigned long ToRGBA(std::string& s) const;

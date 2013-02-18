@@ -25,8 +25,8 @@
 
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-TelnetProxy::TelnetProxy(uint32_t addr, uint16_t port)
-	: mSock(addr, port)
+TelnetProxy::TelnetProxy(const TcpSocket& sock)
+	: mSock(sock)
 {
 }
 

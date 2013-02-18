@@ -175,7 +175,8 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 size_t ut_ComProxy_MaskControlCharacters(void)
 {
 	TestCaseBegin();
-	ComProxy proxy(0, 0);
+	TcpSocket dummySock(0, 0);
+	ComProxy testee(dummySock);
 	uint8_t sendBuffer[256];
 	uint8_t recvBuffer[sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 + 1];
 
@@ -186,43 +187,43 @@ size_t ut_ComProxy_MaskControlCharacters(void)
 	}
 
 	/* test MaskControlCharacters() with to small target buffer */
-	size_t bytesWritten = proxy.MaskControlCharacters(sendBuffer, sizeof(sendBuffer), recvBuffer, sizeof(recvBuffer) / 2);
+	size_t bytesWritten = testee.MaskControlCharacters(sendBuffer, sizeof(sendBuffer), recvBuffer, sizeof(recvBuffer) / 2);
 	CHECK(0 == bytesWritten);
 
 	/* mask control characters for crc in little endian order(bootloader) */
-	bytesWritten = proxy.MaskControlCharacters(sendBuffer, sizeof(sendBuffer), recvBuffer, sizeof(recvBuffer));
+	bytesWritten = testee.MaskControlCharacters(sendBuffer, sizeof(sendBuffer), recvBuffer, sizeof(recvBuffer));
 	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE <= bytesWritten);
 	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= bytesWritten);
 
 	/* and unmask everything again */
-	bytesWritten = proxy.UnmaskControlCharacters(recvBuffer, bytesWritten, recvBuffer, sizeof(recvBuffer), true);
+	bytesWritten = testee.UnmaskControlCharacters(recvBuffer, bytesWritten, recvBuffer, sizeof(recvBuffer), true);
 	CHECK(sizeof(sendBuffer) == bytesWritten);
 
 	/* mask control characters for crc in big endian order(firmware) */
-	bytesWritten = proxy.MaskControlCharacters(sendBuffer, sizeof(sendBuffer), recvBuffer, sizeof(recvBuffer), false);
+	bytesWritten = testee.MaskControlCharacters(sendBuffer, sizeof(sendBuffer), recvBuffer, sizeof(recvBuffer), false);
 	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE <= bytesWritten);
 	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= bytesWritten);
 
 	/* and unmask everything again */
-	bytesWritten = proxy.UnmaskControlCharacters(recvBuffer, bytesWritten, recvBuffer, sizeof(recvBuffer), true, false);
+	bytesWritten = testee.UnmaskControlCharacters(recvBuffer, bytesWritten, recvBuffer, sizeof(recvBuffer), true, false);
 	CHECK(sizeof(sendBuffer) == bytesWritten);
 
 	/* mask control characters for crc in big endian order(firmware) */
-	bytesWritten = proxy.MaskControlCharacters(sendBuffer, sizeof(sendBuffer), recvBuffer, sizeof(recvBuffer), false);
+	bytesWritten = testee.MaskControlCharacters(sendBuffer, sizeof(sendBuffer), recvBuffer, sizeof(recvBuffer), false);
 	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE <= bytesWritten);
 	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= bytesWritten);
 
 	/* and unmask everything again in wrong byte order */
-	bytesWritten = proxy.UnmaskControlCharacters(recvBuffer, bytesWritten, recvBuffer, sizeof(recvBuffer), true);
+	bytesWritten = testee.UnmaskControlCharacters(recvBuffer, bytesWritten, recvBuffer, sizeof(recvBuffer), true);
 	CHECK(0 == bytesWritten);
 
 	/* mask control characters for noCrc test */
-	bytesWritten = proxy.MaskControlCharacters(sendBuffer, sizeof(sendBuffer), recvBuffer, sizeof(recvBuffer));
+	bytesWritten = testee.MaskControlCharacters(sendBuffer, sizeof(sendBuffer), recvBuffer, sizeof(recvBuffer));
 	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE <= bytesWritten);
 	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= bytesWritten);
 
 	/* and unmask everything again */
-	bytesWritten = proxy.UnmaskControlCharacters(recvBuffer, bytesWritten, recvBuffer, sizeof(recvBuffer), false);
+	bytesWritten = testee.UnmaskControlCharacters(recvBuffer, bytesWritten, recvBuffer, sizeof(recvBuffer), false);
 	CHECK(sizeof(sendBuffer) + 2 == bytesWritten);
 
 	for(size_t i = 0; i < 6; i++)
@@ -236,13 +237,14 @@ size_t ut_ComProxy_MaskControlCharacters(void)
 size_t ut_ComProxy_BlEepromReadRequest(void)
 {
 	TestCaseBegin();
-	ComProxy proxy(0, 0);
+	TcpSocket dummySock(0, 0);
+	ComProxy testee(dummySock);
 	uint8_t response[512];
 	memset(response, 0, sizeof(response));
 
 	BlEepromReadRequest request;
 	request.SetAddressNumBytes(0xDA7A, sizeof(dummyBlFlashReadResponsePure));
-	size_t bytesReceived = proxy.Send(request, response, sizeof(response));
+	size_t bytesReceived = testee.Send(request, response, sizeof(response));
 	CHECK(sizeof(dummyBlFlashReadResponsePure) == bytesReceived);
 	CHECK(0 == memcmp(dummyBlFlashReadResponsePure, response, sizeof(dummyBlFlashReadResponsePure)));
 	TestCaseEnd();
@@ -251,7 +253,8 @@ size_t ut_ComProxy_BlEepromReadRequest(void)
 size_t ut_ComProxy_BlEepromReadRequestTimeout(void)
 {
 	TestCaseBegin();
-	ComProxy proxy(0, 0);
+	TcpSocket dummySock(0, 0);
+	ComProxy testee(dummySock);
 	uint8_t response[512];
 	memset(response, 0, sizeof(response));
 	timeval delay = {1, 0};
@@ -259,7 +262,7 @@ size_t ut_ComProxy_BlEepromReadRequestTimeout(void)
 
 	BlEepromReadRequest request;
 	request.SetAddressNumBytes(0xDA7A, sizeof(dummyBlFlashReadResponsePure));
-	size_t bytesReceived = proxy.Send(request, response, sizeof(response));
+	size_t bytesReceived = testee.Send(request, response, sizeof(response));
 	CHECK(0 == bytesReceived);
 	TestCaseEnd();
 }
@@ -272,12 +275,13 @@ size_t ut_ComProxy_BlEepromWriteRequest(void)
 size_t ut_ComProxy_BlFlashCrc16Request(void)
 {
 	TestCaseBegin();
-	ComProxy proxy(0, 0);
+	TcpSocket dummySock(0, 0);
+	ComProxy testee(dummySock);
 	uint8_t response[512];
 	memset(response, 0, sizeof(response));
 
 	BlFlashCrc16Request request(0xDA7ADA7A, 2);
-	size_t bytesReceived = proxy.Send(request, response, sizeof(response));
+	size_t bytesReceived = testee.Send(request, response, sizeof(response));
 	CHECK(sizeof(dummyBlFlashCrc16ResponsePure) == bytesReceived);
 	CHECK(0 == memcmp(dummyBlFlashCrc16ResponsePure, response, sizeof(dummyBlFlashCrc16ResponsePure)));
 	TestCaseEnd();
@@ -286,12 +290,13 @@ size_t ut_ComProxy_BlFlashCrc16Request(void)
 size_t ut_ComProxy_BlFlashEraseRequest(void)
 {
 	TestCaseBegin();
-	ComProxy proxy(0, 0);
+	TcpSocket dummySock(0, 0);
+	ComProxy testee(dummySock);
 	uint8_t response[512];
 	memset(response, 0, sizeof(response));
 
 	BlFlashEraseRequest request(0xDA7ADA7A, 2);
-	size_t bytesReceived = proxy.Send(request, response, sizeof(response));
+	size_t bytesReceived = testee.Send(request, response, sizeof(response));
 	CHECK(sizeof(dummyBlFlashEraseResponsePure) == bytesReceived);
 	CHECK(0 == memcmp(dummyBlFlashEraseResponsePure, response, sizeof(dummyBlFlashEraseResponsePure)));
 	TestCaseEnd();
@@ -300,13 +305,14 @@ size_t ut_ComProxy_BlFlashEraseRequest(void)
 size_t ut_ComProxy_BlFlashReadRequest(void)
 {
 	TestCaseBegin();
-	ComProxy proxy(0, 0);
+	TcpSocket dummySock(0, 0);
+	ComProxy testee(dummySock);
 	uint8_t response[512];
 	memset(response, 0, sizeof(response));
 
 	BlFlashReadRequest request;
 	request.SetAddressNumBytes(0, 0x40);
-	size_t bytesReceived = proxy.Send(request, response, sizeof(response));
+	size_t bytesReceived = testee.Send(request, response, sizeof(response));
 	CHECK(sizeof(dummyBlFlashReadResponsePure) == bytesReceived);
 	CHECK(0 == memcmp(dummyBlFlashReadResponsePure, response, sizeof(dummyBlFlashReadResponsePure)));
 
@@ -327,12 +333,13 @@ size_t ut_ComProxy_BlFuseWriteRequest(void)
 size_t ut_ComProxy_BlInfoRequest(void)
 {
 	TestCaseBegin();
-	ComProxy proxy(0, 0);
+	TcpSocket dummySock(0, 0);
+	ComProxy testee(dummySock);
 	uint8_t response[512];
 	memset(response, 0, sizeof(response));
 
 	BlInfoRequest infoRequest;
-	size_t bytesReceived = proxy.Send(infoRequest, response, sizeof(response));
+	size_t bytesReceived = testee.Send(infoRequest, response, sizeof(response));
 	Trace(ZONE_INFO, "--->: %u:%u\n", sizeof(BlInfo), bytesReceived);
 	CHECK(sizeof(BlInfo) == bytesReceived);
 
@@ -343,10 +350,11 @@ size_t ut_ComProxy_BlInfoRequest(void)
 size_t ut_ComProxy_BlRunAppRequest(void)
 {
 	TestCaseBegin();
-	ComProxy proxy(0, 0);
+	TcpSocket dummySock(0, 0);
+	ComProxy testee(dummySock);
 
 	BlRunAppRequest request;
-	size_t bytesReceived = proxy.Send(request, 0, 0);
+	size_t bytesReceived = testee.Send(request, 0, 0);
 	CHECK(0 == bytesReceived);
 	CHECK('x' == g_TestSocketRecvBuffer[0]);
 	CHECK('x' == g_TestSocketRecvBuffer[1]);

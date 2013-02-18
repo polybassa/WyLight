@@ -29,10 +29,10 @@
 class TelnetProxy
 {
 	private:
-		const TcpSocket mSock;
+		const TcpSocket& mSock;
 
 	public:
-		TelnetProxy(uint32_t addr, uint16_t port);
+		TelnetProxy(const TcpSocket& sock);
 
 		void ClearResponse(void) const;
 		bool Close(bool doSave) const;

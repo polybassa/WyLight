@@ -45,8 +45,8 @@ static const timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for fra
 	pOutput++; \
 }
 
-ComProxy::ComProxy(uint32_t addr, uint16_t port)
-	: mSock(addr, port)
+ComProxy::ComProxy(const TcpSocket& sock)
+	: mSock(sock)
 {
 }
 

@@ -99,7 +99,8 @@ size_t ut_TelnetProxy_CloseAndSave(void)
 	static const std::string CLOSE_CMD("save\r\nexit\r\n");
 	static const std::string RESPONSE("save\r\n\r\nStoring in config\r\n<2.31> exit\r\n\r\nEXIT\r\n");
 	TestCaseBegin();
-	TelnetProxy testee{0, 0};
+	TcpSocket sock{0, 0};
+	TelnetProxy testee{sock};
 
 	//test with save
 	g_TestSocketRecvBufferPos = 0;
@@ -118,7 +119,8 @@ size_t ut_TelnetProxy_CloseWithoutSave(void)
 	static const std::string CLOSE_CMD("exit\r\n");
 	static const std::string RESPONSE("exit\r\n\r\nEXIT\r\n");
 	TestCaseBegin();
-	TelnetProxy testee{0, 0};
+	TcpSocket sock{0, 0};
+	TelnetProxy testee{sock};
 
 	//test with save
 	g_TestSocketRecvBufferPos = 0;
@@ -136,7 +138,8 @@ size_t ut_TelnetProxy_Open(void)
 {
 	static const std::string OPEN_CMD("$$$\r\n");
 	TestCaseBegin();
-	TelnetProxy testee{0, 0};
+	TcpSocket sock{0, 0};
+	TelnetProxy testee{sock};
 
 	g_TestSocketSendBufferPos = 0;
 	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
@@ -149,7 +152,8 @@ size_t ut_TelnetProxy_Open(void)
 size_t ut_TelnetProxy_Recv(void)
 {
 	TestCaseBegin();
-	TelnetProxy testee{0, 0};
+	TcpSocket sock{0, 0};
+	TelnetProxy testee{sock};
 	// test empty recv
 	CHECK(testee.Recv(""));
 
@@ -165,7 +169,8 @@ size_t ut_TelnetProxy_Send(void)
 {
 	const std::string cmd("FOO\r\n");
 	TestCaseBegin();
-	TelnetProxy testee{0, 0};
+	TcpSocket sock{0, 0};
+	TelnetProxy testee{sock};
 	// test wrong echo
 	g_TestSocketRecvBufferPos = 0;
 	g_TestSocketRecvBufferSize = 19;
@@ -220,7 +225,8 @@ size_t ut_TelnetProxy_SendString(void)
 		}
 	}
 
-	TelnetProxy testee(0, 0);
+	TcpSocket sock{0, 0};
+	TelnetProxy testee{sock};
 
 	// test without space
 	g_TestSocketRecvBufferPos = 0;
