@@ -890,6 +890,7 @@ ErrorCode WiflyControl::FwSetRtc(struct tm* timeValue)
 	unsigned char buffer[512];
 	
 	int bytesRead = FwSend(&mCmdFrame, sizeof(struct rtc_time),&buffer[0], sizeof(buffer));
+		
 #ifdef DEBUG
 	cout << __FUNCTION__ << ": We got " << bytesRead << " bytes response, Message: ";
 	for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];

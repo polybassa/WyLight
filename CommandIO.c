@@ -38,7 +38,7 @@ void writeByte(uns8 byte)
     {
 	  g_CmdBuf.buffer[g_CmdBuf.counter] = byte;
 	  g_CmdBuf.counter = g_CmdBuf.counter + 1;
-	  Crc_AddCrc(byte, &g_CmdBuf.CrcH, &g_CmdBuf.CrcL);
+	  Crc_AddCrc(byte, &g_CmdBuf.CrcH, &g_CmdBuf.CrcL);		
     }
     else
     {
