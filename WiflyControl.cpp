@@ -477,7 +477,7 @@ bool WiflyControl::BlProgramFlash(const std::string& pFilename)
 	return true;
 }
 
-ERROR_CODE WiflyControl::BlRunApp(void) const
+ErrorCode WiflyControl::BlRunApp(void) const
 {
 	BlRunAppRequest request;
 	unsigned char buffer[32];
@@ -494,7 +494,7 @@ ERROR_CODE WiflyControl::BlRunApp(void) const
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
 		if(pResponse->cmd == FW_STARTED) return pResponse->state;
 	}
-	return NoResponse;
+	return SCRIPTBUFFER_FULL;
 }
 
 bool WiflyControl::BlEnableAutostart(void) const
@@ -576,7 +576,7 @@ int WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, unsigned char*
 	return mProxy.Send(&mCmdFrame, pResponse, responseSize, false);
 }
 
-ERROR_CODE WiflyControl::FwClearScript(void)
+ErrorCode WiflyControl::FwClearScript(void)
 {
 	mCmdFrame.led.cmd = CLEAR_SCRIPT;
 	unsigned char buffer[512];
@@ -593,10 +593,10 @@ ERROR_CODE WiflyControl::FwClearScript(void)
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
 		if(pResponse->cmd == CLEAR_SCRIPT) return pResponse->state;
 	}
-	return NoResponse;
+	return SCRIPTBUFFER_FULL;
 }
 
-ERROR_CODE WiflyControl::FwLoopOn(void)
+ErrorCode WiflyControl::FwLoopOn(void)
 {
 	mCmdFrame.led.cmd = LOOP_ON;
 	unsigned char buffer[512];
@@ -613,10 +613,10 @@ ERROR_CODE WiflyControl::FwLoopOn(void)
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
 		if(pResponse->cmd == LOOP_ON) return pResponse->state;
 	}
-	return NoResponse;
+	return SCRIPTBUFFER_FULL;
 }
 
-ERROR_CODE WiflyControl::FwLoopOff(unsigned char numLoops)
+ErrorCode WiflyControl::FwLoopOff(unsigned char numLoops)
 {
 	mCmdFrame.led.cmd = LOOP_OFF;
 	mCmdFrame.led.data.loopEnd.numLoops = numLoops;
@@ -635,17 +635,17 @@ ERROR_CODE WiflyControl::FwLoopOff(unsigned char numLoops)
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
 		if(pResponse->cmd == LOOP_OFF) return pResponse->state;
 	}
-	return NoResponse;
+	return SCRIPTBUFFER_FULL;
 }
 
-ERROR_CODE WiflyControl::FwSetColor(unsigned long addr, unsigned long rgba)
+ErrorCode WiflyControl::FwSetColor(unsigned long addr, unsigned long rgba)
 {
 	return FwSetFade(addr, rgba, 0, false);
 }
 
-ERROR_CODE WiflyControl::FwSetColorDirect(unsigned char* pBuffer, size_t bufferLength)
+ErrorCode WiflyControl::FwSetColorDirect(unsigned char* pBuffer, size_t bufferLength)
 {
-	if(pBuffer == NULL) return ParameterFailure;
+	if(pBuffer == NULL) return SCRIPTBUFFER_FULL;
   
 	mCmdFrame.led.cmd = SET_COLOR_DIRECT;
 	for(unsigned int i = 0; i < NUM_OF_LED * 3; i++)
@@ -673,10 +673,10 @@ ERROR_CODE WiflyControl::FwSetColorDirect(unsigned char* pBuffer, size_t bufferL
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
 		if(pResponse->cmd == SET_COLOR_DIRECT) return pResponse->state;
 	}
-	return NoResponse;
+	return SCRIPTBUFFER_FULL;
 }
 
-ERROR_CODE WiflyControl::FwSetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade)
+ErrorCode WiflyControl::FwSetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade)
 {
 	/*calibrate fadeTmms */
 	fadeTmms = (unsigned short)(fadeTmms / 10);
@@ -701,15 +701,15 @@ ERROR_CODE WiflyControl::FwSetFade(unsigned long addr, unsigned long rgba, unsig
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
 		if(pResponse->cmd == SET_FADE) return pResponse->state;
 	}
-	return NoResponse;
+	return SCRIPTBUFFER_FULL;
 }
 
-ERROR_CODE WiflyControl::FwSetFade(string& addr, string& rgba, unsigned short fadeTmms, bool parallelFade)
+ErrorCode WiflyControl::FwSetFade(string& addr, string& rgba, unsigned short fadeTmms, bool parallelFade)
 {
 	return FwSetFade(ToRGBA(addr), ToRGBA(rgba) << 8, fadeTmms, parallelFade);
 }
 
-ERROR_CODE WiflyControl::FwSetWait(unsigned short waitTmms)
+ErrorCode WiflyControl::FwSetWait(unsigned short waitTmms)
 {
 	mCmdFrame.led.cmd = WAIT;
 	mCmdFrame.led.data.wait.waitTmms = htons((unsigned short)(waitTmms / 10));
@@ -728,7 +728,7 @@ ERROR_CODE WiflyControl::FwSetWait(unsigned short waitTmms)
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
 		if(pResponse->cmd == WAIT) return pResponse->state;
 	}
-	return NoResponse;
+	return SCRIPTBUFFER_FULL;
 }
  
 void WiflyControl::FwTest(void)
@@ -765,7 +765,7 @@ void WiflyControl::FwTest(void)
 	FwLoopOff(0);
 }
 
-ERROR_CODE WiflyControl::FwPrintCycletime(std::ostream& out)
+ErrorCode WiflyControl::FwPrintCycletime(std::ostream& out)
 {
 	mCmdFrame.led.cmd = GET_CYCLETIME;
 	unsigned char buffer[512];
@@ -791,10 +791,10 @@ ERROR_CODE WiflyControl::FwPrintCycletime(std::ostream& out)
 			return pResponse->state;
 		}
 	}
-	return NoResponse;
+	return SCRIPTBUFFER_FULL;
 }
 
-ERROR_CODE WiflyControl::FwPrintTracebuffer(std::ostream& out)
+ErrorCode WiflyControl::FwPrintTracebuffer(std::ostream& out)
 {
 	mCmdFrame.led.cmd = GET_TRACE;
 	unsigned char buffer[512];
@@ -822,10 +822,10 @@ ERROR_CODE WiflyControl::FwPrintTracebuffer(std::ostream& out)
 			return pResponse->state;
 		}
 	}
-	return NoResponse;
+	return SCRIPTBUFFER_FULL;
 }
 
-ERROR_CODE WiflyControl::FwStartBl(void)
+ErrorCode WiflyControl::FwStartBl(void)
 {
 	unsigned char buffer[512];
 	mCmdFrame.led.cmd = START_BL;
@@ -841,12 +841,12 @@ ERROR_CODE WiflyControl::FwStartBl(void)
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
 		if(pResponse->cmd == START_BL) return pResponse->state;
 	}
-	return NoResponse;
+	return SCRIPTBUFFER_FULL;
 }
 
-ERROR_CODE WiflyControl::FwSetRtc(struct tm* timeValue)
+ErrorCode WiflyControl::FwSetRtc(struct tm* timeValue)
 {
-	if(timeValue == NULL) return ParameterFailure;
+	if(timeValue == NULL) return SCRIPTBUFFER_FULL;
   
   	mCmdFrame.led.cmd = SET_RTC;
 	mCmdFrame.led.data.set_rtc.tm_sec  = (uns8) timeValue->tm_sec;
@@ -871,12 +871,12 @@ ERROR_CODE WiflyControl::FwSetRtc(struct tm* timeValue)
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
 		if(pResponse->cmd == SET_RTC) return pResponse->state;
 	}
-	return NoResponse;
+	return SCRIPTBUFFER_FULL;
 }
 
-ERROR_CODE WiflyControl::FwGetRtc(struct tm* timeValue)
+ErrorCode WiflyControl::FwGetRtc(struct tm* timeValue)
 {
-	if(timeValue == NULL) return ParameterFailure;
+	if(timeValue == NULL) return SCRIPTBUFFER_FULL;
     
 	mCmdFrame.led.cmd = GET_RTC;
 	unsigned char buffer[512];
@@ -904,7 +904,7 @@ ERROR_CODE WiflyControl::FwGetRtc(struct tm* timeValue)
 			return pResponse->state;
 		}
 	}
-	return NoResponse;
+	return SCRIPTBUFFER_FULL;
 }
 
 unsigned long WiflyControl::ToRGBA(string& s) const

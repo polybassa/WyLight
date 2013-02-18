@@ -20,19 +20,14 @@
 #include "CommandIO.h"
 #include "RingBuf.h"
 #include "trace.h"
+#include "ledstrip.h"
 
 struct ErrorBits g_ErrorBits;
 
-ERROR_CODE Error_GetState()
+ErrorCode Error_GetState()
 {
-	if(g_ErrorBits.CmdBufOverflow) return ErrorCmdBufFull;
-#ifdef DEBUG
-	else if(RingBuf_HasError(&g_TraceBuf)) return ErrorTraceBufFull;
-#endif
-	else if(RingBuf_HasError(&g_RingBuf)) return ErrorRecvBufFull;
-	else if(g_ErrorBits.CrcFailure) return ErrorCrcCheckFail;
-	else if(g_ErrorBits.EepromFailure) return ErrorEepromFull;
-	else return NoError;
+	if(g_ErrorBits.EepromFailure) return SCRIPTBUFFER_FULL;
+	else return OK;
 }
 
 void Error_Throw()
@@ -40,19 +35,16 @@ void Error_Throw()
 #ifdef DEBUG
 	if(RingBuf_HasError(&g_TraceBuf)) 
 	{
-		// *** if a RingBufError occure, I have to throw away the current command,
-		// *** because the last byte was not saved. Commandstring is inconsistent
-		Trace_String("E:05; ERROR: Tracebuffer full");
-		// *** Re-init the Ringbuffer to get a consistent commandstring and reset error
+		// *** Re-init the Ringbuffer
 		RingBuf_Init(&g_TraceBuf);
+		Trace_String("E:05; ERROR: Tracebuffer full");
 	}
 #endif
 	
 	if(g_ErrorBits.CmdBufOverflow)
 	{
 		Trace_String("E:04; ERROR: Commandbuffer full");
-		CommandIO_Init();
-		g_ErrorBits.CmdBufOverflow = 0;
+		Error_FatalError();
 	}
 	
 	if(RingBuf_HasError(&g_RingBuf)) 
@@ -74,4 +66,20 @@ void Error_Throw()
 		Trace_String("E:01; ERROR: EEPROM is full");
 		g_ErrorBits.EepromFailure = 0;
 	}
+}
+
+void Error_FatalError()
+{
+	uns8 i = 0;
+	for(;i < NUM_OF_LED; i++)
+	{
+		gLedBuf.led_array[i] = 0xff;
+		i++;
+		gLedBuf.led_array[i] = 0x00;
+		i++;
+		gLedBuf.led_array[i] = 0x00;
+	}
+	
+	Ledstrip_UpdateLed();
+	while(1);
 }

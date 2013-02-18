@@ -248,7 +248,7 @@ void CommandIO_CreateResponse(struct response_frame *mFrame, uns8 cmd)
 	mFrame->cmd = cmd;
 	uns8 tempErrorState = (uns8)Error_GetState();
 	mFrame->state = tempErrorState;
-	mFrame->length = sizeof(uns8) + sizeof(ERROR_CODE) + sizeof(uns16);
+	mFrame->length = sizeof(uns8) + sizeof(ErrorCode) + sizeof(uns16);
 	
 	switch (cmd) {
 		case GET_RTC:

@@ -114,7 +114,7 @@ struct cmd_get_fw_version {
 struct response_frame {
 	uns16 length;		/* only for Firmware, do not use in Client */
 	uns8 cmd;
-	ERROR_CODE state;
+	ErrorCode state;
 	union {
 		struct rtc_time get_rtc;
 		struct cmd_get_fw_version version;

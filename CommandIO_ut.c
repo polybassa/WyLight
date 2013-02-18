@@ -61,7 +61,7 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 	return 1;
 }
 
-ERROR_CODE Error_GetState()
+ErrorCode Error_GetState()
 {
 	return 0xff;
 }
