@@ -730,29 +730,6 @@ ERROR_CODE WiflyControl::FwSetWait(unsigned short waitTmms)
 	}
 	return NoResponse;
 }
-
-ERROR_CODE WiflyControl::FwAddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second)
-{
-	mCmdFrame.led.cmd = ADD_COLOR;
-	SetAddrRgb(mCmdFrame.led.data.add_color, addr, rgba);
-	mCmdFrame.led.data.add_color.hour = hour;
-	mCmdFrame.led.data.add_color.minute = minute;
-	mCmdFrame.led.data.add_color.second = second;
-	
-	unsigned char buffer[512];
-
-	int bytesRead = FwSend(&mCmdFrame, sizeof(struct cmd_add_color), &buffer[0], sizeof(buffer));
-	cout << __FUNCTION__ << ": We got " << bytesRead << " bytes response, Message: ";
-	for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
-	cout << endl;
-	return NoError;
-	
-}
-
-ERROR_CODE WiflyControl::FwAddColor(string& addr, string& rgba, unsigned char hour, unsigned char minute, unsigned char second)
-{
-	return FwAddColor(ToRGBA(addr), ToRGBA(rgba) << 8, hour, minute, second);
-}
  
 void WiflyControl::FwTest(void)
 {

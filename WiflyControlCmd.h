@@ -72,31 +72,6 @@ class WiflyControlCmd
 		}
 };
 
-class ControlCmdAddColor : public WiflyControlCmd
-{
-	public:
-		ControlCmdAddColor(void) : WiflyControlCmd(
-			string("addcolor"),
-				string(" <addr> <rgb> <hour> <minute> <second>'\n")
-			+ string("    <addr> hex bitmask, which leds should be set to the new color\n")
-			+ string("    <rgb> hex rgb value of the new color f.e. red: ff0000\n")
-			+ string("    <hour> hour of date event\n")
-			+ string("    <minute> minute of date event\n")
-			+ string("    <second> second of date event")) {};
-
-		virtual void Run(WiflyControl& control) const {
-			string addr, color;
-			uint32_t hour, minute, second;
-			cin >> addr;
-			cin >> color;
-			cin >> hour;
-			cin >> minute;
-			cin >> second;
-			cout << addr << " " << color << " " << hour << " " << minute << " " << second << endl; 
-			control.FwAddColor(addr, color, hour, minute, second);
-		};
-};
-
 class ControlCmdBlAutostartEnable : public WiflyControlCmd
 {
 	public:
@@ -504,7 +479,6 @@ class ControlCmdTest : public WiflyControlCmd
 };
 
 static const WiflyControlCmd* s_Cmds[] = {
-	new ControlCmdAddColor(),
 	new ControlCmdBlAutostartEnable(),
 	new ControlCmdBlInfo(),
 	new ControlCmdBlCrcFlash(),

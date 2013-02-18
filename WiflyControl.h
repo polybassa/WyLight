@@ -81,9 +81,6 @@ class WiflyControl
 		
 		ERROR_CODE FwSetWait(unsigned short waitTmms);
 		
-		ERROR_CODE FwAddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second);
-		ERROR_CODE FwAddColor(std::string& addr, std::string& rgba, unsigned char hour, unsigned char minute, unsigned char second);
-		
 		void FwTest(void);
 		ERROR_CODE FwPrintCycletime(std::ostream& out);
 		ERROR_CODE FwPrintTracebuffer(std::ostream& out);
