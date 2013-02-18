@@ -825,6 +825,36 @@ ErrorCode WiflyControl::FwPrintTracebuffer(std::ostream& out)
 	return SCRIPTBUFFER_FULL;
 }
 
+ErrorCode WiflyControl::FwPrintFwVersion(std::ostream& out)
+{
+	mCmdFrame.led.cmd = GET_FW_VERSION;
+	unsigned char buffer[512];
+	
+	int bytesRead = FwSend(&mCmdFrame, 0, &buffer[0], sizeof(buffer));
+	
+#ifdef DEBUG
+	cout << __FUNCTION__ << ": We got " << bytesRead << " bytes response, Message: ";
+	for(int i = 0; i < bytesRead; i++ ) cout << buffer[i];
+	cout << endl;
+#endif
+	
+	if(4 <= bytesRead)
+	{
+		out << __FUNCTION__ << ": Firmwareversion: " << endl;
+		
+		struct response_frame *pResponse = (response_frame*)&buffer[0];
+		if(pResponse->cmd == GET_FW_VERSION)
+		{
+			out << (int) pResponse->data.version.major << ".";
+			out << (int) pResponse->data.version.minor;
+			out << endl;
+			return pResponse->state;
+		}
+	}
+	return SCRIPTBUFFER_FULL;
+}
+
+
 ErrorCode WiflyControl::FwStartBl(void)
 {
 	unsigned char buffer[512];

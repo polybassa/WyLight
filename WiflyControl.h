@@ -84,6 +84,7 @@ class WiflyControl
 		void FwTest(void);
 		ErrorCode FwPrintCycletime(std::ostream& out);
 		ErrorCode FwPrintTracebuffer(std::ostream& out);
+		ErrorCode FwPrintFwVersion(std::ostream& out);
 		ErrorCode FwStartBl(void);
 		
 		ErrorCode FwSetRtc(struct tm* timeValue);

@@ -327,6 +327,21 @@ class ControlCmdPrintTracebuffer : public WiflyControlCmd
 		};
   
 };
+			
+class ControlCmdPrintFwVersion : public WiflyControlCmd
+{
+	public:
+		ControlCmdPrintFwVersion(void) : WiflyControlCmd(
+			string("print_fwversion"),
+			string("' - displays current firmware version of pic")) {};
+				
+			virtual void Run(WiflyControl& control) const {
+				cout << "Reading firmware version... ";
+				control.FwPrintFwVersion(std::cout);
+			};
+				
+};
+
 
 class ControlCmdClearScript : public WiflyControlCmd
 {
@@ -495,6 +510,7 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdStartBl(),
 	new ControlCmdTest(),
 	new ControlCmdPrintTracebuffer(),
+	new ControlCmdPrintFwVersion(),
 	new ControlCmdPrintCycletime(),
 	new ControlCmdSetRtc(),
 	new ControlCmdGetRtc(),
