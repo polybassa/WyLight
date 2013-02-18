@@ -40,7 +40,7 @@ class TelnetProxy
 		bool Recv(const std::string& expectedResponse) const;
 		bool Send(const std::string& telnetMessage, const std::string& expectedResponse = AOK) const;
 		bool SendString(const std::string& command, std::string value) const;
-		bool SetReplaceChar(const char replace = '$') const; outputLength, bool checkCrc, bool
+		bool SetReplaceChar(const char replace = '$') const;
 };
 
 #endif /* #ifndef _TELNET_PROXY_H_ */

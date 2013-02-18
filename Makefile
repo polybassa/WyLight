@@ -48,6 +48,10 @@ ComProxy_ut.bin: ComProxy_ut.cpp ComProxy.cpp ComProxy.h BlRequest.h unittest.h
 	@g++ ComProxy_ut.cpp ComProxy.cpp crc.c -o $@ -Wall -pedantic -std=c++0x
 	@./$@
 
+TelnetProxy_ut.bin: TelnetProxy_ut.cpp TelnetProxy.cpp TelnetProxy.h unittest.h
+	@g++ TelnetProxy_ut.cpp TelnetProxy.cpp crc.c -o $@ -Wall -pedantic -std=c++0x
+	@./$@
+
 WiflyControl_ut.bin: WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp intelhexclass.h WiflyControlColorClass.h WiflyControlColorClass.cpp WiflyControl.h unittest.h
 	@g++ WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp WiflyControlColorClass.cpp -o $@ -Wall -pedantic -std=c++0x
 	@./$@

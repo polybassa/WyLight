@@ -17,12 +17,18 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "TelnetProxy.h"
+#include "timeval.h"
 #include "trace.h"
 
 #include <algorithm>
 #include <cctype>
 
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+
+TelnetProxy::TelnetProxy(uint32_t addr, uint16_t port)
+	: mSock(addr, port)
+{
+}
 
 void TelnetProxy::ClearResponse(void) const
 {
@@ -33,12 +39,12 @@ void TelnetProxy::ClearResponse(void) const
 
 bool TelnetProxy::Close(bool doSave) const
 {
-	if(doSave && !TelnetSend("save\r\n", "\r\nStoring in config\r\n<2.31> "))
+	if(doSave && !Send("save\r\n", "\r\nStoring in config\r\n<2.31> "))
 	{
 		Trace(ZONE_ERROR, "saving changes failed\n");
 		return false;
 	}
-	return TelnetSend("exit\r\n", "\r\nEXIT\r\n");
+	return Send("exit\r\n", "\r\nEXIT\r\n");
 }
 
 bool TelnetProxy::Open(void) const
@@ -46,7 +52,7 @@ bool TelnetProxy::Open(void) const
 	static const timespec _300_TMMS = {0, 300000000};
 	static const uint8_t ENTER_CMD_MODE[] = {'$', '$', '$'}; 
 
-	TelnetClearResponse();
+	ClearResponse();
 	if(sizeof(ENTER_CMD_MODE) != mSock.Send(ENTER_CMD_MODE, sizeof(ENTER_CMD_MODE)))
 	{
 		Trace(ZONE_ERROR, "send $$$ sequence failed\n");
@@ -56,14 +62,14 @@ bool TelnetProxy::Open(void) const
 	// after "$$$" we need to wait at least 250ms to enter command mode
 	nanosleep(&_300_TMMS, NULL);
 
-	if(!TelnetRecv("CMD\r\n"))
+	if(!Recv("CMD\r\n"))
 	{
 		Trace(ZONE_ERROR, "start telnet console mode failed\n");
 		return false;
 	}
 	
 	// send carriage return to start telnet console mode
-	return TelnetSend("\r\n", "\r\n<2.31> ");
+	return Send("\r\n", "\r\n<2.31> ");
 }
 
 bool TelnetProxy::Recv(const std::string& expectedResponse) const
@@ -100,13 +106,13 @@ bool TelnetProxy::Send(const std::string& telnetMessage, const std::string& expe
 		return false;
 	}
 
-	if(!TelnetRecv(telnetMessage))
+	if(!Recv(telnetMessage))
 	{
 		Trace(ZONE_ERROR, ">>%s<< receive echo failed\n", telnetMessage.data());
 		return false;
 	}
 	
-	if(!TelnetRecv(expectedResponse))
+	if(!Recv(expectedResponse))
 	{
 		Trace(ZONE_ERROR, ">>%s<< receive acknowledgment failed\n", telnetMessage.data());
 		return false;
@@ -121,7 +127,7 @@ bool TelnetProxy::SendString(const std::string& command, std::string value) cons
 	// if value contains no spaces its simple
 	if(std::string::npos == value.find_first_of(' ', 0))
 	{
-		return TelnetSend(value.insert(0, command).append("\r\n"));
+		return Send(value.insert(0, command).append("\r\n"));
 	}
 
 	// value contains spaces so we have to replace them with another character
@@ -134,19 +140,19 @@ bool TelnetProxy::SendString(const std::string& command, std::string value) cons
 
 	const char replacement = REPLACE[pos];
 	std::replace_if(value.begin(), value.end(), isblank, replacement);
-	if(!TelnetSetReplaceChar(replacement))
+	if(!SetReplaceChar(replacement))
 	{
 		Trace(ZONE_ERROR, "set replacement character failed\n");
 		return false;
 	}
 
-	const bool valueWasSet = TelnetSend(value.insert(0, command).append("\r\n"));
-	return TelnetSetReplaceChar() && valueWasSet;
+	const bool valueWasSet = Send(value.insert(0, command).append("\r\n"));
+	return SetReplaceChar() && valueWasSet;
 }
 
 bool TelnetProxy::SetReplaceChar(const char replace) const
 {
 	std::string replaceCmd("set opt replace " + std::string(1, replace) + std::string("\r\n"));
-	return TelnetSend(replaceCmd);
+	return Send(replaceCmd);
 }
 
