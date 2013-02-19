@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import biz.bruenn.WiflyLight.R.id;
 import biz.bruenn.WiflyLight.R.string;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -43,7 +43,10 @@ public class WiflyLightActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View v, int arg2,
 					long arg3) {
 				Endpoint e = mRemoteArrayAdapter.getItem(arg2);
-				startActivityForResult(v.getContext(), WiflyControlActivity.class, e);
+				Intent i = new Intent(v.getContext(), WiflyControlActivity.class);
+				i.putExtra(WiflyControlActivity.EXTRA_IP, e.getAddr());
+				i.putExtra(WiflyControlActivity.EXTRA_PORT, e.getPort());
+				startActivityForResult(i, 0);    	
 			}
 		});
         
@@ -65,26 +68,13 @@ public class WiflyLightActivity extends Activity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
     	super.onCreateContextMenu(menu, v, menuInfo);
-    	getMenuInflater().inflate(R.menu.context_menu_remotes, menu);
+
+    	AdapterContextMenuInfo info = (AdapterContextMenuInfo)menuInfo;
+		showDialog(info.position);
     }
     
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
-    	AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
-    	switch(item.getItemId()) {
-    	case R.id.configure:
-    		Endpoint e = mRemoteArrayAdapter.getItem(info.position);
-			startActivityForResult(getBaseContext(), WiflyConfigActivity.class, e);
-    		return true;
-    	default:
-    		return super.onContextItemSelected(item);
-    	}
-    }
-    
-    private void startActivityForResult(Context context, Class<?> cls, Endpoint remote) {
-		Intent i = new Intent(context, cls);
-		i.putExtra(Endpoint.EXTRA_IP, remote.getAddr());
-		i.putExtra(Endpoint.EXTRA_PORT, remote.getPort());
-		startActivityForResult(i, 0);    	
+    protected Dialog onCreateDialog(int position, Bundle savedInstanceState) {
+    	return new StringPickerDialog(this, mRemoteArrayAdapter.getItem(position));
     }
 }

@@ -1,8 +1,6 @@
 package biz.bruenn.WiflyLight;
 
 public class Endpoint {
-	public static final String EXTRA_IP = "IpAddress";
-	public static final String EXTRA_PORT = "Port";
 	private final int mAddr;
 	private final short mPort;
 	
