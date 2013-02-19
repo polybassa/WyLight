@@ -22,19 +22,15 @@
 #include "BlRequest.h"
 #include "ClientSocket.h"
 #include "trace.h"
-#include <iostream>
-
-
-#define AOK "\r\nAOK\r\n<2.31> "
 
 class ComProxy
 {
 	private:
-		const TcpSocket mSock;
+		const TcpSocket& mSock;
 		size_t Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout = NULL, bool checkCrc = true, bool crcInLittleEndian = true) const;
 
 	public:
-		ComProxy(uint32_t addr, uint16_t port);
+		ComProxy(const TcpSocket& sock);
 
 		/**
 		 * Mask bytes of input buffer and add CRC16-CITT checksum to the end
@@ -47,14 +43,6 @@ class ComProxy
 		int32_t Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync = true) const;
 		int32_t Send(struct cmd_frame const* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const;
 		int32_t Send(uint8_t const* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool sync, bool crcInLittleEndian = true) const;
-
-		void TelnetClearResponse(void) const;
-		bool TelnetClose(bool doSave) const;
-		bool TelnetOpen(void) const;
-		bool TelnetRecv(const std::string& expectedResponse) const;
-		bool TelnetSend(const std::string& telnetMessage, const std::string& expectedResponse = AOK) const;
-		bool TelnetSendString(const std::string& command, std::string value) const;
-		bool TelnetSetReplaceChar(const char replace = '$') const;
 		size_t UnmaskControlCharacters(const uint8_t* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool checkCrc, bool crcInLittleEndian = true) const;
 };
 
