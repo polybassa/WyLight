@@ -75,6 +75,6 @@ public class WiflyLightActivity extends Activity {
     
     @Override
     protected Dialog onCreateDialog(int position, Bundle savedInstanceState) {
-    	return new StringPickerDialog(this, mRemoteArrayAdapter.getItem(position));
+    	return new SetWlanDialog(this, mRemoteArrayAdapter.getItem(position));
     }
 }
