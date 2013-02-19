@@ -3,7 +3,7 @@
 
     <string name="app_name">WiflyLight</string>
     <string name="default_text">FooBar</string>
-    <string name="do_configure">config</string>
+    <string name="configure">configure</string>
     <string name="scan">Scan</string>
     <string name="scanning">Scanning...</string>
     <string name="set_color">Set color</string>

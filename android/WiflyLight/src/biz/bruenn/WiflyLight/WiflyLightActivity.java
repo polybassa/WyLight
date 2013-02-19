@@ -9,8 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -31,6 +35,7 @@ public class WiflyLightActivity extends Activity {
         setContentView(R.layout.main);
 
         mRemoteList = (ListView)findViewById(id.remoteList);
+        registerForContextMenu(mRemoteList);
         mRemoteArrayAdapter = new ArrayAdapter<Endpoint>(this, android.R.layout.simple_list_item_1, mRemoteArray);
         mRemoteList.setAdapter(mRemoteArrayAdapter);
         mRemoteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -38,14 +43,7 @@ public class WiflyLightActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View v, int arg2,
 					long arg3) {
 				Endpoint e = mRemoteArrayAdapter.getItem(arg2);
-				//TODO enable this code and remove debug code below of it
-//				Intent i = new Intent(v.getContext(), WiflyControlActivity.class);
-//				i.putExtra(WiflyControlActivity.EXTRA_IP, e.getAddr());
-//				i.putExtra(WiflyControlActivity.EXTRA_PORT, e.getPort());
-				Intent i = new Intent(v.getContext(), WiflyConfigActivity.class);
-				i.putExtra(WiflyConfigActivity.EXTRA_IP, e.getAddr());
-				i.putExtra(WiflyConfigActivity.EXTRA_PORT, e.getPort());
-				startActivityForResult(i, 0);
+				startActivityForResult(v.getContext(), WiflyControlActivity.class, e);
 			}
 		});
         
@@ -62,5 +60,31 @@ public class WiflyLightActivity extends Activity {
 						btn).execute(Long.valueOf(3000000000L));
 			}
 		});
+    }
+    
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+    	super.onCreateContextMenu(menu, v, menuInfo);
+    	getMenuInflater().inflate(R.menu.context_menu_remotes, menu);
+    }
+    
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+    	AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
+    	switch(item.getItemId()) {
+    	case R.id.configure:
+    		Endpoint e = mRemoteArrayAdapter.getItem(info.position);
+			startActivityForResult(getBaseContext(), WiflyConfigActivity.class, e);
+    		return true;
+    	default:
+    		return super.onContextItemSelected(item);
+    	}
+    }
+    
+    private void startActivityForResult(Context context, Class<?> cls, Endpoint remote) {
+		Intent i = new Intent(context, cls);
+		i.putExtra(Endpoint.EXTRA_IP, remote.getAddr());
+		i.putExtra(Endpoint.EXTRA_PORT, remote.getPort());
+		startActivityForResult(i, 0);    	
     }
 }
