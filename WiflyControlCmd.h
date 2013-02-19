@@ -308,8 +308,9 @@ class ControlCmdStartBl : public WiflyControlCmd
 					string("' - start bootloader and terminate application")) {};
 				  
 		virtual void Run(WiflyControl& control) const {
+			SimpleResponse response(START_BL);
 			cout << "Starting bootloader... ";
-			cout << (control.FwStartBl() ? "failed!" : "done.") << endl;
+			cout << (control.FwStartBl(response) ? "failed!" : "done.") << endl;
 		};
   
 };
@@ -467,9 +468,10 @@ class ControlCmdGetRtc : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const {
 			struct tm timeinfo;
+			RtcResponse response;
 			
 			cout << "Getting target time... ";
-			if(control.FwGetRtc(&timeinfo))
+			if(control.FwGetRtc(&timeinfo, response))
 			{
 				cout << "failed!" << endl;
 			}
