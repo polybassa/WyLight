@@ -27,6 +27,7 @@
 #include "intelhexclass.h"
 #include "error.h"
 #include "TelnetProxy.h"
+#include "WiflyControlException.h"
 
 class WiflyResponse
 {
