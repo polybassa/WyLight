@@ -41,7 +41,6 @@
 #define GET_RTC 0xF3
 #define SET_COLOR_DIRECT 0xF1
 #define GET_CYCLETIME 0xF0
-#define ADD_COLOR 0xEF
 #define GET_TRACE 0xEE
 #define GET_FW_VERSION 0xED
 #define FW_STARTED 0xEC
@@ -115,7 +114,7 @@ struct cmd_get_fw_version {
 struct response_frame {
 	uns16 length;		/* only for Firmware, do not use in Client */
 	uns8 cmd;
-	ERROR_CODE state;
+	ErrorCode state;
 	union {
 		struct rtc_time get_rtc;
 		struct cmd_get_fw_version version;

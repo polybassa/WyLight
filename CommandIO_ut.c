@@ -61,7 +61,7 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 	return 1;
 }
 
-ERROR_CODE Error_GetState()
+ErrorCode Error_GetState()
 {
 	return 0xff;
 }
@@ -274,11 +274,18 @@ int ut_CommandIO_SendResponse(void)
 		RingBuf_Put(&g_RingBuf, RingBuf_Get(&g_RingBufResponse));
 	}
 
-	for (i = 0; i < 100; i++)
+	for (i = 0; i < mFrame.length * 2; i++)
 	{
 		CommandIO_GetCommands();
 	}
-	
+#ifdef DEBUG
+	uns8 *pFrame = (uns8*)&mFrame;
+	uns8 *pCmd =  (uns8*)&g_CmdBuf.buffer;
+	for(i = 0; i < mFrame.length; i++)
+	{
+		printf(" %#x == %#x \n" , *pFrame++, *pCmd++);
+	}
+#endif
 	/* in the inputbuffer of g_CmdBuf must be the same data as in mFrame now */
 	const bool success = (0 == memcmp((void*)&mFrame, (void*)&g_CmdBuf.buffer, mFrame.length));
 	if(!success) TraceBuffer(ZONE_INFO, (uint8_t*)&randomData, sizeof(randomData), "%02x ", "this random data killed the test:\n");

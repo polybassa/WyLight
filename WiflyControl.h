@@ -57,7 +57,7 @@ class WiflyControl
 		bool BlWriteEeprom(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
 		
 		bool BlProgramFlash(const std::string& Filename);
-		ERROR_CODE BlRunApp(void) const;
+		ErrorCode BlRunApp(void) const;
 		bool BlEnableAutostart(void) const;
 		
 		/** ----------------------------- Telnet METHODES ----------------------------- **/
@@ -66,9 +66,9 @@ class WiflyControl
 		
 		
 		/** ------------------------------ FIRMWARE METHODES ------------------------------ **/
-		ERROR_CODE FwClearScript(void);
-		ERROR_CODE FwLoopOn(void);
-		ERROR_CODE FwLoopOff(unsigned char numLoops);
+		ErrorCode FwClearScript(void);
+		ErrorCode FwLoopOn(void);
+		ErrorCode FwLoopOff(unsigned char numLoops);
 		
 
 		/**
@@ -76,23 +76,21 @@ class WiflyControl
 			f.e. red(255, 0, 0) is in rgba as: 0xff000000
 				 white(255, 255, 255) is in rgba as: 0xffffff00
 		**/
-		ERROR_CODE FwSetColor(unsigned long addr, unsigned long rgba);
-		ERROR_CODE FwSetColorDirect(unsigned char* pBuffer, size_t bufferLength);
+		ErrorCode FwSetColor(unsigned long addr, unsigned long rgba);
+		ErrorCode FwSetColorDirect(unsigned char* pBuffer, size_t bufferLength);
 		
-		ERROR_CODE FwSetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade);
-		ERROR_CODE FwSetFade(std::string& addr, std::string& rgba, unsigned short fadeTmms, bool parallelFade);
+		ErrorCode FwSetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade);
+		ErrorCode FwSetFade(std::string& addr, std::string& rgba, unsigned short fadeTmms, bool parallelFade);
 		
-		ERROR_CODE FwSetWait(unsigned short waitTmms);
-		
-		ERROR_CODE FwAddColor(unsigned long addr, unsigned long rgba, unsigned char hour, unsigned char minute, unsigned char second);
-		ERROR_CODE FwAddColor(std::string& addr, std::string& rgba, unsigned char hour, unsigned char minute, unsigned char second);
+		ErrorCode FwSetWait(unsigned short waitTmms);
 		
 		void FwTest(void);
-		ERROR_CODE FwPrintCycletime(std::ostream& out);
-		ERROR_CODE FwPrintTracebuffer(std::ostream& out);
-		ERROR_CODE FwStartBl(void);
+		ErrorCode FwPrintCycletime(std::ostream& out);
+		ErrorCode FwPrintTracebuffer(std::ostream& out);
+		ErrorCode FwPrintFwVersion(std::ostream& out);
+		ErrorCode FwStartBl(void);
 		
-		ERROR_CODE FwSetRtc(struct tm* timeValue);
-		ERROR_CODE FwGetRtc(struct tm* timeValue);
+		ErrorCode FwSetRtc(struct tm* timeValue);
+		ErrorCode FwGetRtc(struct tm* timeValue);
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */

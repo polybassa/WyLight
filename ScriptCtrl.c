@@ -144,11 +144,8 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 			return TRUE;
 		}
 #endif /* #ifndef CC8E */
-		case ADD_COLOR:
+		case GET_FW_VERSION:
 		{
-#ifdef ALARMCLOCK
-			date_timer_add_event(&pCmd->data.add_color);
-#endif /* ALARMCLOCK */
 			return TRUE;
 		}
 	}
