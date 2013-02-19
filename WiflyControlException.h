@@ -42,7 +42,7 @@ class WiflyControlBadResponseException : public WiflyControlException
 {
 public:
 	WiflyControlBadResponseException(const struct cmd_frame* const failedFrame, const char* const errorString, int errorID )
-	: WiflyControlException(errorString, errorID) { memcpy(&mFailedFrame, failedFrame, sizeof(struct cmd_frame)); };
+	: WiflyControlException(errorString, errorID) { memcpy(&mFailedFrame, failedFrame, sizeof(struct cmd_frame)); }
 	
 	struct cmd_frame getFailedFrame() const { return mFailedFrame; }
 	
