@@ -707,7 +707,7 @@ ErrorCode WiflyControl::FwSetWait(unsigned short waitTmms)
 	unsigned char buffer[512];
 	
 	int bytesRead = FwSend(&mCmdFrame, sizeof(cmd_set_fade), &buffer[0], sizeof(buffer));
-Trace(ZONE_VERBOSE, "We got %d bytes response.\n", bytesRead);
+	Trace(ZONE_VERBOSE, "We got %d bytes response.\n", bytesRead);
 	TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer[0], bytesRead, "%02x ", "Message: ");
 
 	

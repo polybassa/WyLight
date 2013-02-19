@@ -26,6 +26,7 @@
 #include "BlRequest.h"
 #include "intelhexclass.h"
 #include "error.h"
+#include "WiflyControlException.h"
 
 class WiflyControl
 {
