@@ -40,11 +40,6 @@ uns16 Flash_Read(const uns8 upperAdress, const uns16 adress)
 }
 #endif /* __CC8E__ */
 
-void Flash_ReadBlock(const uns8 upperAdress, const uns16 adress, uns16 *data, const uns16 length)
-{
-	uns8 i;
-	
-}
 void Flash_Write(const uns8 upperAdress, const uns16 adress, const uns16 data);
 
 void Flash_WriteBlock(const uns8 upperAdress, const uns16 adress, uns16 *data, const uns16 length);

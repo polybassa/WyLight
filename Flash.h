@@ -23,7 +23,6 @@
 #include "platform.h"
 
 uns16 Flash_Read(const uns8 upperAdress, const uns16 adress);
-void Flash_ReadBlock(const uns8 upperAdress, const uns16 adress, uns16 *data, const uns16 length);
 void Flash_Write(const uns8 upperAdress, const uns16 adress, const uns16 data);
 void Flash_WriteBlock(const uns8 upperAdress, const uns16 adress, uns16 *data, const uns16 length);
 void Flash_Erase(const uns8 upperAdress, const uns16 adress);
