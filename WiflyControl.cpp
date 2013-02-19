@@ -837,7 +837,7 @@ ErrorCode WiflyControl::FwPrintFwVersion(std::ostream& out)
 }
 
 
-ErrorCode WiflyControl::FwStartBl(void)
+ErrorCode WiflyControl::FwStartBl(WiflyResponse& response)
 {
 	unsigned char buffer[512];
 	mCmdFrame.led.cmd = START_BL;
@@ -847,7 +847,9 @@ ErrorCode WiflyControl::FwStartBl(void)
 	Trace(ZONE_VERBOSE, "We got %d bytes response.\n", bytesRead);
 	TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer[0], bytesRead, "%02x ", "Message: ");
 
-	if(4 <= bytesRead)
+	response.Init(buffer, bytesRead);
+	if(response.IsValid())
+	//if(4 <= bytesRead)
 	{
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
 		if(pResponse->cmd == START_BL) return pResponse->state;
@@ -884,7 +886,7 @@ ErrorCode WiflyControl::FwSetRtc(struct tm* timeValue)
 	return SCRIPTBUFFER_FULL;
 }
 
-ErrorCode WiflyControl::FwGetRtc(struct tm* timeValue)
+ErrorCode WiflyControl::FwGetRtc(struct tm* timeValue, WiflyResponse& response)
 {
 	if(timeValue == NULL) return SCRIPTBUFFER_FULL;
     
@@ -895,7 +897,9 @@ ErrorCode WiflyControl::FwGetRtc(struct tm* timeValue)
 	Trace(ZONE_VERBOSE, "We got %d bytes response.\n", bytesRead);
 	TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer[0], bytesRead, "%02x ", "Message: ");
 
-	
+
+	response.Init(buffer, bytesRead);
+	//TODO this logic should be moved into the response object. f.e. into Init()
 	if(4 <= bytesRead)
 	{
 		struct response_frame *pResponse = (response_frame*)&buffer[0];

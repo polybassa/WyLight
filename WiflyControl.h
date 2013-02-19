@@ -28,6 +28,47 @@
 #include "error.h"
 #include "TelnetProxy.h"
 
+class WiflyResponse
+{
+	public:
+		virtual void Init(uint8_t* pData, size_t dataLength) = 0;
+		bool IsValid(void) const { return mIsValid; };
+
+	protected:
+		WiflyResponse(void) : mIsValid(false) {};
+		bool mIsValid;
+};
+
+class SimpleResponse : public WiflyResponse
+{
+	public:
+		SimpleResponse(uint8_t cmd) : mCmd(cmd) {};
+		void Init(uint8_t* pData, size_t dataLength)
+		{
+			mIsValid = (NULL != pData) && (4 <= dataLength) && (mCmd == pData[2]);
+		};
+
+	private:
+		const uint8_t mCmd;
+};
+
+class RtcResponse : public SimpleResponse
+{
+	public:
+		RtcResponse(void) : SimpleResponse(GET_RTC) {};
+		void Init(uint8_t* pData, size_t dataLength)
+		{
+			SimpleResponse::Init(pData, dataLength);
+			if(mIsValid && (dataLength >= 4 + sizeof(struct rtc_time)))
+			{
+				//TODO extract rtc time from pData here
+			}
+		};
+
+	private:
+		//TODO add rtc time members here
+};
+
 class WiflyControl
 {
 	private:
@@ -88,9 +129,9 @@ class WiflyControl
 		ErrorCode FwPrintCycletime(std::ostream& out);
 		ErrorCode FwPrintTracebuffer(std::ostream& out);
 		ErrorCode FwPrintFwVersion(std::ostream& out);
-		ErrorCode FwStartBl(void);
+		ErrorCode FwStartBl(WiflyResponse& response);
 		
 		ErrorCode FwSetRtc(struct tm* timeValue);
-		ErrorCode FwGetRtc(struct tm* timeValue);
+		ErrorCode FwGetRtc(struct tm* timeValue, WiflyResponse& response);
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */
