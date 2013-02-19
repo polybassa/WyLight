@@ -24,6 +24,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="biz.bruenn.WiflyLight.WiflyConfigActivity"
+            android:label="@string/title_activity_wifly_config" >
+        </activity>
+        <activity
             android:name="biz.bruenn.WiflyLight.WiflyControlActivity"
             android:label="@string/title_activity_wifly_control" >
         </activity>

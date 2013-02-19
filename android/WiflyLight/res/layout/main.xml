@@ -13,7 +13,7 @@
         android:id="@+id/debugOutput"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello" />
+        android:text="@string/default_text" />
     <ListView
         android:id="@+id/remoteList"
         android:layout_width="fill_parent"

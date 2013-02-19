@@ -18,7 +18,7 @@ import android.widget.ListView;
 public class WiflyLightActivity extends Activity {
 	private ListView mRemoteList;
 	private ArrayList<Endpoint> mRemoteArray = new ArrayList<Endpoint>();
-	ArrayAdapter<Endpoint> mRemoteArrayAdapter;
+	private ArrayAdapter<Endpoint> mRemoteArrayAdapter;
 	
 	static {
 		System.loadLibrary("wifly");
@@ -38,9 +38,13 @@ public class WiflyLightActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View v, int arg2,
 					long arg3) {
 				Endpoint e = mRemoteArrayAdapter.getItem(arg2);
-				Intent i = new Intent(v.getContext(), WiflyControlActivity.class);
-				i.putExtra(WiflyControlActivity.EXTRA_IP, e.getAddr());
-				i.putExtra(WiflyControlActivity.EXTRA_PORT, e.getPort());
+				//TODO enable this code and remove debug code below of it
+//				Intent i = new Intent(v.getContext(), WiflyControlActivity.class);
+//				i.putExtra(WiflyControlActivity.EXTRA_IP, e.getAddr());
+//				i.putExtra(WiflyControlActivity.EXTRA_PORT, e.getPort());
+				Intent i = new Intent(v.getContext(), WiflyConfigActivity.class);
+				i.putExtra(WiflyConfigActivity.EXTRA_IP, e.getAddr());
+				i.putExtra(WiflyConfigActivity.EXTRA_PORT, e.getPort());
 				startActivityForResult(i, 0);
 			}
 		});
