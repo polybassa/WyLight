@@ -29,7 +29,7 @@ ClientSocket::~ClientSocket(void) {}
 TcpSocket::TcpSocket(uint32_t addr, uint16_t port) : ClientSocket(addr, port, 0) {}
 size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const { return 0;}
 size_t TcpSocket::Send(const uint8_t* frame, size_t length) const {return 0; }
-ComProxy::ComProxy(uint32_t addr, uint16_t port) : mSock (addr, port) {}
+ComProxy::ComProxy(const TcpSocket& sock) : mSock (sock) {}
 int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const {	return -1; }
 int32_t ComProxy::Send(cmd_frame const* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const {	return -1; }
 
@@ -38,25 +38,27 @@ static std::list<std::string> g_TestBuffer;
 static bool g_ProxySaved = false;
 static bool g_ProxyConnected = false;
 
-bool ComProxy::TelnetClose(bool doSave) const
+
+TelnetProxy::TelnetProxy(const TcpSocket& sock) : mSock (sock) {}
+bool TelnetProxy::Close(bool doSave) const
 {
 	g_ProxySaved = doSave;
 	g_ProxyConnected = false;
 	return true;
 }
 
-bool ComProxy::TelnetOpen(void) const
+bool TelnetProxy::Open(void) const
 {
 	return g_ProxyConnected = true;
 }
 
-bool ComProxy::TelnetSend(const std::string& message, const std::string& expectedResponse) const
+bool TelnetProxy::Send(const std::string& message, const std::string& expectedResponse) const
 {
 	g_TestBuffer.push_back(message);
 	return g_ProxyConnected;
 }
 
-bool ComProxy::TelnetSendString(const std::string& command, std::string value) const
+bool TelnetProxy::SendString(const std::string& command, std::string value) const
 {
 	g_TestBuffer.push_back(command);
 	g_TestBuffer.push_back(value);

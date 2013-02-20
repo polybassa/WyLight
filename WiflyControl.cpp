@@ -56,7 +56,7 @@ static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VER
 
 
 WiflyControl::WiflyControl(unsigned long addr, unsigned short port)
-: mProxy(addr, port)
+: mSock(addr, port), mProxy(mSock), mTelnet(mSock)
 {
 	//TODO remove length
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;
@@ -512,7 +512,7 @@ bool WiflyControl::ConfSetDefaults(void) const
 		"set wlan rate 0\r\n",            // slowest datarate but highest range
 	};
 
-	if(!mProxy.TelnetOpen())
+	if(!mTelnet.Open())
 	{
 		Trace(ZONE_ERROR, "open telnet connection failed\n");
 		return false;
@@ -520,13 +520,13 @@ bool WiflyControl::ConfSetDefaults(void) const
 
 	for(size_t i = 0; i < sizeof(commands) / sizeof(commands[0]); i++)
 	{
-		if(!mProxy.TelnetSend(commands[i]))
+		if(!mTelnet.Send(commands[i]))
 		{
 			Trace(ZONE_ERROR, "command: '%s' failed -> exit without saving\n", commands[i].data());
-			return mProxy.TelnetClose(false);
+			return mTelnet.Close(false);
 		} 
 	}
-	return mProxy.TelnetClose(true);
+	return mTelnet.Close(true);
 }
 
 bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssid) const
@@ -546,26 +546,26 @@ bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssi
 		return false;
 	}
 
-	if(!mProxy.TelnetOpen())
+	if(!mTelnet.Open())
 	{
 		Trace(ZONE_ERROR, "open telnet connection failed\n");
 		return false;
 	}
 
-	if(!mProxy.TelnetSendString("set wlan phrase ", phrase))
+	if(!mTelnet.SendString("set wlan phrase ", phrase))
 	{
 		Trace(ZONE_ERROR, "set wlan phrase to '%s' failed\n", phrase.data());
-		mProxy.TelnetClose(false);
+		mTelnet.Close(false);
 		return false;
 	}
 
-	if(!mProxy.TelnetSendString("set wlan ssid ", ssid))
+	if(!mTelnet.SendString("set wlan ssid ", ssid))
 	{
 		Trace(ZONE_ERROR, "set wlan ssid to '%s' failed\n", ssid.data());
-		mProxy.TelnetClose(false);
+		mTelnet.Close(false);
 		return false;
 	}
-	return mProxy.TelnetClose(true);
+	return mTelnet.Close(true);
 }
 
 int WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, unsigned char* pResponse, size_t responseSize) const
@@ -837,7 +837,7 @@ ErrorCode WiflyControl::FwPrintFwVersion(std::ostream& out)
 }
 
 
-ErrorCode WiflyControl::FwStartBl(void)
+ErrorCode WiflyControl::FwStartBl(WiflyResponse& response)
 {
 	unsigned char buffer[512];
 	mCmdFrame.led.cmd = START_BL;
@@ -847,7 +847,9 @@ ErrorCode WiflyControl::FwStartBl(void)
 	Trace(ZONE_VERBOSE, "We got %d bytes response.\n", bytesRead);
 	TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer[0], bytesRead, "%02x ", "Message: ");
 
-	if(4 <= bytesRead)
+	response.Init(buffer, bytesRead);
+	if(response.IsValid())
+	//if(4 <= bytesRead)
 	{
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
 		if(pResponse->cmd == START_BL) return pResponse->state;
@@ -884,7 +886,7 @@ ErrorCode WiflyControl::FwSetRtc(struct tm* timeValue)
 	return SCRIPTBUFFER_FULL;
 }
 
-ErrorCode WiflyControl::FwGetRtc(struct tm* timeValue)
+ErrorCode WiflyControl::FwGetRtc(struct tm* timeValue, WiflyResponse& response)
 {
 	if(timeValue == NULL) return SCRIPTBUFFER_FULL;
     
@@ -895,7 +897,9 @@ ErrorCode WiflyControl::FwGetRtc(struct tm* timeValue)
 	Trace(ZONE_VERBOSE, "We got %d bytes response.\n", bytesRead);
 	TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer[0], bytesRead, "%02x ", "Message: ");
 
-	
+
+	response.Init(buffer, bytesRead);
+	//TODO this logic should be moved into the response object. f.e. into Init()
 	if(4 <= bytesRead)
 	{
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
