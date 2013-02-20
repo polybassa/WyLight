@@ -21,33 +21,72 @@
 #define ____WiflyControlException__
 
 #include <stdio.h>
-#include <string.h>
+#include <exception>
+#include <string>
 #include "wifly_cmd.h"
+#include "BlRequest.h"
 
-class WiflyControlException
+
+class WiflyControlException : public std::exception
 {
 public:
-	WiflyControlException(const char* const errorString, int errorID = 0)
-	: mID(errorID) { strncpy(mErrorString, errorString, sizeof(mErrorString)); }
+	WiflyControlException(const std::string errorString = "WiflyControlException")
+	: std::exception(), m_ErrorString(errorString) {};
 		
-	int getID() const { return mID; }
-	const char* getErrorString() const { return mErrorString; }
+	const std::string& getErrorString(void) const { return m_ErrorString; };
 	
 private:
-	int mID;
-	char mErrorString[1024];
+	const std::string m_ErrorString;
 };
 
-class WiflyControlBadResponseException : public WiflyControlException
+class WiflyControlBlNoResponseException: public WiflyControlException
 {
 public:
-	WiflyControlBadResponseException(const struct cmd_frame* const failedFrame, const char* const errorString, int errorID )
-	: WiflyControlException(errorString, errorID) { memcpy(&mFailedFrame, failedFrame, sizeof(struct cmd_frame)); }
+	WiflyControlBlNoResponseException(const struct BlRequest failedRequest, const std::string errorString)
+	: WiflyControlException(errorString), m_FailedRequest(failedRequest) {};
 	
-	struct cmd_frame getFailedFrame() const { return mFailedFrame; }
+	const struct BlRequest& getFailedRequest(void) const { return m_FailedRequest; };
 	
 private:
-	struct cmd_frame mFailedFrame;
+	struct BlRequest m_FailedRequest;
 };
+
+class WiflyControlFwNoResponseException : public WiflyControlException
+{
+public:
+	WiflyControlFwNoResponseException(const struct cmd_frame* const failedFrame, const std::string errorString)
+	: WiflyControlException(errorString) { memcpy(&m_FailedFrame, failedFrame, sizeof(struct cmd_frame)); }
+	
+	const struct cmd_frame getFailedFrame(void) const { return m_FailedFrame; }
+	
+private:
+	struct cmd_frame m_FailedFrame;
+};
+
+class WiflyControlConnectionAbortException : public WiflyControlException
+{
+public:
+	WiflyControlConnectionAbortException(const bool doReconnect = false, const std::string errorString = "")
+	: WiflyControlException(errorString), reconnect(doReconnect) {};
+	
+	const bool doReconnect(void) const {return reconnect; };
+	
+private:
+	const bool reconnect;
+};
+
+class WiflyControlScriptBufferFullException : public WiflyControlException
+{
+public:
+	WiflyControlScriptBufferFullException(const struct cmd_frame* const failedCommand, const std::string errorString)
+	: WiflyControlException(errorString) { memcpy(&m_FailedCommand, failedCommand, sizeof(struct cmd_frame)); }
+	
+	const struct cmd_frame getFailedCommand(void) const { return m_FailedCommand; }
+	
+private:
+	struct cmd_frame m_FailedCommand;
+};
+
+
 
 #endif /* defined(____WiflyControlException__) */
