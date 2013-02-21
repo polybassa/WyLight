@@ -47,7 +47,9 @@ jlong Java_biz_bruenn_WiflyLight_WiflyControl_create(JNIEnv* env, jobject ref, j
 
 jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwSetColor(JNIEnv* env, jobject ref, jlong pNative, jint addr, jint rgba)
 {
-	return reinterpret_cast<WiflyControl*>(pNative)->FwSetColor(addr, rgba);
+	SimpleResponse response(SET_FADE);
+	reinterpret_cast<WiflyControl*>(pNative)->FwSetFade(response, addr, rgba);
+	return response.IsValid();
 }
 
 void Java_biz_bruenn_WiflyLight_WiflyControl_release(JNIEnv* env, jobject ref, jlong pNative)

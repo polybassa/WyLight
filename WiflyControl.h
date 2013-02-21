@@ -78,11 +78,10 @@ class WiflyControl
 			f.e. red(255, 0, 0) is in rgba as: 0xff000000
 				 white(255, 255, 255) is in rgba as: 0xffffff00
 		**/
-		bool FwSetColor(WiflyResponse&, unsigned long addr, unsigned long rgba);
 		bool FwSetColorDirect(WiflyResponse&, unsigned char* pBuffer, size_t bufferLength);
 		
-		bool FwSetFade(WiflyResponse&, unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade);
-		bool FwSetFade(WiflyResponse&, std::string& addr, std::string& rgba, unsigned short fadeTmms, bool parallelFade);
+		bool FwSetFade(WiflyResponse&, unsigned long addr, unsigned long rgba, unsigned short fadeTmms = 0, bool parallelFade = false);
+		bool FwSetFade(WiflyResponse&, std::string& addr, std::string& rgba, unsigned short fadeTmms = 0, bool parallelFade = false);
 		
 		bool FwSetWait(WiflyResponse&, unsigned short waitTmms);
 		

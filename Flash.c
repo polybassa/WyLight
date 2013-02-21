@@ -47,4 +47,3 @@ void Flash_WriteBlock(const uns8 upperAdress, const uns16 adress, uns16 *data, c
 void Flash_Erase(const uns8 upperAdress, const uns16 adress);
 
 void Flash_EraseBlock(const uns8 upperAdress, const uns16 adress, uns16 *data, const uns16 length);
-*/

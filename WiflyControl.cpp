@@ -601,11 +601,6 @@ bool WiflyControl::FwLoopOff(WiflyResponse& response, unsigned char numLoops)
    	return FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
 }
 
-bool WiflyControl::FwSetColor(WiflyResponse& response, unsigned long addr, unsigned long rgba)
-{
-	return FwSetFade(response, addr, rgba, 0, false);
-}
-
 bool WiflyControl::FwSetColorDirect(WiflyResponse& response, unsigned char* pBuffer, size_t bufferLength)
 {
 	if(pBuffer == NULL) return false; //TODO should be throw exceptiong wrong parameter
@@ -660,8 +655,6 @@ void WiflyControl::FwTest(void)
 	SimpleResponse setFadeResp(SET_FADE);
 	SimpleResponse setWaitResp(WAIT);
 	
-	
-	uint32_t bitMask = 0x01;
 	WiflyControlColorClass LedColor = WiflyControlColorClass(0xffffffff);
       
 	static const unsigned long RED   = 0xFF000000;
@@ -674,7 +667,9 @@ void WiflyControl::FwTest(void)
 	FwLoopOn(loopOnResp);
 	FwSetFade(setFadeResp, 0xFFFFFFFFLU, RED, 2000, false);
 	
-	/*for(unsigned int i = 0; i < NUM_OF_LED; i++)
+
+	/*uint32_t bitMask = 0x01;
+	for(unsigned int i = 0; i < NUM_OF_LED; i++)
 	{
 		LedColor.red((uint8_t)((0xff / NUM_OF_LED) * i));
 		LedColor.green((uint8_t)((0xff / NUM_OF_LED) * i));
