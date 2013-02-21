@@ -94,38 +94,6 @@ struct BroadcastMessage
 		return ((BroadcastReceiver::STOP_MSG_LENGTH == length)
 						&& (0 == memcmp(&mac, BroadcastReceiver::STOP_MSG, BroadcastReceiver::STOP_MSG_LENGTH)));
 	};
-
-// was used only for debugging
-// deactivated because of possible byte order issues using IsWiflyBroadcast()
-#if 0 
-	void NetworkToHost(void) {
-		port = ntohs(port);
-		rtc = ntohl(rtc);
-		bat_mV = ntohs(bat_mV);
-		gpioValue = ntohs(gpioValue);
-		bootTmms = ntohs(bootTmms);
-		for(size_t i = 0; i < sizeof(sensor)/sizeof(sensor[0]); i++) {
-			sensor[i] = ntohs(sensor[i]);
-		}
-	};
-
-	void Print(std::ostream& out) const {
-
-		out << "MAC:        "	<< std::hex
-		<< (int32_t) mac[0] << ' ' << (int32_t) mac[1] << ' ' << (int32_t) mac[2] << ' '
-		<< (int32_t) mac[3] << ' ' << (int32_t) mac[4] << ' ' << (int32_t) mac[5]
-		<< "\nChannel:  " << std::dec << (int32_t)channel
-		<< "\nRssi:     " << (int32_t)rssi
-		<< "%\nPort:     " << port 
-		<< "\nRTC:      0x" << std::hex << rtc
-		<< "\nBat:      " << std::dec << bat_mV
-		<< "mV\nGPIO:     0x" << std::hex << gpioValue
-		<< "\nTime:     " << asciiTime
-		<< "\nVersion:  " << version
-		<< "\nDeviceID: " << deviceId
-		<< "\nBoottime: " << std::dec << bootTmms << "ms\n";
-	};
-#endif
 };
 #pragma pack(pop)
 #endif /* #ifndef _BROADCAST_RECEIVER_H_ */

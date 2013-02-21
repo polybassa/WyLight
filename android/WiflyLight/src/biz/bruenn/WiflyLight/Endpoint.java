@@ -23,6 +23,14 @@ public class Endpoint {
 	
 	@Override
 	public String toString() {
-		return Integer.toHexString(mAddr) + ':' + String.valueOf(mPort);
+		int _4 = mAddr & 0xff;
+		int _3 = Integer.rotateRight(mAddr, 8) & 0xff;
+		int _2 = Integer.rotateRight(mAddr, 16) & 0xff;
+		int _1 = Integer.rotateRight(mAddr, 24) & 0xff;
+		return Integer.toString(_1) + '.' 
+			 + Integer.toString(_2) + '.'
+			 + Integer.toString(_3) + '.'
+			 + Integer.toString(_4) + ':'
+			 + String.valueOf(mPort);
 	}
 }

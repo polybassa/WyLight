@@ -21,6 +21,8 @@
 #include <unistd.h>
 #include <jni.h>
 
+static WiflyControl* g_pControl = NULL;
+
 extern "C" {
 jlong Java_biz_bruenn_WiflyLight_RemoteCollector_createBroadcastReceiver(JNIEnv* env, jobject ref)
 {
@@ -42,17 +44,43 @@ jlong Java_biz_bruenn_WiflyLight_RemoteCollector_getNextRemote(JNIEnv* env, jobj
 
 jlong Java_biz_bruenn_WiflyLight_WiflyControl_create(JNIEnv* env, jobject ref, jint ipv4Addr, jshort port)
 {
-	return (jlong) new WiflyControl(ipv4Addr, port);
+	// TODO make this threadsafe
+	if(NULL == g_pControl) {
+		g_pControl = new WiflyControl(ipv4Addr, port);
+		return (jlong) g_pControl;
+	}
+	return NULL;
+}
+
+jstring Java_biz_bruenn_WiflyLight_WiflyControl_ConfGetSsid(JNIEnv* env, jobject ref, jlong pNative)
+{
+	std::string mySsid = reinterpret_cast<WiflyControl*>(pNative)->ConfGetSsid();
+	return env->NewStringUTF(mySsid.data());
+}
+
+jboolean Java_biz_bruenn_WiflyLight_WiflyControl_ConfSetWlan(JNIEnv* env, jobject ref, jlong pNative, jstring passphrase, jstring ssid)
+{
+	const char* myPassphrase = env->GetStringUTFChars(passphrase, 0);
+	const char* mySsid = env->GetStringUTFChars(ssid, 0);
+	jboolean result = reinterpret_cast<WiflyControl*>(pNative)->ConfSetWlan(myPassphrase, mySsid);
+	env->ReleaseStringUTFChars(passphrase, myPassphrase);
+	env->ReleaseStringUTFChars(ssid, mySsid);
+	return result;
 }
 
 jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwSetColor(JNIEnv* env, jobject ref, jlong pNative, jint addr, jint rgba)
 {
-	return reinterpret_cast<WiflyControl*>(pNative)->FwSetColor(addr, rgba);
+	SimpleResponse response(SET_FADE);
+	reinterpret_cast<WiflyControl*>(pNative)->FwSetFade(response, addr, rgba);
+	return response.IsValid();
 }
 
 void Java_biz_bruenn_WiflyLight_WiflyControl_release(JNIEnv* env, jobject ref, jlong pNative)
 {
-	delete (WiflyControl*)pNative;
+	if((WiflyControl*)pNative == g_pControl) {
+		delete g_pControl;
+		g_pControl = NULL;
+	}
 }
 }
 
