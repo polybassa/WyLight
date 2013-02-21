@@ -241,3 +241,4 @@ WiflyControl_ut.bin
 contents.xcworkspacedata
 commandIO_ut.bin
 WorkspaceSettings.xcsettings
+TelnetProxy_ut.bin

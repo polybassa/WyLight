@@ -23,6 +23,7 @@
 #include <iomanip>
 #include <time.h>
 #include <stdint.h>
+#include "WiflyControlResponse.h"
 
 //TODO remove this dependencies!!!
 using std::cin;
@@ -264,7 +265,7 @@ class ControlCmdBlRunApp : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const {
 			cout << "Starting application... ";
-			cout << (control.BlRunApp() ? "failed!" : "done.") << endl;
+			cout << (control.BlRunApp() ? "done." : "failed!") << endl;
 		};
 };
 
@@ -310,7 +311,7 @@ class ControlCmdStartBl : public WiflyControlCmd
 		virtual void Run(WiflyControl& control) const {
 			SimpleResponse response(START_BL);
 			cout << "Starting bootloader... ";
-			cout << (control.FwStartBl(response) ? "failed!" : "done.") << endl;
+			cout << (control.FwStartBl(response) ? "done." : "failed!") << endl;
 		};
   
 };
@@ -323,8 +324,10 @@ class ControlCmdPrintTracebuffer : public WiflyControlCmd
 					string("' - displays content in tracebuffer of pic")) {};
 				  
 		virtual void Run(WiflyControl& control) const {
+			TracebufferResponse response;
 			cout << "Reading tracebuffer... ";
-			control.FwPrintTracebuffer(std::cout);
+			cout << (control.FwPrintTracebuffer(response) ? "done." : "failed!") << endl;
+			response.PrintTracebuffer(std::cout);
 		};
   
 };
@@ -337,8 +340,10 @@ class ControlCmdPrintFwVersion : public WiflyControlCmd
 			string("' - displays current firmware version of pic")) {};
 				
 			virtual void Run(WiflyControl& control) const {
+				FirmwareVersionResponse response;
 				cout << "Reading firmware version... ";
-				control.FwPrintFwVersion(std::cout);
+				cout << (control.FwPrintFwVersion(response) ? "done." : "failed!") << endl;
+				response.PrintFirmwareVersion(std::cout);
 			};
 				
 };
@@ -352,8 +357,9 @@ class ControlCmdClearScript : public WiflyControlCmd
 				string("' - clear script buffer")) {};
 
 		virtual void Run(WiflyControl& control) const {
+			SimpleResponse response(CLEAR_SCRIPT);
 			cout << "Clearing script buffer... ";
-			cout << (control.FwClearScript() ? "failed!" : "done.") << endl;
+			cout << (control.FwClearScript(response) ? "done." : "failed!") << endl;
 
 		};
 };
@@ -366,8 +372,10 @@ class ControlCmdPrintCycletime : public WiflyControlCmd
 				string("' - prints all timevalues of internal methode execution times")) {};
 
 		virtual void Run(WiflyControl& control) const {
+			CycletimeResponse response;
 			cout << "Transmitting command print cycletime... ";
-			cout << (control.FwPrintCycletime(std::cout) ? "failed!" : "done.") << endl;
+			cout << (control.FwPrintCycletime(response) ? "done." : "failed!") << endl;
+			response.PrintCycletimes(std::cout);
 
 		};
 };
@@ -380,8 +388,9 @@ class ControlCmdLoopOn : public WiflyControlCmd
 				string("' - indicates the start of a loop")) {};
 
 		virtual void Run(WiflyControl& control) const {
+			SimpleResponse response(LOOP_ON);
 			cout << "Transmitting command loop on... ";
-			cout << (control.FwLoopOn() ? "failed!" : "done.") << endl;
+			cout << (control.FwLoopOn(response) ? "done." : "failed!") << endl;
 
 		};
 };
@@ -395,10 +404,11 @@ class ControlCmdLoopOff : public WiflyControlCmd
 			+ string("    <numLoops> number of executions for the loop. Enter 0 for infinity loop. Maximum 255")) {};
 
 		virtual void Run(WiflyControl& control) const {
+			SimpleResponse response(LOOP_OFF);
 			int numLoops;
 			cin >> numLoops;
 			cout << "Transmitting command loop off... ";
-			cout << (control.FwLoopOff( (unsigned char)numLoops ) ? "failed!" : "done.") << endl;
+			cout << (control.FwLoopOff(response, (unsigned char)numLoops) ? "done." : "failed!") << endl;
 		};
 };
 
@@ -411,10 +421,11 @@ class ControlCmdWait : public WiflyControlCmd
 			+ string("    <time> the number of milliseconds the wait should take")) {};
 
 		virtual void Run(WiflyControl& control) const {
+			SimpleResponse response(WAIT);
 			uint16_t waitTmms;
 			cin >> waitTmms;
 			cout << "Transmitting command wait... ";
-			cout << (control.FwSetWait( waitTmms ) ? "failed!" : "done.") << endl;
+			cout << (control.FwSetWait(response, waitTmms) ? "done." : "failed!") << endl;
 		};
 };
 
@@ -429,13 +440,14 @@ class ControlCmdSetFade : public WiflyControlCmd
 			+ string("    <time> the number of milliseconds the fade should take")) {};
 
 		virtual void Run(WiflyControl& control) const {
+			SimpleResponse response(SET_FADE);
 			string addr, color;
 			unsigned long timevalue;
 			cin >> addr;
 			cin >> color;
 			cin >> timevalue;
 			cout << "Transmitting command set fade... ";
-			cout << (control.FwSetFade(addr, color, (uint16_t)timevalue, false) ? "failed!" : "done.") << endl;
+			cout << (control.FwSetFade(response, addr, color, (uint16_t)timevalue, false) ? "done." : "failed!") << endl;
 		};
 };
 
@@ -447,6 +459,7 @@ class ControlCmdSetRtc : public WiflyControlCmd
 				string("' - set time of rtc in target to current systemtime")){};
 
 		virtual void Run(WiflyControl& control) const {
+			SimpleResponse response(SET_RTC);
 			struct tm* timeinfo;
 			time_t rawtime;
 			
@@ -455,7 +468,7 @@ class ControlCmdSetRtc : public WiflyControlCmd
 			timeinfo = localtime(&rawtime);
 			
 			cout << "Transmitting current time... ";
-			cout << (control.FwSetRtc(timeinfo) ? "failed!" : "done.") << endl;
+			cout << (control.FwSetRtc(response, timeinfo) ? "done." : "failed!") << endl;
 		};
 };
 
@@ -467,19 +480,12 @@ class ControlCmdGetRtc : public WiflyControlCmd
 				string("' - get time of rtc in target")){};
 
 		virtual void Run(WiflyControl& control) const {
-			struct tm timeinfo;
 			RtcResponse response;
 			
 			cout << "Getting target time... ";
-			if(control.FwGetRtc(&timeinfo, response))
-			{
-				cout << "failed!" << endl;
-			}
-			else
-			{
-				cout << "done." << endl;
-				cout << "Current time at target device is: " << asctime(&timeinfo) << endl;
-			}
+			cout << (control.FwGetRtc(response) ? "done." : "failed!") << endl;
+			struct tm timeinfo = response.GetRealTime();
+			if(response.IsValid()) cout << endl << asctime(&timeinfo) << endl;
 		};
 };
 

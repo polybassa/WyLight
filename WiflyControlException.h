@@ -25,6 +25,7 @@
 #include <string>
 #include "wifly_cmd.h"
 #include "BlRequest.h"
+#include "WiflyControlResponse.h"
 
 
 class WiflyControlException : public std::exception
@@ -54,13 +55,15 @@ private:
 class FwNoResponseException : public WiflyControlException
 {
 public:
-	FwNoResponseException(const struct cmd_frame* const failedFrame, const std::string errorString)
-	: WiflyControlException(errorString) { memcpy(&m_FailedFrame, failedFrame, sizeof(struct cmd_frame)); }
+	FwNoResponseException(const struct cmd_frame* const failedFrame, const WiflyResponse *pResponseObj, const std::string errorString)
+	: WiflyControlException(errorString) { memcpy(&m_FailedFrame, failedFrame, sizeof(struct cmd_frame)); m_Response = pResponseObj; }
 	
-	const struct cmd_frame GetFailedFrame(void) const { return m_FailedFrame; }
+	const struct cmd_frame GetFailedFrame(void) const { return m_FailedFrame; };
+	const WiflyResponse* GetResponseObj(void) const {return m_Response; };
 	
 private:
 	struct cmd_frame m_FailedFrame;
+	const WiflyResponse* m_Response;
 };
 
 class ScriptBufferFullException : public WiflyControlException

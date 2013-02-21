@@ -28,47 +28,7 @@
 #include "error.h"
 #include "TelnetProxy.h"
 #include "WiflyControlException.h"
-
-class WiflyResponse
-{
-	public:
-		virtual void Init(uint8_t* pData, size_t dataLength) = 0;
-		bool IsValid(void) const { return mIsValid; };
-
-	protected:
-		WiflyResponse(void) : mIsValid(false) {};
-		bool mIsValid;
-};
-
-class SimpleResponse : public WiflyResponse
-{
-	public:
-		SimpleResponse(uint8_t cmd) : mCmd(cmd) {};
-		void Init(uint8_t* pData, size_t dataLength)
-		{
-			mIsValid = (NULL != pData) && (4 <= dataLength) && (mCmd == pData[2]);
-		};
-
-	private:
-		const uint8_t mCmd;
-};
-
-class RtcResponse : public SimpleResponse
-{
-	public:
-		RtcResponse(void) : SimpleResponse(GET_RTC) {};
-		void Init(uint8_t* pData, size_t dataLength)
-		{
-			SimpleResponse::Init(pData, dataLength);
-			if(mIsValid && (dataLength >= 4 + sizeof(struct rtc_time)))
-			{
-				//TODO extract rtc time from pData here
-			}
-		};
-
-	private:
-		//TODO add rtc time members here
-};
+#include "WiflyControlResponse.h"
 
 class WiflyControl
 {
@@ -80,7 +40,7 @@ class WiflyControl
 		struct cmd_frame mCmdFrame;
 		unsigned long ToRGBA(std::string& s) const;
 		size_t BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync = true) const;
-		int FwSend(struct cmd_frame* pFrame, size_t length, unsigned char* pResponse, size_t responseSize) const;
+		bool FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const;
 		
 	public:
 		WiflyControl(unsigned long addr, unsigned short port);
@@ -99,7 +59,7 @@ class WiflyControl
 		bool BlWriteEeprom(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
 		
 		bool BlProgramFlash(const std::string& Filename);
-		ErrorCode BlRunApp(void) const;
+		bool BlRunApp(void) const;
 		bool BlEnableAutostart(void) const;
 		
 		/** ----------------------------- Telnet METHODES ----------------------------- **/
@@ -108,9 +68,9 @@ class WiflyControl
 		
 		
 		/** ------------------------------ FIRMWARE METHODES ------------------------------ **/
-		ErrorCode FwClearScript(void);
-		ErrorCode FwLoopOn(void);
-		ErrorCode FwLoopOff(unsigned char numLoops);
+		bool FwClearScript(WiflyResponse&);
+		bool FwLoopOn(WiflyResponse&);
+		bool FwLoopOff(WiflyResponse&, unsigned char numLoops);
 		
 
 		/**
@@ -118,21 +78,21 @@ class WiflyControl
 			f.e. red(255, 0, 0) is in rgba as: 0xff000000
 				 white(255, 255, 255) is in rgba as: 0xffffff00
 		**/
-		ErrorCode FwSetColor(unsigned long addr, unsigned long rgba);
-		ErrorCode FwSetColorDirect(unsigned char* pBuffer, size_t bufferLength);
+		bool FwSetColor(WiflyResponse&, unsigned long addr, unsigned long rgba);
+		bool FwSetColorDirect(WiflyResponse&, unsigned char* pBuffer, size_t bufferLength);
 		
-		ErrorCode FwSetFade(unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade);
-		ErrorCode FwSetFade(std::string& addr, std::string& rgba, unsigned short fadeTmms, bool parallelFade);
+		bool FwSetFade(WiflyResponse&, unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade);
+		bool FwSetFade(WiflyResponse&, std::string& addr, std::string& rgba, unsigned short fadeTmms, bool parallelFade);
 		
-		ErrorCode FwSetWait(unsigned short waitTmms);
+		bool FwSetWait(WiflyResponse&, unsigned short waitTmms);
 		
 		void FwTest(void);
-		ErrorCode FwPrintCycletime(std::ostream& out);
-		ErrorCode FwPrintTracebuffer(std::ostream& out);
-		ErrorCode FwPrintFwVersion(std::ostream& out);
-		ErrorCode FwStartBl(WiflyResponse& response);
+		bool FwPrintCycletime(WiflyResponse&);
+		bool FwPrintTracebuffer(WiflyResponse&);
+		bool FwPrintFwVersion(WiflyResponse&);
+		bool FwStartBl(WiflyResponse&);
 		
-		ErrorCode FwSetRtc(struct tm* timeValue);
-		ErrorCode FwGetRtc(struct tm* timeValue, WiflyResponse& response);
+		bool FwSetRtc(WiflyResponse&, struct tm* timeValue);
+		bool FwGetRtc(WiflyResponse&);
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */
