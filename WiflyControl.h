@@ -41,7 +41,7 @@ class WiflyControl
 		int FwSend(struct cmd_frame* pFrame, size_t length, unsigned char* pResponse, size_t responseSize) const;
 		
 	public:
-		WiflyControl(unsigned long addr, unsigned short port);
+		WiflyControl(uint32_t addr, uint16_t port);
 		
 		/** ----------------------------- BOOTLOADER METHODES ----------------------------- **/
 		size_t BlFlashErase(unsigned char* pBuffer, unsigned int endAddress, const size_t numPages, bool doSync) const;
@@ -61,8 +61,9 @@ class WiflyControl
 		bool BlEnableAutostart(void) const;
 		
 		/** ----------------------------- Telnet METHODES ----------------------------- **/
+		std::string ConfGetSsid(void) const;
 		bool ConfSetDefaults(void) const;
-		bool ConfSetWlan(const std::string& phrase, const std::string& ssid) const;
+		bool ConfSetWlan(const std::string phrase, const std::string ssid) const;
 		
 		
 		/** ------------------------------ FIRMWARE METHODES ------------------------------ **/

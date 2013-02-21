@@ -7,11 +7,11 @@ import android.view.View;
 import android.widget.Button;
 
 public class SetWlanDialog extends Dialog {
-	private final WiflyControl mControl;
+	private final Endpoint mRemote;
 	
 	SetWlanDialog(Context context, Endpoint remote) {
 		super(context);
-		mControl = new WiflyControl(remote.getAddr(), remote.getPort());
+		mRemote = remote;
 	}
 	
 	@Override
@@ -24,7 +24,10 @@ public class SetWlanDialog extends Dialog {
 			
 			public void onClick(View v) {
 				// TODO replace this dummy call with confSetWlan()
-				mControl.fwSetColor(0xffffffff, 0xff000000);
+				WiflyControl control = new WiflyControl();
+				control.connect(mRemote.getAddr(), mRemote.getPort());
+				control.fwSetColor(0xffffffff, 0xff000000);
+				control.disconnect();
 				dismiss();
 			}
 		});

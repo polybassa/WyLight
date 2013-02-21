@@ -28,7 +28,8 @@ public class WiflyControlActivity extends Activity {
 		Intent i = getIntent();
 		int ip = i.getIntExtra(EXTRA_IP, 0);
 		short port = i.getShortExtra(EXTRA_PORT, DEFAULT_PORT);
-		mCtrl = new WiflyControl(ip, port);
+		mCtrl = new WiflyControl();
+		mCtrl.connect(ip, port);
 		
 		mSetColorBtn = (Button)findViewById(R.id.setColor);
 		mSetColorBtn.setOnClickListener(new View.OnClickListener() {

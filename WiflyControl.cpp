@@ -55,7 +55,7 @@ static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;
 }
 
 
-WiflyControl::WiflyControl(unsigned long addr, unsigned short port)
+WiflyControl::WiflyControl(uint32_t addr, uint16_t port)
 : mSock(addr, port), mProxy(mSock), mTelnet(mSock)
 {
 	//TODO remove length
@@ -504,6 +504,11 @@ bool WiflyControl::BlEnableAutostart(void) const
 	return BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
 }
 
+std::string WiflyControl::ConfGetSsid(void) const
+{
+	return "HUHU";
+}
+
 bool WiflyControl::ConfSetDefaults(void) const
 {
 	static const std::string commands[] = {
@@ -531,7 +536,12 @@ bool WiflyControl::ConfSetDefaults(void) const
 	return mTelnet.Close(true);
 }
 
-bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssid) const
+bool WiflyControl::ConfSetWlan(const char* p) const
+{
+	return true;
+}
+
+bool WiflyControl::ConfSetWlan(const std::string phrase, const std::string ssid) const
 {
 	static const size_t PHRASE_MAX = 63;
 	static const size_t SSID_MAX = 32;

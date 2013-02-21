@@ -30,6 +30,10 @@ pic:
 simu:
 	gcc ${X86_SRC} -DX86 -DDEBUG -lpthread ${OPENGL_LIB} -o server.bin -Wall
 
+android_test:
+	ndk-build -C $(ANDROID_DIR)Test
+	cp -r $(ANDROID_DIR)Test/libs/ $(ANDROID_DIR)/
+
 android_client:
 	ndk-build -C $(ANDROID_DIR)
 
