@@ -55,7 +55,7 @@ static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VER
 }
 
 
-WiflyControl::WiflyControl(unsigned long addr, unsigned short port)
+WiflyControl::WiflyControl(uint32_t addr, uint16_t port)
 : mSock(addr, port), mProxy(mSock), mTelnet(mSock)
 {
 	//TODO remove length
@@ -500,6 +500,11 @@ bool WiflyControl::BlEnableAutostart(void) const
 	unsigned char value = 0xff;
 	
 	return BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
+}
+
+std::string WiflyControl::ConfGetSsid(void) const
+{
+	return "HUHU";
 }
 
 bool WiflyControl::ConfSetDefaults(void) const
