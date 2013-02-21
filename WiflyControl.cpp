@@ -536,12 +536,7 @@ bool WiflyControl::ConfSetDefaults(void) const
 	return mTelnet.Close(true);
 }
 
-bool WiflyControl::ConfSetWlan(const char* p) const
-{
-	return true;
-}
-
-bool WiflyControl::ConfSetWlan(const std::string phrase, const std::string ssid) const
+bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssid) const
 {
 	static const size_t PHRASE_MAX = 63;
 	static const size_t SSID_MAX = 32;
