@@ -23,6 +23,8 @@
 #include <stdio.h>
 #include <exception>
 #include <string>
+#include <string.h>
+#include <typeinfo>
 #include "wifly_cmd.h"
 #include "BlRequest.h"
 #include "WiflyControlResponse.h"
@@ -52,32 +54,36 @@ private:
 	struct BlRequest m_FailedRequest;
 };
 
-class FwNoResponseException : public WiflyControlException
+class FwException : public WiflyControlException
 {
 public:
-	FwNoResponseException(const struct cmd_frame* const failedFrame, const WiflyResponse *pResponseObj, const std::string errorString)
-	: WiflyControlException(errorString) { memcpy(&m_FailedFrame, failedFrame, sizeof(struct cmd_frame)); m_Response = pResponseObj; }
+	FwException(const struct cmd_frame* const failedFrame, const std::string errorString)
+	: WiflyControlException(errorString)
+	{
+		if(failedFrame != NULL)
+		{
+			memcpy(&m_FailedFrame, failedFrame, sizeof(struct cmd_frame));
+		}
+	};
 	
 	const struct cmd_frame GetFailedFrame(void) const { return m_FailedFrame; };
-	const WiflyResponse* GetResponseObj(void) const {return m_Response; };
 	
 private:
 	struct cmd_frame m_FailedFrame;
-	const WiflyResponse* m_Response;
 };
 
-class ScriptBufferFullException : public WiflyControlException
+class ScriptBufferFullException : public FwException
 {
 public:
-	ScriptBufferFullException(const struct cmd_frame* const failedCommand, const std::string errorString)
-	: WiflyControlException(errorString) { memcpy(&m_FailedCommand, failedCommand, sizeof(struct cmd_frame)); }
-	
-	const struct cmd_frame GetFailedCommand(void) const { return m_FailedCommand; }
-	
-private:
-	struct cmd_frame m_FailedCommand;
+	ScriptBufferFullException(const struct cmd_frame* const failedCommand, const std::string errorString = "Buffer for commands in light is full!")
+	: FwException(failedCommand, errorString) {};
 };
 
-
+class FwNoResponseException : public FwException
+{
+public:
+	FwNoResponseException(const struct cmd_frame* const failedCommand, const std::string errorString = "Invalid response received or connection abort!")
+	: FwException(failedCommand, errorString) {};
+};
 
 #endif /* defined(____WiflyControlException__) */

@@ -40,7 +40,7 @@ class WiflyControl
 		struct cmd_frame mCmdFrame;
 		unsigned long ToRGBA(std::string& s) const;
 		size_t BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync = true) const;
-		bool FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const;
+		WiflyResponse& FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const;
 		
 	public:
 		WiflyControl(uint32_t addr, uint16_t port);
@@ -69,6 +69,7 @@ class WiflyControl
 		
 		
 		/** ------------------------------ FIRMWARE METHODES ------------------------------ **/
+		bool FwReTrySend(FwException&);
 		bool FwClearScript(WiflyResponse&);
 		bool FwLoopOn(WiflyResponse&);
 		bool FwLoopOff(WiflyResponse&, unsigned char numLoops);

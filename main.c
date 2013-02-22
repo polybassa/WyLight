@@ -33,7 +33,6 @@
 #include "ScriptCtrl.h"
 #include "trace.h"
 #include "error.h"
-#include "Flash.h"
 #ifdef __CC8E__
 #include "int18XXX.h"
 #endif /* #ifdef __CC8E__ */
@@ -239,5 +238,4 @@ void InitAll()
 #include "iic.c"
 #include "ScriptCtrl.c"
 #include "trace.c"
-#include "Flash.c"
 #endif /* #ifdef __CC8E__ */

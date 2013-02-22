@@ -573,7 +573,7 @@ bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssi
 	return mTelnet.Close(true);
 }
 
-bool WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const
+WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const
 {
 	pFrame->length = length + 2; //add cmd and length byte
 	unsigned char buffer[512];
@@ -583,19 +583,29 @@ bool WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse
 	TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer[0], bytesRead, "%02x ", "Message: ");
 	
 	response.Init((response_frame*)&buffer[0], bytesRead);
-	return response.IsValid();
+	
+	if(!response.IsValid()) throw FwNoResponseException(pFrame);
+	
+	return response;
+}
+
+bool WiflyControl::FwReTrySend(FwException& exception)
+{
+	cmd_frame frame = exception.GetFailedFrame();
+	SimpleResponse response(frame.led.cmd);
+	return FwSend(&frame, frame.length - 2, response).IsValid();
 }
 
 bool WiflyControl::FwClearScript(WiflyResponse& response)
 {
 	mCmdFrame.led.cmd = CLEAR_SCRIPT;
-	return FwSend(&mCmdFrame, 0, response);
+	return FwSend(&mCmdFrame, 0, response).IsValid();
 }
 
 bool WiflyControl::FwLoopOn(WiflyResponse& response)
 {
 	mCmdFrame.led.cmd = LOOP_ON;
-	return FwSend(&mCmdFrame, 0, response);
+	return FwSend(&mCmdFrame, 0, response).IsValid();
 }
 
 bool WiflyControl::FwLoopOff(WiflyResponse& response, unsigned char numLoops)
@@ -603,7 +613,7 @@ bool WiflyControl::FwLoopOff(WiflyResponse& response, unsigned char numLoops)
 	mCmdFrame.led.cmd = LOOP_OFF;
 	mCmdFrame.led.data.loopEnd.numLoops = numLoops;
 	
-   	return FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
+   	return FwSend(&mCmdFrame, sizeof(cmd_set_fade), response).IsValid();
 }
 
 bool WiflyControl::FwSetColorDirect(WiflyResponse& response, unsigned char* pBuffer, size_t bufferLength)
@@ -622,7 +632,7 @@ bool WiflyControl::FwSetColorDirect(WiflyResponse& response, unsigned char* pBuf
 		mCmdFrame.led.data.set_color_direct.ptr_led_array[i] = 0;
 	    }
 	}
-	return FwSend(&mCmdFrame, sizeof(struct cmd_set_color_direct),response);
+	return FwSend(&mCmdFrame, sizeof(struct cmd_set_color_direct),response).IsValid();
 }
 
 bool WiflyControl::FwSetFade(WiflyResponse& response, unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade)
@@ -636,7 +646,7 @@ bool WiflyControl::FwSetFade(WiflyResponse& response, unsigned long addr, unsign
 	mCmdFrame.led.data.set_fade.fadeTmms = htons(fadeTmms);
 	mCmdFrame.led.data.set_fade.parallelFade = parallelFade;
 
-	return FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
+	return FwSend(&mCmdFrame, sizeof(cmd_set_fade), response).IsValid();
 }
 
 bool WiflyControl::FwSetFade(WiflyResponse& response, string& addr, string& rgba, unsigned short fadeTmms, bool parallelFade)
@@ -649,7 +659,7 @@ bool WiflyControl::FwSetWait(WiflyResponse& response, unsigned short waitTmms)
 	mCmdFrame.led.cmd = WAIT;
 	mCmdFrame.led.data.wait.waitTmms = htons((unsigned short)(waitTmms / 10));
 	
-	return FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
+	return FwSend(&mCmdFrame, sizeof(cmd_set_fade), response).IsValid();
 }
 
 void WiflyControl::FwTest(void)
@@ -696,26 +706,26 @@ void WiflyControl::FwTest(void)
 bool WiflyControl::FwPrintCycletime(WiflyResponse& response)
 {
 	mCmdFrame.led.cmd = GET_CYCLETIME;
-	return FwSend(&mCmdFrame, 0, response);
+	return FwSend(&mCmdFrame, 0, response).IsValid();
 }
 
 bool WiflyControl::FwPrintTracebuffer(WiflyResponse& response)
 {
 	mCmdFrame.led.cmd = GET_TRACE;
-	return FwSend(&mCmdFrame, 0, response);
+	return FwSend(&mCmdFrame, 0, response).IsValid();
 }
 
 bool WiflyControl::FwPrintFwVersion(WiflyResponse& response)
 {
 	mCmdFrame.led.cmd = GET_FW_VERSION;
-	return FwSend(&mCmdFrame, 0, response);
+	return FwSend(&mCmdFrame, 0, response).IsValid();
 }
 
 
 bool WiflyControl::FwStartBl(WiflyResponse& response)
 {
 	mCmdFrame.led.cmd = START_BL;
-	return FwSend(&mCmdFrame, 0, response);
+	return FwSend(&mCmdFrame, 0, response).IsValid();
 }
 
 bool WiflyControl::FwSetRtc(WiflyResponse& response, struct tm* timeValue)
@@ -731,13 +741,13 @@ bool WiflyControl::FwSetRtc(WiflyResponse& response, struct tm* timeValue)
 	mCmdFrame.led.data.set_rtc.tm_year = (uns8) timeValue->tm_year;
 	mCmdFrame.led.data.set_rtc.tm_wday = (uns8) timeValue->tm_wday;
 	
-	return FwSend(&mCmdFrame, sizeof(struct rtc_time),response);
+	return FwSend(&mCmdFrame, sizeof(struct rtc_time),response).IsValid();
 }
 
 bool WiflyControl::FwGetRtc(WiflyResponse& response)
 {    
 	mCmdFrame.led.cmd = GET_RTC;
-	return FwSend(&mCmdFrame, 0, response);
+	return FwSend(&mCmdFrame, 0, response).IsValid();
 	
 }
 

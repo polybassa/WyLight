@@ -163,5 +163,4 @@ private:
 	cmd_get_fw_version mFwVersion;
 };
 
-
 #endif
