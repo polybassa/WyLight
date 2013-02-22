@@ -107,7 +107,7 @@ private:
 class TracebufferResponse : public SimpleResponse
 {
 public:
-	TracebufferResponse(void) : SimpleResponse(GET_TRACE) {};
+	TracebufferResponse(void) : SimpleResponse(GET_TRACE), mMessageLength(0) {};
 	void Init(response_frame* pData, size_t dataLength)
 	{
 		SimpleResponse::Init(pData, dataLength);
@@ -132,7 +132,7 @@ public:
 	
 private:
 	char mTracebuffer[RingBufferSize];
-	unsigned int mMessageLength = 0;
+	unsigned int mMessageLength;
 };
 
 class FirmwareVersionResponse : public SimpleResponse

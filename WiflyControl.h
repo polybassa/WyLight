@@ -43,7 +43,7 @@ class WiflyControl
 		bool FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const;
 		
 	public:
-		WiflyControl(unsigned long addr, unsigned short port);
+		WiflyControl(uint32_t addr, uint16_t port);
 		
 		/** ----------------------------- BOOTLOADER METHODES ----------------------------- **/
 		size_t BlFlashErase(unsigned char* pBuffer, unsigned int endAddress, const size_t numPages, bool doSync) const;
@@ -63,6 +63,7 @@ class WiflyControl
 		bool BlEnableAutostart(void) const;
 		
 		/** ----------------------------- Telnet METHODES ----------------------------- **/
+		std::string ConfGetSsid(void) const;
 		bool ConfSetDefaults(void) const;
 		bool ConfSetWlan(const std::string& phrase, const std::string& ssid) const;
 		
@@ -78,11 +79,10 @@ class WiflyControl
 			f.e. red(255, 0, 0) is in rgba as: 0xff000000
 				 white(255, 255, 255) is in rgba as: 0xffffff00
 		**/
-		bool FwSetColor(WiflyResponse&, unsigned long addr, unsigned long rgba);
 		bool FwSetColorDirect(WiflyResponse&, unsigned char* pBuffer, size_t bufferLength);
 		
-		bool FwSetFade(WiflyResponse&, unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade);
-		bool FwSetFade(WiflyResponse&, std::string& addr, std::string& rgba, unsigned short fadeTmms, bool parallelFade);
+		bool FwSetFade(WiflyResponse&, unsigned long addr, unsigned long rgba, unsigned short fadeTmms = 0, bool parallelFade = false);
+		bool FwSetFade(WiflyResponse&, std::string& addr, std::string& rgba, unsigned short fadeTmms = 0, bool parallelFade = false);
 		
 		bool FwSetWait(WiflyResponse&, unsigned short waitTmms);
 		
