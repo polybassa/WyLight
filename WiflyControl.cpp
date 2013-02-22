@@ -585,6 +585,7 @@ WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, Wif
 	response.Init((response_frame*)&buffer[0], bytesRead);
 	
 	if(!response.IsValid()) throw FwNoResponseException(pFrame);
+	if(response.IsScriptBufferFull()) throw ScriptBufferFullException(pFrame);
 	
 	return response;
 }
