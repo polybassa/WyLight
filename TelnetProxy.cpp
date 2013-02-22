@@ -47,6 +47,23 @@ bool TelnetProxy::Close(bool doSave) const
 	return Send("exit\r\n", "\r\nEXIT\r\n");
 }
 
+void TelnetProxy::GetString(const std::string& getCmd, const std::string& searchKey, std::string& result) const
+{
+	result.clear();
+	if(getCmd.size() != mSock.Send((uint8_t*)getCmd.data(), getCmd.size()))
+	{
+		Trace(ZONE_ERROR, "Send telnetMessage >>%s<< failed\n", getCmd.data());
+		return;
+	}
+
+	if(!Recv(getCmd))
+	{
+		Trace(ZONE_ERROR, ">>%s<< receive echo failed\n", getCmd.data());
+		return;
+	}
+	RecvString(searchKey, result);
+}
+
 bool TelnetProxy::Open(void) const
 {
 	static const timespec _300_TMMS = {0, 300000000};
@@ -96,6 +113,76 @@ bool TelnetProxy::Recv(const std::string& expectedResponse) const
 	TraceBuffer(ZONE_INFO, buffer, bytesRead, "%c", "%u bytes received: ", bytesRead);
 	Trace(ZONE_INFO, "%u:%u\n", bytesRead, expectedResponse.size());
 	return 0 == memcmp(expectedResponse.data(), buffer, expectedResponse.size());
+}
+
+bool TelnetProxy::RecvString(const std::string& searchKey, std::string& result) const
+{
+	timeval timeout = {5, 0};
+	uint8_t buffer[128];
+	uint8_t* pBufferPos = buffer;
+	uint8_t* pAOKBegin = buffer;
+	uint8_t* pAOKPos = buffer;
+
+	timeval endTime, now;
+	gettimeofday(&endTime, NULL);
+	timeval_add(&endTime, &timeout);
+	do	
+	{
+		pBufferPos += mSock.Recv(pBufferPos, sizeof(buffer) - (pBufferPos - buffer), &timeout);
+
+		// check for AOK
+		pAOKPos = pAOKBegin;
+		while(pAOKPos < pBufferPos) {
+			if(*pAOKPos == AOK[pAOKPos-pAOKBegin])
+			{
+				if(pAOKPos >= pAOKBegin + sizeof(AOK) - 2)
+				{
+					//we reached the end -> find beginning
+					buffer[sizeof(buffer) - 1] = 0;
+					const char* pStart = strstr((char*)buffer, searchKey.c_str());
+					if(NULL == pStart)
+					{
+						Trace(ZONE_ERROR, "Couldn't find '%s' in response\n", searchKey.c_str());
+						return false;
+					}
+
+					pStart += searchKey.size();
+					if((uint8_t*)pStart >= pAOKBegin)
+					{
+						Trace(ZONE_ERROR, "Something went wrong, pStart is behind pAOKBegin\n");
+						return false;
+					}
+
+					// valid start found -> find next endline
+					// because we found an AOK there has to be at least one "\r\n"!
+					const char* pEnd = pStart;
+					bool CRisFound = false;
+					bool LFisFound = false;
+					do 
+					{
+						CRisFound = CRisFound || (*pEnd == '\r');
+						LFisFound = CRisFound && (*pEnd == '\n');
+						pEnd++;
+					}while(!(CRisFound && LFisFound));
+					pEnd -= 2;
+
+					const size_t bytesFound = pEnd - pStart;
+					result.append(pStart, bytesFound);
+					TraceBuffer(ZONE_INFO, pStart, bytesFound, "%c", "%u bytes bytesFound: ", bytesFound);
+					return true;
+				}
+			}
+			else
+			{
+				pAOKBegin = pAOKPos;
+			}
+			pAOKPos++;
+		}
+
+		gettimeofday(&now, NULL);
+	} while((buffer + sizeof(buffer) > pBufferPos) && timeval_sub(&endTime, &now, &timeout));
+	TraceBuffer(ZONE_ERROR, buffer, pBufferPos - buffer, "%c", "%u bytes No end found in: ", pBufferPos - buffer);
+	return false;
 }
 
 bool TelnetProxy::Send(const std::string& telnetMessage, const std::string& expectedResponse) const
@@ -152,7 +239,7 @@ bool TelnetProxy::SendString(const std::string& command, std::string value) cons
 
 bool TelnetProxy::SetReplaceChar(const char replace) const
 {
-	std::string replaceCmd("set opt replace " + std::string(1, replace) + std::string("\r\n"));
+	std::string replaceCmd("set opt replace " + std::string(1, replace) + "\r\n");
 	return Send(replaceCmd);
 }
 

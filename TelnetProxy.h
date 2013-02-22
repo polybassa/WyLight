@@ -36,8 +36,10 @@ class TelnetProxy
 
 		void ClearResponse(void) const;
 		bool Close(bool doSave) const;
+		void GetString(const std::string& getCmd, const std::string& searchKey, std::string& result) const;
 		bool Open(void) const;
 		bool Recv(const std::string& expectedResponse) const;
+		bool RecvString(const std::string& searchKey, std::string& result) const;
 		bool Send(const std::string& telnetMessage, const std::string& expectedResponse = AOK) const;
 		bool SendString(const std::string& command, std::string value) const;
 		bool SetReplaceChar(const char replace = '$') const;
