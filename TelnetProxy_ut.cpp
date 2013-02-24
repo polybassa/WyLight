@@ -172,7 +172,7 @@ size_t ut_TelnetProxy_RecvString(void)
 	TcpSocket sock{0, 0};
 	TelnetProxy testee{sock};
 	std::string response;
-#if 0 //TODO
+
 	// test empty key -> should receive the first line
 	g_TestSocketRecvBufferPos = 0;
 	g_TestSocketRecvBufferSize = fullResponse.size();
@@ -180,14 +180,13 @@ size_t ut_TelnetProxy_RecvString(void)
 	response.clear();
 	CHECK(testee.RecvString("", response));
 	CHECK(0 == response.compare("ssid not this ssid: this is my ssid!"));
-#endif
+
 	// test recv something
 	g_TestSocketRecvBufferPos = 0;
 	g_TestSocketRecvBufferSize = fullResponse.size();
 	memcpy(g_TestSocketRecvBuffer, fullResponse.data(), fullResponse.size());
 	response.clear();
 	CHECK(testee.RecvString("ssid: ", response));
-//	Trace(ZONE_ERROR, ">>%s<<\n", response.c_str());
 	CHECK(0 == response.compare("this is my ssid!"));
 	TestCaseEnd();
 }

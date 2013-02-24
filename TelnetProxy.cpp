@@ -72,13 +72,8 @@ bool TelnetProxy::ExtractStringOfInterest(const std::string& buffer, const std::
 void TelnetProxy::GetString(const std::string& getCmd, const std::string& searchKey, std::string& result) const
 {
 	result.clear();
-	if(getCmd.size() != mSock.Send((uint8_t*)getCmd.data(), getCmd.size()))
-	{
-		Trace(ZONE_ERROR, "Send telnetMessage >>%s<< failed\n", getCmd.data());
-		return;
-	}
 
-	if(!Recv(getCmd))
+	if(!SendAndWaitForEcho(getCmd))
 	{
 		Trace(ZONE_ERROR, ">>%s<< receive echo failed\n", getCmd.data());
 		return;
@@ -184,13 +179,7 @@ bool TelnetProxy::RecvString(const std::string& searchKey, std::string& result) 
 
 bool TelnetProxy::Send(const std::string& telnetMessage, const std::string& expectedResponse) const
 {
-	if(telnetMessage.size() != mSock.Send((uint8_t*)telnetMessage.data(), telnetMessage.size()))
-	{
-		Trace(ZONE_ERROR, "Send telnetMessage >>%s<< failed\n", telnetMessage.data());
-		return false;
-	}
-
-	if(!Recv(telnetMessage))
+	if(!SendAndWaitForEcho(telnetMessage))
 	{
 		Trace(ZONE_ERROR, ">>%s<< receive echo failed\n", telnetMessage.data());
 		return false;
@@ -202,6 +191,16 @@ bool TelnetProxy::Send(const std::string& telnetMessage, const std::string& expe
 		return false;
 	}
 	return true;
+}
+
+bool TelnetProxy::SendAndWaitForEcho(const std::string& telnetMessage) const
+{
+	if(telnetMessage.size() != mSock.Send((uint8_t*)telnetMessage.data(), telnetMessage.size()))
+	{
+		Trace(ZONE_ERROR, "Send telnetMessage >>%s<< failed\n", telnetMessage.data());
+		return false;
+	}
+	return Recv(telnetMessage);
 }
 
 bool TelnetProxy::SendString(const std::string& command, std::string value) const
