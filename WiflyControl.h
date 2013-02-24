@@ -69,7 +69,6 @@ class WiflyControl
 		
 		
 		/** ------------------------------ FIRMWARE METHODES ------------------------------ **/
-		bool FwReTrySend(FwException&);
 		bool FwClearScript(WiflyResponse&);
 		bool FwLoopOn(WiflyResponse&);
 		bool FwLoopOff(WiflyResponse&, unsigned char numLoops);

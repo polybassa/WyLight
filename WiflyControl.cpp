@@ -590,13 +590,6 @@ WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, Wif
 	return response;
 }
 
-bool WiflyControl::FwReTrySend(FwException& exception)
-{
-	cmd_frame frame = exception.GetFailedFrame();
-	SimpleResponse response(frame.led.cmd);
-	return FwSend(&frame, frame.length - 2, response).IsValid();
-}
-
 bool WiflyControl::FwClearScript(WiflyResponse& response)
 {
 	mCmdFrame.led.cmd = CLEAR_SCRIPT;

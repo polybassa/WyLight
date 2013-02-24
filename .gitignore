@@ -242,3 +242,5 @@ contents.xcworkspacedata
 commandIO_ut.bin
 WorkspaceSettings.xcsettings
 TelnetProxy_ut.bin
+PIC18_Bootloader/PIC18 Bootloader V1.HEX
+WiflyControl_Xcode_Workspace.xcworkspace/xcuserdata/weitys1.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
