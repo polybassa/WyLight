@@ -165,6 +165,32 @@ size_t ut_TelnetProxy_Recv(void)
 	TestCaseEnd();
 }
 
+size_t ut_TelnetProxy_RecvString(void)
+{
+	static const std::string fullResponse("ssid not this ssid: this is my ssid!\r\nssid: XX\r\nAOK\r\n<2.31> ");
+	TestCaseBegin();
+	TcpSocket sock{0, 0};
+	TelnetProxy testee{sock};
+	std::string response;
+
+	// test empty key -> should receive the first line
+	g_TestSocketRecvBufferPos = 0;
+	g_TestSocketRecvBufferSize = fullResponse.size();
+	memcpy(g_TestSocketRecvBuffer, fullResponse.data(), fullResponse.size());
+	response.clear();
+	CHECK(testee.RecvString("", response));
+	CHECK(0 == response.compare("ssid not this ssid: this is my ssid!"));
+
+	// test recv something
+	g_TestSocketRecvBufferPos = 0;
+	g_TestSocketRecvBufferSize = fullResponse.size();
+	memcpy(g_TestSocketRecvBuffer, fullResponse.data(), fullResponse.size());
+	response.clear();
+	CHECK(testee.RecvString("ssid: ", response));
+	CHECK(0 == response.compare("this is my ssid!"));
+	TestCaseEnd();
+}
+
 size_t ut_TelnetProxy_Send(void)
 {
 	const std::string cmd("FOO\r\n");
@@ -269,12 +295,13 @@ size_t ut_TelnetProxy_SendString(void)
 int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
-	RunTest(true, ut_TelnetProxy_Recv);
-	RunTest(true, ut_TelnetProxy_Send);
-	RunTest(true, ut_TelnetProxy_SendString);
 	RunTest(true, ut_TelnetProxy_CloseAndSave);
 	RunTest(true, ut_TelnetProxy_CloseWithoutSave);
 	RunTest(true, ut_TelnetProxy_Open);
+	RunTest(true, ut_TelnetProxy_Recv);
+	RunTest(true, ut_TelnetProxy_RecvString);
+	RunTest(true, ut_TelnetProxy_Send);
+	RunTest(true, ut_TelnetProxy_SendString);
 	UnitTestMainEnd();
 }
 
