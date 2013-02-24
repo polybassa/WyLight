@@ -22,6 +22,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <sstream>
 
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
@@ -45,6 +46,27 @@ bool TelnetProxy::Close(bool doSave) const
 		return false;
 	}
 	return Send("exit\r\n", "\r\nEXIT\r\n");
+}
+
+bool TelnetProxy::ExtractStringOfInterest(const std::string& buffer, const char* const pLimit, const std::string& searchKey, std::string& result) const
+{
+	std::stringstream stream;
+	stream << buffer;
+	std::string line;
+	getline(stream, line, '\r');
+	while(!line.empty())
+	{
+		const size_t start = line.find(searchKey);
+		if(start != std::string::npos)
+		{
+			result.assign(line.substr(start + searchKey.size()));
+			TraceBuffer(ZONE_INFO, result.c_str(), result.size(), "%c", "%u bytes found: ", result.size());
+			return true;
+		}
+		getline(stream, line, '\r');
+	}
+	Trace(ZONE_ERROR, "Couldn't find '%s' in response\n", searchKey.c_str());
+	return false;
 }
 
 void TelnetProxy::GetString(const std::string& getCmd, const std::string& searchKey, std::string& result) const
@@ -121,67 +143,42 @@ bool TelnetProxy::RecvString(const std::string& searchKey, std::string& result) 
 	uint8_t buffer[128];
 	uint8_t* pBufferPos = buffer;
 	uint8_t* pAOKBegin = buffer;
-	uint8_t* pAOKPos = buffer;
+	uint8_t* pAOKPos = pAOKBegin;
 
 	timeval endTime, now;
 	gettimeofday(&endTime, NULL);
 	timeval_add(&endTime, &timeout);
 	do	
 	{
-		pBufferPos += mSock.Recv(pBufferPos, sizeof(buffer) - (pBufferPos - buffer), &timeout);
+		pBufferPos += mSock.Recv(pBufferPos, sizeof(buffer) - 1 - (pBufferPos - buffer), &timeout);
 
 		// check for AOK
-		pAOKPos = pAOKBegin;
-		while(pAOKPos < pBufferPos) {
-			if(*pAOKPos == AOK[pAOKPos-pAOKBegin])
+		while(pAOKPos < pBufferPos)
+		{
+			if(*pAOKPos != AOK[pAOKPos-pAOKBegin])
 			{
-				if(pAOKPos >= pAOKBegin + sizeof(AOK) - 2)
-				{
-					//we reached the end -> find beginning
-					buffer[sizeof(buffer) - 1] = 0;
-					const char* pStart = strstr((char*)buffer, searchKey.c_str());
-					if(NULL == pStart)
-					{
-						Trace(ZONE_ERROR, "Couldn't find '%s' in response\n", searchKey.c_str());
-						return false;
-					}
-
-					pStart += searchKey.size();
-					if((uint8_t*)pStart >= pAOKBegin)
-					{
-						Trace(ZONE_ERROR, "Something went wrong, pStart is behind pAOKBegin\n");
-						return false;
-					}
-
-					// valid start found -> find next endline
-					// because we found an AOK there has to be at least one "\r\n"!
-					const char* pEnd = pStart;
-					bool CRisFound = false;
-					bool LFisFound = false;
-					do 
-					{
-						CRisFound = CRisFound || (*pEnd == '\r');
-						LFisFound = CRisFound && (*pEnd == '\n');
-						pEnd++;
-					}while(!(CRisFound && LFisFound));
-					pEnd -= 2;
-
-					const size_t bytesFound = pEnd - pStart;
-					result.append(pStart, bytesFound);
-					TraceBuffer(ZONE_INFO, pStart, bytesFound, "%c", "%u bytes bytesFound: ", bytesFound);
-					return true;
-				}
+				// We are not in a AOK sequence -> move pointers ahead
+				pAOKBegin = pAOKPos;
 			}
 			else
 			{
-				pAOKBegin = pAOKPos;
+				if(pAOKPos >= pAOKBegin + sizeof(AOK) - 2)
+				{
+					// We received a full AOK sequence -> extract response from our data
+					buffer[sizeof(buffer) - 1] = 0;
+					return ExtractStringOfInterest((const char*)buffer, (const char*)pAOKBegin, searchKey, result);
+				}
+				else
+				{
+					Trace(ZONE_INFO, "Found next character of AOK, but end not reached yet\n");
+				}
 			}
 			pAOKPos++;
 		}
 
 		gettimeofday(&now, NULL);
 	} while((buffer + sizeof(buffer) > pBufferPos) && timeval_sub(&endTime, &now, &timeout));
-	TraceBuffer(ZONE_ERROR, buffer, pBufferPos - buffer, "%c", "%u bytes No end found in: ", pBufferPos - buffer);
+	//TraceBuffer(ZONE_ERROR, buffer, pBufferPos - buffer, "%c", "No end found in: ");
 	return false;
 }
 

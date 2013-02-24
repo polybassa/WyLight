@@ -36,6 +36,7 @@ class TelnetProxy
 
 		void ClearResponse(void) const;
 		bool Close(bool doSave) const;
+		bool ExtractStringOfInterest(const std::string& buffer, const char* const pLimit, const std::string& searchKey, std::string& result) const;
 		void GetString(const std::string& getCmd, const std::string& searchKey, std::string& result) const;
 		bool Open(void) const;
 		bool Recv(const std::string& expectedResponse) const;
