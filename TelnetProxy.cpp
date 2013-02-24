@@ -178,7 +178,7 @@ bool TelnetProxy::RecvString(const std::string& searchKey, std::string& result) 
 
 		gettimeofday(&now, NULL);
 	} while((buffer + sizeof(buffer) > pBufferPos) && timeval_sub(&endTime, &now, &timeout));
-	//TraceBuffer(ZONE_ERROR, buffer, pBufferPos - buffer, "%c", "No end found in: ");
+	TraceBuffer(ZONE_ERROR, buffer, pBufferPos - buffer, "%c", "No end found in: ");
 	return false;
 }
 
