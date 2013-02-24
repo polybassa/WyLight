@@ -30,17 +30,24 @@ class TelnetProxy
 {
 	private:
 		const TcpSocket& mSock;
+		bool ExtractStringOfInterest(const std::string& buffer, const std::string& searchKey, std::string& result) const;
+		bool Recv(const std::string& expectedResponse) const;
+		bool RecvString(const std::string& searchKey, std::string& result) const;
+		bool SendAndWaitForEcho(const std::string& telnetMessage) const;
+		bool SetReplaceChar(const char replace = '$') const;
 
 	public:
 		TelnetProxy(const TcpSocket& sock);
 
 		void ClearResponse(void) const;
 		bool Close(bool doSave) const;
+		void GetString(const std::string& getCmd, const std::string& searchKey, std::string& result) const;
 		bool Open(void) const;
-		bool Recv(const std::string& expectedResponse) const;
 		bool Send(const std::string& telnetMessage, const std::string& expectedResponse = AOK) const;
 		bool SendString(const std::string& command, std::string value) const;
-		bool SetReplaceChar(const char replace = '$') const;
+
+		friend size_t ut_TelnetProxy_Recv(void);
+		friend size_t ut_TelnetProxy_RecvString(void);
 };
 
 #endif /* #ifndef _TELNET_PROXY_H_ */
