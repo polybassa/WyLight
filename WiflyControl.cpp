@@ -75,8 +75,7 @@ bool WiflyControl::BlFlashErase(void) const
 	BlInfo info;
 	if(sizeof(info) != BlReadInfo(info))
 	{
-		cout << __FILE__ << "::" << __FUNCTION__
-		<< "(): Erase flash failed, couldn't determine bootloader location" << endl;
+		Trace(ZONE_VERBOSE, "Erase flash failed, couldn't determine bootloader location\n");
 		return FALSE;
 	}
 	const unsigned int firstAddress = info.GetAddress() - 1;
@@ -88,15 +87,12 @@ bool WiflyControl::BlFlashErase(void) const
 	{
 		// force SYNC only for erase command
 		bytesRead = BlFlashErase(&buffer[0], address, FLASH_ERASE_BLOCKS, true);
-#ifdef DEBUG
-		cout << __FILE__ << "::" << __FUNCTION__
-		 << "(): Erase at " << hex << address << endl;
-#endif
-		 if((bytesRead < 1) || (0x03 != buffer[0])) 
+		Trace(ZONE_INFO, " Erase at: %x\n", address);
+		
+		if((bytesRead < 1) || (0x03 != buffer[0]))
 		 {
-		      cout << __FILE__ << "::" << __FUNCTION__
-		      << "():Erase flash failed at address: " << hex << address << endl;
-		      return FALSE; 
+			 Trace(ZONE_VERBOSE, "Erase flash failed at address: %x\n", address);
+			 return FALSE; 
 		 }
 		 address -= FLASH_ERASE_BLOCKSIZE * FLASH_ERASE_BLOCKS;
 	}
@@ -104,10 +100,9 @@ bool WiflyControl::BlFlashErase(void) const
 	 * so we set our startaddress at the beginning of this block and erase */
 	bytesRead = BlFlashErase(&buffer[0], FLASH_ERASE_BLOCKS * FLASH_ERASE_BLOCKSIZE -1, FLASH_ERASE_BLOCKS, true);
 	if((bytesRead < 1) || (0x03 != buffer[0])) 
-	{		    
-		  cout << __FILE__ << "::" << __FUNCTION__
-		  << "():Erase flash failed at address: " << hex << 0 << endl;
-		  return FALSE; 
+	{
+		Trace(ZONE_VERBOSE, "Erase flash failed at address: %x\n", address);
+		return FALSE;
 	}
 	return TRUE;
 }
@@ -128,10 +123,7 @@ size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size
 {
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	size_t bytesReceived = mProxy.Send(req, buffer, sizeof(buffer), doSync);
-
-#ifdef DEBUG
-	cout << __FILE__ << "::" << __FUNCTION__ << "(): " << bytesReceived << ":" << sizeof(BlInfo) << endl;
-#endif
+	Trace(ZONE_INFO, " %d:%d \n", bytesReceived, sizeof(BlInfo));
 	if(responseSize == bytesReceived)
 	{
 		memcpy(pResponse, buffer, responseSize);
@@ -144,8 +136,7 @@ size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address
 {
 	if(numBlocks * FLASH_ERASE_BLOCKSIZE + address > FLASH_SIZE)
 	{
-		cout << __FILE__ << "::" << __FUNCTION__
-		<< "(): can not performe crc outside the flash" << endl;
+		Trace(ZONE_VERBOSE, "Couldn't performe crc check outside the flash. \n");
 		return false;
 	}
   
@@ -158,8 +149,7 @@ size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address
 		sumBytesRead += bytesRead;
 		if(FLASH_CRC_BLOCKSIZE * 2 != bytesRead)
 		{
-			cout << __FILE__ << "::" << __FUNCTION__
-			<< "(): only " << bytesRead << " bytes read not " << FLASH_CRC_BLOCKSIZE * 2 << endl;
+			Trace(ZONE_VERBOSE, "only %d bytes read. %d bytes expected! \n", bytesRead, FLASH_CRC_BLOCKSIZE * 2);
 			return sumBytesRead;
 		}
 		address += (FLASH_CRC_BLOCKSIZE * FLASH_ERASE_BLOCKSIZE);
@@ -172,8 +162,7 @@ size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address
 	sumBytesRead += bytesRead;
 	if(numBlocks * 2 != bytesRead)
 	{
-		cout << __FILE__ << "::" << __FUNCTION__
-		<< "(): only " << bytesRead << " bytes read not " << numBlocks * 2 << endl;
+		Trace(ZONE_VERBOSE, "only %d bytes read. %d bytes expected! \n", bytesRead, numBlocks * 2);
 	}
 	return sumBytesRead;
 }
@@ -182,8 +171,7 @@ size_t WiflyControl::BlReadEeprom(unsigned char* pBuffer, unsigned int address, 
 {
 	if(numBytes + address > EEPROM_SIZE)
 	{
-		cout << __FILE__ << "::" << __FUNCTION__
-		<< "(): can not performe read outside the eeprom" << endl;
+		Trace(ZONE_VERBOSE, "Couldn't performe read outside the eeprom. \n");
 		return 0;
 	}
 	
@@ -197,8 +185,7 @@ size_t WiflyControl::BlReadEeprom(unsigned char* pBuffer, unsigned int address, 
 		sumBytesRead += bytesRead;
 		if(EEPROM_READ_BLOCKSIZE != bytesRead)
 		{
-			cout << __FILE__ << "::" << __FUNCTION__
-			<< "(): only " << bytesRead << " bytes read not " << EEPROM_READ_BLOCKSIZE << endl;
+			Trace(ZONE_VERBOSE, "only %d bytes read. %d bytes expected! \n", bytesRead, EEPROM_READ_BLOCKSIZE);
 			return sumBytesRead;
 		}
 		address += EEPROM_READ_BLOCKSIZE;
@@ -210,8 +197,7 @@ size_t WiflyControl::BlReadEeprom(unsigned char* pBuffer, unsigned int address, 
 	sumBytesRead += bytesRead;
 	if(numBytes != bytesRead)
 	{
-		cout << __FILE__ << "::" << __FUNCTION__
-		<< "(): only " << bytesRead << " bytes read not " << numBytes << endl;
+		Trace(ZONE_VERBOSE, "only %d bytes read. %d bytes expected! \n", bytesRead, numBytes);
 	}
 	return sumBytesRead;
 }
@@ -220,8 +206,7 @@ size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, s
 {
 	if(numBytes + address > FLASH_SIZE)
 	{
-		cout << __FILE__ << "::" << __FUNCTION__
-		<< "(): can not performe read outside the flash" << endl;
+		Trace(ZONE_VERBOSE, "Couldn't performe read outside the flash. \n");
 		return 0;
 	}
   
@@ -235,8 +220,7 @@ size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, s
 		sumBytesRead += bytesRead;
 		if(FLASH_READ_BLOCKSIZE != bytesRead)
 		{
-			cout << __FILE__ << "::" << __FUNCTION__
-			<< "(): only " << bytesRead << " bytes read not " << FLASH_READ_BLOCKSIZE << endl;
+			Trace(ZONE_VERBOSE, "only %d bytes read. %d bytes expected! \n", bytesRead, FLASH_READ_BLOCKSIZE);
 			return sumBytesRead;
 		}
 		address += FLASH_READ_BLOCKSIZE;
@@ -249,8 +233,7 @@ size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, s
 	sumBytesRead += bytesRead;
 	if(numBytes != bytesRead)
 	{
-		cout << __FILE__ << "::" << __FUNCTION__
-		<< "(): only " << bytesRead << " bytes read not " << numBytes << endl;
+		Trace(ZONE_VERBOSE, "only %d bytes read. %d bytes expected! \n", bytesRead, numBytes);
 	}
 	return sumBytesRead;
 }
@@ -265,8 +248,7 @@ bool WiflyControl::BlWriteFlash(unsigned int address, unsigned char* pBuffer, si
 {
 	if(bufferLength + address > FLASH_SIZE)
 	{
-		cout << __FILE__ << "::" << __FUNCTION__
-		<< "(): can not performe write outside the flash" << endl;
+		Trace(ZONE_VERBOSE, "Couldn't performe write outside the flash. \n");
 		return false;
 	}
   
@@ -297,8 +279,7 @@ bool WiflyControl::BlWriteEeprom(unsigned int address, unsigned char* pBuffer, s
 {
 	if(bufferLength + address > EEPROM_SIZE)
 	{
-		cout << __FILE__ << "::" << __FUNCTION__
-		<< "(): can not performe write outside the eeprom" << endl;
+		Trace(ZONE_VERBOSE, "Couldn't performe write outside the eeprom. \n");
 		return false;
 	}
       
@@ -325,30 +306,28 @@ bool WiflyControl::BlWriteEeprom(unsigned int address, unsigned char* pBuffer, s
 	return (1 == BlRead(request, &response, sizeof(response)));
 }
 
-bool WiflyControl::BlProgramFlash(const std::string& pFilename)
+bool WiflyControl::BlProgramFlash(const std::string& pFilename, std::ostream& out)
 {
-	cout << endl << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")" << endl;
-	cout << "opening '" << pFilename << "' ...";
+	out << endl << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")" << endl;
+	out << "opening '" << pFilename << "' ...";
 
 	std::ifstream hexFile;
 	hexFile.open(const_cast<char*>(pFilename.c_str()), ifstream::in);
 	
 	if(!hexFile.good())
 	{
-		cout << "failed!" << endl;
+		out << "failed!" << endl;
 		return false;
 	}
-	cout << "done." << endl;
+	out << "done." << endl;
 
-	
 	intelhex hexConverter;
 	hexFile >> hexConverter;
 	
 	BlInfo info;
 	if(sizeof(info) != BlReadInfo(info))
 	{
-		cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
-		<< ": can not read bootloader info from traget device" << endl;
+		Trace(ZONE_VERBOSE, "can not read bootloader info from traget device \n");
 		return false;
 	}
 	
@@ -360,15 +339,13 @@ bool WiflyControl::BlProgramFlash(const std::string& pFilename)
 	{
 	    if(endAddress >= (unsigned long)(info.GetAddress()))
 	    {
-		  cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
-		  << ": endaddress of program code is in bootloader area of the target device flash" << endl;
-		  return false;
+			Trace(ZONE_VERBOSE, "endaddress of program code is in bootloader area of the target device flash \n");
+			return false;
 	    }
 	}
 	else
 	{
-	    cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
-	    << ": can not read endAddress from hexConverter" << endl;
+		Trace(ZONE_VERBOSE, "can't read endAddress from hexConverter \n");
 	    return false;
 	}
 	
@@ -393,8 +370,7 @@ bool WiflyControl::BlProgramFlash(const std::string& pFilename)
 	hexConverter.begin();
 	if(hexConverter.currentAddress() != 0)
 	{
-		cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
-		<< ": program code does not start at address 0x0000" << endl;
+		Trace(ZONE_VERBOSE, "program code does not start at address 0x0000 \n");
 		return false;
 	}
 	
@@ -402,23 +378,20 @@ bool WiflyControl::BlProgramFlash(const std::string& pFilename)
 	{
 		if(!hexConverter.getData(&appVector[i],(unsigned long)i))
 		{
-		    cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
-		    << ": can not read data at address 0x" << hexConverter.currentAddress() << endl;
+			Trace(ZONE_VERBOSE, "can not read data at address 0x%x \n", hexConverter.currentAddress());
 		    return false;
 		}
 	}
 	
 	if(!BlEnableAutostart())
 	{
-		cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
-		<< ": can not enable bootloader autostart!" << endl;
+		Trace(ZONE_VERBOSE,"can not enable bootloader autostart!\n");
 		return false;
 	}
 	
 	if(!BlFlashErase())
 	{
-		cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
-		<< ": can not erase target device flash!" << endl;
+		Trace(ZONE_VERBOSE, "can not erase target device flash! \n");
 		return false;
 	}
 	
@@ -428,8 +401,7 @@ bool WiflyControl::BlProgramFlash(const std::string& pFilename)
 	
 	if(endAddress > FLASH_SIZE)
 	{
-		cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
-		<< ": endaddress of program code is outside the target device flash" << endl;
+		Trace(ZONE_VERBOSE, "endaddress of program code is outside the target device flash\n");
 		return false;
 	}
 	
@@ -451,8 +423,7 @@ bool WiflyControl::BlProgramFlash(const std::string& pFilename)
 	}
 	if(!BlWriteFlash(0, &flashBuffer[0], (size_t)endAddress+1))
 	{
-		cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
-		<< ": writing program code to target device flash failed!" << endl;
+		Trace(ZONE_VERBOSE, "writing program code to target device flash failed!\n");
 		return false;
 	}
 	
@@ -470,8 +441,7 @@ bool WiflyControl::BlProgramFlash(const std::string& pFilename)
 	
 	if(!BlWriteFlash(info.GetAddress() - FLASH_WRITE_BLOCKSIZE, &appVecBuf[0], FLASH_WRITE_BLOCKSIZE))
 	{
-		cout << __FILE__ << "::" << __FUNCTION__ << "(" << pFilename << ")"
-		<< ": writing application startvector to target device flash failed!" << endl;
+		Trace(ZONE_VERBOSE, "writing application startvector to target device flash failed!\n")
 		return false;
 	}
 	

@@ -189,7 +189,7 @@ class ControlCmdBlProgramFlash : public WiflyControlCmd
 			
 			cin >> path;
 					  
-			if(control.BlProgramFlash(path))
+			if(control.BlProgramFlash(path, std::cout))
 			{
 			    cout << endl <<"Program device flash succesful"<<endl;
 			}
