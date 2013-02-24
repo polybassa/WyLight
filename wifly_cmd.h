@@ -55,23 +55,6 @@
 #pragma pack(1)
 #endif
 
-struct cmd_add_color {
-	uns8 addr[4];
-	uns8 red;
-	uns8 green;
-	uns8 blue;
-	uns8 hour;
-	uns8 minute;
-	uns8 second;
-};
-
-struct cmd_set_color {
-	uns8 addr[4];
-	uns8 red;
-	uns8 green;
-	uns8 blue;
-};
-
 struct cmd_set_fade {
 	uns8 addr[4];
 	uns8 red;
@@ -126,8 +109,6 @@ struct response_frame {
 struct led_cmd {
 	uns8 cmd;
 	union {
-		struct cmd_add_color add_color;
-		struct cmd_set_color set_color;
 		struct cmd_set_fade set_fade;
 		struct cmd_set_run set_run;
 		struct cmd_wait wait;

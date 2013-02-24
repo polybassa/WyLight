@@ -42,11 +42,6 @@ void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 	gSetFadeWasCalled = TRUE;
 }
 
-unsigned char date_timer_add_event(struct cmd_add_color* pCmd)
-{
-	return 0;
-}
-
 /******************************* test functions *******************************/
 /* add simple command and read back */
 int ut_ScriptCtrl_SimpleReadWrite(void)

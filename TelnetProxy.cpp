@@ -22,6 +22,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <sstream>
 
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
@@ -45,6 +46,39 @@ bool TelnetProxy::Close(bool doSave) const
 		return false;
 	}
 	return Send("exit\r\n", "\r\nEXIT\r\n");
+}
+
+bool TelnetProxy::ExtractStringOfInterest(const std::string& buffer, const std::string& searchKey, std::string& result) const
+{
+	std::stringstream stream;
+	stream << buffer;
+	std::string line;
+	getline(stream, line, '\r');
+	while(!line.empty())
+	{
+		const size_t start = line.find(searchKey);
+		if(start != std::string::npos)
+		{
+			result.assign(line.substr(start + searchKey.size()));
+			TraceBuffer(ZONE_INFO, result.c_str(), result.size(), "%c", "%u bytes found: ", result.size());
+			return true;
+		}
+		getline(stream, line, '\r');
+	}
+	Trace(ZONE_ERROR, "Couldn't find '%s' in response\n", searchKey.c_str());
+	return false;
+}
+
+void TelnetProxy::GetString(const std::string& getCmd, const std::string& searchKey, std::string& result) const
+{
+	result.clear();
+
+	if(!SendAndWaitForEcho(getCmd))
+	{
+		Trace(ZONE_ERROR, ">>%s<< receive echo failed\n", getCmd.data());
+		return;
+	}
+	RecvString(searchKey, result);
 }
 
 bool TelnetProxy::Open(void) const
@@ -98,15 +132,54 @@ bool TelnetProxy::Recv(const std::string& expectedResponse) const
 	return 0 == memcmp(expectedResponse.data(), buffer, expectedResponse.size());
 }
 
+bool TelnetProxy::RecvString(const std::string& searchKey, std::string& result) const
+{
+	timeval timeout = {5, 0};
+	uint8_t buffer[128];
+	uint8_t* pBufferPos = buffer;
+	uint8_t* pAOKBegin = buffer;
+	uint8_t* pAOKPos = pAOKBegin;
+
+	timeval endTime, now;
+	gettimeofday(&endTime, NULL);
+	timeval_add(&endTime, &timeout);
+	do	
+	{
+		pBufferPos += mSock.Recv(pBufferPos, sizeof(buffer) - 1 - (pBufferPos - buffer), &timeout);
+
+		// check for AOK
+		while(pAOKPos < pBufferPos)
+		{
+			if(*pAOKPos != AOK[pAOKPos-pAOKBegin])
+			{
+				// We are not in a AOK sequence -> move pointers ahead
+				pAOKBegin = pAOKPos;
+			}
+			else
+			{
+				if(pAOKPos >= pAOKBegin + sizeof(AOK) - 2)
+				{
+					// We received a full AOK sequence -> extract response from our data
+					buffer[sizeof(buffer) - 1] = 0;
+					return ExtractStringOfInterest((const char*)buffer, searchKey, result);
+				}
+				else
+				{
+					Trace(ZONE_INFO, "Found next character of AOK, but end not reached yet\n");
+				}
+			}
+			pAOKPos++;
+		}
+
+		gettimeofday(&now, NULL);
+	} while((buffer + sizeof(buffer) > pBufferPos) && timeval_sub(&endTime, &now, &timeout));
+	TraceBuffer(ZONE_ERROR, buffer, pBufferPos - buffer, "%c", "No end found in: ");
+	return false;
+}
+
 bool TelnetProxy::Send(const std::string& telnetMessage, const std::string& expectedResponse) const
 {
-	if(telnetMessage.size() != mSock.Send((uint8_t*)telnetMessage.data(), telnetMessage.size()))
-	{
-		Trace(ZONE_ERROR, "Send telnetMessage >>%s<< failed\n", telnetMessage.data());
-		return false;
-	}
-
-	if(!Recv(telnetMessage))
+	if(!SendAndWaitForEcho(telnetMessage))
 	{
 		Trace(ZONE_ERROR, ">>%s<< receive echo failed\n", telnetMessage.data());
 		return false;
@@ -118,6 +191,16 @@ bool TelnetProxy::Send(const std::string& telnetMessage, const std::string& expe
 		return false;
 	}
 	return true;
+}
+
+bool TelnetProxy::SendAndWaitForEcho(const std::string& telnetMessage) const
+{
+	if(telnetMessage.size() != mSock.Send((uint8_t*)telnetMessage.data(), telnetMessage.size()))
+	{
+		Trace(ZONE_ERROR, "Send telnetMessage >>%s<< failed\n", telnetMessage.data());
+		return false;
+	}
+	return Recv(telnetMessage);
 }
 
 bool TelnetProxy::SendString(const std::string& command, std::string value) const
@@ -152,7 +235,7 @@ bool TelnetProxy::SendString(const std::string& command, std::string value) cons
 
 bool TelnetProxy::SetReplaceChar(const char replace) const
 {
-	std::string replaceCmd("set opt replace " + std::string(1, replace) + std::string("\r\n"));
+	std::string replaceCmd("set opt replace " + std::string(1, replace) + "\r\n");
 	return Send(replaceCmd);
 }
 
