@@ -24,6 +24,7 @@
 #include "ComProxy.h"
 #include "wifly_cmd.h"
 #include "BlRequest.h"
+#include "FwRequest.h"
 #include "intelhexclass.h"
 #include "error.h"
 #include "TelnetProxy.h"
@@ -40,6 +41,7 @@ class WiflyControl
 		struct cmd_frame mCmdFrame;
 		unsigned long ToRGBA(std::string& s) const;
 		size_t BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync = true) const;
+		WiflyResponse& FwSend(const FwRequest& request, WiflyResponse& response) const;
 		WiflyResponse& FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const;
 		
 	public:

@@ -59,7 +59,7 @@ WiflyControl::WiflyControl(uint32_t addr, uint16_t port)
 : mSock(addr, port), mProxy(mSock), mTelnet(mSock)
 {
 	//TODO remove length
-	mCmdFrame.length = (uns8)sizeof(struct cmd_set_color) + 2;
+	mCmdFrame.length = (uns8)sizeof(struct cmd_set_fade) + 2;
 }
 
 /** --------------------------------------- BOOTLOADER METHODES --------------------------------------- **/
@@ -573,6 +573,18 @@ bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssi
 	return mTelnet.Close(true);
 }
 
+WiflyResponse& WiflyControl::FwSend(const FwRequest& request, WiflyResponse& response) const
+{
+	unsigned char buffer[512];
+	int bytesRead = mProxy.Send(request.GetCmdFrame(), &buffer[0], sizeof(buffer), false);
+	
+	Trace(ZONE_VERBOSE, "We got %d bytes response.\n", bytesRead);
+	TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer[0], bytesRead, "%02x ", "Message: ");
+	
+	response.Init((response_frame*)&buffer[0], bytesRead);
+	return response;
+}
+
 WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const
 {
 	pFrame->length = length + 2; //add cmd and length byte
@@ -598,14 +610,14 @@ bool WiflyControl::FwReTrySend(FwException& exception)
 
 bool WiflyControl::FwClearScript(WiflyResponse& response)
 {
-	mCmdFrame.led.cmd = CLEAR_SCRIPT;
-	return FwSend(&mCmdFrame, 0, response).IsValid();
+	FwRequest request(CLEAR_SCRIPT);
+	return FwSend(request, response).IsValid();
 }
 
 bool WiflyControl::FwLoopOn(WiflyResponse& response)
 {
-	mCmdFrame.led.cmd = LOOP_ON;
-	return FwSend(&mCmdFrame, 0, response).IsValid();
+	FwRequest request(LOOP_ON);
+	return FwSend(request, response).IsValid();
 }
 
 bool WiflyControl::FwLoopOff(WiflyResponse& response, unsigned char numLoops)
