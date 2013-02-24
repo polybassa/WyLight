@@ -61,7 +61,7 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 
 uint32_t BroadcastReceiver::GetIp(size_t index) const
 {
-	return mIpTable[index].m_Addr;
+	return mIpTable[index].GetIp();
 }
 
 Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout)
@@ -85,7 +85,7 @@ Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout)
 
 uint16_t BroadcastReceiver::GetPort(size_t index) const
 {
-	return mIpTable[index].m_Port;
+	return mIpTable[index].GetPort();
 }
 
 size_t BroadcastReceiver::NumRemotes(void) const

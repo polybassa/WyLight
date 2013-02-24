@@ -1,5 +1,5 @@
 /**
-		Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+		Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
 
@@ -24,37 +24,6 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <sys/time.h>
-
-class Endpoint
-{
-	public:
-		Endpoint(sockaddr_storage& addr, const size_t size, uint16_t port) {
-			assert(sizeof(sockaddr_in) == size);
-			m_Addr = ntohl(((sockaddr_in&)addr).sin_addr.s_addr);
-			m_Port = ntohs(port);
-		};
-
-		Endpoint(uint32_t addr = 0, uint16_t port = 0) : m_Addr(addr), m_Port(port) {
-		};
-
-		friend std::ostream& operator << (std::ostream& out, const Endpoint& ref) {
-			return out << std::hex << ref.m_Addr << ':' << std::dec << ref.m_Port;
-		};
-
-		/* 
-		 * @return ipv4 address(A) and port(P) as a combined 64 bit value 0xAAAAAAAA0000PPPP
-		 */
-		uint64_t AsUint64(void) const {
-			return ((uint64_t)m_Addr << 32) | m_Port; 
-		};
-
-		bool IsValid(void) const {
-			return (0 != m_Addr) && (0 != m_Port);
-		};
-
-		uint32_t m_Addr;
-		uint16_t m_Port;
-};
 
 class ClientSocket
 {

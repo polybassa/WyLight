@@ -20,6 +20,7 @@
 #define _BROADCAST_RECEIVER_H_
 
 #include "ClientSocket.h"
+#include "Endpoint.h"
 #include <stdint.h>
 #include <cstring>
 #include <mutex>
