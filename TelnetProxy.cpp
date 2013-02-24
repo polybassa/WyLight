@@ -48,7 +48,7 @@ bool TelnetProxy::Close(bool doSave) const
 	return Send("exit\r\n", "\r\nEXIT\r\n");
 }
 
-bool TelnetProxy::ExtractStringOfInterest(const std::string& buffer, const char* const pLimit, const std::string& searchKey, std::string& result) const
+bool TelnetProxy::ExtractStringOfInterest(const std::string& buffer, const std::string& searchKey, std::string& result) const
 {
 	std::stringstream stream;
 	stream << buffer;
@@ -166,7 +166,7 @@ bool TelnetProxy::RecvString(const std::string& searchKey, std::string& result) 
 				{
 					// We received a full AOK sequence -> extract response from our data
 					buffer[sizeof(buffer) - 1] = 0;
-					return ExtractStringOfInterest((const char*)buffer, (const char*)pAOKBegin, searchKey, result);
+					return ExtractStringOfInterest((const char*)buffer, searchKey, result);
 				}
 				else
 				{
