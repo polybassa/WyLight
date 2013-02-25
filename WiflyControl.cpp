@@ -441,7 +441,7 @@ bool WiflyControl::BlProgramFlash(const std::string& pFilename, std::ostream& ou
 	
 	if(!BlWriteFlash(info.GetAddress() - FLASH_WRITE_BLOCKSIZE, &appVecBuf[0], FLASH_WRITE_BLOCKSIZE))
 	{
-		Trace(ZONE_VERBOSE, "writing application startvector to target device flash failed!\n")
+		Trace(ZONE_VERBOSE, "writing application startvector to target device flash failed!\n");
 		return false;
 	}
 	

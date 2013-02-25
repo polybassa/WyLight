@@ -44,7 +44,7 @@ public:
 	void Init(response_frame* pData, size_t dataLength)
 	{
 		mIsValid = (NULL != pData) && (4 <= dataLength) && (mCmd == pData->cmd);
-		mIsScriptBufferFull = (pData->state == SCRIPTBUFFER_FULL);
+		mIsScriptBufferFull = pData->state == SCRIPTBUFFER_FULL;
 	};
 	
 private:
