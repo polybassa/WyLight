@@ -1,6 +1,9 @@
 package biz.bruenn.WiflyLight;
 
-public class Endpoint {
+import java.io.Serializable;
+
+public class Endpoint implements Serializable {
+	private static final long serialVersionUID = -8653676704955283379L;
 	private final int mAddr;
 	private final short mPort;
 	

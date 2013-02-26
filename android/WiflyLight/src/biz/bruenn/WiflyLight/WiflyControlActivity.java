@@ -13,6 +13,7 @@ import android.widget.Toast;
 import biz.bruenn.WiflyLight.R.id;
 
 public class WiflyControlActivity extends Activity {
+	public static final String EXTRA_ENDPOINT = "biz.bruenn.WiflyLight.Endpoint";
 	public static final String EXTRA_IP = "IpAddress";
 	public static final String EXTRA_PORT = "Port";
 	public static final short DEFAULT_PORT = 2000;
@@ -27,9 +28,7 @@ public class WiflyControlActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wifly_control);
 		Intent i = getIntent();
-		final int ip = i.getIntExtra(EXTRA_IP, 0);
-		final short port = i.getShortExtra(EXTRA_PORT, DEFAULT_PORT);
-		mRemote = new Endpoint(ip, port);
+		mRemote = (Endpoint) i.getSerializableExtra(EXTRA_ENDPOINT);
 		
 		mSetColorBtn = (Button)findViewById(R.id.setColor);
 		mSetColorBtn.setOnClickListener(new View.OnClickListener() {
