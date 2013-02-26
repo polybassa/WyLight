@@ -94,10 +94,10 @@ public:
 	{
 		if(mIsValid)
 		{
-			out << "Cycletimes: " << endl;
+			out << "Cycletimes: " << std::endl;
 			for( unsigned int i = 0; i < CYCLETIME_METHODE_ENUM_SIZE; i++)
 			{
-				out << std::setw(3) << std::dec << i + 1 << ": " << std::setw(8) << std::dec << mCycletimes[i] << " us" << endl;
+				out << std::setw(3) << std::dec << i + 1 << ": " << std::setw(8) << std::dec << mCycletimes[i] << " us" << std::endl;
 			}
 
 		}
@@ -127,9 +127,9 @@ public:
 	{
 		if(mIsValid)
 		{
-			out << endl << "Tracebuffercontent: ";
+			out << std::endl << "Tracebuffercontent: ";
 			for(unsigned int i = 0; i < mMessageLength; i++) out << mTracebuffer[i];
-			out << endl;
+			out << std::endl;
 		}
 	};
 	
@@ -155,10 +155,10 @@ public:
 	{
 		if(mIsValid)
 		{
-			out << endl << "Firmwareversion: ";
+			out << std::endl << "Firmwareversion: ";
 			out << (int) mFwVersion.major << ".";
 			out << (int) mFwVersion.minor;
-			out << endl;
+			out << std::endl;
 		}
 	};
 	
