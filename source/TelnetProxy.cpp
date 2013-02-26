@@ -60,7 +60,7 @@ bool TelnetProxy::ExtractStringOfInterest(const std::string& buffer, const std::
 		if(start != std::string::npos)
 		{
 			result.assign(line.substr(start + searchKey.size()));
-			TraceBuffer(ZONE_INFO, result.c_str(), result.size(), "%c", "%u bytes found: ", result.size());
+			TraceBuffer(ZONE_INFO, result.c_str(), result.size(), "%c", "%lu bytes found: ", result.size());
 			return true;
 		}
 		getline(stream, line, '\r');
@@ -126,9 +126,9 @@ bool TelnetProxy::Recv(const std::string& expectedResponse) const
 		bytesRead += mSock.Recv(pBufferPos, expectedResponse.size() - bytesRead, &timeout);
 		gettimeofday(&now, NULL);
 	} while((bytesRead < expectedResponse.size()) && timeval_sub(&endTime, &now, &timeout));
-	TraceBuffer(ZONE_INFO, buffer, bytesRead, "%02x ", "%u bytes received: ", bytesRead);
-	TraceBuffer(ZONE_INFO, buffer, bytesRead, "%c", "%u bytes received: ", bytesRead);
-	Trace(ZONE_INFO, "%u:%u\n", bytesRead, expectedResponse.size());
+	TraceBuffer(ZONE_INFO, buffer, bytesRead, "%02x ", "%zu bytes received: ", bytesRead);
+	TraceBuffer(ZONE_INFO, buffer, bytesRead, "%c", "%zu bytes received: ", bytesRead);
+	Trace(ZONE_INFO, "%zu:%lu\n", bytesRead, expectedResponse.size());
 	return 0 == memcmp(expectedResponse.data(), buffer, expectedResponse.size());
 }
 

@@ -116,7 +116,7 @@ public:
 		SimpleResponse::Init(pData, dataLength);
 		if(mIsValid)
 		{
-			mMessageLength = dataLength - 4;
+			mMessageLength = (unsigned int)dataLength - 4;
 			for (unsigned int i = 0; i < dataLength; i++)
 			{
 				mTracebuffer[i] = (char) pData->data.get_trace_string[i];

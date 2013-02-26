@@ -162,7 +162,7 @@ size_t ComProxy::Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout, bool c
 	// TODO refactor this with code in commandstorage. It should be identical to the fw receive implementation
 	do {
 		size_t bytesMasked = mSock.Recv(pBuffer, length, pTimeout);
-		Trace(ZONE_INFO, "Bytes masked: %u\n", bytesMasked);
+		Trace(ZONE_INFO, "Bytes masked: %zu\n", bytesMasked);
 		uint8_t* pInput = pBuffer;
 		while(bytesMasked-- > 0)
 		{
@@ -196,7 +196,7 @@ size_t ComProxy::Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout, bool c
 						Crc_AddCrc16(pBuffer[-2], &prepreCrc);
 						crc = prepreCrc;
 					}
-					Trace(ZONE_INFO, "Crc: 0x%04x Returnvalue: %u\n", crc, (pBuffer - 2) - pBufferBegin);
+					Trace(ZONE_INFO, "Crc: 0x%04x Returnvalue: %lu\n", crc, (pBuffer - 2) - pBufferBegin);
 					return (0 != crc) ? 0 : (pBuffer - 2) - pBufferBegin;
 				}
 				else if (BL_STX == *pInput)
@@ -223,7 +223,7 @@ size_t ComProxy::Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout, bool c
 
 int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const
 {
-	Trace(ZONE_INFO, "%u pure bytes\n", req.GetSize());
+	Trace(ZONE_INFO, "%zu pure bytes\n", req.GetSize());
 	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
 }
 
@@ -291,7 +291,7 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 			timeval timeout = RESPONSE_TIMEOUT;
 			size_t bytesReceived = Recv(recvBuffer, sizeof(recvBuffer), &timeout, checkCrc, crcInLittleEndian);
 			memcpy(pResponse, recvBuffer, bytesReceived);
-			return bytesReceived;
+			return (uint32_t)bytesReceived;
  		}
 }
 

@@ -123,7 +123,7 @@ size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size
 {
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	size_t bytesReceived = mProxy.Send(req, buffer, sizeof(buffer), doSync);
-	Trace(ZONE_INFO, " %d:%d \n", bytesReceived, sizeof(BlInfo));
+	Trace(ZONE_INFO, " %zd:%ld \n", bytesReceived, sizeof(BlInfo));
 	if(responseSize == bytesReceived)
 	{
 		memcpy(pResponse, buffer, responseSize);
@@ -149,7 +149,7 @@ size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address
 		sumBytesRead += bytesRead;
 		if(FLASH_CRC_BLOCKSIZE * 2 != bytesRead)
 		{
-			Trace(ZONE_VERBOSE, "only %d bytes read. %d bytes expected! \n", bytesRead, FLASH_CRC_BLOCKSIZE * 2);
+			Trace(ZONE_VERBOSE, "only %zd bytes read. %d bytes expected! \n", bytesRead, FLASH_CRC_BLOCKSIZE * 2);
 			return sumBytesRead;
 		}
 		address += (FLASH_CRC_BLOCKSIZE * FLASH_ERASE_BLOCKSIZE);
@@ -162,7 +162,7 @@ size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address
 	sumBytesRead += bytesRead;
 	if(numBlocks * 2 != bytesRead)
 	{
-		Trace(ZONE_VERBOSE, "only %d bytes read. %d bytes expected! \n", bytesRead, numBlocks * 2);
+		Trace(ZONE_VERBOSE, "only %zd bytes read. %ld bytes expected! \n", bytesRead, numBlocks * 2);
 	}
 	return sumBytesRead;
 }
@@ -185,7 +185,7 @@ size_t WiflyControl::BlReadEeprom(unsigned char* pBuffer, unsigned int address, 
 		sumBytesRead += bytesRead;
 		if(EEPROM_READ_BLOCKSIZE != bytesRead)
 		{
-			Trace(ZONE_VERBOSE, "only %d bytes read. %d bytes expected! \n", bytesRead, EEPROM_READ_BLOCKSIZE);
+			Trace(ZONE_VERBOSE, "only %zd bytes read. %d bytes expected! \n", bytesRead, EEPROM_READ_BLOCKSIZE);
 			return sumBytesRead;
 		}
 		address += EEPROM_READ_BLOCKSIZE;
@@ -197,7 +197,7 @@ size_t WiflyControl::BlReadEeprom(unsigned char* pBuffer, unsigned int address, 
 	sumBytesRead += bytesRead;
 	if(numBytes != bytesRead)
 	{
-		Trace(ZONE_VERBOSE, "only %d bytes read. %d bytes expected! \n", bytesRead, numBytes);
+		Trace(ZONE_VERBOSE, "only %zd bytes read. %zd bytes expected! \n", bytesRead, numBytes);
 	}
 	return sumBytesRead;
 }
@@ -220,7 +220,7 @@ size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, s
 		sumBytesRead += bytesRead;
 		if(FLASH_READ_BLOCKSIZE != bytesRead)
 		{
-			Trace(ZONE_VERBOSE, "only %d bytes read. %d bytes expected! \n", bytesRead, FLASH_READ_BLOCKSIZE);
+			Trace(ZONE_VERBOSE, "only %zd bytes read. %d bytes expected! \n", bytesRead, FLASH_READ_BLOCKSIZE);
 			return sumBytesRead;
 		}
 		address += FLASH_READ_BLOCKSIZE;
@@ -233,7 +233,7 @@ size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, s
 	sumBytesRead += bytesRead;
 	if(numBytes != bytesRead)
 	{
-		Trace(ZONE_VERBOSE, "only %d bytes read. %d bytes expected! \n", bytesRead, numBytes);
+		Trace(ZONE_VERBOSE, "only %zd bytes read. %zd bytes expected! \n", bytesRead, numBytes);
 	}
 	return sumBytesRead;
 }
@@ -378,7 +378,7 @@ bool WiflyControl::BlProgramFlash(const std::string& pFilename, std::ostream& ou
 	{
 		if(!hexConverter.getData(&appVector[i],(unsigned long)i))
 		{
-			Trace(ZONE_VERBOSE, "can not read data at address 0x%x \n", hexConverter.currentAddress());
+			Trace(ZONE_VERBOSE, "can not read data at address 0x%lx \n", hexConverter.currentAddress());
 		    return false;
 		}
 	}
@@ -454,7 +454,7 @@ bool WiflyControl::BlRunApp(void) const
 	unsigned char buffer[32];
 	size_t bytesRead = BlRead(request, &buffer[0], 6);
 	
-	Trace(ZONE_VERBOSE, "We got %d bytes response.\n", bytesRead);
+	Trace(ZONE_VERBOSE, "We got %zd bytes response.\n", bytesRead);
 	TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer[0], bytesRead, "%02x ", "Message: ");
 	
 	if(4 <= bytesRead)
