@@ -66,7 +66,7 @@ class WiflyControl
 		std::string ConfGetSsid(void) const;
 		bool ConfSetDefaults(void) const;
 		bool ConfSetWlan(const std::string& phrase, const std::string& ssid) const;
-		
+		bool ConfUpdate(void) const;
 		
 		/** ------------------------------ FIRMWARE METHODES ------------------------------ **/
 		bool FwClearScript(WiflyResponse&);

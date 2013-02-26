@@ -543,6 +543,35 @@ bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssi
 	return mTelnet.Close(true);
 }
 
+bool WiflyControl::ConfUpdate(void) const
+{
+	static const std::string commands[] = {
+		"set ftp address 198.175.253.161\r\n", // configure ftp server
+		"set ftp user roving\r\n", // configure ftp server
+		"set ftp pass Pass123\r\n", // configure ftp server
+		"save\r\n",
+		"ftp update wifly-245.img\r\n",	 // get fw file
+		"set factory RESET\r\n",            			// factory reset required
+		"reboot\r\n",
+	};
+
+	if(!mTelnet.Open())
+	{
+		Trace(ZONE_ERROR, "open telnet connection failed\n");
+		return false;
+	}
+
+	for(size_t i = 0; i < sizeof(commands) / sizeof(commands[0]); i++)
+	{
+		if(!mTelnet.Send(commands[i]))
+		{
+			Trace(ZONE_ERROR, "command: '%s' failed -> exit without saving\n", commands[i].data());
+			return mTelnet.Close(false);
+		} 
+	}
+	return mTelnet.Close(false);
+}
+
 WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const
 {
 	pFrame->length = length + 2; //add cmd and length byte
