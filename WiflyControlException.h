@@ -35,6 +35,7 @@ class WiflyControlException : public std::exception
 public:
 	WiflyControlException(const std::string errorString = "WiflyControlException")
 	: std::exception(), m_ErrorString(errorString) {};
+	~WiflyControlException(void) throw() {};
 		
 	const std::string& GetErrorString(void) const { return m_ErrorString; };
 	
