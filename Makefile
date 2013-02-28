@@ -32,7 +32,7 @@ all_nils: test pic x86_client
 all_pat: test pic simu x86_client android_client
 
 pic:
-	wine ${PIC_CC8E} ${SOURCE_DIR}/main.c -I${SOURCE_DIR} -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM -O${BUILD_DIR}
+	cd firmware/; make pic; cd ..
 
 simu:
 	gcc $(patsubst %.c,${SOURCE_DIR}/%.c,${X86_SRC}) -DDEBUG -lpthread ${OPENGL_LIB} -o ${BUILD_DIR}/server.bin -Wall
@@ -76,4 +76,4 @@ test: clean $(patsubst %_ut.bin,${SOURCE_DIR}/%_ut.bin,${UNITTESTS})
  
 
 clean:
-	@rm -rf ${BUILD_DIR}/*.asm ${BUILD_DIR}/*.bin ${BUILD_DIR}/*.cod ${BUILD_DIR}/*.fcs ${BUILD_DIR}/*.hex ${BUILD_DIR}/*.lst ${BUILD_DIR}/*.occ ${BUILD_DIR}/*.var ${BUILD_DIR}/*.dSYM ${BUILD_DIR}/.metadata/ ${ANDROID_BIN}
+	@rm -rf ${BUILD_DIR} ${ANDROID_BIN}
