@@ -16,29 +16,23 @@ OUTPUT_DIR=../binary
 UNITTESTS=CommandIO_ut.bin crc_ut.bin ledstrip_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin 
 
 
-all: pic simu
+all: pic
 
 outdir:
-	mkdir -p ${OUTPUT_DIR}
+	@mkdir -p ${OUTPUT_DIR}
 
 pic: outdir
 	wine ${PIC_CC8E} main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM -O${OUTPUT_DIR}
 
-ifeq ($(UNAME),Linux)
 simu:
-	gcc ${X86_SRC} -DDEBUG -lpthread ${OPENGL_LIB} -o ${OUTPUT_DIR}/server.bin -Wall
-
-else ifeq ($(UNAME),Darwin)
-simu: 
-	echo Not supported under OSX
-endif
+	gcc ${X86_SRC} -DDEBUG -DX86 -lpthread ${OPENGL_LIB} -o ${OUTPUT_DIR}/server.bin -Wall
 
 #generic rule to build and run c unittests
 %_ut.bin: %_ut.c %.c %.h
 	@gcc $< $(subst _ut.c,.c,$<) eeprom.c -o ${OUTPUT_DIR}/$@ -Wall -std=c11
 	@./${OUTPUT_DIR}/$@
 
-test: clean ${UNITTESTS}
+test: clean outdir ${UNITTESTS}
  
 clean:
 	@rm -rf ${BUILD_DIR}

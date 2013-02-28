@@ -51,29 +51,15 @@ x86_client_debug:
 	echo $(patsubst %.cpp,${SOURCE_DIR}/%.cpp,${X86_CLIENT_FILES}) 
 	${X86_CLIENT_BUILD} -DDEBUG -g
 
-#generic rule to build and run c unittests
-%_ut.bin: %_ut.c %.c %.h
-	@gcc $< $(subst _ut.c,.c,$<) ${SOURCE_DIR}/eeprom.c -o $(subst ${SOURCE},${BUILD},$@) -Wall -std=c11
-	@./$(subst ${SOURCE},${BUILD},$@)
 
-${SOURCE_DIR}/BroadcastReceiver_ut.bin: ${SOURCE_DIR}/BroadcastReceiver_ut.cpp ${SOURCE_DIR}/BroadcastReceiver.cpp ${SOURCE_DIR}/BroadcastReceiver.h ${SOURCE_DIR}/ClientSocket.cpp ${SOURCE_DIR}/ClientSocket.h ${SOURCE_DIR}/unittest.h
-	@g++ ${SOURCE_DIR}/BroadcastReceiver_ut.cpp ${SOURCE_DIR}/BroadcastReceiver.cpp ${SOURCE_DIR}/ClientSocket.cpp -lpthread -o $(subst ${SOURCE},${BUILD},$@) -Wall -std=c++0x
-	@./$(subst ${SOURCE},${BUILD},$@)
 
-${SOURCE_DIR}/ComProxy_ut.bin: ${SOURCE_DIR}/ComProxy_ut.cpp ${SOURCE_DIR}/ComProxy.cpp ${SOURCE_DIR}/ComProxy.h ${SOURCE_DIR}/BlRequest.h ${SOURCE_DIR}/unittest.h
-	@g++ ${SOURCE_DIR}/ComProxy_ut.cpp ${SOURCE_DIR}/ComProxy.cpp ${SOURCE_DIR}/crc.c -o $(subst ${SOURCE},${BUILD},$@) -Wall -pedantic -std=c++0x
-	@./$(subst ${SOURCE},${BUILD},$@)
+%_test:
+	cd $(subst _test,,$@); make test; cd ..
 
-${SOURCE_DIR}/TelnetProxy_ut.bin: ${SOURCE_DIR}/TelnetProxy_ut.cpp ${SOURCE_DIR}/TelnetProxy.cpp ${SOURCE_DIR}/TelnetProxy.h ${SOURCE_DIR}/unittest.h
-	@g++ ${SOURCE_DIR}/TelnetProxy_ut.cpp ${SOURCE_DIR}/TelnetProxy.cpp ${SOURCE_DIR}/crc.c -o $(subst ${SOURCE},${BUILD},$@) -Wall -pedantic -std=c++0x
-	@./$(subst ${SOURCE},${BUILD},$@)
+test: clean firmware_test library_test
 
-${SOURCE_DIR}/WiflyControl_ut.bin: ${SOURCE_DIR}/WiflyControl_ut.cpp ${SOURCE_DIR}/WiflyControl.cpp ${SOURCE_DIR}/intelhexclass.cpp ${SOURCE_DIR}/intelhexclass.h ${SOURCE_DIR}/WiflyControlColorClass.h ${SOURCE_DIR}/WiflyControlColorClass.cpp ${SOURCE_DIR}/WiflyControl.h ${SOURCE_DIR}/unittest.h
-	@g++ ${SOURCE_DIR}/WiflyControl_ut.cpp ${SOURCE_DIR}/WiflyControl.cpp ${SOURCE_DIR}/intelhexclass.cpp ${SOURCE_DIR}/WiflyControlColorClass.cpp -o $(subst ${SOURCE},${BUILD},$@) -Wall -pedantic -std=c++0x
-	@./$(subst ${SOURCE},${BUILD},$@)
+%_clean:
+	cd $(subst _clean,,$@); make clean; cd ..
 
-test: clean $(patsubst %_ut.bin,${SOURCE_DIR}/%_ut.bin,${UNITTESTS})
- 
+clean: firmware_clean library_clean
 
-clean:
-	@rm -rf ${BUILD_DIR} ${ANDROID_BIN}
