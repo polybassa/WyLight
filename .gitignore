@@ -244,3 +244,10 @@ WorkspaceSettings.xcsettings
 TelnetProxy_ut.bin
 PIC18_Bootloader/PIC18 Bootloader V1.HEX
 WiflyControl_Xcode_Workspace.xcworkspace/xcuserdata/weitys1.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
+XCode/WiflyControlCli/WiflyControlCli/WiflyControlCli.xcodeproj/project.pbxproj
+XCode/WiflyControlCli/WiflyControlCli/WiflyControlCli.xcodeproj/project.xcworkspace/xcuserdata/weitys1.xcuserdatad/UserInterfaceState.xcuserstate
+XCode/WiflyControlCli/WiflyControlCli/WiflyControlCli.xcodeproj/xcuserdata/weitys1.xcuserdatad/xcschemes/WiflyControlCli.xcscheme
+XCode/WiflyControlCli/WiflyControlCli/WiflyControlCli.xcodeproj/xcuserdata/weitys1.xcuserdatad/xcschemes/xcschememanagement.plist
+XCode/WiflyControlCli/WiflyControlCli/WiflyControlCli/WiflyControlCli.1
+Breakpoints.xcbkptlist
+WiflyControl_ut.1
