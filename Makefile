@@ -30,4 +30,5 @@ test: clean firmware_test library_test
 	cd $(subst _clean,,$@); make clean; cd ..
 
 clean: cli_clean firmware_clean library_clean
+	rm -rf $(ANDROID_BIN)
 
