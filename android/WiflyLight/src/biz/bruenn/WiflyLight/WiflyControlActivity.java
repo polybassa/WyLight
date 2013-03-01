@@ -47,7 +47,9 @@ public class WiflyControlActivity extends Activity {
 				int y = Math.max(0, Math.min(b.getHeight()-1, (int)event.getY()));
 				mColor = b.getPixel(x, y);
 				mSetColorBtn.setBackgroundColor(mColor);
-				mSetColorBtn.setText(Integer.toHexString(mColor));
+				//TODO remove debug code
+				//mSetColorBtn.setText(Integer.toHexString(mColor));
+				mSetColorBtn.setTextColor(0xff000000 | ~mColor);
 				return true;
 			}
 		});
