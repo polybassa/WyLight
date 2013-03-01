@@ -1,19 +1,22 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
-DIR := ../../../
+FW_SRC := ../../../firmware/
+LIB_SRC := ../../../library/
 LOCAL_LDLIBS := -llog
 LOCAL_CFLAGS := -DX86 -DOS_ANDROID
 LOCAL_MODULE := wifly
-LOCAL_SRC_FILES := $(DIR)BroadcastReceiver.cpp
-LOCAL_SRC_FILES += $(DIR)ClientSocket.cpp
-LOCAL_SRC_FILES += $(DIR)ComProxy.cpp
-LOCAL_SRC_FILES += $(DIR)crc.c
-LOCAL_SRC_FILES += $(DIR)intelhexclass.cpp
-LOCAL_SRC_FILES += $(DIR)TelnetProxy.cpp
-LOCAL_SRC_FILES += $(DIR)WiflyControl.cpp
-LOCAL_SRC_FILES += $(DIR)WiflyControlColorClass.cpp
-LOCAL_SRC_FILES += $(DIR)WiflyControlJni.cpp
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/$(DIR)c++11_wrapper
+LOCAL_SRC_FILES := $(FW_SRC)crc.c
+LOCAL_SRC_FILES += $(LIB_SRC)BroadcastReceiver.cpp
+LOCAL_SRC_FILES += $(LIB_SRC)ClientSocket.cpp
+LOCAL_SRC_FILES += $(LIB_SRC)ComProxy.cpp
+LOCAL_SRC_FILES += $(LIB_SRC)intelhexclass.cpp
+LOCAL_SRC_FILES += $(LIB_SRC)TelnetProxy.cpp
+LOCAL_SRC_FILES += $(LIB_SRC)WiflyControl.cpp
+LOCAL_SRC_FILES += $(LIB_SRC)WiflyControlColorClass.cpp
+LOCAL_SRC_FILES += WiflyControlJni.cpp
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/c++11_wrapper
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/$(FW_SRC)
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/$(LIB_SRC)
 
 include $(BUILD_SHARED_LIBRARY)
