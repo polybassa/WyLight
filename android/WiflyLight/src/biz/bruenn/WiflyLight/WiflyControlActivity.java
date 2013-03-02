@@ -13,11 +13,13 @@ import android.widget.Toast;
 import biz.bruenn.WiflyLight.R.id;
 
 public class WiflyControlActivity extends Activity {
+	public static final String EXTRA_ENDPOINT = "biz.bruenn.WiflyLight.Endpoint";
 	public static final String EXTRA_IP = "IpAddress";
 	public static final String EXTRA_PORT = "Port";
 	public static final short DEFAULT_PORT = 2000;
 	
-	private WiflyControl mCtrl;
+	private WiflyControl mCtrl = new WiflyControl();
+	private Endpoint mRemote;
 	private Button mSetColorBtn;
 	private int mColor = 0xff000000;
 
@@ -26,10 +28,7 @@ public class WiflyControlActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wifly_control);
 		Intent i = getIntent();
-		int ip = i.getIntExtra(EXTRA_IP, 0);
-		short port = i.getShortExtra(EXTRA_PORT, DEFAULT_PORT);
-		mCtrl = new WiflyControl();
-		mCtrl.connect(ip, port);
+		mRemote = (Endpoint) i.getSerializableExtra(EXTRA_ENDPOINT);
 		
 		mSetColorBtn = (Button)findViewById(R.id.setColor);
 		mSetColorBtn.setOnClickListener(new View.OnClickListener() {
@@ -48,15 +47,23 @@ public class WiflyControlActivity extends Activity {
 				int y = Math.max(0, Math.min(b.getHeight()-1, (int)event.getY()));
 				mColor = b.getPixel(x, y);
 				mSetColorBtn.setBackgroundColor(mColor);
-				mSetColorBtn.setText(Integer.toHexString(mColor));
+				//TODO remove debug code
+				//mSetColorBtn.setText(Integer.toHexString(mColor));
+				mSetColorBtn.setTextColor(0xff000000 | ~mColor);
 				return true;
 			}
 		});
 	}
 	
 	@Override
-	protected void onDestroy() {
-		mCtrl = null;
-		super.onDestroy();
+	protected void onPause() {
+		mCtrl.disconnect();
+		super.onPause();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mCtrl.connect(mRemote);
 	}
 }

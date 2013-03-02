@@ -1,5 +1,6 @@
 package biz.bruenn.WiflyLight.test;
 
+import biz.bruenn.WiflyLight.Endpoint;
 import biz.bruenn.WiflyLight.WiflyControl;
 import android.test.AndroidTestCase;
 
@@ -30,20 +31,21 @@ public class WiflyControlTest extends AndroidTestCase {
 	public void testMultipleInstances() {
 		WiflyControl testeeOne = new WiflyControl();
 		WiflyControl testeeTwo = new WiflyControl();
-		
-		assertTrue(testeeOne.connect(0, (short)0));
-		assertFalse(testeeTwo.connect(0, (short)0));		
+		Endpoint e = new Endpoint(0, (short)0);
+		assertTrue(testeeOne.connect(e));
+		assertFalse(testeeTwo.connect(e));		
 	}
 	
 	public void testConfSetWlan() {
 		WiflyControl testee = new WiflyControl();
+		Endpoint e = new Endpoint(0, (short)0);
 		String specialChars = new String();
 		
 		for(char c = 32; c < 127; c++) {
 			specialChars += c;
 		}
 		
-		assertTrue(testee.connect(0, (short)0));
+		assertTrue(testee.connect(e));
 		assertTrue(testee.confSetWlan("passphrase", specialChars));
 		String ssid = testee.confGetSsid();
 		assertEquals(ssid, specialChars);

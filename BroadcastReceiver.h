@@ -20,13 +20,14 @@
 #define _BROADCAST_RECEIVER_H_
 
 #include "ClientSocket.h"
+#include "Endpoint.h"
+#include <atomic>
 #include <stdint.h>
 #include <cstring>
 #include <mutex>
-#include <atomic>
 #include <ostream>
+#include <set>
 #include <string>
-#include <vector>
 
 class BroadcastReceiver
 {
@@ -36,6 +37,7 @@ class BroadcastReceiver
 		static const size_t BROADCAST_DEVICE_ID_LENGTH;
 		static const int8_t STOP_MSG[];
 		static const size_t STOP_MSG_LENGTH;
+		static const Endpoint EMPTY_ENDPOINT;
 		const uint16_t mPort;
 
 		BroadcastReceiver(uint16_t port = BROADCAST_PORT);
@@ -48,9 +50,8 @@ class BroadcastReceiver
 		 */
 		void operator() (std::ostream& out, timeval* timeout = NULL);
 
-		uint32_t GetIp(size_t index) const;
+		const Endpoint& GetEndpoint(size_t index) const;
 		Endpoint GetNextRemote(timeval* timeout);
-		uint16_t GetPort(size_t index) const;
 
 		/**
 		 * @return number of known IP addresses
@@ -63,7 +64,7 @@ class BroadcastReceiver
 		void Stop(void);
 
 	private:
-		std::vector<Endpoint> mIpTable;
+		std::set<Endpoint> mIpTable;
 		volatile bool mIsRunning;
 		std::atomic<int32_t> mNumInstances;
 		std::mutex mMutex;

@@ -18,12 +18,13 @@
 
 #ifndef _WIFLYCONTROLCMD_H_
 #define _WIFLYCONTROLCMD_H_
+#include "WiflyControlResponse.h"
+#include "trace.h"
 #include <iostream>
 #include <string>
 #include <iomanip>
 #include <time.h>
 #include <stdint.h>
-#include "WiflyControlResponse.h"
 
 //TODO remove this dependencies!!!
 using std::cin;
@@ -31,6 +32,8 @@ using std::cout;
 using std::hex;
 using std::setfill;
 using std::setw;
+
+static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 class WiflyControlCmd
 {
@@ -301,6 +304,20 @@ class ControlCmdConfSetWlan : public WiflyControlCmd
 		};
 };
 
+class ControlCmdConfUpdate : public WiflyControlCmd
+{
+	public:
+		ControlCmdConfUpdate(void) : WiflyControlCmd(
+					string("conf_update"),
+					string("' - update wifly firmware"))
+		{};
+
+		virtual void Run(WiflyControl& control) const {
+			cout << "Updating wifly firmware... ";
+			cout << (control.ConfUpdate() ? "done.\n" : "failed!\n");
+		};
+};
+
 class ControlCmdStartBl : public WiflyControlCmd
 {
 	public:
@@ -447,7 +464,12 @@ class ControlCmdSetFade : public WiflyControlCmd
 			cin >> color;
 			cin >> timevalue;
 			cout << "Transmitting command set fade... ";
-			cout << (control.FwSetFade(response, addr, color, (uint16_t)timevalue, false) ? "done." : "failed!") << endl;
+			const bool result = control.FwSetFade(response, addr, color, (uint16_t)timevalue, false);
+			if(result)
+			cout << "\nFOO\n";	
+else
+			cout << "\nBAR\n";	
+			//cout << (control.FwSetFade(response, addr, color, (uint16_t)timevalue, false) ? "done." : "failed!") << endl;
 		};
 };
 
@@ -513,6 +535,7 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdBlRunApp(),
 	new ControlCmdConfSetDefaults(),
 	new ControlCmdConfSetWlan(),
+	new ControlCmdConfUpdate(),
 	new ControlCmdClearScript(),
 	new ControlCmdSetFade(),
 	new ControlCmdStartBl(),
@@ -547,6 +570,7 @@ class WiflyControlCmdBuilder
 		 */
 		static const WiflyControlCmd* GetCmd(const string name) {
 			for(size_t i = 0; i < s_NumCmds; i++) {
+				Trace(ZONE_INFO, "%u:%s:%s\n", i, name.c_str(), s_Cmds[i]->GetName().c_str());
 				if(0 == name.compare(s_Cmds[i]->GetName())) {
 					return s_Cmds[i];
 				}
