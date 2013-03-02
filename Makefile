@@ -20,7 +20,6 @@ android_client:
 
 x86_client:
 	cd cli; make cli; cd ..
-
 %_test:
 	cd $(subst _test,,$@); make test; cd ..
 
