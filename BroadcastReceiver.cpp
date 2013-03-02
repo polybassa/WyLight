@@ -28,6 +28,7 @@ const int8_t BroadcastReceiver::BROADCAST_DEVICE_ID[] = "WiFly";
 const size_t BroadcastReceiver::BROADCAST_DEVICE_ID_LENGTH = 5;
 const int8_t BroadcastReceiver::STOP_MSG[] = "StopThread";
 const size_t BroadcastReceiver::STOP_MSG_LENGTH = sizeof(STOP_MSG);
+const Endpoint BroadcastReceiver::EMPTY_ENDPOINT;
 
 BroadcastReceiver::BroadcastReceiver(uint16_t port)
 	: mPort(port), mIsRunning(true), mNumInstances(0)
@@ -63,14 +64,11 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 
 const Endpoint& BroadcastReceiver::GetEndpoint(size_t index) const
 {
-	size_t i = 0;
+	if(index >= mIpTable.size())
+		return EMPTY_ENDPOINT;
+
 	auto it = mIpTable.begin();
-	return *it;
-	while(i <= index && it != mIpTable.end())
-	{
-		++i;++it;
-	}
-	//Trace(ZONE_INFO, "returning %p\n", it);
+	for(; index != 0; --index, ++it);
 	return *it;
 }
 

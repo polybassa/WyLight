@@ -70,6 +70,7 @@ uint8_t capturedBroadcastMessage_2[110] = {
 
 sockaddr_in g_FirstRemote = {AF_INET, htons(0xffff), {htonl(0x7F000001)}};
 sockaddr_in g_SecondRemote = {AF_INET, htons(0xffff), {htonl(0x7F000002)}};;
+sockaddr_in g_ThirdRemote = {AF_INET, htons(0xffff), {htonl(0x7F000003)}};;
 
 
 /**************** includes, classes and functions for wrapping ****************/
@@ -135,7 +136,6 @@ int32_t ut_BroadcastReceiver_TestSimple(void)
 
 	CHECK(0 == out.str().compare("0:127.0.0.1:2000\n"));
 	CHECK(1 == dummyReceiver.NumRemotes());
-	Trace(ZONE_INFO, "0x%04x\n", dummyReceiver.GetEndpoint(0).GetIp());
 	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
 	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
 	TestCaseEnd();
@@ -170,16 +170,20 @@ int32_t ut_BroadcastReceiver_TestNoTimeout(void)
 	nanosleep(&NANOSLEEP_TIME, NULL);
 	SetTestSocket(&g_SecondRemote, 0, capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
 	nanosleep(&NANOSLEEP_TIME, NULL);
+	SetTestSocket(&g_ThirdRemote, 0, capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
+	nanosleep(&NANOSLEEP_TIME, NULL);
 
 	dummyReceiver.Stop();
 	myThread.join();
 
-	CHECK(0 == out.str().compare("0:127.0.0.1:2000\n1:127.0.0.2:2000\n"));
-	CHECK(2 == dummyReceiver.NumRemotes());
+	CHECK(0 == out.str().compare("0:127.0.0.1:2000\n1:127.0.0.2:2000\n2:127.0.0.3:2000\n"));
+	CHECK(3 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
 	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
 	CHECK(0x7F000002 == dummyReceiver.GetEndpoint(1).GetIp());
 	CHECK(2000 == dummyReceiver.GetEndpoint(1).GetPort());
+	CHECK(0x7F000003 == dummyReceiver.GetEndpoint(2).GetIp());
+	CHECK(2000 == dummyReceiver.GetEndpoint(2).GetPort());
 	TestCaseEnd();
 }
 

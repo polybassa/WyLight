@@ -37,6 +37,7 @@ class BroadcastReceiver
 		static const size_t BROADCAST_DEVICE_ID_LENGTH;
 		static const int8_t STOP_MSG[];
 		static const size_t STOP_MSG_LENGTH;
+		static const Endpoint EMPTY_ENDPOINT;
 		const uint16_t mPort;
 
 		BroadcastReceiver(uint16_t port = BROADCAST_PORT);
