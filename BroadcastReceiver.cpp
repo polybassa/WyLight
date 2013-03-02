@@ -18,13 +18,17 @@
 
 #include "BroadcastReceiver.h"
 #include "timeval.h"
+#include "trace.h"
 #include <iostream>
 #include <stdio.h>
+
+static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 const int8_t BroadcastReceiver::BROADCAST_DEVICE_ID[] = "WiFly";
 const size_t BroadcastReceiver::BROADCAST_DEVICE_ID_LENGTH = 5;
 const int8_t BroadcastReceiver::STOP_MSG[] = "StopThread";
 const size_t BroadcastReceiver::STOP_MSG_LENGTH = sizeof(STOP_MSG);
+const Endpoint BroadcastReceiver::EMPTY_ENDPOINT;
 
 BroadcastReceiver::BroadcastReceiver(uint16_t port)
 	: mPort(port), mIsRunning(true), mNumInstances(0)
@@ -34,7 +38,6 @@ BroadcastReceiver::BroadcastReceiver(uint16_t port)
 BroadcastReceiver::~BroadcastReceiver(void)
 {
 	Stop();
-	//TODO cleanup mIpTable
 }
 
 void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
@@ -59,9 +62,14 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 	std::atomic_fetch_sub(&mNumInstances, 1);
 }
 
-uint32_t BroadcastReceiver::GetIp(size_t index) const
+const Endpoint& BroadcastReceiver::GetEndpoint(size_t index) const
 {
-	return mIpTable[index].m_Addr;
+	if(index >= mIpTable.size())
+		return EMPTY_ENDPOINT;
+
+	auto it = mIpTable.begin();
+	for(; index != 0; --index, ++it);
+	return *it;
 }
 
 Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout)
@@ -71,21 +79,16 @@ Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout)
 	socklen_t remoteAddrLength = sizeof(remoteAddr);
 
 	BroadcastMessage msg;
-	size_t bytesRead = udpSock.RecvFrom((uint8_t*)&msg, sizeof(msg), timeout, (sockaddr*)&remoteAddr, &remoteAddrLength);
+	const size_t bytesRead = udpSock.RecvFrom((uint8_t*)&msg, sizeof(msg), timeout, (sockaddr*)&remoteAddr, &remoteAddrLength);
 	if(msg.IsWiflyBroadcast(bytesRead))
 	{
 		Endpoint newRemote(remoteAddr, remoteAddrLength, msg.port);
 		mMutex.lock();
-		mIpTable.push_back(newRemote);
+		bool added = mIpTable.insert(newRemote).second;
 		mMutex.unlock();
-		return newRemote;
+		return added ? newRemote : Endpoint();
 	}
 	return Endpoint();
-}
-
-uint16_t BroadcastReceiver::GetPort(size_t index) const
-{
-	return mIpTable[index].m_Port;
 }
 
 size_t BroadcastReceiver::NumRemotes(void) const

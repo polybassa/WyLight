@@ -48,8 +48,8 @@ x86_client_debug:
 	@gcc $< $(subst _ut.c,.c,$<) eeprom.c -o $@ -Wall -std=c11
 	@./$@
 
-BroadcastReceiver_ut.bin: BroadcastReceiver_ut.cpp BroadcastReceiver.cpp BroadcastReceiver.h ClientSocket.cpp ClientSocket.h unittest.h
-	@g++ BroadcastReceiver_ut.cpp BroadcastReceiver.cpp ClientSocket.cpp -DX86 -lpthread -o $@ -Wall -std=c++0x
+BroadcastReceiver_ut.bin: BroadcastReceiver_ut.cpp BroadcastReceiver.cpp BroadcastReceiver.h ClientSocket.h unittest.h
+	@g++ BroadcastReceiver_ut.cpp BroadcastReceiver.cpp -DDEBUG -DX86 -lpthread -o $@ -Wall -std=c++0x
 	@./$@
 
 ComProxy_ut.bin: ComProxy_ut.cpp ComProxy.cpp ComProxy.h BlRequest.h unittest.h

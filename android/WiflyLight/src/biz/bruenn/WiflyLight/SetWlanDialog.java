@@ -25,7 +25,7 @@ public class SetWlanDialog extends Dialog {
 			public void onClick(View v) {
 				// TODO replace this dummy call with confSetWlan()
 				WiflyControl control = new WiflyControl();
-				control.connect(mRemote.getAddr(), mRemote.getPort());
+				control.connect(mRemote);
 				control.fwSetColor(0xffffffff, 0xff000000);
 				control.disconnect();
 				dismiss();

@@ -13,8 +13,8 @@ public class WiflyControl {
 		disconnect();
 	}
 	
-	public boolean connect(int ipv4Addr, short port) {
-		mNative = create(ipv4Addr, port);
+	public boolean connect(Endpoint remote) {
+		mNative = create(remote.getAddr(), remote.getPort());
 		return 0 != mNative;
 	}
 	
