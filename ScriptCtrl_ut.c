@@ -18,6 +18,8 @@
 
 #include "trace.h"
 #include "unittest.h"
+#include <stdbool.h>
+
 #define NUM_TEST_LOOPS 255
  
 int gSetFadeWasCalled;

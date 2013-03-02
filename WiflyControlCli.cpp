@@ -92,6 +92,7 @@ int main(int argc, const char* argv[])
 
 	receiver.Stop();
 	t.join();
-	WiflyControlCli cli(receiver.GetIp(selection), receiver.GetPort(selection));
+	const Endpoint& e = receiver.GetEndpoint(selection);
+	WiflyControlCli cli(e.GetIp(), e.GetPort());
 	cli.Run();
 }

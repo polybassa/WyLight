@@ -19,6 +19,7 @@
 #include "platform.h"
 #include "unittest.h"
 #include "crc.h"
+#include <stdbool.h>
 
 /* test crc commands */
 int ut_Crc_AddCrc(void)
