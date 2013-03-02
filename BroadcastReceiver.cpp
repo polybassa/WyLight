@@ -18,8 +18,11 @@
 
 #include "BroadcastReceiver.h"
 #include "timeval.h"
+#include "trace.h"
 #include <iostream>
 #include <stdio.h>
+
+static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 const int8_t BroadcastReceiver::BROADCAST_DEVICE_ID[] = "WiFly";
 const size_t BroadcastReceiver::BROADCAST_DEVICE_ID_LENGTH = 5;
@@ -34,7 +37,6 @@ BroadcastReceiver::BroadcastReceiver(uint16_t port)
 BroadcastReceiver::~BroadcastReceiver(void)
 {
 	Stop();
-	//TODO cleanup mIpTable
 }
 
 void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
@@ -59,9 +61,17 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 	std::atomic_fetch_sub(&mNumInstances, 1);
 }
 
-uint32_t BroadcastReceiver::GetIp(size_t index) const
+const Endpoint& BroadcastReceiver::GetEndpoint(size_t index) const
 {
-	return mIpTable[index].GetIp();
+	size_t i = 0;
+	auto it = mIpTable.begin();
+	return *it;
+	while(i <= index && it != mIpTable.end())
+	{
+		++i;++it;
+	}
+	Trace(ZONE_INFO, "returning %p\n", it);
+	return *it;
 }
 
 Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout)
@@ -76,16 +86,11 @@ Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout)
 	{
 		Endpoint newRemote(remoteAddr, remoteAddrLength, msg.port);
 		mMutex.lock();
-		mIpTable.push_back(newRemote);
+		bool added = mIpTable.insert(newRemote).second;
 		mMutex.unlock();
-		return newRemote;
+		return added ? newRemote : Endpoint();
 	}
 	return Endpoint();
-}
-
-uint16_t BroadcastReceiver::GetPort(size_t index) const
-{
-	return mIpTable[index].GetPort();
 }
 
 size_t BroadcastReceiver::NumRemotes(void) const

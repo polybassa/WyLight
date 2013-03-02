@@ -21,9 +21,7 @@
 
 //*********************** ENUMERATIONS *********************************************
 #define TRUE  1
-#define true TRUE
 #define FALSE 0
-#define false FALSE
 
 //*********************** CONFIGURATION ********************************************
 #define NUM_OF_LED 32
@@ -31,6 +29,9 @@
 #ifdef __CC8E__
 	#include "inline.h"
 	#include "int18XXX.h"
+
+	#define true TRUE
+	#define false FALSE
 	
 	#define softResetJumpDestination(x)
 

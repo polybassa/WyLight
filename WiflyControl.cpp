@@ -378,7 +378,7 @@ bool WiflyControl::BlProgramFlash(const std::string& pFilename, std::ostream& ou
 	{
 		if(!hexConverter.getData(&appVector[i],(unsigned long)i))
 		{
-			Trace(ZONE_VERBOSE, "can not read data at address 0x%x \n", hexConverter.currentAddress());
+			Trace(ZONE_VERBOSE, "can not read data at address 0x%08lx \n", hexConverter.currentAddress());
 		    return false;
 		}
 	}
@@ -441,7 +441,7 @@ bool WiflyControl::BlProgramFlash(const std::string& pFilename, std::ostream& ou
 	
 	if(!BlWriteFlash(info.GetAddress() - FLASH_WRITE_BLOCKSIZE, &appVecBuf[0], FLASH_WRITE_BLOCKSIZE))
 	{
-		Trace(ZONE_VERBOSE, "writing application startvector to target device flash failed!\n")
+		Trace(ZONE_VERBOSE, "writing application startvector to target device flash failed!\n");
 		return false;
 	}
 	
@@ -576,15 +576,19 @@ WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, Wif
 {
 	pFrame->length = length + 2; //add cmd and length byte
 	unsigned char buffer[512];
+
+	Trace(ZONE_INFO, "before send\n");
 	int bytesRead = mProxy.Send(&mCmdFrame, &buffer[0], sizeof(buffer), false);
 	
-	Trace(ZONE_VERBOSE, "We got %d bytes response.\n", bytesRead);
-	TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer[0], bytesRead, "%02x ", "Message: ");
+	TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer[0], (size_t)bytesRead, "%02x ", "We got %d bytes response.\nMessage: ", bytesRead);
 	
+	Trace(ZONE_INFO, "before init\n");
 	response.Init((response_frame*)&buffer[0], bytesRead);
 	
-	if(!response.IsValid()) throw FwNoResponseException(pFrame);
-	if(response.IsScriptBufferFull()) throw ScriptBufferFullException(pFrame);
+	Trace(ZONE_INFO, "after init\n");
+	Trace(ZONE_INFO, "Result %s \n", (response.IsValid() ? "true" : "false"));
+	//if(!response.IsValid()) throw FwNoResponseException(pFrame);
+	//if(response.IsScriptBufferFull()) throw ScriptBufferFullException(pFrame);
 	
 	return response;
 }
@@ -638,7 +642,7 @@ bool WiflyControl::FwSetFade(WiflyResponse& response, unsigned long addr, unsign
 	SetAddrRgb(mCmdFrame.led.data.set_fade, addr, rgba);
 	mCmdFrame.led.data.set_fade.fadeTmms = htons(fadeTmms);
 	mCmdFrame.led.data.set_fade.parallelFade = parallelFade;
-
+Trace(ZONE_INFO, "HUHUHUHUHU\n");
 	return FwSend(&mCmdFrame, sizeof(cmd_set_fade), response).IsValid();
 }
 

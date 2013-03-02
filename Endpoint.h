@@ -40,6 +40,11 @@ class Endpoint
 		{
 		};
 
+		bool operator<(const Endpoint& ref) const
+		{
+			return AsUint64() < ref.AsUint64();
+		};
+
 		friend std::ostream& operator << (std::ostream& out, const Endpoint& ref)
 		{
 			return out << ((ref.mAddr & 0xff000000 ) >> 24) << '.'

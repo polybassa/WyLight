@@ -27,7 +27,7 @@
 
 #include <stdio.h>
 
-static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING;
+static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style)
 	: mSock(socket(AF_INET, style, 0))
@@ -77,7 +77,7 @@ size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 
 size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 {
-	TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending %u bytes: ", length);
+	TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending on socket 0x%08x, %u bytes: ", mSock, length);
 	return send(mSock, frame, length, 0);
 }
 
