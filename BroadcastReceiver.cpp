@@ -70,7 +70,7 @@ const Endpoint& BroadcastReceiver::GetEndpoint(size_t index) const
 	{
 		++i;++it;
 	}
-	Trace(ZONE_INFO, "returning %p\n", it);
+	//Trace(ZONE_INFO, "returning %p\n", it);
 	return *it;
 }
 
@@ -81,7 +81,7 @@ Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout)
 	socklen_t remoteAddrLength = sizeof(remoteAddr);
 
 	BroadcastMessage msg;
-	size_t bytesRead = udpSock.RecvFrom((uint8_t*)&msg, sizeof(msg), timeout, (sockaddr*)&remoteAddr, &remoteAddrLength);
+	const size_t bytesRead = udpSock.RecvFrom((uint8_t*)&msg, sizeof(msg), timeout, (sockaddr*)&remoteAddr, &remoteAddrLength);
 	if(msg.IsWiflyBroadcast(bytesRead))
 	{
 		Endpoint newRemote(remoteAddr, remoteAddrLength, msg.port);

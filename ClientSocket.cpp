@@ -48,7 +48,7 @@ TcpSocket::TcpSocket(uint32_t addr, uint16_t port)
 {
 	if(connect(mSock, reinterpret_cast<sockaddr*>(&mSockAddr), sizeof(mSockAddr)) < 0)
 	{
-		Trace(ZONE_ERROR, "Connection to 0x%08x:%05u failed\n", addr, port);
+		Trace(ZONE_ERROR, "Connection to 0x%04x:%05u failed\n", addr, port);
 	}
 }
 
@@ -77,7 +77,7 @@ size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 
 size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 {
-	TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending on socket 0x%08x, %u bytes: ", mSock, length);
+	TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending on socket 0x%04x, %u bytes: ", mSock, length);
 	return send(mSock, frame, length, 0);
 }
 
@@ -91,12 +91,6 @@ UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadc
 	      pthread_exit(NULL);
 	      return;
 	}
-}
-
-size_t UdpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
-{
-	Trace(ZONE_ERROR, "Not implemented\n");
-	return 0;
 }
 
 size_t UdpSocket::RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout, struct sockaddr* remoteAddr, socklen_t* remoteAddrLength) const

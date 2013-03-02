@@ -18,7 +18,6 @@
 
 #include "unittest.h"
 #include "BroadcastReceiver.h"
-#include "ClientSocket.h"
 #include "trace.h"
 #include <thread>
 #include <sstream>
@@ -69,6 +68,52 @@ uint8_t capturedBroadcastMessage_2[110] = {
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 //sensors
 };
 
+sockaddr_in g_FirstRemote = {AF_INET, htons(0xffff), {htonl(0x7F000001)}};
+sockaddr_in g_SecondRemote = {AF_INET, htons(0xffff), {htonl(0x7F000002)}};;
+
+
+/**************** includes, classes and functions for wrapping ****************/
+uint8_t g_TestSocketRecvBuffer[10240];
+uint8_t* g_TestSocketRecvBufferPos = g_TestSocketRecvBuffer;
+size_t g_TestSocketRecvBufferSize = 0;
+const sockaddr_in* g_TestSocketRecvAddr;
+
+void SetTestSocket(sockaddr_in* addr, size_t offset, void* pData, size_t dataLength)
+{
+	g_TestSocketRecvAddr = addr;
+	memcpy(g_TestSocketRecvBuffer + offset, pData, dataLength);
+	g_TestSocketRecvBufferPos = g_TestSocketRecvBuffer;
+	g_TestSocketRecvBufferSize = offset + dataLength;
+}
+
+ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) : mSock(0) {}
+ClientSocket::~ClientSocket(void) {}
+
+UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast)
+:ClientSocket(addr, port, SOCK_DGRAM) {}
+
+size_t UdpSocket::RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout, struct sockaddr* remoteAddr, socklen_t* remoteAddrLength) const
+{
+	const size_t bytesToSend = std::min(g_TestSocketRecvBufferSize, length);
+	if(bytesToSend > 0)
+	{
+		memcpy(pBuffer, g_TestSocketRecvBufferPos, bytesToSend);
+		memcpy(remoteAddr, g_TestSocketRecvAddr, sizeof(sockaddr_in));
+		*remoteAddrLength = sizeof(sockaddr_in);
+		g_TestSocketRecvBufferPos += bytesToSend;
+		g_TestSocketRecvBufferSize -= bytesToSend;
+	}
+	return bytesToSend;
+}
+
+size_t UdpSocket::Send(const uint8_t* frame, size_t length) const
+{
+	return 0;
+}
+
+
+
+/******************************* test functions *******************************/
 int32_t ut_BroadcastReceiver_TestEmpty(void)
 {
 	TestCaseBegin();
@@ -80,13 +125,11 @@ int32_t ut_BroadcastReceiver_TestEmpty(void)
 int32_t ut_BroadcastReceiver_TestSimple(void)
 {
 	TestCaseBegin();
+	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	std::ostringstream out;
-	UdpSocket udpSock(0x7f000001, BroadcastReceiver::BROADCAST_PORT, false);
 	BroadcastReceiver dummyReceiver;
 	timeval timeout = {2, 0};
 	std::thread myThread(std::ref(dummyReceiver), std::ref(out), &timeout);
-	nanosleep(&NANOSLEEP_TIME, NULL);
-	udpSock.Send(capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	dummyReceiver.Stop();
 	myThread.join();
 
@@ -101,15 +144,12 @@ int32_t ut_BroadcastReceiver_TestSimple(void)
 int32_t ut_BroadcastReceiver_TestTwoSame(void)
 {
 	TestCaseBegin();
+	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
+	SetTestSocket(&g_FirstRemote, sizeof(capturedBroadcastMessage), capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	std::ostringstream out;
-	UdpSocket udpSock(0x7f000001, BroadcastReceiver::BROADCAST_PORT, false);
 	BroadcastReceiver dummyReceiver;
 	timeval timeout = {3, 0};
 	std::thread myThread(std::ref(dummyReceiver), std::ref(out), &timeout);
-	nanosleep(&NANOSLEEP_TIME, NULL);
-	udpSock.Send(capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
-	nanosleep(&NANOSLEEP_TIME, NULL);
-	udpSock.Send(capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
 	dummyReceiver.Stop();
 	myThread.join();
 
@@ -123,23 +163,23 @@ int32_t ut_BroadcastReceiver_TestTwoSame(void)
 int32_t ut_BroadcastReceiver_TestNoTimeout(void)
 {
 	TestCaseBegin();
+	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	std::ostringstream out;
-	UdpSocket udpSock(0x7f000001, BroadcastReceiver::BROADCAST_PORT, false);
 	BroadcastReceiver dummyReceiver;
 	std::thread myThread(std::ref(dummyReceiver), std::ref(out));
 	nanosleep(&NANOSLEEP_TIME, NULL);
-	udpSock.Send(capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
+	SetTestSocket(&g_SecondRemote, 0, capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
 	nanosleep(&NANOSLEEP_TIME, NULL);
-	udpSock.Send(capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
+
 	dummyReceiver.Stop();
 	myThread.join();
 
-	CHECK(0 == out.str().compare("0:127.0.0.1:2000\n1:127.0.0.1:2000\n"));
+	CHECK(0 == out.str().compare("0:127.0.0.1:2000\n1:127.0.0.2:2000\n"));
 	CHECK(2 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
 	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
-	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
-	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
+	CHECK(0x7F000002 == dummyReceiver.GetEndpoint(1).GetIp());
+	CHECK(2000 == dummyReceiver.GetEndpoint(1).GetPort());
 	TestCaseEnd();
 }
 
@@ -149,8 +189,7 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_BroadcastReceiver_TestEmpty);
 	RunTest(true, ut_BroadcastReceiver_TestSimple);
 	RunTest(true, ut_BroadcastReceiver_TestTwoSame);
-	//TODO refactor this unittest to support multiple different sockets!
-	RunTest(false, ut_BroadcastReceiver_TestNoTimeout);
+	RunTest(true, ut_BroadcastReceiver_TestNoTimeout);
 	UnitTestMainEnd();
 }
 
