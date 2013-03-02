@@ -259,6 +259,7 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 	/* sync with bootloader */
 	if(doSync)
 	{
+		Trace(ZONE_VERBOSE, "sync with bootloader\n");
 		timeval timeout;
 		do
 		{
@@ -272,26 +273,28 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 			timeout = RESPONSE_TIMEOUT;
 		} while(0 == mSock.Recv(recvBuffer, sizeof(recvBuffer), &timeout));
 	}
+	
+	Trace(ZONE_VERBOSE, "syncronized\n");
+	/* synchronized -> send request */
+	if(bufferSize != mSock.Send(buffer, bufferSize))
+	{
+		Trace(ZONE_ERROR, "socket->Send() failed\n");
+		return 0;
+	}
 
-		{
-			/* synchronized -> send request */
-			if(bufferSize != mSock.Send(buffer, bufferSize))
-			{
-				Trace(ZONE_ERROR, "socket->Send() failed\n");
-				return 0;
-			}
+	/* wait for a response? */
+	if((0 == pResponse) || (0 == responseSize))
+	{
+		Trace(ZONE_INFO, "waiting for no response-> exiting...\n");
+		return 0;
+	}
 
-			/* wait for a response? */
-			if((0 == pResponse) || (0 == responseSize))
-			{
-				Trace(ZONE_INFO, "waiting for no response-> exiting...\n");
-				return 0;
-			}
-			/* receive response */
-			timeval timeout = RESPONSE_TIMEOUT;
-			size_t bytesReceived = Recv(recvBuffer, sizeof(recvBuffer), &timeout, checkCrc, crcInLittleEndian);
-			memcpy(pResponse, recvBuffer, bytesReceived);
-			return (uint32_t)bytesReceived;
- 		}
+	/* receive response */
+	timeval timeout = RESPONSE_TIMEOUT;
+	Trace(ZONE_INFO, "HUHU\n");
+	size_t bytesReceived = Recv(recvBuffer, sizeof(recvBuffer), &timeout, checkCrc, crcInLittleEndian);
+	memcpy(pResponse, recvBuffer, bytesReceived);
+	Trace(ZONE_VERBOSE, "%zu bytes received\n", bytesReceived);
+	return (int32_t)bytesReceived;
 }
 

@@ -4,7 +4,6 @@ include $(CLEAR_VARS)
 FW_SRC := ../../../firmware/
 LIB_SRC := ../../../library/
 LOCAL_LDLIBS := -llog
-LOCAL_CFLAGS := -DX86 -DOS_ANDROID
 LOCAL_MODULE := wifly
 LOCAL_SRC_FILES := $(FW_SRC)crc.c
 LOCAL_SRC_FILES += $(LIB_SRC)BroadcastReceiver.cpp

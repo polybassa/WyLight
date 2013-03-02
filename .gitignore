@@ -251,3 +251,10 @@ XCode/WiflyControlCli/WiflyControlCli/WiflyControlCli.xcodeproj/xcuserdata/weity
 XCode/WiflyControlCli/WiflyControlCli/WiflyControlCli/WiflyControlCli.1
 Breakpoints.xcbkptlist
 WiflyControl_ut.1
+firmware/not_used/INT16CXX.H
+firmware/not_used/adc.c
+firmware/not_used/delay20.c
+firmware/not_used/eeprom.c
+firmware/not_used/ringbuffer.c
+firmware/not_used/ringbuffer.h
+firmware/not_used/steckdose_main copy.c
