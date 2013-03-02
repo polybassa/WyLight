@@ -126,10 +126,10 @@ size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size
 	Trace(ZONE_INFO, " %zd:%ld \n", bytesReceived, sizeof(BlInfo));
 	if(responseSize == bytesReceived)
 	{
-		memcpy(pResponse, buffer, responseSize);
-		return responseSize;
+		throw BlNoResponseException(req);
 	}
-	return 0;
+	memcpy(pResponse, buffer, responseSize);
+	return responseSize;
 }
 
 size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address, size_t numBlocks) const

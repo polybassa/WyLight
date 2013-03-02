@@ -46,7 +46,7 @@ private:
 class BlNoResponseException: public WiflyControlException
 {
 public:
-	BlNoResponseException(const struct BlRequest failedRequest, const std::string errorString)
+	BlNoResponseException(const struct BlRequest failedRequest, const std::string errorString = "No response received")
 	: WiflyControlException(errorString), m_FailedRequest(failedRequest) {};
 	
 	const struct BlRequest& GetFailedRequest(void) const { return m_FailedRequest; };
