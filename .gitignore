@@ -258,3 +258,7 @@ firmware/not_used/eeprom.c
 firmware/not_used/ringbuffer.c
 firmware/not_used/ringbuffer.h
 firmware/not_used/steckdose_main copy.c
+library/TelnetProxy.o
+library/WiflyControlColorClass.o
+binary/cli.bin
+binary/libWiflyControl.a
