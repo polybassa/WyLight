@@ -49,7 +49,7 @@ x86_client_debug:
 	@./$@
 
 BroadcastReceiver_ut.bin: BroadcastReceiver_ut.cpp BroadcastReceiver.cpp BroadcastReceiver.h ClientSocket.h unittest.h
-	@g++ BroadcastReceiver_ut.cpp BroadcastReceiver.cpp -DDEBUG -DX86 -lpthread -o $@ -Wall -std=c++0x
+	@g++ BroadcastReceiver_ut.cpp BroadcastReceiver.cpp -DX86 -lpthread -o $@ -Wall -std=c++0x
 	@./$@
 
 ComProxy_ut.bin: ComProxy_ut.cpp ComProxy.cpp ComProxy.h BlRequest.h unittest.h
