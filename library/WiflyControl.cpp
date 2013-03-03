@@ -453,6 +453,11 @@ bool WiflyControl::ConfSetDefaults(void) const
 		"set uart flow 0\r\n",            // PIC uart parameter
 		"set uart mode 0\r\n",            // PIC uart parameter
 		"set wlan rate 0\r\n",            // slowest datarate but highest range
+		"set comm remote 0\r\n",		  // Disable *Hello* string
+		"set comm open 0\r\n",			  // Disable *OPEN* string
+		"set comm close 0\r\n",			  // Disable *CLOS* string
+		"set opt deviceid Wifly_Light\r\n",// Set deviceid which appears in broadcastmsg to "Wifly_Light"
+		"set wlan tx 12\r\n",			  // Set the Wi-Fi transmit power to maximum
 	};
 
 	if(!mTelnet.Open())
@@ -518,7 +523,7 @@ bool WiflyControl::ConfUpdate(void) const
 		"set ftp user roving\r\n", // configure ftp server
 		"set ftp pass Pass123\r\n", // configure ftp server
 		"save\r\n",
-		"ftp update wifly-245.img\r\n",	 // get fw file
+		"ftp update wifly7-245.img\r\n",	 // get fw file
 		"set factory RESET\r\n",            			// factory reset required
 		"reboot\r\n",
 	};
