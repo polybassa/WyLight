@@ -84,11 +84,12 @@ class ControlCmdBlAutostartEnable : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const
 		{
-			if(control.BlEnableAutostart())
+			try
 			{
-			    cout << endl <<"Bootloader Autostart enabled!"<<endl;
+				control.BlEnableAutostart();
+				cout << endl <<"Bootloader Autostart enabled!"<<endl;
 			}
-			else
+			catch(WiflyControlException)
 			{
 			    cout << endl <<"Bootloader Autostart not enabled!"<<endl;
 			}
@@ -104,18 +105,19 @@ class ControlCmdBlInfo : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const {
 			BlInfo info;
-			if(sizeof(info) == control.BlReadInfo(info))
+			try
 			{
+				control.BlReadInfo(info);
 				info.Print();
 			}
-			else
+			catch(WiflyControlException)
 			{
 				std::cout << "Read bootloader info failed" << endl;
 			}
 		};
 };
 
-class ControlCmdBlCrcFlash : public WiflyControlCmd
+class ControlCmdBlCrcFlash : public WiflyControlCmd //TODO add try catch
 {
 	public:
 		ControlCmdBlCrcFlash(void) : WiflyControlCmd("crc_flash") {};
@@ -149,13 +151,14 @@ class ControlCmdBlEraseFlash : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const
 		{
-			if(control.BlFlashErase())
+			try
 			{
-			    cout << endl <<"Erase complete flash succesful"<<endl;
+				control.BlFlashErase();
+				cout << endl << "Erase complete flash succesful" << endl;
 			}
-			else
+			catch(WiflyControlException)
 			{
-			    cout << endl <<"Erase complete flash failed"<<endl;
+			    cout << endl << "Erase complete flash failed" << endl;
 			}
 		}	
 };
@@ -168,11 +171,12 @@ class ControlCmdBlEraseEeprom : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const
 		{
-			if(control.BlEepromErase())
+			try 
 			{
+				control.BlEepromErase();
 			    cout << endl <<"Erase complete eeprom succesful"<<endl;
 			}
-			else
+			catch(WiflyControlException)
 			{
 			    cout << endl <<"Erase complete eeprom failed"<<endl;
 			}
@@ -189,21 +193,20 @@ class ControlCmdBlProgramFlash : public WiflyControlCmd
 		virtual void Run(WiflyControl& control) const
 		{
 			string path;
-			
 			cin >> path;
-					  
-			if(control.BlProgramFlash(path, std::cout))
+			try
 			{
+				control.BlProgramFlash(path);
 			    cout << endl <<"Program device flash succesful"<<endl;
 			}
-			else
+			catch(WiflyControlException)
 			{
 			    cout << endl <<"Program device flash failed"<<endl;
 			}
 		}	
 };
 
-class ControlCmdBlRead : public WiflyControlCmd
+class ControlCmdBlRead : public WiflyControlCmd //TODO add Try Catch
 {
 	public:
 		ControlCmdBlRead(string name) : WiflyControlCmd(
@@ -268,7 +271,15 @@ class ControlCmdBlRunApp : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const {
 			cout << "Starting application... ";
-			cout << (control.BlRunApp() ? "done." : "failed!") << endl;
+			try
+			{
+				control.BlRunApp();
+				cout << "done." << endl;
+			}
+			catch(WiflyControlException)
+			{				
+				cout << "failed!" << endl;
+			}
 		};
 };
 
@@ -326,9 +337,17 @@ class ControlCmdStartBl : public WiflyControlCmd
 					string("' - start bootloader and terminate application")) {};
 				  
 		virtual void Run(WiflyControl& control) const {
-			SimpleResponse response(START_BL);
 			cout << "Starting bootloader... ";
-			cout << (control.FwStartBl(response) ? "done." : "failed!") << endl;
+			try
+			{
+				SimpleResponse response(START_BL);
+				control.FwStartBl(response);
+				cout << "done." << endl;
+			}
+			catch(WiflyControlException)
+			{
+				cout << "failed!"<< endl;
+			}
 		};
   
 };
@@ -341,10 +360,18 @@ class ControlCmdPrintTracebuffer : public WiflyControlCmd
 					string("' - displays content in tracebuffer of pic")) {};
 				  
 		virtual void Run(WiflyControl& control) const {
-			TracebufferResponse response;
 			cout << "Reading tracebuffer... ";
-			cout << (control.FwPrintTracebuffer(response) ? "done." : "failed!") << endl;
-			response.PrintTracebuffer(std::cout);
+			try
+			{
+				TracebufferResponse response;
+				control.FwPrintTracebuffer(response);
+				cout << "done." << endl;
+				response.PrintTracebuffer(std::cout);
+			}
+			catch(WiflyControlException)
+			{
+				cout << "failed!"<< endl;
+			}
 		};
   
 };
@@ -357,12 +384,19 @@ class ControlCmdPrintFwVersion : public WiflyControlCmd
 			string("' - displays current firmware version of pic")) {};
 				
 			virtual void Run(WiflyControl& control) const {
-				FirmwareVersionResponse response;
 				cout << "Reading firmware version... ";
-				cout << (control.FwPrintFwVersion(response) ? "done." : "failed!") << endl;
-				response.PrintFirmwareVersion(std::cout);
+				try
+				{
+					FirmwareVersionResponse response;
+					control.FwPrintFwVersion(response);
+					cout << "done." << endl;
+					response.PrintFirmwareVersion(std::cout);
+				}
+				catch(WiflyControlException)
+				{
+					cout << "failed!"<< endl;
+				}
 			};
-				
 };
 
 
@@ -374,10 +408,17 @@ class ControlCmdClearScript : public WiflyControlCmd
 				string("' - clear script buffer")) {};
 
 		virtual void Run(WiflyControl& control) const {
-			SimpleResponse response(CLEAR_SCRIPT);
 			cout << "Clearing script buffer... ";
-			cout << (control.FwClearScript(response) ? "done." : "failed!") << endl;
-
+			try
+			{
+				SimpleResponse response(CLEAR_SCRIPT);
+				control.FwClearScript(response);
+				cout << "done." << endl;
+			}
+			catch(WiflyControlException)
+			{
+				cout << "failed!"<< endl;
+			}
 		};
 };
 
@@ -389,11 +430,18 @@ class ControlCmdPrintCycletime : public WiflyControlCmd
 				string("' - prints all timevalues of internal methode execution times")) {};
 
 		virtual void Run(WiflyControl& control) const {
-			CycletimeResponse response;
 			cout << "Transmitting command print cycletime... ";
-			cout << (control.FwPrintCycletime(response) ? "done." : "failed!") << endl;
-			response.PrintCycletimes(std::cout);
-
+			try
+			{
+				CycletimeResponse response;
+				control.FwPrintCycletime(response);
+				cout << "done." << endl;
+				response.PrintCycletimes(std::cout);
+			}
+			catch(WiflyControlException)
+			{
+				cout << "failed!"<< endl;
+			}
 		};
 };
 
@@ -405,10 +453,18 @@ class ControlCmdLoopOn : public WiflyControlCmd
 				string("' - indicates the start of a loop")) {};
 
 		virtual void Run(WiflyControl& control) const {
-			SimpleResponse response(LOOP_ON);
 			cout << "Transmitting command loop on... ";
-			cout << (control.FwLoopOn(response) ? "done." : "failed!") << endl;
-
+			try
+			{
+				SimpleResponse response(LOOP_ON);
+				control.FwLoopOn(response);
+				cout << "done." << endl;
+			}
+			catch(WiflyControlException)
+			{
+				cout << "failed!"<< endl;
+			}
+			
 		};
 };
 
@@ -421,11 +477,19 @@ class ControlCmdLoopOff : public WiflyControlCmd
 			+ string("    <numLoops> number of executions for the loop. Enter 0 for infinity loop. Maximum 255")) {};
 
 		virtual void Run(WiflyControl& control) const {
-			SimpleResponse response(LOOP_OFF);
 			int numLoops;
 			cin >> numLoops;
 			cout << "Transmitting command loop off... ";
-			cout << (control.FwLoopOff(response, (unsigned char)numLoops) ? "done." : "failed!") << endl;
+			try
+			{
+				SimpleResponse response(LOOP_OFF);
+				control.FwLoopOff(response, (unsigned char)numLoops);
+				cout << "done." << endl;
+			}
+			catch(WiflyControlException)
+			{
+				cout << "failed!"<< endl;
+			}
 		};
 };
 
@@ -438,11 +502,19 @@ class ControlCmdWait : public WiflyControlCmd
 			+ string("    <time> the number of milliseconds the wait should take")) {};
 
 		virtual void Run(WiflyControl& control) const {
-			SimpleResponse response(WAIT);
 			uint16_t waitTmms;
 			cin >> waitTmms;
 			cout << "Transmitting command wait... ";
-			cout << (control.FwSetWait(response, waitTmms) ? "done." : "failed!") << endl;
+			try
+			{
+				SimpleResponse response(WAIT);
+				control.FwSetWait(response, waitTmms);
+				cout << "done." << endl;
+			}
+			catch(WiflyControlException)
+			{
+				cout << "failed!"<< endl;
+			}
 		};
 };
 
@@ -457,19 +529,22 @@ class ControlCmdSetFade : public WiflyControlCmd
 			+ string("    <time> the number of milliseconds the fade should take")) {};
 
 		virtual void Run(WiflyControl& control) const {
-			SimpleResponse response(SET_FADE);
 			string addr, color;
 			unsigned long timevalue;
 			cin >> addr;
 			cin >> color;
 			cin >> timevalue;
 			cout << "Transmitting command set fade... ";
-			const bool result = control.FwSetFade(response, addr, color, (uint16_t)timevalue, false);
-			if(result)
-			cout << "\nFOO\n";	
-else
-			cout << "\nBAR\n";	
-			//cout << (control.FwSetFade(response, addr, color, (uint16_t)timevalue, false) ? "done." : "failed!") << endl;
+			try
+			{
+				SimpleResponse response(SET_FADE);
+				control.FwSetFade(response, addr, color, (uint16_t)timevalue, false);
+				cout << "done." << endl;
+			}
+			catch(WiflyControlException)
+			{
+				cout << "failed!"<< endl;
+			}
 		};
 };
 
@@ -481,16 +556,21 @@ class ControlCmdSetRtc : public WiflyControlCmd
 				string("' - set time of rtc in target to current systemtime")){};
 
 		virtual void Run(WiflyControl& control) const {
-			SimpleResponse response(SET_RTC);
-			struct tm* timeinfo;
-			time_t rawtime;
-			
-			
-			rawtime = time(NULL);
-			timeinfo = localtime(&rawtime);
-			
 			cout << "Transmitting current time... ";
-			cout << (control.FwSetRtc(response, timeinfo) ? "done." : "failed!") << endl;
+			try
+			{
+				SimpleResponse response(SET_RTC);
+				struct tm* timeinfo;
+				time_t rawtime;
+				rawtime = time(NULL);
+				timeinfo = localtime(&rawtime);
+				control.FwSetRtc(response, timeinfo);
+				cout << "done." << endl;
+			}
+			catch(WiflyControlException)
+			{
+				cout << "failed!"<< endl;
+			}
 		};
 };
 
@@ -502,13 +582,21 @@ class ControlCmdGetRtc : public WiflyControlCmd
 				string("' - get time of rtc in target")){};
 
 		virtual void Run(WiflyControl& control) const {
-			RtcResponse response;
-			
 			cout << "Getting target time... ";
-			cout << (control.FwGetRtc(response) ? "done." : "failed!") << endl;
-			struct tm timeinfo = response.GetRealTime();
-			if(response.IsValid()) cout << endl << asctime(&timeinfo) << endl;
+			try
+			{
+				RtcResponse response;
+				control.FwGetRtc(response);
+				cout << "done." << endl;
+				struct tm timeinfo = response.GetRealTime();
+				cout << endl << asctime(&timeinfo) << endl;
+			}
+			catch(WiflyControlException)
+			{
+				cout << "failed!"<< endl;
+			}
 		};
+
 };
 
 class ControlCmdTest : public WiflyControlCmd
