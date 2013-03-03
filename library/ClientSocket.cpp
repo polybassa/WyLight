@@ -77,7 +77,7 @@ size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 
 size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 {
-	TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending on socket 0x%04x, %u bytes: ", mSock, length);
+	TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending on socket 0x%04x, %zu bytes: ", mSock, length);
 	return send(mSock, frame, length, 0);
 }
 

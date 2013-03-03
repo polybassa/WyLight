@@ -570,7 +570,7 @@ class WiflyControlCmdBuilder
 		 */
 		static const WiflyControlCmd* GetCmd(const string name) {
 			for(size_t i = 0; i < s_NumCmds; i++) {
-				Trace(ZONE_INFO, "%u:%s:%s\n", i, name.c_str(), s_Cmds[i]->GetName().c_str());
+				Trace(ZONE_INFO, "%zu:%s:%s\n", i, name.c_str(), s_Cmds[i]->GetName().c_str());
 				if(0 == name.compare(s_Cmds[i]->GetName())) {
 					return s_Cmds[i];
 				}
