@@ -117,7 +117,7 @@ class ControlCmdBlInfo : public WiflyControlCmd
 		};
 };
 
-class ControlCmdBlCrcFlash : public WiflyControlCmd //TODO add try catch
+class ControlCmdBlCrcFlash : public WiflyControlCmd
 {
 	public:
 		ControlCmdBlCrcFlash(void) : WiflyControlCmd("crc_flash") {};
@@ -126,20 +126,28 @@ class ControlCmdBlCrcFlash : public WiflyControlCmd //TODO add try catch
 			size_t numBlocks;
 			cin >> address;
 			cin >> numBlocks;
-			unsigned char buffer[(FLASH_SIZE / FLASH_ERASE_BLOCKSIZE) * 2];
-			if(sizeof(buffer) / 2 < numBlocks)
+			try
 			{
-				cout << "Read CRC failed. Too many CRCs requested" << endl;
-				return;
+				unsigned char buffer[(FLASH_SIZE / FLASH_ERASE_BLOCKSIZE) * 2];
+				if(sizeof(buffer) / 2 < numBlocks)
+				{
+					cout << "Read CRC failed. Too many CRCs requested" << endl;
+					return;
+				}
+				
+				size_t bytesRead = control.BlReadCrcFlash(buffer, address, numBlocks);
+				if(2 * numBlocks != bytesRead)
+				{
+					cout << "Read CRC failed" << endl;
+					return;
+				}
+				PrintCrc(buffer, bytesRead, address);
 			}
-
-			size_t bytesRead = control.BlReadCrcFlash(buffer, address, numBlocks); 
-			if(2 * numBlocks != bytesRead)
+			catch(WiflyControlException)
 			{
 				cout << "Read CRC failed" << endl;
-				return;
 			}
-			PrintCrc(buffer, bytesRead, address);
+			
 		};
 };
 
@@ -206,7 +214,7 @@ class ControlCmdBlProgramFlash : public WiflyControlCmd
 		}	
 };
 
-class ControlCmdBlRead : public WiflyControlCmd //TODO add Try Catch
+class ControlCmdBlRead : public WiflyControlCmd 
 {
 	public:
 		ControlCmdBlRead(string name) : WiflyControlCmd(
@@ -223,24 +231,32 @@ class ControlCmdBlRead : public WiflyControlCmd //TODO add Try Catch
 			size_t numBytes;
 			cin >> address;
 			cin >> numBytes;
-			unsigned char buffer[0x10000];
-			if(sizeof(buffer) < numBytes)
+			try
 			{
-				cout << "Read " << m_Name << " failed. Too many bytes requested" << endl;
-				return;
+				unsigned char buffer[0x10000];
+				if(sizeof(buffer) < numBytes)
+				{
+					cout << "Read " << m_Name << " failed. Too many bytes requested" << endl;
+					return;
+				}
+
+				size_t bytesRead = Read(control, buffer, address, numBytes);
+
+				if(bytesRead != numBytes) 
+				{
+					cout << "Read " << m_Name << " failed" << endl;
+				} 
+				else 
+				{
+					Print(buffer, bytesRead, address);
+				}
+
 			}
-
-			size_t bytesRead = Read(control, buffer, address, numBytes);
-
-			if(bytesRead != numBytes) 
+			catch(WiflyControlException)
 			{
 				cout << "Read " << m_Name << " failed" << endl;
-			} 
-			else 
-			{
-				Print(buffer, bytesRead, address);
 			}
-		};
+	};
 };
 
 class ControlCmdBlReadEeprom : public ControlCmdBlRead
@@ -398,7 +414,6 @@ class ControlCmdPrintFwVersion : public WiflyControlCmd
 				}
 			};
 };
-
 
 class ControlCmdClearScript : public WiflyControlCmd
 {
@@ -607,7 +622,14 @@ class ControlCmdTest : public WiflyControlCmd
 				string("' - run test loop")) {};
 
 		virtual void Run(WiflyControl& control) const {
-			control.FwTest();
+			try
+			{
+				control.FwTest();
+			}
+			catch(WiflyControlException)
+			{
+				cout << "FwTest failed!" << endl;
+			}
 		};
 };
 
