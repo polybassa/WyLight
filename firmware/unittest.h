@@ -52,7 +52,7 @@
 
 #define UnitTestMainBegin(X) size_t numErrors = 0; size_t numSkipped = 0; size_t numTests = 0;
 #define UnitTestMainEnd(X) { \
-	printf("%25s run %2u Tests (%2u skipped | %2u errors)\n", __FILE__, numTests, numSkipped, numErrors); \
+	printf("%25s run %2lu Tests (%2lu skipped | %2lu errors)\n", __FILE__, numTests, numSkipped, numErrors); \
 	return numErrors; \
 }
 
