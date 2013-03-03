@@ -519,12 +519,13 @@ bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssi
 bool WiflyControl::ConfUpdate(void) const
 {
 	static const std::string commands[] = {
-		"set ftp address 198.175.253.161\r\n", // configure ftp server
-		"set ftp user roving\r\n", // configure ftp server
-		"set ftp pass Pass123\r\n", // configure ftp server
+		"set ftp address 0\r\n",				// configure ftp server
+		"set dns name rn.microchip.com\r\n",	// set dns of updateserver
+		"set ftp user roving\r\n",				// configure ftp server
+		"set ftp pass Pass123\r\n",				// configure ftp server
 		"save\r\n",
-		"ftp update wifly7-245.img\r\n",	 // get fw file
-		"set factory RESET\r\n",            			// factory reset required
+		"ftp update wifly7-245.img\r\n",		// get fw file
+		"set factory RESET\r\n",            	// factory reset required
 		"reboot\r\n",
 	};
 
