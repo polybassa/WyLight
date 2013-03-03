@@ -46,21 +46,21 @@ class WiflyControl
 		WiflyControl(uint32_t addr, uint16_t port);
 		
 		/** ----------------------------- BOOTLOADER METHODES ----------------------------- **/
-		size_t BlFlashErase(unsigned char* pBuffer, unsigned int endAddress, const size_t numPages, bool doSync) const;
-		bool BlFlashErase(void) const;
-		bool BlEepromErase(void) const;
+		void BlFlashErase(unsigned int endAddress, const size_t numPages, bool doSync) const;
+		void BlFlashErase(void) const;
+		void BlEepromErase(void) const;
 		
 		size_t BlReadCrcFlash(unsigned char* pBuffer, unsigned int address, const size_t numBytes) const;
 		size_t BlReadEeprom(unsigned char* pBuffer, unsigned int address, size_t numBytes) const;
 		size_t BlReadFlash(unsigned char* pBuffer, unsigned int address, size_t numBytes) const;
-		size_t BlReadInfo(BlInfo& info) const;
+		void BlReadInfo(BlInfo& info) const;
 		
-		bool BlWriteFlash(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
-		bool BlWriteEeprom(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
+		void BlWriteFlash(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
+		void BlWriteEeprom(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
 		
-		bool BlProgramFlash(const std::string& Filename, std::ostream& messageStream);
-		bool BlRunApp(void) const;
-		bool BlEnableAutostart(void) const;
+		void BlProgramFlash(const std::string& Filename);
+		void BlRunApp(void) const;
+		void BlEnableAutostart(void) const;
 		
 		/** ----------------------------- Telnet METHODES ----------------------------- **/
 		std::string ConfGetSsid(void) const;
@@ -69,9 +69,9 @@ class WiflyControl
 		bool ConfUpdate(void) const;
 		
 		/** ------------------------------ FIRMWARE METHODES ------------------------------ **/
-		bool FwClearScript(WiflyResponse&);
-		bool FwLoopOn(WiflyResponse&);
-		bool FwLoopOff(WiflyResponse&, unsigned char numLoops);
+		void FwClearScript(WiflyResponse&);
+		void FwLoopOn(WiflyResponse&);
+		void FwLoopOff(WiflyResponse&, unsigned char numLoops);
 		
 
 		/**
@@ -79,20 +79,20 @@ class WiflyControl
 			f.e. red(255, 0, 0) is in rgba as: 0xff000000
 				 white(255, 255, 255) is in rgba as: 0xffffff00
 		**/
-		bool FwSetColorDirect(WiflyResponse&, unsigned char* pBuffer, size_t bufferLength);
+		void FwSetColorDirect(WiflyResponse&, unsigned char* pBuffer, size_t bufferLength);
 		
-		bool FwSetFade(WiflyResponse&, unsigned long addr, unsigned long rgba, unsigned short fadeTmms = 0, bool parallelFade = false);
-		bool FwSetFade(WiflyResponse&, std::string& addr, std::string& rgba, unsigned short fadeTmms = 0, bool parallelFade = false);
+		void FwSetFade(WiflyResponse&, unsigned long addr, unsigned long rgba, unsigned short fadeTmms = 0, bool parallelFade = false);
+		void FwSetFade(WiflyResponse&, std::string& addr, std::string& rgba, unsigned short fadeTmms = 0, bool parallelFade = false);
 		
-		bool FwSetWait(WiflyResponse&, unsigned short waitTmms);
+		void FwSetWait(WiflyResponse&, unsigned short waitTmms);
 		
 		void FwTest(void);
-		bool FwPrintCycletime(WiflyResponse&);
-		bool FwPrintTracebuffer(WiflyResponse&);
-		bool FwPrintFwVersion(WiflyResponse&);
-		bool FwStartBl(WiflyResponse&);
+		void FwPrintCycletime(WiflyResponse&);
+		void FwPrintTracebuffer(WiflyResponse&);
+		void FwPrintFwVersion(WiflyResponse&);
+		void FwStartBl(WiflyResponse&);
 		
-		bool FwSetRtc(WiflyResponse&, struct tm* timeValue);
-		bool FwGetRtc(WiflyResponse&);
+		void FwSetRtc(WiflyResponse&, struct tm* timeValue);
+		void FwGetRtc(WiflyResponse&);
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */
