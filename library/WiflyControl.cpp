@@ -109,7 +109,7 @@ size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	size_t bytesReceived = mProxy.Send(req, buffer, sizeof(buffer), doSync);
 	Trace(ZONE_INFO, " %zd:%ld \n", bytesReceived, sizeof(BlInfo));
-	if(responseSize == bytesReceived)
+	if(responseSize != bytesReceived)
 	{
 		throw BlNoResponseException(req);
 	}
@@ -122,7 +122,7 @@ size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address
 	if(numBlocks * FLASH_ERASE_BLOCKSIZE + address > FLASH_SIZE)
 	{
 		Trace(ZONE_VERBOSE, "Couldn't performe crc check outside the flash. \n");
-		return false;
+		throw WiflyControlException("Couldn't performe crc check outside the flash. \n");
 	}
   
 	size_t bytesRead;
@@ -132,11 +132,6 @@ size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address
 		BlFlashCrc16Request readRequest(address, FLASH_CRC_BLOCKSIZE);
 		bytesRead = BlRead(readRequest, pBuffer, FLASH_CRC_BLOCKSIZE * 2);
 		sumBytesRead += bytesRead;
-		if(FLASH_CRC_BLOCKSIZE * 2 != bytesRead)
-		{
-			Trace(ZONE_VERBOSE, "only %zd bytes read. %d bytes expected! \n", bytesRead, FLASH_CRC_BLOCKSIZE * 2);
-			return sumBytesRead;
-		}
 		address += (FLASH_CRC_BLOCKSIZE * FLASH_ERASE_BLOCKSIZE);
 		numBlocks -= FLASH_CRC_BLOCKSIZE;
 		pBuffer += FLASH_CRC_BLOCKSIZE * 2;
@@ -145,10 +140,6 @@ size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address
 	BlFlashCrc16Request readRequest(address, numBlocks);
 	bytesRead = BlRead(readRequest, pBuffer, numBlocks * 2);
 	sumBytesRead += bytesRead;
-	if(numBlocks * 2 != bytesRead)
-	{
-		Trace(ZONE_VERBOSE, "only %zd bytes read. %ld bytes expected! \n", bytesRead, numBlocks * 2);
-	}
 	return sumBytesRead;
 }
 
@@ -168,11 +159,6 @@ size_t WiflyControl::BlReadEeprom(unsigned char* pBuffer, unsigned int address, 
 		readRequest.SetAddressNumBytes(address, EEPROM_READ_BLOCKSIZE);
 		bytesRead = BlRead(readRequest, pBuffer, EEPROM_READ_BLOCKSIZE);
 		sumBytesRead += bytesRead;
-		if(EEPROM_READ_BLOCKSIZE != bytesRead)
-		{
-			Trace(ZONE_VERBOSE, "only %zd bytes read. %d bytes expected! \n", bytesRead, EEPROM_READ_BLOCKSIZE);
-			throw WiflyControlException("Don't receive expected count of bytes!");
-		}
 		address += EEPROM_READ_BLOCKSIZE;
 		numBytes -= EEPROM_READ_BLOCKSIZE;
 		pBuffer += EEPROM_READ_BLOCKSIZE;
@@ -180,11 +166,6 @@ size_t WiflyControl::BlReadEeprom(unsigned char* pBuffer, unsigned int address, 
 	readRequest.SetAddressNumBytes(address, numBytes);
 	bytesRead = BlRead(readRequest, pBuffer, numBytes);
 	sumBytesRead += bytesRead;
-	if(numBytes != bytesRead)
-	{
-		Trace(ZONE_VERBOSE, "only %zd bytes read. %zd bytes expected! \n", bytesRead, numBytes);
-		throw WiflyControlException("Don't receive expected count of bytes!");
-	}
 	return sumBytesRead;
 }
 
@@ -193,7 +174,7 @@ size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, s
 	if(numBytes + address > FLASH_SIZE)
 	{
 		Trace(ZONE_VERBOSE, "Couldn't performe read outside the flash. \n");
-		return 0;
+		throw WiflyControlException("Couldn't performe read outside the flash. \n");
 	}
   
 	size_t bytesRead;
@@ -204,11 +185,6 @@ size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, s
 		readRequest.SetAddressNumBytes(address, FLASH_READ_BLOCKSIZE);
 		bytesRead = BlRead(readRequest, pBuffer, FLASH_READ_BLOCKSIZE);
 		sumBytesRead += bytesRead;
-		if(FLASH_READ_BLOCKSIZE != bytesRead)
-		{
-			Trace(ZONE_VERBOSE, "only %zd bytes read. %d bytes expected! \n", bytesRead, FLASH_READ_BLOCKSIZE);
-			return sumBytesRead;
-		}
 		address += FLASH_READ_BLOCKSIZE;
 		numBytes -= FLASH_READ_BLOCKSIZE;
 		pBuffer += FLASH_READ_BLOCKSIZE;
@@ -217,22 +193,13 @@ size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, s
 	readRequest.SetAddressNumBytes(address, numBytes);
 	bytesRead = BlRead(readRequest, pBuffer, numBytes);
 	sumBytesRead += bytesRead;
-	if(numBytes != bytesRead)
-	{
-		Trace(ZONE_VERBOSE, "only %zd bytes read. %zd bytes expected! \n", bytesRead, numBytes);
-	}
 	return sumBytesRead;
 }
 
 void WiflyControl::BlReadInfo(BlInfo& blInfo) const
 {
 	BlInfoRequest request;
-	size_t bytesRead = BlRead(request, reinterpret_cast<unsigned char*>(&blInfo), sizeof(BlInfo));
-	if(sizeof(blInfo) == bytesRead)
-	{
-		return;
-	}
-	throw BlNoResponseException(request, "BlReadInfo failed. Received bytes != expected bytes\n" );
+	BlRead(request, reinterpret_cast<unsigned char*>(&blInfo), sizeof(BlInfo));
 }
 
 void WiflyControl::BlWriteFlash(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const
@@ -252,18 +219,19 @@ void WiflyControl::BlWriteFlash(unsigned int address, unsigned char* pBuffer, si
 		request.SetData(address, pBuffer, FLASH_WRITE_BLOCKSIZE);
 
 		// we expect only the 0x04 command byte as response
-		if(1 != BlRead(request, &response, sizeof(response)) && response != 0x04)
+		BlRead(request, &response, sizeof(response));
+		if(response != 0x04)
 		{
 			throw BlNoResponseException(request);
 		}
-		
 		address += FLASH_WRITE_BLOCKSIZE;
 		pBuffer += FLASH_WRITE_BLOCKSIZE;
 		bytesLeft -= FLASH_WRITE_BLOCKSIZE;
 	}
 
 	request.SetData(address, pBuffer, bytesLeft);
-	if(1 == BlRead(request, &response, sizeof(response)) && response != 0x04)
+	BlRead(request, &response, sizeof(response));
+	if(response != 0x04)
 	{
 		throw BlNoResponseException(request);
 	}
@@ -286,7 +254,8 @@ void WiflyControl::BlWriteEeprom(unsigned int address, unsigned char* pBuffer, s
 		request.SetData(address, pBuffer, EEPROM_WRITE_BLOCKSIZE);
 
 		// we expect only the 0x06 command byte as response
-		if(1 != BlRead(request, &response, sizeof(response)) && response != 0x06)
+		BlRead(request, &response, sizeof(response));
+		if(response != 0x06)
 		{
 			throw BlNoResponseException(request);
 		}
@@ -297,7 +266,8 @@ void WiflyControl::BlWriteEeprom(unsigned int address, unsigned char* pBuffer, s
 	}
 
 	request.SetData(address, pBuffer, bytesLeft);
-	if(1 == BlRead(request, &response, sizeof(response)) && response != 0x06)
+	BlRead(request, &response, sizeof(response));
+	if(response != 0x06)
 	{
 		throw BlNoResponseException(request);
 	}
@@ -436,7 +406,6 @@ void WiflyControl::BlRunApp(void) const
 void WiflyControl::BlEnableAutostart(void) const
 {
 	unsigned char value = 0xff;
-	
 	BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
 }
 
