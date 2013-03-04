@@ -65,13 +65,12 @@ WiflyControl::WiflyControl(uint32_t addr, uint16_t port)
 /** --------------------------------------- BOOTLOADER METHODES --------------------------------------- **/
 void WiflyControl::BlFlashErase(unsigned int endAddress, const size_t numPages, bool doSync) const
 {
-	//TODO Remove buffer, add only one byte response
+	unsigned char response;
 	BlFlashEraseRequest request(endAddress, numPages);
-	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	// we expect only one byte as response, the command code 0x03
-	size_t bytesRead = BlRead(request, &buffer[0], 1, doSync);
+	size_t bytesRead = BlRead(request, &response, sizeof(response), doSync);
 	
-	if((bytesRead < 1) || (0x03 != buffer[0]))
+	if(0x03 != response)
 	{
 		Trace(ZONE_VERBOSE, "Erase flash failed at address: %x\n", endAddress);
 		throw BlNoResponseException(request, "Erase flash failed!");
