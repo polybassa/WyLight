@@ -17,6 +17,9 @@ android_test:
 
 android_client:
 	ndk-build -C $(ANDROID_DIR)
+	
+x86_client_debug:
+	cd cli; make cli_debug; cd ..
 
 x86_client:
 	cd cli; make cli; cd ..

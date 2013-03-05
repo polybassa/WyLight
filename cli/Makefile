@@ -24,5 +24,8 @@ outdir:
 cli: outdir $(FILES) $(HEADERS) $(FW_FILES) $(WIFLYCONTROL)
 	$(CC) $(FILES) $(FW_FILES) $(WIFLYCONTROL) $(INC) -lpthread -o ${OUTPUT_DIR}/cli.bin $(CFLAGS)
 
+cli_debug: outdir $(FILES) $(HEADERS) $(FW_FILES) $(WIFLYCONTROL)
+	$(CC) $(FILES) $(FW_FILES) $(WIFLYCONTROL) $(INC) -DDEBUG -lpthread -o ${OUTPUT_DIR}/cli.bin $(CFLAGS)
+
 clean: WIFLYCONTROL_clean
 	@rm -rf ${BUILD_DIR}
