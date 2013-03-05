@@ -20,9 +20,14 @@
 #include "unittest.h"
 #include "WiflyControl.h"
 #include <string>
+#include <stdlib.h>
+#include <time.h>
 
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
+// global variables
+uint8_t g_FlashRndDataPool[FLASH_SIZE];
+uint8_t g_EepromRndDataPool[EEPROM_SIZE];
 // empty wrappers to satisfy the linker
 ClientSocket::ClientSocket(uint32_t, uint16_t, int) : mSock(0) {}
 ClientSocket::~ClientSocket(void) {}
@@ -30,7 +35,55 @@ TcpSocket::TcpSocket(uint32_t addr, uint16_t port) : ClientSocket(addr, port, 0)
 size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const { return 0;}
 size_t TcpSocket::Send(const uint8_t* frame, size_t length) const {return 0; }
 ComProxy::ComProxy(const TcpSocket& sock) : mSock (sock) {}
-int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const {	return -1; }
+
+#define return_resp {\
+	for(unsigned int i = 0; i < sizeof(resp); i++)\
+	{ \
+		if(responseSize >= i) *pResponse++ = resp[i]; \
+	}\
+	return sizeof(resp);}
+
+
+int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const
+{
+	if(typeid(req) == typeid(BlInfoRequest))
+	{
+		uint8_t resp[] = {0x00, 0x03, 0x01, 0x05, 0xff, 0x84, 0x00, 0xfd, 0x00, 0x00};
+		return_resp;
+	}
+	if(typeid(req) == typeid(BlFlashEraseRequest))
+	{
+		uint8_t resp[] = {0x03};
+		return_resp;
+	}
+	if(typeid(req) == typeid(BlFlashWriteRequest))
+	{
+		uint8_t resp[] = {0x04};
+		return_resp;
+	}
+	if(typeid(req) == typeid(BlFlashReadRequest))
+	{
+		BlFlashReadRequest* mReq = dynamic_cast<BlFlashReadRequest*>(&req);
+		
+		uint32_t address = ((uint32_t)mReq->addressU) << 16;
+		address += ((uint32_t)mReq->addressHigh) << 8;
+		address += (uint32_t)mReq->addressLow;
+		
+		uint16_t bytes = ((uint16_t)mReq->numBytesHigh) << 8;
+		bytes += ((uint16_t)mReq->numBytesLow);
+		
+		unsigned int i;
+		for(i = 0; i < bytes; i++)
+		{
+			*pResponse++ = g_FlashRndDataPool[address + i];
+		}
+		return i;
+	}
+	
+	return -1;
+}
+
+
 int32_t ComProxy::Send(cmd_frame const* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const {	return -1; }
 
 // wrapper to test WiflyControl
@@ -67,6 +120,61 @@ bool TelnetProxy::SendString(const std::string& command, std::string value) cons
 
 
 // Testcases
+size_t ut_WiflyControl_BlReadInfo(void)
+{
+	TestCaseBegin();
+	WiflyControl testctrl(0,0);
+	BlInfo mInfo;
+	testctrl.BlReadInfo(mInfo);
+	CHECK(mInfo.familyId == 4);
+	CHECK(mInfo.versionMajor == 1);
+	CHECK(mInfo.versionMinor == 5);
+	CHECK(mInfo.zero == 0);
+	CHECK(mInfo.sizeHigh == 3);
+	CHECK(mInfo.sizeLow == 0);
+	CHECK(mInfo.startU == 0);
+	CHECK(mInfo.startHigh == 253);
+	CHECK(mInfo.startLow == 0);
+	CHECK(mInfo.cmdmaskHigh == 255);
+	//CHECK(mInfo.cmdmaskLow == 0x84);
+	TestCaseEnd();
+}
+
+size_t ut_WiflyControl_BlFlashErase(void)
+{
+	TestCaseBegin();
+	WiflyControl testctrl(0,0);
+	WiflyControlException *pEx;
+	pEx = NULL;
+	try
+	{
+		testctrl.BlFlashErase();
+	} catch (WiflyControlException &e) {
+		pEx = &e;
+	}
+	CHECK(pEx == NULL);
+	TestCaseEnd();
+}
+
+size_t ut_WiflyControl_BlFlashRead(void)
+{
+	TestCaseBegin();
+	srand(time(NULL));
+	
+	/* fill gloabal random data pool */
+	for(unsigned int i = 0; i < sizeof(g_FlashRndDataPool); i++)
+		g_FlashRndDataPool[i] = (uint8_t) rand() % 255;
+	
+	WiflyControl testctrl(0,0);
+	
+	uint8_t rcvFlashData[FLASH_SIZE];
+	
+	size_t rcvBytes = testctrl.BlReadFlash(rcvFlashData, 0, FLASH_SIZE);
+	
+	CHECK(0 == memcmp(g_FlashRndDataPool, rcvFlashData, rcvBytes));	
+	TestCaseEnd();
+}
+
 size_t ut_WiflyControl_ConfSetDefaults(void)
 {
 	TestCaseBegin();
@@ -137,6 +245,9 @@ int main (int argc, const char* argv[])
 	UnitTestMainBegin();
 	RunTest(true, ut_WiflyControl_ConfSetDefaults);
 	RunTest(true, ut_WiflyControl_ConfSetWlan);
+	RunTest(true, ut_WiflyControl_BlReadInfo);
+	RunTest(true, ut_WiflyControl_BlFlashErase);
+	RunTest(true, ut_WiflyControl_BlFlashRead);
 	UnitTestMainEnd();
 }
 

@@ -109,6 +109,7 @@ size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	size_t bytesReceived = mProxy.Send(req, buffer, sizeof(buffer), doSync);
 	Trace(ZONE_INFO, " %zd:%ld \n", bytesReceived, sizeof(BlInfo));
+	TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer[0], bytesReceived, "0x%02x, ", "Message: ");
 	if(responseSize != bytesReceived)
 	{
 		throw BlNoResponseException(req);
@@ -393,8 +394,6 @@ void WiflyControl::BlRunApp(void) const
 	size_t bytesRead = BlRead(request, &buffer[0], 6);
 	
 	Trace(ZONE_VERBOSE, "We got %zd bytes response.\n", bytesRead);
-	TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer[0], bytesRead, "%02x ", "Message: ");
-	
 	if(4 <= bytesRead)
 	{
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
