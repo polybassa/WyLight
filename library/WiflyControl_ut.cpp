@@ -76,6 +76,11 @@ size_t ut_WiflyControl_ConfSetDefaults(void)
 		"set uart flow 0\r\n",            // PIC uart parameter
 		"set uart mode 0\r\n",            // PIC uart parameter
 		"set wlan rate 0\r\n",            // slowest datarate but highest range
+		"set comm remote 0\r\n",		  // Disable *Hello* string
+		"set comm open 0\r\n",			  // Disable *OPEN* string
+		"set comm close 0\r\n",			  // Disable *CLOS* string
+		"set opt deviceid Wifly_Light\r\n",// Set deviceid which appears in broadcastmsg to "Wifly_Light"
+		"set wlan tx 12\r\n",			  // Set the Wi-Fi transmit power to maximum
 	};
 	static const size_t numCommands = sizeof(commands) / sizeof(commands[0]);
 

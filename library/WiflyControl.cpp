@@ -68,7 +68,7 @@ void WiflyControl::BlFlashErase(unsigned int endAddress, const size_t numPages, 
 	unsigned char response;
 	BlFlashEraseRequest request(endAddress, numPages);
 	// we expect only one byte as response, the command code 0x03
-	size_t bytesRead = BlRead(request, &response, sizeof(response), doSync);
+	BlRead(request, &response, sizeof(response), doSync);
 	
 	if(0x03 != response)
 	{
