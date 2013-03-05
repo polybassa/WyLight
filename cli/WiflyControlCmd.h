@@ -292,9 +292,10 @@ class ControlCmdBlRunApp : public WiflyControlCmd
 				control.BlRunApp();
 				cout << "done." << endl;
 			}
-			catch(WiflyControlException)
+			catch(WiflyControlException &e)
 			{				
 				cout << "failed!" << endl;
+				cout << e.GetErrorString() << endl;
 			}
 		};
 };

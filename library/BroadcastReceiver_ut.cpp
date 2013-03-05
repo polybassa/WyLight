@@ -68,9 +68,9 @@ uint8_t capturedBroadcastMessage_2[110] = {
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 //sensors
 };
 
-sockaddr_in g_FirstRemote = {AF_INET, htons(0xffff), {htonl(0x7F000001)}};
-sockaddr_in g_SecondRemote = {AF_INET, htons(0xffff), {htonl(0x7F000002)}};;
-sockaddr_in g_ThirdRemote = {AF_INET, htons(0xffff), {htonl(0x7F000003)}};;
+sockaddr_in g_FirstRemote;// = { .sin_family = AF_INET, .sin_port = (htons(0xffff)), .sin_addr = (htonl(0x7F000001))};
+sockaddr_in g_SecondRemote;// = {.sin_family = AF_INET, .sin_port = (htons(0xffff)), .sin_addr = (htonl(0x7F000002))};;
+sockaddr_in g_ThirdRemote;// = {.sin_family = AF_INET, .sin_port = (htons(0xffff)), .sin_addr = (htonl(0x7F000003))};;
 
 
 /**************** includes, classes and functions for wrapping ****************/
@@ -78,6 +78,20 @@ uint8_t g_TestSocketRecvBuffer[10240];
 uint8_t* g_TestSocketRecvBufferPos = g_TestSocketRecvBuffer;
 size_t g_TestSocketRecvBufferSize = 0;
 const sockaddr_in* g_TestSocketRecvAddr;
+
+void initEndpoints(void)
+{
+	g_FirstRemote.sin_family = AF_INET;
+	g_SecondRemote.sin_family = AF_INET;
+	g_ThirdRemote.sin_family = AF_INET;
+	g_FirstRemote.sin_port = (htons(0xffff));
+	g_SecondRemote.sin_port = (htons(0xffff));
+	g_ThirdRemote.sin_port = (htons(0xffff));
+	g_FirstRemote.sin_addr.s_addr = (htonl(0x7F000001));
+	g_SecondRemote.sin_addr.s_addr = (htonl(0x7F000002));
+	g_ThirdRemote.sin_addr.s_addr = (htonl(0x7F000003));
+
+}
 
 void SetTestSocket(sockaddr_in* addr, size_t offset, void* pData, size_t dataLength)
 {
@@ -120,6 +134,7 @@ int32_t ut_BroadcastReceiver_TestEmpty(void)
 	TestCaseBegin();
 	BroadcastReceiver dummyReceiver;
 	CHECK(0 == dummyReceiver.NumRemotes());
+	
 	TestCaseEnd();
 }
 
@@ -133,7 +148,6 @@ int32_t ut_BroadcastReceiver_TestSimple(void)
 	std::thread myThread(std::ref(dummyReceiver), std::ref(out), &timeout);
 	dummyReceiver.Stop();
 	myThread.join();
-
 	CHECK(0 == out.str().compare("0:127.0.0.1:2000\n"));
 	CHECK(1 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
@@ -190,6 +204,10 @@ int32_t ut_BroadcastReceiver_TestNoTimeout(void)
 int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
+	
+	initEndpoints();
+	
+	
 	RunTest(true, ut_BroadcastReceiver_TestEmpty);
 	RunTest(true, ut_BroadcastReceiver_TestSimple);
 	RunTest(true, ut_BroadcastReceiver_TestTwoSame);
