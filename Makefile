@@ -24,7 +24,7 @@ x86_client_debug:
 x86_client:
 	cd cli; make cli; cd ..
 %_test:
-	cd $(subst _test,,$@); make test; cd ..
+	@cd $(subst _test,,$@); make test; cd ..
 
 test: clean firmware_test library_test
 
