@@ -53,6 +53,21 @@ int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, 
 	}
 	if(typeid(req) == typeid(BlFlashEraseRequest))
 	{
+		BlFlashEraseRequest* mReq = dynamic_cast<BlFlashEraseRequest*>(&req);
+		uint32_t address = ((uint32_t)mReq->addressU) << 16;
+		address += ((uint32_t)mReq->addressHigh) << 8;
+		address += (uint32_t)mReq->addressLow;
+		
+		uint16_t pages = (uint16_t)mReq->numPages;
+		
+		int endaddress = address - (pages * FLASH_ERASE_BLOCKSIZE);
+		if(endaddress < 0) endaddress = 0;
+		
+		for(int i = address; i >= endaddress;  i--)
+		{
+			g_FlashRndDataPool[i] = 0x00;
+		}
+		
 		uint8_t resp[] = {0x03};
 		return_resp;
 	}
@@ -143,9 +158,19 @@ size_t ut_WiflyControl_BlReadInfo(void)
 size_t ut_WiflyControl_BlFlashErase(void)
 {
 	TestCaseBegin();
+	
+	srand(time(NULL));
+	
+	/* fill gloabal random data pool */
+	for(unsigned int i = 0; i < sizeof(g_FlashRndDataPool); i++)
+		g_FlashRndDataPool[i] = (uint8_t) rand() % 255;
+		
+	BlInfo blInfo;
 	WiflyControl testctrl(0,0);
+	testctrl.BlReadInfo(blInfo);
 	WiflyControlException *pEx;
 	pEx = NULL;
+	
 	try
 	{
 		testctrl.BlFlashErase();
@@ -153,6 +178,12 @@ size_t ut_WiflyControl_BlFlashErase(void)
 		pEx = &e;
 	}
 	CHECK(pEx == NULL);
+	
+	for(unsigned int i = 0; i < blInfo.GetAddress(); i++)
+	{
+		CHECK(0 == g_FlashRndDataPool[i]);
+	}
+	
 	TestCaseEnd();
 }
 
