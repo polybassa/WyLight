@@ -1,6 +1,9 @@
 package biz.bruenn.WiflyLight;
 
 public class WiflyControl {
+	
+	public static final int ALL_LEDS = 0xffffffff;
+	
 	private native long create(int ipv4Addr, short port);
 	private native String ConfGetSsid(long pNative);
 	private native boolean ConfSetWlan(long pNative, String passphrase, String ssid);
