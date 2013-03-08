@@ -83,6 +83,7 @@ void Error_FatalError()
 	
 	Ledstrip_UpdateLed();
 	while(PORTB.5 != 0);
+	while(PORTB.5 == 0);
 	CommandIO_Init();
 	RingBuf_Init(&g_RingBuf);
 }
