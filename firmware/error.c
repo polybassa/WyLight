@@ -27,6 +27,7 @@ struct ErrorBits g_ErrorBits;
 ErrorCode Error_GetState()
 {
 	if(g_ErrorBits.EepromFailure) return SCRIPTBUFFER_FULL;
+	else if(g_ErrorBits.CrcFailure) return CRC_CHECK_FAILED;
 	else return OK;
 }
 
@@ -49,12 +50,12 @@ void Error_Throw()
 	
 	if(RingBuf_HasError(&g_RingBuf)) 
 	{
-		// *** if a RingBufError occure, I have to throw away the current command,
-		// *** because the last byte was not saved. Commandstring is inconsistent
-		CommandIO_Init();
 		Trace_String("E:03; ERROR: Receivebuffer full");
 		// *** Re-init the Ringbuffer to get a consistent commandstring and reset error
 		RingBuf_Init(&g_RingBuf);
+		// *** if a RingBufError occure, I have to throw away the current command,
+		// *** because the last byte was not saved. Commandstring is inconsistent
+		CommandIO_Init();
 	}
 	if(g_ErrorBits.CrcFailure)
 	{
@@ -81,5 +82,7 @@ void Error_FatalError()
 	}
 	
 	Ledstrip_UpdateLed();
-	while(1);
+	while(PORTB.5 != 0);
+	CommandIO_Init();
+	RingBuf_Init(&g_RingBuf);
 }

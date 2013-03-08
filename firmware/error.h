@@ -33,7 +33,8 @@ typedef enum {
 typedef enum __attribute__ ((__packed__)) {
 #endif 
 	OK,
-	SCRIPTBUFFER_FULL
+	SCRIPTBUFFER_FULL,
+	CRC_CHECK_FAILED
 } ErrorCode;
 
 #define Error_Init(x) \

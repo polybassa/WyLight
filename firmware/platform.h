@@ -41,7 +41,7 @@
 	
 	void Platform_AllowInterrupts();
 	void Platform_EnableAllInterrupts();
-	void Platform_DisableAllInterrupts();
+	//void Platform_DisableAllInterrupts();
 	
 	void Platform_CheckInputs();
 	
