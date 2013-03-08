@@ -86,6 +86,9 @@ void Ledstrip_UpdateLed(void);
  */
 uns8 Ledstrip_NumOfFades(void);
 
+void Ledstrip_ToogleLeds(void);
+
+
 #ifdef DEBUG
 #ifndef __CC8E__
 void Ledstrip_Test(unsigned char address);

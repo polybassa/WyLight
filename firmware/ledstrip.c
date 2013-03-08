@@ -18,12 +18,14 @@
 
 #include "ledstrip.h"
 #include "spi.h"
-
+#include "wifly_cmd.h"
 #ifdef __CC8E__
 #include "MATH16.H"
 #endif /* #ifdef __CC8E__ */
 
 struct LedBuffer gLedBuf;
+struct cmd_set_fade mFade;
+
 
 /**
  * Since we often work with a rotating bitmask which is greater
@@ -107,6 +109,40 @@ uns8 Ledstrip_NumOfFades(void)
 	return counter;
 }
 
+void Ledstrip_ToogleLeds(void)
+{
+	//check current status of led
+	uns8 counter = 0;
+	uns8 i;
+	
+	for(i = 0; i < NUM_OF_LED * 3; i++)
+	{
+		if(gLedBuf.led_array[i] > 0)
+		{
+			counter += 1;
+		}
+	}
+	//struct cmd_set_fade mFade;
+	
+	mFade.addr[0] = 0xff;
+	mFade.addr[1] = 0xff;
+	mFade.addr[2] = 0xff;
+	mFade.addr[3] = 0xff;
+	mFade.fadeTmms = htons(200);
+
+	if(counter > 0)		//switch off
+	{
+		mFade.red = 0x00;
+		mFade.green = 0x00;
+		mFade.blue = 0x00;
+	}
+	else {
+		mFade.red = 0xff;
+		mFade.green = 0xff;
+		mFade.blue = 0xff;
+	}
+	Ledstrip_SetFade(&mFade);
+}
 
 void Ledstrip_Init(void)
 {

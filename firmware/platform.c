@@ -17,15 +17,31 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "platform.h"
-
+//#include "ScriptCtrl.h"
+#include "ledstrip.h"
 #ifdef __CC8E__
 void Platform_CheckInputs()
-{
+{	
+	if(PORTB.5 == 0)
+	{
+		lastSwitchState = 1;
+		return;
+	}
+	if(PORTB.5 == 1)
+	{
+		if(lastSwitchState == 1)
+		{
+			ScriptCtrl_Clear();
+			Ledstrip_ToogleLeds();
+		}
+		lastSwitchState = 0;
+	}
+	/*
 	//Goto Bootloader if PORTB.0 is low
 	if(PORTB.5 == 0)
 	{
 		softReset();
-	}
+	}*/
 }
 
 void Platform_AllowInterrupts()
