@@ -627,9 +627,10 @@ class ControlCmdTest : public WiflyControlCmd
 			{
 				control.FwTest();
 			}
-			catch(WiflyControlException)
+			catch(WiflyControlException &e)
 			{
 				cout << "FwTest failed!" << endl;
+				cout << e.GetErrorString() << endl;
 			}
 		};
 };
