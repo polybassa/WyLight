@@ -71,13 +71,13 @@ void Error_Throw()
 void Error_FatalError()
 {
 	uns8 i = 0;
-	for(;i < NUM_OF_LED; i++)
+	for(;i < NUM_OF_LED * 3; i++)
 	{
+		gLedBuf.led_array[i] = 0x00;
+		i++;
+		gLedBuf.led_array[i] = 0x00;
+		i++;
 		gLedBuf.led_array[i] = 0xff;
-		i++;
-		gLedBuf.led_array[i] = 0x00;
-		i++;
-		gLedBuf.led_array[i] = 0x00;
 	}
 	
 	Ledstrip_UpdateLed();
