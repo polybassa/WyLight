@@ -1,5 +1,7 @@
 package biz.bruenn.WiflyLight;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +19,15 @@ public class SetBrightnessFragment extends ControlFragment {
 
 		SeekBar brightness = (SeekBar)view.findViewById(R.id.brightnessPicker);
 		brightness.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
-				// TODO beatify
-				int intensity = (int)(2.55f * progress);
-				int c = ((((intensity << 8) | intensity) << 8) | intensity) << 8;
-				boolean done = mCtrl.fwSetColor(WiflyControl.ALL_LEDS, c);
-				Toast.makeText(seekBar.getContext(), String.valueOf(done), Toast.LENGTH_SHORT).show();	
+			private AtomicBoolean mChangeIsInProgress = new AtomicBoolean(false);
+
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				if(!mChangeIsInProgress.getAndSet(true)) {		
+					final int intensity = (int)(2.55f * progress);
+					final int c = ((((intensity << 8) | intensity) << 8) | intensity) << 8;
+					mCtrl.fwSetColor(WiflyControl.ALL_LEDS, c);
+					mChangeIsInProgress.set(false);
+				}
 			}
 			
 			public void onStartTrackingTouch(SeekBar seekBar) {

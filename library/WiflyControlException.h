@@ -38,6 +38,7 @@ public:
 	~WiflyControlException(void) throw() {};
 		
 	const std::string& GetErrorString(void) const { return m_ErrorString; };
+	const char* what(void) const throw() { return m_ErrorString.c_str(); };
 	
 private:
 	const std::string m_ErrorString;
