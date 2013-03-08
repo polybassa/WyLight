@@ -58,7 +58,7 @@ uns8 Eeprom_Read(const uns16 adress)
 
 #else
 
-static uns8 g_Eeprom[0x400];
+static uns8 g_Eeprom[(1 + SCRIPTCTRL_NUM_CMD_MAX) * sizeof(struct led_cmd)];
 
 uns8 Eeprom_Read(const uns16 adress)
 {
@@ -67,14 +67,15 @@ uns8 Eeprom_Read(const uns16 adress)
 
 void Eeprom_Write(const uns16 adress,const uns8 data)
 {
+	printf("%u %u %u\n", SCRIPTCTRL_NUM_CMD_MAX, sizeof(struct led_cmd), adress);
+	assert(adress < sizeof(g_Eeprom));
 	g_Eeprom[adress] = data;
 }
-
 #endif /* #ifdef X86 */
 
 //*********************** EEPROM BYTEARRAY SCHREIBEN  **************************************
 
-void Eeprom_WriteBlock(uns8 *array, uns16 adress,const uns8 length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
+void Eeprom_WriteBlock(const uns8 *array, uns16 adress,const uns8 length)			//Zum Ausführen eines beliebigen Befehls durch den Programmcode
 {
 	if(!array) return;
 	uns8 i;

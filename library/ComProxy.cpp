@@ -291,7 +291,6 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 
 	/* receive response */
 	timeval timeout = RESPONSE_TIMEOUT;
-	Trace(ZONE_INFO, "HUHU\n");
 	size_t bytesReceived = Recv(recvBuffer, sizeof(recvBuffer), &timeout, checkCrc, crcInLittleEndian);
 	memcpy(pResponse, recvBuffer, bytesReceived);
 	Trace(ZONE_VERBOSE, "%zu bytes received\n", bytesReceived);

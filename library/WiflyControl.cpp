@@ -602,13 +602,14 @@ void WiflyControl::FwSetWait(WiflyResponse& response, unsigned short waitTmms)
 
 void WiflyControl::FwTest(void)
 {
+	static const timespec sleepTime{0, 50000000};
 	SimpleResponse setFadeResp(SET_FADE);
 	uint32_t color = 0xff;
 	for(size_t i = 0; i < 100; ++i)
 	{
 		color = ((color & 0xff) << 24) | (color >> 8);
 		FwSetFade(setFadeResp, 0xffffffff, color, 0, false);
-		sleep(1);
+		nanosleep(&sleepTime, NULL);
 	}	
 #if 0
 	SimpleResponse clrResp(CLEAR_SCRIPT);

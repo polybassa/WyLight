@@ -629,7 +629,7 @@ class ControlCmdTest : public WiflyControlCmd
 			}
 			catch(WiflyControlException e)
 			{
-				cout << "FwTest failed!" << e.what().c_str() << endl;
+				cout << "FwTest failed!" << e.what() << endl;
 			}
 		};
 };

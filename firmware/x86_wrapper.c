@@ -146,7 +146,7 @@ void Rtc_Ctl(enum RTC_request req,struct rtc_time *pRtcTime) {}
 void UART_Init() {}
 void UART_Send(uns8 ch)
 {
-	printf("%c", ch);
+	printf("0x%02x(%c)\n", ch, ch);
 	send(g_uartSocket, &ch, sizeof(ch), 0);
 }
 void SPI_Init() {}
