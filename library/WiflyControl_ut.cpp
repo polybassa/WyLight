@@ -73,6 +73,18 @@ int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, 
 	}
 	if(typeid(req) == typeid(BlFlashWriteRequest))
 	{
+		BlFlashWriteRequest* mReq = dynamic_cast<BlFlashWriteRequest*>(&req);
+		
+		uint32_t address = ((uint32_t)mReq->addressU) << 16;
+		address += ((uint32_t)mReq->addressHigh) << 8;
+		address += (uint32_t)mReq->addressLow;
+		
+		uint16_t bytes = ((uint16_t)mReq->numBlocksLow) * FLASH_WRITE_BLOCKSIZE;
+		
+		for (int i = 0; i < bytes; i++, address++) {
+			g_FlashRndDataPool[address] = mReq->payload[i];
+		}
+		
 		uint8_t resp[] = {0x04};
 		return_resp;
 	}
@@ -94,7 +106,43 @@ int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, 
 		}
 		return i;
 	}
-	
+	if(typeid(req) == typeid(BlEepromReadRequest))
+	{
+		BlEepromReadRequest* mReq = dynamic_cast<BlEepromReadRequest*>(&req);
+		
+		uint32_t address = ((uint32_t)mReq->addressU) << 16;
+		address += ((uint32_t)mReq->addressHigh) << 8;
+		address += (uint32_t)mReq->addressLow;
+		
+		uint16_t bytes = ((uint16_t)mReq->numBytesHigh) << 8;
+		bytes += ((uint16_t)mReq->numBytesLow);
+		
+		unsigned int i;
+		for(i = 0; i < bytes; i++)
+		{
+			*pResponse++ = g_EepromRndDataPool[address + i];
+		}
+		return i;
+	}
+	if(typeid(req) == typeid(BlEepromWriteRequest))
+	{
+		BlEepromWriteRequest* mReq = dynamic_cast<BlEepromWriteRequest*>(&req);
+		
+		uint32_t address = ((uint32_t)mReq->addressU) << 16;
+		address += ((uint32_t)mReq->addressHigh) << 8;
+		address += (uint32_t)mReq->addressLow;
+		
+		uint16_t bytes = ((uint16_t)mReq->numBytesHigh) << 8;
+		bytes += ((uint16_t)mReq->numBytesLow);
+		
+		for (int i = 0; i < bytes; i++, address++) {
+			g_EepromRndDataPool[address] = mReq->payload[i];
+		}
+		
+		uint8_t resp[] = {0x06};
+		return_resp;
+		
+	}
 	return -1;
 }
 
@@ -206,6 +254,106 @@ size_t ut_WiflyControl_BlFlashRead(void)
 	TestCaseEnd();
 }
 
+size_t ut_WiflyControl_BlEepromRead(void)
+{
+	TestCaseBegin();
+	srand(time(NULL));
+	
+	/* fill gloabal random data pool */
+	for(unsigned int i = 0; i < sizeof(g_EepromRndDataPool); i++)
+		g_EepromRndDataPool[i] = (uint8_t) rand() % 255;
+	
+	WiflyControl testctrl(0,0);
+	
+	uint8_t rcvEepromData[EEPROM_SIZE];
+	
+	size_t rcvBytes = testctrl.BlReadEeprom(rcvEepromData, 0, EEPROM_SIZE);
+	
+	CHECK(0 == memcmp(g_EepromRndDataPool, rcvEepromData, rcvBytes));
+	TestCaseEnd();
+}
+
+size_t ut_WiflyControl_BlEepromWrite(void)
+{
+	TestCaseBegin();
+	
+	srand(time(NULL));
+	
+	uint8_t m_EepromRndDataPool[EEPROM_SIZE];
+	
+	/* fill gloabal random data pool */
+	for(unsigned int i = 0; i < sizeof(g_EepromRndDataPool); i++)
+	{
+		g_EepromRndDataPool[i] = (uint8_t) rand() % 255;
+		m_EepromRndDataPool[i] = (uint8_t) rand() % 255;
+	}
+	
+	WiflyControl testctrl(0,0);
+	
+	testctrl.BlWriteEeprom(0, m_EepromRndDataPool, EEPROM_SIZE);
+		
+	for(unsigned int i = 0; i < EEPROM_SIZE; i++)
+	{
+		CHECK(m_EepromRndDataPool[i] == g_EepromRndDataPool[i]);
+	}
+	
+	TestCaseEnd();
+
+}
+
+size_t ut_WiflyControl_BlEepromErase(void)
+{
+	TestCaseBegin();
+	
+	srand(time(NULL));
+	
+	/* fill gloabal random data pool */
+	for(unsigned int i = 0; i < sizeof(g_EepromRndDataPool); i++)
+	{
+		g_EepromRndDataPool[i] = (uint8_t) rand() % 255;
+	}
+	
+	WiflyControl testctrl(0,0);
+	
+	testctrl.BlEepromErase();
+	
+	for(unsigned int i = 0; i < EEPROM_SIZE; i++)
+	{
+		CHECK(0xff == g_EepromRndDataPool[i]);
+	}
+	
+	TestCaseEnd();
+	
+}
+
+size_t ut_WiflyControl_BlFlashWrite(void)
+{
+	TestCaseBegin();
+	
+	srand(time(NULL));
+	
+	uint8_t m_FlashRndDataPool[FLASH_SIZE];
+	
+	/* fill gloabal random data pool */
+	for(unsigned int i = 0; i < sizeof(g_FlashRndDataPool); i++)
+	{
+		g_FlashRndDataPool[i] = (uint8_t) rand() % 255;
+		m_FlashRndDataPool[i] = (uint8_t) rand() % 255;
+	}
+	
+	WiflyControl testctrl(0,0);
+	
+	testctrl.BlWriteFlash(0, m_FlashRndDataPool, sizeof(m_FlashRndDataPool));
+	
+	for(unsigned int i = 0; i < FLASH_SIZE; i++)
+	{
+		CHECK(m_FlashRndDataPool[i] == g_FlashRndDataPool[i]);
+	}
+	
+	TestCaseEnd();
+	
+}
+
 size_t ut_WiflyControl_ConfSetDefaults(void)
 {
 	TestCaseBegin();
@@ -279,6 +427,10 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_WiflyControl_BlReadInfo);
 	RunTest(true, ut_WiflyControl_BlFlashErase);
 	RunTest(true, ut_WiflyControl_BlFlashRead);
+	RunTest(true, ut_WiflyControl_BlFlashWrite);
+	RunTest(true, ut_WiflyControl_BlEepromRead);
+	RunTest(true, ut_WiflyControl_BlEepromWrite);
+	RunTest(true, ut_WiflyControl_BlEepromErase);
 	UnitTestMainEnd();
 }
 
