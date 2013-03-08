@@ -57,7 +57,9 @@ uns8 Eeprom_Read(const uns16 adress)
 }
 
 #else
-
+#include "ScriptCtrl.h"
+#include "wifly_cmd.h"
+#include <assert.h>
 static uns8 g_Eeprom[(1 + SCRIPTCTRL_NUM_CMD_MAX) * sizeof(struct led_cmd)];
 
 uns8 Eeprom_Read(const uns16 adress)
@@ -65,9 +67,8 @@ uns8 Eeprom_Read(const uns16 adress)
 	return g_Eeprom[adress];
 }
 
-void Eeprom_Write(const uns16 adress,const uns8 data)
+void Eeprom_Write(const uns16 adress, const uns8 data)
 {
-	printf("%u %u %u\n", SCRIPTCTRL_NUM_CMD_MAX, sizeof(struct led_cmd), adress);
 	assert(adress < sizeof(g_Eeprom));
 	g_Eeprom[adress] = data;
 }
@@ -81,7 +82,8 @@ void Eeprom_WriteBlock(const uns8 *array, uns16 adress,const uns8 length)			//Zu
 	uns8 i;
 	for(i=0;i<length;i++)
 	{
-		Eeprom_Write(adress,*array);
+		uns8* pByte = (uns8*)array;
+		Eeprom_Write(adress, *pByte);
 		adress++;
 		array++;
 	}
