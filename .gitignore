@@ -265,3 +265,4 @@ binary/libWiflyControl.a
 library/TelnetProxy_ut.bin.cpgz
 library/WiflyControl_ut.bin.cpgz
 WiflyControl_ut.bin.cpgz
+wiflycontrol.dylib

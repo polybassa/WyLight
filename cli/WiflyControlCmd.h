@@ -634,6 +634,27 @@ class ControlCmdTest : public WiflyControlCmd
 			}
 		};
 };
+			
+class ControlCmdStressTest : public WiflyControlCmd
+{
+	public:
+		ControlCmdStressTest(void) : WiflyControlCmd(
+			   string("stresstest"),
+			   string("' - run test loop! Caution: Test run in endless loop")) {};
+				
+		virtual void Run(WiflyControl& control) const {
+			try
+			{
+				control.FwStressTest();
+			}
+			catch(WiflyControlException &e)
+			{
+				cout << "FwStressTest failed!" << endl;
+				cout << e.GetErrorString() << endl;
+			}
+		};
+};
+
 
 static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdBlAutostartEnable(),
@@ -652,6 +673,7 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdSetFade(),
 	new ControlCmdStartBl(),
 	new ControlCmdTest(),
+	new ControlCmdStressTest(),
 	new ControlCmdPrintTracebuffer(),
 	new ControlCmdPrintFwVersion(),
 	new ControlCmdPrintCycletime(),

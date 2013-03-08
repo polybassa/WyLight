@@ -518,17 +518,24 @@ WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, Wif
 {
 	pFrame->length = length + 2; //add cmd and length byte
 	unsigned char buffer[512];
-
-	Trace(ZONE_INFO, "before send\n");
-	int bytesRead = mProxy.Send(&mCmdFrame, &buffer[0], sizeof(buffer), false);
+	const int numRetrysByCrcFailure = 5;
+	int deadlockProtection = 0;
+	do
+	{
+		deadlockProtection++;
+		Trace(ZONE_INFO, "before send\n");
+		int bytesRead = mProxy.Send(pFrame, buffer, sizeof(buffer), false);
 	
-	TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer[0], (size_t)bytesRead, "%02x ", "We got %d bytes response.\nMessage: ", bytesRead);
+		TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer[0], (size_t)bytesRead, "%02x ", "We got %d bytes response.\nMessage: ", bytesRead);
 	
-	Trace(ZONE_INFO, "before init\n");
-	response.Init((response_frame*)&buffer[0], bytesRead);
+		Trace(ZONE_INFO, "before init\n");
+		response.Init((response_frame*)&buffer[0], bytesRead);
 	
-	Trace(ZONE_INFO, "after init\n");
-	Trace(ZONE_INFO, "Result %s \n", (response.IsValid() ? "true" : "false"));
+		Trace(ZONE_INFO, "after init\n");
+		Trace(ZONE_INFO, "Result %s \n", (response.IsValid() ? "true" : "false"));
+		Trace(ZONE_INFO, "CRC-Check failure %s \n", (response.IsCrcCheckFailed() ? "true" : "false"));
+	}while (response.IsCrcCheckFailed() && (deadlockProtection <  numRetrysByCrcFailure));
+	
 	if(!response.IsValid()) throw FwNoResponseException(pFrame);
 	if(response.IsScriptBufferFull()) throw ScriptBufferFullException(pFrame);
 	
@@ -600,6 +607,22 @@ void WiflyControl::FwSetWait(WiflyResponse& response, unsigned short waitTmms)
 	FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
 }
 
+void WiflyControl::FwStressTest(void)
+{
+	SimpleResponse clrResp(CLEAR_SCRIPT);
+	SimpleResponse setColorDirectResp(SET_COLOR_DIRECT);
+	
+	FwClearScript(clrResp);
+
+	uns8 ledArr[NUM_OF_LED * 3];
+	uns8 color = 0;
+	while(true){
+		color++;
+		std::fill_n(ledArr, sizeof(ledArr), color);
+		FwSetColorDirect(setColorDirectResp, ledArr, sizeof(ledArr));
+	}
+}
+
 void WiflyControl::FwTest(void)
 {
 	SimpleResponse clrResp(CLEAR_SCRIPT);
@@ -607,6 +630,8 @@ void WiflyControl::FwTest(void)
 	SimpleResponse loopOnResp(LOOP_ON);
 	SimpleResponse setFadeResp(SET_FADE);
 	SimpleResponse setWaitResp(WAIT);
+		
+	FwClearScript(clrResp);
 	
 	WiflyControlColorClass LedColor = WiflyControlColorClass(0xffffffff);
       
@@ -620,8 +645,7 @@ void WiflyControl::FwTest(void)
 	FwLoopOn(loopOnResp);
 	FwSetFade(setFadeResp, 0xFFFFFFFFLU, RED, 2000, false);
 	
-
-	/*uint32_t bitMask = 0x01;
+	uint32_t bitMask = 0x01;
 	for(unsigned int i = 0; i < NUM_OF_LED; i++)
 	{
 		LedColor.red((uint8_t)((0xff / NUM_OF_LED) * i));
@@ -629,7 +653,8 @@ void WiflyControl::FwTest(void)
 		LedColor.blue(0xff);
 		FwSetFade(setFadeResp, bitMask, LedColor.rgba(), 20000 + i * 200, true);
 		bitMask = bitMask << 1;
-	}*/
+	}
+	
 	FwSetWait(setWaitResp, 30000);
 	FwSetFade(setFadeResp, 0xFFFFFFFFLU, GREEN,2000, false);
 	FwSetFade(setFadeResp, 0x000000FFLU, RED,  2000, true);
