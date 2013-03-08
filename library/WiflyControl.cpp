@@ -587,9 +587,9 @@ void WiflyControl::FwSetFade(WiflyResponse& response, unsigned long addr, unsign
 	FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
 }
 
-void WiflyControl::FwSetFade(WiflyResponse& response, string& addr, string& rgba, unsigned short fadeTmms, bool parallelFade)
+void WiflyControl::FwSetFade(WiflyResponse& response, string& addr, string& rgb, unsigned short fadeTmms, bool parallelFade)
 {
-	FwSetFade(response, ToRGBA(addr), ToRGBA(rgba) << 8, fadeTmms, parallelFade);
+	FwSetFade(response, ToRGBA(addr), ToRGBA(rgb) << 8, fadeTmms, parallelFade);
 }
 
 void WiflyControl::FwSetWait(WiflyResponse& response, unsigned short waitTmms)
@@ -602,6 +602,16 @@ void WiflyControl::FwSetWait(WiflyResponse& response, unsigned short waitTmms)
 
 void WiflyControl::FwTest(void)
 {
+	static const timespec sleepTime{0, 50000000};
+	SimpleResponse setFadeResp(SET_FADE);
+	uint32_t color = 0xff;
+	for(size_t i = 0; i < 100; ++i)
+	{
+		color = ((color & 0xff) << 24) | (color >> 8);
+		FwSetFade(setFadeResp, 0xffffffff, color, 0, false);
+		nanosleep(&sleepTime, NULL);
+	}	
+#if 0
 	SimpleResponse clrResp(CLEAR_SCRIPT);
 	SimpleResponse loopOffResp(LOOP_OFF);
 	SimpleResponse loopOnResp(LOOP_ON);
@@ -639,6 +649,7 @@ void WiflyControl::FwTest(void)
 	FwSetWait(setWaitResp, 2000);
 	FwSetFade(setFadeResp, 0xFFFFFFFFLU, BLACK,2000, false);
 	FwLoopOff(loopOffResp, 0);
+#endif
 }
 
 void WiflyControl::FwPrintCycletime(WiflyResponse& response)

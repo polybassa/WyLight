@@ -24,7 +24,7 @@ outdir:
 pic: outdir
 	wine ${PIC_CC8E} main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM -O${OUTPUT_DIR}
 
-simu:
+simu: outdir
 	gcc ${X86_SRC} -DDEBUG -DX86 -lpthread ${OPENGL_LIB} -o ${OUTPUT_DIR}/server.bin -Wall
 
 #generic rule to build and run c unittests

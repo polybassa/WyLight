@@ -44,7 +44,7 @@ public class WiflyLightActivity extends Activity {
 					long arg3) {
 				Endpoint e = mRemoteArrayAdapter.getItem(arg2);
 				Intent i = new Intent(v.getContext(), WiflyControlActivity.class);
-				i.putExtra(WiflyControlActivity.EXTRA_ENDPOINT,e);
+				i.putExtra(WiflyControlActivity.EXTRA_ENDPOINT, e);
 				startActivityForResult(i, 0);    	
 			}
 		});

@@ -60,7 +60,7 @@
 /**
  * save command to eeprom
  */
-uns8 ScriptCtrl_Write(struct led_cmd* pCmd);
+uns8 ScriptCtrl_Write(const struct led_cmd* pCmd);
 
 /* private globals */
 struct ScriptBuf gScriptBuf;
@@ -279,16 +279,16 @@ void ScriptCtrl_Run(void)
 			}
 			break;
 		}
-	}	
+	}
 }
 
-uns8 ScriptCtrl_Write(struct led_cmd* pCmd)
+uns8 ScriptCtrl_Write(const struct led_cmd* pCmd)
 {
 	uns8 writeNext = ScriptBufInc(gScriptBuf.write);
 	if(writeNext != gScriptBuf.read)
 	{
 		uns16 tempAddress = ScriptBufAddr(gScriptBuf.write);
-		Eeprom_WriteBlock((uns8*)pCmd, tempAddress, sizeof(struct led_cmd));
+		Eeprom_WriteBlock((const uns8*)pCmd, tempAddress, sizeof(struct led_cmd));
 		ScriptBufSetWrite(writeNext);
 		return TRUE;
 	}

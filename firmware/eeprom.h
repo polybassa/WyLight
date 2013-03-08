@@ -30,6 +30,6 @@
 /* eeprom access functions */
 void Eeprom_Write(const uns16 adress, const uns8 data);
 uns8 Eeprom_Read(const uns16 adress);
-void Eeprom_WriteBlock(uns8 *array, uns16 adress, const uns8 length);
+void Eeprom_WriteBlock(const uns8 *array, uns16 adress, const uns8 length);
 void Eeprom_ReadBlock(uns8 *array, uns16 adress, const uns8 length);
 #endif
