@@ -75,12 +75,6 @@ struct cmd_wait {
 	uns16 waitTmms;
 };
 
-struct cmd_set_run {
-	uns8 direction;
-	uns16 durationTmms;
-	uns16 fadeTmms;
-};
-
 struct cmd_set_color_direct {
 #ifdef __CC8E__
 	uns8 ptr_led_array;
@@ -110,7 +104,6 @@ struct led_cmd {
 	uns8 cmd;
 	union {
 		struct cmd_set_fade set_fade;
-		struct cmd_set_run set_run;
 		struct cmd_wait wait;
 		struct cmd_loop_end loopEnd;
 		struct rtc_time set_rtc;
