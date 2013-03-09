@@ -25,6 +25,7 @@
 
 //*********************** CONFIGURATION ********************************************
 #define NUM_OF_LED 32
+uns8 lastSwitchState;
 
 #ifdef __CC8E__
 	#include "inline.h"
@@ -41,7 +42,7 @@
 	
 	void Platform_AllowInterrupts();
 	void Platform_EnableAllInterrupts();
-	void Platform_DisableAllInterrupts();
+	//void Platform_DisableAllInterrupts();
 	
 	void Platform_CheckInputs();
 	

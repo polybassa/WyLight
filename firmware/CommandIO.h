@@ -22,7 +22,7 @@
 #include "platform.h"
 #include "wifly_cmd.h"
 
-#define CMDFRAMELENGTH NUM_OF_LED*3+5
+#define CMDFRAMELENGTH (NUM_OF_LED * 3 + 10) * 4
 
 /** Statemachine STATES **/
 #define CS_WaitForSTX 0
@@ -32,7 +32,7 @@
 
 struct CommandBuffer{
     uns8 buffer[CMDFRAMELENGTH];
-    uns8 counter;
+    uns16 counter;
     uns8 state;
     uns8 CrcH;
     uns8 CrcL;

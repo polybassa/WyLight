@@ -34,15 +34,17 @@ struct response_frame g_ResponseBuf;
 
 void writeByte(uns8 byte)
 {
-    if(g_CmdBuf.counter < CMDFRAMELENGTH)
+    if(g_CmdBuf.counter < (uns16)CMDFRAMELENGTH)
     {
 	  g_CmdBuf.buffer[g_CmdBuf.counter] = byte;
-	  g_CmdBuf.counter = g_CmdBuf.counter + 1;
+	  g_CmdBuf.counter++;
 	  Crc_AddCrc(byte, &g_CmdBuf.CrcH, &g_CmdBuf.CrcL);		
     }
     else
     {
-	  g_ErrorBits.CmdBufOverflow = TRUE;
+		g_ErrorBits.CmdBufOverflow = TRUE;
+		Trace_Hex16(g_CmdBuf.counter);
+		Trace_String(" cntr");
     }
 }
 
@@ -94,7 +96,6 @@ void CommandIO_GetCommands()
 {	
 	if(g_ErrorBits.CmdBufOverflow)
 	{
-		Trace_String("CommandIO_GetCommands(): CmdBufOverflow\n");
 		return;
 	}
   
@@ -102,8 +103,6 @@ void CommandIO_GetCommands()
 	{
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
-		Trace_String("CommandIO_GetCommands(): RingBuf has error\n");
-		CommandIO_Init();
 		return;
 	}
 	
@@ -193,7 +192,7 @@ void CommandIO_GetCommands()
 				  Trace_Hex(g_CmdBuf.buffer[g_CmdBuf.counter - 1]);
 				  Trace_String("\n");
 			  }
-			  
+			  DeleteBuffer();
 			  CommandIO_CreateResponse(&g_ResponseBuf, g_CmdBuf.buffer[1]);
 			  CommandIO_SendResponse(&g_ResponseBuf);
 			  

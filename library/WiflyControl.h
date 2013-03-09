@@ -87,6 +87,7 @@ class WiflyControl
 		void FwSetWait(WiflyResponse&, unsigned short waitTmms);
 		
 		void FwTest(void);
+		void FwStressTest(void);
 		void FwPrintCycletime(WiflyResponse&);
 		void FwPrintTracebuffer(WiflyResponse&);
 		void FwPrintFwVersion(WiflyResponse&);

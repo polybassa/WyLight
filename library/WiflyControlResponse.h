@@ -30,11 +30,13 @@ public:
 	virtual void Init(response_frame* pData, size_t dataLength) = 0;
 	bool IsValid(void) const { return mIsValid; };
 	bool IsScriptBufferFull(void) const { return mIsScriptBufferFull; };
+	bool IsCrcCheckFailed(void) const { return mIsCrcCheckFailed; };
 	
 protected:
 	WiflyResponse(void) : mIsValid(false), mIsScriptBufferFull(true) {};
 	bool mIsValid;
 	bool mIsScriptBufferFull;
+	bool mIsCrcCheckFailed;
 };
 
 class SimpleResponse : public WiflyResponse
@@ -43,8 +45,9 @@ public:
 	SimpleResponse(uint8_t cmd) : mCmd(cmd) {};
 	void Init(response_frame* pData, size_t dataLength)
 	{
-		mIsValid = (NULL != pData) && (4 <= dataLength) && (mCmd == pData->cmd);
+		mIsValid = (NULL != pData) && (4 <= dataLength) && (mCmd == pData->cmd) && (pData->state == OK);
 		mIsScriptBufferFull = pData->state == SCRIPTBUFFER_FULL;
+		mIsCrcCheckFailed = pData->state == CRC_CHECK_FAILED;
 	};
 	
 private:
