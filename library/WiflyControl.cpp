@@ -44,16 +44,17 @@ static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VER
  * Macro to reduce code redundancy, while converting two 32 bit values into
  * an address array and red, green, blue values. 
  */
-#define SetAddrRgb(REF, ADDRESS, RGBA) { \
-	REF.addr[3] = (ADDRESS & 0xff000000) >> 24; \
-	REF.addr[2] = (ADDRESS & 0x00ff0000) >> 16; \
-	REF.addr[1] = (ADDRESS & 0x0000ff00) >> 8; \
-	REF.addr[0] = (ADDRESS & 0x000000ff); \
-	REF.red = (RGBA & 0xff000000) >> 24; \
-	REF.green = (RGBA & 0x00ff0000) >> 16; \
-	REF.blue = (RGBA & 0x0000ff00) >> 8; \
+#define SetAddrRgb(REF, ADDRESS, ARGB) { \
+	REF.addr[3] = ((ADDRESS) & 0xff000000) >> 24; \
+	REF.addr[2] = ((ADDRESS) & 0x00ff0000) >> 16; \
+	REF.addr[1] = ((ADDRESS) & 0x0000ff00) >> 8; \
+	REF.addr[0] = ((ADDRESS) & 0x000000ff); \
+	REF.red = ((ARGB) & 0x00ff0000) >> 16; \
+	REF.green = ((ARGB) & 0x0000ff00) >> 8; \
+	REF.blue = (ARGB) & 0x000000ff; \
 }
 
+const std::string WiflyControl::LEDS_ALL{"ffffffff"};
 
 WiflyControl::WiflyControl(uint32_t addr, uint16_t port)
 : mSock(addr, port), mProxy(mSock), mTelnet(mSock)
@@ -517,15 +518,15 @@ bool WiflyControl::ConfUpdate(void) const
 WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const
 {
 	pFrame->length = length + 2; //add cmd and length byte
-	unsigned char buffer[512];
+	response_frame buffer;
 
 	Trace(ZONE_INFO, "before send\n");
-	int bytesRead = mProxy.Send(&mCmdFrame, &buffer[0], sizeof(buffer), false);
+	int bytesRead = mProxy.Send(&mCmdFrame, &buffer, sizeof(buffer), false);
 	
-	TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer[0], (size_t)bytesRead, "%02x ", "We got %d bytes response.\nMessage: ", bytesRead);
+	TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer, (size_t)bytesRead, "%02x ", "We got %d bytes response.\nMessage: ", bytesRead);
 	
 	Trace(ZONE_INFO, "before init\n");
-	response.Init((response_frame*)&buffer[0], bytesRead);
+	response.Init(&buffer, bytesRead);
 	
 	Trace(ZONE_INFO, "after init\n");
 	Trace(ZONE_INFO, "Result %s \n", (response.IsValid() ? "true" : "false"));
@@ -560,6 +561,13 @@ void WiflyControl::FwSetColorDirect(WiflyResponse& response, unsigned char* pBuf
 	if(pBuffer == NULL) throw std::bad_alloc();
   
 	mCmdFrame.led.cmd = SET_COLOR_DIRECT;
+#if 1
+	//TODO verify this implementation by an unittest
+	static const size_t maxBufferLength = NUM_OF_LED * 3;
+	bufferLength = std::min(bufferLength, maxBufferLength);
+	memcpy(mCmdFrame.led.data.set_color_direct.ptr_led_array, pBuffer, bufferLength);
+	memset(mCmdFrame.led.data.set_color_direct.ptr_led_array + bufferLength, 0, maxBufferLength - bufferLength);
+#else
 	for(unsigned int i = 0; i < NUM_OF_LED * 3; i++)
 	{
 	    if(i < bufferLength)
@@ -571,25 +579,26 @@ void WiflyControl::FwSetColorDirect(WiflyResponse& response, unsigned char* pBuf
 		mCmdFrame.led.data.set_color_direct.ptr_led_array[i] = 0;
 	    }
 	}
+#endif
 	FwSend(&mCmdFrame, sizeof(struct cmd_set_color_direct),response);
 }
 
-void WiflyControl::FwSetFade(WiflyResponse& response, unsigned long addr, unsigned long rgba, unsigned short fadeTmms, bool parallelFade)
+void WiflyControl::FwSetFade(WiflyResponse& response, uint32_t argb, uint16_t fadeTmms, uint32_t addr, bool parallelFade)
 {
 	/*calibrate fadeTmms */
 	fadeTmms = (unsigned short)(fadeTmms / 10);
 	if(fadeTmms == 0) fadeTmms = 1;
 	
 	mCmdFrame.led.cmd = SET_FADE;
-	SetAddrRgb(mCmdFrame.led.data.set_fade, addr, rgba);
+	SetAddrRgb(mCmdFrame.led.data.set_fade, addr, argb);
 	mCmdFrame.led.data.set_fade.fadeTmms = htons(fadeTmms);
 	mCmdFrame.led.data.set_fade.parallelFade = parallelFade;
 	FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
 }
 
-void WiflyControl::FwSetFade(WiflyResponse& response, string& addr, string& rgb, unsigned short fadeTmms, bool parallelFade)
+void WiflyControl::FwSetFade(WiflyResponse& response, const string& rgb, uint16_t fadeTmms, const string& addr, bool parallelFade)
 {
-	FwSetFade(response, ToRGBA(addr), ToRGBA(rgb) << 8, fadeTmms, parallelFade);
+	FwSetFade(response, 0xff000000 | ToARGB(rgb), fadeTmms, ToARGB(addr), parallelFade);
 }
 
 void WiflyControl::FwSetWait(WiflyResponse& response, unsigned short waitTmms)
@@ -700,15 +709,15 @@ void WiflyControl::FwGetRtc(WiflyResponse& response)
 	
 }
 
-unsigned long WiflyControl::ToRGBA(string& s) const
+unsigned long WiflyControl::ToARGB(const string& s) const
 {
 	if(s.length() > 8) return 0;
 
 	// use a stringstream to convert hex ascii string into machine bits
-	unsigned long rgba;
+	unsigned long argb;
 	stringstream converter;
 	converter << hex << s;
-	converter >> rgba;
-	return rgba;
+	converter >> argb;
+	return argb;
 }
 

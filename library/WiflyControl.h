@@ -38,11 +38,12 @@ class WiflyControl
 		const TelnetProxy mTelnet;
 		pthread_t mRecvThread;
 		struct cmd_frame mCmdFrame;
-		unsigned long ToRGBA(std::string& s) const;
+		unsigned long ToARGB(const std::string& s) const;
 		size_t BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync = true) const;
 		WiflyResponse& FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const;
 		
 	public:
+		static const std::string LEDS_ALL;
 		WiflyControl(uint32_t addr, uint16_t port);
 		
 		/** ----------------------------- BOOTLOADER METHODES ----------------------------- **/
@@ -63,26 +64,72 @@ class WiflyControl
 		void BlEnableAutostart(void) const;
 		
 		/** ----------------------------- Telnet METHODES ----------------------------- **/
+
+		/**
+		 * Read the currently configured ssid from Wifly module
+		 * @return an empty string or the ssid
+		 */
 		std::string ConfGetSsid(void) const;
+
+		/**
+		 * Set the Wifly module communication parameters to defaults
+		 * @return false, in case of an error
+		 */
 		bool ConfSetDefaults(void) const;
+
+		/**
+		 * Set the Wifly module wlan connection parameters
+		 * @param phrase WPA2 passphrase 1 - 63 characters
+		 * @param ssid 1 - 32 characters
+		 * @return false, in case of an error
+		 */
 		bool ConfSetWlan(const std::string& phrase, const std::string& ssid) const;
+
+		/**
+		 * Update the Wifly module firmware
+		 * @return true, if reboot was triggered successfully, connection will then be lost!
+		 */
 		bool ConfUpdate(void) const;
 		
 		/** ------------------------------ FIRMWARE METHODES ------------------------------ **/
-		void FwClearScript(WiflyResponse&);
-		void FwLoopOn(WiflyResponse&);
-		void FwLoopOff(WiflyResponse&, unsigned char numLoops);
-		
 
 		/**
-			rgba is a 32 Bit rgb value with alpha channel. Alpha is unused, but easier to handle
-			f.e. red(255, 0, 0) is in rgba as: 0xff000000
-				 white(255, 255, 255) is in rgba as: 0xffffff00
-		**/
+		 * Wipe all commands from the Wifly script controller
+		 * @param response will be modified according to the success of this operation
+		 */
+		void FwClearScript(WiflyResponse& response);
+
+		/**
+		 * Inject a LoopOn command into the Wifly script controller
+		 * @param response will be modified according to the success of this operation
+		 */
+		void FwLoopOn(WiflyResponse&);
+
+		/**
+		 * Inject a LoopOff command into the Wifly script controller
+		 * @param response will be modified according to the success of this operation
+		 * @param numLoops number of rounds before termination of the loop, use 0 for infinite loops. To terminate an infinite loop you have to call <FwClearScript>
+		 */
+		void FwLoopOff(WiflyResponse&, uint8_t numLoops);
+
+		/**
+		 * Set all leds with different colors directly. This doesn't affect the Wifly script controller
+		 */
 		void FwSetColorDirect(WiflyResponse&, unsigned char* pBuffer, size_t bufferLength);
 		
-		void FwSetFade(WiflyResponse&, unsigned long addr, unsigned long rgba, unsigned short fadeTmms = 0, bool parallelFade = false);
-		void FwSetFade(WiflyResponse&, std::string& addr, std::string& rgba, unsigned short fadeTmms = 0, bool parallelFade = false);
+		/**
+		 * Sends a fade command to the connected wifly module
+		 * @param response reference to a response object, FwSetFade will modify the state of the referenced object according to the transmit status.
+		 * @param argb is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff) f.e.
+		 *        black(  0,  0,  0) as argb is 0xff000000
+		 *        green(  0,255,  0) as argb is 0xff00ff00
+		 *        white(255,255,255) as argb is 0xffffffff
+		 * @param fadeTmms fading time in milliseconds use 0 to set color immediately, default = 0
+		 * @param addr bitmask of leds which should be effected by this command, set bit to 1 to affect the led, default 0xffffffff
+		 * @param parallelFade if true other fades are allowed in parallel
+		 */
+		void FwSetFade(WiflyResponse& response, uint32_t argb, uint16_t fadeTmms = 0, uint32_t addr = 0xffffffff, bool parallelFade = false);
+		void FwSetFade(WiflyResponse&, const std::string& rgba, uint16_t fadeTmms = 0, const std::string& addr = LEDS_ALL, bool parallelFade = false);
 		
 		void FwSetWait(WiflyResponse&, unsigned short waitTmms);
 		

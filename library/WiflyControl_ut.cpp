@@ -98,8 +98,14 @@ int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, 
 	return -1;
 }
 
-
-int32_t ComProxy::Send(cmd_frame const* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const {	return -1; }
+cmd_frame g_SendFrame;
+int32_t ComProxy::Send(const cmd_frame* pFrame, response_frame* pResponse, size_t responseSize, bool doSync) const
+{
+	memcpy(&g_SendFrame, pFrame, sizeof(g_SendFrame));
+	pResponse->length = sizeof(uns8) + sizeof(uns16) + sizeof(ErrorCode);
+	pResponse->cmd = pFrame->led.cmd;	
+	return sizeof(g_SendFrame);
+}
 
 // wrapper to test WiflyControl
 static std::list<std::string> g_TestBuffer;
@@ -135,26 +141,6 @@ bool TelnetProxy::SendString(const std::string& command, std::string value) cons
 
 
 // Testcases
-size_t ut_WiflyControl_BlReadInfo(void)
-{
-	TestCaseBegin();
-	WiflyControl testctrl(0,0);
-	BlInfo mInfo;
-	testctrl.BlReadInfo(mInfo);
-	CHECK(mInfo.familyId == 4);
-	CHECK(mInfo.versionMajor == 1);
-	CHECK(mInfo.versionMinor == 5);
-	CHECK(mInfo.zero == 0);
-	CHECK(mInfo.sizeHigh == 3);
-	CHECK(mInfo.sizeLow == 0);
-	CHECK(mInfo.startU == 0);
-	CHECK(mInfo.startHigh == 253);
-	CHECK(mInfo.startLow == 0);
-	CHECK(mInfo.cmdmaskHigh == 255);
-	//CHECK(mInfo.cmdmaskLow == 0x84);
-	TestCaseEnd();
-}
-
 size_t ut_WiflyControl_BlFlashErase(void)
 {
 	TestCaseBegin();
@@ -203,6 +189,26 @@ size_t ut_WiflyControl_BlFlashRead(void)
 	size_t rcvBytes = testctrl.BlReadFlash(rcvFlashData, 0, FLASH_SIZE);
 	
 	CHECK(0 == memcmp(g_FlashRndDataPool, rcvFlashData, rcvBytes));	
+	TestCaseEnd();
+}
+
+size_t ut_WiflyControl_BlReadInfo(void)
+{
+	TestCaseBegin();
+	WiflyControl testctrl(0,0);
+	BlInfo mInfo;
+	testctrl.BlReadInfo(mInfo);
+	CHECK(mInfo.familyId == 4);
+	CHECK(mInfo.versionMajor == 1);
+	CHECK(mInfo.versionMinor == 5);
+	CHECK(mInfo.zero == 0);
+	CHECK(mInfo.sizeHigh == 3);
+	CHECK(mInfo.sizeLow == 0);
+	CHECK(mInfo.startU == 0);
+	CHECK(mInfo.startHigh == 253);
+	CHECK(mInfo.startLow == 0);
+	CHECK(mInfo.cmdmaskHigh == 255);
+	//CHECK(mInfo.cmdmaskLow == 0x84);
 	TestCaseEnd();
 }
 
@@ -271,6 +277,37 @@ size_t ut_WiflyControl_ConfSetWlan(void)
 	TestCaseEnd();
 }
 
+size_t ut_WiflyControl_FwSetFade(void)
+{
+	cmd_frame expectedOutgoingFrame;
+	expectedOutgoingFrame.length = 2 + sizeof(cmd_set_fade);
+	expectedOutgoingFrame.led.cmd = SET_FADE;
+	expectedOutgoingFrame.led.data.set_fade.addr[0] = 0xff;
+	expectedOutgoingFrame.led.data.set_fade.addr[1] = 0xff;
+	expectedOutgoingFrame.led.data.set_fade.addr[2] = 0xff;
+	expectedOutgoingFrame.led.data.set_fade.addr[3] = 0xff;
+	expectedOutgoingFrame.led.data.set_fade.red = 0xff;
+	expectedOutgoingFrame.led.data.set_fade.green = 0x00;
+	expectedOutgoingFrame.led.data.set_fade.blue = 0xff;
+	expectedOutgoingFrame.led.data.set_fade.parallelFade = 0x00;
+	//TODO why do we use fadeTmms == 1 for SetColor?
+	expectedOutgoingFrame.led.data.set_fade.fadeTmms = htons(0x0001);
+
+	TestCaseBegin();
+	WiflyControl testee(0, 0);
+	SimpleResponse response(SET_FADE);
+	
+	// set color
+	testee.FwSetFade(response, "ff00ff");
+	CHECK(response.IsValid());
+	TraceBuffer(ZONE_INFO, &g_SendFrame, expectedOutgoingFrame.length, "%02x ", "IS  :");
+	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, expectedOutgoingFrame.length, "%02x ", "SOLL:");
+	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, expectedOutgoingFrame.length));
+	
+	
+	TestCaseEnd();
+}
+
 int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
@@ -279,6 +316,7 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_WiflyControl_BlReadInfo);
 	RunTest(true, ut_WiflyControl_BlFlashErase);
 	RunTest(true, ut_WiflyControl_BlFlashRead);
+	RunTest(true, ut_WiflyControl_FwSetFade);
 	UnitTestMainEnd();
 }
 
