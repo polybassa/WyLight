@@ -54,7 +54,6 @@
 #pragma pack(push)
 #pragma pack(1)
 #endif
-
 struct cmd_set_fade {
 	uns8 addr[4];
 	uns8 red;

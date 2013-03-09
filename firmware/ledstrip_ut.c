@@ -29,8 +29,6 @@ void SPI_Init(void) {};
 void SPI_SendLedBuffer(void) {};
 struct ScriptBuf gScriptBuf;
 
-
-struct LedBuffer gLedBuf;
 int ut_Ledstrip_Init(void)
 {
 	TestCaseBegin();

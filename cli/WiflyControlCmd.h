@@ -294,8 +294,7 @@ class ControlCmdBlRunApp : public WiflyControlCmd
 			}
 			catch(WiflyControlException &e)
 			{				
-				cout << "failed!" << endl;
-				cout << e.GetErrorString() << endl;
+				cout << "failed!\n" << e.what() << endl;
 			}
 		};
 };
@@ -648,8 +647,7 @@ class ControlCmdStressTest : public WiflyControlCmd
 			}
 			catch(WiflyControlException &e)
 			{
-				cout << "FwStressTest failed!" << endl;
-				cout << e.GetErrorString() << endl;
+				cout << "FwStressTest failed!\n" << e.what() << endl;
 			}
 		};
 };

@@ -108,7 +108,7 @@ uns8 Ledstrip_NumOfFades(void)
 	}
 	return counter;
 }
-
+#if 0
 void Ledstrip_ToogleLeds(void)
 {
 	//check current status of led
@@ -143,7 +143,7 @@ void Ledstrip_ToogleLeds(void)
 	}
 	Ledstrip_SetFade(&mFade);
 }
-
+#endif
 void Ledstrip_Init(void)
 {
 	// initialize interface to ledstrip
