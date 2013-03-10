@@ -563,25 +563,10 @@ void WiflyControl::FwSetColorDirect(WiflyResponse& response, unsigned char* pBuf
 	if(pBuffer == NULL) throw std::bad_alloc();
   
 	mCmdFrame.led.cmd = SET_COLOR_DIRECT;
-#if 1
-	//TODO verify this implementation by an unittest
 	static const size_t maxBufferLength = NUM_OF_LED * 3;
 	bufferLength = std::min(bufferLength, maxBufferLength);
 	memcpy(mCmdFrame.led.data.set_color_direct.ptr_led_array, pBuffer, bufferLength);
 	memset(mCmdFrame.led.data.set_color_direct.ptr_led_array + bufferLength, 0, maxBufferLength - bufferLength);
-#else
-	for(unsigned int i = 0; i < NUM_OF_LED * 3; i++)
-	{
-	    if(i < bufferLength)
-	    {
-		mCmdFrame.led.data.set_color_direct.ptr_led_array[i] = *pBuffer++;
-	    }
-	    else
-	    {
-		mCmdFrame.led.data.set_color_direct.ptr_led_array[i] = 0;
-	    }
-	}
-#endif
 	FwSend(&mCmdFrame, sizeof(struct cmd_set_color_direct),response);
 }
 
