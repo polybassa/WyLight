@@ -635,7 +635,7 @@ void WiflyControl::FwTest(void)
 	for(size_t i = 0; i < 100; ++i)
 	{
 		color = ((color & 0xff) << 24) | (color >> 8);
-		FwSetFade(setFadeResp, 0xffffffff, color, 0, false);
+		FwSetFade(setFadeResp, color);
 		nanosleep(&sleepTime, NULL);
 	}	
 #if 0
