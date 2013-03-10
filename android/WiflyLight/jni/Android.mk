@@ -12,7 +12,6 @@ LOCAL_SRC_FILES += $(LIB_SRC)ComProxy.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)intelhexclass.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)TelnetProxy.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)WiflyControl.cpp
-LOCAL_SRC_FILES += $(LIB_SRC)WiflyControlColorClass.cpp
 LOCAL_SRC_FILES += WiflyControlJni.cpp
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/c++11_wrapper
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/$(FW_SRC)
