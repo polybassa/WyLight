@@ -553,7 +553,7 @@ class ControlCmdSetFade : public WiflyControlCmd
 			try
 			{
 				SimpleResponse response(SET_FADE);
-				control.FwSetFade(response, addr, color, (uint16_t)timevalue, false);
+				control.FwSetFade(response, color, (uint16_t)timevalue, addr, false);
 				cout << "done." << endl;
 			}
 			catch(WiflyControlException& e)

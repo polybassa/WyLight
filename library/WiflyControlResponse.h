@@ -45,6 +45,7 @@ public:
 	SimpleResponse(uint8_t cmd) : mCmd(cmd) {};
 	void Init(response_frame* pData, size_t dataLength)
 	{
+		printf("SimpleResponse: %u %02x-%02x %d\n", dataLength, mCmd, pData->cmd, pData->state);
 		mIsValid = (NULL != pData) && (4 <= dataLength) && (mCmd == pData->cmd) && (pData->state == OK);
 		mIsScriptBufferFull = pData->state == SCRIPTBUFFER_FULL;
 		mIsCrcCheckFailed = pData->state == CRC_CHECK_FAILED;
