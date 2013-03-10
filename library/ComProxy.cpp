@@ -227,9 +227,9 @@ int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, 
 	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
 }
 
-int32_t ComProxy::Send(const struct cmd_frame* pFrame, uint8_t* pResponse, size_t responseSize, bool doSync) const
+int32_t ComProxy::Send(const struct cmd_frame* pFrame, response_frame* pResponse, size_t responseSize, bool doSync) const
 {
-	return Send(reinterpret_cast<const uint8_t*>(pFrame), pFrame->length, pResponse, responseSize, true, doSync, false);
+	return Send(reinterpret_cast<const uint8_t*>(pFrame), pFrame->length, reinterpret_cast<uint8_t*>(pResponse), responseSize, true, doSync, false);
 }
 
 int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const
@@ -274,7 +274,7 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 		} while(0 == mSock.Recv(recvBuffer, sizeof(recvBuffer), &timeout));
 	}
 	
-	Trace(ZONE_VERBOSE, "syncronized\n");
+	Trace(ZONE_VERBOSE, "synchronized\n");
 	/* synchronized -> send request */
 	if(bufferSize != mSock.Send(buffer, bufferSize))
 	{
@@ -292,8 +292,9 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 	/* receive response */
 	timeval timeout = RESPONSE_TIMEOUT;
 	size_t bytesReceived = Recv(recvBuffer, sizeof(recvBuffer), &timeout, checkCrc, crcInLittleEndian);
-	memcpy(pResponse, recvBuffer, bytesReceived);
-	Trace(ZONE_VERBOSE, "%zu bytes received\n", bytesReceived);
+	const size_t bytesToCopy = std::min(bytesReceived, responseSize);
+	memcpy(pResponse, recvBuffer, bytesToCopy);
+	Trace(ZONE_VERBOSE, "%zu bytes received %zu bytes copied\n", bytesReceived, bytesToCopy);
 	return (int32_t)bytesReceived;
 }
 

@@ -52,7 +52,7 @@ extern struct RingBuffer g_TraceBuf;
 		if(g_DebugZones & (ZONE)) { \
 			Trace(ZONE, __VA_ARGS__); \
 			for(size_t i = 0; i < (LENGTH); i++) { \
-				printf(BUFFER_FORMAT, (BUFFER)[i]); \
+				printf(BUFFER_FORMAT, ((uint8_t*)(BUFFER))[i]); \
 			} \
 			printf("\n"); \
 		} \
