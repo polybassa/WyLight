@@ -1,5 +1,5 @@
 ANDROID_DIR=./android/WiflyLight
-ANDROID_BIN=android/.metadata ${ANDROID_DIR}/bin/ ${ANDROID_DIR}/gen/ ${ANDROID_DIR}/libs/ ${ANDROID_DIR}/obj/ ${ANDROID_DIR}Test/bin/ ${ANDROID_DIR}Test/gen/ ${ANDROID_DIR}Test/libs/ ${ANDROID_DIR}Test/obj/
+ANDROID_BIN=android/.metadata ${ANDROID_DIR}/bin/ ${ANDROID_DIR}/gen/ ${ANDROID_DIR}/libs/armeabi/ ${ANDROID_DIR}/obj/ ${ANDROID_DIR}Test/bin/ ${ANDROID_DIR}Test/gen/ ${ANDROID_DIR}Test/libs/ ${ANDROID_DIR}Test/obj/
 
 all_nils: test pic x86_client
 
@@ -24,7 +24,7 @@ x86_client_debug:
 x86_client:
 	cd cli; make cli; cd ..
 %_test:
-	cd $(subst _test,,$@); make test; cd ..
+	@cd $(subst _test,,$@); make test; cd ..
 
 test: clean firmware_test library_test
 

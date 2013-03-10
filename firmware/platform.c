@@ -19,9 +19,11 @@
 #include "platform.h"
 //#include "ScriptCtrl.h"
 #include "ledstrip.h"
+
 #ifdef __CC8E__
 void Platform_CheckInputs()
-{	
+{
+	static uns8 lastSwitchState;
 	if(PORTB.5 == 0)
 	{
 		lastSwitchState = 1;
@@ -32,7 +34,7 @@ void Platform_CheckInputs()
 		if(lastSwitchState == 1)
 		{
 			ScriptCtrl_Clear();
-			Ledstrip_ToogleLeds();
+			Ledstrip_ToggleLeds();
 		}
 		lastSwitchState = 0;
 	}

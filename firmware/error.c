@@ -82,8 +82,10 @@ void Error_FatalError()
 	}
 	
 	Ledstrip_UpdateLed();
+#ifdef __CC8E__
 	while(PORTB.5 != 0);
 	while(PORTB.5 == 0);
+#endif
 	CommandIO_Init();
 	RingBuf_Init(&g_RingBuf);
 }

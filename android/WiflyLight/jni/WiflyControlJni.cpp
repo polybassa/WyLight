@@ -70,9 +70,16 @@ jboolean Java_biz_bruenn_WiflyLight_WiflyControl_ConfSetWlan(JNIEnv* env, jobjec
 
 jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwSetColor(JNIEnv* env, jobject ref, jlong pNative, jint addr, jint rgba)
 {
-	SimpleResponse response(SET_FADE);
-	reinterpret_cast<WiflyControl*>(pNative)->FwSetFade(response, addr, rgba);
-	return response.IsValid();
+	try
+	{
+		SimpleResponse response(SET_FADE);
+		reinterpret_cast<WiflyControl*>(pNative)->FwSetFade(response, addr, rgba);
+		return response.IsValid();
+	}
+	catch(WiflyControlException e)
+	{
+		return false;
+	}
 }
 
 void Java_biz_bruenn_WiflyLight_WiflyControl_release(JNIEnv* env, jobject ref, jlong pNative)

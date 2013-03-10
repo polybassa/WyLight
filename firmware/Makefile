@@ -13,8 +13,6 @@ X86_SRC=main.c crc.c CommandIO.c eeprom.c error.c ledstrip.c RingBuf.c ScriptCtr
 
 OUTPUT_DIR=../binary
 
-UNITTESTS=CommandIO_ut.bin crc_ut.bin ledstrip_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin 
-
 
 all: pic
 
@@ -24,7 +22,7 @@ outdir:
 pic: outdir
 	wine ${PIC_CC8E} main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM -O${OUTPUT_DIR}
 
-simu:
+simu: outdir
 	gcc ${X86_SRC} -DDEBUG -DX86 -lpthread ${OPENGL_LIB} -o ${OUTPUT_DIR}/server.bin -Wall
 
 #generic rule to build and run c unittests
@@ -32,7 +30,7 @@ simu:
 	@gcc $< $(subst _ut.c,.c,$<) eeprom.c -o ${OUTPUT_DIR}/$@ -Wall -std=c11
 	@./${OUTPUT_DIR}/$@
 
-test: clean outdir ${UNITTESTS}
+test: clean outdir CommandIO_ut.bin crc_ut.bin ledstrip_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin
  
 clean:
 	@rm -rf ${BUILD_DIR}
