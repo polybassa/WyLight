@@ -2,7 +2,7 @@ CC=g++
 CFLAGS =-Wall
 CFLAGS+=-pedantic
 CFLAGS+=-std=c++0x
-FILES=BroadcastReceiver.cpp ClientSocket.cpp ComProxy.cpp intelhexclass.cpp TelnetProxy.cpp WiflyControl.cpp WiflyControlColorClass.cpp 
+FILES=BroadcastReceiver.cpp ClientSocket.cpp ComProxy.cpp intelhexclass.cpp TelnetProxy.cpp WiflyControl.cpp 
 FW_FILES=../firmware/crc.c
 FW_HEADERS=../firmware/trace.h ../firmware/unittest.h
 INC=-I../firmware
@@ -37,8 +37,8 @@ TelnetProxy_ut.bin: TelnetProxy_ut.cpp TelnetProxy.cpp TelnetProxy.h $(FW_HEADER
 	@g++ TelnetProxy_ut.cpp TelnetProxy.cpp $(FW_FILES) $(INC) -o $@ -Wall -pedantic -std=c++0x
 	@./$@
 
-WiflyControl_ut.bin: WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp intelhexclass.h WiflyControlColorClass.h WiflyControlColorClass.cpp WiflyControl.h $(FW_HEADERS)
-	@g++ WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp WiflyControlColorClass.cpp $(INC) -o $@ -Wall -pedantic -std=c++0x
+WiflyControl_ut.bin: WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp intelhexclass.h WiflyColor.h WiflyControl.h $(FW_HEADERS)
+	@g++ WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp WiflyColor.cpp $(INC) -o $@ -Wall -pedantic -std=c++0x
 	@./$@
 
 
