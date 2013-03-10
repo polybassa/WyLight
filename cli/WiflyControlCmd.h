@@ -294,8 +294,7 @@ class ControlCmdBlRunApp : public WiflyControlCmd
 			}
 			catch(WiflyControlException &e)
 			{				
-				cout << "failed!" << endl;
-				cout << e.GetErrorString() << endl;
+				cout << "failed!\n" << e.what() << endl;
 			}
 		};
 };
@@ -557,9 +556,9 @@ class ControlCmdSetFade : public WiflyControlCmd
 				control.FwSetFade(response, addr, color, (uint16_t)timevalue, false);
 				cout << "done." << endl;
 			}
-			catch(WiflyControlException)
+			catch(WiflyControlException& e)
 			{
-				cout << "failed!"<< endl;
+				cout << "failed!\n" << e.what() << endl;
 			}
 		};
 };
@@ -627,10 +626,9 @@ class ControlCmdTest : public WiflyControlCmd
 			{
 				control.FwTest();
 			}
-			catch(WiflyControlException &e)
+			catch(WiflyControlException e)
 			{
-				cout << "FwTest failed!" << endl;
-				cout << e.GetErrorString() << endl;
+				cout << "FwTest failed!\n" << e.what() << endl;
 			}
 		};
 };
@@ -649,8 +647,7 @@ class ControlCmdStressTest : public WiflyControlCmd
 			}
 			catch(WiflyControlException &e)
 			{
-				cout << "FwStressTest failed!" << endl;
-				cout << e.GetErrorString() << endl;
+				cout << "FwStressTest failed!\n" << e.what() << endl;
 			}
 		};
 };

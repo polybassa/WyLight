@@ -25,7 +25,6 @@
 
 //*********************** CONFIGURATION ********************************************
 #define NUM_OF_LED 32
-uns8 lastSwitchState;
 
 #ifdef __CC8E__
 	#include "inline.h"
@@ -33,6 +32,7 @@ uns8 lastSwitchState;
 
 	#define true TRUE
 	#define false FALSE
+	#define __attribute__(X)
 	
 	#define softResetJumpDestination(x)
 

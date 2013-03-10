@@ -45,7 +45,7 @@ void UART_Send(const uns8 ch)
 	TXREG1=ch;
 }
 
-#endif /* #ifndef CC8E */
+#endif /* #ifdef CC8E */
 
 #if 0
 /* NOT USED CODE ----- REMOVE IF WE DON'T NEED IT ANYMORE */

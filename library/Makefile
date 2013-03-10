@@ -11,7 +11,7 @@ OBJ=$(FILES:.cpp=.o)
 
 all: libWiflyControl.a
 
-.cpp.o:
+.cpp.o: %.cpp
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 clean:
