@@ -32,6 +32,7 @@
 
 	#define true TRUE
 	#define false FALSE
+	#define __attribute__(X)
 	
 	#define softResetJumpDestination(x)
 

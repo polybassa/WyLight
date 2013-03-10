@@ -50,11 +50,7 @@
 #define FW_MAX_MESSAGE_LENGTH 128
 
 //*********************** STRUCT DECLARATION *********************************************
-#ifndef __CC8E__
-#pragma pack(push)
-#pragma pack(1)
-#endif
-struct cmd_set_fade {
+struct __attribute__((__packed__)) cmd_set_fade {
 	uns8 addr[4];
 	uns8 red;
 	uns8 green;
@@ -63,18 +59,18 @@ struct cmd_set_fade {
 	uns16 fadeTmms; //fadetime in ms
 };
 
-struct cmd_loop_end {
+struct __attribute__((__packed__)) cmd_loop_end {
 	uns8 startIndex; /* pointer to the corresponding cmd_loop_start */
 	uns8 counter; /* current loop counter, used due processing */
 	uns8 numLoops; /* number of programmed loops f.e. LOOP_INFINITE */
 	uns8 depth; /* number of recursions */
 };
 
-struct cmd_wait {
+struct __attribute__((__packed__)) cmd_wait {
 	uns16 waitTmms;
 };
 
-struct cmd_set_color_direct {
+struct __attribute__((__packed__)) cmd_set_color_direct {
 #ifdef __CC8E__
 	uns8 ptr_led_array;
 #else
@@ -82,16 +78,16 @@ struct cmd_set_color_direct {
 #endif
 };
 
-struct cmd_get_fw_version {
+struct __attribute__((__packed__)) cmd_get_fw_version {
 	uns8 major;
 	uns8 minor;
 };
 
-struct response_frame {
+struct __attribute__((__packed__)) response_frame {
 	uns16 length;		/* only for Firmware, do not use in Client */
 	uns8 cmd;
 	ErrorCode state;
-	union {
+	union __attribute__((__packed__)) {
 		struct rtc_time get_rtc;
 		struct cmd_get_fw_version version;
 		uns8 get_trace_string[RingBufferSize];
@@ -99,7 +95,7 @@ struct response_frame {
 	}data;
 };
 
-struct led_cmd {
+struct __attribute__((__packed__)) led_cmd {
 	uns8 cmd;
 	union {
 		struct cmd_set_fade set_fade;
@@ -110,13 +106,10 @@ struct led_cmd {
 	}data;
 };
 
-struct cmd_frame {
+struct __attribute__((__packed__)) cmd_frame {
 	//TODO remove length
 	uns8 length;
 	struct led_cmd led;
 };
-#ifndef __CC8E__
-#pragma pack(pop)
-#endif
 #define FRAMELENGTH (sizeof(struct cmd_frame) + 1)			// *** max length of one commandframe
 #endif /* #ifndef _WIFLY_CMD_H_ */

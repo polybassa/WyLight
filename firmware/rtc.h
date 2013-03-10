@@ -26,7 +26,7 @@
 enum RTC_request{ RTC_SET_TIME, RTC_RD_TIME};
 
  /** *********************** rtc.h VARIABLES *********************************************/
- struct rtc_time{
+struct  __attribute__((__packed__)) rtc_time {
 	uns8 tm_sec;    /* seconds after the minute (0 to 59) */
 	uns8 tm_min;    /* minutes after the hour (0 to 59) */
 	uns8 tm_hour;   /* hours since midnight (0 to 23) */

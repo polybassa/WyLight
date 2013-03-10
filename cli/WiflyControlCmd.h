@@ -556,9 +556,9 @@ class ControlCmdSetFade : public WiflyControlCmd
 				control.FwSetFade(response, addr, color, (uint16_t)timevalue, false);
 				cout << "done." << endl;
 			}
-			catch(WiflyControlException)
+			catch(WiflyControlException& e)
 			{
-				cout << "failed!"<< endl;
+				cout << "failed!\n" << e.what() << endl;
 			}
 		};
 };

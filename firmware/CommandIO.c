@@ -174,13 +174,13 @@ void CommandIO_GetCommands()
 			  {
 				  // [0] contains cmd_frame->length so we send [1]
 #ifndef __CC8E__
-				if(!ScriptCtrl_Add((struct led_cmd*)&g_CmdBuf.buffer[1]))
+					if(!ScriptCtrl_Add((struct led_cmd*)&g_CmdBuf.buffer[1]))
 #else
-				if(!ScriptCtrl_Add(&g_CmdBuf.buffer[1]))
+					if(!ScriptCtrl_Add(&g_CmdBuf.buffer[1]))
 #endif
-				{
-					g_ErrorBits.EepromFailure = 1;
-				}
+					{
+						g_ErrorBits.EepromFailure = 1;
+					}
 			  }
 			  else
 			  {
@@ -248,7 +248,6 @@ void CommandIO_CreateResponse(struct response_frame *mFrame, uns8 cmd)
 	uns8 tempErrorState = (uns8)Error_GetState();
 	mFrame->state = tempErrorState;
 	mFrame->length = sizeof(uns8) + sizeof(ErrorCode) + sizeof(uns16);
-	
 	switch (cmd) {
 		case GET_RTC:
 		{

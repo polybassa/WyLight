@@ -13,8 +13,6 @@ X86_SRC=main.c crc.c CommandIO.c eeprom.c error.c ledstrip.c RingBuf.c ScriptCtr
 
 OUTPUT_DIR=../binary
 
-UNITTESTS=CommandIO_ut.bin crc_ut.bin ledstrip_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin 
-
 
 all: pic
 
@@ -32,7 +30,7 @@ simu: outdir
 	@gcc $< $(subst _ut.c,.c,$<) eeprom.c -o ${OUTPUT_DIR}/$@ -Wall -std=c11
 	@./${OUTPUT_DIR}/$@
 
-test: clean outdir ${UNITTESTS}
+test: clean outdir CommandIO_ut.bin crc_ut.bin ledstrip_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin
  
 clean:
 	@rm -rf ${BUILD_DIR}

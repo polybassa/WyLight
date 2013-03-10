@@ -86,7 +86,7 @@ void Ledstrip_UpdateLed(void);
  */
 uns8 Ledstrip_NumOfFades(void);
 
-void Ledstrip_ToogleLeds(void);
+void Ledstrip_ToggleLeds(void);
 
 
 #ifdef DEBUG

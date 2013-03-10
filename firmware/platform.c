@@ -34,7 +34,7 @@ void Platform_CheckInputs()
 		if(lastSwitchState == 1)
 		{
 			ScriptCtrl_Clear();
-			//TODO Ledstrip_ToogleLeds();
+			Ledstrip_ToggleLeds();
 		}
 		lastSwitchState = 0;
 	}
