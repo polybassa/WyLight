@@ -22,8 +22,6 @@
 
 #include <algorithm>
 #include <cctype>
-#include <iostream>
-#include <sstream>
 #include <stddef.h>
 #include <fstream>
 #include <iomanip>
@@ -31,7 +29,7 @@
 #include <unistd.h>
 #include "intelhexclass.h"
 
-#include "WiflyControlColorClass.h"
+#include "WiflyColor.h"
 
 using std::cout;
 using std::ifstream;
@@ -563,25 +561,10 @@ void WiflyControl::FwSetColorDirect(WiflyResponse& response, unsigned char* pBuf
 	if(pBuffer == NULL) throw std::bad_alloc();
   
 	mCmdFrame.led.cmd = SET_COLOR_DIRECT;
-#if 1
-	//TODO verify this implementation by an unittest
 	static const size_t maxBufferLength = NUM_OF_LED * 3;
 	bufferLength = std::min(bufferLength, maxBufferLength);
 	memcpy(mCmdFrame.led.data.set_color_direct.ptr_led_array, pBuffer, bufferLength);
 	memset(mCmdFrame.led.data.set_color_direct.ptr_led_array + bufferLength, 0, maxBufferLength - bufferLength);
-#else
-	for(unsigned int i = 0; i < NUM_OF_LED * 3; i++)
-	{
-	    if(i < bufferLength)
-	    {
-		mCmdFrame.led.data.set_color_direct.ptr_led_array[i] = *pBuffer++;
-	    }
-	    else
-	    {
-		mCmdFrame.led.data.set_color_direct.ptr_led_array[i] = 0;
-	    }
-	}
-#endif
 	FwSend(&mCmdFrame, sizeof(struct cmd_set_color_direct),response);
 }
 
@@ -600,7 +583,7 @@ void WiflyControl::FwSetFade(WiflyResponse& response, uint32_t argb, uint16_t fa
 
 void WiflyControl::FwSetFade(WiflyResponse& response, const string& rgb, uint16_t fadeTmms, const string& addr, bool parallelFade)
 {
-	FwSetFade(response, 0xff000000 | ToARGB(rgb), fadeTmms, ToARGB(addr), parallelFade);
+	FwSetFade(response, 0xff000000 | WiflyColor::ToARGB(rgb), fadeTmms, WiflyColor::ToARGB(addr), parallelFade);
 }
 
 void WiflyControl::FwSetWait(WiflyResponse& response, unsigned short waitTmms)
@@ -629,6 +612,7 @@ void WiflyControl::FwStressTest(void)
 
 void WiflyControl::FwTest(void)
 {
+#if 1
 	static const timespec sleepTime{0, 50000000};
 	SimpleResponse setFadeResp(SET_FADE);
 	uint32_t color = 0xff;
@@ -637,8 +621,8 @@ void WiflyControl::FwTest(void)
 		color = ((color & 0xff) << 24) | (color >> 8);
 		FwSetFade(setFadeResp, color);
 		nanosleep(&sleepTime, NULL);
-	}	
-#if 0
+	}
+#else
 	SimpleResponse clrResp(CLEAR_SCRIPT);
 	SimpleResponse loopOffResp(LOOP_OFF);
 	SimpleResponse loopOnResp(LOOP_ON);
@@ -647,36 +631,30 @@ void WiflyControl::FwTest(void)
 		
 	FwClearScript(clrResp);
 	
-	WiflyControlColorClass LedColor = WiflyControlColorClass(0xffffffff);
-      
-	static const unsigned long RED   = 0xFF000000;
-	static const unsigned long GREEN = 0x00FF0000;
-	static const unsigned long BLUE  = 0x0000FF00;
-	static const unsigned long WHITE = 0xFFFFFF00;
-	static const unsigned long BLACK = 0x00000000;
+	WiflyColor ledColor(0xffffffff);
 	
 	FwClearScript(clrResp);
 	FwLoopOn(loopOnResp);
-	FwSetFade(setFadeResp, 0xFFFFFFFFLU, RED, 2000, false);
+	FwSetFade(setFadeResp, WiflyColor::RED, 2000, 0xFFFFFFFF, false);
 	
 	uint32_t bitMask = 0x01;
 	for(unsigned int i = 0; i < NUM_OF_LED; i++)
 	{
-		LedColor.red((uint8_t)((0xff / NUM_OF_LED) * i));
-		LedColor.green((uint8_t)((0xff / NUM_OF_LED) * i));
-		LedColor.blue(0xff);
-		FwSetFade(setFadeResp, bitMask, LedColor.rgba(), 20000 + i * 200, true);
+		ledColor.red((uint8_t)((0xff / NUM_OF_LED) * i));
+		ledColor.green((uint8_t)((0xff / NUM_OF_LED) * i));
+		ledColor.blue(0xff);
+		FwSetFade(setFadeResp, bitMask, ledColor.argb(), 20000 + i * 200, true);
 		bitMask = bitMask << 1;
 	}
 	
 	FwSetWait(setWaitResp, 30000);
-	FwSetFade(setFadeResp, 0xFFFFFFFFLU, GREEN,2000, false);
-	FwSetFade(setFadeResp, 0x000000FFLU, RED,  2000, true);
-	FwSetFade(setFadeResp, 0x0000FF00LU, GREEN,2000, true);
-	FwSetFade(setFadeResp, 0x00FF0000LU, BLUE, 2000, true);
-	FwSetFade(setFadeResp, 0xFF000000LU, WHITE,2000, false);
+	FwSetFade(setFadeResp, WiflyColor::GREEN,2000, 0xFFFFFFFF, false);
+	FwSetFade(setFadeResp, WiflyColor::RED,  2000, 0x000000FF, true);
+	FwSetFade(setFadeResp, WiflyColor::GREEN,2000, 0x0000FF00, true);
+	FwSetFade(setFadeResp, WiflyColor::BLUE, 2000, 0x00FF0000, true);
+	FwSetFade(setFadeResp, WiflyColor::WHITE,2000, 0xFF000000, false);
 	FwSetWait(setWaitResp, 2000);
-	FwSetFade(setFadeResp, 0xFFFFFFFFLU, BLACK,2000, false);
+	FwSetFade(setFadeResp, WiflyColor::BLACK,2000, 0xFFFFFFFF, false);
 	FwLoopOff(loopOffResp, 0);
 #endif
 }
@@ -727,17 +705,5 @@ void WiflyControl::FwGetRtc(WiflyResponse& response)
 	mCmdFrame.led.cmd = GET_RTC;
 	FwSend(&mCmdFrame, 0, response);
 	
-}
-
-unsigned long WiflyControl::ToARGB(const string& s) const
-{
-	if(s.length() > 8) return 0;
-
-	// use a stringstream to convert hex ascii string into machine bits
-	unsigned long argb;
-	stringstream converter;
-	converter << hex << s;
-	converter >> argb;
-	return argb;
 }
 
