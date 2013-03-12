@@ -423,7 +423,7 @@ bool WiflyControl::ConfSetDefaults(void) const
 		"set comm remote 0\r\n",		  // Disable *Hello* string
 		"set comm open 0\r\n",			  // Disable *OPEN* string
 		"set comm close 0\r\n",			  // Disable *CLOS* string
-		"set opt deviceid Wifly_Light\r\n",// Set deviceid which appears in broadcastmsg to "Wifly_Light"
+		"set opt deviceid WiFly_Light\r\n",// Set deviceid which appears in broadcastmsg to "Wifly_Light"
 		"set wlan tx 12\r\n",			  // Set the Wi-Fi transmit power to maximum
 	};
 

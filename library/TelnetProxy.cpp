@@ -40,7 +40,7 @@ void TelnetProxy::ClearResponse(void) const
 
 bool TelnetProxy::Close(bool doSave) const
 {
-	if(doSave && !Send("save\r\n", "\r\nStoring in config\r\n<2.31> "))
+	if(doSave && !Send("save\r\n", "\r\nStoring in config\r\n<2.36> "))
 	{
 		Trace(ZONE_ERROR, "saving changes failed\n");
 		return false;
@@ -103,7 +103,7 @@ bool TelnetProxy::Open(void) const
 	}
 	
 	// send carriage return to start telnet console mode
-	return Send("\r\n", "\r\n<2.31> ");
+	return Send("\r\n", "\r\n<2.36> ");
 }
 
 bool TelnetProxy::Recv(const std::string& expectedResponse) const
