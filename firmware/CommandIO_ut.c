@@ -242,8 +242,11 @@ int ut_CommandIO_SendResponse(void)
 	
 	/* generate a default frame with maximal length of commandbuffer */
 	struct response_frame mFrame;
-	mFrame.length = 250;
-	
+	if(CMDFRAMELENGTH >= 250)
+	{
+		mFrame.length = 250;
+	}
+	else mFrame.length = CMDFRAMELENGTH - 2;
 	/* get a pointer to start of payload */
 	uns8 *pPayload;
 	pPayload =(uns8*)&(mFrame.cmd);

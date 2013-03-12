@@ -22,7 +22,9 @@
 #include "platform.h"
 #include "wifly_cmd.h"
 
-#define CMDFRAMELENGTH (NUM_OF_LED * 3 + 10) * 4
+/** Biggest packet is a SET_COLOR_DIRECT packet. In worst case bevor every databyte is a
+ maskbyte so we need to multiply the size by 2 **/
+#define CMDFRAMELENGTH (NUM_OF_LED * 3 + FRAMELENGTH) * 2
 
 /** Statemachine STATES **/
 #define CS_WaitForSTX 0
