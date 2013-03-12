@@ -38,7 +38,7 @@ TelnetProxy_ut.bin: TelnetProxy_ut.cpp TelnetProxy.cpp TelnetProxy.h $(FW_HEADER
 	@./$@
 
 WiflyControl_ut.bin: WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp intelhexclass.h WiflyColor.h WiflyControl.h $(FW_HEADERS)
-	@g++ WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp WiflyColor.cpp $(INC) -o $@ -Wall -pedantic -std=c++0x
+	@g++ WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp $(INC) -o $@ -Wall -pedantic -std=c++0x
 	@./$@
 
 
