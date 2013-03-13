@@ -372,7 +372,7 @@ size_t ut_WiflyControl_ConfSetDefaults(void)
 		"set ftp address 169.254.7.57\r\n",// configure localhost as ftp server in ad-hoc connection
 		"set ftp pass Pass123\r\n",        // configure ftp password
 		"set ftp user roving\r\n",         // configure ftp username
-		"set opt deviceid WiFly_Light\r\n",// Set deviceid which appears in broadcastmsg to "Wifly_Light"
+		"set opt deviceid Wifly_Light\r\n",// Set deviceid which appears in broadcastmsg to "Wifly_Light"
 		"set uart baud 115200\r\n",        // PIC uart parameter
 		"set uart flow 0\r\n",             // PIC uart parameter
 		"set uart mode 0\r\n",             // PIC uart parameter
