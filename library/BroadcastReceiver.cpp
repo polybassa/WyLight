@@ -80,8 +80,10 @@ Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout)
 
 	BroadcastMessage msg;
 	const size_t bytesRead = udpSock.RecvFrom((uint8_t*)&msg, sizeof(msg), timeout, (sockaddr*)&remoteAddr, &remoteAddrLength);
+	TraceBuffer(ZONE_VERBOSE, msg.deviceId, sizeof(msg.deviceId), "%c", "%zu bytes broadcast message received DeviceId: \n", bytesRead);
 	if(msg.IsWiflyBroadcast(bytesRead))
 	{
+		Trace(ZONE_INFO, "Broadcast detected\n");
 		Endpoint newRemote(remoteAddr, remoteAddrLength, msg.port);
 		mMutex.lock();
 		bool added = mIpTable.insert(newRemote).second;
