@@ -24,7 +24,7 @@
 #include <string>
 
 
-#define AOK "\r\nAOK\r\n<2.31> "
+#define AOK "\r\nAOK\r\n<2.45> "
 
 class TelnetProxy
 {
