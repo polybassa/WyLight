@@ -420,6 +420,7 @@ bool WiflyControl::ConfSetDefaults(void) const
 		"set comm open 0\r\n",             // Disable *OPEN* string
 		"set comm remote 0\r\n",           // Disable *Hello* string
 //		"set dns name rn.microchip.com\r\n",	// set dns of updateserver
+		"set ip dhcp 1\r\n",               // enable DHCP client
 		"set ftp address 169.254.7.57\r\n",// configure localhost as ftp server in ad-hoc connection
 		"set ftp pass Pass123\r\n",        // configure ftp password
 		"set ftp user roving\r\n",         // configure ftp username
@@ -427,6 +428,8 @@ bool WiflyControl::ConfSetDefaults(void) const
 		"set uart baud 115200\r\n",        // PIC uart parameter
 		"set uart flow 0\r\n",             // PIC uart parameter
 		"set uart mode 0\r\n",             // PIC uart parameter
+		"set wlan auth 4\r\n",             // use WPA2 protection
+		"set wlan join 1\r\n",             // scan for ap and auto join
 		"set wlan rate 0\r\n",             // slowest datarate but highest range
 		"set wlan tx 12\r\n",              // Set the Wi-Fi transmit power to maximum
 	};

@@ -77,7 +77,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 	// prepare response for entering telnet mode
 	if((frame[0] == '$') && (frame[1] == '$') && (frame[2] == '$'))
 	{
-		static const std::string RESPONSE("CMD\r\n\r\n\r\n<2.36> ");
+		static const std::string RESPONSE("CMD\r\n\r\n\r\n<2.45> ");
 		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = RESPONSE.size();
 		memcpy(g_TestSocketRecvBuffer, RESPONSE.data(), g_TestSocketRecvBufferSize);
@@ -97,7 +97,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 size_t ut_TelnetProxy_CloseAndSave(void)
 {
 	static const std::string CLOSE_CMD("save\r\nexit\r\n");
-	static const std::string RESPONSE("save\r\n\r\nStoring in config\r\n<2.36> exit\r\n\r\nEXIT\r\n");
+	static const std::string RESPONSE("save\r\n\r\nStoring in config\r\n<2.45> exit\r\n\r\nEXIT\r\n");
 	TestCaseBegin();
 	TcpSocket sock{0, 0};
 	TelnetProxy testee{sock};
@@ -167,7 +167,7 @@ size_t ut_TelnetProxy_Recv(void)
 
 size_t ut_TelnetProxy_RecvString(void)
 {
-	static const std::string fullResponse("ssid not this ssid: this is my ssid!\r\nssid: XX\r\nAOK\r\n<2.36> ");
+	static const std::string fullResponse("ssid not this ssid: this is my ssid!\r\nssid: XX\r\nAOK\r\n<2.45> ");
 	TestCaseBegin();
 	TcpSocket sock{0, 0};
 	TelnetProxy testee{sock};
@@ -200,7 +200,7 @@ size_t ut_TelnetProxy_Send(void)
 	// test wrong echo
 	g_TestSocketRecvBufferPos = 0;
 	g_TestSocketRecvBufferSize = 19;
-	memcpy(g_TestSocketRecvBuffer, "BAR\r\n\r\nAOK\r\n<2.36> ", g_TestSocketRecvBufferSize);
+	memcpy(g_TestSocketRecvBuffer, "BAR\r\n\r\nAOK\r\n<2.45> ", g_TestSocketRecvBufferSize);
 	g_TestSocketSendBufferPos = 0;
 	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
 	CHECK(!testee.Send(cmd));
@@ -209,7 +209,7 @@ size_t ut_TelnetProxy_Send(void)
 
 	// test wrong implicit AOK response
 	g_TestSocketRecvBufferPos = 0;
-	memcpy(g_TestSocketRecvBuffer, "FOO\r\n\r\nERR\r\n<2.36> ", g_TestSocketRecvBufferSize);
+	memcpy(g_TestSocketRecvBuffer, "FOO\r\n\r\nERR\r\n<2.45> ", g_TestSocketRecvBufferSize);
 	g_TestSocketSendBufferPos = 0;
 	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
 	CHECK(!testee.Send(cmd));
@@ -218,7 +218,7 @@ size_t ut_TelnetProxy_Send(void)
 
 	// test implicit AOK response
 	g_TestSocketRecvBufferPos = 0;
-	memcpy(g_TestSocketRecvBuffer, "FOO\r\n\r\nAOK\r\n<2.36> ", g_TestSocketRecvBufferSize);
+	memcpy(g_TestSocketRecvBuffer, "FOO\r\n\r\nAOK\r\n<2.45> ", g_TestSocketRecvBufferSize);
 	g_TestSocketSendBufferPos = 0;
 	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
 	CHECK(testee.Send(cmd));
@@ -227,10 +227,10 @@ size_t ut_TelnetProxy_Send(void)
 
 	// test good
 	g_TestSocketRecvBufferPos = 0;
-	memcpy(g_TestSocketRecvBuffer, "FOO\r\n\r\nBAR\r\n<2.36> ", g_TestSocketRecvBufferSize);
+	memcpy(g_TestSocketRecvBuffer, "FOO\r\n\r\nBAR\r\n<2.45> ", g_TestSocketRecvBufferSize);
 	g_TestSocketSendBufferPos = 0;
 	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
-	CHECK(testee.Send(cmd, "\r\nBAR\r\n<2.36> "));
+	CHECK(testee.Send(cmd, "\r\nBAR\r\n<2.45> "));
 	CHECK(cmd.size() == g_TestSocketSendBufferPos);
 	CHECK(0 == memcmp(g_TestSocketSendBuffer, cmd.data(), cmd.size()));
 	TestCaseEnd();
