@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.Toast;
 
 public class SetBrightnessFragment extends ControlFragment {
 
@@ -24,8 +23,8 @@ public class SetBrightnessFragment extends ControlFragment {
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				if(!mChangeIsInProgress.getAndSet(true)) {		
 					final int intensity = (int)(2.55f * progress);
-					final int c = ((((intensity << 8) | intensity) << 8) | intensity) << 8;
-					mCtrl.fwSetColor(WiflyControl.ALL_LEDS, c);
+					final int c = (((intensity << 8) | intensity) << 8) | intensity;
+					mCtrl.fwSetColor(c, WiflyControl.ALL_LEDS);
 					mChangeIsInProgress.set(false);
 				}
 			}

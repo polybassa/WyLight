@@ -7,7 +7,7 @@ public class WiflyControl {
 	private native long create(int ipv4Addr, short port);
 	private native String ConfGetSsid(long pNative);
 	private native boolean ConfSetWlan(long pNative, String passphrase, String ssid);
-	private native boolean FwSetColor(long pNative, int addr, int rgba);
+	private native boolean FwSetColor(long pNative, int argb, int addr);
 	private native void release(long pNative);
 	
 	private long mNative;
@@ -34,7 +34,7 @@ public class WiflyControl {
 		return ConfSetWlan(mNative, passphrase, ssid);
 	}
 	
-	public synchronized boolean fwSetColor(int addr, int rgba) {
-		return FwSetColor(mNative, addr, rgba);
+	public synchronized boolean fwSetColor(int argb, int addr) {
+		return FwSetColor(mNative, argb, addr);
 	}
 }

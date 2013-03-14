@@ -22,8 +22,9 @@
 #include "ClientSocket.h"
 #include "Endpoint.h"
 #include <atomic>
-#include <stdint.h>
 #include <cstring>
+#include <stdint.h>
+#include <string>
 #include <mutex>
 #include <ostream>
 #include <set>
@@ -33,8 +34,8 @@ class BroadcastReceiver
 {
 	public:
 		static const uint16_t BROADCAST_PORT = 55555;
-		static const int8_t BROADCAST_DEVICE_ID[];
-		static const size_t BROADCAST_DEVICE_ID_LENGTH;
+		static const std::string DEVICE_ID;
+		static const std::string DEVICE_ID_OLD;
 		static const int8_t STOP_MSG[];
 		static const size_t STOP_MSG_LENGTH;
 		static const Endpoint EMPTY_ENDPOINT;
@@ -87,13 +88,19 @@ struct BroadcastMessage
 	uint16_t bootTmms;
 	uint16_t sensor[8];
 
-	bool IsWiflyBroadcast(size_t length) {
-		return ((sizeof(BroadcastMessage) == length) && (0 == memcmp(deviceId,	BroadcastReceiver::BROADCAST_DEVICE_ID, BroadcastReceiver::BROADCAST_DEVICE_ID_LENGTH)));
+	bool IsWiflyBroadcast(size_t length) const {
+		return ((sizeof(BroadcastMessage) == length)
+		&& (IsDevice(BroadcastReceiver::DEVICE_ID) || IsDevice(BroadcastReceiver::DEVICE_ID_OLD)));
 	};
 
-	bool IsStop(size_t length) {
+	bool IsStop(size_t length) const {
 		return ((BroadcastReceiver::STOP_MSG_LENGTH == length)
 						&& (0 == memcmp(&mac, BroadcastReceiver::STOP_MSG, BroadcastReceiver::STOP_MSG_LENGTH)));
+	};
+
+private:
+	bool IsDevice(const std::string& deviceType) const {
+		return (0 == memcmp(deviceId,	deviceType.data(), deviceType.size()));
 	};
 };
 #pragma pack(pop)

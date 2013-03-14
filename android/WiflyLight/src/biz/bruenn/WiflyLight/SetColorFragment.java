@@ -23,8 +23,7 @@ public class SetColorFragment extends ControlFragment {
 		mSetColorBtn = (Button)v.findViewById(R.id.setColor);
 		mSetColorBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				int c = mColor << 8;
-				boolean done = mCtrl.fwSetColor(0xffffffff, c);
+				boolean done = mCtrl.fwSetColor(mColor, WiflyControl.ALL_LEDS);
 				Toast.makeText(v.getContext(), String.valueOf(done), Toast.LENGTH_SHORT).show();
 			}
 		});
