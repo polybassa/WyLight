@@ -40,7 +40,7 @@ void TelnetProxy::ClearResponse(void) const
 
 bool TelnetProxy::Close(bool doSave) const
 {
-	if(doSave && !Send("save\r\n", "\r\nStoring in config\r\n<2.45> "))
+	if(doSave && !Send("save\r\n", "\r\nStoring in config" PROMPT))
 	{
 		Trace(ZONE_ERROR, "saving changes failed\n");
 		return false;
@@ -50,10 +50,12 @@ bool TelnetProxy::Close(bool doSave) const
 
 bool TelnetProxy::ExtractStringOfInterest(const std::string& buffer, const std::string& searchKey, std::string& result) const
 {
+	Trace(ZONE_VERBOSE, buffer.c_str());
 	std::stringstream stream;
 	stream << buffer;
 	std::string line;
 	getline(stream, line, '\r');
+	Trace(ZONE_VERBOSE, "Line: %s\n", line.c_str());
 	while(!line.empty())
 	{
 		const size_t start = line.find(searchKey);
@@ -67,18 +69,6 @@ bool TelnetProxy::ExtractStringOfInterest(const std::string& buffer, const std::
 	}
 	Trace(ZONE_ERROR, "Couldn't find '%s' in response\n", searchKey.c_str());
 	return false;
-}
-
-void TelnetProxy::GetString(const std::string& getCmd, const std::string& searchKey, std::string& result) const
-{
-	result.clear();
-
-	if(!SendAndWaitForEcho(getCmd))
-	{
-		Trace(ZONE_ERROR, ">>%s<< receive echo failed\n", getCmd.data());
-		return;
-	}
-	RecvString(searchKey, result);
 }
 
 bool TelnetProxy::Open(void) const
@@ -103,7 +93,7 @@ bool TelnetProxy::Open(void) const
 	}
 	
 	// send carriage return to start telnet console mode
-	return Send("\r\n", "\r\n<2.45> ");
+	return Send("\r\n", PROMPT);
 }
 
 bool TelnetProxy::Recv(const std::string& expectedResponse) const
@@ -124,8 +114,10 @@ bool TelnetProxy::Recv(const std::string& expectedResponse) const
 	{
 		uint8_t* const pBufferPos = buffer + bytesRead;
 		bytesRead += mSock.Recv(pBufferPos, expectedResponse.size() - bytesRead, &timeout);
+
 		gettimeofday(&now, NULL);
 	} while((bytesRead < expectedResponse.size()) && timeval_sub(&endTime, &now, &timeout));
+
 	TraceBuffer(ZONE_INFO, buffer, bytesRead, "%02x ", "%zu bytes received: ", bytesRead);
 	TraceBuffer(ZONE_INFO, buffer, bytesRead, "%c", "%zu bytes received: ", bytesRead);
 	Trace(ZONE_INFO, "%zu:%lu\n", bytesRead, expectedResponse.size());
@@ -135,10 +127,10 @@ bool TelnetProxy::Recv(const std::string& expectedResponse) const
 bool TelnetProxy::RecvString(const std::string& searchKey, std::string& result) const
 {
 	timeval timeout = {5, 0};
-	uint8_t buffer[128];
+	uint8_t buffer[256];
 	uint8_t* pBufferPos = buffer;
-	uint8_t* pAOKBegin = buffer;
-	uint8_t* pAOKPos = pAOKBegin;
+	uint8_t* pPromptBegin = buffer;
+	uint8_t* pPromptPos = pPromptBegin;
 
 	timeval endTime, now;
 	gettimeofday(&endTime, NULL);
@@ -146,35 +138,49 @@ bool TelnetProxy::RecvString(const std::string& searchKey, std::string& result) 
 	do	
 	{
 		pBufferPos += mSock.Recv(pBufferPos, sizeof(buffer) - 1 - (pBufferPos - buffer), &timeout);
+		TraceBuffer(ZONE_VERBOSE, pPromptPos, pBufferPos-pPromptPos, "%c", "telnet response:\n");
 
 		// check for AOK
-		while(pAOKPos < pBufferPos)
+		while(pPromptPos < pBufferPos)
 		{
-			if(*pAOKPos != AOK[pAOKPos-pAOKBegin])
+			if(*pPromptPos != PROMPT[pPromptPos-pPromptBegin])
 			{
 				// We are not in a AOK sequence -> move pointers ahead
-				pAOKBegin = pAOKPos;
+				pPromptBegin = pPromptPos;
 			}
 			else
 			{
-				if(pAOKPos >= pAOKBegin + sizeof(AOK) - 2)
+				if(pPromptPos >= pPromptBegin + sizeof(PROMPT) - 2)
 				{
-					// We received a full AOK sequence -> extract response from our data
+					// We received a full PROMPT sequence -> extract response from our data
 					buffer[sizeof(buffer) - 1] = 0;
-					return ExtractStringOfInterest((const char*)buffer, searchKey, result);
+					static const size_t skipLeadingCRLF = 2;
+					return ExtractStringOfInterest((const char*)buffer + skipLeadingCRLF, searchKey, result);
 				}
 				else
 				{
-					Trace(ZONE_INFO, "Found next character of AOK, but end not reached yet\n");
+					Trace(ZONE_INFO, "Found next character of PROMPT, but end not reached yet\n");
 				}
 			}
-			pAOKPos++;
+			pPromptPos++;
 		}
 
 		gettimeofday(&now, NULL);
 	} while((buffer + sizeof(buffer) > pBufferPos) && timeval_sub(&endTime, &now, &timeout));
 	TraceBuffer(ZONE_ERROR, buffer, pBufferPos - buffer, "%c", "No end found in: ");
 	return false;
+}
+
+void TelnetProxy::RecvString(const std::string& getCmd, const std::string& searchKey, std::string& result) const
+{
+	result.clear();
+
+	if(!SendAndWaitForEcho(getCmd))
+	{
+		Trace(ZONE_ERROR, ">>%s<< receive echo failed\n", getCmd.data());
+		return;
+	}
+	RecvString(searchKey, result);
 }
 
 bool TelnetProxy::Send(const std::string& telnetMessage, const std::string& expectedResponse) const

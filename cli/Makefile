@@ -22,7 +22,7 @@ outdir:
 	mkdir -p ${OUTPUT_DIR}
 
 cli: outdir $(FILES) $(HEADERS) $(FW_FILES) $(WIFLYCONTROL)
-	$(CC) $(FILES) $(FW_FILES) $(WIFLYCONTROL) $(INC) -lpthread -o ${OUTPUT_DIR}/cli.bin $(CFLAGS)
+	$(CC) $(FILES) $(FW_FILES) $(WIFLYCONTROL) $(INC) -lpthread -o ${OUTPUT_DIR}/cli.bin $(CFLAGS) -DDEBUG
 
 cli_debug: outdir $(FILES) $(HEADERS) $(FW_FILES) $(WIFLYCONTROL)
 	$(CC) $(FILES) $(FW_FILES) $(WIFLYCONTROL) $(INC) -DDEBUG -lpthread -o ${OUTPUT_DIR}/cli.bin $(CFLAGS)

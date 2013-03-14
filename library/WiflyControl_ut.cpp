@@ -175,6 +175,10 @@ bool TelnetProxy::Open(void) const
 	return g_ProxyConnected = true;
 }
 
+void TelnetProxy::RecvString(const std::string& getCmd, const std::string& searchKey, std::string& result) const
+{
+}
+
 bool TelnetProxy::Send(const std::string& message, const std::string& expectedResponse) const
 {
 	g_TestBuffer.push_back(message);
