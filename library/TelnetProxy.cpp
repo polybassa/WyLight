@@ -40,12 +40,12 @@ void TelnetProxy::ClearResponse(void) const
 
 bool TelnetProxy::Close(bool doSave) const
 {
-	if(doSave && !Send("save\r\n", "\r\nStoring in config" PROMPT))
+	if(doSave && !Send("save\r\n", "Storing in config" PROMPT))
 	{
 		Trace(ZONE_ERROR, "saving changes failed\n");
 		return false;
 	}
-	return Send("exit\r\n", "\r\nEXIT\r\n");
+	return Send("exit\r\n", "EXIT\r\n");
 }
 
 bool TelnetProxy::ExtractStringOfInterest(const std::string& buffer, const std::string& searchKey, std::string& result) const
@@ -93,7 +93,7 @@ bool TelnetProxy::Open(void) const
 	}
 	
 	// send carriage return to start telnet console mode
-	return Send("\r\n", PROMPT);
+	return true;return Send("\r\n", PROMPT);
 }
 
 bool TelnetProxy::Recv(const std::string& expectedResponse) const
@@ -118,9 +118,9 @@ bool TelnetProxy::Recv(const std::string& expectedResponse) const
 		gettimeofday(&now, NULL);
 	} while((bytesRead < expectedResponse.size()) && timeval_sub(&endTime, &now, &timeout));
 
+	TraceBuffer(ZONE_INFO, expectedResponse.data(), expectedResponse.size(), "%02x ", "%zu bytes expected: ", expectedResponse.size());
 	TraceBuffer(ZONE_INFO, buffer, bytesRead, "%02x ", "%zu bytes received: ", bytesRead);
 	TraceBuffer(ZONE_INFO, buffer, bytesRead, "%c", "%zu bytes received: ", bytesRead);
-	Trace(ZONE_INFO, "%zu:%lu\n", bytesRead, expectedResponse.size());
 	return 0 == memcmp(expectedResponse.data(), buffer, expectedResponse.size());
 }
 
@@ -154,8 +154,7 @@ bool TelnetProxy::RecvString(const std::string& searchKey, std::string& result) 
 				{
 					// We received a full PROMPT sequence -> extract response from our data
 					buffer[sizeof(buffer) - 1] = 0;
-					static const size_t skipLeadingCRLF = 2;
-					return ExtractStringOfInterest((const char*)buffer + skipLeadingCRLF, searchKey, result);
+					return ExtractStringOfInterest((const char*)buffer, searchKey, result);
 				}
 				else
 				{
@@ -206,7 +205,7 @@ bool TelnetProxy::SendAndWaitForEcho(const std::string& telnetMessage) const
 		Trace(ZONE_ERROR, "Send telnetMessage >>%s<< failed\n", telnetMessage.data());
 		return false;
 	}
-	return Recv(telnetMessage);
+	return Recv(telnetMessage+"\r\n");
 }
 
 bool TelnetProxy::SendString(const std::string& command, std::string value) const

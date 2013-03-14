@@ -88,6 +88,10 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 	memcpy(g_TestSocketRecvBuffer + g_TestSocketRecvBufferSize, frame, length);
 	g_TestSocketRecvBufferSize += length;
 
+	// echo back CRLF
+	memcpy(g_TestSocketRecvBuffer + g_TestSocketRecvBufferSize, "\r\n", 2);
+	g_TestSocketRecvBufferSize += 2;
+
 	// append AOK
 	memcpy(g_TestSocketRecvBuffer + g_TestSocketRecvBufferSize, AOK_STRING.data(), AOK_STRING.size());
 	g_TestSocketRecvBufferSize += AOK_STRING.size();
@@ -136,7 +140,7 @@ size_t ut_TelnetProxy_CloseWithoutSave(void)
 
 size_t ut_TelnetProxy_Open(void)
 {
-	static const std::string OPEN_CMD("$$$\r\n");
+	static const std::string OPEN_CMD("$$$");
 	TestCaseBegin();
 	TcpSocket sock{0, 0};
 	TelnetProxy testee{sock};
@@ -230,7 +234,7 @@ size_t ut_TelnetProxy_Send(void)
 	memcpy(g_TestSocketRecvBuffer, "FOO\r\n\r\nBAR" PROMPT, g_TestSocketRecvBufferSize);
 	g_TestSocketSendBufferPos = 0;
 	memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
-	CHECK(testee.Send(cmd, "\r\nBAR" PROMPT));
+	CHECK(testee.Send(cmd, "BAR" PROMPT));
 	CHECK(cmd.size() == g_TestSocketSendBufferPos);
 	CHECK(0 == memcmp(g_TestSocketSendBuffer, cmd.data(), cmd.size()));
 	TestCaseEnd();
