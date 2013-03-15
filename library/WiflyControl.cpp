@@ -503,10 +503,11 @@ void WiflyControl::FwClearScript(WiflyResponse& response)
 	FwSend(&mCmdFrame, 0, response);
 }
 
-void WiflyControl::FwGetCycletime(CycletimeResponse& response)
+CycletimeResponse& WiflyControl::FwGetCycletime(CycletimeResponse& response)
 {
 	mCmdFrame.led.cmd = GET_CYCLETIME;
 	FwSend(&mCmdFrame, 0, response);
+	return response;
 }
 
 void WiflyControl::FwGetRtc(RtcResponse& response)
@@ -515,16 +516,18 @@ void WiflyControl::FwGetRtc(RtcResponse& response)
 	FwSend(&mCmdFrame, 0, response);
 }
 
-void WiflyControl::FwGetTracebuffer(TracebufferResponse& response)
+TracebufferResponse& WiflyControl::FwGetTracebuffer(TracebufferResponse& response)
 {
 	mCmdFrame.led.cmd = GET_TRACE;
 	FwSend(&mCmdFrame, 0, response);
+	return response;
 }
 
-void WiflyControl::FwGetVersion(FirmwareVersionResponse& response)
+FirmwareVersionResponse& WiflyControl::FwGetVersion(FirmwareVersionResponse& response)
 {
 	mCmdFrame.led.cmd = GET_FW_VERSION;
 	FwSend(&mCmdFrame, 0, response);
+	return response;
 }
 
 void WiflyControl::FwLoopOn(WiflyResponse& response)

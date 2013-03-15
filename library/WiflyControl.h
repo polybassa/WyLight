@@ -53,7 +53,8 @@ class WiflyControl
 		void BlEepromErase(void) const;
 
 		/**
-		 * TODO
+		 * Instructs the bootloader to set the autostart flag to true. This ensures
+		 * the bootloader will be started on the next reboot automatically.
 		 */
 		void BlEnableAutostart(void) const;
 		
@@ -146,9 +147,9 @@ class WiflyControl
 		/**
 		 * Reads the cycletimes from wifly device and stores them into the response object
 		 * @param response reference to an object to store the read cyletimes
-		 * @return cycletimes from the wifly device stored to the referenced CycletimeResponse
+		 * @return <response>
 		 */
-		void FwGetCycletime(CycletimeResponse& response);
+		CycletimeResponse& FwGetCycletime(CycletimeResponse& response);
 
 		/**
 		 * Reads the current rtc time from the wifly device
@@ -159,16 +160,16 @@ class WiflyControl
 		/**
 		 * Reads the tracebuffer from wifly device and stores the data into the response object
 		 * @param response reference to an object to store the read tracebuffer content
-		 * @return tracebuffer content from the wifly device stored to the referenced TracebufferResponse
+		 * @return <response>
 		 */
-		void FwGetTracebuffer(TracebufferResponse& response);
+		TracebufferResponse& FwGetTracebuffer(TracebufferResponse& response);
 
 		/**
 		 * Reads the firmware version currently running on the wifly device.
 		 * @param response reference to an object to store the read version number
-		 * @return the wifly device version number stored to the referenced FirmwareVersionResponse
+		 * @return <response>
 		 */
-		void FwGetVersion(FirmwareVersionResponse& response);
+		FirmwareVersionResponse& FwGetVersion(FirmwareVersionResponse& response);
 
 		/**
 		 * Injects a LoopOn command into the wifly script controller
