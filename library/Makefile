@@ -12,7 +12,7 @@ OBJ=$(FILES:.cpp=.o)
 all: libWiflyControl.a
 
 .cpp.o: %.cpp
-	$(CC) $(CFLAGS) $(INC) -c $< -o $@ -DDEBUG
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 clean:
 	@rm -f *.o *.bin
