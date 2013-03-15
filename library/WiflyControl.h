@@ -136,58 +136,118 @@ class WiflyControl
 		 */
 		bool ConfSetWlan(const std::string& phrase, const std::string& ssid) const;
 		
-		/** ------------------------------ FIRMWARE METHODES ------------------------------ **/
-
+/** -------------------------- FIRMWARE METHODES -------------------------- **/
 		/**
 		 * Wipe all commands from the Wifly script controller
 		 * @param response will be modified according to the success of this operation
 		 */
 		void FwClearScript(WiflyResponse& response);
+		
+		/**
+		 * Reads the cycletimes from wifly device and stores them into the response object
+		 * @param response reference to an object to store the read cyletimes
+		 * @return cycletimes from the wifly device stored to the referenced CycletimeResponse
+		 */
+		void FwGetCycletime(CycletimeResponse& response);
 
 		/**
-		 * Inject a LoopOn command into the Wifly script controller
+		 * Reads the current rtc time from the wifly device
+		 *
+		 */
+		void FwGetRtc(RtcResponse& response);
+
+		/**
+		 * Reads the tracebuffer from wifly device and stores the data into the response object
+		 * @param response reference to an object to store the read tracebuffer content
+		 * @return tracebuffer content from the wifly device stored to the referenced TracebufferResponse
+		 */
+		void FwGetTracebuffer(TracebufferResponse& response);
+
+		/**
+		 * Reads the firmware version currently running on the wifly device.
+		 * @param response reference to an object to store the read version number
+		 * @return the wifly device version number stored to the referenced FirmwareVersionResponse
+		 */
+		void FwGetVersion(FirmwareVersionResponse& response);
+
+		/**
+		 * Injects a LoopOn command into the wifly script controller
 		 * @param response will be modified according to the success of this operation
 		 */
-		void FwLoopOn(WiflyResponse&);
+		void FwLoopOn(WiflyResponse& response);
 
 		/**
-		 * Inject a LoopOff command into the Wifly script controller
+		 * Injects a LoopOff command into the wifly script controller
 		 * @param response will be modified according to the success of this operation
 		 * @param numLoops number of rounds before termination of the loop, use 0 for infinite loops. To terminate an infinite loop you have to call <FwClearScript>
 		 */
-		void FwLoopOff(WiflyResponse&, uint8_t numLoops);
+		void FwLoopOff(WiflyResponse& response, uint8_t numLoops);
 
 		/**
-		 * Set all leds with different colors directly. This doesn't affect the Wifly script controller
+		 * Sets all leds with different colors directly. This doesn't affect the Wifly script controller
+		 * Example: to set the first led to yellow and the second to blue and all others to off use a <pBuffer> like this:
+		 * pBuffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6;
+		 * @param response will be modified according to the success of this operation
+		 * @param pBuffer containing continouse rgb values r1g1b1r2g2b2...r32g32b32
+		 * @param bufferLength number of bytes in <pBuffer> usally 32 * 3 bytes
 		 */
-		void FwSetColorDirect(WiflyResponse&, unsigned char* pBuffer, size_t bufferLength);
+		void FwSetColorDirect(WiflyResponse& response, uint8_t* pBuffer, size_t bufferLength);
 		
 		/**
-		 * Sends a fade command to the connected wifly module
-		 * @param response reference to a response object, FwSetFade will modify the state of the referenced object according to the transmit status.
+		 * Injects a fade command into the wifly script controller
+		 * @param response will be modified according to the success of this operation
 		 * @param argb is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff) f.e.
 		 *        black(  0,  0,  0) as argb is 0xff000000
 		 *        green(  0,255,  0) as argb is 0xff00ff00
 		 *        white(255,255,255) as argb is 0xffffffff
 		 * @param fadeTmms fading time in milliseconds use 0 to set color immediately, default = 0
 		 * @param addr bitmask of leds which should be effected by this command, set bit to 1 to affect the led, default 0xffffffff
-		 * @param parallelFade if true other fades are allowed in parallel
+		 * @param parallelFade if true other fades are allowed in parallel with this fade
 		 */
 		void FwSetFade(WiflyResponse& response, uint32_t argb, uint16_t fadeTmms = 0, uint32_t addr = 0xffffffff, bool parallelFade = false);
-		void FwSetFade(WiflyResponse&, const std::string& rgba, uint16_t fadeTmms = 0, const std::string& addr = LEDS_ALL, bool parallelFade = false);
+
+		/**
+		 * Injects a fade command into the wifly script controller
+		 * @param response will be modified according to the success of this operation
+		 * @param rgb is a hex string representation of a rgb value without leading '0x'
+		 *        black "0"
+		 *        green "ff00"
+		 *        white "ffffff"
+		 * @param fadeTmms fading time in milliseconds use 0 to set color immediately, default = 0
+		 * @param addr is a hex string representation of a 32 bit mask without leading '0x' of leds which should be effected by this comman.
+		 *        all leds          "ffffffff" (default)
+		 *        first three leds  "7"
+		 *        only the last led "80000000"
+		 * @param parallelFade if true other fades are allowed in parallel with this fade
+		 */
+		void FwSetFade(WiflyResponse& response, const std::string& rgb, uint16_t fadeTmms = 0, const std::string& addr = LEDS_ALL, bool parallelFade = false);
+
+		/**
+		 * Sets the rtc clock of the wifly device to the specified time.
+		 * The wifly device has to be in firmware mode for this command.
+		 * @param response will be modified according to the success of this operation.
+		 * @param timeValue pointer to a posix tm struct containing the new time
+		 */
+		void FwSetRtc(SimpleResponse& response, struct tm* timeValue);
 		
-		void FwSetWait(WiflyResponse&, unsigned short waitTmms);
+		/**
+		 * Injects a wait command into the wifly script controller.
+		 * This causes the script processing to wait before executing the next command fir the specified duration
+		 * @param response will be modified according to the success of this operation
+		 * @param waitTmms timme in milliseconds to wait until execution of the next command
+		 */
+		void FwSetWait(WiflyResponse& response, uint16_t waitTmms);
+
+		/**
+		 * Stops firmware and script controller execution and start the bootloader of the wifly device
+		 * @param response will be modified according to the success of this operation.
+		 */
+		void FwStartBl(SimpleResponse& response);
 		
+
+		//TODO move this test functions to the integration test 
 		void FwTest(void);
 		void FwStressTest(void);
-		void FwPrintCycletime(WiflyResponse&);
-		void FwPrintTracebuffer(WiflyResponse&);
-		void FwPrintFwVersion(WiflyResponse&);
-		void FwStartBl(WiflyResponse&);
-		
-		void FwSetRtc(WiflyResponse&, struct tm* timeValue);
-		void FwGetRtc(WiflyResponse&);
-
 	private:
 		const TcpSocket mSock;
 		const ComProxy mProxy;
@@ -203,9 +263,39 @@ class WiflyControl
 		 * @param numPages number of pages in a block
 		 */
 		void BlFlashErase(const uint32_t endAddress, const uint8_t numPages) const;
-		size_t BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync = true) const;
-		void BlWriteFlash(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
-		void BlWriteEeprom(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
+
+		/**
+		 * Send a request to the bootloader and read his response into pResponse
+		 * @param request reference to a bootloader requested
+		 * @param pResponse a buffer for the response of the bootloader
+		 * @param responseSize sizeof of the <pResponse> buffer in bytes
+		 * @param doSync if set to 'true' the uart sync is issued before data transfer default = true
+		 * @return the number of bytes the bootloader send back in his response
+		 */
+		size_t BlRead(BlRequest& request, uint8_t* pResponse, const size_t responseSize, bool doSync = true) const;
+
+		/**
+		 * Instructs the bootloader of the wifly device to write data to the eeprom.
+		 * @param address in eeprom
+		 * @param pBuffer containing the new data for eeprom
+		 * @param bufferLength number of bytes to write to eeprom
+		 */
+		void BlWriteEeprom(uint32_t address, uint8_t* pBuffer, size_t bufferLength) const;
+
+		/**
+		 * Instructs the bootloader of the wifly device to write data to the flash.
+		 * @param address in flash
+		 * @param pBuffer containing the new data for flash
+		 * @param bufferLength number of bytes to write to flash
+		 */
+		void BlWriteFlash(uint32_t address, uint8_t* pBuffer, size_t bufferLength) const;
+
+		/**
+		 * Sends a wifly command frame to te wifly device
+		 * @param pFrame pointer to the frame, which should be send
+		 * @param length number of bytes on the <pFrame>
+		 * @param response will be modified according to the success of this operation
+		 */		
 		WiflyResponse& FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const;
 
 /** ------------------ friendships for unittesting only ------------------- **/

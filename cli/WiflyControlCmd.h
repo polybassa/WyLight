@@ -380,7 +380,7 @@ class ControlCmdPrintTracebuffer : public WiflyControlCmd
 			try
 			{
 				TracebufferResponse response;
-				control.FwPrintTracebuffer(response);
+				control.FwGetTracebuffer(response);
 				cout << "done." << endl;
 				response.PrintTracebuffer(std::cout);
 			}
@@ -404,7 +404,7 @@ class ControlCmdPrintFwVersion : public WiflyControlCmd
 				try
 				{
 					FirmwareVersionResponse response;
-					control.FwPrintFwVersion(response);
+					control.FwGetVersion(response);
 					cout << "done." << endl;
 					response.PrintFirmwareVersion(std::cout);
 				}
@@ -449,7 +449,7 @@ class ControlCmdPrintCycletime : public WiflyControlCmd
 			try
 			{
 				CycletimeResponse response;
-				control.FwPrintCycletime(response);
+				control.FwGetCycletime(response);
 				cout << "done." << endl;
 				response.PrintCycletimes(std::cout);
 			}
