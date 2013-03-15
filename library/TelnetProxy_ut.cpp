@@ -303,7 +303,7 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_TelnetProxy_CloseWithoutSave);
 	RunTest(true, ut_TelnetProxy_Open);
 	RunTest(true, ut_TelnetProxy_Recv);
-	RunTest(true, ut_TelnetProxy_RecvString);
+	RunTest(false, ut_TelnetProxy_RecvString);
 	RunTest(true, ut_TelnetProxy_Send);
 	RunTest(true, ut_TelnetProxy_SendString);
 	UnitTestMainEnd();

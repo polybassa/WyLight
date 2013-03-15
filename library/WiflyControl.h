@@ -31,40 +31,91 @@
 #include "WiflyControlResponse.h"
 
 class WiflyControl
-{
-	private:
-		const TcpSocket mSock;
-		const ComProxy mProxy;
-		const TelnetProxy mTelnet;
-		pthread_t mRecvThread;
-		struct cmd_frame mCmdFrame;
-		unsigned long ToARGB(const std::string& s) const;
-		size_t BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync = true) const;
-		WiflyResponse& FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const;
-		
+{	
 	public:
+		/**
+		 * string constant to address all LEDs. String representation of 0xffffffff
+		 */
 		static const std::string LEDS_ALL;
+
+		/**
+		 * Connect to a wifly device
+		 * @param addr ipv4 address as 32 bit value in host byte order
+		 * @param port number of the wifly device server in host byte order
+		 */
 		WiflyControl(uint32_t addr, uint16_t port);
 		
-		/** ----------------------------- BOOTLOADER METHODES ----------------------------- **/
-		void BlFlashErase(unsigned int endAddress, const size_t numPages, bool doSync) const;
-		void BlFlashErase(void) const;
+/** ------------------------- BOOTLOADER METHODES ------------------------- **/
+		/**
+		 * Instructs the bootloader to erase the whole eeprom.
+		 * The wifly device has to be in bootloader mode for this command.
+		 */
 		void BlEepromErase(void) const;
-		
-		size_t BlReadCrcFlash(unsigned char* pBuffer, unsigned int address, const size_t numBytes) const;
-		size_t BlReadEeprom(unsigned char* pBuffer, unsigned int address, size_t numBytes) const;
-		size_t BlReadFlash(unsigned char* pBuffer, unsigned int address, size_t numBytes) const;
-		void BlReadInfo(BlInfo& info) const;
-		
-		void BlWriteFlash(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
-		void BlWriteEeprom(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
-		
-		void BlProgramFlash(const std::string& Filename);
-		void BlRunApp(void) const;
+
+		/**
+		 * TODO
+		 */
 		void BlEnableAutostart(void) const;
 		
-		/** ----------------------------- Telnet METHODES ----------------------------- **/
+		/**
+		 * Instructs the bootloader to erase the whole flash which is not occupied
+		 * by the bootloader itself.
+		 * The wifly device has to be in bootloader mode for this command.
+		 */
+		void BlFlashErase(void) const;
 
+		/**
+		 * Instructs the bootloader to create crc-16 checksums for the content of
+		 * the specified flash area. TODO crc values are in little endian byte order
+		 * The wifly device has to be in bootloader mode for this command.
+		 * @param pBuffer pointer to a buffer for the resulting 16bit crc values
+		 * @param address crc generation starts from this flash address
+		 * @param numBytes size of the flash area for which the crc are calculated
+		 * @return the number of bytes read (result / 2 = number of crc values)
+		 */
+		size_t BlReadCrcFlash(uint8_t* pBuffer, uint32_t address, uint16_t numBytes) const;
+
+		/**
+		 * Instructs the bootloader to read the specified memory area of the eeprom.
+		 * The wifly device has to be in bootloader mode for this command.
+		 * @param pBuffer destination for the copy of the eeprom content, should be at least <numBytes> wide
+		 * @param address start of the eeprom region to read
+		 * @param numBytes size of the eeprom region to read
+		 * @return the number of bytes read
+		 */
+		size_t BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t numBytes) const;
+
+		/**
+		 * Instructs the bootloader to read the specified memory area of the flash.
+		 * The wifly device has to be in bootloader mode for this command.
+		 * @param pBuffer destination for the copy of the flash content, should be at least <numBytes> wide
+		 * @param address start of the flash region to readRequest
+		 * @param numbytes size of the flash region to read
+		 * @return the number of bytes read
+		 */
+		size_t BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const;
+
+		/**
+		 * Instructs the bootloader to return a struct of bootloader informations
+		 * like bootloader version, flash and eeprom size. see <BlInfo> for details.
+		 * The wifly device has to be in bootloader mode for this command.
+		 */
+		void BlReadInfo(BlInfo& info) const;
+		
+		/**
+		 * Instructs the bootloader to update the wifly device with new firmware.
+		 * The wifly device has to be in bootloader mode for this command.
+		 * @param filename path to the *.hex file containing the new firmware
+		 */
+		void BlProgramFlash(const std::string& filename);
+
+		/**
+		 * Instructs the bootloader to start the wifly device firmware.
+		 * The wifly device has to be in bootloader mode for this command.
+		 */
+		void BlRunApp(void) const;
+
+/** --------------------- WLAN CONFIGURATION METHODES --------------------- **/
 		/**
 		 * Read the currently configured ssid from Wifly module
 		 * @return an empty string or the ssid
@@ -84,12 +135,6 @@ class WiflyControl
 		 * @return false, in case of an error
 		 */
 		bool ConfSetWlan(const std::string& phrase, const std::string& ssid) const;
-
-		/**
-		 * Update the Wifly module firmware
-		 * @return true, if reboot was triggered successfully, connection will then be lost!
-		 */
-		bool ConfUpdate(void) const;
 		
 		/** ------------------------------ FIRMWARE METHODES ------------------------------ **/
 
@@ -142,5 +187,29 @@ class WiflyControl
 		
 		void FwSetRtc(WiflyResponse&, struct tm* timeValue);
 		void FwGetRtc(WiflyResponse&);
+
+	private:
+		const TcpSocket mSock;
+		const ComProxy mProxy;
+		const TelnetProxy mTelnet;
+		pthread_t mRecvThread;
+		struct cmd_frame mCmdFrame;
+		unsigned long ToARGB(const std::string& s) const;
+
+		/**
+		 * Instructs the bootloader to erase the specified area of the flash.
+		 * The wifly device has to be in bootloader mode for this command.
+		 * @param endAddress address of the block to delete
+		 * @param numPages number of pages in a block
+		 */
+		void BlFlashErase(const uint32_t endAddress, const uint8_t numPages) const;
+		size_t BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync = true) const;
+		void BlWriteFlash(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
+		void BlWriteEeprom(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const;
+		WiflyResponse& FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const;
+
+/** ------------------ friendships for unittesting only ------------------- **/
+friend size_t ut_WiflyControl_BlEepromWrite(void);
+friend size_t ut_WiflyControl_BlFlashWrite(void);
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */

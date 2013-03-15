@@ -22,9 +22,10 @@
 #include <cassert>
 #include <cstring>
 #include <stdio.h>
+#include <stdint.h>
 
-#define WORD(HIGH, LOW) (unsigned short)(((((unsigned short)(HIGH))<< 8) | (((unsigned short)(LOW)) & 0x00ff)))
-#define DWORD(HIGH, LOW) (unsigned int)(((((unsigned int)(HIGH))<< 16) | (((unsigned int)(LOW)) & 0x0000ffff)))
+#define WORD(HIGH, LOW) (uint16_t)(((((uint16_t)(HIGH))<< 8) | (((uint16_t)(LOW)) & 0x00ff)))
+#define DWORD(HIGH, LOW) (uint32_t)(((((uint32_t)(HIGH))<< 16) | (((uint32_t)(LOW)) & 0x0000ffff)))
 
 #define FLASH_ERASE_BLOCKSIZE 64
 #define FLASH_ERASE_BLOCKS 128		/* Blocks erased by one command */
@@ -104,7 +105,7 @@ struct BlInfo
 	unsigned char deviceIdHigh;
 #endif
 
-	unsigned int GetAddress(void) const
+	uint32_t GetAddress(void) const
 	{
 		return DWORD(WORD(zero, startU), WORD(startHigh, startLow));
 	}
@@ -162,16 +163,16 @@ struct BlEepromWriteRequest : public BlAddressRequest
 
 struct BlFlashCrc16Request : public BlAddressRequest
 {
-		BlFlashCrc16Request(unsigned int address, unsigned short numBlocks)
+		BlFlashCrc16Request(uint32_t address, uint16_t numBlocks)
 		: BlAddressRequest(2, 0x02)
 		{
 			SetAddress(address);
-			numBlocksLow = static_cast<unsigned char>(numBlocks & 0x00FF);
-			numBlocksHigh = static_cast<unsigned char>((numBlocks & 0xFF00) >> 8);
+			numBlocksLow = static_cast<uint8_t>(numBlocks & 0x00FF);
+			numBlocksHigh = static_cast<uint8_t>((numBlocks & 0xFF00) >> 8);
 		};
 
-		unsigned char numBlocksLow;
-		unsigned char numBlocksHigh;
+		uint8_t numBlocksLow;
+		uint8_t numBlocksHigh;
 
 		// this is a special command where no crc is generated for the response
 		virtual bool CheckCrc() const { return false; };
@@ -179,7 +180,7 @@ struct BlFlashCrc16Request : public BlAddressRequest
 
 struct BlFlashEraseRequest : public BlAddressRequest
 {
-		BlFlashEraseRequest(unsigned int address, unsigned char numFlashPages)
+		BlFlashEraseRequest(uint32_t address, uint8_t numFlashPages)
 		: BlAddressRequest(1, 0x03), numPages(numFlashPages)
 		{
 			SetAddress(address);

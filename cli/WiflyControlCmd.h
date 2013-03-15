@@ -345,20 +345,6 @@ class ControlCmdConfSetWlan : public WiflyControlCmd
 		};
 };
 
-class ControlCmdConfUpdate : public WiflyControlCmd
-{
-	public:
-		ControlCmdConfUpdate(void) : WiflyControlCmd(
-					string("conf_update"),
-					string("' - update wifly firmware"))
-		{};
-
-		virtual void Run(WiflyControl& control) const {
-			cout << "Updating wifly firmware... ";
-			cout << (control.ConfUpdate() ? "done.\n" : "failed!\n");
-		};
-};
-
 class ControlCmdStartBl : public WiflyControlCmd
 {
 	public:
@@ -680,7 +666,6 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdConfGetSsid(),
 	new ControlCmdConfSetDefaults(),
 	new ControlCmdConfSetWlan(),
-	new ControlCmdConfUpdate(),
 	new ControlCmdClearScript(),
 	new ControlCmdSetFade(),
 	new ControlCmdStartBl(),
