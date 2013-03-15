@@ -26,6 +26,10 @@
 #include "timer.h"
 #include "error.h"
 
+#ifdef __cplusplus
+#include <ostream>
+#endif
+
 //*********************** ENUMERATIONS *********************************************
 #define STX 0x0F
 #define DLE 0x05
@@ -81,6 +85,12 @@ struct __attribute__((__packed__)) cmd_set_color_direct {
 struct __attribute__((__packed__)) cmd_get_fw_version {
 	uns8 major;
 	uns8 minor;
+#ifdef __cplusplus
+	friend std::ostream& operator<< (std::ostream& out, const cmd_get_fw_version& ref)
+	{
+		return out << (int) ref.major << '.' << (int) ref.minor << '\n';
+	};
+#endif
 };
 
 struct __attribute__((__packed__)) response_frame {
