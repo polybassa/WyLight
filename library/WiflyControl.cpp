@@ -409,7 +409,13 @@ void WiflyControl::BlEnableAutostart(void) const
 
 std::string WiflyControl::ConfGetSsid(void) const
 {
-	return "HUHU";
+	std::string result{};
+	if(mTelnet.Open())
+	{
+		mTelnet.RecvString("get wlan\r\n", "SSID=", result);
+		mTelnet.Close(false);
+	}
+	return result;
 }
 
 bool WiflyControl::ConfSetDefaults(void) const

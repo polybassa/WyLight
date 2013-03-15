@@ -5,9 +5,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class SetWlanDialog extends Dialog {
 	private final Endpoint mRemote;
+	private EditText mPass;
+	private EditText mSsid;
 	
 	SetWlanDialog(Context context, Endpoint remote) {
 		super(context);
@@ -19,14 +22,22 @@ public class SetWlanDialog extends Dialog {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dialog_set_wlan);
 		
+		mPass = (EditText)findViewById(R.id.editPassphrase);
+		mSsid = (EditText)findViewById(R.id.editSsid);
+
+		WiflyControl control = new WiflyControl();
+		control.connect(mRemote);
+		mSsid.setText(control.confGetSsid());
+		control.disconnect();
+		
 		Button save = (Button)findViewById(R.id.save);
 		save.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				// TODO replace this dummy call with confSetWlan()
+				
 				WiflyControl control = new WiflyControl();
 				control.connect(mRemote);
-				control.fwSetColor(0xffffffff, 0xff000000);
+				control.confSetWlan(mPass.getText().toString(),	mSsid.getText().toString());
 				control.disconnect();
 				dismiss();
 			}
@@ -39,5 +50,4 @@ public class SetWlanDialog extends Dialog {
 			}
 		});
 	}
-
 }

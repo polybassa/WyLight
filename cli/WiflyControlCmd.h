@@ -299,6 +299,20 @@ class ControlCmdBlRunApp : public WiflyControlCmd
 		};
 };
 
+class ControlCmdConfGetSsid : public WiflyControlCmd
+{
+	public:
+		ControlCmdConfGetSsid(void) : WiflyControlCmd(
+					string("conf_ssid"),
+					string("' - get configured ssid from wlan module"))
+		{};
+
+		virtual void Run(WiflyControl& control) const {
+			cout << "Reading wifly configuration ssid: ";
+			cout << control.ConfGetSsid() << "\n";
+		};
+};
+
 class ControlCmdConfSetDefaults : public WiflyControlCmd
 {
 	public:
@@ -663,6 +677,7 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdBlReadEeprom(),
 	new ControlCmdBlReadFlash(),
 	new ControlCmdBlRunApp(),
+	new ControlCmdConfGetSsid(),
 	new ControlCmdConfSetDefaults(),
 	new ControlCmdConfSetWlan(),
 	new ControlCmdConfUpdate(),
