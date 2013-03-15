@@ -61,19 +61,19 @@ WiflyControl::WiflyControl(uint32_t addr, uint16_t port)
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_fade) + 2;
 }
 
-/** --------------------------------------- BOOTLOADER METHODES --------------------------------------- **/
-void WiflyControl::BlFlashErase(unsigned int endAddress, const size_t numPages, bool doSync) const
+/** ------------------------- BOOTLOADER METHODES ------------------------- **/
+void WiflyControl::BlEepromErase(void) const
 {
-	unsigned char response;
-	BlFlashEraseRequest request(endAddress, numPages);
-	// we expect only one byte as response, the command code 0x03
-	BlRead(request, &response, sizeof(response), doSync);
+	unsigned char buffer[EEPROM_SIZE];
+	std::fill_n(buffer, EEPROM_SIZE, 0xff);
 	
-	if(0x03 != response)
-	{
-		Trace(ZONE_VERBOSE, "Erase flash failed at address: %x\n", endAddress);
-		throw BlNoResponseException(request, "Erase flash failed!");
-	}
+	BlWriteEeprom((unsigned int)0, &buffer[0], sizeof(buffer));
+}
+
+void WiflyControl::BlEnableAutostart(void) const
+{
+	unsigned char value = 0xff;
+	BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
 }
 
 void WiflyControl::BlFlashErase(void) const
@@ -86,21 +86,28 @@ void WiflyControl::BlFlashErase(void) const
 
 	while(address > FLASH_ERASE_BLOCKSIZE * FLASH_ERASE_BLOCKS)
 	{
-		// force SYNC only for erase command
-		BlFlashErase(address, FLASH_ERASE_BLOCKS, true);
+		BlFlashErase(address, FLASH_ERASE_BLOCKS);
 		address -= FLASH_ERASE_BLOCKSIZE * FLASH_ERASE_BLOCKS;
 	}
 	/* now we erased everything until a part of the flash smaller than FLASH_ERASE_BLOCKS * FLASH_ERASE_BLOCKSIZE
 	 * so we set our startaddress at the beginning of this block and erase */
-	BlFlashErase(FLASH_ERASE_BLOCKS * FLASH_ERASE_BLOCKSIZE -1, FLASH_ERASE_BLOCKS, true);
+	BlFlashErase(FLASH_ERASE_BLOCKS * FLASH_ERASE_BLOCKSIZE -1, FLASH_ERASE_BLOCKS);
 }
 
-void WiflyControl::BlEepromErase(void) const
+void WiflyControl::BlFlashErase(const uint32_t endAddress, const uint8_t numPages) const
 {
-	unsigned char buffer[EEPROM_SIZE];
-	std::fill_n(buffer, EEPROM_SIZE, 0xff);
+	unsigned char response;
+	BlFlashEraseRequest request(endAddress, numPages);
+
+	// always sync for flash erase
+	BlRead(request, &response, sizeof(response), true);
 	
-	BlWriteEeprom((unsigned int)0, &buffer[0], sizeof(buffer));
+	// we expect only one byte as response, the command code 0x03
+	if(0x03 != response)
+	{
+		Trace(ZONE_VERBOSE, "Erase flash failed at address: %x\n", endAddress);
+		throw BlNoResponseException(request, "Erase flash failed!");
+	}
 }
 
 size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync) const
@@ -117,7 +124,7 @@ size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size
 	return responseSize;
 }
 
-size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address, size_t numBlocks) const
+size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address, uint16_t numBlocks) const
 {
 	if(numBlocks * FLASH_ERASE_BLOCKSIZE + address > FLASH_SIZE)
 	{
@@ -143,7 +150,7 @@ size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address
 	return sumBytesRead;
 }
 
-size_t WiflyControl::BlReadEeprom(unsigned char* pBuffer, unsigned int address, size_t numBytes) const
+size_t WiflyControl::BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t numBytes) const
 {
 	if(numBytes + address > EEPROM_SIZE)
 	{
@@ -169,7 +176,7 @@ size_t WiflyControl::BlReadEeprom(unsigned char* pBuffer, unsigned int address, 
 	return sumBytesRead;
 }
 
-size_t WiflyControl::BlReadFlash(unsigned char* pBuffer, unsigned int address, size_t numBytes) const
+size_t WiflyControl::BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const
 {
 	if(numBytes + address > FLASH_SIZE)
 	{
@@ -401,12 +408,6 @@ void WiflyControl::BlRunApp(void) const
 	throw BlNoResponseException(request);
 }
 
-void WiflyControl::BlEnableAutostart(void) const
-{
-	unsigned char value = 0xff;
-	BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
-}
-
 std::string WiflyControl::ConfGetSsid(void) const
 {
 	std::string result{};
@@ -496,30 +497,51 @@ bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssi
 	return mTelnet.Close(true);
 }
 
-bool WiflyControl::ConfUpdate(void) const
+void WiflyControl::FwClearScript(WiflyResponse& response)
 {
-	static const std::string commands[] = {
-//		"ftp update wifly7-245.img\r\n", // get fw file
-		"ftp update wifly-245.img\r\n",  // get fw file
-		"set factory RESET\r\n",         // factory reset required
-		"reboot\r\n",
-	};
+	mCmdFrame.led.cmd = CLEAR_SCRIPT;
+	FwSend(&mCmdFrame, 0, response);
+}
 
-	if(!mTelnet.Open())
-	{
-		Trace(ZONE_ERROR, "open telnet connection failed\n");
-		return false;
-	}
+CycletimeResponse& WiflyControl::FwGetCycletime(CycletimeResponse& response)
+{
+	mCmdFrame.led.cmd = GET_CYCLETIME;
+	FwSend(&mCmdFrame, 0, response);
+	return response;
+}
 
-	for(size_t i = 0; i < sizeof(commands) / sizeof(commands[0]); i++)
-	{
-		if(!mTelnet.Send(commands[i]))
-		{
-			Trace(ZONE_ERROR, "command: '%s' failed -> exit without saving\n", commands[i].data());
-			return mTelnet.Close(false);
-		} 
-	}
-	return mTelnet.Close(false);
+void WiflyControl::FwGetRtc(RtcResponse& response)
+{    
+	mCmdFrame.led.cmd = GET_RTC;
+	FwSend(&mCmdFrame, 0, response);
+}
+
+TracebufferResponse& WiflyControl::FwGetTracebuffer(TracebufferResponse& response)
+{
+	mCmdFrame.led.cmd = GET_TRACE;
+	FwSend(&mCmdFrame, 0, response);
+	return response;
+}
+
+FirmwareVersionResponse& WiflyControl::FwGetVersion(FirmwareVersionResponse& response)
+{
+	mCmdFrame.led.cmd = GET_FW_VERSION;
+	FwSend(&mCmdFrame, 0, response);
+	return response;
+}
+
+void WiflyControl::FwLoopOn(WiflyResponse& response)
+{
+	mCmdFrame.led.cmd = LOOP_ON;
+	FwSend(&mCmdFrame, 0, response);
+}
+
+void WiflyControl::FwLoopOff(WiflyResponse& response, unsigned char numLoops)
+{
+	mCmdFrame.led.cmd = LOOP_OFF;
+	mCmdFrame.led.data.loopEnd.numLoops = numLoops;
+	
+	FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
 }
 
 WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const
@@ -543,26 +565,6 @@ WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, Wif
 	if(response.IsScriptBufferFull()) throw ScriptBufferFullException(pFrame);
 	
 	return response;
-}
-
-void WiflyControl::FwClearScript(WiflyResponse& response)
-{
-	mCmdFrame.led.cmd = CLEAR_SCRIPT;
-	FwSend(&mCmdFrame, 0, response);
-}
-
-void WiflyControl::FwLoopOn(WiflyResponse& response)
-{
-	mCmdFrame.led.cmd = LOOP_ON;
-	FwSend(&mCmdFrame, 0, response);
-}
-
-void WiflyControl::FwLoopOff(WiflyResponse& response, unsigned char numLoops)
-{
-	mCmdFrame.led.cmd = LOOP_OFF;
-	mCmdFrame.led.data.loopEnd.numLoops = numLoops;
-	
-	FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
 }
 
 void WiflyControl::FwSetColorDirect(WiflyResponse& response, unsigned char* pBuffer, size_t bufferLength)
@@ -593,6 +595,22 @@ void WiflyControl::FwSetFade(WiflyResponse& response, uint32_t argb, uint16_t fa
 void WiflyControl::FwSetFade(WiflyResponse& response, const string& rgb, uint16_t fadeTmms, const string& addr, bool parallelFade)
 {
 	FwSetFade(response, 0xff000000 | WiflyColor::ToARGB(rgb), fadeTmms, WiflyColor::ToARGB(addr), parallelFade);
+}
+
+void WiflyControl::FwSetRtc(SimpleResponse& response, struct tm* timeValue)
+{
+	if(timeValue == NULL) throw std::bad_alloc();
+  
+  	mCmdFrame.led.cmd = SET_RTC;
+	mCmdFrame.led.data.set_rtc.tm_sec  = (uns8) timeValue->tm_sec;
+	mCmdFrame.led.data.set_rtc.tm_min  = (uns8) timeValue->tm_min;
+	mCmdFrame.led.data.set_rtc.tm_hour = (uns8) timeValue->tm_hour;
+	mCmdFrame.led.data.set_rtc.tm_mday = (uns8) timeValue->tm_mday;
+	mCmdFrame.led.data.set_rtc.tm_mon  = (uns8) timeValue->tm_mon;
+	mCmdFrame.led.data.set_rtc.tm_year = (uns8) timeValue->tm_year;
+	mCmdFrame.led.data.set_rtc.tm_wday = (uns8) timeValue->tm_wday;
+	
+	FwSend(&mCmdFrame, sizeof(struct rtc_time),response);
 }
 
 void WiflyControl::FwSetWait(WiflyResponse& response, unsigned short waitTmms)
@@ -668,51 +686,9 @@ void WiflyControl::FwTest(void)
 #endif
 }
 
-void WiflyControl::FwPrintCycletime(WiflyResponse& response)
-{
-	mCmdFrame.led.cmd = GET_CYCLETIME;
-	FwSend(&mCmdFrame, 0, response);
-}
-
-void WiflyControl::FwPrintTracebuffer(WiflyResponse& response)
-{
-	mCmdFrame.led.cmd = GET_TRACE;
-	FwSend(&mCmdFrame, 0, response);
-}
-
-void WiflyControl::FwPrintFwVersion(WiflyResponse& response)
-{
-	mCmdFrame.led.cmd = GET_FW_VERSION;
-	FwSend(&mCmdFrame, 0, response);
-}
-
-
-void WiflyControl::FwStartBl(WiflyResponse& response)
+void WiflyControl::FwStartBl(SimpleResponse& response)
 {
 	mCmdFrame.led.cmd = START_BL;
 	FwSend(&mCmdFrame, 0, response);
-}
-
-void WiflyControl::FwSetRtc(WiflyResponse& response, struct tm* timeValue)
-{
-	if(timeValue == NULL) throw std::bad_alloc();
-  
-  	mCmdFrame.led.cmd = SET_RTC;
-	mCmdFrame.led.data.set_rtc.tm_sec  = (uns8) timeValue->tm_sec;
-	mCmdFrame.led.data.set_rtc.tm_min  = (uns8) timeValue->tm_min;
-	mCmdFrame.led.data.set_rtc.tm_hour = (uns8) timeValue->tm_hour;
-	mCmdFrame.led.data.set_rtc.tm_mday = (uns8) timeValue->tm_mday;
-	mCmdFrame.led.data.set_rtc.tm_mon  = (uns8) timeValue->tm_mon;
-	mCmdFrame.led.data.set_rtc.tm_year = (uns8) timeValue->tm_year;
-	mCmdFrame.led.data.set_rtc.tm_wday = (uns8) timeValue->tm_wday;
-	
-	FwSend(&mCmdFrame, sizeof(struct rtc_time),response);
-}
-
-void WiflyControl::FwGetRtc(WiflyResponse& response)
-{    
-	mCmdFrame.led.cmd = GET_RTC;
-	FwSend(&mCmdFrame, 0, response);
-	
 }
 

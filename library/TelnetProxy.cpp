@@ -93,7 +93,7 @@ bool TelnetProxy::Open(void) const
 	}
 	
 	// send carriage return to start telnet console mode
-	return true;return Send("\r\n", PROMPT);
+	return true;
 }
 
 bool TelnetProxy::Recv(const std::string& expectedResponse) const

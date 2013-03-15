@@ -171,7 +171,7 @@ size_t ut_TelnetProxy_Recv(void)
 
 size_t ut_TelnetProxy_RecvString(void)
 {
-	static const std::string fullResponse("\r\nssid not this ssid: this is my ssid!\r\nssid: XX" PROMPT);
+	static const std::string fullResponse("ssid not this ssid: this is my ssid!\r\nssid: XX" PROMPT);
 	TestCaseBegin();
 	TcpSocket sock{0, 0};
 	TelnetProxy testee{sock};
@@ -182,6 +182,7 @@ size_t ut_TelnetProxy_RecvString(void)
 	g_TestSocketRecvBufferSize = fullResponse.size();
 	memcpy(g_TestSocketRecvBuffer, fullResponse.data(), fullResponse.size());
 	response.clear();
+	
 	CHECK(testee.RecvString("", response));
 	CHECK(0 == response.compare("ssid not this ssid: this is my ssid!"));
 
