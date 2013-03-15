@@ -93,17 +93,19 @@ public:
 			}
 		}
 	};
-	void PrintCycletimes(std::ostream& out)
+
+	friend std::ostream& operator<< (std::ostream& out, const CycletimeResponse& ref)
 	{
-		if(mIsValid)
+		if(ref.mIsValid)
 		{
-			out << "Cycletimes: " << std::endl;
+			out << "Cycletimes: \n";
 			for( unsigned int i = 0; i < CYCLETIME_METHODE_ENUM_SIZE; i++)
 			{
-				out << std::setw(3) << std::dec << i + 1 << ": " << std::setw(8) << std::dec << mCycletimes[i] << " us" << std::endl;
+				out << std::setw(3) << std::dec << i + 1 << ": " << std::setw(8) << std::dec << ref.mCycletimes[i] << " us\n";
 			}
 
 		}
+		return out;
 	};
 
 private:
@@ -120,20 +122,18 @@ public:
 		if(mIsValid)
 		{
 			mMessageLength = (unsigned int)dataLength - 4;
-			for (unsigned int i = 0; i < dataLength; i++)
-			{
-				mTracebuffer[i] = (char) pData->data.get_trace_string[i];
-			}
+			memcpy(mTracebuffer, pData->data.get_trace_string, dataLength);
 		}
 	};
-	void PrintTracebuffer(std::ostream& out)
+
+	friend std::ostream& operator<< (std::ostream& out, const TracebufferResponse& ref)
 	{
-		if(mIsValid)
+		if(ref.mIsValid)
 		{
-			out << std::endl << "Tracebuffercontent: ";
-			for(unsigned int i = 0; i < mMessageLength; i++) out << mTracebuffer[i];
-			out << std::endl;
+			out << "Tracebuffercontent: ";
+			for(unsigned int i = 0; i < ref.mMessageLength; i++) out << ref.mTracebuffer[i];
 		}
+		return out;
 	};
 	
 private:
@@ -150,19 +150,13 @@ public:
 		SimpleResponse::Init(pData, dataLength);
 		if(mIsValid && (dataLength >= 4 + sizeof(struct cmd_get_fw_version)))
 		{
-			mFwVersion.major = pData->data.version.major;
-			mFwVersion.minor = pData->data.version.minor;
+			mFwVersion = pData->data.version;
 		}
 	};
-	void PrintFirmwareVersion(std::ostream& out)
+
+	friend std::ostream& operator<< (std::ostream& out, const FirmwareVersionResponse& ref)
 	{
-		if(mIsValid)
-		{
-			out << std::endl << "Firmwareversion: ";
-			out << (int) mFwVersion.major << ".";
-			out << (int) mFwVersion.minor;
-			out << std::endl;
-		}
+		return out << "Firmwareversion: " << ref.mFwVersion;
 	};
 	
 private:

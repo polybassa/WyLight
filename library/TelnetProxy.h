@@ -24,7 +24,8 @@
 #include <string>
 
 
-#define AOK "\r\nAOK\r\n<2.45> "
+#define AOK "AOK\r\n<2.45> "
+#define PROMPT "\r\n<2.45> "
 
 class TelnetProxy
 {
@@ -41,7 +42,7 @@ class TelnetProxy
 
 		void ClearResponse(void) const;
 		bool Close(bool doSave) const;
-		void GetString(const std::string& getCmd, const std::string& searchKey, std::string& result) const;
+		void RecvString(const std::string& getCmd, const std::string& searchKey, std::string& result) const;
 		bool Open(void) const;
 		bool Send(const std::string& telnetMessage, const std::string& expectedResponse = AOK) const;
 		bool SendString(const std::string& command, std::string value) const;

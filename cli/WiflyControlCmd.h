@@ -299,6 +299,20 @@ class ControlCmdBlRunApp : public WiflyControlCmd
 		};
 };
 
+class ControlCmdConfGetSsid : public WiflyControlCmd
+{
+	public:
+		ControlCmdConfGetSsid(void) : WiflyControlCmd(
+					string("conf_ssid"),
+					string("' - get configured ssid from wlan module"))
+		{};
+
+		virtual void Run(WiflyControl& control) const {
+			cout << "Reading wifly configuration ssid: ";
+			cout << control.ConfGetSsid() << "\n";
+		};
+};
+
 class ControlCmdConfSetDefaults : public WiflyControlCmd
 {
 	public:
@@ -328,20 +342,6 @@ class ControlCmdConfSetWlan : public WiflyControlCmd
 			cin >> ssid;
 			cout << "Setting passphrase '" << phrase << "' and ssid '" << ssid << "'... ";
 			cout << (control.ConfSetWlan(phrase, ssid) ? "done.\n" : "failed!\n");
-		};
-};
-
-class ControlCmdConfUpdate : public WiflyControlCmd
-{
-	public:
-		ControlCmdConfUpdate(void) : WiflyControlCmd(
-					string("conf_update"),
-					string("' - update wifly firmware"))
-		{};
-
-		virtual void Run(WiflyControl& control) const {
-			cout << "Updating wifly firmware... ";
-			cout << (control.ConfUpdate() ? "done.\n" : "failed!\n");
 		};
 };
 
@@ -380,13 +380,11 @@ class ControlCmdPrintTracebuffer : public WiflyControlCmd
 			try
 			{
 				TracebufferResponse response;
-				control.FwPrintTracebuffer(response);
-				cout << "done." << endl;
-				response.PrintTracebuffer(std::cout);
+				cout << "done.\n\n" << control.FwGetTracebuffer(response) << '\n';
 			}
 			catch(WiflyControlException)
 			{
-				cout << "failed!"<< endl;
+				cout << "failed!\n"<< endl;
 			}
 		};
   
@@ -404,13 +402,11 @@ class ControlCmdPrintFwVersion : public WiflyControlCmd
 				try
 				{
 					FirmwareVersionResponse response;
-					control.FwPrintFwVersion(response);
-					cout << "done." << endl;
-					response.PrintFirmwareVersion(std::cout);
+					cout << "done.\n\n" << control.FwGetVersion(response) << '\n';
 				}
-				catch(WiflyControlException)
+				catch(WiflyControlException&)
 				{
-					cout << "failed!"<< endl;
+					cout << "failed!\n";
 				}
 			};
 };
@@ -449,9 +445,7 @@ class ControlCmdPrintCycletime : public WiflyControlCmd
 			try
 			{
 				CycletimeResponse response;
-				control.FwPrintCycletime(response);
-				cout << "done." << endl;
-				response.PrintCycletimes(std::cout);
+				cout << "done.\n" << control.FwGetCycletime(response) << '\n';
 			}
 			catch(WiflyControlException)
 			{
@@ -663,9 +657,9 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdBlReadEeprom(),
 	new ControlCmdBlReadFlash(),
 	new ControlCmdBlRunApp(),
+	new ControlCmdConfGetSsid(),
 	new ControlCmdConfSetDefaults(),
 	new ControlCmdConfSetWlan(),
-	new ControlCmdConfUpdate(),
 	new ControlCmdClearScript(),
 	new ControlCmdSetFade(),
 	new ControlCmdStartBl(),
