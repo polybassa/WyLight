@@ -1,0 +1,663 @@
+
+CC8E Version 1.3F, Copyright (c) B Knudsen Data.
+* FUNCTION CALL STRUCTURE
+
+F: HighPriorityInterrupt  :#0 
+    HighPriorityInterruptFunction: #1 
+
+F: LowPriorityInterrupt   :#0 
+
+F: HighPriorityInterruptFunction :#1 
+    RingBuf_HasError      : #8 
+    RingBuf_Put           : #2 
+
+F: main                   :#0 
+    InitAll               : #1 
+    Timer_StartStopwatch  : #7 
+    Timer_StartStopwatch  : #7 
+    Platform_CheckInputs  : #1 
+    Timer_StopStopwatch   : #7 
+    Timer_StartStopwatch  : #7 
+    Error_Throw           : #1 
+    Timer_StopStopwatch   : #7 
+    Timer_StartStopwatch  : #7 
+    CommandIO_GetCommands : #1 
+    Timer_StopStopwatch   : #7 
+    Timer_StartStopwatch  : #7 
+    ScriptCtrl_Run        : #1 
+    Timer_StopStopwatch   : #7 
+    Timer_StartStopwatch  : #7 
+    Ledstrip_DoFade       : #1 
+    Timer_StopStopwatch   : #7 
+    Timer_StartStopwatch  : #7 
+    Ledstrip_UpdateLed    : #3 
+    Timer_StopStopwatch   : #7 
+    Timer_StopStopwatch   : #7 
+
+F: InitAll                :#1 
+    RingBuf_Init          : #4 
+    UART_Init             : #1 
+    Timer_Init            : #1 
+    Ledstrip_Init         : #1 
+    CommandIO_Init        : #3 
+    Rtc_Init              : #1 
+    ScriptCtrl_Init       : #1 
+    Platform_AllowInterrupts: #1 
+    Platform_DisableBootloaderAutostart: #1 
+    Trace_String          : #18
+    CommandIO_CreateResponse: #3 
+    CommandIO_SendResponse: #3 
+
+F: Crc_AddCrc             :#4 
+
+F: Crc_AddCrc16           :#0 
+    Crc_AddCrc            : #4 
+
+F: Crc_BuildCrc           :#0 
+    _const1               : #1 
+    Crc_AddCrc            : #4 
+
+F: Crc_NewCrc             :#2 
+
+F: Eeprom_Write           :#12
+
+F: Eeprom_Read            :#4 
+
+F: Eeprom_WriteBlock      :#3 
+    Eeprom_Write          : #12
+
+F: Eeprom_ReadBlock       :#1 
+    Eeprom_Read           : #4 
+
+F: Error_GetState         :#1 
+
+F: Error_Throw            :#1 
+    RingBuf_HasError      : #8 
+    RingBuf_Init          : #4 
+    Trace_String          : #18
+    Trace_String          : #18
+    Error_FatalError      : #1 
+    RingBuf_HasError      : #8 
+    Trace_String          : #18
+    RingBuf_Init          : #4 
+    CommandIO_Init        : #3 
+    Trace_String          : #18
+    Trace_String          : #18
+
+F: Error_FatalError       :#1 
+    Ledstrip_UpdateLed    : #3 
+    CommandIO_Init        : #3 
+    RingBuf_Init          : #4 
+
+F: _mult8x8               :#7 
+
+F: _multS8x8              :#0 
+
+F: _multU16x8             :#0 
+
+F: _mult16x16             :#0 
+
+F: _divU16_8              :#9 
+
+F: _divU16_16             :#0 
+
+F: _divS16_8              :#0 
+
+F: _divS16_16             :#0 
+
+F: _remU16_8              :#0 
+
+F: _remU16_16             :#0 
+
+F: _remS16_8              :#0 
+
+F: _remS16_16             :#0 
+
+F: Ledstrip_NumOfFades    :#0 
+
+F: Ledstrip_ToggleLeds    :#1 
+    Ledstrip_UpdateLed    : #3 
+
+F: Ledstrip_Init          :#1 
+    SPI_Init              : #1 
+
+F: Ledstrip_SetColorDirect :#1 
+
+F: Ledstrip_DoFade        :#1 
+
+F: Ledstrip_UpdateLed     :#3 
+    SPI_SendLedBuffer     : #1 
+
+F: Ledstrip_SetFade       :#1 
+    ntohs                 : #3 
+    _divU16_8             : #9 
+    _divU16_8             : #9 
+    _divU16_8             : #9 
+    _divU16_8             : #9 
+    _divU16_8             : #9 
+    _divU16_8             : #9 
+
+F: SPI_Init               :#1 
+
+F: SPI_Send               :#1 
+
+F: SPI_SendLedBuffer      :#1 
+    SPI_Send              : #1 
+
+F: Timer_Init             :#1 
+
+F: Timer_StartStopwatch   :#7 
+
+F: Timer_StopStopwatch    :#7 
+
+F: Timer_PrintCycletime   :#1 
+    htons                 : #1 
+
+F: RingBuf_Init           :#4 
+
+F: RingBuf_Get            :#2 
+
+F: RingBuf_Put            :#2 
+
+F: RingBuf_HasError       :#8 
+
+F: RingBuf_IsEmpty        :#2 
+    _const2               : #2 
+    _const2               : #2 
+
+F: UART_Init              :#1 
+
+F: UART_Send              :#8 
+
+F: writeByte              :#3 
+    Crc_AddCrc            : #4 
+    Trace_Hex16           : #1 
+    Trace_String          : #18
+
+F: DeleteBuffer           :#3 
+    Crc_NewCrc            : #2 
+
+F: CommandIO_Init         :#3 
+    DeleteBuffer          : #3 
+
+F: CommandIO_GetCommands  :#1 
+    RingBuf_HasError      : #8 
+    RingBuf_IsEmpty       : #2 
+    RingBuf_Get           : #2 
+    DeleteBuffer          : #3 
+    writeByte             : #3 
+    writeByte             : #3 
+    ScriptCtrl_Add        : #1 
+    Trace_String          : #18
+    Trace_Hex             : #12
+    Trace_Hex             : #12
+    Trace_Hex             : #12
+    Trace_Hex             : #12
+    Trace_String          : #18
+    DeleteBuffer          : #3 
+    CommandIO_CreateResponse: #3 
+    CommandIO_SendResponse: #3 
+    writeByte             : #3 
+
+F: CommandIO_SendResponse :#3 
+    Crc_NewCrc            : #2 
+    UART_Send             : #8 
+    Crc_AddCrc            : #4 
+    UART_Send             : #8 
+    UART_Send             : #8 
+    UART_Send             : #8 
+    UART_Send             : #8 
+    UART_Send             : #8 
+    UART_Send             : #8 
+    UART_Send             : #8 
+
+F: CommandIO_CreateResponse :#3 
+    Error_GetState        : #1 
+    Rtc_Ctl               : #2 
+    Timer_PrintCycletime  : #1 
+    Trace_Print           : #1 
+    _const3               : #2 
+    _const3               : #2 
+
+F: Platform_CheckInputs   :#1 
+    ScriptCtrl_Clear      : #2 
+    Ledstrip_ToggleLeds   : #1 
+
+F: Platform_AllowInterrupts :#1 
+
+F: Platform_EnableAllInterrupts :#0 
+
+F: Platform_DisableAllInterrupts :#0 
+
+F: Platform_DisableBootloaderAutostart :#1 
+    Eeprom_Write          : #12
+
+F: Platform_EnableBootloaderAutostart :#1 
+    Eeprom_Write          : #12
+
+F: htons                  :#1 
+
+F: ntohs                  :#3 
+
+F: BcdToBin               :#7 
+    _mult8x8              : #7 
+
+F: BinToBcd               :#7 
+    _divU16_8             : #9 
+    _mult8x8              : #7 
+
+F: Rtc_Init               :#1 
+    I2C_Init              : #1 
+    I2C_Write             : #9 
+    I2C_Write             : #9 
+
+F: Rtc_Ctl                :#2 
+    I2C_Read              : #7 
+    BcdToBin              : #7 
+    I2C_Read              : #7 
+    BcdToBin              : #7 
+    I2C_Read              : #7 
+    BcdToBin              : #7 
+    I2C_Read              : #7 
+    BcdToBin              : #7 
+    I2C_Read              : #7 
+    BcdToBin              : #7 
+    I2C_Read              : #7 
+    BcdToBin              : #7 
+    I2C_Read              : #7 
+    BcdToBin              : #7 
+    BinToBcd              : #7 
+    I2C_Write             : #9 
+    BinToBcd              : #7 
+    I2C_Write             : #9 
+    BinToBcd              : #7 
+    I2C_Write             : #9 
+    BinToBcd              : #7 
+    I2C_Write             : #9 
+    BinToBcd              : #7 
+    I2C_Write             : #9 
+    BinToBcd              : #7 
+    I2C_Write             : #9 
+    BinToBcd              : #7 
+    I2C_Write             : #9 
+
+F: I2C_Init               :#1 
+
+F: I2C_Write              :#9 
+
+F: I2C_Read               :#7 
+
+F: ScriptCtrl_Add         :#1 
+    Trace_String          : #18
+    ScriptCtrl_Write      : #4 
+    Trace_String          : #18
+    Trace_Hex             : #12
+    Trace_Hex             : #12
+    Trace_Hex             : #12
+    Trace_Hex             : #12
+    Trace_String          : #18
+    ScriptCtrl_Write      : #4 
+    ScriptCtrl_Write      : #4 
+    CommandIO_CreateResponse: #3 
+    CommandIO_SendResponse: #3 
+    Platform_EnableBootloaderAutostart: #1 
+    Rtc_Ctl               : #2 
+    Ledstrip_SetColorDirect: #1 
+    ScriptCtrl_Write      : #4 
+
+F: ScriptCtrl_Clear       :#2 
+    Eeprom_Write          : #12
+    Eeprom_Write          : #12
+    Eeprom_Write          : #12
+
+F: ScriptCtrl_Init        :#1 
+    Eeprom_Read           : #4 
+    Eeprom_Read           : #4 
+    Eeprom_Read           : #4 
+
+F: ScriptCtrl_Run         :#1 
+    ScriptCtrl_Clear      : #2 
+    _mult8x8              : #7 
+    Eeprom_ReadBlock      : #1 
+    Trace_String          : #18
+    Eeprom_Write          : #12
+    Trace_String          : #18
+    Trace_String          : #18
+    Trace_Hex             : #12
+    Trace_Hex             : #12
+    Trace_String          : #18
+    Eeprom_WriteBlock     : #3 
+    Trace_String          : #18
+    Eeprom_Write          : #12
+    Eeprom_Write          : #12
+    Trace_String          : #18
+    _mult8x8              : #7 
+    Eeprom_WriteBlock     : #3 
+    Ledstrip_SetFade      : #1 
+    ntohs                 : #3 
+    Eeprom_Write          : #12
+    ntohs                 : #3 
+    Eeprom_Write          : #12
+
+F: ScriptCtrl_Write       :#4 
+    _mult8x8              : #7 
+    Eeprom_WriteBlock     : #3 
+    Eeprom_Write          : #12
+
+F: PutToBuf               :#9 
+    RingBuf_HasError      : #8 
+    RingBuf_Put           : #2 
+
+F: Trace_String           :#18
+    RingBuf_HasError      : #8 
+    _const4               : #2 
+    PutToBuf              : #9 
+    _const4               : #2 
+
+F: Trace_Char             :#0 
+    PutToBuf              : #9 
+
+F: Trace_Number           :#0 
+    RingBuf_HasError      : #8 
+    _divU16_8             : #9 
+    _mult8x8              : #7 
+    _divU16_8             : #9 
+    _mult8x8              : #7 
+    PutToBuf              : #9 
+    PutToBuf              : #9 
+    PutToBuf              : #9 
+
+F: Trace_Hex              :#12
+    RingBuf_HasError      : #8 
+    PutToBuf              : #9 
+    PutToBuf              : #9 
+    PutToBuf              : #9 
+    PutToBuf              : #9 
+
+F: Trace_Hex16            :#1 
+    Trace_Hex             : #12
+    Trace_Hex             : #12
+
+F: Trace_Print            :#1 
+    RingBuf_IsEmpty       : #2 
+    RingBuf_Get           : #2 
+
+F: _const1                :#1 
+
+F: _const2                :#2 
+
+F: _const3                :#2 
+
+F: _const4                :#2 
+
+
+ L1  HighPriorityInterrupt
+ L2    HighPriorityInterruptFunction
+ L3      RingBuf_HasError
+ L3      RingBuf_Put
+
+ L1  LowPriorityInterrupt
+
+ L0  main
+ L1    InitAll
+ L2      RingBuf_Init
+ L2      UART_Init
+ L2      Timer_Init
+ L2      Ledstrip_Init
+ L3        SPI_Init
+ L2      CommandIO_Init
+ L2        DeleteBuffer [T-GOTO]
+ L2          Crc_NewCrc [T-GOTO]
+ L2      Rtc_Init
+ L3        I2C_Init
+ L3        I2C_Write
+ L2        I2C_Write [T-GOTO]
+ L2      ScriptCtrl_Init
+ L3        Eeprom_Read
+ L3        Eeprom_Read
+ L3        Eeprom_Read
+ L2      Platform_AllowInterrupts
+ L2      Platform_DisableBootloaderAutostart
+ L2        Eeprom_Write [T-GOTO]
+ L2      Trace_String
+ L3        RingBuf_HasError
+ L3        _const4
+ L3        PutToBuf
+ L4          RingBuf_HasError
+ L3          RingBuf_Put [T-GOTO]
+ L3        _const4
+ L2      CommandIO_CreateResponse
+ L3        Error_GetState
+ L3        Rtc_Ctl
+ L4          I2C_Read
+ L4          BcdToBin
+ L5            _mult8x8
+ L4          I2C_Read
+ L4          BcdToBin ..
+ L4          I2C_Read
+ L4          BcdToBin ..
+ L4          I2C_Read
+ L4          BcdToBin ..
+ L4          I2C_Read
+ L4          BcdToBin ..
+ L4          I2C_Read
+ L4          BcdToBin ..
+ L4          I2C_Read
+ L4          BcdToBin ..
+ L4          BinToBcd
+ L5            _divU16_8
+ L5            _mult8x8
+ L4          I2C_Write
+ L4          BinToBcd ..
+ L4          I2C_Write
+ L4          BinToBcd ..
+ L4          I2C_Write
+ L4          BinToBcd ..
+ L4          I2C_Write
+ L4          BinToBcd ..
+ L4          I2C_Write
+ L4          BinToBcd ..
+ L4          I2C_Write
+ L4          BinToBcd ..
+ L4          I2C_Write
+ L3        Timer_PrintCycletime
+ L4          htons
+ L3        Trace_Print
+ L4          RingBuf_IsEmpty
+ L5            _const2
+ L5            _const2
+ L4          RingBuf_Get
+ L3        _const3
+ L3        _const3
+ L1      CommandIO_SendResponse [T-GOTO]
+ L2        Crc_NewCrc
+ L2        UART_Send
+ L2        Crc_AddCrc
+ L2        UART_Send
+ L2        UART_Send
+ L2        UART_Send
+ L2        UART_Send
+ L2        UART_Send
+ L2        UART_Send
+ L1        UART_Send [T-GOTO]
+ L1    Timer_StartStopwatch
+ L1    Timer_StartStopwatch
+ L1    Platform_CheckInputs
+ L2      ScriptCtrl_Clear
+ L3        Eeprom_Write
+ L3        Eeprom_Write
+ L3        Eeprom_Write
+ L2      Ledstrip_ToggleLeds
+ L2        Ledstrip_UpdateLed [T-GOTO]
+ L2          SPI_SendLedBuffer [T-GOTO]
+ L3            SPI_Send
+ L1    Timer_StopStopwatch
+ L1    Timer_StartStopwatch
+ L1    Error_Throw
+ L2      RingBuf_HasError
+ L2      RingBuf_Init
+ L2      Trace_String ..
+ L2      Trace_String ..
+ L2      Error_FatalError
+ L3        Ledstrip_UpdateLed ..
+ L3        CommandIO_Init
+ L3          DeleteBuffer [T-GOTO]
+ L3            Crc_NewCrc [T-GOTO]
+ L2        RingBuf_Init [T-GOTO]
+ L2      RingBuf_HasError
+ L2      Trace_String ..
+ L2      RingBuf_Init
+ L2      CommandIO_Init ..
+ L2      Trace_String ..
+ L2      Trace_String ..
+ L1    Timer_StopStopwatch
+ L1    Timer_StartStopwatch
+ L1    CommandIO_GetCommands
+ L2      RingBuf_HasError
+ L2      RingBuf_IsEmpty ..
+ L2      RingBuf_Get
+ L2      DeleteBuffer ..
+ L2      writeByte
+ L3        Crc_AddCrc
+ L3        Trace_Hex16
+ L4          Trace_Hex
+ L5            RingBuf_HasError
+ L5            PutToBuf
+ L6              RingBuf_HasError
+ L5              RingBuf_Put [T-GOTO]
+ L5            PutToBuf ..
+ L5            PutToBuf ..
+ L4            PutToBuf [T-GOTO] ..
+ L3          Trace_Hex [T-GOTO] ..
+ L2        Trace_String [T-GOTO]
+ L3          RingBuf_HasError
+ L3          _const4
+ L3          PutToBuf ..
+ L3          _const4
+ L2      writeByte ..
+ L2      ScriptCtrl_Add
+ L3        Trace_String ..
+ L2        ScriptCtrl_Write [T-GOTO]
+ L3          _mult8x8
+ L3          Eeprom_WriteBlock
+ L4            Eeprom_Write
+ L3          Eeprom_Write
+ L3        Trace_String ..
+ L3        Trace_Hex ..
+ L3        Trace_Hex ..
+ L3        Trace_Hex ..
+ L3        Trace_Hex ..
+ L3        Trace_String ..
+ L2        ScriptCtrl_Write [T-GOTO] ..
+ L2        ScriptCtrl_Write [T-GOTO] ..
+ L3        CommandIO_CreateResponse
+ L4          Error_GetState
+ L4          Rtc_Ctl
+ L5            I2C_Read
+ L5            BcdToBin
+ L6              _mult8x8
+ L5            I2C_Read
+ L5            BcdToBin ..
+ L5            I2C_Read
+ L5            BcdToBin ..
+ L5            I2C_Read
+ L5            BcdToBin ..
+ L5            I2C_Read
+ L5            BcdToBin ..
+ L5            I2C_Read
+ L5            BcdToBin ..
+ L5            I2C_Read
+ L5            BcdToBin ..
+ L5            BinToBcd
+ L6              _divU16_8
+ L6              _mult8x8
+ L5            I2C_Write
+ L5            BinToBcd ..
+ L5            I2C_Write
+ L5            BinToBcd ..
+ L5            I2C_Write
+ L5            BinToBcd ..
+ L5            I2C_Write
+ L5            BinToBcd ..
+ L5            I2C_Write
+ L5            BinToBcd ..
+ L5            I2C_Write
+ L5            BinToBcd ..
+ L5            I2C_Write
+ L4          Timer_PrintCycletime
+ L5            htons
+ L4          Trace_Print
+ L5            RingBuf_IsEmpty
+ L6              _const2
+ L6              _const2
+ L5            RingBuf_Get
+ L4          _const3
+ L4          _const3
+ L3        CommandIO_SendResponse
+ L4          Crc_NewCrc
+ L4          UART_Send
+ L4          Crc_AddCrc
+ L4          UART_Send
+ L4          UART_Send
+ L4          UART_Send
+ L4          UART_Send
+ L4          UART_Send
+ L4          UART_Send
+ L3          UART_Send [T-GOTO]
+ L3        Platform_EnableBootloaderAutostart
+ L3          Eeprom_Write [T-GOTO]
+ L3        Rtc_Ctl ..
+ L3        Ledstrip_SetColorDirect
+ L2        ScriptCtrl_Write [T-GOTO] ..
+ L2      Trace_String ..
+ L2      Trace_Hex ..
+ L2      Trace_Hex ..
+ L2      Trace_Hex ..
+ L2      Trace_Hex ..
+ L2      Trace_String ..
+ L2      DeleteBuffer ..
+ L2      CommandIO_CreateResponse ..
+ L2      CommandIO_SendResponse ..
+ L2      writeByte ..
+ L1    Timer_StopStopwatch
+ L1    Timer_StartStopwatch
+ L1    ScriptCtrl_Run
+ L2      ScriptCtrl_Clear ..
+ L2      _mult8x8
+ L2      Eeprom_ReadBlock
+ L3        Eeprom_Read
+ L2      Trace_String ..
+ L2      Eeprom_Write
+ L2      Trace_String ..
+ L2      Trace_String ..
+ L2      Trace_Hex ..
+ L2      Trace_Hex ..
+ L2      Trace_String ..
+ L2      Eeprom_WriteBlock ..
+ L2      Trace_String ..
+ L2      Eeprom_Write
+ L2      Eeprom_Write
+ L2      Trace_String ..
+ L2      _mult8x8
+ L2      Eeprom_WriteBlock ..
+ L2      Ledstrip_SetFade
+ L3        ntohs
+ L3        _divU16_8
+ L3        _divU16_8
+ L3        _divU16_8
+ L3        _divU16_8
+ L3        _divU16_8
+ L3        _divU16_8
+ L2      ntohs
+ L2      Eeprom_Write
+ L2      ntohs
+ L2      Eeprom_Write
+ L1    Timer_StopStopwatch
+ L1    Timer_StartStopwatch
+ L1    Ledstrip_DoFade
+ L1    Timer_StopStopwatch
+ L1    Timer_StartStopwatch
+ L1    Ledstrip_UpdateLed ..
+ L1    Timer_StopStopwatch
+ L1    Timer_StopStopwatch
+
