@@ -248,13 +248,30 @@ class WiflyControl
 		//TODO move this test functions to the integration test 
 		void FwTest(void);
 		void FwStressTest(void);
+
+
+/** ------------------------- PRIVATE DECLARATIONS ------------------------- **/
 	private:
+		/**
+		 * Socket used for communication with wifly device.
+		 * A reference to this socket is provided to the aggregated subobjects.
+		 */
 		const TcpSocket mSock;
+
+		/**
+		 * Proxy object handling the low level communication with bootloader and firmware.
+		 */
 		const ComProxy mProxy;
+
+		/**
+		 * Proxy object handling the communication with the wlan module for its configuration
+		 */
 		const TelnetProxy mTelnet;
-		pthread_t mRecvThread;
+
+		/**
+		 * Internal command frame used to send to the wifly device, this member should be removed and replaced by local variables.
+		 */
 		struct cmd_frame mCmdFrame;
-		unsigned long ToARGB(const std::string& s) const;
 
 		/**
 		 * Instructs the bootloader to erase the specified area of the flash.
