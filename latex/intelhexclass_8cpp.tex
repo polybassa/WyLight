@@ -1,0 +1,96 @@
+\hypertarget{intelhexclass_8cpp}{\section{library/intelhexclass.cpp File Reference}
+\label{intelhexclass_8cpp}\index{library/intelhexclass.\-cpp@{library/intelhexclass.\-cpp}}
+}
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$vector$>$}\\*
+{\ttfamily \#include $<$cstdio$>$}\\*
+{\ttfamily \#include \char`\"{}intelhexclass.\-h\char`\"{}}\\*
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358}{intelhex\-Record\-Type} \{ \\*
+{\bfseries D\-A\-T\-A\-\_\-\-R\-E\-C\-O\-R\-D}, 
+{\bfseries E\-N\-D\-\_\-\-O\-F\-\_\-\-F\-I\-L\-E\-\_\-\-R\-E\-C\-O\-R\-D}, 
+{\bfseries E\-X\-T\-E\-N\-D\-E\-D\-\_\-\-S\-E\-G\-M\-E\-N\-T\-\_\-\-A\-D\-D\-R\-E\-S\-S}, 
+{\bfseries S\-T\-A\-R\-T\-\_\-\-S\-E\-G\-M\-E\-N\-T\-\_\-\-A\-D\-D\-R\-E\-S\-S}, 
+\\*
+{\bfseries E\-X\-T\-E\-N\-D\-E\-D\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-D\-D\-R\-E\-S\-S}, 
+{\bfseries S\-T\-A\-R\-T\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-D\-D\-R\-E\-S\-S}, 
+{\bfseries N\-O\-\_\-\-O\-F\-\_\-\-R\-E\-C\-O\-R\-D\-\_\-\-T\-Y\-P\-E\-S}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+istream \& \hyperlink{intelhexclass_8cpp_a73fb9c5b9d6d069b5eb83340942fd54b}{operator$>$$>$} (istream \&data\-In, \hyperlink{classintelhex}{intelhex} \&ih\-Local)
+\item 
+ostream \& \hyperlink{intelhexclass_8cpp_a320e23dab311a6c652aa7ddb9e2f9cc2}{operator$<$$<$} (ostream \&data\-Out, \hyperlink{classintelhex}{intelhex} \&ih\-Local)
+\end{DoxyCompactItemize}
+
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358}{\index{intelhexclass.\-cpp@{intelhexclass.\-cpp}!intelhex\-Record\-Type@{intelhex\-Record\-Type}}
+\index{intelhex\-Record\-Type@{intelhex\-Record\-Type}!intelhexclass.cpp@{intelhexclass.\-cpp}}
+\subsubsection[{intelhex\-Record\-Type}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf intelhex\-Record\-Type}}}\label{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358}
+Possible record types for Intel H\-E\-X file.
+
+List of all possible record types that can be found in an Intel H\-E\-X file. 
+
+\subsection{Function Documentation}
+\hypertarget{intelhexclass_8cpp_a320e23dab311a6c652aa7ddb9e2f9cc2}{\index{intelhexclass.\-cpp@{intelhexclass.\-cpp}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!intelhexclass.cpp@{intelhexclass.\-cpp}}
+\subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{ostream \&}]{data\-Out, }
+\item[{{\bf intelhex} \&}]{ih\-Local}
+\end{DoxyParamCaption}
+)}}\label{intelhexclass_8cpp_a320e23dab311a6c652aa7ddb9e2f9cc2}
+\begin{DoxyVerb}     Operator overloaded to encode any data held in memory into the Intel
+     HEX format for storage on disk                 
+\end{DoxyVerb}
+
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{intelhexclass_8cpp_a73fb9c5b9d6d069b5eb83340942fd54b}{operator$>$$>$()}
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em data\-Out} & -\/ Output stream for to store the decoded file information \\
+\hline
+{\em ih\-Local} & -\/ Points to this class so that friend function has access to private class members\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em -\/} & pointer to output stream \\
+\hline
+\end{DoxyRetVals}
+\hypertarget{intelhexclass_8cpp_a73fb9c5b9d6d069b5eb83340942fd54b}{\index{intelhexclass.\-cpp@{intelhexclass.\-cpp}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!intelhexclass.cpp@{intelhexclass.\-cpp}}
+\subsubsection[{operator$>$$>$}]{\setlength{\rightskip}{0pt plus 5cm}istream\& operator$>$$>$ (
+\begin{DoxyParamCaption}
+\item[{istream \&}]{data\-In, }
+\item[{{\bf intelhex} \&}]{ih\-Local}
+\end{DoxyParamCaption}
+)}}\label{intelhexclass_8cpp_a73fb9c5b9d6d069b5eb83340942fd54b}
+\begin{DoxyVerb}     Operator overloaded to decode data streamed in from a file in the 
+     Intel HEX format into memory                 
+\end{DoxyVerb}
+
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{intelhexclass_8cpp_a320e23dab311a6c652aa7ddb9e2f9cc2}{operator$<$$<$()}
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em data\-In} & -\/ Input stream for the encoded file information \\
+\hline
+{\em ih\-Local} & -\/ Points to this class so that friend function has access to private class members\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em -\/} & pointer to input stream \\
+\hline
+\end{DoxyRetVals}

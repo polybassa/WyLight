@@ -1,0 +1,46 @@
+\hypertarget{class_udp_socket}{\section{Udp\-Socket Class Reference}
+\label{class_udp_socket}\index{Udp\-Socket@{Udp\-Socket}}
+}
+Inheritance diagram for Udp\-Socket\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_udp_socket}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_udp_socket_a017a02140e8618ce88f8d8c5a3bf2ba3}{Udp\-Socket} (uint32\-\_\-t addr, uint16\-\_\-t port, bool do\-Bind=true, int enable\-Broadcast=0)
+\item 
+\hypertarget{class_udp_socket_a1391f69e42186e42966deb59c45f381f}{size\-\_\-t {\bfseries Recv\-From} (uint8\-\_\-t $\ast$p\-Buffer, size\-\_\-t length, timeval $\ast$timeout=N\-U\-L\-L, struct sockaddr $\ast$remote\-Addr=N\-U\-L\-L, socklen\-\_\-t $\ast$remote\-Addr\-Length=N\-U\-L\-L) const }\label{class_udp_socket_a1391f69e42186e42966deb59c45f381f}
+
+\item 
+\hypertarget{class_udp_socket_a8985c64bd6d8a3b10c51bb84df253c24}{virtual size\-\_\-t {\bfseries Send} (const uint8\-\_\-t $\ast$frame, size\-\_\-t length) const }\label{class_udp_socket_a8985c64bd6d8a3b10c51bb84df253c24}
+
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_udp_socket_a017a02140e8618ce88f8d8c5a3bf2ba3}{\index{Udp\-Socket@{Udp\-Socket}!Udp\-Socket@{Udp\-Socket}}
+\index{Udp\-Socket@{Udp\-Socket}!UdpSocket@{Udp\-Socket}}
+\subsubsection[{Udp\-Socket}]{\setlength{\rightskip}{0pt plus 5cm}Udp\-Socket\-::\-Udp\-Socket (
+\begin{DoxyParamCaption}
+\item[{uint32\-\_\-t}]{addr, }
+\item[{uint16\-\_\-t}]{port, }
+\item[{bool}]{do\-Bind = {\ttfamily true}, }
+\item[{int}]{enable\-Broadcast = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)}}\label{class_udp_socket_a017a02140e8618ce88f8d8c5a3bf2ba3}
+
+\begin{DoxyParams}{Parameters}
+{\em enable\-Broadcast} & use 1 to enable broadcast else set 0 \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+library/Client\-Socket.\-h\item 
+library/Broadcast\-Receiver\-\_\-ut.\-cpp\item 
+library/Client\-Socket.\-cpp\end{DoxyCompactItemize}
