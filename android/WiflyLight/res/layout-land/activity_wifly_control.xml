@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WiflyControlActivity" >
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="fill_parent"
+		android:layout_centerInParent="true" >
+		
+    	<ImageView
+        	android:id="@+id/colorPicker"
+        	android:src="@drawable/select_color"
+        	android:layout_width="wrap_content"
+        	android:layout_height="fill_parent" />
+
+    	<Button
+        	android:id="@+id/setColor"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center_vertical"
+        	android:layout_margin="12dp"
+        	android:text="@string/set_color" />
+	</LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">WiflyLight</string>
+    <string name="default_text">FooBar</string>
+    <string name="cancel">Cancel</string>
+    <string name="configure">configure</string>
+    <string name="passphrase_hint">Passphrase 1-63 character</string>
+    <string name="save">Save</string>
+    <string name="scan">Scan</string>
+    <string name="scanning">Scanning...</string>
+    <string name="set_color">Set color</string>
+    <string name="ssid_hint">SSID 1-32 character</string>
+    <string name="title_activity_wifly_control">Control your WiflyLight</string>
+
+</resources>
