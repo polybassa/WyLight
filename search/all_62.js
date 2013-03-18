@@ -1,28 +1,12 @@
 var searchData=
 [
-  ['begin',['begin',['../classintelhex.html#ab2b1119e14a960ea2b356967244aafb3',1,'intelhex']]],
-  ['bladdressrequest',['BlAddressRequest',['../struct_bl_address_request.html',1,'']]],
   ['bleepromerase',['BlEepromErase',['../class_wifly_control.html#a96bd445dcfcb45252530315b8919fd80',1,'WiflyControl']]],
-  ['bleepromreadrequest',['BlEepromReadRequest',['../struct_bl_eeprom_read_request.html',1,'']]],
-  ['bleepromwriterequest',['BlEepromWriteRequest',['../struct_bl_eeprom_write_request.html',1,'']]],
   ['blenableautostart',['BlEnableAutostart',['../class_wifly_control.html#acc372e780a40e0634d1ccf89aaba6b32',1,'WiflyControl']]],
-  ['blflashcrc16request',['BlFlashCrc16Request',['../struct_bl_flash_crc16_request.html',1,'']]],
   ['blflasherase',['BlFlashErase',['../class_wifly_control.html#abe0bceb7ec0cfc88c2fccdae0d844d8a',1,'WiflyControl']]],
-  ['blflasheraserequest',['BlFlashEraseRequest',['../struct_bl_flash_erase_request.html',1,'']]],
-  ['blflashreadrequest',['BlFlashReadRequest',['../struct_bl_flash_read_request.html',1,'']]],
-  ['blflashwriterequest',['BlFlashWriteRequest',['../struct_bl_flash_write_request.html',1,'']]],
-  ['blinfo',['BlInfo',['../struct_bl_info.html',1,'']]],
-  ['blinforequest',['BlInfoRequest',['../struct_bl_info_request.html',1,'']]],
-  ['blnoresponseexception',['BlNoResponseException',['../class_bl_no_response_exception.html',1,'']]],
   ['blprogramflash',['BlProgramFlash',['../class_wifly_control.html#a29e6124445a27e1fd26cfccce701cc09',1,'WiflyControl']]],
   ['blreadcrcflash',['BlReadCrcFlash',['../class_wifly_control.html#a97f0c9d5e0ea08f2f60a720b0134fff1',1,'WiflyControl']]],
   ['blreadeeprom',['BlReadEeprom',['../class_wifly_control.html#a13504dcf2d451545e8b5c3fa2f85b0e4',1,'WiflyControl']]],
   ['blreadflash',['BlReadFlash',['../class_wifly_control.html#a5337818ba998047b8a8cdc738ddf3e43',1,'WiflyControl']]],
   ['blreadinfo',['BlReadInfo',['../class_wifly_control.html#a26885cabebc9719b1da2d29131517efb',1,'WiflyControl']]],
-  ['blreadrequest',['BlReadRequest',['../struct_bl_read_request.html',1,'']]],
-  ['blrequest',['BlRequest',['../struct_bl_request.html',1,'']]],
-  ['blrunapp',['BlRunApp',['../class_wifly_control.html#a776073bd4991e4331fb946e456d803df',1,'WiflyControl']]],
-  ['blrunapprequest',['BlRunAppRequest',['../struct_bl_run_app_request.html',1,'']]],
-  ['broadcastmessage',['BroadcastMessage',['../struct_broadcast_message.html',1,'']]],
-  ['broadcastreceiver',['BroadcastReceiver',['../class_broadcast_receiver.html',1,'']]]
+  ['blrunapp',['BlRunApp',['../class_wifly_control.html#a776073bd4991e4331fb946e456d803df',1,'WiflyControl']]]
 ];
