@@ -91,7 +91,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Class to decode, encode and manipulate Intel HEX format files.  
+<p>Class to communicate with a Wifly_Light Hardware.  
  <a href="class_wifly_control.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_wifly_control_8h_source.html">WiflyControl.h</a>&gt;</code></p>
@@ -170,8 +170,13 @@ Friends</h2></td></tr>
 <tr class="separator:a661b9ec8a685bc800221f2fd5d031a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Class to decode, encode and manipulate Intel HEX format files. </p>
-<p>The Intel HEX class allows the user to stream in the content of an Intel HEX file so that its content can by analysed more easily than trying to decode the Intel HEX file in a text editor. In conjunction with a suitable application it is possible to create content, analyse content and even compare the content of files with one another. </p>
+<div class="textblock"><p>Class to communicate with a Wifly_Light Hardware. </p>
+<p>The <a class="el" href="class_wifly_control.html" title="Class to communicate with a Wifly_Light Hardware.">WiflyControl</a> class allows the user to control the Wifly_Light Hardware. There are three target's at the Wifly_Light Hardware.</p>
+<ul>
+<li>Bootloader All methodes with Bl* relate to the bootloader part.</li>
+<li>Firmware All methodes with Fw* relate to the firmware part.</li>
+<li>RN-171 Wifi Interface All methodes witch Conf* relate to the communication module. </li>
+</ul>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a23f04e8c95cf5ebd5d576c0f6c5fecff"></a>
 <div class="memitem">
@@ -1003,7 +1008,7 @@ Friends</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Mar 19 2013 17:21:56 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Mar 19 2013 17:33:16 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
