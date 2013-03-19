@@ -36,8 +36,8 @@ clean: cli_clean firmware_clean library_clean
 
 document:
 	doxygen docs/Doxyfile;
-	cd html;
-	git add .;
-	git commit -m "documentation";
-	git push origin gh-pages;
+	cd html
+	git add .
+	git commit -m "documentation"
+	git push origin gh-pages
 	cd ..
