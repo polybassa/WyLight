@@ -1,4 +1,4 @@
-/**
+/*
 		Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
@@ -15,6 +15,24 @@
 
     You should have received a copy of the GNU General Public License
     along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
+
+
+/******************************************************************************/
+/*! \file WiflyControl.h
+ * \author Nils Weiss, Patrick Bruenn
+ *
+ *! \cond
+ * class - WiflyControl
+ * \endcond
+ *
+ * \brief Class to decode, encode and manipulate Intel HEX format files.
+ *
+ * The Intel HEX class allows the user to stream in the content of an Intel HEX
+ * file so that its content can by analysed more easily than trying to decode
+ * the Intel HEX file in a text editor. In conjunction with a suitable
+ * application it is possible to create content, analyse content and even compare
+ * the content of files with one another.
+ *******************************************************************************/
 
 #ifndef _WIFLYCONTROL_H_
 #define _WIFLYCONTROL_H_
@@ -45,7 +63,7 @@ class WiflyControl
 		 */
 		WiflyControl(uint32_t addr, uint16_t port);
 		
-/** ------------------------- BOOTLOADER METHODES ------------------------- **/
+/* ------------------------- BOOTLOADER METHODES ------------------------- */
 		/**
 		 * Instructs the bootloader to erase the whole eeprom.
 		 * The wifly device has to be in bootloader mode for this command.
@@ -116,7 +134,7 @@ class WiflyControl
 		 */
 		void BlRunApp(void) const;
 
-/** --------------------- WLAN CONFIGURATION METHODES --------------------- **/
+/* --------------------- WLAN CONFIGURATION METHODES --------------------- */
 		/**
 		 * Read the currently configured ssid from Wifly module
 		 * @return an empty string or the ssid
@@ -137,7 +155,7 @@ class WiflyControl
 		 */
 		bool ConfSetWlan(const std::string& phrase, const std::string& ssid) const;
 		
-/** -------------------------- FIRMWARE METHODES -------------------------- **/
+/* -------------------------- FIRMWARE METHODES -------------------------- */
 		/**
 		 * Wipe all commands from the Wifly script controller
 		 * @param response will be modified according to the success of this operation
@@ -251,7 +269,7 @@ class WiflyControl
 		void FwStressTest(void);
 
 
-/** ------------------------- PRIVATE DECLARATIONS ------------------------- **/
+/* ------------------------- PRIVATE DECLARATIONS ------------------------- */
 	private:
 		/**
 		 * Socket used for communication with wifly device.
@@ -316,8 +334,15 @@ class WiflyControl
 		 */		
 		WiflyResponse& FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const;
 
-/** ------------------ friendships for unittesting only ------------------- **/
-friend size_t ut_WiflyControl_BlEepromWrite(void);
-friend size_t ut_WiflyControl_BlFlashWrite(void);
+/* ------------------ friendships for unittesting only ------------------- */
+		/**
+		 * friendships for unittesting only
+		 */
+		friend size_t ut_WiflyControl_BlEepromWrite(void);
+
+		/**
+		* friendships for unittesting only
+		*/
+		friend size_t ut_WiflyControl_BlFlashWrite(void);
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */

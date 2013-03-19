@@ -34,3 +34,10 @@ test: clean firmware_test library_test
 clean: cli_clean firmware_clean library_clean
 	rm -rf $(ANDROID_BIN)
 
+document:
+	doxygen docs/Doxyfile;
+	cd html;
+	git add .;
+	git commit -m "documentation";
+	git push origin gh-pages;
+	cd ..
