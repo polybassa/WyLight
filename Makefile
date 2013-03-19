@@ -38,6 +38,6 @@ document:
 	doxygen docs/Doxyfile;
 	cd html
 	git add .
-	git commit -m "documentation"
+	git commit -m "documentation";
 	git push origin gh-pages
 	cd ..
