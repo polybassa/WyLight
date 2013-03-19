@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['begin',['begin',['../classintelhex.html#ab2b1119e14a960ea2b356967244aafb3',1,'intelhex']]],
   ['bleepromerase',['BlEepromErase',['../class_wifly_control.html#a96bd445dcfcb45252530315b8919fd80',1,'WiflyControl']]],
   ['blenableautostart',['BlEnableAutostart',['../class_wifly_control.html#acc372e780a40e0634d1ccf89aaba6b32',1,'WiflyControl']]],
   ['blflasherase',['BlFlashErase',['../class_wifly_control.html#abe0bceb7ec0cfc88c2fccdae0d844d8a',1,'WiflyControl']]],
