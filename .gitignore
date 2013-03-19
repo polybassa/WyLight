@@ -1,3 +1,10 @@
 html/
-docs
-latex
+docs/
+latex/
+binary/
+library/ClientSocket.o
+library/TelnetProxy.o
+library/WiflyControl.o
+library/TelnetProxy_ut.bin
+library/WiflyControl_ut.bin
+*.bin

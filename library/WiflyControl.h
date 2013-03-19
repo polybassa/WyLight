@@ -25,13 +25,17 @@
  * class - WiflyControl
  * \endcond
  *
- * \brief Class to decode, encode and manipulate Intel HEX format files.
+ * \brief Class to communicate with a Wifly_Light Hardware.
  *
- * The Intel HEX class allows the user to stream in the content of an Intel HEX
- * file so that its content can by analysed more easily than trying to decode
- * the Intel HEX file in a text editor. In conjunction with a suitable
- * application it is possible to create content, analyse content and even compare
- * the content of files with one another.
+ * 
+ * The WiflyControl class allows the user to control the Wifly_Light Hardware.
+ * There are three target's at the Wifly_Light Hardware.
+ * - Bootloader<br>
+ *           All methodes with Bl* relate to the bootloader part.
+ * - Firmware<br>
+ *           All methodes with Fw* relate to the firmware part.
+ * - RN-171 Wifi Interface<br>
+ *           All methodes witch Conf* relate to the communication module.
  *******************************************************************************/
 
 #ifndef _WIFLYCONTROL_H_
