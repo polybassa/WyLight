@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.3"/>
-<title>Wifly_Light: FwException Class Reference</title>
+<title>Wifly_Light: library/WiflyControl.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -37,8 +37,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
+      <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -59,10 +59,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
+      <li><a href="files.html"><span>File&#160;List</span></a></li>
     </ul>
   </div>
 <!-- window showing the filter options -->
@@ -79,50 +76,44 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_e3d620c6b6fdb93ed3bc6186215bde2e.html">library</a></li>  </ul>
+</div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="class_fw_exception-members.html">List of all members</a>  </div>
+<a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle">
-<div class="title">FwException Class Reference</div>  </div>
+<div class="title">WiflyControl.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Inheritance diagram for FwException:</div>
-<div class="dyncontent">
- <div class="center">
-  <img src="class_fw_exception.png" usemap="#FwException_map" alt=""/>
-  <map id="FwException_map" name="FwException_map">
-<area href="class_wifly_control_exception.html" alt="WiflyControlException" shape="rect" coords="83,56,239,80"/>
-<area href="class_fw_no_response_exception.html" alt="FwNoResponseException" shape="rect" coords="0,168,156,192"/>
-<area href="class_script_buffer_full_exception.html" alt="ScriptBufferFullException" shape="rect" coords="166,168,322,192"/>
-</map>
- </div></div>
+<div class="textblock"><code>#include &lt;string&gt;</code><br/>
+<code>#include &lt;time.h&gt;</code><br/>
+<code>#include &quot;ComProxy.h&quot;</code><br/>
+<code>#include &quot;wifly_cmd.h&quot;</code><br/>
+<code>#include &quot;BlRequest.h&quot;</code><br/>
+<code>#include &quot;<a class="el" href="intelhexclass_8h_source.html">intelhexclass.h</a>&quot;</code><br/>
+<code>#include &quot;error.h&quot;</code><br/>
+<code>#include &quot;TelnetProxy.h&quot;</code><br/>
+<code>#include &quot;WiflyControlException.h&quot;</code><br/>
+<code>#include &quot;WiflyControlResponse.h&quot;</code><br/>
+</div>
+<p><a href="_wifly_control_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:a2ed0f0fded36da55c6ab89e84f690941"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2ed0f0fded36da55c6ab89e84f690941"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>FwException</b> (const struct cmd_frame *const failedFrame, const std::string errorString)</td></tr>
-<tr class="separator:a2ed0f0fded36da55c6ab89e84f690941"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8b9d2e412bd11f40cc8b3964d6da13a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af8b9d2e412bd11f40cc8b3964d6da13a"></a>
-struct cmd_frame&#160;</td><td class="memItemRight" valign="bottom"><b>GetFailedFrame</b> (void) const </td></tr>
-<tr class="separator:af8b9d2e412bd11f40cc8b3964d6da13a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_class_wifly_control_exception"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_wifly_control_exception')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_wifly_control_exception.html">WiflyControlException</a></td></tr>
-<tr class="memitem:a7c12735a818b900b9b5edb6ee5e0e305 inherit pub_methods_class_wifly_control_exception"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c12735a818b900b9b5edb6ee5e0e305"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>WiflyControlException</b> (const std::string errorString=&quot;WiflyControlException&quot;)</td></tr>
-<tr class="separator:a7c12735a818b900b9b5edb6ee5e0e305 inherit pub_methods_class_wifly_control_exception"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0fa2a5e8db72e6927d29c82968319e78 inherit pub_methods_class_wifly_control_exception"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0fa2a5e8db72e6927d29c82968319e78"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>what</b> (void) const   throw ()</td></tr>
-<tr class="separator:a0fa2a5e8db72e6927d29c82968319e78 inherit pub_methods_class_wifly_control_exception"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html">WiflyControl</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to decode, encode and manipulate Intel HEX format files.  <a href="class_wifly_control.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>library/<a class="el" href="_wifly_control_exception_8h_source.html">WiflyControlException.h</a></li>
-</ul>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><dl class="section author"><dt>Author</dt><dd>Nils Weiss, Patrick Bruenn</dd></dl>
+<p>! </p>
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Mar 19 2013 17:17:13 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Mar 19 2013 17:17:04 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
