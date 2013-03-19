@@ -156,7 +156,7 @@ public:
 
 	friend std::ostream& operator<< (std::ostream& out, const FirmwareVersionResponse& ref)
 	{
-		return out << "Firmwareversion: " << ref.mFwVersion;
+		return out << "Firmwareversion: " << std::dec << ref.mFwVersion << std::endl;
 	};
 	
 private:

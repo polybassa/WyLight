@@ -8,3 +8,6 @@ library/WiflyControl.o
 library/TelnetProxy_ut.bin
 library/WiflyControl_ut.bin
 *.bin
+library/BroadcastReceiver.o
+library/ComProxy.o
+library/intelhexclass.o

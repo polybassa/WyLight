@@ -40,7 +40,7 @@ struct CommandBuffer{
     uns8 CrcL;
 };
 extern bank2 struct CommandBuffer g_CmdBuf;
-extern const struct cmd_get_fw_version g_Version;
+extern struct cmd_get_fw_version g_Version;
 extern struct response_frame g_ResponseBuf;
 
 
