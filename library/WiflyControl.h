@@ -119,6 +119,13 @@ class WiflyControl
 		size_t BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const;
 
 		/**
+		 * Instructs the bootloader to read the version string from the firmware memory.
+		 * The wifly device has to be in bootloader mode for this command.
+		 * @return the version string from pic flash memory
+		 */
+		std::string BlReadFwVersion(void) const;
+
+		/**
 		 * Instructs the bootloader to return a struct of bootloader informations
 		 * like bootloader version, flash and eeprom size. see <BlInfo> for details.
 		 * The wifly device has to be in bootloader mode for this command.
@@ -272,6 +279,13 @@ class WiflyControl
 		void FwTest(void);
 		void FwStressTest(void);
 
+/* ------------------------- VERSION EXTRACT METHODE ------------------------- */
+		/**
+		 * Methode to extract the firmware version from a hex file
+		 * @return the version string from a given hex file
+		 */
+		std::string ExtractFwVersion(const std::string& pFilename) const;
+	
 
 /* ------------------------- PRIVATE DECLARATIONS ------------------------- */
 	private:

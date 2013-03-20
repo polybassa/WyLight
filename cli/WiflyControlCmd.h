@@ -298,6 +298,28 @@ class ControlCmdBlRunApp : public WiflyControlCmd
 			}
 		};
 };
+			
+class ControlCmdBlReadFwVersion : public WiflyControlCmd
+{
+	public:
+		ControlCmdBlReadFwVersion(void) : WiflyControlCmd(
+					string("bl_read_version"),
+					string("' - prints the version of firmware in program memory"))
+				{};
+				
+				virtual void Run(WiflyControl& control) const {
+					cout << "Reading firmware version... ";
+					try
+					{
+						cout << endl << "Version: " << control.BlReadFwVersion() << endl << endl << "done." << endl;
+					}
+					catch(WiflyControlException &e)
+					{
+						cout << "failed!\n" << e.what() << endl;
+					}
+				};
+			};
+
 
 class ControlCmdConfGetSsid : public WiflyControlCmd
 {
@@ -656,6 +678,7 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdBlProgramFlash(),
 	new ControlCmdBlReadEeprom(),
 	new ControlCmdBlReadFlash(),
+	new ControlCmdBlReadFwVersion(),
 	new ControlCmdBlRunApp(),
 	new ControlCmdConfGetSsid(),
 	new ControlCmdConfSetDefaults(),

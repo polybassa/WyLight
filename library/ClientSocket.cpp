@@ -63,10 +63,10 @@ size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 	if((1 == select(mSock + 1, &readSockets, NULL, NULL, timeout))
 	&& (FD_ISSET(mSock, &readSockets)))
 	{
-		int bytesRead = recv(mSock, pBuffer, length, 0);
+		ssize_t bytesRead = recv(mSock, pBuffer, length, 0);
 		if(bytesRead > 0)
 		{
-			Trace(ZONE_INFO, "Receiving %zu bytes\n", bytesRead);
+			Trace(ZONE_INFO, "Receiving %lu bytes\n", bytesRead);
 			return static_cast<size_t>(bytesRead);
 		}
 	}
