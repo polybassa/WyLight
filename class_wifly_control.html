@@ -112,6 +112,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a13504dcf2d451545e8b5c3fa2f85b0e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5337818ba998047b8a8cdc738ddf3e43"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a5337818ba998047b8a8cdc738ddf3e43">BlReadFlash</a> (uint8_t *pBuffer, uint32_t address, size_t numBytes) const </td></tr>
 <tr class="separator:a5337818ba998047b8a8cdc738ddf3e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a779ef8b2751c2ddf3cd07c869a73797e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a779ef8b2751c2ddf3cd07c869a73797e">BlReadFwVersion</a> (void) const </td></tr>
+<tr class="separator:a779ef8b2751c2ddf3cd07c869a73797e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26885cabebc9719b1da2d29131517efb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a26885cabebc9719b1da2d29131517efb">BlReadInfo</a> (<a class="el" href="struct_bl_info.html">BlInfo</a> &amp;info) const </td></tr>
 <tr class="separator:a26885cabebc9719b1da2d29131517efb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29e6124445a27e1fd26cfccce701cc09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a29e6124445a27e1fd26cfccce701cc09">BlProgramFlash</a> (const std::string &amp;filename)</td></tr>
@@ -413,6 +415,24 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the number of bytes read </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a779ef8b2751c2ddf3cd07c869a73797e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string WiflyControl::BlReadFwVersion </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Instructs the bootloader to read the version string from the firmware memory. The wifly device has to be in bootloader mode for this command. </p>
+<dl class="section return"><dt>Returns</dt><dd>the version string from pic flash memory </dd></dl>
 
 </div>
 </div>
@@ -1011,7 +1031,7 @@ Friends</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Mar 19 2013 20:15:00 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 20 2013 16:55:55 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
