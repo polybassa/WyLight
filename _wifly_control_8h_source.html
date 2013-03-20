@@ -141,83 +141,85 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wifly_control.html#a5337818ba998047b8a8cdc738ddf3e43">BlReadFlash</a>(uint8_t* pBuffer, uint32_t address, <span class="keywordtype">size_t</span> numBytes) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        std::string <a class="code" href="class_wifly_control.html#a779ef8b2751c2ddf3cd07c869a73797e">BlReadFwVersion</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a26885cabebc9719b1da2d29131517efb">BlReadInfo</a>(<a class="code" href="struct_bl_info.html">BlInfo</a>&amp; info) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        </div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a29e6124445a27e1fd26cfccce701cc09">BlProgramFlash</a>(<span class="keyword">const</span> std::string&amp; filename);</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a776073bd4991e4331fb946e456d803df">BlRunApp</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    </div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        std::string <a class="code" href="class_wifly_control.html#a779ef8b2751c2ddf3cd07c869a73797e">BlReadFwVersion</a>(<span class="keyword">const</span> std::string&amp; pFilename) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a26885cabebc9719b1da2d29131517efb">BlReadInfo</a>(<a class="code" href="struct_bl_info.html">BlInfo</a>&amp; info) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        </div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a29e6124445a27e1fd26cfccce701cc09">BlProgramFlash</a>(<span class="keyword">const</span> std::string&amp; filename);</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">/* --------------------- WLAN CONFIGURATION METHODES --------------------- */</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        std::string <a class="code" href="class_wifly_control.html#aa46eb435216680bdb7e069571e7f7545">ConfGetSsid</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wifly_control.html#a932d65b7b9346a2bd9ced995fe2239ab">ConfSetDefaults</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a776073bd4991e4331fb946e456d803df">BlRunApp</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment">/* --------------------- WLAN CONFIGURATION METHODES --------------------- */</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        std::string <a class="code" href="class_wifly_control.html#aa46eb435216680bdb7e069571e7f7545">ConfGetSsid</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wifly_control.html#ad73ecaee1bf99c406c621fb602abf808">ConfSetWlan</a>(<span class="keyword">const</span> std::string&amp; phrase, <span class="keyword">const</span> std::string&amp; ssid) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        </div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment">/* -------------------------- FIRMWARE METHODES -------------------------- */</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a048e64bf80f176638032fec15f56c793">FwClearScript</a>(<a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; response);</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        </div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        <a class="code" href="class_cycletime_response.html">CycletimeResponse</a>&amp; <a class="code" href="class_wifly_control.html#ac2e0be90ef2dde0af9030b4d0aa23ad7">FwGetCycletime</a>(<a class="code" href="class_cycletime_response.html">CycletimeResponse</a>&amp; response);</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a18b6f0a018f94aae19196fc0c2bc472c">FwGetRtc</a>(<a class="code" href="class_rtc_response.html">RtcResponse</a>&amp; response);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wifly_control.html#a932d65b7b9346a2bd9ced995fe2239ab">ConfSetDefaults</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wifly_control.html#ad73ecaee1bf99c406c621fb602abf808">ConfSetWlan</a>(<span class="keyword">const</span> std::string&amp; phrase, <span class="keyword">const</span> std::string&amp; ssid) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        </div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment">/* -------------------------- FIRMWARE METHODES -------------------------- */</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a048e64bf80f176638032fec15f56c793">FwClearScript</a>(<a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; response);</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        </div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        <a class="code" href="class_cycletime_response.html">CycletimeResponse</a>&amp; <a class="code" href="class_wifly_control.html#ac2e0be90ef2dde0af9030b4d0aa23ad7">FwGetCycletime</a>(<a class="code" href="class_cycletime_response.html">CycletimeResponse</a>&amp; response);</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        <a class="code" href="class_tracebuffer_response.html">TracebufferResponse</a>&amp; <a class="code" href="class_wifly_control.html#a25d9cd36f191da91d23f453f360cc723">FwGetTracebuffer</a>(<a class="code" href="class_tracebuffer_response.html">TracebufferResponse</a>&amp; response);</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        <a class="code" href="class_firmware_version_response.html">FirmwareVersionResponse</a>&amp; <a class="code" href="class_wifly_control.html#a2eaf82cb4b880b099093e9242bd66b7d">FwGetVersion</a>(<a class="code" href="class_firmware_version_response.html">FirmwareVersionResponse</a>&amp; response);</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#ac0bcc3ca66256effb309545cf7341f9c">FwLoopOn</a>(<a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; response);</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a18b6f0a018f94aae19196fc0c2bc472c">FwGetRtc</a>(<a class="code" href="class_rtc_response.html">RtcResponse</a>&amp; response);</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <a class="code" href="class_tracebuffer_response.html">TracebufferResponse</a>&amp; <a class="code" href="class_wifly_control.html#a25d9cd36f191da91d23f453f360cc723">FwGetTracebuffer</a>(<a class="code" href="class_tracebuffer_response.html">TracebufferResponse</a>&amp; response);</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        <a class="code" href="class_firmware_version_response.html">FirmwareVersionResponse</a>&amp; <a class="code" href="class_wifly_control.html#a2eaf82cb4b880b099093e9242bd66b7d">FwGetVersion</a>(<a class="code" href="class_firmware_version_response.html">FirmwareVersionResponse</a>&amp; response);</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a8bcc4ce879e66a60f25c7790e07d3e61">FwLoopOff</a>(<a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; response, uint8_t numLoops);</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a5a1bf514798ab57f893dbadfc525c531">FwSetColorDirect</a>(<a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; response, uint8_t* pBuffer, <span class="keywordtype">size_t</span> bufferLength);</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        </div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a8f6ce3dc38f480fc68574f87983154ec">FwSetFade</a>(<a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; response, uint32_t argb, uint16_t fadeTmms = 0, uint32_t addr = 0xffffffff, <span class="keywordtype">bool</span> parallelFade = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a8f6ce3dc38f480fc68574f87983154ec">FwSetFade</a>(<a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; response, <span class="keyword">const</span> std::string&amp; rgb, uint16_t fadeTmms = 0, <span class="keyword">const</span> std::string&amp; addr = <a class="code" href="class_wifly_control.html#a1fb5f6703533d3ccf68f6e474f51dbce">LEDS_ALL</a>, <span class="keywordtype">bool</span> parallelFade = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a693a47088f11cba5659e3de44180f710">FwSetRtc</a>(<a class="code" href="class_simple_response.html">SimpleResponse</a>&amp; response, <span class="keyword">struct</span> tm* timeValue);</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        </div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a0caceaf85966349061bb6e435bfd557b">FwSetWait</a>(<a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; response, uint16_t waitTmms);</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a155011ac62054bd61d9d29b6a6f5c2f3">FwStartBl</a>(<a class="code" href="class_simple_response.html">SimpleResponse</a>&amp; response);</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        </div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        <span class="comment">//TODO move this test functions to the integration test </span></div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        <span class="keywordtype">void</span> FwTest(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        <span class="keywordtype">void</span> FwStressTest(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="comment">/* ------------------------- PRIVATE DECLARATIONS ------------------------- */</span></div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <span class="keyword">const</span> <a class="code" href="class_tcp_socket.html">TcpSocket</a> mSock;</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        <span class="keyword">const</span> <a class="code" href="class_com_proxy.html">ComProxy</a> mProxy;</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        <span class="keyword">const</span> <a class="code" href="class_telnet_proxy.html">TelnetProxy</a> mTelnet;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        <span class="keyword">struct </span>cmd_frame mCmdFrame;</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#abe0bceb7ec0cfc88c2fccdae0d844d8a">BlFlashErase</a>(<span class="keyword">const</span> uint32_t endAddress, <span class="keyword">const</span> uint8_t numPages) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        <span class="keywordtype">size_t</span> BlRead(<a class="code" href="struct_bl_request.html">BlRequest</a>&amp; request, uint8_t* pResponse, <span class="keyword">const</span> <span class="keywordtype">size_t</span> responseSize, <span class="keywordtype">bool</span> doSync = <span class="keyword">true</span>) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        <span class="keywordtype">void</span> BlWriteEeprom(uint32_t address, uint8_t* pBuffer, <span class="keywordtype">size_t</span> bufferLength) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        <span class="keywordtype">void</span> BlWriteFlash(uint32_t address, uint8_t* pBuffer, <span class="keywordtype">size_t</span> bufferLength) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        <a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; FwSend(<span class="keyword">struct</span> cmd_frame* pFrame, <span class="keywordtype">size_t</span> length, <a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; response) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="comment">/* ------------------ friendships for unittesting only ------------------- */</span></div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        <span class="keyword">friend</span> <span class="keywordtype">size_t</span> <a class="code" href="class_wifly_control.html#a327c95f9335fa4b257b064ef2e917a80">ut_WiflyControl_BlEepromWrite</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#ac0bcc3ca66256effb309545cf7341f9c">FwLoopOn</a>(<a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; response);</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a8bcc4ce879e66a60f25c7790e07d3e61">FwLoopOff</a>(<a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; response, uint8_t numLoops);</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a5a1bf514798ab57f893dbadfc525c531">FwSetColorDirect</a>(<a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; response, uint8_t* pBuffer, <span class="keywordtype">size_t</span> bufferLength);</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        </div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a8f6ce3dc38f480fc68574f87983154ec">FwSetFade</a>(<a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; response, uint32_t argb, uint16_t fadeTmms = 0, uint32_t addr = 0xffffffff, <span class="keywordtype">bool</span> parallelFade = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a8f6ce3dc38f480fc68574f87983154ec">FwSetFade</a>(<a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; response, <span class="keyword">const</span> std::string&amp; rgb, uint16_t fadeTmms = 0, <span class="keyword">const</span> std::string&amp; addr = <a class="code" href="class_wifly_control.html#a1fb5f6703533d3ccf68f6e474f51dbce">LEDS_ALL</a>, <span class="keywordtype">bool</span> parallelFade = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a693a47088f11cba5659e3de44180f710">FwSetRtc</a>(<a class="code" href="class_simple_response.html">SimpleResponse</a>&amp; response, <span class="keyword">struct</span> tm* timeValue);</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        </div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a0caceaf85966349061bb6e435bfd557b">FwSetWait</a>(<a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; response, uint16_t waitTmms);</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a155011ac62054bd61d9d29b6a6f5c2f3">FwStartBl</a>(<a class="code" href="class_simple_response.html">SimpleResponse</a>&amp; response);</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        </div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        <span class="comment">//TODO move this test functions to the integration test </span></div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <span class="keywordtype">void</span> FwTest(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        <span class="keywordtype">void</span> FwStressTest(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="comment">/* ------------------------- PRIVATE DECLARATIONS ------------------------- */</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        <span class="keyword">const</span> <a class="code" href="class_tcp_socket.html">TcpSocket</a> mSock;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        <span class="keyword">const</span> <a class="code" href="class_com_proxy.html">ComProxy</a> mProxy;</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        <span class="keyword">const</span> <a class="code" href="class_telnet_proxy.html">TelnetProxy</a> mTelnet;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        <span class="keyword">struct </span>cmd_frame mCmdFrame;</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#abe0bceb7ec0cfc88c2fccdae0d844d8a">BlFlashErase</a>(<span class="keyword">const</span> uint32_t endAddress, <span class="keyword">const</span> uint8_t numPages) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        <span class="keywordtype">size_t</span> BlRead(<a class="code" href="struct_bl_request.html">BlRequest</a>&amp; request, uint8_t* pResponse, <span class="keyword">const</span> <span class="keywordtype">size_t</span> responseSize, <span class="keywordtype">bool</span> doSync = <span class="keyword">true</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        <span class="keywordtype">void</span> BlWriteEeprom(uint32_t address, uint8_t* pBuffer, <span class="keywordtype">size_t</span> bufferLength) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        <span class="keywordtype">void</span> BlWriteFlash(uint32_t address, uint8_t* pBuffer, <span class="keywordtype">size_t</span> bufferLength) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        <a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; FwSend(<span class="keyword">struct</span> cmd_frame* pFrame, <span class="keywordtype">size_t</span> length, <a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; response) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        <span class="keyword">friend</span> <span class="keywordtype">size_t</span> <a class="code" href="class_wifly_control.html#a661b9ec8a685bc800221f2fd5d031a20">ut_WiflyControl_BlFlashWrite</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;};</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _WIFLYCONTROL_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;<span class="comment">/* ------------------ friendships for unittesting only ------------------- */</span></div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        <span class="keyword">friend</span> <span class="keywordtype">size_t</span> <a class="code" href="class_wifly_control.html#a327c95f9335fa4b257b064ef2e917a80">ut_WiflyControl_BlEepromWrite</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;        <span class="keyword">friend</span> <span class="keywordtype">size_t</span> <a class="code" href="class_wifly_control.html#a661b9ec8a685bc800221f2fd5d031a20">ut_WiflyControl_BlFlashWrite</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;};</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _WIFLYCONTROL_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 20 2013 16:55:38 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 20 2013 17:37:32 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
