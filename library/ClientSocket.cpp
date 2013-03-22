@@ -29,9 +29,12 @@
 
 static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style)
-	: mSock(socket(AF_INET, style, 0))
+
+ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) 
+	: mSock(socket(AF_INET, style, 0)) 
 {
+	if( -1 == mSock) throw FatalError("Create socket failed");
+
 	memset(&mSockAddr, 0, sizeof(mSockAddr));
 	mSockAddr.sin_family = AF_INET;
 	mSockAddr.sin_port = htons(port);
@@ -43,36 +46,41 @@ ClientSocket::~ClientSocket()
 	close(mSock);
 }
 
-TcpSocket::TcpSocket(uint32_t addr, uint16_t port)
-	: ClientSocket(addr, port, SOCK_STREAM)
-{
-	if(connect(mSock, reinterpret_cast<sockaddr*>(&mSockAddr), sizeof(mSockAddr)) < 0)
-	{
-		Trace(ZONE_ERROR, "Connection to 0x%04x:%05u failed\n", addr, port);
-	}
-}
-
-size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
+bool ClientSocket::Select(timeval* timeout) const throw (FatalError)
 {
 	/* prepare socket set for select() */
 	fd_set readSockets;
 	FD_ZERO(&readSockets);
 	FD_SET(mSock, &readSockets);
 	
-	/* wait for receive data and check if socket was correct */
-	if((1 == select(mSock + 1, &readSockets, NULL, NULL, timeout))
-	&& (FD_ISSET(mSock, &readSockets)))
+	/* wait for receive data */
+	const int selectState = select(mSock + 1, &readSockets, NULL, NULL, timeout);
+	if(0 == selectState)
 	{
-		int bytesRead = recv(mSock, pBuffer, length, 0);
-		if(bytesRead > 0)
-		{
-			Trace(ZONE_INFO, "Receiving %zu bytes\n", bytesRead);
-			return static_cast<size_t>(bytesRead);
-		}
+		Trace(ZONE_INFO, "Select timed out\n");
+		return true;
 	}
-	
-	/* some error occur */
-	return 0;
+
+	/* and check if socket was correct */
+	if((1 != selectState) || (!FD_ISSET(mSock, &readSockets)))
+	{
+		throw FatalError("something strange happen in select() called by TcpSocket::Recv()");
+	}
+	return false;
+}
+
+TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError)
+	: ClientSocket(addr, port, SOCK_STREAM)
+{
+	if(0 != connect(mSock, reinterpret_cast<sockaddr*>(&mSockAddr), sizeof(mSockAddr)))
+	{
+		throw ConnectionLost("connect() failed", addr, port);
+	}
+}
+
+size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const throw(FatalError)
+{
+	return Select(timeout) ? 0 : recv(mSock, pBuffer, length, 0);
 }
 
 size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
@@ -81,28 +89,23 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 	return send(mSock, frame, length, 0);
 }
 
-UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast)
+UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) throw (FatalError)
 	: ClientSocket(addr, port, SOCK_DGRAM)
 {
-	setsockopt(mSock, SOL_SOCKET, SO_BROADCAST, &enableBroadcast, sizeof(enableBroadcast));
+	if(0 != setsockopt(mSock, SOL_SOCKET, SO_BROADCAST, &enableBroadcast, sizeof(enableBroadcast)))
+	{
+		throw FatalError("setsockopt() failed");
+	}
+
 	if(doBind && 0 != bind(mSock, reinterpret_cast<struct sockaddr *>(&mSockAddr), sizeof(struct sockaddr)))
 	{
-				Trace(ZONE_ERROR, "Bind failure!\n");
-	      pthread_exit(NULL);
-	      return;
+		throw FatalError("Bind UDP socket failed");
 	}
 }
 
-size_t UdpSocket::RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout, struct sockaddr* remoteAddr, socklen_t* remoteAddrLength) const
+size_t UdpSocket::RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout, struct sockaddr* remoteAddr, socklen_t* remoteAddrLength) const throw (FatalError)
 {
-	fd_set readSet;
-	FD_ZERO(&readSet);
-	FD_SET(mSock, &readSet);
-	if(0 < select(mSock+1, &readSet, NULL, NULL, timeout))
-	{
-		return recvfrom(mSock, pBuffer, length, 0, remoteAddr, remoteAddrLength);
-	}
-	return 0;
+	return Select(timeout) ? 0 : recvfrom(mSock, pBuffer, length, 0, remoteAddr, remoteAddrLength);
 }
 
 size_t UdpSocket::Send(const uint8_t* frame, size_t length) const

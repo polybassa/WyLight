@@ -18,6 +18,8 @@
 
 #ifndef _CLIENTSOCKET_H_
 #define _CLIENTSOCKET_H_
+#include "WiflyControlException.h"
+
 #include <cassert>
 #include <ostream>
 #include <stddef.h>
@@ -25,34 +27,108 @@
 #include <sys/socket.h>
 #include <sys/time.h>
 
+/**
+ * Abstract base class controlling the low level socket file descriptor
+ */
 class ClientSocket
 {
-	protected:
-		const int mSock;
-		struct sockaddr_in mSockAddr;
-
 	public:
-		ClientSocket(uint32_t addr, uint16_t port, int style);
+		/**
+		 * Aquire the low level socket file descriptor
+		 * @param addr IPv4 address in host byte order
+		 * @param port IPv4 port number in host byte order
+		 * @param style either SOCK_DGRAM (udp) or SOCK_STREAM for tcp socket
+		 * @throws FatalError if the creation of the bsd sock descriptor fails
+		 */
+		ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError);
+
+		/**
+		 * Destructor releasing the socket file descriptor
+		 */
 		virtual ~ClientSocket();
+
+		/**
+		 * wait for data on the low level socket
+		 * @param timout to wait for data, to block indefinitly use NULL, which is default
+		 * @return true if select() timed out, false if data is ready
+		 * @throws FatalError if something very unexpected happens
+		 */
+		bool Select(timeval* timeout) const throw (FatalError);
+
+		/**
+		 * Interface to send a data frame with a given length, you have to implement
+		 * this function in child classes
+		 */
 		virtual size_t Send(const uint8_t* frame, size_t length) const = 0;
+
+	protected:
+		/**
+		 * low level socket file descriptor
+		 */
+		const int mSock;
+
+		/**
+		 * IPv4 address of listening or target port
+		 */
+		struct sockaddr_in mSockAddr;
 };
 
+/**
+ * Wrapper to make tcp socket handling more easy
+ */
 class TcpSocket : public ClientSocket
 {
 	public:
-		TcpSocket(uint32_t Addr, uint16_t port);
-		size_t Recv(uint8_t* pBuffer, size_t length, timeval* timeout = NULL) const;
+		/**
+		 * @param addr IPv4 address in host byte order
+		 * @param port IPv4 port number in host byte order
+		 * @throws FatalError if the base class constructor fails @see ClientSocket#ClientSocket
+		 * @throws ConnectionLost if connect() fails on the internal socket
+		 */
+		TcpSocket(uint32_t Addr, uint16_t port) throw (ConnectionLost, FatalError);
+
+		/**
+		 * Receive data from the remote socket.
+		 * @param pBuffer to store the read data
+		 * @param length size of the pBuffer
+		 * @param timout to wait for data, to block indefinitly use NULL, which is default
+		 * @return number of bytes read into <pBuffer>
+		 * @throws FatalError if something very unexpected happens
+		 */
+		size_t Recv(uint8_t* pBuffer, size_t length, timeval* timeout = NULL) const throw (FatalError);
+
+		/**
+		 * @see ClientSocket#Send
+		 */
 		virtual size_t Send(const uint8_t* frame, size_t length) const;
 };
 
+/**
+ * Wrapper to make udp socket handling more easy
+ */
 class UdpSocket : public ClientSocket
 {
 	public:
 		/**
-		 * @param enableBroadcast use 1 to enable broadcast else set 0
+		 * @param addr IPv4 address in host byte order
+		 * @param port IPv4 port number in host byte order
+		 * @param doBind set to true to 
+		 * @param enableBroadcast use 1 to enable broadcast else set 0 (default)
+		 * @throws FatalError if the base class constructor fails
 		 */
-		UdpSocket(uint32_t addr, uint16_t port, bool doBind = true, int enableBroadcast = 0);
-		size_t RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout = NULL, struct sockaddr* remoteAddr = NULL, socklen_t* remoteAddrLength = NULL) const;
+		UdpSocket(uint32_t addr, uint16_t port, bool doBind = true, int enableBroadcast = 0) throw (FatalError);
+
+		/**
+		 * Receive data from the remote socket.
+		 * @param pBuffer to store the read data
+		 * @param length size of the pBuffer
+		 * @param timout to wait for data, to block indefinitly use NULL, which is default
+		 * @param remoteAddr pointer to a struct where the senders address should be stored, this param is optional use NULL to ignore it
+		 * @param remoteAddrLength size of the struct remoteAddr is pointing to, after a successfull call with no NULL pointers in remoteAddrLength and remoteAddr it will point to the size of the written remoteAddr struct
+		 * @return number of bytes read into <pBuffer>
+		 * @throws FatalError if something very unexpected happens
+		 */
+		size_t RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout = NULL, struct sockaddr* remoteAddr = NULL, socklen_t* remoteAddrLength = NULL) const throw (FatalError);
 		virtual size_t Send(const uint8_t* frame, size_t length) const;
 };
 #endif /* #ifndef _CLIENTSOCKET_H_ */
