@@ -9,7 +9,7 @@ else ifeq ($(UNAME),Darwin)
 	OPENGL_LIB_OSX=-framework Carbon -framework OpenGL -framework GLUT
 endif
 
-X86_SRC=main.c crc.c CommandIO.c eeprom.c error.c ledstrip.c RingBuf.c ScriptCtrl.c spi.c timer.c trace.c usart.c x86_wrapper.c x86_gl.c
+X86_SRC=main.c crc.c CommandIO.c eeprom.c error.c ledstrip.c RingBuf.c ScriptCtrl.c spi.c timer.c trace.c usart.c Version.c x86_wrapper.c x86_gl.c
 
 OUTPUT_DIR=../binary
 
