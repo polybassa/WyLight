@@ -44,7 +44,7 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 {
 	// only one thread allowed per instance
 	if(0 == std::atomic_fetch_add(&mNumInstances, 1))
-	{
+	try {
 		size_t numRemotes = 0;
 		timeval endTime, now;
 		gettimeofday(&endTime, NULL);
@@ -58,6 +58,8 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 			}
 			gettimeofday(&now, NULL);
 		} while(mIsRunning && timeval_sub(&endTime, &now, pTimeout));
+	} catch (FatalError& e) {
+		out << "EXCEPTION in " << __FILE__ << ':' << __LINE__ << ' ' << e << '\n';
 	}
 	std::atomic_fetch_sub(&mNumInstances, 1);
 }
@@ -74,7 +76,7 @@ const Endpoint& BroadcastReceiver::GetEndpoint(size_t index) const
 
 Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout)
 {
-	UdpSocket udpSock(INADDR_ANY, mPort, true, true);
+	UdpSocket udpSock(INADDR_ANY, mPort, true, 1);
 	sockaddr_storage remoteAddr;
 	socklen_t remoteAddrLength = sizeof(remoteAddr);
 

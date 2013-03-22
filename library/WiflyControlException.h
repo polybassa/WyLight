@@ -29,6 +29,39 @@
 #include "BlRequest.h"
 #include "WiflyControlResponse.h"
 
+class FatalError : public std::exception
+{
+public:
+	FatalError(const std::string& description) throw () : mDescription(description) {};
+	virtual ~FatalError(void) throw () {};
+
+	friend std::ostream& operator<< (std::ostream& out, const FatalError& ref)
+	{
+		return out << ref.mDescription;
+	};
+
+protected:
+	std::string mDescription;
+};
+
+class ConnectionLost : public FatalError
+{
+public:
+	ConnectionLost(const std::string& description, uint32_t addr, uint16_t port)
+		: FatalError(description), mAddress(addr), mPort(port)
+	{
+	};
+
+	friend std::ostream& operator<< (std::ostream& out, const ConnectionLost& ref)
+	{
+		return out << "ConnectionLost to: " << ref.mAddress << ':' << ref.mPort
+		           <<" due: '" << ref.mDescription << '\'';
+	};
+
+protected:
+	uint32_t mAddress;
+	uint16_t mPort;
+};
 
 class WiflyControlException : public std::exception
 {

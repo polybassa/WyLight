@@ -29,10 +29,10 @@ static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZON
 uint8_t g_FlashRndDataPool[FLASH_SIZE];
 uint8_t g_EepromRndDataPool[EEPROM_SIZE];
 // empty wrappers to satisfy the linker
-ClientSocket::ClientSocket(uint32_t, uint16_t, int) : mSock(0) {}
+ClientSocket::ClientSocket(uint32_t, uint16_t, int) throw (FatalError) : mSock(0) {}
 ClientSocket::~ClientSocket(void) {}
-TcpSocket::TcpSocket(uint32_t addr, uint16_t port) : ClientSocket(addr, port, 0) {}
-size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const { return 0;}
+TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError) : ClientSocket(addr, port, 0) {}
+size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const throw (FatalError) { return 0;}
 size_t TcpSocket::Send(const uint8_t* frame, size_t length) const {return 0; }
 ComProxy::ComProxy(const TcpSocket& sock) : mSock (sock) {}
 
