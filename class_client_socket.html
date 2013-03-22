@@ -104,20 +104,20 @@ Inheritance diagram for ClientSocket:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9ef0e9b489c27a59ddcc5b863d70c5c4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ef0e9b489c27a59ddcc5b863d70c5c4"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ClientSocket</b> (uint32_t addr, uint16_t port, int style)</td></tr>
+<tr class="memitem:a9ef0e9b489c27a59ddcc5b863d70c5c4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_socket.html#a9ef0e9b489c27a59ddcc5b863d70c5c4">ClientSocket</a> (uint32_t addr, uint16_t port, int style)  throw (FatalError)</td></tr>
 <tr class="separator:a9ef0e9b489c27a59ddcc5b863d70c5c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad53cfcbf3eebbfb8b8314f58d3354edd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad53cfcbf3eebbfb8b8314f58d3354edd"></a>
-virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><b>Send</b> (const uint8_t *frame, size_t length) const =0</td></tr>
+<tr class="memitem:a9c8af4fc4f56b62ef0ff7d67037f65a3"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_socket.html#a9c8af4fc4f56b62ef0ff7d67037f65a3">~ClientSocket</a> ()</td></tr>
+<tr class="separator:a9c8af4fc4f56b62ef0ff7d67037f65a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab024bbccfda7b4983177e318b7ac32a7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_socket.html#ab024bbccfda7b4983177e318b7ac32a7">Select</a> (timeval *timeout) const   throw (FatalError)</td></tr>
+<tr class="separator:ab024bbccfda7b4983177e318b7ac32a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad53cfcbf3eebbfb8b8314f58d3354edd"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_socket.html#ad53cfcbf3eebbfb8b8314f58d3354edd">Send</a> (const uint8_t *frame, size_t length) const =0</td></tr>
 <tr class="separator:ad53cfcbf3eebbfb8b8314f58d3354edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:acb5029d09ef913c0b444e97f2cc98bef"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acb5029d09ef913c0b444e97f2cc98bef"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>mSock</b></td></tr>
+<tr class="memitem:acb5029d09ef913c0b444e97f2cc98bef"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_socket.html#acb5029d09ef913c0b444e97f2cc98bef">mSock</a></td></tr>
 <tr class="separator:acb5029d09ef913c0b444e97f2cc98bef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbf9ed9f1ebac9348a2d1c77b516acbc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acbf9ed9f1ebac9348a2d1c77b516acbc"></a>
-struct sockaddr_in&#160;</td><td class="memItemRight" valign="bottom"><b>mSockAddr</b></td></tr>
+<tr class="memitem:acbf9ed9f1ebac9348a2d1c77b516acbc"><td class="memItemLeft" align="right" valign="top">struct sockaddr_in&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_socket.html#acbf9ed9f1ebac9348a2d1c77b516acbc">mSockAddr</a></td></tr>
 <tr class="separator:acbf9ed9f1ebac9348a2d1c77b516acbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -125,14 +125,197 @@ struct sockaddr_in&#160;</td><td class="memItemRight" valign="bottom"><b>mSockAd
 </pre><p>This file is part of Wifly_Light.</p>
 <p>Wifly_Light is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
 <p>Wifly_Light is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
-<p>You should have received a copy of the GNU General Public License along with Wifly_Light. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+<p>You should have received a copy of the GNU General Public License along with Wifly_Light. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. Abstract base class controlling the low level socket file descriptor </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a9ef0e9b489c27a59ddcc5b863d70c5c4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ClientSocket::ClientSocket </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>style</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>  throw (<a class="el" href="class_fatal_error.html">FatalError</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Aquire the low level socket file descriptor </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">addr</td><td>IPv4 address in host byte order </td></tr>
+    <tr><td class="paramname">port</td><td>IPv4 port number in host byte order </td></tr>
+    <tr><td class="paramname">style</td><td>either SOCK_DGRAM (udp) or SOCK_STREAM for tcp socket </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_fatal_error.html">FatalError</a></td><td>if the creation of the bsd sock descriptor fails </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a9c8af4fc4f56b62ef0ff7d67037f65a3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual ClientSocket::~ClientSocket </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Destructor releasing the socket file descriptor </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ab024bbccfda7b4983177e318b7ac32a7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ClientSocket::Select </td>
+          <td>(</td>
+          <td class="paramtype">timeval *&#160;</td>
+          <td class="paramname"><em>timeout</em></td><td>)</td>
+          <td> const  throw (<a class="el" href="class_fatal_error.html">FatalError</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>wait for data on the low level socket </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">timout</td><td>to wait for data, to block indefinitly use NULL, which is default </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if select() timed out, false if data is ready </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_fatal_error.html">FatalError</a></td><td>if something very unexpected happens </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ad53cfcbf3eebbfb8b8314f58d3354edd"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual size_t ClientSocket::Send </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>frame</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Interface to send a data frame with a given length, you have to implement this function in child classes </p>
+
+<p>Implemented in <a class="el" href="class_udp_socket.html#a434383e163f13643cff11a2cdf59961a">UdpSocket</a>, and <a class="el" href="class_tcp_socket.html#add01c46a43a1663da73ec620dd9ad5ef">TcpSocket</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="acb5029d09ef913c0b444e97f2cc98bef"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int ClientSocket::mSock</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>low level socket file descriptor </p>
+
+</div>
+</div>
+<a class="anchor" id="acbf9ed9f1ebac9348a2d1c77b516acbc"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct sockaddr_in ClientSocket::mSockAddr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>IPv4 address of listening or target port </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>library/<a class="el" href="_client_socket_8h_source.html">ClientSocket.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 20 2013 17:50:35 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 22 2013 21:19:04 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

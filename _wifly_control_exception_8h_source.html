@@ -99,68 +99,101 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;BlRequest.h&quot;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;WiflyControlResponse.h&quot;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="code" href="class_wifly_control_exception.html">   33</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_wifly_control_exception.html">WiflyControlException</a> : <span class="keyword">public</span> std::exception</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="class_wifly_control_exception.html">WiflyControlException</a>(<span class="keyword">const</span> std::string errorString = <span class="stringliteral">&quot;WiflyControlException&quot;</span>)</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    : std::exception(), m_ErrorString(errorString) {};</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    ~<a class="code" href="class_wifly_control_exception.html">WiflyControlException</a>(<span class="keywordtype">void</span>) <span class="keywordflow">throw</span>() {};</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* what(<span class="keywordtype">void</span>) <span class="keyword">const</span> <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> m_ErrorString.c_str(); };</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">const</span> std::string m_ErrorString;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;};</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="code" href="class_bl_no_response_exception.html">   45</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_bl_no_response_exception.html">BlNoResponseException</a>: <span class="keyword">public</span> <a class="code" href="class_wifly_control_exception.html">WiflyControlException</a></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="class_bl_no_response_exception.html">BlNoResponseException</a>(<span class="keyword">const</span> <span class="keyword">struct</span> <a class="code" href="struct_bl_request.html">BlRequest</a> failedRequest, <span class="keyword">const</span> std::string errorString = <span class="stringliteral">&quot;No response received&quot;</span>)</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    : <a class="code" href="class_wifly_control_exception.html">WiflyControlException</a>(errorString), m_FailedRequest(failedRequest) {};</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="struct_bl_request.html">BlRequest</a>&amp; GetFailedRequest(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_FailedRequest; };</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_bl_request.html">BlRequest</a> m_FailedRequest;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;};</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="code" href="class_fw_exception.html">   57</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_fw_exception.html">FwException</a> : <span class="keyword">public</span> <a class="code" href="class_wifly_control_exception.html">WiflyControlException</a></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <a class="code" href="class_fw_exception.html">FwException</a>(<span class="keyword">const</span> <span class="keyword">struct</span> cmd_frame* <span class="keyword">const</span> failedFrame, <span class="keyword">const</span> std::string errorString)</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    : <a class="code" href="class_wifly_control_exception.html">WiflyControlException</a>(errorString)</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">if</span>(failedFrame != NULL)</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            memcpy(&amp;m_FailedFrame, failedFrame, <span class="keyword">sizeof</span>(<span class="keyword">struct</span> cmd_frame));</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        }</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    };</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">const</span> <span class="keyword">struct </span>cmd_frame GetFailedFrame(void) const { <span class="keywordflow">return</span> m_FailedFrame; };</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">struct </span>cmd_frame m_FailedFrame;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;};</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="code" href="class_script_buffer_full_exception.html">   75</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_script_buffer_full_exception.html">ScriptBufferFullException</a> : <span class="keyword">public</span> <a class="code" href="class_fw_exception.html">FwException</a></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;{</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <a class="code" href="class_script_buffer_full_exception.html">ScriptBufferFullException</a>(<span class="keyword">const</span> <span class="keyword">struct</span> cmd_frame* <span class="keyword">const</span> failedCommand, <span class="keyword">const</span> std::string errorString = <span class="stringliteral">&quot;Buffer for commands in light is full!&quot;</span>)</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    : <a class="code" href="class_fw_exception.html">FwException</a>(failedCommand, errorString) {};</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;};</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="code" href="class_fw_no_response_exception.html">   82</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_fw_no_response_exception.html">FwNoResponseException</a> : <span class="keyword">public</span> <a class="code" href="class_fw_exception.html">FwException</a></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;{</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <a class="code" href="class_fw_no_response_exception.html">FwNoResponseException</a>(<span class="keyword">const</span> <span class="keyword">struct</span> cmd_frame* <span class="keyword">const</span> failedCommand, <span class="keyword">const</span> std::string errorString = <span class="stringliteral">&quot;Invalid response received or connection abort!&quot;</span>)</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    : <a class="code" href="class_fw_exception.html">FwException</a>(failedCommand, errorString) {};</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;};</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* defined(____WiflyControlException__) */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="code" href="class_fatal_error.html">   32</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_fatal_error.html">FatalError</a> : <span class="keyword">public</span> std::exception</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="class_fatal_error.html">FatalError</a>(<span class="keyword">const</span> std::string&amp; description) <span class="keywordflow">throw</span> () : mDescription(description) {};</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="class_fatal_error.html">FatalError</a>(<span class="keywordtype">void</span>) <span class="keywordflow">throw</span> () {};</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">friend</span> std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, <span class="keyword">const</span> <a class="code" href="class_fatal_error.html">FatalError</a>&amp; ref)</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordflow">return</span> out &lt;&lt; ref.mDescription;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    };</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    std::string mDescription;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;};</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="code" href="class_connection_lost.html">   47</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_connection_lost.html">ConnectionLost</a> : <span class="keyword">public</span> <a class="code" href="class_fatal_error.html">FatalError</a></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="class_connection_lost.html">ConnectionLost</a>(<span class="keyword">const</span> std::string&amp; description, uint32_t addr, uint16_t port)</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        : <a class="code" href="class_fatal_error.html">FatalError</a>(description), mAddress(addr), mPort(port)</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    };</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">friend</span> std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, <span class="keyword">const</span> <a class="code" href="class_connection_lost.html">ConnectionLost</a>&amp; ref)</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keywordflow">return</span> out &lt;&lt; <span class="stringliteral">&quot;ConnectionLost to: &quot;</span> &lt;&lt; ref.mAddress &lt;&lt; <span class="charliteral">&#39;:&#39;</span> &lt;&lt; ref.mPort</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                   &lt;&lt;<span class="stringliteral">&quot; due: &#39;&quot;</span> &lt;&lt; ref.mDescription &lt;&lt; <span class="charliteral">&#39;\&#39;&#39;</span>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    };</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    uint32_t mAddress;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    uint16_t mPort;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;};</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="code" href="class_wifly_control_exception.html">   66</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_wifly_control_exception.html">WiflyControlException</a> : <span class="keyword">public</span> std::exception</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="class_wifly_control_exception.html">WiflyControlException</a>(<span class="keyword">const</span> std::string errorString = <span class="stringliteral">&quot;WiflyControlException&quot;</span>)</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    : std::exception(), m_ErrorString(errorString) {};</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    ~<a class="code" href="class_wifly_control_exception.html">WiflyControlException</a>(<span class="keywordtype">void</span>) <span class="keywordflow">throw</span>() {};</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* what(<span class="keywordtype">void</span>) <span class="keyword">const</span> <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> m_ErrorString.c_str(); };</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keyword">const</span> std::string m_ErrorString;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;};</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="code" href="class_bl_no_response_exception.html">   78</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_bl_no_response_exception.html">BlNoResponseException</a>: <span class="keyword">public</span> <a class="code" href="class_wifly_control_exception.html">WiflyControlException</a></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;{</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <a class="code" href="class_bl_no_response_exception.html">BlNoResponseException</a>(<span class="keyword">const</span> <span class="keyword">struct</span> <a class="code" href="struct_bl_request.html">BlRequest</a> failedRequest, <span class="keyword">const</span> std::string errorString = <span class="stringliteral">&quot;No response received&quot;</span>)</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    : <a class="code" href="class_wifly_control_exception.html">WiflyControlException</a>(errorString), m_FailedRequest(failedRequest) {};</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="struct_bl_request.html">BlRequest</a>&amp; GetFailedRequest(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_FailedRequest; };</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_bl_request.html">BlRequest</a> m_FailedRequest;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;};</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="code" href="class_fw_exception.html">   90</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_fw_exception.html">FwException</a> : <span class="keyword">public</span> <a class="code" href="class_wifly_control_exception.html">WiflyControlException</a></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;{</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <a class="code" href="class_fw_exception.html">FwException</a>(<span class="keyword">const</span> <span class="keyword">struct</span> cmd_frame* <span class="keyword">const</span> failedFrame, <span class="keyword">const</span> std::string errorString)</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    : <a class="code" href="class_wifly_control_exception.html">WiflyControlException</a>(errorString)</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    {</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="keywordflow">if</span>(failedFrame != NULL)</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            memcpy(&amp;m_FailedFrame, failedFrame, <span class="keyword">sizeof</span>(<span class="keyword">struct</span> cmd_frame));</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        }</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    };</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keyword">const</span> <span class="keyword">struct </span>cmd_frame GetFailedFrame(void) const { <span class="keywordflow">return</span> m_FailedFrame; };</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keyword">struct </span>cmd_frame m_FailedFrame;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;};</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="code" href="class_script_buffer_full_exception.html">  108</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_script_buffer_full_exception.html">ScriptBufferFullException</a> : <span class="keyword">public</span> <a class="code" href="class_fw_exception.html">FwException</a></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;{</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <a class="code" href="class_script_buffer_full_exception.html">ScriptBufferFullException</a>(<span class="keyword">const</span> <span class="keyword">struct</span> cmd_frame* <span class="keyword">const</span> failedCommand, <span class="keyword">const</span> std::string errorString = <span class="stringliteral">&quot;Buffer for commands in light is full!&quot;</span>)</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    : <a class="code" href="class_fw_exception.html">FwException</a>(failedCommand, errorString) {};</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;};</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+<div class="line"><a name="l00115"></a><span class="lineno"><a class="code" href="class_fw_no_response_exception.html">  115</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_fw_no_response_exception.html">FwNoResponseException</a> : <span class="keyword">public</span> <a class="code" href="class_fw_exception.html">FwException</a></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;{</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <a class="code" href="class_fw_no_response_exception.html">FwNoResponseException</a>(<span class="keyword">const</span> <span class="keyword">struct</span> cmd_frame* <span class="keyword">const</span> failedCommand, <span class="keyword">const</span> std::string errorString = <span class="stringliteral">&quot;Invalid response received or connection abort!&quot;</span>)</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    : <a class="code" href="class_fw_exception.html">FwException</a>(failedCommand, errorString) {};</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;};</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* defined(____WiflyControlException__) */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 20 2013 17:50:30 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 22 2013 21:18:58 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

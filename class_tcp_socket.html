@@ -88,6 +88,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">TcpSocket Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="_client_socket_8h_source.html">ClientSocket.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for TcpSocket:</div>
 <div class="dyncontent">
@@ -100,37 +102,170 @@ Inheritance diagram for TcpSocket:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac7d0bc1afd5de6ed718785d35c656bb3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac7d0bc1afd5de6ed718785d35c656bb3"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TcpSocket</b> (uint32_t Addr, uint16_t port)</td></tr>
+<tr class="memitem:ac7d0bc1afd5de6ed718785d35c656bb3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tcp_socket.html#ac7d0bc1afd5de6ed718785d35c656bb3">TcpSocket</a> (uint32_t Addr, uint16_t port)  throw (ConnectionLost, FatalError)</td></tr>
 <tr class="separator:ac7d0bc1afd5de6ed718785d35c656bb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae11e390e4c9f9de484da2868a25d1623"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae11e390e4c9f9de484da2868a25d1623"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>Recv</b> (uint8_t *pBuffer, size_t length, timeval *timeout=NULL) const </td></tr>
+<tr class="memitem:ae11e390e4c9f9de484da2868a25d1623"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tcp_socket.html#ae11e390e4c9f9de484da2868a25d1623">Recv</a> (uint8_t *pBuffer, size_t length, timeval *timeout=NULL) const   throw (FatalError)</td></tr>
 <tr class="separator:ae11e390e4c9f9de484da2868a25d1623"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add01c46a43a1663da73ec620dd9ad5ef"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="add01c46a43a1663da73ec620dd9ad5ef"></a>
-virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><b>Send</b> (const uint8_t *frame, size_t length) const </td></tr>
+<tr class="memitem:add01c46a43a1663da73ec620dd9ad5ef"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tcp_socket.html#add01c46a43a1663da73ec620dd9ad5ef">Send</a> (const uint8_t *frame, size_t length) const </td></tr>
 <tr class="separator:add01c46a43a1663da73ec620dd9ad5ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_client_socket"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_client_socket')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_client_socket.html">ClientSocket</a></td></tr>
-<tr class="memitem:a9ef0e9b489c27a59ddcc5b863d70c5c4 inherit pub_methods_class_client_socket"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ef0e9b489c27a59ddcc5b863d70c5c4"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ClientSocket</b> (uint32_t addr, uint16_t port, int style)</td></tr>
+<tr class="memitem:a9ef0e9b489c27a59ddcc5b863d70c5c4 inherit pub_methods_class_client_socket"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_socket.html#a9ef0e9b489c27a59ddcc5b863d70c5c4">ClientSocket</a> (uint32_t addr, uint16_t port, int style)  throw (FatalError)</td></tr>
 <tr class="separator:a9ef0e9b489c27a59ddcc5b863d70c5c4 inherit pub_methods_class_client_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c8af4fc4f56b62ef0ff7d67037f65a3 inherit pub_methods_class_client_socket"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_socket.html#a9c8af4fc4f56b62ef0ff7d67037f65a3">~ClientSocket</a> ()</td></tr>
+<tr class="separator:a9c8af4fc4f56b62ef0ff7d67037f65a3 inherit pub_methods_class_client_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab024bbccfda7b4983177e318b7ac32a7 inherit pub_methods_class_client_socket"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_socket.html#ab024bbccfda7b4983177e318b7ac32a7">Select</a> (timeval *timeout) const   throw (FatalError)</td></tr>
+<tr class="separator:ab024bbccfda7b4983177e318b7ac32a7 inherit pub_methods_class_client_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_class_client_socket"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_client_socket')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_client_socket.html">ClientSocket</a></td></tr>
-<tr class="memitem:acb5029d09ef913c0b444e97f2cc98bef inherit pro_attribs_class_client_socket"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acb5029d09ef913c0b444e97f2cc98bef"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>mSock</b></td></tr>
+<tr class="memitem:acb5029d09ef913c0b444e97f2cc98bef inherit pro_attribs_class_client_socket"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_socket.html#acb5029d09ef913c0b444e97f2cc98bef">mSock</a></td></tr>
 <tr class="separator:acb5029d09ef913c0b444e97f2cc98bef inherit pro_attribs_class_client_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbf9ed9f1ebac9348a2d1c77b516acbc inherit pro_attribs_class_client_socket"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acbf9ed9f1ebac9348a2d1c77b516acbc"></a>
-struct sockaddr_in&#160;</td><td class="memItemRight" valign="bottom"><b>mSockAddr</b></td></tr>
+<tr class="memitem:acbf9ed9f1ebac9348a2d1c77b516acbc inherit pro_attribs_class_client_socket"><td class="memItemLeft" align="right" valign="top">struct sockaddr_in&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_socket.html#acbf9ed9f1ebac9348a2d1c77b516acbc">mSockAddr</a></td></tr>
 <tr class="separator:acbf9ed9f1ebac9348a2d1c77b516acbc inherit pro_attribs_class_client_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Wrapper to make tcp socket handling more easy </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="ac7d0bc1afd5de6ed718785d35c656bb3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TcpSocket::TcpSocket </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>Addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>port</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>  throw (<a class="el" href="class_connection_lost.html">ConnectionLost</a>, <a class="el" href="class_fatal_error.html">FatalError</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">addr</td><td>IPv4 address in host byte order </td></tr>
+    <tr><td class="paramname">port</td><td>IPv4 port number in host byte order </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_fatal_error.html">FatalError</a></td><td>if the base class constructor fails</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_client_socket.html#a9ef0e9b489c27a59ddcc5b863d70c5c4">ClientSocket::ClientSocket</a> </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_connection_lost.html">ConnectionLost</a></td><td>if connect() fails on the internal socket </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ae11e390e4c9f9de484da2868a25d1623"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t TcpSocket::Recv </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>pBuffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">timeval *&#160;</td>
+          <td class="paramname"><em>timeout</em> = <code>NULL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const  throw (<a class="el" href="class_fatal_error.html">FatalError</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Receive data from the remote socket. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pBuffer</td><td>to store the read data </td></tr>
+    <tr><td class="paramname">length</td><td>size of the pBuffer </td></tr>
+    <tr><td class="paramname">timout</td><td>to wait for data, to block indefinitly use NULL, which is default </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>number of bytes read into &lt;pBuffer&gt; </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_fatal_error.html">FatalError</a></td><td>if something very unexpected happens </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="add01c46a43a1663da73ec620dd9ad5ef"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual size_t TcpSocket::Send </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>frame</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_client_socket.html#ad53cfcbf3eebbfb8b8314f58d3354edd">ClientSocket::Send</a> </dd></dl>
+
+<p>Implements <a class="el" href="class_client_socket.html#ad53cfcbf3eebbfb8b8314f58d3354edd">ClientSocket</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>library/<a class="el" href="_client_socket_8h_source.html">ClientSocket.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 20 2013 17:50:37 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 22 2013 21:19:07 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['fatalerror',['FatalError',['../class_fatal_error.html',1,'']]],
   ['firmwareversionresponse',['FirmwareVersionResponse',['../class_firmware_version_response.html',1,'']]],
   ['fwclearscript',['FwClearScript',['../class_wifly_control.html#a048e64bf80f176638032fec15f56c793',1,'WiflyControl']]],
   ['fwexception',['FwException',['../class_fw_exception.html',1,'']]],
