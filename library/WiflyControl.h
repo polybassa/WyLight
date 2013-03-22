@@ -1,4 +1,4 @@
-/**
+/*
 		Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
@@ -15,6 +15,28 @@
 
     You should have received a copy of the GNU General Public License
     along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
+
+
+/******************************************************************************/
+/*! \file WiflyControl.h
+ * \author Nils Weiss, Patrick Bruenn
+ *
+ *! \cond
+ * class - WiflyControl
+ * \endcond
+ *
+ * \brief Class to communicate with a Wifly_Light Hardware.
+ *
+ * 
+ * The WiflyControl class allows the user to control the Wifly_Light Hardware.
+ * There are three target's at the Wifly_Light Hardware.
+ * - Bootloader<br>
+ *           All methodes with Bl* relate to the bootloader part.
+ * - Firmware<br>
+ *           All methodes with Fw* relate to the firmware part.
+ * - RN-171 Wifi Interface<br>
+ *           All methodes witch Conf* relate to the communication module.
+ *******************************************************************************/
 
 #ifndef _WIFLYCONTROL_H_
 #define _WIFLYCONTROL_H_
@@ -45,7 +67,7 @@ class WiflyControl
 		 */
 		WiflyControl(uint32_t addr, uint16_t port);
 		
-/** ------------------------- BOOTLOADER METHODES ------------------------- **/
+/* ------------------------- BOOTLOADER METHODES ------------------------- */
 		/**
 		 * Instructs the bootloader to erase the whole eeprom.
 		 * The wifly device has to be in bootloader mode for this command.
@@ -97,6 +119,13 @@ class WiflyControl
 		size_t BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const;
 
 		/**
+		 * Instructs the bootloader to read the version string from the firmware memory.
+		 * The wifly device has to be in bootloader mode for this command.
+		 * @return the version string from pic flash memory
+		 */
+		std::string BlReadFwVersion(void) const;
+
+		/**
 		 * Instructs the bootloader to return a struct of bootloader informations
 		 * like bootloader version, flash and eeprom size. see <BlInfo> for details.
 		 * The wifly device has to be in bootloader mode for this command.
@@ -116,7 +145,7 @@ class WiflyControl
 		 */
 		void BlRunApp(void) const;
 
-/** --------------------- WLAN CONFIGURATION METHODES --------------------- **/
+/* --------------------- WLAN CONFIGURATION METHODES --------------------- */
 		/**
 		 * Read the currently configured ssid from Wifly module
 		 * @return an empty string or the ssid
@@ -137,7 +166,7 @@ class WiflyControl
 		 */
 		bool ConfSetWlan(const std::string& phrase, const std::string& ssid) const;
 		
-/** -------------------------- FIRMWARE METHODES -------------------------- **/
+/* -------------------------- FIRMWARE METHODES -------------------------- */
 		/**
 		 * Wipe all commands from the Wifly script controller
 		 * @param response will be modified according to the success of this operation
@@ -250,8 +279,15 @@ class WiflyControl
 		void FwTest(void);
 		void FwStressTest(void);
 
+/* ------------------------- VERSION EXTRACT METHODE ------------------------- */
+		/**
+		 * Methode to extract the firmware version from a hex file
+		 * @return the version string from a given hex file
+		 */
+		std::string ExtractFwVersion(const std::string& pFilename) const;
+	
 
-/** ------------------------- PRIVATE DECLARATIONS ------------------------- **/
+/* ------------------------- PRIVATE DECLARATIONS ------------------------- */
 	private:
 		/**
 		 * Socket used for communication with wifly device.
@@ -316,8 +352,15 @@ class WiflyControl
 		 */		
 		WiflyResponse& FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const;
 
-/** ------------------ friendships for unittesting only ------------------- **/
-friend size_t ut_WiflyControl_BlEepromWrite(void);
-friend size_t ut_WiflyControl_BlFlashWrite(void);
+/* ------------------ friendships for unittesting only ------------------- */
+		/**
+		 * friendships for unittesting only
+		 */
+		friend size_t ut_WiflyControl_BlEepromWrite(void);
+
+		/**
+		* friendships for unittesting only
+		*/
+		friend size_t ut_WiflyControl_BlFlashWrite(void);
 };
 #endif /* #ifndef _WIFLYCONTROL_H_ */

@@ -76,6 +76,50 @@ void WiflyControl::BlEnableAutostart(void) const
 	BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
 }
 
+std::string WiflyControl::BlReadFwVersion(void) const
+{
+	BlInfo info;
+	BlReadInfo(info);
+	
+	uint8_t buffer[256];
+	std::fill_n(buffer, sizeof(buffer), 0xff);
+	
+	/* set first block to half of program memory */
+	uint32_t readblock = info.GetAddress() / 2;
+	uint32_t address = readblock;
+	const uint32_t byteblock = 32;
+	
+	while(readblock > byteblock)
+	{
+		Trace(ZONE_INFO,"READ@%x", address);
+		size_t bytesRead = BlReadFlash(buffer, address, byteblock);
+		bool flashEmpty = true;
+		
+		/* check if all read data contains no program code */
+		for(size_t i = 0; i < bytesRead; i++)
+			if(buffer[i] != 0xff) flashEmpty = false;
+		
+		readblock /= 2;
+		if(flashEmpty)
+			address -= readblock;
+		else
+			address += readblock;
+	}
+	
+	address -= readblock * 2;
+	size_t bytesRead = BlReadFlash(buffer, address, byteblock * 2);
+	
+	uint8_t *pString = (uint8_t*) &buffer[bytesRead];
+	while(*pString == 0xff)
+		if(pString-- < &buffer[0])
+			return std::string("ERROR");
+	
+	if(pString - 7 < &buffer[0])
+		return std::string("ERROR");
+	
+	return std::string((const char*)pString - 7, 7);
+}
+
 void WiflyControl::BlFlashErase(void) const
 {
 	BlInfo info;
@@ -636,6 +680,36 @@ void WiflyControl::FwStressTest(void)
 		FwSetColorDirect(setColorDirectResp, ledArr, sizeof(ledArr));
 	}
 }
+
+std::string WiflyControl::ExtractFwVersion(const std::string& pFilename) const
+{
+	std::ifstream hexFile;
+	hexFile.open(const_cast<char*>(pFilename.c_str()), ifstream::in);
+	
+	if(!hexFile.good())
+	{
+		throw WiflyControlException("opening '" + pFilename + "' failed");
+	}
+	
+	intelhex hexConverter;
+	hexFile >> hexConverter;
+	unsigned long endAddress;
+	unsigned char buffer[16];
+	std::fill_n(buffer, sizeof(buffer), 0x00);
+	
+	if(!hexConverter.endAddress(&endAddress))
+	{
+		Trace(ZONE_VERBOSE, "can't read endAddress from hexConverter \n");
+	    throw WiflyControlException("can't read endAddress from hexConverter \n");
+	}
+	endAddress -= 7;
+	for(unsigned int i = 0; i < 7; i++)
+	{
+		hexConverter.getData(&buffer[i], endAddress++);
+	}
+	return std::string((const char*)&buffer[0], 7);
+}
+
 
 void WiflyControl::FwTest(void)
 {

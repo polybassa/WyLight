@@ -1,0 +1,103 @@
+\hypertarget{class_broadcast_receiver}{\section{Broadcast\-Receiver Class Reference}
+\label{class_broadcast_receiver}\index{Broadcast\-Receiver@{Broadcast\-Receiver}}
+}
+
+
+{\ttfamily \#include $<$Broadcast\-Receiver.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_broadcast_receiver_a9c3f8ebdef813f03edec75f88389a6ee}{{\bfseries Broadcast\-Receiver} (uint16\-\_\-t port=B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T)}\label{class_broadcast_receiver_a9c3f8ebdef813f03edec75f88389a6ee}
+
+\item 
+void \hyperlink{class_broadcast_receiver_ac2fa6c783d73121c800d3c015621964d}{operator()} (std\-::ostream \&out, timeval $\ast$timeout=N\-U\-L\-L)
+\item 
+\hypertarget{class_broadcast_receiver_a1c487597e1338d5e5fca55f1d89d0eb1}{const \hyperlink{class_endpoint}{Endpoint} \& {\bfseries Get\-Endpoint} (size\-\_\-t index) const }\label{class_broadcast_receiver_a1c487597e1338d5e5fca55f1d89d0eb1}
+
+\item 
+\hypertarget{class_broadcast_receiver_a4549672ea1b9b008f93b42329c8bea5f}{\hyperlink{class_endpoint}{Endpoint} {\bfseries Get\-Next\-Remote} (timeval $\ast$timeout)}\label{class_broadcast_receiver_a4549672ea1b9b008f93b42329c8bea5f}
+
+\item 
+size\-\_\-t \hyperlink{class_broadcast_receiver_a6e403e696a76c5bc8c2b9215c3d5704d}{Num\-Remotes} (void) const 
+\item 
+void \hyperlink{class_broadcast_receiver_ab0f0852ab37655f23bebaca888216502}{Stop} (void)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_broadcast_receiver_a3e1de2825034cb6e2b15641c490d9381}{const uint16\-\_\-t {\bfseries m\-Port}}\label{class_broadcast_receiver_a3e1de2825034cb6e2b15641c490d9381}
+
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_broadcast_receiver_a38d37ce60dc1fb1e0dbc08d80b5d3b47}{static const uint16\-\_\-t {\bfseries B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T} = 55555}\label{class_broadcast_receiver_a38d37ce60dc1fb1e0dbc08d80b5d3b47}
+
+\item 
+\hypertarget{class_broadcast_receiver_a7314a4107fc6e1c3d8dbace2b47c07d1}{static const std\-::string {\bfseries D\-E\-V\-I\-C\-E\-\_\-\-I\-D}}\label{class_broadcast_receiver_a7314a4107fc6e1c3d8dbace2b47c07d1}
+
+\item 
+\hypertarget{class_broadcast_receiver_addb5597142e98c3c16afce397082d960}{static const std\-::string {\bfseries D\-E\-V\-I\-C\-E\-\_\-\-I\-D\-\_\-\-O\-L\-D}}\label{class_broadcast_receiver_addb5597142e98c3c16afce397082d960}
+
+\item 
+\hypertarget{class_broadcast_receiver_a8a59a09e4b750cc992d9aab3a4c06a33}{static const int8\-\_\-t {\bfseries S\-T\-O\-P\-\_\-\-M\-S\-G} \mbox{[}$\,$\mbox{]}}\label{class_broadcast_receiver_a8a59a09e4b750cc992d9aab3a4c06a33}
+
+\item 
+\hypertarget{class_broadcast_receiver_afa28d7c0a9058e830c7586e33acc6b69}{static const size\-\_\-t {\bfseries S\-T\-O\-P\-\_\-\-M\-S\-G\-\_\-\-L\-E\-N\-G\-T\-H}}\label{class_broadcast_receiver_afa28d7c0a9058e830c7586e33acc6b69}
+
+\item 
+\hypertarget{class_broadcast_receiver_a545fbd086416bfa77cd42b531d045a5b}{static const \hyperlink{class_endpoint}{Endpoint} {\bfseries E\-M\-P\-T\-Y\-\_\-\-E\-N\-D\-P\-O\-I\-N\-T}}\label{class_broadcast_receiver_a545fbd086416bfa77cd42b531d045a5b}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
+
+This file is part of Wifly\-\_\-\-Light.
+
+Wifly\-\_\-\-Light is free software\-: you can redistribute it and/or modify it under the terms of the G\-N\-U General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+Wifly\-\_\-\-Light is distributed in the hope that it will be useful, but W\-I\-T\-H\-O\-U\-T A\-N\-Y W\-A\-R\-R\-A\-N\-T\-Y; without even the implied warranty of M\-E\-R\-C\-H\-A\-N\-T\-A\-B\-I\-L\-I\-T\-Y or F\-I\-T\-N\-E\-S\-S F\-O\-R A P\-A\-R\-T\-I\-C\-U\-L\-A\-R P\-U\-R\-P\-O\-S\-E. See the G\-N\-U General Public License for more details.
+
+You should have received a copy of the G\-N\-U General Public License along with Wifly\-\_\-\-Light. If not, see \href{http://www.gnu.org/licenses/}{\tt http\-://www.\-gnu.\-org/licenses/}. 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_broadcast_receiver_a6e403e696a76c5bc8c2b9215c3d5704d}{\index{Broadcast\-Receiver@{Broadcast\-Receiver}!Num\-Remotes@{Num\-Remotes}}
+\index{Num\-Remotes@{Num\-Remotes}!BroadcastReceiver@{Broadcast\-Receiver}}
+\subsubsection[{Num\-Remotes}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t Broadcast\-Receiver\-::\-Num\-Remotes (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_broadcast_receiver_a6e403e696a76c5bc8c2b9215c3d5704d}
+\begin{DoxyReturn}{Returns}
+number of known I\-P addresses 
+\end{DoxyReturn}
+\hypertarget{class_broadcast_receiver_ac2fa6c783d73121c800d3c015621964d}{\index{Broadcast\-Receiver@{Broadcast\-Receiver}!operator()@{operator()}}
+\index{operator()@{operator()}!BroadcastReceiver@{Broadcast\-Receiver}}
+\subsubsection[{operator()}]{\setlength{\rightskip}{0pt plus 5cm}void Broadcast\-Receiver\-::operator() (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{out, }
+\item[{timeval $\ast$}]{timeout = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)}}\label{class_broadcast_receiver_ac2fa6c783d73121c800d3c015621964d}
+Wait for broadcasts and print them to a stream 
+\begin{DoxyParams}{Parameters}
+{\em out} & stream to print collected remotes on \\
+\hline
+{\em timeout} & in seconds, until execution is terminated \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_broadcast_receiver_ab0f0852ab37655f23bebaca888216502}{\index{Broadcast\-Receiver@{Broadcast\-Receiver}!Stop@{Stop}}
+\index{Stop@{Stop}!BroadcastReceiver@{Broadcast\-Receiver}}
+\subsubsection[{Stop}]{\setlength{\rightskip}{0pt plus 5cm}void Broadcast\-Receiver\-::\-Stop (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_broadcast_receiver_ab0f0852ab37655f23bebaca888216502}
+Sends a stop event to terminate execution of operator() 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/Broadcast\-Receiver.\-h\end{DoxyCompactItemize}

@@ -49,7 +49,7 @@ class WiflyColor
 			std::stringstream converter;
 			converter << std::hex << s;
 			converter >> argb;
-			return argb;
+			return (uint32_t)argb;
 		};
 
 		WiflyColor(const uint32_t argbValue = 0) { argb(argbValue); };

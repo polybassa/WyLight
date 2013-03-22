@@ -153,7 +153,7 @@ int32_t ComProxy::Send(const cmd_frame* pFrame, response_frame* pResponse, size_
 	pResponse->length = sizeof(uns8) + sizeof(uns16) + sizeof(ErrorCode);
 	pResponse->cmd = pFrame->led.cmd;
 	pResponse->state = OK;
-	return sizeof(g_SendFrame);
+	return pResponse->length;
 }
 
 // wrapper to test WiflyControl

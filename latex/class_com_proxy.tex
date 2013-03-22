@@ -1,0 +1,68 @@
+\hypertarget{class_com_proxy}{\section{Com\-Proxy Class Reference}
+\label{class_com_proxy}\index{Com\-Proxy@{Com\-Proxy}}
+}
+
+
+{\ttfamily \#include $<$Com\-Proxy.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_com_proxy_a71069fbcb6901649f75f7b816559e061}{{\bfseries Com\-Proxy} (const \hyperlink{class_tcp_socket}{Tcp\-Socket} \&sock)}\label{class_com_proxy_a71069fbcb6901649f75f7b816559e061}
+
+\item 
+size\-\_\-t \hyperlink{class_com_proxy_ada3a89b37980a3e14d3f76341db0c78e}{Mask\-Control\-Characters} (const uint8\-\_\-t $\ast$p\-Input, size\-\_\-t input\-Length, uint8\-\_\-t $\ast$p\-Output, size\-\_\-t output\-Length, bool crc\-In\-Little\-Endian=true) const 
+\item 
+\hypertarget{class_com_proxy_a58c03dfa5d87cbad6ce77257c5195eb4}{int32\-\_\-t {\bfseries Send} (\hyperlink{struct_bl_request}{Bl\-Request} \&req, uint8\-\_\-t $\ast$p\-Response, size\-\_\-t response\-Size, bool do\-Sync=true) const }\label{class_com_proxy_a58c03dfa5d87cbad6ce77257c5195eb4}
+
+\item 
+\hypertarget{class_com_proxy_ab6205e7b4fbfcce8066e3019f5b52fb0}{int32\-\_\-t {\bfseries Send} (struct cmd\-\_\-frame const $\ast$p\-Frame, response\-\_\-frame $\ast$p\-Response, size\-\_\-t response\-Size, bool do\-Sync) const }\label{class_com_proxy_ab6205e7b4fbfcce8066e3019f5b52fb0}
+
+\item 
+\hypertarget{class_com_proxy_a5d07c1c822e4ce825236900a6b15e020}{int32\-\_\-t {\bfseries Send} (uint8\-\_\-t const $\ast$p\-Request, const size\-\_\-t request\-Size, uint8\-\_\-t $\ast$p\-Response, size\-\_\-t response\-Size, bool check\-Crc, bool sync, bool crc\-In\-Little\-Endian=true) const }\label{class_com_proxy_a5d07c1c822e4ce825236900a6b15e020}
+
+\item 
+\hypertarget{class_com_proxy_a533dbda1e24b846609c153c7545baba0}{size\-\_\-t {\bfseries Unmask\-Control\-Characters} (const uint8\-\_\-t $\ast$p\-Input, size\-\_\-t input\-Length, uint8\-\_\-t $\ast$p\-Output, size\-\_\-t output\-Length, bool check\-Crc, bool crc\-In\-Little\-Endian=true) const }\label{class_com_proxy_a533dbda1e24b846609c153c7545baba0}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
+
+This file is part of Wifly\-\_\-\-Light.
+
+Wifly\-\_\-\-Light is free software\-: you can redistribute it and/or modify it under the terms of the G\-N\-U General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+Wifly\-\_\-\-Light is distributed in the hope that it will be useful, but W\-I\-T\-H\-O\-U\-T A\-N\-Y W\-A\-R\-R\-A\-N\-T\-Y; without even the implied warranty of M\-E\-R\-C\-H\-A\-N\-T\-A\-B\-I\-L\-I\-T\-Y or F\-I\-T\-N\-E\-S\-S F\-O\-R A P\-A\-R\-T\-I\-C\-U\-L\-A\-R P\-U\-R\-P\-O\-S\-E. See the G\-N\-U General Public License for more details.
+
+You should have received a copy of the G\-N\-U General Public License along with Wifly\-\_\-\-Light. If not, see \href{http://www.gnu.org/licenses/}{\tt http\-://www.\-gnu.\-org/licenses/}. 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_com_proxy_ada3a89b37980a3e14d3f76341db0c78e}{\index{Com\-Proxy@{Com\-Proxy}!Mask\-Control\-Characters@{Mask\-Control\-Characters}}
+\index{Mask\-Control\-Characters@{Mask\-Control\-Characters}!ComProxy@{Com\-Proxy}}
+\subsubsection[{Mask\-Control\-Characters}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t Com\-Proxy\-::\-Mask\-Control\-Characters (
+\begin{DoxyParamCaption}
+\item[{const uint8\-\_\-t $\ast$}]{p\-Input, }
+\item[{size\-\_\-t}]{input\-Length, }
+\item[{uint8\-\_\-t $\ast$}]{p\-Output, }
+\item[{size\-\_\-t}]{output\-Length, }
+\item[{bool}]{crc\-In\-Little\-Endian = {\ttfamily true}}
+\end{DoxyParamCaption}
+) const}}\label{class_com_proxy_ada3a89b37980a3e14d3f76341db0c78e}
+Mask bytes of input buffer and add C\-R\-C16-\/\-C\-I\-T\-T checksum to the end 
+\begin{DoxyParams}{Parameters}
+{\em p\-Input} & input buffer \\
+\hline
+{\em input\-Length} & number of bytes in input buffer \\
+\hline
+{\em p\-Output} & output buffer \\
+\hline
+{\em output\-Length} & size of the output buffer \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/Com\-Proxy.\-h\end{DoxyCompactItemize}

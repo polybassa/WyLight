@@ -66,7 +66,7 @@ ErrorCode Error_GetState()
 	return 0xff;
 }
 
-const struct cmd_get_fw_version g_Version = {99, 99};
+struct cmd_get_fw_version g_Version = {99, 99};
 
 void Rtc_Ctl(enum RTC_request req,struct rtc_time *pRtcTime)
 {

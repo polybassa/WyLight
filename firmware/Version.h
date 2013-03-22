@@ -17,4 +17,15 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 
-#include "WiflyControlException.h"
+#ifndef _Version_h
+#define _Version_h
+#include "wifly_cmd.h"
+#include "VersionFile.h"
+
+extern struct cmd_get_fw_version g_Version;
+extern const char verStr[];
+
+void Version_Init(void);
+
+
+#endif

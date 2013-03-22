@@ -23,6 +23,7 @@
 #endif
 
 //*********************** INCLUDEDATEIEN *********************************************
+#include "Version.h"
 #include "platform.h"
 #include "RingBuf.h"		
 #include "usart.h"			
@@ -33,6 +34,7 @@
 #include "ScriptCtrl.h"
 #include "trace.h"
 #include "error.h"
+
 #ifdef __CC8E__
 #include "int18XXX.h"
 #endif /* #ifdef __CC8E__ */
@@ -46,7 +48,6 @@ jmp_buf g_ResetEnvironment;
 //*********************** GLOBAL VARIABLES *******************************************
 uns8 g_UpdateLed;
 uns8 g_UpdateLedStrip;
-const struct cmd_get_fw_version g_Version = {0, 1};
 
 //*********************** MACROS *****************************************************
 #ifdef DEBUG
@@ -205,6 +206,7 @@ void InitAll()
 	CommandIO_Init();
 	Rtc_Init();
 	ScriptCtrl_Init();
+	Version_Init();
 
 #ifndef __CC8E__
 	init_x86();
@@ -238,4 +240,7 @@ void InitAll()
 #include "iic.c"
 #include "ScriptCtrl.c"
 #include "trace.c"
+#include "Version.c"
+// MUST be at the last position, that the version-string is written on the end of the hexcode
+const char verStr[] = VER_STRING;
 #endif /* #ifdef __CC8E__ */
