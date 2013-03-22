@@ -30,7 +30,7 @@
 #define CRC_SIZE 2
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) : mSock(0) {}
+ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) : mSock(0) {}
 ClientSocket::~ClientSocket(void) {}
 
 const BlInfo dummyBlInfo = {0xDE, 0xAD, 0xAF, 0xFE, 0xFF, 0x4, 0x0, 0xB0, 0xB1, 0xE5, 0x00};
@@ -56,7 +56,7 @@ void SetDelay(timeval& delay)
 	g_TestSocketSendDelay.tv_nsec = delay.tv_usec * 1000;
 }
 
-TcpSocket::TcpSocket(uint32_t	addr, uint16_t port) : ClientSocket(addr, port, 0)
+TcpSocket::TcpSocket(uint32_t	addr, uint16_t port) throw (ConnectionLost, FatalError) : ClientSocket(addr, port, 0)
 {
 	g_TestSocketSendDelay.tv_sec = 0;
 	g_TestSocketSendDelay.tv_nsec = 0;
@@ -66,7 +66,7 @@ TcpSocket::TcpSocket(uint32_t	addr, uint16_t port) : ClientSocket(addr, port, 0)
  * For each call to Recv() we only return one byte of data to simulate a very
  * fragmented response from pic.
  */
-size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
+size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const throw (FatalError)
 {
 	nanosleep(&g_TestSocketSendDelay, NULL);
 	Trace(ZONE_VERBOSE, "%p %u of %u wait for %u\n", pBuffer, g_TestSocketRecvBufferPos, g_TestSocketRecvBufferSize, length);

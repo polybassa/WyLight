@@ -101,13 +101,13 @@ void SetTestSocket(sockaddr_in* addr, size_t offset, void* pData, size_t dataLen
 	g_TestSocketRecvBufferSize = offset + dataLength;
 }
 
-ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) : mSock(0) {}
+ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) : mSock(0) {}
 ClientSocket::~ClientSocket(void) {}
 
-UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast)
+UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) throw (FatalError)
 :ClientSocket(addr, port, SOCK_DGRAM) {}
 
-size_t UdpSocket::RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout, struct sockaddr* remoteAddr, socklen_t* remoteAddrLength) const
+size_t UdpSocket::RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout, struct sockaddr* remoteAddr, socklen_t* remoteAddrLength) const throw (FatalError)
 {
 	const size_t bytesToSend = std::min(g_TestSocketRecvBufferSize, length);
 	if(bytesToSend > 0)

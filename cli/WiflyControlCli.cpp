@@ -16,9 +16,10 @@
     You should have received a copy of the GNU General Public License
     along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
+#include "BroadcastReceiver.h"
 #include "WiflyControlCli.h"
 #include "WiflyControlCmd.h"
-#include "BroadcastReceiver.h"
+#include "WiflyControlException.h"
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>
