@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -34,7 +34,7 @@ struct response_frame g_ResponseBuf;
 
 void writeByte(uns8 byte)
 {
-    if(g_CmdBuf.counter < (uns16)CMDFRAMELENGTH)
+    if(g_CmdBuf.counter < CMDFRAMELENGTH)
     {
 	  g_CmdBuf.buffer[g_CmdBuf.counter] = byte;
 	  g_CmdBuf.counter++;
@@ -93,114 +93,96 @@ void CommandIO_Init()
  * **/
 
 void CommandIO_GetCommands()
-{	
-	if(g_ErrorBits.CmdBufOverflow)
+{
+	while(!RingBuf_IsEmpty(&g_RingBuf))
 	{
-		return;
-	}
+		if(g_ErrorBits.CmdBufOverflow)
+			return;
   
-	if(RingBuf_HasError(&g_RingBuf))
-	{
-		// *** if a RingBufError occure, I have to throw away the current command,
-		// *** because the last byte was not saved. Commandstring is inconsistent
-		return;
-	}
+		if(RingBuf_HasError(&g_RingBuf))
+		{
+			// *** if a RingBufError occure, I have to throw away the current command,
+			// *** because the last byte was not saved. Commandstring is inconsistent
+			return;
+		}
 	
-	if(RingBuf_IsEmpty(&g_RingBuf))
-	{
-		return;
-	}
-	
-	// *** get new_byte from ringbuffer
-	uns8 new_byte = RingBuf_Get(&g_RingBuf);
-	switch(g_CmdBuf.state)
-	{
-	  case CS_WaitForSTX:
-	  {
-	      if(new_byte == STX)
-	      {
+		// *** get new_byte from ringbuffer
+		uns8 new_byte = RingBuf_Get(&g_RingBuf);
+		switch(g_CmdBuf.state)
+		{
+			case CS_WaitForSTX:
+			{
+				if(new_byte == STX)
 					g_CmdBuf.state = CS_DeleteBuffer;
-	      }
-	      break;
-	  }
-	  case CS_DeleteBuffer:
-	  {
-	      DeleteBuffer();
-	      
-	      if(new_byte == STX)
-	      {
-		  break;
-	      }
-	      
-	      if(new_byte == ETX)
-	      {
-		  g_CmdBuf.state = CS_WaitForSTX;
-		  break;
-	      }
-	      
-	      if(new_byte == DLE)
-	      {
-		  g_CmdBuf.state = CS_UnMaskChar;
-		  break;
-	      }
-	      
-	      writeByte(new_byte);
-	      g_CmdBuf.state = CS_SaveChar;
-	      break;
-	  }
-	  case CS_UnMaskChar:
-	  {
-	      writeByte(new_byte);
-	      g_CmdBuf.state = CS_SaveChar;
-	      break;
-	  }
-	  case CS_SaveChar:
-	  {
-	      if(new_byte == DLE)
-	      {
-			  g_CmdBuf.state = CS_UnMaskChar;
-			  break;
-	      }
-	      if(new_byte == STX)
-	      {
-			  g_CmdBuf.state = CS_DeleteBuffer;
-			  break;
-	      }
-	      if(new_byte == ETX)
-		  {
-			g_CmdBuf.state = CS_WaitForSTX;
-
-			  if((0 == g_CmdBuf.CrcL) && (0 == g_CmdBuf.CrcH)) 	/* CRC Check */
-			  {
-				  // [0] contains cmd_frame->length so we send [1]
-#ifndef __CC8E__
-					if(!ScriptCtrl_Add((struct led_cmd*)&g_CmdBuf.buffer[1]))
-#else
-					if(!ScriptCtrl_Add(&g_CmdBuf.buffer[1]))
-#endif
+				break;
+			}
+			case CS_DeleteBuffer:
+			{
+				DeleteBuffer();
+				switch (new_byte)
+				{
+					case STX: break;
+					case ETX: g_CmdBuf.state = CS_WaitForSTX; break;
+					case DLE: g_CmdBuf.state = CS_UnMaskChar; break;
+					default:
 					{
-						g_ErrorBits.EepromFailure = 1;
+						writeByte(new_byte);
+						g_CmdBuf.state = CS_SaveChar;
+					};break;
+				}
+				break;
+			}
+			case CS_UnMaskChar:
+			{
+				writeByte(new_byte);
+				g_CmdBuf.state = CS_SaveChar;
+				break;
+			}
+			case CS_SaveChar:
+			{
+				if(new_byte == DLE)
+				{
+					g_CmdBuf.state = CS_UnMaskChar;
+					break;
+				}
+				if(new_byte == STX)
+				{
+					g_CmdBuf.state = CS_DeleteBuffer;
+					break;
+				}
+				if(new_byte == ETX)
+				{
+					g_CmdBuf.state = CS_WaitForSTX;
+					if((0 == g_CmdBuf.CrcL) && (0 == g_CmdBuf.CrcH)) 	/* CRC Check */
+					{
+						// [0] contains cmd_frame->length so we send [1]
+#ifndef __CC8E__
+						if(!ScriptCtrl_Add((struct led_cmd*)&g_CmdBuf.buffer[1]))
+#else
+						if(!ScriptCtrl_Add(&g_CmdBuf.buffer[1]))
+#endif
+						{
+							g_ErrorBits.EepromFailure = 1;
+						}
 					}
-			  }
-			  else
-			  {
-				  g_ErrorBits.CrcFailure = 1;
-				  Trace_String("Crc error: ");
-				  Trace_Hex(g_CmdBuf.CrcL);
-				  Trace_Hex(g_CmdBuf.CrcH);
-				  Trace_Hex(g_CmdBuf.buffer[g_CmdBuf.counter - 2]);
-				  Trace_Hex(g_CmdBuf.buffer[g_CmdBuf.counter - 1]);
-				  Trace_String("\n");
-			  }
-			  DeleteBuffer();
-			  CommandIO_CreateResponse(&g_ResponseBuf, g_CmdBuf.buffer[1]);
-			  CommandIO_SendResponse(&g_ResponseBuf);
-			  
-			  break;
-	      }
-	      writeByte(new_byte);
-	      break;
-	  }
+					else
+					{
+						g_ErrorBits.CrcFailure = 1;
+						Trace_String("Crc error: ");
+						Trace_Hex(g_CmdBuf.CrcL);
+						Trace_Hex(g_CmdBuf.CrcH);
+						Trace_Hex(g_CmdBuf.buffer[g_CmdBuf.counter - 2]);
+						Trace_Hex(g_CmdBuf.buffer[g_CmdBuf.counter - 1]);
+						Trace_String("\n");
+					}
+					CommandIO_CreateResponse(&g_ResponseBuf, g_CmdBuf.buffer[1]);
+					CommandIO_SendResponse(&g_ResponseBuf);
+					break;
+				}
+				writeByte(new_byte);
+				break;
+			}
+		}
 	}
 }
 

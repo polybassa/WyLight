@@ -22,9 +22,8 @@
 #include "platform.h"
 #include "wifly_cmd.h"
 
-/** Biggest packet is a SET_COLOR_DIRECT packet. In worst case bevor every databyte is a
- maskbyte so we need to multiply the size by 2 **/
-#define CMDFRAMELENGTH (NUM_OF_LED * 3 + FRAMELENGTH + 5) * 2
+/* "+3" is need, because the crc is not in sizeof(cmd_frame) */
+#define CMDFRAMELENGTH (NUM_OF_LED * 3 + sizeof(struct cmd_frame) + 3)
 
 /** Statemachine STATES **/
 #define CS_WaitForSTX 0
@@ -34,7 +33,7 @@
 
 struct CommandBuffer{
     uns8 buffer[CMDFRAMELENGTH];
-    uns16 counter;
+    uns8 counter;
     uns8 state;
     uns8 CrcH;
     uns8 CrcL;

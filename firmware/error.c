@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+ Copyright (C) 2012, 2013 Nils Weiss, Patrick Brünn.
  
  This file is part of Wifly_Light.
  
@@ -86,6 +86,7 @@ void Error_FatalError()
 	while(PORTB.5 != 0);
 	while(PORTB.5 == 0);
 #endif
-	CommandIO_Init();
 	RingBuf_Init(&g_RingBuf);
+	CommandIO_Init();
+	ScriptCtrl_Init();
 }

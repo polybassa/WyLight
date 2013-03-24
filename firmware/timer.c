@@ -122,12 +122,12 @@ uns8 Timer_PrintCycletime(uns16 *pArray, const uns16 arraySize)
 }
 #else
 
-void Timer_StartStopwatch(enum CYCLETIME_METHODE destMethode)
+void Timer_StartStopwatch(const enum CYCLETIME_METHODE destMethode)
 {
 	
 }
 
-void Timer_StopStopwatch(enum CYCLETIME_METHODE destMethode)
+void Timer_StopStopwatch(const enum CYCLETIME_METHODE destMethode)
 {
 	
 }
