@@ -36,26 +36,45 @@ class BroadcastReceiver
 		static const uint16_t BROADCAST_PORT = 55555;
 		static const std::string DEVICE_ID;
 		static const std::string DEVICE_ID_OLD;
-		static const int8_t STOP_MSG[];
-		static const size_t STOP_MSG_LENGTH;
+		static const std::string STOP_MSG;
 		static const Endpoint EMPTY_ENDPOINT;
 		const uint16_t mPort;
 
+		/*
+		 * Construct an object for broadcast listening on the specified port
+		 * @param port to listen on, deault is @see BROADCAST_PORT
+		 */
 		BroadcastReceiver(uint16_t port = BROADCAST_PORT);
+
+		/*
+		 * Stop receiving loop and cleanup
+		 */
 		~BroadcastReceiver(void);
 
 		/**
-		 * Wait for broadcasts and print them to a stream
+		 * Listen for broadcasts and print them to a stream
 		 * @param out stream to print collected remotes on
-		 * @param timeout in seconds, until execution is terminated
+		 * @param timeout in seconds, until execution is terminated, to wait indefinetly use NULL (default)
 		 */
 		void operator() (std::ostream& out, timeval* timeout = NULL);
 
+		/*
+		 * Get a reference to the endpoint at the specified index
+		 * @param index of the endpoint in the internal IpTable, should be lees than NumRemotes()
+		 * @return a reference to the endpoint at the specified index or an empty object (@see EMPTY_ENDPOINT), when the index was out of bound
+		 */
 		const Endpoint& GetEndpoint(size_t index) const;
-		Endpoint GetNextRemote(timeval* timeout);
+
+		/*
+		 * Listen for broadcasts until a new remote is discovered.
+		 * @param timeout to wait until give up, use NULL to wait forever
+		 * @return an empty Endpoint object in case of an error, if a new remote is discovered an Endpoint object with its address and port is returned.
+		 * @throws FatalError if something failed seriously in the underlying socket
+		 */
+		Endpoint GetNextRemote(timeval* timeout) throw (FatalError);
 
 		/**
-		 * @return number of known IP addresses
+		 * @return number of discovered remotes addresses
 		 */
 		size_t NumRemotes(void) const;
 
@@ -70,38 +89,5 @@ class BroadcastReceiver
 		std::atomic<int32_t> mNumInstances;
 		std::mutex mMutex;
 };
-
-#pragma pack(push)
-#pragma pack(1)
-struct BroadcastMessage
-{
-	uint8_t mac[6];
-	uint8_t channel;
-	uint8_t rssi;
-	uint16_t port;
-	uint32_t rtc;
-	uint16_t bat_mV;
-	uint16_t gpioValue;
-	int8_t asciiTime[13+1];
-	int8_t version[26+1+1];// this seems a little strange. bug in wifly fw?
-	int8_t deviceId[32];
-	uint16_t bootTmms;
-	uint16_t sensor[8];
-
-	bool IsWiflyBroadcast(size_t length) const {
-		return ((sizeof(BroadcastMessage) == length)
-		&& (IsDevice(BroadcastReceiver::DEVICE_ID) || IsDevice(BroadcastReceiver::DEVICE_ID_OLD)));
-	};
-
-	bool IsStop(size_t length) const {
-		return ((BroadcastReceiver::STOP_MSG_LENGTH == length)
-						&& (0 == memcmp(&mac, BroadcastReceiver::STOP_MSG, BroadcastReceiver::STOP_MSG_LENGTH)));
-	};
-
-private:
-	bool IsDevice(const std::string& deviceType) const {
-		return (0 == memcmp(deviceId,	deviceType.data(), deviceType.size()));
-	};
-};
-#pragma pack(pop)
 #endif /* #ifndef _BROADCAST_RECEIVER_H_ */
+
