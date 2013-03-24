@@ -111,7 +111,7 @@ uns8 Ledstrip_NumOfFades(void)
 
 void Ledstrip_ToggleLeds(void)
 {
-#if 1
+#if 0
 	//TODO is this implementation equivalent to yours?
 
 	// if all leds are of we switch all on to white else switch all off
