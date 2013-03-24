@@ -17,6 +17,7 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "BroadcastReceiver.h"
+#include "BroadcastMessage.h"
 #include "timeval.h"
 #include "trace.h"
 #include <iostream>
@@ -26,8 +27,7 @@ static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VER
 
 const std::string BroadcastReceiver::DEVICE_ID("Wifly_Light");
 const std::string BroadcastReceiver::DEVICE_ID_OLD("WiFly");
-const int8_t BroadcastReceiver::STOP_MSG[] = "StopThread";
-const size_t BroadcastReceiver::STOP_MSG_LENGTH = sizeof(STOP_MSG);
+const std::string BroadcastReceiver::STOP_MSG{"StopThread"};
 const Endpoint BroadcastReceiver::EMPTY_ENDPOINT;
 
 BroadcastReceiver::BroadcastReceiver(uint16_t port)
@@ -52,7 +52,7 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 		timeval_add(&endTime, pTimeout);
 		do
 		{
-			Endpoint remote = GetNextRemote(pTimeout);
+			const Endpoint remote = GetNextRemote(pTimeout);
 			if(remote.IsValid()) {
 				out << numRemotes << ':' << remote << '\n';
 				numRemotes++;
@@ -77,7 +77,7 @@ const Endpoint& BroadcastReceiver::GetEndpoint(size_t index) const
 	return *it;
 }
 
-Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout)
+Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout) throw (FatalError)
 {
 	UdpSocket udpSock(INADDR_ANY, mPort, true, 1);
 	sockaddr_storage remoteAddr;
@@ -107,6 +107,6 @@ void BroadcastReceiver::Stop(void)
 {
 	mIsRunning = false;
 	UdpSocket sock(INADDR_LOOPBACK, mPort, false);
-	sock.Send((unsigned char const*)STOP_MSG, STOP_MSG_LENGTH);
+	sock.Send((uint8_t*)STOP_MSG.data(), STOP_MSG.size());
 }
 
