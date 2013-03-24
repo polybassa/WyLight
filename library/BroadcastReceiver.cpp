@@ -44,7 +44,8 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 {
 	// only one thread allowed per instance
 	if(0 == std::atomic_fetch_add(&mNumInstances, 1))
-	try {
+	try
+	{
 		size_t numRemotes = 0;
 		timeval endTime, now;
 		gettimeofday(&endTime, NULL);
@@ -58,7 +59,9 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 			}
 			gettimeofday(&now, NULL);
 		} while(mIsRunning && timeval_sub(&endTime, &now, pTimeout));
-	} catch (FatalError& e) {
+	}
+	catch (FatalError& e)
+	{
 		out << "EXCEPTION in " << __FILE__ << ':' << __LINE__ << ' ' << e << '\n';
 	}
 	std::atomic_fetch_sub(&mNumInstances, 1);
