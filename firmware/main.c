@@ -17,7 +17,7 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #ifdef __CC8E__
-//#define DEBUG
+#define DEBUG
 #pragma optimize 1
 #pragma sharedAllocation
 #endif

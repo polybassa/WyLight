@@ -49,7 +49,7 @@ struct cmd_set_fade mFade;
 	uns8 *address = pCmd->addr; \
 	uns8 k,mask; \
 	mask = 0x01; \
-	for(k = 0; k < (NUM_OF_LED * 3); k++) {	\
+	for(k = 0; k < sizeof(gLedBuf.led_array); k++) {	\
 		if(0 != (*address & mask)) { \
 			BLOCK \
 		} else { \
@@ -94,21 +94,6 @@ struct cmd_set_fade mFade;
 		gLedBuf.cyclesLeft[k] = temp16;  \
 };
 
-uns8 Ledstrip_NumOfFades(void)
-{
-	uns8 counter = 0;
-	uns8 i;
-	
-	for(i = 0; i < NUM_OF_LED * 3; i++)
-	{
-		if(gLedBuf.delta[i] > 0)
-		{
-			counter += 1;
-		}
-	}
-	return counter;
-}
-
 void Ledstrip_ToggleLeds(void)
 {
 #if 0
@@ -139,20 +124,18 @@ void Ledstrip_ToggleLeds(void)
 	uns8 counter = 0;
 	uns8 i;
 	
-	for(i = 0; i < NUM_OF_LED * 3; i++)
+	for(i = 0; i < sizeof(gLedBuf.led_array); i++)
 	{
 		if(gLedBuf.led_array[i] > 0)
 		{
 			counter += 1;
 		}
 	}
-	//struct cmd_set_fade mFade;
-	
 	mFade.addr[0] = 0xff;
 	mFade.addr[1] = 0xff;
 	mFade.addr[2] = 0xff;
 	mFade.addr[3] = 0xff;
-	mFade.fadeTmms = htons(200);
+	mFade.fadeTmms = htons(100);
 
 	if(counter > 0)		//switch off
 	{
@@ -212,14 +195,12 @@ void Ledstrip_Init(void)
 	} while(0 != i);
 	
 	gLedBuf.fadeTmms = 0;
-	gLedBuf.flags.run_aktiv = 0;
-	gLedBuf.flags.run_direction = 0;
 }
 
 void Ledstrip_SetColorDirect(uns8 *pValues)
 {
 	uns8 k, temp;
-	for(k = 0; k < (NUM_OF_LED * 3); k++)
+	for(k = 0; k < sizeof(gLedBuf.led_array); k++)
 	{
 		temp = *pValues;
 		gLedBuf.led_array[k] = temp;
@@ -238,7 +219,7 @@ void Ledstrip_DoFade(void)
 	
 	/* Update cyclesLeft Value for all LED's */
 	
-	for(k = 0; k < NUM_OF_LED * 3; k++)
+	for(k = 0; k < sizeof(gLedBuf.delta); k++)
 	{
 		if((gLedBuf.delta[k] > 0) && (gLedBuf.cyclesLeft[k] > 0))
 		{
@@ -246,7 +227,7 @@ void Ledstrip_DoFade(void)
 		}
 	}
 	
-	for(k = 0; k < (NUM_OF_LED * 3); k++)
+	for(k = 0; k < sizeof(gLedBuf.delta); k++)
 	{
 		// fade active on this led and current periode is over?
 		if((gLedBuf.delta[k] > 0) && (gLedBuf.cyclesLeft[k] == 0))
@@ -313,9 +294,7 @@ void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 			INC_BIT_COUNTER(stepAddress, stepMask);
 			INC_BIT_COUNTER(stepAddress, stepMask);
 		}
-	);
-	gLedBuf.flags.run_aktiv = 0;
-	
+	);	
 }
 
 #ifdef DEBUG
