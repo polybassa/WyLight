@@ -179,6 +179,7 @@ size_t ut_ComProxy_MaskControlCharacters(void)
 	TcpSocket dummySock(0, 0);
 	ComProxy testee(dummySock);
 	uint8_t sendBuffer[256];
+	static const uint8_t* const sendBufferEnd = sendBuffer + sizeof(sendBuffer);
 	uint8_t recvBuffer[sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 + 1];
 
 	/* prepare send buffer with test data */
@@ -190,19 +191,20 @@ size_t ut_ComProxy_MaskControlCharacters(void)
 	/* test MaskControlCharacters() with to small target buffer */
 	MaskBuffer tooSmall{sizeof(recvBuffer) / 2};
 	try {
-		tooSmall.Mask(sendBuffer, sendBuffer + sizeof(sendBuffer));
+		tooSmall.Mask(sendBuffer, sendBufferEnd);
 		CHECK(false);
 	} catch (FatalError& e) {
 		CHECK(true);
 	}
 
 	/* mask control characters for crc in little endian order(bootloader) */
-	size_t bytesWritten = testee.MaskControlCharacters(sendBuffer, sizeof(sendBuffer), recvBuffer, sizeof(recvBuffer));
-	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE <= bytesWritten);
-	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= bytesWritten);
+	MaskBuffer littleEndian{sizeof(recvBuffer)};
+	littleEndian.Mask(sendBuffer, sendBufferEnd);
+	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE <= littleEndian.Size());
+	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= littleEndian.Size());
 
 	/* and unmask everything again */
-	bytesWritten = testee.UnmaskControlCharacters(recvBuffer, bytesWritten, recvBuffer, sizeof(recvBuffer), true);
+	size_t bytesWritten = testee.UnmaskControlCharacters(littleEndian.Data(), littleEndian.Size(), recvBuffer, sizeof(recvBuffer), true);
 	CHECK(sizeof(sendBuffer) == bytesWritten);
 
 	/* mask control characters for crc in big endian order(firmware) */
