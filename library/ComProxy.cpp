@@ -37,15 +37,7 @@ size_t ComProxy::MaskControlCharacters(const uint8_t* pInput, size_t inputLength
 {
 	try {
 	MaskBuffer maskBuffer{outputLength};
-	
-	const uint8_t* const pInputEnd = pInput + inputLength;
-
-	while(pInput < pInputEnd)
-	{
-		maskBuffer.AddWithCrc(*pInput);
-		pInput++;
-	}
-	maskBuffer.AppendCrc(crcInLittleEndian);
+	maskBuffer.Mask(pInput, pInput + inputLength, crcInLittleEndian);
 
 	memcpy(pOutput, maskBuffer.Data(), maskBuffer.Size());
 	pOutput += maskBuffer.Size();
@@ -213,6 +205,7 @@ int32_t ComProxy::Send(const struct cmd_frame* pFrame, response_frame* pResponse
 
 int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const
 {
+	MaskBuffer maskBuffer{BL_MAX_MESSAGE_LENGTH};
 	uint8_t buffer[BL_MAX_MESSAGE_LENGTH];
 	uint8_t recvBuffer[BL_MAX_MESSAGE_LENGTH];
 	size_t bufferSize = 0;
@@ -222,7 +215,8 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 	bufferSize++;
 
 	/* mask control characters in request and add crc */
-	bufferSize += MaskControlCharacters(pRequest, requestSize, buffer + 1, sizeof(buffer) + 1, crcInLittleEndian);
+	maskBuffer.Mask(pRequest, pRequest + requestSize, crcInLittleEndian);
+	bufferSize += MaskControlCharacters(pRequest, requestSize, buffer + 1, sizeof(buffer) - 1, crcInLittleEndian);
 	if(1 == bufferSize)
 	{
 		Trace(ZONE_ERROR, "MaskControlCharacters() failed\n");

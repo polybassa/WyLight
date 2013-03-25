@@ -69,6 +69,16 @@ class MaskBuffer
 			return mData;
 		};
 
+		void Mask(const uint8_t* pInput, const uint8_t* const pInputEnd, const bool crcInLittleEndian)
+		{
+			while(pInput < pInputEnd)
+			{
+				AddWithCrc(*pInput);
+				pInput++;
+			}
+			AppendCrc(crcInLittleEndian);
+		};
+
 		size_t Size(void) const
 		{
 			return mLength;
