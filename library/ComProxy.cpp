@@ -18,6 +18,7 @@
 
 #include "ComProxy.h"
 #include "crc.h"
+#include "MaskBuffer.h"
 #include "timeval.h"
 #include "trace.h"
 #include "wifly_cmd.h"
@@ -26,24 +27,6 @@ static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZON
 
 static const timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for framented responses from pic
 
-/**
- * This makro is used in ComProxy::MaskControlCharacters and requires some
- * implicit parameter:
- * @param bytesWritten counter of bytes in output buffer
- * @param outputLength size of output buffer
- * @param pOutput output buffer
- * @param _BYTE_ the byte we have to mask and write to buffer
- */
-#define MaskAndAddByteToOutput(_BYTE_) { \
-	if(IsCtrlChar(_BYTE_)) { \
-		if(++bytesWritten > outputLength) return 0; \
-		*pOutput = BL_DLE; \
-		pOutput++; \
-	} \
-	if(++bytesWritten > outputLength) return 0; \
-	*pOutput = _BYTE_; \
-	pOutput++; \
-}
 
 ComProxy::ComProxy(const TcpSocket& sock)
 	: mSock(sock)
@@ -52,29 +35,25 @@ ComProxy::ComProxy(const TcpSocket& sock)
 
 size_t ComProxy::MaskControlCharacters(const uint8_t* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool crcInLittleEndian) const
 {
+	try {
+	MaskBuffer maskBuffer{outputLength};
+	
 	const uint8_t* const pInputEnd = pInput + inputLength;
-	size_t bytesWritten = 0;
-	uint16_t crc = 0;
 
 	while(pInput < pInputEnd)
 	{
-		MaskAndAddByteToOutput(*pInput);
-		Crc_AddCrc16(*pInput, &crc);
+		maskBuffer.AddWithCrc(*pInput);
 		pInput++;
 	}
+	maskBuffer.AppendCrc(crcInLittleEndian);
 
-	// add crc to output
-	if(crcInLittleEndian)
-	{
-		MaskAndAddByteToOutput((uint8_t)(crc & 0xff));
-		MaskAndAddByteToOutput((uint8_t)(crc >> 8));
+	memcpy(pOutput, maskBuffer.Data(), maskBuffer.Size());
+	pOutput += maskBuffer.Size();
+	return maskBuffer.Size();
+	} catch (FatalError& e) {
+		std::cout << e << '\n';
+		return 0;
 	}
-	else
-	{
-		MaskAndAddByteToOutput((uint8_t)(crc >> 8));
-		MaskAndAddByteToOutput((uint8_t)(crc & 0xff));
-	}
-	return bytesWritten;
 }
 
 size_t ComProxy::UnmaskControlCharacters(const uint8_t* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool checkCrc, bool crcInLittleEndian) const
