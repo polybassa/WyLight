@@ -208,30 +208,33 @@ size_t ut_ComProxy_MaskControlCharacters(void)
 	CHECK(sizeof(sendBuffer) == bytesWritten);
 
 	/* mask control characters for crc in big endian order(firmware) */
-	bytesWritten = testee.MaskControlCharacters(sendBuffer, sizeof(sendBuffer), recvBuffer, sizeof(recvBuffer), false);
-	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE <= bytesWritten);
-	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= bytesWritten);
+	MaskBuffer bigEndian{sizeof(recvBuffer)};
+	bigEndian.Mask(sendBuffer, sendBufferEnd, false);
+	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE <= bigEndian.Size());
+	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= bigEndian.Size());
 
 	/* and unmask everything again */
-	bytesWritten = testee.UnmaskControlCharacters(recvBuffer, bytesWritten, recvBuffer, sizeof(recvBuffer), true, false);
+	bytesWritten = testee.UnmaskControlCharacters(bigEndian.Data(), bigEndian.Size(), recvBuffer, sizeof(recvBuffer), true, false);
 	CHECK(sizeof(sendBuffer) == bytesWritten);
 
 	/* mask control characters for crc in big endian order(firmware) */
-	bytesWritten = testee.MaskControlCharacters(sendBuffer, sizeof(sendBuffer), recvBuffer, sizeof(recvBuffer), false);
-	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE <= bytesWritten);
-	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= bytesWritten);
+	MaskBuffer wrongOrder{sizeof(recvBuffer)};
+	wrongOrder.Mask(sendBuffer, sendBufferEnd, false);
+	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE <= wrongOrder.Size());
+	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= wrongOrder.Size());
 
 	/* and unmask everything again in wrong byte order */
-	bytesWritten = testee.UnmaskControlCharacters(recvBuffer, bytesWritten, recvBuffer, sizeof(recvBuffer), true);
+	bytesWritten = testee.UnmaskControlCharacters(wrongOrder.Data(), wrongOrder.Size(), recvBuffer, sizeof(recvBuffer), true);
 	CHECK(0 == bytesWritten);
 
 	/* mask control characters for noCrc test */
-	bytesWritten = testee.MaskControlCharacters(sendBuffer, sizeof(sendBuffer), recvBuffer, sizeof(recvBuffer));
-	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE <= bytesWritten);
-	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= bytesWritten);
+	MaskBuffer noCrc{sizeof(recvBuffer)};
+	noCrc.Mask(sendBuffer, sendBufferEnd);
+	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE <= noCrc.Size());
+	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= noCrc.Size());
 
 	/* and unmask everything again */
-	bytesWritten = testee.UnmaskControlCharacters(recvBuffer, bytesWritten, recvBuffer, sizeof(recvBuffer), false);
+	bytesWritten = testee.UnmaskControlCharacters(noCrc.Data(), noCrc.Size(), recvBuffer, sizeof(recvBuffer), false);
 	CHECK(sizeof(sendBuffer) + 2 == bytesWritten);
 
 	for(size_t i = 0; i < 6; i++)
