@@ -18,6 +18,7 @@
 
 #include "unittest.h"
 #include "ComProxy.h"
+#include "MaskBuffer.h"
 #include <algorithm>
 #include <limits>
 #include <time.h>
@@ -187,11 +188,16 @@ size_t ut_ComProxy_MaskControlCharacters(void)
 	}
 
 	/* test MaskControlCharacters() with to small target buffer */
-	size_t bytesWritten = testee.MaskControlCharacters(sendBuffer, sizeof(sendBuffer), recvBuffer, sizeof(recvBuffer) / 2);
-	CHECK(0 == bytesWritten);
+	MaskBuffer tooSmall{sizeof(recvBuffer) / 2};
+	try {
+		tooSmall.Mask(sendBuffer, sendBuffer + sizeof(sendBuffer));
+		CHECK(false);
+	} catch (FatalError& e) {
+		CHECK(true);
+	}
 
 	/* mask control characters for crc in little endian order(bootloader) */
-	bytesWritten = testee.MaskControlCharacters(sendBuffer, sizeof(sendBuffer), recvBuffer, sizeof(recvBuffer));
+	size_t bytesWritten = testee.MaskControlCharacters(sendBuffer, sizeof(sendBuffer), recvBuffer, sizeof(recvBuffer));
 	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE <= bytesWritten);
 	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= bytesWritten);
 

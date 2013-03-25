@@ -23,9 +23,6 @@
 #include "crc.h"
 #include "WiflyControlException.h"
 
-#include <stdint.h>
-#include <stdio.h>
-
 class MaskBuffer
 {
 	public:
@@ -69,7 +66,7 @@ class MaskBuffer
 			return mData;
 		};
 
-		void Mask(const uint8_t* pInput, const uint8_t* const pInputEnd, const bool crcInLittleEndian)
+		void Mask(const uint8_t* pInput, const uint8_t* const pInputEnd, const bool crcInLittleEndian = true)
 		{
 			while(pInput < pInputEnd)
 			{
@@ -102,7 +99,6 @@ class MaskBuffer
 		void AddPure(uint8_t newByte)
 		{
 			if(mLength >= mCapacity) {
-				std::cout << mLength << ':' << mCapacity << '\n';
 				throw FatalError("MaskBuffer overflow");
 			}
 			mData[mLength] = newByte;
