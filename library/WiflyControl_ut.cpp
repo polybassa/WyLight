@@ -516,7 +516,7 @@ size_t ut_WiflyControl_FwSetFade(void)
 	expectedOutgoingFrame.led.data.set_fade.blue = 0xff;
 	expectedOutgoingFrame.led.data.set_fade.parallelFade = 0x00;
 	//TODO why do we use fadeTmms == 1 for SetColor?
-	expectedOutgoingFrame.led.data.set_fade.fadeTmms = htons(0x0001);
+	expectedOutgoingFrame.led.data.set_fade.fadeTmms = htons(0x0004);
 
 	TestCaseBegin();
 	WiflyControl testee(0, 0);
