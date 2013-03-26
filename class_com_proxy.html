@@ -96,8 +96,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a71069fbcb6901649f75f7b816559e061"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a71069fbcb6901649f75f7b816559e061"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ComProxy</b> (const <a class="el" href="class_tcp_socket.html">TcpSocket</a> &amp;sock)</td></tr>
 <tr class="separator:a71069fbcb6901649f75f7b816559e061"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada3a89b37980a3e14d3f76341db0c78e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_com_proxy.html#ada3a89b37980a3e14d3f76341db0c78e">MaskControlCharacters</a> (const uint8_t *pInput, size_t inputLength, uint8_t *pOutput, size_t outputLength, bool crcInLittleEndian=true) const </td></tr>
-<tr class="separator:ada3a89b37980a3e14d3f76341db0c78e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58c03dfa5d87cbad6ce77257c5195eb4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a58c03dfa5d87cbad6ce77257c5195eb4"></a>
 int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>Send</b> (<a class="el" href="struct_bl_request.html">BlRequest</a> &amp;req, uint8_t *pResponse, size_t responseSize, bool doSync=true) const </td></tr>
 <tr class="separator:a58c03dfa5d87cbad6ce77257c5195eb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,68 +115,13 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>UnmaskControlCharac
 <p>Wifly_Light is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
 <p>Wifly_Light is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
 <p>You should have received a copy of the GNU General Public License along with Wifly_Light. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ada3a89b37980a3e14d3f76341db0c78e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t ComProxy::MaskControlCharacters </td>
-          <td>(</td>
-          <td class="paramtype">const uint8_t *&#160;</td>
-          <td class="paramname"><em>pInput</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>inputLength</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>pOutput</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>outputLength</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>crcInLittleEndian</em> = <code>true</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Mask bytes of input buffer and add CRC16-CITT checksum to the end </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pInput</td><td>input buffer </td></tr>
-    <tr><td class="paramname">inputLength</td><td>number of bytes in input buffer </td></tr>
-    <tr><td class="paramname">pOutput</td><td>output buffer </td></tr>
-    <tr><td class="paramname">outputLength</td><td>size of the output buffer </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>library/<a class="el" href="_com_proxy_8h_source.html">ComProxy.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Mar 25 2013 00:27:16 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Mar 26 2013 14:55:28 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

@@ -104,7 +104,7 @@ Public Member Functions</h2></td></tr>
 const <a class="el" href="class_endpoint.html">Endpoint</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetEndpoint</b> (size_t index) const </td></tr>
 <tr class="separator:a1c487597e1338d5e5fca55f1d89d0eb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4549672ea1b9b008f93b42329c8bea5f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4549672ea1b9b008f93b42329c8bea5f"></a>
-<a class="el" href="class_endpoint.html">Endpoint</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetNextRemote</b> (timeval *timeout)</td></tr>
+<a class="el" href="class_endpoint.html">Endpoint</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetNextRemote</b> (timeval *timeout)  throw (FatalError)</td></tr>
 <tr class="separator:a4549672ea1b9b008f93b42329c8bea5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e403e696a76c5bc8c2b9215c3d5704d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_receiver.html#a6e403e696a76c5bc8c2b9215c3d5704d">NumRemotes</a> (void) const </td></tr>
 <tr class="separator:a6e403e696a76c5bc8c2b9215c3d5704d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,12 +128,9 @@ static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>D
 <tr class="memitem:addb5597142e98c3c16afce397082d960"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="addb5597142e98c3c16afce397082d960"></a>
 static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>DEVICE_ID_OLD</b></td></tr>
 <tr class="separator:addb5597142e98c3c16afce397082d960"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a59a09e4b750cc992d9aab3a4c06a33"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a59a09e4b750cc992d9aab3a4c06a33"></a>
-static const int8_t&#160;</td><td class="memItemRight" valign="bottom"><b>STOP_MSG</b> []</td></tr>
-<tr class="separator:a8a59a09e4b750cc992d9aab3a4c06a33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa28d7c0a9058e830c7586e33acc6b69"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afa28d7c0a9058e830c7586e33acc6b69"></a>
-static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>STOP_MSG_LENGTH</b></td></tr>
-<tr class="separator:afa28d7c0a9058e830c7586e33acc6b69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c365a7403457725e25c3124868fd6d9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6c365a7403457725e25c3124868fd6d9"></a>
+static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>STOP_MSG</b></td></tr>
+<tr class="separator:a6c365a7403457725e25c3124868fd6d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a545fbd086416bfa77cd42b531d045a5b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a545fbd086416bfa77cd42b531d045a5b"></a>
 static const <a class="el" href="class_endpoint.html">Endpoint</a>&#160;</td><td class="memItemRight" valign="bottom"><b>EMPTY_ENDPOINT</b></td></tr>
 <tr class="separator:a545fbd086416bfa77cd42b531d045a5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -158,7 +155,7 @@ static const <a class="el" href="class_endpoint.html">Endpoint</a>&#160;</td><td
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>number of known IP addresses </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>number of discovered remotes addresses </dd></dl>
 
 </div>
 </div>
@@ -185,11 +182,11 @@ static const <a class="el" href="class_endpoint.html">Endpoint</a>&#160;</td><td
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Wait for broadcasts and print them to a stream </p>
+<p>Listen for broadcasts and print them to a stream </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">out</td><td>stream to print collected remotes on </td></tr>
-    <tr><td class="paramname">timeout</td><td>in seconds, until execution is terminated </td></tr>
+    <tr><td class="paramname">timeout</td><td>in seconds, until execution is terminated, to wait indefinetly use NULL (default) </td></tr>
   </table>
   </dd>
 </dl>
@@ -219,7 +216,7 @@ static const <a class="el" href="class_endpoint.html">Endpoint</a>&#160;</td><td
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Mar 25 2013 00:27:16 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Mar 26 2013 14:55:27 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
