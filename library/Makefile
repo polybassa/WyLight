@@ -29,7 +29,7 @@ BroadcastReceiver_ut.bin: BroadcastReceiver_ut.cpp BroadcastReceiver.cpp Broadca
 	@g++ BroadcastReceiver_ut.cpp BroadcastReceiver.cpp $(INC) -lpthread -o $@ -Wall -std=c++0x
 	@./$@
 
-ComProxy_ut.bin: ComProxy_ut.cpp ComProxy.cpp ComProxy.h BlRequest.h $(FW_HEADERS)
+ComProxy_ut.bin: ComProxy_ut.cpp ComProxy.cpp ComProxy.h BlRequest.h MaskBuffer.h $(FW_HEADERS)
 	@g++ ComProxy_ut.cpp ComProxy.cpp $(FW_FILES) $(INC) -o $@ -Wall -pedantic -std=c++0x
 	@./$@
 
