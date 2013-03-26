@@ -180,11 +180,6 @@ void SPI_SendLedBuffer(uns8 *array)//!!! CHECK if GIE=0 during the sendroutine i
 	pthread_mutex_unlock(&g_led_mutex);
 }
 
-uns8 Trace_Print(uns8 *pArray, const uns16 arraySize)
-{
-	return 0;
-}
-
 void init_x86(void)
 {
 	pthread_t broadcastThread;
