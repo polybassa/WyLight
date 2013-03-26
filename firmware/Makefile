@@ -20,6 +20,9 @@ outdir:
 	@mkdir -p ${OUTPUT_DIR}
 
 pic: outdir
+	wine ${PIC_CC8E} main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM -O${OUTPUT_DIR}
+
+pic_release: outdir
 	wine ${PIC_CC8E} main.c -ver#VersionFile.h -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM -O${OUTPUT_DIR}
 
 simu: outdir
