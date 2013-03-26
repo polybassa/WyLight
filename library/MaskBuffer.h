@@ -37,34 +37,9 @@ class MaskBuffer
 			delete mData;
 		};
 
-		void AddWithCrc(uint8_t newByte)
-		{
-			Add(newByte);
-			Crc_AddCrc16(newByte, &mCrc);
-		};
-
-		void AppendCrc(bool crcInLittleEndian)
-		{
-			if(crcInLittleEndian)
-			{
-				Add((uint8_t)(mCrc & 0xff));
-				Add((uint8_t)(mCrc >> 8));
-			}
-			else
-			{
-				Add((uint8_t)(mCrc >> 8));
-				Add((uint8_t)(mCrc & 0xff));
-			}
-		};
-
 		void CompleteWithETX(void)
 		{
 			AddPure(BL_ETX);
-		};
-
-		uint16_t Crc16(void) const
-		{
-			return mCrc;
 		};
 
 		const uint8_t* Data(void) const
@@ -109,6 +84,26 @@ class MaskBuffer
 			}
 			mData[mLength] = newByte;
 			mLength++;
+		};
+
+		void AddWithCrc(uint8_t newByte)
+		{
+			Add(newByte);
+			Crc_AddCrc16(newByte, &mCrc);
+		};
+
+		void AppendCrc(bool crcInLittleEndian)
+		{
+			if(crcInLittleEndian)
+			{
+				Add((uint8_t)(mCrc & 0xff));
+				Add((uint8_t)(mCrc >> 8));
+			}
+			else
+			{
+				Add((uint8_t)(mCrc >> 8));
+				Add((uint8_t)(mCrc & 0xff));
+			}
 		};
 };
 #endif /* #ifndef _MASK_BUFFER_H_ */
