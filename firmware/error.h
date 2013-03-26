@@ -39,7 +39,8 @@ typedef enum __attribute__ ((__packed__)) {
 
 #define Error_Init(x) \
 	g_ErrorBits.CrcFailure = 0; \
-	g_ErrorBits.EepromFailure = 0;
+	g_ErrorBits.EepromFailure = 0; \
+	g_ErrorBits.CmdBufOverflow = 0;
 
 void Error_Throw();
 	

@@ -87,6 +87,7 @@ void Error_FatalError()
 	while(PORTB.5 != 0);
 	while(PORTB.5 == 0);
 #endif
+	Error_Init();
 	RingBuf_Init(&g_RingBuf);
 	CommandIO_Init();
 	ScriptCtrl_Init();
