@@ -25,6 +25,12 @@
 /* "+3" is need, because the crc is not in sizeof(cmd_frame) */
 #define CMDFRAMELENGTH (NUM_OF_LED * 3 + sizeof(struct cmd_frame) + 3)
 
+#ifdef __CC8E__
+#if (CMDFRAMELENGTH>255)
+#error CMDFRAMELENGTH is greater than 255. Please check CommandBuffer.counter variable.
+#endif
+#endif
+
 /** Statemachine STATES **/
 #define CS_WaitForSTX 0
 #define	CS_DeleteBuffer 1

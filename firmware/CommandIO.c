@@ -34,7 +34,7 @@ struct response_frame g_ResponseBuf;
 
 void writeByte(uns8 byte)
 {
-    if(g_CmdBuf.counter < CMDFRAMELENGTH)
+    if(g_CmdBuf.counter < sizeof(g_CmdBuf.buffer))
     {
 	  g_CmdBuf.buffer[g_CmdBuf.counter] = byte;
 	  g_CmdBuf.counter++;
