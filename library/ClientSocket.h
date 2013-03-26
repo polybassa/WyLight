@@ -18,6 +18,7 @@
 
 #ifndef _CLIENTSOCKET_H_
 #define _CLIENTSOCKET_H_
+
 #include "WiflyControlException.h"
 
 #include <cassert>
@@ -125,7 +126,7 @@ class UdpSocket : public ClientSocket
 		 * @param timout to wait for data, to block indefinitly use NULL, which is default
 		 * @param remoteAddr pointer to a struct where the senders address should be stored, this param is optional use NULL to ignore it
 		 * @param remoteAddrLength size of the struct remoteAddr is pointing to, after a successfull call with no NULL pointers in remoteAddrLength and remoteAddr it will point to the size of the written remoteAddr struct
-		 * @return number of bytes read into <pBuffer>
+		 * @return number of bytes read into <pBuffer>, 0 in case of a timeout
 		 * @throws FatalError if something very unexpected happens
 		 */
 		size_t RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout = NULL, struct sockaddr* remoteAddr = NULL, socklen_t* remoteAddrLength = NULL) const throw (FatalError);

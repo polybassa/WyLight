@@ -18,6 +18,7 @@
 
 #include "ComProxy.h"
 #include "crc.h"
+#include "MaskBuffer.h"
 #include "timeval.h"
 #include "trace.h"
 #include "wifly_cmd.h"
@@ -26,55 +27,10 @@ static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZON
 
 static const timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for framented responses from pic
 
-/**
- * This makro is used in ComProxy::MaskControlCharacters and requires some
- * implicit parameter:
- * @param bytesWritten counter of bytes in output buffer
- * @param outputLength size of output buffer
- * @param pOutput output buffer
- * @param _BYTE_ the byte we have to mask and write to buffer
- */
-#define MaskAndAddByteToOutput(_BYTE_) { \
-	if(IsCtrlChar(_BYTE_)) { \
-		if(++bytesWritten > outputLength) return 0; \
-		*pOutput = BL_DLE; \
-		pOutput++; \
-	} \
-	if(++bytesWritten > outputLength) return 0; \
-	*pOutput = _BYTE_; \
-	pOutput++; \
-}
 
 ComProxy::ComProxy(const TcpSocket& sock)
 	: mSock(sock)
 {
-}
-
-size_t ComProxy::MaskControlCharacters(const uint8_t* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool crcInLittleEndian) const
-{
-	const uint8_t* const pInputEnd = pInput + inputLength;
-	size_t bytesWritten = 0;
-	uint16_t crc = 0;
-
-	while(pInput < pInputEnd)
-	{
-		MaskAndAddByteToOutput(*pInput);
-		Crc_AddCrc16(*pInput, &crc);
-		pInput++;
-	}
-
-	// add crc to output
-	if(crcInLittleEndian)
-	{
-		MaskAndAddByteToOutput((uint8_t)(crc & 0xff));
-		MaskAndAddByteToOutput((uint8_t)(crc >> 8));
-	}
-	else
-	{
-		MaskAndAddByteToOutput((uint8_t)(crc >> 8));
-		MaskAndAddByteToOutput((uint8_t)(crc & 0xff));
-	}
-	return bytesWritten;
 }
 
 size_t ComProxy::UnmaskControlCharacters(const uint8_t* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool checkCrc, bool crcInLittleEndian) const
@@ -234,25 +190,13 @@ int32_t ComProxy::Send(const struct cmd_frame* pFrame, response_frame* pResponse
 
 int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const
 {
-	uint8_t buffer[BL_MAX_MESSAGE_LENGTH];
+	MaskBuffer maskBuffer{BL_MAX_MESSAGE_LENGTH};
 	uint8_t recvBuffer[BL_MAX_MESSAGE_LENGTH];
-	size_t bufferSize = 0;
-
-	/* add leading STX */
-	buffer[0] = BL_STX;
-	bufferSize++;
 
 	/* mask control characters in request and add crc */
-	bufferSize += MaskControlCharacters(pRequest, requestSize, buffer + 1, sizeof(buffer) + 1, crcInLittleEndian);
-	if(1 == bufferSize)
-	{
-		Trace(ZONE_ERROR, "MaskControlCharacters() failed\n");
-		return 0;
-	}
+	maskBuffer.Mask(pRequest, pRequest + requestSize, crcInLittleEndian);
+	maskBuffer.CompleteWithETX();
 
-	/* add BL_ETX to the end of buffer */
-	buffer[bufferSize] = BL_ETX;
-	bufferSize++;
 
 	int numRetries = BL_MAX_RETRIES;
 
@@ -276,7 +220,7 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 	
 	Trace(ZONE_VERBOSE, "synchronized\n");
 	/* synchronized -> send request */
-	if(bufferSize != mSock.Send(buffer, bufferSize))
+	if(maskBuffer.Size() != mSock.Send(maskBuffer.Data(), maskBuffer.Size()))
 	{
 		Trace(ZONE_ERROR, "socket->Send() failed\n");
 		return 0;
