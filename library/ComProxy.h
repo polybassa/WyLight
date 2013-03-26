@@ -32,15 +32,6 @@ class ComProxy
 
 	public:
 		ComProxy(const TcpSocket& sock);
-
-		/**
-		 * Mask bytes of input buffer and add CRC16-CITT checksum to the end
-		 * @param pInput input buffer
-		 * @param inputLength number of bytes in input buffer
-		 * @param pOutput output buffer
-		 * @param outputLength size of the output buffer
-		 */
-		size_t MaskControlCharacters(const uint8_t* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool crcInLittleEndian = true) const;
 		int32_t Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync = true) const;
 		int32_t Send(struct cmd_frame const* pFrame, response_frame* pResponse, size_t responseSize, bool doSync) const;
 		int32_t Send(uint8_t const* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool sync, bool crcInLittleEndian = true) const;

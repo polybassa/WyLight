@@ -33,21 +33,6 @@ ComProxy::ComProxy(const TcpSocket& sock)
 {
 }
 
-size_t ComProxy::MaskControlCharacters(const uint8_t* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool crcInLittleEndian) const
-{
-	try {
-	MaskBuffer maskBuffer{outputLength};
-	maskBuffer.Mask(pInput, pInput + inputLength, crcInLittleEndian);
-
-	memcpy(pOutput, maskBuffer.Data(), maskBuffer.Size());
-	pOutput += maskBuffer.Size();
-	return maskBuffer.Size();
-	} catch (FatalError& e) {
-		std::cout << e << '\n';
-		return 0;
-	}
-}
-
 size_t ComProxy::UnmaskControlCharacters(const uint8_t* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool checkCrc, bool crcInLittleEndian) const
 {
 	if(outputLength < inputLength)
@@ -206,26 +191,12 @@ int32_t ComProxy::Send(const struct cmd_frame* pFrame, response_frame* pResponse
 int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const
 {
 	MaskBuffer maskBuffer{BL_MAX_MESSAGE_LENGTH};
-	uint8_t buffer[BL_MAX_MESSAGE_LENGTH];
 	uint8_t recvBuffer[BL_MAX_MESSAGE_LENGTH];
-	size_t bufferSize = 0;
-
-	/* add leading STX */
-	buffer[0] = BL_STX;
-	bufferSize++;
 
 	/* mask control characters in request and add crc */
 	maskBuffer.Mask(pRequest, pRequest + requestSize, crcInLittleEndian);
-	bufferSize += MaskControlCharacters(pRequest, requestSize, buffer + 1, sizeof(buffer) - 1, crcInLittleEndian);
-	if(1 == bufferSize)
-	{
-		Trace(ZONE_ERROR, "MaskControlCharacters() failed\n");
-		return 0;
-	}
+	maskBuffer.CompleteWithETX();
 
-	/* add BL_ETX to the end of buffer */
-	buffer[bufferSize] = BL_ETX;
-	bufferSize++;
 
 	int numRetries = BL_MAX_RETRIES;
 
@@ -249,7 +220,7 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 	
 	Trace(ZONE_VERBOSE, "synchronized\n");
 	/* synchronized -> send request */
-	if(bufferSize != mSock.Send(buffer, bufferSize))
+	if(maskBuffer.Size() != mSock.Send(maskBuffer.Data(), maskBuffer.Size()))
 	{
 		Trace(ZONE_ERROR, "socket->Send() failed\n");
 		return 0;

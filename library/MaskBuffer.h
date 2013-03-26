@@ -29,6 +29,7 @@ class MaskBuffer
 		MaskBuffer(size_t capacity) : mCapacity(capacity), mLength(0), mCrc(0)
 		{
 			mData = new uint8_t[capacity];
+			AddPure(BL_STX);
 		};
 
 		~MaskBuffer(void)
@@ -54,6 +55,11 @@ class MaskBuffer
 				Add((uint8_t)(mCrc >> 8));
 				Add((uint8_t)(mCrc & 0xff));
 			}
+		};
+
+		void CompleteWithETX(void)
+		{
+			AddPure(BL_ETX);
 		};
 
 		uint16_t Crc16(void) const
