@@ -40,10 +40,6 @@ struct LedBuffer{
 	uns8 step[NUM_OF_LED / 8 * 3];
 	uns8 stepSize[NUM_OF_LED * 3];
 	uns16 fadeTmms;
-	struct status_bits{
-		uns8 run_aktiv : 1;
-		uns8 run_direction : 1;    // 1==left, 0==right
-	} flags;
 };
 
 extern struct LedBuffer gLedBuf;
@@ -79,12 +75,6 @@ void Ledstrip_SetFade(struct cmd_set_fade *pCmd);
 void Ledstrip_DoFade(void);
 
 void Ledstrip_UpdateLed(void);
-
-/**
- * returns a number of current running fades
- * returns 0 if no fade is running
- */
-uns8 Ledstrip_NumOfFades(void);
 
 void Ledstrip_ToggleLeds(void);
 

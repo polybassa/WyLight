@@ -493,7 +493,7 @@ size_t ut_WiflyControl_FwSetColorDirectToMany(void)
 	cmd_frame expectedOutgoingFrame;
 	expectedOutgoingFrame.led.cmd = SET_COLOR_DIRECT;
 	expectedOutgoingFrame.length = 2 + sizeof(cmd_set_color_direct);	
-	memcpy(expectedOutgoingFrame.led.data.set_color_direct.ptr_led_array, shortBuffer, sizeof(shortBuffer));
+	memcpy(expectedOutgoingFrame.led.data.set_color_direct.ptr_led_array, shortBuffer, NUM_OF_LED * 3);
 
 	testee.FwSetColorDirect(response, shortBuffer, sizeof(shortBuffer));
 

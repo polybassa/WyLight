@@ -130,4 +130,9 @@ uns8 Trace_Print(uns8 *pArray, const uns16 arraySize)
 	}
 	return i;
 }
+#else 
+uns8 Trace_Print(uns8 *pArray, const uns16 arraySize)
+{
+	return 0;
+}
 #endif

@@ -121,5 +121,4 @@ struct __attribute__((__packed__)) cmd_frame {
 	uns8 length;
 	struct led_cmd led;
 };
-#define FRAMELENGTH (sizeof(struct cmd_frame) + 1)			// *** max length of one commandframe
 #endif /* #ifndef _WIFLY_CMD_H_ */
