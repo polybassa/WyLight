@@ -19,6 +19,7 @@
 #include "error.h"
 #include "CommandIO.h"
 #include "RingBuf.h"
+#include "ScriptCtrl.h"
 #include "trace.h"
 #include "ledstrip.h"
 
