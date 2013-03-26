@@ -623,20 +623,19 @@ void WiflyControl::FwSetColorDirect(WiflyResponse& response, unsigned char* pBuf
 	FwSend(&mCmdFrame, sizeof(struct cmd_set_color_direct),response);
 }
 
-void WiflyControl::FwSetFade(WiflyResponse& response, uint32_t argb, uint16_t fadeTmms, uint32_t addr, bool parallelFade)
+void WiflyControl::FwSetFade(WiflyResponse& response, uint32_t argb, uint32_t fadeTmms, uint32_t addr, bool parallelFade)
 {
-	/*calibrate fadeTmms */
-	fadeTmms = (unsigned short)(fadeTmms / 10);
-	if(fadeTmms == 0) fadeTmms = 1;
+	fadeTmms = fadeTmms / calibrationValue;
+	if(fadeTmms < 4) fadeTmms = 4;
 	
 	mCmdFrame.led.cmd = SET_FADE;
 	SetAddrRgb(mCmdFrame.led.data.set_fade, addr, argb);
-	mCmdFrame.led.data.set_fade.fadeTmms = htons(fadeTmms);
+	mCmdFrame.led.data.set_fade.fadeTmms = htons((uint16_t)fadeTmms);
 	mCmdFrame.led.data.set_fade.parallelFade = parallelFade;
 	FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
 }
 
-void WiflyControl::FwSetFade(WiflyResponse& response, const string& rgb, uint16_t fadeTmms, const string& addr, bool parallelFade)
+void WiflyControl::FwSetFade(WiflyResponse& response, const string& rgb, uint32_t fadeTmms, const string& addr, bool parallelFade)
 {
 	FwSetFade(response, 0xff000000 | WiflyColor::ToARGB(rgb), fadeTmms, WiflyColor::ToARGB(addr), parallelFade);
 }
@@ -657,10 +656,10 @@ void WiflyControl::FwSetRtc(SimpleResponse& response, struct tm* timeValue)
 	FwSend(&mCmdFrame, sizeof(struct rtc_time),response);
 }
 
-void WiflyControl::FwSetWait(WiflyResponse& response, unsigned short waitTmms)
+void WiflyControl::FwSetWait(WiflyResponse& response, uint32_t waitTmms)
 {
 	mCmdFrame.led.cmd = WAIT;
-	mCmdFrame.led.data.wait.waitTmms = htons((unsigned short)(waitTmms / 10));
+	mCmdFrame.led.data.wait.waitTmms = htons((uint16_t)(waitTmms / calibrationValue));
 	
 	FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
 }

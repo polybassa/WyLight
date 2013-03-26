@@ -533,7 +533,7 @@ class ControlCmdWait : public WiflyControlCmd
 			+ string("    <time> the number of milliseconds the wait should take")) {};
 
 		virtual void Run(WiflyControl& control) const {
-			uint16_t waitTmms;
+			uint32_t waitTmms;
 			cin >> waitTmms;
 			cout << "Transmitting command wait... ";
 			try
@@ -561,7 +561,7 @@ class ControlCmdSetFade : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const {
 			string addr, color;
-			unsigned long timevalue;
+			uint32_t timevalue;
 			cin >> addr;
 			cin >> color;
 			cin >> timevalue;
@@ -569,7 +569,7 @@ class ControlCmdSetFade : public WiflyControlCmd
 			try
 			{
 				SimpleResponse response(SET_FADE);
-				control.FwSetFade(response, color, (uint16_t)timevalue, addr, false);
+				control.FwSetFade(response, color, timevalue, addr, false);
 				cout << "done." << endl;
 			}
 			catch(WiflyControlException& e)
