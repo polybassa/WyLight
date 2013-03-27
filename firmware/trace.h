@@ -28,6 +28,8 @@
 #ifdef DEBUG
 extern struct RingBuffer g_TraceBuf;
 #ifdef __CC8E__
+	void Trace_Init();
+
 	void Trace_String(const char *string);
 	
 	void Trace_Number(const uns8 input);
@@ -41,6 +43,7 @@ extern struct RingBuffer g_TraceBuf;
 	uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
 #else 
 	#include "stdio.h"
+	#define Trace_Init(x)
 	#define Trace_String(str) do { printf("%s", str); } while (0)
 	#define Trace_Number(input) do { printf("%04x", input); } while (0)
 	#define Trace_Hex(hex) do { printf("%02x ", hex); } while(0)
@@ -66,6 +69,7 @@ extern struct RingBuffer g_TraceBuf;
 	} while(0)
 #endif
 #else
+	#define Trace_Init(x)
 	#define Trace_String(str)
 	#define Trace_Number(input)
 	#define Trace_Hex(hex)

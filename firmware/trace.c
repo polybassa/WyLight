@@ -21,6 +21,11 @@
 #if defined(DEBUG) && defined(__CC8E__)
 struct RingBuffer g_TraceBuf;
 
+void Trace_Init(void)
+{
+	RingBuf_Init(&g_TraceBuf);
+}
+
 void PutToBuf(const uns8 Byte)
 {
 	if(RingBuf_HasError(&g_TraceBuf)) return;
