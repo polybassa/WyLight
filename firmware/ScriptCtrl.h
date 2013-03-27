@@ -21,6 +21,7 @@
 
 #include "platform.h"
 #include "wifly_cmd.h"
+#include "error.h"
 
 #define SCRIPTCTRL_NUM_CMD_MAX 63			/*BITMASK */
 #define SCRIPTCTRL_LOOP_DEPTH_MAX 4

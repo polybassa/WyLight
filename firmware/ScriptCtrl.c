@@ -20,6 +20,7 @@
 #include "CommandIO.h"
 #include "ledstrip.h"
 #include "eeprom.h"
+#include "error.h"
 #include "trace.h"
 
 /**************** private functions/ macros *****************/
@@ -71,7 +72,7 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 	/* We have to reject all commands until buffer was cleared completely */
 	if(gScriptBuf.isClearing)
 	{
-		return FALSE;
+		return SCRIPTBUFFER_FULL;
 	}
 
 	switch(pCmd->cmd)
@@ -79,7 +80,7 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 		case CLEAR_SCRIPT:
 			Trace_String("Clearing script buffer\n");
 			gScriptBuf.isClearing = TRUE;
-			return TRUE;
+			return OK;
 		case LOOP_ON:
 			gScriptBuf.loopStart[gScriptBuf.loopDepth] = gScriptBuf.write;
 			gScriptBuf.loopDepth++;
@@ -106,17 +107,17 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 		}
 		case START_BL:
 		{
-			CommandIO_CreateResponse(&g_ResponseBuf, START_BL);
+			CommandIO_CreateResponse(&g_ResponseBuf, START_BL, OK);
 			CommandIO_SendResponse(&g_ResponseBuf);
 			Platform_EnableBootloaderAutostart();
 			softReset();
 			/* never reach this */
-			return FALSE;
+			return OK;
 		}
 #ifdef __CC8E__
 		case GET_RTC:
 		{
-			return TRUE;
+			return OK;
 		}
 		case SET_RTC:
 		{
@@ -128,28 +129,36 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 			g_RtcTime.tm_min = pCmd->data.set_rtc.tm_min;
 			g_RtcTime.tm_sec = pCmd->data.set_rtc.tm_sec;
 			Rtc_Ctl(RTC_SET_TIME, &g_RtcTime);
-			return TRUE;
+			return OK;
 		}
 		case SET_COLOR_DIRECT:
 		{
 			Ledstrip_SetColorDirect(&pCmd->data.set_color_direct.ptr_led_array);
-			return TRUE;
+			return OK;
 		}	
 		case GET_CYCLETIME:
 		{
-			return TRUE;
+			return OK;
 		}
 		case GET_TRACE:
 		{
-			return TRUE;
+			return OK;
 		}
 #endif /* #ifndef CC8E */
 		case GET_FW_VERSION:
 		{
-			return TRUE;
+			return OK;
+		}
+		case SET_FADE:
+		{
+			return ScriptCtrl_Write(pCmd);
+		}
+		default:
+		{
+			return BAD_COMMAND_CODE;
 		}
 	}
-	return ScriptCtrl_Write(pCmd);
+		
 }
 
 void ScriptCtrl_Clear(void)
@@ -290,8 +299,8 @@ uns8 ScriptCtrl_Write(const struct led_cmd* pCmd)
 		uns16 tempAddress = ScriptBufAddr(gScriptBuf.write);
 		Eeprom_WriteBlock((const uns8*)pCmd, tempAddress, sizeof(struct led_cmd));
 		ScriptBufSetWrite(writeNext);
-		return TRUE;
+		return OK;
 	}
-	return FALSE;
+	return SCRIPTBUFFER_FULL;
 }
 
