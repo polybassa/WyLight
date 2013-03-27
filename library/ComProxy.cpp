@@ -104,20 +104,17 @@ size_t ComProxy::UnmaskControlCharacters(const uint8_t* pInput, size_t inputLeng
 	return bytesWritten - 2;
 }
 
-size_t ComProxy::Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout, bool checkCrc, bool crcInLittleEndian) const
+size_t ComProxy::Recv(uint8_t* pBuffer, const size_t length, timeval* pTimeout, bool checkCrc, bool crcInLittleEndian) const
 {
 	timeval endTime, now;
 	gettimeofday(&endTime, NULL);
 	timeval_add(&endTime, pTimeout);
-	uint8_t* const pBufferBegin = pBuffer;
-	uint16_t crc = 0;
-	uint16_t preCrc = 0;
-	uint16_t prepreCrc = 0;
 	bool lastWasDLE = false;
+	UnmaskBuffer recvBuffer{length};
 
 	// TODO refactor this with code in commandstorage. It should be identical to the fw receive implementation
 	do {
-		size_t bytesMasked = mSock.Recv(pBuffer, length, pTimeout);
+		size_t bytesMasked = mSock.Recv(pBuffer, length-recvBuffer.Size(), pTimeout);
 		Trace(ZONE_INFO, "Bytes masked: %zu\n", bytesMasked);
 		uint8_t* pInput = pBuffer;
 		while(bytesMasked-- > 0)
@@ -125,55 +122,37 @@ size_t ComProxy::Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout, bool c
 			if(lastWasDLE)
 			{
 				lastWasDLE = false;
-				prepreCrc = preCrc;
-				preCrc = crc;
-				Crc_AddCrc16(*pInput, &crc);
-				*pBuffer = *pInput;
-				pBuffer++;
-				length--;
+				recvBuffer.Add(*pInput);
 			}
 			else
 			{
-				if(BL_DLE == *pInput)
+				switch(*pInput)
 				{
-					lastWasDLE = true;
-				}
-				else if (BL_ETX == *pInput)
-				{
-					Trace(ZONE_INFO, "Detect ETX\n");
-					if(!checkCrc)
-					{
-						return pBuffer - pBufferBegin;
-					}
-
-					if(crcInLittleEndian)
-					{
-						Crc_AddCrc16(pBuffer[-1], &prepreCrc);
-						Crc_AddCrc16(pBuffer[-2], &prepreCrc);
-						crc = prepreCrc;
-					}
-					Trace(ZONE_INFO, "Crc: 0x%04x Returnvalue: %lu\n", crc, (pBuffer - 2) - pBufferBegin);
-					return (0 != crc) ? 0 : (pBuffer - 2) - pBufferBegin;
-				}
-				else if (BL_STX == *pInput)
-				{
-					pBuffer = pBufferBegin;
-					Trace(ZONE_INFO, "Detect STX\n");
-				}
-				else
-				{
-					prepreCrc = preCrc;
-					preCrc = crc;
-					Crc_AddCrc16(*pInput, &crc);
-					*pBuffer = *pInput;
-					pBuffer++;
-					length--;
+					case BL_ETX:
+						Trace(ZONE_INFO, "Detect ETX\n");
+						if(checkCrc)
+						{
+							recvBuffer.CheckAndRemoveCrc(crcInLittleEndian);
+						}
+						memcpy(pBuffer, recvBuffer.Data(), recvBuffer.Size());
+						return recvBuffer.Size();
+					case BL_DLE:
+						lastWasDLE = true;
+						break;
+					case BL_STX:
+						Trace(ZONE_INFO, "Detect STX\n");
+						recvBuffer.Clear();
+						break;
+					default:
+						recvBuffer.Add(*pInput);
+						break;
 				}
 			}
 			pInput++;
 		}
 		gettimeofday(&now, NULL);
 	} while(timeval_sub(&endTime, &now, pTimeout));
+	Trace(ZONE_INFO, "Timout\n");
 	return 0;
 }
 
