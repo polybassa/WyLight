@@ -19,6 +19,8 @@
 #ifndef _BL_REQUEST_H_
 #define _BL_REQUEST_H_
 
+#include "wifly_cmd.h"
+
 #include <cassert>
 #include <cstring>
 #include <stdio.h>
@@ -37,11 +39,11 @@
 #define EEPROM_WRITE_BLOCKSIZE 256
 #define EEPROM_SIZE 1024
 #define BL_AUTOSTART_ADDRESS 0x3ff
-#define BL_STX 0x0f
-#define BL_ETX 0x04
-#define BL_DLE 0x05
+static const uint8_t BL_STX = STX;
+static const uint8_t BL_ETX = ETX;
+static const uint8_t BL_DLE = DLE;
 #define BL_CRTL_CHAR_NUM 3
-#define IsCtrlChar(X) (((X)==BL_STX) || ((X)==BL_ETX) || ((X)==BL_DLE))
+inline bool IsCtrlChar(uint8_t X) { return (((X)==BL_STX) || ((X)==BL_ETX) || ((X)==BL_DLE)); }
 
 static const unsigned int BL_MAX_RETRIES = 5;
 static const size_t BL_MAX_MESSAGE_LENGTH = 512;
