@@ -202,12 +202,12 @@ void InitAll()
 	UART_Init();
 	Timer_Init();
 	Ledstrip_Init();
-	Error_Init();
 	CommandIO_Init();
 	Rtc_Init();
 	ScriptCtrl_Init();
 	Version_Init();
-
+	Trace_Init();
+	
 #ifndef __CC8E__
 	init_x86();
 #endif /* #ifndef CC8E */
@@ -215,12 +215,12 @@ void InitAll()
 	Platform_AllowInterrupts();
 	Platform_DisableBootloaderAutostart();
 	
-	Trace_String("Wait");
+	Trace_String("Startup");
 	
 	/* Startup Wait-Time 2s
 	 * to protect Wifly-Modul from errors*/
-	gScriptBuf.waitValue = 500;
-	CommandIO_CreateResponse(&g_ResponseBuf, FW_STARTED);
+	gScriptBuf.waitValue = 20;
+	CommandIO_CreateResponse(&g_ResponseBuf, FW_STARTED, OK);
 	CommandIO_SendResponse(&g_ResponseBuf);
 }
 
