@@ -33,7 +33,6 @@
 
 static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;
 
-struct ErrorBits g_ErrorBits;
 struct RingBuffer g_RingBufResponse;
 uns8 g_RandomDataPool[500];
 
@@ -59,11 +58,6 @@ void UART_SendString(const uns8 *string)
 uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 {
 	return 1;
-}
-
-ErrorCode Error_GetState()
-{
-	return 0xff;
 }
 
 struct cmd_get_fw_version g_Version = {99, 99};
@@ -180,14 +174,7 @@ int ut_CommandIO_ReadTwoFrames_1(void)
 	
 	for(i = 0; i < sizeof(dummyFrame_twoFrames_1) - 1; i++)
 	{
-	  CommandIO_GetCommands();
-	  
-	  if(g_ErrorBits.CrcFailure == 1)
-	  {
-	      g_ErrorBits.CrcFailure = 0;
-	      CHECK(0 == memcmp(dummyFrame_twoFramesPure_1, g_CmdBuf.buffer , g_CmdBuf.counter));
-	      CHECK(CS_WaitForSTX == g_CmdBuf.state);
-	  }
+		CommandIO_GetCommands();
 	}
 	CommandIO_GetCommands();
 	CommandIO_GetCommands();
@@ -214,14 +201,8 @@ int ut_CommandIO_ReadTwoFrames_2(void)
 	
 	for(i = 0; i < sizeof(dummyFrame_twoFrames_2) - 1; i++)
 	{
-	  CommandIO_GetCommands();
+		CommandIO_GetCommands();
 	  
-	  if(g_ErrorBits.CrcFailure == 1)
-	  {
-	      g_ErrorBits.CrcFailure = 0;
-	      CHECK(0 == memcmp(dummyFrame_twoFramesPure_1, g_CmdBuf.buffer , g_CmdBuf.counter));
-	      CHECK(CS_WaitForSTX == g_CmdBuf.state);
-	  }
 	}
 	CommandIO_GetCommands();
 	CommandIO_GetCommands();
@@ -309,11 +290,11 @@ int ut_CommandIO_CreateResponse_RTC(void)
 	
 	struct response_frame mFrame;
 	
-	CommandIO_CreateResponse(&mFrame, GET_RTC);
+	CommandIO_CreateResponse(&mFrame, GET_RTC, OK);
 	CHECK(0 == memcmp((void*)&(mFrame.data), (void*)&g_RandomDataPool[0], sizeof(struct rtc_time)));
 	CHECK(mFrame.cmd == GET_RTC);
 	CHECK(mFrame.length == sizeof(struct rtc_time) + sizeof(uns8)*2 + sizeof(uns16));
-	CHECK(mFrame.state == 0xff);
+	CHECK(mFrame.state == OK);
 	
 	TestCaseEnd();
 }
@@ -330,12 +311,12 @@ int ut_CommandIO_CreateResponse_CYCLETIME(void)
 	
 	struct response_frame mFrame;
 	
-	CommandIO_CreateResponse(&mFrame, GET_CYCLETIME);
+	CommandIO_CreateResponse(&mFrame, GET_CYCLETIME, OK);
 	CHECK(0 == memcmp((void*)&(mFrame.data), (void*)&g_RandomDataPool[0], sizeof(struct response_frame) - 4));
 	CHECK(mFrame.cmd == GET_CYCLETIME);
 	
 	CHECK(mFrame.length == sizeof(struct response_frame));
-	CHECK(mFrame.state == 0xff);
+	CHECK(mFrame.state == OK);
 	
 	TestCaseEnd();
 }
@@ -352,12 +333,12 @@ int ut_CommandIO_CreateResponse_TRACE(void)
 	
 	struct response_frame mFrame;
 	
-	CommandIO_CreateResponse(&mFrame, GET_TRACE);
+	CommandIO_CreateResponse(&mFrame, GET_TRACE, OK);
 	CHECK(0 == memcmp((void*)&(mFrame.data), (void*)&g_RandomDataPool[0], sizeof(struct response_frame) - 4));
 	CHECK(mFrame.cmd == GET_TRACE);
 	
 	CHECK(mFrame.length == sizeof(struct response_frame));
-	CHECK(mFrame.state == 0xff);
+	CHECK(mFrame.state == OK);
 	
 	TestCaseEnd();
 }
@@ -367,11 +348,11 @@ int ut_CommandIO_CreateResponse_FW_VERSION(void)
 	TestCaseBegin();
 	struct response_frame mFrame;
 	
-	CommandIO_CreateResponse(&mFrame, GET_FW_VERSION);
+	CommandIO_CreateResponse(&mFrame, GET_FW_VERSION, OK);
 	CHECK(0 == memcmp((void*)&(mFrame.data), (void*)&g_Version, sizeof(struct cmd_get_fw_version)));
 	CHECK(mFrame.cmd == GET_FW_VERSION);
 	CHECK(mFrame.length == 6);
-	CHECK(mFrame.state == 0xff);
+	CHECK(mFrame.state == OK);
 	
 	TestCaseEnd();
 }
@@ -381,10 +362,10 @@ int ut_CommandIO_CreateResponse_SET_FADE(void)
 	TestCaseBegin();
 	struct response_frame mFrame;
 	
-	CommandIO_CreateResponse(&mFrame, SET_FADE);
+	CommandIO_CreateResponse(&mFrame, SET_FADE, OK);
 	CHECK(mFrame.cmd == SET_FADE);
 	CHECK(mFrame.length == 4);
-	CHECK(mFrame.state == 0xff);
+	CHECK(mFrame.state == OK);
 	
 	TestCaseEnd();
 }
@@ -401,7 +382,7 @@ int ut_CommandIO_Create_n_Send(void)
 	
 	struct response_frame mFrame;
 	
-	CommandIO_CreateResponse(&mFrame, GET_RTC);
+	CommandIO_CreateResponse(&mFrame, GET_RTC, OK);
 	
 	/* init everything, g_RingBufResponse is used to save all send data from UART_send */
 	RingBuf_Init(&g_RingBufResponse);
@@ -429,7 +410,7 @@ int ut_CommandIO_Create_n_Send(void)
 	CHECK(0 == memcmp((void*)&(rFrame->data), (void*)&g_RandomDataPool[0], sizeof(struct rtc_time)));
 	CHECK(rFrame->cmd == GET_RTC);
 	CHECK(rFrame->length == sizeof(struct rtc_time) + sizeof(uns8)*2 + sizeof(uns16));
-	CHECK(rFrame->state == 0xff);
+	CHECK(rFrame->state == OK);
 	
 	
 	TestCaseEnd();

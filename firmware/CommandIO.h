@@ -53,9 +53,11 @@ void CommandIO_Init();
 
 void CommandIO_GetCommands();
 
+void CommandIO_Error();
+
 void CommandIO_SendResponse(struct response_frame *mFrame);
 
-void CommandIO_CreateResponse(struct response_frame *mFrame, uns8 cmd);
+void CommandIO_CreateResponse(struct response_frame *mFrame, uns8 cmd, ErrorCode mState);
 
 #endif /* #ifndef _COMMANDSTORAGE_H_ */
 

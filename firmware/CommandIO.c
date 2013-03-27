@@ -19,9 +19,9 @@
 #include "CommandIO.h"
 #include "ScriptCtrl.h"
 #include "trace.h"
-#include "usart.h"
 #include "RingBuf.h"
 #include "crc.h"
+#include "usart.h"
 #include "error.h"
 #include "wifly_cmd.h"
 #include "rtc.h"
@@ -36,15 +36,13 @@ void writeByte(uns8 byte)
 {
     if(g_CmdBuf.counter < sizeof(g_CmdBuf.buffer))
     {
-	  g_CmdBuf.buffer[g_CmdBuf.counter] = byte;
-	  g_CmdBuf.counter++;
-	  Crc_AddCrc(byte, &g_CmdBuf.CrcH, &g_CmdBuf.CrcL);		
+		g_CmdBuf.buffer[g_CmdBuf.counter] = byte;
+		g_CmdBuf.counter++;
+		Crc_AddCrc(byte, &g_CmdBuf.CrcH, &g_CmdBuf.CrcL);
     }
     else
     {
-		g_ErrorBits.CmdBufOverflow = TRUE;
-		Trace_Hex16(g_CmdBuf.counter);
-		Trace_String(" cntr");
+		CommandIO_Error();
     }
 }
 
@@ -59,6 +57,13 @@ void CommandIO_Init()
 { 
     g_CmdBuf.state = CS_WaitForSTX;
     DeleteBuffer();
+}
+
+void CommandIO_Error()
+{
+	CommandIO_CreateResponse(&g_ResponseBuf, g_CmdBuf.buffer[1], BAD_PACKET);
+	CommandIO_SendResponse(&g_ResponseBuf);
+	CommandIO_Init();
 }
 
 
@@ -94,18 +99,18 @@ void CommandIO_Init()
 
 void CommandIO_GetCommands()
 {
+	if(RingBuf_HasError(&g_RingBuf))
+	{
+		Trace_String("E:03; ERROR: Receivebuffer full");
+		// *** if a RingBufError occure, I have to throw away the current command,
+		// *** because the last byte was not saved. Commandstring is inconsistent
+		RingBuf_Init(&g_RingBuf);
+		CommandIO_Error();
+		return;
+	}
+	
 	while(!RingBuf_IsEmpty(&g_RingBuf))
 	{
-		if(g_ErrorBits.CmdBufOverflow)
-			return;
-  
-		if(RingBuf_HasError(&g_RingBuf))
-		{
-			// *** if a RingBufError occure, I have to throw away the current command,
-			// *** because the last byte was not saved. Commandstring is inconsistent
-			return;
-		}
-	
 		// *** get new_byte from ringbuffer
 		uns8 new_byte = RingBuf_Get(&g_RingBuf);
 		switch(g_CmdBuf.state)
@@ -153,29 +158,22 @@ void CommandIO_GetCommands()
 				if(new_byte == ETX)
 				{
 					g_CmdBuf.state = CS_WaitForSTX;
+					ErrorCode mRetValue = BAD_PACKET;
+					
 					if((0 == g_CmdBuf.CrcL) && (0 == g_CmdBuf.CrcH)) 	/* CRC Check */
 					{
 						// [0] contains cmd_frame->length so we send [1]
 #ifndef __CC8E__
-						if(!ScriptCtrl_Add((struct led_cmd*)&g_CmdBuf.buffer[1]))
+						mRetValue = ScriptCtrl_Add((struct led_cmd*)&g_CmdBuf.buffer[1]);
 #else
-						if(!ScriptCtrl_Add(&g_CmdBuf.buffer[1]))
+						mRetValue = ScriptCtrl_Add(&g_CmdBuf.buffer[1]);
 #endif
-						{
-							g_ErrorBits.EepromFailure = 1;
-						}
 					}
 					else
 					{
-						g_ErrorBits.CrcFailure = 1;
-						Trace_String("Crc error: ");
-						Trace_Hex(g_CmdBuf.CrcL);
-						Trace_Hex(g_CmdBuf.CrcH);
-						Trace_Hex(g_CmdBuf.buffer[g_CmdBuf.counter - 2]);
-						Trace_Hex(g_CmdBuf.buffer[g_CmdBuf.counter - 1]);
-						Trace_String("\n");
+						mRetValue = CRC_CHECK_FAILED;
 					}
-					CommandIO_CreateResponse(&g_ResponseBuf, g_CmdBuf.buffer[1]);
+					CommandIO_CreateResponse(&g_ResponseBuf, g_CmdBuf.buffer[1], mRetValue);
 					CommandIO_SendResponse(&g_ResponseBuf);
 					break;
 				}
@@ -224,11 +222,10 @@ void CommandIO_SendResponse(struct response_frame *mFrame)
 	UART_Send(ETX);
 }
 
-void CommandIO_CreateResponse(struct response_frame *mFrame, uns8 cmd)
+void CommandIO_CreateResponse(struct response_frame *mFrame, uns8 cmd, ErrorCode mState)
 {
 	mFrame->cmd = cmd;
-	uns8 tempErrorState = (uns8)Error_GetState();
-	mFrame->state = tempErrorState;
+	mFrame->state = mState;
 	mFrame->length = sizeof(uns8) + sizeof(ErrorCode) + sizeof(uns16);
 	switch (cmd) {
 		case GET_RTC:
