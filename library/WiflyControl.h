@@ -290,6 +290,11 @@ class WiflyControl
 /* ------------------------- PRIVATE DECLARATIONS ------------------------- */
 	private:
 		/**
+		 * Internal calculation value to convert a given timevalue to the right value for the Wifly_Light. This value is used in every functions with expectes a Tmms value as parameter.
+		 */
+		static const double CALIBRATION_VALUE;
+
+		/**
 		 * Socket used for communication with wifly device.
 		 * A reference to this socket is provided to the aggregated subobjects.
 		 */
@@ -309,11 +314,6 @@ class WiflyControl
 		 * Internal command frame used to send to the wifly device, this member should be removed and replaced by local variables.
 		 */
 		struct cmd_frame mCmdFrame;
-	
-		/**
-		 * Internal calculation value to convert a given timevalue to the right value for the Wifly_Light. This value is used in every functions with expectes a Tmms value as parameter.
-		 */
-		const double calibrationValue = 19.1;
 
 		/**
 		 * Instructs the bootloader to erase the specified area of the flash.

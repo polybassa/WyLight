@@ -53,6 +53,7 @@ static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VER
 }
 
 const std::string WiflyControl::LEDS_ALL{"ffffffff"};
+const double WiflyControl::CALIBRATION_VALUE{19.1};
 
 WiflyControl::WiflyControl(uint32_t addr, uint16_t port)
 : mSock(addr, port), mProxy(mSock), mTelnet(mSock)
@@ -625,7 +626,7 @@ void WiflyControl::FwSetColorDirect(WiflyResponse& response, unsigned char* pBuf
 
 void WiflyControl::FwSetFade(WiflyResponse& response, uint32_t argb, uint32_t fadeTmms, uint32_t addr, bool parallelFade)
 {
-	fadeTmms = fadeTmms / calibrationValue;
+	fadeTmms = fadeTmms / CALIBRATION_VALUE;
 	if(fadeTmms < 4) fadeTmms = 4;
 	
 	mCmdFrame.led.cmd = SET_FADE;
@@ -659,7 +660,7 @@ void WiflyControl::FwSetRtc(SimpleResponse& response, struct tm* timeValue)
 void WiflyControl::FwSetWait(WiflyResponse& response, uint32_t waitTmms)
 {
 	mCmdFrame.led.cmd = WAIT;
-	mCmdFrame.led.data.wait.waitTmms = htons((uint16_t)(waitTmms / calibrationValue));
+	mCmdFrame.led.data.wait.waitTmms = htons((uint16_t)(waitTmms / CALIBRATION_VALUE));
 	
 	FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
 }
