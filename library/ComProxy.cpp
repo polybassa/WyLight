@@ -109,46 +109,14 @@ size_t ComProxy::Recv(uint8_t* pBuffer, const size_t length, timeval* pTimeout, 
 	timeval endTime, now;
 	gettimeofday(&endTime, NULL);
 	timeval_add(&endTime, pTimeout);
-	bool lastWasDLE = false;
 	UnmaskBuffer recvBuffer{length};
 
-	// TODO refactor this with code in commandstorage. It should be identical to the fw receive implementation
 	do {
 		size_t bytesMasked = mSock.Recv(pBuffer, length-recvBuffer.Size(), pTimeout);
-		Trace(ZONE_INFO, "Bytes masked: %zu\n", bytesMasked);
-		uint8_t* pInput = pBuffer;
-		while(bytesMasked-- > 0)
+		if(recvBuffer.Unmask(pBuffer, bytesMasked, checkCrc, crcInLittleEndian))
 		{
-			if(lastWasDLE)
-			{
-				lastWasDLE = false;
-				recvBuffer.Add(*pInput);
-			}
-			else
-			{
-				switch(*pInput)
-				{
-					case BL_ETX:
-						Trace(ZONE_INFO, "Detect ETX\n");
-						if(checkCrc)
-						{
-							recvBuffer.CheckAndRemoveCrc(crcInLittleEndian);
-						}
-						memcpy(pBuffer, recvBuffer.Data(), recvBuffer.Size());
-						return recvBuffer.Size();
-					case BL_DLE:
-						lastWasDLE = true;
-						break;
-					case BL_STX:
-						Trace(ZONE_INFO, "Detect STX\n");
-						recvBuffer.Clear();
-						break;
-					default:
-						recvBuffer.Add(*pInput);
-						break;
-				}
-			}
-			pInput++;
+			memcpy(pBuffer, recvBuffer.Data(), recvBuffer.Size());
+			return recvBuffer.Size();
 		}
 		gettimeofday(&now, NULL);
 	} while(timeval_sub(&endTime, &now, pTimeout));
