@@ -44,7 +44,7 @@ ComProxy::ComProxy(const TcpSocket& sock) : mSock (sock) {}
 	return sizeof(resp);}
 
 
-size_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const
+size_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const throw(ConnectionTimeout, FatalError)
 {
 	if(typeid(req) == typeid(BlInfoRequest))
 	{
@@ -147,7 +147,7 @@ size_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, b
 }
 
 cmd_frame g_SendFrame;
-size_t ComProxy::Send(const cmd_frame* pFrame, response_frame* pResponse, size_t responseSize, bool doSync) const
+size_t ComProxy::Send(const cmd_frame* pFrame, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout)
 {
 	memcpy(&g_SendFrame, pFrame, sizeof(g_SendFrame));
 	pResponse->length = sizeof(uns8) + sizeof(uns16) + sizeof(ErrorCode);

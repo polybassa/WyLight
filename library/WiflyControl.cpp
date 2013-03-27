@@ -598,7 +598,7 @@ WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, Wif
 	do
 	{
 		numCrcRetries++;
-		int bytesRead = mProxy.Send(pFrame, &buffer, sizeof(buffer), false);
+		int bytesRead = mProxy.Send(pFrame, &buffer, sizeof(buffer));
 	
 		TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer, (size_t)bytesRead, "%02x ", "We got %d bytes response.\nMessage: ", bytesRead);
 		response.Init(&buffer, bytesRead);

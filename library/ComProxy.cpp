@@ -33,7 +33,6 @@ ComProxy::ComProxy(const TcpSocket& sock)
 {
 }
 
-
 size_t ComProxy::Recv(uint8_t* pBuffer, const size_t length, timeval* pTimeout, bool checkCrc, bool crcInLittleEndian) const throw (ConnectionTimeout)
 {
 	timeval endTime, now;
@@ -53,18 +52,18 @@ size_t ComProxy::Recv(uint8_t* pBuffer, const size_t length, timeval* pTimeout, 
 	throw ConnectionTimeout("Receive response timed out");
 }
 
-size_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const
+size_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const throw(ConnectionTimeout, FatalError)
 {
 	Trace(ZONE_INFO, "%zu pure bytes\n", req.GetSize());
 	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
 }
 
-size_t ComProxy::Send(const struct cmd_frame* pFrame, response_frame* pResponse, size_t responseSize, bool doSync) const
+size_t ComProxy::Send(const struct cmd_frame* pFrame, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout)
 {
-	return Send(reinterpret_cast<const uint8_t*>(pFrame), pFrame->length, reinterpret_cast<uint8_t*>(pResponse), responseSize, true, doSync, false);
+	return Send(reinterpret_cast<const uint8_t*>(pFrame), pFrame->length, reinterpret_cast<uint8_t*>(pResponse), responseSize, true, false, false);
 }
 
-size_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const
+size_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const throw(ConnectionTimeout, FatalError)
 {	
 	/* do baudrate synchronisation with bootloader if requested */
 	if(doSync)
