@@ -17,20 +17,8 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "error.h"
-#include "CommandIO.h"
 #include "RingBuf.h"
-#include "ScriptCtrl.h"
 #include "trace.h"
-#include "ledstrip.h"
-
-struct ErrorBits g_ErrorBits;
-
-ErrorCode Error_GetState()
-{
-	if(g_ErrorBits.EepromFailure) return SCRIPTBUFFER_FULL;
-	else if(g_ErrorBits.CrcFailure) return CRC_CHECK_FAILED;
-	else return OK;
-}
 
 void Error_Throw()
 {
@@ -42,61 +30,4 @@ void Error_Throw()
 		Trace_String("E:05; ERROR: Tracebuffer full");
 	}
 #endif
-	
-	if(g_ErrorBits.CmdBufOverflow)
-	{
-		Trace_String("E:04; ERROR: Commandbuffer full ");
-		Error_FatalError();
-	}
-	
-	if(RingBuf_HasError(&g_RingBuf)) 
-	{
-		Trace_String("E:03; ERROR: Receivebuffer full");
-		// *** Re-init the Ringbuffer to get a consistent commandstring and reset error
-		RingBuf_Init(&g_RingBuf);
-		// *** if a RingBufError occure, I have to throw away the current command,
-		// *** because the last byte was not saved. Commandstring is inconsistent
-		CommandIO_Init();
-	}
-	if(g_ErrorBits.CrcFailure)
-	{
-		Trace_String("E:02; ERROR: Crc-Check failed");
-		g_ErrorBits.CrcFailure = 0;
-	}
-	if(g_ErrorBits.EepromFailure)
-	{
-		Trace_String("E:01; ERROR: EEPROM is full");
-		g_ErrorBits.EepromFailure = 0;
-	}
-}
-
-void Error_FatalError()
-{
-	uns8 i = 0;
-	for(;i < NUM_OF_LED * 3; i++)
-	{
-		gLedBuf.led_array[i] = 0x00;
-		i++;
-		gLedBuf.led_array[i] = 0x00;
-		i++;
-		gLedBuf.led_array[i] = 0xff;
-	}
-	
-	Ledstrip_UpdateLed();
-	
-	RingBuf_Init(&g_TraceBuf);
-	for(i = 0; i < sizeof(g_CmdBuf.buffer); i++)
-	{
-		Trace_Hex(g_CmdBuf.buffer[i]);
-		Trace_Char(' ');
-	}
-	
-#ifdef __CC8E__
-	while(PORTB.5 != 0);
-	while(PORTB.5 == 0);
-#endif
-	Error_Init();
-	RingBuf_Init(&g_RingBuf);
-	CommandIO_Init();
-	ScriptCtrl_Init();
 }

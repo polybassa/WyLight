@@ -19,32 +19,17 @@
 #ifndef _ERROR_H_
 #define _ERROR_H_
 
-// *** ERRORBITS
-struct ErrorBits {
-		char CrcFailure:1;
-		char EepromFailure:1;
-		char CmdBufOverflow:1;
-};
-extern struct ErrorBits g_ErrorBits;
-
 #ifdef __CC8E__
 typedef enum {
 #else /* For GCC or CLANG on X86, ARM */
 typedef enum __attribute__ ((__packed__)) {
 #endif 
-	OK,
+	OK = 0x00,
 	SCRIPTBUFFER_FULL,
-	CRC_CHECK_FAILED
+	CRC_CHECK_FAILED,
+	BAD_PACKET,
+	BAD_COMMAND_CODE
 } ErrorCode;
 
-#define Error_Init(x) \
-	g_ErrorBits.CrcFailure = 0; \
-	g_ErrorBits.EepromFailure = 0; \
-	g_ErrorBits.CmdBufOverflow = 0;
-
 void Error_Throw();
-	
-void Error_FatalError();
-
-ErrorCode Error_GetState();
 #endif /* #ifndef _ERROR_H_ */
