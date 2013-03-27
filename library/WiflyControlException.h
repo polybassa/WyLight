@@ -63,6 +63,12 @@ protected:
 	uint16_t mPort;
 };
 
+class ConnectionTimeout : public FatalError
+{
+public:
+	ConnectionTimeout(const std::string& description) : FatalError(description) {};
+};
+
 class WiflyControlException : public std::exception
 {
 public:

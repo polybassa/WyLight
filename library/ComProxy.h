@@ -28,7 +28,11 @@ class ComProxy
 {
 	private:
 		const TcpSocket& mSock;
-		size_t Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout = NULL, bool checkCrc = true, bool crcInLittleEndian = true) const;
+
+		/*
+		 * @throw FatalError if responsed timed out
+		 */
+		size_t Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout = NULL, bool checkCrc = true, bool crcInLittleEndian = true) const throw(ConnectionTimeout);
 
 	public:
 		ComProxy(const TcpSocket& sock);

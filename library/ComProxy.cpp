@@ -104,7 +104,7 @@ size_t ComProxy::UnmaskControlCharacters(const uint8_t* pInput, size_t inputLeng
 	return bytesWritten - 2;
 }
 
-size_t ComProxy::Recv(uint8_t* pBuffer, const size_t length, timeval* pTimeout, bool checkCrc, bool crcInLittleEndian) const
+size_t ComProxy::Recv(uint8_t* pBuffer, const size_t length, timeval* pTimeout, bool checkCrc, bool crcInLittleEndian) const throw (ConnectionTimeout)
 {
 	timeval endTime, now;
 	gettimeofday(&endTime, NULL);
@@ -152,8 +152,7 @@ size_t ComProxy::Recv(uint8_t* pBuffer, const size_t length, timeval* pTimeout, 
 		}
 		gettimeofday(&now, NULL);
 	} while(timeval_sub(&endTime, &now, pTimeout));
-	Trace(ZONE_INFO, "Timout\n");
-	return 0;
+	throw ConnectionTimeout("Receive response timed out");
 }
 
 int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const

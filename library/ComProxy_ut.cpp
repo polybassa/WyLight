@@ -273,8 +273,12 @@ size_t ut_ComProxy_BlEepromReadRequestTimeout(void)
 
 	BlEepromReadRequest request;
 	request.SetAddressNumBytes(0xDA7A, sizeof(dummyBlFlashReadResponsePure));
-	size_t bytesReceived = testee.Send(request, response, sizeof(response));
-	CHECK(0 == bytesReceived);
+	try {
+		testee.Send(request, response, sizeof(response));
+		CHECK(false);
+	} catch (ConnectionTimeout& e) {
+		CHECK(true);
+	}
 	TestCaseEnd();
 }
 
