@@ -75,11 +75,6 @@ class MaskBuffer : public BaseBuffer
 			AddPure(BL_STX);
 		};
 
-		void CompleteWithETX(void)
-		{
-			AddPure(BL_ETX);
-		};
-
 		void Mask(const uint8_t* pInput, const uint8_t* const pInputEnd, const bool crcInLittleEndian = true)
 		{
 			while(pInput < pInputEnd)
@@ -88,6 +83,7 @@ class MaskBuffer : public BaseBuffer
 				pInput++;
 			}
 			AppendCrc(crcInLittleEndian);
+			AddPure(BL_ETX);
 		};
 
 	private:
@@ -126,6 +122,7 @@ class UnmaskBuffer : public BaseBuffer
 	public:
 		UnmaskBuffer(size_t capacity) : BaseBuffer(capacity)
 		{
+			Clear();
 		};
 
 		void Add(uint8_t newByte)
@@ -138,6 +135,7 @@ class UnmaskBuffer : public BaseBuffer
 		{
 			BaseBuffer::Clear();
 			mPrePreCrc = mPreCrc = 0;
+			mLastWasDLE = false;
 		};
 
 		void CheckAndRemoveCrc(bool crcInLittleEndian) throw (FatalError)
@@ -153,9 +151,50 @@ class UnmaskBuffer : public BaseBuffer
 			}
 		};
 
+		/*
+		 * @return true if end of response reached (marked by an ETX), else false
+		 */
+		bool Unmask(const uint8_t* pInput, size_t bytesMasked, bool checkCrc, bool crcInLittleEndian)
+		{
+			while(bytesMasked-- > 0)
+			{
+				if(mLastWasDLE)
+				{
+					mLastWasDLE = false;
+					Add(*pInput);
+				}
+				else
+				{
+					switch(*pInput)
+					{
+						case BL_ETX:
+							Trace(ZONE_INFO, "Detect ETX\n");
+							if(checkCrc)
+							{
+								CheckAndRemoveCrc(crcInLittleEndian);
+							}
+							return true;
+						case BL_DLE:
+							mLastWasDLE = true;
+							break;
+						case BL_STX:
+							Trace(ZONE_INFO, "Detect STX\n");
+							Clear();
+							break;
+						default:
+							Add(*pInput);
+							break;
+					}
+				}
+				pInput++;
+			}
+			return false;
+		};
+
 	private:
 		uint16_t mPrePreCrc;
 		uint16_t mPreCrc;
+		bool mLastWasDLE;
 
 		void AddToCrc(uint8_t newByte)
 		{

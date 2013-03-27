@@ -25,7 +25,7 @@
 
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-static const timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for framented responses from pic
+static const timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for fragmented responses from pic
 
 
 ComProxy::ComProxy(const TcpSocket& sock)
@@ -33,172 +33,47 @@ ComProxy::ComProxy(const TcpSocket& sock)
 {
 }
 
-size_t ComProxy::UnmaskControlCharacters(const uint8_t* pInput, size_t inputLength, uint8_t* pOutput, size_t outputLength, bool checkCrc, bool crcInLittleEndian) const
-{
-	if(outputLength < inputLength)
-	{
-		return 0;
-	}
-	const uint8_t* const pInputEnd = pInput + inputLength;
-	/* The bootloader sends the low byte of crc first, so we cannot just add
-	 * all bytes to the checksum and compare it to zero.
-	 * Now, our approach is to save the two latest crc's and parse the whole
-	 * input buffer. When everything was read prepreCrc contains the crc before
-	 * the first crc byte from data stream was added to crc.
-	 */
-	uint16_t crc = 0;
-	uint16_t preCrc = 0;
-	uint16_t prepreCrc = 0;
-	size_t bytesWritten = 0;
-
-	/* unmask input buffer and calculate crc */
-	while(pInput < pInputEnd)
-	{
-		if(*pInput == BL_DLE)
-		{
-			pInput++;
-		}
-		*pOutput = *pInput;
-		prepreCrc = preCrc;
-		preCrc = crc;
-		Crc_AddCrc16(*pInput, &crc);
-		pOutput++;
-		bytesWritten++;
-		pInput++;
-	}
-
-	/* for responses without crc we can finish here */
-	if(!checkCrc)
-	{
-		return bytesWritten;
-	}
-
-	/* we should have read at least two crc bytes! */
-	if(bytesWritten < 2)
-	{
-		return 0;
-	}
-
-	if(crcInLittleEndian)
-	{
-		/* know we have to take the last two bytes (which can be masked!) and compare
-		 * them to the calculated checksum, by adding them in reverse order and
-		 * comparing them with zero
-		 */
-		pInput--;
-		Crc_AddCrc16(*pInput, &prepreCrc);
-		pInput--;
-		if(BL_DLE == *pInput)
-		{
-			pInput--;
-		}
-		Crc_AddCrc16(*pInput, &prepreCrc);
-		crc = prepreCrc;
-	}
-
-	if(0 != crc)
-	{
-		Trace(ZONE_WARNING, "check crc: 0x%04x crc failed\n", prepreCrc);
-		return 0;
-	}
-	return bytesWritten - 2;
-}
-
-size_t ComProxy::Recv(uint8_t* pBuffer, const size_t length, timeval* pTimeout, bool checkCrc, bool crcInLittleEndian) const
+size_t ComProxy::Recv(uint8_t* pBuffer, const size_t length, timeval* pTimeout, bool checkCrc, bool crcInLittleEndian) const throw (ConnectionTimeout)
 {
 	timeval endTime, now;
 	gettimeofday(&endTime, NULL);
 	timeval_add(&endTime, pTimeout);
-	bool lastWasDLE = false;
 	UnmaskBuffer recvBuffer{length};
 
-	// TODO refactor this with code in commandstorage. It should be identical to the fw receive implementation
 	do {
-		size_t bytesMasked = mSock.Recv(pBuffer, length-recvBuffer.Size(), pTimeout);
-		Trace(ZONE_INFO, "Bytes masked: %zu\n", bytesMasked);
-		uint8_t* pInput = pBuffer;
-		while(bytesMasked-- > 0)
+		const size_t bytesMasked = mSock.Recv(pBuffer, length - recvBuffer.Size(), pTimeout);
+		if(recvBuffer.Unmask(pBuffer, bytesMasked, checkCrc, crcInLittleEndian))
 		{
-			if(lastWasDLE)
-			{
-				lastWasDLE = false;
-				recvBuffer.Add(*pInput);
-			}
-			else
-			{
-				switch(*pInput)
-				{
-					case BL_ETX:
-						Trace(ZONE_INFO, "Detect ETX\n");
-						if(checkCrc)
-						{
-							recvBuffer.CheckAndRemoveCrc(crcInLittleEndian);
-						}
-						memcpy(pBuffer, recvBuffer.Data(), recvBuffer.Size());
-						return recvBuffer.Size();
-					case BL_DLE:
-						lastWasDLE = true;
-						break;
-					case BL_STX:
-						Trace(ZONE_INFO, "Detect STX\n");
-						recvBuffer.Clear();
-						break;
-					default:
-						recvBuffer.Add(*pInput);
-						break;
-				}
-			}
-			pInput++;
+			memcpy(pBuffer, recvBuffer.Data(), recvBuffer.Size());
+			return recvBuffer.Size();
 		}
 		gettimeofday(&now, NULL);
 	} while(timeval_sub(&endTime, &now, pTimeout));
-	Trace(ZONE_INFO, "Timout\n");
-	return 0;
+	throw ConnectionTimeout("Receive response timed out");
 }
 
-int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const
+size_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const throw(ConnectionTimeout, FatalError)
 {
 	Trace(ZONE_INFO, "%zu pure bytes\n", req.GetSize());
 	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
 }
 
-int32_t ComProxy::Send(const struct cmd_frame* pFrame, response_frame* pResponse, size_t responseSize, bool doSync) const
+size_t ComProxy::Send(const struct cmd_frame* pFrame, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout)
 {
-	return Send(reinterpret_cast<const uint8_t*>(pFrame), pFrame->length, reinterpret_cast<uint8_t*>(pResponse), responseSize, true, doSync, false);
+	return Send(reinterpret_cast<const uint8_t*>(pFrame), pFrame->length, reinterpret_cast<uint8_t*>(pResponse), responseSize, true, false, false);
 }
 
-int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const
-{
-	MaskBuffer maskBuffer{BL_MAX_MESSAGE_LENGTH};
-	uint8_t recvBuffer[BL_MAX_MESSAGE_LENGTH];
-
-	/* mask control characters in request and add crc */
-	maskBuffer.Mask(pRequest, pRequest + requestSize, crcInLittleEndian);
-	maskBuffer.CompleteWithETX();
-
-
-	int numRetries = BL_MAX_RETRIES;
-
-	/* sync with bootloader */
+size_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const throw(ConnectionTimeout, FatalError)
+{	
+	/* do baudrate synchronisation with bootloader if requested */
 	if(doSync)
 	{
-		Trace(ZONE_VERBOSE, "sync with bootloader\n");
-		timeval timeout;
-		do
-		{
-			if(0 > --numRetries)
-			{
-				Trace(ZONE_WARNING, "Too many retries\n");
-				return -1;
-			}
-			Trace(ZONE_INFO, "SYNC...\n");
-			mSock.Send(BL_SYNC, sizeof(BL_SYNC));
-			timeout = RESPONSE_TIMEOUT;
-		} while(0 == mSock.Recv(recvBuffer, sizeof(recvBuffer), &timeout));
+		SyncWithBootloader();
 	}
-	
-	Trace(ZONE_VERBOSE, "synchronized\n");
-	/* synchronized -> send request */
+
+	/* mask control characters in request and add crc */
+	MaskBuffer maskBuffer{BL_MAX_MESSAGE_LENGTH};
+	maskBuffer.Mask(pRequest, pRequest + requestSize, crcInLittleEndian);
 	if(maskBuffer.Size() != mSock.Send(maskBuffer.Data(), maskBuffer.Size()))
 	{
 		Trace(ZONE_ERROR, "socket->Send() failed\n");
@@ -206,7 +81,7 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 	}
 
 	/* wait for a response? */
-	if((0 == pResponse) || (0 == responseSize))
+	if((NULL == pResponse) || (0 == responseSize))
 	{
 		Trace(ZONE_INFO, "waiting for no response-> exiting...\n");
 		return 0;
@@ -214,10 +89,22 @@ int32_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_
 
 	/* receive response */
 	timeval timeout = RESPONSE_TIMEOUT;
-	size_t bytesReceived = Recv(recvBuffer, sizeof(recvBuffer), &timeout, checkCrc, crcInLittleEndian);
-	const size_t bytesToCopy = std::min(bytesReceived, responseSize);
-	memcpy(pResponse, recvBuffer, bytesToCopy);
-	Trace(ZONE_VERBOSE, "%zu bytes received %zu bytes copied\n", bytesReceived, bytesToCopy);
-	return (int32_t)bytesReceived;
+	return Recv(pResponse, responseSize, &timeout, checkCrc, crcInLittleEndian);
+}
+
+void ComProxy::SyncWithBootloader(void) const throw (FatalError)
+{
+	uint8_t recvBuffer[BL_MAX_MESSAGE_LENGTH];
+	timeval timeout;
+	int numRetries = BL_MAX_RETRIES;
+	do
+	{
+		if(0 > --numRetries) {
+			throw FatalError("SyncWithBootloader failed, too many reties");
+		}
+		Trace(ZONE_INFO, "SYNC...\n");
+		mSock.Send(BL_SYNC, sizeof(BL_SYNC));
+		timeout = RESPONSE_TIMEOUT;
+	} while(0 == mSock.Recv(recvBuffer, sizeof(recvBuffer), &timeout));
 }
 

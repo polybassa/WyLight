@@ -69,7 +69,7 @@ class BroadcastReceiver
 		 * Listen for broadcasts until a new remote is discovered.
 		 * @param timeout to wait until give up, use NULL to wait forever
 		 * @return an empty Endpoint object in case of an error, if a new remote is discovered an Endpoint object with its address and port is returned.
-		 * @throws FatalError if something failed seriously in the underlying socket
+		 * @throw FatalError if something failed seriously in the underlying socket
 		 */
 		Endpoint GetNextRemote(timeval* timeout) throw (FatalError);
 
