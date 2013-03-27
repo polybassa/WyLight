@@ -604,10 +604,17 @@ WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, Wif
 		response.Init(&buffer, bytesRead);
 	
 		Trace(ZONE_INFO, "CRC-Check %s \n", (response.IsCrcCheckFailed() ? "failed" : "successful"));
-	}while (response.IsCrcCheckFailed() && (numCrcRetries <  maxCrcRetries));
+		Trace(ZONE_INFO, "BAD_PACKET-Check %s \n", (response.IsBadPacket() ? "failed" : "successful"));
+		Trace(ZONE_INFO, "BAD_Command-Check %s \n", (response.IsBadCommandCode() ? "failed" : "successful"));
+	}while ((response.IsCrcCheckFailed() || response.IsBadPacket())  && (numCrcRetries <  maxCrcRetries));
 	
-	if(!response.IsValid()) throw FwNoResponseException(pFrame);
-	if(response.IsScriptBufferFull()) throw ScriptBufferFullException(pFrame);
+	if(!response.IsValid())
+	{
+		if(response.IsScriptBufferFull()) throw ScriptBufferFullException(pFrame);
+		if(response.IsBadCommandCode()) throw WiflyControlException("FIRMWARE RECEIVED A BAD COMMAND CODE");
+		throw FwNoResponseException(pFrame);
+	}
+
 	
 	return response;
 }

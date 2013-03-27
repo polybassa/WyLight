@@ -31,12 +31,16 @@ public:
 	bool IsValid(void) const { return mIsValid; };
 	bool IsScriptBufferFull(void) const { return mIsScriptBufferFull; };
 	bool IsCrcCheckFailed(void) const { return mIsCrcCheckFailed; };
+	bool IsBadPacket(void) const { return mIsBadPacket; };
+	bool IsBadCommandCode(void) const { return mIsBadCommand; };
 	
 protected:
 	WiflyResponse(void) : mIsValid(false), mIsScriptBufferFull(true) {};
 	bool mIsValid;
 	bool mIsScriptBufferFull;
 	bool mIsCrcCheckFailed;
+	bool mIsBadPacket;
+	bool mIsBadCommand;
 };
 
 class SimpleResponse : public WiflyResponse
@@ -48,6 +52,8 @@ public:
 		mIsValid = (NULL != pData) && (4 <= dataLength) && (mCmd == pData->cmd) && (pData->state == OK);
 		mIsScriptBufferFull = pData->state == SCRIPTBUFFER_FULL;
 		mIsCrcCheckFailed = pData->state == CRC_CHECK_FAILED;
+		mIsBadPacket = pData->state == BAD_PACKET;
+		mIsBadCommand = pData->state == BAD_COMMAND_CODE;
 	};
 	
 private:
