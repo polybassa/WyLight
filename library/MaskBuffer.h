@@ -23,28 +23,61 @@
 #include "crc.h"
 #include "WiflyControlException.h"
 
-class MaskBuffer
+class BaseBuffer
 {
 	public:
-		MaskBuffer(size_t capacity) : mCapacity(capacity), mLength(0), mCrc(0)
+		BaseBuffer(size_t capacity) : mCapacity(capacity)
 		{
 			mData = new uint8_t[capacity];
-			AddPure(BL_STX);
+			Clear();
 		};
 
-		~MaskBuffer(void)
+		virtual ~BaseBuffer(void)
 		{
 			delete mData;
 		};
 
-		void CompleteWithETX(void)
+		virtual void Clear(void)
 		{
-			AddPure(BL_ETX);
+			mLength = 0;
+			mCrc = 0;
 		};
 
 		const uint8_t* Data(void) const
 		{
 			return mData;
+		};
+
+		size_t Size(void) const
+		{
+			return mLength;
+		};
+
+	protected:	
+		const size_t mCapacity;
+		uint8_t* mData;
+		size_t mLength;
+		uint16_t mCrc;
+
+		void AddPure(uint8_t newByte)
+		{
+			if(mLength >= mCapacity) throw FatalError("BaseBuffer overflow");
+			mData[mLength] = newByte;
+			mLength++;
+		};
+};
+
+class MaskBuffer : public BaseBuffer
+{
+	public:
+		MaskBuffer(size_t capacity) : BaseBuffer(capacity)
+		{
+			AddPure(BL_STX);
+		};
+
+		void CompleteWithETX(void)
+		{
+			AddPure(BL_ETX);
 		};
 
 		void Mask(const uint8_t* pInput, const uint8_t* const pInputEnd, const bool crcInLittleEndian = true)
@@ -57,17 +90,7 @@ class MaskBuffer
 			AppendCrc(crcInLittleEndian);
 		};
 
-		size_t Size(void) const
-		{
-			return mLength;
-		};
-
 	private:
-		const size_t mCapacity;
-		uint8_t* mData;
-		size_t mLength;
-		uint16_t mCrc;
-
 		void Add(uint8_t newByte)
 		{
 			if(IsCtrlChar(newByte))
@@ -75,15 +98,6 @@ class MaskBuffer
 				AddPure(BL_DLE);
 			}
 			AddPure(newByte);
-		};
-
-		void AddPure(uint8_t newByte)
-		{
-			if(mLength >= mCapacity) {
-				throw FatalError("MaskBuffer overflow");
-			}
-			mData[mLength] = newByte;
-			mLength++;
 		};
 
 		void AddWithCrc(uint8_t newByte)
@@ -104,6 +118,62 @@ class MaskBuffer
 				Add((uint8_t)(mCrc >> 8));
 				Add((uint8_t)(mCrc & 0xff));
 			}
+		};
+};
+
+class UnmaskBuffer : public BaseBuffer
+{
+	public:
+		UnmaskBuffer(size_t capacity) : BaseBuffer(capacity)
+		{
+		};
+
+		void Add(uint8_t newByte)
+		{
+				AddPure(newByte);
+				AddToCrc(newByte);
+		};
+
+		void Clear(void)
+		{
+			BaseBuffer::Clear();
+			mPrePreCrc = mPreCrc = 0;
+		};
+
+		void CheckAndRemoveCrc(bool crcInLittleEndian) throw (FatalError)
+		{
+			if(0x0000 == GetCrc16(crcInLittleEndian))
+			{
+				if(2 > mLength) throw FatalError("Buffer underrun in UnmaskBuffer");
+				mLength -= 2;
+			}
+			else
+			{
+				Clear();				
+			}
+		};
+
+	private:
+		uint16_t mPrePreCrc;
+		uint16_t mPreCrc;
+
+		void AddToCrc(uint8_t newByte)
+		{
+			mPrePreCrc = mPreCrc;
+			mPreCrc = mCrc;
+			Crc_AddCrc16(newByte, &mCrc);
+		};
+
+		uint16_t GetCrc16(bool crcInLittleEndian) const
+		{
+			if(crcInLittleEndian)
+			{
+				uint16_t crc = mPrePreCrc;
+				Crc_AddCrc16(mData[mLength-1], &crc);
+				Crc_AddCrc16(mData[mLength-2], &crc);
+				return crc;
+			}
+			return mCrc;
 		};
 };
 #endif /* #ifndef _MASK_BUFFER_H_ */
