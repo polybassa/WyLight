@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['basebuffer',['BaseBuffer',['../class_base_buffer.html',1,'']]],
   ['bladdressrequest',['BlAddressRequest',['../struct_bl_address_request.html',1,'']]],
   ['bleepromreadrequest',['BlEepromReadRequest',['../struct_bl_eeprom_read_request.html',1,'']]],
   ['bleepromwriterequest',['BlEepromWriteRequest',['../struct_bl_eeprom_write_request.html',1,'']]],

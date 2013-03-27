@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.3"/>
-<title>Wifly_Light: ComProxy Class Reference</title>
+<title>Wifly_Light: BaseBuffer Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -83,31 +83,61 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="class_com_proxy-members.html">List of all members</a>  </div>
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="class_base_buffer-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">ComProxy Class Reference</div>  </div>
+<div class="title">BaseBuffer Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="_com_proxy_8h_source.html">ComProxy.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_mask_buffer_8h_source.html">MaskBuffer.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for BaseBuffer:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_base_buffer.png" usemap="#BaseBuffer_map" alt=""/>
+  <map id="BaseBuffer_map" name="BaseBuffer_map">
+<area href="class_mask_buffer.html" alt="MaskBuffer" shape="rect" coords="0,56,90,80"/>
+<area href="class_unmask_buffer.html" alt="UnmaskBuffer" shape="rect" coords="100,56,190,80"/>
+</map>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a71069fbcb6901649f75f7b816559e061"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a71069fbcb6901649f75f7b816559e061"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ComProxy</b> (const <a class="el" href="class_tcp_socket.html">TcpSocket</a> &amp;sock)</td></tr>
-<tr class="separator:a71069fbcb6901649f75f7b816559e061"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58c03dfa5d87cbad6ce77257c5195eb4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a58c03dfa5d87cbad6ce77257c5195eb4"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>Send</b> (<a class="el" href="struct_bl_request.html">BlRequest</a> &amp;req, uint8_t *pResponse, size_t responseSize, bool doSync=true) const </td></tr>
-<tr class="separator:a58c03dfa5d87cbad6ce77257c5195eb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6205e7b4fbfcce8066e3019f5b52fb0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab6205e7b4fbfcce8066e3019f5b52fb0"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>Send</b> (struct cmd_frame const *pFrame, response_frame *pResponse, size_t responseSize, bool doSync) const </td></tr>
-<tr class="separator:ab6205e7b4fbfcce8066e3019f5b52fb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d07c1c822e4ce825236900a6b15e020"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5d07c1c822e4ce825236900a6b15e020"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>Send</b> (uint8_t const *pRequest, const size_t requestSize, uint8_t *pResponse, size_t responseSize, bool checkCrc, bool sync, bool crcInLittleEndian=true) const </td></tr>
-<tr class="separator:a5d07c1c822e4ce825236900a6b15e020"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a533dbda1e24b846609c153c7545baba0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a533dbda1e24b846609c153c7545baba0"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>UnmaskControlCharacters</b> (const uint8_t *pInput, size_t inputLength, uint8_t *pOutput, size_t outputLength, bool checkCrc, bool crcInLittleEndian=true) const </td></tr>
-<tr class="separator:a533dbda1e24b846609c153c7545baba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9a224d3a675ca598954a1260625a47f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9a224d3a675ca598954a1260625a47f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BaseBuffer</b> (size_t capacity)</td></tr>
+<tr class="separator:ad9a224d3a675ca598954a1260625a47f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a783a711936fb71f4e762d20945a5a39a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a783a711936fb71f4e762d20945a5a39a"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Clear</b> (void)</td></tr>
+<tr class="separator:a783a711936fb71f4e762d20945a5a39a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a203c147ef5f319ab88f1408a65e4e21f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a203c147ef5f319ab88f1408a65e4e21f"></a>
+const uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><b>Data</b> (void) const </td></tr>
+<tr class="separator:a203c147ef5f319ab88f1408a65e4e21f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1a14b6abab04b72a87ac7da40c6273d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac1a14b6abab04b72a87ac7da40c6273d"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>Size</b> (void) const </td></tr>
+<tr class="separator:ac1a14b6abab04b72a87ac7da40c6273d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a2d95a62e0b6ac0ab1af89cb7471d20d4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2d95a62e0b6ac0ab1af89cb7471d20d4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AddPure</b> (uint8_t newByte)</td></tr>
+<tr class="separator:a2d95a62e0b6ac0ab1af89cb7471d20d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a667e748b2f88e0c3ac43730f1ced3616"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a667e748b2f88e0c3ac43730f1ced3616"></a>
+const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>mCapacity</b></td></tr>
+<tr class="separator:a667e748b2f88e0c3ac43730f1ced3616"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dad25def957cb8c95ce874e4e6531c9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1dad25def957cb8c95ce874e4e6531c9"></a>
+uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><b>mData</b></td></tr>
+<tr class="separator:a1dad25def957cb8c95ce874e4e6531c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18cc80c360b914585278da7233af540c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a18cc80c360b914585278da7233af540c"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>mLength</b></td></tr>
+<tr class="separator:a18cc80c360b914585278da7233af540c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaae3bf69d9096078814b3fd769803914"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaae3bf69d9096078814b3fd769803914"></a>
+uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>mCrc</b></td></tr>
+<tr class="separator:aaae3bf69d9096078814b3fd769803914"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.</p>
@@ -116,12 +146,12 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>UnmaskControlCharac
 <p>Wifly_Light is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
 <p>You should have received a copy of the GNU General Public License along with Wifly_Light. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
-<li>library/<a class="el" href="_com_proxy_8h_source.html">ComProxy.h</a></li>
+<li>library/<a class="el" href="_mask_buffer_8h_source.html">MaskBuffer.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 27 2013 21:08:05 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 27 2013 21:08:00 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['basebuffer',['BaseBuffer',['../class_base_buffer.html',1,'']]],
   ['begin',['begin',['../classintelhex.html#ab2b1119e14a960ea2b356967244aafb3',1,'intelhex']]],
   ['bladdressrequest',['BlAddressRequest',['../struct_bl_address_request.html',1,'']]],
   ['bleepromerase',['BlEepromErase',['../class_wifly_control.html#a96bd445dcfcb45252530315b8919fd80',1,'WiflyControl']]],

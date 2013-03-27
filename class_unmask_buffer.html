@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.3"/>
-<title>Wifly_Light: MaskBuffer Class Reference</title>
+<title>Wifly_Light: UnmaskBuffer Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -83,39 +83,39 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="class_mask_buffer-members.html">List of all members</a>  </div>
+<a href="class_unmask_buffer-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">MaskBuffer Class Reference</div>  </div>
+<div class="title">UnmaskBuffer Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="dynheader">
-Inheritance diagram for MaskBuffer:</div>
+Inheritance diagram for UnmaskBuffer:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="class_mask_buffer.png" usemap="#MaskBuffer_map" alt=""/>
-  <map id="MaskBuffer_map" name="MaskBuffer_map">
-<area href="class_base_buffer.html" alt="BaseBuffer" shape="rect" coords="0,0,77,24"/>
+  <img src="class_unmask_buffer.png" usemap="#UnmaskBuffer_map" alt=""/>
+  <map id="UnmaskBuffer_map" name="UnmaskBuffer_map">
+<area href="class_base_buffer.html" alt="BaseBuffer" shape="rect" coords="0,0,90,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa05e87d473f76408d932241237237fa3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa05e87d473f76408d932241237237fa3"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>MaskBuffer</b> (size_t capacity)</td></tr>
-<tr class="separator:aa05e87d473f76408d932241237237fa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6455133c249b983c5f9a88ed236a0b6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab6455133c249b983c5f9a88ed236a0b6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>CompleteWithETX</b> (void)</td></tr>
-<tr class="separator:ab6455133c249b983c5f9a88ed236a0b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf795c9fde275a75264c66bc1488201c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abf795c9fde275a75264c66bc1488201c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Mask</b> (const uint8_t *pInput, const uint8_t *const pInputEnd, const bool crcInLittleEndian=true)</td></tr>
-<tr class="separator:abf795c9fde275a75264c66bc1488201c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a573a994de533d402b288faf82a3a18aa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a573a994de533d402b288faf82a3a18aa"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>UnmaskBuffer</b> (size_t capacity)</td></tr>
+<tr class="separator:a573a994de533d402b288faf82a3a18aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43e81eeeb02f1669a34e059a4ea9360d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a43e81eeeb02f1669a34e059a4ea9360d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Add</b> (uint8_t newByte)</td></tr>
+<tr class="separator:a43e81eeeb02f1669a34e059a4ea9360d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fbf77d6da309067cd3915cbf98eb65c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1fbf77d6da309067cd3915cbf98eb65c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Clear</b> (void)</td></tr>
+<tr class="separator:a1fbf77d6da309067cd3915cbf98eb65c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e3485aea701f3d543989a9a781dbe0a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4e3485aea701f3d543989a9a781dbe0a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckAndRemoveCrc</b> (bool crcInLittleEndian)  throw (FatalError)</td></tr>
+<tr class="separator:a4e3485aea701f3d543989a9a781dbe0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_base_buffer"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_base_buffer')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_base_buffer.html">BaseBuffer</a></td></tr>
 <tr class="memitem:ad9a224d3a675ca598954a1260625a47f inherit pub_methods_class_base_buffer"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9a224d3a675ca598954a1260625a47f"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>BaseBuffer</b> (size_t capacity)</td></tr>
 <tr class="separator:ad9a224d3a675ca598954a1260625a47f inherit pub_methods_class_base_buffer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a783a711936fb71f4e762d20945a5a39a inherit pub_methods_class_base_buffer"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a783a711936fb71f4e762d20945a5a39a"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Clear</b> (void)</td></tr>
-<tr class="separator:a783a711936fb71f4e762d20945a5a39a inherit pub_methods_class_base_buffer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a203c147ef5f319ab88f1408a65e4e21f inherit pub_methods_class_base_buffer"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a203c147ef5f319ab88f1408a65e4e21f"></a>
 const uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><b>Data</b> (void) const </td></tr>
 <tr class="separator:a203c147ef5f319ab88f1408a65e4e21f inherit pub_methods_class_base_buffer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -149,7 +149,7 @@ uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>mCrc</b></td></tr
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 27 2013 21:08:10 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 27 2013 21:08:12 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
