@@ -45,7 +45,7 @@ void Error_Throw()
 	
 	if(g_ErrorBits.CmdBufOverflow)
 	{
-		Trace_String("E:04; ERROR: Commandbuffer full");
+		Trace_String("E:04; ERROR: Commandbuffer full ");
 		Error_FatalError();
 	}
 	
@@ -83,6 +83,14 @@ void Error_FatalError()
 	}
 	
 	Ledstrip_UpdateLed();
+	
+	RingBuf_Init(&g_TraceBuf);
+	for(i = 0; i < sizeof(g_CmdBuf.buffer); i++)
+	{
+		Trace_Hex(g_CmdBuf.buffer[i]);
+		Trace_Char(' ');
+	}
+	
 #ifdef __CC8E__
 	while(PORTB.5 != 0);
 	while(PORTB.5 == 0);
