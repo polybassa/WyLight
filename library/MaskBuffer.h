@@ -75,11 +75,6 @@ class MaskBuffer : public BaseBuffer
 			AddPure(BL_STX);
 		};
 
-		void CompleteWithETX(void)
-		{
-			AddPure(BL_ETX);
-		};
-
 		void Mask(const uint8_t* pInput, const uint8_t* const pInputEnd, const bool crcInLittleEndian = true)
 		{
 			while(pInput < pInputEnd)
@@ -88,6 +83,7 @@ class MaskBuffer : public BaseBuffer
 				pInput++;
 			}
 			AppendCrc(crcInLittleEndian);
+			AddPure(BL_ETX);
 		};
 
 	private:

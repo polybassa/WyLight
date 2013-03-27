@@ -33,12 +33,14 @@ class ComProxy
 		 * @throw FatalError if responsed timed out
 		 */
 		size_t Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout = NULL, bool checkCrc = true, bool crcInLittleEndian = true) const throw(ConnectionTimeout);
+		
+		void SyncWithBootloader(void) const throw (FatalError);
 
 	public:
 		ComProxy(const TcpSocket& sock);
-		int32_t Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync = true) const;
-		int32_t Send(struct cmd_frame const* pFrame, response_frame* pResponse, size_t responseSize, bool doSync) const;
-		int32_t Send(uint8_t const* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool sync, bool crcInLittleEndian = true) const;
+		size_t Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync = true) const;
+		size_t Send(struct cmd_frame const* pFrame, response_frame* pResponse, size_t responseSize, bool doSync) const;
+		size_t Send(uint8_t const* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool sync, bool crcInLittleEndian = true) const;
 };
 
 #endif /* #ifndef _COM_PROXY_H_ */

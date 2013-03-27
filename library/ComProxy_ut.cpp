@@ -204,7 +204,6 @@ size_t ut_ComProxy_MaskControlCharacters(void)
 	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= littleEndian.Size() - 1);
 
 	/* and unmask everything again */
-	littleEndian.CompleteWithETX();
 	UnmaskBuffer response{sizeof(recvBuffer)};
 	CHECK(response.Unmask(littleEndian.Data() + 1, littleEndian.Size() - 1, true, true));
 	CHECK(response.Size() == sizeof(sendBuffer));
@@ -217,7 +216,6 @@ size_t ut_ComProxy_MaskControlCharacters(void)
 	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= bigEndian.Size() - 1);
 
 	/* and unmask everything again */
-	bigEndian.CompleteWithETX();
 	response.Clear();
 	CHECK(0 == response.Size());
 	CHECK(response.Unmask(bigEndian.Data() + 1, bigEndian.Size() - 1, true, false));
@@ -231,7 +229,6 @@ size_t ut_ComProxy_MaskControlCharacters(void)
 	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= wrongOrder.Size() - 1);
 
 	/* and unmask everything again in wrong byte order */
-	wrongOrder.CompleteWithETX();
 	response.Clear();
 	CHECK(response.Unmask(wrongOrder.Data() + 1, wrongOrder.Size() - 1, true, true));
 	CHECK(response.Size() == 0);
@@ -243,7 +240,6 @@ size_t ut_ComProxy_MaskControlCharacters(void)
 	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= noCrc.Size() - 1);
 
 	/* and unmask everything again */
-	noCrc.CompleteWithETX();
 	response.Clear();
 	CHECK(response.Unmask(noCrc.Data() + 1, noCrc.Size() - 1, false, false));
 	CHECK(response.Size() == sizeof(sendBuffer) + 2);

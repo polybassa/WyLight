@@ -130,6 +130,7 @@ class UdpSocket : public ClientSocket
 		 * @throw FatalError if something very unexpected happens
 		 */
 		size_t RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout = NULL, struct sockaddr* remoteAddr = NULL, socklen_t* remoteAddrLength = NULL) const throw (FatalError);
+
 		virtual size_t Send(const uint8_t* frame, size_t length) const;
 };
 #endif /* #ifndef _CLIENTSOCKET_H_ */

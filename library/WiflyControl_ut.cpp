@@ -44,7 +44,7 @@ ComProxy::ComProxy(const TcpSocket& sock) : mSock (sock) {}
 	return sizeof(resp);}
 
 
-int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const
+size_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const
 {
 	if(typeid(req) == typeid(BlInfoRequest))
 	{
@@ -143,11 +143,11 @@ int32_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, 
 		return_resp;
 		
 	}
-	return -1;
+	throw FatalError("Unknown request");
 }
 
 cmd_frame g_SendFrame;
-int32_t ComProxy::Send(const cmd_frame* pFrame, response_frame* pResponse, size_t responseSize, bool doSync) const
+size_t ComProxy::Send(const cmd_frame* pFrame, response_frame* pResponse, size_t responseSize, bool doSync) const
 {
 	memcpy(&g_SendFrame, pFrame, sizeof(g_SendFrame));
 	pResponse->length = sizeof(uns8) + sizeof(uns16) + sizeof(ErrorCode);
