@@ -96,18 +96,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a71069fbcb6901649f75f7b816559e061"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a71069fbcb6901649f75f7b816559e061"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ComProxy</b> (const <a class="el" href="class_tcp_socket.html">TcpSocket</a> &amp;sock)</td></tr>
 <tr class="separator:a71069fbcb6901649f75f7b816559e061"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58c03dfa5d87cbad6ce77257c5195eb4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a58c03dfa5d87cbad6ce77257c5195eb4"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>Send</b> (<a class="el" href="struct_bl_request.html">BlRequest</a> &amp;req, uint8_t *pResponse, size_t responseSize, bool doSync=true) const </td></tr>
-<tr class="separator:a58c03dfa5d87cbad6ce77257c5195eb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6205e7b4fbfcce8066e3019f5b52fb0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab6205e7b4fbfcce8066e3019f5b52fb0"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>Send</b> (struct cmd_frame const *pFrame, response_frame *pResponse, size_t responseSize, bool doSync) const </td></tr>
-<tr class="separator:ab6205e7b4fbfcce8066e3019f5b52fb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d07c1c822e4ce825236900a6b15e020"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5d07c1c822e4ce825236900a6b15e020"></a>
-int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>Send</b> (uint8_t const *pRequest, const size_t requestSize, uint8_t *pResponse, size_t responseSize, bool checkCrc, bool sync, bool crcInLittleEndian=true) const </td></tr>
-<tr class="separator:a5d07c1c822e4ce825236900a6b15e020"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a533dbda1e24b846609c153c7545baba0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a533dbda1e24b846609c153c7545baba0"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>UnmaskControlCharacters</b> (const uint8_t *pInput, size_t inputLength, uint8_t *pOutput, size_t outputLength, bool checkCrc, bool crcInLittleEndian=true) const </td></tr>
-<tr class="separator:a533dbda1e24b846609c153c7545baba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c665ae8f978d295196dbb9d0f609494"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c665ae8f978d295196dbb9d0f609494"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>Send</b> (<a class="el" href="struct_bl_request.html">BlRequest</a> &amp;req, uint8_t *pResponse, size_t responseSize, bool doSync=true) const   throw (ConnectionTimeout, FatalError)</td></tr>
+<tr class="separator:a8c665ae8f978d295196dbb9d0f609494"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a356ff2e48f92c1b80d2aab7e9f32bbe9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a356ff2e48f92c1b80d2aab7e9f32bbe9"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>Send</b> (struct cmd_frame const *pFrame, response_frame *pResponse, size_t responseSize) const   throw (ConnectionTimeout)</td></tr>
+<tr class="separator:a356ff2e48f92c1b80d2aab7e9f32bbe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.</p>
@@ -121,7 +115,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>UnmaskControlCharac
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 27 2013 21:19:07 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Mar 28 2013 15:43:56 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
