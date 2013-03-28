@@ -19,7 +19,7 @@
 #include "timer.h"
 #include "trace.h"
 
-bank3 struct CycleTimeBuffer g_CycleTimeBuffer;
+struct CycleTimeBuffer g_CycleTimeBuffer;
 enum CYCLETIME_METHODE enumMethode;
 
 void Timer_Init()
@@ -32,18 +32,18 @@ void Timer_Init()
 	 * T1 Interrupt occures with a frequency of 30 Hz.
 	 * This is used to update the ledstrip with the current colorvalue
 	 */
-	T1CON = 0b00100111;
+	T1CON = 0b00110111;
 	TMR1IE = TRUE;
 	
 	/*
 	 * T5 Interrupt every 5 Millisecounds if clock is 64MHz
 	 * Calculation
-	 * 64000000 Hz / 8 / 40000
+	 * 64000000 Hz / 4 / 8 / 5000
 	 */
-	T5CON = 0b01110111;
+	T5CON = 0b00110111;
 	TMR5IE = TRUE;
-	TMR5H = 0x63;
-	TMR5L = 0xC0;
+	TMR5H = 0xEC;
+	TMR5L = 0x78;
 	/* 
 	** T4 Interrupt every 4 Millisecound if clock is 64MHz
 	** Calculation

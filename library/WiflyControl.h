@@ -234,7 +234,7 @@ class WiflyControl
 		 * @param addr bitmask of leds which should be effected by this command, set bit to 1 to affect the led, default 0xffffffff
 		 * @param parallelFade if true other fades are allowed in parallel with this fade
 		 */
-		void FwSetFade(WiflyResponse& response, uint32_t argb, uint32_t fadeTmms = 0, uint32_t addr = 0xffffffff, bool parallelFade = false);
+		void FwSetFade(WiflyResponse& response, uint32_t argb, uint16_t fadeTmms = 0, uint32_t addr = 0xffffffff, bool parallelFade = false);
 
 		/**
 		 * Injects a fade command into the wifly script controller
@@ -250,7 +250,7 @@ class WiflyControl
 		 *        only the last led "80000000"
 		 * @param parallelFade if true other fades are allowed in parallel with this fade
 		 */
-		void FwSetFade(WiflyResponse& response, const std::string& rgb, uint32_t fadeTmms = 0, const std::string& addr = LEDS_ALL, bool parallelFade = false);
+		void FwSetFade(WiflyResponse& response, const std::string& rgb, uint16_t fadeTmms = 0, const std::string& addr = LEDS_ALL, bool parallelFade = false);
 
 		/**
 		 * Sets the rtc clock of the wifly device to the specified time.
@@ -266,7 +266,7 @@ class WiflyControl
 		 * @param response will be modified according to the success of this operation
 		 * @param waitTmms timme in milliseconds to wait until execution of the next command
 		 */
-		void FwSetWait(WiflyResponse& response, uint32_t waitTmms);
+		void FwSetWait(WiflyResponse& response, uint16_t waitTmms);
 
 		/**
 		 * Stops firmware and script controller execution and start the bootloader of the wifly device
@@ -289,11 +289,6 @@ class WiflyControl
 
 /* ------------------------- PRIVATE DECLARATIONS ------------------------- */
 	private:
-		/**
-		 * Internal calculation value to convert a given timevalue to the right value for the Wifly_Light. This value is used in every functions with expectes a Tmms value as parameter.
-		 */
-		static const double CALIBRATION_VALUE;
-
 		/**
 		 * Socket used for communication with wifly device.
 		 * A reference to this socket is provided to the aggregated subobjects.

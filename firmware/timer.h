@@ -43,7 +43,7 @@ struct CycleTimeBuffer{
 	uns16 tempCycleTime[CYCLETIME_METHODE_ENUM_SIZE];
 };
 
-extern bank3 struct CycleTimeBuffer g_CycleTimeBuffer;
+extern struct CycleTimeBuffer g_CycleTimeBuffer;
 
 void Timer_Init();
 
@@ -65,7 +65,7 @@ uns8 Timer_PrintCycletime(uns16 *pArray, const uns16 arraySize);
 #define Timer2Interrupt(x) TMR2IF = 0;
 #define Timer3Interrupt(x) TMR3IF = 0;
 #define Timer4Interrupt(x) TMR4IF = 0;
-#define Timer5Interrupt(x) TMR5IF = 0; TMR5H = 0x63; TMR5L = 0xC0;
+#define Timer5Interrupt(x) TMR5IF = 0; TMR5H = 0xEC; TMR5L = 0x78;
 
 #define Timer1Enable(x) TMR1ON = 1;
 #define Timer1Disable(x) TMR1ON = 0;
