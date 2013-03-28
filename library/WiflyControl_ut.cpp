@@ -147,7 +147,7 @@ size_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, b
 }
 
 cmd_frame g_SendFrame;
-size_t ComProxy::Send(const cmd_frame* pFrame, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout)
+size_t ComProxy::Send(const cmd_frame* pFrame, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout, FatalError)
 {
 	memcpy(&g_SendFrame, pFrame, sizeof(g_SendFrame));
 	pResponse->length = sizeof(uns8) + sizeof(uns16) + sizeof(ErrorCode);

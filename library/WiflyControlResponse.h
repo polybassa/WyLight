@@ -22,38 +22,52 @@
 #include <cstdlib>
 #include <iostream>
 #include <iomanip>
+#include <string>
 #include "wifly_cmd.h"
+#include "WiflyControlException.h"
 
 class WiflyResponse
 {
 public:
-	virtual void Init(response_frame* pData, size_t dataLength) = 0;
+	virtual void Init(response_frame& frame, size_t dataLength) = 0;
 	bool IsValid(void) const { return mIsValid; };
-	bool IsScriptBufferFull(void) const { return mIsScriptBufferFull; };
-	bool IsCrcCheckFailed(void) const { return mIsCrcCheckFailed; };
-	bool IsBadPacket(void) const { return mIsBadPacket; };
-	bool IsBadCommandCode(void) const { return mIsBadCommand; };
 	
 protected:
-	WiflyResponse(void) : mIsValid(false), mIsScriptBufferFull(true) {};
+	WiflyResponse(void) : mIsValid(false) {};
 	bool mIsValid;
-	bool mIsScriptBufferFull;
-	bool mIsCrcCheckFailed;
-	bool mIsBadPacket;
-	bool mIsBadCommand;
 };
 
 class SimpleResponse : public WiflyResponse
 {
 public:
 	SimpleResponse(uint8_t cmd) : mCmd(cmd) {};
-	void Init(response_frame* pData, size_t dataLength)
+	void Init(response_frame& pData, const size_t dataLength)
 	{
-		mIsValid = (NULL != pData) && (4 <= dataLength) && (mCmd == pData->cmd) && (pData->state == OK);
-		mIsScriptBufferFull = pData->state == SCRIPTBUFFER_FULL;
-		mIsCrcCheckFailed = pData->state == CRC_CHECK_FAILED;
-		mIsBadPacket = pData->state == BAD_PACKET;
-		mIsBadCommand = pData->state == BAD_COMMAND_CODE;
+		if(dataLength < 4) {
+			// response to short -> seems corrupted, allow retry
+			return;
+		}
+
+		if(mCmd != pData.cmd) {
+			// response doesn't match to request, allow retry
+			return;
+		}
+
+		switch(pData.state)
+		{
+			case OK:
+				mIsValid = true;
+				return;
+			case SCRIPTBUFFER_FULL:
+				throw ScriptBufferFullException{};
+			case CRC_CHECK_FAILED:
+			case BAD_PACKET:
+				return;
+			case BAD_COMMAND_CODE:
+				throw FatalError("FIRMWARE RECEIVED A BAD COMMAND CODE" +pData.cmd);
+			default:
+				throw FatalError("Unexpected response state: " + pData.state);
+		};
 	};
 	
 private:
@@ -64,18 +78,18 @@ class RtcResponse : public SimpleResponse
 {
 public:
 	RtcResponse(void) : SimpleResponse(GET_RTC) {};
-	void Init(response_frame* pData, size_t dataLength)
+	void Init(response_frame& pData, size_t dataLength)
 	{
 		SimpleResponse::Init(pData, dataLength);
 		if(mIsValid && (dataLength >= 4 + sizeof(struct rtc_time)))
 		{
-			mTimeValue.tm_sec = pData->data.get_rtc.tm_sec;
-			mTimeValue.tm_min = pData->data.get_rtc.tm_min;
-			mTimeValue.tm_hour = pData->data.get_rtc.tm_hour;
-			mTimeValue.tm_mday = pData->data.get_rtc.tm_mday;
-			mTimeValue.tm_year = pData->data.get_rtc.tm_year;
-			mTimeValue.tm_wday = pData->data.get_rtc.tm_wday;
-			mTimeValue.tm_mon = pData->data.get_rtc.tm_mon;
+			mTimeValue.tm_sec = pData.data.get_rtc.tm_sec;
+			mTimeValue.tm_min = pData.data.get_rtc.tm_min;
+			mTimeValue.tm_hour = pData.data.get_rtc.tm_hour;
+			mTimeValue.tm_mday = pData.data.get_rtc.tm_mday;
+			mTimeValue.tm_year = pData.data.get_rtc.tm_year;
+			mTimeValue.tm_wday = pData.data.get_rtc.tm_wday;
+			mTimeValue.tm_mon = pData.data.get_rtc.tm_mon;
 		}
 	};
 	struct tm GetRealTime(void) const {return mTimeValue; };
@@ -88,14 +102,14 @@ class CycletimeResponse : public SimpleResponse
 {
 public:
 	CycletimeResponse(void) : SimpleResponse(GET_CYCLETIME) {};
-	void Init(response_frame* pData, size_t dataLength)
+	void Init(response_frame& pData, size_t dataLength)
 	{
 		SimpleResponse::Init(pData, dataLength);
 		if(mIsValid && (dataLength >= 4 + sizeof(uns16) * CYCLETIME_METHODE_ENUM_SIZE))
 		{
 			for (unsigned int i = 0; i < CYCLETIME_METHODE_ENUM_SIZE && i < dataLength / sizeof(uns16); i++)
 			{
-				mCycletimes[i] = ntohs(pData->data.get_max_cycle_times[i]);
+				mCycletimes[i] = ntohs(pData.data.get_max_cycle_times[i]);
 			}
 		}
 	};
@@ -122,13 +136,13 @@ class TracebufferResponse : public SimpleResponse
 {
 public:
 	TracebufferResponse(void) : SimpleResponse(GET_TRACE), mMessageLength(0) {};
-	void Init(response_frame* pData, size_t dataLength)
+	void Init(response_frame& pData, size_t dataLength)
 	{
 		SimpleResponse::Init(pData, dataLength);
 		if(mIsValid)
 		{
 			mMessageLength = (unsigned int)dataLength - 4;
-			memcpy(mTracebuffer, pData->data.get_trace_string, dataLength);
+			memcpy(mTracebuffer, pData.data.get_trace_string, dataLength);
 		}
 	};
 
@@ -151,12 +165,12 @@ class FirmwareVersionResponse : public SimpleResponse
 {
 public:
 	FirmwareVersionResponse(void) : SimpleResponse(GET_FW_VERSION) {};
-	void Init(response_frame* pData, size_t dataLength)
+	void Init(response_frame& pData, size_t dataLength)
 	{
 		SimpleResponse::Init(pData, dataLength);
 		if(mIsValid && (dataLength >= 4 + sizeof(struct cmd_get_fw_version)))
 		{
-			mFwVersion = pData->data.version;
+			mFwVersion = pData.data.version;
 		}
 	};
 

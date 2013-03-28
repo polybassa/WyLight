@@ -27,7 +27,7 @@
 #include <typeinfo>
 #include "wifly_cmd.h"
 #include "BlRequest.h"
-#include "WiflyControlResponse.h"
+//#include "WiflyControlResponse.h"
 
 class FatalError : public std::exception
 {
@@ -67,6 +67,12 @@ class ConnectionTimeout : public FatalError
 {
 public:
 	ConnectionTimeout(const std::string& description) : FatalError(description) {};
+};
+
+class ScriptBufferFullException : public FatalError
+{
+public:
+	ScriptBufferFullException(void) : FatalError("ScriptBuffer in PIC is full, clear it or wait") {};
 };
 
 class WiflyControlException : public std::exception
@@ -109,13 +115,6 @@ public:
 	
 private:
 	struct cmd_frame m_FailedFrame;
-};
-
-class ScriptBufferFullException : public FwException
-{
-public:
-	ScriptBufferFullException(const struct cmd_frame* const failedCommand, const std::string errorString = "Buffer for commands in light is full!")
-	: FwException(failedCommand, errorString) {};
 };
 
 class FwNoResponseException : public FwException

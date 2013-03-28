@@ -593,25 +593,20 @@ WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, Wif
 {
 	pFrame->length = length + 2; //add cmd and length byte
 	response_frame buffer;
-	const size_t maxCrcRetries = 5;
-	size_t numCrcRetries = 0;
+	size_t numCrcRetries = 5;
 	do
 	{
-		numCrcRetries++;
-		int bytesRead = mProxy.Send(pFrame, &buffer, sizeof(buffer));
-	
-		TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer, (size_t)bytesRead, "%02x ", "We got %d bytes response.\nMessage: ", bytesRead);
-		response.Init(&buffer, bytesRead);
-	
-		Trace(ZONE_INFO, "CRC-Check %s \n", (response.IsCrcCheckFailed() ? "failed" : "successful"));
-		Trace(ZONE_INFO, "BAD_PACKET-Check %s \n", (response.IsBadPacket() ? "failed" : "successful"));
-		Trace(ZONE_INFO, "BAD_Command-Check %s \n", (response.IsBadCommandCode() ? "failed" : "successful"));
-	}while ((response.IsCrcCheckFailed() || response.IsBadPacket())  && (numCrcRetries <  maxCrcRetries));
+		const size_t bytesRead = mProxy.Send(pFrame, &buffer, sizeof(buffer));
+		TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer, bytesRead, "%02x ", "We got %d bytes response.\nMessage: ", bytesRead);
+
+		// init will fail if bytesRead == 0 (crc error)		
+		response.Init(buffer, bytesRead);
+		
+		numCrcRetries--;
+	}while (!response.IsValid() && (0 < numCrcRetries));
 	
 	if(!response.IsValid())
 	{
-		if(response.IsScriptBufferFull()) throw ScriptBufferFullException(pFrame);
-		if(response.IsBadCommandCode()) throw WiflyControlException("FIRMWARE RECEIVED A BAD COMMAND CODE");
 		throw FwNoResponseException(pFrame);
 	}
 
