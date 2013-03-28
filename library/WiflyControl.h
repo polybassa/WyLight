@@ -177,30 +177,37 @@ class WiflyControl
 		
 		/**
 		 * Reads the cycletimes from wifly device and stores them into the response object
-		 * @param response reference to an object to store the read cyletimes
-		 * @return <response>
+		 * @return a string with all recorded cycletimes from PIC firmware
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		CycletimeResponse& FwGetCycletime(CycletimeResponse& response);
+		std::string FwGetCycletime(void) throw (FatalError, ScriptBufferFull);
 
 		/**
 		 * Reads the current rtc time from the wifly device
-		 *
+		 * @param timeValue reference to a tm object, where to store the rtc time from PIC firmware
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwGetRtc(RtcResponse& response);
+		void FwGetRtc(tm& timeValue) throw (FatalError, ScriptBufferFull);
 
 		/**
 		 * Reads the tracebuffer from wifly device and stores the data into the response object
 		 * @param response reference to an object to store the read tracebuffer content
-		 * @return <response>
+		 * @return a string with all recorded trace messages from PIC firmware
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		TracebufferResponse& FwGetTracebuffer(TracebufferResponse& response);
+		std::string FwGetTracebuffer(void) throw (FatalError, ScriptBufferFull);
 
 		/**
 		 * Reads the firmware version currently running on the wifly device.
 		 * @param response reference to an object to store the read version number
-		 * @return <response>
+		 * @return a string representing the version number of the PIC firmware
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		FirmwareVersionResponse& FwGetVersion(FirmwareVersionResponse& response);
+		std::string FwGetVersion(void) throw (FatalError, ScriptBufferFull);
 
 		/**
 		 * Injects a LoopOn command into the wifly script controller

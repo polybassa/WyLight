@@ -389,6 +389,46 @@ class ControlCmdStartBl : public WiflyControlCmd
   
 };
 
+class ControlCmdPrintCycletime : public WiflyControlCmd
+{
+	public:
+		ControlCmdPrintCycletime(void) : WiflyControlCmd(
+				string("print_cycletime"),
+				string("' - prints all timevalues of internal methode execution times")) {};
+
+		virtual void Run(WiflyControl& control) const {
+			cout << "Transmitting command print cycletime... ";
+			try
+			{
+				cout << "done.\n" << control.FwGetCycletime() << '\n';
+			}
+			catch(FatalError& e)
+			{
+				cout << "failed! because of: " << e << '\n';
+			}
+		};
+};
+			
+class ControlCmdPrintFwVersion : public WiflyControlCmd
+{
+	public:
+		ControlCmdPrintFwVersion(void) : WiflyControlCmd(
+			string("print_fwversion"),
+			string("' - displays current firmware version of pic")) {};
+				
+		virtual void Run(WiflyControl& control) const {
+			cout << "Reading firmware version... ";
+			try
+			{
+				cout << "done.\n\n" << control.FwGetVersion() << '\n';
+			}
+			catch(FatalError& e)
+			{
+				cout << "failed! because of: " << e << '\n';
+			}
+		};
+};
+
 class ControlCmdPrintTracebuffer : public WiflyControlCmd
 {
 	public:
@@ -400,36 +440,14 @@ class ControlCmdPrintTracebuffer : public WiflyControlCmd
 			cout << "Reading tracebuffer... ";
 			try
 			{
-				TracebufferResponse response;
-				cout << "done.\n\n" << control.FwGetTracebuffer(response) << '\n';
+				cout << "done.\n\n" << control.FwGetTracebuffer() << '\n';
 			}
-			catch(WiflyControlException)
+			catch(FatalError& e)
 			{
-				cout << "failed!\n"<< endl;
+				cout << "failed! because of: " << e << '\n';
 			}
 		};
   
-};
-			
-class ControlCmdPrintFwVersion : public WiflyControlCmd
-{
-	public:
-		ControlCmdPrintFwVersion(void) : WiflyControlCmd(
-			string("print_fwversion"),
-			string("' - displays current firmware version of pic")) {};
-				
-			virtual void Run(WiflyControl& control) const {
-				cout << "Reading firmware version... ";
-				try
-				{
-					FirmwareVersionResponse response;
-					cout << "done.\n\n" << control.FwGetVersion(response) << '\n';
-				}
-				catch(WiflyControlException&)
-				{
-					cout << "failed!\n";
-				}
-			};
 };
 
 class ControlCmdClearScript : public WiflyControlCmd
@@ -442,27 +460,6 @@ class ControlCmdClearScript : public WiflyControlCmd
 		virtual void Run(WiflyControl& control) const {
 			cout << "Clearing script buffer... ";
 			TRY_CATCH_COUT(control.FwClearScript());
-		};
-};
-
-class ControlCmdPrintCycletime : public WiflyControlCmd
-{
-	public:
-		ControlCmdPrintCycletime(void) : WiflyControlCmd(
-				string("print_cycletime"),
-				string("' - prints all timevalues of internal methode execution times")) {};
-
-		virtual void Run(WiflyControl& control) const {
-			cout << "Transmitting command print cycletime... ";
-			try
-			{
-				CycletimeResponse response;
-				cout << "done.\n" << control.FwGetCycletime(response) << '\n';
-			}
-			catch(WiflyControlException)
-			{
-				cout << "failed!"<< endl;
-			}
 		};
 };
 
@@ -571,15 +568,13 @@ class ControlCmdGetRtc : public WiflyControlCmd
 			cout << "Getting target time... ";
 			try
 			{
-				RtcResponse response;
-				control.FwGetRtc(response);
-				cout << "done." << endl;
-				struct tm timeinfo = response.GetRealTime();
-				cout << endl << asctime(&timeinfo) << endl;
+				tm timeinfo;
+				control.FwGetRtc(timeinfo);
+				cout << "done.\n\n" << asctime(&timeinfo) << '\n';
 			}
-			catch(WiflyControlException)
+			catch(FatalError& e)
 			{
-				cout << "failed!"<< endl;
+				cout << "failed! because of: " << e << '\n';
 			}
 		};
 

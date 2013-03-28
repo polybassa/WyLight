@@ -34,7 +34,6 @@
 using std::cout;
 using std::ifstream;
 using std::hex;
-using std::stringstream;
 
 static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
@@ -549,31 +548,36 @@ void WiflyControl::FwClearScript(void) throw (FatalError, ScriptBufferFull)
 	FwSend(&mCmdFrame, 0, response);
 }
 
-CycletimeResponse& WiflyControl::FwGetCycletime(CycletimeResponse& response)
+std::string WiflyControl::FwGetCycletime(void) throw (FatalError, ScriptBufferFull)
 {
+	CycletimeResponse response;
 	mCmdFrame.led.cmd = GET_CYCLETIME;
 	FwSend(&mCmdFrame, 0, response);
-	return response;
+	return response.ToString();
 }
 
-void WiflyControl::FwGetRtc(RtcResponse& response)
-{    
+void WiflyControl::FwGetRtc(tm& timeValue) throw (FatalError, ScriptBufferFull)
+{
+	RtcResponse response;
 	mCmdFrame.led.cmd = GET_RTC;
 	FwSend(&mCmdFrame, 0, response);
+	timeValue = response.GetRealTime();
 }
 
-TracebufferResponse& WiflyControl::FwGetTracebuffer(TracebufferResponse& response)
+std::string WiflyControl::FwGetTracebuffer(void) throw (FatalError, ScriptBufferFull)
 {
+	TracebufferResponse response;
 	mCmdFrame.led.cmd = GET_TRACE;
 	FwSend(&mCmdFrame, 0, response);
-	return response;
+	return response.ToString();
 }
 
-FirmwareVersionResponse& WiflyControl::FwGetVersion(FirmwareVersionResponse& response)
+std::string WiflyControl::FwGetVersion(void) throw (FatalError, ScriptBufferFull)
 {
+	FirmwareVersionResponse response;
 	mCmdFrame.led.cmd = GET_FW_VERSION;
 	FwSend(&mCmdFrame, 0, response);
-	return response;
+	return response.ToString();
 }
 
 void WiflyControl::FwLoopOn(void) throw (FatalError, ScriptBufferFull)

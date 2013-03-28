@@ -23,6 +23,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <sstream>
 #include "wifly_cmd.h"
 #include "WiflyControlException.h"
 
@@ -122,6 +123,15 @@ public:
 		return false;
 	};
 
+	std::string ToString(void) const
+	{
+		std::stringstream stream;
+		stream << *this;
+		std::string temp;
+		stream >> temp;
+		return temp;
+	};
+
 	friend std::ostream& operator<< (std::ostream& out, const CycletimeResponse& ref)
 	{
 		out << "Cycletimes: \n";
@@ -154,6 +164,15 @@ public:
 		return false;
 	};
 
+	std::string ToString(void) const
+	{
+		std::stringstream stream;
+		stream << *this;
+		std::string temp;
+		stream >> temp;
+		return temp;
+	};
+
 	friend std::ostream& operator<< (std::ostream& out, const TracebufferResponse& ref)
 	{
 		out << "Tracebuffercontent: ";
@@ -182,6 +201,15 @@ public:
 			return true;
 		}
 		return false;
+	};
+
+	std::string ToString(void) const
+	{
+		std::stringstream stream;
+		stream << *this;
+		std::string temp;
+		stream >> temp;
+		return temp;
 	};
 
 	friend std::ostream& operator<< (std::ostream& out, const FirmwareVersionResponse& ref)
