@@ -29,8 +29,13 @@
 class WiflyResponse
 {
 public:
-	virtual void Init(response_frame& frame, size_t dataLength) = 0;
-	bool IsValid(void) const { return mIsValid; };
+	/*
+	 * Validate and convert data from response_frame
+	 * @return true, if convertion was successfull, false if data was corrupted and a retry might be successfull.
+	 * @throw FatalError if command code of the response doesn't match the code of the request
+	 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
+	 */
+	virtual bool Init(response_frame& frame, size_t dataLength) = 0;
 	
 protected:
 	WiflyResponse(void) : mIsValid(false) {};
@@ -41,28 +46,28 @@ class SimpleResponse : public WiflyResponse
 {
 public:
 	SimpleResponse(uint8_t cmd) : mCmd(cmd) {};
-	void Init(response_frame& pData, const size_t dataLength)
+	bool Init(response_frame& pData, const size_t dataLength)
 	{
 		if(dataLength < 4) {
 			// response to short -> seems corrupted, allow retry
-			return;
+			return false;
 		}
 
 		if(mCmd != pData.cmd) {
 			// response doesn't match to request, allow retry
-			return;
+			return false;
 		}
 
 		switch(pData.state)
 		{
 			case OK:
 				mIsValid = true;
-				return;
+				return true;
 			case SCRIPTBUFFER_FULL:
-				throw ScriptBufferFullException{};
+				throw ScriptBufferFull{};
 			case CRC_CHECK_FAILED:
 			case BAD_PACKET:
-				return;
+				return false;
 			case BAD_COMMAND_CODE:
 				throw FatalError("FIRMWARE RECEIVED A BAD COMMAND CODE" +pData.cmd);
 			default:
@@ -78,7 +83,7 @@ class RtcResponse : public SimpleResponse
 {
 public:
 	RtcResponse(void) : SimpleResponse(GET_RTC) {};
-	void Init(response_frame& pData, size_t dataLength)
+	bool Init(response_frame& pData, size_t dataLength)
 	{
 		SimpleResponse::Init(pData, dataLength);
 		if(mIsValid && (dataLength >= 4 + sizeof(struct rtc_time)))
@@ -91,6 +96,7 @@ public:
 			mTimeValue.tm_wday = pData.data.get_rtc.tm_wday;
 			mTimeValue.tm_mon = pData.data.get_rtc.tm_mon;
 		}
+		return mIsValid;
 	};
 	struct tm GetRealTime(void) const {return mTimeValue; };
 	
@@ -102,7 +108,7 @@ class CycletimeResponse : public SimpleResponse
 {
 public:
 	CycletimeResponse(void) : SimpleResponse(GET_CYCLETIME) {};
-	void Init(response_frame& pData, size_t dataLength)
+	bool Init(response_frame& pData, size_t dataLength)
 	{
 		SimpleResponse::Init(pData, dataLength);
 		if(mIsValid && (dataLength >= 4 + sizeof(uns16) * CYCLETIME_METHODE_ENUM_SIZE))
@@ -112,6 +118,7 @@ public:
 				mCycletimes[i] = ntohs(pData.data.get_max_cycle_times[i]);
 			}
 		}
+		return mIsValid;
 	};
 
 	friend std::ostream& operator<< (std::ostream& out, const CycletimeResponse& ref)
@@ -136,7 +143,7 @@ class TracebufferResponse : public SimpleResponse
 {
 public:
 	TracebufferResponse(void) : SimpleResponse(GET_TRACE), mMessageLength(0) {};
-	void Init(response_frame& pData, size_t dataLength)
+	bool Init(response_frame& pData, size_t dataLength)
 	{
 		SimpleResponse::Init(pData, dataLength);
 		if(mIsValid)
@@ -144,6 +151,7 @@ public:
 			mMessageLength = (unsigned int)dataLength - 4;
 			memcpy(mTracebuffer, pData.data.get_trace_string, dataLength);
 		}
+		return mIsValid;
 	};
 
 	friend std::ostream& operator<< (std::ostream& out, const TracebufferResponse& ref)
@@ -165,13 +173,14 @@ class FirmwareVersionResponse : public SimpleResponse
 {
 public:
 	FirmwareVersionResponse(void) : SimpleResponse(GET_FW_VERSION) {};
-	void Init(response_frame& pData, size_t dataLength)
+	bool Init(response_frame& pData, size_t dataLength)
 	{
 		SimpleResponse::Init(pData, dataLength);
 		if(mIsValid && (dataLength >= 4 + sizeof(struct cmd_get_fw_version)))
 		{
 			mFwVersion = pData.data.version;
 		}
+		return mIsValid;
 	};
 
 	friend std::ostream& operator<< (std::ostream& out, const FirmwareVersionResponse& ref)

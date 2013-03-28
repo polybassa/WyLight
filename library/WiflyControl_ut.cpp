@@ -451,7 +451,6 @@ size_t ut_WiflyControl_FwSetColorDirectRedOnly(void)
 
 	testee.FwSetColorDirect(response, shortBuffer, sizeof(shortBuffer));
 
-	CHECK(response.IsValid());
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, expectedOutgoingFrame.length));
 	TestCaseEnd();
 }
@@ -476,7 +475,6 @@ size_t ut_WiflyControl_FwSetColorDirectThreeLeds(void)
 
 	testee.FwSetColorDirect(response, shortBuffer, sizeof(shortBuffer));
 
-	CHECK(response.IsValid());
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, expectedOutgoingFrame.length));
 	TestCaseEnd();
 }
@@ -497,7 +495,6 @@ size_t ut_WiflyControl_FwSetColorDirectToMany(void)
 
 	testee.FwSetColorDirect(response, shortBuffer, sizeof(shortBuffer));
 
-	CHECK(response.IsValid());
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, expectedOutgoingFrame.length));
 	TestCaseEnd();
 }
@@ -524,7 +521,6 @@ size_t ut_WiflyControl_FwSetFade(void)
 	
 	// set color
 	testee.FwSetFade(response, "ff00ff");
-	CHECK(response.IsValid());
 	TraceBuffer(ZONE_INFO, &g_SendFrame, expectedOutgoingFrame.length, "%02x ", "IS  :");
 	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, expectedOutgoingFrame.length, "%02x ", "SOLL:");
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, expectedOutgoingFrame.length));

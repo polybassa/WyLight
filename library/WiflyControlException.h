@@ -69,10 +69,10 @@ public:
 	ConnectionTimeout(const std::string& description) : FatalError(description) {};
 };
 
-class ScriptBufferFullException : public FatalError
+class ScriptBufferFull : public FatalError
 {
 public:
-	ScriptBufferFullException(void) : FatalError("ScriptBuffer in PIC is full, clear it or wait") {};
+	ScriptBufferFull(void) : FatalError("ScriptBuffer in PIC is full, clear it or wait") {};
 };
 
 class WiflyControlException : public std::exception

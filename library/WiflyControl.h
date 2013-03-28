@@ -350,10 +350,13 @@ class WiflyControl
 		void BlWriteFlash(uint32_t address, uint8_t* pBuffer, size_t bufferLength) const;
 
 		/**
-		 * Sends a wifly command frame to te wifly device
+		 * Sends a wifly command frame to the wifly device
 		 * @param pFrame pointer to the frame, which should be send
 		 * @param length number of bytes on the <pFrame>
 		 * @param response will be modified according to the success of this operation
+		 * @return response
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */		
 		WiflyResponse& FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const;
 

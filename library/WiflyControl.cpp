@@ -598,20 +598,13 @@ WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, Wif
 	{
 		const size_t bytesRead = mProxy.Send(pFrame, &buffer, sizeof(buffer));
 		TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer, bytesRead, "%02x ", "We got %d bytes response.\nMessage: ", bytesRead);
-
-		// init will fail if bytesRead == 0 (crc error)		
-		response.Init(buffer, bytesRead);
-		
-		numCrcRetries--;
-	}while (!response.IsValid() && (0 < numCrcRetries));
 	
-	if(!response.IsValid())
-	{
-		throw FwNoResponseException(pFrame);
-	}
-
-	
-	return response;
+		if(response.Init(buffer, bytesRead))
+		{
+			return response;
+		}
+	} while (0 < --numCrcRetries);	
+	throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": Too many retries");
 }
 
 void WiflyControl::FwSetColorDirect(WiflyResponse& response, unsigned char* pBuffer, size_t bufferLength)
