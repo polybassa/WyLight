@@ -204,8 +204,10 @@ size_t ut_ComProxy_MaskControlCharacters(void)
 	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= littleEndian.Size() - 1);
 
 	/* and unmask everything again */
-	size_t bytesWritten = testee.UnmaskControlCharacters(littleEndian.Data() + 1, littleEndian.Size() - 1, recvBuffer, sizeof(recvBuffer), true);
-	CHECK(sizeof(sendBuffer) == bytesWritten);
+	UnmaskBuffer response{sizeof(recvBuffer)};
+	CHECK(response.Unmask(littleEndian.Data() + 1, littleEndian.Size() - 1, true, true));
+	CHECK(response.Size() == sizeof(sendBuffer));
+	CHECK(0 == memcmp(sendBuffer, response.Data(), response.Size()));
 
 	/* mask control characters for crc in big endian order(firmware) */
 	MaskBuffer bigEndian{sizeof(recvBuffer)};
@@ -214,8 +216,11 @@ size_t ut_ComProxy_MaskControlCharacters(void)
 	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= bigEndian.Size() - 1);
 
 	/* and unmask everything again */
-	bytesWritten = testee.UnmaskControlCharacters(bigEndian.Data() + 1, bigEndian.Size() - 1, recvBuffer, sizeof(recvBuffer), true, false);
-	CHECK(sizeof(sendBuffer) == bytesWritten);
+	response.Clear();
+	CHECK(0 == response.Size());
+	CHECK(response.Unmask(bigEndian.Data() + 1, bigEndian.Size() - 1, true, false));
+	CHECK(response.Size() == sizeof(sendBuffer));
+	CHECK(0 == memcmp(sendBuffer, response.Data(), response.Size()));
 
 	/* mask control characters for crc in big endian order(firmware) */
 	MaskBuffer wrongOrder{sizeof(recvBuffer)};
@@ -224,8 +229,9 @@ size_t ut_ComProxy_MaskControlCharacters(void)
 	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= wrongOrder.Size() - 1);
 
 	/* and unmask everything again in wrong byte order */
-	bytesWritten = testee.UnmaskControlCharacters(wrongOrder.Data() + 1, wrongOrder.Size() - 1, recvBuffer, sizeof(recvBuffer), true);
-	CHECK(0 == bytesWritten);
+	response.Clear();
+	CHECK(response.Unmask(wrongOrder.Data() + 1, wrongOrder.Size() - 1, true, true));
+	CHECK(response.Size() == 0);
 
 	/* mask control characters for noCrc test */
 	MaskBuffer noCrc{sizeof(recvBuffer)};
@@ -234,14 +240,10 @@ size_t ut_ComProxy_MaskControlCharacters(void)
 	CHECK(sizeof(sendBuffer) + BL_CRTL_CHAR_NUM + CRC_SIZE*2 >= noCrc.Size() - 1);
 
 	/* and unmask everything again */
-	bytesWritten = testee.UnmaskControlCharacters(noCrc.Data() + 1, noCrc.Size() - 1, recvBuffer, sizeof(recvBuffer), false);
-	CHECK(sizeof(sendBuffer) + 2 == bytesWritten);
-
-	for(size_t i = 0; i < 6; i++)
-	{
-		Trace(ZONE_INFO, "%02x - %02x\n", sendBuffer[i], recvBuffer[i]);
-	}
-	CHECK(0 == memcmp(sendBuffer, recvBuffer, 256));
+	response.Clear();
+	CHECK(response.Unmask(noCrc.Data() + 1, noCrc.Size() - 1, false, false));
+	CHECK(response.Size() == sizeof(sendBuffer) + 2);
+	CHECK(0 == memcmp(sendBuffer, response.Data(), 256));
 	TestCaseEnd();
 }
 
@@ -273,8 +275,12 @@ size_t ut_ComProxy_BlEepromReadRequestTimeout(void)
 
 	BlEepromReadRequest request;
 	request.SetAddressNumBytes(0xDA7A, sizeof(dummyBlFlashReadResponsePure));
-	size_t bytesReceived = testee.Send(request, response, sizeof(response));
-	CHECK(0 == bytesReceived);
+	try {
+		testee.Send(request, response, sizeof(response));
+		CHECK(false);
+	} catch (ConnectionTimeout& e) {
+		CHECK(true);
+	}
 	TestCaseEnd();
 }
 
