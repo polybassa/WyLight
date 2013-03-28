@@ -170,59 +170,66 @@ class WiflyControl
 		/**
 		 * Wipe all commands from the Wifly script controller
 		 * @param response will be modified according to the success of this operation
+		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwClearScript(void) throw (FatalError, ScriptBufferFull);
+		void FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 		
 		/**
 		 * Reads the cycletimes from wifly device and stores them into the response object
 		 * @return a string with all recorded cycletimes from PIC firmware
+		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		std::string FwGetCycletime(void) throw (FatalError, ScriptBufferFull);
+		std::string FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 		/**
 		 * Reads the current rtc time from the wifly device
 		 * @param timeValue reference to a tm object, where to store the rtc time from PIC firmware
+		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwGetRtc(tm& timeValue) throw (FatalError, ScriptBufferFull);
+		void FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 		/**
 		 * Reads the tracebuffer from wifly device and stores the data into the response object
 		 * @param response reference to an object to store the read tracebuffer content
 		 * @return a string with all recorded trace messages from PIC firmware
+		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		std::string FwGetTracebuffer(void) throw (FatalError, ScriptBufferFull);
+		std::string FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 		/**
 		 * Reads the firmware version currently running on the wifly device.
 		 * @param response reference to an object to store the read version number
 		 * @return a string representing the version number of the PIC firmware
+		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		std::string FwGetVersion(void) throw (FatalError, ScriptBufferFull);
+		std::string FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 		/**
 		 * Injects a LoopOn command into the wifly script controller
+		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwLoopOn(void) throw (FatalError, ScriptBufferFull);
+		void FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 		/**
 		 * Injects a LoopOff command into the wifly script controller
 		 * @param numLoops number of rounds before termination of the loop, use 0 for infinite loops. To terminate an infinite loop you have to call <FwClearScript>
+		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwLoopOff(uint8_t numLoops) throw (FatalError, ScriptBufferFull);
+		void FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 		/**
 		 * Sets all leds with different colors directly. This doesn't affect the Wifly script controller
@@ -230,10 +237,11 @@ class WiflyControl
 		 * pBuffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6;
 		 * @param pBuffer containing continouse rgb values r1g1b1r2g2b2...r32g32b32
 		 * @param bufferLength number of bytes in <pBuffer> usally 32 * 3 bytes
+		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (FatalError, ScriptBufferFull);
+		void FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 		
 		/**
 		 * Injects a fade command into the wifly script controller
@@ -244,10 +252,11 @@ class WiflyControl
 		 * @param fadeTmms fading time in milliseconds use 0 to set color immediately, default = 0
 		 * @param addr bitmask of leds which should be effected by this command, set bit to 1 to affect the led, default 0xffffffff
 		 * @param parallelFade if true other fades are allowed in parallel with this fade
+		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwSetFade(uint32_t argb, uint32_t fadeTmms = 0, uint32_t addr = 0xffffffff, bool parallelFade = false) throw (FatalError, ScriptBufferFull);
+		void FwSetFade(uint32_t argb, uint32_t fadeTmms = 0, uint32_t addr = 0xffffffff, bool parallelFade = false) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 		/**
 		 * Injects a fade command into the wifly script controller
@@ -261,35 +270,39 @@ class WiflyControl
 		 *        first three leds  "7"
 		 *        only the last led "80000000"
 		 * @param parallelFade if true other fades are allowed in parallel with this fade
+		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwSetFade(const std::string& rgb, uint32_t fadeTmms = 0, const std::string& addr = LEDS_ALL, bool parallelFade = false) throw (FatalError, ScriptBufferFull);
+		void FwSetFade(const std::string& rgb, uint32_t fadeTmms = 0, const std::string& addr = LEDS_ALL, bool parallelFade = false) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 		/**
 		 * Sets the rtc clock of the wifly device to the specified time.
 		 * The wifly device has to be in firmware mode for this command.
 		 * @param timeValue pointer to a posix tm struct containing the new time
+		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwSetRtc(const tm& timeValue) throw (FatalError, ScriptBufferFull);
+		void FwSetRtc(const tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 		
 		/**
 		 * Injects a wait command into the wifly script controller.
 		 * This causes the script processing to wait before executing the next command for the specified duration
 		 * @param waitTmms timme in milliseconds to wait until execution of the next command
+		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwSetWait(uint32_t waitTmms) throw (FatalError, ScriptBufferFull);
+		void FwSetWait(uint32_t waitTmms) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 		/**
 		 * Stops firmware and script controller execution and start the bootloader of the wifly device
+		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwStartBl(void) throw (FatalError, ScriptBufferFull);
+		void FwStartBl(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 		
 
 		//TODO move this test functions to the integration test 
@@ -372,10 +385,11 @@ class WiflyControl
 		 * @param length number of bytes on the <pFrame>
 		 * @param response will be modified according to the success of this operation
 		 * @return response
+		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */		
-		WiflyResponse& FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const;
+		WiflyResponse& FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 /* ------------------ friendships for unittesting only ------------------- */
 		/**

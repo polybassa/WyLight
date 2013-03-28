@@ -541,14 +541,14 @@ bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssi
 	return mTelnet.Close(true);
 }
 
-void WiflyControl::FwClearScript(void) throw (FatalError, ScriptBufferFull)
+void WiflyControl::FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(CLEAR_SCRIPT);
 	mCmdFrame.led.cmd = CLEAR_SCRIPT;
 	FwSend(&mCmdFrame, 0, response);
 }
 
-std::string WiflyControl::FwGetCycletime(void) throw (FatalError, ScriptBufferFull)
+std::string WiflyControl::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	CycletimeResponse response;
 	mCmdFrame.led.cmd = GET_CYCLETIME;
@@ -556,7 +556,7 @@ std::string WiflyControl::FwGetCycletime(void) throw (FatalError, ScriptBufferFu
 	return response.ToString();
 }
 
-void WiflyControl::FwGetRtc(tm& timeValue) throw (FatalError, ScriptBufferFull)
+void WiflyControl::FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	RtcResponse response;
 	mCmdFrame.led.cmd = GET_RTC;
@@ -564,7 +564,7 @@ void WiflyControl::FwGetRtc(tm& timeValue) throw (FatalError, ScriptBufferFull)
 	timeValue = response.GetRealTime();
 }
 
-std::string WiflyControl::FwGetTracebuffer(void) throw (FatalError, ScriptBufferFull)
+std::string WiflyControl::FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	TracebufferResponse response;
 	mCmdFrame.led.cmd = GET_TRACE;
@@ -572,7 +572,7 @@ std::string WiflyControl::FwGetTracebuffer(void) throw (FatalError, ScriptBuffer
 	return response.ToString();
 }
 
-std::string WiflyControl::FwGetVersion(void) throw (FatalError, ScriptBufferFull)
+std::string WiflyControl::FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	FirmwareVersionResponse response;
 	mCmdFrame.led.cmd = GET_FW_VERSION;
@@ -580,14 +580,14 @@ std::string WiflyControl::FwGetVersion(void) throw (FatalError, ScriptBufferFull
 	return response.ToString();
 }
 
-void WiflyControl::FwLoopOn(void) throw (FatalError, ScriptBufferFull)
+void WiflyControl::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(LOOP_ON);
 	mCmdFrame.led.cmd = LOOP_ON;
 	FwSend(&mCmdFrame, 0, response);
 }
 
-void WiflyControl::FwLoopOff(uint8_t numLoops) throw (FatalError, ScriptBufferFull)
+void WiflyControl::FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(LOOP_OFF);
 	mCmdFrame.led.cmd = LOOP_OFF;
@@ -596,7 +596,7 @@ void WiflyControl::FwLoopOff(uint8_t numLoops) throw (FatalError, ScriptBufferFu
 	FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
 }
 
-WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const
+WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	pFrame->length = length + 2; //add cmd and length byte
 	response_frame buffer;
@@ -614,7 +614,7 @@ WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, Wif
 	throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": Too many retries");
 }
 
-void WiflyControl::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (FatalError, ScriptBufferFull)
+void WiflyControl::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	static const size_t maxBufferLength = NUM_OF_LED * 3;
 	SimpleResponse response(SET_COLOR_DIRECT);  
@@ -625,7 +625,7 @@ void WiflyControl::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength)
 	FwSend(&mCmdFrame, sizeof(struct cmd_set_color_direct),response);
 }
 
-void WiflyControl::FwSetFade(uint32_t argb, uint32_t fadeTmms, uint32_t addr, bool parallelFade) throw (FatalError, ScriptBufferFull)
+void WiflyControl::FwSetFade(uint32_t argb, uint32_t fadeTmms, uint32_t addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(SET_FADE);	
 	mCmdFrame.led.cmd = SET_FADE;
@@ -638,12 +638,12 @@ void WiflyControl::FwSetFade(uint32_t argb, uint32_t fadeTmms, uint32_t addr, bo
 	FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
 }
 
-void WiflyControl::FwSetFade(const string& rgb, uint32_t fadeTmms, const string& addr, bool parallelFade) throw (FatalError, ScriptBufferFull)
+void WiflyControl::FwSetFade(const string& rgb, uint32_t fadeTmms, const string& addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	FwSetFade(0xff000000 | WiflyColor::ToARGB(rgb), fadeTmms, WiflyColor::ToARGB(addr), parallelFade);
 }
 
-void WiflyControl::FwSetRtc(const tm& timeValue) throw (FatalError, ScriptBufferFull)
+void WiflyControl::FwSetRtc(const tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(SET_RTC);
 	mCmdFrame.led.cmd = SET_RTC;
@@ -658,7 +658,7 @@ void WiflyControl::FwSetRtc(const tm& timeValue) throw (FatalError, ScriptBuffer
 	FwSend(&mCmdFrame, sizeof(struct rtc_time), response);
 }
 
-void WiflyControl::FwSetWait(uint32_t waitTmms) throw (FatalError, ScriptBufferFull)
+void WiflyControl::FwSetWait(uint32_t waitTmms) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(WAIT);
 	mCmdFrame.led.cmd = WAIT;
@@ -757,7 +757,7 @@ void WiflyControl::FwTest(void)
 #endif
 }
 
-void WiflyControl::FwStartBl(void) throw (FatalError, ScriptBufferFull)
+void WiflyControl::FwStartBl(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(START_BL);
 	mCmdFrame.led.cmd = START_BL;
