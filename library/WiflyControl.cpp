@@ -542,8 +542,9 @@ bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssi
 	return mTelnet.Close(true);
 }
 
-void WiflyControl::FwClearScript(WiflyResponse& response)
+void WiflyControl::FwClearScript(void) throw (FatalError, ScriptBufferFull)
 {
+	SimpleResponse response(CLEAR_SCRIPT);
 	mCmdFrame.led.cmd = CLEAR_SCRIPT;
 	FwSend(&mCmdFrame, 0, response);
 }
@@ -575,14 +576,16 @@ FirmwareVersionResponse& WiflyControl::FwGetVersion(FirmwareVersionResponse& res
 	return response;
 }
 
-void WiflyControl::FwLoopOn(WiflyResponse& response)
+void WiflyControl::FwLoopOn(void) throw (FatalError, ScriptBufferFull)
 {
+	SimpleResponse response(LOOP_ON);
 	mCmdFrame.led.cmd = LOOP_ON;
 	FwSend(&mCmdFrame, 0, response);
 }
 
-void WiflyControl::FwLoopOff(WiflyResponse& response, unsigned char numLoops)
+void WiflyControl::FwLoopOff(uint8_t numLoops) throw (FatalError, ScriptBufferFull)
 {
+	SimpleResponse response(LOOP_OFF);
 	mCmdFrame.led.cmd = LOOP_OFF;
 	mCmdFrame.led.data.loopEnd.numLoops = numLoops;
 	
@@ -607,72 +610,68 @@ WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, Wif
 	throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": Too many retries");
 }
 
-void WiflyControl::FwSetColorDirect(WiflyResponse& response, unsigned char* pBuffer, size_t bufferLength)
+void WiflyControl::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (FatalError, ScriptBufferFull)
 {
-	if(pBuffer == NULL) throw std::bad_alloc();
-  
-	mCmdFrame.led.cmd = SET_COLOR_DIRECT;
 	static const size_t maxBufferLength = NUM_OF_LED * 3;
+	SimpleResponse response(SET_COLOR_DIRECT);  
+	mCmdFrame.led.cmd = SET_COLOR_DIRECT;
 	bufferLength = std::min(bufferLength, maxBufferLength);
 	memcpy(mCmdFrame.led.data.set_color_direct.ptr_led_array, pBuffer, bufferLength);
 	memset(mCmdFrame.led.data.set_color_direct.ptr_led_array + bufferLength, 0, maxBufferLength - bufferLength);
 	FwSend(&mCmdFrame, sizeof(struct cmd_set_color_direct),response);
 }
 
-void WiflyControl::FwSetFade(WiflyResponse& response, uint32_t argb, uint32_t fadeTmms, uint32_t addr, bool parallelFade)
+void WiflyControl::FwSetFade(uint32_t argb, uint32_t fadeTmms, uint32_t addr, bool parallelFade) throw (FatalError, ScriptBufferFull)
 {
-	fadeTmms = fadeTmms / CALIBRATION_VALUE;
-	if(fadeTmms < 4) fadeTmms = 4;
-	
+	SimpleResponse response(SET_FADE);	
 	mCmdFrame.led.cmd = SET_FADE;
 	SetAddrRgb(mCmdFrame.led.data.set_fade, addr, argb);
+
+	// calibrate fadeTmms to pic cycles
+	fadeTmms = std::max(4u, (uint32_t)(fadeTmms / CALIBRATION_VALUE));
 	mCmdFrame.led.data.set_fade.fadeTmms = htons((uint16_t)fadeTmms);
 	mCmdFrame.led.data.set_fade.parallelFade = parallelFade;
 	FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
 }
 
-void WiflyControl::FwSetFade(WiflyResponse& response, const string& rgb, uint32_t fadeTmms, const string& addr, bool parallelFade)
+void WiflyControl::FwSetFade(const string& rgb, uint32_t fadeTmms, const string& addr, bool parallelFade) throw (FatalError, ScriptBufferFull)
 {
-	FwSetFade(response, 0xff000000 | WiflyColor::ToARGB(rgb), fadeTmms, WiflyColor::ToARGB(addr), parallelFade);
+	FwSetFade(0xff000000 | WiflyColor::ToARGB(rgb), fadeTmms, WiflyColor::ToARGB(addr), parallelFade);
 }
 
-void WiflyControl::FwSetRtc(SimpleResponse& response, struct tm* timeValue)
+void WiflyControl::FwSetRtc(const tm& timeValue) throw (FatalError, ScriptBufferFull)
 {
-	if(timeValue == NULL) throw std::bad_alloc();
-  
-  	mCmdFrame.led.cmd = SET_RTC;
-	mCmdFrame.led.data.set_rtc.tm_sec  = (uns8) timeValue->tm_sec;
-	mCmdFrame.led.data.set_rtc.tm_min  = (uns8) timeValue->tm_min;
-	mCmdFrame.led.data.set_rtc.tm_hour = (uns8) timeValue->tm_hour;
-	mCmdFrame.led.data.set_rtc.tm_mday = (uns8) timeValue->tm_mday;
-	mCmdFrame.led.data.set_rtc.tm_mon  = (uns8) timeValue->tm_mon;
-	mCmdFrame.led.data.set_rtc.tm_year = (uns8) timeValue->tm_year;
-	mCmdFrame.led.data.set_rtc.tm_wday = (uns8) timeValue->tm_wday;
+	SimpleResponse response(SET_RTC);
+	mCmdFrame.led.cmd = SET_RTC;
+	mCmdFrame.led.data.set_rtc.tm_sec  = (uns8) timeValue.tm_sec;
+	mCmdFrame.led.data.set_rtc.tm_min  = (uns8) timeValue.tm_min;
+	mCmdFrame.led.data.set_rtc.tm_hour = (uns8) timeValue.tm_hour;
+	mCmdFrame.led.data.set_rtc.tm_mday = (uns8) timeValue.tm_mday;
+	mCmdFrame.led.data.set_rtc.tm_mon  = (uns8) timeValue.tm_mon;
+	mCmdFrame.led.data.set_rtc.tm_year = (uns8) timeValue.tm_year;
+	mCmdFrame.led.data.set_rtc.tm_wday = (uns8) timeValue.tm_wday;
 	
-	FwSend(&mCmdFrame, sizeof(struct rtc_time),response);
+	FwSend(&mCmdFrame, sizeof(struct rtc_time), response);
 }
 
-void WiflyControl::FwSetWait(WiflyResponse& response, uint32_t waitTmms)
+void WiflyControl::FwSetWait(uint32_t waitTmms) throw (FatalError, ScriptBufferFull)
 {
+	SimpleResponse response(WAIT);
 	mCmdFrame.led.cmd = WAIT;
 	mCmdFrame.led.data.wait.waitTmms = htons((uint16_t)(waitTmms / CALIBRATION_VALUE));
-	
 	FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
 }
 
 void WiflyControl::FwStressTest(void)
-{
-	SimpleResponse clrResp(CLEAR_SCRIPT);
-	SimpleResponse setColorDirectResp(SET_COLOR_DIRECT);
-	
-	FwClearScript(clrResp);
+{	
+	FwClearScript();
 
 	uns8 ledArr[NUM_OF_LED * 3];
 	uns8 color = 0;
 	while(true){
 		color++;
 		std::fill_n(ledArr, sizeof(ledArr), color);
-		FwSetColorDirect(setColorDirectResp, ledArr, sizeof(ledArr));
+		FwSetColorDirect(ledArr, sizeof(ledArr));
 	}
 }
 
@@ -710,12 +709,11 @@ void WiflyControl::FwTest(void)
 {
 #if 1
 	static const timespec sleepTime{0, 50000000};
-	SimpleResponse setFadeResp(SET_FADE);
 	uint32_t color = 0xff;
 	for(size_t i = 0; i < 100; ++i)
 	{
 		color = ((color & 0xff) << 24) | (color >> 8);
-		FwSetFade(setFadeResp, color);
+		FwSetFade(color);
 		nanosleep(&sleepTime, NULL);
 	}
 #else
@@ -755,8 +753,9 @@ void WiflyControl::FwTest(void)
 #endif
 }
 
-void WiflyControl::FwStartBl(SimpleResponse& response)
+void WiflyControl::FwStartBl(void) throw (FatalError, ScriptBufferFull)
 {
+	SimpleResponse response(START_BL);
 	mCmdFrame.led.cmd = START_BL;
 	FwSend(&mCmdFrame, 0, response);
 }

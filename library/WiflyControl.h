@@ -170,8 +170,10 @@ class WiflyControl
 		/**
 		 * Wipe all commands from the Wifly script controller
 		 * @param response will be modified according to the success of this operation
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwClearScript(WiflyResponse& response);
+		void FwClearScript(void) throw (FatalError, ScriptBufferFull);
 		
 		/**
 		 * Reads the cycletimes from wifly device and stores them into the response object
@@ -202,30 +204,32 @@ class WiflyControl
 
 		/**
 		 * Injects a LoopOn command into the wifly script controller
-		 * @param response will be modified according to the success of this operation
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwLoopOn(WiflyResponse& response);
+		void FwLoopOn(void) throw (FatalError, ScriptBufferFull);
 
 		/**
 		 * Injects a LoopOff command into the wifly script controller
-		 * @param response will be modified according to the success of this operation
 		 * @param numLoops number of rounds before termination of the loop, use 0 for infinite loops. To terminate an infinite loop you have to call <FwClearScript>
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwLoopOff(WiflyResponse& response, uint8_t numLoops);
+		void FwLoopOff(uint8_t numLoops) throw (FatalError, ScriptBufferFull);
 
 		/**
 		 * Sets all leds with different colors directly. This doesn't affect the Wifly script controller
 		 * Example: to set the first led to yellow and the second to blue and all others to off use a <pBuffer> like this:
 		 * pBuffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6;
-		 * @param response will be modified according to the success of this operation
 		 * @param pBuffer containing continouse rgb values r1g1b1r2g2b2...r32g32b32
 		 * @param bufferLength number of bytes in <pBuffer> usally 32 * 3 bytes
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwSetColorDirect(WiflyResponse& response, uint8_t* pBuffer, size_t bufferLength);
+		void FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (FatalError, ScriptBufferFull);
 		
 		/**
 		 * Injects a fade command into the wifly script controller
-		 * @param response will be modified according to the success of this operation
 		 * @param argb is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff) f.e.
 		 *        black(  0,  0,  0) as argb is 0xff000000
 		 *        green(  0,255,  0) as argb is 0xff00ff00
@@ -233,12 +237,13 @@ class WiflyControl
 		 * @param fadeTmms fading time in milliseconds use 0 to set color immediately, default = 0
 		 * @param addr bitmask of leds which should be effected by this command, set bit to 1 to affect the led, default 0xffffffff
 		 * @param parallelFade if true other fades are allowed in parallel with this fade
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwSetFade(WiflyResponse& response, uint32_t argb, uint32_t fadeTmms = 0, uint32_t addr = 0xffffffff, bool parallelFade = false);
+		void FwSetFade(uint32_t argb, uint32_t fadeTmms = 0, uint32_t addr = 0xffffffff, bool parallelFade = false) throw (FatalError, ScriptBufferFull);
 
 		/**
 		 * Injects a fade command into the wifly script controller
-		 * @param response will be modified according to the success of this operation
 		 * @param rgb is a hex string representation of a rgb value without leading '0x'
 		 *        black "0"
 		 *        green "ff00"
@@ -249,30 +254,35 @@ class WiflyControl
 		 *        first three leds  "7"
 		 *        only the last led "80000000"
 		 * @param parallelFade if true other fades are allowed in parallel with this fade
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwSetFade(WiflyResponse& response, const std::string& rgb, uint32_t fadeTmms = 0, const std::string& addr = LEDS_ALL, bool parallelFade = false);
+		void FwSetFade(const std::string& rgb, uint32_t fadeTmms = 0, const std::string& addr = LEDS_ALL, bool parallelFade = false) throw (FatalError, ScriptBufferFull);
 
 		/**
 		 * Sets the rtc clock of the wifly device to the specified time.
 		 * The wifly device has to be in firmware mode for this command.
-		 * @param response will be modified according to the success of this operation.
 		 * @param timeValue pointer to a posix tm struct containing the new time
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwSetRtc(SimpleResponse& response, struct tm* timeValue);
+		void FwSetRtc(const tm& timeValue) throw (FatalError, ScriptBufferFull);
 		
 		/**
 		 * Injects a wait command into the wifly script controller.
-		 * This causes the script processing to wait before executing the next command fir the specified duration
-		 * @param response will be modified according to the success of this operation
+		 * This causes the script processing to wait before executing the next command for the specified duration
 		 * @param waitTmms timme in milliseconds to wait until execution of the next command
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwSetWait(WiflyResponse& response, uint32_t waitTmms);
+		void FwSetWait(uint32_t waitTmms) throw (FatalError, ScriptBufferFull);
 
 		/**
 		 * Stops firmware and script controller execution and start the bootloader of the wifly device
-		 * @param response will be modified according to the success of this operation.
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwStartBl(SimpleResponse& response);
+		void FwStartBl(void) throw (FatalError, ScriptBufferFull);
 		
 
 		//TODO move this test functions to the integration test 
