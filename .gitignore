@@ -13,3 +13,5 @@ library/WiflyControl_ut.bin
 library/BroadcastReceiver.o
 library/ComProxy.o
 library/intelhexclass.o
+*.eps
+
