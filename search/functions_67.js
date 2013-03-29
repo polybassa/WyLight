@@ -3,7 +3,7 @@ var searchData=
   ['getaddress',['GetAddress',['../struct_bl_info.html#a54a7c7a8982f9ed99517977a9089da62',1,'BlInfo']]],
   ['getcrc16',['GetCrc16',['../class_unmask_buffer.html#ac5211a85560c7d1cf2a3c56bc702428a',1,'UnmaskBuffer']]],
   ['getdata',['getData',['../classintelhex.html#a01f7799f7a86e45c28b713e9472a8a5a',1,'intelhex::getData(unsigned char *data)'],['../classintelhex.html#a6596b518a9a832ed8e6ba21a0e07861c',1,'intelhex::getData(unsigned char *data, unsigned long address)'],['../struct_bl_request.html#aa96361ac208e80204a36870f79f90a83',1,'BlRequest::GetData()']]],
-  ['getendpoint',['GetEndpoint',['../class_broadcast_receiver.html#aac4e2401b2cb7fdae40929bd896724f7',1,'BroadcastReceiver']]],
+  ['getendpoint',['GetEndpoint',['../class_broadcast_receiver.html#a1c487597e1338d5e5fca55f1d89d0eb1',1,'BroadcastReceiver']]],
   ['getfailedframe',['GetFailedFrame',['../class_fw_exception.html#af8b9d2e412bd11f40cc8b3964d6da13a',1,'FwException']]],
   ['getfailedrequest',['GetFailedRequest',['../class_bl_no_response_exception.html#aa8c6c0a7ac0e88cda1f6b04932373f5d',1,'BlNoResponseException']]],
   ['getip',['GetIp',['../class_endpoint.html#a5618578a2aea0258faac2ec166809f61',1,'Endpoint']]],

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['nanosleep_5ftime',['NANOSLEEP_TIME',['../_broadcast_receiver__ut_8cpp.html#a6e289328c8121a52ad890da4651dec60',1,'BroadcastReceiver_ut.cpp']]],
   ['nooferrors',['noOfErrors',['../classintelhex.html#a451b78972165b898e91a129670fce919',1,'intelhex']]],
   ['noofwarnings',['noOfWarnings',['../classintelhex.html#a5ea3789cc9ea71c9b35322aabca05158',1,'intelhex']]],
   ['numblockshigh',['numBlocksHigh',['../struct_bl_flash_crc16_request.html#a99771cedf57ffdd7a1933caad05c56b8',1,'BlFlashCrc16Request']]],
