@@ -1,4 +1,4 @@
-/**
+/*
  Copyright (C) 2012, 2013 Nils Weiss, Patrick Brünn.
  
  This file is part of Wifly_Light.
