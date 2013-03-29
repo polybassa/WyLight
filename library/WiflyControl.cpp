@@ -632,6 +632,8 @@ void WiflyControl::FwSetColorDirect(WiflyResponse& response, unsigned char* pBuf
 
 void WiflyControl::FwSetFade(WiflyResponse& response, uint32_t argb, uint16_t fadeTmms, uint32_t addr, bool parallelFade)
 {
+	if (fadeTmms < 1) fadeTmms = 1;
+		
 	mCmdFrame.led.cmd = SET_FADE;
 	SetAddrRgb(mCmdFrame.led.data.set_fade, addr, argb);
 	mCmdFrame.led.data.set_fade.fadeTmms = htons(fadeTmms);
