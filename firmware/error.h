@@ -27,7 +27,7 @@ typedef enum __attribute__ ((__packed__)) {
 	OK = 0x00,
 	SCRIPTBUFFER_FULL,
 	CRC_CHECK_FAILED,
-	BAD_PACKET,
+	BAD_PACKET,					//ringbuffer or commandIo overflow
 	BAD_COMMAND_CODE
 } ErrorCode;
 

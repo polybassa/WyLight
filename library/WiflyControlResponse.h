@@ -22,38 +22,57 @@
 #include <cstdlib>
 #include <iostream>
 #include <iomanip>
+#include <string>
+#include <sstream>
 #include "wifly_cmd.h"
+#include "WiflyControlException.h"
 
 class WiflyResponse
 {
 public:
-	virtual void Init(response_frame* pData, size_t dataLength) = 0;
-	bool IsValid(void) const { return mIsValid; };
-	bool IsScriptBufferFull(void) const { return mIsScriptBufferFull; };
-	bool IsCrcCheckFailed(void) const { return mIsCrcCheckFailed; };
-	bool IsBadPacket(void) const { return mIsBadPacket; };
-	bool IsBadCommandCode(void) const { return mIsBadCommand; };
+	virtual bool Init(response_frame& frame, size_t dataLength) = 0;
 	
 protected:
-	WiflyResponse(void) : mIsValid(false), mIsScriptBufferFull(true) {};
-	bool mIsValid;
-	bool mIsScriptBufferFull;
-	bool mIsCrcCheckFailed;
-	bool mIsBadPacket;
-	bool mIsBadCommand;
+	WiflyResponse(void) {};
 };
 
 class SimpleResponse : public WiflyResponse
 {
 public:
 	SimpleResponse(uint8_t cmd) : mCmd(cmd) {};
-	void Init(response_frame* pData, size_t dataLength)
+
+	/*
+	 * Validate and convert data from response_frame
+	 * @return true, if convertion was successfull, false if data was corrupted and a retry might be successfull.
+	 * @throw FatalError if command code of the response doesn't match the code of the request
+	 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
+	 */
+	bool Init(response_frame& pData, const size_t dataLength)
 	{
-		mIsValid = (NULL != pData) && (4 <= dataLength) && (mCmd == pData->cmd) && (pData->state == OK);
-		mIsScriptBufferFull = pData->state == SCRIPTBUFFER_FULL;
-		mIsCrcCheckFailed = pData->state == CRC_CHECK_FAILED;
-		mIsBadPacket = pData->state == BAD_PACKET;
-		mIsBadCommand = pData->state == BAD_COMMAND_CODE;
+		if(dataLength < 4) {
+			// response to short -> seems corrupted, allow retry
+			return false;
+		}
+
+		if(mCmd != pData.cmd) {
+			// response doesn't match to request, allow retry
+			return false;
+		}
+
+		switch(pData.state)
+		{
+			case OK:
+				return true;
+			case SCRIPTBUFFER_FULL:
+				throw ScriptBufferFull{};
+			case CRC_CHECK_FAILED:
+			case BAD_PACKET:
+				return false;
+			case BAD_COMMAND_CODE:
+				throw FatalError("FIRMWARE RECEIVED A BAD COMMAND CODE" + pData.cmd);
+			default:
+				throw FatalError("Unexpected response state: " + pData.state);
+		};
 	};
 	
 private:
@@ -64,19 +83,21 @@ class RtcResponse : public SimpleResponse
 {
 public:
 	RtcResponse(void) : SimpleResponse(GET_RTC) {};
-	void Init(response_frame* pData, size_t dataLength)
+	bool Init(response_frame& pData, size_t dataLength)
 	{
-		SimpleResponse::Init(pData, dataLength);
-		if(mIsValid && (dataLength >= 4 + sizeof(struct rtc_time)))
+		if(SimpleResponse::Init(pData, dataLength)
+		&& (dataLength >= 4 + sizeof(struct rtc_time)))
 		{
-			mTimeValue.tm_sec = pData->data.get_rtc.tm_sec;
-			mTimeValue.tm_min = pData->data.get_rtc.tm_min;
-			mTimeValue.tm_hour = pData->data.get_rtc.tm_hour;
-			mTimeValue.tm_mday = pData->data.get_rtc.tm_mday;
-			mTimeValue.tm_year = pData->data.get_rtc.tm_year;
-			mTimeValue.tm_wday = pData->data.get_rtc.tm_wday;
-			mTimeValue.tm_mon = pData->data.get_rtc.tm_mon;
+			mTimeValue.tm_sec = pData.data.get_rtc.tm_sec;
+			mTimeValue.tm_min = pData.data.get_rtc.tm_min;
+			mTimeValue.tm_hour = pData.data.get_rtc.tm_hour;
+			mTimeValue.tm_mday = pData.data.get_rtc.tm_mday;
+			mTimeValue.tm_year = pData.data.get_rtc.tm_year;
+			mTimeValue.tm_wday = pData.data.get_rtc.tm_wday;
+			mTimeValue.tm_mon = pData.data.get_rtc.tm_mon;
+			return true;
 		}
+		return false;
 	};
 	struct tm GetRealTime(void) const {return mTimeValue; };
 	
@@ -88,76 +109,107 @@ class CycletimeResponse : public SimpleResponse
 {
 public:
 	CycletimeResponse(void) : SimpleResponse(GET_CYCLETIME) {};
-	void Init(response_frame* pData, size_t dataLength)
+	bool Init(response_frame& pData, size_t dataLength)
 	{
-		SimpleResponse::Init(pData, dataLength);
-		if(mIsValid && (dataLength >= 4 + sizeof(uns16) * CYCLETIME_METHODE_ENUM_SIZE))
+		if(SimpleResponse::Init(pData, dataLength)
+		&& (dataLength >= 4 + sizeof(mCycletimes[0]) * CYCLETIME_METHODE_ENUM_SIZE))
 		{
-			for (unsigned int i = 0; i < CYCLETIME_METHODE_ENUM_SIZE && i < dataLength / sizeof(uns16); i++)
+			for(size_t i = 0; i < CYCLETIME_METHODE_ENUM_SIZE && i < dataLength / sizeof(uns16); i++)
 			{
-				mCycletimes[i] = ntohs(pData->data.get_max_cycle_times[i]);
+				mCycletimes[i] = ntohs(pData.data.get_max_cycle_times[i]);
 			}
+			return true;
 		}
+		return false;
+	};
+
+	std::string ToString(void) const
+	{
+		std::stringstream stream;
+		stream << *this;
+		std::string temp;
+		stream >> temp;
+		return temp;
 	};
 
 	friend std::ostream& operator<< (std::ostream& out, const CycletimeResponse& ref)
 	{
-		if(ref.mIsValid)
+		out << "Cycletimes: \n";
+		for( unsigned int i = 0; i < CYCLETIME_METHODE_ENUM_SIZE; i++)
 		{
-			out << "Cycletimes: \n";
-			for( unsigned int i = 0; i < CYCLETIME_METHODE_ENUM_SIZE; i++)
-			{
-				out << std::setw(3) << std::dec << i + 1 << ": " << std::setw(8) << std::dec << ref.mCycletimes[i] << " us\n";
-			}
-
+			out << std::setw(3) << std::dec << i + 1 << ": " << std::setw(8) << std::dec << ref.mCycletimes[i] << " us\n";
 		}
 		return out;
 	};
 
 private:
-	uns16 mCycletimes[CYCLETIME_METHODE_ENUM_SIZE];
+	uint16_t mCycletimes[CYCLETIME_METHODE_ENUM_SIZE];
 };
 
 class TracebufferResponse : public SimpleResponse
 {
 public:
 	TracebufferResponse(void) : SimpleResponse(GET_TRACE), mMessageLength(0) {};
-	void Init(response_frame* pData, size_t dataLength)
+	bool Init(response_frame& pData, size_t dataLength)
 	{
-		SimpleResponse::Init(pData, dataLength);
-		if(mIsValid)
+		if(SimpleResponse::Init(pData, dataLength)
+		&& dataLength - 4 < sizeof(mTracebuffer))
 		{
+			//TODO test this: mTraceMessage = std::string((char*)pData.data.get_trace_string, dataLength - 4);
 			mMessageLength = (unsigned int)dataLength - 4;
-			memcpy(mTracebuffer, pData->data.get_trace_string, dataLength);
+			memcpy(mTracebuffer, pData.data.get_trace_string, mMessageLength);
+			mTracebuffer[mMessageLength] = '\0';
+			return true;
 		}
+		return false;
+	};
+
+	std::string ToString(void) const
+	{
+		std::stringstream stream;
+		stream << *this;
+		std::string temp;
+		stream >> temp;
+		return temp;
 	};
 
 	friend std::ostream& operator<< (std::ostream& out, const TracebufferResponse& ref)
 	{
-		if(ref.mIsValid)
-		{
-			out << "Tracebuffercontent: ";
-			for(unsigned int i = 0; i < ref.mMessageLength; i++) out << ref.mTracebuffer[i];
+		out << "Tracebuffercontent: ";
+		for(unsigned int i = 0; i < ref.mMessageLength; i++) {
+			out << ref.mTracebuffer[i];
 		}
 		return out;
 	};
 	
 private:
+	//TODO std::string mTraceMessage;
 	char mTracebuffer[RingBufferSize];
-	unsigned int mMessageLength;
+	size_t mMessageLength;
 };
 
 class FirmwareVersionResponse : public SimpleResponse
 {
 public:
 	FirmwareVersionResponse(void) : SimpleResponse(GET_FW_VERSION) {};
-	void Init(response_frame* pData, size_t dataLength)
+	bool Init(response_frame& pData, size_t dataLength)
 	{
-		SimpleResponse::Init(pData, dataLength);
-		if(mIsValid && (dataLength >= 4 + sizeof(struct cmd_get_fw_version)))
+		if(SimpleResponse::Init(pData, dataLength)
+		&& (dataLength >= 4 + sizeof(struct cmd_get_fw_version)))
 		{
-			mFwVersion = pData->data.version;
+			mFwVersion = pData.data.version;
+			return true;
 		}
+		return false;
+	};
+
+	std::string ToString(void) const
+	{
+		std::stringstream stream;
+		stream << *this;
+		std::string temp;
+		stream >> temp;
+		return temp;
 	};
 
 	friend std::ostream& operator<< (std::ostream& out, const FirmwareVersionResponse& ref)

@@ -52,13 +52,13 @@ size_t ComProxy::Recv(uint8_t* pBuffer, const size_t length, timeval* pTimeout, 
 	throw ConnectionTimeout("Receive response timed out");
 }
 
-size_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const throw(ConnectionTimeout, FatalError)
+size_t ComProxy::Send(const BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const throw(ConnectionTimeout, FatalError)
 {
 	Trace(ZONE_INFO, "%zu pure bytes\n", req.GetSize());
 	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
 }
 
-size_t ComProxy::Send(const struct cmd_frame* pFrame, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout)
+size_t ComProxy::Send(const struct cmd_frame* pFrame, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout, FatalError)
 {
 	return Send(reinterpret_cast<const uint8_t*>(pFrame), pFrame->length, reinterpret_cast<uint8_t*>(pResponse), responseSize, true, false, false);
 }
@@ -76,8 +76,7 @@ size_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_t
 	maskBuffer.Mask(pRequest, pRequest + requestSize, crcInLittleEndian);
 	if(maskBuffer.Size() != mSock.Send(maskBuffer.Data(), maskBuffer.Size()))
 	{
-		Trace(ZONE_ERROR, "socket->Send() failed\n");
-		return 0;
+		throw FatalError("mSock.Send() failed");
 	}
 
 	/* wait for a response? */
