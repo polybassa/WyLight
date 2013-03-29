@@ -91,7 +91,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#ifndef _BL_REQUEST_H_</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define _BL_REQUEST_H_</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="wifly__cmd_8h.html">wifly_cmd.h</a>&quot;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;wifly_cmd.h&quot;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;cassert&gt;</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;cstring&gt;</span></div>
@@ -111,9 +111,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00039"></a><span class="lineno"><a class="code" href="_bl_request_8h.html#a5f45dd63fc17090ece1b40b668195185">   39</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define EEPROM_WRITE_BLOCKSIZE 256</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno"><a class="code" href="_bl_request_8h.html#ae3ef7bba113f663df6996f286b632a3f">   40</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define EEPROM_SIZE 1024</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno"><a class="code" href="_bl_request_8h.html#a337faffcba6453b5274eb476376ebfb9">   41</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define BL_AUTOSTART_ADDRESS 0x3ff</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor"></span><span class="keyword">static</span> <span class="keyword">const</span> uint8_t BL_STX = <a class="code" href="wifly__cmd_8h.html#aacd744a917e61146ec8b7175b4761683">STX</a>;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> uint8_t BL_ETX = <a class="code" href="wifly__cmd_8h.html#af02558e983dd26832a852bf186ed6726">ETX</a>;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> uint8_t BL_DLE = <a class="code" href="wifly__cmd_8h.html#add7018db64fb17dd1e4664b4494be0ee">DLE</a>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor"></span><span class="keyword">static</span> <span class="keyword">const</span> uint8_t BL_STX = STX;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> uint8_t BL_ETX = ETX;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> uint8_t BL_DLE = DLE;</div>
 <div class="line"><a name="l00045"></a><span class="lineno"><a class="code" href="_bl_request_8h.html#adc31e4bc6e9c1cdbed276862a52f09cf">   45</a></span>&#160;<span class="preprocessor">#define BL_CRTL_CHAR_NUM 3</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno"><a class="code" href="_bl_request_8h.html#ab6d0d55d09ff97aaf075361fd7a6e61e">   46</a></span>&#160;<span class="preprocessor"></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="_bl_request_8h.html#ab6d0d55d09ff97aaf075361fd7a6e61e">IsCtrlChar</a>(uint8_t X) { <span class="keywordflow">return</span> (((X)==BL_STX) || ((X)==BL_ETX) || ((X)==BL_DLE)); }</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
@@ -303,7 +303,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 15:21:32 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:27:42 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

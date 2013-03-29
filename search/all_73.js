@@ -6,9 +6,6 @@ var searchData=
   ['send',['Send',['../class_client_socket.html#ad53cfcbf3eebbfb8b8314f58d3354edd',1,'ClientSocket::Send()'],['../class_tcp_socket.html#add01c46a43a1663da73ec620dd9ad5ef',1,'TcpSocket::Send()'],['../class_udp_socket.html#a434383e163f13643cff11a2cdf59961a',1,'UdpSocket::Send()'],['../class_com_proxy.html#a8c665ae8f978d295196dbb9d0f609494',1,'ComProxy::Send(BlRequest &amp;req, uint8_t *pResponse, size_t responseSize, bool doSync=true) const '],['../class_com_proxy.html#a356ff2e48f92c1b80d2aab7e9f32bbe9',1,'ComProxy::Send(struct cmd_frame const *pFrame, response_frame *pResponse, size_t responseSize) const '],['../class_telnet_proxy.html#a3a00f8fc67d35112929ca9e664c3197a',1,'TelnetProxy::Send()']]],
   ['sendstring',['SendString',['../class_telnet_proxy.html#aa9ea9a5af4c1f58f2cc8c6edfa1501ae',1,'TelnetProxy']]],
   ['sensor',['sensor',['../struct_broadcast_message.html#adfe11beb5dc63400e112cfe2bf59fd0b',1,'BroadcastMessage']]],
-  ['set_5fcolor_5fdirect',['SET_COLOR_DIRECT',['../wifly__cmd_8h.html#a0a54c492d1f226048a77c64146c997e8',1,'wifly_cmd.h']]],
-  ['set_5ffade',['SET_FADE',['../wifly__cmd_8h.html#adaa7739b3f2ee6faea8c9c93331cf15e',1,'wifly_cmd.h']]],
-  ['set_5frtc',['SET_RTC',['../wifly__cmd_8h.html#a7ebe68dabb3864696a8a466499fbc37d',1,'wifly_cmd.h']]],
   ['setaddress',['SetAddress',['../struct_bl_address_request.html#add81e2ca67af34bf1c94e175a57656bf',1,'BlAddressRequest']]],
   ['setaddressnumbytes',['SetAddressNumBytes',['../struct_bl_read_request.html#ad5aba1ab1c446945f62f05b21d3fac4d',1,'BlReadRequest']]],
   ['setdata',['SetData',['../struct_bl_eeprom_write_request.html#afbd5e65c2c49791b2812d965fea7ca51',1,'BlEepromWriteRequest::SetData()'],['../struct_bl_flash_write_request.html#acf26fc08c3d7fe8d36cc195faee09ac8',1,'BlFlashWriteRequest::SetData()']]],
@@ -18,12 +15,10 @@ var searchData=
   ['size',['Size',['../class_base_buffer.html#ac1a14b6abab04b72a87ac7da40c6273d',1,'BaseBuffer::Size()'],['../classintelhex.html#afa757932ec420f977d33bb9a2d5a0a69',1,'intelhex::size()']]],
   ['sizehigh',['sizeHigh',['../struct_bl_info.html#a17fd7e3d13075c98cb3589a5670eaa27',1,'BlInfo']]],
   ['sizelow',['sizeLow',['../struct_bl_info.html#af53fd31e97f796089198cf77681ba9cb',1,'BlInfo']]],
-  ['start_5fbl',['START_BL',['../wifly__cmd_8h.html#a4326b9c6fade091231e80b968a60a706',1,'wifly_cmd.h']]],
   ['startaddress',['startAddress',['../classintelhex.html#aa8833665b99f0b6ac64fcef7d2116c42',1,'intelhex']]],
   ['starthigh',['startHigh',['../struct_bl_info.html#a952bed33ae2583318cb548e5af1ee0f7',1,'BlInfo']]],
   ['startlow',['startLow',['../struct_bl_info.html#a4d08750ac1951abfae43f350f11e6e74',1,'BlInfo']]],
   ['startu',['startU',['../struct_bl_info.html#ad0ff495d980e4852f048e4b8f3f937aa',1,'BlInfo']]],
   ['stop',['Stop',['../class_broadcast_receiver.html#ab0f0852ab37655f23bebaca888216502',1,'BroadcastReceiver']]],
-  ['stop_5fmsg',['STOP_MSG',['../class_broadcast_receiver.html#a6c365a7403457725e25c3124868fd6d9',1,'BroadcastReceiver']]],
-  ['stx',['STX',['../wifly__cmd_8h.html#aacd744a917e61146ec8b7175b4761683',1,'wifly_cmd.h']]]
+  ['stop_5fmsg',['STOP_MSG',['../class_broadcast_receiver.html#a6c365a7403457725e25c3124868fd6d9',1,'BroadcastReceiver']]]
 ];

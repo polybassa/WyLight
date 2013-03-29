@@ -1,9 +1,5 @@
 var searchData=
 [
-  ['get_5fcycletime',['GET_CYCLETIME',['../wifly__cmd_8h.html#ad85137e75446e2830debd36ea2bbbb86',1,'wifly_cmd.h']]],
-  ['get_5ffw_5fversion',['GET_FW_VERSION',['../wifly__cmd_8h.html#abe765b488fd74814d88b642a2a5ad40f',1,'wifly_cmd.h']]],
-  ['get_5frtc',['GET_RTC',['../wifly__cmd_8h.html#a0757333a90fd4e4ce2caa450615fa38b',1,'wifly_cmd.h']]],
-  ['get_5ftrace',['GET_TRACE',['../wifly__cmd_8h.html#a287bce07d738d5f6c3fb093350833d0b',1,'wifly_cmd.h']]],
   ['getaddress',['GetAddress',['../struct_bl_info.html#a54a7c7a8982f9ed99517977a9089da62',1,'BlInfo']]],
   ['getdata',['getData',['../classintelhex.html#a01f7799f7a86e45c28b713e9472a8a5a',1,'intelhex::getData(unsigned char *data)'],['../classintelhex.html#a6596b518a9a832ed8e6ba21a0e07861c',1,'intelhex::getData(unsigned char *data, unsigned long address)'],['../struct_bl_request.html#aa96361ac208e80204a36870f79f90a83',1,'BlRequest::GetData()']]],
   ['getendpoint',['GetEndpoint',['../class_broadcast_receiver.html#a1c487597e1338d5e5fca55f1d89d0eb1',1,'BroadcastReceiver']]],

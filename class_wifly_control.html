@@ -61,6 +61,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -69,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -113,7 +114,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5337818ba998047b8a8cdc738ddf3e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a779ef8b2751c2ddf3cd07c869a73797e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a779ef8b2751c2ddf3cd07c869a73797e">BlReadFwVersion</a> (void) const </td></tr>
 <tr class="separator:a779ef8b2751c2ddf3cd07c869a73797e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26885cabebc9719b1da2d29131517efb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a26885cabebc9719b1da2d29131517efb">BlReadInfo</a> (BlInfo &amp;info) const </td></tr>
+<tr class="memitem:a26885cabebc9719b1da2d29131517efb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a26885cabebc9719b1da2d29131517efb">BlReadInfo</a> (<a class="el" href="struct_bl_info.html">BlInfo</a> &amp;info) const </td></tr>
 <tr class="separator:a26885cabebc9719b1da2d29131517efb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29e6124445a27e1fd26cfccce701cc09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a29e6124445a27e1fd26cfccce701cc09">BlProgramFlash</a> (const std::string &amp;filename)</td></tr>
 <tr class="separator:a29e6124445a27e1fd26cfccce701cc09"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,31 +126,31 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a932d65b7b9346a2bd9ced995fe2239ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad73ecaee1bf99c406c621fb602abf808"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#ad73ecaee1bf99c406c621fb602abf808">ConfSetWlan</a> (const std::string &amp;phrase, const std::string &amp;ssid) const </td></tr>
 <tr class="separator:ad73ecaee1bf99c406c621fb602abf808"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a048e64bf80f176638032fec15f56c793"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a048e64bf80f176638032fec15f56c793">FwClearScript</a> (WiflyResponse &amp;response)</td></tr>
+<tr class="memitem:a048e64bf80f176638032fec15f56c793"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a048e64bf80f176638032fec15f56c793">FwClearScript</a> (<a class="el" href="class_wifly_response.html">WiflyResponse</a> &amp;response)</td></tr>
 <tr class="separator:a048e64bf80f176638032fec15f56c793"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2e0be90ef2dde0af9030b4d0aa23ad7"><td class="memItemLeft" align="right" valign="top">CycletimeResponse &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#ac2e0be90ef2dde0af9030b4d0aa23ad7">FwGetCycletime</a> (CycletimeResponse &amp;response)</td></tr>
+<tr class="memitem:ac2e0be90ef2dde0af9030b4d0aa23ad7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_cycletime_response.html">CycletimeResponse</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#ac2e0be90ef2dde0af9030b4d0aa23ad7">FwGetCycletime</a> (<a class="el" href="class_cycletime_response.html">CycletimeResponse</a> &amp;response)</td></tr>
 <tr class="separator:ac2e0be90ef2dde0af9030b4d0aa23ad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18b6f0a018f94aae19196fc0c2bc472c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a18b6f0a018f94aae19196fc0c2bc472c">FwGetRtc</a> (RtcResponse &amp;response)</td></tr>
+<tr class="memitem:a18b6f0a018f94aae19196fc0c2bc472c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a18b6f0a018f94aae19196fc0c2bc472c">FwGetRtc</a> (<a class="el" href="class_rtc_response.html">RtcResponse</a> &amp;response)</td></tr>
 <tr class="separator:a18b6f0a018f94aae19196fc0c2bc472c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25d9cd36f191da91d23f453f360cc723"><td class="memItemLeft" align="right" valign="top">TracebufferResponse &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a25d9cd36f191da91d23f453f360cc723">FwGetTracebuffer</a> (TracebufferResponse &amp;response)</td></tr>
+<tr class="memitem:a25d9cd36f191da91d23f453f360cc723"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_tracebuffer_response.html">TracebufferResponse</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a25d9cd36f191da91d23f453f360cc723">FwGetTracebuffer</a> (<a class="el" href="class_tracebuffer_response.html">TracebufferResponse</a> &amp;response)</td></tr>
 <tr class="separator:a25d9cd36f191da91d23f453f360cc723"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2eaf82cb4b880b099093e9242bd66b7d"><td class="memItemLeft" align="right" valign="top">FirmwareVersionResponse &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a2eaf82cb4b880b099093e9242bd66b7d">FwGetVersion</a> (FirmwareVersionResponse &amp;response)</td></tr>
+<tr class="memitem:a2eaf82cb4b880b099093e9242bd66b7d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_firmware_version_response.html">FirmwareVersionResponse</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a2eaf82cb4b880b099093e9242bd66b7d">FwGetVersion</a> (<a class="el" href="class_firmware_version_response.html">FirmwareVersionResponse</a> &amp;response)</td></tr>
 <tr class="separator:a2eaf82cb4b880b099093e9242bd66b7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0bcc3ca66256effb309545cf7341f9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#ac0bcc3ca66256effb309545cf7341f9c">FwLoopOn</a> (WiflyResponse &amp;response)</td></tr>
+<tr class="memitem:ac0bcc3ca66256effb309545cf7341f9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#ac0bcc3ca66256effb309545cf7341f9c">FwLoopOn</a> (<a class="el" href="class_wifly_response.html">WiflyResponse</a> &amp;response)</td></tr>
 <tr class="separator:ac0bcc3ca66256effb309545cf7341f9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bcc4ce879e66a60f25c7790e07d3e61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a8bcc4ce879e66a60f25c7790e07d3e61">FwLoopOff</a> (WiflyResponse &amp;response, uint8_t numLoops)</td></tr>
+<tr class="memitem:a8bcc4ce879e66a60f25c7790e07d3e61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a8bcc4ce879e66a60f25c7790e07d3e61">FwLoopOff</a> (<a class="el" href="class_wifly_response.html">WiflyResponse</a> &amp;response, uint8_t numLoops)</td></tr>
 <tr class="separator:a8bcc4ce879e66a60f25c7790e07d3e61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a1bf514798ab57f893dbadfc525c531"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a5a1bf514798ab57f893dbadfc525c531">FwSetColorDirect</a> (WiflyResponse &amp;response, uint8_t *pBuffer, size_t bufferLength)</td></tr>
+<tr class="memitem:a5a1bf514798ab57f893dbadfc525c531"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a5a1bf514798ab57f893dbadfc525c531">FwSetColorDirect</a> (<a class="el" href="class_wifly_response.html">WiflyResponse</a> &amp;response, uint8_t *pBuffer, size_t bufferLength)</td></tr>
 <tr class="separator:a5a1bf514798ab57f893dbadfc525c531"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f6ce3dc38f480fc68574f87983154ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a8f6ce3dc38f480fc68574f87983154ec">FwSetFade</a> (WiflyResponse &amp;response, uint32_t argb, uint16_t fadeTmms=0, uint32_t addr=0xffffffff, bool parallelFade=false)</td></tr>
+<tr class="memitem:a8f6ce3dc38f480fc68574f87983154ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a8f6ce3dc38f480fc68574f87983154ec">FwSetFade</a> (<a class="el" href="class_wifly_response.html">WiflyResponse</a> &amp;response, uint32_t argb, uint16_t fadeTmms=0, uint32_t addr=0xffffffff, bool parallelFade=false)</td></tr>
 <tr class="separator:a8f6ce3dc38f480fc68574f87983154ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c09bac57cb017cb022b190616616975"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a9c09bac57cb017cb022b190616616975">FwSetFade</a> (WiflyResponse &amp;response, const std::string &amp;rgb, uint16_t fadeTmms=0, const std::string &amp;addr=<a class="el" href="class_wifly_control.html#a1fb5f6703533d3ccf68f6e474f51dbce">LEDS_ALL</a>, bool parallelFade=false)</td></tr>
+<tr class="memitem:a9c09bac57cb017cb022b190616616975"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a9c09bac57cb017cb022b190616616975">FwSetFade</a> (<a class="el" href="class_wifly_response.html">WiflyResponse</a> &amp;response, const std::string &amp;rgb, uint16_t fadeTmms=0, const std::string &amp;addr=<a class="el" href="class_wifly_control.html#a1fb5f6703533d3ccf68f6e474f51dbce">LEDS_ALL</a>, bool parallelFade=false)</td></tr>
 <tr class="separator:a9c09bac57cb017cb022b190616616975"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a693a47088f11cba5659e3de44180f710"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a693a47088f11cba5659e3de44180f710">FwSetRtc</a> (SimpleResponse &amp;response, struct tm *timeValue)</td></tr>
+<tr class="memitem:a693a47088f11cba5659e3de44180f710"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a693a47088f11cba5659e3de44180f710">FwSetRtc</a> (<a class="el" href="class_simple_response.html">SimpleResponse</a> &amp;response, struct tm *timeValue)</td></tr>
 <tr class="separator:a693a47088f11cba5659e3de44180f710"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0caceaf85966349061bb6e435bfd557b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a0caceaf85966349061bb6e435bfd557b">FwSetWait</a> (WiflyResponse &amp;response, uint16_t waitTmms)</td></tr>
+<tr class="memitem:a0caceaf85966349061bb6e435bfd557b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a0caceaf85966349061bb6e435bfd557b">FwSetWait</a> (<a class="el" href="class_wifly_response.html">WiflyResponse</a> &amp;response, uint16_t waitTmms)</td></tr>
 <tr class="separator:a0caceaf85966349061bb6e435bfd557b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a155011ac62054bd61d9d29b6a6f5c2f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a155011ac62054bd61d9d29b6a6f5c2f3">FwStartBl</a> (SimpleResponse &amp;response)</td></tr>
+<tr class="memitem:a155011ac62054bd61d9d29b6a6f5c2f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a155011ac62054bd61d9d29b6a6f5c2f3">FwStartBl</a> (<a class="el" href="class_simple_response.html">SimpleResponse</a> &amp;response)</td></tr>
 <tr class="separator:a155011ac62054bd61d9d29b6a6f5c2f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7163d265422cb49fefc935da9e2857c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#ab7163d265422cb49fefc935da9e2857c">FwTest</a> (void)</td></tr>
 <tr class="separator:ab7163d265422cb49fefc935da9e2857c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -442,7 +443,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">void WiflyControl::BlReadInfo </td>
           <td>(</td>
-          <td class="paramtype">BlInfo &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_bl_info.html">BlInfo</a> &amp;&#160;</td>
           <td class="paramname"><em>info</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -565,7 +566,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">void WiflyControl::FwClearScript </td>
           <td>(</td>
-          <td class="paramtype">WiflyResponse &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_wifly_response.html">WiflyResponse</a> &amp;&#160;</td>
           <td class="paramname"><em>response</em></td><td>)</td>
           <td></td>
         </tr>
@@ -586,9 +587,9 @@ Friends</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">CycletimeResponse&amp; WiflyControl::FwGetCycletime </td>
+          <td class="memname"><a class="el" href="class_cycletime_response.html">CycletimeResponse</a>&amp; WiflyControl::FwGetCycletime </td>
           <td>(</td>
-          <td class="paramtype">CycletimeResponse &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_cycletime_response.html">CycletimeResponse</a> &amp;&#160;</td>
           <td class="paramname"><em>response</em></td><td>)</td>
           <td></td>
         </tr>
@@ -612,7 +613,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">void WiflyControl::FwGetRtc </td>
           <td>(</td>
-          <td class="paramtype">RtcResponse &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_rtc_response.html">RtcResponse</a> &amp;&#160;</td>
           <td class="paramname"><em>response</em></td><td>)</td>
           <td></td>
         </tr>
@@ -627,9 +628,9 @@ Friends</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">TracebufferResponse&amp; WiflyControl::FwGetTracebuffer </td>
+          <td class="memname"><a class="el" href="class_tracebuffer_response.html">TracebufferResponse</a>&amp; WiflyControl::FwGetTracebuffer </td>
           <td>(</td>
-          <td class="paramtype">TracebufferResponse &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_tracebuffer_response.html">TracebufferResponse</a> &amp;&#160;</td>
           <td class="paramname"><em>response</em></td><td>)</td>
           <td></td>
         </tr>
@@ -651,9 +652,9 @@ Friends</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">FirmwareVersionResponse&amp; WiflyControl::FwGetVersion </td>
+          <td class="memname"><a class="el" href="class_firmware_version_response.html">FirmwareVersionResponse</a>&amp; WiflyControl::FwGetVersion </td>
           <td>(</td>
-          <td class="paramtype">FirmwareVersionResponse &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_firmware_version_response.html">FirmwareVersionResponse</a> &amp;&#160;</td>
           <td class="paramname"><em>response</em></td><td>)</td>
           <td></td>
         </tr>
@@ -677,7 +678,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">void WiflyControl::FwLoopOff </td>
           <td>(</td>
-          <td class="paramtype">WiflyResponse &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_wifly_response.html">WiflyResponse</a> &amp;&#160;</td>
           <td class="paramname"><em>response</em>, </td>
         </tr>
         <tr>
@@ -711,7 +712,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">void WiflyControl::FwLoopOn </td>
           <td>(</td>
-          <td class="paramtype">WiflyResponse &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_wifly_response.html">WiflyResponse</a> &amp;&#160;</td>
           <td class="paramname"><em>response</em></td><td>)</td>
           <td></td>
         </tr>
@@ -734,7 +735,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">void WiflyControl::FwSetColorDirect </td>
           <td>(</td>
-          <td class="paramtype">WiflyResponse &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_wifly_response.html">WiflyResponse</a> &amp;&#160;</td>
           <td class="paramname"><em>response</em>, </td>
         </tr>
         <tr>
@@ -775,7 +776,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">void WiflyControl::FwSetFade </td>
           <td>(</td>
-          <td class="paramtype">WiflyResponse &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_wifly_response.html">WiflyResponse</a> &amp;&#160;</td>
           <td class="paramname"><em>response</em>, </td>
         </tr>
         <tr>
@@ -830,7 +831,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">void WiflyControl::FwSetFade </td>
           <td>(</td>
-          <td class="paramtype">WiflyResponse &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_wifly_response.html">WiflyResponse</a> &amp;&#160;</td>
           <td class="paramname"><em>response</em>, </td>
         </tr>
         <tr>
@@ -885,7 +886,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">void WiflyControl::FwSetRtc </td>
           <td>(</td>
-          <td class="paramtype">SimpleResponse &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_simple_response.html">SimpleResponse</a> &amp;&#160;</td>
           <td class="paramname"><em>response</em>, </td>
         </tr>
         <tr>
@@ -919,7 +920,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">void WiflyControl::FwSetWait </td>
           <td>(</td>
-          <td class="paramtype">WiflyResponse &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_wifly_response.html">WiflyResponse</a> &amp;&#160;</td>
           <td class="paramname"><em>response</em>, </td>
         </tr>
         <tr>
@@ -953,7 +954,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">void WiflyControl::FwStartBl </td>
           <td>(</td>
-          <td class="paramtype">SimpleResponse &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_simple_response.html">SimpleResponse</a> &amp;&#160;</td>
           <td class="paramname"><em>response</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1080,7 +1081,7 @@ Friends</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 15:24:57 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:27:54 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
