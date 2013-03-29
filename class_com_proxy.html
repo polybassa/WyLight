@@ -70,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -83,6 +83,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_com_proxy-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">ComProxy Class Reference</div>  </div>
@@ -93,15 +95,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a71069fbcb6901649f75f7b816559e061"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a71069fbcb6901649f75f7b816559e061"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ComProxy</b> (const <a class="el" href="class_tcp_socket.html">TcpSocket</a> &amp;sock)</td></tr>
+<tr class="memitem:a71069fbcb6901649f75f7b816559e061"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_com_proxy.html#a71069fbcb6901649f75f7b816559e061">ComProxy</a> (const <a class="el" href="class_tcp_socket.html">TcpSocket</a> &amp;sock)</td></tr>
 <tr class="separator:a71069fbcb6901649f75f7b816559e061"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c665ae8f978d295196dbb9d0f609494"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c665ae8f978d295196dbb9d0f609494"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>Send</b> (<a class="el" href="struct_bl_request.html">BlRequest</a> &amp;req, uint8_t *pResponse, size_t responseSize, bool doSync=true) const   throw (ConnectionTimeout, FatalError)</td></tr>
+<tr class="memitem:a8c665ae8f978d295196dbb9d0f609494"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_com_proxy.html#a8c665ae8f978d295196dbb9d0f609494">Send</a> (<a class="el" href="struct_bl_request.html">BlRequest</a> &amp;req, uint8_t *pResponse, size_t responseSize, bool doSync=true) const   throw (ConnectionTimeout, FatalError)</td></tr>
 <tr class="separator:a8c665ae8f978d295196dbb9d0f609494"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a356ff2e48f92c1b80d2aab7e9f32bbe9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a356ff2e48f92c1b80d2aab7e9f32bbe9"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>Send</b> (struct cmd_frame const *pFrame, response_frame *pResponse, size_t responseSize) const   throw (ConnectionTimeout)</td></tr>
+<tr class="memitem:a356ff2e48f92c1b80d2aab7e9f32bbe9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_com_proxy.html#a356ff2e48f92c1b80d2aab7e9f32bbe9">Send</a> (struct cmd_frame const *pFrame, response_frame *pResponse, size_t responseSize) const   throw (ConnectionTimeout)</td></tr>
 <tr class="separator:a356ff2e48f92c1b80d2aab7e9f32bbe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a5f20bbe1a06e70adf4f9e1706f23c72a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_com_proxy.html#a5f20bbe1a06e70adf4f9e1706f23c72a">Recv</a> (uint8_t *pBuffer, size_t length, timeval *pTimeout=NULL, bool checkCrc=true, bool crcInLittleEndian=true) const   throw (ConnectionTimeout)</td></tr>
+<tr class="separator:a5f20bbe1a06e70adf4f9e1706f23c72a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c6e331100154b06ff88d40d4454bf28"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_com_proxy.html#a9c6e331100154b06ff88d40d4454bf28">Send</a> (uint8_t const *pRequest, const size_t requestSize, uint8_t *pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian=true) const   throw (ConnectionTimeout, FatalError)</td></tr>
+<tr class="separator:a9c6e331100154b06ff88d40d4454bf28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cde9c98726caeea603d1f2d8d2c112c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_com_proxy.html#a2cde9c98726caeea603d1f2d8d2c112c">SyncWithBootloader</a> (void) const   throw (FatalError)</td></tr>
+<tr class="separator:a2cde9c98726caeea603d1f2d8d2c112c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a8a959aedfe026ff4a419d3bd017dfd00"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_tcp_socket.html">TcpSocket</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_com_proxy.html#a8a959aedfe026ff4a419d3bd017dfd00">mSock</a></td></tr>
+<tr class="separator:a8a959aedfe026ff4a419d3bd017dfd00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.</p>
@@ -109,13 +122,264 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>Send</b> (struct cm
 <p>Wifly_Light is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
 <p>Wifly_Light is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
 <p>You should have received a copy of the GNU General Public License along with Wifly_Light. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a71069fbcb6901649f75f7b816559e061"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ComProxy::ComProxy </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_tcp_socket.html">TcpSocket</a> &amp;&#160;</td>
+          <td class="paramname"><em>sock</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a5f20bbe1a06e70adf4f9e1706f23c72a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ComProxy::Recv </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>pBuffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">timeval *&#160;</td>
+          <td class="paramname"><em>pTimeout</em> = <code>NULL</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>checkCrc</em> = <code>true</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>crcInLittleEndian</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const  throw (<a class="el" href="class_connection_timeout.html">ConnectionTimeout</a>)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a8c665ae8f978d295196dbb9d0f609494"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ComProxy::Send </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_bl_request.html">BlRequest</a> &amp;&#160;</td>
+          <td class="paramname"><em>req</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>pResponse</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>responseSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>doSync</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const  throw (<a class="el" href="class_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_fatal_error.html">FatalError</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a356ff2e48f92c1b80d2aab7e9f32bbe9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ComProxy::Send </td>
+          <td>(</td>
+          <td class="paramtype">struct cmd_frame const *&#160;</td>
+          <td class="paramname"><em>pFrame</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">response_frame *&#160;</td>
+          <td class="paramname"><em>pResponse</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>responseSize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const  throw (<a class="el" href="class_connection_timeout.html">ConnectionTimeout</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a9c6e331100154b06ff88d40d4454bf28"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ComProxy::Send </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t const *&#160;</td>
+          <td class="paramname"><em>pRequest</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>requestSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>pResponse</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>responseSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>checkCrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>doSync</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>crcInLittleEndian</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const  throw (<a class="el" href="class_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_fatal_error.html">FatalError</a>)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a2cde9c98726caeea603d1f2d8d2c112c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ComProxy::SyncWithBootloader </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const  throw (<a class="el" href="class_fatal_error.html">FatalError</a>)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a8a959aedfe026ff4a419d3bd017dfd00"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="class_tcp_socket.html">TcpSocket</a>&amp; ComProxy::mSock</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>library/<a class="el" href="_com_proxy_8h_source.html">ComProxy.h</a></li>
+<li>library/<a class="el" href="_com_proxy_8cpp.html">ComProxy.cpp</a></li>
+<li>library/<a class="el" href="_wifly_control__ut_8cpp.html">WiflyControl_ut.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 01:45:36 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:14:23 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

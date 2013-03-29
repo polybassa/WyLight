@@ -70,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -83,6 +83,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="class_endpoint-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -94,32 +95,31 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a155f5e34aad88e781207ffa55666992f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a155f5e34aad88e781207ffa55666992f"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Endpoint</b> (sockaddr_storage &amp;addr, const size_t size, uint16_t port)</td></tr>
+<tr class="memitem:a155f5e34aad88e781207ffa55666992f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_endpoint.html#a155f5e34aad88e781207ffa55666992f">Endpoint</a> (sockaddr_storage &amp;addr, const size_t size, uint16_t port)</td></tr>
 <tr class="separator:a155f5e34aad88e781207ffa55666992f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea663fa6d602bd9b0ee36a0a20c10515"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aea663fa6d602bd9b0ee36a0a20c10515"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Endpoint</b> (uint32_t addr=0, uint16_t port=0)</td></tr>
+<tr class="memitem:aea663fa6d602bd9b0ee36a0a20c10515"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_endpoint.html#aea663fa6d602bd9b0ee36a0a20c10515">Endpoint</a> (uint32_t addr=0, uint16_t port=0)</td></tr>
 <tr class="separator:aea663fa6d602bd9b0ee36a0a20c10515"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ebaa89afaae9dd7b1305532634c2871"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ebaa89afaae9dd7b1305532634c2871"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;</b> (const <a class="el" href="class_endpoint.html">Endpoint</a> &amp;ref) const </td></tr>
+<tr class="memitem:a1ebaa89afaae9dd7b1305532634c2871"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_endpoint.html#a1ebaa89afaae9dd7b1305532634c2871">operator&lt;</a> (const <a class="el" href="class_endpoint.html">Endpoint</a> &amp;ref) const </td></tr>
 <tr class="separator:a1ebaa89afaae9dd7b1305532634c2871"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d0912e7fa4ae54f9402d6833a6d3ae6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2d0912e7fa4ae54f9402d6833a6d3ae6"></a>
-uint64_t&#160;</td><td class="memItemRight" valign="bottom"><b>AsUint64</b> (void) const </td></tr>
+<tr class="memitem:a2d0912e7fa4ae54f9402d6833a6d3ae6"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_endpoint.html#a2d0912e7fa4ae54f9402d6833a6d3ae6">AsUint64</a> (void) const </td></tr>
 <tr class="separator:a2d0912e7fa4ae54f9402d6833a6d3ae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5618578a2aea0258faac2ec166809f61"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5618578a2aea0258faac2ec166809f61"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetIp</b> (void) const </td></tr>
+<tr class="memitem:a5618578a2aea0258faac2ec166809f61"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_endpoint.html#a5618578a2aea0258faac2ec166809f61">GetIp</a> (void) const </td></tr>
 <tr class="separator:a5618578a2aea0258faac2ec166809f61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab314920c2ea906136bb10db9a8b19d9f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab314920c2ea906136bb10db9a8b19d9f"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetPort</b> (void) const </td></tr>
+<tr class="memitem:ab314920c2ea906136bb10db9a8b19d9f"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_endpoint.html#ab314920c2ea906136bb10db9a8b19d9f">GetPort</a> (void) const </td></tr>
 <tr class="separator:ab314920c2ea906136bb10db9a8b19d9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a514014f7d1ee63a7c5a3ed7c8b129526"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a514014f7d1ee63a7c5a3ed7c8b129526"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsValid</b> (void) const </td></tr>
+<tr class="memitem:a514014f7d1ee63a7c5a3ed7c8b129526"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_endpoint.html#a514014f7d1ee63a7c5a3ed7c8b129526">IsValid</a> (void) const </td></tr>
 <tr class="separator:a514014f7d1ee63a7c5a3ed7c8b129526"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:ae189cff17e7a17bfa3be5607895f40ee"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_endpoint.html#ae189cff17e7a17bfa3be5607895f40ee">mAddr</a></td></tr>
+<tr class="separator:ae189cff17e7a17bfa3be5607895f40ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a629fdae27eebf3fca169fef322cace67"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_endpoint.html#a629fdae27eebf3fca169fef322cace67">mPort</a></td></tr>
+<tr class="separator:a629fdae27eebf3fca169fef322cace67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:af3f74b3b812453bb6cc60400dfc0c82c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af3f74b3b812453bb6cc60400dfc0c82c"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;out, const <a class="el" href="class_endpoint.html">Endpoint</a> &amp;ref)</td></tr>
+<tr class="memitem:af3f74b3b812453bb6cc60400dfc0c82c"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_endpoint.html#af3f74b3b812453bb6cc60400dfc0c82c">operator&lt;&lt;</a> (std::ostream &amp;out, const <a class="el" href="class_endpoint.html">Endpoint</a> &amp;ref)</td></tr>
 <tr class="separator:af3f74b3b812453bb6cc60400dfc0c82c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -128,13 +128,285 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
 <p>Wifly_Light is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
 <p>Wifly_Light is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
 <p>You should have received a copy of the GNU General Public License along with Wifly_Light. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a155f5e34aad88e781207ffa55666992f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Endpoint::Endpoint </td>
+          <td>(</td>
+          <td class="paramtype">sockaddr_storage &amp;&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>port</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aea663fa6d602bd9b0ee36a0a20c10515"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Endpoint::Endpoint </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>addr</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>port</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a2d0912e7fa4ae54f9402d6833a6d3ae6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t Endpoint::AsUint64 </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a5618578a2aea0258faac2ec166809f61"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t Endpoint::GetIp </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab314920c2ea906136bb10db9a8b19d9f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t Endpoint::GetPort </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a514014f7d1ee63a7c5a3ed7c8b129526"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Endpoint::IsValid </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1ebaa89afaae9dd7b1305532634c2871"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Endpoint::operator&lt; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_endpoint.html">Endpoint</a> &amp;&#160;</td>
+          <td class="paramname"><em>ref</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a class="anchor" id="af3f74b3b812453bb6cc60400dfc0c82c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="class_endpoint.html">Endpoint</a> &amp;&#160;</td>
+          <td class="paramname"><em>ref</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="ae189cff17e7a17bfa3be5607895f40ee"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t Endpoint::mAddr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a629fdae27eebf3fca169fef322cace67"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t Endpoint::mPort</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>library/<a class="el" href="_endpoint_8h_source.html">Endpoint.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 01:45:37 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:14:24 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

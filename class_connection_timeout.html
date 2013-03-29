@@ -70,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -88,6 +88,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">ConnectionTimeout Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="_wifly_control_exception_8h_source.html">WiflyControlException.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for ConnectionTimeout:</div>
 <div class="dyncontent">
@@ -100,28 +102,52 @@ Inheritance diagram for ConnectionTimeout:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aad47e4fb39b39ba1d31c8c2ab9604b7d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aad47e4fb39b39ba1d31c8c2ab9604b7d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ConnectionTimeout</b> (const std::string &amp;description)</td></tr>
+<tr class="memitem:aad47e4fb39b39ba1d31c8c2ab9604b7d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connection_timeout.html#aad47e4fb39b39ba1d31c8c2ab9604b7d">ConnectionTimeout</a> (const std::string &amp;description)</td></tr>
 <tr class="separator:aad47e4fb39b39ba1d31c8c2ab9604b7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_fatal_error"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_fatal_error')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_fatal_error.html">FatalError</a></td></tr>
-<tr class="memitem:aaa9f59404db32566da96acf868509817 inherit pub_methods_class_fatal_error"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa9f59404db32566da96acf868509817"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>FatalError</b> (const std::string &amp;description)  throw ()</td></tr>
+<tr class="memitem:aaa9f59404db32566da96acf868509817 inherit pub_methods_class_fatal_error"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fatal_error.html#aaa9f59404db32566da96acf868509817">FatalError</a> (const std::string &amp;description)  throw ()</td></tr>
 <tr class="separator:aaa9f59404db32566da96acf868509817 inherit pub_methods_class_fatal_error"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3efb05890de21cb4e0e0b548c2eb6be inherit pub_methods_class_fatal_error"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fatal_error.html#ad3efb05890de21cb4e0e0b548c2eb6be">~FatalError</a> (void)  throw ()</td></tr>
+<tr class="separator:ad3efb05890de21cb4e0e0b548c2eb6be inherit pub_methods_class_fatal_error"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_class_fatal_error"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_fatal_error')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_fatal_error.html">FatalError</a></td></tr>
-<tr class="memitem:a1212bcbefda9c186177be682576f4e00 inherit pro_attribs_class_fatal_error"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1212bcbefda9c186177be682576f4e00"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>mDescription</b></td></tr>
+<tr class="memitem:a1212bcbefda9c186177be682576f4e00 inherit pro_attribs_class_fatal_error"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fatal_error.html#a1212bcbefda9c186177be682576f4e00">mDescription</a></td></tr>
 <tr class="separator:a1212bcbefda9c186177be682576f4e00 inherit pro_attribs_class_fatal_error"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="aad47e4fb39b39ba1d31c8c2ab9604b7d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ConnectionTimeout::ConnectionTimeout </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>description</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>library/<a class="el" href="_wifly_control_exception_8h_source.html">WiflyControlException.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 01:45:36 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:14:24 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

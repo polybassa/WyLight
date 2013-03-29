@@ -70,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -83,6 +83,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="classintelhex-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -133,8 +135,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aff915b320f5a4c2d84340fa57c99499c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#aff915b320f5a4c2d84340fa57c99499c">endOfData</a> ()</td></tr>
 <tr class="memdesc:aff915b320f5a4c2d84340fa57c99499c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if we have reached end of available data.  <a href="#aff915b320f5a4c2d84340fa57c99499c"></a><br/></td></tr>
 <tr class="separator:aff915b320f5a4c2d84340fa57c99499c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2bd5b567207303d4d9f4322e6262d6d6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2bd5b567207303d4d9f4322e6262d6d6"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> ()</td></tr>
+<tr class="memitem:a2bd5b567207303d4d9f4322e6262d6d6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a2bd5b567207303d4d9f4322e6262d6d6">empty</a> ()</td></tr>
 <tr class="separator:a2bd5b567207303d4d9f4322e6262d6d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83b54457c121b0f35b21b78fa2ecd712"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a83b54457c121b0f35b21b78fa2ecd712">jumpTo</a> (unsigned long address)</td></tr>
 <tr class="memdesc:a83b54457c121b0f35b21b78fa2ecd712"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves the address pointer to the desired address.  <a href="#a83b54457c121b0f35b21b78fa2ecd712"></a><br/></td></tr>
@@ -163,35 +164,25 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> ()</td></tr
 <tr class="memitem:a71096983db3c24a5ac9b95663937a4ce"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a71096983db3c24a5ac9b95663937a4ce">insertData</a> (unsigned char data)</td></tr>
 <tr class="memdesc:a71096983db3c24a5ac9b95663937a4ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts desired byte at the current address pointer.  <a href="#a71096983db3c24a5ac9b95663937a4ce"></a><br/></td></tr>
 <tr class="separator:a71096983db3c24a5ac9b95663937a4ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00ff4c491fabc5ef207071358e1b9298"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a00ff4c491fabc5ef207071358e1b9298"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>insertData</b> (unsigned char data, unsigned long address)</td></tr>
+<tr class="memitem:a00ff4c491fabc5ef207071358e1b9298"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a00ff4c491fabc5ef207071358e1b9298">insertData</a> (unsigned char data, unsigned long address)</td></tr>
 <tr class="separator:a00ff4c491fabc5ef207071358e1b9298"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4fc2715f4c63d3f31e8d2b0533583e5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab4fc2715f4c63d3f31e8d2b0533583e5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>overwriteData</b> (unsigned char data)</td></tr>
+<tr class="memitem:ab4fc2715f4c63d3f31e8d2b0533583e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#ab4fc2715f4c63d3f31e8d2b0533583e5">overwriteData</a> (unsigned char data)</td></tr>
 <tr class="separator:ab4fc2715f4c63d3f31e8d2b0533583e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83edcd2329cb52a4bab6bb46463184d7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a83edcd2329cb52a4bab6bb46463184d7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>overwriteData</b> (unsigned char data, unsigned long address)</td></tr>
+<tr class="memitem:a83edcd2329cb52a4bab6bb46463184d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a83edcd2329cb52a4bab6bb46463184d7">overwriteData</a> (unsigned char data, unsigned long address)</td></tr>
 <tr class="separator:a83edcd2329cb52a4bab6bb46463184d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5de5cf10103fc307127f9017f3e5cd76"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5de5cf10103fc307127f9017f3e5cd76"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>blankFill</b> (unsigned char data)</td></tr>
+<tr class="memitem:a5de5cf10103fc307127f9017f3e5cd76"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a5de5cf10103fc307127f9017f3e5cd76">blankFill</a> (unsigned char data)</td></tr>
 <tr class="separator:a5de5cf10103fc307127f9017f3e5cd76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84bbd449bb55e218b62ea73e2b399196"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a84bbd449bb55e218b62ea73e2b399196"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>blankFill</b> (unsigned char *const data, unsigned long sizeOfData)</td></tr>
+<tr class="memitem:a84bbd449bb55e218b62ea73e2b399196"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a84bbd449bb55e218b62ea73e2b399196">blankFill</a> (unsigned char *const data, unsigned long sizeOfData)</td></tr>
 <tr class="separator:a84bbd449bb55e218b62ea73e2b399196"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf6f77af7a82623ef16471f105ac3fe7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaf6f77af7a82623ef16471f105ac3fe7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>blankFill</b> (unsigned char *const data, unsigned long sizeOfData, unsigned long <a class="el" href="classintelhex.html#a9b159bea81eb832e37f6cf88a57ca659">endAddress</a>)</td></tr>
+<tr class="memitem:aaf6f77af7a82623ef16471f105ac3fe7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#aaf6f77af7a82623ef16471f105ac3fe7">blankFill</a> (unsigned char *const data, unsigned long sizeOfData, unsigned long <a class="el" href="classintelhex.html#a9b159bea81eb832e37f6cf88a57ca659">endAddress</a>)</td></tr>
 <tr class="separator:aaf6f77af7a82623ef16471f105ac3fe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c26ba3dc9dd4f3021bb6c7f6983388f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c26ba3dc9dd4f3021bb6c7f6983388f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>blankFillRandom</b> ()</td></tr>
+<tr class="memitem:a9c26ba3dc9dd4f3021bb6c7f6983388f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a9c26ba3dc9dd4f3021bb6c7f6983388f">blankFillRandom</a> ()</td></tr>
 <tr class="separator:a9c26ba3dc9dd4f3021bb6c7f6983388f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1dbcbf3df1aaafd518882c882f43f76"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa1dbcbf3df1aaafd518882c882f43f76"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>blankFillRandom</b> (unsigned long <a class="el" href="classintelhex.html#a9b159bea81eb832e37f6cf88a57ca659">endAddress</a>)</td></tr>
+<tr class="memitem:aa1dbcbf3df1aaafd518882c882f43f76"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#aa1dbcbf3df1aaafd518882c882f43f76">blankFillRandom</a> (unsigned long <a class="el" href="classintelhex.html#a9b159bea81eb832e37f6cf88a57ca659">endAddress</a>)</td></tr>
 <tr class="separator:aa1dbcbf3df1aaafd518882c882f43f76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e5c67fccc34c78e6dbd28f4b795fb0f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2e5c67fccc34c78e6dbd28f4b795fb0f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>blankFillAddressLowByte</b> ()</td></tr>
+<tr class="memitem:a2e5c67fccc34c78e6dbd28f4b795fb0f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a2e5c67fccc34c78e6dbd28f4b795fb0f">blankFillAddressLowByte</a> ()</td></tr>
 <tr class="separator:a2e5c67fccc34c78e6dbd28f4b795fb0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7b16f457563da93569b9812fafb9e7d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab7b16f457563da93569b9812fafb9e7d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>blankFillAddressLowByte</b> (unsigned long <a class="el" href="classintelhex.html#a9b159bea81eb832e37f6cf88a57ca659">endAddress</a>)</td></tr>
+<tr class="memitem:ab7b16f457563da93569b9812fafb9e7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#ab7b16f457563da93569b9812fafb9e7d">blankFillAddressLowByte</a> (unsigned long <a class="el" href="classintelhex.html#a9b159bea81eb832e37f6cf88a57ca659">endAddress</a>)</td></tr>
 <tr class="separator:ab7b16f457563da93569b9812fafb9e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05a19e1e9f1eb493a8d0bc29db88683f"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a05a19e1e9f1eb493a8d0bc29db88683f">getNoWarnings</a> ()</td></tr>
 <tr class="memdesc:a05a19e1e9f1eb493a8d0bc29db88683f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns number of unread warning messages.  <a href="#a05a19e1e9f1eb493a8d0bc29db88683f"></a><br/></td></tr>
@@ -205,16 +196,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>blankFillAddressLowBy
 <tr class="memitem:a6609fd1c57a650c45a1961f6318d643e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a6609fd1c57a650c45a1961f6318d643e">popNextError</a> (string &amp;error)</td></tr>
 <tr class="memdesc:a6609fd1c57a650c45a1961f6318d643e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pop next error message from the list of errors.  <a href="#a6609fd1c57a650c45a1961f6318d643e"></a><br/></td></tr>
 <tr class="separator:a6609fd1c57a650c45a1961f6318d643e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94d6d17ba22263a4775d80b2a0e6e95f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a94d6d17ba22263a4775d80b2a0e6e95f">getStartSegmentAddress</a> (unsigned short *ipRegister, unsigned short *csRegister)</td></tr>
+<tr class="memitem:a94d6d17ba22263a4775d80b2a0e6e95f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a94d6d17ba22263a4775d80b2a0e6e95f">getStartSegmentAddress</a> (unsigned short *<a class="el" href="classintelhex.html#acf63100ba6ba58da893f29596560efbd">ipRegister</a>, unsigned short *<a class="el" href="classintelhex.html#aabbf5689bc667734dca7f23a11d3df68">csRegister</a>)</td></tr>
 <tr class="memdesc:a94d6d17ba22263a4775d80b2a0e6e95f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns segment start address for the IP and ES registers.  <a href="#a94d6d17ba22263a4775d80b2a0e6e95f"></a><br/></td></tr>
 <tr class="separator:a94d6d17ba22263a4775d80b2a0e6e95f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7bc61f72756d37509e768906733ba10b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a7bc61f72756d37509e768906733ba10b">getStartLinearAddress</a> (unsigned long *eipRegister)</td></tr>
+<tr class="memitem:a7bc61f72756d37509e768906733ba10b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a7bc61f72756d37509e768906733ba10b">getStartLinearAddress</a> (unsigned long *<a class="el" href="classintelhex.html#abedd6ca388d3cad1d2525abc5939d27e">eipRegister</a>)</td></tr>
 <tr class="memdesc:a7bc61f72756d37509e768906733ba10b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns segment linear address for the EIP register.  <a href="#a7bc61f72756d37509e768906733ba10b"></a><br/></td></tr>
 <tr class="separator:a7bc61f72756d37509e768906733ba10b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9688f0002be870b05d64b5f9fcdeb86b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a9688f0002be870b05d64b5f9fcdeb86b">setStartSegmentAddress</a> (unsigned short ipRegister, unsigned short csRegister)</td></tr>
+<tr class="memitem:a9688f0002be870b05d64b5f9fcdeb86b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a9688f0002be870b05d64b5f9fcdeb86b">setStartSegmentAddress</a> (unsigned short <a class="el" href="classintelhex.html#acf63100ba6ba58da893f29596560efbd">ipRegister</a>, unsigned short <a class="el" href="classintelhex.html#aabbf5689bc667734dca7f23a11d3df68">csRegister</a>)</td></tr>
 <tr class="memdesc:a9688f0002be870b05d64b5f9fcdeb86b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the segment start address for the IP and CS registers.  <a href="#a9688f0002be870b05d64b5f9fcdeb86b"></a><br/></td></tr>
 <tr class="separator:a9688f0002be870b05d64b5f9fcdeb86b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7629ca097b2de02dea37fcaa2dc2709c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a7629ca097b2de02dea37fcaa2dc2709c">setStartLinearAddress</a> (unsigned long eipRegister)</td></tr>
+<tr class="memitem:a7629ca097b2de02dea37fcaa2dc2709c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a7629ca097b2de02dea37fcaa2dc2709c">setStartLinearAddress</a> (unsigned long <a class="el" href="classintelhex.html#abedd6ca388d3cad1d2525abc5939d27e">eipRegister</a>)</td></tr>
 <tr class="memdesc:a7629ca097b2de02dea37fcaa2dc2709c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the segment start address for the EIP register.  <a href="#a7629ca097b2de02dea37fcaa2dc2709c"></a><br/></td></tr>
 <tr class="separator:a7629ca097b2de02dea37fcaa2dc2709c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a489fc3b9c34542def2a5167192b291da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a489fc3b9c34542def2a5167192b291da">segmentAddressingOn</a> ()</td></tr>
@@ -229,6 +220,85 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>blankFillAddressLowBy
 <tr class="memitem:a3958f077a662291bbde3472ea2bcfb4d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a3958f077a662291bbde3472ea2bcfb4d">verboseOff</a> ()</td></tr>
 <tr class="memdesc:a3958f077a662291bbde3472ea2bcfb4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns off textual output to cout during decoding.  <a href="#a3958f077a662291bbde3472ea2bcfb4d"></a><br/></td></tr>
 <tr class="separator:a3958f077a662291bbde3472ea2bcfb4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a5adb32f7af4a3c75fd0745ef2827da9a"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a5adb32f7af4a3c75fd0745ef2827da9a">stringToHex</a> (string value)</td></tr>
+<tr class="separator:a5adb32f7af4a3c75fd0745ef2827da9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af45f701889bcd7e5d25066a69e0f91bf"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#af45f701889bcd7e5d25066a69e0f91bf">ulToHexString</a> (unsigned long value)</td></tr>
+<tr class="separator:af45f701889bcd7e5d25066a69e0f91bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3185843e9397b26ccd330ead0a9a7bed"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a3185843e9397b26ccd330ead0a9a7bed">ucToHexString</a> (unsigned char value)</td></tr>
+<tr class="memdesc:a3185843e9397b26ccd330ead0a9a7bed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an unsigned char to a string in HEX format.  <a href="#a3185843e9397b26ccd330ead0a9a7bed"></a><br/></td></tr>
+<tr class="separator:a3185843e9397b26ccd330ead0a9a7bed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15904358dffd75ddded56657675f3c04"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a15904358dffd75ddded56657675f3c04">ulToString</a> (unsigned long value)</td></tr>
+<tr class="memdesc:a15904358dffd75ddded56657675f3c04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an unsigned long to a string in DEC format.  <a href="#a15904358dffd75ddded56657675f3c04"></a><br/></td></tr>
+<tr class="separator:a15904358dffd75ddded56657675f3c04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58cd289e3cac113630c1925e391e29d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a58cd289e3cac113630c1925e391e29d9">decodeDataRecord</a> (unsigned char recordLength, unsigned long loadOffset, string::const_iterator data)</td></tr>
+<tr class="memdesc:a58cd289e3cac113630c1925e391e29d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decodes the data content of a data record.  <a href="#a58cd289e3cac113630c1925e391e29d9"></a><br/></td></tr>
+<tr class="separator:a58cd289e3cac113630c1925e391e29d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c0be2c34550af96766e32dcbc7cbf37"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a4c0be2c34550af96766e32dcbc7cbf37">addWarning</a> (string warningMessage)</td></tr>
+<tr class="memdesc:a4c0be2c34550af96766e32dcbc7cbf37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a warning message to the warning message list.  <a href="#a4c0be2c34550af96766e32dcbc7cbf37"></a><br/></td></tr>
+<tr class="separator:a4c0be2c34550af96766e32dcbc7cbf37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ad7e4af211dd3aabd79c18f96e9d7f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a1ad7e4af211dd3aabd79c18f96e9d7f7">addError</a> (string errorMessage)</td></tr>
+<tr class="memdesc:a1ad7e4af211dd3aabd79c18f96e9d7f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add an error message to the error message list.  <a href="#a1ad7e4af211dd3aabd79c18f96e9d7f7"></a><br/></td></tr>
+<tr class="separator:a1ad7e4af211dd3aabd79c18f96e9d7f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a5add4e9b26e1c467296bec8a94d4ee65"><td class="memItemLeft" align="right" valign="top">map&lt; unsigned long, unsigned char &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65">ihContent</a></td></tr>
+<tr class="memdesc:a5add4e9b26e1c467296bec8a94d4ee65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container for decoded Intel HEX content.  <a href="#a5add4e9b26e1c467296bec8a94d4ee65"></a><br/></td></tr>
+<tr class="separator:a5add4e9b26e1c467296bec8a94d4ee65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accc24f65b09b8cbe43ec9dba0f315f83"><td class="memItemLeft" align="right" valign="top">map&lt; unsigned long, unsigned <br class="typebreak"/>
+char &gt;::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83">ihIterator</a></td></tr>
+<tr class="memdesc:accc24f65b09b8cbe43ec9dba0f315f83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterator for the container holding the decoded Intel HEX content.  <a href="#accc24f65b09b8cbe43ec9dba0f315f83"></a><br/></td></tr>
+<tr class="separator:accc24f65b09b8cbe43ec9dba0f315f83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4adf41a09983f0f78a11c8fc392c33f8"><td class="memItemLeft" align="right" valign="top">pair&lt; map&lt; unsigned long, <br class="typebreak"/>
+unsigned char &gt;::iterator, <br class="typebreak"/>
+bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a4adf41a09983f0f78a11c8fc392c33f8">ihReturn</a></td></tr>
+<tr class="memdesc:a4adf41a09983f0f78a11c8fc392c33f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pair for the container holding the decoded Intel HEX content.  <a href="#a4adf41a09983f0f78a11c8fc392c33f8"></a><br/></td></tr>
+<tr class="separator:a4adf41a09983f0f78a11c8fc392c33f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacb1421e6ecfde72ec6b164d361442d6"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#aacb1421e6ecfde72ec6b164d361442d6">segmentBaseAddress</a></td></tr>
+<tr class="memdesc:aacb1421e6ecfde72ec6b164d361442d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores segment base address of Intel HEX file.  <a href="#aacb1421e6ecfde72ec6b164d361442d6"></a><br/></td></tr>
+<tr class="separator:aacb1421e6ecfde72ec6b164d361442d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a825c8bbb00069930960d90fe90a1b397"><td class="memItemLeft" >struct {</td></tr>
+<tr class="memitem:a6c6b2cb362c27f2f7278c62682b19f88"><td class="memItemLeft" >&#160;&#160;&#160;unsigned short&#160;&#160;&#160;<a class="el" href="classintelhex.html#aabbf5689bc667734dca7f23a11d3df68">csRegister</a></td></tr>
+<tr class="separator:a6c6b2cb362c27f2f7278c62682b19f88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75318d2c32a371cff35cc28596722825"><td class="memItemLeft" >&#160;&#160;&#160;unsigned short&#160;&#160;&#160;<a class="el" href="classintelhex.html#acf63100ba6ba58da893f29596560efbd">ipRegister</a></td></tr>
+<tr class="separator:a75318d2c32a371cff35cc28596722825"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a884033e8d4a9c4f88bc552cfb323f6bd"><td class="memItemLeft" >&#160;&#160;&#160;bool&#160;&#160;&#160;<a class="el" href="classintelhex.html#ab58b4357deef8e4f0af9817393fc0b6e">exists</a></td></tr>
+<tr class="separator:a884033e8d4a9c4f88bc552cfb323f6bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a825c8bbb00069930960d90fe90a1b397"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a></td></tr>
+<tr class="separator:a825c8bbb00069930960d90fe90a1b397"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0e6c51bedf95a65fd4d79711a254460"><td class="memItemLeft" >struct {</td></tr>
+<tr class="memitem:a023fa12e537bb52053150a5a3e8c9e11"><td class="memItemLeft" >&#160;&#160;&#160;unsigned long&#160;&#160;&#160;<a class="el" href="classintelhex.html#abedd6ca388d3cad1d2525abc5939d27e">eipRegister</a></td></tr>
+<tr class="separator:a023fa12e537bb52053150a5a3e8c9e11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a359c9c580012f84aa63eb08167bc089d"><td class="memItemLeft" >&#160;&#160;&#160;bool&#160;&#160;&#160;<a class="el" href="classintelhex.html#ab58b4357deef8e4f0af9817393fc0b6e">exists</a></td></tr>
+<tr class="separator:a359c9c580012f84aa63eb08167bc089d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0e6c51bedf95a65fd4d79711a254460"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#ac0e6c51bedf95a65fd4d79711a254460">startLinearAddress</a></td></tr>
+<tr class="separator:ac0e6c51bedf95a65fd4d79711a254460"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2207eeb5852e806c2548f6d4380992df"><td class="memItemLeft" >struct {</td></tr>
+<tr class="memitem:a7dd5d2bb0343497cb82691c232d19877"><td class="memItemLeft" >&#160;&#160;&#160;list&lt; string &gt;&#160;&#160;&#160;<a class="el" href="classintelhex.html#a0ae0e9a75bdfaa50d6d0266bb3d56ed1">ihWarnings</a></td></tr>
+<tr class="separator:a7dd5d2bb0343497cb82691c232d19877"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2bce38fc79942d5977603ee0c453759"><td class="memItemLeft" >&#160;&#160;&#160;unsigned long&#160;&#160;&#160;<a class="el" href="classintelhex.html#a5ea3789cc9ea71c9b35322aabca05158">noOfWarnings</a></td></tr>
+<tr class="separator:aa2bce38fc79942d5977603ee0c453759"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2207eeb5852e806c2548f6d4380992df"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a2207eeb5852e806c2548f6d4380992df">msgWarning</a></td></tr>
+<tr class="separator:a2207eeb5852e806c2548f6d4380992df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a722b041577b9810fb0bb7eb4b4e536d7"><td class="memItemLeft" >struct {</td></tr>
+<tr class="memitem:a65c3417b74c4a7baf025ae9eee3b418e"><td class="memItemLeft" >&#160;&#160;&#160;list&lt; string &gt;&#160;&#160;&#160;<a class="el" href="classintelhex.html#a76fb4550b43dfbb08018cabf34298400">ihErrors</a></td></tr>
+<tr class="separator:a65c3417b74c4a7baf025ae9eee3b418e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2449c5cbd6da5f8a3e67d092494632a"><td class="memItemLeft" >&#160;&#160;&#160;unsigned long&#160;&#160;&#160;<a class="el" href="classintelhex.html#a451b78972165b898e91a129670fce919">noOfErrors</a></td></tr>
+<tr class="separator:ad2449c5cbd6da5f8a3e67d092494632a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a722b041577b9810fb0bb7eb4b4e536d7"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a722b041577b9810fb0bb7eb4b4e536d7">msgError</a></td></tr>
+<tr class="separator:a722b041577b9810fb0bb7eb4b4e536d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a757b3e3037a34caf004981aed2a297b6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a757b3e3037a34caf004981aed2a297b6">foundEof</a></td></tr>
+<tr class="memdesc:a757b3e3037a34caf004981aed2a297b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Note that EOF record is found.  <a href="#a757b3e3037a34caf004981aed2a297b6"></a><br/></td></tr>
+<tr class="separator:a757b3e3037a34caf004981aed2a297b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65f440d3762d1b9437b7473c4df3bb8f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a65f440d3762d1b9437b7473c4df3bb8f">verbose</a></td></tr>
+<tr class="memdesc:a65f440d3762d1b9437b7473c4df3bb8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select verbose mode.  <a href="#a65f440d3762d1b9437b7473c4df3bb8f"></a><br/></td></tr>
+<tr class="separator:a65f440d3762d1b9437b7473c4df3bb8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5831ba42a6d900b6b01bade869ac06e7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintelhex.html#a5831ba42a6d900b6b01bade869ac06e7">segmentAddressMode</a></td></tr>
+<tr class="memdesc:a5831ba42a6d900b6b01bade869ac06e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select segment address mode.  <a href="#a5831ba42a6d900b6b01bade869ac06e7"></a><br/></td></tr>
+<tr class="separator:a5831ba42a6d900b6b01bade869ac06e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -331,6 +401,70 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a1ad7e4af211dd3aabd79c18f96e9d7f7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void intelhex::addError </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>errorMessage</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Add an error message to the error message list. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">errorMessage</td><td>- the text to be added for this error </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a4c0be2c34550af96766e32dcbc7cbf37"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void intelhex::addWarning </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>warningMessage</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Add a warning message to the warning message list. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">warningMessage</td><td>- the text to be added for this warning </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="ab2b1119e14a960ea2b356967244aafb3"></a>
 <div class="memitem">
 <div class="memproto">
@@ -361,6 +495,142 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a5de5cf10103fc307127f9017f3e5cd76"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool intelhex::blankFill </td>
+          <td>(</td>
+          <td class="paramtype">unsigned char&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a84bbd449bb55e218b62ea73e2b399196"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool intelhex::blankFill </td>
+          <td>(</td>
+          <td class="paramtype">unsigned char *const&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>sizeOfData</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aaf6f77af7a82623ef16471f105ac3fe7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void intelhex::blankFill </td>
+          <td>(</td>
+          <td class="paramtype">unsigned char *const&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>sizeOfData</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>endAddress</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a2e5c67fccc34c78e6dbd28f4b795fb0f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool intelhex::blankFillAddressLowByte </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab7b16f457563da93569b9812fafb9e7d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void intelhex::blankFillAddressLowByte </td>
+          <td>(</td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>endAddress</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a9c26ba3dc9dd4f3021bb6c7f6983388f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool intelhex::blankFillRandom </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aa1dbcbf3df1aaafd518882c882f43f76"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void intelhex::blankFillRandom </td>
+          <td>(</td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>endAddress</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a631d8930daeaf04bf0d9ad9c25679a0b"></a>
 <div class="memitem">
 <div class="memproto">
@@ -388,6 +658,60 @@ Friends</h2></td></tr>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname">Current</td><td>address being pointed to. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a58cd289e3cac113630c1925e391e29d9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void intelhex::decodeDataRecord </td>
+          <td>(</td>
+          <td class="paramtype">unsigned char&#160;</td>
+          <td class="paramname"><em>recordLength</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>loadOffset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string::const_iterator&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Decodes the data content of a data record. </p>
+<pre class="fragment">     Takes the data element of a data record in string format, converts
+     each 2 char element into a single byte and then inserts that byte of
+     data into the ihContent STL map.
+</pre><dl class="section see"><dt>See Also</dt><dd>encodeDataRecord()</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">recordLength</td><td>- Number of bytes in this record as extracted from this line in the Intel HEX file </td></tr>
+    <tr><td class="paramname">loadOffset</td><td>- The offset from the segment base address for the first byte in this record </td></tr>
+    <tr><td class="paramname">data</td><td>- The data content of the record in a string </td></tr>
   </table>
   </dd>
 </dl>
@@ -426,6 +750,29 @@ Friends</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="a2bd5b567207303d4d9f4322e6262d6d6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool intelhex::empty </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -525,7 +872,7 @@ Friends</h2></td></tr>
 <p>Checks if we have reached end of available data. </p>
 <pre class="fragment">     The internal pointer is checked to see if we have reached the end of 
      the data held in memory
-</pre><dl class="section see"><dt>See Also</dt><dd><a class="el" href="classintelhex.html#a044d6ab5b10a38ffa40a0b1f55b7e808" title="Overloaded prefix increment operator.">operator++()</a>, <a class="el" href="classintelhex.html#ab54337b9681fc0b50e3fdb18ed1714fa" title="Overloaded postfix increment operator.">operator++(int)</a>, operator&ndash;(), operator&ndash;(int), empty()</dd></dl>
+</pre><dl class="section see"><dt>See Also</dt><dd><a class="el" href="classintelhex.html#a044d6ab5b10a38ffa40a0b1f55b7e808" title="Overloaded prefix increment operator.">operator++()</a>, <a class="el" href="classintelhex.html#ab54337b9681fc0b50e3fdb18ed1714fa" title="Overloaded postfix increment operator.">operator++(int)</a>, operator&ndash;(), operator&ndash;(int), <a class="el" href="classintelhex.html#a2bd5b567207303d4d9f4322e6262d6d6">empty()</a></dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname">true</td><td>- reached the end of the Intel HEX data in memory or no data in memory yet. </td></tr>
@@ -846,6 +1193,32 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a00ff4c491fabc5ef207071358e1b9298"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool intelhex::insertData </td>
+          <td>(</td>
+          <td class="paramtype">unsigned char&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>address</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a83b54457c121b0f35b21b78fa2ecd712"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1063,6 +1436,48 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ab4fc2715f4c63d3f31e8d2b0533583e5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void intelhex::overwriteData </td>
+          <td>(</td>
+          <td class="paramtype">unsigned char&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a83edcd2329cb52a4bab6bb46463184d7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void intelhex::overwriteData </td>
+          <td>(</td>
+          <td class="paramtype">unsigned char&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>address</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a6609fd1c57a650c45a1961f6318d643e"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1277,7 +1692,7 @@ Friends</h2></td></tr>
 <p>Checks if we have reached end of available data. </p>
 <pre class="fragment">     The internal pointer is checked to see if we have reached the end of 
      the data held in memory
-</pre><dl class="section see"><dt>See Also</dt><dd><a class="el" href="classintelhex.html#a044d6ab5b10a38ffa40a0b1f55b7e808" title="Overloaded prefix increment operator.">operator++()</a>, <a class="el" href="classintelhex.html#ab54337b9681fc0b50e3fdb18ed1714fa" title="Overloaded postfix increment operator.">operator++(int)</a>, operator&ndash;(), operator&ndash;(int), empty()</dd></dl>
+</pre><dl class="section see"><dt>See Also</dt><dd><a class="el" href="classintelhex.html#a044d6ab5b10a38ffa40a0b1f55b7e808" title="Overloaded prefix increment operator.">operator++()</a>, <a class="el" href="classintelhex.html#ab54337b9681fc0b50e3fdb18ed1714fa" title="Overloaded postfix increment operator.">operator++(int)</a>, operator&ndash;(), operator&ndash;(int), <a class="el" href="classintelhex.html#a2bd5b567207303d4d9f4322e6262d6d6">empty()</a></dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname">true</td><td>- reached the end of the Intel HEX data in memory or no data in memory yet. </td></tr>
@@ -1328,6 +1743,139 @@ Friends</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="a5adb32f7af4a3c75fd0745ef2827da9a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char intelhex::stringToHex </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3185843e9397b26ccd330ead0a9a7bed"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string intelhex::ucToHexString </td>
+          <td>(</td>
+          <td class="paramtype">unsigned char&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts an unsigned char to a string in HEX format. </p>
+<pre class="fragment">     Takes the received paramter and converts it into its equivalent value
+     represented in ASCII and formatted in hexadecimal. Return value is a
+     2 character long string, prefaced with '0' where necessary.
+</pre><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>- a value between 0x00 and 0xFF</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">-</td><td>2-character long string</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Alpha characters are capitalised.</dd></dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classintelhex.html#a5adb32f7af4a3c75fd0745ef2827da9a">stringToHex()</a>, <a class="el" href="classintelhex.html#af45f701889bcd7e5d25066a69e0f91bf">ulToHexString()</a>, <a class="el" href="classintelhex.html#a15904358dffd75ddded56657675f3c04" title="Converts an unsigned long to a string in DEC format.">ulToString()</a> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="af45f701889bcd7e5d25066a69e0f91bf"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string intelhex::ulToHexString </td>
+          <td>(</td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a15904358dffd75ddded56657675f3c04"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string intelhex::ulToString </td>
+          <td>(</td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts an unsigned long to a string in DEC format. </p>
+<pre class="fragment">     Takes the received paramter and converts it into its equivalent value
+     represented in ASCII and formatted in decimal. Return value will never
+     be longer than a 48 character long string.
+</pre><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>- value to be converted</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">-</td><td>ASCII string representation of value</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classintelhex.html#a5adb32f7af4a3c75fd0745ef2827da9a">stringToHex()</a>, <a class="el" href="classintelhex.html#af45f701889bcd7e5d25066a69e0f91bf">ulToHexString()</a>, <a class="el" href="classintelhex.html#a3185843e9397b26ccd330ead0a9a7bed" title="Converts an unsigned char to a string in HEX format.">ucToHexString()</a> </dd></dl>
 
 </div>
 </div>
@@ -1488,13 +2036,320 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="aabbf5689bc667734dca7f23a11d3df68"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned short intelhex::csRegister</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="abedd6ca388d3cad1d2525abc5939d27e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long intelhex::eipRegister</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab58b4357deef8e4f0af9817393fc0b6e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool intelhex::exists</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a757b3e3037a34caf004981aed2a297b6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool intelhex::foundEof</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Note that EOF record is found. </p>
+<p>Used to note that the EOF record was found in order to ensure that it doesn't appear twice during encoding. </p>
+
+</div>
+</div>
+<a class="anchor" id="a5add4e9b26e1c467296bec8a94d4ee65"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">map&lt;unsigned long, unsigned char&gt; intelhex::ihContent</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Container for decoded Intel HEX content. </p>
+<p>STL map holding the addresses found in the Intel HEX file and the associated data byte stored at that address </p>
+
+</div>
+</div>
+<a class="anchor" id="a76fb4550b43dfbb08018cabf34298400"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">list&lt;string&gt; intelhex::ihErrors</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="accc24f65b09b8cbe43ec9dba0f315f83"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">map&lt;unsigned long, unsigned char&gt;::iterator intelhex::ihIterator</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Iterator for the container holding the decoded Intel HEX content. </p>
+<p>This iterator is used by the class to point to the location in memory currently being used to read or write data. If no file has been loaded into memory, it points to the start of ihContent. </p>
+
+</div>
+</div>
+<a class="anchor" id="a4adf41a09983f0f78a11c8fc392c33f8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pair&lt;map&lt;unsigned long, unsigned char&gt;::iterator,bool&gt; intelhex::ihReturn</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pair for the container holding the decoded Intel HEX content. </p>
+<p>This is used to acquire the result of an attempt to insert new data into ihContent. Since the ihContent is a map STL, it can't allow data to be assigned to the same address more than once. In this way we can ensure that no address in a file is falsely assigned data more than once. </p>
+
+</div>
+</div>
+<a class="anchor" id="a0ae0e9a75bdfaa50d6d0266bb3d56ed1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">list&lt;string&gt; intelhex::ihWarnings</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="acf63100ba6ba58da893f29596560efbd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned short intelhex::ipRegister</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a722b041577b9810fb0bb7eb4b4e536d7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct { ... }   intelhex::msgError</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a2207eeb5852e806c2548f6d4380992df"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct { ... }   intelhex::msgWarning</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a451b78972165b898e91a129670fce919"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long intelhex::noOfErrors</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a5ea3789cc9ea71c9b35322aabca05158"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long intelhex::noOfWarnings</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a5831ba42a6d900b6b01bade869ac06e7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool intelhex::segmentAddressMode</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Select segment address mode. </p>
+<p>If true, use the segment addressing mode when encoding files. otherwise the default linear address mode will be used. Please refer to Intel's Hexadecimal Object File Format Specifiation for further information. </p>
+
+</div>
+</div>
+<a class="anchor" id="aacb1421e6ecfde72ec6b164d361442d6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long intelhex::segmentBaseAddress</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Stores segment base address of Intel HEX file. </p>
+<p>The segment base address is a 32-bit address to which the current load offset (as found in a Data Record line of the Intel HEX file) is added to calculate the actual address of the data. The Data Records can only point to a 64kByte address, so the segment base address expands the addressing to 4GB. This variable always holds the last address accessed. This variable is only used during file decoding and encoding in the operator&lt;&lt; and operator&gt;&gt; class member friend functions. </p>
+
+</div>
+</div>
+<a class="anchor" id="ac0e6c51bedf95a65fd4d79711a254460"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct { ... }   intelhex::startLinearAddress</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a825c8bbb00069930960d90fe90a1b397"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct { ... }   intelhex::startSegmentAddress</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a65f440d3762d1b9437b7473c4df3bb8f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool intelhex::verbose</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Select verbose mode. </p>
+<p>Used during development to display messages as the incoming data stream is decoded </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>library/<a class="el" href="intelhexclass_8h_source.html">intelhexclass.h</a></li>
+<li>library/<a class="el" href="intelhexclass_8cpp.html">intelhexclass.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 01:45:39 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:14:26 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

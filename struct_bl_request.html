@@ -70,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -89,6 +89,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">BlRequest Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="_bl_request_8h_source.html">BlRequest.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for BlRequest:</div>
 <div class="dyncontent">
@@ -110,35 +112,161 @@ Inheritance diagram for BlRequest:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3b8671171980b783d25f8491e55e1a58"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3b8671171980b783d25f8491e55e1a58"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BlRequest</b> (size_t size, unsigned char cmd)</td></tr>
+<tr class="memitem:a3b8671171980b783d25f8491e55e1a58"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_bl_request.html#a3b8671171980b783d25f8491e55e1a58">BlRequest</a> (size_t size, unsigned char cmd)</td></tr>
 <tr class="separator:a3b8671171980b783d25f8491e55e1a58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa96361ac208e80204a36870f79f90a83"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa96361ac208e80204a36870f79f90a83"></a>
-const unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><b>GetData</b> () const </td></tr>
+<tr class="memitem:aa96361ac208e80204a36870f79f90a83"><td class="memItemLeft" align="right" valign="top">const unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_bl_request.html#aa96361ac208e80204a36870f79f90a83">GetData</a> () const </td></tr>
 <tr class="separator:aa96361ac208e80204a36870f79f90a83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf1d5f14893458a504180196837dcca3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaf1d5f14893458a504180196837dcca3"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetSize</b> () const </td></tr>
+<tr class="memitem:aaf1d5f14893458a504180196837dcca3"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_bl_request.html#aaf1d5f14893458a504180196837dcca3">GetSize</a> () const </td></tr>
 <tr class="separator:aaf1d5f14893458a504180196837dcca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15810e2347a8b2170030f0c2f98fe4d8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a15810e2347a8b2170030f0c2f98fe4d8"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckCrc</b> () const </td></tr>
+<tr class="memitem:a15810e2347a8b2170030f0c2f98fe4d8"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_bl_request.html#a15810e2347a8b2170030f0c2f98fe4d8">CheckCrc</a> () const </td></tr>
 <tr class="separator:a15810e2347a8b2170030f0c2f98fe4d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:afd0174f556d9d4538de850260e8d08a4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd0174f556d9d4538de850260e8d08a4"></a>
-const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>mSize</b></td></tr>
+<tr class="memitem:afd0174f556d9d4538de850260e8d08a4"><td class="memItemLeft" align="right" valign="top">const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_bl_request.html#afd0174f556d9d4538de850260e8d08a4">mSize</a></td></tr>
 <tr class="separator:afd0174f556d9d4538de850260e8d08a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96c808cdbb7f02eeffcea7ebcdb98d0b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a96c808cdbb7f02eeffcea7ebcdb98d0b"></a>
-const unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>mCmd</b></td></tr>
+<tr class="memitem:a96c808cdbb7f02eeffcea7ebcdb98d0b"><td class="memItemLeft" align="right" valign="top">const unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_bl_request.html#a96c808cdbb7f02eeffcea7ebcdb98d0b">mCmd</a></td></tr>
 <tr class="separator:a96c808cdbb7f02eeffcea7ebcdb98d0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a3b8671171980b783d25f8491e55e1a58"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">BlRequest::BlRequest </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned char&#160;</td>
+          <td class="paramname"><em>cmd</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a15810e2347a8b2170030f0c2f98fe4d8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool BlRequest::CheckCrc </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="struct_bl_run_app_request.html#a63e276cbe52c1aa8a3c5ec3a16e6e21b">BlRunAppRequest</a>, and <a class="el" href="struct_bl_flash_crc16_request.html#a8758fc8e47673ffc02fd7b79596b21d9">BlFlashCrc16Request</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa96361ac208e80204a36870f79f90a83"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const unsigned char* BlRequest::GetData </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aaf1d5f14893458a504180196837dcca3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t BlRequest::GetSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a96c808cdbb7f02eeffcea7ebcdb98d0b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const unsigned char BlRequest::mCmd</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="afd0174f556d9d4538de850260e8d08a4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const size_t BlRequest::mSize</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>library/<a class="el" href="_bl_request_8h_source.html">BlRequest.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 01:45:35 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:14:22 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

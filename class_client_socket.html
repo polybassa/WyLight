@@ -70,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -106,8 +106,8 @@ Inheritance diagram for ClientSocket:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a9ef0e9b489c27a59ddcc5b863d70c5c4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_socket.html#a9ef0e9b489c27a59ddcc5b863d70c5c4">ClientSocket</a> (uint32_t addr, uint16_t port, int style)  throw (FatalError)</td></tr>
 <tr class="separator:a9ef0e9b489c27a59ddcc5b863d70c5c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c8af4fc4f56b62ef0ff7d67037f65a3"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_socket.html#a9c8af4fc4f56b62ef0ff7d67037f65a3">~ClientSocket</a> ()</td></tr>
-<tr class="separator:a9c8af4fc4f56b62ef0ff7d67037f65a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef5d9c1c9b443124b820521276b175ca"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_socket.html#aef5d9c1c9b443124b820521276b175ca">~ClientSocket</a> ()</td></tr>
+<tr class="separator:aef5d9c1c9b443124b820521276b175ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab024bbccfda7b4983177e318b7ac32a7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_socket.html#ab024bbccfda7b4983177e318b7ac32a7">Select</a> (timeval *timeout) const   throw (FatalError)</td></tr>
 <tr class="separator:ab024bbccfda7b4983177e318b7ac32a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad53cfcbf3eebbfb8b8314f58d3354edd"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_socket.html#ad53cfcbf3eebbfb8b8314f58d3354edd">Send</a> (const uint8_t *frame, size_t length) const =0</td></tr>
@@ -174,7 +174,7 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a9c8af4fc4f56b62ef0ff7d67037f65a3"></a>
+<a class="anchor" id="aef5d9c1c9b443124b820521276b175ca"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -182,8 +182,9 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual ClientSocket::~ClientSocket </td>
+          <td class="memname">ClientSocket::~ClientSocket </td>
           <td>(</td>
+          <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -262,7 +263,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Interface to send a data frame with a given length, you have to implement this function in child classes </p>
 
-<p>Implemented in <a class="el" href="class_udp_socket.html#a434383e163f13643cff11a2cdf59961a">UdpSocket</a>, and <a class="el" href="class_tcp_socket.html#add01c46a43a1663da73ec620dd9ad5ef">TcpSocket</a>.</p>
+<p>Implemented in <a class="el" href="class_udp_socket.html#a8985c64bd6d8a3b10c51bb84df253c24">UdpSocket</a>, and <a class="el" href="class_tcp_socket.html#aadee07197b48fb7f50f7e9069fdb8d2d">TcpSocket</a>.</p>
 
 </div>
 </div>
@@ -309,13 +310,18 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>library/<a class="el" href="_client_socket_8h_source.html">ClientSocket.h</a></li>
+<li>library/<a class="el" href="_broadcast_receiver__ut_8cpp.html">BroadcastReceiver_ut.cpp</a></li>
+<li>library/<a class="el" href="_client_socket_8cpp.html">ClientSocket.cpp</a></li>
+<li>library/<a class="el" href="_com_proxy__ut_8cpp.html">ComProxy_ut.cpp</a></li>
+<li>library/<a class="el" href="_telnet_proxy__ut_8cpp.html">TelnetProxy_ut.cpp</a></li>
+<li>library/<a class="el" href="_wifly_control__ut_8cpp.html">WiflyControl_ut.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 01:45:36 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:14:23 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

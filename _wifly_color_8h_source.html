@@ -60,6 +60,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
+      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 <!-- window showing the filter options -->
@@ -67,7 +68,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -86,7 +87,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">WiflyColor.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
+<a href="_wifly_color_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#ifndef __WIFLYCOLOR_H_</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define __WIFLYCOLOR_H_</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor"></span></div>
@@ -100,46 +101,46 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keyword">union</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;              uint8_t asBytes[4];</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;              uint32_t asBigEndianLong;</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="code" href="class_wifly_color.html#a78508053f83c1dcb963a1fdf0127e239">   32</a></span>&#160;              uint8_t <a class="code" href="class_wifly_color.html#a78508053f83c1dcb963a1fdf0127e239">asBytes</a>[4];</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="code" href="class_wifly_color.html#a6af6487d17668e3c40edfd60429f0304">   33</a></span>&#160;              uint32_t <a class="code" href="class_wifly_color.html#a6af6487d17668e3c40edfd60429f0304">asBigEndianLong</a>;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        };</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> uint32_t RED   = 0xffff0000;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> uint32_t GREEN = 0xff00ff00;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> uint32_t BLUE  = 0xff0000ff;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> uint32_t WHITE = 0xffffffff;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> uint32_t BLACK = 0xff000000;</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="code" href="class_wifly_color.html#a9a00937bdf95435aa6e3e41ba5c6708b">   36</a></span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> uint32_t <a class="code" href="class_wifly_color.html#a9a00937bdf95435aa6e3e41ba5c6708b">RED</a>   = 0xffff0000;</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="code" href="class_wifly_color.html#adb9acf98ee5417f6293ae3fa9277237d">   37</a></span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> uint32_t <a class="code" href="class_wifly_color.html#adb9acf98ee5417f6293ae3fa9277237d">GREEN</a> = 0xff00ff00;</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="code" href="class_wifly_color.html#ad63591638c12c2f9c5df743fceef6c43">   38</a></span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> uint32_t <a class="code" href="class_wifly_color.html#ad63591638c12c2f9c5df743fceef6c43">BLUE</a>  = 0xff0000ff;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="code" href="class_wifly_color.html#a746808c029beaa107b15296826f7e462">   39</a></span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> uint32_t <a class="code" href="class_wifly_color.html#a746808c029beaa107b15296826f7e462">WHITE</a> = 0xffffffff;</div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="code" href="class_wifly_color.html#afa045408a6b3f401e8b7d850f120a025">   40</a></span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> uint32_t <a class="code" href="class_wifly_color.html#afa045408a6b3f401e8b7d850f120a025">BLACK</a> = 0xff000000;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
 <div class="line"><a name="l00046"></a><span class="lineno"><a class="code" href="class_wifly_color.html#a0e552c6a422e953415700714ab9db184">   46</a></span>&#160;        <span class="keyword">static</span> uint32_t <a class="code" href="class_wifly_color.html#a0e552c6a422e953415700714ab9db184">ToARGB</a>(<span class="keyword">const</span> std::string&amp; s) {</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <span class="keywordflow">if</span>(s.length() &gt; 8) <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> argb;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="class_wifly_color.html#ac4034056a383f4e8c8beae0586459b8d">argb</a>;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            std::stringstream converter;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            converter &lt;&lt; std::hex &lt;&lt; s;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            converter &gt;&gt; argb;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="keywordflow">return</span> (uint32_t)argb;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            converter &gt;&gt; <a class="code" href="class_wifly_color.html#ac4034056a383f4e8c8beae0586459b8d">argb</a>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="keywordflow">return</span> (uint32_t)<a class="code" href="class_wifly_color.html#ac4034056a383f4e8c8beae0586459b8d">argb</a>;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        };</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <a class="code" href="class_wifly_color.html">WiflyColor</a>(<span class="keyword">const</span> uint32_t argbValue = 0) { argb(argbValue); };</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="code" href="class_wifly_color.html#a68d2fd89ce0c7d55514587c39f97e01c">   55</a></span>&#160;        <a class="code" href="class_wifly_color.html#a68d2fd89ce0c7d55514587c39f97e01c">WiflyColor</a>(<span class="keyword">const</span> uint32_t argbValue = 0) { <a class="code" href="class_wifly_color.html#ac4034056a383f4e8c8beae0586459b8d">argb</a>(argbValue); };</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        uint8_t red()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> asBytes[1]; };</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordtype">void</span> red(uint8_t value) { asBytes[1] = value; };</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="code" href="class_wifly_color.html#ad8523a03d716f35671c4e74f8940eb37">   57</a></span>&#160;        uint8_t <a class="code" href="class_wifly_color.html#ad8523a03d716f35671c4e74f8940eb37">red</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code" href="class_wifly_color.html#a78508053f83c1dcb963a1fdf0127e239">asBytes</a>[1]; };</div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="code" href="class_wifly_color.html#a9397eca76be8f7abb88a84b719d99d6b">   58</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_color.html#a9397eca76be8f7abb88a84b719d99d6b">red</a>(uint8_t value) { <a class="code" href="class_wifly_color.html#a78508053f83c1dcb963a1fdf0127e239">asBytes</a>[1] = value; };</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        uint8_t green()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> asBytes[2]; };</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordtype">void</span> green(uint8_t value) { asBytes[2] = value; };</div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="code" href="class_wifly_color.html#aeba066005ba425225621111ea6b9251f">   60</a></span>&#160;        uint8_t <a class="code" href="class_wifly_color.html#aeba066005ba425225621111ea6b9251f">green</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code" href="class_wifly_color.html#a78508053f83c1dcb963a1fdf0127e239">asBytes</a>[2]; };</div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="code" href="class_wifly_color.html#abe50acffd7b1a172597ae8525149763a">   61</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_color.html#abe50acffd7b1a172597ae8525149763a">green</a>(uint8_t value) { <a class="code" href="class_wifly_color.html#a78508053f83c1dcb963a1fdf0127e239">asBytes</a>[2] = value; };</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        uint8_t blue()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> asBytes[3]; };</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordtype">void</span> blue(uint8_t value) { asBytes[3] = value; };</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="code" href="class_wifly_color.html#a9b2e0b29756d5915f4e96b85c1978fea">   63</a></span>&#160;        uint8_t <a class="code" href="class_wifly_color.html#a9b2e0b29756d5915f4e96b85c1978fea">blue</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code" href="class_wifly_color.html#a78508053f83c1dcb963a1fdf0127e239">asBytes</a>[3]; };</div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="code" href="class_wifly_color.html#ad0c7f227f49eb00af032f4ae95e78f4a">   64</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_color.html#ad0c7f227f49eb00af032f4ae95e78f4a">blue</a>(uint8_t value) { <a class="code" href="class_wifly_color.html#a78508053f83c1dcb963a1fdf0127e239">asBytes</a>[3] = value; };</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        uint32_t argb()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> ntohl(asBigEndianLong); };</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordtype">void</span> argb(uint32_t argbValue) { asBigEndianLong = htonl(argbValue); };</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="code" href="class_wifly_color.html#ac4034056a383f4e8c8beae0586459b8d">   66</a></span>&#160;        uint32_t <a class="code" href="class_wifly_color.html#ac4034056a383f4e8c8beae0586459b8d">argb</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> ntohl(<a class="code" href="class_wifly_color.html#a6af6487d17668e3c40edfd60429f0304">asBigEndianLong</a>); };</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="code" href="class_wifly_color.html#acfccad3c8a67c2e2f417beca040bc8df">   67</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_color.html#acfccad3c8a67c2e2f417beca040bc8df">argb</a>(uint32_t argbValue) { <a class="code" href="class_wifly_color.html#a6af6487d17668e3c40edfd60429f0304">asBigEndianLong</a> = htonl(argbValue); };</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;};</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* _WIFLYCOLOR_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 01:45:25 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:14:12 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

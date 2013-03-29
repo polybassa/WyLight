@@ -70,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -85,6 +85,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_broadcast_receiver-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">BroadcastReceiver Class Reference</div>  </div>
@@ -95,16 +96,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9c3f8ebdef813f03edec75f88389a6ee"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c3f8ebdef813f03edec75f88389a6ee"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BroadcastReceiver</b> (uint16_t port=BROADCAST_PORT)</td></tr>
+<tr class="memitem:a9c3f8ebdef813f03edec75f88389a6ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_receiver.html#a9c3f8ebdef813f03edec75f88389a6ee">BroadcastReceiver</a> (uint16_t port=<a class="el" href="class_broadcast_receiver.html#a38d37ce60dc1fb1e0dbc08d80b5d3b47">BROADCAST_PORT</a>)</td></tr>
 <tr class="separator:a9c3f8ebdef813f03edec75f88389a6ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d262088f10ee4a53d2590bc472864b0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_receiver.html#a1d262088f10ee4a53d2590bc472864b0">~BroadcastReceiver</a> (void)</td></tr>
+<tr class="separator:a1d262088f10ee4a53d2590bc472864b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2fa6c783d73121c800d3c015621964d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_receiver.html#ac2fa6c783d73121c800d3c015621964d">operator()</a> (std::ostream &amp;out, timeval *timeout=NULL)</td></tr>
 <tr class="separator:ac2fa6c783d73121c800d3c015621964d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c487597e1338d5e5fca55f1d89d0eb1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c487597e1338d5e5fca55f1d89d0eb1"></a>
-const <a class="el" href="class_endpoint.html">Endpoint</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetEndpoint</b> (size_t index) const </td></tr>
-<tr class="separator:a1c487597e1338d5e5fca55f1d89d0eb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4549672ea1b9b008f93b42329c8bea5f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4549672ea1b9b008f93b42329c8bea5f"></a>
-<a class="el" href="class_endpoint.html">Endpoint</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetNextRemote</b> (timeval *timeout)  throw (FatalError)</td></tr>
+<tr class="memitem:aac4e2401b2cb7fdae40929bd896724f7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_endpoint.html">Endpoint</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_receiver.html#aac4e2401b2cb7fdae40929bd896724f7">GetEndpoint</a> (size_t index) const </td></tr>
+<tr class="separator:aac4e2401b2cb7fdae40929bd896724f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4549672ea1b9b008f93b42329c8bea5f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_endpoint.html">Endpoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_receiver.html#a4549672ea1b9b008f93b42329c8bea5f">GetNextRemote</a> (timeval *timeout)  throw (FatalError)</td></tr>
 <tr class="separator:a4549672ea1b9b008f93b42329c8bea5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e403e696a76c5bc8c2b9215c3d5704d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_receiver.html#a6e403e696a76c5bc8c2b9215c3d5704d">NumRemotes</a> (void) const </td></tr>
 <tr class="separator:a6e403e696a76c5bc8c2b9215c3d5704d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -113,27 +113,32 @@ const <a class="el" href="class_endpoint.html">Endpoint</a> &amp;&#160;</td><td 
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a3e1de2825034cb6e2b15641c490d9381"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3e1de2825034cb6e2b15641c490d9381"></a>
-const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>mPort</b></td></tr>
+<tr class="memitem:a3e1de2825034cb6e2b15641c490d9381"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_receiver.html#a3e1de2825034cb6e2b15641c490d9381">mPort</a></td></tr>
 <tr class="separator:a3e1de2825034cb6e2b15641c490d9381"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a38d37ce60dc1fb1e0dbc08d80b5d3b47"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38d37ce60dc1fb1e0dbc08d80b5d3b47"></a>
-static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>BROADCAST_PORT</b> = 55555</td></tr>
+<tr class="memitem:a38d37ce60dc1fb1e0dbc08d80b5d3b47"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_receiver.html#a38d37ce60dc1fb1e0dbc08d80b5d3b47">BROADCAST_PORT</a> = 55555</td></tr>
 <tr class="separator:a38d37ce60dc1fb1e0dbc08d80b5d3b47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7314a4107fc6e1c3d8dbace2b47c07d1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7314a4107fc6e1c3d8dbace2b47c07d1"></a>
-static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>DEVICE_ID</b></td></tr>
+<tr class="memitem:a7314a4107fc6e1c3d8dbace2b47c07d1"><td class="memItemLeft" align="right" valign="top">static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_receiver.html#a7314a4107fc6e1c3d8dbace2b47c07d1">DEVICE_ID</a></td></tr>
 <tr class="separator:a7314a4107fc6e1c3d8dbace2b47c07d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:addb5597142e98c3c16afce397082d960"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="addb5597142e98c3c16afce397082d960"></a>
-static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>DEVICE_ID_OLD</b></td></tr>
+<tr class="memitem:addb5597142e98c3c16afce397082d960"><td class="memItemLeft" align="right" valign="top">static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_receiver.html#addb5597142e98c3c16afce397082d960">DEVICE_ID_OLD</a></td></tr>
 <tr class="separator:addb5597142e98c3c16afce397082d960"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c365a7403457725e25c3124868fd6d9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6c365a7403457725e25c3124868fd6d9"></a>
-static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>STOP_MSG</b></td></tr>
+<tr class="memitem:a6c365a7403457725e25c3124868fd6d9"><td class="memItemLeft" align="right" valign="top">static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_receiver.html#a6c365a7403457725e25c3124868fd6d9">STOP_MSG</a> {&quot;StopThread&quot;}</td></tr>
 <tr class="separator:a6c365a7403457725e25c3124868fd6d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a545fbd086416bfa77cd42b531d045a5b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a545fbd086416bfa77cd42b531d045a5b"></a>
-static const <a class="el" href="class_endpoint.html">Endpoint</a>&#160;</td><td class="memItemRight" valign="bottom"><b>EMPTY_ENDPOINT</b></td></tr>
+<tr class="memitem:a545fbd086416bfa77cd42b531d045a5b"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="class_endpoint.html">Endpoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_receiver.html#a545fbd086416bfa77cd42b531d045a5b">EMPTY_ENDPOINT</a></td></tr>
 <tr class="separator:a545fbd086416bfa77cd42b531d045a5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a2b60eade8524ccbba66d28cb39c80c61"><td class="memItemLeft" align="right" valign="top">std::set&lt; <a class="el" href="class_endpoint.html">Endpoint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_receiver.html#a2b60eade8524ccbba66d28cb39c80c61">mIpTable</a></td></tr>
+<tr class="separator:a2b60eade8524ccbba66d28cb39c80c61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68ee06096528f7ee84278a7858900786"><td class="memItemLeft" align="right" valign="top">volatile bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_receiver.html#a68ee06096528f7ee84278a7858900786">mIsRunning</a></td></tr>
+<tr class="separator:a68ee06096528f7ee84278a7858900786"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36d1b87ce3d6416956b4838b9404a96a"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; int32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_receiver.html#a36d1b87ce3d6416956b4838b9404a96a">mNumInstances</a></td></tr>
+<tr class="separator:a36d1b87ce3d6416956b4838b9404a96a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7a9ed558758de4e13482864a3ee7d1f"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_receiver.html#ad7a9ed558758de4e13482864a3ee7d1f">mMutex</a></td></tr>
+<tr class="separator:ad7a9ed558758de4e13482864a3ee7d1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.</p>
@@ -141,7 +146,72 @@ static const <a class="el" href="class_endpoint.html">Endpoint</a>&#160;</td><td
 <p>Wifly_Light is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
 <p>Wifly_Light is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
 <p>You should have received a copy of the GNU General Public License along with Wifly_Light. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a9c3f8ebdef813f03edec75f88389a6ee"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">BroadcastReceiver::BroadcastReceiver </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>port</em> = <code><a class="el" href="class_broadcast_receiver.html#a38d37ce60dc1fb1e0dbc08d80b5d3b47">BROADCAST_PORT</a></code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1d262088f10ee4a53d2590bc472864b0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">BroadcastReceiver::~BroadcastReceiver </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="aac4e2401b2cb7fdae40929bd896724f7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="class_endpoint.html">Endpoint</a> &amp; BroadcastReceiver::GetEndpoint </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a4549672ea1b9b008f93b42329c8bea5f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_endpoint.html">Endpoint</a> BroadcastReceiver::GetNextRemote </td>
+          <td>(</td>
+          <td class="paramtype">timeval *&#160;</td>
+          <td class="paramname"><em>timeout</em></td><td>)</td>
+          <td>  throw (<a class="el" href="class_fatal_error.html">FatalError</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a6e403e696a76c5bc8c2b9215c3d5704d"></a>
 <div class="memitem">
 <div class="memproto">
@@ -210,13 +280,207 @@ static const <a class="el" href="class_endpoint.html">Endpoint</a>&#160;</td><td
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a38d37ce60dc1fb1e0dbc08d80b5d3b47"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint16_t BroadcastReceiver::BROADCAST_PORT = 55555</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a7314a4107fc6e1c3d8dbace2b47c07d1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string BroadcastReceiver::DEVICE_ID</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="addb5597142e98c3c16afce397082d960"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string BroadcastReceiver::DEVICE_ID_OLD</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a545fbd086416bfa77cd42b531d045a5b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="class_endpoint.html">Endpoint</a> BroadcastReceiver::EMPTY_ENDPOINT</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a2b60eade8524ccbba66d28cb39c80c61"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::set&lt;<a class="el" href="class_endpoint.html">Endpoint</a>&gt; BroadcastReceiver::mIpTable</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a68ee06096528f7ee84278a7858900786"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile bool BroadcastReceiver::mIsRunning</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad7a9ed558758de4e13482864a3ee7d1f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::mutex BroadcastReceiver::mMutex</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a36d1b87ce3d6416956b4838b9404a96a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::atomic&lt;int32_t&gt; BroadcastReceiver::mNumInstances</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3e1de2825034cb6e2b15641c490d9381"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint16_t BroadcastReceiver::mPort</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a6c365a7403457725e25c3124868fd6d9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string BroadcastReceiver::STOP_MSG {&quot;StopThread&quot;}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>library/<a class="el" href="_broadcast_receiver_8h_source.html">BroadcastReceiver.h</a></li>
+<li>library/<a class="el" href="_broadcast_receiver_8cpp.html">BroadcastReceiver.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 01:45:35 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:14:22 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

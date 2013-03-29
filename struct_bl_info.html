@@ -70,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -89,59 +89,230 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">BlInfo Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="_bl_request_8h_source.html">BlRequest.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a54a7c7a8982f9ed99517977a9089da62"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a54a7c7a8982f9ed99517977a9089da62"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetAddress</b> (void) const </td></tr>
+<tr class="memitem:a54a7c7a8982f9ed99517977a9089da62"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_bl_info.html#a54a7c7a8982f9ed99517977a9089da62">GetAddress</a> (void) const </td></tr>
 <tr class="separator:a54a7c7a8982f9ed99517977a9089da62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4deedea65fec600c73ad4097659a4cfa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4deedea65fec600c73ad4097659a4cfa"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Print</b> (void) const </td></tr>
+<tr class="memitem:a4deedea65fec600c73ad4097659a4cfa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_bl_info.html#a4deedea65fec600c73ad4097659a4cfa">Print</a> (void) const </td></tr>
 <tr class="separator:a4deedea65fec600c73ad4097659a4cfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:af53fd31e97f796089198cf77681ba9cb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af53fd31e97f796089198cf77681ba9cb"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>sizeLow</b></td></tr>
+<tr class="memitem:af53fd31e97f796089198cf77681ba9cb"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_bl_info.html#af53fd31e97f796089198cf77681ba9cb">sizeLow</a></td></tr>
 <tr class="separator:af53fd31e97f796089198cf77681ba9cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17fd7e3d13075c98cb3589a5670eaa27"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a17fd7e3d13075c98cb3589a5670eaa27"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>sizeHigh</b></td></tr>
+<tr class="memitem:a17fd7e3d13075c98cb3589a5670eaa27"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_bl_info.html#a17fd7e3d13075c98cb3589a5670eaa27">sizeHigh</a></td></tr>
 <tr class="separator:a17fd7e3d13075c98cb3589a5670eaa27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adecf35498759a50f70cfd720930c2fee"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adecf35498759a50f70cfd720930c2fee"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>versionMajor</b></td></tr>
+<tr class="memitem:adecf35498759a50f70cfd720930c2fee"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_bl_info.html#adecf35498759a50f70cfd720930c2fee">versionMajor</a></td></tr>
 <tr class="separator:adecf35498759a50f70cfd720930c2fee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a013455b390e6a994503fc913ef4962ec"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a013455b390e6a994503fc913ef4962ec"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>versionMinor</b></td></tr>
+<tr class="memitem:a013455b390e6a994503fc913ef4962ec"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_bl_info.html#a013455b390e6a994503fc913ef4962ec">versionMinor</a></td></tr>
 <tr class="separator:a013455b390e6a994503fc913ef4962ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6230bfa0bbba06b6d4cbf4a091f29206"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6230bfa0bbba06b6d4cbf4a091f29206"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>cmdmaskHigh</b></td></tr>
+<tr class="memitem:a6230bfa0bbba06b6d4cbf4a091f29206"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_bl_info.html#a6230bfa0bbba06b6d4cbf4a091f29206">cmdmaskHigh</a></td></tr>
 <tr class="separator:a6230bfa0bbba06b6d4cbf4a091f29206"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa83c1399c74fbc43483497e25d01a944"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa83c1399c74fbc43483497e25d01a944"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>familyId</b>: 4</td></tr>
+<tr class="memitem:aa83c1399c74fbc43483497e25d01a944"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_bl_info.html#aa83c1399c74fbc43483497e25d01a944">familyId</a>: 4</td></tr>
 <tr class="separator:aa83c1399c74fbc43483497e25d01a944"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f12826be55d13f19c756bc5e3428b3c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1f12826be55d13f19c756bc5e3428b3c"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>cmdmaskLow</b>:4</td></tr>
+<tr class="memitem:a1f12826be55d13f19c756bc5e3428b3c"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_bl_info.html#a1f12826be55d13f19c756bc5e3428b3c">cmdmaskLow</a>:4</td></tr>
 <tr class="separator:a1f12826be55d13f19c756bc5e3428b3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d08750ac1951abfae43f350f11e6e74"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4d08750ac1951abfae43f350f11e6e74"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>startLow</b></td></tr>
+<tr class="memitem:a4d08750ac1951abfae43f350f11e6e74"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_bl_info.html#a4d08750ac1951abfae43f350f11e6e74">startLow</a></td></tr>
 <tr class="separator:a4d08750ac1951abfae43f350f11e6e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a952bed33ae2583318cb548e5af1ee0f7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a952bed33ae2583318cb548e5af1ee0f7"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>startHigh</b></td></tr>
+<tr class="memitem:a952bed33ae2583318cb548e5af1ee0f7"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_bl_info.html#a952bed33ae2583318cb548e5af1ee0f7">startHigh</a></td></tr>
 <tr class="separator:a952bed33ae2583318cb548e5af1ee0f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0ff495d980e4852f048e4b8f3f937aa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad0ff495d980e4852f048e4b8f3f937aa"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>startU</b></td></tr>
+<tr class="memitem:ad0ff495d980e4852f048e4b8f3f937aa"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_bl_info.html#ad0ff495d980e4852f048e4b8f3f937aa">startU</a></td></tr>
 <tr class="separator:ad0ff495d980e4852f048e4b8f3f937aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46dfaab15225f0149142be16b0976216"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a46dfaab15225f0149142be16b0976216"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>zero</b></td></tr>
+<tr class="memitem:a46dfaab15225f0149142be16b0976216"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_bl_info.html#a46dfaab15225f0149142be16b0976216">zero</a></td></tr>
 <tr class="separator:a46dfaab15225f0149142be16b0976216"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a54a7c7a8982f9ed99517977a9089da62"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t BlInfo::GetAddress </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a4deedea65fec600c73ad4097659a4cfa"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BlInfo::Print </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a6230bfa0bbba06b6d4cbf4a091f29206"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char BlInfo::cmdmaskHigh</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1f12826be55d13f19c756bc5e3428b3c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char BlInfo::cmdmaskLow</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aa83c1399c74fbc43483497e25d01a944"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char BlInfo::familyId</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a17fd7e3d13075c98cb3589a5670eaa27"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char BlInfo::sizeHigh</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af53fd31e97f796089198cf77681ba9cb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char BlInfo::sizeLow</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a952bed33ae2583318cb548e5af1ee0f7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char BlInfo::startHigh</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a4d08750ac1951abfae43f350f11e6e74"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char BlInfo::startLow</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad0ff495d980e4852f048e4b8f3f937aa"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char BlInfo::startU</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="adecf35498759a50f70cfd720930c2fee"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char BlInfo::versionMajor</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a013455b390e6a994503fc913ef4962ec"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char BlInfo::versionMinor</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a46dfaab15225f0149142be16b0976216"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char BlInfo::zero</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>library/<a class="el" href="_bl_request_8h_source.html">BlRequest.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 01:45:34 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:14:20 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

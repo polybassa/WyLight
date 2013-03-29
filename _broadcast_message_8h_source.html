@@ -60,6 +60,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
+      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 <!-- window showing the filter options -->
@@ -67,7 +68,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -86,37 +87,37 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">BroadcastMessage.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
+<a href="_broadcast_message_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#ifndef _BROADCAST_MESSAGE_H_</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define _BROADCAST_MESSAGE_H_</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;BroadcastReceiver.h&quot;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_broadcast_receiver_8h.html">BroadcastReceiver.h</a>&quot;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#pragma pack(push)</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#pragma pack(1)</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno"><a class="code" href="struct_broadcast_message.html">   26</a></span>&#160;<span class="preprocessor"></span><span class="keyword">struct </span><a class="code" href="struct_broadcast_message.html">BroadcastMessage</a></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    uint8_t mac[6];</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    uint8_t channel;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    uint8_t rssi;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    uint16_t port;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    uint32_t rtc;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    uint16_t bat_mV;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    uint16_t gpioValue;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    int8_t asciiTime[13+1];</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    int8_t version[26+1+1];<span class="comment">// this seems a little strange. bug in wifly fw?</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    int8_t deviceId[32];</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    uint16_t bootTmms;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    uint16_t sensor[8];</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="code" href="struct_broadcast_message.html#a3ac273d4896e7a2f61bc9e5e462b7f12">   28</a></span>&#160;    uint8_t <a class="code" href="struct_broadcast_message.html#a3ac273d4896e7a2f61bc9e5e462b7f12">mac</a>[6];</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="code" href="struct_broadcast_message.html#a2a8000548cf6f0765d8d5a95346819e3">   29</a></span>&#160;    uint8_t <a class="code" href="struct_broadcast_message.html#a2a8000548cf6f0765d8d5a95346819e3">channel</a>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="code" href="struct_broadcast_message.html#ad01e36acd26ba12f61cf46f116173680">   30</a></span>&#160;    uint8_t <a class="code" href="struct_broadcast_message.html#ad01e36acd26ba12f61cf46f116173680">rssi</a>;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="code" href="struct_broadcast_message.html#ad1b068a0ec74e5ffdb2dd0d4ab550616">   31</a></span>&#160;    uint16_t <a class="code" href="struct_broadcast_message.html#ad1b068a0ec74e5ffdb2dd0d4ab550616">port</a>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="code" href="struct_broadcast_message.html#ab7f823fa16241b8305ce51a808d534ce">   32</a></span>&#160;    uint32_t <a class="code" href="struct_broadcast_message.html#ab7f823fa16241b8305ce51a808d534ce">rtc</a>;</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="code" href="struct_broadcast_message.html#ad4ba25279648f3d69685a59b139c9abe">   33</a></span>&#160;    uint16_t <a class="code" href="struct_broadcast_message.html#ad4ba25279648f3d69685a59b139c9abe">bat_mV</a>;</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="code" href="struct_broadcast_message.html#a70f920e51357cadc8b8289726cfaf9a6">   34</a></span>&#160;    uint16_t <a class="code" href="struct_broadcast_message.html#a70f920e51357cadc8b8289726cfaf9a6">gpioValue</a>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="code" href="struct_broadcast_message.html#aa7f6b47ac086067f235f7bf50a1ba463">   35</a></span>&#160;    int8_t <a class="code" href="struct_broadcast_message.html#aa7f6b47ac086067f235f7bf50a1ba463">asciiTime</a>[13+1];</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="code" href="struct_broadcast_message.html#ac348f0fde101e0d4ecb2ea47de28b8dc">   36</a></span>&#160;    int8_t <a class="code" href="struct_broadcast_message.html#ac348f0fde101e0d4ecb2ea47de28b8dc">version</a>[26+1+1];<span class="comment">// this seems a little strange. bug in wifly fw?</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="code" href="struct_broadcast_message.html#a5eed77683f928d1454419138eed7d673">   37</a></span>&#160;    int8_t <a class="code" href="struct_broadcast_message.html#a5eed77683f928d1454419138eed7d673">deviceId</a>[32];</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="code" href="struct_broadcast_message.html#a20abccb0a47e7956cd2a3bcd3299c23c">   38</a></span>&#160;    uint16_t <a class="code" href="struct_broadcast_message.html#a20abccb0a47e7956cd2a3bcd3299c23c">bootTmms</a>;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="code" href="struct_broadcast_message.html#adfe11beb5dc63400e112cfe2bf59fd0b">   39</a></span>&#160;    uint16_t <a class="code" href="struct_broadcast_message.html#adfe11beb5dc63400e112cfe2bf59fd0b">sensor</a>[8];</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">bool</span> IsWiflyBroadcast(<span class="keywordtype">size_t</span> length)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="code" href="struct_broadcast_message.html#a3050a0c141e0bd6d5333f9c7d880842c">   41</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="struct_broadcast_message.html#a3050a0c141e0bd6d5333f9c7d880842c">IsWiflyBroadcast</a>(<span class="keywordtype">size_t</span> length)<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keywordflow">return</span> ((<span class="keyword">sizeof</span>(<a class="code" href="struct_broadcast_message.html">BroadcastMessage</a>) == length)</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        &amp;&amp; (IsDevice(BroadcastReceiver::DEVICE_ID) || IsDevice(BroadcastReceiver::DEVICE_ID_OLD)));</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        &amp;&amp; (<a class="code" href="struct_broadcast_message.html#adc4856179981352262ba8abd31b0902f">IsDevice</a>(<a class="code" href="class_broadcast_receiver.html#a7314a4107fc6e1c3d8dbace2b47c07d1">BroadcastReceiver::DEVICE_ID</a>) || <a class="code" href="struct_broadcast_message.html#adc4856179981352262ba8abd31b0902f">IsDevice</a>(<a class="code" href="class_broadcast_receiver.html#addb5597142e98c3c16afce397082d960">BroadcastReceiver::DEVICE_ID_OLD</a>)));</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    };</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">bool</span> IsDevice(<span class="keyword">const</span> std::string&amp; deviceType)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordflow">return</span> (0 == memcmp(deviceId,   deviceType.data(), deviceType.size()));</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="code" href="struct_broadcast_message.html#adc4856179981352262ba8abd31b0902f">   47</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="struct_broadcast_message.html#adc4856179981352262ba8abd31b0902f">IsDevice</a>(<span class="keyword">const</span> std::string&amp; deviceType)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordflow">return</span> (0 == memcmp(<a class="code" href="struct_broadcast_message.html#a5eed77683f928d1454419138eed7d673">deviceId</a>,   deviceType.data(), deviceType.size()));</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    };</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;};</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#pragma pack(pop)</span></div>
@@ -124,7 +125,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 01:45:24 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:14:12 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

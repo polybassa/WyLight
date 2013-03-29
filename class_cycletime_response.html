@@ -70,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -83,12 +83,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="class_cycletime_response-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">CycletimeResponse Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="_wifly_control_response_8h_source.html">WiflyControlResponse.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for CycletimeResponse:</div>
 <div class="dyncontent">
@@ -102,62 +105,177 @@ Inheritance diagram for CycletimeResponse:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ada97d2caf35ad02157828780c66bbaf4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ada97d2caf35ad02157828780c66bbaf4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Init</b> (response_frame *pData, size_t dataLength)</td></tr>
+<tr class="memitem:a6f8a0c12dadb460e3c1fb1bdb7895e7b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cycletime_response.html#a6f8a0c12dadb460e3c1fb1bdb7895e7b">CycletimeResponse</a> (void)</td></tr>
+<tr class="separator:a6f8a0c12dadb460e3c1fb1bdb7895e7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada97d2caf35ad02157828780c66bbaf4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cycletime_response.html#ada97d2caf35ad02157828780c66bbaf4">Init</a> (response_frame *pData, size_t dataLength)</td></tr>
 <tr class="separator:ada97d2caf35ad02157828780c66bbaf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_simple_response"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_simple_response')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_simple_response.html">SimpleResponse</a></td></tr>
-<tr class="memitem:aefac8d5010a3d168a206c78fbbd917ff inherit pub_methods_class_simple_response"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aefac8d5010a3d168a206c78fbbd917ff"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SimpleResponse</b> (uint8_t cmd)</td></tr>
+<tr class="memitem:aefac8d5010a3d168a206c78fbbd917ff inherit pub_methods_class_simple_response"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simple_response.html#aefac8d5010a3d168a206c78fbbd917ff">SimpleResponse</a> (uint8_t cmd)</td></tr>
 <tr class="separator:aefac8d5010a3d168a206c78fbbd917ff inherit pub_methods_class_simple_response"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_wifly_response"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_wifly_response')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_wifly_response.html">WiflyResponse</a></td></tr>
-<tr class="memitem:a78274601001f1f8e112e1c59ea59f9df inherit pub_methods_class_wifly_response"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a78274601001f1f8e112e1c59ea59f9df"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsValid</b> (void) const </td></tr>
+<tr class="memitem:a78274601001f1f8e112e1c59ea59f9df inherit pub_methods_class_wifly_response"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_response.html#a78274601001f1f8e112e1c59ea59f9df">IsValid</a> (void) const </td></tr>
 <tr class="separator:a78274601001f1f8e112e1c59ea59f9df inherit pub_methods_class_wifly_response"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b5e58113cf23e0723d0a2d22e0c8acb inherit pub_methods_class_wifly_response"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4b5e58113cf23e0723d0a2d22e0c8acb"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsScriptBufferFull</b> (void) const </td></tr>
+<tr class="memitem:a4b5e58113cf23e0723d0a2d22e0c8acb inherit pub_methods_class_wifly_response"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_response.html#a4b5e58113cf23e0723d0a2d22e0c8acb">IsScriptBufferFull</a> (void) const </td></tr>
 <tr class="separator:a4b5e58113cf23e0723d0a2d22e0c8acb inherit pub_methods_class_wifly_response"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae28f6e581ab7864969d2bf70b1c44ee0 inherit pub_methods_class_wifly_response"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae28f6e581ab7864969d2bf70b1c44ee0"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCrcCheckFailed</b> (void) const </td></tr>
+<tr class="memitem:ae28f6e581ab7864969d2bf70b1c44ee0 inherit pub_methods_class_wifly_response"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_response.html#ae28f6e581ab7864969d2bf70b1c44ee0">IsCrcCheckFailed</a> (void) const </td></tr>
 <tr class="separator:ae28f6e581ab7864969d2bf70b1c44ee0 inherit pub_methods_class_wifly_response"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d714b9f6c9d411d5a73752a7f7e46a6 inherit pub_methods_class_wifly_response"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2d714b9f6c9d411d5a73752a7f7e46a6"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsBadPacket</b> (void) const </td></tr>
+<tr class="memitem:a2d714b9f6c9d411d5a73752a7f7e46a6 inherit pub_methods_class_wifly_response"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_response.html#a2d714b9f6c9d411d5a73752a7f7e46a6">IsBadPacket</a> (void) const </td></tr>
 <tr class="separator:a2d714b9f6c9d411d5a73752a7f7e46a6 inherit pub_methods_class_wifly_response"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c3503cf4138e4fd4b85406e444ac5d8 inherit pub_methods_class_wifly_response"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c3503cf4138e4fd4b85406e444ac5d8"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsBadCommandCode</b> (void) const </td></tr>
+<tr class="memitem:a7c3503cf4138e4fd4b85406e444ac5d8 inherit pub_methods_class_wifly_response"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_response.html#a7c3503cf4138e4fd4b85406e444ac5d8">IsBadCommandCode</a> (void) const </td></tr>
 <tr class="separator:a7c3503cf4138e4fd4b85406e444ac5d8 inherit pub_methods_class_wifly_response"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a92026d70dfa2f7a3bd29ddbcdb07dd8f"><td class="memItemLeft" align="right" valign="top">uns16&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cycletime_response.html#a92026d70dfa2f7a3bd29ddbcdb07dd8f">mCycletimes</a> [CYCLETIME_METHODE_ENUM_SIZE]</td></tr>
+<tr class="separator:a92026d70dfa2f7a3bd29ddbcdb07dd8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:a297451ca9509cdee481811027a5e31a6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a297451ca9509cdee481811027a5e31a6"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;out, const <a class="el" href="class_cycletime_response.html">CycletimeResponse</a> &amp;ref)</td></tr>
+<tr class="memitem:a297451ca9509cdee481811027a5e31a6"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cycletime_response.html#a297451ca9509cdee481811027a5e31a6">operator&lt;&lt;</a> (std::ostream &amp;out, const <a class="el" href="class_cycletime_response.html">CycletimeResponse</a> &amp;ref)</td></tr>
 <tr class="separator:a297451ca9509cdee481811027a5e31a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_methods_class_wifly_response"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_wifly_response')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_wifly_response.html">WiflyResponse</a></td></tr>
+<tr class="memitem:aa9025b5027dcf680c1bedb39cc258aa4 inherit pro_methods_class_wifly_response"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_response.html#aa9025b5027dcf680c1bedb39cc258aa4">WiflyResponse</a> (void)</td></tr>
+<tr class="separator:aa9025b5027dcf680c1bedb39cc258aa4 inherit pro_methods_class_wifly_response"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_wifly_response"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_wifly_response')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_wifly_response.html">WiflyResponse</a></td></tr>
-<tr class="memitem:a623b14a001d67b20f8b68d4678f980da inherit pro_attribs_class_wifly_response"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a623b14a001d67b20f8b68d4678f980da"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>mIsValid</b></td></tr>
+<tr class="memitem:a623b14a001d67b20f8b68d4678f980da inherit pro_attribs_class_wifly_response"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_response.html#a623b14a001d67b20f8b68d4678f980da">mIsValid</a></td></tr>
 <tr class="separator:a623b14a001d67b20f8b68d4678f980da inherit pro_attribs_class_wifly_response"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96140d95b1d54221bf6e81cf723f1192 inherit pro_attribs_class_wifly_response"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a96140d95b1d54221bf6e81cf723f1192"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>mIsScriptBufferFull</b></td></tr>
+<tr class="memitem:a96140d95b1d54221bf6e81cf723f1192 inherit pro_attribs_class_wifly_response"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_response.html#a96140d95b1d54221bf6e81cf723f1192">mIsScriptBufferFull</a></td></tr>
 <tr class="separator:a96140d95b1d54221bf6e81cf723f1192 inherit pro_attribs_class_wifly_response"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e3b9bdb3dea4b9cad2956126b3b18bb inherit pro_attribs_class_wifly_response"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5e3b9bdb3dea4b9cad2956126b3b18bb"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>mIsCrcCheckFailed</b></td></tr>
+<tr class="memitem:a5e3b9bdb3dea4b9cad2956126b3b18bb inherit pro_attribs_class_wifly_response"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_response.html#a5e3b9bdb3dea4b9cad2956126b3b18bb">mIsCrcCheckFailed</a></td></tr>
 <tr class="separator:a5e3b9bdb3dea4b9cad2956126b3b18bb inherit pro_attribs_class_wifly_response"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae45e670094b8cf78bc81f7dba41fd9f9 inherit pro_attribs_class_wifly_response"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae45e670094b8cf78bc81f7dba41fd9f9"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>mIsBadPacket</b></td></tr>
+<tr class="memitem:ae45e670094b8cf78bc81f7dba41fd9f9 inherit pro_attribs_class_wifly_response"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_response.html#ae45e670094b8cf78bc81f7dba41fd9f9">mIsBadPacket</a></td></tr>
 <tr class="separator:ae45e670094b8cf78bc81f7dba41fd9f9 inherit pro_attribs_class_wifly_response"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9ebfde980d88cc43a6f64d65a0e9db7 inherit pro_attribs_class_wifly_response"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac9ebfde980d88cc43a6f64d65a0e9db7"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>mIsBadCommand</b></td></tr>
+<tr class="memitem:ac9ebfde980d88cc43a6f64d65a0e9db7 inherit pro_attribs_class_wifly_response"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_response.html#ac9ebfde980d88cc43a6f64d65a0e9db7">mIsBadCommand</a></td></tr>
 <tr class="separator:ac9ebfde980d88cc43a6f64d65a0e9db7 inherit pro_attribs_class_wifly_response"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a6f8a0c12dadb460e3c1fb1bdb7895e7b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">CycletimeResponse::CycletimeResponse </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ada97d2caf35ad02157828780c66bbaf4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CycletimeResponse::Init </td>
+          <td>(</td>
+          <td class="paramtype">response_frame *&#160;</td>
+          <td class="paramname"><em>pData</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>dataLength</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="class_simple_response.html#a68f547257c77006d8dfc19192299b209">SimpleResponse</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a class="anchor" id="a297451ca9509cdee481811027a5e31a6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="class_cycletime_response.html">CycletimeResponse</a> &amp;&#160;</td>
+          <td class="paramname"><em>ref</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a92026d70dfa2f7a3bd29ddbcdb07dd8f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uns16 CycletimeResponse::mCycletimes[CYCLETIME_METHODE_ENUM_SIZE]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>library/<a class="el" href="_wifly_control_response_8h_source.html">WiflyControlResponse.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 01:45:37 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:14:24 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
