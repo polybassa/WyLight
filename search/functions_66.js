@@ -11,7 +11,6 @@ var searchData=
   ['fwloopoff',['FwLoopOff',['../class_wifly_control.html#a8bcc4ce879e66a60f25c7790e07d3e61',1,'WiflyControl']]],
   ['fwloopon',['FwLoopOn',['../class_wifly_control.html#ac0bcc3ca66256effb309545cf7341f9c',1,'WiflyControl']]],
   ['fwnoresponseexception',['FwNoResponseException',['../class_fw_no_response_exception.html#ad34ddcad497c940499efcf7b138838c8',1,'FwNoResponseException']]],
-  ['fwsend',['FwSend',['../class_wifly_control.html#afcfcb310c4f104adc7801291100c5186',1,'WiflyControl']]],
   ['fwsetcolordirect',['FwSetColorDirect',['../class_wifly_control.html#a5a1bf514798ab57f893dbadfc525c531',1,'WiflyControl']]],
   ['fwsetfade',['FwSetFade',['../class_wifly_control.html#a8f6ce3dc38f480fc68574f87983154ec',1,'WiflyControl::FwSetFade(WiflyResponse &amp;response, uint32_t argb, uint16_t fadeTmms=0, uint32_t addr=0xffffffff, bool parallelFade=false)'],['../class_wifly_control.html#a9c09bac57cb017cb022b190616616975',1,'WiflyControl::FwSetFade(WiflyResponse &amp;response, const std::string &amp;rgb, uint16_t fadeTmms=0, const std::string &amp;addr=LEDS_ALL, bool parallelFade=false)']]],
   ['fwsetrtc',['FwSetRtc',['../class_wifly_control.html#a693a47088f11cba5659e3de44180f710',1,'WiflyControl']]],

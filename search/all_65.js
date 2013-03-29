@@ -13,6 +13,5 @@ var searchData=
   ['endpoint_2eh',['Endpoint.h',['../_endpoint_8h.html',1,'']]],
   ['etx',['ETX',['../wifly__cmd_8h.html#af02558e983dd26832a852bf186ed6726',1,'wifly_cmd.h']]],
   ['exists',['exists',['../classintelhex.html#ab58b4357deef8e4f0af9817393fc0b6e',1,'intelhex']]],
-  ['extractfwversion',['ExtractFwVersion',['../class_wifly_control.html#a5ce19529396544bd081d1b00df62b794',1,'WiflyControl']]],
-  ['extractstringofinterest',['ExtractStringOfInterest',['../class_telnet_proxy.html#ae0b0cf5d682e16635c129d28b2f468ac',1,'TelnetProxy']]]
+  ['extractfwversion',['ExtractFwVersion',['../class_wifly_control.html#a5ce19529396544bd081d1b00df62b794',1,'WiflyControl']]]
 ];

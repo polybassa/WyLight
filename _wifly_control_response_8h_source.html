@@ -118,18 +118,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00046"></a><span class="lineno"><a class="code" href="class_simple_response.html">   46</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_simple_response.html">SimpleResponse</a> : <span class="keyword">public</span> <a class="code" href="class_wifly_response.html">WiflyResponse</a></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="code" href="class_simple_response.html#aefac8d5010a3d168a206c78fbbd917ff">   49</a></span>&#160;    <a class="code" href="class_simple_response.html#aefac8d5010a3d168a206c78fbbd917ff">SimpleResponse</a>(uint8_t cmd) : <a class="code" href="class_simple_response.html#a160999907022b25c150131a6576598df">mCmd</a>(cmd) {};</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="code" href="class_simple_response.html#aefac8d5010a3d168a206c78fbbd917ff">   49</a></span>&#160;    <a class="code" href="class_simple_response.html#aefac8d5010a3d168a206c78fbbd917ff">SimpleResponse</a>(uint8_t cmd) : mCmd(cmd) {};</div>
 <div class="line"><a name="l00050"></a><span class="lineno"><a class="code" href="class_simple_response.html#a68f547257c77006d8dfc19192299b209">   50</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_simple_response.html#a68f547257c77006d8dfc19192299b209">Init</a>(response_frame* pData, <span class="keywordtype">size_t</span> dataLength)</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <a class="code" href="class_wifly_response.html#a623b14a001d67b20f8b68d4678f980da">mIsValid</a> = (NULL != pData) &amp;&amp; (4 &lt;= dataLength) &amp;&amp; (<a class="code" href="class_simple_response.html#a160999907022b25c150131a6576598df">mCmd</a> == pData-&gt;cmd) &amp;&amp; (pData-&gt;state == OK);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <a class="code" href="class_wifly_response.html#a623b14a001d67b20f8b68d4678f980da">mIsValid</a> = (NULL != pData) &amp;&amp; (4 &lt;= dataLength) &amp;&amp; (mCmd == pData-&gt;cmd) &amp;&amp; (pData-&gt;state == OK);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <a class="code" href="class_wifly_response.html#a96140d95b1d54221bf6e81cf723f1192">mIsScriptBufferFull</a> = pData-&gt;state == SCRIPTBUFFER_FULL;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <a class="code" href="class_wifly_response.html#a5e3b9bdb3dea4b9cad2956126b3b18bb">mIsCrcCheckFailed</a> = pData-&gt;state == CRC_CHECK_FAILED;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <a class="code" href="class_wifly_response.html#ae45e670094b8cf78bc81f7dba41fd9f9">mIsBadPacket</a> = pData-&gt;state == BAD_PACKET;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <a class="code" href="class_wifly_response.html#ac9ebfde980d88cc43a6f64d65a0e9db7">mIsBadCommand</a> = pData-&gt;state == BAD_COMMAND_CODE;</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="code" href="class_simple_response.html#a160999907022b25c150131a6576598df">   57</a></span>&#160;    };</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    };</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keyword">const</span> uint8_t <a class="code" href="class_simple_response.html#a160999907022b25c150131a6576598df">mCmd</a>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keyword">const</span> uint8_t mCmd;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;};</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
 <div class="line"><a name="l00063"></a><span class="lineno"><a class="code" href="class_rtc_response.html">   63</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_rtc_response.html">RtcResponse</a> : <span class="keyword">public</span> <a class="code" href="class_simple_response.html">SimpleResponse</a></div>
@@ -141,19 +141,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <a class="code" href="class_simple_response.html#a68f547257c77006d8dfc19192299b209">SimpleResponse::Init</a>(pData, dataLength);</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">if</span>(<a class="code" href="class_wifly_response.html#a623b14a001d67b20f8b68d4678f980da">mIsValid</a> &amp;&amp; (dataLength &gt;= 4 + <span class="keyword">sizeof</span>(<span class="keyword">struct</span> rtc_time)))</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <a class="code" href="class_rtc_response.html#a043bc0545bfbfbaa27713a1d624735a4">mTimeValue</a>.tm_sec = pData-&gt;data.get_rtc.tm_sec;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <a class="code" href="class_rtc_response.html#a043bc0545bfbfbaa27713a1d624735a4">mTimeValue</a>.tm_min = pData-&gt;data.get_rtc.tm_min;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <a class="code" href="class_rtc_response.html#a043bc0545bfbfbaa27713a1d624735a4">mTimeValue</a>.tm_hour = pData-&gt;data.get_rtc.tm_hour;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <a class="code" href="class_rtc_response.html#a043bc0545bfbfbaa27713a1d624735a4">mTimeValue</a>.tm_mday = pData-&gt;data.get_rtc.tm_mday;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <a class="code" href="class_rtc_response.html#a043bc0545bfbfbaa27713a1d624735a4">mTimeValue</a>.tm_year = pData-&gt;data.get_rtc.tm_year;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <a class="code" href="class_rtc_response.html#a043bc0545bfbfbaa27713a1d624735a4">mTimeValue</a>.tm_wday = pData-&gt;data.get_rtc.tm_wday;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <a class="code" href="class_rtc_response.html#a043bc0545bfbfbaa27713a1d624735a4">mTimeValue</a>.tm_mon = pData-&gt;data.get_rtc.tm_mon;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            mTimeValue.tm_sec = pData-&gt;data.get_rtc.tm_sec;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            mTimeValue.tm_min = pData-&gt;data.get_rtc.tm_min;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            mTimeValue.tm_hour = pData-&gt;data.get_rtc.tm_hour;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            mTimeValue.tm_mday = pData-&gt;data.get_rtc.tm_mday;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            mTimeValue.tm_year = pData-&gt;data.get_rtc.tm_year;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            mTimeValue.tm_wday = pData-&gt;data.get_rtc.tm_wday;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            mTimeValue.tm_mon = pData-&gt;data.get_rtc.tm_mon;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    };</div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="code" href="class_rtc_response.html#abdf1aa92c47891e4ca9672a9244672a6">   81</a></span>&#160;    <span class="keyword">struct </span>tm <a class="code" href="class_rtc_response.html#abdf1aa92c47891e4ca9672a9244672a6">GetRealTime</a>(void) const {<span class="keywordflow">return</span> <a class="code" href="class_rtc_response.html#a043bc0545bfbfbaa27713a1d624735a4">mTimeValue</a>; };</div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="code" href="class_rtc_response.html#abdf1aa92c47891e4ca9672a9244672a6">   81</a></span>&#160;    <span class="keyword">struct </span>tm <a class="code" href="class_rtc_response.html#abdf1aa92c47891e4ca9672a9244672a6">GetRealTime</a>(void) const {<span class="keywordflow">return</span> mTimeValue; };</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    </div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="code" href="class_rtc_response.html#a043bc0545bfbfbaa27713a1d624735a4">   84</a></span>&#160;    <span class="keyword">struct </span>tm <a class="code" href="class_rtc_response.html#a043bc0545bfbfbaa27713a1d624735a4">mTimeValue</a>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keyword">struct </span>tm mTimeValue;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;};</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
 <div class="line"><a name="l00087"></a><span class="lineno"><a class="code" href="class_cycletime_response.html">   87</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_cycletime_response.html">CycletimeResponse</a> : <span class="keyword">public</span> <a class="code" href="class_simple_response.html">SimpleResponse</a></div>
@@ -167,7 +167,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        {</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; CYCLETIME_METHODE_ENUM_SIZE &amp;&amp; i &lt; dataLength / <span class="keyword">sizeof</span>(uns16); i++)</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            {</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                <a class="code" href="class_cycletime_response.html#a92026d70dfa2f7a3bd29ddbcdb07dd8f">mCycletimes</a>[i] = ntohs(pData-&gt;data.get_max_cycle_times[i]);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                mCycletimes[i] = ntohs(pData-&gt;data.get_max_cycle_times[i]);</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            }</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        }</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    };</div>
@@ -179,28 +179,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            out &lt;&lt; <span class="stringliteral">&quot;Cycletimes: \n&quot;</span>;</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keywordflow">for</span>( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; CYCLETIME_METHODE_ENUM_SIZE; i++)</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            {</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                out &lt;&lt; std::setw(3) &lt;&lt; std::dec &lt;&lt; i + 1 &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; std::setw(8) &lt;&lt; std::dec &lt;&lt; ref.<a class="code" href="class_cycletime_response.html#a92026d70dfa2f7a3bd29ddbcdb07dd8f">mCycletimes</a>[i] &lt;&lt; <span class="stringliteral">&quot; us\n&quot;</span>;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                out &lt;&lt; std::setw(3) &lt;&lt; std::dec &lt;&lt; i + 1 &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; std::setw(8) &lt;&lt; std::dec &lt;&lt; ref.mCycletimes[i] &lt;&lt; <span class="stringliteral">&quot; us\n&quot;</span>;</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            }</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        }</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordflow">return</span> out;</div>
-<div class="line"><a name="l00115"></a><span class="lineno"><a class="code" href="class_cycletime_response.html#a92026d70dfa2f7a3bd29ddbcdb07dd8f">  115</a></span>&#160;    };</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    };</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    uns16 <a class="code" href="class_cycletime_response.html#a92026d70dfa2f7a3bd29ddbcdb07dd8f">mCycletimes</a>[CYCLETIME_METHODE_ENUM_SIZE];</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    uns16 mCycletimes[CYCLETIME_METHODE_ENUM_SIZE];</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;};</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
 <div class="line"><a name="l00121"></a><span class="lineno"><a class="code" href="class_tracebuffer_response.html">  121</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_tracebuffer_response.html">TracebufferResponse</a> : <span class="keyword">public</span> <a class="code" href="class_simple_response.html">SimpleResponse</a></div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;{</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00124"></a><span class="lineno"><a class="code" href="class_tracebuffer_response.html#a94988174d777de8317773333fc5e9d86">  124</a></span>&#160;    <a class="code" href="class_tracebuffer_response.html#a94988174d777de8317773333fc5e9d86">TracebufferResponse</a>(<span class="keywordtype">void</span>) : <a class="code" href="class_simple_response.html">SimpleResponse</a>(<a class="code" href="wifly__cmd_8h.html#a287bce07d738d5f6c3fb093350833d0b">GET_TRACE</a>), <a class="code" href="class_tracebuffer_response.html#a5acc18c6f2293f5b66b4f670fc2ffb25">mMessageLength</a>(0) {};</div>
+<div class="line"><a name="l00124"></a><span class="lineno"><a class="code" href="class_tracebuffer_response.html#a94988174d777de8317773333fc5e9d86">  124</a></span>&#160;    <a class="code" href="class_tracebuffer_response.html#a94988174d777de8317773333fc5e9d86">TracebufferResponse</a>(<span class="keywordtype">void</span>) : <a class="code" href="class_simple_response.html">SimpleResponse</a>(<a class="code" href="wifly__cmd_8h.html#a287bce07d738d5f6c3fb093350833d0b">GET_TRACE</a>), mMessageLength(0) {};</div>
 <div class="line"><a name="l00125"></a><span class="lineno"><a class="code" href="class_tracebuffer_response.html#aa091cf2da2f93d5be25386c91b827d72">  125</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_tracebuffer_response.html#aa091cf2da2f93d5be25386c91b827d72">Init</a>(response_frame* pData, <span class="keywordtype">size_t</span> dataLength)</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    {</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        <a class="code" href="class_simple_response.html#a68f547257c77006d8dfc19192299b209">SimpleResponse::Init</a>(pData, dataLength);</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="keywordflow">if</span>(<a class="code" href="class_wifly_response.html#a623b14a001d67b20f8b68d4678f980da">mIsValid</a>)</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        {</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            <a class="code" href="class_tracebuffer_response.html#a5acc18c6f2293f5b66b4f670fc2ffb25">mMessageLength</a> = (<span class="keywordtype">unsigned</span> int)dataLength - 4;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            memcpy(<a class="code" href="class_tracebuffer_response.html#a230cdee41abc7ddab337649e7521983b">mTracebuffer</a>, pData-&gt;data.get_trace_string, dataLength);</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            mMessageLength = (<span class="keywordtype">unsigned</span> int)dataLength - 4;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            memcpy(mTracebuffer, pData-&gt;data.get_trace_string, dataLength);</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        }</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    };</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
@@ -209,14 +209,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        <span class="keywordflow">if</span>(ref.<a class="code" href="class_wifly_response.html#a623b14a001d67b20f8b68d4678f980da">mIsValid</a>)</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        {</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            out &lt;&lt; <span class="stringliteral">&quot;Tracebuffercontent: &quot;</span>;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; ref.<a class="code" href="class_tracebuffer_response.html#a5acc18c6f2293f5b66b4f670fc2ffb25">mMessageLength</a>; i++) out &lt;&lt; ref.<a class="code" href="class_tracebuffer_response.html#a230cdee41abc7ddab337649e7521983b">mTracebuffer</a>[i];</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; ref.mMessageLength; i++) out &lt;&lt; ref.mTracebuffer[i];</div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        }</div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        <span class="keywordflow">return</span> out;</div>
-<div class="line"><a name="l00143"></a><span class="lineno"><a class="code" href="class_tracebuffer_response.html#a230cdee41abc7ddab337649e7521983b">  143</a></span>&#160;    };</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    };</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    </div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keywordtype">char</span> <a class="code" href="class_tracebuffer_response.html#a230cdee41abc7ddab337649e7521983b">mTracebuffer</a>[RingBufferSize];</div>
-<div class="line"><a name="l00147"></a><span class="lineno"><a class="code" href="class_tracebuffer_response.html#a5acc18c6f2293f5b66b4f670fc2ffb25">  147</a></span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="class_tracebuffer_response.html#a5acc18c6f2293f5b66b4f670fc2ffb25">mMessageLength</a>;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keywordtype">char</span> mTracebuffer[RingBufferSize];</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> mMessageLength;</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;};</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
 <div class="line"><a name="l00150"></a><span class="lineno"><a class="code" href="class_firmware_version_response.html">  150</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_firmware_version_response.html">FirmwareVersionResponse</a> : <span class="keyword">public</span> <a class="code" href="class_simple_response.html">SimpleResponse</a></div>
@@ -228,24 +228,24 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <a class="code" href="class_simple_response.html#a68f547257c77006d8dfc19192299b209">SimpleResponse::Init</a>(pData, dataLength);</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <span class="keywordflow">if</span>(<a class="code" href="class_wifly_response.html#a623b14a001d67b20f8b68d4678f980da">mIsValid</a> &amp;&amp; (dataLength &gt;= 4 + <span class="keyword">sizeof</span>(<span class="keyword">struct</span> cmd_get_fw_version)))</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        {</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            <a class="code" href="class_firmware_version_response.html#af65d9293d7df690abb4982ca79cbe6b8">mFwVersion</a> = pData-&gt;data.version;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            mFwVersion = pData-&gt;data.version;</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        }</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    };</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
 <div class="line"><a name="l00163"></a><span class="lineno"><a class="code" href="class_firmware_version_response.html#a37b570544d9c72195251b87e598a0451">  163</a></span>&#160;    <span class="keyword">friend</span> std::ostream&amp; <a class="code" href="class_firmware_version_response.html#a37b570544d9c72195251b87e598a0451">operator&lt;&lt; </a>(std::ostream&amp; out, <span class="keyword">const</span> <a class="code" href="class_firmware_version_response.html">FirmwareVersionResponse</a>&amp; ref)</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    {</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <span class="keywordflow">return</span> out &lt;&lt; <span class="stringliteral">&quot;Firmwareversion: &quot;</span> &lt;&lt; std::dec &lt;&lt; ref.<a class="code" href="class_firmware_version_response.html#af65d9293d7df690abb4982ca79cbe6b8">mFwVersion</a> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00166"></a><span class="lineno"><a class="code" href="class_firmware_version_response.html#af65d9293d7df690abb4982ca79cbe6b8">  166</a></span>&#160;    };</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <span class="keywordflow">return</span> out &lt;&lt; <span class="stringliteral">&quot;Firmwareversion: &quot;</span> &lt;&lt; std::dec &lt;&lt; ref.mFwVersion &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    };</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    </div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    cmd_get_fw_version <a class="code" href="class_firmware_version_response.html#af65d9293d7df690abb4982ca79cbe6b8">mFwVersion</a>;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    cmd_get_fw_version mFwVersion;</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;};</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 15:18:45 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:21:33 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

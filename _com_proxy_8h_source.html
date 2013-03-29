@@ -131,7 +131,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="comment">/*</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">         * Reference to a tcp socket with an established connection to a wifly module</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="code" href="class_com_proxy.html#a8a959aedfe026ff4a419d3bd017dfd00">   62</a></span>&#160;        <span class="keyword">const</span> <a class="code" href="class_tcp_socket.html">TcpSocket</a>&amp; <a class="code" href="class_com_proxy.html#a8a959aedfe026ff4a419d3bd017dfd00">mSock</a>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keyword">const</span> <a class="code" href="class_tcp_socket.html">TcpSocket</a>&amp; mSock;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="comment">/*</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">         * Receive data on the TcpSocket @see mSock, unmask the control characters and write the plain message into pBuffer</span></div>
@@ -143,7 +143,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">         * @return the number of bytes received, or 0 if the crc check fails</span></div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">         * @throw ConnectionTimeout if responsed timed out</span></div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_com_proxy.html#a5f20bbe1a06e70adf4f9e1706f23c72a">Recv</a>(uint8_t* pBuffer, <span class="keywordtype">size_t</span> length, timeval* pTimeout = NULL, <span class="keywordtype">bool</span> checkCrc = <span class="keyword">true</span>, <span class="keywordtype">bool</span> crcInLittleEndian = <span class="keyword">true</span>) <span class="keyword">const</span> throw(<a class="code" href="class_connection_timeout.html">ConnectionTimeout</a>);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordtype">size_t</span> Recv(uint8_t* pBuffer, <span class="keywordtype">size_t</span> length, timeval* pTimeout = NULL, <span class="keywordtype">bool</span> checkCrc = <span class="keyword">true</span>, <span class="keywordtype">bool</span> crcInLittleEndian = <span class="keyword">true</span>) <span class="keyword">const</span> <span class="keywordflow">throw</span>(<a class="code" href="class_connection_timeout.html">ConnectionTimeout</a>);</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="comment">/*</span></div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">         * Send a bootloader or firmware pRequest to the PIC</span></div>
@@ -158,20 +158,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">         * @throw ConnectionTimeout if a timeout occurred</span></div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">         * @throw FatalError if synchronisation failed</span></div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_com_proxy.html#a8c665ae8f978d295196dbb9d0f609494">Send</a>(uint8_t const* pRequest, const <span class="keywordtype">size_t</span> requestSize, uint8_t* pResponse, <span class="keywordtype">size_t</span> responseSize, <span class="keywordtype">bool</span> checkCrc, <span class="keywordtype">bool</span> doSync, <span class="keywordtype">bool</span> crcInLittleEndian = true) const throw(ConnectionTimeout, <a class="code" href="class_fatal_error.html">FatalError</a>);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_com_proxy.html#a8c665ae8f978d295196dbb9d0f609494">Send</a>(uint8_t <span class="keyword">const</span>* pRequest, <span class="keyword">const</span> <span class="keywordtype">size_t</span> requestSize, uint8_t* pResponse, <span class="keywordtype">size_t</span> responseSize, <span class="keywordtype">bool</span> checkCrc, <span class="keywordtype">bool</span> doSync, <span class="keywordtype">bool</span> crcInLittleEndian = <span class="keyword">true</span>) <span class="keyword">const</span> <span class="keywordflow">throw</span>(<a class="code" href="class_connection_timeout.html">ConnectionTimeout</a>, <a class="code" href="class_fatal_error.html">FatalError</a>);</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        </div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="comment">/*</span></div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">         * Send a byte sequence to force a uart baud rate synchronisation between WLAN module and PIC</span></div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">         * @throw FatalError if synchronisation fails</span></div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_com_proxy.html#a2cde9c98726caeea603d1f2d8d2c112c">SyncWithBootloader</a>(<span class="keywordtype">void</span>) const throw (FatalError);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keywordtype">void</span> SyncWithBootloader(<span class="keywordtype">void</span>) <span class="keyword">const</span> <span class="keywordflow">throw</span> (<a class="code" href="class_fatal_error.html">FatalError</a>);</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;};</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _COM_PROXY_H_ */</span><span class="preprocessor"></span></div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 15:18:45 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:21:32 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

@@ -158,51 +158,51 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno"><a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65">  131</a></span>&#160;        map&lt;unsigned long, unsigned char&gt; <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        map&lt;unsigned long, unsigned char&gt; ihContent;</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        </div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno"><a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83">  141</a></span>&#160;        map&lt;unsigned long, unsigned char&gt;::iterator <a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a>;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        map&lt;unsigned long, unsigned char&gt;::iterator ihIterator;</div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        </div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno"><a class="code" href="classintelhex.html#a4adf41a09983f0f78a11c8fc392c33f8">  152</a></span>&#160;        pair&lt;map&lt;unsigned long, unsigned char&gt;::iterator,<span class="keywordtype">bool</span>&gt; <a class="code" href="classintelhex.html#a4adf41a09983f0f78a11c8fc392c33f8" title="Pair for the container holding the decoded Intel HEX content.">ihReturn</a>;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        pair&lt;map&lt;unsigned long, unsigned char&gt;::iterator,<span class="keywordtype">bool</span>&gt; ihReturn;</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  </div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
-<div class="line"><a name="l00166"></a><span class="lineno"><a class="code" href="classintelhex.html#aacb1421e6ecfde72ec6b164d361442d6">  166</a></span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="classintelhex.html#aacb1421e6ecfde72ec6b164d361442d6" title="Stores segment base address of Intel HEX file.">segmentBaseAddress</a>;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> segmentBaseAddress;</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        </div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        <span class="keyword">struct </span>{</div>
 <div class="line"><a name="l00185"></a><span class="lineno"><a class="code" href="classintelhex.html#aabbf5689bc667734dca7f23a11d3df68">  185</a></span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>  <a class="code" href="classintelhex.html#aabbf5689bc667734dca7f23a11d3df68">csRegister</a>;</div>
 <div class="line"><a name="l00186"></a><span class="lineno"><a class="code" href="classintelhex.html#acf63100ba6ba58da893f29596560efbd">  186</a></span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>  <a class="code" href="classintelhex.html#acf63100ba6ba58da893f29596560efbd">ipRegister</a>;</div>
 <div class="line"><a name="l00187"></a><span class="lineno"><a class="code" href="classintelhex.html#ab58b4357deef8e4f0af9817393fc0b6e">  187</a></span>&#160;            <span class="keywordtype">bool</span>            <a class="code" href="classintelhex.html#ab58b4357deef8e4f0af9817393fc0b6e">exists</a>;</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        } <a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        } startSegmentAddress;</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        </div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        <span class="keyword">struct </span>{</div>
 <div class="line"><a name="l00206"></a><span class="lineno"><a class="code" href="classintelhex.html#abedd6ca388d3cad1d2525abc5939d27e">  206</a></span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>   <a class="code" href="classintelhex.html#abedd6ca388d3cad1d2525abc5939d27e">eipRegister</a>;</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;            <span class="keywordtype">bool</span>            <a class="code" href="classintelhex.html#ab58b4357deef8e4f0af9817393fc0b6e">exists</a>;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        } <a class="code" href="classintelhex.html#ac0e6c51bedf95a65fd4d79711a254460">startLinearAddress</a>;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        } startLinearAddress;</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        </div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        </div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        <span class="keyword">struct </span>{</div>
 <div class="line"><a name="l00222"></a><span class="lineno"><a class="code" href="classintelhex.html#a0ae0e9a75bdfaa50d6d0266bb3d56ed1">  222</a></span>&#160;            list&lt;string&gt; <a class="code" href="classintelhex.html#a0ae0e9a75bdfaa50d6d0266bb3d56ed1">ihWarnings</a>;</div>
 <div class="line"><a name="l00223"></a><span class="lineno"><a class="code" href="classintelhex.html#a5ea3789cc9ea71c9b35322aabca05158">  223</a></span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="classintelhex.html#a5ea3789cc9ea71c9b35322aabca05158">noOfWarnings</a>;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        } <a class="code" href="classintelhex.html#a2207eeb5852e806c2548f6d4380992df">msgWarning</a>;</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        } msgWarning;</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        </div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        <span class="keyword">struct </span>{</div>
 <div class="line"><a name="l00237"></a><span class="lineno"><a class="code" href="classintelhex.html#a76fb4550b43dfbb08018cabf34298400">  237</a></span>&#160;            list&lt;string&gt; <a class="code" href="classintelhex.html#a76fb4550b43dfbb08018cabf34298400">ihErrors</a>;</div>
 <div class="line"><a name="l00238"></a><span class="lineno"><a class="code" href="classintelhex.html#a451b78972165b898e91a129670fce919">  238</a></span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="classintelhex.html#a451b78972165b898e91a129670fce919">noOfErrors</a>;</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        } <a class="code" href="classintelhex.html#a722b041577b9810fb0bb7eb4b4e536d7">msgError</a>;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        } msgError;</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        </div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
-<div class="line"><a name="l00247"></a><span class="lineno"><a class="code" href="classintelhex.html#a757b3e3037a34caf004981aed2a297b6">  247</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classintelhex.html#a757b3e3037a34caf004981aed2a297b6" title="Note that EOF record is found.">foundEof</a>;</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        <span class="keywordtype">bool</span> foundEof;</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        </div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
-<div class="line"><a name="l00255"></a><span class="lineno"><a class="code" href="classintelhex.html#a65f440d3762d1b9437b7473c4df3bb8f">  255</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classintelhex.html#a65f440d3762d1b9437b7473c4df3bb8f" title="Select verbose mode.">verbose</a>;</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        <span class="keywordtype">bool</span> verbose;</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
-<div class="line"><a name="l00265"></a><span class="lineno"><a class="code" href="classintelhex.html#a5831ba42a6d900b6b01bade869ac06e7">  265</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classintelhex.html#a5831ba42a6d900b6b01bade869ac06e7" title="Select segment address mode.">segmentAddressMode</a>;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        <span class="keywordtype">bool</span> segmentAddressMode;</div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <span class="comment">/***********************************************************************     </span></div>
 <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="comment">        * \brief Converts a 2 char string to its HEX value.</span></div>
@@ -224,7 +224,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="comment">        *</span></div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="comment">        * \sa ulToHexString(), ucToHexString(), ulToString()</span></div>
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="comment">        ***********************************************************************/</span></div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="classintelhex.html#a5adb32f7af4a3c75fd0745ef2827da9a">stringToHex</a>(<span class="keywordtype">string</span> value);</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> stringToHex(<span class="keywordtype">string</span> value);</div>
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;</div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <span class="comment">/***********************************************************************   </span></div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="comment">        * \brief Converts an unsigned long to a string in HEX format.</span></div>
@@ -243,51 +243,51 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="comment">        * \sa</span></div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="comment">        * stringToHex(), ucToHexString(), ulToString()</span></div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="comment">        ***********************************************************************/</span></div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        <span class="keywordtype">string</span> <a class="code" href="classintelhex.html#af45f701889bcd7e5d25066a69e0f91bf">ulToHexString</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> value);</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        <span class="keywordtype">string</span> ulToHexString(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> value);</div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        <span class="keywordtype">string</span> <a class="code" href="classintelhex.html#a3185843e9397b26ccd330ead0a9a7bed" title="Converts an unsigned char to a string in HEX format.">ucToHexString</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> value);</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        <span class="keywordtype">string</span> ucToHexString(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> value);</div>
 <div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        </div>
 <div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;        <span class="keywordtype">string</span> <a class="code" href="classintelhex.html#a15904358dffd75ddded56657675f3c04" title="Converts an unsigned long to a string in DEC format.">ulToString</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> value);</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;        <span class="keywordtype">string</span> ulToString(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> value);</div>
 <div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        </div>
 <div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classintelhex.html#a58cd289e3cac113630c1925e391e29d9" title="Decodes the data content of a data record.">decodeDataRecord</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> recordLength,</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        <span class="keywordtype">void</span> decodeDataRecord(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> recordLength,</div>
 <div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;                              <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> loadOffset, </div>
 <div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;                              string::const_iterator data);</div>
 <div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;                              </div>
 <div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classintelhex.html#a4c0be2c34550af96766e32dcbc7cbf37" title="Add a warning message to the warning message list.">addWarning</a>(<span class="keywordtype">string</span> warningMessage);</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        <span class="keywordtype">void</span> addWarning(<span class="keywordtype">string</span> warningMessage);</div>
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        </div>
 <div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classintelhex.html#a1ad7e4af211dd3aabd79c18f96e9d7f7" title="Add an error message to the error message list.">addError</a>(<span class="keywordtype">string</span> errorMessage);</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        <span class="keywordtype">void</span> addError(<span class="keywordtype">string</span> errorMessage);</div>
 <div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        </div>
 <div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l00389"></a><span class="lineno"><a class="code" href="classintelhex.html#ae1efd0ed1f56546f8f5f5af87c6cbdd5">  389</a></span>&#160;        <a class="code" href="classintelhex.html#ae1efd0ed1f56546f8f5f5af87c6cbdd5" title="intelhex Class Constructor.">intelhex</a>()</div>
 <div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        {</div>
 <div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;            <span class="comment">/* Initialise the segment base address to zero                    */</span></div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;            <a class="code" href="classintelhex.html#aacb1421e6ecfde72ec6b164d361442d6" title="Stores segment base address of Intel HEX file.">segmentBaseAddress</a> = 0;</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;            segmentBaseAddress = 0;</div>
 <div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;            <span class="comment">/* Clear content of register variables used with the &#39;Start Segment&#39;</span></div>
 <div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;<span class="comment">            *  and &#39;Start Linear&#39; address records                             */</span></div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;            <a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.ipRegister = 0;</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;            <a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.csRegister = 0;</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;            <a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.exists = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;            <a class="code" href="classintelhex.html#ac0e6c51bedf95a65fd4d79711a254460">startLinearAddress</a>.eipRegister = 0;</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;            <a class="code" href="classintelhex.html#ac0e6c51bedf95a65fd4d79711a254460">startLinearAddress</a>.exists = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;            startSegmentAddress.ipRegister = 0;</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;            startSegmentAddress.csRegister = 0;</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;            startSegmentAddress.exists = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;            startLinearAddress.eipRegister = 0;</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;            startLinearAddress.exists = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;            <span class="comment">/* Set up error and warning handling variables                    */</span></div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;            <a class="code" href="classintelhex.html#a2207eeb5852e806c2548f6d4380992df">msgWarning</a>.noOfWarnings = 0;</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;            <a class="code" href="classintelhex.html#a722b041577b9810fb0bb7eb4b4e536d7">msgError</a>.noOfErrors = 0;</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;            msgWarning.noOfWarnings = 0;</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;            msgError.noOfErrors = 0;</div>
 <div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;            <span class="comment">/* Note that the EOF record has not been found yet                */</span></div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;            <a class="code" href="classintelhex.html#a757b3e3037a34caf004981aed2a297b6" title="Note that EOF record is found.">foundEof</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;            foundEof = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;            <span class="comment">/* Set verbose mode to off                                        */</span></div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;            <a class="code" href="classintelhex.html#a65f440d3762d1b9437b7473c4df3bb8f" title="Select verbose mode.">verbose</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;            verbose = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;            <span class="comment">/* Set segment address mode to false (default)                    */</span></div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;            <a class="code" href="classintelhex.html#a5831ba42a6d900b6b01bade869ac06e7" title="Select segment address mode.">segmentAddressMode</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;            segmentAddressMode = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;            <span class="comment">/* Ensure ihContent is cleared and point ihIterator at it         */</span></div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;            <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.clear();</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;            <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.begin();</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;            <a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a> = <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.begin();</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;            ihContent.clear();</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;            ihContent.begin();</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;            ihIterator = ihContent.begin();</div>
 <div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        }</div>
 <div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;</div>
 <div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
@@ -300,28 +300,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00430"></a><span class="lineno"><a class="code" href="classintelhex.html#a41b4c3b7851461b9240fdef90bc62768">  430</a></span>&#160;        <a class="code" href="classintelhex.html#ae1efd0ed1f56546f8f5f5af87c6cbdd5" title="intelhex Class Constructor.">intelhex</a>(<span class="keyword">const</span> <a class="code" href="classintelhex.html" title="Class to decode, encode and manipulate Intel HEX format files.">intelhex</a> &amp;ihSource)</div>
 <div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;        {</div>
 <div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;            <span class="comment">/* Initialise the segment base address                            */</span></div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;            <a class="code" href="classintelhex.html#aacb1421e6ecfde72ec6b164d361442d6" title="Stores segment base address of Intel HEX file.">segmentBaseAddress</a> = ihSource.<a class="code" href="classintelhex.html#aacb1421e6ecfde72ec6b164d361442d6" title="Stores segment base address of Intel HEX file.">segmentBaseAddress</a>;</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;            segmentBaseAddress = ihSource.segmentBaseAddress;</div>
 <div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;            <span class="comment">/* Initialise content of register variables used with the &#39;Start Segment&#39;</span></div>
 <div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;<span class="comment">            *  and &#39;Start Linear&#39; address records                             */</span></div>
-<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;            <a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.ipRegister = ihSource.<a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.<a class="code" href="classintelhex.html#acf63100ba6ba58da893f29596560efbd">ipRegister</a>;</div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;            <a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.csRegister = ihSource.<a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.<a class="code" href="classintelhex.html#aabbf5689bc667734dca7f23a11d3df68">csRegister</a>;</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;            <a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.exists = ihSource.<a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.<a class="code" href="classintelhex.html#ab58b4357deef8e4f0af9817393fc0b6e">exists</a>;</div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;            <a class="code" href="classintelhex.html#ac0e6c51bedf95a65fd4d79711a254460">startLinearAddress</a>.eipRegister = ihSource.<a class="code" href="classintelhex.html#ac0e6c51bedf95a65fd4d79711a254460">startLinearAddress</a>.<a class="code" href="classintelhex.html#abedd6ca388d3cad1d2525abc5939d27e">eipRegister</a>;</div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;            <a class="code" href="classintelhex.html#ac0e6c51bedf95a65fd4d79711a254460">startLinearAddress</a>.exists = ihSource.<a class="code" href="classintelhex.html#ac0e6c51bedf95a65fd4d79711a254460">startLinearAddress</a>.<a class="code" href="classintelhex.html#ab58b4357deef8e4f0af9817393fc0b6e">exists</a>;</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;            startSegmentAddress.ipRegister = ihSource.startSegmentAddress.<a class="code" href="classintelhex.html#acf63100ba6ba58da893f29596560efbd">ipRegister</a>;</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;            startSegmentAddress.csRegister = ihSource.startSegmentAddress.<a class="code" href="classintelhex.html#aabbf5689bc667734dca7f23a11d3df68">csRegister</a>;</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;            startSegmentAddress.exists = ihSource.startSegmentAddress.<a class="code" href="classintelhex.html#ab58b4357deef8e4f0af9817393fc0b6e">exists</a>;</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;            startLinearAddress.eipRegister = ihSource.startLinearAddress.<a class="code" href="classintelhex.html#abedd6ca388d3cad1d2525abc5939d27e">eipRegister</a>;</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;            startLinearAddress.exists = ihSource.startLinearAddress.<a class="code" href="classintelhex.html#ab58b4357deef8e4f0af9817393fc0b6e">exists</a>;</div>
 <div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;            <span class="comment">/* Set up error and warning handling variables                    */</span></div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;            <a class="code" href="classintelhex.html#a2207eeb5852e806c2548f6d4380992df">msgWarning</a>.noOfWarnings = ihSource.<a class="code" href="classintelhex.html#a2207eeb5852e806c2548f6d4380992df">msgWarning</a>.<a class="code" href="classintelhex.html#a5ea3789cc9ea71c9b35322aabca05158">noOfWarnings</a>;</div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;            <a class="code" href="classintelhex.html#a2207eeb5852e806c2548f6d4380992df">msgWarning</a>.ihWarnings = ihSource.<a class="code" href="classintelhex.html#a2207eeb5852e806c2548f6d4380992df">msgWarning</a>.<a class="code" href="classintelhex.html#a0ae0e9a75bdfaa50d6d0266bb3d56ed1">ihWarnings</a>;</div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;            <a class="code" href="classintelhex.html#a722b041577b9810fb0bb7eb4b4e536d7">msgError</a>.noOfErrors = ihSource.<a class="code" href="classintelhex.html#a722b041577b9810fb0bb7eb4b4e536d7">msgError</a>.<a class="code" href="classintelhex.html#a451b78972165b898e91a129670fce919">noOfErrors</a>;</div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;            <a class="code" href="classintelhex.html#a722b041577b9810fb0bb7eb4b4e536d7">msgError</a>.ihErrors = ihSource.<a class="code" href="classintelhex.html#a722b041577b9810fb0bb7eb4b4e536d7">msgError</a>.<a class="code" href="classintelhex.html#a76fb4550b43dfbb08018cabf34298400">ihErrors</a>;</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;            msgWarning.noOfWarnings = ihSource.msgWarning.<a class="code" href="classintelhex.html#a5ea3789cc9ea71c9b35322aabca05158">noOfWarnings</a>;</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;            msgWarning.ihWarnings = ihSource.msgWarning.<a class="code" href="classintelhex.html#a0ae0e9a75bdfaa50d6d0266bb3d56ed1">ihWarnings</a>;</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;            msgError.noOfErrors = ihSource.msgError.<a class="code" href="classintelhex.html#a451b78972165b898e91a129670fce919">noOfErrors</a>;</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;            msgError.ihErrors = ihSource.msgError.<a class="code" href="classintelhex.html#a76fb4550b43dfbb08018cabf34298400">ihErrors</a>;</div>
 <div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;            <span class="comment">/* Note that the EOF record has not been found yet                */</span></div>
-<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;            <a class="code" href="classintelhex.html#a757b3e3037a34caf004981aed2a297b6" title="Note that EOF record is found.">foundEof</a> = ihSource.<a class="code" href="classintelhex.html#a757b3e3037a34caf004981aed2a297b6" title="Note that EOF record is found.">foundEof</a>;</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;            foundEof = ihSource.foundEof;</div>
 <div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;            <span class="comment">/* Set verbose mode to off                                        */</span></div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;            <a class="code" href="classintelhex.html#a65f440d3762d1b9437b7473c4df3bb8f" title="Select verbose mode.">verbose</a> = ihSource.<a class="code" href="classintelhex.html#a65f440d3762d1b9437b7473c4df3bb8f" title="Select verbose mode.">verbose</a>;</div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;            verbose = ihSource.verbose;</div>
 <div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;            <span class="comment">/* Set segment address mode to false (default)                    */</span></div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;            <a class="code" href="classintelhex.html#a5831ba42a6d900b6b01bade869ac06e7" title="Select segment address mode.">segmentAddressMode</a> = ihSource.<a class="code" href="classintelhex.html#a5831ba42a6d900b6b01bade869ac06e7" title="Select segment address mode.">segmentAddressMode</a>;</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;            segmentAddressMode = ihSource.segmentAddressMode;</div>
 <div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;            <span class="comment">/* Copy HEX file content variables                                */</span></div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;            <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a> = ihSource.<a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>;</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;            <a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a> = ihSource.<a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a>;</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;            ihContent = ihSource.ihContent;</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;            ihIterator = ihSource.ihIterator;</div>
 <div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;        }</div>
 <div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;        </div>
 <div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
@@ -334,28 +334,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;                <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;            </div>
 <div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;            <span class="comment">/* Initialise the segment base address                            */</span></div>
-<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;            <a class="code" href="classintelhex.html#aacb1421e6ecfde72ec6b164d361442d6" title="Stores segment base address of Intel HEX file.">segmentBaseAddress</a> = ihSource.<a class="code" href="classintelhex.html#aacb1421e6ecfde72ec6b164d361442d6" title="Stores segment base address of Intel HEX file.">segmentBaseAddress</a>;</div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;            segmentBaseAddress = ihSource.segmentBaseAddress;</div>
 <div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;            <span class="comment">/* Initialise content of register variables used with the &#39;Start Segment&#39;</span></div>
 <div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;<span class="comment">            *  and &#39;Start Linear&#39; address records                             */</span></div>
-<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;            <a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.ipRegister = ihSource.<a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.<a class="code" href="classintelhex.html#acf63100ba6ba58da893f29596560efbd">ipRegister</a>;</div>
-<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;            <a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.csRegister = ihSource.<a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.<a class="code" href="classintelhex.html#aabbf5689bc667734dca7f23a11d3df68">csRegister</a>;</div>
-<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;            <a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.exists = ihSource.<a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.<a class="code" href="classintelhex.html#ab58b4357deef8e4f0af9817393fc0b6e">exists</a>;</div>
-<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;            <a class="code" href="classintelhex.html#ac0e6c51bedf95a65fd4d79711a254460">startLinearAddress</a>.eipRegister = ihSource.<a class="code" href="classintelhex.html#ac0e6c51bedf95a65fd4d79711a254460">startLinearAddress</a>.<a class="code" href="classintelhex.html#abedd6ca388d3cad1d2525abc5939d27e">eipRegister</a>;</div>
-<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;            <a class="code" href="classintelhex.html#ac0e6c51bedf95a65fd4d79711a254460">startLinearAddress</a>.exists = ihSource.<a class="code" href="classintelhex.html#ac0e6c51bedf95a65fd4d79711a254460">startLinearAddress</a>.<a class="code" href="classintelhex.html#ab58b4357deef8e4f0af9817393fc0b6e">exists</a>;</div>
+<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;            startSegmentAddress.ipRegister = ihSource.startSegmentAddress.<a class="code" href="classintelhex.html#acf63100ba6ba58da893f29596560efbd">ipRegister</a>;</div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;            startSegmentAddress.csRegister = ihSource.startSegmentAddress.<a class="code" href="classintelhex.html#aabbf5689bc667734dca7f23a11d3df68">csRegister</a>;</div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;            startSegmentAddress.exists = ihSource.startSegmentAddress.<a class="code" href="classintelhex.html#ab58b4357deef8e4f0af9817393fc0b6e">exists</a>;</div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;            startLinearAddress.eipRegister = ihSource.startLinearAddress.<a class="code" href="classintelhex.html#abedd6ca388d3cad1d2525abc5939d27e">eipRegister</a>;</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;            startLinearAddress.exists = ihSource.startLinearAddress.<a class="code" href="classintelhex.html#ab58b4357deef8e4f0af9817393fc0b6e">exists</a>;</div>
 <div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;            <span class="comment">/* Set up error and warning handling variables                    */</span></div>
-<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;            <a class="code" href="classintelhex.html#a2207eeb5852e806c2548f6d4380992df">msgWarning</a>.noOfWarnings = ihSource.<a class="code" href="classintelhex.html#a2207eeb5852e806c2548f6d4380992df">msgWarning</a>.<a class="code" href="classintelhex.html#a5ea3789cc9ea71c9b35322aabca05158">noOfWarnings</a>;</div>
-<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;            <a class="code" href="classintelhex.html#a2207eeb5852e806c2548f6d4380992df">msgWarning</a>.ihWarnings = ihSource.<a class="code" href="classintelhex.html#a2207eeb5852e806c2548f6d4380992df">msgWarning</a>.<a class="code" href="classintelhex.html#a0ae0e9a75bdfaa50d6d0266bb3d56ed1">ihWarnings</a>;</div>
-<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;            <a class="code" href="classintelhex.html#a722b041577b9810fb0bb7eb4b4e536d7">msgError</a>.noOfErrors = ihSource.<a class="code" href="classintelhex.html#a722b041577b9810fb0bb7eb4b4e536d7">msgError</a>.<a class="code" href="classintelhex.html#a451b78972165b898e91a129670fce919">noOfErrors</a>;</div>
-<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;            <a class="code" href="classintelhex.html#a722b041577b9810fb0bb7eb4b4e536d7">msgError</a>.ihErrors = ihSource.<a class="code" href="classintelhex.html#a722b041577b9810fb0bb7eb4b4e536d7">msgError</a>.<a class="code" href="classintelhex.html#a76fb4550b43dfbb08018cabf34298400">ihErrors</a>;</div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;            msgWarning.noOfWarnings = ihSource.msgWarning.<a class="code" href="classintelhex.html#a5ea3789cc9ea71c9b35322aabca05158">noOfWarnings</a>;</div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;            msgWarning.ihWarnings = ihSource.msgWarning.<a class="code" href="classintelhex.html#a0ae0e9a75bdfaa50d6d0266bb3d56ed1">ihWarnings</a>;</div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;            msgError.noOfErrors = ihSource.msgError.<a class="code" href="classintelhex.html#a451b78972165b898e91a129670fce919">noOfErrors</a>;</div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;            msgError.ihErrors = ihSource.msgError.<a class="code" href="classintelhex.html#a76fb4550b43dfbb08018cabf34298400">ihErrors</a>;</div>
 <div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;            <span class="comment">/* Note that the EOF record has not been found yet                */</span></div>
-<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;            <a class="code" href="classintelhex.html#a757b3e3037a34caf004981aed2a297b6" title="Note that EOF record is found.">foundEof</a> = ihSource.<a class="code" href="classintelhex.html#a757b3e3037a34caf004981aed2a297b6" title="Note that EOF record is found.">foundEof</a>;</div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;            foundEof = ihSource.foundEof;</div>
 <div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;            <span class="comment">/* Set verbose mode to off                                        */</span></div>
-<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;            <a class="code" href="classintelhex.html#a65f440d3762d1b9437b7473c4df3bb8f" title="Select verbose mode.">verbose</a> = ihSource.<a class="code" href="classintelhex.html#a65f440d3762d1b9437b7473c4df3bb8f" title="Select verbose mode.">verbose</a>;</div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;            verbose = ihSource.verbose;</div>
 <div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;            <span class="comment">/* Set segment address mode to false (default)                    */</span></div>
-<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;            <a class="code" href="classintelhex.html#a5831ba42a6d900b6b01bade869ac06e7" title="Select segment address mode.">segmentAddressMode</a> = ihSource.<a class="code" href="classintelhex.html#a5831ba42a6d900b6b01bade869ac06e7" title="Select segment address mode.">segmentAddressMode</a>;</div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;            segmentAddressMode = ihSource.segmentAddressMode;</div>
 <div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;            <span class="comment">/* Copy HEX file content variables                                */</span></div>
-<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;            <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a> = ihSource.<a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>;</div>
-<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;            <a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a> = ihSource.<a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a>;</div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;            ihContent = ihSource.ihContent;</div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;            ihIterator = ihSource.ihIterator;</div>
 <div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;            </div>
 <div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;        }</div>
@@ -363,7 +363,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l00512"></a><span class="lineno"><a class="code" href="classintelhex.html#a044d6ab5b10a38ffa40a0b1f55b7e808">  512</a></span>&#160;        <a class="code" href="classintelhex.html" title="Class to decode, encode and manipulate Intel HEX format files.">intelhex</a>&amp; <a class="code" href="classintelhex.html#a044d6ab5b10a38ffa40a0b1f55b7e808" title="Overloaded prefix increment operator.">operator++</a>()</div>
 <div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;        {</div>
-<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;            ++<a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a>;</div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;            ++ihIterator;</div>
 <div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;            </div>
 <div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;            <span class="keywordflow">return</span>(*<span class="keyword">this</span>);</div>
 <div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;        }</div>
@@ -379,7 +379,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l00540"></a><span class="lineno"><a class="code" href="classintelhex.html#ab85cbeafe9cc6adcec79f1bc709addca">  540</a></span>&#160;        <a class="code" href="classintelhex.html" title="Class to decode, encode and manipulate Intel HEX format files.">intelhex</a>&amp; <a class="code" href="classintelhex.html#ab85cbeafe9cc6adcec79f1bc709addca" title="Overloaded prefix decrement operator.">operator--</a>()</div>
 <div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;        {</div>
-<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;            --<a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a>;</div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;            --ihIterator;</div>
 <div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;            </div>
 <div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;            <span class="keywordflow">return</span>(*<span class="keyword">this</span>);</div>
 <div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;        }</div>
@@ -395,26 +395,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l00573"></a><span class="lineno"><a class="code" href="classintelhex.html#ab2b1119e14a960ea2b356967244aafb3">  573</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classintelhex.html#ab2b1119e14a960ea2b356967244aafb3" title="Moves the address pointer to the first available address.">begin</a>()</div>
 <div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;        {</div>
-<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.size() != 0)</div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;            <span class="keywordflow">if</span> (ihContent.size() != 0)</div>
 <div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;            {</div>
-<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;                <a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a> = <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.begin();</div>
+<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;                ihIterator = ihContent.begin();</div>
 <div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;            }</div>
 <div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;        }</div>
 <div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;        </div>
 <div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l00593"></a><span class="lineno"><a class="code" href="classintelhex.html#a7759926596cfcffec94e391fff4298e9">  593</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classintelhex.html#a7759926596cfcffec94e391fff4298e9" title="Moves the address pointer to the last available address.">end</a>()</div>
 <div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;        {</div>
-<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;            <span class="keywordflow">if</span> (!<a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.empty())</div>
+<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;            <span class="keywordflow">if</span> (!ihContent.empty())</div>
 <div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;            {</div>
-<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;                <a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a> = <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.end();</div>
-<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;                --<a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a>;</div>
+<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;                ihIterator = ihContent.end();</div>
+<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;                --ihIterator;</div>
 <div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;            }</div>
 <div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;        }</div>
 <div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;        </div>
 <div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l00618"></a><span class="lineno"><a class="code" href="classintelhex.html#afa757932ec420f977d33bb9a2d5a0a69">  618</a></span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="classintelhex.html#afa757932ec420f977d33bb9a2d5a0a69" title="Checks if we have reached end of available data.">size</a>()</div>
 <div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;        {</div>
-<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(<a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.size());</div>
+<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(ihContent.size());</div>
 <div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;        }</div>
 <div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;        </div>
 <div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
@@ -423,14 +423,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;            <span class="comment">/* Return true if there is no data anyway                         */</span></div>
 <div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;            <span class="keywordtype">bool</span> result = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;            </div>
-<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;            <span class="keywordflow">if</span> (!<a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.empty())</div>
+<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;            <span class="keywordflow">if</span> (!ihContent.empty())</div>
 <div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;            {</div>
 <div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;                map&lt;unsigned long, unsigned char&gt;::iterator it \</div>
-<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;                                                             = <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.end();</div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;                                                             = ihContent.end();</div>
 <div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;                </div>
 <div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;                --it;</div>
 <div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;</div>
-<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;                <span class="keywordflow">if</span> (it != <a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a>)</div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;                <span class="keywordflow">if</span> (it != ihIterator)</div>
 <div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;                {</div>
 <div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;                    result = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;                }</div>
@@ -440,7 +440,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;        </div>
 <div class="line"><a name="l00659"></a><span class="lineno"><a class="code" href="classintelhex.html#a2bd5b567207303d4d9f4322e6262d6d6">  659</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classintelhex.html#a2bd5b567207303d4d9f4322e6262d6d6">empty</a>()</div>
 <div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;        {</div>
-<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.empty();</div>
+<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;            <span class="keywordflow">return</span> ihContent.empty();</div>
 <div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;        }</div>
 <div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;        </div>
 <div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
@@ -448,14 +448,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;        {</div>
 <div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;            <span class="keywordtype">bool</span> result = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;            </div>
-<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.size() != 0)</div>
+<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;            <span class="keywordflow">if</span> (ihContent.size() != 0)</div>
 <div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;            {</div>
 <div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;                map&lt;unsigned long, unsigned char&gt;::iterator it;</div>
-<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;                it = <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.find(address);</div>
-<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;                <span class="keywordflow">if</span> (it != <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.end())</div>
+<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;                it = ihContent.find(address);</div>
+<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;                <span class="keywordflow">if</span> (it != ihContent.end())</div>
 <div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;                {</div>
 <div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;                    result = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;                    <a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a> = it;</div>
+<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;                    ihIterator = it;</div>
 <div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;                }</div>
 <div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;            }</div>
 <div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;            <span class="keywordflow">return</span> result;</div>
@@ -467,16 +467,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;            <span class="keywordtype">bool</span> result = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;</div>
 <div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;            <span class="comment">/* If we have data */</span>            </div>
-<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.size() != 0)</div>
+<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;            <span class="keywordflow">if</span> (ihContent.size() != 0)</div>
 <div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;            {</div>
 <div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;                <span class="comment">/* If we&#39;re not already pointing to the end */</span></div>
-<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a> != <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.end())</div>
+<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;                <span class="keywordflow">if</span> (ihIterator != ihContent.end())</div>
 <div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;                {</div>
 <div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;                    <span class="comment">/* Increment iterator */</span></div>
-<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;                    <a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a>++;</div>
+<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;                    ihIterator++;</div>
 <div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;                    </div>
 <div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;                    <span class="comment">/* If we still haven&#39;t reached the end... */</span></div>
-<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;                    <span class="keywordflow">if</span> (<a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a> != <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.end())</div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;                    <span class="keywordflow">if</span> (ihIterator != ihContent.end())</div>
 <div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;                    {</div>
 <div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;                        <span class="comment">/* Everything is ok! */</span></div>
 <div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;                        result = <span class="keyword">true</span>;</div>
@@ -494,13 +494,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;            <span class="keywordtype">bool</span> result = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;</div>
 <div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;            <span class="comment">/* If we have data */</span>            </div>
-<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.size() != 0)</div>
+<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;            <span class="keywordflow">if</span> (ihContent.size() != 0)</div>
 <div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;            {</div>
 <div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;                <span class="comment">/* If we&#39;re not already pointing to the start */</span></div>
-<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a> != <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.begin())</div>
+<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;                <span class="keywordflow">if</span> (ihIterator != ihContent.begin())</div>
 <div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;                {</div>
 <div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;                    <span class="comment">/* Decrement iterator */</span></div>
-<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;                    <a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a>--;</div>
+<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;                    ihIterator--;</div>
 <div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;                    </div>
 <div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;                    <span class="comment">/* Everything is ok! */</span></div>
 <div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;                    result = <span class="keyword">true</span>;</div>
@@ -514,17 +514,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l00774"></a><span class="lineno"><a class="code" href="classintelhex.html#a631d8930daeaf04bf0d9ad9c25679a0b">  774</a></span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="classintelhex.html#a631d8930daeaf04bf0d9ad9c25679a0b" title="Returns the current address being pointed to.">currentAddress</a>()</div>
 <div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;        {</div>
-<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a>-&gt;first;</div>
+<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;            <span class="keywordflow">return</span> ihIterator-&gt;first;</div>
 <div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;        }</div>
 <div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;        </div>
 <div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l00793"></a><span class="lineno"><a class="code" href="classintelhex.html#aa8833665b99f0b6ac64fcef7d2116c42">  793</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classintelhex.html#aa8833665b99f0b6ac64fcef7d2116c42" title="Returns the lowest address currently available.">startAddress</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> * address)</div>
 <div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;        {</div>
-<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.size() != 0)</div>
+<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;            <span class="keywordflow">if</span> (ihContent.size() != 0)</div>
 <div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;            {</div>
 <div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;                map&lt;unsigned long, unsigned char&gt;::iterator it;</div>
 <div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;            </div>
-<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;                it = <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.begin();</div>
+<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;                it = ihContent.begin();</div>
 <div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;                *address = (*it).first;</div>
 <div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;            }</div>
@@ -535,11 +535,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l00821"></a><span class="lineno"><a class="code" href="classintelhex.html#a9b159bea81eb832e37f6cf88a57ca659">  821</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classintelhex.html#a9b159bea81eb832e37f6cf88a57ca659" title="Returns the highest address currently available.">endAddress</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> * address)</div>
 <div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;        {</div>
-<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.size() != 0)</div>
+<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;            <span class="keywordflow">if</span> (ihContent.size() != 0)</div>
 <div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;            {</div>
 <div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;                map&lt;unsigned long, unsigned char&gt;::reverse_iterator rit;</div>
 <div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;            </div>
-<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;                rit = <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.rbegin();</div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;                rit = ihContent.rbegin();</div>
 <div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;                *address = (*rit).first;</div>
 <div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;            }</div>
@@ -550,9 +550,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l00849"></a><span class="lineno"><a class="code" href="classintelhex.html#a01f7799f7a86e45c28b713e9472a8a5a">  849</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classintelhex.html#a01f7799f7a86e45c28b713e9472a8a5a" title="Returns the data to which the iterator is currently pointing.">getData</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> * data)</div>
 <div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;        {</div>
-<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;            <span class="keywordflow">if</span> (!<a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.empty() &amp;&amp; (<a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a> != <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.end()))</div>
+<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;            <span class="keywordflow">if</span> (!ihContent.empty() &amp;&amp; (ihIterator != ihContent.end()))</div>
 <div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;            {</div>
-<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;                *data = <a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a>-&gt;second;</div>
+<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;                *data = ihIterator-&gt;second;</div>
 <div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;            }</div>
 <div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
@@ -564,15 +564,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;            <span class="keywordtype">bool</span> found = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;            map&lt;unsigned long, unsigned char&gt;::iterator localIterator;</div>
 <div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160;</div>
-<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160;            <span class="keywordflow">if</span> (!<a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.empty())</div>
+<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160;            <span class="keywordflow">if</span> (!ihContent.empty())</div>
 <div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;            {</div>
-<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;                localIterator = <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.find(address);</div>
+<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;                localIterator = ihContent.find(address);</div>
 <div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;                </div>
-<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;                <span class="keywordflow">if</span> (localIterator != <a class="code" href="classintelhex.html#a5add4e9b26e1c467296bec8a94d4ee65" title="Container for decoded Intel HEX content.">ihContent</a>.end())</div>
+<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;                <span class="keywordflow">if</span> (localIterator != ihContent.end())</div>
 <div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;                {</div>
 <div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;                    found = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;                    <a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a> = localIterator;</div>
-<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;                    *data = <a class="code" href="classintelhex.html#accc24f65b09b8cbe43ec9dba0f315f83" title="Iterator for the container holding the decoded Intel HEX content.">ihIterator</a>-&gt;second;</div>
+<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;                    ihIterator = localIterator;</div>
+<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;                    *data = ihIterator-&gt;second;</div>
 <div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;                }</div>
 <div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;            }</div>
 <div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;</div>
@@ -604,25 +604,25 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00928"></a><span class="lineno">  928</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l00935"></a><span class="lineno"><a class="code" href="classintelhex.html#a05a19e1e9f1eb493a8d0bc29db88683f">  935</a></span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="classintelhex.html#a05a19e1e9f1eb493a8d0bc29db88683f" title="Returns number of unread warning messages.">getNoWarnings</a>()</div>
 <div class="line"><a name="l00936"></a><span class="lineno">  936</span>&#160;        {</div>
-<div class="line"><a name="l00937"></a><span class="lineno">  937</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classintelhex.html#a2207eeb5852e806c2548f6d4380992df">msgWarning</a>.noOfWarnings;</div>
+<div class="line"><a name="l00937"></a><span class="lineno">  937</span>&#160;            <span class="keywordflow">return</span> msgWarning.noOfWarnings;</div>
 <div class="line"><a name="l00938"></a><span class="lineno">  938</span>&#160;        }</div>
 <div class="line"><a name="l00939"></a><span class="lineno">  939</span>&#160;        </div>
 <div class="line"><a name="l00940"></a><span class="lineno">  940</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l00947"></a><span class="lineno"><a class="code" href="classintelhex.html#a77cddd46c3f97692b4d89f138bdabb72">  947</a></span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="classintelhex.html#a77cddd46c3f97692b4d89f138bdabb72" title="Returns number of unread error messages.">getNoErrors</a>()</div>
 <div class="line"><a name="l00948"></a><span class="lineno">  948</span>&#160;        {</div>
-<div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classintelhex.html#a722b041577b9810fb0bb7eb4b4e536d7">msgError</a>.noOfErrors;</div>
+<div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160;            <span class="keywordflow">return</span> msgError.noOfErrors;</div>
 <div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160;        }</div>
 <div class="line"><a name="l00951"></a><span class="lineno">  951</span>&#160;        </div>
 <div class="line"><a name="l00952"></a><span class="lineno">  952</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l00965"></a><span class="lineno"><a class="code" href="classintelhex.html#ab881b8cb0fe665395a29e4375db8f7c4">  965</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classintelhex.html#ab881b8cb0fe665395a29e4375db8f7c4" title="Pop next warning message from the list of warnings.">popNextWarning</a>(<span class="keywordtype">string</span>&amp; warning)</div>
 <div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;        {</div>
-<div class="line"><a name="l00967"></a><span class="lineno">  967</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="classintelhex.html#a2207eeb5852e806c2548f6d4380992df">msgWarning</a>.noOfWarnings &gt; 0)</div>
+<div class="line"><a name="l00967"></a><span class="lineno">  967</span>&#160;            <span class="keywordflow">if</span> (msgWarning.noOfWarnings &gt; 0)</div>
 <div class="line"><a name="l00968"></a><span class="lineno">  968</span>&#160;            {</div>
-<div class="line"><a name="l00969"></a><span class="lineno">  969</span>&#160;                warning = <a class="code" href="classintelhex.html#a2207eeb5852e806c2548f6d4380992df">msgWarning</a>.ihWarnings.front();</div>
+<div class="line"><a name="l00969"></a><span class="lineno">  969</span>&#160;                warning = msgWarning.ihWarnings.front();</div>
 <div class="line"><a name="l00970"></a><span class="lineno">  970</span>&#160;                </div>
-<div class="line"><a name="l00971"></a><span class="lineno">  971</span>&#160;                <a class="code" href="classintelhex.html#a2207eeb5852e806c2548f6d4380992df">msgWarning</a>.ihWarnings.pop_front();</div>
+<div class="line"><a name="l00971"></a><span class="lineno">  971</span>&#160;                msgWarning.ihWarnings.pop_front();</div>
 <div class="line"><a name="l00972"></a><span class="lineno">  972</span>&#160;            </div>
-<div class="line"><a name="l00973"></a><span class="lineno">  973</span>&#160;                <a class="code" href="classintelhex.html#a2207eeb5852e806c2548f6d4380992df">msgWarning</a>.noOfWarnings = <a class="code" href="classintelhex.html#a2207eeb5852e806c2548f6d4380992df">msgWarning</a>.ihWarnings.size();</div>
+<div class="line"><a name="l00973"></a><span class="lineno">  973</span>&#160;                msgWarning.noOfWarnings = msgWarning.ihWarnings.size();</div>
 <div class="line"><a name="l00974"></a><span class="lineno">  974</span>&#160;                </div>
 <div class="line"><a name="l00975"></a><span class="lineno">  975</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00976"></a><span class="lineno">  976</span>&#160;            }</div>
@@ -635,13 +635,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00983"></a><span class="lineno">  983</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l00996"></a><span class="lineno"><a class="code" href="classintelhex.html#a6609fd1c57a650c45a1961f6318d643e">  996</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classintelhex.html#a6609fd1c57a650c45a1961f6318d643e" title="Pop next error message from the list of errors.">popNextError</a>(<span class="keywordtype">string</span>&amp; error)</div>
 <div class="line"><a name="l00997"></a><span class="lineno">  997</span>&#160;        {</div>
-<div class="line"><a name="l00998"></a><span class="lineno">  998</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="classintelhex.html#a722b041577b9810fb0bb7eb4b4e536d7">msgError</a>.noOfErrors &gt; 0)</div>
+<div class="line"><a name="l00998"></a><span class="lineno">  998</span>&#160;            <span class="keywordflow">if</span> (msgError.noOfErrors &gt; 0)</div>
 <div class="line"><a name="l00999"></a><span class="lineno">  999</span>&#160;            {</div>
-<div class="line"><a name="l01000"></a><span class="lineno"> 1000</span>&#160;                error = <a class="code" href="classintelhex.html#a722b041577b9810fb0bb7eb4b4e536d7">msgError</a>.ihErrors.front();</div>
+<div class="line"><a name="l01000"></a><span class="lineno"> 1000</span>&#160;                error = msgError.ihErrors.front();</div>
 <div class="line"><a name="l01001"></a><span class="lineno"> 1001</span>&#160;                </div>
-<div class="line"><a name="l01002"></a><span class="lineno"> 1002</span>&#160;                <a class="code" href="classintelhex.html#a722b041577b9810fb0bb7eb4b4e536d7">msgError</a>.ihErrors.pop_front();</div>
+<div class="line"><a name="l01002"></a><span class="lineno"> 1002</span>&#160;                msgError.ihErrors.pop_front();</div>
 <div class="line"><a name="l01003"></a><span class="lineno"> 1003</span>&#160;            </div>
-<div class="line"><a name="l01004"></a><span class="lineno"> 1004</span>&#160;                <a class="code" href="classintelhex.html#a722b041577b9810fb0bb7eb4b4e536d7">msgError</a>.noOfErrors = <a class="code" href="classintelhex.html#a722b041577b9810fb0bb7eb4b4e536d7">msgError</a>.ihErrors.size();</div>
+<div class="line"><a name="l01004"></a><span class="lineno"> 1004</span>&#160;                msgError.noOfErrors = msgError.ihErrors.size();</div>
 <div class="line"><a name="l01005"></a><span class="lineno"> 1005</span>&#160;                </div>
 <div class="line"><a name="l01006"></a><span class="lineno"> 1006</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l01007"></a><span class="lineno"> 1007</span>&#160;            }</div>
@@ -655,64 +655,64 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l01029"></a><span class="lineno"><a class="code" href="classintelhex.html#a94d6d17ba22263a4775d80b2a0e6e95f"> 1029</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classintelhex.html#a94d6d17ba22263a4775d80b2a0e6e95f" title="Returns segment start address for the IP and ES registers.">getStartSegmentAddress</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> * <a class="code" href="classintelhex.html#acf63100ba6ba58da893f29596560efbd">ipRegister</a>, </div>
 <div class="line"><a name="l01030"></a><span class="lineno"> 1030</span>&#160;                                    <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> * <a class="code" href="classintelhex.html#aabbf5689bc667734dca7f23a11d3df68">csRegister</a>)</div>
 <div class="line"><a name="l01031"></a><span class="lineno"> 1031</span>&#160;        {</div>
-<div class="line"><a name="l01032"></a><span class="lineno"> 1032</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.exists == <span class="keyword">true</span>)</div>
+<div class="line"><a name="l01032"></a><span class="lineno"> 1032</span>&#160;            <span class="keywordflow">if</span> (startSegmentAddress.exists == <span class="keyword">true</span>)</div>
 <div class="line"><a name="l01033"></a><span class="lineno"> 1033</span>&#160;            {</div>
-<div class="line"><a name="l01034"></a><span class="lineno"> 1034</span>&#160;                *ipRegister = <a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.ipRegister;</div>
-<div class="line"><a name="l01035"></a><span class="lineno"> 1035</span>&#160;                *csRegister = <a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.csRegister;</div>
+<div class="line"><a name="l01034"></a><span class="lineno"> 1034</span>&#160;                *ipRegister = startSegmentAddress.ipRegister;</div>
+<div class="line"><a name="l01035"></a><span class="lineno"> 1035</span>&#160;                *csRegister = startSegmentAddress.csRegister;</div>
 <div class="line"><a name="l01036"></a><span class="lineno"> 1036</span>&#160;            }</div>
 <div class="line"><a name="l01037"></a><span class="lineno"> 1037</span>&#160;            </div>
-<div class="line"><a name="l01038"></a><span class="lineno"> 1038</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.exists;</div>
+<div class="line"><a name="l01038"></a><span class="lineno"> 1038</span>&#160;            <span class="keywordflow">return</span> startSegmentAddress.exists;</div>
 <div class="line"><a name="l01039"></a><span class="lineno"> 1039</span>&#160;        }</div>
 <div class="line"><a name="l01040"></a><span class="lineno"> 1040</span>&#160;        </div>
 <div class="line"><a name="l01041"></a><span class="lineno"> 1041</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l01055"></a><span class="lineno"><a class="code" href="classintelhex.html#a7bc61f72756d37509e768906733ba10b"> 1055</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classintelhex.html#a7bc61f72756d37509e768906733ba10b" title="Returns segment linear address for the EIP register.">getStartLinearAddress</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> * <a class="code" href="classintelhex.html#abedd6ca388d3cad1d2525abc5939d27e">eipRegister</a>)</div>
 <div class="line"><a name="l01056"></a><span class="lineno"> 1056</span>&#160;        {</div>
-<div class="line"><a name="l01057"></a><span class="lineno"> 1057</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="classintelhex.html#ac0e6c51bedf95a65fd4d79711a254460">startLinearAddress</a>.exists == <span class="keyword">true</span>)</div>
+<div class="line"><a name="l01057"></a><span class="lineno"> 1057</span>&#160;            <span class="keywordflow">if</span> (startLinearAddress.exists == <span class="keyword">true</span>)</div>
 <div class="line"><a name="l01058"></a><span class="lineno"> 1058</span>&#160;            {</div>
-<div class="line"><a name="l01059"></a><span class="lineno"> 1059</span>&#160;                *eipRegister = <a class="code" href="classintelhex.html#ac0e6c51bedf95a65fd4d79711a254460">startLinearAddress</a>.eipRegister;</div>
+<div class="line"><a name="l01059"></a><span class="lineno"> 1059</span>&#160;                *eipRegister = startLinearAddress.eipRegister;</div>
 <div class="line"><a name="l01060"></a><span class="lineno"> 1060</span>&#160;            }</div>
 <div class="line"><a name="l01061"></a><span class="lineno"> 1061</span>&#160;            </div>
-<div class="line"><a name="l01062"></a><span class="lineno"> 1062</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classintelhex.html#ac0e6c51bedf95a65fd4d79711a254460">startLinearAddress</a>.exists;</div>
+<div class="line"><a name="l01062"></a><span class="lineno"> 1062</span>&#160;            <span class="keywordflow">return</span> startLinearAddress.exists;</div>
 <div class="line"><a name="l01063"></a><span class="lineno"> 1063</span>&#160;        }</div>
 <div class="line"><a name="l01064"></a><span class="lineno"> 1064</span>&#160;        </div>
 <div class="line"><a name="l01065"></a><span class="lineno"> 1065</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l01077"></a><span class="lineno"><a class="code" href="classintelhex.html#a9688f0002be870b05d64b5f9fcdeb86b"> 1077</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classintelhex.html#a9688f0002be870b05d64b5f9fcdeb86b" title="Sets the segment start address for the IP and CS registers.">setStartSegmentAddress</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> <a class="code" href="classintelhex.html#acf63100ba6ba58da893f29596560efbd">ipRegister</a>, </div>
 <div class="line"><a name="l01078"></a><span class="lineno"> 1078</span>&#160;                                    <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> <a class="code" href="classintelhex.html#aabbf5689bc667734dca7f23a11d3df68">csRegister</a>)</div>
 <div class="line"><a name="l01079"></a><span class="lineno"> 1079</span>&#160;        {</div>
-<div class="line"><a name="l01080"></a><span class="lineno"> 1080</span>&#160;            <a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.ipRegister = <a class="code" href="classintelhex.html#acf63100ba6ba58da893f29596560efbd">ipRegister</a>;</div>
-<div class="line"><a name="l01081"></a><span class="lineno"> 1081</span>&#160;            <a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.csRegister = <a class="code" href="classintelhex.html#aabbf5689bc667734dca7f23a11d3df68">csRegister</a>;</div>
-<div class="line"><a name="l01082"></a><span class="lineno"> 1082</span>&#160;            <a class="code" href="classintelhex.html#a825c8bbb00069930960d90fe90a1b397">startSegmentAddress</a>.exists = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l01080"></a><span class="lineno"> 1080</span>&#160;            startSegmentAddress.ipRegister = <a class="code" href="classintelhex.html#acf63100ba6ba58da893f29596560efbd">ipRegister</a>;</div>
+<div class="line"><a name="l01081"></a><span class="lineno"> 1081</span>&#160;            startSegmentAddress.csRegister = <a class="code" href="classintelhex.html#aabbf5689bc667734dca7f23a11d3df68">csRegister</a>;</div>
+<div class="line"><a name="l01082"></a><span class="lineno"> 1082</span>&#160;            startSegmentAddress.exists = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l01083"></a><span class="lineno"> 1083</span>&#160;        }</div>
 <div class="line"><a name="l01084"></a><span class="lineno"> 1084</span>&#160;        </div>
 <div class="line"><a name="l01085"></a><span class="lineno"> 1085</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l01095"></a><span class="lineno"><a class="code" href="classintelhex.html#a7629ca097b2de02dea37fcaa2dc2709c"> 1095</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classintelhex.html#a7629ca097b2de02dea37fcaa2dc2709c" title="Sets the segment start address for the EIP register.">setStartLinearAddress</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="classintelhex.html#abedd6ca388d3cad1d2525abc5939d27e">eipRegister</a>)</div>
 <div class="line"><a name="l01096"></a><span class="lineno"> 1096</span>&#160;        {</div>
-<div class="line"><a name="l01097"></a><span class="lineno"> 1097</span>&#160;            <a class="code" href="classintelhex.html#ac0e6c51bedf95a65fd4d79711a254460">startLinearAddress</a>.eipRegister = <a class="code" href="classintelhex.html#abedd6ca388d3cad1d2525abc5939d27e">eipRegister</a>;</div>
-<div class="line"><a name="l01098"></a><span class="lineno"> 1098</span>&#160;            <a class="code" href="classintelhex.html#ac0e6c51bedf95a65fd4d79711a254460">startLinearAddress</a>.exists = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l01097"></a><span class="lineno"> 1097</span>&#160;            startLinearAddress.eipRegister = <a class="code" href="classintelhex.html#abedd6ca388d3cad1d2525abc5939d27e">eipRegister</a>;</div>
+<div class="line"><a name="l01098"></a><span class="lineno"> 1098</span>&#160;            startLinearAddress.exists = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l01099"></a><span class="lineno"> 1099</span>&#160;        }</div>
 <div class="line"><a name="l01100"></a><span class="lineno"> 1100</span>&#160;        </div>
 <div class="line"><a name="l01101"></a><span class="lineno"> 1101</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l01106"></a><span class="lineno"><a class="code" href="classintelhex.html#a489fc3b9c34542def2a5167192b291da"> 1106</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classintelhex.html#a489fc3b9c34542def2a5167192b291da" title="Turns on segment addressing mode during encoding.">segmentAddressingOn</a>()</div>
 <div class="line"><a name="l01107"></a><span class="lineno"> 1107</span>&#160;        {</div>
-<div class="line"><a name="l01108"></a><span class="lineno"> 1108</span>&#160;            <a class="code" href="classintelhex.html#a5831ba42a6d900b6b01bade869ac06e7" title="Select segment address mode.">segmentAddressMode</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l01108"></a><span class="lineno"> 1108</span>&#160;            segmentAddressMode = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l01109"></a><span class="lineno"> 1109</span>&#160;        }</div>
 <div class="line"><a name="l01110"></a><span class="lineno"> 1110</span>&#160;        </div>
 <div class="line"><a name="l01111"></a><span class="lineno"> 1111</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l01116"></a><span class="lineno"><a class="code" href="classintelhex.html#a5055edd337d19037ab254a27016267f8"> 1116</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classintelhex.html#a5055edd337d19037ab254a27016267f8" title="Turns on linear addressing mode during encoding.">linearAddressingOn</a>()</div>
 <div class="line"><a name="l01117"></a><span class="lineno"> 1117</span>&#160;        {</div>
-<div class="line"><a name="l01118"></a><span class="lineno"> 1118</span>&#160;            <a class="code" href="classintelhex.html#a5831ba42a6d900b6b01bade869ac06e7" title="Select segment address mode.">segmentAddressMode</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01118"></a><span class="lineno"> 1118</span>&#160;            segmentAddressMode = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l01119"></a><span class="lineno"> 1119</span>&#160;        }</div>
 <div class="line"><a name="l01120"></a><span class="lineno"> 1120</span>&#160;        </div>
 <div class="line"><a name="l01121"></a><span class="lineno"> 1121</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l01127"></a><span class="lineno"><a class="code" href="classintelhex.html#ac6a0119a04a2090af3ffe8c33a37cbc9"> 1127</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classintelhex.html#ac6a0119a04a2090af3ffe8c33a37cbc9" title="Turns on textual output to cout during decoding.">verboseOn</a>()</div>
 <div class="line"><a name="l01128"></a><span class="lineno"> 1128</span>&#160;        {</div>
-<div class="line"><a name="l01129"></a><span class="lineno"> 1129</span>&#160;            <a class="code" href="classintelhex.html#a65f440d3762d1b9437b7473c4df3bb8f" title="Select verbose mode.">verbose</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l01129"></a><span class="lineno"> 1129</span>&#160;            verbose = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l01130"></a><span class="lineno"> 1130</span>&#160;        }</div>
 <div class="line"><a name="l01131"></a><span class="lineno"> 1131</span>&#160;        </div>
 <div class="line"><a name="l01132"></a><span class="lineno"> 1132</span>&#160;        <span class="comment">/**********************************************************************/</span></div>
 <div class="line"><a name="l01137"></a><span class="lineno"><a class="code" href="classintelhex.html#a3958f077a662291bbde3472ea2bcfb4d"> 1137</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classintelhex.html#a3958f077a662291bbde3472ea2bcfb4d" title="Turns off textual output to cout during decoding.">verboseOff</a>()</div>
 <div class="line"><a name="l01138"></a><span class="lineno"> 1138</span>&#160;        {</div>
-<div class="line"><a name="l01139"></a><span class="lineno"> 1139</span>&#160;            <a class="code" href="classintelhex.html#a65f440d3762d1b9437b7473c4df3bb8f" title="Select verbose mode.">verbose</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01139"></a><span class="lineno"> 1139</span>&#160;            verbose = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l01140"></a><span class="lineno"> 1140</span>&#160;        }</div>
 <div class="line"><a name="l01141"></a><span class="lineno"> 1141</span>&#160;};</div>
 <div class="line"><a name="l01142"></a><span class="lineno"> 1142</span>&#160;<span class="preprocessor">#endif</span></div>
@@ -720,7 +720,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 15:18:45 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:21:33 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

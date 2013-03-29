@@ -11,14 +11,13 @@ var searchData=
   ['bleepromwriterequest',['BlEepromWriteRequest',['../struct_bl_eeprom_write_request.html#a3b99db2cb245648831ca9c4d7f0f2850',1,'BlEepromWriteRequest']]],
   ['blenableautostart',['BlEnableAutostart',['../class_wifly_control.html#acc372e780a40e0634d1ccf89aaba6b32',1,'WiflyControl']]],
   ['blflashcrc16request',['BlFlashCrc16Request',['../struct_bl_flash_crc16_request.html#a19119cb8b72cd5892ee4c75d8187ce36',1,'BlFlashCrc16Request']]],
-  ['blflasherase',['BlFlashErase',['../class_wifly_control.html#abe0bceb7ec0cfc88c2fccdae0d844d8a',1,'WiflyControl::BlFlashErase(void) const '],['../class_wifly_control.html#abec6d9c2f4478e46cf9e095a93b3c68d',1,'WiflyControl::BlFlashErase(const uint32_t endAddress, const uint8_t numPages) const ']]],
+  ['blflasherase',['BlFlashErase',['../class_wifly_control.html#abe0bceb7ec0cfc88c2fccdae0d844d8a',1,'WiflyControl']]],
   ['blflasheraserequest',['BlFlashEraseRequest',['../struct_bl_flash_erase_request.html#aea945f360bd7e53e625a9235071599d8',1,'BlFlashEraseRequest']]],
   ['blflashreadrequest',['BlFlashReadRequest',['../struct_bl_flash_read_request.html#ad9f8bbe8e60adf3dbe3a500e42bc8da8',1,'BlFlashReadRequest']]],
   ['blflashwriterequest',['BlFlashWriteRequest',['../struct_bl_flash_write_request.html#a75a82feb7af0d39c306d9abd258d5b22',1,'BlFlashWriteRequest']]],
   ['blinforequest',['BlInfoRequest',['../struct_bl_info_request.html#adb80973f956f16dbc030ff027cb229d7',1,'BlInfoRequest']]],
   ['blnoresponseexception',['BlNoResponseException',['../class_bl_no_response_exception.html#ae3e31d1bd98466bcb7af228d1195da2c',1,'BlNoResponseException']]],
   ['blprogramflash',['BlProgramFlash',['../class_wifly_control.html#a29e6124445a27e1fd26cfccce701cc09',1,'WiflyControl']]],
-  ['blread',['BlRead',['../class_wifly_control.html#ad8d11db989908aa13372755210fb27f7',1,'WiflyControl']]],
   ['blreadcrcflash',['BlReadCrcFlash',['../class_wifly_control.html#a97f0c9d5e0ea08f2f60a720b0134fff1',1,'WiflyControl']]],
   ['blreadeeprom',['BlReadEeprom',['../class_wifly_control.html#a13504dcf2d451545e8b5c3fa2f85b0e4',1,'WiflyControl']]],
   ['blreadflash',['BlReadFlash',['../class_wifly_control.html#a5337818ba998047b8a8cdc738ddf3e43',1,'WiflyControl']]],
@@ -29,7 +28,5 @@ var searchData=
   ['blrunapp',['BlRunApp',['../class_wifly_control.html#a776073bd4991e4331fb946e456d803df',1,'WiflyControl']]],
   ['blrunapprequest',['BlRunAppRequest',['../struct_bl_run_app_request.html#a051bfcca520225571dfe62af8bb3a842',1,'BlRunAppRequest']]],
   ['blue',['blue',['../class_wifly_color.html#a9b2e0b29756d5915f4e96b85c1978fea',1,'WiflyColor::blue() const '],['../class_wifly_color.html#ad0c7f227f49eb00af032f4ae95e78f4a',1,'WiflyColor::blue(uint8_t value)']]],
-  ['blwriteeeprom',['BlWriteEeprom',['../class_wifly_control.html#a46e5e83cd548454f17a00323ace9e579',1,'WiflyControl']]],
-  ['blwriteflash',['BlWriteFlash',['../class_wifly_control.html#a91e41d26681cfc5bf0237627558a9e02',1,'WiflyControl']]],
   ['broadcastreceiver',['BroadcastReceiver',['../class_broadcast_receiver.html#a9c3f8ebdef813f03edec75f88389a6ee',1,'BroadcastReceiver']]]
 ];

@@ -84,8 +84,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="class_wifly_control-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -165,30 +163,6 @@ Public Member Functions</h2></td></tr>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a1fb5f6703533d3ccf68f6e474f51dbce"><td class="memItemLeft" align="right" valign="top">static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a1fb5f6703533d3ccf68f6e474f51dbce">LEDS_ALL</a></td></tr>
 <tr class="separator:a1fb5f6703533d3ccf68f6e474f51dbce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:abec6d9c2f4478e46cf9e095a93b3c68d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#abec6d9c2f4478e46cf9e095a93b3c68d">BlFlashErase</a> (const uint32_t endAddress, const uint8_t numPages) const </td></tr>
-<tr class="separator:abec6d9c2f4478e46cf9e095a93b3c68d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8d11db989908aa13372755210fb27f7"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#ad8d11db989908aa13372755210fb27f7">BlRead</a> (<a class="el" href="struct_bl_request.html">BlRequest</a> &amp;request, uint8_t *pResponse, const size_t responseSize, bool doSync=true) const </td></tr>
-<tr class="separator:ad8d11db989908aa13372755210fb27f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46e5e83cd548454f17a00323ace9e579"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a46e5e83cd548454f17a00323ace9e579">BlWriteEeprom</a> (uint32_t address, uint8_t *pBuffer, size_t bufferLength) const </td></tr>
-<tr class="separator:a46e5e83cd548454f17a00323ace9e579"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91e41d26681cfc5bf0237627558a9e02"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a91e41d26681cfc5bf0237627558a9e02">BlWriteFlash</a> (uint32_t address, uint8_t *pBuffer, size_t bufferLength) const </td></tr>
-<tr class="separator:a91e41d26681cfc5bf0237627558a9e02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afcfcb310c4f104adc7801291100c5186"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_wifly_response.html">WiflyResponse</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#afcfcb310c4f104adc7801291100c5186">FwSend</a> (struct cmd_frame *pFrame, size_t length, <a class="el" href="class_wifly_response.html">WiflyResponse</a> &amp;response) const </td></tr>
-<tr class="separator:afcfcb310c4f104adc7801291100c5186"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a366b4cfd0ecc54acd5745a1bae75cf45"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_tcp_socket.html">TcpSocket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a366b4cfd0ecc54acd5745a1bae75cf45">mSock</a></td></tr>
-<tr class="separator:a366b4cfd0ecc54acd5745a1bae75cf45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e817a91a8f4756885fe9dd7cc05b702"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_com_proxy.html">ComProxy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a6e817a91a8f4756885fe9dd7cc05b702">mProxy</a></td></tr>
-<tr class="separator:a6e817a91a8f4756885fe9dd7cc05b702"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe7637abc4d8df8800c49ce1206de1b4"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_telnet_proxy.html">TelnetProxy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#afe7637abc4d8df8800c49ce1206de1b4">mTelnet</a></td></tr>
-<tr class="separator:afe7637abc4d8df8800c49ce1206de1b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23e024715db65a6d0024f3e849c1d2d4"><td class="memItemLeft" align="right" valign="top">struct cmd_frame&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a23e024715db65a6d0024f3e849c1d2d4">mCmdFrame</a></td></tr>
-<tr class="separator:a23e024715db65a6d0024f3e849c1d2d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -295,48 +269,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="abec6d9c2f4478e46cf9e095a93b3c68d"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WiflyControl::BlFlashErase </td>
-          <td>(</td>
-          <td class="paramtype">const uint32_t&#160;</td>
-          <td class="paramname"><em>endAddress</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const uint8_t&#160;</td>
-          <td class="paramname"><em>numPages</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Instructs the bootloader to erase the specified area of the flash. The wifly device has to be in bootloader mode for this command. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">endAddress</td><td>address of the block to delete </td></tr>
-    <tr><td class="paramname">numPages</td><td>number of pages in a block </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a class="anchor" id="a29e6124445a27e1fd26cfccce701cc09"></a>
 <div class="memitem">
 <div class="memproto">
@@ -357,63 +289,6 @@ Friends</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a class="anchor" id="ad8d11db989908aa13372755210fb27f7"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t WiflyControl::BlRead </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_bl_request.html">BlRequest</a> &amp;&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>pResponse</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>responseSize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>doSync</em> = <code>true</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Send a request to the bootloader and read his response into pResponse </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">request</td><td>reference to a bootloader requested </td></tr>
-    <tr><td class="paramname">pResponse</td><td>a buffer for the response of the bootloader </td></tr>
-    <tr><td class="paramname">responseSize</td><td>sizeof of the &lt;pResponse&gt; buffer in bytes </td></tr>
-    <tr><td class="paramname">doSync</td><td>if set to 'true' the uart sync is issued before data transfer default = true </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the number of bytes the bootloader send back in his response </dd></dl>
 
 </div>
 </div>
@@ -592,104 +467,6 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Instructs the bootloader to start the wifly device firmware. The wifly device has to be in bootloader mode for this command. </p>
-
-</div>
-</div>
-<a class="anchor" id="a46e5e83cd548454f17a00323ace9e579"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WiflyControl::BlWriteEeprom </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>address</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>pBuffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>bufferLength</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Instructs the bootloader of the wifly device to write data to the eeprom. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">address</td><td>in eeprom </td></tr>
-    <tr><td class="paramname">pBuffer</td><td>containing the new data for eeprom </td></tr>
-    <tr><td class="paramname">bufferLength</td><td>number of bytes to write to eeprom </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a91e41d26681cfc5bf0237627558a9e02"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WiflyControl::BlWriteFlash </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>address</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>pBuffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>bufferLength</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Instructs the bootloader of the wifly device to write data to the flash. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">address</td><td>in flash </td></tr>
-    <tr><td class="paramname">pBuffer</td><td>containing the new data for flash </td></tr>
-    <tr><td class="paramname">bufferLength</td><td>number of bytes to write to flash </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -944,55 +721,6 @@ Friends</h2></td></tr>
 <p>Injects a LoopOn command into the wifly script controller </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">response</td><td>will be modified according to the success of this operation </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="afcfcb310c4f104adc7801291100c5186"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_wifly_response.html">WiflyResponse</a>&amp; WiflyControl::FwSend </td>
-          <td>(</td>
-          <td class="paramtype">struct cmd_frame *&#160;</td>
-          <td class="paramname"><em>pFrame</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>length</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_wifly_response.html">WiflyResponse</a> &amp;&#160;</td>
-          <td class="paramname"><em>response</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Sends a wifly command frame to te wifly device </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pFrame</td><td>pointer to the frame, which should be send </td></tr>
-    <tr><td class="paramname">length</td><td>number of bytes on the &lt;pFrame&gt; </td></tr>
     <tr><td class="paramname">response</td><td>will be modified according to the success of this operation </td></tr>
   </table>
   </dd>
@@ -1347,97 +1075,13 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a23e024715db65a6d0024f3e849c1d2d4"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct cmd_frame WiflyControl::mCmdFrame</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Internal command frame used to send to the wifly device, this member should be removed and replaced by local variables. </p>
-
-</div>
-</div>
-<a class="anchor" id="a6e817a91a8f4756885fe9dd7cc05b702"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="class_com_proxy.html">ComProxy</a> WiflyControl::mProxy</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Proxy object handling the low level communication with bootloader and firmware. </p>
-
-</div>
-</div>
-<a class="anchor" id="a366b4cfd0ecc54acd5745a1bae75cf45"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="class_tcp_socket.html">TcpSocket</a> WiflyControl::mSock</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Socket used for communication with wifly device. A reference to this socket is provided to the aggregated subobjects. </p>
-
-</div>
-</div>
-<a class="anchor" id="afe7637abc4d8df8800c49ce1206de1b4"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="class_telnet_proxy.html">TelnetProxy</a> WiflyControl::mTelnet</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Proxy object handling the communication with the wlan module for its configuration </p>
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>library/<a class="el" href="_wifly_control_8h_source.html">WiflyControl.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 15:18:58 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:21:44 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

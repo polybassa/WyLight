@@ -103,12 +103,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00031"></a><span class="lineno"><a class="code" href="class_endpoint.html#a155f5e34aad88e781207ffa55666992f">   31</a></span>&#160;        <a class="code" href="class_endpoint.html#a155f5e34aad88e781207ffa55666992f">Endpoint</a>(sockaddr_storage&amp; addr, <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, uint16_t port)</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        {</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            assert(<span class="keyword">sizeof</span>(sockaddr_in) == size);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            <a class="code" href="class_endpoint.html#ae189cff17e7a17bfa3be5607895f40ee">mAddr</a> = ntohl(((sockaddr_in&amp;)addr).sin_addr.s_addr);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <a class="code" href="class_endpoint.html#a629fdae27eebf3fca169fef322cace67">mPort</a> = ntohs(port);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            mAddr = ntohl(((sockaddr_in&amp;)addr).sin_addr.s_addr);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            mPort = ntohs(port);</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        };</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
 <div class="line"><a name="l00038"></a><span class="lineno"><a class="code" href="class_endpoint.html#aea663fa6d602bd9b0ee36a0a20c10515">   38</a></span>&#160;        <a class="code" href="class_endpoint.html#a155f5e34aad88e781207ffa55666992f">Endpoint</a>(uint32_t addr = 0, uint16_t port = 0)</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            : <a class="code" href="class_endpoint.html#ae189cff17e7a17bfa3be5607895f40ee">mAddr</a>(addr), <a class="code" href="class_endpoint.html#a629fdae27eebf3fca169fef322cace67">mPort</a>(port)</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            : mAddr(addr), mPort(port)</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        {</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        };</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
@@ -119,11 +119,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
 <div class="line"><a name="l00048"></a><span class="lineno"><a class="code" href="class_endpoint.html#af3f74b3b812453bb6cc60400dfc0c82c">   48</a></span>&#160;        <span class="keyword">friend</span> std::ostream&amp; <a class="code" href="class_endpoint.html#af3f74b3b812453bb6cc60400dfc0c82c">operator &lt;&lt; </a>(std::ostream&amp; out, <span class="keyword">const</span> <a class="code" href="class_endpoint.html">Endpoint</a>&amp; ref)</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        {</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordflow">return</span> out &lt;&lt; ((ref.<a class="code" href="class_endpoint.html#ae189cff17e7a17bfa3be5607895f40ee">mAddr</a> &amp; 0xff000000 ) &gt;&gt; 24) &lt;&lt; <span class="charliteral">&#39;.&#39;</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                                 &lt;&lt; ((ref.<a class="code" href="class_endpoint.html#ae189cff17e7a17bfa3be5607895f40ee">mAddr</a> &amp; 0x00ff0000 ) &gt;&gt; 16) &lt;&lt; <span class="charliteral">&#39;.&#39;</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                                 &lt;&lt; ((ref.<a class="code" href="class_endpoint.html#ae189cff17e7a17bfa3be5607895f40ee">mAddr</a> &amp; 0x0000ff00 ) &gt;&gt; 8) &lt;&lt; <span class="charliteral">&#39;.&#39;</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                                 &lt;&lt; (ref.<a class="code" href="class_endpoint.html#ae189cff17e7a17bfa3be5607895f40ee">mAddr</a> &amp; 0x000000ff )</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                                 &lt;&lt; <span class="charliteral">&#39;:&#39;</span> &lt;&lt; ref.<a class="code" href="class_endpoint.html#a629fdae27eebf3fca169fef322cace67">mPort</a>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordflow">return</span> out &lt;&lt; ((ref.mAddr &amp; 0xff000000 ) &gt;&gt; 24) &lt;&lt; <span class="charliteral">&#39;.&#39;</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                                 &lt;&lt; ((ref.mAddr &amp; 0x00ff0000 ) &gt;&gt; 16) &lt;&lt; <span class="charliteral">&#39;.&#39;</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                                 &lt;&lt; ((ref.mAddr &amp; 0x0000ff00 ) &gt;&gt; 8) &lt;&lt; <span class="charliteral">&#39;.&#39;</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                                 &lt;&lt; (ref.mAddr &amp; 0x000000ff )</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                                 &lt;&lt; <span class="charliteral">&#39;:&#39;</span> &lt;&lt; ref.mPort;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        };</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="comment">/* </span></div>
@@ -131,34 +131,34 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">         */</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno"><a class="code" href="class_endpoint.html#a2d0912e7fa4ae54f9402d6833a6d3ae6">   60</a></span>&#160;        uint64_t <a class="code" href="class_endpoint.html#a2d0912e7fa4ae54f9402d6833a6d3ae6">AsUint64</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keywordflow">return</span> ((uint64_t)<a class="code" href="class_endpoint.html#ae189cff17e7a17bfa3be5607895f40ee">mAddr</a> &lt;&lt; 32) | <a class="code" href="class_endpoint.html#a629fdae27eebf3fca169fef322cace67">mPort</a>; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keywordflow">return</span> ((uint64_t)mAddr &lt;&lt; 32) | mPort; </div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        };</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
 <div class="line"><a name="l00065"></a><span class="lineno"><a class="code" href="class_endpoint.html#a5618578a2aea0258faac2ec166809f61">   65</a></span>&#160;        uint32_t <a class="code" href="class_endpoint.html#a5618578a2aea0258faac2ec166809f61">GetIp</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_endpoint.html#ae189cff17e7a17bfa3be5607895f40ee">mAddr</a>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keywordflow">return</span> mAddr;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        };</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
 <div class="line"><a name="l00070"></a><span class="lineno"><a class="code" href="class_endpoint.html#ab314920c2ea906136bb10db9a8b19d9f">   70</a></span>&#160;        uint16_t <a class="code" href="class_endpoint.html#ab314920c2ea906136bb10db9a8b19d9f">GetPort</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_endpoint.html#a629fdae27eebf3fca169fef322cace67">mPort</a>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordflow">return</span> mPort;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        };</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
 <div class="line"><a name="l00075"></a><span class="lineno"><a class="code" href="class_endpoint.html#a514014f7d1ee63a7c5a3ed7c8b129526">   75</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_endpoint.html#a514014f7d1ee63a7c5a3ed7c8b129526">IsValid</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keywordflow">return</span> (0 != <a class="code" href="class_endpoint.html#ae189cff17e7a17bfa3be5607895f40ee">mAddr</a>) &amp;&amp; (0 != <a class="code" href="class_endpoint.html#a629fdae27eebf3fca169fef322cace67">mPort</a>);</div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="code" href="class_endpoint.html#ae189cff17e7a17bfa3be5607895f40ee">   78</a></span>&#160;        };</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keywordflow">return</span> (0 != mAddr) &amp;&amp; (0 != mPort);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        };</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        uint32_t <a class="code" href="class_endpoint.html#ae189cff17e7a17bfa3be5607895f40ee">mAddr</a>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="code" href="class_endpoint.html#a629fdae27eebf3fca169fef322cace67">   82</a></span>&#160;        uint16_t <a class="code" href="class_endpoint.html#a629fdae27eebf3fca169fef322cace67">mPort</a>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        uint32_t mAddr;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        uint16_t mPort;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;};</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _ENDPOINT_H_ */</span><span class="preprocessor"></span></div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 15:18:45 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:21:32 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

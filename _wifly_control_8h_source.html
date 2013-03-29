@@ -194,23 +194,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;</div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="comment">/* ------------------------- PRIVATE DECLARATIONS ------------------------- */</span></div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00296"></a><span class="lineno"><a class="code" href="class_wifly_control.html#a366b4cfd0ecc54acd5745a1bae75cf45">  296</a></span>&#160;        <span class="keyword">const</span> <a class="code" href="class_tcp_socket.html">TcpSocket</a> <a class="code" href="class_wifly_control.html#a366b4cfd0ecc54acd5745a1bae75cf45">mSock</a>;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        <span class="keyword">const</span> <a class="code" href="class_tcp_socket.html">TcpSocket</a> mSock;</div>
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;</div>
-<div class="line"><a name="l00301"></a><span class="lineno"><a class="code" href="class_wifly_control.html#a6e817a91a8f4756885fe9dd7cc05b702">  301</a></span>&#160;        <span class="keyword">const</span> <a class="code" href="class_com_proxy.html">ComProxy</a> <a class="code" href="class_wifly_control.html#a6e817a91a8f4756885fe9dd7cc05b702">mProxy</a>;</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        <span class="keyword">const</span> <a class="code" href="class_com_proxy.html">ComProxy</a> mProxy;</div>
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;</div>
-<div class="line"><a name="l00306"></a><span class="lineno"><a class="code" href="class_wifly_control.html#afe7637abc4d8df8800c49ce1206de1b4">  306</a></span>&#160;        <span class="keyword">const</span> <a class="code" href="class_telnet_proxy.html">TelnetProxy</a> <a class="code" href="class_wifly_control.html#afe7637abc4d8df8800c49ce1206de1b4">mTelnet</a>;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        <span class="keyword">const</span> <a class="code" href="class_telnet_proxy.html">TelnetProxy</a> mTelnet;</div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
-<div class="line"><a name="l00311"></a><span class="lineno"><a class="code" href="class_wifly_control.html#a23e024715db65a6d0024f3e849c1d2d4">  311</a></span>&#160;        <span class="keyword">struct </span>cmd_frame <a class="code" href="class_wifly_control.html#a23e024715db65a6d0024f3e849c1d2d4">mCmdFrame</a>;</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        <span class="keyword">struct </span>cmd_frame mCmdFrame;</div>
 <div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;</div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#abe0bceb7ec0cfc88c2fccdae0d844d8a">BlFlashErase</a>(<span class="keyword">const</span> uint32_t endAddress, <span class="keyword">const</span> uint8_t numPages) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wifly_control.html#ad8d11db989908aa13372755210fb27f7">BlRead</a>(<a class="code" href="struct_bl_request.html">BlRequest</a>&amp; request, uint8_t* pResponse, <span class="keyword">const</span> <span class="keywordtype">size_t</span> responseSize, <span class="keywordtype">bool</span> doSync = <span class="keyword">true</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        <span class="keywordtype">size_t</span> BlRead(<a class="code" href="struct_bl_request.html">BlRequest</a>&amp; request, uint8_t* pResponse, <span class="keyword">const</span> <span class="keywordtype">size_t</span> responseSize, <span class="keywordtype">bool</span> doSync = <span class="keyword">true</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a46e5e83cd548454f17a00323ace9e579">BlWriteEeprom</a>(uint32_t address, uint8_t* pBuffer, <span class="keywordtype">size_t</span> bufferLength) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        <span class="keywordtype">void</span> BlWriteEeprom(uint32_t address, uint8_t* pBuffer, <span class="keywordtype">size_t</span> bufferLength) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wifly_control.html#a91e41d26681cfc5bf0237627558a9e02">BlWriteFlash</a>(uint32_t address, uint8_t* pBuffer, <span class="keywordtype">size_t</span> bufferLength) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        <span class="keywordtype">void</span> BlWriteFlash(uint32_t address, uint8_t* pBuffer, <span class="keywordtype">size_t</span> bufferLength) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        <a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; <a class="code" href="class_wifly_control.html#afcfcb310c4f104adc7801291100c5186">FwSend</a>(<span class="keyword">struct</span> cmd_frame* pFrame, <span class="keywordtype">size_t</span> length, <a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; response) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        <a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; FwSend(<span class="keyword">struct</span> cmd_frame* pFrame, <span class="keywordtype">size_t</span> length, <a class="code" href="class_wifly_response.html">WiflyResponse</a>&amp; response) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;</div>
 <div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;<span class="comment">/* ------------------ friendships for unittesting only ------------------- */</span></div>
 <div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        <span class="keyword">friend</span> <span class="keywordtype">size_t</span> <a class="code" href="class_wifly_control.html#a327c95f9335fa4b257b064ef2e917a80">ut_WiflyControl_BlEepromWrite</a>(<span class="keywordtype">void</span>);</div>
@@ -221,7 +221,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 15:18:45 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:21:33 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

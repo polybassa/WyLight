@@ -83,8 +83,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="class_telnet_proxy-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -110,24 +108,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3a00f8fc67d35112929ca9e664c3197a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9ea9a5af4c1f58f2cc8c6edfa1501ae"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_telnet_proxy.html#aa9ea9a5af4c1f58f2cc8c6edfa1501ae">SendString</a> (const std::string &amp;command, std::string value) const </td></tr>
 <tr class="separator:aa9ea9a5af4c1f58f2cc8c6edfa1501ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:ae0b0cf5d682e16635c129d28b2f468ac"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_telnet_proxy.html#ae0b0cf5d682e16635c129d28b2f468ac">ExtractStringOfInterest</a> (const std::string &amp;buffer, const std::string &amp;searchKey, std::string &amp;result) const </td></tr>
-<tr class="separator:ae0b0cf5d682e16635c129d28b2f468ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12f64cee935a32cd2c7fd10007bab493"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_telnet_proxy.html#a12f64cee935a32cd2c7fd10007bab493">Recv</a> (const std::string &amp;expectedResponse) const </td></tr>
-<tr class="separator:a12f64cee935a32cd2c7fd10007bab493"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e3e9c6e12a6b23095409cfbdb0cd550"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_telnet_proxy.html#a6e3e9c6e12a6b23095409cfbdb0cd550">RecvString</a> (const std::string &amp;searchKey, std::string &amp;result) const </td></tr>
-<tr class="separator:a6e3e9c6e12a6b23095409cfbdb0cd550"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23c303252b9923492d1e3a2343b356c5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_telnet_proxy.html#a23c303252b9923492d1e3a2343b356c5">SendAndWaitForEcho</a> (const std::string &amp;telnetMessage) const </td></tr>
-<tr class="separator:a23c303252b9923492d1e3a2343b356c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b1b1898b6747fb1ed2bd372598a31a0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_telnet_proxy.html#a8b1b1898b6747fb1ed2bd372598a31a0">SetReplaceChar</a> (const char replace= '$') const </td></tr>
-<tr class="separator:a8b1b1898b6747fb1ed2bd372598a31a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:adf42163051142b711efdf714b4da5fd4"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_tcp_socket.html">TcpSocket</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_telnet_proxy.html#adf42163051142b711efdf714b4da5fd4">mSock</a></td></tr>
-<tr class="separator:adf42163051142b711efdf714b4da5fd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -186,46 +166,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ae0b0cf5d682e16635c129d28b2f468ac"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool TelnetProxy::ExtractStringOfInterest </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>searchKey</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string &amp;&#160;</td>
-          <td class="paramname"><em>result</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a4b7729ca11f4ef533d3015b0a53974e6"></a>
 <div class="memitem">
 <div class="memproto">
@@ -238,64 +178,6 @@ Friends</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a12f64cee935a32cd2c7fd10007bab493"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool TelnetProxy::Recv </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>expectedResponse</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a6e3e9c6e12a6b23095409cfbdb0cd550"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool TelnetProxy::RecvString </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>searchKey</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string &amp;&#160;</td>
-          <td class="paramname"><em>result</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
@@ -358,30 +240,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a23c303252b9923492d1e3a2343b356c5"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool TelnetProxy::SendAndWaitForEcho </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>telnetMessage</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="aa9ea9a5af4c1f58f2cc8c6edfa1501ae"></a>
 <div class="memitem">
 <div class="memproto">
@@ -404,30 +262,6 @@ Friends</h2></td></tr>
           <td></td><td> const</td>
         </tr>
       </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a8b1b1898b6747fb1ed2bd372598a31a0"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool TelnetProxy::SetReplaceChar </td>
-          <td>(</td>
-          <td class="paramtype">const char&#160;</td>
-          <td class="paramname"><em>replace</em> = <code>'$'</code></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
@@ -481,34 +315,13 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="adf42163051142b711efdf714b4da5fd4"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="class_tcp_socket.html">TcpSocket</a>&amp; TelnetProxy::mSock</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>library/<a class="el" href="_telnet_proxy_8h_source.html">TelnetProxy.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 15:18:57 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:21:43 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

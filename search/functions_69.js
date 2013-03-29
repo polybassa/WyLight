@@ -8,7 +8,6 @@ var searchData=
   ['isbadpacket',['IsBadPacket',['../class_wifly_response.html#a2d714b9f6c9d411d5a73752a7f7e46a6',1,'WiflyResponse']]],
   ['iscrccheckfailed',['IsCrcCheckFailed',['../class_wifly_response.html#ae28f6e581ab7864969d2bf70b1c44ee0',1,'WiflyResponse']]],
   ['isctrlchar',['IsCtrlChar',['../_bl_request_8h.html#ab6d0d55d09ff97aaf075361fd7a6e61e',1,'BlRequest.h']]],
-  ['isdevice',['IsDevice',['../struct_broadcast_message.html#adc4856179981352262ba8abd31b0902f',1,'BroadcastMessage']]],
   ['isscriptbufferfull',['IsScriptBufferFull',['../class_wifly_response.html#a4b5e58113cf23e0723d0a2d22e0c8acb',1,'WiflyResponse']]],
   ['isvalid',['IsValid',['../class_endpoint.html#a514014f7d1ee63a7c5a3ed7c8b129526',1,'Endpoint::IsValid()'],['../class_wifly_response.html#a78274601001f1f8e112e1c59ea59f9df',1,'WiflyResponse::IsValid()']]],
   ['iswiflybroadcast',['IsWiflyBroadcast',['../struct_broadcast_message.html#a3050a0c141e0bd6d5333f9c7d880842c',1,'BroadcastMessage']]]
