@@ -22,6 +22,7 @@
 #include <string>
 #include <stdlib.h>
 #include <time.h>
+#include "intelhexclass.h"
 
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
