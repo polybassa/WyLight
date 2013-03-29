@@ -95,9 +95,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a71069fbcb6901649f75f7b816559e061"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_com_proxy.html#a71069fbcb6901649f75f7b816559e061">ComProxy</a> (const <a class="el" href="class_tcp_socket.html">TcpSocket</a> &amp;sock)</td></tr>
 <tr class="separator:a71069fbcb6901649f75f7b816559e061"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c665ae8f978d295196dbb9d0f609494"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_com_proxy.html#a8c665ae8f978d295196dbb9d0f609494">Send</a> (<a class="el" href="struct_bl_request.html">BlRequest</a> &amp;req, uint8_t *pResponse, size_t responseSize, bool doSync=true) const   throw (ConnectionTimeout, FatalError)</td></tr>
-<tr class="separator:a8c665ae8f978d295196dbb9d0f609494"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a356ff2e48f92c1b80d2aab7e9f32bbe9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_com_proxy.html#a356ff2e48f92c1b80d2aab7e9f32bbe9">Send</a> (struct cmd_frame const *pFrame, response_frame *pResponse, size_t responseSize) const   throw (ConnectionTimeout)</td></tr>
+<tr class="memitem:a2443ea54fcb996802d643468eb5333b9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_com_proxy.html#a2443ea54fcb996802d643468eb5333b9">Send</a> (const <a class="el" href="struct_bl_request.html">BlRequest</a> &amp;req, uint8_t *pResponse, size_t responseSize, bool doSync=true) const   throw (ConnectionTimeout, FatalError)</td></tr>
+<tr class="separator:a2443ea54fcb996802d643468eb5333b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a356ff2e48f92c1b80d2aab7e9f32bbe9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_com_proxy.html#a356ff2e48f92c1b80d2aab7e9f32bbe9">Send</a> (struct cmd_frame const *pFrame, response_frame *pResponse, size_t responseSize) const   throw (ConnectionTimeout, FatalError)</td></tr>
 <tr class="separator:a356ff2e48f92c1b80d2aab7e9f32bbe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -118,14 +118,14 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a8c665ae8f978d295196dbb9d0f609494"></a>
+<a class="anchor" id="a2443ea54fcb996802d643468eb5333b9"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">size_t ComProxy::Send </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_bl_request.html">BlRequest</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="struct_bl_request.html">BlRequest</a> &amp;&#160;</td>
           <td class="paramname"><em>req</em>, </td>
         </tr>
         <tr>
@@ -181,7 +181,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> const  throw (<a class="el" href="class_connection_timeout.html">ConnectionTimeout</a>)</td>
+          <td></td><td> const  throw (<a class="el" href="class_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_fatal_error.html">FatalError</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -194,7 +194,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 15:36:17 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Mar 29 2013 15:52:45 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
