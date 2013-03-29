@@ -59,12 +59,7 @@ class BaseBuffer
 		size_t mLength;
 		uint16_t mCrc;
 
-		void AddPure(uint8_t newByte)
-		{
-			if(mLength >= mCapacity) throw FatalError("BaseBuffer overflow");
-			mData[mLength] = newByte;
-			mLength++;
-		};
+		void AddPure(uint8_t newByte);
 };
 
 class MaskBuffer : public BaseBuffer
@@ -75,46 +70,12 @@ class MaskBuffer : public BaseBuffer
 			AddPure(BL_STX);
 		};
 
-		void Mask(const uint8_t* pInput, const uint8_t* const pInputEnd, const bool crcInLittleEndian = true)
-		{
-			while(pInput < pInputEnd)
-			{
-				AddWithCrc(*pInput);
-				pInput++;
-			}
-			AppendCrc(crcInLittleEndian);
-			AddPure(BL_ETX);
-		};
+		void Mask(const uint8_t* pInput, const uint8_t* const pInputEnd, const bool crcInLittleEndian = true);
 
 	private:
-		void Add(uint8_t newByte)
-		{
-			if(IsCtrlChar(newByte))
-			{
-				AddPure(BL_DLE);
-			}
-			AddPure(newByte);
-		};
-
-		void AddWithCrc(uint8_t newByte)
-		{
-			Add(newByte);
-			Crc_AddCrc16(newByte, &mCrc);
-		};
-
-		void AppendCrc(bool crcInLittleEndian)
-		{
-			if(crcInLittleEndian)
-			{
-				Add((uint8_t)(mCrc & 0xff));
-				Add((uint8_t)(mCrc >> 8));
-			}
-			else
-			{
-				Add((uint8_t)(mCrc >> 8));
-				Add((uint8_t)(mCrc & 0xff));
-			}
-		};
+		void Add(uint8_t newByte);
+		void AddWithCrc(uint8_t newByte);
+		void AppendCrc(bool crcInLittleEndian);
 };
 
 class UnmaskBuffer : public BaseBuffer
@@ -125,95 +86,24 @@ class UnmaskBuffer : public BaseBuffer
 			Clear();
 		};
 
-		void Add(uint8_t newByte)
-		{
-				AddPure(newByte);
-				AddToCrc(newByte);
-		};
-
-		void Clear(void)
-		{
-			BaseBuffer::Clear();
-			mPrePreCrc = mPreCrc = 0;
-			mLastWasDLE = false;
-		};
-
-		void CheckAndRemoveCrc(bool crcInLittleEndian) throw (FatalError)
-		{
-			if(0x0000 == GetCrc16(crcInLittleEndian))
-			{
-				if(2 > mLength) throw FatalError("Buffer underrun in UnmaskBuffer");
-				mLength -= 2;
-			}
-			else
-			{
-				Clear();				
-			}
-		};
-
+		void Add(uint8_t newByte);
+		void Clear(void);
+		void CheckAndRemoveCrc(bool crcInLittleEndian) throw (FatalError);
+		
 		/*
 		 * @return true if end of response reached (marked by an ETX), else false
 		 */
-		bool Unmask(const uint8_t* pInput, size_t bytesMasked, bool checkCrc, bool crcInLittleEndian)
-		{
-			while(bytesMasked-- > 0)
-			{
-				if(mLastWasDLE)
-				{
-					mLastWasDLE = false;
-					Add(*pInput);
-				}
-				else
-				{
-					switch(*pInput)
-					{
-						case BL_ETX:
-							Trace(ZONE_INFO, "Detect ETX\n");
-							if(checkCrc)
-							{
-								CheckAndRemoveCrc(crcInLittleEndian);
-							}
-							return true;
-						case BL_DLE:
-							mLastWasDLE = true;
-							break;
-						case BL_STX:
-							Trace(ZONE_INFO, "Detect STX\n");
-							Clear();
-							break;
-						default:
-							Add(*pInput);
-							break;
-					}
-				}
-				pInput++;
-			}
-			return false;
-		};
+		bool Unmask(const uint8_t* pInput, size_t bytesMasked, bool checkCrc, bool crcInLittleEndian);
 
 	private:
 		uint16_t mPrePreCrc;
 		uint16_t mPreCrc;
 		bool mLastWasDLE;
 
-		void AddToCrc(uint8_t newByte)
-		{
-			mPrePreCrc = mPreCrc;
-			mPreCrc = mCrc;
-			Crc_AddCrc16(newByte, &mCrc);
-		};
-
-		uint16_t GetCrc16(bool crcInLittleEndian) const
-		{
-			if(crcInLittleEndian)
-			{
-				uint16_t crc = mPrePreCrc;
-				Crc_AddCrc16(mData[mLength-1], &crc);
-				Crc_AddCrc16(mData[mLength-2], &crc);
-				return crc;
-			}
-			return mCrc;
-		};
+		void AddToCrc(uint8_t newByte);
+		
+		uint16_t GetCrc16(bool crcInLittleEndian) const;
+		
 };
 #endif /* #ifndef _MASK_BUFFER_H_ */
 
