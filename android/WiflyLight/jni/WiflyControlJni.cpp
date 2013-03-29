@@ -72,11 +72,10 @@ jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwSetColor(JNIEnv* env, jobject
 {
 	try
 	{
-		SimpleResponse response(SET_FADE);
-		reinterpret_cast<WiflyControl*>(pNative)->FwSetFade(response, argb, 0, addr);
-		return response.IsValid();
+		reinterpret_cast<WiflyControl*>(pNative)->FwSetFade(argb, 0, addr);
+		return true;
 	}
-	catch(WiflyControlException e)
+	catch(FatalError& e)
 	{
 		return false;
 	}

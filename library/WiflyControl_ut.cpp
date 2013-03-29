@@ -44,7 +44,7 @@ ComProxy::ComProxy(const TcpSocket& sock) : mSock (sock) {}
 	return sizeof(resp);}
 
 
-size_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const throw(ConnectionTimeout, FatalError)
+size_t ComProxy::Send(const BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const throw(ConnectionTimeout, FatalError)
 {
 	if(typeid(req) == typeid(BlInfoRequest))
 	{
@@ -53,12 +53,9 @@ size_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, b
 	}
 	if(typeid(req) == typeid(BlFlashEraseRequest))
 	{
-		BlFlashEraseRequest* mReq = dynamic_cast<BlFlashEraseRequest*>(&req);
-		uint32_t address = ((uint32_t)mReq->addressU) << 16;
-		address += ((uint32_t)mReq->addressHigh) << 8;
-		address += (uint32_t)mReq->addressLow;
-		
-		uint16_t pages = (uint16_t)mReq->numPages;
+		const BlFlashEraseRequest& mReq = dynamic_cast<const BlFlashEraseRequest&>(req);
+		uint32_t address = DWORD(WORD(0, mReq.addressU), WORD(mReq.addressHigh, mReq.addressLow));
+		uint16_t pages = (uint16_t)mReq.numPages;
 		
 		int endaddress = address - (pages * FLASH_ERASE_BLOCKSIZE);
 		if(endaddress < 0) endaddress = 0;
@@ -73,16 +70,12 @@ size_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, b
 	}
 	if(typeid(req) == typeid(BlFlashWriteRequest))
 	{
-		BlFlashWriteRequest* mReq = dynamic_cast<BlFlashWriteRequest*>(&req);
-		
-		uint32_t address = ((uint32_t)mReq->addressU) << 16;
-		address += ((uint32_t)mReq->addressHigh) << 8;
-		address += (uint32_t)mReq->addressLow;
-		
-		uint16_t bytes = ((uint16_t)mReq->numBlocksLow) * FLASH_WRITE_BLOCKSIZE;
+		const BlFlashWriteRequest& mReq = dynamic_cast<const BlFlashWriteRequest&>(req);
+		uint32_t address = DWORD(WORD(0, mReq.addressU), WORD(mReq.addressHigh, mReq.addressLow));
+		uint16_t bytes = ((uint16_t)mReq.numBlocksLow) * FLASH_WRITE_BLOCKSIZE;
 		
 		for (int i = 0; i < bytes; i++, address++) {
-			g_FlashRndDataPool[address] = mReq->payload[i];
+			g_FlashRndDataPool[address] = mReq.payload[i];
 		}
 		
 		uint8_t resp[] = {0x04};
@@ -90,14 +83,10 @@ size_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, b
 	}
 	if(typeid(req) == typeid(BlFlashReadRequest))
 	{
-		BlFlashReadRequest* mReq = dynamic_cast<BlFlashReadRequest*>(&req);
+		const BlFlashReadRequest& mReq = dynamic_cast<const BlFlashReadRequest&>(req);
 		
-		uint32_t address = ((uint32_t)mReq->addressU) << 16;
-		address += ((uint32_t)mReq->addressHigh) << 8;
-		address += (uint32_t)mReq->addressLow;
-		
-		uint16_t bytes = ((uint16_t)mReq->numBytesHigh) << 8;
-		bytes += ((uint16_t)mReq->numBytesLow);
+		uint32_t address = DWORD(WORD(0, mReq.addressU), WORD(mReq.addressHigh, mReq.addressLow));
+		uint16_t bytes = WORD(mReq.numBytesHigh, mReq.numBytesLow);
 		
 		unsigned int i;
 		for(i = 0; i < bytes; i++)
@@ -108,14 +97,10 @@ size_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, b
 	}
 	if(typeid(req) == typeid(BlEepromReadRequest))
 	{
-		BlEepromReadRequest* mReq = dynamic_cast<BlEepromReadRequest*>(&req);
+		const BlEepromReadRequest& mReq = dynamic_cast<const BlEepromReadRequest&>(req);
 		
-		uint32_t address = ((uint32_t)mReq->addressU) << 16;
-		address += ((uint32_t)mReq->addressHigh) << 8;
-		address += (uint32_t)mReq->addressLow;
-		
-		uint16_t bytes = ((uint16_t)mReq->numBytesHigh) << 8;
-		bytes += ((uint16_t)mReq->numBytesLow);
+		uint32_t address = DWORD(WORD(0, mReq.addressU), WORD(mReq.addressHigh, mReq.addressLow));		
+		uint16_t bytes = WORD(mReq.numBytesHigh, mReq.numBytesLow);
 		
 		unsigned int i;
 		for(i = 0; i < bytes; i++)
@@ -126,17 +111,13 @@ size_t ComProxy::Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, b
 	}
 	if(typeid(req) == typeid(BlEepromWriteRequest))
 	{
-		BlEepromWriteRequest* mReq = dynamic_cast<BlEepromWriteRequest*>(&req);
+		const BlEepromWriteRequest& mReq = dynamic_cast<const BlEepromWriteRequest&>(req);
 		
-		uint32_t address = ((uint32_t)mReq->addressU) << 16;
-		address += ((uint32_t)mReq->addressHigh) << 8;
-		address += (uint32_t)mReq->addressLow;
-		
-		uint16_t bytes = ((uint16_t)mReq->numBytesHigh) << 8;
-		bytes += ((uint16_t)mReq->numBytesLow);
+		uint32_t address = DWORD(WORD(0, mReq.addressU), WORD(mReq.addressHigh, mReq.addressLow));
+		uint16_t bytes = WORD(mReq.numBytesHigh, mReq.numBytesLow);
 		
 		for (int i = 0; i < bytes; i++, address++) {
-			g_EepromRndDataPool[address] = mReq->payload[i];
+			g_EepromRndDataPool[address] = mReq.payload[i];
 		}
 		
 		uint8_t resp[] = {0x06};

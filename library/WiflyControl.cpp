@@ -154,15 +154,15 @@ void WiflyControl::BlFlashErase(const uint32_t endAddress, const uint8_t numPage
 	}
 }
 
-size_t WiflyControl::BlRead(BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync) const
+size_t WiflyControl::BlRead(const BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync) const throw(ConnectionTimeout, FatalError)
 {
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	size_t bytesReceived = mProxy.Send(req, buffer, sizeof(buffer), doSync);
 	Trace(ZONE_INFO, " %zd:%ld \n", bytesReceived, sizeof(BlInfo));
 	TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer[0], bytesReceived, "0x%02x, ", "Message: ");
 	if(responseSize != bytesReceived)
-	{
-		throw BlNoResponseException(req);
+	{	
+		throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": Too many retries");
 	}
 	memcpy(pResponse, buffer, responseSize);
 	return responseSize;
@@ -292,8 +292,7 @@ void WiflyControl::BlWriteEeprom(unsigned int address, unsigned char* pBuffer, s
 {
 	if(bufferLength + address > EEPROM_SIZE)
 	{
-		Trace(ZONE_VERBOSE, "Couldn't performe write outside the eeprom. \n");
-		throw WiflyControlException("Couldn't performe write outside the eeprom. \n");
+		throw FatalError("Couldn't perform write outside the eeprom. \n");
 	}
       
 	BlEepromWriteRequest request;
@@ -308,7 +307,7 @@ void WiflyControl::BlWriteEeprom(unsigned int address, unsigned char* pBuffer, s
 		BlRead(request, &response, sizeof(response));
 		if(response != 0x06)
 		{
-			throw BlNoResponseException(request);
+			throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": response of wrong command code");
 		}
 		
 		address += EEPROM_WRITE_BLOCKSIZE;
@@ -320,7 +319,7 @@ void WiflyControl::BlWriteEeprom(unsigned int address, unsigned char* pBuffer, s
 	BlRead(request, &response, sizeof(response));
 	if(response != 0x06)
 	{
-		throw BlNoResponseException(request);
+		throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": response of wrong command code");
 	}
 }
 
@@ -331,7 +330,7 @@ void WiflyControl::BlProgramFlash(const std::string& pFilename)
 	
 	if(!hexFile.good())
 	{
-		throw WiflyControlException("opening '" + pFilename + "' failed");
+		throw FatalError("opening '" + pFilename + "' failed");
 	}
 	
 	intelhex hexConverter;
@@ -341,21 +340,13 @@ void WiflyControl::BlProgramFlash(const std::string& pFilename)
 	BlReadInfo(info);
 	
 	/*Check if last address of programmcode is not in the bootblock */
-	
-	unsigned long endAddress;
-	
-	if(hexConverter.endAddress(&endAddress))
-	{
-	    if(endAddress >= (unsigned long)(info.GetAddress()))
-	    {
-			Trace(ZONE_VERBOSE, "endaddress of program code is in bootloader area of the target device flash \n");
-			throw WiflyControlException("endaddress of program code is in bootloader area of the target device flash \n");
-	    }
+	unsigned long endAddress;	
+	if(!hexConverter.endAddress(&endAddress)) {
+		throw FatalError("can't read endAddress from hexConverter \n");
 	}
-	else
-	{
-		Trace(ZONE_VERBOSE, "can't read endAddress from hexConverter \n");
-	    throw WiflyControlException("can't read endAddress from hexConverter \n");
+	
+	if(endAddress >= (unsigned long)(info.GetAddress())) {
+		throw FatalError("endaddress of program code is in bootloader area of the target device flash \n");
 	}
 	
 	unsigned short word1, word2;
@@ -375,20 +366,17 @@ void WiflyControl::BlProgramFlash(const std::string& pFilename)
 	resetVector[3] = (unsigned char)(word2 >> 8);
 	
 	/*Put AppVektor from the beginning of hexfile at the startaddress of the bootloader */
-	
 	hexConverter.begin();
 	if(hexConverter.currentAddress() != 0)
 	{
-		Trace(ZONE_VERBOSE, "program code does not start at address 0x0000 \n");
-		throw WiflyControlException("program code does not start at address 0x0000 \n");
+		throw FatalError("program code does not start at address 0x0000 \n");
 	}
 	
 	for(unsigned int i = 0; i < sizeof(appVector); i++)
 	{
 		if(!hexConverter.getData(&appVector[i],(unsigned long)i))
 		{
-			Trace(ZONE_VERBOSE, "can not read data at address 0x%08lx \n", hexConverter.currentAddress());
-		    throw WiflyControlException("can not read data at address " + hexConverter.currentAddress());
+			throw FatalError("can not read data at address " + hexConverter.currentAddress());
 		}
 	}
 	
@@ -401,8 +389,7 @@ void WiflyControl::BlProgramFlash(const std::string& pFilename)
 	
 	if(endAddress > FLASH_SIZE)
 	{
-		Trace(ZONE_VERBOSE, "endaddress of program code is outside the target device flash\n");
-		throw WiflyControlException("endaddress of program code is outside the target device flash\n");
+		throw FatalError("endaddress of program code is outside the target device flash\n");
 	}
 	
 	/* Write the resetVector to temporary flashBuffer*/
@@ -610,7 +597,7 @@ WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, Wif
 		{
 			return response;
 		}
-	} while (0 < --numCrcRetries);	
+	} while (0 < --numCrcRetries);
 	throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": Too many retries");
 }
 

@@ -69,6 +69,12 @@ public:
 	ConnectionTimeout(const std::string& description) : FatalError(description) {};
 };
 
+class InvalidParameter : public FatalError
+{
+public:
+	InvalidParameter(const std::string& description) : FatalError(description) {};
+};
+
 class ScriptBufferFull : public FatalError
 {
 public:

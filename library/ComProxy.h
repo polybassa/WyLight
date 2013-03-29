@@ -43,7 +43,7 @@ class ComProxy
 		 * @throw ConnectionTimeout if a timeout occurred
 		 * @throw FatalError if synchronisation or sending to socket failed
 		 */
-		size_t Send(BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync = true) const throw(ConnectionTimeout, FatalError);
+		size_t Send(const BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync = true) const throw(ConnectionTimeout, FatalError);
 
 		/*
 		 * Send a request to the PIC firmware and wait for a response
@@ -70,7 +70,7 @@ class ComProxy
 		 * @param checkCrc if true the crc of the response will be checked, 0 is returned if crc was wrong
 		 * @param crcInLittleEndian if true the crc is assumed to be in little endian byte order like the bootloader will send it. if false the byte order is assumed to be big endian
 		 * @return the number of bytes received or 0 if the crc check fails
-		 * @throw ConnectionTimeout if responsed timed out
+		 * @throw ConnectionTimeout if response timed out
 		 */
 		size_t Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout = NULL, bool checkCrc = true, bool crcInLittleEndian = true) const throw(ConnectionTimeout);
 

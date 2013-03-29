@@ -360,8 +360,10 @@ class WiflyControl
 		 * @param responseSize sizeof of the <pResponse> buffer in bytes
 		 * @param doSync if set to 'true' the uart sync is issued before data transfer default = true
 		 * @return the number of bytes the bootloader send back in his response
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 */
-		size_t BlRead(BlRequest& request, uint8_t* pResponse, const size_t responseSize, bool doSync = true) const;
+		size_t BlRead(const BlRequest& request, uint8_t* pResponse, const size_t responseSize, bool doSync = true) const throw(ConnectionTimeout, FatalError);
 
 		/**
 		 * Instructs the bootloader of the wifly device to write data to the eeprom.

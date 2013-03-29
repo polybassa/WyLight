@@ -92,15 +92,8 @@ class ControlCmdBlAutostartEnable : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const
 		{
-			try
-			{
-				control.BlEnableAutostart();
-				cout << endl <<"Bootloader Autostart enabled!"<<endl;
-			}
-			catch(WiflyControlException)
-			{
-			    cout << endl <<"Bootloader Autostart not enabled!"<<endl;
-			}
+			cout << "\nEnabling bootloader autostart... ";
+			TRY_CATCH_COUT(control.BlEnableAutostart());
 		}	
 };
 
