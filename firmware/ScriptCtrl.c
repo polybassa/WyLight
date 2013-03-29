@@ -59,6 +59,7 @@
 }
 
 /**
+ * Prototyp - Private function
  * save command to eeprom
  */
 uns8 ScriptCtrl_Write(const struct led_cmd* pCmd);

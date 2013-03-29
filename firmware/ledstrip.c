@@ -18,7 +18,6 @@
 
 #include "ledstrip.h"
 #include "spi.h"
-#include "wifly_cmd.h"
 #ifdef __CC8E__
 #include "MATH16.H"
 #endif /* #ifdef __CC8E__ */
@@ -96,30 +95,6 @@ struct cmd_set_fade mFade;
 
 void Ledstrip_ToggleLeds(void)
 {
-#if 0
-	//TODO is this implementation equivalent to yours?
-
-	// if all leds are of we switch all on to white else switch all off
-	uns8 ledColor = 0xff;
-	uns8 i = 0;
-	while(i < NUM_OF_LED * 3)
-	{
-		if(gLedBuf.led_array[i] > 0)
-		{
-			ledColor = 0;
-			break;
-		}
-		i++;
-	}
-
-	// we found out the state of the leds. Now, we switch on or off
-	uns8 led;
-	for(led = 0; led < NUM_OF_LED * 3; led++)
-	{
-		gLedBuf.led_array[led] = ledColor;
-	}
-	Ledstrip_UpdateLed();
-#else
 	//check current status of led
 	uns8 counter = 0;
 	uns8 i;
@@ -135,7 +110,7 @@ void Ledstrip_ToggleLeds(void)
 	mFade.addr[1] = 0xff;
 	mFade.addr[2] = 0xff;
 	mFade.addr[3] = 0xff;
-	mFade.fadeTmms = htons(100);
+	mFade.fadeTmms = htons(200);
 
 	if(counter > 0)		//switch off
 	{
@@ -149,7 +124,6 @@ void Ledstrip_ToggleLeds(void)
 		mFade.blue = 0xff;
 	}
 	Ledstrip_SetFade(&mFade);
-#endif
 }
 
 void Ledstrip_Init(void)

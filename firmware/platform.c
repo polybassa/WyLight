@@ -66,12 +66,12 @@ void Platform_EnableAllInterrupts()
 	GIEL = 1; 
 	GIEH = 1;
 }
-
+/*
 void Platform_DisableAllInterrupts()
 {
 	GIEL = 0; 
 	GIEH = 0;
-}
+}*/
 
 void Platform_DisableBootloaderAutostart()
 {

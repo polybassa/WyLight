@@ -46,8 +46,6 @@
 #include "ComProxy.h"
 #include "wifly_cmd.h"
 #include "BlRequest.h"
-#include "intelhexclass.h"
-#include "error.h"
 #include "TelnetProxy.h"
 #include "WiflyControlException.h"
 #include "WiflyControlResponse.h"

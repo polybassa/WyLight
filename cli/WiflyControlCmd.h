@@ -32,6 +32,9 @@ using std::cout;
 using std::hex;
 using std::setfill;
 using std::setw;
+using std::endl;
+using std::string;
+using std::ostream;
 
 static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
