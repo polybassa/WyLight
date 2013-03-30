@@ -21,6 +21,7 @@
 #include <unistd.h>
 #include "x86_wrapper.h"
 #include "RingBuf.h"
+#include "ScriptCtrl.h"
 #include "timer.h"
 #include "Version.h"
 
@@ -34,6 +35,7 @@ uns8 g_led_status[NUM_OF_LED*3];
 extern uns8 g_UpdateLed;
 
 struct RingBuffer g_TraceBuf;
+extern struct ScriptBuf gScriptBuf;
 
 int g_uartSocket = -1;
 const unsigned short BROADCAST_PORT = 55555;
@@ -140,6 +142,9 @@ void* timer4_interrupt(void* unused)
 	{
 		usleep(1000);
 		g_UpdateLed++;
+		if(gScriptBuf.waitValue > 0) {
+			gScriptBuf.waitValue--;
+		};
 	}
 }
 

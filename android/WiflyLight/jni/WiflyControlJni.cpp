@@ -23,6 +23,14 @@
 
 static WiflyControl* g_pControl = NULL;
 
+#define TRY_CATCH_RETURN_BOOL(EXPRESSION) \
+	try { \
+		(EXPRESSION); \
+		return true; \
+	} catch(FatalError& e) { \
+		return false; \
+	}
+
 extern "C" {
 jlong Java_biz_bruenn_WiflyLight_RemoteCollector_createBroadcastReceiver(JNIEnv* env, jobject ref)
 {
@@ -68,17 +76,29 @@ jboolean Java_biz_bruenn_WiflyLight_WiflyControl_ConfSetWlan(JNIEnv* env, jobjec
 	return result;
 }
 
+jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwClearScript(JNIEnv* env, jobject ref, jlong pNative)
+{
+	TRY_CATCH_RETURN_BOOL(reinterpret_cast<WiflyControl*>(pNative)->FwClearScript());
+}
+
+jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwLoopOff(JNIEnv* env, jobject ref, jlong pNative, jbyte numLoops)
+{
+	TRY_CATCH_RETURN_BOOL(reinterpret_cast<WiflyControl*>(pNative)->FwLoopOff(numLoops));
+}
+
+jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwLoopOn(JNIEnv* env, jobject ref, jlong pNative)
+{
+	TRY_CATCH_RETURN_BOOL(reinterpret_cast<WiflyControl*>(pNative)->FwLoopOn());
+}
+
 jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwSetColor(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr)
 {
-	try
-	{
-		reinterpret_cast<WiflyControl*>(pNative)->FwSetFade(argb, 0, addr);
-		return true;
-	}
-	catch(FatalError& e)
-	{
-		return false;
-	}
+	TRY_CATCH_RETURN_BOOL(reinterpret_cast<WiflyControl*>(pNative)->FwSetFade(argb, 0, addr, false));
+}
+
+jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwSetFade(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr, jshort fadeTime)
+{
+	TRY_CATCH_RETURN_BOOL(reinterpret_cast<WiflyControl*>(pNative)->FwSetFade(argb, fadeTime, addr, false));
 }
 
 void Java_biz_bruenn_WiflyLight_WiflyControl_release(JNIEnv* env, jobject ref, jlong pNative)

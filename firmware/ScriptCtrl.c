@@ -187,12 +187,12 @@ void ScriptCtrl_Run(void)
 	{
 		ScriptCtrl_Clear();
 	}
-#ifdef __CC8E__
+
 	if(gScriptBuf.waitValue > 0)
 	{
 		return;
 	}
-#endif /* #ifdef CC8E */	
+
 	/* cmd available? */
 	if(gScriptBuf.execute == gScriptBuf.write)
 	{

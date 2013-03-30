@@ -215,14 +215,6 @@ class WiflyControl
 		std::string FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 		/**
-		 * Injects a LoopOn command into the wifly script controller
-		 * @throw ConnectionTimeout if response timed out
-		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
-		 */
-		void FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-
-		/**
 		 * Injects a LoopOff command into the wifly script controller
 		 * @param numLoops number of rounds before termination of the loop, use 0 for infinite loops. To terminate an infinite loop you have to call <FwClearScript>
 		 * @throw ConnectionTimeout if response timed out
@@ -230,6 +222,14 @@ class WiflyControl
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
 		void FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+
+		/**
+		 * Injects a LoopOn command into the wifly script controller
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
+		 */
+		void FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 		/**
 		 * Sets all leds with different colors directly. This doesn't affect the Wifly script controller
