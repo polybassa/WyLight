@@ -1,7 +1,5 @@
 package biz.bruenn.WiflyLight;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -13,38 +11,32 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class SetColorFragment extends ControlFragment {
+public class SetFadeFragment extends ControlFragment {
 
 	private int mColor = 0xff000000;
-	private Button mSetColorBtn;
+	private Button mSetFadeBtn;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_set_color, group, false);
+		View v = inflater.inflate(R.layout.fragment_set_fade, group, false);
 		
-		mSetColorBtn = (Button)v.findViewById(R.id.setColor);
-		mSetColorBtn.setOnClickListener(new View.OnClickListener() {
+		mSetFadeBtn = (Button)v.findViewById(R.id.setFade);
+		mSetFadeBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				boolean done = mCtrl.fwSetColor(mColor, WiflyControl.ALL_LEDS);
+				boolean done = mCtrl.fwSetFade(mColor, WiflyControl.ALL_LEDS, (short) 500);
 				Toast.makeText(v.getContext(), String.valueOf(done), Toast.LENGTH_SHORT).show();
 			}
 		});
 		
 		ImageView colorPicker = (ImageView)v.findViewById(R.id.colorPicker);
 		colorPicker.setOnTouchListener(new View.OnTouchListener() {
-			private AtomicBoolean mChangeIsInProgress = new AtomicBoolean(false);
-			
 			public boolean onTouch(View v, MotionEvent event) {
 				Bitmap b = ((BitmapDrawable)((ImageView)v).getDrawable()).getBitmap();
 				int x = Math.max(0, Math.min(b.getWidth()-1, (int)event.getX()));
 				int y = Math.max(0, Math.min(b.getHeight()-1, (int)event.getY()));
 				mColor = b.getPixel(x, y);
-				mSetColorBtn.setBackgroundColor(mColor);
-				mSetColorBtn.setTextColor(0xff000000 | ~mColor);
-				if(!mChangeIsInProgress.getAndSet(true)) {
-					mCtrl.fwSetColor(mColor, WiflyControl.ALL_LEDS);
-					mChangeIsInProgress.set(false);
-				}
+				mSetFadeBtn.setBackgroundColor(mColor);
+				mSetFadeBtn.setTextColor(0xff000000 | ~mColor);
 				return true;
 			}
 		});
