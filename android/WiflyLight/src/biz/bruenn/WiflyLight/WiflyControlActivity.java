@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.Toast;
 
 public class WiflyControlActivity extends FragmentActivity {
 	public static final String EXTRA_ENDPOINT = "biz.bruenn.WiflyLight.Endpoint";
@@ -25,7 +27,7 @@ public class WiflyControlActivity extends FragmentActivity {
 
 		@Override
 		public int getCount() {
-			return 2;
+			return 3;
 		}
 
 		@Override
@@ -35,13 +37,32 @@ public class WiflyControlActivity extends FragmentActivity {
 				ControlFragment f = new SetBrightnessFragment();
 				f.setWiflyControl(mCtrl);
 				return f;
-			default:
+			case 1:
 				ControlFragment ff = new SetColorFragment();
 				ff.setWiflyControl(mCtrl);
 				return ff;
+			default:
+				ControlFragment fff = new SetFadeFragment();
+				fff.setWiflyControl(mCtrl);
+				return fff;
 			}
+		}	
+	}
+	
+	public void onClickHandler(View view) {
+		boolean done = false;
+		switch(view.getId()) {
+		case R.id.setClear:
+			done = mCtrl.fwClearScript();
+			break;
+		case R.id.setLoopOff:
+			done = mCtrl.fwLoopOff((byte) 0);
+			break;
+		case R.id.setLoopOn:
+			done = mCtrl.fwLoopOn();
+			break;
 		}
-		
+		Toast.makeText(view.getContext(), String.valueOf(done), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override

@@ -9,7 +9,12 @@
     <string name="save">Save</string>
     <string name="scan">Scan</string>
     <string name="scanning">Scanning...</string>
+    <string name="set_clear">Clear</string>
     <string name="set_color">Set color</string>
+    <string name="set_delayfade">Delay fade by 5 sec.</string>
+    <string name="set_fade">Set fade</string>
+    <string name="set_loopon">Loop on</string>
+    <string name="set_loopoff">Loop off</string>
     <string name="ssid_hint">SSID 1-32 character</string>
     <string name="title_activity_wifly_control">Control your WiflyLight</string>
 

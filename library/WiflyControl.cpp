@@ -566,13 +566,6 @@ std::string WiflyControl::FwGetVersion(void) throw (ConnectionTimeout, FatalErro
 	return response.ToString();
 }
 
-void WiflyControl::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	SimpleResponse response(LOOP_ON);
-	mCmdFrame.led.cmd = LOOP_ON;
-	FwSend(&mCmdFrame, 0, response);
-}
-
 void WiflyControl::FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(LOOP_OFF);
@@ -580,6 +573,13 @@ void WiflyControl::FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalEr
 	mCmdFrame.led.data.loopEnd.numLoops = numLoops;
 	
 	FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
+}
+
+void WiflyControl::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+{
+	SimpleResponse response(LOOP_ON);
+	mCmdFrame.led.cmd = LOOP_ON;
+	FwSend(&mCmdFrame, 0, response);
 }
 
 WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
@@ -620,7 +620,7 @@ void WiflyControl::FwSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bo
 	// ommit fadeTime == 0
 	fadeTime = ((0 == fadeTime) ? 1 : fadeTime);
 	mCmdFrame.led.data.set_fade.fadeTmms = htons(fadeTime);
-	mCmdFrame.led.data.set_fade.parallelFade = parallelFade;
+	mCmdFrame.led.data.set_fade.parallelFade = (parallelFade ? 1 : 0);
 	FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
 }
 
