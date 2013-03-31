@@ -36,7 +36,7 @@
 
 #define RunTest(RUN, FUNC) { \
 	if(RUN) { \
-		int _errors= FUNC(); \
+		size_t _errors= FUNC(); \
 		if(_errors != 0) { \
 			printf(#FUNC"() run with %d errors\n", (int)_errors); \
 			numErrors+= _errors; \

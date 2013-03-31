@@ -27,7 +27,6 @@
 #include <typeinfo>
 #include "wifly_cmd.h"
 #include "BlRequest.h"
-//#include "WiflyControlResponse.h"
 
 class FatalError : public std::exception
 {
@@ -85,9 +84,14 @@ class WiflyControlException : public std::exception
 {
 public:
 	WiflyControlException(const std::string errorString = "WiflyControlException")
-	: std::exception(), m_ErrorString(errorString) {};
+		: std::exception(), m_ErrorString(errorString) {};
 	~WiflyControlException(void) throw() {};
 	const char* what(void) const throw() { return m_ErrorString.c_str(); };
+	
+	friend std::ostream& operator<< (std::ostream& out, const WiflyControlException& ref)
+	{
+		return out << ref.m_ErrorString;
+	};
 	
 private:
 	const std::string m_ErrorString;

@@ -478,7 +478,7 @@ size_t ut_WiflyControl_FwSetColorDirectToMany(void)
 	TestCaseEnd();
 }
 
-size_t ut_WiflyControl_FwSetFade(void)
+size_t ut_WiflyControl_FwSetFade_1(void)
 {
 	cmd_frame expectedOutgoingFrame;
 	expectedOutgoingFrame.length = 2 + sizeof(cmd_set_fade);
@@ -507,6 +507,225 @@ size_t ut_WiflyControl_FwSetFade(void)
 	TestCaseEnd();
 }
 
+size_t ut_WiflyControl_FwSetFade_2(void)
+{
+	cmd_frame expectedOutgoingFrame;
+	expectedOutgoingFrame.length = 2 + sizeof(cmd_set_fade);
+	expectedOutgoingFrame.led.cmd = SET_FADE;
+	expectedOutgoingFrame.led.data.set_fade.addr[0] = 0x44;
+	expectedOutgoingFrame.led.data.set_fade.addr[1] = 0x33;
+	expectedOutgoingFrame.led.data.set_fade.addr[2] = 0x22;
+	expectedOutgoingFrame.led.data.set_fade.addr[3] = 0x11;
+	expectedOutgoingFrame.led.data.set_fade.red = 0x11;
+	expectedOutgoingFrame.led.data.set_fade.green = 0x22;
+	expectedOutgoingFrame.led.data.set_fade.blue = 0x33;
+	expectedOutgoingFrame.led.data.set_fade.parallelFade = 0x01;
+	//TODO why do we use fadeTmms == 1 for SetColor?
+	expectedOutgoingFrame.led.data.set_fade.fadeTmms = htons(1000);
+	
+	TestCaseBegin();
+	WiflyControl testee(0, 0);
+	
+	// set color
+	testee.FwSetFade("112233", 1000, "11223344", true);
+	TraceBuffer(ZONE_INFO, &g_SendFrame, expectedOutgoingFrame.length, "%02x ", "IS  :");
+	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, expectedOutgoingFrame.length, "%02x ", "SOLL:");
+	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, expectedOutgoingFrame.length));
+	
+	
+	TestCaseEnd();
+}
+
+size_t ut_WiflyControl_FwSetWait(void)
+{
+	cmd_frame expectedOutgoingFrame = {0xff};
+	expectedOutgoingFrame.length = 2 + sizeof(cmd_wait);
+	expectedOutgoingFrame.led.cmd = WAIT;
+	expectedOutgoingFrame.led.data.wait.waitTmms = htons(1000);
+	
+	TestCaseBegin();
+	WiflyControl testee(0, 0);
+	
+	testee.FwSetWait(1000);
+	TraceBuffer(ZONE_INFO, &g_SendFrame, expectedOutgoingFrame.length, "%02x ", "IS  :");
+	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, expectedOutgoingFrame.length, "%02x ", "SOLL:");
+	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, expectedOutgoingFrame.length));
+	
+	TestCaseEnd();
+}
+
+size_t ut_WiflyControl_FwSetRtc(void)
+{
+	tm timeinfo;
+	time_t rawtime;
+	rawtime = time(NULL);
+	localtime_r(&rawtime, &timeinfo);
+	
+	cmd_frame expectedOutgoingFrame = {0xff};
+	expectedOutgoingFrame.length = 2 + sizeof(rtc_time);
+	expectedOutgoingFrame.led.cmd = SET_RTC;
+	expectedOutgoingFrame.led.data.set_rtc.tm_sec  = (uns8) timeinfo.tm_sec;
+	expectedOutgoingFrame.led.data.set_rtc.tm_min  = (uns8) timeinfo.tm_min;
+	expectedOutgoingFrame.led.data.set_rtc.tm_hour = (uns8) timeinfo.tm_hour;
+	expectedOutgoingFrame.led.data.set_rtc.tm_mday = (uns8) timeinfo.tm_mday;
+	expectedOutgoingFrame.led.data.set_rtc.tm_mon  = (uns8) timeinfo.tm_mon;
+	expectedOutgoingFrame.led.data.set_rtc.tm_year = (uns8) timeinfo.tm_year;
+	expectedOutgoingFrame.led.data.set_rtc.tm_wday = (uns8) timeinfo.tm_wday;
+
+	
+	TestCaseBegin();
+	WiflyControl testee(0, 0);
+	
+	testee.FwSetRtc(timeinfo);
+	TraceBuffer(ZONE_INFO, &g_SendFrame, expectedOutgoingFrame.length, "%02x ", "IS  :");
+	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, expectedOutgoingFrame.length, "%02x ", "SOLL:");
+	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, expectedOutgoingFrame.length));
+	
+	TestCaseEnd();
+}
+
+size_t ut_WiflyControl_FwClearScript(void)
+{
+	cmd_frame expectedOutgoingFrame = {0xff};
+	expectedOutgoingFrame.length = 2;
+	expectedOutgoingFrame.led.cmd = CLEAR_SCRIPT;
+	
+	TestCaseBegin();
+	WiflyControl testee(0, 0);
+	
+	testee.FwClearScript();
+	TraceBuffer(ZONE_INFO, &g_SendFrame, expectedOutgoingFrame.length, "%02x ", "IS  :");
+	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, expectedOutgoingFrame.length, "%02x ", "SOLL:");
+	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, expectedOutgoingFrame.length));
+	
+	TestCaseEnd();
+}
+
+size_t ut_WiflyControl_FwGetTracebuffer(void)
+{
+	cmd_frame expectedOutgoingFrame = {0xff};
+	expectedOutgoingFrame.length = 2;
+	expectedOutgoingFrame.led.cmd = GET_TRACE;
+	
+	TestCaseBegin();
+	WiflyControl testee(0, 0);
+	
+	try {
+		testee.FwGetTracebuffer();
+	} catch (std::exception) { }
+
+	
+	TraceBuffer(ZONE_INFO, &g_SendFrame, expectedOutgoingFrame.length, "%02x ", "IS  :");
+	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, expectedOutgoingFrame.length, "%02x ", "SOLL:");
+	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, expectedOutgoingFrame.length));
+	
+	TestCaseEnd();
+}
+
+size_t ut_WiflyControl_FwGetCycletime(void)
+{
+	cmd_frame expectedOutgoingFrame = {0xff};
+	expectedOutgoingFrame.length = 2;
+	expectedOutgoingFrame.led.cmd = GET_CYCLETIME;
+	
+	TestCaseBegin();
+	WiflyControl testee(0, 0);
+	
+	try {
+		testee.FwGetCycletime();
+	} catch (std::exception) { }
+
+	TraceBuffer(ZONE_INFO, &g_SendFrame, expectedOutgoingFrame.length, "%02x ", "IS  :");
+	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, expectedOutgoingFrame.length, "%02x ", "SOLL:");
+	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, expectedOutgoingFrame.length));
+	
+	TestCaseEnd();
+}
+
+size_t ut_WiflyControl_FwGetRtc(void)
+{
+	tm timeinfo;
+	
+	cmd_frame expectedOutgoingFrame = {0xff};
+	expectedOutgoingFrame.length = 2;
+	expectedOutgoingFrame.led.cmd = GET_RTC;
+	
+	TestCaseBegin();
+	WiflyControl testee(0, 0);
+	
+	try {
+		testee.FwGetRtc(timeinfo);
+	} catch (std::exception) { }
+	
+	TraceBuffer(ZONE_INFO, &g_SendFrame, expectedOutgoingFrame.length, "%02x ", "IS  :");
+	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, expectedOutgoingFrame.length, "%02x ", "SOLL:");
+	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, expectedOutgoingFrame.length));
+	
+	TestCaseEnd();
+}
+
+size_t ut_WiflyControl_FwGetVersion(void)
+{
+	cmd_frame expectedOutgoingFrame = {0xff};
+	expectedOutgoingFrame.length = 2;
+	expectedOutgoingFrame.led.cmd = GET_FW_VERSION;
+	
+	TestCaseBegin();
+	WiflyControl testee(0, 0);
+	
+	try {
+		testee.FwGetVersion();
+	} catch (std::exception) { }
+	
+	TraceBuffer(ZONE_INFO, &g_SendFrame, expectedOutgoingFrame.length, "%02x ", "IS  :");
+	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, expectedOutgoingFrame.length, "%02x ", "SOLL:");
+	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, expectedOutgoingFrame.length));
+	
+	TestCaseEnd();
+}
+
+size_t ut_WiflyControl_FwLoopOff(void)
+{
+	cmd_frame expectedOutgoingFrame = {0xff};
+	expectedOutgoingFrame.length = 2 + sizeof(cmd_loop_end);
+	expectedOutgoingFrame.led.cmd = LOOP_OFF;
+	expectedOutgoingFrame.led.data.loopEnd.numLoops = 100;
+	expectedOutgoingFrame.led.data.loopEnd.counter = 0;
+	expectedOutgoingFrame.led.data.loopEnd.depth = 0;
+	expectedOutgoingFrame.led.data.loopEnd.startIndex = 0;
+	
+	TestCaseBegin();
+	WiflyControl testee(0, 0);
+	
+	testee.FwLoopOff(100)
+	
+	TraceBuffer(ZONE_INFO, &g_SendFrame, expectedOutgoingFrame.length, "%02x ", "IS  :");
+	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, expectedOutgoingFrame.length, "%02x ", "SOLL:");
+	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, expectedOutgoingFrame.length));
+	
+	TestCaseEnd();
+}
+
+size_t ut_WiflyControl_FwLoopOn(void)
+{
+	cmd_frame expectedOutgoingFrame = {0xff};
+	expectedOutgoingFrame.length = 2;
+	expectedOutgoingFrame.led.cmd = LOOP_ON;
+	
+	TestCaseBegin();
+	WiflyControl testee(0, 0);
+	
+	testee.FwLoopOn();
+	
+	TraceBuffer(ZONE_INFO, &g_SendFrame, expectedOutgoingFrame.length, "%02x ", "IS  :");
+	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, expectedOutgoingFrame.length, "%02x ", "SOLL:");
+	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, expectedOutgoingFrame.length));
+	
+	TestCaseEnd();
+}
+
+
+
 int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
@@ -522,7 +741,18 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_WiflyControl_FwSetColorDirectRedOnly);
 	RunTest(true, ut_WiflyControl_FwSetColorDirectThreeLeds);
 	RunTest(true, ut_WiflyControl_FwSetColorDirectToMany);
-	RunTest(true, ut_WiflyControl_FwSetFade);
+	RunTest(true, ut_WiflyControl_FwSetFade_1);
+	RunTest(true, ut_WiflyControl_FwSetFade_2);
+	RunTest(true, ut_WiflyControl_FwSetWait);
+	RunTest(true, ut_WiflyControl_FwSetRtc);
+	RunTest(true, ut_WiflyControl_FwGetTracebuffer);
+	RunTest(true, ut_WiflyControl_FwGetRtc);
+	RunTest(true, ut_WiflyControl_FwGetCycletime);
+	RunTest(true, ut_WiflyControl_FwClearScript);
+	RunTest(true, ut_WiflyControl_FwLoopOff);
+	RunTest(true, ut_WiflyControl_FwGetVersion);
+	RunTest(true, ut_WiflyControl_FwLoopOn);
+
 	UnitTestMainEnd();
 }
 

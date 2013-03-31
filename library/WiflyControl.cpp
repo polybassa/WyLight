@@ -149,7 +149,7 @@ void WiflyControl::BlFlashErase(const uint32_t endAddress, const uint8_t numPage
 	if(0x03 != response)
 	{
 		Trace(ZONE_VERBOSE, "Erase flash failed at address: %x\n", endAddress);
-		throw BlNoResponseException(request, "Erase flash failed!");
+		throw BlNoResponseException(request, "Erase flash failed at address: "  + endAddress);
 	}
 }
 
@@ -571,8 +571,13 @@ void WiflyControl::FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalEr
 	SimpleResponse response(LOOP_OFF);
 	mCmdFrame.led.cmd = LOOP_OFF;
 	mCmdFrame.led.data.loopEnd.numLoops = numLoops;
+	/* this values are set by the firmware */
+	mCmdFrame.led.data.loopEnd.startIndex = 0;
+	mCmdFrame.led.data.loopEnd.counter = 0;
+	mCmdFrame.led.data.loopEnd.depth = 0;
 	
-	FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
+	
+	FwSend(&mCmdFrame, sizeof(cmd_loop_end), response);
 }
 
 void WiflyControl::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
@@ -590,7 +595,7 @@ WiflyResponse& WiflyControl::FwSend(struct cmd_frame* pFrame, size_t length, Wif
 	do
 	{
 		const size_t bytesRead = mProxy.Send(pFrame, &buffer, sizeof(buffer));
-		TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer, bytesRead, "%02x ", "We got %d bytes response.\nMessage: ", bytesRead);
+		TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer, bytesRead, "%02x ", "We got %zd bytes response.\nMessage: ", bytesRead);
 	
 		if(response.Init(buffer, bytesRead))
 		{
@@ -641,7 +646,7 @@ void WiflyControl::FwSetRtc(const tm& timeValue) throw (ConnectionTimeout, Fatal
 	mCmdFrame.led.data.set_rtc.tm_year = (uns8) timeValue.tm_year;
 	mCmdFrame.led.data.set_rtc.tm_wday = (uns8) timeValue.tm_wday;
 	
-	FwSend(&mCmdFrame, sizeof(struct rtc_time), response);
+	FwSend(&mCmdFrame, sizeof(rtc_time), response);
 }
 
 void WiflyControl::FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
@@ -649,7 +654,7 @@ void WiflyControl::FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalE
 	SimpleResponse response(WAIT);
 	mCmdFrame.led.cmd = WAIT;
 	mCmdFrame.led.data.wait.waitTmms = htons(waitTime);
-	FwSend(&mCmdFrame, sizeof(cmd_set_fade), response);
+	FwSend(&mCmdFrame, sizeof(cmd_wait), response);
 }
 
 void WiflyControl::FwStressTest(void)
