@@ -50,7 +50,7 @@ class ClientSocket
 
 		/**
 		 * wait for data on the low level socket
-		 * @param timout to wait for data, to block indefinitly use NULL, which is default
+		 * @param timeout to wait for data, to block indefinitly use NULL, which is default
 		 * @return true if select() timed out, false if data is ready
 		 * @throw FatalError if something very unexpected happens
 		 */

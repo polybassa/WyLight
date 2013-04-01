@@ -1,5 +1,14 @@
-/**
-
-@brief Documentation file for Mainpage
-@author Nils Weiß, Patrick Bruenn
+/*! \mainpage Wifly_Light Documentation
+ *
+ * \section intro_sec Introduction
+ *
+ *  Here you find the documentation of the Wifly_Light (WyLight) project.
+ *
+ * \section sourceCode Source-Code
+ * You can download the source code at: https://github.com/polybassa/Wifly_Light
+ * 
+ * 
+ *
+ *
+ * \authors Nils Weiß (polybassa), Patrick Bruenn (tawarisch)
 */
