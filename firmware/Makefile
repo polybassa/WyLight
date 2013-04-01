@@ -30,7 +30,7 @@ simu: outdir
 
 #generic rule to build and run c unittests
 %_ut.bin: %_ut.c %.c %.h
-	@gcc $< $(subst _ut.c,.c,$<) eeprom.c -o ${OUTPUT_DIR}/$@ -Wall -std=c++0x
+	@gcc $< $(subst _ut.c,.c,$<) eeprom.c -o ${OUTPUT_DIR}/$@ -Wall
 	@./${OUTPUT_DIR}/$@
 
 test: clean outdir CommandIO_ut.bin crc_ut.bin ledstrip_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin
