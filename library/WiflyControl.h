@@ -99,7 +99,7 @@ class WiflyControl
 		/**
 		 * Instructs the bootloader to read the specified memory area of the eeprom.
 		 * The wifly device has to be in bootloader mode for this command.
-		 * @param pBuffer destination for the copy of the eeprom content, should be at least <numBytes> wide
+		 * @param pBuffer destination for the copy of the eeprom content, should be at least \<numBytes\> wide
 		 * @param address start of the eeprom region to read
 		 * @param numBytes size of the eeprom region to read
 		 * @return the number of bytes read
@@ -109,9 +109,9 @@ class WiflyControl
 		/**
 		 * Instructs the bootloader to read the specified memory area of the flash.
 		 * The wifly device has to be in bootloader mode for this command.
-		 * @param pBuffer destination for the copy of the flash content, should be at least <numBytes> wide
-		 * @param address start of the flash region to readRequest
-		 * @param numbytes size of the flash region to read
+		 * @param pBuffer destination for the copy of the flash content, should be at least \<numBytes\> wide
+		 * @param address start of the flash region to read
+		 * @param numBytes size of the flash region to read
 		 * @return the number of bytes read
 		 */
 		size_t BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const;
@@ -125,7 +125,7 @@ class WiflyControl
 
 		/**
 		 * Instructs the bootloader to return a struct of bootloader informations
-		 * like bootloader version, flash and eeprom size. see <BlInfo> for details.
+		 * like bootloader version, flash and eeprom size. see \<BlInfo\> for details.
 		 * The wifly device has to be in bootloader mode for this command.
 		 */
 		void BlReadInfo(BlInfo& info) const;
@@ -167,7 +167,6 @@ class WiflyControl
 /* -------------------------- FIRMWARE METHODES -------------------------- */
 		/**
 		 * Wipe all commands from the Wifly script controller
-		 * @param response will be modified according to the success of this operation
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
@@ -194,7 +193,6 @@ class WiflyControl
 
 		/**
 		 * Reads the tracebuffer from wifly device and stores the data into the response object
-		 * @param response reference to an object to store the read tracebuffer content
 		 * @return a string with all recorded trace messages from PIC firmware
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
@@ -204,7 +202,6 @@ class WiflyControl
 
 		/**
 		 * Reads the firmware version currently running on the wifly device.
-		 * @param response reference to an object to store the read version number
 		 * @return a string representing the version number of the PIC firmware
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
@@ -214,7 +211,7 @@ class WiflyControl
 
 		/**
 		 * Injects a LoopOff command into the wifly script controller
-		 * @param numLoops number of rounds before termination of the loop, use 0 for infinite loops. To terminate an infinite loop you have to call <FwClearScript>
+		 * @param numLoops number of rounds before termination of the loop, use 0 for infinite loops. To terminate an infinite loop you have to call \<FwClearScript\>
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
@@ -231,10 +228,10 @@ class WiflyControl
 
 		/**
 		 * Sets all leds with different colors directly. This doesn't affect the Wifly script controller
-		 * Example: to set the first led to yellow and the second to blue and all others to off use a <pBuffer> like this:
+		 * Example: to set the first led to yellow and the second to blue and all others to off use a \<pBuffer\> like this:
 		 * pBuffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6;
 		 * @param pBuffer containing continouse rgb values r1g1b1r2g2b2...r32g32b32
-		 * @param bufferLength number of bytes in <pBuffer> usally 32 * 3 bytes
+		 * @param bufferLength number of bytes in \<pBuffer\> usally 32 * 3 bytes
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed

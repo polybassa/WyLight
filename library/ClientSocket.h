@@ -81,7 +81,7 @@ class TcpSocket : public ClientSocket
 {
 	public:
 		/**
-		 * @param addr IPv4 address in host byte order
+		 * @param Addr IPv4 address in host byte order
 		 * @param port IPv4 port number in host byte order
 		 * @throw FatalError if the base class constructor fails @see ClientSocket#ClientSocket
 		 * @throw ConnectionLost if connect() fails on the internal socket
@@ -92,8 +92,8 @@ class TcpSocket : public ClientSocket
 		 * Receive data from the remote socket.
 		 * @param pBuffer to store the read data
 		 * @param length size of the pBuffer
-		 * @param timout to wait for data, to block indefinitly use NULL, which is default
-		 * @return number of bytes read into <pBuffer>
+		 * @param timeout to wait for data, to block indefinitly use NULL, which is default
+		 * @return number of bytes read into \<pBuffer\>
 		 * @throw FatalError if something very unexpected happens
 		 */
 		size_t Recv(uint8_t* pBuffer, size_t length, timeval* timeout = NULL) const throw (FatalError);
@@ -123,10 +123,10 @@ class UdpSocket : public ClientSocket
 		 * Receive data from the remote socket.
 		 * @param pBuffer to store the read data
 		 * @param length size of the pBuffer
-		 * @param timout to wait for data, to block indefinitly use NULL, which is default
+		 * @param timeout to wait for data, to block indefinitly use NULL, which is default
 		 * @param remoteAddr pointer to a struct where the senders address should be stored, this param is optional use NULL to ignore it
 		 * @param remoteAddrLength size of the struct remoteAddr is pointing to, after a successfull call with no NULL pointers in remoteAddrLength and remoteAddr it will point to the size of the written remoteAddr struct
-		 * @return number of bytes read into <pBuffer>, 0 in case of a timeout
+		 * @return number of bytes read into \<pBuffer\>, 0 in case of a timeout
 		 * @throw FatalError if something very unexpected happens
 		 */
 		size_t RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout = NULL, struct sockaddr* remoteAddr = NULL, socklen_t* remoteAddrLength = NULL) const throw (FatalError);
