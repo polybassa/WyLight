@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['wifly_5flight_20documentation',['Wifly_Light Documentation',['../index.html',1,'']]],
   ['what',['what',['../class_wifly_control_exception.html#a0fa2a5e8db72e6927d29c82968319e78',1,'WiflyControlException']]],
   ['white',['WHITE',['../class_wifly_color.html#a746808c029beaa107b15296826f7e462',1,'WiflyColor']]],
   ['wiflycolor',['WiflyColor',['../class_wifly_color.html',1,'WiflyColor'],['../class_wifly_color.html#a68d2fd89ce0c7d55514587c39f97e01c',1,'WiflyColor::WiflyColor()']]],
