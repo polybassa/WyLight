@@ -84,15 +84,15 @@ class WiflyControlCmd
 		}
 };
 
-class ControlCmdBlAutostartEnable : public WiflyControlCmd
+class ControlCmdBlEnableAutostart : public WiflyControlCmd
 {
 	public:
-		ControlCmdBlAutostartEnable(void) : WiflyControlCmd(
-				string("enable_bl_autostart")) {};
+		ControlCmdBlEnableAutostart(void) : WiflyControlCmd(
+				string("bl_enable_autostart")) {};
 
 		virtual void Run(WiflyControl& control) const
 		{
-			cout << "\nEnabling bootloader autostart... ";
+			cout << "\nBL: Enabling autostart... ";
 			TRY_CATCH_COUT(control.BlEnableAutostart());
 		}	
 };
@@ -111,7 +111,7 @@ class ControlCmdBlInfo : public WiflyControlCmd
 				control.BlReadInfo(info);
 				info.Print();
 			}
-			catch(WiflyControlException)
+			catch(FatalError& e)
 			{
 				std::cout << "Read bootloader info failed" << endl;
 			}
@@ -144,9 +144,9 @@ class ControlCmdBlCrcFlash : public WiflyControlCmd
 				}
 				PrintCrc(buffer, bytesRead, address);
 			}
-			catch(WiflyControlException)
+			catch(FatalError& e)
 			{
-				cout << "Read CRC failed" << endl;
+				cout << "Read CRC failed because of " << e << endl;
 			}
 			
 		};
@@ -160,15 +160,8 @@ class ControlCmdBlEraseFlash : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const
 		{
-			try
-			{
-				control.BlFlashErase();
-				cout << endl << "Erase complete flash succesful" << endl;
-			}
-			catch(WiflyControlException)
-			{
-			    cout << endl << "Erase complete flash failed" << endl;
-			}
+			cout << "\nErasing flash... ";
+			TRY_CATCH_COUT(control.BlEraseFlash());
 		}	
 };
 
@@ -180,15 +173,8 @@ class ControlCmdBlEraseEeprom : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const
 		{
-			try 
-			{
-				control.BlEepromErase();
-			    cout << endl <<"Erase complete eeprom succesful"<<endl;
-			}
-			catch(WiflyControlException)
-			{
-			    cout << endl <<"Erase complete eeprom failed"<<endl;
-			}
+			cout << "\nErasing eeprom... ";
+			TRY_CATCH_COUT(control.BlEraseEeprom());
 		}	
 };
 
@@ -203,15 +189,8 @@ class ControlCmdBlProgramFlash : public WiflyControlCmd
 		{
 			string path;
 			cin >> path;
-			try
-			{
-				control.BlProgramFlash(path);
-			    cout << endl <<"Program device flash succesful"<<endl;
-			}
-			catch(WiflyControlException)
-			{
-			    cout << endl <<"Program device flash failed"<<endl;
-			}
+			cout << "Programming device flash... ";
+			TRY_CATCH_COUT(control.BlProgramFlash(path));
 		}	
 };
 
@@ -253,9 +232,9 @@ class ControlCmdBlRead : public WiflyControlCmd
 				}
 
 			}
-			catch(WiflyControlException)
+			catch(FatalError& e)
 			{
-				cout << "Read " << m_Name << " failed" << endl;
+				cout << "Read " << m_Name << " failed, because of " << e << endl;
 			}
 	};
 };
@@ -288,15 +267,7 @@ class ControlCmdBlRunApp : public WiflyControlCmd
 
 		virtual void Run(WiflyControl& control) const {
 			cout << "Starting application... ";
-			try
-			{
-				control.BlRunApp();
-				cout << "done." << endl;
-			}
-			catch(WiflyControlException &e)
-			{				
-				cout << "failed!\n" << e.what() << endl;
-			}
+			TRY_CATCH_COUT(control.BlRunApp());
 		};
 };
 			
@@ -314,9 +285,9 @@ class ControlCmdBlReadFwVersion : public WiflyControlCmd
 					{
 						cout << endl << "Version: " << control.BlReadFwVersion() << endl << endl << "done." << endl;
 					}
-					catch(WiflyControlException &e)
+					catch(FatalError& e)
 					{
-						cout << "failed!\n" << e.what() << endl;
+						cout << "failed, because of " << e << endl;
 					}
 				};
 			};
@@ -397,7 +368,7 @@ class ControlCmdPrintCycletime : public WiflyControlCmd
 			}
 			catch(FatalError& e)
 			{
-				cout << "failed! because of: " << e << '\n';
+				cout << "failed, because of " << e << '\n';
 			}
 		};
 };
@@ -581,14 +552,8 @@ class ControlCmdTest : public WiflyControlCmd
 				string("' - run test loop")) {};
 
 		virtual void Run(WiflyControl& control) const {
-			try
-			{
-				control.FwTest();
-			}
-			catch(WiflyControlException e)
-			{
-				cout << "FwTest failed!\n" << e.what() << endl;
-			}
+			cout << "Running fw test loop... ";
+			TRY_CATCH_COUT(control.FwTest());
 		};
 };
 			
@@ -600,20 +565,14 @@ class ControlCmdStressTest : public WiflyControlCmd
 			   string("' - run test loop! Caution: Test run in endless loop")) {};
 				
 		virtual void Run(WiflyControl& control) const {
-			try
-			{
-				control.FwStressTest();
-			}
-			catch(WiflyControlException &e)
-			{
-				cout << "FwStressTest failed!\n" << e.what() << endl;
-			}
+			cout << "Running stresstest... ";
+			TRY_CATCH_COUT(control.FwStressTest());
 		};
 };
 
 
 static const WiflyControlCmd* s_Cmds[] = {
-	new ControlCmdBlAutostartEnable(),
+	new ControlCmdBlEnableAutostart(),
 	new ControlCmdBlInfo(),
 	new ControlCmdBlCrcFlash(),
 	new ControlCmdBlEraseEeprom(),

@@ -145,7 +145,7 @@ struct BlEepromWriteRequest : public BlAddressRequest
 {
 		BlEepromWriteRequest() : BlAddressRequest(sizeof(payload) + 2, 0x06) {};
 
-		void SetData(unsigned int address, unsigned char* pData, size_t numBytes)
+		void SetData(unsigned int address, const uint8_t* pData, size_t numBytes)
 		{
 			assert(numBytes <= sizeof(payload));
 			SetAddress(address);

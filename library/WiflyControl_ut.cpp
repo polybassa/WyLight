@@ -175,7 +175,7 @@ bool TelnetProxy::SendString(const std::string& command, std::string value) cons
 
 
 // Testcases
-size_t ut_WiflyControl_BlEepromErase(void)
+size_t ut_WiflyControl_BlEraseEeprom(void)
 {
 	TestCaseBegin();
 	
@@ -189,7 +189,7 @@ size_t ut_WiflyControl_BlEepromErase(void)
 	
 	WiflyControl testctrl(0,0);
 	
-	testctrl.BlEepromErase();
+	testctrl.BlEraseEeprom();
 	
 	for(unsigned int i = 0; i < EEPROM_SIZE; i++)
 	{
@@ -246,7 +246,7 @@ size_t ut_WiflyControl_BlEepromWrite(void)
 
 }
 
-size_t ut_WiflyControl_BlFlashErase(void)
+size_t ut_WiflyControl_BlEraseFlash(void)
 {
 	TestCaseBegin();
 	
@@ -258,17 +258,13 @@ size_t ut_WiflyControl_BlFlashErase(void)
 		
 	BlInfo blInfo;
 	WiflyControl testctrl(0,0);
-	testctrl.BlReadInfo(blInfo);
-	WiflyControlException *pEx;
-	pEx = NULL;
-	
 	try
 	{
-		testctrl.BlFlashErase();
-	} catch (WiflyControlException &e) {
-		pEx = &e;
+		testctrl.BlReadInfo(blInfo);
+		testctrl.BlEraseFlash();
+	} catch (FatalError& e) {
+		CHECK(false);
 	}
-	CHECK(pEx == NULL);
 	
 	for(unsigned int i = 0; i < blInfo.GetAddress(); i++)
 	{
@@ -512,12 +508,12 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_WiflyControl_ConfSetDefaults);
 	RunTest(true, ut_WiflyControl_ConfSetWlan);
 	RunTest(true, ut_WiflyControl_BlReadInfo);
-	RunTest(true, ut_WiflyControl_BlFlashErase);
+	RunTest(true, ut_WiflyControl_BlEraseFlash);
 	RunTest(true, ut_WiflyControl_BlFlashRead);
 	RunTest(true, ut_WiflyControl_BlFlashWrite);
 	RunTest(true, ut_WiflyControl_BlEepromRead);
 	RunTest(true, ut_WiflyControl_BlEepromWrite);
-	RunTest(true, ut_WiflyControl_BlEepromErase);
+	RunTest(true, ut_WiflyControl_BlEraseEeprom);
 	RunTest(true, ut_WiflyControl_FwSetColorDirectRedOnly);
 	RunTest(true, ut_WiflyControl_FwSetColorDirectThreeLeds);
 	RunTest(true, ut_WiflyControl_FwSetColorDirectToMany);

@@ -69,23 +69,40 @@ class WiflyControl
 		
 /* ------------------------- BOOTLOADER METHODES ------------------------- */
 		/**
-		 * Instructs the bootloader to erase the whole eeprom.
-		 * The wifly device has to be in bootloader mode for this command.
-		 */
-		void BlEepromErase(void) const;
-
-		/**
 		 * Instructs the bootloader to set the autostart flag to true. This ensures
 		 * the bootloader will be started on the next reboot automatically.
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw InvalidParameter a parameter is out of bound
 		 */
-		void BlEnableAutostart(void) const;
+		void BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError, InvalidParameter);
 		
+		/**
+		 * Instructs the bootloader to erase the whole eeprom.
+		 * The wifly device has to be in bootloader mode for this command.
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw InvalidParameter a parameter is out of bound
+		 */
+		void BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError);
+
 		/**
 		 * Instructs the bootloader to erase the whole flash which is not occupied
 		 * by the bootloader itself.
 		 * The wifly device has to be in bootloader mode for this command.
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 */
-		void BlFlashErase(void) const;
+		void BlEraseFlash(void) const throw(ConnectionTimeout, FatalError);
+		
+		/**
+		 * Instructs the bootloader to update the wifly device with new firmware.
+		 * The wifly device has to be in bootloader mode for this command.
+		 * @param filename path to the *.hex file containing the new firmware
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 */
+		void BlProgramFlash(const std::string& filename) throw (ConnectionTimeout, FatalError);
 
 		/**
 		 * Instructs the bootloader to create crc-16 checksums for the content of
@@ -95,8 +112,11 @@ class WiflyControl
 		 * @param address crc generation starts from this flash address
 		 * @param numBytes size of the flash area for which the crc are calculated
 		 * @return the number of bytes read (result / 2 = number of crc values)
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw InvalidParameter a parameter is out of bound
 		 */
-		size_t BlReadCrcFlash(uint8_t* pBuffer, uint32_t address, uint16_t numBytes) const;
+		size_t BlReadCrcFlash(uint8_t* pBuffer, uint32_t address, uint16_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
 
 		/**
 		 * Instructs the bootloader to read the specified memory area of the eeprom.
@@ -105,8 +125,11 @@ class WiflyControl
 		 * @param address start of the eeprom region to read
 		 * @param numBytes size of the eeprom region to read
 		 * @return the number of bytes read
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw InvalidParameter a parameter is out of bound
 		 */
-		size_t BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t numBytes) const;
+		size_t BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
 
 		/**
 		 * Instructs the bootloader to read the specified memory area of the flash.
@@ -115,35 +138,37 @@ class WiflyControl
 		 * @param address start of the flash region to readRequest
 		 * @param numbytes size of the flash region to read
 		 * @return the number of bytes read
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw InvalidParameter a parameter is out of bound
 		 */
-		size_t BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const;
+		size_t BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
 
 		/**
 		 * Instructs the bootloader to read the version string from the firmware memory.
 		 * The wifly device has to be in bootloader mode for this command.
 		 * @return the version string from pic flash memory
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 */
-		std::string BlReadFwVersion(void) const;
+		std::string BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError);
 
 		/**
 		 * Instructs the bootloader to return a struct of bootloader informations
 		 * like bootloader version, flash and eeprom size. see <BlInfo> for details.
 		 * The wifly device has to be in bootloader mode for this command.
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 */
-		void BlReadInfo(BlInfo& info) const;
-		
-		/**
-		 * Instructs the bootloader to update the wifly device with new firmware.
-		 * The wifly device has to be in bootloader mode for this command.
-		 * @param filename path to the *.hex file containing the new firmware
-		 */
-		void BlProgramFlash(const std::string& filename);
+		void BlReadInfo(BlInfo& info) const throw (ConnectionTimeout, FatalError);
 
 		/**
 		 * Instructs the bootloader to start the wifly device firmware.
 		 * The wifly device has to be in bootloader mode for this command.
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 */
-		void BlRunApp(void) const;
+		void BlRunApp(void) const throw (ConnectionTimeout, FatalError);
 
 /* --------------------- WLAN CONFIGURATION METHODES --------------------- */
 		/**
@@ -345,8 +370,10 @@ class WiflyControl
 		 * The wifly device has to be in bootloader mode for this command.
 		 * @param endAddress address of the block to delete
 		 * @param numPages number of pages in a block
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 */
-		void BlFlashErase(const uint32_t endAddress, const uint8_t numPages) const;
+		void BlEraseFlash(const uint32_t endAddress, const uint8_t numPages) const throw (ConnectionTimeout, FatalError);
 
 		/**
 		 * Send a request to the bootloader and read his response into pResponse
@@ -365,16 +392,22 @@ class WiflyControl
 		 * @param address in eeprom
 		 * @param pBuffer containing the new data for eeprom
 		 * @param bufferLength number of bytes to write to eeprom
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw InvalidParameter a parameter is out of bound
 		 */
-		void BlWriteEeprom(uint32_t address, uint8_t* pBuffer, size_t bufferLength) const;
+		void BlWriteEeprom(uint32_t address, const uint8_t* pBuffer, size_t bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter);
 
 		/**
 		 * Instructs the bootloader of the wifly device to write data to the flash.
 		 * @param address in flash
 		 * @param pBuffer containing the new data for flash
 		 * @param bufferLength number of bytes to write to flash
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw InvalidParameter a parameter is out of bound
 		 */
-		void BlWriteFlash(uint32_t address, uint8_t* pBuffer, size_t bufferLength) const;
+		void BlWriteFlash(uint32_t address, uint8_t* pBuffer, size_t bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter);
 
 		/**
 		 * Sends a wifly command frame to the wifly device

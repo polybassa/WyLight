@@ -81,6 +81,7 @@ public:
 	ScriptBufferFull(void) : FatalError("ScriptBuffer in PIC is full, clear it or wait") {};
 };
 
+#if 0
 class WiflyControlException : public std::exception
 {
 public:
@@ -129,5 +130,6 @@ public:
 	FwNoResponseException(const struct cmd_frame* const failedCommand, const std::string errorString = "Invalid response received or connection abort!")
 	: FwException(failedCommand, errorString) {};
 };
+#endif
 
 #endif /* defined(____WiflyControlException__) */

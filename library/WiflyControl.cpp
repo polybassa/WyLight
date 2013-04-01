@@ -61,21 +61,145 @@ WiflyControl::WiflyControl(uint32_t addr, uint16_t port)
 }
 
 /** ------------------------- BOOTLOADER METHODES ------------------------- **/
-void WiflyControl::BlEepromErase(void) const
+void WiflyControl::BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError, InvalidParameter)
 {
-	unsigned char buffer[EEPROM_SIZE];
+	static const uint8_t value = 0xff;
+	BlWriteEeprom((uint32_t)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
+}
+
+void WiflyControl::BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError)
+{
+	//TODO use c++11 array initialization
+	uint8_t buffer[EEPROM_SIZE];
 	std::fill_n(buffer, EEPROM_SIZE, 0xff);
-	
-	BlWriteEeprom((unsigned int)0, &buffer[0], sizeof(buffer));
+	BlWriteEeprom((uint32_t)0, &buffer[0], sizeof(buffer));
 }
 
-void WiflyControl::BlEnableAutostart(void) const
+void WiflyControl::BlEraseFlash(void) const throw(ConnectionTimeout, FatalError)
 {
-	unsigned char value = 0xff;
-	BlWriteEeprom((unsigned int)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
+	BlInfo info;
+	BlReadInfo(info);
+	
+	const unsigned int firstAddress = info.GetAddress() - 1;
+	unsigned int address = firstAddress;
+
+	while(address > FLASH_ERASE_BLOCKSIZE * FLASH_ERASE_BLOCKS)
+	{
+		BlEraseFlash(address, FLASH_ERASE_BLOCKS);
+		address -= FLASH_ERASE_BLOCKSIZE * FLASH_ERASE_BLOCKS;
+	}
+	/* now we erased everything until a part of the flash smaller than FLASH_ERASE_BLOCKS * FLASH_ERASE_BLOCKSIZE
+	 * so we set our startaddress at the beginning of this block and erase */
+	BlEraseFlash(FLASH_ERASE_BLOCKS * FLASH_ERASE_BLOCKSIZE -1, FLASH_ERASE_BLOCKS);
 }
 
-std::string WiflyControl::BlReadFwVersion(void) const
+void WiflyControl::BlEraseFlash(const uint32_t endAddress, const uint8_t numPages) const throw(ConnectionTimeout, FatalError)
+{
+	unsigned char response;
+	BlFlashEraseRequest request(endAddress, numPages);
+
+	// always sync for flash erase
+	BlRead(request, &response, sizeof(response), true);
+	
+	// we expect only one byte as response, the command code 0x03
+	if(0x03 != response)
+	{
+		throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": response of wrong command code");
+	}
+}
+
+size_t WiflyControl::BlRead(const BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync) const throw(ConnectionTimeout, FatalError)
+{
+	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
+	size_t bytesReceived = mProxy.Send(req, buffer, sizeof(buffer), doSync);
+	Trace(ZONE_INFO, " %zd:%ld \n", bytesReceived, sizeof(BlInfo));
+	TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer[0], bytesReceived, "0x%02x, ", "Message: ");
+	if(responseSize != bytesReceived)
+	{	
+		throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": Too many retries");
+	}
+	memcpy(pResponse, buffer, responseSize);
+	return responseSize;
+}
+
+size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address, uint16_t numBlocks) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+{
+	if(numBlocks * FLASH_ERASE_BLOCKSIZE + address > FLASH_SIZE)
+	{
+		throw InvalidParameter(std::string(__FILE__) + ':' + __FUNCTION__ + ": address or numBlocks out of range");
+	}
+  
+	size_t bytesRead;
+	size_t sumBytesRead = 0;
+	while(numBlocks > FLASH_CRC_BLOCKSIZE)
+	{
+		BlFlashCrc16Request readRequest(address, FLASH_CRC_BLOCKSIZE);
+		bytesRead = BlRead(readRequest, pBuffer, FLASH_CRC_BLOCKSIZE * 2);
+		sumBytesRead += bytesRead;
+		address += (FLASH_CRC_BLOCKSIZE * FLASH_ERASE_BLOCKSIZE);
+		numBlocks -= FLASH_CRC_BLOCKSIZE;
+		pBuffer += FLASH_CRC_BLOCKSIZE * 2;
+	}
+
+	BlFlashCrc16Request readRequest(address, numBlocks);
+	bytesRead = BlRead(readRequest, pBuffer, numBlocks * 2);
+	sumBytesRead += bytesRead;
+	return sumBytesRead;
+}
+
+size_t WiflyControl::BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+{
+	if(numBytes + address > EEPROM_SIZE)
+	{
+		throw InvalidParameter(std::string(__FILE__) + ':' + __FUNCTION__ + ": address or numBytes out of range");
+	}
+	
+	size_t bytesRead;
+	size_t sumBytesRead = 0;
+	BlEepromReadRequest readRequest;
+	while(numBytes > EEPROM_READ_BLOCKSIZE)
+	{
+		readRequest.SetAddressNumBytes(address, EEPROM_READ_BLOCKSIZE);
+		bytesRead = BlRead(readRequest, pBuffer, EEPROM_READ_BLOCKSIZE);
+		sumBytesRead += bytesRead;
+		address += EEPROM_READ_BLOCKSIZE;
+		numBytes -= EEPROM_READ_BLOCKSIZE;
+		pBuffer += EEPROM_READ_BLOCKSIZE;
+	}
+	readRequest.SetAddressNumBytes(address, numBytes);
+	bytesRead = BlRead(readRequest, pBuffer, numBytes);
+	sumBytesRead += bytesRead;
+	return sumBytesRead;
+}
+
+size_t WiflyControl::BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+{
+	if(numBytes + address > FLASH_SIZE)
+	{
+		throw InvalidParameter(std::string(__FILE__) + ':' + __FUNCTION__ + ": address or numBytes out of range");
+	}
+  
+	size_t bytesRead;
+	size_t sumBytesRead = 0;
+	BlFlashReadRequest readRequest;
+	while(numBytes > FLASH_READ_BLOCKSIZE)
+	{
+		readRequest.SetAddressNumBytes(address, FLASH_READ_BLOCKSIZE);
+		bytesRead = BlRead(readRequest, pBuffer, FLASH_READ_BLOCKSIZE);
+		sumBytesRead += bytesRead;
+		address += FLASH_READ_BLOCKSIZE;
+		numBytes -= FLASH_READ_BLOCKSIZE;
+		pBuffer += FLASH_READ_BLOCKSIZE;
+	}
+
+	readRequest.SetAddressNumBytes(address, numBytes);
+	bytesRead = BlRead(readRequest, pBuffer, numBytes);
+	sumBytesRead += bytesRead;
+	return sumBytesRead;
+}
+
+//TODO is it really necessary to read the whole flash?
+std::string WiflyControl::BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError)
 {
 	BlInfo info;
 	BlReadInfo(info);
@@ -111,153 +235,25 @@ std::string WiflyControl::BlReadFwVersion(void) const
 	uint8_t *pString = (uint8_t*) &buffer[bytesRead];
 	while(*pString == 0xff)
 		if(pString-- < &buffer[0])
-			return std::string("ERROR");
+			throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": version string corrupt1");
 	
 	if(pString - 7 < &buffer[0])
-		return std::string("ERROR");
+		throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": version string corrupt2");
 	
 	return std::string((const char*)pString - 7, 7);
 }
 
-void WiflyControl::BlFlashErase(void) const
-{
-	BlInfo info;
-	BlReadInfo(info);
-	
-	const unsigned int firstAddress = info.GetAddress() - 1;
-	unsigned int address = firstAddress;
-
-	while(address > FLASH_ERASE_BLOCKSIZE * FLASH_ERASE_BLOCKS)
-	{
-		BlFlashErase(address, FLASH_ERASE_BLOCKS);
-		address -= FLASH_ERASE_BLOCKSIZE * FLASH_ERASE_BLOCKS;
-	}
-	/* now we erased everything until a part of the flash smaller than FLASH_ERASE_BLOCKS * FLASH_ERASE_BLOCKSIZE
-	 * so we set our startaddress at the beginning of this block and erase */
-	BlFlashErase(FLASH_ERASE_BLOCKS * FLASH_ERASE_BLOCKSIZE -1, FLASH_ERASE_BLOCKS);
-}
-
-void WiflyControl::BlFlashErase(const uint32_t endAddress, const uint8_t numPages) const
-{
-	unsigned char response;
-	BlFlashEraseRequest request(endAddress, numPages);
-
-	// always sync for flash erase
-	BlRead(request, &response, sizeof(response), true);
-	
-	// we expect only one byte as response, the command code 0x03
-	if(0x03 != response)
-	{
-		Trace(ZONE_VERBOSE, "Erase flash failed at address: %x\n", endAddress);
-		throw BlNoResponseException(request, "Erase flash failed!");
-	}
-}
-
-size_t WiflyControl::BlRead(const BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync) const throw(ConnectionTimeout, FatalError)
-{
-	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
-	size_t bytesReceived = mProxy.Send(req, buffer, sizeof(buffer), doSync);
-	Trace(ZONE_INFO, " %zd:%ld \n", bytesReceived, sizeof(BlInfo));
-	TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer[0], bytesReceived, "0x%02x, ", "Message: ");
-	if(responseSize != bytesReceived)
-	{	
-		throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": Too many retries");
-	}
-	memcpy(pResponse, buffer, responseSize);
-	return responseSize;
-}
-
-size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address, uint16_t numBlocks) const
-{
-	if(numBlocks * FLASH_ERASE_BLOCKSIZE + address > FLASH_SIZE)
-	{
-		Trace(ZONE_VERBOSE, "Couldn't performe crc check outside the flash. \n");
-		throw WiflyControlException("Couldn't performe crc check outside the flash. \n");
-	}
-  
-	size_t bytesRead;
-	size_t sumBytesRead = 0;
-	while(numBlocks > FLASH_CRC_BLOCKSIZE)
-	{
-		BlFlashCrc16Request readRequest(address, FLASH_CRC_BLOCKSIZE);
-		bytesRead = BlRead(readRequest, pBuffer, FLASH_CRC_BLOCKSIZE * 2);
-		sumBytesRead += bytesRead;
-		address += (FLASH_CRC_BLOCKSIZE * FLASH_ERASE_BLOCKSIZE);
-		numBlocks -= FLASH_CRC_BLOCKSIZE;
-		pBuffer += FLASH_CRC_BLOCKSIZE * 2;
-	}
-
-	BlFlashCrc16Request readRequest(address, numBlocks);
-	bytesRead = BlRead(readRequest, pBuffer, numBlocks * 2);
-	sumBytesRead += bytesRead;
-	return sumBytesRead;
-}
-
-size_t WiflyControl::BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t numBytes) const
-{
-	if(numBytes + address > EEPROM_SIZE)
-	{
-		Trace(ZONE_VERBOSE, "Couldn't performe read outside the eeprom. \n");
-		throw WiflyControlException("Couldn't performe read outside the eeprom. \n");
-	}
-	
-	size_t bytesRead;
-	size_t sumBytesRead = 0;
-	BlEepromReadRequest readRequest;
-	while(numBytes > EEPROM_READ_BLOCKSIZE)
-	{
-		readRequest.SetAddressNumBytes(address, EEPROM_READ_BLOCKSIZE);
-		bytesRead = BlRead(readRequest, pBuffer, EEPROM_READ_BLOCKSIZE);
-		sumBytesRead += bytesRead;
-		address += EEPROM_READ_BLOCKSIZE;
-		numBytes -= EEPROM_READ_BLOCKSIZE;
-		pBuffer += EEPROM_READ_BLOCKSIZE;
-	}
-	readRequest.SetAddressNumBytes(address, numBytes);
-	bytesRead = BlRead(readRequest, pBuffer, numBytes);
-	sumBytesRead += bytesRead;
-	return sumBytesRead;
-}
-
-size_t WiflyControl::BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const
-{
-	if(numBytes + address > FLASH_SIZE)
-	{
-		Trace(ZONE_VERBOSE, "Couldn't performe read outside the flash. \n");
-		throw WiflyControlException("Couldn't performe read outside the flash. \n");
-	}
-  
-	size_t bytesRead;
-	size_t sumBytesRead = 0;
-	BlFlashReadRequest readRequest;
-	while(numBytes > FLASH_READ_BLOCKSIZE)
-	{
-		readRequest.SetAddressNumBytes(address, FLASH_READ_BLOCKSIZE);
-		bytesRead = BlRead(readRequest, pBuffer, FLASH_READ_BLOCKSIZE);
-		sumBytesRead += bytesRead;
-		address += FLASH_READ_BLOCKSIZE;
-		numBytes -= FLASH_READ_BLOCKSIZE;
-		pBuffer += FLASH_READ_BLOCKSIZE;
-	}
-
-	readRequest.SetAddressNumBytes(address, numBytes);
-	bytesRead = BlRead(readRequest, pBuffer, numBytes);
-	sumBytesRead += bytesRead;
-	return sumBytesRead;
-}
-
-void WiflyControl::BlReadInfo(BlInfo& blInfo) const
+void WiflyControl::BlReadInfo(BlInfo& blInfo) const throw (ConnectionTimeout, FatalError)
 {
 	BlInfoRequest request;
 	BlRead(request, reinterpret_cast<unsigned char*>(&blInfo), sizeof(BlInfo));
 }
 
-void WiflyControl::BlWriteFlash(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const
+void WiflyControl::BlWriteFlash(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	if(bufferLength + address > FLASH_SIZE)
 	{
-		Trace(ZONE_VERBOSE, "Couldn't performe write outside the flash. \n");
-		throw WiflyControlException("Couldn't performe write outside the flash. \n");
+		throw InvalidParameter("Address + bufferLength out of flash range\n");
 	}
   
 	BlFlashWriteRequest request;
@@ -272,7 +268,7 @@ void WiflyControl::BlWriteFlash(unsigned int address, unsigned char* pBuffer, si
 		BlRead(request, &response, sizeof(response));
 		if(response != 0x04)
 		{
-			throw BlNoResponseException(request);
+			throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": response of wrong command code");
 		}
 		address += FLASH_WRITE_BLOCKSIZE;
 		pBuffer += FLASH_WRITE_BLOCKSIZE;
@@ -283,15 +279,15 @@ void WiflyControl::BlWriteFlash(unsigned int address, unsigned char* pBuffer, si
 	BlRead(request, &response, sizeof(response));
 	if(response != 0x04)
 	{
-		throw BlNoResponseException(request);
+		throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": response of wrong command code");
 	}
 }
 
-void WiflyControl::BlWriteEeprom(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const
+void WiflyControl::BlWriteEeprom(unsigned int address, const uint8_t* pBuffer, size_t bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	if(bufferLength + address > EEPROM_SIZE)
 	{
-		throw FatalError("Couldn't perform write outside the eeprom. \n");
+		throw InvalidParameter("Address + bufferLength out of eeprom range\n");
 	}
       
 	BlEepromWriteRequest request;
@@ -322,7 +318,7 @@ void WiflyControl::BlWriteEeprom(unsigned int address, unsigned char* pBuffer, s
 	}
 }
 
-void WiflyControl::BlProgramFlash(const std::string& pFilename)
+void WiflyControl::BlProgramFlash(const std::string& pFilename) throw(ConnectionTimeout, FatalError)
 {
 	std::ifstream hexFile;
 	hexFile.open(const_cast<char*>(pFilename.c_str()), ifstream::in);
@@ -380,7 +376,7 @@ void WiflyControl::BlProgramFlash(const std::string& pFilename)
 	}
 	
 	BlEnableAutostart();
-	BlFlashErase();
+	BlEraseFlash();
 	
 	unsigned int writeAddress = 0;
 	unsigned char flashBuffer[FLASH_SIZE];
@@ -423,7 +419,7 @@ void WiflyControl::BlProgramFlash(const std::string& pFilename)
 	BlWriteFlash(info.GetAddress() - FLASH_WRITE_BLOCKSIZE, &appVecBuf[0], FLASH_WRITE_BLOCKSIZE);
 }
 
-void WiflyControl::BlRunApp(void) const
+void WiflyControl::BlRunApp(void) const throw (ConnectionTimeout, FatalError)
 {
 	BlRunAppRequest request;
 	unsigned char buffer[32];
@@ -434,8 +430,9 @@ void WiflyControl::BlRunApp(void) const
 	{
 		struct response_frame *pResponse = (response_frame*)&buffer[0];
 		if(pResponse->cmd == FW_STARTED) return;
+		throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": response of wrong command code");
 	}
-	throw BlNoResponseException(request);
+	throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": response of wrong length");
 }
 
 std::string WiflyControl::ConfGetSsid(void) const
@@ -672,7 +669,7 @@ std::string WiflyControl::ExtractFwVersion(const std::string& pFilename) const
 	
 	if(!hexFile.good())
 	{
-		throw WiflyControlException("opening '" + pFilename + "' failed");
+		throw FatalError("opening '" + pFilename + "' failed");
 	}
 	
 	intelhex hexConverter;
@@ -683,8 +680,7 @@ std::string WiflyControl::ExtractFwVersion(const std::string& pFilename) const
 	
 	if(!hexConverter.endAddress(&endAddress))
 	{
-		Trace(ZONE_VERBOSE, "can't read endAddress from hexConverter \n");
-	    throw WiflyControlException("can't read endAddress from hexConverter \n");
+	    throw FatalError("can't read endAddress from hexConverter \n");
 	}
 	endAddress -= 7;
 	for(unsigned int i = 0; i < 7; i++)
