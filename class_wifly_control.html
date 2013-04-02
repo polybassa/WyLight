@@ -100,25 +100,25 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a23f04e8c95cf5ebd5d576c0f6c5fecff"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a23f04e8c95cf5ebd5d576c0f6c5fecff">WiflyControl</a> (uint32_t addr, uint16_t port)</td></tr>
 <tr class="separator:a23f04e8c95cf5ebd5d576c0f6c5fecff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96bd445dcfcb45252530315b8919fd80"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a96bd445dcfcb45252530315b8919fd80">BlEepromErase</a> (void) const </td></tr>
-<tr class="separator:a96bd445dcfcb45252530315b8919fd80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc372e780a40e0634d1ccf89aaba6b32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#acc372e780a40e0634d1ccf89aaba6b32">BlEnableAutostart</a> (void) const </td></tr>
+<tr class="memitem:acc372e780a40e0634d1ccf89aaba6b32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#acc372e780a40e0634d1ccf89aaba6b32">BlEnableAutostart</a> (void) const   throw (ConnectionTimeout, FatalError, InvalidParameter)</td></tr>
 <tr class="separator:acc372e780a40e0634d1ccf89aaba6b32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe0bceb7ec0cfc88c2fccdae0d844d8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#abe0bceb7ec0cfc88c2fccdae0d844d8a">BlFlashErase</a> (void) const </td></tr>
-<tr class="separator:abe0bceb7ec0cfc88c2fccdae0d844d8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97f0c9d5e0ea08f2f60a720b0134fff1"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a97f0c9d5e0ea08f2f60a720b0134fff1">BlReadCrcFlash</a> (uint8_t *pBuffer, uint32_t address, uint16_t numBytes) const </td></tr>
-<tr class="separator:a97f0c9d5e0ea08f2f60a720b0134fff1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13504dcf2d451545e8b5c3fa2f85b0e4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a13504dcf2d451545e8b5c3fa2f85b0e4">BlReadEeprom</a> (uint8_t *pBuffer, uint32_t address, size_t numBytes) const </td></tr>
-<tr class="separator:a13504dcf2d451545e8b5c3fa2f85b0e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5337818ba998047b8a8cdc738ddf3e43"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a5337818ba998047b8a8cdc738ddf3e43">BlReadFlash</a> (uint8_t *pBuffer, uint32_t address, size_t numBytes) const </td></tr>
-<tr class="separator:a5337818ba998047b8a8cdc738ddf3e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a779ef8b2751c2ddf3cd07c869a73797e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a779ef8b2751c2ddf3cd07c869a73797e">BlReadFwVersion</a> (void) const </td></tr>
-<tr class="separator:a779ef8b2751c2ddf3cd07c869a73797e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26885cabebc9719b1da2d29131517efb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a26885cabebc9719b1da2d29131517efb">BlReadInfo</a> (<a class="el" href="struct_bl_info.html">BlInfo</a> &amp;info) const </td></tr>
-<tr class="separator:a26885cabebc9719b1da2d29131517efb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29e6124445a27e1fd26cfccce701cc09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a29e6124445a27e1fd26cfccce701cc09">BlProgramFlash</a> (const std::string &amp;filename)</td></tr>
+<tr class="memitem:a647ca69f7edd312506e56b7473ce3ef4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a647ca69f7edd312506e56b7473ce3ef4">BlEraseEeprom</a> (void) const   throw (ConnectionTimeout, FatalError)</td></tr>
+<tr class="separator:a647ca69f7edd312506e56b7473ce3ef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41e9d3ebf658cba44e71970ee7e4653e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a41e9d3ebf658cba44e71970ee7e4653e">BlEraseFlash</a> (void) const   throw (ConnectionTimeout, FatalError)</td></tr>
+<tr class="separator:a41e9d3ebf658cba44e71970ee7e4653e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29e6124445a27e1fd26cfccce701cc09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a29e6124445a27e1fd26cfccce701cc09">BlProgramFlash</a> (const std::string &amp;filename)  throw (ConnectionTimeout, FatalError)</td></tr>
 <tr class="separator:a29e6124445a27e1fd26cfccce701cc09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a776073bd4991e4331fb946e456d803df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a776073bd4991e4331fb946e456d803df">BlRunApp</a> (void) const </td></tr>
+<tr class="memitem:a97f0c9d5e0ea08f2f60a720b0134fff1"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a97f0c9d5e0ea08f2f60a720b0134fff1">BlReadCrcFlash</a> (uint8_t *pBuffer, uint32_t address, uint16_t numBytes) const   throw (ConnectionTimeout, FatalError, InvalidParameter)</td></tr>
+<tr class="separator:a97f0c9d5e0ea08f2f60a720b0134fff1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13504dcf2d451545e8b5c3fa2f85b0e4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a13504dcf2d451545e8b5c3fa2f85b0e4">BlReadEeprom</a> (uint8_t *pBuffer, uint32_t address, size_t numBytes) const   throw (ConnectionTimeout, FatalError, InvalidParameter)</td></tr>
+<tr class="separator:a13504dcf2d451545e8b5c3fa2f85b0e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5337818ba998047b8a8cdc738ddf3e43"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a5337818ba998047b8a8cdc738ddf3e43">BlReadFlash</a> (uint8_t *pBuffer, uint32_t address, size_t numBytes) const   throw (ConnectionTimeout, FatalError, InvalidParameter)</td></tr>
+<tr class="separator:a5337818ba998047b8a8cdc738ddf3e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a779ef8b2751c2ddf3cd07c869a73797e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a779ef8b2751c2ddf3cd07c869a73797e">BlReadFwVersion</a> (void) const   throw (ConnectionTimeout, FatalError)</td></tr>
+<tr class="separator:a779ef8b2751c2ddf3cd07c869a73797e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26885cabebc9719b1da2d29131517efb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a26885cabebc9719b1da2d29131517efb">BlReadInfo</a> (<a class="el" href="struct_bl_info.html">BlInfo</a> &amp;info) const   throw (ConnectionTimeout, FatalError)</td></tr>
+<tr class="separator:a26885cabebc9719b1da2d29131517efb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a776073bd4991e4331fb946e456d803df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a776073bd4991e4331fb946e456d803df">BlRunApp</a> (void) const   throw (ConnectionTimeout, FatalError)</td></tr>
 <tr class="separator:a776073bd4991e4331fb946e456d803df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa46eb435216680bdb7e069571e7f7545"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#aa46eb435216680bdb7e069571e7f7545">ConfGetSsid</a> (void) const </td></tr>
 <tr class="separator:aa46eb435216680bdb7e069571e7f7545"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,23 +218,6 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a96bd445dcfcb45252530315b8919fd80"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WiflyControl::BlEepromErase </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Instructs the bootloader to erase the whole eeprom. The wifly device has to be in bootloader mode for this command. </p>
-
-</div>
-</div>
 <a class="anchor" id="acc372e780a40e0634d1ccf89aaba6b32"></a>
 <div class="memitem">
 <div class="memproto">
@@ -244,28 +227,68 @@ Friends</h2></td></tr>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td> const  throw (<a class="el" href="class_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_fatal_error.html">FatalError</a>, <a class="el" href="class_invalid_parameter.html">InvalidParameter</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Instructs the bootloader to set the autostart flag to true. This ensures the bootloader will be started on the next reboot automatically. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
+    <tr><td class="paramname"><a class="el" href="class_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
+    <tr><td class="paramname"><a class="el" href="class_invalid_parameter.html">InvalidParameter</a></td><td>a parameter is out of bound </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a class="anchor" id="abe0bceb7ec0cfc88c2fccdae0d844d8a"></a>
+<a class="anchor" id="a647ca69f7edd312506e56b7473ce3ef4"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void WiflyControl::BlFlashErase </td>
+          <td class="memname">void WiflyControl::BlEraseEeprom </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td> const  throw (<a class="el" href="class_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_fatal_error.html">FatalError</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Instructs the bootloader to erase the whole eeprom. The wifly device has to be in bootloader mode for this command. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
+    <tr><td class="paramname"><a class="el" href="class_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
+    <tr><td class="paramname"><a class="el" href="class_invalid_parameter.html">InvalidParameter</a></td><td>a parameter is out of bound </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a41e9d3ebf658cba44e71970ee7e4653e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WiflyControl::BlEraseFlash </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const  throw (<a class="el" href="class_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_fatal_error.html">FatalError</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Instructs the bootloader to erase the whole flash which is not occupied by the bootloader itself. The wifly device has to be in bootloader mode for this command. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
+    <tr><td class="paramname"><a class="el" href="class_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -278,7 +301,7 @@ Friends</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>filename</em></td><td>)</td>
-          <td></td>
+          <td>  throw (<a class="el" href="class_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_fatal_error.html">FatalError</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -286,6 +309,13 @@ Friends</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">filename</td><td>path to the *.hex file containing the new firmware </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
+    <tr><td class="paramname"><a class="el" href="class_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
   </table>
   </dd>
 </dl>
@@ -317,7 +347,7 @@ Friends</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> const</td>
+          <td></td><td> const  throw (<a class="el" href="class_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_fatal_error.html">FatalError</a>, <a class="el" href="class_invalid_parameter.html">InvalidParameter</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -331,6 +361,14 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the number of bytes read (result / 2 = number of crc values) </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
+    <tr><td class="paramname"><a class="el" href="class_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
+    <tr><td class="paramname"><a class="el" href="class_invalid_parameter.html">InvalidParameter</a></td><td>a parameter is out of bound </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -359,7 +397,7 @@ Friends</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> const</td>
+          <td></td><td> const  throw (<a class="el" href="class_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_fatal_error.html">FatalError</a>, <a class="el" href="class_invalid_parameter.html">InvalidParameter</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -373,6 +411,14 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the number of bytes read </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
+    <tr><td class="paramname"><a class="el" href="class_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
+    <tr><td class="paramname"><a class="el" href="class_invalid_parameter.html">InvalidParameter</a></td><td>a parameter is out of bound </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -401,7 +447,7 @@ Friends</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> const</td>
+          <td></td><td> const  throw (<a class="el" href="class_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_fatal_error.html">FatalError</a>, <a class="el" href="class_invalid_parameter.html">InvalidParameter</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -415,6 +461,14 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the number of bytes read </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
+    <tr><td class="paramname"><a class="el" href="class_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
+    <tr><td class="paramname"><a class="el" href="class_invalid_parameter.html">InvalidParameter</a></td><td>a parameter is out of bound </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -427,12 +481,19 @@ Friends</h2></td></tr>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td> const  throw (<a class="el" href="class_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_fatal_error.html">FatalError</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Instructs the bootloader to read the version string from the firmware memory. The wifly device has to be in bootloader mode for this command. </p>
 <dl class="section return"><dt>Returns</dt><dd>the version string from pic flash memory </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
+    <tr><td class="paramname"><a class="el" href="class_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -445,11 +506,18 @@ Friends</h2></td></tr>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_bl_info.html">BlInfo</a> &amp;&#160;</td>
           <td class="paramname"><em>info</em></td><td>)</td>
-          <td> const</td>
+          <td> const  throw (<a class="el" href="class_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_fatal_error.html">FatalError</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Instructs the bootloader to return a struct of bootloader informations like bootloader version, flash and eeprom size. see &lt;<a class="el" href="struct_bl_info.html">BlInfo</a>&gt; for details. The wifly device has to be in bootloader mode for this command. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
+    <tr><td class="paramname"><a class="el" href="class_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -462,11 +530,18 @@ Friends</h2></td></tr>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td> const  throw (<a class="el" href="class_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_fatal_error.html">FatalError</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Instructs the bootloader to start the wifly device firmware. The wifly device has to be in bootloader mode for this command. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
+    <tr><td class="paramname"><a class="el" href="class_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1101,7 +1176,7 @@ Friends</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 1 2013 15:47:51 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Apr 2 2013 08:22:33 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

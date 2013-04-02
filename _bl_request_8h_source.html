@@ -234,7 +234,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;{</div>
 <div class="line"><a name="l00146"></a><span class="lineno"><a class="code" href="struct_bl_eeprom_write_request.html#a3b99db2cb245648831ca9c4d7f0f2850">  146</a></span>&#160;        <a class="code" href="struct_bl_eeprom_write_request.html#a3b99db2cb245648831ca9c4d7f0f2850">BlEepromWriteRequest</a>() : <a class="code" href="struct_bl_address_request.html">BlAddressRequest</a>(sizeof(<a class="code" href="struct_bl_eeprom_write_request.html#a55b1312edf28cfa81d1ca266c986ad72">payload</a>) + 2, 0x06) {};</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
-<div class="line"><a name="l00148"></a><span class="lineno"><a class="code" href="struct_bl_eeprom_write_request.html#afbd5e65c2c49791b2812d965fea7ca51">  148</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="struct_bl_eeprom_write_request.html#afbd5e65c2c49791b2812d965fea7ca51">SetData</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> address, <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* pData, <span class="keywordtype">size_t</span> numBytes)</div>
+<div class="line"><a name="l00148"></a><span class="lineno"><a class="code" href="struct_bl_eeprom_write_request.html#a1855ba1e441ab8188e8384e64ebb0d59">  148</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="struct_bl_eeprom_write_request.html#a1855ba1e441ab8188e8384e64ebb0d59">SetData</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> address, <span class="keyword">const</span> uint8_t* pData, <span class="keywordtype">size_t</span> numBytes)</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        {</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            assert(numBytes &lt;= <span class="keyword">sizeof</span>(<a class="code" href="struct_bl_eeprom_write_request.html#a55b1312edf28cfa81d1ca266c986ad72">payload</a>));</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <a class="code" href="struct_bl_address_request.html#add81e2ca67af34bf1c94e175a57656bf">SetAddress</a>(address);</div>
@@ -320,7 +320,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 1 2013 15:47:44 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Apr 2 2013 08:22:20 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

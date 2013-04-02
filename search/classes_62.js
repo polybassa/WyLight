@@ -10,7 +10,6 @@ var searchData=
   ['blflashwriterequest',['BlFlashWriteRequest',['../struct_bl_flash_write_request.html',1,'']]],
   ['blinfo',['BlInfo',['../struct_bl_info.html',1,'']]],
   ['blinforequest',['BlInfoRequest',['../struct_bl_info_request.html',1,'']]],
-  ['blnoresponseexception',['BlNoResponseException',['../class_bl_no_response_exception.html',1,'']]],
   ['blreadrequest',['BlReadRequest',['../struct_bl_read_request.html',1,'']]],
   ['blrequest',['BlRequest',['../struct_bl_request.html',1,'']]],
   ['blrunapprequest',['BlRunAppRequest',['../struct_bl_run_app_request.html',1,'']]],
