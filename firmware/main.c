@@ -34,6 +34,7 @@
 #include "ScriptCtrl.h"
 #include "trace.h"
 #include "error.h"
+#include "Flash.h"
 
 #ifdef __CC8E__
 #include "int18XXX.h"
@@ -240,6 +241,7 @@ void InitAll()
 #include "iic.c"
 #include "ScriptCtrl.c"
 #include "trace.c"
+#include "Flash.c"
 #include "Version.c"
 // MUST be at the last position, that the version-string is written on the end of the hexcode
 const char verStr[] = VER_STRING;
