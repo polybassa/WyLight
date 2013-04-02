@@ -131,10 +131,11 @@ void Flash_WriteBlock(uns16 adress, uns8 *data, const uns16 length_bytes)
 
 void Flash_EraseBlock64(const uns16 adress)
 {
-	if(!AdressValid(adress)) return;
+	uns16 pageAdress = adress & 0xffc0;
+	if(!AdressValid(pageAdress)) return;
 	TBLPTRU = 0;
-	TBLPTRH = adress.high8;
-	TBLPTRL = adress.low8;        	// Adresse in Adressregister uebertragen
+	TBLPTRH = pageAdress.high8;
+	TBLPTRL = pageAdress.low8;        	// Adresse in Adressregister uebertragen
 	
 #asm
 	bsf	EECON1, EEPGD
@@ -153,16 +154,15 @@ void Flash_EraseBlock64(const uns16 adress)
 	
 }
 
-void Flash_EraseBlocks64(uns16 adress, uns8 numBlocks)
+void Flash_EraseBlocks64(const uns16 adress, uns8 numBlocks)
 {
+	uns16 pageAdress = adress & 0xffc0;
 	while(numBlocks)
 	{
 		numBlocks--;
-		Flash_EraseBlock64(adress);
+		Flash_EraseBlock64(pageAdress);
 		
-		adress += FLASH_BLOCKSIZE_BYTE;
-		if(adress == 0)
-			return;
+		pageAdress = pageAdress + FLASH_BLOCKSIZE_BYTE;
 	}
 }
 #endif /* __CC8E__ */
