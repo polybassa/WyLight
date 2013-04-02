@@ -128,7 +128,7 @@ public:
 		std::stringstream stream;
 		stream << *this;
 		std::string temp;
-		stream >> temp;
+		temp = stream.str();
 		return temp;
 	};
 
@@ -149,16 +149,12 @@ private:
 class TracebufferResponse : public SimpleResponse
 {
 public:
-	TracebufferResponse(void) : SimpleResponse(GET_TRACE), mMessageLength(0) {};
+	TracebufferResponse(void) : SimpleResponse(GET_TRACE) {};
 	bool Init(response_frame& pData, size_t dataLength)
 	{
-		if(SimpleResponse::Init(pData, dataLength)
-		&& dataLength - 4 < sizeof(mTracebuffer))
+		if(SimpleResponse::Init(pData, dataLength))
 		{
-			//TODO test this: mTraceMessage = std::string((char*)pData.data.get_trace_string, dataLength - 4);
-			mMessageLength = (unsigned int)dataLength - 4;
-			memcpy(mTracebuffer, pData.data.get_trace_string, mMessageLength);
-			mTracebuffer[mMessageLength] = '\0';
+			mTraceMessage = std::string((char*)pData.data.get_trace_string, dataLength - 4);
 			return true;
 		}
 		return false;
@@ -169,23 +165,18 @@ public:
 		std::stringstream stream;
 		stream << *this;
 		std::string temp;
-		stream >> temp;
+		temp = stream.str();
 		return temp;
 	};
 
 	friend std::ostream& operator<< (std::ostream& out, const TracebufferResponse& ref)
 	{
-		out << "Tracebuffercontent: ";
-		for(unsigned int i = 0; i < ref.mMessageLength; i++) {
-			out << ref.mTracebuffer[i];
-		}
+		out << "Tracebuffercontent: " << ref.mTraceMessage;
 		return out;
 	};
 	
 private:
-	//TODO std::string mTraceMessage;
-	char mTracebuffer[RingBufferSize];
-	size_t mMessageLength;
+	std::string mTraceMessage;
 };
 
 class FirmwareVersionResponse : public SimpleResponse
@@ -208,7 +199,7 @@ public:
 		std::stringstream stream;
 		stream << *this;
 		std::string temp;
-		stream >> temp;
+		temp = stream.str();
 		return temp;
 	};
 
