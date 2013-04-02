@@ -22,10 +22,13 @@
 
 #include "platform.h"
 
+#define FLASH_BLOCKSIZE_BYTE 64
+#define FLASH_BLOCKSIZE_WORD 32
+
 uns16 Flash_Read(const uns8 upperAdress, const uns16 adress);
-void Flash_Write(const uns8 upperAdress, const uns16 adress, const uns16 data);
-void Flash_WriteBlock(const uns8 upperAdress, const uns16 adress, uns16 *data, const uns16 length);
-void Flash_Erase(const uns8 upperAdress, const uns16 adress);
-void Flash_EraseBlock(const uns8 upperAdress, const uns16 adress, uns16 *data, const uns16 length);
+void Flash_ReadBlock(const uns8 upperAdress, const uns16 adress, uns8 *data, const uns16 length_bytes);
+void Flash_WriteBlock(const uns8 upperAdress, const uns16 adress, uns8 *data, const uns16 length_bytes);
+void Flash_EraseBlock64(const uns8 upperAdress, const uns16 adress);
+void Flash_EraseBlocks64(uns8 upperAdress, uns16 adress, uns8 numBlocks);
 
 #endif /* defined(____flash__) */

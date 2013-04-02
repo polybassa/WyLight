@@ -180,7 +180,7 @@ size_t ut_WiflyControl_BlEepromErase(void)
 {
 	TestCaseBegin();
 	
-	srand(time(NULL));
+	srand(time_t(NULL));
 	
 	/* fill gloabal random data pool */
 	for(unsigned int i = 0; i < sizeof(g_EepromRndDataPool); i++)
@@ -203,7 +203,7 @@ size_t ut_WiflyControl_BlEepromErase(void)
 size_t ut_WiflyControl_BlEepromRead(void)
 {
 	TestCaseBegin();
-	srand(time(NULL));
+	srand(time_t(NULL));
 	
 	/* fill gloabal random data pool */
 	for(unsigned int i = 0; i < sizeof(g_EepromRndDataPool); i++)
@@ -223,7 +223,7 @@ size_t ut_WiflyControl_BlEepromWrite(void)
 {
 	TestCaseBegin();
 	
-	srand(time(NULL));
+	srand(time_t(NULL));
 	
 	uint8_t m_EepromRndDataPool[EEPROM_SIZE];
 	
@@ -251,7 +251,7 @@ size_t ut_WiflyControl_BlFlashErase(void)
 {
 	TestCaseBegin();
 	
-	srand(time(NULL));
+	srand(time_t(NULL));
 	
 	/* fill gloabal random data pool */
 	for(unsigned int i = 0; i < sizeof(g_FlashRndDataPool); i++)
@@ -282,7 +282,7 @@ size_t ut_WiflyControl_BlFlashErase(void)
 size_t ut_WiflyControl_BlFlashRead(void)
 {
 	TestCaseBegin();
-	srand(time(NULL));
+	srand(time_t(NULL));
 	
 	/* fill gloabal random data pool */
 	for(unsigned int i = 0; i < sizeof(g_FlashRndDataPool); i++)
@@ -302,7 +302,7 @@ size_t ut_WiflyControl_BlFlashWrite(void)
 {
 	TestCaseBegin();
 	
-	srand(time(NULL));
+	srand(time_t(NULL));
 	
 	uint8_t m_FlashRndDataPool[FLASH_SIZE];
 	
