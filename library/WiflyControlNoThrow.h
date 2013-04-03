@@ -18,17 +18,20 @@
 
 
 /******************************************************************************/
-/*! \file WiflyControl.h
+/*! \file WiflyControlNoThrow.h
  * \author Nils Weiss, Patrick Bruenn
  *
  *! \cond
- * class - WiflyControl
+ * class - WiflyControlNoThrow
  * \endcond
  *
  * \brief Class to communicate with a Wifly_Light Hardware.
  *
  * 
- * The WiflyControl class allows the user to control the Wifly_Light Hardware.
+ * The WiflyControlNoThrow class allows the user to control the Wifly_Light hardware.
+ * This is a wrapper class to @see WiflyControl to catch all exceptions from the
+ * lower software layers and convert them into error codes, which is required for
+ * example for jni or iOS clients
  * There are three target's at the Wifly_Light Hardware.
  * - Bootloader<br>
  *           All methodes with Bl* relate to the bootloader part.
@@ -38,42 +41,37 @@
  *           All methodes witch Conf* relate to the communication module.
  *******************************************************************************/
 
-#ifndef _WIFLYCONTROL_H_
-#define _WIFLYCONTROL_H_
+#ifndef _WIFLYCONTROL_NOTHROW_H_
+#define _WIFLYCONTROL_NOTHROW_H_
+#include "WiflyControl.h"
 
-#include <string>
-#include <time.h>
-#include "ComProxy.h"
-#include "wifly_cmd.h"
-#include "BlRequest.h"
-#include "TelnetProxy.h"
-#include "WiflyControlException.h"
-#include "WiflyControlResponse.h"
+enum WiflyError {
+	NO_ERROR = 0,
+	FATAL_ERROR,
+	CONNECTION_LOST,
+	CONNECTION_TIMEOUT,
+	INVALID_PARAMETER,
+	SCRIPT_FULL,
+};
 
-class WiflyControl
+class WiflyControlNoThrow : private WiflyControl
 {	
 	public:
-		/**
-		 * string constant to address all LEDs. String representation of 0xffffffff
-		 */
-		static const std::string LEDS_ALL;
 
 		/**
 		 * Connect to a wifly device
 		 * @param addr ipv4 address as 32 bit value in host byte order
 		 * @param port number of the wifly device server in host byte order
 		 */
-		WiflyControl(uint32_t addr, uint16_t port);
+		WiflyControlNoThrow(uint32_t addr, uint16_t port);
 		
 /* ------------------------- BOOTLOADER METHODES ------------------------- */
 		/**
 		 * Instructs the bootloader to set the autostart flag to true. This ensures
 		 * the bootloader will be started on the next reboot automatically.
-		 * @throw ConnectionTimeout if response timed out
-		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-		 * @throw InvalidParameter a parameter is out of bound
+		 * @return CONNECTION_TIMEOUT if response timed out, FATAL_ERROR if command code of the response doesn't match the code of the request, or too many retries failed, INVALID_PARAMETER if a parameter is out of bound, OK is returned if no error occurred
 		 */
-		void BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError, InvalidParameter);
+		uint32_t BlEnableAutostart(void) const;
 		
 		/**
 		 * Instructs the bootloader to erase the whole eeprom.
@@ -82,7 +80,7 @@ class WiflyControl
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw InvalidParameter a parameter is out of bound
 		 */
-		void BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError);
+		uint32_t BlEraseEeprom(void) const;
 
 		/**
 		 * Instructs the bootloader to erase the whole flash which is not occupied
@@ -91,7 +89,7 @@ class WiflyControl
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 */
-		void BlEraseFlash(void) const throw(ConnectionTimeout, FatalError);
+		uint32_t BlEraseFlash(void) const;
 		
 		/**
 		 * Instructs the bootloader to update the wifly device with new firmware.
@@ -100,7 +98,7 @@ class WiflyControl
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 */
-		void BlProgramFlash(const std::string& filename) const throw (ConnectionTimeout, FatalError);
+		uint32_t BlProgramFlash(const std::string& filename) const;
 
 		/**
 		 * Instructs the bootloader to create crc-16 checksums for the content of
@@ -114,12 +112,12 @@ class WiflyControl
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw InvalidParameter a parameter is out of bound
 		 */
-		size_t BlReadCrcFlash(uint8_t* pBuffer, uint32_t address, uint16_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
+		size_t BlReadCrcFlash(uint8_t* pBuffer, uint32_t address, uint16_t numBytes) const;
 
 		/**
 		 * Instructs the bootloader to read the specified memory area of the eeprom.
 		 * The wifly device has to be in bootloader mode for this command.
-		 * @param pBuffer destination for the copy of the eeprom content, should be at least \<numBytes\> wide
+		 * @param pBuffer destination for the copy of the eeprom content, should be at least <numBytes> wide
 		 * @param address start of the eeprom region to read
 		 * @param numBytes size of the eeprom region to read
 		 * @return the number of bytes read
@@ -127,20 +125,20 @@ class WiflyControl
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw InvalidParameter a parameter is out of bound
 		 */
-		size_t BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
+		size_t BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t numBytes) const;
 
 		/**
 		 * Instructs the bootloader to read the specified memory area of the flash.
 		 * The wifly device has to be in bootloader mode for this command.
-		 * @param pBuffer destination for the copy of the flash content, should be at least \<numBytes\> wide
-		 * @param address start of the flash region to read
-		 * @param numBytes size of the flash region to read
+		 * @param pBuffer destination for the copy of the flash content, should be at least <numBytes> wide
+		 * @param address start of the flash region to readRequest
+		 * @param numbytes size of the flash region to read
 		 * @return the number of bytes read
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw InvalidParameter a parameter is out of bound
 		 */
-		size_t BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
+		size_t BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const;
 
 		/**
 		 * Instructs the bootloader to read the version string from the firmware memory.
@@ -149,16 +147,16 @@ class WiflyControl
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 */
-		std::string BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError);
+		std::string BlReadFwVersion(void) const;
 
 		/**
 		 * Instructs the bootloader to return a struct of bootloader informations
-		 * like bootloader version, flash and eeprom size. see \<BlInfo\> for details.
+		 * like bootloader version, flash and eeprom size. see <BlInfo> for details.
 		 * The wifly device has to be in bootloader mode for this command.
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 */
-		void BlReadInfo(BlInfo& info) const throw (ConnectionTimeout, FatalError);
+		uint32_t BlReadInfo(BlInfo& info) const;
 
 		/**
 		 * Instructs the bootloader to start the wifly device firmware.
@@ -166,7 +164,7 @@ class WiflyControl
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 */
-		void BlRunApp(void) const throw (ConnectionTimeout, FatalError);
+		uint32_t BlRunApp(void) const;
 
 /* --------------------- WLAN CONFIGURATION METHODES --------------------- */
 		/**
@@ -192,11 +190,12 @@ class WiflyControl
 /* -------------------------- FIRMWARE METHODES -------------------------- */
 		/**
 		 * Wipe all commands from the Wifly script controller
+		 * @param response will be modified according to the success of this operation
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		uint32_t FwClearScript(void);
 		
 		/**
 		 * Reads the cycletimes from wifly device and stores them into the response object
@@ -205,7 +204,7 @@ class WiflyControl
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		std::string FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		std::string FwGetCycletime(void);
 
 		/**
 		 * Reads the current rtc time from the wifly device
@@ -214,34 +213,36 @@ class WiflyControl
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		uint32_t FwGetRtc(tm& timeValue);
 
 		/**
 		 * Reads the tracebuffer from wifly device and stores the data into the response object
+		 * @param response reference to an object to store the read tracebuffer content
 		 * @return a string with all recorded trace messages from PIC firmware
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		std::string FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		std::string FwGetTracebuffer(void);
 
 		/**
 		 * Reads the firmware version currently running on the wifly device.
+		 * @param response reference to an object to store the read version number
 		 * @return a string representing the version number of the PIC firmware
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		std::string FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		std::string FwGetVersion(void);
 
 		/**
 		 * Injects a LoopOff command into the wifly script controller
-		 * @param numLoops number of rounds before termination of the loop, use 0 for infinite loops. To terminate an infinite loop you have to call \<FwClearScript\>
+		 * @param numLoops number of rounds before termination of the loop, use 0 for infinite loops. To terminate an infinite loop you have to call <FwClearScript>
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		uint32_t FwLoopOff(uint8_t numLoops);
 
 		/**
 		 * Injects a LoopOn command into the wifly script controller
@@ -249,19 +250,19 @@ class WiflyControl
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		uint32_t FwLoopOn(void);
 
 		/**
 		 * Sets all leds with different colors directly. This doesn't affect the Wifly script controller
-		 * Example: to set the first led to yellow and the second to blue and all others to off use a \<pBuffer\> like this:
+		 * Example: to set the first led to yellow and the second to blue and all others to off use a <pBuffer> like this:
 		 * pBuffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6;
 		 * @param pBuffer containing continouse rgb values r1g1b1r2g2b2...r32g32b32
-		 * @param bufferLength number of bytes in \<pBuffer\> usally 32 * 3 bytes
+		 * @param bufferLength number of bytes in <pBuffer> usally 32 * 3 bytes
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		uint32_t FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength);
 		
 		/**
 		 * Injects a fade command into the wifly script controller
@@ -276,25 +277,7 @@ class WiflyControl
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade = false) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-
-		/**
-		 * Injects a fade command into the wifly script controller
-		 * @param rgb is a hex string representation of a rgb value without leading '0x'
-		 *        black "0"
-		 *        green "ff00"
-		 *        white "ffffff"
-		 * @param fadeTime in hundreths of a second. Use 0 to set color immediately, default = 0
-		 * @param addr is a hex string representation of a 32 bit mask without leading '0x' of leds which should be effected by this comman.
-		 *        all leds          "ffffffff" (default)
-		 *        first three leds  "7"
-		 *        only the last led "80000000"
-		 * @param parallelFade if true other fades are allowed in parallel with this fade
-		 * @throw ConnectionTimeout if response timed out
-		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
-		 */
-		void FwSetFade(const std::string& rgb, uint16_t fadeTime = 0, const std::string& addr = LEDS_ALL, bool parallelFade = false) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		uint32_t FwSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade = false);
 
 		/**
 		 * Sets the rtc clock of the wifly device to the specified time.
@@ -304,7 +287,7 @@ class WiflyControl
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwSetRtc(const tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		uint32_t FwSetRtc(const tm& timeValue);
 		
 		/**
 		 * Injects a wait command into the wifly script controller.
@@ -314,7 +297,7 @@ class WiflyControl
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		uint32_t FwSetWait(uint16_t waitTime);
 
 		/**
 		 * Stops firmware and script controller execution and start the bootloader of the wifly device
@@ -322,109 +305,6 @@ class WiflyControl
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		void FwStartBl(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-		
-
-		//TODO move this test functions to the integration test 
-		void FwTest(void);
-		void FwStressTest(void);
-
-/* ------------------------- VERSION EXTRACT METHODE ------------------------- */
-		/**
-		 * Methode to extract the firmware version from a hex file
-		 * @return the version string from a given hex file
-		 */
-		std::string ExtractFwVersion(const std::string& pFilename) const;
-	
-
-/* ------------------------- PRIVATE DECLARATIONS ------------------------- */
-	private:
-		/**
-		 * Socket used for communication with wifly device.
-		 * A reference to this socket is provided to the aggregated subobjects.
-		 */
-		const TcpSocket mSock;
-
-		/**
-		 * Proxy object handling the low level communication with bootloader and firmware.
-		 */
-		const ComProxy mProxy;
-
-		/**
-		 * Proxy object handling the communication with the wlan module for its configuration
-		 */
-		const TelnetProxy mTelnet;
-
-		/**
-		 * Internal command frame used to send to the wifly device, this member should be removed and replaced by local variables.
-		 */
-		struct cmd_frame mCmdFrame;
-
-		/**
-		 * Instructs the bootloader to erase the specified area of the flash.
-		 * The wifly device has to be in bootloader mode for this command.
-		 * @param endAddress address of the block to delete
-		 * @param numPages number of pages in a block
-		 * @throw ConnectionTimeout if response timed out
-		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-		 */
-		void BlEraseFlash(const uint32_t endAddress, const uint8_t numPages) const throw (ConnectionTimeout, FatalError);
-
-		/**
-		 * Send a request to the bootloader and read his response into pResponse
-		 * @param request reference to a bootloader requested
-		 * @param pResponse a buffer for the response of the bootloader
-		 * @param responseSize sizeof of the <pResponse> buffer in bytes
-		 * @param doSync if set to 'true' the uart sync is issued before data transfer default = true
-		 * @return the number of bytes the bootloader send back in his response
-		 * @throw ConnectionTimeout if response timed out
-		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-		 */
-		size_t BlRead(const BlRequest& request, uint8_t* pResponse, const size_t responseSize, bool doSync = true) const throw(ConnectionTimeout, FatalError);
-
-		/**
-		 * Instructs the bootloader of the wifly device to write data to the eeprom.
-		 * @param address in eeprom
-		 * @param pBuffer containing the new data for eeprom
-		 * @param bufferLength number of bytes to write to eeprom
-		 * @throw ConnectionTimeout if response timed out
-		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-		 * @throw InvalidParameter a parameter is out of bound
-		 */
-		void BlWriteEeprom(uint32_t address, const uint8_t* pBuffer, size_t bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter);
-
-		/**
-		 * Instructs the bootloader of the wifly device to write data to the flash.
-		 * @param address in flash
-		 * @param pBuffer containing the new data for flash
-		 * @param bufferLength number of bytes to write to flash
-		 * @throw ConnectionTimeout if response timed out
-		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-		 * @throw InvalidParameter a parameter is out of bound
-		 */
-		void BlWriteFlash(uint32_t address, uint8_t* pBuffer, size_t bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter);
-
-		/**
-		 * Sends a wifly command frame to the wifly device
-		 * @param pFrame pointer to the frame, which should be send
-		 * @param length number of bytes on the <pFrame>
-		 * @param response will be modified according to the success of this operation
-		 * @return response
-		 * @throw ConnectionTimeout if response timed out
-		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
-		 */		
-		WiflyResponse& FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-
-/* ------------------ friendships for unittesting only ------------------- */
-		/**
-		 * friendships for unittesting only
-		 */
-		friend size_t ut_WiflyControl_BlEepromWrite(void);
-
-		/**
-		* friendships for unittesting only
-		*/
-		friend size_t ut_WiflyControl_BlFlashWrite(void);
+		uint32_t FwStartBl(void);	
 };
-#endif /* #ifndef _WIFLYCONTROL_H_ */
+#endif /* #ifndef _WIFLYCONTROL_NOTHROW_H_ */
