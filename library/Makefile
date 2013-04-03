@@ -2,7 +2,7 @@ CC=g++
 CFLAGS =-Wall
 CFLAGS+=-pedantic
 CFLAGS+=-std=c++0x
-FILES=BroadcastReceiver.cpp ClientSocket.cpp ComProxy.cpp intelhexclass.cpp MaskBuffer.cpp TelnetProxy.cpp WiflyControl.cpp 
+FILES=BroadcastReceiver.cpp ClientSocket.cpp ComProxy.cpp intelhexclass.cpp MaskBuffer.cpp TelnetProxy.cpp WiflyControl.cpp WiflyControlNoThrow.cpp
 FW_FILES=../firmware/crc.c
 FW_HEADERS=../firmware/trace.h ../firmware/unittest.h
 INC=-I../firmware
