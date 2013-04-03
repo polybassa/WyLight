@@ -318,7 +318,7 @@ void WiflyControl::BlWriteEeprom(unsigned int address, const uint8_t* pBuffer, s
 	}
 }
 
-void WiflyControl::BlProgramFlash(const std::string& pFilename) throw(ConnectionTimeout, FatalError)
+void WiflyControl::BlProgramFlash(const std::string& pFilename) const throw (ConnectionTimeout, FatalError)
 {
 	std::ifstream hexFile;
 	hexFile.open(const_cast<char*>(pFilename.c_str()), ifstream::in);
