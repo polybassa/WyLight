@@ -488,7 +488,7 @@ Additional Inherited Members</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">out</td><td>ostream where the eeprom content is written </td></tr>
     <tr><td class="paramname">address</td><td>start of the flash region to readRequest </td></tr>
-    <tr><td class="paramname">numbytes</td><td>size of the flash region to read </td></tr>
+    <tr><td class="paramname">numBytes</td><td>size of the flash region to read </td></tr>
   </table>
   </dd>
 </dl>
@@ -540,7 +540,7 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Instructs the bootloader to return a struct of bootloader informations like bootloader version, flash and eeprom size. see &lt;BlInfo&gt; for details. The wifly device has to be in bootloader mode for this command. </p>
+<p>Instructs the bootloader to return a struct of bootloader informations like bootloader version, flash and eeprom size. see <a class="el" href="struct_bl_info.html">BlInfo</a> for details. The wifly device has to be in bootloader mode for this command. </p>
 <dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
@@ -665,12 +665,6 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Wipe all commands from the Wifly script controller </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">response</td><td>will be modified according to the success of this operation </td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
@@ -807,7 +801,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Injects a LoopOff command into the wifly script controller </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">numLoops</td><td>number of rounds before termination of the loop, use 0 for infinite loops. To terminate an infinite loop you have to call &lt;FwClearScript&gt; </td></tr>
+    <tr><td class="paramname">numLoops</td><td>number of rounds before termination of the loop, use 0 for infinite loops. To terminate an infinite loop you have to call ::FwClearScript </td></tr>
   </table>
   </dd>
 </dl>
@@ -1016,7 +1010,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 4 2013 09:40:09 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 4 2013 09:43:27 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
