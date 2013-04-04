@@ -42,8 +42,8 @@ static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VER
 	try { \
 		(X); \
 		cout << "done.\n"; \
-	} catch(FatalError& e) { \
-		cout << "failed! because of: " << e << '\n'; \
+	} catch(std::exception& e) { \
+		cout << "failed! because of: " << e.what() << '\n'; \
 	}
 
 class WiflyControlCmd
