@@ -40,25 +40,67 @@ WiflyControl::WiflyControl(uint32_t addr, uint16_t port)
 	mCmdFrame.length = (uns8)sizeof(struct cmd_set_fade) + 2;
 }
 
-void WiflyControl::BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError){}
+static WiflyError g_ErrorCode;
 
-void WiflyControl::BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError){}
+static void throwExceptions()
+{
+	switch (g_ErrorCode) {
+		case CONNECTION_TIMEOUT:
+			throw ConnectionTimeout("");
+		case CONNECTION_LOST:
+			throw ConnectionLost("", 0, 0);
+		case INVALID_PARAMETER:
+			throw InvalidParameter("");
+		case SCRIPT_FULL:
+			throw ScriptBufferFull();
+		case FATAL_ERROR:
+			throw FatalError("");
+		default:
+			return;
+	}
+}
 
-void WiflyControl::BlEraseFlash(void) const throw(ConnectionTimeout, FatalError){}
+void WiflyControl::BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError){ throwExceptions(); }
 
-void WiflyControl::BlProgramFlash(const std::string& filename) const throw (ConnectionTimeout, FatalError) {}
+void WiflyControl::BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError){throwExceptions(); }
 
-size_t WiflyControl::BlReadCrcFlash(uint8_t* pBuffer, uint32_t address, uint16_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter) { return 0; }
+void WiflyControl::BlEraseFlash(void) const throw(ConnectionTimeout, FatalError){throwExceptions(); }
 
-size_t WiflyControl::BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter) {return 0; }
+void WiflyControl::BlProgramFlash(const std::string& filename) const throw (ConnectionTimeout, FatalError) {throwExceptions(); }
 
-size_t WiflyControl::BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter) {return 0; }
+size_t WiflyControl::BlReadCrcFlash(uint8_t* pBuffer, uint32_t address, uint16_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+{
+	throwExceptions();
+	size_t i;
+	for(i = 0; i < numBytes; i++)
+		*pBuffer++ = 0xff;
+	
+	return i;
+}
 
-std::string WiflyControl::BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError) {return ""; }
+size_t WiflyControl::BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+{
+	throwExceptions();
+	size_t i;
+	for(i = 0; i < numBytes; i++)
+		*pBuffer++ = 0xff;
+	return i;
+}
 
-void WiflyControl::BlReadInfo(BlInfo& info) const throw (ConnectionTimeout, FatalError){}
+size_t WiflyControl::BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+{
+	throwExceptions();
+	size_t i;
+	for(i = 0; i < numBytes; i++)
+		*pBuffer++ = 0xff;
+	return i;
+}
 
-void WiflyControl::BlRunApp(void) const throw (ConnectionTimeout, FatalError){}
+std::string WiflyControl::BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError) {throwExceptions(); return ""; }
+
+void WiflyControl::BlReadInfo(BlInfo& info) const throw (ConnectionTimeout, FatalError){throwExceptions(); }
+
+void WiflyControl::BlRunApp(void) const throw (ConnectionTimeout, FatalError){throwExceptions(); }
 
 std::string WiflyControl::ConfGetSsid(void) const {return ""; }
 
@@ -66,35 +108,214 @@ bool WiflyControl::ConfSetDefaults(void) const {return true; }
 
 bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssid) const {return true; }
 
-void WiflyControl::FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {}
+void WiflyControl::FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-std::string WiflyControl::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {return ""; }
+std::string WiflyControl::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
 
-void WiflyControl::FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull){}
+void WiflyControl::FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull){throwExceptions(); }
 
-std::string WiflyControl::FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {return ""; }
+std::string WiflyControl::FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
 
-std::string WiflyControl::FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {return ""; }
+std::string WiflyControl::FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
 
-void WiflyControl::FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {}
+void WiflyControl::FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-void WiflyControl::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {}
+void WiflyControl::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-void WiflyControl::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {}
+void WiflyControl::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-void WiflyControl::FwSetFade(const std::string& rgb, uint16_t fadeTime, const std::string& addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {}
+void WiflyControl::FwSetFade(const std::string& rgb, uint16_t fadeTime, const std::string& addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-void WiflyControl::FwSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {}
+void WiflyControl::FwSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-void WiflyControl::FwSetRtc(const tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {}
+void WiflyControl::FwSetRtc(const tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-void WiflyControl::FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {}
+void WiflyControl::FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-void WiflyControl::FwStartBl(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {}
+void WiflyControl::FwStartBl(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
+
+size_t ut_WiflyControlNoThrow_FwFunctions(void)
+{
+	TestCaseBegin();
+	
+	WiflyError mError[] = {CONNECTION_TIMEOUT, FATAL_ERROR, SCRIPT_FULL, NO_ERROR};
+	
+	WiflyControlNoThrow testee(0, 0);
+	
+	std::string tempStr = "";
+	tm tempTime;
+	uint8_t buffer;
+	
+	for( auto e : mError)
+	{
+		g_ErrorCode = e;
+		CHECK(e == testee.FwLoopOn());
+		CHECK(e == testee.FwClearScript());
+		CHECK(e == testee.FwGetCycletime(tempStr));
+		CHECK(e == testee.FwGetRtc(tempTime));
+		CHECK(e == testee.FwGetTracebuffer(tempStr));
+		CHECK(e == testee.FwGetVersion(tempStr));
+		CHECK(e == testee.FwLoopOff(0));
+		CHECK(e == testee.FwSetRtc(tempTime));
+		CHECK(e == testee.FwSetWait(0));
+		CHECK(e == testee.FwStartBl());
+		CHECK(e == testee.FwSetFade(0));
+		CHECK(e == testee.FwStartBl());
+		CHECK(e == testee.FwSetColorDirect(&buffer, sizeof(buffer)));
+		
+	}
+	
+	TestCaseEnd();
+}
+
+size_t ut_WiflyControlNoThrow_ConfFunctions(void)
+{
+	TestCaseBegin();
+	
+	WiflyControlNoThrow testee(0, 0);
+	
+	std::string tempStr = "";
+		
+	CHECK(NO_ERROR == testee.ConfGetSsid(tempStr));
+	CHECK(NO_ERROR == testee.ConfSetWlan(tempStr, tempStr));
+	CHECK(NO_ERROR == testee.ConfSetDefaults());
+	TestCaseEnd();
+}
+
+size_t ut_WiflyControlNoThrow_BlFunctions(void)
+{
+	TestCaseBegin();
+	
+	WiflyError mError[] = {CONNECTION_TIMEOUT, FATAL_ERROR, NO_ERROR};
+	
+	WiflyControlNoThrow testee(0, 0);
+	
+	std::string tempStr = "";
+	BlInfo info;
+
+	
+	for( auto e : mError)
+	{
+		g_ErrorCode = e;
+		CHECK(e == testee.BlRunApp());
+		CHECK(e == testee.BlReadInfo(info));
+		CHECK(e == testee.BlReadFwVersion(tempStr));
+		CHECK(e == testee.BlProgramFlash(tempStr));
+		CHECK(e == testee.BlEraseFlash());
+		CHECK(e == testee.BlEraseEeprom());
+		CHECK(e == testee.BlEnableAutostart());
+	}
+	
+	WiflyError mError2[] = {CONNECTION_TIMEOUT, FATAL_ERROR, NO_ERROR, INVALID_PARAMETER};
+
+	for( auto e : mError2)
+	{
+		g_ErrorCode = e;
+		CHECK(e == testee.BlReadCrcFlash(std::cout, 0, 0));
+		CHECK(e == testee.BlReadEeprom(std::cout, 0, 0));
+		CHECK(e == testee.BlReadFlash(std::cout, 0, 0));
+	}
+	
+	TestCaseEnd();
+}
+
+size_t ut_WiflyControlNoThrow_BlReadFlash(void)
+{
+	TestCaseBegin();
+	
+	WiflyControlNoThrow testee(0, 0);
+	
+	g_ErrorCode = NO_ERROR;
+	
+	std::stringstream mStream;
+	mStream.clear();
+	
+	size_t length = 1000;
+	size_t counter = 0;
+	
+	testee.BlReadFlash(mStream, 0,length);
+	do
+	{
+		uint8_t byte = 0;
+		mStream >> byte;
+		if(mStream.eof())break;
+		
+		CHECK(0xff == byte);
+		counter++;
+	}while(!mStream.eof());
+	CHECK(counter == length);
+	
+	TestCaseEnd();
+}
+
+size_t ut_WiflyControlNoThrow_BlReadCrcFlash(void)
+{
+	TestCaseBegin();
+	
+	WiflyControlNoThrow testee(0, 0);
+	
+	g_ErrorCode = NO_ERROR;
+	
+	std::stringstream mStream;
+	mStream.clear();
+	
+	size_t length = 1000;
+	size_t counter = 0;
+	
+	testee.BlReadCrcFlash(mStream, 0,length);
+	do
+	{
+		uint8_t byte = 0;
+		mStream >> byte;
+		if(mStream.eof())break;
+		
+		CHECK(0xff == byte);
+		counter++;
+	}while(!mStream.eof());
+	CHECK(counter == length);
+	
+	TestCaseEnd();
+}
+
+size_t ut_WiflyControlNoThrow_BlReadEeprom(void)
+{
+	TestCaseBegin();
+	
+	WiflyControlNoThrow testee(0, 0);
+	
+	g_ErrorCode = NO_ERROR;
+	
+	std::stringstream mStream;
+	mStream.clear();
+	
+	size_t length = 1000;
+	size_t counter = 0;
+	
+	testee.BlReadEeprom(mStream, 0,length);
+	do
+	{
+		uint8_t byte = 0;
+		mStream >> byte;
+		if(mStream.eof())break;
+		
+		CHECK(0xff == byte);
+		counter++;
+	}while(!mStream.eof());
+	CHECK(counter == length);
+	
+	TestCaseEnd();
+}
+
+
 
 int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
-
+	RunTest(true, ut_WiflyControlNoThrow_FwFunctions);
+	RunTest(true, ut_WiflyControlNoThrow_ConfFunctions);
+	RunTest(true, ut_WiflyControlNoThrow_BlFunctions);
+	RunTest(true, ut_WiflyControlNoThrow_BlReadFlash);
+	RunTest(true, ut_WiflyControlNoThrow_BlReadCrcFlash);
+	RunTest(true, ut_WiflyControlNoThrow_BlReadEeprom);
 	UnitTestMainEnd();
 }

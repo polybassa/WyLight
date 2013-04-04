@@ -36,7 +36,7 @@ uint32_t WiflyControlNoThrow::SolveException(void) const
 	} catch (InvalidParameter) {
 		return INVALID_PARAMETER;
 	} catch	(ScriptBufferFull) {
-		return SCRIPTBUFFER_FULL;
+		return SCRIPT_FULL;
 	} catch (FatalError) {
 		return FATAL_ERROR;
 	} catch (std::exception) {

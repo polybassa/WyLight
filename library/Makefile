@@ -40,8 +40,12 @@ TelnetProxy_ut.bin: TelnetProxy_ut.cpp TelnetProxy.cpp TelnetProxy.h $(FW_HEADER
 WiflyControl_ut.bin: WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp intelhexclass.h WiflyColor.h WiflyControl.h $(FW_HEADERS)
 	@g++ WiflyControl_ut.cpp WiflyControl.cpp intelhexclass.cpp $(INC) -o $@ -Wall -pedantic -std=c++0x
 	@./$@
+	
+WiflyControlNoThrow_ut.bin: WiflyControlNoThrow_ut.cpp WiflyControlNoThrow.cpp WiflyControlNoThrow.h $(FW_HEADERS)
+	@g++ WiflyControlNoThrow_ut.cpp WiflyControlNoThrow.cpp $(INC) -o $@ -Wall -pedantic -std=c++0x
+	@./$@
 
 
-test: clean BroadcastReceiver_ut.bin ComProxy_ut.bin TelnetProxy_ut.bin WiflyControl_ut.bin
+test: clean BroadcastReceiver_ut.bin ComProxy_ut.bin TelnetProxy_ut.bin WiflyControl_ut.bin WiflyControlNoThrow_ut.bin
 	
 
