@@ -35,10 +35,10 @@ uint32_t WiflyControlNoThrow::SolveException(void) const
 		return CONNECTION_TIMEOUT;
 	} catch (InvalidParameter) {
 		return INVALID_PARAMETER;
-	} catch (FatalError) {
-		return FATAL_ERROR;
 	} catch	(ScriptBufferFull) {
 		return SCRIPTBUFFER_FULL;
+	} catch (FatalError) {
+		return FATAL_ERROR;
 	} catch (std::exception) {
 		std::cout << "CATCH std::exception";
 		std::cerr << "CATCH std::exception";
@@ -83,7 +83,7 @@ uint32_t WiflyControlNoThrow::BlReadCrcFlash(std::ostream& out, uint32_t address
 	try {
 		uint8_t buffer[5096];
 		size_t bytesRead = WiflyControl::BlReadCrcFlash(buffer, address, numBlocks);
-		for (int i = 0; i < bytesRead; i++) {
+		for (size_t i = 0; i < bytesRead; i++) {
 			out << buffer[i];
 		} 
 		return NO_ERROR;
@@ -97,7 +97,7 @@ uint32_t WiflyControlNoThrow::BlReadEeprom(std::ostream& out, uint32_t address, 
 	try {
 		uint8_t buffer[5096];
 		size_t bytesRead = WiflyControl::BlReadEeprom(buffer, address, numBytes);
-		for (int i = 0; i < bytesRead; i++) {
+		for (size_t i = 0; i < bytesRead; i++) {
 			out << buffer[i];
 		}
 		return NO_ERROR;
@@ -111,7 +111,7 @@ uint32_t WiflyControlNoThrow::BlReadFlash(std::ostream& out, uint32_t address, s
 	try {
 		uint8_t buffer[5096];
 		size_t bytesRead = WiflyControl::BlReadFlash(buffer, address, numBytes);
-		for (int i = 0; i < bytesRead; i++) {
+		for (size_t i = 0; i < bytesRead; i++) {
 			out << buffer[i];
 		}
 		return NO_ERROR;
