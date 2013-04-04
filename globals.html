@@ -67,6 +67,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li class="current"><a href="globals.html"><span>All</span></a></li>
       <li><a href="globals_func.html"><span>Functions</span></a></li>
+      <li><a href="globals_enum.html"><span>Enumerations</span></a></li>
+      <li><a href="globals_eval.html"><span>Enumerator</span></a></li>
       <li><a href="globals_defs.html"><span>Macros</span></a></li>
     </ul>
   </div>
@@ -76,7 +78,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -96,6 +98,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>BL_CRTL_CHAR_NUM
 : <a class="el" href="_bl_request_8h.html#adc31e4bc6e9c1cdbed276862a52f09cf">BlRequest.h</a>
 </li>
+<li>CONNECTION_LOST
+: <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2a00bc8d8fa2a4ef22ac8d9aa337802707">WiflyControlNoThrow.h</a>
+</li>
+<li>CONNECTION_TIMEOUT
+: <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2af0f23e909b306d85fac6d0087800dadc">WiflyControlNoThrow.h</a>
+</li>
 <li>DWORD
 : <a class="el" href="_bl_request_8h.html#ac32dc621c21e4ca8664269a4e9bb315f">BlRequest.h</a>
 </li>
@@ -107,6 +115,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>EEPROM_WRITE_BLOCKSIZE
 : <a class="el" href="_bl_request_8h.html#a5f45dd63fc17090ece1b40b668195185">BlRequest.h</a>
+</li>
+<li>FATAL_ERROR
+: <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2a9ea7cd44f3b5993c0b647366d8ff725e">WiflyControlNoThrow.h</a>
 </li>
 <li>FLASH_CRC_BLOCKSIZE
 : <a class="el" href="_bl_request_8h.html#a94673376d5e3c5c7f835e6595f105372">BlRequest.h</a>
@@ -126,11 +137,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>FLASH_WRITE_BLOCKSIZE
 : <a class="el" href="_bl_request_8h.html#ae93d0b04d7bc152e72713dc07fcc1e9f">BlRequest.h</a>
 </li>
+<li>INVALID_PARAMETER
+: <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2a0d213a9ce640867b78937ff030c6c76f">WiflyControlNoThrow.h</a>
+</li>
 <li>IsCtrlChar()
 : <a class="el" href="_bl_request_8h.html#ab6d0d55d09ff97aaf075361fd7a6e61e">BlRequest.h</a>
 </li>
+<li>NO_ERROR
+: <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2abf350750d0d4fabd8954c0f1e9bbae94">WiflyControlNoThrow.h</a>
+</li>
 <li>PROMPT
 : <a class="el" href="_telnet_proxy_8h.html#accdbea14ea06c15e271784368bd993e8">TelnetProxy.h</a>
+</li>
+<li>SCRIPT_FULL
+: <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2ae8f3c55467ccd9edc93507455b76c3ed">WiflyControlNoThrow.h</a>
+</li>
+<li>WiflyError
+: <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2">WiflyControlNoThrow.h</a>
 </li>
 <li>WORD
 : <a class="el" href="_bl_request_8h.html#acb8656d747a871710ed38fdb9f77f7fb">BlRequest.h</a>
@@ -139,7 +162,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 2 2013 15:28:50 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 4 2013 09:40:10 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

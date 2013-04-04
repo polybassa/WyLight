@@ -11,7 +11,7 @@ var searchData=
   ['setstartlinearaddress',['setStartLinearAddress',['../classintelhex.html#a7629ca097b2de02dea37fcaa2dc2709c',1,'intelhex']]],
   ['setstartsegmentaddress',['setStartSegmentAddress',['../classintelhex.html#a9688f0002be870b05d64b5f9fcdeb86b',1,'intelhex']]],
   ['simpleresponse',['SimpleResponse',['../class_simple_response.html#aefac8d5010a3d168a206c78fbbd917ff',1,'SimpleResponse']]],
-  ['size',['size',['../classintelhex.html#afa757932ec420f977d33bb9a2d5a0a69',1,'intelhex::size()'],['../class_base_buffer.html#ac1a14b6abab04b72a87ac7da40c6273d',1,'BaseBuffer::Size()']]],
+  ['size',['Size',['../class_base_buffer.html#ac1a14b6abab04b72a87ac7da40c6273d',1,'BaseBuffer::Size()'],['../classintelhex.html#afa757932ec420f977d33bb9a2d5a0a69',1,'intelhex::size()']]],
   ['startaddress',['startAddress',['../classintelhex.html#aa8833665b99f0b6ac64fcef7d2116c42',1,'intelhex']]],
   ['stop',['Stop',['../class_broadcast_receiver.html#ab0f0852ab37655f23bebaca888216502',1,'BroadcastReceiver']]]
 ];

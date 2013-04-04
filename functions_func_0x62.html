@@ -104,7 +104,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -135,9 +135,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>blankFillRandom()
 : <a class="el" href="classintelhex.html#a9c26ba3dc9dd4f3021bb6c7f6983388f">intelhex</a>
 </li>
-<li>BlEepromErase()
-: <a class="el" href="class_wifly_control.html#a96bd445dcfcb45252530315b8919fd80">WiflyControl</a>
-</li>
 <li>BlEepromReadRequest()
 : <a class="el" href="struct_bl_eeprom_read_request.html#ae5a78051b53df168ee72761c98ee0452">BlEepromReadRequest</a>
 </li>
@@ -146,12 +143,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>BlEnableAutostart()
 : <a class="el" href="class_wifly_control.html#acc372e780a40e0634d1ccf89aaba6b32">WiflyControl</a>
+, <a class="el" href="class_wifly_control_no_throw.html#a4c35f2535eb1f14e30f631fada8a5497">WiflyControlNoThrow</a>
+</li>
+<li>BlEraseEeprom()
+: <a class="el" href="class_wifly_control_no_throw.html#aedb987e1add91290d62e33bdf638b79e">WiflyControlNoThrow</a>
+, <a class="el" href="class_wifly_control.html#a647ca69f7edd312506e56b7473ce3ef4">WiflyControl</a>
+</li>
+<li>BlEraseFlash()
+: <a class="el" href="class_wifly_control.html#a41e9d3ebf658cba44e71970ee7e4653e">WiflyControl</a>
+, <a class="el" href="class_wifly_control_no_throw.html#a1d0dffa11f76b27385052fe1927d29c5">WiflyControlNoThrow</a>
 </li>
 <li>BlFlashCrc16Request()
 : <a class="el" href="struct_bl_flash_crc16_request.html#a19119cb8b72cd5892ee4c75d8187ce36">BlFlashCrc16Request</a>
-</li>
-<li>BlFlashErase()
-: <a class="el" href="class_wifly_control.html#abe0bceb7ec0cfc88c2fccdae0d844d8a">WiflyControl</a>
 </li>
 <li>BlFlashEraseRequest()
 : <a class="el" href="struct_bl_flash_erase_request.html#aea945f360bd7e53e625a9235071599d8">BlFlashEraseRequest</a>
@@ -165,29 +168,29 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>BlInfoRequest()
 : <a class="el" href="struct_bl_info_request.html#adb80973f956f16dbc030ff027cb229d7">BlInfoRequest</a>
 </li>
-<li>BlNoResponseException()
-: <a class="el" href="class_bl_no_response_exception.html#ae3e31d1bd98466bcb7af228d1195da2c">BlNoResponseException</a>
-</li>
 <li>BlProgramFlash()
-: <a class="el" href="class_wifly_control.html#a29e6124445a27e1fd26cfccce701cc09">WiflyControl</a>
-</li>
-<li>BlRead()
-: <a class="el" href="class_wifly_control.html#ad8d11db989908aa13372755210fb27f7">WiflyControl</a>
+: <a class="el" href="class_wifly_control.html#ace3e7d6e58266b711fa93b974289e6b3">WiflyControl</a>
+, <a class="el" href="class_wifly_control_no_throw.html#ad02f390c7b5e3dc81b22aaf70218fd5d">WiflyControlNoThrow</a>
 </li>
 <li>BlReadCrcFlash()
-: <a class="el" href="class_wifly_control.html#a97f0c9d5e0ea08f2f60a720b0134fff1">WiflyControl</a>
+: <a class="el" href="class_wifly_control_no_throw.html#aca4db46b89caa1641599a3a25e38bd40">WiflyControlNoThrow</a>
+, <a class="el" href="class_wifly_control.html#a97f0c9d5e0ea08f2f60a720b0134fff1">WiflyControl</a>
 </li>
 <li>BlReadEeprom()
 : <a class="el" href="class_wifly_control.html#a13504dcf2d451545e8b5c3fa2f85b0e4">WiflyControl</a>
+, <a class="el" href="class_wifly_control_no_throw.html#aba9249f26f98e16bde7df538e4cc8b65">WiflyControlNoThrow</a>
 </li>
 <li>BlReadFlash()
-: <a class="el" href="class_wifly_control.html#a5337818ba998047b8a8cdc738ddf3e43">WiflyControl</a>
+: <a class="el" href="class_wifly_control_no_throw.html#a9b854767640d540c0ec48d9683da4436">WiflyControlNoThrow</a>
+, <a class="el" href="class_wifly_control.html#a5337818ba998047b8a8cdc738ddf3e43">WiflyControl</a>
 </li>
 <li>BlReadFwVersion()
 : <a class="el" href="class_wifly_control.html#a779ef8b2751c2ddf3cd07c869a73797e">WiflyControl</a>
+, <a class="el" href="class_wifly_control_no_throw.html#a997dec8e65fb166ac8640f44c0443035">WiflyControlNoThrow</a>
 </li>
 <li>BlReadInfo()
 : <a class="el" href="class_wifly_control.html#a26885cabebc9719b1da2d29131517efb">WiflyControl</a>
+, <a class="el" href="class_wifly_control_no_throw.html#a323797a3fdc5f2bfde6b4f504f3828fb">WiflyControlNoThrow</a>
 </li>
 <li>BlReadRequest()
 : <a class="el" href="struct_bl_read_request.html#a5e2c76a2fadad900193acedfc0f24f77">BlReadRequest</a>
@@ -197,18 +200,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>BlRunApp()
 : <a class="el" href="class_wifly_control.html#a776073bd4991e4331fb946e456d803df">WiflyControl</a>
+, <a class="el" href="class_wifly_control_no_throw.html#a6692124924a54cb2e9b6a1b92824b0ce">WiflyControlNoThrow</a>
 </li>
 <li>BlRunAppRequest()
 : <a class="el" href="struct_bl_run_app_request.html#a051bfcca520225571dfe62af8bb3a842">BlRunAppRequest</a>
 </li>
 <li>blue()
 : <a class="el" href="class_wifly_color.html#ad0c7f227f49eb00af032f4ae95e78f4a">WiflyColor</a>
-</li>
-<li>BlWriteEeprom()
-: <a class="el" href="class_wifly_control.html#a46e5e83cd548454f17a00323ace9e579">WiflyControl</a>
-</li>
-<li>BlWriteFlash()
-: <a class="el" href="class_wifly_control.html#a91e41d26681cfc5bf0237627558a9e02">WiflyControl</a>
 </li>
 <li>BroadcastReceiver()
 : <a class="el" href="class_broadcast_receiver.html#a9c3f8ebdef813f03edec75f88389a6ee">BroadcastReceiver</a>
@@ -217,7 +215,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 29 2013 15:18:59 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 4 2013 09:40:09 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
