@@ -61,10 +61,16 @@ WiflyControl::WiflyControl(uint32_t addr, uint16_t port)
 }
 
 /** ------------------------- BOOTLOADER METHODES ------------------------- **/
-void WiflyControl::BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError, InvalidParameter)
+void WiflyControl::BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError)
 {
 	static const uint8_t value = 0xff;
-	BlWriteEeprom((uint32_t)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
+	try {
+		BlWriteEeprom((uint32_t)BL_AUTOSTART_ADDRESS, &value, sizeof(value));
+	} catch (InvalidParameter &e) {
+		throw new FatalError(std::string(e.what()) + "\n Internal failure in BlWriteEeprom(BL_AUTOSTART_ADDRESS....)");
+	} catch (std::exception &e) {
+		throw e;
+	}
 }
 
 void WiflyControl::BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError)

@@ -73,7 +73,7 @@ class WiflyControl
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw InvalidParameter a parameter is out of bound
 		 */
-		void BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError, InvalidParameter);
+		void BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError);
 		
 		/**
 		 * Instructs the bootloader to erase the whole eeprom.
