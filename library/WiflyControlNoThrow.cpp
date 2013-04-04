@@ -25,147 +25,274 @@ WiflyControlNoThrow::WiflyControlNoThrow(uint32_t addr, uint16_t port)
 {
 }
 
-#define TRY_CATCH_RETURN(X,...) \
-		try { \
-		X(__VA_ARGS__); \
-		return NO_ERROR; \
-	} catch (ConnectionTimeout) { \
-		return CONNECTION_TIMEOUT; \
-	} catch (InvalidParameter) { \
-		return INVALID_PARAMETER; \
-	} catch (FatalError) { \
-		return FATAL_ERROR; \
+uint32_t WiflyControlNoThrow::SolveException(void) const
+{
+	try {
+		throw;
+	} catch (ConnectionLost) {
+		return CONNECTION_LOST;
+	} catch (ConnectionTimeout) {
+		return CONNECTION_TIMEOUT;
+	} catch (InvalidParameter) {
+		return INVALID_PARAMETER;
+	} catch (FatalError) {
+		return FATAL_ERROR;
+	} catch	(ScriptBufferFull) {
+		return SCRIPTBUFFER_FULL;
+	} catch (std::exception) {
+		std::cout << "CATCH std::exception";
+		std::cerr << "CATCH std::exception";
+		//std::terminate();
+		return FATAL_ERROR;
 	}
+}
 
 /** ------------------------- BOOTLOADER METHODES ------------------------- **/
 uint32_t WiflyControlNoThrow::BlEnableAutostart(void) const
 {
-	TRY_CATCH_RETURN(WiflyControl::BlEnableAutostart);
+	try {
+		WiflyControl::BlEnableAutostart();
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
 uint32_t WiflyControlNoThrow::BlEraseEeprom(void) const
 {
-	TRY_CATCH_RETURN(WiflyControl::BlEraseEeprom);
+	try {
+		WiflyControl::BlEraseEeprom();
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
 uint32_t WiflyControlNoThrow::BlEraseFlash(void) const
 {
-	TRY_CATCH_RETURN(WiflyControl::BlEraseEeprom);
+	try {
+		WiflyControl::BlEraseFlash();
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
-size_t WiflyControlNoThrow::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address, uint16_t numBlocks) const
+uint32_t WiflyControlNoThrow::BlReadCrcFlash(std::ostream& out, uint32_t address, uint16_t numBlocks) const
 {
-	//TODO
-	return 0;
+	try {
+		uint8_t buffer[5096];
+		size_t bytesRead = WiflyControl::BlReadCrcFlash(buffer, address, numBlocks);
+		for (int i = 0; i < bytesRead; i++) {
+			out << buffer[i];
+		} 
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
-size_t WiflyControlNoThrow::BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t numBytes) const
+uint32_t WiflyControlNoThrow::BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes) const
 {
-	//TODO
-	return 0;
+	try {
+		uint8_t buffer[5096];
+		size_t bytesRead = WiflyControl::BlReadEeprom(buffer, address, numBytes);
+		for (int i = 0; i < bytesRead; i++) {
+			out << buffer[i];
+		}
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
-size_t WiflyControlNoThrow::BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const
+uint32_t WiflyControlNoThrow::BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) const
 {
-	//TODO
-	return 0;
+	try {
+		uint8_t buffer[5096];
+		size_t bytesRead = WiflyControl::BlReadFlash(buffer, address, numBytes);
+		for (int i = 0; i < bytesRead; i++) {
+			out << buffer[i];
+		}
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
-std::string WiflyControlNoThrow::BlReadFwVersion(void) const
+uint32_t WiflyControlNoThrow::BlReadFwVersion(std::string& versionString) const
 {
-	return std::string{};
+	try {
+		versionString = WiflyControl::BlReadFwVersion();
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
 uint32_t WiflyControlNoThrow::BlReadInfo(BlInfo& blInfo) const
 {
-	TRY_CATCH_RETURN(WiflyControl::BlReadInfo, blInfo);
+	try {
+		WiflyControl::BlReadInfo(blInfo);
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
 uint32_t WiflyControlNoThrow::BlProgramFlash(const std::string& filename) const
 {
-	TRY_CATCH_RETURN(WiflyControl::BlProgramFlash, filename);
+	try {
+		WiflyControl::BlProgramFlash(filename);
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
 uint32_t WiflyControlNoThrow::BlRunApp(void) const
 {
-	TRY_CATCH_RETURN(WiflyControl::BlRunApp);
+	try {
+		WiflyControl::BlRunApp();
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
-std::string WiflyControlNoThrow::ConfGetSsid(void) const
+uint32_t WiflyControlNoThrow::ConfGetSsid(std::string& ssid) const
 {
-	return WiflyControl::ConfGetSsid();
+	ssid = WiflyControl::ConfGetSsid();
+	return NO_ERROR;
 }
 
-bool WiflyControlNoThrow::ConfSetDefaults(void) const
+uint32_t WiflyControlNoThrow::ConfSetDefaults(void) const
 {
-	return WiflyControl::ConfSetDefaults();
+	return WiflyControl::ConfSetDefaults() ? NO_ERROR : FATAL_ERROR;
 }
 
-bool WiflyControlNoThrow::ConfSetWlan(const std::string& phrase, const std::string& ssid) const
+uint32_t WiflyControlNoThrow::ConfSetWlan(const std::string& phrase, const std::string& ssid) const
 {
-	return WiflyControl::ConfSetWlan(phrase, ssid);
+	return WiflyControl::ConfSetWlan(phrase, ssid) ? NO_ERROR : FATAL_ERROR;
 }
 
 uint32_t WiflyControlNoThrow::FwClearScript(void)
 {
-	TRY_CATCH_RETURN(WiflyControl::FwClearScript);
+	try {
+		WiflyControl::FwClearScript();
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
-std::string WiflyControlNoThrow::FwGetCycletime(void)
+uint32_t WiflyControlNoThrow::FwGetCycletime(std::string& output)
 {
-	//TODO
-	return std::string{};
+	try {
+		output = WiflyControl::FwGetCycletime();
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
 uint32_t WiflyControlNoThrow::FwGetRtc(tm& timeValue)
 {
-	TRY_CATCH_RETURN(WiflyControl::FwGetRtc, timeValue);
+	try {
+		WiflyControl::FwGetRtc(timeValue);
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
-std::string WiflyControlNoThrow::FwGetTracebuffer(void)
+uint32_t WiflyControlNoThrow::FwGetTracebuffer(std::string& output)
 {
-	//TODO
-	return std::string{};
+	try {
+		output = WiflyControl::FwGetTracebuffer();
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
-std::string WiflyControlNoThrow::FwGetVersion(void)
+uint32_t WiflyControlNoThrow::FwGetVersion(std::string& output)
 {
-	//TODO
-	return std::string{};
+	try {
+		output = WiflyControl::FwGetVersion();
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
 uint32_t WiflyControlNoThrow::FwLoopOff(uint8_t numLoops)
 {
-	TRY_CATCH_RETURN(WiflyControl::FwLoopOff, numLoops);
+	try {
+		WiflyControl::FwLoopOff(numLoops);
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
 uint32_t WiflyControlNoThrow::FwLoopOn(void)
 {
-	TRY_CATCH_RETURN(WiflyControl::FwLoopOn);
+	try {
+		WiflyControl::FwLoopOn();
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
 uint32_t WiflyControlNoThrow::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength)
 {
-	TRY_CATCH_RETURN(WiflyControl::FwSetColorDirect, pBuffer, bufferLength);
+	try {
+		WiflyControl::FwSetColorDirect(pBuffer, bufferLength);
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
 uint32_t WiflyControlNoThrow::FwSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade)
 {
-	TRY_CATCH_RETURN(WiflyControl::FwSetFade, argb, fadeTime, addr, parallelFade);
+	try {
+		WiflyControl::FwSetFade(argb,fadeTime,addr,parallelFade);
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
 uint32_t WiflyControlNoThrow::FwSetRtc(const tm& timeValue)
 {
-	TRY_CATCH_RETURN(WiflyControl::FwSetRtc, timeValue);
+	try {
+		WiflyControl::FwSetRtc(timeValue);
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
 uint32_t WiflyControlNoThrow::FwSetWait(uint16_t waitTime)
 {
-	TRY_CATCH_RETURN(WiflyControl::FwSetWait, waitTime);
+	try {
+		WiflyControl::FwSetWait(waitTime);
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
 uint32_t WiflyControlNoThrow::FwStartBl(void)
 {
-	TRY_CATCH_RETURN(WiflyControl::FwStartBl);
+	try {
+		WiflyControl::FwStartBl();
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
 }
 
