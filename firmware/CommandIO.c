@@ -230,19 +230,19 @@ void CommandIO_CreateResponse(struct response_frame *mFrame, uns8 cmd, ErrorCode
 	switch (cmd) {
 		case GET_RTC:
 		{
-			Rtc_Ctl(RTC_RD_TIME, &mFrame->data.get_rtc);
+			Rtc_Ctl(RTC_RD_TIME, &mFrame->data.time);
 			mFrame->length += sizeof(struct rtc_time);
 			break;
 		};
 		case GET_CYCLETIME:
 		{
-			uns8 bytesPrint = Timer_PrintCycletime(&(mFrame->data.get_max_cycle_times[0]), sizeof(struct response_frame) - 4);
+			uns8 bytesPrint = Timer_PrintCycletime(&(mFrame->data.max_cycle_times[0]), sizeof(struct response_frame) - 4);
 			mFrame->length += bytesPrint;
 			break;
 		};
 		case GET_TRACE:
 		{
-			uns8 bytesPrint = Trace_Print(&(mFrame->data.get_trace_string[0]), sizeof(struct response_frame) - 4);
+			uns8 bytesPrint = Trace_Print(&(mFrame->data.trace_string[0]), sizeof(struct response_frame) - 4);
 			mFrame->length += bytesPrint;
 			break;
 		};

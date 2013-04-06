@@ -98,10 +98,10 @@ struct __attribute__((__packed__)) response_frame {
 	uns8 cmd;
 	ErrorCode state;
 	union __attribute__((__packed__)) {
-		struct rtc_time get_rtc;
+		struct rtc_time time;
 		struct cmd_get_fw_version version;
-		uns8 get_trace_string[RingBufferSize];
-		uns16 get_max_cycle_times[CYCLETIME_METHODE_ENUM_SIZE];
+		uns8 trace_string[RingBufferSize];
+		uns16 max_cycle_times[CYCLETIME_METHODE_ENUM_SIZE];
 	}data;
 };
 

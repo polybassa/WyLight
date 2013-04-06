@@ -88,13 +88,13 @@ public:
 		if(SimpleResponse::Init(pData, dataLength)
 		&& (dataLength >= 4 + sizeof(struct rtc_time)))
 		{
-			mTimeValue.tm_sec = pData.data.get_rtc.tm_sec;
-			mTimeValue.tm_min = pData.data.get_rtc.tm_min;
-			mTimeValue.tm_hour = pData.data.get_rtc.tm_hour;
-			mTimeValue.tm_mday = pData.data.get_rtc.tm_mday;
-			mTimeValue.tm_year = pData.data.get_rtc.tm_year;
-			mTimeValue.tm_wday = pData.data.get_rtc.tm_wday;
-			mTimeValue.tm_mon = pData.data.get_rtc.tm_mon;
+			mTimeValue.tm_sec = pData.data.time.tm_sec;
+			mTimeValue.tm_min = pData.data.time.tm_min;
+			mTimeValue.tm_hour = pData.data.time.tm_hour;
+			mTimeValue.tm_mday = pData.data.time.tm_mday;
+			mTimeValue.tm_year = pData.data.time.tm_year;
+			mTimeValue.tm_wday = pData.data.time.tm_wday;
+			mTimeValue.tm_mon = pData.data.time.tm_mon;
 			return true;
 		}
 		return false;
@@ -116,7 +116,7 @@ public:
 		{
 			for(size_t i = 0; i < CYCLETIME_METHODE_ENUM_SIZE && i < dataLength / sizeof(uns16); i++)
 			{
-				mCycletimes[i] = ntohs(pData.data.get_max_cycle_times[i]);
+				mCycletimes[i] = ntohs(pData.data.max_cycle_times[i]);
 			}
 			return true;
 		}
@@ -154,7 +154,7 @@ public:
 	{
 		if(SimpleResponse::Init(pData, dataLength))
 		{
-			mTraceMessage = std::string((char*)pData.data.get_trace_string, dataLength - 4);
+			mTraceMessage = std::string((char*)pData.data.trace_string, dataLength - 4);
 			return true;
 		}
 		return false;
