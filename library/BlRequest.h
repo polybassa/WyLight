@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+ Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -26,8 +26,8 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#define WORD(HIGH, LOW) (uint16_t)(((((uint16_t)(HIGH))<< 8) | (((uint16_t)(LOW)) & 0x00ff)))
-#define DWORD(HIGH, LOW) (uint32_t)(((((uint32_t)(HIGH))<< 16) | (((uint32_t)(LOW)) & 0x0000ffff)))
+#define BL_WORD(HIGH, LOW) (uint16_t)(((((uint16_t)(HIGH))<< 8) | (((uint16_t)(LOW)) & 0x00ff)))
+#define BL_DWORD(HIGH, LOW) (uint32_t)(((((uint32_t)(HIGH))<< 16) | (((uint32_t)(LOW)) & 0x0000ffff)))
 
 #define FLASH_ERASE_BLOCKSIZE 64
 #define FLASH_ERASE_BLOCKS 128		/* Blocks erased by one command */
@@ -109,7 +109,7 @@ struct BlInfo
 
 	uint32_t GetAddress(void) const
 	{
-		return DWORD(WORD(zero, startU), WORD(startHigh, startLow));
+		return BL_DWORD(BL_WORD(zero, startU), BL_WORD(startHigh, startLow));
 	}
 
 	void Print(void) const
@@ -119,7 +119,7 @@ struct BlInfo
 			case 0x02:
 				printf("PIC16");
 	#ifdef PIC16
-				printf("F%d", WORD(deviceIdHigh, deviceIdLow));
+				printf("F%d", BL_WORD(deviceIdHigh, deviceIdLow));
 	#endif
 				break;
 			case 0x04:
@@ -130,7 +130,7 @@ struct BlInfo
 				break;
 		}
 		printf(" bootloader V%d.%d\n", versionMajor, versionMinor);
-		printf("Size: %d\n", WORD(sizeHigh, sizeLow));
+		printf("Size: %d\n", BL_WORD(sizeHigh, sizeLow));
 		printf("Startaddress: 0x%x\n", GetAddress());
 		printf("erase flash command %ssupported\n", ((0x02 == familyId) && (0x01 != cmdmaskHigh)) ? "not " : "");
 	};

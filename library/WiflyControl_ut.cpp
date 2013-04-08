@@ -55,7 +55,7 @@ size_t ComProxy::Send(const BlRequest& req, uint8_t* pResponse, size_t responseS
 	if(typeid(req) == typeid(BlFlashEraseRequest))
 	{
 		const BlFlashEraseRequest& mReq = dynamic_cast<const BlFlashEraseRequest&>(req);
-		uint32_t address = DWORD(WORD(0, mReq.addressU), WORD(mReq.addressHigh, mReq.addressLow));
+		uint32_t address = BL_DWORD(BL_WORD(0, mReq.addressU), BL_WORD(mReq.addressHigh, mReq.addressLow));
 		uint16_t pages = (uint16_t)mReq.numPages;
 		
 		int endaddress = address - (pages * FLASH_ERASE_BLOCKSIZE);
@@ -72,7 +72,7 @@ size_t ComProxy::Send(const BlRequest& req, uint8_t* pResponse, size_t responseS
 	if(typeid(req) == typeid(BlFlashWriteRequest))
 	{
 		const BlFlashWriteRequest& mReq = dynamic_cast<const BlFlashWriteRequest&>(req);
-		uint32_t address = DWORD(WORD(0, mReq.addressU), WORD(mReq.addressHigh, mReq.addressLow));
+		uint32_t address = BL_DWORD(BL_WORD(0, mReq.addressU), BL_WORD(mReq.addressHigh, mReq.addressLow));
 		uint16_t bytes = ((uint16_t)mReq.numBlocksLow) * FLASH_WRITE_BLOCKSIZE;
 		
 		for (int i = 0; i < bytes; i++, address++) {
@@ -86,8 +86,8 @@ size_t ComProxy::Send(const BlRequest& req, uint8_t* pResponse, size_t responseS
 	{
 		const BlFlashReadRequest& mReq = dynamic_cast<const BlFlashReadRequest&>(req);
 		
-		uint32_t address = DWORD(WORD(0, mReq.addressU), WORD(mReq.addressHigh, mReq.addressLow));
-		uint16_t bytes = WORD(mReq.numBytesHigh, mReq.numBytesLow);
+		uint32_t address = BL_DWORD(BL_WORD(0, mReq.addressU), BL_WORD(mReq.addressHigh, mReq.addressLow));
+		uint16_t bytes = BL_WORD(mReq.numBytesHigh, mReq.numBytesLow);
 		
 		unsigned int i;
 		for(i = 0; i < bytes; i++)
@@ -100,8 +100,8 @@ size_t ComProxy::Send(const BlRequest& req, uint8_t* pResponse, size_t responseS
 	{
 		const BlEepromReadRequest& mReq = dynamic_cast<const BlEepromReadRequest&>(req);
 		
-		uint32_t address = DWORD(WORD(0, mReq.addressU), WORD(mReq.addressHigh, mReq.addressLow));		
-		uint16_t bytes = WORD(mReq.numBytesHigh, mReq.numBytesLow);
+		uint32_t address = BL_DWORD(BL_WORD(0, mReq.addressU), BL_WORD(mReq.addressHigh, mReq.addressLow));		
+		uint16_t bytes = BL_WORD(mReq.numBytesHigh, mReq.numBytesLow);
 		
 		unsigned int i;
 		for(i = 0; i < bytes; i++)
@@ -114,8 +114,8 @@ size_t ComProxy::Send(const BlRequest& req, uint8_t* pResponse, size_t responseS
 	{
 		const BlEepromWriteRequest& mReq = dynamic_cast<const BlEepromWriteRequest&>(req);
 		
-		uint32_t address = DWORD(WORD(0, mReq.addressU), WORD(mReq.addressHigh, mReq.addressLow));
-		uint16_t bytes = WORD(mReq.numBytesHigh, mReq.numBytesLow);
+		uint32_t address = BL_DWORD(BL_WORD(0, mReq.addressU), BL_WORD(mReq.addressHigh, mReq.addressLow));
+		uint16_t bytes = BL_WORD(mReq.numBytesHigh, mReq.numBytesLow);
 		
 		for (int i = 0; i < bytes; i++, address++) {
 			g_EepromRndDataPool[address] = mReq.payload[i];
