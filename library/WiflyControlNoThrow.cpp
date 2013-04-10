@@ -29,16 +29,8 @@ uint32_t WiflyControlNoThrow::SolveException(void) const
 {
 	try {
 		throw;
-	} catch (ConnectionLost) {
-		return CONNECTION_LOST;
-	} catch (ConnectionTimeout) {
-		return CONNECTION_TIMEOUT;
-	} catch (InvalidParameter) {
-		return INVALID_PARAMETER;
-	} catch	(ScriptBufferFull) {
-		return SCRIPT_FULL;
-	} catch (FatalError) {
-		return FATAL_ERROR;
+	} catch (FatalError& e) {
+		return e.AsErrorCode();
 	} catch (std::exception) {
 		std::cout << "CATCH std::exception";
 		std::cerr << "CATCH std::exception";
@@ -50,32 +42,17 @@ uint32_t WiflyControlNoThrow::SolveException(void) const
 /** ------------------------- BOOTLOADER METHODES ------------------------- **/
 uint32_t WiflyControlNoThrow::BlEnableAutostart(void) const
 {
-	try {
-		WiflyControl::BlEnableAutostart();
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
+	return Try(&WiflyControl::BlEnableAutostart);
 }
 
 uint32_t WiflyControlNoThrow::BlEraseEeprom(void) const
 {
-	try {
-		WiflyControl::BlEraseEeprom();
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
+	return Try(&WiflyControl::BlEraseEeprom);
 }
 
 uint32_t WiflyControlNoThrow::BlEraseFlash(void) const
 {
-	try {
-		WiflyControl::BlEraseFlash();
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
+	return Try(&WiflyControl::BlEraseFlash);
 }
 
 uint32_t WiflyControlNoThrow::BlReadCrcFlash(std::ostream& out, uint32_t address, uint16_t numBlocks) const
@@ -152,12 +129,7 @@ uint32_t WiflyControlNoThrow::BlProgramFlash(const std::string& filename) const
 
 uint32_t WiflyControlNoThrow::BlRunApp(void) const
 {
-	try {
-		WiflyControl::BlRunApp();
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
+	return Try(&WiflyControl::BlRunApp);
 }
 
 uint32_t WiflyControlNoThrow::ConfGetSsid(std::string& ssid) const
@@ -293,6 +265,21 @@ uint32_t WiflyControlNoThrow::FwStartBl(void)
 		return NO_ERROR;
 	} catch (...) {
 		return SolveException();
+	}
+}
+
+uint32_t WiflyControlNoThrow::Try(const std::function<void(const WiflyControl&)> call) const
+{
+	try {
+		call(*this);
+		return NO_ERROR;
+	} catch (FatalError& e) {
+		return e.AsErrorCode();
+	} catch (std::exception) {
+		std::cout << "CATCH std::exception";
+		std::cerr << "CATCH std::exception";
+		//std::terminate();
+		return FATAL_ERROR;
 	}
 }
 
