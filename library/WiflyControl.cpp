@@ -204,7 +204,6 @@ size_t WiflyControl::BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numB
 	return sumBytesRead;
 }
 
-//TODO is it really necessary to read the whole flash?
 std::string WiflyControl::BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError)
 {
 	BlInfo info;
@@ -236,7 +235,7 @@ std::string WiflyControl::BlReadFwVersion(void) const throw (ConnectionTimeout, 
 	}
 	
 	address -= readblock * 2;
-	size_t bytesRead = BlReadFlash(buffer, address, byteblock * 2);
+	size_t bytesRead = BlReadFlash(buffer, address, byteblock * 4);
 	
 	uint8_t *pString = (uint8_t*) &buffer[bytesRead];
 	while(*pString == 0xff)
@@ -246,7 +245,7 @@ std::string WiflyControl::BlReadFwVersion(void) const throw (ConnectionTimeout, 
 	if(pString - 7 < &buffer[0])
 		throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": version string corrupt2");
 	
-	return std::string((const char*)pString - 7, 7);
+	return std::string((const char*)pString - 8, 7);
 }
 
 void WiflyControl::BlReadInfo(BlInfo& blInfo) const throw (ConnectionTimeout, FatalError)
