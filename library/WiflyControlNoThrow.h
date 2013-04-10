@@ -130,7 +130,7 @@ class WiflyControlNoThrow : private WiflyControl
 			<BR><B>INVALID_PARAMETER</B> if a parameter is out of bound
 			<BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
-		uint32_t BlReadCrcFlash(std::ostream& out, unsigned int address, uint16_t numBlocks) const;
+		uint32_t BlReadCrcFlash(std::ostream& out, uint32_t address, size_t numBlocks) const;
 
 		/**
 		 * Instructs the bootloader to read the specified memory area of the eeprom.
@@ -144,7 +144,7 @@ class WiflyControlNoThrow : private WiflyControl
 			<BR><B>INVALID_PARAMETER</B> if a parameter is out of bound
 			<BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
-	uint32_t BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes) const;
+		uint32_t BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes) const;
 
 		/**
 		 * Instructs the bootloader to read the specified memory area of the flash.

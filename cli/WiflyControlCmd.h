@@ -61,27 +61,31 @@ class WiflyControlCmd
 	protected:
 		const string m_Name;
 		const string m_Description;
-		void Print(const unsigned char* const pBuffer, const size_t size, const uint32_t address) const {
+		void Print(std::istream& in, const size_t size, const uint32_t address) const {
 			for(size_t i = 0; i < size; i++) {
 				if(0 == (i % 16)) {
 					cout << endl << "0x" << setw(4) << setfill('0') << hex << int(address+i) << ": ";
 				}
-				cout << setw(2) << setfill('0') << hex << int(pBuffer[i]) << ' ';
+				uint8_t b;
+				in >> b;
+				cout << setw(2) << setfill('0') << hex << int(b) << ' ';
 			}
 			cout << endl;
 		}
-		void PrintCrc(const unsigned char* const pBuffer, const size_t size, const uint32_t address) const {
+		void PrintCrc(std::istream& in, const size_t size, const uint32_t address) const {
 			for(size_t i = 0; i < size; i++) {
 				if(0 == (i % 2)) {
-					cout << endl 
-					<< "0x" << setw(4) << setfill('0') << hex 
-					<< int(address+i * FLASH_ERASE_BLOCKSIZE) 
-					<< " - " 
-					<< "0x" << setw(4) << setfill('0') << hex 
-					<< int(address+ ((i+2) * FLASH_ERASE_BLOCKSIZE) -1) 
+					cout << endl
+					<< "0x" << setw(4) << setfill('0') << hex
+					<< int(address+i * FLASH_ERASE_BLOCKSIZE)
+					<< " - "
+					<< "0x" << setw(4) << setfill('0') << hex
+					<< int(address+ ((i+2) * FLASH_ERASE_BLOCKSIZE) -1)
 					<< ": ";
 				}
-				cout << setw(2) << setfill('0') << hex << int(pBuffer[i]) << ' ';
+				uint8_t b;
+				in >> b;
+				cout << setw(2) << setfill('0') << hex << int(b) << ' ';
 			}
 			cout << endl;
 		}
@@ -132,20 +136,16 @@ class ControlCmdBlCrcFlash : public WiflyControlCmd
 			cin >> numBlocks;
 			try
 			{
-				unsigned char buffer[(FLASH_SIZE / FLASH_ERASE_BLOCKSIZE) * 2];
-				if(sizeof(buffer) / 2 < numBlocks)
-				{
-					cout << "Read CRC failed. Too many CRCs requested" << endl;
-					return;
-				}
-				
-				size_t bytesRead = control.BlReadCrcFlash(buffer, address, numBlocks);
+				std::stringstream mStream;
+				control.BlReadCrcFlash(mStream, address, numBlocks);
+				mStream.seekp(0, std::ios::end);
+				size_t bytesRead = mStream.tellp();
 				if(2 * numBlocks != bytesRead)
 				{
 					cout << "Read CRC failed" << endl;
 					return;
 				}
-				PrintCrc(buffer, bytesRead, address);
+				PrintCrc(mStream, bytesRead, address);
 			}
 			catch(FatalError& e)
 			{
@@ -207,7 +207,7 @@ class ControlCmdBlRead : public WiflyControlCmd
 
 		const string m_Name;
 		
-		virtual size_t Read(WiflyControl& control, unsigned char* pBuffer, uint32_t address, const size_t numBytes) const = 0;
+		virtual void Read(WiflyControl& control, std::ostream& out, uint32_t address, const size_t numBytes) const = 0;
 
 		virtual void Run(WiflyControl& control) const {
 			uint32_t address;
@@ -216,22 +216,18 @@ class ControlCmdBlRead : public WiflyControlCmd
 			cin >> numBytes;
 			try
 			{
-				unsigned char buffer[0x10000];
-				if(sizeof(buffer) < numBytes)
-				{
-					cout << "Read " << m_Name << " failed. Too many bytes requested" << endl;
-					return;
-				}
+				std::stringstream mStream;
 
-				size_t bytesRead = Read(control, buffer, address, numBytes);
-
-				if(bytesRead != numBytes) 
+				Read(control, mStream, address, numBytes);
+				mStream.seekp(0, std::ios::end);
+				size_t bytesRead = mStream.tellp();
+				if(bytesRead != numBytes)
 				{
 					cout << "Read " << m_Name << " failed" << endl;
 				} 
 				else 
 				{
-					Print(buffer, bytesRead, address);
+					Print(mStream, bytesRead, address);
 				}
 
 			}
@@ -246,8 +242,8 @@ class ControlCmdBlReadEeprom : public ControlCmdBlRead
 {
 	public:
 		ControlCmdBlReadEeprom(void) : ControlCmdBlRead("eeprom") {};
-		size_t Read(WiflyControl& control, unsigned char* pBuffer, uint32_t address, const size_t numBytes) const {
-			return control.BlReadEeprom(pBuffer, address, numBytes);
+		void Read(WiflyControl& control, std::ostream& out, uint32_t address, const size_t numBytes) const {
+			control.BlReadEeprom(out, address, numBytes);
 		};
 };
 
@@ -255,8 +251,8 @@ class ControlCmdBlReadFlash : public ControlCmdBlRead
 {
 	public:
 		ControlCmdBlReadFlash(void) : ControlCmdBlRead("flash") {};
-		size_t Read(WiflyControl& control, unsigned char* pBuffer, uint32_t address, const size_t numBytes) const {
-			return control.BlReadFlash(pBuffer, address, numBytes);
+		void Read(WiflyControl& control, std::ostream& out, uint32_t address, const size_t numBytes) const {
+			control.BlReadFlash(out, address, numBytes);
 		};
 };
 

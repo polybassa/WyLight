@@ -78,14 +78,10 @@ uint32_t WiflyControlNoThrow::BlEraseFlash(void) const
 	}
 }
 
-uint32_t WiflyControlNoThrow::BlReadCrcFlash(std::ostream& out, uint32_t address, uint16_t numBlocks) const
+uint32_t WiflyControlNoThrow::BlReadCrcFlash(std::ostream& out, uint32_t address, size_t numBlocks) const
 {
 	try {
-		uint8_t buffer[5096];
-		size_t bytesRead = WiflyControl::BlReadCrcFlash(buffer, address, numBlocks);
-		for (size_t i = 0; i < bytesRead; i++) {
-			out << buffer[i];
-		} 
+		WiflyControl::BlReadCrcFlash(out, address, numBlocks);
 		return NO_ERROR;
 	} catch (...) {
 		return SolveException();
@@ -95,11 +91,7 @@ uint32_t WiflyControlNoThrow::BlReadCrcFlash(std::ostream& out, uint32_t address
 uint32_t WiflyControlNoThrow::BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes) const
 {
 	try {
-		uint8_t buffer[5096];
-		size_t bytesRead = WiflyControl::BlReadEeprom(buffer, address, numBytes);
-		for (size_t i = 0; i < bytesRead; i++) {
-			out << buffer[i];
-		}
+		WiflyControl::BlReadEeprom(out, address, numBytes);
 		return NO_ERROR;
 	} catch (...) {
 		return SolveException();
@@ -109,11 +101,7 @@ uint32_t WiflyControlNoThrow::BlReadEeprom(std::ostream& out, uint32_t address, 
 uint32_t WiflyControlNoThrow::BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) const
 {
 	try {
-		uint8_t buffer[5096];
-		size_t bytesRead = WiflyControl::BlReadFlash(buffer, address, numBytes);
-		for (size_t i = 0; i < bytesRead; i++) {
-			out << buffer[i];
-		}
+		WiflyControl::BlReadFlash(out, address, numBytes);
 		return NO_ERROR;
 	} catch (...) {
 		return SolveException();

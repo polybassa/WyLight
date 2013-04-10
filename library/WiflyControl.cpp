@@ -128,6 +128,15 @@ size_t WiflyControl::BlRead(const BlRequest& req, unsigned char* pResponse, cons
 	return responseSize;
 }
 
+void WiflyControl::BlReadCrcFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+{
+	uint8_t buffer[5096];
+	size_t bytesRead = BlReadCrcFlash(buffer, address, numBytes);
+	for (size_t i = 0; i < bytesRead; i++) {
+		out << buffer[i];
+	}
+}
+
 size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address, uint16_t numBlocks) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	if(numBlocks * FLASH_ERASE_BLOCKSIZE + address > FLASH_SIZE)
@@ -153,6 +162,15 @@ size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address
 	return sumBytesRead;
 }
 
+void WiflyControl::BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+{
+	uint8_t buffer[EEPROM_SIZE];
+	size_t bytesRead = BlReadEeprom(buffer, address, numBytes);
+	for (size_t i = 0; i < bytesRead; i++) {
+		out.put(buffer[i]);
+	}
+}
+
 size_t WiflyControl::BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	if(numBytes + address > EEPROM_SIZE)
@@ -176,6 +194,15 @@ size_t WiflyControl::BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t num
 	bytesRead = BlRead(readRequest, pBuffer, numBytes);
 	sumBytesRead += bytesRead;
 	return sumBytesRead;
+}
+
+void WiflyControl::BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+{
+	uint8_t buffer[FLASH_SIZE];
+	size_t bytesRead = BlReadFlash(buffer, address, numBytes);
+	for (size_t i = 0; i < bytesRead; i++) {
+		out << buffer[i];
+	}
 }
 
 size_t WiflyControl::BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)

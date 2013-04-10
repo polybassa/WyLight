@@ -106,41 +106,38 @@ class WiflyControl
 		 * Instructs the bootloader to create crc-16 checksums for the content of
 		 * the specified flash area. TODO crc values are in little endian byte order
 		 * The wifly device has to be in bootloader mode for this command.
-		 * @param pBuffer pointer to a buffer for the resulting 16bit crc values
+		 * @param out ostream for the resulting 16bit crc values
 		 * @param address crc generation starts from this flash address
 		 * @param numBytes size of the flash area for which the crc are calculated
-		 * @return the number of bytes read (result / 2 = number of crc values)
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw InvalidParameter a parameter is out of bound
 		 */
-		size_t BlReadCrcFlash(uint8_t* pBuffer, uint32_t address, uint16_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
+		void BlReadCrcFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
 
 		/**
 		 * Instructs the bootloader to read the specified memory area of the eeprom.
 		 * The wifly device has to be in bootloader mode for this command.
-		 * @param pBuffer destination for the copy of the eeprom content, should be at least \<numBytes\> wide
+		 * @param out ostream where the eeprom content is written
 		 * @param address start of the eeprom region to read
 		 * @param numBytes size of the eeprom region to read
-		 * @return the number of bytes read
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw InvalidParameter a parameter is out of bound
 		 */
-		size_t BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
+		void BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
 
 		/**
 		 * Instructs the bootloader to read the specified memory area of the flash.
 		 * The wifly device has to be in bootloader mode for this command.
-		 * @param pBuffer destination for the copy of the flash content, should be at least \<numBytes\> wide
+		 * @param out ostream where the flash content is written
 		 * @param address start of the flash region to read
 		 * @param numBytes size of the flash region to read
-		 * @return the number of bytes read
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw InvalidParameter a parameter is out of bound
 		 */
-		size_t BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
+		void BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
 
 		/**
 		 * Instructs the bootloader to read the version string from the firmware memory.
@@ -415,6 +412,47 @@ class WiflyControl
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */		
 		WiflyResponse& FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+	
+		/**
+		 * Instructs the bootloader to create crc-16 checksums for the content of
+		 * the specified flash area. TODO crc values are in little endian byte order
+		 * The wifly device has to be in bootloader mode for this command.
+		 * @param pBuffer pointer to a buffer for the resulting 16bit crc values
+		 * @param address crc generation starts from this flash address
+		 * @param numBytes size of the flash area for which the crc are calculated
+		 * @return the number of bytes read (result / 2 = number of crc values)
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw InvalidParameter a parameter is out of bound
+		 */
+		size_t BlReadCrcFlash(uint8_t* pBuffer, uint32_t address, uint16_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
+		
+		/**
+		 * Instructs the bootloader to read the specified memory area of the eeprom.
+		 * The wifly device has to be in bootloader mode for this command.
+		 * @param pBuffer destination for the copy of the eeprom content, should be at least \<numBytes\> wide
+		 * @param address start of the eeprom region to read
+		 * @param numBytes size of the eeprom region to read
+		 * @return the number of bytes read
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw InvalidParameter a parameter is out of bound
+		 */
+		size_t BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
+	
+		/**
+		 * Instructs the bootloader to read the specified memory area of the flash.
+		 * The wifly device has to be in bootloader mode for this command.
+		 * @param pBuffer destination for the copy of the flash content, should be at least \<numBytes\> wide
+		 * @param address start of the flash region to read
+		 * @param numBytes size of the flash region to read
+		 * @return the number of bytes read
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw InvalidParameter a parameter is out of bound
+		 */
+	size_t BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
+
 
 /* ------------------ friendships for unittesting only ------------------- */
 		/**

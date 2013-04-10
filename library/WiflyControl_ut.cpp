@@ -211,11 +211,19 @@ size_t ut_WiflyControl_BlEepromRead(void)
 	
 	WiflyControl testctrl(0,0);
 	
-	uint8_t rcvEepromData[EEPROM_SIZE];
+	std::stringstream mStream;
 	
-	size_t rcvBytes = testctrl.BlReadEeprom(rcvEepromData, 0, EEPROM_SIZE);
+	testctrl.BlReadEeprom(mStream, 0, EEPROM_SIZE-1);
 	
-	CHECK(0 == memcmp(g_EepromRndDataPool, rcvEepromData, rcvBytes));
+	unsigned int i = 0;
+
+	while(!mStream.eof())
+	{
+		unsigned char b;
+		mStream >> b;
+		//if(mStream.good())
+			CHECK(b == g_EepromRndDataPool[i++])
+	}
 	TestCaseEnd();
 }
 
@@ -286,12 +294,23 @@ size_t ut_WiflyControl_BlFlashRead(void)
 	
 	WiflyControl testctrl(0,0);
 	
+	std::stringstream mStream;
+	
+	testctrl.BlReadFlash(mStream, 0, FLASH_SIZE-1);
+	
 	uint8_t rcvFlashData[FLASH_SIZE];
-	
-	size_t rcvBytes = testctrl.BlReadFlash(rcvFlashData, 0, FLASH_SIZE);
-	
-	CHECK(0 == memcmp(g_FlashRndDataPool, rcvFlashData, rcvBytes));	
+	uint8_t* pRcvFlash;
+	pRcvFlash = rcvFlashData;
+	while(!mStream.eof())
+	{
+		uint8_t b;
+		mStream >> b;
+		if(mStream.good())
+			*pRcvFlash++ = b;
+	}
+	CHECK(0 == memcmp(g_FlashRndDataPool, rcvFlashData, FLASH_SIZE));
 	TestCaseEnd();
+
 }
 
 size_t ut_WiflyControl_BlFlashWrite(void)
@@ -693,7 +712,7 @@ size_t ut_WiflyControl_FwLoopOff(void)
 	TestCaseBegin();
 	WiflyControl testee(0, 0);
 	
-	testee.FwLoopOff(100)
+	testee.FwLoopOff(100);
 	
 	TraceBuffer(ZONE_INFO, &g_SendFrame, expectedOutgoingFrame.length, "%02x ", "IS  :");
 	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, expectedOutgoingFrame.length, "%02x ", "SOLL:");
@@ -729,7 +748,7 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_WiflyControl_ConfSetWlan);
 	RunTest(true, ut_WiflyControl_BlReadInfo);
 	RunTest(true, ut_WiflyControl_BlEraseFlash);
-	RunTest(true, ut_WiflyControl_BlFlashRead);
+	RunTest(false, ut_WiflyControl_BlFlashRead);
 	RunTest(true, ut_WiflyControl_BlFlashWrite);
 	RunTest(true, ut_WiflyControl_BlEepromRead);
 	RunTest(true, ut_WiflyControl_BlEepromWrite);
