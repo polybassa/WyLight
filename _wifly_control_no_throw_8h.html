@@ -84,13 +84,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle">
 <div class="title">WiflyControlNoThrow.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="_wifly_control_8h_source.html">WiflyControl.h</a>&quot;</code><br/>
+<code>#include &lt;functional&gt;</code><br/>
 </div>
 <p><a href="_wifly_control_no_throw_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -99,61 +99,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control_no_throw.html">WiflyControlNoThrow</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to communicate with a Wifly_Light Hardware.  <a href="class_wifly_control_no_throw.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:a35f87aeba08c4e366afd2fe914d231d2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2">WiflyError</a> { <br/>
-&#160;&#160;<a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2abf350750d0d4fabd8954c0f1e9bbae94">NO_ERROR</a> = 0, 
-<a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2a9ea7cd44f3b5993c0b647366d8ff725e">FATAL_ERROR</a>, 
-<a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2a00bc8d8fa2a4ef22ac8d9aa337802707">CONNECTION_LOST</a>, 
-<a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2af0f23e909b306d85fac6d0087800dadc">CONNECTION_TIMEOUT</a>, 
-<br/>
-&#160;&#160;<a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2a0d213a9ce640867b78937ff030c6c76f">INVALID_PARAMETER</a>, 
-<a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2ae8f3c55467ccd9edc93507455b76c3ed">SCRIPT_FULL</a>
-<br/>
- }</td></tr>
-<tr class="memdesc:a35f87aeba08c4e366afd2fe914d231d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returnvalues of <a class="el" href="class_wifly_control_no_throw.html" title="Class to communicate with a Wifly_Light Hardware.">WiflyControlNoThrow</a>.  <a href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2">More...</a><br/></td></tr>
-<tr class="separator:a35f87aeba08c4e366afd2fe914d231d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section author"><dt>Author</dt><dd>Nils Weiss, Patrick Bruenn </dd></dl>
-</div><h2 class="groupheader">Enumeration Type Documentation</h2>
-<a class="anchor" id="a35f87aeba08c4e366afd2fe914d231d2"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2">WiflyError</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returnvalues of <a class="el" href="class_wifly_control_no_throw.html" title="Class to communicate with a Wifly_Light Hardware.">WiflyControlNoThrow</a>. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="a35f87aeba08c4e366afd2fe914d231d2abf350750d0d4fabd8954c0f1e9bbae94"></a>NO_ERROR</em>&nbsp;</td><td class="fielddoc">
-<p>is returned if no error occurred </p>
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="a35f87aeba08c4e366afd2fe914d231d2a9ea7cd44f3b5993c0b647366d8ff725e"></a>FATAL_ERROR</em>&nbsp;</td><td class="fielddoc">
-<p>if command code of the response doesn't match the code of the request, or too many retries failed </p>
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="a35f87aeba08c4e366afd2fe914d231d2a00bc8d8fa2a4ef22ac8d9aa337802707"></a>CONNECTION_LOST</em>&nbsp;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="a35f87aeba08c4e366afd2fe914d231d2af0f23e909b306d85fac6d0087800dadc"></a>CONNECTION_TIMEOUT</em>&nbsp;</td><td class="fielddoc">
-<p>if response timed out </p>
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="a35f87aeba08c4e366afd2fe914d231d2a0d213a9ce640867b78937ff030c6c76f"></a>INVALID_PARAMETER</em>&nbsp;</td><td class="fielddoc">
-<p>if a parameter is out of bound </p>
-</td></tr>
-<tr><td class="fieldname"><em><a class="anchor" id="a35f87aeba08c4e366afd2fe914d231d2ae8f3c55467ccd9edc93507455b76c3ed"></a>SCRIPT_FULL</em>&nbsp;</td><td class="fielddoc">
-</td></tr>
-</table>
-
-</div>
-</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 4 2013 20:42:08 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 11 2013 20:04:56 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

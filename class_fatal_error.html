@@ -107,15 +107,19 @@ Inheritance diagram for FatalError:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aaa9f59404db32566da96acf868509817"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fatal_error.html#aaa9f59404db32566da96acf868509817">FatalError</a> (const std::string &amp;description)  throw ()</td></tr>
-<tr class="separator:aaa9f59404db32566da96acf868509817"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab005fe4973271bbb4fd6d93b4276e032"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fatal_error.html#ab005fe4973271bbb4fd6d93b4276e032">FatalError</a> (const std::string &amp;description, uint32_t errorCode=<a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2a9ea7cd44f3b5993c0b647366d8ff725e">FATAL_ERROR</a>)  throw ()</td></tr>
+<tr class="separator:ab005fe4973271bbb4fd6d93b4276e032"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3efb05890de21cb4e0e0b548c2eb6be"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fatal_error.html#ad3efb05890de21cb4e0e0b548c2eb6be">~FatalError</a> (void)  throw ()</td></tr>
 <tr class="separator:ad3efb05890de21cb4e0e0b548c2eb6be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff5d3bf2e203cd489572faacbef89877"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fatal_error.html#aff5d3bf2e203cd489572faacbef89877">AsErrorCode</a> (void) const </td></tr>
+<tr class="separator:aff5d3bf2e203cd489572faacbef89877"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a1212bcbefda9c186177be682576f4e00"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fatal_error.html#a1212bcbefda9c186177be682576f4e00">mDescription</a></td></tr>
-<tr class="separator:a1212bcbefda9c186177be682576f4e00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02622271122ba8f87fea8b7f78e8ba0d"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fatal_error.html#a02622271122ba8f87fea8b7f78e8ba0d">mDescription</a></td></tr>
+<tr class="separator:a02622271122ba8f87fea8b7f78e8ba0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37d3c3b085afb40a682e4233ce63639f"><td class="memItemLeft" align="right" valign="top">const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fatal_error.html#a37d3c3b085afb40a682e4233ce63639f">mErrorCode</a></td></tr>
+<tr class="separator:a37d3c3b085afb40a682e4233ce63639f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -123,7 +127,7 @@ Friends</h2></td></tr>
 <tr class="separator:ae2c3ada9625867398d5bbd51b1223a13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aaa9f59404db32566da96acf868509817"></a>
+<a class="anchor" id="ab005fe4973271bbb4fd6d93b4276e032"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -134,8 +138,18 @@ Friends</h2></td></tr>
           <td class="memname">FatalError::FatalError </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>description</em></td><td>)</td>
-          <td>  throw ()</td>
+          <td class="paramname"><em>description</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>errorCode</em> = <code><a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2a9ea7cd44f3b5993c0b647366d8ff725e">FATAL_ERROR</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>  throw ()</td>
         </tr>
       </table>
   </td>
@@ -165,6 +179,31 @@ Friends</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="aff5d3bf2e203cd489572faacbef89877"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t FatalError::AsErrorCode </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -207,7 +246,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a1212bcbefda9c186177be682576f4e00"></a>
+<a class="anchor" id="a02622271122ba8f87fea8b7f78e8ba0d"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -215,7 +254,27 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string FatalError::mDescription</td>
+          <td class="memname">const std::string FatalError::mDescription</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a37d3c3b085afb40a682e4233ce63639f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint32_t FatalError::mErrorCode</td>
         </tr>
       </table>
   </td>
@@ -233,7 +292,7 @@ Friends</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 4 2013 20:42:13 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 11 2013 20:05:05 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

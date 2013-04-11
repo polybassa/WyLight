@@ -115,8 +115,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1d0dffa11f76b27385052fe1927d29c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad02f390c7b5e3dc81b22aaf70218fd5d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control_no_throw.html#ad02f390c7b5e3dc81b22aaf70218fd5d">BlProgramFlash</a> (const std::string &amp;filename) const </td></tr>
 <tr class="separator:ad02f390c7b5e3dc81b22aaf70218fd5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca4db46b89caa1641599a3a25e38bd40"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control_no_throw.html#aca4db46b89caa1641599a3a25e38bd40">BlReadCrcFlash</a> (std::ostream &amp;out, unsigned int address, uint16_t numBlocks) const </td></tr>
-<tr class="separator:aca4db46b89caa1641599a3a25e38bd40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9267651f26444d43967a7653e9fc2c97"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control_no_throw.html#a9267651f26444d43967a7653e9fc2c97">BlReadCrcFlash</a> (std::ostream &amp;out, uint32_t address, size_t numBlocks) const </td></tr>
+<tr class="separator:a9267651f26444d43967a7653e9fc2c97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba9249f26f98e16bde7df538e4cc8b65"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control_no_throw.html#aba9249f26f98e16bde7df538e4cc8b65">BlReadEeprom</a> (std::ostream &amp;out, uint32_t address, size_t numBytes) const </td></tr>
 <tr class="separator:aba9249f26f98e16bde7df538e4cc8b65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b854767640d540c0ec48d9683da4436"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control_no_throw.html#a9b854767640d540c0ec48d9683da4436">BlReadFlash</a> (std::ostream &amp;out, uint32_t address, size_t numBytes) const </td></tr>
@@ -171,12 +171,12 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a41e9d3ebf658cba44e71970ee7e4653e inherit pub_methods_class_wifly_control"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace3e7d6e58266b711fa93b974289e6b3 inherit pub_methods_class_wifly_control"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#ace3e7d6e58266b711fa93b974289e6b3">BlProgramFlash</a> (const std::string &amp;filename) const   throw (ConnectionTimeout, FatalError)</td></tr>
 <tr class="separator:ace3e7d6e58266b711fa93b974289e6b3 inherit pub_methods_class_wifly_control"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97f0c9d5e0ea08f2f60a720b0134fff1 inherit pub_methods_class_wifly_control"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a97f0c9d5e0ea08f2f60a720b0134fff1">BlReadCrcFlash</a> (uint8_t *pBuffer, uint32_t address, uint16_t numBytes) const   throw (ConnectionTimeout, FatalError, InvalidParameter)</td></tr>
-<tr class="separator:a97f0c9d5e0ea08f2f60a720b0134fff1 inherit pub_methods_class_wifly_control"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13504dcf2d451545e8b5c3fa2f85b0e4 inherit pub_methods_class_wifly_control"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a13504dcf2d451545e8b5c3fa2f85b0e4">BlReadEeprom</a> (uint8_t *pBuffer, uint32_t address, size_t numBytes) const   throw (ConnectionTimeout, FatalError, InvalidParameter)</td></tr>
-<tr class="separator:a13504dcf2d451545e8b5c3fa2f85b0e4 inherit pub_methods_class_wifly_control"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5337818ba998047b8a8cdc738ddf3e43 inherit pub_methods_class_wifly_control"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a5337818ba998047b8a8cdc738ddf3e43">BlReadFlash</a> (uint8_t *pBuffer, uint32_t address, size_t numBytes) const   throw (ConnectionTimeout, FatalError, InvalidParameter)</td></tr>
-<tr class="separator:a5337818ba998047b8a8cdc738ddf3e43 inherit pub_methods_class_wifly_control"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4ae45fd35fc53e7d2e4263fc5651ad6 inherit pub_methods_class_wifly_control"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#ab4ae45fd35fc53e7d2e4263fc5651ad6">BlReadCrcFlash</a> (std::ostream &amp;out, uint32_t address, size_t numBytes) const   throw (ConnectionTimeout, FatalError, InvalidParameter)</td></tr>
+<tr class="separator:ab4ae45fd35fc53e7d2e4263fc5651ad6 inherit pub_methods_class_wifly_control"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9b3c774b26a69d07a0169fb926c0bae inherit pub_methods_class_wifly_control"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#af9b3c774b26a69d07a0169fb926c0bae">BlReadEeprom</a> (std::ostream &amp;out, uint32_t address, size_t numBytes) const   throw (ConnectionTimeout, FatalError, InvalidParameter)</td></tr>
+<tr class="separator:af9b3c774b26a69d07a0169fb926c0bae inherit pub_methods_class_wifly_control"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfa85cd0cb17e0fa65da4c92e32ad0d4 inherit pub_methods_class_wifly_control"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#abfa85cd0cb17e0fa65da4c92e32ad0d4">BlReadFlash</a> (std::ostream &amp;out, uint32_t address, size_t numBytes) const   throw (ConnectionTimeout, FatalError, InvalidParameter)</td></tr>
+<tr class="separator:abfa85cd0cb17e0fa65da4c92e32ad0d4 inherit pub_methods_class_wifly_control"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a779ef8b2751c2ddf3cd07c869a73797e inherit pub_methods_class_wifly_control"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a779ef8b2751c2ddf3cd07c869a73797e">BlReadFwVersion</a> (void) const   throw (ConnectionTimeout, FatalError)</td></tr>
 <tr class="separator:a779ef8b2751c2ddf3cd07c869a73797e inherit pub_methods_class_wifly_control"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26885cabebc9719b1da2d29131517efb inherit pub_methods_class_wifly_control"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a26885cabebc9719b1da2d29131517efb">BlReadInfo</a> (<a class="el" href="struct_bl_info.html">BlInfo</a> &amp;info) const   throw (ConnectionTimeout, FatalError)</td></tr>
@@ -286,7 +286,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Instructs the bootloader to set the autostart flag to true. This ensures the bootloader will be started on the next reboot automatically. </p>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>NO_ERROR</b> is returned if no error occurred </dd></dl>
@@ -307,7 +307,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Instructs the bootloader to erase the whole eeprom. The wifly device has to be in bootloader mode for this command. </p>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>NO_ERROR</b> is returned if no error occurred </dd></dl>
@@ -328,7 +328,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Instructs the bootloader to erase the whole flash which is not occupied by the bootloader itself. The wifly device has to be in bootloader mode for this command. </p>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>NO_ERROR</b> is returned if no error occurred </dd></dl>
@@ -355,14 +355,14 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>NO_ERROR</b> is returned if no error occurred </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="aca4db46b89caa1641599a3a25e38bd40"></a>
+<a class="anchor" id="a9267651f26444d43967a7653e9fc2c97"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -375,13 +375,13 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>address</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>numBlocks</em>&#160;</td>
         </tr>
         <tr>
@@ -400,7 +400,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>INVALID_PARAMETER</b> if a parameter is out of bound <br/>
@@ -446,7 +446,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>INVALID_PARAMETER</b> if a parameter is out of bound <br/>
@@ -492,7 +492,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>INVALID_PARAMETER</b> if a parameter is out of bound <br/>
@@ -520,7 +520,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>NO_ERROR</b> is returned if no error occurred </dd></dl>
@@ -541,7 +541,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Instructs the bootloader to return a struct of bootloader informations like bootloader version, flash and eeprom size. see <a class="el" href="struct_bl_info.html">BlInfo</a> for details. The wifly device has to be in bootloader mode for this command. </p>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>NO_ERROR</b> is returned if no error occurred </dd></dl>
@@ -562,7 +562,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Instructs the bootloader to start the wifly device firmware. The wifly device has to be in bootloader mode for this command. </p>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>NO_ERROR</b> is returned if no error occurred </dd></dl>
@@ -589,7 +589,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>NO_ERROR</b> is returned if no error occurred </dd></dl>
 
 </div>
@@ -608,7 +608,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Set the Wifly module communication parameters to defaults </p>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>FATAL_ERROR</b> in case of an error <br/>
 <b>NO_ERROR</b> is returned if no error occurred </dd></dl>
 
@@ -645,7 +645,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>FATAL_ERROR</b> in case of an error <br/>
 <b>NO_ERROR</b> is returned if no error occurred </dd></dl>
 
@@ -665,7 +665,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Wipe all commands from the Wifly script controller </p>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>SCRIPT_FULL</b> if script buffer in PIC firmware is full and request couldn't be executed <br/>
@@ -693,7 +693,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>SCRIPT_FULL</b> if script buffer in PIC firmware is full and request couldn't be executed <br/>
@@ -721,7 +721,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>SCRIPT_FULL</b> if script buffer in PIC firmware is full and request couldn't be executed <br/>
@@ -749,7 +749,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>SCRIPT_FULL</b> if script buffer in PIC firmware is full and request couldn't be executed <br/>
@@ -777,7 +777,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>SCRIPT_FULL</b> if script buffer in PIC firmware is full and request couldn't be executed <br/>
@@ -805,7 +805,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>SCRIPT_FULL</b> if script buffer in PIC firmware is full and request couldn't be executed <br/>
@@ -827,7 +827,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Injects a LoopOn command into the wifly script controller </p>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>SCRIPT_FULL</b> if script buffer in PIC firmware is full and request couldn't be executed <br/>
@@ -866,7 +866,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>SCRIPT_FULL</b> if script buffer in PIC firmware is full and request couldn't be executed <br/>
@@ -919,7 +919,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>SCRIPT_FULL</b> if script buffer in PIC firmware is full and request couldn't be executed <br/>
@@ -947,7 +947,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>SCRIPT_FULL</b> if script buffer in PIC firmware is full and request couldn't be executed <br/>
@@ -975,7 +975,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>SCRIPT_FULL</b> if script buffer in PIC firmware is full and request couldn't be executed &lt; BR&gt;<b>NO_ERROR</b> is returned if no error occurred </dd></dl>
@@ -996,7 +996,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Stops firmware and script controller execution and start the bootloader of the wifly device </p>
-<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_no_throw_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
+<dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2" title="Returnvalues of WiflyControlNoThrow.">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
 <b>SCRIPT_FULL</b> if script buffer in PIC firmware is full and request couldn't be executed <br/>
@@ -1010,7 +1010,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 4 2013 20:42:16 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 11 2013 20:05:15 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

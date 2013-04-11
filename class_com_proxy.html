@@ -97,8 +97,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a71069fbcb6901649f75f7b816559e061"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2443ea54fcb996802d643468eb5333b9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_com_proxy.html#a2443ea54fcb996802d643468eb5333b9">Send</a> (const <a class="el" href="struct_bl_request.html">BlRequest</a> &amp;req, uint8_t *pResponse, size_t responseSize, bool doSync=true) const   throw (ConnectionTimeout, FatalError)</td></tr>
 <tr class="separator:a2443ea54fcb996802d643468eb5333b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a356ff2e48f92c1b80d2aab7e9f32bbe9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_com_proxy.html#a356ff2e48f92c1b80d2aab7e9f32bbe9">Send</a> (struct cmd_frame const *pFrame, response_frame *pResponse, size_t responseSize) const   throw (ConnectionTimeout, FatalError)</td></tr>
-<tr class="separator:a356ff2e48f92c1b80d2aab7e9f32bbe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fd3719cd64459a8966161e8bf5abed8"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_com_proxy.html#a9fd3719cd64459a8966161e8bf5abed8">Send</a> (const <a class="el" href="class_fw_request.html">FwRequest</a> &amp;request, response_frame *pResponse, size_t responseSize) const   throw (ConnectionTimeout, FatalError)</td></tr>
+<tr class="separator:a9fd3719cd64459a8966161e8bf5abed8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a71069fbcb6901649f75f7b816559e061"></a>
@@ -156,15 +156,15 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a356ff2e48f92c1b80d2aab7e9f32bbe9"></a>
+<a class="anchor" id="a9fd3719cd64459a8966161e8bf5abed8"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">size_t ComProxy::Send </td>
           <td>(</td>
-          <td class="paramtype">struct cmd_frame const *&#160;</td>
-          <td class="paramname"><em>pFrame</em>, </td>
+          <td class="paramtype">const <a class="el" href="class_fw_request.html">FwRequest</a> &amp;&#160;</td>
+          <td class="paramname"><em>request</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -194,7 +194,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 4 2013 20:42:12 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 11 2013 20:05:04 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

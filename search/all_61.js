@@ -10,5 +10,6 @@ var searchData=
   ['asbigendianlong',['asBigEndianLong',['../class_wifly_color.html#a6af6487d17668e3c40edfd60429f0304',1,'WiflyColor']]],
   ['asbytes',['asBytes',['../class_wifly_color.html#a78508053f83c1dcb963a1fdf0127e239',1,'WiflyColor']]],
   ['asciitime',['asciiTime',['../struct_broadcast_message.html#aa7f6b47ac086067f235f7bf50a1ba463',1,'BroadcastMessage']]],
+  ['aserrorcode',['AsErrorCode',['../class_fatal_error.html#aff5d3bf2e203cd489572faacbef89877',1,'FatalError']]],
   ['asuint64',['AsUint64',['../class_endpoint.html#a2d0912e7fa4ae54f9402d6833a6d3ae6',1,'Endpoint']]]
 ];

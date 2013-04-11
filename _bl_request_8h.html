@@ -128,10 +128,10 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:acb8656d747a871710ed38fdb9f77f7fb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_bl_request_8h.html#acb8656d747a871710ed38fdb9f77f7fb">WORD</a>(HIGH, LOW)&#160;&#160;&#160;(uint16_t)(((((uint16_t)(HIGH))&lt;&lt; 8) | (((uint16_t)(LOW)) &amp; 0x00ff)))</td></tr>
-<tr class="separator:acb8656d747a871710ed38fdb9f77f7fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac32dc621c21e4ca8664269a4e9bb315f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_bl_request_8h.html#ac32dc621c21e4ca8664269a4e9bb315f">DWORD</a>(HIGH, LOW)&#160;&#160;&#160;(uint32_t)(((((uint32_t)(HIGH))&lt;&lt; 16) | (((uint32_t)(LOW)) &amp; 0x0000ffff)))</td></tr>
-<tr class="separator:ac32dc621c21e4ca8664269a4e9bb315f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adab2850c36aeffe55ad0faa1e4a2e3a4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_bl_request_8h.html#adab2850c36aeffe55ad0faa1e4a2e3a4">BL_WORD</a>(HIGH, LOW)&#160;&#160;&#160;(uint16_t)(((((uint16_t)(HIGH))&lt;&lt; 8) | (((uint16_t)(LOW)) &amp; 0x00ff)))</td></tr>
+<tr class="separator:adab2850c36aeffe55ad0faa1e4a2e3a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80595b3d82a783b293c1974922ffd119"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_bl_request_8h.html#a80595b3d82a783b293c1974922ffd119">BL_DWORD</a>(HIGH, LOW)&#160;&#160;&#160;(uint32_t)(((((uint32_t)(HIGH))&lt;&lt; 16) | (((uint32_t)(LOW)) &amp; 0x0000ffff)))</td></tr>
+<tr class="separator:a80595b3d82a783b293c1974922ffd119"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac996c860317bb3ff843b979448edd27c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_bl_request_8h.html#ac996c860317bb3ff843b979448edd27c">FLASH_ERASE_BLOCKSIZE</a>&#160;&#160;&#160;64</td></tr>
 <tr class="separator:ac996c860317bb3ff843b979448edd27c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c7a793c69778ad4ca35e6af48157a66"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_bl_request_8h.html#a6c7a793c69778ad4ca35e6af48157a66">FLASH_ERASE_BLOCKS</a>&#160;&#160;&#160;128		/* Blocks erased by one command */</td></tr>
@@ -185,12 +185,12 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ac32dc621c21e4ca8664269a4e9bb315f"></a>
+<a class="anchor" id="a80595b3d82a783b293c1974922ffd119"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define DWORD</td>
+          <td class="memname">#define BL_DWORD</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">HIGH, </td>
@@ -205,6 +205,32 @@ Functions</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td>&#160;&#160;&#160;(uint32_t)(((((uint32_t)(HIGH))&lt;&lt; 16) | (((uint32_t)(LOW)) &amp; 0x0000ffff)))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="adab2850c36aeffe55ad0faa1e4a2e3a4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BL_WORD</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">HIGH, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">LOW&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;(uint16_t)(((((uint16_t)(HIGH))&lt;&lt; 8) | (((uint16_t)(LOW)) &amp; 0x00ff)))</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -319,32 +345,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="acb8656d747a871710ed38fdb9f77f7fb"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define WORD</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">HIGH, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">LOW&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;(uint16_t)(((((uint16_t)(HIGH))&lt;&lt; 8) | (((uint16_t)(LOW)) &amp; 0x00ff)))</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="ab6d0d55d09ff97aaf075361fd7a6e61e"></a>
 <div class="memitem">
@@ -373,7 +373,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 4 2013 20:42:08 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 11 2013 20:04:56 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

@@ -117,12 +117,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a41e9d3ebf658cba44e71970ee7e4653e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace3e7d6e58266b711fa93b974289e6b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#ace3e7d6e58266b711fa93b974289e6b3">BlProgramFlash</a> (const std::string &amp;filename) const   throw (ConnectionTimeout, FatalError)</td></tr>
 <tr class="separator:ace3e7d6e58266b711fa93b974289e6b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97f0c9d5e0ea08f2f60a720b0134fff1"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a97f0c9d5e0ea08f2f60a720b0134fff1">BlReadCrcFlash</a> (uint8_t *pBuffer, uint32_t address, uint16_t numBytes) const   throw (ConnectionTimeout, FatalError, InvalidParameter)</td></tr>
-<tr class="separator:a97f0c9d5e0ea08f2f60a720b0134fff1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13504dcf2d451545e8b5c3fa2f85b0e4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a13504dcf2d451545e8b5c3fa2f85b0e4">BlReadEeprom</a> (uint8_t *pBuffer, uint32_t address, size_t numBytes) const   throw (ConnectionTimeout, FatalError, InvalidParameter)</td></tr>
-<tr class="separator:a13504dcf2d451545e8b5c3fa2f85b0e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5337818ba998047b8a8cdc738ddf3e43"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a5337818ba998047b8a8cdc738ddf3e43">BlReadFlash</a> (uint8_t *pBuffer, uint32_t address, size_t numBytes) const   throw (ConnectionTimeout, FatalError, InvalidParameter)</td></tr>
-<tr class="separator:a5337818ba998047b8a8cdc738ddf3e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4ae45fd35fc53e7d2e4263fc5651ad6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#ab4ae45fd35fc53e7d2e4263fc5651ad6">BlReadCrcFlash</a> (std::ostream &amp;out, uint32_t address, size_t numBytes) const   throw (ConnectionTimeout, FatalError, InvalidParameter)</td></tr>
+<tr class="separator:ab4ae45fd35fc53e7d2e4263fc5651ad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9b3c774b26a69d07a0169fb926c0bae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#af9b3c774b26a69d07a0169fb926c0bae">BlReadEeprom</a> (std::ostream &amp;out, uint32_t address, size_t numBytes) const   throw (ConnectionTimeout, FatalError, InvalidParameter)</td></tr>
+<tr class="separator:af9b3c774b26a69d07a0169fb926c0bae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfa85cd0cb17e0fa65da4c92e32ad0d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#abfa85cd0cb17e0fa65da4c92e32ad0d4">BlReadFlash</a> (std::ostream &amp;out, uint32_t address, size_t numBytes) const   throw (ConnectionTimeout, FatalError, InvalidParameter)</td></tr>
+<tr class="separator:abfa85cd0cb17e0fa65da4c92e32ad0d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a779ef8b2751c2ddf3cd07c869a73797e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a779ef8b2751c2ddf3cd07c869a73797e">BlReadFwVersion</a> (void) const   throw (ConnectionTimeout, FatalError)</td></tr>
 <tr class="separator:a779ef8b2751c2ddf3cd07c869a73797e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26885cabebc9719b1da2d29131517efb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a26885cabebc9719b1da2d29131517efb">BlReadInfo</a> (<a class="el" href="struct_bl_info.html">BlInfo</a> &amp;info) const   throw (ConnectionTimeout, FatalError)</td></tr>
@@ -331,15 +331,15 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a97f0c9d5e0ea08f2f60a720b0134fff1"></a>
+<a class="anchor" id="ab4ae45fd35fc53e7d2e4263fc5651ad6"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t WiflyControl::BlReadCrcFlash </td>
+          <td class="memname">void WiflyControl::BlReadCrcFlash </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>pBuffer</em>, </td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -350,7 +350,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>numBytes</em>&#160;</td>
         </tr>
         <tr>
@@ -363,13 +363,12 @@ Friends</h2></td></tr>
 <p>Instructs the bootloader to create crc-16 checksums for the content of the specified flash area. TODO crc values are in little endian byte order The wifly device has to be in bootloader mode for this command. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pBuffer</td><td>pointer to a buffer for the resulting 16bit crc values </td></tr>
+    <tr><td class="paramname">out</td><td>ostream for the resulting 16bit crc values </td></tr>
     <tr><td class="paramname">address</td><td>crc generation starts from this flash address </td></tr>
     <tr><td class="paramname">numBytes</td><td>size of the flash area for which the crc are calculated </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the number of bytes read (result / 2 = number of crc values) </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="class_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
@@ -381,15 +380,15 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a13504dcf2d451545e8b5c3fa2f85b0e4"></a>
+<a class="anchor" id="af9b3c774b26a69d07a0169fb926c0bae"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t WiflyControl::BlReadEeprom </td>
+          <td class="memname">void WiflyControl::BlReadEeprom </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>pBuffer</em>, </td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -413,13 +412,12 @@ Friends</h2></td></tr>
 <p>Instructs the bootloader to read the specified memory area of the eeprom. The wifly device has to be in bootloader mode for this command. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pBuffer</td><td>destination for the copy of the eeprom content, should be at least &lt;numBytes&gt; wide </td></tr>
+    <tr><td class="paramname">out</td><td>ostream where the eeprom content is written </td></tr>
     <tr><td class="paramname">address</td><td>start of the eeprom region to read </td></tr>
     <tr><td class="paramname">numBytes</td><td>size of the eeprom region to read </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the number of bytes read </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="class_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
@@ -431,15 +429,15 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a5337818ba998047b8a8cdc738ddf3e43"></a>
+<a class="anchor" id="abfa85cd0cb17e0fa65da4c92e32ad0d4"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t WiflyControl::BlReadFlash </td>
+          <td class="memname">void WiflyControl::BlReadFlash </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>pBuffer</em>, </td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -463,13 +461,12 @@ Friends</h2></td></tr>
 <p>Instructs the bootloader to read the specified memory area of the flash. The wifly device has to be in bootloader mode for this command. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pBuffer</td><td>destination for the copy of the flash content, should be at least &lt;numBytes&gt; wide </td></tr>
+    <tr><td class="paramname">out</td><td>ostream where the flash content is written </td></tr>
     <tr><td class="paramname">address</td><td>start of the flash region to read </td></tr>
     <tr><td class="paramname">numBytes</td><td>size of the flash region to read </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the number of bytes read </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="class_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
@@ -1185,7 +1182,7 @@ Friends</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 4 2013 20:42:16 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 11 2013 20:05:14 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
