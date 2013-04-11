@@ -1,5 +1,5 @@
-ANDROID_DIR=./android/WiflyLight
-ANDROID_BIN=android/.metadata ${ANDROID_DIR}/bin/ ${ANDROID_DIR}/gen/ ${ANDROID_DIR}/libs/armeabi/ ${ANDROID_DIR}/obj/ ${ANDROID_DIR}Test/bin/ ${ANDROID_DIR}Test/gen/ ${ANDROID_DIR}Test/libs/ ${ANDROID_DIR}Test/obj/
+include Makefile.android
+include Makefile.docu
 
 all_nils: test pic x86_client
 
@@ -15,13 +15,6 @@ pic_release:
 
 simu:
 	cd firmware; make simu; cd ..
-
-android_test:
-	ndk-build -C $(ANDROID_DIR)Test
-	cp -r $(ANDROID_DIR)Test/libs/ $(ANDROID_DIR)/
-
-android_client:
-	ndk-build -C $(ANDROID_DIR)
 	
 x86_client_debug:
 	cd cli; make cli_debug; cd ..
@@ -39,8 +32,3 @@ test: clean firmware_test library_test
 clean: cli_clean firmware_clean library_clean
 	rm -rf $(ANDROID_BIN)
 
-documentation:
-	doxygen docs/Doxyfile; cd html; git add .; git commit -m "documentation"; git push origin gh-pages; cd ..
-
-docu:
-	doxygen docs/Doxyfile
