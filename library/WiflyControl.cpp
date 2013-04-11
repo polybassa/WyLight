@@ -91,15 +91,15 @@ void WiflyControl::BlEraseFlash(void) const throw(ConnectionTimeout, FatalError)
 
 	while(address > FLASH_ERASE_BLOCKSIZE * FLASH_ERASE_BLOCKS)
 	{
-		BlEraseFlash(address, FLASH_ERASE_BLOCKS);
+		BlEraseFlashArea(address, FLASH_ERASE_BLOCKS);
 		address -= FLASH_ERASE_BLOCKSIZE * FLASH_ERASE_BLOCKS;
 	}
 	/* now we erased everything until a part of the flash smaller than FLASH_ERASE_BLOCKS * FLASH_ERASE_BLOCKSIZE
 	 * so we set our startaddress at the beginning of this block and erase */
-	BlEraseFlash(FLASH_ERASE_BLOCKS * FLASH_ERASE_BLOCKSIZE -1, FLASH_ERASE_BLOCKS);
+	BlEraseFlashArea(FLASH_ERASE_BLOCKS * FLASH_ERASE_BLOCKSIZE -1, FLASH_ERASE_BLOCKS);
 }
 
-void WiflyControl::BlEraseFlash(const uint32_t endAddress, const uint8_t numPages) const throw(ConnectionTimeout, FatalError)
+void WiflyControl::BlEraseFlashArea(const uint32_t endAddress, const uint8_t numPages) const throw(ConnectionTimeout, FatalError)
 {
 	unsigned char response;
 	BlFlashEraseRequest request(endAddress, numPages);

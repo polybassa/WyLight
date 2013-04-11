@@ -28,11 +28,35 @@
 #include "wifly_cmd.h"
 #include "BlRequest.h"
 
+/******************************************************************************/
+/*!\file WiflyControlException.h
+ * \author Nils Weiss, Patrick Bruenn
+ *
+ * \cond
+ * enum - WiflyError
+ * \endcond
+ *
+ * \brief Returnvalues of WiflyControlNoThrow
+ *
+ *
+ *******************************************************************************/
+
+enum WiflyError {
+	NO_ERROR = 0,			/**< is returned if no error occurred */ 
+	FATAL_ERROR,			/**< if command code of the response doesn't match the code of the request, or too many retries failed */ 
+	CONNECTION_LOST,
+	CONNECTION_TIMEOUT,		/**< if response timed out */
+	INVALID_PARAMETER,		/**< if a parameter is out of bound */
+	SCRIPT_FULL,
+};
+
 class FatalError : public std::exception
 {
 public:
-	FatalError(const std::string& description) throw () : mDescription(description) {};
+	FatalError(const std::string& description, uint32_t errorCode = FATAL_ERROR) throw () : mDescription(description), mErrorCode(errorCode) {};
 	virtual ~FatalError(void) throw () {};
+
+	uint32_t AsErrorCode(void) const { return mErrorCode; };
 
 	friend std::ostream& operator<< (std::ostream& out, const FatalError& ref)
 	{
@@ -40,14 +64,15 @@ public:
 	};
 
 protected:
-	std::string mDescription;
+	const std::string mDescription;
+	const uint32_t mErrorCode;
 };
 
 class ConnectionLost : public FatalError
 {
 public:
 	ConnectionLost(const std::string& description, uint32_t addr, uint16_t port)
-		: FatalError(description), mAddress(addr), mPort(port)
+		: FatalError(description, CONNECTION_LOST), mAddress(addr), mPort(port)
 	{
 	};
 
@@ -65,18 +90,18 @@ protected:
 class ConnectionTimeout : public FatalError
 {
 public:
-	ConnectionTimeout(const std::string& description) : FatalError(description) {};
+	ConnectionTimeout(const std::string& description) : FatalError(description, CONNECTION_TIMEOUT) {};
 };
 
 class InvalidParameter : public FatalError
 {
 public:
-	InvalidParameter(const std::string& description) : FatalError(description) {};
+	InvalidParameter(const std::string& description) : FatalError(description, INVALID_PARAMETER) {};
 };
 
 class ScriptBufferFull : public FatalError
 {
 public:
-	ScriptBufferFull(void) : FatalError("ScriptBuffer in PIC is full, clear it or wait") {};
+	ScriptBufferFull(void) : FatalError("ScriptBuffer in PIC is full, clear it or wait", SCRIPT_FULL) {};
 };
 #endif /* defined(____WiflyControlException__) */
