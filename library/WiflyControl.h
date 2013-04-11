@@ -365,7 +365,7 @@ class WiflyControl
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 */
-		void BlEraseFlash(const uint32_t endAddress, const uint8_t numPages) const throw (ConnectionTimeout, FatalError);
+		void BlEraseFlashArea(const uint32_t endAddress, const uint8_t numPages) const throw (ConnectionTimeout, FatalError);
 
 		/**
 		 * Send a request to the bootloader and read his response into pResponse

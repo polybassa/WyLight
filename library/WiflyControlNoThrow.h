@@ -19,28 +19,7 @@
 #ifndef _WIFLYCONTROL_NOTHROW_H_
 #define _WIFLYCONTROL_NOTHROW_H_
 #include "WiflyControl.h"
-
-/******************************************************************************/
-/*!\file WiflyControlNoThrow.h
- * \author Nils Weiss, Patrick Bruenn
- *
- * \cond
- * enum - WiflyError
- * \endcond
- *
- * \brief Returnvalues of WiflyControlNoThrow
- *
- *
- *******************************************************************************/
-
-enum WiflyError {
-	NO_ERROR = 0,			/**< is returned if no error occurred */ 
-	FATAL_ERROR,			/**< if command code of the response doesn't match the code of the request, or too many retries failed */ 
-	CONNECTION_LOST,
-	CONNECTION_TIMEOUT,		/**< if response timed out */
-	INVALID_PARAMETER,		/**< if a parameter is out of bound */
-	SCRIPT_FULL,
-};
+#include <functional>
 
 /******************************************************************************/
 /*!\cond
@@ -366,6 +345,6 @@ class WiflyControlNoThrow : private WiflyControl
 		 * Converts all exceptions from ::WiflyControl to the relating ::WiflyError
 		 */
 		uint32_t SolveException(void) const;
-	
+		uint32_t Try(const std::function<void(const WiflyControl&)> call) const;
 };
 #endif /* #ifndef _WIFLYCONTROL_NOTHROW_H_ */
