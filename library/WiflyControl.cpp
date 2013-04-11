@@ -130,6 +130,7 @@ size_t WiflyControl::BlRead(const BlRequest& req, unsigned char* pResponse, cons
 
 void WiflyControl::BlReadCrcFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
+	out.flags ( std::ios::right | std::ios::hex | std::ios::showbase );
 	uint8_t buffer[5096];
 	size_t bytesRead = BlReadCrcFlash(buffer, address, numBytes);
 	for (size_t i = 0; i < bytesRead; i++) {
@@ -166,6 +167,7 @@ void WiflyControl::BlReadEeprom(std::ostream& out, uint32_t address, size_t numB
 {
 	uint8_t buffer[EEPROM_SIZE];
 	size_t bytesRead = BlReadEeprom(buffer, address, numBytes);
+	out.flags ( std::ios::right | std::ios::hex | std::ios::showbase );
 	for (size_t i = 0; i < bytesRead; i++) {
 		out.put(buffer[i]);
 	}
@@ -198,6 +200,7 @@ size_t WiflyControl::BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t num
 
 void WiflyControl::BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
+	out.flags ( std::ios::right | std::ios::hex | std::ios::showbase );
 	uint8_t buffer[FLASH_SIZE];
 	size_t bytesRead = BlReadFlash(buffer, address, numBytes);
 	for (size_t i = 0; i < bytesRead; i++) {

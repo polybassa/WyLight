@@ -68,32 +68,35 @@ void WiflyControl::BlEraseFlash(void) const throw(ConnectionTimeout, FatalError)
 
 void WiflyControl::BlProgramFlash(const std::string& filename) const throw (ConnectionTimeout, FatalError) {throwExceptions(); }
 
-size_t WiflyControl::BlReadCrcFlash(uint8_t* pBuffer, uint32_t address, uint16_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+void WiflyControl::BlReadCrcFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	throwExceptions();
-	size_t i;
-	for(i = 0; i < numBytes; i++)
-		*pBuffer++ = 0xff;
-	
-	return i;
+	while(numBytes)
+	{
+		numBytes--;
+		out << 0xff;
+	}
 }
 
-size_t WiflyControl::BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+
+void WiflyControl::BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	throwExceptions();
-	size_t i;
-	for(i = 0; i < numBytes; i++)
-		*pBuffer++ = 0xff;
-	return i;
+	while(numBytes)
+	{
+		numBytes--;
+		out << 0xff;
+	}
 }
 
-size_t WiflyControl::BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+void WiflyControl::BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	throwExceptions();
-	size_t i;
-	for(i = 0; i < numBytes; i++)
-		*pBuffer++ = 0xff;
-	return i;
+	while(numBytes)
+	{
+		numBytes--;
+		out << 0xff;
+	}
 }
 
 std::string WiflyControl::BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError) {throwExceptions(); return ""; }
@@ -314,8 +317,8 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_WiflyControlNoThrow_FwFunctions);
 	RunTest(true, ut_WiflyControlNoThrow_ConfFunctions);
 	RunTest(true, ut_WiflyControlNoThrow_BlFunctions);
-	RunTest(true, ut_WiflyControlNoThrow_BlReadFlash);
-	RunTest(true, ut_WiflyControlNoThrow_BlReadCrcFlash);
-	RunTest(true, ut_WiflyControlNoThrow_BlReadEeprom);
+	RunTest(false, ut_WiflyControlNoThrow_BlReadFlash);
+	RunTest(false, ut_WiflyControlNoThrow_BlReadCrcFlash);
+	RunTest(false, ut_WiflyControlNoThrow_BlReadEeprom);
 	UnitTestMainEnd();
 }
