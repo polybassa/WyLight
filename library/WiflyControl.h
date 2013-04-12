@@ -326,6 +326,8 @@ class WiflyControl
 		//TODO move this test functions to the integration test 
 		void FwTest(void);
 		void FwStressTest(void);
+	
+		WiflyControl& operator<<(const FwRequest& cmd);
 
 /* ------------------------- VERSION EXTRACT METHODE ------------------------- */
 		/**
@@ -406,7 +408,9 @@ class WiflyControl
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */		
-		FwResponse& FwSend(const FwRequest& request, FwResponse &response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		FwResponse& FwSend(const FwRequest& request, FwResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		FwResponse& FwSend(const FwRequest& request, FwResponse&& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+
 			
 		/**
 		 * Instructs the bootloader to create crc-16 checksums for the content of
