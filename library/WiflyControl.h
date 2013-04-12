@@ -409,8 +409,6 @@ class WiflyControl
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */		
 		FwResponse& FwSend(const FwRequest& request, FwResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-		FwResponse& FwSend(const FwRequest& request, FwResponse&& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-
 			
 		/**
 		 * Instructs the bootloader to create crc-16 checksums for the content of

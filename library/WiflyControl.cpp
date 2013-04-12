@@ -587,7 +587,7 @@ void WiflyControl::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBu
 	FwSend(FwCmdLoopOn(), response);
 }
 
-FwResponse& WiflyControl::FwSend(const FwRequest& request, FwResponse&& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+FwResponse& WiflyControl::FwSend(const FwRequest& request, FwResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	response_frame buffer;
 	size_t numCrcRetries = 5;
@@ -602,12 +602,6 @@ FwResponse& WiflyControl::FwSend(const FwRequest& request, FwResponse&& response
 		}
 	} while (0 < --numCrcRetries);
 	throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": Too many retries");
-}
-
-FwResponse& WiflyControl::FwSend(const FwRequest& request, FwResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	FwSend(request, std::move(response));
-	return response;
 }
 
 void WiflyControl::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
@@ -682,8 +676,9 @@ std::string WiflyControl::ExtractFwVersion(const std::string& pFilename) const
 
 WiflyControl& WiflyControl::operator<<(const FwRequest& cmd)
 {
-	FwResponseFactory mFac;
-	this->FwSend(cmd, mFac.create(*cmd.GetData()));
+	FwResponse* mRes = FwResponseFactory::create(*cmd.GetData());
+	this->FwSend(cmd, *mRes);
+	delete mRes;
 	return *this;
 }
 
