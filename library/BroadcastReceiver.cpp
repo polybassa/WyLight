@@ -89,7 +89,7 @@ Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout) throw (FatalError)
 	if(msg.IsWiflyBroadcast(bytesRead))
 	{
 		Trace(ZONE_INFO, "Broadcast detected\n");
-		Endpoint newRemote(remoteAddr, remoteAddrLength, msg.port);
+		Endpoint newRemote(remoteAddr, remoteAddrLength, msg.port, std::string((char*)&msg.deviceId[0]));
 		mMutex.lock();
 		bool added = mIpTable.insert(newRemote).second;
 		mMutex.unlock();

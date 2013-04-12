@@ -34,6 +34,12 @@ class Endpoint
 			mAddr = ntohl(((sockaddr_in&)addr).sin_addr.s_addr);
 			mPort = ntohs(port);
 		};
+		
+		Endpoint(sockaddr_storage& addr, const size_t size, uint16_t port, std::string devId)
+		: Endpoint(addr, size, port)
+		{
+			mDeviceId = devId;
+		};
 
 		Endpoint(uint32_t addr = 0, uint16_t port = 0)
 			: mAddr(addr), mPort(port)
@@ -51,7 +57,8 @@ class Endpoint
 								 << ((ref.mAddr & 0x00ff0000 ) >> 16) << '.'
 								 << ((ref.mAddr & 0x0000ff00 ) >> 8) << '.'
 								 << (ref.mAddr & 0x000000ff )
-								 << ':' << ref.mPort;
+								 << ':' << ref.mPort
+								 << "  :  " << ref.mDeviceId;
 		};
 
 		/* 
@@ -71,6 +78,11 @@ class Endpoint
 		{
 			return mPort;
 		};
+	
+		std::string GetDeviceId(void) const
+		{
+			return mDeviceId;
+		};
 
 		bool IsValid(void) const
 		{
@@ -80,6 +92,7 @@ class Endpoint
 	private:
 		uint32_t mAddr;
 		uint16_t mPort;
+		std::string mDeviceId = "";
 };
 #endif /* #ifndef _ENDPOINT_H_ */
 
