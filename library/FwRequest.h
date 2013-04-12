@@ -125,6 +125,10 @@ public:
 		mCmdFrame.data.set_fade.fadeTmms = htons(fadeTime);
 		mCmdFrame.data.set_fade.parallelFade = (parallelFade ? 1 : 0);
 	};
+	FwCmdSetFade(uint32_t argb) : FwCmdSetFade(argb, 0, 0xffffffff, false) {};
+	FwCmdSetFade(uint32_t argb, uint16_t fadeTime) : FwCmdSetFade(argb, fadeTime, 0xffffffff, false) {};
+	FwCmdSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr) : FwCmdSetFade(argb, fadeTime, addr, false) {};
+	
 };
 
 class FwCmdSetRtc : public FwRequest
