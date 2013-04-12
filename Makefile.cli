@@ -1,0 +1,9 @@
+x86_client_debug:
+	cd cli; make cli_debug; cd ..
+
+x86_client:
+	cd cli; make cli; cd ..
+
+cli_clean:
+	cd cli; make clean; cd ..
+

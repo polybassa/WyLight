@@ -1,0 +1,15 @@
+pic:
+	cd firmware; make pic; cd ..
+
+pic_release:
+	cd firmware; make pic_release; cd ..
+
+simu:
+	cd firmware; make simu; cd ..
+	
+firmware_test:
+	@cd firmware; make test; cd ..
+
+firmware_clean:
+	cd firmware; make clean; cd ..
+
