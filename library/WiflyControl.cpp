@@ -587,7 +587,7 @@ void WiflyControl::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBu
 	FwSend(FwCmdLoopOn(), response);
 }
 
-WiflyResponse& WiflyControl::FwSend(const FwRequest& request, WiflyResponse &response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+FwResponse& WiflyControl::FwSend(const FwRequest& request, FwResponse &response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	response_frame buffer;
 	size_t numCrcRetries = 5;

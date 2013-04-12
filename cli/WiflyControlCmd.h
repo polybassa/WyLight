@@ -18,7 +18,7 @@
 
 #ifndef _WIFLYCONTROLCMD_H_
 #define _WIFLYCONTROLCMD_H_
-#include "WiflyControlResponse.h"
+#include "FwResponse.h"
 #include "trace.h"
 #include <iostream>
 #include <string>
