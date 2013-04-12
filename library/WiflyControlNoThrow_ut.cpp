@@ -36,8 +36,6 @@ TelnetProxy::TelnetProxy(const TcpSocket& sock) : mSock (sock) {}
 WiflyControl::WiflyControl(uint32_t addr, uint16_t port)
 : mSock(addr, port), mProxy(mSock), mTelnet(mSock)
 {
-	//TODO remove length
-	mCmdFrame.length = (uns8)sizeof(struct cmd_set_fade) + 2;
 }
 
 static WiflyError g_ErrorCode;

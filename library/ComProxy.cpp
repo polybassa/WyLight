@@ -58,10 +58,11 @@ size_t ComProxy::Send(const BlRequest& req, uint8_t* pResponse, size_t responseS
 	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
 }
 
-size_t ComProxy::Send(const struct cmd_frame* pFrame, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout, FatalError)
+size_t ComProxy::Send(const FwRequest& request, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout, FatalError)
 {
-	return Send(reinterpret_cast<const uint8_t*>(pFrame), pFrame->length, reinterpret_cast<uint8_t*>(pResponse), responseSize, true, false, false);
+	return Send(request.GetData(), request.GetSize(), reinterpret_cast<uint8_t*>(pResponse), responseSize, true, false, false);
 }
+
 
 size_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const throw(ConnectionTimeout, FatalError)
 {	

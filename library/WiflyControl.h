@@ -46,9 +46,10 @@
 #include "ComProxy.h"
 #include "wifly_cmd.h"
 #include "BlRequest.h"
+#include "FwRequest.h"
 #include "TelnetProxy.h"
 #include "WiflyControlException.h"
-#include "WiflyControlResponse.h"
+#include "FwResponse.h"
 
 class WiflyControl
 {	
@@ -353,11 +354,6 @@ class WiflyControl
 		const TelnetProxy mTelnet;
 
 		/**
-		 * Internal command frame used to send to the wifly device, this member should be removed and replaced by local variables.
-		 */
-		struct cmd_frame mCmdFrame;
-
-		/**
 		 * Instructs the bootloader to erase the specified area of the flash.
 		 * The wifly device has to be in bootloader mode for this command.
 		 * @param endAddress address of the block to delete
@@ -403,16 +399,15 @@ class WiflyControl
 
 		/**
 		 * Sends a wifly command frame to the wifly device
-		 * @param pFrame pointer to the frame, which should be send
-		 * @param length number of bytes on the <pFrame>
+		 * @param request FwRequest object with the frame, which should be send
 		 * @param response will be modified according to the success of this operation
 		 * @return response
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */		
-		WiflyResponse& FwSend(struct cmd_frame* pFrame, size_t length, WiflyResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-	
+		FwResponse& FwSend(const FwRequest& request, FwResponse &response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+			
 		/**
 		 * Instructs the bootloader to create crc-16 checksums for the content of
 		 * the specified flash area. TODO crc values are in little endian byte order

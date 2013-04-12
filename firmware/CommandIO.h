@@ -23,7 +23,7 @@
 #include "wifly_cmd.h"
 
 /* "+3" is need, because the crc is not in sizeof(cmd_frame) */
-#define CMDFRAMELENGTH (NUM_OF_LED * 3 + sizeof(struct cmd_frame) + 3)
+#define CMDFRAMELENGTH (NUM_OF_LED * 3 + sizeof(struct led_cmd) + 3)
 
 #ifdef __CC8E__
 #if (CMDFRAMELENGTH>255)

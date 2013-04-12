@@ -22,6 +22,7 @@
 #include "BlRequest.h"
 #include "ClientSocket.h"
 #include "trace.h"
+#include "FwRequest.h"
 #include "wifly_cmd.h"
 
 class ComProxy
@@ -47,14 +48,14 @@ class ComProxy
 
 		/*
 		 * Send a request to the PIC firmware and wait for a response
-		 * @param pFrame pointer to a firmware command frame
+		 * @param request FwRequest object with a firmware command frame
 		 * @param pResponse pointer to buffer for the response frame
 		 * @param responseSize size of the response buffer
 		 * @return number of bytes read into pResponse or 0 if crc check fails
 		 * @throw ConnectionTimeout if a timeout occurred
 		 * @throw FatalError if sending to socket failed
 		 */
-		size_t Send(struct cmd_frame const* pFrame, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout, FatalError);
+		size_t Send(const FwRequest& request, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout, FatalError);
 
 	private:
 		/*

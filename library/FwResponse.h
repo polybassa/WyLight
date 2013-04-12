@@ -16,8 +16,8 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef _WiflyControlResponse_h
-#define _WiflyControlResponse_h
+#ifndef _FwResponse_h
+#define _FwResponse_h
 
 #include <cstdlib>
 #include <iostream>
@@ -27,16 +27,16 @@
 #include "wifly_cmd.h"
 #include "WiflyControlException.h"
 
-class WiflyResponse
+class FwResponse
 {
 public:
 	virtual bool Init(response_frame& frame, size_t dataLength) = 0;
 	
 protected:
-	WiflyResponse(void) {};
+	FwResponse(void) {};
 };
 
-class SimpleResponse : public WiflyResponse
+class SimpleResponse : public FwResponse
 {
 public:
 	SimpleResponse(uint8_t cmd) : mCmd(cmd) {};

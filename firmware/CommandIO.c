@@ -164,16 +164,16 @@ void CommandIO_GetCommands()
 					{
 						// [0] contains cmd_frame->length so we send [1]
 #ifndef __CC8E__
-						mRetValue = ScriptCtrl_Add((struct led_cmd*)&g_CmdBuf.buffer[1]);
+						mRetValue = ScriptCtrl_Add((struct led_cmd*)&g_CmdBuf.buffer[0]);
 #else
-						mRetValue = ScriptCtrl_Add(&g_CmdBuf.buffer[1]);
+						mRetValue = ScriptCtrl_Add(&g_CmdBuf.buffer[0]);
 #endif
 					}
 					else
 					{
 						mRetValue = CRC_CHECK_FAILED;
 					}
-					CommandIO_CreateResponse(&g_ResponseBuf, g_CmdBuf.buffer[1], mRetValue);
+					CommandIO_CreateResponse(&g_ResponseBuf, g_CmdBuf.buffer[0], mRetValue);
 					CommandIO_SendResponse(&g_ResponseBuf);
 					break;
 				}

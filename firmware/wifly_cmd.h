@@ -116,9 +116,4 @@ struct __attribute__((__packed__)) led_cmd {
 	}data;
 };
 
-struct __attribute__((__packed__)) cmd_frame {
-	//TODO remove length
-	uns8 length;
-	struct led_cmd led;
-};
 #endif /* #ifndef _WIFLY_CMD_H_ */
