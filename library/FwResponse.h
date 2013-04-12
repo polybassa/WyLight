@@ -31,6 +31,7 @@ class FwResponse
 {
 public:
 	virtual bool Init(response_frame& frame, size_t dataLength) = 0;
+	virtual ~FwResponse() {};
 protected:
 	FwResponse(void) {};
 };
@@ -213,24 +214,27 @@ private:
 			
 class FwResponseFactory
 {
+	FwResponseFactory() = delete;
+	FwResponseFactory( const FwResponseFactory& other ) = delete;
+	FwResponseFactory& operator=( const FwResponseFactory& ) = delete;
 public:
-	FwResponse create(uint8_t cmd)
+	static FwResponse* create(uint8_t cmd)
 	{
 		switch(cmd)
 		{
-			case WAIT: return SimpleResponse(WAIT);
-			case SET_FADE: return SimpleResponse(SET_FADE);
-			case LOOP_ON: return SimpleResponse(LOOP_ON);
-			case LOOP_OFF: return SimpleResponse(LOOP_OFF);
-			case CLEAR_SCRIPT: return SimpleResponse(CLEAR_SCRIPT);
-			case START_BL: return SimpleResponse(START_BL);
-			case SET_RTC: return SimpleResponse(SET_RTC);
-			case GET_RTC: return RtcResponse();
-			case SET_COLOR_DIRECT: return SimpleResponse(SET_COLOR_DIRECT);
-			case GET_CYCLETIME: return CycletimeResponse();
-			case GET_TRACE: return TracebufferResponse();
-			case GET_FW_VERSION: return FirmwareVersionResponse();
-			default: return SimpleResponse(0);
+			case WAIT: return new SimpleResponse(WAIT);
+			case SET_FADE: return new SimpleResponse(SET_FADE);
+			case LOOP_ON: return new SimpleResponse(LOOP_ON);
+			case LOOP_OFF: return new SimpleResponse(LOOP_OFF);
+			case CLEAR_SCRIPT: return new SimpleResponse(CLEAR_SCRIPT);
+			case START_BL: return new SimpleResponse(START_BL);
+			case SET_RTC: return new SimpleResponse(SET_RTC);
+			case GET_RTC: return new RtcResponse();
+			case SET_COLOR_DIRECT: return new SimpleResponse(SET_COLOR_DIRECT);
+			case GET_CYCLETIME: return new CycletimeResponse();
+			case GET_TRACE: return new TracebufferResponse();
+			case GET_FW_VERSION: return new FirmwareVersionResponse();
+			default: return new SimpleResponse(0);
 		}
 	};
 };
