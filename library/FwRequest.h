@@ -40,11 +40,11 @@ REF.blue = (ARGB) & 0x000000ff; \
 class FwRequest
 {
 protected:
-	FwRequest() {}
+	FwRequest() : mSize(1) {}
 	FwRequest(size_t size) : mSize(1 + size) {};
 	FwRequest( const FwRequest& other ) = default;
 	FwRequest& operator=( const FwRequest& ) = default;
-	const size_t mSize = 1;
+	const size_t mSize;
 	struct led_cmd mReqFrame;
 public:
 	const uint8_t* GetData(void) const { return reinterpret_cast<const uint8_t*>(&mReqFrame); };
