@@ -544,47 +544,47 @@ bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssi
 void WiflyControl::FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(CLEAR_SCRIPT);
-	FwSend(FwCmdClearScript(), response);
+	FwSend(FwReqClearScript(), response);
 }
 
 std::string WiflyControl::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	CycletimeResponse response;
-	FwSend(FwCmdGetCycletime(), response);
+	FwSend(FwReqGetCycletime(), response);
 	return response.ToString();
 }
 
 void WiflyControl::FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	RtcResponse response;
-	FwSend(FwCmdGetRtc(), response);
+	FwSend(FwReqGetRtc(), response);
 	timeValue = response.GetRealTime();
 }
 
 std::string WiflyControl::FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	TracebufferResponse response;
-	FwSend(FwCmdGetTracebuffer(), response);
+	FwSend(FwReqGetTracebuffer(), response);
 	return response.ToString();
 }
 
 std::string WiflyControl::FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	FirmwareVersionResponse response;
-	FwSend(FwCmdGetVersion(), response);
+	FwSend(FwReqGetVersion(), response);
 	return response.ToString();
 }
 
 void WiflyControl::FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(LOOP_OFF);
-	FwSend(FwCmdLoopOff(numLoops), response);
+	FwSend(FwReqLoopOff(numLoops), response);
 }
 
 void WiflyControl::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(LOOP_ON);
-	FwSend(FwCmdLoopOn(), response);
+	FwSend(FwReqLoopOn(), response);
 }
 
 FwResponse& WiflyControl::FwSend(const FwRequest& request, FwResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
@@ -607,13 +607,13 @@ FwResponse& WiflyControl::FwSend(const FwRequest& request, FwResponse& response)
 void WiflyControl::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(SET_COLOR_DIRECT);  
-	FwSend(FwCmdSetColorDirect(pBuffer, bufferLength), response);
+	FwSend(FwReqSetColorDirect(pBuffer, bufferLength), response);
 }
 
 void WiflyControl::FwSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(SET_FADE);
-	FwSend(FwCmdSetFade(argb, fadeTime, addr, parallelFade), response);
+	FwSend(FwReqSetFade(argb, fadeTime, addr, parallelFade), response);
 }
 
 void WiflyControl::FwSetFade(const string& rgb, uint16_t fadeTime, const string& addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
@@ -624,13 +624,13 @@ void WiflyControl::FwSetFade(const string& rgb, uint16_t fadeTime, const string&
 void WiflyControl::FwSetRtc(const tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(SET_RTC);
-	FwSend(FwCmdSetRtc(timeValue), response);
+	FwSend(FwReqSetRtc(timeValue), response);
 }
 
 void WiflyControl::FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(WAIT);
-	FwSend(FwCmdWait(waitTime), response);
+	FwSend(FwReqWait(waitTime), response);
 }
 
 void WiflyControl::FwStressTest(void)
@@ -735,6 +735,6 @@ void WiflyControl::FwTest(void)
 void WiflyControl::FwStartBl(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(START_BL);
-	FwSend(FwCmdStartBl(), response);
+	FwSend(FwReqStartBl(), response);
 }
 
