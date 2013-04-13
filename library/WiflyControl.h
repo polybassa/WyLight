@@ -46,9 +46,10 @@
 #include "ComProxy.h"
 #include "wifly_cmd.h"
 #include "BlRequest.h"
-#include "FwRequest.h"
 #include "TelnetProxy.h"
 #include "WiflyControlException.h"
+#include "FwCommand.h"
+#include "FwRequest.h"
 #include "FwResponse.h"
 
 class WiflyControl
@@ -327,7 +328,7 @@ class WiflyControl
 		void FwTest(void);
 		void FwStressTest(void);
 	
-		WiflyControl& operator<<(const FwRequest& cmd);
+		WiflyControl& operator<<(const FwCommand& cmd);
 
 /* ------------------------- VERSION EXTRACT METHODE ------------------------- */
 		/**

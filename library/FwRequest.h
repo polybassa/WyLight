@@ -40,51 +40,51 @@ REF.blue = (ARGB) & 0x000000ff; \
 class FwRequest
 {
 protected:
-	FwRequest() : mSize(1) {}
+	FwRequest(void) : mSize(1) {}
 	FwRequest(size_t size) : mSize(1 + size) {};
-	FwRequest( const FwRequest& other ) = default;
-	FwRequest& operator=( const FwRequest& ) = default;
+	FwRequest( const FwRequest& other ) = delete;
+	FwRequest& operator=( const FwRequest& ) = delete;
 	const size_t mSize;
 	struct led_cmd mReqFrame;
 public:
 	const uint8_t* GetData(void) const { return reinterpret_cast<const uint8_t*>(&mReqFrame); };
-	size_t GetSize() const { return mSize; };
+	size_t GetSize(void) const { return mSize; };
 };
 
 class FwReqWait : public FwRequest
 {
 public:
-	FwReqWait(uns16 waitTime) : FwRequest(sizeof(cmd_wait)) { mReqFrame.cmd = WAIT; mReqFrame.data.wait.waitTmms = htons(waitTime); };
+	FwReqWait(uint16_t waitTime) : FwRequest(sizeof(cmd_wait)) { mReqFrame.cmd = WAIT; mReqFrame.data.wait.waitTmms = htons(waitTime); };
 };
 
 class FwReqClearScript : public FwRequest
 {
 public:
-	FwReqClearScript() : FwRequest() { mReqFrame.cmd = CLEAR_SCRIPT; };
+	FwReqClearScript(void) : FwRequest() { mReqFrame.cmd = CLEAR_SCRIPT; };
 };
 
 class FwReqGetCycletime : public FwRequest
 {
 public:
-	FwReqGetCycletime() : FwRequest() { mReqFrame.cmd = GET_CYCLETIME; };
+	FwReqGetCycletime(void) : FwRequest() { mReqFrame.cmd = GET_CYCLETIME; };
 };
 
 class FwReqGetRtc : public FwRequest
 {
 public:
-	FwReqGetRtc() : FwRequest() { mReqFrame.cmd = GET_RTC; };
+	FwReqGetRtc(void) : FwRequest() { mReqFrame.cmd = GET_RTC; };
 };
 
 class FwReqGetTracebuffer : public FwRequest
 {
 public:
-	FwReqGetTracebuffer() : FwRequest() { mReqFrame.cmd = GET_TRACE; };
+	FwReqGetTracebuffer(void) : FwRequest() { mReqFrame.cmd = GET_TRACE; };
 };
 
 class FwReqGetVersion : public FwRequest
 {
 public:
-	FwReqGetVersion() : FwRequest() { mReqFrame.cmd = GET_FW_VERSION; };
+	FwReqGetVersion(void) : FwRequest() { mReqFrame.cmd = GET_FW_VERSION; };
 };
 
 class FwReqLoopOff : public FwRequest
@@ -96,7 +96,7 @@ public:
 class FwReqLoopOn : public FwRequest
 {
 public:
-	FwReqLoopOn() : FwRequest() { mReqFrame.cmd = LOOP_ON; };
+	FwReqLoopOn(void) : FwRequest() { mReqFrame.cmd = LOOP_ON; };
 };
 
 class FwReqSetColorDirect : public FwRequest
@@ -125,10 +125,9 @@ public:
 		mReqFrame.data.set_fade.fadeTmms = htons(fadeTime);
 		mReqFrame.data.set_fade.parallelFade = (parallelFade ? 1 : 0);
 	};
-	FwReqSetFade(uint32_t argb) : FwReqSetFade(argb, 0, 0xffffffff, false) {};
-	FwReqSetFade(uint32_t argb, uint16_t fadeTime) : FwReqSetFade(argb, fadeTime, 0xffffffff, false) {};
 	FwReqSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr) : FwReqSetFade(argb, fadeTime, addr, false) {};
-	
+	FwReqSetFade(uint32_t argb, uint16_t fadeTime) : FwReqSetFade(argb, fadeTime, 0xffffffff) {};
+	FwReqSetFade(uint32_t argb) : FwReqSetFade(argb, 0) {};
 };
 
 class FwReqSetRtc : public FwRequest
@@ -150,7 +149,7 @@ public:
 class FwReqStartBl : public FwRequest
 {
 public:
-	FwReqStartBl() : FwRequest() { mReqFrame.cmd = START_BL; };
+	FwReqStartBl(void) : FwRequest() { mReqFrame.cmd = START_BL; };
 };
 
 

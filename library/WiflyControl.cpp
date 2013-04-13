@@ -674,11 +674,9 @@ std::string WiflyControl::ExtractFwVersion(const std::string& pFilename) const
 	return std::string((const char*)&buffer[0], 7);
 }
 
-WiflyControl& WiflyControl::operator<<(const FwRequest& cmd)
+WiflyControl& WiflyControl::operator<<(const FwCommand& cmd)
 {
-	FwResponse* mRes = FwResponseFactory::create(*cmd.GetData());
-	this->FwSend(cmd, *mRes);
-	delete mRes;
+	this->FwSend(*cmd.GetRequest(), *cmd.GetResponse());
 	return *this;
 }
 
