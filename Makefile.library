@@ -8,18 +8,18 @@ LIB_OBJ=$(LIB_SRC:%.cpp=%.o)
 	$(GPP) $(CFLAGS) $(INC) -c $< -o $@
 
 outdir:
-	mkdir -p ${OUT_DIR}
+	@mkdir -p ${OUT_DIR}
 
 $(LIB_TARGET): outdir $(LIB_OBJ)
-	rm -f $(LIB_TARGET)	
-	ar cq $(LIB_TARGET) $(LIB_OBJ)
+	@rm -f $(LIB_TARGET)	
+	@ar cq $(LIB_TARGET) $(LIB_OBJ)
 
 library: $(LIB_TARGET)
 
 library_clean:
-	rm -f $(LIB_DIR)/*.o
-	rm -f *_ut.bin
-	rm -f $(LIB_TARGET)
+	@rm -f $(LIB_DIR)/*.o
+	@rm -f *_ut.bin
+	@rm -f $(LIB_TARGET)
 
 BroadcastReceiver_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
 	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/BroadcastReceiver_ut.cpp $(LIB_DIR)/BroadcastReceiver.cpp -lpthread -o $@

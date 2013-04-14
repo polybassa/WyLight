@@ -24,5 +24,7 @@ release: test pic_release x86_client documentation
 
 test: clean firmware_test library_test
 
-clean: android_clean cli_clean firmware_clean library_clean
+clean: android_clean cli_clean library_clean
+	@rm -rf $(OUT_DIR)
+	@echo "cleanup done."
 

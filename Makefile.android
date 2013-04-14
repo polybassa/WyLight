@@ -1,12 +1,12 @@
 ANDROID_DIR=./android/WiflyLight
 ANDROID_BIN=android/.metadata ${ANDROID_DIR}/bin/ ${ANDROID_DIR}/gen/ ${ANDROID_DIR}/libs/armeabi/ ${ANDROID_DIR}/obj/ ${ANDROID_DIR}Test/bin/ ${ANDROID_DIR}Test/gen/ ${ANDROID_DIR}Test/libs/ ${ANDROID_DIR}Test/obj/
 
-android_test:
-	ndk-build -C $(ANDROID_DIR)Test
-	cp -r $(ANDROID_DIR)Test/libs/ $(ANDROID_DIR)/
-
 android_client:
 	ndk-build -C $(ANDROID_DIR)
 	
-android_clean: cli_clean firmware_clean library_clean
-	rm -rf $(ANDROID_BIN)
+android_clean:
+	@rm -rf $(ANDROID_BIN)
+
+android_test:
+	ndk-build -C $(ANDROID_DIR)Test
+	cp -r $(ANDROID_DIR)Test/libs/ $(ANDROID_DIR)/
