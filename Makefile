@@ -16,11 +16,11 @@ include Makefile.cli
 include Makefile.docu
 include Makefile.firmware
 
-all_nils: test pic x86_client
+all_nils: test pic cli
 
-all_pat: test pic simu x86_client android_client
+all_pat: test pic simu cli android_client
 
-release: test pic_release x86_client documentation
+release: test pic_release cli documentation
 
 test: clean firmware_test library_test
 
