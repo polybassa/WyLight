@@ -14,6 +14,8 @@ $(LIB_TARGET): outdir $(LIB_OBJ)
 	rm -f $(LIB_TARGET)	
 	ar cq $(LIB_TARGET) $(LIB_OBJ)
 
+library: $(LIB_TARGET)
+
 library_clean:
 	echo "cleaning library"
 	echo $(LIB_SRC) 

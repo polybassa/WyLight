@@ -1,4 +1,5 @@
 CLI_TARGET=$(OUT_DIR)/cli.bin
+CLI_LIBS=-lpthread
 CLI_SRC=$(wildcard $(CLI_DIR)/*.cpp)
 CLI_ADDITIONAL_SRC=./firmware/crc.c
 
@@ -6,8 +7,8 @@ CLI_ADDITIONAL_SRC=./firmware/crc.c
 cli: $(LIB_TARGET)
 	echo "building cli"
 	echo $(LIB_TARGET)
-	$(GPP) $(CLI_SRC) $(CLI_ADDITIONAL_SRC) $(LIB_TARGET) $(INC) -lpthread -o ${CLI_TARGET} $(CFLAGS)
+	$(GPP) $(CFLAGS) $(INC) $(CLI_SRC) $(CLI_ADDITIONAL_SRC) $(LIB_TARGET) $(CLI_LIBS) -o ${CLI_TARGET}
 
 cli_clean:
-	cd cli; make clean; cd ..
+	rm -f CLI_TARGET
 
