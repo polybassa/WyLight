@@ -1,0 +1,30 @@
+UNAME := $(shell uname)
+#Linux detected -> use configuration of pat
+ifeq ($(UNAME),Linux)
+	PIC_CC8E=/home/gpb/cc8efree/CC8E.EXE
+	OPENGL_LIB=-lGL -lGLU -lglut
+#OSX detected -> use configuration of nils
+else ifeq ($(UNAME),Darwin)
+	PIC_CC8E=/Users/weitys1/Dropbox/Wifly_Light/CC8E/CC8E.EXE
+	OPENGL_LIB_OSX=-framework Carbon -framework OpenGL -framework GLUT
+endif
+FW_TEST_SRC=$(wildcard $(FW_DIR)/*_ut.c)
+FW_SRC=$(filter-out $(FW_DIR)/iic.c $(FW_DIR)/rtc.c, $(filter-out $(FW_TEST_SRC), $(wildcard $(FW_DIR)/*.c)))
+
+pic: outdir
+	wine ${PIC_CC8E} $(INC) $(FW_DIR)/main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM -O${OUT_DIR}
+
+pic_release: outdir
+	wine ${PIC_CC8E} $(INC) $(FW_DIR)/main.c -ver#VersionFile.h -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM -O${OUT_DIR}
+
+simu: outdir
+	gcc -Wall $(INC) ${FW_SRC} -DDEBUG -DX86 -lpthread ${OPENGL_LIB} -o ${OUT_DIR}/simu.bin
+
+#generic rule to build and run c unittests
+%_ut.bin: $(FW_DIR)/%_ut.c $(FW_DIR)/%.c $(FW_DIR)/%.h
+	@gcc $< $(subst _ut.c,.c,$<) $(FW_DIR)/eeprom.c -o ${OUT_DIR}/$@ -Wall
+	@./${OUT_DIR}/$@
+
+firmware_test: clean outdir CommandIO_ut.bin crc_ut.bin ledstrip_ut.bin RingBuf_ut.bin ScriptCtrl_ut.bin
+
+
