@@ -22,9 +22,6 @@ all_pat: test pic simu x86_client android_client
 
 release: test pic_release x86_client documentation
 
-%_test:
-	@cd $(subst _test,,$@); make test; cd ..
-
 test: clean firmware_test library_test
 
 clean: android_clean cli_clean firmware_clean library_clean
