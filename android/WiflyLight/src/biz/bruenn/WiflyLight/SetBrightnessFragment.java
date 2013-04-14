@@ -2,11 +2,14 @@ package biz.bruenn.WiflyLight;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import biz.bruenn.WiflyLight.exception.ConnectionTimeout;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
+import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class SetBrightnessFragment extends ControlFragment {
@@ -24,8 +27,16 @@ public class SetBrightnessFragment extends ControlFragment {
 				if(!mChangeIsInProgress.getAndSet(true)) {		
 					final int intensity = (int)(2.55f * progress);
 					final int c = (((intensity << 8) | intensity) << 8) | intensity;
-					mCtrl.fwSetColor(c, WiflyControl.ALL_LEDS);
-					mChangeIsInProgress.set(false);
+					try {
+						mCtrl.fwSetColor(c, WiflyControl.ALL_LEDS);
+					} catch (ConnectionTimeout e) {
+						Toast.makeText(seekBar.getContext(), "Connection lost", Toast.LENGTH_SHORT).show();
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						getActivity().finish();
+					} finally {
+						mChangeIsInProgress.set(false);
+					}
 				}
 			}
 			

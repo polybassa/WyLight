@@ -1,5 +1,6 @@
 package biz.bruenn.WiflyLight;
 
+import biz.bruenn.WiflyLight.exception.FatalError;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -87,6 +88,12 @@ public class WiflyControlActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		mCtrl.connect(mRemote);
+		try {
+			mCtrl.connect(mRemote);
+		} catch (FatalError e) {
+			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

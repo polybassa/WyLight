@@ -53,10 +53,16 @@ enum WiflyError {
 class FatalError : public std::exception
 {
 public:
-	FatalError(const std::string& description, uint32_t errorCode = FATAL_ERROR) throw () : mDescription(description), mErrorCode(errorCode) {};
+	FatalError(const std::string& description, const std::string& javaClassType = "biz/bruenn/WiflyLight/exception/FatalError", uint32_t errorCode = FATAL_ERROR) throw () : mDescription(description), mJavaClassType(javaClassType), mErrorCode(errorCode) {};
 	virtual ~FatalError(void) throw () {};
 
 	uint32_t AsErrorCode(void) const { return mErrorCode; };
+
+	const char* GetJavaClassType(void) const { return mJavaClassType.c_str(); };
+
+	const char* what() const throw () {
+		return mDescription.c_str();
+	};
 
 	friend std::ostream& operator<< (std::ostream& out, const FatalError& ref)
 	{
@@ -65,6 +71,7 @@ public:
 
 protected:
 	const std::string mDescription;
+	const std::string mJavaClassType;
 	const uint32_t mErrorCode;
 };
 
@@ -72,7 +79,7 @@ class ConnectionLost : public FatalError
 {
 public:
 	ConnectionLost(const std::string& description, uint32_t addr, uint16_t port)
-		: FatalError(description, CONNECTION_LOST), mAddress(addr), mPort(port)
+		: FatalError(description, "biz/bruenn/WiflyLight/exception/ConnectionLost", CONNECTION_LOST), mAddress(addr), mPort(port)
 	{
 	};
 
@@ -90,18 +97,18 @@ protected:
 class ConnectionTimeout : public FatalError
 {
 public:
-	ConnectionTimeout(const std::string& description) : FatalError(description, CONNECTION_TIMEOUT) {};
+	ConnectionTimeout(const std::string& description) : FatalError(description, "biz/bruenn/WiflyLight/exception/ConnectionTimeout", CONNECTION_TIMEOUT) {};
 };
 
 class InvalidParameter : public FatalError
 {
 public:
-	InvalidParameter(const std::string& description) : FatalError(description, INVALID_PARAMETER) {};
+	InvalidParameter(const std::string& description) : FatalError(description, "biz/bruenn/WiflyLight/exception/InvalidParameter", INVALID_PARAMETER) {};
 };
 
 class ScriptBufferFull : public FatalError
 {
 public:
-	ScriptBufferFull(void) : FatalError("ScriptBuffer in PIC is full, clear it or wait", SCRIPT_FULL) {};
+	ScriptBufferFull(void) : FatalError("ScriptBuffer in PIC is full, clear it or wait", "biz/bruenn/WiflyLight/exception/ScriptBufferFull", SCRIPT_FULL) {};
 };
 #endif /* defined(____WiflyControlException__) */

@@ -23,12 +23,17 @@
 
 static WiflyControl* g_pControl = NULL;
 
+void ThrowJniException(JNIEnv* env, const FatalError& e) {
+		jclass javaException = env->FindClass(e.GetJavaClassType());
+		env->ThrowNew(javaException, e.what());
+}
+
 #define TRY_CATCH_RETURN_BOOL(EXPRESSION) \
 	try { \
 		(EXPRESSION); \
 		return true; \
 	} catch(FatalError& e) { \
-		return false; \
+		ThrowJniException(env, e); \
 	}
 
 extern "C" {
@@ -54,8 +59,13 @@ jlong Java_biz_bruenn_WiflyLight_WiflyControl_create(JNIEnv* env, jobject ref, j
 {
 	// TODO make this threadsafe
 	if(NULL == g_pControl) {
-		g_pControl = new WiflyControl(ipv4Addr, port);
-		return (jlong) g_pControl;
+		try {
+			g_pControl = new WiflyControl(ipv4Addr, port);
+			return reinterpret_cast<jlong>(g_pControl);
+		} catch (FatalError& e) {
+			g_pControl = NULL;
+			ThrowJniException(env, e);
+		}
 	}
 	return NULL;
 }

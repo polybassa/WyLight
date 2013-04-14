@@ -1,16 +1,19 @@
 package biz.bruenn.WiflyLight;
 
+import biz.bruenn.WiflyLight.exception.ConnectionTimeout;
+import biz.bruenn.WiflyLight.exception.FatalError;
+
 public class WiflyControl {
 	
 	public static final int ALL_LEDS = 0xffffffff;
 	
-	private native long create(int ipv4Addr, short port);
+	private native long create(int ipv4Addr, short port) throws FatalError;
 	private native String ConfGetSsid(long pNative);
 	private native boolean ConfSetWlan(long pNative, String passphrase, String ssid);
 	private native boolean FwClearScript(long pNative);
 	private native boolean FwLoopOff(long pNative, byte numLoops);
 	private native boolean FwLoopOn(long pNative);
-	private native boolean FwSetColor(long pNative, int argb, int addr);
+	private native boolean FwSetColor(long pNative, int argb, int addr) throws ConnectionTimeout;
 	private native boolean FwSetFade(long pNative, int argb, int addr, short fadeTime);
 	private native void release(long pNative);
 	
@@ -20,7 +23,7 @@ public class WiflyControl {
 		disconnect();
 	}
 	
-	public synchronized boolean connect(Endpoint remote) {
+	public synchronized boolean connect(Endpoint remote) throws FatalError {
 		mNative = create(remote.getAddr(), remote.getPort());
 		return 0 != mNative;
 	}
@@ -50,7 +53,7 @@ public class WiflyControl {
 		return FwLoopOn(mNative);
 	}
 	
-	public synchronized boolean fwSetColor(int argb, int addr) {
+	public synchronized boolean fwSetColor(int argb, int addr) throws ConnectionTimeout {
 		return FwSetColor(mNative, argb, addr);
 	}
 	
