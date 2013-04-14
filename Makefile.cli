@@ -1,8 +1,12 @@
-x86_client_debug:
-	cd cli; make cli_debug; cd ..
+CLI_TARGET=$(OUT_DIR)/cli.bin
+CLI_SRC=$(wildcard $(CLI_DIR)/*.cpp)
+CLI_ADDITIONAL_SRC=./firmware/crc.c
 
-x86_client:
-	cd cli; make cli; cd ..
+# cli: outdir $(FILES) $(HEADERS) $(FW_FILES) $(WIFLYCONTROL)
+cli: $(LIB_TARGET)
+	echo "building cli"
+	echo $(LIB_TARGET)
+	$(GPP) $(CLI_SRC) $(CLI_ADDITIONAL_SRC) $(LIB_TARGET) $(INC) -lpthread -o ${CLI_TARGET} $(CFLAGS)
 
 cli_clean:
 	cd cli; make clean; cd ..

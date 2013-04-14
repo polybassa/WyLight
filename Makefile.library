@@ -1,16 +1,16 @@
 LIB_TARGET=$(OUT_DIR)/libWiflyControl.a
-LIB_SRC=$(wildcard $(LIB_DIR)/*.cpp)
-LIB_INC=-I$(FW_DIR)
+LIB_TEST_SRC=$(wildcard $(LIB_DIR)/*_ut.cpp)
+LIB_SRC=$(filter-out $(LIB_TEST_SRC), $(wildcard $(LIB_DIR)/*.cpp))
 LIB_OBJ=$(LIB_SRC:%.cpp=%.o)
 
 %.o: %.cpp
-	$(GPP) $(CFLAGS) $(LIB_INC) -c $< -o $@
+	$(GPP) $(CFLAGS) $(INC) -c $< -o $@
 
 outdir:
 	mkdir -p ${OUT_DIR}
 
-library: outdir $(LIB_OBJ)
-	echo $(LIB_OBJ)
+$(LIB_TARGET): outdir $(LIB_OBJ)
+	echo "building library"
 	rm -f $(LIB_TARGET)	
 	ar cq $(LIB_TARGET) $(LIB_OBJ)
 

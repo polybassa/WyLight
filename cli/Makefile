@@ -12,12 +12,6 @@ OUTPUT_DIR=../binary
 
 all: cli
 
-$(WIFLYCONTROL):
-	cd ../library; make; cd ..
-
-WIFLYCONTROL_clean:
-	cd ../library; make clean; cd ..
-
 outdir:
 	mkdir -p ${OUTPUT_DIR}
 

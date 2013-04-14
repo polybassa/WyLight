@@ -3,16 +3,18 @@ CFLAGS =-Wall
 CFLAGS+=-pedantic
 CFLAGS+=-std=c++0x
 
-OUT_DIR=./binary
-
+CLI_DIR=./cli
 FW_DIR=./firmware
 LIB_DIR=./library
 
+OUT_DIR=./binary
+INC=-I$(FW_DIR) -I$(LIB_DIR)
+
 include Makefile.android
+include Makefile.library
 include Makefile.cli
 include Makefile.docu
 include Makefile.firmware
-include Makefile.library
 
 all_nils: test pic x86_client
 
