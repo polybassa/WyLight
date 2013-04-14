@@ -1,0 +1,46 @@
+LIB_TARGET=$(OUT_DIR)/libWiflyControl.a
+LIB_TEST_SRC=$(wildcard $(LIB_DIR)/*_ut.cpp)
+LIB_SRC=$(filter-out $(LIB_TEST_SRC), $(wildcard $(LIB_DIR)/*.cpp))
+LIB_ADDITIONAL_SRC=./firmware/crc.c
+LIB_OBJ=$(LIB_SRC:%.cpp=%.o)
+
+%.o: %.cpp
+	$(GPP) $(CFLAGS) $(INC) -c $< -o $@
+
+outdir:
+	@mkdir -p ${OUT_DIR}
+
+$(LIB_TARGET): outdir $(LIB_OBJ)
+	@rm -f $(LIB_TARGET)	
+	@ar cq $(LIB_TARGET) $(LIB_OBJ)
+
+library: $(LIB_TARGET)
+
+library_clean:
+	@rm -f $(LIB_DIR)/*.o
+	@rm -f *_ut.bin
+	@rm -f $(LIB_TARGET)
+
+BroadcastReceiver_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
+	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/BroadcastReceiver_ut.cpp $(LIB_DIR)/BroadcastReceiver.cpp -lpthread -o $@
+	@./$@
+
+ComProxy_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
+	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/ComProxy_ut.cpp $(LIB_DIR)/ComProxy.cpp $(LIB_DIR)/MaskBuffer.cpp $(LIB_ADDITIONAL_SRC) -o $@
+	@./$@
+
+TelnetProxy_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
+	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/TelnetProxy_ut.cpp $(LIB_DIR)/TelnetProxy.cpp $(FW_FILES) $(INC) -o $@ -Wall -pedantic -std=c++0x
+	@./$@
+
+WiflyControl_ut.bin:  $(LIB_SRC) $(LIB_TEST_SRC)
+	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/WiflyControl_ut.cpp $(LIB_DIR)/WiflyControl.cpp $(LIB_DIR)/intelhexclass.cpp $(INC) -o $@ -Wall -pedantic -std=c++0x 
+	@./$@
+	
+WiflyControlNoThrow_ut.bin:  $(LIB_SRC) $(LIB_TEST_SRC)
+	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/WiflyControlNoThrow_ut.cpp $(LIB_DIR)/WiflyControlNoThrow.cpp $(INC) -o $@ -Wall -pedantic -std=c++0x
+	@./$@
+
+
+library_test: BroadcastReceiver_ut.bin ComProxy_ut.bin TelnetProxy_ut.bin WiflyControl_ut.bin WiflyControlNoThrow_ut.bin
+

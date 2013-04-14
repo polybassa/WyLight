@@ -148,7 +148,8 @@ int32_t ut_BroadcastReceiver_TestSimple(void)
 	std::thread myThread(std::ref(dummyReceiver), std::ref(out), &timeout);
 	dummyReceiver.Stop();
 	myThread.join();
-	CHECK(0 == out.str().compare("0:127.0.0.1:2000\n"));
+
+	CHECK(0 == out.str().compare("0:127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
 	CHECK(1 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
 	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
@@ -167,7 +168,7 @@ int32_t ut_BroadcastReceiver_TestTwoSame(void)
 	dummyReceiver.Stop();
 	myThread.join();
 
-	CHECK(0 == out.str().compare("0:127.0.0.1:2000\n"));
+	CHECK(0 == out.str().compare("0:127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
 	CHECK(1 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
 	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
@@ -190,7 +191,7 @@ int32_t ut_BroadcastReceiver_TestNoTimeout(void)
 	dummyReceiver.Stop();
 	myThread.join();
 
-	CHECK(0 == out.str().compare("0:127.0.0.1:2000\n1:127.0.0.2:2000\n2:127.0.0.3:2000\n"));
+	CHECK(0 == out.str().compare("0:127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n1:127.0.0.2:2000  :  WiFly_Light\n2:127.0.0.3:2000  :  WiFly_Light\n"));
 	CHECK(3 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
 	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());

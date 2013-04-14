@@ -115,7 +115,7 @@ public:
 class FwReqSetFade : public FwRequest
 {
 public:
-	FwReqSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) : FwRequest(sizeof(cmd_set_fade))
+	FwReqSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade = false) : FwRequest(sizeof(cmd_set_fade))
 	{
 		mReqFrame.cmd = SET_FADE;
 		SetAddrRgb(mReqFrame.data.set_fade, addr, argb);
@@ -125,9 +125,6 @@ public:
 		mReqFrame.data.set_fade.fadeTmms = htons(fadeTime);
 		mReqFrame.data.set_fade.parallelFade = (parallelFade ? 1 : 0);
 	};
-	FwReqSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr) : FwReqSetFade(argb, fadeTime, addr, false) {};
-	FwReqSetFade(uint32_t argb, uint16_t fadeTime) : FwReqSetFade(argb, fadeTime, 0xffffffff) {};
-	FwReqSetFade(uint32_t argb) : FwReqSetFade(argb, 0) {};
 };
 
 class FwReqSetRtc : public FwRequest
