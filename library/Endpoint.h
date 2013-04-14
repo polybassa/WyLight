@@ -28,21 +28,16 @@
 class Endpoint
 {
 	public:
-		Endpoint(sockaddr_storage& addr, const size_t size, uint16_t port)
+		Endpoint(sockaddr_storage& addr, const size_t size, uint16_t port, std::string devId = "")
 		{
 			assert(sizeof(sockaddr_in) == size);
 			mAddr = ntohl(((sockaddr_in&)addr).sin_addr.s_addr);
 			mPort = ntohs(port);
-		};
-		
-		Endpoint(sockaddr_storage& addr, const size_t size, uint16_t port, std::string devId)
-		: Endpoint(addr, size, port)
-		{
 			mDeviceId = devId;
 		};
 
 		Endpoint(uint32_t addr = 0, uint16_t port = 0)
-			: mAddr(addr), mPort(port)
+			: mAddr(addr), mPort(port), mDeviceId("")
 		{
 		};
 
@@ -92,7 +87,7 @@ class Endpoint
 	private:
 		uint32_t mAddr;
 		uint16_t mPort;
-		std::string mDeviceId = "";
+		std::string mDeviceId;
 };
 #endif /* #ifndef _ENDPOINT_H_ */
 
