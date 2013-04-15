@@ -1,46 +1,30 @@
-ANDROID_DIR=./android/WiflyLight
-ANDROID_BIN=android/.metadata ${ANDROID_DIR}/bin/ ${ANDROID_DIR}/gen/ ${ANDROID_DIR}/libs/armeabi/ ${ANDROID_DIR}/obj/ ${ANDROID_DIR}Test/bin/ ${ANDROID_DIR}Test/gen/ ${ANDROID_DIR}Test/libs/ ${ANDROID_DIR}Test/obj/
+GPP=g++
+CFLAGS =-Wall
+CFLAGS+=-pedantic
+CFLAGS+=-std=c++0x
 
-all_nils: test pic x86_client
+CLI_DIR=./cli
+FW_DIR=./firmware
+LIB_DIR=./library
 
-all_pat: test pic simu x86_client android_client
+OUT_DIR=./binary
+INC=-I$(FW_DIR) -I$(LIB_DIR)
 
-release: test pic_release x86_client documentation
+include Makefile.android
+include Makefile.library
+include Makefile.cli
+include Makefile.docu
+include Makefile.firmware
 
-pic:
-	cd firmware; make pic; cd ..
+all_nils: test pic cli
 
-pic_release:
-	cd firmware; make pic_release; cd ..
+all_pat: test pic simu cli android_client
 
-simu:
-	cd firmware; make simu; cd ..
-
-android_test:
-	ndk-build -C $(ANDROID_DIR)Test
-	cp -r $(ANDROID_DIR)Test/libs/ $(ANDROID_DIR)/
-
-android_client:
-	ndk-build -C $(ANDROID_DIR)
-	
-x86_client_debug:
-	cd cli; make cli_debug; cd ..
-
-x86_client:
-	cd cli; make cli; cd ..
-%_test:
-	@cd $(subst _test,,$@); make test; cd ..
+release: test pic_release cli documentation
 
 test: clean firmware_test library_test
 
-%_clean:
-	cd $(subst _clean,,$@); make clean; cd ..
+clean: android_clean cli_clean library_clean
+	@rm -rf $(OUT_DIR)
+	@echo "cleanup done."
 
-clean: cli_clean firmware_clean library_clean
-	rm -rf $(ANDROID_BIN)
-
-documentation:
-	doxygen docs/Doxyfile; cd html; git add .; git commit -m "documentation"; git push origin gh-pages; cd ..
-
-docu:
-	doxygen docs/Doxyfile
