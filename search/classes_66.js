@@ -3,7 +3,6 @@ var searchData=
   ['fatalerror',['FatalError',['../class_fatal_error.html',1,'']]],
   ['firmwareversionresponse',['FirmwareVersionResponse',['../class_firmware_version_response.html',1,'']]],
   ['fwcmdclearscript',['FwCmdClearScript',['../class_fw_cmd_clear_script.html',1,'']]],
-  ['fwcmdgetcycletime',['FwCmdGetCycletime',['../class_fw_cmd_get_cycletime.html',1,'']]],
   ['fwcmdgetrtc',['FwCmdGetRtc',['../class_fw_cmd_get_rtc.html',1,'']]],
   ['fwcmdgettracebuffer',['FwCmdGetTracebuffer',['../class_fw_cmd_get_tracebuffer.html',1,'']]],
   ['fwcmdgetversion',['FwCmdGetVersion',['../class_fw_cmd_get_version.html',1,'']]],
@@ -14,5 +13,19 @@ var searchData=
   ['fwcmdsetrtc',['FwCmdSetRtc',['../class_fw_cmd_set_rtc.html',1,'']]],
   ['fwcmdstartbl',['FwCmdStartBl',['../class_fw_cmd_start_bl.html',1,'']]],
   ['fwcmdwait',['FwCmdWait',['../class_fw_cmd_wait.html',1,'']]],
-  ['fwrequest',['FwRequest',['../class_fw_request.html',1,'']]]
+  ['fwcommand',['FwCommand',['../class_fw_command.html',1,'']]],
+  ['fwreqclearscript',['FwReqClearScript',['../class_fw_req_clear_script.html',1,'']]],
+  ['fwreqgetcycletime',['FwReqGetCycletime',['../class_fw_req_get_cycletime.html',1,'']]],
+  ['fwreqgetrtc',['FwReqGetRtc',['../class_fw_req_get_rtc.html',1,'']]],
+  ['fwreqgettracebuffer',['FwReqGetTracebuffer',['../class_fw_req_get_tracebuffer.html',1,'']]],
+  ['fwreqgetversion',['FwReqGetVersion',['../class_fw_req_get_version.html',1,'']]],
+  ['fwreqloopoff',['FwReqLoopOff',['../class_fw_req_loop_off.html',1,'']]],
+  ['fwreqloopon',['FwReqLoopOn',['../class_fw_req_loop_on.html',1,'']]],
+  ['fwreqsetcolordirect',['FwReqSetColorDirect',['../class_fw_req_set_color_direct.html',1,'']]],
+  ['fwreqsetfade',['FwReqSetFade',['../class_fw_req_set_fade.html',1,'']]],
+  ['fwreqsetrtc',['FwReqSetRtc',['../class_fw_req_set_rtc.html',1,'']]],
+  ['fwreqstartbl',['FwReqStartBl',['../class_fw_req_start_bl.html',1,'']]],
+  ['fwrequest',['FwRequest',['../class_fw_request.html',1,'']]],
+  ['fwreqwait',['FwReqWait',['../class_fw_req_wait.html',1,'']]],
+  ['fwresponse',['FwResponse',['../class_fw_response.html',1,'']]]
 ];

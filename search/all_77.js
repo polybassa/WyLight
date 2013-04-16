@@ -9,7 +9,5 @@ var searchData=
   ['wiflycontrolexception_2eh',['WiflyControlException.h',['../_wifly_control_exception_8h.html',1,'']]],
   ['wiflycontrolnothrow',['WiflyControlNoThrow',['../class_wifly_control_no_throw.html',1,'WiflyControlNoThrow'],['../class_wifly_control_no_throw.html#a716d1c0768041b880205838c09999284',1,'WiflyControlNoThrow::WiflyControlNoThrow()']]],
   ['wiflycontrolnothrow_2eh',['WiflyControlNoThrow.h',['../_wifly_control_no_throw_8h.html',1,'']]],
-  ['wiflycontrolresponse_2eh',['WiflyControlResponse.h',['../_wifly_control_response_8h.html',1,'']]],
-  ['wiflyerror',['WiflyError',['../_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2',1,'WiflyControlException.h']]],
-  ['wiflyresponse',['WiflyResponse',['../class_wifly_response.html',1,'WiflyResponse'],['../class_wifly_response.html#aa9025b5027dcf680c1bedb39cc258aa4',1,'WiflyResponse::WiflyResponse()']]]
+  ['wiflyerror',['WiflyError',['../_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2',1,'WiflyControlException.h']]]
 ];

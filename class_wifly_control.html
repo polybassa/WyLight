@@ -135,6 +135,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a932d65b7b9346a2bd9ced995fe2239ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad73ecaee1bf99c406c621fb602abf808"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#ad73ecaee1bf99c406c621fb602abf808">ConfSetWlan</a> (const std::string &amp;phrase, const std::string &amp;ssid) const </td></tr>
 <tr class="separator:ad73ecaee1bf99c406c621fb602abf808"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9007c55526c07ac80fafe33653ab263"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#ae9007c55526c07ac80fafe33653ab263">ConfRebootWlanModul</a> (void) const </td></tr>
+<tr class="separator:ae9007c55526c07ac80fafe33653ab263"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a3142eab30bfc15ffd871cb4a139522"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a8a3142eab30bfc15ffd871cb4a139522">ConfSetDeviceId</a> (const std::string &amp;name) const </td></tr>
+<tr class="separator:a8a3142eab30bfc15ffd871cb4a139522"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cb531078a50475b0244645e95903e73"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a0cb531078a50475b0244645e95903e73">FwClearScript</a> (void)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
 <tr class="separator:a0cb531078a50475b0244645e95903e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a526613f649f34d881cb4dc9f663c32b6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a526613f649f34d881cb4dc9f663c32b6">FwGetCycletime</a> (void)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
@@ -165,6 +169,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab7163d265422cb49fefc935da9e2857c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa954fdf2ebcf00d628fc80231c2c4197"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#aa954fdf2ebcf00d628fc80231c2c4197">FwStressTest</a> (void)</td></tr>
 <tr class="separator:aa954fdf2ebcf00d628fc80231c2c4197"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad15afdd61f031ca77c4807fbb3869f95"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_wifly_control.html">WiflyControl</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#ad15afdd61f031ca77c4807fbb3869f95">operator&lt;&lt;</a> (const <a class="el" href="class_fw_command.html">FwCommand</a> &amp;cmd)</td></tr>
+<tr class="separator:ad15afdd61f031ca77c4807fbb3869f95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ce19529396544bd081d1b00df62b794"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a5ce19529396544bd081d1b00df62b794">ExtractFwVersion</a> (const std::string &amp;pFilename) const </td></tr>
 <tr class="separator:a5ce19529396544bd081d1b00df62b794"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -569,6 +575,24 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ae9007c55526c07ac80fafe33653ab263"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool WiflyControl::ConfRebootWlanModul </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Reboot the modul. ATTENTION: You have to reconnect after a reboot </p>
+<dl class="section return"><dt>Returns</dt><dd>false, in case of an error </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a932d65b7b9346a2bd9ced995fe2239ab"></a>
 <div class="memitem">
 <div class="memproto">
@@ -583,6 +607,30 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Set the Wifly module communication parameters to defaults </p>
+<dl class="section return"><dt>Returns</dt><dd>false, in case of an error </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a8a3142eab30bfc15ffd871cb4a139522"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool WiflyControl::ConfSetDeviceId </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Allows you to give every Wifly_Light device an unique name </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>1 - 32 characters </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>false, in case of an error </dd></dl>
 
 </div>
@@ -1103,6 +1151,22 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ad15afdd61f031ca77c4807fbb3869f95"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_wifly_control.html">WiflyControl</a>&amp; WiflyControl::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_fw_command.html">FwCommand</a> &amp;&#160;</td>
+          <td class="paramname"><em>cmd</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
 <a class="anchor" id="a327c95f9335fa4b257b064ef2e917a80"></a>
 <div class="memitem">
@@ -1182,7 +1246,7 @@ Friends</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 11 2013 20:05:14 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Apr 16 2013 23:55:37 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

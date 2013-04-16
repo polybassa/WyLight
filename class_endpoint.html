@@ -94,8 +94,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a155f5e34aad88e781207ffa55666992f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_endpoint.html#a155f5e34aad88e781207ffa55666992f">Endpoint</a> (sockaddr_storage &amp;addr, const size_t size, uint16_t port)</td></tr>
-<tr class="separator:a155f5e34aad88e781207ffa55666992f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad855b9615cd2a35d122cef1f938f85a6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_endpoint.html#ad855b9615cd2a35d122cef1f938f85a6">Endpoint</a> (sockaddr_storage &amp;addr, const size_t size, uint16_t port, std::string devId=&quot;&quot;)</td></tr>
+<tr class="separator:ad855b9615cd2a35d122cef1f938f85a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea663fa6d602bd9b0ee36a0a20c10515"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_endpoint.html#aea663fa6d602bd9b0ee36a0a20c10515">Endpoint</a> (uint32_t addr=0, uint16_t port=0)</td></tr>
 <tr class="separator:aea663fa6d602bd9b0ee36a0a20c10515"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ebaa89afaae9dd7b1305532634c2871"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_endpoint.html#a1ebaa89afaae9dd7b1305532634c2871">operator&lt;</a> (const <a class="el" href="class_endpoint.html">Endpoint</a> &amp;ref) const </td></tr>
@@ -106,6 +106,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5618578a2aea0258faac2ec166809f61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab314920c2ea906136bb10db9a8b19d9f"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_endpoint.html#ab314920c2ea906136bb10db9a8b19d9f">GetPort</a> (void) const </td></tr>
 <tr class="separator:ab314920c2ea906136bb10db9a8b19d9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fa08af06fd1ffd733fe6e1444cf2fa9"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_endpoint.html#a9fa08af06fd1ffd733fe6e1444cf2fa9">GetDeviceId</a> (void) const </td></tr>
+<tr class="separator:a9fa08af06fd1ffd733fe6e1444cf2fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a514014f7d1ee63a7c5a3ed7c8b129526"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_endpoint.html#a514014f7d1ee63a7c5a3ed7c8b129526">IsValid</a> (void) const </td></tr>
 <tr class="separator:a514014f7d1ee63a7c5a3ed7c8b129526"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -121,7 +123,7 @@ Friends</h2></td></tr>
 <p>Wifly_Light is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
 <p>You should have received a copy of the GNU General Public License along with Wifly_Light. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a155f5e34aad88e781207ffa55666992f"></a>
+<a class="anchor" id="ad855b9615cd2a35d122cef1f938f85a6"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -144,7 +146,13 @@ Friends</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>port</em>&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>devId</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -205,6 +213,30 @@ Friends</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">uint64_t Endpoint::AsUint64 </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a9fa08af06fd1ffd733fe6e1444cf2fa9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string Endpoint::GetDeviceId </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -357,7 +389,7 @@ Friends</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 11 2013 20:05:05 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Apr 16 2013 23:55:27 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

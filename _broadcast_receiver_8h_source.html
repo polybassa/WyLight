@@ -125,54 +125,55 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00036"></a><span class="lineno"><a class="code" href="class_broadcast_receiver.html#a38d37ce60dc1fb1e0dbc08d80b5d3b47">   36</a></span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> uint16_t <a class="code" href="class_broadcast_receiver.html#a38d37ce60dc1fb1e0dbc08d80b5d3b47">BROADCAST_PORT</a> = 55555;</div>
 <div class="line"><a name="l00037"></a><span class="lineno"><a class="code" href="class_broadcast_receiver.html#a7314a4107fc6e1c3d8dbace2b47c07d1">   37</a></span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> std::string <a class="code" href="class_broadcast_receiver.html#a7314a4107fc6e1c3d8dbace2b47c07d1">DEVICE_ID</a>;</div>
 <div class="line"><a name="l00038"></a><span class="lineno"><a class="code" href="class_broadcast_receiver.html#addb5597142e98c3c16afce397082d960">   38</a></span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> std::string <a class="code" href="class_broadcast_receiver.html#addb5597142e98c3c16afce397082d960">DEVICE_ID_OLD</a>;</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="code" href="class_broadcast_receiver.html#a6c365a7403457725e25c3124868fd6d9">   39</a></span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> std::string <a class="code" href="class_broadcast_receiver.html#a6c365a7403457725e25c3124868fd6d9">STOP_MSG</a>;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="code" href="class_broadcast_receiver.html#a545fbd086416bfa77cd42b531d045a5b">   40</a></span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="class_endpoint.html">Endpoint</a> <a class="code" href="class_broadcast_receiver.html#a545fbd086416bfa77cd42b531d045a5b">EMPTY_ENDPOINT</a>;</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="code" href="class_broadcast_receiver.html#a3e1de2825034cb6e2b15641c490d9381">   41</a></span>&#160;        <span class="keyword">const</span> uint16_t <a class="code" href="class_broadcast_receiver.html#a3e1de2825034cb6e2b15641c490d9381">mPort</a>;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="comment">/*</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">         * Construct an object for broadcast listening on the specified port</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">         * @param port to listen on, deault is @see BROADCAST_PORT</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <a class="code" href="class_broadcast_receiver.html#a9c3f8ebdef813f03edec75f88389a6ee">BroadcastReceiver</a>(uint16_t port = <a class="code" href="class_broadcast_receiver.html#a38d37ce60dc1fb1e0dbc08d80b5d3b47">BROADCAST_PORT</a>);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="comment">/*</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">         * Stop receiving loop and cleanup</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <a class="code" href="class_broadcast_receiver.html#a1d262088f10ee4a53d2590bc472864b0">~BroadcastReceiver</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_broadcast_receiver.html#ac2fa6c783d73121c800d3c015621964d">operator() </a>(std::ostream&amp; out, timeval* timeout = NULL);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="comment">/*</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">         * Get a reference to the endpoint at the specified index</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">         * @param index of the endpoint in the internal IpTable, should be lees than NumRemotes()</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">         * @return a reference to the endpoint at the specified index or an empty object (@see EMPTY_ENDPOINT), when the index was out of bound</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keyword">const</span> <a class="code" href="class_endpoint.html">Endpoint</a>&amp; <a class="code" href="class_broadcast_receiver.html#a1c487597e1338d5e5fca55f1d89d0eb1">GetEndpoint</a>(<span class="keywordtype">size_t</span> index) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="comment">/*</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">         * Listen for broadcasts until a new remote is discovered.</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">         * @param timeout to wait until give up, use NULL to wait forever</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">         * @return an empty Endpoint object in case of an error, if a new remote is discovered an Endpoint object with its address and port is returned.</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">         * @throw FatalError if something failed seriously in the underlying socket</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <a class="code" href="class_endpoint.html">Endpoint</a> <a class="code" href="class_broadcast_receiver.html#a4549672ea1b9b008f93b42329c8bea5f">GetNextRemote</a>(timeval* timeout) <span class="keywordflow">throw</span> (<a class="code" href="class_fatal_error.html">FatalError</a>);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_broadcast_receiver.html#a6e403e696a76c5bc8c2b9215c3d5704d">NumRemotes</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_broadcast_receiver.html#ab0f0852ab37655f23bebaca888216502">Stop</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        std::set&lt;Endpoint&gt; mIpTable;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keyword">volatile</span> <span class="keywordtype">bool</span> mIsRunning;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        std::atomic&lt;int32_t&gt; mNumInstances;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        std::mutex mMutex;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;};</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _BROADCAST_RECEIVER_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="code" href="class_broadcast_receiver.html#ae22c7443414e66b3e50911e91f6d6e35">   39</a></span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> std::string <a class="code" href="class_broadcast_receiver.html#ae22c7443414e66b3e50911e91f6d6e35">DEVICE_VERSION</a>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="code" href="class_broadcast_receiver.html#a6c365a7403457725e25c3124868fd6d9">   40</a></span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> std::string <a class="code" href="class_broadcast_receiver.html#a6c365a7403457725e25c3124868fd6d9">STOP_MSG</a>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="code" href="class_broadcast_receiver.html#a545fbd086416bfa77cd42b531d045a5b">   41</a></span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="class_endpoint.html">Endpoint</a> <a class="code" href="class_broadcast_receiver.html#a545fbd086416bfa77cd42b531d045a5b">EMPTY_ENDPOINT</a>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="code" href="class_broadcast_receiver.html#a3e1de2825034cb6e2b15641c490d9381">   42</a></span>&#160;        <span class="keyword">const</span> uint16_t <a class="code" href="class_broadcast_receiver.html#a3e1de2825034cb6e2b15641c490d9381">mPort</a>;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">         * Construct an object for broadcast listening on the specified port</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">         * @param port to listen on, deault is @see BROADCAST_PORT</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">         */</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <a class="code" href="class_broadcast_receiver.html#a9c3f8ebdef813f03edec75f88389a6ee">BroadcastReceiver</a>(uint16_t port = <a class="code" href="class_broadcast_receiver.html#a38d37ce60dc1fb1e0dbc08d80b5d3b47">BROADCAST_PORT</a>);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">         * Stop receiving loop and cleanup</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">         */</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <a class="code" href="class_broadcast_receiver.html#a1d262088f10ee4a53d2590bc472864b0">~BroadcastReceiver</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_broadcast_receiver.html#ac2fa6c783d73121c800d3c015621964d">operator() </a>(std::ostream&amp; out, timeval* timeout = NULL);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">         * Get a reference to the endpoint at the specified index</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">         * @param index of the endpoint in the internal IpTable, should be lees than NumRemotes()</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">         * @return a reference to the endpoint at the specified index or an empty object (@see EMPTY_ENDPOINT), when the index was out of bound</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">         */</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keyword">const</span> <a class="code" href="class_endpoint.html">Endpoint</a>&amp; <a class="code" href="class_broadcast_receiver.html#a1c487597e1338d5e5fca55f1d89d0eb1">GetEndpoint</a>(<span class="keywordtype">size_t</span> index) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">         * Listen for broadcasts until a new remote is discovered.</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">         * @param timeout to wait until give up, use NULL to wait forever</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">         * @return an empty Endpoint object in case of an error, if a new remote is discovered an Endpoint object with its address and port is returned.</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">         * @throw FatalError if something failed seriously in the underlying socket</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">         */</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <a class="code" href="class_endpoint.html">Endpoint</a> <a class="code" href="class_broadcast_receiver.html#a4549672ea1b9b008f93b42329c8bea5f">GetNextRemote</a>(timeval* timeout) <span class="keywordflow">throw</span> (<a class="code" href="class_fatal_error.html">FatalError</a>);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_broadcast_receiver.html#a6e403e696a76c5bc8c2b9215c3d5704d">NumRemotes</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_broadcast_receiver.html#ab0f0852ab37655f23bebaca888216502">Stop</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        std::set&lt;Endpoint&gt; mIpTable;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keyword">volatile</span> <span class="keywordtype">bool</span> mIsRunning;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        std::atomic&lt;int32_t&gt; mNumInstances;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        std::mutex mMutex;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;};</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _BROADCAST_RECEIVER_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 11 2013 20:04:56 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Apr 16 2013 23:55:18 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

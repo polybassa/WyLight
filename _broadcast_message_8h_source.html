@@ -129,20 +129,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
 <div class="line"><a name="l00041"></a><span class="lineno"><a class="code" href="struct_broadcast_message.html#a3050a0c141e0bd6d5333f9c7d880842c">   41</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="struct_broadcast_message.html#a3050a0c141e0bd6d5333f9c7d880842c">IsWiflyBroadcast</a>(<span class="keywordtype">size_t</span> length)<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keywordflow">return</span> ((<span class="keyword">sizeof</span>(<a class="code" href="struct_broadcast_message.html">BroadcastMessage</a>) == length)</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        &amp;&amp; (IsDevice(<a class="code" href="class_broadcast_receiver.html#a7314a4107fc6e1c3d8dbace2b47c07d1">BroadcastReceiver::DEVICE_ID</a>) || IsDevice(<a class="code" href="class_broadcast_receiver.html#addb5597142e98c3c16afce397082d960">BroadcastReceiver::DEVICE_ID_OLD</a>)));</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    };</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">bool</span> IsDevice(<span class="keyword">const</span> std::string&amp; deviceType)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordflow">return</span> (0 == memcmp(<a class="code" href="struct_broadcast_message.html#a5eed77683f928d1454419138eed7d673">deviceId</a>,   deviceType.data(), deviceType.size()));</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    };</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;};</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#pragma pack(pop)</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif </span><span class="comment">/* #ifndef _BROADCAST_MESSAGE_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                &amp;&amp; (IsDevice(<a class="code" href="class_broadcast_receiver.html#a7314a4107fc6e1c3d8dbace2b47c07d1">BroadcastReceiver::DEVICE_ID</a>)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                    || IsDevice(<a class="code" href="class_broadcast_receiver.html#addb5597142e98c3c16afce397082d960">BroadcastReceiver::DEVICE_ID_OLD</a>)</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                    || IsVersion(<a class="code" href="class_broadcast_receiver.html#ae22c7443414e66b3e50911e91f6d6e35">BroadcastReceiver::DEVICE_VERSION</a>)));</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    };</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">bool</span> IsVersion(<span class="keyword">const</span> std::string&amp; deviceVersion)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordflow">return</span> (0 == memcmp(<a class="code" href="struct_broadcast_message.html#ac348f0fde101e0d4ecb2ea47de28b8dc">version</a>, deviceVersion.data(), deviceVersion.size()));</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">bool</span> IsDevice(<span class="keyword">const</span> std::string&amp; deviceType)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">return</span> (0 == memcmp(<a class="code" href="struct_broadcast_message.html#a5eed77683f928d1454419138eed7d673">deviceId</a>,   deviceType.data(), deviceType.size()));</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    };</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;};</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#pragma pack(pop)</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif </span><span class="comment">/* #ifndef _BROADCAST_MESSAGE_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 11 2013 20:04:56 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Apr 16 2013 23:55:18 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
