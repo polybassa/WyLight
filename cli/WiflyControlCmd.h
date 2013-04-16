@@ -320,6 +320,29 @@ class ControlCmdConfSetDefaults : public WiflyControlCmd
 		};
 };
 
+class ControlCmdConfRebootWlanModul : public WiflyControlCmd
+{
+	public:
+		ControlCmdConfRebootWlanModul(void) : WiflyControlCmd(
+					string("conf_rebootWlanModul"),
+					string("' - reboots the wlan modul. Cli terminates after this command!"))
+		{};
+				
+		virtual void Run(WiflyControl& control) const {
+			cout << "Rebooting wlan module... ";
+			if(control.ConfRebootWlanModul())
+			{
+				cout << "done.\n";
+				cout << "Terminating WiflyControl commandline interface now!!!! Please restart." << endl;
+				std::exit(EXIT_SUCCESS);
+			}
+			else
+			{
+				cout << "failed!\n";
+			}
+		};
+};
+
 class ControlCmdConfSetWlan : public WiflyControlCmd
 {
 	public:
@@ -337,6 +360,23 @@ class ControlCmdConfSetWlan : public WiflyControlCmd
 			cout << (control.ConfSetWlan(phrase, ssid) ? "done.\n" : "failed!\n");
 		};
 };
+			
+class ControlCmdConfSetDeviceId : public WiflyControlCmd
+{
+public:
+	ControlCmdConfSetDeviceId(void) : WiflyControlCmd(
+		string("conf_deviceId"),
+		string(" <name>'\n")
+		+ string("    <name> device name 1-32 characters")) {};
+				
+	virtual void Run(WiflyControl& control) const {
+		string name;
+		cin >> name;
+		cout << "Setting device name '" << name << "'... ";
+		cout << (control.ConfSetDeviceId(name) ? "done.\n" : "failed!\n");
+	};
+};
+
 
 class ControlCmdStartBl : public WiflyControlCmd
 {
@@ -584,6 +624,8 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdConfGetSsid(),
 	new ControlCmdConfSetDefaults(),
 	new ControlCmdConfSetWlan(),
+	new ControlCmdConfSetDeviceId(),
+	new ControlCmdConfRebootWlanModul(),
 	new ControlCmdClearScript(),
 	new ControlCmdSetFade(),
 	new ControlCmdStartBl(),

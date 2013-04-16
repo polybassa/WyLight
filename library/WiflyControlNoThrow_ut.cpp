@@ -109,6 +109,10 @@ bool WiflyControl::ConfSetDefaults(void) const {return true; }
 
 bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssid) const {return true; }
 
+bool WiflyControl::ConfSetDeviceId(const std::string& name) const {return true; }
+
+bool WiflyControl::ConfRebootWlanModul() const {return true; }
+
 void WiflyControl::FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
 std::string WiflyControl::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }

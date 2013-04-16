@@ -168,6 +168,12 @@ bool TelnetProxy::Send(const std::string& message, const std::string& expectedRe
 	return g_ProxyConnected;
 }
 
+bool TelnetProxy::SendRebootCommand(void) const
+{
+	return true;
+}
+
+
 bool TelnetProxy::SendString(const std::string& command, std::string value) const
 {
 	g_TestBuffer.push_back(command);
