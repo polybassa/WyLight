@@ -40,10 +40,16 @@ struct BroadcastMessage
 
 	bool IsWiflyBroadcast(size_t length) const {
 		return ((sizeof(BroadcastMessage) == length)
-		&& (IsDevice(BroadcastReceiver::DEVICE_ID) || IsDevice(BroadcastReceiver::DEVICE_ID_OLD)));
+				&& (IsDevice(BroadcastReceiver::DEVICE_ID)
+					|| IsDevice(BroadcastReceiver::DEVICE_ID_OLD)
+					|| IsVersion(BroadcastReceiver::DEVICE_VERSION)));
 	};
 
 private:
+	bool IsVersion(const std::string& deviceVersion) const {
+		return (0 == memcmp(version, deviceVersion.data(), deviceVersion.size()));
+	}
+	
 	bool IsDevice(const std::string& deviceType) const {
 		return (0 == memcmp(deviceId,	deviceType.data(), deviceType.size()));
 	};

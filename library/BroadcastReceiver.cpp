@@ -27,6 +27,7 @@ static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VER
 
 const std::string BroadcastReceiver::DEVICE_ID("Wifly_Light");
 const std::string BroadcastReceiver::DEVICE_ID_OLD("WiFly");
+const std::string BroadcastReceiver::DEVICE_VERSION("WiFly Ver 2.45, 10-09-2012");
 const std::string BroadcastReceiver::STOP_MSG{"StopThread"};
 const Endpoint BroadcastReceiver::EMPTY_ENDPOINT;
 

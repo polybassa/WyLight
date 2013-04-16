@@ -36,6 +36,7 @@ class BroadcastReceiver
 		static const uint16_t BROADCAST_PORT = 55555;
 		static const std::string DEVICE_ID;
 		static const std::string DEVICE_ID_OLD;
+		static const std::string DEVICE_VERSION;
 		static const std::string STOP_MSG;
 		static const Endpoint EMPTY_ENDPOINT;
 		const uint16_t mPort;
