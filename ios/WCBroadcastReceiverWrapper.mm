@@ -31,11 +31,14 @@
         // Start BroadcastReceiver
         self.mStream = new std::stringstream();
         self.receiver = new BroadcastReceiver(55555);
-        //self.receiverThread = new std::thread(std::ref(*self.receiver), std::ref(*self.mStream));
-        self.receiverThread = new std::thread(std::ref(*self.receiver), std::ref(std::cout));
+#ifndef DEBUG
+        self.receiverThread = new std::thread(std::ref(*self.receiver), std::ref(*self.mStream));
+#else
+		self.receiverThread = new std::thread(std::ref(*self.receiver), std::ref(std::cout));
+		NSLog(@"start receiver");
 
-        NSLog(@"start receiver");
-    }
+#endif
+	}
     return self;
 }
 
@@ -58,19 +61,6 @@
 {
     return (*self.receiver).NumRemotes();
 }
-
-/*
- - (NSString *)ipInfoStream
- {
- if((*self.receiver).NumRemotes() == 0)
- return @"No device online";
- 
- char temp[256];
- (*self.mStream).getline(temp, sizeof(temp));
- 
- return [NSString stringWithCString:temp encoding:NSASCIIStringEncoding];
- }
- */
 
 - (uint32_t)ipAdressOfTarget:(size_t)index
 {
@@ -97,8 +87,7 @@
     Endpoint mEndpoint = (*self.receiver).GetEndpoint(index);
     
     std::string mStr = mEndpoint.GetDeviceId();
-    //const char *temp = mStr.c_str();
-    
+   
     return [NSString stringWithCString:mStr.c_str() encoding:NSASCIIStringEncoding];
 }
 
