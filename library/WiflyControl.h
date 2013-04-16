@@ -187,6 +187,19 @@ class WiflyControl
 		 * @return false, in case of an error
 		 */
 		bool ConfSetWlan(const std::string& phrase, const std::string& ssid) const;
+	
+		/**
+		 * Reboot the modul. ATTENTION: You have to reconnect after a reboot
+		 * @return false, in case of an error
+		 */
+		bool ConfRebootWlanModul(void) const;
+		
+		/**
+		 * Allows you to give every Wifly_Light device an unique name
+		 * @param name 1 - 32 characters
+		 * @return false, in case of an error
+		 */
+		bool ConfSetDeviceId(const std::string& name) const;
 		
 /* -------------------------- FIRMWARE METHODES -------------------------- */
 		/**

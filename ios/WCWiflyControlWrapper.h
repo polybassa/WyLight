@@ -13,6 +13,8 @@
 - (id)initWithIP:(uint32_t)ip withPort:(uint16_t)port;
 - (uint32_t)setWlanSsid:(NSString *)ssid password:(NSString *)password;
 - (uint32_t)setDefaultConfiguration;
+- (uint32_t)setWlanDeviceName:(NSString *)name;
+- (uint32_t)rebootWlanModul;
 
 - (uint32_t)setColorDirect:(const uint8_t*)pointerBuffer bufferLength:(size_t)length;
 - (uint32_t)setWaitTimeInTenMilliSecondsIntervals:(uint16_t)time;

@@ -57,6 +57,18 @@
     return (*self.mControl).ConfSetDefaults();
 }
 
+- (uint32_t)setWlanDeviceName:(NSString *)name
+{
+	const std::string nameCString([name cStringUsingEncoding:NSASCIIStringEncoding]);
+	
+	return (*self.mControl).ConfSetDeviceId(nameCString);
+}
+
+- (uint32_t)rebootWlanModul
+{
+	return (*self.mControl).ConfRebootWlanModul();
+}
+
 #pragma mark - Firmware methods
 
 - (uint32_t)setColorDirect:(const uint8_t*)pointerBuffer bufferLength:(size_t)length

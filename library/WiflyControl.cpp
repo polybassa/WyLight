@@ -515,7 +515,7 @@ bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssi
 	
 	if((ssid.size() < 1) || (ssid.size() > SSID_MAX))
 	{
-		Trace(ZONE_WARNING, "Invalid wlan ssid '%s'\n", phrase.data());
+		Trace(ZONE_WARNING, "Invalid wlan ssid '%s'\n", ssid.data());
 		return false;
 	}
 
@@ -539,6 +539,51 @@ bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssi
 		return false;
 	}
 	return mTelnet.Close(true);
+}
+
+bool WiflyControl::ConfSetDeviceId(const std::string& name) const
+{
+	static const size_t NAME_MAX_LEN = 32;
+	
+	if((name.size() < 1) || (name.size() > NAME_MAX_LEN))
+	{
+		Trace(ZONE_WARNING, "Invalid device name '%s'\n", name.data());
+		return false;
+	}
+	
+	if(!mTelnet.Open())
+	{
+		Trace(ZONE_ERROR, "open telnet connection failed\n");
+		return false;
+	}
+	
+	if(!mTelnet.SendString("set opt deviceid ", name))
+	{
+		Trace(ZONE_ERROR, "set device name to '%s' failed\n", name.data());
+		mTelnet.Close(false);
+		return false;
+	}
+	
+	return mTelnet.Close(true);
+}
+
+bool WiflyControl::ConfRebootWlanModul(void) const
+{
+	if(!mTelnet.Open())
+	{
+		Trace(ZONE_ERROR, "open telnet connection failed\n");
+		return false;
+	}
+	
+	static const std::string command = "reboot";
+	
+	if(!mTelnet.SendRebootCommand())
+	{
+		Trace(ZONE_ERROR, "send reboot command failed\n");
+		mTelnet.Close(false);
+		return false;
+	}
+	return true;
 }
 
 void WiflyControl::FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)

@@ -136,6 +136,16 @@ uint32_t WiflyControlNoThrow::ConfSetWlan(const std::string& phrase, const std::
 	return WiflyControl::ConfSetWlan(phrase, ssid) ? NO_ERROR : FATAL_ERROR;
 }
 
+uint32_t WiflyControlNoThrow::ConfRebootWlanModul(void) const
+{
+	return WiflyControl::ConfRebootWlanModul() ? NO_ERROR : FATAL_ERROR;
+}
+
+uint32_t WiflyControlNoThrow::ConfSetDeviceId(const std::string &name) const
+{
+	return WiflyControl::ConfSetDeviceId(name) ? NO_ERROR : FATAL_ERROR;
+}
+
 uint32_t WiflyControlNoThrow::FwClearScript(void)
 {
 	try {
