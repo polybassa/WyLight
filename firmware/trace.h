@@ -41,7 +41,7 @@ extern struct RingBuffer g_TraceBuf;
 	void Trace_Char(const uns8 input);
 	
 	uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
-#elseif defined(TARGET_OS_IPHONE)
+#elseif TARGET_OS_IPHONE
 	#define Trace_Init(x)
 	#define Trace_String(str)
 	#define Trace_Number(input)
