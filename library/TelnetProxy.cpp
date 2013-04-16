@@ -208,6 +208,17 @@ bool TelnetProxy::SendAndWaitForEcho(const std::string& telnetMessage) const
 	return Recv(telnetMessage+"\r\n");
 }
 
+bool TelnetProxy::SendRebootCommand(void) const
+{
+	const std::string telnetMessage = "reboot\r\n";
+	if(telnetMessage.size() != mSock.Send((uint8_t*)telnetMessage.data(), telnetMessage.size()))
+	{
+		Trace(ZONE_ERROR, "Send telnetMessage >>%s<< failed\n", telnetMessage.data());
+		return false;
+	}
+	return Recv(telnetMessage);
+}
+
 bool TelnetProxy::SendString(const std::string& command, std::string value) const
 {
 	static const std::string REPLACE("\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2A\x2B\x2C\x2D\x2E\x2F\x3A\x3B\x3C\x3D\x3E\x3F\x40\x5B\x5C\x5D\x5E\x5F\x60\x7B\x7C\x7D\x7E");

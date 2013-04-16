@@ -46,6 +46,7 @@ class TelnetProxy
 		bool Open(void) const;
 		bool Send(const std::string& telnetMessage, const std::string& expectedResponse = AOK) const;
 		bool SendString(const std::string& command, std::string value) const;
+		bool SendRebootCommand(void) const;
 
 		friend size_t ut_TelnetProxy_Recv(void);
 		friend size_t ut_TelnetProxy_RecvString(void);
