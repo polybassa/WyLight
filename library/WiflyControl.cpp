@@ -612,7 +612,6 @@ void WiflyControl::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength)
 
 void WiflyControl::FwSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	throw ConnectionTimeout("you just catched a debug exception");
 	SimpleResponse response(SET_FADE);
 	FwSend(FwReqSetFade(argb, fadeTime, addr, parallelFade), response);
 }

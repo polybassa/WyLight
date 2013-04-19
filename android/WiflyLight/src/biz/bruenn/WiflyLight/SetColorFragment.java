@@ -2,8 +2,6 @@ package biz.bruenn.WiflyLight;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import biz.bruenn.WiflyLight.exception.ConnectionTimeout;
-
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -13,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class SetColorFragment extends ControlFragment {
 
@@ -27,14 +24,7 @@ public class SetColorFragment extends ControlFragment {
 		mSetColorBtn = (Button)v.findViewById(R.id.setColor);
 		mSetColorBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				try {
-					mCtrl.fwSetColor(mColor, WiflyControl.ALL_LEDS);
-				} catch (ConnectionTimeout e) {
-					Toast.makeText(v.getContext(), "Connection lost", Toast.LENGTH_SHORT).show();
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					getActivity().finish();
-				}
+				onSetColor(mColor);
 			}
 		});
 		
@@ -50,16 +40,8 @@ public class SetColorFragment extends ControlFragment {
 				mSetColorBtn.setBackgroundColor(mColor);
 				mSetColorBtn.setTextColor(0xff000000 | ~mColor);
 				if(!mChangeIsInProgress.getAndSet(true)) {
-					try {
-						mCtrl.fwSetColor(mColor, WiflyControl.ALL_LEDS);
-					} catch (ConnectionTimeout e) {
-						Toast.makeText(v.getContext(), "Connection lost", Toast.LENGTH_SHORT).show();
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						getActivity().finish();
-					} finally {
-						mChangeIsInProgress.set(false);
-					}
+					onSetColor(mColor);
+					mChangeIsInProgress.set(false);
 				}
 				return true;
 			}

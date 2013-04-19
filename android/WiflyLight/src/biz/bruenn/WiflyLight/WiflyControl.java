@@ -2,6 +2,7 @@ package biz.bruenn.WiflyLight;
 
 import biz.bruenn.WiflyLight.exception.ConnectionTimeout;
 import biz.bruenn.WiflyLight.exception.FatalError;
+import biz.bruenn.WiflyLight.exception.ScriptBufferFull;
 
 public class WiflyControl {
 	
@@ -53,11 +54,11 @@ public class WiflyControl {
 		return FwLoopOn(mNative);
 	}
 	
-	public synchronized boolean fwSetColor(int argb, int addr) throws ConnectionTimeout {
+	public synchronized boolean fwSetColor(int argb, int addr) throws ConnectionTimeout, FatalError, ScriptBufferFull {
 		return FwSetColor(mNative, argb, addr);
 	}
 	
-	public synchronized boolean fwSetFade(int argb, int addr, short fadeTime) {
+	public synchronized boolean fwSetFade(int argb, int addr, short fadeTime) throws ConnectionTimeout, FatalError, ScriptBufferFull {
 		return FwSetFade(mNative, argb, addr, fadeTime);
 	}
 }
