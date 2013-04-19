@@ -4,9 +4,13 @@ import biz.bruenn.WiflyLight.exception.FatalError;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class SetWlanDialog extends Dialog {
 	private final Endpoint mRemote;
@@ -29,13 +33,25 @@ public class SetWlanDialog extends Dialog {
 		WiflyControl control = new WiflyControl();
 		try {
 			control.connect(mRemote);
-		} catch (FatalError e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			mSsid.setText(control.confGetSsid());
+			control.disconnect();
+		} catch (FatalError e) {
+			Toast.makeText(getContext(), R.string.msg_connectionfailed, Toast.LENGTH_SHORT).show();
+			dismiss();
 		}
-		mSsid.setText(control.confGetSsid());
-		control.disconnect();
 		
+		CheckBox toggle = (CheckBox)findViewById(R.id.togglePassphrase);
+		toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if(isChecked) {
+					mPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+				} else {
+					mPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+				}
+			}
+		});
+
 		Button save = (Button)findViewById(R.id.save);
 		save.setOnClickListener(new View.OnClickListener() {
 			
@@ -44,12 +60,12 @@ public class SetWlanDialog extends Dialog {
 				WiflyControl control = new WiflyControl();
 				try {
 					control.connect(mRemote);
+					control.confSetWlan(mPass.getText().toString(),	mSsid.getText().toString());
+					control.disconnect();
 				} catch (FatalError e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				control.confSetWlan(mPass.getText().toString(),	mSsid.getText().toString());
-				control.disconnect();
 				dismiss();
 			}
 		});
