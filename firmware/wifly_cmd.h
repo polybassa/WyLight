@@ -37,6 +37,7 @@
 
 #define WAIT 0xFE
 #define SET_FADE 0xFC
+#define SET_GRADIENT 0xF9
 #define CLEAR_SCRIPT 0xF8
 #define LOOP_ON 0xF7
 #define LOOP_OFF 0xF6
@@ -60,7 +61,26 @@ struct __attribute__((__packed__)) cmd_set_fade {
 	uns8 green;
 	uns8 blue;
 	uns8 parallelFade;
-	uns16 fadeTmms; //fadetime in ms
+	uns16 fadeTmms; //fadetime in ten ms
+};
+
+struct __attribute__((__packed__)) cmd_set_gradient {
+	uns8 red_1;
+	uns8 green_1;
+	uns8 blue_1;
+	uns8 red_2;
+	uns8 green_2;
+	uns8 blue_2;
+	uns8 parallelAndOffset; //most significant bit is the parallel bit, the 7 lower bit's hold the number of the offset
+	uns8 numberOfLeds;
+	uns16 fadeTmms; //fadetime in ten ms
+	
+#ifdef __cplusplus
+	uint8_t getOffset(void) const { return parallelAndOffset & 0x7F; };
+	void setOffset(const uint8_t offset) { parallelAndOffset = (parallelAndOffset & 0x80) | (offset & 0x7F); };
+	bool getParallelFade(void) const { return (parallelAndOffset & 0x80) > 0; };
+	void setParallelFade(const bool parallelFade) { parallelAndOffset = (parallelAndOffset & 0x7F) | ( parallelFade ? 0x80 : 0x00); };
+#endif
 };
 
 struct __attribute__((__packed__)) cmd_loop_end {
@@ -113,6 +133,7 @@ struct __attribute__((__packed__)) led_cmd {
 		struct cmd_loop_end loopEnd;
 		struct rtc_time set_rtc;
 		struct cmd_set_color_direct set_color_direct;
+		struct cmd_set_gradient set_gradient;
 	}data;
 };
 

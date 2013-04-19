@@ -64,6 +64,9 @@ void Ledstrip_SetColorDirect(uns8 *pValues);
  */
 void Ledstrip_SetFade(struct cmd_set_fade *pCmd);
 
+void Ledstrip_SetGradient(struct cmd_set_gradient *pCmd);
+
+
 /**
  * called by the main cycle
  * update the ledstrip accourding to the precalculated parameters in <gLedBuf>

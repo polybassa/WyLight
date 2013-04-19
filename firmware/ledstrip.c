@@ -271,6 +271,84 @@ void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 	);	
 }
 
+#define CALC_DELTA(target,source_1,source_2) { \
+	target = source_1; \
+	if(target > source_2) \
+		target = target - source_2; \
+	else \
+		target = source_2 - target; \
+	target = target / numOfLeds; }
+
+// To add or sub the diff from color by each loop run to get the right color for
+// every led. If compare is greater then color, this macro add's diff, otherwise it sub's diff
+#define ADJUST_COLOR(color,compare,diff) { \
+	if(color > compare) \
+		color -= diff; \
+	else \
+		color += diff; }\
+
+void Ledstrip_SetGradient(struct cmd_set_gradient *pCmd)
+{
+	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
+	
+	uns8 offset = pCmd->parallelAndOffset & 0x7f;
+	uns8 numOfLeds = pCmd->numberOfLeds - 1;
+	uns8 deltaRed, deltaGreen, deltaBlue;
+	
+	if(numOfLeds == 255 || numOfLeds == 0)
+		numOfLeds = 1;
+	
+	CALC_DELTA(deltaRed, pCmd->red_1, pCmd->red_2);
+	CALC_DELTA(deltaGreen, pCmd->green_1, pCmd->green_2);
+	CALC_DELTA(deltaBlue, pCmd->blue_1, pCmd->blue_2);
+		
+	uns8 red = pCmd->red_1;
+	uns8 green = pCmd->green_1;
+	uns8 blue = pCmd->blue_1;
+	
+	//define variables for CALC_COLOR macro
+	uns16 temp16;
+	uns8 k,delta,stepSize,temp8;
+	uns8* stepAddress = gLedBuf.step;
+	uns8 stepMask = 0x01;
+	
+	offset = offset * 3;
+	numOfLeds = numOfLeds * 3;
+	
+	const uns8 endPosition = offset + numOfLeds;
+			
+	for(k = 0; k < NUM_OF_LED * 3; k++)
+	{
+		if (k >= endPosition)
+		{
+			red = pCmd->red_2;
+			green = pCmd->green_2;
+			blue = pCmd->blue_2;
+			
+			CALC_COLOR(blue);
+			k++;
+			CALC_COLOR(green);
+			k++;
+			CALC_COLOR(red);
+			break;
+		}
+		
+		if(k >= offset)
+		{
+			CALC_COLOR(blue);
+			k++;
+			CALC_COLOR(green);
+			k++;
+			CALC_COLOR(red);
+			ADJUST_COLOR(red, pCmd->red_2, deltaRed);
+			ADJUST_COLOR(green, pCmd->green_2, deltaGreen);
+			ADJUST_COLOR(blue, pCmd->blue_2, deltaBlue);
+		}
+		else
+			INC_BIT_COUNTER(stepAddress, stepMask);
+	}
+}
+
 #ifdef DEBUG
 #ifndef __CC8E__
 void Ledstrip_Test(unsigned char address)
