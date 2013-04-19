@@ -53,15 +53,15 @@ enum WiflyError {
 class FatalError : public std::exception
 {
 public:
-	FatalError(const std::string& description, const std::string& javaClassType = "biz/bruenn/WiflyLight/exception/FatalError", uint32_t errorCode = FATAL_ERROR) throw () : mDescription(description), mJavaClassType(javaClassType), mErrorCode(errorCode) {};
+	FatalError(const std::string& description, uint32_t errorCode = FATAL_ERROR) throw () : mDescription(description), mErrorCode(errorCode) {};
 	virtual ~FatalError(void) throw () {};
 
-	uint32_t AsErrorCode(void) const { return mErrorCode; };
+	uint32_t AsErrorCode(void) const {
+		return mErrorCode;
+	};
 
-	const char* GetJavaClassType(void) const { return mJavaClassType.c_str(); };
-
-	const char* what() const throw () {
-		return mDescription.c_str();
+	virtual const char* GetJavaClassType(void) const {
+		return "biz/bruenn/WiflyLight/exception/FatalError";
 	};
 
 	friend std::ostream& operator<< (std::ostream& out, const FatalError& ref)
@@ -71,7 +71,6 @@ public:
 
 protected:
 	const std::string mDescription;
-	const std::string mJavaClassType;
 	const uint32_t mErrorCode;
 };
 
@@ -79,8 +78,12 @@ class ConnectionLost : public FatalError
 {
 public:
 	ConnectionLost(const std::string& description, uint32_t addr, uint16_t port)
-		: FatalError(description, "biz/bruenn/WiflyLight/exception/ConnectionLost", CONNECTION_LOST), mAddress(addr), mPort(port)
+		: FatalError(description, CONNECTION_LOST), mAddress(addr), mPort(port)
 	{
+	};
+
+	virtual const char* GetJavaClassType(void) const {
+		return "biz/bruenn/WiflyLight/exception/ConnectionLost";
 	};
 
 	friend std::ostream& operator<< (std::ostream& out, const ConnectionLost& ref)
@@ -97,18 +100,30 @@ protected:
 class ConnectionTimeout : public FatalError
 {
 public:
-	ConnectionTimeout(const std::string& description) : FatalError(description, "biz/bruenn/WiflyLight/exception/ConnectionTimeout", CONNECTION_TIMEOUT) {};
+	ConnectionTimeout(const std::string& description) : FatalError(description, CONNECTION_TIMEOUT) {};
+
+	virtual const char* GetJavaClassType(void) const {
+		return "biz/bruenn/WiflyLight/exception/ConnectionTimeout";
+	};
 };
 
 class InvalidParameter : public FatalError
 {
 public:
-	InvalidParameter(const std::string& description) : FatalError(description, "biz/bruenn/WiflyLight/exception/InvalidParameter", INVALID_PARAMETER) {};
+	InvalidParameter(const std::string& description) : FatalError(description, INVALID_PARAMETER) {};
+
+	virtual const char* GetJavaClassType(void) const {
+		return "biz/bruenn/WiflyLight/exception/InvalidParameter";
+	};
 };
 
 class ScriptBufferFull : public FatalError
 {
 public:
-	ScriptBufferFull(void) : FatalError("ScriptBuffer in PIC is full, clear it or wait", "biz/bruenn/WiflyLight/exception/ScriptBufferFull", SCRIPT_FULL) {};
+	ScriptBufferFull(void) : FatalError("ScriptBuffer in PIC is full, clear it or wait", SCRIPT_FULL) {};
+
+	virtual const char* GetJavaClassType(void) const {
+		return "biz/bruenn/WiflyLight/exception/ScriptBufferFull";
+	};
 };
 #endif /* defined(____WiflyControlException__) */
