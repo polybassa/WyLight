@@ -17,5 +17,5 @@
     <string name="set_loopoff">Loop off</string>
     <string name="ssid_hint">SSID 1-32 character</string>
     <string name="title_activity_wifly_control">Control your WiflyLight</string>
-
+    <string name="msg_scriptbufferfull">The script buffer is full, clear it first</string>
 </resources>

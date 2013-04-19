@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class SetColorFragment extends ControlFragment {
 
@@ -21,12 +20,11 @@ public class SetColorFragment extends ControlFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_set_color, group, false);
-		
+
 		mSetColorBtn = (Button)v.findViewById(R.id.setColor);
 		mSetColorBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				boolean done = mCtrl.fwSetColor(mColor, WiflyControl.ALL_LEDS);
-				Toast.makeText(v.getContext(), String.valueOf(done), Toast.LENGTH_SHORT).show();
+				onSetColor(mColor);
 			}
 		});
 		
@@ -42,7 +40,7 @@ public class SetColorFragment extends ControlFragment {
 				mSetColorBtn.setBackgroundColor(mColor);
 				mSetColorBtn.setTextColor(0xff000000 | ~mColor);
 				if(!mChangeIsInProgress.getAndSet(true)) {
-					mCtrl.fwSetColor(mColor, WiflyControl.ALL_LEDS);
+					onSetColor(mColor);
 					mChangeIsInProgress.set(false);
 				}
 				return true;

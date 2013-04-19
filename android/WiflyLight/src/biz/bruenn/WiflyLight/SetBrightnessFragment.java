@@ -24,7 +24,7 @@ public class SetBrightnessFragment extends ControlFragment {
 				if(!mChangeIsInProgress.getAndSet(true)) {		
 					final int intensity = (int)(2.55f * progress);
 					final int c = (((intensity << 8) | intensity) << 8) | intensity;
-					mCtrl.fwSetColor(c, WiflyControl.ALL_LEDS);
+					onSetColor(c);
 					mChangeIsInProgress.set(false);
 				}
 			}

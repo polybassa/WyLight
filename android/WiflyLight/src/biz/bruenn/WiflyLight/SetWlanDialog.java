@@ -1,5 +1,6 @@
 package biz.bruenn.WiflyLight;
 
+import biz.bruenn.WiflyLight.exception.FatalError;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -26,7 +27,12 @@ public class SetWlanDialog extends Dialog {
 		mSsid = (EditText)findViewById(R.id.editSsid);
 
 		WiflyControl control = new WiflyControl();
-		control.connect(mRemote);
+		try {
+			control.connect(mRemote);
+		} catch (FatalError e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		mSsid.setText(control.confGetSsid());
 		control.disconnect();
 		
@@ -36,7 +42,12 @@ public class SetWlanDialog extends Dialog {
 			public void onClick(View v) {
 				
 				WiflyControl control = new WiflyControl();
-				control.connect(mRemote);
+				try {
+					control.connect(mRemote);
+				} catch (FatalError e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				control.confSetWlan(mPass.getText().toString(),	mSsid.getText().toString());
 				control.disconnect();
 				dismiss();
