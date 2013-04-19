@@ -323,6 +323,8 @@ class WiflyControlNoThrow : private WiflyControl
 		 */
 		uint32_t FwSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade = false);
 
+		uint32_t FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0);
+	
 		/**
 		 * Sets the rtc clock of the wifly device to the specified time.
 		 * The wifly device has to be in firmware mode for this command.

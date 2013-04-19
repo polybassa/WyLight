@@ -307,6 +307,10 @@ class WiflyControl
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
 		void FwSetFade(const std::string& rgb, uint16_t fadeTime = 0, const std::string& addr = LEDS_ALL, bool parallelFade = false) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+	
+		void FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0);
+	
+		void FwSetGradient(const std::string& rgb_1, const std::string& rgb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0);
 
 		/**
 		 * Sets the rtc clock of the wifly device to the specified time.

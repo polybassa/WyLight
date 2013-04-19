@@ -37,6 +37,20 @@ REF.green = ((ARGB) & 0x0000ff00) >> 8; \
 REF.blue = (ARGB) & 0x000000ff; \
 }
 
+#define SetRgb_1(REF, ARGB) { \
+REF.red_1 = ((ARGB) & 0x00ff0000) >> 16; \
+REF.green_1 = ((ARGB) & 0x0000ff00) >> 8; \
+REF.blue_1 = (ARGB) & 0x000000ff; \
+}
+
+#define SetRgb_2(REF, ARGB) { \
+REF.red_2 = ((ARGB) & 0x00ff0000) >> 16; \
+REF.green_2 = ((ARGB) & 0x0000ff00) >> 8; \
+REF.blue_2 = (ARGB) & 0x000000ff; \
+}
+
+
+
 class FwRequest
 {
 protected:
@@ -126,6 +140,26 @@ public:
 		mReqFrame.data.set_fade.parallelFade = (parallelFade ? 1 : 0);
 	};
 };
+
+class FwReqSetGradient : public FwRequest
+{
+public:
+	FwReqSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0) : FwRequest(sizeof(cmd_set_gradient))
+	{
+		if (offset > 0x7f) throw FatalError("Invalid Parameter, offset is greater than 127");
+		
+		mReqFrame.cmd = SET_GRADIENT;
+		SetRgb_1(mReqFrame.data.set_gradient, argb_1);
+		SetRgb_2(mReqFrame.data.set_gradient, argb_2);
+		
+		fadeTime = ((0 == fadeTime) ? 1 : fadeTime);
+		mReqFrame.data.set_gradient.fadeTmms = htons(fadeTime);
+		mReqFrame.data.set_gradient.numberOfLeds = length;
+		mReqFrame.data.set_gradient.setOffset(offset);
+		mReqFrame.data.set_gradient.setParallelFade(parallelFade);
+	};
+};
+
 
 class FwReqSetRtc : public FwRequest
 {

@@ -88,8 +88,15 @@ public:
 class FwCmdSetFade : public FwCommand
 {
 public:
-	FwCmdSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) : FwCommand(new FwReqSetFade(argb, fadeTime = 0, addr = 0xffffffff, parallelFade = false), new SimpleResponse(SET_FADE)) {};
+	FwCmdSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade = false) : FwCommand(new FwReqSetFade(argb, fadeTime, addr, parallelFade), new SimpleResponse(SET_FADE)) {};
 };
+
+class FwCmdSetGradient : public FwCommand
+{
+public:
+	FwCmdSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0) : FwCommand(new FwReqSetGradient(argb_1, argb_2, fadeTime,  parallelFade, length, offset), new SimpleResponse(SET_GRADIENT)) {};
+};
+
 
 class FwCmdSetRtc : public FwCommand
 {

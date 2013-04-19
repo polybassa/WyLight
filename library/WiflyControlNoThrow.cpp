@@ -236,6 +236,17 @@ uint32_t WiflyControlNoThrow::FwSetFade(uint32_t argb, uint16_t fadeTime, uint32
 	}
 }
 
+uint32_t WiflyControlNoThrow::FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset)
+{
+	try {
+		WiflyControl::FwSetGradient(argb_1, argb_2, fadeTime, parallelFade, length, offset);
+		return NO_ERROR;
+	} catch (...) {
+		return SolveException();
+	}
+	
+}
+
 uint32_t WiflyControlNoThrow::FwSetRtc(const tm& timeValue)
 {
 	try {
