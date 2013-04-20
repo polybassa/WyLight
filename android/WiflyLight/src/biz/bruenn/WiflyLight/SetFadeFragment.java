@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class SetFadeFragment extends ControlFragment {
 
@@ -23,8 +22,7 @@ public class SetFadeFragment extends ControlFragment {
 		mSetFadeBtn = (Button)v.findViewById(R.id.setFade);
 		mSetFadeBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				boolean done = mCtrl.fwSetFade(mColor, WiflyControl.ALL_LEDS, (short) 500);
-				Toast.makeText(v.getContext(), String.valueOf(done), Toast.LENGTH_SHORT).show();
+				onSetFade(mColor, (short)500);
 			}
 		});
 		

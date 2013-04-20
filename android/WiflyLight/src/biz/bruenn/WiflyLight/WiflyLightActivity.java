@@ -18,6 +18,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class WiflyLightActivity extends Activity {
 	private ListView mRemoteList;
@@ -38,6 +39,7 @@ public class WiflyLightActivity extends Activity {
         registerForContextMenu(mRemoteList);
         mRemoteArrayAdapter = new ArrayAdapter<Endpoint>(this, android.R.layout.simple_list_item_1, mRemoteArray);
         mRemoteList.setAdapter(mRemoteArrayAdapter);
+        mRemoteList.setEmptyView((TextView)findViewById(android.R.id.empty));
         mRemoteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> arg0, View v, int arg2,
