@@ -669,7 +669,7 @@ void WiflyControl::FwSetFade(const string& rgb, uint16_t fadeTime, const string&
 void WiflyControl::FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset)
 {
 	SimpleResponse response(SET_GRADIENT);
-	FwSend(FwReqSetGradient(argb_1, argb_2,fadeTime,parallelFade,length,offset), response);
+	FwSend(FwReqSetGradient(argb_1, argb_2, fadeTime, parallelFade, length, offset), response);
 }
 
 

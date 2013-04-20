@@ -308,8 +308,32 @@ class WiflyControl
 		 */
 		void FwSetFade(const std::string& rgb, uint16_t fadeTime = 0, const std::string& addr = LEDS_ALL, bool parallelFade = false) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 	
+	   /**
+		* Injects a gradient command into the wifly script controller
+		* @param argb_1 is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff). This is the start color for the gradient.
+		* @param argb_2 is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff). This is the end color for the gradient.
+		* @param fadeTime in hundreths of a second. Use 0 to set color immediately, default = 0
+		* @param parallelFade if true other fades are allowed in parallel with this fade
+		* @param length is the number of led's from startposition to endposition
+		* @param offset can be used to move the startposition of the gradient on the ledstrip
+		* @throw ConnectionTimeout if response timed out
+		* @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		* @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
+		*/
 		void FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0);
 	
+		/**
+		* Injects a gradient command into the wifly script controller
+		* @param rgb_1 is a hex string representation of a rgb value without leading '0x'
+		* @param rgb_2 is a hex string representation of a rgb value without leading '0x'
+		* @param fadeTime in hundreths of a second. Use 0 to set color immediately, default = 0
+		* @param parallelFade if true other fades are allowed in parallel with this fade
+		* @param length is the number of led's from startposition to endposition
+		* @param offset can be used to move the startposition of the gradient on the ledstrip
+		* @throw ConnectionTimeout if response timed out
+		* @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		* @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
+		*/
 		void FwSetGradient(const std::string& rgb_1, const std::string& rgb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0);
 
 		/**

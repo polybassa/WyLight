@@ -139,6 +139,8 @@ void WiflyControl::FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalE
 
 void WiflyControl::FwStartBl(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
+void WiflyControl::FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset) { throwExceptions(); }
+
 size_t ut_WiflyControlNoThrow_FwFunctions(void)
 {
 	TestCaseBegin();
@@ -167,7 +169,7 @@ size_t ut_WiflyControlNoThrow_FwFunctions(void)
 		CHECK(e == testee.FwSetFade(0));
 		CHECK(e == testee.FwStartBl());
 		CHECK(e == testee.FwSetColorDirect(&buffer, sizeof(buffer)));
-		
+		CHECK(e == testee.FwSetGradient(0,0));
 	}
 	
 	TestCaseEnd();

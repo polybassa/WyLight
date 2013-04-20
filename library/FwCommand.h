@@ -70,7 +70,7 @@ public:
 class FwCmdLoopOff : public FwCommand
 {
 public:
-	FwCmdLoopOff(uint8_t numLoops) : FwCommand(new FwReqLoopOff(numLoops), new SimpleResponse(LOOP_OFF)) {};
+	FwCmdLoopOff(uint8_t numLoops = 0) : FwCommand(new FwReqLoopOff(numLoops), new SimpleResponse(LOOP_OFF)) {};
 };
 
 class FwCmdLoopOn : public FwCommand

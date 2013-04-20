@@ -295,7 +295,7 @@ void Ledstrip_SetGradient(struct cmd_set_gradient *pCmd)
 	uns8 numOfLeds = pCmd->numberOfLeds - 1;
 	uns8 deltaRed, deltaGreen, deltaBlue;
 	
-	if(numOfLeds == 255 || numOfLeds == 0)
+	if(numOfLeds == 255 || numOfLeds == 0)
 		numOfLeds = 1;
 	
 	CALC_DELTA(deltaRed, pCmd->red_1, pCmd->red_2);

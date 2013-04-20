@@ -23,6 +23,7 @@
 #define NUM_TEST_LOOPS 255
  
 int gSetFadeWasCalled;
+int gSetGradientWasCalled;
 
 /**************** includes and functions for wrapping ****************/
 #include "ScriptCtrl.h"
@@ -42,6 +43,12 @@ void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 {
 	Trace_String("Ledstrip_SetFade was called\n");
 	gSetFadeWasCalled = TRUE;
+}
+
+void Ledstrip_SetGradient(struct cmd_set_fade *pCmd)
+{
+	Trace_String("Ledstrip_SetGradient was called\n");
+	gSetGradientWasCalled = TRUE;
 }
 
 /******************************* test functions *******************************/

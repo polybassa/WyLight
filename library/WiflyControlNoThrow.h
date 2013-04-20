@@ -322,7 +322,21 @@ class WiflyControlNoThrow : private WiflyControl
 			<BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
 		uint32_t FwSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade = false);
-
+		
+		/**
+		* Injects a gradient command into the wifly script controller
+		* @param argb_1 is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff). This is the start color for the gradient.
+		* @param argb_2 is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff). This is the end color for the gradient.
+		* @param fadeTime in hundreths of a second. Use 0 to set color immediately, default = 0
+		* @param parallelFade if true other fades are allowed in parallel with this fade
+		* @param length is the number of led's from startposition to endposition
+		* @param offset can be used to move the startposition of the gradient on the ledstrip
+		* @return Indexed by ::WiflyError
+		   <BR><B>CONNECTION_TIMEOUT</B> if response timed out
+		   <BR><B>FATAL_ERROR</B> if command code of the response doesn't match the code of the request, or too many retries failed, or a invalid value for offset
+		   <BR><B>SCRIPT_FULL</B> if script buffer in PIC firmware is full and request couldn't be executed
+		   <BR><B>NO_ERROR</B> is returned if no error occurred
+		 */
 		uint32_t FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0);
 	
 		/**

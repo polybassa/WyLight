@@ -129,7 +129,7 @@ public:
 class FwReqSetFade : public FwRequest
 {
 public:
-	FwReqSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade = false) : FwRequest(sizeof(cmd_set_fade))
+	FwReqSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) : FwRequest(sizeof(cmd_set_fade))
 	{
 		mReqFrame.cmd = SET_FADE;
 		SetAddrRgb(mReqFrame.data.set_fade, addr, argb);
@@ -144,7 +144,7 @@ public:
 class FwReqSetGradient : public FwRequest
 {
 public:
-	FwReqSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0) : FwRequest(sizeof(cmd_set_gradient))
+	FwReqSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset) : FwRequest(sizeof(cmd_set_gradient))
 	{
 		if (offset > 0x7f) throw FatalError("Invalid Parameter, offset is greater than 127");
 		
@@ -159,7 +159,6 @@ public:
 		mReqFrame.data.set_gradient.setParallelFade(parallelFade);
 	};
 };
-
 
 class FwReqSetRtc : public FwRequest
 {

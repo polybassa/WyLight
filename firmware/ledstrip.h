@@ -64,8 +64,12 @@ void Ledstrip_SetColorDirect(uns8 *pValues);
  */
 void Ledstrip_SetFade(struct cmd_set_fade *pCmd);
 
+/**
+ * Callback if a "set_gradient" command is received.
+ * fading parameters are calculated and stored to be used in
+ * Ledstrip_DoFade() which is called in the main cycle
+ */
 void Ledstrip_SetGradient(struct cmd_set_gradient *pCmd);
-
 
 /**
  * called by the main cycle

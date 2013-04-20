@@ -554,6 +554,32 @@ size_t ut_WiflyControl_FwSetFade_2(void)
 	TestCaseEnd();
 }
 
+size_t ut_WiflyControl_FwSetGradient(void)
+{
+	led_cmd expectedOutgoingFrame;
+	expectedOutgoingFrame.cmd = SET_GRADIENT;
+	expectedOutgoingFrame.data.set_gradient.red_1 = 0x11;
+	expectedOutgoingFrame.data.set_gradient.green_1 = 0x22;
+	expectedOutgoingFrame.data.set_gradient.blue_1 = 0x33;
+	expectedOutgoingFrame.data.set_gradient.red_2 = 0x33;
+	expectedOutgoingFrame.data.set_gradient.green_2 = 0x22;
+	expectedOutgoingFrame.data.set_gradient.blue_2 = 0x11;
+	expectedOutgoingFrame.data.set_gradient.parallelAndOffset = 0xff;
+	expectedOutgoingFrame.data.set_gradient.numberOfLeds = 10;
+	expectedOutgoingFrame.data.set_gradient.fadeTmms = htons(1000);
+	
+	TestCaseBegin();
+	WiflyControl testee(0, 0);
+	
+	testee.FwSetGradient("112233","332211", 1000, true, 10, 127);
+	TraceBuffer(ZONE_INFO, &g_SendFrame, sizeof(cmd_set_gradient) + 1, "%02x ", "IS  :");
+	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, sizeof(cmd_set_gradient) + 1, "%02x ", "SOLL:");
+	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, sizeof(cmd_set_gradient) + 1));
+	
+	
+	TestCaseEnd();
+}
+
 size_t ut_WiflyControl_FwSetWait(void)
 {
 	led_cmd expectedOutgoingFrame = {0xff};
