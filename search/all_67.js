@@ -16,5 +16,5 @@ var searchData=
   ['getstartlinearaddress',['getStartLinearAddress',['../classintelhex.html#a7bc61f72756d37509e768906733ba10b',1,'intelhex']]],
   ['getstartsegmentaddress',['getStartSegmentAddress',['../classintelhex.html#a94d6d17ba22263a4775d80b2a0e6e95f',1,'intelhex']]],
   ['gpiovalue',['gpioValue',['../struct_broadcast_message.html#a70f920e51357cadc8b8289726cfaf9a6',1,'BroadcastMessage']]],
-  ['green',['GREEN',['../class_wifly_color.html#adb9acf98ee5417f6293ae3fa9277237d',1,'WiflyColor::GREEN()'],['../class_wifly_color.html#aeba066005ba425225621111ea6b9251f',1,'WiflyColor::green() const '],['../class_wifly_color.html#abe50acffd7b1a172597ae8525149763a',1,'WiflyColor::green(uint8_t value)']]]
+  ['green',['green',['../class_wifly_color.html#aeba066005ba425225621111ea6b9251f',1,'WiflyColor::green() const '],['../class_wifly_color.html#abe50acffd7b1a172597ae8525149763a',1,'WiflyColor::green(uint8_t value)'],['../class_wifly_color.html#adb9acf98ee5417f6293ae3fa9277237d',1,'WiflyColor::GREEN()']]]
 ];

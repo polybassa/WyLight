@@ -34,7 +34,7 @@ var searchData=
   ['blrequest_2eh',['BlRequest.h',['../_bl_request_8h.html',1,'']]],
   ['blrunapp',['BlRunApp',['../class_wifly_control.html#a776073bd4991e4331fb946e456d803df',1,'WiflyControl::BlRunApp()'],['../class_wifly_control_no_throw.html#a6692124924a54cb2e9b6a1b92824b0ce',1,'WiflyControlNoThrow::BlRunApp()']]],
   ['blrunapprequest',['BlRunAppRequest',['../struct_bl_run_app_request.html',1,'BlRunAppRequest'],['../struct_bl_run_app_request.html#a051bfcca520225571dfe62af8bb3a842',1,'BlRunAppRequest::BlRunAppRequest()']]],
-  ['blue',['BLUE',['../class_wifly_color.html#ad63591638c12c2f9c5df743fceef6c43',1,'WiflyColor::BLUE()'],['../class_wifly_color.html#a9b2e0b29756d5915f4e96b85c1978fea',1,'WiflyColor::blue() const '],['../class_wifly_color.html#ad0c7f227f49eb00af032f4ae95e78f4a',1,'WiflyColor::blue(uint8_t value)']]],
+  ['blue',['blue',['../class_wifly_color.html#a9b2e0b29756d5915f4e96b85c1978fea',1,'WiflyColor::blue() const '],['../class_wifly_color.html#ad0c7f227f49eb00af032f4ae95e78f4a',1,'WiflyColor::blue(uint8_t value)'],['../class_wifly_color.html#ad63591638c12c2f9c5df743fceef6c43',1,'WiflyColor::BLUE()']]],
   ['boottmms',['bootTmms',['../struct_broadcast_message.html#a20abccb0a47e7956cd2a3bcd3299c23c',1,'BroadcastMessage']]],
   ['broadcast_5fport',['BROADCAST_PORT',['../class_broadcast_receiver.html#a38d37ce60dc1fb1e0dbc08d80b5d3b47',1,'BroadcastReceiver']]],
   ['broadcastmessage',['BroadcastMessage',['../struct_broadcast_message.html',1,'']]],

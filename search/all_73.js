@@ -12,6 +12,8 @@ var searchData=
   ['setaddressnumbytes',['SetAddressNumBytes',['../struct_bl_read_request.html#ad5aba1ab1c446945f62f05b21d3fac4d',1,'BlReadRequest']]],
   ['setaddrrgb',['SetAddrRgb',['../_fw_request_8h.html#ab920d47c551380540cd2a5f42679c725',1,'FwRequest.h']]],
   ['setdata',['SetData',['../struct_bl_eeprom_write_request.html#a1855ba1e441ab8188e8384e64ebb0d59',1,'BlEepromWriteRequest::SetData()'],['../struct_bl_flash_write_request.html#acf26fc08c3d7fe8d36cc195faee09ac8',1,'BlFlashWriteRequest::SetData()']]],
+  ['setrgb_5f1',['SetRgb_1',['../_fw_request_8h.html#a985d842698aec4c6a981ab19507a3ef7',1,'FwRequest.h']]],
+  ['setrgb_5f2',['SetRgb_2',['../_fw_request_8h.html#a33e6a09409de617ff40636e555197c78',1,'FwRequest.h']]],
   ['setstartlinearaddress',['setStartLinearAddress',['../classintelhex.html#a7629ca097b2de02dea37fcaa2dc2709c',1,'intelhex']]],
   ['setstartsegmentaddress',['setStartSegmentAddress',['../classintelhex.html#a9688f0002be870b05d64b5f9fcdeb86b',1,'intelhex']]],
   ['simpleresponse',['SimpleResponse',['../class_simple_response.html',1,'SimpleResponse'],['../class_simple_response.html#aefac8d5010a3d168a206c78fbbd917ff',1,'SimpleResponse::SimpleResponse()']]],

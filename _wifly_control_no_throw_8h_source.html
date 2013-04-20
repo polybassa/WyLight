@@ -168,22 +168,24 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        uint32_t <a class="code" href="class_wifly_control_no_throw.html#a90186029abfde0d299c6fe232747452d">FwSetColorDirect</a>(<span class="keyword">const</span> uint8_t* pBuffer, <span class="keywordtype">size_t</span> bufferLength);</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        </div>
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        uint32_t <a class="code" href="class_wifly_control_no_throw.html#ad54e9041e920a4ed43b7b6fbd597c9c7">FwSetFade</a>(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, <span class="keywordtype">bool</span> parallelFade = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        uint32_t <a class="code" href="class_wifly_control_no_throw.html#a5a8101329291df5f96c0312ad9975589">FwSetRtc</a>(<span class="keyword">const</span> tm&amp; timeValue);</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        </div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;        uint32_t <a class="code" href="class_wifly_control_no_throw.html#a311853b7e9eaffadc1e2664653b71534">FwSetWait</a>(uint16_t waitTime);</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        uint32_t <a class="code" href="class_wifly_control_no_throw.html#a026c989019eb328ffb2afb3e911399ce">FwStartBl</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    </div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        uint32_t SolveException(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;        uint32_t Try(<span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<span class="keyword">const</span> <a class="code" href="class_wifly_control.html" title="Class to communicate with a Wifly_Light Hardware.">WiflyControl</a>&amp;)&gt; call) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;};</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _WIFLYCONTROL_NOTHROW_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        </div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        uint32_t <a class="code" href="class_wifly_control_no_throw.html#aee4511965e53d1564da2788bebb271a1">FwSetGradient</a>(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, <span class="keywordtype">bool</span> parallelFade = <span class="keyword">false</span>, uint8_t length = NUM_OF_LED, uint8_t offset = 0);</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    </div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        uint32_t <a class="code" href="class_wifly_control_no_throw.html#a5a8101329291df5f96c0312ad9975589">FwSetRtc</a>(<span class="keyword">const</span> tm&amp; timeValue);</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        </div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        uint32_t <a class="code" href="class_wifly_control_no_throw.html#a311853b7e9eaffadc1e2664653b71534">FwSetWait</a>(uint16_t waitTime);</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        uint32_t <a class="code" href="class_wifly_control_no_throw.html#a026c989019eb328ffb2afb3e911399ce">FwStartBl</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;    </div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        uint32_t SolveException(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        uint32_t Try(<span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<span class="keyword">const</span> <a class="code" href="class_wifly_control.html" title="Class to communicate with a Wifly_Light Hardware.">WiflyControl</a>&amp;)&gt; call) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;};</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _WIFLYCONTROL_NOTHROW_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 16 2013 23:55:18 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Apr 20 2013 16:55:49 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

@@ -120,6 +120,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fw_req_set_fade.html">FwReqSetFade</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fw_req_set_gradient.html">FwReqSetGradient</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fw_req_set_rtc.html">FwReqSetRtc</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fw_req_start_bl.html">FwReqStartBl</a></td></tr>
@@ -129,6 +131,10 @@ Classes</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:ab920d47c551380540cd2a5f42679c725"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_fw_request_8h.html#ab920d47c551380540cd2a5f42679c725">SetAddrRgb</a>(REF, ADDRESS, ARGB)</td></tr>
 <tr class="separator:ab920d47c551380540cd2a5f42679c725"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a985d842698aec4c6a981ab19507a3ef7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_fw_request_8h.html#a985d842698aec4c6a981ab19507a3ef7">SetRgb_1</a>(REF, ARGB)</td></tr>
+<tr class="separator:a985d842698aec4c6a981ab19507a3ef7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33e6a09409de617ff40636e555197c78"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_fw_request_8h.html#a33e6a09409de617ff40636e555197c78">SetRgb_2</a>(REF, ARGB)</td></tr>
+<tr class="separator:a33e6a09409de617ff40636e555197c78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a class="anchor" id="ab920d47c551380540cd2a5f42679c725"></a>
@@ -173,10 +179,72 @@ Macros</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a985d842698aec4c6a981ab19507a3ef7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SetRgb_1</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">REF, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">ARGB&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">{ \</div>
+<div class="line">REF.red_1 = ((ARGB) &amp; 0x00ff0000) &gt;&gt; 16; \</div>
+<div class="line">REF.green_1 = ((ARGB) &amp; 0x0000ff00) &gt;&gt; 8; \</div>
+<div class="line">REF.blue_1 = (ARGB) &amp; 0x000000ff; \</div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a33e6a09409de617ff40636e555197c78"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SetRgb_2</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">REF, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">ARGB&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">{ \</div>
+<div class="line">REF.red_2 = ((ARGB) &amp; 0x00ff0000) &gt;&gt; 16; \</div>
+<div class="line">REF.green_2 = ((ARGB) &amp; 0x0000ff00) &gt;&gt; 8; \</div>
+<div class="line">REF.blue_2 = (ARGB) &amp; 0x000000ff; \</div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 16 2013 23:55:18 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Apr 20 2013 16:55:49 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
