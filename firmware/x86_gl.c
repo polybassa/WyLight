@@ -37,6 +37,10 @@ void gl_display(void)
 	clock_gettime(CLOCK_MONOTONIC, &lastTime);
 
 	for(;;) {
+#ifndef SHOW_FPS
+		static const struct timespec NANOSLEEP_TIME = {0, 500000000};
+		nanosleep(&NANOSLEEP_TIME, NULL);
+#endif
 		frames++;
 		glClear(GL_COLOR_BUFFER_BIT);
 		glLoadIdentity();

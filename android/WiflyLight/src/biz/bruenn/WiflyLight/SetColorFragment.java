@@ -9,40 +9,24 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class SetColorFragment extends ControlFragment {
-
-	private int mColor = 0xff000000;
-	private Button mSetColorBtn;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_set_color, group, false);
-		
-		mSetColorBtn = (Button)v.findViewById(R.id.setColor);
-		mSetColorBtn.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				boolean done = mCtrl.fwSetColor(mColor, WiflyControl.ALL_LEDS);
-				Toast.makeText(v.getContext(), String.valueOf(done), Toast.LENGTH_SHORT).show();
-			}
-		});
 		
 		ImageView colorPicker = (ImageView)v.findViewById(R.id.colorPicker);
 		colorPicker.setOnTouchListener(new View.OnTouchListener() {
 			private AtomicBoolean mChangeIsInProgress = new AtomicBoolean(false);
 			
 			public boolean onTouch(View v, MotionEvent event) {
-				Bitmap b = ((BitmapDrawable)((ImageView)v).getDrawable()).getBitmap();
-				int x = Math.max(0, Math.min(b.getWidth()-1, (int)event.getX()));
-				int y = Math.max(0, Math.min(b.getHeight()-1, (int)event.getY()));
-				mColor = b.getPixel(x, y);
-				mSetColorBtn.setBackgroundColor(mColor);
-				mSetColorBtn.setTextColor(0xff000000 | ~mColor);
+				final Bitmap bmp = ((BitmapDrawable)((ImageView)v).getDrawable()).getBitmap();
+				final int x = Math.max(0, Math.min(bmp.getWidth()-1, (int)event.getX()));
+				final int y = Math.max(0, Math.min(bmp.getHeight()-1, (int)event.getY()));
 				if(!mChangeIsInProgress.getAndSet(true)) {
-					mCtrl.fwSetColor(mColor, WiflyControl.ALL_LEDS);
+					onSetColor(bmp.getPixel(x, y));
 					mChangeIsInProgress.set(false);
 				}
 				return true;
