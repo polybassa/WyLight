@@ -26,6 +26,7 @@ public class SetWlanDialog extends Dialog {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dialog_set_wlan);
+		setTitle(R.string.title_dialog_set_wlan);
 		
 		mPass = (EditText)findViewById(R.id.editPassphrase);
 		mSsid = (EditText)findViewById(R.id.editSsid);

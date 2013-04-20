@@ -2,15 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minWidth="300dp"
     android:orientation="vertical" >
     
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ssid_description" />    
     <EditText
         android:id="@+id/editSsid"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/ssid_hint"
         android:inputType="text" />    
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/passphrase_description" />    
     <EditText
         android:id="@+id/editPassphrase"
         android:layout_width="fill_parent"
