@@ -101,6 +101,31 @@
     return (*self.mControl).FwSetFade(colorInARGB, timeValue, address, parallel);
 }
 
+- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB ColorTwo:(uint32_t)colorTwoInARGB
+{
+    return (*self.mControl).FwSetGradient(colorOneInARGB, colorTwoInARGB);
+}
+
+- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB ColorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue
+{
+    return (*self.mControl).FwSetGradient(colorOneInARGB, colorTwoInARGB, timeValue);
+}
+
+- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB ColorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel
+{
+    return (*self.mControl).FwSetGradient(colorOneInARGB, colorTwoInARGB, timeValue, parallel);
+}
+
+- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB ColorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel gradientLength:(uint8_t)length
+{
+    return (*self.mControl).FwSetGradient(colorOneInARGB, colorTwoInARGB, timeValue, parallel, length);
+}
+
+- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB ColorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel gradientLength:(uint8_t)length startPosition:(uint8_t)offset
+{
+    return (*self.mControl).FwSetGradient(colorOneInARGB, colorTwoInARGB, timeValue, parallel, length, offset);
+}
+
 - (uint32_t)loopOn
 {
     return (*self.mControl).FwLoopOn();

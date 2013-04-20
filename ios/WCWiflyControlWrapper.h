@@ -22,6 +22,11 @@
 - (uint32_t)setFade:(uint32_t)colorInARGB time:(uint16_t)timeValue;
 - (uint32_t)setFade:(uint32_t)colorInARGB time:(uint16_t)timeValue address:(uint32_t)address;
 - (uint32_t)setFade:(uint32_t)colorInARGB time:(uint16_t)timeValue address:(uint32_t)address parallelFade:(BOOL)parallel;
+- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB ColorTwo:(uint32_t)colorTwoInARGB;
+- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB ColorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue;
+- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB ColorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel;
+- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB ColorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel gradientLength:(uint8_t)length;
+- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB ColorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel gradientLength:(uint8_t)length startPosition:(uint8_t)offset;
 - (uint32_t)loopOn;
 - (uint32_t)loopOffWithNumberOfRepeats:(uint8_t)repeats;
 - (uint32_t)clearScript;
