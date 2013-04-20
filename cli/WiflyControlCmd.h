@@ -522,7 +522,7 @@ class ControlCmdSetFade : public WiflyControlCmd
 				string(" <addr> <rgb> <time>'\n")
 			+ string("    <addr> hex bitmask, which leds should be set to the new color\n")
 			+ string("    <rgb> hex rgb value of the new color f.e. red: ff0000\n")
-			+ string("    <time> the number of milliseconds the fade should take")) {};
+			+ string("    <time> the number of ten milliseconds the fade should take")) {};
 
 		virtual void Run(WiflyControl& control) const {
 			string addr, color;
@@ -533,6 +533,27 @@ class ControlCmdSetFade : public WiflyControlCmd
 			cout << "Transmitting command set fade... ";
 			TRY_CATCH_COUT(control.FwSetFade(color, timevalue, addr, false));
 		};
+};
+			
+class ControlCmdSetGradient : public WiflyControlCmd
+{
+public:
+	ControlCmdSetGradient(void) : WiflyControlCmd(
+		  string("setgradient"),
+		  string(" <rgb_1> <rgb_2> <time>'\n")
+		  + string("    <rgb_1> hex rgb value of the start color f.e. green: 00ff00\n")
+		  + string("    <rgb_2> hex rgb value of the end color f.e. red: ff0000\n")
+		  + string("    <time> the number of ten milliseconds the fade should take")) {};
+				
+				virtual void Run(WiflyControl& control) const {
+					string color_1, color_2;
+					uint16_t timevalue;
+					cin >> color_1;
+					cin >> color_2;
+					cin >> timevalue;
+					cout << "Transmitting command set fade... ";
+					TRY_CATCH_COUT(control.FwSetGradient(color_1, color_2, timevalue));
+				};
 };
 
 class ControlCmdSetRtc : public WiflyControlCmd
@@ -628,6 +649,7 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdConfRebootWlanModul(),
 	new ControlCmdClearScript(),
 	new ControlCmdSetFade(),
+	new ControlCmdSetGradient(),
 	new ControlCmdStartBl(),
 	new ControlCmdTest(),
 	new ControlCmdStressTest(),
