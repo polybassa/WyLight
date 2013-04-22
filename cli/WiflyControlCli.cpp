@@ -26,6 +26,7 @@
 #include <thread>
 #include <unistd.h>
 #include <vector>
+#include <sstream>
 
 using std::cin;
 using std::cout;
@@ -82,17 +83,33 @@ void WiflyControlCli::ShowHelp(void) const
 int main(int argc, const char* argv[])
 {
 	BroadcastReceiver receiver(55555);
-	std::thread t(std::ref(receiver), std::ref(cout));
+	std::stringstream logStream;
+	std::thread t(std::ref(receiver), std::ref(logStream));
 
 	// wait for user input
 	size_t selection;
+	std::thread u([&]
+	{
+		size_t numOfRemotes = 0;
+		while(selection >= receiver.NumRemotes())
+		{
+			sleep(1);
+			if(numOfRemotes != receiver.NumRemotes())
+			{
+				numOfRemotes = receiver.NumRemotes();
+				for(int i = 0; i < 100; i++) cout << endl;
+				receiver.PrintAllEndpoints(cout);
+	}}});
+	
 	do
 	{
 		std::cin >> selection;
 	} while(selection >= receiver.NumRemotes());
-
+	
+	u.join();
 	receiver.Stop();
 	t.join();
+	
 	const Endpoint& e = receiver.GetEndpoint(selection);
 	WiflyControlCli cli(e.GetIp(), e.GetPort());
 	cli.Run();

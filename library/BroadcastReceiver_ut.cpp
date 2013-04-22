@@ -202,6 +202,36 @@ int32_t ut_BroadcastReceiver_TestNoTimeout(void)
 	TestCaseEnd();
 }
 
+int32_t ut_BroadcastReceiver_DifferentOrder(void)
+{
+	TestCaseBegin();
+	std::ostringstream out, out2;
+	BroadcastReceiver dummyReceiver;
+	std::thread myThread(std::ref(dummyReceiver), std::ref(out));
+	SetTestSocket(&g_SecondRemote, 0, capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
+	nanosleep(&NANOSLEEP_TIME, NULL);
+	SetTestSocket(&g_ThirdRemote, 0, capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
+	nanosleep(&NANOSLEEP_TIME, NULL);
+	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
+	nanosleep(&NANOSLEEP_TIME, NULL);
+	
+	dummyReceiver.Stop();
+	myThread.join();
+	dummyReceiver.PrintAllEndpoints(out2);
+	CHECK(0 == out.str().compare("0:127.0.0.2:2000  :  WiFly_Light\n1:127.0.0.3:2000  :  WiFly_Light\n2:127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
+	
+	CHECK(0 == out2.str().compare("0:127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n1:127.0.0.2:2000  :  WiFly_Light\n2:127.0.0.3:2000  :  WiFly_Light\n"));
+	CHECK(3 == dummyReceiver.NumRemotes());
+	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
+	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
+	CHECK(0x7F000002 == dummyReceiver.GetEndpoint(1).GetIp());
+	CHECK(2000 == dummyReceiver.GetEndpoint(1).GetPort());
+	CHECK(0x7F000003 == dummyReceiver.GetEndpoint(2).GetIp());
+	CHECK(2000 == dummyReceiver.GetEndpoint(2).GetPort());
+	TestCaseEnd();
+}
+
+
 int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
@@ -213,6 +243,7 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_BroadcastReceiver_TestSimple);
 	RunTest(true, ut_BroadcastReceiver_TestTwoSame);
 	RunTest(true, ut_BroadcastReceiver_TestNoTimeout);
+	RunTest(true, ut_BroadcastReceiver_DifferentOrder);
 	UnitTestMainEnd();
 }
 

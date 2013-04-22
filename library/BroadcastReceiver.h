@@ -83,6 +83,8 @@ class BroadcastReceiver
 		 * Sends a stop event to terminate execution of operator()
 		 */
 		void Stop(void);
+	
+		void PrintAllEndpoints(std::ostream& out);
 
 	private:
 		std::set<Endpoint> mIpTable;

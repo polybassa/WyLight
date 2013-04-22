@@ -68,6 +68,16 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 	std::atomic_fetch_sub(&mNumInstances, 1);
 }
 
+void BroadcastReceiver::PrintAllEndpoints(std::ostream& out)
+{
+	int index = 0;
+	for(auto x : mIpTable)
+	{
+		//std::cout << index << ':' << x << '\n';
+		out << index++ << ':' << x << '\n';
+	}	
+}
+
 const Endpoint& BroadcastReceiver::GetEndpoint(size_t index) const
 {
 	if(index >= mIpTable.size())
