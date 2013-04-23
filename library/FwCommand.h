@@ -24,23 +24,41 @@
 #include "FwResponse.h"
 
 class FwCommand {
-	const FwRequest* const mRequest;
-	FwResponse* const mResponse;
 	FwCommand( const FwCommand& other ) = delete;
 	FwCommand& operator=( const FwCommand& ) = delete;
 
 protected:
-	FwCommand(const FwRequest* const req, FwResponse* const resp) : mRequest(req), mResponse(resp) {};
+	FwCommand(FwRequest* const req, FwResponse* const resp) : mRequest(req), mResponse(resp) {};
+	
+	FwRequest* const mRequest;
+	FwResponse* const mResponse;
+
 	
 public:
-	const FwRequest* const GetRequest(void) const {return mRequest; };
+	FwRequest* const GetRequest(void) const {return mRequest; };
 	FwResponse* const GetResponse(void) const {return mResponse; };
 };
 
-class FwCmdWait : public FwCommand
+class ILedCommand : public ILedRequest
+{
+public:
+	virtual ~ILedCommand() {};
+};
+
+class FwCmdWait : public FwCommand, public ILedCommand
 {
 public:
 	FwCmdWait(uint16_t waitTime) : FwCommand(new FwReqWait(waitTime), new SimpleResponse(WAIT)) {};
+	
+	virtual void setTimeValue(uint16_t timeValue)
+	{
+		((FwReqWait*)(this->GetRequest()))->setTimeValue(timeValue);
+	};
+	
+	virtual uint16_t getTimeValue(void)
+	{
+		return ((FwReqWait*)(this->GetRequest()))->getTimeValue();
+	};
 };
 
 class FwCmdClearScript : public FwCommand
@@ -85,16 +103,36 @@ public:
 	FwCmdSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) : FwCommand(new FwReqSetColorDirect(pBuffer, bufferLength), new SimpleResponse(SET_COLOR_DIRECT)) {};
 };
 
-class FwCmdSetFade : public FwCommand
+class FwCmdSetFade : public FwCommand, public ILedCommand
 {
 public:
 	FwCmdSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade = false) : FwCommand(new FwReqSetFade(argb, fadeTime, addr, parallelFade), new SimpleResponse(SET_FADE)) {};
+	
+	virtual void setTimeValue(uint16_t timeValue)
+	{
+		((FwReqSetFade*)(this->GetRequest()))->setTimeValue(timeValue);
+	};
+	
+	virtual uint16_t getTimeValue(void)
+	{
+		return ((FwCmdSetFade*)(this->GetRequest()))->getTimeValue();
+	};
 };
 
-class FwCmdSetGradient : public FwCommand
+class FwCmdSetGradient : public FwCommand, public ILedCommand
 {
 public:
 	FwCmdSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0) : FwCommand(new FwReqSetGradient(argb_1, argb_2, fadeTime,  parallelFade, length, offset), new SimpleResponse(SET_GRADIENT)) {};
+	
+	virtual void setTimeValue(uint16_t timeValue)
+	{
+		((FwReqSetGradient*)(this->GetRequest()))->setTimeValue(timeValue);
+	};
+	
+	virtual uint16_t getTimeValue(void)
+	{
+		return ((FwReqSetGradient*)(this->GetRequest()))->getTimeValue();
+	};
 };
 
 

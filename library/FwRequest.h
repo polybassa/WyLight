@@ -22,6 +22,7 @@
 #include "wifly_cmd.h"
 #include <stdio.h>
 #include <stdint.h>
+#include "WiflyControlException.h"
 
 /**
  * Macro to reduce code redundancy, while converting two 32 bit values into
@@ -65,10 +66,29 @@ public:
 	size_t GetSize(void) const { return mSize; };
 };
 
-class FwReqWait : public FwRequest
+class ILedRequest
+{	
+public:
+	virtual ~ILedRequest() {};
+	virtual void setTimeValue(uint16_t timeValue) = delete;
+	virtual uint16_t getTimeValue(void) = delete;
+};
+
+class FwReqWait : public FwRequest, ILedRequest
 {
 public:
-	FwReqWait(uint16_t waitTime) : FwRequest(sizeof(cmd_wait)) { mReqFrame.cmd = WAIT; mReqFrame.data.wait.waitTmms = htons(waitTime); };
+	FwReqWait(uint16_t waitTime) : FwRequest(sizeof(cmd_wait)) { mReqFrame.cmd = WAIT; this->setTimeValue(waitTime); };
+	
+	virtual void setTimeValue(uint16_t timeValue)
+	{
+		timeValue = ((0 == timeValue) ? 1 : timeValue);
+		mReqFrame.data.wait.waitTmms = htons(timeValue);
+	};
+	
+	virtual uint16_t getTimeValue(void)
+	{
+		return ntohs(mReqFrame.data.wait.waitTmms);
+	};
 };
 
 class FwReqClearScript : public FwRequest
@@ -126,7 +146,7 @@ public:
 	};
 };
 
-class FwReqSetFade : public FwRequest
+class FwReqSetFade : public FwRequest, public ILedRequest
 {
 public:
 	FwReqSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) : FwRequest(sizeof(cmd_set_fade))
@@ -134,14 +154,23 @@ public:
 		mReqFrame.cmd = SET_FADE;
 		SetAddrRgb(mReqFrame.data.set_fade, addr, argb);
 		
-		// ommit fadeTime == 0
-		fadeTime = ((0 == fadeTime) ? 1 : fadeTime);
-		mReqFrame.data.set_fade.fadeTmms = htons(fadeTime);
 		mReqFrame.data.set_fade.parallelFade = (parallelFade ? 1 : 0);
+		this->setTimeValue(fadeTime);
+	};
+	
+	virtual void setTimeValue(uint16_t timeValue)
+	{
+		timeValue = ((0 == timeValue) ? 1 : timeValue);
+		mReqFrame.data.set_fade.fadeTmms = htons(timeValue);
+	};
+	
+	virtual uint16_t getTimeValue(void)
+	{
+		return ntohs(mReqFrame.data.set_fade.fadeTmms);
 	};
 };
 
-class FwReqSetGradient : public FwRequest
+class FwReqSetGradient : public FwRequest, public ILedRequest
 {
 public:
 	FwReqSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset) : FwRequest(sizeof(cmd_set_gradient))
@@ -152,11 +181,22 @@ public:
 		SetRgb_1(mReqFrame.data.set_gradient, argb_1);
 		SetRgb_2(mReqFrame.data.set_gradient, argb_2);
 		
-		fadeTime = ((0 == fadeTime) ? 1 : fadeTime);
-		mReqFrame.data.set_gradient.fadeTmms = htons(fadeTime);
 		mReqFrame.data.set_gradient.numberOfLeds = length;
 		mReqFrame.data.set_gradient.setOffset(offset);
 		mReqFrame.data.set_gradient.setParallelFade(parallelFade);
+		
+		this->setTimeValue(fadeTime);
+	};
+	
+	virtual void setTimeValue(uint16_t timeValue)
+	{
+		timeValue = ((0 == timeValue) ? 1 : timeValue);
+		mReqFrame.data.set_gradient.fadeTmms = htons(timeValue);
+	};
+	
+	virtual uint16_t getTimeValue(void)
+	{
+		return ntohs(mReqFrame.data.set_gradient.fadeTmms);
 	};
 };
 
