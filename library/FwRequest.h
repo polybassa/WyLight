@@ -59,6 +59,7 @@ protected:
 	FwRequest(size_t size) : mSize(1 + size) {};
 	FwRequest( const FwRequest& other ) = delete;
 	FwRequest& operator=( const FwRequest& ) = delete;
+	
 	const size_t mSize;
 	struct led_cmd mReqFrame;
 public:
@@ -66,15 +67,7 @@ public:
 	size_t GetSize(void) const { return mSize; };
 };
 
-class ILedRequest
-{	
-public:
-	virtual ~ILedRequest() {};
-	virtual void setTimeValue(uint16_t timeValue) = delete;
-	virtual uint16_t getTimeValue(void) = delete;
-};
-
-class FwReqWait : public FwRequest, ILedRequest
+class FwReqWait : public FwRequest
 {
 public:
 	FwReqWait(uint16_t waitTime) : FwRequest(sizeof(cmd_wait)) { mReqFrame.cmd = WAIT; this->setTimeValue(waitTime); };
@@ -146,7 +139,7 @@ public:
 	};
 };
 
-class FwReqSetFade : public FwRequest, public ILedRequest
+class FwReqSetFade : public FwRequest
 {
 public:
 	FwReqSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) : FwRequest(sizeof(cmd_set_fade))
@@ -170,7 +163,7 @@ public:
 	};
 };
 
-class FwReqSetGradient : public FwRequest, public ILedRequest
+class FwReqSetGradient : public FwRequest
 {
 public:
 	FwReqSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset) : FwRequest(sizeof(cmd_set_gradient))
