@@ -22,6 +22,7 @@
 #include "wifly_cmd.h"
 #include <stdio.h>
 #include <stdint.h>
+#include "WiflyControlException.h"
 
 /**
  * Macro to reduce code redundancy, while converting two 32 bit values into
@@ -58,6 +59,7 @@ protected:
 	FwRequest(size_t size) : mSize(1 + size) {};
 	FwRequest( const FwRequest& other ) = delete;
 	FwRequest& operator=( const FwRequest& ) = delete;
+	
 	const size_t mSize;
 	struct led_cmd mReqFrame;
 public:
@@ -68,7 +70,18 @@ public:
 class FwReqWait : public FwRequest
 {
 public:
-	FwReqWait(uint16_t waitTime) : FwRequest(sizeof(cmd_wait)) { mReqFrame.cmd = WAIT; mReqFrame.data.wait.waitTmms = htons(waitTime); };
+	FwReqWait(uint16_t waitTime) : FwRequest(sizeof(cmd_wait)) { mReqFrame.cmd = WAIT; this->setTimeValue(waitTime); };
+	
+	virtual void setTimeValue(uint16_t timeValue)
+	{
+		timeValue = ((0 == timeValue) ? 1 : timeValue);
+		mReqFrame.data.wait.waitTmms = htons(timeValue);
+	};
+	
+	virtual uint16_t getTimeValue(void)
+	{
+		return ntohs(mReqFrame.data.wait.waitTmms);
+	};
 };
 
 class FwReqClearScript : public FwRequest
@@ -134,10 +147,19 @@ public:
 		mReqFrame.cmd = SET_FADE;
 		SetAddrRgb(mReqFrame.data.set_fade, addr, argb);
 		
-		// ommit fadeTime == 0
-		fadeTime = ((0 == fadeTime) ? 1 : fadeTime);
-		mReqFrame.data.set_fade.fadeTmms = htons(fadeTime);
 		mReqFrame.data.set_fade.parallelFade = (parallelFade ? 1 : 0);
+		this->setTimeValue(fadeTime);
+	};
+	
+	virtual void setTimeValue(uint16_t timeValue)
+	{
+		timeValue = ((0 == timeValue) ? 1 : timeValue);
+		mReqFrame.data.set_fade.fadeTmms = htons(timeValue);
+	};
+	
+	virtual uint16_t getTimeValue(void)
+	{
+		return ntohs(mReqFrame.data.set_fade.fadeTmms);
 	};
 };
 
@@ -152,11 +174,22 @@ public:
 		SetRgb_1(mReqFrame.data.set_gradient, argb_1);
 		SetRgb_2(mReqFrame.data.set_gradient, argb_2);
 		
-		fadeTime = ((0 == fadeTime) ? 1 : fadeTime);
-		mReqFrame.data.set_gradient.fadeTmms = htons(fadeTime);
 		mReqFrame.data.set_gradient.numberOfLeds = length;
 		mReqFrame.data.set_gradient.setOffset(offset);
 		mReqFrame.data.set_gradient.setParallelFade(parallelFade);
+		
+		this->setTimeValue(fadeTime);
+	};
+	
+	virtual void setTimeValue(uint16_t timeValue)
+	{
+		timeValue = ((0 == timeValue) ? 1 : timeValue);
+		mReqFrame.data.set_gradient.fadeTmms = htons(timeValue);
+	};
+	
+	virtual uint16_t getTimeValue(void)
+	{
+		return ntohs(mReqFrame.data.set_gradient.fadeTmms);
 	};
 };
 
