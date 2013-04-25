@@ -320,17 +320,17 @@ class ControlCmdConfSetDefaults : public WiflyControlCmd
 		};
 };
 
-class ControlCmdConfRebootWlanModul : public WiflyControlCmd
+class ControlCmdConfRebootWlanModule : public WiflyControlCmd
 {
 	public:
-		ControlCmdConfRebootWlanModul(void) : WiflyControlCmd(
-					string("conf_rebootWlanModul"),
+		ControlCmdConfRebootWlanModule(void) : WiflyControlCmd(
+					string("conf_rebootWlanModule"),
 					string("' - reboots the wlan modul. Cli terminates after this command!"))
 		{};
 				
 		virtual void Run(WiflyControl& control) const {
 			cout << "Rebooting wlan module... ";
-			if(control.ConfRebootWlanModul())
+			if(control.ConfRebootWlanModule())
 			{
 				cout << "done.\n";
 				cout << "Terminating WiflyControl commandline interface now!!!! Please restart." << endl;
@@ -646,7 +646,7 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdConfSetDefaults(),
 	new ControlCmdConfSetWlan(),
 	new ControlCmdConfSetDeviceId(),
-	new ControlCmdConfRebootWlanModul(),
+	new ControlCmdConfRebootWlanModule(),
 	new ControlCmdClearScript(),
 	new ControlCmdSetFade(),
 	new ControlCmdSetGradient(),

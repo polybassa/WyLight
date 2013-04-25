@@ -567,7 +567,7 @@ bool WiflyControl::ConfSetDeviceId(const std::string& name) const
 	return mTelnet.Close(true);
 }
 
-bool WiflyControl::ConfRebootWlanModul(void) const
+bool WiflyControl::ConfRebootWlanModule(void) const
 {
 	if(!mTelnet.Open())
 	{

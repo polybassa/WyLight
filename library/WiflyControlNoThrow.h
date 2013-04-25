@@ -204,7 +204,7 @@ class WiflyControlNoThrow : private WiflyControl
 			<BR><B>FATAL_ERROR</B> in case of an error
 			<BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
-		uint32_t ConfRebootWlanModul(void) const;
+		uint32_t ConfRebootWlanModule(void) const;
 		
 		/**
 		 * Allows you to give every Wifly_Light device an unique name
