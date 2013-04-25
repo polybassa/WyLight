@@ -111,7 +111,7 @@ bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssi
 
 bool WiflyControl::ConfSetDeviceId(const std::string& name) const {return true; }
 
-bool WiflyControl::ConfRebootWlanModul() const {return true; }
+bool WiflyControl::ConfRebootWlanModule() const {return true; }
 
 void WiflyControl::FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
