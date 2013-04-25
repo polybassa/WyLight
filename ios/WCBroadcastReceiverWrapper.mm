@@ -1,6 +1,5 @@
 //
 //  WCBroadcastReceiverWrapper.m
-//  WiflyCommander
 //
 //  Created by Bastian Kres on 16.04.13.
 //  Copyright (c) 2013 Bastian Kres. All rights reserved.

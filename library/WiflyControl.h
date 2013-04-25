@@ -192,7 +192,7 @@ class WiflyControl
 		 * Reboot the modul. ATTENTION: You have to reconnect after a reboot
 		 * @return false, in case of an error
 		 */
-		bool ConfRebootWlanModul(void) const;
+		bool ConfRebootWlanModule(void) const;
 		
 		/**
 		 * Allows you to give every Wifly_Light device an unique name
