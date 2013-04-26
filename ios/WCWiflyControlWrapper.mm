@@ -1,6 +1,5 @@
 //
 //  WCWiflyControlWrapper.m
-//  WiflyCommander
 //
 //  Created by Bastian Kres on 16.04.13.
 //  Copyright (c) 2013 Bastian Kres. All rights reserved.
@@ -25,7 +24,7 @@
     @throw ([NSException exceptionWithName:@"Wrong init-method" reason:@"Use -initWithIP:withPort:" userInfo:nil]);
 }
 
--(id)initWithIP:(uint32_t)ip withPort:(uint16_t)port
+- (id)initWithIP:(uint32_t)ip port:(uint16_t)port
 {
     self = [super init];
     if (self)
@@ -44,7 +43,7 @@
 
 #pragma mark - Configuration WLAN-Module
 
-- (uint32_t)setWlanSsid:(NSString *)ssid password:(NSString *)password
+- (uint32_t)setWlanSSID:(NSString *)ssid password:(NSString *)password
 {
     const std::string ssidCString([ssid cStringUsingEncoding:NSASCIIStringEncoding]);
     const std::string passwordCString([password cStringUsingEncoding:NSASCIIStringEncoding]);
@@ -66,10 +65,41 @@
 
 - (uint32_t)rebootWlanModul
 {
-	return (*self.mControl).ConfRebootWlanModul();
+	return (*self.mControl).ConfRebootWlanModule();
 }
 
 #pragma mark - Firmware methods
+
+- (uint32_t)setColorDirect:(UIColor *)newColor
+{
+    float redPart;
+    float greenPart;
+    float bluePart;
+    [newColor getRed:&redPart green:&greenPart blue:&bluePart alpha:nil];
+    
+    int sizeColorArray = 32 * 3;
+    
+    uint8_t colorArray[sizeColorArray];
+    uint8_t *pointer = colorArray;
+    
+    for (int i = 0; i < sizeColorArray; i++)
+    {
+        switch (i%3)
+        {
+            case 0:
+                *pointer++ = (uint8_t)(bluePart * 255);
+                break;
+            case 1:
+                *pointer++ = (uint8_t)(greenPart * 255);
+                break;
+            case 2:
+                *pointer++ = (uint8_t)(redPart * 255);
+                break;
+        }
+    }
+    
+    return [self setColorDirect:colorArray bufferLength:sizeColorArray];
+}
 
 - (uint32_t)setColorDirect:(const uint8_t*)pointerBuffer bufferLength:(size_t)length
 {
@@ -101,27 +131,27 @@
     return (*self.mControl).FwSetFade(colorInARGB, timeValue, address, parallel);
 }
 
-- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB ColorTwo:(uint32_t)colorTwoInARGB
+- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB
 {
     return (*self.mControl).FwSetGradient(colorOneInARGB, colorTwoInARGB);
 }
 
-- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB ColorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue
+- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue
 {
     return (*self.mControl).FwSetGradient(colorOneInARGB, colorTwoInARGB, timeValue);
 }
 
-- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB ColorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel
+- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel
 {
     return (*self.mControl).FwSetGradient(colorOneInARGB, colorTwoInARGB, timeValue, parallel);
 }
 
-- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB ColorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel gradientLength:(uint8_t)length
+- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel gradientLength:(uint8_t)length
 {
     return (*self.mControl).FwSetGradient(colorOneInARGB, colorTwoInARGB, timeValue, parallel, length);
 }
 
-- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB ColorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel gradientLength:(uint8_t)length startPosition:(uint8_t)offset
+- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel gradientLength:(uint8_t)length startPosition:(uint8_t)offset
 {
     return (*self.mControl).FwSetGradient(colorOneInARGB, colorTwoInARGB, timeValue, parallel, length, offset);
 }
@@ -131,7 +161,7 @@
     return (*self.mControl).FwLoopOn();
 }
 
-- (uint32_t)loopOffWithNumberOfRepeats:(uint8_t)repeats
+- (uint32_t)loopOffAfterNumberOfRepeats:(uint8_t)repeats
 {
     return (*self.mControl).FwLoopOff(repeats); // 0: Endlosschleife / 255: Maximale Anzahl
 }
