@@ -182,6 +182,7 @@ void ScriptCtrl_Init(void)
 	gScriptBuf.read = Eeprom_Read(EEPROM_SCRIPTBUF_READ);
 	gScriptBuf.write = Eeprom_Read(EEPROM_SCRIPTBUF_WRITE);
 	gScriptBuf.execute = gScriptBuf.read;
+	gScriptBuf.isRunning = TRUE;
 }
 //TODO Add a Methode to test the Errorbits and there responses
 
@@ -192,6 +193,8 @@ void ScriptCtrl_Run(void)
 	{
 		ScriptCtrl_Clear();
 	}
+	
+	if(!gScriptBuf.isRunning) return;
 
 	if(gScriptBuf.waitValue > 0)
 	{
@@ -314,6 +317,10 @@ void ScriptCtrl_Run(void)
 
 uns8 ScriptCtrl_Write(const struct led_cmd* pCmd)
 {
+	/* if we write a new command, we set the scriptCtrl to running
+	 * ATTENTION Check if this behaviour is acceptable when whe use an alarmCtrl */
+	if(!gScriptBuf.isRunning) gScriptBuf.isRunning = TRUE;
+	
 	uns8 writeNext = ScriptBufInc(gScriptBuf.write);
 	if(writeNext != gScriptBuf.read)
 	{
@@ -323,5 +330,13 @@ uns8 ScriptCtrl_Write(const struct led_cmd* pCmd)
 		return OK;
 	}
 	return SCRIPTBUFFER_FULL;
+}
+
+void ScriptCtrl_DecrementWaitValue(void)
+{
+	if(gScriptBuf.waitValue > 0)
+	{
+		gScriptBuf.waitValue = gScriptBuf.waitValue - 1;
+	}
 }
 

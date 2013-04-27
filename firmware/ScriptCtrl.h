@@ -34,6 +34,7 @@ struct ScriptBuf {
 	uns8 read;
 	uns8 write;
 	uns8 inLoop;
+	bit isRunning;
 	bit isClearing;
 };
 
@@ -59,5 +60,10 @@ void ScriptCtrl_Init(void);
  * Read next available command from eeprom and run it.
  */
 void ScriptCtrl_Run(void);
+
+/**
+ * Decrements the wait counter of the script controller
+ */
+void ScriptCtrl_DecrementWaitValue(void);
 
 #endif /* #ifndef _SCRIPTCTRL_H_ */
