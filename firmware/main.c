@@ -97,10 +97,7 @@ interrupt LowPriorityInterrupt(void)
 	if(TMR5IF)
 	{
 	      g_UpdateLed = g_UpdateLed + 1;
-	      if(gScriptBuf.waitValue > 0)
-	      {
-		    gScriptBuf.waitValue = gScriptBuf.waitValue - 1;
-	      }
+		  ScriptCtrl_DecrementWaitValue();
 	      Timer5Interrupt();
 	} 
 		

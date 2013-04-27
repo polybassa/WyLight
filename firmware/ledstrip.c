@@ -93,36 +93,19 @@ struct cmd_set_fade mFade;
 		gLedBuf.cyclesLeft[k] = temp16;  \
 };
 
-void Ledstrip_ToggleLeds(void)
+void Ledstrip_FadeOffLeds(void)
 {
 	//check current status of led
-	uns8 counter = 0;
-	uns8 i;
-	
-	for(i = 0; i < sizeof(gLedBuf.led_array); i++)
-	{
-		if(gLedBuf.led_array[i] > 0)
-		{
-			counter += 1;
-		}
-	}
 	mFade.addr[0] = 0xff;
 	mFade.addr[1] = 0xff;
 	mFade.addr[2] = 0xff;
 	mFade.addr[3] = 0xff;
 	mFade.fadeTmms = htons(200);
 
-	if(counter > 0)		//switch off
-	{
-		mFade.red = 0x00;
-		mFade.green = 0x00;
-		mFade.blue = 0x00;
-	}
-	else {
-		mFade.red = 0xff;
-		mFade.green = 0xff;
-		mFade.blue = 0xff;
-	}
+	mFade.red = 0x00;
+	mFade.green = 0x00;
+	mFade.blue = 0x00;
+	
 	Ledstrip_SetFade(&mFade);
 }
 

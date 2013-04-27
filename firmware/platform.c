@@ -33,8 +33,14 @@ void Platform_CheckInputs()
 	{
 		if(lastSwitchState == 1)
 		{
-			ScriptCtrl_Clear();
-			Ledstrip_ToggleLeds();
+			if(gScriptBuf.isRunning)
+			{
+				Ledstrip_FadeOffLeds();
+				gScriptBuf.isRunning = FALSE;
+			}
+			else
+				gScriptBuf.isRunning = TRUE;
+			
 		}
 		lastSwitchState = 0;
 	}

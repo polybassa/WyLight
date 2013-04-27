@@ -83,7 +83,7 @@ void Ledstrip_DoFade(void);
 
 void Ledstrip_UpdateLed(void);
 
-void Ledstrip_ToggleLeds(void);
+void Ledstrip_FadeOffLeds(void);
 
 
 #ifdef DEBUG
