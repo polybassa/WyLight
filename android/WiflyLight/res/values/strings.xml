@@ -4,7 +4,11 @@
     <string name="app_name">WiflyLight</string>
     <string name="cancel">Cancel</string>
     <string name="configure">configure</string>
-    <string name="passphrase_hint">Passphrase 1-63 character</string>
+    <string name="msg_connectionfailed">Connection to the wifly device failed</string>
+    <string name="msg_noremote">No remote detected, click scan to find one</string>
+    <string name="msg_scriptbufferfull">The script buffer is full, clear it first</string>
+    <string name="passphrase_description">WPA2 passphrase:</string>
+    <string name="passphrase_hint">1-63 characters</string>
     <string name="passphrase_toggle">Show passphrase</string>
     <string name="save">Save</string>
     <string name="scan">Scan</string>
@@ -15,9 +19,8 @@
     <string name="set_fade">Set fade</string>
     <string name="set_loopon">Loop on</string>
     <string name="set_loopoff">Loop off</string>
-    <string name="ssid_hint">SSID 1-32 character</string>
+    <string name="ssid_description">Network-SSID:</string>
+    <string name="ssid_hint">1-32 characters</string>
     <string name="title_activity_wifly_control">Control your WiflyLight</string>
-    <string name="msg_connectionfailed">Connection to the wifly device failed</string>
-    <string name="msg_noremote">No remote detected, click scan to find one</string>
-    <string name="msg_scriptbufferfull">The script buffer is full, clear it first</string>
+    <string name="title_dialog_set_wlan">Configure your WLAN settings</string>
 </resources>
