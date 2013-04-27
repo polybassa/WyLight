@@ -2,6 +2,8 @@ package biz.bruenn.WiflyLight;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import biz.bruenn.WiflyLight.view.VolumeView;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +39,7 @@ public class SetBrightnessFragment extends ControlFragment {
 				//do nothing
 			}
 		});
-		return view;
+		//return view;
+		return new VolumeView(getActivity());
 	}
 }
