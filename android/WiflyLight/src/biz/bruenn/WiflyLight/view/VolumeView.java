@@ -10,7 +10,6 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.Shader;
 import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.PathShape;
 import android.graphics.drawable.shapes.RectShape;
 import android.view.MotionEvent;
 import android.view.View;
@@ -65,7 +64,7 @@ public class VolumeView extends View {
 		
 		mCover.setBounds(left, top, right, bottom);
 		
-		Shader frameShader = new LinearGradient(0, 0, (right - left) / 4, 0, Color.BLACK, Color.DKGRAY, Shader.TileMode.MIRROR);
+		//Shader frameShader = new LinearGradient(0, 0, (right - left) / 4, 0, Color.BLACK, Color.DKGRAY, Shader.TileMode.MIRROR);
 		//mFramePaint.setShader(frameShader);
 		
 		mFramePath.reset();
