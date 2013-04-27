@@ -18,30 +18,38 @@ import android.view.View;
 
 
 public class VolumeView extends View {
+	
+	public interface OnVolumeChangedListener {
+		public void onVolumeChanged(int percent);
+	}
+	
 	private ShapeDrawable mBar;
 	private ShapeDrawable mCover;
-	private ShapeDrawable mFrame;
 	private Paint mFramePaint;
 	private Path mFramePath;
-	private int mPercent = 0;
+	private boolean mEmbraceTouch = false;
+	private OnVolumeChangedListener mOnVolumeChangedListener = null;
 
 	public VolumeView(Context context) {
 		super(context);
 
 		mBar = new ShapeDrawable(new RectShape());
-		mBar.getPaint().setColor(Color.RED);
 		
 		mCover = new ShapeDrawable(new RectShape());
-		mCover.getPaint().setColor(Color.GREEN);
+		//mCover.getPaint().setColor(Color.BLACK);
+		
+		mFramePath = new Path();
+		mFramePaint = new Paint();
+		mFramePaint.setColor(Color.YELLOW);
+		mFramePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+		mFramePaint.setAntiAlias(true);
+		mFramePaint.setPathEffect(new CornerPathEffect(10));
 	}
 	
 	@Override
 	protected void onDraw(Canvas canvas) {
-		canvas.drawColor(Color.BLACK);
 		mBar.draw(canvas);
-		mCover.draw(canvas);
-		//mFrame.draw(canvas);
-		
+		mCover.draw(canvas);		
 		canvas.drawPath(mFramePath, mFramePaint);
 	}
 	
@@ -55,42 +63,53 @@ public class VolumeView extends View {
 		Shader barShader = new LinearGradient(right - left, 0, right - left, h, Color.WHITE, Color.BLACK, Shader.TileMode.REPEAT);
 		mBar.getPaint().setShader(barShader);
 		
-		mPercent = bottom / 2;
 		mCover.setBounds(left, top, right, bottom);
 		
-		mFramePath = new Path();
+		Shader frameShader = new LinearGradient(0, 0, (right - left) / 4, 0, Color.BLACK, Color.DKGRAY, Shader.TileMode.MIRROR);
+		//mFramePaint.setShader(frameShader);
+		
+		mFramePath.reset();
 		mFramePath.moveTo(left, top);
 		mFramePath.lineTo(w / 2, bottom);
 		mFramePath.lineTo(right, top);
 		mFramePath.lineTo(right, bottom);
 		mFramePath.lineTo(left, bottom);
 		mFramePath.close();
-		
-
-		mFramePaint = new Paint();
-		//mFramePaint = mFrame.getPaint();
-		mFramePaint.setColor(Color.YELLOW);
-		mFramePaint.setStyle(Paint.Style.FILL_AND_STROKE);
-		mFramePaint.setAntiAlias(true);
-		mFramePaint.setPathEffect(new CornerPathEffect(10));
-		
-		mFrame = new ShapeDrawable(new PathShape(mFramePath, w, h));
-		mFrame.setBounds(left, top, right, bottom);
-		
-		
 	}
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		//mPercent = (int)event.getY();
-		
 		final Rect r = mBar.getBounds();
-		int newY = (int)event.getY();
-		mPercent = Math.min(r.bottom, Math.max(r.top, newY)); 
-		mCover.setBounds(r.left, r.top, r.right, mPercent);
+		final int newX = (int)event.getX();
+		final int newY = (int)event.getY();
+		final int coverBottom = Math.min(r.bottom, Math.max(r.top, newY));
+		final int action = event.getAction();
 		
-		//this.invalidateDrawable(mCover);
+		// begin of touch event, check if touch was in range
+		if(MotionEvent.ACTION_DOWN == action) {
+			mEmbraceTouch = (r.left <= newX && newX <= r.right);
+		}
+		
+		// we can ignore all further touch events
+		if(!mEmbraceTouch) {
+			return false;
+		}
+		
+		// check for end of touch gesture
+		if(MotionEvent.ACTION_UP == action) {
+			mEmbraceTouch = false;
+			if(null != mOnVolumeChangedListener) {
+				mOnVolumeChangedListener.onVolumeChanged(100 - 100 * coverBottom / r.bottom);
+			}
+		}
+
+		// we moved the selection -> repaint
+		mCover.setBounds(r.left, r.top, r.right, coverBottom);
 		this.invalidate();
 		return true;
+	}
+	
+	public void setOnVolumeChangedListener(OnVolumeChangedListener listener) {
+		mOnVolumeChangedListener  = listener;
 	}
 }
