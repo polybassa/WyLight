@@ -71,10 +71,12 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 void BroadcastReceiver::PrintAllEndpoints(std::ostream& out)
 {
 	int index = 0;
-	for(auto x : mIpTable)
+	//TODO wait for full c++11 features in android ndk. by the way we should move this printing functions out of BroadcastReceiver into cli or whoever wants to "print" something out
+	//for(auto x : mIpTable)
+	for(auto it = mIpTable.begin(); it != mIpTable.end(); it++)
 	{
-		//std::cout << index << ':' << x << '\n';
-		out << index++ << ':' << x << '\n';
+		//std::cout << index << ':' << *it << '\n';
+		out << index++ << ':' << *it << '\n';
 	}	
 }
 
