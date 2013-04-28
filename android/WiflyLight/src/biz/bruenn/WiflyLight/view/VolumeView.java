@@ -98,7 +98,7 @@ public class VolumeView extends View {
 		if(MotionEvent.ACTION_UP == action) {
 			mEmbraceTouch = false;
 			if(null != mOnVolumeChangedListener) {
-				mOnVolumeChangedListener.onVolumeChanged(100 - 100 * coverBottom / r.bottom);
+				mOnVolumeChangedListener.onVolumeChanged(100 - 100 * (coverBottom - r.top) / (r.bottom - r.top));
 			}
 		}
 
