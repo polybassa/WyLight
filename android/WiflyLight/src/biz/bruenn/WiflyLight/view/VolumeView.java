@@ -54,25 +54,40 @@ public class VolumeView extends View {
 	
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		final int left = w / 4;
-		final int top = h / 10;
-		final int right = w - left;
-		final int bottom = h - top;
-		mBar.setBounds(left, top, right, bottom);
-		Shader barShader = new LinearGradient(right - left, 0, right - left, h, Color.WHITE, Color.BLACK, Shader.TileMode.REPEAT);
+		final int innerLeft = w / 4;
+		final int innerTop = h / 10;
+		final int innerRight = w - innerLeft;
+		final int innerBottom = h - innerTop;
+
+		final int innerWidth = w - 2*innerLeft;
+		final int padding = w / 12;
+		final int outerLeft = innerLeft - padding;
+		final int outerTop = innerTop - padding;
+		final int outerRight = innerRight + padding;
+		final int outerBottom = innerBottom + padding;
+		
+		mBar.setBounds(innerLeft, innerTop, innerRight, innerBottom);
+		Shader barShader = new LinearGradient(innerRight - innerLeft, 0, innerRight - innerLeft, h, Color.WHITE, Color.BLACK, Shader.TileMode.REPEAT);
 		mBar.getPaint().setShader(barShader);
 		
-		mCover.setBounds(left, top, right, bottom);
+		mCover.setBounds(innerLeft, innerTop, innerRight, innerBottom);
 		
-		//Shader frameShader = new LinearGradient(0, 0, (right - left) / 4, 0, Color.BLACK, Color.DKGRAY, Shader.TileMode.MIRROR);
-		//mFramePaint.setShader(frameShader);
+		Shader frameShader = new LinearGradient(0, 0, innerWidth, 0, Color.GRAY, Color.DKGRAY, Shader.TileMode.MIRROR);
+		mFramePaint.setShader(frameShader);
 		
 		mFramePath.reset();
-		mFramePath.moveTo(left, top);
-		mFramePath.lineTo(w / 2, bottom);
-		mFramePath.lineTo(right, top);
-		mFramePath.lineTo(right, bottom);
-		mFramePath.lineTo(left, bottom);
+		mFramePath.moveTo(w / 2 + padding, innerTop);
+		mFramePath.lineTo(w / 2, outerTop);
+		mFramePath.lineTo(outerLeft, outerTop);
+		mFramePath.lineTo(outerLeft, outerBottom);
+		mFramePath.lineTo(outerRight, outerBottom);
+		mFramePath.lineTo(outerRight, outerTop);
+		mFramePath.lineTo(w / 2, outerTop);
+		mFramePath.lineTo(w / 2 - padding, innerTop);
+		mFramePath.lineTo(innerRight, innerTop);
+		mFramePath.lineTo(w / 2 + padding, innerBottom);
+		mFramePath.lineTo(w / 2 - padding, innerBottom);
+		mFramePath.lineTo(innerLeft, innerTop);
 		mFramePath.close();
 	}
 	
