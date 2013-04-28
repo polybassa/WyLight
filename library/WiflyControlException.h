@@ -64,6 +64,10 @@ public:
 		return "biz/bruenn/WiflyLight/exception/FatalError";
 	};
 
+	const char* what(void) const throw() {
+		return mDescription.c_str();
+	};
+
 	friend std::ostream& operator<< (std::ostream& out, const FatalError& ref)
 	{
 		return out << ref.mDescription;
