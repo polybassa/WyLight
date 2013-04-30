@@ -306,20 +306,6 @@ class ControlCmdConfGetSsid : public WiflyControlCmd
 		};
 };
 
-class ControlCmdConfSetDefaults : public WiflyControlCmd
-{
-	public:
-		ControlCmdConfSetDefaults(void) : WiflyControlCmd(
-					string("conf_defaults"),
-					string("' - set connection parameters to default"))
-		{};
-
-		virtual void Run(WiflyControl& control) const {
-			cout << "Setting wifly configuration to defaults... ";
-			cout << (control.ConfSetDefaults() ? "done.\n" : "failed!\n");
-		};
-};
-
 class ControlCmdConfRebootWlanModule : public WiflyControlCmd
 {
 	public:
@@ -343,23 +329,61 @@ class ControlCmdConfRebootWlanModule : public WiflyControlCmd
 		};
 };
 
-class ControlCmdConfSetWlan : public WiflyControlCmd
+class ControlCmdConfWlanAsClient : public WiflyControlCmd
 {
 	public:
-		ControlCmdConfSetWlan(void) : WiflyControlCmd(
-				string("conf_wlan"),
-				string(" <passphrase> <ssid>'\n")
+		ControlCmdConfWlanAsClient(void) : WiflyControlCmd(
+				string("conf_wlanAsClient"),
+				string(" <passphrase> <ssid> <name>'\n")
 			+ string("    <passphrase> wpa passphrase 1-63 characters\n")
-			+ string("    <ssid> wlan ssid 1-32 characters")) {};
+			+ string("    <ssid> wlan ssid 1-32 characters\n")
+			+ string("    <name> device name for broadcasts 1-32 characters")) {};
 
 		virtual void Run(WiflyControl& control) const {
-			string phrase, ssid;
+			string phrase, ssid, name;
 			cin >> phrase;
 			cin >> ssid;
-			cout << "Setting passphrase '" << phrase << "' and ssid '" << ssid << "'... ";
-			cout << (control.ConfSetWlan(phrase, ssid) ? "done.\n" : "failed!\n");
+			cin >> name;
+			cout << "Setting passphrase '" << phrase << "' and ssid '" << ssid << "' and name '" << name <<"' ... ";
+			
+			if(control.ConfModuleForWlan(phrase, ssid, name))
+			{
+				cout << "done.\n";
+				cout << "Terminating WiflyControl commandline interface now!!!! Please restart." << endl;
+				std::exit(EXIT_SUCCESS);
+			}
+			else
+			{
+				cout << "failed!\n";
+			}
 		};
 };
+			
+class ControlCmdConfWlanAsSoftAP : public WiflyControlCmd
+{
+	public:
+		ControlCmdConfWlanAsSoftAP(void) : WiflyControlCmd(
+			   string("conf_wlanAsSoftAP"),
+			   string(" <ssid>'\n")
+		     + string("    <ssid> wlan ssid 1-32 characters")) {};
+				
+				virtual void Run(WiflyControl& control) const {
+					string ssid;
+					cin >> ssid;
+					cout << "Setting as soft-AP with ssid '" << ssid << "'... ";
+					if(control.ConfModuleAsSoftAP(ssid))
+					{
+						cout << "done.\n";
+						cout << "Terminating WiflyControl commandline interface now!!!! Please restart." << endl;
+						std::exit(EXIT_SUCCESS);
+					}
+					else
+					{
+						cout << "failed!\n";
+					}
+				};
+			};
+
 			
 class ControlCmdConfSetDeviceId : public WiflyControlCmd
 {
@@ -643,8 +667,8 @@ static const WiflyControlCmd* s_Cmds[] = {
 	new ControlCmdBlReadFwVersion(),
 	new ControlCmdBlRunApp(),
 	new ControlCmdConfGetSsid(),
-	new ControlCmdConfSetDefaults(),
-	new ControlCmdConfSetWlan(),
+	new ControlCmdConfWlanAsClient(),
+	new ControlCmdConfWlanAsSoftAP(),
 	new ControlCmdConfSetDeviceId(),
 	new ControlCmdConfRebootWlanModule(),
 	new ControlCmdClearScript(),
