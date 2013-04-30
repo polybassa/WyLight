@@ -173,21 +173,23 @@ class WiflyControl
 		 * @return an empty string or the ssid
 		 */
 		std::string ConfGetSsid(void) const;
-
+	
 		/**
-		 * Set the Wifly module communication parameters to defaults
+		 * Configurates the Wifly module as stand alone accesspoint. With accesspoint name you can change the ssid for this accesspoint.
+		 * @param accesspointName 1 - 32 characters
 		 * @return false, in case of an error
 		 */
-		bool ConfSetDefaults(void) const;
-
+		bool ConfModuleAsSoftAP(const std::string& accesspointName = "Wifly_Light") const;
+	
 		/**
-		 * Set the Wifly module wlan connection parameters
+		 * Configurates the Wifly module as client for an existing wlan network with WPA2 protection
 		 * @param phrase WPA2 passphrase 1 - 63 characters
 		 * @param ssid 1 - 32 characters
+		 * @param name 1 - 32 characters, unique name which apperas in the broadcast message
 		 * @return false, in case of an error
 		 */
-		bool ConfSetWlan(const std::string& phrase, const std::string& ssid) const;
-	
+		bool ConfModuleForWlan(const std::string& phrase, const std::string& ssid, const std::string& name = "Wifly_Light") const;
+
 		/**
 		 * Reboot the modul. ATTENTION: You have to reconnect after a reboot
 		 * @return false, in case of an error
@@ -490,10 +492,34 @@ class WiflyControl
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw InvalidParameter a parameter is out of bound
 		 */
-	size_t BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
-
+		size_t BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
+	
+		/**
+		 * Set the Wifly module communication parameters to defaults
+		 * @return false, in case of an error
+		 */
+		bool ConfSetDefaults(void) const;
+	
+		/**
+		 * Set the Wifly module wlan connection parameters
+		 * @param phrase WPA2 passphrase 1 - 63 characters
+		 * @param ssid 1 - 32 characters
+		 * @return false, in case of an error
+		 */
+		bool ConfSetWlan(const std::string& phrase, const std::string& ssid) const;
+	
 
 /* ------------------ friendships for unittesting only ------------------- */
+	   /**
+		* friendships for unittesting only
+		*/
+		friend bool ut_WiflyControl_ConfSetDefaults(WiflyControl& ref);
+	
+		/**
+		 * friendships for unittesting only
+		 */
+		friend bool ut_WiflyControl_ConfSetWlan(WiflyControl& ref, const std::string& phrase, const std::string& ssid);
+	
 		/**
 		 * friendships for unittesting only
 		 */

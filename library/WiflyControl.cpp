@@ -463,6 +463,97 @@ std::string WiflyControl::ConfGetSsid(void) const
 	return result;
 }
 
+bool WiflyControl::ConfModuleAsSoftAP(const std::string& accesspointName) const
+{
+	if(!ConfSetDeviceId(accesspointName))
+	{
+		Trace(ZONE_ERROR, "set DeviceId failed\n");
+		return false;
+	}
+	
+	static const size_t SSID_MAX = 32;
+	
+	if((accesspointName.size() < 1) || (accesspointName.size() > SSID_MAX))
+	{
+		Trace(ZONE_WARNING, "Invalid wlan ssid '%s'\n", accesspointName.data());
+		return false;
+	}
+	
+	if(!mTelnet.Open())
+	{
+		Trace(ZONE_ERROR, "open telnet connection failed\n");
+		return false;
+	}
+	
+	if(!mTelnet.SendString("set wlan ssid ", accesspointName))
+	{
+		Trace(ZONE_ERROR, "set wlan ssid to '%s' failed\n", accesspointName.data());
+		mTelnet.Close(false);
+		return false;
+	}
+	
+	static const std::string commands[] = {
+		"set broadcast interval 1\r\n",    // to support fast broadcast recognition
+		"set comm close 0\r\n",            // Disable *CLOS* string
+		"set comm open 0\r\n",             // Disable *OPEN* string
+		"set comm remote 0\r\n",           // Disable *Hello* string
+		//		"set dns name rn.microchip.com\r\n",	// set dns of updateserver
+		"set ip dhcp 4\r\n",               // enable DHCP server
+		"set ftp address 169.254.7.57\r\n",// configure localhost as ftp server in ad-hoc connection
+		"set ftp pass Pass123\r\n",        // configure ftp password
+		"set ftp user roving\r\n",         // configure ftp username
+		"set uart baud 115200\r\n",        // PIC uart parameter
+		"set uart flow 0\r\n",             // PIC uart parameter
+		"set uart mode 0\r\n",             // PIC uart parameter
+		"set wlan join 7\r\n",             // enable AP mode
+		"set wlan rate 0\r\n",             // slowest datarate but highest range
+		"set wlan tx 12\r\n",              // Set the Wi-Fi transmit power to maximum
+		"set wlan channel 1\r\n",		   // Set the wlan channel to 0 to perform an automatic scan for a free channel
+		"set ip a 1.2.3.4\r\n",	           // Set ip address for accespoint
+		"set ip g 0.0.0.0\r\n",			   // Set gateway address to zero
+		"set ip n 255.255.255.0\r\n",	   // Set netmask for accespoint
+	};
+	
+	for(size_t i = 0; i < sizeof(commands) / sizeof(commands[0]); i++)
+	{
+		if(!mTelnet.Send(commands[i]))
+		{
+			Trace(ZONE_ERROR, "command: '%s' failed -> exit without saving\n", commands[i].data());
+			return mTelnet.Close(false);
+		}
+	}
+	
+	if(!mTelnet.Close(true))
+	{
+		Trace(ZONE_ERROR, "save changes failed\n");
+		return false;
+	}
+	return ConfRebootWlanModule();
+}
+
+bool WiflyControl::ConfModuleForWlan(const std::string& phrase, const std::string& ssid, const std::string& name) const
+{
+	if(!ConfSetDefaults())
+	{
+		Trace(ZONE_ERROR, "set defaults failed\n");
+		return false;
+	}
+	
+	if(!ConfSetWlan(phrase, ssid))
+	{
+		Trace(ZONE_ERROR, "set wlan phrase and ssid failed\n");
+		return false;
+	}
+	
+	if(!ConfSetDeviceId(name))
+	{
+		Trace(ZONE_ERROR, "set device name failed\n");
+		return false;
+	}
+	
+	return ConfRebootWlanModule();
+}
+
 bool WiflyControl::ConfSetDefaults(void) const
 {
 	static const std::string commands[] = {
@@ -479,6 +570,7 @@ bool WiflyControl::ConfSetDefaults(void) const
 		"set uart baud 115200\r\n",        // PIC uart parameter
 		"set uart flow 0\r\n",             // PIC uart parameter
 		"set uart mode 0\r\n",             // PIC uart parameter
+		"set wlan channel 0\r\n",		   // Set the wlan channel to 0 to perform an automatic scan for a free channel
 		"set wlan auth 4\r\n",             // use WPA2 protection
 		"set wlan join 1\r\n",             // scan for ap and auto join
 		"set wlan rate 0\r\n",             // slowest datarate but highest range

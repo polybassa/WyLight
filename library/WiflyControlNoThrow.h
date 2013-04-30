@@ -181,23 +181,25 @@ class WiflyControlNoThrow : private WiflyControl
 		uint32_t ConfGetSsid(std::string& ssid) const;
 
 		/**
-		 * Set the Wifly module communication parameters to defaults
+		 * Configurates the Wifly module as stand alone accesspoint. With accesspoint name you can change the ssid for this accesspoint.
+		 * @param accesspointName 1 - 32 characters
 		 * @return Indexed by ::WiflyError
-			<BR><B>FATAL_ERROR</B> in case of an error
-			<BR><B>NO_ERROR</B> is returned if no error occurred
+		    <BR><B>FATAL_ERROR</B> in case of an error
+		    <BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
-		uint32_t ConfSetDefaults(void) const;
-
+		uint32_t ConfModuleAsSoftAP(const std::string& accesspointName = "Wifly_Light") const;
+	
 		/**
-		 * Set the Wifly module wlan connection parameters
+		 * Configurates the Wifly module as client for an existing wlan network with WPA2 protection
 		 * @param phrase WPA2 passphrase 1 - 63 characters
 		 * @param ssid 1 - 32 characters
+		 * @param name 1 - 32 characters, unique name which apperas in the broadcast message
 		 * @return Indexed by ::WiflyError
-			<BR><B>FATAL_ERROR</B> in case of an error
-			<BR><B>NO_ERROR</B> is returned if no error occurred
+		    <BR><B>FATAL_ERROR</B> in case of an error
+		    <BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
-		uint32_t ConfSetWlan(const std::string& phrase, const std::string& ssid) const;
-	
+		uint32_t ConfModuleForWlan(const std::string& phrase, const std::string& ssid, const std::string& name = "Wifly_Light") const;
+		
 		/**
 		 * Reboot the modul. ATTENTION: You have to reconnect after a reboot
 		 * @return Indexed by ::WiflyError

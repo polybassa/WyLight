@@ -126,14 +126,14 @@ uint32_t WiflyControlNoThrow::ConfGetSsid(std::string& ssid) const
 	return NO_ERROR;
 }
 
-uint32_t WiflyControlNoThrow::ConfSetDefaults(void) const
+uint32_t WiflyControlNoThrow::ConfModuleForWlan(const std::string &phrase, const std::string &ssid, const std::string &name) const
 {
-	return WiflyControl::ConfSetDefaults() ? NO_ERROR : FATAL_ERROR;
+	return WiflyControl::ConfModuleForWlan(phrase, ssid, name) ? NO_ERROR : FATAL_ERROR;
 }
 
-uint32_t WiflyControlNoThrow::ConfSetWlan(const std::string& phrase, const std::string& ssid) const
+uint32_t WiflyControlNoThrow::ConfModuleAsSoftAP(const std::string &name) const
 {
-	return WiflyControl::ConfSetWlan(phrase, ssid) ? NO_ERROR : FATAL_ERROR;
+	return WiflyControl::ConfModuleAsSoftAP(name) ? NO_ERROR : FATAL_ERROR;
 }
 
 uint32_t WiflyControlNoThrow::ConfRebootWlanModule(void) const

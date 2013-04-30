@@ -139,6 +139,22 @@ size_t ComProxy::Send(const FwRequest& request, response_frame* pResponse, size_
 	return pResponse->length;
 }
 
+/**
+ * friendships for unittesting only
+ */
+bool ut_WiflyControl_ConfSetDefaults(WiflyControl& ref)
+{
+	return ref.ConfSetDefaults();
+}
+
+/**
+ * friendships for unittesting only
+ */
+bool ut_WiflyControl_ConfSetWlan(WiflyControl& ref, const std::string& phrase, const std::string& ssid)
+{
+	return ref.ConfSetWlan(phrase, ssid);
+}
+
 // wrapper to test WiflyControl
 static std::list<std::string> g_TestBuffer;
 static bool g_ProxySaved = false;
@@ -385,6 +401,7 @@ size_t ut_WiflyControl_ConfSetDefaults(void)
 		"set uart baud 115200\r\n",        // PIC uart parameter
 		"set uart flow 0\r\n",             // PIC uart parameter
 		"set uart mode 0\r\n",             // PIC uart parameter
+		"set wlan channel 0\r\n",		   // Set the wlan channel to 0 to perform an automatic scan for a free channel
 		"set wlan auth 4\r\n",             // use WPA2 protection
 		"set wlan join 1\r\n",             // scan for ap and auto join
 		"set wlan rate 0\r\n",             // slowest datarate but highest range
@@ -395,7 +412,7 @@ size_t ut_WiflyControl_ConfSetDefaults(void)
 	WiflyControl testee(0, 0);
 
 	g_TestBuffer.clear();
-	CHECK(testee.ConfSetDefaults());
+	CHECK(ut_WiflyControl_ConfSetDefaults(testee));
 	CHECK(!g_ProxyConnected);
 	CHECK(g_ProxySaved);
 	CHECK(numCommands == g_TestBuffer.size());
@@ -420,22 +437,21 @@ size_t ut_WiflyControl_ConfSetWlan(void)
 	WiflyControl testee(0, 0);
 	
 	// passphrase to short
-	CHECK(!testee.ConfSetWlan("", ssid));
-
+	CHECK(!ut_WiflyControl_ConfSetWlan(testee, "", ssid));
 	// passphrase to long
-	CHECK(!testee.ConfSetWlan(phraseToLong, ssid));
+	CHECK(!ut_WiflyControl_ConfSetWlan(testee, phraseToLong, ssid));
 
 	// passphrase contains not only alphanumeric characters
-	CHECK(!testee.ConfSetWlan(phraseContainsNonAlNum, ssid));
+	CHECK(!ut_WiflyControl_ConfSetWlan(testee, phraseContainsNonAlNum, ssid));
 
 	// ssid to short
-	CHECK(!testee.ConfSetWlan(phrase, ""));
+	CHECK(!ut_WiflyControl_ConfSetWlan(testee, phrase, ""));
 
 	// ssid to long
-	CHECK(!testee.ConfSetWlan(phrase, ssidToLong));
+	CHECK(!ut_WiflyControl_ConfSetWlan(testee, phrase, ssidToLong));
 
 	// valid passphrase and ssid
-	CHECK(testee.ConfSetWlan(phrase, ssid));
+	CHECK(ut_WiflyControl_ConfSetWlan(testee, phrase, ssid));
 	
 	TestCaseEnd();
 }

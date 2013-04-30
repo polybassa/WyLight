@@ -113,6 +113,10 @@ bool WiflyControl::ConfSetDeviceId(const std::string& name) const {return true; 
 
 bool WiflyControl::ConfRebootWlanModule() const {return true; }
 
+bool WiflyControl::ConfModuleAsSoftAP(const std::string& accesspointName) const {return true; }
+
+bool WiflyControl::ConfModuleForWlan(const std::string &phrase, const std::string &ssid, const std::string& name) const {return true; }
+
 void WiflyControl::FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
 std::string WiflyControl::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
@@ -184,8 +188,8 @@ size_t ut_WiflyControlNoThrow_ConfFunctions(void)
 	std::string tempStr = "";
 		
 	CHECK(NO_ERROR == testee.ConfGetSsid(tempStr));
-	CHECK(NO_ERROR == testee.ConfSetWlan(tempStr, tempStr));
-	CHECK(NO_ERROR == testee.ConfSetDefaults());
+	CHECK(NO_ERROR == testee.ConfModuleAsSoftAP(tempStr));
+	CHECK(NO_ERROR == testee.ConfModuleForWlan(tempStr,tempStr,tempStr));
 	TestCaseEnd();
 }
 
