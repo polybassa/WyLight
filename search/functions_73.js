@@ -11,8 +11,9 @@ var searchData=
   ['setdata',['SetData',['../struct_bl_eeprom_write_request.html#a1855ba1e441ab8188e8384e64ebb0d59',1,'BlEepromWriteRequest::SetData()'],['../struct_bl_flash_write_request.html#acf26fc08c3d7fe8d36cc195faee09ac8',1,'BlFlashWriteRequest::SetData()']]],
   ['setstartlinearaddress',['setStartLinearAddress',['../classintelhex.html#a7629ca097b2de02dea37fcaa2dc2709c',1,'intelhex']]],
   ['setstartsegmentaddress',['setStartSegmentAddress',['../classintelhex.html#a9688f0002be870b05d64b5f9fcdeb86b',1,'intelhex']]],
+  ['settimevalue',['setTimeValue',['../class_fw_cmd_wait.html#a7395af5fb0d36e4acd100b3a090aca6e',1,'FwCmdWait::setTimeValue()'],['../class_fw_cmd_set_fade.html#aa991366855cc8a77a4bac4ffd2c6aa9a',1,'FwCmdSetFade::setTimeValue()'],['../class_fw_cmd_set_gradient.html#ab484576c4e5ced92cbae1f6741a31c7c',1,'FwCmdSetGradient::setTimeValue()'],['../class_fw_req_wait.html#a0139a285b43943fce2c95906e1d06d76',1,'FwReqWait::setTimeValue()'],['../class_fw_req_set_fade.html#a87a2aa2b160b9b2597ae162417d37de6',1,'FwReqSetFade::setTimeValue()'],['../class_fw_req_set_gradient.html#ad656a26164aafa1af0631ad15146bed5',1,'FwReqSetGradient::setTimeValue()']]],
   ['simpleresponse',['SimpleResponse',['../class_simple_response.html#aefac8d5010a3d168a206c78fbbd917ff',1,'SimpleResponse']]],
-  ['size',['Size',['../class_base_buffer.html#ac1a14b6abab04b72a87ac7da40c6273d',1,'BaseBuffer::Size()'],['../classintelhex.html#afa757932ec420f977d33bb9a2d5a0a69',1,'intelhex::size()']]],
+  ['size',['size',['../classintelhex.html#afa757932ec420f977d33bb9a2d5a0a69',1,'intelhex::size()'],['../class_base_buffer.html#ac1a14b6abab04b72a87ac7da40c6273d',1,'BaseBuffer::Size()']]],
   ['startaddress',['startAddress',['../classintelhex.html#aa8833665b99f0b6ac64fcef7d2116c42',1,'intelhex']]],
   ['stop',['Stop',['../class_broadcast_receiver.html#ab0f0852ab37655f23bebaca888216502',1,'BroadcastReceiver']]]
 ];

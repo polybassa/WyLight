@@ -15,6 +15,8 @@ var searchData=
   ['mlength',['mLength',['../class_base_buffer.html#a18cc80c360b914585278da7233af540c',1,'BaseBuffer']]],
   ['mport',['mPort',['../class_broadcast_receiver.html#a3e1de2825034cb6e2b15641c490d9381',1,'BroadcastReceiver::mPort()'],['../class_connection_lost.html#a8b05ac061a6d77c326cb261aa1fc93ab',1,'ConnectionLost::mPort()']]],
   ['mreqframe',['mReqFrame',['../class_fw_request.html#a1aefbfbc115ce21f8816c8a458108263',1,'FwRequest']]],
+  ['mrequest',['mRequest',['../class_fw_command.html#a98cb2a0ff9743e83748ce4dec0de4579',1,'FwCommand']]],
+  ['mresponse',['mResponse',['../class_fw_command.html#a0522c805e2c4fed9f1989a04db4c53a0',1,'FwCommand']]],
   ['msize',['mSize',['../struct_bl_request.html#afd0174f556d9d4538de850260e8d08a4',1,'BlRequest::mSize()'],['../class_fw_request.html#a5f44d41f56901e8b61ee9390c0af8eca',1,'FwRequest::mSize()']]],
   ['msock',['mSock',['../class_client_socket.html#acb5029d09ef913c0b444e97f2cc98bef',1,'ClientSocket']]],
   ['msockaddr',['mSockAddr',['../class_client_socket.html#acbf9ed9f1ebac9348a2d1c77b516acbc',1,'ClientSocket']]]

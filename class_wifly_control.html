@@ -131,12 +131,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a776073bd4991e4331fb946e456d803df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa46eb435216680bdb7e069571e7f7545"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#aa46eb435216680bdb7e069571e7f7545">ConfGetSsid</a> (void) const </td></tr>
 <tr class="separator:aa46eb435216680bdb7e069571e7f7545"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a932d65b7b9346a2bd9ced995fe2239ab"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a932d65b7b9346a2bd9ced995fe2239ab">ConfSetDefaults</a> (void) const </td></tr>
-<tr class="separator:a932d65b7b9346a2bd9ced995fe2239ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad73ecaee1bf99c406c621fb602abf808"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#ad73ecaee1bf99c406c621fb602abf808">ConfSetWlan</a> (const std::string &amp;phrase, const std::string &amp;ssid) const </td></tr>
-<tr class="separator:ad73ecaee1bf99c406c621fb602abf808"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9007c55526c07ac80fafe33653ab263"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#ae9007c55526c07ac80fafe33653ab263">ConfRebootWlanModul</a> (void) const </td></tr>
-<tr class="separator:ae9007c55526c07ac80fafe33653ab263"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2728aad7816abfbf9d4acdfb191c5bb3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a2728aad7816abfbf9d4acdfb191c5bb3">ConfModuleAsSoftAP</a> (const std::string &amp;accesspointName=&quot;Wifly_Light&quot;) const </td></tr>
+<tr class="separator:a2728aad7816abfbf9d4acdfb191c5bb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6535a5148e4da9fb62460aeefba22fcc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a6535a5148e4da9fb62460aeefba22fcc">ConfModuleForWlan</a> (const std::string &amp;phrase, const std::string &amp;ssid, const std::string &amp;name=&quot;Wifly_Light&quot;) const </td></tr>
+<tr class="separator:a6535a5148e4da9fb62460aeefba22fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2562a7dfca209f533b537b1667dde91c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a2562a7dfca209f533b537b1667dde91c">ConfRebootWlanModule</a> (void) const </td></tr>
+<tr class="separator:a2562a7dfca209f533b537b1667dde91c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a3142eab30bfc15ffd871cb4a139522"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a8a3142eab30bfc15ffd871cb4a139522">ConfSetDeviceId</a> (const std::string &amp;name) const </td></tr>
 <tr class="separator:a8a3142eab30bfc15ffd871cb4a139522"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cb531078a50475b0244645e95903e73"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a0cb531078a50475b0244645e95903e73">FwClearScript</a> (void)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
@@ -185,6 +185,10 @@ Static Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
+<tr class="memitem:a36b5c00f9f2f73e06cadae67312349b4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a36b5c00f9f2f73e06cadae67312349b4">ut_WiflyControl_ConfSetDefaults</a> (<a class="el" href="class_wifly_control.html">WiflyControl</a> &amp;ref)</td></tr>
+<tr class="separator:a36b5c00f9f2f73e06cadae67312349b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad253e89bab564cf17fd5c8a9add65613"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#ad253e89bab564cf17fd5c8a9add65613">ut_WiflyControl_ConfSetWlan</a> (<a class="el" href="class_wifly_control.html">WiflyControl</a> &amp;ref, const std::string &amp;phrase, const std::string &amp;ssid)</td></tr>
+<tr class="separator:ad253e89bab564cf17fd5c8a9add65613"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a327c95f9335fa4b257b064ef2e917a80"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a327c95f9335fa4b257b064ef2e917a80">ut_WiflyControl_BlEepromWrite</a> (void)</td></tr>
 <tr class="separator:a327c95f9335fa4b257b064ef2e917a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a661b9ec8a685bc800221f2fd5d031a20"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wifly_control.html#a661b9ec8a685bc800221f2fd5d031a20">ut_WiflyControl_BlFlashWrite</a> (void)</td></tr>
@@ -579,12 +583,78 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ae9007c55526c07ac80fafe33653ab263"></a>
+<a class="anchor" id="a2728aad7816abfbf9d4acdfb191c5bb3"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool WiflyControl::ConfRebootWlanModul </td>
+          <td class="memname">bool WiflyControl::ConfModuleAsSoftAP </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>accesspointName</em> = <code>&quot;Wifly_Light&quot;</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Configurates the Wifly module as stand alone accesspoint. With accesspoint name you can change the ssid for this accesspoint. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">accespointName</td><td>1 - 32 characters </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>false, in case of an error </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6535a5148e4da9fb62460aeefba22fcc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool WiflyControl::ConfModuleForWlan </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>phrase</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>ssid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em> = <code>&quot;Wifly_Light&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Configurates the Wifly module as client for an existing wlan network with WPA2 protection </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">phrase</td><td>WPA2 passphrase 1 - 63 characters </td></tr>
+    <tr><td class="paramname">ssid</td><td>1 - 32 characters </td></tr>
+    <tr><td class="paramname">name</td><td>1 - 32 characters, unique name which apperas in the broadcast message </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>false, in case of an error </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a2562a7dfca209f533b537b1667dde91c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool WiflyControl::ConfRebootWlanModule </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -593,24 +663,6 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Reboot the modul. ATTENTION: You have to reconnect after a reboot </p>
-<dl class="section return"><dt>Returns</dt><dd>false, in case of an error </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a932d65b7b9346a2bd9ced995fe2239ab"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool WiflyControl::ConfSetDefaults </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Set the Wifly module communication parameters to defaults </p>
 <dl class="section return"><dt>Returns</dt><dd>false, in case of an error </dd></dl>
 
 </div>
@@ -632,41 +684,6 @@ Friends</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>1 - 32 characters </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>false, in case of an error </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="ad73ecaee1bf99c406c621fb602abf808"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool WiflyControl::ConfSetWlan </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>phrase</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>ssid</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Set the Wifly module wlan connection parameters </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">phrase</td><td>WPA2 passphrase 1 - 63 characters </td></tr>
-    <tr><td class="paramname">ssid</td><td>1 - 32 characters </td></tr>
   </table>
   </dd>
 </dl>
@@ -1362,6 +1379,72 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a36b5c00f9f2f73e06cadae67312349b4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ut_WiflyControl_ConfSetDefaults </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_wifly_control.html">WiflyControl</a> &amp;&#160;</td>
+          <td class="paramname"><em>ref</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>friendships for unittesting only </p>
+
+</div>
+</div>
+<a class="anchor" id="ad253e89bab564cf17fd5c8a9add65613"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ut_WiflyControl_ConfSetWlan </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_wifly_control.html">WiflyControl</a> &amp;&#160;</td>
+          <td class="paramname"><em>ref</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>phrase</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>ssid</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>friendships for unittesting only </p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="a1fb5f6703533d3ccf68f6e474f51dbce"></a>
 <div class="memitem">
@@ -1390,7 +1473,7 @@ Friends</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Apr 20 2013 16:56:04 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Apr 30 2013 15:11:17 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

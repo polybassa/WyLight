@@ -161,19 +161,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_broadcast_receiver.html#a6e403e696a76c5bc8c2b9215c3d5704d">NumRemotes</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_broadcast_receiver.html#ab0f0852ab37655f23bebaca888216502">Stop</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        std::set&lt;Endpoint&gt; mIpTable;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keyword">volatile</span> <span class="keywordtype">bool</span> mIsRunning;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        std::atomic&lt;int32_t&gt; mNumInstances;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        std::mutex mMutex;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;};</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _BROADCAST_RECEIVER_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_broadcast_receiver.html#a4b8090a05353668151af7e887acfd32f">PrintAllEndpoints</a>(std::ostream&amp; out);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        std::set&lt;Endpoint&gt; mIpTable;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keyword">volatile</span> <span class="keywordtype">bool</span> mIsRunning;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        std::atomic&lt;int32_t&gt; mNumInstances;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        std::mutex mMutex;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;};</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _BROADCAST_RECEIVER_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Apr 20 2013 16:55:49 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Apr 30 2013 15:10:51 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
