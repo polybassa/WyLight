@@ -11,9 +11,8 @@
 
 // Configuration
 - (id)initWithIP:(uint32_t)ip port:(uint16_t)port;
-- (uint32_t)setWlanSSID:(NSString *)ssid password:(NSString *)password;
-- (uint32_t)setDefaultConfiguration;
-- (uint32_t)setWlanDeviceName:(NSString *)name;
+- (uint32_t)configurateWlanModuleAsSoftAP:(NSString *)ssid password:(NSString *)password name:(NSString *)name;
+- (uint32_t)configurateWlanModuleAsSoftAP:(NSString *)ssid;
 - (uint32_t)rebootWlanModul;
 
 // Firmware methods

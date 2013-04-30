@@ -43,24 +43,20 @@
 
 #pragma mark - Configuration WLAN-Module
 
-- (uint32_t)setWlanSSID:(NSString *)ssid password:(NSString *)password
+- (uint32_t)configurateWlanModuleAsClient:(NSString *)ssid password:(NSString *)password name:(NSString *)name
 {
     const std::string ssidCString([ssid cStringUsingEncoding:NSASCIIStringEncoding]);
     const std::string passwordCString([password cStringUsingEncoding:NSASCIIStringEncoding]);
-    
-    return (*self.mControl).ConfSetWlan(passwordCString, ssidCString);
-}
-
-- (uint32_t)setDefaultConfiguration
-{
-    return (*self.mControl).ConfSetDefaults();
-}
-
-- (uint32_t)setWlanDeviceName:(NSString *)name
-{
 	const std::string nameCString([name cStringUsingEncoding:NSASCIIStringEncoding]);
-	
-	return (*self.mControl).ConfSetDeviceId(nameCString);
+    
+    return (*self.mControl).ConfModuleForWlan(passwordCString, ssidCString, nameCString);
+}
+
+- (uint32_t)configurateWlanModuleAsSoftAP:(NSString *)ssid
+{
+    const std::string ssidCString([ssid cStringUsingEncoding:NSASCIIStringEncoding]);
+    
+    return (*self.mControl).ConfModuleAsSoftAP(ssidCString);
 }
 
 - (uint32_t)rebootWlanModul
