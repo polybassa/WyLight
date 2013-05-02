@@ -452,6 +452,8 @@ void WiflyControl::BlRunApp(void) const throw (ConnectionTimeout, FatalError)
 	throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": response of wrong length");
 }
 
+#pragma mark RN171-METHODES
+
 std::string WiflyControl::ConfGetSsid(void) const
 {
 	std::string result{};
@@ -677,6 +679,8 @@ bool WiflyControl::ConfRebootWlanModule(void) const
 	}
 	return true;
 }
+
+#pragma mark FIRMWARE-METHODES
 
 void WiflyControl::FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {

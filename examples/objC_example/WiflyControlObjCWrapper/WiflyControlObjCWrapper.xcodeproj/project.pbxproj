@@ -160,17 +160,6 @@
 		5CCC872C171E8792009E1BD4 /* library */ = {
 			isa = PBXGroup;
 			children = (
-				5C9089C3172AB69D00FA4C83 /* WiflyControl.cpp */,
-				5C9089CA172AB6D700FA4C83 /* crc.c */,
-				5C9089CB172AB6D700FA4C83 /* crc.h */,
-				5C9089CC172AB6D700FA4C83 /* platform.h */,
-				5C9089CD172AB6D700FA4C83 /* timeval.h */,
-				5C9089CE172AB6D700FA4C83 /* trace.h */,
-				5C9089CF172AB6D700FA4C83 /* wifly_cmd.h */,
-				5C9089C4172AB69D00FA4C83 /* WiflyControl.h */,
-				5C9089C5172AB69D00FA4C83 /* WiflyControlException.h */,
-				5C9089C6172AB69D00FA4C83 /* WiflyControlNoThrow.cpp */,
-				5C9089C7172AB69D00FA4C83 /* WiflyControlNoThrow.h */,
 				5C9089A8172AB67C00FA4C83 /* BlRequest.h */,
 				5C9089A9172AB67C00FA4C83 /* BroadcastMessage.h */,
 				5C9089AA172AB67C00FA4C83 /* BroadcastReceiver.cpp */,
@@ -179,6 +168,8 @@
 				5C9089AD172AB67C00FA4C83 /* ClientSocket.h */,
 				5C9089AE172AB67C00FA4C83 /* ComProxy.cpp */,
 				5C9089AF172AB67C00FA4C83 /* ComProxy.h */,
+				5C9089CA172AB6D700FA4C83 /* crc.c */,
+				5C9089CB172AB6D700FA4C83 /* crc.h */,
 				5C9089B0172AB67C00FA4C83 /* Endpoint.h */,
 				5C9089B1172AB67C00FA4C83 /* FwCommand.h */,
 				5C9089B2172AB67C00FA4C83 /* FwRequest.h */,
@@ -187,9 +178,18 @@
 				5C9089B5172AB67C00FA4C83 /* intelhexclass.h */,
 				5C9089B6172AB67C00FA4C83 /* MaskBuffer.cpp */,
 				5C9089B7172AB67C00FA4C83 /* MaskBuffer.h */,
+				5C9089CC172AB6D700FA4C83 /* platform.h */,
 				5C9089B8172AB67C00FA4C83 /* TelnetProxy.cpp */,
 				5C9089B9172AB67C00FA4C83 /* TelnetProxy.h */,
+				5C9089CD172AB6D700FA4C83 /* timeval.h */,
+				5C9089CE172AB6D700FA4C83 /* trace.h */,
+				5C9089CF172AB6D700FA4C83 /* wifly_cmd.h */,
 				5C9089BA172AB67C00FA4C83 /* WiflyColor.h */,
+				5C9089C3172AB69D00FA4C83 /* WiflyControl.cpp */,
+				5C9089C4172AB69D00FA4C83 /* WiflyControl.h */,
+				5C9089C5172AB69D00FA4C83 /* WiflyControlException.h */,
+				5C9089C6172AB69D00FA4C83 /* WiflyControlNoThrow.cpp */,
+				5C9089C7172AB69D00FA4C83 /* WiflyControlNoThrow.h */,
 			);
 			name = library;
 			sourceTree = "<group>";
