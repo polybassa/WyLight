@@ -68,17 +68,9 @@ uint8_t capturedBroadcastMessage_2[110] = {
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 //sensors
 };
 
-struct Ipv4Addr : public sockaddr_in {
-	Ipv4Addr(uint16_t port, uint32_t ip) {
-		sin_family = AF_INET;
-		sin_port = htons(port);
-		sin_addr.s_addr = htonl(ip);
-	};
-};
-
-static const Ipv4Addr g_FirstRemote(0xffff, 0x7F000001);
-static const Ipv4Addr g_SecondRemote(0xffff, 0x7F000002);
-static const Ipv4Addr g_ThirdRemote(0xffff, 0x7F000003);
+static const Ipv4Addr g_FirstRemote(0x7F000001, 0xffff);
+static const Ipv4Addr g_SecondRemote(0x7F000002, 0xffff);
+static const Ipv4Addr g_ThirdRemote(0x7F000003, 0xffff);
 
 /**************** includes, classes and functions for wrapping ****************/
 uint8_t g_TestSocketRecvBuffer[10240];
@@ -94,7 +86,7 @@ void SetTestSocket(const sockaddr_in* addr, size_t offset, void* pData, size_t d
 	g_TestSocketRecvBufferSize = offset + dataLength;
 }
 
-ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) : mSock(0) {}
+ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) : mSock(0), mSockAddr(addr, port) {}
 ClientSocket::~ClientSocket(void) {}
 
 UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) throw (FatalError)
