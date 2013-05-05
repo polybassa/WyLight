@@ -25,9 +25,9 @@
 #include <cstring>
 #include <stdint.h>
 #include <string>
+#include <map>
 #include <mutex>
 #include <ostream>
-#include <set>
 #include <string>
 
 class BroadcastReceiver
@@ -39,10 +39,10 @@ class BroadcastReceiver
 		static const std::string DEVICE_VERSION;
 		static const std::string STOP_MSG;
 		static const Endpoint EMPTY_ENDPOINT;
-		const uint16_t mPort;
 
 		/*
 		 * Construct an object for broadcast listening on the specified port
+		 * @param path to the containing files used to store recent remotes
 		 * @param port to listen on, deault is @see BROADCAST_PORT
 		 */
 		BroadcastReceiver(uint16_t port = BROADCAST_PORT);
@@ -64,7 +64,7 @@ class BroadcastReceiver
 		 * @param index of the endpoint in the internal IpTable, should be lees than NumRemotes()
 		 * @return a reference to the endpoint at the specified index or an empty object (@see EMPTY_ENDPOINT), when the index was out of bound
 		 */
-		const Endpoint& GetEndpoint(size_t index) const;
+		Endpoint& GetEndpoint(size_t index);
 
 		/*
 		 * Listen for broadcasts until a new remote is discovered.
@@ -79,18 +79,33 @@ class BroadcastReceiver
 		 */
 		size_t NumRemotes(void) const;
 
+		void PrintAllEndpoints(std::ostream& out);
+
+		/**
+		 * Read recent endpoints from file
+		 * @param filename of the file containing the recent endpoints
+		 */
+		void ReadRecentEndpoints(const std::string& filename);
+
 		/**
 		 * Sends a stop event to terminate execution of operator()
 		 */
 		void Stop(void);
+
+		/**
+		 * Write recent endpoints to file
+		 * @param filename of the file containing the recent endpoints
+		 */
+		void WriteRecentEndpoints(const std::string& filename, uint8_t threshold = 1) const;
 	
-		void PrintAllEndpoints(std::ostream& out);
 
 	private:
-		std::set<Endpoint> mIpTable;
+		const uint16_t mPort;
+		std::map<size_t, Endpoint> mIpTable;
 		volatile bool mIsRunning;
 		std::atomic<int32_t> mNumInstances;
 		std::mutex mMutex;
+		std::string mFavourites;
 };
 #endif /* #ifndef _BROADCAST_RECEIVER_H_ */
 

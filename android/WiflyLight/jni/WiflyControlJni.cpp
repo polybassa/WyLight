@@ -37,9 +37,12 @@ void ThrowJniException(JNIEnv* env, const FatalError& e) {
 	}
 
 extern "C" {
-jlong Java_biz_bruenn_WiflyLight_RemoteCollector_createBroadcastReceiver(JNIEnv* env, jobject ref)
+jlong Java_biz_bruenn_WiflyLight_RemoteCollector_createBroadcastReceiver(JNIEnv* env, jobject ref, jstring path)
 {
-	return (jlong) new BroadcastReceiver(BroadcastReceiver::BROADCAST_PORT);
+	const char* myPath = env->GetStringUTFChars(path, 0);
+	const jlong result = (jlong) new BroadcastReceiver(myPath, BroadcastReceiver::BROADCAST_PORT);
+	env->ReleaseStringUTFChars(path, myPath);
+	return result;
 }
 
 void Java_biz_bruenn_WiflyLight_RemoteCollector_releaseBroadcastReceiver(JNIEnv* env, jobject ref, jlong pNative)

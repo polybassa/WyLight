@@ -21,6 +21,7 @@
 #include "timeval.h"
 #include "trace.h"
 #include <iostream>
+#include <fstream>
 #include <stdio.h>
 
 static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
@@ -76,18 +77,13 @@ void BroadcastReceiver::PrintAllEndpoints(std::ostream& out)
 	for(auto it = mIpTable.begin(); it != mIpTable.end(); it++)
 	{
 		//std::cout << index << ':' << *it << '\n';
-		out << index++ << ':' << *it << '\n';
+		out << index++ << ':' << it->second << '\n';
 	}	
 }
 
-const Endpoint& BroadcastReceiver::GetEndpoint(size_t index) const
+Endpoint& BroadcastReceiver::GetEndpoint(size_t index)
 {
-	if(index >= mIpTable.size())
-		return EMPTY_ENDPOINT;
-
-	auto it = mIpTable.begin();
-	for(; index != 0; --index, ++it);
-	return *it;
+	return mIpTable[index];
 }
 
 Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout) throw (FatalError)
@@ -104,7 +100,7 @@ Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout) throw (FatalError)
 		Trace(ZONE_INFO, "Broadcast detected\n");
 		Endpoint newRemote(remoteAddr, remoteAddrLength, msg.port, std::string((char*)&msg.deviceId[0]));
 		mMutex.lock();
-		bool added = mIpTable.insert(newRemote).second;
+		bool added = mIpTable.insert(std::pair<size_t, Endpoint>(mIpTable.size(), newRemote)).second;
 		mMutex.unlock();
 		return added ? newRemote : Endpoint();
 	}
@@ -116,10 +112,40 @@ size_t BroadcastReceiver::NumRemotes(void) const
 	return mIpTable.size();
 }
 
+void BroadcastReceiver::ReadRecentEndpoints(const std::string& filename)
+{
+	std::ifstream inFile;
+	inFile.open(filename, std::ios::in | std::ios::binary);
+	
+	uint64_t data;
+	uint32_t i = 0;
+	while(inFile >> data) {
+		Endpoint recentEndpoint(data);
+		mIpTable.insert(std::pair<size_t, Endpoint>(i, recentEndpoint));
+	}
+	inFile.close();
+}
+
 void BroadcastReceiver::Stop(void)
 {
 	mIsRunning = false;
 	UdpSocket sock(INADDR_LOOPBACK, mPort, false);
 	sock.Send((uint8_t*)STOP_MSG.data(), STOP_MSG.size());
+}
+
+
+void BroadcastReceiver::WriteRecentEndpoints(const std::string& filename, uint8_t threshold) const
+{
+	std::ofstream outFile;
+	outFile.open(filename, std::ios::out | std::ios::trunc | std::ios::binary);
+
+	// write to file
+	for(auto it = mIpTable.begin(); it != mIpTable.end(); it++)
+	{
+		if((*it).second.GetScore() >= threshold) {
+			outFile << (*it).second.AsUint64();
+		}
+	}
+	outFile.close();
 }
 

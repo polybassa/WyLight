@@ -15,7 +15,7 @@ public class Endpoint implements Serializable {
 	public Endpoint(long remote) {
 		this((int)(remote >> 32), (short)(remote & 0x000000000000ffffL));
 	}
-	
+
 	public int getAddr() {
 		return mAddr;
 	}

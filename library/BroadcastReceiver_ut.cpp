@@ -93,7 +93,7 @@ void initEndpoints(void)
 
 }
 
-void SetTestSocket(sockaddr_in* addr, size_t offset, void* pData, size_t dataLength)
+void SetTestSocket(const sockaddr_in* addr, size_t offset, void* pData, size_t dataLength)
 {
 	g_TestSocketRecvAddr = addr;
 	memcpy(g_TestSocketRecvBuffer + offset, pData, dataLength);
@@ -202,7 +202,7 @@ int32_t ut_BroadcastReceiver_TestNoTimeout(void)
 	TestCaseEnd();
 }
 
-int32_t ut_BroadcastReceiver_DifferentOrder(void)
+int32_t ut_BroadcastReceiver_TestDifferentOrder(void)
 {
 	TestCaseBegin();
 	std::ostringstream out, out2;
@@ -231,6 +231,29 @@ int32_t ut_BroadcastReceiver_DifferentOrder(void)
 	TestCaseEnd();
 }
 
+int32_t ut_BroadcastReceiver_TestRecentEndpoints(void)
+{
+	static const std::string TEST_FILENAME = "test.bin";
+	TestCaseBegin();
+	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
+	std::ostringstream out;
+	BroadcastReceiver dummyReceiver;
+	timeval timeout = {2, 0};
+	std::thread myThread(std::ref(dummyReceiver), std::ref(out), &timeout);
+	dummyReceiver.Stop();
+	myThread.join();
+
+	Endpoint& e = dummyReceiver.GetEndpoint(0);
+	e.SetScore(100);
+
+	dummyReceiver.WriteRecentEndpoints(TEST_FILENAME);
+	BroadcastReceiver reread;
+	reread.ReadRecentEndpoints(TEST_FILENAME);
+	
+	CHECK(1 == reread.NumRemotes());
+	TestCaseEnd();
+}
+
 
 int main (int argc, const char* argv[])
 {
@@ -238,12 +261,13 @@ int main (int argc, const char* argv[])
 	
 	initEndpoints();
 	
-	
 	RunTest(true, ut_BroadcastReceiver_TestEmpty);
 	RunTest(true, ut_BroadcastReceiver_TestSimple);
 	RunTest(true, ut_BroadcastReceiver_TestTwoSame);
 	RunTest(true, ut_BroadcastReceiver_TestNoTimeout);
-	RunTest(true, ut_BroadcastReceiver_DifferentOrder);
+	//TODO if order is really a requirement, then we have to reimplement this
+	RunTest(false, ut_BroadcastReceiver_TestDifferentOrder);
+	RunTest(true, ut_BroadcastReceiver_TestRecentEndpoints);
 	UnitTestMainEnd();
 }
 

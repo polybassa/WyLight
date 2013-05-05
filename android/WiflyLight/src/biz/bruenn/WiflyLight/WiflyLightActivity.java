@@ -21,9 +21,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class WiflyLightActivity extends Activity {
-	private ListView mRemoteList;
 	private ArrayList<Endpoint> mRemoteArray = new ArrayList<Endpoint>();
 	private ArrayAdapter<Endpoint> mRemoteArrayAdapter;
+	private ListView mRemoteList;
+	private RemoteManager mRemoteManager;
 	
 	static {
 		System.loadLibrary("wifly");
@@ -58,12 +59,16 @@ public class WiflyLightActivity extends Activity {
 				Button btn = (Button)v;
 				btn.setClickable(false);
 				btn.setText(string.scanning);
-				new RemoteCollector((WifiManager)getSystemService(Context.WIFI_SERVICE), 
+				new RemoteCollector(v.getContext(), (WifiManager)getSystemService(Context.WIFI_SERVICE), 
 						mRemoteArray,
 						mRemoteArrayAdapter,
 						btn).execute(Long.valueOf(3000000000L));
 			}
 		});
+        
+        mRemoteManager = new RemoteManager(this);
+        //mRemoteManager.addFavouritesToList(mRemoteArray);
+        //mRemoteArrayAdapter.notifyDataSetChanged();
     }
     
     @Override

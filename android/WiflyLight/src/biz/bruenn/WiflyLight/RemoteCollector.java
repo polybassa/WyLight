@@ -3,13 +3,14 @@ package biz.bruenn.WiflyLight;
 import java.util.ArrayList;
 import biz.bruenn.WiflyLight.R.string;
 
+import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 public class RemoteCollector extends AsyncTask<Long, Void, Void> {
-	private native long createBroadcastReceiver();
+	private native long createBroadcastReceiver(String path);
 	private native long getNextRemote(long pNative, long timeoutNanos);
 	private native void releaseBroadcastReceiver(long pNative);
 	
@@ -19,9 +20,9 @@ public class RemoteCollector extends AsyncTask<Long, Void, Void> {
 	private long mNative = 0;
 	private Button mScanBtn;
 	
-	public RemoteCollector(WifiManager wifiMgr, ArrayList<Endpoint> remoteArray, ArrayAdapter<Endpoint> remoteArrayAdapter, Button scanBtn) {
+	public RemoteCollector(Context context, WifiManager wifiMgr, ArrayList<Endpoint> remoteArray, ArrayAdapter<Endpoint> remoteArrayAdapter, Button scanBtn) {
 		mMulticastLock = wifiMgr.createMulticastLock("WiflyLight_MulticastLock");
-		mNative = createBroadcastReceiver();
+		mNative = createBroadcastReceiver(context.getFilesDir().getAbsolutePath());
 		mRemoteArray = remoteArray;
 		mRemoteArrayAdapter = remoteArrayAdapter;
 		mScanBtn = scanBtn;
