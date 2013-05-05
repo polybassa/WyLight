@@ -18,6 +18,7 @@
 
 #ifndef _ENDPOINT_H_
 #define _ENDPOINT_H_
+#include <atomic>
 #include <cassert>
 #include <ostream>
 #include <stddef.h>
@@ -49,7 +50,8 @@ class Endpoint
 
 		friend std::ostream& operator << (std::ostream& out, const Endpoint& ref)
 		{
-			return out << ((ref.mIp & 0xff000000 ) >> 24) << '.'
+			return out << (int)ref.mScore << ' '
+								 << ((ref.mIp & 0xff000000 ) >> 24) << '.'
 								 << ((ref.mIp & 0x00ff0000 ) >> 16) << '.'
 								 << ((ref.mIp & 0x0000ff00 ) >> 8) << '.'
 								 << (ref.mIp & 0x000000ff )
@@ -80,12 +82,17 @@ class Endpoint
 			return mScore;
 		};
 
+		/*
+		 * Increment score
+		 * @return reference to itself
+		 */
+		Endpoint& operator ++(void) {
+			++mScore;
+			return *this;
+		}
+
 		bool IsValid(void) const {
 			return (0 != mIp) && (0 != mPort);
-		};
-
-		void SetScore(uint8_t newScore) {
-			mScore = newScore;
 		};
 
 	private:

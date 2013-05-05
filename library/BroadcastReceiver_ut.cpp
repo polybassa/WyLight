@@ -134,7 +134,7 @@ int32_t ut_BroadcastReceiver_TestSimple(void)
 	dummyReceiver.Stop();
 	myThread.join();
 
-	CHECK(0 == out.str().compare("0:127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
+	CHECK(0 == out.str().compare("0:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
 	CHECK(1 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
 	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
@@ -155,7 +155,7 @@ int32_t ut_BroadcastReceiver_TestTwoSame(void)
 	dummyReceiver.Stop();
 	myThread.join();
 
-	CHECK(0 == out.str().compare("0:127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
+	CHECK(0 == out.str().compare("0:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
 	CHECK(1 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
 	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
@@ -178,7 +178,7 @@ int32_t ut_BroadcastReceiver_TestNoTimeout(void)
 	dummyReceiver.Stop();
 	myThread.join();
 
-	CHECK(0 == out.str().compare("0:127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n1:127.0.0.2:2000  :  WiFly_Light\n2:127.0.0.3:2000  :  WiFly_Light\n"));
+	CHECK(0 == out.str().compare("0:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n1:0 127.0.0.2:2000  :  WiFly_Light\n2:0 127.0.0.3:2000  :  WiFly_Light\n"));
 	CHECK(3 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
 	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
@@ -205,9 +205,9 @@ int32_t ut_BroadcastReceiver_TestDifferentOrder(void)
 	dummyReceiver.Stop();
 	myThread.join();
 	dummyReceiver.PrintAllEndpoints(out2);
-	CHECK(0 == out.str().compare("0:127.0.0.2:2000  :  WiFly_Light\n1:127.0.0.3:2000  :  WiFly_Light\n2:127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
+	CHECK(0 == out.str().compare("0:0 127.0.0.2:2000  :  WiFly_Light\n1:0 127.0.0.3:2000  :  WiFly_Light\n2:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
 	
-	CHECK(0 == out2.str().compare("0:127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n1:127.0.0.2:2000  :  WiFly_Light\n2:127.0.0.3:2000  :  WiFly_Light\n"));
+	CHECK(0 == out2.str().compare("0:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n1:0 127.0.0.2:2000  :  WiFly_Light\n2:0 127.0.0.3:2000  :  WiFly_Light\n"));
 	CHECK(3 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
 	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
@@ -239,11 +239,11 @@ int32_t ut_BroadcastReceiver_TestRecentEndpoints(void)
 	myThread.join();
 
 	Endpoint& firstScored = dummyReceiver.GetEndpoint(0);
-	firstScored.SetScore(100);
+	++(++firstScored);
 	Endpoint& secondScored = dummyReceiver.GetEndpoint(2);
-	secondScored.SetScore(10);
+	++(++secondScored);
 
-	dummyReceiver.WriteRecentEndpoints(TEST_FILENAME);
+	dummyReceiver.WriteRecentEndpoints(TEST_FILENAME, 2);
 	BroadcastReceiver reread;
 	reread.ReadRecentEndpoints(TEST_FILENAME);
 	
