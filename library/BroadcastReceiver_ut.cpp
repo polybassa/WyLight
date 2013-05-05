@@ -220,7 +220,7 @@ int32_t ut_BroadcastReceiver_TestDifferentOrder(void)
 
 int32_t ut_BroadcastReceiver_TestRecentEndpoints(void)
 {
-	static const std::string TEST_FILENAME = "dummy2.txt";
+	static const std::string TEST_FILENAME = "TestRecentEndpoints.txt";
 	TestCaseBegin();
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	std::ostringstream out;
