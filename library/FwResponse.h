@@ -69,9 +69,9 @@ public:
 			case BAD_PACKET:
 				return false;
 			case BAD_COMMAND_CODE:
-				throw FatalError("FIRMWARE RECEIVED A BAD COMMAND CODE" + pData.cmd);
+				throw FatalError("FIRMWARE RECEIVED A BAD COMMAND CODE" + std::to_string(pData.cmd));
 			default:
-				throw FatalError("Unexpected response state: " + pData.state);
+				throw FatalError("Unexpected response state: " + std::to_string(pData.state));
 		};
 	};
 	

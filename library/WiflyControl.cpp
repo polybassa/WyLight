@@ -21,6 +21,7 @@
 #include "trace.h"
 
 #include <algorithm>
+#include <sstream>
 #include <cctype>
 #include <stddef.h>
 #include <fstream>
@@ -388,7 +389,8 @@ void WiflyControl::BlProgramFlash(const std::string& pFilename) const throw (Con
 	{
 		if(!hexConverter.getData(&appVector[i],(unsigned long)i))
 		{
-			throw FatalError("can not read data at address " + hexConverter.currentAddress());
+		
+			throw FatalError("can not read data at address " + std::to_string(hexConverter.currentAddress()));
 		}
 	}
 	
