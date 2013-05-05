@@ -37,16 +37,8 @@ class Endpoint
 			mDeviceId = devId;
 		};
 
-		Endpoint(uint32_t ip = 0, uint16_t port = 0, uint8_t score = 0)
-			: mIp(ip), mPort(port), mScore(score), mDeviceId("")
-		{
-		};
-
-		Endpoint(uint64_t value)
-			: mIp((value & 0xffffffff00000000LLU) >> 32),
-			  mPort(value & 0x00000000000000FFLLU),
-			  mScore((value & 0x0000000000FF0000LLU) >> 16),
-			  mDeviceId("")
+		Endpoint(uint32_t ip = 0, uint16_t port = 0, uint8_t score = 0, std::string devId = "")
+			: mIp(ip), mPort(port), mScore(score), mDeviceId(devId)
 		{
 		};
 

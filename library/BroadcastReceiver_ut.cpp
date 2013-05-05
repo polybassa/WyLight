@@ -68,30 +68,23 @@ uint8_t capturedBroadcastMessage_2[110] = {
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 //sensors
 };
 
-sockaddr_in g_FirstRemote;// = { .sin_family = AF_INET, .sin_port = (htons(0xffff)), .sin_addr = (htonl(0x7F000001))};
-sockaddr_in g_SecondRemote;// = {.sin_family = AF_INET, .sin_port = (htons(0xffff)), .sin_addr = (htonl(0x7F000002))};;
-sockaddr_in g_ThirdRemote;// = {.sin_family = AF_INET, .sin_port = (htons(0xffff)), .sin_addr = (htonl(0x7F000003))};;
+struct Ipv4Addr : public sockaddr_in {
+	Ipv4Addr(uint16_t port, uint32_t ip) {
+		sin_family = AF_INET;
+		sin_port = htons(port);
+		sin_addr.s_addr = htonl(ip);
+	};
+};
 
+static const Ipv4Addr g_FirstRemote(0xffff, 0x7F000001);
+static const Ipv4Addr g_SecondRemote(0xffff, 0x7F000002);
+static const Ipv4Addr g_ThirdRemote(0xffff, 0x7F000003);
 
 /**************** includes, classes and functions for wrapping ****************/
 uint8_t g_TestSocketRecvBuffer[10240];
 uint8_t* g_TestSocketRecvBufferPos = g_TestSocketRecvBuffer;
 size_t g_TestSocketRecvBufferSize = 0;
 const sockaddr_in* g_TestSocketRecvAddr;
-
-void initEndpoints(void)
-{
-	g_FirstRemote.sin_family = AF_INET;
-	g_SecondRemote.sin_family = AF_INET;
-	g_ThirdRemote.sin_family = AF_INET;
-	g_FirstRemote.sin_port = (htons(0xffff));
-	g_SecondRemote.sin_port = (htons(0xffff));
-	g_ThirdRemote.sin_port = (htons(0xffff));
-	g_FirstRemote.sin_addr.s_addr = (htonl(0x7F000001));
-	g_SecondRemote.sin_addr.s_addr = (htonl(0x7F000002));
-	g_ThirdRemote.sin_addr.s_addr = (htonl(0x7F000003));
-
-}
 
 void SetTestSocket(const sockaddr_in* addr, size_t offset, void* pData, size_t dataLength)
 {
@@ -160,11 +153,13 @@ int32_t ut_BroadcastReceiver_TestTwoSame(void)
 {
 	TestCaseBegin();
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
-	SetTestSocket(&g_FirstRemote, sizeof(capturedBroadcastMessage), capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	std::ostringstream out;
 	BroadcastReceiver dummyReceiver;
 	timeval timeout = {3, 0};
 	std::thread myThread(std::ref(dummyReceiver), std::ref(out), &timeout);
+	nanosleep(&NANOSLEEP_TIME, NULL);
+	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
+	nanosleep(&NANOSLEEP_TIME, NULL);
 	dummyReceiver.Stop();
 	myThread.join();
 
@@ -233,24 +228,38 @@ int32_t ut_BroadcastReceiver_TestDifferentOrder(void)
 
 int32_t ut_BroadcastReceiver_TestRecentEndpoints(void)
 {
-	static const std::string TEST_FILENAME = "test.bin";
+	static const std::string TEST_FILENAME = "dummy2.txt";
 	TestCaseBegin();
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	std::ostringstream out;
 	BroadcastReceiver dummyReceiver;
 	timeval timeout = {2, 0};
 	std::thread myThread(std::ref(dummyReceiver), std::ref(out), &timeout);
+
+
+	nanosleep(&NANOSLEEP_TIME, NULL);
+	SetTestSocket(&g_SecondRemote, 0, capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
+	nanosleep(&NANOSLEEP_TIME, NULL);
+	SetTestSocket(&g_ThirdRemote, 0, capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
+	nanosleep(&NANOSLEEP_TIME, NULL);
+
 	dummyReceiver.Stop();
 	myThread.join();
 
-	Endpoint& e = dummyReceiver.GetEndpoint(0);
-	e.SetScore(100);
+	Endpoint& firstScored = dummyReceiver.GetEndpoint(0);
+	firstScored.SetScore(100);
+	Endpoint& secondScored = dummyReceiver.GetEndpoint(2);
+	secondScored.SetScore(10);
 
 	dummyReceiver.WriteRecentEndpoints(TEST_FILENAME);
 	BroadcastReceiver reread;
 	reread.ReadRecentEndpoints(TEST_FILENAME);
 	
-	CHECK(1 == reread.NumRemotes());
+	CHECK(2 == reread.NumRemotes());
+	CHECK(0x7F000001 == reread.GetEndpoint(0).GetIp());
+	CHECK(2000 == reread.GetEndpoint(0).GetPort());
+	CHECK(0x7F000003 == reread.GetEndpoint(1).GetIp());
+	CHECK(2000 == reread.GetEndpoint(1).GetPort());
 	TestCaseEnd();
 }
 
@@ -258,9 +267,6 @@ int32_t ut_BroadcastReceiver_TestRecentEndpoints(void)
 int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
-	
-	initEndpoints();
-	
 	RunTest(true, ut_BroadcastReceiver_TestEmpty);
 	RunTest(true, ut_BroadcastReceiver_TestSimple);
 	RunTest(true, ut_BroadcastReceiver_TestTwoSame);

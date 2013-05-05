@@ -20,6 +20,7 @@
 #include "BroadcastMessage.h"
 #include "timeval.h"
 #include "trace.h"
+#include "WiflyColor.h"
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
@@ -99,12 +100,18 @@ Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout) throw (FatalError)
 	{
 		Trace(ZONE_INFO, "Broadcast detected\n");
 		Endpoint newRemote(remoteAddr, remoteAddrLength, msg.port, std::string((char*)&msg.deviceId[0]));
-		mMutex.lock();
-		bool added = mIpTable.insert(std::pair<size_t, Endpoint>(mIpTable.size(), newRemote)).second;
-		mMutex.unlock();
-		return added ? newRemote : Endpoint();
+		return LockedInsert(newRemote) ? newRemote : Endpoint();
 	}
 	return Endpoint();
+}
+
+bool BroadcastReceiver::LockedInsert(Endpoint& newEndpoint)
+{
+	mMutex.lock();
+	const bool added = mIpTableShadow.insert(newEndpoint).second;
+	if(added) mIpTable.insert(std::pair<size_t, Endpoint>(mIpTable.size(), newEndpoint)).second;
+	mMutex.unlock();
+	return added;
 }
 
 size_t BroadcastReceiver::NumRemotes(void) const
@@ -114,14 +121,17 @@ size_t BroadcastReceiver::NumRemotes(void) const
 
 void BroadcastReceiver::ReadRecentEndpoints(const std::string& filename)
 {
-	std::ifstream inFile;
-	inFile.open(filename, std::ios::in | std::ios::binary);
-	
-	uint64_t data;
-	uint32_t i = 0;
-	while(inFile >> data) {
-		Endpoint recentEndpoint(data);
-		mIpTable.insert(std::pair<size_t, Endpoint>(i, recentEndpoint));
+	std::ifstream inFile(filename);
+	if(!inFile.is_open()) {
+		Trace(ZONE_ERROR, "Open file to read recent endpoints failed\n");
+		return;
+	}
+
+	int score, port;
+	std::string ip, deviceId;
+	while(inFile >> score >> ip >> port >> deviceId) {
+		Endpoint next(WiflyColor::ToARGB(ip), port, score, deviceId);
+		LockedInsert(next);
 	}
 	inFile.close();
 }
@@ -136,14 +146,15 @@ void BroadcastReceiver::Stop(void)
 
 void BroadcastReceiver::WriteRecentEndpoints(const std::string& filename, uint8_t threshold) const
 {
-	std::ofstream outFile;
-	outFile.open(filename, std::ios::out | std::ios::trunc | std::ios::binary);
+	std::ofstream outFile(filename, std::ios::trunc);
 
 	// write to file
 	for(auto it = mIpTable.begin(); it != mIpTable.end(); it++)
 	{
-		if((*it).second.GetScore() >= threshold) {
-			outFile << (*it).second.AsUint64();
+		if((*it).second.GetScore() >= threshold)
+		{
+			//TODO refactor this but then we have to change the CLI implementation
+			outFile << (int)((*it).second.GetScore()) << ' ' << std::hex << (*it).second.GetIp() << ' ' << std::dec << (*it).second.GetPort() << ' ' << (*it).second.GetDeviceId() << '\n';
 		}
 	}
 	outFile.close();

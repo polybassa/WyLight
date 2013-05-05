@@ -28,6 +28,7 @@
 #include <map>
 #include <mutex>
 #include <ostream>
+#include <set>
 #include <string>
 
 class BroadcastReceiver
@@ -101,11 +102,14 @@ class BroadcastReceiver
 
 	private:
 		const uint16_t mPort;
+		std::set<Endpoint> mIpTableShadow;
 		std::map<size_t, Endpoint> mIpTable;
 		volatile bool mIsRunning;
 		std::atomic<int32_t> mNumInstances;
 		std::mutex mMutex;
 		std::string mFavourites;
+
+		bool LockedInsert(Endpoint& e);
 };
 #endif /* #ifndef _BROADCAST_RECEIVER_H_ */
 
