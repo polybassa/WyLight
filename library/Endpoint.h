@@ -25,6 +25,8 @@
 #include <sys/socket.h>
 #include <sys/time.h>
 
+namespace WyLight {
+
 class Endpoint
 {
 	public:
@@ -88,6 +90,7 @@ class Endpoint
 		uint32_t mAddr;
 		uint16_t mPort;
 		std::string mDeviceId;
-};
+};			
+}
 #endif /* #ifndef _ENDPOINT_H_ */
 

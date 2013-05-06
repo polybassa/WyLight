@@ -25,6 +25,8 @@
 #include "FwRequest.h"
 #include "wifly_cmd.h"
 
+namespace WyLight{
+
 class ComProxy
 {
 	public:
@@ -96,5 +98,6 @@ class ComProxy
 		 */
 		void SyncWithBootloader(void) const throw (FatalError);
 };
+}
 #endif /* #ifndef _COM_PROXY_H_ */
 

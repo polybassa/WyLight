@@ -24,6 +24,8 @@
 #include <sstream>
 #include <stdint.h>
 
+namespace WyLight {
+
 class WiflyColor
 {	
 	private:
@@ -66,5 +68,5 @@ class WiflyColor
 		uint32_t argb() const { return ntohl(asBigEndianLong); };
 		void argb(uint32_t argbValue) { asBigEndianLong = htonl(argbValue); };
 };
-
+}
 #endif /* _WIFLYCOLOR_H_ */

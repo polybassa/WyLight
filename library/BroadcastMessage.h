@@ -20,7 +20,8 @@
 #define _BROADCAST_MESSAGE_H_
 
 #include "BroadcastReceiver.h"
-
+namespace WyLight {
+	
 #pragma pack(push)
 #pragma pack(1)
 struct BroadcastMessage
@@ -55,4 +56,6 @@ private:
 	};
 };
 #pragma pack(pop)
+	
+}
 #endif /* #ifndef _BROADCAST_MESSAGE_H_ */

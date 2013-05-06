@@ -22,6 +22,8 @@
 #include "unittest.h"
 #include "WiflyControlNoThrow.h"
 
+using namespace WyLight;
+
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 /***** Wrappers ****/
@@ -33,7 +35,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const {return 0; }
 ComProxy::ComProxy(const TcpSocket& sock) : mSock (sock) {}
 TelnetProxy::TelnetProxy(const TcpSocket& sock) : mSock (sock) {}
 
-WiflyControl::WiflyControl(uint32_t addr, uint16_t port)
+Control::Control(uint32_t addr, uint16_t port)
 : mSock(addr, port), mProxy(mSock), mTelnet(mSock)
 {
 }
@@ -58,15 +60,15 @@ static void throwExceptions()
 	}
 }
 
-void WiflyControl::BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError){ throwExceptions(); }
+void Control::BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError){ throwExceptions(); }
 
-void WiflyControl::BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError){throwExceptions(); }
+void Control::BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError){throwExceptions(); }
 
-void WiflyControl::BlEraseFlash(void) const throw(ConnectionTimeout, FatalError){throwExceptions(); }
+void Control::BlEraseFlash(void) const throw(ConnectionTimeout, FatalError){throwExceptions(); }
 
-void WiflyControl::BlProgramFlash(const std::string& filename) const throw (ConnectionTimeout, FatalError) {throwExceptions(); }
+void Control::BlProgramFlash(const std::string& filename) const throw (ConnectionTimeout, FatalError) {throwExceptions(); }
 
-void WiflyControl::BlReadCrcFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+void Control::BlReadCrcFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	throwExceptions();
 	while(numBytes)
@@ -77,7 +79,7 @@ void WiflyControl::BlReadCrcFlash(std::ostream& out, uint32_t address, size_t nu
 }
 
 
-void WiflyControl::BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+void Control::BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	throwExceptions();
 	while(numBytes)
@@ -87,7 +89,7 @@ void WiflyControl::BlReadEeprom(std::ostream& out, uint32_t address, size_t numB
 	}
 }
 
-void WiflyControl::BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+void Control::BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	throwExceptions();
 	while(numBytes)
@@ -97,53 +99,53 @@ void WiflyControl::BlReadFlash(std::ostream& out, uint32_t address, size_t numBy
 	}
 }
 
-std::string WiflyControl::BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError) {throwExceptions(); return ""; }
+std::string Control::BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError) {throwExceptions(); return ""; }
 
-void WiflyControl::BlReadInfo(BlInfo& info) const throw (ConnectionTimeout, FatalError){throwExceptions(); }
+void Control::BlReadInfo(BlInfo& info) const throw (ConnectionTimeout, FatalError){throwExceptions(); }
 
-void WiflyControl::BlRunApp(void) const throw (ConnectionTimeout, FatalError){throwExceptions(); }
+void Control::BlRunApp(void) const throw (ConnectionTimeout, FatalError){throwExceptions(); }
 
-std::string WiflyControl::ConfGetSsid(void) const {return ""; }
+std::string Control::ConfGetSsid(void) const {return ""; }
 
-bool WiflyControl::ConfSetDefaults(void) const {return true; }
+bool Control::ConfSetDefaults(void) const {return true; }
 
-bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssid) const {return true; }
+bool Control::ConfSetWlan(const std::string& phrase, const std::string& ssid) const {return true; }
 
-bool WiflyControl::ConfSetDeviceId(const std::string& name) const {return true; }
+bool Control::ConfSetDeviceId(const std::string& name) const {return true; }
 
-bool WiflyControl::ConfRebootWlanModule() const {return true; }
+bool Control::ConfRebootWlanModule() const {return true; }
 
-bool WiflyControl::ConfModuleAsSoftAP(const std::string& accesspointName) const {return true; }
+bool Control::ConfModuleAsSoftAP(const std::string& accesspointName) const {return true; }
 
-bool WiflyControl::ConfModuleForWlan(const std::string &phrase, const std::string &ssid, const std::string& name) const {return true; }
+bool Control::ConfModuleForWlan(const std::string &phrase, const std::string &ssid, const std::string& name) const {return true; }
 
-void WiflyControl::FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
+void Control::FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-std::string WiflyControl::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
+std::string Control::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
 
-void WiflyControl::FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull){throwExceptions(); }
+void Control::FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull){throwExceptions(); }
 
-std::string WiflyControl::FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
+std::string Control::FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
 
-std::string WiflyControl::FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
+std::string Control::FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
 
-void WiflyControl::FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
+void Control::FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-void WiflyControl::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
+void Control::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-void WiflyControl::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
+void Control::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-void WiflyControl::FwSetFade(const std::string& rgb, uint16_t fadeTime, const std::string& addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
+void Control::FwSetFade(const std::string& rgb, uint16_t fadeTime, const std::string& addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-void WiflyControl::FwSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
+void Control::FwSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-void WiflyControl::FwSetRtc(const tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
+void Control::FwSetRtc(const tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-void WiflyControl::FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
+void Control::FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-void WiflyControl::FwStartBl(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
+void Control::FwStartBl(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-void WiflyControl::FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset) { throwExceptions(); }
+void Control::FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset) { throwExceptions(); }
 
 size_t ut_WiflyControlNoThrow_FwFunctions(void)
 {
@@ -151,7 +153,7 @@ size_t ut_WiflyControlNoThrow_FwFunctions(void)
 	
 	WiflyError mError[] = {CONNECTION_TIMEOUT, FATAL_ERROR, SCRIPT_FULL, NO_ERROR};
 	
-	WiflyControlNoThrow testee(0, 0);
+	ControlNoThrow testee(0, 0);
 	
 	std::string tempStr = "";
 	tm tempTime;
@@ -183,7 +185,7 @@ size_t ut_WiflyControlNoThrow_ConfFunctions(void)
 {
 	TestCaseBegin();
 	
-	WiflyControlNoThrow testee(0, 0);
+	ControlNoThrow testee(0, 0);
 	
 	std::string tempStr = "";
 		
@@ -199,7 +201,7 @@ size_t ut_WiflyControlNoThrow_BlFunctions(void)
 	
 	WiflyError mError[] = {CONNECTION_TIMEOUT, FATAL_ERROR, NO_ERROR};
 	
-	WiflyControlNoThrow testee(0, 0);
+	ControlNoThrow testee(0, 0);
 	
 	std::string tempStr = "";
 	BlInfo info;
@@ -234,7 +236,7 @@ size_t ut_WiflyControlNoThrow_BlReadFlash(void)
 {
 	TestCaseBegin();
 	
-	WiflyControlNoThrow testee(0, 0);
+	ControlNoThrow testee(0, 0);
 	
 	g_ErrorCode = NO_ERROR;
 	
@@ -263,7 +265,7 @@ size_t ut_WiflyControlNoThrow_BlReadCrcFlash(void)
 {
 	TestCaseBegin();
 	
-	WiflyControlNoThrow testee(0, 0);
+	ControlNoThrow testee(0, 0);
 	
 	g_ErrorCode = NO_ERROR;
 	
@@ -292,7 +294,7 @@ size_t ut_WiflyControlNoThrow_BlReadEeprom(void)
 {
 	TestCaseBegin();
 	
-	WiflyControlNoThrow testee(0, 0);
+	ControlNoThrow testee(0, 0);
 	
 	g_ErrorCode = NO_ERROR;
 	

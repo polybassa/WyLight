@@ -57,7 +57,7 @@ class WiflyControlCmd
 		};
 
 		const string& GetName(void) const { return m_Name; };
-		virtual void Run(WiflyControl& control) const = 0;
+		virtual void Run(WyLight::Control& control) const = 0;
 	protected:
 		const string m_Name;
 		const string m_Description;
@@ -97,7 +97,7 @@ class ControlCmdBlEnableAutostart : public WiflyControlCmd
 		ControlCmdBlEnableAutostart(void) : WiflyControlCmd(
 				string("bl_enable_autostart")) {};
 
-		virtual void Run(WiflyControl& control) const
+		virtual void Run(WyLight::Control& control) const
 		{
 			cout << "\nBL: Enabling autostart... ";
 			TRY_CATCH_COUT(control.BlEnableAutostart());
@@ -111,14 +111,14 @@ class ControlCmdBlInfo : public WiflyControlCmd
 				string("bl_info"), 
 				string("' - read bootloader information")) {};
 
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			BlInfo info;
 			try
 			{
 				control.BlReadInfo(info);
 				info.Print();
 			}
-			catch(FatalError& e)
+			catch(WyLight::FatalError& e)
 			{
 				std::cout << "Read bootloader info failed" << endl;
 			}
@@ -129,7 +129,7 @@ class ControlCmdBlCrcFlash : public WiflyControlCmd
 {
 	public:
 		ControlCmdBlCrcFlash(void) : WiflyControlCmd("crc_flash") {};
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			uint32_t address;
 			size_t numBlocks;
 			cin >> address;
@@ -147,7 +147,7 @@ class ControlCmdBlCrcFlash : public WiflyControlCmd
 				}
 				PrintCrc(mStream, bytesRead, address);
 			}
-			catch(FatalError& e)
+			catch(WyLight::FatalError& e)
 			{
 				cout << "Read CRC failed because of " << e << endl;
 			}
@@ -161,7 +161,7 @@ class ControlCmdBlEraseFlash : public WiflyControlCmd
 		ControlCmdBlEraseFlash(void) : WiflyControlCmd(
 				string("erase_flash")) {};
 
-		virtual void Run(WiflyControl& control) const
+		virtual void Run(WyLight::Control& control) const
 		{
 			cout << "\nErasing flash... ";
 			TRY_CATCH_COUT(control.BlEraseFlash());
@@ -174,7 +174,7 @@ class ControlCmdBlEraseEeprom : public WiflyControlCmd
 		ControlCmdBlEraseEeprom(void) : WiflyControlCmd(
 				string("erase_eeprom")) {};
 
-		virtual void Run(WiflyControl& control) const
+		virtual void Run(WyLight::Control& control) const
 		{
 			cout << "\nErasing eeprom... ";
 			TRY_CATCH_COUT(control.BlEraseEeprom());
@@ -188,7 +188,7 @@ class ControlCmdBlProgramFlash : public WiflyControlCmd
 				string("program_flash"),
 				string(" <hexFile>' \n ") + string("    <hexFile> path of hexfile to write")) {};
 
-		virtual void Run(WiflyControl& control) const
+		virtual void Run(WyLight::Control& control) const
 		{
 			string path;
 			cin >> path;
@@ -207,9 +207,9 @@ class ControlCmdBlRead : public WiflyControlCmd
 
 		const string m_Name;
 		
-		virtual void Read(WiflyControl& control, std::ostream& out, uint32_t address, const size_t numBytes) const = 0;
+		virtual void Read(WyLight::Control& control, std::ostream& out, uint32_t address, const size_t numBytes) const = 0;
 
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			uint32_t address;
 			size_t numBytes;
 			cin >> address;
@@ -231,7 +231,7 @@ class ControlCmdBlRead : public WiflyControlCmd
 				}
 
 			}
-			catch(FatalError& e)
+			catch(WyLight::FatalError& e)
 			{
 				cout << "Read " << m_Name << " failed, because of " << e << endl;
 			}
@@ -242,7 +242,7 @@ class ControlCmdBlReadEeprom : public ControlCmdBlRead
 {
 	public:
 		ControlCmdBlReadEeprom(void) : ControlCmdBlRead("eeprom") {};
-		void Read(WiflyControl& control, std::ostream& out, uint32_t address, const size_t numBytes) const {
+		void Read(WyLight::Control& control, std::ostream& out, uint32_t address, const size_t numBytes) const {
 			control.BlReadEeprom(out, address, numBytes);
 		};
 };
@@ -251,7 +251,7 @@ class ControlCmdBlReadFlash : public ControlCmdBlRead
 {
 	public:
 		ControlCmdBlReadFlash(void) : ControlCmdBlRead("flash") {};
-		void Read(WiflyControl& control, std::ostream& out, uint32_t address, const size_t numBytes) const {
+		void Read(WyLight::Control& control, std::ostream& out, uint32_t address, const size_t numBytes) const {
 			control.BlReadFlash(out, address, numBytes);
 		};
 };
@@ -264,7 +264,7 @@ class ControlCmdBlRunApp : public WiflyControlCmd
 				string("' - start application and terminate bootloader"))
 		{};
 
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			cout << "Starting application... ";
 			TRY_CATCH_COUT(control.BlRunApp());
 		};
@@ -278,13 +278,13 @@ class ControlCmdBlReadFwVersion : public WiflyControlCmd
 					string("' - prints the version of firmware in program memory"))
 				{};
 				
-				virtual void Run(WiflyControl& control) const {
+				virtual void Run(WyLight::Control& control) const {
 					cout << "Reading firmware version... ";
 					try
 					{
 						cout << endl << "Version: " << control.BlReadFwVersion() << endl << endl << "done." << endl;
 					}
-					catch(FatalError& e)
+					catch(WyLight::FatalError& e)
 					{
 						cout << "failed, because of " << e << endl;
 					}
@@ -300,7 +300,7 @@ class ControlCmdConfGetSsid : public WiflyControlCmd
 					string("' - get configured ssid from wlan module"))
 		{};
 
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			cout << "Reading wifly configuration ssid: ";
 			cout << control.ConfGetSsid() << "\n";
 		};
@@ -314,12 +314,12 @@ class ControlCmdConfRebootWlanModule : public WiflyControlCmd
 					string("' - reboots the wlan modul. Cli terminates after this command!"))
 		{};
 				
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			cout << "Rebooting wlan module... ";
 			if(control.ConfRebootWlanModule())
 			{
 				cout << "done.\n";
-				cout << "Terminating WiflyControl commandline interface now!!!! Please restart." << endl;
+				cout << "Terminating WyLight::Control commandline interface now!!!! Please restart." << endl;
 				std::exit(EXIT_SUCCESS);
 			}
 			else
@@ -339,7 +339,7 @@ class ControlCmdConfWlanAsClient : public WiflyControlCmd
 			+ string("    <ssid> wlan ssid 1-32 characters\n")
 			+ string("    <name> device name for broadcasts 1-32 characters")) {};
 
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			string phrase, ssid, name;
 			cin >> phrase;
 			cin >> ssid;
@@ -349,7 +349,7 @@ class ControlCmdConfWlanAsClient : public WiflyControlCmd
 			if(control.ConfModuleForWlan(phrase, ssid, name))
 			{
 				cout << "done.\n";
-				cout << "Terminating WiflyControl commandline interface now!!!! Please restart." << endl;
+				cout << "Terminating WyLight::Control commandline interface now!!!! Please restart." << endl;
 				std::exit(EXIT_SUCCESS);
 			}
 			else
@@ -367,14 +367,14 @@ class ControlCmdConfWlanAsSoftAP : public WiflyControlCmd
 			   string(" <ssid>'\n")
 		     + string("    <ssid> wlan ssid 1-32 characters")) {};
 				
-				virtual void Run(WiflyControl& control) const {
+				virtual void Run(WyLight::Control& control) const {
 					string ssid;
 					cin >> ssid;
 					cout << "Setting as soft-AP with ssid '" << ssid << "'... ";
 					if(control.ConfModuleAsSoftAP(ssid))
 					{
 						cout << "done.\n";
-						cout << "Terminating WiflyControl commandline interface now!!!! Please restart." << endl;
+						cout << "Terminating WyLight::Control commandline interface now!!!! Please restart." << endl;
 						std::exit(EXIT_SUCCESS);
 					}
 					else
@@ -393,7 +393,7 @@ public:
 		string(" <name>'\n")
 		+ string("    <name> device name 1-32 characters")) {};
 				
-	virtual void Run(WiflyControl& control) const {
+	virtual void Run(WyLight::Control& control) const {
 		string name;
 		cin >> name;
 		cout << "Setting device name '" << name << "'... ";
@@ -409,7 +409,7 @@ class ControlCmdStartBl : public WiflyControlCmd
 				 string("start_bl"),
 					string("' - start bootloader and terminate application")) {};
 				  
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			cout << "Starting bootloader... ";
 			TRY_CATCH_COUT(control.FwStartBl());
 		};
@@ -423,13 +423,13 @@ class ControlCmdPrintCycletime : public WiflyControlCmd
 				string("print_cycletime"),
 				string("' - prints all timevalues of internal methode execution times")) {};
 
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			cout << "Transmitting command print cycletime... ";
 			try
 			{
 				cout << "done.\n" << control.FwGetCycletime() << '\n';
 			}
-			catch(FatalError& e)
+			catch(WyLight::FatalError& e)
 			{
 				cout << "failed, because of " << e << '\n';
 			}
@@ -443,13 +443,13 @@ class ControlCmdPrintFwVersion : public WiflyControlCmd
 			string("print_fwversion"),
 			string("' - displays current firmware version of pic")) {};
 				
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			cout << "Reading firmware version... ";
 			try
 			{
 				cout << "done.\n\n" << control.FwGetVersion() << '\n';
 			}
-			catch(FatalError& e)
+			catch(WyLight::FatalError& e)
 			{
 				cout << "failed! because of: " << e << '\n';
 			}
@@ -463,13 +463,13 @@ class ControlCmdPrintTracebuffer : public WiflyControlCmd
 				  string("print_tracebuffer"),
 					string("' - displays content in tracebuffer of pic")) {};
 				  
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			cout << "Reading tracebuffer... ";
 			try
 			{
 				cout << "done.\n\n" << control.FwGetTracebuffer() << '\n';
 			}
-			catch(FatalError& e)
+			catch(WyLight::FatalError& e)
 			{
 				cout << "failed! because of: " << e << '\n';
 			}
@@ -484,7 +484,7 @@ class ControlCmdClearScript : public WiflyControlCmd
 				string("clear"),
 				string("' - clear script buffer")) {};
 
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			cout << "Clearing script buffer... ";
 			TRY_CATCH_COUT(control.FwClearScript());
 		};
@@ -497,7 +497,7 @@ class ControlCmdLoopOn : public WiflyControlCmd
 				string("loopon"),
 				string("' - indicates the start of a loop")) {};
 
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			cout << "Transmitting command loop on... ";
 			TRY_CATCH_COUT(control.FwLoopOn());
 		};
@@ -512,7 +512,7 @@ class ControlCmdLoopOff : public WiflyControlCmd
 			+ string("    <numLoops> [0..255] number of executions for the loop. Enter 0 for infinity loop."))
 		{};
 
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			int numLoops;
 			do {
 				cin >> numLoops;
@@ -530,7 +530,7 @@ class ControlCmdWait : public WiflyControlCmd
 				string(" <time>'\n")
 			+ string("    <time> the number of milliseconds the wait should take")) {};
 
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			uint16_t waitTmms;
 			cin >> waitTmms;
 			cout << "Transmitting command wait... ";
@@ -548,7 +548,7 @@ class ControlCmdSetFade : public WiflyControlCmd
 			+ string("    <rgb> hex rgb value of the new color f.e. red: ff0000\n")
 			+ string("    <time> the number of ten milliseconds the fade should take")) {};
 
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			string addr, color;
 			uint16_t timevalue;
 			cin >> addr;
@@ -569,7 +569,7 @@ public:
 		  + string("    <rgb_2> hex rgb value of the end color f.e. red: ff0000\n")
 		  + string("    <time> the number of ten milliseconds the fade should take")) {};
 				
-				virtual void Run(WiflyControl& control) const {
+				virtual void Run(WyLight::Control& control) const {
 					string color_1, color_2;
 					uint16_t timevalue;
 					cin >> color_1;
@@ -587,7 +587,7 @@ class ControlCmdSetRtc : public WiflyControlCmd
 				string("setrtc"),
 				string("' - set time of rtc in target to current systemtime")){};
 
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			cout << "Transmitting current time... ";
 			try
 			{
@@ -598,7 +598,7 @@ class ControlCmdSetRtc : public WiflyControlCmd
 				control.FwSetRtc(timeinfo);
 				cout << "done.\n";
 			}
-			catch(FatalError& e)
+			catch(WyLight::FatalError& e)
 			{
 				cout << "failed! because of: " << e << '\n';
 			}
@@ -612,7 +612,7 @@ class ControlCmdGetRtc : public WiflyControlCmd
 				string("getrtc"),
 				string("' - get time of rtc in target")){};
 
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			cout << "Getting target time... ";
 			try
 			{
@@ -620,7 +620,7 @@ class ControlCmdGetRtc : public WiflyControlCmd
 				control.FwGetRtc(timeinfo);
 				cout << "done.\n\n" << asctime(&timeinfo) << '\n';
 			}
-			catch(FatalError& e)
+			catch(WyLight::FatalError& e)
 			{
 				cout << "failed! because of: " << e << '\n';
 			}
@@ -635,7 +635,7 @@ class ControlCmdTest : public WiflyControlCmd
 				string("test"),
 				string("' - run test loop")) {};
 
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			cout << "Running fw test loop... ";
 			TRY_CATCH_COUT(control.FwTest());
 		};
@@ -648,7 +648,7 @@ class ControlCmdStressTest : public WiflyControlCmd
 			   string("stresstest"),
 			   string("' - run test loop! Caution: Test run in endless loop")) {};
 				
-		virtual void Run(WiflyControl& control) const {
+		virtual void Run(WyLight::Control& control) const {
 			cout << "Running stresstest... ";
 			TRY_CATCH_COUT(control.FwStressTest());
 		};

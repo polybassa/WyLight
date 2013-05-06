@@ -30,6 +30,8 @@
 #include <set>
 #include <string>
 
+namespace WyLight{
+
 class BroadcastReceiver
 {
 	public:
@@ -92,5 +94,6 @@ class BroadcastReceiver
 		std::atomic<int32_t> mNumInstances;
 		std::mutex mMutex;
 };
+}
 #endif /* #ifndef _BROADCAST_RECEIVER_H_ */
 

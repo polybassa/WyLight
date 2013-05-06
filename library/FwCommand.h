@@ -23,6 +23,8 @@
 #include "FwRequest.h"
 #include "FwResponse.h"
 
+namespace WyLight {
+
 class FwCommand {
 	FwCommand( const FwCommand& other ) = delete;
 	FwCommand& operator=( const FwCommand& ) = delete;
@@ -142,6 +144,6 @@ public:
 	FwCmdStartBl(void) : FwCommand(new FwReqStartBl(), new SimpleResponse(START_BL)) {};
 };
 
-
+}
 
 #endif /* defined(__WiflyControlCli__FwCommand__) */

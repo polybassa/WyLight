@@ -28,6 +28,8 @@
 #include "ClientSocket.h"
 #include "string.h"
 
+using namespace WyLight;
+
 #define CRC_SIZE 2
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 

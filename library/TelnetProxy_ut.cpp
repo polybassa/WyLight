@@ -26,6 +26,8 @@
 /**************** includes, classes and functions for wrapping ****************/
 #include <string.h>
 
+using namespace WyLight;
+
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 static const std::string AOK_STRING(AOK);
 
@@ -153,6 +155,7 @@ size_t ut_TelnetProxy_Open(void)
 	TestCaseEnd();
 }
 
+namespace WyLight {
 size_t ut_TelnetProxy_Recv(void)
 {
 	TestCaseBegin();
@@ -168,7 +171,9 @@ size_t ut_TelnetProxy_Recv(void)
 	CHECK(testee.Recv("Test"));
 	TestCaseEnd();
 }
+}
 
+namespace WyLight {
 size_t ut_TelnetProxy_RecvString(void)
 {
 	static const std::string fullResponse("ssid not this ssid: this is my ssid!\r\nssid: XX" PROMPT);
@@ -194,6 +199,7 @@ size_t ut_TelnetProxy_RecvString(void)
 	CHECK(testee.RecvString("ssid: ", response));
 	CHECK(0 == response.compare("this is my ssid!"));
 	TestCaseEnd();
+}
 }
 
 size_t ut_TelnetProxy_Send(void)

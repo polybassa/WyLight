@@ -52,7 +52,9 @@
 #include "FwRequest.h"
 #include "FwResponse.h"
 
-class WiflyControl
+namespace WyLight {
+
+class Control
 {	
 	public:
 		/**
@@ -65,7 +67,7 @@ class WiflyControl
 		 * @param addr ipv4 address as 32 bit value in host byte order
 		 * @param port number of the wifly device server in host byte order
 		 */
-		WiflyControl(uint32_t addr, uint16_t port);
+		Control(uint32_t addr, uint16_t port);
 		
 /* ------------------------- BOOTLOADER METHODES ------------------------- */
 		/**
@@ -169,20 +171,20 @@ class WiflyControl
 
 /* --------------------- WLAN CONFIGURATION METHODES --------------------- */
 		/**
-		 * Read the currently configured ssid from Wifly module
+		 * Read the currently configured ssid from WyLight module
 		 * @return an empty string or the ssid
 		 */
 		std::string ConfGetSsid(void) const;
 	
 		/**
-		 * Configurates the Wifly module as stand alone accesspoint. With accesspoint name you can change the ssid for this accesspoint.
+		 * Configurates the WyLight module as stand alone accesspoint. With accesspoint name you can change the ssid for this accesspoint.
 		 * @param accesspointName 1 - 32 characters
 		 * @return false, in case of an error
 		 */
 		bool ConfModuleAsSoftAP(const std::string& accesspointName = "Wifly_Light") const;
 	
 		/**
-		 * Configurates the Wifly module as client for an existing wlan network with WPA2 protection
+		 * Configurates the WyLight module as client for an existing wlan network with WPA2 protection
 		 * @param phrase WPA2 passphrase 1 - 63 characters
 		 * @param ssid 1 - 32 characters
 		 * @param name 1 - 32 characters, unique name which apperas in the broadcast message
@@ -205,7 +207,7 @@ class WiflyControl
 		
 /* -------------------------- FIRMWARE METHODES -------------------------- */
 		/**
-		 * Wipe all commands from the Wifly script controller
+		 * Wipe all commands from the WyLight script controller
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
@@ -266,7 +268,7 @@ class WiflyControl
 		void FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 		/**
-		 * Sets all leds with different colors directly. This doesn't affect the Wifly script controller
+		 * Sets all leds with different colors directly. This doesn't affect the WyLight script controller
 		 * Example: to set the first led to yellow and the second to blue and all others to off use a \<pBuffer\> like this:
 		 * pBuffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6;
 		 * @param pBuffer containing continouse rgb values r1g1b1r2g2b2...r32g32b32
@@ -371,7 +373,7 @@ class WiflyControl
 		void FwTest(void);
 		void FwStressTest(void);
 	
-		WiflyControl& operator<<(const FwCommand& cmd);
+		Control& operator<<(const FwCommand& cmd);
 
 /* ------------------------- VERSION EXTRACT METHODE ------------------------- */
 		/**
@@ -495,13 +497,13 @@ class WiflyControl
 		size_t BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
 	
 		/**
-		 * Set the Wifly module communication parameters to defaults
+		 * Set the WyLight module communication parameters to defaults
 		 * @return false, in case of an error
 		 */
 		bool ConfSetDefaults(void) const;
 	
 		/**
-		 * Set the Wifly module wlan connection parameters
+		 * Set the WyLight module wlan connection parameters
 		 * @param phrase WPA2 passphrase 1 - 63 characters
 		 * @param ssid 1 - 32 characters
 		 * @return false, in case of an error
@@ -513,12 +515,12 @@ class WiflyControl
 	   /**
 		* friendships for unittesting only
 		*/
-		friend bool ut_WiflyControl_ConfSetDefaults(WiflyControl& ref);
+		friend bool ut_WiflyControl_ConfSetDefaults(Control& ref);
 	
 		/**
 		 * friendships for unittesting only
 		 */
-		friend bool ut_WiflyControl_ConfSetWlan(WiflyControl& ref, const std::string& phrase, const std::string& ssid);
+		friend bool ut_WiflyControl_ConfSetWlan(Control& ref, const std::string& phrase, const std::string& ssid);
 	
 		/**
 		 * friendships for unittesting only
@@ -530,4 +532,5 @@ class WiflyControl
 		*/
 		friend size_t ut_WiflyControl_BlFlashWrite(void);
 };
+}
 #endif /* #ifndef _WIFLYCONTROL_H_ */

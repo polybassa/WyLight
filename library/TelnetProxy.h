@@ -23,6 +23,7 @@
 #include "trace.h"
 #include <string>
 
+namespace WyLight{
 
 #define AOK "AOK\r\n<2.45> "
 #define PROMPT "\r\n<2.45> "
@@ -51,5 +52,5 @@ class TelnetProxy
 		friend size_t ut_TelnetProxy_Recv(void);
 		friend size_t ut_TelnetProxy_RecvString(void);
 };
-
+}
 #endif /* #ifndef _TELNET_PROXY_H_ */

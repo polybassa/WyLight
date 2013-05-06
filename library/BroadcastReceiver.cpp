@@ -25,23 +25,23 @@
 
 static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-const std::string BroadcastReceiver::DEVICE_ID("Wifly_Light");
-const std::string BroadcastReceiver::DEVICE_ID_OLD("WiFly");
-const std::string BroadcastReceiver::DEVICE_VERSION("WiFly Ver 2.45, 10-09-2012");
-const std::string BroadcastReceiver::STOP_MSG{"StopThread"};
-const Endpoint BroadcastReceiver::EMPTY_ENDPOINT;
+const std::string WyLight::BroadcastReceiver::DEVICE_ID("Wifly_Light");
+const std::string WyLight::BroadcastReceiver::DEVICE_ID_OLD("WiFly");
+const std::string WyLight::BroadcastReceiver::DEVICE_VERSION("WiFly Ver 2.45, 10-09-2012");
+const std::string WyLight::BroadcastReceiver::STOP_MSG{"StopThread"};
+const WyLight::Endpoint WyLight::BroadcastReceiver::EMPTY_ENDPOINT;
 
-BroadcastReceiver::BroadcastReceiver(uint16_t port)
+WyLight::BroadcastReceiver::BroadcastReceiver(uint16_t port)
 	: mPort(port), mIsRunning(true), mNumInstances(0)
 {
 }
 
-BroadcastReceiver::~BroadcastReceiver(void)
+WyLight::BroadcastReceiver::~BroadcastReceiver(void)
 {
 	Stop();
 }
 
-void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
+void WyLight::BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 {
 	// only one thread allowed per instance
 	if(0 == std::atomic_fetch_add(&mNumInstances, 1))
@@ -68,7 +68,7 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 	std::atomic_fetch_sub(&mNumInstances, 1);
 }
 
-void BroadcastReceiver::PrintAllEndpoints(std::ostream& out)
+void WyLight::BroadcastReceiver::PrintAllEndpoints(std::ostream& out)
 {
 	int index = 0;
 	//TODO wait for full c++11 features in android ndk. by the way we should move this printing functions out of BroadcastReceiver into cli or whoever wants to "print" something out
@@ -80,7 +80,7 @@ void BroadcastReceiver::PrintAllEndpoints(std::ostream& out)
 	}	
 }
 
-const Endpoint& BroadcastReceiver::GetEndpoint(size_t index) const
+const WyLight::Endpoint& WyLight::BroadcastReceiver::GetEndpoint(size_t index) const
 {
 	if(index >= mIpTable.size())
 		return EMPTY_ENDPOINT;
@@ -90,7 +90,7 @@ const Endpoint& BroadcastReceiver::GetEndpoint(size_t index) const
 	return *it;
 }
 
-Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout) throw (FatalError)
+WyLight::Endpoint WyLight::BroadcastReceiver::GetNextRemote(timeval* timeout) throw (FatalError)
 {
 	UdpSocket udpSock(INADDR_ANY, mPort, true, 1);
 	sockaddr_storage remoteAddr;
@@ -111,12 +111,12 @@ Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout) throw (FatalError)
 	return Endpoint();
 }
 
-size_t BroadcastReceiver::NumRemotes(void) const
+size_t WyLight::BroadcastReceiver::NumRemotes(void) const
 {
 	return mIpTable.size();
 }
 
-void BroadcastReceiver::Stop(void)
+void WyLight::BroadcastReceiver::Stop(void)
 {
 	mIsRunning = false;
 	UdpSocket sock(INADDR_LOOPBACK, mPort, false);

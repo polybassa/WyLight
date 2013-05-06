@@ -82,7 +82,7 @@ void WiflyControlCli::ShowHelp(void) const
 
 int main(int argc, const char* argv[])
 {
-	BroadcastReceiver receiver(55555);
+	WyLight::BroadcastReceiver receiver(55555);
 	std::stringstream logStream;
 	std::thread t(std::ref(receiver), std::ref(logStream));
 
@@ -110,7 +110,15 @@ int main(int argc, const char* argv[])
 	receiver.Stop();
 	t.join();
 	
-	const Endpoint& e = receiver.GetEndpoint(selection);
+	const WyLight::Endpoint& e = receiver.GetEndpoint(selection);
 	WiflyControlCli cli(e.GetIp(), e.GetPort());
 	cli.Run();
+	/*
+	WiflyControl cli(e.GetIp(), e.GetPort());*/
+	
+//	cli << FwCmdClearScript();
+/*	cli << FwCmdSetGradient(0xffff0000, 0xff00ff00, 1000, false, 5, 0);
+	cli << FwCmdSetGradient(0xffff00ff, 0xffff0000, 1000, true, 5, 5);
+	cli << FwCmdSetGradient(0xff00ff00, 0xff0000ff, 1000, false, 5, 10);*/
+	//cli << FwCmdSetGradient(0xffff0000, 0xff00ff00, 1000);
 }

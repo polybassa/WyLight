@@ -25,7 +25,7 @@
 class WiflyControlCli
 {
 	private:
-		WiflyControl mControl;
+		WyLight::Control mControl;
 		bool mRunning;
 		void ShowHelp(void) const;
 

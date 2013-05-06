@@ -22,14 +22,14 @@
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 
-void BaseBuffer::AddPure(uint8_t newByte)
+void WyLight::BaseBuffer::AddPure(uint8_t newByte)
 {
 	if(mLength >= mCapacity) throw FatalError("BaseBuffer overflow");
 		mData[mLength] = newByte;
 		mLength++;
 }
 
-void MaskBuffer::Mask(const uint8_t* pInput, const uint8_t* const pInputEnd, const bool crcInLittleEndian)
+void WyLight::MaskBuffer::Mask(const uint8_t* pInput, const uint8_t* const pInputEnd, const bool crcInLittleEndian)
 {
 	while(pInput < pInputEnd)
 	{
@@ -40,7 +40,7 @@ void MaskBuffer::Mask(const uint8_t* pInput, const uint8_t* const pInputEnd, con
 	AddPure(BL_ETX);
 }
 
-void MaskBuffer::Add(uint8_t newByte)
+void WyLight::MaskBuffer::Add(uint8_t newByte)
 {
 	if(IsCtrlChar(newByte))
 	{
@@ -49,13 +49,13 @@ void MaskBuffer::Add(uint8_t newByte)
 	AddPure(newByte);
 }
 
-void MaskBuffer::AddWithCrc(uint8_t newByte)
+void WyLight::MaskBuffer::AddWithCrc(uint8_t newByte)
 {
 	Add(newByte);
 	Crc_AddCrc16(newByte, &mCrc);
 }
 
-void MaskBuffer::AppendCrc(bool crcInLittleEndian)
+void WyLight::MaskBuffer::AppendCrc(bool crcInLittleEndian)
 {
 	if(crcInLittleEndian)
 	{
@@ -69,20 +69,20 @@ void MaskBuffer::AppendCrc(bool crcInLittleEndian)
 	}
 }
 
-void UnmaskBuffer::Add(uint8_t newByte)
+void WyLight::UnmaskBuffer::Add(uint8_t newByte)
 {
 	AddPure(newByte);
 	AddToCrc(newByte);
 }
 
-void UnmaskBuffer::Clear(void)
+void WyLight::UnmaskBuffer::Clear(void)
 {
 	BaseBuffer::Clear();
 	mPrePreCrc = mPreCrc = 0;
 	mLastWasDLE = false;
 }
 
-void UnmaskBuffer::CheckAndRemoveCrc(bool crcInLittleEndian) throw (FatalError)
+void WyLight::UnmaskBuffer::CheckAndRemoveCrc(bool crcInLittleEndian) throw (FatalError)
 {
 	if(0x0000 == GetCrc16(crcInLittleEndian))
 	{
@@ -95,7 +95,7 @@ void UnmaskBuffer::CheckAndRemoveCrc(bool crcInLittleEndian) throw (FatalError)
 	}
 }
 
-bool UnmaskBuffer::Unmask(const uint8_t* pInput, size_t bytesMasked, bool checkCrc, bool crcInLittleEndian)
+bool WyLight::UnmaskBuffer::Unmask(const uint8_t* pInput, size_t bytesMasked, bool checkCrc, bool crcInLittleEndian)
 {
 	while(bytesMasked-- > 0)
 	{
@@ -132,14 +132,14 @@ bool UnmaskBuffer::Unmask(const uint8_t* pInput, size_t bytesMasked, bool checkC
 	return false;
 }
 
-void UnmaskBuffer::AddToCrc(uint8_t newByte)
+void WyLight::UnmaskBuffer::AddToCrc(uint8_t newByte)
 {
 	mPrePreCrc = mPreCrc;
 	mPreCrc = mCrc;
 	Crc_AddCrc16(newByte, &mCrc);
 }
 
-uint16_t UnmaskBuffer::GetCrc16(bool crcInLittleEndian) const
+uint16_t WyLight::UnmaskBuffer::GetCrc16(bool crcInLittleEndian) const
 {
 	if(crcInLittleEndian)
 	{

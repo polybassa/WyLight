@@ -37,7 +37,7 @@
 		
 		// Now we have all informations to create a WiflyControl object. A connection to our selected target will be create automatically by initialisation of our object.
 		
-		self.control = [[WCWiflyControlWrapper alloc]initWithIP:ipOfFirstAvailableTarget withPort:portOfFirstAvailableTarget];
+		self.control = [[WCWiflyControlWrapper alloc]initWithIP:ipOfFirstAvailableTarget port:portOfFirstAvailableTarget];
 		NSLog(@"Connetion to %@ : %d %d created!\n", nameOfFirstAvailableTarget, ipOfFirstAvailableTarget, portOfFirstAvailableTarget);
 		
 		// Now we can play around with our control object
@@ -61,13 +61,13 @@
 		// tell our lamp that we want to program a script. With loopOn we mark the top of our script
 		[self.control loopOn];
 		
-		[self.control setGradientWithColor:0xffff0000 ColorTwo:0xff00ff00 time:5000];
+		[self.control setGradientWithColor:0xffff0000 colorTwo:0xff00ff00 time:5000];
 		[self.control setFade:0xffffff00 time:5000];
-		[self.control setGradientWithColor:0xff00ff00 ColorTwo:0xffff0000 time:5000];
+		[self.control setGradientWithColor:0xff00ff00 colorTwo:0xffff0000 time:5000];
 		[self.control setFade:0xffffff00 time:5000];
 
 		// enough now... Now we want to execute this loop 5 times. If you want to execute a loop as infinite loop, we have to choose 0 as numberOfRepeats f.e. [self.control loopOffWithNumberOfRepeats:0];
-		[self.control loopOffWithNumberOfRepeats:5];
+		[self.control loopOffAfterNumberOfRepeats:5];
 		
 		// every function of the WCWiflyControlWrapper has a returnvalue. See documentation for further informations. 0 means no error
 		// if we want to react to communication errors or other failures we can check the return value

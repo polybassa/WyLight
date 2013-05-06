@@ -24,6 +24,8 @@
 #include <stdint.h>
 #include "WiflyControlException.h"
 
+namespace WyLight {
+
 /**
  * Macro to reduce code redundancy, while converting two 32 bit values into
  * an address array and red, green, blue values.
@@ -214,8 +216,5 @@ class FwReqStartBl : public FwRequest
 public:
 	FwReqStartBl(void) : FwRequest() { mReqFrame.cmd = START_BL; };
 };
-
-
-
-
+}
 #endif

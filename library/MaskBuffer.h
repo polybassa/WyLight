@@ -23,6 +23,8 @@
 #include "crc.h"
 #include "WiflyControlException.h"
 
+namespace WyLight {
+
 class BaseBuffer
 {
 	public:
@@ -104,6 +106,7 @@ class UnmaskBuffer : public BaseBuffer
 		
 		uint16_t GetCrc16(bool crcInLittleEndian) const;
 		
-};
+};	
+}
 #endif /* #ifndef _MASK_BUFFER_H_ */
 

@@ -41,13 +41,15 @@
  *
  *******************************************************************************/
 
+namespace WyLight{
+
 enum WiflyError {
 	NO_ERROR = 0,			/**< is returned if no error occurred */ 
 	FATAL_ERROR,			/**< if command code of the response doesn't match the code of the request, or too many retries failed */ 
 	CONNECTION_LOST,
 	CONNECTION_TIMEOUT,		/**< if response timed out */
 	INVALID_PARAMETER,		/**< if a parameter is out of bound */
-	SCRIPT_FULL,
+	SCRIPT_FULL
 };
 
 class FatalError : public std::exception
@@ -61,7 +63,7 @@ public:
 	};
 
 	virtual const char* GetJavaClassType(void) const {
-		return "biz/bruenn/WiflyLight/exception/FatalError";
+		return "biz/bruenn/WyLight/exception/FatalError";
 	};
 
 	const char* what(void) const throw() {
@@ -130,4 +132,5 @@ public:
 		return "biz/bruenn/WiflyLight/exception/ScriptBufferFull";
 	};
 };
+}
 #endif /* defined(____WiflyControlException__) */

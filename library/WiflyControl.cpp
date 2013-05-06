@@ -38,13 +38,13 @@ using std::hex;
 
 static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-const std::string WiflyControl::LEDS_ALL{"ffffffff"};
+const std::string WyLight::Control
+::LEDS_ALL{"ffffffff"};
 
-WiflyControl::WiflyControl(uint32_t addr, uint16_t port)
-: mSock(addr, port), mProxy(mSock), mTelnet(mSock) {}
+WyLight::Control::Control(uint32_t addr, uint16_t port) : mSock(addr, port), mProxy(mSock), mTelnet(mSock) {}
 
 /** ------------------------- BOOTLOADER METHODES ------------------------- **/
-void WiflyControl::BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError)
+void WyLight::Control::BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError)
 {
 	static const uint8_t value = 0xff;
 	try {
@@ -56,7 +56,7 @@ void WiflyControl::BlEnableAutostart(void) const throw(ConnectionTimeout, FatalE
 	}
 }
 
-void WiflyControl::BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError)
+void WyLight::Control::BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError)
 {
 	//TODO use c++11 array initialization
 	uint8_t buffer[EEPROM_SIZE];
@@ -64,7 +64,7 @@ void WiflyControl::BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError
 	BlWriteEeprom((uint32_t)0, &buffer[0], sizeof(buffer));
 }
 
-void WiflyControl::BlEraseFlash(void) const throw(ConnectionTimeout, FatalError)
+void WyLight::Control::BlEraseFlash(void) const throw(ConnectionTimeout, FatalError)
 {
 	BlInfo info;
 	BlReadInfo(info);
@@ -82,7 +82,7 @@ void WiflyControl::BlEraseFlash(void) const throw(ConnectionTimeout, FatalError)
 	BlEraseFlashArea(FLASH_ERASE_BLOCKS * FLASH_ERASE_BLOCKSIZE -1, FLASH_ERASE_BLOCKS);
 }
 
-void WiflyControl::BlEraseFlashArea(const uint32_t endAddress, const uint8_t numPages) const throw(ConnectionTimeout, FatalError)
+void WyLight::Control::BlEraseFlashArea(const uint32_t endAddress, const uint8_t numPages) const throw(ConnectionTimeout, FatalError)
 {
 	unsigned char response;
 	BlFlashEraseRequest request(endAddress, numPages);
@@ -97,7 +97,7 @@ void WiflyControl::BlEraseFlashArea(const uint32_t endAddress, const uint8_t num
 	}
 }
 
-size_t WiflyControl::BlRead(const BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync) const throw(ConnectionTimeout, FatalError)
+size_t WyLight::Control::BlRead(const BlRequest& req, unsigned char* pResponse, const size_t responseSize, bool doSync) const throw(ConnectionTimeout, FatalError)
 {
 	unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
 	size_t bytesReceived = mProxy.Send(req, buffer, sizeof(buffer), doSync);
@@ -111,7 +111,7 @@ size_t WiflyControl::BlRead(const BlRequest& req, unsigned char* pResponse, cons
 	return responseSize;
 }
 
-void WiflyControl::BlReadCrcFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+void WyLight::Control::BlReadCrcFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	out.flags ( std::ios::right | std::ios::hex | std::ios::showbase );
 	uint8_t buffer[5096];
@@ -121,7 +121,7 @@ void WiflyControl::BlReadCrcFlash(std::ostream& out, uint32_t address, size_t nu
 	}
 }
 
-size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address, uint16_t numBlocks) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+size_t WyLight::Control::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address, uint16_t numBlocks) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	if(numBlocks * FLASH_ERASE_BLOCKSIZE + address > FLASH_SIZE)
 	{
@@ -146,7 +146,7 @@ size_t WiflyControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address
 	return sumBytesRead;
 }
 
-void WiflyControl::BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+void WyLight::Control::BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	uint8_t buffer[EEPROM_SIZE];
 	size_t bytesRead = BlReadEeprom(buffer, address, numBytes);
@@ -156,7 +156,7 @@ void WiflyControl::BlReadEeprom(std::ostream& out, uint32_t address, size_t numB
 	}
 }
 
-size_t WiflyControl::BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+size_t WyLight::Control::BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	if(numBytes + address > EEPROM_SIZE)
 	{
@@ -181,7 +181,7 @@ size_t WiflyControl::BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t num
 	return sumBytesRead;
 }
 
-void WiflyControl::BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+void WyLight::Control::BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	out.flags ( std::ios::right | std::ios::hex | std::ios::showbase );
 	uint8_t buffer[FLASH_SIZE];
@@ -191,7 +191,7 @@ void WiflyControl::BlReadFlash(std::ostream& out, uint32_t address, size_t numBy
 	}
 }
 
-size_t WiflyControl::BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+size_t WyLight::Control::BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	if(numBytes + address > FLASH_SIZE)
 	{
@@ -217,7 +217,7 @@ size_t WiflyControl::BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numB
 	return sumBytesRead;
 }
 
-std::string WiflyControl::BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError)
+std::string WyLight::Control::BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError)
 {
 	BlInfo info;
 	BlReadInfo(info);
@@ -261,13 +261,13 @@ std::string WiflyControl::BlReadFwVersion(void) const throw (ConnectionTimeout, 
 	return std::string((const char*)pString - 8, 7);
 }
 
-void WiflyControl::BlReadInfo(BlInfo& blInfo) const throw (ConnectionTimeout, FatalError)
+void WyLight::Control::BlReadInfo(BlInfo& blInfo) const throw (ConnectionTimeout, FatalError)
 {
 	BlInfoRequest request;
 	BlRead(request, reinterpret_cast<unsigned char*>(&blInfo), sizeof(BlInfo));
 }
 
-void WiflyControl::BlWriteFlash(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+void WyLight::Control::BlWriteFlash(unsigned int address, unsigned char* pBuffer, size_t bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	if(bufferLength + address > FLASH_SIZE)
 	{
@@ -301,7 +301,7 @@ void WiflyControl::BlWriteFlash(unsigned int address, unsigned char* pBuffer, si
 	}
 }
 
-void WiflyControl::BlWriteEeprom(unsigned int address, const uint8_t* pBuffer, size_t bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+void WyLight::Control::BlWriteEeprom(unsigned int address, const uint8_t* pBuffer, size_t bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	if(bufferLength + address > EEPROM_SIZE)
 	{
@@ -336,7 +336,7 @@ void WiflyControl::BlWriteEeprom(unsigned int address, const uint8_t* pBuffer, s
 	}
 }
 
-void WiflyControl::BlProgramFlash(const std::string& pFilename) const throw (ConnectionTimeout, FatalError)
+void WyLight::Control::BlProgramFlash(const std::string& pFilename) const throw (ConnectionTimeout, FatalError)
 {
 	std::ifstream hexFile;
 	hexFile.open(const_cast<char*>(pFilename.c_str()), ifstream::in);
@@ -438,7 +438,7 @@ void WiflyControl::BlProgramFlash(const std::string& pFilename) const throw (Con
 	BlWriteFlash(info.GetAddress() - FLASH_WRITE_BLOCKSIZE, &appVecBuf[0], FLASH_WRITE_BLOCKSIZE);
 }
 
-void WiflyControl::BlRunApp(void) const throw (ConnectionTimeout, FatalError)
+void WyLight::Control::BlRunApp(void) const throw (ConnectionTimeout, FatalError)
 {
 	BlRunAppRequest request;
 	unsigned char buffer[32];
@@ -456,7 +456,7 @@ void WiflyControl::BlRunApp(void) const throw (ConnectionTimeout, FatalError)
 
 #pragma mark RN171-METHODES
 
-std::string WiflyControl::ConfGetSsid(void) const
+std::string WyLight::Control::ConfGetSsid(void) const
 {
 	std::string result{};
 	if(mTelnet.Open())
@@ -467,7 +467,7 @@ std::string WiflyControl::ConfGetSsid(void) const
 	return result;
 }
 
-bool WiflyControl::ConfModuleAsSoftAP(const std::string& accesspointName) const
+bool WyLight::Control::ConfModuleAsSoftAP(const std::string& accesspointName) const
 {
 	if(!ConfSetDeviceId(accesspointName))
 	{
@@ -535,7 +535,7 @@ bool WiflyControl::ConfModuleAsSoftAP(const std::string& accesspointName) const
 	return ConfRebootWlanModule();
 }
 
-bool WiflyControl::ConfModuleForWlan(const std::string& phrase, const std::string& ssid, const std::string& name) const
+bool WyLight::Control::ConfModuleForWlan(const std::string& phrase, const std::string& ssid, const std::string& name) const
 {
 	if(!ConfSetDefaults())
 	{
@@ -558,7 +558,7 @@ bool WiflyControl::ConfModuleForWlan(const std::string& phrase, const std::strin
 	return ConfRebootWlanModule();
 }
 
-bool WiflyControl::ConfSetDefaults(void) const
+bool WyLight::Control::ConfSetDefaults(void) const
 {
 	static const std::string commands[] = {
 		"set broadcast interval 1\r\n",    // to support fast broadcast recognition
@@ -598,7 +598,7 @@ bool WiflyControl::ConfSetDefaults(void) const
 	return mTelnet.Close(true);
 }
 
-bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssid) const
+bool WyLight::Control::ConfSetWlan(const std::string& phrase, const std::string& ssid) const
 {
 	static const size_t PHRASE_MAX = 63;
 	static const size_t SSID_MAX = 32;
@@ -637,7 +637,7 @@ bool WiflyControl::ConfSetWlan(const std::string& phrase, const std::string& ssi
 	return mTelnet.Close(true);
 }
 
-bool WiflyControl::ConfSetDeviceId(const std::string& name) const
+bool WyLight::Control::ConfSetDeviceId(const std::string& name) const
 {
 	static const size_t NAME_MAX_LEN = 32;
 	
@@ -663,7 +663,7 @@ bool WiflyControl::ConfSetDeviceId(const std::string& name) const
 	return mTelnet.Close(true);
 }
 
-bool WiflyControl::ConfRebootWlanModule(void) const
+bool WyLight::Control::ConfRebootWlanModule(void) const
 {
 	if(!mTelnet.Open())
 	{
@@ -684,53 +684,53 @@ bool WiflyControl::ConfRebootWlanModule(void) const
 
 #pragma mark FIRMWARE-METHODES
 
-void WiflyControl::FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+void WyLight::Control::FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(CLEAR_SCRIPT);
 	FwSend(FwReqClearScript(), response);
 }
 
-std::string WiflyControl::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+std::string WyLight::Control::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	CycletimeResponse response;
 	FwSend(FwReqGetCycletime(), response);
 	return response.ToString();
 }
 
-void WiflyControl::FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+void WyLight::Control::FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	RtcResponse response;
 	FwSend(FwReqGetRtc(), response);
 	timeValue = response.GetRealTime();
 }
 
-std::string WiflyControl::FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+std::string WyLight::Control::FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	TracebufferResponse response;
 	FwSend(FwReqGetTracebuffer(), response);
 	return response.ToString();
 }
 
-std::string WiflyControl::FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+std::string WyLight::Control::FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	FirmwareVersionResponse response;
 	FwSend(FwReqGetVersion(), response);
 	return response.ToString();
 }
 
-void WiflyControl::FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+void WyLight::Control::FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(LOOP_OFF);
 	FwSend(FwReqLoopOff(numLoops), response);
 }
 
-void WiflyControl::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+void WyLight::Control::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(LOOP_ON);
 	FwSend(FwReqLoopOn(), response);
 }
 
-FwResponse& WiflyControl::FwSend(const FwRequest& request, FwResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+WyLight::FwResponse& WyLight::Control::FwSend(const FwRequest& request, FwResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	response_frame buffer;
 	size_t numCrcRetries = 5;
@@ -747,48 +747,48 @@ FwResponse& WiflyControl::FwSend(const FwRequest& request, FwResponse& response)
 	throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": Too many retries");
 }
 
-void WiflyControl::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+void WyLight::Control::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(SET_COLOR_DIRECT);  
 	FwSend(FwReqSetColorDirect(pBuffer, bufferLength), response);
 }
 
-void WiflyControl::FwSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+void WyLight::Control::FwSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(SET_FADE);
 	FwSend(FwReqSetFade(argb, fadeTime, addr, parallelFade), response);
 }
 
-void WiflyControl::FwSetFade(const string& rgb, uint16_t fadeTime, const string& addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+void WyLight::Control::FwSetFade(const string& rgb, uint16_t fadeTime, const string& addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	FwSetFade(0xff000000 | WiflyColor::ToARGB(rgb), fadeTime, WiflyColor::ToARGB(addr), parallelFade);
 }
 
-void WiflyControl::FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset)
+void WyLight::Control::FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset)
 {
 	SimpleResponse response(SET_GRADIENT);
 	FwSend(FwReqSetGradient(argb_1, argb_2, fadeTime, parallelFade, length, offset), response);
 }
 
 
-void WiflyControl::FwSetGradient(const string& rgb_1, const string& rgb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset)
+void WyLight::Control::FwSetGradient(const string& rgb_1, const string& rgb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset)
 {
 	FwSetGradient(0xff000000 | WiflyColor::ToARGB(rgb_1), 0xff000000 | WiflyColor::ToARGB(rgb_2), fadeTime, parallelFade, length, offset);
 }
 
-void WiflyControl::FwSetRtc(const tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+void WyLight::Control::FwSetRtc(const tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(SET_RTC);
 	FwSend(FwReqSetRtc(timeValue), response);
 }
 
-void WiflyControl::FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+void WyLight::Control::FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(WAIT);
 	FwSend(FwReqWait(waitTime), response);
 }
 
-void WiflyControl::FwStressTest(void)
+void WyLight::Control::FwStressTest(void)
 {	
 	FwClearScript();
 
@@ -801,7 +801,7 @@ void WiflyControl::FwStressTest(void)
 	}
 }
 
-std::string WiflyControl::ExtractFwVersion(const std::string& pFilename) const
+std::string WyLight::Control::ExtractFwVersion(const std::string& pFilename) const
 {
 	std::ifstream hexFile;
 	hexFile.open(const_cast<char*>(pFilename.c_str()), ifstream::in);
@@ -829,7 +829,7 @@ std::string WiflyControl::ExtractFwVersion(const std::string& pFilename) const
 	return std::string((const char*)&buffer[0], 7);
 }
 
-WiflyControl& WiflyControl::operator<<(const FwCommand& cmd)
+WyLight::Control& WyLight::Control::operator<<(const FwCommand& cmd)
 {
 	this->FwSend(*cmd.GetRequest(), *cmd.GetResponse());
 	return *this;
@@ -837,7 +837,7 @@ WiflyControl& WiflyControl::operator<<(const FwCommand& cmd)
 
 
 
-void WiflyControl::FwTest(void)
+void WyLight::Control::FwTest(void)
 {
 #if 1
 	static const timespec sleepTime{0, 50000000};
@@ -885,7 +885,7 @@ void WiflyControl::FwTest(void)
 #endif
 }
 
-void WiflyControl::FwStartBl(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+void WyLight::Control::FwStartBl(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	SimpleResponse response(START_BL);
 	FwSend(FwReqStartBl(), response);

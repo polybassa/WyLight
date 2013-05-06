@@ -26,19 +26,19 @@
 
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-TelnetProxy::TelnetProxy(const TcpSocket& sock)
+WyLight::TelnetProxy::TelnetProxy(const TcpSocket& sock)
 	: mSock(sock)
 {
 }
 
-void TelnetProxy::ClearResponse(void) const
+void WyLight::TelnetProxy::ClearResponse(void) const
 {
 	timeval timeout{0, 1};
 	uint8_t response[64];
 	while(sizeof(response) <= mSock.Recv(response, sizeof(response), &timeout));
 }
 
-bool TelnetProxy::Close(bool doSave) const
+bool WyLight::TelnetProxy::Close(bool doSave) const
 {
 	if(doSave && !Send("save\r\n", "Storing in config" PROMPT))
 	{
@@ -48,7 +48,7 @@ bool TelnetProxy::Close(bool doSave) const
 	return Send("exit\r\n", "EXIT\r\n");
 }
 
-bool TelnetProxy::ExtractStringOfInterest(const std::string& buffer, const std::string& searchKey, std::string& result) const
+bool WyLight::TelnetProxy::ExtractStringOfInterest(const std::string& buffer, const std::string& searchKey, std::string& result) const
 {
 	Trace(ZONE_VERBOSE, buffer.c_str());
 	std::stringstream stream;
@@ -71,7 +71,7 @@ bool TelnetProxy::ExtractStringOfInterest(const std::string& buffer, const std::
 	return false;
 }
 
-bool TelnetProxy::Open(void) const
+bool WyLight::TelnetProxy::Open(void) const
 {
 	static const timespec _300_TMMS = {0, 300000000};
 	static const uint8_t ENTER_CMD_MODE[] = {'$', '$', '$'}; 
@@ -96,7 +96,7 @@ bool TelnetProxy::Open(void) const
 	return true;
 }
 
-bool TelnetProxy::Recv(const std::string& expectedResponse) const
+bool WyLight::TelnetProxy::Recv(const std::string& expectedResponse) const
 {
 	timeval timeout = {5, 0};
 	uint8_t buffer[64];
@@ -124,7 +124,7 @@ bool TelnetProxy::Recv(const std::string& expectedResponse) const
 	return 0 == memcmp(expectedResponse.data(), buffer, expectedResponse.size());
 }
 
-bool TelnetProxy::RecvString(const std::string& searchKey, std::string& result) const
+bool WyLight::TelnetProxy::RecvString(const std::string& searchKey, std::string& result) const
 {
 	timeval timeout = {5, 0};
 	uint8_t buffer[256];
@@ -170,7 +170,7 @@ bool TelnetProxy::RecvString(const std::string& searchKey, std::string& result) 
 	return false;
 }
 
-void TelnetProxy::RecvString(const std::string& getCmd, const std::string& searchKey, std::string& result) const
+void WyLight::TelnetProxy::RecvString(const std::string& getCmd, const std::string& searchKey, std::string& result) const
 {
 	result.clear();
 
@@ -182,7 +182,7 @@ void TelnetProxy::RecvString(const std::string& getCmd, const std::string& searc
 	RecvString(searchKey, result);
 }
 
-bool TelnetProxy::Send(const std::string& telnetMessage, const std::string& expectedResponse) const
+bool WyLight::TelnetProxy::Send(const std::string& telnetMessage, const std::string& expectedResponse) const
 {
 	if(!SendAndWaitForEcho(telnetMessage))
 	{
@@ -198,7 +198,7 @@ bool TelnetProxy::Send(const std::string& telnetMessage, const std::string& expe
 	return true;
 }
 
-bool TelnetProxy::SendAndWaitForEcho(const std::string& telnetMessage) const
+bool WyLight::TelnetProxy::SendAndWaitForEcho(const std::string& telnetMessage) const
 {
 	if(telnetMessage.size() != mSock.Send((uint8_t*)telnetMessage.data(), telnetMessage.size()))
 	{
@@ -208,7 +208,7 @@ bool TelnetProxy::SendAndWaitForEcho(const std::string& telnetMessage) const
 	return Recv(telnetMessage+"\r\n");
 }
 
-bool TelnetProxy::SendRebootCommand(void) const
+bool WyLight::TelnetProxy::SendRebootCommand(void) const
 {
 	const std::string telnetMessage = "reboot\r\n";
 	if(telnetMessage.size() != mSock.Send((uint8_t*)telnetMessage.data(), telnetMessage.size()))
@@ -219,7 +219,7 @@ bool TelnetProxy::SendRebootCommand(void) const
 	return Recv(telnetMessage);
 }
 
-bool TelnetProxy::SendString(const std::string& command, std::string value) const
+bool WyLight::TelnetProxy::SendString(const std::string& command, std::string value) const
 {
 	static const std::string REPLACE("\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2A\x2B\x2C\x2D\x2E\x2F\x3A\x3B\x3C\x3D\x3E\x3F\x40\x5B\x5C\x5D\x5E\x5F\x60\x7B\x7C\x7D\x7E");
 
@@ -249,7 +249,7 @@ bool TelnetProxy::SendString(const std::string& command, std::string value) cons
 	return SetReplaceChar() && valueWasSet;
 }
 
-bool TelnetProxy::SetReplaceChar(const char replace) const
+bool WyLight::TelnetProxy::SetReplaceChar(const char replace) const
 {
 	std::string replaceCmd("set opt replace " + std::string(1, replace) + "\r\n");
 	return Send(replaceCmd);

@@ -21,15 +21,17 @@
 #include "WiflyControl.h"
 #include <functional>
 
+namespace WyLight {
+
 /******************************************************************************/
 /*!\cond
- * class - WiflyControlNoThrow
+ * class - ControlNoThrow
  * \endcond
  *
  * \brief Class to communicate with a Wifly_Light Hardware.
  *
  * 
- * The WiflyControlNoThrow class allows the user to control the Wifly_Light hardware.
+ * The ControlNoThrow class allows the user to control the Wifly_Light hardware.
  * This is a wrapper class to ::WiflyControl to catch all exceptions from the
  * lower software layers and convert them into error codes, which is required for
  * example for jni or iOS clients
@@ -42,7 +44,7 @@
  *           All methodes witch Conf* relate to the communication module.
  *******************************************************************************/
 
-class WiflyControlNoThrow : private WiflyControl
+class ControlNoThrow : private Control
 {	
 	public:
 
@@ -51,7 +53,7 @@ class WiflyControlNoThrow : private WiflyControl
 		 * @param addr ipv4 address as 32 bit value in host byte order
 		 * @param port number of the wifly device server in host byte order
 		 */
-		WiflyControlNoThrow(uint32_t addr, uint16_t port);
+		ControlNoThrow(uint32_t addr, uint16_t port);
 		
 /* ------------------------- BOOTLOADER METHODES ------------------------- */
 		/**
@@ -173,7 +175,7 @@ class WiflyControlNoThrow : private WiflyControl
 
 /* --------------------- WLAN CONFIGURATION METHODES --------------------- */
 		/**
-		 * Read the currently configured ssid from Wifly module
+		 * Read the currently configured ssid from WyLight module
 		 * @param ssid is the outputstring for the current ssid set in the RN-171 WLAN modul
 		 * @return Indexed by ::WiflyError
 			<BR><B>NO_ERROR</B> is returned if no error occurred
@@ -181,7 +183,7 @@ class WiflyControlNoThrow : private WiflyControl
 		uint32_t ConfGetSsid(std::string& ssid) const;
 
 		/**
-		 * Configurates the Wifly module as stand alone accesspoint. With accesspoint name you can change the ssid for this accesspoint.
+		 * Configurates the WyLight module as stand alone accesspoint. With accesspoint name you can change the ssid for this accesspoint.
 		 * @param accesspointName 1 - 32 characters
 		 * @return Indexed by ::WiflyError
 		    <BR><B>FATAL_ERROR</B> in case of an error
@@ -190,7 +192,7 @@ class WiflyControlNoThrow : private WiflyControl
 		uint32_t ConfModuleAsSoftAP(const std::string& accesspointName = "Wifly_Light") const;
 	
 		/**
-		 * Configurates the Wifly module as client for an existing wlan network with WPA2 protection
+		 * Configurates the WyLight module as client for an existing wlan network with WPA2 protection
 		 * @param phrase WPA2 passphrase 1 - 63 characters
 		 * @param ssid 1 - 32 characters
 		 * @param name 1 - 32 characters, unique name which apperas in the broadcast message
@@ -219,7 +221,7 @@ class WiflyControlNoThrow : private WiflyControl
 		
 /* -------------------------- FIRMWARE METHODES -------------------------- */
 		/**
-		 * Wipe all commands from the Wifly script controller
+		 * Wipe all commands from the WyLight script controller
 		 * @return Indexed by ::WiflyError
 			<BR><B>CONNECTION_TIMEOUT</B> if response timed out
 			<BR><B>FATAL_ERROR</B> if command code of the response doesn't match the code of the request, or too many retries failed
@@ -295,7 +297,7 @@ class WiflyControlNoThrow : private WiflyControl
 		uint32_t FwLoopOn(void);
 
 		/**
-		 * Sets all leds with different colors directly. This doesn't affect the Wifly script controller
+		 * Sets all leds with different colors directly. This doesn't affect the WyLight script controller
 		 * Example: to set the first led to yellow and the second to blue and all others to off use a \<pBuffer\> like this:
 		 * pBuffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6;
 		 * @param pBuffer containing continouse rgb values r1g1b1r2g2b2...r32g32b32
@@ -380,6 +382,7 @@ class WiflyControlNoThrow : private WiflyControl
 		 * Converts all exceptions from ::WiflyControl to the relating ::WiflyError
 		 */
 		uint32_t SolveException(void) const;
-		uint32_t Try(const std::function<void(const WiflyControl&)> call) const;
+	uint32_t Try(const std::function<void(const WyLight::Control&)> call) const;
 };
+}
 #endif /* #ifndef _WIFLYCONTROL_NOTHROW_H_ */

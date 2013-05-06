@@ -28,6 +28,7 @@
 #include <sys/socket.h>
 #include <sys/time.h>
 
+namespace WyLight{
 /**
  * Abstract base class controlling the low level socket file descriptor
  */
@@ -133,5 +134,6 @@ class UdpSocket : public ClientSocket
 
 		virtual size_t Send(const uint8_t* frame, size_t length) const;
 };
+}
 #endif /* #ifndef _CLIENTSOCKET_H_ */
 

@@ -15,7 +15,7 @@
 @interface WCBroadcastReceiverWrapper ()
 
 @property (nonatomic) std::stringstream *mStream;
-@property (nonatomic) BroadcastReceiver *receiver;
+@property (nonatomic) WyLight::BroadcastReceiver *receiver;
 @property (nonatomic) std::thread *receiverThread;
 
 @end
@@ -29,7 +29,7 @@
     {
         // Start BroadcastReceiver
         self.mStream = new std::stringstream();
-        self.receiver = new BroadcastReceiver(55555);
+        self.receiver = new WyLight::BroadcastReceiver(55555);
 #ifndef DEBUG
         self.receiverThread = new std::thread(std::ref(*self.receiver), std::ref(*self.mStream));
 #else
@@ -65,7 +65,7 @@
 {
     if(index > [self numberOfTargets])
         return 0;
-    Endpoint mEndpoint = (*self.receiver).GetEndpoint(index);
+    WyLight::Endpoint mEndpoint = (*self.receiver).GetEndpoint(index);
     
     return mEndpoint.GetIp();
 }
@@ -74,7 +74,7 @@
 {
     if(index > [self numberOfTargets])
         return 0;
-    Endpoint mEndpoint = (*self.receiver).GetEndpoint(index);
+    WyLight::Endpoint mEndpoint = (*self.receiver).GetEndpoint(index);
     
     return mEndpoint.GetPort();
 }
@@ -83,7 +83,7 @@
 {
     if(index > [self numberOfTargets])
         return 0;
-    Endpoint mEndpoint = (*self.receiver).GetEndpoint(index);
+    WyLight::Endpoint mEndpoint = (*self.receiver).GetEndpoint(index);
     
     std::string mStr = mEndpoint.GetDeviceId();
    

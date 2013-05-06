@@ -27,6 +27,8 @@
 #include "wifly_cmd.h"
 #include "WiflyControlException.h"
 
+namespace WyLight {
+
 class FwResponse
 {
 public:
@@ -210,5 +212,6 @@ public:
 	
 private:
 	cmd_get_fw_version mFwVersion;
-};
+};			
+}
 #endif

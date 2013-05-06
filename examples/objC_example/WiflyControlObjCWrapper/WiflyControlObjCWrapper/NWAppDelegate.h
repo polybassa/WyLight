@@ -13,7 +13,7 @@
 @interface NWAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (nonatomic) WCBroadcastReceiverWrapper *broadcastreceiver;
-@property (nonatomic) WCWiflyControlWrapper *control;
+@property (strong, nonatomic) WCBroadcastReceiverWrapper *broadcastreceiver;
+@property (strong, nonatomic) WCWiflyControlWrapper *control;
 
 @end

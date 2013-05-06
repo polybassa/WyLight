@@ -26,7 +26,7 @@
 #include <unistd.h>
 
 using std::vector;
-
+using namespace WyLight;
 
 static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 

@@ -11,7 +11,7 @@
 
 @interface WCWiflyControlWrapper ()
 
-@property (nonatomic) WiflyControlNoThrow *mControl;
+@property (nonatomic) WyLight::ControlNoThrow *mControl;
 
 @end
 
@@ -29,7 +29,7 @@
     self = [super init];
     if (self)
     {
-        self.mControl = new WiflyControlNoThrow(ip,port);
+        self.mControl = new WyLight::ControlNoThrow(ip,port);
     }
     return self;
 }
