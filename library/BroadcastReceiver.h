@@ -46,7 +46,7 @@ class BroadcastReceiver
 		 * @param path to the containing files used to store recent remotes
 		 * @param port to listen on, deault is @see BROADCAST_PORT
 		 */
-		BroadcastReceiver(uint16_t port = BROADCAST_PORT);
+		BroadcastReceiver(uint16_t port = BROADCAST_PORT, const std::string& recentFilename = "");
 
 		/*
 		 * Stop receiving loop and cleanup
@@ -83,7 +83,7 @@ class BroadcastReceiver
 		void PrintAllEndpoints(std::ostream& out);
 
 		/**
-		 * Read recent endpoints from file
+		 * Read recent endpoints from file and add them to mIpTable
 		 * @param filename of the file containing the recent endpoints
 		 */
 		void ReadRecentEndpoints(const std::string& filename);
@@ -96,6 +96,7 @@ class BroadcastReceiver
 		/**
 		 * Write recent endpoints to file
 		 * @param filename of the file containing the recent endpoints
+		 * @param threshold which an endpoints score has to have at least to be written to the file
 		 */
 		void WriteRecentEndpoints(const std::string& filename, uint8_t threshold = 1) const;
 	
@@ -107,9 +108,14 @@ class BroadcastReceiver
 		volatile bool mIsRunning;
 		std::atomic<int32_t> mNumInstances;
 		std::mutex mMutex;
-		std::string mFavourites;
+		const std::string mRecentFilename;
 
-		bool LockedInsert(Endpoint& e);
+		/**
+		 * Insert threadsafe a new endpoint to the mIpTable
+		 * @param endpoint a copy of this referenced object will be stored to mIpTable
+		 * @return true if a new endpoint was added, false if it already existed or an error occur
+		 */
+		bool LockedInsert(Endpoint& endpoint);
 };
 #endif /* #ifndef _BROADCAST_RECEIVER_H_ */
 

@@ -40,7 +40,7 @@ extern "C" {
 jlong Java_biz_bruenn_WiflyLight_RemoteCollector_createBroadcastReceiver(JNIEnv* env, jobject ref, jstring path)
 {
 	const char* myPath = env->GetStringUTFChars(path, 0);
-	const jlong result = (jlong) new BroadcastReceiver(myPath, BroadcastReceiver::BROADCAST_PORT);
+	const jlong result = (jlong) new BroadcastReceiver(BroadcastReceiver::BROADCAST_PORT, myPath);
 	env->ReleaseStringUTFChars(path, myPath);
 	return result;
 }

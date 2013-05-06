@@ -33,14 +33,16 @@ const std::string BroadcastReceiver::DEVICE_VERSION("WiFly Ver 2.45, 10-09-2012"
 const std::string BroadcastReceiver::STOP_MSG{"StopThread"};
 const Endpoint BroadcastReceiver::EMPTY_ENDPOINT;
 
-BroadcastReceiver::BroadcastReceiver(uint16_t port)
-	: mPort(port), mIsRunning(true), mNumInstances(0)
+BroadcastReceiver::BroadcastReceiver(uint16_t port, const std::string& recentFilename)
+	: mPort(port), mIsRunning(true), mNumInstances(0), mRecentFilename(recentFilename)
 {
+	ReadRecentEndpoints(mRecentFilename);
 }
 
 BroadcastReceiver::~BroadcastReceiver(void)
 {
 	Stop();
+	WriteRecentEndpoints(mRecentFilename);
 }
 
 void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
