@@ -71,10 +71,11 @@ void Control::BlProgramFlash(const std::string& filename) const throw (Connectio
 void Control::BlReadCrcFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	throwExceptions();
+	out.flags ( std::ios::right | std::ios::hex | std::ios::showbase );
 	while(numBytes)
 	{
 		numBytes--;
-		out << 0xff;
+		out.put((char)0xff);
 	}
 }
 
@@ -82,20 +83,22 @@ void Control::BlReadCrcFlash(std::ostream& out, uint32_t address, size_t numByte
 void Control::BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	throwExceptions();
+	out.flags ( std::ios::right | std::ios::hex | std::ios::showbase );
 	while(numBytes)
 	{
 		numBytes--;
-		out << 0xff;
+		out.put((char)0xff);
 	}
 }
 
 void Control::BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter)
 {
 	throwExceptions();
+	out.flags ( std::ios::right | std::ios::hex | std::ios::showbase );
 	while(numBytes)
 	{
 		numBytes--;
-		out << 0xff;
+		out.put((char)0xff);
 	}
 }
 
@@ -327,8 +330,8 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_WiflyControlNoThrow_FwFunctions);
 	RunTest(true, ut_WiflyControlNoThrow_ConfFunctions);
 	RunTest(true, ut_WiflyControlNoThrow_BlFunctions);
-	RunTest(false, ut_WiflyControlNoThrow_BlReadFlash);
-	RunTest(false, ut_WiflyControlNoThrow_BlReadCrcFlash);
-	RunTest(false, ut_WiflyControlNoThrow_BlReadEeprom);
+	RunTest(true, ut_WiflyControlNoThrow_BlReadFlash);
+	RunTest(true, ut_WiflyControlNoThrow_BlReadCrcFlash);
+	RunTest(true, ut_WiflyControlNoThrow_BlReadEeprom);
 	UnitTestMainEnd();
 }

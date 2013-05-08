@@ -21,14 +21,154 @@
 static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 WyLight::ControlNoThrow::ControlNoThrow(uint32_t addr, uint16_t port)
-: Control(addr, port)
+: mControl(addr, port) {}
+
+uint32_t WyLight::ControlNoThrow::BlEnableAutostart(void) const
 {
+	return Try(std::bind(&Control::BlEnableAutostart, mControl));
 }
 
-uint32_t WyLight::ControlNoThrow::SolveException(void) const
+uint32_t WyLight::ControlNoThrow::BlEraseEeprom(void) const
+{
+	return Try(std::bind(&Control::BlEraseEeprom, mControl));
+}
+
+uint32_t WyLight::ControlNoThrow::BlEraseFlash(void) const
+{
+	return Try(std::bind(&Control::BlEraseFlash, mControl));
+}
+
+uint32_t WyLight::ControlNoThrow::BlReadCrcFlash(std::ostream& out, uint32_t address, size_t numBlocks) const
+{
+	return Try(std::bind(static_cast<void(Control::*)(std::ostream&, uint32_t, size_t)const>(&Control::BlReadCrcFlash), mControl, std::ref(out), address, numBlocks));
+}
+
+uint32_t WyLight::ControlNoThrow::BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes) const
+{
+	return Try(std::bind(static_cast<void(Control::*)(std::ostream&, uint32_t, size_t)const>(&Control::BlReadEeprom), mControl, std::ref(out), address, numBytes));
+}
+
+uint32_t WyLight::ControlNoThrow::BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) const
+{
+	return Try(std::bind(static_cast<void(Control::*)(std::ostream&, uint32_t, size_t)const>(&Control::BlReadFlash), mControl, std::ref(out), address, numBytes));
+}
+
+uint32_t WyLight::ControlNoThrow::BlReadFwVersion(std::string& versionString) const
+{
+	return Try(std::bind(&Control::BlReadFwVersion, mControl), versionString);
+}
+
+uint32_t WyLight::ControlNoThrow::BlReadInfo(BlInfo& blInfo) const
+{
+	return Try(std::bind(&Control::BlReadInfo, mControl, std::ref(blInfo)));
+}
+
+uint32_t WyLight::ControlNoThrow::BlProgramFlash(const std::string& filename) const
+{
+	return Try(std::bind(&Control::BlProgramFlash, mControl, filename));
+}
+
+uint32_t WyLight::ControlNoThrow::BlRunApp(void) const
+{
+	return Try(std::bind(&Control::BlRunApp, mControl));
+}
+
+uint32_t WyLight::ControlNoThrow::ConfGetSsid(std::string& ssid) const
+{
+	ssid = mControl.ConfGetSsid();
+	return NO_ERROR;
+}
+
+uint32_t WyLight::ControlNoThrow::ConfModuleForWlan(const std::string &phrase, const std::string &ssid, const std::string &name) const
+{
+	return mControl.ConfModuleForWlan(phrase, ssid, name) ? NO_ERROR : FATAL_ERROR;
+}
+
+uint32_t WyLight::ControlNoThrow::ConfModuleAsSoftAP(const std::string &name) const
+{
+	return mControl.ConfModuleAsSoftAP(name) ? NO_ERROR : FATAL_ERROR;
+}
+
+uint32_t WyLight::ControlNoThrow::ConfRebootWlanModule(void) const
+{
+	return mControl.ConfRebootWlanModule() ? NO_ERROR : FATAL_ERROR;
+}
+
+uint32_t WyLight::ControlNoThrow::ConfSetDeviceId(const std::string &name) const
+{
+	return mControl.ConfSetDeviceId(name) ? NO_ERROR : FATAL_ERROR;
+}
+
+uint32_t WyLight::ControlNoThrow::FwClearScript(void)
+{
+	return Try(std::bind(&Control::FwClearScript, mControl));
+}
+
+uint32_t WyLight::ControlNoThrow::FwGetCycletime(std::string& output)
+{
+	return Try(std::bind(&Control::FwGetCycletime, mControl), output);
+}
+
+uint32_t WyLight::ControlNoThrow::FwGetRtc(tm& timeValue)
+{
+	return Try(std::bind(&Control::FwGetRtc, mControl, std::ref(timeValue)));
+}
+
+uint32_t WyLight::ControlNoThrow::FwGetTracebuffer(std::string& output)
+{
+	return Try(std::bind(&Control::FwGetTracebuffer, mControl), output);
+}
+
+uint32_t WyLight::ControlNoThrow::FwGetVersion(std::string& output)
+{
+	return Try(std::bind(&Control::FwGetVersion, mControl), output);
+}
+
+uint32_t WyLight::ControlNoThrow::FwLoopOff(const uint8_t numLoops)
+{
+	return Try(std::bind(&Control::FwLoopOff, mControl, numLoops));
+}
+
+uint32_t WyLight::ControlNoThrow::FwLoopOn(void)
+{
+	return Try(std::bind(&Control::FwLoopOn, mControl));
+}
+
+uint32_t WyLight::ControlNoThrow::FwSetColorDirect(const uint8_t* pBuffer, const size_t bufferLength)
+{
+	return Try(std::bind(&Control::FwSetColorDirect, mControl, pBuffer, bufferLength));
+}
+
+uint32_t WyLight::ControlNoThrow::FwSetFade(const uint32_t argb, const uint16_t fadeTime, const uint32_t addr, const bool parallelFade)
+{
+	return Try(std::bind(static_cast<void(Control::*)(uint32_t, uint16_t, uint32_t, bool)>(&Control::FwSetFade), mControl, argb, fadeTime, addr, parallelFade));
+}
+
+uint32_t WyLight::ControlNoThrow::FwSetGradient(const uint32_t argb_1, const uint32_t argb_2, const uint16_t fadeTime, const bool parallelFade, const uint8_t length, uint8_t offset)
+{
+	return Try(std::bind(static_cast<void(Control::*)(uint32_t, uint32_t, uint16_t, bool, uint8_t, uint8_t)>(&Control::FwSetGradient), mControl, argb_1, argb_2, fadeTime, parallelFade, length, offset));
+}
+
+uint32_t WyLight::ControlNoThrow::FwSetRtc(const tm& timeValue)
+{
+	return Try(std::bind(&Control::FwSetRtc, mControl, timeValue));
+}
+
+uint32_t WyLight::ControlNoThrow::FwSetWait(const uint16_t waitTime)
+{
+	return Try(std::bind(&Control::FwSetWait, mControl, waitTime));
+}
+
+uint32_t WyLight::ControlNoThrow::FwStartBl(void)
+{
+	return Try(std::bind(&Control::FwStartBl, mControl));
+}
+
+uint32_t WyLight::ControlNoThrow::Try(const std::function<std::string(void)> call, std::string& returnString) const
 {
 	try {
-		throw;
+		returnString = call();
+		return NO_ERROR;
 	} catch (FatalError& e) {
 		return e.AsErrorCode();
 	} catch (std::exception) {
@@ -39,248 +179,11 @@ uint32_t WyLight::ControlNoThrow::SolveException(void) const
 	}
 }
 
-/** ------------------------- BOOTLOADER METHODES ------------------------- **/
-uint32_t WyLight::ControlNoThrow::BlEnableAutostart(void) const
-{
-	return Try(&Control::BlEnableAutostart);
-}
 
-uint32_t WyLight::ControlNoThrow::BlEraseEeprom(void) const
-{
-	return Try(&Control::BlEraseEeprom);
-}
-
-uint32_t WyLight::ControlNoThrow::BlEraseFlash(void) const
-{
-	return Try(&Control::BlEraseFlash);
-}
-
-uint32_t WyLight::ControlNoThrow::BlReadCrcFlash(std::ostream& out, uint32_t address, size_t numBlocks) const
+uint32_t WyLight::ControlNoThrow::Try(const std::function<void(void)> call) const
 {
 	try {
-		Control::BlReadCrcFlash(out, address, numBlocks);
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
-}
-
-uint32_t WyLight::ControlNoThrow::BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes) const
-{
-	try {
-		Control::BlReadEeprom(out, address, numBytes);
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
-}
-
-uint32_t WyLight::ControlNoThrow::BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) const
-{
-	try {
-		Control::BlReadFlash(out, address, numBytes);
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
-}
-
-uint32_t WyLight::ControlNoThrow::BlReadFwVersion(std::string& versionString) const
-{
-	try {
-		versionString = Control::BlReadFwVersion();
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
-}
-
-uint32_t WyLight::ControlNoThrow::BlReadInfo(BlInfo& blInfo) const
-{
-	try {
-		Control::BlReadInfo(blInfo);
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
-}
-
-uint32_t WyLight::ControlNoThrow::BlProgramFlash(const std::string& filename) const
-{
-	try {
-		Control::BlProgramFlash(filename);
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
-}
-
-uint32_t WyLight::ControlNoThrow::BlRunApp(void) const
-{
-	return Try(&Control::BlRunApp);
-}
-
-uint32_t WyLight::ControlNoThrow::ConfGetSsid(std::string& ssid) const
-{
-	ssid = Control::ConfGetSsid();
-	return NO_ERROR;
-}
-
-uint32_t WyLight::ControlNoThrow::ConfModuleForWlan(const std::string &phrase, const std::string &ssid, const std::string &name) const
-{
-	return Control::ConfModuleForWlan(phrase, ssid, name) ? NO_ERROR : FATAL_ERROR;
-}
-
-uint32_t WyLight::ControlNoThrow::ConfModuleAsSoftAP(const std::string &name) const
-{
-	return Control::ConfModuleAsSoftAP(name) ? NO_ERROR : FATAL_ERROR;
-}
-
-uint32_t WyLight::ControlNoThrow::ConfRebootWlanModule(void) const
-{
-	return Control::ConfRebootWlanModule() ? NO_ERROR : FATAL_ERROR;
-}
-
-uint32_t WyLight::ControlNoThrow::ConfSetDeviceId(const std::string &name) const
-{
-	return Control::ConfSetDeviceId(name) ? NO_ERROR : FATAL_ERROR;
-}
-
-uint32_t WyLight::ControlNoThrow::FwClearScript(void)
-{
-	try {
-		Control::FwClearScript();
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
-}
-
-uint32_t WyLight::ControlNoThrow::FwGetCycletime(std::string& output)
-{
-	try {
-		output = Control::FwGetCycletime();
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
-}
-
-uint32_t WyLight::ControlNoThrow::FwGetRtc(tm& timeValue)
-{
-	try {
-		Control::FwGetRtc(timeValue);
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
-}
-
-uint32_t WyLight::ControlNoThrow::FwGetTracebuffer(std::string& output)
-{
-	try {
-		output = Control::FwGetTracebuffer();
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
-}
-
-uint32_t WyLight::ControlNoThrow::FwGetVersion(std::string& output)
-{
-	try {
-		output = Control::FwGetVersion();
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
-}
-
-uint32_t WyLight::ControlNoThrow::FwLoopOff(uint8_t numLoops)
-{
-	try {
-		Control::FwLoopOff(numLoops);
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
-}
-
-uint32_t WyLight::ControlNoThrow::FwLoopOn(void)
-{
-	try {
-		Control::FwLoopOn();
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
-}
-
-uint32_t WyLight::ControlNoThrow::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength)
-{
-	try {
-		Control::FwSetColorDirect(pBuffer, bufferLength);
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
-}
-
-uint32_t WyLight::ControlNoThrow::FwSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade)
-{
-	try {
-		Control::FwSetFade(argb,fadeTime,addr,parallelFade);
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
-}
-
-uint32_t WyLight::ControlNoThrow::FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset)
-{
-	try {
-		Control::FwSetGradient(argb_1, argb_2, fadeTime, parallelFade, length, offset);
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
-	
-}
-
-uint32_t WyLight::ControlNoThrow::FwSetRtc(const tm& timeValue)
-{
-	try {
-		Control::FwSetRtc(timeValue);
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
-}
-
-uint32_t WyLight::ControlNoThrow::FwSetWait(uint16_t waitTime)
-{
-	try {
-		Control::FwSetWait(waitTime);
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
-}
-
-uint32_t WyLight::ControlNoThrow::FwStartBl(void)
-{
-	try {
-		Control::FwStartBl();
-		return NO_ERROR;
-	} catch (...) {
-		return SolveException();
-	}
-}
-
-uint32_t WyLight::ControlNoThrow::Try(const std::function<void(const Control&)> call) const
-{
-	try {
-		call(*this);
+		call();
 		return NO_ERROR;
 	} catch (FatalError& e) {
 		return e.AsErrorCode();

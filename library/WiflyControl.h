@@ -55,7 +55,7 @@
 namespace WyLight {
 
 class Control
-{	
+{
 	public:
 		/**
 		 * string constant to address all LEDs. String representation of 0xffffffff

@@ -44,7 +44,7 @@ namespace WyLight {
  *           All methodes witch Conf* relate to the communication module.
  *******************************************************************************/
 
-class ControlNoThrow : private Control
+class ControlNoThrow
 {	
 	public:
 
@@ -284,7 +284,7 @@ class ControlNoThrow : private Control
 			<BR><B>SCRIPT_FULL</B> if script buffer in PIC firmware is full and request couldn't be executed
 			<BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
-		uint32_t FwLoopOff(uint8_t numLoops);
+		uint32_t FwLoopOff(const uint8_t numLoops);
 
 		/**
 		 * Injects a LoopOn command into the wifly script controller
@@ -308,7 +308,7 @@ class ControlNoThrow : private Control
 			<BR><B>SCRIPT_FULL</B> if script buffer in PIC firmware is full and request couldn't be executed
 			<BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
-		uint32_t FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength);
+		uint32_t FwSetColorDirect(const uint8_t* pBuffer,const size_t bufferLength);
 		
 		/**
 		 * Injects a fade command into the wifly script controller
@@ -325,7 +325,7 @@ class ControlNoThrow : private Control
 			<BR><B>SCRIPT_FULL</B> if script buffer in PIC firmware is full and request couldn't be executed
 			<BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
-		uint32_t FwSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade = false);
+		uint32_t FwSetFade(const uint32_t argb, const uint16_t fadeTime = 0, const uint32_t addr = 0xffffffff, const bool parallelFade = false);
 		
 		/**
 		* Injects a gradient command into the wifly script controller
@@ -341,7 +341,7 @@ class ControlNoThrow : private Control
 		   <BR><B>SCRIPT_FULL</B> if script buffer in PIC firmware is full and request couldn't be executed
 		   <BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
-		uint32_t FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0);
+		uint32_t FwSetGradient(const uint32_t argb_1, const uint32_t argb_2, const uint16_t fadeTime = 0, const bool parallelFade = false, const uint8_t length = NUM_OF_LED, const uint8_t offset = 0);
 	
 		/**
 		 * Sets the rtc clock of the wifly device to the specified time.
@@ -365,7 +365,7 @@ class ControlNoThrow : private Control
 			<BR><B>SCRIPT_FULL</B> if script buffer in PIC firmware is full and request couldn't be executed
 		 <	BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
-		uint32_t FwSetWait(uint16_t waitTime);
+		uint32_t FwSetWait(const uint16_t waitTime);
 
 		/**
 		 * Stops firmware and script controller execution and start the bootloader of the wifly device
@@ -381,8 +381,9 @@ class ControlNoThrow : private Control
 		/**
 		 * Converts all exceptions from ::WiflyControl to the relating ::WiflyError
 		 */
-		uint32_t SolveException(void) const;
-	uint32_t Try(const std::function<void(const WyLight::Control&)> call) const;
+		Control mControl;
+		uint32_t Try(const std::function<void(void)> call) const;
+		uint32_t Try(const std::function<std::string(void)> call, std::string& returnString) const;
 };
 }
 #endif /* #ifndef _WIFLYCONTROL_NOTHROW_H_ */
