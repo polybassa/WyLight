@@ -17,6 +17,22 @@
     along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 
+#ifndef _WIFLYCONTROL_H_
+#define _WIFLYCONTROL_H_
+
+#include <string>
+#include <time.h>
+#include "ComProxy.h"
+#include "wifly_cmd.h"
+#include "BlRequest.h"
+#include "TelnetProxy.h"
+#include "WiflyControlException.h"
+#include "FwCommand.h"
+#include "FwRequest.h"
+#include "FwResponse.h"
+
+namespace WyLight {
+
 /******************************************************************************/
 /*! \file WiflyControl.h
  * \author Nils Weiss, Patrick Bruenn
@@ -37,22 +53,6 @@
  * - RN-171 Wifi Interface<br>
  *           All methodes witch Conf* relate to the communication module.
  *******************************************************************************/
-
-#ifndef _WIFLYCONTROL_H_
-#define _WIFLYCONTROL_H_
-
-#include <string>
-#include <time.h>
-#include "ComProxy.h"
-#include "wifly_cmd.h"
-#include "BlRequest.h"
-#include "TelnetProxy.h"
-#include "WiflyControlException.h"
-#include "FwCommand.h"
-#include "FwRequest.h"
-#include "FwResponse.h"
-
-namespace WyLight {
 
 class Control
 {
