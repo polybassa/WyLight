@@ -162,7 +162,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to communicate with a Wifly_Light Hardware. </p>
-<p>The <a class="el" href="class_wy_light_1_1_control_no_throw.html" title="Class to communicate with a Wifly_Light Hardware.">ControlNoThrow</a> class allows the user to control the Wifly_Light hardware. This is a wrapper class to <a class="el" href="class_wy_light_1_1_control.html">WyLight::Control</a> to catch all exceptions from the lower software layers and convert them into error codes, which is required for example for jni or iOS clients There are three target's at the Wifly_Light Hardware.</p>
+<p>The <a class="el" href="class_wy_light_1_1_control_no_throw.html" title="Class to communicate with a Wifly_Light Hardware.">ControlNoThrow</a> class allows the user to control the Wifly_Light hardware. This is a wrapper class to <a class="el" href="class_wy_light_1_1_control.html" title="Class to communicate with a Wifly_Light Hardware.">WyLight::Control</a> to catch all exceptions from the lower software layers and convert them into error codes, which is required for example for jni or iOS clients There are three target's at the Wifly_Light Hardware.</p>
 <ul>
 <li>Bootloader<br/>
  All methodes with Bl* relate to the bootloader part.</li>
@@ -517,7 +517,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Read the currently configured ssid from <a class="el" href="namespace_wy_light.html" title="Class to communicate with a Wifly_Light Hardware.">WyLight</a> module </p>
+<p>Read the currently configured ssid from <a class="el" href="namespace_wy_light.html" title="Returnvalues of WiflyControlNoThrow.">WyLight</a> module </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ssid</td><td>is the outputstring for the current ssid set in the RN-171 WLAN modul </td></tr>
@@ -542,7 +542,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Configurates the <a class="el" href="namespace_wy_light.html" title="Class to communicate with a Wifly_Light Hardware.">WyLight</a> module as stand alone accesspoint. With accesspoint name you can change the ssid for this accesspoint. </p>
+<p>Configurates the <a class="el" href="namespace_wy_light.html" title="Returnvalues of WiflyControlNoThrow.">WyLight</a> module as stand alone accesspoint. With accesspoint name you can change the ssid for this accesspoint. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">accesspointName</td><td>1 - 32 characters </td></tr>
@@ -584,7 +584,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Configurates the <a class="el" href="namespace_wy_light.html" title="Class to communicate with a Wifly_Light Hardware.">WyLight</a> module as client for an existing wlan network with WPA2 protection </p>
+<p>Configurates the <a class="el" href="namespace_wy_light.html" title="Returnvalues of WiflyControlNoThrow.">WyLight</a> module as client for an existing wlan network with WPA2 protection </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">phrase</td><td>WPA2 passphrase 1 - 63 characters </td></tr>
@@ -658,7 +658,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Wipe all commands from the <a class="el" href="namespace_wy_light.html" title="Class to communicate with a Wifly_Light Hardware.">WyLight</a> script controller </p>
+<p>Wipe all commands from the <a class="el" href="namespace_wy_light.html" title="Returnvalues of WiflyControlNoThrow.">WyLight</a> script controller </p>
 <dl class="section return"><dt>Returns</dt><dd>Indexed by <a class="el" href="namespace_wy_light.html#afd625f917b07e9c48f67c4383af5773f">WiflyError</a> <br/>
 <b>CONNECTION_TIMEOUT</b> if response timed out <br/>
 <b>FATAL_ERROR</b> if command code of the response doesn't match the code of the request, or too many retries failed <br/>
@@ -852,7 +852,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Sets all leds with different colors directly. This doesn't affect the <a class="el" href="namespace_wy_light.html" title="Class to communicate with a Wifly_Light Hardware.">WyLight</a> script controller Example: to set the first led to yellow and the second to blue and all others to off use a &lt;pBuffer&gt; like this: pBuffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6; </p>
+<p>Sets all leds with different colors directly. This doesn't affect the <a class="el" href="namespace_wy_light.html" title="Returnvalues of WiflyControlNoThrow.">WyLight</a> script controller Example: to set the first led to yellow and the second to blue and all others to off use a &lt;pBuffer&gt; like this: pBuffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6; </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pBuffer</td><td>containing continouse rgb values r1g1b1r2g2b2...r32g32b32 </td></tr>
@@ -1071,7 +1071,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 8 2013 17:54:36 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed May 8 2013 18:17:54 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

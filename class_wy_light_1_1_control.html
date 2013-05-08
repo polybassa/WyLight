@@ -96,6 +96,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
+<p>Class to communicate with a Wifly_Light Hardware.  
+ <a href="class_wy_light_1_1_control.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_wifly_control_8h_source.html">WiflyControl.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -187,7 +190,18 @@ Friends</h2></td></tr>
 <tr class="memitem:a661b9ec8a685bc800221f2fd5d031a20"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a661b9ec8a685bc800221f2fd5d031a20">ut_WiflyControl_BlFlashWrite</a> (void)</td></tr>
 <tr class="separator:a661b9ec8a685bc800221f2fd5d031a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Class to communicate with a Wifly_Light Hardware. </p>
+<p>The WiflyControl class allows the user to control the Wifly_Light Hardware. There are three target's at the Wifly_Light Hardware.</p>
+<ul>
+<li>Bootloader<br/>
+ All methodes with Bl* relate to the bootloader part.</li>
+<li>Firmware<br/>
+ All methodes with Fw* relate to the firmware part.</li>
+<li>RN-171 Wifi Interface<br/>
+ All methodes witch Conf* relate to the communication module. </li>
+</ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a2d5efc4402b12961aea578e1aeb91dab"></a>
 <div class="memitem">
 <div class="memproto">
@@ -560,7 +574,7 @@ Friends</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Read the currently configured ssid from <a class="el" href="namespace_wy_light.html" title="Class to communicate with a Wifly_Light Hardware.">WyLight</a> module </p>
+<p>Read the currently configured ssid from <a class="el" href="namespace_wy_light.html" title="Returnvalues of WiflyControlNoThrow.">WyLight</a> module </p>
 <dl class="section return"><dt>Returns</dt><dd>an empty string or the ssid </dd></dl>
 
 </div>
@@ -578,7 +592,7 @@ Friends</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Configurates the <a class="el" href="namespace_wy_light.html" title="Class to communicate with a Wifly_Light Hardware.">WyLight</a> module as stand alone accesspoint. With accesspoint name you can change the ssid for this accesspoint. </p>
+<p>Configurates the <a class="el" href="namespace_wy_light.html" title="Returnvalues of WiflyControlNoThrow.">WyLight</a> module as stand alone accesspoint. With accesspoint name you can change the ssid for this accesspoint. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">accesspointName</td><td>1 - 32 characters </td></tr>
@@ -618,7 +632,7 @@ Friends</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Configurates the <a class="el" href="namespace_wy_light.html" title="Class to communicate with a Wifly_Light Hardware.">WyLight</a> module as client for an existing wlan network with WPA2 protection </p>
+<p>Configurates the <a class="el" href="namespace_wy_light.html" title="Returnvalues of WiflyControlNoThrow.">WyLight</a> module as client for an existing wlan network with WPA2 protection </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">phrase</td><td>WPA2 passphrase 1 - 63 characters </td></tr>
@@ -704,7 +718,7 @@ Friends</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Wipe all commands from the <a class="el" href="namespace_wy_light.html" title="Class to communicate with a Wifly_Light Hardware.">WyLight</a> script controller </p>
+<p>Wipe all commands from the <a class="el" href="namespace_wy_light.html" title="Returnvalues of WiflyControlNoThrow.">WyLight</a> script controller </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
@@ -904,7 +918,7 @@ Friends</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Sets all leds with different colors directly. This doesn't affect the <a class="el" href="namespace_wy_light.html" title="Class to communicate with a Wifly_Light Hardware.">WyLight</a> script controller Example: to set the first led to yellow and the second to blue and all others to off use a &lt;pBuffer&gt; like this: pBuffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6; </p>
+<p>Sets all leds with different colors directly. This doesn't affect the <a class="el" href="namespace_wy_light.html" title="Returnvalues of WiflyControlNoThrow.">WyLight</a> script controller Example: to set the first led to yellow and the second to blue and all others to off use a &lt;pBuffer&gt; like this: pBuffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6; </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pBuffer</td><td>containing continouse rgb values r1g1b1r2g2b2...r32g32b32 </td></tr>
@@ -1455,7 +1469,7 @@ Friends</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 8 2013 17:54:35 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed May 8 2013 18:17:53 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
