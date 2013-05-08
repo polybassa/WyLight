@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['numremotes',['NumRemotes',['../class_broadcast_receiver.html#a6e403e696a76c5bc8c2b9215c3d5704d',1,'BroadcastReceiver']]]
+  ['numremotes',['NumRemotes',['../class_wy_light_1_1_broadcast_receiver.html#ab8100fdc85265308689ce34147f106bb',1,'WyLight::BroadcastReceiver']]]
 ];

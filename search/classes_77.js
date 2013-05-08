@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['wiflycolor',['WiflyColor',['../class_wifly_color.html',1,'']]],
-  ['wiflycontrol',['WiflyControl',['../class_wifly_control.html',1,'']]],
-  ['wiflycontrolnothrow',['WiflyControlNoThrow',['../class_wifly_control_no_throw.html',1,'']]]
+  ['wiflycolor',['WiflyColor',['../class_wy_light_1_1_wifly_color.html',1,'WyLight']]]
 ];

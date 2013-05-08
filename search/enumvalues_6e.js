@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['no_5ferror',['NO_ERROR',['../_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2abf350750d0d4fabd8954c0f1e9bbae94',1,'WiflyControlException.h']]]
+  ['no_5ferror',['NO_ERROR',['../namespace_wy_light.html#afd625f917b07e9c48f67c4383af5773fa041d99db4a9cc85ed3b2682c3a4530b5',1,'WyLight']]]
 ];

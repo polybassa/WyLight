@@ -37,6 +37,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -68,7 +69,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -112,94 +113,97 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;crc.h&quot;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_wifly_control_exception_8h.html">WiflyControlException.h</a>&quot;</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="code" href="class_base_buffer.html">   26</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_base_buffer.html">BaseBuffer</a></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="code" href="class_base_buffer.html#ad9a224d3a675ca598954a1260625a47f">   29</a></span>&#160;        <a class="code" href="class_base_buffer.html#ad9a224d3a675ca598954a1260625a47f">BaseBuffer</a>(<span class="keywordtype">size_t</span> capacity) : <a class="code" href="class_base_buffer.html#a667e748b2f88e0c3ac43730f1ced3616">mCapacity</a>(capacity)</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            <a class="code" href="class_base_buffer.html#a1dad25def957cb8c95ce874e4e6531c9">mData</a> = <span class="keyword">new</span> uint8_t[capacity];</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <a class="code" href="class_base_buffer.html#a783a711936fb71f4e762d20945a5a39a">Clear</a>();</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        };</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="code" href="class_base_buffer.html#a7f90045f192b04e80f0334de445bcb77">   35</a></span>&#160;        <span class="keyword">virtual</span> <a class="code" href="class_base_buffer.html#a7f90045f192b04e80f0334de445bcb77">~BaseBuffer</a>(<span class="keywordtype">void</span>)</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <span class="keyword">delete</span> <a class="code" href="class_base_buffer.html#a1dad25def957cb8c95ce874e4e6531c9">mData</a>;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        };</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="code" href="class_base_buffer.html#a783a711936fb71f4e762d20945a5a39a">   40</a></span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_buffer.html#a783a711936fb71f4e762d20945a5a39a">Clear</a>(<span class="keywordtype">void</span>)</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <a class="code" href="class_base_buffer.html#a18cc80c360b914585278da7233af540c">mLength</a> = 0;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            <a class="code" href="class_base_buffer.html#aaae3bf69d9096078814b3fd769803914">mCrc</a> = 0;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        };</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="code" href="class_base_buffer.html#a203c147ef5f319ab88f1408a65e4e21f">   46</a></span>&#160;        <span class="keyword">const</span> uint8_t* <a class="code" href="class_base_buffer.html#a203c147ef5f319ab88f1408a65e4e21f">Data</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_base_buffer.html#a1dad25def957cb8c95ce874e4e6531c9">mData</a>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        };</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="code" href="class_base_buffer.html#ac1a14b6abab04b72a87ac7da40c6273d">   51</a></span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_base_buffer.html#ac1a14b6abab04b72a87ac7da40c6273d">Size</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_base_buffer.html#a18cc80c360b914585278da7233af540c">mLength</a>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="code" href="class_base_buffer.html#a667e748b2f88e0c3ac43730f1ced3616">   54</a></span>&#160;        };</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">protected</span>:  </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">size_t</span> <a class="code" href="class_base_buffer.html#a667e748b2f88e0c3ac43730f1ced3616">mCapacity</a>;</div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="code" href="class_base_buffer.html#a1dad25def957cb8c95ce874e4e6531c9">   58</a></span>&#160;        uint8_t* <a class="code" href="class_base_buffer.html#a1dad25def957cb8c95ce874e4e6531c9">mData</a>;</div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="code" href="class_base_buffer.html#a18cc80c360b914585278da7233af540c">   59</a></span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_base_buffer.html#a18cc80c360b914585278da7233af540c">mLength</a>;</div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="code" href="class_base_buffer.html#aaae3bf69d9096078814b3fd769803914">   60</a></span>&#160;        uint16_t <a class="code" href="class_base_buffer.html#aaae3bf69d9096078814b3fd769803914">mCrc</a>;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_base_buffer.html#a2d95a62e0b6ac0ab1af89cb7471d20d4">AddPure</a>(uint8_t newByte);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;};</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="code" href="class_mask_buffer.html">   65</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_mask_buffer.html">MaskBuffer</a> : <span class="keyword">public</span> <a class="code" href="class_base_buffer.html">BaseBuffer</a></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;{</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="code" href="class_mask_buffer.html#aa05e87d473f76408d932241237237fa3">   68</a></span>&#160;        <a class="code" href="class_mask_buffer.html#aa05e87d473f76408d932241237237fa3">MaskBuffer</a>(<span class="keywordtype">size_t</span> capacity) : <a class="code" href="class_base_buffer.html">BaseBuffer</a>(capacity)</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <a class="code" href="class_base_buffer.html#a2d95a62e0b6ac0ab1af89cb7471d20d4">AddPure</a>(BL_STX);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        };</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_mask_buffer.html#abf795c9fde275a75264c66bc1488201c">Mask</a>(<span class="keyword">const</span> uint8_t* pInput, <span class="keyword">const</span> uint8_t* <span class="keyword">const</span> pInputEnd, <span class="keyword">const</span> <span class="keywordtype">bool</span> crcInLittleEndian = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span>WyLight {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_base_buffer.html">   28</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_wy_light_1_1_base_buffer.html">BaseBuffer</a></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_base_buffer.html#a3a45cf0d57bbf72a0eb26fbc27b71b6c">   31</a></span>&#160;        <a class="code" href="class_wy_light_1_1_base_buffer.html#a3a45cf0d57bbf72a0eb26fbc27b71b6c">BaseBuffer</a>(<span class="keywordtype">size_t</span> capacity) : <a class="code" href="class_wy_light_1_1_base_buffer.html#a536a7f475b68dee906028913cab8799a">mCapacity</a>(capacity)</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            <a class="code" href="class_wy_light_1_1_base_buffer.html#a724a04148d90146319fc11894d2ebd6e">mData</a> = <span class="keyword">new</span> uint8_t[capacity];</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            <a class="code" href="class_wy_light_1_1_base_buffer.html#ad7c6538cc7136f71a96efe6d85c8ff8f">Clear</a>();</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        };</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_base_buffer.html#a0aa58a0961102462df6833aeb97a994f">   37</a></span>&#160;        <span class="keyword">virtual</span> <a class="code" href="class_wy_light_1_1_base_buffer.html#a0aa58a0961102462df6833aeb97a994f">~BaseBuffer</a>(<span class="keywordtype">void</span>)</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            <span class="keyword">delete</span> <a class="code" href="class_wy_light_1_1_base_buffer.html#a724a04148d90146319fc11894d2ebd6e">mData</a>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        };</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_base_buffer.html#ad7c6538cc7136f71a96efe6d85c8ff8f">   42</a></span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_base_buffer.html#ad7c6538cc7136f71a96efe6d85c8ff8f">Clear</a>(<span class="keywordtype">void</span>)</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <a class="code" href="class_wy_light_1_1_base_buffer.html#ab36dd430b1e190e54ce338d3b98c1cbd">mLength</a> = 0;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <a class="code" href="class_wy_light_1_1_base_buffer.html#a084b781e48f372fc9d72ef95a7435d7a">mCrc</a> = 0;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        };</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_base_buffer.html#aae9c729bfa00ff4d4628da666b858c60">   48</a></span>&#160;        <span class="keyword">const</span> uint8_t* <a class="code" href="class_wy_light_1_1_base_buffer.html#aae9c729bfa00ff4d4628da666b858c60">Data</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_wy_light_1_1_base_buffer.html#a724a04148d90146319fc11894d2ebd6e">mData</a>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        };</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_base_buffer.html#a6aa8fcfeaeeb093bce60211a3728337a">   53</a></span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_base_buffer.html#a6aa8fcfeaeeb093bce60211a3728337a">Size</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_wy_light_1_1_base_buffer.html#ab36dd430b1e190e54ce338d3b98c1cbd">mLength</a>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_base_buffer.html#a536a7f475b68dee906028913cab8799a">   56</a></span>&#160;        };</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">protected</span>:  </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_base_buffer.html#a536a7f475b68dee906028913cab8799a">mCapacity</a>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_base_buffer.html#a724a04148d90146319fc11894d2ebd6e">   60</a></span>&#160;        uint8_t* <a class="code" href="class_wy_light_1_1_base_buffer.html#a724a04148d90146319fc11894d2ebd6e">mData</a>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_base_buffer.html#ab36dd430b1e190e54ce338d3b98c1cbd">   61</a></span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_base_buffer.html#ab36dd430b1e190e54ce338d3b98c1cbd">mLength</a>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_base_buffer.html#a084b781e48f372fc9d72ef95a7435d7a">   62</a></span>&#160;        uint16_t <a class="code" href="class_wy_light_1_1_base_buffer.html#a084b781e48f372fc9d72ef95a7435d7a">mCrc</a>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_base_buffer.html#a528639672ade7ec49160c5297b246055">AddPure</a>(uint8_t newByte);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;};</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_mask_buffer.html">   67</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_wy_light_1_1_mask_buffer.html">MaskBuffer</a> : <span class="keyword">public</span> <a class="code" href="class_wy_light_1_1_base_buffer.html">BaseBuffer</a></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;{</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_mask_buffer.html#a865583376a1ddb00632f1ecddd883759">   70</a></span>&#160;        <a class="code" href="class_wy_light_1_1_mask_buffer.html#a865583376a1ddb00632f1ecddd883759">MaskBuffer</a>(<span class="keywordtype">size_t</span> capacity) : <a class="code" href="class_wy_light_1_1_base_buffer.html">BaseBuffer</a>(capacity)</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <a class="code" href="class_wy_light_1_1_base_buffer.html#a528639672ade7ec49160c5297b246055">AddPure</a>(BL_STX);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        };</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keywordtype">void</span> Add(uint8_t newByte);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordtype">void</span> AddWithCrc(uint8_t newByte);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordtype">void</span> AppendCrc(<span class="keywordtype">bool</span> crcInLittleEndian);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="code" href="class_unmask_buffer.html">   81</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_unmask_buffer.html">UnmaskBuffer</a> : <span class="keyword">public</span> <a class="code" href="class_base_buffer.html">BaseBuffer</a></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;{</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="code" href="class_unmask_buffer.html#a573a994de533d402b288faf82a3a18aa">   84</a></span>&#160;        <a class="code" href="class_unmask_buffer.html#a573a994de533d402b288faf82a3a18aa">UnmaskBuffer</a>(<span class="keywordtype">size_t</span> capacity) : <a class="code" href="class_base_buffer.html">BaseBuffer</a>(capacity)</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <a class="code" href="class_unmask_buffer.html#a1fbf77d6da309067cd3915cbf98eb65c">Clear</a>();</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        };</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_unmask_buffer.html#a43e81eeeb02f1669a34e059a4ea9360d">Add</a>(uint8_t newByte);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_unmask_buffer.html#a1fbf77d6da309067cd3915cbf98eb65c">Clear</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_unmask_buffer.html#a4e3485aea701f3d543989a9a781dbe0a">CheckAndRemoveCrc</a>(<span class="keywordtype">bool</span> crcInLittleEndian) <span class="keywordflow">throw</span> (<a class="code" href="class_fatal_error.html">FatalError</a>);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="comment">/*</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">         * @return true if end of response reached (marked by an ETX), else false</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_unmask_buffer.html#ae3cab35f1b3ca8f9bca6c9c3bd84ec3d">Unmask</a>(<span class="keyword">const</span> uint8_t* pInput, <span class="keywordtype">size_t</span> bytesMasked, <span class="keywordtype">bool</span> checkCrc, <span class="keywordtype">bool</span> crcInLittleEndian);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        uint16_t mPrePreCrc;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        uint16_t mPreCrc;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordtype">bool</span> mLastWasDLE;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keywordtype">void</span> AddToCrc(uint8_t newByte);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        uint16_t GetCrc16(<span class="keywordtype">bool</span> crcInLittleEndian) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_mask_buffer.html#a6abd197d4d7fe655fdb1c6efdb8ebb71">Mask</a>(<span class="keyword">const</span> uint8_t* pInput, <span class="keyword">const</span> uint8_t* <span class="keyword">const</span> pInputEnd, <span class="keyword">const</span> <span class="keywordtype">bool</span> crcInLittleEndian = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordtype">void</span> Add(uint8_t newByte);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordtype">void</span> AddWithCrc(uint8_t newByte);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordtype">void</span> AppendCrc(<span class="keywordtype">bool</span> crcInLittleEndian);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;};</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_unmask_buffer.html">   83</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_wy_light_1_1_unmask_buffer.html">UnmaskBuffer</a> : <span class="keyword">public</span> <a class="code" href="class_wy_light_1_1_base_buffer.html">BaseBuffer</a></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;{</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_unmask_buffer.html#a664016ab8306b9c72c01a8d57b2404b5">   86</a></span>&#160;        <a class="code" href="class_wy_light_1_1_unmask_buffer.html#a664016ab8306b9c72c01a8d57b2404b5">UnmaskBuffer</a>(<span class="keywordtype">size_t</span> capacity) : <a class="code" href="class_wy_light_1_1_base_buffer.html">BaseBuffer</a>(capacity)</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <a class="code" href="class_wy_light_1_1_unmask_buffer.html#a0d535dd72bf7759dc780e1341f30a75f">Clear</a>();</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        };</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_unmask_buffer.html#a176ee14660b44137a8ce041c7e338b94">Add</a>(uint8_t newByte);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_unmask_buffer.html#a0d535dd72bf7759dc780e1341f30a75f">Clear</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_unmask_buffer.html#a4ce5f97f46916275ddb5f919483acab6">CheckAndRemoveCrc</a>(<span class="keywordtype">bool</span> crcInLittleEndian) <span class="keywordflow">throw</span> (<a class="code" href="class_wy_light_1_1_fatal_error.html">FatalError</a>);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">         * @return true if end of response reached (marked by an ETX), else false</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">         */</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_unmask_buffer.html#a8268033300f5f43ad9ccb2e806b84b44">Unmask</a>(<span class="keyword">const</span> uint8_t* pInput, <span class="keywordtype">size_t</span> bytesMasked, <span class="keywordtype">bool</span> checkCrc, <span class="keywordtype">bool</span> crcInLittleEndian);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        uint16_t mPrePreCrc;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        uint16_t mPreCrc;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keywordtype">bool</span> mLastWasDLE;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordtype">void</span> AddToCrc(uint8_t newByte);</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;};</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _MASK_BUFFER_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        uint16_t GetCrc16(<span class="keywordtype">bool</span> crcInLittleEndian) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;};  </div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;}</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _MASK_BUFFER_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 30 2013 15:21:20 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed May 8 2013 17:54:22 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

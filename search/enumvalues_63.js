@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['connection_5flost',['CONNECTION_LOST',['../_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2a00bc8d8fa2a4ef22ac8d9aa337802707',1,'WiflyControlException.h']]],
-  ['connection_5ftimeout',['CONNECTION_TIMEOUT',['../_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2af0f23e909b306d85fac6d0087800dadc',1,'WiflyControlException.h']]]
+  ['connection_5flost',['CONNECTION_LOST',['../namespace_wy_light.html#afd625f917b07e9c48f67c4383af5773fa507ea1a926f43bf1604d8f83ac2ce8df',1,'WyLight']]],
+  ['connection_5ftimeout',['CONNECTION_TIMEOUT',['../namespace_wy_light.html#afd625f917b07e9c48f67c4383af5773fa66154513af88023e418086be2c270446',1,'WyLight']]]
 ];

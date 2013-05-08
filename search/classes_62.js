@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['basebuffer',['BaseBuffer',['../class_base_buffer.html',1,'']]],
+  ['basebuffer',['BaseBuffer',['../class_wy_light_1_1_base_buffer.html',1,'WyLight']]],
   ['bladdressrequest',['BlAddressRequest',['../struct_bl_address_request.html',1,'']]],
   ['bleepromreadrequest',['BlEepromReadRequest',['../struct_bl_eeprom_read_request.html',1,'']]],
   ['bleepromwriterequest',['BlEepromWriteRequest',['../struct_bl_eeprom_write_request.html',1,'']]],
@@ -13,6 +13,6 @@ var searchData=
   ['blreadrequest',['BlReadRequest',['../struct_bl_read_request.html',1,'']]],
   ['blrequest',['BlRequest',['../struct_bl_request.html',1,'']]],
   ['blrunapprequest',['BlRunAppRequest',['../struct_bl_run_app_request.html',1,'']]],
-  ['broadcastmessage',['BroadcastMessage',['../struct_broadcast_message.html',1,'']]],
-  ['broadcastreceiver',['BroadcastReceiver',['../class_broadcast_receiver.html',1,'']]]
+  ['broadcastmessage',['BroadcastMessage',['../struct_wy_light_1_1_broadcast_message.html',1,'WyLight']]],
+  ['broadcastreceiver',['BroadcastReceiver',['../class_wy_light_1_1_broadcast_receiver.html',1,'WyLight']]]
 ];

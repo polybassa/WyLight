@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['udpsocket',['UdpSocket',['../class_udp_socket.html#a017a02140e8618ce88f8d8c5a3bf2ba3',1,'UdpSocket']]],
-  ['unmask',['Unmask',['../class_unmask_buffer.html#ae3cab35f1b3ca8f9bca6c9c3bd84ec3d',1,'UnmaskBuffer']]],
-  ['unmaskbuffer',['UnmaskBuffer',['../class_unmask_buffer.html#a573a994de533d402b288faf82a3a18aa',1,'UnmaskBuffer']]]
+  ['udpsocket',['UdpSocket',['../class_wy_light_1_1_udp_socket.html#adcf1f11b78b2485b475f3b040ff8f2d4',1,'WyLight::UdpSocket']]],
+  ['unmask',['Unmask',['../class_wy_light_1_1_unmask_buffer.html#a8268033300f5f43ad9ccb2e806b84b44',1,'WyLight::UnmaskBuffer']]],
+  ['unmaskbuffer',['UnmaskBuffer',['../class_wy_light_1_1_unmask_buffer.html#a664016ab8306b9c72c01a8d57b2404b5',1,'WyLight::UnmaskBuffer']]]
 ];

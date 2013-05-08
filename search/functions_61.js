@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['add',['Add',['../class_unmask_buffer.html#a43e81eeeb02f1669a34e059a4ea9360d',1,'UnmaskBuffer']]],
-  ['addpure',['AddPure',['../class_base_buffer.html#a2d95a62e0b6ac0ab1af89cb7471d20d4',1,'BaseBuffer']]],
-  ['argb',['argb',['../class_wifly_color.html#ac4034056a383f4e8c8beae0586459b8d',1,'WiflyColor::argb() const '],['../class_wifly_color.html#acfccad3c8a67c2e2f417beca040bc8df',1,'WiflyColor::argb(uint32_t argbValue)']]],
-  ['aserrorcode',['AsErrorCode',['../class_fatal_error.html#aff5d3bf2e203cd489572faacbef89877',1,'FatalError']]],
-  ['asuint64',['AsUint64',['../class_endpoint.html#a2d0912e7fa4ae54f9402d6833a6d3ae6',1,'Endpoint']]]
+  ['add',['Add',['../class_wy_light_1_1_unmask_buffer.html#a176ee14660b44137a8ce041c7e338b94',1,'WyLight::UnmaskBuffer']]],
+  ['addpure',['AddPure',['../class_wy_light_1_1_base_buffer.html#a528639672ade7ec49160c5297b246055',1,'WyLight::BaseBuffer']]],
+  ['argb',['argb',['../class_wy_light_1_1_wifly_color.html#ab7e53732ecb04513ddd62cd5ee9baaad',1,'WyLight::WiflyColor::argb() const '],['../class_wy_light_1_1_wifly_color.html#ac5cae0bdf5e5ebf7d5bfe1223d03169a',1,'WyLight::WiflyColor::argb(uint32_t argbValue)']]],
+  ['aserrorcode',['AsErrorCode',['../class_wy_light_1_1_fatal_error.html#a15ae0113906c71cf34d631767371042c',1,'WyLight::FatalError']]],
+  ['asuint64',['AsUint64',['../class_wy_light_1_1_endpoint.html#ae0269aa4b78b40366140a4fe98140e67',1,'WyLight::Endpoint']]]
 ];

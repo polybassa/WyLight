@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['bat_5fmv',['bat_mV',['../struct_broadcast_message.html#ad4ba25279648f3d69685a59b139c9abe',1,'BroadcastMessage']]],
-  ['black',['BLACK',['../class_wifly_color.html#afa045408a6b3f401e8b7d850f120a025',1,'WiflyColor']]],
-  ['blue',['BLUE',['../class_wifly_color.html#ad63591638c12c2f9c5df743fceef6c43',1,'WiflyColor']]],
-  ['boottmms',['bootTmms',['../struct_broadcast_message.html#a20abccb0a47e7956cd2a3bcd3299c23c',1,'BroadcastMessage']]],
-  ['broadcast_5fport',['BROADCAST_PORT',['../class_broadcast_receiver.html#a38d37ce60dc1fb1e0dbc08d80b5d3b47',1,'BroadcastReceiver']]]
+  ['bat_5fmv',['bat_mV',['../struct_wy_light_1_1_broadcast_message.html#aece2abbfade1888f969880e9d4cd2bfa',1,'WyLight::BroadcastMessage']]],
+  ['black',['BLACK',['../class_wy_light_1_1_wifly_color.html#a543f570e0e4776da66f2bc85f08f2af7',1,'WyLight::WiflyColor']]],
+  ['blue',['BLUE',['../class_wy_light_1_1_wifly_color.html#a9b59f5a5f52beba738ce799799d273b7',1,'WyLight::WiflyColor']]],
+  ['boottmms',['bootTmms',['../struct_wy_light_1_1_broadcast_message.html#a52b9e5a034569cf7592cd902c292d577',1,'WyLight::BroadcastMessage']]],
+  ['broadcast_5fport',['BROADCAST_PORT',['../class_wy_light_1_1_broadcast_receiver.html#a7cdb8d26a95a50b32317bb8332668f9f',1,'WyLight::BroadcastReceiver']]]
 ];

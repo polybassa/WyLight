@@ -1,10 +1,11 @@
 var searchData=
 [
-  ['recv',['Recv',['../class_tcp_socket.html#ae11e390e4c9f9de484da2868a25d1623',1,'TcpSocket']]],
-  ['recvfrom',['RecvFrom',['../class_udp_socket.html#a1391f69e42186e42966deb59c45f381f',1,'UdpSocket']]],
-  ['recvstring',['RecvString',['../class_telnet_proxy.html#a9f167bcd354e53ab8fb959472415762b',1,'TelnetProxy']]],
-  ['red',['red',['../class_wifly_color.html#ad8523a03d716f35671c4e74f8940eb37',1,'WiflyColor::red() const '],['../class_wifly_color.html#a9397eca76be8f7abb88a84b719d99d6b',1,'WiflyColor::red(uint8_t value)'],['../class_wifly_color.html#a9a00937bdf95435aa6e3e41ba5c6708b',1,'WiflyColor::RED()']]],
-  ['rssi',['rssi',['../struct_broadcast_message.html#ad01e36acd26ba12f61cf46f116173680',1,'BroadcastMessage']]],
-  ['rtc',['rtc',['../struct_broadcast_message.html#ab7f823fa16241b8305ce51a808d534ce',1,'BroadcastMessage']]],
-  ['rtcresponse',['RtcResponse',['../class_rtc_response.html',1,'RtcResponse'],['../class_rtc_response.html#abbbb2258740e610d5e3badfb4539b4c7',1,'RtcResponse::RtcResponse()']]]
+  ['recv',['Recv',['../class_wy_light_1_1_tcp_socket.html#aef83b055add4c47c4ab6b3395559ca27',1,'WyLight::TcpSocket']]],
+  ['recvfrom',['RecvFrom',['../class_wy_light_1_1_udp_socket.html#a937cb9beb6c957e0870228815e1d2cb4',1,'WyLight::UdpSocket']]],
+  ['recvstring',['RecvString',['../class_wy_light_1_1_telnet_proxy.html#ac4a01d35a096c4289467ae20c8e98909',1,'WyLight::TelnetProxy']]],
+  ['red',['red',['../class_wy_light_1_1_wifly_color.html#a3e82f59485585bbb227596fe96ba9dbf',1,'WyLight::WiflyColor::red() const '],['../class_wy_light_1_1_wifly_color.html#a6ce3ce1c62b4a2ac87ce8c390170ce94',1,'WyLight::WiflyColor::red(uint8_t value)'],['../class_wy_light_1_1_wifly_color.html#a8d3be283a5ee05b7e784985c13f7fbaa',1,'WyLight::WiflyColor::RED()']]],
+  ['rssi',['rssi',['../struct_wy_light_1_1_broadcast_message.html#a7284df9957e3fe4d8cc77d5fd64f6ad0',1,'WyLight::BroadcastMessage']]],
+  ['rtc',['rtc',['../struct_wy_light_1_1_broadcast_message.html#a4cc5a5b440dc793d0ca62b512fd0ca3c',1,'WyLight::BroadcastMessage']]],
+  ['rtcresponse',['RtcResponse',['../class_wy_light_1_1_rtc_response.html#a005721c3f86d547677851ff9f62dbb85',1,'WyLight::RtcResponse']]],
+  ['rtcresponse',['RtcResponse',['../class_wy_light_1_1_rtc_response.html',1,'WyLight']]]
 ];

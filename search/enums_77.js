@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wiflyerror',['WiflyError',['../_wifly_control_exception_8h.html#a35f87aeba08c4e366afd2fe914d231d2',1,'WiflyControlException.h']]]
+  ['wiflyerror',['WiflyError',['../namespace_wy_light.html#afd625f917b07e9c48f67c4383af5773f',1,'WyLight']]]
 ];

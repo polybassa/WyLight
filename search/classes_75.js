@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['udpsocket',['UdpSocket',['../class_udp_socket.html',1,'']]],
-  ['unmaskbuffer',['UnmaskBuffer',['../class_unmask_buffer.html',1,'']]]
+  ['udpsocket',['UdpSocket',['../class_wy_light_1_1_udp_socket.html',1,'WyLight']]],
+  ['unmaskbuffer',['UnmaskBuffer',['../class_wy_light_1_1_unmask_buffer.html',1,'WyLight']]]
 ];

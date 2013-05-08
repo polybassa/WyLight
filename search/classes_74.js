@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['tcpsocket',['TcpSocket',['../class_tcp_socket.html',1,'']]],
-  ['telnetproxy',['TelnetProxy',['../class_telnet_proxy.html',1,'']]],
-  ['tracebufferresponse',['TracebufferResponse',['../class_tracebuffer_response.html',1,'']]]
+  ['tcpsocket',['TcpSocket',['../class_wy_light_1_1_tcp_socket.html',1,'WyLight']]],
+  ['telnetproxy',['TelnetProxy',['../class_wy_light_1_1_telnet_proxy.html',1,'WyLight']]],
+  ['tracebufferresponse',['TracebufferResponse',['../class_wy_light_1_1_tracebuffer_response.html',1,'WyLight']]]
 ];

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['mask',['Mask',['../class_mask_buffer.html#abf795c9fde275a75264c66bc1488201c',1,'MaskBuffer']]],
-  ['maskbuffer',['MaskBuffer',['../class_mask_buffer.html#aa05e87d473f76408d932241237237fa3',1,'MaskBuffer']]]
+  ['mask',['Mask',['../class_wy_light_1_1_mask_buffer.html#a6abd197d4d7fe655fdb1c6efdb8ebb71',1,'WyLight::MaskBuffer']]],
+  ['maskbuffer',['MaskBuffer',['../class_wy_light_1_1_mask_buffer.html#a865583376a1ddb00632f1ecddd883759',1,'WyLight::MaskBuffer']]]
 ];
