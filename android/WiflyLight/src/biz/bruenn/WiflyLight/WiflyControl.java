@@ -8,7 +8,6 @@ public class WiflyControl {
 	
 	public static final int ALL_LEDS = 0xffffffff;
 	
-	private native long create(int ipv4Addr, short port) throws FatalError;
 	private native String ConfGetSsid(long pNative);
 	private native boolean ConfSetWlan(long pNative, String passphrase, String ssid);
 	private native boolean FwClearScript(long pNative);
@@ -25,7 +24,7 @@ public class WiflyControl {
 	}
 	
 	public synchronized boolean connect(Endpoint remote) throws FatalError {
-		mNative = create(remote.getAddr(), remote.getPort());
+		mNative = remote.connect();
 		return 0 != mNative;
 	}
 	

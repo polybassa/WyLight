@@ -31,7 +31,7 @@ const std::string BroadcastReceiver::DEVICE_ID("Wifly_Light");
 const std::string BroadcastReceiver::DEVICE_ID_OLD("WiFly");
 const std::string BroadcastReceiver::DEVICE_VERSION("WiFly Ver 2.45, 10-09-2012");
 const std::string BroadcastReceiver::STOP_MSG{"StopThread"};
-const Endpoint BroadcastReceiver::EMPTY_ENDPOINT;
+Endpoint BroadcastReceiver::EMPTY_ENDPOINT{};
 
 BroadcastReceiver::BroadcastReceiver(uint16_t port, const std::string& recentFilename)
 	: mPort(port), mIsRunning(true), mNumInstances(0), mRecentFilename(recentFilename)
@@ -86,7 +86,18 @@ void BroadcastReceiver::PrintAllEndpoints(std::ostream& out)
 
 Endpoint& BroadcastReceiver::GetEndpoint(size_t index)
 {
-	return mIpTable[index];
+	auto it = mIpTable.find(index);
+	return (mIpTable.end() == it) ? EMPTY_ENDPOINT : it->second;
+}
+
+Endpoint& BroadcastReceiver::GetEndpointByFingerprint(const uint64_t fingerprint)
+{
+	for(auto it = mIpTable.begin(); it != mIpTable.end(); it++) {
+		if(fingerprint == (*it).second.AsUint64()) {
+			return (*it).second;
+		}
+	}
+	return EMPTY_ENDPOINT;
 }
 
 Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout) throw (FatalError)

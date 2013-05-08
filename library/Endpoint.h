@@ -60,10 +60,10 @@ class Endpoint
 		};
 
 		/* 
-		 * @return ipv4 address(A), score(S) and port(P) as a combined 64 bit value 0xAAAAAAAA00SSPPPP
+		 * @return ipv4 address(A) and port(P) as a combined 64 bit value 0xAAAAAAAA0000PPPP
 		 */
 		uint64_t AsUint64(void) const {
-			return ((uint64_t)mIp << 32) | mScore << 16 | mPort;
+			return ((uint64_t)mIp << 32) | mPort;
 		};
 	
 		std::string GetDeviceId(void) const {

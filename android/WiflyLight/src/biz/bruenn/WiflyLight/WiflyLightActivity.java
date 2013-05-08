@@ -24,7 +24,7 @@ public class WiflyLightActivity extends Activity {
 	private ArrayList<Endpoint> mRemoteArray = new ArrayList<Endpoint>();
 	private ArrayAdapter<Endpoint> mRemoteArrayAdapter;
 	private ListView mRemoteList;
-	private RemoteManager mRemoteManager;
+	private BroadcastReceiver mBroadcastReceiver;
 	
 	static {
 		System.loadLibrary("wifly");
@@ -36,8 +36,10 @@ public class WiflyLightActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        mBroadcastReceiver = new BroadcastReceiver(this.getFilesDir().getAbsolutePath() + "/recent.txt");
         mRemoteList = (ListView)findViewById(id.remoteList);
         registerForContextMenu(mRemoteList);
+        
         mRemoteArrayAdapter = new ArrayAdapter<Endpoint>(this, android.R.layout.simple_list_item_1, mRemoteArray);
         mRemoteList.setAdapter(mRemoteArrayAdapter);
         mRemoteList.setEmptyView((TextView)findViewById(android.R.id.empty));
@@ -53,22 +55,28 @@ public class WiflyLightActivity extends Activity {
 		});
         
         Button scanBtn = (Button)findViewById(id.scan);
+        
         scanBtn.setOnClickListener(new View.OnClickListener() {
-			
 			public void onClick(View v) {
 				Button btn = (Button)v;
 				btn.setClickable(false);
 				btn.setText(string.scanning);
-				new RemoteCollector(v.getContext(), (WifiManager)getSystemService(Context.WIFI_SERVICE), 
+				new RemoteCollector(mBroadcastReceiver, (WifiManager)getSystemService(Context.WIFI_SERVICE), 
 						mRemoteArray,
 						mRemoteArrayAdapter,
 						btn).execute(Long.valueOf(3000000000L));
 			}
 		});
         
-        mRemoteManager = new RemoteManager(this);
-        //mRemoteManager.addFavouritesToList(mRemoteArray);
-        //mRemoteArrayAdapter.notifyDataSetChanged();
+        // add all recent endpoints to our list view
+        for(long index = 0;;index++) {
+        	Endpoint e = mBroadcastReceiver.getEndpoint(index);
+        	if(!e.isValid()) {
+        		break;        		
+        	}
+        	mRemoteArray.add(e);
+        }
+        mRemoteArrayAdapter.notifyDataSetChanged();
     }
     
     @Override
@@ -82,5 +90,12 @@ public class WiflyLightActivity extends Activity {
     @Override
     protected Dialog onCreateDialog(int position, Bundle savedInstanceState) {
     	return new SetWlanDialog(this, mRemoteArrayAdapter.getItem(position));
+    }
+    
+    @Override
+    protected void onDestroy() {
+    	mBroadcastReceiver.release();
+    	mBroadcastReceiver = null;
+    	super.onDestroy();
     }
 }

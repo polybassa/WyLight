@@ -123,6 +123,45 @@ int32_t ut_BroadcastReceiver_TestEmpty(void)
 	TestCaseEnd();
 }
 
+int32_t ut_BroadcastReceiver_TestGetEndpoint(void)
+{
+	TestCaseBegin();
+	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
+	std::ostringstream out;
+	BroadcastReceiver dummyReceiver;
+	timeval timeout = {2, 0};
+	std::thread myThread(std::ref(dummyReceiver), std::ref(out), &timeout);
+	nanosleep(&NANOSLEEP_TIME, NULL);
+	dummyReceiver.Stop();
+	myThread.join();
+
+	const Endpoint& byIndex = dummyReceiver.GetEndpoint(0);
+	const Endpoint& byFingerprint = dummyReceiver.GetEndpointByFingerprint(byIndex.AsUint64());
+	CHECK(byIndex.GetIp() == byFingerprint.GetIp());
+	CHECK(byIndex.GetPort() == byFingerprint.GetPort());
+	CHECK(byIndex.GetDeviceId() == byFingerprint.GetDeviceId());
+	CHECK(byIndex.GetScore() == byFingerprint.GetScore());
+	CHECK(byIndex.GetIp() == 0x7F000001);
+	CHECK(byIndex.GetPort() == 2000);
+	CHECK(0 == byIndex.GetDeviceId().compare("WiFly-EZX12345678901234567890123N"));
+	CHECK(byIndex.GetScore() == 0);
+
+	const Endpoint& outOfBound = dummyReceiver.GetEndpoint(1);
+	const Endpoint& empty = dummyReceiver.GetEndpointByFingerprint(0);
+	CHECK(outOfBound.GetIp() == empty.GetIp());
+	CHECK(outOfBound.GetPort() == empty.GetPort());
+	CHECK(outOfBound.GetDeviceId() == empty.GetDeviceId());
+	CHECK(outOfBound.GetScore() == empty.GetScore());
+	CHECK(outOfBound.GetIp() == 0);
+	CHECK(outOfBound.GetPort() == 0);
+	CHECK(0 == outOfBound.GetDeviceId().compare(""));
+	CHECK(outOfBound.GetScore() == 0);
+
+	CHECK(0 == out.str().compare("0:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
+	CHECK(1 == dummyReceiver.NumRemotes());
+	TestCaseEnd();
+}
+
 int32_t ut_BroadcastReceiver_TestSimple(void)
 {
 	TestCaseBegin();
@@ -260,6 +299,7 @@ int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
 	RunTest(true, ut_BroadcastReceiver_TestEmpty);
+	RunTest(true, ut_BroadcastReceiver_TestGetEndpoint);
 	RunTest(true, ut_BroadcastReceiver_TestSimple);
 	RunTest(true, ut_BroadcastReceiver_TestTwoSame);
 	RunTest(true, ut_BroadcastReceiver_TestNoTimeout);

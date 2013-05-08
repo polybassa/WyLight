@@ -39,7 +39,7 @@ class BroadcastReceiver
 		static const std::string DEVICE_ID_OLD;
 		static const std::string DEVICE_VERSION;
 		static const std::string STOP_MSG;
-		static const Endpoint EMPTY_ENDPOINT;
+		static Endpoint EMPTY_ENDPOINT;
 
 		/*
 		 * Construct an object for broadcast listening on the specified port
@@ -63,9 +63,16 @@ class BroadcastReceiver
 		/*
 		 * Get a reference to the endpoint at the specified index
 		 * @param index of the endpoint in the internal IpTable, should be lees than NumRemotes()
-		 * @return a reference to the endpoint at the specified index or an empty object (@see EMPTY_ENDPOINT), when the index was out of bound
+		 * @return a reference to the endpoint at the specified index or an empty object, if the index was out of bound
 		 */
 		Endpoint& GetEndpoint(size_t index);
+
+		/*
+		 * Get a reference to an endpoint with a matching fingerprint
+		 * @param fingerprint to search for
+		 * @return a reference to an endpoint with a matching fingerprint an empty object, if no matching endpoint was found
+		 */
+		Endpoint& GetEndpointByFingerprint(const uint64_t fingerprint);
 
 		/*
 		 * Listen for broadcasts until a new remote is discovered.
