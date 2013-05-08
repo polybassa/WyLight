@@ -32,7 +32,7 @@ namespace WyLight {
  *
  * 
  * The ControlNoThrow class allows the user to control the Wifly_Light hardware.
- * This is a wrapper class to ::WiflyControl to catch all exceptions from the
+ * This is a wrapper class to ::WyLight::Control to catch all exceptions from the
  * lower software layers and convert them into error codes, which is required for
  * example for jni or iOS clients
  * There are three target's at the Wifly_Light Hardware.
