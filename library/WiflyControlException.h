@@ -28,6 +28,8 @@
 #include "wifly_cmd.h"
 #include "BlRequest.h"
 
+namespace WyLight{
+
 /******************************************************************************/
 /*!\file WiflyControlException.h
  * \author Nils Weiss, Patrick Bruenn
@@ -40,8 +42,6 @@
  *
  *
  *******************************************************************************/
-
-namespace WyLight{
 
 enum WiflyError {
 	NO_ERROR = 0,			/**< is returned if no error occurred */ 
