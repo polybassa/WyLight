@@ -25,52 +25,52 @@ WyLight::ControlNoThrow::ControlNoThrow(uint32_t addr, uint16_t port)
 
 uint32_t WyLight::ControlNoThrow::BlEnableAutostart(void) const
 {
-	return Try(std::bind(&Control::BlEnableAutostart, mControl));
+	return Try(std::bind(&Control::BlEnableAutostart, std::ref(mControl)));
 }
 
 uint32_t WyLight::ControlNoThrow::BlEraseEeprom(void) const
 {
-	return Try(std::bind(&Control::BlEraseEeprom, mControl));
+	return Try(std::bind(&Control::BlEraseEeprom, std::ref(mControl)));
 }
 
 uint32_t WyLight::ControlNoThrow::BlEraseFlash(void) const
 {
-	return Try(std::bind(&Control::BlEraseFlash, mControl));
+	return Try(std::bind(&Control::BlEraseFlash, std::ref(mControl)));
 }
 
 uint32_t WyLight::ControlNoThrow::BlReadCrcFlash(std::ostream& out, uint32_t address, size_t numBlocks) const
 {
-	return Try(std::bind(static_cast<void(Control::*)(std::ostream&, uint32_t, size_t)const>(&Control::BlReadCrcFlash), mControl, std::ref(out), address, numBlocks));
+	return Try(std::bind(static_cast<void(Control::*)(std::ostream&, uint32_t, size_t)const>(&Control::BlReadCrcFlash), std::ref(mControl), std::ref(out), address, numBlocks));
 }
 
 uint32_t WyLight::ControlNoThrow::BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes) const
 {
-	return Try(std::bind(static_cast<void(Control::*)(std::ostream&, uint32_t, size_t)const>(&Control::BlReadEeprom), mControl, std::ref(out), address, numBytes));
+	return Try(std::bind(static_cast<void(Control::*)(std::ostream&, uint32_t, size_t)const>(&Control::BlReadEeprom), std::ref(mControl), std::ref(out), address, numBytes));
 }
 
 uint32_t WyLight::ControlNoThrow::BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) const
 {
-	return Try(std::bind(static_cast<void(Control::*)(std::ostream&, uint32_t, size_t)const>(&Control::BlReadFlash), mControl, std::ref(out), address, numBytes));
+	return Try(std::bind(static_cast<void(Control::*)(std::ostream&, uint32_t, size_t)const>(&Control::BlReadFlash), std::ref(mControl), std::ref(out), address, numBytes));
 }
 
 uint32_t WyLight::ControlNoThrow::BlReadFwVersion(std::string& versionString) const
 {
-	return Try(std::bind(&Control::BlReadFwVersion, mControl), versionString);
+	return Try(std::bind(&Control::BlReadFwVersion, std::ref(mControl)), versionString);
 }
 
 uint32_t WyLight::ControlNoThrow::BlReadInfo(BlInfo& blInfo) const
 {
-	return Try(std::bind(&Control::BlReadInfo, mControl, std::ref(blInfo)));
+	return Try(std::bind(&Control::BlReadInfo, std::ref(mControl), std::ref(blInfo)));
 }
 
 uint32_t WyLight::ControlNoThrow::BlProgramFlash(const std::string& filename) const
 {
-	return Try(std::bind(&Control::BlProgramFlash, mControl, filename));
+	return Try(std::bind(&Control::BlProgramFlash, std::ref(mControl), filename));
 }
 
 uint32_t WyLight::ControlNoThrow::BlRunApp(void) const
 {
-	return Try(std::bind(&Control::BlRunApp, mControl));
+	return Try(std::bind(&Control::BlRunApp, std::ref(mControl)));
 }
 
 uint32_t WyLight::ControlNoThrow::ConfGetSsid(std::string& ssid) const
@@ -101,67 +101,67 @@ uint32_t WyLight::ControlNoThrow::ConfSetDeviceId(const std::string &name) const
 
 uint32_t WyLight::ControlNoThrow::FwClearScript(void)
 {
-	return Try(std::bind(&Control::FwClearScript, mControl));
+	return Try(std::bind(&Control::FwClearScript, std::ref(mControl)));
 }
 
 uint32_t WyLight::ControlNoThrow::FwGetCycletime(std::string& output)
 {
-	return Try(std::bind(&Control::FwGetCycletime, mControl), output);
+	return Try(std::bind(&Control::FwGetCycletime, std::ref(mControl)), output);
 }
 
 uint32_t WyLight::ControlNoThrow::FwGetRtc(tm& timeValue)
 {
-	return Try(std::bind(&Control::FwGetRtc, mControl, std::ref(timeValue)));
+	return Try(std::bind(&Control::FwGetRtc, std::ref(mControl), std::ref(timeValue)));
 }
 
 uint32_t WyLight::ControlNoThrow::FwGetTracebuffer(std::string& output)
 {
-	return Try(std::bind(&Control::FwGetTracebuffer, mControl), output);
+	return Try(std::bind(&Control::FwGetTracebuffer, std::ref(mControl)), output);
 }
 
 uint32_t WyLight::ControlNoThrow::FwGetVersion(std::string& output)
 {
-	return Try(std::bind(&Control::FwGetVersion, mControl), output);
+	return Try(std::bind(&Control::FwGetVersion, std::ref(mControl)), output);
 }
 
 uint32_t WyLight::ControlNoThrow::FwLoopOff(const uint8_t numLoops)
 {
-	return Try(std::bind(&Control::FwLoopOff, mControl, numLoops));
+	return Try(std::bind(&Control::FwLoopOff, std::ref(mControl), numLoops));
 }
 
 uint32_t WyLight::ControlNoThrow::FwLoopOn(void)
 {
-	return Try(std::bind(&Control::FwLoopOn, mControl));
+	return Try(std::bind(&Control::FwLoopOn, std::ref(mControl)));
 }
 
 uint32_t WyLight::ControlNoThrow::FwSetColorDirect(const uint8_t* pBuffer, const size_t bufferLength)
 {
-	return Try(std::bind(&Control::FwSetColorDirect, mControl, pBuffer, bufferLength));
+	return Try(std::bind(&Control::FwSetColorDirect, std::ref(mControl), pBuffer, bufferLength));
 }
 
 uint32_t WyLight::ControlNoThrow::FwSetFade(const uint32_t argb, const uint16_t fadeTime, const uint32_t addr, const bool parallelFade)
 {
-	return Try(std::bind(static_cast<void(Control::*)(uint32_t, uint16_t, uint32_t, bool)>(&Control::FwSetFade), mControl, argb, fadeTime, addr, parallelFade));
+	return Try(std::bind(static_cast<void(Control::*)(uint32_t, uint16_t, uint32_t, bool)>(&Control::FwSetFade), std::ref(mControl), argb, fadeTime, addr, parallelFade));
 }
 
 uint32_t WyLight::ControlNoThrow::FwSetGradient(const uint32_t argb_1, const uint32_t argb_2, const uint16_t fadeTime, const bool parallelFade, const uint8_t length, uint8_t offset)
 {
-	return Try(std::bind(static_cast<void(Control::*)(uint32_t, uint32_t, uint16_t, bool, uint8_t, uint8_t)>(&Control::FwSetGradient), mControl, argb_1, argb_2, fadeTime, parallelFade, length, offset));
+	return Try(std::bind(static_cast<void(Control::*)(uint32_t, uint32_t, uint16_t, bool, uint8_t, uint8_t)>(&Control::FwSetGradient), std::ref(mControl), argb_1, argb_2, fadeTime, parallelFade, length, offset));
 }
 
 uint32_t WyLight::ControlNoThrow::FwSetRtc(const tm& timeValue)
 {
-	return Try(std::bind(&Control::FwSetRtc, mControl, timeValue));
+	return Try(std::bind(&Control::FwSetRtc, std::ref(mControl), timeValue));
 }
 
 uint32_t WyLight::ControlNoThrow::FwSetWait(const uint16_t waitTime)
 {
-	return Try(std::bind(&Control::FwSetWait, mControl, waitTime));
+	return Try(std::bind(&Control::FwSetWait, std::ref(mControl), waitTime));
 }
 
 uint32_t WyLight::ControlNoThrow::FwStartBl(void)
 {
-	return Try(std::bind(&Control::FwStartBl, mControl));
+	return Try(std::bind(&Control::FwStartBl, std::ref(mControl)));
 }
 
 uint32_t WyLight::ControlNoThrow::Try(const std::function<std::string(void)> call, std::string& returnString) const
