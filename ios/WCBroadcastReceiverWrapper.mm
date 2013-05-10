@@ -18,7 +18,14 @@
 @property (nonatomic) WyLight::BroadcastReceiver *receiver;
 @property (nonatomic) std::thread *receiverThread;
 
+- (void)postNotification;
+
 @end
+
+void cNotification(WCBroadcastReceiverWrapper* receiver,NSThread* targetThread , const WyLight::Endpoint& endpoint)
+{
+	[receiver performSelector:@selector(postNotification) onThread:targetThread withObject:nil waitUntilDone:NO];
+}
 
 @implementation WCBroadcastReceiverWrapper
 
@@ -30,12 +37,12 @@
         // Start BroadcastReceiver
         self.mStream = new std::stringstream();
         self.receiver = new WyLight::BroadcastReceiver(55555);
+		self.receiver->SetCallbackAddedNewRemote(std::bind(&cNotification, self, [NSThread currentThread], std::placeholders::_1));
 #ifndef DEBUG
         self.receiverThread = new std::thread(std::ref(*self.receiver), std::ref(*self.mStream));
 #else
 		self.receiverThread = new std::thread(std::ref(*self.receiver), std::ref(std::cout));
 		NSLog(@"start receiver");
-
 #endif
 	}
     return self;
@@ -88,6 +95,11 @@
     std::string mStr = mEndpoint.GetDeviceId();
    
     return [NSString stringWithCString:mStr.c_str() encoding:NSASCIIStringEncoding];
+}
+
+- (void)postNotification
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"NewTargetAddedNotification" object:self];
 }
 
 @end
