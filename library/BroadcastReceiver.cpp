@@ -32,7 +32,7 @@ const std::string WyLight::BroadcastReceiver::STOP_MSG{"StopThread"};
 const WyLight::Endpoint WyLight::BroadcastReceiver::EMPTY_ENDPOINT;
 
 WyLight::BroadcastReceiver::BroadcastReceiver(uint16_t port)
-	: mPort(port), mIsRunning(true), mNumInstances(0)
+	: mPort(port), mIsRunning(true), mNumInstances(0), mAddedNewRemoteCallback(nullptr)
 {
 }
 
@@ -57,6 +57,7 @@ void WyLight::BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeou
 			if(remote.IsValid()) {
 				out << numRemotes << ':' << remote << '\n';
 				numRemotes++;
+				if(mAddedNewRemoteCallback) mAddedNewRemoteCallback(remote);
 			}
 			gettimeofday(&now, NULL);
 		} while(mIsRunning && timeval_sub(&endTime, &now, pTimeout));
@@ -121,5 +122,10 @@ void WyLight::BroadcastReceiver::Stop(void)
 	mIsRunning = false;
 	UdpSocket sock(INADDR_LOOPBACK, mPort, false);
 	sock.Send((uint8_t*)STOP_MSG.data(), STOP_MSG.size());
+}
+
+void WyLight::BroadcastReceiver::SetCallbackAddedNewRemote(const std::function<void(const Endpoint& newEndpoint)>& functionObj)
+{
+	mAddedNewRemoteCallback = functionObj;
 }
 

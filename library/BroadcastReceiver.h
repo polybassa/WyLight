@@ -29,6 +29,7 @@
 #include <ostream>
 #include <set>
 #include <string>
+#include <functional>
 
 namespace WyLight{
 
@@ -87,12 +88,18 @@ class BroadcastReceiver
 		void Stop(void);
 	
 		void PrintAllEndpoints(std::ostream& out);
+	
+		/**
+		 * Callback methode to notify that a new Enpoint was add to the IpTable
+		 */
+		void SetCallbackAddedNewRemote(const std::function<void(const Endpoint& newEndpoint)>& functionObj);
 
 	private:
 		std::set<Endpoint> mIpTable;
 		volatile bool mIsRunning;
 		std::atomic<int32_t> mNumInstances;
 		std::mutex mMutex;
+		std::function<void(const Endpoint& newEndpoint)> mAddedNewRemoteCallback;
 };
 }
 #endif /* #ifndef _BROADCAST_RECEIVER_H_ */
