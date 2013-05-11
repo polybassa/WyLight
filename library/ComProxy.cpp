@@ -23,17 +23,19 @@
 #include "trace.h"
 #include "wifly_cmd.h"
 
+namespace WyLight {
+
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 static const timeval RESPONSE_TIMEOUT = {3, 0}; // three seconds timeout for fragmented responses from pic
 
 
-WyLight::ComProxy::ComProxy(const TcpSocket& sock)
+ComProxy::ComProxy(const TcpSocket& sock)
 	: mSock(sock)
 {
 }
 
-size_t WyLight::ComProxy::Recv(uint8_t* pBuffer, const size_t length, timeval* pTimeout, bool checkCrc, bool crcInLittleEndian) const throw (ConnectionTimeout)
+size_t ComProxy::Recv(uint8_t* pBuffer, const size_t length, timeval* pTimeout, bool checkCrc, bool crcInLittleEndian) const throw (ConnectionTimeout)
 {
 	timeval endTime, now;
 	gettimeofday(&endTime, NULL);
@@ -52,19 +54,19 @@ size_t WyLight::ComProxy::Recv(uint8_t* pBuffer, const size_t length, timeval* p
 	throw ConnectionTimeout("Receive response timed out");
 }
 
-size_t WyLight::ComProxy::Send(const BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const throw(ConnectionTimeout, FatalError)
+size_t ComProxy::Send(const BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync) const throw(ConnectionTimeout, FatalError)
 {
 	Trace(ZONE_INFO, "%zu pure bytes\n", req.GetSize());
 	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
 }
 
-size_t WyLight::ComProxy::Send(const FwRequest& request, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout, FatalError)
+size_t ComProxy::Send(const FwRequest& request, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout, FatalError)
 {
 	return Send(request.GetData(), request.GetSize(), reinterpret_cast<uint8_t*>(pResponse), responseSize, true, false, false);
 }
 
 
-size_t WyLight::ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const throw(ConnectionTimeout, FatalError)
+size_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const throw(ConnectionTimeout, FatalError)
 {	
 	/* do baudrate synchronisation with bootloader if requested */
 	if(doSync)
@@ -92,7 +94,7 @@ size_t WyLight::ComProxy::Send(const uint8_t* pRequest, const size_t requestSize
 	return Recv(pResponse, responseSize, &timeout, checkCrc, crcInLittleEndian);
 }
 
-void WyLight::ComProxy::SyncWithBootloader(void) const throw (FatalError)
+void ComProxy::SyncWithBootloader(void) const throw (FatalError)
 {
 	uint8_t recvBuffer[BL_MAX_MESSAGE_LENGTH];
 	timeval timeout;
@@ -107,4 +109,4 @@ void WyLight::ComProxy::SyncWithBootloader(void) const throw (FatalError)
 		timeout = RESPONSE_TIMEOUT;
 	} while(0 == mSock.Recv(recvBuffer, sizeof(recvBuffer), &timeout));
 }
-
+} /* namespace WyLight */

@@ -18,6 +18,7 @@
 
 #ifndef _ENDPOINT_H_
 #define _ENDPOINT_H_
+#include <atomic>
 #include <cassert>
 #include <ostream>
 #include <stddef.h>
@@ -31,29 +32,31 @@ class Endpoint
 {
 	public:
 		Endpoint(sockaddr_storage& addr, const size_t size, uint16_t port, std::string devId = "")
+			: mScore(0)
 		{
 			assert(sizeof(sockaddr_in) == size);
-			mAddr = ntohl(((sockaddr_in&)addr).sin_addr.s_addr);
+			mIp = ntohl(((sockaddr_in&)addr).sin_addr.s_addr);
 			mPort = ntohs(port);
 			mDeviceId = devId;
 		};
 
-		Endpoint(uint32_t addr = 0, uint16_t port = 0)
-			: mAddr(addr), mPort(port), mDeviceId("")
+		Endpoint(uint32_t ip = 0, uint16_t port = 0, uint8_t score = 0, std::string devId = "")
+			: mIp(ip), mPort(port), mScore(score), mDeviceId(devId)
 		{
 		};
 
-		bool operator<(const Endpoint& ref) const
-		{
-			return AsUint64() < ref.AsUint64();
+		bool operator<(const Endpoint& ref) const {
+			return (mIp < ref.GetIp())
+					|| ((mIp == ref.GetIp()) && (mPort < ref.GetPort()));
 		};
 
 		friend std::ostream& operator << (std::ostream& out, const Endpoint& ref)
 		{
-			return out << ((ref.mAddr & 0xff000000 ) >> 24) << '.'
-								 << ((ref.mAddr & 0x00ff0000 ) >> 16) << '.'
-								 << ((ref.mAddr & 0x0000ff00 ) >> 8) << '.'
-								 << (ref.mAddr & 0x000000ff )
+			return out << (int)ref.mScore << ' '
+								 << ((ref.mIp & 0xff000000 ) >> 24) << '.'
+								 << ((ref.mIp & 0x00ff0000 ) >> 16) << '.'
+								 << ((ref.mIp & 0x0000ff00 ) >> 8) << '.'
+								 << (ref.mIp & 0x000000ff )
 								 << ':' << ref.mPort
 								 << "  :  " << ref.mDeviceId;
 		};
@@ -61,34 +64,43 @@ class Endpoint
 		/* 
 		 * @return ipv4 address(A) and port(P) as a combined 64 bit value 0xAAAAAAAA0000PPPP
 		 */
-		uint64_t AsUint64(void) const
-		{
-			return ((uint64_t)mAddr << 32) | mPort; 
-		};
-
-		uint32_t GetIp(void) const
-		{
-			return mAddr;
-		};
-
-		uint16_t GetPort(void) const
-		{
-			return mPort;
+		uint64_t AsUint64(void) const {
+			return ((uint64_t)mIp << 32) | mPort;
 		};
 	
-		std::string GetDeviceId(void) const
-		{
+		std::string GetDeviceId(void) const {
 			return mDeviceId;
 		};
 
-		bool IsValid(void) const
-		{
-			return (0 != mAddr) && (0 != mPort);
+		uint32_t GetIp(void) const {
+			return mIp;
+		};
+
+		uint16_t GetPort(void) const {
+			return mPort;
+		};
+
+		uint8_t GetScore(void) const {
+			return mScore;
+		};
+
+		/*
+		 * Increment score
+		 * @return reference to itself
+		 */
+		Endpoint& operator ++(void) {
+			++mScore;
+			return *this;
+		}
+
+		bool IsValid(void) const {
+			return (0 != mIp) && (0 != mPort);
 		};
 
 	private:
-		uint32_t mAddr;
+		uint32_t mIp;
 		uint16_t mPort;
+		uint8_t mScore;
 		std::string mDeviceId;
 };			
 }

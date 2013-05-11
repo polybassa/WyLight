@@ -27,7 +27,7 @@ using namespace WyLight;
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 /***** Wrappers ****/
-ClientSocket::ClientSocket(uint32_t, uint16_t, int) throw (FatalError) : mSock(0) {}
+ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) : mSock(0), mSockAddr(addr, port) {}
 ClientSocket::~ClientSocket(void) {}
 TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError) : ClientSocket(addr, port, 0) {}
 size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const throw (FatalError) { return 0;}

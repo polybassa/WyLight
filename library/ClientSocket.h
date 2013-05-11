@@ -29,6 +29,19 @@
 #include <sys/time.h>
 
 namespace WyLight{
+
+/**
+ * Helper class to simplify handling of sockaddr_in
+ */
+struct Ipv4Addr : public sockaddr_in {
+	Ipv4Addr(uint32_t addr, uint16_t port) {
+		memset(this, 0, sizeof(*this));
+		sin_family = AF_INET;
+		sin_port = htons(port);
+		sin_addr.s_addr = htonl(addr);
+	};
+};
+
 /**
  * Abstract base class controlling the low level socket file descriptor
  */
@@ -72,7 +85,7 @@ class ClientSocket
 		/**
 		 * IPv4 address of listening or target port
 		 */
-		struct sockaddr_in mSockAddr;
+		Ipv4Addr mSockAddr;
 };
 
 /**

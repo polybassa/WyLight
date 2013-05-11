@@ -9,26 +9,19 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 public class RemoteCollector extends AsyncTask<Long, Void, Void> {
-	private native long createBroadcastReceiver();
-	private native long getNextRemote(long pNative, long timeoutNanos);
-	private native void releaseBroadcastReceiver(long pNative);
 	
 	private ArrayAdapter<Endpoint> mRemoteArrayAdapter;
 	private ArrayList<Endpoint> mRemoteArray;
-	private WifiManager.MulticastLock mMulticastLock; 
-	private long mNative = 0;
+	private WifiManager.MulticastLock mMulticastLock;
+	private BroadcastReceiver mBroadcastReceiver;
 	private Button mScanBtn;
 	
-	public RemoteCollector(WifiManager wifiMgr, ArrayList<Endpoint> remoteArray, ArrayAdapter<Endpoint> remoteArrayAdapter, Button scanBtn) {
+	public RemoteCollector(BroadcastReceiver receiver, WifiManager wifiMgr, ArrayList<Endpoint> remoteArray, ArrayAdapter<Endpoint> remoteArrayAdapter, Button scanBtn) {
 		mMulticastLock = wifiMgr.createMulticastLock("WiflyLight_MulticastLock");
-		mNative = createBroadcastReceiver();
+		mBroadcastReceiver = receiver;
 		mRemoteArray = remoteArray;
 		mRemoteArrayAdapter = remoteArrayAdapter;
 		mScanBtn = scanBtn;
-	}
-	
-	public void finalize() throws Throwable {
-		releaseBroadcastReceiver(mNative);
 	}
 
 	public void run() {
@@ -41,7 +34,7 @@ public class RemoteCollector extends AsyncTask<Long, Void, Void> {
 		
 		mMulticastLock.acquire();
 		while(!isCancelled() && (timeoutNanos > 0)) {
-			Endpoint remote = new Endpoint(getNextRemote(mNative, timeoutNanos));
+			Endpoint remote = mBroadcastReceiver.getNextRemote(timeoutNanos);
 			
 			if(remote.isValid())
 			{

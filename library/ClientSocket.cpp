@@ -27,26 +27,23 @@
 
 #include <stdio.h>
 
+namespace WyLight {
+
 static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 
-WyLight::ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) 
-	: mSock(socket(AF_INET, style, 0)) 
+ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) 
+	: mSock(socket(AF_INET, style, 0)), mSockAddr(addr, port)
 {
 	if( -1 == mSock) throw FatalError("Create socket failed");
-
-	memset(&mSockAddr, 0, sizeof(mSockAddr));
-	mSockAddr.sin_family = AF_INET;
-	mSockAddr.sin_port = htons(port);
-	mSockAddr.sin_addr.s_addr = htonl(addr);
 }
 
-WyLight::ClientSocket::~ClientSocket()
+ClientSocket::~ClientSocket()
 {
 	close(mSock);
 }
 
-bool WyLight::ClientSocket::Select(timeval* timeout) const throw (FatalError)
+bool ClientSocket::Select(timeval* timeout) const throw (FatalError)
 {
 	/* prepare socket set for select() */
 	fd_set readSockets;
@@ -69,7 +66,7 @@ bool WyLight::ClientSocket::Select(timeval* timeout) const throw (FatalError)
 	return false;
 }
 
-WyLight::TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError)
+TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError)
 	: ClientSocket(addr, port, SOCK_STREAM)
 {
 	if(0 != connect(mSock, reinterpret_cast<sockaddr*>(&mSockAddr), sizeof(mSockAddr)))
@@ -78,18 +75,18 @@ WyLight::TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLos
 	}
 }
 
-size_t WyLight::TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const throw(FatalError)
+size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const throw(FatalError)
 {
 	return Select(timeout) ? 0 : recv(mSock, pBuffer, length, 0);
 }
 
-size_t WyLight::TcpSocket::Send(const uint8_t* frame, size_t length) const
+size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 {
 	TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending on socket 0x%04x, %zu bytes: ", mSock, length);
 	return send(mSock, frame, length, 0);
 }
 
-WyLight::UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) throw (FatalError)
+UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) throw (FatalError)
 	: ClientSocket(addr, port, SOCK_DGRAM)
 {
 	if(0 != setsockopt(mSock, SOL_SOCKET, SO_BROADCAST, &enableBroadcast, sizeof(enableBroadcast)))
@@ -103,14 +100,15 @@ WyLight::UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int ena
 	}
 }
 
-size_t WyLight::UdpSocket::RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout, struct sockaddr* remoteAddr, socklen_t* remoteAddrLength) const throw (FatalError)
+size_t UdpSocket::RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout, struct sockaddr* remoteAddr, socklen_t* remoteAddrLength) const throw (FatalError)
 {
 	return Select(timeout) ? 0 : recvfrom(mSock, pBuffer, length, 0, remoteAddr, remoteAddrLength);
 }
 
-size_t WyLight::UdpSocket::Send(const uint8_t* frame, size_t length) const
+size_t UdpSocket::Send(const uint8_t* frame, size_t length) const
 {
 	TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending %zu bytes: ", length);
-	return sendto(mSock, frame, length, 0, (struct sockaddr*)&mSockAddr, sizeof(mSockAddr));
+	return sendto(mSock, frame, length, 0, reinterpret_cast<const struct sockaddr*>(&mSockAddr), sizeof(mSockAddr));
 }
+} /* namespace WyLight */
 
