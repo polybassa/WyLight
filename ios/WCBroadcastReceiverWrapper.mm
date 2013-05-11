@@ -22,8 +22,15 @@
 
 @end
 
-void cNotification(WCBroadcastReceiverWrapper* receiver,NSThread* targetThread , const WyLight::Endpoint& endpoint)
+void cNotification(WCBroadcastReceiverWrapper* receiver,NSThread* targetThread ,const size_t index, const WyLight::Endpoint& endpoint)
 {
+	unsigned char bytes[4];
+    bytes[0] = endpoint.GetIp() & 0xFF;
+    bytes[1] = (endpoint.GetIp() >> 8) & 0xFF;
+    bytes[2] = (endpoint.GetIp() >> 16) & 0xFF;
+    bytes[3] = (endpoint.GetIp() >> 24) & 0xFF;
+	
+	NSLog(@"New: %zd : %d.%d.%d.%d, %d  %s", index, bytes[3], bytes[2], bytes[1], bytes[0], endpoint.GetPort(), endpoint.GetDeviceId().c_str());
 	[receiver performSelector:@selector(postNotification) onThread:targetThread withObject:nil waitUntilDone:NO];
 }
 
@@ -36,14 +43,9 @@ void cNotification(WCBroadcastReceiverWrapper* receiver,NSThread* targetThread ,
     {
         // Start BroadcastReceiver
         self.mStream = new std::stringstream();
-        self.receiver = new WyLight::BroadcastReceiver(55555);
-		self.receiver->SetCallbackAddedNewRemote(std::bind(&cNotification, self, [NSThread currentThread], std::placeholders::_1));
-#ifndef DEBUG
-        self.receiverThread = new std::thread(std::ref(*self.receiver), std::ref(*self.mStream));
-#else
-		self.receiverThread = new std::thread(std::ref(*self.receiver), std::ref(std::cout));
+        self.receiver = new WyLight::BroadcastReceiver(55555, "recv.txt", std::bind(&cNotification, self, [NSThread currentThread], std::placeholders::_1, std::placeholders::_2));
+		self.receiverThread = new std::thread(std::ref(*self.receiver));
 		NSLog(@"start receiver");
-#endif
 	}
     return self;
 }
