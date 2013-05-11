@@ -190,7 +190,7 @@ class Control
 		 * @param name 1 - 32 characters, unique name which apperas in the broadcast message
 		 * @return false, in case of an error
 		 */
-		bool ConfModuleForWlan(const std::string& phrase, const std::string& ssid, const std::string& name = "Wifly_Light") const;
+		bool ConfModuleForWlan(const std::string& phrase, const std::string& ssid, const std::string& deviceId = "Wifly_Light") const;
 
 		/**
 		 * Reboot the modul. ATTENTION: You have to reconnect after a reboot

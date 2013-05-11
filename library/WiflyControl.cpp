@@ -454,8 +454,6 @@ void WyLight::Control::BlRunApp(void) const throw (ConnectionTimeout, FatalError
 	throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": response of wrong length");
 }
 
-#pragma mark RN171-METHODES
-
 std::string WyLight::Control::ConfGetSsid(void) const
 {
 	std::string result{};
@@ -535,7 +533,7 @@ bool WyLight::Control::ConfModuleAsSoftAP(const std::string& accesspointName) co
 	return ConfRebootWlanModule();
 }
 
-bool WyLight::Control::ConfModuleForWlan(const std::string& phrase, const std::string& ssid, const std::string& name) const
+bool WyLight::Control::ConfModuleForWlan(const std::string& phrase, const std::string& ssid, const std::string& deviceId) const
 {
 	if(!ConfSetDefaults())
 	{
@@ -549,7 +547,7 @@ bool WyLight::Control::ConfModuleForWlan(const std::string& phrase, const std::s
 		return false;
 	}
 	
-	if(!ConfSetDeviceId(name))
+	if(!ConfSetDeviceId(deviceId))
 	{
 		Trace(ZONE_ERROR, "set device name failed\n");
 		return false;
@@ -681,8 +679,6 @@ bool WyLight::Control::ConfRebootWlanModule(void) const
 	}
 	return true;
 }
-
-#pragma mark FIRMWARE-METHODES
 
 void WyLight::Control::FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {

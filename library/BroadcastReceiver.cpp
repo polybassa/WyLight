@@ -32,7 +32,13 @@ const std::string WyLight::BroadcastReceiver::STOP_MSG{"StopThread"};
 const WyLight::Endpoint WyLight::BroadcastReceiver::EMPTY_ENDPOINT;
 
 WyLight::BroadcastReceiver::BroadcastReceiver(uint16_t port)
+
+#if defined(__cplusplus) && (__cplusplus < 201103L)
+#warning "Check for a newer compiler to avoid using this C++11 wrapper file"
+	: mPort(port), mIsRunning(true), mNumInstances(0), mAddedNewRemoteCallback(NULL)
+#else
 	: mPort(port), mIsRunning(true), mNumInstances(0), mAddedNewRemoteCallback(nullptr)
+#endif
 {
 }
 

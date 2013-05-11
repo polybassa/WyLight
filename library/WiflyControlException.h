@@ -28,6 +28,21 @@
 #include "wifly_cmd.h"
 #include "BlRequest.h"
 
+
+#if defined(__cplusplus) && (__cplusplus < 201103L)
+#warning "Check for a newer compiler to avoid using this C++11 wrapper file"
+#include <sstream>
+namespace std {
+template <class T>
+std::string to_string(T value)
+{
+	std::stringstream converter;
+	converter << value;
+	return converter.str();
+};
+}
+#endif
+
 namespace WyLight{
 
 /******************************************************************************/
