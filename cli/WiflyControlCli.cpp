@@ -80,33 +80,25 @@ void WiflyControlCli::ShowHelp(void) const
 	return;
 }
 
+void newRemoteCallback(const size_t index, const WyLight::Endpoint& newEndpoint)
+{
+	std::cout << "New: " << index << ':' << newEndpoint << '\n';
+}
+
 int main(int argc, const char* argv[])
 {
 	WyLight::BroadcastReceiver receiver(55555);
+	receiver.SetCallbackAddedNewRemote(newRemoteCallback);
 	std::stringstream logStream;
 	std::thread t(std::ref(receiver), std::ref(logStream));
 
 	// wait for user input
-	size_t selection;
-	std::thread u([&]
-	{
-		size_t numOfRemotes = 0;
-		while(selection >= receiver.NumRemotes())
-		{
-			sleep(1);
-			if(numOfRemotes != receiver.NumRemotes())
-			{
-				numOfRemotes = receiver.NumRemotes();
-				for(int i = 0; i < 100; i++) cout << endl;
-				receiver.PrintAllEndpoints(cout);
-	}}});
-	
+	size_t selection;	
 	do
 	{
 		std::cin >> selection;
 	} while(selection >= receiver.NumRemotes());
 	
-	u.join();
 	receiver.Stop();
 	t.join();
 	

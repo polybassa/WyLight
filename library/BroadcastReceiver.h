@@ -101,7 +101,7 @@ class BroadcastReceiver
 		/**
 		 * Callback methode to notify that a new Enpoint was add to the IpTable
 		 */
-		void SetCallbackAddedNewRemote(const std::function<void(const Endpoint& newEndpoint)>& functionObj);
+		void SetCallbackAddedNewRemote(const std::function<void(size_t index, const Endpoint& newEndpoint)>& functionObj);
 
 		/**
 		 * Sends a stop event to terminate execution of operator()
@@ -123,7 +123,7 @@ class BroadcastReceiver
 		std::atomic<int32_t> mNumInstances;
 		std::mutex mMutex;
 		const std::string mRecentFilename;
-		std::function<void(const Endpoint& newEndpoint)> mAddedNewRemoteCallback;
+		std::function<void(size_t index, const Endpoint& newEndpoint)> mAddedNewRemoteCallback;
 
 		/**
 		 * Insert threadsafe a new endpoint to the mIpTable

@@ -67,9 +67,10 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 		{
 			const Endpoint remote = GetNextRemote(pTimeout);
 			if(remote.IsValid()) {
-				out << numRemotes << ':' << remote << '\n';
+				if(mAddedNewRemoteCallback) {
+					mAddedNewRemoteCallback(numRemotes, remote);
+				}
 				numRemotes++;
-				if(mAddedNewRemoteCallback) mAddedNewRemoteCallback(remote);
 			}
 			gettimeofday(&now, NULL);
 		} while(mIsRunning && timeval_sub(&endTime, &now, pTimeout));
@@ -158,7 +159,7 @@ void BroadcastReceiver::ReadRecentEndpoints(const std::string& filename)
 	inFile.close();
 }
 
-void BroadcastReceiver::SetCallbackAddedNewRemote(const std::function<void(const Endpoint& newEndpoint)>& functionObj)
+void BroadcastReceiver::SetCallbackAddedNewRemote(const std::function<void(size_t index, const Endpoint& newEndpoint)>& functionObj)
 {
 	mAddedNewRemoteCallback = functionObj;
 }
