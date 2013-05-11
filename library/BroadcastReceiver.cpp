@@ -23,15 +23,17 @@
 #include <iostream>
 #include <stdio.h>
 
+namespace WyLight {
+
 static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-const std::string WyLight::BroadcastReceiver::DEVICE_ID("Wifly_Light");
-const std::string WyLight::BroadcastReceiver::DEVICE_ID_OLD("WiFly");
-const std::string WyLight::BroadcastReceiver::DEVICE_VERSION("WiFly Ver 2.45, 10-09-2012");
-const std::string WyLight::BroadcastReceiver::STOP_MSG{"StopThread"};
-const WyLight::Endpoint WyLight::BroadcastReceiver::EMPTY_ENDPOINT;
+const std::string BroadcastReceiver::DEVICE_ID("Wifly_Light");
+const std::string BroadcastReceiver::DEVICE_ID_OLD("WiFly");
+const std::string BroadcastReceiver::DEVICE_VERSION("WiFly Ver 2.45, 10-09-2012");
+const std::string BroadcastReceiver::STOP_MSG{"StopThread"};
+const Endpoint BroadcastReceiver::EMPTY_ENDPOINT;
 
-WyLight::BroadcastReceiver::BroadcastReceiver(uint16_t port)
+BroadcastReceiver::BroadcastReceiver(uint16_t port)
 
 #if defined(__cplusplus) && (__cplusplus < 201103L)
 #warning "Check for a newer compiler to avoid using this C++11 wrapper file"
@@ -42,12 +44,12 @@ WyLight::BroadcastReceiver::BroadcastReceiver(uint16_t port)
 {
 }
 
-WyLight::BroadcastReceiver::~BroadcastReceiver(void)
+BroadcastReceiver::~BroadcastReceiver(void)
 {
 	Stop();
 }
 
-void WyLight::BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
+void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 {
 	// only one thread allowed per instance
 	if(0 == std::atomic_fetch_add(&mNumInstances, 1))
@@ -75,7 +77,7 @@ void WyLight::BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeou
 	std::atomic_fetch_sub(&mNumInstances, 1);
 }
 
-void WyLight::BroadcastReceiver::PrintAllEndpoints(std::ostream& out)
+void BroadcastReceiver::PrintAllEndpoints(std::ostream& out)
 {
 	int index = 0;
 	//TODO wait for full c++11 features in android ndk. by the way we should move this printing functions out of BroadcastReceiver into cli or whoever wants to "print" something out
@@ -87,7 +89,7 @@ void WyLight::BroadcastReceiver::PrintAllEndpoints(std::ostream& out)
 	}	
 }
 
-const WyLight::Endpoint& WyLight::BroadcastReceiver::GetEndpoint(size_t index) const
+const Endpoint& BroadcastReceiver::GetEndpoint(size_t index) const
 {
 	if(index >= mIpTable.size())
 		return EMPTY_ENDPOINT;
@@ -97,7 +99,7 @@ const WyLight::Endpoint& WyLight::BroadcastReceiver::GetEndpoint(size_t index) c
 	return *it;
 }
 
-WyLight::Endpoint WyLight::BroadcastReceiver::GetNextRemote(timeval* timeout) throw (FatalError)
+Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout) throw (FatalError)
 {
 	UdpSocket udpSock(INADDR_ANY, mPort, true, 1);
 	sockaddr_storage remoteAddr;
@@ -118,20 +120,20 @@ WyLight::Endpoint WyLight::BroadcastReceiver::GetNextRemote(timeval* timeout) th
 	return Endpoint();
 }
 
-size_t WyLight::BroadcastReceiver::NumRemotes(void) const
+size_t BroadcastReceiver::NumRemotes(void) const
 {
 	return mIpTable.size();
 }
 
-void WyLight::BroadcastReceiver::Stop(void)
+void BroadcastReceiver::Stop(void)
 {
 	mIsRunning = false;
 	UdpSocket sock(INADDR_LOOPBACK, mPort, false);
 	sock.Send((uint8_t*)STOP_MSG.data(), STOP_MSG.size());
 }
 
-void WyLight::BroadcastReceiver::SetCallbackAddedNewRemote(const std::function<void(const Endpoint& newEndpoint)>& functionObj)
+void BroadcastReceiver::SetCallbackAddedNewRemote(const std::function<void(const Endpoint& newEndpoint)>& functionObj)
 {
 	mAddedNewRemoteCallback = functionObj;
 }
-
+} /* namespace WyLight */

@@ -25,7 +25,7 @@
 #include "intelhexclass.h"
 #include "FwRequest.h"
 
-using namespace WyLight;
+namespace WyLight {
 
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
@@ -141,25 +141,7 @@ size_t ComProxy::Send(const FwRequest& request, response_frame* pResponse, size_
 	return pResponse->length;
 }
 
-namespace WyLight {
-/**
- * friendships for unittesting only
- */
-bool ut_WiflyControl_ConfSetDefaults(WyLight::Control& ref)
-{
-	return ref.ConfSetDefaults();
-}
-
-/**
- * friendships for unittesting only
- */
-bool ut_WiflyControl_ConfSetWlan(WyLight::Control& ref, const std::string& phrase, const std::string& ssid)
-{
-	return ref.ConfSetWlan(phrase, ssid);
-}
-}
-
-// wrapper to test WyLight::Control
+// wrapper to test Control
 static std::list<std::string> g_TestBuffer;
 static bool g_ProxySaved = false;
 static bool g_ProxyConnected = false;
@@ -215,7 +197,7 @@ size_t ut_WiflyControl_BlEraseEeprom(void)
 		g_EepromRndDataPool[i] = (uint8_t) rand() % 255;
 	}
 	
-	WyLight::Control testctrl(0,0);
+	Control testctrl(0,0);
 	
 	testctrl.BlEraseEeprom();
 	
@@ -236,7 +218,7 @@ size_t ut_WiflyControl_BlEepromRead(void)
 	for(unsigned int i = 0; i < sizeof(g_EepromRndDataPool); i++)
 		g_EepromRndDataPool[i] = (uint8_t) rand() % 255;
 	
-	WyLight::Control testctrl(0,0);
+	Control testctrl(0,0);
 	
 	std::stringstream mStream;
 	
@@ -257,7 +239,6 @@ size_t ut_WiflyControl_BlEepromRead(void)
 	
 }
 
-namespace WyLight {
 size_t ut_WiflyControl_BlEepromWrite(void)
 {
 	TestCaseBegin();
@@ -273,7 +254,7 @@ size_t ut_WiflyControl_BlEepromWrite(void)
 		m_EepromRndDataPool[i] = (uint8_t) rand() % 255;
 	}
 	
-	WyLight::Control testctrl(0,0);
+	Control testctrl(0,0);
 	
 	testctrl.BlWriteEeprom(0, m_EepromRndDataPool, EEPROM_SIZE);
 		
@@ -283,8 +264,6 @@ size_t ut_WiflyControl_BlEepromWrite(void)
 	}
 	
 	TestCaseEnd();
-
-}
 }
 
 size_t ut_WiflyControl_BlEraseFlash(void)
@@ -298,7 +277,7 @@ size_t ut_WiflyControl_BlEraseFlash(void)
 		g_FlashRndDataPool[i] = (uint8_t) rand() % 255;
 		
 	BlInfo blInfo;
-	WyLight::Control testctrl(0,0);
+	Control testctrl(0,0);
 	try
 	{
 		testctrl.BlReadInfo(blInfo);
@@ -324,7 +303,7 @@ size_t ut_WiflyControl_BlFlashRead(void)
 	for(unsigned int i = 0; i < sizeof(g_FlashRndDataPool); i++)
 		g_FlashRndDataPool[i] = (uint8_t) rand() % 255;
 	
-	WyLight::Control testctrl(0,0);
+	Control testctrl(0,0);
 	
 	std::stringstream mStream;
 	
@@ -343,7 +322,6 @@ size_t ut_WiflyControl_BlFlashRead(void)
 
 }
 
-namespace WyLight{
 size_t ut_WiflyControl_BlFlashWrite(void)
 {
 	TestCaseBegin();
@@ -359,7 +337,7 @@ size_t ut_WiflyControl_BlFlashWrite(void)
 		m_FlashRndDataPool[i] = (uint8_t) rand() % 255;
 	}
 	
-	WyLight::Control testctrl(0,0);
+	Control testctrl(0,0);
 	
 	testctrl.BlWriteFlash(0, m_FlashRndDataPool, sizeof(m_FlashRndDataPool));
 	
@@ -369,14 +347,12 @@ size_t ut_WiflyControl_BlFlashWrite(void)
 	}
 	
 	TestCaseEnd();
-	
-}
 }
 
 size_t ut_WiflyControl_BlReadInfo(void)
 {
 	TestCaseBegin();
-	WyLight::Control testctrl(0,0);
+	Control testctrl(0,0);
 	BlInfo mInfo;
 	testctrl.BlReadInfo(mInfo);
 	CHECK(mInfo.familyId == 4);
@@ -417,10 +393,10 @@ size_t ut_WiflyControl_ConfSetDefaults(void)
 	};
 	static const size_t numCommands = sizeof(commands) / sizeof(commands[0]);
 
-	WyLight::Control testee(0, 0);
+	Control testee(0, 0);
 
 	g_TestBuffer.clear();
-	CHECK(ut_WiflyControl_ConfSetDefaults(testee));
+	CHECK(testee.ConfSetDefaults());
 	CHECK(!g_ProxyConnected);
 	CHECK(g_ProxySaved);
 	CHECK(numCommands == g_TestBuffer.size());
@@ -442,24 +418,24 @@ size_t ut_WiflyControl_ConfSetWlan(void)
 	static const std::string phraseToLong(phrase + " ");
 	static const std::string ssid      ("12345678911234567892123456789312");
 	static const std::string ssidToLong(ssid + " ");
-	WyLight::Control testee(0, 0);
+	Control testee(0, 0);
 	
 	// passphrase to short
-	CHECK(!ut_WiflyControl_ConfSetWlan(testee, "", ssid));
+	CHECK(!testee.ConfSetWlan("", ssid));
 	// passphrase to long
-	CHECK(!ut_WiflyControl_ConfSetWlan(testee, phraseToLong, ssid));
+	CHECK(!testee.ConfSetWlan(phraseToLong, ssid));
 
 	// passphrase contains not only alphanumeric characters
-	CHECK(!ut_WiflyControl_ConfSetWlan(testee, phraseContainsNonAlNum, ssid));
+	CHECK(!testee.ConfSetWlan(phraseContainsNonAlNum, ssid));
 
 	// ssid to short
-	CHECK(!ut_WiflyControl_ConfSetWlan(testee, phrase, ""));
+	CHECK(!testee.ConfSetWlan(phrase, ""));
 
 	// ssid to long
-	CHECK(!ut_WiflyControl_ConfSetWlan(testee, phrase, ssidToLong));
+	CHECK(!testee.ConfSetWlan(phrase, ssidToLong));
 
 	// valid passphrase and ssid
-	CHECK(ut_WiflyControl_ConfSetWlan(testee, phrase, ssid));
+	CHECK(testee.ConfSetWlan(phrase, ssid));
 	
 	TestCaseEnd();
 }
@@ -467,7 +443,7 @@ size_t ut_WiflyControl_ConfSetWlan(void)
 size_t ut_WiflyControl_FwSetColorDirectRedOnly(void)
 {
 	TestCaseBegin();
-	WyLight::Control testee(0, 0);
+	Control testee(0, 0);
 	
 	// three leds only, first red, second green last blue
 	uint8_t shortBuffer[1]{0xff};
@@ -485,7 +461,7 @@ size_t ut_WiflyControl_FwSetColorDirectRedOnly(void)
 size_t ut_WiflyControl_FwSetColorDirectThreeLeds(void)
 {
 	TestCaseBegin();
-	WyLight::Control testee(0, 0);
+	Control testee(0, 0);
 	
 	// three leds only, first red, second green last blue
 	uint8_t shortBuffer[3 * 3];
@@ -507,7 +483,7 @@ size_t ut_WiflyControl_FwSetColorDirectThreeLeds(void)
 size_t ut_WiflyControl_FwSetColorDirectToMany(void)
 {
 	TestCaseBegin();
-	WyLight::Control testee(0, 0);
+	Control testee(0, 0);
 	
 	// three leds only, first red, second green last blue
 	uint8_t shortBuffer[2*NUM_OF_LED * 3];
@@ -538,7 +514,7 @@ size_t ut_WiflyControl_FwSetFade_1(void)
 	expectedOutgoingFrame.data.set_fade.fadeTmms = htons(0x0001);
 
 	TestCaseBegin();
-	WyLight::Control testee(0, 0);
+	Control testee(0, 0);
 	
 	// set color
 	testee.FwSetFade("ff00ff");
@@ -566,7 +542,7 @@ size_t ut_WiflyControl_FwSetFade_2(void)
 	expectedOutgoingFrame.data.set_fade.fadeTmms = htons(1000);
 	
 	TestCaseBegin();
-	WyLight::Control testee(0, 0);
+	Control testee(0, 0);
 	
 	// set color
 	testee.FwSetFade("112233", 1000, "11223344", true);
@@ -593,7 +569,7 @@ size_t ut_WiflyControl_FwSetGradient(void)
 	expectedOutgoingFrame.data.set_gradient.fadeTmms = htons(1000);
 	
 	TestCaseBegin();
-	WyLight::Control testee(0, 0);
+	Control testee(0, 0);
 	
 	testee.FwSetGradient("112233","332211", 1000, true, 10, 127);
 	TraceBuffer(ZONE_INFO, &g_SendFrame, sizeof(cmd_set_gradient) + 1, "%02x ", "IS  :");
@@ -611,7 +587,7 @@ size_t ut_WiflyControl_FwSetWait(void)
 	expectedOutgoingFrame.data.wait.waitTmms = htons(1000);
 	
 	TestCaseBegin();
-	WyLight::Control testee(0, 0);
+	Control testee(0, 0);
 	
 	testee.FwSetWait(1000);
 	TraceBuffer(ZONE_INFO, &g_SendFrame, sizeof(cmd_wait) + 1, "%02x ", "IS  :");
@@ -640,7 +616,7 @@ size_t ut_WiflyControl_FwSetRtc(void)
 
 	
 	TestCaseBegin();
-	WyLight::Control testee(0, 0);
+	Control testee(0, 0);
 	
 	testee.FwSetRtc(timeinfo);
 	TraceBuffer(ZONE_INFO, &g_SendFrame, sizeof(rtc_time)+1, "%02x ", "IS  :");
@@ -656,7 +632,7 @@ size_t ut_WiflyControl_FwClearScript(void)
 	expectedOutgoingFrame.cmd = CLEAR_SCRIPT;
 	
 	TestCaseBegin();
-	WyLight::Control testee(0, 0);
+	Control testee(0, 0);
 	
 	testee.FwClearScript();
 	TraceBuffer(ZONE_INFO, &g_SendFrame, 1, "%02x ", "IS  :");
@@ -672,7 +648,7 @@ size_t ut_WiflyControl_FwGetTracebuffer(void)
 	expectedOutgoingFrame.cmd = GET_TRACE;
 	
 	TestCaseBegin();
-	WyLight::Control testee(0, 0);
+	Control testee(0, 0);
 	
 	try {
 		testee.FwGetTracebuffer();
@@ -692,7 +668,7 @@ size_t ut_WiflyControl_FwGetCycletime(void)
 	expectedOutgoingFrame.cmd = GET_CYCLETIME;
 	
 	TestCaseBegin();
-	WyLight::Control testee(0, 0);
+	Control testee(0, 0);
 	
 	try {
 		testee.FwGetCycletime();
@@ -713,7 +689,7 @@ size_t ut_WiflyControl_FwGetRtc(void)
 	expectedOutgoingFrame.cmd = GET_RTC;
 	
 	TestCaseBegin();
-	WyLight::Control testee(0, 0);
+	Control testee(0, 0);
 	
 	try {
 		testee.FwGetRtc(timeinfo);
@@ -732,7 +708,7 @@ size_t ut_WiflyControl_FwGetVersion(void)
 	expectedOutgoingFrame.cmd = GET_FW_VERSION;
 	
 	TestCaseBegin();
-	WyLight::Control testee(0, 0);
+	Control testee(0, 0);
 	
 	try {
 		testee.FwGetVersion();
@@ -755,7 +731,7 @@ size_t ut_WiflyControl_FwLoopOff(void)
 	expectedOutgoingFrame.data.loopEnd.startIndex = 0;
 	
 	TestCaseBegin();
-	WyLight::Control testee(0, 0);
+	Control testee(0, 0);
 	
 	testee.FwLoopOff(100);
 	
@@ -772,7 +748,7 @@ size_t ut_WiflyControl_FwLoopOn(void)
 	expectedOutgoingFrame.cmd = LOOP_ON;
 	
 	TestCaseBegin();
-	WyLight::Control testee(0, 0);
+	Control testee(0, 0);
 	
 	testee.FwLoopOn();
 	
@@ -782,8 +758,9 @@ size_t ut_WiflyControl_FwLoopOn(void)
 	
 	TestCaseEnd();
 }
+} /* namespace WyLight */
 
-
+using namespace WyLight;
 
 int main (int argc, const char* argv[])
 {
@@ -793,9 +770,9 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_WiflyControl_BlReadInfo);
 	RunTest(true, ut_WiflyControl_BlEraseFlash);
 	RunTest(true, ut_WiflyControl_BlFlashRead);
-	RunTest(true, WyLight::ut_WiflyControl_BlFlashWrite);
+	RunTest(true, ut_WiflyControl_BlFlashWrite);
 	RunTest(true, ut_WiflyControl_BlEepromRead);
-	RunTest(true, WyLight::ut_WiflyControl_BlEepromWrite);
+	RunTest(true, ut_WiflyControl_BlEepromWrite);
 	RunTest(true, ut_WiflyControl_BlEraseEeprom);
 	RunTest(true, ut_WiflyControl_FwSetColorDirectRedOnly);
 	RunTest(true, ut_WiflyControl_FwSetColorDirectThreeLeds);
