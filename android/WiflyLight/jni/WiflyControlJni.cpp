@@ -18,10 +18,12 @@
 
 #include "BroadcastReceiver.h"
 #include "WiflyControl.h"
+#include <sstream>
 #include <unistd.h>
 #include <jni.h>
 
-static WiflyControl* g_pControl = NULL;
+namespace WyLight {
+static Control* g_pControl = NULL;
 
 void ThrowJniException(JNIEnv* env, const FatalError& e) {
 		jclass javaException = env->FindClass(e.GetJavaClassType());
@@ -37,17 +39,20 @@ void ThrowJniException(JNIEnv* env, const FatalError& e) {
 	}
 
 extern "C" {
-jlong Java_biz_bruenn_WiflyLight_RemoteCollector_createBroadcastReceiver(JNIEnv* env, jobject ref)
+jlong Java_biz_bruenn_WiflyLight_BroadcastReceiver_create(JNIEnv* env, jobject ref, jstring path)
 {
-	return (jlong) new BroadcastReceiver(BroadcastReceiver::BROADCAST_PORT);
+	const char* myPath = env->GetStringUTFChars(path, 0);
+	const jlong result = (jlong) new BroadcastReceiver(BroadcastReceiver::BROADCAST_PORT, myPath);
+	env->ReleaseStringUTFChars(path, myPath);
+	return result;
 }
 
-void Java_biz_bruenn_WiflyLight_RemoteCollector_releaseBroadcastReceiver(JNIEnv* env, jobject ref, jlong pNative)
+jlong Java_biz_bruenn_WiflyLight_BroadcastReceiver_getEndpoint(JNIEnv* env, jobject ref, jlong pNative, jlong index)
 {
-	delete (BroadcastReceiver*)pNative;
+	return ((BroadcastReceiver*)pNative)->GetEndpoint(index).AsUint64();
 }
 
-jlong Java_biz_bruenn_WiflyLight_RemoteCollector_getNextRemote(JNIEnv* env, jobject ref, jlong pNative, jlong timeoutNanos)
+jlong Java_biz_bruenn_WiflyLight_BroadcastReceiver_getNextRemote(JNIEnv* env, jobject ref, jlong pNative, jlong timeoutNanos)
 {
 	timeval timeout;
 	timeout.tv_sec = timeoutNanos / 1000000000L;
@@ -55,12 +60,19 @@ jlong Java_biz_bruenn_WiflyLight_RemoteCollector_getNextRemote(JNIEnv* env, jobj
 	return ((BroadcastReceiver*)pNative)->GetNextRemote(&timeout).AsUint64();
 }
 
-jlong Java_biz_bruenn_WiflyLight_WiflyControl_create(JNIEnv* env, jobject ref, jint ipv4Addr, jshort port)
+void Java_biz_bruenn_WiflyLight_BroadcastReceiver_release(JNIEnv* env, jobject ref, jlong pNative)
+{
+	delete (BroadcastReceiver*)pNative;
+}
+
+jlong Java_biz_bruenn_WiflyLight_Endpoint_connect(JNIEnv* env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint)
 {
 	// TODO make this threadsafe
 	if(NULL == g_pControl) {
 		try {
-			g_pControl = new WiflyControl(ipv4Addr, port);
+			Endpoint& remote = ((BroadcastReceiver*)pBroadcastReceiver)->GetEndpointByFingerprint(fingerprint);
+			++remote;
+			g_pControl = new Control(remote.GetIp(), remote.GetPort());
 			return reinterpret_cast<jlong>(g_pControl);
 		} catch (FatalError& e) {
 			g_pControl = NULL;
@@ -72,7 +84,7 @@ jlong Java_biz_bruenn_WiflyLight_WiflyControl_create(JNIEnv* env, jobject ref, j
 
 jstring Java_biz_bruenn_WiflyLight_WiflyControl_ConfGetSsid(JNIEnv* env, jobject ref, jlong pNative)
 {
-	std::string mySsid = reinterpret_cast<WiflyControl*>(pNative)->ConfGetSsid();
+	std::string mySsid = reinterpret_cast<Control*>(pNative)->ConfGetSsid();
 	return env->NewStringUTF(mySsid.data());
 }
 
@@ -80,7 +92,7 @@ jboolean Java_biz_bruenn_WiflyLight_WiflyControl_ConfSetWlan(JNIEnv* env, jobjec
 {
 	const char* myPassphrase = env->GetStringUTFChars(passphrase, 0);
 	const char* mySsid = env->GetStringUTFChars(ssid, 0);
-	jboolean result = reinterpret_cast<WiflyControl*>(pNative)->ConfSetWlan(myPassphrase, mySsid);
+	jboolean result = reinterpret_cast<Control*>(pNative)->ConfModuleForWlan(myPassphrase, mySsid);
 	env->ReleaseStringUTFChars(passphrase, myPassphrase);
 	env->ReleaseStringUTFChars(ssid, mySsid);
 	return result;
@@ -88,35 +100,36 @@ jboolean Java_biz_bruenn_WiflyLight_WiflyControl_ConfSetWlan(JNIEnv* env, jobjec
 
 jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwClearScript(JNIEnv* env, jobject ref, jlong pNative)
 {
-	TRY_CATCH_RETURN_BOOL(reinterpret_cast<WiflyControl*>(pNative)->FwClearScript());
+	TRY_CATCH_RETURN_BOOL(reinterpret_cast<Control*>(pNative)->FwClearScript());
 }
 
 jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwLoopOff(JNIEnv* env, jobject ref, jlong pNative, jbyte numLoops)
 {
-	TRY_CATCH_RETURN_BOOL(reinterpret_cast<WiflyControl*>(pNative)->FwLoopOff(numLoops));
+	TRY_CATCH_RETURN_BOOL(reinterpret_cast<Control*>(pNative)->FwLoopOff(numLoops));
 }
 
 jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwLoopOn(JNIEnv* env, jobject ref, jlong pNative)
 {
-	TRY_CATCH_RETURN_BOOL(reinterpret_cast<WiflyControl*>(pNative)->FwLoopOn());
+	TRY_CATCH_RETURN_BOOL(reinterpret_cast<Control*>(pNative)->FwLoopOn());
 }
 
 jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwSetColor(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr)
 {
-	TRY_CATCH_RETURN_BOOL(reinterpret_cast<WiflyControl*>(pNative)->FwSetFade(argb, 0, addr, false));
+	TRY_CATCH_RETURN_BOOL(reinterpret_cast<Control*>(pNative)->FwSetFade(argb, 0, addr, false));
 }
 
 jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwSetFade(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr, jshort fadeTime)
 {
-	TRY_CATCH_RETURN_BOOL(reinterpret_cast<WiflyControl*>(pNative)->FwSetFade(argb, fadeTime, addr, false));
+	TRY_CATCH_RETURN_BOOL(reinterpret_cast<Control*>(pNative)->FwSetFade(argb, fadeTime, addr, false));
 }
 
 void Java_biz_bruenn_WiflyLight_WiflyControl_release(JNIEnv* env, jobject ref, jlong pNative)
 {
-	if((WiflyControl*)pNative == g_pControl) {
+	if((Control*)pNative == g_pControl) {
 		delete g_pControl;
 		g_pControl = NULL;
 	}
 }
-}
+} /* extern "C" */
+} /* namespace WyLight */
 

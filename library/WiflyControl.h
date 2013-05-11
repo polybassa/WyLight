@@ -190,7 +190,7 @@ class Control
 		 * @param name 1 - 32 characters, unique name which apperas in the broadcast message
 		 * @return false, in case of an error
 		 */
-		bool ConfModuleForWlan(const std::string& phrase, const std::string& ssid, const std::string& name = "Wifly_Light") const;
+		bool ConfModuleForWlan(const std::string& phrase, const std::string& ssid, const std::string& deviceId = "Wifly_Light") const;
 
 		/**
 		 * Reboot the modul. ATTENTION: You have to reconnect after a reboot
@@ -510,27 +510,11 @@ class Control
 		 */
 		bool ConfSetWlan(const std::string& phrase, const std::string& ssid) const;
 	
-
 /* ------------------ friendships for unittesting only ------------------- */
-	   /**
-		* friendships for unittesting only
-		*/
-		friend bool ut_WiflyControl_ConfSetDefaults(Control& ref);
-	
-		/**
-		 * friendships for unittesting only
-		 */
-		friend bool ut_WiflyControl_ConfSetWlan(Control& ref, const std::string& phrase, const std::string& ssid);
-	
-		/**
-		 * friendships for unittesting only
-		 */
 		friend size_t ut_WiflyControl_BlEepromWrite(void);
-
-		/**
-		* friendships for unittesting only
-		*/
 		friend size_t ut_WiflyControl_BlFlashWrite(void);
+		friend size_t ut_WiflyControl_ConfSetDefaults(void);
+		friend size_t ut_WiflyControl_ConfSetWlan(void);
 };
 }
 #endif /* #ifndef _WIFLYCONTROL_H_ */
