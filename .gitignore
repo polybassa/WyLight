@@ -17,3 +17,6 @@ library/intelhexclass.o
 *.eps
 
 UserInterfaceState.xcuserstate
+TestRecentEndpoints.txt
+TestRecentEndpoints2.txt
+recent.txt

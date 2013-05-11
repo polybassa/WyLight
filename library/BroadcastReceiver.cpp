@@ -54,7 +54,7 @@ void BroadcastReceiver::operator() (timeval* pTimeout) throw (FatalError)
 	if(0 == std::atomic_fetch_add(&mNumInstances, 1))
 	try
 	{
-		size_t numRemotes = 0;
+		size_t numRemotes = mIpTable.size();
 		timeval endTime, now;
 		gettimeofday(&endTime, NULL);
 		timeval_add(&endTime, pTimeout);

@@ -112,8 +112,10 @@ size_t UdpSocket::Send(const uint8_t* frame, size_t length) const
 }
 
 std::ostringstream g_TestOut;
+size_t g_LastIndex;
 void TestCallback(size_t index, const Endpoint& newEndpoint)
 {
+	g_LastIndex = index;
 	g_TestOut << index << ':' << newEndpoint << '\n';	
 }
 
@@ -270,6 +272,63 @@ int32_t ut_BroadcastReceiver_TestRecentEndpoints(void)
 	TestCaseEnd();
 }
 
+int32_t ut_BroadcastReceiver_TestRecentEndpoints2(void)
+{
+	g_LastIndex = 0xff;
+	static const std::string TEST_FILENAME = "TestRecentEndpoints2.txt";
+	TestCaseBegin();
+	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
+	g_TestOut.str("");
+	{
+		BroadcastReceiver dummyReceiver(BroadcastReceiver::BROADCAST_PORT, "", TestCallback);
+		timeval timeout = {2, 0};
+		std::thread myThread(std::ref(dummyReceiver), &timeout);
+		
+		nanosleep(&NANOSLEEP_TIME, NULL);
+		CHECK(g_LastIndex == 0);
+		SetTestSocket(&g_SecondRemote, 0, capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
+		nanosleep(&NANOSLEEP_TIME, NULL);
+		CHECK(g_LastIndex == 1);
+		
+		dummyReceiver.Stop();
+		myThread.join();
+	
+		Endpoint& firstScored = dummyReceiver.GetEndpoint(0);
+		++(++firstScored);
+		Endpoint& secondScored = dummyReceiver.GetEndpoint(1);
+		++(++secondScored);
+		
+		CHECK(2 == dummyReceiver.NumRemotes());
+		CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
+		CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
+	
+		dummyReceiver.WriteRecentEndpoints(TEST_FILENAME, 2);
+	}
+	BroadcastReceiver reread(BroadcastReceiver::BROADCAST_PORT, TEST_FILENAME, TestCallback);
+	timeval timeout = {2, 0};
+	std::thread myThread(std::ref(reread), &timeout);
+	
+	CHECK(2 == reread.NumRemotes());
+	CHECK(0x7F000001 == reread.GetEndpoint(0).GetIp());
+	CHECK(2000 == reread.GetEndpoint(0).GetPort());
+	
+	nanosleep(&NANOSLEEP_TIME, NULL);
+	SetTestSocket(&g_ThirdRemote, 0, capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
+	nanosleep(&NANOSLEEP_TIME, NULL);
+	CHECK(2 == g_LastIndex);
+
+	
+	reread.Stop();
+	myThread.join();
+	
+	CHECK(3 == reread.NumRemotes());
+	CHECK(0x7F000001 == reread.GetEndpoint(0).GetIp());
+	CHECK(2000 == reread.GetEndpoint(0).GetPort());
+	CHECK(0x7F000002 == reread.GetEndpoint(1).GetIp());
+	CHECK(2000 == reread.GetEndpoint(1).GetPort());
+	TestCaseEnd();
+}
+
 
 int main (int argc, const char* argv[])
 {
@@ -280,6 +339,7 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_BroadcastReceiver_TestTwoSame);
 	RunTest(true, ut_BroadcastReceiver_TestNoTimeout);
 	RunTest(true, ut_BroadcastReceiver_TestRecentEndpoints);
+	RunTest(true, ut_BroadcastReceiver_TestRecentEndpoints2);
 	UnitTestMainEnd();
 }
 
