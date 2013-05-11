@@ -59,10 +59,9 @@ class BroadcastReceiver
 
 		/**
 		 * Listen for broadcasts and print them to a stream
-		 * @param out stream to print collected remotes on
 		 * @param timeout in seconds, until execution is terminated, to wait indefinetly use NULL (default)
 		 */
-		void operator() (std::ostream& out, timeval* timeout = NULL);
+		void operator() (timeval* timeout = NULL) throw (FatalError);
 
 		/*
 		 * Get a reference to the endpoint at the specified index
@@ -117,7 +116,7 @@ class BroadcastReceiver
 		std::atomic<int32_t> mNumInstances;
 		std::mutex mMutex;
 		const std::string mRecentFilename;
-		const std::function<void(size_t index, const Endpoint& newEndpoint)> mAddedNewRemoteCallback;
+		const std::function<void(size_t index, const Endpoint& newRemote)> mOnNewRemote;
 
 		/**
 		 * Insert threadsafe a new endpoint to the mIpTable

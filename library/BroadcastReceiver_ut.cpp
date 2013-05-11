@@ -135,7 +135,7 @@ int32_t ut_BroadcastReceiver_TestGetEndpoint(void)
 	g_TestOut.str("");
 	BroadcastReceiver dummyReceiver(BroadcastReceiver::BROADCAST_PORT, "", TestCallback);
 	timeval timeout = {2, 0};
-	std::thread myThread(std::ref(dummyReceiver), std::ref(g_TestOut), &timeout);
+	std::thread myThread(std::ref(dummyReceiver), &timeout);
 	nanosleep(&NANOSLEEP_TIME, NULL);
 	dummyReceiver.Stop();
 	myThread.join();
@@ -174,7 +174,7 @@ int32_t ut_BroadcastReceiver_TestSimple(void)
 	g_TestOut.str("");
 	BroadcastReceiver dummyReceiver(BroadcastReceiver::BROADCAST_PORT, "", TestCallback);
 	timeval timeout = {2, 0};
-	std::thread myThread(std::ref(dummyReceiver), std::ref(g_TestOut), &timeout);
+	std::thread myThread(std::ref(dummyReceiver), &timeout);
 	dummyReceiver.Stop();
 	myThread.join();
 
@@ -192,7 +192,7 @@ int32_t ut_BroadcastReceiver_TestTwoSame(void)
 	g_TestOut.str("");
 	BroadcastReceiver dummyReceiver(BroadcastReceiver::BROADCAST_PORT, "", TestCallback);
 	timeval timeout = {3, 0};
-	std::thread myThread(std::ref(dummyReceiver), std::ref(g_TestOut), &timeout);
+	std::thread myThread(std::ref(dummyReceiver), &timeout);
 	nanosleep(&NANOSLEEP_TIME, NULL);
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	nanosleep(&NANOSLEEP_TIME, NULL);
@@ -212,7 +212,7 @@ int32_t ut_BroadcastReceiver_TestNoTimeout(void)
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	g_TestOut.str("");
 	BroadcastReceiver dummyReceiver(BroadcastReceiver::BROADCAST_PORT, "", TestCallback);
-	std::thread myThread(std::ref(dummyReceiver), std::ref(std::cout));
+	std::thread myThread(std::ref(dummyReceiver));
 	nanosleep(&NANOSLEEP_TIME, NULL);
 	SetTestSocket(&g_SecondRemote, 0, capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
 	nanosleep(&NANOSLEEP_TIME, NULL);
@@ -241,7 +241,7 @@ int32_t ut_BroadcastReceiver_TestRecentEndpoints(void)
 	g_TestOut.str("");
 	BroadcastReceiver dummyReceiver(BroadcastReceiver::BROADCAST_PORT, "", TestCallback);
 	timeval timeout = {2, 0};
-	std::thread myThread(std::ref(dummyReceiver), std::ref(g_TestOut), &timeout);
+	std::thread myThread(std::ref(dummyReceiver), &timeout);
 
 
 	nanosleep(&NANOSLEEP_TIME, NULL);

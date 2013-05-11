@@ -36,8 +36,8 @@ const std::string BroadcastReceiver::STOP_MSG{"StopThread"};
 Endpoint BroadcastReceiver::EMPTY_ENDPOINT{};
 
 
-BroadcastReceiver::BroadcastReceiver(uint16_t port, const std::string& recentFilename, const std::function<void(size_t index, const Endpoint& newEndpoint)>& onNewEndpoint)
-	: mPort(port), mIsRunning(true), mNumInstances(0), mRecentFilename(recentFilename), mAddedNewRemoteCallback(onNewEndpoint)
+BroadcastReceiver::BroadcastReceiver(uint16_t port, const std::string& recentFilename, const std::function<void(size_t index, const Endpoint& newRemote)>& onNewRemote)
+	: mPort(port), mIsRunning(true), mNumInstances(0), mRecentFilename(recentFilename), mOnNewRemote(onNewRemote)
 {
 	ReadRecentEndpoints(mRecentFilename);
 }
@@ -48,7 +48,7 @@ BroadcastReceiver::~BroadcastReceiver(void)
 	WriteRecentEndpoints(mRecentFilename);
 }
 
-void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
+void BroadcastReceiver::operator() (timeval* pTimeout) throw (FatalError)
 {
 	// only one thread allowed per instance
 	if(0 == std::atomic_fetch_add(&mNumInstances, 1))
@@ -62,8 +62,8 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 		{
 			const Endpoint remote = GetNextRemote(pTimeout);
 			if(remote.IsValid()) {
-				if(mAddedNewRemoteCallback) {
-					mAddedNewRemoteCallback(numRemotes, remote);
+				if(mOnNewRemote) {
+					mOnNewRemote(numRemotes, remote);
 				}
 				numRemotes++;
 			}
@@ -72,7 +72,8 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 	}
 	catch (FatalError& e)
 	{
-		out << "EXCEPTION in " << __FILE__ << ':' << __LINE__ << ' ' << e << '\n';
+		std::atomic_fetch_sub(&mNumInstances, 1);
+		throw(e);
 	}
 	std::atomic_fetch_sub(&mNumInstances, 1);
 }

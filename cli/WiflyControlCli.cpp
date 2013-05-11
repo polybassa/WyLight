@@ -87,10 +87,8 @@ void newRemoteCallback(const size_t index, const WyLight::Endpoint& newEndpoint)
 
 int main(int argc, const char* argv[])
 {
-	WyLight::BroadcastReceiver receiver(55555);
-	receiver.SetCallbackAddedNewRemote(newRemoteCallback);
-	std::stringstream logStream;
-	std::thread t(std::ref(receiver), std::ref(logStream));
+	WyLight::BroadcastReceiver receiver(55555, "recent.txt", newRemoteCallback);
+	std::thread t(std::ref(receiver));
 
 	// wait for user input
 	size_t selection;	
