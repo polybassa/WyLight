@@ -25,6 +25,7 @@
 #include <cstring>
 #include <stdint.h>
 #include <string>
+#include <map>
 #include <mutex>
 #include <ostream>
 #include <set>
@@ -41,14 +42,14 @@ class BroadcastReceiver
 		static const std::string DEVICE_ID_OLD;
 		static const std::string DEVICE_VERSION;
 		static const std::string STOP_MSG;
-		static const Endpoint EMPTY_ENDPOINT;
-		const uint16_t mPort;
+		static Endpoint EMPTY_ENDPOINT;
 
 		/*
 		 * Construct an object for broadcast listening on the specified port
+		 * @param path to the containing files used to store recent remotes
 		 * @param port to listen on, deault is @see BROADCAST_PORT
 		 */
-		BroadcastReceiver(uint16_t port = BROADCAST_PORT);
+		BroadcastReceiver(uint16_t port = BROADCAST_PORT, const std::string& recentFilename = "");
 
 		/*
 		 * Stop receiving loop and cleanup
@@ -65,9 +66,16 @@ class BroadcastReceiver
 		/*
 		 * Get a reference to the endpoint at the specified index
 		 * @param index of the endpoint in the internal IpTable, should be lees than NumRemotes()
-		 * @return a reference to the endpoint at the specified index or an empty object (@see EMPTY_ENDPOINT), when the index was out of bound
+		 * @return a reference to the endpoint at the specified index or an empty object, if the index was out of bound
 		 */
-		const Endpoint& GetEndpoint(size_t index) const;
+		Endpoint& GetEndpoint(size_t index);
+
+		/*
+		 * Get a reference to an endpoint with a matching fingerprint
+		 * @param fingerprint to search for
+		 * @return a reference to an endpoint with a matching fingerprint an empty object, if no matching endpoint was found
+		 */
+		Endpoint& GetEndpointByFingerprint(const uint64_t fingerprint);
 
 		/*
 		 * Listen for broadcasts until a new remote is discovered.
@@ -82,24 +90,47 @@ class BroadcastReceiver
 		 */
 		size_t NumRemotes(void) const;
 
-		/**
-		 * Sends a stop event to terminate execution of operator()
-		 */
-		void Stop(void);
-	
 		void PrintAllEndpoints(std::ostream& out);
-	
+
+		/**
+		 * Read recent endpoints from file and add them to mIpTable
+		 * @param filename of the file containing the recent endpoints
+		 */
+		void ReadRecentEndpoints(const std::string& filename);
+
 		/**
 		 * Callback methode to notify that a new Enpoint was add to the IpTable
 		 */
 		void SetCallbackAddedNewRemote(const std::function<void(const Endpoint& newEndpoint)>& functionObj);
 
+		/**
+		 * Sends a stop event to terminate execution of operator()
+		 */
+		void Stop(void);
+
+		/**
+		 * Write recent endpoints to file
+		 * @param filename of the file containing the recent endpoints
+		 * @param threshold which an endpoints score has to have at least to be written to the file
+		 */
+		void WriteRecentEndpoints(const std::string& filename, uint8_t threshold = 1) const;
+
 	private:
-		std::set<Endpoint> mIpTable;
+		const uint16_t mPort;
+		std::set<Endpoint> mIpTableShadow;
+		std::map<size_t, Endpoint> mIpTable;
 		volatile bool mIsRunning;
 		std::atomic<int32_t> mNumInstances;
 		std::mutex mMutex;
+		const std::string mRecentFilename;
 		std::function<void(const Endpoint& newEndpoint)> mAddedNewRemoteCallback;
+
+		/**
+		 * Insert threadsafe a new endpoint to the mIpTable
+		 * @param endpoint a copy of this referenced object will be stored to mIpTable
+		 * @return true if a new endpoint was added, false if it already existed or an error occur
+		 */
+		bool LockedInsert(Endpoint& endpoint);
 };
 }
 #endif /* #ifndef _BROADCAST_RECEIVER_H_ */

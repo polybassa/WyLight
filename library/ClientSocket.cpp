@@ -33,14 +33,9 @@ static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VER
 
 
 ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) 
-	: mSock(socket(AF_INET, style, 0)) 
+	: mSock(socket(AF_INET, style, 0)), mSockAddr(addr, port)
 {
 	if( -1 == mSock) throw FatalError("Create socket failed");
-
-	memset(&mSockAddr, 0, sizeof(mSockAddr));
-	mSockAddr.sin_family = AF_INET;
-	mSockAddr.sin_port = htons(port);
-	mSockAddr.sin_addr.s_addr = htonl(addr);
 }
 
 ClientSocket::~ClientSocket()
@@ -113,7 +108,7 @@ size_t UdpSocket::RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout, st
 size_t UdpSocket::Send(const uint8_t* frame, size_t length) const
 {
 	TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending %zu bytes: ", length);
-	return sendto(mSock, frame, length, 0, (struct sockaddr*)&mSockAddr, sizeof(mSockAddr));
+	return sendto(mSock, frame, length, 0, reinterpret_cast<const struct sockaddr*>(&mSockAddr), sizeof(mSockAddr));
 }
 } /* namespace WyLight */
 

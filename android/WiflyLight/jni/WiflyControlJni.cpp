@@ -18,6 +18,7 @@
 
 #include "BroadcastReceiver.h"
 #include "WiflyControl.h"
+#include <sstream>
 #include <unistd.h>
 #include <jni.h>
 
@@ -38,17 +39,20 @@ void ThrowJniException(JNIEnv* env, const FatalError& e) {
 	}
 
 extern "C" {
-jlong Java_biz_bruenn_WiflyLight_RemoteCollector_createBroadcastReceiver(JNIEnv* env, jobject ref)
+jlong Java_biz_bruenn_WiflyLight_BroadcastReceiver_create(JNIEnv* env, jobject ref, jstring path)
 {
-	return (jlong) new BroadcastReceiver(BroadcastReceiver::BROADCAST_PORT);
+	const char* myPath = env->GetStringUTFChars(path, 0);
+	const jlong result = (jlong) new BroadcastReceiver(BroadcastReceiver::BROADCAST_PORT, myPath);
+	env->ReleaseStringUTFChars(path, myPath);
+	return result;
 }
 
-void Java_biz_bruenn_WiflyLight_RemoteCollector_releaseBroadcastReceiver(JNIEnv* env, jobject ref, jlong pNative)
+jlong Java_biz_bruenn_WiflyLight_BroadcastReceiver_getEndpoint(JNIEnv* env, jobject ref, jlong pNative, jlong index)
 {
-	delete (BroadcastReceiver*)pNative;
+	return ((BroadcastReceiver*)pNative)->GetEndpoint(index).AsUint64();
 }
 
-jlong Java_biz_bruenn_WiflyLight_RemoteCollector_getNextRemote(JNIEnv* env, jobject ref, jlong pNative, jlong timeoutNanos)
+jlong Java_biz_bruenn_WiflyLight_BroadcastReceiver_getNextRemote(JNIEnv* env, jobject ref, jlong pNative, jlong timeoutNanos)
 {
 	timeval timeout;
 	timeout.tv_sec = timeoutNanos / 1000000000L;
@@ -56,12 +60,19 @@ jlong Java_biz_bruenn_WiflyLight_RemoteCollector_getNextRemote(JNIEnv* env, jobj
 	return ((BroadcastReceiver*)pNative)->GetNextRemote(&timeout).AsUint64();
 }
 
-jlong Java_biz_bruenn_WiflyLight_WiflyControl_create(JNIEnv* env, jobject ref, jint ipv4Addr, jshort port)
+void Java_biz_bruenn_WiflyLight_BroadcastReceiver_release(JNIEnv* env, jobject ref, jlong pNative)
+{
+	delete (BroadcastReceiver*)pNative;
+}
+
+jlong Java_biz_bruenn_WiflyLight_Endpoint_connect(JNIEnv* env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint)
 {
 	// TODO make this threadsafe
 	if(NULL == g_pControl) {
 		try {
-			g_pControl = new Control(ipv4Addr, port);
+			Endpoint& remote = ((BroadcastReceiver*)pBroadcastReceiver)->GetEndpointByFingerprint(fingerprint);
+			++remote;
+			g_pControl = new Control(remote.GetIp(), remote.GetPort());
 			return reinterpret_cast<jlong>(g_pControl);
 		} catch (FatalError& e) {
 			g_pControl = NULL;
@@ -119,6 +130,6 @@ void Java_biz_bruenn_WiflyLight_WiflyControl_release(JNIEnv* env, jobject ref, j
 		g_pControl = NULL;
 	}
 }
-}
+} /* extern "C" */
 } /* namespace WyLight */
 

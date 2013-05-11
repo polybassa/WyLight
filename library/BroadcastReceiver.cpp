@@ -20,7 +20,9 @@
 #include "BroadcastMessage.h"
 #include "timeval.h"
 #include "trace.h"
+#include "WiflyColor.h"
 #include <iostream>
+#include <fstream>
 #include <stdio.h>
 
 namespace WyLight {
@@ -31,22 +33,24 @@ const std::string BroadcastReceiver::DEVICE_ID("Wifly_Light");
 const std::string BroadcastReceiver::DEVICE_ID_OLD("WiFly");
 const std::string BroadcastReceiver::DEVICE_VERSION("WiFly Ver 2.45, 10-09-2012");
 const std::string BroadcastReceiver::STOP_MSG{"StopThread"};
-const Endpoint BroadcastReceiver::EMPTY_ENDPOINT;
+Endpoint BroadcastReceiver::EMPTY_ENDPOINT{};
 
-BroadcastReceiver::BroadcastReceiver(uint16_t port)
 
+BroadcastReceiver::BroadcastReceiver(uint16_t port, const std::string& recentFilename)
 #if defined(__cplusplus) && (__cplusplus < 201103L)
-#warning "Check for a newer compiler to avoid using this C++11 wrapper file"
-	: mPort(port), mIsRunning(true), mNumInstances(0), mAddedNewRemoteCallback(NULL)
+#warning "Check for a newer android NDK compiler to avoid using this stupid ifdef"
+	: mPort(port), mIsRunning(true), mNumInstances(0), mRecentFilename(recentFilename), mAddedNewRemoteCallback(NULL)
 #else
-	: mPort(port), mIsRunning(true), mNumInstances(0), mAddedNewRemoteCallback(nullptr)
+	: mPort(port), mIsRunning(true), mNumInstances(0), mRecentFilename(recentFilename), mAddedNewRemoteCallback(nullptr)
 #endif
 {
+	ReadRecentEndpoints(mRecentFilename);
 }
 
 BroadcastReceiver::~BroadcastReceiver(void)
 {
 	Stop();
+	WriteRecentEndpoints(mRecentFilename);
 }
 
 void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
@@ -85,18 +89,24 @@ void BroadcastReceiver::PrintAllEndpoints(std::ostream& out)
 	for(auto it = mIpTable.begin(); it != mIpTable.end(); it++)
 	{
 		//std::cout << index << ':' << *it << '\n';
-		out << index++ << ':' << *it << '\n';
+		out << index++ << ':' << it->second << '\n';
 	}	
 }
 
-const Endpoint& BroadcastReceiver::GetEndpoint(size_t index) const
+Endpoint& BroadcastReceiver::GetEndpoint(size_t index)
 {
-	if(index >= mIpTable.size())
-		return EMPTY_ENDPOINT;
+	auto it = mIpTable.find(index);
+	return (mIpTable.end() == it) ? EMPTY_ENDPOINT : it->second;
+}
 
-	auto it = mIpTable.begin();
-	for(; index != 0; --index, ++it);
-	return *it;
+Endpoint& BroadcastReceiver::GetEndpointByFingerprint(const uint64_t fingerprint)
+{
+	for(auto it = mIpTable.begin(); it != mIpTable.end(); it++) {
+		if(fingerprint == (*it).second.AsUint64()) {
+			return (*it).second;
+		}
+	}
+	return EMPTY_ENDPOINT;
 }
 
 Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout) throw (FatalError)
@@ -112,17 +122,45 @@ Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout) throw (FatalError)
 	{
 		Trace(ZONE_INFO, "Broadcast detected\n");
 		Endpoint newRemote(remoteAddr, remoteAddrLength, msg.port, std::string((char*)&msg.deviceId[0]));
-		mMutex.lock();
-		bool added = mIpTable.insert(newRemote).second;
-		mMutex.unlock();
-		return added ? newRemote : Endpoint();
+		return LockedInsert(newRemote) ? newRemote : Endpoint();
 	}
 	return Endpoint();
+}
+
+bool BroadcastReceiver::LockedInsert(Endpoint& newEndpoint)
+{
+	mMutex.lock();
+	const bool added = mIpTableShadow.insert(newEndpoint).second;
+	if(added) mIpTable.insert(std::pair<size_t, Endpoint>(mIpTable.size(), newEndpoint)).second;
+	mMutex.unlock();
+	return added;
 }
 
 size_t BroadcastReceiver::NumRemotes(void) const
 {
 	return mIpTable.size();
+}
+
+void BroadcastReceiver::ReadRecentEndpoints(const std::string& filename)
+{
+	std::ifstream inFile(filename);
+	if(!inFile.is_open()) {
+		Trace(ZONE_ERROR, "Open file to read recent endpoints failed\n");
+		return;
+	}
+
+	int score, port;
+	std::string ip, deviceId;
+	while(inFile >> score >> ip >> port >> deviceId) {
+		Endpoint next(WiflyColor::ToARGB(ip), port, score, deviceId);
+		LockedInsert(next);
+	}
+	inFile.close();
+}
+
+void BroadcastReceiver::SetCallbackAddedNewRemote(const std::function<void(const Endpoint& newEndpoint)>& functionObj)
+{
+	mAddedNewRemoteCallback = functionObj;
 }
 
 void BroadcastReceiver::Stop(void)
@@ -132,8 +170,19 @@ void BroadcastReceiver::Stop(void)
 	sock.Send((uint8_t*)STOP_MSG.data(), STOP_MSG.size());
 }
 
-void BroadcastReceiver::SetCallbackAddedNewRemote(const std::function<void(const Endpoint& newEndpoint)>& functionObj)
+void BroadcastReceiver::WriteRecentEndpoints(const std::string& filename, uint8_t threshold) const
 {
-	mAddedNewRemoteCallback = functionObj;
+	std::ofstream outFile(filename, std::ios::trunc);
+
+	// write to file
+	for(auto it = mIpTable.begin(); it != mIpTable.end(); it++)
+	{
+		if((*it).second.GetScore() >= threshold)
+		{
+			//TODO refactor this but then we have to change the CLI implementation
+			outFile << (int)((*it).second.GetScore()) << ' ' << std::hex << (*it).second.GetIp() << ' ' << std::dec << (*it).second.GetPort() << ' ' << (*it).second.GetDeviceId() << '\n';
+		}
+	}
+	outFile.close();
 }
 } /* namespace WyLight */
