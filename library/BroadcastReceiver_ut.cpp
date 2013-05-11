@@ -111,6 +111,11 @@ size_t UdpSocket::Send(const uint8_t* frame, size_t length) const
 	return 0;
 }
 
+std::ostringstream g_TestOut;
+void TestCallback(size_t index, const Endpoint& newEndpoint)
+{
+	g_TestOut << index << ':' << newEndpoint << '\n';	
+}
 
 
 /******************************* test functions *******************************/
@@ -127,10 +132,11 @@ int32_t ut_BroadcastReceiver_TestGetEndpoint(void)
 {
 	TestCaseBegin();
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
-	std::ostringstream out;
+	g_TestOut.str("");
 	BroadcastReceiver dummyReceiver;
+	dummyReceiver.SetCallbackAddedNewRemote(TestCallback);
 	timeval timeout = {2, 0};
-	std::thread myThread(std::ref(dummyReceiver), std::ref(out), &timeout);
+	std::thread myThread(std::ref(dummyReceiver), std::ref(g_TestOut), &timeout);
 	nanosleep(&NANOSLEEP_TIME, NULL);
 	dummyReceiver.Stop();
 	myThread.join();
@@ -157,7 +163,7 @@ int32_t ut_BroadcastReceiver_TestGetEndpoint(void)
 	CHECK(0 == outOfBound.GetDeviceId().compare(""));
 	CHECK(outOfBound.GetScore() == 0);
 
-	CHECK(0 == out.str().compare("0:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
+	CHECK(0 == g_TestOut.str().compare("0:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
 	CHECK(1 == dummyReceiver.NumRemotes());
 	TestCaseEnd();
 }
@@ -166,14 +172,15 @@ int32_t ut_BroadcastReceiver_TestSimple(void)
 {
 	TestCaseBegin();
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
-	std::ostringstream out;
+	g_TestOut.str("");
 	BroadcastReceiver dummyReceiver;
+	dummyReceiver.SetCallbackAddedNewRemote(TestCallback);
 	timeval timeout = {2, 0};
-	std::thread myThread(std::ref(dummyReceiver), std::ref(out), &timeout);
+	std::thread myThread(std::ref(dummyReceiver), std::ref(g_TestOut), &timeout);
 	dummyReceiver.Stop();
 	myThread.join();
 
-	CHECK(0 == out.str().compare("0:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
+	CHECK(0 == g_TestOut.str().compare("0:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
 	CHECK(1 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
 	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
@@ -184,17 +191,18 @@ int32_t ut_BroadcastReceiver_TestTwoSame(void)
 {
 	TestCaseBegin();
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
-	std::ostringstream out;
+	g_TestOut.str("");
 	BroadcastReceiver dummyReceiver;
+	dummyReceiver.SetCallbackAddedNewRemote(TestCallback);
 	timeval timeout = {3, 0};
-	std::thread myThread(std::ref(dummyReceiver), std::ref(out), &timeout);
+	std::thread myThread(std::ref(dummyReceiver), std::ref(g_TestOut), &timeout);
 	nanosleep(&NANOSLEEP_TIME, NULL);
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	nanosleep(&NANOSLEEP_TIME, NULL);
 	dummyReceiver.Stop();
 	myThread.join();
 
-	CHECK(0 == out.str().compare("0:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
+	CHECK(0 == g_TestOut.str().compare("0:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
 	CHECK(1 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
 	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
@@ -205,9 +213,10 @@ int32_t ut_BroadcastReceiver_TestNoTimeout(void)
 {
 	TestCaseBegin();
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
-	std::ostringstream out;
+	g_TestOut.str("");
 	BroadcastReceiver dummyReceiver;
-	std::thread myThread(std::ref(dummyReceiver), std::ref(out));
+	dummyReceiver.SetCallbackAddedNewRemote(TestCallback);
+	std::thread myThread(std::ref(dummyReceiver), std::ref(g_TestOut));
 	nanosleep(&NANOSLEEP_TIME, NULL);
 	SetTestSocket(&g_SecondRemote, 0, capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
 	nanosleep(&NANOSLEEP_TIME, NULL);
@@ -217,7 +226,7 @@ int32_t ut_BroadcastReceiver_TestNoTimeout(void)
 	dummyReceiver.Stop();
 	myThread.join();
 
-	CHECK(0 == out.str().compare("0:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n1:0 127.0.0.2:2000  :  WiFly_Light\n2:0 127.0.0.3:2000  :  WiFly_Light\n"));
+	CHECK(0 == g_TestOut.str().compare("0:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n1:0 127.0.0.2:2000  :  WiFly_Light\n2:0 127.0.0.3:2000  :  WiFly_Light\n"));
 	CHECK(3 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
 	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
@@ -231,22 +240,24 @@ int32_t ut_BroadcastReceiver_TestNoTimeout(void)
 int32_t ut_BroadcastReceiver_TestDifferentOrder(void)
 {
 	TestCaseBegin();
-	std::ostringstream out, out2;
+	g_TestOut.str("");
+	std::ostringstream out2;
 	BroadcastReceiver dummyReceiver;
-	std::thread myThread(std::ref(dummyReceiver), std::ref(out));
+	std::thread myThread(std::ref(dummyReceiver), std::ref(g_TestOut));
 	SetTestSocket(&g_SecondRemote, 0, capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
 	nanosleep(&NANOSLEEP_TIME, NULL);
 	SetTestSocket(&g_ThirdRemote, 0, capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
 	nanosleep(&NANOSLEEP_TIME, NULL);
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	nanosleep(&NANOSLEEP_TIME, NULL);
+
+	
 	
 	dummyReceiver.Stop();
 	myThread.join();
 	dummyReceiver.PrintAllEndpoints(out2);
-	CHECK(0 == out.str().compare("0:0 127.0.0.2:2000  :  WiFly_Light\n1:0 127.0.0.3:2000  :  WiFly_Light\n2:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
-	
-	CHECK(0 == out2.str().compare("0:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n1:0 127.0.0.2:2000  :  WiFly_Light\n2:0 127.0.0.3:2000  :  WiFly_Light\n"));
+	CHECK(0 == g_TestOut.str().compare("0:0 127.0.0.2:2000  :  WiFly_Light\n1:0 127.0.0.3:2000  :  WiFly_Light\n2:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
+
 	CHECK(3 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
 	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
@@ -262,10 +273,10 @@ int32_t ut_BroadcastReceiver_TestRecentEndpoints(void)
 	static const std::string TEST_FILENAME = "TestRecentEndpoints.txt";
 	TestCaseBegin();
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
-	std::ostringstream out;
+	g_TestOut.str("");
 	BroadcastReceiver dummyReceiver;
 	timeval timeout = {2, 0};
-	std::thread myThread(std::ref(dummyReceiver), std::ref(out), &timeout);
+	std::thread myThread(std::ref(dummyReceiver), std::ref(g_TestOut), &timeout);
 
 
 	nanosleep(&NANOSLEEP_TIME, NULL);
