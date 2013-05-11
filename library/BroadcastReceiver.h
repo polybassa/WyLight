@@ -48,8 +48,9 @@ class BroadcastReceiver
 		 * Construct an object for broadcast listening on the specified port
 		 * @param path to the containing files used to store recent remotes
 		 * @param port to listen on, deault is @see BROADCAST_PORT
+		 * @param onNewEndpoint callback, which is called if a new endpoint got discovered
 		 */
-		BroadcastReceiver(uint16_t port = BROADCAST_PORT, const std::string& recentFilename = "");
+		BroadcastReceiver(uint16_t port = BROADCAST_PORT, const std::string& recentFilename = "", const std::function<void(size_t index, const Endpoint& newEndpoint)>& onNewEndpoint = NULL);
 
 		/*
 		 * Stop receiving loop and cleanup
@@ -90,18 +91,11 @@ class BroadcastReceiver
 		 */
 		size_t NumRemotes(void) const;
 
-		void PrintAllEndpoints(std::ostream& out);
-
 		/**
 		 * Read recent endpoints from file and add them to mIpTable
 		 * @param filename of the file containing the recent endpoints
 		 */
 		void ReadRecentEndpoints(const std::string& filename);
-
-		/**
-		 * Callback methode to notify that a new Enpoint was add to the IpTable
-		 */
-		void SetCallbackAddedNewRemote(const std::function<void(size_t index, const Endpoint& newEndpoint)>& functionObj);
 
 		/**
 		 * Sends a stop event to terminate execution of operator()
@@ -123,7 +117,7 @@ class BroadcastReceiver
 		std::atomic<int32_t> mNumInstances;
 		std::mutex mMutex;
 		const std::string mRecentFilename;
-		std::function<void(size_t index, const Endpoint& newEndpoint)> mAddedNewRemoteCallback;
+		const std::function<void(size_t index, const Endpoint& newEndpoint)> mAddedNewRemoteCallback;
 
 		/**
 		 * Insert threadsafe a new endpoint to the mIpTable

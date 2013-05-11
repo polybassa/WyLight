@@ -36,13 +36,8 @@ const std::string BroadcastReceiver::STOP_MSG{"StopThread"};
 Endpoint BroadcastReceiver::EMPTY_ENDPOINT{};
 
 
-BroadcastReceiver::BroadcastReceiver(uint16_t port, const std::string& recentFilename)
-#if defined(__cplusplus) && (__cplusplus < 201103L)
-#warning "Check for a newer android NDK compiler to avoid using this stupid ifdef"
-	: mPort(port), mIsRunning(true), mNumInstances(0), mRecentFilename(recentFilename), mAddedNewRemoteCallback(NULL)
-#else
-	: mPort(port), mIsRunning(true), mNumInstances(0), mRecentFilename(recentFilename), mAddedNewRemoteCallback(nullptr)
-#endif
+BroadcastReceiver::BroadcastReceiver(uint16_t port, const std::string& recentFilename, const std::function<void(size_t index, const Endpoint& newEndpoint)>& onNewEndpoint)
+	: mPort(port), mIsRunning(true), mNumInstances(0), mRecentFilename(recentFilename), mAddedNewRemoteCallback(onNewEndpoint)
 {
 	ReadRecentEndpoints(mRecentFilename);
 }
@@ -80,18 +75,6 @@ void BroadcastReceiver::operator() (std::ostream& out, timeval* pTimeout)
 		out << "EXCEPTION in " << __FILE__ << ':' << __LINE__ << ' ' << e << '\n';
 	}
 	std::atomic_fetch_sub(&mNumInstances, 1);
-}
-
-void BroadcastReceiver::PrintAllEndpoints(std::ostream& out)
-{
-	int index = 0;
-	//TODO wait for full c++11 features in android ndk. by the way we should move this printing functions out of BroadcastReceiver into cli or whoever wants to "print" something out
-	//for(auto x : mIpTable)
-	for(auto it = mIpTable.begin(); it != mIpTable.end(); it++)
-	{
-		//std::cout << index << ':' << *it << '\n';
-		out << index++ << ':' << it->second << '\n';
-	}	
 }
 
 Endpoint& BroadcastReceiver::GetEndpoint(size_t index)
@@ -157,11 +140,6 @@ void BroadcastReceiver::ReadRecentEndpoints(const std::string& filename)
 		LockedInsert(next);
 	}
 	inFile.close();
-}
-
-void BroadcastReceiver::SetCallbackAddedNewRemote(const std::function<void(size_t index, const Endpoint& newEndpoint)>& functionObj)
-{
-	mAddedNewRemoteCallback = functionObj;
 }
 
 void BroadcastReceiver::Stop(void)

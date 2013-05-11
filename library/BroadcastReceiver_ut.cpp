@@ -133,8 +133,7 @@ int32_t ut_BroadcastReceiver_TestGetEndpoint(void)
 	TestCaseBegin();
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	g_TestOut.str("");
-	BroadcastReceiver dummyReceiver;
-	dummyReceiver.SetCallbackAddedNewRemote(TestCallback);
+	BroadcastReceiver dummyReceiver(BroadcastReceiver::BROADCAST_PORT, "", TestCallback);
 	timeval timeout = {2, 0};
 	std::thread myThread(std::ref(dummyReceiver), std::ref(g_TestOut), &timeout);
 	nanosleep(&NANOSLEEP_TIME, NULL);
@@ -173,8 +172,7 @@ int32_t ut_BroadcastReceiver_TestSimple(void)
 	TestCaseBegin();
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	g_TestOut.str("");
-	BroadcastReceiver dummyReceiver;
-	dummyReceiver.SetCallbackAddedNewRemote(TestCallback);
+	BroadcastReceiver dummyReceiver(BroadcastReceiver::BROADCAST_PORT, "", TestCallback);
 	timeval timeout = {2, 0};
 	std::thread myThread(std::ref(dummyReceiver), std::ref(g_TestOut), &timeout);
 	dummyReceiver.Stop();
@@ -192,8 +190,7 @@ int32_t ut_BroadcastReceiver_TestTwoSame(void)
 	TestCaseBegin();
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	g_TestOut.str("");
-	BroadcastReceiver dummyReceiver;
-	dummyReceiver.SetCallbackAddedNewRemote(TestCallback);
+	BroadcastReceiver dummyReceiver(BroadcastReceiver::BROADCAST_PORT, "", TestCallback);
 	timeval timeout = {3, 0};
 	std::thread myThread(std::ref(dummyReceiver), std::ref(g_TestOut), &timeout);
 	nanosleep(&NANOSLEEP_TIME, NULL);
@@ -214,9 +211,8 @@ int32_t ut_BroadcastReceiver_TestNoTimeout(void)
 	TestCaseBegin();
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	g_TestOut.str("");
-	BroadcastReceiver dummyReceiver;
-	dummyReceiver.SetCallbackAddedNewRemote(TestCallback);
-	std::thread myThread(std::ref(dummyReceiver), std::ref(g_TestOut));
+	BroadcastReceiver dummyReceiver(BroadcastReceiver::BROADCAST_PORT, "", TestCallback);
+	std::thread myThread(std::ref(dummyReceiver), std::ref(std::cout));
 	nanosleep(&NANOSLEEP_TIME, NULL);
 	SetTestSocket(&g_SecondRemote, 0, capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
 	nanosleep(&NANOSLEEP_TIME, NULL);
@@ -237,44 +233,13 @@ int32_t ut_BroadcastReceiver_TestNoTimeout(void)
 	TestCaseEnd();
 }
 
-int32_t ut_BroadcastReceiver_TestDifferentOrder(void)
-{
-	TestCaseBegin();
-	g_TestOut.str("");
-	std::ostringstream out2;
-	BroadcastReceiver dummyReceiver;
-	std::thread myThread(std::ref(dummyReceiver), std::ref(g_TestOut));
-	SetTestSocket(&g_SecondRemote, 0, capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
-	nanosleep(&NANOSLEEP_TIME, NULL);
-	SetTestSocket(&g_ThirdRemote, 0, capturedBroadcastMessage_2, sizeof(capturedBroadcastMessage_2));
-	nanosleep(&NANOSLEEP_TIME, NULL);
-	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
-	nanosleep(&NANOSLEEP_TIME, NULL);
-
-	
-	
-	dummyReceiver.Stop();
-	myThread.join();
-	dummyReceiver.PrintAllEndpoints(out2);
-	CHECK(0 == g_TestOut.str().compare("0:0 127.0.0.2:2000  :  WiFly_Light\n1:0 127.0.0.3:2000  :  WiFly_Light\n2:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
-
-	CHECK(3 == dummyReceiver.NumRemotes());
-	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
-	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
-	CHECK(0x7F000002 == dummyReceiver.GetEndpoint(1).GetIp());
-	CHECK(2000 == dummyReceiver.GetEndpoint(1).GetPort());
-	CHECK(0x7F000003 == dummyReceiver.GetEndpoint(2).GetIp());
-	CHECK(2000 == dummyReceiver.GetEndpoint(2).GetPort());
-	TestCaseEnd();
-}
-
 int32_t ut_BroadcastReceiver_TestRecentEndpoints(void)
 {
 	static const std::string TEST_FILENAME = "TestRecentEndpoints.txt";
 	TestCaseBegin();
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	g_TestOut.str("");
-	BroadcastReceiver dummyReceiver;
+	BroadcastReceiver dummyReceiver(BroadcastReceiver::BROADCAST_PORT, "", TestCallback);
 	timeval timeout = {2, 0};
 	std::thread myThread(std::ref(dummyReceiver), std::ref(g_TestOut), &timeout);
 
@@ -314,8 +279,6 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_BroadcastReceiver_TestSimple);
 	RunTest(true, ut_BroadcastReceiver_TestTwoSame);
 	RunTest(true, ut_BroadcastReceiver_TestNoTimeout);
-	//TODO if order is really a requirement, then we have to reimplement this
-	RunTest(false, ut_BroadcastReceiver_TestDifferentOrder);
 	RunTest(true, ut_BroadcastReceiver_TestRecentEndpoints);
 	UnitTestMainEnd();
 }
