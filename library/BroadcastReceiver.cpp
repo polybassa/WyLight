@@ -62,9 +62,6 @@ void BroadcastReceiver::operator() (timeval* pTimeout) throw (FatalError)
 		{
 			const Endpoint remote = GetNextRemote(pTimeout);
 			if(remote.IsValid()) {
-				if(mOnNewRemote) {
-					mOnNewRemote(numRemotes, remote);
-				}
 				numRemotes++;
 			}
 			gettimeofday(&now, NULL);
@@ -116,7 +113,11 @@ bool BroadcastReceiver::LockedInsert(Endpoint& newEndpoint)
 {
 	mMutex.lock();
 	const bool added = mIpTableShadow.insert(newEndpoint).second;
-	if(added) mIpTable.insert(std::pair<size_t, Endpoint>(mIpTable.size(), newEndpoint)).second;
+	if(added)
+	{
+		if(mOnNewRemote) mOnNewRemote(mIpTable.size(), newEndpoint);
+		mIpTable.insert(std::pair<size_t, Endpoint>(mIpTable.size(), newEndpoint));
+	}
 	mMutex.unlock();
 	return added;
 }

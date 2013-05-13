@@ -22,15 +22,18 @@
 
 @end
 
+// We can avoid this function by using a lamda function in -(id) init .... std::bind([]{}.....) but it's very unreadable
 void cNotification(WCBroadcastReceiverWrapper* receiver,NSThread* targetThread ,const size_t index, const WyLight::Endpoint& endpoint)
 {
-	unsigned char bytes[4];
-    bytes[0] = endpoint.GetIp() & 0xFF;
-    bytes[1] = (endpoint.GetIp() >> 8) & 0xFF;
-    bytes[2] = (endpoint.GetIp() >> 16) & 0xFF;
-    bytes[3] = (endpoint.GetIp() >> 24) & 0xFF;
+	NSLog(@"New: %zd : %d.%d.%d.%d, %d  %s",
+		  index,
+		  (endpoint.GetIp() >> 24) & 0xFF,
+		  (endpoint.GetIp() >> 16) & 0xFF,
+		  (endpoint.GetIp() >> 8) & 0xFF,
+		  (endpoint.GetIp() & 0xFF),
+		  endpoint.GetPort(),
+		  endpoint.GetDeviceId().c_str());
 	
-	NSLog(@"New: %zd : %d.%d.%d.%d, %d  %s", index, bytes[3], bytes[2], bytes[1], bytes[0], endpoint.GetPort(), endpoint.GetDeviceId().c_str());
 	[receiver performSelector:@selector(postNotification) onThread:targetThread withObject:nil waitUntilDone:NO];
 }
 
