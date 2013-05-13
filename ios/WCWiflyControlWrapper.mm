@@ -47,7 +47,6 @@ void simpleExecuter(WCWiflyControlWrapper* ctrl, NSThread* targetThread)
 			if(retVal != WyLight::NO_ERROR)
 			{
 				[ctrl performSelector:@selector(callFatalErrorDelegate:) onThread:targetThread withObject:[NSNumber numberWithUnsignedInt:retVal] waitUntilDone:NO];
-				return;
 			}
 		}
 	}
@@ -72,7 +71,6 @@ void executerWithNotification(WCWiflyControlWrapper* ctrl, NSThread* targetThrea
 			if(retVal != WyLight::NO_ERROR)
 			{
 				[ctrl performSelector:@selector(callFatalErrorDelegate:) onThread:targetThread withObject:[NSNumber numberWithUnsignedInt:retVal] waitUntilDone:NO];
-				return;
 			}
 			else
 			{
@@ -382,7 +380,11 @@ NSString *const CommandExecutedNotification = @"CommandExecutedNotification";
 - (void)callFatalErrorDelegate:(NSNumber*)errorCode
 {
 	NSLog(@"ErrorCode %@", errorCode);
-	[delegate fatalErrorOccured:self errorCode:errorCode];
+	if([errorCode intValue] == WyLight::SCRIPT_FULL)
+	{
+		[delegate scriptFullErrorOccured:self errorCode:errorCode];
+	}
+	else [delegate fatalErrorOccured:self errorCode:errorCode];
 }
 
 @end
