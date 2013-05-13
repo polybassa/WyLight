@@ -2,16 +2,36 @@
 //  WCWiflyControlWrapper.h
 //
 //  Created by Bastian Kres on 16.04.13.
-//  Copyright (c) 2013 Bastian Kres. All rights reserved.
+//  Copyright (c) 2013 Bastian Kres, Nils Weiß. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
-@interface WCWiflyControlWrapper : NSObject
+@class WCWiflyControlWrapper;
+
+@protocol WCWiflyControlDelegate 
+@optional
+
+- (void) fatalErrorOccured:(WCWiflyControlWrapper *)sender errorCode:(NSNumber *)errorCode;
+
+@end
+
+@interface WCWiflyControlWrapper : NSObject {
+	id <WCWiflyControlDelegate> delegate;
+}
+
+FOUNDATION_EXPORT NSString *const CommandExecutedNotification;
+
+@property (nonatomic, weak) id <WCWiflyControlDelegate> delegate;
 
 // Configuration
 - (id)initWithIP:(uint32_t)ip port:(uint16_t)port;
-- (void)configurateWlanModuleAsClient:(NSString *)ssid password:(NSString *)password name:(NSString *)name;
+
+/**
+ * Attention: After executing one of the next three command's you have to dealloc your WCWiflyControlWrapper object
+ * The CommandExecutedNotification tell's you the succesfull execution of a command
+ */
+- (void)configurateWlanModuleAsClientForNetwork:(NSString *)ssid password:(NSString *)password name:(NSString *)name;
 - (void)configurateWlanModuleAsSoftAP:(NSString *)ssid;
 - (void)rebootWlanModul;
 
