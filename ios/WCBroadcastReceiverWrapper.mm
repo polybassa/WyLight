@@ -2,7 +2,7 @@
 //  WCBroadcastReceiverWrapper.m
 //
 //  Created by Bastian Kres on 16.04.13.
-//  Copyright (c) 2013 Bastian Kres. All rights reserved.
+//  Copyright (c) 2013 Bastian Kres, Nils Weiß. All rights reserved.
 //
 
 #import "WCBroadcastReceiverWrapper.h"
@@ -38,6 +38,8 @@ void cNotification(WCBroadcastReceiverWrapper* receiver,NSThread* targetThread ,
 }
 
 @implementation WCBroadcastReceiverWrapper
+
+NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
 
 - (id)init
 {
@@ -104,7 +106,7 @@ void cNotification(WCBroadcastReceiverWrapper* receiver,NSThread* targetThread ,
 
 - (void)postNotification
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"NewTargetAddedNotification" object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NewTargetAddedNotification object:self];
 }
 
 @end
