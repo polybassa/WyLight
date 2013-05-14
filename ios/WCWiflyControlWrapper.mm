@@ -25,16 +25,14 @@
 
 @property (nonatomic) NSThread* threadOfOwner;
 
--(void) postNotification;
 -(void) callFatalErrorDelegate:(NSNumber*)errorCode;
+-(void) callWiflyControlHasDisconnectedDelegate;
 
 @end
 
 @implementation WCWiflyControlWrapper
 
 @synthesize delegate;
-
-NSString *const CommandExecutedNotification = @"CommandExecutedNotification";
 
 #pragma mark - Object
 
@@ -101,7 +99,7 @@ NSString *const CommandExecutedNotification = @"CommandExecutedNotification";
 															}
 															else
 															{
-																[self performSelector:@selector(postNotification) onThread:[self threadOfOwner] withObject:nil waitUntilDone:NO];
+																[self performSelector:@selector(callWiflyControlHasDisconnectedDelegate) onThread:[self threadOfOwner] withObject:nil waitUntilDone:NO];
 															}
 
 														}
@@ -373,11 +371,6 @@ NSString *const CommandExecutedNotification = @"CommandExecutedNotification";
 	mCmdQueue->push_front(std::bind(&WyLight::ControlNoThrow::BlRunApp, std::ref(*mControl)));
 }
 
-- (void)postNotification
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:CommandExecutedNotification object:self];
-}
-
 - (void)callFatalErrorDelegate:(NSNumber*)errorCode
 {
 	NSLog(@"ErrorCode %@", errorCode);
@@ -389,6 +382,11 @@ NSString *const CommandExecutedNotification = @"CommandExecutedNotification";
 	{
 		[delegate fatalErrorOccured:self errorCode:errorCode];
 	}
+}
+
+- (void)callWiflyControlHasDisconnectedDelegate
+{
+	[delegate wiflyControlHasDisconnected:self];
 }
 
 @end
