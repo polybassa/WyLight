@@ -9,10 +9,12 @@
 
 @class WCWiflyControlWrapper;
 
-@protocol WCWiflyControlDelegate 
-@optional
+@protocol WCWiflyControlDelegate
 
+@optional
+// dealloc this object to disconnet, if this error occure
 - (void) fatalErrorOccured:(WCWiflyControlWrapper *)sender errorCode:(NSNumber *)errorCode;
+// send clearscript to target to fix this error
 - (void) scriptFullErrorOccured:(WCWiflyControlWrapper *)sender errorCode:(NSNumber*)errorCode;
 
 @end
@@ -21,6 +23,8 @@
 	id <WCWiflyControlDelegate> delegate;
 }
 
+// This notification tells you that a command wlan configuration command finished successfull. !!!! dealloc this object if you receive this message.
+// Internally the the control object has to disconnect after a wlan configuration command
 FOUNDATION_EXPORT NSString *const CommandExecutedNotification;
 
 @property (nonatomic, weak) id <WCWiflyControlDelegate> delegate;
