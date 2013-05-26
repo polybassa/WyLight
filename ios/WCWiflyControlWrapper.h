@@ -7,21 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class WCWiflyControlWrapper;
-
-@protocol WCWiflyControlDelegate
-
-@optional
-// dealloc this object to disconnet, if this error occure
-- (void) fatalErrorOccured:(WCWiflyControlWrapper *)sender errorCode:(NSNumber *)errorCode;
-
-// send clearscript to target to fix this error
-- (void) scriptFullErrorOccured:(WCWiflyControlWrapper *)sender errorCode:(NSNumber*)errorCode;
-
-// This delegate tells you that a wlan configuration command finished successfull. !!!! dealloc this object if you receive this message.
-// Internally the control object has to disconnect after a wlan configuration command
-- (void) wiflyControlHasDisconnected:(WCWiflyControlWrapper *)sender;
-@end
+@protocol WCWiflyControlDelegate;
 
 @interface WCWiflyControlWrapper : NSObject {
 	id <WCWiflyControlDelegate> delegate;
@@ -69,3 +55,19 @@
 - (void)leaveBootloader;
 
 @end
+
+@protocol WCWiflyControlDelegate
+
+@optional
+// dealloc this object to disconnet, if this error occure
+- (void) fatalErrorOccured:(WCWiflyControlWrapper *)sender errorCode:(NSNumber *)errorCode;
+
+// send clearscript to target to fix this error
+- (void) scriptFullErrorOccured:(WCWiflyControlWrapper *)sender errorCode:(NSNumber*)errorCode;
+
+// This delegate tells you that a wlan configuration command finished successfull. !!!! dealloc this object if you receive this message.
+// Internally the control object has to disconnect after a wlan configuration command
+- (void) wiflyControlHasDisconnected:(WCWiflyControlWrapper *)sender;
+@end
+
+
