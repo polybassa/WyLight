@@ -63,11 +63,17 @@ class WiflyControlCmd
 		const string m_Description;
 		void Print(std::istream& in, const size_t size, const uint32_t address) const {
 			for(size_t i = 0; i < size; i++) {
+				char asciiString[16];
 				if(0 == (i % 16)) {
+					string asciiOutput(asciiString);
+					for(char& c : asciiOutput) { if(c < 0x20) c = ' ';}
+					i == 0 ? cout << "" : cout << "   :   ";
+					cout << asciiOutput;
 					cout << endl << "0x" << setw(4) << setfill('0') << hex << int(address+i) << ": ";
 				}
 				uint8_t b;
 				in >> b;
+				asciiString[i % 16] = b;
 				cout << setw(2) << setfill('0') << hex << int(b) << ' ';
 			}
 			cout << endl;
