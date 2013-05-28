@@ -18,18 +18,15 @@
 
 
 #include "Flash.h"
-#include "trace.h"
 
 #ifdef __CC8E__
 
 uns8 AdressValid(const uns16 adress)
 {
-	if (adress < 0xf000 && adress > 0x5000)
+	if (adress < 0xf000 && adress >= 0x5000)
 		return TRUE;
 	else
 	{
-		Trace_String(" InvalidAdr@");
-		Trace_Hex16(adress);
 		return FALSE;
 	}
 }
@@ -48,7 +45,6 @@ void Flash_ReadBlock(const uns8 upperAdress, const uns16 adress, uns8 *data, con
 		tblrd*+
 #endasm
 		*data++ = TABLAT;
-		Trace_Hex(TABLAT);
 	}
 }
 
@@ -59,7 +55,7 @@ uns16 Flash_Read(const uns8 upperAdress, const uns16 adress)
 	return buffer;
 }
 
-void Flash_WriteBlock(uns16 adress, uns8 *data, const uns16 length_bytes)
+void Flash_WriteBlock(uns16 adress, const uns8 *data, const uns16 length_bytes)
 {
 	uns16 pageAdress, offset, endAdress, i;
 	
