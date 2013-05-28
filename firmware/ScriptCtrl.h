@@ -39,7 +39,6 @@ struct ScriptBuf {
 };
 
 extern struct ScriptBuf gScriptBuf;
-extern struct response_frame gResponse;
 
 /**
  * Add new command to script
