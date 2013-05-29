@@ -46,7 +46,7 @@ struct CommandBuffer{
 };
 extern bank2 struct CommandBuffer g_CmdBuf;
 extern struct cmd_get_fw_version g_Version;
-extern struct response_frame g_ResponseBuf;
+extern bank5 struct response_frame g_ResponseBuf;
 
 
 void CommandIO_Init();
