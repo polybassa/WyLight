@@ -154,7 +154,10 @@ void BroadcastReceiver::Stop(void)
 void BroadcastReceiver::WriteRecentEndpoints(const std::string& filename, uint8_t threshold) const
 {
 	std::ofstream outFile(filename, std::ios::trunc);
-
+	if(!outFile.is_open()) {
+		Trace(ZONE_ERROR, "Open file to write recent endpoints failed\n");
+		return;
+	}
 	// write to file
 	for(auto it = mIpTable.begin(); it != mIpTable.end(); it++)
 	{
