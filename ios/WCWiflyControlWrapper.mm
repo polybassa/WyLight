@@ -126,18 +126,14 @@
 	delete gCtrlMutex;
 	delete gFunctionMutex;
 	delete mControl;
+	delete mFunction;
 	
-	if(mFunction != NULL) delete mFunction;
-    
-	mFunction = NULL;
-	ctrlIsRunning = NULL;
-	mFirstCtrlThread = NULL;
-	mSecondCtrlThread = NULL;
-	mCmdQueue = NULL;
-	gCtrlMutex = NULL;
-	gFunctionMutex = NULL;
-	gCmdQueueMutex = NULL;
-	mControl = NULL;
+#if !__has_feature(objc_arc)
+    //Do manual memory management...
+	[super dealloc];
+#else
+    //Usually do nothing...
+#endif
 }
 
 #pragma mark - Configuration WLAN-Module

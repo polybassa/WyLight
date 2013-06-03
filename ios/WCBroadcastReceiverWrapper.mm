@@ -69,10 +69,14 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
     delete mStream;
     delete receiver;
     delete receiverThread;
-    
-    mStream = NULL;
-    receiver = NULL;
-    receiverThread = NULL;
+	
+#if !__has_feature(objc_arc)
+    //Do manual memory management...
+	[super dealloc];
+#else
+    //Usually do nothing...
+#endif
+	
 }
 
 - (size_t)numberOfTargets
