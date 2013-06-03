@@ -37,8 +37,14 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
         mStream = new std::stringstream();
 		self.threadOfOwner = [NSThread currentThread];
 		
+		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+		NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
+		
+		NSMutableString *filePath = [[NSMutableString alloc] initWithString:basePath];
+		[filePath appendString:@"/recv.txt"];
+
 		receiver = new WyLight::BroadcastReceiver(55555,
-												  "recv.txt",
+												  [filePath cStringUsingEncoding:NSASCIIStringEncoding],
 												  [=](const size_t index, const WyLight::Endpoint& endpoint)
 													{
 														NSLog(@"New: %zd : %d.%d.%d.%d, %d  %s",
@@ -86,12 +92,32 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
 
 - (uint32_t)ipAdressOfTarget:(size_t)index
 {
-    if(index > [self numberOfTargets])
+    if(index >= [self numberOfTargets])
         return 0;
+	
     WyLight::Endpoint mEndpoint = receiver->GetEndpoint(index);
-    
+    	
     return mEndpoint.GetIp();
 }
+
+- (void)increaseScoreOfIpAdress:(uint32_t)ipAdress
+{
+	for(size_t index = 0; index < [self numberOfTargets]; index++)
+	{
+		if((receiver->GetEndpoint(index)).GetIp() == ipAdress)
+			++(receiver->GetEndpoint(index));
+	}
+}
+
+- (void)SetScoreOfIpAdress:(uint32_t)ipAdress Score:(uint8_t)score
+{
+	for(size_t index = 0; index < [self numberOfTargets]; index++)
+	{
+		if(receiver->GetEndpoint(index).GetIp() == ipAdress)
+			receiver->GetEndpoint(index).SetScore(score);
+	}
+}
+
 
 - (uint16_t)portOfTarget:(size_t)index
 {
