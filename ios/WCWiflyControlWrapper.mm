@@ -10,17 +10,20 @@
 #include <time.h>
 #include <thread>
 #include <mutex>
-#include <queue>
 #include <functional>
-#include <atomic>
+#include "MessageQueue.h"
+#include <tuple>
+
+
+typedef std::function<uint32_t(void)> ControlCommand;
+//tupel <1> == true: terminate task; tuple <2>: command to execute; tuple<3> == 0: no notification after execution command, == 1: notification after execution command
+typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 @interface WCWiflyControlWrapper () {
 	WyLight::ControlNoThrow *mControl;
-	std::thread *mFirstCtrlThread, *mSecondCtrlThread;
-	std::function<uint32_t(void)> *mFunction;
-	std::mutex *gCtrlMutex, *gCmdQueueMutex, *gFunctionMutex;
-	std::deque<std::function<uint32_t(void)>> *mCmdQueue;
-	std::atomic<bool> *ctrlIsRunning;
+	std::thread *mCtrlThread;
+	std::mutex *gCtrlMutex;
+	WyLight::MessageQueue<ControlMessage> *mCmdQueue;
 }
 
 @property (nonatomic) NSThread* threadOfOwner;
@@ -48,63 +51,33 @@
     {
 		mControl = new WyLight::ControlNoThrow(ip,port);
 		self.threadOfOwner = [NSThread currentThread];
-		mFunction = NULL;
-		ctrlIsRunning = new std::atomic<bool>(true);
-		mCmdQueue	= new std::deque<std::function<uint32_t(void)>>();
 		gCtrlMutex = new std::mutex();
-		gCmdQueueMutex = new std::mutex();
-		gFunctionMutex = new std::mutex();
-		mFirstCtrlThread = new std::thread([=]	{
+		mCmdQueue = new WyLight::MessageQueue<ControlMessage>();
+		mCtrlThread = new std::thread([=]{
 													uint32_t retVal;
-													std::function<uint32_t(void)> call;
-													while(ctrlIsRunning)
+													while(true)
 													{
-														if(!(mCmdQueue->empty()))
+														auto tup = mCmdQueue->receive();
+														
+														if(std::get<0>(tup))
 														{
-															{
-																std::lock_guard<std::mutex> queueLock(*gCmdQueueMutex);
-																call = mCmdQueue->front();
-																mCmdQueue->pop_front();
-															}
-															{
-																std::lock_guard<std::mutex> ctrlLock(*gCtrlMutex);
-																retVal = call();
-															}
-															if(retVal != WyLight::NO_ERROR)
-															{
-																[self performSelector:@selector(callFatalErrorDelegate:) onThread:[self threadOfOwner] withObject:[NSNumber numberWithUnsignedInt:retVal] waitUntilDone:NO];
-															}
+															NSLog(@"terminate runLoop\n");
+															break;
+														}
+														
+														{	std::lock_guard<std::mutex> ctrlLock(*gCtrlMutex);
+															retVal = std::get<1>(tup)(); }
+														
+														if(retVal != WyLight::NO_ERROR)
+														{
+															[self performSelector:@selector(callFatalErrorDelegate:) onThread:self.threadOfOwner withObject:[NSNumber numberWithUnsignedInt:retVal] waitUntilDone:NO];
+														}
+														else if(retVal == WyLight::NO_ERROR && std::get<2>(tup) == 1)	//do we have to notify after execution?
+														{
+															[self performSelector:@selector(callWiflyControlHasDisconnectedDelegate) onThread:self.threadOfOwner withObject:nil waitUntilDone:NO];
 														}
 													}
 												}
-											);
-		mSecondCtrlThread = new std::thread([=]	{
-													uint32_t retVal;
-													while(ctrlIsRunning)
-													{
-														if(mFunction != NULL)
-														{
-															{
-																std::lock_guard<std::mutex> funcLock(*gFunctionMutex);
-																std::lock_guard<std::mutex> ctrlLock(*gCtrlMutex);
-																retVal = (*mFunction)();
-															
-																delete mFunction;
-																mFunction = NULL;
-															}
-															
-															if(retVal != WyLight::NO_ERROR)
-															{
-																[self performSelector:@selector(callFatalErrorDelegate:) onThread:[self threadOfOwner] withObject:[NSNumber numberWithUnsignedInt:retVal] waitUntilDone:NO];
-															}
-															else
-															{
-																[self performSelector:@selector(callWiflyControlHasDisconnectedDelegate) onThread:[self threadOfOwner] withObject:nil waitUntilDone:NO];
-															}
-
-														}
-													}
-												 }
 											);
 	}
     return self;
@@ -114,19 +87,13 @@
 
 -(void)dealloc
 {
-	ctrlIsRunning = false;
-	mFirstCtrlThread->join();
-	mSecondCtrlThread->join();
+	mCmdQueue->sendOnlyThis(std::make_tuple(true, [=]{return 0xdeadbeef;}, 0));
+	mCtrlThread->join();
 	
-	delete ctrlIsRunning;
-	delete mFirstCtrlThread;
-	delete mSecondCtrlThread;
+	delete mCtrlThread;
 	delete mCmdQueue;
-	delete gCmdQueueMutex;
 	delete gCtrlMutex;
-	delete gFunctionMutex;
 	delete mControl;
-	delete mFunction;
 	
 #if !__has_feature(objc_arc)
     //Do manual memory management...
@@ -144,22 +111,25 @@
     const std::string passwordCString([password cStringUsingEncoding:NSASCIIStringEncoding]);
 	const std::string nameCString([name cStringUsingEncoding:NSASCIIStringEncoding]);
     
-	std::lock_guard<std::mutex> lock(*gFunctionMutex);
-	mFunction = new std::function<uint32_t(void)>(std::bind(&WyLight::ControlNoThrow::ConfModuleForWlan, std::ref(*mControl), passwordCString, ssidCString, nameCString));
+	mCmdQueue->sendOnlyThis(std::make_tuple(false,
+											std::bind(&WyLight::ControlNoThrow::ConfModuleForWlan, std::ref(*mControl), passwordCString, ssidCString, nameCString),
+											1));
 }
 
 - (void)configurateWlanModuleAsSoftAP:(NSString *)ssid
 {
     const std::string ssidCString([ssid cStringUsingEncoding:NSASCIIStringEncoding]);
 	
-	std::lock_guard<std::mutex> lock(*gFunctionMutex);
-	mFunction = new std::function<uint32_t(void)>(std::bind(&WyLight::ControlNoThrow::ConfModuleAsSoftAP, std::ref(*mControl), ssidCString));
+	mCmdQueue->sendOnlyThis(std::make_tuple(false,
+											std::bind(&WyLight::ControlNoThrow::ConfModuleAsSoftAP, std::ref(*mControl), ssidCString),
+											1));
 }
 
 - (void)rebootWlanModul
 {
-	std::lock_guard<std::mutex> lock(*gFunctionMutex);
-	mFunction = new std::function<uint32_t(void)>(std::bind(&WyLight::ControlNoThrow::ConfRebootWlanModule, std::ref(*mControl)));
+	mCmdQueue->sendOnlyThis(std::make_tuple(false,
+											std::bind(&WyLight::ControlNoThrow::ConfRebootWlanModule, std::ref(*mControl)),
+											1));
 }
 
 #pragma mark - Firmware methods
@@ -197,14 +167,16 @@
 
 - (void)setColorDirect:(const uint8_t*)pointerBuffer bufferLength:(size_t)length
 {
-	std::lock_guard<std::mutex> lock(*gCmdQueueMutex);
-	mCmdQueue->push_front(std::bind(&WyLight::ControlNoThrow::FwSetColorDirect, std::ref(*mControl), pointerBuffer, length));
+	mCmdQueue->sendDirect(std::make_tuple(false,
+										  std::bind(&WyLight::ControlNoThrow::FwSetColorDirect, std::ref(*mControl), pointerBuffer, length),
+										  0));
 }
 
 - (void)setWaitTimeInTenMilliSecondsIntervals:(uint16_t)time
 {
-	std::lock_guard<std::mutex> lock(*gCmdQueueMutex);
-	mCmdQueue->push_back(std::bind(&WyLight::ControlNoThrow::FwSetWait, std::ref(*mControl), time));
+	mCmdQueue->send(std::make_tuple(false,
+									std::bind(&WyLight::ControlNoThrow::FwSetWait, std::ref(*mControl), time),
+									0));
 }
 
 - (void)setFade:(uint32_t)colorInARGB
@@ -224,8 +196,9 @@
 
 - (void)setFade:(uint32_t)colorInARGB time:(uint16_t)timeValue address:(uint32_t)address parallelFade:(BOOL)parallel
 {
-    std::lock_guard<std::mutex> lock(*gCmdQueueMutex);
-	mCmdQueue->push_back(std::bind(&WyLight::ControlNoThrow::FwSetFade, std::ref(*mControl), colorInARGB, timeValue, address, parallel));
+	mCmdQueue->send(std::make_tuple(false,
+									std::bind(&WyLight::ControlNoThrow::FwSetFade, std::ref(*mControl), colorInARGB, timeValue, address, parallel),
+									0));
 }
 
 - (void)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB
@@ -250,26 +223,30 @@
 
 - (void)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel gradientLength:(uint8_t)length startPosition:(uint8_t)offset
 {
-	std::lock_guard<std::mutex> lock(*gCmdQueueMutex);
-	mCmdQueue->push_back(std::bind(&WyLight::ControlNoThrow::FwSetGradient, std::ref(*mControl), colorOneInARGB, colorTwoInARGB, timeValue, parallel, length, offset));
+	mCmdQueue->send(std::make_tuple(false,
+									std::bind(&WyLight::ControlNoThrow::FwSetGradient, std::ref(*mControl), colorOneInARGB, colorTwoInARGB, timeValue, parallel, length, offset),
+									0));
 }
 
 - (void)loopOn
 {
-	std::lock_guard<std::mutex> lock(*gCmdQueueMutex);
-	mCmdQueue->push_back(std::bind(&WyLight::ControlNoThrow::FwLoopOn, std::ref(*mControl)));
+	mCmdQueue->send(std::make_tuple(false,
+									std::bind(&WyLight::ControlNoThrow::FwLoopOn, std::ref(*mControl)),
+									0));
 }
 
 - (void)loopOffAfterNumberOfRepeats:(uint8_t)repeats
 {
-    std::lock_guard<std::mutex> lock(*gCmdQueueMutex);
-	mCmdQueue->push_back(std::bind(&WyLight::ControlNoThrow::FwLoopOff, std::ref(*mControl), repeats)); // 0: Endlosschleife / 255: Maximale Anzahl
+	mCmdQueue->send(std::make_tuple(false,
+									std::bind(&WyLight::ControlNoThrow::FwLoopOff, std::ref(*mControl), repeats),
+									0)); // 0: Endlosschleife / 255: Maximale Anzahl
 }
 
 - (void)clearScript
 {
-    std::lock_guard<std::mutex> lock(*gCmdQueueMutex);
-	mCmdQueue->push_back(std::bind(&WyLight::ControlNoThrow::FwClearScript, std::ref(*mControl)));
+    mCmdQueue->send(std::make_tuple(false,
+									std::bind(&WyLight::ControlNoThrow::FwClearScript, std::ref(*mControl)),
+									0));
 }
 
 - (void)readRtcTime:(NSDate **)date
@@ -300,8 +277,9 @@
     //time(&rawTime);
     timeInfo = localtime(&rawTime);
     
-	std::lock_guard<std::mutex> lock(*gCmdQueueMutex);
-	mCmdQueue->push_front(std::bind(&WyLight::ControlNoThrow::FwSetRtc, std::ref(*mControl), *timeInfo));
+	mCmdQueue->sendDirect(std::make_tuple(false,
+									std::bind(&WyLight::ControlNoThrow::FwSetRtc, std::ref(*mControl), *timeInfo),
+									0));
 }
 
 - (void)readCurrentFirmwareVersionFromFirmware:(NSString **)currentFirmwareVersionStringPlaceholder
@@ -324,9 +302,9 @@
 
 - (void)enterBootloader
 {
-	std::lock_guard<std::mutex> lock(*gCmdQueueMutex);
-	mCmdQueue->clear();
-	mCmdQueue->push_front(std::bind(&WyLight::ControlNoThrow::FwStartBl, std::ref(*mControl)));
+	mCmdQueue->sendOnlyThis(std::make_tuple(false,
+										  std::bind(&WyLight::ControlNoThrow::FwStartBl, std::ref(*mControl)),
+										  0));
 }
 
 #pragma mark - Bootloader methods
@@ -356,15 +334,16 @@
     NSString *documentsDirectoryPath = [paths objectAtIndex:0];
     NSString *filePath = [documentsDirectoryPath stringByAppendingPathComponent:@"main.hex"];
     
-	std::lock_guard<std::mutex> lock(*gCmdQueueMutex);
-	mCmdQueue->push_back(std::bind(&WyLight::ControlNoThrow::BlProgramFlash, std::ref(*mControl), std::string([filePath cStringUsingEncoding:NSASCIIStringEncoding])));
+	mCmdQueue->sendOnlyThis(std::make_tuple(false,
+										  std::bind(&WyLight::ControlNoThrow::BlProgramFlash, std::ref(*mControl), std::string([filePath cStringUsingEncoding:NSASCIIStringEncoding])),
+										  0));
 }
 
 - (void)leaveBootloader
 {
-	std::lock_guard<std::mutex> lock(*gCmdQueueMutex);
-	mCmdQueue->clear();
-	mCmdQueue->push_front(std::bind(&WyLight::ControlNoThrow::BlRunApp, std::ref(*mControl)));
+	mCmdQueue->sendOnlyThis(std::make_tuple(false,
+											std::bind(&WyLight::ControlNoThrow::BlRunApp, std::ref(*mControl)),
+											0));
 }
 
 - (void)callFatalErrorDelegate:(NSNumber*)errorCode
