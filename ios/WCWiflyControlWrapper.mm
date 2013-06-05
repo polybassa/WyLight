@@ -63,7 +63,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 														
 														if(std::get<0>(tup))
 														{
-															NSLog(@"terminate runLoop\n");
+															NSLog(@"WCWiflyControlWrapper: Terminate runLoop\n");
 															break;
 														}
 														
@@ -85,19 +85,29 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
     return self;
 }
 
-
-
--(void)dealloc
+- (void)disconnect
 {
-	NSLog(@"Dealloc WCWiflyControlWrapper\n");
-	mCmdQueue->sendOnlyThis(std::make_tuple(true, [=]{return 0xdeadbeef;}, 0));
-	mCtrlThread->join();
+	if(mCmdQueue != NULL && mCtrlThread != NULL) {
+		NSLog(@"Disconnect WCWiflyControlWrapper\n");
+		mCmdQueue->sendOnlyThis(std::make_tuple(true, [=]{return 0xdeadbeef;}, 0));
+		mCtrlThread->join();
+	}
 	
 	delete mCtrlThread;
 	delete mCmdQueue;
 	delete gCtrlMutex;
 	delete mControl;
 	
+	mCtrlThread = NULL;
+	mCmdQueue = NULL;
+	gCtrlMutex = NULL;
+	mControl = NULL;
+}
+
+- (void)dealloc
+{
+	NSLog(@"Dealloc WCWiflyControlWrapper\n");
+	[self disconnect];
 #if !__has_feature(objc_arc)
     //Do manual memory management...
 	[super dealloc];

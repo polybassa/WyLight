@@ -56,7 +56,7 @@
 - (void)programFlash;
 - (void)leaveBootloader;
 
-- (void)dealloc;
+- (void)disconnect;
 
 @end
 

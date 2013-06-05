@@ -70,16 +70,27 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
     return self;
 }
 
-- (void)dealloc
+- (void)stop
 {
-    // Stop BroadcastReceiver
-    receiver->Stop();
-    receiverThread->join();
-    
+	if(receiver != NULL && receiverThread != NULL)
+	{
+		// Stop BroadcastReceiver
+		receiver->Stop();
+		receiverThread->join();
+    }
+	
     delete mStream;
     delete receiver;
     delete receiverThread;
 	
+	mStream = NULL;
+	receiver = NULL;
+	receiverThread = NULL;
+}
+
+- (void)dealloc
+{
+	[self stop];
 #if !__has_feature(objc_arc)
     //Do manual memory management...
 	[super dealloc];

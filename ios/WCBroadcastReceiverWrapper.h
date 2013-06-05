@@ -19,4 +19,5 @@ FOUNDATION_EXPORT NSString *const NewTargetAddedNotification;
 - (void)SetScoreOfIpAdress:(uint32_t)ipAdress Score:(uint8_t)score;
 - (uint8_t)scoreOfTarget:(size_t)index;
 - (void)saveTargets;
+- (void)stop;
 @end
