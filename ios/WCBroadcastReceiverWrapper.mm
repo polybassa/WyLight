@@ -18,7 +18,11 @@
 	std::thread *receiverThread;
 }
 
-@property (nonatomic) NSThread* threadOfOwner;
+#if !__has_feature(objc_arc)
+@property (nonatomic, unsafe_unretained) NSThread* threadOfOwner;
+#else
+@property (nonatomic, weak) NSThread* threadOfOwner;
+#endif
 
 - (void)postNotification;
 
@@ -128,6 +132,16 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
     return mEndpoint.GetPort();
 }
 
+- (uint8_t)scoreOfTarget:(size_t)index
+{
+    if(index > [self numberOfTargets])
+        return 0;
+    WyLight::Endpoint mEndpoint = receiver->GetEndpoint(index);
+    
+    return mEndpoint.GetScore();
+}
+
+
 - (NSString *)deviceNameOfTarget:(size_t)index
 {
     if(index > [self numberOfTargets])
@@ -137,6 +151,11 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
     std::string mStr = mEndpoint.GetDeviceId();
    
     return [NSString stringWithCString:mStr.c_str() encoding:NSASCIIStringEncoding];
+}
+
+- (void)saveTargets
+{
+	receiver->WriteRecentEndpoints();
 }
 
 - (void)postNotification

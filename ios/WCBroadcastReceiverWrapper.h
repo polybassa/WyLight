@@ -17,5 +17,6 @@ FOUNDATION_EXPORT NSString *const NewTargetAddedNotification;
 - (NSString *)deviceNameOfTarget:(size_t)index;
 - (void)increaseScoreOfIpAdress:(uint32_t)ipAdress;
 - (void)SetScoreOfIpAdress:(uint32_t)ipAdress Score:(uint8_t)score;
-
+- (uint8_t)scoreOfTarget:(size_t)index;
+- (void)saveTargets;
 @end
