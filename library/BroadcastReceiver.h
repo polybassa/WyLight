@@ -106,7 +106,7 @@ class BroadcastReceiver
 		 * @param filename of the file containing the recent endpoints
 		 * @param threshold which an endpoints score has to have at least to be written to the file
 		 */
-		void WriteRecentEndpoints(const std::string& filename, uint8_t threshold = 1) const;
+		void WriteRecentEndpoints(const std::string& filename = "", uint8_t threshold = 1) const;
 
 	private:
 		const uint16_t mPort;

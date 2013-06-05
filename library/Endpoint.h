@@ -93,7 +93,7 @@ class Endpoint
 		 * @return reference to itself
 		 */
 		Endpoint& operator ++(void) {
-			++mScore;
+			if(mScore < 255) ++mScore;
 			return *this;
 		}
 

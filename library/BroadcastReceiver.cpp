@@ -153,7 +153,12 @@ void BroadcastReceiver::Stop(void)
 
 void BroadcastReceiver::WriteRecentEndpoints(const std::string& filename, uint8_t threshold) const
 {
-	std::ofstream outFile(filename, std::ios::trunc);
+	std::ofstream outFile;
+	if(filename.compare("") == 0)
+		outFile.open(mRecentFilename, std::ios::trunc);
+	else
+		outFile.open(filename, std::ios::trunc);
+	
 	if(!outFile.is_open()) {
 		Trace(ZONE_ERROR, "Open file to write recent endpoints failed\n");
 		return;
