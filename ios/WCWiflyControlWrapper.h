@@ -9,11 +9,13 @@
 
 @protocol WCWiflyControlDelegate;
 
-@interface WCWiflyControlWrapper : NSObject {
-	id <WCWiflyControlDelegate> delegate;
-}
+@interface WCWiflyControlWrapper : NSObject {}
 
+#if !__has_feature(objc_arc)
+@property (nonatomic, unsafe_unretained) id <WCWiflyControlDelegate> delegate;
+#else
 @property (nonatomic, weak) id <WCWiflyControlDelegate> delegate;
+#endif
 
 // Configuration
 - (id)initWithIP:(uint32_t)ip port:(uint16_t)port;
@@ -53,6 +55,8 @@
 - (void)readCurrentFirmwareVersionFromBootloder:(NSString **)currentFirmwareVersionStringPlaceholder;
 - (void)programFlash;
 - (void)leaveBootloader;
+
+- (void)dealloc;
 
 @end
 

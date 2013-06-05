@@ -14,7 +14,6 @@
 #include "MessageQueue.h"
 #include <tuple>
 
-
 typedef std::function<uint32_t(void)> ControlCommand;
 //tupel <1> == true: terminate task; tuple <2>: command to execute; tuple<3> == 0: no notification after execution command, == 1: notification after execution command
 typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
@@ -26,7 +25,11 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 	WyLight::MessageQueue<ControlMessage> *mCmdQueue;
 }
 
-@property (nonatomic) NSThread* threadOfOwner;
+#if !__has_feature(objc_arc)
+@property (nonatomic, unsafe_unretained) NSThread* threadOfOwner;
+#else
+@property (nonatomic, weak) NSThread* threadOfOwner;
+#endif
 
 -(void) callFatalErrorDelegate:(NSNumber*)errorCode;
 -(void) callWiflyControlHasDisconnectedDelegate;
@@ -34,8 +37,6 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 @end
 
 @implementation WCWiflyControlWrapper
-
-@synthesize delegate;
 
 #pragma mark - Object
 
@@ -49,6 +50,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
     self = [super init];
     if (self)
     {
+		NSLog(@"Start WCWiflyControlWrapper\n");
 		mControl = new WyLight::ControlNoThrow(ip,port);
 		self.threadOfOwner = [NSThread currentThread];
 		gCtrlMutex = new std::mutex();
@@ -87,6 +89,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 -(void)dealloc
 {
+	NSLog(@"Dealloc WCWiflyControlWrapper\n");
 	mCmdQueue->sendOnlyThis(std::make_tuple(true, [=]{return 0xdeadbeef;}, 0));
 	mCtrlThread->join();
 	
@@ -351,17 +354,17 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 	NSLog(@"ErrorCode %@", errorCode);
 	if([errorCode intValue] == WyLight::SCRIPT_FULL)
 	{
-		[delegate scriptFullErrorOccured:self errorCode:errorCode];
+		[_delegate scriptFullErrorOccured:self errorCode:errorCode];
 	}
 	else
 	{
-		[delegate fatalErrorOccured:self errorCode:errorCode];
+		[_delegate fatalErrorOccured:self errorCode:errorCode];
 	}
 }
 
 - (void)callWiflyControlHasDisconnectedDelegate
 {
-	[delegate wiflyControlHasDisconnected:self];
+	[_delegate wiflyControlHasDisconnected:self];
 }
 
 @end
