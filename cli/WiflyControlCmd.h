@@ -25,6 +25,7 @@
 #include <iomanip>
 #include <time.h>
 #include <stdint.h>
+#include <memory>
 
 //TODO remove this dependencies!!!
 using std::cin;
@@ -660,37 +661,37 @@ class ControlCmdStressTest : public WiflyControlCmd
 		};
 };
 
-
-static const WiflyControlCmd* s_Cmds[] = {
-	new ControlCmdBlEnableAutostart(),
-	new ControlCmdBlInfo(),
-	new ControlCmdBlCrcFlash(),
-	new ControlCmdBlEraseEeprom(),
-	new ControlCmdBlEraseFlash(),
-	new ControlCmdBlProgramFlash(),
-	new ControlCmdBlReadEeprom(),
-	new ControlCmdBlReadFlash(),
-	new ControlCmdBlReadFwVersion(),
-	new ControlCmdBlRunApp(),
-	new ControlCmdConfGetSsid(),
-	new ControlCmdConfWlanAsClient(),
-	new ControlCmdConfWlanAsSoftAP(),
-	new ControlCmdConfSetDeviceId(),
-	new ControlCmdConfRebootWlanModule(),
-	new ControlCmdClearScript(),
-	new ControlCmdSetFade(),
-	new ControlCmdSetGradient(),
-	new ControlCmdStartBl(),
-	new ControlCmdTest(),
-	new ControlCmdStressTest(),
-	new ControlCmdPrintTracebuffer(),
-	new ControlCmdPrintFwVersion(),
-	new ControlCmdPrintCycletime(),
-	new ControlCmdSetRtc(),
-	new ControlCmdGetRtc(),
-	new ControlCmdLoopOn(),
-	new ControlCmdLoopOff(),
-	new ControlCmdWait(),
+static const std::shared_ptr<WiflyControlCmd> s_Cmds[] = {
+//static const WiflyControlCmd* s_Cmds[] = {
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdBlEnableAutostart()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdBlInfo()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdBlCrcFlash()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdBlEraseEeprom()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdBlEraseFlash()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdBlProgramFlash()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdBlReadEeprom()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdBlReadFlash()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdBlReadFwVersion()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdBlRunApp()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdConfGetSsid()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdConfWlanAsClient()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdConfWlanAsSoftAP()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdConfSetDeviceId()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdConfRebootWlanModule()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdClearScript()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdSetFade()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdSetGradient()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdStartBl()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdTest()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdStressTest()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdPrintTracebuffer()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdPrintFwVersion()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdPrintCycletime()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdSetRtc()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdGetRtc()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdLoopOn()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdLoopOff()),
+	std::shared_ptr<WiflyControlCmd>(new ControlCmdWait()),
 //TODO implement on demand	ControlCmdBlWriteEeprom writeEeprom;
 //TODO	ControlCmdBlWriteFlash writeFlash;
 };
@@ -711,7 +712,7 @@ class WiflyControlCmdBuilder
 		 * @param name of the command
 		 * @return pointer to an command object for the given name or NULL in case of an error
 		 */
-		static const WiflyControlCmd* GetCmd(const string name) {
+		static const std::shared_ptr<WiflyControlCmd> GetCmd(const string name) {
 			for(size_t i = 0; i < s_NumCmds; i++) {
 				Trace(ZONE_INFO, "%zu:%s:%s\n", i, name.c_str(), s_Cmds[i]->GetName().c_str());
 				if(0 == name.compare(s_Cmds[i]->GetName())) {
@@ -726,7 +727,7 @@ class WiflyControlCmdBuilder
 		 * @param index of the command
 		 * @return pointer to an command object or NULL if index is out of range
 		 */
-		static const WiflyControlCmd* GetCmd(size_t index) {
+		static const std::shared_ptr<WiflyControlCmd> GetCmd(size_t index) {
 			if(index < s_NumCmds) {
 				return s_Cmds[index];
 			}

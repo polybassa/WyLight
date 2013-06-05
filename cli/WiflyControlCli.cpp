@@ -27,6 +27,7 @@
 #include <unistd.h>
 #include <vector>
 #include <sstream>
+#include <memory>
 
 using std::cin;
 using std::cout;
@@ -40,7 +41,7 @@ WiflyControlCli::WiflyControlCli(uint32_t addr, uint16_t port)
 
 void WiflyControlCli::Run(void)
 {
-	const WiflyControlCmd* pCmd;
+	std::shared_ptr<WiflyControlCmd> pCmd;
 	ShowHelp();
 	string nextCmd;
 	while(mRunning)
@@ -73,7 +74,7 @@ void WiflyControlCli::ShowHelp(void) const
 	cout << "'exit' - terminate cli" << endl;
 
 	size_t i = 0;
-	const WiflyControlCmd* pCmd = WiflyControlCmdBuilder::GetCmd(i++);
+	std::shared_ptr<WiflyControlCmd> pCmd = WiflyControlCmdBuilder::GetCmd(i++);
 	while(pCmd != NULL) {
 		cout << *pCmd << endl;
 		pCmd = WiflyControlCmdBuilder::GetCmd(i++);
