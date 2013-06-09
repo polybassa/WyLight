@@ -19,10 +19,10 @@ typedef std::function<uint32_t(void)> ControlCommand;
 typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 @interface WCWiflyControlWrapper () {
-	WyLight::ControlNoThrow *mControl;
-	std::thread *mCtrlThread;
-	std::mutex *gCtrlMutex;
-	WyLight::MessageQueue<ControlMessage> *mCmdQueue;
+	std::shared_ptr<WyLight::ControlNoThrow> mControl;
+	std::shared_ptr<std::thread> mCtrlThread;
+	std::shared_ptr<std::mutex> gCtrlMutex;
+	std::shared_ptr<WyLight::MessageQueue<ControlMessage>> mCmdQueue;
 }
 
 #if !__has_feature(objc_arc)
@@ -51,11 +51,11 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
     if (self)
     {
 		NSLog(@"Start WCWiflyControlWrapper\n");
-		mControl = new WyLight::ControlNoThrow(ip,port);
+		mControl = std::make_shared<WyLight::ControlNoThrow>(ip,port);
 		self.threadOfOwner = [NSThread currentThread];
-		gCtrlMutex = new std::mutex();
-		mCmdQueue = new WyLight::MessageQueue<ControlMessage>();
-		mCtrlThread = new std::thread([=]{
+		gCtrlMutex = std::make_shared<std::mutex>();
+		mCmdQueue = std::make_shared<WyLight::MessageQueue<ControlMessage>>();
+		mCtrlThread = std::make_shared<std::thread>([=]{
 													uint32_t retVal;
 													while(true)
 													{
@@ -87,21 +87,16 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)disconnect
 {
-	if(mCmdQueue != NULL && mCtrlThread != NULL) {
+	if(mCmdQueue && mCtrlThread) {
 		NSLog(@"Disconnect WCWiflyControlWrapper\n");
 		mCmdQueue->sendOnlyThis(std::make_tuple(true, [=]{return 0xdeadbeef;}, 0));
 		mCtrlThread->join();
 	}
 	
-	delete mCtrlThread;
-	delete mCmdQueue;
-	delete gCtrlMutex;
-	delete mControl;
-	
-	mCtrlThread = NULL;
-	mCmdQueue = NULL;
-	gCtrlMutex = NULL;
-	mControl = NULL;
+	mCtrlThread.reset();
+	mCmdQueue.reset();
+	gCtrlMutex.reset();
+	mControl.reset();
 }
 
 - (void)dealloc
@@ -343,10 +338,8 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)programFlash
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectoryPath = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectoryPath stringByAppendingPathComponent:@"main.hex"];
-    
+	NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"main" ofType:@"hex"]; //Whatever your file - extension is
+
 	mCmdQueue->sendOnlyThis(std::make_tuple(false,
 										  std::bind(&WyLight::ControlNoThrow::BlProgramFlash, std::ref(*mControl), std::string([filePath cStringUsingEncoding:NSASCIIStringEncoding])),
 										  0));

@@ -20,4 +20,5 @@ FOUNDATION_EXPORT NSString *const NewTargetAddedNotification;
 - (uint8_t)scoreOfTarget:(size_t)index;
 - (void)saveTargets;
 - (void)stop;
+- (void)clearTargets;
 @end

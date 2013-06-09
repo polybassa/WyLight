@@ -9,13 +9,12 @@
 
 #include "BroadcastReceiver.h"
 #include <iostream>
-#include <sstream>
+#include <memory>
 #include <thread>
 
 @interface WCBroadcastReceiverWrapper () {
-	std::stringstream *mStream;
-	WyLight::BroadcastReceiver *receiver;
-	std::thread *receiverThread;
+	std::shared_ptr<WyLight::BroadcastReceiver> receiver;
+	std::shared_ptr<std::thread> receiverThread;
 }
 
 #if !__has_feature(objc_arc)
@@ -38,7 +37,6 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
     if (self)
     {
         // Start BroadcastReceiver
-        mStream = new std::stringstream();
 		self.threadOfOwner = [NSThread currentThread];
 		
 		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -47,7 +45,7 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
 		NSMutableString *filePath = [[NSMutableString alloc] initWithString:basePath];
 		[filePath appendString:@"/recv.txt"];
 
-		receiver = new WyLight::BroadcastReceiver(55555,
+		receiver = std::make_shared<WyLight::BroadcastReceiver>(55555,
 												  [filePath cStringUsingEncoding:NSASCIIStringEncoding],
 												  [=](const size_t index, const WyLight::Endpoint& endpoint)
 													{
@@ -64,7 +62,7 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
 													}
 												  );
 
-		receiverThread = new std::thread(std::ref(*receiver));
+		receiverThread = std::make_shared<std::thread>(std::ref(*receiver));
 		NSLog(@"start receiver");
 	}
     return self;
@@ -72,20 +70,14 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
 
 - (void)stop
 {
-	if(receiver != NULL && receiverThread != NULL)
+	if(receiver && receiverThread)
 	{
 		// Stop BroadcastReceiver
 		receiver->Stop();
 		receiverThread->join();
     }
-	
-    delete mStream;
-    delete receiver;
-    delete receiverThread;
-	
-	mStream = NULL;
-	receiver = NULL;
-	receiverThread = NULL;
+	receiver.reset();
+	receiverThread.reset();
 }
 
 - (void)dealloc
@@ -107,17 +99,15 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
 
 - (uint32_t)ipAdressOfTarget:(size_t)index
 {
-    if(index >= [self numberOfTargets])
+    if(index >= receiver->NumRemotes())
         return 0;
 	
-    WyLight::Endpoint mEndpoint = receiver->GetEndpoint(index);
-    	
-    return mEndpoint.GetIp();
+    return receiver->GetEndpoint(index).GetIp();
 }
 
 - (void)increaseScoreOfIpAdress:(uint32_t)ipAdress
 {
-	for(size_t index = 0; index < [self numberOfTargets]; index++)
+	for(size_t index = 0; index < receiver->NumRemotes(); index++)
 	{
 		if((receiver->GetEndpoint(index)).GetIp() == ipAdress)
 			++(receiver->GetEndpoint(index));
@@ -126,7 +116,7 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
 
 - (void)SetScoreOfIpAdress:(uint32_t)ipAdress Score:(uint8_t)score
 {
-	for(size_t index = 0; index < [self numberOfTargets]; index++)
+	for(size_t index = 0; index < receiver->NumRemotes(); index++)
 	{
 		if(receiver->GetEndpoint(index).GetIp() == ipAdress)
 			receiver->GetEndpoint(index).SetScore(score);
@@ -136,7 +126,7 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
 
 - (uint16_t)portOfTarget:(size_t)index
 {
-    if(index > [self numberOfTargets])
+    if(index > receiver->NumRemotes())
         return 0;
     WyLight::Endpoint mEndpoint = receiver->GetEndpoint(index);
     
@@ -145,7 +135,7 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
 
 - (uint8_t)scoreOfTarget:(size_t)index
 {
-    if(index > [self numberOfTargets])
+    if(index > receiver->NumRemotes())
         return 0;
     WyLight::Endpoint mEndpoint = receiver->GetEndpoint(index);
     
@@ -155,12 +145,12 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
 
 - (NSString *)deviceNameOfTarget:(size_t)index
 {
-    if(index > [self numberOfTargets])
+    if(index > receiver->NumRemotes())
         return 0;
     WyLight::Endpoint mEndpoint = receiver->GetEndpoint(index);
     
     std::string mStr = mEndpoint.GetDeviceId();
-   
+	
     return [NSString stringWithCString:mStr.c_str() encoding:NSASCIIStringEncoding];
 }
 
@@ -172,6 +162,11 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
 - (void)postNotification
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:NewTargetAddedNotification object:self];
+}
+
+- (void)clearTargets
+{
+	receiver->DeleteRecentEndpointFile();
 }
 
 @end
