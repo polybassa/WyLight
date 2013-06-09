@@ -89,7 +89,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 {
 	if(mCmdQueue && mCtrlThread) {
 		NSLog(@"Disconnect WCWiflyControlWrapper\n");
-		mCmdQueue->sendOnlyThis(std::make_tuple(true, [=]{return 0xdeadbeef;}, 0));
+		mCmdQueue->clear_and_push_front(std::make_tuple(true, [=]{return 0xdeadbeef;}, 0));
 		mCtrlThread->join();
 	}
 	
@@ -119,7 +119,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
     const std::string passwordCString([password cStringUsingEncoding:NSASCIIStringEncoding]);
 	const std::string nameCString([name cStringUsingEncoding:NSASCIIStringEncoding]);
     
-	mCmdQueue->sendOnlyThis(std::make_tuple(false,
+	mCmdQueue->clear_and_push_front(std::make_tuple(false,
 											std::bind(&WyLight::ControlNoThrow::ConfModuleForWlan, std::ref(*mControl), passwordCString, ssidCString, nameCString),
 											1));
 }
@@ -128,14 +128,14 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 {
     const std::string ssidCString([ssid cStringUsingEncoding:NSASCIIStringEncoding]);
 	
-	mCmdQueue->sendOnlyThis(std::make_tuple(false,
+	mCmdQueue->clear_and_push_front(std::make_tuple(false,
 											std::bind(&WyLight::ControlNoThrow::ConfModuleAsSoftAP, std::ref(*mControl), ssidCString),
 											1));
 }
 
 - (void)rebootWlanModul
 {
-	mCmdQueue->sendOnlyThis(std::make_tuple(false,
+	mCmdQueue->clear_and_push_front(std::make_tuple(false,
 											std::bind(&WyLight::ControlNoThrow::ConfRebootWlanModule, std::ref(*mControl)),
 											1));
 }
@@ -175,14 +175,14 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)setColorDirect:(const uint8_t*)pointerBuffer bufferLength:(size_t)length
 {
-	mCmdQueue->sendDirect(std::make_tuple(false,
+	mCmdQueue->push_front(std::make_tuple(false,
 										  std::bind(&WyLight::ControlNoThrow::FwSetColorDirect, std::ref(*mControl), pointerBuffer, length),
 										  0));
 }
 
 - (void)setWaitTimeInTenMilliSecondsIntervals:(uint16_t)time
 {
-	mCmdQueue->send(std::make_tuple(false,
+	mCmdQueue->push_back(std::make_tuple(false,
 									std::bind(&WyLight::ControlNoThrow::FwSetWait, std::ref(*mControl), time),
 									0));
 }
@@ -204,7 +204,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)setFade:(uint32_t)colorInARGB time:(uint16_t)timeValue address:(uint32_t)address parallelFade:(BOOL)parallel
 {
-	mCmdQueue->send(std::make_tuple(false,
+	mCmdQueue->push_back(std::make_tuple(false,
 									std::bind(&WyLight::ControlNoThrow::FwSetFade, std::ref(*mControl), colorInARGB, timeValue, address, parallel),
 									0));
 }
@@ -231,28 +231,28 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel gradientLength:(uint8_t)length startPosition:(uint8_t)offset
 {
-	mCmdQueue->send(std::make_tuple(false,
+	mCmdQueue->push_back(std::make_tuple(false,
 									std::bind(&WyLight::ControlNoThrow::FwSetGradient, std::ref(*mControl), colorOneInARGB, colorTwoInARGB, timeValue, parallel, length, offset),
 									0));
 }
 
 - (void)loopOn
 {
-	mCmdQueue->send(std::make_tuple(false,
+	mCmdQueue->push_back(std::make_tuple(false,
 									std::bind(&WyLight::ControlNoThrow::FwLoopOn, std::ref(*mControl)),
 									0));
 }
 
 - (void)loopOffAfterNumberOfRepeats:(uint8_t)repeats
 {
-	mCmdQueue->send(std::make_tuple(false,
+	mCmdQueue->push_back(std::make_tuple(false,
 									std::bind(&WyLight::ControlNoThrow::FwLoopOff, std::ref(*mControl), repeats),
 									0)); // 0: Endlosschleife / 255: Maximale Anzahl
 }
 
 - (void)clearScript
 {
-    mCmdQueue->send(std::make_tuple(false,
+    mCmdQueue->push_back(std::make_tuple(false,
 									std::bind(&WyLight::ControlNoThrow::FwClearScript, std::ref(*mControl)),
 									0));
 }
@@ -285,7 +285,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
     //time(&rawTime);
     timeInfo = localtime(&rawTime);
     
-	mCmdQueue->sendDirect(std::make_tuple(false,
+	mCmdQueue->push_front(std::make_tuple(false,
 									std::bind(&WyLight::ControlNoThrow::FwSetRtc, std::ref(*mControl), *timeInfo),
 									0));
 }
@@ -310,7 +310,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)enterBootloader
 {
-	mCmdQueue->sendOnlyThis(std::make_tuple(false,
+	mCmdQueue->clear_and_push_front(std::make_tuple(false,
 										  std::bind(&WyLight::ControlNoThrow::FwStartBl, std::ref(*mControl)),
 										  0));
 }
@@ -340,14 +340,14 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 {
 	NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"main" ofType:@"hex"]; //Whatever your file - extension is
 
-	mCmdQueue->sendOnlyThis(std::make_tuple(false,
+	mCmdQueue->clear_and_push_front(std::make_tuple(false,
 										  std::bind(&WyLight::ControlNoThrow::BlProgramFlash, std::ref(*mControl), std::string([filePath cStringUsingEncoding:NSASCIIStringEncoding])),
 										  0));
 }
 
 - (void)leaveBootloader
 {
-	mCmdQueue->sendOnlyThis(std::make_tuple(false,
+	mCmdQueue->clear_and_push_front(std::make_tuple(false,
 											std::bind(&WyLight::ControlNoThrow::BlRunApp, std::ref(*mControl)),
 											0));
 }

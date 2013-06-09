@@ -35,22 +35,24 @@ class MessageQueue {
 	
 public:
 	MessageQueue(void) {};
-	MessageQueue(MessageQueue const&& other) : mQueue(other.mQueue), mMutex(other.mMutex), mCondVar(other.mCondVar) {};
+	MessageQueue(MessageQueue const&& other) : mQueue(std::move(other.mQueue)), mMutex(std::move(other.mMutex)), mCondVar(std::move(other.mCondVar)) {};
 	
-	void send(const T&& message);
+	void push_back(const T&& message);
 	
-	void sendDirect(const T&& message);
+	void push_front(const T&& message);
 	
 	void clear(void);
 	
-	void sendOnlyThis(const T&& message);
+	void clear_and_push_front(const T&& message);
+	
+	bool empty(void) const;
 	
 	T receive(void);
 };
 }
 
 template <typename T>
-void WyLight::MessageQueue<T>::send(const T&& message)
+void WyLight::MessageQueue<T>::push_back(const T&& message)
 {
 	{
 		std::lock_guard<std::mutex> lg(this->mMutex);
@@ -60,7 +62,7 @@ void WyLight::MessageQueue<T>::send(const T&& message)
 }
 
 template <typename T>
-void WyLight::MessageQueue<T>::sendDirect(const T&& message)
+void WyLight::MessageQueue<T>::push_front(const T&& message)
 {
 	{
 		std::lock_guard<std::mutex> lg(this->mMutex);
@@ -77,10 +79,16 @@ void WyLight::MessageQueue<T>::clear(void)
 }
 
 template <typename T>
-void WyLight::MessageQueue<T>::sendOnlyThis(const T&& message)
+void WyLight::MessageQueue<T>::clear_and_push_front(const T&& message)
 {
 	this->clear();
-	this->sendDirect(std::move(message));
+	this->push_front(std::move(message));
+}
+
+template <typename T>
+bool WyLight::MessageQueue<T>::empty(void) const
+{
+	return this->mQueue.empty();
 }
 
 template <typename T>
