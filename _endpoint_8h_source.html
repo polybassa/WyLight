@@ -91,86 +91,102 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="_endpoint_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#ifndef _ENDPOINT_H_</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define _ENDPOINT_H_</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;cassert&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;ostream&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;netinet/in.h&gt;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;sys/socket.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;sys/time.h&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>WyLight {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html">   30</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_wy_light_1_1_endpoint.html">Endpoint</a></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#ab63ad1030b33a946e6874e9a95242652">   33</a></span>&#160;        <a class="code" href="class_wy_light_1_1_endpoint.html#ab63ad1030b33a946e6874e9a95242652">Endpoint</a>(sockaddr_storage&amp; addr, <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, uint16_t port, std::string devId = <span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            assert(<span class="keyword">sizeof</span>(sockaddr_in) == size);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            mAddr = ntohl(((sockaddr_in&amp;)addr).sin_addr.s_addr);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            mPort = ntohs(port);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            mDeviceId = devId;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        };</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#af2e60edd907796ebddb40c92259cfb27">   41</a></span>&#160;        <a class="code" href="class_wy_light_1_1_endpoint.html#ab63ad1030b33a946e6874e9a95242652">Endpoint</a>(uint32_t addr = 0, uint16_t port = 0)</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            : mAddr(addr), mPort(port), mDeviceId(<span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        };</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#a23413704ae873962f584e8e4bcb3a3b5">   46</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_endpoint.html#a23413704ae873962f584e8e4bcb3a3b5">operator&lt;</a>(<span class="keyword">const</span> <a class="code" href="class_wy_light_1_1_endpoint.html">Endpoint</a>&amp; ref)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_wy_light_1_1_endpoint.html#ae0269aa4b78b40366140a4fe98140e67">AsUint64</a>() &lt; ref.<a class="code" href="class_wy_light_1_1_endpoint.html#ae0269aa4b78b40366140a4fe98140e67">AsUint64</a>();</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        };</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#af3f74b3b812453bb6cc60400dfc0c82c">   51</a></span>&#160;        <span class="keyword">friend</span> std::ostream&amp; <a class="code" href="class_wy_light_1_1_endpoint.html#af3f74b3b812453bb6cc60400dfc0c82c">operator &lt;&lt; </a>(std::ostream&amp; out, <span class="keyword">const</span> <a class="code" href="class_wy_light_1_1_endpoint.html">Endpoint</a>&amp; ref)</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordflow">return</span> out &lt;&lt; ((ref.mAddr &amp; 0xff000000 ) &gt;&gt; 24) &lt;&lt; <span class="charliteral">&#39;.&#39;</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                                 &lt;&lt; ((ref.mAddr &amp; 0x00ff0000 ) &gt;&gt; 16) &lt;&lt; <span class="charliteral">&#39;.&#39;</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                                 &lt;&lt; ((ref.mAddr &amp; 0x0000ff00 ) &gt;&gt; 8) &lt;&lt; <span class="charliteral">&#39;.&#39;</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                                 &lt;&lt; (ref.mAddr &amp; 0x000000ff )</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                                 &lt;&lt; <span class="charliteral">&#39;:&#39;</span> &lt;&lt; ref.mPort</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                                 &lt;&lt; <span class="stringliteral">&quot;  :  &quot;</span> &lt;&lt; ref.mDeviceId;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        };</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="comment">/* </span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">         * @return ipv4 address(A) and port(P) as a combined 64 bit value 0xAAAAAAAA0000PPPP</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#ae0269aa4b78b40366140a4fe98140e67">   64</a></span>&#160;        uint64_t <a class="code" href="class_wy_light_1_1_endpoint.html#ae0269aa4b78b40366140a4fe98140e67">AsUint64</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keywordflow">return</span> ((uint64_t)mAddr &lt;&lt; 32) | mPort; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        };</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#a65cca33e7eef5794500621333d2246ed">   69</a></span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_endpoint.html#a65cca33e7eef5794500621333d2246ed">GetIp</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keywordflow">return</span> mAddr;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        };</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#ac59441c4d0b60d941150401c118ac63f">   74</a></span>&#160;        uint16_t <a class="code" href="class_wy_light_1_1_endpoint.html#ac59441c4d0b60d941150401c118ac63f">GetPort</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keywordflow">return</span> mPort;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;atomic&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;ostream&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;netinet/in.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;sys/socket.h&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;sys/time.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>WyLight {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html">   31</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_wy_light_1_1_endpoint.html">Endpoint</a></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#ab63ad1030b33a946e6874e9a95242652">   34</a></span>&#160;        <a class="code" href="class_wy_light_1_1_endpoint.html#ab63ad1030b33a946e6874e9a95242652">Endpoint</a>(sockaddr_storage&amp; addr, <span class="keyword">const</span> <span class="keywordtype">size_t</span> size, uint16_t port, std::string devId = <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            : mScore(0)</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            assert(<span class="keyword">sizeof</span>(sockaddr_in) == size);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            mIp = ntohl(((sockaddr_in&amp;)addr).sin_addr.s_addr);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            mPort = ntohs(port);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            mDeviceId = devId;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        };</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#ad6953673c9ac61ebbedb32fac5b580ed">   43</a></span>&#160;        <a class="code" href="class_wy_light_1_1_endpoint.html#ab63ad1030b33a946e6874e9a95242652">Endpoint</a>(uint32_t ip = 0, uint16_t port = 0, uint8_t score = 0, std::string devId = <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            : mIp(ip), mPort(port), mScore(score), mDeviceId(devId)</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        };</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#a23413704ae873962f584e8e4bcb3a3b5">   48</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_endpoint.html#a23413704ae873962f584e8e4bcb3a3b5">operator&lt;</a>(<span class="keyword">const</span> <a class="code" href="class_wy_light_1_1_endpoint.html">Endpoint</a>&amp; ref)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keywordflow">return</span> (mIp &lt; ref.<a class="code" href="class_wy_light_1_1_endpoint.html#a65cca33e7eef5794500621333d2246ed">GetIp</a>())</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                    || ((mIp == ref.<a class="code" href="class_wy_light_1_1_endpoint.html#a65cca33e7eef5794500621333d2246ed">GetIp</a>()) &amp;&amp; (mPort &lt; ref.<a class="code" href="class_wy_light_1_1_endpoint.html#ac59441c4d0b60d941150401c118ac63f">GetPort</a>()));</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        };</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#af3f74b3b812453bb6cc60400dfc0c82c">   53</a></span>&#160;        <span class="keyword">friend</span> std::ostream&amp; <a class="code" href="class_wy_light_1_1_endpoint.html#af3f74b3b812453bb6cc60400dfc0c82c">operator &lt;&lt; </a>(std::ostream&amp; out, <span class="keyword">const</span> <a class="code" href="class_wy_light_1_1_endpoint.html">Endpoint</a>&amp; ref)</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">return</span> out &lt;&lt; (int)ref.mScore &lt;&lt; <span class="charliteral">&#39; &#39;</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                                 &lt;&lt; ((ref.mIp &amp; 0xff000000 ) &gt;&gt; 24) &lt;&lt; <span class="charliteral">&#39;.&#39;</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                                 &lt;&lt; ((ref.mIp &amp; 0x00ff0000 ) &gt;&gt; 16) &lt;&lt; <span class="charliteral">&#39;.&#39;</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                                 &lt;&lt; ((ref.mIp &amp; 0x0000ff00 ) &gt;&gt; 8) &lt;&lt; <span class="charliteral">&#39;.&#39;</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                                 &lt;&lt; (ref.mIp &amp; 0x000000ff )</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                                 &lt;&lt; <span class="charliteral">&#39;:&#39;</span> &lt;&lt; ref.mPort</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                                 &lt;&lt; <span class="stringliteral">&quot;  :  &quot;</span> &lt;&lt; ref.mDeviceId;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        };</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="comment">/* </span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">         * @return ipv4 address(A) and port(P) as a combined 64 bit value 0xAAAAAAAA0000PPPP</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">         */</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#ae0269aa4b78b40366140a4fe98140e67">   67</a></span>&#160;        uint64_t <a class="code" href="class_wy_light_1_1_endpoint.html#ae0269aa4b78b40366140a4fe98140e67">AsUint64</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keywordflow">return</span> ((uint64_t)mIp &lt;&lt; 32) | mPort;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        };</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    </div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#a45f7f0b61014a9732a7c31dec22cfeaf">   71</a></span>&#160;        std::string <a class="code" href="class_wy_light_1_1_endpoint.html#a45f7f0b61014a9732a7c31dec22cfeaf">GetDeviceId</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordflow">return</span> mDeviceId;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        };</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#a65cca33e7eef5794500621333d2246ed">   75</a></span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_endpoint.html#a65cca33e7eef5794500621333d2246ed">GetIp</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keywordflow">return</span> mIp;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        };</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    </div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#a45f7f0b61014a9732a7c31dec22cfeaf">   79</a></span>&#160;        std::string <a class="code" href="class_wy_light_1_1_endpoint.html#a45f7f0b61014a9732a7c31dec22cfeaf">GetDeviceId</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keywordflow">return</span> mDeviceId;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        };</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#a4b0ccfbc29c760fb0c34e9365a3f587d">   84</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_endpoint.html#a4b0ccfbc29c760fb0c34e9365a3f587d">IsValid</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keywordflow">return</span> (0 != mAddr) &amp;&amp; (0 != mPort);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        };</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        uint32_t mAddr;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        uint16_t mPort;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        std::string mDeviceId;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;};          </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;}</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _ENDPOINT_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#ac59441c4d0b60d941150401c118ac63f">   79</a></span>&#160;        uint16_t <a class="code" href="class_wy_light_1_1_endpoint.html#ac59441c4d0b60d941150401c118ac63f">GetPort</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keywordflow">return</span> mPort;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        };</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#a8e19107acfb14d455dde2206b971cc2d">   83</a></span>&#160;        uint8_t <a class="code" href="class_wy_light_1_1_endpoint.html#a8e19107acfb14d455dde2206b971cc2d">GetScore</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">return</span> mScore;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        };</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            </div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#acab91ff69fc991948b87121e5667b121">   87</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_endpoint.html#acab91ff69fc991948b87121e5667b121">SetScore</a>(<span class="keyword">const</span> uint8_t&amp; score) {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            mScore = score;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        };</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">         * Increment score</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">         * @return reference to itself</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">         */</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#a6db37d31aac048566b112e1c25bea7fd">   95</a></span>&#160;        <a class="code" href="class_wy_light_1_1_endpoint.html">Endpoint</a>&amp; <a class="code" href="class_wy_light_1_1_endpoint.html#a6db37d31aac048566b112e1c25bea7fd">operator ++</a>(<span class="keywordtype">void</span>) {</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keywordflow">if</span>(mScore &lt; 255) ++mScore;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        }</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_endpoint.html#a4b0ccfbc29c760fb0c34e9365a3f587d">  100</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_endpoint.html#a4b0ccfbc29c760fb0c34e9365a3f587d">IsValid</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <span class="keywordflow">return</span> (0 != mIp) &amp;&amp; (0 != mPort);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        };</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        uint32_t mIp;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        uint16_t mPort;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        uint8_t mScore;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        std::string mDeviceId;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;};          </div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;}</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _ENDPOINT_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 8 2013 18:21:22 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jun 9 2013 23:45:50 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

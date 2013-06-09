@@ -157,7 +157,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    </div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_control.html#a16a660f58bf48a006e1709a28ebc2ae8">ConfModuleAsSoftAP</a>(const std::<span class="keywordtype">string</span>&amp; accesspointName = &quot;Wifly_Light&quot;) const;</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    </div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_control.html#a3ac51c071326447fb3ee653676fcccf9">ConfModuleForWlan</a>(const std::<span class="keywordtype">string</span>&amp; phrase, const std::<span class="keywordtype">string</span>&amp; ssid, const std::<span class="keywordtype">string</span>&amp; name = &quot;Wifly_Light&quot;) const;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_control.html#a801a17d49dc76e80a2a8ea8709e4d6f5">ConfModuleForWlan</a>(const std::<span class="keywordtype">string</span>&amp; phrase, const std::<span class="keywordtype">string</span>&amp; ssid, const std::<span class="keywordtype">string</span>&amp; deviceId = &quot;Wifly_Light&quot;) const;</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_control.html#aa9ac31328f888ff1d90cefe04f7353e6">ConfRebootWlanModule</a>(<span class="keywordtype">void</span>) const;</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        </div>
@@ -233,22 +233,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;    </div>
 <div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;        <span class="keywordtype">bool</span> ConfSetWlan(const std::<span class="keywordtype">string</span>&amp; phrase, const std::<span class="keywordtype">string</span>&amp; ssid) const;</div>
 <div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;    </div>
-<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;</div>
-<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;<span class="comment">/* ------------------ friendships for unittesting only ------------------- */</span></div>
-<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;        friend <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_control.html#af826310a17b81d01503e3c2f60abf286">ut_WiflyControl_ConfSetDefaults</a>(<a class="code" href="class_wy_light_1_1_control.html" title="Class to communicate with a Wifly_Light Hardware.">Control</a>&amp; ref);</div>
-<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;    </div>
-<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;        friend <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_control.html#a6cce83c7c842f8b4c2c4aa539b4d986e">ut_WiflyControl_ConfSetWlan</a>(<a class="code" href="class_wy_light_1_1_control.html" title="Class to communicate with a Wifly_Light Hardware.">Control</a>&amp; ref, const std::<span class="keywordtype">string</span>&amp; phrase, const std::<span class="keywordtype">string</span>&amp; ssid);</div>
-<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;    </div>
-<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;        friend <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#a327c95f9335fa4b257b064ef2e917a80">ut_WiflyControl_BlEepromWrite</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;</div>
-<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;        friend <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#a661b9ec8a685bc800221f2fd5d031a20">ut_WiflyControl_BlFlashWrite</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;};</div>
-<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;}</div>
-<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _WIFLYCONTROL_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;<span class="comment">/* ------------------ friendships for unittesting only ------------------- */</span></div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;        friend <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#a327c95f9335fa4b257b064ef2e917a80">ut_WiflyControl_BlEepromWrite</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;        friend <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#a661b9ec8a685bc800221f2fd5d031a20">ut_WiflyControl_BlFlashWrite</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;        friend <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#aeefa8ad693af2b134456faaf1586a2f7">ut_WiflyControl_ConfSetDefaults</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;        friend <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#a04989feb17717c76d1dd95666aec3c93">ut_WiflyControl_ConfSetWlan</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;};</div>
+<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;}</div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _WIFLYCONTROL_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 8 2013 18:21:22 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jun 9 2013 23:45:50 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

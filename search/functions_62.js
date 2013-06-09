@@ -27,5 +27,5 @@ var searchData=
   ['blrunapp',['BlRunApp',['../class_wy_light_1_1_control.html#a6a515497781d7ab7ad5fde04b5466c63',1,'WyLight::Control::BlRunApp()'],['../class_wy_light_1_1_control_no_throw.html#ab5d301c3983548d341890ea4291c9854',1,'WyLight::ControlNoThrow::BlRunApp()']]],
   ['blrunapprequest',['BlRunAppRequest',['../struct_bl_run_app_request.html#a051bfcca520225571dfe62af8bb3a842',1,'BlRunAppRequest']]],
   ['blue',['blue',['../class_wy_light_1_1_wifly_color.html#a2c95d36931e4904838cc07cbc8e0556a',1,'WyLight::WiflyColor::blue() const '],['../class_wy_light_1_1_wifly_color.html#a921dcca5daed2301aaf98b6e08b3f522',1,'WyLight::WiflyColor::blue(uint8_t value)']]],
-  ['broadcastreceiver',['BroadcastReceiver',['../class_wy_light_1_1_broadcast_receiver.html#aa5821d363d4b6f50a8ccb6a6efcb6e74',1,'WyLight::BroadcastReceiver']]]
+  ['broadcastreceiver',['BroadcastReceiver',['../class_wy_light_1_1_broadcast_receiver.html#ac03335f0824e0de7d0dd87d5187aafa3',1,'WyLight::BroadcastReceiver']]]
 ];

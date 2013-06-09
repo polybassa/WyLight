@@ -41,6 +41,6 @@ var searchData=
   ['broadcastmessage',['BroadcastMessage',['../struct_wy_light_1_1_broadcast_message.html',1,'WyLight']]],
   ['broadcastmessage_2eh',['BroadcastMessage.h',['../_broadcast_message_8h.html',1,'']]],
   ['broadcastreceiver',['BroadcastReceiver',['../class_wy_light_1_1_broadcast_receiver.html',1,'WyLight']]],
-  ['broadcastreceiver',['BroadcastReceiver',['../class_wy_light_1_1_broadcast_receiver.html#aa5821d363d4b6f50a8ccb6a6efcb6e74',1,'WyLight::BroadcastReceiver']]],
+  ['broadcastreceiver',['BroadcastReceiver',['../class_wy_light_1_1_broadcast_receiver.html#ac03335f0824e0de7d0dd87d5187aafa3',1,'WyLight::BroadcastReceiver']]],
   ['broadcastreceiver_2eh',['BroadcastReceiver.h',['../_broadcast_receiver_8h.html',1,'']]]
 ];

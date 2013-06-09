@@ -5,6 +5,7 @@ var searchData=
   ['insertdata',['insertData',['../classintelhex.html#a71096983db3c24a5ac9b95663937a4ce',1,'intelhex::insertData(unsigned char data)'],['../classintelhex.html#a00ff4c491fabc5ef207071358e1b9298',1,'intelhex::insertData(unsigned char data, unsigned long address)']]],
   ['intelhex',['intelhex',['../classintelhex.html#ae1efd0ed1f56546f8f5f5af87c6cbdd5',1,'intelhex::intelhex()'],['../classintelhex.html#a41b4c3b7851461b9240fdef90bc62768',1,'intelhex::intelhex(const intelhex &amp;ihSource)']]],
   ['invalidparameter',['InvalidParameter',['../class_wy_light_1_1_invalid_parameter.html#a52625733bfa36035b8f0d0bb89b6d101',1,'WyLight::InvalidParameter']]],
+  ['ipv4addr',['Ipv4Addr',['../struct_wy_light_1_1_ipv4_addr.html#a6ed8e919ab4ca060a98ef38c0b662262',1,'WyLight::Ipv4Addr']]],
   ['isctrlchar',['IsCtrlChar',['../_bl_request_8h.html#ab6d0d55d09ff97aaf075361fd7a6e61e',1,'BlRequest.h']]],
   ['isvalid',['IsValid',['../class_wy_light_1_1_endpoint.html#a4b0ccfbc29c760fb0c34e9365a3f587d',1,'WyLight::Endpoint']]],
   ['iswiflybroadcast',['IsWiflyBroadcast',['../struct_wy_light_1_1_broadcast_message.html#a1cddfb2dd5da9655d50d7918944d038b',1,'WyLight::BroadcastMessage']]]

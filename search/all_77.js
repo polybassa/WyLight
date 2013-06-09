@@ -10,5 +10,6 @@ var searchData=
   ['wiflycontrolexception_2eh',['WiflyControlException.h',['../_wifly_control_exception_8h.html',1,'']]],
   ['wiflycontrolnothrow_2eh',['WiflyControlNoThrow.h',['../_wifly_control_no_throw_8h.html',1,'']]],
   ['wiflyerror',['WiflyError',['../namespace_wy_light.html#afd625f917b07e9c48f67c4383af5773f',1,'WyLight']]],
+  ['writerecentendpoints',['WriteRecentEndpoints',['../class_wy_light_1_1_broadcast_receiver.html#a54367ab857356899e0c5263b856e2d60',1,'WyLight::BroadcastReceiver']]],
   ['wylight',['WyLight',['../namespace_wy_light.html',1,'']]]
 ];

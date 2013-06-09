@@ -102,49 +102,59 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;sys/time.h&gt;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>WyLight{</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_client_socket.html">   35</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_wy_light_1_1_client_socket.html">ClientSocket</a></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <a class="code" href="class_wy_light_1_1_client_socket.html#afe4f631abfffc996c24a8a55a9d5cea0">ClientSocket</a>(uint32_t addr, uint16_t port, <span class="keywordtype">int</span> style) <span class="keywordflow">throw</span> (<a class="code" href="class_wy_light_1_1_fatal_error.html">FatalError</a>);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="class_wy_light_1_1_client_socket.html#afba3cd05e78cb8f0c46600d3dbba22f4">~ClientSocket</a>();</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_client_socket.html#a8a34f39b3bbd8b4b2901e6c4f6f2d2e9">Select</a>(timeval* timeout) <span class="keyword">const</span> <span class="keywordflow">throw</span> (<a class="code" href="class_wy_light_1_1_fatal_error.html">FatalError</a>);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="code" href="struct_wy_light_1_1_ipv4_addr.html">   36</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_wy_light_1_1_ipv4_addr.html">Ipv4Addr</a> : <span class="keyword">public</span> sockaddr_in {</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="code" href="struct_wy_light_1_1_ipv4_addr.html#a6ed8e919ab4ca060a98ef38c0b662262">   37</a></span>&#160;    <a class="code" href="struct_wy_light_1_1_ipv4_addr.html#a6ed8e919ab4ca060a98ef38c0b662262">Ipv4Addr</a>(uint32_t addr, uint16_t port) {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        memset(<span class="keyword">this</span>, 0, <span class="keyword">sizeof</span>(*<span class="keyword">this</span>));</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        sin_family = AF_INET;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        sin_port = htons(port);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        sin_addr.s_addr = htonl(addr);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    };</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;};</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_client_socket.html">   48</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_wy_light_1_1_client_socket.html">ClientSocket</a></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <a class="code" href="class_wy_light_1_1_client_socket.html#afe4f631abfffc996c24a8a55a9d5cea0">ClientSocket</a>(uint32_t addr, uint16_t port, <span class="keywordtype">int</span> style) <span class="keywordflow">throw</span> (<a class="code" href="class_wy_light_1_1_fatal_error.html">FatalError</a>);</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_client_socket.html#ab5ea6d042caa7f624015d514263ab6b5">Send</a>(<span class="keyword">const</span> uint8_t* frame, <span class="keywordtype">size_t</span> length) <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_client_socket.html#a339a7d8dd046156f3d7c148181ac0673">   70</a></span>&#160;        <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="class_wy_light_1_1_client_socket.html#a339a7d8dd046156f3d7c148181ac0673">mSock</a>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_client_socket.html#a50bcbb1f2e4f96d962e64755180e5f70">   75</a></span>&#160;        <span class="keyword">struct </span>sockaddr_in <a class="code" href="class_wy_light_1_1_client_socket.html#a50bcbb1f2e4f96d962e64755180e5f70">mSockAddr</a>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;};</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_tcp_socket.html">   81</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_wy_light_1_1_tcp_socket.html">TcpSocket</a> : <span class="keyword">public</span> <a class="code" href="class_wy_light_1_1_client_socket.html">ClientSocket</a></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;{</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <a class="code" href="class_wy_light_1_1_tcp_socket.html#a69045a3bf0b959b50b2b4d2a18ee06c1">TcpSocket</a>(uint32_t Addr, uint16_t port) <span class="keywordflow">throw</span> (<a class="code" href="class_wy_light_1_1_connection_lost.html">ConnectionLost</a>, <a class="code" href="class_wy_light_1_1_fatal_error.html">FatalError</a>);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_tcp_socket.html#aef83b055add4c47c4ab6b3395559ca27">Recv</a>(uint8_t* pBuffer, <span class="keywordtype">size_t</span> length, timeval* timeout = NULL) <span class="keyword">const</span> <span class="keywordflow">throw</span> (<a class="code" href="class_wy_light_1_1_fatal_error.html">FatalError</a>);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_tcp_socket.html#acd2ed7e05e7a8efc55b01e422d957857">Send</a>(<span class="keyword">const</span> uint8_t* frame, <span class="keywordtype">size_t</span> length) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;};</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="line"><a name="l00111"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_udp_socket.html">  111</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_wy_light_1_1_udp_socket.html">UdpSocket</a> : <span class="keyword">public</span> <a class="code" href="class_wy_light_1_1_client_socket.html">ClientSocket</a></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;{</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <a class="code" href="class_wy_light_1_1_udp_socket.html#adcf1f11b78b2485b475f3b040ff8f2d4">UdpSocket</a>(uint32_t addr, uint16_t port, <span class="keywordtype">bool</span> doBind = <span class="keyword">true</span>, <span class="keywordtype">int</span> enableBroadcast = 0) <span class="keywordflow">throw</span> (<a class="code" href="class_wy_light_1_1_fatal_error.html">FatalError</a>);</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_udp_socket.html#a937cb9beb6c957e0870228815e1d2cb4">RecvFrom</a>(uint8_t* pBuffer, <span class="keywordtype">size_t</span> length, timeval* timeout = NULL, <span class="keyword">struct</span> sockaddr* remoteAddr = NULL, socklen_t* remoteAddrLength = NULL) <span class="keyword">const</span> <span class="keywordflow">throw</span> (<a class="code" href="class_wy_light_1_1_fatal_error.html">FatalError</a>);</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_udp_socket.html#aaba73a044c8aed0ef0c1e44ce46d88ca">Send</a>(<span class="keyword">const</span> uint8_t* frame, <span class="keywordtype">size_t</span> length) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;};</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;}</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _CLIENTSOCKET_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="class_wy_light_1_1_client_socket.html#afba3cd05e78cb8f0c46600d3dbba22f4">~ClientSocket</a>();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_client_socket.html#a8a34f39b3bbd8b4b2901e6c4f6f2d2e9">Select</a>(timeval* timeout) <span class="keyword">const</span> <span class="keywordflow">throw</span> (<a class="code" href="class_wy_light_1_1_fatal_error.html">FatalError</a>);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_client_socket.html#ab5ea6d042caa7f624015d514263ab6b5">Send</a>(<span class="keyword">const</span> uint8_t* frame, <span class="keywordtype">size_t</span> length) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_client_socket.html#a339a7d8dd046156f3d7c148181ac0673">   83</a></span>&#160;        <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="class_wy_light_1_1_client_socket.html#a339a7d8dd046156f3d7c148181ac0673">mSock</a>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_client_socket.html#a3849426773c4b3e300edc8cd3b37b16a">   88</a></span>&#160;        <a class="code" href="struct_wy_light_1_1_ipv4_addr.html">Ipv4Addr</a> <a class="code" href="class_wy_light_1_1_client_socket.html#a3849426773c4b3e300edc8cd3b37b16a">mSockAddr</a>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;};</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_tcp_socket.html">   94</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_wy_light_1_1_tcp_socket.html">TcpSocket</a> : <span class="keyword">public</span> <a class="code" href="class_wy_light_1_1_client_socket.html">ClientSocket</a></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;{</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <a class="code" href="class_wy_light_1_1_tcp_socket.html#a69045a3bf0b959b50b2b4d2a18ee06c1">TcpSocket</a>(uint32_t Addr, uint16_t port) <span class="keywordflow">throw</span> (<a class="code" href="class_wy_light_1_1_connection_lost.html">ConnectionLost</a>, <a class="code" href="class_wy_light_1_1_fatal_error.html">FatalError</a>);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_tcp_socket.html#aef83b055add4c47c4ab6b3395559ca27">Recv</a>(uint8_t* pBuffer, <span class="keywordtype">size_t</span> length, timeval* timeout = NULL) <span class="keyword">const</span> <span class="keywordflow">throw</span> (<a class="code" href="class_wy_light_1_1_fatal_error.html">FatalError</a>);</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_tcp_socket.html#acd2ed7e05e7a8efc55b01e422d957857">Send</a>(<span class="keyword">const</span> uint8_t* frame, <span class="keywordtype">size_t</span> length) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;};</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_udp_socket.html">  124</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_wy_light_1_1_udp_socket.html">UdpSocket</a> : <span class="keyword">public</span> <a class="code" href="class_wy_light_1_1_client_socket.html">ClientSocket</a></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;{</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        <a class="code" href="class_wy_light_1_1_udp_socket.html#adcf1f11b78b2485b475f3b040ff8f2d4">UdpSocket</a>(uint32_t addr, uint16_t port, <span class="keywordtype">bool</span> doBind = <span class="keyword">true</span>, <span class="keywordtype">int</span> enableBroadcast = 0) <span class="keywordflow">throw</span> (<a class="code" href="class_wy_light_1_1_fatal_error.html">FatalError</a>);</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_udp_socket.html#a937cb9beb6c957e0870228815e1d2cb4">RecvFrom</a>(uint8_t* pBuffer, <span class="keywordtype">size_t</span> length, timeval* timeout = NULL, <span class="keyword">struct</span> sockaddr* remoteAddr = NULL, socklen_t* remoteAddrLength = NULL) <span class="keyword">const</span> <span class="keywordflow">throw</span> (<a class="code" href="class_wy_light_1_1_fatal_error.html">FatalError</a>);</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_udp_socket.html#aaba73a044c8aed0ef0c1e44ce46d88ca">Send</a>(<span class="keyword">const</span> uint8_t* frame, <span class="keywordtype">size_t</span> length) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;};</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;}</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _CLIENTSOCKET_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 8 2013 18:21:22 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jun 9 2013 23:45:50 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

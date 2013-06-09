@@ -11,6 +11,8 @@ var searchData=
   ['invalidparameter',['InvalidParameter',['../class_wy_light_1_1_invalid_parameter.html',1,'WyLight']]],
   ['invalidparameter',['InvalidParameter',['../class_wy_light_1_1_invalid_parameter.html#a52625733bfa36035b8f0d0bb89b6d101',1,'WyLight::InvalidParameter']]],
   ['ipregister',['ipRegister',['../classintelhex.html#acf63100ba6ba58da893f29596560efbd',1,'intelhex']]],
+  ['ipv4addr',['Ipv4Addr',['../struct_wy_light_1_1_ipv4_addr.html',1,'WyLight']]],
+  ['ipv4addr',['Ipv4Addr',['../struct_wy_light_1_1_ipv4_addr.html#a6ed8e919ab4ca060a98ef38c0b662262',1,'WyLight::Ipv4Addr']]],
   ['isctrlchar',['IsCtrlChar',['../_bl_request_8h.html#ab6d0d55d09ff97aaf075361fd7a6e61e',1,'BlRequest.h']]],
   ['isvalid',['IsValid',['../class_wy_light_1_1_endpoint.html#a4b0ccfbc29c760fb0c34e9365a3f587d',1,'WyLight::Endpoint']]],
   ['iswiflybroadcast',['IsWiflyBroadcast',['../struct_wy_light_1_1_broadcast_message.html#a1cddfb2dd5da9655d50d7918944d038b',1,'WyLight::BroadcastMessage']]]

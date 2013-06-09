@@ -4,8 +4,8 @@ var searchData=
   ['maddress',['mAddress',['../class_wy_light_1_1_connection_lost.html#ae4207146ab81928c6ae1a161602a8765',1,'WyLight::ConnectionLost']]],
   ['mainpage_2edox',['mainpage.dox',['../mainpage_8dox.html',1,'']]],
   ['mask',['Mask',['../class_wy_light_1_1_mask_buffer.html#a6abd197d4d7fe655fdb1c6efdb8ebb71',1,'WyLight::MaskBuffer']]],
-  ['maskbuffer',['MaskBuffer',['../class_wy_light_1_1_mask_buffer.html',1,'WyLight']]],
   ['maskbuffer',['MaskBuffer',['../class_wy_light_1_1_mask_buffer.html#a865583376a1ddb00632f1ecddd883759',1,'WyLight::MaskBuffer']]],
+  ['maskbuffer',['MaskBuffer',['../class_wy_light_1_1_mask_buffer.html',1,'WyLight']]],
   ['maskbuffer_2eh',['MaskBuffer.h',['../_mask_buffer_8h.html',1,'']]],
   ['mcapacity',['mCapacity',['../class_wy_light_1_1_base_buffer.html#a536a7f475b68dee906028913cab8799a',1,'WyLight::BaseBuffer']]],
   ['mcmd',['mCmd',['../struct_bl_request.html#a96c808cdbb7f02eeffcea7ebcdb98d0b',1,'BlRequest']]],
@@ -13,12 +13,15 @@ var searchData=
   ['mdata',['mData',['../class_wy_light_1_1_base_buffer.html#a724a04148d90146319fc11894d2ebd6e',1,'WyLight::BaseBuffer']]],
   ['mdescription',['mDescription',['../class_wy_light_1_1_fatal_error.html#aeae1bd38ee1c9b21b260a10ecc89b5f4',1,'WyLight::FatalError']]],
   ['merrorcode',['mErrorCode',['../class_wy_light_1_1_fatal_error.html#a7d6df57841d017b51107a80ac6205c93',1,'WyLight::FatalError']]],
+  ['messagequeue',['MessageQueue',['../class_wy_light_1_1_message_queue.html',1,'WyLight']]],
+  ['messagequeue',['MessageQueue',['../class_wy_light_1_1_message_queue.html#aa116745b3c6a257e7a8149432b1ae612',1,'WyLight::MessageQueue::MessageQueue(void)'],['../class_wy_light_1_1_message_queue.html#a92bf2e25bbd0feceabb3bf21368a4696',1,'WyLight::MessageQueue::MessageQueue(MessageQueue const &amp;&amp;other)']]],
+  ['messagequeue_2eh',['MessageQueue.h',['../_message_queue_8h.html',1,'']]],
   ['mlength',['mLength',['../class_wy_light_1_1_base_buffer.html#ab36dd430b1e190e54ce338d3b98c1cbd',1,'WyLight::BaseBuffer']]],
-  ['mport',['mPort',['../class_wy_light_1_1_broadcast_receiver.html#a517a1bb1ac188eeda23f94e021e10a83',1,'WyLight::BroadcastReceiver::mPort()'],['../class_wy_light_1_1_connection_lost.html#a54e8b7c58d8f24d8da4fd839aa8e556d',1,'WyLight::ConnectionLost::mPort()']]],
+  ['mport',['mPort',['../class_wy_light_1_1_connection_lost.html#a54e8b7c58d8f24d8da4fd839aa8e556d',1,'WyLight::ConnectionLost']]],
   ['mreqframe',['mReqFrame',['../class_wy_light_1_1_fw_request.html#a2c07f543884aab374e5de1c5c7e77b4e',1,'WyLight::FwRequest']]],
   ['mrequest',['mRequest',['../class_wy_light_1_1_fw_command.html#a6d611b50c1a5f510e81d36c3c4263714',1,'WyLight::FwCommand']]],
   ['mresponse',['mResponse',['../class_wy_light_1_1_fw_command.html#a9b9af43c7c491efabf09684078d27387',1,'WyLight::FwCommand']]],
   ['msize',['mSize',['../struct_bl_request.html#afd0174f556d9d4538de850260e8d08a4',1,'BlRequest::mSize()'],['../class_wy_light_1_1_fw_request.html#af224c579af518569cc8a6d32f533a8fb',1,'WyLight::FwRequest::mSize()']]],
   ['msock',['mSock',['../class_wy_light_1_1_client_socket.html#a339a7d8dd046156f3d7c148181ac0673',1,'WyLight::ClientSocket']]],
-  ['msockaddr',['mSockAddr',['../class_wy_light_1_1_client_socket.html#a50bcbb1f2e4f96d962e64755180e5f70',1,'WyLight::ClientSocket']]]
+  ['msockaddr',['mSockAddr',['../class_wy_light_1_1_client_socket.html#a3849426773c4b3e300edc8cd3b37b16a',1,'WyLight::ClientSocket']]]
 ];
