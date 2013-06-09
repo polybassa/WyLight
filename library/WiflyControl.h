@@ -187,7 +187,7 @@ class Control
 		 * Configurates the WyLight module as client for an existing wlan network with WPA2 protection
 		 * @param phrase WPA2 passphrase 1 - 63 characters
 		 * @param ssid 1 - 32 characters
-		 * @param name 1 - 32 characters, unique name which apperas in the broadcast message
+		 * @param deviceId 1 - 32 characters, unique name which apperas in the broadcast message
 		 * @return false, in case of an error
 		 */
 		bool ConfModuleForWlan(const std::string& phrase, const std::string& ssid, const std::string& deviceId = "Wifly_Light") const;
