@@ -41,7 +41,7 @@ WiflyControlCli::WiflyControlCli(uint32_t addr, uint16_t port)
 
 void WiflyControlCli::Run(void)
 {
-	std::shared_ptr<WiflyControlCmd> pCmd;
+	std::shared_ptr<const WiflyControlCmd> pCmd;
 	ShowHelp();
 	string nextCmd;
 	while(mRunning)
@@ -74,7 +74,7 @@ void WiflyControlCli::ShowHelp(void) const
 	cout << "'exit' - terminate cli" << endl;
 
 	size_t i = 0;
-	std::shared_ptr<WiflyControlCmd> pCmd = WiflyControlCmdBuilder::GetCmd(i++);
+	std::shared_ptr<const WiflyControlCmd> pCmd = WiflyControlCmdBuilder::GetCmd(i++);
 	while(pCmd != NULL) {
 		cout << *pCmd << endl;
 		pCmd = WiflyControlCmdBuilder::GetCmd(i++);
