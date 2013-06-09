@@ -24,6 +24,7 @@
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
+#include <mutex>
 
 namespace WyLight {
 
@@ -111,14 +112,13 @@ Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout) throw (FatalError)
 
 bool BroadcastReceiver::LockedInsert(Endpoint& newEndpoint)
 {
-	mMutex.lock();
+	std::lock_guard<std::mutex> lg(mMutex);
 	const bool added = mIpTableShadow.insert(newEndpoint).second;
 	if(added)
 	{
 		if(mOnNewRemote) mOnNewRemote(mIpTable.size(), newEndpoint);
 		mIpTable.insert(std::pair<size_t, Endpoint>(mIpTable.size(), newEndpoint));
 	}
-	mMutex.unlock();
 	return added;
 }
 
@@ -174,4 +174,19 @@ void BroadcastReceiver::WriteRecentEndpoints(const std::string& filename, uint8_
 	}
 	outFile.close();
 }
+	
+void BroadcastReceiver::DeleteRecentEndpointFile(const std::string& filename) const
+{
+	int returnCode;
+	if(filename.compare("") == 0)
+		returnCode = std::remove(mRecentFilename.c_str());
+	else
+		returnCode = std::remove(filename.c_str());
+	
+	if(returnCode) {
+		Trace(ZONE_ERROR, "Delete file recent endpoints failed\n");
+		return;
+	}
+}
+	
 } /* namespace WyLight */
