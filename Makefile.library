@@ -29,6 +29,10 @@ ComProxy_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
 	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/ComProxy_ut.cpp $(LIB_DIR)/ComProxy.cpp $(LIB_DIR)/MaskBuffer.cpp $(LIB_ADDITIONAL_SRC) -o $@
 	@./$@
 
+Script_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
+	@$(GPP) $(CFLAGS) -DDEBUG $(INC) $(LIB_DIR)/Script_ut.cpp $(LIB_DIR)/Script.cpp $(LIB_ADDITIONAL_SRC) -o $@
+	@./$@
+
 TelnetProxy_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
 	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/TelnetProxy_ut.cpp $(LIB_DIR)/TelnetProxy.cpp $(FW_FILES) $(INC) -o $@ -Wall -pedantic -std=c++0x
 	@./$@
@@ -42,5 +46,5 @@ WiflyControlNoThrow_ut.bin:  $(LIB_SRC) $(LIB_TEST_SRC)
 	@./$@
 
 
-library_test: BroadcastReceiver_ut.bin ComProxy_ut.bin TelnetProxy_ut.bin WiflyControl_ut.bin WiflyControlNoThrow_ut.bin
+library_test: BroadcastReceiver_ut.bin ComProxy_ut.bin Script_ut.bin TelnetProxy_ut.bin WiflyControl_ut.bin WiflyControlNoThrow_ut.bin
 

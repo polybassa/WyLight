@@ -69,6 +69,7 @@ public:
 				throw ScriptBufferFull{};
 			case CRC_CHECK_FAILED:
 			case BAD_PACKET:
+				// bad response but allow retry
 				return false;
 			case BAD_COMMAND_CODE:
 				throw FatalError("FIRMWARE RECEIVED A BAD COMMAND CODE" + std::to_string(pData.cmd));

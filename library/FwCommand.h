@@ -19,14 +19,15 @@
 #ifndef __WiflyControlCli__FwCommand__
 #define __WiflyControlCli__FwCommand__
 
-#include <iostream>
 #include "FwRequest.h"
 #include "FwResponse.h"
+
+#include <algorithm>
+#include <iostream>
 
 namespace WyLight {
 
 class FwCommand {
-	FwCommand( const FwCommand& other ) = delete;
 	FwCommand& operator=( const FwCommand& ) = delete;
 
 protected:
@@ -37,23 +38,53 @@ protected:
 
 	
 public:
+	virtual ~FwCommand(void) { };
 	FwRequest* const GetRequest(void) const {return mRequest; };
 	FwResponse* const GetResponse(void) const {return mResponse; };
 };
 
-class FwCmdWait : public FwCommand
+class FwCmdScript : public FwCommand
 {
+	SimpleResponse mResponse;
+protected:
+	FwCmdScript(FwRequest* const req, uint8_t cmd) : FwCommand(req, &mResponse), mResponse(cmd) {};
+
 public:
-	FwCmdWait(uint16_t waitTime) : FwCommand(new FwReqWait(waitTime), new SimpleResponse(WAIT)) {};
+	virtual bool Equals(const FwCmdScript& ref) const {
+		return (typeid(*this) == typeid(ref));
+	};
+	virtual	std::ostream& Write(std::ostream& out, size_t& indentation) const = 0;
+};
+
+class FwCmdWait : public FwCmdScript
+{
+	FwReqWait mRequest;
+public:
+	static const std::string TOKEN;
+	FwCmdWait(std::istream& is) : FwCmdScript(&mRequest, WAIT), mRequest(is) {};
+	FwCmdWait(uint16_t waitTime) : FwCmdScript(&mRequest, WAIT), mRequest(waitTime) {};
 	
 	virtual void setTimeValue(uint16_t timeValue)
 	{
-		((FwReqWait*)(this->GetRequest()))->setTimeValue(timeValue);
+		mRequest.setTimeValue(timeValue);
 	};
 	
-	virtual uint16_t getTimeValue(void)
+	virtual uint16_t getTimeValue(void) const
 	{
-		return ((FwReqWait*)(this->GetRequest()))->getTimeValue();
+		return mRequest.getTimeValue();
+	};
+
+	bool Equals(const FwCmdScript& ref) const
+	{
+		if(!FwCmdScript::Equals(ref)) {
+			return false;
+		}
+		auto r = reinterpret_cast<const FwCmdWait&>(ref);
+		return getTimeValue() == r.getTimeValue();
+	};
+	
+	std::ostream& Write(std::ostream& out, size_t& indentation) const {
+		return mRequest.Write(out, indentation);
 	};
 };
 
@@ -81,16 +112,29 @@ public:
 	FwCmdGetVersion(void) : FwCommand(new FwReqGetVersion(), new SimpleResponse(GET_FW_VERSION)) {};
 };
 
-class FwCmdLoopOff : public FwCommand
+class FwCmdLoopOff : public FwCmdScript
 {
+	FwReqLoopOff mRequest;
 public:
-	FwCmdLoopOff(uint8_t numLoops = 0) : FwCommand(new FwReqLoopOff(numLoops), new SimpleResponse(LOOP_OFF)) {};
+	static const std::string TOKEN;
+	FwCmdLoopOff(std::istream& is) : FwCmdScript(&mRequest, LOOP_OFF), mRequest(is) {};
+	FwCmdLoopOff(uint8_t numLoops = 0) : FwCmdScript(&mRequest, LOOP_OFF), mRequest(numLoops) {};
+	
+	std::ostream& Write(std::ostream& out, size_t& indentation) const {
+		return mRequest.Write(out, indentation);
+	};
 };
 
-class FwCmdLoopOn : public FwCommand
+class FwCmdLoopOn : public FwCmdScript
 {
+	FwReqLoopOn mRequest;
 public:
-	FwCmdLoopOn(void) : FwCommand(new FwReqLoopOn(), new SimpleResponse(LOOP_ON)) {};
+	static const std::string TOKEN;
+	FwCmdLoopOn(void) : FwCmdScript(&mRequest, LOOP_ON) {};
+	
+	std::ostream& Write(std::ostream& out, size_t& indentation) const {
+		return mRequest.Write(out, indentation);
+	};
 };
 
 class FwCmdSetColorDirect : public FwCommand
@@ -99,10 +143,13 @@ public:
 	FwCmdSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) : FwCommand(new FwReqSetColorDirect(pBuffer, bufferLength), new SimpleResponse(SET_COLOR_DIRECT)) {};
 };
 
-class FwCmdSetFade : public FwCommand
+class FwCmdSetFade : public FwCmdScript
 {
+	FwReqSetFade mRequest;
 public:
-	FwCmdSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade = false) : FwCommand(new FwReqSetFade(argb, fadeTime, addr, parallelFade), new SimpleResponse(SET_FADE)) {};
+	static const std::string TOKEN;
+	FwCmdSetFade(std::istream& is) : FwCmdScript(&mRequest, SET_FADE), mRequest(is) {};
+	FwCmdSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade = false) : FwCmdScript(&mRequest, SET_FADE), mRequest(argb, fadeTime, addr, parallelFade) {};
 	
 	virtual void setTimeValue(uint16_t timeValue)
 	{
@@ -113,12 +160,19 @@ public:
 	{
 		return ((FwCmdSetFade*)(this->GetRequest()))->getTimeValue();
 	};
+	
+	std::ostream& Write(std::ostream& out, size_t& indentation) const {
+		return mRequest.Write(out, indentation);
+	};
 };
 
-class FwCmdSetGradient : public FwCommand
+class FwCmdSetGradient : public FwCmdScript
 {
+	FwReqSetGradient mRequest;
 public:
-	FwCmdSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0) : FwCommand(new FwReqSetGradient(argb_1, argb_2, fadeTime,  parallelFade, length, offset), new SimpleResponse(SET_GRADIENT)) {};
+	static const std::string TOKEN;
+	FwCmdSetGradient(std::istream& is) : FwCmdScript(&mRequest, SET_FADE), mRequest(is) {};
+	FwCmdSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0) : FwCmdScript(&mRequest, SET_FADE), mRequest(argb_1, argb_2, fadeTime,  parallelFade, length, offset) {};
 	
 	virtual void setTimeValue(uint16_t timeValue)
 	{
@@ -128,6 +182,10 @@ public:
 	virtual uint16_t getTimeValue(void)
 	{
 		return ((FwReqSetGradient*)(this->GetRequest()))->getTimeValue();
+	};
+	
+	std::ostream& Write(std::ostream& out, size_t& indentation) const {
+		return mRequest.Write(out, indentation);
 	};
 };
 

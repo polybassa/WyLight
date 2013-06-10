@@ -19,10 +19,13 @@
 #ifndef WiflyControlCli_FwRequest_h
 #define WiflyControlCli_FwRequest_h
 
-#include "wifly_cmd.h"
-#include <stdio.h>
-#include <stdint.h>
+#include "WiflyColor.h"
 #include "WiflyControlException.h"
+#include "wifly_cmd.h"
+
+#include <iostream>
+#include <limits>
+#include <stdio.h>
 
 namespace WyLight {
 
@@ -57,10 +60,7 @@ REF.blue_2 = (ARGB) & 0x000000ff; \
 class FwRequest
 {
 protected:
-	FwRequest(void) : mSize(1) {}
-	FwRequest(size_t size) : mSize(1 + size) {};
-	FwRequest( const FwRequest& other ) = delete;
-	FwRequest& operator=( const FwRequest& ) = delete;
+	FwRequest(uint8_t cmd, size_t size = 0) : mSize(1 + size) { mReqFrame.cmd = cmd; };
 	
 	const size_t mSize;
 	struct led_cmd mReqFrame;
@@ -69,10 +69,34 @@ public:
 	size_t GetSize(void) const { return mSize; };
 };
 
-class FwReqWait : public FwRequest
+class FwReqScript : public FwRequest
+{
+protected:
+	FwReqScript(uint8_t cmd, size_t size = 0) : FwRequest(cmd, size) {};
+
+public:
+	static const size_t INDENTATION_MAX = 10;
+	static const char INDENTATION_CHARACTER = ' ';
+	virtual std::ostream& Write(std::ostream& out, size_t& indentation) const {
+		const size_t numCharacters = std::min(INDENTATION_MAX, 2 * indentation);
+		for(size_t i = 0; i < numCharacters; ++i) {
+			out << INDENTATION_CHARACTER;
+		}
+		return out;
+	};
+};
+
+class FwReqWait : public FwReqScript
 {
 public:
-	FwReqWait(uint16_t waitTime) : FwRequest(sizeof(cmd_wait)) { mReqFrame.cmd = WAIT; this->setTimeValue(waitTime); };
+	FwReqWait(std::istream& is) : FwReqScript(WAIT, sizeof(cmd_wait)) {
+		uint16_t waitTime;
+		is >> waitTime;
+		setTimeValue(waitTime);
+	};
+	FwReqWait(uint16_t waitTime) : FwReqScript(WAIT, sizeof(cmd_wait)) {
+		setTimeValue(waitTime);
+	};
 	
 	virtual void setTimeValue(uint16_t timeValue)
 	{
@@ -80,81 +104,109 @@ public:
 		mReqFrame.data.wait.waitTmms = htons(timeValue);
 	};
 	
-	virtual uint16_t getTimeValue(void)
+	virtual uint16_t getTimeValue(void) const
 	{
 		return ntohs(mReqFrame.data.wait.waitTmms);
 	};
+
+	std::ostream& Write(std::ostream& out, size_t& indentation) const
+	{
+		return FwReqScript::Write(out, indentation) << "wait " << std::dec << htons(mReqFrame.data.wait.waitTmms);
+	}
 };
 
-class FwReqClearScript : public FwRequest
+struct FwReqClearScript : public FwRequest
 {
-public:
-	FwReqClearScript(void) : FwRequest() { mReqFrame.cmd = CLEAR_SCRIPT; };
+	FwReqClearScript(void) : FwRequest(CLEAR_SCRIPT) {};
 };
 
-class FwReqGetCycletime : public FwRequest
+struct FwReqGetCycletime : public FwRequest
 {
-public:
-	FwReqGetCycletime(void) : FwRequest() { mReqFrame.cmd = GET_CYCLETIME; };
+	FwReqGetCycletime(void) : FwRequest(GET_CYCLETIME) {};
 };
 
-class FwReqGetRtc : public FwRequest
+struct FwReqGetRtc : public FwRequest
 {
-public:
-	FwReqGetRtc(void) : FwRequest() { mReqFrame.cmd = GET_RTC; };
+	FwReqGetRtc(void) : FwRequest(GET_RTC) {};
 };
 
-class FwReqGetTracebuffer : public FwRequest
+struct FwReqGetTracebuffer : public FwRequest
 {
-public:
-	FwReqGetTracebuffer(void) : FwRequest() { mReqFrame.cmd = GET_TRACE; };
+	FwReqGetTracebuffer(void) : FwRequest(GET_TRACE) {};
 };
 
 class FwReqGetVersion : public FwRequest
 {
 public:
-	FwReqGetVersion(void) : FwRequest() { mReqFrame.cmd = GET_FW_VERSION; };
+	FwReqGetVersion(void) : FwRequest(GET_FW_VERSION) {};
 };
 
-class FwReqLoopOff : public FwRequest
+class FwReqLoopOff : public FwReqScript
 {
 public:
-	FwReqLoopOff(uint8_t numLoops) : FwRequest(sizeof(cmd_loop_end)) { mReqFrame.cmd = LOOP_OFF; mReqFrame.data.loopEnd.numLoops = numLoops; };
+	FwReqLoopOff(std::istream& is) : FwReqScript(LOOP_OFF, sizeof(cmd_loop_end)) {
+		int value;
+		is >> value;
+		mReqFrame.data.loopEnd.numLoops = (uint8_t)value;
+	};
+	FwReqLoopOff(uint8_t numLoops) : FwReqScript(LOOP_OFF, sizeof(cmd_loop_end)) {
+		mReqFrame.data.loopEnd.numLoops = numLoops;
+	};
+
+	std::ostream& Write(std::ostream& out, size_t& indentation) const
+	{
+		return FwReqScript::Write(out, --indentation) << "loop_off " << std::dec << (int)mReqFrame.data.loopEnd.numLoops;
+	};
 };
 
-class FwReqLoopOn : public FwRequest
+class FwReqLoopOn : public FwReqScript
 {
 public:
-	FwReqLoopOn(void) : FwRequest() { mReqFrame.cmd = LOOP_ON; };
+	FwReqLoopOn(void) : FwReqScript(LOOP_ON) {};
+
+	std::ostream& Write(std::ostream& out, size_t& indentation) const
+	{
+		FwReqScript::Write(out, indentation) << "loop";
+		++indentation;
+		return out;
+	}
 };
 
 class FwReqSetColorDirect : public FwRequest
 {
 public:
-	FwReqSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) : FwRequest(sizeof(struct cmd_set_color_direct))
+	FwReqSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) : FwRequest(SET_COLOR_DIRECT, sizeof(struct cmd_set_color_direct))
 	{
 		static const size_t maxBufferLength = NUM_OF_LED * 3;
-		mReqFrame.cmd = SET_COLOR_DIRECT;
 		bufferLength = std::min(bufferLength, maxBufferLength);
 		memcpy(mReqFrame.data.set_color_direct.ptr_led_array, pBuffer, bufferLength);
 		memset(mReqFrame.data.set_color_direct.ptr_led_array + bufferLength, 0, maxBufferLength - bufferLength);
 	};
 };
 
-class FwReqSetFade : public FwRequest
+class FwReqSetFade : public FwReqScript
 {
+	WiflyColor addr;
+	WiflyColor argb;
+	uint16_t fadeTime;
+	bool parallelFade;
 public:
-	FwReqSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) : FwRequest(sizeof(cmd_set_fade))
+	FwReqSetFade(std::istream& is) : FwReqScript(SET_FADE, sizeof(cmd_set_fade)) {
+		is >> addr >> argb >> parallelFade >> fadeTime;
+		SetAddrRgb(mReqFrame.data.set_fade, addr.argb(), argb.argb());
+		mReqFrame.data.set_fade.parallelFade = parallelFade;
+		this->setTimeValue(fadeTime);
+	};
+	FwReqSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) : FwReqScript(SET_FADE, sizeof(cmd_set_fade))
 	{
-		mReqFrame.cmd = SET_FADE;
 		SetAddrRgb(mReqFrame.data.set_fade, addr, argb);
-		
-		mReqFrame.data.set_fade.parallelFade = (parallelFade ? 1 : 0);
+		mReqFrame.data.set_fade.parallelFade = parallelFade;
 		this->setTimeValue(fadeTime);
 	};
 	
 	virtual void setTimeValue(uint16_t timeValue)
 	{
+		fadeTime = timeValue;
 		timeValue = ((0 == timeValue) ? 1 : timeValue);
 		mReqFrame.data.set_fade.fadeTmms = htons(timeValue);
 	};
@@ -163,18 +215,51 @@ public:
 	{
 		return ntohs(mReqFrame.data.set_fade.fadeTmms);
 	};
+
+	std::ostream& Write(std::ostream& out, size_t& indentation) const {
+		return FwReqScript::Write(out, indentation) << "fade " << std::hex << addr << ' ' << argb << ' ' << std::dec << parallelFade << ' ' << fadeTime;
+	};
 };
 
-class FwReqSetGradient : public FwRequest
+class FwReqSetGradient : public FwReqScript
 {
+	WiflyColor argb_1;
+	WiflyColor argb_2;
+	uint16_t fadeTime;
+	bool parallelFade;
+	uint8_t length;
+	uint8_t offset;	
 public:
-	FwReqSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset) : FwRequest(sizeof(cmd_set_gradient))
-	{
+	FwReqSetGradient(std::istream& is) : FwReqScript(SET_GRADIENT, sizeof(cmd_set_gradient)) {
+		int __length;
+		int __offset;
+		is >> argb_1 >> argb_2 >> parallelFade >> __offset >> __length >> fadeTime;
+		offset = __offset;
+		length = __length;
 		if (offset > 0x7f) throw FatalError("Invalid Parameter, offset is greater than 127");
 		
-		mReqFrame.cmd = SET_GRADIENT;
-		SetRgb_1(mReqFrame.data.set_gradient, argb_1);
-		SetRgb_2(mReqFrame.data.set_gradient, argb_2);
+		SetRgb_1(mReqFrame.data.set_gradient, argb_1.argb());
+		SetRgb_2(mReqFrame.data.set_gradient, argb_2.argb());
+		
+		mReqFrame.data.set_gradient.numberOfLeds = length;
+		mReqFrame.data.set_gradient.setOffset(offset);
+		mReqFrame.data.set_gradient.setParallelFade(parallelFade);
+		
+		this->setTimeValue(fadeTime);
+	};
+	FwReqSetGradient(uint32_t __argb_1, uint32_t __argb_2, uint16_t __fadeTime, bool __parallelFade, uint8_t __length, uint8_t __offset) : FwReqScript(SET_GRADIENT, sizeof(cmd_set_gradient))
+	{
+		if (offset > 0x7f) throw FatalError("Invalid Parameter, offset is greater than 127");
+
+		argb_1.argb(__argb_1);
+		argb_2.argb(__argb_2);
+		fadeTime = __fadeTime;
+		parallelFade = __parallelFade;
+		length = __length;
+		offset = __offset;	
+		
+		SetRgb_1(mReqFrame.data.set_gradient, argb_1.argb());
+		SetRgb_2(mReqFrame.data.set_gradient, argb_2.argb());
 		
 		mReqFrame.data.set_gradient.numberOfLeds = length;
 		mReqFrame.data.set_gradient.setOffset(offset);
@@ -193,14 +278,18 @@ public:
 	{
 		return ntohs(mReqFrame.data.set_gradient.fadeTmms);
 	};
+
+	std::ostream& Write(std::ostream& out, size_t& indentation) const
+	{
+		return FwReqScript::Write(out, indentation) << "gradient " << argb_1 << ' ' << argb_2 << ' ' << std::dec << parallelFade << ' ' << (int)offset << ' ' << (int)length << ' ' << fadeTime;
+	};
 };
 
 class FwReqSetRtc : public FwRequest
 {
 public:
-	FwReqSetRtc(const tm& timeValue) : FwRequest(sizeof(rtc_time))
+	FwReqSetRtc(const tm& timeValue) : FwRequest(SET_RTC, sizeof(rtc_time))
 	{
-		mReqFrame.cmd = SET_RTC;
 		mReqFrame.data.set_rtc.tm_sec  = (uns8) timeValue.tm_sec;
 		mReqFrame.data.set_rtc.tm_min  = (uns8) timeValue.tm_min;
 		mReqFrame.data.set_rtc.tm_hour = (uns8) timeValue.tm_hour;
@@ -211,10 +300,9 @@ public:
 	};
 };
 
-class FwReqStartBl : public FwRequest
+struct FwReqStartBl : public FwRequest
 {
-public:
-	FwReqStartBl(void) : FwRequest() { mReqFrame.cmd = START_BL; };
+	FwReqStartBl(void) : FwRequest(START_BL) {};
 };
 }
 #endif

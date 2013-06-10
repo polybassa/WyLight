@@ -38,13 +38,13 @@ namespace WyLight {
  * \author Nils Weiss, Patrick Bruenn
  *
  *! \cond
- * class - WiflyControl
+ * class - Control
  * \endcond
  *
  * \brief Class to communicate with a Wifly_Light Hardware.
  *
  * 
- * The WiflyControl class allows the user to control the Wifly_Light Hardware.
+ * The Control class allows the user to control the Wifly_Light Hardware.
  * There are three target's at the Wifly_Light Hardware.
  * - Bootloader<br>
  *           All methodes with Bl* relate to the bootloader part.
@@ -53,7 +53,6 @@ namespace WyLight {
  * - RN-171 Wifi Interface<br>
  *           All methodes witch Conf* relate to the communication module.
  *******************************************************************************/
-
 class Control
 {
 	public:

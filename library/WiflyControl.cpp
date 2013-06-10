@@ -43,6 +43,9 @@ static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VER
 const std::string Control
 ::LEDS_ALL{"ffffffff"};
 
+const size_t FwReqScript::INDENTATION_MAX;
+const char FwReqScript::INDENTATION_CHARACTER;
+
 Control::Control(uint32_t addr, uint16_t port) : mSock(addr, port), mProxy(mSock), mTelnet(mSock) {}
 
 /** ------------------------- BOOTLOADER METHODES ------------------------- **/
