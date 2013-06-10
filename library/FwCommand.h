@@ -40,14 +40,20 @@ protected:
 public:
 	virtual ~FwCommand(void) { };
 	FwRequest* const GetRequest(void) const {return mRequest; };
-	FwResponse* const GetResponse(void) const {return mResponse; };
+	virtual FwResponse* const GetResponse(void) const {return mResponse; };
 };
 
-class FwCmdScript : public FwCommand
+class FwCmdSimple : public FwCommand
 {
 	SimpleResponse mResponse;
 protected:
-	FwCmdScript(FwRequest* const req, uint8_t cmd) : FwCommand(req, &mResponse), mResponse(cmd) {};
+	FwCmdSimple(FwRequest* req, uint8_t cmd) : FwCommand(req, &mResponse), mResponse(cmd) {};
+};
+
+class FwCmdScript : public FwCmdSimple
+{
+protected:
+	FwCmdScript(FwRequest* const req, uint8_t cmd) : FwCmdSimple(req, cmd) {};
 
 public:
 	virtual bool Equals(const FwCmdScript& ref) const {
@@ -88,28 +94,35 @@ public:
 	};
 };
 
-class FwCmdClearScript : public FwCommand
+class FwCmdClearScript : public FwCmdSimple
 {
+	FwReqClearScript mRequest;
 public:
-	FwCmdClearScript(void) : FwCommand(new FwReqClearScript(), new SimpleResponse(CLEAR_SCRIPT)) {};
+	FwCmdClearScript(void) : FwCmdSimple(&mRequest, CLEAR_SCRIPT) {};
 };
 
 class FwCmdGetRtc : public FwCommand
 {
+	FwReqGetRtc mRequest;
+	RtcResponse mResponse;
 public:
-	FwCmdGetRtc(void) : FwCommand(new FwReqGetRtc(), new SimpleResponse(GET_RTC)) {};
+	FwCmdGetRtc(void) : FwCommand(&mRequest, &mResponse) {};
 };
 
 class FwCmdGetTracebuffer : public FwCommand
 {
+	FwReqGetTracebuffer mRequest;
+	TracebufferResponse mResponse;
 public:
-	FwCmdGetTracebuffer(void) : FwCommand(new FwReqGetTracebuffer(), new SimpleResponse(GET_TRACE)) {};
+	FwCmdGetTracebuffer(void) : FwCommand(&mRequest, &mResponse) {};
 };
 
 class FwCmdGetVersion : public FwCommand
 {
+	FwReqGetVersion mRequest;
+	FirmwareVersionResponse mResponse;
 public:
-	FwCmdGetVersion(void) : FwCommand(new FwReqGetVersion(), new SimpleResponse(GET_FW_VERSION)) {};
+	FwCmdGetVersion(void) : FwCommand(&mRequest, &mResponse) {};
 };
 
 class FwCmdLoopOff : public FwCmdScript
@@ -153,12 +166,12 @@ public:
 	
 	virtual void setTimeValue(uint16_t timeValue)
 	{
-		((FwReqSetFade*)(this->GetRequest()))->setTimeValue(timeValue);
+		mRequest.setTimeValue(timeValue);
 	};
 	
 	virtual uint16_t getTimeValue(void)
 	{
-		return ((FwCmdSetFade*)(this->GetRequest()))->getTimeValue();
+		return mRequest.getTimeValue();
 	};
 	
 	std::ostream& Write(std::ostream& out, size_t& indentation) const {
@@ -176,12 +189,12 @@ public:
 	
 	virtual void setTimeValue(uint16_t timeValue)
 	{
-		((FwReqSetGradient*)(this->GetRequest()))->setTimeValue(timeValue);
+		mRequest.setTimeValue(timeValue);
 	};
 	
 	virtual uint16_t getTimeValue(void)
 	{
-		return ((FwReqSetGradient*)(this->GetRequest()))->getTimeValue();
+		return mRequest.getTimeValue();
 	};
 	
 	std::ostream& Write(std::ostream& out, size_t& indentation) const {
@@ -190,16 +203,18 @@ public:
 };
 
 
-class FwCmdSetRtc : public FwCommand
+class FwCmdSetRtc : public FwCmdSimple
 {
+	FwReqSetRtc mRequest;
 public:
-	FwCmdSetRtc(const tm& timeValue) : FwCommand(new FwReqSetRtc(timeValue), new SimpleResponse(SET_RTC)) {};
+	FwCmdSetRtc(const tm& timeValue) : FwCmdSimple(&mRequest, SET_RTC), mRequest(timeValue) {};
 };
 
-class FwCmdStartBl : public FwCommand
+class FwCmdStartBl : public FwCmdSimple
 {
+	FwReqStartBl mRequest;
 public:
-	FwCmdStartBl(void) : FwCommand(new FwReqStartBl(), new SimpleResponse(START_BL)) {};
+	FwCmdStartBl(void) : FwCmdSimple(&mRequest, START_BL) {};
 };
 
 }

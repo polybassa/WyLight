@@ -84,6 +84,7 @@ private:
 
 class RtcResponse : public SimpleResponse
 {
+	struct tm mTimeValue;
 public:
 	RtcResponse(void) : SimpleResponse(GET_RTC) {};
 	bool Init(response_frame& pData, size_t dataLength)
@@ -103,9 +104,6 @@ public:
 		return false;
 	};
 	struct tm GetRealTime(void) const {return mTimeValue; };
-	
-private:
-	struct tm mTimeValue;
 };
 
 class CycletimeResponse : public SimpleResponse
