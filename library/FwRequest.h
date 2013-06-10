@@ -59,12 +59,11 @@ REF.blue_2 = (ARGB) & 0x000000ff; \
 
 class FwRequest
 {
-protected:
-	FwRequest(uint8_t cmd, size_t size = 0) : mSize(1 + size) { mReqFrame.cmd = cmd; };
-	
+protected:	
 	const size_t mSize;
 	struct led_cmd mReqFrame;
 public:
+	FwRequest(uint8_t cmd, size_t size = 0) : mSize(1 + size) { mReqFrame.cmd = cmd; };
 	const uint8_t* GetData(void) const { return reinterpret_cast<const uint8_t*>(&mReqFrame); };
 	size_t GetSize(void) const { return mSize; };
 };
@@ -113,11 +112,6 @@ public:
 	{
 		return FwReqScript::Write(out, indentation) << "wait " << std::dec << htons(mReqFrame.data.wait.waitTmms);
 	}
-};
-
-struct FwReqClearScript : public FwRequest
-{
-	FwReqClearScript(void) : FwRequest(CLEAR_SCRIPT) {};
 };
 
 struct FwReqGetCycletime : public FwRequest
@@ -298,11 +292,6 @@ public:
 		mReqFrame.data.set_rtc.tm_year = (uns8) timeValue.tm_year;
 		mReqFrame.data.set_rtc.tm_wday = (uns8) timeValue.tm_wday;
 	};
-};
-
-struct FwReqStartBl : public FwRequest
-{
-	FwReqStartBl(void) : FwRequest(START_BL) {};
 };
 }
 #endif

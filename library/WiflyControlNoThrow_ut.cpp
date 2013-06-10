@@ -148,7 +148,7 @@ void Control::FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalError,
 
 void Control::FwStartBl(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-void Control::FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset) { throwExceptions(); }
+void Control::FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset) throw (ConnectionTimeout, FatalError, ScriptBufferFull) { throwExceptions(); }
 
 size_t ut_WiflyControlNoThrow_FwFunctions(void)
 {

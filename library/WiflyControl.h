@@ -323,7 +323,7 @@ class Control
 		* @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		* @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		*/
-		void FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0);
+		void FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 	
 		/**
 		* Injects a gradient command into the wifly script controller
@@ -337,7 +337,7 @@ class Control
 		* @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		* @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		*/
-		void FwSetGradient(const std::string& rgb_1, const std::string& rgb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0);
+		void FwSetGradient(const std::string& rgb_1, const std::string& rgb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 		/**
 		 * Sets the rtc clock of the wifly device to the specified time.
@@ -372,7 +372,7 @@ class Control
 		void FwTest(void);
 		void FwStressTest(void);
 	
-		Control& operator<<(const FwCommand& cmd);
+		Control& operator<<(const FwCommand& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 /* ------------------------- VERSION EXTRACT METHODE ------------------------- */
 		/**

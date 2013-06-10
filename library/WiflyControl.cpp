@@ -687,8 +687,7 @@ bool Control::ConfRebootWlanModule(void) const
 
 void Control::FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	SimpleResponse response(CLEAR_SCRIPT);
-	FwSend(FwReqClearScript(), response);
+	*this << FwCmdClearScript{};
 }
 
 std::string Control::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
@@ -721,14 +720,12 @@ std::string Control::FwGetVersion(void) throw (ConnectionTimeout, FatalError, Sc
 
 void Control::FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	SimpleResponse response(LOOP_OFF);
-	FwSend(FwReqLoopOff(numLoops), response);
+	*this << FwCmdLoopOff{numLoops};
 }
 
 void Control::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	SimpleResponse response(LOOP_ON);
-	FwSend(FwReqLoopOn(), response);
+	*this << FwCmdLoopOn{};
 }
 
 FwResponse& Control::FwSend(const FwRequest& request, FwResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
@@ -750,14 +747,12 @@ FwResponse& Control::FwSend(const FwRequest& request, FwResponse& response) cons
 
 void Control::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	SimpleResponse response(SET_COLOR_DIRECT);  
-	FwSend(FwReqSetColorDirect(pBuffer, bufferLength), response);
+	*this << FwCmdSetColorDirect{pBuffer, bufferLength};
 }
 
 void Control::FwSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	SimpleResponse response(SET_FADE);
-	FwSend(FwReqSetFade(argb, fadeTime, addr, parallelFade), response);
+	*this << FwCmdSetFade{argb, fadeTime, addr, parallelFade};
 }
 
 void Control::FwSetFade(const string& rgb, uint16_t fadeTime, const string& addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
@@ -765,28 +760,25 @@ void Control::FwSetFade(const string& rgb, uint16_t fadeTime, const string& addr
 	FwSetFade(0xff000000 | WiflyColor::ToARGB(rgb), fadeTime, WiflyColor::ToARGB(addr), parallelFade);
 }
 
-void Control::FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset)
+void Control::FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	SimpleResponse response(SET_GRADIENT);
-	FwSend(FwReqSetGradient(argb_1, argb_2, fadeTime, parallelFade, length, offset), response);
+	*this << FwCmdSetGradient{argb_1, argb_2, fadeTime, parallelFade, length, offset};
 }
 
 
-void Control::FwSetGradient(const string& rgb_1, const string& rgb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset)
+void Control::FwSetGradient(const string& rgb_1, const string& rgb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	FwSetGradient(0xff000000 | WiflyColor::ToARGB(rgb_1), 0xff000000 | WiflyColor::ToARGB(rgb_2), fadeTime, parallelFade, length, offset);
 }
 
 void Control::FwSetRtc(const tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	SimpleResponse response(SET_RTC);
-	FwSend(FwReqSetRtc(timeValue), response);
+	*this << FwCmdSetRtc{timeValue};
 }
 
 void Control::FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	SimpleResponse response(WAIT);
-	FwSend(FwReqWait(waitTime), response);
+	*this << FwCmdWait{waitTime};
 }
 
 void Control::FwStressTest(void)
@@ -830,7 +822,7 @@ std::string Control::ExtractFwVersion(const std::string& pFilename) const
 	return std::string((const char*)&buffer[0], 7);
 }
 
-Control& Control::operator<<(const FwCommand& cmd)
+Control& Control::operator<<(const FwCommand& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	this->FwSend(*cmd.GetRequest(), *cmd.GetResponse());
 	return *this;
@@ -888,7 +880,6 @@ void Control::FwTest(void)
 
 void Control::FwStartBl(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	SimpleResponse response(START_BL);
-	FwSend(FwReqStartBl(), response);
+	*this << FwCmdStartBl{};
 }
 } /* namespace WyLight */

@@ -45,15 +45,17 @@ public:
 
 class FwCmdSimple : public FwCommand
 {
+	FwRequest mRequest;
 	SimpleResponse mResponse;
 protected:
-	FwCmdSimple(FwRequest* req, uint8_t cmd) : FwCommand(req, &mResponse), mResponse(cmd) {};
+	FwCmdSimple(uint8_t cmd) : FwCommand(&mRequest, &mResponse), mRequest(cmd),  mResponse(cmd) {};
 };
 
-class FwCmdScript : public FwCmdSimple
+class FwCmdScript : public FwCommand
 {
+	SimpleResponse mResponse;
 protected:
-	FwCmdScript(FwRequest* const req, uint8_t cmd) : FwCmdSimple(req, cmd) {};
+	FwCmdScript(FwRequest* const req, uint8_t cmd) : FwCommand(req, &mResponse), mResponse(cmd) {};
 
 public:
 	virtual bool Equals(const FwCmdScript& ref) const {
@@ -94,11 +96,9 @@ public:
 	};
 };
 
-class FwCmdClearScript : public FwCmdSimple
+struct FwCmdClearScript : public FwCmdSimple
 {
-	FwReqClearScript mRequest;
-public:
-	FwCmdClearScript(void) : FwCmdSimple(&mRequest, CLEAR_SCRIPT) {};
+	FwCmdClearScript(void) : FwCmdSimple(CLEAR_SCRIPT) {};
 };
 
 class FwCmdGetRtc : public FwCommand
@@ -203,18 +203,17 @@ public:
 };
 
 
-class FwCmdSetRtc : public FwCmdSimple
+class FwCmdSetRtc : public FwCommand
 {
 	FwReqSetRtc mRequest;
+	SimpleResponse mResponse;
 public:
-	FwCmdSetRtc(const tm& timeValue) : FwCmdSimple(&mRequest, SET_RTC), mRequest(timeValue) {};
+	FwCmdSetRtc(const tm& timeValue) : FwCommand(&mRequest, &mResponse), mRequest(timeValue), mResponse(SET_RTC) {};
 };
 
-class FwCmdStartBl : public FwCmdSimple
+struct FwCmdStartBl : public FwCmdSimple
 {
-	FwReqStartBl mRequest;
-public:
-	FwCmdStartBl(void) : FwCmdSimple(&mRequest, START_BL) {};
+	FwCmdStartBl(void) : FwCmdSimple(START_BL) {};
 };
 
 }
