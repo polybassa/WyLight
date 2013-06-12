@@ -175,8 +175,13 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)setColorDirect:(const uint8_t*)pointerBuffer bufferLength:(size_t)length
 {
-	mCmdQueue->push_front(std::make_tuple(false,
-										  std::bind(&WyLight::ControlNoThrow::FwSetColorDirect, std::ref(*mControl), pointerBuffer, length),
+	std::list<uint8_t> buffer;
+	for(size_t i = 0; i < length; i++)
+	{
+		buffer.insert(buffer.end(), *pointerBuffer++);
+	}
+	mCmdQueue->push_back(std::make_tuple(false,
+										  std::bind(&WyLight::ControlNoThrow::FwSetColorDirect, std::ref(*mControl), buffer),
 										  0));
 }
 
@@ -340,14 +345,14 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 {
 	NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"main" ofType:@"hex"]; //Whatever your file - extension is
 
-	mCmdQueue->clear_and_push_front(std::make_tuple(false,
+	mCmdQueue->push_back(std::make_tuple(false,
 										  std::bind(&WyLight::ControlNoThrow::BlProgramFlash, std::ref(*mControl), std::string([filePath cStringUsingEncoding:NSASCIIStringEncoding])),
 										  0));
 }
 
 - (void)leaveBootloader
 {
-	mCmdQueue->clear_and_push_front(std::make_tuple(false,
+	mCmdQueue->push_back(std::make_tuple(false,
 											std::bind(&WyLight::ControlNoThrow::BlRunApp, std::ref(*mControl)),
 											0));
 }

@@ -20,3 +20,9 @@ UserInterfaceState.xcuserstate
 TestRecentEndpoints.txt
 TestRecentEndpoints2.txt
 recent.txt
+autoscan.log
+configure.scan
+firmware/autoscan.log
+firmware/configure.scan
+library/autoscan.log
+library/configure.scan
