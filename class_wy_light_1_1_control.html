@@ -149,6 +149,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a88aa60d7825c6d0082b29c435373ca31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f20aed69408200c467d25904e15a8b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a6f20aed69408200c467d25904e15a8b6">FwLoopOn</a> (void)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
 <tr class="separator:a6f20aed69408200c467d25904e15a8b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c75e41fe0e5e18752281d65480eeeb2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a7c75e41fe0e5e18752281d65480eeeb2">FwSetColorDirect</a> (const std::list&lt; uint8_t &gt; buffer)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
+<tr class="separator:a7c75e41fe0e5e18752281d65480eeeb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7237fc75e32c06cba158722b58672596"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a7237fc75e32c06cba158722b58672596">FwSetColorDirect</a> (const uint8_t *pBuffer, size_t bufferLength)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
 <tr class="separator:a7237fc75e32c06cba158722b58672596"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19ce28fca468a3da113e6588e67486c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a19ce28fca468a3da113e6588e67486c2">FwSetFade</a> (uint32_t argb, uint16_t fadeTime=0, uint32_t addr=0xffffffff, bool parallelFade=false)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
@@ -895,6 +897,37 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a7c75e41fe0e5e18752281d65480eeeb2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WyLight::Control::FwSetColorDirect </td>
+          <td>(</td>
+          <td class="paramtype">const std::list&lt; uint8_t &gt;&#160;</td>
+          <td class="paramname"><em>buffer</em></td><td>)</td>
+          <td>  throw (<a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a>, <a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets all leds with different colors directly. This doesn't affect the <a class="el" href="namespace_wy_light.html">WyLight</a> script controller Example: to set the first led to yellow and the second to blue and all others to off use a &lt;pBuffer&gt; like this: buffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6; </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffer</td><td>containing continouse rgb values r1g1b1r2g2b2...r32g32b32 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
+    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
+    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a></td><td>if script buffer in PIC firmware is full and request couldn't be executed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a7237fc75e32c06cba158722b58672596"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1449,7 +1482,7 @@ Friends</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jun 9 2013 23:46:09 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jun 12 2013 15:01:47 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
