@@ -33,6 +33,8 @@ using std::cin;
 using std::cout;
 using namespace WyLight;
 
+void newRemoteCallback(const size_t index, const WyLight::Endpoint& newEndpoint);
+
 WiflyControlCli::WiflyControlCli(uint32_t addr, uint16_t port)
 : mControl(addr, port), mRunning(true)
 {
@@ -109,7 +111,7 @@ int main(int argc, const char* argv[])
 	/*
 	Control cli(e.GetIp(), e.GetPort());
 	
-	
+	WiflyColor::
 	cli << FwCmdClearScript();
 	cli << FwCmdSetGradient(0xffff0000, 0xff00ff00, 1000, false, 5, 0);
 	cli << FwCmdSetGradient(0xffff00ff, 0xffff0000, 1000, true, 5, 5);

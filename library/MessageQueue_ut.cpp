@@ -56,16 +56,16 @@ int32_t ut_MessageQueue_simple(void)
 	
 	CHECK(0 == mInt);
 	
-	messages.send([=]{return 1;});
+	messages.push_back([=]{return 1;});
 	std::this_thread::sleep_for(std::chrono::milliseconds(20));
 	CHECK(1 == mInt);
 	
-	messages.send([=]{return 2;});
+	messages.push_back([=]{return 2;});
 	std::this_thread::sleep_for(std::chrono::milliseconds(20));
 	CHECK(2 == mInt);
 
-	messages.send([=]{return 4;});
-	messages.sendDirect([=]{return 3;});
+	messages.push_back([=]{return 4;});
+	messages.push_front([=]{return 3;});
 	std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	CHECK(3 == mInt);
 	std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -73,17 +73,17 @@ int32_t ut_MessageQueue_simple(void)
 	
 	{
 		std::lock_guard<std::mutex> lg(mMut);
-		messages.send([=]{return 5;});
-		messages.send([=]{return 5;});
-		messages.send([=]{return 5;});
-		messages.sendOnlyThis([=]{return 6;});
+		messages.push_back([=]{return 5;});
+		messages.push_back([=]{return 5;});
+		messages.push_back([=]{return 5;});
+		messages.clear_and_push_front([=]{return 6;});
 	}
 	std::this_thread::sleep_for(std::chrono::milliseconds(20));
 	CHECK(6 == mInt);
 	std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	CHECK(6 == mInt);
 
-	messages.send([=]{return 5;});
+	messages.push_back([=]{return 5;});
 	running  = 0;
 	t1.join();
 		
@@ -118,17 +118,17 @@ int32_t ut_MessageQueue_complex(void)
 	
 	CHECK(0 == mInt);
 	
-	messages.send(std::make_pair([=]{return 1;}, false));
+	messages.push_back(std::make_pair([=]{return 1;}, false));
 	std::this_thread::sleep_for(std::chrono::milliseconds(20));
 	CHECK(1 == mInt);
 	
-	messages.send(std::make_pair([=]{return 2;}, false));
+	messages.push_back(std::make_pair([=]{return 2;}, false));
 	std::this_thread::sleep_for(std::chrono::milliseconds(20));
 	CHECK(2 == mInt);
 	
-	messages.send(std::make_pair([=]{return 4;}, false));
-	messages.send(std::make_pair([=]{return 5;}, false));
-	messages.sendDirect(std::make_pair([=]{return 3;}, false));
+	messages.push_back(std::make_pair([=]{return 4;}, false));
+	messages.push_back(std::make_pair([=]{return 5;}, false));
+	messages.push_front(std::make_pair([=]{return 3;}, false));
 	std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	CHECK(3 == mInt);
 	std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -139,17 +139,17 @@ int32_t ut_MessageQueue_complex(void)
 	
 	{
 		std::lock_guard<std::mutex> lg(mMut);
-		messages.send(std::make_pair([=]{return 4;}, false));
-		messages.send(std::make_pair([=]{return 4;}, false));
-		messages.send(std::make_pair([=]{return 4;}, false));
-		messages.sendOnlyThis(std::make_pair([=]{return 6;}, false));
+		messages.push_back(std::make_pair([=]{return 4;}, false));
+		messages.push_back(std::make_pair([=]{return 4;}, false));
+		messages.push_back(std::make_pair([=]{return 4;}, false));
+		messages.clear_and_push_front(std::make_pair([=]{return 6;}, false));
 	}
 	std::this_thread::sleep_for(std::chrono::milliseconds(20));
 	CHECK(6 == mInt);
 	std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	CHECK(6 == mInt);
 	
-	messages.sendDirect(std::make_pair([=]{return 0xff;}, true));
+	messages.push_front(std::make_pair([=]{return 0xff;}, true));
 	std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	t1.join();
 	

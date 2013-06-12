@@ -298,17 +298,16 @@ class ControlNoThrow
 
 		/**
 		 * Sets all leds with different colors directly. This doesn't affect the WyLight script controller
-		 * Example: to set the first led to yellow and the second to blue and all others to off use a \<pBuffer\> like this:
-		 * pBuffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6;
-		 * @param pBuffer containing continouse rgb values r1g1b1r2g2b2...r32g32b32
-		 * @param bufferLength number of bytes in \<pBuffer\> usally 32 * 3 bytes
+		 * Example: to set the first led to yellow and the second to blue and all others to off use a \<buffer\> like this:
+		 * buffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6;
+		 * @param buffer containing continouse rgb values r1g1b1r2g2b2...r32g32b32
 		 * @return Indexed by ::WiflyError
 			<BR><B>CONNECTION_TIMEOUT</B> if response timed out
 			<BR><B>FATAL_ERROR</B> if command code of the response doesn't match the code of the request, or too many retries failed
 			<BR><B>SCRIPT_FULL</B> if script buffer in PIC firmware is full and request couldn't be executed
 			<BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
-		uint32_t FwSetColorDirect(const uint8_t* pBuffer,const size_t bufferLength);
+		uint32_t FwSetColorDirect(const std::list<uint8_t> buffer);
 		
 		/**
 		 * Injects a fade command into the wifly script controller

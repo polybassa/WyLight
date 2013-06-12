@@ -22,6 +22,7 @@
 
 #include <string>
 #include <time.h>
+#include <list>
 #include "ComProxy.h"
 #include "wifly_cmd.h"
 #include "BlRequest.h"
@@ -270,6 +271,17 @@ class Control
 		/**
 		 * Sets all leds with different colors directly. This doesn't affect the WyLight script controller
 		 * Example: to set the first led to yellow and the second to blue and all others to off use a \<pBuffer\> like this:
+		 * buffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6;
+		 * @param buffer containing continouse rgb values r1g1b1r2g2b2...r32g32b32
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
+		 */
+		void FwSetColorDirect(const std::list<uint8_t> buffer) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		
+		/**
+		 * Sets all leds with different colors directly. This doesn't affect the WyLight script controller
+		 * Example: to set the first led to yellow and the second to blue and all others to off use a \<pBuffer\> like this:
 		 * pBuffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6;
 		 * @param pBuffer containing continouse rgb values r1g1b1r2g2b2...r32g32b32
 		 * @param bufferLength number of bytes in \<pBuffer\> usally 32 * 3 bytes
@@ -278,7 +290,7 @@ class Control
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
 		void FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-		
+	
 		/**
 		 * Injects a fade command into the wifly script controller
 		 * @param argb is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff) f.e.

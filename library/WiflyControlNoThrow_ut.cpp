@@ -136,7 +136,7 @@ void Control::FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalError, 
 
 void Control::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-void Control::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
+void Control::FwSetColorDirect(const std::list<uint8_t> buffer) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
 void Control::FwSetFade(const std::string& rgb, uint16_t fadeTime, const std::string& addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
@@ -160,7 +160,7 @@ size_t ut_WiflyControlNoThrow_FwFunctions(void)
 	
 	std::string tempStr = "";
 	tm tempTime;
-	uint8_t buffer;
+	std::list<uint8_t> buffer;
 	
 	for( auto e : mError)
 	{
@@ -177,7 +177,7 @@ size_t ut_WiflyControlNoThrow_FwFunctions(void)
 		CHECK(e == testee.FwStartBl());
 		CHECK(e == testee.FwSetFade(0));
 		CHECK(e == testee.FwStartBl());
-		CHECK(e == testee.FwSetColorDirect(&buffer, sizeof(buffer)));
+		CHECK(e == testee.FwSetColorDirect(buffer));
 		CHECK(e == testee.FwSetGradient(0,0));
 	}
 	
