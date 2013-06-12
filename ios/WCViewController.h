@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WCWiflyControlWrapper.h"
 
-@interface WCViewController : UIViewController
+@class WCEndpoint;
+
+@interface WCViewController : UIViewController <WCWiflyControlDelegate>
+
+@property (nonatomic, strong) NSMutableArray *targetEndpoints;
+@property (nonatomic, strong) NSMutableArray *ledControllerArray;
+@property (nonatomic, weak) id <WCWiflyControlDelegate> delegate;
 
 @end
