@@ -37,8 +37,11 @@ const std::string FwCmdLoopOn::TOKEN("loop");
 const std::string FwCmdLoopOff::TOKEN("loop_off");
 const std::string FwCmdWait::TOKEN("wait");
 
-const size_t FwReqScript::INDENTATION_MAX;
-const char FwReqScript::INDENTATION_CHARACTER;
+const size_t FwCmdScript::INDENTATION_MAX;
+const char FwCmdScript::INDENTATION_CHARACTER;
+
+
+
 
 #if 0
 void badFade(void)

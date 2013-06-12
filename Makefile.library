@@ -30,7 +30,7 @@ ComProxy_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
 	@./$@
 
 Script_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
-	@$(GPP) $(CFLAGS) -DDEBUG $(INC) $(LIB_DIR)/Script_ut.cpp $(LIB_DIR)/Script.cpp $(LIB_ADDITIONAL_SRC) -o $@
+	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/Script_ut.cpp $(LIB_DIR)/Script.cpp $(LIB_ADDITIONAL_SRC) -o $@
 	@./$@
 
 TelnetProxy_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)

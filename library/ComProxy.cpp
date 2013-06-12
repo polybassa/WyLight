@@ -60,9 +60,9 @@ size_t ComProxy::Send(const BlRequest& req, uint8_t* pResponse, size_t responseS
 	return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
 }
 
-size_t ComProxy::Send(const FwRequest& request, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout, FatalError)
+size_t ComProxy::Send(const FwCommand& cmd, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout, FatalError)
 {
-	return Send(request.GetData(), request.GetSize(), reinterpret_cast<uint8_t*>(pResponse), responseSize, true, false, false);
+	return Send(cmd.GetData(), cmd.GetSize(), reinterpret_cast<uint8_t*>(pResponse), responseSize, true, false, false);
 }
 
 

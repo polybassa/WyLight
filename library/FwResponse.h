@@ -29,10 +29,13 @@
 
 namespace WyLight {
 
-class FwResponse
+struct IFwResponse {
+	virtual bool Init(response_frame& frame, size_t dataLength) = 0;	
+};
+
+class FwResponse : public IFwResponse
 {
 public:
-	virtual bool Init(response_frame& frame, size_t dataLength) = 0;
 	virtual ~FwResponse() {};
 protected:
 	FwResponse(void) {};
@@ -40,6 +43,7 @@ protected:
 
 class SimpleResponse : public FwResponse
 {
+	const uint8_t mCmd;
 public:
 	SimpleResponse(uint8_t cmd) : mCmd(cmd) {};
 
@@ -77,9 +81,6 @@ public:
 				throw FatalError("Unexpected response state: " + std::to_string(pData.state));
 		};
 	};
-	
-private:
-	const uint8_t mCmd;
 };
 
 class RtcResponse : public SimpleResponse
@@ -182,6 +183,7 @@ private:
 
 class FirmwareVersionResponse : public SimpleResponse
 {
+	cmd_get_fw_version mFwVersion;
 public:
 	FirmwareVersionResponse(void) : SimpleResponse(GET_FW_VERSION) {};
 	bool Init(response_frame& pData, size_t dataLength)
@@ -208,9 +210,6 @@ public:
 	{
 		return out << "Firmwareversion: " << std::dec << ref.mFwVersion << std::endl;
 	};
-	
-private:
-	cmd_get_fw_version mFwVersion;
 };			
 }
 #endif

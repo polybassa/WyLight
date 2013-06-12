@@ -60,7 +60,7 @@ bool Script::Equals(const Script& ref) const
 	}
 
 	auto refIt = ref.Begin();
-	for(auto it = mList.begin(); it != mList.end(); ++it, ++refIt) {
+	for(auto it = mList.begin(); it != mList.end() && refIt != ref.End(); ++it, ++refIt) {
 		if(!(*it)->Equals(**refIt)) {
 			return false;
 		}
@@ -78,7 +78,6 @@ void Script::Read(const std::string& filename, Script& newScript)
 
 	std::string command;
 	while(inFile >> command) {
-
 		if (0 == command.compare(FwCmdLoopOn::TOKEN)) {
 			newScript.Add(new FwCmdLoopOn());
 		} else if (0 == command.compare(FwCmdLoopOff::TOKEN)) {

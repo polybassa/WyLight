@@ -31,16 +31,30 @@ class FwCommand {
 	FwCommand& operator=( const FwCommand& ) = delete;
 
 protected:
-	FwCommand(FwRequest* const req, FwResponse* const resp) : mRequest(req), mResponse(resp) {};
+	FwCommand(uint8_t cmd, size_t size, FwResponse* const resp) : mResponse(resp), mSize(size) {
+		mReqFrame.cmd = cmd;
+	};
 	
-	FwRequest* const mRequest;
 	FwResponse* const mResponse;
+
+
+	const size_t mSize;
+	struct led_cmd mReqFrame;
 
 	
 public:
 	virtual ~FwCommand(void) { };
-	FwRequest* const GetRequest(void) const {return mRequest; };
 	virtual FwResponse* const GetResponse(void) const {return mResponse; };
+
+	virtual const uint8_t* GetData(void) const { return reinterpret_cast<const uint8_t*>(&mReqFrame); };
+	size_t GetSize(void) const { return mSize; };
+};
+
+class FwCmdGet : public FwCommand
+{
+	FwRequest mRequest;
+protected:
+	FwCmdGet(uint8_t cmd, FwResponse* resp) : FwCommand(cmd, 1, resp), mRequest(cmd) {};
 };
 
 class FwCmdSimple : public FwCommand
@@ -48,38 +62,44 @@ class FwCmdSimple : public FwCommand
 	FwRequest mRequest;
 	SimpleResponse mResponse;
 protected:
-	FwCmdSimple(uint8_t cmd) : FwCommand(&mRequest, &mResponse), mRequest(cmd),  mResponse(cmd) {};
+	FwCmdSimple(uint8_t cmd) : FwCommand(cmd, 1, &mResponse), mRequest(cmd),  mResponse(cmd) {};
 };
 
 class FwCmdScript : public FwCommand
 {
 	SimpleResponse mResponse;
 protected:
-	FwCmdScript(FwRequest* const req, uint8_t cmd) : FwCommand(req, &mResponse), mResponse(cmd) {};
+	FwCmdScript(size_t size, uint8_t cmd) : FwCommand(cmd, 1 + size, &mResponse), mResponse(cmd) {};
 
 public:
+	static const size_t INDENTATION_MAX = 10;
+	static const char INDENTATION_CHARACTER = ' ';
+
 	virtual bool Equals(const FwCmdScript& ref) const {
 		return (typeid(*this) == typeid(ref));
 	};
-	virtual	std::ostream& Write(std::ostream& out, size_t& indentation) const = 0;
+
+	virtual	std::ostream& Write(std::ostream& out, size_t& indentation) const {
+		const size_t numCharacters = std::min(INDENTATION_MAX, 2 * indentation);
+		for(size_t i = 0; i < numCharacters; ++i) {
+			out << INDENTATION_CHARACTER;
+		}
+		return out;
+	};
 };
 
 class FwCmdWait : public FwCmdScript
 {
-	FwReqWait mRequest;
 public:
 	static const std::string TOKEN;
-	FwCmdWait(std::istream& is) : FwCmdScript(&mRequest, WAIT), mRequest(is) {};
-	FwCmdWait(uint16_t waitTime) : FwCmdScript(&mRequest, WAIT), mRequest(waitTime) {};
-	
-	virtual void setTimeValue(uint16_t timeValue)
-	{
-		mRequest.setTimeValue(timeValue);
+	FwCmdWait(std::istream& is) : FwCmdScript(sizeof(cmd_wait), WAIT) {
+		uint16_t waitTime;
+		is >> waitTime;
+		mReqFrame.data.wait.waitTmms = htons(std::max((uint16_t)1, waitTime));		
 	};
-	
-	virtual uint16_t getTimeValue(void) const
-	{
-		return mRequest.getTimeValue();
+
+	FwCmdWait(uint16_t waitTime) : FwCmdScript(sizeof(cmd_wait), WAIT) {
+		mReqFrame.data.wait.waitTmms = htons(std::max((uint16_t)1, waitTime));
 	};
 
 	bool Equals(const FwCmdScript& ref) const
@@ -88,11 +108,11 @@ public:
 			return false;
 		}
 		auto r = reinterpret_cast<const FwCmdWait&>(ref);
-		return getTimeValue() == r.getTimeValue();
+		return mReqFrame.data.wait.waitTmms == r.mReqFrame.data.wait.waitTmms;
 	};
 	
 	std::ostream& Write(std::ostream& out, size_t& indentation) const {
-		return mRequest.Write(out, indentation);
+		return FwCmdScript::Write(out, indentation) << "wait " << std::dec << ntohs(mReqFrame.data.wait.waitTmms);
 	};
 };
 
@@ -101,114 +121,133 @@ struct FwCmdClearScript : public FwCmdSimple
 	FwCmdClearScript(void) : FwCmdSimple(CLEAR_SCRIPT) {};
 };
 
-class FwCmdGetRtc : public FwCommand
+struct FwCmdGetCycletime : public FwCmdGet
 {
-	FwReqGetRtc mRequest;
+	CycletimeResponse mResponse;
+	FwCmdGetCycletime(void) : FwCmdGet(GET_CYCLETIME, &mResponse) {};
+};
+
+struct FwCmdGetRtc : public FwCmdGet
+{
 	RtcResponse mResponse;
-public:
-	FwCmdGetRtc(void) : FwCommand(&mRequest, &mResponse) {};
+	FwCmdGetRtc(void) : FwCmdGet(GET_RTC, &mResponse) {};
 };
 
-class FwCmdGetTracebuffer : public FwCommand
+struct FwCmdGetTracebuffer : public FwCmdGet
 {
-	FwReqGetTracebuffer mRequest;
 	TracebufferResponse mResponse;
-public:
-	FwCmdGetTracebuffer(void) : FwCommand(&mRequest, &mResponse) {};
+	FwCmdGetTracebuffer(void) : FwCmdGet(GET_TRACE, &mResponse) {};
 };
 
-class FwCmdGetVersion : public FwCommand
+struct FwCmdGetVersion : public FwCmdGet
 {
-	FwReqGetVersion mRequest;
 	FirmwareVersionResponse mResponse;
-public:
-	FwCmdGetVersion(void) : FwCommand(&mRequest, &mResponse) {};
+	FwCmdGetVersion(void) : FwCmdGet(GET_FW_VERSION, &mResponse) {};
 };
 
 class FwCmdLoopOff : public FwCmdScript
 {
-	FwReqLoopOff mRequest;
 public:
 	static const std::string TOKEN;
-	FwCmdLoopOff(std::istream& is) : FwCmdScript(&mRequest, LOOP_OFF), mRequest(is) {};
-	FwCmdLoopOff(uint8_t numLoops = 0) : FwCmdScript(&mRequest, LOOP_OFF), mRequest(numLoops) {};
+	FwCmdLoopOff(std::istream& is) : FwCmdScript(sizeof(cmd_loop_end), LOOP_OFF) {
+		int numLoops;
+		is >> numLoops;
+		mReqFrame.data.loopEnd.numLoops = (uint8_t)numLoops;		
+	};
+
+	FwCmdLoopOff(uint8_t numLoops = 0) : FwCmdScript(sizeof(cmd_loop_end), LOOP_OFF) {
+		mReqFrame.data.loopEnd.numLoops = numLoops;
+	};
 	
 	std::ostream& Write(std::ostream& out, size_t& indentation) const {
-		return mRequest.Write(out, indentation);
+		return FwCmdScript::Write(out, --indentation) << "loop_off " << std::dec << (int)mReqFrame.data.loopEnd.numLoops;
 	};
 };
 
 class FwCmdLoopOn : public FwCmdScript
 {
-	FwReqLoopOn mRequest;
 public:
 	static const std::string TOKEN;
-	FwCmdLoopOn(void) : FwCmdScript(&mRequest, LOOP_ON) {};
+	FwCmdLoopOn(void) : FwCmdScript(0, LOOP_ON) {};
 	
 	std::ostream& Write(std::ostream& out, size_t& indentation) const {
-		return mRequest.Write(out, indentation);
+		FwCmdScript::Write(out, indentation) << "loop";
+		++indentation;
+		return out;
 	};
 };
 
 class FwCmdSetColorDirect : public FwCommand
 {
+	SimpleResponse mResponse;
 public:
-	FwCmdSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) : FwCommand(new FwReqSetColorDirect(pBuffer, bufferLength), new SimpleResponse(SET_COLOR_DIRECT)) {};
+	FwCmdSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) : FwCommand(SET_COLOR_DIRECT, 1 + sizeof(cmd_set_color_direct), &mResponse), mResponse(SET_COLOR_DIRECT) {
+		static const size_t maxBufferLength = NUM_OF_LED * 3;
+		bufferLength = std::min(bufferLength, maxBufferLength);
+		memcpy(mReqFrame.data.set_color_direct.ptr_led_array, pBuffer, bufferLength);
+		memset(mReqFrame.data.set_color_direct.ptr_led_array + bufferLength, 0, maxBufferLength - bufferLength);
+	};
 };
 
 class FwCmdSetFade : public FwCmdScript
 {
-	FwReqSetFade mRequest;
 public:
 	static const std::string TOKEN;
-	FwCmdSetFade(std::istream& is) : FwCmdScript(&mRequest, SET_FADE), mRequest(is) {};
-	FwCmdSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade = false) : FwCmdScript(&mRequest, SET_FADE), mRequest(argb, fadeTime, addr, parallelFade) {};
-	
-	virtual void setTimeValue(uint16_t timeValue)
-	{
-		mRequest.setTimeValue(timeValue);
+	FwCmdSetFade(std::istream& is) : FwCmdScript(sizeof(cmd_set_fade), SET_FADE) {
+		WiflyColor addr, argb;
+		uint16_t fadeTime;
+		bool parallelFade;
+		is >> addr >> argb >> parallelFade >> fadeTime;
+		mReqFrame.data.set_fade.Set(addr.argb(), argb.argb(), (uint8_t)parallelFade, fadeTime);
 	};
-	
-	virtual uint16_t getTimeValue(void)
-	{
-		return mRequest.getTimeValue();
+	FwCmdSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade = false)
+	: FwCmdScript(sizeof(cmd_set_fade), SET_FADE) {
+		mReqFrame.data.set_fade.Set(addr, argb, (uint8_t)parallelFade, fadeTime);	
 	};
 	
 	std::ostream& Write(std::ostream& out, size_t& indentation) const {
-		return mRequest.Write(out, indentation);
+		FwCmdScript::Write(out, indentation) << "fade ";
+		return mReqFrame.data.set_fade.Write(out, indentation);
 	};
 };
 
 class FwCmdSetGradient : public FwCmdScript
 {
-	FwReqSetGradient mRequest;
 public:
 	static const std::string TOKEN;
-	FwCmdSetGradient(std::istream& is) : FwCmdScript(&mRequest, SET_FADE), mRequest(is) {};
-	FwCmdSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0) : FwCmdScript(&mRequest, SET_FADE), mRequest(argb_1, argb_2, fadeTime,  parallelFade, length, offset) {};
-	
-	virtual void setTimeValue(uint16_t timeValue)
-	{
-		mRequest.setTimeValue(timeValue);
+	FwCmdSetGradient(std::istream& is) : FwCmdScript(sizeof(cmd_set_gradient), SET_FADE) {		
+		WiflyColor argb_1, argb_2;
+		uint16_t fadeTime;
+		int parallel, length, offset;	
+		is >> argb_1 >> argb_2 >> parallel >> offset >> length >> fadeTime;
+		mReqFrame.data.set_gradient.Set(argb_1.argb(), argb_2.argb(), parallel, (uint8_t)offset, (uint8_t)length, fadeTime);
 	};
-	
-	virtual uint16_t getTimeValue(void)
-	{
-		return mRequest.getTimeValue();
-	};
+
+	FwCmdSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0) : FwCmdScript(sizeof(cmd_set_gradient), SET_FADE) {
+
+		mReqFrame.data.set_gradient.Set(argb_1, argb_2, parallelFade, offset, length, fadeTime);
+};
 	
 	std::ostream& Write(std::ostream& out, size_t& indentation) const {
-		return mRequest.Write(out, indentation);
+		FwCmdScript::Write(out, indentation) << "gradient ";
+		return mReqFrame.data.set_gradient.Write(out, indentation);
 	};
 };
 
-
 class FwCmdSetRtc : public FwCommand
 {
-	FwReqSetRtc mRequest;
 	SimpleResponse mResponse;
 public:
-	FwCmdSetRtc(const tm& timeValue) : FwCommand(&mRequest, &mResponse), mRequest(timeValue), mResponse(SET_RTC) {};
+	FwCmdSetRtc(const tm& timeValue) : FwCommand(SET_RTC, 1 + sizeof(rtc_time), &mResponse), mResponse(SET_RTC)
+	{
+		mReqFrame.data.set_rtc.tm_sec  = (uns8) timeValue.tm_sec;
+		mReqFrame.data.set_rtc.tm_min  = (uns8) timeValue.tm_min;
+		mReqFrame.data.set_rtc.tm_hour = (uns8) timeValue.tm_hour;
+		mReqFrame.data.set_rtc.tm_mday = (uns8) timeValue.tm_mday;
+		mReqFrame.data.set_rtc.tm_mon  = (uns8) timeValue.tm_mon;
+		mReqFrame.data.set_rtc.tm_year = (uns8) timeValue.tm_year;
+		mReqFrame.data.set_rtc.tm_wday = (uns8) timeValue.tm_wday;
+	};
 };
 
 struct FwCmdStartBl : public FwCmdSimple

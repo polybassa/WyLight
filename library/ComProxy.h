@@ -22,7 +22,7 @@
 #include "BlRequest.h"
 #include "ClientSocket.h"
 #include "trace.h"
-#include "FwRequest.h"
+#include "FwCommand.h"
 #include "wifly_cmd.h"
 
 namespace WyLight{
@@ -50,14 +50,14 @@ class ComProxy
 
 		/*
 		 * Send a request to the PIC firmware and wait for a response
-		 * @param request FwRequest object with a firmware command frame
+		 * @param request FwCommand object with a firmware command frame
 		 * @param pResponse pointer to buffer for the response frame
 		 * @param responseSize size of the response buffer
 		 * @return number of bytes read into pResponse or 0 if crc check fails
 		 * @throw ConnectionTimeout if a timeout occurred
 		 * @throw FatalError if sending to socket failed
 		 */
-		size_t Send(const FwRequest& request, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout, FatalError);
+		size_t Send(const FwCommand& request, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout, FatalError);
 
 	private:
 		/*

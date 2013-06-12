@@ -43,8 +43,8 @@ static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VER
 const std::string Control
 ::LEDS_ALL{"ffffffff"};
 
-const size_t FwReqScript::INDENTATION_MAX;
-const char FwReqScript::INDENTATION_CHARACTER;
+const size_t FwCmdScript::INDENTATION_MAX;
+const char FwCmdScript::INDENTATION_CHARACTER;
 
 Control::Control(uint32_t addr, uint16_t port) : mSock(addr, port), mProxy(mSock), mTelnet(mSock) {}
 
@@ -692,30 +692,30 @@ void Control::FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBu
 
 std::string Control::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	CycletimeResponse response;
-	FwSend(FwReqGetCycletime(), response);
-	return response.ToString();
+	FwCmdGetCycletime cmd;
+	*this << cmd;
+	return cmd.mResponse.ToString();
 }
 
 void Control::FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	RtcResponse response;
-	FwSend(FwReqGetRtc(), response);
-	timeValue = response.GetRealTime();
+	FwCmdGetRtc cmd;
+	*this << cmd;
+	timeValue = cmd.mResponse.GetRealTime();
 }
 
 std::string Control::FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	TracebufferResponse response;
-	FwSend(FwReqGetTracebuffer(), response);
-	return response.ToString();
+	FwCmdGetTracebuffer cmd;
+	*this << cmd;
+	return cmd.mResponse.ToString();
 }
 
 std::string Control::FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	FirmwareVersionResponse response;
-	FwSend(FwReqGetVersion(), response);
-	return response.ToString();
+	FwCmdGetVersion cmd;
+	*this << cmd;
+	return cmd.mResponse.ToString();
 }
 
 void Control::FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
@@ -728,13 +728,13 @@ void Control::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferF
 	*this << FwCmdLoopOn{};
 }
 
-FwResponse& Control::FwSend(const FwRequest& request, FwResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+IFwResponse& Control::FwSend(const FwCommand& cmd, IFwResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	response_frame buffer;
 	size_t numCrcRetries = 5;
 	do
 	{
-		const size_t bytesRead = mProxy.Send(request, &buffer, sizeof(buffer));
+		const size_t bytesRead = mProxy.Send(cmd, &buffer, sizeof(buffer));
 		TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer, bytesRead, "%02x ", "We got %zd bytes response.\nMessage: ", bytesRead);
 		
 		if(response.Init(buffer, bytesRead))
@@ -824,7 +824,7 @@ std::string Control::ExtractFwVersion(const std::string& pFilename) const
 
 Control& Control::operator<<(const FwCommand& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	this->FwSend(*cmd.GetRequest(), *cmd.GetResponse());
+	this->FwSend(cmd, *cmd.GetResponse());
 	return *this;
 }
 

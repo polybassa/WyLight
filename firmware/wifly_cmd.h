@@ -27,7 +27,9 @@
 #include "error.h"
 
 #ifdef __cplusplus
+#include <algorithm>
 #include <ostream>
+#include <stdint.h>
 #endif
 
 //*********************** ENUMERATIONS *********************************************
@@ -62,6 +64,25 @@ struct __attribute__((__packed__)) cmd_set_fade {
 	uns8 blue;
 	uns8 parallelFade;
 	uns16 fadeTmms; //fadetime in ten ms
+#ifdef __cplusplus
+	void Set(uint32_t __addr, uint32_t argb, uint8_t parallel, uint16_t fadeTime) {
+		addr[3] = (uint8_t)(__addr >> 24);
+		addr[2] = (uint8_t)(__addr >> 16);
+		addr[1] = (uint8_t)(__addr >> 8);
+		addr[0] = (uint8_t)(__addr);
+		red = (uint8_t)(argb >> 16);
+		green = (uint8_t)(argb >> 8);
+		blue = (uint8_t)(argb);
+		parallelFade = parallel;
+		fadeTmms = htons(std::max((uint16_t)1, fadeTime));
+	};
+
+	std::ostream& Write(std::ostream& out, size_t& indentation) const {
+		const uint32_t addrVal = addr[3] << 24 | addr[2] << 16 | addr[1] << 8 | addr[0];
+		const uint32_t argbVal = red << 16 | green << 8 | blue;
+		return out << "0x" << std::hex << addrVal << " 0x" << std::hex << argbVal << ' ' << std::dec << (int)parallelFade << ' ' << ntohs(fadeTmms);
+	};
+#endif /* #ifdef __cplusplus */
 };
 
 struct __attribute__((__packed__)) cmd_set_gradient {
@@ -76,10 +97,24 @@ struct __attribute__((__packed__)) cmd_set_gradient {
 	uns16 fadeTmms; //fadetime in ten ms
 	
 #ifdef __cplusplus
-	uint8_t getOffset(void) const { return parallelAndOffset & 0x7F; };
-	void setOffset(const uint8_t offset) { parallelAndOffset = (parallelAndOffset & 0x80) | (offset & 0x7F); };
-	bool getParallelFade(void) const { return (parallelAndOffset & 0x80) > 0; };
-	void setParallelFade(const bool parallelFade) { parallelAndOffset = (parallelAndOffset & 0x7F) | ( parallelFade ? 0x80 : 0x00); };
+	void Set(uint32_t argb_1, uint32_t argb_2, uint8_t parallel, uint8_t offset, uint8_t length, uint16_t fadeTime) {
+//		if (offset > 0x7f) throw FatalError("Invalid Parameter, offset is greater than 127");
+		red_1   = (uint8_t)(argb_1 >> 16);
+		green_1 = (uint8_t)(argb_1 >> 8);
+		blue_1  = (uint8_t)(argb_1);
+		red_2   = (uint8_t)(argb_2 >> 16);
+		green_2 = (uint8_t)(argb_2 >> 8);
+		blue_2  = (uint8_t)(argb_2);
+		parallelAndOffset = (parallel ? 0x80 : 0x00) | (offset & 0x7F);
+		numberOfLeds = length;
+		fadeTmms = htons(std::max((uint16_t)1, fadeTime));
+	};
+
+	std::ostream& Write(std::ostream& out, size_t& indentation) const {
+		const uint32_t argbVal_1 = red_1 << 16 | green_1 << 8 | blue_1;
+		const uint32_t argbVal_2 = red_2 << 16 | green_2 << 8 | blue_2;
+		return out << "0x" << std::hex << argbVal_1 << " 0x" << std::hex << argbVal_2 << ' ' << std::dec << (int)(parallelAndOffset & 0x80) << ' ' << (int)(parallelAndOffset & 0x7F) << ' ' << (int)numberOfLeds << ' ' << ntohs(fadeTmms);
+	};
 #endif
 };
 
