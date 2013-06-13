@@ -728,7 +728,7 @@ void Control::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferF
 	*this << FwCmdLoopOn{};
 }
 
-IFwResponse& Control::FwSend(const FwCommand& cmd, IFwResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+FwResponse& Control::FwSend(const FwCommand& cmd, FwResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	response_frame buffer;
 	size_t numCrcRetries = 5;

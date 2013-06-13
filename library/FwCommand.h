@@ -19,8 +19,8 @@
 #ifndef __WiflyControlCli__FwCommand__
 #define __WiflyControlCli__FwCommand__
 
-#include "FwRequest.h"
 #include "FwResponse.h"
+#include "WiflyColor.h"
 
 #include <algorithm>
 #include <iostream>
@@ -52,22 +52,20 @@ public:
 
 class FwCmdGet : public FwCommand
 {
-	FwRequest mRequest;
 protected:
-	FwCmdGet(uint8_t cmd, FwResponse* resp) : FwCommand(cmd, 1, resp), mRequest(cmd) {};
+	FwCmdGet(uint8_t cmd, FwResponse* resp) : FwCommand(cmd, 1, resp) {};
 };
 
 class FwCmdSimple : public FwCommand
 {
-	FwRequest mRequest;
-	SimpleResponse mResponse;
+	FwResponse mResponse;
 protected:
-	FwCmdSimple(uint8_t cmd) : FwCommand(cmd, 1, &mResponse), mRequest(cmd),  mResponse(cmd) {};
+	FwCmdSimple(uint8_t cmd) : FwCommand(cmd, 1, &mResponse), mResponse(cmd) {};
 };
 
 class FwCmdScript : public FwCommand
 {
-	SimpleResponse mResponse;
+	FwResponse mResponse;
 protected:
 	FwCmdScript(size_t size, uint8_t cmd) : FwCommand(cmd, 1 + size, &mResponse), mResponse(cmd) {};
 
@@ -179,7 +177,7 @@ public:
 
 class FwCmdSetColorDirect : public FwCommand
 {
-	SimpleResponse mResponse;
+	FwResponse mResponse;
 public:
 	FwCmdSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) : FwCommand(SET_COLOR_DIRECT, 1 + sizeof(cmd_set_color_direct), &mResponse), mResponse(SET_COLOR_DIRECT) {
 		static const size_t maxBufferLength = NUM_OF_LED * 3;
@@ -236,7 +234,7 @@ public:
 
 class FwCmdSetRtc : public FwCommand
 {
-	SimpleResponse mResponse;
+	FwResponse mResponse;
 public:
 	FwCmdSetRtc(const tm& timeValue) : FwCommand(SET_RTC, 1 + sizeof(rtc_time), &mResponse), mResponse(SET_RTC)
 	{

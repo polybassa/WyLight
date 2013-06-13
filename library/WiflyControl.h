@@ -28,7 +28,6 @@
 #include "TelnetProxy.h"
 #include "WiflyControlException.h"
 #include "FwCommand.h"
-#include "FwRequest.h"
 #include "FwResponse.h"
 
 namespace WyLight {
@@ -453,7 +452,7 @@ class Control
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */		
-		IFwResponse& FwSend(const FwCommand& command, IFwResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		FwResponse& FwSend(const FwCommand& command, FwResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 			
 		/**
 		 * Instructs the bootloader to create crc-16 checksums for the content of

@@ -29,23 +29,11 @@
 
 namespace WyLight {
 
-struct IFwResponse {
-	virtual bool Init(response_frame& frame, size_t dataLength) = 0;	
-};
-
-class FwResponse : public IFwResponse
-{
-public:
-	virtual ~FwResponse() {};
-protected:
-	FwResponse(void) {};
-};
-
-class SimpleResponse : public FwResponse
+class FwResponse
 {
 	const uint8_t mCmd;
 public:
-	SimpleResponse(uint8_t cmd) : mCmd(cmd) {};
+	FwResponse(uint8_t cmd) : mCmd(cmd) {};
 
 	/*
 	 * Validate and convert data from response_frame
@@ -83,14 +71,14 @@ public:
 	};
 };
 
-class RtcResponse : public SimpleResponse
+class RtcResponse : public FwResponse
 {
 	struct tm mTimeValue;
 public:
-	RtcResponse(void) : SimpleResponse(GET_RTC) {};
+	RtcResponse(void) : FwResponse(GET_RTC) {};
 	bool Init(response_frame& pData, size_t dataLength)
 	{
-		if(SimpleResponse::Init(pData, dataLength)
+		if(FwResponse::Init(pData, dataLength)
 		&& (dataLength >= 4 + sizeof(struct rtc_time)))
 		{
 			mTimeValue.tm_sec = pData.data.time.tm_sec;
@@ -107,13 +95,13 @@ public:
 	struct tm GetRealTime(void) const {return mTimeValue; };
 };
 
-class CycletimeResponse : public SimpleResponse
+class CycletimeResponse : public FwResponse
 {
 public:
-	CycletimeResponse(void) : SimpleResponse(GET_CYCLETIME) {};
+	CycletimeResponse(void) : FwResponse(GET_CYCLETIME) {};
 	bool Init(response_frame& pData, size_t dataLength)
 	{
-		if(SimpleResponse::Init(pData, dataLength)
+		if(FwResponse::Init(pData, dataLength)
 		&& (dataLength >= 4 + sizeof(mCycletimes[0]) * CYCLETIME_METHODE_ENUM_SIZE))
 		{
 			for(size_t i = 0; i < CYCLETIME_METHODE_ENUM_SIZE && i < dataLength / sizeof(uns16); i++)
@@ -148,13 +136,13 @@ private:
 	uint16_t mCycletimes[CYCLETIME_METHODE_ENUM_SIZE];
 };
 
-class TracebufferResponse : public SimpleResponse
+class TracebufferResponse : public FwResponse
 {
 public:
-	TracebufferResponse(void) : SimpleResponse(GET_TRACE) {};
+	TracebufferResponse(void) : FwResponse(GET_TRACE) {};
 	bool Init(response_frame& pData, size_t dataLength)
 	{
-		if(SimpleResponse::Init(pData, dataLength))
+		if(FwResponse::Init(pData, dataLength))
 		{
 			mTraceMessage = std::string((char*)pData.data.trace_string, dataLength - 4);
 			return true;
@@ -181,14 +169,14 @@ private:
 	std::string mTraceMessage;
 };
 
-class FirmwareVersionResponse : public SimpleResponse
+class FirmwareVersionResponse : public FwResponse
 {
 	cmd_get_fw_version mFwVersion;
 public:
-	FirmwareVersionResponse(void) : SimpleResponse(GET_FW_VERSION) {};
+	FirmwareVersionResponse(void) : FwResponse(GET_FW_VERSION) {};
 	bool Init(response_frame& pData, size_t dataLength)
 	{
-		if(SimpleResponse::Init(pData, dataLength)
+		if(FwResponse::Init(pData, dataLength)
 		&& (dataLength >= 4 + sizeof(struct cmd_get_fw_version)))
 		{
 			mFwVersion = pData.data.version;

@@ -23,7 +23,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include "intelhexclass.h"
-#include "FwRequest.h"
 
 namespace WyLight {
 
