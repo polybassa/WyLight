@@ -46,6 +46,12 @@ const std::string Control
 const size_t FwCmdScript::INDENTATION_MAX;
 const char FwCmdScript::INDENTATION_CHARACTER;
 
+const std::string FwCmdSetFade::TOKEN("fade");
+const std::string FwCmdSetGradient::TOKEN("gradient");
+const std::string FwCmdLoopOn::TOKEN("loop");
+const std::string FwCmdLoopOff::TOKEN("loop_off");
+const std::string FwCmdWait::TOKEN("wait");
+
 Control::Control(uint32_t addr, uint16_t port) : mSock(addr, port), mProxy(mSock), mTelnet(mSock) {}
 
 /** ------------------------- BOOTLOADER METHODES ------------------------- **/
@@ -822,10 +828,15 @@ std::string Control::ExtractFwVersion(const std::string& pFilename) const
 	return std::string((const char*)&buffer[0], 7);
 }
 
-Control& Control::operator<<(const FwCommand& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+Control& Control::operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	this->FwSend(cmd, *cmd.GetResponse());
+	this->FwSend(cmd, cmd.GetResponse());
 	return *this;
+}
+
+Control& Control::operator<<(FwCommand& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+{
+	return *this << std::move(cmd);
 }
 
 

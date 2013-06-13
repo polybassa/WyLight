@@ -27,47 +27,38 @@
 
 namespace WyLight {
 
-class FwCommand {
-	FwCommand& operator=( const FwCommand& ) = delete;
-
-protected:
-	FwCommand(uint8_t cmd, size_t size, FwResponse* const resp) : mResponse(resp), mSize(size) {
-		mReqFrame.cmd = cmd;
-	};
-	
-	FwResponse* const mResponse;
-
-
+class FwCommand
+{
 	const size_t mSize;
+protected:
 	struct led_cmd mReqFrame;
-
+	FwCommand(uint8_t cmd, size_t size = 0) : mSize(1 + size) {	mReqFrame.cmd = cmd; };
+	virtual ~FwCommand(void) = default;
 	
 public:
-	virtual ~FwCommand(void) { };
-	virtual FwResponse* const GetResponse(void) const {return mResponse; };
-
-	virtual const uint8_t* GetData(void) const { return reinterpret_cast<const uint8_t*>(&mReqFrame); };
+	const uint8_t* GetData(void) const { return reinterpret_cast<const uint8_t*>(&mReqFrame);	};
 	size_t GetSize(void) const { return mSize; };
+	virtual FwResponse& GetResponse(void) = 0;
 };
 
-class FwCmdGet : public FwCommand
+struct FwCmdGet : public FwCommand
 {
-protected:
-	FwCmdGet(uint8_t cmd, FwResponse* resp) : FwCommand(cmd, 1, resp) {};
+	FwCmdGet(uint8_t cmd) : FwCommand(cmd) {};
 };
 
 class FwCmdSimple : public FwCommand
 {
 	FwResponse mResponse;
 protected:
-	FwCmdSimple(uint8_t cmd) : FwCommand(cmd, 1, &mResponse), mResponse(cmd) {};
+	FwCmdSimple(uint8_t cmd, size_t size = 0) : FwCommand(cmd, size), mResponse(cmd) {};
+public:
+	FwResponse& GetResponse(void) { return mResponse;	};
 };
 
-class FwCmdScript : public FwCommand
+class FwCmdScript : public FwCmdSimple
 {
-	FwResponse mResponse;
 protected:
-	FwCmdScript(size_t size, uint8_t cmd) : FwCommand(cmd, 1 + size, &mResponse), mResponse(cmd) {};
+	FwCmdScript(uint8_t cmd, size_t size = 0) : FwCmdSimple(cmd, size) {};
 
 public:
 	static const size_t INDENTATION_MAX = 10;
@@ -79,10 +70,7 @@ public:
 
 	virtual	std::ostream& Write(std::ostream& out, size_t& indentation) const {
 		const size_t numCharacters = std::min(INDENTATION_MAX, 2 * indentation);
-		for(size_t i = 0; i < numCharacters; ++i) {
-			out << INDENTATION_CHARACTER;
-		}
-		return out;
+		return out << std::string(numCharacters, INDENTATION_CHARACTER);
 	};
 };
 
@@ -90,13 +78,13 @@ class FwCmdWait : public FwCmdScript
 {
 public:
 	static const std::string TOKEN;
-	FwCmdWait(std::istream& is) : FwCmdScript(sizeof(cmd_wait), WAIT) {
+	FwCmdWait(std::istream& is) : FwCmdScript(WAIT, sizeof(cmd_wait)) {
 		uint16_t waitTime;
 		is >> waitTime;
 		mReqFrame.data.wait.waitTmms = htons(std::max((uint16_t)1, waitTime));		
 	};
 
-	FwCmdWait(uint16_t waitTime) : FwCmdScript(sizeof(cmd_wait), WAIT) {
+	FwCmdWait(uint16_t waitTime) : FwCmdScript(WAIT, sizeof(cmd_wait)) {
 		mReqFrame.data.wait.waitTmms = htons(std::max((uint16_t)1, waitTime));
 	};
 
@@ -110,7 +98,7 @@ public:
 	};
 	
 	std::ostream& Write(std::ostream& out, size_t& indentation) const {
-		return FwCmdScript::Write(out, indentation) << "wait " << std::dec << ntohs(mReqFrame.data.wait.waitTmms);
+		return FwCmdScript::Write(out, indentation) << TOKEN << ' ' << std::dec << ntohs(mReqFrame.data.wait.waitTmms);
 	};
 };
 
@@ -122,64 +110,65 @@ struct FwCmdClearScript : public FwCmdSimple
 struct FwCmdGetCycletime : public FwCmdGet
 {
 	CycletimeResponse mResponse;
-	FwCmdGetCycletime(void) : FwCmdGet(GET_CYCLETIME, &mResponse) {};
+	FwCmdGetCycletime(void) : FwCmdGet(GET_CYCLETIME) {};
+	FwResponse& GetResponse(void) { return mResponse;	};
 };
 
 struct FwCmdGetRtc : public FwCmdGet
 {
 	RtcResponse mResponse;
-	FwCmdGetRtc(void) : FwCmdGet(GET_RTC, &mResponse) {};
+	FwCmdGetRtc(void) : FwCmdGet(GET_RTC) {};
+	FwResponse& GetResponse(void) { return mResponse;	};
 };
 
 struct FwCmdGetTracebuffer : public FwCmdGet
 {
 	TracebufferResponse mResponse;
-	FwCmdGetTracebuffer(void) : FwCmdGet(GET_TRACE, &mResponse) {};
+	FwCmdGetTracebuffer(void) : FwCmdGet(GET_TRACE) {};
+	FwResponse& GetResponse(void) { return mResponse;	};
 };
 
 struct FwCmdGetVersion : public FwCmdGet
 {
 	FirmwareVersionResponse mResponse;
-	FwCmdGetVersion(void) : FwCmdGet(GET_FW_VERSION, &mResponse) {};
+	FwCmdGetVersion(void) : FwCmdGet(GET_FW_VERSION) {};
+	FwResponse& GetResponse(void) { return mResponse;	};
 };
 
-class FwCmdLoopOff : public FwCmdScript
+struct FwCmdLoopOff : public FwCmdScript
 {
-public:
 	static const std::string TOKEN;
-	FwCmdLoopOff(std::istream& is) : FwCmdScript(sizeof(cmd_loop_end), LOOP_OFF) {
+	FwCmdLoopOff(std::istream& is) : FwCmdScript(LOOP_OFF, sizeof(cmd_loop_end)) {
 		int numLoops;
 		is >> numLoops;
 		mReqFrame.data.loopEnd.numLoops = (uint8_t)numLoops;		
 	};
 
-	FwCmdLoopOff(uint8_t numLoops = 0) : FwCmdScript(sizeof(cmd_loop_end), LOOP_OFF) {
+	FwCmdLoopOff(uint8_t numLoops = 0) : FwCmdScript(LOOP_OFF, sizeof(cmd_loop_end)) {
 		mReqFrame.data.loopEnd.numLoops = numLoops;
 	};
 	
 	std::ostream& Write(std::ostream& out, size_t& indentation) const {
-		return FwCmdScript::Write(out, --indentation) << "loop_off " << std::dec << (int)mReqFrame.data.loopEnd.numLoops;
+		return FwCmdScript::Write(out, --indentation) << TOKEN << ' ' << std::dec << (int)mReqFrame.data.loopEnd.numLoops;
 	};
 };
 
-class FwCmdLoopOn : public FwCmdScript
+struct FwCmdLoopOn : public FwCmdScript
 {
-public:
 	static const std::string TOKEN;
-	FwCmdLoopOn(void) : FwCmdScript(0, LOOP_ON) {};
+	FwCmdLoopOn(void) : FwCmdScript(LOOP_ON) {};
 	
 	std::ostream& Write(std::ostream& out, size_t& indentation) const {
-		FwCmdScript::Write(out, indentation) << "loop";
+		FwCmdScript::Write(out, indentation) << TOKEN;
 		++indentation;
 		return out;
 	};
 };
 
-class FwCmdSetColorDirect : public FwCommand
+class FwCmdSetColorDirect : public FwCmdSimple
 {
-	FwResponse mResponse;
 public:
-	FwCmdSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) : FwCommand(SET_COLOR_DIRECT, 1 + sizeof(cmd_set_color_direct), &mResponse), mResponse(SET_COLOR_DIRECT) {
+	FwCmdSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) : FwCmdSimple(SET_COLOR_DIRECT, sizeof(cmd_set_color_direct)) {
 		static const size_t maxBufferLength = NUM_OF_LED * 3;
 		bufferLength = std::min(bufferLength, maxBufferLength);
 		memcpy(mReqFrame.data.set_color_direct.ptr_led_array, pBuffer, bufferLength);
@@ -187,11 +176,10 @@ public:
 	};
 };
 
-class FwCmdSetFade : public FwCmdScript
+struct FwCmdSetFade : public FwCmdScript
 {
-public:
 	static const std::string TOKEN;
-	FwCmdSetFade(std::istream& is) : FwCmdScript(sizeof(cmd_set_fade), SET_FADE) {
+	FwCmdSetFade(std::istream& is) : FwCmdScript(SET_FADE, sizeof(cmd_set_fade)) {
 		WiflyColor addr, argb;
 		uint16_t fadeTime;
 		bool parallelFade;
@@ -199,21 +187,20 @@ public:
 		mReqFrame.data.set_fade.Set(addr.argb(), argb.argb(), (uint8_t)parallelFade, fadeTime);
 	};
 	FwCmdSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade = false)
-	: FwCmdScript(sizeof(cmd_set_fade), SET_FADE) {
+	: FwCmdScript(SET_FADE, sizeof(cmd_set_fade)) {
 		mReqFrame.data.set_fade.Set(addr, argb, (uint8_t)parallelFade, fadeTime);	
 	};
 	
 	std::ostream& Write(std::ostream& out, size_t& indentation) const {
-		FwCmdScript::Write(out, indentation) << "fade ";
+		FwCmdScript::Write(out, indentation) << TOKEN << ' ';
 		return mReqFrame.data.set_fade.Write(out, indentation);
 	};
 };
 
-class FwCmdSetGradient : public FwCmdScript
+struct FwCmdSetGradient : public FwCmdScript
 {
-public:
 	static const std::string TOKEN;
-	FwCmdSetGradient(std::istream& is) : FwCmdScript(sizeof(cmd_set_gradient), SET_FADE) {		
+	FwCmdSetGradient(std::istream& is) : FwCmdScript(SET_GRADIENT, sizeof(cmd_set_gradient)) {		
 		WiflyColor argb_1, argb_2;
 		uint16_t fadeTime;
 		int parallel, length, offset;	
@@ -221,22 +208,20 @@ public:
 		mReqFrame.data.set_gradient.Set(argb_1.argb(), argb_2.argb(), parallel, (uint8_t)offset, (uint8_t)length, fadeTime);
 	};
 
-	FwCmdSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0) : FwCmdScript(sizeof(cmd_set_gradient), SET_FADE) {
+	FwCmdSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0) : FwCmdScript(SET_GRADIENT, sizeof(cmd_set_gradient)) {
 
 		mReqFrame.data.set_gradient.Set(argb_1, argb_2, parallelFade, offset, length, fadeTime);
 };
 	
 	std::ostream& Write(std::ostream& out, size_t& indentation) const {
-		FwCmdScript::Write(out, indentation) << "gradient ";
+		FwCmdScript::Write(out, indentation) << TOKEN << ' ';
 		return mReqFrame.data.set_gradient.Write(out, indentation);
 	};
 };
 
-class FwCmdSetRtc : public FwCommand
+struct FwCmdSetRtc : public FwCmdSimple
 {
-	FwResponse mResponse;
-public:
-	FwCmdSetRtc(const tm& timeValue) : FwCommand(SET_RTC, 1 + sizeof(rtc_time), &mResponse), mResponse(SET_RTC)
+	FwCmdSetRtc(const tm& timeValue) : FwCmdSimple(SET_RTC, sizeof(rtc_time))
 	{
 		mReqFrame.data.set_rtc.tm_sec  = (uns8) timeValue.tm_sec;
 		mReqFrame.data.set_rtc.tm_min  = (uns8) timeValue.tm_min;

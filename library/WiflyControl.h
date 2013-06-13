@@ -371,7 +371,8 @@ class Control
 		void FwTest(void);
 		void FwStressTest(void);
 	
-		Control& operator<<(const FwCommand& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		Control& operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		Control& operator<<(FwCommand& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 /* ------------------------- VERSION EXTRACT METHODE ------------------------- */
 		/**
