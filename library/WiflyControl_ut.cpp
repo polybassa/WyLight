@@ -23,7 +23,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include "intelhexclass.h"
-#include "FwRequest.h"
 
 namespace WyLight {
 
@@ -125,7 +124,7 @@ size_t ComProxy::Send(const BlRequest& req, uint8_t* pResponse, size_t responseS
 }
 
 led_cmd g_SendFrame;
-size_t ComProxy::Send(const FwRequest& request, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout, FatalError)
+size_t ComProxy::Send(const FwCommand& request, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout, FatalError)
 {
 	memcpy(&g_SendFrame, request.GetData(), request.GetSize());
 	pResponse->length = sizeof(uns8) + sizeof(uns16) + sizeof(ErrorCode);
