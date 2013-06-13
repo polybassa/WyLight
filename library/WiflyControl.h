@@ -29,7 +29,6 @@
 #include "TelnetProxy.h"
 #include "WiflyControlException.h"
 #include "FwCommand.h"
-#include "FwRequest.h"
 #include "FwResponse.h"
 
 namespace WyLight {
@@ -39,13 +38,13 @@ namespace WyLight {
  * \author Nils Weiss, Patrick Bruenn
  *
  *! \cond
- * class - WiflyControl
+ * class - Control
  * \endcond
  *
  * \brief Class to communicate with a Wifly_Light Hardware.
  *
  * 
- * The WiflyControl class allows the user to control the Wifly_Light Hardware.
+ * The Control class allows the user to control the Wifly_Light Hardware.
  * There are three target's at the Wifly_Light Hardware.
  * - Bootloader<br>
  *           All methodes with Bl* relate to the bootloader part.
@@ -54,7 +53,6 @@ namespace WyLight {
  * - RN-171 Wifi Interface<br>
  *           All methodes witch Conf* relate to the communication module.
  *******************************************************************************/
-
 class Control
 {
 	public:
@@ -336,7 +334,7 @@ class Control
 		* @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		* @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		*/
-		void FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0);
+		void FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 	
 		/**
 		* Injects a gradient command into the wifly script controller
@@ -350,7 +348,7 @@ class Control
 		* @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		* @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		*/
-		void FwSetGradient(const std::string& rgb_1, const std::string& rgb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0);
+		void FwSetGradient(const std::string& rgb_1, const std::string& rgb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 		/**
 		 * Sets the rtc clock of the wifly device to the specified time.
@@ -385,7 +383,8 @@ class Control
 		void FwTest(void);
 		void FwStressTest(void);
 	
-		Control& operator<<(const FwCommand& cmd);
+		Control& operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		Control& operator<<(FwCommand& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 /* ------------------------- VERSION EXTRACT METHODE ------------------------- */
 		/**
@@ -459,14 +458,14 @@ class Control
 
 		/**
 		 * Sends a wifly command frame to the wifly device
-		 * @param request FwRequest object with the frame, which should be send
+		 * @param command FwCommand object with the frame, which should be send
 		 * @param response will be modified according to the success of this operation
 		 * @return response
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */		
-		FwResponse& FwSend(const FwRequest& request, FwResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		FwResponse& FwSend(const FwCommand& command, FwResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 			
 		/**
 		 * Instructs the bootloader to create crc-16 checksums for the content of
