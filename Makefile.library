@@ -30,7 +30,7 @@ ComProxy_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
 	@./$@
 	
 MessageQueue_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
-	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/MessageQueue_ut.cpp  -D_GLIBCXX_USE_NANOSLEEP -o $@ -Wall -pedantic -std=c++0x
+	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/MessageQueue_ut.cpp -lpthread -D_GLIBCXX_USE_NANOSLEEP -o $@ -Wall -pedantic -std=c++0x
 	@./$@
 
 TelnetProxy_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
