@@ -136,9 +136,9 @@ uint32_t ControlNoThrow::FwLoopOn(void)
 	return Try(std::bind(&Control::FwLoopOn, std::ref(mControl)));
 }
 
-uint32_t ControlNoThrow::FwSetColorDirect(const uint8_t* pBuffer, const size_t bufferLength)
+uint32_t ControlNoThrow::FwSetColorDirect(const std::list<uint8_t> buffer)
 {
-	return Try(std::bind(&Control::FwSetColorDirect, std::ref(mControl), pBuffer, bufferLength));
+	return Try(std::bind(static_cast<void(Control::*)(const std::list<uint8_t>)>(&Control::FwSetColorDirect), std::ref(mControl), buffer));
 }
 
 uint32_t ControlNoThrow::FwSetFade(const uint32_t argb, const uint16_t fadeTime, const uint32_t addr, const bool parallelFade)

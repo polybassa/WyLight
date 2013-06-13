@@ -83,13 +83,17 @@ class Endpoint
 		uint8_t GetScore(void) const {
 			return mScore;
 		};
+			
+		void SetScore(const uint8_t& score) {
+			mScore = score;
+		};
 
 		/*
 		 * Increment score
 		 * @return reference to itself
 		 */
 		Endpoint& operator ++(void) {
-			++mScore;
+			if(mScore < 255) ++mScore;
 			return *this;
 		}
 

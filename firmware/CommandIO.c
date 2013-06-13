@@ -27,7 +27,7 @@
 #include "rtc.h"
 
 bank2 struct CommandBuffer g_CmdBuf;
-struct response_frame g_ResponseBuf;
+bank5 struct response_frame g_ResponseBuf;
 
 
 /** PRIVATE METHODE **/

@@ -2,16 +2,37 @@
 //  WCWiflyControlWrapper.m
 //
 //  Created by Bastian Kres on 16.04.13.
-//  Copyright (c) 2013 Bastian Kres. All rights reserved.
+//  Copyright (c) 2013 Bastian Kres, Nils Weiß. All rights reserved.
 //
 
 #import "WCWiflyControlWrapper.h"
 #include "WiflyControlNoThrow.h"
 #include <time.h>
+#include <thread>
+#include <mutex>
+#include <functional>
+#include "MessageQueue.h"
+#include <tuple>
 
-@interface WCWiflyControlWrapper ()
+typedef std::function<uint32_t(void)> ControlCommand;
+//tupel <1> == true: terminate task; tuple <2>: command to execute; tuple<3> == 0: no notification after execution command, == 1: notification after execution command
+typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
-@property (nonatomic) WyLight::ControlNoThrow *mControl;
+@interface WCWiflyControlWrapper () {
+	std::shared_ptr<WyLight::ControlNoThrow> mControl;
+	std::shared_ptr<std::thread> mCtrlThread;
+	std::shared_ptr<std::mutex> gCtrlMutex;
+	std::shared_ptr<WyLight::MessageQueue<ControlMessage>> mCmdQueue;
+}
+
+#if !__has_feature(objc_arc)
+@property (nonatomic, unsafe_unretained) NSThread* threadOfOwner;
+#else
+@property (nonatomic, weak) NSThread* threadOfOwner;
+#endif
+
+-(void) callFatalErrorDelegate:(NSNumber*)errorCode;
+-(void) callWiflyControlHasDisconnectedDelegate;
 
 @end
 
@@ -29,51 +50,106 @@
     self = [super init];
     if (self)
     {
-        self.mControl = new WyLight::ControlNoThrow(ip,port);
-    }
+		NSLog(@"Start WCWiflyControlWrapper\n");
+		mControl = std::make_shared<WyLight::ControlNoThrow>(ip,port);
+		self.threadOfOwner = [NSThread currentThread];
+		gCtrlMutex = std::make_shared<std::mutex>();
+		mCmdQueue = std::make_shared<WyLight::MessageQueue<ControlMessage>>();
+		mCtrlThread = std::make_shared<std::thread>([=]{
+													uint32_t retVal;
+													while(true)
+													{
+														auto tup = mCmdQueue->receive();
+														
+														if(std::get<0>(tup))
+														{
+															NSLog(@"WCWiflyControlWrapper: Terminate runLoop\n");
+															break;
+														}
+														
+														{	std::lock_guard<std::mutex> ctrlLock(*gCtrlMutex);
+															retVal = std::get<1>(tup)(); }
+														
+														if(retVal != WyLight::NO_ERROR)
+														{
+															[self performSelector:@selector(callFatalErrorDelegate:) onThread:self.threadOfOwner withObject:[NSNumber numberWithUnsignedInt:retVal] waitUntilDone:NO];
+														}
+														else if(retVal == WyLight::NO_ERROR && std::get<2>(tup) == 1)	//do we have to notify after execution?
+														{
+															[self performSelector:@selector(callWiflyControlHasDisconnectedDelegate) onThread:self.threadOfOwner withObject:nil waitUntilDone:NO];
+														}
+													}
+												}
+											);
+	}
     return self;
 }
 
--(void)dealloc
+- (void)disconnect
 {
-    delete self.mControl;
-    
-    self.mControl = NULL;
+	if(mCmdQueue && mCtrlThread) {
+		NSLog(@"Disconnect WCWiflyControlWrapper\n");
+		mCmdQueue->clear_and_push_front(std::make_tuple(true, [=]{return 0xdeadbeef;}, 0));
+		mCtrlThread->join();
+	}
+	
+	mCtrlThread.reset();
+	mCmdQueue.reset();
+	gCtrlMutex.reset();
+	mControl.reset();
+}
+
+- (void)dealloc
+{
+	NSLog(@"Dealloc WCWiflyControlWrapper\n");
+	[self disconnect];
+#if !__has_feature(objc_arc)
+    //Do manual memory management...
+	[super dealloc];
+#else
+    //Usually do nothing...
+#endif
 }
 
 #pragma mark - Configuration WLAN-Module
 
-- (uint32_t)configurateWlanModuleAsClient:(NSString *)ssid password:(NSString *)password name:(NSString *)name
+- (void)configurateWlanModuleAsClientForNetwork:(NSString *)ssid password:(NSString *)password name:(NSString *)name
 {
     const std::string ssidCString([ssid cStringUsingEncoding:NSASCIIStringEncoding]);
     const std::string passwordCString([password cStringUsingEncoding:NSASCIIStringEncoding]);
 	const std::string nameCString([name cStringUsingEncoding:NSASCIIStringEncoding]);
     
-    return (*self.mControl).ConfModuleForWlan(passwordCString, ssidCString, nameCString);
+	mCmdQueue->clear_and_push_front(std::make_tuple(false,
+											std::bind(&WyLight::ControlNoThrow::ConfModuleForWlan, std::ref(*mControl), passwordCString, ssidCString, nameCString),
+											1));
 }
 
-- (uint32_t)configurateWlanModuleAsSoftAP:(NSString *)ssid
+- (void)configurateWlanModuleAsSoftAP:(NSString *)ssid
 {
     const std::string ssidCString([ssid cStringUsingEncoding:NSASCIIStringEncoding]);
-    
-    return (*self.mControl).ConfModuleAsSoftAP(ssidCString);
+	
+	mCmdQueue->clear_and_push_front(std::make_tuple(false,
+											std::bind(&WyLight::ControlNoThrow::ConfModuleAsSoftAP, std::ref(*mControl), ssidCString),
+											1));
 }
 
-- (uint32_t)rebootWlanModul
+- (void)rebootWlanModul
 {
-	return (*self.mControl).ConfRebootWlanModule();
+	mCmdQueue->clear_and_push_front(std::make_tuple(false,
+											std::bind(&WyLight::ControlNoThrow::ConfRebootWlanModule, std::ref(*mControl)),
+											1));
 }
 
 #pragma mark - Firmware methods
 
-- (uint32_t)setColorDirect:(UIColor *)newColor
+- (void)setColorDirect:(UIColor *)newColor
 {
     float redPart;
     float greenPart;
     float bluePart;
     [newColor getRed:&redPart green:&greenPart blue:&bluePart alpha:nil];
     
-    int sizeColorArray = 32 * 3;
+    int sizeColorArray = NUM_OF_LED * 3;
     
     uint8_t colorArray[sizeColorArray];
     uint8_t *pointer = colorArray;
@@ -94,89 +170,115 @@
         }
     }
     
-    return [self setColorDirect:colorArray bufferLength:sizeColorArray];
+	[self setColorDirect:colorArray bufferLength:sizeColorArray];
 }
 
-- (uint32_t)setColorDirect:(const uint8_t*)pointerBuffer bufferLength:(size_t)length
+- (void)setColorDirect:(const uint8_t*)pointerBuffer bufferLength:(size_t)length
 {
-    return (*self.mControl).FwSetColorDirect(pointerBuffer, length);
+	std::list<uint8_t> buffer;
+	for(size_t i = 0; i < length; i++)
+	{
+		buffer.insert(buffer.end(), *pointerBuffer++);
+	}
+	mCmdQueue->push_back(std::make_tuple(false,
+										  std::bind(&WyLight::ControlNoThrow::FwSetColorDirect, std::ref(*mControl), buffer),
+										  0));
 }
 
-- (uint32_t)setWaitTimeInTenMilliSecondsIntervals:(uint16_t)time
+- (void)setWaitTimeInTenMilliSecondsIntervals:(uint16_t)time
 {
-    return (*self.mControl).FwSetWait(time);
+	mCmdQueue->push_back(std::make_tuple(false,
+									std::bind(&WyLight::ControlNoThrow::FwSetWait, std::ref(*mControl), time),
+									0));
 }
 
-- (uint32_t)setFade:(uint32_t)colorInARGB
+- (void)setFade:(uint32_t)colorInARGB
 {
-    return (*self.mControl).FwSetFade(colorInARGB);
+	[self setFade:colorInARGB time:0];
 }
 
-- (uint32_t)setFade:(uint32_t)colorInARGB time:(uint16_t)timeValue
+- (void)setFade:(uint32_t)colorInARGB time:(uint16_t)timeValue
 {
-    return (*self.mControl).FwSetFade(colorInARGB, timeValue);
+	[self setFade:colorInARGB time:timeValue address:0xffffffff];
 }
 
-- (uint32_t)setFade:(uint32_t)colorInARGB time:(uint16_t)timeValue address:(uint32_t)address
+- (void)setFade:(uint32_t)colorInARGB time:(uint16_t)timeValue address:(uint32_t)address
 {
-    return (*self.mControl).FwSetFade(colorInARGB, timeValue, address);
+    [self setFade:colorInARGB time:timeValue address:address parallelFade:false];
 }
 
-- (uint32_t)setFade:(uint32_t)colorInARGB time:(uint16_t)timeValue address:(uint32_t)address parallelFade:(BOOL)parallel
+- (void)setFade:(uint32_t)colorInARGB time:(uint16_t)timeValue address:(uint32_t)address parallelFade:(BOOL)parallel
 {
-    return (*self.mControl).FwSetFade(colorInARGB, timeValue, address, parallel);
+	mCmdQueue->push_back(std::make_tuple(false,
+									std::bind(&WyLight::ControlNoThrow::FwSetFade, std::ref(*mControl), colorInARGB, timeValue, address, parallel),
+									0));
 }
 
-- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB
+- (void)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB
 {
-    return (*self.mControl).FwSetGradient(colorOneInARGB, colorTwoInARGB);
+    [self setGradientWithColor:colorOneInARGB colorTwo:colorTwoInARGB time:0];
 }
 
-- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue
+- (void)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue
 {
-    return (*self.mControl).FwSetGradient(colorOneInARGB, colorTwoInARGB, timeValue);
+    [self setGradientWithColor:colorOneInARGB colorTwo:colorTwoInARGB time:timeValue parallelFade:false];
 }
 
-- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel
+- (void)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel
 {
-    return (*self.mControl).FwSetGradient(colorOneInARGB, colorTwoInARGB, timeValue, parallel);
+    [self setGradientWithColor:colorOneInARGB colorTwo:colorTwoInARGB time:timeValue parallelFade:parallel gradientLength:NUM_OF_LED];
 }
 
-- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel gradientLength:(uint8_t)length
+- (void)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel gradientLength:(uint8_t)length
 {
-    return (*self.mControl).FwSetGradient(colorOneInARGB, colorTwoInARGB, timeValue, parallel, length);
+    [self setGradientWithColor:colorOneInARGB colorTwo:colorTwoInARGB time:timeValue parallelFade:parallel gradientLength:length startPosition:0];
 }
 
-- (uint32_t)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel gradientLength:(uint8_t)length startPosition:(uint8_t)offset
+- (void)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel gradientLength:(uint8_t)length startPosition:(uint8_t)offset
 {
-    return (*self.mControl).FwSetGradient(colorOneInARGB, colorTwoInARGB, timeValue, parallel, length, offset);
+	mCmdQueue->push_back(std::make_tuple(false,
+									std::bind(&WyLight::ControlNoThrow::FwSetGradient, std::ref(*mControl), colorOneInARGB, colorTwoInARGB, timeValue, parallel, length, offset),
+									0));
 }
 
-- (uint32_t)loopOn
+- (void)loopOn
 {
-    return (*self.mControl).FwLoopOn();
+	mCmdQueue->push_back(std::make_tuple(false,
+									std::bind(&WyLight::ControlNoThrow::FwLoopOn, std::ref(*mControl)),
+									0));
 }
 
-- (uint32_t)loopOffAfterNumberOfRepeats:(uint8_t)repeats
+- (void)loopOffAfterNumberOfRepeats:(uint8_t)repeats
 {
-    return (*self.mControl).FwLoopOff(repeats); // 0: Endlosschleife / 255: Maximale Anzahl
+	mCmdQueue->push_back(std::make_tuple(false,
+									std::bind(&WyLight::ControlNoThrow::FwLoopOff, std::ref(*mControl), repeats),
+									0)); // 0: Endlosschleife / 255: Maximale Anzahl
 }
 
-- (uint32_t)clearScript
+- (void)clearScript
 {
-    return (*self.mControl).FwClearScript();
+    mCmdQueue->push_back(std::make_tuple(false,
+									std::bind(&WyLight::ControlNoThrow::FwClearScript, std::ref(*mControl)),
+									0));
 }
 
-- (uint32_t)readRtcTime:(NSDate **)date
+- (void)readRtcTime:(NSDate **)date
 {
     struct tm timeInfo;
-    uint32_t returnValue = (*self.mControl).FwGetRtc(timeInfo);
-    *date = [NSDate dateWithTimeIntervalSince1970:mktime(&timeInfo)];
+	std::lock_guard<std::mutex> lock(*gCtrlMutex);
+	
+    uint32_t returnValue = mControl->FwGetRtc(timeInfo);
     
-    return returnValue;
+    if(returnValue != WyLight::NO_ERROR)
+	{
+		[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
+		*date = nil;
+	}
+	else
+		*date = [NSDate dateWithTimeIntervalSince1970:mktime(&timeInfo)];
 }
 
-- (uint32_t)writeRtcTime
+- (void)writeRtcTime
 {
     //NSDate *date = [NSDate date];
     //NSTimeZone = [NSTimeZone locald]
@@ -188,46 +290,89 @@
     //time(&rawTime);
     timeInfo = localtime(&rawTime);
     
-    return (*self.mControl).FwSetRtc(*timeInfo);
+	mCmdQueue->push_front(std::make_tuple(false,
+									std::bind(&WyLight::ControlNoThrow::FwSetRtc, std::ref(*mControl), *timeInfo),
+									0));
 }
 
-- (uint32_t)readCurrentFirmwareVersionFromFirmware:(NSString **)currentFirmwareVersionStringPlaceholder
+- (void)readCurrentFirmwareVersionFromFirmware:(NSString **)currentFirmwareVersionStringPlaceholder
 {
     std::string firmwareVersionString;
-    uint32_t returnValue = (*self.mControl).FwGetVersion(firmwareVersionString);
-    *currentFirmwareVersionStringPlaceholder = [NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding];
     
-    return returnValue;
+	std::lock_guard<std::mutex> lock(*gCtrlMutex);
+    uint32_t returnValue = mControl->FwGetVersion(firmwareVersionString);
+    
+    if(returnValue != WyLight::NO_ERROR)
+	{
+		[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
+		*currentFirmwareVersionStringPlaceholder = nil;
+	}
+	else
+	{
+		*currentFirmwareVersionStringPlaceholder = [NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding];
+	}
 }
 
-- (uint32_t)enterBootloader
+- (void)enterBootloader
 {
-    return (*self.mControl).FwStartBl();
+	mCmdQueue->clear_and_push_front(std::make_tuple(false,
+										  std::bind(&WyLight::ControlNoThrow::FwStartBl, std::ref(*mControl)),
+										  0));
 }
 
 #pragma mark - Bootloader methods
 
-- (uint32_t)readCurrentFirmwareVersionFromBootloder:(NSString **)currentFirmwareVersionStringPlaceholder
+- (void)readCurrentFirmwareVersionFromBootloder:(NSString **)currentFirmwareVersionStringPlaceholder
 {
     std::string firmwareVersionString;
-    uint32_t returnValue = (*self.mControl).BlReadFwVersion(firmwareVersionString);
+	std::lock_guard<std::mutex> lock(*gCtrlMutex);
+    uint32_t returnValue = mControl->BlReadFwVersion(firmwareVersionString);
     *currentFirmwareVersionStringPlaceholder = [NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding];
     
-    return returnValue;
+    if(returnValue != WyLight::NO_ERROR)
+	{
+		[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
+		*currentFirmwareVersionStringPlaceholder = nil;
+	}
+	else
+	{
+		*currentFirmwareVersionStringPlaceholder = [NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding];
+	}
+
 }
 
-- (uint32_t)programFlash
+- (void)programFlash
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectoryPath = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectoryPath stringByAppendingPathComponent:@"main.hex"];
-    
-    return (*self.mControl).BlProgramFlash(std::string([filePath cStringUsingEncoding:NSASCIIStringEncoding]));
+	NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"main" ofType:@"hex"]; //Whatever your file - extension is
+
+	mCmdQueue->push_back(std::make_tuple(false,
+										  std::bind(&WyLight::ControlNoThrow::BlProgramFlash, std::ref(*mControl), std::string([filePath cStringUsingEncoding:NSASCIIStringEncoding])),
+										  0));
 }
 
-- (uint32_t)leaveBootloader
+- (void)leaveBootloader
 {
-    return (*self.mControl).BlRunApp();
+	mCmdQueue->push_back(std::make_tuple(false,
+											std::bind(&WyLight::ControlNoThrow::BlRunApp, std::ref(*mControl)),
+											0));
+}
+
+- (void)callFatalErrorDelegate:(NSNumber*)errorCode
+{
+	NSLog(@"ErrorCode %@", errorCode);
+	if([errorCode intValue] == WyLight::SCRIPT_FULL)
+	{
+		[_delegate scriptFullErrorOccured:self errorCode:errorCode];
+	}
+	else
+	{
+		[_delegate fatalErrorOccured:self errorCode:errorCode];
+	}
+}
+
+- (void)callWiflyControlHasDisconnectedDelegate
+{
+	[_delegate wiflyControlHasDisconnected:self];
 }
 
 @end

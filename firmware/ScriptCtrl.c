@@ -79,7 +79,7 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 	switch(pCmd->cmd)
 	{
 		case CLEAR_SCRIPT:
-			Trace_String("Clearing script buffer\n");
+			Trace_String("Clearing script buffer;");
 			gScriptBuf.isClearing = TRUE;
 			return OK;
 		case LOOP_ON:
@@ -99,7 +99,7 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 			Trace_Hex(pCmd->data.loopEnd.startIndex);
 			Trace_Hex(pCmd->data.loopEnd.depth);
 			Trace_Hex(pCmd->data.loopEnd.counter);
-			Trace_String("\n");
+			Trace_String(";");
 			return ScriptCtrl_Write(pCmd);
 		}
 		case WAIT:
@@ -215,7 +215,7 @@ void ScriptCtrl_Run(void)
 	{
 		case LOOP_ON:
 		{
-			Trace_String("LOOP_ON\n");
+			Trace_String("LOOP_ON;");
 			/* move execute pointer to the next command */
 			gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
 			ScriptBufSetInLoop(TRUE);
@@ -225,7 +225,7 @@ void ScriptCtrl_Run(void)
 		{
 			if(LOOP_INFINITE == nextCmd.data.loopEnd.counter)
 			{
-				Trace_String("End of infinite loop reached\n");
+				Trace_String("End of infinite loop reached;");
 				/* move execute pointer to the top of this loop */
 				gScriptBuf.execute = nextCmd.data.loopEnd.startIndex;
 			}
@@ -234,7 +234,7 @@ void ScriptCtrl_Run(void)
 				Trace_String("normal loop iteration");
 				Trace_Hex(nextCmd.data.loopEnd.counter);
 				Trace_Hex(nextCmd.data.loopEnd.depth);
-				Trace_String("\n");
+				Trace_String(";");
 				/* update counter and set execute pointer to start of the loop */
 				nextCmd.data.loopEnd.counter--;
 				Eeprom_WriteBlock((uns8*)&nextCmd, tempAddress, sizeof(struct led_cmd));
@@ -246,7 +246,7 @@ void ScriptCtrl_Run(void)
 			{
 				if(0 == nextCmd.data.loopEnd.depth)
 				{
-					Trace_String("End of top loop reached\n");
+					Trace_String("End of top loop reached;");
 					/* move execute pointer to the next command */
 					gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
 
@@ -256,7 +256,7 @@ void ScriptCtrl_Run(void)
 				}
 				else
 				{
-					Trace_String("End of inner loop reached\n");
+					Trace_String("End of inner loop reached;");
 					/* reinit counter for next iteration */
 					nextCmd.data.loopEnd.counter = nextCmd.data.loopEnd.numLoops;
 					uns16 tempAddress = ScriptBufAddr(gScriptBuf.execute);

@@ -27,9 +27,13 @@
 #include <unistd.h>
 #include <vector>
 #include <sstream>
+#include <memory>
 
 using std::cin;
 using std::cout;
+using namespace WyLight;
+
+void newRemoteCallback(const size_t index, const WyLight::Endpoint& newEndpoint);
 
 WiflyControlCli::WiflyControlCli(uint32_t addr, uint16_t port)
 : mControl(addr, port), mRunning(true)
@@ -39,7 +43,7 @@ WiflyControlCli::WiflyControlCli(uint32_t addr, uint16_t port)
 
 void WiflyControlCli::Run(void)
 {
-	const WiflyControlCmd* pCmd;
+	std::shared_ptr<const WiflyControlCmd> pCmd;
 	ShowHelp();
 	string nextCmd;
 	while(mRunning)
@@ -72,7 +76,7 @@ void WiflyControlCli::ShowHelp(void) const
 	cout << "'exit' - terminate cli" << endl;
 
 	size_t i = 0;
-	const WiflyControlCmd* pCmd = WiflyControlCmdBuilder::GetCmd(i++);
+	std::shared_ptr<const WiflyControlCmd> pCmd = WiflyControlCmdBuilder::GetCmd(i++);
 	while(pCmd != NULL) {
 		cout << *pCmd << endl;
 		pCmd = WiflyControlCmdBuilder::GetCmd(i++);
@@ -103,12 +107,14 @@ int main(int argc, const char* argv[])
 	const WyLight::Endpoint& e = receiver.GetEndpoint(selection);
 	WiflyControlCli cli(e.GetIp(), e.GetPort());
 	cli.Run();
-	/*
-	WiflyControl cli(e.GetIp(), e.GetPort());*/
 	
-//	cli << FwCmdClearScript();
-/*	cli << FwCmdSetGradient(0xffff0000, 0xff00ff00, 1000, false, 5, 0);
+	/*
+	Control cli(e.GetIp(), e.GetPort());
+	
+	WiflyColor::
+	cli << FwCmdClearScript();
+	cli << FwCmdSetGradient(0xffff0000, 0xff00ff00, 1000, false, 5, 0);
 	cli << FwCmdSetGradient(0xffff00ff, 0xffff0000, 1000, true, 5, 5);
-	cli << FwCmdSetGradient(0xff00ff00, 0xff0000ff, 1000, false, 5, 10);*/
-	//cli << FwCmdSetGradient(0xffff0000, 0xff00ff00, 1000);
+	cli << FwCmdSetGradient(0xff00ff00, 0xff0000ff, 1000, false, 5, 10);
+	cli << FwCmdSetGradient(0xffff0000, 0xff00ff00, 1000);*/
 }

@@ -747,8 +747,21 @@ FwResponse& Control::FwSend(const FwRequest& request, FwResponse& response) cons
 
 void Control::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	SimpleResponse response(SET_COLOR_DIRECT);  
+	SimpleResponse response(SET_COLOR_DIRECT);
 	FwSend(FwReqSetColorDirect(pBuffer, bufferLength), response);
+}
+	
+void Control::FwSetColorDirect(const std::list<uint8_t> buffer) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+{
+	uint8_t mBuffer[NUM_OF_LED * 3];
+	size_t count = 0;
+	for(auto i = buffer.begin(); i != buffer.end(); i++)
+	{
+		if(count >= NUM_OF_LED * 3) break;
+		mBuffer[count++] = *i;
+	}
+	SimpleResponse response(SET_COLOR_DIRECT);
+	FwSetColorDirect(mBuffer, count);
 }
 
 void Control::FwSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull)

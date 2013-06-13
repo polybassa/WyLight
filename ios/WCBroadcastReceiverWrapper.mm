@@ -2,42 +2,34 @@
 //  WCBroadcastReceiverWrapper.m
 //
 //  Created by Bastian Kres on 16.04.13.
-//  Copyright (c) 2013 Bastian Kres. All rights reserved.
+//  Copyright (c) 2013 Bastian Kres, Nils Weiß. All rights reserved.
 //
 
 #import "WCBroadcastReceiverWrapper.h"
 
 #include "BroadcastReceiver.h"
 #include <iostream>
-#include <sstream>
+#include <memory>
 #include <thread>
 
-@interface WCBroadcastReceiverWrapper ()
+@interface WCBroadcastReceiverWrapper () {
+	std::shared_ptr<WyLight::BroadcastReceiver> receiver;
+	std::shared_ptr<std::thread> receiverThread;
+}
 
-@property (nonatomic) std::stringstream *mStream;
-@property (nonatomic) WyLight::BroadcastReceiver *receiver;
-@property (nonatomic) std::thread *receiverThread;
+#if !__has_feature(objc_arc)
+@property (nonatomic, unsafe_unretained) NSThread* threadOfOwner;
+#else
+@property (nonatomic, weak) NSThread* threadOfOwner;
+#endif
 
 - (void)postNotification;
 
 @end
 
-// We can avoid this function by using a lamda function in -(id) init .... std::bind([]{}.....) but it's very unreadable
-void cNotification(WCBroadcastReceiverWrapper* receiver,NSThread* targetThread ,const size_t index, const WyLight::Endpoint& endpoint)
-{
-	NSLog(@"New: %zd : %d.%d.%d.%d, %d  %s",
-		  index,
-		  (endpoint.GetIp() >> 24) & 0xFF,
-		  (endpoint.GetIp() >> 16) & 0xFF,
-		  (endpoint.GetIp() >> 8) & 0xFF,
-		  (endpoint.GetIp() & 0xFF),
-		  endpoint.GetPort(),
-		  endpoint.GetDeviceId().c_str());
-	
-	[receiver performSelector:@selector(postNotification) onThread:targetThread withObject:nil waitUntilDone:NO];
-}
-
 @implementation WCBroadcastReceiverWrapper
+
+NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
 
 - (id)init
 {
@@ -45,66 +37,136 @@ void cNotification(WCBroadcastReceiverWrapper* receiver,NSThread* targetThread ,
     if (self)
     {
         // Start BroadcastReceiver
-        self.mStream = new std::stringstream();
-        self.receiver = new WyLight::BroadcastReceiver(55555, "recv.txt", std::bind(&cNotification, self, [NSThread currentThread], std::placeholders::_1, std::placeholders::_2));
-		self.receiverThread = new std::thread(std::ref(*self.receiver));
+		self.threadOfOwner = [NSThread currentThread];
+		
+		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+		NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
+		
+		NSMutableString *filePath = [[NSMutableString alloc] initWithString:basePath];
+		[filePath appendString:@"/recv.txt"];
+
+		receiver = std::make_shared<WyLight::BroadcastReceiver>(55555,
+												  [filePath cStringUsingEncoding:NSASCIIStringEncoding],
+												  [=](const size_t index, const WyLight::Endpoint& endpoint)
+													{
+														NSLog(@"New: %zd : %d.%d.%d.%d, %d  %s",
+															  index,
+															  (endpoint.GetIp() >> 24) & 0xFF,
+															  (endpoint.GetIp() >> 16) & 0xFF,
+															  (endpoint.GetIp() >> 8) & 0xFF,
+															  (endpoint.GetIp() & 0xFF),
+															  endpoint.GetPort(),
+															  endpoint.GetDeviceId().c_str());
+		
+														[self performSelector:@selector(postNotification) onThread:[self threadOfOwner] withObject:nil waitUntilDone:NO];
+													}
+												  );
+
+		receiverThread = std::make_shared<std::thread>(std::ref(*receiver));
 		NSLog(@"start receiver");
 	}
     return self;
 }
 
+- (void)stop
+{
+	if(receiver && receiverThread)
+	{
+		// Stop BroadcastReceiver
+		receiver->Stop();
+		receiverThread->join();
+    }
+	receiver.reset();
+	receiverThread.reset();
+}
+
 - (void)dealloc
 {
-    // Stop BroadcastReceiver
-    (*self.receiver).Stop();
-    (*self.receiverThread).join();
-    
-    delete self.mStream;
-    delete self.receiver;
-    delete self.receiverThread;
-    
-    self.mStream = NULL;
-    self.receiver = NULL;
-    self.receiverThread = NULL;
+	[self stop];
+#if !__has_feature(objc_arc)
+    //Do manual memory management...
+	[super dealloc];
+#else
+    //Usually do nothing...
+#endif
+	
 }
 
 - (size_t)numberOfTargets
 {
-    return (*self.receiver).NumRemotes();
+    return receiver->NumRemotes();
 }
 
 - (uint32_t)ipAdressOfTarget:(size_t)index
 {
-    if(index > [self numberOfTargets])
+    if(index >= receiver->NumRemotes())
         return 0;
-    WyLight::Endpoint mEndpoint = (*self.receiver).GetEndpoint(index);
-    
-    return mEndpoint.GetIp();
+	
+    return receiver->GetEndpoint(index).GetIp();
 }
+
+- (void)increaseScoreOfIpAdress:(uint32_t)ipAdress
+{
+	for(size_t index = 0; index < receiver->NumRemotes(); index++)
+	{
+		if((receiver->GetEndpoint(index)).GetIp() == ipAdress)
+			++(receiver->GetEndpoint(index));
+	}
+}
+
+- (void)SetScoreOfIpAdress:(uint32_t)ipAdress Score:(uint8_t)score
+{
+	for(size_t index = 0; index < receiver->NumRemotes(); index++)
+	{
+		if(receiver->GetEndpoint(index).GetIp() == ipAdress)
+			receiver->GetEndpoint(index).SetScore(score);
+	}
+}
+
 
 - (uint16_t)portOfTarget:(size_t)index
 {
-    if(index > [self numberOfTargets])
+    if(index > receiver->NumRemotes())
         return 0;
-    WyLight::Endpoint mEndpoint = (*self.receiver).GetEndpoint(index);
+    WyLight::Endpoint mEndpoint = receiver->GetEndpoint(index);
     
     return mEndpoint.GetPort();
 }
 
+- (uint8_t)scoreOfTarget:(size_t)index
+{
+    if(index > receiver->NumRemotes())
+        return 0;
+    WyLight::Endpoint mEndpoint = receiver->GetEndpoint(index);
+    
+    return mEndpoint.GetScore();
+}
+
+
 - (NSString *)deviceNameOfTarget:(size_t)index
 {
-    if(index > [self numberOfTargets])
+    if(index > receiver->NumRemotes())
         return 0;
-    WyLight::Endpoint mEndpoint = (*self.receiver).GetEndpoint(index);
+    WyLight::Endpoint mEndpoint = receiver->GetEndpoint(index);
     
     std::string mStr = mEndpoint.GetDeviceId();
-   
+	
     return [NSString stringWithCString:mStr.c_str() encoding:NSASCIIStringEncoding];
+}
+
+- (void)saveTargets
+{
+	receiver->WriteRecentEndpoints();
 }
 
 - (void)postNotification
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"NewTargetAddedNotification" object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NewTargetAddedNotification object:self];
+}
+
+- (void)clearTargets
+{
+	receiver->DeleteRecentEndpointFile();
 }
 
 @end

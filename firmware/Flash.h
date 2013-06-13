@@ -27,7 +27,7 @@
 
 uns16 Flash_Read(const uns8 upperAdress, const uns16 adress);
 void Flash_ReadBlock(const uns8 upperAdress, const uns16 adress, uns8 *data, const uns16 length_bytes);
-void Flash_WriteBlock(uns16 adress, uns8 *data, const uns16 length_bytes);
+void Flash_WriteBlock(uns16 adress, const uns8 *data, const uns16 length_bytes);
 void Flash_EraseBlock64(const uns16 adress);
 void Flash_EraseBlocks64(const uns16 adress, uns8 numBlocks);
 

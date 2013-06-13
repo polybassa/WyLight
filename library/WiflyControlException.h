@@ -33,13 +33,13 @@
 #warning "Check for a newer compiler to avoid using this C++11 wrapper file"
 #include <sstream>
 namespace std {
-template <class T>
-std::string to_string(T value)
-{
-	std::stringstream converter;
-	converter << value;
-	return converter.str();
-};
+	template <class T>
+	std::string to_string(T value)
+	{
+		std::stringstream converter;
+		converter << value;
+		return converter.str();
+	}
 }
 #endif
 
