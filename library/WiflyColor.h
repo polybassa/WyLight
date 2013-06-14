@@ -67,6 +67,23 @@ class WiflyColor
 		
 		uint32_t argb() const { return ntohl(asBigEndianLong); };
 		void argb(uint32_t argbValue) { asBigEndianLong = htonl(argbValue); };
+	
+		bool operator== (const WiflyColor& ref) const
+		{
+			return asBigEndianLong == ref.asBigEndianLong;
+		};
+
+		friend std::ostream& operator<< (std::ostream& out, const WiflyColor& ref) {
+			return out << "0x" << std::hex << ref.argb();
+		};
+
+		friend std::istream& operator>> (std::istream& is, WiflyColor& ref)
+		{
+			std::string temp;
+			is >> temp;
+			ref.argb(WiflyColor::ToARGB(temp));
+			return is;
+		};
 };
 }
 #endif /* _WIFLYCOLOR_H_ */

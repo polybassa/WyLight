@@ -22,6 +22,18 @@
 #define _CPP11_WRAPPER_MUTEX_
 #include <pthread.h>
 namespace std {
+template<class T>
+class lock_guard {
+	T& mLockable;
+public:
+	lock_guard(T& lockable) : mLockable(lockable) {
+		mLockable.lock();
+	}
+	~lock_guard(void) {
+		mLockable.unlock();
+	};	
+};
+
 class mutex {
 	pthread_mutex_t mMutex;
 	public:

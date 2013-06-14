@@ -30,7 +30,11 @@ ComProxy_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
 	@./$@
 	
 MessageQueue_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
-	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/MessageQueue_ut.cpp  -D_GLIBCXX_USE_NANOSLEEP -o $@ -Wall -pedantic -std=c++0x
+	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/MessageQueue_ut.cpp -lpthread -D_GLIBCXX_USE_NANOSLEEP -o $@ -Wall -pedantic -std=c++0x
+	@./$@
+
+Script_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
+	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/Script_ut.cpp $(LIB_DIR)/Script.cpp $(LIB_ADDITIONAL_SRC) -o $@
 	@./$@
 
 TelnetProxy_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
@@ -45,6 +49,5 @@ WiflyControlNoThrow_ut.bin:  $(LIB_SRC) $(LIB_TEST_SRC)
 	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/WiflyControlNoThrow_ut.cpp $(LIB_DIR)/WiflyControlNoThrow.cpp $(INC) -o $@ -Wall -pedantic -std=c++0x
 	@./$@
 
-
-library_test: BroadcastReceiver_ut.bin MessageQueue_ut.bin ComProxy_ut.bin TelnetProxy_ut.bin WiflyControl_ut.bin WiflyControlNoThrow_ut.bin
+library_test: BroadcastReceiver_ut.bin ComProxy_ut.bin MessageQueue_ut.bin Script_ut.bin TelnetProxy_ut.bin WiflyControl_ut.bin WiflyControlNoThrow_ut.bin
 
