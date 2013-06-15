@@ -16,32 +16,15 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-
 #ifndef ____WiflyControlException__
 #define ____WiflyControlException__
 
 #include <stdio.h>
 #include <exception>
 #include <string>
-#include <string.h>
 #include <typeinfo>
 #include "wifly_cmd.h"
 #include "BlRequest.h"
-
-
-#if defined(__cplusplus) && (__cplusplus < 201103L)
-#warning "Check for a newer compiler to avoid using this C++11 wrapper file"
-#include <sstream>
-namespace std {
-	template <class T>
-	std::string to_string(T value)
-	{
-		std::stringstream converter;
-		converter << value;
-		return converter.str();
-	}
-}
-#endif
 
 namespace WyLight{
 

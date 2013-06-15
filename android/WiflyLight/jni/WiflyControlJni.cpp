@@ -79,7 +79,7 @@ jlong Java_biz_bruenn_WiflyLight_Endpoint_connect(JNIEnv* env, jobject ref, jlon
 			ThrowJniException(env, e);
 		}
 	}
-	return NULL;
+	return static_cast<jlong>(NULL);
 }
 
 jstring Java_biz_bruenn_WiflyLight_WiflyControl_ConfGetSsid(JNIEnv* env, jobject ref, jlong pNative)
