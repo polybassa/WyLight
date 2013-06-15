@@ -734,7 +734,7 @@ void Control::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferF
 	*this << FwCmdLoopOn{};
 }
 
-FwResponse& Control::FwSend(const FwCommand& cmd, FwResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+void Control::FwSend(FwCommand& cmd) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	response_frame buffer;
 	size_t numCrcRetries = 5;
@@ -743,13 +743,14 @@ FwResponse& Control::FwSend(const FwCommand& cmd, FwResponse& response) const th
 		const size_t bytesRead = mProxy.Send(cmd, &buffer, sizeof(buffer));
 		TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer, bytesRead, "%02x ", "We got %zd bytes response.\nMessage: ", bytesRead);
 		
-		if(response.Init(buffer, bytesRead))
+		if(cmd.GetResponse().Init(buffer, bytesRead))
 		{
-			return response;
+			return;
 		}
 	} while (0 < --numCrcRetries);
 	throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": Too many retries");
 }
+	
 
 void Control::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
@@ -842,13 +843,13 @@ std::string Control::ExtractFwVersion(const std::string& pFilename) const
 
 Control& Control::operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	this->FwSend(cmd, cmd.GetResponse());
+	this->FwSend(cmd);
 	return *this;
 }
 
 Control& Control::operator<<(FwCommand& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	return *this << std::move(cmd);
+	*this << std::move(cmd);
 }
 
 

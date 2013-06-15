@@ -41,7 +41,7 @@ public:
 	 * @throw FatalError if command code of the response doesn't match the code of the request
 	 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 	 */
-	bool Init(response_frame& pData, const size_t dataLength)
+	virtual bool Init(response_frame& pData, const size_t dataLength)
 	{
 		if(dataLength < 4) {
 			// response to short -> seems corrupted, allow retry

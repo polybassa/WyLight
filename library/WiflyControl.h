@@ -459,13 +459,11 @@ class Control
 		/**
 		 * Sends a wifly command frame to the wifly device
 		 * @param command FwCommand object with the frame, which should be send
-		 * @param response will be modified according to the success of this operation
-		 * @return response
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */		
-		FwResponse& FwSend(const FwCommand& command, FwResponse& response) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		void FwSend(FwCommand& cmd) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 			
 		/**
 		 * Instructs the bootloader to create crc-16 checksums for the content of
