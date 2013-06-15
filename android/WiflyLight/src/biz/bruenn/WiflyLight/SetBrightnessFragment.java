@@ -20,29 +20,7 @@ public class SetBrightnessFragment extends ControlFragment {
 
 		View view = inflater.inflate(R.layout.fragment_set_brightness, group, false);	
 
-		SeekBar brightness = (SeekBar)view.findViewById(R.id.brightnessPicker);
-		brightness.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-			private AtomicBoolean mChangeIsInProgress = new AtomicBoolean(false);
-
-			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-				if(!mChangeIsInProgress.getAndSet(true)) {		
-					final int intensity = (int)(2.55f * progress);
-					final int c = (((intensity << 8) | intensity) << 8) | intensity;
-					onSetColor(c);
-					mChangeIsInProgress.set(false);
-				}
-			}
-			
-			public void onStartTrackingTouch(SeekBar seekBar) {
-				//do nothing				
-			}
-			
-			public void onStopTrackingTouch(SeekBar seekBar) {
-				//do nothing
-			}
-		});
-		//return view;
-		mVolume =  new VolumeView(getActivity());
+		mVolume = (VolumeView)view.findViewById(R.id.brightnessPicker);
 		mVolume.setOnVolumeChangedListener(new VolumeView.OnVolumeChangedListener() {
 			private AtomicBoolean mChangeIsInProgress = new AtomicBoolean(false);
 			
@@ -55,6 +33,6 @@ public class SetBrightnessFragment extends ControlFragment {
 				}
 			}
 		});
-		return mVolume;
+		return view;
 	}
 }

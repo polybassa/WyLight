@@ -5,9 +5,8 @@
     android:gravity="top"
     tools:context=".WiflyControlActivity" >
 
-    <SeekBar
+    <biz.bruenn.WiflyLight.view.VolumeView
         android:id="@+id/brightnessPicker"
-        android:src="@drawable/select_color"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />

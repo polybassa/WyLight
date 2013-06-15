@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.graphics.Shader;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -29,8 +30,8 @@ public class VolumeView extends View {
 	private boolean mEmbraceTouch = false;
 	private OnVolumeChangedListener mOnVolumeChangedListener = null;
 
-	public VolumeView(Context context) {
-		super(context);
+	public VolumeView(Context context, AttributeSet attrib) {
+		super(context, attrib);
 
 		mBar = new ShapeDrawable(new RectShape());
 		
