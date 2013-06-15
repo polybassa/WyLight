@@ -848,7 +848,7 @@ Control& Control::operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalErr
 
 Control& Control::operator<<(FwCommand& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	*this << std::move(cmd);
+	return *this << std::move(cmd);
 }
 
 
