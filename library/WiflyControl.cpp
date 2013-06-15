@@ -69,10 +69,9 @@ void Control::BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError)
 
 void Control::BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError)
 {
-	//TODO use c++11 array initialization
 	uint8_t buffer[EEPROM_SIZE];
 	std::fill_n(buffer, EEPROM_SIZE, 0xff);
-	BlWriteEeprom((uint32_t)0, &buffer[0], sizeof(buffer));
+	BlWriteEeprom((uint32_t)0, buffer, sizeof(buffer));
 }
 
 void Control::BlEraseFlash(void) const throw(ConnectionTimeout, FatalError)
