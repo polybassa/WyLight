@@ -28,16 +28,17 @@ public class VolumeView extends View {
 	private Paint mFramePaint;
 	private Path mFramePath;
 	private boolean mEmbraceTouch = false;
+	private boolean mVertical = false;
 	private OnVolumeChangedListener mOnVolumeChangedListener = null;
 
 	public VolumeView(Context context, AttributeSet attrib) {
 		super(context, attrib);
-
-		mBar = new ShapeDrawable(new RectShape());
 		
+		mVertical = attrib.getAttributeBooleanValue("http://schemas.android.com/apk/res/android", "orientation", false);
+		
+		mBar = new ShapeDrawable(new RectShape());
 		mCover = new ShapeDrawable(new RectShape());
 		//mCover.getPaint().setColor(Color.BLACK);
-		
 		mFramePath = new Path();
 		mFramePaint = new Paint();
 		mFramePaint.setColor(Color.YELLOW);
@@ -55,41 +56,64 @@ public class VolumeView extends View {
 	
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		final int innerLeft = w / 4;
-		final int innerTop = h / 10;
+		final int padding = (mVertical ? h : w) / 8;
+		final int innerLeft = padding;
+		final int innerTop = padding;
 		final int innerRight = w - innerLeft;
 		final int innerBottom = h - innerTop;
-
-		final int innerWidth = w - 2*innerLeft;
-		final int padding = w / 12;
-		final int outerLeft = innerLeft - padding;
-		final int outerTop = innerTop - padding;
-		final int outerRight = innerRight + padding;
-		final int outerBottom = innerBottom + padding;
+		final int innerWidth = w - 2*padding;
+		final int innerHeight = h - 2*padding;
+		final int outerLeft = 0;
+		final int outerTop = 0;
+		final int outerRight = w;
+		final int outerBottom = h;
 		
 		mBar.setBounds(innerLeft, innerTop, innerRight, innerBottom);
-		Shader barShader = new LinearGradient(innerRight - innerLeft, 0, innerRight - innerLeft, h, Color.WHITE, Color.BLACK, Shader.TileMode.REPEAT);
-		mBar.getPaint().setShader(barShader);
-		
 		mCover.setBounds(innerLeft, innerTop, innerRight, innerBottom);
 		
-		Shader frameShader = new LinearGradient(0, 0, innerWidth, 0, Color.GRAY, Color.DKGRAY, Shader.TileMode.MIRROR);
-		mFramePaint.setShader(frameShader);
-		
-		mFramePath.reset();
-		mFramePath.moveTo(w / 2 + padding, innerTop);
-		mFramePath.lineTo(w / 2, outerTop);
-		mFramePath.lineTo(outerLeft, outerTop);
-		mFramePath.lineTo(outerLeft, outerBottom);
-		mFramePath.lineTo(outerRight, outerBottom);
-		mFramePath.lineTo(outerRight, outerTop);
-		mFramePath.lineTo(w / 2, outerTop);
-		mFramePath.lineTo(w / 2 - padding, innerTop);
-		mFramePath.lineTo(innerRight, innerTop);
-		mFramePath.lineTo(w / 2 + padding, innerBottom);
-		mFramePath.lineTo(w / 2 - padding, innerBottom);
-		mFramePath.lineTo(innerLeft, innerTop);
-		mFramePath.close();
+		if(mVertical) {
+			Shader barShader = new LinearGradient(0, innerBottom - innerTop, w, innerBottom - innerTop, Color.BLACK, Color.WHITE, Shader.TileMode.REPEAT);
+			mBar.getPaint().setShader(barShader);
+			
+			Shader frameShader = new LinearGradient(0, 0, innerHeight, 0, Color.GRAY, Color.DKGRAY, Shader.TileMode.MIRROR);
+			mFramePaint.setShader(frameShader);
+			
+			mFramePath.reset();
+			mFramePath.moveTo(innerRight, h / 2 + padding);
+			mFramePath.lineTo(outerRight, h / 2);
+			mFramePath.lineTo(outerRight, outerTop);
+			mFramePath.lineTo(outerLeft, outerTop);
+			mFramePath.lineTo(outerLeft, outerBottom);
+			mFramePath.lineTo(outerRight, outerBottom);
+			mFramePath.lineTo(outerRight, h/2);
+			mFramePath.lineTo(innerRight, h / 2 - padding);
+			mFramePath.lineTo(innerRight, innerBottom);
+			mFramePath.lineTo(innerLeft, h / 2 + padding);
+			mFramePath.lineTo(innerLeft, h / 2 - padding);
+			mFramePath.lineTo(innerRight, innerTop);
+			mFramePath.close();
+		} else {
+			Shader barShader = new LinearGradient(innerRight - innerLeft, 0, innerRight - innerLeft, h, Color.WHITE, Color.BLACK, Shader.TileMode.REPEAT);
+			mBar.getPaint().setShader(barShader);
+			
+			Shader frameShader = new LinearGradient(0, 0, innerWidth, 0, Color.GRAY, Color.DKGRAY, Shader.TileMode.MIRROR);
+			mFramePaint.setShader(frameShader);
+			
+			mFramePath.reset();
+			mFramePath.moveTo(w / 2 + padding, innerTop);
+			mFramePath.lineTo(w / 2, outerTop);
+			mFramePath.lineTo(outerLeft, outerTop);
+			mFramePath.lineTo(outerLeft, outerBottom);
+			mFramePath.lineTo(outerRight, outerBottom);
+			mFramePath.lineTo(outerRight, outerTop);
+			mFramePath.lineTo(w / 2, outerTop);
+			mFramePath.lineTo(w / 2 - padding, innerTop);
+			mFramePath.lineTo(innerRight, innerTop);
+			mFramePath.lineTo(w / 2 + padding, innerBottom);
+			mFramePath.lineTo(w / 2 - padding, innerBottom);
+			mFramePath.lineTo(innerLeft, innerTop);
+			mFramePath.close();
+		}
 	}
 	
 	@Override
@@ -98,6 +122,7 @@ public class VolumeView extends View {
 		final int newX = (int)event.getX();
 		final int newY = (int)event.getY();
 		final int coverBottom = Math.min(r.bottom, Math.max(r.top, newY));
+		final int coverRight = Math.min(r.right, Math.max(r.left, newX));
 		final int action = event.getAction();
 		
 		// begin of touch event, check if touch was in range
@@ -114,12 +139,20 @@ public class VolumeView extends View {
 		if(MotionEvent.ACTION_UP == action) {
 			mEmbraceTouch = false;
 			if(null != mOnVolumeChangedListener) {
-				mOnVolumeChangedListener.onVolumeChanged(100 - 100 * (coverBottom - r.top) / (r.bottom - r.top));
+				if(mVertical) {
+					mOnVolumeChangedListener.onVolumeChanged(100 - 100 * (coverRight - r.left) / (r.right - r.left));
+				} else {
+					mOnVolumeChangedListener.onVolumeChanged(100 - 100 * (coverBottom - r.top) / (r.bottom - r.top));
+				}
 			}
 		}
 
 		// we moved the selection -> repaint
-		mCover.setBounds(r.left, r.top, r.right, coverBottom);
+		if(mVertical) {
+			mCover.setBounds(coverRight, r.top, r.right, r.bottom);
+		} else {
+			mCover.setBounds(r.left, r.top, r.right, coverBottom);
+		}
 		this.invalidate();
 		return true;
 	}
