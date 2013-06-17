@@ -21,7 +21,8 @@
 #include <stdbool.h>
 
 #define NUM_TEST_LOOPS 255
- 
+
+int gSetColorDirectWasCalled;
 int gSetFadeWasCalled;
 int gSetGradientWasCalled;
 
@@ -37,6 +38,12 @@ void CommandIO_CreateResponse(struct response_frame *mFrame, uns8 cmd)
 
 void CommandIO_SendResponse(struct response_frame *mFrame)
 {
+}
+
+void Ledstrip_SetColorDirect(struct cmd_set_fade *pCmd)
+{
+	Trace_String("Ledstrip_SetColorDirect was called\n");
+	gSetColorDirectWasCalled = TRUE;
 }
 
 void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
