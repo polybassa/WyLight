@@ -132,11 +132,14 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 			Rtc_Ctl(RTC_SET_TIME, &g_RtcTime);
 			return OK;
 		}
+#endif /* #ifdef __CC8E__ */
 		case SET_COLOR_DIRECT:
 		{
+			Trace_String("SET_COLOR_DIRECT");
 			Ledstrip_SetColorDirect(&pCmd->data.set_color_direct.ptr_led_array);
 			return OK;
-		}	
+		}
+#ifdef __CC8E__
 		case GET_CYCLETIME:
 		{
 			return OK;
@@ -145,7 +148,7 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 		{
 			return OK;
 		}
-#endif /* #ifndef CC8E */
+#endif /* #ifdef __CC8E__ */
 		case GET_FW_VERSION:
 		{
 			return OK;

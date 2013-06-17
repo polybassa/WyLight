@@ -1,4 +1,4 @@
-package biz.bruenn.WiflyLight;
+package biz.bruenn.WyLight;
 
 import java.util.ArrayList;
 import biz.bruenn.WiflyLight.R.string;

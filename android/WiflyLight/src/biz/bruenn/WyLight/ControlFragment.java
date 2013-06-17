@@ -1,8 +1,9 @@
-package biz.bruenn.WiflyLight;
+package biz.bruenn.WyLight;
 
-import biz.bruenn.WiflyLight.exception.ConnectionTimeout;
-import biz.bruenn.WiflyLight.exception.FatalError;
-import biz.bruenn.WiflyLight.exception.ScriptBufferFull;
+import biz.bruenn.WiflyLight.R;
+import biz.bruenn.WyLight.exception.ConnectionTimeout;
+import biz.bruenn.WyLight.exception.FatalError;
+import biz.bruenn.WyLight.exception.ScriptBufferFull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;

@@ -768,6 +768,29 @@ void Control::FwSetColorDirect(const std::list<uint8_t> buffer) throw (Connectio
 	FwSetColorDirect(mBuffer, count);
 }
 
+void Control::FwSetColorDirect(const uint32_t argb, const uint32_t addr) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+{
+	const uint8_t red = (uint8_t)(argb >> 16);
+	const uint8_t green = (uint8_t)(argb >> 8);
+	const uint8_t blue = (uint8_t)argb;
+	uint8_t buffer[3*NUM_OF_LED];
+	memset(buffer, 0, sizeof(buffer));
+	uint8_t* pCur = buffer;
+	for(size_t mask = 0x1; mask > 0; mask = mask << 1) {
+		static_assert(sizeof(mask) * 8 == NUM_OF_LED,
+				"This trick only works if the mask field overflows to zero exactly with the last led");
+		if(addr & mask) {
+			*pCur = red;
+			*(++pCur) = green;
+			*(++pCur) = blue;
+			++pCur;
+		} else {
+			pCur += 3;
+		}
+	}
+	*this << FwCmdSetColorDirect{buffer, sizeof(buffer)};
+}
+
 void Control::FwSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	*this << FwCmdSetFade{argb, fadeTime, addr, parallelFade};

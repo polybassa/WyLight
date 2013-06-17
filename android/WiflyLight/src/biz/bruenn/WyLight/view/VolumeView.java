@@ -1,4 +1,4 @@
-package biz.bruenn.WiflyLight.view;
+package biz.bruenn.WyLight.view;
 
 import android.content.Context;
 import android.graphics.Canvas;

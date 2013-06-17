@@ -18,6 +18,7 @@
 
 #include "ledstrip.h"
 #include "spi.h"
+#include "trace.h"
 #ifdef __CC8E__
 #include "MATH16.H"
 #endif /* #ifdef __CC8E__ */
@@ -156,14 +157,27 @@ void Ledstrip_Init(void)
 
 void Ledstrip_SetColorDirect(uns8 *pValues)
 {
-	uns8 k, temp;
-	for(k = 0; k < sizeof(gLedBuf.led_array); k++)
+	uns8 k, red, green, blue;
+	for(k = 0; k < sizeof(gLedBuf.led_array);)
 	{
-		temp = *pValues;
-		gLedBuf.led_array[k] = temp;
-		pValues += 1;
+		red = *pValues;
+		++pValues;
+		green = *pValues;
+		++pValues;
+		blue = *pValues;
+		++pValues;
+		gLedBuf.led_array[k] = blue;
 		gLedBuf.cyclesLeft[k] = 0;
 		gLedBuf.delta[k] = 0;
+		++k;
+		gLedBuf.led_array[k] = green;
+		gLedBuf.cyclesLeft[k] = 0;
+		gLedBuf.delta[k] = 0;
+		++k;
+		gLedBuf.led_array[k] = red;
+		gLedBuf.cyclesLeft[k] = 0;
+		gLedBuf.delta[k] = 0;
+		++k;
 	}
 }
 

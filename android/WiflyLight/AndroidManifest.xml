@@ -15,7 +15,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <activity
-            android:name="biz.bruenn.WiflyLight.WiflyLightActivity"
+            android:name="biz.bruenn.WyLight.WiflyLightActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="biz.bruenn.WiflyLight.WiflyControlActivity"
+            android:name="biz.bruenn.WyLight.WiflyControlActivity"
             android:label="@string/title_activity_wifly_control" >
         </activity>
     </application>

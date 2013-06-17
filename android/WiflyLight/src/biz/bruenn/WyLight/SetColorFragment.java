@@ -1,6 +1,8 @@
-package biz.bruenn.WiflyLight;
+package biz.bruenn.WyLight;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import biz.bruenn.WiflyLight.R;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;

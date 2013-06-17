@@ -1,8 +1,8 @@
-package biz.bruenn.WiflyLight;
+package biz.bruenn.WyLight;
 
 import java.io.Serializable;
 
-import biz.bruenn.WiflyLight.exception.FatalError;
+import biz.bruenn.WyLight.exception.FatalError;
 
 public class Endpoint implements Serializable {
 	private static final long serialVersionUID = -8653676704955283379L;

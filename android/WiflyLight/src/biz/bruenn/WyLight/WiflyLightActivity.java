@@ -1,7 +1,8 @@
-package biz.bruenn.WiflyLight;
+package biz.bruenn.WyLight;
 
 import java.util.ArrayList;
 
+import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WiflyLight.R.id;
 import biz.bruenn.WiflyLight.R.string;
 import android.app.Activity;

@@ -1,4 +1,4 @@
-package biz.bruenn.WiflyLight;
+package biz.bruenn.WyLight;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -6,7 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import biz.bruenn.WiflyLight.view.VolumeView;
+import biz.bruenn.WiflyLight.R;
+import biz.bruenn.WyLight.view.VolumeView;
 
 public class SetRGBFragment extends ControlFragment {
 	int mRed = 0;
@@ -25,10 +26,7 @@ public class SetRGBFragment extends ControlFragment {
 			public void onVolumeChanged(int percent) {
 				final int intensity = (int)(2.55f * percent);
 				mRed = 0xff000000 | ((0x000000ff & intensity) << 16);
-				if(!mChangeIsInProgress.getAndSet(true)) {
-					onSetColor(mRed | mGreen | mBlue);
-					mChangeIsInProgress.set(false);
-				}
+				updateColor();
 			}
 		});	
 
@@ -37,10 +35,7 @@ public class SetRGBFragment extends ControlFragment {
 			public void onVolumeChanged(int percent) {
 				final int intensity = (int)(2.55f * percent);
 				mGreen = ((0x000000ff & intensity) << 8);
-				if(!mChangeIsInProgress.getAndSet(true)) {
-					onSetColor(mRed | mGreen | mBlue);
-					mChangeIsInProgress.set(false);
-				}
+				updateColor();
 			}
 		});	
 
@@ -49,13 +44,17 @@ public class SetRGBFragment extends ControlFragment {
 			public void onVolumeChanged(int percent) {
 				final int intensity = (int)(2.55f * percent);
 				mBlue = 0x000000ff & intensity;
-				if(!mChangeIsInProgress.getAndSet(true)) {
-					onSetColor(mRed | mGreen | mBlue);
-					mChangeIsInProgress.set(false);
-				}
+				updateColor();
 			}
 		});
 		return view;
+	}
+	
+	private void updateColor() {
+		if(!mChangeIsInProgress.getAndSet(true)) {
+			onSetColor(mRed | mGreen | mBlue);
+			mChangeIsInProgress.set(false);
+		}
 	}
 
 }

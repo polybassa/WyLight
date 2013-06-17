@@ -1,8 +1,9 @@
-package biz.bruenn.WiflyLight;
+package biz.bruenn.WyLight;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import biz.bruenn.WiflyLight.view.VolumeView;
+import biz.bruenn.WiflyLight.R;
+import biz.bruenn.WyLight.view.VolumeView;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

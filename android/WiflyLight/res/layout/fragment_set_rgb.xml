@@ -10,7 +10,7 @@
     	android:layout_width="fill_parent"
     	android:layout_weight="1"
     />
-    <biz.bruenn.WiflyLight.view.VolumeView
+    <biz.bruenn.WyLight.view.VolumeView
     	color="0xffff0000"
     	android:id="@+id/redVolume"
     	android:orientation="vertical"
@@ -23,7 +23,7 @@
     	android:layout_width="fill_parent"
     	android:layout_weight="1"
     />
-    <biz.bruenn.WiflyLight.view.VolumeView
+    <biz.bruenn.WyLight.view.VolumeView
     	color="0xff00ff00"
     	android:id="@+id/greenVolume"
     	android:orientation="vertical"
@@ -36,7 +36,7 @@
     	android:layout_width="fill_parent"
     	android:layout_weight="1"
     />
-    <biz.bruenn.WiflyLight.view.VolumeView
+    <biz.bruenn.WyLight.view.VolumeView
     	color="0xff0000ff"
     	android:id="@+id/blueVolume"
     	android:orientation="vertical"
