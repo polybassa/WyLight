@@ -39,7 +39,7 @@ void ThrowJniException(JNIEnv* env, const FatalError& e) {
 	}
 
 extern "C" {
-jlong Java_biz_bruenn_WiflyLight_BroadcastReceiver_create(JNIEnv* env, jobject ref, jstring path)
+jlong Java_biz_bruenn_WyLight_BroadcastReceiver_create(JNIEnv* env, jobject ref, jstring path)
 {
 	const char* myPath = env->GetStringUTFChars(path, 0);
 	const jlong result = (jlong) new BroadcastReceiver(BroadcastReceiver::BROADCAST_PORT, myPath);
@@ -47,12 +47,12 @@ jlong Java_biz_bruenn_WiflyLight_BroadcastReceiver_create(JNIEnv* env, jobject r
 	return result;
 }
 
-jlong Java_biz_bruenn_WiflyLight_BroadcastReceiver_getEndpoint(JNIEnv* env, jobject ref, jlong pNative, jlong index)
+jlong Java_biz_bruenn_WyLight_BroadcastReceiver_getEndpoint(JNIEnv* env, jobject ref, jlong pNative, jlong index)
 {
 	return ((BroadcastReceiver*)pNative)->GetEndpoint(index).AsUint64();
 }
 
-jlong Java_biz_bruenn_WiflyLight_BroadcastReceiver_getNextRemote(JNIEnv* env, jobject ref, jlong pNative, jlong timeoutNanos)
+jlong Java_biz_bruenn_WyLight_BroadcastReceiver_getNextRemote(JNIEnv* env, jobject ref, jlong pNative, jlong timeoutNanos)
 {
 	timeval timeout;
 	timeout.tv_sec = timeoutNanos / 1000000000L;
@@ -60,12 +60,12 @@ jlong Java_biz_bruenn_WiflyLight_BroadcastReceiver_getNextRemote(JNIEnv* env, jo
 	return ((BroadcastReceiver*)pNative)->GetNextRemote(&timeout).AsUint64();
 }
 
-void Java_biz_bruenn_WiflyLight_BroadcastReceiver_release(JNIEnv* env, jobject ref, jlong pNative)
+void Java_biz_bruenn_WyLight_BroadcastReceiver_release(JNIEnv* env, jobject ref, jlong pNative)
 {
 	delete (BroadcastReceiver*)pNative;
 }
 
-jlong Java_biz_bruenn_WiflyLight_Endpoint_connect(JNIEnv* env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint)
+jlong Java_biz_bruenn_WyLight_Endpoint_connect(JNIEnv* env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint)
 {
 	// TODO make this threadsafe
 	if(NULL == g_pControl) {
@@ -79,16 +79,16 @@ jlong Java_biz_bruenn_WiflyLight_Endpoint_connect(JNIEnv* env, jobject ref, jlon
 			ThrowJniException(env, e);
 		}
 	}
-	return NULL;
+	return static_cast<jlong>(NULL);
 }
 
-jstring Java_biz_bruenn_WiflyLight_WiflyControl_ConfGetSsid(JNIEnv* env, jobject ref, jlong pNative)
+jstring Java_biz_bruenn_WyLight_WiflyControl_ConfGetSsid(JNIEnv* env, jobject ref, jlong pNative)
 {
 	std::string mySsid = reinterpret_cast<Control*>(pNative)->ConfGetSsid();
 	return env->NewStringUTF(mySsid.data());
 }
 
-jboolean Java_biz_bruenn_WiflyLight_WiflyControl_ConfSetWlan(JNIEnv* env, jobject ref, jlong pNative, jstring passphrase, jstring ssid)
+jboolean Java_biz_bruenn_WyLight_WiflyControl_ConfSetWlan(JNIEnv* env, jobject ref, jlong pNative, jstring passphrase, jstring ssid)
 {
 	const char* myPassphrase = env->GetStringUTFChars(passphrase, 0);
 	const char* mySsid = env->GetStringUTFChars(ssid, 0);
@@ -98,32 +98,32 @@ jboolean Java_biz_bruenn_WiflyLight_WiflyControl_ConfSetWlan(JNIEnv* env, jobjec
 	return result;
 }
 
-jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwClearScript(JNIEnv* env, jobject ref, jlong pNative)
+jboolean Java_biz_bruenn_WyLight_WiflyControl_FwClearScript(JNIEnv* env, jobject ref, jlong pNative)
 {
 	TRY_CATCH_RETURN_BOOL(reinterpret_cast<Control*>(pNative)->FwClearScript());
 }
 
-jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwLoopOff(JNIEnv* env, jobject ref, jlong pNative, jbyte numLoops)
+jboolean Java_biz_bruenn_WyLight_WiflyControl_FwLoopOff(JNIEnv* env, jobject ref, jlong pNative, jbyte numLoops)
 {
 	TRY_CATCH_RETURN_BOOL(reinterpret_cast<Control*>(pNative)->FwLoopOff(numLoops));
 }
 
-jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwLoopOn(JNIEnv* env, jobject ref, jlong pNative)
+jboolean Java_biz_bruenn_WyLight_WiflyControl_FwLoopOn(JNIEnv* env, jobject ref, jlong pNative)
 {
 	TRY_CATCH_RETURN_BOOL(reinterpret_cast<Control*>(pNative)->FwLoopOn());
 }
 
-jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwSetColor(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr)
+jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetColor(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr)
 {
-	TRY_CATCH_RETURN_BOOL(reinterpret_cast<Control*>(pNative)->FwSetFade(argb, 0, addr, false));
+	TRY_CATCH_RETURN_BOOL(reinterpret_cast<Control*>(pNative)->FwSetColorDirect(argb, addr));
 }
 
-jboolean Java_biz_bruenn_WiflyLight_WiflyControl_FwSetFade(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr, jshort fadeTime)
+jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetFade(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr, jshort fadeTime)
 {
 	TRY_CATCH_RETURN_BOOL(reinterpret_cast<Control*>(pNative)->FwSetFade(argb, fadeTime, addr, false));
 }
 
-void Java_biz_bruenn_WiflyLight_WiflyControl_release(JNIEnv* env, jobject ref, jlong pNative)
+void Java_biz_bruenn_WyLight_WiflyControl_release(JNIEnv* env, jobject ref, jlong pNative)
 {
 	if((Control*)pNative == g_pControl) {
 		delete g_pControl;

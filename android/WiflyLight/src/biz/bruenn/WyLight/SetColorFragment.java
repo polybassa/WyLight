@@ -1,6 +1,8 @@
-package biz.bruenn.WiflyLight;
+package biz.bruenn.WyLight;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import biz.bruenn.WiflyLight.R;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -11,11 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-public class SetColorFunFragment extends ControlFragment {
+public class SetColorFragment extends ControlFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_set_color_fun, group, false);
+		View v = inflater.inflate(R.layout.fragment_set_color, group, false);
 		
 		ImageView colorPicker = (ImageView)v.findViewById(R.id.colorPicker);
 		colorPicker.setOnTouchListener(new View.OnTouchListener() {

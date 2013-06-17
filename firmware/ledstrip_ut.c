@@ -73,9 +73,12 @@ int ut_Ledstrip_SetColorDirect(void)
 	}
 
 	Ledstrip_SetColorDirect(testCmd);
-	for(i = 0; i < NUM_OF_LED * 3; i++)
+	for(i = 0; i < NUM_OF_LED * 3; i+=3)
 	{
-		CHECK(i == (gLedBuf.led_array[i]));
+		// led_array is ordered brg not rgb!
+		CHECK(i == (gLedBuf.led_array[i+2]));
+		CHECK(i+1 == (gLedBuf.led_array[i+1]));
+		CHECK(i+2 == (gLedBuf.led_array[i]));
 	}
 	TestCaseEnd();
 }

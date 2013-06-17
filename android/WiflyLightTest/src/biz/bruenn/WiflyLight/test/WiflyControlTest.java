@@ -1,7 +1,7 @@
 package biz.bruenn.WiflyLight.test;
 
-import biz.bruenn.WiflyLight.Endpoint;
-import biz.bruenn.WiflyLight.WiflyControl;
+import biz.bruenn.WyLight.Endpoint;
+import biz.bruenn.WyLight.WiflyControl;
 import android.test.AndroidTestCase;
 
 public class WiflyControlTest extends AndroidTestCase {

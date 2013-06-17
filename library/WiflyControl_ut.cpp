@@ -437,7 +437,7 @@ size_t ut_WiflyControl_FwSetColorDirectRedOnly(void)
 	TestCaseBegin();
 	Control testee(0, 0);
 	
-	// three leds only, first red, second green last blue
+	// one leds only, first red
 	uint8_t shortBuffer[1]{0xff};
 	led_cmd expectedOutgoingFrame;
 	expectedOutgoingFrame.cmd = SET_COLOR_DIRECT;
@@ -467,6 +467,42 @@ size_t ut_WiflyControl_FwSetColorDirectThreeLeds(void)
 	memset(expectedOutgoingFrame.data.set_color_direct.ptr_led_array + sizeof(shortBuffer), 0x00, sizeof(cmd_set_color_direct) - sizeof(shortBuffer));
 
 	testee.FwSetColorDirect(shortBuffer, sizeof(shortBuffer));
+
+	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, sizeof(led_cmd)));
+	TestCaseEnd();
+}
+
+size_t ut_WiflyControl_FwSetColorDirectThreeLeds_2(void)
+{
+	TestCaseBegin();
+	Control testee(0, 0);
+	
+	// three leds only, all set to yellow
+	const uint32_t argb = 0xffffff00;
+	const uint32_t addr = 0x00000007;
+	uint8_t shortBuffer[3 * 3];
+	memset(shortBuffer, 0, sizeof(shortBuffer));
+	shortBuffer[0 * 3 + 0] = 0xff; //first led red
+	shortBuffer[1 * 3 + 1] = 0xff; //second led green
+	shortBuffer[2 * 3 + 2] = 0xff; //third led blue
+	led_cmd expectedOutgoingFrame;
+	expectedOutgoingFrame.cmd = SET_COLOR_DIRECT;
+	memset(expectedOutgoingFrame.data.set_color_direct.ptr_led_array, 0, 3*NUM_OF_LED);
+	expectedOutgoingFrame.data.set_color_direct.ptr_led_array[0] = 0xff;
+	expectedOutgoingFrame.data.set_color_direct.ptr_led_array[1] = 0xff;
+	expectedOutgoingFrame.data.set_color_direct.ptr_led_array[2] = 0x00;
+	expectedOutgoingFrame.data.set_color_direct.ptr_led_array[3] = 0xff;
+	expectedOutgoingFrame.data.set_color_direct.ptr_led_array[4] = 0xff;
+	expectedOutgoingFrame.data.set_color_direct.ptr_led_array[5] = 0x00;
+	expectedOutgoingFrame.data.set_color_direct.ptr_led_array[6] = 0xff;
+	expectedOutgoingFrame.data.set_color_direct.ptr_led_array[7] = 0xff;
+	expectedOutgoingFrame.data.set_color_direct.ptr_led_array[8] = 0x00;
+
+	testee.FwSetColorDirect(argb, addr);
+
+
+	TraceBuffer(ZONE_INFO, &g_SendFrame, sizeof(led_cmd) + 1, "%02x ", "IS  :");
+	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, sizeof(led_cmd) + 1, "%02x ", "SOLL:");
 
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, sizeof(led_cmd)));
 	TestCaseEnd();
@@ -768,6 +804,7 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_WiflyControl_BlEraseEeprom);
 	RunTest(true, ut_WiflyControl_FwSetColorDirectRedOnly);
 	RunTest(true, ut_WiflyControl_FwSetColorDirectThreeLeds);
+	RunTest(true, ut_WiflyControl_FwSetColorDirectThreeLeds_2);
 	RunTest(true, ut_WiflyControl_FwSetColorDirectToMany);
 	RunTest(true, ut_WiflyControl_FwSetFade_1);
 	RunTest(true, ut_WiflyControl_FwSetFade_2);
@@ -780,6 +817,5 @@ int main (int argc, const char* argv[])
 	RunTest(true, ut_WiflyControl_FwLoopOff);
 	RunTest(true, ut_WiflyControl_FwGetVersion);
 	RunTest(true, ut_WiflyControl_FwLoopOn);
-
 	UnitTestMainEnd();
 }
