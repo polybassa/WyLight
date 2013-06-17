@@ -29,19 +29,19 @@ public class VolumeView extends View {
 	private Path mFramePath;
 	private boolean mEmbraceTouch = false;
 	private boolean mVertical = false;
+	private final int mColor;
 	private OnVolumeChangedListener mOnVolumeChangedListener = null;
 
 	public VolumeView(Context context, AttributeSet attrib) {
 		super(context, attrib);
-		
+
 		mVertical = attrib.getAttributeBooleanValue("http://schemas.android.com/apk/res/android", "orientation", false);
+		mColor = attrib.getAttributeIntValue(null, "color", Color.WHITE);
 		
 		mBar = new ShapeDrawable(new RectShape());
 		mCover = new ShapeDrawable(new RectShape());
-		//mCover.getPaint().setColor(Color.BLACK);
 		mFramePath = new Path();
 		mFramePaint = new Paint();
-		mFramePaint.setColor(Color.YELLOW);
 		mFramePaint.setStyle(Paint.Style.FILL_AND_STROKE);
 		mFramePaint.setAntiAlias(true);
 		mFramePaint.setPathEffect(new CornerPathEffect(10));
@@ -72,7 +72,7 @@ public class VolumeView extends View {
 		mCover.setBounds(innerLeft, innerTop, innerRight, innerBottom);
 		
 		if(mVertical) {
-			Shader barShader = new LinearGradient(0, innerBottom - innerTop, w, innerBottom - innerTop, Color.BLACK, Color.WHITE, Shader.TileMode.REPEAT);
+			Shader barShader = new LinearGradient(0, innerBottom - innerTop, w, innerBottom - innerTop, Color.BLACK, mColor, Shader.TileMode.REPEAT);
 			mBar.getPaint().setShader(barShader);
 			
 			Shader frameShader = new LinearGradient(0, 0, innerHeight, 0, Color.GRAY, Color.DKGRAY, Shader.TileMode.MIRROR);
@@ -93,7 +93,7 @@ public class VolumeView extends View {
 			mFramePath.lineTo(innerRight, innerTop);
 			mFramePath.close();
 		} else {
-			Shader barShader = new LinearGradient(innerRight - innerLeft, 0, innerRight - innerLeft, h, Color.WHITE, Color.BLACK, Shader.TileMode.REPEAT);
+			Shader barShader = new LinearGradient(innerRight - innerLeft, 0, innerRight - innerLeft, h, mColor, Color.BLACK, Shader.TileMode.REPEAT);
 			mBar.getPaint().setShader(barShader);
 			
 			Shader frameShader = new LinearGradient(0, 0, innerWidth, 0, Color.GRAY, Color.DKGRAY, Shader.TileMode.MIRROR);
