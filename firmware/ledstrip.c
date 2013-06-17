@@ -18,7 +18,6 @@
 
 #include "ledstrip.h"
 #include "spi.h"
-#include "trace.h"
 #ifdef __CC8E__
 #include "MATH16.H"
 #endif /* #ifdef __CC8E__ */

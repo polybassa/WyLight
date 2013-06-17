@@ -135,7 +135,6 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 #endif /* #ifdef __CC8E__ */
 		case SET_COLOR_DIRECT:
 		{
-			Trace_String("SET_COLOR_DIRECT");
 			Ledstrip_SetColorDirect((uns8*)&pCmd->data.set_color_direct.ptr_led_array);
 			return OK;
 		}
