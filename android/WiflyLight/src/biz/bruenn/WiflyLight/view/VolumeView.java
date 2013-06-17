@@ -140,7 +140,7 @@ public class VolumeView extends View {
 			mEmbraceTouch = false;
 			if(null != mOnVolumeChangedListener) {
 				if(mVertical) {
-					mOnVolumeChangedListener.onVolumeChanged(100 - 100 * (coverRight - r.left) / (r.right - r.left));
+					mOnVolumeChangedListener.onVolumeChanged(100 * (coverRight - r.left) / (r.right - r.left));
 				} else {
 					mOnVolumeChangedListener.onVolumeChanged(100 - 100 * (coverBottom - r.top) / (r.bottom - r.top));
 				}

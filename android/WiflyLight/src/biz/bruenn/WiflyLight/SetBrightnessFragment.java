@@ -11,15 +11,13 @@ import android.view.ViewGroup;
 
 public class SetBrightnessFragment extends ControlFragment {
 
-	private VolumeView mVolume;
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.fragment_set_brightness, group, false);	
 
-		mVolume = (VolumeView)view.findViewById(R.id.brightnessPicker);
-		mVolume.setOnVolumeChangedListener(new VolumeView.OnVolumeChangedListener() {
+		VolumeView volume = (VolumeView)view.findViewById(R.id.brightnessPicker);
+		volume.setOnVolumeChangedListener(new VolumeView.OnVolumeChangedListener() {
 			private AtomicBoolean mChangeIsInProgress = new AtomicBoolean(false);
 			
 			public void onVolumeChanged(int percent) {

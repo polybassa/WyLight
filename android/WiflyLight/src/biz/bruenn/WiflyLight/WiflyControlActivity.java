@@ -28,24 +28,28 @@ public class WiflyControlActivity extends FragmentActivity {
 
 		@Override
 		public int getCount() {
-			return 3;
+			return 4;
 		}
 
 		@Override
 		public Fragment getItem(int arg0) {
 			switch(arg0) {
 			case 0:
-				ControlFragment f = new SetBrightnessFragment();
-				f.setWiflyControl(mCtrl);
-				return f;
+				ControlFragment brightness = new SetBrightnessFragment();
+				brightness.setWiflyControl(mCtrl);
+				return brightness;
 			case 1:
-				ControlFragment ff = new SetColorFragment();
-				ff.setWiflyControl(mCtrl);
-				return ff;
+				ControlFragment rgb = new SetRGBFragment();
+				rgb.setWiflyControl(mCtrl);
+				return rgb;
+			case 2:
+				ControlFragment color = new SetColorFragment();
+				color.setWiflyControl(mCtrl);
+				return color;
 			default:
-				ControlFragment fff = new SetFadeFragment();
-				fff.setWiflyControl(mCtrl);
-				return fff;
+				ControlFragment setFade = new SetFadeFragment();
+				setFade.setWiflyControl(mCtrl);
+				return setFade;
 			}
 		}	
 	}
