@@ -1,15 +1,43 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="top"
+    android:orientation="vertical"
     tools:context=".WiflyControlActivity" >
-
-    <biz.bruenn.WiflyLight.view.VolumeView
-        android:id="@+id/brightnessPicker"
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
-
-</RelativeLayout>
+    
+    <LinearLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="1" >
+	</LinearLayout>		
+    <LinearLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="8" >
+    	<View
+    		android:id="@+id/leftPadding"
+    		android:layout_weight="1"
+    		android:layout_width="0dp"
+    		android:layout_height="fill_parent"
+    	/>
+    	<biz.bruenn.WiflyLight.view.VolumeView
+    		android:id="@+id/brightnessPicker"
+    		android:orientation="horizontal"
+    		android:layout_width="0dp"
+    		android:layout_height="fill_parent"
+    		android:layout_centerInParent="true"
+    		android:layout_weight="2"
+    	/>
+    	<View
+    		android:id="@+id/rightPadding"
+    		android:layout_weight="1"
+    		android:layout_width="0dp"
+    		android:layout_height="fill_parent"
+    	/>
+    </LinearLayout>
+    <LinearLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="1" >
+    </LinearLayout>
+</LinearLayout>
