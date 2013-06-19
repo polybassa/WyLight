@@ -1,4 +1,4 @@
-package biz.bruenn.WiflyLight;
+package biz.bruenn.WyLight;
 
 public class BroadcastReceiver {
 	private native long create(String path);

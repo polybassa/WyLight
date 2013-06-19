@@ -1,4 +1,4 @@
-package biz.bruenn.WiflyLight.exception;
+package biz.bruenn.WyLight.exception;
 
 public class FatalError extends Exception {
 	

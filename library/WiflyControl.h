@@ -288,6 +288,19 @@ class Control
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
 		void FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+
+		/**
+		 * Sets all leds with same color directly. This doesn't affect the WyLight script controller
+		 * @param argb is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff) f.e.
+		 *        black(  0,  0,  0) as argb is 0xff000000
+		 *        green(  0,255,  0) as argb is 0xff00ff00
+		 *        white(255,255,255) as argb is 0xffffffff
+		 * @param addr bitmask of leds which should be effected by this command, set bit to 1 to affect the led, default 0xffffffff
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
+		 */
+		void FwSetColorDirect(uint32_t argb, uint32_t addr) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 	
 		/**
 		 * Injects a fade command into the wifly script controller

@@ -1,6 +1,7 @@
-package biz.bruenn.WiflyLight;
+package biz.bruenn.WyLight;
 
-import biz.bruenn.WiflyLight.exception.FatalError;
+import biz.bruenn.WiflyLight.R;
+import biz.bruenn.WyLight.exception.FatalError;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
