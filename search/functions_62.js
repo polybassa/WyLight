@@ -1,7 +1,7 @@
 var searchData=
 [
   ['basebuffer',['BaseBuffer',['../class_wy_light_1_1_base_buffer.html#a3a45cf0d57bbf72a0eb26fbc27b71b6c',1,'WyLight::BaseBuffer']]],
-  ['begin',['begin',['../classintelhex.html#ab2b1119e14a960ea2b356967244aafb3',1,'intelhex']]],
+  ['begin',['Begin',['../class_wy_light_1_1_script.html#afbeda0bde94783f5e167db930cab1941',1,'WyLight::Script::Begin()'],['../classintelhex.html#ab2b1119e14a960ea2b356967244aafb3',1,'intelhex::begin()']]],
   ['bladdressrequest',['BlAddressRequest',['../struct_bl_address_request.html#aff4bb182ecbd0b573d424db09b9516f2',1,'BlAddressRequest']]],
   ['blankfill',['blankFill',['../classintelhex.html#a5de5cf10103fc307127f9017f3e5cd76',1,'intelhex::blankFill(unsigned char data)'],['../classintelhex.html#a84bbd449bb55e218b62ea73e2b399196',1,'intelhex::blankFill(unsigned char *const data, unsigned long sizeOfData)'],['../classintelhex.html#aaf6f77af7a82623ef16471f105ac3fe7',1,'intelhex::blankFill(unsigned char *const data, unsigned long sizeOfData, unsigned long endAddress)']]],
   ['blankfilladdresslowbyte',['blankFillAddressLowByte',['../classintelhex.html#a2e5c67fccc34c78e6dbd28f4b795fb0f',1,'intelhex::blankFillAddressLowByte()'],['../classintelhex.html#ab7b16f457563da93569b9812fafb9e7d',1,'intelhex::blankFillAddressLowByte(unsigned long endAddress)']]],

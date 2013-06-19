@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['add',['Add',['../class_wy_light_1_1_unmask_buffer.html#a176ee14660b44137a8ce041c7e338b94',1,'WyLight::UnmaskBuffer']]],
+  ['add',['Add',['../class_wy_light_1_1_unmask_buffer.html#a176ee14660b44137a8ce041c7e338b94',1,'WyLight::UnmaskBuffer::Add()'],['../class_wy_light_1_1_script.html#ab2376cd555a0b6052052e9a4d1a41eeb',1,'WyLight::Script::Add()']]],
   ['addpure',['AddPure',['../class_wy_light_1_1_base_buffer.html#a528639672ade7ec49160c5297b246055',1,'WyLight::BaseBuffer']]],
   ['addresshigh',['addressHigh',['../struct_bl_address_request.html#a9e30628b0954a18ed75ce920a33d72ee',1,'BlAddressRequest']]],
   ['addresslow',['addressLow',['../struct_bl_address_request.html#ae6a252f564542600cecd8c370ff25955',1,'BlAddressRequest']]],

@@ -154,13 +154,30 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        </div>
 <div class="line"><a name="l00068"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_wifly_color.html#ab7e53732ecb04513ddd62cd5ee9baaad">   68</a></span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_wifly_color.html#ab7e53732ecb04513ddd62cd5ee9baaad">argb</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> ntohl(<a class="code" href="class_wy_light_1_1_wifly_color.html#ab82810306a5a34f69d13193b476aec66">asBigEndianLong</a>); };</div>
 <div class="line"><a name="l00069"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_wifly_color.html#ac5cae0bdf5e5ebf7d5bfe1223d03169a">   69</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_wifly_color.html#ac5cae0bdf5e5ebf7d5bfe1223d03169a">argb</a>(uint32_t argbValue) { <a class="code" href="class_wy_light_1_1_wifly_color.html#ab82810306a5a34f69d13193b476aec66">asBigEndianLong</a> = htonl(argbValue); };</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;};</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* _WIFLYCOLOR_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    </div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_wifly_color.html#aef5d10538a0dd9a18705e2b54372086a">   71</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_wifly_color.html#aef5d10538a0dd9a18705e2b54372086a">operator== </a>(<span class="keyword">const</span> <a class="code" href="class_wy_light_1_1_wifly_color.html">WiflyColor</a>&amp; ref)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_wy_light_1_1_wifly_color.html#ab82810306a5a34f69d13193b476aec66">asBigEndianLong</a> == ref.<a class="code" href="class_wy_light_1_1_wifly_color.html#ab82810306a5a34f69d13193b476aec66">asBigEndianLong</a>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        };</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_wifly_color.html#ae96d680637f6f27cf9f5ebe4353f665e">   76</a></span>&#160;        <span class="keyword">friend</span> std::ostream&amp; <a class="code" href="class_wy_light_1_1_wifly_color.html#ae96d680637f6f27cf9f5ebe4353f665e">operator&lt;&lt; </a>(std::ostream&amp; out, <span class="keyword">const</span> <a class="code" href="class_wy_light_1_1_wifly_color.html">WiflyColor</a>&amp; ref) {</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keywordflow">return</span> out &lt;&lt; <span class="stringliteral">&quot;0x&quot;</span> &lt;&lt; std::hex &lt;&lt; ref.<a class="code" href="class_wy_light_1_1_wifly_color.html#ab7e53732ecb04513ddd62cd5ee9baaad">argb</a>();</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        };</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_wifly_color.html#a7ce59baece98d749ba1f30f7248f38ac">   80</a></span>&#160;        <span class="keyword">friend</span> std::istream&amp; <a class="code" href="class_wy_light_1_1_wifly_color.html#a7ce59baece98d749ba1f30f7248f38ac">operator&gt;&gt; </a>(std::istream&amp; is, <a class="code" href="class_wy_light_1_1_wifly_color.html">WiflyColor</a>&amp; ref)</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            std::string temp;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            is &gt;&gt; temp;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            ref.<a class="code" href="class_wy_light_1_1_wifly_color.html#ab7e53732ecb04513ddd62cd5ee9baaad">argb</a>(<a class="code" href="class_wy_light_1_1_wifly_color.html#aaf4a27a7197e7704848bf758f03557f3">WiflyColor::ToARGB</a>(temp));</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="keywordflow">return</span> is;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        };</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;};</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;}</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* _WIFLYCOLOR_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 12 2013 15:01:32 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jun 19 2013 17:37:25 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

@@ -112,7 +112,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_bl_request_8h.html">BlRequest.h</a>&quot;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_client_socket_8h.html">ClientSocket.h</a>&quot;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;trace.h&quot;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_fw_request_8h.html">FwRequest.h</a>&quot;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_fw_command_8h.html">FwCommand.h</a>&quot;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;wifly_cmd.h&quot;</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>WyLight{</div>
@@ -140,14 +140,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="comment">/*</span></div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">         * Send a request to the PIC firmware and wait for a response</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">         * @param request FwRequest object with a firmware command frame</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">         * @param request FwCommand object with a firmware command frame</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">         * @param pResponse pointer to buffer for the response frame</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">         * @param responseSize size of the response buffer</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">         * @return number of bytes read into pResponse or 0 if crc check fails</span></div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">         * @throw ConnectionTimeout if a timeout occurred</span></div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">         * @throw FatalError if sending to socket failed</span></div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_com_proxy.html#a56167b55c50edd0a64d5c6826ff9db98">Send</a>(<span class="keyword">const</span> <a class="code" href="class_wy_light_1_1_fw_request.html">FwRequest</a>&amp; request, response_frame* pResponse, <span class="keywordtype">size_t</span> responseSize) <span class="keyword">const</span> <span class="keywordflow">throw</span>(<a class="code" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="code" href="class_wy_light_1_1_fatal_error.html">FatalError</a>);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_com_proxy.html#a56167b55c50edd0a64d5c6826ff9db98">Send</a>(<span class="keyword">const</span> <a class="code" href="class_wy_light_1_1_fw_command.html">FwCommand</a>&amp; request, response_frame* pResponse, <span class="keywordtype">size_t</span> responseSize) <span class="keyword">const</span> <span class="keywordflow">throw</span>(<a class="code" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="code" href="class_wy_light_1_1_fatal_error.html">FatalError</a>);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="comment">/*</span></div>
@@ -194,7 +194,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 12 2013 15:01:32 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jun 19 2013 17:37:24 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

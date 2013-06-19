@@ -3,7 +3,7 @@ var searchData=
   ['basebuffer',['BaseBuffer',['../class_wy_light_1_1_base_buffer.html',1,'WyLight']]],
   ['basebuffer',['BaseBuffer',['../class_wy_light_1_1_base_buffer.html#a3a45cf0d57bbf72a0eb26fbc27b71b6c',1,'WyLight::BaseBuffer']]],
   ['bat_5fmv',['bat_mV',['../struct_wy_light_1_1_broadcast_message.html#aece2abbfade1888f969880e9d4cd2bfa',1,'WyLight::BroadcastMessage']]],
-  ['begin',['begin',['../classintelhex.html#ab2b1119e14a960ea2b356967244aafb3',1,'intelhex']]],
+  ['begin',['Begin',['../class_wy_light_1_1_script.html#afbeda0bde94783f5e167db930cab1941',1,'WyLight::Script::Begin()'],['../classintelhex.html#ab2b1119e14a960ea2b356967244aafb3',1,'intelhex::begin()']]],
   ['bl_5fautostart_5faddress',['BL_AUTOSTART_ADDRESS',['../_bl_request_8h.html#a337faffcba6453b5274eb476376ebfb9',1,'BlRequest.h']]],
   ['bl_5fcrtl_5fchar_5fnum',['BL_CRTL_CHAR_NUM',['../_bl_request_8h.html#adc31e4bc6e9c1cdbed276862a52f09cf',1,'BlRequest.h']]],
   ['bl_5fdword',['BL_DWORD',['../_bl_request_8h.html#a80595b3d82a783b293c1974922ffd119',1,'BlRequest.h']]],

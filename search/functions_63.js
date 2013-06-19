@@ -2,7 +2,7 @@ var searchData=
 [
   ['checkandremovecrc',['CheckAndRemoveCrc',['../class_wy_light_1_1_unmask_buffer.html#a4ce5f97f46916275ddb5f919483acab6',1,'WyLight::UnmaskBuffer']]],
   ['checkcrc',['CheckCrc',['../struct_bl_request.html#a15810e2347a8b2170030f0c2f98fe4d8',1,'BlRequest::CheckCrc()'],['../struct_bl_flash_crc16_request.html#a8758fc8e47673ffc02fd7b79596b21d9',1,'BlFlashCrc16Request::CheckCrc()'],['../struct_bl_run_app_request.html#a63e276cbe52c1aa8a3c5ec3a16e6e21b',1,'BlRunAppRequest::CheckCrc()']]],
-  ['clear',['clear',['../class_wy_light_1_1_message_queue.html#a07807ffc11826fb293b95f56fa2a6952',1,'WyLight::MessageQueue::clear()'],['../class_wy_light_1_1_base_buffer.html#ad7c6538cc7136f71a96efe6d85c8ff8f',1,'WyLight::BaseBuffer::Clear()'],['../class_wy_light_1_1_unmask_buffer.html#a0d535dd72bf7759dc780e1341f30a75f',1,'WyLight::UnmaskBuffer::Clear()']]],
+  ['clear',['Clear',['../class_wy_light_1_1_base_buffer.html#ad7c6538cc7136f71a96efe6d85c8ff8f',1,'WyLight::BaseBuffer::Clear()'],['../class_wy_light_1_1_unmask_buffer.html#a0d535dd72bf7759dc780e1341f30a75f',1,'WyLight::UnmaskBuffer::Clear()'],['../class_wy_light_1_1_message_queue.html#a07807ffc11826fb293b95f56fa2a6952',1,'WyLight::MessageQueue::clear()']]],
   ['clear_5fand_5fpush_5ffront',['clear_and_push_front',['../class_wy_light_1_1_message_queue.html#afa0cc613fbaf294bab1834b97d159de8',1,'WyLight::MessageQueue']]],
   ['clearresponse',['ClearResponse',['../class_wy_light_1_1_telnet_proxy.html#ab438600992c7087b8bc8ec4248e4e9c1',1,'WyLight::TelnetProxy']]],
   ['clientsocket',['ClientSocket',['../class_wy_light_1_1_client_socket.html#afe4f631abfffc996c24a8a55a9d5cea0',1,'WyLight::ClientSocket']]],
