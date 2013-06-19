@@ -1,5 +1,6 @@
-package biz.bruenn.WiflyLight;
+package biz.bruenn.WyLight;
 
+import biz.bruenn.WiflyLight.R;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
