@@ -1,11 +1,26 @@
-GPP=g++
+GPP=$(CXX)
 CFLAGS =-Wall
 CFLAGS+=-pedantic
-CFLAGS+=-std=c++0x
+CFLAGS+=-std=c++11
 
 CLI_DIR=./cli
 FW_DIR=./firmware
 LIB_DIR=./library
+
+UNAME := $(shell uname)
+#Linux detected -> use configuration of pat
+ifeq ($(UNAME),Linux)
+	OPENGL_LIB=-lGL -lGLU -lglut
+#OSX detected -> use configuration of nils
+else ifeq ($(UNAME),Darwin)
+	OPENGL_LIB_OSX=-framework Carbon -framework OpenGL -framework GLUT
+endif
+
+GIT=@GIT@
+DOXYGEN=@DOXYGEN@
+NDK=@NDK@
+WINE=@WINE@
+PIC_CC8E=@PIC_CC8E@
 
 OUT_DIR=./binary
 INC=-I$(FW_DIR) -I$(LIB_DIR)
