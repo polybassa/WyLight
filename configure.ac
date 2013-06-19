@@ -20,14 +20,10 @@ AC_PATH_PROG(DOXYGEN, doxygen, [doxygen not found])
 AC_PATH_PROG(GIT, git, [git not found])
 
 # Checks for libraries.
-# FIXME: Replace `main' with a function in `-lGL':
-AC_CHECK_LIB([GL], [main])
-# FIXME: Replace `main' with a function in `-lGLU':
-AC_CHECK_LIB([GLU], [main])
-# FIXME: Replace `main' with a function in `-lglut':
-AC_CHECK_LIB([glut], [main])
-# FIXME: Replace `main' with a function in `-lpthread':
-AC_CHECK_LIB([pthread], [main])
+AC_CHECK_LIB([GL], glAlphaFunc)
+AC_CHECK_LIB([GLU], gluBeginCurve)
+AC_CHECK_LIB([glut], glutBitmapCharacter)
+AC_CHECK_LIB([pthread], pthread_create)
 
 # Checks for header files.
 AC_CHECK_HEADERS([arpa/inet.h netinet/in.h stddef.h stdint.h stdlib.h string.h sys/socket.h sys/time.h unistd.h])

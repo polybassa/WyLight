@@ -3616,11 +3616,10 @@ fi
 
 
 # Checks for libraries.
-# FIXME: Replace `main' with a function in `-lGL':
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lGL" >&5
-$as_echo_n "checking for main in -lGL... " >&6; }
-if ${ac_cv_lib_GL_main+:} false; then :
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for glAlphaFunc in -lGL" >&5
+$as_echo_n "checking for glAlphaFunc in -lGL... " >&6; }
+if ${ac_cv_lib_GL_glAlphaFunc+:} false; then :
   $as_echo_n "(cached) " >&6
 else
   ac_check_lib_save_LIBS=$LIBS
@@ -3628,27 +3627,33 @@ LIBS="-lGL  $LIBS"
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
-
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char glAlphaFunc ();
 int
 main ()
 {
-return main ();
+return glAlphaFunc ();
   ;
   return 0;
 }
 _ACEOF
 if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_GL_main=yes
+  ac_cv_lib_GL_glAlphaFunc=yes
 else
-  ac_cv_lib_GL_main=no
+  ac_cv_lib_GL_glAlphaFunc=no
 fi
 rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_GL_main" >&5
-$as_echo "$ac_cv_lib_GL_main" >&6; }
-if test "x$ac_cv_lib_GL_main" = xyes; then :
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_GL_glAlphaFunc" >&5
+$as_echo "$ac_cv_lib_GL_glAlphaFunc" >&6; }
+if test "x$ac_cv_lib_GL_glAlphaFunc" = xyes; then :
   cat >>confdefs.h <<_ACEOF
 #define HAVE_LIBGL 1
 _ACEOF
@@ -3657,10 +3662,9 @@ _ACEOF
 
 fi
 
-# FIXME: Replace `main' with a function in `-lGLU':
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lGLU" >&5
-$as_echo_n "checking for main in -lGLU... " >&6; }
-if ${ac_cv_lib_GLU_main+:} false; then :
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for gluBeginCurve in -lGLU" >&5
+$as_echo_n "checking for gluBeginCurve in -lGLU... " >&6; }
+if ${ac_cv_lib_GLU_gluBeginCurve+:} false; then :
   $as_echo_n "(cached) " >&6
 else
   ac_check_lib_save_LIBS=$LIBS
@@ -3668,27 +3672,33 @@ LIBS="-lGLU  $LIBS"
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
-
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char gluBeginCurve ();
 int
 main ()
 {
-return main ();
+return gluBeginCurve ();
   ;
   return 0;
 }
 _ACEOF
 if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_GLU_main=yes
+  ac_cv_lib_GLU_gluBeginCurve=yes
 else
-  ac_cv_lib_GLU_main=no
+  ac_cv_lib_GLU_gluBeginCurve=no
 fi
 rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_GLU_main" >&5
-$as_echo "$ac_cv_lib_GLU_main" >&6; }
-if test "x$ac_cv_lib_GLU_main" = xyes; then :
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_GLU_gluBeginCurve" >&5
+$as_echo "$ac_cv_lib_GLU_gluBeginCurve" >&6; }
+if test "x$ac_cv_lib_GLU_gluBeginCurve" = xyes; then :
   cat >>confdefs.h <<_ACEOF
 #define HAVE_LIBGLU 1
 _ACEOF
@@ -3697,10 +3707,9 @@ _ACEOF
 
 fi
 
-# FIXME: Replace `main' with a function in `-lglut':
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lglut" >&5
-$as_echo_n "checking for main in -lglut... " >&6; }
-if ${ac_cv_lib_glut_main+:} false; then :
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for glutBitmapCharacter in -lglut" >&5
+$as_echo_n "checking for glutBitmapCharacter in -lglut... " >&6; }
+if ${ac_cv_lib_glut_glutBitmapCharacter+:} false; then :
   $as_echo_n "(cached) " >&6
 else
   ac_check_lib_save_LIBS=$LIBS
@@ -3708,27 +3717,33 @@ LIBS="-lglut  $LIBS"
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
-
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char glutBitmapCharacter ();
 int
 main ()
 {
-return main ();
+return glutBitmapCharacter ();
   ;
   return 0;
 }
 _ACEOF
 if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_glut_main=yes
+  ac_cv_lib_glut_glutBitmapCharacter=yes
 else
-  ac_cv_lib_glut_main=no
+  ac_cv_lib_glut_glutBitmapCharacter=no
 fi
 rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_glut_main" >&5
-$as_echo "$ac_cv_lib_glut_main" >&6; }
-if test "x$ac_cv_lib_glut_main" = xyes; then :
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_glut_glutBitmapCharacter" >&5
+$as_echo "$ac_cv_lib_glut_glutBitmapCharacter" >&6; }
+if test "x$ac_cv_lib_glut_glutBitmapCharacter" = xyes; then :
   cat >>confdefs.h <<_ACEOF
 #define HAVE_LIBGLUT 1
 _ACEOF
@@ -3737,10 +3752,9 @@ _ACEOF
 
 fi
 
-# FIXME: Replace `main' with a function in `-lpthread':
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lpthread" >&5
-$as_echo_n "checking for main in -lpthread... " >&6; }
-if ${ac_cv_lib_pthread_main+:} false; then :
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for pthread_create in -lpthread" >&5
+$as_echo_n "checking for pthread_create in -lpthread... " >&6; }
+if ${ac_cv_lib_pthread_pthread_create+:} false; then :
   $as_echo_n "(cached) " >&6
 else
   ac_check_lib_save_LIBS=$LIBS
@@ -3748,27 +3762,33 @@ LIBS="-lpthread  $LIBS"
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
-
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char pthread_create ();
 int
 main ()
 {
-return main ();
+return pthread_create ();
   ;
   return 0;
 }
 _ACEOF
 if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_pthread_main=yes
+  ac_cv_lib_pthread_pthread_create=yes
 else
-  ac_cv_lib_pthread_main=no
+  ac_cv_lib_pthread_pthread_create=no
 fi
 rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_pthread_main" >&5
-$as_echo "$ac_cv_lib_pthread_main" >&6; }
-if test "x$ac_cv_lib_pthread_main" = xyes; then :
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_pthread_pthread_create" >&5
+$as_echo "$ac_cv_lib_pthread_pthread_create" >&6; }
+if test "x$ac_cv_lib_pthread_pthread_create" = xyes; then :
   cat >>confdefs.h <<_ACEOF
 #define HAVE_LIBPTHREAD 1
 _ACEOF
