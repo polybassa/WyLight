@@ -1,7 +1,7 @@
 GPP=$(CXX)
 CFLAGS =-Wall
 CFLAGS+=-pedantic
-CFLAGS+=-std=c++11
+CFLAGS+=-std=c++0x
 
 CLI_DIR=./cli
 FW_DIR=./firmware

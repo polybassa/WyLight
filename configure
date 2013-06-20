@@ -3402,7 +3402,7 @@ $as_echo "no" >&6; }
   SET_MAKE="MAKE=${MAKE-make}"
 fi
 
-AM_CXXFLAGS=-std=c++11
+AM_CXXFLAGS=-std=c++0x
 
 AM_CXXFLAGS=-pedantic
 

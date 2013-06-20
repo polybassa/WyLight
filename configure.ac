@@ -10,7 +10,7 @@ AC_CONFIG_HEADERS([config.h])
 AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_MAKE_SET
-AC_SUBST(AM_CXXFLAGS, [-std=c++11])
+AC_SUBST(AM_CXXFLAGS, [-std=c++0x])
 AC_SUBST(AM_CXXFLAGS, [-pedantic])
 AC_SUBST(AM_CXXFLAGS, [-Wall])
 AC_PATH_PROG(WINE, wine,[wine not found])

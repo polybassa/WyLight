@@ -14,13 +14,13 @@
 #define HAVE_INTTYPES_H 1
 
 /* Define to 1 if you have the `GL' library (-lGL). */
-#define HAVE_LIBGL 1
+/* #undef HAVE_LIBGL */
 
 /* Define to 1 if you have the `GLU' library (-lGLU). */
-#define HAVE_LIBGLU 1
+/* #undef HAVE_LIBGLU */
 
 /* Define to 1 if you have the `glut' library (-lglut). */
-#define HAVE_LIBGLUT 1
+/* #undef HAVE_LIBGLUT */
 
 /* Define to 1 if you have the `pthread' library (-lpthread). */
 #define HAVE_LIBPTHREAD 1
