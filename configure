@@ -627,9 +627,9 @@ LIBOBJS
 EGREP
 GREP
 CPP
+PIC_CC8E
 GIT
 DOXYGEN
-PIC_CC8E
 NDK
 WINE
 AM_CXXFLAGS
@@ -3490,48 +3490,7 @@ $as_echo "no" >&6; }
 fi
 
 
-# Extract the first word of "CC8E.EXE", so it can be a program name with args.
-set dummy CC8E.EXE; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if ${ac_cv_path_PIC_CC8E+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $PIC_CC8E in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_PIC_CC8E="$PIC_CC8E" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-as_dummy="$PATH:/Users:/home:/Users/weitys1/Dropbox/Wifly_Light/CC8E:/home/gpb/cc8efree"
-for as_dir in $as_dummy
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_path_PIC_CC8E="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_PIC_CC8E" && ac_cv_path_PIC_CC8E="CC8E NOT FOUND"
-  ;;
-esac
-fi
-PIC_CC8E=$ac_cv_path_PIC_CC8E
-if test -n "$PIC_CC8E"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PIC_CC8E" >&5
-$as_echo "$PIC_CC8E" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
+# AC_PATH_PROG(PIC_CC8E, [CC8E.EXE], [CC8E NOT FOUND],[$PATH:/Users/weitys1/Dropbox/Wifly_Light/CC8E:/home/gpb/cc8efree:/home/weitys1/Dropbox/Wifly_Light/CC8E])
 # Extract the first word of "doxygen", so it can be a program name with args.
 set dummy doxygen; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
@@ -3614,6 +3573,59 @@ $as_echo "no" >&6; }
 fi
 
 
+
+
+
+# Extract the first word of "CC8E.EXE", so it can be a program name with args.
+set dummy CC8E.EXE; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_PIC_CC8E+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $PIC_CC8E in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PIC_CC8E="$PIC_CC8E" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+as_dummy="$PATH:/Users/weitys1/Dropbox/Wifly_Light/CC8E:/home/gpb/cc8efree:/home/weitys1/Dropbox/Wifly_Light/CC8E"
+for as_dir in $as_dummy
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_PIC_CC8E="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_PIC_CC8E" && ac_cv_path_PIC_CC8E="CC8E_NOT_FOUND"
+  ;;
+esac
+fi
+PIC_CC8E=$ac_cv_path_PIC_CC8E
+if test -n "$PIC_CC8E"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PIC_CC8E" >&5
+$as_echo "$PIC_CC8E" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+if test x"${PIC_CC8E}" == x"CC8E_NOT_FOUND" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: Searching for CC8E with find!" >&5
+$as_echo "Searching for CC8E with find!" >&6; }
+	PIC_CC8E=$(find ~ -name 'CC8E.EXE' -print -quit)
+else
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: CC8E found!" >&5
+$as_echo "CC8E found!" >&6; }
+fi
 
 # Checks for libraries.
 

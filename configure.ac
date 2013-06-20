@@ -15,9 +15,19 @@ AC_SUBST(AM_CXXFLAGS, [-pedantic])
 AC_SUBST(AM_CXXFLAGS, [-Wall])
 AC_PATH_PROG(WINE, wine,[wine not found])
 AC_PATH_PROG(NDK, ndk-build, [ndk not found])
-AC_PATH_PROG(PIC_CC8E, [CC8E.EXE], [CC8E NOT FOUND],[$PATH:/Users:/home:/Users/weitys1/Dropbox/Wifly_Light/CC8E:/home/gpb/cc8efree])
+# AC_PATH_PROG(PIC_CC8E, [CC8E.EXE], [CC8E NOT FOUND],[$PATH:/Users/weitys1/Dropbox/Wifly_Light/CC8E:/home/gpb/cc8efree:/home/weitys1/Dropbox/Wifly_Light/CC8E])
 AC_PATH_PROG(DOXYGEN, doxygen, [doxygen not found])
 AC_PATH_PROG(GIT, git, [git not found])
+
+AC_DEFUN(AC_PATH_PROG_CC8E, [
+AC_PATH_PROG(PIC_CC8E, [CC8E.EXE], [CC8E_NOT_FOUND],[$PATH:/Users/weitys1/Dropbox/Wifly_Light/CC8E:/home/gpb/cc8efree:/home/weitys1/Dropbox/Wifly_Light/CC8E])
+if test x"${PIC_CC8E}" == x"CC8E_NOT_FOUND" ; then
+    AC_MSG_RESULT([Searching for CC8E with find!])   
+	PIC_CC8E=$(find ~ -name 'CC8E.EXE' -print -quit) 
+else
+	AC_MSG_RESULT([CC8E found!])
+fi ])
+AC_PATH_PROG_CC8E
 
 # Checks for libraries.
 AC_CHECK_LIB([GL], glAlphaFunc)
