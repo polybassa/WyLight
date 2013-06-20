@@ -776,7 +776,7 @@ void Control::FwSetColorDirect(const uint32_t argb, const uint32_t addr) throw (
 	uint8_t buffer[3*NUM_OF_LED];
 	memset(buffer, 0, sizeof(buffer));
 	uint8_t* pCur = buffer;
-	for(size_t mask = 0x1; mask > 0; mask = mask << 1) {
+	for(uint32_t mask = 0x1; mask > 0; mask = mask << 1) {
 		static_assert(sizeof(mask) * 8 == NUM_OF_LED,
 				"This trick only works if the mask field overflows to zero exactly with the last led");
 		if(addr & mask) {
