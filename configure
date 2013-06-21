@@ -627,6 +627,9 @@ LIBOBJS
 EGREP
 GREP
 CPP
+glut
+GLU
+GL
 PIC_CC8E
 GIT
 DOXYGEN
@@ -3435,7 +3438,7 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_WINE" && ac_cv_path_WINE="wine not found"
+  test -z "$ac_cv_path_WINE" && ac_cv_path_WINE="not_found"
   ;;
 esac
 fi
@@ -3476,7 +3479,7 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_NDK" && ac_cv_path_NDK="ndk not found"
+  test -z "$ac_cv_path_NDK" && ac_cv_path_NDK="not_found"
   ;;
 esac
 fi
@@ -3490,7 +3493,6 @@ $as_echo "no" >&6; }
 fi
 
 
-# AC_PATH_PROG(PIC_CC8E, [CC8E.EXE], [CC8E NOT FOUND],[$PATH:/Users/weitys1/Dropbox/Wifly_Light/CC8E:/home/gpb/cc8efree:/home/weitys1/Dropbox/Wifly_Light/CC8E])
 # Extract the first word of "doxygen", so it can be a program name with args.
 set dummy doxygen; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
@@ -3518,7 +3520,7 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_DOXYGEN" && ac_cv_path_DOXYGEN="doxygen not found"
+  test -z "$ac_cv_path_DOXYGEN" && ac_cv_path_DOXYGEN="not_found"
   ;;
 esac
 fi
@@ -3559,7 +3561,7 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_GIT" && ac_cv_path_GIT="git not found"
+  test -z "$ac_cv_path_GIT" && ac_cv_path_GIT="not_found"
   ;;
 esac
 fi
@@ -3604,7 +3606,7 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_PIC_CC8E" && ac_cv_path_PIC_CC8E="CC8E_NOT_FOUND"
+  test -z "$ac_cv_path_PIC_CC8E" && ac_cv_path_PIC_CC8E="not_found"
   ;;
 esac
 fi
@@ -3618,7 +3620,7 @@ $as_echo "no" >&6; }
 fi
 
 
-if test x"${PIC_CC8E}" == x"CC8E_NOT_FOUND" ; then
+if test x"${PIC_CC8E}" == x"not_found" ; then
     { $as_echo "$as_me:${as_lineno-$LINENO}: result: Searching for CC8E with find!" >&5
 $as_echo "Searching for CC8E with find!" >&6; }
 	PIC_CC8E=$(find ~ -name 'CC8E.EXE' -print -quit)
@@ -3666,11 +3668,10 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_GL_glAlphaFunc" >&5
 $as_echo "$ac_cv_lib_GL_glAlphaFunc" >&6; }
 if test "x$ac_cv_lib_GL_glAlphaFunc" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBGL 1
-_ACEOF
+  GL=found
 
-  LIBS="-lGL $LIBS"
+else
+  GL=not_found
 
 fi
 
@@ -3711,11 +3712,10 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_GLU_gluBeginCurve" >&5
 $as_echo "$ac_cv_lib_GLU_gluBeginCurve" >&6; }
 if test "x$ac_cv_lib_GLU_gluBeginCurve" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBGLU 1
-_ACEOF
+  GLU=found
 
-  LIBS="-lGLU $LIBS"
+else
+  GLU=not_found
 
 fi
 
@@ -3756,11 +3756,10 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_glut_glutBitmapCharacter" >&5
 $as_echo "$ac_cv_lib_glut_glutBitmapCharacter" >&6; }
 if test "x$ac_cv_lib_glut_glutBitmapCharacter" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBGLUT 1
-_ACEOF
+  glut=found
 
-  LIBS="-lglut $LIBS"
+else
+  glut=not_found
 
 fi
 
