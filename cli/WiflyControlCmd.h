@@ -18,7 +18,7 @@
 
 #ifndef _WIFLYCONTROLCMD_H_
 #define _WIFLYCONTROLCMD_H_
-#include "FwResponse.h"
+#include "FwCommand.h"
 #include "trace.h"
 #include <iostream>
 #include <string>
@@ -418,7 +418,7 @@ class ControlCmdStartBl : public WiflyControlCmd
 				  
 		virtual void Run(WyLight::Control& control) const {
 			cout << "Starting bootloader... ";
-			TRY_CATCH_COUT(control.FwStartBl());
+			TRY_CATCH_COUT(control << WyLight::FwCmdStartBl{});
 		};
   
 };

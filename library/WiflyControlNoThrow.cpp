@@ -163,7 +163,22 @@ uint32_t ControlNoThrow::FwSetWait(const uint16_t waitTime)
 
 uint32_t ControlNoThrow::FwStartBl(void)
 {
-	return Try(std::bind(&Control::FwStartBl, std::ref(mControl)));
+	return Try(std::move(FwCmdStartBl{}));
+}
+
+uint32_t ControlNoThrow::Try(FwCommand&& cmd)
+{
+	try {
+		mControl << std::move(cmd);
+		return NO_ERROR;
+	} catch (FatalError& e) {
+		return e.AsErrorCode();
+	} catch (std::exception) {
+		std::cout << "CATCH std::exception";
+		std::cerr << "CATCH std::exception";
+		//std::terminate();
+		return FATAL_ERROR;
+	}
 }
 
 uint32_t ControlNoThrow::Try(const std::function<std::string(void)> call, std::string& returnString) const

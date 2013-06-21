@@ -233,6 +233,9 @@ struct FwCmdSetRtc : public FwCmdSimple
 	};
 };
 
+/**
+ * Stops firmware and script controller execution and start the bootloader of the wifly device
+ */
 struct FwCmdStartBl : public FwCmdSimple
 {
 	FwCmdStartBl(void) : FwCmdSimple(START_BL) {};

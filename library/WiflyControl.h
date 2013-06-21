@@ -382,14 +382,6 @@ class Control
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
 		void FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-
-		/**
-		 * Stops firmware and script controller execution and start the bootloader of the wifly device
-		 * @throw ConnectionTimeout if response timed out
-		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
-		 */
-		void FwStartBl(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 		
 
 		//TODO move this test functions to the integration test 

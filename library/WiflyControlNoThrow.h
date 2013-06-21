@@ -381,6 +381,7 @@ class ControlNoThrow
 		 * Converts all exceptions from ::WiflyControl to the relating ::WiflyError
 		 */
 		Control mControl;
+		uint32_t Try(FwCommand&& cmd);
 		uint32_t Try(const std::function<void(void)> call) const;
 		uint32_t Try(const std::function<std::string(void)> call, std::string& returnString) const;
 };

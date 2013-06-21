@@ -923,9 +923,4 @@ void Control::FwTest(void)
 	FwLoopOff(loopOffResp, 0);
 #endif
 }
-
-void Control::FwStartBl(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	*this << FwCmdStartBl{};
-}
 } /* namespace WyLight */
