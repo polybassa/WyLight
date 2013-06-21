@@ -26,3 +26,10 @@ firmware/autoscan.log
 firmware/configure.scan
 library/autoscan.log
 library/configure.scan
+Makefile
+TestOutput.txt
+autom4te.cache/output.0
+autom4te.cache/requests
+autom4te.cache/traces.0
+config.log
+config.status
