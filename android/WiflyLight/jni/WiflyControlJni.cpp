@@ -126,7 +126,7 @@ jboolean Java_biz_bruenn_WyLight_WiflyControl_FwLoopOn(JNIEnv* env, jobject ref,
 
 jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetColor(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr)
 {
-	TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdSetColorDirect{argb, addr});
+	TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdSetColorDirect{(uint32_t)argb, (uint32_t)addr});
 }
 
 jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetFade(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr, jshort fadeTime)

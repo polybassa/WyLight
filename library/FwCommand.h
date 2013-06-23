@@ -33,7 +33,7 @@ class FwCommand
 protected:
 	struct led_cmd mReqFrame;
 	FwCommand(uint8_t cmd, size_t size = 0) : mSize(1 + size) {	mReqFrame.cmd = cmd; };
-	~FwCommand(void) = default;
+	virtual ~FwCommand(void) = default;
 	
 public:
 	const uint8_t* GetData(void) const { return reinterpret_cast<const uint8_t*>(&mReqFrame);	};
