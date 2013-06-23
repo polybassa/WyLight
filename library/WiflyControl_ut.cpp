@@ -599,7 +599,7 @@ size_t ut_WiflyControl_FwSetGradient(void)
 	TestCaseBegin();
 	Control testee(0, 0);
 	
-	testee.FwSetGradient("112233","332211", 1000, true, 10, 127);
+	testee << std::move(FwCmdSetGradient{0xff112233,0xff332211, 1000, true, 10, 127});
 	TraceBuffer(ZONE_INFO, &g_SendFrame, sizeof(cmd_set_gradient) + 1, "%02x ", "IS  :");
 	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, sizeof(cmd_set_gradient) + 1, "%02x ", "SOLL:");
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, sizeof(cmd_set_gradient) + 1));

@@ -153,8 +153,6 @@ void Control::FwSetRtc(const tm& timeValue) throw (ConnectionTimeout, FatalError
 
 void Control::FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-void Control::FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset) throw (ConnectionTimeout, FatalError, ScriptBufferFull) { throwExceptions(); }
-
 Control& Control::operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	throwExceptions();

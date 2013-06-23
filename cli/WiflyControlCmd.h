@@ -47,6 +47,16 @@ static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VER
 		cout << "failed! because of: " << e.what() << '\n'; \
 	}
 
+void TrySend(WyLight::Control& ctrl, WyLight::FwCommand&& cmd)
+{
+	try {
+		ctrl << std::move(cmd);
+		cout << "done.\n";
+	} catch(std::exception& e) {
+		cout << "failed! because of: " << e.what() << '\n';
+	}
+}
+
 class WiflyControlCmd
 {
 	public:
@@ -418,7 +428,7 @@ class ControlCmdStartBl : public WiflyControlCmd
 				  
 		virtual void Run(WyLight::Control& control) const {
 			cout << "Starting bootloader... ";
-			TRY_CATCH_COUT(control << WyLight::FwCmdStartBl{});
+			TrySend(control, WyLight::FwCmdStartBl{});
 		};
   
 };
@@ -558,7 +568,7 @@ class ControlCmdSetFade : public WiflyControlCmd
 
 		virtual void Run(WyLight::Control& control) const {
 			cout << "Parsing and transmitting command set fade... ";
-			TRY_CATCH_COUT(control << WyLight::FwCmdSetFade{cin});
+			TrySend(control, std::move(WyLight::FwCmdSetFade{cin}));
 		};
 };
 			
@@ -573,13 +583,8 @@ public:
 		  + string("    <time> the number of ten milliseconds the fade should take")) {};
 				
 				virtual void Run(WyLight::Control& control) const {
-					string color_1, color_2;
-					uint16_t timevalue;
-					cin >> color_1;
-					cin >> color_2;
-					cin >> timevalue;
-					cout << "Transmitting command set fade... ";
-					TRY_CATCH_COUT(control.FwSetGradient(color_1, color_2, timevalue));
+					cout << "Parsing and transmitting command set gradient... ";
+					TrySend(control, std::move(WyLight::FwCmdSetGradient{cin}));
 				};
 };
 

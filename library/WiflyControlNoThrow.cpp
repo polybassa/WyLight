@@ -148,7 +148,7 @@ uint32_t ControlNoThrow::FwSetFade(const uint32_t argb, const uint16_t fadeTime,
 
 uint32_t ControlNoThrow::FwSetGradient(const uint32_t argb_1, const uint32_t argb_2, const uint16_t fadeTime, const bool parallelFade, const uint8_t length, uint8_t offset)
 {
-	return Try(std::bind(static_cast<void(Control::*)(uint32_t, uint32_t, uint16_t, bool, uint8_t, uint8_t)>(&Control::FwSetGradient), std::ref(mControl), argb_1, argb_2, fadeTime, parallelFade, length, offset));
+	return Try(std::move(FwCmdSetGradient{argb_1, argb_2, fadeTime, parallelFade, length, offset}));
 }
 
 uint32_t ControlNoThrow::FwSetRtc(const tm& timeValue)
@@ -163,7 +163,7 @@ uint32_t ControlNoThrow::FwSetWait(const uint16_t waitTime)
 
 uint32_t ControlNoThrow::FwStartBl(void)
 {
-	return Try(FwCmdStartBl{});
+	return Try(std::move(FwCmdStartBl{}));
 }
 
 uint32_t ControlNoThrow::Try(FwCommand&& cmd)

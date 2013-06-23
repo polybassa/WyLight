@@ -215,10 +215,22 @@ struct FwCmdSetGradient : public FwCmdScript
 		WiflyColor argb_1, argb_2;
 		uint16_t fadeTime;
 		int parallel, length, offset;	
-		is >> argb_1 >> argb_2 >> parallel >> offset >> length >> fadeTime;
+		is >> argb_1 >> argb_2 >> fadeTime >> offset >> length >> parallel;
 		mReqFrame.data.set_gradient.Set(argb_1.argb(), argb_2.argb(), parallel, (uint8_t)offset, (uint8_t)length, fadeTime);
 	};
 
+  /**
+	 * Injects a gradient command into the wifly script controller
+	 * @param argb_1 is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff). This is the start color for the gradient.
+	 * @param argb_2 is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff). This is the end color for the gradient.
+	 * @param fadeTime in hundreths of a second. Use 0 to set color immediately, default = 0
+	 * @param parallelFade if true other fades are allowed in parallel with this fade
+	 * @param length is the number of led's from startposition to endposition
+	 * @param offset can be used to move the startposition of the gradient on the ledstrip
+	 * @throw ConnectionTimeout if response timed out
+	 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+	 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
+	 */
 	FwCmdSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0) : FwCmdScript(SET_GRADIENT, sizeof(cmd_set_gradient)) {
 
 		mReqFrame.data.set_gradient.Set(argb_1, argb_2, parallelFade, offset, length, fadeTime);

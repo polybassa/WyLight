@@ -113,7 +113,7 @@ struct __attribute__((__packed__)) cmd_set_gradient {
 	std::ostream& Write(std::ostream& out, size_t& indentation) const {
 		const uint32_t argbVal_1 = red_1 << 16 | green_1 << 8 | blue_1;
 		const uint32_t argbVal_2 = red_2 << 16 | green_2 << 8 | blue_2;
-		return out << "0x" << std::hex << argbVal_1 << " 0x" << std::hex << argbVal_2 << ' ' << std::dec << (int)(parallelAndOffset & 0x80) << ' ' << (int)(parallelAndOffset & 0x7F) << ' ' << (int)numberOfLeds << ' ' << ntohs(fadeTmms);
+		return out << "0x" << std::hex << argbVal_1 << " 0x" << std::hex << argbVal_2 << ' ' << std::dec << ntohs(fadeTmms) << ' ' << (int)(parallelAndOffset & 0x7F) << ' ' << (int)numberOfLeds << ' ' << (int)(parallelAndOffset & 0x80);
 	};
 #endif
 };
