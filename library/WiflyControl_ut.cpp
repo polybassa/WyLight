@@ -617,7 +617,7 @@ size_t ut_WiflyControl_FwSetWait(void)
 	TestCaseBegin();
 	Control testee(0, 0);
 	
-	testee.FwSetWait(1000);
+	testee << std::move(FwCmdWait{1000});
 	TraceBuffer(ZONE_INFO, &g_SendFrame, sizeof(cmd_wait) + 1, "%02x ", "IS  :");
 	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, sizeof(cmd_wait) + 1, "%02x ", "SOLL:");
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, sizeof(cmd_wait)+ 1));
@@ -646,7 +646,7 @@ size_t ut_WiflyControl_FwSetRtc(void)
 	TestCaseBegin();
 	Control testee(0, 0);
 	
-	testee.FwSetRtc(timeinfo);
+	testee << std::move(FwCmdSetRtc{timeinfo});
 	TraceBuffer(ZONE_INFO, &g_SendFrame, sizeof(rtc_time)+1, "%02x ", "IS  :");
 	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, sizeof(rtc_time)+1, "%02x ", "SOLL:");
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, sizeof(rtc_time)+ 1));
@@ -662,7 +662,7 @@ size_t ut_WiflyControl_FwClearScript(void)
 	TestCaseBegin();
 	Control testee(0, 0);
 	
-	testee.FwClearScript();
+	testee << std::move(FwCmdClearScript{});
 	TraceBuffer(ZONE_INFO, &g_SendFrame, 1, "%02x ", "IS  :");
 	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, 1, "%02x ", "SOLL:");
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, 1));
@@ -761,7 +761,7 @@ size_t ut_WiflyControl_FwLoopOff(void)
 	TestCaseBegin();
 	Control testee(0, 0);
 	
-	testee.FwLoopOff(100);
+	testee << std::move(FwCmdLoopOff{100});
 	
 	TraceBuffer(ZONE_INFO, &g_SendFrame, 1, "%02x ", "IS  :");
 	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, 1, "%02x ", "SOLL:");
@@ -778,7 +778,7 @@ size_t ut_WiflyControl_FwLoopOn(void)
 	TestCaseBegin();
 	Control testee(0, 0);
 	
-	testee.FwLoopOn();
+	testee << std::move(FwCmdLoopOn{});
 	
 	TraceBuffer(ZONE_INFO, &g_SendFrame, 1, "%02x ", "IS  :");
 	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, 1, "%02x ", "SOLL:");

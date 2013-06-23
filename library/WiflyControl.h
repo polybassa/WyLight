@@ -204,15 +204,7 @@ class Control
 		 */
 		bool ConfSetDeviceId(const std::string& name) const;
 		
-/* -------------------------- FIRMWARE METHODES -------------------------- */
-		/**
-		 * Wipe all commands from the WyLight script controller
-		 * @throw ConnectionTimeout if response timed out
-		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
-		 */
-		void FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-		
+/* -------------------------- FIRMWARE METHODES -------------------------- */		
 		/**
 		 * Reads the cycletimes from wifly device and stores them into the response object
 		 * @return a string with all recorded cycletimes from PIC firmware
@@ -250,23 +242,6 @@ class Control
 		std::string FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 		/**
-		 * Injects a LoopOff command into the wifly script controller
-		 * @param numLoops number of rounds before termination of the loop, use 0 for infinite loops. To terminate an infinite loop you have to call \<FwClearScript\>
-		 * @throw ConnectionTimeout if response timed out
-		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
-		 */
-		void FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-
-		/**
-		 * Injects a LoopOn command into the wifly script controller
-		 * @throw ConnectionTimeout if response timed out
-		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
-		 */
-		void FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-
-		/**
 		 * Sets all leds with different colors directly. This doesn't affect the WyLight script controller
 		 * Example: to set the first led to yellow and the second to blue and all others to off use a \<pBuffer\> like this:
 		 * buffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6;
@@ -301,28 +276,7 @@ class Control
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
 		void FwSetColorDirect(uint32_t argb, uint32_t addr) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-
-		/**
-		 * Sets the rtc clock of the wifly device to the specified time.
-		 * The wifly device has to be in firmware mode for this command.
-		 * @param timeValue pointer to a posix tm struct containing the new time
-		 * @throw ConnectionTimeout if response timed out
-		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
-		 */
-		void FwSetRtc(const tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 		
-		/**
-		 * Injects a wait command into the wifly script controller.
-		 * This causes the script processing to wait before executing the next command for the specified duration
-		 * @param waitTime in hundreths of a second
-		 * @throw ConnectionTimeout if response timed out
-		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
-		 */
-		void FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-		
-
 		//TODO move this test functions to the integration test 
 		void FwTest(void);
 		void FwStressTest(void);

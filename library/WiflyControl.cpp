@@ -690,11 +690,6 @@ bool Control::ConfRebootWlanModule(void) const
 	return true;
 }
 
-void Control::FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	*this << FwCmdClearScript{};
-}
-
 std::string Control::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	FwCmdGetCycletime cmd;
@@ -721,16 +716,6 @@ std::string Control::FwGetVersion(void) throw (ConnectionTimeout, FatalError, Sc
 	FwCmdGetVersion cmd;
 	*this << cmd;
 	return cmd.mResponse.ToString();
-}
-
-void Control::FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	*this << FwCmdLoopOff{numLoops};
-}
-
-void Control::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	*this << FwCmdLoopOn{};
 }
 
 void Control::FwSend(FwCommand& cmd) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
@@ -791,19 +776,9 @@ void Control::FwSetColorDirect(const uint32_t argb, const uint32_t addr) throw (
 	*this << FwCmdSetColorDirect{buffer, sizeof(buffer)};
 }
 
-void Control::FwSetRtc(const tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	*this << FwCmdSetRtc{timeValue};
-}
-
-void Control::FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	*this << FwCmdWait{waitTime};
-}
-
 void Control::FwStressTest(void)
 {	
-	FwClearScript();
+	*this << std::move(FwCmdClearScript{});
 
 	uns8 ledArr[NUM_OF_LED * 3];
 	uns8 color = 0;
@@ -864,7 +839,7 @@ void Control::FwTest(void)
 	for(size_t i = 0; i < 100; ++i)
 	{
 		color = ((color & 0xff) << 24) | (color >> 8);
-		*this << std::move(FwCmdSetFade{color});
+		*this << FwCmdSetFade{color};
 		nanosleep(&sleepTime, NULL);
 	}
 #else

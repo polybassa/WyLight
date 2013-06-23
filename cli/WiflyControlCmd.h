@@ -503,7 +503,7 @@ class ControlCmdClearScript : public WiflyControlCmd
 
 		virtual void Run(WyLight::Control& control) const {
 			cout << "Clearing script buffer... ";
-			TRY_CATCH_COUT(control.FwClearScript());
+			TrySend(control, WyLight::FwCmdClearScript{});
 		};
 };
 
@@ -516,7 +516,7 @@ class ControlCmdLoopOn : public WiflyControlCmd
 
 		virtual void Run(WyLight::Control& control) const {
 			cout << "Transmitting command loop on... ";
-			TRY_CATCH_COUT(control.FwLoopOn());
+			TrySend(control, WyLight::FwCmdLoopOn{});
 		};
 };
 
@@ -530,12 +530,8 @@ class ControlCmdLoopOff : public WiflyControlCmd
 		{};
 
 		virtual void Run(WyLight::Control& control) const {
-			int numLoops;
-			do {
-				cin >> numLoops;
-			} while((numLoops < 0) || (numLoops > UINT8_MAX)); 
 			cout << "Transmitting command loop off... ";
-			TRY_CATCH_COUT(control.FwLoopOff((uint8_t)numLoops));
+			TrySend(control, WyLight::FwCmdLoopOff{cin});
 		};
 };
 
@@ -548,10 +544,8 @@ class ControlCmdWait : public WiflyControlCmd
 			+ string("    <time> the number of milliseconds the wait should take")) {};
 
 		virtual void Run(WyLight::Control& control) const {
-			uint16_t waitTmms;
-			cin >> waitTmms;
 			cout << "Transmitting command wait... ";
-			TRY_CATCH_COUT(control.FwSetWait(waitTmms));
+			TrySend(control, WyLight::FwCmdWait{cin});
 		};
 };
 
@@ -568,7 +562,7 @@ class ControlCmdSetFade : public WiflyControlCmd
 
 		virtual void Run(WyLight::Control& control) const {
 			cout << "Parsing and transmitting command set fade... ";
-			TrySend(control, std::move(WyLight::FwCmdSetFade{cin}));
+			TrySend(control, WyLight::FwCmdSetFade{cin});
 		};
 };
 			
@@ -587,7 +581,7 @@ public:
 				
 				virtual void Run(WyLight::Control& control) const {
 					cout << "Parsing and transmitting command set gradient... ";
-					TrySend(control, std::move(WyLight::FwCmdSetGradient{cin}));
+					TrySend(control, WyLight::FwCmdSetGradient{cin});
 				};
 };
 
@@ -599,20 +593,8 @@ class ControlCmdSetRtc : public WiflyControlCmd
 				string("' - set time of rtc in target to current systemtime")){};
 
 		virtual void Run(WyLight::Control& control) const {
-			cout << "Transmitting current time... ";
-			try
-			{
-				tm timeinfo;
-				time_t rawtime;
-				rawtime = time(NULL);
-				localtime_r(&rawtime, &timeinfo);
-				control.FwSetRtc(timeinfo);
-				cout << "done.\n";
-			}
-			catch(WyLight::FatalError& e)
-			{
-				cout << "failed! because of: " << e << '\n';
-			}
+			cout << "Parsing and transmitting current time... ";
+			TrySend(control, WyLight::FwCmdSetRtc{});
 		};
 };
 

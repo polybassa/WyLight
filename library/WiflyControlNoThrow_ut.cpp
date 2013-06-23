@@ -133,8 +133,6 @@ bool Control::ConfModuleAsSoftAP(const std::string& accesspointName) const {retu
 
 bool Control::ConfModuleForWlan(const std::string &phrase, const std::string &ssid, const std::string& name) const {return true; }
 
-void Control::FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
-
 std::string Control::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
 
 void Control::FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull){throwExceptions(); }
@@ -143,15 +141,7 @@ std::string Control::FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError
 
 std::string Control::FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
 
-void Control::FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
-
-void Control::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
-
 void Control::FwSetColorDirect(const std::list<uint8_t> buffer) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
-
-void Control::FwSetRtc(const tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
-
-void Control::FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
 Control& Control::operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {

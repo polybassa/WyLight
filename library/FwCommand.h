@@ -84,6 +84,11 @@ public:
 		mReqFrame.data.wait.waitTmms = htons(std::max((uint16_t)1, waitTime));		
 	};
 
+	/**
+	 * Injects a wait command into the wifly script controller.
+	 * This causes the script processing to wait before executing the next command for the specified duration
+	 * @param waitTime in hundreths of a second
+	 */
 	FwCmdWait(uint16_t waitTime) : FwCmdScript(WAIT, sizeof(cmd_wait)) {
 		mReqFrame.data.wait.waitTmms = htons(std::max((uint16_t)1, waitTime));
 	};
@@ -102,6 +107,9 @@ public:
 	};
 };
 
+/**
+ * Wipe all commands from the WyLight script controller
+ */
 struct FwCmdClearScript : public FwCmdSimple
 {
 	FwCmdClearScript(void) : FwCmdSimple(CLEAR_SCRIPT) {};
@@ -144,6 +152,10 @@ struct FwCmdLoopOff : public FwCmdScript
 		mReqFrame.data.loopEnd.numLoops = (uint8_t)numLoops;		
 	};
 
+	/**
+	 * Injects a LoopOff command into the wifly script controller
+	 * @param numLoops number of rounds before termination of the loop, use 0 for infinite loops. To terminate an infinite loop you have to send a \<FwCmdClearScript\>
+	 */
 	FwCmdLoopOff(uint8_t numLoops = 0) : FwCmdScript(LOOP_OFF, sizeof(cmd_loop_end)) {
 		mReqFrame.data.loopEnd.numLoops = numLoops;
 	};
@@ -153,6 +165,9 @@ struct FwCmdLoopOff : public FwCmdScript
 	};
 };
 
+/**
+ * Injects a LoopOn command into the wifly script controller
+ */
 struct FwCmdLoopOn : public FwCmdScript
 {
 	static const std::string TOKEN;
@@ -227,9 +242,6 @@ struct FwCmdSetGradient : public FwCmdScript
 	 * @param parallelFade if true other fades are allowed in parallel with this fade
 	 * @param length is the number of led's from startposition to endposition
 	 * @param offset can be used to move the startposition of the gradient on the ledstrip
-	 * @throw ConnectionTimeout if response timed out
-	 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-	 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 	 */
 	FwCmdSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0) : FwCmdScript(SET_GRADIENT, sizeof(cmd_set_gradient)) {
 
@@ -244,7 +256,30 @@ struct FwCmdSetGradient : public FwCmdScript
 
 struct FwCmdSetRtc : public FwCmdSimple
 {
+	/**
+	 * Sets the rtc clock of the wifly device to the current time.
+	 * The wifly device has to be in firmware mode for this command.
+	 */
+	FwCmdSetRtc(void) : FwCmdSimple(SET_RTC, sizeof(rtc_time))
+	{
+		tm timeinfo;
+		time_t rawtime;
+		rawtime = time(NULL);
+		localtime_r(&rawtime, &timeinfo);
+		SetTime(timeinfo);
+	}
+	
+	/**
+	 * Sets the rtc clock of the wifly device to the specified time.
+	 * The wifly device has to be in firmware mode for this command.
+	 * @param timeValue pointer to a posix tm struct containing the new time
+	 */
 	FwCmdSetRtc(const tm& timeValue) : FwCmdSimple(SET_RTC, sizeof(rtc_time))
+	{
+		SetTime(timeValue);
+	};
+private:
+	void SetTime(const tm& timeValue)
 	{
 		mReqFrame.data.set_rtc.tm_sec  = (uns8) timeValue.tm_sec;
 		mReqFrame.data.set_rtc.tm_min  = (uns8) timeValue.tm_min;
