@@ -84,6 +84,11 @@ public:
 		mReqFrame.data.wait.waitTmms = htons(std::max((uint16_t)1, waitTime));		
 	};
 
+	/**
+	 * Injects a wait command into the wifly script controller.
+	 * This causes the script processing to wait before executing the next command for the specified duration
+	 * @param waitTime in hundreths of a second
+	 */
 	FwCmdWait(uint16_t waitTime) : FwCmdScript(WAIT, sizeof(cmd_wait)) {
 		mReqFrame.data.wait.waitTmms = htons(std::max((uint16_t)1, waitTime));
 	};
@@ -102,6 +107,9 @@ public:
 	};
 };
 
+/**
+ * Wipe all commands from the WyLight script controller
+ */
 struct FwCmdClearScript : public FwCmdSimple
 {
 	FwCmdClearScript(void) : FwCmdSimple(CLEAR_SCRIPT) {};
@@ -144,6 +152,10 @@ struct FwCmdLoopOff : public FwCmdScript
 		mReqFrame.data.loopEnd.numLoops = (uint8_t)numLoops;		
 	};
 
+	/**
+	 * Injects a LoopOff command into the wifly script controller
+	 * @param numLoops number of rounds before termination of the loop, use 0 for infinite loops. To terminate an infinite loop you have to send a \<FwCmdClearScript\>
+	 */
 	FwCmdLoopOff(uint8_t numLoops = 0) : FwCmdScript(LOOP_OFF, sizeof(cmd_loop_end)) {
 		mReqFrame.data.loopEnd.numLoops = numLoops;
 	};
@@ -153,6 +165,9 @@ struct FwCmdLoopOff : public FwCmdScript
 	};
 };
 
+/**
+ * Injects a LoopOn command into the wifly script controller
+ */
 struct FwCmdLoopOn : public FwCmdScript
 {
 	static const std::string TOKEN;
@@ -165,14 +180,34 @@ struct FwCmdLoopOn : public FwCmdScript
 	};
 };
 
-class FwCmdSetColorDirect : public FwCmdSimple
+struct FwCmdSetColorDirect : public FwCmdSimple
 {
-public:
-	FwCmdSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) : FwCmdSimple(SET_COLOR_DIRECT, sizeof(cmd_set_color_direct)) {
-		static const size_t maxBufferLength = NUM_OF_LED * 3;
-		bufferLength = std::min(bufferLength, maxBufferLength);
-		memcpy(mReqFrame.data.set_color_direct.ptr_led_array, pBuffer, bufferLength);
-		memset(mReqFrame.data.set_color_direct.ptr_led_array + bufferLength, 0, maxBufferLength - bufferLength);
+	/**
+	 * Sets all leds with same color directly. This doesn't affect the WyLight script controller
+	 * @param argb is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff) f.e.
+	 *        black(  0,  0,  0) as argb is 0xff000000
+	 *        green(  0,255,  0) as argb is 0xff00ff00
+	 *        white(255,255,255) as argb is 0xffffffff
+	 * @param addr bitmask of leds which should be effected by this command, set bit to 1 to affect the led, default 0xffffffff
+	 */
+	FwCmdSetColorDirect(uint32_t argb, uint32_t addr) : FwCmdSimple(SET_COLOR_DIRECT, sizeof(cmd_set_color_direct))
+	{
+		const uint8_t red = (uint8_t)(argb >> 16);
+		const uint8_t green = (uint8_t)(argb >> 8);
+		const uint8_t blue = (uint8_t)argb;
+		mReqFrame.data.set_color_direct.Set(red, green, blue, addr);
+	};
+		
+	/**
+	 * Sets all leds with different colors directly. This doesn't affect the WyLight script controller
+	 * Example: to set the first led to yellow and the second to blue and all others to off use a \<pBuffer\> like this:
+	 * pBuffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6;
+	 * @param pBuffer containing continouse rgb values r1g1b1r2g2b2...r32g32b32
+	 * @param bufferLength number of bytes in \<pBuffer\> usally 32 * 3 bytes
+	 */
+	FwCmdSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) : FwCmdSimple(SET_COLOR_DIRECT, sizeof(cmd_set_color_direct))
+	{
+		mReqFrame.data.set_color_direct.Set(pBuffer, bufferLength);
 	};
 };
 
@@ -183,9 +218,20 @@ struct FwCmdSetFade : public FwCmdScript
 		WiflyColor addr, argb;
 		uint16_t fadeTime;
 		bool parallelFade;
-		is >> addr >> argb >> parallelFade >> fadeTime;
+		is >> addr >> argb >> fadeTime >> parallelFade;
 		mReqFrame.data.set_fade.Set(addr.argb(), argb.argb(), (uint8_t)parallelFade, fadeTime);
 	};
+
+	/**
+	 * Injects a fade command into the wifly script controller
+	 * @param argb is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff) f.e.
+	 *        black(  0,  0,  0) as argb is 0xff000000
+	 *        green(  0,255,  0) as argb is 0xff00ff00
+	 *        white(255,255,255) as argb is 0xffffffff
+	 * @param fadeTime in hundreths of a second. Use 0 to set color immediately, default = 0
+	 * @param addr bitmask of leds which should be effected by this command, set bit to 1 to affect the led, default 0xffffffff
+	 * @param parallelFade if true other fades are allowed in parallel with this fade
+	 */
 	FwCmdSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade = false)
 	: FwCmdScript(SET_FADE, sizeof(cmd_set_fade)) {
 		mReqFrame.data.set_fade.Set(addr, argb, (uint8_t)parallelFade, fadeTime);	
@@ -204,10 +250,19 @@ struct FwCmdSetGradient : public FwCmdScript
 		WiflyColor argb_1, argb_2;
 		uint16_t fadeTime;
 		int parallel, length, offset;	
-		is >> argb_1 >> argb_2 >> parallel >> offset >> length >> fadeTime;
+		is >> argb_1 >> argb_2 >> fadeTime >> offset >> length >> parallel;
 		mReqFrame.data.set_gradient.Set(argb_1.argb(), argb_2.argb(), parallel, (uint8_t)offset, (uint8_t)length, fadeTime);
 	};
 
+  /**
+	 * Injects a gradient command into the wifly script controller
+	 * @param argb_1 is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff). This is the start color for the gradient.
+	 * @param argb_2 is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff). This is the end color for the gradient.
+	 * @param fadeTime in hundreths of a second. Use 0 to set color immediately, default = 0
+	 * @param parallelFade if true other fades are allowed in parallel with this fade
+	 * @param length is the number of led's from startposition to endposition
+	 * @param offset can be used to move the startposition of the gradient on the ledstrip
+	 */
 	FwCmdSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0) : FwCmdScript(SET_GRADIENT, sizeof(cmd_set_gradient)) {
 
 		mReqFrame.data.set_gradient.Set(argb_1, argb_2, parallelFade, offset, length, fadeTime);
@@ -221,7 +276,30 @@ struct FwCmdSetGradient : public FwCmdScript
 
 struct FwCmdSetRtc : public FwCmdSimple
 {
+	/**
+	 * Sets the rtc clock of the wifly device to the current time.
+	 * The wifly device has to be in firmware mode for this command.
+	 */
+	FwCmdSetRtc(void) : FwCmdSimple(SET_RTC, sizeof(rtc_time))
+	{
+		tm timeinfo;
+		time_t rawtime;
+		rawtime = time(NULL);
+		localtime_r(&rawtime, &timeinfo);
+		SetTime(timeinfo);
+	}
+	
+	/**
+	 * Sets the rtc clock of the wifly device to the specified time.
+	 * The wifly device has to be in firmware mode for this command.
+	 * @param timeValue pointer to a posix tm struct containing the new time
+	 */
 	FwCmdSetRtc(const tm& timeValue) : FwCmdSimple(SET_RTC, sizeof(rtc_time))
+	{
+		SetTime(timeValue);
+	};
+private:
+	void SetTime(const tm& timeValue)
 	{
 		mReqFrame.data.set_rtc.tm_sec  = (uns8) timeValue.tm_sec;
 		mReqFrame.data.set_rtc.tm_min  = (uns8) timeValue.tm_min;
@@ -233,6 +311,9 @@ struct FwCmdSetRtc : public FwCmdSimple
 	};
 };
 
+/**
+ * Stops firmware and script controller execution and start the bootloader of the wifly device
+ */
 struct FwCmdStartBl : public FwCmdSimple
 {
 	FwCmdStartBl(void) : FwCmdSimple(START_BL) {};
