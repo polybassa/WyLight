@@ -560,11 +560,11 @@ class ControlCmdSetFade : public WiflyControlCmd
 	public:
 		ControlCmdSetFade(void) : WiflyControlCmd(
 				string("setfade"),
-				string(" <addr> <rgb> <time>'\n")
+				string(" <addr> <rgb> <time> <parallel>'\n")
 			+ string("    <addr> hex bitmask, which leds should be set to the new color\n")
 			+ string("    <rgb> hex rgb value of the new color f.e. red: ff0000\n")
 			+ string("    <time> the number of ten milliseconds the fade should take")
-			+ string("    <parallelFade> 1 to allow parallel fades, 0 to disable")) {};
+			+ string("    <parallel> 1 to allow parallel fades, 0 to disable")) {};
 
 		virtual void Run(WyLight::Control& control) const {
 			cout << "Parsing and transmitting command set fade... ";
@@ -577,10 +577,13 @@ class ControlCmdSetGradient : public WiflyControlCmd
 public:
 	ControlCmdSetGradient(void) : WiflyControlCmd(
 		  string("setgradient"),
-		  string(" <rgb_1> <rgb_2> <time>'\n")
+		  string(" <rgb_1> <rgb_2> <time> <offset> <num_leds> <parallel>'\n")
 		  + string("    <rgb_1> hex rgb value of the start color f.e. green: 00ff00\n")
 		  + string("    <rgb_2> hex rgb value of the end color f.e. red: ff0000\n")
-		  + string("    <time> the number of ten milliseconds the fade should take")) {};
+		  + string("    <time> the number of ten milliseconds the fade should take")
+		  + string("    <offset> position of the first led")
+		  + string("    <num_leds> position of the last led - <offset>")
+			+ string("    <parallel> 1 to allow parallel fades, 0 to disable")) {};
 				
 				virtual void Run(WyLight::Control& control) const {
 					cout << "Parsing and transmitting command set gradient... ";
