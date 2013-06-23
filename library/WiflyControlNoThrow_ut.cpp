@@ -141,8 +141,6 @@ std::string Control::FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError
 
 std::string Control::FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
 
-void Control::FwSetColorDirect(const std::list<uint8_t> buffer) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
-
 Control& Control::operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	throwExceptions();
@@ -159,7 +157,7 @@ size_t ut_WiflyControlNoThrow_FwFunctions(void)
 	
 	std::string tempStr = "";
 	tm tempTime;
-	std::list<uint8_t> buffer;
+	std::vector<uint8_t> buffer;
 	
 	for( auto e : mError)
 	{

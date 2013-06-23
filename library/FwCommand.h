@@ -180,14 +180,34 @@ struct FwCmdLoopOn : public FwCmdScript
 	};
 };
 
-class FwCmdSetColorDirect : public FwCmdSimple
+struct FwCmdSetColorDirect : public FwCmdSimple
 {
-public:
-	FwCmdSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) : FwCmdSimple(SET_COLOR_DIRECT, sizeof(cmd_set_color_direct)) {
-		static const size_t maxBufferLength = NUM_OF_LED * 3;
-		bufferLength = std::min(bufferLength, maxBufferLength);
-		memcpy(mReqFrame.data.set_color_direct.ptr_led_array, pBuffer, bufferLength);
-		memset(mReqFrame.data.set_color_direct.ptr_led_array + bufferLength, 0, maxBufferLength - bufferLength);
+	/**
+	 * Sets all leds with same color directly. This doesn't affect the WyLight script controller
+	 * @param argb is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff) f.e.
+	 *        black(  0,  0,  0) as argb is 0xff000000
+	 *        green(  0,255,  0) as argb is 0xff00ff00
+	 *        white(255,255,255) as argb is 0xffffffff
+	 * @param addr bitmask of leds which should be effected by this command, set bit to 1 to affect the led, default 0xffffffff
+	 */
+	FwCmdSetColorDirect(uint32_t argb, uint32_t addr) : FwCmdSimple(SET_COLOR_DIRECT, sizeof(cmd_set_color_direct))
+	{
+		const uint8_t red = (uint8_t)(argb >> 16);
+		const uint8_t green = (uint8_t)(argb >> 8);
+		const uint8_t blue = (uint8_t)argb;
+		mReqFrame.data.set_color_direct.Set(red, green, blue, addr);
+	};
+		
+	/**
+	 * Sets all leds with different colors directly. This doesn't affect the WyLight script controller
+	 * Example: to set the first led to yellow and the second to blue and all others to off use a \<pBuffer\> like this:
+	 * pBuffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6;
+	 * @param pBuffer containing continouse rgb values r1g1b1r2g2b2...r32g32b32
+	 * @param bufferLength number of bytes in \<pBuffer\> usally 32 * 3 bytes
+	 */
+	FwCmdSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) : FwCmdSimple(SET_COLOR_DIRECT, sizeof(cmd_set_color_direct))
+	{
+		mReqFrame.data.set_color_direct.Set(pBuffer, bufferLength);
 	};
 };
 

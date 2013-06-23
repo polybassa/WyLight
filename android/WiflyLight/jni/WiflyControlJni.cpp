@@ -111,27 +111,27 @@ jboolean Java_biz_bruenn_WyLight_WiflyControl_ConfSetWlan(JNIEnv* env, jobject r
 
 jboolean Java_biz_bruenn_WyLight_WiflyControl_FwClearScript(JNIEnv* env, jobject ref, jlong pNative)
 {
-	TrySend(env, reinterpret_cast<Control*>(pNative), std::move(FwCmdClearScript{}));
+	TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdClearScript{});
 }
 
 jboolean Java_biz_bruenn_WyLight_WiflyControl_FwLoopOff(JNIEnv* env, jobject ref, jlong pNative, jbyte numLoops)
 {
-	TrySend(env, reinterpret_cast<Control*>(pNative), std::move(FwCmdLoopOff{(uint8_t)numLoops}));
+	TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdLoopOff{(uint8_t)numLoops});
 }
 
 jboolean Java_biz_bruenn_WyLight_WiflyControl_FwLoopOn(JNIEnv* env, jobject ref, jlong pNative)
 {
-	TrySend(env, reinterpret_cast<Control*>(pNative), std::move(FwCmdLoopOn{}));
+	TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdLoopOn{});
 }
 
 jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetColor(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr)
 {
-	TRY_CATCH_RETURN_BOOL(reinterpret_cast<Control*>(pNative)->FwSetColorDirect(argb, addr));
+	TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdSetColorDirect{argb, addr});
 }
 
 jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetFade(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr, jshort fadeTime)
 {
-	return TrySend(env, reinterpret_cast<Control*>(pNative), std::move(FwCmdSetFade{(uint32_t)argb, (uint16_t)fadeTime, (uint32_t)addr, false}));
+	return TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdSetFade{(uint32_t)argb, (uint16_t)fadeTime, (uint32_t)addr, false});
 }
 
 void Java_biz_bruenn_WyLight_WiflyControl_release(JNIEnv* env, jobject ref, jlong pNative)

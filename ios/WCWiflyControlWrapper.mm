@@ -175,11 +175,9 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)setColorDirect:(const uint8_t*)pointerBuffer bufferLength:(size_t)length
 {
-	std::list<uint8_t> buffer;
-	for(size_t i = 0; i < length; i++)
-	{
-		buffer.insert(buffer.end(), *pointerBuffer++);
-	}
+	std::vector<uint8_t> buffer;
+	buffer.reserve(length);
+	memcpy(buffer.data(), pointerBuffer, length);
 	mCmdQueue->push_back(std::make_tuple(false,
 										  std::bind(&WyLight::ControlNoThrow::FwSetColorDirect, std::ref(*mControl), buffer),
 										  0));

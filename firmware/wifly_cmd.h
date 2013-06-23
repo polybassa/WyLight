@@ -134,6 +134,32 @@ struct __attribute__((__packed__)) cmd_set_color_direct {
 	uns8 ptr_led_array;
 #else
 	uns8 ptr_led_array[NUM_OF_LED * 3];
+#ifdef __cplusplus
+	void Set(const uint8_t red, const uint8_t green, const uint8_t blue, const uint32_t addr)
+	{
+		memset(ptr_led_array, 0, sizeof(ptr_led_array));
+		uint8_t* pCur = ptr_led_array;
+		for(uint32_t mask = 0x1; mask > 0; mask = mask << 1) {
+			static_assert(sizeof(mask) * 8 * 3 == sizeof(ptr_led_array),
+				"This trick only works if the mask field overflows to zero exactly with the last led");
+			if(addr & mask) {
+				*pCur = red;
+				*(++pCur) = green;
+				*(++pCur) = blue;
+				++pCur;
+			} else {
+				pCur += 3;
+			}
+		}
+	};
+
+	void Set(const uint8_t* pBuffer, size_t bufferLength)
+	{
+		bufferLength = std::min(bufferLength, sizeof(ptr_led_array));
+		memcpy(ptr_led_array, pBuffer, bufferLength);
+		memset(ptr_led_array + bufferLength, 0, sizeof(ptr_led_array) - bufferLength);
+	};
+#endif
 #endif
 };
 

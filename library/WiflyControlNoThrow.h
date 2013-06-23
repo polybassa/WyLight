@@ -307,7 +307,7 @@ class ControlNoThrow
 			<BR><B>SCRIPT_FULL</B> if script buffer in PIC firmware is full and request couldn't be executed
 			<BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
-		uint32_t FwSetColorDirect(const std::list<uint8_t> buffer);
+		uint32_t FwSetColorDirect(const std::vector<uint8_t> buffer);
 		
 		/**
 		 * Injects a fade command into the wifly script controller

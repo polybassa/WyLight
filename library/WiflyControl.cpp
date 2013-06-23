@@ -734,58 +734,17 @@ void Control::FwSend(FwCommand& cmd) const throw (ConnectionTimeout, FatalError,
 	} while (0 < --numCrcRetries);
 	throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": Too many retries");
 }
-	
-
-void Control::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	*this << FwCmdSetColorDirect{pBuffer, bufferLength};
-}
-	
-void Control::FwSetColorDirect(const std::list<uint8_t> buffer) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	uint8_t mBuffer[NUM_OF_LED * 3];
-	size_t count = 0;
-	for(auto i = buffer.begin(); i != buffer.end(); i++)
-	{
-		if(count >= NUM_OF_LED * 3) break;
-		mBuffer[count++] = *i;
-	}
-	FwSetColorDirect(mBuffer, count);
-}
-
-void Control::FwSetColorDirect(const uint32_t argb, const uint32_t addr) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	const uint8_t red = (uint8_t)(argb >> 16);
-	const uint8_t green = (uint8_t)(argb >> 8);
-	const uint8_t blue = (uint8_t)argb;
-	uint8_t buffer[3*NUM_OF_LED];
-	memset(buffer, 0, sizeof(buffer));
-	uint8_t* pCur = buffer;
-	for(uint32_t mask = 0x1; mask > 0; mask = mask << 1) {
-		static_assert(sizeof(mask) * 8 == NUM_OF_LED,
-				"This trick only works if the mask field overflows to zero exactly with the last led");
-		if(addr & mask) {
-			*pCur = red;
-			*(++pCur) = green;
-			*(++pCur) = blue;
-			++pCur;
-		} else {
-			pCur += 3;
-		}
-	}
-	*this << FwCmdSetColorDirect{buffer, sizeof(buffer)};
-}
 
 void Control::FwStressTest(void)
 {	
-	*this << std::move(FwCmdClearScript{});
+	*this << FwCmdClearScript{};
 
 	uns8 ledArr[NUM_OF_LED * 3];
 	uns8 color = 0;
 	while(true){
 		color++;
 		std::fill_n(ledArr, sizeof(ledArr), color);
-		FwSetColorDirect(ledArr, sizeof(ledArr));
+		*this << FwCmdSetColorDirect{ledArr, sizeof(ledArr)};
 	}
 }
 
