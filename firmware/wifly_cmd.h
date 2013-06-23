@@ -80,7 +80,7 @@ struct __attribute__((__packed__)) cmd_set_fade {
 	std::ostream& Write(std::ostream& out, size_t& indentation) const {
 		const uint32_t addrVal = addr[3] << 24 | addr[2] << 16 | addr[1] << 8 | addr[0];
 		const uint32_t argbVal = red << 16 | green << 8 | blue;
-		return out << "0x" << std::hex << addrVal << " 0x" << std::hex << argbVal << ' ' << std::dec << (int)parallelFade << ' ' << ntohs(fadeTmms);
+		return out << "0x" << std::hex << addrVal << " 0x" << std::hex << argbVal << ' ' << std::dec << ntohs(fadeTmms) << ' ' << (int)parallelFade;
 	};
 #endif /* #ifdef __cplusplus */
 };

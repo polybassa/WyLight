@@ -545,7 +545,7 @@ size_t ut_WiflyControl_FwSetFade_1(void)
 	Control testee(0, 0);
 	
 	// set color
-	testee.FwSetFade("ff00ff");
+	testee << FwCmdSetFade{0xffff00ff};
 	TraceBuffer(ZONE_INFO, &g_SendFrame, sizeof(cmd_set_fade) + 1, "%02x ", "IS  :");
 	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, sizeof(cmd_set_fade) + 1, "%02x ", "SOLL:");
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, sizeof(cmd_set_fade) + 1));
@@ -573,7 +573,7 @@ size_t ut_WiflyControl_FwSetFade_2(void)
 	Control testee(0, 0);
 	
 	// set color
-	testee.FwSetFade("112233", 1000, "11223344", true);
+	testee << FwCmdSetFade{0xff112233, 1000, 0x11223344, true};
 	TraceBuffer(ZONE_INFO, &g_SendFrame, sizeof(cmd_set_fade) + 1, "%02x ", "IS  :");
 	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, sizeof(cmd_set_fade) + 1, "%02x ", "SOLL:");
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, sizeof(cmd_set_fade) + 1));

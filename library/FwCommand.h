@@ -183,9 +183,20 @@ struct FwCmdSetFade : public FwCmdScript
 		WiflyColor addr, argb;
 		uint16_t fadeTime;
 		bool parallelFade;
-		is >> addr >> argb >> parallelFade >> fadeTime;
+		is >> addr >> argb >> fadeTime >> parallelFade;
 		mReqFrame.data.set_fade.Set(addr.argb(), argb.argb(), (uint8_t)parallelFade, fadeTime);
 	};
+
+	/**
+	 * Injects a fade command into the wifly script controller
+	 * @param argb is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff) f.e.
+	 *        black(  0,  0,  0) as argb is 0xff000000
+	 *        green(  0,255,  0) as argb is 0xff00ff00
+	 *        white(255,255,255) as argb is 0xffffffff
+	 * @param fadeTime in hundreths of a second. Use 0 to set color immediately, default = 0
+	 * @param addr bitmask of leds which should be effected by this command, set bit to 1 to affect the led, default 0xffffffff
+	 * @param parallelFade if true other fades are allowed in parallel with this fade
+	 */
 	FwCmdSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade = false)
 	: FwCmdScript(SET_FADE, sizeof(cmd_set_fade)) {
 		mReqFrame.data.set_fade.Set(addr, argb, (uint8_t)parallelFade, fadeTime);	

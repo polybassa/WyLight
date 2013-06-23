@@ -301,40 +301,7 @@ class Control
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
 		void FwSetColorDirect(uint32_t argb, uint32_t addr) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-	
-		/**
-		 * Injects a fade command into the wifly script controller
-		 * @param argb is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff) f.e.
-		 *        black(  0,  0,  0) as argb is 0xff000000
-		 *        green(  0,255,  0) as argb is 0xff00ff00
-		 *        white(255,255,255) as argb is 0xffffffff
-		 * @param fadeTime in hundreths of a second. Use 0 to set color immediately, default = 0
-		 * @param addr bitmask of leds which should be effected by this command, set bit to 1 to affect the led, default 0xffffffff
-		 * @param parallelFade if true other fades are allowed in parallel with this fade
-		 * @throw ConnectionTimeout if response timed out
-		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
-		 */
-		void FwSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade = false) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-
-		/**
-		 * Injects a fade command into the wifly script controller
-		 * @param rgb is a hex string representation of a rgb value without leading '0x'
-		 *        black "0"
-		 *        green "ff00"
-		 *        white "ffffff"
-		 * @param fadeTime in hundreths of a second. Use 0 to set color immediately, default = 0
-		 * @param addr is a hex string representation of a 32 bit mask without leading '0x' of leds which should be effected by this comman.
-		 *        all leds          "ffffffff" (default)
-		 *        first three leds  "7"
-		 *        only the last led "80000000"
-		 * @param parallelFade if true other fades are allowed in parallel with this fade
-		 * @throw ConnectionTimeout if response timed out
-		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
-		 */
-		void FwSetFade(const std::string& rgb, uint16_t fadeTime = 0, const std::string& addr = LEDS_ALL, bool parallelFade = false) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-	
+		
 	   /**
 		* Injects a gradient command into the wifly script controller
 		* @param argb_1 is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff). This is the start color for the gradient.

@@ -38,6 +38,17 @@ void ThrowJniException(JNIEnv* env, const FatalError& e) {
 		ThrowJniException(env, e); \
 	}
 
+jboolean TrySend(JNIEnv* env, Control* pCtrl, FwCommand&& cmd)
+{
+	assert(pCtrl);
+	try {
+		*pCtrl << std::move(cmd);
+		return true;
+	} catch(FatalError& e) {
+		ThrowJniException(env, e);
+	}
+}
+
 extern "C" {
 jlong Java_biz_bruenn_WyLight_BroadcastReceiver_create(JNIEnv* env, jobject ref, jstring path)
 {
@@ -120,7 +131,7 @@ jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetColor(JNIEnv* env, jobject re
 
 jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetFade(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr, jshort fadeTime)
 {
-	TRY_CATCH_RETURN_BOOL(reinterpret_cast<Control*>(pNative)->FwSetFade(argb, fadeTime, addr, false));
+	return TrySend(env, reinterpret_cast<Control*>(pNative), std::move(FwCmdSetFade{argb, fadeTime, addr, false}));
 }
 
 void Java_biz_bruenn_WyLight_WiflyControl_release(JNIEnv* env, jobject ref, jlong pNative)

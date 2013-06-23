@@ -791,16 +791,6 @@ void Control::FwSetColorDirect(const uint32_t argb, const uint32_t addr) throw (
 	*this << FwCmdSetColorDirect{buffer, sizeof(buffer)};
 }
 
-void Control::FwSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	*this << FwCmdSetFade{argb, fadeTime, addr, parallelFade};
-}
-
-void Control::FwSetFade(const string& rgb, uint16_t fadeTime, const string& addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	FwSetFade(0xff000000 | WiflyColor::ToARGB(rgb), fadeTime, WiflyColor::ToARGB(addr), parallelFade);
-}
-
 void Control::FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	*this << FwCmdSetGradient{argb_1, argb_2, fadeTime, parallelFade, length, offset};
@@ -871,7 +861,8 @@ Control& Control::operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalErr
 
 Control& Control::operator<<(FwCommand& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	return *this << std::move(cmd);
+	this->FwSend(cmd);
+	return *this;;
 }
 
 
@@ -884,7 +875,7 @@ void Control::FwTest(void)
 	for(size_t i = 0; i < 100; ++i)
 	{
 		color = ((color & 0xff) << 24) | (color >> 8);
-		FwSetFade(color);
+		*this << std::move(FwCmdSetFade{color});
 		nanosleep(&sleepTime, NULL);
 	}
 #else

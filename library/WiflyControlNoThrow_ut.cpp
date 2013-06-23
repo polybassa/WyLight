@@ -60,6 +60,17 @@ static void throwExceptions()
 	}
 }
 
+
+
+const size_t FwCmdScript::INDENTATION_MAX;
+const char FwCmdScript::INDENTATION_CHARACTER;
+
+const std::string FwCmdSetFade::TOKEN("fade");
+const std::string FwCmdSetGradient::TOKEN("gradient");
+const std::string FwCmdLoopOn::TOKEN("loop");
+const std::string FwCmdLoopOff::TOKEN("loop_off");
+const std::string FwCmdWait::TOKEN("wait");
+
 void Control::BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError){ throwExceptions(); }
 
 void Control::BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError){throwExceptions(); }
@@ -138,10 +149,6 @@ void Control::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferF
 
 void Control::FwSetColorDirect(const std::list<uint8_t> buffer) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
-void Control::FwSetFade(const std::string& rgb, uint16_t fadeTime, const std::string& addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
-
-void Control::FwSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
-
 void Control::FwSetRtc(const tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
 
 void Control::FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); }
@@ -151,6 +158,7 @@ void Control::FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime,
 Control& Control::operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	throwExceptions();
+	return *this;
 }
 
 size_t ut_WiflyControlNoThrow_FwFunctions(void)

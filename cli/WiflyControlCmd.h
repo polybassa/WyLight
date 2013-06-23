@@ -553,16 +553,12 @@ class ControlCmdSetFade : public WiflyControlCmd
 				string(" <addr> <rgb> <time>'\n")
 			+ string("    <addr> hex bitmask, which leds should be set to the new color\n")
 			+ string("    <rgb> hex rgb value of the new color f.e. red: ff0000\n")
-			+ string("    <time> the number of ten milliseconds the fade should take")) {};
+			+ string("    <time> the number of ten milliseconds the fade should take")
+			+ string("    <parallelFade> 1 to allow parallel fades, 0 to disable")) {};
 
 		virtual void Run(WyLight::Control& control) const {
-			string addr, color;
-			uint16_t timevalue;
-			cin >> addr;
-			cin >> color;
-			cin >> timevalue;
-			cout << "Transmitting command set fade... ";
-			TRY_CATCH_COUT(control.FwSetFade(color, timevalue, addr, false));
+			cout << "Parsing and transmitting command set fade... ";
+			TRY_CATCH_COUT(control << WyLight::FwCmdSetFade{cin});
 		};
 };
 			
