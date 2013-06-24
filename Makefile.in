@@ -22,13 +22,17 @@ TARGETS+=cli
 MESSAGES="Attention:\n"
 
 ifneq "not_found" "@PIC_CC8E@"
-ifneq "not_found" "@WINE@"
-TARGETS+=pic
+	ifneq "" "@PIC_CC8E@"
+		ifneq "not_found" "@WINE@"
+			TARGETS+=pic
+		else
+			MESSAGES+="install wine and run ./configure again to make pic firmware\n"
+		endif
+	else
+		MESSAGES+="install CC8E.exe from http://www.bknd.com in your home directory and run ./configure again to make pic firmware\n"
+	endif
 else
-MESSAGES+="install wine and run ./configure again to make pic firmware\n"
-endif
-else
-MESSAGES+="install CC8E.exe from http://www.bknd.com and run ./configure again to make pic firmware\n"
+	MESSAGES+="install CC8E.exe from http://www.bknd.com in your home directory and run ./configure again to make pic firmware\n"
 endif
 
 ifneq "not_found" "@GL@"
