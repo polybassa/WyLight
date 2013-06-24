@@ -690,11 +690,6 @@ bool Control::ConfRebootWlanModule(void) const
 	return true;
 }
 
-void Control::FwClearScript(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	*this << FwCmdClearScript{};
-}
-
 std::string Control::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	FwCmdGetCycletime cmd;
@@ -723,16 +718,6 @@ std::string Control::FwGetVersion(void) throw (ConnectionTimeout, FatalError, Sc
 	return cmd.mResponse.ToString();
 }
 
-void Control::FwLoopOff(uint8_t numLoops) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	*this << FwCmdLoopOff{numLoops};
-}
-
-void Control::FwLoopOn(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	*this << FwCmdLoopOn{};
-}
-
 void Control::FwSend(FwCommand& cmd) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	response_frame buffer;
@@ -749,89 +734,17 @@ void Control::FwSend(FwCommand& cmd) const throw (ConnectionTimeout, FatalError,
 	} while (0 < --numCrcRetries);
 	throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": Too many retries");
 }
-	
-
-void Control::FwSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	*this << FwCmdSetColorDirect{pBuffer, bufferLength};
-}
-	
-void Control::FwSetColorDirect(const std::list<uint8_t> buffer) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	uint8_t mBuffer[NUM_OF_LED * 3];
-	size_t count = 0;
-	for(auto i = buffer.begin(); i != buffer.end(); i++)
-	{
-		if(count >= NUM_OF_LED * 3) break;
-		mBuffer[count++] = *i;
-	}
-	FwSetColorDirect(mBuffer, count);
-}
-
-void Control::FwSetColorDirect(const uint32_t argb, const uint32_t addr) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	const uint8_t red = (uint8_t)(argb >> 16);
-	const uint8_t green = (uint8_t)(argb >> 8);
-	const uint8_t blue = (uint8_t)argb;
-	uint8_t buffer[3*NUM_OF_LED];
-	memset(buffer, 0, sizeof(buffer));
-	uint8_t* pCur = buffer;
-	for(uint32_t mask = 0x1; mask > 0; mask = mask << 1) {
-		static_assert(sizeof(mask) * 8 == NUM_OF_LED,
-				"This trick only works if the mask field overflows to zero exactly with the last led");
-		if(addr & mask) {
-			*pCur = red;
-			*(++pCur) = green;
-			*(++pCur) = blue;
-			++pCur;
-		} else {
-			pCur += 3;
-		}
-	}
-	*this << FwCmdSetColorDirect{buffer, sizeof(buffer)};
-}
-
-void Control::FwSetFade(uint32_t argb, uint16_t fadeTime, uint32_t addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	*this << FwCmdSetFade{argb, fadeTime, addr, parallelFade};
-}
-
-void Control::FwSetFade(const string& rgb, uint16_t fadeTime, const string& addr, bool parallelFade) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	FwSetFade(0xff000000 | WiflyColor::ToARGB(rgb), fadeTime, WiflyColor::ToARGB(addr), parallelFade);
-}
-
-void Control::FwSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	*this << FwCmdSetGradient{argb_1, argb_2, fadeTime, parallelFade, length, offset};
-}
-
-
-void Control::FwSetGradient(const string& rgb_1, const string& rgb_2, uint16_t fadeTime, bool parallelFade, uint8_t length, uint8_t offset) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	FwSetGradient(0xff000000 | WiflyColor::ToARGB(rgb_1), 0xff000000 | WiflyColor::ToARGB(rgb_2), fadeTime, parallelFade, length, offset);
-}
-
-void Control::FwSetRtc(const tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	*this << FwCmdSetRtc{timeValue};
-}
-
-void Control::FwSetWait(uint16_t waitTime) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	*this << FwCmdWait{waitTime};
-}
 
 void Control::FwStressTest(void)
 {	
-	FwClearScript();
+	*this << FwCmdClearScript{};
 
 	uns8 ledArr[NUM_OF_LED * 3];
 	uns8 color = 0;
 	while(true){
 		color++;
 		std::fill_n(ledArr, sizeof(ledArr), color);
-		FwSetColorDirect(ledArr, sizeof(ledArr));
+		*this << FwCmdSetColorDirect{ledArr, sizeof(ledArr)};
 	}
 }
 
@@ -871,7 +784,8 @@ Control& Control::operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalErr
 
 Control& Control::operator<<(FwCommand& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	return *this << std::move(cmd);
+	this->FwSend(cmd);
+	return *this;;
 }
 
 void Control::FwTest(void)
@@ -882,7 +796,7 @@ void Control::FwTest(void)
 	for(size_t i = 0; i < 100; ++i)
 	{
 		color = ((color & 0xff) << 24) | (color >> 8);
-		FwSetFade(color);
+		*this << FwCmdSetFade{color};
 		nanosleep(&sleepTime, NULL);
 	}
 #else
@@ -920,10 +834,5 @@ void Control::FwTest(void)
 	FwSetFade(setFadeResp, WiflyColor::BLACK,2000, 0xFFFFFFFF, false);
 	FwLoopOff(loopOffResp, 0);
 #endif
-}
-
-void Control::FwStartBl(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-{
-	*this << FwCmdStartBl{};
 }
 } /* namespace WyLight */

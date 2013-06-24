@@ -1,6 +1,6 @@
 loop
-  gradient 0x112233 0x445566 0 1 2 100
-  fade 0x1234 0x112233 1 100
+  gradient 0x112233 0x445566 100 1 2 0
+  fade 0x1234 0x112233 100 1
   wait 5000
 loop_off 0
 

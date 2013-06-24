@@ -444,7 +444,7 @@ size_t ut_WiflyControl_FwSetColorDirectRedOnly(void)
 	memcpy(expectedOutgoingFrame.data.set_color_direct.ptr_led_array, shortBuffer, sizeof(shortBuffer));
 	memset(expectedOutgoingFrame.data.set_color_direct.ptr_led_array + sizeof(shortBuffer), 0x00, sizeof(cmd_set_color_direct) - sizeof(shortBuffer));
 
-	testee.FwSetColorDirect(shortBuffer, sizeof(shortBuffer));
+	testee << FwCmdSetColorDirect{shortBuffer, sizeof(shortBuffer)};
 
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, sizeof(led_cmd)));
 	TestCaseEnd();
@@ -466,7 +466,7 @@ size_t ut_WiflyControl_FwSetColorDirectThreeLeds(void)
 	memcpy(expectedOutgoingFrame.data.set_color_direct.ptr_led_array, shortBuffer, sizeof(shortBuffer));
 	memset(expectedOutgoingFrame.data.set_color_direct.ptr_led_array + sizeof(shortBuffer), 0x00, sizeof(cmd_set_color_direct) - sizeof(shortBuffer));
 
-	testee.FwSetColorDirect(shortBuffer, sizeof(shortBuffer));
+	testee << FwCmdSetColorDirect{shortBuffer, sizeof(shortBuffer)};
 
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, sizeof(led_cmd)));
 	TestCaseEnd();
@@ -498,7 +498,7 @@ size_t ut_WiflyControl_FwSetColorDirectThreeLeds_2(void)
 	expectedOutgoingFrame.data.set_color_direct.ptr_led_array[7] = 0xff;
 	expectedOutgoingFrame.data.set_color_direct.ptr_led_array[8] = 0x00;
 
-	testee.FwSetColorDirect(argb, addr);
+	testee << FwCmdSetColorDirect{argb, addr};
 
 
 	TraceBuffer(ZONE_INFO, &g_SendFrame, sizeof(led_cmd) + 1, "%02x ", "IS  :");
@@ -520,7 +520,7 @@ size_t ut_WiflyControl_FwSetColorDirectToMany(void)
 	expectedOutgoingFrame.cmd = SET_COLOR_DIRECT;
 	memcpy(expectedOutgoingFrame.data.set_color_direct.ptr_led_array, shortBuffer, NUM_OF_LED * 3);
 
-	testee.FwSetColorDirect(shortBuffer, sizeof(shortBuffer));
+	testee << FwCmdSetColorDirect(shortBuffer, sizeof(shortBuffer));
 
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, sizeof(led_cmd)));
 	TestCaseEnd();
@@ -545,7 +545,7 @@ size_t ut_WiflyControl_FwSetFade_1(void)
 	Control testee(0, 0);
 	
 	// set color
-	testee.FwSetFade("ff00ff");
+	testee << FwCmdSetFade{0xffff00ff};
 	TraceBuffer(ZONE_INFO, &g_SendFrame, sizeof(cmd_set_fade) + 1, "%02x ", "IS  :");
 	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, sizeof(cmd_set_fade) + 1, "%02x ", "SOLL:");
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, sizeof(cmd_set_fade) + 1));
@@ -573,7 +573,7 @@ size_t ut_WiflyControl_FwSetFade_2(void)
 	Control testee(0, 0);
 	
 	// set color
-	testee.FwSetFade("112233", 1000, "11223344", true);
+	testee << FwCmdSetFade{0xff112233, 1000, 0x11223344, true};
 	TraceBuffer(ZONE_INFO, &g_SendFrame, sizeof(cmd_set_fade) + 1, "%02x ", "IS  :");
 	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, sizeof(cmd_set_fade) + 1, "%02x ", "SOLL:");
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, sizeof(cmd_set_fade) + 1));
@@ -599,7 +599,7 @@ size_t ut_WiflyControl_FwSetGradient(void)
 	TestCaseBegin();
 	Control testee(0, 0);
 	
-	testee.FwSetGradient("112233","332211", 1000, true, 10, 127);
+	testee << FwCmdSetGradient{0xff112233,0xff332211, 1000, true, 10, 127};
 	TraceBuffer(ZONE_INFO, &g_SendFrame, sizeof(cmd_set_gradient) + 1, "%02x ", "IS  :");
 	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, sizeof(cmd_set_gradient) + 1, "%02x ", "SOLL:");
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, sizeof(cmd_set_gradient) + 1));
@@ -617,7 +617,7 @@ size_t ut_WiflyControl_FwSetWait(void)
 	TestCaseBegin();
 	Control testee(0, 0);
 	
-	testee.FwSetWait(1000);
+	testee << FwCmdWait{1000};
 	TraceBuffer(ZONE_INFO, &g_SendFrame, sizeof(cmd_wait) + 1, "%02x ", "IS  :");
 	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, sizeof(cmd_wait) + 1, "%02x ", "SOLL:");
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, sizeof(cmd_wait)+ 1));
@@ -646,7 +646,7 @@ size_t ut_WiflyControl_FwSetRtc(void)
 	TestCaseBegin();
 	Control testee(0, 0);
 	
-	testee.FwSetRtc(timeinfo);
+	testee << FwCmdSetRtc{timeinfo};
 	TraceBuffer(ZONE_INFO, &g_SendFrame, sizeof(rtc_time)+1, "%02x ", "IS  :");
 	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, sizeof(rtc_time)+1, "%02x ", "SOLL:");
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, sizeof(rtc_time)+ 1));
@@ -662,7 +662,7 @@ size_t ut_WiflyControl_FwClearScript(void)
 	TestCaseBegin();
 	Control testee(0, 0);
 	
-	testee.FwClearScript();
+	testee << FwCmdClearScript{};
 	TraceBuffer(ZONE_INFO, &g_SendFrame, 1, "%02x ", "IS  :");
 	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, 1, "%02x ", "SOLL:");
 	CHECK(0 == memcmp(&g_SendFrame, &expectedOutgoingFrame, 1));
@@ -761,7 +761,7 @@ size_t ut_WiflyControl_FwLoopOff(void)
 	TestCaseBegin();
 	Control testee(0, 0);
 	
-	testee.FwLoopOff(100);
+	testee << FwCmdLoopOff{100};
 	
 	TraceBuffer(ZONE_INFO, &g_SendFrame, 1, "%02x ", "IS  :");
 	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, 1, "%02x ", "SOLL:");
@@ -778,7 +778,7 @@ size_t ut_WiflyControl_FwLoopOn(void)
 	TestCaseBegin();
 	Control testee(0, 0);
 	
-	testee.FwLoopOn();
+	testee << FwCmdLoopOn{};
 	
 	TraceBuffer(ZONE_INFO, &g_SendFrame, 1, "%02x ", "IS  :");
 	TraceBuffer(ZONE_INFO, &expectedOutgoingFrame, 1, "%02x ", "SOLL:");
