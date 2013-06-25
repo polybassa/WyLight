@@ -20,6 +20,7 @@
 #define _WIFLYCONTROL_NOTHROW_H_
 #include "WiflyControl.h"
 #include <functional>
+#include <vector>
 
 namespace WyLight {
 
