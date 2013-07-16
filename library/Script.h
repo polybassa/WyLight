@@ -26,20 +26,17 @@
 
 namespace WyLight {
 
-class Script
+class Script : public std::list<FwCmdScript>
 {
-	std::list<const FwCmdScript*> mList;
+	
 
 public:
-	static void Read(const std::string& filename, Script& newScript);
-	static void Write(const std::string& filename, const Script& newScript);
+	static void deserialize(const std::string& filename, Script& newScript);
+	static void serialize(const std::string& filename, const Script& newScript);
 
 	Script(const std::string& filename);
 	~Script(void);
-	void Add(const FwCmdScript* pCmd);
-	std::list<const FwCmdScript*>::const_iterator Begin() const;
-	std::list<const FwCmdScript*>::const_iterator End() const;
-	bool Equals(const Script& ref) const;
+	bool operator ==(const Script& ref) const;
 };
 } /* namespace WyLight */
 #endif /* #ifndef __WyLight__Script__ */

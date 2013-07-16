@@ -26,49 +26,29 @@ static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZON
 
 Script::Script(const std::string& filename)
 {
-	Script::Read(filename, *this);
+	Script::deserialize(filename, *this);
 }
 
 Script::~Script(void)
 {
-	while(!mList.empty()) {
-		const FwCmdScript* pNext = mList.back();
-		mList.pop_back();
-		delete pNext;
-	}
 }
 
-void Script::Add(const FwCmdScript* pCmd)
+bool Script::operator == (const Script& ref) const
 {
-	mList.push_back(pCmd);
-}
-
-std::list<const FwCmdScript*>::const_iterator Script::Begin(void) const
-{
-	return mList.begin();
-}
-
-std::list<const FwCmdScript*>::const_iterator Script::End(void) const
-{
-	return mList.end();
-}
-
-bool Script::Equals(const Script& ref) const
-{
-	if(mList.size() != ref.mList.size()) {
+	if(this->list::size() != ref.list::size()) {
 		return false;
 	}
 
-	auto refIt = ref.Begin();
-	for(auto it = mList.begin(); it != mList.end() && refIt != ref.End(); ++it, ++refIt) {
-		if(!(*it)->Equals(**refIt)) {
+	auto refIt = ref.begin();
+	for(const auto& cmd : *this) {
+		if(cmd != *refIt++) {
 			return false;
 		}
 	}
 	return true;
 }
 
-void Script::Read(const std::string& filename, Script& newScript)
+void Script::deserialize(const std::string& filename, Script& newScript)
 {
 	std::ifstream inFile(filename);
 	if(!inFile.is_open()) {
@@ -79,15 +59,15 @@ void Script::Read(const std::string& filename, Script& newScript)
 	std::string command;
 	while(inFile >> command) {
 		if (0 == command.compare(FwCmdLoopOn::TOKEN)) {
-			newScript.Add(new FwCmdLoopOn());
+			newScript.push_back(FwCmdLoopOn());
 		} else if (0 == command.compare(FwCmdLoopOff::TOKEN)) {
-			newScript.Add(new FwCmdLoopOff(inFile));
+			newScript.push_back(FwCmdLoopOff(inFile));
 		} else if (0 == command.compare(FwCmdWait::TOKEN)) {
-			newScript.Add(new FwCmdWait(inFile));
+			newScript.push_back(FwCmdWait(inFile));
 		} else if (0 == command.compare(FwCmdSetFade::TOKEN)) {
-			newScript.Add(new FwCmdSetFade(inFile));
+			newScript.push_back(FwCmdSetFade(inFile));
 		} else if (0 == command.compare(FwCmdSetGradient::TOKEN)) {
-			newScript.Add(new FwCmdSetGradient(inFile));
+			newScript.push_back(FwCmdSetGradient(inFile));
 		} else {
 			Trace(ZONE_ERROR, "Unknown command '%s'\n", command.c_str());
 			assert(false);
@@ -96,7 +76,7 @@ void Script::Read(const std::string& filename, Script& newScript)
 	inFile.close();
 }
 
-void Script::Write(const std::string& filename, const Script& newScript)
+void Script::serialize(const std::string& filename, const Script& newScript)
 {
 	std::ofstream outFile(filename);
 	if(!outFile.is_open()) {
@@ -106,8 +86,9 @@ void Script::Write(const std::string& filename, const Script& newScript)
 
 	std::string command;
 	size_t identation = 0;
-	for(auto it = newScript.Begin(); it != newScript.End(); ++it) {
-		(*it)->Write(outFile, identation) << '\n';
+	for(const auto& cmd : newScript) {
+		std::cout << typeid(cmd).name() << std::endl;
+		cmd.Write(outFile, identation) << '\n';
 	}
 	outFile.close();
 }
