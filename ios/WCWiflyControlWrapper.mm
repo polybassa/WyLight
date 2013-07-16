@@ -7,7 +7,6 @@
 
 #import "WCWiflyControlWrapper.h"
 #include "WiflyControlNoThrow.h"
-#include <time.h>
 #include <thread>
 #include <mutex>
 #include <functional>
@@ -149,7 +148,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
     float bluePart;
     [newColor getRed:&redPart green:&greenPart blue:&bluePart alpha:nil];
     
-    int sizeColorArray = NUM_OF_LED * 3;
+    const size_t sizeColorArray = NUM_OF_LED * 3;
     
     uint8_t colorArray[sizeColorArray];
     uint8_t *pointer = colorArray;
