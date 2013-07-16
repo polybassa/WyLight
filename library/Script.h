@@ -23,10 +23,11 @@
 
 #include <list>
 #include <string>
+#include <memory>
 
 namespace WyLight {
 
-class Script : public std::list<FwCmdScript>
+class Script : public std::list<std::shared_ptr<FwCmdScript>>
 {
 	
 
@@ -37,6 +38,7 @@ public:
 	Script(const std::string& filename);
 	~Script(void);
 	bool operator ==(const Script& ref) const;
+
 };
 } /* namespace WyLight */
 #endif /* #ifndef __WyLight__Script__ */

@@ -99,7 +99,7 @@ public:
 		mReqFrame.data.wait.waitTmms = htons(std::max((uint16_t)1, waitTime));
 	};
 
-	std::ostream& Write(std::ostream& out, size_t& indentation) const {
+	std::ostream& Write(std::ostream& out, size_t& indentation) const override {
 		return FwCmdScript::Write(out, indentation) << TOKEN << ' ' << std::dec << ntohs(mReqFrame.data.wait.waitTmms);
 	};
 };
@@ -157,7 +157,7 @@ struct FwCmdLoopOff : public FwCmdScript
 		mReqFrame.data.loopEnd.numLoops = numLoops;
 	};
 	
-	std::ostream& Write(std::ostream& out, size_t& indentation) const {
+	std::ostream& Write(std::ostream& out, size_t& indentation) const override {
 		return FwCmdScript::Write(out, --indentation) << TOKEN << ' ' << std::dec << (int)mReqFrame.data.loopEnd.numLoops;
 	};
 };
@@ -170,7 +170,7 @@ struct FwCmdLoopOn : public FwCmdScript
 	static const std::string TOKEN;
 	FwCmdLoopOn(void) : FwCmdScript(LOOP_ON) {};
 	
-	std::ostream& Write(std::ostream& out, size_t& indentation) const {
+	std::ostream& Write(std::ostream& out, size_t& indentation) const override {
 		FwCmdScript::Write(out, indentation) << TOKEN;
 		++indentation;
 		return out;
@@ -234,7 +234,7 @@ struct FwCmdSetFade : public FwCmdScript
 		mReqFrame.data.set_fade.Set(addr, argb, (uint8_t)parallelFade, fadeTime);	
 	};
 	
-	std::ostream& Write(std::ostream& out, size_t& indentation) const {
+	std::ostream& Write(std::ostream& out, size_t& indentation) const override {
 		FwCmdScript::Write(out, indentation) << TOKEN << ' ';
 		return mReqFrame.data.set_fade.Write(out, indentation);
 	};
@@ -265,7 +265,7 @@ struct FwCmdSetGradient : public FwCmdScript
 		mReqFrame.data.set_gradient.Set(argb_1, argb_2, parallelFade, offset, length, fadeTime);
 };
 	
-	std::ostream& Write(std::ostream& out, size_t& indentation) const {
+	std::ostream& Write(std::ostream& out, size_t& indentation) const override {
 		FwCmdScript::Write(out, indentation) << TOKEN << ' ';
 		return mReqFrame.data.set_gradient.Write(out, indentation);
 	};

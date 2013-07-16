@@ -18,6 +18,7 @@
 
 #include "Script.h"
 #include "trace.h"
+#include <memory>
 #include <fstream>
 
 namespace WyLight {
@@ -41,7 +42,7 @@ bool Script::operator == (const Script& ref) const
 
 	auto refIt = ref.begin();
 	for(const auto& cmd : *this) {
-		if(cmd != *refIt++) {
+		if(*cmd != **refIt++) {
 			return false;
 		}
 	}
@@ -59,15 +60,15 @@ void Script::deserialize(const std::string& filename, Script& newScript)
 	std::string command;
 	while(inFile >> command) {
 		if (0 == command.compare(FwCmdLoopOn::TOKEN)) {
-			newScript.push_back(FwCmdLoopOn());
+			newScript.push_back(std::make_shared<FwCmdLoopOn>(FwCmdLoopOn()));
 		} else if (0 == command.compare(FwCmdLoopOff::TOKEN)) {
-			newScript.push_back(FwCmdLoopOff(inFile));
+			newScript.push_back(std::make_shared<FwCmdLoopOff>(FwCmdLoopOff(inFile)));
 		} else if (0 == command.compare(FwCmdWait::TOKEN)) {
-			newScript.push_back(FwCmdWait(inFile));
+			newScript.push_back(std::make_shared<FwCmdWait>(FwCmdWait(inFile)));
 		} else if (0 == command.compare(FwCmdSetFade::TOKEN)) {
-			newScript.push_back(FwCmdSetFade(inFile));
+			newScript.push_back(std::make_shared<FwCmdSetFade>(FwCmdSetFade(inFile)));
 		} else if (0 == command.compare(FwCmdSetGradient::TOKEN)) {
-			newScript.push_back(FwCmdSetGradient(inFile));
+			newScript.push_back(std::make_shared<FwCmdSetGradient>(FwCmdSetGradient(inFile)));
 		} else {
 			Trace(ZONE_ERROR, "Unknown command '%s'\n", command.c_str());
 			assert(false);
@@ -87,8 +88,7 @@ void Script::serialize(const std::string& filename, const Script& newScript)
 	std::string command;
 	size_t identation = 0;
 	for(const auto& cmd : newScript) {
-		std::cout << typeid(cmd).name() << std::endl;
-		cmd.Write(outFile, identation) << '\n';
+		cmd->Write(outFile, identation) << '\n';
 	}
 	outFile.close();
 }

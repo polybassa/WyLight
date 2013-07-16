@@ -19,6 +19,7 @@
 #include "unittest.h"
 #include "Script.h"
 
+
 /**************** includes, classes and functions for wrapping ****************/
 
 using namespace WyLight;
@@ -102,11 +103,11 @@ size_t ut_Script_ReadGood(void)
 	auto nextCmd = newScript.begin();
 	
 	
-	CHECK(refLoop == *nextCmd++);
-	CHECK(refGradient == *nextCmd++);
-	CHECK(refFade == *nextCmd++);
-	CHECK(refWait == *nextCmd++);
-	CHECK(refLoopOff == *nextCmd++);
+	CHECK(refLoop == **nextCmd++);
+	CHECK(refGradient == **nextCmd++);
+	CHECK(refFade == **nextCmd++);
+	CHECK(refWait == **nextCmd++);
+	CHECK(refLoopOff == **nextCmd++);
 	CHECK(nextCmd == newScript.end());
 	TestCaseEnd();
 }
