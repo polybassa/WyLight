@@ -21,7 +21,6 @@
 #define _WIFLYCONTROL_H_
 
 #include <string>
-#include <time.h>
 #include <list>
 #include "ComProxy.h"
 #include "wifly_cmd.h"
@@ -30,6 +29,7 @@
 #include "WiflyControlException.h"
 #include "FwCommand.h"
 #include "FwResponse.h"
+#include "Script.h"
 
 namespace WyLight {
 
@@ -247,6 +247,8 @@ class Control
 	
 		Control& operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 		Control& operator<<(FwCommand& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		Control& operator<<(Script&& script) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		Control& operator<<(Script& script) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 /* ------------------------- VERSION EXTRACT METHODE ------------------------- */
 		/**

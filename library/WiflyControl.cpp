@@ -787,10 +787,28 @@ Control& Control::operator<<(FwCommand& cmd) throw (ConnectionTimeout, FatalErro
 	this->FwSend(cmd);
 	return *this;;
 }
+	
+Control& Control::operator<<(Script&& script) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+{
+	for(FwCmdScript& cmd : script)
+	{
+		this->FwSend(cmd);
+	}
+	return *this;
+}
+
+Control& Control::operator<<(Script& script) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+{
+	for(FwCmdScript& cmd : script)
+	{
+		this->FwSend(cmd);
+	}
+	return *this;
+}
 
 void Control::FwTest(void)
 {
-#if 1
+#if 0
 	static const timespec sleepTime{0, 50000000};
 	uint32_t color = 0xff;
 	for(size_t i = 0; i < 100; ++i)
@@ -800,20 +818,16 @@ void Control::FwTest(void)
 		nanosleep(&sleepTime, NULL);
 	}
 #else
-	SimpleResponse clrResp(CLEAR_SCRIPT);
-	SimpleResponse loopOffResp(LOOP_OFF);
-	SimpleResponse loopOnResp(LOOP_ON);
-	SimpleResponse setFadeResp(SET_FADE);
-	SimpleResponse setWaitResp(WAIT);
-		
-	FwClearScript(clrResp);
+	Script testScript("test.script");
 	
-	WiflyColor ledColor(0xffffffff);
+	testScript.push_front(FwCmdLoopOn());
+	testScript.push_back(FwCmdSetFade(WiflyColor::GREEN, 2000));
+	testScript.push_back(FwCmdSetFade(WiflyColor::RED, 2000));
+	testScript.push_back(FwCmdSetFade(WiflyColor::BLUE, 2000));
+	testScript.push_back(FwCmdLoopOff(5));
 	
-	FwClearScript(clrResp);
-	FwLoopOn(loopOnResp);
-	FwSetFade(setFadeResp, WiflyColor::RED, 2000, 0xFFFFFFFF, false);
-	
+	*this << testScript;
+	/*
 	uint32_t bitMask = 0x01;
 	for(unsigned int i = 0; i < NUM_OF_LED; i++)
 	{
@@ -824,7 +838,7 @@ void Control::FwTest(void)
 		bitMask = bitMask << 1;
 	}
 	
-	FwSetWait(setWaitResp, 30000);
+	testScript.push_back((setWaitResp, 30000);
 	FwSetFade(setFadeResp, WiflyColor::GREEN,2000, 0xFFFFFFFF, false);
 	FwSetFade(setFadeResp, WiflyColor::RED,  2000, 0x000000FF, true);
 	FwSetFade(setFadeResp, WiflyColor::GREEN,2000, 0x0000FF00, true);
@@ -832,7 +846,7 @@ void Control::FwTest(void)
 	FwSetFade(setFadeResp, WiflyColor::WHITE,2000, 0xFF000000, false);
 	FwSetWait(setWaitResp, 2000);
 	FwSetFade(setFadeResp, WiflyColor::BLACK,2000, 0xFFFFFFFF, false);
-	FwLoopOff(loopOffResp, 0);
+	FwLoopOff(loopOffResp, 0);*/
 #endif
 }
 } /* namespace WyLight */
