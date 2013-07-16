@@ -23,8 +23,6 @@
 #include <algorithm>
 #include <cctype>
 #include <sstream>
-#include <thread>
-#include <chrono>
 
 namespace WyLight {
 
@@ -77,7 +75,7 @@ bool TelnetProxy::ExtractStringOfInterest(const std::string& buffer, const std::
 
 bool TelnetProxy::Open(void) const
 {
-	static const std::chrono::milliseconds _300_TMMS(300);
+	static const timespec _300_TMMS = {0, 300000000};
 	static const uint8_t ENTER_CMD_MODE[] = {'$', '$', '$'}; 
 
 	ClearResponse();
@@ -88,8 +86,7 @@ bool TelnetProxy::Open(void) const
 	}
 	
 	// after "$$$" we need to wait at least 250ms to enter command mode
-	std::this_thread::sleep_for(_300_TMMS);
-	
+	nanosleep(&_300_TMMS, NULL);
 
 	if(!Recv("CMD\r\n"))
 	{
