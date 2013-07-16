@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <type_traits>
 
 namespace WyLight {
 
@@ -32,13 +33,22 @@ class FwCommand
 	const size_t mSize;
 protected:
 	struct led_cmd mReqFrame;
-	FwCommand(uint8_t cmd, size_t size = 0) : mSize(1 + size) {	mReqFrame.cmd = cmd; };
+	FwCommand(uint8_t cmd, size_t size = 0) : mSize(1 + size) { memset(&mReqFrame, 0, sizeof(mReqFrame)); mReqFrame.cmd = cmd; };
 	virtual ~FwCommand(void) = default;
 	
 public:
 	const uint8_t* GetData(void) const { return reinterpret_cast<const uint8_t*>(&mReqFrame);	};
 	size_t GetSize(void) const { return mSize; };
 	virtual FwResponse& GetResponse(void) = 0;
+	virtual bool operator == (const FwCommand& ref) const
+	{
+		if(this->GetSize() != ref.GetSize()) return false;
+		return memcmp(this->GetData(), ref.GetData(), std::min(this->GetSize(), ref.GetSize())) == 0;
+	}
+	virtual bool operator != (const FwCommand& ref) const
+	{
+		return !(*this == ref);
+	}
 };
 
 struct FwCmdGet : public FwCommand
@@ -63,10 +73,6 @@ protected:
 public:
 	static const size_t INDENTATION_MAX = 10;
 	static const char INDENTATION_CHARACTER = ' ';
-
-	virtual bool Equals(const FwCmdScript& ref) const {
-		return (typeid(*this) == typeid(ref));
-	};
 
 	virtual	std::ostream& Write(std::ostream& out, size_t& indentation) const {
 		const size_t numCharacters = std::min(INDENTATION_MAX, 2 * indentation);
@@ -93,15 +99,6 @@ public:
 		mReqFrame.data.wait.waitTmms = htons(std::max((uint16_t)1, waitTime));
 	};
 
-	bool Equals(const FwCmdScript& ref) const
-	{
-		if(!FwCmdScript::Equals(ref)) {
-			return false;
-		}
-		auto r = reinterpret_cast<const FwCmdWait&>(ref);
-		return mReqFrame.data.wait.waitTmms == r.mReqFrame.data.wait.waitTmms;
-	};
-	
 	std::ostream& Write(std::ostream& out, size_t& indentation) const {
 		return FwCmdScript::Write(out, indentation) << TOKEN << ' ' << std::dec << ntohs(mReqFrame.data.wait.waitTmms);
 	};
@@ -147,9 +144,9 @@ struct FwCmdLoopOff : public FwCmdScript
 {
 	static const std::string TOKEN;
 	FwCmdLoopOff(std::istream& is) : FwCmdScript(LOOP_OFF, sizeof(cmd_loop_end)) {
-		int numLoops;
+		unsigned int numLoops;
 		is >> numLoops;
-		mReqFrame.data.loopEnd.numLoops = (uint8_t)numLoops;		
+		mReqFrame.data.loopEnd.numLoops = (uint8_t)numLoops;
 	};
 
 	/**
