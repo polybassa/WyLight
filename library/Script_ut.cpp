@@ -25,8 +25,8 @@ using namespace WyLight;
 
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-static const FwCmdSetFade refFade(0x1234, 100, 0x112233, true);
-static const FwCmdSetGradient refGradient(0x112233, 0x445566, false, 1, 2, 100);
+static const FwCmdSetFade refFade(0x112233, 100, 0x1234, true);
+static const FwCmdSetGradient refGradient(0x112233, 0x445566, 100, false, 2, 1);
 static const FwCmdLoopOff refLoopOff(0);
 static const FwCmdLoopOn refLoop;
 static const FwCmdWait refWait(5000);
@@ -84,14 +84,14 @@ void badLoopEnd(void)
 void badWait(void)
 {
 	Script newScript("TestInput.txt");
-	auto nextCmd = newScript.Begin();
+	auto nextCmd = newScript.begin();
 	
-	assert(refLoop.Equals(*(*(nextCmd++))));
-	assert(refGradient.Equals(*(*(nextCmd++))));
-	assert(refFade.Equals(*(*(nextCmd++))));
+	assert(refLoop.equals(*(nextCmd++)));
+	assert(refGradient.equals(*(nextCmd++)));
+	assert(refFade.equals(*(nextCmd++)));
 
 	WaitCmd refWait(5001);
-	assert(!refWait.Equals(*(*(nextCmd++))));
+	assert(!refWait.equals(*(*(nextCmd++))));
 }
 #endif
 
@@ -99,14 +99,15 @@ size_t ut_Script_ReadGood(void)
 {
 	TestCaseBegin();
 	Script newScript("TestInput.txt");
-	auto nextCmd = newScript.Begin();
+	auto nextCmd = newScript.begin();
 	
-	CHECK(refLoop.Equals(*(*(nextCmd++))));
-	CHECK(refGradient.Equals(*(*(nextCmd++))));
-	CHECK(refFade.Equals(*(*(nextCmd++))));
-	CHECK(refWait.Equals(*(*(nextCmd++))));
-	CHECK(refLoopOff.Equals(*(*(nextCmd++))));
-	CHECK(nextCmd == newScript.End());
+	
+	CHECK(refLoop == *nextCmd++);
+	CHECK(refGradient == *nextCmd++);
+	CHECK(refFade == *nextCmd++);
+	CHECK(refWait == *nextCmd++);
+	CHECK(refLoopOff == *nextCmd++);
+	CHECK(nextCmd == newScript.end());
 	TestCaseEnd();
 }
 
@@ -114,9 +115,9 @@ size_t ut_Script_WriteGood(void)
 {
 	TestCaseBegin();
 	Script refScript("TestInput.txt");
-	Script::Write("TestOutput.txt", refScript);
+	Script::serialize("TestOutput.txt", refScript);
 	Script newScript("TestOutput.txt");
-	CHECK(newScript.Equals(refScript));
+	CHECK(newScript == refScript);
 	TestCaseEnd();
 }
 
