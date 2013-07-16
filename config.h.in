@@ -12,17 +12,11 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
-/* Define to 1 if you have the `GL' library (-lGL). */
-#undef HAVE_LIBGL
-
-/* Define to 1 if you have the `GLU' library (-lGLU). */
-#undef HAVE_LIBGLU
-
-/* Define to 1 if you have the `glut' library (-lglut). */
-#undef HAVE_LIBGLUT
-
 /* Define to 1 if you have the `pthread' library (-lpthread). */
 #undef HAVE_LIBPTHREAD
+
+/* Define to 1 if you have the `thread' library (-lthread). */
+#undef HAVE_LIBTHREAD
 
 /* Define to 1 if you have the `localtime_r' function. */
 #undef HAVE_LOCALTIME_R

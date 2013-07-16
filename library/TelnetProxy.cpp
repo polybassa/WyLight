@@ -16,6 +16,11 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
+#include "../config.h"
+#ifndef HAVE_LIBTHREAD
+#define _GLIBCXX_USE_NANOSLEEP
+#endif
+
 #include "TelnetProxy.h"
 #include "timeval.h"
 #include "trace.h"
@@ -23,6 +28,8 @@
 #include <algorithm>
 #include <cctype>
 #include <sstream>
+#include <thread>
+#include <chrono>
 
 namespace WyLight {
 
@@ -75,7 +82,6 @@ bool TelnetProxy::ExtractStringOfInterest(const std::string& buffer, const std::
 
 bool TelnetProxy::Open(void) const
 {
-	static const timespec _300_TMMS = {0, 300000000};
 	static const uint8_t ENTER_CMD_MODE[] = {'$', '$', '$'}; 
 
 	ClearResponse();
@@ -86,7 +92,7 @@ bool TelnetProxy::Open(void) const
 	}
 	
 	// after "$$$" we need to wait at least 250ms to enter command mode
-	nanosleep(&_300_TMMS, NULL);
+	std::this_thread::sleep_for(std::chrono::nanoseconds(300000000));
 
 	if(!Recv("CMD\r\n"))
 	{
