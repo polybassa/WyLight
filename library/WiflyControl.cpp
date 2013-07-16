@@ -790,25 +790,25 @@ Control& Control::operator<<(FwCommand& cmd) throw (ConnectionTimeout, FatalErro
 	
 Control& Control::operator<<(Script&& script) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	for(FwCmdScript& cmd : script)
+	for(auto& cmdPtr : script)
 	{
-		this->FwSend(cmd);
+		this->FwSend(*cmdPtr);
 	}
 	return *this;
 }
 
 Control& Control::operator<<(Script& script) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	for(FwCmdScript& cmd : script)
+	for(auto& cmdPtr : script)
 	{
-		this->FwSend(cmd);
+		this->FwSend(*cmdPtr);
 	}
 	return *this;
 }
 
 void Control::FwTest(void)
 {
-#if 0
+#if 1
 	static const timespec sleepTime{0, 50000000};
 	uint32_t color = 0xff;
 	for(size_t i = 0; i < 100; ++i)
