@@ -38,6 +38,19 @@ public:
 	Script(const std::string& filename);
 	~Script(void);
 	bool operator ==(const Script& ref) const;
+	
+	template<typename T>
+	void emplace_back_FwCmd(T&& t)
+	{
+		this->emplace_back(std::make_shared<T>(std::forward<T>(t)));
+	};
+
+	
+	template<typename T>
+	void emplace_front_FwCmd(T&& t)
+	{
+		this->emplace_front(std::make_shared<T>(std::forward<T>(t)));
+	};	
 
 };
 } /* namespace WyLight */

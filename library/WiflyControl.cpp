@@ -28,9 +28,11 @@
 #include <iomanip>
 #include <cstdlib>
 #include <unistd.h>
+#include <memory>
 #include "intelhexclass.h"
 
 #include "WiflyColor.h"
+#include "Script.h"
 
 using std::cout;
 using std::ifstream;
@@ -808,7 +810,7 @@ Control& Control::operator<<(Script& script) throw (ConnectionTimeout, FatalErro
 
 void Control::FwTest(void)
 {
-#if 1
+#if 0
 	static const timespec sleepTime{0, 50000000};
 	uint32_t color = 0xff;
 	for(size_t i = 0; i < 100; ++i)
@@ -818,13 +820,17 @@ void Control::FwTest(void)
 		nanosleep(&sleepTime, NULL);
 	}
 #else
+	
+	
+	*this << FwCmdClearScript() << FwCmdSetFade(WiflyColor::BLACK, 2);
+	
 	Script testScript("test.script");
 	
-	testScript.push_front(FwCmdLoopOn());
-	testScript.push_back(FwCmdSetFade(WiflyColor::GREEN, 2000));
-	testScript.push_back(FwCmdSetFade(WiflyColor::RED, 2000));
-	testScript.push_back(FwCmdSetFade(WiflyColor::BLUE, 2000));
-	testScript.push_back(FwCmdLoopOff(5));
+	testScript.emplace_front_FwCmd(FwCmdLoopOn());
+	testScript.emplace_back_FwCmd(FwCmdSetFade(WiflyColor::GREEN, 2000));
+	testScript.emplace_back_FwCmd(FwCmdSetFade(WiflyColor::RED, 2000));
+	testScript.emplace_back_FwCmd(FwCmdSetFade(WiflyColor::BLUE, 2000));
+	testScript.emplace_back_FwCmd(FwCmdLoopOff(5));
 	
 	*this << testScript;
 	/*
