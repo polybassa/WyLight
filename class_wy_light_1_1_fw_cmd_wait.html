@@ -114,10 +114,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aefaea11de876a87b6e77a7abb9cb5e61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb67aeee9e9c5643c08723482f20ba35"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_fw_cmd_wait.html#acb67aeee9e9c5643c08723482f20ba35">FwCmdWait</a> (uint16_t waitTime)</td></tr>
 <tr class="separator:acb67aeee9e9c5643c08723482f20ba35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa756d392ed32724cd1e5d19e649910ef"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_fw_cmd_wait.html#aa756d392ed32724cd1e5d19e649910ef">Equals</a> (const <a class="el" href="class_wy_light_1_1_fw_cmd_script.html">FwCmdScript</a> &amp;ref) const </td></tr>
-<tr class="separator:aa756d392ed32724cd1e5d19e649910ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7a4431a0e31da910ced08340d959fb6"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_fw_cmd_wait.html#af7a4431a0e31da910ced08340d959fb6">Write</a> (std::ostream &amp;out, size_t &amp;indentation) const </td></tr>
-<tr class="separator:af7a4431a0e31da910ced08340d959fb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d96368a646e49b02058891417188d86"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_fw_cmd_wait.html#a8d96368a646e49b02058891417188d86">Write</a> (std::ostream &amp;out, size_t &amp;indentation) const override</td></tr>
+<tr class="separator:a8d96368a646e49b02058891417188d86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -184,37 +182,18 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Injects a wait command into the wifly script controller. This causes the script processing to wait before executing the next command for the specified duration </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">waitTime</td><td>in hundreths of a second </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="aa756d392ed32724cd1e5d19e649910ef"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool WyLight::FwCmdWait::Equals </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="class_wy_light_1_1_fw_cmd_script.html">FwCmdScript</a> &amp;&#160;</td>
-          <td class="paramname"><em>ref</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="class_wy_light_1_1_fw_cmd_script.html#a59a0fa086da7390bdd666ab2e59f9572">WyLight::FwCmdScript</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="af7a4431a0e31da910ced08340d959fb6"></a>
+<a class="anchor" id="a8d96368a646e49b02058891417188d86"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -241,7 +220,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -277,7 +256,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 19 2013 17:37:31 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jul 18 2013 10:41:08 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

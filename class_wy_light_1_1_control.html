@@ -135,8 +135,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa9ac31328f888ff1d90cefe04f7353e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa829e0a757758eb960da902803b138d8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#aa829e0a757758eb960da902803b138d8">ConfSetDeviceId</a> (const std::string &amp;name) const </td></tr>
 <tr class="separator:aa829e0a757758eb960da902803b138d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07de4d3ab9e66bae632775a999b9b822"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a07de4d3ab9e66bae632775a999b9b822">FwClearScript</a> (void)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
-<tr class="separator:a07de4d3ab9e66bae632775a999b9b822"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedce9e77a3358f551cc66c4a8a492260"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#aedce9e77a3358f551cc66c4a8a492260">FwGetCycletime</a> (void)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
 <tr class="separator:aedce9e77a3358f551cc66c4a8a492260"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a082452281e1de4160b1fa9f1275a91"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a9a082452281e1de4160b1fa9f1275a91">FwGetRtc</a> (tm &amp;timeValue)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
@@ -145,28 +143,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af2035569a368fbcafa758ec649914f66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb78c0d47ab18019b4e5758df6796062"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#adb78c0d47ab18019b4e5758df6796062">FwGetVersion</a> (void)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
 <tr class="separator:adb78c0d47ab18019b4e5758df6796062"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88aa60d7825c6d0082b29c435373ca31"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a88aa60d7825c6d0082b29c435373ca31">FwLoopOff</a> (uint8_t numLoops)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
-<tr class="separator:a88aa60d7825c6d0082b29c435373ca31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f20aed69408200c467d25904e15a8b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a6f20aed69408200c467d25904e15a8b6">FwLoopOn</a> (void)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
-<tr class="separator:a6f20aed69408200c467d25904e15a8b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c75e41fe0e5e18752281d65480eeeb2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a7c75e41fe0e5e18752281d65480eeeb2">FwSetColorDirect</a> (const std::list&lt; uint8_t &gt; buffer)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
-<tr class="separator:a7c75e41fe0e5e18752281d65480eeeb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7237fc75e32c06cba158722b58672596"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a7237fc75e32c06cba158722b58672596">FwSetColorDirect</a> (const uint8_t *pBuffer, size_t bufferLength)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
-<tr class="separator:a7237fc75e32c06cba158722b58672596"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19ce28fca468a3da113e6588e67486c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a19ce28fca468a3da113e6588e67486c2">FwSetFade</a> (uint32_t argb, uint16_t fadeTime=0, uint32_t addr=0xffffffff, bool parallelFade=false)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
-<tr class="separator:a19ce28fca468a3da113e6588e67486c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4aa6f40448f934116374e8baf9eaa7d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a4aa6f40448f934116374e8baf9eaa7d2">FwSetFade</a> (const std::string &amp;rgb, uint16_t fadeTime=0, const std::string &amp;addr=<a class="el" href="class_wy_light_1_1_control.html#a6d407aadfe5921e4af9bf756cc9d8a28">LEDS_ALL</a>, bool parallelFade=false)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
-<tr class="separator:a4aa6f40448f934116374e8baf9eaa7d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a233e94ee77ffe1d2ba39bc9dc5c6164b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a233e94ee77ffe1d2ba39bc9dc5c6164b">FwSetGradient</a> (uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime=0, bool parallelFade=false, uint8_t length=NUM_OF_LED, uint8_t offset=0)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
-<tr class="separator:a233e94ee77ffe1d2ba39bc9dc5c6164b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae779c7cc6283ab79fafbca7f1f368515"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#ae779c7cc6283ab79fafbca7f1f368515">FwSetGradient</a> (const std::string &amp;rgb_1, const std::string &amp;rgb_2, uint16_t fadeTime=0, bool parallelFade=false, uint8_t length=NUM_OF_LED, uint8_t offset=0)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
-<tr class="separator:ae779c7cc6283ab79fafbca7f1f368515"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af21032b831d63c34c1473dcabe05f469"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#af21032b831d63c34c1473dcabe05f469">FwSetRtc</a> (const tm &amp;timeValue)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
-<tr class="separator:af21032b831d63c34c1473dcabe05f469"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a91acb258bad6739a30066d7c0d9835"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a3a91acb258bad6739a30066d7c0d9835">FwSetWait</a> (uint16_t waitTime)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
-<tr class="separator:a3a91acb258bad6739a30066d7c0d9835"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3f7f8e3440a14fd9345c3bcde7aaf70"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#aa3f7f8e3440a14fd9345c3bcde7aaf70">FwStartBl</a> (void)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
-<tr class="separator:aa3f7f8e3440a14fd9345c3bcde7aaf70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a4621f063e3d539f06d4e1141229e44"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a4a4621f063e3d539f06d4e1141229e44">FwTest</a> (void)</td></tr>
 <tr class="separator:a4a4621f063e3d539f06d4e1141229e44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2f20a5d9d87b9b1c8a2e481e71602a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#af2f20a5d9d87b9b1c8a2e481e71602a8">FwStressTest</a> (void)</td></tr>
@@ -175,6 +151,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3679510a5c28c97ef9cbbbbc2ffee9e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0948069a02431beb689055b56afc759"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_wy_light_1_1_control.html">Control</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#ab0948069a02431beb689055b56afc759">operator&lt;&lt;</a> (<a class="el" href="class_wy_light_1_1_fw_command.html">FwCommand</a> &amp;cmd)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
 <tr class="separator:ab0948069a02431beb689055b56afc759"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add8b6887c1fb93571af763d436193f7e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_wy_light_1_1_control.html">Control</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#add8b6887c1fb93571af763d436193f7e">operator&lt;&lt;</a> (<a class="el" href="class_wy_light_1_1_script.html">Script</a> &amp;&amp;script)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
+<tr class="separator:add8b6887c1fb93571af763d436193f7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd06c7b743976e2c0f345e22fd2f5a2a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_wy_light_1_1_control.html">Control</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#abd06c7b743976e2c0f345e22fd2f5a2a">operator&lt;&lt;</a> (<a class="el" href="class_wy_light_1_1_script.html">Script</a> &amp;script)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
+<tr class="separator:abd06c7b743976e2c0f345e22fd2f5a2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09d8a865f5557d584032cf088e32ade0"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a09d8a865f5557d584032cf088e32ade0">ExtractFwVersion</a> (const std::string &amp;pFilename) const </td></tr>
 <tr class="separator:a09d8a865f5557d584032cf088e32ade0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -709,31 +689,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a07de4d3ab9e66bae632775a999b9b822"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WyLight::Control::FwClearScript </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td>  throw (<a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a>, <a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a>)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Wipe all commands from the <a class="el" href="namespace_wy_light.html">WyLight</a> script controller </p>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a></td><td>if script buffer in PIC firmware is full and request couldn't be executed </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a class="anchor" id="aedce9e77a3358f551cc66c4a8a492260"></a>
 <div class="memitem">
 <div class="memproto">
@@ -843,474 +798,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a88aa60d7825c6d0082b29c435373ca31"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WyLight::Control::FwLoopOff </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>numLoops</em></td><td>)</td>
-          <td>  throw (<a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a>, <a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a>)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Injects a LoopOff command into the wifly script controller </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">numLoops</td><td>number of rounds before termination of the loop, use 0 for infinite loops. To terminate an infinite loop you have to call &lt;FwClearScript&gt; </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a></td><td>if script buffer in PIC firmware is full and request couldn't be executed </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a6f20aed69408200c467d25904e15a8b6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WyLight::Control::FwLoopOn </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td>  throw (<a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a>, <a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a>)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Injects a LoopOn command into the wifly script controller </p>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a></td><td>if script buffer in PIC firmware is full and request couldn't be executed </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a7c75e41fe0e5e18752281d65480eeeb2"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WyLight::Control::FwSetColorDirect </td>
-          <td>(</td>
-          <td class="paramtype">const std::list&lt; uint8_t &gt;&#160;</td>
-          <td class="paramname"><em>buffer</em></td><td>)</td>
-          <td>  throw (<a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a>, <a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a>)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Sets all leds with different colors directly. This doesn't affect the <a class="el" href="namespace_wy_light.html">WyLight</a> script controller Example: to set the first led to yellow and the second to blue and all others to off use a &lt;pBuffer&gt; like this: buffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6; </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">buffer</td><td>containing continouse rgb values r1g1b1r2g2b2...r32g32b32 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a></td><td>if script buffer in PIC firmware is full and request couldn't be executed </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a7237fc75e32c06cba158722b58672596"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WyLight::Control::FwSetColorDirect </td>
-          <td>(</td>
-          <td class="paramtype">const uint8_t *&#160;</td>
-          <td class="paramname"><em>pBuffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>bufferLength</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>  throw (<a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a>, <a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a>)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Sets all leds with different colors directly. This doesn't affect the <a class="el" href="namespace_wy_light.html">WyLight</a> script controller Example: to set the first led to yellow and the second to blue and all others to off use a &lt;pBuffer&gt; like this: pBuffer[] = {0xff, 0xff, 0x00, 0x00, 0x00, 0xff}; bufferLength = 6; </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pBuffer</td><td>containing continouse rgb values r1g1b1r2g2b2...r32g32b32 </td></tr>
-    <tr><td class="paramname">bufferLength</td><td>number of bytes in &lt;pBuffer&gt; usally 32 * 3 bytes </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a></td><td>if script buffer in PIC firmware is full and request couldn't be executed </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a19ce28fca468a3da113e6588e67486c2"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WyLight::Control::FwSetFade </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>argb</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>fadeTime</em> = <code>0</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>addr</em> = <code>0xffffffff</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>parallelFade</em> = <code>false</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>  throw (<a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a>, <a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a>)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Injects a fade command into the wifly script controller </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">argb</td><td>is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff) f.e. black(  0,  0,  0) as argb is 0xff000000 green(  0,255,  0) as argb is 0xff00ff00 white(255,255,255) as argb is 0xffffffff </td></tr>
-    <tr><td class="paramname">fadeTime</td><td>in hundreths of a second. Use 0 to set color immediately, default = 0 </td></tr>
-    <tr><td class="paramname">addr</td><td>bitmask of leds which should be effected by this command, set bit to 1 to affect the led, default 0xffffffff </td></tr>
-    <tr><td class="paramname">parallelFade</td><td>if true other fades are allowed in parallel with this fade </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a></td><td>if script buffer in PIC firmware is full and request couldn't be executed </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a4aa6f40448f934116374e8baf9eaa7d2"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WyLight::Control::FwSetFade </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>rgb</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>fadeTime</em> = <code>0</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>addr</em> = <code><a class="el" href="class_wy_light_1_1_control.html#a6d407aadfe5921e4af9bf756cc9d8a28">LEDS_ALL</a></code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>parallelFade</em> = <code>false</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>  throw (<a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a>, <a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a>)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Injects a fade command into the wifly script controller </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">rgb</td><td>is a hex string representation of a rgb value without leading '0x' black "0" green "ff00" white "ffffff" </td></tr>
-    <tr><td class="paramname">fadeTime</td><td>in hundreths of a second. Use 0 to set color immediately, default = 0 </td></tr>
-    <tr><td class="paramname">addr</td><td>is a hex string representation of a 32 bit mask without leading '0x' of leds which should be effected by this comman. all leds "ffffffff" (default) first three leds "7" only the last led "80000000" </td></tr>
-    <tr><td class="paramname">parallelFade</td><td>if true other fades are allowed in parallel with this fade </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a></td><td>if script buffer in PIC firmware is full and request couldn't be executed </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a233e94ee77ffe1d2ba39bc9dc5c6164b"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WyLight::Control::FwSetGradient </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>argb_1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>argb_2</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>fadeTime</em> = <code>0</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>parallelFade</em> = <code>false</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>length</em> = <code>NUM_OF_LED</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>offset</em> = <code>0</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>  throw (<a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a>, <a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a>)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Injects a gradient command into the wifly script controller </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">argb_1</td><td>is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff). This is the start color for the gradient. </td></tr>
-    <tr><td class="paramname">argb_2</td><td>is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff). This is the end color for the gradient. </td></tr>
-    <tr><td class="paramname">fadeTime</td><td>in hundreths of a second. Use 0 to set color immediately, default = 0 </td></tr>
-    <tr><td class="paramname">parallelFade</td><td>if true other fades are allowed in parallel with this fade </td></tr>
-    <tr><td class="paramname">length</td><td>is the number of led's from startposition to endposition </td></tr>
-    <tr><td class="paramname">offset</td><td>can be used to move the startposition of the gradient on the ledstrip </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a></td><td>if script buffer in PIC firmware is full and request couldn't be executed </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="ae779c7cc6283ab79fafbca7f1f368515"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WyLight::Control::FwSetGradient </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>rgb_1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>rgb_2</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>fadeTime</em> = <code>0</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>parallelFade</em> = <code>false</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>length</em> = <code>NUM_OF_LED</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>offset</em> = <code>0</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>  throw (<a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a>, <a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a>)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Injects a gradient command into the wifly script controller </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">rgb_1</td><td>is a hex string representation of a rgb value without leading '0x' </td></tr>
-    <tr><td class="paramname">rgb_2</td><td>is a hex string representation of a rgb value without leading '0x' </td></tr>
-    <tr><td class="paramname">fadeTime</td><td>in hundreths of a second. Use 0 to set color immediately, default = 0 </td></tr>
-    <tr><td class="paramname">parallelFade</td><td>if true other fades are allowed in parallel with this fade </td></tr>
-    <tr><td class="paramname">length</td><td>is the number of led's from startposition to endposition </td></tr>
-    <tr><td class="paramname">offset</td><td>can be used to move the startposition of the gradient on the ledstrip </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a></td><td>if script buffer in PIC firmware is full and request couldn't be executed </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="af21032b831d63c34c1473dcabe05f469"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WyLight::Control::FwSetRtc </td>
-          <td>(</td>
-          <td class="paramtype">const tm &amp;&#160;</td>
-          <td class="paramname"><em>timeValue</em></td><td>)</td>
-          <td>  throw (<a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a>, <a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a>)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Sets the rtc clock of the wifly device to the specified time. The wifly device has to be in firmware mode for this command. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">timeValue</td><td>pointer to a posix tm struct containing the new time </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a></td><td>if script buffer in PIC firmware is full and request couldn't be executed </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a3a91acb258bad6739a30066d7c0d9835"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WyLight::Control::FwSetWait </td>
-          <td>(</td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>waitTime</em></td><td>)</td>
-          <td>  throw (<a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a>, <a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a>)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Injects a wait command into the wifly script controller. This causes the script processing to wait before executing the next command for the specified duration </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">waitTime</td><td>in hundreths of a second </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a></td><td>if script buffer in PIC firmware is full and request couldn't be executed </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="aa3f7f8e3440a14fd9345c3bcde7aaf70"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WyLight::Control::FwStartBl </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td>  throw (<a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a>, <a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a>)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Stops firmware and script controller execution and start the bootloader of the wifly device </p>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a></td><td>if command code of the response doesn't match the code of the request, or too many retries failed </td></tr>
-    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a></td><td>if script buffer in PIC firmware is full and request couldn't be executed </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a class="anchor" id="af2f20a5d9d87b9b1c8a2e481e71602a8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1368,6 +855,38 @@ Friends</h2></td></tr>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_wy_light_1_1_fw_command.html">FwCommand</a> &amp;&#160;</td>
           <td class="paramname"><em>cmd</em></td><td>)</td>
+          <td>  throw (<a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a>, <a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="add8b6887c1fb93571af763d436193f7e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_wy_light_1_1_control.html">Control</a>&amp; WyLight::Control::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_wy_light_1_1_script.html">Script</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>script</em></td><td>)</td>
+          <td>  throw (<a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a>, <a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="abd06c7b743976e2c0f345e22fd2f5a2a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_wy_light_1_1_control.html">Control</a>&amp; WyLight::Control::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_wy_light_1_1_script.html">Script</a> &amp;&#160;</td>
+          <td class="paramname"><em>script</em></td><td>)</td>
           <td>  throw (<a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a>, <a class="el" href="class_wy_light_1_1_script_buffer_full.html">ScriptBufferFull</a>)</td>
         </tr>
       </table>
@@ -1500,7 +1019,7 @@ Friends</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 19 2013 17:37:36 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jul 18 2013 10:41:15 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

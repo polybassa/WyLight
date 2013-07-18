@@ -11,7 +11,7 @@ var searchData=
   ['fwcmdloopoff',['FwCmdLoopOff',['../struct_wy_light_1_1_fw_cmd_loop_off.html',1,'WyLight']]],
   ['fwcmdloopon',['FwCmdLoopOn',['../struct_wy_light_1_1_fw_cmd_loop_on.html',1,'WyLight']]],
   ['fwcmdscript',['FwCmdScript',['../class_wy_light_1_1_fw_cmd_script.html',1,'WyLight']]],
-  ['fwcmdsetcolordirect',['FwCmdSetColorDirect',['../class_wy_light_1_1_fw_cmd_set_color_direct.html',1,'WyLight']]],
+  ['fwcmdsetcolordirect',['FwCmdSetColorDirect',['../struct_wy_light_1_1_fw_cmd_set_color_direct.html',1,'WyLight']]],
   ['fwcmdsetfade',['FwCmdSetFade',['../struct_wy_light_1_1_fw_cmd_set_fade.html',1,'WyLight']]],
   ['fwcmdsetgradient',['FwCmdSetGradient',['../struct_wy_light_1_1_fw_cmd_set_gradient.html',1,'WyLight']]],
   ['fwcmdsetrtc',['FwCmdSetRtc',['../struct_wy_light_1_1_fw_cmd_set_rtc.html',1,'WyLight']]],

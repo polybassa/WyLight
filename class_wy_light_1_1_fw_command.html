@@ -111,7 +111,7 @@ Inheritance diagram for WyLight::FwCommand:</div>
 <area href="struct_wy_light_1_1_fw_cmd_get_version.html" alt="WyLight::FwCmdGetVersion" shape="rect" coords="201,280,392,304"/>
 <area href="struct_wy_light_1_1_fw_cmd_clear_script.html" alt="WyLight::FwCmdClearScript" shape="rect" coords="603,112,794,136"/>
 <area href="class_wy_light_1_1_fw_cmd_script.html" alt="WyLight::FwCmdScript" shape="rect" coords="603,168,794,192"/>
-<area href="class_wy_light_1_1_fw_cmd_set_color_direct.html" alt="WyLight::FwCmdSetColorDirect" shape="rect" coords="603,224,794,248"/>
+<area href="struct_wy_light_1_1_fw_cmd_set_color_direct.html" alt="WyLight::FwCmdSetColorDirect" shape="rect" coords="603,224,794,248"/>
 <area href="struct_wy_light_1_1_fw_cmd_set_rtc.html" alt="WyLight::FwCmdSetRtc" shape="rect" coords="603,280,794,304"/>
 <area href="struct_wy_light_1_1_fw_cmd_start_bl.html" alt="WyLight::FwCmdStartBl" shape="rect" coords="603,336,794,360"/>
 </map>
@@ -125,6 +125,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af45ca242c24c497039ea3063d1d2bf06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37ae4cf77fd2787a9802dbb55ef489fe"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_wy_light_1_1_fw_response.html">FwResponse</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_fw_command.html#a37ae4cf77fd2787a9802dbb55ef489fe">GetResponse</a> (void)=0</td></tr>
 <tr class="separator:a37ae4cf77fd2787a9802dbb55ef489fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adad943e35162c4967a7c7f1ff44e9b66"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_fw_command.html#adad943e35162c4967a7c7f1ff44e9b66">operator==</a> (const <a class="el" href="class_wy_light_1_1_fw_command.html">FwCommand</a> &amp;ref) const </td></tr>
+<tr class="separator:adad943e35162c4967a7c7f1ff44e9b66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a442a3756b34059192afc65f547d67094"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_fw_command.html#a442a3756b34059192afc65f547d67094">operator!=</a> (const <a class="el" href="class_wy_light_1_1_fw_command.html">FwCommand</a> &amp;ref) const </td></tr>
+<tr class="separator:a442a3756b34059192afc65f547d67094"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -272,6 +276,54 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a442a3756b34059192afc65f547d67094"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool WyLight::FwCommand::operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_wy_light_1_1_fw_command.html">FwCommand</a> &amp;&#160;</td>
+          <td class="paramname"><em>ref</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="adad943e35162c4967a7c7f1ff44e9b66"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool WyLight::FwCommand::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_wy_light_1_1_fw_command.html">FwCommand</a> &amp;&#160;</td>
+          <td class="paramname"><em>ref</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="a9c16cbc6d789b240a43b95c74c608353"></a>
 <div class="memitem">
@@ -299,7 +351,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 19 2013 17:37:30 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jul 18 2013 10:41:07 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

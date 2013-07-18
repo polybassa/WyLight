@@ -12,6 +12,7 @@ var searchData=
   ['sendrebootcommand',['SendRebootCommand',['../class_wy_light_1_1_telnet_proxy.html#a92900b6d84df1080f9cb6cc5ae854a72',1,'WyLight::TelnetProxy']]],
   ['sendstring',['SendString',['../class_wy_light_1_1_telnet_proxy.html#a2db92c2c87d880c90f7e48514e3bdb61',1,'WyLight::TelnetProxy']]],
   ['sensor',['sensor',['../struct_wy_light_1_1_broadcast_message.html#ac999a8e5814f990c66a07b448d961095',1,'WyLight::BroadcastMessage']]],
+  ['serialize',['serialize',['../class_wy_light_1_1_script.html#a9d9ea9b2dc8642321f6d5f39cab82870',1,'WyLight::Script']]],
   ['setaddress',['SetAddress',['../struct_bl_address_request.html#add81e2ca67af34bf1c94e175a57656bf',1,'BlAddressRequest']]],
   ['setaddressnumbytes',['SetAddressNumBytes',['../struct_bl_read_request.html#ad5aba1ab1c446945f62f05b21d3fac4d',1,'BlReadRequest']]],
   ['setdata',['SetData',['../struct_bl_eeprom_write_request.html#a1855ba1e441ab8188e8384e64ebb0d59',1,'BlEepromWriteRequest::SetData()'],['../struct_bl_flash_write_request.html#acf26fc08c3d7fe8d36cc195faee09ac8',1,'BlFlashWriteRequest::SetData()']]],
