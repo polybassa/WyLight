@@ -34,7 +34,7 @@ MessageQueue_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
 	@./${OUT_DIR}/$@
 
 Script_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
-	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/Script_ut.cpp $(LIB_DIR)/Script.cpp $(LIB_ADDITIONAL_SRC) -o ${OUT_DIR}/$@
+	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/Script_ut.cpp $(LIB_DIR)/Script.cpp $(LIB_ADDITIONAL_SRC) -o ${OUT_DIR}/$@ -Wall -pedantic -std=c++0x
 	@./${OUT_DIR}/$@
 
 TelnetProxy_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
@@ -42,7 +42,7 @@ TelnetProxy_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
 	@./${OUT_DIR}/$@
 
 WiflyControl_ut.bin:  $(LIB_SRC) $(LIB_TEST_SRC)
-	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/WiflyControl_ut.cpp $(LIB_DIR)/WiflyControl.cpp $(LIB_DIR)/intelhexclass.cpp $(INC) -o ${OUT_DIR}/$@ -Wall -pedantic -std=c++0x 
+	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/WiflyControl_ut.cpp $(LIB_DIR)/WiflyControl.cpp $(LIB_DIR)/intelhexclass.cpp $(INC) $(LIB_DIR)/Script.cpp -o ${OUT_DIR}/$@ -Wall -pedantic -std=c++0x 
 	@./${OUT_DIR}/$@
 	
 WiflyControlNoThrow_ut.bin:  $(LIB_SRC) $(LIB_TEST_SRC)

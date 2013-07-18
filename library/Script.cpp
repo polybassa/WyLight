@@ -18,7 +18,6 @@
 
 #include "Script.h"
 #include "trace.h"
-#include <memory>
 #include <fstream>
 
 namespace WyLight {
@@ -60,15 +59,15 @@ void Script::deserialize(const std::string& filename, Script& newScript)
 	std::string command;
 	while(inFile >> command) {
 		if (0 == command.compare(FwCmdLoopOn::TOKEN)) {
-			newScript.push_back(std::make_shared<FwCmdLoopOn>(FwCmdLoopOn()));
+			newScript.emplace_back(FwCmdLoopOn());
 		} else if (0 == command.compare(FwCmdLoopOff::TOKEN)) {
-			newScript.push_back(std::make_shared<FwCmdLoopOff>(FwCmdLoopOff(inFile)));
+			newScript.emplace_back(FwCmdLoopOff(inFile));
 		} else if (0 == command.compare(FwCmdWait::TOKEN)) {
-			newScript.push_back(std::make_shared<FwCmdWait>(FwCmdWait(inFile)));
+			newScript.emplace_back(FwCmdWait(inFile));
 		} else if (0 == command.compare(FwCmdSetFade::TOKEN)) {
-			newScript.push_back(std::make_shared<FwCmdSetFade>(FwCmdSetFade(inFile)));
+			newScript.emplace_back(FwCmdSetFade(inFile));
 		} else if (0 == command.compare(FwCmdSetGradient::TOKEN)) {
-			newScript.push_back(std::make_shared<FwCmdSetGradient>(FwCmdSetGradient(inFile)));
+			newScript.emplace_back(FwCmdSetGradient(inFile));
 		} else {
 			Trace(ZONE_ERROR, "Unknown command '%s'\n", command.c_str());
 			assert(false);

@@ -29,7 +29,6 @@ namespace WyLight {
 
 class Script : public std::list<std::shared_ptr<FwCmdScript>>
 {
-	
 
 public:
 	static void deserialize(const std::string& filename, Script& newScript);
@@ -40,17 +39,16 @@ public:
 	bool operator ==(const Script& ref) const;
 	
 	template<typename T>
-	void emplace_back_FwCmd(T&& t)
+	void emplace_back(T&& t)
 	{
-		this->emplace_back(std::make_shared<T>(std::forward<T>(t)));
-	};
+		this->list::emplace_back(std::make_shared<T>(std::forward<T>(t)));
+	}
 
-	
 	template<typename T>
-	void emplace_front_FwCmd(T&& t)
+	void emplace_front(T&& t)
 	{
-		this->emplace_front(std::make_shared<T>(std::forward<T>(t)));
-	};	
+		this->list::emplace_front(std::make_shared<T>(std::forward<T>(t)));
+	}	
 
 };
 } /* namespace WyLight */

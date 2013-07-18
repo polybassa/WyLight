@@ -101,8 +101,8 @@ size_t ut_Script_ReadGood(void)
 	TestCaseBegin();
 	Script newScript("TestInput.txt");
 	auto nextCmd = newScript.begin();
-	
-	
+		
+	CHECK(refLoop == *newScript.front());
 	CHECK(refLoop == **nextCmd++);
 	CHECK(refGradient == **nextCmd++);
 	CHECK(refFade == **nextCmd++);

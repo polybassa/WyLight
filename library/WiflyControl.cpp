@@ -30,9 +30,7 @@
 #include <unistd.h>
 #include <memory>
 #include "intelhexclass.h"
-
 #include "WiflyColor.h"
-#include "Script.h"
 
 using std::cout;
 using std::ifstream;
@@ -792,7 +790,7 @@ Control& Control::operator<<(FwCommand& cmd) throw (ConnectionTimeout, FatalErro
 	
 Control& Control::operator<<(Script&& script) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	for(auto& cmdPtr : script)
+	for(const auto& cmdPtr : script)
 	{
 		this->FwSend(*cmdPtr);
 	}
@@ -801,7 +799,7 @@ Control& Control::operator<<(Script&& script) throw (ConnectionTimeout, FatalErr
 
 Control& Control::operator<<(Script& script) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	for(auto& cmdPtr : script)
+	for(const auto& cmdPtr : script)
 	{
 		this->FwSend(*cmdPtr);
 	}
@@ -824,13 +822,13 @@ void Control::FwTest(void)
 	
 	*this << FwCmdClearScript() << FwCmdSetFade(WiflyColor::BLACK, 2);
 	
-	Script testScript("test.script");
+	WyLight::Script testScript("test.script");
 	
-	testScript.emplace_front_FwCmd(FwCmdLoopOn());
-	testScript.emplace_back_FwCmd(FwCmdSetFade(WiflyColor::GREEN, 2000));
-	testScript.emplace_back_FwCmd(FwCmdSetFade(WiflyColor::RED, 2000));
-	testScript.emplace_back_FwCmd(FwCmdSetFade(WiflyColor::BLUE, 2000));
-	testScript.emplace_back_FwCmd(FwCmdLoopOff(5));
+	testScript.emplace_front(FwCmdLoopOn());
+	testScript.emplace_back(FwCmdSetFade(WiflyColor::GREEN, 2000));
+	testScript.emplace_back(FwCmdSetFade(WiflyColor::RED, 2000));
+	testScript.emplace_back(FwCmdSetFade(WiflyColor::BLUE, 2000));
+	testScript.emplace_back(FwCmdLoopOff(5));
 	
 	*this << testScript;
 	/*

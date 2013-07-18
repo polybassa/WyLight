@@ -21,15 +21,14 @@
 #define _WIFLYCONTROL_H_
 
 #include <string>
-#include <list>
 #include "ComProxy.h"
 #include "wifly_cmd.h"
 #include "BlRequest.h"
 #include "TelnetProxy.h"
 #include "WiflyControlException.h"
 #include "FwCommand.h"
-#include "FwResponse.h"
 #include "Script.h"
+
 
 namespace WyLight {
 

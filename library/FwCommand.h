@@ -22,9 +22,7 @@
 #include "FwResponse.h"
 #include "WiflyColor.h"
 
-#include <algorithm>
 #include <iostream>
-#include <type_traits>
 
 namespace WyLight {
 
