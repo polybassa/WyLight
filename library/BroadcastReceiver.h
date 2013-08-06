@@ -94,7 +94,7 @@ class BroadcastReceiver
 		 * Read recent endpoints from file and add them to mIpTable
 		 * @param filename of the file containing the recent endpoints
 		 */
-		void ReadRecentEndpoints(const std::string& filename);
+		void ReadRecentEndpoints(const std::string& filename = "");
 
 		/**
 		 * Sends a stop event to terminate execution of operator()
@@ -109,10 +109,10 @@ class BroadcastReceiver
 		void WriteRecentEndpoints(const std::string& filename = "", uint8_t threshold = 1) const;
 	
 		/**
-		 * Delete all recent endpoints in file
+		 * Delete all recent endpoints in file and in the internal IpTables
 		 * @param filename of the file containing the recent endpoints
 		 */
-		void DeleteRecentEndpointFile(const std::string& filename = "") const;
+		void DeleteRecentEndpointFile(const std::string& filename = "");
 
 		
 	private:

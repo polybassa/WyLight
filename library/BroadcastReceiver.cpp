@@ -129,7 +129,13 @@ size_t BroadcastReceiver::NumRemotes(void) const
 
 void BroadcastReceiver::ReadRecentEndpoints(const std::string& filename)
 {
-	std::ifstream inFile(filename);
+	std::ifstream inFile;
+	if(filename.compare("") == 0)
+		inFile.open(mRecentFilename, std::ios::in);
+	else
+		inFile.open(filename, std::ios::in);
+	
+	
 	if(!inFile.is_open()) {
 		Trace(ZONE_ERROR, "Open file to read recent endpoints failed\n");
 		return;
@@ -175,8 +181,12 @@ void BroadcastReceiver::WriteRecentEndpoints(const std::string& filename, uint8_
 	outFile.close();
 }
 	
-void BroadcastReceiver::DeleteRecentEndpointFile(const std::string& filename) const
+void BroadcastReceiver::DeleteRecentEndpointFile(const std::string& filename)
 {
+	std::lock_guard<std::mutex> lock(this->mMutex);
+	this->mIpTableShadow.clear();
+	this->mIpTable.clear();
+	
 	int returnCode;
 	if(filename.compare("") == 0)
 		returnCode = std::remove(mRecentFilename.c_str());
