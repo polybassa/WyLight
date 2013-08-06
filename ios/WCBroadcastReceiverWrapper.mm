@@ -6,6 +6,7 @@
 //
 
 #import "WCBroadcastReceiverWrapper.h"
+#import "WCEndpoint.h"
 
 #include "BroadcastReceiver.h"
 #include <iostream>
@@ -29,7 +30,7 @@
 
 @implementation WCBroadcastReceiverWrapper
 
-NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
+NSString *const TargetsChangedNotification = @"TargetsChangedNotification";
 
 - (id)init
 {
@@ -38,34 +39,44 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
     {
         // Start BroadcastReceiver
 		self.threadOfOwner = [NSThread currentThread];
-		
+				
 		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 		NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
 		
 		NSMutableString *filePath = [[NSMutableString alloc] initWithString:basePath];
 		[filePath appendString:@"/recv.txt"];
 
-		receiver = std::make_shared<WyLight::BroadcastReceiver>(55555,
-												  [filePath cStringUsingEncoding:NSASCIIStringEncoding],
-												  [=](const size_t index, const WyLight::Endpoint& endpoint)
-													{
-														NSLog(@"New: %zd : %d.%d.%d.%d, %d  %s",
-															  index,
-															  (endpoint.GetIp() >> 24) & 0xFF,
-															  (endpoint.GetIp() >> 16) & 0xFF,
-															  (endpoint.GetIp() >> 8) & 0xFF,
-															  (endpoint.GetIp() & 0xFF),
-															  endpoint.GetPort(),
-															  endpoint.GetDeviceId().c_str());
+		receiver = std::make_shared<WyLight::BroadcastReceiver>
+												(55555,
+												[filePath cStringUsingEncoding:NSASCIIStringEncoding],
+												[=](const size_t index, const WyLight::Endpoint& endpoint)
+												{
+													NSLog(@"New: %zd : %d.%d.%d.%d, %d  %s",
+														  index,
+														  (endpoint.GetIp() >> 24) & 0xFF,
+														  (endpoint.GetIp() >> 16) & 0xFF,
+														  (endpoint.GetIp() >> 8) & 0xFF,
+														  (endpoint.GetIp() & 0xFF),
+														  endpoint.GetPort(),
+														  endpoint.GetDeviceId().c_str());
 		
-														[self performSelector:@selector(postNotification) onThread:[self threadOfOwner] withObject:nil waitUntilDone:NO];
-													}
-												  );
-
-		receiverThread = std::make_shared<std::thread>(std::ref(*receiver));
-		NSLog(@"start receiver");
+													[self performSelector:@selector(postNotification) onThread:[self threadOfOwner] withObject:nil waitUntilDone:NO];
+												}
+												);
 	}
     return self;
+}
+
+- (void)start
+{
+	if (receiver && !receiverThread) {
+		receiverThread = std::make_shared<std::thread>(std::ref(*receiver));
+		receiver->ReadRecentEndpoints();
+		NSLog(@"start receiver");
+		[self postNotification];
+	} else {
+		NSLog(@"receiver is already running");
+	}
 }
 
 - (void)stop
@@ -76,13 +87,13 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
 		receiver->Stop();
 		receiverThread->join();
     }
-	receiver.reset();
 	receiverThread.reset();
 }
 
 - (void)dealloc
 {
 	[self stop];
+	receiver.reset();
 #if !__has_feature(objc_arc)
     //Do manual memory management...
 	[super dealloc];
@@ -92,66 +103,39 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
 	
 }
 
-- (size_t)numberOfTargets
+- (NSArray *)targets
 {
-    return receiver->NumRemotes();
-}
-
-- (uint32_t)ipAdressOfTarget:(size_t)index
-{
-    if(index >= receiver->NumRemotes())
-        return 0;
+	NSMutableArray *allTargets = [[NSMutableArray alloc] init];
 	
-    return receiver->GetEndpoint(index).GetIp();
+	for (size_t index = 0; index < receiver->NumRemotes(); index++) {
+		WCEndpoint *endpoint = [[WCEndpoint alloc] initWithIpAdress:receiver->GetEndpoint(index).GetIp()
+															   port:receiver->GetEndpoint(index).GetPort()
+															   name:[NSString stringWithCString:receiver->GetEndpoint(index).GetDeviceId().c_str()
+																					   encoding:NSASCIIStringEncoding]
+															  score:receiver->GetEndpoint(index).GetScore()];
+		[allTargets addObject:endpoint];
+	}
+	return allTargets;
 }
 
-- (void)increaseScoreOfIpAdress:(uint32_t)ipAdress
+- (void)setWCEndpointAsFavorite:(WCEndpoint *)endpoint
 {
 	for(size_t index = 0; index < receiver->NumRemotes(); index++)
 	{
-		if((receiver->GetEndpoint(index)).GetIp() == ipAdress)
+		if((receiver->GetEndpoint(index)).GetIp() == endpoint.ipAdress)
 			++(receiver->GetEndpoint(index));
 	}
+	[self postNotification];
 }
 
-- (void)SetScoreOfIpAdress:(uint32_t)ipAdress Score:(uint8_t)score
+- (void)unsetWCEndpointAsFavorite:(WCEndpoint *)endpoint
 {
 	for(size_t index = 0; index < receiver->NumRemotes(); index++)
 	{
-		if(receiver->GetEndpoint(index).GetIp() == ipAdress)
-			receiver->GetEndpoint(index).SetScore(score);
+		if((receiver->GetEndpoint(index)).GetIp() == endpoint.ipAdress)
+			receiver->GetEndpoint(index).SetScore(0);
 	}
-}
-
-
-- (uint16_t)portOfTarget:(size_t)index
-{
-    if(index > receiver->NumRemotes())
-        return 0;
-    WyLight::Endpoint mEndpoint = receiver->GetEndpoint(index);
-    
-    return mEndpoint.GetPort();
-}
-
-- (uint8_t)scoreOfTarget:(size_t)index
-{
-    if(index > receiver->NumRemotes())
-        return 0;
-    WyLight::Endpoint mEndpoint = receiver->GetEndpoint(index);
-    
-    return mEndpoint.GetScore();
-}
-
-
-- (NSString *)deviceNameOfTarget:(size_t)index
-{
-    if(index > receiver->NumRemotes())
-        return 0;
-    WyLight::Endpoint mEndpoint = receiver->GetEndpoint(index);
-    
-    std::string mStr = mEndpoint.GetDeviceId();
-	
-    return [NSString stringWithCString:mStr.c_str() encoding:NSASCIIStringEncoding];
+	[self postNotification];
 }
 
 - (void)saveTargets
@@ -161,12 +145,13 @@ NSString *const NewTargetAddedNotification = @"NewTargetAddedNotification";
 
 - (void)postNotification
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:NewTargetAddedNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:TargetsChangedNotification object:self];
 }
 
 - (void)clearTargets
 {
 	receiver->DeleteRecentEndpointFile();
+	[self postNotification];
 }
 
 @end
