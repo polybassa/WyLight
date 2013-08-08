@@ -6,6 +6,7 @@
 //
 
 #import "WCWiflyControlWrapper.h"
+#import "WCEndpoint.h"
 #include "WiflyControlNoThrow.h"
 #include <thread>
 #include <mutex>
@@ -14,6 +15,7 @@
 #include <tuple>
 
 typedef std::function<uint32_t(void)> ControlCommand;
+
 //tupel <1> == true: terminate task; tuple <2>: command to execute; tuple<3> == 0: no notification after execution command, == 1: notification after execution command
 typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
@@ -24,13 +26,9 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 	std::shared_ptr<WyLight::MessageQueue<ControlMessage>> mCmdQueue;
 }
 
-#if !__has_feature(objc_arc)
-@property (nonatomic, unsafe_unretained) NSThread* threadOfOwner;
-#else
-@property (nonatomic, weak) NSThread* threadOfOwner;
-#endif
+@property (nonatomic, strong) WCEndpoint *endpoint;
 
--(void) callFatalErrorDelegate:(NSNumber*)errorCode;
+-(void) callFatalErrorDelegate:(NSNumber *)errorCode;
 -(void) callWiflyControlHasDisconnectedDelegate;
 
 @end
@@ -41,73 +39,83 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (id)init
 {
-    @throw ([NSException exceptionWithName:@"Wrong init-method" reason:@"Use -initWithIP:withPort:" userInfo:nil]);
+    @throw ([NSException exceptionWithName:@"Wrong init-method" reason:@"Use -initWithEndpoint:establishConnection:" userInfo:nil]);
 }
 
-- (id)initWithIP:(uint32_t)ip port:(uint16_t)port
+- (id)initWithWCEndpoint:(WCEndpoint *)endpoint establishConnection:(BOOL)connect
 {
     self = [super init];
     if (self)
     {
-		NSLog(@"Start WCWiflyControlWrapper\n");
-		mControl = std::make_shared<WyLight::ControlNoThrow>(ip,port);
-		self.threadOfOwner = [NSThread currentThread];
-		gCtrlMutex = std::make_shared<std::mutex>();
-		mCmdQueue = std::make_shared<WyLight::MessageQueue<ControlMessage>>();
-		mCtrlThread = std::make_shared<std::thread>([=]{
-													uint32_t retVal;
-													while(true)
-													{
-														auto tup = mCmdQueue->receive();
-														
-														if(std::get<0>(tup))
-														{
-															NSLog(@"WCWiflyControlWrapper: Terminate runLoop\n");
-															break;
-														}
-														
-														{	std::lock_guard<std::mutex> ctrlLock(*gCtrlMutex);
-															retVal = std::get<1>(tup)(); }
-														
-														if(retVal != WyLight::NO_ERROR)
-														{
-															[self performSelector:@selector(callFatalErrorDelegate:) onThread:self.threadOfOwner withObject:[NSNumber numberWithUnsignedInt:retVal] waitUntilDone:NO];
-														}
-														else if(retVal == WyLight::NO_ERROR && std::get<2>(tup) == 1)	//do we have to notify after execution?
-														{
-															[self performSelector:@selector(callWiflyControlHasDisconnectedDelegate) onThread:self.threadOfOwner withObject:nil waitUntilDone:NO];
-														}
-													}
-												}
-											);
+		self.endpoint = endpoint;
+		if (connect) {
+			[self connect];
+		}
 	}
     return self;
 }
 
+- (void)connect
+{
+		NSLog(@"Start WCWiflyControlWrapper\n");
+		mControl = std::make_shared<WyLight::ControlNoThrow>(self.endpoint.ipAdress,self.endpoint.port);
+		gCtrlMutex = std::make_shared<std::mutex>();
+		mCmdQueue = std::make_shared<WyLight::MessageQueue<ControlMessage>>();
+		mCmdQueue->setMessageLimit(8);
+		mCtrlThread = std::make_shared<std::thread>
+		([=]{
+			uint32_t retVal;
+			while(true)
+			{
+				auto tup = mCmdQueue->receive();
+			
+				if(std::get<0>(tup))
+				{
+					NSLog(@"WCWiflyControlWrapper: Terminate runLoop\n");
+					break;
+				}
+				{
+					std::lock_guard<std::mutex> ctrlLock(*gCtrlMutex);
+					retVal = std::get<1>(tup)();
+				}
+			
+				if(retVal != WyLight::NO_ERROR)
+				{
+					dispatch_async(dispatch_get_main_queue(), ^{
+						[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:retVal]];
+					});
+				}
+				else if(retVal == WyLight::NO_ERROR && std::get<2>(tup) == 1)	//do we have to notify after execution?
+				{
+					dispatch_async(dispatch_get_main_queue(), ^{
+						[self callWiflyControlHasDisconnectedDelegate];
+					});
+				}
+			}
+		});
+}
+
 - (void)disconnect
 {
-	if(mCmdQueue && mCtrlThread) {
-		NSLog(@"Disconnect WCWiflyControlWrapper\n");
-		mCmdQueue->clear_and_push_front(std::make_tuple(true, [=]{return 0xdeadbeef;}, 0));
-		mCtrlThread->join();
-	}
-	
-	mCtrlThread.reset();
-	mCmdQueue.reset();
-	gCtrlMutex.reset();
-	mControl.reset();
+	dispatch_async(dispatch_queue_create("disconnectQ", NULL), ^{
+		if(mCmdQueue && mCtrlThread) {
+			NSLog(@"Disconnect WCWiflyControlWrapper\n");
+			
+			mCmdQueue->clear_and_push_front(std::make_tuple(true, [=]{return 0xdeadbeef;}, 0));
+			mCtrlThread->join();
+		}
+		
+		mCtrlThread.reset();
+		mCmdQueue.reset();
+		gCtrlMutex.reset();
+		mControl.reset();
+
+	});
 }
 
 - (void)dealloc
 {
 	NSLog(@"Dealloc WCWiflyControlWrapper\n");
-	[self disconnect];
-#if !__has_feature(objc_arc)
-    //Do manual memory management...
-	[super dealloc];
-#else
-    //Usually do nothing...
-#endif
 }
 
 #pragma mark - Configuration WLAN-Module
@@ -157,13 +165,13 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
     {
         switch (i%3)
         {
-            case 0:
+            case 2:
                 *pointer++ = (uint8_t)(bluePart * 255);
                 break;
             case 1:
                 *pointer++ = (uint8_t)(greenPart * 255);
                 break;
-            case 2:
+            case 0:
                 *pointer++ = (uint8_t)(redPart * 255);
                 break;
         }
@@ -174,9 +182,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)setColorDirect:(const uint8_t*)pointerBuffer bufferLength:(size_t)length
 {
-	std::vector<uint8_t> buffer;
-	buffer.reserve(length);
-	memcpy(buffer.data(), pointerBuffer, length);
+	std::vector<uint8_t> buffer(pointerBuffer, pointerBuffer + length);
 	mCmdQueue->push_back(std::make_tuple(false,
 										  std::bind(&WyLight::ControlNoThrow::FwSetColorDirect, std::ref(*mControl), buffer),
 										  0));
@@ -338,13 +344,24 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 }
 
-- (void)programFlash
+- (void)programFlashAsync:(BOOL)async
 {
 	NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"main" ofType:@"hex"]; //Whatever your file - extension is
-
-	mCmdQueue->push_back(std::make_tuple(false,
-										  std::bind(&WyLight::ControlNoThrow::BlProgramFlash, std::ref(*mControl), std::string([filePath cStringUsingEncoding:NSASCIIStringEncoding])),
-										  0));
+	
+	if (async) {
+		mCmdQueue->push_back(std::make_tuple(false,
+											 std::bind(&WyLight::ControlNoThrow::BlProgramFlash, std::ref(*mControl), std::string([filePath cStringUsingEncoding:NSASCIIStringEncoding])),
+											 0));
+	} else
+	{
+		std::lock_guard<std::mutex> lock(*gCtrlMutex);
+		uint32_t returnValue = mControl->BlProgramFlash([filePath cStringUsingEncoding:NSASCIIStringEncoding]);
+		
+		if(returnValue != WyLight::NO_ERROR)
+		{
+			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
+		}
+	}
 }
 
 - (void)leaveBootloader
@@ -359,17 +376,17 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 	NSLog(@"ErrorCode %@", errorCode);
 	if([errorCode intValue] == WyLight::SCRIPT_FULL)
 	{
-		[_delegate scriptFullErrorOccured:self errorCode:errorCode];
+		[self.delegate scriptFullErrorOccured:self errorCode:errorCode];
 	}
 	else
 	{
-		[_delegate fatalErrorOccured:self errorCode:errorCode];
+		[self.delegate fatalErrorOccured:self errorCode:errorCode];
 	}
 }
 
 - (void)callWiflyControlHasDisconnectedDelegate
 {
-	[_delegate wiflyControlHasDisconnected:self];
+	[self.delegate wiflyControlHasDisconnected:self];
 }
 
 @end

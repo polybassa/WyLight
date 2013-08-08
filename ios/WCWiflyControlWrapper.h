@@ -7,21 +7,19 @@
 
 #import <Foundation/Foundation.h>
 
+@class WCEndpoint;
+
 @protocol WCWiflyControlDelegate;
 
 @interface WCWiflyControlWrapper : NSObject {}
 
-#if !__has_feature(objc_arc)
-@property (nonatomic, unsafe_unretained) id <WCWiflyControlDelegate> delegate;
-#else
 @property (nonatomic, weak) id <WCWiflyControlDelegate> delegate;
-#endif
 
 // Configuration
-- (id)initWithIP:(uint32_t)ip port:(uint16_t)port;
+- (id)initWithWCEndpoint:(WCEndpoint *)endpoint establishConnection:(BOOL)connect;
 
 /**
- * Attention: After executing one of the next three command's you have to dealloc your WCWiflyControlWrapper object
+ * Attention: After executing one of the next three command's you have to disconnect your WCWiflyControlWrapper object
  * The CommandExecutedNotification tell's you the succesfull execution of a command
  */
 - (void)configurateWlanModuleAsClientForNetwork:(NSString *)ssid password:(NSString *)password name:(NSString *)name;
@@ -53,9 +51,9 @@
 
 // Bootloader methods
 - (void)readCurrentFirmwareVersionFromBootloder:(NSString **)currentFirmwareVersionStringPlaceholder;
-- (void)programFlash;
+- (void)programFlashAsync:(BOOL)async;
 - (void)leaveBootloader;
-
+- (void)connect;
 - (void)disconnect;
 
 @end
