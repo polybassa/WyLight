@@ -32,6 +32,7 @@ class MessageQueue {
 	std::deque<T> mQueue;
 	std::mutex mMutex;
 	std::condition_variable mCondVar;
+	size_t mMessageLimit = 0;
 	
 public:
 	MessageQueue(void) {};
@@ -47,6 +48,8 @@ public:
 	
 	bool empty(void) const;
 	
+	void setMessageLimit(size_t limit) { (limit < 5) ? mMessageLimit = 5 : mMessageLimit = limit; };
+	
 	T receive(void);
 };
 }
@@ -56,7 +59,15 @@ void WyLight::MessageQueue<T>::push_back(const T&& message)
 {
 	{
 		std::lock_guard<std::mutex> lg(this->mMutex);
-		this->mQueue.push_back(std::move(message));
+		if (mMessageLimit == 0 || (mMessageLimit > this->mQueue.size()))
+		{
+			this->mQueue.push_back(std::move(message));
+		}
+		else
+		{
+			this->mQueue.erase(++(this->mQueue.begin())); //delete the secound element in the queue
+			this->mQueue.push_back(std::move(message));
+		}
 	}
 	this->mCondVar.notify_one();
 }
@@ -88,6 +99,7 @@ void WyLight::MessageQueue<T>::clear_and_push_front(const T&& message)
 template <typename T>
 bool WyLight::MessageQueue<T>::empty(void) const
 {
+	std::lock_guard<std::mutex> lg(this->mMutex);
 	return this->mQueue.empty();
 }
 
