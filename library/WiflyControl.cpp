@@ -721,7 +721,7 @@ std::string Control::FwGetVersion(void) throw (ConnectionTimeout, FatalError, Sc
 void Control::FwSend(FwCommand& cmd) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	response_frame buffer;
-	size_t numCrcRetries = 5;
+	size_t numCrcRetries = 8;
 	do
 	{
 		const size_t bytesRead = mProxy.Send(cmd, &buffer, sizeof(buffer));
