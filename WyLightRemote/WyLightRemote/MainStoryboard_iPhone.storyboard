@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2vN-Kx-tp5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="v4T-uT-mOL">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -346,7 +346,7 @@
                                     <navigationItem title="Add new Target" id="ZDf-7v-laj">
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="TeT-vk-PkU">
                                             <connections>
-                                                <segue destination="q6e-iH-q3v" kind="unwind" identifier="" unwindAction="cancelAddNewTargetSegue:" id="N6e-EF-zP2"/>
+                                                <segue destination="q6e-iH-q3v" kind="unwind" identifier="cancelAddNewTargetSegue:" unwindAction="cancelAddNewTargetSegue:" id="N6e-EF-zP2"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="gnT-rD-38e">
@@ -375,8 +375,9 @@
                     </view>
                     <connections>
                         <outlet property="guideView" destination="G6K-nh-wh7" id="3Sg-JG-6s6"/>
-                        <segue destination="210-eT-Inp" kind="modal" identifier="showSelectMode:" modalTransitionStyle="flipHorizontal" id="cjI-04-jYM"/>
                         <segue destination="q6e-iH-q3v" kind="unwind" identifier="noNewTargetFoundSegue:" unwindAction="noNewTargetFoundSegue:" id="iLV-bq-9ii"/>
+                        <segue destination="kau-uB-eG6" kind="modal" identifier="configureAsSoftAP:" modalTransitionStyle="flipHorizontal" id="CMf-Du-R24"/>
+                        <segue destination="kau-uB-eG6" kind="modal" identifier="configureAsClient:" modalTransitionStyle="flipHorizontal" id="d1a-yx-KFh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nBj-v5-GXW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -384,112 +385,18 @@
             </objects>
             <point key="canvasLocation" x="1545" y="1050"/>
         </scene>
-        <!--Add New Target Chooser View Controller-->
-        <scene sceneID="dFG-Yq-djp">
-            <objects>
-                <viewController id="210-eT-Inp" customClass="NWAddNewTargetChooserViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="zco-cz-4bY">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <navigationBar contentMode="scaleToFill" barStyle="blackOpaque" translatesAutoresizingMaskIntoConstraints="NO" id="QW9-2X-W4K">
-                                <color key="tintColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
-                                <items>
-                                    <navigationItem title="Add new Target" id="iEQ-Vo-4SC">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="t9o-ua-Ozi">
-                                            <connections>
-                                                <segue destination="oSN-3I-9YO" kind="unwind" unwindAction="cancelAddNewTargetSegue:" id="Qhv-Ch-470"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FEl-vh-BGx">
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="DRa-NG-JeS"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="SoftAP">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="kau-uB-eG6" kind="modal" identifier="configureAsSoftAP:" modalTransitionStyle="flipHorizontal" id="eGR-aJ-kz9"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" highlighted="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tRG-3G-XuR">
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="y5M-dC-oHe"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Client">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="kau-uB-eG6" kind="modal" identifier="configureAsClient:" modalTransitionStyle="flipHorizontal" id="6yQ-mM-Q50"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="BG8-6X-Yzu">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="202" id="gq4-TA-IwD"/>
-                                </constraints>
-                                <string key="text">Please choose, in which mode  you want to operate your WyLight. You can operate your WyLight as stand alone Soft-Accesspoint or as Client in your existing WLAN environment. </string>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                <color key="textColor" red="0.97647064920000004" green="0.5176470876" blue="0.26666668059999998" alpha="1" colorSpace="deviceRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="QW9-2X-W4K" firstAttribute="leading" secondItem="zco-cz-4bY" secondAttribute="leading" type="default" id="1Fc-Hg-370"/>
-                            <constraint firstItem="QW9-2X-W4K" firstAttribute="trailing" secondItem="zco-cz-4bY" secondAttribute="trailing" type="default" id="9ra-Wf-LJu"/>
-                            <constraint firstItem="BG8-6X-Yzu" firstAttribute="leading" secondItem="zco-cz-4bY" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="AKe-5M-dm8"/>
-                            <constraint firstAttribute="bottom" secondItem="tRG-3G-XuR" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="OEG-PG-osQ"/>
-                            <constraint firstItem="QW9-2X-W4K" firstAttribute="top" secondItem="zco-cz-4bY" secondAttribute="top" type="default" id="SWZ-ZQ-CV4"/>
-                            <constraint firstAttribute="bottom" secondItem="FEl-vh-BGx" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="YHA-wb-0oL"/>
-                            <constraint firstAttribute="trailing" secondItem="tRG-3G-XuR" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="nIt-cm-LSd"/>
-                            <constraint firstItem="FEl-vh-BGx" firstAttribute="leading" secondItem="zco-cz-4bY" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="rq2-Fr-B7r"/>
-                            <constraint firstAttribute="trailing" secondItem="BG8-6X-Yzu" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="wbe-1B-9h3"/>
-                            <constraint firstItem="BG8-6X-Yzu" firstAttribute="top" secondItem="QW9-2X-W4K" secondAttribute="bottom" type="default" id="zNI-Vu-dx1"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="2k6-RQ-6kK"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mNA-li-bFB" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="oSN-3I-9YO" userLabel="Exit" sceneMemberID="exit"/>
-            </objects>
-            <point key="canvasLocation" x="2033" y="1050"/>
-        </scene>
         <!--Add New Target Configure View Controller-->
         <scene sceneID="E65-z1-b3p">
             <objects>
+                <exit id="7uJ-0A-h3o" userLabel="Exit" sceneMemberID="exit"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Z2L-zf-sKP" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="kau-uB-eG6" customClass="NWAddNewTargetConfigureViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bi1-Vo-i0u">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2SY-5j-B41">
+                            <scrollView opaque="NO" autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2SY-5j-B41">
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZEe-Y2-T8T">
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <state key="normal" title="Configure">
-                                            <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <state key="highlighted">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="configButtonPressed:" destination="kau-uB-eG6" eventType="touchUpInside" id="X30-Dw-VgF"/>
-                                        </connections>
-                                    </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="SSID of your WLAN Network" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oMI-IW-qah">
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                         <color key="textColor" red="0.97647064920000004" green="0.5176470876" blue="0.26666668059999998" alpha="1" colorSpace="deviceRGB"/>
@@ -529,31 +436,29 @@
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                 <constraints>
+                                    <constraint firstItem="w8J-e3-NZz" firstAttribute="top" secondItem="3df-UK-Ria" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="1sf-D3-YkI"/>
                                     <constraint firstItem="3kM-fS-ZuP" firstAttribute="leading" secondItem="2SY-5j-B41" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="559-BZ-gbh"/>
                                     <constraint firstItem="w8J-e3-NZz" firstAttribute="leading" secondItem="2SY-5j-B41" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="5Wq-oS-nRA"/>
-                                    <constraint firstItem="bJv-2J-8Cs" firstAttribute="centerX" secondItem="ZEe-Y2-T8T" secondAttribute="centerX" type="default" id="7ZQ-th-dkm"/>
                                     <constraint firstAttribute="trailing" secondItem="w8J-e3-NZz" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="7bM-kJ-Kfa"/>
                                     <constraint firstAttribute="trailing" secondItem="3kM-fS-ZuP" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="7w4-Oz-Hzu"/>
                                     <constraint firstItem="7Tl-Rx-p1D" firstAttribute="leading" secondItem="2SY-5j-B41" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="8RK-i2-rsL"/>
+                                    <constraint firstItem="oMI-IW-qah" firstAttribute="top" secondItem="2SY-5j-B41" secondAttribute="top" constant="19" id="FHW-zg-IaD"/>
+                                    <constraint firstItem="w8J-e3-NZz" firstAttribute="centerX" secondItem="2SY-5j-B41" secondAttribute="centerX" type="default" id="FPK-5d-kLi"/>
                                     <constraint firstItem="3df-UK-Ria" firstAttribute="leading" secondItem="2SY-5j-B41" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="FwY-Q4-Ksd"/>
-                                    <constraint firstItem="3df-UK-Ria" firstAttribute="top" secondItem="oMI-IW-qah" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="Gwf-zC-uBs"/>
                                     <constraint firstItem="bJv-2J-8Cs" firstAttribute="leading" secondItem="2SY-5j-B41" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="KXj-dd-qvY"/>
-                                    <constraint firstItem="oMI-IW-qah" firstAttribute="top" secondItem="2SY-5j-B41" secondAttribute="top" constant="20" symbolic="YES" type="default" id="LEH-oT-whI"/>
-                                    <constraint firstItem="3kM-fS-ZuP" firstAttribute="top" secondItem="w8J-e3-NZz" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="NNA-85-CiV"/>
                                     <constraint firstAttribute="trailing" secondItem="3df-UK-Ria" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="OOn-hW-Oot"/>
-                                    <constraint firstItem="ZEe-Y2-T8T" firstAttribute="top" secondItem="bJv-2J-8Cs" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="Oij-mS-0Is"/>
-                                    <constraint firstAttribute="bottom" secondItem="ZEe-Y2-T8T" secondAttribute="bottom" constant="143" id="S8q-tw-dCi"/>
-                                    <constraint firstItem="oMI-IW-qah" firstAttribute="centerX" secondItem="2SY-5j-B41" secondAttribute="centerX" type="default" id="VpW-zU-1El"/>
+                                    <constraint firstItem="7Tl-Rx-p1D" firstAttribute="top" secondItem="2SY-5j-B41" secondAttribute="top" constant="163" id="RBt-gk-WRD"/>
                                     <constraint firstAttribute="trailing" secondItem="7Tl-Rx-p1D" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="XFK-4g-HLc"/>
                                     <constraint firstAttribute="trailing" secondItem="bJv-2J-8Cs" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="YBH-sD-RBa"/>
-                                    <constraint firstItem="7Tl-Rx-p1D" firstAttribute="top" secondItem="3kM-fS-ZuP" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="ap6-pe-dX1"/>
                                     <constraint firstAttribute="trailing" secondItem="oMI-IW-qah" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="gyM-fP-Llz"/>
-                                    <constraint firstItem="w8J-e3-NZz" firstAttribute="top" secondItem="3df-UK-Ria" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="teC-Qz-ID0"/>
+                                    <constraint firstAttribute="bottom" secondItem="bJv-2J-8Cs" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="k4i-bR-GOk"/>
+                                    <constraint firstItem="3kM-fS-ZuP" firstAttribute="top" secondItem="2SY-5j-B41" secondAttribute="top" constant="124" id="mWO-zN-SKZ"/>
                                     <constraint firstItem="oMI-IW-qah" firstAttribute="leading" secondItem="2SY-5j-B41" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="vIl-BM-KmU"/>
-                                    <constraint firstItem="bJv-2J-8Cs" firstAttribute="top" secondItem="7Tl-Rx-p1D" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="vmf-ag-WfH"/>
+                                    <constraint firstItem="bJv-2J-8Cs" firstAttribute="top" secondItem="2SY-5j-B41" secondAttribute="top" constant="196" id="xWM-oA-MZK"/>
+                                    <constraint firstItem="3df-UK-Ria" firstAttribute="top" secondItem="2SY-5j-B41" secondAttribute="top" constant="53" id="zwg-Hv-1eR"/>
                                 </constraints>
                                 <connections>
-                                    <outlet property="delegate" destination="kau-uB-eG6" id="lyv-3M-AxD"/>
+                                    <outlet property="delegate" destination="kau-uB-eG6" id="kVG-b5-HR8"/>
                                 </connections>
                             </scrollView>
                             <navigationBar contentMode="scaleToFill" barStyle="blackOpaque" translatesAutoresizingMaskIntoConstraints="NO" id="thj-OA-OH8">
@@ -565,17 +470,22 @@
                                                 <segue destination="7uJ-0A-h3o" kind="unwind" unwindAction="cancelAddNewTargetSegue:" id="udL-6V-3rr"/>
                                             </connections>
                                         </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="POI-ry-qRB">
+                                            <connections>
+                                                <action selector="configButtonPressed:" destination="kau-uB-eG6" id="I3i-Mp-I19"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="2SY-5j-B41" secondAttribute="bottom" constant="-5" id="0Jl-DP-h8V"/>
                             <constraint firstItem="thj-OA-OH8" firstAttribute="trailing" secondItem="bi1-Vo-i0u" secondAttribute="trailing" type="default" id="6uC-LB-D01"/>
                             <constraint firstItem="2SY-5j-B41" firstAttribute="trailing" secondItem="bi1-Vo-i0u" secondAttribute="trailing" type="default" id="ByX-6d-BL8"/>
                             <constraint firstItem="2SY-5j-B41" firstAttribute="leading" secondItem="bi1-Vo-i0u" secondAttribute="leading" type="default" id="TfQ-TH-GdT"/>
-                            <constraint firstItem="2SY-5j-B41" firstAttribute="top" secondItem="bi1-Vo-i0u" secondAttribute="top" constant="49" id="YoU-u5-G2i"/>
+                            <constraint firstItem="2SY-5j-B41" firstAttribute="top" secondItem="bi1-Vo-i0u" secondAttribute="top" constant="44" type="user" id="YoU-u5-G2i"/>
+                            <constraint firstAttribute="bottom" secondItem="2SY-5j-B41" secondAttribute="bottom" constant="170" id="edk-4i-CUV"/>
                             <constraint firstItem="thj-OA-OH8" firstAttribute="top" secondItem="bi1-Vo-i0u" secondAttribute="top" type="default" id="tKa-0r-DTf"/>
                             <constraint firstItem="thj-OA-OH8" firstAttribute="leading" secondItem="bi1-Vo-i0u" secondAttribute="leading" type="default" id="zdf-7u-Bv6"/>
                         </constraints>
@@ -585,7 +495,7 @@
                         <outlet property="nameTextField" destination="bJv-2J-8Cs" id="sGt-JN-Db4"/>
                         <outlet property="passLabel" destination="w8J-e3-NZz" id="0Or-ek-RIK"/>
                         <outlet property="passTextField" destination="3kM-fS-ZuP" id="L8U-L5-jRr"/>
-                        <outlet property="scrollView" destination="2SY-5j-B41" id="6ES-Pe-fYw"/>
+                        <outlet property="scrollView" destination="2SY-5j-B41" id="xcP-yt-Aa9"/>
                         <outlet property="ssidLabel" destination="oMI-IW-qah" id="rMg-jK-UeY"/>
                         <outlet property="ssidTextField" destination="3df-UK-Ria" id="tbX-Za-mbM"/>
                         <segue destination="7uJ-0A-h3o" kind="unwind" identifier="unwindConfigureDone:" unwindAction="unwindAtConnectionHasDisconnected:" id="pSJ-5K-DDp"/>
@@ -593,15 +503,8 @@
                         <segue destination="7uJ-0A-h3o" kind="unwind" identifier="unwindConfigurationAtConnectionHasDisconnected" unwindAction="unwindAtConnectionHasDisconnected:" id="yWh-kD-UUn"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Z2L-zf-sKP" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="7uJ-0A-h3o" userLabel="Exit" sceneMemberID="exit"/>
-                <tapGestureRecognizer id="tox-62-wh7">
-                    <connections>
-                        <action selector="tap:" destination="kau-uB-eG6" id="b1q-8s-yBG"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2525" y="1050"/>
+            <point key="canvasLocation" x="2034" y="1050"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="m7p-py-uDD">
@@ -705,9 +608,6 @@
         <class className="NSLayoutConstraint" superclassName="NSObject">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
         </class>
-        <class className="NWAddNewTargetChooserViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NWAddNewTargetChooserViewController.h"/>
-        </class>
         <class className="NWAddNewTargetConfigureViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NWAddNewTargetConfigureViewController.h"/>
             <relationships>
@@ -791,7 +691,7 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="6yQ-mM-Q50"/>
+        <segue reference="d1a-yx-KFh"/>
         <segue reference="WVG-zL-Tln"/>
     </inferredMetricsTieBreakers>
 </document>

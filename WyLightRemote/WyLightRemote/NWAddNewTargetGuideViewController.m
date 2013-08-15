@@ -10,6 +10,7 @@
 #import "NWAddNewTargetGuideView.h"
 #import "WCBroadcastReceiverWrapper.h"
 #import "WCEndpoint.h"
+#import "NWAddNewTargetConfigureViewController.h"
 
 @interface NWAddNewTargetGuideViewController ()
 @property (strong, nonatomic) IBOutlet NWAddNewTargetGuideView *guideView;
@@ -23,6 +24,10 @@
 	self.guideView.pageImageStrings = @[@"Guide1.png", @"Guide2.png"];
 	self.guideView.currentPageIndex = 0;
 }
+
+#define SLEEP_TIME_INTERVAL 0.5
+#define SCANNING_TIME_S 40
+#define ENDPOINT_IP 16909060 // is equal to 1.2.3.4
 
 - (void)nextPage
 {
@@ -43,24 +48,24 @@
 		
 		//**** dispatch queue scanning
 		dispatch_async(dispatch_queue_create("Scanning for Broadcast of 1.2.3.4", NULL), ^{
-			BOOL found = NO;
-			//BOOL found = YES; //for DEBUG only !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			//BOOL found = NO;
+			BOOL found = YES; //for DEBUG only !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			[self.receiver clearTargets];
-			for (unsigned int i = 0; i < 80; i++) {
+			for (unsigned int i = 0; i < (SCANNING_TIME_S / SLEEP_TIME_INTERVAL); i++) {
 				dispatch_async(dispatch_get_main_queue(), ^{
-					progressView.progress = i / 80.0;
+					progressView.progress = i / (SCANNING_TIME_S / SLEEP_TIME_INTERVAL);
 				});
 				for (WCEndpoint *endpoint in self.receiver.targets) {
-					// 16909060 is equal to 1.2.3.4
-					if (endpoint.ipAdress == 16909060 ) found = YES;
+					if (endpoint.ipAdress == ENDPOINT_IP) found = YES;
 				}
 				if (found) break;
-				[NSThread sleepForTimeInterval:0.5];
+				[NSThread sleepForTimeInterval:SLEEP_TIME_INTERVAL];
 			}
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[scanningAlertView dismissWithClickedButtonIndex:0 animated:YES];
 				if (found) {
-					[self performSegueWithIdentifier:@"showSelectMode:" sender:self];
+					//[self performSegueWithIdentifier:@"showSelectMode:" sender:self];
+					[self showSelectionAlertView];
 				} else {
 					[self performSegueWithIdentifier:@"noNewTargetFoundSegue:" sender:self];
 				}
@@ -68,6 +73,34 @@
 		});
 	}
 }
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.destinationViewController isKindOfClass:[NWAddNewTargetConfigureViewController class]]) {
+		
+		NWAddNewTargetConfigureViewController *destViewCtrl = (NWAddNewTargetConfigureViewController*) segue.destinationViewController;
+		
+		if ([segue.identifier isEqualToString:@"configureAsSoftAP:"]) {
+			destViewCtrl.configureTargetAsSoftAP = YES;
+		} else {
+			destViewCtrl.configureTargetAsSoftAP = NO;
+		}
+	}
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (buttonIndex == 1) {
+		[self performSegueWithIdentifier:@"configureAsClient:" sender:self];
+	} else if (buttonIndex == 0) {
+		[self performSegueWithIdentifier:@"configureAsSoftAP:" sender:self];
+	} else {
+		[self performSegueWithIdentifier:@"cancelAddNewTargetSegue:" sender:self];
+	}
+}
+
+- (void)showSelectionAlertView {
+	[[[UIAlertView alloc] initWithTitle:@"Operation Mode" message:@"Please choose, in which mode you want to operate your WyLight." delegate:self cancelButtonTitle:nil otherButtonTitles:@"SoftAP", @"Client", nil] show];
+}
+
 - (IBAction)donePressed:(id)sender {
 	[self nextPage];
 }

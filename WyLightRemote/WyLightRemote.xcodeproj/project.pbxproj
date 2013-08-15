@@ -48,7 +48,6 @@
 		5C542CCF17BC163A00E4410A /* NWAddNewTargetConfigureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CC817BC163900E4410A /* NWAddNewTargetConfigureViewController.m */; };
 		5C542CD017BC163A00E4410A /* NWAddNewTargetGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CCA17BC163900E4410A /* NWAddNewTargetGuideViewController.m */; };
 		5C542CD117BC163A00E4410A /* NWAddNewTargetGuideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CCC17BC163A00E4410A /* NWAddNewTargetGuideView.m */; };
-		5C542CD217BC163A00E4410A /* NWAddNewTargetChooserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CCE17BC163A00E4410A /* NWAddNewTargetChooserViewController.m */; };
 		5C542CD517BC165200E4410A /* NWBroadcastsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CD417BC165200E4410A /* NWBroadcastsTVC.m */; };
 		5C542CFA17BC167600E4410A /* NWBrightnessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CD717BC167400E4410A /* NWBrightnessViewController.m */; };
 		5C542CFB17BC167600E4410A /* NWConnectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CD917BC167400E4410A /* NWConnectionViewController.m */; };
@@ -68,6 +67,9 @@
 		5C542D0917BC167600E4410A /* NWScriptEffectCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CF517BC167600E4410A /* NWScriptEffectCommandObject.m */; };
 		5C542D0B17BC167600E4410A /* NWEditGradientCommandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CF917BC167600E4410A /* NWEditGradientCommandViewController.m */; };
 		5C542D1217BCC46300E4410A /* NWDefaultColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542D1117BCC46200E4410A /* NWDefaultColorPickerViewController.m */; };
+		5C542D1917BCD89000E4410A /* main.hex in Resources */ = {isa = PBXBuildFile; fileRef = 5C542D1617BCD89000E4410A /* main.hex */; };
+		5C542D1A17BCD89000E4410A /* Guide2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C542D1717BCD89000E4410A /* Guide2.png */; };
+		5C542D1B17BCD89000E4410A /* Guide1.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C542D1817BCD89000E4410A /* Guide1.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -153,8 +155,6 @@
 		5C542CCA17BC163900E4410A /* NWAddNewTargetGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWAddNewTargetGuideViewController.m; sourceTree = "<group>"; };
 		5C542CCB17BC163A00E4410A /* NWAddNewTargetGuideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWAddNewTargetGuideView.h; sourceTree = "<group>"; };
 		5C542CCC17BC163A00E4410A /* NWAddNewTargetGuideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWAddNewTargetGuideView.m; sourceTree = "<group>"; };
-		5C542CCD17BC163A00E4410A /* NWAddNewTargetChooserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWAddNewTargetChooserViewController.h; sourceTree = "<group>"; };
-		5C542CCE17BC163A00E4410A /* NWAddNewTargetChooserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWAddNewTargetChooserViewController.m; sourceTree = "<group>"; };
 		5C542CD317BC165200E4410A /* NWBroadcastsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWBroadcastsTVC.h; sourceTree = "<group>"; };
 		5C542CD417BC165200E4410A /* NWBroadcastsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWBroadcastsTVC.m; sourceTree = "<group>"; };
 		5C542CD617BC167400E4410A /* NWBrightnessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWBrightnessViewController.h; sourceTree = "<group>"; };
@@ -193,6 +193,9 @@
 		5C542CF917BC167600E4410A /* NWEditGradientCommandViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWEditGradientCommandViewController.m; sourceTree = "<group>"; };
 		5C542D1017BCC46200E4410A /* NWDefaultColorPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWDefaultColorPickerViewController.h; sourceTree = "<group>"; };
 		5C542D1117BCC46200E4410A /* NWDefaultColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWDefaultColorPickerViewController.m; sourceTree = "<group>"; };
+		5C542D1617BCD89000E4410A /* main.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.hex; sourceTree = "<group>"; };
+		5C542D1717BCD89000E4410A /* Guide2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Guide2.png; sourceTree = "<group>"; };
+		5C542D1817BCD89000E4410A /* Guide1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Guide1.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -256,6 +259,9 @@
 		5C542C4D17BC13B000E4410A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5C542D1617BCD89000E4410A /* main.hex */,
+				5C542D1717BCD89000E4410A /* Guide2.png */,
+				5C542D1817BCD89000E4410A /* Guide1.png */,
 				5C542C5517BC13B000E4410A /* NWAppDelegate.h */,
 				5C542C5617BC13B000E4410A /* NWAppDelegate.m */,
 				5C542C4E17BC13B000E4410A /* WyLightRemote-Info.plist */,
@@ -365,8 +371,6 @@
 				5C542CC817BC163900E4410A /* NWAddNewTargetConfigureViewController.m */,
 				5C542CC917BC163900E4410A /* NWAddNewTargetGuideViewController.h */,
 				5C542CCA17BC163900E4410A /* NWAddNewTargetGuideViewController.m */,
-				5C542CCD17BC163A00E4410A /* NWAddNewTargetChooserViewController.h */,
-				5C542CCE17BC163A00E4410A /* NWAddNewTargetChooserViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -481,6 +485,9 @@
 				5C542CBB17BC15EF00E4410A /* colorPickerKnob@2x.png in Resources */,
 				5C542CC317BC15EF00E4410A /* pickerColorWheel.png in Resources */,
 				5C542CC417BC15EF00E4410A /* pickerColorWheel@2x.png in Resources */,
+				5C542D1917BCD89000E4410A /* main.hex in Resources */,
+				5C542D1A17BCD89000E4410A /* Guide2.png in Resources */,
+				5C542D1B17BCD89000E4410A /* Guide1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,7 +524,6 @@
 				5C542CCF17BC163A00E4410A /* NWAddNewTargetConfigureViewController.m in Sources */,
 				5C542CD017BC163A00E4410A /* NWAddNewTargetGuideViewController.m in Sources */,
 				5C542CD117BC163A00E4410A /* NWAddNewTargetGuideView.m in Sources */,
-				5C542CD217BC163A00E4410A /* NWAddNewTargetChooserViewController.m in Sources */,
 				5C542CD517BC165200E4410A /* NWBroadcastsTVC.m in Sources */,
 				5C542CFA17BC167600E4410A /* NWBrightnessViewController.m in Sources */,
 				5C542CFB17BC167600E4410A /* NWConnectionViewController.m in Sources */,

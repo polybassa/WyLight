@@ -10,7 +10,7 @@
 
 @protocol WCWiflyControlDelegate;
 
-@interface NWAddNewTargetConfigureViewController : UIViewController <UITextFieldDelegate, WCWiflyControlDelegate, UIScrollViewDelegate>
+@interface NWAddNewTargetConfigureViewController : UIViewController <UITextFieldDelegate, WCWiflyControlDelegate>
 
 @property (nonatomic, assign) BOOL configureTargetAsSoftAP;
 

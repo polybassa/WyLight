@@ -10,7 +10,7 @@
 
 @class WCBroadcastReceiverWrapper;
 
-@interface NWAddNewTargetGuideViewController : UIViewController
+@interface NWAddNewTargetGuideViewController : UIViewController <UIAlertViewDelegate>
 
 @property (nonatomic, weak) WCBroadcastReceiverWrapper *receiver;
 

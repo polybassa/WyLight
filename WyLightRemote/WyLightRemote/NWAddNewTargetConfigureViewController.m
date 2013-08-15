@@ -17,35 +17,22 @@
 @property (weak, nonatomic) IBOutlet UITextField *passTextField;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
-@property (strong, nonatomic) UIAlertView *scanningAlertView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-
+@property (strong, nonatomic) UIAlertView *scanningAlertView;
 @end
 
 @implementation NWAddNewTargetConfigureViewController
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(keyboardWasShown:)
-												 name:UIKeyboardDidShowNotification object:nil];
-	
-    [[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(keyboardWillBeHidden:)
-												 name:UIKeyboardWillHideNotification object:nil];
-	
+	[self.scrollView setContentSize:[[UIScreen mainScreen]applicationFrame].size];
+		
 	if (self.configureTargetAsSoftAP) {
 		self.passLabel.hidden = YES;
 		self.passTextField.hidden = YES;
 		self.nameLabel.hidden = YES;
 		self.nameTextField.hidden = YES;
 	}
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (BOOL)textFieldInputValid {
@@ -110,30 +97,12 @@
 	});
 }
 
-- (IBAction)tap:(id)sender {
-	[self.ssidTextField resignFirstResponder];
-	[self.passTextField resignFirstResponder];
-	[self.nameTextField resignFirstResponder];
-}
-
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	[textField resignFirstResponder];
 	return NO;
 }
 
-- (void)keyboardWasShown:(NSNotification*)notification {
-    NSDictionary* info = [notification userInfo];
-    CGSize keyboardSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-	if(self.view.bounds.size.width < self.view.bounds.size.height) //horizontal
-		self.scrollView.frame = CGRectMake(self.scrollView.frame.origin.x, self.scrollView.frame.origin.y, self.view.frame.size.width, self.scrollView.frame.size.height - keyboardSize.height);
-}
-
-- (void)keyboardWillBeHidden:(NSNotification*)notification {
-	NSDictionary* info = [notification userInfo];
-    CGSize keyboardSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-	if(self.view.bounds.size.width < self.view.bounds.size.height) //horizontal
-		self.scrollView.frame = CGRectMake(self.scrollView.frame.origin.x, self.scrollView.frame.origin.y, self.view.frame.size.width, self.scrollView.frame.size.height + keyboardSize.height);
-}
+#pragma mark - WCWiflyControlDelegate
 
 - (void) fatalErrorOccured:(WCWiflyControlWrapper *)sender errorCode:(NSNumber *)errorCode {
 	NSLog(@"FatalError: ErrorCode = %d\n", [errorCode unsignedIntValue]);
