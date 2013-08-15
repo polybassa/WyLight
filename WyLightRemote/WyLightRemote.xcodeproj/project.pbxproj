@@ -70,6 +70,7 @@
 		5C542D1917BCD89000E4410A /* main.hex in Resources */ = {isa = PBXBuildFile; fileRef = 5C542D1617BCD89000E4410A /* main.hex */; };
 		5C542D1A17BCD89000E4410A /* Guide2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C542D1717BCD89000E4410A /* Guide2.png */; };
 		5C542D1B17BCD89000E4410A /* Guide1.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C542D1817BCD89000E4410A /* Guide1.png */; };
+		5C542D2217BD301300E4410A /* NWEditFadeCommandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542D2117BD301200E4410A /* NWEditFadeCommandViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -196,6 +197,8 @@
 		5C542D1617BCD89000E4410A /* main.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.hex; sourceTree = "<group>"; };
 		5C542D1717BCD89000E4410A /* Guide2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Guide2.png; sourceTree = "<group>"; };
 		5C542D1817BCD89000E4410A /* Guide1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Guide1.png; sourceTree = "<group>"; };
+		5C542D2017BD301000E4410A /* NWEditFadeCommandViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWEditFadeCommandViewController.h; sourceTree = "<group>"; };
+		5C542D2117BD301200E4410A /* NWEditFadeCommandViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWEditFadeCommandViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -363,6 +366,8 @@
 				5C542D1117BCC46200E4410A /* NWDefaultColorPickerViewController.m */,
 				5C542CDA17BC167400E4410A /* NWColorPickerViewController.h */,
 				5C542CDB17BC167400E4410A /* NWColorPickerViewController.m */,
+				5C542D2017BD301000E4410A /* NWEditFadeCommandViewController.h */,
+				5C542D2117BD301200E4410A /* NWEditFadeCommandViewController.m */,
 				5C542CF817BC167600E4410A /* NWEditGradientCommandViewController.h */,
 				5C542CF917BC167600E4410A /* NWEditGradientCommandViewController.m */,
 				5C542CD317BC165200E4410A /* NWBroadcastsTVC.h */,
@@ -543,6 +548,7 @@
 				5C542D0917BC167600E4410A /* NWScriptEffectCommandObject.m in Sources */,
 				5C542D0B17BC167600E4410A /* NWEditGradientCommandViewController.m in Sources */,
 				5C542D1217BCC46300E4410A /* NWDefaultColorPickerViewController.m in Sources */,
+				5C542D2217BD301300E4410A /* NWEditFadeCommandViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

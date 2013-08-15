@@ -10,14 +10,13 @@
 
 @implementation NWScriptObjectButton
 
-@synthesize startColors = _startColors;
-
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-		self.opaque = NO;
+		self.opaque = YES;
+		self.backgroundColor = [UIColor clearColor];
 	}
     return self;
 }
@@ -33,7 +32,6 @@
 	_startColors = startColors;
 	[self setNeedsDisplay];
 }
-
 
 #pragma mark - GESTURE
 

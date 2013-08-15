@@ -12,7 +12,6 @@
 
 @property (nonatomic, strong) NSArray *startColors;
 @property (nonatomic, strong) NSArray *endColors;
-
 @property (nonatomic, strong) UITouch *latestTouchBegan;
 
 - (void)pinch:(UIPinchGestureRecognizer *)gesture;

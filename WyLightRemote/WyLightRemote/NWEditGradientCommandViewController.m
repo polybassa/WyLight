@@ -9,13 +9,12 @@
 #import "NWEditGradientCommandViewController.h"
 #import "NWSetGradientScriptCommandObject.h"
 #import "NWScriptObjectButton.h"
+#import "KZColorPickerSwatchView.h"
 
 @interface NWEditGradientCommandViewController ()
-@property (weak, nonatomic) IBOutlet NWScriptObjectButton *gradientPreviewView;
-@property (weak, nonatomic) IBOutlet UIStepper *durationStepper;
-@property (weak, nonatomic) IBOutlet UILabel *currentDurationLabel;
-@property (weak, nonatomic) IBOutlet UIButton *color1Button;
-@property (weak, nonatomic) IBOutlet UIButton *color2Button;
+@property (strong, nonatomic) NWScriptObjectButton *gradientPreviewView;
+@property (strong, nonatomic) KZColorPickerSwatchView *colorButton1;
+@property (strong, nonatomic) KZColorPickerSwatchView *colorButton2;
 @property (strong, nonatomic) NSString *colorToEdit;
 @property (nonatomic) BOOL gestureLockForEditOffset;
 
@@ -23,38 +22,59 @@
 
 @implementation NWEditGradientCommandViewController
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+- (void)setup {	
+	self.colorButton1 = [[KZColorPickerSwatchView alloc] initWithFrame:CGRectZero];
+	[self.colorButton1 addTarget:self action:@selector(color1ButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+	[self.view addSubview:self.colorButton1];
 	
-	//init command only for testing purpose
-	self.command = [[NWSetGradientScriptCommandObject alloc]init];
-	self.command.color1 = [[UIColor greenColor] copy];
-	self.command.color2 = [[UIColor redColor] copy];
-	self.command.duration = 100;
-	self.command.offset = 0;
-	self.command.numberOfLeds = 32;
-	
-}
+	self.colorButton2 = [[KZColorPickerSwatchView alloc] initWithFrame:CGRectZero];
+	[self.colorButton2 addTarget:self action:@selector(color2ButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+	[self.view addSubview:self.colorButton2];
 
-- (void)viewWillAppear:(BOOL)animated
-{
-	[super viewWillAppear:animated];
-	self.command.backgroundColor = [UIColor blackColor];
-	
-	self.durationStepper.value = self.command.duration / 100;
-	self.currentDurationLabel.text = [NSString stringWithFormat:@"Duration: %d s", self.command.duration / 100];
-	
-	self.color1Button.titleLabel.backgroundColor = self.command.color1;
-	self.color2Button.titleLabel.backgroundColor = self.command.color2;
+	self.gradientPreviewView = [[NWScriptObjectButton alloc]initWithFrame:CGRectZero];
+	[self.view addSubview:self.gradientPreviewView];
 	self.gradientPreviewView.backgroundColor = [UIColor blackColor];
-	self.gradientPreviewView.endColors = self.command.colors;
 	
 	UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchOnGradientView:)];
 	[self.gradientPreviewView addGestureRecognizer:pinch];
 	
 	UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panOnGradientView:)];
 	[self.gradientPreviewView addGestureRecognizer:pan];
+}
+
+- (void)viewWillLayoutSubviews
+{
+	[self fixLocations];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	self.colorButton2.color = self.command.color2;
+	self.gradientPreviewView.endColors = self.command.colors;
+	self.colorButton1.color = self.command.color1;
+}
+
+- (void)fixLocations {
+	//horizontal
+		CGFloat totalWidth = self.view.bounds.size.width - 40.0;
+		CGFloat totalHeight = self.view.bounds.size.height - 40.0;
+		
+		CGFloat gradientViewHeight = totalHeight - ((NSUInteger)totalHeight % 32);
+		
+		self.gradientPreviewView.frame = CGRectMake(20, 20, totalWidth - 60, gradientViewHeight);
+		
+        CGFloat colorButtonCellWidth = 40;
+		CGFloat colorButtonCellHeight = gradientViewHeight / 2 - 20;
+        
+		self.colorButton1.frame = CGRectMake(totalWidth - 20, 20, colorButtonCellWidth, colorButtonCellHeight);
+		self.colorButton2.frame = CGRectMake(totalWidth - 20, 20 + colorButtonCellHeight + 40, colorButtonCellWidth, colorButtonCellHeight);
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	[self setup];
 }
 
 - (IBAction)panOnGradientView:(UIPanGestureRecognizer *)gesture {
@@ -109,12 +129,6 @@
     }
 }
 
-- (IBAction)durationChanged:(UIStepper *)sender {
-	
-	self.command.duration = (unsigned int)(sender.value * 100);
-	self.currentDurationLabel.text = [NSString stringWithFormat:@"Duration: %d s", self.command.duration / 100];
-}
-
 - (IBAction)color2ButtonPressed:(id)sender {
 	self.colorToEdit = @"color2";
 	[self performSegueWithIdentifier:@"editColor:" sender:self];
@@ -148,7 +162,7 @@
 			self.command.color2 = [segue.sourceViewController performSelector:@selector(selectedColor)];
 		}
 		if ([self.colorToEdit isEqualToString:@"color1"]) {
-			self.command.color2 = [segue.sourceViewController performSelector:@selector(selectedColor)];
+			self.command.color1 = [segue.sourceViewController performSelector:@selector(selectedColor)];
 		}
 	}
 }
