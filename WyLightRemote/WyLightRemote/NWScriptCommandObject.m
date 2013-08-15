@@ -10,4 +10,19 @@
 
 @implementation NWScriptCommandObject
 
+- (NSArray*)colors
+{
+	return nil;
+}
+
+- (UIColor *)backgroundColor
+{
+	if (_backgroundColor == nil)
+	{
+		_backgroundColor = [[UIColor blackColor] copy];
+	}
+	return _backgroundColor;
+}
+
+
 @end

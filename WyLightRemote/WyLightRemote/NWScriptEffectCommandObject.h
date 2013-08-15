@@ -10,8 +10,6 @@
 
 @interface NWScriptEffectCommandObject : NWScriptCommandObject
 
-@property (nonatomic, readonly, strong) NSArray *colors;
-@property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic) BOOL parallel;
 
 @end

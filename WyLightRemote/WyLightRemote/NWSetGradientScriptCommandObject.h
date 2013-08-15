@@ -14,5 +14,7 @@
 @property (nonatomic, strong) UIColor *color2;
 @property (nonatomic) uint8_t offset;
 @property (nonatomic) uint8_t numberOfLeds;
+@property (nonatomic, readonly) uint32_t address;
+
 
 @end

@@ -13,7 +13,7 @@
 
 @interface NWEditGradientCommandViewController : UIViewController
 
-@property (nonatomic, weak) NWSetGradientScriptCommandObject *command;
+@property (nonatomic, strong) NWSetGradientScriptCommandObject *command;
 
 - (IBAction)unwindChangeColorDone:(UIStoryboardSegue *)segue;
 

@@ -61,7 +61,6 @@
 		5C542D0317BC167600E4410A /* NWLoopOnCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CE917BC167500E4410A /* NWLoopOnCommandObject.m */; };
 		5C542D0417BC167600E4410A /* NWLoopOffCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CEB17BC167500E4410A /* NWLoopOffCommandObject.m */; };
 		5C542D0517BC167600E4410A /* NWSetGradientScriptCommandObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CED17BC167500E4410A /* NWSetGradientScriptCommandObject.mm */; };
-		5C542D0617BC167600E4410A /* NWWaitScriptCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CEF17BC167500E4410A /* NWWaitScriptCommandObject.m */; };
 		5C542D0717BC167600E4410A /* NWScriptCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CF117BC167500E4410A /* NWScriptCommandObject.m */; };
 		5C542D0817BC167600E4410A /* NWSetFadeScriptCommandObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CF317BC167600E4410A /* NWSetFadeScriptCommandObject.mm */; };
 		5C542D0917BC167600E4410A /* NWScriptEffectCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CF517BC167600E4410A /* NWScriptEffectCommandObject.m */; };
@@ -71,6 +70,8 @@
 		5C542D1A17BCD89000E4410A /* Guide2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C542D1717BCD89000E4410A /* Guide2.png */; };
 		5C542D1B17BCD89000E4410A /* Guide1.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C542D1817BCD89000E4410A /* Guide1.png */; };
 		5C542D2217BD301300E4410A /* NWEditFadeCommandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542D2117BD301200E4410A /* NWEditFadeCommandViewController.m */; };
+		5C542D2817BD547A00E4410A /* NWComplexScriptCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542D2717BD547800E4410A /* NWComplexScriptCommandObject.m */; };
+		5C542D2B17BD629700E4410A /* NWEditComplexScriptObjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542D2A17BD629400E4410A /* NWEditComplexScriptObjectViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -182,8 +183,6 @@
 		5C542CEB17BC167500E4410A /* NWLoopOffCommandObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWLoopOffCommandObject.m; sourceTree = "<group>"; };
 		5C542CEC17BC167500E4410A /* NWSetGradientScriptCommandObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWSetGradientScriptCommandObject.h; sourceTree = "<group>"; };
 		5C542CED17BC167500E4410A /* NWSetGradientScriptCommandObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NWSetGradientScriptCommandObject.mm; sourceTree = "<group>"; };
-		5C542CEE17BC167500E4410A /* NWWaitScriptCommandObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWWaitScriptCommandObject.h; sourceTree = "<group>"; };
-		5C542CEF17BC167500E4410A /* NWWaitScriptCommandObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWWaitScriptCommandObject.m; sourceTree = "<group>"; };
 		5C542CF017BC167500E4410A /* NWScriptCommandObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptCommandObject.h; sourceTree = "<group>"; };
 		5C542CF117BC167500E4410A /* NWScriptCommandObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptCommandObject.m; sourceTree = "<group>"; };
 		5C542CF217BC167500E4410A /* NWSetFadeScriptCommandObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWSetFadeScriptCommandObject.h; sourceTree = "<group>"; };
@@ -199,6 +198,10 @@
 		5C542D1817BCD89000E4410A /* Guide1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Guide1.png; sourceTree = "<group>"; };
 		5C542D2017BD301000E4410A /* NWEditFadeCommandViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWEditFadeCommandViewController.h; sourceTree = "<group>"; };
 		5C542D2117BD301200E4410A /* NWEditFadeCommandViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWEditFadeCommandViewController.m; sourceTree = "<group>"; };
+		5C542D2617BD547700E4410A /* NWComplexScriptCommandObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWComplexScriptCommandObject.h; sourceTree = "<group>"; };
+		5C542D2717BD547800E4410A /* NWComplexScriptCommandObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWComplexScriptCommandObject.m; sourceTree = "<group>"; };
+		5C542D2917BD629300E4410A /* NWEditComplexScriptObjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWEditComplexScriptObjectViewController.h; sourceTree = "<group>"; };
+		5C542D2A17BD629400E4410A /* NWEditComplexScriptObjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWEditComplexScriptObjectViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -370,6 +373,8 @@
 				5C542D2117BD301200E4410A /* NWEditFadeCommandViewController.m */,
 				5C542CF817BC167600E4410A /* NWEditGradientCommandViewController.h */,
 				5C542CF917BC167600E4410A /* NWEditGradientCommandViewController.m */,
+				5C542D2917BD629300E4410A /* NWEditComplexScriptObjectViewController.h */,
+				5C542D2A17BD629400E4410A /* NWEditComplexScriptObjectViewController.m */,
 				5C542CD317BC165200E4410A /* NWBroadcastsTVC.h */,
 				5C542CD417BC165200E4410A /* NWBroadcastsTVC.m */,
 				5C542CC717BC163900E4410A /* NWAddNewTargetConfigureViewController.h */,
@@ -413,16 +418,16 @@
 				5C542CE917BC167500E4410A /* NWLoopOnCommandObject.m */,
 				5C542CEA17BC167500E4410A /* NWLoopOffCommandObject.h */,
 				5C542CEB17BC167500E4410A /* NWLoopOffCommandObject.m */,
-				5C542CEC17BC167500E4410A /* NWSetGradientScriptCommandObject.h */,
-				5C542CED17BC167500E4410A /* NWSetGradientScriptCommandObject.mm */,
-				5C542CEE17BC167500E4410A /* NWWaitScriptCommandObject.h */,
-				5C542CEF17BC167500E4410A /* NWWaitScriptCommandObject.m */,
 				5C542CF017BC167500E4410A /* NWScriptCommandObject.h */,
 				5C542CF117BC167500E4410A /* NWScriptCommandObject.m */,
-				5C542CF217BC167500E4410A /* NWSetFadeScriptCommandObject.h */,
-				5C542CF317BC167600E4410A /* NWSetFadeScriptCommandObject.mm */,
 				5C542CF417BC167600E4410A /* NWScriptEffectCommandObject.h */,
 				5C542CF517BC167600E4410A /* NWScriptEffectCommandObject.m */,
+				5C542CEC17BC167500E4410A /* NWSetGradientScriptCommandObject.h */,
+				5C542CED17BC167500E4410A /* NWSetGradientScriptCommandObject.mm */,
+				5C542CF217BC167500E4410A /* NWSetFadeScriptCommandObject.h */,
+				5C542CF317BC167600E4410A /* NWSetFadeScriptCommandObject.mm */,
+				5C542D2617BD547700E4410A /* NWComplexScriptCommandObject.h */,
+				5C542D2717BD547800E4410A /* NWComplexScriptCommandObject.m */,
 			);
 			name = CommandModel;
 			sourceTree = "<group>";
@@ -542,13 +547,14 @@
 				5C542D0317BC167600E4410A /* NWLoopOnCommandObject.m in Sources */,
 				5C542D0417BC167600E4410A /* NWLoopOffCommandObject.m in Sources */,
 				5C542D0517BC167600E4410A /* NWSetGradientScriptCommandObject.mm in Sources */,
-				5C542D0617BC167600E4410A /* NWWaitScriptCommandObject.m in Sources */,
 				5C542D0717BC167600E4410A /* NWScriptCommandObject.m in Sources */,
 				5C542D0817BC167600E4410A /* NWSetFadeScriptCommandObject.mm in Sources */,
 				5C542D0917BC167600E4410A /* NWScriptEffectCommandObject.m in Sources */,
 				5C542D0B17BC167600E4410A /* NWEditGradientCommandViewController.m in Sources */,
 				5C542D1217BCC46300E4410A /* NWDefaultColorPickerViewController.m in Sources */,
 				5C542D2217BD301300E4410A /* NWEditFadeCommandViewController.m in Sources */,
+				5C542D2817BD547A00E4410A /* NWComplexScriptCommandObject.m in Sources */,
+				5C542D2B17BD629700E4410A /* NWEditComplexScriptObjectViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

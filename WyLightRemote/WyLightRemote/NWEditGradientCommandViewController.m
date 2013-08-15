@@ -74,6 +74,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	
+	self.command = [[NWSetGradientScriptCommandObject alloc] init];
+	self.command.color1 = [UIColor blueColor];
+	self.command.color2 = [UIColor greenColor];
+	
+	self.command.offset = 10;
+	self.command.numberOfLeds = 10;
+
 	[self setup];
 }
 

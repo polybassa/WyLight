@@ -11,5 +11,7 @@
 @interface NWScriptCommandObject : NWCommandObject
 
 @property (nonatomic, assign) uint16_t duration;
+@property (nonatomic, readonly, strong) NSArray *colors;
+@property (nonatomic, strong) UIColor *backgroundColor;
 
 @end

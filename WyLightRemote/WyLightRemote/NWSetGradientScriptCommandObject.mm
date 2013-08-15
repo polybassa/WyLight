@@ -100,4 +100,27 @@
 	return mutableColorArray;
 }
 
+- (uint32_t)address
+{
+	uint8_t offset = self.offset;
+	uint8_t numOfLeds = self.numberOfLeds;
+	const uint8_t endPosition = offset + numOfLeds;
+	
+	uint32_t outputBitmask = 0x00;
+	uint32_t compareBitmask = 0x00000001;
+	
+	for (unsigned int i = 0; i < NUM_OF_LED; i++) {
+		if (i > endPosition) {
+			//is empty
+		} else if (i == endPosition ) {
+			outputBitmask = outputBitmask | compareBitmask;
+		} else if (i >= offset) {
+			outputBitmask = outputBitmask | compareBitmask;
+		}
+		compareBitmask = compareBitmask << 1;
+	}
+	return outputBitmask;
+
+}
+
 @end
