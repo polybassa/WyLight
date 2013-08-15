@@ -1,19 +1,15 @@
 //
-//  NWScriptColorPickerViewController.m
+//  NWDefaultColorPickerViewController.m
 //  WyLightRemote
 //
-//  Created by Nils Weiß on 13.08.13.
+//  Created by Nils Weiß on 15.08.13.
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
-#import "NWScriptColorPickerViewController.h"
+#import "NWDefaultColorPickerViewController.h"
 #import "KZColorPicker.h"
 
-@interface NWScriptColorPickerViewController ()
-
-@end
-
-@implementation NWScriptColorPickerViewController
+@implementation NWDefaultColorPickerViewController
 
 - (void)loadView
 {
@@ -58,6 +54,9 @@
 - (void) pickerChanged:(KZColorPicker *)cp
 {
     self.selectedColor = cp.selectedColor;
+	if (self.colorPickerDelegate) {
+		[self.colorPickerDelegate defaultColorController:self didChangeColor:self.selectedColor];
+	}
 }
 
 @end

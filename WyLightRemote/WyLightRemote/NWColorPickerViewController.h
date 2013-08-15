@@ -7,7 +7,9 @@
 //
 
 #import "NWConnectionViewController.h"
+#import "NWDefaultColorPickerViewController.h"
 
-@interface NWColorPickerViewController : NWConnectionViewController
+@interface NWColorPickerViewController : NWDefaultColorPickerViewController <NWDefaultColorControllerDelegate>
 
 @end
+

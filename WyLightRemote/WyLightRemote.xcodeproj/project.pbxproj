@@ -66,8 +66,8 @@
 		5C542D0717BC167600E4410A /* NWScriptCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CF117BC167500E4410A /* NWScriptCommandObject.m */; };
 		5C542D0817BC167600E4410A /* NWSetFadeScriptCommandObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CF317BC167600E4410A /* NWSetFadeScriptCommandObject.mm */; };
 		5C542D0917BC167600E4410A /* NWScriptEffectCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CF517BC167600E4410A /* NWScriptEffectCommandObject.m */; };
-		5C542D0A17BC167600E4410A /* NWScriptColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CF717BC167600E4410A /* NWScriptColorPickerViewController.m */; };
 		5C542D0B17BC167600E4410A /* NWEditGradientCommandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CF917BC167600E4410A /* NWEditGradientCommandViewController.m */; };
+		5C542D1217BCC46300E4410A /* NWDefaultColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542D1117BCC46200E4410A /* NWDefaultColorPickerViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -189,10 +189,10 @@
 		5C542CF317BC167600E4410A /* NWSetFadeScriptCommandObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NWSetFadeScriptCommandObject.mm; sourceTree = "<group>"; };
 		5C542CF417BC167600E4410A /* NWScriptEffectCommandObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptEffectCommandObject.h; sourceTree = "<group>"; };
 		5C542CF517BC167600E4410A /* NWScriptEffectCommandObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptEffectCommandObject.m; sourceTree = "<group>"; };
-		5C542CF617BC167600E4410A /* NWScriptColorPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptColorPickerViewController.h; sourceTree = "<group>"; };
-		5C542CF717BC167600E4410A /* NWScriptColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptColorPickerViewController.m; sourceTree = "<group>"; };
 		5C542CF817BC167600E4410A /* NWEditGradientCommandViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWEditGradientCommandViewController.h; sourceTree = "<group>"; };
 		5C542CF917BC167600E4410A /* NWEditGradientCommandViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWEditGradientCommandViewController.m; sourceTree = "<group>"; };
+		5C542D1017BCC46200E4410A /* NWDefaultColorPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWDefaultColorPickerViewController.h; sourceTree = "<group>"; };
+		5C542D1117BCC46200E4410A /* NWDefaultColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWDefaultColorPickerViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -353,10 +353,10 @@
 				5C542CD717BC167400E4410A /* NWBrightnessViewController.m */,
 				5C542CD817BC167400E4410A /* NWConnectionViewController.h */,
 				5C542CD917BC167400E4410A /* NWConnectionViewController.m */,
+				5C542D1017BCC46200E4410A /* NWDefaultColorPickerViewController.h */,
+				5C542D1117BCC46200E4410A /* NWDefaultColorPickerViewController.m */,
 				5C542CDA17BC167400E4410A /* NWColorPickerViewController.h */,
 				5C542CDB17BC167400E4410A /* NWColorPickerViewController.m */,
-				5C542CF617BC167600E4410A /* NWScriptColorPickerViewController.h */,
-				5C542CF717BC167600E4410A /* NWScriptColorPickerViewController.m */,
 				5C542CF817BC167600E4410A /* NWEditGradientCommandViewController.h */,
 				5C542CF917BC167600E4410A /* NWEditGradientCommandViewController.m */,
 				5C542CD317BC165200E4410A /* NWBroadcastsTVC.h */,
@@ -535,8 +535,8 @@
 				5C542D0717BC167600E4410A /* NWScriptCommandObject.m in Sources */,
 				5C542D0817BC167600E4410A /* NWSetFadeScriptCommandObject.mm in Sources */,
 				5C542D0917BC167600E4410A /* NWScriptEffectCommandObject.m in Sources */,
-				5C542D0A17BC167600E4410A /* NWScriptColorPickerViewController.m in Sources */,
 				5C542D0B17BC167600E4410A /* NWEditGradientCommandViewController.m in Sources */,
+				5C542D1217BCC46300E4410A /* NWDefaultColorPickerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

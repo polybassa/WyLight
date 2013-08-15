@@ -12,16 +12,9 @@
 
 @implementation NWConnectionViewController
 
-@synthesize controlHandle = _controlHandle;
-
-- (void) setControlHandle:(WCWiflyControlWrapper *)controlHandle
-{
-	_controlHandle = controlHandle;
-}
-
 - (WCWiflyControlWrapper *)controlHandle
 {
-	if (!_controlHandle) {
+	if (!_controlHandle && self.delegate) {
 		[self.delegate performUnwindSegue];
 		return nil;
 	}
