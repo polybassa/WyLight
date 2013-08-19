@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="add_command">Add</string>
     <string name="app_name">WiflyLight</string>
     <string name="cancel">Cancel</string>
+    <string name="clear">Clear</string>
     <string name="configure">configure</string>
     <string name="msg_connectionfailed">Connection to the wifly device failed</string>
     <string name="msg_noremote">No remote detected, click scan to find one</string>
@@ -13,6 +15,7 @@
     <string name="save">Save</string>
     <string name="scan">Scan</string>
     <string name="scanning">Scanning...</string>
+    <string name="send">Send</string>
     <string name="set_clear">Clear</string>
     <string name="set_color">Set color</string>
     <string name="set_delayfade">Delay fade by 5 sec.</string>
@@ -21,6 +24,7 @@
     <string name="set_loopoff">Loop off</string>
     <string name="ssid_description">Network-SSID:</string>
     <string name="ssid_hint">1-32 characters</string>
+    <string name="title_activity_edit_command">Edit command</string>
     <string name="title_activity_wifly_control">Control your WiflyLight</string>
     <string name="title_dialog_set_wlan">Configure your WLAN settings</string>
 </resources>
