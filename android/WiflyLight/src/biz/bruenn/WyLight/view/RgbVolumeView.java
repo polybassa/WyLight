@@ -1,7 +1,6 @@
 package biz.bruenn.WyLight.view;
 
 import biz.bruenn.WiflyLight.R;
-import biz.bruenn.WyLight.view.VolumeView.OnVolumeChangedListener;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;

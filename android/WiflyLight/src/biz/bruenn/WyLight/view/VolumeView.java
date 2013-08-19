@@ -29,6 +29,7 @@ public class VolumeView extends View {
 	private Path mFramePath;
 	private boolean mEmbraceTouch = false;
 	private boolean mVertical = false;
+	private int mVolume = 0;
 	private final int mColor;
 	private OnVolumeChangedListener mOnVolumeChangedListener = null;
 
@@ -69,7 +70,13 @@ public class VolumeView extends View {
 		final int outerBottom = h;
 		
 		mBar.setBounds(innerLeft, innerTop, innerRight, innerBottom);
-		mCover.setBounds(innerLeft, innerTop, innerRight, innerBottom);
+		if(mVertical) {
+			final int left = innerLeft + (mVolume * (innerRight - innerLeft) / 100);
+			mCover.setBounds(left, innerTop, innerRight, innerBottom);
+		} else {
+			final int bottom = innerBottom - (mVolume * (innerBottom - innerTop) / 100);
+			mCover.setBounds(innerLeft, innerTop, innerRight, bottom);			
+		}
 		
 		if(mVertical) {
 			Shader barShader = new LinearGradient(0, innerBottom - innerTop, w, innerBottom - innerTop, Color.BLACK, mColor, Shader.TileMode.REPEAT);
@@ -140,9 +147,11 @@ public class VolumeView extends View {
 			mEmbraceTouch = false;
 			if(null != mOnVolumeChangedListener) {
 				if(mVertical) {
-					mOnVolumeChangedListener.onVolumeChanged(100 * (coverRight - r.left) / (r.right - r.left));
+					mVolume = 100 * (coverRight - r.left) / (r.right - r.left);
+					mOnVolumeChangedListener.onVolumeChanged(mVolume);
 				} else {
-					mOnVolumeChangedListener.onVolumeChanged(100 - 100 * (coverBottom - r.top) / (r.bottom - r.top));
+					mVolume = 100 - 100 * (coverBottom - r.top) / (r.bottom - r.top);
+					mOnVolumeChangedListener.onVolumeChanged(mVolume);
 				}
 			}
 		}

@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class EditCommandActivity extends Activity {
-	public static final String EXTRA_COMMAND = "biz.bruenn.WyLight.ScriptCommand";
 	
 	private ScriptCommand mCmd;
 	private Button mSave = null;
@@ -21,14 +20,11 @@ public class EditCommandActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_command);
-
-		Intent i = getIntent();
-		mCmd = (ScriptCommand) i.getSerializableExtra(EXTRA_COMMAND);
 		
 		mSave = (Button)this.findViewById(R.id.save);
 		mSave.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				setResult(mColor);
+				setResult(mColor, getIntent());
 				finish();
 			}
 		});

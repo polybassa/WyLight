@@ -16,26 +16,26 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class ScriptingFragment extends ControlFragment {
+	public static final String ITEM_POSITION = "ITEM_POSITION";
 
 	private ArrayList<ScriptCommand> mArrayList = new ArrayList<ScriptCommand>();
-	private ArrayAdapter<ScriptCommand> mAdapter;
+	private ScriptAdapter mAdapter;
 	private Random r = new Random();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_scripting, group, false);
 		
-		mAdapter = new ArrayAdapter<ScriptCommand>(this.getActivity(), android.R.layout.simple_list_item_1, mArrayList);
+		mAdapter = new ScriptAdapter(this.getActivity(), android.R.layout.simple_list_item_1, mArrayList);
 		mAdapter.notifyDataSetChanged();
 		ListView list = (ListView)v.findViewById(R.id.scriptList);
 		list.setAdapter(mAdapter);
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-			public void onItemClick(AdapterView<?> arg0, View v, int arg2,
-					long arg3) {
-				ScriptCommand cmd = mAdapter.getItem(arg2);
+			public void onItemClick(AdapterView<?> parent, View v, int position,
+					long id) {
 				Intent i = new Intent(v.getContext(), EditCommandActivity.class);
-				i.putExtra(EditCommandActivity.EXTRA_COMMAND, cmd);
+				i.putExtra(ITEM_POSITION, position);
 				startActivityForResult(i, 0);
 			}
 			
@@ -68,6 +68,11 @@ public class ScriptingFragment extends ControlFragment {
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		Toast.makeText(getActivity(), String.valueOf(resultCode), Toast.LENGTH_SHORT).show();
+		if(null != data) {
+			int position = data.getIntExtra(ITEM_POSITION, 0);
+			Toast.makeText(getActivity(), String.valueOf(position) + ':' + String.valueOf(resultCode), Toast.LENGTH_SHORT).show();
+			mAdapter.getItem(position).setColor(resultCode);
+			mAdapter.notifyDataSetChanged();
+		}
 	}
 }
