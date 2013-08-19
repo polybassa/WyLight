@@ -7,13 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import biz.bruenn.WiflyLight.R;
-import biz.bruenn.WyLight.view.VolumeView;
+import biz.bruenn.WyLight.view.RgbVolumeView;
 
-public class SetRGBFragment extends ControlFragment {
-	int mRed = 0;
-	int mGreen = 0;
-	int mBlue = 0;
-	
+public class SetRGBFragment extends ControlFragment {	
 	AtomicBoolean mChangeIsInProgress = new AtomicBoolean(false);
 
 	@Override
@@ -21,40 +17,16 @@ public class SetRGBFragment extends ControlFragment {
 
 		View view = inflater.inflate(R.layout.fragment_set_rgb, group, false);	
 
-		VolumeView red = (VolumeView)view.findViewById(R.id.redVolume);
-		red.setOnVolumeChangedListener(new VolumeView.OnVolumeChangedListener() {			
-			public void onVolumeChanged(int percent) {
-				final int intensity = (int)(2.55f * percent);
-				mRed = 0xff000000 | ((0x000000ff & intensity) << 16);
-				updateColor();
-			}
-		});	
+		RgbVolumeView rgb = (RgbVolumeView)view.findViewById(R.id.rgb_volume);
+		rgb.setOnColorChangedListener(new RgbVolumeView.OnColorChangedListener() {
+			public void onColorChanged(int color) {
 
-		VolumeView green = (VolumeView)view.findViewById(R.id.greenVolume);
-		green.setOnVolumeChangedListener(new VolumeView.OnVolumeChangedListener() {			
-			public void onVolumeChanged(int percent) {
-				final int intensity = (int)(2.55f * percent);
-				mGreen = ((0x000000ff & intensity) << 8);
-				updateColor();
-			}
-		});	
-
-		VolumeView blue = (VolumeView)view.findViewById(R.id.blueVolume);
-		blue.setOnVolumeChangedListener(new VolumeView.OnVolumeChangedListener() {			
-			public void onVolumeChanged(int percent) {
-				final int intensity = (int)(2.55f * percent);
-				mBlue = 0x000000ff & intensity;
-				updateColor();
+				if(!mChangeIsInProgress.getAndSet(true)) {
+					onSetColor(color);
+					mChangeIsInProgress.set(false);
+				}
 			}
 		});
 		return view;
 	}
-	
-	private void updateColor() {
-		if(!mChangeIsInProgress.getAndSet(true)) {
-			onSetColor(mRed | mGreen | mBlue);
-			mChangeIsInProgress.set(false);
-		}
-	}
-
 }

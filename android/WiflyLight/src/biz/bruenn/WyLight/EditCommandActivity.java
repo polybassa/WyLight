@@ -3,15 +3,12 @@ package biz.bruenn.WyLight;
 import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.view.RgbVolumeView;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 public class EditCommandActivity extends Activity {
 	
-	private ScriptCommand mCmd;
 	private Button mSave = null;
 	private int mColor;
 	
