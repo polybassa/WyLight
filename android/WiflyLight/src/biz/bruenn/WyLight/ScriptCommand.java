@@ -11,6 +11,10 @@ public class ScriptCommand implements Serializable {
 		mString = temp;
 	}
 	
+	public int getColor() {
+		return mColor;
+	}
+	
 	public void setColor(int color) {
 		mColor = color;
 	}

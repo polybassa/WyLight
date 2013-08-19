@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import biz.bruenn.WiflyLight.R;
+import biz.bruenn.WyLight.exception.ConnectionTimeout;
+import biz.bruenn.WyLight.exception.FatalError;
+import biz.bruenn.WyLight.exception.ScriptBufferFull;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -51,7 +54,8 @@ public class ScriptingFragment extends ControlFragment {
 		clear.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				mAdapter.clear();				
+				mAdapter.clear();
+				mCtrl.fwClearScript();
 			}
 		});
 		
@@ -59,7 +63,7 @@ public class ScriptingFragment extends ControlFragment {
 		send.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				Toast.makeText(getActivity(), "send script not implemented yet", Toast.LENGTH_SHORT).show();
+				sendScript();				
 			}
 		});
 		return v;
@@ -68,10 +72,29 @@ public class ScriptingFragment extends ControlFragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(null != data) {
-			int position = data.getIntExtra(ITEM_POSITION, 0);
-			Toast.makeText(getActivity(), String.valueOf(position) + ':' + String.valueOf(resultCode), Toast.LENGTH_SHORT).show();
+			final int position = data.getIntExtra(ITEM_POSITION, 0);
 			mAdapter.getItem(position).setColor(resultCode);
 			mAdapter.notifyDataSetChanged();
+		}
+	}
+	
+	private void sendScript() {
+		try {
+			mCtrl.fwClearScript();
+			mCtrl.fwLoopOn();
+			for(ScriptCommand cmd: this.mArrayList) {
+					mCtrl.fwSetFade(cmd.getColor(), 0xffffffff, (short)500);
+			}
+			mCtrl.fwLoopOff((byte)0);
+		} catch (ConnectionTimeout e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ScriptBufferFull e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FatalError e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
