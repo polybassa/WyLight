@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="xrX-67-0yu">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
+    </dependencies>
+    <scenes>
+        <!--Brightness View Controller-->
+        <scene sceneID="66c-GR-fMd">
+            <objects>
+                <viewController id="Gib-cg-PbH" customClass="NWBrightnessViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="C82-fa-z7V">
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <slider opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="CfU-7e-jrS">
+                                <connections>
+                                    <action selector="sliderValueChanged:" destination="Gib-cg-PbH" eventType="valueChanged" id="cLp-2t-b8Q"/>
+                                </connections>
+                            </slider>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="🔅" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="27" translatesAutoresizingMaskIntoConstraints="NO" id="gbi-Hm-bkS">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="1QP-ES-aRm"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AppleColorEmoji" family="Apple Color Emoji" pointSize="54"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="🔆" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gNO-WQ-ttK">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="63" type="user" id="KsW-Ea-rxA"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AppleColorEmoji" family="Apple Color Emoji" pointSize="54"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="1" stepValue="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="58h-eY-vyk">
+                                <connections>
+                                    <action selector="stepperValueChanged:" destination="Gib-cg-PbH" eventType="valueChanged" id="K71-Op-p4H"/>
+                                </connections>
+                            </stepper>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="gNO-WQ-ttK" firstAttribute="centerY" secondItem="gbi-Hm-bkS" secondAttribute="centerY" priority="466" type="user" id="1Hm-FE-C38"/>
+                            <constraint firstItem="CfU-7e-jrS" firstAttribute="top" secondItem="gNO-WQ-ttK" secondAttribute="top" type="default" id="C51-fV-R50"/>
+                            <constraint firstItem="CfU-7e-jrS" firstAttribute="centerX" secondItem="58h-eY-vyk" secondAttribute="centerX" priority="412" type="user" id="Dwa-tL-Ffi"/>
+                            <constraint firstAttribute="trailing" secondItem="gNO-WQ-ttK" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="HB5-JH-UP3"/>
+                            <constraint firstItem="CfU-7e-jrS" firstAttribute="leading" secondItem="gbi-Hm-bkS" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="aQB-Ok-hIb"/>
+                            <constraint firstItem="gNO-WQ-ttK" firstAttribute="centerY" secondItem="C82-fa-z7V" secondAttribute="centerY" type="default" id="bbu-QN-X1t"/>
+                            <constraint firstItem="gNO-WQ-ttK" firstAttribute="leading" secondItem="CfU-7e-jrS" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="dHc-tN-0uL"/>
+                            <constraint firstItem="58h-eY-vyk" firstAttribute="top" secondItem="CfU-7e-jrS" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="fnT-8E-y7C"/>
+                            <constraint firstItem="gbi-Hm-bkS" firstAttribute="leading" secondItem="C82-fa-z7V" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="pkx-bP-aQb"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" systemItem="featured" id="45E-0o-o9p"/>
+                    <connections>
+                        <outlet property="brightnessSlider" destination="CfU-7e-jrS" id="U14-de-vBX"/>
+                        <outlet property="brightnessStepper" destination="58h-eY-vyk" id="LFe-L3-rJD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8tA-vb-QJj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2337" y="-479"/>
+        </scene>
+        <!--Script View Controller-->
+        <scene sceneID="Jv0-rW-SV0">
+            <objects>
+                <viewController id="hi5-3x-DT2" customClass="NWScriptViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="NSs-Tb-Ayf">
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" systemItem="bookmarks" id="wc8-9f-Kd2"/>
+                    <navigationItem key="navigationItem" id="EdX-6c-79u"/>
+                    <connections>
+                        <outlet property="scrollView" destination="NSs-Tb-Ayf" id="2KK-sc-xeZ"/>
+                        <segue destination="gZg-ey-fxC" kind="push" id="UYq-WR-zSe"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="r49-aV-9K6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2277" y="109"/>
+        </scene>
+        <!--Edit Complex Script Object View Controller-->
+        <scene sceneID="6Uw-Lg-CXy">
+            <objects>
+                <viewController id="gZg-ey-fxC" customClass="NWEditComplexScriptObjectViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="p8W-JM-nqr">
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="L0A-6s-xVw"/>
+                    <connections>
+                        <segue destination="rcO-HS-3Vg" kind="push" identifier="editGradient:" id="ef1-0U-dTP"/>
+                        <segue destination="nkA-7T-jlh" kind="push" identifier="editFade:" id="noJ-CB-kC3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oPB-rF-Cvb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3341" y="109"/>
+        </scene>
+        <!--Edit Gradient Command View Controller-->
+        <scene sceneID="Cf2-Rt-V5z">
+            <objects>
+                <viewController id="rcO-HS-3Vg" customClass="NWEditGradientCommandViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="j2L-2N-Rp7">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="G52-iI-aOw"/>
+                    <connections>
+                        <segue destination="iqF-T6-xdP" kind="push" identifier="editColor:" id="WVG-zL-Tln"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WZZ-gl-6le" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4124" y="-229"/>
+        </scene>
+        <!--Edit Fade Command View Controller-->
+        <scene sceneID="4iI-n0-q9m">
+            <objects>
+                <viewController id="nkA-7T-jlh" customClass="NWEditFadeCommandViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lIN-Vb-Te5">
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="leO-yU-vod"/>
+                    <connections>
+                        <segue destination="iqF-T6-xdP" kind="push" identifier="editColor:" id="Nt8-HZ-Byd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="log-hv-8op" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4124" y="379"/>
+        </scene>
+        <!--Default Color Picker View Controller-->
+        <scene sceneID="fXh-yK-5tV">
+            <objects>
+                <viewController id="iqF-T6-xdP" customClass="NWDefaultColorPickerViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sLd-n4-kuy">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="8ow-I5-pKN">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="9C4-0J-Enz">
+                            <connections>
+                                <segue destination="tMI-dd-8mx" kind="unwind" unwindAction="unwindChangeColorCancel:" id="pN6-NP-r1x"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="NMG-YS-vdY">
+                            <connections>
+                                <segue destination="tMI-dd-8mx" kind="unwind" unwindAction="unwindChangeColorDone:" id="qhn-Sg-94e"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pcN-wv-ivd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="tMI-dd-8mx" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="5382" y="109"/>
+        </scene>
+        <!--Color Picker View Controller-->
+        <scene sceneID="lh4-cu-eqA">
+            <objects>
+                <viewController id="0Nb-vS-VFp" customClass="NWColorPickerViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="AxV-aj-nTX">
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" systemItem="favorites" id="2F3-FI-8CZ"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7dp-Al-fOp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2337" y="-1132"/>
+        </scene>
+        <!--ConnectionTBC-->
+        <scene sceneID="ecv-G2-lCx">
+            <objects>
+                <tabBarController definesPresentationContext="YES" id="8YW-ST-V3x" customClass="NWConnectionTBC" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="Rng-89-7df"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="CjR-vV-ZHe">
+                        <rect key="frame" x="129" y="330" width="163" height="49"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="0Nb-vS-VFp" kind="relationship" relationship="viewControllers" id="bIm-gE-SsQ"/>
+                        <segue destination="Gib-cg-PbH" kind="relationship" relationship="viewControllers" id="yC1-av-Kqg"/>
+                        <segue destination="urR-3F-rzf" kind="unwind" identifier="unwindAtConnectionFatalErrorOccured" unwindAction="unwindAtConnectionFatalErrorOccured:" id="rEP-m2-rlI"/>
+                        <segue destination="urR-3F-rzf" kind="unwind" identifier="unwindAtConnectionHasDisconnected" unwindAction="unwindAtConnectionHasDisconnected:" id="Cjr-u5-6Ye"/>
+                        <segue destination="hi5-3x-DT2" kind="relationship" relationship="viewControllers" id="ebs-2I-ev0"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DAF-a1-0f2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="urR-3F-rzf" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="1545" y="-480"/>
+        </scene>
+        <!--Add New Target Guide View Controller-->
+        <scene sceneID="OSx-Hz-8vC">
+            <objects>
+                <viewController id="r4j-Y4-WvM" customClass="NWAddNewTargetGuideViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lwq-OK-Ha0">
+                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" barStyle="blackOpaque" translatesAutoresizingMaskIntoConstraints="NO" id="eQY-Jx-8oa">
+                                <color key="tintColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                <items>
+                                    <navigationItem title="Add new Target" id="ZDf-7v-laj">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="TeT-vk-PkU">
+                                            <connections>
+                                                <segue destination="q6e-iH-q3v" kind="unwind" identifier="cancelAddNewTargetSegue:" unwindAction="cancelAddNewTargetSegue:" id="N6e-EF-zP2"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="gnT-rD-38e">
+                                            <connections>
+                                                <action selector="donePressed:" destination="r4j-Y4-WvM" id="ZA9-kh-ln9"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G6K-nh-wh7" customClass="NWAddNewTargetGuideView">
+                                <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                <gestureRecognizers/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="G6K-nh-wh7" firstAttribute="top" secondItem="eQY-Jx-8oa" secondAttribute="bottom" type="default" id="7Ib-of-sjJ"/>
+                            <constraint firstItem="eQY-Jx-8oa" firstAttribute="leading" secondItem="lwq-OK-Ha0" secondAttribute="leading" type="default" id="Cmc-LB-X99"/>
+                            <constraint firstItem="G6K-nh-wh7" firstAttribute="bottom" secondItem="lwq-OK-Ha0" secondAttribute="bottom" type="default" id="Eqn-se-0wd"/>
+                            <constraint firstItem="eQY-Jx-8oa" firstAttribute="trailing" secondItem="lwq-OK-Ha0" secondAttribute="trailing" type="default" id="Fm2-YB-ZXl"/>
+                            <constraint firstItem="eQY-Jx-8oa" firstAttribute="top" secondItem="lwq-OK-Ha0" secondAttribute="top" type="default" id="WSh-w1-Tyc"/>
+                            <constraint firstItem="G6K-nh-wh7" firstAttribute="leading" secondItem="lwq-OK-Ha0" secondAttribute="leading" type="default" id="g32-gW-72u"/>
+                            <constraint firstItem="G6K-nh-wh7" firstAttribute="trailing" secondItem="lwq-OK-Ha0" secondAttribute="trailing" type="default" id="zND-Pe-TaZ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="guideView" destination="G6K-nh-wh7" id="3Sg-JG-6s6"/>
+                        <segue destination="q6e-iH-q3v" kind="unwind" identifier="noNewTargetFoundSegue:" unwindAction="noNewTargetFoundSegue:" id="iLV-bq-9ii"/>
+                        <segue destination="kau-uB-eG6" kind="modal" identifier="configureAsSoftAP:" modalTransitionStyle="flipHorizontal" id="CMf-Du-R24"/>
+                        <segue destination="kau-uB-eG6" kind="modal" identifier="configureAsClient:" modalTransitionStyle="flipHorizontal" id="d1a-yx-KFh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nBj-v5-GXW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="q6e-iH-q3v" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="1545" y="1050"/>
+        </scene>
+        <!--Add New Target Configure View Controller-->
+        <scene sceneID="E65-z1-b3p">
+            <objects>
+                <exit id="7uJ-0A-h3o" userLabel="Exit" sceneMemberID="exit"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Z2L-zf-sKP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="kau-uB-eG6" customClass="NWAddNewTargetConfigureViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bi1-Vo-i0u">
+                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <scrollView opaque="NO" autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2SY-5j-B41">
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="SSID of your WLAN Network" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oMI-IW-qah">
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <color key="textColor" red="0.97647064920000004" green="0.5176470876" blue="0.26666668059999998" alpha="1" colorSpace="deviceRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3df-UK-Ria">
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="kau-uB-eG6" id="73T-Je-ESz"/>
+                                        </connections>
+                                    </textField>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Passphrase of your WLAN" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w8J-e3-NZz">
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <color key="textColor" red="0.97647064920000004" green="0.5176470876" blue="0.26666668059999998" alpha="1" colorSpace="deviceRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3kM-fS-ZuP">
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="kau-uB-eG6" id="98u-sj-qIV"/>
+                                        </connections>
+                                    </textField>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Name of your WyLight" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Tl-Rx-p1D">
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <color key="textColor" red="0.97647064920000004" green="0.5176470876" blue="0.26666668059999998" alpha="1" colorSpace="deviceRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="myLight" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bJv-2J-8Cs">
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="kau-uB-eG6" id="B0k-ZL-7Eg"/>
+                                        </connections>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="w8J-e3-NZz" firstAttribute="top" secondItem="3df-UK-Ria" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="1sf-D3-YkI"/>
+                                    <constraint firstItem="3kM-fS-ZuP" firstAttribute="leading" secondItem="2SY-5j-B41" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="559-BZ-gbh"/>
+                                    <constraint firstItem="w8J-e3-NZz" firstAttribute="leading" secondItem="2SY-5j-B41" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="5Wq-oS-nRA"/>
+                                    <constraint firstAttribute="trailing" secondItem="w8J-e3-NZz" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="7bM-kJ-Kfa"/>
+                                    <constraint firstAttribute="trailing" secondItem="3kM-fS-ZuP" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="7w4-Oz-Hzu"/>
+                                    <constraint firstItem="7Tl-Rx-p1D" firstAttribute="leading" secondItem="2SY-5j-B41" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="8RK-i2-rsL"/>
+                                    <constraint firstItem="oMI-IW-qah" firstAttribute="top" secondItem="2SY-5j-B41" secondAttribute="top" constant="19" id="FHW-zg-IaD"/>
+                                    <constraint firstItem="w8J-e3-NZz" firstAttribute="centerX" secondItem="2SY-5j-B41" secondAttribute="centerX" type="default" id="FPK-5d-kLi"/>
+                                    <constraint firstItem="3df-UK-Ria" firstAttribute="leading" secondItem="2SY-5j-B41" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="FwY-Q4-Ksd"/>
+                                    <constraint firstItem="bJv-2J-8Cs" firstAttribute="leading" secondItem="2SY-5j-B41" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="KXj-dd-qvY"/>
+                                    <constraint firstAttribute="trailing" secondItem="3df-UK-Ria" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="OOn-hW-Oot"/>
+                                    <constraint firstItem="7Tl-Rx-p1D" firstAttribute="top" secondItem="2SY-5j-B41" secondAttribute="top" constant="163" id="RBt-gk-WRD"/>
+                                    <constraint firstAttribute="trailing" secondItem="7Tl-Rx-p1D" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="XFK-4g-HLc"/>
+                                    <constraint firstAttribute="trailing" secondItem="bJv-2J-8Cs" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="YBH-sD-RBa"/>
+                                    <constraint firstAttribute="trailing" secondItem="oMI-IW-qah" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="gyM-fP-Llz"/>
+                                    <constraint firstAttribute="bottom" secondItem="bJv-2J-8Cs" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="k4i-bR-GOk"/>
+                                    <constraint firstItem="3kM-fS-ZuP" firstAttribute="top" secondItem="2SY-5j-B41" secondAttribute="top" constant="124" id="mWO-zN-SKZ"/>
+                                    <constraint firstItem="oMI-IW-qah" firstAttribute="leading" secondItem="2SY-5j-B41" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="vIl-BM-KmU"/>
+                                    <constraint firstItem="bJv-2J-8Cs" firstAttribute="top" secondItem="2SY-5j-B41" secondAttribute="top" constant="196" id="xWM-oA-MZK"/>
+                                    <constraint firstItem="3df-UK-Ria" firstAttribute="top" secondItem="2SY-5j-B41" secondAttribute="top" constant="53" id="zwg-Hv-1eR"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="kau-uB-eG6" id="kVG-b5-HR8"/>
+                                </connections>
+                            </scrollView>
+                            <navigationBar contentMode="scaleToFill" barStyle="blackOpaque" translatesAutoresizingMaskIntoConstraints="NO" id="thj-OA-OH8">
+                                <color key="tintColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                <items>
+                                    <navigationItem title="Add new Target" id="Bdp-v1-JYj">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ncU-r4-jZS">
+                                            <connections>
+                                                <segue destination="7uJ-0A-h3o" kind="unwind" unwindAction="cancelAddNewTargetSegue:" id="udL-6V-3rr"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="POI-ry-qRB">
+                                            <connections>
+                                                <action selector="configButtonPressed:" destination="kau-uB-eG6" id="I3i-Mp-I19"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="thj-OA-OH8" firstAttribute="trailing" secondItem="bi1-Vo-i0u" secondAttribute="trailing" type="default" id="6uC-LB-D01"/>
+                            <constraint firstItem="2SY-5j-B41" firstAttribute="trailing" secondItem="bi1-Vo-i0u" secondAttribute="trailing" type="default" id="ByX-6d-BL8"/>
+                            <constraint firstItem="2SY-5j-B41" firstAttribute="leading" secondItem="bi1-Vo-i0u" secondAttribute="leading" type="default" id="TfQ-TH-GdT"/>
+                            <constraint firstItem="2SY-5j-B41" firstAttribute="top" secondItem="bi1-Vo-i0u" secondAttribute="top" constant="44" type="user" id="YoU-u5-G2i"/>
+                            <constraint firstAttribute="bottom" secondItem="2SY-5j-B41" secondAttribute="bottom" constant="170" id="edk-4i-CUV"/>
+                            <constraint firstItem="thj-OA-OH8" firstAttribute="top" secondItem="bi1-Vo-i0u" secondAttribute="top" type="default" id="tKa-0r-DTf"/>
+                            <constraint firstItem="thj-OA-OH8" firstAttribute="leading" secondItem="bi1-Vo-i0u" secondAttribute="leading" type="default" id="zdf-7u-Bv6"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="nameLabel" destination="7Tl-Rx-p1D" id="raq-hN-mnS"/>
+                        <outlet property="nameTextField" destination="bJv-2J-8Cs" id="sGt-JN-Db4"/>
+                        <outlet property="passLabel" destination="w8J-e3-NZz" id="0Or-ek-RIK"/>
+                        <outlet property="passTextField" destination="3kM-fS-ZuP" id="L8U-L5-jRr"/>
+                        <outlet property="scrollView" destination="2SY-5j-B41" id="xcP-yt-Aa9"/>
+                        <outlet property="ssidLabel" destination="oMI-IW-qah" id="rMg-jK-UeY"/>
+                        <outlet property="ssidTextField" destination="3df-UK-Ria" id="tbX-Za-mbM"/>
+                        <segue destination="7uJ-0A-h3o" kind="unwind" identifier="unwindConfigureDone:" unwindAction="unwindAtConnectionHasDisconnected:" id="pSJ-5K-DDp"/>
+                        <segue destination="7uJ-0A-h3o" kind="unwind" identifier="unwindConfigurationAtFatalErrorOccured" unwindAction="unwindAtConnectionFatalErrorOccured:" id="5ad-yu-LAm"/>
+                        <segue destination="7uJ-0A-h3o" kind="unwind" identifier="unwindConfigurationAtConnectionHasDisconnected" unwindAction="unwindAtConnectionHasDisconnected:" id="yWh-kD-UUn"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="2034" y="1050"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="m7p-py-uDD">
+            <objects>
+                <navigationController id="v4T-uT-mOL" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="blackOpaque" id="Wum-vD-QNm">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="WY4-VB-j5N" kind="relationship" relationship="rootViewController" id="eX9-ig-wV9"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wxf-p7-hAj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="374" y="77"/>
+        </scene>
+        <!--BroadcastsTVC - WyLight Remote-->
+        <scene sceneID="2Ce-4w-DcM">
+            <objects>
+                <tableViewController id="WY4-VB-j5N" customClass="NWBroadcastsTVC" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="IfA-3M-dMv">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="gray" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Target" textLabel="uMz-Q8-lUN" detailTextLabel="yL0-Uc-9Zk" style="IBUITableViewCellStyleValue1" id="UwN-qJ-LIK">
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uMz-Q8-lUN">
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yL0-Uc-9Zk">
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="8YW-ST-V3x" kind="push" identifier="setEndpoint:" id="Flu-ZD-B69"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="WY4-VB-j5N" id="x8e-RM-9sj"/>
+                            <outlet property="delegate" destination="WY4-VB-j5N" id="u0R-kZ-Yez"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="WyLight Remote" id="0YI-tb-Q4S">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Y4X-xt-gZX">
+                            <connections>
+                                <segue destination="r4j-Y4-WvM" kind="modal" identifier="addNewTarget:" modalTransitionStyle="flipHorizontal" id="gvP-7m-TEx"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="YoW-MY-HiC">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HeD-sg-qRe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="941" y="77"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="q6u-wE-bps">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OmD-pf-7Y2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController id="xrX-67-0yu" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ErQ-PE-Nhw">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="rcO-HS-3Vg" kind="relationship" relationship="rootViewController" id="o8I-Tb-7aA"/>
+                    </connections>
+                </navigationController>
+            </objects>
+            <point key="canvasLocation" x="2928" y="-523"/>
+        </scene>
+    </scenes>
+    <classes>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="NWAddNewTargetConfigureViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NWAddNewTargetConfigureViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="nameTextField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="passLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="passTextField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="ssidLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="ssidTextField" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="NWAddNewTargetGuideView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NWAddNewTargetGuideView.h"/>
+        </class>
+        <class className="NWAddNewTargetGuideViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NWAddNewTargetGuideViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="guideView" candidateClass="NWAddNewTargetGuideView"/>
+            </relationships>
+        </class>
+        <class className="NWBrightnessViewController" superclassName="NWConnectionViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NWBrightnessViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="brightnessSlider" candidateClass="UISlider"/>
+                <relationship kind="outlet" name="brightnessStepper" candidateClass="UIStepper"/>
+            </relationships>
+        </class>
+        <class className="NWBroadcastsTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NWBroadcastsTVC.h"/>
+            <relationships>
+                <relationship kind="action" name="cancelAddNewTargetSegue:" candidateClass="UIStoryboardSegue"/>
+                <relationship kind="action" name="noNewTargetFoundSegue:" candidateClass="UIStoryboardSegue"/>
+                <relationship kind="action" name="unwindAtConnectionFatalErrorOccured:" candidateClass="UIStoryboardSegue"/>
+                <relationship kind="action" name="unwindAtConnectionHasDisconnected:" candidateClass="UIStoryboardSegue"/>
+            </relationships>
+        </class>
+        <class className="NWColorPickerViewController" superclassName="NWDefaultColorPickerViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NWColorPickerViewController.h"/>
+        </class>
+        <class className="NWConnectionTBC" superclassName="UITabBarController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NWConnectionTBC.h"/>
+        </class>
+        <class className="NWConnectionViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NWConnectionViewController.h"/>
+        </class>
+        <class className="NWDefaultColorPickerViewController" superclassName="NWConnectionViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NWDefaultColorPickerViewController.h"/>
+        </class>
+        <class className="NWEditComplexScriptObjectViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NWEditComplexScriptObjectViewController.h"/>
+        </class>
+        <class className="NWEditFadeCommandViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NWEditFadeCommandViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="unwindChangeColorCancel:" candidateClass="UIStoryboardSegue"/>
+                <relationship kind="action" name="unwindChangeColorDone:" candidateClass="UIStoryboardSegue"/>
+            </relationships>
+        </class>
+        <class className="NWEditGradientCommandViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NWEditGradientCommandViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="unwindChangeColorCancel:" candidateClass="UIStoryboardSegue"/>
+                <relationship kind="action" name="unwindChangeColorDone:" candidateClass="UIStoryboardSegue"/>
+            </relationships>
+        </class>
+        <class className="NWScriptObjectButton" superclassName="UIButton">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NWScriptObjectButton.h"/>
+        </class>
+        <class className="NWScriptViewController" superclassName="NWConnectionViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NWScriptViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="button" candidateClass="NWScriptObjectButton"/>
+            </relationships>
+        </class>
+        <class className="UIRefreshControl" superclassName="UIControl">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UIRefreshControl.h"/>
+        </class>
+        <class className="UIStoryboardSegue" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UIStoryboardSegue.h"/>
+        </class>
+    </classes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination"/>
+    </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="d1a-yx-KFh"/>
+        <segue reference="o8I-Tb-7aA"/>
+        <segue reference="WVG-zL-Tln"/>
+    </inferredMetricsTieBreakers>
+</document>
