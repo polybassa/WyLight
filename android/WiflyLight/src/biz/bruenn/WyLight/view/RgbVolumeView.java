@@ -26,7 +26,7 @@ public class RgbVolumeView extends LinearLayout {
 		red.setOnVolumeChangedListener(new VolumeView.OnVolumeChangedListener() {			
 			public void onVolumeChanged(int percent) {
 				final int intensity = (int)(2.55f * percent);
-				mRed = 0xff000000 | ((0x000000ff & intensity) << 16);
+				mRed = ((0x000000ff & intensity) << 16);
 				updateColor();
 			}
 		});	
@@ -56,7 +56,7 @@ public class RgbVolumeView extends LinearLayout {
 	
 	private void updateColor() {
 		if(null != mOnColorChangedListener) {
-			mOnColorChangedListener.onColorChanged(mRed | mGreen | mBlue);
+			mOnColorChangedListener.onColorChanged(0xff000000 | mRed | mGreen | mBlue);
 		}
 	}
 
