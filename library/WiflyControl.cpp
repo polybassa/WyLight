@@ -561,15 +561,12 @@ bool Control::ConfModuleForWlan(const std::string& phrase, const std::string& ss
 		Trace(ZONE_ERROR, "set defaults failed\n");
 		return false;
 	}
-Trace(ZONE_INFO, "Defaults set\n");
 	
 	if(!ConfSetWlan(phrase, ssid))
 	{
 		Trace(ZONE_ERROR, "set wlan phrase and ssid failed\n");
 		return false;
 	}
-	Trace(ZONE_INFO, "wlan set\n");
-	std::cout << phrase << ':' << ssid << '\n';
 	
 	if(!ConfSetDeviceId(deviceId))
 	{
