@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class ScriptingFragment extends ControlFragment {
 	public static final String ITEM_POSITION = "ITEM_POSITION";
@@ -82,8 +81,8 @@ public class ScriptingFragment extends ControlFragment {
 		try {
 			mCtrl.fwClearScript();
 			mCtrl.fwLoopOn();
-			for(ScriptCommand cmd: this.mArrayList) {
-					mCtrl.fwSetFade(cmd.getColor(), 0xffffffff, (short)500);
+			for(ScriptCommand cmd: mArrayList) {
+				cmd.sendTo(mCtrl);
 			}
 			mCtrl.fwLoopOff((byte)0);
 		} catch (ConnectionTimeout e) {
