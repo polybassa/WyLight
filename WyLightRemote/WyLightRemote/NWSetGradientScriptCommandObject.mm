@@ -85,9 +85,9 @@
 	const uint8_t endPosition = offset + numOfLeds;
 	
 	for (unsigned int i = 0; i < NUM_OF_LED; i++) {
-		if (i > endPosition) {
+		if (i >= endPosition) {
 			[mutableColorArray addObject:[self.backgroundColor copy]];
-		} else if (i == endPosition ) {
+		} else if (i == (endPosition - 1 )) {
 			[mutableColorArray addObject:[UIColor colorWithRed:color2Red
 														 green:color2Green
 														  blue:color2Blue
@@ -117,9 +117,9 @@
 	uint32_t compareBitmask = 0x00000001;
 	
 	for (unsigned int i = 0; i < NUM_OF_LED; i++) {
-		if (i > endPosition) {
+		if (i >= endPosition) {
 			//is empty
-		} else if (i == endPosition ) {
+		} else if (i == (endPosition - 1)) {
 			outputBitmask = outputBitmask | compareBitmask;
 		} else if (i >= offset) {
 			outputBitmask = outputBitmask | compareBitmask;

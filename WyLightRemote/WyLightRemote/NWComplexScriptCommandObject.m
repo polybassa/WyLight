@@ -47,7 +47,7 @@
 {
 	NSMutableArray *outPutColors = [[NSMutableArray alloc]init];
 	uint32_t compareMask = 0x00000001;
-	for (unsigned int i = 0; i < [[[self.itsScriptObjects lastObject] colors]count]; i++) {
+	for (unsigned int i = 0; i < [[[self.itsScriptObjects lastObject] colors]count]; i++) {  //i = 0 - 31
 		NSUInteger j = self.itsScriptObjects.count;
 		while (j--) {
 			NWScriptEffectCommandObject *currentObj = [self.itsScriptObjects objectAtIndex:j];
@@ -59,7 +59,7 @@
 				}
 			}
 		}
-		if (i > outPutColors.count) {
+		if (i >= outPutColors.count) {
 			[outPutColors addObject:self.backgroundColor];
 		}
 		compareMask = compareMask << 1;
