@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "NWDefaultColorPickerViewController.h"
 
+@class WCWiflyControlWrapper;
+
+
 @interface NWColorPickerViewController : NWDefaultColorPickerViewController <NWDefaultColorControllerDelegate>
 
 @property (nonatomic, weak) WCWiflyControlWrapper *controlHandle;

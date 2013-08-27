@@ -18,13 +18,21 @@
 
 @implementation NWBroadcastsTVC
 
-- (WCBroadcastReceiverWrapper *)receiver
-{
+- (void)refresh {
+	[self.refreshControl beginRefreshing];
+	[self.receiver clearTargets];
+}
+
+#pragma mark - GETTER
+
+- (WCBroadcastReceiverWrapper *)receiver {
 	if (!_receiver) {
 		_receiver = [[WCBroadcastReceiverWrapper alloc] init];
 	}
 	return _receiver;
 }
+
+#pragma mark - VIEW LIFECYCLE METHODES
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -40,11 +48,6 @@
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 	[[NSNotificationCenter defaultCenter] removeObserver:self.tableView];
-}
-
-- (void)refresh {
-	[self.refreshControl beginRefreshing];
-	[self.receiver clearTargets];
 }
 
 #pragma mark - Table view data source
@@ -65,6 +68,8 @@
 	cell.detailTextLabel.text = [[[self.receiver targets]objectAtIndex:indexPath.row] adressString];
     return cell;
 }
+
+#pragma mark - SEGUE's
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     NSIndexPath *indexPath = nil;

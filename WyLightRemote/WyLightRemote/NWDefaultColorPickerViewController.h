@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @protocol NWDefaultColorControllerDelegate;
-@class WCWiflyControlWrapper;
+
 
 @interface NWDefaultColorPickerViewController : UIViewController
 
@@ -17,6 +17,7 @@
 @property (nonatomic, weak) id <NWDefaultColorControllerDelegate> colorPickerDelegate;
 
 @end
+
 
 @protocol NWDefaultColorControllerDelegate
 - (void) defaultColorController:(NWDefaultColorPickerViewController *)controller didChangeColor:(UIColor *)color;

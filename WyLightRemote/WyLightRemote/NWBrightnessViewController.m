@@ -10,6 +10,7 @@
 #import "WCWiflyControlWrapper.h"
 
 @interface NWBrightnessViewController ()
+
 @property (weak, nonatomic) IBOutlet UISlider *brightnessSlider;
 @property (weak, nonatomic) IBOutlet UIStepper *brightnessStepper;
 
@@ -17,10 +18,11 @@
 
 @implementation NWBrightnessViewController
 
-- (void) viewDidLoad
-{
+- (void) viewDidLoad {
 	self.brightnessSlider.value = self.brightnessStepper.value;
 }
+
+#pragma mark - VALUE CHANGED CALLBACK's
 
 - (IBAction)sliderValueChanged:(UISlider *)sender {
 	[self.controlHandle setColorDirect:[UIColor colorWithRed:sender.value green:sender.value blue:sender.value alpha:1.0]];
@@ -33,8 +35,9 @@
 	self.brightnessSlider.value = sender.value;
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
+#pragma mark - HANDLE ROTATION
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	
 	if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
@@ -45,8 +48,7 @@
 	}
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 	
 	if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))

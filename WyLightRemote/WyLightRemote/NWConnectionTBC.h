@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @class WCEndpoint;
-
 @protocol WCWiflyControlDelegate;
+
 
 @interface NWConnectionTBC : UITabBarController <WCWiflyControlDelegate>
 

@@ -11,13 +11,15 @@
 #import "WCEndpoint.h"
 
 @interface NWConnectionTBC ()
+
 @property (nonatomic, strong) WCWiflyControlWrapper* controlHandle;
+
 @end
 
 @implementation NWConnectionTBC
 
-- (void)setEndpoint:(WCEndpoint *)endpoint
-{
+//establishes connection to the endpoint automatically
+- (void)setEndpoint:(WCEndpoint *)endpoint {
 	__block UIAlertView *connectingView = [[UIAlertView alloc] initWithTitle:@"Connecting" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
 	[connectingView show];
 	UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -49,8 +51,7 @@
 	self.title = endpoint.name;
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"closeConnection:"]) {
 		if (self.controlHandle) {
 			[self.controlHandle disconnect];
@@ -61,22 +62,19 @@
 
 #pragma mark - DELEGATE METHODES
 
-- (void) fatalErrorOccured:(WCWiflyControlWrapper *)sender errorCode:(NSNumber *)errorCode
-{
+- (void) fatalErrorOccured:(WCWiflyControlWrapper *)sender errorCode:(NSNumber *)errorCode {
 	NSLog(@"FatalError: ErrorCode = %d\n", [errorCode unsignedIntValue]);
 	[sender disconnect];
 	[sender setDelegate:nil];
 	[self performSegueWithIdentifier:@"unwindAtConnectionFatalErrorOccured" sender:self];
 }
 
-- (void) scriptFullErrorOccured:(WCWiflyControlWrapper *)sender errorCode:(NSNumber*)errorCode
-{
+- (void) scriptFullErrorOccured:(WCWiflyControlWrapper *)sender errorCode:(NSNumber*)errorCode {
 	NSLog(@"ScriptFullError - Cleared Scriptbuffer automatically!\n");
 	[sender clearScript];
 }
 
-- (void) wiflyControlHasDisconnected:(WCWiflyControlWrapper *)sender
-{
+- (void) wiflyControlHasDisconnected:(WCWiflyControlWrapper *)sender {
 	NSLog(@"WiflyControlHasDisconnected\n");
 	[sender disconnect];
 	[sender setDelegate:nil];

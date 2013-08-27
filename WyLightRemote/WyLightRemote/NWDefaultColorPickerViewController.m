@@ -11,8 +11,7 @@
 
 @implementation NWDefaultColorPickerViewController
 
-- (void)loadView
-{
+- (void)loadView {
 	UIView *container = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
 	
 	container.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -27,8 +26,16 @@
 	[self.view addSubview:picker];
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
+- (void) pickerChanged:(KZColorPicker *)cp {
+    self.selectedColor = cp.selectedColor;
+	if (self.colorPickerDelegate) {
+		[self.colorPickerDelegate defaultColorController:self didChangeColor:self.selectedColor];
+	}
+}
+
+#pragma mark - HANDLE ROTATION
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	
 	if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
@@ -39,8 +46,7 @@
 	}
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 	
 	if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
@@ -48,14 +54,6 @@
 		CGRect biggerFrame = self.tabBarController.view.frame;
 		biggerFrame.size.height += self.tabBarController.tabBar.frame.size.height;
 		self.tabBarController.view.frame = biggerFrame ;
-	}
-}
-
-- (void) pickerChanged:(KZColorPicker *)cp
-{
-    self.selectedColor = cp.selectedColor;
-	if (self.colorPickerDelegate) {
-		[self.colorPickerDelegate defaultColorController:self didChangeColor:self.selectedColor];
 	}
 }
 
