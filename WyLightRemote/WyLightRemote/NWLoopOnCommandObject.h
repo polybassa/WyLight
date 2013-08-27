@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
-#import "NWCommandObject.h"
+#import "NWSendableCommand.h"
 
-@interface NWLoopOnCommandObject : NWCommandObject
+@interface NWLoopOnCommandObject : NSObject <NWSendableCommand>
 
 @end

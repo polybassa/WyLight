@@ -13,8 +13,7 @@
 
 @implementation NWSetGradientScriptCommandObject
 
-- (id)copyWithZone:(NSZone *)zone
-{
+- (id)copyWithZone:(NSZone *)zone {
 	NWSetGradientScriptCommandObject *other = [[NWSetGradientScriptCommandObject alloc]init];
 	other.parallel = self.parallel;
 	other.offset = self.offset;
@@ -26,8 +25,7 @@
 	return other;
 }
 
-- (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control
-{
+- (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control {
 	WyLight::WiflyColor color1, color2;
 	
 	CGFloat r, g, b, a;
@@ -46,15 +44,13 @@
 	[control setGradientWithColor:color1.argb() colorTwo:color2.argb() time:self.duration parallelFade:self.parallel gradientLength:self.numberOfLeds startPosition:self.offset];
 }
 
-- (void)setOffset:(uint8_t)offset
-{
+- (void)setOffset:(uint8_t)offset {
 	if (offset + self.numberOfLeds < NUM_OF_LED && offset >= 0) {
 		_offset = offset;
 	}
 }
 
-- (void)setNumberOfLeds:(uint8_t)numberOfLeds
-{
+- (void)setNumberOfLeds:(uint8_t)numberOfLeds {
 	if ((self.offset + numberOfLeds) <= NUM_OF_LED) {
 		_numberOfLeds = numberOfLeds;
 	} else if (self.offset > 0 && numberOfLeds <= NUM_OF_LED)
@@ -67,8 +63,7 @@
 	}
 }
 
-- (NSArray *)colors
-{
+- (NSArray *)colors {
 	NSMutableArray *mutableColorArray = [[NSMutableArray alloc]init];
 	CGFloat deltaRed, deltaGreen, deltaBlue, color1Red, color2Red, color1Green, color2Green, color1Blue, color2Blue;
 	
@@ -113,8 +108,7 @@
 	return mutableColorArray;
 }
 
-- (uint32_t)address
-{
+- (uint32_t)address {
 	uint8_t offset = self.offset;
 	uint8_t numOfLeds = self.numberOfLeds;
 	const uint8_t endPosition = offset + numOfLeds;

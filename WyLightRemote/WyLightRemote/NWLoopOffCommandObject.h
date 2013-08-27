@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
-#import "NWCommandObject.h"
+#import "NWSendableCommand.h"
 
-@interface NWLoopOffCommandObject : NWCommandObject
+@interface NWLoopOffCommandObject : NSObject <NWSendableCommand>
 
 @property (nonatomic) uint8_t numberOfRepeats;
 

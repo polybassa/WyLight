@@ -10,18 +10,22 @@
 
 @implementation NWScriptCommandObject
 
-- (NSArray*)colors
-{
+@synthesize backgroundColor = _backgroundColor;
+
+- (NSArray*)colors {
 	return nil;
 }
 
-- (UIColor *)backgroundColor
-{
+- (UIColor *)backgroundColor {
 	if (_backgroundColor == nil)
 	{
-		_backgroundColor = [[UIColor blackColor] copy];
+		_backgroundColor = [UIColor blackColor];
 	}
 	return _backgroundColor;
+} 
+
+- (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control {
+	[[[NSException alloc] initWithName:@"Function not implemented" reason:@"Implement function sendToWCWiflyControl:" userInfo:nil] raise];
 }
 
 @end

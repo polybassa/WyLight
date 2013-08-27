@@ -6,12 +6,11 @@
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
-#import "NWCommandObject.h"
+#import "NWSendableCommand.h"
+#import "NWDrawableCommand.h"
 
-@interface NWScriptCommandObject : NWCommandObject
+@interface NWScriptCommandObject : NSObject <NWSendableCommand, NWDrawableCommand>
 
 @property (nonatomic, assign) uint16_t duration;
-@property (nonatomic, readonly, strong) NSArray *colors;
-@property (nonatomic, strong) UIColor *backgroundColor;
 
 @end

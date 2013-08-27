@@ -9,6 +9,7 @@
 #import "NWComplexScriptCommandObject.h"
 #import "WCWiflyControlWrapper.h"
 #import "NWScriptEffectCommandObject.h"
+#import "NWSendableCommand.h"
 
 @implementation NWComplexScriptCommandObject
 
@@ -18,7 +19,7 @@
 		[control setWaitTimeInTenMilliSecondsIntervals:self.duration];
 	} else {
 		[self prepareForSendToWCWiflyControl];
-		for (NWCommandObject *command in self.itsScriptObjects) {
+		for (NSObject <NWSendableCommand> *command in self.itsScriptObjects) {
 			[command sendToWCWiflyControl:control];
 		}
 	}
@@ -51,7 +52,7 @@
 		while (j--) {
 			NWScriptEffectCommandObject *currentObj = [self.itsScriptObjects objectAtIndex:j];
 			if ([currentObj respondsToSelector:@selector(address)]) {
-				const uint32_t bitmask = [currentObj performSelector:@selector(address)];
+				const uint32_t bitmask = (uint32_t)[currentObj performSelector:@selector(address)];
 				if (bitmask & compareMask) {
 					[outPutColors addObject:currentObj.colors[i]];
 					break;

@@ -1,8 +1,8 @@
 //
-//  NWCommandObject.h
+//  NWSendableCommand.h
 //  WyLightRemote
 //
-//  Created by Nils Weiß on 13.08.13.
+//  Created by Nils Weiß on 27.08.13.
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
@@ -10,11 +10,8 @@
 
 @class WCWiflyControlWrapper;
 
-@interface NWCommandObject : NSObject
+@protocol NWSendableCommand <NSObject>
 
 - (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control;
 
 @end
-
-
-

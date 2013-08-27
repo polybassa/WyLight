@@ -13,8 +13,7 @@
 
 @implementation NWSetFadeScriptCommandObject
 
-- (id)copyWithZone:(NSZone *)zone
-{
+- (id)copyWithZone:(NSZone *)zone {
 	NWSetFadeScriptCommandObject *other = [[NWSetFadeScriptCommandObject alloc]init];
 	other.parallel = self.parallel;
 	other.backgroundColor = [self.backgroundColor copyWithZone:zone];
@@ -24,9 +23,7 @@
 	return other;
 }
 
-
-- (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control
-{
+- (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control {
 	WyLight::WiflyColor color;
 	
 	CGFloat r, g, b, a;
@@ -39,8 +36,7 @@
 	[control setFade:color.argb() time:self.duration address:self.address parallelFade:self.parallel];
 }
 
-- (NSArray *)colors
-{
+- (NSArray *)colors {
 	NSMutableArray *mutableColorArray = [[NSMutableArray alloc]init];
 	uint32_t compareMask = 0x00000001;
 	

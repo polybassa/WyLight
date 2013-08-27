@@ -152,7 +152,7 @@
 	
 	//TESTCODE
 	self.command = [[NWComplexScriptCommandObject alloc] init];
-	self.command.backgroundColor = [UIColor blackColor];
+	//self.command.backgroundColor = [UIColor blackColor];
 	
 	{
 		NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];

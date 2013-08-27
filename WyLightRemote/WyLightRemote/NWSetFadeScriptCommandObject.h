@@ -13,5 +13,4 @@
 @property (nonatomic) uint32_t address;
 @property (nonatomic, strong) UIColor *color;
 
-
 @end

@@ -10,9 +10,12 @@
 
 @implementation NWScriptEffectCommandObject
 
-- (BOOL)parallel
-{
+- (BOOL)parallel {
 	return NO;
+}
+
+- (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control {
+	[[[NSException alloc] initWithName:@"Function not implemented" reason:@"Implement function sendToWCWiflyControl:" userInfo:nil] raise];
 }
 
 @end
