@@ -6,8 +6,12 @@
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
-#import "NWConnectionViewController.h"
+#import <UIKit/UIKit.h>
 
-@interface NWScriptViewController : NWConnectionViewController
+@class WCWiflyControlWrapper;
+
+@interface NWScriptViewController : UIViewController
+
+@property (nonatomic, weak) WCWiflyControlWrapper *controlHandle;
 
 @end

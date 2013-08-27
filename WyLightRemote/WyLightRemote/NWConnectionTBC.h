@@ -10,9 +10,9 @@
 
 @class WCEndpoint;
 
-@protocol WCWiflyControlDelegate, NWUnwindSegueOnConnectionLostDelegate;
+@protocol WCWiflyControlDelegate;
 
-@interface NWConnectionTBC : UITabBarController <WCWiflyControlDelegate, NWUnwindSegueOnConnectionLostDelegate>
+@interface NWConnectionTBC : UITabBarController <WCWiflyControlDelegate>
 
 @property (nonatomic, strong) WCEndpoint* endpoint;
 

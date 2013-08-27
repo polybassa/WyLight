@@ -18,4 +18,6 @@
 
 - (IBAction)noNewTargetFoundSegue:(UIStoryboardSegue *)segue;
 
+- (IBAction)closeConnection:(UIStoryboardSegue *)sender;
+
 @end

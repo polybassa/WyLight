@@ -9,7 +9,6 @@
 #import "NWConnectionTBC.h"
 #import "WCWiflyControlWrapper.h"
 #import "WCEndpoint.h"
-#import "NWConnectionViewController.h"
 
 @interface NWConnectionTBC ()
 @property (nonatomic, strong) WCWiflyControlWrapper* controlHandle;
@@ -47,34 +46,20 @@
 			connectingView = nil;
 		});
 	});
+	self.title = endpoint.name;
 }
 
-- (void)viewDidLoad
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-	for (id obj in self.viewControllers) {
-		if ([obj respondsToSelector:@selector(setDelegate:)]) {
-			[obj performSelector:@selector(setDelegate:) withObject:self];
+	if ([segue.identifier isEqualToString:@"closeConnection:"]) {
+		if (self.controlHandle) {
+			[self.controlHandle disconnect];
+			self.controlHandle = nil;
 		}
 	}
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-	[super viewDidDisappear:animated];
-	if (self.controlHandle) {
-		[self.controlHandle disconnect];
-		self.controlHandle = nil;
-	}
-}
-
-
 #pragma mark - DELEGATE METHODES
-
-- (void)performUnwindSegue
-{
-	NSLog(@"A ViewController in TabbarController.viewControllers force to unwind\n");
-	[self performSegueWithIdentifier:@"unwindAtConnectionFatalErrorOccured" sender:self];
-}
 
 - (void) fatalErrorOccured:(WCWiflyControlWrapper *)sender errorCode:(NSNumber *)errorCode
 {

@@ -7,14 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "NWConnectionViewController.h"
 
 @protocol NWDefaultColorControllerDelegate;
+@class WCWiflyControlWrapper;
 
-@interface NWDefaultColorPickerViewController : NWConnectionViewController
+@interface NWDefaultColorPickerViewController : UIViewController
 
 @property (nonatomic, strong) UIColor *selectedColor;
-@property (nonatomic, weak) id <NWUnwindSegueOnConnectionLostDelegate> delegate;
 @property (nonatomic, weak) id <NWDefaultColorControllerDelegate> colorPickerDelegate;
 
 @end

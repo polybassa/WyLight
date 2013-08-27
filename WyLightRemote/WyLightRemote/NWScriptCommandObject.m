@@ -24,5 +24,4 @@
 	return _backgroundColor;
 }
 
-
 @end

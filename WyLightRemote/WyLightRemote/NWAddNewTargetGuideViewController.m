@@ -48,8 +48,8 @@
 		
 		//**** dispatch queue scanning
 		dispatch_async(dispatch_queue_create("Scanning for Broadcast of 1.2.3.4", NULL), ^{
-			//BOOL found = NO;
-			BOOL found = YES; //for DEBUG only !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			BOOL found = NO;
+			//BOOL found = YES; //for DEBUG only !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			[self.receiver clearTargets];
 			for (unsigned int i = 0; i < (SCANNING_TIME_S / SLEEP_TIME_INTERVAL); i++) {
 				dispatch_async(dispatch_get_main_queue(), ^{

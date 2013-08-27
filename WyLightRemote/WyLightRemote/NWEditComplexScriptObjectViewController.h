@@ -8,8 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "NWComplexScriptCommandObject.h"
+
 @interface NWEditComplexScriptObjectViewController : UIViewController
 
 @property (nonatomic, strong) NWComplexScriptCommandObject *command;
+
+@property (nonatomic, weak) WCWiflyControlWrapper *controlHandle;
+
+- (IBAction)unwindEditScriptObject:(UIStoryboardSegue *)segue;
 
 @end

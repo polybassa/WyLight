@@ -11,7 +11,7 @@
 
 @interface NWEditFadeCommandViewController : UIViewController
 
-@property (nonatomic, weak) NWSetFadeScriptCommandObject *command;
+@property (nonatomic, strong) NWSetFadeScriptCommandObject *command;
 
 - (IBAction)unwindChangeColorDone:(UIStoryboardSegue *)segue;
 

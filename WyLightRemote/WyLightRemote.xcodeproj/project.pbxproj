@@ -50,7 +50,6 @@
 		5C542CD117BC163A00E4410A /* NWAddNewTargetGuideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CCC17BC163A00E4410A /* NWAddNewTargetGuideView.m */; };
 		5C542CD517BC165200E4410A /* NWBroadcastsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CD417BC165200E4410A /* NWBroadcastsTVC.m */; };
 		5C542CFA17BC167600E4410A /* NWBrightnessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CD717BC167400E4410A /* NWBrightnessViewController.m */; };
-		5C542CFB17BC167600E4410A /* NWConnectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CD917BC167400E4410A /* NWConnectionViewController.m */; };
 		5C542CFC17BC167600E4410A /* NWColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CDB17BC167400E4410A /* NWColorPickerViewController.m */; };
 		5C542CFD17BC167600E4410A /* NWConnectionTBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CDD17BC167400E4410A /* NWConnectionTBC.m */; };
 		5C542CFE17BC167600E4410A /* NWScriptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CDF17BC167400E4410A /* NWScriptViewController.m */; };
@@ -161,8 +160,6 @@
 		5C542CD417BC165200E4410A /* NWBroadcastsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWBroadcastsTVC.m; sourceTree = "<group>"; };
 		5C542CD617BC167400E4410A /* NWBrightnessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWBrightnessViewController.h; sourceTree = "<group>"; };
 		5C542CD717BC167400E4410A /* NWBrightnessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWBrightnessViewController.m; sourceTree = "<group>"; };
-		5C542CD817BC167400E4410A /* NWConnectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWConnectionViewController.h; sourceTree = "<group>"; };
-		5C542CD917BC167400E4410A /* NWConnectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWConnectionViewController.m; sourceTree = "<group>"; };
 		5C542CDA17BC167400E4410A /* NWColorPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWColorPickerViewController.h; sourceTree = "<group>"; };
 		5C542CDB17BC167400E4410A /* NWColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWColorPickerViewController.m; sourceTree = "<group>"; };
 		5C542CDC17BC167400E4410A /* NWConnectionTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWConnectionTBC.h; sourceTree = "<group>"; };
@@ -359,12 +356,12 @@
 		5C542D0C17BC176600E4410A /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				5C542CD317BC165200E4410A /* NWBroadcastsTVC.h */,
+				5C542CD417BC165200E4410A /* NWBroadcastsTVC.m */,
 				5C542CDC17BC167400E4410A /* NWConnectionTBC.h */,
 				5C542CDD17BC167400E4410A /* NWConnectionTBC.m */,
 				5C542CD617BC167400E4410A /* NWBrightnessViewController.h */,
 				5C542CD717BC167400E4410A /* NWBrightnessViewController.m */,
-				5C542CD817BC167400E4410A /* NWConnectionViewController.h */,
-				5C542CD917BC167400E4410A /* NWConnectionViewController.m */,
 				5C542D1017BCC46200E4410A /* NWDefaultColorPickerViewController.h */,
 				5C542D1117BCC46200E4410A /* NWDefaultColorPickerViewController.m */,
 				5C542CDA17BC167400E4410A /* NWColorPickerViewController.h */,
@@ -375,8 +372,6 @@
 				5C542CF917BC167600E4410A /* NWEditGradientCommandViewController.m */,
 				5C542D2917BD629300E4410A /* NWEditComplexScriptObjectViewController.h */,
 				5C542D2A17BD629400E4410A /* NWEditComplexScriptObjectViewController.m */,
-				5C542CD317BC165200E4410A /* NWBroadcastsTVC.h */,
-				5C542CD417BC165200E4410A /* NWBroadcastsTVC.m */,
 				5C542CC717BC163900E4410A /* NWAddNewTargetConfigureViewController.h */,
 				5C542CC817BC163900E4410A /* NWAddNewTargetConfigureViewController.m */,
 				5C542CC917BC163900E4410A /* NWAddNewTargetGuideViewController.h */,
@@ -536,7 +531,6 @@
 				5C542CD117BC163A00E4410A /* NWAddNewTargetGuideView.m in Sources */,
 				5C542CD517BC165200E4410A /* NWBroadcastsTVC.m in Sources */,
 				5C542CFA17BC167600E4410A /* NWBrightnessViewController.m in Sources */,
-				5C542CFB17BC167600E4410A /* NWConnectionViewController.m in Sources */,
 				5C542CFC17BC167600E4410A /* NWColorPickerViewController.m in Sources */,
 				5C542CFD17BC167600E4410A /* NWConnectionTBC.m in Sources */,
 				5C542CFE17BC167600E4410A /* NWScriptViewController.m in Sources */,
@@ -669,6 +663,7 @@
 				5C542C6817BC13B000E4410A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

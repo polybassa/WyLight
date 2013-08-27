@@ -13,6 +13,19 @@
 
 @implementation NWSetGradientScriptCommandObject
 
+- (id)copyWithZone:(NSZone *)zone
+{
+	NWSetGradientScriptCommandObject *other = [[NWSetGradientScriptCommandObject alloc]init];
+	other.parallel = self.parallel;
+	other.offset = self.offset;
+	other.numberOfLeds = self.numberOfLeds;
+	other.backgroundColor = [self.backgroundColor copyWithZone:zone];
+	other.color1 = [self.color1 copyWithZone:zone];
+	other.color2 = [self.color2 copyWithZone:zone];
+	other.duration = self.duration;
+	return other;
+}
+
 - (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control
 {
 	WyLight::WiflyColor color1, color2;
@@ -20,15 +33,15 @@
 	CGFloat r, g, b, a;
 	[self.color1 getRed:&r green:&g blue:&b alpha:&a];
 	
-	color1.red((uint8_t)r);
-	color1.green((uint8_t)g);
-	color1.blue((uint8_t)b);
+	color1.red((uint8_t)(r * 255));
+	color1.green((uint8_t)(g * 255));
+	color1.blue((uint8_t)(b * 255));
 	
 	[self.color2 getRed:&r green:&g blue:&b alpha:&a];
 	
-	color2.red((uint8_t)r);
-	color2.green((uint8_t)g);
-	color2.blue((uint8_t)b);
+	color2.red((uint8_t)(r * 255));
+	color2.green((uint8_t)(g * 255));
+	color2.blue((uint8_t)(b * 255));
 	
 	[control setGradientWithColor:color1.argb() colorTwo:color2.argb() time:self.duration parallelFade:self.parallel gradientLength:self.numberOfLeds startPosition:self.offset];
 }

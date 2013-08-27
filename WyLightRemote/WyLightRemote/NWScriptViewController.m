@@ -16,7 +16,6 @@
 @property (strong, nonatomic) NWScript *script;
 @property (strong, nonatomic) NSMutableArray *scriptButtons;
 @property (weak, nonatomic) IBOutlet NWScriptObjectButton *button;
-
 @end
 
 @implementation NWScriptViewController
@@ -32,14 +31,23 @@
 - (void) viewDidLoad
 {
 	[super viewDidLoad];
-	
-	
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+	if ([segue.identifier isEqualToString:@"edit:"])
+	{
+		if ([segue.destinationViewController respondsToSelector:@selector(setControlHandle:)])
+		{
+			[segue.destinationViewController performSelector:@selector(setControlHandle:) withObject:self.controlHandle];
+		}
+	}
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-	self.scrollView = [[UIScrollView alloc]initWithFrame:self.view.frame];
+	self.scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 100, self.view.frame.size.width, self.view.frame.size.height)];
 	[self.view addSubview:self.scrollView];
 	self.scrollView.contentSize = CGSizeMake([self.script.totalDurationInTmms floatValue], self.view.bounds.size.height);
 	self.scrollView.delegate = self;
@@ -53,7 +61,7 @@
 		NWScriptObjectButton *button = [[NWScriptObjectButton alloc]initWithFrame:
 										CGRectMake(
 												   (i == 0) ? 20 : prevButton.frame.origin.x + prevButton.frame.size.width + 1,
-												   self.scrollView.center.y - 60,
+												   self.scrollView.frame.origin.y,
 												   [[(NWScriptObject*)[scriptObjects lastObject] duration] floatValue],
 												   96)];
 		[self.scrollView addSubview:button];
