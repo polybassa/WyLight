@@ -25,16 +25,14 @@
 	}
 }
 
-- (NSMutableArray *)itsScriptObjects
-{
+- (NSMutableArray *)itsScriptObjects {
 	if (!_itsScriptObjects) {
 		_itsScriptObjects = [[NSMutableArray alloc]init];
 	}
 	return _itsScriptObjects;
 }
 
-- (void)prepareForSendToWCWiflyControl
-{
+- (void)prepareForSendToWCWiflyControl {
 	for (NWScriptEffectCommandObject *command in self.itsScriptObjects) {
 		command.parallel = YES;
 		command.duration = self.duration;

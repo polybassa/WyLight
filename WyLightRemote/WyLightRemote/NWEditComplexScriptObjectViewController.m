@@ -37,7 +37,7 @@
 	[self.view addSubview:self.gradientPreviewView];
 	
 	self.scrollView = [[UIScrollView alloc]initWithFrame:CGRectZero];
-	self.scrollView.backgroundColor = [UIColor lightGrayColor];
+	self.scrollView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 	[self.view addSubview:self.scrollView];
 	
 	[self setupCommandObjectViews];
@@ -132,19 +132,31 @@
 }
 
 - (void)fixLocations {
-	//horizontal
 	CGFloat totalWidth = self.view.bounds.size.width - 40.0;
 	CGFloat totalHeight = self.view.bounds.size.height - 40.0;
 	CGFloat xOffset = 20;
 	
-	self.gradientPreviewView.frame = CGRectMake(xOffset, 80, totalWidth, self.command.colors.count * 4);
+	if (self.view.bounds.size.height > self.view.bounds.size.width) {
+		//horizontal
+		self.gradientPreviewView.frame = CGRectMake(xOffset, 80, totalWidth, self.command.colors.count * 5);
 	
-	self.modeSwitch.frame = CGRectMake(self.view.bounds.size.width / 2 - 20, 20, 40, 20);
+		self.modeSwitch.frame = CGRectMake(20, 20, 40, 20);
 	
-	self.scrollView.contentSize = CGSizeMake(100 * self.command.itsScriptObjects.count + 20, self.command.colors.count * 4);
-	self.scrollView.frame = CGRectMake(xOffset, totalHeight / 2 + 40 , totalWidth, self.command.colors.count * 4);
+		self.scrollView.contentSize = CGSizeMake(100 * self.command.itsScriptObjects.count + 20, self.command.colors.count * 4);
+		self.scrollView.frame = CGRectMake(0, totalHeight / 2 + 80 , self.view.bounds.size.width, self.command.colors.count * 4);
 	
-	self.sendButton.frame = CGRectMake(20, 370, 100, 40);
+		self.sendButton.frame = CGRectMake(180, 20, 100, 40);
+	}
+	else {
+		self.gradientPreviewView.frame = CGRectMake(self.view.center.x, 20, self.view.bounds.size.width / 2 - 20, self.command.colors.count * 3);
+		
+		self.modeSwitch.frame = CGRectMake(20, 20, 40, 20);
+		
+		self.scrollView.contentSize = CGSizeMake(100 * self.command.itsScriptObjects.count + 20, self.command.colors.count * 4);
+		self.scrollView.frame = CGRectMake(0, self.view.center.y, self.view.bounds.size.width, self.command.colors.count * 4);
+		
+		self.sendButton.frame = CGRectMake(20, 60, 100, 40);
+	}
 }
 
 - (void)viewDidLoad {
