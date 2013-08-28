@@ -93,17 +93,27 @@ jlong Java_biz_bruenn_WyLight_Endpoint_connect(JNIEnv* env, jobject ref, jlong p
 	return static_cast<jlong>(NULL);
 }
 
+jboolean Java_biz_bruenn_WyLight_WiflyControl_ConfGetSoftAp(JNIEnv* env, jobject ref, jlong pNative)
+{
+	return reinterpret_cast<Control*>(pNative)->ConfGetSoftAp();
+}
+
 jstring Java_biz_bruenn_WyLight_WiflyControl_ConfGetSsid(JNIEnv* env, jobject ref, jlong pNative)
 {
 	std::string mySsid = reinterpret_cast<Control*>(pNative)->ConfGetSsid();
 	return env->NewStringUTF(mySsid.data());
 }
 
-jboolean Java_biz_bruenn_WyLight_WiflyControl_ConfSetWlan(JNIEnv* env, jobject ref, jlong pNative, jstring passphrase, jstring ssid)
+jboolean Java_biz_bruenn_WyLight_WiflyControl_ConfSetWlan(JNIEnv* env, jobject ref, jlong pNative, jstring passphrase, jstring ssid, jboolean softAp)
 {
 	const char* myPassphrase = env->GetStringUTFChars(passphrase, 0);
 	const char* mySsid = env->GetStringUTFChars(ssid, 0);
-	jboolean result = reinterpret_cast<Control*>(pNative)->ConfModuleForWlan(myPassphrase, mySsid);
+	jboolean result;
+	if(softAp) {
+		result = reinterpret_cast<Control*>(pNative)->ConfModuleAsSoftAP(mySsid);
+	} else {
+		result = reinterpret_cast<Control*>(pNative)->ConfModuleForWlan(myPassphrase, mySsid);
+	}
 	env->ReleaseStringUTFChars(passphrase, myPassphrase);
 	env->ReleaseStringUTFChars(ssid, mySsid);
 	return result;

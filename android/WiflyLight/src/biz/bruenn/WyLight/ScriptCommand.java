@@ -2,6 +2,10 @@ package biz.bruenn.WyLight;
 
 import java.io.Serializable;
 
+import biz.bruenn.WyLight.exception.ConnectionTimeout;
+import biz.bruenn.WyLight.exception.FatalError;
+import biz.bruenn.WyLight.exception.ScriptBufferFull;
+
 public class ScriptCommand implements Serializable {
 	private static final long serialVersionUID = 3259077254858405352L;
 	
@@ -13,6 +17,10 @@ public class ScriptCommand implements Serializable {
 	
 	public int getColor() {
 		return mColor;
+	}
+	
+	public void sendTo(WiflyControl ctrl) throws ConnectionTimeout, ScriptBufferFull, FatalError {
+		ctrl.fwSetFade(mColor, 0xffffffff, (short) 500);
 	}
 	
 	public void setColor(int color) {
