@@ -54,7 +54,7 @@ public class ScriptingFragment extends ControlFragment {
 			
 			public void onClick(View v) {
 				mAdapter.clear();
-				mCtrl.fwClearScript();
+				mProvider.getControl().fwClearScript();
 			}
 		});
 		
@@ -79,12 +79,12 @@ public class ScriptingFragment extends ControlFragment {
 	
 	private void sendScript() {
 		try {
-			mCtrl.fwClearScript();
-			mCtrl.fwLoopOn();
+			mProvider.getControl().fwClearScript();
+			mProvider.getControl().fwLoopOn();
 			for(ScriptCommand cmd: mArrayList) {
-				cmd.sendTo(mCtrl);
+				cmd.sendTo(mProvider.getControl());
 			}
-			mCtrl.fwLoopOff((byte)0);
+			mProvider.getControl().fwLoopOff((byte)0);
 		} catch (ConnectionTimeout e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
