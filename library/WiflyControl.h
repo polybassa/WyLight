@@ -169,6 +169,12 @@ class Control
 
 /* --------------------- WLAN CONFIGURATION METHODES --------------------- */
 		/**
+		 * Read the currently configured mode(client/SoftAP) from WyLight module
+		 * @return true if WyLight module is configured for SoftAP mode
+		 */
+		bool ConfGetSoftAp(void) const;
+
+		/**
 		 * Read the currently configured ssid from WyLight module
 		 * @return an empty string or the ssid
 		 */

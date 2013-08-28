@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class ScriptingFragment extends ControlFragment {
 	public static final String ITEM_POSITION = "ITEM_POSITION";
@@ -55,7 +54,7 @@ public class ScriptingFragment extends ControlFragment {
 			
 			public void onClick(View v) {
 				mAdapter.clear();
-				mCtrl.fwClearScript();
+				mProvider.getControl().fwClearScript();
 			}
 		});
 		
@@ -80,12 +79,12 @@ public class ScriptingFragment extends ControlFragment {
 	
 	private void sendScript() {
 		try {
-			mCtrl.fwClearScript();
-			mCtrl.fwLoopOn();
-			for(ScriptCommand cmd: this.mArrayList) {
-					mCtrl.fwSetFade(cmd.getColor(), 0xffffffff, (short)500);
+			mProvider.getControl().fwClearScript();
+			mProvider.getControl().fwLoopOn();
+			for(ScriptCommand cmd: mArrayList) {
+				cmd.sendTo(mProvider.getControl());
 			}
-			mCtrl.fwLoopOff((byte)0);
+			mProvider.getControl().fwLoopOff((byte)0);
 		} catch (ConnectionTimeout e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

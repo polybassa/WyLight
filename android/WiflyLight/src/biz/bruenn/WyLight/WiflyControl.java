@@ -7,9 +7,10 @@ import biz.bruenn.WyLight.exception.ScriptBufferFull;
 public class WiflyControl {
 	
 	public static final int ALL_LEDS = 0xffffffff;
-	
+
+	private native boolean ConfGetSoftAp(long pNative);
 	private native String ConfGetSsid(long pNative);
-	private native boolean ConfSetWlan(long pNative, String passphrase, String ssid);
+	private native boolean ConfSetWlan(long pNative, String passphrase, String ssid, boolean softAp);
 	private native boolean FwClearScript(long pNative);
 	private native boolean FwLoopOff(long pNative, byte numLoops);
 	private native boolean FwLoopOn(long pNative);
@@ -33,12 +34,16 @@ public class WiflyControl {
 		mNative = 0;
 	}
 	
+	public synchronized boolean confGetSoftAp() {
+		return ConfGetSoftAp(mNative);
+	}
+	
 	public synchronized String confGetSsid() {
 		return ConfGetSsid(mNative);
 	}
 	
-	public synchronized boolean confSetWlan(String passphrase, String ssid) {
-		return ConfSetWlan(mNative, passphrase, ssid);
+	public synchronized boolean confSetWlan(String passphrase, String ssid, boolean softAp) {
+		return ConfSetWlan(mNative, passphrase, ssid, softAp);
 	}
 	
 	public synchronized boolean fwClearScript() {

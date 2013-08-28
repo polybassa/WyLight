@@ -1,6 +1,7 @@
 package biz.bruenn.WyLight;
 
 import biz.bruenn.WiflyLight.R;
+import biz.bruenn.WyLight.ControlFragment.WiflyControlProvider;
 import biz.bruenn.WyLight.exception.FatalError;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Toast;
 
-public class WiflyControlActivity extends FragmentActivity {
+public class WiflyControlActivity extends FragmentActivity implements WiflyControlProvider {
 	public static final String EXTRA_ENDPOINT = "biz.bruenn.WiflyLight.Endpoint";
 	public static final String EXTRA_IP = "IpAddress";
 	public static final String EXTRA_PORT = "Port";
@@ -37,26 +38,25 @@ public class WiflyControlActivity extends FragmentActivity {
 			switch(arg0) {
 			case 3:
 				ControlFragment brightness = new SetBrightnessFragment();
-				brightness.setWiflyControl(mCtrl);
 				return brightness;
 			case 1:
 				ControlFragment rgb = new SetRGBFragment();
-				rgb.setWiflyControl(mCtrl);
 				return rgb;
 			case 2:
 				ControlFragment color = new SetColorFragment();
-				color.setWiflyControl(mCtrl);
 				return color;
 			case 0:
 				ControlFragment scripting = new ScriptingFragment();
-				scripting.setWiflyControl(mCtrl);
 				return scripting;
 			default:
 				ControlFragment setFade = new SetFadeFragment();
-				setFade.setWiflyControl(mCtrl);
 				return setFade;
 			}
 		}	
+	}
+
+	public WiflyControl getControl() {
+		return mCtrl;
 	}
 	
 	public void onClickHandler(View view) {

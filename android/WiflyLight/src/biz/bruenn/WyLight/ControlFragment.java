@@ -4,13 +4,28 @@ import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.exception.ConnectionTimeout;
 import biz.bruenn.WyLight.exception.FatalError;
 import biz.bruenn.WyLight.exception.ScriptBufferFull;
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
 public class ControlFragment extends Fragment {
 
-	protected WiflyControl mCtrl;
+	protected WiflyControlProvider mProvider;
+	
+	public interface WiflyControlProvider {
+		public WiflyControl getControl();
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			mProvider = (WiflyControlProvider)activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString() + " must implement WiflyControlProvider!");
+		}
+	}
 	
 	protected void onConnectionLost() {
 		final FragmentActivity activity = getActivity();
@@ -20,7 +35,7 @@ public class ControlFragment extends Fragment {
 	
 	protected void onSetColor(int color) {
 		try {
-			mCtrl.fwSetColor(color, WiflyControl.ALL_LEDS);
+			mProvider.getControl().fwSetColor(color, WiflyControl.ALL_LEDS);
 		} catch (ConnectionTimeout e) {
 			onConnectionLost();
 		} catch (ScriptBufferFull e) {
@@ -32,7 +47,7 @@ public class ControlFragment extends Fragment {
 	
 	protected void onSetFade(int color, short time) {	
 		try {
-			mCtrl.fwSetFade(color, WiflyControl.ALL_LEDS, time);
+			mProvider.getControl().fwSetFade(color, WiflyControl.ALL_LEDS, time);
 		} catch (ConnectionTimeout e) {
 			onConnectionLost();
 		} catch (ScriptBufferFull e) {
@@ -40,9 +55,5 @@ public class ControlFragment extends Fragment {
 		} catch (FatalError e) {
 			Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
 		}		
-	}
-
-	public void setWiflyControl(WiflyControl ctrl) {
-		mCtrl = ctrl;
 	}
 }

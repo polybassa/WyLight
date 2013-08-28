@@ -90,7 +90,12 @@ public class WiflyLightActivity extends Activity {
     
     @Override
     protected Dialog onCreateDialog(int position, Bundle savedInstanceState) {
-    	return new SetWlanDialog(this, mRemoteArrayAdapter.getItem(position));
+    	if(0 <= position && position < mRemoteArrayAdapter.getCount()) {
+    		return new SetWlanDialog(this, mRemoteArrayAdapter.getItem(position));
+    	} else {
+    		// this is to omit a bug when switching from SoftAP to client mode
+    		return null;
+    	}
     }
     
     @Override
