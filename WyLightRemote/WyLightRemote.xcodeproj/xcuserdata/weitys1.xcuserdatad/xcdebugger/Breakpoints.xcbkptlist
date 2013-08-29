@@ -13,8 +13,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "20"
          endingLineNumber = "20"
-         landmarkName = "@interface NWEditComplexScriptObjectViewController"
-         landmarkType = "2">
+         landmarkName = "-unwindEditScriptObject:"
+         landmarkType = "4">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -47,33 +47,39 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "WyLightRemote/NWEditComplexScriptObjectViewController.m"
-         timestampString = "399471630.264254"
+         timestampString = "399474595.903858"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "327"
-         endingLineNumber = "327">
+         startingLineNumber = "329"
+         endingLineNumber = "329"
+         landmarkName = "-collectionView:numberOfItemsInSection:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "WyLightRemote/NWEditComplexScriptObjectViewController.m"
-         timestampString = "399471630.264254"
+         timestampString = "399474595.903858"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "287"
-         endingLineNumber = "287">
+         startingLineNumber = "289"
+         endingLineNumber = "289"
+         landmarkName = "-activateDeletionMode:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "WyLightRemote/NWEditComplexScriptObjectViewController.m"
-         timestampString = "399471630.264254"
+         timestampString = "399474595.903858"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "297"
-         endingLineNumber = "297">
+         startingLineNumber = "299"
+         endingLineNumber = "299"
+         landmarkName = "-endDeletionMode:"
+         landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

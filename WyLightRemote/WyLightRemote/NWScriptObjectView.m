@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "NWScriptObjectView.h"
 
 @implementation NWScriptObjectView
@@ -14,10 +15,22 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-		self.opaque = NO;
-		self.backgroundColor = [UIColor clearColor];
+		self.layer.shouldRasterize = YES;
+		
+        self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleHeight;
+        self.clipsToBounds = YES;
+        self.layer.opacity = 1;
+        self.layer.borderColor = [UIColor darkGrayColor].CGColor;
+        self.layer.borderWidth = 2.0;
 	}
     return self;
+}
+
+- (void)setFrame:(CGRect)frame
+{
+	[super setFrame:frame];
+	float dim = MIN(self.bounds.size.width, self.bounds.size.height);
+	self.layer.cornerRadius = dim/8;
 }
 
 - (void)setEndColors:(NSArray *)endColors {
@@ -40,14 +53,7 @@
 - (void)drawRect:(CGRect)rect {
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	const CGFloat heightFract = self.bounds.size.height / self.endColors.count;
-	
-	//CGContextSaveGState(context);
-	[[UIColor clearColor] setFill];
-	CGContextFillRect(context, self.bounds);
-	[[UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:8]addClip];
-	
-	//CGContextRestoreGState(context);
-	
+		
 	for (unsigned int i = 0; i < self.endColors.count; i++) {
 		CGContextSaveGState(context);
 		CGContextAddRect(context, CGRectMake(self.bounds.origin.x, i * heightFract, self.bounds.size.width, heightFract));

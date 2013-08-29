@@ -20,17 +20,9 @@ static UIImage *deleteButtonImg;
         // Initialization code
 		UIView *insetView = [[UIView alloc] initWithFrame:CGRectInset(self.bounds, self.bounds.size.width/16, self.bounds.size.height/16)];
         [self.contentView addSubview:insetView];
-        self.layer.shouldRasterize = YES;
 
         self.scriptObjectView = [[NWScriptObjectView alloc] initWithFrame:CGRectMake(0, 0, insetView.frame.size.width, insetView.frame.size.height)];
-        self.scriptObjectView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleHeight;
-        float dim = MIN(self.scriptObjectView.bounds.size.width, self.scriptObjectView.bounds.size.height);
-        self.scriptObjectView.clipsToBounds = YES;
-        self.scriptObjectView.layer.cornerRadius = dim/8;
-        self.scriptObjectView.layer.opacity = 0.9;
-        self.scriptObjectView.layer.borderColor = [UIColor darkGrayColor].CGColor;
-        self.scriptObjectView.layer.borderWidth = 2.0;
-        self.scriptObjectView.backgroundColor = [UIColor lightGrayColor];
+		self.scriptObjectView.backgroundColor = [UIColor blackColor];
         [insetView addSubview:self.scriptObjectView];
 
 		self.deleteButton = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width/32, frame.size.width/32, frame.size.width/4, frame.size.width/4)];

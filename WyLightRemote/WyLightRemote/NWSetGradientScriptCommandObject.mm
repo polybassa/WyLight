@@ -45,7 +45,7 @@
 }
 
 - (void)setOffset:(uint8_t)offset {
-	if (offset + self.numberOfLeds < NUM_OF_LED && offset >= 0) {
+	if (offset + self.numberOfLeds <= NUM_OF_LED && offset >= 0) {
 		_offset = offset;
 	}
 }

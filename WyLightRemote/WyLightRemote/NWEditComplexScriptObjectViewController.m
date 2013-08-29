@@ -25,7 +25,7 @@
 @property (nonatomic, strong) UIButton *addCommandButton;
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) ALRadialMenu *radialMenu;
-@property (nonatomic, strong) NSIndexPath *indexPathOfLastCell;
+@property (nonatomic, weak) NSIndexPath *indexPathOfLastCell;
 @end
 
 @implementation NWEditComplexScriptObjectViewController
@@ -231,8 +231,9 @@
 	[self.command.itsScriptObjects addObject:obj];
 	[self updateGradientView];
 	[self.collectionView reloadData];
-	
-	[self.collectionView scrollToItemAtIndexPath:self.indexPathOfLastCell atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+	if (self.indexPathOfLastCell) {
+		[self.collectionView scrollToItemAtIndexPath:self.indexPathOfLastCell atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+	}
 }
 
 - (void)addGradientCommand {
@@ -245,8 +246,9 @@
 	[self.command.itsScriptObjects addObject: obj];
 	[self updateGradientView];
 	[self.collectionView reloadData];
-	
-	[self.collectionView scrollToItemAtIndexPath:self.indexPathOfLastCell atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+	if (self.indexPathOfLastCell) {
+		[self.collectionView scrollToItemAtIndexPath:self.indexPathOfLastCell atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+	}
 }
 
 #pragma mark - USER ACTIONS
