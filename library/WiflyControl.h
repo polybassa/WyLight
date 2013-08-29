@@ -168,6 +168,19 @@ class Control
 		void BlRunApp(void) const throw (ConnectionTimeout, FatalError);
 
 /* --------------------- WLAN CONFIGURATION METHODES --------------------- */
+
+		/**
+		 * Read the device id from WyLight module
+		 * @return an empty string or the device id
+		 */
+		std::string ConfGetDeviceId(void) const;
+
+		/**
+		 * Read the currently configured wlan passphrase from WyLight module
+		 * @return an empty string or the wlan passphrase
+		 */
+		std::string ConfGetPassphrase(void) const;
+
 		/**
 		 * Read the currently configured mode(client/SoftAP) from WyLight module
 		 * @return true if WyLight module is configured for SoftAP mode
@@ -373,6 +386,13 @@ class Control
 		 * @throw InvalidParameter a parameter is out of bound
 		 */
 		size_t BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
+
+		/**
+		 * Read the currently configured wlan passphrase from WyLight module
+		 * @param searchKey to search the wlan settings for
+		 * @return an empty string or the value of the specified wlan setting
+		 */
+		std::string ConfGet(const std::string& searchKey, const std::string& getCmd = "get wlan\r\n") const;
 	
 		/**
 		 * Set the WyLight module communication parameters to defaults

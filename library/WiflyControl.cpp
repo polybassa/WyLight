@@ -475,15 +475,30 @@ bool Control::ConfGetSoftAp(void) const
 	return (0 == result.compare("7"));
 }
 
-std::string Control::ConfGetSsid(void) const
+std::string Control::ConfGet(const std::string& searchKey, const std::string& getCmd) const
 {
 	std::string result{};
 	if(mTelnet.Open())
 	{
-		mTelnet.RecvString("get wlan\r\n", "SSID=", result);
+		mTelnet.RecvString(getCmd, searchKey, result);
 		mTelnet.Close(false);
 	}
 	return result;
+}
+
+std::string Control::ConfGetDeviceId(void) const
+{
+	return ConfGet("DeviceId=", "get opt\r\n");
+}
+
+std::string Control::ConfGetPassphrase(void) const
+{
+	return ConfGet("Passphrase=");
+}
+
+std::string Control::ConfGetSsid(void) const
+{
+	return ConfGet("SSID=");
 }
 
 bool Control::ConfModuleAsSoftAP(const std::string& accesspointName) const

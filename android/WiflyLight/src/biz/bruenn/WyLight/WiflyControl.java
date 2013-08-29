@@ -8,9 +8,11 @@ public class WiflyControl {
 	
 	public static final int ALL_LEDS = 0xffffffff;
 
+	private native String ConfGetDeviceId(long pNative);
+	private native String ConfGetPassphrase(long pNative);
 	private native boolean ConfGetSoftAp(long pNative);
 	private native String ConfGetSsid(long pNative);
-	private native boolean ConfSetWlan(long pNative, String passphrase, String ssid, boolean softAp);
+	private native boolean ConfSetWlan(long pNative, String passphrase, String ssid, String deviceId, boolean softAp);
 	private native boolean FwClearScript(long pNative);
 	private native boolean FwLoopOff(long pNative, byte numLoops);
 	private native boolean FwLoopOn(long pNative);
@@ -34,6 +36,14 @@ public class WiflyControl {
 		mNative = 0;
 	}
 	
+	public synchronized String confGetDeviceId() {
+		return ConfGetDeviceId(mNative);
+	}
+	
+	public synchronized String confGetPassphrase() {
+		return ConfGetPassphrase(mNative);
+	}
+	
 	public synchronized boolean confGetSoftAp() {
 		return ConfGetSoftAp(mNative);
 	}
@@ -42,8 +52,8 @@ public class WiflyControl {
 		return ConfGetSsid(mNative);
 	}
 	
-	public synchronized boolean confSetWlan(String passphrase, String ssid, boolean softAp) {
-		return ConfSetWlan(mNative, passphrase, ssid, softAp);
+	public synchronized boolean confSetWlan(String passphrase, String ssid, String deviceId, boolean softAp) {
+		return ConfSetWlan(mNative, passphrase, ssid, deviceId, softAp);
 	}
 	
 	public synchronized boolean fwClearScript() {

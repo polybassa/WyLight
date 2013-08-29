@@ -30,14 +30,6 @@ void ThrowJniException(JNIEnv* env, const FatalError& e) {
 		env->ThrowNew(javaException, e.what());
 }
 
-#define TRY_CATCH_RETURN_BOOL(EXPRESSION) \
-	try { \
-		(EXPRESSION); \
-		return true; \
-	} catch(FatalError& e) { \
-		ThrowJniException(env, e); \
-	}
-
 jboolean TrySend(JNIEnv* env, Control* pCtrl, FwCommand&& cmd)
 {
 	assert(pCtrl);
@@ -93,6 +85,18 @@ jlong Java_biz_bruenn_WyLight_Endpoint_connect(JNIEnv* env, jobject ref, jlong p
 	return static_cast<jlong>(NULL);
 }
 
+jstring Java_biz_bruenn_WyLight_WiflyControl_ConfGetDeviceId(JNIEnv* env, jobject ref, jlong pNative)
+{
+	std::string myDeviceId = reinterpret_cast<Control*>(pNative)->ConfGetDeviceId();
+	return env->NewStringUTF(myDeviceId.data());
+}
+
+jstring Java_biz_bruenn_WyLight_WiflyControl_ConfGetPassphrase(JNIEnv* env, jobject ref, jlong pNative)
+{
+	std::string myPassphrase = reinterpret_cast<Control*>(pNative)->ConfGetPassphrase();
+	return env->NewStringUTF(myPassphrase.data());
+}
+
 jboolean Java_biz_bruenn_WyLight_WiflyControl_ConfGetSoftAp(JNIEnv* env, jobject ref, jlong pNative)
 {
 	return reinterpret_cast<Control*>(pNative)->ConfGetSoftAp();
@@ -104,16 +108,18 @@ jstring Java_biz_bruenn_WyLight_WiflyControl_ConfGetSsid(JNIEnv* env, jobject re
 	return env->NewStringUTF(mySsid.data());
 }
 
-jboolean Java_biz_bruenn_WyLight_WiflyControl_ConfSetWlan(JNIEnv* env, jobject ref, jlong pNative, jstring passphrase, jstring ssid, jboolean softAp)
+jboolean Java_biz_bruenn_WyLight_WiflyControl_ConfSetWlan(JNIEnv* env, jobject ref, jlong pNative, jstring passphrase, jstring ssid, jstring deviceId, jboolean softAp)
 {
-	const char* myPassphrase = env->GetStringUTFChars(passphrase, 0);
-	const char* mySsid = env->GetStringUTFChars(ssid, 0);
+	const char* const myDeviceId = env->GetStringUTFChars(deviceId, 0);
+	const char* const myPassphrase = env->GetStringUTFChars(passphrase, 0);
+	const char* const mySsid = env->GetStringUTFChars(ssid, 0);
 	jboolean result;
 	if(softAp) {
 		result = reinterpret_cast<Control*>(pNative)->ConfModuleAsSoftAP(mySsid);
 	} else {
-		result = reinterpret_cast<Control*>(pNative)->ConfModuleForWlan(myPassphrase, mySsid);
+		result = reinterpret_cast<Control*>(pNative)->ConfModuleForWlan(myPassphrase, mySsid, myDeviceId);
 	}
+	env->ReleaseStringUTFChars(deviceId, myDeviceId);
 	env->ReleaseStringUTFChars(passphrase, myPassphrase);
 	env->ReleaseStringUTFChars(ssid, mySsid);
 	return result;
