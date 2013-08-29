@@ -14,7 +14,6 @@
 - (id)init {
     if (self = [super init])
     {
-        self.itemSize = CGSizeMake(500, 500);
         self.minimumInteritemSpacing = 2;
         self.minimumLineSpacing = 2;
         self.scrollDirection = UICollectionViewScrollDirectionHorizontal;

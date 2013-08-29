@@ -11,10 +11,9 @@
 #import "NWCollectionViewLayout.h"
 #import "ALRadialMenu.h"
 
-@interface NWEditComplexScriptObjectViewController : UIViewController <UIGestureRecognizerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, NWCollectionViewLayoutDelegate, ALRadialMenuDelegate>
+@interface NWEditComplexScriptObjectViewController : UIViewController 
 
-@property (nonatomic, strong) NWComplexScriptCommandObject *command; //turn to weak later
-
+@property (nonatomic, weak) NWComplexScriptCommandObject *command; 
 @property (nonatomic, weak) WCWiflyControlWrapper *controlHandle;
 
 - (IBAction)unwindEditScriptObject:(UIStoryboardSegue *)segue;

@@ -7,122 +7,104 @@
 //
 
 #import "NWScriptViewController.h"
-#import "NWScriptObject.h"
 #import "NWScript.h"
+#import "NWEditComplexScriptObjectViewController.h"
+#import "NWScriptObjectCollectionViewCell.h"
 
-@interface NWScriptViewController () <UIScrollViewDelegate>
-@property (strong, nonatomic) UIScrollView *scrollView;
+@interface NWScriptViewController () <UIGestureRecognizerDelegate>
+
 @property (strong, nonatomic) NWScript *script;
-@property (strong, nonatomic) NSMutableArray *scriptButtons;
+@property (strong, nonatomic) UIScrollView *scrollView;
+@property (nonatomic) BOOL isDeletionModeActive;
+@property (nonatomic) CGFloat timeScaleFactor;
+
 @end
 
 @implementation NWScriptViewController
 
-- (NSMutableArray *)scriptButtons
-{
-	if (!_scriptButtons) {
-		_scriptButtons = [[NSMutableArray alloc]init];
+- (NWScript *)script {
+	if (_script == nil) {
+		_script = [[NWScript alloc]init];
 	}
-	return _scriptButtons;
+	return _script;
 }
 
-- (void) viewDidLoad
-{
+- (void)fixLocations {
+	if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal	
+	}
+	else {		
+	}
+}
+
+- (void)setup {
+	self.timeScaleFactor = 1;
+	
+	//scroll view
+	self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
+}
+
+- (void)viewDidLoad {
 	[super viewDidLoad];
+	[self setup];
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[self fixLocations];
+}
+
+#pragma mark - SEGUE
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"edit:"])
 	{
 		if ([segue.destinationViewController respondsToSelector:@selector(setControlHandle:)])
 		{
 			[segue.destinationViewController performSelector:@selector(setControlHandle:) withObject:self.controlHandle];
 		}
-	}
-}
-
-- (void) viewWillAppear:(BOOL)animated
-{
-	[super viewWillAppear:animated];
-	self.scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 100, self.view.frame.size.width, self.view.frame.size.height)];
-	[self.view addSubview:self.scrollView];
-	self.scrollView.contentSize = CGSizeMake([self.script.totalDurationInTmms floatValue], self.view.bounds.size.height);
-	self.scrollView.delegate = self;
-	
-	/*for (unsigned int i = 0; i < self.script.allVisibleScriptBlocks.count; i++) {
-		NSArray* scriptObjects = [self.script.allVisibleScriptBlocks objectForKey:@(i)];
-		NWScriptObjectButton *prevButton = nil;
-		if (i > 0 && ([self.scriptButtons count] > (i - 1))) {
-			prevButton = [self.scriptButtons objectAtIndex:i - 1];
-		}
-		NWScriptObjectButton *button = [[NWScriptObjectButton alloc]initWithFrame:
-										CGRectMake(
-												   (i == 0) ? 20 : prevButton.frame.origin.x + prevButton.frame.size.width + 1,
-												   self.scrollView.frame.origin.y,
-												   [[(NWScriptObject*)[scriptObjects lastObject] duration] floatValue],
-												   96)];
-		[self.scrollView addSubview:button];
-		button.startColors = [[scriptObjects lastObject] startColors];
-		button.endColors = [NWScriptObject mergedColorsFromArray:scriptObjects];
-		[button addGestureRecognizer:[[UIPinchGestureRecognizer alloc]initWithTarget:button action:@selector(pinch:)]];
-		//[button addTarget:self action:@selector(wasDragged:withEvent:) forControlEvents:UIControlEventTouchDragInside];
 		
-		[self.scriptButtons addObject:button];
-	}
-
-	*/
-	/*
-	
-	for (unsigned int i = 0; i < self.script.completeScript.count; i++) {
-		NWScriptObject* scriptObj = [self.script.completeScript objectAtIndex:i];
-		NWScriptObjectButton *prevButton = nil;
-		if (i > 0 && ([self.scriptButtons count] > (i - 1))) {
-			prevButton = [self.scriptButtons objectAtIndex:i - 1];
-		}
-		NWScriptObjectButton *button = [[NWScriptObjectButton alloc]initWithFrame:
-										CGRectMake(
-												   (i == 0) ? 20 : prevButton.frame.origin.x + prevButton.frame.size.width + 1,
-												   self.scrollView.center.y,
-												   [scriptObj.duration floatValue],
-												   96)];
-		[self.scrollView addSubview:button];
-		button.startColors = scriptObj.startColors;
-		button.endColors = scriptObj.endColors;
-		[button addGestureRecognizer:[[UIPinchGestureRecognizer alloc]initWithTarget:button action:@selector(pinch:)]];
-		[button addTarget:self action:@selector(wasDragged:withEvent:) forControlEvents:UIControlEventTouchDragInside];
-		
-		[self.scriptButtons addObject:button];
-		
-	}*/
-}
-
-- (void)wasDragged:(UIButton *)button withEvent:(UIEvent *)event
-{
-	// get the touch
-	UITouch *touch = [[event touchesForView:button] anyObject];
-	
-	// get delta
-	CGPoint previousLocation = [touch previousLocationInView:button];
-	CGPoint location = [touch locationInView:button];
-	CGFloat delta_x = location.x - previousLocation.x;
-	CGFloat delta_y = location.y - previousLocation.y;
-	
-	// move button
-	button.center = CGPointMake(button.center.x + delta_x,
-								button.center.y + delta_y);
-}
-
-- (NWScript *)script
-{
-	if (!_script) {
-		_script = [[NWScript alloc]init];
-		for (int i = 0; i < 20; i++) {
-			NWScriptObject *obj = [[NWScriptObject alloc]init];
-			obj.command = [NWScriptObject randomCommand];
-			[_script addObject:obj];
+		if ([segue.destinationViewController isKindOfClass:[NWEditComplexScriptObjectViewController class]]) {
+			NWEditComplexScriptObjectViewController *ctrl = (NWEditComplexScriptObjectViewController *)segue.destinationViewController;
+			ctrl.command = [self.script.scriptArray lastObject];
 		}
 	}
-	return _script;
 }
+/*
+#pragma mark - gesture-recognition action methods
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    CGPoint touchPoint = [touch locationInView:self.collectionView];
+    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:touchPoint];
+    if (indexPath && [gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])
+    {
+        return NO;
+    }
+    return YES;
+}
+
+- (void)activateDeletionMode:(UILongPressGestureRecognizer *)gr {
+    if (gr.state == UIGestureRecognizerStateBegan)
+    {
+        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:[gr locationInView:self.collectionView]];
+        if (indexPath)
+        {
+            self.isDeletionModeActive = YES;
+            NWCollectionViewLayout *layout = (NWCollectionViewLayout *)self.collectionView.collectionViewLayout;
+            [layout invalidateLayout];
+        }
+    }
+}
+
+- (void)endDeletionMode:(UITapGestureRecognizer *)gr {
+    if (self.isDeletionModeActive)
+    {
+        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:[gr locationInView:self.collectionView]];
+        //if (!indexPath)
+        {
+            self.isDeletionModeActive = NO;
+            NWCollectionViewLayout *layout = (NWCollectionViewLayout *)self.collectionView.collectionViewLayout;
+            [layout invalidateLayout];
+        }
+    }
+}*/
+
+
 @end

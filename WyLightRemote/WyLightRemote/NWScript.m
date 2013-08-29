@@ -7,128 +7,129 @@
 //
 
 #import "NWScript.h"
-#import "NWScriptObject.h"
+#import "NWComplexScriptCommandObject.h"
+#import "NWSetFadeScriptCommandObject.h" //remove when finished
+#import "NWSetGradientScriptCommandObject.h" //remove when finished
 
 @interface NWScript()
 
-@property (nonatomic, strong) NSMutableArray *script;
+@property (nonatomic, readwrite, strong) NSMutableArray *scriptArray;
 
 @end
 
 @implementation NWScript
 
-- (NSArray *)completeScript
-{
-	return self.script;
-}
-
-- (NSDictionary *)allVisibleScriptBlocks
-{
-	NSMutableDictionary* mutDict = [[NSMutableDictionary alloc]init];
-	NSNumber *key = @(0);
-	NSMutableArray *valueArray = [[NSMutableArray alloc]init];
-	for (unsigned int i = 0; i < self.script.count;i++) {
-		
-		[valueArray addObject:[self.completeScript objectAtIndex:i]];
-		if (![[self.completeScript objectAtIndex:i] parallel]) {
-			[mutDict addEntriesFromDictionary:@{key: valueArray}];
-			key = @([key intValue] + 1);
-			valueArray = [[NSMutableArray alloc]init];
-		}
+-(id)init {
+	self = [super init];
+	
+	if (self) {
+		[self fillWithTestData];
 	}
-	return mutDict;
+	return self;
 }
 
-- (NSMutableArray *)script
-{
-	if (!_script)
+- (void)fillWithTestData {
+	//TESTCODE
+	NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
+	//self.command.backgroundColor = [UIColor blackColor];
+	
 	{
-		_script = [[NSMutableArray alloc]init];
+		NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
+		obj.address = 0xffffffff;
+		obj.color = [UIColor redColor];
+		
+		[comObj.itsScriptObjects addObject:obj];
 	}
-	return _script;
-}
-
-- (void)linkScriptObject:(NWScriptObject *)scriptObject
-{
-	NSUInteger index = [self.script indexOfObject:scriptObject];
+	{
+		NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
+		obj.address = 0x000000ff;
+		obj.color = [UIColor yellowColor];
+		
+		[comObj.itsScriptObjects addObject:obj];
+	}
+	{
+		NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
+		obj.color1 = [UIColor blueColor];
+		obj.color2 = [UIColor greenColor];
+		
+		obj.offset = 10;
+		obj.numberOfLeds = 10;
+		[comObj.itsScriptObjects addObject: obj];
+	}
+	{
+		NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
+		obj.color1 = [UIColor blueColor];
+		obj.color2 = [UIColor greenColor];
+		
+		obj.offset = 20;
+		obj.numberOfLeds = 5;
+		[comObj.itsScriptObjects addObject: obj];
+	}
+	comObj.duration = 200;
+	[self addObject:comObj];
+	//TESTCODE
+	comObj = [[NWComplexScriptCommandObject alloc] init];
+	//self.command.backgroundColor = [UIColor blackColor];
 	
-	if (index) {
-		NWScriptObject *prevScriptObject = [self.script objectAtIndex:index - 1];
-		scriptObject.prevScriptObject = prevScriptObject;
-		prevScriptObject.nextScriptObject = scriptObject;
+	{
+		NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
+		obj.address = 0xffffffff;
+		obj.color = [UIColor greenColor];
+		
+		[comObj.itsScriptObjects addObject:obj];
 	}
-	if ((index + 1) < [self.script count]) {
-		NWScriptObject *nextScriptObject = [self.script objectAtIndex:index + 1];
-		nextScriptObject.prevScriptObject = scriptObject;
-		scriptObject.nextScriptObject = nextScriptObject;
+	comObj.duration = 50;
+	[self addObject:comObj];
+	//TESTCODE
+	comObj = [[NWComplexScriptCommandObject alloc] init];
+	//self.command.backgroundColor = [UIColor blackColor];
+	{
+		NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
+		obj.color1 = [UIColor blueColor];
+		obj.color2 = [UIColor greenColor];
+		
+		obj.offset = 10;
+		obj.numberOfLeds = 10;
+		[comObj.itsScriptObjects addObject: obj];
 	}
+	{
+		NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
+		obj.color1 = [UIColor blueColor];
+		obj.color2 = [UIColor greenColor];
+		
+		obj.offset = 0;
+		obj.numberOfLeds = 32;
+		[comObj.itsScriptObjects addObject: obj];
+	}
+	comObj.duration = 100;
+	[self addObject:comObj];
 }
 
-- (void)unlinkScriptObject:(NWScriptObject *)scriptObject
-{
-	NSUInteger index = [self.script indexOfObject:scriptObject];
-	NWScriptObject *prevScriptObject = nil;
-	NWScriptObject *nextScriptObject = nil;
-	
-	if (index) {
-		prevScriptObject = [self.script objectAtIndex:index - 1];
+- (NSMutableArray *)scriptArray {
+	if (!_scriptArray)
+	{
+		_scriptArray = [[NSMutableArray alloc]init];
 	}
-	if ((index + 1) < [self.script count]) {
-		nextScriptObject = [self.script objectAtIndex:index + 1];
-	}
-	
-	if (prevScriptObject) {
-		prevScriptObject.nextScriptObject = nextScriptObject;
-	}
-	if (nextScriptObject) {
-		nextScriptObject.prevScriptObject = prevScriptObject;
-	}
+	return _scriptArray;
 }
 
-- (void) addObject:(id)anObject
-{
-	if ([anObject isKindOfClass:[NWScriptObject class]]) {
-		[self.script addObject:anObject];
-		NWScriptObject *scriptObject = (NWScriptObject *)anObject;
-		[self linkScriptObject:scriptObject];
-	}
-}
-
-- (void)insertObject:(id)anObject atIndex:(NSUInteger)index
-{
-	if ([anObject isKindOfClass:[NWScriptObject class]]) {
-		[self.script addObject:anObject];
-		NWScriptObject *scriptObject = (NWScriptObject *)anObject;
-		[self linkScriptObject:scriptObject];
-	}
-}
-- (void)removeObject:(id)anObject
-{
-	if ([anObject isKindOfClass:[NWScriptObject class]]) {
-		NWScriptObject *scriptObject = (NWScriptObject *)anObject;
-		[self unlinkScriptObject:scriptObject];
-		[self.script removeObject:anObject];
-	}
-}
-
-- (void)removeObjectAtIndex:(NSUInteger)index
-{
-	if (index < [self.script count]) {
-		NWScriptObject *scriptObject = [self.script objectAtIndex:index];
-		[self unlinkScriptObject:scriptObject];
-		[self.script removeObjectAtIndex:index];
-	}
-}
-
-- (NSNumber *)totalDurationInTmms
-{
+- (NSNumber *)totalDurationInTmms {
 	NSUInteger totalDuration = 0;
-	for (NWScriptObject *obj in self.script) {
-		if (!obj.parallel) {
-			totalDuration = totalDuration + [obj.duration unsignedIntegerValue];
-		}
+	for (NWComplexScriptCommandObject *obj in self.scriptArray) {
+		totalDuration = totalDuration + obj.duration;
 	}
 	return @(totalDuration);
 }
+
+- (void)addObject:(NWComplexScriptCommandObject *)anObject {
+	NWComplexScriptCommandObject *lastObj = self.scriptArray.lastObject;
+	[self.scriptArray addObject:anObject];
+	if (lastObj) {
+		lastObj.next = anObject;
+		anObject.prev = lastObj;
+		anObject.next = nil;
+	}
+}
+
 
 @end

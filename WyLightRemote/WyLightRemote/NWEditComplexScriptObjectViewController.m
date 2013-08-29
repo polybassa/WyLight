@@ -16,7 +16,7 @@
 #import "NWCollectionViewLayout.h"
 #import "NWScriptObjectCollectionViewCell.h"
 
-@interface NWEditComplexScriptObjectViewController ()
+@interface NWEditComplexScriptObjectViewController () <UIGestureRecognizerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, NWCollectionViewLayoutDelegate, ALRadialMenuDelegate>
 @property (nonatomic, strong) NWScriptObjectView *gradientPreviewView;
 @property (nonatomic, strong) UISwitch *modeSwitch;
 @property (nonatomic) BOOL isDeletionModeActive;
@@ -86,44 +86,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
-	//TESTCODE
-	self.command = [[NWComplexScriptCommandObject alloc] init];
-	//self.command.backgroundColor = [UIColor blackColor];
-	
-	{
-		NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
-		obj.address = 0xffffffff;
-		obj.color = [UIColor redColor];
-	
-		[self.command.itsScriptObjects addObject:obj];
-	}
-	{
-		NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
-		obj.address = 0x000000ff;
-		obj.color = [UIColor yellowColor];
-		
-		[self.command.itsScriptObjects addObject:obj];
-	}
-	{
-		NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
-		obj.color1 = [UIColor blueColor];
-		obj.color2 = [UIColor greenColor];
-	
-		obj.offset = 10;
-		obj.numberOfLeds = 10;
-		[self.command.itsScriptObjects addObject: obj];
-	}
-	{
-		NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
-		obj.color1 = [UIColor blueColor];
-		obj.color2 = [UIColor greenColor];
-		
-		obj.offset = 20;
-		obj.numberOfLeds = 5;
-		[self.command.itsScriptObjects addObject: obj];
-	}
-	self.command.duration = 2;
 	[self setup];
 }
 
@@ -258,11 +220,15 @@
 }
 
 - (void)sendPreview:(UIButton *)sender {
+	uint16_t tempduration = self.command.duration;
+	self.command.duration = 1;
+	
 	if (self.controlHandle) {
 		[self.controlHandle clearScript];
 		[self.controlHandle setColorDirect:[UIColor blackColor]];
 		[self.command sendToWCWiflyControl:self.controlHandle];
 	}
+	self.command.duration = tempduration;
 }
 
 - (void)switchChanged {
@@ -355,7 +321,7 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return CGSizeMake(100, self.collectionView.frame.size.height - 20);
+	return CGSizeMake(122, self.collectionView.frame.size.height - 20);
 }
 
 #pragma mark - delete for button

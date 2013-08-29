@@ -8,15 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+@class NWComplexScriptCommandObject;
+
 @interface NWScript : NSObject
 
-@property (nonatomic, readonly, strong) NSArray *completeScript;
-@property (nonatomic, readonly, strong) NSDictionary *allVisibleScriptBlocks;
+@property (nonatomic, readonly, strong) NSMutableArray *scriptArray;
 
-- (void)addObject:(id)anObject;
-- (void)insertObject:(id)anObject atIndex:(NSUInteger)index;
+- (void)addObject:(NWComplexScriptCommandObject *)anObject;
+- (void)insertObject:(NWComplexScriptCommandObject *)anObject atIndex:(NSUInteger)index;
 - (void)removeObject:(id)anObject;
 - (void)removeObjectAtIndex:(NSUInteger)index;
+- (NSUInteger)indexOfObject:(id)anObject;
 
 - (NSNumber *)totalDurationInTmms;
 
