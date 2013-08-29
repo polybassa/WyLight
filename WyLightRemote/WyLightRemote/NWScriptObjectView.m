@@ -1,76 +1,66 @@
 //
-//  NWScriptObjectButton.m
+//  NWScriptObjectView.m
 //  WyLightRemote
 //
-//  Created by Nils Weiß on 09.08.13.
+//  Created by Nils Weiß on 28.08.13.
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
-#import "NWScriptObjectButton.h"
+#import "NWScriptObjectView.h"
 
-@implementation NWScriptObjectButton
+@implementation NWScriptObjectView
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-		self.opaque = YES;
+		self.opaque = NO;
 		self.backgroundColor = [UIColor clearColor];
 	}
     return self;
 }
 
-- (void)setEndColors:(NSArray *)endColors
-{
+- (void)setEndColors:(NSArray *)endColors {
 	_endColors = endColors;
 	[self setNeedsDisplay];
 }
 
-- (void)setStartColors:(NSArray *)startColors
-{
+- (void)setStartColors:(NSArray *)startColors {
 	_startColors = startColors;
 	[self setNeedsDisplay];
 }
 
-#pragma mark - GESTURE
-
-- (void)pinch:(UIPinchGestureRecognizer *)gesture
-{
-    if ((gesture.state == UIGestureRecognizerStateChanged) ||
-        (gesture.state == UIGestureRecognizerStateEnded)) {		
-		self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width * gesture.scale, self.frame.size.height);
-        gesture.scale = 1;
-    }
-}
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 	[super touchesBegan:touches withEvent:event];
 	self.latestTouchBegan = touches.anyObject;
 }
 
 #pragma mark - DRAWING
 
-- (void)drawRect:(CGRect)rect
-{
+- (void)drawRect:(CGRect)rect {
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	const CGFloat heightFract = self.bounds.size.height / self.endColors.count;
+	
+	//CGContextSaveGState(context);
+	[[UIColor clearColor] setFill];
+	CGContextFillRect(context, self.bounds);
+	[[UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:8]addClip];
+	
+	//CGContextRestoreGState(context);
 	
 	for (unsigned int i = 0; i < self.endColors.count; i++) {
 		CGContextSaveGState(context);
 		CGContextAddRect(context, CGRectMake(self.bounds.origin.x, i * heightFract, self.bounds.size.width, heightFract));
 		CGContextClip(context);
 		CGContextDrawLinearGradient(context,
-									[NWScriptObjectButton createGradientWithStartColor:self.startColors[i] endColor:self.endColors[i]],
+									[NWScriptObjectView createGradientWithStartColor:self.startColors[i] endColor:self.endColors[i]],
 									CGPointMake(self.bounds.origin.x, i * heightFract + heightFract / 2),
 									CGPointMake(self.bounds.size.width, i * heightFract + heightFract / 2), 0);
 		CGContextRestoreGState(context);
 	}
 }
 
-+ (CGGradientRef)createGradientWithStartColor:(UIColor*)startColor endColor:(UIColor*)endColor
-{
++ (CGGradientRef)createGradientWithStartColor:(UIColor*)startColor endColor:(UIColor*)endColor {
     CGGradientRef result;
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGFloat locations[2] = {0.0f, 1.0f};
@@ -88,5 +78,6 @@
     CGColorSpaceRelease(colorSpace);
     return result;
 }
+
 
 @end

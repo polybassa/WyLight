@@ -8,11 +8,11 @@
 
 #import "NWEditGradientCommandViewController.h"
 #import "NWSetGradientScriptCommandObject.h"
-#import "NWScriptObjectButton.h"
+#import "NWScriptObjectView.h"
 #import "KZColorPickerSwatchView.h"
 
 @interface NWEditGradientCommandViewController ()
-@property (strong, nonatomic) NWScriptObjectButton *gradientPreviewView;
+@property (strong, nonatomic) NWScriptObjectView *gradientPreviewView;
 @property (strong, nonatomic) KZColorPickerSwatchView *colorButton1;
 @property (strong, nonatomic) KZColorPickerSwatchView *colorButton2;
 @property (strong, nonatomic) NSString *colorToEdit;
@@ -31,7 +31,7 @@
 	[self.colorButton2 addTarget:self action:@selector(color2ButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:self.colorButton2];
 
-	self.gradientPreviewView = [[NWScriptObjectButton alloc]initWithFrame:CGRectZero];
+	self.gradientPreviewView = [[NWScriptObjectView alloc]initWithFrame:CGRectZero];
 	[self.view addSubview:self.gradientPreviewView];
 	self.gradientPreviewView.backgroundColor = [UIColor blackColor];
 	

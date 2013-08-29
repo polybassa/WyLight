@@ -7,11 +7,11 @@
 //
 
 #import "NWEditFadeCommandViewController.h"
-#import "NWScriptObjectButton.h"
+#import "NWScriptObjectView.h"
 #import "KZColorPickerSwatchView.h"
 
 @interface NWEditFadeCommandViewController ()
-@property (strong, nonatomic) NWScriptObjectButton *gradientPreviewView;
+@property (strong, nonatomic) NWScriptObjectView *gradientPreviewView;
 @property (strong, nonatomic) KZColorPickerSwatchView *colorButton1;
 @property (nonatomic) uint32_t addressBeforPanBegan;
 
@@ -24,7 +24,7 @@
 	[self.colorButton1 addTarget:self action:@selector(color1ButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:self.colorButton1];
 	
-	self.gradientPreviewView = [[NWScriptObjectButton alloc]initWithFrame:CGRectZero];
+	self.gradientPreviewView = [[NWScriptObjectView alloc]initWithFrame:CGRectZero];
 	[self.view addSubview:self.gradientPreviewView];
 	self.gradientPreviewView.backgroundColor = [UIColor blackColor];
 	

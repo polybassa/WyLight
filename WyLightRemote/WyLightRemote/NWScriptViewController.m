@@ -7,7 +7,6 @@
 //
 
 #import "NWScriptViewController.h"
-#import "NWScriptObjectButton.h"
 #import "NWScriptObject.h"
 #import "NWScript.h"
 
@@ -15,7 +14,6 @@
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) NWScript *script;
 @property (strong, nonatomic) NSMutableArray *scriptButtons;
-@property (weak, nonatomic) IBOutlet NWScriptObjectButton *button;
 @end
 
 @implementation NWScriptViewController
@@ -52,7 +50,7 @@
 	self.scrollView.contentSize = CGSizeMake([self.script.totalDurationInTmms floatValue], self.view.bounds.size.height);
 	self.scrollView.delegate = self;
 	
-	for (unsigned int i = 0; i < self.script.allVisibleScriptBlocks.count; i++) {
+	/*for (unsigned int i = 0; i < self.script.allVisibleScriptBlocks.count; i++) {
 		NSArray* scriptObjects = [self.script.allVisibleScriptBlocks objectForKey:@(i)];
 		NWScriptObjectButton *prevButton = nil;
 		if (i > 0 && ([self.scriptButtons count] > (i - 1))) {
@@ -68,12 +66,12 @@
 		button.startColors = [[scriptObjects lastObject] startColors];
 		button.endColors = [NWScriptObject mergedColorsFromArray:scriptObjects];
 		[button addGestureRecognizer:[[UIPinchGestureRecognizer alloc]initWithTarget:button action:@selector(pinch:)]];
-		[button addTarget:self action:@selector(wasDragged:withEvent:) forControlEvents:UIControlEventTouchDragInside];
+		//[button addTarget:self action:@selector(wasDragged:withEvent:) forControlEvents:UIControlEventTouchDragInside];
 		
 		[self.scriptButtons addObject:button];
 	}
 
-	
+	*/
 	/*
 	
 	for (unsigned int i = 0; i < self.script.completeScript.count; i++) {
