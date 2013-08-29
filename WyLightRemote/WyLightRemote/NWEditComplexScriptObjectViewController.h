@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "NWComplexScriptCommandObject.h"
 
-@interface NWEditComplexScriptObjectViewController : UIViewController
+@protocol NWScriptObjectScrollViewDelegate;
 
-@property (nonatomic, strong) NWComplexScriptCommandObject *command;
+@interface NWEditComplexScriptObjectViewController : UIViewController <NWScriptObjectScrollViewDelegate>
+
+@property (nonatomic, strong) NWComplexScriptCommandObject *command; //turn to weak later
 
 @property (nonatomic, weak) WCWiflyControlWrapper *controlHandle;
 

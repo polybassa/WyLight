@@ -7,17 +7,18 @@
 //
 
 #import "NWEditComplexScriptObjectViewController.h"
-#import "NWScriptObjectButton.h"
+#import "NWScriptObjectView.h"
 #import "NWSetFadeScriptCommandObject.h"
 #import "NWSetGradientScriptCommandObject.h"
 #import "NWEditFadeCommandViewController.h"
 #import "NWEditGradientCommandViewController.h"
 #import "WCWiflyControlWrapper.h"
+#import "NWScriptObjectScrollView.h"
 
 @interface NWEditComplexScriptObjectViewController ()
-@property (nonatomic, strong) NWScriptObjectButton *gradientPreviewView;
+@property (nonatomic, strong) NWScriptObjectView *gradientPreviewView;
 @property (nonatomic, strong) UISwitch *modeSwitch;
-@property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) NWScriptObjectScrollView *scrollView;
 @property (nonatomic, strong) NSMutableArray *commandObjectViews;
 @property (nonatomic) NSUInteger indexOfObjectToAlter;
 @property (nonatomic, strong) UIButton *sendButton;
@@ -32,18 +33,17 @@
 	[self.modeSwitch addTarget:self action:@selector(switchChanged) forControlEvents:UIControlEventValueChanged];
 	[self.view addSubview:self.modeSwitch];
 	
-	self.gradientPreviewView = [[NWScriptObjectButton alloc]initWithFrame:CGRectZero];
+	self.gradientPreviewView = [[NWScriptObjectView alloc]initWithFrame:CGRectZero];
 	self.gradientPreviewView.backgroundColor = [UIColor blackColor];
 	[self.view addSubview:self.gradientPreviewView];
 	
-	self.scrollView = [[UIScrollView alloc]initWithFrame:CGRectZero];
+	self.scrollView = [[NWScriptObjectScrollView alloc]initWithFrame:CGRectZero];
 	self.scrollView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+	self.scrollView.mainView = self.view;
+	self.scrollView.delegate = self;
 	[self.view addSubview:self.scrollView];
 	
 	[self setupCommandObjectViews];
-	for (NWScriptObjectButton *view in self.commandObjectViews) {
-		[self.scrollView addSubview:view];
-	}
 	
 	self.sendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	[self.sendButton addTarget:self action:@selector(sendPreview:) forControlEvents:UIControlEventTouchDown];
@@ -61,33 +61,23 @@
 }
 
 - (void)setupCommandObjectViews {
-	NSMutableArray *commandObjectViews = [[NSMutableArray alloc]init];
-	
-	NSUInteger i = 0;
+	NSMutableArray *tempViews = [[NSMutableArray alloc] init];
 	
 	for (NWScriptCommandObject *command in self.command.itsScriptObjects) {
-		NWScriptObjectButton *view = [[NWScriptObjectButton alloc] initWithFrame:CGRectMake(20 + i * 100, self.scrollView.frame.origin.y + 10, 80, self.command.colors.count * 3)];
+		NWScriptObjectButton *view = [[NWScriptObjectButton alloc] initWithFrame:CGRectZero];
 		view.endColors = command.colors;
 		view.backgroundColor = [UIColor blackColor];
 		
 		UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(doubleTapAtCommandObject:)];
 		gesture.numberOfTapsRequired = 2;
 		[view addGestureRecognizer:gesture];
+		gesture.delegate = view;
 		
-		[commandObjectViews addObject:view];
-		i++;
+		[tempViews addObject:view];
 	}
-	self.commandObjectViews = commandObjectViews;
+	self.commandObjectViews = tempViews;
+	[self.scrollView reloadDataFromArray:self.commandObjectViews];
 }
-
-- (NSMutableArray *)commandObjectViews {
-	if (_commandObjectViews == nil) {
-		_commandObjectViews = [[NSMutableArray alloc]init];
-	}
-	return _commandObjectViews;
-}
-
-
 
 - (IBAction)doubleTapAtCommandObject:(UITapGestureRecognizer *)recognizer {
 	self.indexOfObjectToAlter = [self.commandObjectViews indexOfObject:recognizer.view];
@@ -142,7 +132,7 @@
 	
 		self.modeSwitch.frame = CGRectMake(20, 20, 40, 20);
 	
-		self.scrollView.contentSize = CGSizeMake(100 * self.command.itsScriptObjects.count + 20, self.command.colors.count * 4);
+		//self.scrollView.contentSize = CGSizeMake(100 * self.command.itsScriptObjects.count + 20, self.command.colors.count * 4);
 		self.scrollView.frame = CGRectMake(0, totalHeight / 2 + 80 , self.view.bounds.size.width, self.command.colors.count * 4);
 	
 		self.sendButton.frame = CGRectMake(180, 20, 100, 40);
@@ -152,8 +142,8 @@
 		
 		self.modeSwitch.frame = CGRectMake(20, 20, 40, 20);
 		
-		self.scrollView.contentSize = CGSizeMake(100 * self.command.itsScriptObjects.count + 20, self.command.colors.count * 4);
-		self.scrollView.frame = CGRectMake(0, self.view.center.y, self.view.bounds.size.width, self.command.colors.count * 4);
+		//self.scrollView.contentSize = CGSizeMake(100 * self.command.itsScriptObjects.count + 20, self.command.colors.count * 4);
+		self.scrollView.frame = CGRectMake(0, self.view.center.y - 100, self.view.bounds.size.width, self.command.colors.count * 4);
 		
 		self.sendButton.frame = CGRectMake(20, 60, 100, 40);
 	}
@@ -200,6 +190,11 @@
 	}
 	self.command.duration = 2;
 	[self setup];
+}
+
+- (void)positionInScrollViewChanged:(NWScriptObjectButton *)button
+{
+	NSLog(@"do something");
 }
 
 - (IBAction)unwindEditScriptObject:(UIStoryboardSegue *)segue {

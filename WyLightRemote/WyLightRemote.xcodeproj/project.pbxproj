@@ -70,6 +70,8 @@
 		5C542D2217BD301300E4410A /* NWEditFadeCommandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542D2117BD301200E4410A /* NWEditFadeCommandViewController.m */; };
 		5C542D2817BD547A00E4410A /* NWComplexScriptCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542D2717BD547800E4410A /* NWComplexScriptCommandObject.m */; };
 		5C542D2B17BD629700E4410A /* NWEditComplexScriptObjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542D2A17BD629400E4410A /* NWEditComplexScriptObjectViewController.m */; };
+		5C7034B317CDDFB200B121A6 /* NWScriptObjectScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7034B217CDDFB200B121A6 /* NWScriptObjectScrollView.m */; };
+		5C7034B617CE24EE00B121A6 /* NWScriptObjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7034B517CE24EE00B121A6 /* NWScriptObjectView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -198,6 +200,10 @@
 		5C542D2A17BD629400E4410A /* NWEditComplexScriptObjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWEditComplexScriptObjectViewController.m; sourceTree = "<group>"; };
 		5C7034AF17CCEE3200B121A6 /* NWSendableCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NWSendableCommand.h; sourceTree = "<group>"; };
 		5C7034B017CCF17900B121A6 /* NWDrawableCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NWDrawableCommand.h; sourceTree = "<group>"; };
+		5C7034B117CDDFB200B121A6 /* NWScriptObjectScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptObjectScrollView.h; sourceTree = "<group>"; };
+		5C7034B217CDDFB200B121A6 /* NWScriptObjectScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptObjectScrollView.m; sourceTree = "<group>"; };
+		5C7034B417CE24ED00B121A6 /* NWScriptObjectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptObjectView.h; sourceTree = "<group>"; };
+		5C7034B517CE24EE00B121A6 /* NWScriptObjectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptObjectView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -386,6 +392,10 @@
 				5C542CCC17BC163A00E4410A /* NWAddNewTargetGuideView.m */,
 				5C542CE017BC167500E4410A /* NWScriptObjectButton.h */,
 				5C542CE117BC167500E4410A /* NWScriptObjectButton.m */,
+				5C7034B417CE24ED00B121A6 /* NWScriptObjectView.h */,
+				5C7034B517CE24EE00B121A6 /* NWScriptObjectView.m */,
+				5C7034B117CDDFB200B121A6 /* NWScriptObjectScrollView.h */,
+				5C7034B217CDDFB200B121A6 /* NWScriptObjectScrollView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -547,6 +557,8 @@
 				5C542D2217BD301300E4410A /* NWEditFadeCommandViewController.m in Sources */,
 				5C542D2817BD547A00E4410A /* NWComplexScriptCommandObject.m in Sources */,
 				5C542D2B17BD629700E4410A /* NWEditComplexScriptObjectViewController.m in Sources */,
+				5C7034B317CDDFB200B121A6 /* NWScriptObjectScrollView.m in Sources */,
+				5C7034B617CE24EE00B121A6 /* NWScriptObjectView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

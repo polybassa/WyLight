@@ -68,7 +68,7 @@
 		button.startColors = [[scriptObjects lastObject] startColors];
 		button.endColors = [NWScriptObject mergedColorsFromArray:scriptObjects];
 		[button addGestureRecognizer:[[UIPinchGestureRecognizer alloc]initWithTarget:button action:@selector(pinch:)]];
-		[button addTarget:self action:@selector(wasDragged:withEvent:) forControlEvents:UIControlEventTouchDragInside];
+		//[button addTarget:self action:@selector(wasDragged:withEvent:) forControlEvents:UIControlEventTouchDragInside];
 		
 		[self.scriptButtons addObject:button];
 	}
