@@ -17,6 +17,7 @@ public class SetWlanDialog extends Dialog {
 	private final Endpoint mRemote;
 	private EditText mPass;
 	private EditText mSsid;
+	private CheckBox mSoftAp;
 	
 	SetWlanDialog(Context context, Endpoint remote) {
 		super(context);
@@ -31,16 +32,7 @@ public class SetWlanDialog extends Dialog {
 		
 		mPass = (EditText)findViewById(R.id.editPassphrase);
 		mSsid = (EditText)findViewById(R.id.editSsid);
-
-		WiflyControl control = new WiflyControl();
-		try {
-			control.connect(mRemote);
-			mSsid.setText(control.confGetSsid());
-			control.disconnect();
-		} catch (FatalError e) {
-			Toast.makeText(getContext(), R.string.msg_connectionfailed, Toast.LENGTH_SHORT).show();
-			dismiss();
-		}
+		mSoftAp = (CheckBox)findViewById(R.id.toggleSoftAp);
 		
 		CheckBox toggle = (CheckBox)findViewById(R.id.togglePassphrase);
 		toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -62,11 +54,14 @@ public class SetWlanDialog extends Dialog {
 				WiflyControl control = new WiflyControl();
 				try {
 					control.connect(mRemote);
-					control.confSetWlan(mPass.getText().toString(),	mSsid.getText().toString());
+					control.confSetWlan(mPass.getText().toString(),
+										mSsid.getText().toString(),
+										mSoftAp.isChecked());
 					control.disconnect();
 				} catch (FatalError e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
 				}
 				dismiss();
 			}
@@ -78,5 +73,21 @@ public class SetWlanDialog extends Dialog {
 				cancel();				
 			}
 		});
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		WiflyControl control = new WiflyControl();
+		try {
+			control.connect(mRemote);
+			mSsid.setText(control.confGetSsid());
+			mSoftAp.setChecked(control.confGetSoftAp());
+			control.disconnect();
+		} catch (FatalError e) {
+			Toast.makeText(getContext(), R.string.msg_connectionfailed, Toast.LENGTH_SHORT).show();
+			dismiss();
+		}
+		
 	}
 }

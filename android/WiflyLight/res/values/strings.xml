@@ -22,6 +22,7 @@
     <string name="set_fade">Set fade</string>
     <string name="set_loopon">Loop on</string>
     <string name="set_loopoff">Loop off</string>
+    <string name="softap_toggle">SoftAP (not recommended)</string>
     <string name="ssid_description">Network-SSID:</string>
     <string name="ssid_hint">1-32 characters</string>
     <string name="title_activity_edit_command">Edit command</string>
