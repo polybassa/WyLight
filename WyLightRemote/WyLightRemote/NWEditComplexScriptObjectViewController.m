@@ -25,6 +25,7 @@
 @property (nonatomic, strong) UIButton *addCommandButton;
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) ALRadialMenu *radialMenu;
+@property (nonatomic, strong) NSIndexPath *indexPathOfLastCell;
 @end
 
 @implementation NWEditComplexScriptObjectViewController
@@ -230,6 +231,8 @@
 	[self.command.itsScriptObjects addObject:obj];
 	[self updateGradientView];
 	[self.collectionView reloadData];
+	
+	[self.collectionView scrollToItemAtIndexPath:self.indexPathOfLastCell atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
 }
 
 - (void)addGradientCommand {
@@ -242,6 +245,8 @@
 	[self.command.itsScriptObjects addObject: obj];
 	[self updateGradientView];
 	[self.collectionView reloadData];
+	
+	[self.collectionView scrollToItemAtIndexPath:self.indexPathOfLastCell atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
 }
 
 #pragma mark - USER ACTIONS
@@ -256,8 +261,6 @@
 		[self.controlHandle setColorDirect:[UIColor blackColor]];
 		[self.command sendToWCWiflyControl:self.controlHandle];
 	}
-	
-	//[self.radialMenu buttonsWillAnimateFromButton:sender withFrame:sender.frame inView:self.view];
 }
 
 - (void)switchChanged {
@@ -345,7 +348,7 @@
 	[tempCell addGestureRecognizer:gesture];
 	
 	[tempCell.deleteButton addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
-
+	self.indexPathOfLastCell = indexPath;
 	return tempCell;
 }
 
