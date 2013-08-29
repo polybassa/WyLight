@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "NWComplexScriptCommandObject.h"
+#import "NWCollectionViewLayout.h"
+#import "ALRadialMenu.h"
 
-@protocol NWScriptObjectScrollViewDelegate;
-
-@interface NWEditComplexScriptObjectViewController : UIViewController <NWScriptObjectScrollViewDelegate>
+@interface NWEditComplexScriptObjectViewController : UIViewController <UIGestureRecognizerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, NWCollectionViewLayoutDelegate, ALRadialMenuDelegate>
 
 @property (nonatomic, strong) NWComplexScriptCommandObject *command; //turn to weak later
 

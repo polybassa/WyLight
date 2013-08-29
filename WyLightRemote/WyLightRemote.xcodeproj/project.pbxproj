@@ -53,7 +53,6 @@
 		5C542CFC17BC167600E4410A /* NWColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CDB17BC167400E4410A /* NWColorPickerViewController.m */; };
 		5C542CFD17BC167600E4410A /* NWConnectionTBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CDD17BC167400E4410A /* NWConnectionTBC.m */; };
 		5C542CFE17BC167600E4410A /* NWScriptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CDF17BC167400E4410A /* NWScriptViewController.m */; };
-		5C542CFF17BC167600E4410A /* NWScriptObjectButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CE117BC167500E4410A /* NWScriptObjectButton.m */; };
 		5C542D0017BC167600E4410A /* NWScript.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CE317BC167500E4410A /* NWScript.m */; };
 		5C542D0117BC167600E4410A /* NWScriptObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CE517BC167500E4410A /* NWScriptObject.m */; };
 		5C542D0317BC167600E4410A /* NWLoopOnCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542CE917BC167500E4410A /* NWLoopOnCommandObject.m */; };
@@ -70,8 +69,14 @@
 		5C542D2217BD301300E4410A /* NWEditFadeCommandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542D2117BD301200E4410A /* NWEditFadeCommandViewController.m */; };
 		5C542D2817BD547A00E4410A /* NWComplexScriptCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542D2717BD547800E4410A /* NWComplexScriptCommandObject.m */; };
 		5C542D2B17BD629700E4410A /* NWEditComplexScriptObjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C542D2A17BD629400E4410A /* NWEditComplexScriptObjectViewController.m */; };
-		5C7034B317CDDFB200B121A6 /* NWScriptObjectScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7034B217CDDFB200B121A6 /* NWScriptObjectScrollView.m */; };
 		5C7034B617CE24EE00B121A6 /* NWScriptObjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7034B517CE24EE00B121A6 /* NWScriptObjectView.m */; };
+		5C7034B917CF216200B121A6 /* NWScriptObjectCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7034B817CF216100B121A6 /* NWScriptObjectCollectionViewCell.m */; };
+		5C7034BC17CF230900B121A6 /* NWCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7034BB17CF230800B121A6 /* NWCollectionViewLayout.m */; };
+		5C7034BF17CF297000B121A6 /* NWCollectionViewLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7034BE17CF296F00B121A6 /* NWCollectionViewLayoutAttributes.m */; };
+		5C7034C517CF3D9000B121A6 /* ALRadialButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7034C217CF3D8D00B121A6 /* ALRadialButton.m */; };
+		5C7034C617CF3D9000B121A6 /* ALRadialMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7034C417CF3D8F00B121A6 /* ALRadialMenu.m */; };
+		5C7034CA17CF428100B121A6 /* fade.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C7034C817CF427E00B121A6 /* fade.png */; };
+		5C7034CB17CF428100B121A6 /* gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C7034C917CF427F00B121A6 /* gradient.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -167,8 +172,6 @@
 		5C542CDD17BC167400E4410A /* NWConnectionTBC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWConnectionTBC.m; sourceTree = "<group>"; };
 		5C542CDE17BC167400E4410A /* NWScriptViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptViewController.h; sourceTree = "<group>"; };
 		5C542CDF17BC167400E4410A /* NWScriptViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptViewController.m; sourceTree = "<group>"; };
-		5C542CE017BC167500E4410A /* NWScriptObjectButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptObjectButton.h; sourceTree = "<group>"; };
-		5C542CE117BC167500E4410A /* NWScriptObjectButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptObjectButton.m; sourceTree = "<group>"; };
 		5C542CE217BC167500E4410A /* NWScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScript.h; sourceTree = "<group>"; };
 		5C542CE317BC167500E4410A /* NWScript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScript.m; sourceTree = "<group>"; };
 		5C542CE417BC167500E4410A /* NWScriptObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptObject.h; sourceTree = "<group>"; };
@@ -200,10 +203,20 @@
 		5C542D2A17BD629400E4410A /* NWEditComplexScriptObjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWEditComplexScriptObjectViewController.m; sourceTree = "<group>"; };
 		5C7034AF17CCEE3200B121A6 /* NWSendableCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NWSendableCommand.h; sourceTree = "<group>"; };
 		5C7034B017CCF17900B121A6 /* NWDrawableCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NWDrawableCommand.h; sourceTree = "<group>"; };
-		5C7034B117CDDFB200B121A6 /* NWScriptObjectScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptObjectScrollView.h; sourceTree = "<group>"; };
-		5C7034B217CDDFB200B121A6 /* NWScriptObjectScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptObjectScrollView.m; sourceTree = "<group>"; };
 		5C7034B417CE24ED00B121A6 /* NWScriptObjectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptObjectView.h; sourceTree = "<group>"; };
 		5C7034B517CE24EE00B121A6 /* NWScriptObjectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptObjectView.m; sourceTree = "<group>"; };
+		5C7034B717CF216100B121A6 /* NWScriptObjectCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptObjectCollectionViewCell.h; sourceTree = "<group>"; };
+		5C7034B817CF216100B121A6 /* NWScriptObjectCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptObjectCollectionViewCell.m; sourceTree = "<group>"; };
+		5C7034BA17CF230800B121A6 /* NWCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWCollectionViewLayout.h; sourceTree = "<group>"; };
+		5C7034BB17CF230800B121A6 /* NWCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWCollectionViewLayout.m; sourceTree = "<group>"; };
+		5C7034BD17CF296E00B121A6 /* NWCollectionViewLayoutAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWCollectionViewLayoutAttributes.h; sourceTree = "<group>"; };
+		5C7034BE17CF296F00B121A6 /* NWCollectionViewLayoutAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWCollectionViewLayoutAttributes.m; sourceTree = "<group>"; };
+		5C7034C117CF3D8C00B121A6 /* ALRadialButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALRadialButton.h; sourceTree = "<group>"; };
+		5C7034C217CF3D8D00B121A6 /* ALRadialButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALRadialButton.m; sourceTree = "<group>"; };
+		5C7034C317CF3D8E00B121A6 /* ALRadialMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALRadialMenu.h; sourceTree = "<group>"; };
+		5C7034C417CF3D8F00B121A6 /* ALRadialMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALRadialMenu.m; sourceTree = "<group>"; };
+		5C7034C817CF427E00B121A6 /* fade.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fade.png; sourceTree = "<group>"; };
+		5C7034C917CF427F00B121A6 /* gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gradient.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -375,8 +388,7 @@
 				5C542D2117BD301200E4410A /* NWEditFadeCommandViewController.m */,
 				5C542CF817BC167600E4410A /* NWEditGradientCommandViewController.h */,
 				5C542CF917BC167600E4410A /* NWEditGradientCommandViewController.m */,
-				5C542D2917BD629300E4410A /* NWEditComplexScriptObjectViewController.h */,
-				5C542D2A17BD629400E4410A /* NWEditComplexScriptObjectViewController.m */,
+				5C7034C017CF2C2C00B121A6 /* ComplexScriptObject */,
 				5C542CC717BC163900E4410A /* NWAddNewTargetConfigureViewController.h */,
 				5C542CC817BC163900E4410A /* NWAddNewTargetConfigureViewController.m */,
 				5C542CC917BC163900E4410A /* NWAddNewTargetGuideViewController.h */,
@@ -390,12 +402,8 @@
 			children = (
 				5C542CCB17BC163A00E4410A /* NWAddNewTargetGuideView.h */,
 				5C542CCC17BC163A00E4410A /* NWAddNewTargetGuideView.m */,
-				5C542CE017BC167500E4410A /* NWScriptObjectButton.h */,
-				5C542CE117BC167500E4410A /* NWScriptObjectButton.m */,
 				5C7034B417CE24ED00B121A6 /* NWScriptObjectView.h */,
 				5C7034B517CE24EE00B121A6 /* NWScriptObjectView.m */,
-				5C7034B117CDDFB200B121A6 /* NWScriptObjectScrollView.h */,
-				5C7034B217CDDFB200B121A6 /* NWScriptObjectScrollView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -434,6 +442,43 @@
 				5C542D2717BD547800E4410A /* NWComplexScriptCommandObject.m */,
 			);
 			name = CommandModel;
+			sourceTree = "<group>";
+		};
+		5C7034C017CF2C2C00B121A6 /* ComplexScriptObject */ = {
+			isa = PBXGroup;
+			children = (
+				5C7034CC17CF429800B121A6 /* images */,
+				5C7034C717CF3D9D00B121A6 /* RadialMenu */,
+				5C7034B717CF216100B121A6 /* NWScriptObjectCollectionViewCell.h */,
+				5C7034B817CF216100B121A6 /* NWScriptObjectCollectionViewCell.m */,
+				5C7034BA17CF230800B121A6 /* NWCollectionViewLayout.h */,
+				5C7034BB17CF230800B121A6 /* NWCollectionViewLayout.m */,
+				5C7034BD17CF296E00B121A6 /* NWCollectionViewLayoutAttributes.h */,
+				5C7034BE17CF296F00B121A6 /* NWCollectionViewLayoutAttributes.m */,
+				5C542D2917BD629300E4410A /* NWEditComplexScriptObjectViewController.h */,
+				5C542D2A17BD629400E4410A /* NWEditComplexScriptObjectViewController.m */,
+			);
+			name = ComplexScriptObject;
+			sourceTree = "<group>";
+		};
+		5C7034C717CF3D9D00B121A6 /* RadialMenu */ = {
+			isa = PBXGroup;
+			children = (
+				5C7034C117CF3D8C00B121A6 /* ALRadialButton.h */,
+				5C7034C217CF3D8D00B121A6 /* ALRadialButton.m */,
+				5C7034C317CF3D8E00B121A6 /* ALRadialMenu.h */,
+				5C7034C417CF3D8F00B121A6 /* ALRadialMenu.m */,
+			);
+			name = RadialMenu;
+			sourceTree = "<group>";
+		};
+		5C7034CC17CF429800B121A6 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				5C7034C817CF427E00B121A6 /* fade.png */,
+				5C7034C917CF427F00B121A6 /* gradient.png */,
+			);
+			name = images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -502,6 +547,8 @@
 				5C542D1917BCD89000E4410A /* main.hex in Resources */,
 				5C542D1A17BCD89000E4410A /* Guide2.png in Resources */,
 				5C542D1B17BCD89000E4410A /* Guide1.png in Resources */,
+				5C7034CA17CF428100B121A6 /* fade.png in Resources */,
+				5C7034CB17CF428100B121A6 /* gradient.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -543,7 +590,6 @@
 				5C542CFC17BC167600E4410A /* NWColorPickerViewController.m in Sources */,
 				5C542CFD17BC167600E4410A /* NWConnectionTBC.m in Sources */,
 				5C542CFE17BC167600E4410A /* NWScriptViewController.m in Sources */,
-				5C542CFF17BC167600E4410A /* NWScriptObjectButton.m in Sources */,
 				5C542D0017BC167600E4410A /* NWScript.m in Sources */,
 				5C542D0117BC167600E4410A /* NWScriptObject.m in Sources */,
 				5C542D0317BC167600E4410A /* NWLoopOnCommandObject.m in Sources */,
@@ -557,8 +603,12 @@
 				5C542D2217BD301300E4410A /* NWEditFadeCommandViewController.m in Sources */,
 				5C542D2817BD547A00E4410A /* NWComplexScriptCommandObject.m in Sources */,
 				5C542D2B17BD629700E4410A /* NWEditComplexScriptObjectViewController.m in Sources */,
-				5C7034B317CDDFB200B121A6 /* NWScriptObjectScrollView.m in Sources */,
 				5C7034B617CE24EE00B121A6 /* NWScriptObjectView.m in Sources */,
+				5C7034B917CF216200B121A6 /* NWScriptObjectCollectionViewCell.m in Sources */,
+				5C7034BC17CF230900B121A6 /* NWCollectionViewLayout.m in Sources */,
+				5C7034BF17CF297000B121A6 /* NWCollectionViewLayoutAttributes.m in Sources */,
+				5C7034C517CF3D9000B121A6 /* ALRadialButton.m in Sources */,
+				5C7034C617CF3D9000B121A6 /* ALRadialMenu.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

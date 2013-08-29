@@ -13,88 +13,21 @@
 #import "NWEditFadeCommandViewController.h"
 #import "NWEditGradientCommandViewController.h"
 #import "WCWiflyControlWrapper.h"
-#import "NWScriptObjectScrollView.h"
+#import "NWCollectionViewLayout.h"
+#import "NWScriptObjectCollectionViewCell.h"
 
 @interface NWEditComplexScriptObjectViewController ()
 @property (nonatomic, strong) NWScriptObjectView *gradientPreviewView;
 @property (nonatomic, strong) UISwitch *modeSwitch;
-@property (nonatomic, strong) NWScriptObjectScrollView *scrollView;
-@property (nonatomic, strong) NSMutableArray *commandObjectViews;
+@property (nonatomic) BOOL isDeletionModeActive;
 @property (nonatomic) NSUInteger indexOfObjectToAlter;
 @property (nonatomic, strong) UIButton *sendButton;
+@property (nonatomic, strong) UIButton *addCommandButton;
+@property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) ALRadialMenu *radialMenu;
 @end
 
 @implementation NWEditComplexScriptObjectViewController
-
-- (void)setup {
-	self.view.backgroundColor = [UIColor viewFlipsideBackgroundColor];
-	
-	self.modeSwitch = [[UISwitch alloc]initWithFrame:CGRectZero];
-	[self.modeSwitch addTarget:self action:@selector(switchChanged) forControlEvents:UIControlEventValueChanged];
-	[self.view addSubview:self.modeSwitch];
-	
-	self.gradientPreviewView = [[NWScriptObjectView alloc]initWithFrame:CGRectZero];
-	self.gradientPreviewView.backgroundColor = [UIColor blackColor];
-	[self.view addSubview:self.gradientPreviewView];
-	
-	self.scrollView = [[NWScriptObjectScrollView alloc]initWithFrame:CGRectZero];
-	self.scrollView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
-	self.scrollView.mainView = self.view;
-	self.scrollView.delegate = self;
-	[self.view addSubview:self.scrollView];
-	
-	[self setupCommandObjectViews];
-	
-	self.sendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	[self.sendButton addTarget:self action:@selector(sendPreview:) forControlEvents:UIControlEventTouchDown];
-	[self.sendButton setTitle:@"Preview" forState:UIControlStateNormal];
-	[self.view addSubview:self.sendButton];
-}
-
-- (IBAction)sendPreview:(id)sender
-{
-	if (self.controlHandle) {
-		[self.controlHandle clearScript];
-		[self.controlHandle setColorDirect:[UIColor blackColor]];
-		[self.command sendToWCWiflyControl:self.controlHandle];
-	}
-}
-
-- (void)setupCommandObjectViews {
-	NSMutableArray *tempViews = [[NSMutableArray alloc] init];
-	
-	for (NWScriptCommandObject *command in self.command.itsScriptObjects) {
-		NWScriptObjectButton *view = [[NWScriptObjectButton alloc] initWithFrame:CGRectZero];
-		view.endColors = command.colors;
-		view.backgroundColor = [UIColor blackColor];
-		
-		UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(doubleTapAtCommandObject:)];
-		gesture.numberOfTapsRequired = 2;
-		[view addGestureRecognizer:gesture];
-		gesture.delegate = view;
-		
-		[tempViews addObject:view];
-	}
-	self.commandObjectViews = tempViews;
-	[self.scrollView reloadDataFromArray:self.commandObjectViews];
-}
-
-- (IBAction)doubleTapAtCommandObject:(UITapGestureRecognizer *)recognizer {
-	self.indexOfObjectToAlter = [self.commandObjectViews indexOfObject:recognizer.view];
-	NWScriptCommandObject *obj = [self.command.itsScriptObjects objectAtIndex:self.indexOfObjectToAlter];
-	
-	if ([obj isKindOfClass:[NWSetFadeScriptCommandObject class]]) {
-		[self performSegueWithIdentifier:@"editFade:" sender:self];
-	} else if ([obj isKindOfClass:[NWSetGradientScriptCommandObject class]])
-	{
-		[self performSegueWithIdentifier:@"editGradient:" sender:self];
-	}
-}
-
-- (void)switchChanged {
-	self.command.waitCommand = !self.modeSwitch.on;
-	[self setColorsOfGradientView];
-}
 
 - (void)viewWillLayoutSubviews {
 	[super viewWillLayoutSubviews];
@@ -104,10 +37,10 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.modeSwitch.on = !self.command.isWaitCommand;
-	[self setColorsOfGradientView];
+	[self updateGradientView];
 }
 
-- (void)setColorsOfGradientView {
+- (void)updateGradientView {
 	if (self.command.prev) {
 		self.gradientPreviewView.startColors = self.command.prev.colors;
 	} else {
@@ -126,26 +59,27 @@
 	CGFloat totalHeight = self.view.bounds.size.height - 40.0;
 	CGFloat xOffset = 20;
 	
-	if (self.view.bounds.size.height > self.view.bounds.size.width) {
-		//horizontal
+	if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
 		self.gradientPreviewView.frame = CGRectMake(xOffset, 80, totalWidth, self.command.colors.count * 5);
 	
 		self.modeSwitch.frame = CGRectMake(20, 20, 40, 20);
+
+		self.collectionView.frame = CGRectMake(0, totalHeight / 2 + 100 , self.view.bounds.size.width, self.command.colors.count * 4);
 	
-		//self.scrollView.contentSize = CGSizeMake(100 * self.command.itsScriptObjects.count + 20, self.command.colors.count * 4);
-		self.scrollView.frame = CGRectMake(0, totalHeight / 2 + 80 , self.view.bounds.size.width, self.command.colors.count * 4);
-	
-		self.sendButton.frame = CGRectMake(180, 20, 100, 40);
+		self.sendButton.frame = CGRectMake(140, 20, 100, 40);
+		
+		self.addCommandButton.frame = CGRectMake(self.view.bounds.size.width - 20, self.collectionView.center.y - 10, 20, 20);
 	}
 	else {
 		self.gradientPreviewView.frame = CGRectMake(self.view.center.x, 20, self.view.bounds.size.width / 2 - 20, self.command.colors.count * 3);
 		
 		self.modeSwitch.frame = CGRectMake(20, 20, 40, 20);
 		
-		//self.scrollView.contentSize = CGSizeMake(100 * self.command.itsScriptObjects.count + 20, self.command.colors.count * 4);
-		self.scrollView.frame = CGRectMake(0, self.view.center.y - 100, self.view.bounds.size.width, self.command.colors.count * 4);
+		self.collectionView.frame = CGRectMake(0, self.view.center.y, self.view.bounds.size.width, self.command.colors.count * 4);
 		
 		self.sendButton.frame = CGRectMake(20, 60, 100, 40);
+		
+		self.addCommandButton.frame = CGRectMake(self.view.bounds.size.width - 20, self.collectionView.center.y - 10, 20, 20);
 	}
 }
 
@@ -158,7 +92,7 @@
 	
 	{
 		NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
-		obj.address = 0xff000000;
+		obj.address = 0xffffffff;
 		obj.color = [UIColor redColor];
 	
 		[self.command.itsScriptObjects addObject:obj];
@@ -192,22 +126,256 @@
 	[self setup];
 }
 
-- (void)positionInScrollViewChanged:(NWScriptObjectButton *)button
-{
-	NSLog(@"do something");
+- (void)setup {
+	//self
+	self.view.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+	
+	//mode switch
+	self.modeSwitch = [[UISwitch alloc]initWithFrame:CGRectZero];
+	[self.modeSwitch addTarget:self action:@selector(switchChanged) forControlEvents:UIControlEventValueChanged];
+	[self.view addSubview:self.modeSwitch];
+	
+	//gradient view
+	self.gradientPreviewView = [[NWScriptObjectView alloc]initWithFrame:CGRectZero];
+	self.gradientPreviewView.backgroundColor = [UIColor blackColor];
+	[self.view addSubview:self.gradientPreviewView];
+	
+	//collection view
+	NWCollectionViewLayout *layout = [[NWCollectionViewLayout alloc]init];
+		
+	self.collectionView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
+	self.collectionView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+	self.collectionView.dataSource = self;
+	self.collectionView.delegate = self;
+	[self.collectionView registerClass:[NWScriptObjectCollectionViewCell class] forCellWithReuseIdentifier:@"SCRIPT"];
+	[self.view addSubview:self.collectionView];
+	
+	UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(activateDeletionMode:)];
+	longPress.delegate = self;
+	[self.collectionView addGestureRecognizer:longPress];
+	
+	UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(endDeletionMode:)];
+	tap.delegate = self;
+	tap.numberOfTapsRequired = 1;
+	[self.collectionView addGestureRecognizer:tap];
+	
+	//send button
+	self.sendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	[self.sendButton addTarget:self action:@selector(sendPreview:) forControlEvents:UIControlEventTouchUpInside];
+	[self.sendButton setTitle:@"Preview" forState:UIControlStateNormal];
+	[self.view addSubview:self.sendButton];
+	
+	//add command button
+	self.addCommandButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
+	[self.addCommandButton addTarget:self action:@selector(addCommandButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+	[self.addCommandButton setTitle:@"Add" forState:UIControlStateNormal];
+	[self.view addSubview:self.addCommandButton];
+
+	//radial menue
+	self.radialMenu = [[ALRadialMenu alloc] init];
+	self.radialMenu.delegate = self;
 }
 
+#pragma mark - RADIAL MENU DELEGATE 
+- (NSInteger)numberOfItemsInRadialMenu:(ALRadialMenu *)radialMenu {
+	return 2;
+}
+
+- (NSInteger)arcStartForRadialMenu:(ALRadialMenu *)radialMenu {
+	return 145;
+}
+
+- (NSInteger)arcSizeForRadialMenu:(ALRadialMenu *)radialMenu {
+	return 70;
+}
+
+- (NSInteger)arcRadiusForRadialMenu:(ALRadialMenu *)radialMenu {
+	return 60;
+}
+
+- (float)buttonSizeForRadialMenu:(ALRadialMenu *)radialMenu {
+	return 50;
+}
+
+- (UIImage *)radialMenu:(ALRadialMenu *)radialMenu imageForIndex:(NSInteger)index {
+	UIImage *image = nil;
+	
+	if (index == 1) {
+		image = [UIImage imageNamed:@"fade"];
+	} else if (index == 2) {
+		image = [UIImage imageNamed:@"gradient"];
+	}
+	else return nil;
+	return image;
+}
+
+- (void)radialMenu:(ALRadialMenu *)radialMenu didSelectItemAtIndex:(NSInteger)index {
+	[self.radialMenu itemsWillDisapearIntoButton:nil];
+	if (index == 1) {
+		[self addFadeCommand];
+	} else if (index == 2)
+	{
+		[self addGradientCommand];
+	}
+}
+
+#pragma mark - ADD OBJECTS
+- (void)addFadeCommand {
+	NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
+	obj.address = 0xffffffff;
+	obj.color = [UIColor greenColor];
+	obj.duration = 5;
+	obj.parallel = YES;
+	
+	[self.command.itsScriptObjects addObject:obj];
+	[self updateGradientView];
+	[self.collectionView reloadData];
+}
+
+- (void)addGradientCommand {
+	NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
+	obj.color1 = [UIColor blueColor];
+	obj.color2 = [UIColor greenColor];
+	obj.offset = 0;
+	obj.numberOfLeds = 32;
+	
+	[self.command.itsScriptObjects addObject: obj];
+	[self updateGradientView];
+	[self.collectionView reloadData];
+}
+
+#pragma mark - USER ACTIONS
+
+- (void)addCommandButtonPressed:(UIButton *)sender {
+	[self.radialMenu buttonsWillAnimateFromButton:sender withFrame:sender.frame inView:self.view];
+}
+
+- (void)sendPreview:(UIButton *)sender {
+	if (self.controlHandle) {
+		[self.controlHandle clearScript];
+		[self.controlHandle setColorDirect:[UIColor blackColor]];
+		[self.command sendToWCWiflyControl:self.controlHandle];
+	}
+	
+	//[self.radialMenu buttonsWillAnimateFromButton:sender withFrame:sender.frame inView:self.view];
+}
+
+- (void)switchChanged {
+	self.command.waitCommand = !self.modeSwitch.on;
+	[self updateGradientView];
+}
+
+#pragma mark - gesture-recognition action methods
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    CGPoint touchPoint = [touch locationInView:self.collectionView];
+    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:touchPoint];
+    if (indexPath && [gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])
+    {
+        return NO;
+    }
+    return YES;
+}
+
+- (void)activateDeletionMode:(UILongPressGestureRecognizer *)gr {
+    if (gr.state == UIGestureRecognizerStateBegan)
+    {
+        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:[gr locationInView:self.collectionView]];
+        if (indexPath && self.command.itsScriptObjects.count > 1)
+        {
+            self.isDeletionModeActive = YES;
+            NWCollectionViewLayout *layout = (NWCollectionViewLayout *)self.collectionView.collectionViewLayout;
+            [layout invalidateLayout];
+        }
+    }
+}
+
+- (void)endDeletionMode:(UITapGestureRecognizer *)gr {
+    if (self.isDeletionModeActive)
+    {
+        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:[gr locationInView:self.collectionView]];
+        //if (!indexPath)
+        {
+            self.isDeletionModeActive = NO;
+            NWCollectionViewLayout *layout = (NWCollectionViewLayout *)self.collectionView.collectionViewLayout;
+            [layout invalidateLayout];
+        }
+    }
+	else {
+		NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:[gr locationInView:self.collectionView]];
+		if (indexPath) {
+			self.indexOfObjectToAlter = indexPath.row;
+			NWScriptCommandObject *obj = [self.command.itsScriptObjects objectAtIndex:self.indexOfObjectToAlter];
+			
+			if ([obj isKindOfClass:[NWSetFadeScriptCommandObject class]]) {
+				[self performSegueWithIdentifier:@"editFade:" sender:self];
+			} else if ([obj isKindOfClass:[NWSetGradientScriptCommandObject class]])
+			{
+				[self performSegueWithIdentifier:@"editGradient:" sender:self];
+			}
+		}
+	}
+}
+
+#pragma mark - COLLECTION VIEW STUFF
+- (BOOL)isDeletionModeActiveForCollectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout {
+	return self.isDeletionModeActive;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+	return self.command.itsScriptObjects.count;
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+	return 1;
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+	if (self.isDeletionModeActive) {
+		return NO;
+	}
+	else return YES;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+	NWScriptObjectCollectionViewCell *tempCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SCRIPT" forIndexPath:indexPath];
+	tempCell.scriptObjectView.endColors = [self.command.itsScriptObjects[indexPath.row] colors];
+	
+	UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(endDeletionMode:)];
+	gesture.numberOfTapsRequired = 1;
+	[tempCell addGestureRecognizer:gesture];
+	
+	[tempCell.deleteButton addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
+
+	return tempCell;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+	return CGSizeMake(100, self.collectionView.frame.size.height - 20);
+}
+
+#pragma mark - delete for button
+- (void)delete:(UIButton *)sender {
+	if (self.command.itsScriptObjects.count > 1) {
+		NSIndexPath *indexPath = [self.collectionView indexPathForCell:(NWScriptObjectCollectionViewCell *)sender.superview.superview];
+		[self.command.itsScriptObjects removeObjectAtIndex:indexPath.row];
+		[self.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+		[self updateGradientView];
+	}
+	else if (self.isDeletionModeActive) {
+		[self endDeletionMode:nil];
+	}
+}
+
+#pragma mark - SEGUES
 - (IBAction)unwindEditScriptObject:(UIStoryboardSegue *)segue {
 	if ([segue.sourceViewController respondsToSelector:@selector(command)]) {
 		NWScriptCommandObject *cmdObj = (NWScriptCommandObject*)[segue.sourceViewController command];
 		[self.command.itsScriptObjects replaceObjectAtIndex:self.indexOfObjectToAlter withObject:cmdObj];
-		NWScriptObjectButton *view = [self.commandObjectViews objectAtIndex:self.indexOfObjectToAlter];
-		view.endColors = cmdObj.colors;
+		[self.collectionView reloadData];
 	}
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"editFade:"]) {
 		if ([segue.destinationViewController isKindOfClass:[NWEditFadeCommandViewController class]]) {
 			NWEditFadeCommandViewController *dest = (NWEditFadeCommandViewController*)segue.destinationViewController;
