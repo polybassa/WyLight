@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "NWEditComplexScriptObjectViewController.h"
 #import "NWScriptObjectView.h"
 #import "NWSetFadeScriptCommandObject.h"
@@ -359,6 +360,19 @@
 		}
 	}
 }
+
+/*
++ (UIImage *) imageWithView:(UIView *)view
+{
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+	
+    UIImage * img = UIGraphicsGetImageFromCurrentImageContext();
+	
+    UIGraphicsEndImageContext();
+	
+    return img;
+}*/
 
 
 

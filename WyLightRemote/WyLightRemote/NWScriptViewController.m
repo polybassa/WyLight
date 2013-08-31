@@ -30,9 +30,15 @@
 }
 
 - (void)fixLocations {
-	if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal	
+	if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
+		//scroll view
+		self.scrollView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+	
 	}
-	else {		
+	else {
+		
+		self.scrollView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+		
 	}
 }
 
@@ -41,6 +47,8 @@
 	
 	//scroll view
 	self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
+	self.scrollView.backgroundColor = [UIColor lightGrayColor];
+	[self.view addSubview:self.scrollView];
 }
 
 - (void)viewDidLoad {
