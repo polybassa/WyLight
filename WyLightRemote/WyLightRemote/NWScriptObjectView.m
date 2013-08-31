@@ -8,6 +8,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "NWScriptObjectView.h"
+#import "NWScriptView.h"
 
 @implementation NWScriptObjectView
 
@@ -21,16 +22,43 @@
         self.clipsToBounds = YES;
         self.layer.opacity = 1;
         self.layer.borderColor = [UIColor darkGrayColor].CGColor;
-        self.layer.borderWidth = 2.0;
 	}
     return self;
 }
 
-- (void)setFrame:(CGRect)frame
-{
+- (void)setFrame:(CGRect)frame {
 	[super setFrame:frame];
 	float dim = MIN(self.bounds.size.width, self.bounds.size.height);
-	self.layer.cornerRadius = dim/8;
+	if (self.cornerRadius >= 1) {
+		self.layer.cornerRadius = self.cornerRadius;
+	} else {
+		self.layer.cornerRadius = dim/8;
+	}
+	if (self.borderWidth >= 1) {
+		self.layer.borderWidth = self.borderWidth;
+	} else {
+		self.layer.borderWidth = 2.0;
+	}
+	[self setNeedsDisplay];
+}
+
+- (void)pinchWidth:(UIPinchGestureRecognizer *)gesture {
+	if (gesture.state == UIGestureRecognizerStateChanged) {
+		
+		CGFloat x = self.frame.origin.x;
+		CGFloat y = self.frame.origin.y;
+		CGFloat oldWidth = self.frame.size.width;
+		CGFloat width = self.frame.size.width * gesture.scale;
+		CGFloat height = self.frame.size.height;
+		
+		[self.delegate scriptObjectView:self changedWidthTo:width deltaOfChange:width - oldWidth];
+		self.frame = CGRectMake(x, y, width, height);
+		gesture.scale = 1;
+	}
+	if (gesture.state == UIGestureRecognizerStateEnded) {
+		gesture.scale = 1;
+		[self.delegate scriptObjectView:self finishedWidthChange:self.frame.size.width];
+	}
 }
 
 - (void)setEndColors:(NSArray *)endColors {

@@ -76,6 +76,7 @@
 		5C7034C617CF3D9000B121A6 /* ALRadialMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7034C417CF3D8F00B121A6 /* ALRadialMenu.m */; };
 		5C7034CA17CF428100B121A6 /* fade.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C7034C817CF427E00B121A6 /* fade.png */; };
 		5C7034CB17CF428100B121A6 /* gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C7034C917CF427F00B121A6 /* gradient.png */; };
+		5CE16BBD17D1F73A006A8F67 /* NWScriptView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE16BBC17D1F73A006A8F67 /* NWScriptView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -214,6 +215,8 @@
 		5C7034C417CF3D8F00B121A6 /* ALRadialMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALRadialMenu.m; sourceTree = "<group>"; };
 		5C7034C817CF427E00B121A6 /* fade.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fade.png; sourceTree = "<group>"; };
 		5C7034C917CF427F00B121A6 /* gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gradient.png; sourceTree = "<group>"; };
+		5CE16BBB17D1F739006A8F67 /* NWScriptView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptView.h; sourceTree = "<group>"; };
+		5CE16BBC17D1F73A006A8F67 /* NWScriptView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -408,6 +411,8 @@
 		5C542D0E17BCC1F200E4410A /* ScriptViewController */ = {
 			isa = PBXGroup;
 			children = (
+				5CE16BBB17D1F739006A8F67 /* NWScriptView.h */,
+				5CE16BBC17D1F73A006A8F67 /* NWScriptView.m */,
 				5C542CE217BC167500E4410A /* NWScript.h */,
 				5C542CE317BC167500E4410A /* NWScript.m */,
 				5C542CDE17BC167400E4410A /* NWScriptViewController.h */,
@@ -603,6 +608,7 @@
 				5C7034BF17CF297000B121A6 /* NWCollectionViewLayoutAttributes.m in Sources */,
 				5C7034C517CF3D9000B121A6 /* ALRadialButton.m in Sources */,
 				5C7034C617CF3D9000B121A6 /* ALRadialMenu.m in Sources */,
+				5CE16BBD17D1F73A006A8F67 /* NWScriptView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
