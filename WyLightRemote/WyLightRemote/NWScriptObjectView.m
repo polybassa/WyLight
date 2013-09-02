@@ -42,25 +42,6 @@
 	[self setNeedsDisplay];
 }
 
-- (void)pinchWidth:(UIPinchGestureRecognizer *)gesture {
-	if (gesture.state == UIGestureRecognizerStateChanged) {
-		
-		CGFloat x = self.frame.origin.x;
-		CGFloat y = self.frame.origin.y;
-		CGFloat oldWidth = self.frame.size.width;
-		CGFloat width = self.frame.size.width * gesture.scale;
-		CGFloat height = self.frame.size.height;
-		
-		[self.delegate scriptObjectView:self changedWidthTo:width deltaOfChange:width - oldWidth];
-		self.frame = CGRectMake(x, y, width, height);
-		gesture.scale = 1;
-	}
-	if (gesture.state == UIGestureRecognizerStateEnded) {
-		gesture.scale = 1;
-		[self.delegate scriptObjectView:self finishedWidthChange:self.frame.size.width];
-	}
-}
-
 - (void)setEndColors:(NSArray *)endColors {
 	_endColors = endColors;
 	[self setNeedsDisplay];
@@ -86,8 +67,14 @@
 		CGContextSaveGState(context);
 		CGContextAddRect(context, CGRectMake(self.bounds.origin.x, i * heightFract, self.bounds.size.width, heightFract));
 		CGContextClip(context);
+		UIColor *startColor;
+		if (!self.startColors) {
+			startColor = self.backgroundColor;
+		} else {
+			 startColor = self.startColors[i];
+		}
 		CGContextDrawLinearGradient(context,
-									[NWScriptObjectView createGradientWithStartColor:self.startColors[i] endColor:self.endColors[i]],
+									[NWScriptObjectView createGradientWithStartColor:startColor endColor:self.endColors[i]],
 									CGPointMake(self.bounds.origin.x, i * heightFract + heightFract / 2),
 									CGPointMake(self.bounds.size.width, i * heightFract + heightFract / 2), 0);
 		CGContextRestoreGState(context);
