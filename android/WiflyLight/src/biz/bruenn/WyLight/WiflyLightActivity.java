@@ -46,7 +46,7 @@ public class WiflyLightActivity extends Activity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View v = super.getView(position, convertView, parent);
 			if(getItem(position).isOnline()) {
-				((TextView)v).setBackgroundColor(Color.BLUE);
+				((TextView)v).setTextColor(Color.GREEN);
 			}
 			return v;
 		}
