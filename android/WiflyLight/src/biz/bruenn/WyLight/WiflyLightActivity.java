@@ -1,6 +1,7 @@
 package biz.bruenn.WyLight;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WiflyLight.R.id;
@@ -9,11 +10,13 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
@@ -23,12 +26,31 @@ import android.widget.TextView;
 
 public class WiflyLightActivity extends Activity {
 	private ArrayList<Endpoint> mRemoteArray = new ArrayList<Endpoint>();
-	private ArrayAdapter<Endpoint> mRemoteArrayAdapter;
+	private EndpointListAdapter mRemoteArrayAdapter;
 	private ListView mRemoteList;
 	private BroadcastReceiver mBroadcastReceiver;
 	
 	static {
 		System.loadLibrary("wifly");
+	}
+	
+	protected class EndpointListAdapter extends ArrayAdapter<Endpoint> {
+
+		public EndpointListAdapter(Context context, int textViewResourceId,
+				List<Endpoint> objects) {
+			super(context, textViewResourceId, objects);
+			// TODO Auto-generated constructor stub
+		}
+		
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View v = super.getView(position, convertView, parent);
+			if(getItem(position).isOnline()) {
+				((TextView)v).setBackgroundColor(Color.BLUE);
+			}
+			return v;
+		}
+		
 	}
 	
     /** Called when the activity is first created. */
@@ -41,7 +63,7 @@ public class WiflyLightActivity extends Activity {
         mRemoteList = (ListView)findViewById(id.remoteList);
         registerForContextMenu(mRemoteList);
         
-        mRemoteArrayAdapter = new ArrayAdapter<Endpoint>(this, android.R.layout.simple_list_item_1, mRemoteArray);
+        mRemoteArrayAdapter = new EndpointListAdapter(this, android.R.layout.simple_list_item_1, mRemoteArray);
         mRemoteList.setAdapter(mRemoteArrayAdapter);
         mRemoteList.setEmptyView((TextView)findViewById(android.R.id.empty));
         mRemoteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -68,7 +90,6 @@ public class WiflyLightActivity extends Activity {
 						btn).execute(Long.valueOf(3000000000L));
 			}
 		});
-        
         // add all recent endpoints to our list view
         for(long index = 0;;index++) {
         	Endpoint e = mBroadcastReceiver.getEndpoint(index);
