@@ -61,6 +61,7 @@ public class SetWlanDialog extends Dialog {
 										mDeviceId.getText().toString(),
 										mSoftAp.isChecked());
 					control.disconnect();
+					mRemote.setName(mDeviceId.getText().toString());
 				} catch (FatalError e) {
 					Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
 				}

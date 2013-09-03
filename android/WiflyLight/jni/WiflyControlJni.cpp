@@ -85,6 +85,30 @@ jlong Java_biz_bruenn_WyLight_Endpoint_connect(JNIEnv* env, jobject ref, jlong p
 	return static_cast<jlong>(NULL);
 }
 
+jstring Java_biz_bruenn_WyLight_Endpoint_getEndpointName(JNIEnv* env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint)
+{
+	try {
+		const Endpoint& remote = ((BroadcastReceiver*)pBroadcastReceiver)->GetEndpointByFingerprint(fingerprint);
+
+		const std::string myDeviceId = remote.GetDeviceId();
+		return env->NewStringUTF(myDeviceId.data());
+	} catch (FatalError& e) {
+		ThrowJniException(env, e);
+	}
+}
+
+void Java_biz_bruenn_WyLight_Endpoint_setEndpointName(JNIEnv* env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint, jstring deviceId)
+{
+	try {
+		const char* const myDeviceId = env->GetStringUTFChars(deviceId, 0);
+		Endpoint& remote = ((BroadcastReceiver*)pBroadcastReceiver)->GetEndpointByFingerprint(fingerprint);
+		remote.SetDeviceId(myDeviceId);
+		env->ReleaseStringUTFChars(deviceId, myDeviceId);
+	} catch (FatalError& e) {
+		ThrowJniException(env, e);
+	}
+}
+
 jstring Java_biz_bruenn_WyLight_WiflyControl_ConfGetDeviceId(JNIEnv* env, jobject ref, jlong pNative)
 {
 	std::string myDeviceId = reinterpret_cast<Control*>(pNative)->ConfGetDeviceId();

@@ -113,13 +113,18 @@ Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout) throw (FatalError)
 bool BroadcastReceiver::LockedInsert(Endpoint& newEndpoint)
 {
 	std::lock_guard<std::mutex> lg(mMutex);
-	const bool added = mIpTableShadow.insert(newEndpoint).second;
-	if(added)
+	auto addedElement = mIpTableShadow.insert(newEndpoint);
+	if(addedElement.second)
 	{
 		if(mOnNewRemote) mOnNewRemote(mIpTable.size(), newEndpoint);
 		mIpTable.insert(std::pair<size_t, Endpoint>(mIpTable.size(), newEndpoint));
+	} else {
+		Endpoint& ref = GetEndpointByFingerprint(newEndpoint.AsUint64());
+		if(ref.IsValid()) {
+			ref.SetDeviceId(newEndpoint.GetDeviceId());
+		}
 	}
-	return added;
+	return true;
 }
 
 size_t BroadcastReceiver::NumRemotes(void) const
