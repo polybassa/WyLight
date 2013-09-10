@@ -26,6 +26,4 @@ public class ScriptAdapter extends ArrayAdapter<ScriptCommand> {
 		text.setBackgroundColor(getItem(position).getColor());
 		return text;
 	}
-	
-
 }

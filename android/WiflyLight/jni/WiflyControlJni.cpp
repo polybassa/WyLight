@@ -174,6 +174,11 @@ jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetFade(JNIEnv* env, jobject ref
 	return TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdSetFade{(uint32_t)argb, (uint16_t)fadeTime, (uint32_t)addr, false});
 }
 
+jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetGradient(JNIEnv* env, jobject ref, jlong pNative, jint argb_1, jint argb_2, jint length, jint offset, jshort fadeTime)
+{
+	return TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdSetGradient(argb_1, argb_2, fadeTime, false, length, offset));
+}
+
 void Java_biz_bruenn_WyLight_WiflyControl_release(JNIEnv* env, jobject ref, jlong pNative)
 {
 	if((Control*)pNative == g_pControl) {

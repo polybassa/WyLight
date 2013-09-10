@@ -17,7 +17,8 @@ public class WiflyControl {
 	private native boolean FwLoopOff(long pNative, byte numLoops);
 	private native boolean FwLoopOn(long pNative);
 	private native boolean FwSetColor(long pNative, int argb, int addr) throws ConnectionTimeout;
-	private native boolean FwSetFade(long pNative, int argb, int addr, short fadeTime);
+	private native boolean FwSetFade(long pNative, int argb, int addr, short fadeTime) throws ConnectionTimeout;
+	private native boolean FwSetGradient(long pNative, int argb_1, int argb_2, int length, int offset, short fadeTime) throws ConnectionTimeout;
 	private native void release(long pNative);
 	
 	private long mNative;
@@ -74,5 +75,9 @@ public class WiflyControl {
 	
 	public synchronized boolean fwSetFade(int argb, int addr, short fadeTime) throws ConnectionTimeout, FatalError, ScriptBufferFull {
 		return FwSetFade(mNative, argb, addr, fadeTime);
+	}
+	
+	public synchronized boolean fwSetGradient(int argb_1, int argb_2, int length, int offset, short fadeTime) throws ConnectionTimeout, FatalError, ScriptBufferFull {
+		return FwSetGradient(mNative, argb_1, argb_2, length, offset, fadeTime);
 	}
 }
