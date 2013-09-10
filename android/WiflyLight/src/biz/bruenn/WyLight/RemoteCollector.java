@@ -38,7 +38,13 @@ public class RemoteCollector extends AsyncTask<Long, Void, Void> {
 			
 			if(remote.isValid())
 			{
-				mRemoteArray.add(remote);
+				final int index = mRemoteArray.indexOf(remote);
+				if(-1 == index) {
+					remote.setOnline(true);
+					mRemoteArray.add(remote);
+				} else {
+					mRemoteArray.get(index).setOnline(true);
+				}
 				publishProgress();
 			}
 			timeoutNanos = endTime - System.nanoTime();

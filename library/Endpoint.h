@@ -83,6 +83,10 @@ class Endpoint
 		uint8_t GetScore(void) const {
 			return mScore;
 		};
+
+		void SetDeviceId(const std::string& deviceId) {
+			mDeviceId = deviceId;
+		};
 			
 		void SetScore(const uint8_t& score) {
 			mScore = score;

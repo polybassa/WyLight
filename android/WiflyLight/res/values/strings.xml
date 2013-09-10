@@ -6,6 +6,8 @@
     <string name="cancel">Cancel</string>
     <string name="clear">Clear</string>
     <string name="configure">configure</string>
+    <string name="deviceid_description">Device name:</string>
+    <string name="deviceid_hint">this is optional</string>
     <string name="msg_connectionfailed">Connection to the wifly device failed</string>
     <string name="msg_noremote">No remote detected, click scan to find one</string>
     <string name="msg_scriptbufferfull">The script buffer is full, clear it first</string>
