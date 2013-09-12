@@ -125,6 +125,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1d5de392ee1bce3176d0840d855eaa1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a515497781d7ab7ad5fde04b5466c63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a6a515497781d7ab7ad5fde04b5466c63">BlRunApp</a> (void) const   throw (ConnectionTimeout, FatalError)</td></tr>
 <tr class="separator:a6a515497781d7ab7ad5fde04b5466c63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32fce52c7c113c90654e6835c0274f73"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a32fce52c7c113c90654e6835c0274f73">ConfGetDeviceId</a> (void) const </td></tr>
+<tr class="separator:a32fce52c7c113c90654e6835c0274f73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc559100e686136cff2c3bfea53f55a3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#adc559100e686136cff2c3bfea53f55a3">ConfGetPassphrase</a> (void) const </td></tr>
+<tr class="separator:adc559100e686136cff2c3bfea53f55a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08764c74e17d008cf9e03ae6c9a145e0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a08764c74e17d008cf9e03ae6c9a145e0">ConfGetSoftAp</a> (void) const </td></tr>
+<tr class="separator:a08764c74e17d008cf9e03ae6c9a145e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9128e80172dcb8586c9821dc7587f122"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a9128e80172dcb8586c9821dc7587f122">ConfGetSsid</a> (void) const </td></tr>
 <tr class="separator:a9128e80172dcb8586c9821dc7587f122"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16a660f58bf48a006e1709a28ebc2ae8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a16a660f58bf48a006e1709a28ebc2ae8">ConfModuleAsSoftAP</a> (const std::string &amp;accesspointName=&quot;Wifly_Light&quot;) const </td></tr>
@@ -542,6 +548,60 @@ Friends</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="a32fce52c7c113c90654e6835c0274f73"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string WyLight::Control::ConfGetDeviceId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Read the device id from <a class="el" href="namespace_wy_light.html">WyLight</a> module </p>
+<dl class="section return"><dt>Returns</dt><dd>an empty string or the device id </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="adc559100e686136cff2c3bfea53f55a3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string WyLight::Control::ConfGetPassphrase </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Read the currently configured wlan passphrase from <a class="el" href="namespace_wy_light.html">WyLight</a> module </p>
+<dl class="section return"><dt>Returns</dt><dd>an empty string or the wlan passphrase </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a08764c74e17d008cf9e03ae6c9a145e0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool WyLight::Control::ConfGetSoftAp </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Read the currently configured mode(client/SoftAP) from <a class="el" href="namespace_wy_light.html">WyLight</a> module </p>
+<dl class="section return"><dt>Returns</dt><dd>true if <a class="el" href="namespace_wy_light.html">WyLight</a> module is configured for SoftAP mode </dd></dl>
 
 </div>
 </div>
@@ -1019,7 +1079,7 @@ Friends</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 18 2013 10:41:15 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Sep 12 2013 23:11:45 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

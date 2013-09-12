@@ -113,14 +113,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1ed47e38dbc6475905afc528d3bc5420"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8100fdc85265308689ce34147f106bb"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#ab8100fdc85265308689ce34147f106bb">NumRemotes</a> (void) const </td></tr>
 <tr class="separator:ab8100fdc85265308689ce34147f106bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5eecaae483b2476ad9213ab4617dfbb6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a5eecaae483b2476ad9213ab4617dfbb6">ReadRecentEndpoints</a> (const std::string &amp;filename)</td></tr>
-<tr class="separator:a5eecaae483b2476ad9213ab4617dfbb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33985105c1c905bf01ec5012c825878e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a33985105c1c905bf01ec5012c825878e">ReadRecentEndpoints</a> (const std::string &amp;filename=&quot;&quot;)</td></tr>
+<tr class="separator:a33985105c1c905bf01ec5012c825878e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a018a961883af11174f0bc36695bb222c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a018a961883af11174f0bc36695bb222c">Stop</a> (void)</td></tr>
 <tr class="separator:a018a961883af11174f0bc36695bb222c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54367ab857356899e0c5263b856e2d60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a54367ab857356899e0c5263b856e2d60">WriteRecentEndpoints</a> (const std::string &amp;filename=&quot;&quot;, uint8_t threshold=1) const </td></tr>
 <tr class="separator:a54367ab857356899e0c5263b856e2d60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a352e3c6b66322d8dd6af6cd6f2e7c8ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a352e3c6b66322d8dd6af6cd6f2e7c8ad">DeleteRecentEndpointFile</a> (const std::string &amp;filename=&quot;&quot;) const </td></tr>
-<tr class="separator:a352e3c6b66322d8dd6af6cd6f2e7c8ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47dfbc4ae76f027dc8a4c07898eb3bda"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a47dfbc4ae76f027dc8a4c07898eb3bda">DeleteRecentEndpointFile</a> (const std::string &amp;filename=&quot;&quot;)</td></tr>
+<tr class="separator:a47dfbc4ae76f027dc8a4c07898eb3bda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -187,7 +187,7 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a352e3c6b66322d8dd6af6cd6f2e7c8ad"></a>
+<a class="anchor" id="a47dfbc4ae76f027dc8a4c07898eb3bda"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -196,11 +196,11 @@ Static Public Attributes</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>filename</em> = <code>&quot;&quot;</code></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Delete all recent endpoints in file </p>
+<p>Delete all recent endpoints in file and in the internal IpTables </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">filename</td><td>of the file containing the recent endpoints </td></tr>
@@ -298,7 +298,7 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a5eecaae483b2476ad9213ab4617dfbb6"></a>
+<a class="anchor" id="a33985105c1c905bf01ec5012c825878e"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -306,7 +306,7 @@ Static Public Attributes</h2></td></tr>
           <td class="memname">void WyLight::BroadcastReceiver::ReadRecentEndpoints </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td class="paramname"><em>filename</em> = <code>&quot;&quot;</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -499,7 +499,7 @@ Static Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 18 2013 10:41:03 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Sep 12 2013 23:11:44 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
