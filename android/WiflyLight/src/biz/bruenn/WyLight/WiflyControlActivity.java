@@ -36,15 +36,18 @@ public class WiflyControlActivity extends FragmentActivity implements WiflyContr
 		@Override
 		public Fragment getItem(int arg0) {
 			switch(arg0) {
-			case 3:
+			case 2:
 				ControlFragment brightness = new SetBrightnessFragment();
 				return brightness;
-			case 1:
+			case 3:
 				ControlFragment rgb = new SetRGBFragment();
 				return rgb;
-			case 2:
+			case 1:
 				ControlFragment color = new SetColorFragment();
 				return color;
+			case 4:
+				ControlFragment gradient = new SetGradientFragment();
+				return gradient;
 			case 0:
 				ControlFragment scripting = new ScriptingFragment();
 				return scripting;

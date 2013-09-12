@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+<LinearLayout
+	android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/deviceid_description" />    
+    <EditText
+        android:id="@+id/editDeviceId"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/deviceid_hint"
+        android:inputType="text" />
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -13,7 +26,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/ssid_hint"
-        android:inputType="text" />    
+        android:inputType="text" />
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -51,4 +64,4 @@
             android:layout_weight="1"
             android:text="@string/cancel" />
     </LinearLayout>
-</LinearLayout>
+</LinearLayout></ScrollView>

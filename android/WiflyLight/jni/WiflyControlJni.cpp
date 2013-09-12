@@ -30,14 +30,6 @@ void ThrowJniException(JNIEnv* env, const FatalError& e) {
 		env->ThrowNew(javaException, e.what());
 }
 
-#define TRY_CATCH_RETURN_BOOL(EXPRESSION) \
-	try { \
-		(EXPRESSION); \
-		return true; \
-	} catch(FatalError& e) { \
-		ThrowJniException(env, e); \
-	}
-
 jboolean TrySend(JNIEnv* env, Control* pCtrl, FwCommand&& cmd)
 {
 	assert(pCtrl);
@@ -93,6 +85,42 @@ jlong Java_biz_bruenn_WyLight_Endpoint_connect(JNIEnv* env, jobject ref, jlong p
 	return static_cast<jlong>(NULL);
 }
 
+jstring Java_biz_bruenn_WyLight_Endpoint_getEndpointName(JNIEnv* env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint)
+{
+	try {
+		const Endpoint& remote = ((BroadcastReceiver*)pBroadcastReceiver)->GetEndpointByFingerprint(fingerprint);
+
+		const std::string myDeviceId = remote.GetDeviceId();
+		return env->NewStringUTF(myDeviceId.data());
+	} catch (FatalError& e) {
+		ThrowJniException(env, e);
+	}
+}
+
+void Java_biz_bruenn_WyLight_Endpoint_setEndpointName(JNIEnv* env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint, jstring deviceId)
+{
+	try {
+		const char* const myDeviceId = env->GetStringUTFChars(deviceId, 0);
+		Endpoint& remote = ((BroadcastReceiver*)pBroadcastReceiver)->GetEndpointByFingerprint(fingerprint);
+		remote.SetDeviceId(myDeviceId);
+		env->ReleaseStringUTFChars(deviceId, myDeviceId);
+	} catch (FatalError& e) {
+		ThrowJniException(env, e);
+	}
+}
+
+jstring Java_biz_bruenn_WyLight_WiflyControl_ConfGetDeviceId(JNIEnv* env, jobject ref, jlong pNative)
+{
+	std::string myDeviceId = reinterpret_cast<Control*>(pNative)->ConfGetDeviceId();
+	return env->NewStringUTF(myDeviceId.data());
+}
+
+jstring Java_biz_bruenn_WyLight_WiflyControl_ConfGetPassphrase(JNIEnv* env, jobject ref, jlong pNative)
+{
+	std::string myPassphrase = reinterpret_cast<Control*>(pNative)->ConfGetPassphrase();
+	return env->NewStringUTF(myPassphrase.data());
+}
+
 jboolean Java_biz_bruenn_WyLight_WiflyControl_ConfGetSoftAp(JNIEnv* env, jobject ref, jlong pNative)
 {
 	return reinterpret_cast<Control*>(pNative)->ConfGetSoftAp();
@@ -104,16 +132,18 @@ jstring Java_biz_bruenn_WyLight_WiflyControl_ConfGetSsid(JNIEnv* env, jobject re
 	return env->NewStringUTF(mySsid.data());
 }
 
-jboolean Java_biz_bruenn_WyLight_WiflyControl_ConfSetWlan(JNIEnv* env, jobject ref, jlong pNative, jstring passphrase, jstring ssid, jboolean softAp)
+jboolean Java_biz_bruenn_WyLight_WiflyControl_ConfSetWlan(JNIEnv* env, jobject ref, jlong pNative, jstring passphrase, jstring ssid, jstring deviceId, jboolean softAp)
 {
-	const char* myPassphrase = env->GetStringUTFChars(passphrase, 0);
-	const char* mySsid = env->GetStringUTFChars(ssid, 0);
+	const char* const myDeviceId = env->GetStringUTFChars(deviceId, 0);
+	const char* const myPassphrase = env->GetStringUTFChars(passphrase, 0);
+	const char* const mySsid = env->GetStringUTFChars(ssid, 0);
 	jboolean result;
 	if(softAp) {
 		result = reinterpret_cast<Control*>(pNative)->ConfModuleAsSoftAP(mySsid);
 	} else {
-		result = reinterpret_cast<Control*>(pNative)->ConfModuleForWlan(myPassphrase, mySsid);
+		result = reinterpret_cast<Control*>(pNative)->ConfModuleForWlan(myPassphrase, mySsid, myDeviceId);
 	}
+	env->ReleaseStringUTFChars(deviceId, myDeviceId);
 	env->ReleaseStringUTFChars(passphrase, myPassphrase);
 	env->ReleaseStringUTFChars(ssid, mySsid);
 	return result;
@@ -142,6 +172,11 @@ jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetColor(JNIEnv* env, jobject re
 jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetFade(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr, jshort fadeTime)
 {
 	return TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdSetFade{(uint32_t)argb, (uint16_t)fadeTime, (uint32_t)addr, false});
+}
+
+jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetGradient(JNIEnv* env, jobject ref, jlong pNative, jint argb_1, jint argb_2, jint length, jint offset, jshort fadeTime)
+{
+	return TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdSetGradient(argb_1, argb_2, fadeTime, false, length, offset));
 }
 
 void Java_biz_bruenn_WyLight_WiflyControl_release(JNIEnv* env, jobject ref, jlong pNative)

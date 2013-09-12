@@ -56,4 +56,16 @@ public class ControlFragment extends Fragment {
 			Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
 		}		
 	}
+	
+	protected void onSetGradient(int color_1, int color_2, int length, int offset, short time) {	
+		try {
+			mProvider.getControl().fwSetGradient(color_1, color_2, length, offset, time);
+		} catch (ConnectionTimeout e) {
+			onConnectionLost();
+		} catch (ScriptBufferFull e) {
+			Toast.makeText(getActivity(), R.string.msg_scriptbufferfull, Toast.LENGTH_LONG).show();		
+		} catch (FatalError e) {
+			Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+		}		
+	}
 }

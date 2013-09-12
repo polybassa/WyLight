@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 public class SetWlanDialog extends Dialog {
 	private final Endpoint mRemote;
+	private EditText mDeviceId;
 	private EditText mPass;
 	private EditText mSsid;
 	private CheckBox mSoftAp;
@@ -29,7 +30,8 @@ public class SetWlanDialog extends Dialog {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dialog_set_wlan);
 		setTitle(R.string.title_dialog_set_wlan);
-		
+
+		mDeviceId = (EditText)findViewById(R.id.editDeviceId);
 		mPass = (EditText)findViewById(R.id.editPassphrase);
 		mSsid = (EditText)findViewById(R.id.editSsid);
 		mSoftAp = (CheckBox)findViewById(R.id.toggleSoftAp);
@@ -56,11 +58,11 @@ public class SetWlanDialog extends Dialog {
 					control.connect(mRemote);
 					control.confSetWlan(mPass.getText().toString(),
 										mSsid.getText().toString(),
+										mDeviceId.getText().toString(),
 										mSoftAp.isChecked());
 					control.disconnect();
+					mRemote.setName(mDeviceId.getText().toString());
 				} catch (FatalError e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 					Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
 				}
 				dismiss();
@@ -81,6 +83,8 @@ public class SetWlanDialog extends Dialog {
 		WiflyControl control = new WiflyControl();
 		try {
 			control.connect(mRemote);
+			mDeviceId.setText(control.confGetDeviceId());
+			mPass.setText(control.confGetPassphrase());
 			mSsid.setText(control.confGetSsid());
 			mSoftAp.setChecked(control.confGetSoftAp());
 			control.disconnect();
