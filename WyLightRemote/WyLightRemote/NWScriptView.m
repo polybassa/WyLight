@@ -8,12 +8,12 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "NWScriptView.h"
-#import "NWScriptObjectView.h"
+#import "NWScriptObjectControl.h"
+#import "NWTimeLineView.h"
 
 @implementation NWScriptView
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
 		[self setup];
@@ -23,6 +23,8 @@
 
 - (void)setup {
 	self.timelineScaleFactor = 1;
+	self.showsHorizontalScrollIndicator = NO;
+	self.showsVerticalScrollIndicator = NO;
 }
 
 - (void)setFrame:(CGRect)frame {
@@ -35,8 +37,7 @@
 	[self reloadData];
 }
 
-- (void)setTimelineScaleFactor:(CGFloat)timelineScaleFactor
-{
+- (void)setTimelineScaleFactor:(CGFloat)timelineScaleFactor {
 	_timelineScaleFactor = timelineScaleFactor;
 	[self fixLocationsOfSubviews];
 	[self setNeedsDisplay];
@@ -48,7 +49,7 @@
 	}
 	
 	for (NSUInteger index = 0; index < [self.dataSource numberOfObjectsInScriptView:self]; index++) {
-		NWScriptObjectView *subview = [self.dataSource scriptView:self objectForIndex:index];
+		NWScriptObjectControl *subview = [self.dataSource scriptView:self objectForIndex:index];
 		subview.tag = index;
 		[self addSubview:subview];
 	}
@@ -56,7 +57,6 @@
 }
 
 - (void)fixLocationsOfSubviews {
-	
 	CGFloat xPosition = 20;
 	CGFloat width = 0;
 	for (NWScriptObjectView *subview in self.subviews) {
@@ -65,22 +65,22 @@
 			
 			NSUInteger heightFactor = 5;
 			if (subview.endColors.count) {
-				heightFactor = @(self.bounds.size.height / subview.endColors.count).unsignedIntegerValue;
+				heightFactor = @((self.bounds.size.height - 10) / subview.endColors.count).unsignedIntegerValue;
 			}
-			subview.frame = CGRectMake(xPosition, 0, width, subview.endColors.count * heightFactor);
+			subview.frame = CGRectMake(xPosition, 10, width, subview.endColors.count * heightFactor);
 			xPosition += width + 2;
 		}
 	}
 	[self setContentSize:CGSizeMake(xPosition + width, self.bounds.size.height)];
-}
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
+	for (NWScriptObjectView *subview in self.subviews) {
+		if ([subview isKindOfClass:[NWTimeLineView class]]) {
+			subview.frame = CGRectMake(10, 10, self.contentSize.width, self.contentSize.height);
+			NWTimeLineView *timeLine = (NWTimeLineView *)subview;
+			timeLine.contentOffset = CGPointZero;
+			timeLine.contentFrame = self.frame;
+		}
+	}
 }
-*/
 
 @end

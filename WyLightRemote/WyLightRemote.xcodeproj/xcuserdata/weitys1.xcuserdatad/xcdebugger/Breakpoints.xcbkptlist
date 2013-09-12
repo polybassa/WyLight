@@ -86,12 +86,38 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "WyLightRemote/NWScriptView.m"
-         timestampString = "399645859.055144"
+         timestampString = "399831201.820968"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "74"
-         endingLineNumber = "74"
-         landmarkName = "-fixLocationsOfSubviews"
+         startingLineNumber = "75"
+         endingLineNumber = "75"
+         landmarkName = "@implementation NWScriptView"
+         landmarkType = "3">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "WyLightRemote/NWScriptViewController.m"
+         timestampString = "399831614.03734"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "196"
+         endingLineNumber = "196"
+         landmarkName = "-scriptView:widthOfObjectAtIndex:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "WyLightRemote/NWScriptObjectView.m"
+         timestampString = "399728461.645861"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "72"
+         endingLineNumber = "72"
+         landmarkName = "-drawRect:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -99,12 +125,38 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "WyLightRemote/NWScriptViewController.m"
-         timestampString = "399645859.055144"
+         timestampString = "399821372.045526"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "82"
-         endingLineNumber = "82"
-         landmarkName = "-scriptView:widthOfObjectAtIndex:"
+         startingLineNumber = "45"
+         endingLineNumber = "45"
+         landmarkName = "-setTimeScaleFactor:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "WyLightRemote/NWTimeLineView.m"
+         timestampString = "399831428.85007"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "57"
+         endingLineNumber = "57"
+         landmarkName = "-drawRect:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "WyLightRemote/NWScriptViewController.m"
+         timestampString = "399831541.115461"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "83"
+         endingLineNumber = "83"
+         landmarkName = "-setup"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

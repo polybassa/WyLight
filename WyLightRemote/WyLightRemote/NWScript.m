@@ -131,5 +131,17 @@
 	}
 }
 
+- (void)removeObjectAtIndex:(NSUInteger)index {
+	NWComplexScriptCommandObject *tempObj = [self.scriptArray objectAtIndex:index];
+	if (tempObj.prev) {
+		tempObj.prev.next = tempObj.next;
+	}
+	if (tempObj.next) {
+		tempObj.next.prev = tempObj.prev;
+	}
+	
+	[self.scriptArray removeObjectAtIndex:index];
+}
+
 
 @end

@@ -10,13 +10,15 @@
 #import "NWScript.h"
 #import "NWScriptView.h"
 #import "NWComplexScriptCommandObject.h"
-#import "NWScriptObjectView.h"
+#import "NWScriptObjectControl.h"
 #import "NWEditComplexScriptObjectViewController.h"
+#import "NWTimeLineView.h"
 
-@interface NWScriptViewController () <UIGestureRecognizerDelegate, NWScriptViewDataSource, NWScriptObjectViewDelegate>
+@interface NWScriptViewController () <UIGestureRecognizerDelegate, NWScriptViewDataSource, NWScriptObjectControlDelegate, UIScrollViewDelegate>
 
 @property (strong, nonatomic) NWScript *script;
 @property (strong, nonatomic) NWScriptView *scriptView;
+@property (strong, nonatomic) NWTimeLineView *timeLineView;
 @property (nonatomic) BOOL isDeletionModeActive;
 @property (nonatomic) CGFloat timeScaleFactor;
 @property (nonatomic) NSUInteger indexForObjectToEdit;
@@ -25,6 +27,7 @@
 
 @implementation NWScriptViewController
 
+#pragma mark - GETTER + SETTER
 - (NWScript *)script {
 	if (_script == nil) {
 		_script = [[NWScript alloc]init];
@@ -32,33 +35,59 @@
 	return _script;
 }
 
-- (void)fixLocations {
-	if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
-		//script view
-		self.scriptView.frame = CGRectMake(0, 40, self.view.frame.size.width, self.view.frame.size.height - 60);
-	}
-	else {
-		self.scriptView.frame = CGRectMake(0, 40, self.view.frame.size.width, self.view.frame.size.height - 60);
-	}
-}
-
 - (void)setTimeScaleFactor:(CGFloat)timeScaleFactor {
 	if (self.scriptView) {
 		self.scriptView.timelineScaleFactor = timeScaleFactor;
 	}
+	if (self.timeLineView) {
+		self.timeLineView.timeLineScaleFactor = timeScaleFactor;
+	}
 	_timeScaleFactor = timeScaleFactor;
+}
+
+#pragma mark - SETUP STUFF
+- (void)fixLocations {
+	if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
+		
+		//script view
+		self.scriptView.frame = CGRectMake(0, 40, self.view.frame.size.width, self.view.frame.size.height - 60);
+		
+		self.timeLineView.frame = self.scriptView.frame;
+		//self.timeLineView.contentFrame = CGRectMake(20, self.scriptView.frame.origin.y, self.scriptView.contentSize.width, self.scriptView.contentSize.height);
+	}
+	else {
+		
+		self.scriptView.frame = CGRectMake(0, 40, self.view.frame.size.width, self.view.frame.size.height - 60);
+		
+		self.timeLineView.frame = self.scriptView.frame;
+		//self.timeLineView.contentFrame = CGRectMake(20, self.scriptView.frame.origin.y, self.scriptView.contentSize.width, self.scriptView.contentSize.height);
+
+	}
 }
 
 - (void)setup {
 	self.timeScaleFactor = 1;
-	
+		
+		
 	//script view
 	self.scriptView = [[NWScriptView alloc] initWithFrame:CGRectZero];
 	self.scriptView.dataSource = self;
 	self.scriptView.timelineScaleFactor = self.timeScaleFactor;
 	self.scriptView.backgroundColor = [UIColor clearColor];
-	[self.view addSubview:self.scriptView];
+	self.scriptView.delegate = self;
+		
+	UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchOnScriptView:)];
+	[self.scriptView addGestureRecognizer:pinch];
+	[self.view addGestureRecognizer:pinch];
 	
+	self.timeLineView = [[NWTimeLineView alloc] initWithFrame:CGRectZero];
+	self.timeLineView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+	[self.view addSubview:self.timeLineView];
+	[self.scriptView addSubview:self.timeLineView];
+	
+	[self.view addSubview:self.scriptView];
+
+
 }
 
 - (void)viewDidLoad {
@@ -70,6 +99,7 @@
 	[super viewWillAppear:animated];
 	[self fixLocations];
 	[self.scriptView reloadData];
+
 }
 
 - (void)viewWillLayoutSubviews {
@@ -77,6 +107,89 @@
 	[self fixLocations];
 }
 
+#pragma mark - GESTURE RECOGNIZER CALLBACKS
+- (void)setObjectForEdit:(UITapGestureRecognizer *)gesture {
+	if (self.isDeletionModeActive) {
+		if ([gesture.view isKindOfClass:[NWScriptObjectControl class]]) {
+			self.isDeletionModeActive = NO;
+            for (NWScriptObjectControl *control in self.scriptView.subviews) {
+				if ([control isKindOfClass:[NWScriptObjectControl class]]) {
+					control.showDeleteButton = NO;
+				}
+			}
+		}
+	} else {
+		self.indexForObjectToEdit = gesture.view.tag;
+		[self performSegueWithIdentifier:@"edit:" sender:self];
+	}
+}
+
+- (void)activateDeletionMode:(UILongPressGestureRecognizer *)gesture {
+    if (gesture.state == UIGestureRecognizerStateBegan)
+    {
+		if ([gesture.view isKindOfClass:[NWScriptObjectControl class]]) {
+			self.isDeletionModeActive = YES;
+            for (NWScriptObjectControl *control in self.scriptView.subviews) {
+				if ([control isKindOfClass:[NWScriptObjectControl class]]) {
+					control.showDeleteButton = YES;
+				}
+			}
+		}
+    }
+}
+
+- (void)pinchOnScriptView:(UIPinchGestureRecognizer *)gesture {
+	if (gesture.state == UIGestureRecognizerStateChanged) {
+		self.timeScaleFactor *= gesture.scale;
+		self.scriptView.timelineScaleFactor *= gesture.scale;
+		gesture.scale = 1;
+	}
+}
+
+#pragma mark - BUTTON CALLBACKS
+- (void)deleteScriptObject:(UIButton *)sender {
+	if ([sender.superview isKindOfClass:[NWScriptObjectControl class]]) {
+		NWScriptObjectControl *objectToDelete = (NWScriptObjectControl *)sender.superview;
+		
+		//ausblenden
+		[UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+			
+			objectToDelete.alpha = 0.0;
+			objectToDelete.deleteButton.alpha = 0.0;
+			
+		} completion:^(BOOL finished) {
+			
+			if (finished) {
+				
+				[self.script removeObjectAtIndex:objectToDelete.tag];
+				[objectToDelete removeFromSuperview];
+				for (NWScriptObjectControl *ctrl in self.scriptView.subviews) {
+					if ([ctrl isKindOfClass:[NWScriptObjectControl class]]) {
+						if (ctrl.tag > objectToDelete.tag) {
+							ctrl.tag--;
+						}
+					}
+				}
+				
+				[UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+					
+					[self.scriptView fixLocationsOfSubviews];
+					
+				} completion:^(BOOL finished) {
+					
+					[self.scriptView reloadData];
+				}];
+			}
+		}];
+	}
+}
+
+- (void)addScriptCommand:(UIBarButtonItem *)sender {
+	NSLog(@"ADD");
+	
+}
+
+#pragma mark - SCRIPT VIEW DATASOURCE
 - (CGFloat)scriptView:(NWScriptView *)view widthOfObjectAtIndex:(NSUInteger)index {
 	if (view == self.scriptView) {
 		return ((NWComplexScriptCommandObject *)self.script.scriptArray[index]).duration * self.timeScaleFactor;
@@ -84,9 +197,9 @@
 	return 0;
 }
 
-- (NWScriptObjectView *)scriptView:(NWScriptView *)view objectForIndex:(NSUInteger)index {
+- (NWScriptObjectControl *)scriptView:(NWScriptView *)view objectForIndex:(NSUInteger)index {
 	if (view == self.scriptView) {
-		NWScriptObjectView *tempView = [[NWScriptObjectView alloc]initWithFrame:CGRectZero];
+		NWScriptObjectControl *tempView = [[NWScriptObjectControl alloc]initWithFrame:CGRectZero];
 		tempView.endColors = ((NWComplexScriptCommandObject *)self.script.scriptArray[index]).colors;
 		if (((NWComplexScriptCommandObject *)self.script.scriptArray[index]).prev) {
 			tempView.startColors = ((NWComplexScriptCommandObject *)self.script.scriptArray[index]).prev.colors;
@@ -94,6 +207,8 @@
 		tempView.borderWidth = 1;
 		tempView.cornerRadius = 10;
 		tempView.delegate = self;
+		tempView.showDeleteButton = self.isDeletionModeActive;
+		tempView.backgroundColor = [UIColor blackColor];
 		
 		UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(setObjectForEdit:)];
 		tap.numberOfTapsRequired = 1;
@@ -102,14 +217,14 @@
 		UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc]initWithTarget:tempView action:@selector(pinchWidth:)];
 		[tempView addGestureRecognizer:pinch];
 		
+		UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(activateDeletionMode:)];
+		[tempView addGestureRecognizer:longPress];
+		
+		[tempView.deleteButton addTarget:self action:@selector(deleteScriptObject:) forControlEvents:UIControlEventTouchUpInside];
+		
 		return tempView;
 	}
 	return nil;
-}
-
-- (void)setObjectForEdit:(UITapGestureRecognizer *)gesture {
-	self.indexForObjectToEdit = gesture.view.tag;
-	[self performSegueWithIdentifier:@"edit:" sender:self];
 }
 
 - (NSUInteger)numberOfObjectsInScriptView:(NWScriptView *)view {
@@ -119,6 +234,11 @@
 	return 0;
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+	//self.timeLineView.contentOffset = CGPointMake(scrollView.contentOffset.x + 20, scrollView.contentOffset.y);
+}
+
+#pragma mark - SCRIPTOBJECTCONTROL DELEGATE
 - (void)scriptObjectView:(NWScriptObjectView *)view changedWidthTo:(CGFloat)width deltaOfChange:(CGFloat)delta {
 	for (NWScriptObjectView *subview in self.scriptView.subviews) {
 		if ([subview isKindOfClass:[NWScriptObjectView class]]) {
@@ -169,32 +289,8 @@
     }
     return YES;
 }
+*/
 
-- (void)activateDeletionMode:(UILongPressGestureRecognizer *)gr {
-    if (gr.state == UIGestureRecognizerStateBegan)
-    {
-        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:[gr locationInView:self.collectionView]];
-        if (indexPath)
-        {
-            self.isDeletionModeActive = YES;
-            NWCollectionViewLayout *layout = (NWCollectionViewLayout *)self.collectionView.collectionViewLayout;
-            [layout invalidateLayout];
-        }
-    }
-}
-
-- (void)endDeletionMode:(UITapGestureRecognizer *)gr {
-    if (self.isDeletionModeActive)
-    {
-        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:[gr locationInView:self.collectionView]];
-        //if (!indexPath)
-        {
-            self.isDeletionModeActive = NO;
-            NWCollectionViewLayout *layout = (NWCollectionViewLayout *)self.collectionView.collectionViewLayout;
-            [layout invalidateLayout];
-        }
-    }
-}*/
 
 
 @end

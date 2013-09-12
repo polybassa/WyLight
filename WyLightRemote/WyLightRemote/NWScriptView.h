@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class NWScriptView, NWScriptObjectView;
+@class NWScriptView, NWScriptObjectControl;
 
 @protocol NWScriptViewDataSource <NSObject>
 
-- (NWScriptObjectView *)scriptView:(NWScriptView *)view objectForIndex:(NSUInteger)index;
+- (NWScriptObjectControl *)scriptView:(NWScriptView *)view objectForIndex:(NSUInteger)index;
 - (NSUInteger)numberOfObjectsInScriptView:(NWScriptView *)view;
 - (CGFloat)scriptView:(NWScriptView *)view widthOfObjectAtIndex:(NSUInteger)index;
 
@@ -24,5 +24,6 @@
 @property (nonatomic) CGFloat timelineScaleFactor;
 
 - (void)reloadData;
+- (void)fixLocationsOfSubviews;
 
 @end
