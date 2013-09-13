@@ -8,7 +8,6 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "NWScriptObjectView.h"
-#import "NWScriptView.h"
 
 @implementation NWScriptObjectView
 
@@ -57,6 +56,22 @@
 	self.latestTouchBegan = touches.anyObject;
 }
 
+- (void)setBorderWidth:(CGFloat)borderWidth {
+	_borderWidth = borderWidth;
+	[self setNeedsDisplay];
+}
+
+- (void)setCornerRadius:(CGFloat)cornerRadius {
+	_cornerRadius = cornerRadius;
+	[self setNeedsDisplay];
+}
+
+- (void)setBorderColor:(UIColor *)borderColor {
+	_borderColor = borderColor;
+	self.layer.borderColor = _borderColor.CGColor;
+	[self setNeedsDisplay];
+}
+
 #pragma mark - DRAWING
 
 - (void)drawRect:(CGRect)rect {
@@ -65,18 +80,21 @@
 		
 	for (unsigned int i = 0; i < self.endColors.count; i++) {
 		CGContextSaveGState(context);
-		CGContextAddRect(context, CGRectMake(self.bounds.origin.x, i * heightFract, self.bounds.size.width, heightFract));
+		CGFloat rectOriginY = floorf(i * heightFract);
+		CGFloat nextRectOriginY = floorf((i + 1) * heightFract);
+		CGFloat rectHeight = nextRectOriginY - rectOriginY;
+		CGContextAddRect(context, CGRectMake(self.bounds.origin.x, rectOriginY, self.bounds.size.width, rectHeight));
 		CGContextClip(context);
 		UIColor *startColor;
 		if (!self.startColors) {
 			startColor = self.backgroundColor;
 		} else {
-			 startColor = self.startColors[i];
+			startColor = self.startColors[i];
 		}
 		CGContextDrawLinearGradient(context,
 									[NWScriptObjectView createGradientWithStartColor:startColor endColor:self.endColors[i]],
-									CGPointMake(self.bounds.origin.x, i * heightFract + heightFract / 2),
-									CGPointMake(self.bounds.size.width, i * heightFract + heightFract / 2), 0);
+									CGPointMake(self.bounds.origin.x, rectOriginY + rectHeight / 2),
+									CGPointMake(self.bounds.size.width, rectOriginY + rectHeight / 2), 0);
 		CGContextRestoreGState(context);
 	}
 }

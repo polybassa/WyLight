@@ -91,15 +91,15 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "75"
          endingLineNumber = "75"
-         landmarkName = "@implementation NWScriptView"
-         landmarkType = "3">
+         landmarkName = "-fixLocationsOfSubviews"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "WyLightRemote/NWScriptViewController.m"
-         timestampString = "399831614.03734"
+         timestampString = "400753935.604255"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "196"
@@ -112,11 +112,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "WyLightRemote/NWScriptObjectView.m"
-         timestampString = "399728461.645861"
+         timestampString = "400752562.45004"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "72"
-         endingLineNumber = "72"
+         startingLineNumber = "90"
+         endingLineNumber = "90"
          landmarkName = "-drawRect:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -134,20 +134,7 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "WyLightRemote/NWTimeLineView.m"
-         timestampString = "399831428.85007"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "57"
-         endingLineNumber = "57"
-         landmarkName = "-drawRect:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "WyLightRemote/NWScriptViewController.m"

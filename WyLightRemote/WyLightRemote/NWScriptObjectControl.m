@@ -9,7 +9,9 @@
 #import "NWScriptObjectControl.h"
 #import <QuartzCore/QuartzCore.h>
 
-#define MARGIN 1
+#define MARGIN 3
+#define CROSS_INSET (MARGIN + 6)
+
 static UIImage *deleteButtonImg;
 
 @implementation NWScriptObjectControl
@@ -25,10 +27,11 @@ static UIImage *deleteButtonImg;
 			UIGraphicsBeginImageContext(buttonFrame.size);
 			CGFloat sz = MIN(buttonFrame.size.width, buttonFrame.size.height);
 			UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:CGPointMake(buttonFrame.size.width/2, buttonFrame.size.height/2) radius:sz/2-MARGIN startAngle:0 endAngle:M_PI * 2 clockwise:YES];
-			[path moveToPoint:CGPointMake(MARGIN, MARGIN)];
-			[path addLineToPoint:CGPointMake(sz-MARGIN, sz-MARGIN)];
-			[path moveToPoint:CGPointMake(MARGIN, sz-MARGIN)];
-			[path addLineToPoint:CGPointMake(sz-MARGIN, MARGIN)];
+			[path moveToPoint:CGPointMake(CROSS_INSET, CROSS_INSET)];
+			[path addLineToPoint:CGPointMake(sz - CROSS_INSET, sz - CROSS_INSET)];
+			[path moveToPoint:CGPointMake(CROSS_INSET, sz - CROSS_INSET)];
+			[path addLineToPoint:CGPointMake(sz - CROSS_INSET, CROSS_INSET)];
+			[path setLineCapStyle:kCGLineCapRound];
 			[[UIColor redColor] setFill];
 			[[UIColor whiteColor] setStroke];
 			[path setLineWidth:3.0];
