@@ -74,10 +74,9 @@
 		5C7034BF17CF297000B121A6 /* NWCollectionViewLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7034BE17CF296F00B121A6 /* NWCollectionViewLayoutAttributes.m */; };
 		5C7034C517CF3D9000B121A6 /* ALRadialButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7034C217CF3D8D00B121A6 /* ALRadialButton.m */; };
 		5C7034C617CF3D9000B121A6 /* ALRadialMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7034C417CF3D8F00B121A6 /* ALRadialMenu.m */; };
-		5C7034CA17CF428100B121A6 /* fade.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C7034C817CF427E00B121A6 /* fade.png */; };
-		5C7034CB17CF428100B121A6 /* gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C7034C917CF427F00B121A6 /* gradient.png */; };
 		5CB5336C17D2266E00262009 /* NWScriptObjectControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CB5336B17D2266E00262009 /* NWScriptObjectControl.m */; };
 		5CB5336F17D39B2800262009 /* NWTimeLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CB5336E17D39B2800262009 /* NWTimeLineView.m */; };
+		5CDEA45D17E3419D00F1FBC1 /* NWAddCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDEA45C17E3419D00F1FBC1 /* NWAddCollectionViewCell.m */; };
 		5CE16BBD17D1F73A006A8F67 /* NWScriptView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE16BBC17D1F73A006A8F67 /* NWScriptView.m */; };
 /* End PBXBuildFile section */
 
@@ -215,12 +214,12 @@
 		5C7034C217CF3D8D00B121A6 /* ALRadialButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALRadialButton.m; sourceTree = "<group>"; };
 		5C7034C317CF3D8E00B121A6 /* ALRadialMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALRadialMenu.h; sourceTree = "<group>"; };
 		5C7034C417CF3D8F00B121A6 /* ALRadialMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALRadialMenu.m; sourceTree = "<group>"; };
-		5C7034C817CF427E00B121A6 /* fade.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fade.png; sourceTree = "<group>"; };
-		5C7034C917CF427F00B121A6 /* gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gradient.png; sourceTree = "<group>"; };
 		5CB5336A17D2266E00262009 /* NWScriptObjectControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptObjectControl.h; sourceTree = "<group>"; };
 		5CB5336B17D2266E00262009 /* NWScriptObjectControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptObjectControl.m; sourceTree = "<group>"; };
 		5CB5336D17D39B2800262009 /* NWTimeLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWTimeLineView.h; sourceTree = "<group>"; };
 		5CB5336E17D39B2800262009 /* NWTimeLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWTimeLineView.m; sourceTree = "<group>"; };
+		5CDEA45B17E3419C00F1FBC1 /* NWAddCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWAddCollectionViewCell.h; sourceTree = "<group>"; };
+		5CDEA45C17E3419D00F1FBC1 /* NWAddCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWAddCollectionViewCell.m; sourceTree = "<group>"; };
 		5CE16BBB17D1F739006A8F67 /* NWScriptView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptView.h; sourceTree = "<group>"; };
 		5CE16BBC17D1F73A006A8F67 /* NWScriptView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -457,10 +456,11 @@
 		5C7034C017CF2C2C00B121A6 /* ComplexScriptObjectViewController */ = {
 			isa = PBXGroup;
 			children = (
-				5C7034CC17CF429800B121A6 /* images */,
 				5C7034C717CF3D9D00B121A6 /* RadialMenu */,
 				5C7034B717CF216100B121A6 /* NWScriptObjectCollectionViewCell.h */,
 				5C7034B817CF216100B121A6 /* NWScriptObjectCollectionViewCell.m */,
+				5CDEA45B17E3419C00F1FBC1 /* NWAddCollectionViewCell.h */,
+				5CDEA45C17E3419D00F1FBC1 /* NWAddCollectionViewCell.m */,
 				5C7034BA17CF230800B121A6 /* NWCollectionViewLayout.h */,
 				5C7034BB17CF230800B121A6 /* NWCollectionViewLayout.m */,
 				5C7034BD17CF296E00B121A6 /* NWCollectionViewLayoutAttributes.h */,
@@ -480,15 +480,6 @@
 				5C7034C417CF3D8F00B121A6 /* ALRadialMenu.m */,
 			);
 			name = RadialMenu;
-			sourceTree = "<group>";
-		};
-		5C7034CC17CF429800B121A6 /* images */ = {
-			isa = PBXGroup;
-			children = (
-				5C7034C817CF427E00B121A6 /* fade.png */,
-				5C7034C917CF427F00B121A6 /* gradient.png */,
-			);
-			name = images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -557,8 +548,6 @@
 				5C542D1917BCD89000E4410A /* main.hex in Resources */,
 				5C542D1A17BCD89000E4410A /* Guide2.png in Resources */,
 				5C542D1B17BCD89000E4410A /* Guide1.png in Resources */,
-				5C7034CA17CF428100B121A6 /* fade.png in Resources */,
-				5C7034CB17CF428100B121A6 /* gradient.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -621,6 +610,7 @@
 				5CE16BBD17D1F73A006A8F67 /* NWScriptView.m in Sources */,
 				5CB5336C17D2266E00262009 /* NWScriptObjectControl.m in Sources */,
 				5CB5336F17D39B2800262009 /* NWTimeLineView.m in Sources */,
+				5CDEA45D17E3419D00F1FBC1 /* NWAddCollectionViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

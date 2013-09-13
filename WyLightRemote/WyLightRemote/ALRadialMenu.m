@@ -109,13 +109,6 @@
 	
 	//start the timer that kicks off each animation set
 	self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:flingInterval target:self selector:@selector(willFlingItem) userInfo:nil repeats:YES];
-	
-	//the origin button should spin for as long as we are flinging objects
-	//+1 so its still spinning as the final object is animating out
-	float spinDuration = ([self.items count]+1) * flingInterval;
-	
-	//use CABasicAnimation instead of a view animation so we can keep the spin going for more than 360 degrees
-	//[self shouldRotateButton:button forDuration:spinDuration forwardDirection:YES];
 }
 
 
@@ -134,11 +127,6 @@
 	
 	//fling index is still the last object from the fling out
 	self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:flingInterval target:self selector:@selector(willRecoilItem) userInfo:nil repeats:YES];
-	
-	//this should go on for as long as we are flinging objects
-	float spinDuration = ([self.items count]+1) * flingInterval;
-
-	//[self shouldRotateButton:button forDuration:spinDuration forwardDirection:NO];
 }
 
 

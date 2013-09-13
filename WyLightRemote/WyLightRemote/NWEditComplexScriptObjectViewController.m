@@ -16,16 +16,18 @@
 #import "WCWiflyControlWrapper.h"
 #import "NWCollectionViewLayout.h"
 #import "NWScriptObjectCollectionViewCell.h"
+#import "NWAddCollectionViewCell.h"
 
 @interface NWEditComplexScriptObjectViewController () <UIGestureRecognizerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, NWCollectionViewLayoutDelegate, ALRadialMenuDelegate>
 @property (nonatomic, strong) NWScriptObjectView *gradientPreviewView;
 @property (nonatomic, strong) UISwitch *modeSwitch;
 @property (nonatomic) BOOL isDeletionModeActive;
 @property (nonatomic) NSUInteger indexOfObjectToAlter;
-@property (nonatomic, strong) UIButton *addCommandButton;
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) ALRadialMenu *radialMenu;
 @property (nonatomic, weak) NSIndexPath *indexPathOfLastCell;
+@property (nonatomic, strong) UIImage *addFadeImage;
+@property (nonatomic, strong) UIImage *addGradientImage;
 @end
 
 @implementation NWEditComplexScriptObjectViewController
@@ -68,8 +70,6 @@
 		self.modeSwitch.frame = CGRectMake(20, 20, 40, 20);
 
 		self.collectionView.frame = CGRectMake(0, totalHeight / 2 + 100 , self.view.bounds.size.width, self.command.colors.count * 4);
-			
-		self.addCommandButton.frame = CGRectMake(self.view.bounds.size.width - 20, self.collectionView.center.y - 10, 20, 20);
 	}
 	else {
 		self.gradientPreviewView.frame = CGRectMake(self.view.center.x, 20, self.view.bounds.size.width / 2 - 20, self.command.colors.count * 3);
@@ -77,8 +77,6 @@
 		self.modeSwitch.frame = CGRectMake(20, 20, 40, 20);
 		
 		self.collectionView.frame = CGRectMake(0, self.view.center.y, self.view.bounds.size.width, self.command.colors.count * 4);
-				
-		self.addCommandButton.frame = CGRectMake(self.view.bounds.size.width - 20, self.collectionView.center.y - 10, 20, 20);
 	}
 }
 
@@ -109,6 +107,7 @@
 	self.collectionView.dataSource = self;
 	self.collectionView.delegate = self;
 	[self.collectionView registerClass:[NWScriptObjectCollectionViewCell class] forCellWithReuseIdentifier:@"SCRIPT"];
+	[self.collectionView registerClass:[NWAddCollectionViewCell class] forCellWithReuseIdentifier:@"ADD"];
 	[self.view addSubview:self.collectionView];
 	
 	UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(activateDeletionMode:)];
@@ -120,12 +119,6 @@
 	tap.numberOfTapsRequired = 1;
 	[self.collectionView addGestureRecognizer:tap];
 	
-	//add command button
-	self.addCommandButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
-	[self.addCommandButton addTarget:self action:@selector(addCommandButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-	[self.addCommandButton setTitle:@"Add" forState:UIControlStateNormal];
-	[self.view addSubview:self.addCommandButton];
-
 	//radial menue
 	self.radialMenu = [[ALRadialMenu alloc] init];
 	self.radialMenu.delegate = self;
@@ -149,16 +142,16 @@
 }
 
 - (float)buttonSizeForRadialMenu:(ALRadialMenu *)radialMenu {
-	return 50;
+	return 44;
 }
 
 - (UIImage *)radialMenu:(ALRadialMenu *)radialMenu imageForIndex:(NSInteger)index {
 	UIImage *image = nil;
 	
 	if (index == 1) {
-		image = [UIImage imageNamed:@"fade"];
+		image = self.addFadeImage;
 	} else if (index == 2) {
-		image = [UIImage imageNamed:@"gradient"];
+		image = self.addGradientImage;
 	}
 	else return nil;
 	return image;
@@ -174,15 +167,56 @@
 	}
 }
 
+- (UIImage *)addFadeImage {
+	if (!_addFadeImage) {
+		NWScriptObjectView *view = [[NWScriptObjectView alloc]initWithFrame:CGRectMake(0, 0, 64, 64)];
+		view.borderWidth = 1;
+		view.backgroundColor = [UIColor blackColor];
+		view.endColors = [NWEditComplexScriptObjectViewController defaultFadeCommand].colors;
+		view.opaque = NO;
+		
+		_addFadeImage = [NWEditComplexScriptObjectViewController imageWithView:view];
+	}
+	return _addFadeImage;
+}
+
+- (UIImage *)addGradientImage {
+	if (!_addGradientImage) {
+		NWScriptObjectView *view = [[NWScriptObjectView alloc]initWithFrame:CGRectMake(0, 0, 64, 64)];
+		view.borderWidth = 1;
+		view.backgroundColor = [UIColor blackColor];
+		view.endColors = [NWEditComplexScriptObjectViewController defaultGradientCommand].colors;
+		view.opaque = NO;
+		
+		_addGradientImage = [NWEditComplexScriptObjectViewController imageWithView:view];
+	}
+	return _addGradientImage;
+	
+}
+
 #pragma mark - ADD OBJECTS
-- (void)addFadeCommand {
++ (NWSetGradientScriptCommandObject *)defaultGradientCommand {
+	NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
+	obj.color1 = [UIColor blueColor];
+	obj.color2 = [UIColor redColor];
+	obj.offset = 0;
+	obj.numberOfLeds = 32;
+	obj.duration = 5;
+	obj.parallel = YES;
+	return obj;
+}
+
++ (NWSetFadeScriptCommandObject *)defaultFadeCommand {
 	NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
 	obj.address = 0xffffffff;
 	obj.color = [UIColor greenColor];
 	obj.duration = 5;
 	obj.parallel = YES;
-	
-	[self.command.itsScriptObjects addObject:obj];
+	return obj;
+}
+
+- (void)addFadeCommand {
+	[self.command.itsScriptObjects addObject:[NWEditComplexScriptObjectViewController defaultFadeCommand]];
 	[self updateGradientView];
 	[self.collectionView reloadData];
 	if (self.indexPathOfLastCell) {
@@ -190,14 +224,8 @@
 	}
 }
 
-- (void)addGradientCommand {
-	NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
-	obj.color1 = [UIColor blueColor];
-	obj.color2 = [UIColor greenColor];
-	obj.offset = 0;
-	obj.numberOfLeds = 32;
-	
-	[self.command.itsScriptObjects addObject: obj];
+- (void)addGradientCommand {	
+	[self.command.itsScriptObjects addObject: [NWEditComplexScriptObjectViewController defaultGradientCommand]];
 	[self updateGradientView];
 	[self.collectionView reloadData];
 	if (self.indexPathOfLastCell) {
@@ -208,7 +236,13 @@
 #pragma mark - USER ACTIONS
 
 - (void)addCommandButtonPressed:(UIButton *)sender {
-	[self.radialMenu buttonsWillAnimateFromButton:sender withFrame:sender.frame inView:self.view];
+	if (!self.isDeletionModeActive) {
+
+		CGRect frame = CGRectMake(0.0,0.0,sender.frame.size.width,sender.frame.size.height);
+		frame.origin = [sender convertPoint:sender.frame.origin toView:self.view];
+		[self.radialMenu buttonsWillAnimateFromButton:sender withFrame:frame inView:self.view];
+
+	}
 }
 
 - (void)sendPreview {
@@ -238,7 +272,13 @@
     if (gr.state == UIGestureRecognizerStateBegan)
     {
         NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:[gr locationInView:self.collectionView]];
-        if (indexPath && self.command.itsScriptObjects.count > 1)
+		//enter deletion mode only if
+		// indexPath is available
+		// I have more than 1 scriptobject, because i don't want an empty model
+		// gesture is fired on a scriptObject, not on the add Object
+		// and the radial menu is not shown
+		
+        if (indexPath && self.command.itsScriptObjects.count > 1 && indexPath.row < self.command.itsScriptObjects.count && self.radialMenu.itemIndex == 0)
         {
             self.isDeletionModeActive = YES;
             NWCollectionViewLayout *layout = (NWCollectionViewLayout *)self.collectionView.collectionViewLayout;
@@ -250,13 +290,9 @@
 - (void)endDeletionMode:(UITapGestureRecognizer *)gr {
     if (self.isDeletionModeActive)
     {
-        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:[gr locationInView:self.collectionView]];
-        //if (!indexPath)
-        {
-            self.isDeletionModeActive = NO;
-            NWCollectionViewLayout *layout = (NWCollectionViewLayout *)self.collectionView.collectionViewLayout;
-            [layout invalidateLayout];
-        }
+		self.isDeletionModeActive = NO;
+		NWCollectionViewLayout *layout = (NWCollectionViewLayout *)self.collectionView.collectionViewLayout;
+		[layout invalidateLayout];
     }
 	else {
 		NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:[gr locationInView:self.collectionView]];
@@ -280,7 +316,7 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-	return self.command.itsScriptObjects.count;
+	return self.command.itsScriptObjects.count + 1;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -295,16 +331,24 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-	NWScriptObjectCollectionViewCell *tempCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SCRIPT" forIndexPath:indexPath];
-	tempCell.scriptObjectView.endColors = [self.command.itsScriptObjects[indexPath.row] colors];
+	if (indexPath.row < self.command.itsScriptObjects.count) {
+		NWScriptObjectCollectionViewCell *tempCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SCRIPT" forIndexPath:indexPath];
+		tempCell.scriptObjectView.endColors = [self.command.itsScriptObjects[indexPath.row] colors];
 	
-	UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(endDeletionMode:)];
-	gesture.numberOfTapsRequired = 1;
-	[tempCell addGestureRecognizer:gesture];
+		UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(endDeletionMode:)];
+		gesture.numberOfTapsRequired = 1;
+		[tempCell addGestureRecognizer:gesture];
 	
-	[tempCell.deleteButton addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
-	self.indexPathOfLastCell = indexPath;
-	return tempCell;
+		[tempCell.deleteButton addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
+		self.indexPathOfLastCell = indexPath;
+		return tempCell;
+	}
+	else {
+		NWAddCollectionViewCell *tempCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ADD" forIndexPath:indexPath];
+		[tempCell.button addTarget:self action:@selector(addCommandButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+
+		return tempCell;
+	}
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -347,9 +391,7 @@
 	}
 }
 
-/*
-+ (UIImage *) imageWithView:(UIView *)view
-{
++ (UIImage *) imageWithView:(UIView *)view {
     UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0);
     [view.layer renderInContext:UIGraphicsGetCurrentContext()];
 	
@@ -358,7 +400,7 @@
     UIGraphicsEndImageContext();
 	
     return img;
-}*/
+}
 
 
 
