@@ -86,10 +86,10 @@
 		CGContextAddRect(context, CGRectMake(self.bounds.origin.x, rectOriginY, self.bounds.size.width, rectHeight));
 		CGContextClip(context);
 		UIColor *startColor;
-		if (!self.startColors) {
-			startColor = self.backgroundColor;
+		if ((self.startColors) && (i < self.startColors.count)) {
+			startColor = [self.startColors objectAtIndex:i];
 		} else {
-			startColor = self.startColors[i];
+			startColor = self.backgroundColor;
 		}
 		CGContextDrawLinearGradient(context,
 									[NWScriptObjectView createGradientWithStartColor:startColor endColor:self.endColors[i]],

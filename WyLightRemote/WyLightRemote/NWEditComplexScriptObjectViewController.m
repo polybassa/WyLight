@@ -22,7 +22,6 @@
 @property (nonatomic, strong) UISwitch *modeSwitch;
 @property (nonatomic) BOOL isDeletionModeActive;
 @property (nonatomic) NSUInteger indexOfObjectToAlter;
-@property (nonatomic, strong) UIButton *sendButton;
 @property (nonatomic, strong) UIButton *addCommandButton;
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) ALRadialMenu *radialMenu;
@@ -54,6 +53,8 @@
 	} else {
 		self.gradientPreviewView.endColors = self.command.colors;
 	}
+	
+	[self sendPreview];
 }
 
 - (void)fixLocations {
@@ -67,9 +68,7 @@
 		self.modeSwitch.frame = CGRectMake(20, 20, 40, 20);
 
 		self.collectionView.frame = CGRectMake(0, totalHeight / 2 + 100 , self.view.bounds.size.width, self.command.colors.count * 4);
-	
-		self.sendButton.frame = CGRectMake(140, 20, 100, 40);
-		
+			
 		self.addCommandButton.frame = CGRectMake(self.view.bounds.size.width - 20, self.collectionView.center.y - 10, 20, 20);
 	}
 	else {
@@ -78,9 +77,7 @@
 		self.modeSwitch.frame = CGRectMake(20, 20, 40, 20);
 		
 		self.collectionView.frame = CGRectMake(0, self.view.center.y, self.view.bounds.size.width, self.command.colors.count * 4);
-		
-		self.sendButton.frame = CGRectMake(20, 60, 100, 40);
-		
+				
 		self.addCommandButton.frame = CGRectMake(self.view.bounds.size.width - 20, self.collectionView.center.y - 10, 20, 20);
 	}
 }
@@ -122,12 +119,6 @@
 	tap.delegate = self;
 	tap.numberOfTapsRequired = 1;
 	[self.collectionView addGestureRecognizer:tap];
-	
-	//send button
-	self.sendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	[self.sendButton addTarget:self action:@selector(sendPreview:) forControlEvents:UIControlEventTouchUpInside];
-	[self.sendButton setTitle:@"Preview" forState:UIControlStateNormal];
-	[self.view addSubview:self.sendButton];
 	
 	//add command button
 	self.addCommandButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
@@ -220,16 +211,11 @@
 	[self.radialMenu buttonsWillAnimateFromButton:sender withFrame:sender.frame inView:self.view];
 }
 
-- (void)sendPreview:(UIButton *)sender {
-	uint16_t tempduration = self.command.duration;
-	self.command.duration = 1;
-	
+- (void)sendPreview {
 	if (self.controlHandle) {
 		[self.controlHandle clearScript];
-		[self.controlHandle setColorDirect:[UIColor blackColor]];
-		[self.command sendToWCWiflyControl:self.controlHandle];
+		[self.controlHandle setColorDirectWithColors:self.gradientPreviewView.endColors];
 	}
-	self.command.duration = tempduration;
 }
 
 - (void)switchChanged {

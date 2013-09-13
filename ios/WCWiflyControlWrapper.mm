@@ -164,6 +164,11 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
     
     for (int i = 0; i < NUM_OF_LED; i++)
     {
+		redPart = 0;
+		greenPart = 0;
+		bluePart = 0;
+		alphaPart = 0;
+		
 		if (newColors[i]) {
 			[newColors[i] getRed:&redPart green:&greenPart blue:&bluePart alpha:&alphaPart];
 		}

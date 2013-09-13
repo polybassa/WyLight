@@ -50,6 +50,17 @@
 
 - (NSArray *)colors
 {
+	if (self.isWaitCommand) {
+		if (self.prev.colors) {
+			return self.prev.colors;
+		}
+		NSMutableArray *outPutColors = [[NSMutableArray alloc] init];
+		for (NSUInteger i = 0; i < [[[self.itsScriptObjects lastObject]colors]count]; i++) {
+			[outPutColors addObject:self.backgroundColor];
+		}
+		return outPutColors;
+	}
+	
 	if (![self.itsScriptObjects isEqualToArray:self.shadowCopyOfScriptObjects]) {
 		self.itsColors = nil;
 		self.shadowCopyOfScriptObjects = [self.itsScriptObjects copy];
