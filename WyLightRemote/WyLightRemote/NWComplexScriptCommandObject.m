@@ -11,6 +11,13 @@
 #import "NWScriptEffectCommandObject.h"
 #import "NWSendableCommand.h"
 
+@interface NWComplexScriptCommandObject	()
+
+@property (nonatomic, strong) NSArray *itsColors;
+@property (nonatomic, strong) NSArray *shadowCopyOfScriptObjects;
+
+@end
+
 @implementation NWComplexScriptCommandObject
 
 - (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control
@@ -43,26 +50,34 @@
 
 - (NSArray *)colors
 {
-	NSMutableArray *outPutColors = [[NSMutableArray alloc]init];
-	uint32_t compareMask = 0x00000001;
-	for (unsigned int i = 0; i < [[[self.itsScriptObjects lastObject] colors]count]; i++) {  //i = 0 - 31
-		NSUInteger j = self.itsScriptObjects.count;
-		while (j--) {
-			NWScriptEffectCommandObject *currentObj = [self.itsScriptObjects objectAtIndex:j];
-			if ([currentObj respondsToSelector:@selector(address)]) {
-				const uint32_t bitmask = (uint32_t)[currentObj performSelector:@selector(address)];
-				if (bitmask & compareMask) {
-					[outPutColors addObject:currentObj.colors[i]];
-					break;
+	if (![self.itsScriptObjects isEqualToArray:self.shadowCopyOfScriptObjects]) {
+		self.itsColors = nil;
+		self.shadowCopyOfScriptObjects = [self.itsScriptObjects copy];
+	}
+	
+	if (!self.itsColors) {
+		NSMutableArray *outPutColors = [[NSMutableArray alloc]init];
+		uint32_t compareMask = 0x00000001;
+		for (unsigned int i = 0; i < [[[self.itsScriptObjects lastObject] colors]count]; i++) {  //i = 0 - 31
+			NSUInteger j = self.itsScriptObjects.count;
+			while (j--) {
+				NWScriptEffectCommandObject *currentObj = [self.itsScriptObjects objectAtIndex:j];
+				if ([currentObj respondsToSelector:@selector(address)]) {
+					const uint32_t bitmask = (uint32_t)[currentObj performSelector:@selector(address)];
+					if (bitmask & compareMask) {
+						[outPutColors addObject:currentObj.colors[i]];
+						break;
+					}
 				}
 			}
+			if (i >= outPutColors.count) {
+				[outPutColors addObject:self.backgroundColor];
+			}
+			compareMask = compareMask << 1;
 		}
-		if (i >= outPutColors.count) {
-			[outPutColors addObject:self.backgroundColor];
-		}
-		compareMask = compareMask << 1;
+		self.itsColors = [outPutColors copy];
 	}
-	return outPutColors;
+	return self.itsColors;
 }
 
 
