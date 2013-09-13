@@ -149,6 +149,36 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 #pragma mark - Firmware methods
 
+- (void)setColorDirectWithColors:(NSArray *)newColors
+{
+	float redPart;
+    float greenPart;
+    float bluePart;
+	float alphaPart;
+    
+    
+	size_t sizeColorArray = MIN(NUM_OF_LED, newColors.count);
+    
+    uint8_t colorArray[NUM_OF_LED * 3];
+    uint8_t *pointer = colorArray;
+    
+    for (int i = 0; i < NUM_OF_LED; i++)
+    {
+		if (newColors[i]) {
+			[newColors[i] getRed:&redPart green:&greenPart blue:&bluePart alpha:&alphaPart];
+		}
+		else {
+			[[UIColor blackColor] getRed:&redPart green:&greenPart blue:&bluePart alpha:&alphaPart];
+		}
+        
+		*pointer++ = (uint8_t)(redPart * alphaPart * 255);
+		*pointer++ = (uint8_t)(greenPart * alphaPart * 255);
+		*pointer++ = (uint8_t)(bluePart * alphaPart * 255);
+	}
+    
+	[self setColorDirect:colorArray bufferLength:sizeColorArray * 3];
+}
+
 - (void)setColorDirect:(UIColor *)newColor
 {
     float redPart;

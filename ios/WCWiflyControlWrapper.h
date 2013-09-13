@@ -28,7 +28,7 @@
 
 // Firmware methods
 - (void)setColorDirect:(UIColor *)newColor;
-- (void)setColorDirect:(const uint8_t*)pointerBuffer bufferLength:(size_t)length;
+- (void)setColorDirectWithColors:(NSArray *)newColors;
 - (void)setWaitTimeInTenMilliSecondsIntervals:(uint16_t)time;
 - (void)setFade:(uint32_t)colorInARGB;
 - (void)setFade:(uint32_t)colorInARGB time:(uint16_t)timeValue;
