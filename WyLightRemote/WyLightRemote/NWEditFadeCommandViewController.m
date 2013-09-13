@@ -35,13 +35,11 @@
 	[self.gradientPreviewView addGestureRecognizer:tap];
 }
 
-- (void)viewWillLayoutSubviews
-{
+- (void)viewWillLayoutSubviews {
 	[self fixLocations];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.gradientPreviewView.endColors = self.command.colors;
 	self.colorButton1.color = self.command.color;
@@ -52,7 +50,7 @@
 		CGFloat totalWidth = self.view.bounds.size.width - 40.0;
 		CGFloat totalHeight = self.view.bounds.size.height - 40.0;
 		
-		CGFloat gradientViewHeight = totalHeight - ((NSUInteger)totalHeight % 32);
+		CGFloat gradientViewHeight = totalHeight;
 		
 		self.gradientPreviewView.frame = CGRectMake(20, 20, totalWidth - 60, gradientViewHeight);
 		
@@ -62,14 +60,12 @@
 		self.colorButton1.frame = CGRectMake(totalWidth - 20, 20, colorButtonCellWidth, colorButtonCellHeight);
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 	[self setup];
 }
 
-- (void)flipAddressBitsAtIndex:(NSUInteger)index
-{
+- (void)flipAddressBitsAtIndex:(NSUInteger)index {
 	uint32_t flipBitmask = 0x00000001 << index;
 	uint32_t newAddressMask = self.command.address ^ flipBitmask;
 	if ((flipBitmask & self.addressBeforPanBegan & self.command.address) || (flipBitmask & ~self.addressBeforPanBegan & ~self.command.address)) {
@@ -88,7 +84,6 @@
 		[self flipAddressBitsAtIndex:(NSUInteger)(touchLocationInGradientView.y / heightOfOneGradientStrip)];
 	}
 }
-
 
 - (IBAction)panOnGradientView:(UIPanGestureRecognizer *)gesture {
 	CGFloat heightOfOneGradientStrip = self.gradientPreviewView.frame.size.height / [self.gradientPreviewView.endColors count];
@@ -110,7 +105,6 @@
 		}
 	}
 }
-
 
 - (IBAction)color1ButtonPressed:(id)sender {
 	[self performSegueWithIdentifier:@"editColor:" sender:self];

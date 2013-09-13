@@ -42,13 +42,11 @@
 	[self.gradientPreviewView addGestureRecognizer:pan];
 }
 
-- (void)viewWillLayoutSubviews
-{
+- (void)viewWillLayoutSubviews {
 	[self fixLocations];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.colorButton2.color = self.command.color2;
 	self.gradientPreviewView.endColors = self.command.colors;
@@ -60,7 +58,7 @@
 		CGFloat totalWidth = self.view.bounds.size.width - 40.0;
 		CGFloat totalHeight = self.view.bounds.size.height - 40.0;
 		
-		CGFloat gradientViewHeight = totalHeight - ((NSUInteger)totalHeight % 32);
+		CGFloat gradientViewHeight = totalHeight;
 		
 		self.gradientPreviewView.frame = CGRectMake(20, 20, totalWidth - 60, gradientViewHeight);
 		
@@ -71,8 +69,7 @@
 		self.colorButton2.frame = CGRectMake(totalWidth - 20, 20 + colorButtonCellHeight + 40, colorButtonCellWidth, colorButtonCellHeight);
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 	[self setup];
 }
