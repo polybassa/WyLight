@@ -18,7 +18,7 @@
 
 @property (strong, nonatomic) NWScript *script;
 @property (strong, nonatomic) NWScriptView *scriptView;
-@property (strong, nonatomic) NWTimeLineView *timeLineView;
+//@property (strong, nonatomic) NWTimeLineView *timeLineView;
 @property (nonatomic) BOOL isDeletionModeActive;
 @property (nonatomic) CGFloat timeScaleFactor;
 @property (nonatomic) NSUInteger indexForObjectToEdit;
@@ -36,13 +36,31 @@
 }
 
 - (void)setTimeScaleFactor:(CGFloat)timeScaleFactor {
-	if (self.scriptView) {
-		self.scriptView.timelineScaleFactor = timeScaleFactor;
-	}
-	if (self.timeLineView) {
-		self.timeLineView.timeLineScaleFactor = timeScaleFactor;
-	}
 	_timeScaleFactor = timeScaleFactor;
+}
+
+#pragma mark - HANDLE ROTATION
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+		[self.tabBarController.tabBar setHidden:YES];
+	}
+	else {
+		[self.tabBarController.tabBar setHidden:NO];
+	}
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+	
+	if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
+	{
+		CGRect biggerFrame = self.tabBarController.view.frame;
+		biggerFrame.size.height += self.tabBarController.tabBar.frame.size.height;
+		self.tabBarController.view.frame = biggerFrame ;
+	}
 }
 
 #pragma mark - SETUP STUFF
@@ -50,19 +68,13 @@
 	if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
 		
 		//script view
-		self.scriptView.frame = CGRectMake(0, 40, self.view.frame.size.width, self.view.frame.size.height - 60);
-		
-		self.timeLineView.frame = self.scriptView.frame;
-		//self.timeLineView.contentFrame = CGRectMake(20, self.scriptView.frame.origin.y, self.scriptView.contentSize.width, self.scriptView.contentSize.height);
+		self.scriptView.frame = CGRectMake(0, 30, self.view.frame.size.width, self.view.frame.size.height - 60);
 	}
 	else {
 		
-		self.scriptView.frame = CGRectMake(0, 40, self.view.frame.size.width, self.view.frame.size.height - 60);
-		
-		self.timeLineView.frame = self.scriptView.frame;
-		//self.timeLineView.contentFrame = CGRectMake(20, self.scriptView.frame.origin.y, self.scriptView.contentSize.width, self.scriptView.contentSize.height);
-
+		self.scriptView.frame = CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height - 40);
 	}
+	[self.scriptView fixLocationsOfSubviews];
 }
 
 - (void)setup {
@@ -72,22 +84,13 @@
 	//script view
 	self.scriptView = [[NWScriptView alloc] initWithFrame:CGRectZero];
 	self.scriptView.dataSource = self;
-	self.scriptView.timelineScaleFactor = self.timeScaleFactor;
 	self.scriptView.backgroundColor = [UIColor clearColor];
 	self.scriptView.delegate = self;
-		
+	[self.view addSubview:self.scriptView];
+
 	UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchOnScriptView:)];
 	[self.scriptView addGestureRecognizer:pinch];
 	[self.view addGestureRecognizer:pinch];
-	
-	self.timeLineView = [[NWTimeLineView alloc] initWithFrame:CGRectZero];
-	self.timeLineView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
-	[self.view addSubview:self.timeLineView];
-	[self.scriptView addSubview:self.timeLineView];
-	
-	[self.view addSubview:self.scriptView];
-
-
 }
 
 - (void)viewDidLoad {
@@ -141,7 +144,6 @@
 - (void)pinchOnScriptView:(UIPinchGestureRecognizer *)gesture {
 	if (gesture.state == UIGestureRecognizerStateChanged) {
 		self.timeScaleFactor *= gesture.scale;
-		self.scriptView.timelineScaleFactor *= gesture.scale;
 		gesture.scale = 1;
 	}
 }

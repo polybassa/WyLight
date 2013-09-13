@@ -21,7 +21,6 @@
 @interface NWScriptView : UIScrollView
 
 @property (nonatomic, weak) id<NWScriptViewDataSource> dataSource;
-@property (nonatomic) CGFloat timelineScaleFactor;
 
 - (void)reloadData;
 - (void)fixLocationsOfSubviews;

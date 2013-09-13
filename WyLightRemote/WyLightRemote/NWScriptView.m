@@ -9,7 +9,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "NWScriptView.h"
 #import "NWScriptObjectControl.h"
-#import "NWTimeLineView.h"
 
 @implementation NWScriptView
 
@@ -22,7 +21,6 @@
 }
 
 - (void)setup {
-	self.timelineScaleFactor = 1;
 	self.showsHorizontalScrollIndicator = NO;
 	self.showsVerticalScrollIndicator = NO;
 }
@@ -35,12 +33,6 @@
 - (void)setDataSource:(id<NWScriptViewDataSource>)dataSource {
 	_dataSource = dataSource;
 	[self reloadData];
-}
-
-- (void)setTimelineScaleFactor:(CGFloat)timelineScaleFactor {
-	_timelineScaleFactor = timelineScaleFactor;
-	[self fixLocationsOfSubviews];
-	[self setNeedsDisplay];
 }
 
 - (void)reloadData {
@@ -63,24 +55,12 @@
 		if ([subview isKindOfClass:[NWScriptObjectView class]]) {
 			width = [self.dataSource scriptView:self widthOfObjectAtIndex:subview.tag];
 			
-			NSUInteger heightFactor = 5;
-			if (subview.endColors.count) {
-				heightFactor = @((self.bounds.size.height - 10) / subview.endColors.count).unsignedIntegerValue;
-			}
-			subview.frame = CGRectMake(xPosition, 10, width, subview.endColors.count * heightFactor);
+			subview.frame = CGRectMake(xPosition, 10, width, self.frame.size.height - 20);
 			xPosition += width + 2;
 		}
 	}
 	[self setContentSize:CGSizeMake(xPosition + width, self.bounds.size.height)];
 
-	for (NWScriptObjectView *subview in self.subviews) {
-		if ([subview isKindOfClass:[NWTimeLineView class]]) {
-			subview.frame = CGRectMake(10, 10, self.contentSize.width, self.contentSize.height);
-			NWTimeLineView *timeLine = (NWTimeLineView *)subview;
-			timeLine.contentOffset = CGPointZero;
-			timeLine.contentFrame = self.frame;
-		}
-	}
 }
 
 @end
