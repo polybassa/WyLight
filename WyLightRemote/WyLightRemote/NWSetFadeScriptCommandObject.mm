@@ -13,6 +13,16 @@
 
 @implementation NWSetFadeScriptCommandObject
 
+- (BOOL)isEqual:(id)object {
+	if ([object isKindOfClass:[NWSetFadeScriptCommandObject class]]) {
+		NWSetFadeScriptCommandObject *otherFade = (NWSetFadeScriptCommandObject *)object;
+		if (otherFade.duration == self.duration && self.address == otherFade.address && [self.color isEqual:otherFade.color]) {
+			return [super isEqual:object];
+		}
+	}
+	return NO;
+}
+
 - (id)copyWithZone:(NSZone *)zone {
 	NWSetFadeScriptCommandObject *other = [[NWSetFadeScriptCommandObject alloc]init];
 	other.parallel = self.parallel;

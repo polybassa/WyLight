@@ -13,6 +13,20 @@
 
 @implementation NWSetGradientScriptCommandObject
 
+- (BOOL)isEqual:(id)object {
+	if ([object isKindOfClass:[NWSetGradientScriptCommandObject class]]) {
+		NWSetGradientScriptCommandObject *otherGradient = (NWSetGradientScriptCommandObject *)object;
+		if (otherGradient.duration == self.duration &&
+			[otherGradient.color1 isEqual:self.color1] &&
+			[otherGradient.color2 isEqual:self.color2] &&
+			self.offset == otherGradient.offset &&
+			self.numberOfLeds == otherGradient.numberOfLeds) {
+			return [super isEqual:object];
+		}
+	}
+	return NO;
+}
+
 - (id)copyWithZone:(NSZone *)zone {
 	NWSetGradientScriptCommandObject *other = [[NWSetGradientScriptCommandObject alloc]init];
 	other.parallel = self.parallel;
