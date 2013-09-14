@@ -18,7 +18,6 @@
 
 @property (strong, nonatomic) NWScript *script;
 @property (strong, nonatomic) NWScriptView *scriptView;
-//@property (strong, nonatomic) NWTimeLineView *timeLineView;
 @property (nonatomic) BOOL isDeletionModeActive;
 @property (nonatomic) CGFloat timeScaleFactor;
 @property (nonatomic) NSUInteger indexForObjectToEdit;
@@ -52,27 +51,19 @@
 	}
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-	
-	if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
-	{
-		CGRect biggerFrame = self.tabBarController.view.frame;
-		biggerFrame.size.height += self.tabBarController.tabBar.frame.size.height;
-		self.tabBarController.view.frame = biggerFrame ;
-	}
-}
-
 #pragma mark - SETUP STUFF
 - (void)fixLocations {
 	if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
 		
 		//script view
-		self.scriptView.frame = CGRectMake(0, 30, self.view.frame.size.width, self.view.frame.size.height - 60);
+		self.scriptView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
 	}
 	else {
+		CGRect biggerFrame = self.tabBarController.view.frame;
+		biggerFrame.size.height += self.tabBarController.tabBar.frame.size.height;
+		self.tabBarController.view.frame = biggerFrame ;
 		
-		self.scriptView.frame = CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height - 40);
+		self.scriptView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
 	}
 	[self.scriptView fixLocationsOfSubviews];
 }
@@ -90,7 +81,6 @@
 
 	UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchOnScriptView:)];
 	[self.scriptView addGestureRecognizer:pinch];
-	[self.view addGestureRecognizer:pinch];
 }
 
 - (void)viewDidLoad {
@@ -143,7 +133,7 @@
 
 - (void)pinchOnScriptView:(UIPinchGestureRecognizer *)gesture {
 	if (gesture.state == UIGestureRecognizerStateChanged) {
-		self.timeScaleFactor *= gesture.scale;
+		self.scriptView.timeScaleFactor = self.timeScaleFactor *= gesture.scale;
 		gesture.scale = 1;
 	}
 }
@@ -236,12 +226,9 @@
 	return 0;
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	//self.timeLineView.contentOffset = CGPointMake(scrollView.contentOffset.x + 20, scrollView.contentOffset.y);
-}
-
 #pragma mark - SCRIPTOBJECTCONTROL DELEGATE
 - (void)scriptObjectView:(NWScriptObjectView *)view changedWidthTo:(CGFloat)width deltaOfChange:(CGFloat)delta {
+	[self.scriptView fixLocationOfTimelineView:view.tag];
 	for (NWScriptObjectView *subview in self.scriptView.subviews) {
 		if ([subview isKindOfClass:[NWScriptObjectView class]]) {
 			if (subview.tag <= view.tag) {
@@ -253,6 +240,7 @@
 			CGFloat height = subview.frame.size.height;
 			
 			subview.frame = CGRectMake(x, y, width, height);
+			[self.scriptView fixLocationOfTimelineView:subview.tag];
 		}
 	}
 }

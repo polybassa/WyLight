@@ -77,6 +77,7 @@
 		5CB5336C17D2266E00262009 /* NWScriptObjectControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CB5336B17D2266E00262009 /* NWScriptObjectControl.m */; };
 		5CB5336F17D39B2800262009 /* NWTimeLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CB5336E17D39B2800262009 /* NWTimeLineView.m */; };
 		5CDEA45D17E3419D00F1FBC1 /* NWAddCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDEA45C17E3419D00F1FBC1 /* NWAddCollectionViewCell.m */; };
+		5CDEA46017E4C0E200F1FBC1 /* NWTimeInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDEA45F17E4C0E100F1FBC1 /* NWTimeInfoView.m */; };
 		5CE16BBD17D1F73A006A8F67 /* NWScriptView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE16BBC17D1F73A006A8F67 /* NWScriptView.m */; };
 /* End PBXBuildFile section */
 
@@ -220,6 +221,8 @@
 		5CB5336E17D39B2800262009 /* NWTimeLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWTimeLineView.m; sourceTree = "<group>"; };
 		5CDEA45B17E3419C00F1FBC1 /* NWAddCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWAddCollectionViewCell.h; sourceTree = "<group>"; };
 		5CDEA45C17E3419D00F1FBC1 /* NWAddCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWAddCollectionViewCell.m; sourceTree = "<group>"; };
+		5CDEA45E17E4C0E100F1FBC1 /* NWTimeInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWTimeInfoView.h; sourceTree = "<group>"; };
+		5CDEA45F17E4C0E100F1FBC1 /* NWTimeInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWTimeInfoView.m; sourceTree = "<group>"; };
 		5CE16BBB17D1F739006A8F67 /* NWScriptView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptView.h; sourceTree = "<group>"; };
 		5CE16BBC17D1F73A006A8F67 /* NWScriptView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -413,6 +416,8 @@
 				5C7034B517CE24EE00B121A6 /* NWScriptObjectView.m */,
 				5CB5336A17D2266E00262009 /* NWScriptObjectControl.h */,
 				5CB5336B17D2266E00262009 /* NWScriptObjectControl.m */,
+				5CDEA45E17E4C0E100F1FBC1 /* NWTimeInfoView.h */,
+				5CDEA45F17E4C0E100F1FBC1 /* NWTimeInfoView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -611,6 +616,7 @@
 				5CB5336C17D2266E00262009 /* NWScriptObjectControl.m in Sources */,
 				5CB5336F17D39B2800262009 /* NWTimeLineView.m in Sources */,
 				5CDEA45D17E3419D00F1FBC1 /* NWAddCollectionViewCell.m in Sources */,
+				5CDEA46017E4C0E200F1FBC1 /* NWTimeInfoView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
