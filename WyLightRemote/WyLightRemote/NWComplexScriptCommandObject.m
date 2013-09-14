@@ -20,6 +20,17 @@
 
 @implementation NWComplexScriptCommandObject
 
+- (id)copyWithZone:(NSZone *)zone {
+	NWComplexScriptCommandObject *other = [[NWComplexScriptCommandObject alloc]init];
+	other.next = self.next;
+	other.prev = self.prev;
+	other.waitCommand = self.waitCommand;
+	other.itsScriptObjects = [[NSMutableArray alloc]initWithArray:self.itsScriptObjects copyItems:YES];
+	other.duration = self.duration;
+	
+	return other;
+}
+
 - (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control
 {
 	if ([self isWaitCommand]) {

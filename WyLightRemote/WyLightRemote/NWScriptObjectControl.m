@@ -55,6 +55,7 @@ static UIImage *deleteButtonImg;
 }
 
 - (void)setShowDeleteButton:(BOOL)showDeleteButton {
+	_showDeleteButton = showDeleteButton;
 	if (showDeleteButton) {
 		self.deleteButton.layer.opacity = 1.0;
 		[self bringSubviewToFront:self.deleteButton];

@@ -12,7 +12,7 @@
 
 @protocol NWScriptViewDataSource <NSObject>
 
-- (NWScriptObjectControl *)scriptView:(NWScriptView *)view objectForIndex:(NSUInteger)index;
+- (UIView *)scriptView:(NWScriptView *)view objectForIndex:(NSUInteger)index;
 - (NSUInteger)numberOfObjectsInScriptView:(NWScriptView *)view;
 - (CGFloat)scriptView:(NWScriptView *)view widthOfObjectAtIndex:(NSUInteger)index;
 

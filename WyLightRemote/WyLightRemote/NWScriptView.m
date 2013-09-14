@@ -10,6 +10,7 @@
 #import "NWScriptView.h"
 #import "NWScriptObjectControl.h"
 #import "NWTimeInfoView.h"
+#import "NWAddScriptObjectView.h"
 
 @implementation NWScriptView
 
@@ -47,6 +48,10 @@
 			xPosition += width + 2;
 			
 			[self fixLocationOfTimelineView:subview.tag];
+		}
+		if ([subview isKindOfClass:[NWAddScriptObjectView class]]) {
+			subview.frame = CGRectMake(xPosition, yPosition, height / 3, height);
+			xPosition += width + 2;
 		}
 	}
 	[self setContentSize:CGSizeMake(xPosition + width, self.bounds.size.height)];
@@ -94,18 +99,23 @@
 		if ([subview isKindOfClass:[NWTimeInfoView class]]) {
 			[subview removeFromSuperview];
 		}
+		if ([subview isKindOfClass:[NWAddScriptObjectView class]]) {
+			[subview removeFromSuperview];
+		}
+
 	}
 	
 	for (NSUInteger index = 0; index < [self.dataSource numberOfObjectsInScriptView:self]; index++) {
-		NWScriptObjectControl *subview = [self.dataSource scriptView:self objectForIndex:index];
+		UIView *subview = [self.dataSource scriptView:self objectForIndex:index];
 		subview.tag = index;
 		[self addSubview:subview];
 		
-		NWTimeInfoView *timeInfoView = [[NWTimeInfoView alloc] initWithFrame:CGRectZero];
-		timeInfoView.timeScaleFactor = self.timeScaleFactor;
-		timeInfoView.tag = index;
-		[self addSubview:timeInfoView];
-		
+		if ([subview isKindOfClass:[NWScriptObjectControl class]]) {
+			NWTimeInfoView *timeInfoView = [[NWTimeInfoView alloc] initWithFrame:CGRectZero];
+			timeInfoView.timeScaleFactor = self.timeScaleFactor;
+			timeInfoView.tag = index;
+			[self addSubview:timeInfoView];
+		}
 	}
 	[self fixLocationsOfSubviews];
 }
