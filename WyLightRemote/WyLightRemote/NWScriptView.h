@@ -23,6 +23,7 @@
 
 @property (nonatomic, weak) id<NWScriptViewDataSource> dataSource;
 @property (nonatomic) CGFloat timeScaleFactor;
+@property (nonatomic) CGFloat scriptObjectSpacing;
 
 - (void)reloadData;
 - (void)fixLocationsOfSubviews;

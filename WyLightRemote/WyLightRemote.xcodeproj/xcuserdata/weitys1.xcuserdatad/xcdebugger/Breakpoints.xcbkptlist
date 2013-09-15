@@ -151,11 +151,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "WyLightRemote/NWScriptViewController.m"
-         timestampString = "400930295.995983"
+         timestampString = "400938349.778128"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "148"
-         endingLineNumber = "148"
+         startingLineNumber = "155"
+         endingLineNumber = "155"
          landmarkName = "-pinchOnScriptView:"
          landmarkType = "5">
       </FileBreakpoint>

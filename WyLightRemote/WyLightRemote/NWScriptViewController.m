@@ -37,6 +37,29 @@
 	return _script;
 }
 
+- (void)setIsDeletionModeActive:(BOOL)isDeletionModeActive {
+	_isDeletionModeActive = isDeletionModeActive;
+	if (isDeletionModeActive) {
+		for (UIView *control in self.scriptView.subviews) {
+			if ([control isKindOfClass:[NWScriptObjectControl class]]) {
+				((NWScriptObjectControl *)control).showDeleteButton = YES;
+			}
+			if ([control isKindOfClass:[NWAddScriptObjectView class]]) {
+				((NWAddScriptObjectView *)control).button.enabled = NO;
+			}
+		}
+	} else {
+		for (UIView *control in self.scriptView.subviews) {
+			if ([control isKindOfClass:[NWScriptObjectControl class]]) {
+				((NWScriptObjectControl *)control).showDeleteButton = NO;
+			}
+			if ([control isKindOfClass:[NWAddScriptObjectView class]]) {
+				((NWAddScriptObjectView *)control).button.enabled = YES;
+			}
+		}
+	}
+}
+
 #pragma mark - HANDLE ROTATION
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -112,14 +135,6 @@
 	if (self.isDeletionModeActive) {
 		if ([gesture.view isKindOfClass:[NWScriptObjectControl class]]) {
 			self.isDeletionModeActive = NO;
-            for (UIView *control in self.scriptView.subviews) {
-				if ([control isKindOfClass:[NWScriptObjectControl class]]) {
-					((NWScriptObjectControl *)control).showDeleteButton = NO;
-				}
-				if ([control isKindOfClass:[NWAddScriptObjectView class]]) {
-					((NWAddScriptObjectView *)control).button.enabled = YES;
-				}
-			}
 		}
 	} else {
 		self.indexForObjectToEdit = gesture.view.tag;
@@ -130,16 +145,8 @@
 - (void)activateDeletionMode:(UILongPressGestureRecognizer *)gesture {
     if (gesture.state == UIGestureRecognizerStateBegan)
     {
-		if ([gesture.view isKindOfClass:[NWScriptObjectControl class]]) {
+		if ([gesture.view isKindOfClass:[NWScriptObjectControl class]] && self.script.scriptArray.count > 1) {
 			self.isDeletionModeActive = YES;
-            for (UIView *control in self.scriptView.subviews) {
-				if ([control isKindOfClass:[NWScriptObjectControl class]]) {
-					((NWScriptObjectControl *)control).showDeleteButton = YES;
-				}
-				if ([control isKindOfClass:[NWAddScriptObjectView class]]) {
-					((NWAddScriptObjectView *)control).button.enabled = NO;
-				}
-			}
 		}
     }
 }
@@ -155,6 +162,10 @@
 #pragma mark - BUTTON CALLBACKS
 - (void)deleteScriptObject:(UIButton *)sender {
 	if ([sender.superview isKindOfClass:[NWScriptObjectControl class]]) {
+		if (self.script.scriptArray.count <= 1) {
+			self.isDeletionModeActive = NO;
+			return;
+		}
 		NWScriptObjectControl *objectToDelete = (NWScriptObjectControl *)sender.superview;
 		
 		NWTimeInfoView *timeViewToDelete;
@@ -163,8 +174,6 @@
 				timeViewToDelete = (NWTimeInfoView *)subview;
 			}
 		}
-
-		
 		//ausblenden
 		[UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
 			
@@ -174,33 +183,30 @@
 			
 		} completion:^(BOOL finished) {
 			
-			if (finished) {
-				//tags anpassen um danach die Positionen richtig zu berechnen
-				[self.script removeObjectAtIndex:objectToDelete.tag];
-				[objectToDelete removeFromSuperview];
-				[timeViewToDelete removeFromSuperview];
-				for (NWScriptObjectControl *ctrl in self.scriptView.subviews) {
-					if ([ctrl isKindOfClass:[NWScriptObjectControl class]]) {
-						if (ctrl.tag > objectToDelete.tag) {
-							ctrl.tag--;
-						}
-					}
-					if ([ctrl isKindOfClass:[NWTimeInfoView class]]) {
-						if (ctrl.tag > objectToDelete.tag) {
-							ctrl.tag--;
-						}
+			//tags anpassen um danach die Positionen richtig zu berechnen
+			[self.script removeObjectAtIndex:objectToDelete.tag];
+			[objectToDelete removeFromSuperview];
+			[timeViewToDelete removeFromSuperview];
+			for (NWScriptObjectControl *ctrl in self.scriptView.subviews) {
+				if ([ctrl isKindOfClass:[NWScriptObjectControl class]]) {
+					if (ctrl.tag > objectToDelete.tag) {
+						ctrl.tag--;
 					}
 				}
-				//Positionen anpassen
-				[UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-					
-					[self.scriptView fixLocationsOfSubviews];
-					
-				} completion:^(BOOL finished) {
-				//Farben nachladen
-					[self.scriptView reloadData];
-				}];
+				if ([ctrl isKindOfClass:[NWTimeInfoView class]]) {
+					if (ctrl.tag > objectToDelete.tag) {
+						ctrl.tag--;
+					}
+				}
 			}
+			//Positionen anpassen
+			[UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+				[self.scriptView fixLocationsOfSubviews];
+				
+			} completion:^(BOOL finished) {
+			//Farben nachladen
+				[self.scriptView reloadData];
+			}];
 		}];
 	}
 }
@@ -227,13 +233,16 @@
 	[self.scriptView addSubview:timeInfoViewToAdd];
 	
 	//change position of the addButton via tag;
-	addButtonView.tag += 1;
+	CGRect newFrame = CGRectMake(
+								 addButtonView.frame.origin.x + commandToAdd.duration * self.timeScaleFactor + self.scriptView.scriptObjectSpacing,
+								 addButtonView.frame.origin.y,
+								 addButtonView.frame.size.width,
+								 addButtonView.frame.size.height);
 	
+	[self.scriptView scrollRectToVisible:newFrame animated:YES];
 	//Positionen anpassen
 	[UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-		
-		addButtonView.frame = CGRectMake(addButtonView.frame.origin.x + commandToAdd.duration * self.timeScaleFactor + 2, addButtonView.frame.origin.y, addButtonView.frame.size.width, addButtonView.frame.size.height);
-		
+		addButtonView.frame = newFrame;
 	} completion:^(BOOL finished) {
 		[self.scriptView fixLocationsOfSubviews];
 		//Farben nachladen
@@ -303,6 +312,7 @@
 			tempView.scriptObjectView.cornerRadius = 10;
 			tempView.scriptObjectView.backgroundColor = [UIColor blackColor];
 			tempView.tag = index;
+			tempView.button.enabled = !self.isDeletionModeActive;
 
 			return tempView;
 		}

@@ -20,6 +20,7 @@
     self = [super initWithFrame:frame];
     if (self) {
 		[self setup];
+		self.scriptObjectSpacing  = 2.0;
 	}
     return self;
 }
@@ -45,7 +46,7 @@
 			width = [self.dataSource scriptView:self widthOfObjectAtIndex:subview.tag];
 			
 			subview.frame = CGRectMake(xPosition, yPosition, width, height);
-			xPosition += width + 2;
+			xPosition += width + self.scriptObjectSpacing;
 			
 			[self fixLocationOfTimeInfoView:subview.tag];
 		}
@@ -53,7 +54,7 @@
 	for (UIView *subview in self.subviews) {
 		if ([subview isKindOfClass:[NWAddScriptObjectView class]]) {
 			subview.frame = CGRectMake(xPosition, yPosition, height / 3, height);
-			xPosition += width + 2;
+			xPosition += width + self.scriptObjectSpacing;
 		}
 	}
 	[self setContentSize:CGSizeMake(xPosition + width, self.bounds.size.height)];
