@@ -26,6 +26,8 @@
 #include <stdio.h>
 #include <stdint.h>
 
+namespace WyLight {
+
 #define BL_WORD(HIGH, LOW) (uint16_t)(((((uint16_t)(HIGH))<< 8) | (((uint16_t)(LOW)) & 0x00ff)))
 #define BL_DWORD(HIGH, LOW) (uint32_t)(((((uint32_t)(HIGH))<< 16) | (((uint32_t)(LOW)) & 0x0000ffff)))
 
@@ -227,4 +229,6 @@ struct BlRunAppRequest : public BlRequest
 	BlRunAppRequest() : BlRequest(0, 0x08) {};
 	virtual bool CheckCrc() const { return false; };
 };
+	
+} /* namespace WyLight */
 #endif /* #ifndef _BL_REQUEST_H_ */

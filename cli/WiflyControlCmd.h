@@ -128,7 +128,7 @@ class ControlCmdBlInfo : public WiflyControlCmd
 				string("' - read bootloader information")) {};
 
 		virtual void Run(WyLight::Control& control) const {
-			BlInfo info;
+			WyLight::BlInfo info;
 			try
 			{
 				control.BlReadInfo(info);
