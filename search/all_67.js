@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['getaddress',['GetAddress',['../struct_bl_info.html#a54a7c7a8982f9ed99517977a9089da62',1,'BlInfo']]],
-  ['getdata',['getData',['../classintelhex.html#a01f7799f7a86e45c28b713e9472a8a5a',1,'intelhex::getData(unsigned char *data)'],['../classintelhex.html#a6596b518a9a832ed8e6ba21a0e07861c',1,'intelhex::getData(unsigned char *data, unsigned long address)'],['../struct_bl_request.html#aa96361ac208e80204a36870f79f90a83',1,'BlRequest::GetData()'],['../class_wy_light_1_1_fw_command.html#ad891fbb6f1a2bed364a77760c574bc68',1,'WyLight::FwCommand::GetData()']]],
+  ['getaddress',['GetAddress',['../struct_wy_light_1_1_bl_info.html#a93505c5f081c862b51e1f0dc746b6f0a',1,'WyLight::BlInfo']]],
+  ['getdata',['getData',['../classintelhex.html#a01f7799f7a86e45c28b713e9472a8a5a',1,'intelhex::getData(unsigned char *data)'],['../classintelhex.html#a6596b518a9a832ed8e6ba21a0e07861c',1,'intelhex::getData(unsigned char *data, unsigned long address)'],['../struct_wy_light_1_1_bl_request.html#a0d956ad98677f0d309c031d00d797f90',1,'WyLight::BlRequest::GetData()'],['../class_wy_light_1_1_fw_command.html#ad891fbb6f1a2bed364a77760c574bc68',1,'WyLight::FwCommand::GetData()']]],
   ['getdeviceid',['GetDeviceId',['../class_wy_light_1_1_endpoint.html#a45f7f0b61014a9732a7c31dec22cfeaf',1,'WyLight::Endpoint']]],
   ['getendpoint',['GetEndpoint',['../class_wy_light_1_1_broadcast_receiver.html#ab4950ea01d61e47ae91bb085b0135919',1,'WyLight::BroadcastReceiver']]],
   ['getendpointbyfingerprint',['GetEndpointByFingerprint',['../class_wy_light_1_1_broadcast_receiver.html#a57116a61823954a3a86e11d86e2975c7',1,'WyLight::BroadcastReceiver']]],
@@ -14,7 +14,7 @@ var searchData=
   ['getrealtime',['GetRealTime',['../class_wy_light_1_1_rtc_response.html#a5789f86a808e71f53144eed137e3f9cf',1,'WyLight::RtcResponse']]],
   ['getresponse',['GetResponse',['../class_wy_light_1_1_fw_command.html#a37ae4cf77fd2787a9802dbb55ef489fe',1,'WyLight::FwCommand::GetResponse()'],['../class_wy_light_1_1_fw_cmd_simple.html#a0d924ef07e2c70417d7300c384c9914d',1,'WyLight::FwCmdSimple::GetResponse()'],['../struct_wy_light_1_1_fw_cmd_get_cycletime.html#aa6b457bdab92b36b2e16f88868e78beb',1,'WyLight::FwCmdGetCycletime::GetResponse()'],['../struct_wy_light_1_1_fw_cmd_get_rtc.html#a75ca8ea9db3216ef36367546f7726951',1,'WyLight::FwCmdGetRtc::GetResponse()'],['../struct_wy_light_1_1_fw_cmd_get_tracebuffer.html#a3c6291a4be3b4451dc1cdf1b21488d39',1,'WyLight::FwCmdGetTracebuffer::GetResponse()'],['../struct_wy_light_1_1_fw_cmd_get_version.html#a238467662aa18499177b809d9b1d52d4',1,'WyLight::FwCmdGetVersion::GetResponse()']]],
   ['getscore',['GetScore',['../class_wy_light_1_1_endpoint.html#a8e19107acfb14d455dde2206b971cc2d',1,'WyLight::Endpoint']]],
-  ['getsize',['GetSize',['../struct_bl_request.html#aaf1d5f14893458a504180196837dcca3',1,'BlRequest::GetSize()'],['../class_wy_light_1_1_fw_command.html#af45ca242c24c497039ea3063d1d2bf06',1,'WyLight::FwCommand::GetSize()']]],
+  ['getsize',['GetSize',['../struct_wy_light_1_1_bl_request.html#a46864fa4524fcdd0f32033e8f51ba1c5',1,'WyLight::BlRequest::GetSize()'],['../class_wy_light_1_1_fw_command.html#af45ca242c24c497039ea3063d1d2bf06',1,'WyLight::FwCommand::GetSize()']]],
   ['getstartlinearaddress',['getStartLinearAddress',['../classintelhex.html#a7bc61f72756d37509e768906733ba10b',1,'intelhex']]],
   ['getstartsegmentaddress',['getStartSegmentAddress',['../classintelhex.html#a94d6d17ba22263a4775d80b2a0e6e95f',1,'intelhex']]],
   ['gpiovalue',['gpioValue',['../struct_wy_light_1_1_broadcast_message.html#a3317f27030e3f644bf4c3f29748d2aa0',1,'WyLight::BroadcastMessage']]],

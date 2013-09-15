@@ -1,10 +1,10 @@
 var searchData=
 [
   ['sensor',['sensor',['../struct_wy_light_1_1_broadcast_message.html#ac999a8e5814f990c66a07b448d961095',1,'WyLight::BroadcastMessage']]],
-  ['sizehigh',['sizeHigh',['../struct_bl_info.html#a17fd7e3d13075c98cb3589a5670eaa27',1,'BlInfo']]],
-  ['sizelow',['sizeLow',['../struct_bl_info.html#af53fd31e97f796089198cf77681ba9cb',1,'BlInfo']]],
-  ['starthigh',['startHigh',['../struct_bl_info.html#a952bed33ae2583318cb548e5af1ee0f7',1,'BlInfo']]],
-  ['startlow',['startLow',['../struct_bl_info.html#a4d08750ac1951abfae43f350f11e6e74',1,'BlInfo']]],
-  ['startu',['startU',['../struct_bl_info.html#ad0ff495d980e4852f048e4b8f3f937aa',1,'BlInfo']]],
+  ['sizehigh',['sizeHigh',['../struct_wy_light_1_1_bl_info.html#a95dfd12b33d938d0130d1e3326f9d711',1,'WyLight::BlInfo']]],
+  ['sizelow',['sizeLow',['../struct_wy_light_1_1_bl_info.html#a0fdc843fbc878f3570751ef38fa69e0e',1,'WyLight::BlInfo']]],
+  ['starthigh',['startHigh',['../struct_wy_light_1_1_bl_info.html#adaaa62eb1ad8fee73cb2503222e7b905',1,'WyLight::BlInfo']]],
+  ['startlow',['startLow',['../struct_wy_light_1_1_bl_info.html#a7a53fd44ef6def50cbffdc519190961d',1,'WyLight::BlInfo']]],
+  ['startu',['startU',['../struct_wy_light_1_1_bl_info.html#a9d435ba3c8d9b530b3fcbf70c358e72c',1,'WyLight::BlInfo']]],
   ['stop_5fmsg',['STOP_MSG',['../class_wy_light_1_1_broadcast_receiver.html#a7e3c3f4fe453f48d012ecbb15e8cb5e5',1,'WyLight::BroadcastReceiver']]]
 ];

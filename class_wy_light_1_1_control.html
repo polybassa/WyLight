@@ -121,7 +121,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab31a3e0c102ced985377314a3056e588"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6329ec0b3f87a0a1538d44fb2e06a4d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#ac6329ec0b3f87a0a1538d44fb2e06a4d">BlReadFwVersion</a> (void) const   throw (ConnectionTimeout, FatalError)</td></tr>
 <tr class="separator:ac6329ec0b3f87a0a1538d44fb2e06a4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d5de392ee1bce3176d0840d855eaa1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a1d5de392ee1bce3176d0840d855eaa1f">BlReadInfo</a> (<a class="el" href="struct_bl_info.html">BlInfo</a> &amp;info) const   throw (ConnectionTimeout, FatalError)</td></tr>
+<tr class="memitem:a1d5de392ee1bce3176d0840d855eaa1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a1d5de392ee1bce3176d0840d855eaa1f">BlReadInfo</a> (<a class="el" href="struct_wy_light_1_1_bl_info.html">BlInfo</a> &amp;info) const   throw (ConnectionTimeout, FatalError)</td></tr>
 <tr class="separator:a1d5de392ee1bce3176d0840d855eaa1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a515497781d7ab7ad5fde04b5466c63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a6a515497781d7ab7ad5fde04b5466c63">BlRunApp</a> (void) const   throw (ConnectionTimeout, FatalError)</td></tr>
 <tr class="separator:a6a515497781d7ab7ad5fde04b5466c63"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -510,13 +510,13 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">void WyLight::Control::BlReadInfo </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_bl_info.html">BlInfo</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_wy_light_1_1_bl_info.html">BlInfo</a> &amp;&#160;</td>
           <td class="paramname"><em>info</em></td><td>)</td>
           <td> const  throw (<a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Instructs the bootloader to return a struct of bootloader informations like bootloader version, flash and eeprom size. see &lt;<a class="el" href="struct_bl_info.html">BlInfo</a>&gt; for details. The wifly device has to be in bootloader mode for this command. </p>
+<p>Instructs the bootloader to return a struct of bootloader informations like bootloader version, flash and eeprom size. see &lt;<a class="el" href="struct_wy_light_1_1_bl_info.html">BlInfo</a>&gt; for details. The wifly device has to be in bootloader mode for this command. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a></td><td>if response timed out </td></tr>
@@ -1079,7 +1079,7 @@ Friends</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 13 2013 10:41:04 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Sep 15 2013 11:45:26 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

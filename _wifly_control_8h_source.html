@@ -147,7 +147,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        std::<span class="keywordtype">string</span> <a class="code" href="class_wy_light_1_1_control.html#ac6329ec0b3f87a0a1538d44fb2e06a4d">BlReadFwVersion</a>(<span class="keywordtype">void</span>) const throw (ConnectionTimeout, FatalError);</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_control.html#a1d5de392ee1bce3176d0840d855eaa1f">BlReadInfo</a>(<a class="code" href="struct_bl_info.html">BlInfo</a>&amp; info) const throw (ConnectionTimeout, FatalError);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_control.html#a1d5de392ee1bce3176d0840d855eaa1f">BlReadInfo</a>(<a class="code" href="struct_wy_light_1_1_bl_info.html">BlInfo</a>&amp; info) const throw (ConnectionTimeout, FatalError);</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_control.html#a6a515497781d7ab7ad5fde04b5466c63">BlRunApp</a>(<span class="keywordtype">void</span>) const throw (ConnectionTimeout, FatalError);</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
@@ -201,7 +201,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;</div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        <span class="keywordtype">void</span> BlEraseFlashArea(const uint32_t endAddress, const uint8_t numPages) const throw (ConnectionTimeout, FatalError);</div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        <span class="keywordtype">size_t</span> BlRead(const <a class="code" href="struct_bl_request.html">BlRequest</a>&amp; request, uint8_t* pResponse, const <span class="keywordtype">size_t</span> responseSize, <span class="keywordtype">bool</span> doSync = true) const throw(ConnectionTimeout, FatalError);</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        <span class="keywordtype">size_t</span> BlRead(const <a class="code" href="struct_wy_light_1_1_bl_request.html">BlRequest</a>&amp; request, uint8_t* pResponse, const <span class="keywordtype">size_t</span> responseSize, <span class="keywordtype">bool</span> doSync = true) const throw(ConnectionTimeout, FatalError);</div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;</div>
 <div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        <span class="keywordtype">void</span> BlWriteEeprom(uint32_t address, const uint8_t* pBuffer, <span class="keywordtype">size_t</span> bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter);</div>
 <div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;</div>
@@ -232,7 +232,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 13 2013 10:40:52 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Sep 15 2013 11:45:08 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>
