@@ -8,21 +8,52 @@
 
 #import "NWScriptCommandObject.h"
 
+@interface NWScriptCommandObject ()
+
+@property (nonatomic, strong) UIColor *shadowBackgroundColor;
+
+@end
+
 @implementation NWScriptCommandObject
 
 @synthesize backgroundColor = _backgroundColor;
+
+#define DURATION_KEY @"duration"
+
+- (id)init {
+	self = [super init];
+	if (self) {
+		_duration = 1;
+	}
+	return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	self = [super init];
+	if (self) {
+		_duration = (uint16_t)[aDecoder decodeInt32ForKey:DURATION_KEY];
+	}
+	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+	[aCoder encodeInt32:_duration forKey:DURATION_KEY];
+}
 
 - (NSArray*)colors {
 	return nil;
 }
 
 - (UIColor *)backgroundColor {
-	if (_backgroundColor == nil)
-	{
-		_backgroundColor = [UIColor blackColor];
+	if (!self.shadowBackgroundColor) {
+		self.shadowBackgroundColor = [UIColor blackColor];
 	}
-	return _backgroundColor;
-} 
+	return self.shadowBackgroundColor;
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor {
+	self.shadowBackgroundColor = backgroundColor;
+}
 
 - (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control {
 	[[[NSException alloc] initWithName:@"Function not implemented" reason:@"Implement function sendToWCWiflyControl:" userInfo:nil] raise];

@@ -9,7 +9,7 @@
 #import "NWSendableCommand.h"
 #import "NWDrawableCommand.h"
 
-@interface NWScriptCommandObject : NSObject <NWSendableCommand, NWDrawableCommand>
+@interface NWScriptCommandObject : NSObject <NWSendableCommand, NWDrawableCommand, NSCoding>
 
 @property (nonatomic, assign) uint16_t duration;
 

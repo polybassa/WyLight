@@ -31,6 +31,29 @@
 	return other;
 }
 
+#define NEXT_KEY @"next"
+#define PREV_KEY @"prev"
+#define WAIT_KEY @"wait"
+#define SCRIPTOBJECTS_KEY @"scriptObjects"
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	self = [super initWithCoder:aDecoder];
+	if (self) {
+		_next = [aDecoder decodeObjectForKey:NEXT_KEY];
+		_prev = [aDecoder decodeObjectForKey:PREV_KEY];
+		_waitCommand = [aDecoder decodeBoolForKey:WAIT_KEY];
+		_itsScriptObjects = [aDecoder decodeObjectForKey:SCRIPTOBJECTS_KEY];
+	}
+	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+	[aCoder encodeObject:_itsScriptObjects forKey:SCRIPTOBJECTS_KEY];
+	[aCoder encodeObject:_next forKey:NEXT_KEY];
+	[aCoder encodeObject:_prev forKey:PREV_KEY];
+	[aCoder encodeBool:_waitCommand forKey:WAIT_KEY];
+}
+
 - (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control
 {
 	if ([self isWaitCommand]) {

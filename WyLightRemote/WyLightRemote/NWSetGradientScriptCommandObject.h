@@ -8,7 +8,7 @@
 
 #import "NWScriptEffectCommandObject.h"
 
-@interface NWSetGradientScriptCommandObject : NWScriptEffectCommandObject <NSCopying>
+@interface NWSetGradientScriptCommandObject : NWScriptEffectCommandObject <NSCopying, NSCoding>
 
 @property (nonatomic, strong) UIColor *color1;
 @property (nonatomic, strong) UIColor *color2;

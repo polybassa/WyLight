@@ -10,6 +10,20 @@
 
 @implementation NWScriptEffectCommandObject
 
+#define PARALLEL_KEY @"parallel"
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	self = [super initWithCoder:aDecoder];
+	if (self) {
+		_parallel = [aDecoder decodeBoolForKey:PARALLEL_KEY];
+	}
+	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+	[aCoder encodeBool:_parallel forKey:PARALLEL_KEY];
+}
+
 - (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control {
 	[[[NSException alloc] initWithName:@"Function not implemented" reason:@"Implement function sendToWCWiflyControl:" userInfo:nil] raise];
 }

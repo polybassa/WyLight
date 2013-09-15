@@ -8,7 +8,7 @@
 
 #import "NWScriptCommandObject.h"
 
-@interface NWScriptEffectCommandObject : NWScriptCommandObject
+@interface NWScriptEffectCommandObject : NWScriptCommandObject <NSCoding>
 
 @property (nonatomic) BOOL parallel;
 

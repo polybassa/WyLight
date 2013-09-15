@@ -15,10 +15,7 @@
 @property (nonatomic, readonly, strong) NSMutableArray *scriptArray;
 
 - (void)addObject:(NWComplexScriptCommandObject *)anObject;
-- (void)insertObject:(NWComplexScriptCommandObject *)anObject atIndex:(NSUInteger)index;
-- (void)removeObject:(id)anObject;
 - (void)removeObjectAtIndex:(NSUInteger)index;
-- (NSUInteger)indexOfObject:(id)anObject;
 
 - (NSNumber *)totalDurationInTmms;
 

@@ -13,6 +13,23 @@
 
 @implementation NWSetFadeScriptCommandObject
 
+#define COLOR_KEY @"color"
+#define ADDRESS_KEY @"address"
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	self = [super initWithCoder:aDecoder];
+	if (self) {
+		_address = [aDecoder decodeInt32ForKey:ADDRESS_KEY];
+		_color = [aDecoder decodeObjectForKey:COLOR_KEY];
+	}
+	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+	[aCoder encodeInt32:_address forKey:ADDRESS_KEY];
+	[aCoder encodeObject:_color forKey:COLOR_KEY];
+}
+
 - (BOOL)isEqual:(id)object {
 	if ([object isKindOfClass:[NWSetFadeScriptCommandObject class]]) {
 		NWSetFadeScriptCommandObject *otherFade = (NWSetFadeScriptCommandObject *)object;

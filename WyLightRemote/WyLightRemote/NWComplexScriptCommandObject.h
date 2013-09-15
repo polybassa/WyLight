@@ -8,7 +8,7 @@
 
 #import "NWScriptCommandObject.h"
 
-@interface NWComplexScriptCommandObject : NWScriptCommandObject <NSCopying>
+@interface NWComplexScriptCommandObject : NWScriptCommandObject <NSCopying, NSCoding>
 
 @property (nonatomic, weak) NWComplexScriptCommandObject *next;
 @property (nonatomic, weak) NWComplexScriptCommandObject *prev;

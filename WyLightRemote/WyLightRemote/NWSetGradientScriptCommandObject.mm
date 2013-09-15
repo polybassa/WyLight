@@ -13,6 +13,29 @@
 
 @implementation NWSetGradientScriptCommandObject
 
+#define COLOR1_KEY @"color1"
+#define COLOR2_KEY @"color2"
+#define OFFSET_KEY @"offset"
+#define NUM_OF_LED_KEY @"numberOfLeds"
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	self = [super initWithCoder:aDecoder];
+	if (self) {
+		_color1 = [aDecoder decodeObjectForKey:COLOR1_KEY];
+		_color2 = [aDecoder decodeObjectForKey:COLOR2_KEY];
+		_offset = [aDecoder decodeInt32ForKey:OFFSET_KEY];
+		_numberOfLeds = [aDecoder decodeInt32ForKey:NUM_OF_LED_KEY];
+	}
+	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+	[aCoder encodeObject:_color1 forKey:COLOR1_KEY];
+	[aCoder encodeObject:_color2 forKey:COLOR2_KEY];
+	[aCoder encodeInt32:_offset forKey:OFFSET_KEY];
+	[aCoder encodeInt32:_numberOfLeds forKey:NUM_OF_LED_KEY];
+}
+
 - (BOOL)isEqual:(id)object {
 	if ([object isKindOfClass:[NWSetGradientScriptCommandObject class]]) {
 		NWSetGradientScriptCommandObject *otherGradient = (NWSetGradientScriptCommandObject *)object;

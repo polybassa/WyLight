@@ -8,7 +8,7 @@
 
 #import "NWScriptEffectCommandObject.h"
 
-@interface NWSetFadeScriptCommandObject : NWScriptEffectCommandObject <NSCopying>
+@interface NWSetFadeScriptCommandObject : NWScriptEffectCommandObject <NSCopying, NSCoding>
 
 @property (nonatomic) uint32_t address;
 @property (nonatomic, strong) UIColor *color;
