@@ -49,6 +49,8 @@
 			
 			[self fixLocationOfTimeInfoView:subview.tag];
 		}
+	}
+	for (UIView *subview in self.subviews) {
 		if ([subview isKindOfClass:[NWAddScriptObjectView class]]) {
 			subview.frame = CGRectMake(xPosition, yPosition, height / 3, height);
 			xPosition += width + 2;
@@ -62,9 +64,11 @@
 
 - (void)fixLocationOfTimeInfoView:(NSInteger)tag {
 	CGRect subviewFrame;
+	CGFloat subviewAlpha;
 	for (UIView *subview in self.subviews) {
 		if ((subview.tag == tag) && [subview isKindOfClass:[NWScriptObjectView class]]) {
 			subviewFrame = subview.frame;
+			subviewAlpha = subview.alpha;
 			break;
 		}
 	}
@@ -72,6 +76,7 @@
 		if ((subview.tag == tag) && [subview isKindOfClass:[NWTimeInfoView class]]) {
 			subview.frame = CGRectMake(subviewFrame.origin.x, subviewFrame.origin.y + subviewFrame.size.height + Y_SPACE, subviewFrame.size.width, HEIGTH);
 			((NWTimeInfoView *)subview).timeScaleFactor = self.timeScaleFactor;
+			subview.alpha = subviewAlpha;
 			break;
 		}
 	}

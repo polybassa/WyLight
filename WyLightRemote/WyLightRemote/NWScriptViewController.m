@@ -206,10 +206,46 @@
 }
 
 - (void)addScriptCommand:(UIButton *)sender {
-	NSLog(@"ADD");
+	//insert new command in model
 	NWComplexScriptCommandObject *commandToAdd = [[self.script.scriptArray lastObject] copy];
 	[self.script addObject:commandToAdd];
-	[self.scriptView reloadData];	
+	
+	//get last scriptviewobject, it's the addButton
+	NWAddScriptObjectView *addButtonView;
+	for (UIView *view in self.scriptView.subviews) {
+		if ([view isKindOfClass:[NWAddScriptObjectView class]]) {
+			addButtonView = (NWAddScriptObjectView *)view;
+		}
+	}
+	
+	//get new view for the new command
+	UIView *viewToAdd = [self scriptView:self.scriptView objectViewForIndex:addButtonView.tag];
+	viewToAdd.alpha = 0.0;
+	[self.scriptView addSubview:viewToAdd];
+	
+	UIView *timeInfoViewToAdd = [self scriptView:self.scriptView timeInfoViewForIndex:addButtonView.tag];
+	[self.scriptView addSubview:timeInfoViewToAdd];
+	
+	//change position of the addButton via tag;
+	addButtonView.tag += 1;
+	
+	//Positionen anpassen
+	[UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+		
+		addButtonView.frame = CGRectMake(addButtonView.frame.origin.x + commandToAdd.duration * self.timeScaleFactor + 2, addButtonView.frame.origin.y, addButtonView.frame.size.width, addButtonView.frame.size.height);
+		
+	} completion:^(BOOL finished) {
+		[self.scriptView fixLocationsOfSubviews];
+		//Farben nachladen
+		[UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+			viewToAdd.alpha = 1.0;
+			[self.scriptView fixLocationOfTimeInfoView:viewToAdd.tag];
+		} completion:^(BOOL finished) {
+			[self.scriptView reloadData];
+		}];
+	}];
+
+	
 }
 
 - (void)sendScript {
