@@ -29,8 +29,7 @@
 #define SCANNING_TIME_S 40
 #define ENDPOINT_IP 16909060 // is equal to 1.2.3.4
 
-- (void)nextPage
-{
+- (void)nextPage {
 	if ((self.guideView.currentPageIndex + 1 ) < [self.guideView.pageImageStrings count]) {
 		[UIView transitionWithView:self.guideView
 						  duration:0.5

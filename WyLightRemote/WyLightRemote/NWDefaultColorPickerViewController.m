@@ -37,6 +37,23 @@
 	[super viewWillAppear:animated];
 }
 
+- (void)viewWillLayoutSubviews {
+	[super viewWillLayoutSubviews];
+	[self fixLocations];
+	
+}
+
+- (void)fixLocations {
+	if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
+	}
+	else {
+		CGRect biggerFrame = self.tabBarController.view.frame;
+		biggerFrame.size.height += self.tabBarController.tabBar.frame.size.height;
+		self.tabBarController.view.frame = biggerFrame ;
+	}
+}
+
+
 #pragma mark - HANDLE ROTATION
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {

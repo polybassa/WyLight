@@ -127,7 +127,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	[self fixLocations];
 	[self.scriptView reloadData];
 }
 
