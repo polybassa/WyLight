@@ -271,12 +271,16 @@
 }
 
 - (void)sendScript {
-	[self.controlHandle clearScript];
-	[self.controlHandle loopOn];
-	for (NWComplexScriptCommandObject* command in self.script.scriptArray) {
-		[command sendToWCWiflyControl:self.controlHandle];
-	}
-	[self.controlHandle loopOffAfterNumberOfRepeats:0];
+	dispatch_queue_t sendScriptQueue = dispatch_queue_create("sendScriptQueue", NULL);
+	dispatch_async(sendScriptQueue, ^{
+		[self.controlHandle clearScript];
+		[self.controlHandle loopOn];
+		for (NWComplexScriptCommandObject* command in self.script.scriptArray) {
+			[command sendToWCWiflyControl:self.controlHandle];
+			[NSThread sleepForTimeInterval:0.1];
+		}
+		[self.controlHandle loopOffAfterNumberOfRepeats:0];
+	});
 }
 
 #pragma mark - SCRIPT VIEW DATASOURCE
@@ -298,7 +302,7 @@
 				tempView.startColors = ((NWComplexScriptCommandObject *)self.script.scriptArray[index]).prev.colors;
 			}
 			tempView.borderWidth = 1;
-			tempView.cornerRadius = 10;
+			tempView.cornerRadius = 5;
 			tempView.delegate = self;
 			tempView.showDeleteButton = self.isDeletionModeActive;
 			tempView.backgroundColor = [UIColor blackColor];
@@ -322,7 +326,7 @@
 			[tempView.button addTarget:self action:@selector(addScriptCommand:) forControlEvents:UIControlEventTouchUpInside];
 			
 			tempView.scriptObjectView.borderWidth = 1;
-			tempView.scriptObjectView.cornerRadius = 10;
+			tempView.scriptObjectView.cornerRadius = 5;
 			tempView.scriptObjectView.backgroundColor = [UIColor blackColor];
 			tempView.tag = index;
 			tempView.button.enabled = !self.isDeletionModeActive;
