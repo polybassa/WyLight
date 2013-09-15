@@ -75,6 +75,7 @@
 
 #pragma mark - SETUP STUFF
 #define SCRIPT_KEY @"script"
+#define TIMESCALE_KEY @"timescalefactor"
 - (void)fixLocations {
 	if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
 		
@@ -97,8 +98,17 @@
 }
 
 - (void)setup {
-	self.timeScaleFactor = 1;
-		
+	//user data
+	self.timeScaleFactor = [[NSUserDefaults standardUserDefaults] floatForKey:TIMESCALE_KEY];
+	if (self.timeScaleFactor == 0.0) {
+		self.timeScaleFactor = 1.0;
+	}
+	
+	NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:SCRIPT_KEY];
+	if (data) {
+		self.script = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+	}
+	
 	//script view
 	self.scriptView = [[NWScriptView alloc] initWithFrame:CGRectZero];
 	self.scriptView.dataSource = self;
@@ -115,13 +125,17 @@
 	[self.view addSubview:self.sendButton];
 }
 
+- (void)saveUserData {
+	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.script];
+	if (data) {
+		[[NSUserDefaults standardUserDefaults] setObject:data forKey:SCRIPT_KEY];
+	}
+	
+	[[NSUserDefaults standardUserDefaults] setFloat:self.timeScaleFactor forKey:TIMESCALE_KEY];
+}
+
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	
-	NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:SCRIPT_KEY];
-	if (data) {
-		self.script = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-	}
 	[self setup];
 }
 
@@ -131,10 +145,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.script];
-	if (data) {
-		[[NSUserDefaults standardUserDefaults] setObject:data forKey:SCRIPT_KEY];
-	}
+	[self saveUserData];
 	[super viewWillDisappear:animated];
 }
 
@@ -406,20 +417,6 @@
 		}
 	}
 }
-
-/*
-#pragma mark - gesture-recognition action methods
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    CGPoint touchPoint = [touch locationInView:self.collectionView];
-    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:touchPoint];
-    if (indexPath && [gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])
-    {
-        return NO;
-    }
-    return YES;
-}
-*/
-
 
 
 @end
