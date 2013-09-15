@@ -85,19 +85,6 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "WyLightRemote/NWScriptViewController.m"
-         timestampString = "400874831.248631"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "39"
-         endingLineNumber = "39"
-         landmarkName = "-setTimeScaleFactor:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "WyLightRemote/NWEditComplexScriptObjectViewController.m"
          timestampString = "400788804.291143"
          startingColumnNumber = "9223372036854775807"
@@ -164,25 +151,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "WyLightRemote/NWScriptViewController.m"
-         timestampString = "400876245.77546"
+         timestampString = "400930295.995983"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "142"
-         endingLineNumber = "142"
+         startingLineNumber = "148"
+         endingLineNumber = "148"
          landmarkName = "-pinchOnScriptView:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "WyLightRemote/NWScriptView.m"
-         timestampString = "400877665.707333"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "108"
-         endingLineNumber = "108"
-         landmarkName = "-reloadData"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

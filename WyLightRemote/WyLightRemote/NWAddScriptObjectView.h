@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NWScriptObjectView.h"
 
 @interface NWAddScriptObjectView : UIView
 
 @property (nonatomic, strong) UIButton *button;
+@property (nonatomic, strong) NWScriptObjectView *scriptObjectView;
 
 @end

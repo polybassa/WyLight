@@ -61,7 +61,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 		mControl = std::make_shared<WyLight::ControlNoThrow>(self.endpoint.ipAdress,self.endpoint.port);
 		gCtrlMutex = std::make_shared<std::mutex>();
 		mCmdQueue = std::make_shared<WyLight::MessageQueue<ControlMessage>>();
-		mCmdQueue->setMessageLimit(8);
+		mCmdQueue->setMessageLimit(15);
 		mCtrlThread = std::make_shared<std::thread>
 		([=]{
 			uint32_t retVal;

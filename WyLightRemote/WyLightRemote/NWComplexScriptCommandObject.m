@@ -55,8 +55,7 @@
 		command.parallel = YES;
 		command.duration = self.duration;
 	}
-	
-	[self.itsScriptObjects.lastObject setParallel:NO];
+	[[self.itsScriptObjects lastObject] setParallel:NO];
 }
 
 - (NSArray *)colors

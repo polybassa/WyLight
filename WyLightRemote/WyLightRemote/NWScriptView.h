@@ -12,7 +12,8 @@
 
 @protocol NWScriptViewDataSource <NSObject>
 
-- (UIView *)scriptView:(NWScriptView *)view objectForIndex:(NSUInteger)index;
+- (UIView *)scriptView:(NWScriptView *)view objectViewForIndex:(NSUInteger)index;
+- (UIView *)scriptView:(NWScriptView *)view timeInfoViewForIndex:(NSUInteger)index;
 - (NSUInteger)numberOfObjectsInScriptView:(NWScriptView *)view;
 - (CGFloat)scriptView:(NWScriptView *)view widthOfObjectAtIndex:(NSUInteger)index;
 
@@ -25,6 +26,5 @@
 
 - (void)reloadData;
 - (void)fixLocationsOfSubviews;
-- (void)fixLocationOfTimelineView:(NSInteger)tag;
-
+- (void)fixLocationOfTimeInfoView:(NSInteger)tag;
 @end

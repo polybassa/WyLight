@@ -47,7 +47,7 @@
 			subview.frame = CGRectMake(xPosition, yPosition, width, height);
 			xPosition += width + 2;
 			
-			[self fixLocationOfTimelineView:subview.tag];
+			[self fixLocationOfTimeInfoView:subview.tag];
 		}
 		if ([subview isKindOfClass:[NWAddScriptObjectView class]]) {
 			subview.frame = CGRectMake(xPosition, yPosition, height / 3, height);
@@ -60,7 +60,7 @@
 #define Y_SPACE 10
 #define HEIGTH 30
 
-- (void)fixLocationOfTimelineView:(NSInteger)tag {
+- (void)fixLocationOfTimeInfoView:(NSInteger)tag {
 	CGRect subviewFrame;
 	for (UIView *subview in self.subviews) {
 		if ((subview.tag == tag) && [subview isKindOfClass:[NWScriptObjectView class]]) {
@@ -93,28 +93,15 @@
 
 - (void)reloadData {
 	for (UIView *subview in self.subviews) {
-		if ([subview isKindOfClass:[NWScriptObjectControl class]]) {
-			[subview removeFromSuperview];
-		}
-		if ([subview isKindOfClass:[NWTimeInfoView class]]) {
-			[subview removeFromSuperview];
-		}
-		if ([subview isKindOfClass:[NWAddScriptObjectView class]]) {
-			[subview removeFromSuperview];
-		}
-
+		[subview removeFromSuperview];
 	}
 	
 	for (NSUInteger index = 0; index < [self.dataSource numberOfObjectsInScriptView:self]; index++) {
-		UIView *subview = [self.dataSource scriptView:self objectForIndex:index];
-		subview.tag = index;
+		UIView *subview = [self.dataSource scriptView:self objectViewForIndex:index];
 		[self addSubview:subview];
 		
 		if ([subview isKindOfClass:[NWScriptObjectControl class]]) {
-			NWTimeInfoView *timeInfoView = [[NWTimeInfoView alloc] initWithFrame:CGRectZero];
-			timeInfoView.timeScaleFactor = self.timeScaleFactor;
-			timeInfoView.tag = index;
-			[self addSubview:timeInfoView];
+			[self addSubview:[self.dataSource scriptView:self timeInfoViewForIndex:index]];
 		}
 	}
 	[self fixLocationsOfSubviews];

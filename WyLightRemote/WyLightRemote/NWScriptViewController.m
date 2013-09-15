@@ -14,6 +14,7 @@
 #import "NWEditComplexScriptObjectViewController.h"
 #import "NWTimeInfoView.h"
 #import "NWAddScriptObjectView.h"
+#import "WCWiflyControlWrapper.h"
 
 @interface NWScriptViewController () <UIGestureRecognizerDelegate, NWScriptViewDataSource, NWScriptObjectControlDelegate, UIScrollViewDelegate>
 
@@ -22,6 +23,7 @@
 @property (nonatomic) BOOL isDeletionModeActive;
 @property (nonatomic) CGFloat timeScaleFactor;
 @property (nonatomic) NSUInteger indexForObjectToEdit;
+@property (nonatomic, strong) UIButton *sendButton;
 
 @end
 
@@ -33,10 +35,6 @@
 		_script = [[NWScript alloc]init];
 	}
 	return _script;
-}
-
-- (void)setTimeScaleFactor:(CGFloat)timeScaleFactor {
-	_timeScaleFactor = timeScaleFactor;
 }
 
 #pragma mark - HANDLE ROTATION
@@ -57,21 +55,25 @@
 	if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
 		
 		//script view
-		self.scriptView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+		self.scriptView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 60);
+		
+		self.sendButton.frame = CGRectMake(0, self.view.frame.size.height - 40, self.view.frame.size.width, 40);
 	}
 	else {
 		CGRect biggerFrame = self.tabBarController.view.frame;
 		biggerFrame.size.height += self.tabBarController.tabBar.frame.size.height;
 		self.tabBarController.view.frame = biggerFrame ;
 		
-		self.scriptView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+		self.scriptView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 60);
+		
+		self.sendButton.frame = CGRectMake(0, self.view.frame.size.height - 40, self.view.frame.size.width, 40);
+
 	}
 	[self.scriptView fixLocationsOfSubviews];
 }
 
 - (void)setup {
 	self.timeScaleFactor = 1;
-		
 		
 	//script view
 	self.scriptView = [[NWScriptView alloc] initWithFrame:CGRectZero];
@@ -82,6 +84,11 @@
 
 	UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchOnScriptView:)];
 	[self.scriptView addGestureRecognizer:pinch];
+	
+	self.sendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	self.sendButton.titleLabel.text = @"SEND";
+	[self.sendButton addTarget:self action:@selector(sendScript) forControlEvents:UIControlEventTouchUpInside];
+	[self.view addSubview:self.sendButton];
 }
 
 - (void)viewDidLoad {
@@ -93,7 +100,6 @@
 	[super viewWillAppear:animated];
 	[self fixLocations];
 	[self.scriptView reloadData];
-
 }
 
 - (void)viewWillLayoutSubviews {
@@ -140,7 +146,8 @@
 
 - (void)pinchOnScriptView:(UIPinchGestureRecognizer *)gesture {
 	if (gesture.state == UIGestureRecognizerStateChanged) {
-		self.scriptView.timeScaleFactor = self.timeScaleFactor *= gesture.scale;
+		self.timeScaleFactor *= gesture.scale;
+		self.scriptView.timeScaleFactor = self.timeScaleFactor;
 		gesture.scale = 1;
 	}
 }
@@ -205,6 +212,15 @@
 	[self.scriptView reloadData];	
 }
 
+- (void)sendScript {
+	[self.controlHandle clearScript];
+	[self.controlHandle loopOn];
+	for (NWComplexScriptCommandObject* command in self.script.scriptArray) {
+		[command sendToWCWiflyControl:self.controlHandle];
+	}
+	[self.controlHandle loopOffAfterNumberOfRepeats:0];
+}
+
 #pragma mark - SCRIPT VIEW DATASOURCE
 - (CGFloat)scriptView:(NWScriptView *)view widthOfObjectAtIndex:(NSUInteger)index {
 	if (view == self.scriptView) {
@@ -215,7 +231,7 @@
 	return 0;
 }
 
-- (UIView *)scriptView:(NWScriptView *)view objectForIndex:(NSUInteger)index {
+- (UIView *)scriptView:(NWScriptView *)view objectViewForIndex:(NSUInteger)index {
 	if (view == self.scriptView) {
 		if (index < self.script.scriptArray.count) {
 			NWScriptObjectControl *tempView = [[NWScriptObjectControl alloc]initWithFrame:CGRectZero];
@@ -228,6 +244,7 @@
 			tempView.delegate = self;
 			tempView.showDeleteButton = self.isDeletionModeActive;
 			tempView.backgroundColor = [UIColor blackColor];
+			tempView.tag = index;
 			
 			UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(setObjectForEdit:)];
 			tap.numberOfTapsRequired = 1;
@@ -245,6 +262,12 @@
 		} else {
 			NWAddScriptObjectView *tempView = [[NWAddScriptObjectView alloc]initWithFrame:CGRectZero];
 			[tempView.button addTarget:self action:@selector(addScriptCommand:) forControlEvents:UIControlEventTouchUpInside];
+			
+			tempView.scriptObjectView.borderWidth = 1;
+			tempView.scriptObjectView.cornerRadius = 10;
+			tempView.scriptObjectView.backgroundColor = [UIColor blackColor];
+			tempView.tag = index;
+
 			return tempView;
 		}
 	}
@@ -258,9 +281,19 @@
 	return 0;
 }
 
+- (UIView *)scriptView:(NWScriptView *)view timeInfoViewForIndex:(NSUInteger)index {
+	if (view == self.scriptView) {
+		NWTimeInfoView *timeInfoView = [[NWTimeInfoView alloc] initWithFrame:CGRectZero];
+		timeInfoView.timeScaleFactor = self.timeScaleFactor;
+		timeInfoView.tag = index;
+		return timeInfoView;
+	}
+	return nil;
+}
+
 #pragma mark - SCRIPTOBJECTCONTROL DELEGATE
 - (void)scriptObjectView:(NWScriptObjectView *)view changedWidthTo:(CGFloat)width deltaOfChange:(CGFloat)delta {
-	[self.scriptView fixLocationOfTimelineView:view.tag];
+	[self.scriptView fixLocationOfTimeInfoView:view.tag];
 	for (NWScriptObjectView *subview in self.scriptView.subviews) {
 		if ([subview isKindOfClass:[NWScriptObjectView class]]) {
 			if (subview.tag <= view.tag) {
@@ -272,7 +305,7 @@
 			CGFloat height = subview.frame.size.height;
 			
 			subview.frame = CGRectMake(x, y, width, height);
-			[self.scriptView fixLocationOfTimelineView:subview.tag];
+			[self.scriptView fixLocationOfTimeInfoView:subview.tag];
 		}
 		if ([subview isKindOfClass:[NWAddScriptObjectView class]]) {
 			if (subview.tag <= view.tag) {
