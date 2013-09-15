@@ -21,6 +21,7 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
+	[super encodeWithCoder:aCoder];
 	[aCoder encodeBool:_parallel forKey:PARALLEL_KEY];
 }
 

@@ -48,6 +48,7 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
+	[super encodeWithCoder:aCoder];
 	[aCoder encodeObject:_itsScriptObjects forKey:SCRIPTOBJECTS_KEY];
 	[aCoder encodeObject:_next forKey:NEXT_KEY];
 	[aCoder encodeObject:_prev forKey:PREV_KEY];

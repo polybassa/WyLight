@@ -10,7 +10,7 @@
 
 @class NWComplexScriptCommandObject;
 
-@interface NWScript : NSObject
+@interface NWScript : NSObject <NSCoding>
 
 @property (nonatomic, readonly, strong) NSMutableArray *scriptArray;
 

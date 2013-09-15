@@ -20,24 +20,23 @@
 
 #define DURATION_KEY @"duration"
 
-- (id)init {
-	self = [super init];
-	if (self) {
-		_duration = 1;
-	}
-	return self;
-}
-
 - (id)initWithCoder:(NSCoder *)aDecoder {
 	self = [super init];
 	if (self) {
-		_duration = (uint16_t)[aDecoder decodeInt32ForKey:DURATION_KEY];
+		self.duration = (uint16_t)[aDecoder decodeInt32ForKey:DURATION_KEY];
 	}
 	return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
 	[aCoder encodeInt32:_duration forKey:DURATION_KEY];
+}
+
+- (uint16_t)duration {
+	if (!_duration) {
+		_duration = 100;
+	}
+	return _duration;
 }
 
 - (NSArray*)colors {

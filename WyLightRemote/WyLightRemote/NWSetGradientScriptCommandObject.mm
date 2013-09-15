@@ -30,6 +30,7 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
+	[super encodeWithCoder:aCoder];
 	[aCoder encodeObject:_color1 forKey:COLOR1_KEY];
 	[aCoder encodeObject:_color2 forKey:COLOR2_KEY];
 	[aCoder encodeInt32:_offset forKey:OFFSET_KEY];

@@ -26,6 +26,7 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
+	[super encodeWithCoder:aCoder];
 	[aCoder encodeInt32:_address forKey:ADDRESS_KEY];
 	[aCoder encodeObject:_color forKey:COLOR_KEY];
 }

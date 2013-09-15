@@ -74,6 +74,7 @@
 }
 
 #pragma mark - SETUP STUFF
+#define SCRIPT_KEY @"script"
 - (void)fixLocations {
 	if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
 		
@@ -116,6 +117,11 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+	
+	NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:SCRIPT_KEY];
+	if (data) {
+		self.script = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+	}
 	[self setup];
 }
 
@@ -123,6 +129,14 @@
 	[super viewWillAppear:animated];
 	[self fixLocations];
 	[self.scriptView reloadData];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.script];
+	if (data) {
+		[[NSUserDefaults standardUserDefaults] setObject:data forKey:SCRIPT_KEY];
+	}
+	[super viewWillDisappear:animated];
 }
 
 - (void)viewWillLayoutSubviews {

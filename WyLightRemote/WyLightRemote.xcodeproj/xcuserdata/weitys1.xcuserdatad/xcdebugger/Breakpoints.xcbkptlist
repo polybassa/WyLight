@@ -151,12 +151,51 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "WyLightRemote/NWScriptViewController.m"
-         timestampString = "400938349.778128"
+         timestampString = "400944776.15309"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "155"
-         endingLineNumber = "155"
+         startingLineNumber = "169"
+         endingLineNumber = "169"
          landmarkName = "-pinchOnScriptView:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "WyLightRemote/NWScriptCommandObject.m"
+         timestampString = "400946094.362911"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "28"
+         endingLineNumber = "28"
+         landmarkName = "-initWithCoder:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "WyLightRemote/NWScriptCommandObject.m"
+         timestampString = "400945853.962864"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "39"
+         endingLineNumber = "39"
+         landmarkName = "-duration"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "WyLightRemote/NWScriptCommandObject.m"
+         timestampString = "400945954.02355"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "36"
+         endingLineNumber = "36"
+         landmarkName = "-duration"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

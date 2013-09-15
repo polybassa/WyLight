@@ -28,6 +28,20 @@
 	return self;
 }
 
+#define SCRIPTARRAY_KEY @"scriptarray"
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	self = [self init];
+	if (self) {
+		_scriptArray = [aDecoder decodeObjectForKey:SCRIPTARRAY_KEY];
+	}
+	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+	[aCoder encodeObject:_scriptArray forKey:SCRIPTARRAY_KEY];
+}
+
 - (void)fillWithTestData {
 	//TESTCODE
 	NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
