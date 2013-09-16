@@ -52,10 +52,10 @@
 	CGContextAddLineToPoint(context, rect.origin.x + rect.size.width, rect.origin.y + rect.size.height / 1.5);
 	
 	CGContextSetLineWidth(context, 2.0);
-	CGContextMoveToPoint(context, rect.origin.x + 1, rect.origin.y + 1);
+	CGContextMoveToPoint(context, rect.origin.x + 1, rect.origin.y + rect.size.height / 3 + 1);
 	CGContextAddLineToPoint(context, rect.origin.x + 1, rect.origin.y + rect.size.height - 1);
 	
-	CGContextMoveToPoint(context, rect.origin.x + rect.size.width - 1, rect.origin.y + 1);
+	CGContextMoveToPoint(context, rect.origin.x + rect.size.width - 1, rect.origin.y + rect.size.height / 3 + 1);
 	CGContextAddLineToPoint(context, rect.origin.x + rect.size.width - 1, rect.origin.y + rect.size.height - 1);
 	
 	CGContextStrokePath(context);

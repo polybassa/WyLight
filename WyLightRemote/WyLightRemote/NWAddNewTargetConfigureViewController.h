@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@protocol WCWiflyControlDelegate;
+#import "WCWiflyControlWrapper.h"
 
 @interface NWAddNewTargetConfigureViewController : UIViewController <UITextFieldDelegate, WCWiflyControlDelegate>
 

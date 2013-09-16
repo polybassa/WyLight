@@ -120,7 +120,7 @@
 	[self.scriptView addGestureRecognizer:pinch];
 	
 	self.sendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	self.sendButton.titleLabel.text = @"SEND";
+	[self.sendButton setTitle:@"SEND" forState:UIControlStateNormal];
 	[self.sendButton addTarget:self action:@selector(sendScript) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:self.sendButton];
 }

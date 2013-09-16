@@ -8,7 +8,6 @@
 
 #import "NWAddNewTargetConfigureViewController.h"
 #import "WCEndpoint.h"
-#import "WCWiflyControlWrapper.h"
 
 @interface NWAddNewTargetConfigureViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *ssidLabel;

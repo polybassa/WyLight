@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WCWiflyControlWrapper.h"
 
 @class WCEndpoint;
-@protocol WCWiflyControlDelegate;
-
 
 @interface NWConnectionTBC : UITabBarController <WCWiflyControlDelegate>
 

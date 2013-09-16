@@ -7,7 +7,6 @@
 //
 
 #import "NWConnectionTBC.h"
-#import "WCWiflyControlWrapper.h"
 #import "WCEndpoint.h"
 
 @interface NWConnectionTBC ()
