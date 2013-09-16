@@ -10,6 +10,8 @@
 
 @interface NWGradientView : UIView
 
+- (void)setColorsAnimatedWithDuration:(NSTimeInterval)duration startColor:(UIColor *)startColor endColor:(UIColor *)endColor;
+
 @property (nonatomic, strong) UIColor *startColor;
 @property (nonatomic, strong) UIColor *endColor;
 

@@ -17,5 +17,6 @@
 @property (nonatomic) CGFloat borderWidth;
 @property (nonatomic, strong) UIColor *borderColor;
 
+- (void)setColorsAnimatedWithDuration:(NSTimeInterval)duration startColors:(NSArray *)startColors endColor:(NSArray *)endColors;
 
 @end

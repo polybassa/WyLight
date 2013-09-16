@@ -11,13 +11,40 @@
 @implementation NWGradientView
 
 - (void)setEndColor:(UIColor *)endColor {
-	_endColor = endColor;
-	[self setNeedsDisplay];
+	if ([_endColor isEqual:endColor]) {
+		_endColor = endColor;
+	} else {
+		_endColor = endColor;
+		[self setNeedsDisplay];
+	}
 }
 
 - (void)setStartColor:(UIColor *)startColor {
-	_startColor = startColor;
-	[self setNeedsDisplay];
+	if ([_startColor isEqual:startColor]) {
+		_startColor = startColor;
+	} else {
+		_startColor = startColor;
+		[self setNeedsDisplay];
+	}
+}
+
+- (void)setColorsAnimatedWithDuration:(NSTimeInterval)duration startColor:(UIColor *)startColor endColor:(UIColor *)endColor {
+	if ( (![startColor isEqual:self.startColor]) && (![endColor isEqual:self.endColor]) ) {
+		NWGradientView *tempView = [[NWGradientView alloc] initWithFrame:self.frame];
+		tempView.endColor = self.endColor;
+		tempView.startColor = self.startColor;
+		[self.superview addSubview:tempView];
+		self.alpha = 0.0;
+		self.endColor = endColor;
+		self.startColor = startColor;
+		
+		[UIView animateWithDuration:duration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+			tempView.alpha = 0.0;
+			self.alpha = 1.0;
+		} completion:^(BOOL finished) {
+			[tempView removeFromSuperview];
+		}];
+	}
 }
 
 - (void)drawRect:(CGRect)rect
@@ -30,6 +57,12 @@
 }
 
 + (CGGradientRef)createGradientWithStartColor:(UIColor*)startColor endColor:(UIColor*)endColor {
+	if ([endColor isEqual:[UIColor blackColor]]) {
+		endColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
+	}
+	if ([startColor isEqual:[UIColor blackColor]]) {
+		startColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
+	}
 	
     CGGradientRef result;
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();

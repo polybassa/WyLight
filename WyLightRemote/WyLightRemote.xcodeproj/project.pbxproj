@@ -77,6 +77,7 @@
 		5C75E37617E7042F00A31081 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C75E37417E7042F00A31081 /* Icon.png */; };
 		5C75E37717E7042F00A31081 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C75E37517E7042F00A31081 /* Icon@2x.png */; };
 		5C75E37A17E7366900A31081 /* NWGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C75E37917E7366900A31081 /* NWGradientView.m */; };
+		5C75E37D17E7597500A31081 /* NWTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C75E37C17E7597400A31081 /* NWTestViewController.m */; };
 		5CB5336C17D2266E00262009 /* NWScriptObjectControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CB5336B17D2266E00262009 /* NWScriptObjectControl.m */; };
 		5CDEA45D17E3419D00F1FBC1 /* NWAddCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDEA45C17E3419D00F1FBC1 /* NWAddCollectionViewCell.m */; };
 		5CDEA46017E4C0E200F1FBC1 /* NWTimeInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDEA45F17E4C0E100F1FBC1 /* NWTimeInfoView.m */; };
@@ -222,6 +223,8 @@
 		5C75E37517E7042F00A31081 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		5C75E37817E7366900A31081 /* NWGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWGradientView.h; sourceTree = "<group>"; };
 		5C75E37917E7366900A31081 /* NWGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWGradientView.m; sourceTree = "<group>"; };
+		5C75E37B17E7597300A31081 /* NWTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWTestViewController.h; sourceTree = "<group>"; };
+		5C75E37C17E7597400A31081 /* NWTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWTestViewController.m; sourceTree = "<group>"; };
 		5CB5336A17D2266E00262009 /* NWScriptObjectControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptObjectControl.h; sourceTree = "<group>"; };
 		5CB5336B17D2266E00262009 /* NWScriptObjectControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptObjectControl.m; sourceTree = "<group>"; };
 		5CDEA45B17E3419C00F1FBC1 /* NWAddCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWAddCollectionViewCell.h; sourceTree = "<group>"; };
@@ -410,6 +413,8 @@
 				5C542CC817BC163900E4410A /* NWAddNewTargetConfigureViewController.m */,
 				5C542CC917BC163900E4410A /* NWAddNewTargetGuideViewController.h */,
 				5C542CCA17BC163900E4410A /* NWAddNewTargetGuideViewController.m */,
+				5C75E37B17E7597300A31081 /* NWTestViewController.h */,
+				5C75E37C17E7597400A31081 /* NWTestViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -631,6 +636,7 @@
 				5CDEA46017E4C0E200F1FBC1 /* NWTimeInfoView.m in Sources */,
 				5CDEA46317E4DA6400F1FBC1 /* NWAddScriptObjectView.m in Sources */,
 				5C75E37A17E7366900A31081 /* NWGradientView.m in Sources */,
+				5C75E37D17E7597500A31081 /* NWTestViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

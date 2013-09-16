@@ -83,6 +83,17 @@
 	}
 }
 
+- (void)setColorsAnimatedWithDuration:(NSTimeInterval)duration startColors:(NSArray *)startColors endColor:(NSArray *)endColors {
+
+	for (NSUInteger i = 0; i < startColors.count && i < endColors.count && i < self.gradientViews.count; i++) {
+		[((NWGradientView *)self.gradientViews[i]) setColorsAnimatedWithDuration:duration
+																	  startColor:startColors[i]
+																		endColor:endColors[i]];
+	}
+	_startColors = startColors;
+	_endColors = endColors;
+}
+
 - (void)setEndColors:(NSArray *)endColors {
 	_endColors = endColors;
 	[self drawAllColorViews];
