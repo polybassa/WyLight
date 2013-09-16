@@ -16,6 +16,8 @@
 @property (nonatomic, strong) UIColor *selectedColor;
 @property (nonatomic, weak) id <NWDefaultColorControllerDelegate> colorPickerDelegate;
 
+- (void)setColorPickerSelectedColor:(UIColor *)color;
+
 @end
 
 

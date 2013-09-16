@@ -9,7 +9,17 @@
 #import "NWDefaultColorPickerViewController.h"
 #import "KZColorPicker.h"
 
+@interface NWDefaultColorPickerViewController ()
+
+@property (nonatomic, strong) KZColorPicker *colorpicker;
+
+@end
+
 @implementation NWDefaultColorPickerViewController
+
+- (void)setColorPickerSelectedColor:(UIColor *)color {
+	self.colorpicker.selectedColor = color;
+}
 
 - (void)loadView {
 	UIView *container = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
@@ -24,6 +34,7 @@
     picker.oldColor = self.selectedColor;
 	[picker addTarget:self action:@selector(pickerChanged:) forControlEvents:UIControlEventValueChanged];
 	[self.view addSubview:picker];
+	self.colorpicker = picker;
 }
 
 - (void) pickerChanged:(KZColorPicker *)cp {
