@@ -283,73 +283,6 @@
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2SY-5j-B41">
-                                <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="SSID of your WLAN Network" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oMI-IW-qah">
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                        <color key="textColor" red="0.97647064920000004" green="0.5176470876" blue="0.26666668059999998" alpha="1" colorSpace="deviceRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" background="SSID:" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3df-UK-Ria">
-                                        <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="kau-uB-eG6" id="73T-Je-ESz"/>
-                                        </connections>
-                                    </textField>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Passphrase of your WLAN" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w8J-e3-NZz">
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                        <color key="textColor" red="0.97647064920000004" green="0.5176470876" blue="0.26666668059999998" alpha="1" colorSpace="deviceRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3kM-fS-ZuP">
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="kau-uB-eG6" id="98u-sj-qIV"/>
-                                        </connections>
-                                    </textField>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Name of your WyLight" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Tl-Rx-p1D">
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                        <color key="textColor" red="0.97647064920000004" green="0.5176470876" blue="0.26666668059999998" alpha="1" colorSpace="deviceRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="myLight" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bJv-2J-8Cs">
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="kau-uB-eG6" id="B0k-ZL-7Eg"/>
-                                        </connections>
-                                    </textField>
-                                </subviews>
-                                <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstItem="w8J-e3-NZz" firstAttribute="top" secondItem="3df-UK-Ria" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="1sf-D3-YkI"/>
-                                    <constraint firstItem="3kM-fS-ZuP" firstAttribute="leading" secondItem="2SY-5j-B41" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="559-BZ-gbh"/>
-                                    <constraint firstItem="w8J-e3-NZz" firstAttribute="leading" secondItem="2SY-5j-B41" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="5Wq-oS-nRA"/>
-                                    <constraint firstAttribute="trailing" secondItem="w8J-e3-NZz" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="7bM-kJ-Kfa"/>
-                                    <constraint firstAttribute="trailing" secondItem="3kM-fS-ZuP" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="7w4-Oz-Hzu"/>
-                                    <constraint firstItem="7Tl-Rx-p1D" firstAttribute="leading" secondItem="2SY-5j-B41" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="8RK-i2-rsL"/>
-                                    <constraint firstItem="oMI-IW-qah" firstAttribute="top" secondItem="2SY-5j-B41" secondAttribute="top" constant="19" id="FHW-zg-IaD"/>
-                                    <constraint firstItem="w8J-e3-NZz" firstAttribute="centerX" secondItem="2SY-5j-B41" secondAttribute="centerX" type="default" id="FPK-5d-kLi"/>
-                                    <constraint firstItem="3df-UK-Ria" firstAttribute="leading" secondItem="2SY-5j-B41" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="FwY-Q4-Ksd"/>
-                                    <constraint firstItem="bJv-2J-8Cs" firstAttribute="leading" secondItem="2SY-5j-B41" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="KXj-dd-qvY"/>
-                                    <constraint firstAttribute="trailing" secondItem="3df-UK-Ria" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="OOn-hW-Oot"/>
-                                    <constraint firstItem="7Tl-Rx-p1D" firstAttribute="top" secondItem="2SY-5j-B41" secondAttribute="top" constant="163" id="RBt-gk-WRD"/>
-                                    <constraint firstAttribute="trailing" secondItem="7Tl-Rx-p1D" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="XFK-4g-HLc"/>
-                                    <constraint firstAttribute="trailing" secondItem="bJv-2J-8Cs" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="YBH-sD-RBa"/>
-                                    <constraint firstAttribute="trailing" secondItem="oMI-IW-qah" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="gyM-fP-Llz"/>
-                                    <constraint firstAttribute="bottom" secondItem="bJv-2J-8Cs" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="k4i-bR-GOk"/>
-                                    <constraint firstItem="3kM-fS-ZuP" firstAttribute="top" secondItem="2SY-5j-B41" secondAttribute="top" constant="124" id="mWO-zN-SKZ"/>
-                                    <constraint firstItem="oMI-IW-qah" firstAttribute="leading" secondItem="2SY-5j-B41" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="vIl-BM-KmU"/>
-                                    <constraint firstItem="bJv-2J-8Cs" firstAttribute="top" secondItem="2SY-5j-B41" secondAttribute="top" constant="196" id="xWM-oA-MZK"/>
-                                    <constraint firstItem="3df-UK-Ria" firstAttribute="top" secondItem="2SY-5j-B41" secondAttribute="top" constant="53" id="zwg-Hv-1eR"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="delegate" destination="kau-uB-eG6" id="kVG-b5-HR8"/>
-                                </connections>
-                            </scrollView>
                             <navigationBar contentMode="scaleToFill" barStyle="blackOpaque" translatesAutoresizingMaskIntoConstraints="NO" id="thj-OA-OH8">
                                 <color key="tintColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                 <items>
@@ -367,25 +300,57 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="--- bla bla ---" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oMI-IW-qah">
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <color key="textColor" red="0.97647064920000004" green="0.5176470876" blue="0.26666668059999998" alpha="1" colorSpace="deviceRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" background="SSID:" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3df-UK-Ria">
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="kau-uB-eG6" id="73T-Je-ESz"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3kM-fS-ZuP">
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="kau-uB-eG6" id="98u-sj-qIV"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="myLight" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bJv-2J-8Cs">
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="kau-uB-eG6" id="B0k-ZL-7Eg"/>
+                                </connections>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="oMI-IW-qah" firstAttribute="leading" secondItem="bi1-Vo-i0u" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="2uL-j8-KuX"/>
                             <constraint firstItem="thj-OA-OH8" firstAttribute="trailing" secondItem="bi1-Vo-i0u" secondAttribute="trailing" type="default" id="6uC-LB-D01"/>
-                            <constraint firstItem="2SY-5j-B41" firstAttribute="trailing" secondItem="bi1-Vo-i0u" secondAttribute="trailing" type="default" id="ByX-6d-BL8"/>
-                            <constraint firstItem="2SY-5j-B41" firstAttribute="leading" secondItem="bi1-Vo-i0u" secondAttribute="leading" type="default" id="TfQ-TH-GdT"/>
-                            <constraint firstItem="2SY-5j-B41" firstAttribute="top" secondItem="bi1-Vo-i0u" secondAttribute="top" constant="44" type="user" id="YoU-u5-G2i"/>
-                            <constraint firstAttribute="bottom" secondItem="2SY-5j-B41" secondAttribute="bottom" constant="170" id="edk-4i-CUV"/>
+                            <constraint firstItem="bJv-2J-8Cs" firstAttribute="leading" secondItem="bi1-Vo-i0u" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="7jz-b4-CAk"/>
+                            <constraint firstItem="oMI-IW-qah" firstAttribute="top" secondItem="bi1-Vo-i0u" secondAttribute="top" constant="59" id="CUi-Ka-FFo"/>
+                            <constraint firstAttribute="trailing" secondItem="bJv-2J-8Cs" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="Cn1-DV-kAq"/>
+                            <constraint firstItem="3kM-fS-ZuP" firstAttribute="top" secondItem="3df-UK-Ria" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="PeQ-qc-0yd"/>
+                            <constraint firstAttribute="trailing" secondItem="oMI-IW-qah" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="Ryw-3L-2rg"/>
+                            <constraint firstItem="3kM-fS-ZuP" firstAttribute="leading" secondItem="bi1-Vo-i0u" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="STY-ID-6Bk"/>
+                            <constraint firstAttribute="trailing" secondItem="3kM-fS-ZuP" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="Sy8-5o-27U"/>
+                            <constraint firstItem="bJv-2J-8Cs" firstAttribute="top" secondItem="3kM-fS-ZuP" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="m2Z-db-okt"/>
+                            <constraint firstAttribute="trailing" secondItem="3df-UK-Ria" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="mfo-XC-QRT"/>
+                            <constraint firstItem="3df-UK-Ria" firstAttribute="top" secondItem="bi1-Vo-i0u" secondAttribute="top" constant="93" id="pXh-eE-2bW"/>
+                            <constraint firstItem="3df-UK-Ria" firstAttribute="leading" secondItem="bi1-Vo-i0u" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="sE8-6T-3lB"/>
                             <constraint firstItem="thj-OA-OH8" firstAttribute="top" secondItem="bi1-Vo-i0u" secondAttribute="top" type="default" id="tKa-0r-DTf"/>
                             <constraint firstItem="thj-OA-OH8" firstAttribute="leading" secondItem="bi1-Vo-i0u" secondAttribute="leading" type="default" id="zdf-7u-Bv6"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="nameLabel" destination="7Tl-Rx-p1D" id="raq-hN-mnS"/>
+                        <outlet property="informationLabel" destination="oMI-IW-qah" id="UJs-3q-w6z"/>
                         <outlet property="nameTextField" destination="bJv-2J-8Cs" id="sGt-JN-Db4"/>
-                        <outlet property="passLabel" destination="w8J-e3-NZz" id="0Or-ek-RIK"/>
                         <outlet property="passTextField" destination="3kM-fS-ZuP" id="L8U-L5-jRr"/>
-                        <outlet property="scrollView" destination="2SY-5j-B41" id="xcP-yt-Aa9"/>
-                        <outlet property="ssidLabel" destination="oMI-IW-qah" id="rMg-jK-UeY"/>
                         <outlet property="ssidTextField" destination="3df-UK-Ria" id="tbX-Za-mbM"/>
                         <segue destination="7uJ-0A-h3o" kind="unwind" identifier="unwindConfigureDone:" unwindAction="unwindAtConnectionHasDisconnected:" id="pSJ-5K-DDp"/>
                         <segue destination="7uJ-0A-h3o" kind="unwind" identifier="unwindConfigurationAtFatalErrorOccured" unwindAction="unwindAtConnectionFatalErrorOccured:" id="5ad-yu-LAm"/>
@@ -482,12 +447,10 @@
         <class className="NWAddNewTargetConfigureViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NWAddNewTargetConfigureViewController.h"/>
             <relationships>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
+                <relationship kind="action" name="configButtonPressed:"/>
+                <relationship kind="outlet" name="informationLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="nameTextField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="passLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="passTextField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="ssidLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="ssidTextField" candidateClass="UITextField"/>
             </relationships>
         </class>

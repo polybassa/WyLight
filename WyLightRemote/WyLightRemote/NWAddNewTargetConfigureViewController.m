@@ -10,13 +10,10 @@
 #import "WCEndpoint.h"
 
 @interface NWAddNewTargetConfigureViewController ()
-@property (weak, nonatomic) IBOutlet UILabel *ssidLabel;
 @property (weak, nonatomic) IBOutlet UITextField *ssidTextField;
-@property (weak, nonatomic) IBOutlet UILabel *passLabel;
 @property (weak, nonatomic) IBOutlet UITextField *passTextField;
-@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UILabel *informationLabel;
 @property (strong, nonatomic) UIAlertView *scanningAlertView;
 @end
 
@@ -24,13 +21,52 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	[self.scrollView setContentSize:[[UIScreen mainScreen]applicationFrame].size];
-		
 	if (self.configureTargetAsSoftAP) {
-		self.passLabel.hidden = YES;
 		self.passTextField.hidden = YES;
-		self.nameLabel.hidden = YES;
 		self.nameTextField.hidden = YES;
+		self.informationLabel.text = @"Enter SSID for your WyLight";
+	} else {
+		self.informationLabel.text = @"Enter your AP informations";
+	}
+}
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	{
+		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 25)];
+		label.text = @"SSID: ";
+		label.backgroundColor = [UIColor clearColor];
+		label.textColor = [UIColor darkGrayColor];
+		label.shadowColor = [UIColor lightGrayColor];
+		label.shadowOffset = CGSizeMake(1, 1);
+		
+		self.ssidTextField.leftViewMode = UITextFieldViewModeAlways;
+		self.ssidTextField.leftView = label;
+		[label sizeToFit];
+	}
+	{
+		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 25)];
+		label.text = @"PASSWORD: ";
+		label.backgroundColor = [UIColor clearColor];
+		label.textColor = [UIColor darkGrayColor];
+		label.shadowColor = [UIColor lightGrayColor];
+		label.shadowOffset = CGSizeMake(1, 1);
+
+		self.passTextField.leftViewMode = UITextFieldViewModeAlways;
+		self.passTextField.leftView = label;
+		[label sizeToFit];
+	}
+	{
+		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 25)];
+		label.text = @"WyLight Name: ";
+		label.backgroundColor = [UIColor clearColor];
+		label.textColor = [UIColor darkGrayColor];
+		label.shadowColor = [UIColor lightGrayColor];
+		label.shadowOffset = CGSizeMake(1, 1);
+
+		self.nameTextField.leftViewMode = UITextFieldViewModeAlways;
+		self.nameTextField.leftView = label;
+		[label sizeToFit];
 	}
 }
 
