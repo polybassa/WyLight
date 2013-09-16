@@ -285,6 +285,7 @@
 	dispatch_queue_t sendScriptQueue = dispatch_queue_create("sendScriptQueue", NULL);
 	dispatch_async(sendScriptQueue, ^{
 		[self.controlHandle clearScript];
+		[self.controlHandle setColorDirect:[UIColor blackColor]];
 		[self.controlHandle loopOn];
 		for (NWComplexScriptCommandObject* command in self.script.scriptArray) {
 			[command sendToWCWiflyControl:self.controlHandle];

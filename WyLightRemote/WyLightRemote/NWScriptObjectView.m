@@ -8,6 +8,13 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "NWScriptObjectView.h"
+#import "NWGradientView.h"
+
+@interface NWScriptObjectView ()
+
+@property (nonatomic, strong) NSMutableArray *gradientViews;
+
+@end
 
 @implementation NWScriptObjectView
 
@@ -21,8 +28,16 @@
         self.clipsToBounds = YES;
         self.layer.opacity = 1;
         self.layer.borderColor = [UIColor darkGrayColor].CGColor;
+		self.backgroundColor = [UIColor blackColor];
 	}
     return self;
+}
+
+- (NSMutableArray *)gradientViews {
+	if (!_gradientViews) {
+		_gradientViews = [[NSMutableArray alloc] init];
+	}
+	return _gradientViews;
 }
 
 - (void)setFrame:(CGRect)frame {
@@ -38,17 +53,44 @@
 	} else {
 		self.layer.borderWidth = 2.0;
 	}
-	[self setNeedsDisplay];
+	[self drawAllColorViews];
+}
+
+- (void)drawAllColorViews {
+	
+	for (UIView *view in self.gradientViews) {
+		[view removeFromSuperview];
+	}
+	[self.gradientViews removeAllObjects];
+	
+	const CGFloat heightFract = self.bounds.size.height / self.endColors.count;
+	
+	for (unsigned int i = 0; i < self.endColors.count; i++) {
+		CGFloat rectOriginY = floorf(i * heightFract);
+		CGFloat nextRectOriginY = floorf((i + 1) * heightFract);
+		CGFloat rectHeight = nextRectOriginY - rectOriginY;
+		NWGradientView *gradientView = [[NWGradientView alloc] initWithFrame: CGRectMake(self.bounds.origin.x, rectOriginY, self.bounds.size.width, rectHeight)];
+		UIColor *startColor;
+		if ((self.startColors) && (i < self.startColors.count)) {
+			startColor = [self.startColors objectAtIndex:i];
+		} else {
+			startColor = self.backgroundColor;
+		}
+		gradientView.startColor = startColor;
+		gradientView.endColor = self.endColors[i];
+		[self addSubview:gradientView];
+		[self.gradientViews addObject:gradientView];
+	}
 }
 
 - (void)setEndColors:(NSArray *)endColors {
 	_endColors = endColors;
-	[self setNeedsDisplay];
+	[self drawAllColorViews];
 }
 
 - (void)setStartColors:(NSArray *)startColors {
 	_startColors = startColors;
-	[self setNeedsDisplay];
+	[self drawAllColorViews];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -58,65 +100,17 @@
 
 - (void)setBorderWidth:(CGFloat)borderWidth {
 	_borderWidth = borderWidth;
-	[self setNeedsDisplay];
+	self.layer.borderWidth = _borderWidth;
 }
 
 - (void)setCornerRadius:(CGFloat)cornerRadius {
 	_cornerRadius = cornerRadius;
-	[self setNeedsDisplay];
+	self.layer.cornerRadius = _cornerRadius;
 }
 
 - (void)setBorderColor:(UIColor *)borderColor {
 	_borderColor = borderColor;
 	self.layer.borderColor = _borderColor.CGColor;
-	[self setNeedsDisplay];
 }
-
-#pragma mark - DRAWING
-
-- (void)drawRect:(CGRect)rect {
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	const CGFloat heightFract = self.bounds.size.height / self.endColors.count;
-		
-	for (unsigned int i = 0; i < self.endColors.count; i++) {
-		CGContextSaveGState(context);
-		CGFloat rectOriginY = floorf(i * heightFract);
-		CGFloat nextRectOriginY = floorf((i + 1) * heightFract);
-		CGFloat rectHeight = nextRectOriginY - rectOriginY;
-		CGContextAddRect(context, CGRectMake(self.bounds.origin.x, rectOriginY, self.bounds.size.width, rectHeight));
-		CGContextClip(context);
-		UIColor *startColor;
-		if ((self.startColors) && (i < self.startColors.count)) {
-			startColor = [self.startColors objectAtIndex:i];
-		} else {
-			startColor = self.backgroundColor;
-		}
-		CGContextDrawLinearGradient(context,
-									[NWScriptObjectView createGradientWithStartColor:startColor endColor:self.endColors[i]],
-									CGPointMake(self.bounds.origin.x, rectOriginY + rectHeight / 2),
-									CGPointMake(self.bounds.size.width, rectOriginY + rectHeight / 2), 0);
-		CGContextRestoreGState(context);
-	}
-}
-
-+ (CGGradientRef)createGradientWithStartColor:(UIColor*)startColor endColor:(UIColor*)endColor {
-    CGGradientRef result;
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGFloat locations[2] = {0.0f, 1.0f};
-    CGFloat startRed, startGreen, startBlue, startAlpha;
-    CGFloat endRed, endGreen, endBlue, endAlpha;
-	
-    [endColor getRed:&endRed green:&endGreen blue:&endBlue alpha:&endAlpha];
-    [startColor getRed:&startRed green:&startGreen blue:&startBlue alpha:&startAlpha];
-	
-    CGFloat componnents[8] = {
-        startRed, startGreen, startBlue, startAlpha,
-        endRed, endGreen, endBlue, endAlpha
-    };
-    result = CGGradientCreateWithColorComponents(colorSpace, componnents, locations, 2);
-    CGColorSpaceRelease(colorSpace);
-    return result;
-}
-
 
 @end

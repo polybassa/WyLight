@@ -49,23 +49,25 @@ static UIImage *deleteButtonImg;
 
 - (void)setFrame:(CGRect)frame {
 	[super setFrame:frame];
-	self.deleteButton.frame = CGRectMake(0, 0, 30, 30);
-	[self setNeedsDisplay];
-	[self.deleteButton setNeedsDisplay];
+	if (frame.size.width < 30) {
+		self.deleteButton.frame = CGRectMake(0, 0, frame.size.width, frame.size.width);
+	} else {
+		self.deleteButton.frame = CGRectMake(0, 0, 30, 30);
+	}
+	[self bringSubviewToFront:self.deleteButton];
 }
 
 - (void)setShowDeleteButton:(BOOL)showDeleteButton {
 	_showDeleteButton = showDeleteButton;
 	if (showDeleteButton) {
 		self.deleteButton.layer.opacity = 1.0;
-		[self bringSubviewToFront:self.deleteButton];
 		[self startQuivering];
 	} else {
 		self.deleteButton.layer.opacity = 0.0;
 		[self stopQuivering];
 	}
+	[self bringSubviewToFront:self.deleteButton];
 }
-
 
 - (void)pinchWidth:(UIPinchGestureRecognizer *)gesture {
 	if (!self.showDeleteButton) {
