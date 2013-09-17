@@ -32,6 +32,18 @@
 
 @implementation NWEditComplexScriptObjectViewController
 
+- (void)handleEnteredBackground:(NSNotification *)notification {
+	if ([notification.name isEqualToString:UIApplicationDidEnterBackgroundNotification]) {
+		if (self.controlHandle && self.controlHandle.delegate) {
+			[self.controlHandle disconnect];
+			self.controlHandle.delegate = nil;
+			self.controlHandle = nil;
+			[self.navigationController popToRootViewControllerAnimated:YES];
+		}
+	}
+}
+
+
 - (void)viewWillLayoutSubviews {
 	[super viewWillLayoutSubviews];
 	[self fixLocations];
@@ -41,6 +53,15 @@
 	[super viewWillAppear:animated];
 	self.modeSwitch.on = !self.command.isWaitCommand;
 	[self updateGradientView];
+	[[NSNotificationCenter defaultCenter] addObserver: self
+											 selector: @selector(handleEnteredBackground:)
+												 name: UIApplicationDidEnterBackgroundNotification
+											   object: nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[super viewWillDisappear:animated];
 }
 
 - (void)updateGradientView {

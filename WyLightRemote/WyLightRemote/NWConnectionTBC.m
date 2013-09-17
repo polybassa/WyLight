@@ -84,17 +84,12 @@
 
 - (void)handleEnteredBackground:(NSNotification *)notification {
 	if ([notification.name isEqualToString:UIApplicationDidEnterBackgroundNotification]) {
-		NSLog(@"background");
-		/*
-		NSArray *viewControllers = self.navigationController.viewControllers;
-		if (viewControllers.count > 1 && [viewControllers objectAtIndex:viewControllers.count-2] == self) {
-			// View is disappearing because a new view controller was pushed onto the stack
-			NSLog(@"New view controller was pushed");
-		} else if ([viewControllers indexOfObject:self] == NSNotFound) {
-			// View is disappearing because it was popped from the stack
-			NSLog(@"View controller was popped");
-		}*/
-
+		if (self.controlHandle && self.controlHandle.delegate) {
+			[self.controlHandle disconnect];
+			self.controlHandle.delegate = nil;
+			self.controlHandle = nil;
+			[self.navigationController popToRootViewControllerAnimated:YES];
+		}
 	}
 }
 
