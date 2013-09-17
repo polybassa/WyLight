@@ -403,16 +403,8 @@
 				5C542D1117BCC46200E4410A /* NWDefaultColorPickerViewController.m */,
 				5C542CDA17BC167400E4410A /* NWColorPickerViewController.h */,
 				5C542CDB17BC167400E4410A /* NWColorPickerViewController.m */,
-				5C542D2017BD301000E4410A /* NWEditFadeCommandViewController.h */,
-				5C542D2117BD301200E4410A /* NWEditFadeCommandViewController.m */,
-				5C542CF817BC167600E4410A /* NWEditGradientCommandViewController.h */,
-				5C542CF917BC167600E4410A /* NWEditGradientCommandViewController.m */,
-				5C542D0E17BCC1F200E4410A /* ScriptViewController */,
-				5C7034C017CF2C2C00B121A6 /* ComplexScriptObjectViewController */,
-				5C542CC717BC163900E4410A /* NWAddNewTargetConfigureViewController.h */,
-				5C542CC817BC163900E4410A /* NWAddNewTargetConfigureViewController.m */,
-				5C542CC917BC163900E4410A /* NWAddNewTargetGuideViewController.h */,
-				5C542CCA17BC163900E4410A /* NWAddNewTargetGuideViewController.m */,
+				5CA4BDD517E8C38100F267CF /* Script */,
+				5CA4BDD417E8C34200F267CF /* AddNewTargetGuide */,
 				5C75E37B17E7597300A31081 /* NWTestViewController.h */,
 				5C75E37C17E7597400A31081 /* NWTestViewController.m */,
 			);
@@ -474,7 +466,7 @@
 			name = CommandModel;
 			sourceTree = "<group>";
 		};
-		5C7034C017CF2C2C00B121A6 /* ComplexScriptObjectViewController */ = {
+		5C7034C017CF2C2C00B121A6 /* ComplexScriptObject */ = {
 			isa = PBXGroup;
 			children = (
 				5C7034C717CF3D9D00B121A6 /* RadialMenu */,
@@ -489,7 +481,7 @@
 				5C542D2917BD629300E4410A /* NWEditComplexScriptObjectViewController.h */,
 				5C542D2A17BD629400E4410A /* NWEditComplexScriptObjectViewController.m */,
 			);
-			name = ComplexScriptObjectViewController;
+			name = ComplexScriptObject;
 			sourceTree = "<group>";
 		};
 		5C7034C717CF3D9D00B121A6 /* RadialMenu */ = {
@@ -501,6 +493,30 @@
 				5C7034C417CF3D8F00B121A6 /* ALRadialMenu.m */,
 			);
 			name = RadialMenu;
+			sourceTree = "<group>";
+		};
+		5CA4BDD417E8C34200F267CF /* AddNewTargetGuide */ = {
+			isa = PBXGroup;
+			children = (
+				5C542CC717BC163900E4410A /* NWAddNewTargetConfigureViewController.h */,
+				5C542CC817BC163900E4410A /* NWAddNewTargetConfigureViewController.m */,
+				5C542CC917BC163900E4410A /* NWAddNewTargetGuideViewController.h */,
+				5C542CCA17BC163900E4410A /* NWAddNewTargetGuideViewController.m */,
+			);
+			name = AddNewTargetGuide;
+			sourceTree = "<group>";
+		};
+		5CA4BDD517E8C38100F267CF /* Script */ = {
+			isa = PBXGroup;
+			children = (
+				5C542D2017BD301000E4410A /* NWEditFadeCommandViewController.h */,
+				5C542D2117BD301200E4410A /* NWEditFadeCommandViewController.m */,
+				5C542CF817BC167600E4410A /* NWEditGradientCommandViewController.h */,
+				5C542CF917BC167600E4410A /* NWEditGradientCommandViewController.m */,
+				5C542D0E17BCC1F200E4410A /* ScriptViewController */,
+				5C7034C017CF2C2C00B121A6 /* ComplexScriptObject */,
+			);
+			name = Script;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

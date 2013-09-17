@@ -19,6 +19,8 @@
 
 //establishes connection to the endpoint automatically
 - (void)setEndpoint:(WCEndpoint *)endpoint {
+	self.title = endpoint.name;
+	
 	UIAlertView *connectingView = [[UIAlertView alloc] initWithTitle:@"Connecting" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
 	[connectingView show];
 	
@@ -39,15 +41,11 @@
 			if ([obj respondsToSelector:@selector(setControlHandle:)]) {
 				[obj performSelector:@selector(setControlHandle:) withObject:self.controlHandle];
 			}
-			if ([obj respondsToSelector:@selector(setEndpoint:)]) {
-				[obj performSelector:@selector(setEndpoint:) withObject:endpoint];
-			}
 		}
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[connectingView dismissWithClickedButtonIndex:0 animated:YES];
 		});
 	});
-	self.title = endpoint.name;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -60,7 +58,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
 	NSArray *viewControllers = self.navigationController.viewControllers;
-	if (viewControllers.count > 1 && [viewControllers objectAtIndex:viewControllers.count-2] == self) {
+	if (viewControllers.count > 1 && [viewControllers objectAtIndex:viewControllers.count - 2] == self) {
 		// View is disappearing because a new view controller was pushed onto the stack
 		NSLog(@"New view controller was pushed");
 	} else if ([viewControllers indexOfObject:self] == NSNotFound) {
@@ -71,10 +69,14 @@
 			self.controlHandle.delegate = nil;
 			[self.controlHandle disconnect];
 			self.controlHandle = nil;
+			
+			for (id obj in self.viewControllers) {
+				if ([obj respondsToSelector:@selector(setControlHandle:)]) {
+					[obj performSelector:@selector(setControlHandle:) withObject:nil];
+				}
+			}
 		}
 	}
-	
-	NSLog(@"View controller disappear");
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
 	[super viewWillDisappear:animated];
@@ -83,7 +85,7 @@
 - (void)handleEnteredBackground:(NSNotification *)notification {
 	if ([notification.name isEqualToString:UIApplicationDidEnterBackgroundNotification]) {
 		NSLog(@"background");
-		
+		/*
 		NSArray *viewControllers = self.navigationController.viewControllers;
 		if (viewControllers.count > 1 && [viewControllers objectAtIndex:viewControllers.count-2] == self) {
 			// View is disappearing because a new view controller was pushed onto the stack
@@ -91,7 +93,7 @@
 		} else if ([viewControllers indexOfObject:self] == NSNotFound) {
 			// View is disappearing because it was popped from the stack
 			NSLog(@"View controller was popped");
-		}
+		}*/
 
 	}
 }

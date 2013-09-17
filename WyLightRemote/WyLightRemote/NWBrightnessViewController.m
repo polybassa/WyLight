@@ -13,25 +13,44 @@
 
 @property (weak, nonatomic) IBOutlet UISlider *brightnessSlider;
 @property (weak, nonatomic) IBOutlet UIStepper *brightnessStepper;
+@property (nonatomic) BOOL sendAnyCommandToControlHandle;
 
 @end
 
 @implementation NWBrightnessViewController
 
 - (void) viewDidLoad {
+	[super viewDidLoad];
 	self.brightnessSlider.value = self.brightnessStepper.value;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	self.sendAnyCommandToControlHandle = NO;
 }
 
 #pragma mark - VALUE CHANGED CALLBACK's
 
 - (IBAction)sliderValueChanged:(UISlider *)sender {
-	[self.controlHandle setColorDirect:[UIColor colorWithRed:sender.value green:sender.value blue:sender.value alpha:1.0]];
+	if (self.controlHandle) {
+		if (!self.sendAnyCommandToControlHandle) {
+			[self.controlHandle clearScript];
+			self.sendAnyCommandToControlHandle = YES;
+		}
+		[self.controlHandle setColorDirect:[UIColor colorWithRed:sender.value green:sender.value blue:sender.value alpha:1.0]];
+	}
 	self.brightnessStepper.value = sender.value;
 	
 }
 
 - (IBAction)stepperValueChanged:(UIStepper *)sender {
-	[self.controlHandle setColorDirect:[UIColor colorWithRed:sender.value green:sender.value blue:sender.value alpha:1.0]];
+	if (self.controlHandle) {
+		if (!self.sendAnyCommandToControlHandle) {
+			[self.controlHandle clearScript];
+			self.sendAnyCommandToControlHandle = YES;
+		}
+		[self.controlHandle setColorDirect:[UIColor colorWithRed:sender.value green:sender.value blue:sender.value alpha:1.0]];
+	}
 	self.brightnessSlider.value = sender.value;
 }
 

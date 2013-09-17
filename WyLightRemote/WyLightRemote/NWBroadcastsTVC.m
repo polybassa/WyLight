@@ -50,6 +50,14 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self.tableView];
 }
 
+#pragma mark - HANDLE ROTATION
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	[self.refreshControl endRefreshing];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
