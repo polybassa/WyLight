@@ -12,7 +12,7 @@
 #import "WCEndpoint.h"
 #import "NWAddNewTargetConfigureViewController.h"
 
-@interface NWAddNewTargetGuideViewController ()
+@interface NWAddNewTargetGuideViewController () <UIAlertViewDelegate>
 @property (strong, nonatomic) IBOutlet NWAddNewTargetGuideView *guideView;
 
 @end
@@ -23,11 +23,18 @@
     [super viewDidLoad];
 	self.guideView.pageImageStrings = @[@"Guide1.png", @"Guide2.png"];
 	self.guideView.currentPageIndex = 0;
+	
+	UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextPage)];
+	swipe.direction = UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft;
+	[self.guideView addGestureRecognizer:swipe];
 }
 
 #define SLEEP_TIME_INTERVAL 0.5
 #define SCANNING_TIME_S 40
 #define ENDPOINT_IP 16909060 // is equal to 1.2.3.4
+
+#define SCANNING_ALERT_VIEW_TITLE @"Scanning"
+#define SELECTION_ALERT_VIEW_TITLE @"Operation Mode"
 
 - (void)nextPage {
 	if ((self.guideView.currentPageIndex + 1 ) < [self.guideView.pageImageStrings count]) {
@@ -39,11 +46,14 @@
 	}
 	else {
 		//**** Alert view ****
-		UIAlertView *scanningAlertView = [[UIAlertView alloc]initWithTitle:@"Scanning" message:@"Please wait!" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+		UIAlertView *scanningAlertView = [[UIAlertView alloc]initWithTitle:SCANNING_ALERT_VIEW_TITLE message:@" " delegate:self cancelButtonTitle:@"Abort" otherButtonTitles:nil];
+		[scanningAlertView setDelegate:self];
 		[scanningAlertView show];
+
 		UIProgressView *progressView = [[UIProgressView alloc]initWithProgressViewStyle:UIProgressViewStyleDefault];
-		progressView.center = CGPointMake(scanningAlertView.bounds.size.width / 2, scanningAlertView.bounds.size.height - 50);
+		progressView.center = CGPointMake(scanningAlertView.bounds.size.width / 2, scanningAlertView.bounds.size.height - 85);
 		[scanningAlertView addSubview:progressView];
+		
 		
 		//**** dispatch queue scanning
 		dispatch_async(dispatch_queue_create("Scanning for Broadcast of 1.2.3.4", NULL), ^{
@@ -87,17 +97,22 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (buttonIndex == 1) {
-		[self performSegueWithIdentifier:@"configureAsClient:" sender:self];
-	} else if (buttonIndex == 0) {
-		[self performSegueWithIdentifier:@"configureAsSoftAP:" sender:self];
-	} else {
+	if ([alertView.title isEqualToString:SCANNING_ALERT_VIEW_TITLE]) {
 		[self performSegueWithIdentifier:@"cancelAddNewTargetSegue:" sender:self];
+	} else if ([alertView.title isEqualToString:SELECTION_ALERT_VIEW_TITLE]) {
+		
+		if (buttonIndex == 1) {
+			[self performSegueWithIdentifier:@"configureAsClient:" sender:self];
+		} else if (buttonIndex == 0) {
+			[self performSegueWithIdentifier:@"configureAsSoftAP:" sender:self];
+		} else {
+			[self performSegueWithIdentifier:@"cancelAddNewTargetSegue:" sender:self];
+		}
 	}
 }
 
 - (void)showSelectionAlertView {
-	[[[UIAlertView alloc] initWithTitle:@"Operation Mode" message:@"Please choose, in which mode you want to operate your WyLight." delegate:self cancelButtonTitle:nil otherButtonTitles:@"SoftAP", @"Client", nil] show];
+	[[[UIAlertView alloc] initWithTitle:SELECTION_ALERT_VIEW_TITLE message:@"Please choose, in which mode you want to operate your WyLight." delegate:self cancelButtonTitle:nil otherButtonTitles:@"SoftAP", @"Client", nil] show];
 }
 
 - (IBAction)donePressed:(id)sender {
