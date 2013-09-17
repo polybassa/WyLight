@@ -105,23 +105,31 @@
 	dispatch_queue_t configurationQ = dispatch_queue_create("Configure new Target", NULL);
 	dispatch_async(configurationQ, ^{
 		
-		//Firmware update
+		//Erase eeprom
 		dispatch_async(dispatch_get_main_queue(), ^{
 			progressView.progress = 0.2;
+			self.scanningAlertView.message = @"Erase eeprom of target!";
+		});
+		[control eraseEeprom];
+		[NSThread sleepForTimeInterval:1];
+		//Firmware update
+		dispatch_async(dispatch_get_main_queue(), ^{
+			progressView.progress = 0.4;
 			self.scanningAlertView.message = @"Updating target firmware!";
 		});
 		[control programFlashAsync:NO];
 						
 		//Start Firmware
 		dispatch_async(dispatch_get_main_queue(), ^{
-			progressView.progress = 0.5;
+			progressView.progress = 0.7;
 			self.scanningAlertView.message = @"Terminate bootloader and start firmware!";
 		});
 		[control leaveBootloader];
+		[NSThread sleepForTimeInterval:0.4];
 		
 		//Configure WLAN Modul
 		dispatch_async(dispatch_get_main_queue(), ^{
-			progressView.progress = 0.6;
+			progressView.progress = 0.8;
 			self.scanningAlertView.message = @"Configure wlan interface!";
 		});
 		if (self.configureTargetAsSoftAP) {

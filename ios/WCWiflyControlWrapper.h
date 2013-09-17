@@ -51,6 +51,7 @@
 
 // Bootloader methods
 - (void)readCurrentFirmwareVersionFromBootloder:(NSString **)currentFirmwareVersionStringPlaceholder;
+- (void)eraseEeprom;
 - (void)programFlashAsync:(BOOL)async;
 - (void)leaveBootloader;
 - (void)connect;

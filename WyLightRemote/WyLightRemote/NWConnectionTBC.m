@@ -65,7 +65,7 @@
 		// View is disappearing because it was popped from the stack
 		NSLog(@"View controller was popped");
 		
-		if (self.controlHandle) {
+		if (self.controlHandle && self.controlHandle.delegate) {
 			self.controlHandle.delegate = nil;
 			[self.controlHandle disconnect];
 			self.controlHandle = nil;

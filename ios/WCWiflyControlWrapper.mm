@@ -126,7 +126,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
     const std::string passwordCString([password cStringUsingEncoding:NSASCIIStringEncoding]);
 	const std::string nameCString([name cStringUsingEncoding:NSASCIIStringEncoding]);
     
-	mCmdQueue->clear_and_push_front(std::make_tuple(false,
+	mCmdQueue->push_back(std::make_tuple(false,
 											std::bind(&WyLight::ControlNoThrow::ConfModuleForWlan, std::ref(*mControl), passwordCString, ssidCString, nameCString),
 											1));
 }
@@ -135,14 +135,14 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 {
     const std::string ssidCString([ssid cStringUsingEncoding:NSASCIIStringEncoding]);
 	
-	mCmdQueue->clear_and_push_front(std::make_tuple(false,
+	mCmdQueue->push_back(std::make_tuple(false,
 											std::bind(&WyLight::ControlNoThrow::ConfModuleAsSoftAP, std::ref(*mControl), ssidCString),
 											1));
 }
 
 - (void)rebootWlanModul
 {
-	mCmdQueue->clear_and_push_front(std::make_tuple(false,
+	mCmdQueue->push_back(std::make_tuple(false,
 											std::bind(&WyLight::ControlNoThrow::ConfRebootWlanModule, std::ref(*mControl)),
 											1));
 }
@@ -377,6 +377,12 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 		*currentFirmwareVersionStringPlaceholder = [NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding];
 	}
 
+}
+
+- (void)eraseEeprom {
+	mCmdQueue->push_back(std::make_tuple(false,
+										 std::bind(&WyLight::ControlNoThrow::BlEraseEeprom, std::ref(*mControl)),
+										 0));
 }
 
 - (void)programFlashAsync:(BOOL)async
