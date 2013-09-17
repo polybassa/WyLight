@@ -19,6 +19,7 @@
 
 //establishes connection to the endpoint automatically
 - (void)setEndpoint:(WCEndpoint *)endpoint {
+	_endpoint = endpoint;
 	self.title = endpoint.name;
 	
 	UIAlertView *connectingView = [[UIAlertView alloc] initWithTitle:@"Connecting" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
@@ -35,6 +36,12 @@
 			self.controlHandle = nil;
 		}
 		self.controlHandle = [[WCWiflyControlWrapper alloc] initWithWCEndpoint:endpoint establishConnection:YES];
+		if (self.controlHandle == nil) {
+			[connectingView dismissWithClickedButtonIndex:0 animated:YES];
+			[self performSegueWithIdentifier:@"unwindAtConnectionFatalErrorOccured" sender:self];
+			return;
+		}
+		
 		[self.controlHandle setDelegate:self];
 		
 		for (id obj in self.viewControllers) {

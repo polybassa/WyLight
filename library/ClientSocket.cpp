@@ -24,6 +24,7 @@
 #include <cstring>
 #include <iostream>
 #include <unistd.h>
+#include <fcntl.h>
 
 #include <stdio.h>
 
@@ -31,6 +32,7 @@ namespace WyLight {
 
 static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
+#define ESTABLISH_CONNECTION_TIMEOUT 8
 
 ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) 
 	: mSock(socket(AF_INET, style, 0)), mSockAddr(addr, port)
@@ -69,10 +71,44 @@ bool ClientSocket::Select(timeval* timeout) const throw (FatalError)
 TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError)
 	: ClientSocket(addr, port, SOCK_STREAM)
 {
-	if(0 != connect(mSock, reinterpret_cast<sockaddr*>(&mSockAddr), sizeof(mSockAddr)))
+	//set non-blocking
+	long arg = fcntl(mSock, F_GETFL, NULL);
+	arg |= O_NONBLOCK;
+	fcntl(mSock, F_SETFL, arg);
+	
+	int result = connect(mSock, reinterpret_cast<sockaddr*>(&mSockAddr), sizeof(mSockAddr));
+	
+	if(result < 0)
 	{
-		throw ConnectionLost("connect() failed", addr, port);
+		//throw ConnectionLost("connect() failed", addr, port);
+		if (errno == EINPROGRESS) {
+			struct timeval tv;
+			fd_set mSet;
+			int valopt;
+			socklen_t lon;
+			
+			tv.tv_sec = ESTABLISH_CONNECTION_TIMEOUT;
+			tv.tv_usec = 0;
+			FD_ZERO(&mSet);
+			FD_SET(mSock, &mSet);
+			if (select(mSock + 1, NULL, &mSet, NULL, &tv) > 0) {
+				lon = sizeof(int);
+				getsockopt(mSock, SOL_SOCKET, SO_ERROR, (void*)(&valopt), &lon);
+				if (valopt) {
+					throw ConnectionLost("connect() failed with error", addr, port);
+				}
+			}
+			else {
+				throw ConnectionLost("connect() failed with timeout", addr, port);
+			}
+		}
+		else {
+			throw ConnectionLost("connect() failed", addr, port);
+		}
 	}
+	arg = fcntl(mSock, F_GETFL, NULL);
+	arg &= (~O_NONBLOCK);
+	fcntl(mSock, F_SETFL, arg);
 }
 
 size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const throw(FatalError)

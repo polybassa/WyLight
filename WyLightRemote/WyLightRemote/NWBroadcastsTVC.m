@@ -111,6 +111,8 @@
 	if ([segue.sourceViewController respondsToSelector:@selector(endpoint)]) {
 		WCEndpoint *endpoint = [segue.sourceViewController performSelector:@selector(endpoint)];
 		[self.receiver unsetWCEndpointAsFavorite:endpoint];
+		[self.receiver saveTargets];
+		[self.tableView reloadData];
 	}
 }
 

@@ -113,6 +113,8 @@ class BroadcastReceiver
 		 * @param filename of the file containing the recent endpoints
 		 */
 		void DeleteRecentEndpointFile(const std::string& filename = "");
+	
+		void LockedRemove(Endpoint& endpoint);
 
 		
 	private:

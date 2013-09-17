@@ -132,8 +132,10 @@ NSString *const TargetsChangedNotification = @"TargetsChangedNotification";
 {
 	for(size_t index = 0; index < receiver->NumRemotes(); index++)
 	{
-		if((receiver->GetEndpoint(index)).GetIp() == endpoint.ipAdress)
+		if((receiver->GetEndpoint(index)).GetIp() == endpoint.ipAdress) {
 			receiver->GetEndpoint(index).SetScore(0);
+			receiver->LockedRemove(receiver->GetEndpoint(index));
+		}
 	}
 	[self postNotification];
 }

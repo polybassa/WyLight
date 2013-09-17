@@ -49,50 +49,58 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
     {
 		self.endpoint = endpoint;
 		if (connect) {
-			[self connect];
+			if ([self connect] != 0) {
+				return nil;
+			}
 		}
 	}
     return self;
 }
 
-- (void)connect
+- (int)connect
 {
-		NSLog(@"Start WCWiflyControlWrapper\n");
+	NSLog(@"Start WCWiflyControlWrapper\n");
+	try {
 		mControl = std::make_shared<WyLight::ControlNoThrow>(self.endpoint.ipAdress,self.endpoint.port);
-		gCtrlMutex = std::make_shared<std::mutex>();
-		mCmdQueue = std::make_shared<WyLight::MessageQueue<ControlMessage>>();
-		mCmdQueue->setMessageLimit(15);
-		mCtrlThread = std::make_shared<std::thread>
-		([=]{
-			uint32_t retVal;
-			while(true)
+	} catch (std::exception &e) {
+		NSLog(@"%s", e.what());
+		return -1;
+	}
+	gCtrlMutex = std::make_shared<std::mutex>();
+	mCmdQueue = std::make_shared<WyLight::MessageQueue<ControlMessage>>();
+	mCmdQueue->setMessageLimit(15);
+	mCtrlThread = std::make_shared<std::thread>
+	([=]{
+		uint32_t retVal;
+		while(true)
+		{
+			auto tup = mCmdQueue->receive();
+		
+			if(std::get<0>(tup))
 			{
-				auto tup = mCmdQueue->receive();
-			
-				if(std::get<0>(tup))
-				{
-					NSLog(@"WCWiflyControlWrapper: Terminate runLoop\n");
-					break;
-				}
-				{
-					std::lock_guard<std::mutex> ctrlLock(*gCtrlMutex);
-					retVal = std::get<1>(tup)();
-				}
-			
-				if(retVal != WyLight::NO_ERROR)
-				{
-					dispatch_async(dispatch_get_main_queue(), ^{
-						[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:retVal]];
-					});
-				}
-				else if(retVal == WyLight::NO_ERROR && std::get<2>(tup) == 1)	//do we have to notify after execution?
-				{
-					dispatch_async(dispatch_get_main_queue(), ^{
-						[self callWiflyControlHasDisconnectedDelegate];
-					});
-				}
+				NSLog(@"WCWiflyControlWrapper: Terminate runLoop\n");
+				break;
 			}
-		});
+			{
+				std::lock_guard<std::mutex> ctrlLock(*gCtrlMutex);
+				retVal = std::get<1>(tup)();
+			}
+		
+			if(retVal != WyLight::NO_ERROR)
+			{
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:retVal]];
+				});
+			}
+			else if(retVal == WyLight::NO_ERROR && std::get<2>(tup) == 1)	//do we have to notify after execution?
+			{
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[self callWiflyControlHasDisconnectedDelegate];
+				});
+			}
+		}
+	});
+	return 0;
 }
 
 - (void)disconnect

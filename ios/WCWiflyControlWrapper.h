@@ -54,7 +54,7 @@
 - (void)eraseEeprom;
 - (void)programFlashAsync:(BOOL)async;
 - (void)leaveBootloader;
-- (void)connect;
+- (int)connect;
 - (void)disconnect;
 
 @end
