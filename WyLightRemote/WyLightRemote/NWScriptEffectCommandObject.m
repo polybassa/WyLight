@@ -10,7 +10,7 @@
 
 @implementation NWScriptEffectCommandObject
 
-#define PARALLEL_KEY @"parallel"
+#define PARALLEL_KEY @"WyLightRemote.NWScriptEffectCommandObject.parallel"
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
 	self = [super initWithCoder:aDecoder];

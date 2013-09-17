@@ -19,8 +19,9 @@
 
 //establishes connection to the endpoint automatically
 - (void)setEndpoint:(WCEndpoint *)endpoint {
-	__block UIAlertView *connectingView = [[UIAlertView alloc] initWithTitle:@"Connecting" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+	UIAlertView *connectingView = [[UIAlertView alloc] initWithTitle:@"Connecting" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
 	[connectingView show];
+	
 	UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
 	spinner.center = CGPointMake(connectingView.bounds.size.width / 2, connectingView.bounds.size.height - 50);
 	[spinner startAnimating];
@@ -44,19 +45,9 @@
 		}
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[connectingView dismissWithClickedButtonIndex:0 animated:YES];
-			connectingView = nil;
 		});
 	});
 	self.title = endpoint.name;
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	if ([segue.identifier isEqualToString:@"closeConnection:"]) {
-		if (self.controlHandle) {
-			[self.controlHandle disconnect];
-			self.controlHandle = nil;
-		}
-	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -75,9 +66,16 @@
 	} else if ([viewControllers indexOfObject:self] == NSNotFound) {
 		// View is disappearing because it was popped from the stack
 		NSLog(@"View controller was popped");
+		
+		if (self.controlHandle) {
+			self.controlHandle.delegate = nil;
+			[self.controlHandle disconnect];
+			self.controlHandle = nil;
+		}
 	}
 	
 	NSLog(@"View controller disappear");
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
 	[super viewWillDisappear:animated];
 }

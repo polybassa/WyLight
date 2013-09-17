@@ -13,10 +13,10 @@
 
 @implementation NWSetGradientScriptCommandObject
 
-#define COLOR1_KEY @"color1"
-#define COLOR2_KEY @"color2"
-#define OFFSET_KEY @"offset"
-#define NUM_OF_LED_KEY @"numberOfLeds"
+#define COLOR1_KEY @"WyLightRemote.NWSetGradientScriptCommandObject.color1"
+#define COLOR2_KEY @"WyLightRemote.NWSetGradientScriptCommandObject.color2"
+#define OFFSET_KEY @"WyLightRemote.NWSetGradientScriptCommandObject.offset"
+#define NUM_OF_LED_KEY @"WyLightRemote.NWSetGradientScriptCommandObject.numberOfLeds"
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
 	self = [super initWithCoder:aDecoder];

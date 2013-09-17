@@ -31,10 +31,10 @@
 	return other;
 }
 
-#define NEXT_KEY @"next"
-#define PREV_KEY @"prev"
-#define WAIT_KEY @"wait"
-#define SCRIPTOBJECTS_KEY @"scriptObjects"
+#define NEXT_KEY @"WyLightRemote.NWComplexScriptCommandObject.next"
+#define PREV_KEY @"WyLightRemote.NWComplexScriptCommandObject.prev"
+#define WAIT_KEY @"WyLightRemote.NWComplexScriptCommandObject.wait"
+#define SCRIPTOBJECTS_KEY @"WyLightRemote.NWComplexScriptCommandObject.scriptObjects"
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
 	self = [super initWithCoder:aDecoder];

@@ -22,7 +22,7 @@
 
 @implementation NWTestViewController
 
-#define SCRIPT_KEY @"script"
+#define SCRIPT_KEY @"WyLightRemote.NWTestViewController.script"
 
 - (void)setup {
 	self.gradientView = [[NWScriptObjectView alloc] initWithFrame:CGRectMake(10, 10, 250, 300)];

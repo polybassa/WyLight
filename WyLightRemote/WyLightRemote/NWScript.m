@@ -28,7 +28,7 @@
 	return self;
 }
 
-#define SCRIPTARRAY_KEY @"scriptarray"
+#define SCRIPTARRAY_KEY @"WyLightRemote.NWScript.scriptarray"
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
 	self = [self init];

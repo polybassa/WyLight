@@ -13,8 +13,8 @@
 
 @implementation NWSetFadeScriptCommandObject
 
-#define COLOR_KEY @"color"
-#define ADDRESS_KEY @"address"
+#define COLOR_KEY @"WyLightRemote.NWSetFadeScriptCommandObject.color"
+#define ADDRESS_KEY @"WyLightRemote.NWSetFadeScriptCommandObject.address"
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
 	self = [super initWithCoder:aDecoder];

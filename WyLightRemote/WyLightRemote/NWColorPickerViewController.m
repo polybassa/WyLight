@@ -18,7 +18,7 @@
 	}
 }
 
-#define SELECTED_COLOR_KEY @"selectedColor"
+#define SELECTED_COLOR_KEY @"WyLightRemote.NWColorPicerViewController.selectedColor"
 
 - (void)viewDidLoad {
 	[self setColorPickerDelegate:self];

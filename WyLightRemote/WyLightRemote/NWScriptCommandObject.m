@@ -18,7 +18,7 @@
 
 @synthesize backgroundColor = _backgroundColor;
 
-#define DURATION_KEY @"duration"
+#define DURATION_KEY @"WyLightRemote.NWScriptCommandObject.duration"
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
 	self = [super init];

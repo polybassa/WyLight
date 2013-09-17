@@ -74,8 +74,8 @@
 }
 
 #pragma mark - SETUP STUFF
-#define SCRIPT_KEY @"script"
-#define TIMESCALE_KEY @"timescalefactor"
+#define SCRIPT_KEY @"WyLightRemote.NWScriptViewController.script"
+#define TIMESCALE_KEY @"WyLightRemote.NWScriptViewController.timescalefactor"
 - (void)fixLocations {
 	if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
 		

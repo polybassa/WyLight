@@ -65,7 +65,7 @@ blversion = list()
 
 
 #PARAMETER
-TCP_IP = '192.168.2.44'
+TCP_IP = '192.168.176.16'
 TCP_PORT = 2000
 BUFFER_SIZE = 1024
 
