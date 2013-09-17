@@ -59,6 +59,45 @@
 	}
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[[NSNotificationCenter defaultCenter] addObserver: self
+											 selector: @selector(handleEnteredBackground:)
+												 name: UIApplicationDidEnterBackgroundNotification
+											   object: nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	NSArray *viewControllers = self.navigationController.viewControllers;
+	if (viewControllers.count > 1 && [viewControllers objectAtIndex:viewControllers.count-2] == self) {
+		// View is disappearing because a new view controller was pushed onto the stack
+		NSLog(@"New view controller was pushed");
+	} else if ([viewControllers indexOfObject:self] == NSNotFound) {
+		// View is disappearing because it was popped from the stack
+		NSLog(@"View controller was popped");
+	}
+	
+	NSLog(@"View controller disappear");
+	
+	[super viewWillDisappear:animated];
+}
+
+- (void)handleEnteredBackground:(NSNotification *)notification {
+	if ([notification.name isEqualToString:UIApplicationDidEnterBackgroundNotification]) {
+		NSLog(@"background");
+		
+		NSArray *viewControllers = self.navigationController.viewControllers;
+		if (viewControllers.count > 1 && [viewControllers objectAtIndex:viewControllers.count-2] == self) {
+			// View is disappearing because a new view controller was pushed onto the stack
+			NSLog(@"New view controller was pushed");
+		} else if ([viewControllers indexOfObject:self] == NSNotFound) {
+			// View is disappearing because it was popped from the stack
+			NSLog(@"View controller was popped");
+		}
+
+	}
+}
+
 #pragma mark - DELEGATE METHODES
 
 - (void) fatalErrorOccured:(WCWiflyControlWrapper *)sender errorCode:(NSNumber *)errorCode {

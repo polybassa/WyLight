@@ -10,6 +10,7 @@
 #import "NWScript.h"
 #import "NWScriptObjectView.h"
 #import "NWScriptCommandObject.h"
+#import "WCWiflyControlWrapper.h"
 
 @interface NWTestViewController ()
 
