@@ -12,8 +12,10 @@
 
 @implementation NWColorPickerViewController
 
-- (void) defaultColorController:(NWDefaultColorPickerViewController *)controller didChangeColor:(UIColor *)color {
-	[self.controlHandle setColorDirect:color];
+- (void)defaultColorController:(NWDefaultColorPickerViewController *)controller didChangeColor:(UIColor *)color {
+	if (self.controlHandle) {
+		[self.controlHandle setColorDirect:color];
+	}
 }
 
 #define SELECTED_COLOR_KEY @"selectedColor"
