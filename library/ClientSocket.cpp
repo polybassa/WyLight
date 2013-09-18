@@ -76,7 +76,7 @@ TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalE
 	arg |= O_NONBLOCK;
 	fcntl(mSock, F_SETFL, arg);
 	
-	int result = connect(mSock, reinterpret_cast<sockaddr*>(&mSockAddr), sizeof(mSockAddr));
+	const int result = connect(mSock, reinterpret_cast<sockaddr*>(&mSockAddr), sizeof(mSockAddr));
 	
 	if(result < 0)
 	{
