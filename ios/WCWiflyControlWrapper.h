@@ -24,6 +24,7 @@
  */
 - (void)configurateWlanModuleAsClientForNetwork:(NSString *)ssid password:(NSString *)password name:(NSString *)name;
 - (void)configurateWlanModuleAsSoftAP:(NSString *)ssid;
+- (void)configurateWlanModuleChangeChannel:(uint8_t) channel;
 - (void)rebootWlanModul;
 
 // Firmware methods

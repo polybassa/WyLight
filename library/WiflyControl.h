@@ -222,6 +222,14 @@ class Control
 		 */
 		bool ConfSetDeviceId(const std::string& name) const;
 		
+		/**
+		 * Allows you to change the channel of a Wifly_Light immediately
+		 * @param channel any number between 1 and 13
+		 * @return false, in case of an error
+		 */
+		bool ConfSetWlanChannel(const uint8_t channel) const;
+
+		
 /* -------------------------- FIRMWARE METHODES -------------------------- */		
 		/**
 		 * Reads the cycletimes from wifly device and stores them into the response object
@@ -407,7 +415,7 @@ class Control
 		 * @return false, in case of an error
 		 */
 		bool ConfSetWlan(const std::string& phrase, const std::string& ssid) const;
-	
+		
 /* ------------------ friendships for unittesting only ------------------- */
 		friend size_t ut_WiflyControl_BlEepromWrite(void);
 		friend size_t ut_WiflyControl_BlFlashWrite(void);

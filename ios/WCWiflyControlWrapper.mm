@@ -83,7 +83,16 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 			}
 			{
 				std::lock_guard<std::mutex> ctrlLock(*gCtrlMutex);
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[self setNetworkActivityIndicatorVisible:YES];
+				});
 				retVal = std::get<1>(tup)();
+				
+				double delayInSeconds = 0.3;
+				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+					[self setNetworkActivityIndicatorVisible:NO];
+				});
 			}
 		
 			if(retVal != WyLight::NO_ERROR)
@@ -126,6 +135,22 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 	NSLog(@"Dealloc WCWiflyControlWrapper\n");
 }
 
+- (void)setNetworkActivityIndicatorVisible:(BOOL)setVisible {
+    static NSInteger NumberOfCallsToSetVisible = 0;
+    if (setVisible)
+        NumberOfCallsToSetVisible++;
+    else
+        NumberOfCallsToSetVisible--;
+	
+    // The assertion helps to find programmer errors in activity indicator management.
+    // Since a negative NumberOfCallsToSetVisible is not a fatal error,
+    // it should probably be removed from production code.
+    NSAssert(NumberOfCallsToSetVisible >= 0, @"Network Activity Indicator was asked to hide more often than shown");
+    
+    // Display the indicator as long as our static counter is > 0.
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:(NumberOfCallsToSetVisible > 0)];
+}
+
 #pragma mark - Configuration WLAN-Module
 
 - (void)configurateWlanModuleAsClientForNetwork:(NSString *)ssid password:(NSString *)password name:(NSString *)name
@@ -146,6 +171,13 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 	mCmdQueue->push_back(std::make_tuple(false,
 											std::bind(&WyLight::ControlNoThrow::ConfModuleAsSoftAP, std::ref(*mControl), ssidCString),
 											1));
+}
+
+- (void)configurateWlanModuleChangeChannel:(uint8_t)channel
+{
+	mCmdQueue->push_front(std::make_tuple(false,
+										 std::bind(&WyLight::ControlNoThrow::ConfSetWlanChannel, std::ref(*mControl), channel),
+										 0));
 }
 
 - (void)rebootWlanModul

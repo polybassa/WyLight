@@ -100,6 +100,11 @@ uint32_t ControlNoThrow::ConfSetDeviceId(const std::string &name) const
 {
 	return mControl.ConfSetDeviceId(name) ? NO_ERROR : FATAL_ERROR;
 }
+	
+uint32_t ControlNoThrow::ConfSetWlanChannel(const uint8_t channel) const
+{
+	return mControl.ConfSetWlanChannel(channel) ? NO_ERROR : FATAL_ERROR;
+}
 
 uint32_t ControlNoThrow::FwClearScript(void)
 {

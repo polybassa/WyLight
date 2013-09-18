@@ -219,6 +219,15 @@ class ControlNoThrow
 			<BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
 		 uint32_t ConfSetDeviceId(const std::string &name) const;
+			
+		/**
+		 * Allows you to change the channel of a Wifly_Light immediately
+		 * @param channel any number between 1 and 13
+		 * @return Indexed by ::WiflyError
+			<BR><B>FATAL_ERROR</B> in case of an error
+			<BR><B>NO_ERROR</B> is returned if no error occurred
+		 */
+		 uint32_t ConfSetWlanChannel(const uint8_t channel) const;
 		
 /* -------------------------- FIRMWARE METHODES -------------------------- */
 		/**
