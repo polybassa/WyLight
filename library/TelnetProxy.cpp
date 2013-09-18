@@ -34,6 +34,20 @@
 namespace WyLight {
 
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+	
+/***** REGEX CODE ++++++
+ if we want to use FW 2.45 und 4.00
+ const std::string TelnetProxy::aokRegEx = "AOK\r\n<[24]\.[04][05]> ";
+ const std::string TelnetProxy::promptRegEx = "\r\n<[24]\.[04][05]> ";
+ std::regex regEx(expectedResponse);
+ std::cmatch match;
+ 
+ std::string answer((char*)buffer, bytesRead);
+ 
+ if (std::regex_search(answer.c_str(), match, regEx)) {
+ return true;
+ }
+*+++++++++++++++++++*/
 
 TelnetProxy::TelnetProxy(const TcpSocket& sock)
 	: mSock(sock)
