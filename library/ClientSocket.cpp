@@ -22,9 +22,10 @@
 #include <arpa/inet.h>
 #include <sys/select.h>
 #include <cstring>
+#include <errno.h>
+#include <fcntl.h>
 #include <iostream>
 #include <unistd.h>
-#include <fcntl.h>
 
 #include <stdio.h>
 
@@ -71,44 +72,39 @@ bool ClientSocket::Select(timeval* timeout) const throw (FatalError)
 TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError)
 	: ClientSocket(addr, port, SOCK_STREAM)
 {
-	//set non-blocking
-	long arg = fcntl(mSock, F_GETFL, NULL);
-	arg |= O_NONBLOCK;
-	fcntl(mSock, F_SETFL, arg);
+	//set socket options to non-blocking
+	const int socketArgs = fcntl(mSock, F_GETFL, NULL) | O_NONBLOCK;
+	fcntl(mSock, F_SETFL, socketArgs);
 	
-	const int result = connect(mSock, reinterpret_cast<sockaddr*>(&mSockAddr), sizeof(mSockAddr));
-	
-	if(result < 0)
+	const int result = connect(mSock, reinterpret_cast<sockaddr*>(&mSockAddr), sizeof(mSockAddr));	
+	if(result != 0)
 	{
-		//throw ConnectionLost("connect() failed", addr, port);
-		if (errno == EINPROGRESS) {
-			struct timeval tv;
-			fd_set mSet;
-			int valopt;
-			socklen_t lon;
-			
-			tv.tv_sec = ESTABLISH_CONNECTION_TIMEOUT;
-			tv.tv_usec = 0;
-			FD_ZERO(&mSet);
-			FD_SET(mSock, &mSet);
-			if (select(mSock + 1, NULL, &mSet, NULL, &tv) > 0) {
-				lon = sizeof(int);
-				getsockopt(mSock, SOL_SOCKET, SO_ERROR, (void*)(&valopt), &lon);
-				if (valopt) {
-					throw ConnectionLost("connect() failed with error", addr, port);
-				}
-			}
-			else {
-				throw ConnectionLost("connect() failed with timeout", addr, port);
-			}
-		}
-		else {
+		if(errno != EINPROGRESS) {
 			throw ConnectionLost("connect() failed", addr, port);
 		}
+		
+		const struct timespec timeout{ESTABLISH_CONNECTION_TIMEOUT, 0};
+		fd_set writefds;
+		FD_ZERO(&writefds);
+		FD_SET(mSock, &writefds);
+
+		// wait for socket to connect
+		if (pselect(mSock + 1, NULL, &writefds, NULL, &timeout, NULL) <= 0) {
+			throw ConnectionLost("connect() failed with timeout", addr, port);
+		}
+
+		// check if error pending on socket
+		int errorStatus;
+		socklen_t option_len = sizeof(errorStatus);
+		if(0 != getsockopt(mSock, SOL_SOCKET, SO_ERROR, static_cast<void*>(&errorStatus), &option_len)) {
+			throw ConnectionLost("connect() failed with mysterious error", addr, port);
+		}
+		if(0 != errorStatus) {
+			throw ConnectionLost("connect() failed with error", addr, port);
+		}
 	}
-	arg = fcntl(mSock, F_GETFL, NULL);
-	arg &= (~O_NONBLOCK);
-	fcntl(mSock, F_SETFL, arg);
+	const int restSockArgs = fcntl(mSock, F_GETFL, NULL) & (~O_NONBLOCK);
+	fcntl(mSock, F_SETFL, restSockArgs);
 }
 
 size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const throw(FatalError)
