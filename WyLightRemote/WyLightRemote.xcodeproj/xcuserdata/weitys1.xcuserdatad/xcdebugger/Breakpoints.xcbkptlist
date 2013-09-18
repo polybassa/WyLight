@@ -64,19 +64,6 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "WyLightRemote/NWTestViewController.m"
-         timestampString = "401192165.240435"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "65"
-         endingLineNumber = "65"
-         landmarkName = "-buttonPressed"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "../ios/WCWiflyControlWrapper.mm"
          timestampString = "401191606.213324"
          startingColumnNumber = "9223372036854775807"
@@ -109,7 +96,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "127"
          endingLineNumber = "127"
-         landmarkName = "TelnetProxy::Open(void)"
+         landmarkName = "TelnetProxy::Recv(const std::string&amp; expectedResponse)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

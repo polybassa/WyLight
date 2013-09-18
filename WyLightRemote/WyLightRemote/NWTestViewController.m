@@ -22,7 +22,7 @@
 
 @implementation NWTestViewController
 
-#define SCRIPT_KEY @"WyLightRemote.NWTestViewController.script"
+#define SCRIPT_KEY @"WyLightRemote.NWScriptViewController.script"
 
 - (void)setup {
 	self.gradientView = [[NWScriptObjectView alloc] initWithFrame:CGRectMake(10, 10, 250, 300)];
@@ -55,7 +55,7 @@
 
 - (void)buttonPressed {
 	static BOOL animationIsRunning;
-		if (!animationIsRunning) {
+	if (!animationIsRunning) {
 		dispatch_queue_t animationQ = dispatch_queue_create("animationQ", NULL);
 		dispatch_async(animationQ, ^{
 			animationIsRunning = YES;
