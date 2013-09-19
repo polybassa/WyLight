@@ -141,6 +141,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa9ac31328f888ff1d90cefe04f7353e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa829e0a757758eb960da902803b138d8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#aa829e0a757758eb960da902803b138d8">ConfSetDeviceId</a> (const std::string &amp;name) const </td></tr>
 <tr class="separator:aa829e0a757758eb960da902803b138d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9079d8f3560a5c811bf97b138ad12155"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a9079d8f3560a5c811bf97b138ad12155">ConfChangeWlanChannel</a> (void) const </td></tr>
+<tr class="separator:a9079d8f3560a5c811bf97b138ad12155"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedce9e77a3358f551cc66c4a8a492260"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#aedce9e77a3358f551cc66c4a8a492260">FwGetCycletime</a> (void)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
 <tr class="separator:aedce9e77a3358f551cc66c4a8a492260"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a082452281e1de4160b1fa9f1275a91"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a9a082452281e1de4160b1fa9f1275a91">FwGetRtc</a> (tm &amp;timeValue)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
@@ -548,6 +550,24 @@ Friends</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="a9079d8f3560a5c811bf97b138ad12155"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool WyLight::Control::ConfChangeWlanChannel </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Wlan module performs a wifi scan and changes to the next free channel. This function can take some time. </p>
+<dl class="section return"><dt>Returns</dt><dd>false, in case of an error </dd></dl>
 
 </div>
 </div>
@@ -1079,7 +1099,7 @@ Friends</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Sep 17 2013 20:33:56 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Sep 19 2013 13:20:22 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

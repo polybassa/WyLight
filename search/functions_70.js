@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['performwifiscan',['PerformWifiScan',['../class_wy_light_1_1_telnet_proxy.html#aae62f9bb24e292b0ad6afefbe2eafd77',1,'WyLight::TelnetProxy']]],
   ['popnexterror',['popNextError',['../classintelhex.html#a6609fd1c57a650c45a1961f6318d643e',1,'intelhex']]],
   ['popnextwarning',['popNextWarning',['../classintelhex.html#ab881b8cb0fe665395a29e4375db8f7c4',1,'intelhex']]],
   ['print',['Print',['../struct_wy_light_1_1_bl_info.html#a8567ca010c4dfac79426c44eeca2369a',1,'WyLight::BlInfo']]],

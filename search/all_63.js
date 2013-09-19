@@ -15,6 +15,7 @@ var searchData=
   ['comproxy',['ComProxy',['../class_wy_light_1_1_com_proxy.html',1,'WyLight']]],
   ['comproxy',['ComProxy',['../class_wy_light_1_1_com_proxy.html#a1757ec964a2043668fadb2fb6c7486f7',1,'WyLight::ComProxy']]],
   ['comproxy_2eh',['ComProxy.h',['../_com_proxy_8h.html',1,'']]],
+  ['confchangewlanchannel',['ConfChangeWlanChannel',['../class_wy_light_1_1_control.html#a9079d8f3560a5c811bf97b138ad12155',1,'WyLight::Control::ConfChangeWlanChannel()'],['../class_wy_light_1_1_control_no_throw.html#a9dd890f20043ddd80ee529999bfcd21f',1,'WyLight::ControlNoThrow::ConfChangeWlanChannel()']]],
   ['confgetdeviceid',['ConfGetDeviceId',['../class_wy_light_1_1_control.html#a32fce52c7c113c90654e6835c0274f73',1,'WyLight::Control']]],
   ['confgetpassphrase',['ConfGetPassphrase',['../class_wy_light_1_1_control.html#adc559100e686136cff2c3bfea53f55a3',1,'WyLight::Control']]],
   ['confgetsoftap',['ConfGetSoftAp',['../class_wy_light_1_1_control.html#a08764c74e17d008cf9e03ae6c9a145e0',1,'WyLight::Control']]],
@@ -35,6 +36,6 @@ var searchData=
   ['controlnothrow',['ControlNoThrow',['../class_wy_light_1_1_control_no_throw.html#a904cf007af9dad72fc9f561e5bf3fcbf',1,'WyLight::ControlNoThrow']]],
   ['csregister',['csRegister',['../classintelhex.html#aabbf5689bc667734dca7f23a11d3df68',1,'intelhex']]],
   ['currentaddress',['currentAddress',['../classintelhex.html#a631d8930daeaf04bf0d9ad9c25679a0b',1,'intelhex']]],
-  ['cycletimeresponse',['CycletimeResponse',['../class_wy_light_1_1_cycletime_response.html',1,'WyLight']]],
-  ['cycletimeresponse',['CycletimeResponse',['../class_wy_light_1_1_cycletime_response.html#a188f5503b6ca936497135b764d1d1000',1,'WyLight::CycletimeResponse']]]
+  ['cycletimeresponse',['CycletimeResponse',['../class_wy_light_1_1_cycletime_response.html#a188f5503b6ca936497135b764d1d1000',1,'WyLight::CycletimeResponse']]],
+  ['cycletimeresponse',['CycletimeResponse',['../class_wy_light_1_1_cycletime_response.html',1,'WyLight']]]
 ];

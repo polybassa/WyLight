@@ -152,47 +152,49 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#ab6ae25973e8f7943045ed4710cfba3cf">ConfRebootWlanModule</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        </div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;         uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#a1aa980bed9ae47bdab43f5987a41681d">ConfSetDeviceId</a>(<span class="keyword">const</span> std::string &amp;name) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        </div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="comment">/* -------------------------- FIRMWARE METHODES -------------------------- */</span></div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#affad92c25b64a0206b25af3fc538c4d3">FwClearScript</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        </div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#af206ee9a6c7333d0ef38168c978c72c7">FwGetCycletime</a>(std::string&amp; output);</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#a85eeaa249f73f511890e9d3feb9a3c6f">FwGetRtc</a>(tm&amp; timeValue);</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#aa725063c85bbe01b94d8fd868119dbab">FwGetTracebuffer</a>(std::string&amp; output);</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#a63c2375f32c7c5b2679dac095e1adbd1">FwGetVersion</a>(std::string&amp; output);</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#ace76fa87789fc3b36c709ec5a57f8f3c">FwLoopOff</a>(<span class="keyword">const</span> uint8_t numLoops);</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#abe18abf5c2770714da51da98cc1adb15">FwLoopOn</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#a8277cef363ac4e966dfd0ee5946ef051">FwSetColorDirect</a>(<span class="keyword">const</span> std::vector&lt;uint8_t&gt; buffer);</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        </div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#a6b852a289a48a450efc3ffd91edb7832">FwSetFade</a>(<span class="keyword">const</span> uint32_t argb, <span class="keyword">const</span> uint16_t fadeTime = 0, <span class="keyword">const</span> uint32_t addr = 0xffffffff, <span class="keyword">const</span> <span class="keywordtype">bool</span> parallelFade = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        </div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#a1d50d589698cd976dec870710d1d628a">FwSetGradient</a>(<span class="keyword">const</span> uint32_t argb_1, <span class="keyword">const</span> uint32_t argb_2, <span class="keyword">const</span> uint16_t fadeTime = 0, <span class="keyword">const</span> <span class="keywordtype">bool</span> parallelFade = <span class="keyword">false</span>, <span class="keyword">const</span> uint8_t length = NUM_OF_LED, <span class="keyword">const</span> uint8_t offset = 0);</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    </div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#a57d493b1081707246bafa7be52f8db49">FwSetRtc</a>(<span class="keyword">const</span> tm&amp; timeValue);</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        </div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#a124a9c7b09966ce9f717b1058ab0ac54">FwSetWait</a>(<span class="keyword">const</span> uint16_t waitTime);</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#ae94183c86828b1a223c46fec3c04c285">FwStartBl</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    </div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        <a class="code" href="class_wy_light_1_1_control.html" title="Class to communicate with a Wifly_Light Hardware.">Control</a> mControl;</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;        uint32_t Try(<a class="code" href="class_wy_light_1_1_fw_command.html">FwCommand</a>&amp;&amp; cmd);</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;        uint32_t Try(<span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<span class="keywordtype">void</span>)&gt; call) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        uint32_t Try(<span class="keyword">const</span> std::function&lt;std::string(<span class="keywordtype">void</span>)&gt; call, std::string&amp; returnString) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;};</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;}</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _WIFLYCONTROL_NOTHROW_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;            </div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;         uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#a9dd890f20043ddd80ee529999bfcd21f">ConfChangeWlanChannel</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        </div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="comment">/* -------------------------- FIRMWARE METHODES -------------------------- */</span></div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#affad92c25b64a0206b25af3fc538c4d3">FwClearScript</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        </div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#af206ee9a6c7333d0ef38168c978c72c7">FwGetCycletime</a>(std::string&amp; output);</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#a85eeaa249f73f511890e9d3feb9a3c6f">FwGetRtc</a>(tm&amp; timeValue);</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#aa725063c85bbe01b94d8fd868119dbab">FwGetTracebuffer</a>(std::string&amp; output);</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#a63c2375f32c7c5b2679dac095e1adbd1">FwGetVersion</a>(std::string&amp; output);</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#ace76fa87789fc3b36c709ec5a57f8f3c">FwLoopOff</a>(<span class="keyword">const</span> uint8_t numLoops);</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#abe18abf5c2770714da51da98cc1adb15">FwLoopOn</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#a8277cef363ac4e966dfd0ee5946ef051">FwSetColorDirect</a>(<span class="keyword">const</span> std::vector&lt;uint8_t&gt; buffer);</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        </div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#a6b852a289a48a450efc3ffd91edb7832">FwSetFade</a>(<span class="keyword">const</span> uint32_t argb, <span class="keyword">const</span> uint16_t fadeTime = 0, <span class="keyword">const</span> uint32_t addr = 0xffffffff, <span class="keyword">const</span> <span class="keywordtype">bool</span> parallelFade = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        </div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#a1d50d589698cd976dec870710d1d628a">FwSetGradient</a>(<span class="keyword">const</span> uint32_t argb_1, <span class="keyword">const</span> uint32_t argb_2, <span class="keyword">const</span> uint16_t fadeTime = 0, <span class="keyword">const</span> <span class="keywordtype">bool</span> parallelFade = <span class="keyword">false</span>, <span class="keyword">const</span> uint8_t length = NUM_OF_LED, <span class="keyword">const</span> uint8_t offset = 0);</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    </div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#a57d493b1081707246bafa7be52f8db49">FwSetRtc</a>(<span class="keyword">const</span> tm&amp; timeValue);</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;        </div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#a124a9c7b09966ce9f717b1058ab0ac54">FwSetWait</a>(<span class="keyword">const</span> uint16_t waitTime);</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;        uint32_t <a class="code" href="class_wy_light_1_1_control_no_throw.html#ae94183c86828b1a223c46fec3c04c285">FwStartBl</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    </div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        <a class="code" href="class_wy_light_1_1_control.html" title="Class to communicate with a Wifly_Light Hardware.">Control</a> mControl;</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;        uint32_t Try(<a class="code" href="class_wy_light_1_1_fw_command.html">FwCommand</a>&amp;&amp; cmd);</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        uint32_t Try(<span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<span class="keywordtype">void</span>)&gt; call) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        uint32_t Try(<span class="keyword">const</span> std::function&lt;std::string(<span class="keywordtype">void</span>)&gt; call, std::string&amp; returnString) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;};</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;}</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _WIFLYCONTROL_NOTHROW_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Sep 17 2013 20:33:46 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Sep 19 2013 13:20:06 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

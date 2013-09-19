@@ -8,6 +8,7 @@ var searchData=
   ['clientsocket',['ClientSocket',['../class_wy_light_1_1_client_socket.html#afe4f631abfffc996c24a8a55a9d5cea0',1,'WyLight::ClientSocket']]],
   ['close',['Close',['../class_wy_light_1_1_telnet_proxy.html#a21253eaad73040a3c23b4a234a1e4a7c',1,'WyLight::TelnetProxy']]],
   ['comproxy',['ComProxy',['../class_wy_light_1_1_com_proxy.html#a1757ec964a2043668fadb2fb6c7486f7',1,'WyLight::ComProxy']]],
+  ['confchangewlanchannel',['ConfChangeWlanChannel',['../class_wy_light_1_1_control.html#a9079d8f3560a5c811bf97b138ad12155',1,'WyLight::Control::ConfChangeWlanChannel()'],['../class_wy_light_1_1_control_no_throw.html#a9dd890f20043ddd80ee529999bfcd21f',1,'WyLight::ControlNoThrow::ConfChangeWlanChannel()']]],
   ['confgetdeviceid',['ConfGetDeviceId',['../class_wy_light_1_1_control.html#a32fce52c7c113c90654e6835c0274f73',1,'WyLight::Control']]],
   ['confgetpassphrase',['ConfGetPassphrase',['../class_wy_light_1_1_control.html#adc559100e686136cff2c3bfea53f55a3',1,'WyLight::Control']]],
   ['confgetsoftap',['ConfGetSoftAp',['../class_wy_light_1_1_control.html#a08764c74e17d008cf9e03ae6c9a145e0',1,'WyLight::Control']]],
