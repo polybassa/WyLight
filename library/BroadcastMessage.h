@@ -43,7 +43,8 @@ struct BroadcastMessage
 		return ((sizeof(BroadcastMessage) == length)
 				&& (IsDevice(BroadcastReceiver::DEVICE_ID)
 					|| IsDevice(BroadcastReceiver::DEVICE_ID_OLD)
-					|| IsVersion(BroadcastReceiver::DEVICE_VERSION)));
+					|| IsVersion(BroadcastReceiver::DEVICE_VERSION)
+					|| IsVersion(BroadcastReceiver::DEVICE_VERSION4)));
 	};
 
 private:

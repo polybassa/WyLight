@@ -41,6 +41,7 @@ class BroadcastReceiver
 		static const std::string DEVICE_ID;
 		static const std::string DEVICE_ID_OLD;
 		static const std::string DEVICE_VERSION;
+		static const std::string DEVICE_VERSION4;
 		static const std::string STOP_MSG;
 		static Endpoint EMPTY_ENDPOINT;
 

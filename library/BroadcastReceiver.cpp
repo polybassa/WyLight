@@ -28,11 +28,12 @@
 
 namespace WyLight {
 
-static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING ;
 
 const std::string BroadcastReceiver::DEVICE_ID("Wifly_Light");
 const std::string BroadcastReceiver::DEVICE_ID_OLD("WiFly");
 const std::string BroadcastReceiver::DEVICE_VERSION("WiFly Ver 2.45, 10-09-2012");
+const std::string BroadcastReceiver::DEVICE_VERSION4("wifly-EZX Ver 4.00.1, Apr 19");
 const std::string BroadcastReceiver::STOP_MSG{"StopThread"};
 Endpoint BroadcastReceiver::EMPTY_ENDPOINT{};
 

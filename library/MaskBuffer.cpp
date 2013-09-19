@@ -21,7 +21,7 @@
 
 namespace WyLight {
 
-static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_VERBOSE;
 
 void BaseBuffer::AddPure(uint8_t newByte)
 {

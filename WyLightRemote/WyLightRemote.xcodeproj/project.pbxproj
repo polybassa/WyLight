@@ -551,6 +551,15 @@
 				CLASSPREFIX = NW;
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Nils Weiß";
+				TargetAttributes = {
+					5C542C4217BC13B000E4410A = {
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+						};
+					};
+				};
 			};
 			buildConfigurationList = 5C542C3E17BC13B000E4410A /* Build configuration list for PBXProject "WyLightRemote" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -735,9 +744,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WyLightRemote/WyLightRemote-Prefix.pch";
 				INFOPLIST_FILE = "WyLightRemote/WyLightRemote-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -748,9 +759,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WyLightRemote/WyLightRemote-Prefix.pch";
 				INFOPLIST_FILE = "WyLightRemote/WyLightRemote-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;

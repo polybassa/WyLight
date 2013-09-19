@@ -53,7 +53,13 @@ extern struct RingBuffer g_TraceBuf;
     #define Trace_Print(array, arraySize)
     #define Trace_Char(x)
     #define TraceBuffer(ZONE, BUFFER, LENGTH, BUFFER_FORMAT, ...)
-    #define Trace(ZONE, ...)
+	#define Trace(ZONE, ...) do { \
+		if(g_DebugZones & (ZONE)) { \
+			printf("%s:%u: ", __FILE__, __LINE__); \
+			printf(__VA_ARGS__); \
+		} \
+	} while(0)
+
 #else
 	#include "stdio.h"
 	#define Trace_Init(x)
