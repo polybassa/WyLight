@@ -60,6 +60,25 @@ class Endpoint
 								 << ':' << ref.mPort
 								 << "  :  " << ref.mDeviceId;
 		};
+	
+		friend bool operator== (const Endpoint& lhs, const Endpoint& rhs)
+		{
+			if (	(lhs.mDeviceId == rhs.mDeviceId) &&
+					(lhs.mIp == rhs.mIp) &&
+					(lhs.mPort == rhs.mPort) &&
+					(lhs.mScore == rhs.mScore)
+				) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	
+		friend bool operator!= (const Endpoint& lhs, const Endpoint& rhs)
+		{
+			return !(lhs == rhs);
+		}
+
 
 		/* 
 		 * @return ipv4 address(A) and port(P) as a combined 64 bit value 0xAAAAAAAA0000PPPP

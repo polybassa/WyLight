@@ -21,6 +21,7 @@
 - (void)refresh {
 	[self.refreshControl beginRefreshing];
 	[self.receiver clearTargets];
+	[self.tableView reloadData];
 }
 
 #pragma mark - GETTER
@@ -61,11 +62,14 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if ([self.refreshControl isRefreshing] && ([[self.receiver targets] count])) {
-		[self.refreshControl endRefreshing];
+	size_t numberOfTargets = self.receiver.targets.count;
+	if (self.refreshControl.refreshing && numberOfTargets > 0) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self.refreshControl endRefreshing];
+		});
 	}
 	
-    return [[self.receiver targets] count];
+    return numberOfTargets;
 };
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -109,10 +113,8 @@
 	[[[UIAlertView alloc]initWithTitle:@"Oh oh!" message:@"Connection lost\nPlease retry!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 	
 	if ([segue.sourceViewController respondsToSelector:@selector(endpoint)]) {
-		WCEndpoint *endpoint = [segue.sourceViewController performSelector:@selector(endpoint)];
-		[self.receiver unsetWCEndpointAsFavorite:endpoint];
 		[self.receiver saveTargets];
-		[self.tableView reloadData];
+		[self.receiver clearTargets];
 	}
 }
 

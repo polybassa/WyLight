@@ -134,7 +134,7 @@
 			progressView.progress = 0.2;
 			self.scanningAlertView.message = @"Erase eeprom of target!";
 		});
-		[self.controlHandle eraseEeprom];
+		[self.controlHandle eraseEepromAsync:NO];
 		[NSThread sleepForTimeInterval:1];
 		//Firmware update
 		dispatch_async(dispatch_get_main_queue(), ^{

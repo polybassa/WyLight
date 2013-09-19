@@ -290,7 +290,7 @@ RGBType rgbWithUIColor(UIColor *color)
         }
         
         self.brightnessSlider.frame = CGRectMake(300, 
-                                                 self.bounds.size.height * 0.5 - 38 - 50,
+                                                 self.bounds.size.height * 0.5 - 38 - 100,
                                                  165,
                                                  38);
         
