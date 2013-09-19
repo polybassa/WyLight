@@ -98,6 +98,7 @@
                         <segue destination="BHs-hC-79E" kind="relationship" relationship="viewControllers" id="LZM-d5-ywb"/>
                         <segue destination="8aI-nb-yel" kind="unwind" identifier="unwindAtConnectionFatalErrorOccured" unwindAction="unwindAtConnectionFatalErrorOccured:" id="oUG-OO-aVZ"/>
                         <segue destination="8aI-nb-yel" kind="unwind" identifier="unwindAtConnectionHasDisconnected" unwindAction="unwindAtConnectionHasDisconnected:" id="2oK-f7-iXU"/>
+                        <segue destination="8aI-nb-yel" kind="unwind" identifier="closeConnection" unwindAction="closeConnection:" id="IHp-II-ogR"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="owE-Pa-gvU" userLabel="First Responder" sceneMemberID="firstResponder"/>

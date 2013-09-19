@@ -198,10 +198,10 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)setColorDirectWithColors:(NSArray *)newColors
 {
-	float redPart;
-    float greenPart;
-    float bluePart;
-	float alphaPart;
+	CGFloat redPart;
+    CGFloat greenPart;
+    CGFloat bluePart;
+	CGFloat alphaPart;
     
     
 	size_t sizeColorArray = MIN(NUM_OF_LED, newColors.count);
@@ -233,9 +233,9 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)setColorDirect:(UIColor *)newColor
 {
-    float redPart;
-    float greenPart;
-    float bluePart;
+    CGFloat redPart;
+    CGFloat greenPart;
+	CGFloat bluePart;
     [newColor getRed:&redPart green:&greenPart blue:&bluePart alpha:nil];
     
     const size_t sizeColorArray = NUM_OF_LED * 3;
