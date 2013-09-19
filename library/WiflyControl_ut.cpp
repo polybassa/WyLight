@@ -174,7 +174,20 @@ bool TelnetProxy::SendString(const std::string& command, std::string value) cons
 	g_TestBuffer.push_back(value);
 	return g_ProxyConnected;
 }
-
+	
+bool TelnetProxy::PerformWifiScan(std::string& result)const
+{
+	return true;
+}
+	
+unsigned int TelnetProxy::ComputeFreeChannel(const std::string& scanResults) const
+{
+	return 1;
+}
+bool TelnetProxy::ChangeWifiChannel(const size_t channel) const
+{
+	return true;
+}
 
 // Testcases
 size_t ut_WiflyControl_BlEraseEeprom(void)

@@ -48,6 +48,9 @@ class TelnetProxy
 		bool Send(const std::string& telnetMessage, const std::string& expectedResponse = AOK) const;
 		bool SendString(const std::string& command, std::string value) const;
 		bool SendRebootCommand(void) const;
+		bool PerformWifiScan(std::string& result) const;
+		unsigned int ComputeFreeChannel(const std::string& scanResults) const;
+		bool ChangeWifiChannel(const size_t channel) const;
 
 		friend size_t ut_TelnetProxy_Recv(void);
 		friend size_t ut_TelnetProxy_RecvString(void);

@@ -223,11 +223,10 @@ class Control
 		bool ConfSetDeviceId(const std::string& name) const;
 		
 		/**
-		 * Allows you to change the channel of a Wifly_Light immediately
-		 * @param channel any number between 1 and 13
+		 * Wlan module performs a wifi scan and changes to the next free channel. This function can take some time.
 		 * @return false, in case of an error
 		 */
-		bool ConfSetWlanChannel(const uint8_t channel) const;
+		bool ConfChangeWlanChannel(void) const;
 
 		
 /* -------------------------- FIRMWARE METHODES -------------------------- */		

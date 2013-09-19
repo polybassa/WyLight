@@ -177,17 +177,12 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 {
 	if (async) {
 		mCmdQueue->push_front(std::make_tuple(false,
-										 std::bind(&WyLight::ControlNoThrow::ConfSetWlanChannel, std::ref(*mControl), 0),
+										 std::bind(&WyLight::ControlNoThrow::ConfChangeWlanChannel, std::ref(*mControl)),
 										 0));
 	} else {
 		
 		std::lock_guard<std::mutex> lock(*gCtrlMutex);
-		uint32_t returnValue = mControl->ConfSetWlanChannel(0);
-		
-		if(returnValue != WyLight::NO_ERROR)
-		{
-			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
-		}
+		uint32_t returnValue = mControl->ConfChangeWlanChannel();
 
 	}
 }

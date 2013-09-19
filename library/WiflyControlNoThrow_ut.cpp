@@ -125,7 +125,7 @@ bool Control::ConfSetDefaults(void) const {return true; }
 
 bool Control::ConfSetWlan(const std::string& phrase, const std::string& ssid) const {return true; }
 
-bool Control::ConfSetWlanChannel(const uint8_t channel) const {return true; }
+bool Control::ConfChangeWlanChannel(void) const {return true; }
 
 bool Control::ConfSetDeviceId(const std::string& name) const {return true; }
 
@@ -194,7 +194,7 @@ size_t ut_WiflyControlNoThrow_ConfFunctions(void)
 	CHECK(NO_ERROR == testee.ConfGetSsid(tempStr));
 	CHECK(NO_ERROR == testee.ConfModuleAsSoftAP(tempStr));
 	CHECK(NO_ERROR == testee.ConfModuleForWlan(tempStr,tempStr,tempStr));
-	CHECK(NO_ERROR == testee.ConfSetWlanChannel(0));
+	CHECK(NO_ERROR == testee.ConfChangeWlanChannel());
 	TestCaseEnd();
 }
 

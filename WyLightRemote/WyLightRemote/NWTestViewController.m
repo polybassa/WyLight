@@ -54,6 +54,15 @@
 }
 
 - (void)buttonPressed {
+	
+	dispatch_queue_t scanQ = dispatch_queue_create("Scan Wifi Q", NULL);
+	dispatch_async(scanQ, ^{
+		if (self.controlHandle) {
+			[self.controlHandle configurateWlanModuleChannelAsync:NO];
+		}
+	});
+	
+	/*
 	static BOOL animationIsRunning;
 	if (!animationIsRunning) {
 		dispatch_queue_t animationQ = dispatch_queue_create("animationQ", NULL);
@@ -74,7 +83,7 @@
 			[NSThread sleepForTimeInterval:(((NWScriptCommandObject *)[self.script.scriptArray objectAtIndex:0]).duration / 100) * self.slider.value];
 			animationIsRunning = NO;
 		});
-	}
+	}*/
 }
 
 - (void)viewWillAppear:(BOOL)animated {

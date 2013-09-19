@@ -717,25 +717,28 @@ bool Control::ConfRebootWlanModule(void) const
 	return true;
 }
 	
-bool Control::ConfSetWlanChannel(const uint8_t channel) const
+bool Control::ConfChangeWlanChannel(void) const
 {
-	if (channel == 0 || channel > 13) {
-		return false;
-	}
-	
-	const std::string command = "set wlan channel " + std::to_string(channel) + " 1\r\n";
-	
 	if(!mTelnet.Open())
 	{
 		Trace(ZONE_ERROR, "open telnet connection failed\n");
 		return false;
 	}
-	
-	if(!mTelnet.Send(command))
+	std::string result;
+	if(!mTelnet.PerformWifiScan(result))
 	{
-		Trace(ZONE_ERROR, "command: '%s' failed -> exit without saving\n", command.data());
+		Trace(ZONE_ERROR, "wifi scan failed\n");
 		return mTelnet.Close(false);
 	}
+	std::cout << result << std::endl;
+	unsigned int newChannel = mTelnet.ComputeFreeChannel(result);
+	std::cout << newChannel;
+	if(!newChannel)
+	{
+		Trace(ZONE_ERROR, "compute new channel failed\n");
+		return mTelnet.Close(false);
+	}
+	mTelnet.ChangeWifiChannel(newChannel);
 	return mTelnet.Close(false);
 }
 

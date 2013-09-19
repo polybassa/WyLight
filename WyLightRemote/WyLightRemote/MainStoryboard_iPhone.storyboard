@@ -261,50 +261,64 @@
         <!--Add New Target Guide View Controller-->
         <scene sceneID="OSx-Hz-8vC">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="r4j-Y4-WvM" customClass="NWAddNewTargetGuideViewController" sceneMemberID="viewController">
+                <viewController autoresizesArchivedViewToFullSize="NO" automaticallyAdjustsScrollViewInsets="NO" id="r4j-Y4-WvM" customClass="NWAddNewTargetGuideViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="4jb-xO-KzN"/>
                         <viewControllerLayoutGuide type="bottom" id="vbz-tI-l8P"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="lwq-OK-Ha0">
+                    <view key="view" autoresizesSubviews="NO" contentMode="scaleToFill" id="lwq-OK-Ha0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view autoresizesSubviews="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G6K-nh-wh7" customClass="NWAddNewTargetGuideView">
-                                <rect key="frame" x="0.0" y="64" width="320" height="418"/>
+                            <view autoresizesSubviews="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="420" translatesAutoresizingMaskIntoConstraints="NO" id="G6K-nh-wh7" customClass="NWAddNewTargetGuideView">
+                                <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                                <subviews>
+                                    <navigationBar autoresizesSubviews="NO" contentMode="scaleToFill" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eQY-Jx-8oa">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="Z3l-Fk-crZ"/>
+                                        </constraints>
+                                        <color key="tintColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                        <color key="barTintColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                        <textAttributes key="titleTextAttributes">
+                                            <offsetWrapper key="textShadowOffset" horizontal="2" vertical="2"/>
+                                        </textAttributes>
+                                        <items>
+                                            <navigationItem title="Add new Target" id="ZDf-7v-laj">
+                                                <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="TeT-vk-PkU">
+                                                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <connections>
+                                                        <segue destination="q6e-iH-q3v" kind="unwind" identifier="cancelAddNewTargetSegue:" unwindAction="cancelAddNewTargetSegue:" id="N6e-EF-zP2"/>
+                                                    </connections>
+                                                </barButtonItem>
+                                                <barButtonItem key="rightBarButtonItem" systemItem="done" id="gnT-rD-38e">
+                                                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <connections>
+                                                        <action selector="donePressed:" destination="r4j-Y4-WvM" id="ZA9-kh-ln9"/>
+                                                    </connections>
+                                                </barButtonItem>
+                                            </navigationItem>
+                                        </items>
+                                    </navigationBar>
+                                </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                 <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstItem="eQY-Jx-8oa" firstAttribute="top" secondItem="G6K-nh-wh7" secondAttribute="top" id="ciF-jg-btL"/>
+                                    <constraint firstItem="eQY-Jx-8oa" firstAttribute="leading" secondItem="G6K-nh-wh7" secondAttribute="leading" id="jgc-DF-52b"/>
+                                    <constraint firstAttribute="trailing" secondItem="eQY-Jx-8oa" secondAttribute="trailing" id="qNp-Kh-Rxs"/>
+                                </constraints>
                             </view>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="eQY-Jx-8oa">
-                                <rect key="frame" x="0.0" y="20" width="320" height="44"/>
-                                <color key="tintColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
-                                <items>
-                                    <navigationItem title="Add new Target" id="ZDf-7v-laj">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="TeT-vk-PkU">
-                                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                            <connections>
-                                                <segue destination="q6e-iH-q3v" kind="unwind" identifier="cancelAddNewTargetSegue:" unwindAction="cancelAddNewTargetSegue:" id="N6e-EF-zP2"/>
-                                            </connections>
-                                        </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="gnT-rD-38e">
-                                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                            <connections>
-                                                <action selector="donePressed:" destination="r4j-Y4-WvM" id="ZA9-kh-ln9"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="G6K-nh-wh7" firstAttribute="top" secondItem="lwq-OK-Ha0" secondAttribute="top" constant="64" id="27p-a7-B8N"/>
-                            <constraint firstItem="G6K-nh-wh7" firstAttribute="bottom" secondItem="lwq-OK-Ha0" secondAttribute="bottom" constant="2" id="Eqn-se-0wd"/>
+                            <constraint firstItem="G6K-nh-wh7" firstAttribute="bottom" secondItem="lwq-OK-Ha0" secondAttribute="bottom" id="Eqn-se-0wd"/>
+                            <constraint firstItem="G6K-nh-wh7" firstAttribute="top" secondItem="4jb-xO-KzN" secondAttribute="bottom" id="Ycv-Qm-AhH"/>
                             <constraint firstItem="G6K-nh-wh7" firstAttribute="leading" secondItem="lwq-OK-Ha0" secondAttribute="leading" id="g32-gW-72u"/>
                             <constraint firstItem="G6K-nh-wh7" firstAttribute="trailing" secondItem="lwq-OK-Ha0" secondAttribute="trailing" id="zND-Pe-TaZ"/>
                         </constraints>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <connections>
                         <outlet property="guideView" destination="G6K-nh-wh7" id="3Sg-JG-6s6"/>
                         <segue destination="q6e-iH-q3v" kind="unwind" identifier="noNewTargetFoundSegue:" unwindAction="noNewTargetFoundSegue:" id="iLV-bq-9ii"/>
@@ -329,20 +343,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="thj-OA-OH8">
+                            <navigationBar contentMode="scaleToFill" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="thj-OA-OH8">
                                 <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="yuh-yJ-nPl"/>
                                 </constraints>
                                 <color key="tintColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                <color key="barTintColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                 <items>
                                     <navigationItem title="Add new Target" id="Bdp-v1-JYj">
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ncU-r4-jZS">
+                                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <connections>
                                                 <segue destination="7uJ-0A-h3o" kind="unwind" unwindAction="cancelAddNewTargetSegue:" id="udL-6V-3rr"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="POI-ry-qRB">
+                                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <connections>
                                                 <action selector="configButtonPressed:" destination="kau-uB-eG6" id="I3i-Mp-I19"/>
                                             </connections>
@@ -394,6 +411,7 @@
                             <constraint firstItem="3kM-fS-ZuP" firstAttribute="leading" secondItem="bi1-Vo-i0u" secondAttribute="leading" constant="20" symbolic="YES" id="STY-ID-6Bk"/>
                             <constraint firstAttribute="trailing" secondItem="3kM-fS-ZuP" secondAttribute="trailing" constant="20" symbolic="YES" id="Sy8-5o-27U"/>
                             <constraint firstItem="oMI-IW-qah" firstAttribute="top" secondItem="thj-OA-OH8" secondAttribute="bottom" id="hNP-ke-xjz"/>
+                            <constraint firstItem="thj-OA-OH8" firstAttribute="top" secondItem="6Hr-7A-Nz9" secondAttribute="bottom" id="hzR-27-eXI"/>
                             <constraint firstItem="3df-UK-Ria" firstAttribute="trailing" secondItem="3kM-fS-ZuP" secondAttribute="trailing" id="jSA-op-Ksd"/>
                             <constraint firstItem="thj-OA-OH8" firstAttribute="leading" secondItem="bi1-Vo-i0u" secondAttribute="leading" id="lrx-mT-vhr"/>
                             <constraint firstItem="bJv-2J-8Cs" firstAttribute="top" secondItem="3kM-fS-ZuP" secondAttribute="bottom" constant="8" symbolic="YES" id="m2Z-db-okt"/>
@@ -414,7 +432,7 @@
                 <exit id="7uJ-0A-h3o" userLabel="Exit" sceneMemberID="exit"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z2L-zf-sKP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2070" y="1658"/>
+            <point key="canvasLocation" x="2074" y="1663"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="m7p-py-uDD">

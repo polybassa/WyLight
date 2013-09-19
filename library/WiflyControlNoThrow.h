@@ -221,13 +221,12 @@ class ControlNoThrow
 		 uint32_t ConfSetDeviceId(const std::string &name) const;
 			
 		/**
-		 * Allows you to change the channel of a Wifly_Light immediately
-		 * @param channel any number between 1 and 13
+		 * Wlan module performs a wifi scan and changes to the next free channel. This function can take some time.
 		 * @return Indexed by ::WiflyError
 			<BR><B>FATAL_ERROR</B> in case of an error
 			<BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
-		 uint32_t ConfSetWlanChannel(const uint8_t channel) const;
+		 uint32_t ConfChangeWlanChannel(void) const;
 		
 /* -------------------------- FIRMWARE METHODES -------------------------- */
 		/**
