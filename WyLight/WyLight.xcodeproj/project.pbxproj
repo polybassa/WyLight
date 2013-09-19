@@ -34,6 +34,22 @@
 		5C8395E217EB61B4007EF0C6 /* TelnetProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395D017EB61B4007EF0C6 /* TelnetProxy.cpp */; };
 		5C8395E317EB61B4007EF0C6 /* WiflyControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395D317EB61B4007EF0C6 /* WiflyControl.cpp */; };
 		5C8395E417EB61B4007EF0C6 /* WiflyControlNoThrow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395D617EB61B4007EF0C6 /* WiflyControlNoThrow.cpp */; };
+		5C8395E917EB651D007EF0C6 /* NWConnectionTBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395E817EB651D007EF0C6 /* NWConnectionTBC.m */; };
+		5C8395EE17EB6721007EF0C6 /* NWDefaultColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395EB17EB6721007EF0C6 /* NWDefaultColorPickerViewController.m */; };
+		5C8395EF17EB6721007EF0C6 /* NWColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395ED17EB6721007EF0C6 /* NWColorPickerViewController.m */; };
+		5C83962B17EB6C00007EF0C6 /* checkerboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83961517EB6C00007EF0C6 /* checkerboard.png */; };
+		5C83962C17EB6C00007EF0C6 /* checkerboard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83961617EB6C00007EF0C6 /* checkerboard@2x.png */; };
+		5C83962D17EB6C00007EF0C6 /* colorPickerKnob.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83961717EB6C00007EF0C6 /* colorPickerKnob.png */; };
+		5C83962E17EB6C00007EF0C6 /* colorPickerKnob@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83961817EB6C00007EF0C6 /* colorPickerKnob@2x.png */; };
+		5C83962F17EB6C00007EF0C6 /* HSV.c in Sources */ = {isa = PBXBuildFile; fileRef = 5C83961917EB6C00007EF0C6 /* HSV.c */; };
+		5C83963017EB6C00007EF0C6 /* KZColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C83961C17EB6C00007EF0C6 /* KZColorPicker.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5C83963217EB6C00007EF0C6 /* KZColorPickerBrightnessSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C83962017EB6C00007EF0C6 /* KZColorPickerBrightnessSlider.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5C83963317EB6C00007EF0C6 /* KZColorPickerHSWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C83962217EB6C00007EF0C6 /* KZColorPickerHSWheel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5C83963417EB6C00007EF0C6 /* KZColorPickerSwatchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C83962417EB6C00007EF0C6 /* KZColorPickerSwatchView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5C83963517EB6C00007EF0C6 /* KZUnitSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C83962617EB6C00007EF0C6 /* KZUnitSlider.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5C83963617EB6C00007EF0C6 /* pickerColorWheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83962717EB6C00007EF0C6 /* pickerColorWheel.png */; };
+		5C83963717EB6C00007EF0C6 /* pickerColorWheel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83962817EB6C00007EF0C6 /* pickerColorWheel@2x.png */; };
+		5C83963817EB6C00007EF0C6 /* UIColor-Expanded.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C83962A17EB6C00007EF0C6 /* UIColor-Expanded.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +121,32 @@
 		5C8395D517EB61B4007EF0C6 /* WiflyControlException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WiflyControlException.h; path = ../../library/WiflyControlException.h; sourceTree = "<group>"; };
 		5C8395D617EB61B4007EF0C6 /* WiflyControlNoThrow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WiflyControlNoThrow.cpp; path = ../../library/WiflyControlNoThrow.cpp; sourceTree = "<group>"; };
 		5C8395D717EB61B4007EF0C6 /* WiflyControlNoThrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WiflyControlNoThrow.h; path = ../../library/WiflyControlNoThrow.h; sourceTree = "<group>"; };
+		5C8395E717EB651D007EF0C6 /* NWConnectionTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWConnectionTBC.h; sourceTree = "<group>"; };
+		5C8395E817EB651D007EF0C6 /* NWConnectionTBC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWConnectionTBC.m; sourceTree = "<group>"; };
+		5C8395EA17EB6721007EF0C6 /* NWDefaultColorPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWDefaultColorPickerViewController.h; sourceTree = "<group>"; };
+		5C8395EB17EB6721007EF0C6 /* NWDefaultColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWDefaultColorPickerViewController.m; sourceTree = "<group>"; };
+		5C8395EC17EB6721007EF0C6 /* NWColorPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWColorPickerViewController.h; sourceTree = "<group>"; };
+		5C8395ED17EB6721007EF0C6 /* NWColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWColorPickerViewController.m; sourceTree = "<group>"; };
+		5C83961517EB6C00007EF0C6 /* checkerboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkerboard.png; sourceTree = "<group>"; };
+		5C83961617EB6C00007EF0C6 /* checkerboard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkerboard@2x.png"; sourceTree = "<group>"; };
+		5C83961717EB6C00007EF0C6 /* colorPickerKnob.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = colorPickerKnob.png; sourceTree = "<group>"; };
+		5C83961817EB6C00007EF0C6 /* colorPickerKnob@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "colorPickerKnob@2x.png"; sourceTree = "<group>"; };
+		5C83961917EB6C00007EF0C6 /* HSV.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HSV.c; sourceTree = "<group>"; };
+		5C83961A17EB6C00007EF0C6 /* HSV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSV.h; sourceTree = "<group>"; };
+		5C83961B17EB6C00007EF0C6 /* KZColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KZColorPicker.h; sourceTree = "<group>"; };
+		5C83961C17EB6C00007EF0C6 /* KZColorPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KZColorPicker.m; sourceTree = "<group>"; };
+		5C83961F17EB6C00007EF0C6 /* KZColorPickerBrightnessSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KZColorPickerBrightnessSlider.h; sourceTree = "<group>"; };
+		5C83962017EB6C00007EF0C6 /* KZColorPickerBrightnessSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KZColorPickerBrightnessSlider.m; sourceTree = "<group>"; };
+		5C83962117EB6C00007EF0C6 /* KZColorPickerHSWheel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KZColorPickerHSWheel.h; sourceTree = "<group>"; };
+		5C83962217EB6C00007EF0C6 /* KZColorPickerHSWheel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KZColorPickerHSWheel.m; sourceTree = "<group>"; };
+		5C83962317EB6C00007EF0C6 /* KZColorPickerSwatchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KZColorPickerSwatchView.h; sourceTree = "<group>"; };
+		5C83962417EB6C00007EF0C6 /* KZColorPickerSwatchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KZColorPickerSwatchView.m; sourceTree = "<group>"; };
+		5C83962517EB6C00007EF0C6 /* KZUnitSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KZUnitSlider.h; sourceTree = "<group>"; };
+		5C83962617EB6C00007EF0C6 /* KZUnitSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KZUnitSlider.m; sourceTree = "<group>"; };
+		5C83962717EB6C00007EF0C6 /* pickerColorWheel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pickerColorWheel.png; sourceTree = "<group>"; };
+		5C83962817EB6C00007EF0C6 /* pickerColorWheel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pickerColorWheel@2x.png"; sourceTree = "<group>"; };
+		5C83962917EB6C00007EF0C6 /* UIColor-Expanded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor-Expanded.h"; sourceTree = "<group>"; };
+		5C83962A17EB6C00007EF0C6 /* UIColor-Expanded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor-Expanded.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +206,7 @@
 		5C83957F17EB6138007EF0C6 /* WyLight */ = {
 			isa = PBXGroup;
 			children = (
+				5C83961417EB677A007EF0C6 /* ColorPicker */,
 				5C8395E517EB61BF007EF0C6 /* WiflyControlModel */,
 				5C8395E617EB62EB007EF0C6 /* ViewControllers */,
 				5C83958B17EB6138007EF0C6 /* Main.storyboard */,
@@ -253,10 +296,43 @@
 		5C8395E617EB62EB007EF0C6 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				5C8395E717EB651D007EF0C6 /* NWConnectionTBC.h */,
+				5C8395E817EB651D007EF0C6 /* NWConnectionTBC.m */,
 				5C8395AE17EB6182007EF0C6 /* NWBroadcastsTVC.h */,
 				5C8395AF17EB6197007EF0C6 /* NWBroadcastsTVC.m */,
+				5C8395EA17EB6721007EF0C6 /* NWDefaultColorPickerViewController.h */,
+				5C8395EB17EB6721007EF0C6 /* NWDefaultColorPickerViewController.m */,
+				5C8395EC17EB6721007EF0C6 /* NWColorPickerViewController.h */,
+				5C8395ED17EB6721007EF0C6 /* NWColorPickerViewController.m */,
 			);
 			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		5C83961417EB677A007EF0C6 /* ColorPicker */ = {
+			isa = PBXGroup;
+			children = (
+				5C83961517EB6C00007EF0C6 /* checkerboard.png */,
+				5C83961617EB6C00007EF0C6 /* checkerboard@2x.png */,
+				5C83961717EB6C00007EF0C6 /* colorPickerKnob.png */,
+				5C83961817EB6C00007EF0C6 /* colorPickerKnob@2x.png */,
+				5C83961917EB6C00007EF0C6 /* HSV.c */,
+				5C83961A17EB6C00007EF0C6 /* HSV.h */,
+				5C83961B17EB6C00007EF0C6 /* KZColorPicker.h */,
+				5C83961C17EB6C00007EF0C6 /* KZColorPicker.m */,
+				5C83961F17EB6C00007EF0C6 /* KZColorPickerBrightnessSlider.h */,
+				5C83962017EB6C00007EF0C6 /* KZColorPickerBrightnessSlider.m */,
+				5C83962117EB6C00007EF0C6 /* KZColorPickerHSWheel.h */,
+				5C83962217EB6C00007EF0C6 /* KZColorPickerHSWheel.m */,
+				5C83962317EB6C00007EF0C6 /* KZColorPickerSwatchView.h */,
+				5C83962417EB6C00007EF0C6 /* KZColorPickerSwatchView.m */,
+				5C83962517EB6C00007EF0C6 /* KZUnitSlider.h */,
+				5C83962617EB6C00007EF0C6 /* KZUnitSlider.m */,
+				5C83962717EB6C00007EF0C6 /* pickerColorWheel.png */,
+				5C83962817EB6C00007EF0C6 /* pickerColorWheel@2x.png */,
+				5C83962917EB6C00007EF0C6 /* UIColor-Expanded.h */,
+				5C83962A17EB6C00007EF0C6 /* UIColor-Expanded.m */,
+			);
+			name = ColorPicker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -336,9 +412,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C83962C17EB6C00007EF0C6 /* checkerboard@2x.png in Resources */,
+				5C83963617EB6C00007EF0C6 /* pickerColorWheel.png in Resources */,
+				5C83962B17EB6C00007EF0C6 /* checkerboard.png in Resources */,
+				5C83963717EB6C00007EF0C6 /* pickerColorWheel@2x.png in Resources */,
 				5C83959217EB6138007EF0C6 /* Images.xcassets in Resources */,
 				5C83958417EB6138007EF0C6 /* InfoPlist.strings in Resources */,
 				5C83958D17EB6138007EF0C6 /* Main.storyboard in Resources */,
+				5C83962D17EB6C00007EF0C6 /* colorPickerKnob.png in Resources */,
+				5C83962E17EB6C00007EF0C6 /* colorPickerKnob@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,19 +440,29 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C8395DD17EB61B4007EF0C6 /* BroadcastReceiver.cpp in Sources */,
+				5C8395E917EB651D007EF0C6 /* NWConnectionTBC.m in Sources */,
 				5C8395DB17EB61B4007EF0C6 /* WCBroadcastReceiverWrapper.mm in Sources */,
+				5C83963517EB6C00007EF0C6 /* KZUnitSlider.m in Sources */,
+				5C83963417EB6C00007EF0C6 /* KZColorPickerSwatchView.m in Sources */,
+				5C83962F17EB6C00007EF0C6 /* HSV.c in Sources */,
+				5C8395EE17EB6721007EF0C6 /* NWDefaultColorPickerViewController.m in Sources */,
 				5C8395E017EB61B4007EF0C6 /* intelhexclass.cpp in Sources */,
 				5C8395B017EB6197007EF0C6 /* NWBroadcastsTVC.m in Sources */,
 				5C8395DA17EB61B4007EF0C6 /* crc.c in Sources */,
 				5C8395DC17EB61B4007EF0C6 /* WCWiflyControlWrapper.mm in Sources */,
+				5C8395EF17EB6721007EF0C6 /* NWColorPickerViewController.m in Sources */,
 				5C8395D817EB61B4007EF0C6 /* WCEndpoint.m in Sources */,
+				5C83963317EB6C00007EF0C6 /* KZColorPickerHSWheel.m in Sources */,
 				5C8395E417EB61B4007EF0C6 /* WiflyControlNoThrow.cpp in Sources */,
 				5C83958617EB6138007EF0C6 /* main.m in Sources */,
+				5C83963817EB6C00007EF0C6 /* UIColor-Expanded.m in Sources */,
+				5C83963217EB6C00007EF0C6 /* KZColorPickerBrightnessSlider.m in Sources */,
 				5C8395D917EB61B4007EF0C6 /* Script.cpp in Sources */,
 				5C8395DE17EB61B4007EF0C6 /* ClientSocket.cpp in Sources */,
 				5C8395DF17EB61B4007EF0C6 /* ComProxy.cpp in Sources */,
 				5C83958A17EB6138007EF0C6 /* NWAppDelegate.m in Sources */,
 				5C8395E317EB61B4007EF0C6 /* WiflyControl.cpp in Sources */,
+				5C83963017EB6C00007EF0C6 /* KZColorPicker.m in Sources */,
 				5C8395E117EB61B4007EF0C6 /* MaskBuffer.cpp in Sources */,
 				5C8395E217EB61B4007EF0C6 /* TelnetProxy.cpp in Sources */,
 			);

@@ -36,6 +36,9 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="H87-Z1-teV" kind="push" identifier="setEndpoint:" id="HG0-tO-Ulx"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -53,6 +56,73 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SrC-zC-Z42" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="695" y="117"/>
+        </scene>
+        <!--Color Picker View Controller-->
+        <scene sceneID="CdG-a7-zLn">
+            <objects>
+                <viewController id="kO5-iB-Syi" customClass="NWColorPickerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jjO-Zw-gBA"/>
+                        <viewControllerLayoutGuide type="bottom" id="u5b-ac-9zg"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Enc-vS-BbP">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" systemItem="favorites" id="VrI-Vu-uQ4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lck-kK-Z4U" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1984" y="-765"/>
+        </scene>
+        <!--ConnectionTBC-->
+        <scene sceneID="UMD-eN-YA9">
+            <objects>
+                <tabBarController definesPresentationContext="YES" id="H87-Z1-teV" customClass="NWConnectionTBC" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="Wjq-WW-A12">
+                        <barButtonItem key="leftBarButtonItem" title="Disconnect" id="bxa-xS-8Ml">
+                            <connections>
+                                <segue destination="8aI-nb-yel" kind="unwind" unwindAction="closeConnection:" id="j56-4r-KfP"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="EpQ-d0-sJc">
+                        <rect key="frame" x="129" y="330" width="163" height="49"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="kO5-iB-Syi" kind="relationship" relationship="viewControllers" id="nQT-by-sKg"/>
+                        <segue destination="BHs-hC-79E" kind="relationship" relationship="viewControllers" id="LZM-d5-ywb"/>
+                        <segue destination="8aI-nb-yel" kind="unwind" identifier="unwindAtConnectionFatalErrorOccured" unwindAction="unwindAtConnectionFatalErrorOccured:" id="oUG-OO-aVZ"/>
+                        <segue destination="8aI-nb-yel" kind="unwind" identifier="unwindAtConnectionHasDisconnected" unwindAction="unwindAtConnectionHasDisconnected:" id="2oK-f7-iXU"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="owE-Pa-gvU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="8aI-nb-yel" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="1450" y="-440"/>
+        </scene>
+        <!--View Controller - Item 2-->
+        <scene sceneID="KJJ-Y5-RxH">
+            <objects>
+                <viewController id="BHs-hC-79E" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="D6Y-dq-wXg"/>
+                        <viewControllerLayoutGuide type="bottom" id="UOg-6T-fv3"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="gw3-7y-CL5">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 2" id="kud-TW-ohR"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7pw-aj-HoO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1984" y="-114"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="obH-PK-bxy">
