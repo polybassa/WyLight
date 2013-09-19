@@ -24,7 +24,7 @@
  */
 - (void)configurateWlanModuleAsClientForNetwork:(NSString *)ssid password:(NSString *)password name:(NSString *)name;
 - (void)configurateWlanModuleAsSoftAP:(NSString *)ssid;
-- (void)configurateWlanModuleChangeChannel:(uint8_t) channel;
+- (void)configurateWlanModuleChannelAsync:(BOOL)async;
 - (void)rebootWlanModul;
 
 // Firmware methods
@@ -52,7 +52,7 @@
 
 // Bootloader methods
 - (void)readCurrentFirmwareVersionFromBootloder:(NSString **)currentFirmwareVersionStringPlaceholder;
-- (void)eraseEeprom;
+- (void)eraseEepromAsync:(BOOL)async;
 - (void)programFlashAsync:(BOOL)async;
 - (void)leaveBootloader;
 - (int)connect;

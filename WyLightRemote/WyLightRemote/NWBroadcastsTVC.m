@@ -110,12 +110,15 @@
 
 // if a fatal error occures I remove the endpoint from my favorites-list
 - (IBAction)unwindAtConnectionFatalErrorOccured:(UIStoryboardSegue *)segue {
-	[[[UIAlertView alloc]initWithTitle:@"Oh oh!" message:@"Connection lost\nPlease retry!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-	
-	if ([segue.sourceViewController respondsToSelector:@selector(endpoint)]) {
-		[self.receiver saveTargets];
-		[self.receiver clearTargets];
-	}
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[[UIAlertView alloc]initWithTitle:@"Oh oh!" message:@"Connection lost\nPlease retry!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+		
+		if ([segue.sourceViewController respondsToSelector:@selector(endpoint)]) {
+			[self.receiver unsetWCEndpointAsFavorite: [segue.sourceViewController performSelector:@selector(endpoint)]];
+			[self.receiver saveTargets];
+			[self.receiver clearTargets];
+		}
+	});
 }
 
 // show a message

@@ -18,11 +18,8 @@
 	std::shared_ptr<std::thread> receiverThread;
 }
 
-#if !__has_feature(objc_arc)
-@property (nonatomic, unsafe_unretained) NSThread* threadOfOwner;
-#else
 @property (nonatomic, weak) NSThread* threadOfOwner;
-#endif
+@property (nonatomic, strong) NSMutableArray* arrayOfEndpoints;
 
 - (void)postNotification;
 
@@ -59,8 +56,15 @@ NSString *const TargetsChangedNotification = @"TargetsChangedNotification";
 														  (endpoint.GetIp() & 0xFF),
 														  endpoint.GetPort(),
 														  endpoint.GetDeviceId().c_str());
-		
-													[self performSelector:@selector(postNotification) onThread:[self threadOfOwner] withObject:nil waitUntilDone:NO];
+													
+													WCEndpoint *endPoint = [[WCEndpoint alloc] initWithIpAdress:endpoint.GetIp()
+																										   port:endpoint.GetPort()
+																										   name:[NSString stringWithCString:endpoint.GetDeviceId().c_str() encoding:NSASCIIStringEncoding]
+																										  score:endpoint.GetScore()];
+													dispatch_async(dispatch_get_main_queue(), ^{
+														[self.arrayOfEndpoints insertObject:endPoint atIndex:index];
+														[self postNotification];
+													});
 												}
 												);
 	}
@@ -103,19 +107,16 @@ NSString *const TargetsChangedNotification = @"TargetsChangedNotification";
 	
 }
 
+- (NSMutableArray *)arrayOfEndpoints {
+	if (_arrayOfEndpoints == nil) {
+		_arrayOfEndpoints = [[NSMutableArray alloc] init];
+	}
+	return _arrayOfEndpoints;
+}
+
 - (NSArray *)targets
 {
-	NSMutableArray *allTargets = [[NSMutableArray alloc] init];
-	
-	for (size_t index = 0; index < receiver->NumRemotes(); index++) {
-		WCEndpoint *endpoint = [[WCEndpoint alloc] initWithIpAdress:receiver->GetEndpoint(index).GetIp()
-															   port:receiver->GetEndpoint(index).GetPort()
-															   name:[NSString stringWithCString:receiver->GetEndpoint(index).GetDeviceId().c_str()
-																					   encoding:NSASCIIStringEncoding]
-															  score:receiver->GetEndpoint(index).GetScore()];
-		[allTargets addObject:endpoint];
-	}
-	return allTargets;
+	return self.arrayOfEndpoints;
 }
 
 - (void)setWCEndpointAsFavorite:(WCEndpoint *)endpoint
@@ -134,10 +135,8 @@ NSString *const TargetsChangedNotification = @"TargetsChangedNotification";
 	{
 		if((receiver->GetEndpoint(index)).GetIp() == endpoint.ipAdress) {
 			receiver->GetEndpoint(index).SetScore(0);
-			receiver->LockedRemove(receiver->GetEndpoint(index));
 		}
 	}
-	[self postNotification];
 }
 
 - (void)saveTargets
@@ -147,13 +146,13 @@ NSString *const TargetsChangedNotification = @"TargetsChangedNotification";
 
 - (void)postNotification
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:TargetsChangedNotification object:self];
+	[[NSNotificationCenter defaultCenter] postNotificationName:TargetsChangedNotification object:self];
 }
 
 - (void)clearTargets
 {
 	receiver->DeleteRecentEndpointFile();
-	[self postNotification];
+	self.arrayOfEndpoints = nil;
 }
 
 @end

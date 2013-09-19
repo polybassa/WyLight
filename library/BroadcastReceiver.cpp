@@ -126,19 +126,6 @@ bool BroadcastReceiver::LockedInsert(Endpoint& newEndpoint)
 	}
 	return true;
 }
-	
-void BroadcastReceiver::LockedRemove(Endpoint& endpoint)
-{
-	std::lock_guard<std::mutex> lg(mMutex);
-	mIpTableShadow.erase(mIpTableShadow.find(endpoint));
-	for (auto it = mIpTable.begin(); it != mIpTable.end(); it++) {
-		if (it->second.GetIp() == endpoint.GetIp()) {
-			mIpTable.erase(it);
-			return;
-		}
-	}
-}
-
 
 size_t BroadcastReceiver::NumRemotes(void) const
 {

@@ -37,8 +37,10 @@
 		}
 		self.controlHandle = [[WCWiflyControlWrapper alloc] initWithWCEndpoint:endpoint establishConnection:YES];
 		if (self.controlHandle == nil) {
-			[connectingView dismissWithClickedButtonIndex:0 animated:YES];
-			[self performSegueWithIdentifier:@"unwindAtConnectionFatalErrorOccured" sender:self];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[connectingView dismissWithClickedButtonIndex:0 animated:YES];
+				[self performSegueWithIdentifier:@"unwindAtConnectionFatalErrorOccured" sender:self];
+			});
 			return;
 		}
 		

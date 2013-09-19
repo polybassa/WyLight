@@ -62,7 +62,7 @@ class BroadcastReceiver
 		 * @param timeout in seconds, until execution is terminated, to wait indefinetly use NULL (default)
 		 */
 		void operator() (timeval* timeout = NULL) throw (FatalError);
-
+	
 		/*
 		 * Get a reference to the endpoint at the specified index
 		 * @param index of the endpoint in the internal IpTable, should be lees than NumRemotes()
@@ -113,9 +113,6 @@ class BroadcastReceiver
 		 * @param filename of the file containing the recent endpoints
 		 */
 		void DeleteRecentEndpointFile(const std::string& filename = "");
-	
-		void LockedRemove(Endpoint& endpoint);
-
 		
 	private:
 		const uint16_t mPort;

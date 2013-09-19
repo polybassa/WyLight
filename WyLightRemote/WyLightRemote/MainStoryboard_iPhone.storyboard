@@ -270,7 +270,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view autoresizesSubviews="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G6K-nh-wh7" customClass="NWAddNewTargetGuideView">
+                            <view autoresizesSubviews="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G6K-nh-wh7" customClass="NWAddNewTargetGuideView">
                                 <rect key="frame" x="0.0" y="64" width="320" height="418"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                 <gestureRecognizers/>
@@ -281,11 +281,13 @@
                                 <items>
                                     <navigationItem title="Add new Target" id="ZDf-7v-laj">
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="TeT-vk-PkU">
+                                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <connections>
                                                 <segue destination="q6e-iH-q3v" kind="unwind" identifier="cancelAddNewTargetSegue:" unwindAction="cancelAddNewTargetSegue:" id="N6e-EF-zP2"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="gnT-rD-38e">
+                                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <connections>
                                                 <action selector="donePressed:" destination="r4j-Y4-WvM" id="ZA9-kh-ln9"/>
                                             </connections>
@@ -296,8 +298,8 @@
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="G6K-nh-wh7" firstAttribute="top" secondItem="lwq-OK-Ha0" secondAttribute="top" constant="20" symbolic="YES" id="27p-a7-B8N"/>
-                            <constraint firstItem="G6K-nh-wh7" firstAttribute="bottom" secondItem="lwq-OK-Ha0" secondAttribute="bottom" id="Eqn-se-0wd"/>
+                            <constraint firstItem="G6K-nh-wh7" firstAttribute="top" secondItem="lwq-OK-Ha0" secondAttribute="top" constant="64" id="27p-a7-B8N"/>
+                            <constraint firstItem="G6K-nh-wh7" firstAttribute="bottom" secondItem="lwq-OK-Ha0" secondAttribute="bottom" constant="2" id="Eqn-se-0wd"/>
                             <constraint firstItem="G6K-nh-wh7" firstAttribute="leading" secondItem="lwq-OK-Ha0" secondAttribute="leading" id="g32-gW-72u"/>
                             <constraint firstItem="G6K-nh-wh7" firstAttribute="trailing" secondItem="lwq-OK-Ha0" secondAttribute="trailing" id="zND-Pe-TaZ"/>
                         </constraints>

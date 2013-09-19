@@ -173,11 +173,23 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 											1));
 }
 
-- (void)configurateWlanModuleChangeChannel:(uint8_t)channel
+- (void)configurateWlanModuleChannelAsync:(BOOL)async
 {
-	mCmdQueue->push_front(std::make_tuple(false,
-										 std::bind(&WyLight::ControlNoThrow::ConfSetWlanChannel, std::ref(*mControl), channel),
+	if (async) {
+		mCmdQueue->push_front(std::make_tuple(false,
+										 std::bind(&WyLight::ControlNoThrow::ConfSetWlanChannel, std::ref(*mControl), 0),
 										 0));
+	} else {
+		
+		std::lock_guard<std::mutex> lock(*gCtrlMutex);
+		uint32_t returnValue = mControl->ConfSetWlanChannel(0);
+		
+		if(returnValue != WyLight::NO_ERROR)
+		{
+			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
+		}
+
+	}
 }
 
 - (void)rebootWlanModul
@@ -419,10 +431,21 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 }
 
-- (void)eraseEeprom {
-	mCmdQueue->push_back(std::make_tuple(false,
-										 std::bind(&WyLight::ControlNoThrow::BlEraseEeprom, std::ref(*mControl)),
-										 0));
+- (void)eraseEepromAsync:(BOOL)async
+{
+	if (async) {
+		mCmdQueue->push_back(std::make_tuple(false,
+											 std::bind(&WyLight::ControlNoThrow::BlEraseEeprom, std::ref(*mControl)),
+											 0));
+	} else {
+		std::lock_guard<std::mutex> lock(*gCtrlMutex);
+		uint32_t returnValue = mControl->BlEraseEeprom();
+		
+		if(returnValue != WyLight::NO_ERROR)
+		{
+			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
+		}
+	}
 }
 
 - (void)programFlashAsync:(BOOL)async
