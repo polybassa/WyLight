@@ -103,7 +103,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 size_t ut_TelnetProxy_CloseAndSave(void)
 {
 	static const std::string CLOSE_CMD("save\r\nexit\r\n");
-	static const std::string RESPONSE("save\r\n\r\nStoring in config\r\n<2.45> exit\r\n\r\nEXIT\r\n");
+	static const std::string RESPONSE("save\r\n\r\nStoring in config\r\n<4.00> exit\r\n\r\nEXIT\r\n");
 	TestCaseBegin();
 	TcpSocket sock{0, 0};
 	TelnetProxy testee{sock};
