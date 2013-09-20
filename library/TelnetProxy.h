@@ -25,8 +25,8 @@
 
 namespace WyLight{
 
-#define AOK "AOK\r\n<2.45> "
-#define PROMPT "\r\n<2.45> "
+#define AOK "AOK\r\n<4.00> "
+#define PROMPT "\r\n<4.00> "
 
 class TelnetProxy
 {
