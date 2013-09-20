@@ -50,6 +50,13 @@
 		5C83963617EB6C00007EF0C6 /* pickerColorWheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83962717EB6C00007EF0C6 /* pickerColorWheel.png */; };
 		5C83963717EB6C00007EF0C6 /* pickerColorWheel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83962817EB6C00007EF0C6 /* pickerColorWheel@2x.png */; };
 		5C83963817EB6C00007EF0C6 /* UIColor-Expanded.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C83962A17EB6C00007EF0C6 /* UIColor-Expanded.m */; };
+		5C83963B17EC542E007EF0C6 /* NWBrightnessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C83963A17EC542E007EF0C6 /* NWBrightnessViewController.m */; };
+		5C83964017EC5E3E007EF0C6 /* NWAddNewTargetConfigureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C83963D17EC5E3E007EF0C6 /* NWAddNewTargetConfigureViewController.m */; };
+		5C83964117EC5E3E007EF0C6 /* NWAddNewTargetGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C83963F17EC5E3E007EF0C6 /* NWAddNewTargetGuideViewController.m */; };
+		5C83964617EC5E9A007EF0C6 /* NWAddNewTargetGuideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C83964517EC5E9A007EF0C6 /* NWAddNewTargetGuideView.m */; };
+		5C83964917EC5EB7007EF0C6 /* Guide2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83964717EC5EB7007EF0C6 /* Guide2.png */; };
+		5C83964A17EC5EB7007EF0C6 /* Guide1.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83964817EC5EB7007EF0C6 /* Guide1.png */; };
+		5C83964C17EC74C6007EF0C6 /* main.hex in Resources */ = {isa = PBXBuildFile; fileRef = 5C83964B17EC74C6007EF0C6 /* main.hex */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,6 +154,17 @@
 		5C83962817EB6C00007EF0C6 /* pickerColorWheel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pickerColorWheel@2x.png"; sourceTree = "<group>"; };
 		5C83962917EB6C00007EF0C6 /* UIColor-Expanded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor-Expanded.h"; sourceTree = "<group>"; };
 		5C83962A17EB6C00007EF0C6 /* UIColor-Expanded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor-Expanded.m"; sourceTree = "<group>"; };
+		5C83963917EC542E007EF0C6 /* NWBrightnessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWBrightnessViewController.h; sourceTree = "<group>"; };
+		5C83963A17EC542E007EF0C6 /* NWBrightnessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWBrightnessViewController.m; sourceTree = "<group>"; };
+		5C83963C17EC5E3E007EF0C6 /* NWAddNewTargetConfigureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWAddNewTargetConfigureViewController.h; sourceTree = "<group>"; };
+		5C83963D17EC5E3E007EF0C6 /* NWAddNewTargetConfigureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWAddNewTargetConfigureViewController.m; sourceTree = "<group>"; };
+		5C83963E17EC5E3E007EF0C6 /* NWAddNewTargetGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWAddNewTargetGuideViewController.h; sourceTree = "<group>"; };
+		5C83963F17EC5E3E007EF0C6 /* NWAddNewTargetGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWAddNewTargetGuideViewController.m; sourceTree = "<group>"; };
+		5C83964417EC5E9A007EF0C6 /* NWAddNewTargetGuideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWAddNewTargetGuideView.h; sourceTree = "<group>"; };
+		5C83964517EC5E9A007EF0C6 /* NWAddNewTargetGuideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWAddNewTargetGuideView.m; sourceTree = "<group>"; };
+		5C83964717EC5EB7007EF0C6 /* Guide2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Guide2.png; sourceTree = "<group>"; };
+		5C83964817EC5EB7007EF0C6 /* Guide1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Guide1.png; sourceTree = "<group>"; };
+		5C83964B17EC74C6007EF0C6 /* main.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.hex; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,6 +224,7 @@
 		5C83957F17EB6138007EF0C6 /* WyLight */ = {
 			isa = PBXGroup;
 			children = (
+				5C83964317EC5E8A007EF0C6 /* Views */,
 				5C83961417EB677A007EF0C6 /* ColorPicker */,
 				5C8395E517EB61BF007EF0C6 /* WiflyControlModel */,
 				5C8395E617EB62EB007EF0C6 /* ViewControllers */,
@@ -219,6 +238,9 @@
 		5C83958017EB6138007EF0C6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5C83964B17EC74C6007EF0C6 /* main.hex */,
+				5C83964717EC5EB7007EF0C6 /* Guide2.png */,
+				5C83964817EC5EB7007EF0C6 /* Guide1.png */,
 				5C83958817EB6138007EF0C6 /* NWAppDelegate.h */,
 				5C83958917EB6138007EF0C6 /* NWAppDelegate.m */,
 				5C83958117EB6138007EF0C6 /* WyLight-Info.plist */,
@@ -296,6 +318,9 @@
 		5C8395E617EB62EB007EF0C6 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				5C83964217EC5E49007EF0C6 /* AddNewTargetGuide */,
+				5C83963917EC542E007EF0C6 /* NWBrightnessViewController.h */,
+				5C83963A17EC542E007EF0C6 /* NWBrightnessViewController.m */,
 				5C8395E717EB651D007EF0C6 /* NWConnectionTBC.h */,
 				5C8395E817EB651D007EF0C6 /* NWConnectionTBC.m */,
 				5C8395AE17EB6182007EF0C6 /* NWBroadcastsTVC.h */,
@@ -333,6 +358,26 @@
 				5C83962A17EB6C00007EF0C6 /* UIColor-Expanded.m */,
 			);
 			name = ColorPicker;
+			sourceTree = "<group>";
+		};
+		5C83964217EC5E49007EF0C6 /* AddNewTargetGuide */ = {
+			isa = PBXGroup;
+			children = (
+				5C83963D17EC5E3E007EF0C6 /* NWAddNewTargetConfigureViewController.m */,
+				5C83963C17EC5E3E007EF0C6 /* NWAddNewTargetConfigureViewController.h */,
+				5C83963E17EC5E3E007EF0C6 /* NWAddNewTargetGuideViewController.h */,
+				5C83963F17EC5E3E007EF0C6 /* NWAddNewTargetGuideViewController.m */,
+			);
+			name = AddNewTargetGuide;
+			sourceTree = "<group>";
+		};
+		5C83964317EC5E8A007EF0C6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5C83964417EC5E9A007EF0C6 /* NWAddNewTargetGuideView.h */,
+				5C83964517EC5E9A007EF0C6 /* NWAddNewTargetGuideView.m */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -420,7 +465,10 @@
 				5C83958417EB6138007EF0C6 /* InfoPlist.strings in Resources */,
 				5C83958D17EB6138007EF0C6 /* Main.storyboard in Resources */,
 				5C83962D17EB6C00007EF0C6 /* colorPickerKnob.png in Resources */,
+				5C83964C17EC74C6007EF0C6 /* main.hex in Resources */,
 				5C83962E17EB6C00007EF0C6 /* colorPickerKnob@2x.png in Resources */,
+				5C83964A17EC5EB7007EF0C6 /* Guide1.png in Resources */,
+				5C83964917EC5EB7007EF0C6 /* Guide2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,6 +496,8 @@
 				5C8395EE17EB6721007EF0C6 /* NWDefaultColorPickerViewController.m in Sources */,
 				5C8395E017EB61B4007EF0C6 /* intelhexclass.cpp in Sources */,
 				5C8395B017EB6197007EF0C6 /* NWBroadcastsTVC.m in Sources */,
+				5C83963B17EC542E007EF0C6 /* NWBrightnessViewController.m in Sources */,
+				5C83964017EC5E3E007EF0C6 /* NWAddNewTargetConfigureViewController.m in Sources */,
 				5C8395DA17EB61B4007EF0C6 /* crc.c in Sources */,
 				5C8395DC17EB61B4007EF0C6 /* WCWiflyControlWrapper.mm in Sources */,
 				5C8395EF17EB6721007EF0C6 /* NWColorPickerViewController.m in Sources */,
@@ -458,6 +508,8 @@
 				5C83963817EB6C00007EF0C6 /* UIColor-Expanded.m in Sources */,
 				5C83963217EB6C00007EF0C6 /* KZColorPickerBrightnessSlider.m in Sources */,
 				5C8395D917EB61B4007EF0C6 /* Script.cpp in Sources */,
+				5C83964117EC5E3E007EF0C6 /* NWAddNewTargetGuideViewController.m in Sources */,
+				5C83964617EC5E9A007EF0C6 /* NWAddNewTargetGuideView.m in Sources */,
 				5C8395DE17EB61B4007EF0C6 /* ClientSocket.cpp in Sources */,
 				5C8395DF17EB61B4007EF0C6 /* ComProxy.cpp in Sources */,
 				5C83958A17EB6138007EF0C6 /* NWAppDelegate.m in Sources */,
@@ -673,6 +725,7 @@
 				5C8395AA17EB6138007EF0C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5C8395AB17EB6138007EF0C6 /* Build configuration list for PBXNativeTarget "WyLightTests" */ = {
 			isa = XCConfigurationList;
@@ -681,6 +734,7 @@
 				5C8395AD17EB6138007EF0C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

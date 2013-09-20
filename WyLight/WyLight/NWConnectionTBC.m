@@ -52,7 +52,6 @@
 			[connectingView dismissWithClickedButtonIndex:0 animated:YES];
 		});
 	});
-
 }
 
 - (void)disconnectFromEndpoint {

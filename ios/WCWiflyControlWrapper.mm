@@ -59,14 +59,16 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (int)connect
 {
+	gCtrlMutex = std::make_shared<std::mutex>();
+
 	NSLog(@"Start WCWiflyControlWrapper\n");
 	try {
+		std::lock_guard<std::mutex> ctrlLock(*gCtrlMutex);
 		mControl = std::make_shared<WyLight::ControlNoThrow>(self.endpoint.ipAdress,self.endpoint.port);
 	} catch (std::exception &e) {
 		NSLog(@"%s", e.what());
 		return -1;
 	}
-	gCtrlMutex = std::make_shared<std::mutex>();
 	mCmdQueue = std::make_shared<WyLight::MessageQueue<ControlMessage>>();
 	mCmdQueue->setMessageLimit(15);
 	mCtrlThread = std::make_shared<std::thread>
@@ -86,8 +88,9 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 				dispatch_async(dispatch_get_main_queue(), ^{
 					[self setNetworkActivityIndicatorVisible:YES];
 				});
-				retVal = std::get<1>(tup)();
-				
+				if (mControl) {
+					retVal = std::get<1>(tup)();
+				}
 				double delayInSeconds = 0.3;
 				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -155,9 +158,12 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)configurateWlanModuleAsClientForNetwork:(NSString *)ssid password:(NSString *)password name:(NSString *)name
 {
+	NSData *nameData = [name dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+	NSString *nameStr = [[NSString alloc] initWithData:nameData encoding:NSASCIIStringEncoding];
+	
     const std::string ssidCString([ssid cStringUsingEncoding:NSASCIIStringEncoding]);
     const std::string passwordCString([password cStringUsingEncoding:NSASCIIStringEncoding]);
-	const std::string nameCString([name cStringUsingEncoding:NSASCIIStringEncoding]);
+	const std::string nameCString([nameStr cStringUsingEncoding:NSASCIIStringEncoding]);
     
 	mCmdQueue->push_back(std::make_tuple(false,
 											std::bind(&WyLight::ControlNoThrow::ConfModuleForWlan, std::ref(*mControl), passwordCString, ssidCString, nameCString),
@@ -180,10 +186,10 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 										 std::bind(&WyLight::ControlNoThrow::ConfChangeWlanChannel, std::ref(*mControl)),
 										 0));
 	} else {
-		
-		std::lock_guard<std::mutex> lock(*gCtrlMutex);
-		uint32_t returnValue = mControl->ConfChangeWlanChannel();
-
+		if (mControl) {
+			std::lock_guard<std::mutex> lock(*gCtrlMutex);
+			mControl->ConfChangeWlanChannel();
+		}
 	}
 }
 
@@ -349,18 +355,21 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)readRtcTime:(NSDate **)date
 {
-    struct tm timeInfo;
-	std::lock_guard<std::mutex> lock(*gCtrlMutex);
-	
-    uint32_t returnValue = mControl->FwGetRtc(timeInfo);
-    
-    if(returnValue != WyLight::NO_ERROR)
-	{
-		[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
-		*date = nil;
+	if (mControl) {
+			
+		struct tm timeInfo;
+		std::lock_guard<std::mutex> lock(*gCtrlMutex);
+		
+		uint32_t returnValue = mControl->FwGetRtc(timeInfo);
+		
+		if(returnValue != WyLight::NO_ERROR)
+		{
+			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
+			*date = nil;
+		}
+		else
+			*date = [NSDate dateWithTimeIntervalSince1970:mktime(&timeInfo)];
 	}
-	else
-		*date = [NSDate dateWithTimeIntervalSince1970:mktime(&timeInfo)];
 }
 
 - (void)writeRtcTime
@@ -382,19 +391,21 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)readCurrentFirmwareVersionFromFirmware:(NSString **)currentFirmwareVersionStringPlaceholder
 {
-    std::string firmwareVersionString;
-    
-	std::lock_guard<std::mutex> lock(*gCtrlMutex);
-    uint32_t returnValue = mControl->FwGetVersion(firmwareVersionString);
-    
-    if(returnValue != WyLight::NO_ERROR)
-	{
-		[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
-		*currentFirmwareVersionStringPlaceholder = nil;
-	}
-	else
-	{
-		*currentFirmwareVersionStringPlaceholder = [NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding];
+	if (mControl) {
+		std::string firmwareVersionString;
+		
+		std::lock_guard<std::mutex> lock(*gCtrlMutex);
+		uint32_t returnValue = mControl->FwGetVersion(firmwareVersionString);
+		
+		if(returnValue != WyLight::NO_ERROR)
+		{
+			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
+			*currentFirmwareVersionStringPlaceholder = nil;
+		}
+		else
+		{
+			*currentFirmwareVersionStringPlaceholder = [NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding];
+		}
 	}
 }
 
@@ -409,21 +420,22 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)readCurrentFirmwareVersionFromBootloder:(NSString **)currentFirmwareVersionStringPlaceholder
 {
-    std::string firmwareVersionString;
-	std::lock_guard<std::mutex> lock(*gCtrlMutex);
-    uint32_t returnValue = mControl->BlReadFwVersion(firmwareVersionString);
-    *currentFirmwareVersionStringPlaceholder = [NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding];
-    
-    if(returnValue != WyLight::NO_ERROR)
-	{
-		[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
-		*currentFirmwareVersionStringPlaceholder = nil;
-	}
-	else
-	{
+	if (mControl) {
+		std::string firmwareVersionString;
+		std::lock_guard<std::mutex> lock(*gCtrlMutex);
+		uint32_t returnValue = mControl->BlReadFwVersion(firmwareVersionString);
 		*currentFirmwareVersionStringPlaceholder = [NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding];
+		
+		if(returnValue != WyLight::NO_ERROR)
+		{
+			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
+			*currentFirmwareVersionStringPlaceholder = nil;
+		}
+		else
+		{
+			*currentFirmwareVersionStringPlaceholder = [NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding];
+		}
 	}
-
 }
 
 - (void)eraseEepromAsync:(BOOL)async
@@ -433,12 +445,14 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 											 std::bind(&WyLight::ControlNoThrow::BlEraseEeprom, std::ref(*mControl)),
 											 0));
 	} else {
-		std::lock_guard<std::mutex> lock(*gCtrlMutex);
-		uint32_t returnValue = mControl->BlEraseEeprom();
+		if (mControl) {
+			std::lock_guard<std::mutex> lock(*gCtrlMutex);
+			uint32_t returnValue = mControl->BlEraseEeprom();
 		
-		if(returnValue != WyLight::NO_ERROR)
-		{
-			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
+			if(returnValue != WyLight::NO_ERROR)
+			{
+				[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
+			}
 		}
 	}
 }
@@ -453,12 +467,14 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 											 0));
 	} else
 	{
-		std::lock_guard<std::mutex> lock(*gCtrlMutex);
-		uint32_t returnValue = mControl->BlProgramFlash([filePath cStringUsingEncoding:NSASCIIStringEncoding]);
+		if (mControl) {
+			std::lock_guard<std::mutex> lock(*gCtrlMutex);
+			uint32_t returnValue = mControl->BlProgramFlash([filePath cStringUsingEncoding:NSASCIIStringEncoding]);
 		
-		if(returnValue != WyLight::NO_ERROR)
-		{
-			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
+			if(returnValue != WyLight::NO_ERROR)
+			{
+				[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
+			}
 		}
 	}
 }

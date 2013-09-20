@@ -41,7 +41,7 @@ inline bool timeval_sub(const timeval* a, const timeval* b, timeval* result)
 	if(!result) return true;
 
 	long long micros = (a->tv_sec - b->tv_sec) * 1000000 + a->tv_usec - b->tv_usec;
-	result->tv_sec = micros / 1000000;
+	result->tv_sec = (long)(micros / 1000000);
 	result->tv_usec = micros % 1000000;
 	return micros >= 0;
 }

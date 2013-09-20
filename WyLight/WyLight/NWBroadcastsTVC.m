@@ -128,6 +128,7 @@
 						 cancelButtonTitle:@"OK"
 						 otherButtonTitles:nil] show];
 	});
+	[self.receiver clearTargets];
 }
 
 - (IBAction)cancelAddNewTargetSegue:(UIStoryboardSegue *)segue {
