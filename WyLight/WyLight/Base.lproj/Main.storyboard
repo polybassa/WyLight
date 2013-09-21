@@ -74,11 +74,11 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="featured" id="VrI-Vu-uQ4"/>
+                    <tabBarItem key="tabBarItem" systemItem="favorites" id="VrI-Vu-uQ4"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lck-kK-Z4U" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2180" y="-1221"/>
+            <point key="canvasLocation" x="2762" y="-492"/>
         </scene>
         <!--ConnectionTBC-->
         <scene sceneID="UMD-eN-YA9">
@@ -109,7 +109,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="owE-Pa-gvU" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="8aI-nb-yel" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1450" y="-776"/>
+            <point key="canvasLocation" x="2032" y="-47"/>
         </scene>
         <!--Add New Target Guide View Controller - Prepare new Target-->
         <scene sceneID="Eb9-UZ-MQu">
@@ -314,7 +314,7 @@
                             <constraint firstItem="Yxr-JS-w4L" firstAttribute="leading" secondItem="dGg-du-PNe" secondAttribute="trailing" constant="-34" id="xjZ-AH-gXe"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="topRated" id="kud-TW-ohR"/>
+                    <tabBarItem key="tabBarItem" systemItem="history" id="kud-TW-ohR"/>
                     <connections>
                         <outlet property="brightnessSlider" destination="Yxr-JS-w4L" id="LD9-dv-F6A"/>
                         <outlet property="brightnessStepper" destination="gOD-k3-Vfm" id="Qbe-SY-6bi"/>
@@ -322,7 +322,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7pw-aj-HoO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2180" y="-615"/>
+            <point key="canvasLocation" x="2762" y="114"/>
         </scene>
         <!--Color Slider View Controller-->
         <scene sceneID="ELE-5M-NJv">
@@ -403,11 +403,10 @@
                                         <color key="tintColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <action selector="greenChanged:" destination="bmC-jS-Lb1" eventType="valueChanged" id="l3l-H1-Ygb"/>
-                                            <action selector="redChanged:" destination="bmC-jS-Lb1" eventType="valueChanged" id="Oxs-Bw-bOE"/>
                                         </connections>
                                     </slider>
                                 </subviews>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.90196079015731812" green="0.90196079015731812" blue="0.90196079015731812" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
                                 </accessibility>
@@ -444,7 +443,7 @@
                             <constraint firstItem="6qk-gH-p1a" firstAttribute="leading" secondItem="4la-ma-iZI" secondAttribute="leading" id="U9W-c1-K5I"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="featured" id="QwO-Kn-4Pd"/>
+                    <tabBarItem key="tabBarItem" systemItem="mostViewed" id="QwO-Kn-4Pd"/>
                     <connections>
                         <outlet property="blueSlider" destination="Ov3-1s-nu6" id="eWj-CE-4UB"/>
                         <outlet property="blueTextField" destination="Dkf-HB-Ftn" id="tFc-k1-ND4"/>
@@ -456,7 +455,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VRg-ay-gNy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2180" y="-3"/>
+            <point key="canvasLocation" x="2762" y="726"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="obH-PK-bxy">

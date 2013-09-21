@@ -76,16 +76,4 @@
 		[self.tabBarController.tabBar setHidden:NO];
 	}
 }
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-	
-	if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
-	{
-		CGRect biggerFrame = self.tabBarController.view.frame;
-		biggerFrame.size.height += self.tabBarController.tabBar.frame.size.height;
-		self.tabBarController.view.frame = biggerFrame ;
-	}
-}
-
 @end

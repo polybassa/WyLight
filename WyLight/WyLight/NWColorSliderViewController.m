@@ -44,6 +44,8 @@
 	self.redTextField.enabled = NO;
 	self.greenTextField.enabled = NO;
 	self.blueTextField.enabled = NO;
+	
+	//self.redTextField.
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

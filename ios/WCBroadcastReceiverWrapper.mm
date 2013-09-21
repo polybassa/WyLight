@@ -45,7 +45,7 @@ NSString *const TargetsChangedNotification = @"TargetsChangedNotification";
 
 		receiver = std::make_shared<WyLight::BroadcastReceiver>
 												(55555,
-												[filePath cStringUsingEncoding:NSASCIIStringEncoding],
+												filePath.UTF8String,
 												[=](const size_t index, const WyLight::Endpoint& endpoint)
 												{
 													NSLog(@"New: %zd : %d.%d.%d.%d, %d  %s",

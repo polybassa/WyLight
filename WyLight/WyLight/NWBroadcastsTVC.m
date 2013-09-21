@@ -57,6 +57,7 @@
 - (void)viewDidDisappear:(BOOL)animated {
 	[[NSNotificationCenter defaultCenter] removeObserver:self.tableView];
 	[super viewDidDisappear:animated];
+	[self.receiver saveTargets];
 }
 
 #pragma mark - HANDLE ROTATION

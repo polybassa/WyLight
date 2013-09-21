@@ -195,12 +195,13 @@ void BroadcastReceiver::DeleteRecentEndpointFile(const std::string& filename)
 	
 	int returnCode;
 	if(filename.compare("") == 0)
-		returnCode = std::remove(mRecentFilename.c_str());
+		returnCode = remove(mRecentFilename.c_str());
+	
 	else
-		returnCode = std::remove(filename.c_str());
+		returnCode = remove(filename.c_str());
 	
 	if(returnCode) {
-		Trace(ZONE_ERROR, "Delete file recent endpoints failed\n");
+		Trace(ZONE_ERROR, "Delete file \"%s\" recent endpoints failed\n", mRecentFilename.c_str());
 		return;
 	}
 }

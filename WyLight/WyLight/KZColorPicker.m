@@ -244,7 +244,7 @@ RGBType rgbWithUIColor(UIColor *color)
             }
         }
         
-        self.brightnessSlider.frame = CGRectMake(300, self.bounds.size.height * 0.5 - 38 - 100, 165, 38);
+        self.brightnessSlider.frame = CGRectMake(300, self.bounds.size.height * 0.5 - 58, 165, 38);
 		self.colorWheel.frame = CGRectMake(40, 70, self.colorWheel.frame.size.width, self.colorWheel.frame.size.height);
 		self.currentColorView.frame = CGRectMake(10, 65, 44, 44);
         
