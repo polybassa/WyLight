@@ -89,6 +89,9 @@
 					if (endpoint.ipAdress == ENDPOINT_IP) found = YES;
 				}
 				if (found) break;
+				if (!scanningAlertView.isVisible) {
+					return ;
+				}
 				[NSThread sleepForTimeInterval:SLEEP_TIME_INTERVAL];
 			}
 			dispatch_async(dispatch_get_main_queue(), ^{

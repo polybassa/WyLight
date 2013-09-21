@@ -20,6 +20,20 @@
                ReferencedContainer = "container:WyLight.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "5C83959617EB6138007EF0C6"
+               BuildableName = "WyLightTests.xctest"
+               BlueprintName = "WyLightTests"
+               ReferencedContainer = "container:WyLight.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

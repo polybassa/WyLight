@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C4F56EB17EC968E0039ADFF /* NWColorSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4F56EA17EC968E0039ADFF /* NWColorSliderViewController.m */; };
 		5C83957A17EB6138007EF0C6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C83957917EB6138007EF0C6 /* Foundation.framework */; };
 		5C83957C17EB6138007EF0C6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C83957B17EB6138007EF0C6 /* CoreGraphics.framework */; };
 		5C83957E17EB6138007EF0C6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C83957D17EB6138007EF0C6 /* UIKit.framework */; };
@@ -70,6 +71,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5C4F56E917EC968E0039ADFF /* NWColorSliderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWColorSliderViewController.h; sourceTree = "<group>"; };
+		5C4F56EA17EC968E0039ADFF /* NWColorSliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWColorSliderViewController.m; sourceTree = "<group>"; };
 		5C83957617EB6138007EF0C6 /* WyLight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WyLight.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C83957917EB6138007EF0C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5C83957B17EB6138007EF0C6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -329,6 +332,8 @@
 				5C8395EB17EB6721007EF0C6 /* NWDefaultColorPickerViewController.m */,
 				5C8395EC17EB6721007EF0C6 /* NWColorPickerViewController.h */,
 				5C8395ED17EB6721007EF0C6 /* NWColorPickerViewController.m */,
+				5C4F56E917EC968E0039ADFF /* NWColorSliderViewController.h */,
+				5C4F56EA17EC968E0039ADFF /* NWColorSliderViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -503,6 +508,7 @@
 				5C8395EF17EB6721007EF0C6 /* NWColorPickerViewController.m in Sources */,
 				5C8395D817EB61B4007EF0C6 /* WCEndpoint.m in Sources */,
 				5C83963317EB6C00007EF0C6 /* KZColorPickerHSWheel.m in Sources */,
+				5C4F56EB17EC968E0039ADFF /* NWColorSliderViewController.m in Sources */,
 				5C8395E417EB61B4007EF0C6 /* WiflyControlNoThrow.cpp in Sources */,
 				5C83958617EB6138007EF0C6 /* main.m in Sources */,
 				5C83963817EB6C00007EF0C6 /* UIColor-Expanded.m in Sources */,
