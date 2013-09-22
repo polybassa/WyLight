@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C35FEEC17EF4F7100E3DE0D /* NWLoopOnCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C35FEDF17EF4F7100E3DE0D /* NWLoopOnCommandObject.m */; };
+		5C35FEED17EF4F7100E3DE0D /* NWLoopOffCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C35FEE117EF4F7100E3DE0D /* NWLoopOffCommandObject.m */; };
+		5C35FEEE17EF4F7100E3DE0D /* NWScriptCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C35FEE317EF4F7100E3DE0D /* NWScriptCommandObject.m */; };
+		5C35FEEF17EF4F7100E3DE0D /* NWScriptEffectCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C35FEE517EF4F7100E3DE0D /* NWScriptEffectCommandObject.m */; };
+		5C35FEF017EF4F7100E3DE0D /* NWSetGradientScriptCommandObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C35FEE717EF4F7100E3DE0D /* NWSetGradientScriptCommandObject.mm */; };
+		5C35FEF117EF4F7100E3DE0D /* NWSetFadeScriptCommandObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C35FEE917EF4F7100E3DE0D /* NWSetFadeScriptCommandObject.mm */; };
+		5C35FEF217EF4F7100E3DE0D /* NWComplexScriptCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C35FEEB17EF4F7100E3DE0D /* NWComplexScriptCommandObject.m */; };
+		5C35FEF617EF541300E3DE0D /* NWScript.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C35FEF517EF541300E3DE0D /* NWScript.m */; };
 		5C4F56EB17EC968E0039ADFF /* NWColorSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4F56EA17EC968E0039ADFF /* NWColorSliderViewController.m */; };
 		5C83957A17EB6138007EF0C6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C83957917EB6138007EF0C6 /* Foundation.framework */; };
 		5C83957C17EB6138007EF0C6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C83957B17EB6138007EF0C6 /* CoreGraphics.framework */; };
@@ -71,6 +79,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5C35FEDC17EF4F7100E3DE0D /* NWSendableCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWSendableCommand.h; sourceTree = "<group>"; };
+		5C35FEDD17EF4F7100E3DE0D /* NWDrawableCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWDrawableCommand.h; sourceTree = "<group>"; };
+		5C35FEDE17EF4F7100E3DE0D /* NWLoopOnCommandObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWLoopOnCommandObject.h; sourceTree = "<group>"; };
+		5C35FEDF17EF4F7100E3DE0D /* NWLoopOnCommandObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWLoopOnCommandObject.m; sourceTree = "<group>"; };
+		5C35FEE017EF4F7100E3DE0D /* NWLoopOffCommandObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWLoopOffCommandObject.h; sourceTree = "<group>"; };
+		5C35FEE117EF4F7100E3DE0D /* NWLoopOffCommandObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWLoopOffCommandObject.m; sourceTree = "<group>"; };
+		5C35FEE217EF4F7100E3DE0D /* NWScriptCommandObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptCommandObject.h; sourceTree = "<group>"; };
+		5C35FEE317EF4F7100E3DE0D /* NWScriptCommandObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptCommandObject.m; sourceTree = "<group>"; };
+		5C35FEE417EF4F7100E3DE0D /* NWScriptEffectCommandObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptEffectCommandObject.h; sourceTree = "<group>"; };
+		5C35FEE517EF4F7100E3DE0D /* NWScriptEffectCommandObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptEffectCommandObject.m; sourceTree = "<group>"; };
+		5C35FEE617EF4F7100E3DE0D /* NWSetGradientScriptCommandObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWSetGradientScriptCommandObject.h; sourceTree = "<group>"; };
+		5C35FEE717EF4F7100E3DE0D /* NWSetGradientScriptCommandObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NWSetGradientScriptCommandObject.mm; sourceTree = "<group>"; };
+		5C35FEE817EF4F7100E3DE0D /* NWSetFadeScriptCommandObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWSetFadeScriptCommandObject.h; sourceTree = "<group>"; };
+		5C35FEE917EF4F7100E3DE0D /* NWSetFadeScriptCommandObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NWSetFadeScriptCommandObject.mm; sourceTree = "<group>"; };
+		5C35FEEA17EF4F7100E3DE0D /* NWComplexScriptCommandObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWComplexScriptCommandObject.h; sourceTree = "<group>"; };
+		5C35FEEB17EF4F7100E3DE0D /* NWComplexScriptCommandObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWComplexScriptCommandObject.m; sourceTree = "<group>"; };
+		5C35FEF417EF541300E3DE0D /* NWScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScript.h; sourceTree = "<group>"; };
+		5C35FEF517EF541300E3DE0D /* NWScript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScript.m; sourceTree = "<group>"; };
 		5C4F56E917EC968E0039ADFF /* NWColorSliderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWColorSliderViewController.h; sourceTree = "<group>"; };
 		5C4F56EA17EC968E0039ADFF /* NWColorSliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWColorSliderViewController.m; sourceTree = "<group>"; };
 		5C83957617EB6138007EF0C6 /* WyLight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WyLight.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -194,6 +220,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C35FEF317EF4F9400E3DE0D /* CommandModel */ = {
+			isa = PBXGroup;
+			children = (
+				5C35FEF417EF541300E3DE0D /* NWScript.h */,
+				5C35FEF517EF541300E3DE0D /* NWScript.m */,
+				5C35FEDC17EF4F7100E3DE0D /* NWSendableCommand.h */,
+				5C35FEDD17EF4F7100E3DE0D /* NWDrawableCommand.h */,
+				5C35FEDE17EF4F7100E3DE0D /* NWLoopOnCommandObject.h */,
+				5C35FEDF17EF4F7100E3DE0D /* NWLoopOnCommandObject.m */,
+				5C35FEE017EF4F7100E3DE0D /* NWLoopOffCommandObject.h */,
+				5C35FEE117EF4F7100E3DE0D /* NWLoopOffCommandObject.m */,
+				5C35FEE217EF4F7100E3DE0D /* NWScriptCommandObject.h */,
+				5C35FEE317EF4F7100E3DE0D /* NWScriptCommandObject.m */,
+				5C35FEE417EF4F7100E3DE0D /* NWScriptEffectCommandObject.h */,
+				5C35FEE517EF4F7100E3DE0D /* NWScriptEffectCommandObject.m */,
+				5C35FEE617EF4F7100E3DE0D /* NWSetGradientScriptCommandObject.h */,
+				5C35FEE717EF4F7100E3DE0D /* NWSetGradientScriptCommandObject.mm */,
+				5C35FEE817EF4F7100E3DE0D /* NWSetFadeScriptCommandObject.h */,
+				5C35FEE917EF4F7100E3DE0D /* NWSetFadeScriptCommandObject.mm */,
+				5C35FEEA17EF4F7100E3DE0D /* NWComplexScriptCommandObject.h */,
+				5C35FEEB17EF4F7100E3DE0D /* NWComplexScriptCommandObject.m */,
+			);
+			name = CommandModel;
+			sourceTree = "<group>";
+		};
 		5C83956D17EB6138007EF0C6 = {
 			isa = PBXGroup;
 			children = (
@@ -227,6 +278,7 @@
 		5C83957F17EB6138007EF0C6 /* WyLight */ = {
 			isa = PBXGroup;
 			children = (
+				5C35FEF317EF4F9400E3DE0D /* CommandModel */,
 				5C83964317EC5E8A007EF0C6 /* Views */,
 				5C83961417EB677A007EF0C6 /* ColorPicker */,
 				5C8395E517EB61BF007EF0C6 /* WiflyControlModel */,
@@ -496,6 +548,8 @@
 				5C8395E917EB651D007EF0C6 /* NWConnectionTBC.m in Sources */,
 				5C8395DB17EB61B4007EF0C6 /* WCBroadcastReceiverWrapper.mm in Sources */,
 				5C83963517EB6C00007EF0C6 /* KZUnitSlider.m in Sources */,
+				5C35FEEC17EF4F7100E3DE0D /* NWLoopOnCommandObject.m in Sources */,
+				5C35FEF617EF541300E3DE0D /* NWScript.m in Sources */,
 				5C83963417EB6C00007EF0C6 /* KZColorPickerSwatchView.m in Sources */,
 				5C83962F17EB6C00007EF0C6 /* HSV.c in Sources */,
 				5C8395EE17EB6721007EF0C6 /* NWDefaultColorPickerViewController.m in Sources */,
@@ -505,10 +559,14 @@
 				5C83964017EC5E3E007EF0C6 /* NWAddNewTargetConfigureViewController.m in Sources */,
 				5C8395DA17EB61B4007EF0C6 /* crc.c in Sources */,
 				5C8395DC17EB61B4007EF0C6 /* WCWiflyControlWrapper.mm in Sources */,
+				5C35FEEE17EF4F7100E3DE0D /* NWScriptCommandObject.m in Sources */,
 				5C8395EF17EB6721007EF0C6 /* NWColorPickerViewController.m in Sources */,
 				5C8395D817EB61B4007EF0C6 /* WCEndpoint.m in Sources */,
+				5C35FEF017EF4F7100E3DE0D /* NWSetGradientScriptCommandObject.mm in Sources */,
 				5C83963317EB6C00007EF0C6 /* KZColorPickerHSWheel.m in Sources */,
 				5C4F56EB17EC968E0039ADFF /* NWColorSliderViewController.m in Sources */,
+				5C35FEF117EF4F7100E3DE0D /* NWSetFadeScriptCommandObject.mm in Sources */,
+				5C35FEEF17EF4F7100E3DE0D /* NWScriptEffectCommandObject.m in Sources */,
 				5C8395E417EB61B4007EF0C6 /* WiflyControlNoThrow.cpp in Sources */,
 				5C83958617EB6138007EF0C6 /* main.m in Sources */,
 				5C83963817EB6C00007EF0C6 /* UIColor-Expanded.m in Sources */,
@@ -518,8 +576,10 @@
 				5C83964617EC5E9A007EF0C6 /* NWAddNewTargetGuideView.m in Sources */,
 				5C8395DE17EB61B4007EF0C6 /* ClientSocket.cpp in Sources */,
 				5C8395DF17EB61B4007EF0C6 /* ComProxy.cpp in Sources */,
+				5C35FEF217EF4F7100E3DE0D /* NWComplexScriptCommandObject.m in Sources */,
 				5C83958A17EB6138007EF0C6 /* NWAppDelegate.m in Sources */,
 				5C8395E317EB61B4007EF0C6 /* WiflyControl.cpp in Sources */,
+				5C35FEED17EF4F7100E3DE0D /* NWLoopOffCommandObject.m in Sources */,
 				5C83963017EB6C00007EF0C6 /* KZColorPicker.m in Sources */,
 				5C8395E117EB61B4007EF0C6 /* MaskBuffer.cpp in Sources */,
 				5C8395E217EB61B4007EF0C6 /* TelnetProxy.cpp in Sources */,
