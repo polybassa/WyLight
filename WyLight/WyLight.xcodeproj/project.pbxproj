@@ -66,6 +66,12 @@
 		5C83964917EC5EB7007EF0C6 /* Guide2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83964717EC5EB7007EF0C6 /* Guide2.png */; };
 		5C83964A17EC5EB7007EF0C6 /* Guide1.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83964817EC5EB7007EF0C6 /* Guide1.png */; };
 		5C83964C17EC74C6007EF0C6 /* main.hex in Resources */ = {isa = PBXBuildFile; fileRef = 5C83964B17EC74C6007EF0C6 /* main.hex */; };
+		5C90B39317EF56A000BAC74F /* ALRadialButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B39017EF56A000BAC74F /* ALRadialButton.m */; };
+		5C90B39417EF56A000BAC74F /* ALRadialMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B39217EF56A000BAC74F /* ALRadialMenu.m */; };
+		5C90B39A17EF56F300BAC74F /* NWScriptObjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B39717EF56F300BAC74F /* NWScriptObjectView.m */; };
+		5C90B39B17EF56F300BAC74F /* NWScriptObjectControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B39917EF56F300BAC74F /* NWScriptObjectControl.m */; };
+		5C90B39E17EF572400BAC74F /* NWGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B39D17EF572400BAC74F /* NWGradientView.m */; };
+		5C90B3A117F1702F00BAC74F /* NWTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3A017F1702F00BAC74F /* NWTestViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -194,6 +200,18 @@
 		5C83964717EC5EB7007EF0C6 /* Guide2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Guide2.png; sourceTree = "<group>"; };
 		5C83964817EC5EB7007EF0C6 /* Guide1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Guide1.png; sourceTree = "<group>"; };
 		5C83964B17EC74C6007EF0C6 /* main.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.hex; sourceTree = "<group>"; };
+		5C90B38F17EF56A000BAC74F /* ALRadialButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALRadialButton.h; sourceTree = "<group>"; };
+		5C90B39017EF56A000BAC74F /* ALRadialButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALRadialButton.m; sourceTree = "<group>"; };
+		5C90B39117EF56A000BAC74F /* ALRadialMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALRadialMenu.h; sourceTree = "<group>"; };
+		5C90B39217EF56A000BAC74F /* ALRadialMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALRadialMenu.m; sourceTree = "<group>"; };
+		5C90B39617EF56F300BAC74F /* NWScriptObjectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptObjectView.h; sourceTree = "<group>"; };
+		5C90B39717EF56F300BAC74F /* NWScriptObjectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptObjectView.m; sourceTree = "<group>"; };
+		5C90B39817EF56F300BAC74F /* NWScriptObjectControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptObjectControl.h; sourceTree = "<group>"; };
+		5C90B39917EF56F300BAC74F /* NWScriptObjectControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptObjectControl.m; sourceTree = "<group>"; };
+		5C90B39C17EF572400BAC74F /* NWGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWGradientView.h; sourceTree = "<group>"; };
+		5C90B39D17EF572400BAC74F /* NWGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWGradientView.m; sourceTree = "<group>"; };
+		5C90B39F17F1702F00BAC74F /* NWTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWTestViewController.h; sourceTree = "<group>"; };
+		5C90B3A017F1702F00BAC74F /* NWTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWTestViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,6 +296,7 @@
 		5C83957F17EB6138007EF0C6 /* WyLight */ = {
 			isa = PBXGroup;
 			children = (
+				5C90B39517EF56A700BAC74F /* RadialMenu */,
 				5C35FEF317EF4F9400E3DE0D /* CommandModel */,
 				5C83964317EC5E8A007EF0C6 /* Views */,
 				5C83961417EB677A007EF0C6 /* ColorPicker */,
@@ -386,6 +405,8 @@
 				5C8395ED17EB6721007EF0C6 /* NWColorPickerViewController.m */,
 				5C4F56E917EC968E0039ADFF /* NWColorSliderViewController.h */,
 				5C4F56EA17EC968E0039ADFF /* NWColorSliderViewController.m */,
+				5C90B39F17F1702F00BAC74F /* NWTestViewController.h */,
+				5C90B3A017F1702F00BAC74F /* NWTestViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -431,10 +452,27 @@
 		5C83964317EC5E8A007EF0C6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5C90B39C17EF572400BAC74F /* NWGradientView.h */,
+				5C90B39D17EF572400BAC74F /* NWGradientView.m */,
+				5C90B39617EF56F300BAC74F /* NWScriptObjectView.h */,
+				5C90B39717EF56F300BAC74F /* NWScriptObjectView.m */,
+				5C90B39817EF56F300BAC74F /* NWScriptObjectControl.h */,
+				5C90B39917EF56F300BAC74F /* NWScriptObjectControl.m */,
 				5C83964417EC5E9A007EF0C6 /* NWAddNewTargetGuideView.h */,
 				5C83964517EC5E9A007EF0C6 /* NWAddNewTargetGuideView.m */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		5C90B39517EF56A700BAC74F /* RadialMenu */ = {
+			isa = PBXGroup;
+			children = (
+				5C90B38F17EF56A000BAC74F /* ALRadialButton.h */,
+				5C90B39017EF56A000BAC74F /* ALRadialButton.m */,
+				5C90B39117EF56A000BAC74F /* ALRadialMenu.h */,
+				5C90B39217EF56A000BAC74F /* ALRadialMenu.m */,
+			);
+			name = RadialMenu;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -569,14 +607,20 @@
 				5C35FEEF17EF4F7100E3DE0D /* NWScriptEffectCommandObject.m in Sources */,
 				5C8395E417EB61B4007EF0C6 /* WiflyControlNoThrow.cpp in Sources */,
 				5C83958617EB6138007EF0C6 /* main.m in Sources */,
+				5C90B39317EF56A000BAC74F /* ALRadialButton.m in Sources */,
 				5C83963817EB6C00007EF0C6 /* UIColor-Expanded.m in Sources */,
+				5C90B39A17EF56F300BAC74F /* NWScriptObjectView.m in Sources */,
+				5C90B3A117F1702F00BAC74F /* NWTestViewController.m in Sources */,
 				5C83963217EB6C00007EF0C6 /* KZColorPickerBrightnessSlider.m in Sources */,
+				5C90B39417EF56A000BAC74F /* ALRadialMenu.m in Sources */,
 				5C8395D917EB61B4007EF0C6 /* Script.cpp in Sources */,
 				5C83964117EC5E3E007EF0C6 /* NWAddNewTargetGuideViewController.m in Sources */,
 				5C83964617EC5E9A007EF0C6 /* NWAddNewTargetGuideView.m in Sources */,
 				5C8395DE17EB61B4007EF0C6 /* ClientSocket.cpp in Sources */,
 				5C8395DF17EB61B4007EF0C6 /* ComProxy.cpp in Sources */,
 				5C35FEF217EF4F7100E3DE0D /* NWComplexScriptCommandObject.m in Sources */,
+				5C90B39B17EF56F300BAC74F /* NWScriptObjectControl.m in Sources */,
+				5C90B39E17EF572400BAC74F /* NWGradientView.m in Sources */,
 				5C83958A17EB6138007EF0C6 /* NWAppDelegate.m in Sources */,
 				5C8395E317EB61B4007EF0C6 /* WiflyControl.cpp in Sources */,
 				5C35FEED17EF4F7100E3DE0D /* NWLoopOffCommandObject.m in Sources */,
