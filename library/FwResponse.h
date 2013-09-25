@@ -37,6 +37,14 @@ namespace std {
 		converter << value;
 		return converter.str();
 	}
+	inline int stoi(const std::string& str, size_t* idx = 0, int base = 10)
+	{
+		std::stringstream converter;
+		converter << str;
+		int i;
+		converter >> i;
+		return i;
+	}
 }
 #endif /* #ifdef ANDROID */
 
