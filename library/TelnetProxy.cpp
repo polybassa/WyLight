@@ -21,6 +21,11 @@
 #define _GLIBCXX_USE_NANOSLEEP
 #endif
 
+#ifdef ANDROID
+#warning REMOVE THIS hack
+#include "FwResponse.h"
+#endif
+
 #include "TelnetProxy.h"
 #include "timeval.h"
 #include "trace.h"
