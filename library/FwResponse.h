@@ -28,7 +28,7 @@
 #include "WiflyControlException.h"
 
 #ifdef ANDROID
-#warning "Check for a new android-ndk > r8e to avoid using this selfmade implementation"
+#warning "Check for a new android-ndk > r9 to avoid using this selfmade implementation"
 namespace std {
 	template <class T>
 	std::string to_string(T value)
