@@ -1,0 +1,34 @@
+html, body, #wrap {height: 95%;}
+body {
+	background-color: #8f8f8f;
+}
+body > #wrap {
+	height: auto;
+	min-height: 95%;
+}
+
+#footer {
+	font-size: 16px;
+	height: 5%;
+	position: relative;
+	clear:both;
+}
+
+#header {
+	font-size: 60px;
+	margin-bottom: 5%;
+	text-align: center;
+}
+
+#logo {
+	width: 25%;
+	animation: fadein 25s;
+	-moz-animation: fadein 25s; /* Firefox */
+	-webkit-animation: fadein 25s; /* Safari and Chrome */
+	-o-animation: fadein 25s; /* Opera */
+}
+@keyframes fadein {from {opacity:0;} to {opacity:1;}}
+@-moz-keyframes fadein { from {opacity:0;} to {opacity:1;}}
+@-webkit-keyframes fadein { from {opacity:0;} to {opacity:1;}}
+@-o-keyframes fadein { from {opacity:0;} to {opacity: 1;}}​
+
