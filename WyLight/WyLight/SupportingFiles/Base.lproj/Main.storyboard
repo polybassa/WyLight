@@ -475,10 +475,10 @@
             </objects>
             <point key="canvasLocation" x="169" y="117"/>
         </scene>
-        <!--Test View Controller-->
+        <!--Script View Controller-->
         <scene sceneID="Ewz-CC-V7g">
             <objects>
-                <viewController id="aA2-05-n7r" customClass="NWTestViewController" sceneMemberID="viewController">
+                <viewController id="aA2-05-n7r" customClass="NWScriptViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="lqQ-9D-pjY"/>
                         <viewControllerLayoutGuide type="bottom" id="bfU-2B-6Yz"/>
@@ -489,10 +489,32 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="d2B-fR-kat"/>
+                    <connections>
+                        <segue destination="5Xo-in-aay" kind="push" identifier="edit:" id="PCU-ZI-VXy"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vyX-KV-zdl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="764" y="1445"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="I52-6V-MP5">
+            <objects>
+                <viewController id="5Xo-in-aay" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Bzg-yT-irf"/>
+                        <viewControllerLayoutGuide type="bottom" id="rBP-R8-BEJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="eal-Dl-oaX">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="t2Q-K0-EQl"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eAG-ec-n9Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1313" y="1445"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="YdK-lj-13g">

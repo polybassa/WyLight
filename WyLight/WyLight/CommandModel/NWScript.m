@@ -23,9 +23,7 @@
 	self = [super init];
 	
 	if (self) {
-#ifdef DEBUG
 		[self fillWithTestData];
-#endif
 	}
 	return self;
 }
@@ -43,7 +41,6 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder {
 	[aCoder encodeObject:_scriptArray forKey:SCRIPTARRAY_KEY];
 }
-
 
 - (void)fillWithTestData {
 	//TESTCODE

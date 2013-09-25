@@ -13,13 +13,11 @@
 @interface NWScriptObjectControl : NWScriptObjectView
 
 @property (nonatomic, weak) id<NWScriptObjectControlDelegate> delegate;
-@property (nonatomic, strong) UIButton *deleteButton;
-@property (nonatomic) BOOL showDeleteButton;
+@property (nonatomic, getter = isQuivering) BOOL quivering;
 
 - (void)pinchWidth:(UIPinchGestureRecognizer *)gesture;
 
 @end
-
 
 @protocol NWScriptObjectControlDelegate
 

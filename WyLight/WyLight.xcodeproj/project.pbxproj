@@ -72,6 +72,17 @@
 		5C90B39B17EF56F300BAC74F /* NWScriptObjectControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B39917EF56F300BAC74F /* NWScriptObjectControl.m */; };
 		5C90B39E17EF572400BAC74F /* NWGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B39D17EF572400BAC74F /* NWGradientView.m */; };
 		5C90B3A117F1702F00BAC74F /* NWTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3A017F1702F00BAC74F /* NWTestViewController.m */; };
+		5C90B3A617F2EB7A00BAC74F /* NWTimeInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3A317F2EB7A00BAC74F /* NWTimeInfoView.m */; };
+		5C90B3A717F2EB7A00BAC74F /* NWAddScriptObjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3A517F2EB7A00BAC74F /* NWAddScriptObjectView.m */; };
+		5C90B3BD17F3714B00BAC74F /* NWEditFadeCommandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3AA17F3714B00BAC74F /* NWEditFadeCommandViewController.m */; };
+		5C90B3BE17F3714B00BAC74F /* NWEditGradientCommandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3AC17F3714B00BAC74F /* NWEditGradientCommandViewController.m */; };
+		5C90B3BF17F3714B00BAC74F /* NWScriptView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3AE17F3714B00BAC74F /* NWScriptView.m */; };
+		5C90B3C117F3714B00BAC74F /* NWScriptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3B217F3714B00BAC74F /* NWScriptViewController.m */; };
+		5C90B3C217F3714B00BAC74F /* NWScriptObjectCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3B417F3714B00BAC74F /* NWScriptObjectCollectionViewCell.m */; };
+		5C90B3C317F3714B00BAC74F /* NWAddCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3B617F3714B00BAC74F /* NWAddCollectionViewCell.m */; };
+		5C90B3C417F3714B00BAC74F /* NWCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3B817F3714B00BAC74F /* NWCollectionViewLayout.m */; };
+		5C90B3C517F3714B00BAC74F /* NWCollectionViewLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3BA17F3714B00BAC74F /* NWCollectionViewLayoutAttributes.m */; };
+		5C90B3C617F3714B00BAC74F /* NWEditComplexScriptObjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3BC17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,27 +114,27 @@
 		5C35FEEB17EF4F7100E3DE0D /* NWComplexScriptCommandObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWComplexScriptCommandObject.m; sourceTree = "<group>"; };
 		5C35FEF417EF541300E3DE0D /* NWScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScript.h; sourceTree = "<group>"; };
 		5C35FEF517EF541300E3DE0D /* NWScript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScript.m; sourceTree = "<group>"; };
-		5C4F56E917EC968E0039ADFF /* NWColorSliderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWColorSliderViewController.h; sourceTree = "<group>"; };
-		5C4F56EA17EC968E0039ADFF /* NWColorSliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWColorSliderViewController.m; sourceTree = "<group>"; };
+		5C4F56E917EC968E0039ADFF /* NWColorSliderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWColorSliderViewController.h; path = ViewController/NWColorSliderViewController.h; sourceTree = "<group>"; };
+		5C4F56EA17EC968E0039ADFF /* NWColorSliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWColorSliderViewController.m; path = ViewController/NWColorSliderViewController.m; sourceTree = "<group>"; };
 		5C83957617EB6138007EF0C6 /* WyLight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WyLight.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C83957917EB6138007EF0C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5C83957B17EB6138007EF0C6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		5C83957D17EB6138007EF0C6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		5C83958117EB6138007EF0C6 /* WyLight-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WyLight-Info.plist"; sourceTree = "<group>"; };
+		5C83958117EB6138007EF0C6 /* WyLight-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "WyLight-Info.plist"; path = "../WyLight-Info.plist"; sourceTree = "<group>"; };
 		5C83958317EB6138007EF0C6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5C83958517EB6138007EF0C6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		5C83958717EB6138007EF0C6 /* WyLight-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WyLight-Prefix.pch"; sourceTree = "<group>"; };
+		5C83958717EB6138007EF0C6 /* WyLight-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "WyLight-Prefix.pch"; path = "../WyLight-Prefix.pch"; sourceTree = "<group>"; };
 		5C83958817EB6138007EF0C6 /* NWAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NWAppDelegate.h; sourceTree = "<group>"; };
 		5C83958917EB6138007EF0C6 /* NWAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NWAppDelegate.m; sourceTree = "<group>"; };
 		5C83958C17EB6138007EF0C6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		5C83959117EB6138007EF0C6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		5C83959117EB6138007EF0C6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = SupportingFiles/Images.xcassets; sourceTree = "<group>"; };
 		5C83959717EB6138007EF0C6 /* WyLightTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WyLightTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C83959817EB6138007EF0C6 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		5C8395A017EB6138007EF0C6 /* WyLightTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WyLightTests-Info.plist"; sourceTree = "<group>"; };
 		5C8395A217EB6138007EF0C6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5C8395A417EB6138007EF0C6 /* WyLightTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WyLightTests.m; sourceTree = "<group>"; };
-		5C8395AE17EB6182007EF0C6 /* NWBroadcastsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWBroadcastsTVC.h; sourceTree = "<group>"; };
-		5C8395AF17EB6197007EF0C6 /* NWBroadcastsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWBroadcastsTVC.m; sourceTree = "<group>"; };
+		5C8395AE17EB6182007EF0C6 /* NWBroadcastsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWBroadcastsTVC.h; path = ViewController/NWBroadcastsTVC.h; sourceTree = "<group>"; };
+		5C8395AF17EB6197007EF0C6 /* NWBroadcastsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWBroadcastsTVC.m; path = ViewController/NWBroadcastsTVC.m; sourceTree = "<group>"; };
 		5C8395B117EB61B4007EF0C6 /* WCEndpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WCEndpoint.h; path = ../../ios/WCEndpoint.h; sourceTree = "<group>"; };
 		5C8395B217EB61B4007EF0C6 /* WCEndpoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WCEndpoint.m; path = ../../ios/WCEndpoint.m; sourceTree = "<group>"; };
 		5C8395B317EB61B4007EF0C6 /* Script.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Script.cpp; path = ../../library/Script.cpp; sourceTree = "<group>"; };
@@ -163,12 +174,12 @@
 		5C8395D517EB61B4007EF0C6 /* WiflyControlException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WiflyControlException.h; path = ../../library/WiflyControlException.h; sourceTree = "<group>"; };
 		5C8395D617EB61B4007EF0C6 /* WiflyControlNoThrow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WiflyControlNoThrow.cpp; path = ../../library/WiflyControlNoThrow.cpp; sourceTree = "<group>"; };
 		5C8395D717EB61B4007EF0C6 /* WiflyControlNoThrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WiflyControlNoThrow.h; path = ../../library/WiflyControlNoThrow.h; sourceTree = "<group>"; };
-		5C8395E717EB651D007EF0C6 /* NWConnectionTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWConnectionTBC.h; sourceTree = "<group>"; };
-		5C8395E817EB651D007EF0C6 /* NWConnectionTBC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWConnectionTBC.m; sourceTree = "<group>"; };
-		5C8395EA17EB6721007EF0C6 /* NWDefaultColorPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWDefaultColorPickerViewController.h; sourceTree = "<group>"; };
-		5C8395EB17EB6721007EF0C6 /* NWDefaultColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWDefaultColorPickerViewController.m; sourceTree = "<group>"; };
-		5C8395EC17EB6721007EF0C6 /* NWColorPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWColorPickerViewController.h; sourceTree = "<group>"; };
-		5C8395ED17EB6721007EF0C6 /* NWColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWColorPickerViewController.m; sourceTree = "<group>"; };
+		5C8395E717EB651D007EF0C6 /* NWConnectionTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWConnectionTBC.h; path = ViewController/NWConnectionTBC.h; sourceTree = "<group>"; };
+		5C8395E817EB651D007EF0C6 /* NWConnectionTBC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWConnectionTBC.m; path = ViewController/NWConnectionTBC.m; sourceTree = "<group>"; };
+		5C8395EA17EB6721007EF0C6 /* NWDefaultColorPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWDefaultColorPickerViewController.h; path = ViewController/NWDefaultColorPickerViewController.h; sourceTree = "<group>"; };
+		5C8395EB17EB6721007EF0C6 /* NWDefaultColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWDefaultColorPickerViewController.m; path = ViewController/NWDefaultColorPickerViewController.m; sourceTree = "<group>"; };
+		5C8395EC17EB6721007EF0C6 /* NWColorPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWColorPickerViewController.h; path = ViewController/NWColorPickerViewController.h; sourceTree = "<group>"; };
+		5C8395ED17EB6721007EF0C6 /* NWColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWColorPickerViewController.m; path = ViewController/NWColorPickerViewController.m; sourceTree = "<group>"; };
 		5C83961517EB6C00007EF0C6 /* checkerboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkerboard.png; sourceTree = "<group>"; };
 		5C83961617EB6C00007EF0C6 /* checkerboard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkerboard@2x.png"; sourceTree = "<group>"; };
 		5C83961717EB6C00007EF0C6 /* colorPickerKnob.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = colorPickerKnob.png; sourceTree = "<group>"; };
@@ -189,29 +200,51 @@
 		5C83962817EB6C00007EF0C6 /* pickerColorWheel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pickerColorWheel@2x.png"; sourceTree = "<group>"; };
 		5C83962917EB6C00007EF0C6 /* UIColor-Expanded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor-Expanded.h"; sourceTree = "<group>"; };
 		5C83962A17EB6C00007EF0C6 /* UIColor-Expanded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor-Expanded.m"; sourceTree = "<group>"; };
-		5C83963917EC542E007EF0C6 /* NWBrightnessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWBrightnessViewController.h; sourceTree = "<group>"; };
-		5C83963A17EC542E007EF0C6 /* NWBrightnessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWBrightnessViewController.m; sourceTree = "<group>"; };
-		5C83963C17EC5E3E007EF0C6 /* NWAddNewTargetConfigureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWAddNewTargetConfigureViewController.h; sourceTree = "<group>"; };
-		5C83963D17EC5E3E007EF0C6 /* NWAddNewTargetConfigureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWAddNewTargetConfigureViewController.m; sourceTree = "<group>"; };
-		5C83963E17EC5E3E007EF0C6 /* NWAddNewTargetGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWAddNewTargetGuideViewController.h; sourceTree = "<group>"; };
-		5C83963F17EC5E3E007EF0C6 /* NWAddNewTargetGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWAddNewTargetGuideViewController.m; sourceTree = "<group>"; };
+		5C83963917EC542E007EF0C6 /* NWBrightnessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWBrightnessViewController.h; path = ViewController/NWBrightnessViewController.h; sourceTree = "<group>"; };
+		5C83963A17EC542E007EF0C6 /* NWBrightnessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWBrightnessViewController.m; path = ViewController/NWBrightnessViewController.m; sourceTree = "<group>"; };
+		5C83963C17EC5E3E007EF0C6 /* NWAddNewTargetConfigureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWAddNewTargetConfigureViewController.h; path = NewTargetGuide/NWAddNewTargetConfigureViewController.h; sourceTree = "<group>"; };
+		5C83963D17EC5E3E007EF0C6 /* NWAddNewTargetConfigureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWAddNewTargetConfigureViewController.m; path = NewTargetGuide/NWAddNewTargetConfigureViewController.m; sourceTree = "<group>"; };
+		5C83963E17EC5E3E007EF0C6 /* NWAddNewTargetGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWAddNewTargetGuideViewController.h; path = NewTargetGuide/NWAddNewTargetGuideViewController.h; sourceTree = "<group>"; };
+		5C83963F17EC5E3E007EF0C6 /* NWAddNewTargetGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWAddNewTargetGuideViewController.m; path = NewTargetGuide/NWAddNewTargetGuideViewController.m; sourceTree = "<group>"; };
 		5C83964417EC5E9A007EF0C6 /* NWAddNewTargetGuideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWAddNewTargetGuideView.h; sourceTree = "<group>"; };
 		5C83964517EC5E9A007EF0C6 /* NWAddNewTargetGuideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWAddNewTargetGuideView.m; sourceTree = "<group>"; };
 		5C83964717EC5EB7007EF0C6 /* Guide2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Guide2.png; sourceTree = "<group>"; };
 		5C83964817EC5EB7007EF0C6 /* Guide1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Guide1.png; sourceTree = "<group>"; };
 		5C83964B17EC74C6007EF0C6 /* main.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.hex; sourceTree = "<group>"; };
-		5C90B38F17EF56A000BAC74F /* ALRadialButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALRadialButton.h; sourceTree = "<group>"; };
-		5C90B39017EF56A000BAC74F /* ALRadialButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALRadialButton.m; sourceTree = "<group>"; };
-		5C90B39117EF56A000BAC74F /* ALRadialMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALRadialMenu.h; sourceTree = "<group>"; };
-		5C90B39217EF56A000BAC74F /* ALRadialMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALRadialMenu.m; sourceTree = "<group>"; };
+		5C90B38F17EF56A000BAC74F /* ALRadialButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ALRadialButton.h; path = RadialMenu/ALRadialButton.h; sourceTree = "<group>"; };
+		5C90B39017EF56A000BAC74F /* ALRadialButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ALRadialButton.m; path = RadialMenu/ALRadialButton.m; sourceTree = "<group>"; };
+		5C90B39117EF56A000BAC74F /* ALRadialMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ALRadialMenu.h; path = RadialMenu/ALRadialMenu.h; sourceTree = "<group>"; };
+		5C90B39217EF56A000BAC74F /* ALRadialMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ALRadialMenu.m; path = RadialMenu/ALRadialMenu.m; sourceTree = "<group>"; };
 		5C90B39617EF56F300BAC74F /* NWScriptObjectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptObjectView.h; sourceTree = "<group>"; };
 		5C90B39717EF56F300BAC74F /* NWScriptObjectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptObjectView.m; sourceTree = "<group>"; };
 		5C90B39817EF56F300BAC74F /* NWScriptObjectControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptObjectControl.h; sourceTree = "<group>"; };
 		5C90B39917EF56F300BAC74F /* NWScriptObjectControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptObjectControl.m; sourceTree = "<group>"; };
 		5C90B39C17EF572400BAC74F /* NWGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWGradientView.h; sourceTree = "<group>"; };
 		5C90B39D17EF572400BAC74F /* NWGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWGradientView.m; sourceTree = "<group>"; };
-		5C90B39F17F1702F00BAC74F /* NWTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWTestViewController.h; sourceTree = "<group>"; };
-		5C90B3A017F1702F00BAC74F /* NWTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWTestViewController.m; sourceTree = "<group>"; };
+		5C90B39F17F1702F00BAC74F /* NWTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWTestViewController.h; path = ViewController/NWTestViewController.h; sourceTree = "<group>"; };
+		5C90B3A017F1702F00BAC74F /* NWTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWTestViewController.m; path = ViewController/NWTestViewController.m; sourceTree = "<group>"; };
+		5C90B3A217F2EB7A00BAC74F /* NWTimeInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWTimeInfoView.h; sourceTree = "<group>"; };
+		5C90B3A317F2EB7A00BAC74F /* NWTimeInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWTimeInfoView.m; sourceTree = "<group>"; };
+		5C90B3A417F2EB7A00BAC74F /* NWAddScriptObjectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWAddScriptObjectView.h; sourceTree = "<group>"; };
+		5C90B3A517F2EB7A00BAC74F /* NWAddScriptObjectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWAddScriptObjectView.m; sourceTree = "<group>"; };
+		5C90B3A917F3714B00BAC74F /* NWEditFadeCommandViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWEditFadeCommandViewController.h; sourceTree = "<group>"; };
+		5C90B3AA17F3714B00BAC74F /* NWEditFadeCommandViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWEditFadeCommandViewController.m; sourceTree = "<group>"; };
+		5C90B3AB17F3714B00BAC74F /* NWEditGradientCommandViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWEditGradientCommandViewController.h; sourceTree = "<group>"; };
+		5C90B3AC17F3714B00BAC74F /* NWEditGradientCommandViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWEditGradientCommandViewController.m; sourceTree = "<group>"; };
+		5C90B3AD17F3714B00BAC74F /* NWScriptView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptView.h; sourceTree = "<group>"; };
+		5C90B3AE17F3714B00BAC74F /* NWScriptView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptView.m; sourceTree = "<group>"; };
+		5C90B3B117F3714B00BAC74F /* NWScriptViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptViewController.h; sourceTree = "<group>"; };
+		5C90B3B217F3714B00BAC74F /* NWScriptViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptViewController.m; sourceTree = "<group>"; };
+		5C90B3B317F3714B00BAC74F /* NWScriptObjectCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptObjectCollectionViewCell.h; sourceTree = "<group>"; };
+		5C90B3B417F3714B00BAC74F /* NWScriptObjectCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptObjectCollectionViewCell.m; sourceTree = "<group>"; };
+		5C90B3B517F3714B00BAC74F /* NWAddCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWAddCollectionViewCell.h; sourceTree = "<group>"; };
+		5C90B3B617F3714B00BAC74F /* NWAddCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWAddCollectionViewCell.m; sourceTree = "<group>"; };
+		5C90B3B717F3714B00BAC74F /* NWCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWCollectionViewLayout.h; sourceTree = "<group>"; };
+		5C90B3B817F3714B00BAC74F /* NWCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWCollectionViewLayout.m; sourceTree = "<group>"; };
+		5C90B3B917F3714B00BAC74F /* NWCollectionViewLayoutAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWCollectionViewLayoutAttributes.h; sourceTree = "<group>"; };
+		5C90B3BA17F3714B00BAC74F /* NWCollectionViewLayoutAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWCollectionViewLayoutAttributes.m; sourceTree = "<group>"; };
+		5C90B3BB17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWEditComplexScriptObjectViewController.h; sourceTree = "<group>"; };
+		5C90B3BC17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWEditComplexScriptObjectViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,7 +293,7 @@
 				5C35FEEA17EF4F7100E3DE0D /* NWComplexScriptCommandObject.h */,
 				5C35FEEB17EF4F7100E3DE0D /* NWComplexScriptCommandObject.m */,
 			);
-			name = CommandModel;
+			path = CommandModel;
 			sourceTree = "<group>";
 		};
 		5C83956D17EB6138007EF0C6 = {
@@ -323,6 +356,7 @@
 				5C83958717EB6138007EF0C6 /* WyLight-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
 		5C83959E17EB6138007EF0C6 /* WyLightTests */ = {
@@ -392,6 +426,7 @@
 		5C8395E617EB62EB007EF0C6 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				5C90B3A817F36C8A00BAC74F /* Script_DEPRECATED */,
 				5C83964217EC5E49007EF0C6 /* AddNewTargetGuide */,
 				5C83963917EC542E007EF0C6 /* NWBrightnessViewController.h */,
 				5C83963A17EC542E007EF0C6 /* NWBrightnessViewController.m */,
@@ -435,7 +470,7 @@
 				5C83962917EB6C00007EF0C6 /* UIColor-Expanded.h */,
 				5C83962A17EB6C00007EF0C6 /* UIColor-Expanded.m */,
 			);
-			name = ColorPicker;
+			path = ColorPicker;
 			sourceTree = "<group>";
 		};
 		5C83964217EC5E49007EF0C6 /* AddNewTargetGuide */ = {
@@ -452,6 +487,10 @@
 		5C83964317EC5E8A007EF0C6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5C90B3A217F2EB7A00BAC74F /* NWTimeInfoView.h */,
+				5C90B3A317F2EB7A00BAC74F /* NWTimeInfoView.m */,
+				5C90B3A417F2EB7A00BAC74F /* NWAddScriptObjectView.h */,
+				5C90B3A517F2EB7A00BAC74F /* NWAddScriptObjectView.m */,
 				5C90B39C17EF572400BAC74F /* NWGradientView.h */,
 				5C90B39D17EF572400BAC74F /* NWGradientView.m */,
 				5C90B39617EF56F300BAC74F /* NWScriptObjectView.h */,
@@ -461,7 +500,7 @@
 				5C83964417EC5E9A007EF0C6 /* NWAddNewTargetGuideView.h */,
 				5C83964517EC5E9A007EF0C6 /* NWAddNewTargetGuideView.m */,
 			);
-			name = Views;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		5C90B39517EF56A700BAC74F /* RadialMenu */ = {
@@ -473,6 +512,31 @@
 				5C90B39217EF56A000BAC74F /* ALRadialMenu.m */,
 			);
 			name = RadialMenu;
+			sourceTree = "<group>";
+		};
+		5C90B3A817F36C8A00BAC74F /* Script_DEPRECATED */ = {
+			isa = PBXGroup;
+			children = (
+				5C90B3A917F3714B00BAC74F /* NWEditFadeCommandViewController.h */,
+				5C90B3AA17F3714B00BAC74F /* NWEditFadeCommandViewController.m */,
+				5C90B3AB17F3714B00BAC74F /* NWEditGradientCommandViewController.h */,
+				5C90B3AC17F3714B00BAC74F /* NWEditGradientCommandViewController.m */,
+				5C90B3AD17F3714B00BAC74F /* NWScriptView.h */,
+				5C90B3AE17F3714B00BAC74F /* NWScriptView.m */,
+				5C90B3B117F3714B00BAC74F /* NWScriptViewController.h */,
+				5C90B3B217F3714B00BAC74F /* NWScriptViewController.m */,
+				5C90B3B317F3714B00BAC74F /* NWScriptObjectCollectionViewCell.h */,
+				5C90B3B417F3714B00BAC74F /* NWScriptObjectCollectionViewCell.m */,
+				5C90B3B517F3714B00BAC74F /* NWAddCollectionViewCell.h */,
+				5C90B3B617F3714B00BAC74F /* NWAddCollectionViewCell.m */,
+				5C90B3B717F3714B00BAC74F /* NWCollectionViewLayout.h */,
+				5C90B3B817F3714B00BAC74F /* NWCollectionViewLayout.m */,
+				5C90B3B917F3714B00BAC74F /* NWCollectionViewLayoutAttributes.h */,
+				5C90B3BA17F3714B00BAC74F /* NWCollectionViewLayoutAttributes.m */,
+				5C90B3BB17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.h */,
+				5C90B3BC17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.m */,
+			);
+			path = Script_DEPRECATED;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -582,7 +646,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C90B3A617F2EB7A00BAC74F /* NWTimeInfoView.m in Sources */,
 				5C8395DD17EB61B4007EF0C6 /* BroadcastReceiver.cpp in Sources */,
+				5C90B3A717F2EB7A00BAC74F /* NWAddScriptObjectView.m in Sources */,
+				5C90B3C317F3714B00BAC74F /* NWAddCollectionViewCell.m in Sources */,
 				5C8395E917EB651D007EF0C6 /* NWConnectionTBC.m in Sources */,
 				5C8395DB17EB61B4007EF0C6 /* WCBroadcastReceiverWrapper.mm in Sources */,
 				5C83963517EB6C00007EF0C6 /* KZUnitSlider.m in Sources */,
@@ -595,6 +662,7 @@
 				5C8395B017EB6197007EF0C6 /* NWBroadcastsTVC.m in Sources */,
 				5C83963B17EC542E007EF0C6 /* NWBrightnessViewController.m in Sources */,
 				5C83964017EC5E3E007EF0C6 /* NWAddNewTargetConfigureViewController.m in Sources */,
+				5C90B3BD17F3714B00BAC74F /* NWEditFadeCommandViewController.m in Sources */,
 				5C8395DA17EB61B4007EF0C6 /* crc.c in Sources */,
 				5C8395DC17EB61B4007EF0C6 /* WCWiflyControlWrapper.mm in Sources */,
 				5C35FEEE17EF4F7100E3DE0D /* NWScriptCommandObject.m in Sources */,
@@ -607,6 +675,7 @@
 				5C35FEEF17EF4F7100E3DE0D /* NWScriptEffectCommandObject.m in Sources */,
 				5C8395E417EB61B4007EF0C6 /* WiflyControlNoThrow.cpp in Sources */,
 				5C83958617EB6138007EF0C6 /* main.m in Sources */,
+				5C90B3C117F3714B00BAC74F /* NWScriptViewController.m in Sources */,
 				5C90B39317EF56A000BAC74F /* ALRadialButton.m in Sources */,
 				5C83963817EB6C00007EF0C6 /* UIColor-Expanded.m in Sources */,
 				5C90B39A17EF56F300BAC74F /* NWScriptObjectView.m in Sources */,
@@ -614,9 +683,12 @@
 				5C83963217EB6C00007EF0C6 /* KZColorPickerBrightnessSlider.m in Sources */,
 				5C90B39417EF56A000BAC74F /* ALRadialMenu.m in Sources */,
 				5C8395D917EB61B4007EF0C6 /* Script.cpp in Sources */,
+				5C90B3C417F3714B00BAC74F /* NWCollectionViewLayout.m in Sources */,
 				5C83964117EC5E3E007EF0C6 /* NWAddNewTargetGuideViewController.m in Sources */,
+				5C90B3BE17F3714B00BAC74F /* NWEditGradientCommandViewController.m in Sources */,
 				5C83964617EC5E9A007EF0C6 /* NWAddNewTargetGuideView.m in Sources */,
 				5C8395DE17EB61B4007EF0C6 /* ClientSocket.cpp in Sources */,
+				5C90B3C217F3714B00BAC74F /* NWScriptObjectCollectionViewCell.m in Sources */,
 				5C8395DF17EB61B4007EF0C6 /* ComProxy.cpp in Sources */,
 				5C35FEF217EF4F7100E3DE0D /* NWComplexScriptCommandObject.m in Sources */,
 				5C90B39B17EF56F300BAC74F /* NWScriptObjectControl.m in Sources */,
@@ -626,6 +698,9 @@
 				5C35FEED17EF4F7100E3DE0D /* NWLoopOffCommandObject.m in Sources */,
 				5C83963017EB6C00007EF0C6 /* KZColorPicker.m in Sources */,
 				5C8395E117EB61B4007EF0C6 /* MaskBuffer.cpp in Sources */,
+				5C90B3C617F3714B00BAC74F /* NWEditComplexScriptObjectViewController.m in Sources */,
+				5C90B3BF17F3714B00BAC74F /* NWScriptView.m in Sources */,
+				5C90B3C517F3714B00BAC74F /* NWCollectionViewLayoutAttributes.m in Sources */,
 				5C8395E217EB61B4007EF0C6 /* TelnetProxy.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -663,6 +738,7 @@
 				5C83958C17EB6138007EF0C6 /* Base */,
 			);
 			name = Main.storyboard;
+			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
 		5C8395A117EB6138007EF0C6 /* InfoPlist.strings */ = {
