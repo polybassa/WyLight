@@ -20,7 +20,7 @@
     self = [super initWithFrame:frame];
     if (self) {
 		[self setup];
-		self.scriptObjectSpacing  = 2.0;
+		self.scriptObjectSpacing  = 0.0;
 	}
     return self;
 }

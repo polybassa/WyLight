@@ -52,14 +52,14 @@
 		obj.address = 0xffffffff;
 		obj.color = [UIColor redColor];
 		
-		[comObj.itsScriptObjects addObject:obj];
+		[comObj.scriptObjects addObject:obj];
 	}
 	{
 		NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
 		obj.address = 0x000000ff;
 		obj.color = [UIColor yellowColor];
 		
-		[comObj.itsScriptObjects addObject:obj];
+		[comObj.scriptObjects addObject:obj];
 	}
 	{
 		NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
@@ -68,7 +68,7 @@
 		
 		obj.offset = 10;
 		obj.numberOfLeds = 10;
-		[comObj.itsScriptObjects addObject: obj];
+		[comObj.scriptObjects addObject: obj];
 	}
 	{
 		NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
@@ -77,7 +77,7 @@
 		
 		obj.offset = 20;
 		obj.numberOfLeds = 5;
-		[comObj.itsScriptObjects addObject: obj];
+		[comObj.scriptObjects addObject: obj];
 	}
 	comObj.duration = 200;
 	[self addObject:comObj];
@@ -90,7 +90,7 @@
 		obj.address = 0xffffffff;
 		obj.color = [UIColor greenColor];
 		
-		[comObj.itsScriptObjects addObject:obj];
+		[comObj.scriptObjects addObject:obj];
 	}
 	comObj.duration = 50;
 	[self addObject:comObj];
@@ -104,7 +104,7 @@
 		
 		obj.offset = 10;
 		obj.numberOfLeds = 10;
-		[comObj.itsScriptObjects addObject: obj];
+		[comObj.scriptObjects addObject: obj];
 	}
 	{
 		NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
@@ -113,7 +113,7 @@
 		
 		obj.offset = 0;
 		obj.numberOfLeds = 32;
-		[comObj.itsScriptObjects addObject: obj];
+		[comObj.scriptObjects addObject: obj];
 	}
 	comObj.duration = 100;
 	[self addObject:comObj];

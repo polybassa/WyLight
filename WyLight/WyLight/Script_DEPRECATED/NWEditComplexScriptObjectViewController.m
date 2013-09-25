@@ -236,7 +236,7 @@
 }
 
 - (void)addFadeCommand {
-	[self.command.itsScriptObjects addObject:[NWEditComplexScriptObjectViewController defaultFadeCommand]];
+	[self.command.scriptObjects addObject:[NWEditComplexScriptObjectViewController defaultFadeCommand]];
 	[self updateGradientView];
 	[self.collectionView reloadData];
 	if (self.indexPathOfLastCell) {
@@ -245,7 +245,7 @@
 }
 
 - (void)addGradientCommand {	
-	[self.command.itsScriptObjects addObject: [NWEditComplexScriptObjectViewController defaultGradientCommand]];
+	[self.command.scriptObjects addObject: [NWEditComplexScriptObjectViewController defaultGradientCommand]];
 	[self updateGradientView];
 	[self.collectionView reloadData];
 	if (self.indexPathOfLastCell) {
@@ -298,7 +298,7 @@
 		// gesture is fired on a scriptObject, not on the add Object
 		// and the radial menu is not shown
 		
-        if (indexPath && self.command.itsScriptObjects.count > 1 && indexPath.row < self.command.itsScriptObjects.count && self.radialMenu.itemIndex == 0)
+        if (indexPath && self.command.scriptObjects.count > 1 && indexPath.row < self.command.scriptObjects.count && self.radialMenu.itemIndex == 0)
         {
             self.isDeletionModeActive = YES;
             NWCollectionViewLayout *layout = (NWCollectionViewLayout *)self.collectionView.collectionViewLayout;
@@ -318,7 +318,7 @@
 		NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:[gr locationInView:self.collectionView]];
 		if (indexPath) {
 			self.indexOfObjectToAlter = indexPath.row;
-			NWScriptCommandObject *obj = [self.command.itsScriptObjects objectAtIndex:self.indexOfObjectToAlter];
+			NWScriptCommandObject *obj = [self.command.scriptObjects objectAtIndex:self.indexOfObjectToAlter];
 			
 			if ([obj isKindOfClass:[NWSetFadeScriptCommandObject class]]) {
 				[self performSegueWithIdentifier:@"editFade:" sender:self];
@@ -336,7 +336,7 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-	return self.command.itsScriptObjects.count + 1;
+	return self.command.scriptObjects.count + 1;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -351,9 +351,9 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row < self.command.itsScriptObjects.count) {
+	if (indexPath.row < self.command.scriptObjects.count) {
 		NWScriptObjectCollectionViewCell *tempCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SCRIPT" forIndexPath:indexPath];
-		tempCell.scriptObjectView.endColors = [self.command.itsScriptObjects[indexPath.row] colors];
+		tempCell.scriptObjectView.endColors = [self.command.scriptObjects[indexPath.row] colors];
 	
 		UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(endDeletionMode:)];
 		gesture.numberOfTapsRequired = 1;
@@ -377,9 +377,9 @@
 
 #pragma mark - delete for button
 - (void)delete:(UIButton *)sender {
-	if (self.command.itsScriptObjects.count > 1) {
+	if (self.command.scriptObjects.count > 1) {
 		NSIndexPath *indexPath = [self.collectionView indexPathForCell:(NWScriptObjectCollectionViewCell *)sender.superview.superview];
-		[self.command.itsScriptObjects removeObjectAtIndex:indexPath.row];
+		[self.command.scriptObjects removeObjectAtIndex:indexPath.row];
 		[self.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
 		[self updateGradientView];
 	}
@@ -392,7 +392,7 @@
 - (IBAction)unwindEditScriptObject:(UIStoryboardSegue *)segue {
 	if ([segue.sourceViewController respondsToSelector:@selector(command)]) {
 		NWScriptCommandObject *cmdObj = (NWScriptCommandObject*)[segue.sourceViewController command];
-		[self.command.itsScriptObjects replaceObjectAtIndex:self.indexOfObjectToAlter withObject:cmdObj];
+		[self.command.scriptObjects replaceObjectAtIndex:self.indexOfObjectToAlter withObject:cmdObj];
 		[self.collectionView reloadData];
 	}
 }
@@ -401,12 +401,12 @@
 	if ([segue.identifier isEqualToString:@"editFade:"]) {
 		if ([segue.destinationViewController isKindOfClass:[NWEditFadeCommandViewController class]]) {
 			NWEditFadeCommandViewController *dest = (NWEditFadeCommandViewController*)segue.destinationViewController;
-			dest.command = [[self.command.itsScriptObjects objectAtIndex:self.indexOfObjectToAlter] copy];
+			dest.command = [[self.command.scriptObjects objectAtIndex:self.indexOfObjectToAlter] copy];
 		}
 	} else if ([segue.identifier isEqualToString:@"editGradient:"]) {
 		if ([segue.destinationViewController isKindOfClass:[NWEditGradientCommandViewController class]]) {
 			NWEditGradientCommandViewController *dest = (NWEditGradientCommandViewController*)segue.destinationViewController;
-			dest.command = [[self.command.itsScriptObjects objectAtIndex:self.indexOfObjectToAlter] copy];
+			dest.command = [[self.command.scriptObjects objectAtIndex:self.indexOfObjectToAlter] copy];
 		}
 	}
 }

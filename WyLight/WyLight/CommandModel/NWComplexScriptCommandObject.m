@@ -16,6 +16,7 @@
 
 @property (nonatomic, strong) NSArray *itsColors;
 @property (nonatomic, strong) NSArray *shadowCopyOfScriptObjects;
+@property (nonatomic, strong) UIColor *shadowBackgroundColor;
 
 @end
 
@@ -26,7 +27,7 @@
 	other.next = self.next;
 	other.prev = self.prev;
 	other.waitCommand = self.waitCommand;
-	other.itsScriptObjects = [[NSMutableArray alloc]initWithArray:self.itsScriptObjects copyItems:YES];
+	other.scriptObjects = [[NSMutableArray alloc]initWithArray:self.scriptObjects copyItems:YES];
 	other.duration = self.duration;
 	
 	return other;
@@ -43,14 +44,14 @@
 		_next = [aDecoder decodeObjectForKey:NEXT_KEY];
 		_prev = [aDecoder decodeObjectForKey:PREV_KEY];
 		_waitCommand = [aDecoder decodeBoolForKey:WAIT_KEY];
-		_itsScriptObjects = [aDecoder decodeObjectForKey:SCRIPTOBJECTS_KEY];
+		_scriptObjects = [aDecoder decodeObjectForKey:SCRIPTOBJECTS_KEY];
 	}
 	return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
 	[super encodeWithCoder:aCoder];
-	[aCoder encodeObject:_itsScriptObjects forKey:SCRIPTOBJECTS_KEY];
+	[aCoder encodeObject:_scriptObjects forKey:SCRIPTOBJECTS_KEY];
 	[aCoder encodeObject:_next forKey:NEXT_KEY];
 	[aCoder encodeObject:_prev forKey:PREV_KEY];
 	[aCoder encodeBool:_waitCommand forKey:WAIT_KEY];
@@ -69,10 +70,10 @@
 }
 
 - (NSMutableArray *)itsScriptObjects {
-	if (!_itsScriptObjects) {
-		_itsScriptObjects = [[NSMutableArray alloc]init];
+	if (!_scriptObjects) {
+		_scriptObjects = [[NSMutableArray alloc]init];
 	}
-	return _itsScriptObjects;
+	return _scriptObjects;
 }
 
 - (void)prepareForSendToWCWiflyControl {
@@ -81,6 +82,13 @@
 		command.duration = self.duration;
 	}
 	[[self.itsScriptObjects lastObject] setParallel:NO];
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor {
+	_shadowBackgroundColor = backgroundColor;
+	for (id<NWDrawableCommand> cmd in self.scriptObjects) {
+		cmd.backgroundColor = backgroundColor;
+	}
 }
 
 - (NSArray *)colors

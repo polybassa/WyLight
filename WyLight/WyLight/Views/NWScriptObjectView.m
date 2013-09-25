@@ -60,7 +60,7 @@
 		CGFloat rectOriginY = floorf(i * heightFract);
 		CGFloat nextRectOriginY = floorf((i + 1) * heightFract);
 		CGFloat rectHeight = nextRectOriginY - rectOriginY;
-		((UIView*)self.gradientViews[i]).frame = CGRectMake(frame.origin.x, rectOriginY, frame.size.width, rectHeight);
+		((UIView*)self.gradientViews[i]).frame = CGRectMake(0, rectOriginY, frame.size.width, rectHeight);
 	}
 }
 

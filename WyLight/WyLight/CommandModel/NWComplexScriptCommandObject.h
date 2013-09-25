@@ -15,6 +15,6 @@
 
 @property (nonatomic, getter = isWaitCommand) BOOL waitCommand;
 
-@property (nonatomic, strong) NSMutableArray *itsScriptObjects;
+@property (nonatomic, strong) NSMutableArray *scriptObjects;
 
 @end

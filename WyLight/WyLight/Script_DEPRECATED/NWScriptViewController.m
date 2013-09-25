@@ -16,7 +16,7 @@
 #import "NWAddScriptObjectView.h"
 #import "WCWiflyControlWrapper.h"
 
-@interface NWScriptViewController () <UIGestureRecognizerDelegate, NWScriptViewDataSource, NWScriptObjectControlDelegate, UIScrollViewDelegate>
+@interface NWScriptViewController () <NWScriptViewDataSource, NWScriptObjectControlDelegate, UIScrollViewDelegate>
 
 @property (strong, nonatomic) NWScript *script;
 @property (strong, nonatomic) NWScriptView *scriptView;
@@ -42,7 +42,7 @@
 	if (isDeletionModeActive) {
 		for (UIView *control in self.scriptView.subviews) {
 			if ([control isKindOfClass:[NWScriptObjectControl class]]) {
-				//((NWScriptObjectControl *)control).showDeleteButton = YES;
+				((NWScriptObjectControl *)control).quivering = YES;
 			}
 			if ([control isKindOfClass:[NWAddScriptObjectView class]]) {
 				((NWAddScriptObjectView *)control).button.enabled = NO;
@@ -51,7 +51,7 @@
 	} else {
 		for (UIView *control in self.scriptView.subviews) {
 			if ([control isKindOfClass:[NWScriptObjectControl class]]) {
-				//((NWScriptObjectControl *)control).showDeleteButton = NO;
+				((NWScriptObjectControl *)control).quivering = NO;
 			}
 			if ([control isKindOfClass:[NWAddScriptObjectView class]]) {
 				((NWAddScriptObjectView *)control).button.enabled = YES;
@@ -76,6 +76,7 @@
 #pragma mark - SETUP STUFF
 #define SCRIPT_KEY @"WyLightRemote.NWScriptViewController.script"
 #define TIMESCALE_KEY @"WyLightRemote.NWScriptViewController.timescalefactor"
+
 - (void)fixLocations {
 	if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
 		
@@ -150,8 +151,8 @@
 }
 
 - (void)viewWillLayoutSubviews {
-	[super viewWillLayoutSubviews];
 	[self fixLocations];
+	[super viewWillLayoutSubviews];
 }
 
 #pragma mark - GESTURE RECOGNIZER CALLBACKS
@@ -309,6 +310,9 @@
 	if (view == self.scriptView) {
 		if (index < self.script.scriptArray.count) {
 			NWScriptObjectControl *tempView = [[NWScriptObjectControl alloc]initWithFrame:CGRectZero];
+			UIColor *backgroundColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.4];
+			tempView.backgroundColor = backgroundColor;
+			
 			tempView.endColors = ((NWComplexScriptCommandObject *)self.script.scriptArray[index]).colors;
 			if (((NWComplexScriptCommandObject *)self.script.scriptArray[index]).prev) {
 				tempView.startColors = ((NWComplexScriptCommandObject *)self.script.scriptArray[index]).prev.colors;
@@ -317,7 +321,6 @@
 			tempView.cornerRadius = 5;
 			tempView.delegate = self;
 			//tempView.showDeleteButton = self.isDeletionModeActive;
-			tempView.backgroundColor = [UIColor blackColor];
 			tempView.tag = index;
 			
 			UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(setObjectForEdit:)];
