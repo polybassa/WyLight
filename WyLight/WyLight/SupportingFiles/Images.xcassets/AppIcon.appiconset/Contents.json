@@ -3,19 +3,19 @@
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "wylight1-58.png",
+      "filename" : "WyLight_58.png",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "wylight1_80.png",
+      "filename" : "WyLight_80.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "wylight1_120.png",
+      "filename" : "WyLight_120.png",
       "scale" : "2x"
     }
   ],

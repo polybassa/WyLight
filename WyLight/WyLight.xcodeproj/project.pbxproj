@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C20B13B17F442B9001A67C7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C20B13A17F442B9001A67C7 /* QuartzCore.framework */; };
 		5C35FEEC17EF4F7100E3DE0D /* NWLoopOnCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C35FEDF17EF4F7100E3DE0D /* NWLoopOnCommandObject.m */; };
 		5C35FEED17EF4F7100E3DE0D /* NWLoopOffCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C35FEE117EF4F7100E3DE0D /* NWLoopOffCommandObject.m */; };
 		5C35FEEE17EF4F7100E3DE0D /* NWScriptCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C35FEE317EF4F7100E3DE0D /* NWScriptCommandObject.m */; };
@@ -96,6 +97,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5C20B13A17F442B9001A67C7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5C35FEDC17EF4F7100E3DE0D /* NWSendableCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWSendableCommand.h; sourceTree = "<group>"; };
 		5C35FEDD17EF4F7100E3DE0D /* NWDrawableCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWDrawableCommand.h; sourceTree = "<group>"; };
 		5C35FEDE17EF4F7100E3DE0D /* NWLoopOnCommandObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWLoopOnCommandObject.h; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C20B13B17F442B9001A67C7 /* QuartzCore.framework in Frameworks */,
 				5C83957C17EB6138007EF0C6 /* CoreGraphics.framework in Frameworks */,
 				5C83957E17EB6138007EF0C6 /* UIKit.framework in Frameworks */,
 				5C83957A17EB6138007EF0C6 /* Foundation.framework in Frameworks */,
@@ -318,6 +321,7 @@
 		5C83957817EB6138007EF0C6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5C20B13A17F442B9001A67C7 /* QuartzCore.framework */,
 				5C83957917EB6138007EF0C6 /* Foundation.framework */,
 				5C83957B17EB6138007EF0C6 /* CoreGraphics.framework */,
 				5C83957D17EB6138007EF0C6 /* UIKit.framework */,
