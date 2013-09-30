@@ -184,14 +184,21 @@
 	}
 }
 
+- (void)swipeUpOnScriptObject:(UISwipeGestureRecognizer *)gesture {
+	if (gesture.state == UIGestureRecognizerStateEnded && self.isDeletionModeActive) {
+		[self deleteScriptObject:gesture.view];
+	}
+	
+}
+
 #pragma mark - BUTTON CALLBACKS
-- (void)deleteScriptObject:(UIButton *)sender {
-	if ([sender.superview isKindOfClass:[NWScriptObjectControl class]]) {
+- (void)deleteScriptObject:(UIView *)object {
+	if ([object isKindOfClass:[NWScriptObjectControl class]]) {
 		if (self.script.scriptArray.count <= 1) {
 			self.isDeletionModeActive = NO;
 			return;
 		}
-		NWScriptObjectControl *objectToDelete = (NWScriptObjectControl *)sender.superview;
+		NWScriptObjectControl *objectToDelete = (NWScriptObjectControl *)object;
 		
 		NWTimeInfoView *timeViewToDelete;
 		for (UIView *subview in self.scriptView.subviews) {
@@ -310,18 +317,14 @@
 	if (view == self.scriptView) {
 		if (index < self.script.scriptArray.count) {
 			NWScriptObjectControl *tempView = [[NWScriptObjectControl alloc]initWithFrame:CGRectZero];
-			UIColor *backgroundColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.4];
-			tempView.backgroundColor = backgroundColor;
-			
 			tempView.endColors = ((NWComplexScriptCommandObject *)self.script.scriptArray[index]).colors;
 			if (((NWComplexScriptCommandObject *)self.script.scriptArray[index]).prev) {
 				tempView.startColors = ((NWComplexScriptCommandObject *)self.script.scriptArray[index]).prev.colors;
 			}
-			//tempView.borderWidth = 1;
 			tempView.cornerRadius = 5;
 			tempView.delegate = self;
-			//tempView.showDeleteButton = self.isDeletionModeActive;
 			tempView.tag = index;
+			tempView.quivering = self.isDeletionModeActive;
 			
 			UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(setObjectForEdit:)];
 			tap.numberOfTapsRequired = 1;
@@ -333,6 +336,10 @@
 			UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(activateDeletionMode:)];
 			[tempView addGestureRecognizer:longPress];
 			
+			UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeUpOnScriptObject:)];
+			swipe.direction = UISwipeGestureRecognizerDirectionUp;
+			[tempView addGestureRecognizer:swipe];
+			
 			//[tempView.deleteButton addTarget:self action:@selector(deleteScriptObject:) forControlEvents:UIControlEventTouchUpInside];
 			
 			return tempView;
@@ -340,9 +347,7 @@
 			NWAddScriptObjectView *tempView = [[NWAddScriptObjectView alloc]initWithFrame:CGRectZero];
 			[tempView.button addTarget:self action:@selector(addScriptCommand:) forControlEvents:UIControlEventTouchUpInside];
 			
-			//tempView.scriptObjectView.borderWidth = 1;
 			tempView.scriptObjectView.cornerRadius = 5;
-			tempView.scriptObjectView.backgroundColor = [UIColor blackColor];
 			tempView.tag = index;
 			tempView.button.enabled = !self.isDeletionModeActive;
 

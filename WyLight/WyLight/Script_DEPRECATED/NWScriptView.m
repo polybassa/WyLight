@@ -38,8 +38,8 @@
 
 - (void)fixLocationsOfSubviews {
 	CGFloat xPosition = 20;
-	CGFloat yPosition = 30;
-	CGFloat height = self.frame.size.height - yPosition * 3;
+	CGFloat yPosition = 90;
+	CGFloat height = self.frame.size.height - yPosition * 2;
 	CGFloat width = 0;
 	for (UIView *subview in self.subviews) {
 		if ([subview isKindOfClass:[NWScriptObjectView class]]) {
@@ -112,6 +112,5 @@
 	}
 	[self fixLocationsOfSubviews];
 }
-
 
 @end

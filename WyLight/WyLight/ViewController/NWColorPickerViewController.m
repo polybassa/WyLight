@@ -28,17 +28,21 @@
 	}
 }
 
-#define SELECTED_COLOR_KEY @"WyLightRemote.NWColorPicerViewController.selectedColor"
+//#define SELECTED_COLOR_KEY @"WyLightRemote.NWColorPicerViewController.selectedColor"
+#define SELECTED_COLOR_KEY CURRENT_COLOR_KEY
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	self.sendAnyCommandToControlHandle = NO;
+	[self deserializeColor];
 }
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	[self setColorPickerDelegate:self];
-	
+}
+
+- (void)deserializeColor {
 	NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:SELECTED_COLOR_KEY];
 	if (colorData) {
 		self.selectedColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];

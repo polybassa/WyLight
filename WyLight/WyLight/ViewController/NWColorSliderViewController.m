@@ -26,11 +26,19 @@
 
 @synthesize currentColor = _currentColor;
 
-#define CURRENT_COLOR_KEY @"WyLightRemote.NWColorSliderViewController.currentColor"
+//#define SELECTED_COLOR_KEY @"WyLightRemote.NWColorSliderViewController.currentColor"
+#define SELECTED_COLOR_KEY CURRENT_COLOR_KEY
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:CURRENT_COLOR_KEY];
+		
+	self.redTextField.enabled = NO;
+	self.greenTextField.enabled = NO;
+	self.blueTextField.enabled = NO;
+}
+
+- (void)deserializeColor {
+	NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:SELECTED_COLOR_KEY];
 	if (colorData) {
 		self.currentColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
 		
@@ -40,23 +48,23 @@
 		self.greenSlider.value = green;
 		self.blueSlider.value = blue;
 	}
-	
-	self.redTextField.enabled = NO;
-	self.greenTextField.enabled = NO;
-	self.blueTextField.enabled = NO;
-	
-	//self.redTextField.
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
 	NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:self.currentColor];
-	[[NSUserDefaults standardUserDefaults] setObject:colorData forKey:CURRENT_COLOR_KEY];
+	[[NSUserDefaults standardUserDefaults] setObject:colorData forKey:SELECTED_COLOR_KEY];
 	[super viewWillDisappear:animated];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.sendClearCommandToControlHandleFirst = YES;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	
+	[self deserializeColor];
 	self.view.backgroundColor = self.currentColor;
 }
 

@@ -28,7 +28,7 @@
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleHeight;
         self.clipsToBounds = YES;
         self.layer.opacity = 1;
-		self.backgroundColor = [UIColor blackColor];
+		self.backgroundColor = [UIColor whiteColor];
 	}
     return self;
 }
@@ -49,7 +49,9 @@
 	} else {
 		self.layer.cornerRadius = dim/8;
 	}
+	//find a fix to change the frame of a drawn gradient view
 	[self setFrameOfAllColorViews:frame];
+	//[self drawAllColorViews];
 }
 
 - (void)setFrameOfAllColorViews:(CGRect)frame {

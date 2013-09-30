@@ -12,12 +12,16 @@
 @implementation NWScriptObjectControl
 
 - (void)setQuivering:(BOOL)quivering {
-	_quivering = quivering;
 	
-	if (quivering) {
+	if (quivering && (quivering != _quivering)) {
 		[self startQuivering];
-	} else {
+		self.layer.frame = CGRectInset(self.frame, self.frame.size.width * 0.2, 20);
+	} else if (!quivering && (quivering != _quivering)) {
 		[self stopQuivering];
+		self.layer.frame = CGRectInset(self.frame, self.frame.size.width * -0.2, -20);
+	}
+	if (quivering != _quivering) {
+		_quivering = quivering;
 	}
 }
 

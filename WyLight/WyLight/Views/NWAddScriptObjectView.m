@@ -15,14 +15,14 @@
     if (self) {
         // Initialization code
 		self.scriptObjectView = [[NWScriptObjectView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-		self.scriptObjectView.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:0.6];
+		self.scriptObjectView.startColors = @[[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1]];
+		self.scriptObjectView.endColors = self.scriptObjectView.startColors;
 		
 		[self addSubview:self.scriptObjectView];
 		self.button = [UIButton buttonWithType:UIButtonTypeContactAdd];
 		self.button.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
         
         [self addSubview:self.button];
-		
 	}
     return self;
 }

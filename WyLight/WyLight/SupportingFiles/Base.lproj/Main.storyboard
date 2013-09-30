@@ -61,7 +61,7 @@
             </objects>
             <point key="canvasLocation" x="683" y="-27"/>
         </scene>
-        <!--Color Picker View Controller-->
+        <!--Color Picker View Controller - Color Picker-->
         <scene sceneID="CdG-a7-zLn">
             <objects>
                 <viewController id="kO5-iB-Syi" customClass="NWColorPickerViewController" sceneMemberID="viewController">
@@ -74,7 +74,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="favorites" id="VrI-Vu-uQ4"/>
+                    <tabBarItem key="tabBarItem" title="Color Picker" image="Paint_TabBarIcon" id="VrI-Vu-uQ4"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lck-kK-Z4U" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -257,7 +257,7 @@
             </objects>
             <point key="canvasLocation" x="1983" y="710"/>
         </scene>
-        <!--Brightness View Controller-->
+        <!--Brightness View Controller - Dimmer-->
         <scene sceneID="KJJ-Y5-RxH">
             <objects>
                 <viewController id="BHs-hC-79E" customClass="NWBrightnessViewController" sceneMemberID="viewController">
@@ -314,7 +314,7 @@
                             <constraint firstItem="Yxr-JS-w4L" firstAttribute="leading" secondItem="dGg-du-PNe" secondAttribute="trailing" constant="-34" id="xjZ-AH-gXe"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="history" id="kud-TW-ohR"/>
+                    <tabBarItem key="tabBarItem" title="Dimmer" image="Sun_TabBarIcon" id="kud-TW-ohR"/>
                     <connections>
                         <outlet property="brightnessSlider" destination="Yxr-JS-w4L" id="LD9-dv-F6A"/>
                         <outlet property="brightnessStepper" destination="gOD-k3-Vfm" id="Qbe-SY-6bi"/>
@@ -324,7 +324,7 @@
             </objects>
             <point key="canvasLocation" x="2762" y="114"/>
         </scene>
-        <!--Color Slider View Controller-->
+        <!--Color Slider View Controller - RGB Slider-->
         <scene sceneID="ELE-5M-NJv">
             <objects>
                 <viewController id="bmC-jS-Lb1" customClass="NWColorSliderViewController" sceneMemberID="viewController">
@@ -443,7 +443,7 @@
                             <constraint firstItem="6qk-gH-p1a" firstAttribute="leading" secondItem="4la-ma-iZI" secondAttribute="leading" id="U9W-c1-K5I"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="mostViewed" id="QwO-Kn-4Pd"/>
+                    <tabBarItem key="tabBarItem" title="RGB Slider" image="Slider_TabBarIcon" id="QwO-Kn-4Pd"/>
                     <connections>
                         <outlet property="blueSlider" destination="Ov3-1s-nu6" id="eWj-CE-4UB"/>
                         <outlet property="blueTextField" destination="Dkf-HB-Ftn" id="tFc-k1-ND4"/>
@@ -535,6 +535,11 @@
             <point key="canvasLocation" x="238" y="1445"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Paint_TabBarIcon" width="30" height="30"/>
+        <image name="Slider_TabBarIcon" width="30" height="30"/>
+        <image name="Sun_TabBarIcon" width="30" height="30"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

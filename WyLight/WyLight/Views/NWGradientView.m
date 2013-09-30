@@ -16,18 +16,14 @@
 #define DEFAULT_COLOR [UIColor blackColor]
 
 - (void)setEndColor:(UIColor *)endColor {
-	if ([_endColor isEqual:endColor]) {
-		_endColor = endColor;
-	} else {
+	if (![_endColor isEqual:endColor]) {
 		_endColor = endColor;
 		[self setNeedsDisplay];
 	}
 }
 
 - (void)setStartColor:(UIColor *)startColor {
-	if ([_startColor isEqual:startColor]) {
-		_startColor = startColor;
-	} else {
+	if (![_startColor isEqual:startColor]) {
 		_startColor = startColor;
 		[self setNeedsDisplay];
 	}
@@ -68,11 +64,12 @@
 
 - (void)drawRect:(CGRect)rect
 {
+	
     CGContextRef context = UIGraphicsGetCurrentContext();
 	CGGradientRef currentGradient = [NWGradientView createGradientWithStartColor:self.startColor endColor:self.endColor];
 	CGContextDrawLinearGradient(context, currentGradient,
-									CGPointMake(0, 0),
-									CGPointMake(rect.size.width, 0), 0);
+									CGPointMake(0, rect.size.height / 2),
+									CGPointMake(rect.size.width, rect.size.height / 2), 0);
 }
 
 + (CGGradientRef)createGradientWithStartColor:(UIColor*)startColor endColor:(UIColor*)endColor {

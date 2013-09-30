@@ -16,7 +16,7 @@
 
 @property (nonatomic, strong) NSArray *itsColors;
 @property (nonatomic, strong) NSArray *shadowCopyOfScriptObjects;
-@property (nonatomic, strong) UIColor *shadowBackgroundColor;
+//@property (nonatomic, strong) UIColor *shadowBackgroundColor;
 
 @end
 
@@ -57,19 +57,18 @@
 	[aCoder encodeBool:_waitCommand forKey:WAIT_KEY];
 }
 
-- (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control
-{
+- (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control {
 	if ([self isWaitCommand]) {
 		[control setWaitTimeInTenMilliSecondsIntervals:self.duration];
 	} else {
 		[self prepareForSendToWCWiflyControl];
-		for (id<NWSendableCommand> command in self.itsScriptObjects) {
+		for (id<NWSendableCommand> command in self.scriptObjects) {
 			[command sendToWCWiflyControl:control];
 		}
 	}
 }
 
-- (NSMutableArray *)itsScriptObjects {
+- (NSMutableArray *)scriptObjects {
 	if (!_scriptObjects) {
 		_scriptObjects = [[NSMutableArray alloc]init];
 	}
@@ -77,15 +76,15 @@
 }
 
 - (void)prepareForSendToWCWiflyControl {
-	for (NWScriptEffectCommandObject *command in self.itsScriptObjects) {
+	for (NWScriptEffectCommandObject *command in self.scriptObjects) {
 		command.parallel = YES;
 		command.duration = self.duration;
 	}
-	[[self.itsScriptObjects lastObject] setParallel:NO];
+	[[self.scriptObjects lastObject] setParallel:NO];
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
-	_shadowBackgroundColor = backgroundColor;
+	//self.shadowBackgroundColor = backgroundColor;
 	for (id<NWDrawableCommand> cmd in self.scriptObjects) {
 		cmd.backgroundColor = backgroundColor;
 	}
@@ -104,18 +103,18 @@
 		return outPutColors;
 	}
 	
-	if (![self.itsScriptObjects isEqualToArray:self.shadowCopyOfScriptObjects]) {
+	if (![self.scriptObjects isEqualToArray:self.shadowCopyOfScriptObjects]) {
 		self.itsColors = nil;
-		self.shadowCopyOfScriptObjects = [self.itsScriptObjects copy];
+		self.shadowCopyOfScriptObjects = [self.scriptObjects copy];
 	}
 	
 	if (!self.itsColors) {
 		NSMutableArray *outPutColors = [[NSMutableArray alloc]init];
 		uint32_t compareMask = 0x00000001;
 		for (unsigned int i = 0; i < NUM_OF_LED; i++) {  //i = 0 - 31
-			NSUInteger j = self.itsScriptObjects.count;
+			NSUInteger j = self.scriptObjects.count;
 			while (j--) {
-				NWScriptEffectCommandObject *currentObj = [self.itsScriptObjects objectAtIndex:j];
+				NWScriptEffectCommandObject *currentObj = [self.scriptObjects objectAtIndex:j];
 				if ([currentObj respondsToSelector:@selector(address)]) {
 					const uint32_t bitmask = (uint32_t)[currentObj performSelector:@selector(address)];
 					if (bitmask & compareMask) {
