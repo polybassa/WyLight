@@ -144,6 +144,7 @@
 		biggerFrame.size.height += self.tabBarController.tabBar.frame.size.height;
 		self.tabBarController.view.frame = biggerFrame ;
 	}
+	
 }
 
 @end
