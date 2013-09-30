@@ -97,6 +97,64 @@
             endingLineNumber = "117"
             landmarkName = "-colors"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[NWComplexScriptCommandObject colors]"
+                  moduleName = "WyLight"
+                  urlString = "file://localhost/Users/weitys1/Dropbox/Wifly_Light/Software/WyLight/WyLight/CommandModel/NWComplexScriptCommandObject.m"
+                  timestampString = "402272949.932378"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "117"
+                  endingLineNumber = "117"
+                  offsetFromSymbolStart = "476">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[NWComplexScriptCommandObject colors]"
+                  moduleName = "WyLight"
+                  urlString = "file://localhost/Users/weitys1/Dropbox/Wifly_Light/Software/WyLight/WyLight/CommandModel/NWComplexScriptCommandObject.m"
+                  timestampString = "402272949.932897"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "117"
+                  endingLineNumber = "117"
+                  offsetFromSymbolStart = "488">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[NWComplexScriptCommandObject colors]"
+                  moduleName = "WyLight"
+                  urlString = "file://localhost/Users/weitys1/Dropbox/Wifly_Light/Software/WyLight/WyLight/CommandModel/NWComplexScriptCommandObject.m"
+                  timestampString = "402272949.933416"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "117"
+                  endingLineNumber = "117"
+                  offsetFromSymbolStart = "502">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[NWComplexScriptCommandObject colors]"
+                  moduleName = "WyLight"
+                  urlString = "file://localhost/Users/weitys1/Dropbox/Wifly_Light/Software/WyLight/WyLight/CommandModel/NWComplexScriptCommandObject.m"
+                  timestampString = "402272949.933931"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "117"
+                  endingLineNumber = "117"
+                  offsetFromSymbolStart = "598">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -145,6 +203,36 @@
             endingLineNumber = "113"
             landmarkName = "-colors"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[NWComplexScriptCommandObject colors]"
+                  moduleName = "WyLight"
+                  urlString = "file://localhost/Users/weitys1/Dropbox/Wifly_Light/Software/WyLight/WyLight/CommandModel/NWComplexScriptCommandObject.m"
+                  timestampString = "402272949.936168"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "114"
+                  endingLineNumber = "114"
+                  offsetFromSymbolStart = "810">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[NWComplexScriptCommandObject colors]"
+                  moduleName = "WyLight"
+                  urlString = "file://localhost/Users/weitys1/Dropbox/Wifly_Light/Software/WyLight/WyLight/CommandModel/NWComplexScriptCommandObject.m"
+                  timestampString = "402272949.936719"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "114"
+                  endingLineNumber = "114"
+                  offsetFromSymbolStart = "814">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -193,6 +281,52 @@
             endingLineNumber = "82"
             landmarkName = "-fillWithTestData"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../library/WiflyControl.cpp"
+            timestampString = "402272896.693837"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "793"
+            endingLineNumber = "793"
+            landmarkName = "Control::FwSend(FwCommand&amp; cmd)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WyLight::Control::FwSend(WyLight::FwCommand&amp;) const"
+                  moduleName = "WyLight"
+                  urlString = "file://localhost/Users/weitys1/Dropbox/Wifly_Light/Software/library/WiflyControl.cpp"
+                  timestampString = "402272949.939646"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "794"
+                  endingLineNumber = "794"
+                  offsetFromSymbolStart = "378">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WyLight::Control::FwSend(WyLight::FwCommand&amp;) const"
+                  moduleName = "WyLight"
+                  urlString = "file://localhost/Users/weitys1/Dropbox/Wifly_Light/Software/library/WiflyControl.cpp"
+                  timestampString = "402272949.940128"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "794"
+                  endingLineNumber = "794"
+                  offsetFromSymbolStart = "384">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

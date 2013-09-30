@@ -34,9 +34,14 @@ size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const 
 size_t TcpSocket::Send(const uint8_t* frame, size_t length) const {return 0; }
 ComProxy::ComProxy(const TcpSocket& sock) : mSock (sock) {}
 TelnetProxy::TelnetProxy(const TcpSocket& sock) : mSock (sock) {}
+UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) throw (FatalError)	: ClientSocket(addr, port, SOCK_DGRAM) {}
+size_t UdpSocket::Send(const uint8_t *frame, size_t length) const {
+	return length;
+}
+
 
 Control::Control(uint32_t addr, uint16_t port)
-: mSock(addr, port), mProxy(mSock), mTelnet(mSock)
+: mSock(addr, port), mUdpSock(addr, port, false, 0), mProxy(mSock), mTelnet(mSock)
 {
 }
 

@@ -19,6 +19,7 @@
 #include "WiflyControl.h"
 #include "crc.h"
 #include "trace.h"
+#include "MaskBuffer.h"
 
 #include <algorithm>
 #include <sstream>
@@ -52,7 +53,7 @@ const std::string FwCmdLoopOn::TOKEN("loop");
 const std::string FwCmdLoopOff::TOKEN("loop_off");
 const std::string FwCmdWait::TOKEN("wait");
 
-Control::Control(uint32_t addr, uint16_t port) : mSock(addr, port), mProxy(mSock), mTelnet(mSock) {}
+Control::Control(uint32_t addr, uint16_t port) : mSock(addr, port), mUdpSock(addr, port, false, 0), mProxy(mSock), mTelnet(mSock) {}
 
 /** ------------------------- BOOTLOADER METHODES ------------------------- **/
 void Control::BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError)
@@ -550,6 +551,7 @@ bool Control::ConfModuleAsSoftAP(const std::string& accesspointName) const
 		"set ip a 1.2.3.4\r\n",	           // Set ip address for accespoint
 		"set ip g 0.0.0.0\r\n",			   // Set gateway address to zero
 		"set ip n 255.255.255.0\r\n",	   // Set netmask for accespoint
+		"set ip p 11\r\n",				   // Enable UDP, TCP_CLIENT and TCP Protocol
 	};
 	
 	for(size_t i = 0; i < sizeof(commands) / sizeof(commands[0]); i++)
@@ -614,6 +616,7 @@ bool Control::ConfSetDefaults(void) const
 		"set wlan join 1\r\n",             // scan for ap and auto join
 		"set wlan rate 0\r\n",             // slowest datarate but highest range
 		"set wlan tx 12\r\n",              // Set the Wi-Fi transmit power to maximum
+		"set ip p 11\r\n",				   // Enable UDP, TCP_CLIENT and TCP Protocol
 		//"set sys launch_string wps_app"	   // Choose Wps mode
 	};
 
@@ -773,19 +776,29 @@ std::string Control::FwGetVersion(void) throw (ConnectionTimeout, FatalError, Sc
 
 void Control::FwSend(FwCommand& cmd) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
-	response_frame buffer;
-	size_t numCrcRetries = 8;
-	do
-	{
-		const size_t bytesRead = mProxy.Send(cmd, &buffer, sizeof(buffer));
-		TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer, bytesRead, "%02x ", "We got %zd bytes response.\nMessage: ", bytesRead);
-		
-		if(cmd.GetResponse().Init(buffer, bytesRead))
+	if (cmd.IsResponseRequired()) {
+	
+		response_frame buffer;
+		size_t numCrcRetries = 8;
+		do
 		{
-			return;
+			const size_t bytesRead = mProxy.Send(cmd, &buffer, sizeof(buffer));
+			TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer, bytesRead, "%02x ", "We got %zd bytes response.\nMessage: ", bytesRead);
+			
+			if(cmd.GetResponse().Init(buffer, bytesRead))
+			{
+				return;
+			}
+		} while (0 < --numCrcRetries);
+		throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": Too many retries");
+	} else {
+		MaskBuffer maskBuffer{BL_MAX_MESSAGE_LENGTH};
+		maskBuffer.Mask(cmd.GetData(), cmd.GetData() + cmd.GetSize(), false);
+		if(maskBuffer.Size() != mUdpSock.Send(maskBuffer.Data(), maskBuffer.Size()))
+		{
+			throw FatalError("mUdpSock.Send() failed");
 		}
-	} while (0 < --numCrcRetries);
-	throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": Too many retries");
+	}
 }
 
 void Control::FwStressTest(void)

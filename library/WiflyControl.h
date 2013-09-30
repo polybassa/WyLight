@@ -286,10 +286,15 @@ class Control
 /* ------------------------- PRIVATE DECLARATIONS ------------------------- */
 	private:
 		/**
-		 * Socket used for communication with wifly device.
-		 * A reference to this socket is provided to the aggregated subobjects.
+		 * Sockets used for communication with wifly device.
+		 * A reference to the TcpSocket is provided to the aggregated subobjects.
 		 */
 		const TcpSocket mSock;
+	
+		/**
+		 * The UdpSocket is used directly in WiflyControl, to send fast connectionless packets.
+		 */
+		const UdpSocket mUdpSock;
 
 		/**
 		 * Proxy object handling the low level communication with bootloader and firmware.

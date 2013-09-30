@@ -29,14 +29,16 @@ namespace WyLight {
 class FwCommand
 {
 	const size_t mSize;
+	const bool requiresResponse;
 protected:
 	struct led_cmd mReqFrame;
-	FwCommand(uint8_t cmd, size_t size = 0) : mSize(1 + size) { memset(&mReqFrame, 0, sizeof(mReqFrame)); mReqFrame.cmd = cmd; };
+	FwCommand(uint8_t cmd, size_t size = 0, bool withResponse = true) : mSize(1 + size), requiresResponse(withResponse) { memset(&mReqFrame, 0, sizeof(mReqFrame)); mReqFrame.cmd = cmd; };
 	virtual ~FwCommand(void) = default;
 	
 public:
 	const uint8_t* GetData(void) const { return reinterpret_cast<const uint8_t*>(&mReqFrame);	};
 	size_t GetSize(void) const { return mSize; };
+	const bool IsResponseRequired(void) const { return requiresResponse; };
 	virtual FwResponse& GetResponse(void) = 0;
 	virtual bool operator == (const FwCommand& ref) const
 	{
@@ -58,7 +60,7 @@ class FwCmdSimple : public FwCommand
 {
 	FwResponse mResponse;
 protected:
-	FwCmdSimple(uint8_t cmd, size_t size = 0) : FwCommand(cmd, size), mResponse(cmd) {};
+	FwCmdSimple(uint8_t cmd, size_t size = 0, bool withResponse = true) : FwCommand(cmd, size, withResponse), mResponse(cmd) {};
 public:
 	FwResponse& GetResponse(void) { return mResponse;	};
 };
@@ -185,7 +187,7 @@ struct FwCmdSetColorDirect : public FwCmdSimple
 	 *        white(255,255,255) as argb is 0xffffffff
 	 * @param addr bitmask of leds which should be effected by this command, set bit to 1 to affect the led, default 0xffffffff
 	 */
-	FwCmdSetColorDirect(uint32_t argb, uint32_t addr) : FwCmdSimple(SET_COLOR_DIRECT, sizeof(cmd_set_color_direct))
+	FwCmdSetColorDirect(uint32_t argb, uint32_t addr) : FwCmdSimple(SET_COLOR_DIRECT, sizeof(cmd_set_color_direct), false)
 	{
 		const uint8_t red = (uint8_t)(argb >> 16);
 		const uint8_t green = (uint8_t)(argb >> 8);
@@ -200,7 +202,7 @@ struct FwCmdSetColorDirect : public FwCmdSimple
 	 * @param pBuffer containing continouse rgb values r1g1b1r2g2b2...r32g32b32
 	 * @param bufferLength number of bytes in \<pBuffer\> usally 32 * 3 bytes
 	 */
-	FwCmdSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) : FwCmdSimple(SET_COLOR_DIRECT, sizeof(cmd_set_color_direct))
+	FwCmdSetColorDirect(const uint8_t* pBuffer, size_t bufferLength) : FwCmdSimple(SET_COLOR_DIRECT, sizeof(cmd_set_color_direct), false)
 	{
 		mReqFrame.data.set_color_direct.Set(pBuffer, bufferLength);
 	};
