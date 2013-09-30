@@ -197,45 +197,47 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="comment">/* ------------------------- PRIVATE DECLARATIONS ------------------------- */</span></div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    private:</div>
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        const <a class="code" href="class_wy_light_1_1_tcp_socket.html">TcpSocket</a> mSock;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        const <a class="code" href="class_wy_light_1_1_com_proxy.html">ComProxy</a> mProxy;</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    </div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        const <a class="code" href="class_wy_light_1_1_udp_socket.html">UdpSocket</a> mUdpSock;</div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        const <a class="code" href="class_wy_light_1_1_telnet_proxy.html">TelnetProxy</a> mTelnet;</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        const <a class="code" href="class_wy_light_1_1_com_proxy.html">ComProxy</a> mProxy;</div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        <span class="keywordtype">void</span> BlEraseFlashArea(const uint32_t endAddress, const uint8_t numPages) const throw (ConnectionTimeout, FatalError);</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        <span class="keywordtype">size_t</span> BlRead(const <a class="code" href="struct_wy_light_1_1_bl_request.html">BlRequest</a>&amp; request, uint8_t* pResponse, const <span class="keywordtype">size_t</span> responseSize, <span class="keywordtype">bool</span> doSync = true) const throw(ConnectionTimeout, FatalError);</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        <span class="keywordtype">void</span> BlWriteEeprom(uint32_t address, const uint8_t* pBuffer, <span class="keywordtype">size_t</span> bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter);</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        <span class="keywordtype">void</span> BlWriteFlash(uint32_t address, uint8_t* pBuffer, <span class="keywordtype">size_t</span> bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter);</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;        <span class="keywordtype">void</span> FwSend(<a class="code" href="class_wy_light_1_1_fw_command.html">FwCommand</a>&amp; cmd) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;            </div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#aefe6c849859c10b81620e1251a3acbd0">BlReadCrcFlash</a>(uint8_t* pBuffer, uint32_t address, uint16_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        </div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#aadac9ad0d311360e2999414cb220c78f">BlReadEeprom</a>(uint8_t* pBuffer, uint32_t address, <span class="keywordtype">size_t</span> numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    </div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#ab31a3e0c102ced985377314a3056e588">BlReadFlash</a>(uint8_t* pBuffer, uint32_t address, <span class="keywordtype">size_t</span> numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        std::<span class="keywordtype">string</span> ConfGet(const std::<span class="keywordtype">string</span>&amp; searchKey, const std::<span class="keywordtype">string</span>&amp; getCmd = &quot;get wlan\r\n&quot;) const;</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    </div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        <span class="keywordtype">bool</span> ConfSetDefaults(<span class="keywordtype">void</span>) const;</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    </div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;        <span class="keywordtype">bool</span> ConfSetWlan(const std::<span class="keywordtype">string</span>&amp; phrase, const std::<span class="keywordtype">string</span>&amp; ssid) const;</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;        </div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;<span class="comment">/* ------------------ friendships for unittesting only ------------------- */</span></div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;        friend <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#a327c95f9335fa4b257b064ef2e917a80">ut_WiflyControl_BlEepromWrite</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;        friend <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#a661b9ec8a685bc800221f2fd5d031a20">ut_WiflyControl_BlFlashWrite</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;        friend <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#aeefa8ad693af2b134456faaf1586a2f7">ut_WiflyControl_ConfSetDefaults</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;        friend <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#a04989feb17717c76d1dd95666aec3c93">ut_WiflyControl_ConfSetWlan</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;};</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;}</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _WIFLYCONTROL_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        const <a class="code" href="class_wy_light_1_1_telnet_proxy.html">TelnetProxy</a> mTelnet;</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        <span class="keywordtype">void</span> BlEraseFlashArea(const uint32_t endAddress, const uint8_t numPages) const throw (ConnectionTimeout, FatalError);</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        <span class="keywordtype">size_t</span> BlRead(const <a class="code" href="struct_wy_light_1_1_bl_request.html">BlRequest</a>&amp; request, uint8_t* pResponse, const <span class="keywordtype">size_t</span> responseSize, <span class="keywordtype">bool</span> doSync = true) const throw(ConnectionTimeout, FatalError);</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        <span class="keywordtype">void</span> BlWriteEeprom(uint32_t address, const uint8_t* pBuffer, <span class="keywordtype">size_t</span> bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter);</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        <span class="keywordtype">void</span> BlWriteFlash(uint32_t address, uint8_t* pBuffer, <span class="keywordtype">size_t</span> bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter);</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;        <span class="keywordtype">void</span> FwSend(<a class="code" href="class_wy_light_1_1_fw_command.html">FwCommand</a>&amp; cmd) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;            </div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#aefe6c849859c10b81620e1251a3acbd0">BlReadCrcFlash</a>(uint8_t* pBuffer, uint32_t address, uint16_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        </div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#aadac9ad0d311360e2999414cb220c78f">BlReadEeprom</a>(uint8_t* pBuffer, uint32_t address, <span class="keywordtype">size_t</span> numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    </div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#ab31a3e0c102ced985377314a3056e588">BlReadFlash</a>(uint8_t* pBuffer, uint32_t address, <span class="keywordtype">size_t</span> numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;        std::<span class="keywordtype">string</span> ConfGet(const std::<span class="keywordtype">string</span>&amp; searchKey, const std::<span class="keywordtype">string</span>&amp; getCmd = &quot;get wlan\r\n&quot;) const;</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    </div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        <span class="keywordtype">bool</span> ConfSetDefaults(<span class="keywordtype">void</span>) const;</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    </div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;        <span class="keywordtype">bool</span> ConfSetWlan(const std::<span class="keywordtype">string</span>&amp; phrase, const std::<span class="keywordtype">string</span>&amp; ssid) const;</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;        </div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;<span class="comment">/* ------------------ friendships for unittesting only ------------------- */</span></div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;        friend <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#a327c95f9335fa4b257b064ef2e917a80">ut_WiflyControl_BlEepromWrite</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;        friend <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#a661b9ec8a685bc800221f2fd5d031a20">ut_WiflyControl_BlFlashWrite</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;        friend <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#aeefa8ad693af2b134456faaf1586a2f7">ut_WiflyControl_ConfSetDefaults</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;        friend <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_control.html#a04989feb17717c76d1dd95666aec3c93">ut_WiflyControl_ConfSetWlan</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;};</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;}</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _WIFLYCONTROL_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Sep 19 2013 13:20:06 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Oct 1 2013 01:18:40 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

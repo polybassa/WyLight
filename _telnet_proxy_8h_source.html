@@ -115,8 +115,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span>WyLight{</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="code" href="_telnet_proxy_8h.html#a2139cfcd9b3c7af8c0246e72ca4ae807">   28</a></span>&#160;<span class="preprocessor">#define AOK &quot;AOK\r\n&lt;2.45&gt; &quot;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="code" href="_telnet_proxy_8h.html#accdbea14ea06c15e271784368bd993e8">   29</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define PROMPT &quot;\r\n&lt;2.45&gt; &quot;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="code" href="_telnet_proxy_8h.html#a2139cfcd9b3c7af8c0246e72ca4ae807">   28</a></span>&#160;<span class="preprocessor">#define AOK &quot;AOK\r\n&lt;4.00&gt; &quot;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="code" href="_telnet_proxy_8h.html#accdbea14ea06c15e271784368bd993e8">   29</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define PROMPT &quot;\r\n&lt;4.00&gt; &quot;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00031"></a><span class="lineno"><a class="code" href="class_wy_light_1_1_telnet_proxy.html">   31</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_wy_light_1_1_telnet_proxy.html">TelnetProxy</a></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
@@ -139,16 +139,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_telnet_proxy.html#a2db92c2c87d880c90f7e48514e3bdb61">SendString</a>(<span class="keyword">const</span> std::string&amp; command, std::string value) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_telnet_proxy.html#a92900b6d84df1080f9cb6cc5ae854a72">SendRebootCommand</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_telnet_proxy.html#aae62f9bb24e292b0ad6afefbe2eafd77">PerformWifiScan</a>(std::string&amp; result) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keyword">friend</span> <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_telnet_proxy.html#a436d76cf48d888700dddd5dc72c7bc56">ut_TelnetProxy_Recv</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keyword">friend</span> <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_telnet_proxy.html#a899fd61cba9dec179f6a058b25c73cb7">ut_TelnetProxy_RecvString</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;};</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _TELNET_PROXY_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="class_wy_light_1_1_telnet_proxy.html#a557df99e3968f7a86b0dbef55a6c6c72">ComputeFreeChannel</a>(<span class="keyword">const</span> std::string&amp; scanResults) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_telnet_proxy.html#a0a454e69ec789b2d63faea69f480761c">ChangeWifiChannel</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> channel) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keyword">friend</span> <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_telnet_proxy.html#a436d76cf48d888700dddd5dc72c7bc56">ut_TelnetProxy_Recv</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keyword">friend</span> <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_telnet_proxy.html#a899fd61cba9dec179f6a058b25c73cb7">ut_TelnetProxy_RecvString</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;};</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _TELNET_PROXY_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Sep 19 2013 13:20:06 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Oct 1 2013 01:18:40 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

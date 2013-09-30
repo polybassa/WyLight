@@ -16,7 +16,7 @@ var searchData=
   ['setscore',['SetScore',['../class_wy_light_1_1_endpoint.html#acab91ff69fc991948b87121e5667b121',1,'WyLight::Endpoint']]],
   ['setstartlinearaddress',['setStartLinearAddress',['../classintelhex.html#a7629ca097b2de02dea37fcaa2dc2709c',1,'intelhex']]],
   ['setstartsegmentaddress',['setStartSegmentAddress',['../classintelhex.html#a9688f0002be870b05d64b5f9fcdeb86b',1,'intelhex']]],
-  ['size',['size',['../classintelhex.html#afa757932ec420f977d33bb9a2d5a0a69',1,'intelhex::size()'],['../class_wy_light_1_1_base_buffer.html#a6aa8fcfeaeeb093bce60211a3728337a',1,'WyLight::BaseBuffer::Size()']]],
+  ['size',['Size',['../class_wy_light_1_1_base_buffer.html#a6aa8fcfeaeeb093bce60211a3728337a',1,'WyLight::BaseBuffer::Size()'],['../classintelhex.html#afa757932ec420f977d33bb9a2d5a0a69',1,'intelhex::size()']]],
   ['startaddress',['startAddress',['../classintelhex.html#aa8833665b99f0b6ac64fcef7d2116c42',1,'intelhex']]],
   ['stop',['Stop',['../class_wy_light_1_1_broadcast_receiver.html#a018a961883af11174f0bc36695bb222c',1,'WyLight::BroadcastReceiver']]]
 ];
