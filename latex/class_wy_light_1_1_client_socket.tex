@@ -1,0 +1,116 @@
+\hypertarget{class_wy_light_1_1_client_socket}{\section{Wy\-Light\-:\-:Client\-Socket Class Reference}
+\label{class_wy_light_1_1_client_socket}\index{Wy\-Light\-::\-Client\-Socket@{Wy\-Light\-::\-Client\-Socket}}
+}
+
+
+{\ttfamily \#include $<$Client\-Socket.\-h$>$}
+
+Inheritance diagram for Wy\-Light\-:\-:Client\-Socket\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_wy_light_1_1_client_socket}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_wy_light_1_1_client_socket_afe4f631abfffc996c24a8a55a9d5cea0}{Client\-Socket} (uint32\-\_\-t addr, uint16\-\_\-t port, int style)  throw (\-Fatal\-Error)
+\item 
+virtual \hyperlink{class_wy_light_1_1_client_socket_afba3cd05e78cb8f0c46600d3dbba22f4}{$\sim$\-Client\-Socket} ()
+\item 
+bool \hyperlink{class_wy_light_1_1_client_socket_a8a34f39b3bbd8b4b2901e6c4f6f2d2e9}{Select} (timeval $\ast$timeout) const   throw (\-Fatal\-Error)
+\item 
+virtual size\-\_\-t \hyperlink{class_wy_light_1_1_client_socket_ab5ea6d042caa7f624015d514263ab6b5}{Send} (const uint8\-\_\-t $\ast$frame, size\-\_\-t length) const =0
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const int \hyperlink{class_wy_light_1_1_client_socket_a339a7d8dd046156f3d7c148181ac0673}{m\-Sock}
+\item 
+\hyperlink{struct_wy_light_1_1_ipv4_addr}{Ipv4\-Addr} \hyperlink{class_wy_light_1_1_client_socket_a3849426773c4b3e300edc8cd3b37b16a}{m\-Sock\-Addr}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Abstract base class controlling the low level socket file descriptor 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_wy_light_1_1_client_socket_afe4f631abfffc996c24a8a55a9d5cea0}{\index{Wy\-Light\-::\-Client\-Socket@{Wy\-Light\-::\-Client\-Socket}!Client\-Socket@{Client\-Socket}}
+\index{Client\-Socket@{Client\-Socket}!WyLight::ClientSocket@{Wy\-Light\-::\-Client\-Socket}}
+\subsubsection[{Client\-Socket}]{\setlength{\rightskip}{0pt plus 5cm}Wy\-Light\-::\-Client\-Socket\-::\-Client\-Socket (
+\begin{DoxyParamCaption}
+\item[{uint32\-\_\-t}]{addr, }
+\item[{uint16\-\_\-t}]{port, }
+\item[{int}]{style}
+\end{DoxyParamCaption}
+)  throw ({\bf Fatal\-Error})}}\label{class_wy_light_1_1_client_socket_afe4f631abfffc996c24a8a55a9d5cea0}
+Aquire the low level socket file descriptor 
+\begin{DoxyParams}{Parameters}
+{\em addr} & I\-Pv4 address in host byte order \\
+\hline
+{\em port} & I\-Pv4 port number in host byte order \\
+\hline
+{\em style} & either S\-O\-C\-K\-\_\-\-D\-G\-R\-A\-M (udp) or S\-O\-C\-K\-\_\-\-S\-T\-R\-E\-A\-M for tcp socket \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{class_wy_light_1_1_fatal_error}{Fatal\-Error}} & if the creation of the bsd sock descriptor fails \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{class_wy_light_1_1_client_socket_afba3cd05e78cb8f0c46600d3dbba22f4}{\index{Wy\-Light\-::\-Client\-Socket@{Wy\-Light\-::\-Client\-Socket}!$\sim$\-Client\-Socket@{$\sim$\-Client\-Socket}}
+\index{$\sim$\-Client\-Socket@{$\sim$\-Client\-Socket}!WyLight::ClientSocket@{Wy\-Light\-::\-Client\-Socket}}
+\subsubsection[{$\sim$\-Client\-Socket}]{\setlength{\rightskip}{0pt plus 5cm}virtual Wy\-Light\-::\-Client\-Socket\-::$\sim$\-Client\-Socket (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_wy_light_1_1_client_socket_afba3cd05e78cb8f0c46600d3dbba22f4}
+Destructor releasing the socket file descriptor 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_wy_light_1_1_client_socket_a8a34f39b3bbd8b4b2901e6c4f6f2d2e9}{\index{Wy\-Light\-::\-Client\-Socket@{Wy\-Light\-::\-Client\-Socket}!Select@{Select}}
+\index{Select@{Select}!WyLight::ClientSocket@{Wy\-Light\-::\-Client\-Socket}}
+\subsubsection[{Select}]{\setlength{\rightskip}{0pt plus 5cm}bool Wy\-Light\-::\-Client\-Socket\-::\-Select (
+\begin{DoxyParamCaption}
+\item[{timeval $\ast$}]{timeout}
+\end{DoxyParamCaption}
+) const  throw ({\bf Fatal\-Error})}}\label{class_wy_light_1_1_client_socket_a8a34f39b3bbd8b4b2901e6c4f6f2d2e9}
+wait for data on the low level socket 
+\begin{DoxyParams}{Parameters}
+{\em timeout} & to wait for data, to block indefinitly use N\-U\-L\-L, which is default \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if select() timed out, false if data is ready 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{class_wy_light_1_1_fatal_error}{Fatal\-Error}} & if something very unexpected happens \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{class_wy_light_1_1_client_socket_ab5ea6d042caa7f624015d514263ab6b5}{\index{Wy\-Light\-::\-Client\-Socket@{Wy\-Light\-::\-Client\-Socket}!Send@{Send}}
+\index{Send@{Send}!WyLight::ClientSocket@{Wy\-Light\-::\-Client\-Socket}}
+\subsubsection[{Send}]{\setlength{\rightskip}{0pt plus 5cm}virtual size\-\_\-t Wy\-Light\-::\-Client\-Socket\-::\-Send (
+\begin{DoxyParamCaption}
+\item[{const uint8\-\_\-t $\ast$}]{frame, }
+\item[{size\-\_\-t}]{length}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_wy_light_1_1_client_socket_ab5ea6d042caa7f624015d514263ab6b5}
+Interface to send a data frame with a given length, you have to implement this function in child classes 
+
+Implemented in \hyperlink{class_wy_light_1_1_udp_socket_aaba73a044c8aed0ef0c1e44ce46d88ca}{Wy\-Light\-::\-Udp\-Socket}, and \hyperlink{class_wy_light_1_1_tcp_socket_acd2ed7e05e7a8efc55b01e422d957857}{Wy\-Light\-::\-Tcp\-Socket}.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_wy_light_1_1_client_socket_a339a7d8dd046156f3d7c148181ac0673}{\index{Wy\-Light\-::\-Client\-Socket@{Wy\-Light\-::\-Client\-Socket}!m\-Sock@{m\-Sock}}
+\index{m\-Sock@{m\-Sock}!WyLight::ClientSocket@{Wy\-Light\-::\-Client\-Socket}}
+\subsubsection[{m\-Sock}]{\setlength{\rightskip}{0pt plus 5cm}const int Wy\-Light\-::\-Client\-Socket\-::m\-Sock\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_wy_light_1_1_client_socket_a339a7d8dd046156f3d7c148181ac0673}
+low level socket file descriptor \hypertarget{class_wy_light_1_1_client_socket_a3849426773c4b3e300edc8cd3b37b16a}{\index{Wy\-Light\-::\-Client\-Socket@{Wy\-Light\-::\-Client\-Socket}!m\-Sock\-Addr@{m\-Sock\-Addr}}
+\index{m\-Sock\-Addr@{m\-Sock\-Addr}!WyLight::ClientSocket@{Wy\-Light\-::\-Client\-Socket}}
+\subsubsection[{m\-Sock\-Addr}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Ipv4\-Addr} Wy\-Light\-::\-Client\-Socket\-::m\-Sock\-Addr\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_wy_light_1_1_client_socket_a3849426773c4b3e300edc8cd3b37b16a}
+I\-Pv4 address of listening or target port 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{_client_socket_8h}{Client\-Socket.\-h}\end{DoxyCompactItemize}

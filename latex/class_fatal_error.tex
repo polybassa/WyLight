@@ -1,0 +1,109 @@
+\hypertarget{class_fatal_error}{\section{Fatal\-Error Class Reference}
+\label{class_fatal_error}\index{Fatal\-Error@{Fatal\-Error}}
+}
+
+
+{\ttfamily \#include $<$Wifly\-Control\-Exception.\-h$>$}
+
+Inheritance diagram for Fatal\-Error\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_fatal_error}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_fatal_error_ab005fe4973271bbb4fd6d93b4276e032}{Fatal\-Error} (const std\-::string \&description, uint32\-\_\-t error\-Code=\hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2a9ea7cd44f3b5993c0b647366d8ff725e}{F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R})  throw ()
+\item 
+virtual \hyperlink{class_fatal_error_ad3efb05890de21cb4e0e0b548c2eb6be}{$\sim$\-Fatal\-Error} (void)  throw ()
+\item 
+uint32\-\_\-t \hyperlink{class_fatal_error_aff5d3bf2e203cd489572faacbef89877}{As\-Error\-Code} (void) const 
+\item 
+virtual const char $\ast$ \hyperlink{class_fatal_error_a1da7871292d9c49e20a47642367796d1}{Get\-Java\-Class\-Type} (void) const 
+\item 
+const char $\ast$ \hyperlink{class_fatal_error_ab99c115b0c87a911b6bf725c086eb646}{what} (void) const   throw ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const std\-::string \hyperlink{class_fatal_error_a02622271122ba8f87fea8b7f78e8ba0d}{m\-Description}
+\item 
+const uint32\-\_\-t \hyperlink{class_fatal_error_a37d3c3b085afb40a682e4233ce63639f}{m\-Error\-Code}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+std\-::ostream \& \hyperlink{class_fatal_error_ae2c3ada9625867398d5bbd51b1223a13}{operator$<$$<$} (std\-::ostream \&out, const \hyperlink{class_fatal_error}{Fatal\-Error} \&ref)
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_fatal_error_ab005fe4973271bbb4fd6d93b4276e032}{\index{Fatal\-Error@{Fatal\-Error}!Fatal\-Error@{Fatal\-Error}}
+\index{Fatal\-Error@{Fatal\-Error}!FatalError@{Fatal\-Error}}
+\subsubsection[{Fatal\-Error}]{\setlength{\rightskip}{0pt plus 5cm}Fatal\-Error\-::\-Fatal\-Error (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{description, }
+\item[{uint32\-\_\-t}]{error\-Code = {\ttfamily {\bf F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R}}}
+\end{DoxyParamCaption}
+)  throw ()\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_fatal_error_ab005fe4973271bbb4fd6d93b4276e032}
+\hypertarget{class_fatal_error_ad3efb05890de21cb4e0e0b548c2eb6be}{\index{Fatal\-Error@{Fatal\-Error}!$\sim$\-Fatal\-Error@{$\sim$\-Fatal\-Error}}
+\index{$\sim$\-Fatal\-Error@{$\sim$\-Fatal\-Error}!FatalError@{Fatal\-Error}}
+\subsubsection[{$\sim$\-Fatal\-Error}]{\setlength{\rightskip}{0pt plus 5cm}virtual Fatal\-Error\-::$\sim$\-Fatal\-Error (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)  throw ()\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{class_fatal_error_ad3efb05890de21cb4e0e0b548c2eb6be}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_fatal_error_aff5d3bf2e203cd489572faacbef89877}{\index{Fatal\-Error@{Fatal\-Error}!As\-Error\-Code@{As\-Error\-Code}}
+\index{As\-Error\-Code@{As\-Error\-Code}!FatalError@{Fatal\-Error}}
+\subsubsection[{As\-Error\-Code}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Fatal\-Error\-::\-As\-Error\-Code (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_fatal_error_aff5d3bf2e203cd489572faacbef89877}
+\hypertarget{class_fatal_error_a1da7871292d9c49e20a47642367796d1}{\index{Fatal\-Error@{Fatal\-Error}!Get\-Java\-Class\-Type@{Get\-Java\-Class\-Type}}
+\index{Get\-Java\-Class\-Type@{Get\-Java\-Class\-Type}!FatalError@{Fatal\-Error}}
+\subsubsection[{Get\-Java\-Class\-Type}]{\setlength{\rightskip}{0pt plus 5cm}virtual const char$\ast$ Fatal\-Error\-::\-Get\-Java\-Class\-Type (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{class_fatal_error_a1da7871292d9c49e20a47642367796d1}
+
+
+Reimplemented in \hyperlink{class_script_buffer_full_aa12ebfbd443a0f7f1cad7c4a77eb5574}{Script\-Buffer\-Full}, \hyperlink{class_invalid_parameter_a24aa3582a53ed2c8c5d2124e492517aa}{Invalid\-Parameter}, \hyperlink{class_connection_timeout_a731478473576970bf32bb6755f99be3e}{Connection\-Timeout}, and \hyperlink{class_connection_lost_a2eb654e91bef98e581f7e20a6a161d3b}{Connection\-Lost}.
+
+\hypertarget{class_fatal_error_ab99c115b0c87a911b6bf725c086eb646}{\index{Fatal\-Error@{Fatal\-Error}!what@{what}}
+\index{what@{what}!FatalError@{Fatal\-Error}}
+\subsubsection[{what}]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ Fatal\-Error\-::what (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const  throw ()\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_fatal_error_ab99c115b0c87a911b6bf725c086eb646}
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{class_fatal_error_ae2c3ada9625867398d5bbd51b1223a13}{\index{Fatal\-Error@{Fatal\-Error}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!FatalError@{Fatal\-Error}}
+\subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}std\-::ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{out, }
+\item[{const {\bf Fatal\-Error} \&}]{ref}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{class_fatal_error_ae2c3ada9625867398d5bbd51b1223a13}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_fatal_error_a02622271122ba8f87fea8b7f78e8ba0d}{\index{Fatal\-Error@{Fatal\-Error}!m\-Description@{m\-Description}}
+\index{m\-Description@{m\-Description}!FatalError@{Fatal\-Error}}
+\subsubsection[{m\-Description}]{\setlength{\rightskip}{0pt plus 5cm}const std\-::string Fatal\-Error\-::m\-Description\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_fatal_error_a02622271122ba8f87fea8b7f78e8ba0d}
+\hypertarget{class_fatal_error_a37d3c3b085afb40a682e4233ce63639f}{\index{Fatal\-Error@{Fatal\-Error}!m\-Error\-Code@{m\-Error\-Code}}
+\index{m\-Error\-Code@{m\-Error\-Code}!FatalError@{Fatal\-Error}}
+\subsubsection[{m\-Error\-Code}]{\setlength{\rightskip}{0pt plus 5cm}const uint32\-\_\-t Fatal\-Error\-::m\-Error\-Code\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_fatal_error_a37d3c3b085afb40a682e4233ce63639f}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{_wifly_control_exception_8h}{Wifly\-Control\-Exception.\-h}\end{DoxyCompactItemize}

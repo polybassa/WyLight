@@ -1,0 +1,106 @@
+\hypertarget{class_wy_light_1_1_tcp_socket}{\section{Wy\-Light\-:\-:Tcp\-Socket Class Reference}
+\label{class_wy_light_1_1_tcp_socket}\index{Wy\-Light\-::\-Tcp\-Socket@{Wy\-Light\-::\-Tcp\-Socket}}
+}
+
+
+{\ttfamily \#include $<$Client\-Socket.\-h$>$}
+
+Inheritance diagram for Wy\-Light\-:\-:Tcp\-Socket\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_wy_light_1_1_tcp_socket}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_wy_light_1_1_tcp_socket_a69045a3bf0b959b50b2b4d2a18ee06c1}{Tcp\-Socket} (uint32\-\_\-t Addr, uint16\-\_\-t port)  throw (\-Connection\-Lost, Fatal\-Error)
+\item 
+size\-\_\-t \hyperlink{class_wy_light_1_1_tcp_socket_aef83b055add4c47c4ab6b3395559ca27}{Recv} (uint8\-\_\-t $\ast$p\-Buffer, size\-\_\-t length, timeval $\ast$timeout=N\-U\-L\-L) const   throw (\-Fatal\-Error)
+\item 
+virtual size\-\_\-t \hyperlink{class_wy_light_1_1_tcp_socket_acd2ed7e05e7a8efc55b01e422d957857}{Send} (const uint8\-\_\-t $\ast$frame, size\-\_\-t length) const 
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Wrapper to make tcp socket handling more easy 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_wy_light_1_1_tcp_socket_a69045a3bf0b959b50b2b4d2a18ee06c1}{\index{Wy\-Light\-::\-Tcp\-Socket@{Wy\-Light\-::\-Tcp\-Socket}!Tcp\-Socket@{Tcp\-Socket}}
+\index{Tcp\-Socket@{Tcp\-Socket}!WyLight::TcpSocket@{Wy\-Light\-::\-Tcp\-Socket}}
+\subsubsection[{Tcp\-Socket}]{\setlength{\rightskip}{0pt plus 5cm}Wy\-Light\-::\-Tcp\-Socket\-::\-Tcp\-Socket (
+\begin{DoxyParamCaption}
+\item[{uint32\-\_\-t}]{Addr, }
+\item[{uint16\-\_\-t}]{port}
+\end{DoxyParamCaption}
+)  throw ({\bf Connection\-Lost}, {\bf Fatal\-Error})}}\label{class_wy_light_1_1_tcp_socket_a69045a3bf0b959b50b2b4d2a18ee06c1}
+
+\begin{DoxyParams}{Parameters}
+{\em Addr} & I\-Pv4 address in host byte order \\
+\hline
+{\em port} & I\-Pv4 port number in host byte order \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{class_wy_light_1_1_fatal_error}{Fatal\-Error}} & if the base class constructor fails\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_wy_light_1_1_client_socket_afe4f631abfffc996c24a8a55a9d5cea0}{Client\-Socket\-::\-Client\-Socket} 
+\end{DoxySeeAlso}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{class_wy_light_1_1_connection_lost}{Connection\-Lost}} & if connect() fails on the internal socket \\
+\hline
+\end{DoxyExceptions}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_wy_light_1_1_tcp_socket_aef83b055add4c47c4ab6b3395559ca27}{\index{Wy\-Light\-::\-Tcp\-Socket@{Wy\-Light\-::\-Tcp\-Socket}!Recv@{Recv}}
+\index{Recv@{Recv}!WyLight::TcpSocket@{Wy\-Light\-::\-Tcp\-Socket}}
+\subsubsection[{Recv}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t Wy\-Light\-::\-Tcp\-Socket\-::\-Recv (
+\begin{DoxyParamCaption}
+\item[{uint8\-\_\-t $\ast$}]{p\-Buffer, }
+\item[{size\-\_\-t}]{length, }
+\item[{timeval $\ast$}]{timeout = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+) const  throw ({\bf Fatal\-Error})}}\label{class_wy_light_1_1_tcp_socket_aef83b055add4c47c4ab6b3395559ca27}
+Receive data from the remote socket. 
+\begin{DoxyParams}{Parameters}
+{\em p\-Buffer} & to store the read data \\
+\hline
+{\em length} & size of the p\-Buffer \\
+\hline
+{\em timeout} & to wait for data, to block indefinitly use N\-U\-L\-L, which is default \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of bytes read into $<$p\-Buffer$>$ 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{class_wy_light_1_1_fatal_error}{Fatal\-Error}} & if something very unexpected happens \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{class_wy_light_1_1_tcp_socket_acd2ed7e05e7a8efc55b01e422d957857}{\index{Wy\-Light\-::\-Tcp\-Socket@{Wy\-Light\-::\-Tcp\-Socket}!Send@{Send}}
+\index{Send@{Send}!WyLight::TcpSocket@{Wy\-Light\-::\-Tcp\-Socket}}
+\subsubsection[{Send}]{\setlength{\rightskip}{0pt plus 5cm}virtual size\-\_\-t Wy\-Light\-::\-Tcp\-Socket\-::\-Send (
+\begin{DoxyParamCaption}
+\item[{const uint8\-\_\-t $\ast$}]{frame, }
+\item[{size\-\_\-t}]{length}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_wy_light_1_1_tcp_socket_acd2ed7e05e7a8efc55b01e422d957857}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_wy_light_1_1_client_socket_ab5ea6d042caa7f624015d514263ab6b5}{Client\-Socket\-::\-Send} 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{class_wy_light_1_1_client_socket_ab5ea6d042caa7f624015d514263ab6b5}{Wy\-Light\-::\-Client\-Socket}.
+
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{_client_socket_8h}{Client\-Socket.\-h}\end{DoxyCompactItemize}

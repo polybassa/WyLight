@@ -1,0 +1,148 @@
+\hypertarget{class_wy_light_1_1_telnet_proxy}{\section{Wy\-Light\-:\-:Telnet\-Proxy Class Reference}
+\label{class_wy_light_1_1_telnet_proxy}\index{Wy\-Light\-::\-Telnet\-Proxy@{Wy\-Light\-::\-Telnet\-Proxy}}
+}
+
+
+{\ttfamily \#include $<$Telnet\-Proxy.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_wy_light_1_1_telnet_proxy_a0d14c061adc13dd7f2f6d2b2bdbd700e}{Telnet\-Proxy} (const \hyperlink{class_wy_light_1_1_tcp_socket}{Tcp\-Socket} \&sock)
+\item 
+void \hyperlink{class_wy_light_1_1_telnet_proxy_ab438600992c7087b8bc8ec4248e4e9c1}{Clear\-Response} (void) const 
+\item 
+bool \hyperlink{class_wy_light_1_1_telnet_proxy_a21253eaad73040a3c23b4a234a1e4a7c}{Close} (bool do\-Save) const 
+\item 
+void \hyperlink{class_wy_light_1_1_telnet_proxy_ac4a01d35a096c4289467ae20c8e98909}{Recv\-String} (const std\-::string \&get\-Cmd, const std\-::string \&search\-Key, std\-::string \&result) const 
+\item 
+bool \hyperlink{class_wy_light_1_1_telnet_proxy_a296f650c20d7f577cef397cb5a558898}{Open} (void) const 
+\item 
+bool \hyperlink{class_wy_light_1_1_telnet_proxy_a5ac27544d8fde1b3c4c49a09ec2ce356}{Send} (const std\-::string \&telnet\-Message, const std\-::string \&expected\-Response=\hyperlink{_telnet_proxy_8h_a2139cfcd9b3c7af8c0246e72ca4ae807}{A\-O\-K}) const 
+\item 
+bool \hyperlink{class_wy_light_1_1_telnet_proxy_a2db92c2c87d880c90f7e48514e3bdb61}{Send\-String} (const std\-::string \&command, std\-::string value) const 
+\item 
+bool \hyperlink{class_wy_light_1_1_telnet_proxy_a92900b6d84df1080f9cb6cc5ae854a72}{Send\-Reboot\-Command} (void) const 
+\item 
+bool \hyperlink{class_wy_light_1_1_telnet_proxy_aae62f9bb24e292b0ad6afefbe2eafd77}{Perform\-Wifi\-Scan} (std\-::string \&result) const 
+\item 
+unsigned int \hyperlink{class_wy_light_1_1_telnet_proxy_a557df99e3968f7a86b0dbef55a6c6c72}{Compute\-Free\-Channel} (const std\-::string \&scan\-Results) const 
+\item 
+bool \hyperlink{class_wy_light_1_1_telnet_proxy_a0a454e69ec789b2d63faea69f480761c}{Change\-Wifi\-Channel} (const size\-\_\-t channel) const 
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+size\-\_\-t \hyperlink{class_wy_light_1_1_telnet_proxy_a436d76cf48d888700dddd5dc72c7bc56}{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv} (void)
+\item 
+size\-\_\-t \hyperlink{class_wy_light_1_1_telnet_proxy_a899fd61cba9dec179f6a058b25c73cb7}{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String} (void)
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_wy_light_1_1_telnet_proxy_a0d14c061adc13dd7f2f6d2b2bdbd700e}{\index{Wy\-Light\-::\-Telnet\-Proxy@{Wy\-Light\-::\-Telnet\-Proxy}!Telnet\-Proxy@{Telnet\-Proxy}}
+\index{Telnet\-Proxy@{Telnet\-Proxy}!WyLight::TelnetProxy@{Wy\-Light\-::\-Telnet\-Proxy}}
+\subsubsection[{Telnet\-Proxy}]{\setlength{\rightskip}{0pt plus 5cm}Wy\-Light\-::\-Telnet\-Proxy\-::\-Telnet\-Proxy (
+\begin{DoxyParamCaption}
+\item[{const {\bf Tcp\-Socket} \&}]{sock}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_telnet_proxy_a0d14c061adc13dd7f2f6d2b2bdbd700e}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_wy_light_1_1_telnet_proxy_a0a454e69ec789b2d63faea69f480761c}{\index{Wy\-Light\-::\-Telnet\-Proxy@{Wy\-Light\-::\-Telnet\-Proxy}!Change\-Wifi\-Channel@{Change\-Wifi\-Channel}}
+\index{Change\-Wifi\-Channel@{Change\-Wifi\-Channel}!WyLight::TelnetProxy@{Wy\-Light\-::\-Telnet\-Proxy}}
+\subsubsection[{Change\-Wifi\-Channel}]{\setlength{\rightskip}{0pt plus 5cm}bool Wy\-Light\-::\-Telnet\-Proxy\-::\-Change\-Wifi\-Channel (
+\begin{DoxyParamCaption}
+\item[{const size\-\_\-t}]{channel}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_telnet_proxy_a0a454e69ec789b2d63faea69f480761c}
+\hypertarget{class_wy_light_1_1_telnet_proxy_ab438600992c7087b8bc8ec4248e4e9c1}{\index{Wy\-Light\-::\-Telnet\-Proxy@{Wy\-Light\-::\-Telnet\-Proxy}!Clear\-Response@{Clear\-Response}}
+\index{Clear\-Response@{Clear\-Response}!WyLight::TelnetProxy@{Wy\-Light\-::\-Telnet\-Proxy}}
+\subsubsection[{Clear\-Response}]{\setlength{\rightskip}{0pt plus 5cm}void Wy\-Light\-::\-Telnet\-Proxy\-::\-Clear\-Response (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_telnet_proxy_ab438600992c7087b8bc8ec4248e4e9c1}
+\hypertarget{class_wy_light_1_1_telnet_proxy_a21253eaad73040a3c23b4a234a1e4a7c}{\index{Wy\-Light\-::\-Telnet\-Proxy@{Wy\-Light\-::\-Telnet\-Proxy}!Close@{Close}}
+\index{Close@{Close}!WyLight::TelnetProxy@{Wy\-Light\-::\-Telnet\-Proxy}}
+\subsubsection[{Close}]{\setlength{\rightskip}{0pt plus 5cm}bool Wy\-Light\-::\-Telnet\-Proxy\-::\-Close (
+\begin{DoxyParamCaption}
+\item[{bool}]{do\-Save}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_telnet_proxy_a21253eaad73040a3c23b4a234a1e4a7c}
+\hypertarget{class_wy_light_1_1_telnet_proxy_a557df99e3968f7a86b0dbef55a6c6c72}{\index{Wy\-Light\-::\-Telnet\-Proxy@{Wy\-Light\-::\-Telnet\-Proxy}!Compute\-Free\-Channel@{Compute\-Free\-Channel}}
+\index{Compute\-Free\-Channel@{Compute\-Free\-Channel}!WyLight::TelnetProxy@{Wy\-Light\-::\-Telnet\-Proxy}}
+\subsubsection[{Compute\-Free\-Channel}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int Wy\-Light\-::\-Telnet\-Proxy\-::\-Compute\-Free\-Channel (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{scan\-Results}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_telnet_proxy_a557df99e3968f7a86b0dbef55a6c6c72}
+\hypertarget{class_wy_light_1_1_telnet_proxy_a296f650c20d7f577cef397cb5a558898}{\index{Wy\-Light\-::\-Telnet\-Proxy@{Wy\-Light\-::\-Telnet\-Proxy}!Open@{Open}}
+\index{Open@{Open}!WyLight::TelnetProxy@{Wy\-Light\-::\-Telnet\-Proxy}}
+\subsubsection[{Open}]{\setlength{\rightskip}{0pt plus 5cm}bool Wy\-Light\-::\-Telnet\-Proxy\-::\-Open (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_telnet_proxy_a296f650c20d7f577cef397cb5a558898}
+\hypertarget{class_wy_light_1_1_telnet_proxy_aae62f9bb24e292b0ad6afefbe2eafd77}{\index{Wy\-Light\-::\-Telnet\-Proxy@{Wy\-Light\-::\-Telnet\-Proxy}!Perform\-Wifi\-Scan@{Perform\-Wifi\-Scan}}
+\index{Perform\-Wifi\-Scan@{Perform\-Wifi\-Scan}!WyLight::TelnetProxy@{Wy\-Light\-::\-Telnet\-Proxy}}
+\subsubsection[{Perform\-Wifi\-Scan}]{\setlength{\rightskip}{0pt plus 5cm}bool Wy\-Light\-::\-Telnet\-Proxy\-::\-Perform\-Wifi\-Scan (
+\begin{DoxyParamCaption}
+\item[{std\-::string \&}]{result}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_telnet_proxy_aae62f9bb24e292b0ad6afefbe2eafd77}
+\hypertarget{class_wy_light_1_1_telnet_proxy_ac4a01d35a096c4289467ae20c8e98909}{\index{Wy\-Light\-::\-Telnet\-Proxy@{Wy\-Light\-::\-Telnet\-Proxy}!Recv\-String@{Recv\-String}}
+\index{Recv\-String@{Recv\-String}!WyLight::TelnetProxy@{Wy\-Light\-::\-Telnet\-Proxy}}
+\subsubsection[{Recv\-String}]{\setlength{\rightskip}{0pt plus 5cm}void Wy\-Light\-::\-Telnet\-Proxy\-::\-Recv\-String (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{get\-Cmd, }
+\item[{const std\-::string \&}]{search\-Key, }
+\item[{std\-::string \&}]{result}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_telnet_proxy_ac4a01d35a096c4289467ae20c8e98909}
+\hypertarget{class_wy_light_1_1_telnet_proxy_a5ac27544d8fde1b3c4c49a09ec2ce356}{\index{Wy\-Light\-::\-Telnet\-Proxy@{Wy\-Light\-::\-Telnet\-Proxy}!Send@{Send}}
+\index{Send@{Send}!WyLight::TelnetProxy@{Wy\-Light\-::\-Telnet\-Proxy}}
+\subsubsection[{Send}]{\setlength{\rightskip}{0pt plus 5cm}bool Wy\-Light\-::\-Telnet\-Proxy\-::\-Send (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{telnet\-Message, }
+\item[{const std\-::string \&}]{expected\-Response = {\ttfamily {\bf A\-O\-K}}}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_telnet_proxy_a5ac27544d8fde1b3c4c49a09ec2ce356}
+\hypertarget{class_wy_light_1_1_telnet_proxy_a92900b6d84df1080f9cb6cc5ae854a72}{\index{Wy\-Light\-::\-Telnet\-Proxy@{Wy\-Light\-::\-Telnet\-Proxy}!Send\-Reboot\-Command@{Send\-Reboot\-Command}}
+\index{Send\-Reboot\-Command@{Send\-Reboot\-Command}!WyLight::TelnetProxy@{Wy\-Light\-::\-Telnet\-Proxy}}
+\subsubsection[{Send\-Reboot\-Command}]{\setlength{\rightskip}{0pt plus 5cm}bool Wy\-Light\-::\-Telnet\-Proxy\-::\-Send\-Reboot\-Command (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_telnet_proxy_a92900b6d84df1080f9cb6cc5ae854a72}
+\hypertarget{class_wy_light_1_1_telnet_proxy_a2db92c2c87d880c90f7e48514e3bdb61}{\index{Wy\-Light\-::\-Telnet\-Proxy@{Wy\-Light\-::\-Telnet\-Proxy}!Send\-String@{Send\-String}}
+\index{Send\-String@{Send\-String}!WyLight::TelnetProxy@{Wy\-Light\-::\-Telnet\-Proxy}}
+\subsubsection[{Send\-String}]{\setlength{\rightskip}{0pt plus 5cm}bool Wy\-Light\-::\-Telnet\-Proxy\-::\-Send\-String (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{command, }
+\item[{std\-::string}]{value}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_telnet_proxy_a2db92c2c87d880c90f7e48514e3bdb61}
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{class_wy_light_1_1_telnet_proxy_a436d76cf48d888700dddd5dc72c7bc56}{\index{Wy\-Light\-::\-Telnet\-Proxy@{Wy\-Light\-::\-Telnet\-Proxy}!ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv}}
+\index{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv}!WyLight::TelnetProxy@{Wy\-Light\-::\-Telnet\-Proxy}}
+\subsubsection[{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{class_wy_light_1_1_telnet_proxy_a436d76cf48d888700dddd5dc72c7bc56}
+\hypertarget{class_wy_light_1_1_telnet_proxy_a899fd61cba9dec179f6a058b25c73cb7}{\index{Wy\-Light\-::\-Telnet\-Proxy@{Wy\-Light\-::\-Telnet\-Proxy}!ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String}}
+\index{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String}!WyLight::TelnetProxy@{Wy\-Light\-::\-Telnet\-Proxy}}
+\subsubsection[{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{class_wy_light_1_1_telnet_proxy_a899fd61cba9dec179f6a058b25c73cb7}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{_telnet_proxy_8h}{Telnet\-Proxy.\-h}\end{DoxyCompactItemize}

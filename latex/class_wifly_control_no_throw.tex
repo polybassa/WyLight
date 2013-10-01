@@ -1,0 +1,638 @@
+\hypertarget{class_wifly_control_no_throw}{\section{Wifly\-Control\-No\-Throw Class Reference}
+\label{class_wifly_control_no_throw}\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}}
+}
+
+
+Class to communicate with a Wifly\-\_\-\-Light Hardware.  
+
+
+
+
+{\ttfamily \#include $<$Wifly\-Control\-No\-Throw.\-h$>$}
+
+Inheritance diagram for Wifly\-Control\-No\-Throw\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_wifly_control_no_throw}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_wifly_control_no_throw_a716d1c0768041b880205838c09999284}{Wifly\-Control\-No\-Throw} (uint32\-\_\-t addr, uint16\-\_\-t port)
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_a4c35f2535eb1f14e30f631fada8a5497}{Bl\-Enable\-Autostart} (void) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_aedb987e1add91290d62e33bdf638b79e}{Bl\-Erase\-Eeprom} (void) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_a1d0dffa11f76b27385052fe1927d29c5}{Bl\-Erase\-Flash} (void) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_ad02f390c7b5e3dc81b22aaf70218fd5d}{Bl\-Program\-Flash} (const std\-::string \&filename) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_a9267651f26444d43967a7653e9fc2c97}{Bl\-Read\-Crc\-Flash} (std\-::ostream \&out, uint32\-\_\-t address, size\-\_\-t num\-Blocks) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_aba9249f26f98e16bde7df538e4cc8b65}{Bl\-Read\-Eeprom} (std\-::ostream \&out, uint32\-\_\-t address, size\-\_\-t num\-Bytes) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_a9b854767640d540c0ec48d9683da4436}{Bl\-Read\-Flash} (std\-::ostream \&out, uint32\-\_\-t address, size\-\_\-t num\-Bytes) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_a997dec8e65fb166ac8640f44c0443035}{Bl\-Read\-Fw\-Version} (std\-::string \&version\-String) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_a323797a3fdc5f2bfde6b4f504f3828fb}{Bl\-Read\-Info} (\hyperlink{struct_bl_info}{Bl\-Info} \&info) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_a6692124924a54cb2e9b6a1b92824b0ce}{Bl\-Run\-App} (void) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_aecc9be414c20860f23e03c238c8a7f71}{Conf\-Get\-Ssid} (std\-::string \&ssid) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_a3e64aeb861c86a81d9818321b2876ffd}{Conf\-Module\-As\-Soft\-A\-P} (const std\-::string \&accesspoint\-Name=\char`\"{}Wifly\-\_\-\-Light\char`\"{}) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_a0908df657166fd35beb0175a7417538e}{Conf\-Module\-For\-Wlan} (const std\-::string \&phrase, const std\-::string \&ssid, const std\-::string \&name=\char`\"{}Wifly\-\_\-\-Light\char`\"{}) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_a611024109148250af6fa8d9e4c92aeca}{Conf\-Reboot\-Wlan\-Module} (void) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_ab6e743c4f7f24600dbff799c303b243c}{Conf\-Set\-Device\-Id} (const std\-::string \&name) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_a6554b5fd6b88408a23d802b49743dc4b}{Fw\-Clear\-Script} (void)
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_adc034f541e4b7f8cd18a1419c5fcaaba}{Fw\-Get\-Cycletime} (std\-::string \&output)
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_a0b9c93faf22030856003b9e3b02d16d1}{Fw\-Get\-Rtc} (tm \&time\-Value)
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_ae7c1d98947c9a5c8742504c49981a355}{Fw\-Get\-Tracebuffer} (std\-::string \&output)
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_ad5241b18ede5b489b52570f5b5938192}{Fw\-Get\-Version} (std\-::string \&output)
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_a81a2b5f0499c9aae84f7a8150a54df1d}{Fw\-Loop\-Off} (uint8\-\_\-t num\-Loops)
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_a13df2bbf2a0e8cfc31d80137a61e06eb}{Fw\-Loop\-On} (void)
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_a90186029abfde0d299c6fe232747452d}{Fw\-Set\-Color\-Direct} (const uint8\-\_\-t $\ast$p\-Buffer, size\-\_\-t buffer\-Length)
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_ad54e9041e920a4ed43b7b6fbd597c9c7}{Fw\-Set\-Fade} (uint32\-\_\-t argb, uint16\-\_\-t fade\-Time=0, uint32\-\_\-t addr=0xffffffff, bool parallel\-Fade=false)
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_aee4511965e53d1564da2788bebb271a1}{Fw\-Set\-Gradient} (uint32\-\_\-t argb\-\_\-1, uint32\-\_\-t argb\-\_\-2, uint16\-\_\-t fade\-Time=0, bool parallel\-Fade=false, uint8\-\_\-t length=N\-U\-M\-\_\-\-O\-F\-\_\-\-L\-E\-D, uint8\-\_\-t offset=0)
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_a5a8101329291df5f96c0312ad9975589}{Fw\-Set\-Rtc} (const tm \&time\-Value)
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_a311853b7e9eaffadc1e2664653b71534}{Fw\-Set\-Wait} (uint16\-\_\-t wait\-Time)
+\item 
+uint32\-\_\-t \hyperlink{class_wifly_control_no_throw_a026c989019eb328ffb2afb3e911399ce}{Fw\-Start\-Bl} (void)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class to communicate with a Wifly\-\_\-\-Light Hardware. 
+
+The \hyperlink{class_wifly_control_no_throw}{Wifly\-Control\-No\-Throw} class allows the user to control the Wifly\-\_\-\-Light hardware. This is a wrapper class to \hyperlink{class_wifly_control}{Wifly\-Control} to catch all exceptions from the lower software layers and convert them into error codes, which is required for example for jni or i\-O\-S clients There are three target's at the Wifly\-\_\-\-Light Hardware.
+\begin{DoxyItemize}
+\item Bootloader\par
+ All methodes with Bl$\ast$ relate to the bootloader part.
+\item Firmware\par
+ All methodes with Fw$\ast$ relate to the firmware part.
+\item R\-N-\/171 Wifi Interface\par
+ All methodes witch Conf$\ast$ relate to the communication module. 
+\end{DoxyItemize}
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_wifly_control_no_throw_a716d1c0768041b880205838c09999284}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}}
+\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Wifly\-Control\-No\-Throw}]{\setlength{\rightskip}{0pt plus 5cm}Wifly\-Control\-No\-Throw\-::\-Wifly\-Control\-No\-Throw (
+\begin{DoxyParamCaption}
+\item[{uint32\-\_\-t}]{addr, }
+\item[{uint16\-\_\-t}]{port}
+\end{DoxyParamCaption}
+)}}\label{class_wifly_control_no_throw_a716d1c0768041b880205838c09999284}
+Connect to a wifly device 
+\begin{DoxyParams}{Parameters}
+{\em addr} & ipv4 address as 32 bit value in host byte order \\
+\hline
+{\em port} & number of the wifly device server in host byte order \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_wifly_control_no_throw_a4c35f2535eb1f14e30f631fada8a5497}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Bl\-Enable\-Autostart@{Bl\-Enable\-Autostart}}
+\index{Bl\-Enable\-Autostart@{Bl\-Enable\-Autostart}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Enable\-Autostart}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Bl\-Enable\-Autostart (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_wifly_control_no_throw_a4c35f2535eb1f14e30f631fada8a5497}
+Instructs the bootloader to set the autostart flag to true. This ensures the bootloader will be started on the next reboot automatically. \begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_aedb987e1add91290d62e33bdf638b79e}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Bl\-Erase\-Eeprom@{Bl\-Erase\-Eeprom}}
+\index{Bl\-Erase\-Eeprom@{Bl\-Erase\-Eeprom}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Erase\-Eeprom}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Bl\-Erase\-Eeprom (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_wifly_control_no_throw_aedb987e1add91290d62e33bdf638b79e}
+Instructs the bootloader to erase the whole eeprom. The wifly device has to be in bootloader mode for this command. \begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_a1d0dffa11f76b27385052fe1927d29c5}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Bl\-Erase\-Flash@{Bl\-Erase\-Flash}}
+\index{Bl\-Erase\-Flash@{Bl\-Erase\-Flash}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Erase\-Flash}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Bl\-Erase\-Flash (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_wifly_control_no_throw_a1d0dffa11f76b27385052fe1927d29c5}
+Instructs the bootloader to erase the whole flash which is not occupied by the bootloader itself. The wifly device has to be in bootloader mode for this command. \begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_ad02f390c7b5e3dc81b22aaf70218fd5d}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Bl\-Program\-Flash@{Bl\-Program\-Flash}}
+\index{Bl\-Program\-Flash@{Bl\-Program\-Flash}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Program\-Flash}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Bl\-Program\-Flash (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{filename}
+\end{DoxyParamCaption}
+) const}}\label{class_wifly_control_no_throw_ad02f390c7b5e3dc81b22aaf70218fd5d}
+Instructs the bootloader to update the wifly device with new firmware. The wifly device has to be in bootloader mode for this command. 
+\begin{DoxyParams}{Parameters}
+{\em filename} & path to the $\ast$.hex file containing the new firmware \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_a9267651f26444d43967a7653e9fc2c97}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Bl\-Read\-Crc\-Flash@{Bl\-Read\-Crc\-Flash}}
+\index{Bl\-Read\-Crc\-Flash@{Bl\-Read\-Crc\-Flash}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Read\-Crc\-Flash}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Bl\-Read\-Crc\-Flash (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{out, }
+\item[{uint32\-\_\-t}]{address, }
+\item[{size\-\_\-t}]{num\-Blocks}
+\end{DoxyParamCaption}
+) const}}\label{class_wifly_control_no_throw_a9267651f26444d43967a7653e9fc2c97}
+Instructs the bootloader to create crc-\/16 checksums for the content of the specified flash area. T\-O\-D\-O crc values are in little endian byte order The wifly device has to be in bootloader mode for this command. 
+\begin{DoxyParams}{Parameters}
+{\em out} & ostream for the resulting 16bit crc values \\
+\hline
+{\em address} & crc generation starts from this flash address \\
+\hline
+{\em num\-Blocks} & size of the flash area for which the crc are calculated. One block contains 64 bytes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries I\-N\-V\-A\-L\-I\-D\-\_\-\-P\-A\-R\-A\-M\-E\-T\-E\-R} if a parameter is out of bound \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_aba9249f26f98e16bde7df538e4cc8b65}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Bl\-Read\-Eeprom@{Bl\-Read\-Eeprom}}
+\index{Bl\-Read\-Eeprom@{Bl\-Read\-Eeprom}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Read\-Eeprom}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Bl\-Read\-Eeprom (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{out, }
+\item[{uint32\-\_\-t}]{address, }
+\item[{size\-\_\-t}]{num\-Bytes}
+\end{DoxyParamCaption}
+) const}}\label{class_wifly_control_no_throw_aba9249f26f98e16bde7df538e4cc8b65}
+Instructs the bootloader to read the specified memory area of the eeprom. The wifly device has to be in bootloader mode for this command. 
+\begin{DoxyParams}{Parameters}
+{\em out} & ostream where the eeprom content is written \\
+\hline
+{\em address} & start of the eeprom region to read \\
+\hline
+{\em num\-Bytes} & size of the eeprom region to read \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries I\-N\-V\-A\-L\-I\-D\-\_\-\-P\-A\-R\-A\-M\-E\-T\-E\-R} if a parameter is out of bound \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_a9b854767640d540c0ec48d9683da4436}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Bl\-Read\-Flash@{Bl\-Read\-Flash}}
+\index{Bl\-Read\-Flash@{Bl\-Read\-Flash}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Read\-Flash}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Bl\-Read\-Flash (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{out, }
+\item[{uint32\-\_\-t}]{address, }
+\item[{size\-\_\-t}]{num\-Bytes}
+\end{DoxyParamCaption}
+) const}}\label{class_wifly_control_no_throw_a9b854767640d540c0ec48d9683da4436}
+Instructs the bootloader to read the specified memory area of the flash. The wifly device has to be in bootloader mode for this command. 
+\begin{DoxyParams}{Parameters}
+{\em out} & ostream where the eeprom content is written \\
+\hline
+{\em address} & start of the flash region to read\-Request \\
+\hline
+{\em num\-Bytes} & size of the flash region to read \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries I\-N\-V\-A\-L\-I\-D\-\_\-\-P\-A\-R\-A\-M\-E\-T\-E\-R} if a parameter is out of bound \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_a997dec8e65fb166ac8640f44c0443035}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Bl\-Read\-Fw\-Version@{Bl\-Read\-Fw\-Version}}
+\index{Bl\-Read\-Fw\-Version@{Bl\-Read\-Fw\-Version}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Read\-Fw\-Version}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Bl\-Read\-Fw\-Version (
+\begin{DoxyParamCaption}
+\item[{std\-::string \&}]{version\-String}
+\end{DoxyParamCaption}
+) const}}\label{class_wifly_control_no_throw_a997dec8e65fb166ac8640f44c0443035}
+Instructs the bootloader to read the version string from the firmware memory. The wifly device has to be in bootloader mode for this command. 
+\begin{DoxyParams}{Parameters}
+{\em version\-String} & is the returnvalue for the firmware version from pic memory \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_a323797a3fdc5f2bfde6b4f504f3828fb}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Bl\-Read\-Info@{Bl\-Read\-Info}}
+\index{Bl\-Read\-Info@{Bl\-Read\-Info}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Read\-Info}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Bl\-Read\-Info (
+\begin{DoxyParamCaption}
+\item[{{\bf Bl\-Info} \&}]{info}
+\end{DoxyParamCaption}
+) const}}\label{class_wifly_control_no_throw_a323797a3fdc5f2bfde6b4f504f3828fb}
+Instructs the bootloader to return a struct of bootloader informations like bootloader version, flash and eeprom size. see \hyperlink{struct_bl_info}{Bl\-Info} for details. The wifly device has to be in bootloader mode for this command. \begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_a6692124924a54cb2e9b6a1b92824b0ce}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Bl\-Run\-App@{Bl\-Run\-App}}
+\index{Bl\-Run\-App@{Bl\-Run\-App}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Run\-App}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Bl\-Run\-App (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_wifly_control_no_throw_a6692124924a54cb2e9b6a1b92824b0ce}
+Instructs the bootloader to start the wifly device firmware. The wifly device has to be in bootloader mode for this command. \begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_aecc9be414c20860f23e03c238c8a7f71}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Conf\-Get\-Ssid@{Conf\-Get\-Ssid}}
+\index{Conf\-Get\-Ssid@{Conf\-Get\-Ssid}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Conf\-Get\-Ssid}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Conf\-Get\-Ssid (
+\begin{DoxyParamCaption}
+\item[{std\-::string \&}]{ssid}
+\end{DoxyParamCaption}
+) const}}\label{class_wifly_control_no_throw_aecc9be414c20860f23e03c238c8a7f71}
+Read the currently configured ssid from Wifly module 
+\begin{DoxyParams}{Parameters}
+{\em ssid} & is the outputstring for the current ssid set in the R\-N-\/171 W\-L\-A\-N modul \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_a3e64aeb861c86a81d9818321b2876ffd}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Conf\-Module\-As\-Soft\-A\-P@{Conf\-Module\-As\-Soft\-A\-P}}
+\index{Conf\-Module\-As\-Soft\-A\-P@{Conf\-Module\-As\-Soft\-A\-P}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Conf\-Module\-As\-Soft\-A\-P}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Conf\-Module\-As\-Soft\-A\-P (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{accesspoint\-Name = {\ttfamily \char`\"{}Wifly\-\_\-Light\char`\"{}}}
+\end{DoxyParamCaption}
+) const}}\label{class_wifly_control_no_throw_a3e64aeb861c86a81d9818321b2876ffd}
+Configurates the Wifly module as stand alone accesspoint. With accesspoint name you can change the ssid for this accesspoint. 
+\begin{DoxyParams}{Parameters}
+{\em accesspoint\-Name} & 1 -\/ 32 characters \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} in case of an error \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_a0908df657166fd35beb0175a7417538e}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Conf\-Module\-For\-Wlan@{Conf\-Module\-For\-Wlan}}
+\index{Conf\-Module\-For\-Wlan@{Conf\-Module\-For\-Wlan}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Conf\-Module\-For\-Wlan}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Conf\-Module\-For\-Wlan (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{phrase, }
+\item[{const std\-::string \&}]{ssid, }
+\item[{const std\-::string \&}]{name = {\ttfamily \char`\"{}Wifly\-\_\-Light\char`\"{}}}
+\end{DoxyParamCaption}
+) const}}\label{class_wifly_control_no_throw_a0908df657166fd35beb0175a7417538e}
+Configurates the Wifly module as client for an existing wlan network with W\-P\-A2 protection 
+\begin{DoxyParams}{Parameters}
+{\em phrase} & W\-P\-A2 passphrase 1 -\/ 63 characters \\
+\hline
+{\em ssid} & 1 -\/ 32 characters \\
+\hline
+{\em name} & 1 -\/ 32 characters, unique name which apperas in the broadcast message \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} in case of an error \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_a611024109148250af6fa8d9e4c92aeca}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Conf\-Reboot\-Wlan\-Module@{Conf\-Reboot\-Wlan\-Module}}
+\index{Conf\-Reboot\-Wlan\-Module@{Conf\-Reboot\-Wlan\-Module}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Conf\-Reboot\-Wlan\-Module}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Conf\-Reboot\-Wlan\-Module (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_wifly_control_no_throw_a611024109148250af6fa8d9e4c92aeca}
+Reboot the modul. A\-T\-T\-E\-N\-T\-I\-O\-N\-: You have to reconnect after a reboot \begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} in case of an error \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_ab6e743c4f7f24600dbff799c303b243c}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Conf\-Set\-Device\-Id@{Conf\-Set\-Device\-Id}}
+\index{Conf\-Set\-Device\-Id@{Conf\-Set\-Device\-Id}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Conf\-Set\-Device\-Id}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Conf\-Set\-Device\-Id (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{name}
+\end{DoxyParamCaption}
+) const}}\label{class_wifly_control_no_throw_ab6e743c4f7f24600dbff799c303b243c}
+Allows you to give every Wifly\-\_\-\-Light device an unique name 
+\begin{DoxyParams}{Parameters}
+{\em name} & 1 -\/ 32 characters \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} in case of an error \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_a6554b5fd6b88408a23d802b49743dc4b}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Fw\-Clear\-Script@{Fw\-Clear\-Script}}
+\index{Fw\-Clear\-Script@{Fw\-Clear\-Script}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Clear\-Script}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Fw\-Clear\-Script (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_wifly_control_no_throw_a6554b5fd6b88408a23d802b49743dc4b}
+Wipe all commands from the Wifly script controller \begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_adc034f541e4b7f8cd18a1419c5fcaaba}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Fw\-Get\-Cycletime@{Fw\-Get\-Cycletime}}
+\index{Fw\-Get\-Cycletime@{Fw\-Get\-Cycletime}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Get\-Cycletime}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Fw\-Get\-Cycletime (
+\begin{DoxyParamCaption}
+\item[{std\-::string \&}]{output}
+\end{DoxyParamCaption}
+)}}\label{class_wifly_control_no_throw_adc034f541e4b7f8cd18a1419c5fcaaba}
+Reads the cycletimes from wifly device and stores them into the response object 
+\begin{DoxyParams}{Parameters}
+{\em output} & string with all recorded cycletimes from P\-I\-C firmware \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_a0b9c93faf22030856003b9e3b02d16d1}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Fw\-Get\-Rtc@{Fw\-Get\-Rtc}}
+\index{Fw\-Get\-Rtc@{Fw\-Get\-Rtc}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Get\-Rtc}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Fw\-Get\-Rtc (
+\begin{DoxyParamCaption}
+\item[{tm \&}]{time\-Value}
+\end{DoxyParamCaption}
+)}}\label{class_wifly_control_no_throw_a0b9c93faf22030856003b9e3b02d16d1}
+Reads the current rtc time from the wifly device 
+\begin{DoxyParams}{Parameters}
+{\em time\-Value} & reference to a tm object, where to store the rtc time from P\-I\-C firmware \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_ae7c1d98947c9a5c8742504c49981a355}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Fw\-Get\-Tracebuffer@{Fw\-Get\-Tracebuffer}}
+\index{Fw\-Get\-Tracebuffer@{Fw\-Get\-Tracebuffer}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Get\-Tracebuffer}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Fw\-Get\-Tracebuffer (
+\begin{DoxyParamCaption}
+\item[{std\-::string \&}]{output}
+\end{DoxyParamCaption}
+)}}\label{class_wifly_control_no_throw_ae7c1d98947c9a5c8742504c49981a355}
+Reads the tracebuffer from wifly device and stores the data into the response object 
+\begin{DoxyParams}{Parameters}
+{\em output} & a string with all recorded trace messages from P\-I\-C firmware \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_ad5241b18ede5b489b52570f5b5938192}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Fw\-Get\-Version@{Fw\-Get\-Version}}
+\index{Fw\-Get\-Version@{Fw\-Get\-Version}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Get\-Version}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Fw\-Get\-Version (
+\begin{DoxyParamCaption}
+\item[{std\-::string \&}]{output}
+\end{DoxyParamCaption}
+)}}\label{class_wifly_control_no_throw_ad5241b18ede5b489b52570f5b5938192}
+Reads the firmware version currently running on the wifly device. 
+\begin{DoxyParams}{Parameters}
+{\em output} & a string representing the version number of the P\-I\-C firmware \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_a81a2b5f0499c9aae84f7a8150a54df1d}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Fw\-Loop\-Off@{Fw\-Loop\-Off}}
+\index{Fw\-Loop\-Off@{Fw\-Loop\-Off}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Loop\-Off}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Fw\-Loop\-Off (
+\begin{DoxyParamCaption}
+\item[{uint8\-\_\-t}]{num\-Loops}
+\end{DoxyParamCaption}
+)}}\label{class_wifly_control_no_throw_a81a2b5f0499c9aae84f7a8150a54df1d}
+Injects a Loop\-Off command into the wifly script controller 
+\begin{DoxyParams}{Parameters}
+{\em num\-Loops} & number of rounds before termination of the loop, use 0 for infinite loops. To terminate an infinite loop you have to call $<$Fw\-Clear\-Script$>$ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_a13df2bbf2a0e8cfc31d80137a61e06eb}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Fw\-Loop\-On@{Fw\-Loop\-On}}
+\index{Fw\-Loop\-On@{Fw\-Loop\-On}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Loop\-On}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Fw\-Loop\-On (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_wifly_control_no_throw_a13df2bbf2a0e8cfc31d80137a61e06eb}
+Injects a Loop\-On command into the wifly script controller \begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_a90186029abfde0d299c6fe232747452d}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Fw\-Set\-Color\-Direct@{Fw\-Set\-Color\-Direct}}
+\index{Fw\-Set\-Color\-Direct@{Fw\-Set\-Color\-Direct}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Set\-Color\-Direct}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Fw\-Set\-Color\-Direct (
+\begin{DoxyParamCaption}
+\item[{const uint8\-\_\-t $\ast$}]{p\-Buffer, }
+\item[{size\-\_\-t}]{buffer\-Length}
+\end{DoxyParamCaption}
+)}}\label{class_wifly_control_no_throw_a90186029abfde0d299c6fe232747452d}
+Sets all leds with different colors directly. This doesn't affect the Wifly script controller Example\-: to set the first led to yellow and the second to blue and all others to off use a $<$p\-Buffer$>$ like this\-: p\-Buffer\mbox{[}\mbox{]} = \{0xff, 0xff, 0x00, 0x00, 0x00, 0xff\}; buffer\-Length = 6; 
+\begin{DoxyParams}{Parameters}
+{\em p\-Buffer} & containing continouse rgb values r1g1b1r2g2b2...r32g32b32 \\
+\hline
+{\em buffer\-Length} & number of bytes in $<$p\-Buffer$>$ usally 32 $\ast$ 3 bytes \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_ad54e9041e920a4ed43b7b6fbd597c9c7}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Fw\-Set\-Fade@{Fw\-Set\-Fade}}
+\index{Fw\-Set\-Fade@{Fw\-Set\-Fade}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Set\-Fade}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Fw\-Set\-Fade (
+\begin{DoxyParamCaption}
+\item[{uint32\-\_\-t}]{argb, }
+\item[{uint16\-\_\-t}]{fade\-Time = {\ttfamily 0}, }
+\item[{uint32\-\_\-t}]{addr = {\ttfamily 0xffffffff}, }
+\item[{bool}]{parallel\-Fade = {\ttfamily false}}
+\end{DoxyParamCaption}
+)}}\label{class_wifly_control_no_throw_ad54e9041e920a4ed43b7b6fbd597c9c7}
+Injects a fade command into the wifly script controller 
+\begin{DoxyParams}{Parameters}
+{\em argb} & is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff) f.\-e. black(  0,  0,  0) as argb is 0xff000000 green(  0,255,  0) as argb is 0xff00ff00 white(255,255,255) as argb is 0xffffffff \\
+\hline
+{\em fade\-Time} & in hundreths of a second. Use 0 to set color immediately, default = 0 \\
+\hline
+{\em addr} & bitmask of leds which should be effected by this command, set bit to 1 to affect the led, default 0xffffffff \\
+\hline
+{\em parallel\-Fade} & if true other fades are allowed in parallel with this fade \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_aee4511965e53d1564da2788bebb271a1}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Fw\-Set\-Gradient@{Fw\-Set\-Gradient}}
+\index{Fw\-Set\-Gradient@{Fw\-Set\-Gradient}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Set\-Gradient}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Fw\-Set\-Gradient (
+\begin{DoxyParamCaption}
+\item[{uint32\-\_\-t}]{argb\-\_\-1, }
+\item[{uint32\-\_\-t}]{argb\-\_\-2, }
+\item[{uint16\-\_\-t}]{fade\-Time = {\ttfamily 0}, }
+\item[{bool}]{parallel\-Fade = {\ttfamily false}, }
+\item[{uint8\-\_\-t}]{length = {\ttfamily NUM\-\_\-OF\-\_\-LED}, }
+\item[{uint8\-\_\-t}]{offset = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)}}\label{class_wifly_control_no_throw_aee4511965e53d1564da2788bebb271a1}
+Injects a gradient command into the wifly script controller 
+\begin{DoxyParams}{Parameters}
+{\em argb\-\_\-1} & is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff). This is the start color for the gradient. \\
+\hline
+{\em argb\-\_\-2} & is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff). This is the end color for the gradient. \\
+\hline
+{\em fade\-Time} & in hundreths of a second. Use 0 to set color immediately, default = 0 \\
+\hline
+{\em parallel\-Fade} & if true other fades are allowed in parallel with this fade \\
+\hline
+{\em length} & is the number of led's from startposition to endposition \\
+\hline
+{\em offset} & can be used to move the startposition of the gradient on the ledstrip \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed, or a invalid value for offset \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_a5a8101329291df5f96c0312ad9975589}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Fw\-Set\-Rtc@{Fw\-Set\-Rtc}}
+\index{Fw\-Set\-Rtc@{Fw\-Set\-Rtc}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Set\-Rtc}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Fw\-Set\-Rtc (
+\begin{DoxyParamCaption}
+\item[{const tm \&}]{time\-Value}
+\end{DoxyParamCaption}
+)}}\label{class_wifly_control_no_throw_a5a8101329291df5f96c0312ad9975589}
+Sets the rtc clock of the wifly device to the specified time. The wifly device has to be in firmware mode for this command. 
+\begin{DoxyParams}{Parameters}
+{\em time\-Value} & pointer to a posix tm struct containing the new time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_a311853b7e9eaffadc1e2664653b71534}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Fw\-Set\-Wait@{Fw\-Set\-Wait}}
+\index{Fw\-Set\-Wait@{Fw\-Set\-Wait}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Set\-Wait}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Fw\-Set\-Wait (
+\begin{DoxyParamCaption}
+\item[{uint16\-\_\-t}]{wait\-Time}
+\end{DoxyParamCaption}
+)}}\label{class_wifly_control_no_throw_a311853b7e9eaffadc1e2664653b71534}
+Injects a wait command into the wifly script controller. This causes the script processing to wait before executing the next command for the specified duration 
+\begin{DoxyParams}{Parameters}
+{\em wait\-Time} & in hundreths of a second \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed $<$ B\-R$>${\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wifly_control_no_throw_a026c989019eb328ffb2afb3e911399ce}{\index{Wifly\-Control\-No\-Throw@{Wifly\-Control\-No\-Throw}!Fw\-Start\-Bl@{Fw\-Start\-Bl}}
+\index{Fw\-Start\-Bl@{Fw\-Start\-Bl}!WiflyControlNoThrow@{Wifly\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Start\-Bl}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wifly\-Control\-No\-Throw\-::\-Fw\-Start\-Bl (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_wifly_control_no_throw_a026c989019eb328ffb2afb3e911399ce}
+Stops firmware and script controller execution and start the bootloader of the wifly device \begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{_wifly_control_exception_8h_a35f87aeba08c4e366afd2fe914d231d2}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{_wifly_control_no_throw_8h}{Wifly\-Control\-No\-Throw.\-h}\end{DoxyCompactItemize}

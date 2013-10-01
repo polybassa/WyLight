@@ -1,0 +1,211 @@
+\hypertarget{_wifly_control__ut_8cpp}{\section{library/\-Wifly\-Control\-\_\-ut.cpp File Reference}
+\label{_wifly_control__ut_8cpp}\index{library/\-Wifly\-Control\-\_\-ut.\-cpp@{library/\-Wifly\-Control\-\_\-ut.\-cpp}}
+}
+{\ttfamily \#include \char`\"{}trace.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}unittest.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Wifly\-Control.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\\*
+{\ttfamily \#include $<$time.\-h$>$}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_wifly_control__ut_8cpp_a6a2c54b3910626ed11e39f2e0e32545f}{return\-\_\-resp}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+size\-\_\-t \hyperlink{_wifly_control__ut_8cpp_a9582ee26e50df4874904986fcd0c3966}{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Erase} (void)
+\item 
+size\-\_\-t \hyperlink{_wifly_control__ut_8cpp_aea8115a4e4a5f913dcecdb5ce4ea9353}{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Read} (void)
+\item 
+size\-\_\-t \hyperlink{_wifly_control__ut_8cpp_a327c95f9335fa4b257b064ef2e917a80}{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Write} (void)
+\item 
+size\-\_\-t \hyperlink{_wifly_control__ut_8cpp_aa00131207042c7018d5032b020efdbe3}{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Erase} (void)
+\item 
+size\-\_\-t \hyperlink{_wifly_control__ut_8cpp_ab0c8fca39e22614deec1895307fa6c1f}{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Read} (void)
+\item 
+size\-\_\-t \hyperlink{_wifly_control__ut_8cpp_a661b9ec8a685bc800221f2fd5d031a20}{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Write} (void)
+\item 
+size\-\_\-t \hyperlink{_wifly_control__ut_8cpp_a09ef80f71d78a975f42ce249ef4b1796}{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Read\-Info} (void)
+\item 
+size\-\_\-t \hyperlink{_wifly_control__ut_8cpp_aeefa8ad693af2b134456faaf1586a2f7}{ut\-\_\-\-Wifly\-Control\-\_\-\-Conf\-Set\-Defaults} (void)
+\item 
+size\-\_\-t \hyperlink{_wifly_control__ut_8cpp_a04989feb17717c76d1dd95666aec3c93}{ut\-\_\-\-Wifly\-Control\-\_\-\-Conf\-Set\-Wlan} (void)
+\item 
+size\-\_\-t \hyperlink{_wifly_control__ut_8cpp_a811136c588269112d29ab389af2b6c5c}{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-Red\-Only} (void)
+\item 
+size\-\_\-t \hyperlink{_wifly_control__ut_8cpp_ae9b6d3659c544a6376cd7ae22295a60c}{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-Three\-Leds} (void)
+\item 
+size\-\_\-t \hyperlink{_wifly_control__ut_8cpp_a353e1f93671e4aeca63b97a13598b25b}{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-To\-Many} (void)
+\item 
+size\-\_\-t \hyperlink{_wifly_control__ut_8cpp_a83a1830b53c777a45b0fd25364f8f179}{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Fade} (void)
+\item 
+int \hyperlink{_wifly_control__ut_8cpp_ac0f2228420376f4db7e1274f2b41667c}{main} (int argc, const char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static const uint32\-\_\-t \hyperlink{_wifly_control__ut_8cpp_a2faf6e9c5ce44e48bca60ae4b61b81bc}{g\-\_\-\-Debug\-Zones} = Z\-O\-N\-E\-\_\-\-E\-R\-R\-O\-R $|$ Z\-O\-N\-E\-\_\-\-W\-A\-R\-N\-I\-N\-G $|$ Z\-O\-N\-E\-\_\-\-I\-N\-F\-O $|$ Z\-O\-N\-E\-\_\-\-V\-E\-R\-B\-O\-S\-E
+\item 
+uint8\-\_\-t \hyperlink{_wifly_control__ut_8cpp_a17b49506a7b2b69d6e6a6af0c64f2a45}{g\-\_\-\-Flash\-Rnd\-Data\-Pool} \mbox{[}\hyperlink{_bl_request_8h_ae69620948dea1b76e0ab7843ab719db7}{F\-L\-A\-S\-H\-\_\-\-S\-I\-Z\-E}\mbox{]}
+\item 
+uint8\-\_\-t \hyperlink{_wifly_control__ut_8cpp_ae031e71e70154f64b42449a865d5e6fa}{g\-\_\-\-Eeprom\-Rnd\-Data\-Pool} \mbox{[}\hyperlink{_bl_request_8h_ae3ef7bba113f663df6996f286b632a3f}{E\-E\-P\-R\-O\-M\-\_\-\-S\-I\-Z\-E}\mbox{]}
+\item 
+cmd\-\_\-frame \hyperlink{_wifly_control__ut_8cpp_a12e2ccfd6c15db518a2dd38ae65c3b1d}{g\-\_\-\-Send\-Frame}
+\item 
+static std\-::list$<$ std\-::string $>$ \hyperlink{_wifly_control__ut_8cpp_a5330ed1c764bfb259e0a28b351ba867d}{g\-\_\-\-Test\-Buffer}
+\item 
+static bool \hyperlink{_wifly_control__ut_8cpp_ae0f9bb017e58418a154327077d81a48f}{g\-\_\-\-Proxy\-Saved} = false
+\item 
+static bool \hyperlink{_wifly_control__ut_8cpp_a859bfc854d368aa54deee7ff98f0e1a3}{g\-\_\-\-Proxy\-Connected} = false
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{_wifly_control__ut_8cpp_a6a2c54b3910626ed11e39f2e0e32545f}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!return\-\_\-resp@{return\-\_\-resp}}
+\index{return\-\_\-resp@{return\-\_\-resp}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{return\-\_\-resp}]{\setlength{\rightskip}{0pt plus 5cm}\#define return\-\_\-resp}}\label{_wifly_control__ut_8cpp_a6a2c54b3910626ed11e39f2e0e32545f}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\{\(\backslash\)
+    for(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < \textcolor{keyword}{sizeof}(resp); i++)\(\backslash\)
+    \{ \(\backslash\)
+        if(responseSize >= i) *pResponse++ = resp[i]; \(\backslash\)
+    \}\(\backslash\)
+    return \textcolor{keyword}{sizeof}(resp);\}
+\end{DoxyCode}
+
+
+\subsection{Function Documentation}
+\hypertarget{_wifly_control__ut_8cpp_ac0f2228420376f4db7e1274f2b41667c}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!main@{main}}
+\index{main@{main}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{const char $\ast$}]{argv\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}}\label{_wifly_control__ut_8cpp_ac0f2228420376f4db7e1274f2b41667c}
+\hypertarget{_wifly_control__ut_8cpp_a9582ee26e50df4874904986fcd0c3966}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Erase@{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Erase}}
+\index{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Erase@{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Erase}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Erase}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Erase (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_wifly_control__ut_8cpp_a9582ee26e50df4874904986fcd0c3966}
+\hypertarget{_wifly_control__ut_8cpp_aea8115a4e4a5f913dcecdb5ce4ea9353}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Read@{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Read}}
+\index{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Read@{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Read}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Read}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Read (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_wifly_control__ut_8cpp_aea8115a4e4a5f913dcecdb5ce4ea9353}
+\hypertarget{_wifly_control__ut_8cpp_a327c95f9335fa4b257b064ef2e917a80}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Write@{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Write}}
+\index{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Write@{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Write}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Write}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Eeprom\-Write (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_wifly_control__ut_8cpp_a327c95f9335fa4b257b064ef2e917a80}
+friendships for unittesting only \hypertarget{_wifly_control__ut_8cpp_aa00131207042c7018d5032b020efdbe3}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Erase@{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Erase}}
+\index{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Erase@{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Erase}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Erase}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Erase (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_wifly_control__ut_8cpp_aa00131207042c7018d5032b020efdbe3}
+\hypertarget{_wifly_control__ut_8cpp_ab0c8fca39e22614deec1895307fa6c1f}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Read@{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Read}}
+\index{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Read@{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Read}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Read}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Read (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_wifly_control__ut_8cpp_ab0c8fca39e22614deec1895307fa6c1f}
+\hypertarget{_wifly_control__ut_8cpp_a661b9ec8a685bc800221f2fd5d031a20}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Write@{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Write}}
+\index{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Write@{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Write}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Write}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Flash\-Write (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_wifly_control__ut_8cpp_a661b9ec8a685bc800221f2fd5d031a20}
+friendships for unittesting only \hypertarget{_wifly_control__ut_8cpp_a09ef80f71d78a975f42ce249ef4b1796}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Read\-Info@{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Read\-Info}}
+\index{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Read\-Info@{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Read\-Info}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Read\-Info}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Wifly\-Control\-\_\-\-Bl\-Read\-Info (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_wifly_control__ut_8cpp_a09ef80f71d78a975f42ce249ef4b1796}
+\hypertarget{_wifly_control__ut_8cpp_aeefa8ad693af2b134456faaf1586a2f7}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!ut\-\_\-\-Wifly\-Control\-\_\-\-Conf\-Set\-Defaults@{ut\-\_\-\-Wifly\-Control\-\_\-\-Conf\-Set\-Defaults}}
+\index{ut\-\_\-\-Wifly\-Control\-\_\-\-Conf\-Set\-Defaults@{ut\-\_\-\-Wifly\-Control\-\_\-\-Conf\-Set\-Defaults}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Wifly\-Control\-\_\-\-Conf\-Set\-Defaults}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Wifly\-Control\-\_\-\-Conf\-Set\-Defaults (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_wifly_control__ut_8cpp_aeefa8ad693af2b134456faaf1586a2f7}
+\hypertarget{_wifly_control__ut_8cpp_a04989feb17717c76d1dd95666aec3c93}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!ut\-\_\-\-Wifly\-Control\-\_\-\-Conf\-Set\-Wlan@{ut\-\_\-\-Wifly\-Control\-\_\-\-Conf\-Set\-Wlan}}
+\index{ut\-\_\-\-Wifly\-Control\-\_\-\-Conf\-Set\-Wlan@{ut\-\_\-\-Wifly\-Control\-\_\-\-Conf\-Set\-Wlan}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Wifly\-Control\-\_\-\-Conf\-Set\-Wlan}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Wifly\-Control\-\_\-\-Conf\-Set\-Wlan (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_wifly_control__ut_8cpp_a04989feb17717c76d1dd95666aec3c93}
+\hypertarget{_wifly_control__ut_8cpp_a811136c588269112d29ab389af2b6c5c}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-Red\-Only@{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-Red\-Only}}
+\index{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-Red\-Only@{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-Red\-Only}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-Red\-Only}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-Red\-Only (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_wifly_control__ut_8cpp_a811136c588269112d29ab389af2b6c5c}
+\hypertarget{_wifly_control__ut_8cpp_ae9b6d3659c544a6376cd7ae22295a60c}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-Three\-Leds@{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-Three\-Leds}}
+\index{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-Three\-Leds@{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-Three\-Leds}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-Three\-Leds}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-Three\-Leds (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_wifly_control__ut_8cpp_ae9b6d3659c544a6376cd7ae22295a60c}
+\hypertarget{_wifly_control__ut_8cpp_a353e1f93671e4aeca63b97a13598b25b}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-To\-Many@{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-To\-Many}}
+\index{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-To\-Many@{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-To\-Many}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-To\-Many}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Color\-Direct\-To\-Many (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_wifly_control__ut_8cpp_a353e1f93671e4aeca63b97a13598b25b}
+\hypertarget{_wifly_control__ut_8cpp_a83a1830b53c777a45b0fd25364f8f179}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Fade@{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Fade}}
+\index{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Fade@{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Fade}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Fade}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Wifly\-Control\-\_\-\-Fw\-Set\-Fade (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_wifly_control__ut_8cpp_a83a1830b53c777a45b0fd25364f8f179}
+
+
+\subsection{Variable Documentation}
+\hypertarget{_wifly_control__ut_8cpp_a2faf6e9c5ce44e48bca60ae4b61b81bc}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!g\-\_\-\-Debug\-Zones@{g\-\_\-\-Debug\-Zones}}
+\index{g\-\_\-\-Debug\-Zones@{g\-\_\-\-Debug\-Zones}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Debug\-Zones}]{\setlength{\rightskip}{0pt plus 5cm}const uint32\-\_\-t g\-\_\-\-Debug\-Zones = Z\-O\-N\-E\-\_\-\-E\-R\-R\-O\-R $|$ Z\-O\-N\-E\-\_\-\-W\-A\-R\-N\-I\-N\-G $|$ Z\-O\-N\-E\-\_\-\-I\-N\-F\-O $|$ Z\-O\-N\-E\-\_\-\-V\-E\-R\-B\-O\-S\-E\hspace{0.3cm}{\ttfamily [static]}}}\label{_wifly_control__ut_8cpp_a2faf6e9c5ce44e48bca60ae4b61b81bc}
+Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
+
+This file is part of Wifly\-\_\-\-Light.
+
+Wifly\-\_\-\-Light is free software\-: you can redistribute it and/or modify it under the terms of the G\-N\-U General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+Wifly\-\_\-\-Light is distributed in the hope that it will be useful, but W\-I\-T\-H\-O\-U\-T A\-N\-Y W\-A\-R\-R\-A\-N\-T\-Y; without even the implied warranty of M\-E\-R\-C\-H\-A\-N\-T\-A\-B\-I\-L\-I\-T\-Y or F\-I\-T\-N\-E\-S\-S F\-O\-R A P\-A\-R\-T\-I\-C\-U\-L\-A\-R P\-U\-R\-P\-O\-S\-E. See the G\-N\-U General Public License for more details.
+
+You should have received a copy of the G\-N\-U General Public License along with Wifly\-\_\-\-Light. If not, see \href{http://www.gnu.org/licenses/}{\tt http\-://www.\-gnu.\-org/licenses/}. \hypertarget{_wifly_control__ut_8cpp_ae031e71e70154f64b42449a865d5e6fa}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!g\-\_\-\-Eeprom\-Rnd\-Data\-Pool@{g\-\_\-\-Eeprom\-Rnd\-Data\-Pool}}
+\index{g\-\_\-\-Eeprom\-Rnd\-Data\-Pool@{g\-\_\-\-Eeprom\-Rnd\-Data\-Pool}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Eeprom\-Rnd\-Data\-Pool}]{\setlength{\rightskip}{0pt plus 5cm}uint8\-\_\-t g\-\_\-\-Eeprom\-Rnd\-Data\-Pool\mbox{[}{\bf E\-E\-P\-R\-O\-M\-\_\-\-S\-I\-Z\-E}\mbox{]}}}\label{_wifly_control__ut_8cpp_ae031e71e70154f64b42449a865d5e6fa}
+\hypertarget{_wifly_control__ut_8cpp_a17b49506a7b2b69d6e6a6af0c64f2a45}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!g\-\_\-\-Flash\-Rnd\-Data\-Pool@{g\-\_\-\-Flash\-Rnd\-Data\-Pool}}
+\index{g\-\_\-\-Flash\-Rnd\-Data\-Pool@{g\-\_\-\-Flash\-Rnd\-Data\-Pool}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Flash\-Rnd\-Data\-Pool}]{\setlength{\rightskip}{0pt plus 5cm}uint8\-\_\-t g\-\_\-\-Flash\-Rnd\-Data\-Pool\mbox{[}{\bf F\-L\-A\-S\-H\-\_\-\-S\-I\-Z\-E}\mbox{]}}}\label{_wifly_control__ut_8cpp_a17b49506a7b2b69d6e6a6af0c64f2a45}
+\hypertarget{_wifly_control__ut_8cpp_a859bfc854d368aa54deee7ff98f0e1a3}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!g\-\_\-\-Proxy\-Connected@{g\-\_\-\-Proxy\-Connected}}
+\index{g\-\_\-\-Proxy\-Connected@{g\-\_\-\-Proxy\-Connected}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Proxy\-Connected}]{\setlength{\rightskip}{0pt plus 5cm}bool g\-\_\-\-Proxy\-Connected = false\hspace{0.3cm}{\ttfamily [static]}}}\label{_wifly_control__ut_8cpp_a859bfc854d368aa54deee7ff98f0e1a3}
+\hypertarget{_wifly_control__ut_8cpp_ae0f9bb017e58418a154327077d81a48f}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!g\-\_\-\-Proxy\-Saved@{g\-\_\-\-Proxy\-Saved}}
+\index{g\-\_\-\-Proxy\-Saved@{g\-\_\-\-Proxy\-Saved}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Proxy\-Saved}]{\setlength{\rightskip}{0pt plus 5cm}bool g\-\_\-\-Proxy\-Saved = false\hspace{0.3cm}{\ttfamily [static]}}}\label{_wifly_control__ut_8cpp_ae0f9bb017e58418a154327077d81a48f}
+\hypertarget{_wifly_control__ut_8cpp_a12e2ccfd6c15db518a2dd38ae65c3b1d}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!g\-\_\-\-Send\-Frame@{g\-\_\-\-Send\-Frame}}
+\index{g\-\_\-\-Send\-Frame@{g\-\_\-\-Send\-Frame}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Send\-Frame}]{\setlength{\rightskip}{0pt plus 5cm}cmd\-\_\-frame g\-\_\-\-Send\-Frame}}\label{_wifly_control__ut_8cpp_a12e2ccfd6c15db518a2dd38ae65c3b1d}
+\hypertarget{_wifly_control__ut_8cpp_a5330ed1c764bfb259e0a28b351ba867d}{\index{Wifly\-Control\-\_\-ut.\-cpp@{Wifly\-Control\-\_\-ut.\-cpp}!g\-\_\-\-Test\-Buffer@{g\-\_\-\-Test\-Buffer}}
+\index{g\-\_\-\-Test\-Buffer@{g\-\_\-\-Test\-Buffer}!WiflyControl_ut.cpp@{Wifly\-Control\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Test\-Buffer}]{\setlength{\rightskip}{0pt plus 5cm}std\-::list$<$std\-::string$>$ g\-\_\-\-Test\-Buffer\hspace{0.3cm}{\ttfamily [static]}}}\label{_wifly_control__ut_8cpp_a5330ed1c764bfb259e0a28b351ba867d}

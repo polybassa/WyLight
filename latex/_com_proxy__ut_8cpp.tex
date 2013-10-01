@@ -1,0 +1,241 @@
+\hypertarget{_com_proxy__ut_8cpp}{\section{library/\-Com\-Proxy\-\_\-ut.cpp File Reference}
+\label{_com_proxy__ut_8cpp}\index{library/\-Com\-Proxy\-\_\-ut.\-cpp@{library/\-Com\-Proxy\-\_\-ut.\-cpp}}
+}
+{\ttfamily \#include \char`\"{}unittest.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Com\-Proxy.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Mask\-Buffer.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$algorithm$>$}\\*
+{\ttfamily \#include $<$limits$>$}\\*
+{\ttfamily \#include $<$time.\-h$>$}\\*
+{\ttfamily \#include $<$unistd.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}Client\-Socket.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}string.\-h\char`\"{}}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_com_proxy__ut_8cpp_aa93e89217587fdff12bf43b5d7f54f74}{C\-R\-C\-\_\-\-S\-I\-Z\-E}~2
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{_com_proxy__ut_8cpp_a01527be9fb01a0a7a4180c8cf8f74e3f}{Set\-Delay} (timeval \&delay)
+\item 
+size\-\_\-t \hyperlink{_com_proxy__ut_8cpp_a984bf896f20f0d04665c8dc9a77dd651}{ut\-\_\-\-Com\-Proxy\-\_\-\-Mask\-Control\-Characters} (void)
+\item 
+size\-\_\-t \hyperlink{_com_proxy__ut_8cpp_a86980b3838bcbb7311e383f752217515}{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Read\-Request} (void)
+\item 
+size\-\_\-t \hyperlink{_com_proxy__ut_8cpp_a3b8689070978376538fa2717abe534ed}{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Read\-Request\-Timeout} (void)
+\item 
+size\-\_\-t \hyperlink{_com_proxy__ut_8cpp_ae443e9d4e81b2ac0cbe35d697b211466}{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Write\-Request} (void)
+\item 
+size\-\_\-t \hyperlink{_com_proxy__ut_8cpp_ac10beff9671ef3831caa8862f13f8752}{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Crc16\-Request} (void)
+\item 
+size\-\_\-t \hyperlink{_com_proxy__ut_8cpp_a9b51a21874595205218d4a121c903fff}{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Erase\-Request} (void)
+\item 
+size\-\_\-t \hyperlink{_com_proxy__ut_8cpp_a811dbf422edcd462d8b0da741d611290}{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Read\-Request} (void)
+\item 
+size\-\_\-t \hyperlink{_com_proxy__ut_8cpp_aa4f62b65e3bfe0f44286dcd6b038133d}{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Write\-Request} (void)
+\item 
+size\-\_\-t \hyperlink{_com_proxy__ut_8cpp_a094c32a39f435b933e2f046e9ae96cff}{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Fuse\-Write\-Request} (void)
+\item 
+size\-\_\-t \hyperlink{_com_proxy__ut_8cpp_a229086b04f0feb1cb7841eaa885ea2a5}{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Info\-Request} (void)
+\item 
+size\-\_\-t \hyperlink{_com_proxy__ut_8cpp_afe8141248f273b6b18faeece95f16dca}{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Run\-App\-Request} (void)
+\item 
+int \hyperlink{_com_proxy__ut_8cpp_ac0f2228420376f4db7e1274f2b41667c}{main} (int argc, const char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static const uint32\-\_\-t \hyperlink{_com_proxy__ut_8cpp_a2faf6e9c5ce44e48bca60ae4b61b81bc}{g\-\_\-\-Debug\-Zones} = Z\-O\-N\-E\-\_\-\-E\-R\-R\-O\-R $|$ Z\-O\-N\-E\-\_\-\-W\-A\-R\-N\-I\-N\-G $|$ Z\-O\-N\-E\-\_\-\-I\-N\-F\-O $|$ Z\-O\-N\-E\-\_\-\-V\-E\-R\-B\-O\-S\-E
+\item 
+const \hyperlink{struct_bl_info}{Bl\-Info} \hyperlink{_com_proxy__ut_8cpp_ae75159a26e67dd655d97a621d3d9b359}{dummy\-Bl\-Info} = \{0x\-D\-E, 0x\-A\-D, 0x\-A\-F, 0x\-F\-E, 0x\-F\-F, 0x4, 0x0, 0x\-B0, 0x\-B1, 0x\-E5, 0x00\}
+\item 
+const uint8\-\_\-t \hyperlink{_com_proxy__ut_8cpp_a74bf9c311b160ce15e1f568bcb3a115c}{dummy\-Bl\-Info\-Masked} \mbox{[}$\,$\mbox{]} = \{\hyperlink{_bl_request_8h_ad4dc0cd3c81da70b9680edabcc5dbc26}{B\-L\-\_\-\-S\-T\-X}, \hyperlink{_bl_request_8h_ad4dc0cd3c81da70b9680edabcc5dbc26}{B\-L\-\_\-\-S\-T\-X}, 0x\-D\-E, 0x\-A\-D, 0x\-A\-F, 0x\-F\-E, 0x\-F\-F, B\-L\-\_\-\-D\-L\-E, 0x04, 0x\-B0, 0x\-B1, 0x\-E5, 0x00, 0x\-E\-A, 0x35, B\-L\-\_\-\-E\-T\-X\}
+\item 
+const uint8\-\_\-t \hyperlink{_com_proxy__ut_8cpp_acbe00169765f75ef54ead25f8500d42c}{example\-Bl\-Flash\-Read} \mbox{[}$\,$\mbox{]} = \{\hyperlink{_bl_request_8h_ad4dc0cd3c81da70b9680edabcc5dbc26}{B\-L\-\_\-\-S\-T\-X}, 0x01, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0x\-A\-D, 0x\-B5, 0x04\}
+\item 
+const uint8\-\_\-t \hyperlink{_com_proxy__ut_8cpp_adaa99d4b5c7e967164a61c7c191b9a6e}{dummy\-Bl\-Flash\-Read\-Response\-Masked} \mbox{[}$\,$\mbox{]} = \{\hyperlink{_bl_request_8h_ad4dc0cd3c81da70b9680edabcc5dbc26}{B\-L\-\_\-\-S\-T\-X}, 0x\-D\-E, 0x\-A\-D, B\-L\-\_\-\-D\-L\-E, B\-L\-\_\-\-D\-L\-E, 0x\-E\-F, 0xa0, 0x06, B\-L\-\_\-\-E\-T\-X\}
+\item 
+const uint8\-\_\-t \hyperlink{_com_proxy__ut_8cpp_a5b185d122ee9b7beec2d698f8e815dc5}{dummy\-Bl\-Flash\-Read\-Response\-Pure} \mbox{[}$\,$\mbox{]} = \{0x\-D\-E, 0x\-A\-D, B\-L\-\_\-\-D\-L\-E, 0x\-E\-F\}
+\item 
+const uint8\-\_\-t \hyperlink{_com_proxy__ut_8cpp_ad8761f4b0b1a610a3ad96a23a4b3bdfb}{dummy\-Bl\-Flash\-Crc16\-Response\-Masked} \mbox{[}$\,$\mbox{]} = \{\hyperlink{_bl_request_8h_ad4dc0cd3c81da70b9680edabcc5dbc26}{B\-L\-\_\-\-S\-T\-X}, 0x\-D\-E, 0x\-A\-D, B\-L\-\_\-\-D\-L\-E, B\-L\-\_\-\-D\-L\-E, 0x\-E\-F, B\-L\-\_\-\-E\-T\-X\}
+\item 
+const uint8\-\_\-t \hyperlink{_com_proxy__ut_8cpp_ac15cfccefa8a016518c36913569b8879}{dummy\-Bl\-Flash\-Crc16\-Response\-Pure} \mbox{[}$\,$\mbox{]} = \{0x\-D\-E, 0x\-A\-D, B\-L\-\_\-\-D\-L\-E, 0x\-E\-F\}
+\item 
+const uint8\-\_\-t \hyperlink{_com_proxy__ut_8cpp_a8e203086f161b4c4725921a3ae5a5338}{dummy\-Bl\-Flash\-Erase\-Response\-Masked} \mbox{[}$\,$\mbox{]} = \{\hyperlink{_bl_request_8h_ad4dc0cd3c81da70b9680edabcc5dbc26}{B\-L\-\_\-\-S\-T\-X}, 0x03, 0x63, 0x30, B\-L\-\_\-\-E\-T\-X\}
+\item 
+const uint8\-\_\-t \hyperlink{_com_proxy__ut_8cpp_abc88a378d613105e4710c9ca295fdef6}{dummy\-Bl\-Flash\-Erase\-Response\-Pure} \mbox{[}$\,$\mbox{]} = \{0x03\}
+\item 
+uint8\-\_\-t \hyperlink{_com_proxy__ut_8cpp_a3ba266179ee5c70e23b690ad48baf85f}{g\-\_\-\-Test\-Socket\-Recv\-Buffer} \mbox{[}10240\mbox{]}
+\item 
+size\-\_\-t \hyperlink{_com_proxy__ut_8cpp_ad6148336eb2fffbe8719c568f9c005a1}{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos} = 0
+\item 
+size\-\_\-t \hyperlink{_com_proxy__ut_8cpp_ac3f491bb63121206a355e857b98de65e}{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size} = 0
+\item 
+uint8\-\_\-t \hyperlink{_com_proxy__ut_8cpp_a1aa94dcca2ad44ef686d6cd12ed91a16}{g\-\_\-\-Test\-Socket\-Send\-Buffer} \mbox{[}10240\mbox{]}
+\item 
+size\-\_\-t \hyperlink{_com_proxy__ut_8cpp_a8c154d372aefcedeb3887be5357823ab}{g\-\_\-\-Test\-Socket\-Send\-Buffer\-Pos} = 0
+\item 
+timespec \hyperlink{_com_proxy__ut_8cpp_ae78d597aea33b1b6d28709526f57de1c}{g\-\_\-\-Test\-Socket\-Send\-Delay}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{_com_proxy__ut_8cpp_aa93e89217587fdff12bf43b5d7f54f74}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!C\-R\-C\-\_\-\-S\-I\-Z\-E@{C\-R\-C\-\_\-\-S\-I\-Z\-E}}
+\index{C\-R\-C\-\_\-\-S\-I\-Z\-E@{C\-R\-C\-\_\-\-S\-I\-Z\-E}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{C\-R\-C\-\_\-\-S\-I\-Z\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-R\-C\-\_\-\-S\-I\-Z\-E~2}}\label{_com_proxy__ut_8cpp_aa93e89217587fdff12bf43b5d7f54f74}
+Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
+
+This file is part of Wifly\-\_\-\-Light.
+
+Wifly\-\_\-\-Light is free software\-: you can redistribute it and/or modify it under the terms of the G\-N\-U General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+Wifly\-\_\-\-Light is distributed in the hope that it will be useful, but W\-I\-T\-H\-O\-U\-T A\-N\-Y W\-A\-R\-R\-A\-N\-T\-Y; without even the implied warranty of M\-E\-R\-C\-H\-A\-N\-T\-A\-B\-I\-L\-I\-T\-Y or F\-I\-T\-N\-E\-S\-S F\-O\-R A P\-A\-R\-T\-I\-C\-U\-L\-A\-R P\-U\-R\-P\-O\-S\-E. See the G\-N\-U General Public License for more details.
+
+You should have received a copy of the G\-N\-U General Public License along with Wifly\-\_\-\-Light. If not, see \href{http://www.gnu.org/licenses/}{\tt http\-://www.\-gnu.\-org/licenses/}. 
+
+\subsection{Function Documentation}
+\hypertarget{_com_proxy__ut_8cpp_ac0f2228420376f4db7e1274f2b41667c}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!main@{main}}
+\index{main@{main}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{const char $\ast$}]{argv\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}}\label{_com_proxy__ut_8cpp_ac0f2228420376f4db7e1274f2b41667c}
+\hypertarget{_com_proxy__ut_8cpp_a01527be9fb01a0a7a4180c8cf8f74e3f}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!Set\-Delay@{Set\-Delay}}
+\index{Set\-Delay@{Set\-Delay}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{Set\-Delay}]{\setlength{\rightskip}{0pt plus 5cm}void Set\-Delay (
+\begin{DoxyParamCaption}
+\item[{timeval \&}]{delay}
+\end{DoxyParamCaption}
+)}}\label{_com_proxy__ut_8cpp_a01527be9fb01a0a7a4180c8cf8f74e3f}
+\hypertarget{_com_proxy__ut_8cpp_a86980b3838bcbb7311e383f752217515}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Read\-Request@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Read\-Request}}
+\index{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Read\-Request@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Read\-Request}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Read\-Request}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Read\-Request (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_com_proxy__ut_8cpp_a86980b3838bcbb7311e383f752217515}
+\hypertarget{_com_proxy__ut_8cpp_a3b8689070978376538fa2717abe534ed}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Read\-Request\-Timeout@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Read\-Request\-Timeout}}
+\index{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Read\-Request\-Timeout@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Read\-Request\-Timeout}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Read\-Request\-Timeout}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Read\-Request\-Timeout (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_com_proxy__ut_8cpp_a3b8689070978376538fa2717abe534ed}
+\hypertarget{_com_proxy__ut_8cpp_ae443e9d4e81b2ac0cbe35d697b211466}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Write\-Request@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Write\-Request}}
+\index{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Write\-Request@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Write\-Request}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Write\-Request}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Eeprom\-Write\-Request (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_com_proxy__ut_8cpp_ae443e9d4e81b2ac0cbe35d697b211466}
+\hypertarget{_com_proxy__ut_8cpp_ac10beff9671ef3831caa8862f13f8752}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Crc16\-Request@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Crc16\-Request}}
+\index{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Crc16\-Request@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Crc16\-Request}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Crc16\-Request}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Crc16\-Request (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_com_proxy__ut_8cpp_ac10beff9671ef3831caa8862f13f8752}
+\hypertarget{_com_proxy__ut_8cpp_a9b51a21874595205218d4a121c903fff}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Erase\-Request@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Erase\-Request}}
+\index{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Erase\-Request@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Erase\-Request}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Erase\-Request}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Erase\-Request (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_com_proxy__ut_8cpp_a9b51a21874595205218d4a121c903fff}
+\hypertarget{_com_proxy__ut_8cpp_a811dbf422edcd462d8b0da741d611290}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Read\-Request@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Read\-Request}}
+\index{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Read\-Request@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Read\-Request}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Read\-Request}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Read\-Request (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_com_proxy__ut_8cpp_a811dbf422edcd462d8b0da741d611290}
+\hypertarget{_com_proxy__ut_8cpp_aa4f62b65e3bfe0f44286dcd6b038133d}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Write\-Request@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Write\-Request}}
+\index{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Write\-Request@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Write\-Request}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Write\-Request}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Flash\-Write\-Request (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_com_proxy__ut_8cpp_aa4f62b65e3bfe0f44286dcd6b038133d}
+\hypertarget{_com_proxy__ut_8cpp_a094c32a39f435b933e2f046e9ae96cff}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Fuse\-Write\-Request@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Fuse\-Write\-Request}}
+\index{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Fuse\-Write\-Request@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Fuse\-Write\-Request}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Fuse\-Write\-Request}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Fuse\-Write\-Request (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_com_proxy__ut_8cpp_a094c32a39f435b933e2f046e9ae96cff}
+\hypertarget{_com_proxy__ut_8cpp_a229086b04f0feb1cb7841eaa885ea2a5}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Info\-Request@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Info\-Request}}
+\index{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Info\-Request@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Info\-Request}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Info\-Request}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Info\-Request (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_com_proxy__ut_8cpp_a229086b04f0feb1cb7841eaa885ea2a5}
+\hypertarget{_com_proxy__ut_8cpp_afe8141248f273b6b18faeece95f16dca}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Run\-App\-Request@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Run\-App\-Request}}
+\index{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Run\-App\-Request@{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Run\-App\-Request}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Run\-App\-Request}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Com\-Proxy\-\_\-\-Bl\-Run\-App\-Request (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_com_proxy__ut_8cpp_afe8141248f273b6b18faeece95f16dca}
+\hypertarget{_com_proxy__ut_8cpp_a984bf896f20f0d04665c8dc9a77dd651}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!ut\-\_\-\-Com\-Proxy\-\_\-\-Mask\-Control\-Characters@{ut\-\_\-\-Com\-Proxy\-\_\-\-Mask\-Control\-Characters}}
+\index{ut\-\_\-\-Com\-Proxy\-\_\-\-Mask\-Control\-Characters@{ut\-\_\-\-Com\-Proxy\-\_\-\-Mask\-Control\-Characters}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Com\-Proxy\-\_\-\-Mask\-Control\-Characters}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Com\-Proxy\-\_\-\-Mask\-Control\-Characters (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_com_proxy__ut_8cpp_a984bf896f20f0d04665c8dc9a77dd651}
+
+
+\subsection{Variable Documentation}
+\hypertarget{_com_proxy__ut_8cpp_ad8761f4b0b1a610a3ad96a23a4b3bdfb}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!dummy\-Bl\-Flash\-Crc16\-Response\-Masked@{dummy\-Bl\-Flash\-Crc16\-Response\-Masked}}
+\index{dummy\-Bl\-Flash\-Crc16\-Response\-Masked@{dummy\-Bl\-Flash\-Crc16\-Response\-Masked}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{dummy\-Bl\-Flash\-Crc16\-Response\-Masked}]{\setlength{\rightskip}{0pt plus 5cm}const uint8\-\_\-t dummy\-Bl\-Flash\-Crc16\-Response\-Masked\mbox{[}$\,$\mbox{]} = \{{\bf B\-L\-\_\-\-S\-T\-X}, 0x\-D\-E, 0x\-A\-D, B\-L\-\_\-\-D\-L\-E, B\-L\-\_\-\-D\-L\-E, 0x\-E\-F, B\-L\-\_\-\-E\-T\-X\}}}\label{_com_proxy__ut_8cpp_ad8761f4b0b1a610a3ad96a23a4b3bdfb}
+\hypertarget{_com_proxy__ut_8cpp_ac15cfccefa8a016518c36913569b8879}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!dummy\-Bl\-Flash\-Crc16\-Response\-Pure@{dummy\-Bl\-Flash\-Crc16\-Response\-Pure}}
+\index{dummy\-Bl\-Flash\-Crc16\-Response\-Pure@{dummy\-Bl\-Flash\-Crc16\-Response\-Pure}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{dummy\-Bl\-Flash\-Crc16\-Response\-Pure}]{\setlength{\rightskip}{0pt plus 5cm}const uint8\-\_\-t dummy\-Bl\-Flash\-Crc16\-Response\-Pure\mbox{[}$\,$\mbox{]} = \{0x\-D\-E, 0x\-A\-D, B\-L\-\_\-\-D\-L\-E, 0x\-E\-F\}}}\label{_com_proxy__ut_8cpp_ac15cfccefa8a016518c36913569b8879}
+\hypertarget{_com_proxy__ut_8cpp_a8e203086f161b4c4725921a3ae5a5338}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!dummy\-Bl\-Flash\-Erase\-Response\-Masked@{dummy\-Bl\-Flash\-Erase\-Response\-Masked}}
+\index{dummy\-Bl\-Flash\-Erase\-Response\-Masked@{dummy\-Bl\-Flash\-Erase\-Response\-Masked}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{dummy\-Bl\-Flash\-Erase\-Response\-Masked}]{\setlength{\rightskip}{0pt plus 5cm}const uint8\-\_\-t dummy\-Bl\-Flash\-Erase\-Response\-Masked\mbox{[}$\,$\mbox{]} = \{{\bf B\-L\-\_\-\-S\-T\-X}, 0x03, 0x63, 0x30, B\-L\-\_\-\-E\-T\-X\}}}\label{_com_proxy__ut_8cpp_a8e203086f161b4c4725921a3ae5a5338}
+\hypertarget{_com_proxy__ut_8cpp_abc88a378d613105e4710c9ca295fdef6}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!dummy\-Bl\-Flash\-Erase\-Response\-Pure@{dummy\-Bl\-Flash\-Erase\-Response\-Pure}}
+\index{dummy\-Bl\-Flash\-Erase\-Response\-Pure@{dummy\-Bl\-Flash\-Erase\-Response\-Pure}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{dummy\-Bl\-Flash\-Erase\-Response\-Pure}]{\setlength{\rightskip}{0pt plus 5cm}const uint8\-\_\-t dummy\-Bl\-Flash\-Erase\-Response\-Pure\mbox{[}$\,$\mbox{]} = \{0x03\}}}\label{_com_proxy__ut_8cpp_abc88a378d613105e4710c9ca295fdef6}
+\hypertarget{_com_proxy__ut_8cpp_adaa99d4b5c7e967164a61c7c191b9a6e}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!dummy\-Bl\-Flash\-Read\-Response\-Masked@{dummy\-Bl\-Flash\-Read\-Response\-Masked}}
+\index{dummy\-Bl\-Flash\-Read\-Response\-Masked@{dummy\-Bl\-Flash\-Read\-Response\-Masked}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{dummy\-Bl\-Flash\-Read\-Response\-Masked}]{\setlength{\rightskip}{0pt plus 5cm}const uint8\-\_\-t dummy\-Bl\-Flash\-Read\-Response\-Masked\mbox{[}$\,$\mbox{]} = \{{\bf B\-L\-\_\-\-S\-T\-X}, 0x\-D\-E, 0x\-A\-D, B\-L\-\_\-\-D\-L\-E, B\-L\-\_\-\-D\-L\-E, 0x\-E\-F, 0xa0, 0x06, B\-L\-\_\-\-E\-T\-X\}}}\label{_com_proxy__ut_8cpp_adaa99d4b5c7e967164a61c7c191b9a6e}
+\hypertarget{_com_proxy__ut_8cpp_a5b185d122ee9b7beec2d698f8e815dc5}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!dummy\-Bl\-Flash\-Read\-Response\-Pure@{dummy\-Bl\-Flash\-Read\-Response\-Pure}}
+\index{dummy\-Bl\-Flash\-Read\-Response\-Pure@{dummy\-Bl\-Flash\-Read\-Response\-Pure}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{dummy\-Bl\-Flash\-Read\-Response\-Pure}]{\setlength{\rightskip}{0pt plus 5cm}const uint8\-\_\-t dummy\-Bl\-Flash\-Read\-Response\-Pure\mbox{[}$\,$\mbox{]} = \{0x\-D\-E, 0x\-A\-D, B\-L\-\_\-\-D\-L\-E, 0x\-E\-F\}}}\label{_com_proxy__ut_8cpp_a5b185d122ee9b7beec2d698f8e815dc5}
+\hypertarget{_com_proxy__ut_8cpp_ae75159a26e67dd655d97a621d3d9b359}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!dummy\-Bl\-Info@{dummy\-Bl\-Info}}
+\index{dummy\-Bl\-Info@{dummy\-Bl\-Info}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{dummy\-Bl\-Info}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Bl\-Info} dummy\-Bl\-Info = \{0x\-D\-E, 0x\-A\-D, 0x\-A\-F, 0x\-F\-E, 0x\-F\-F, 0x4, 0x0, 0x\-B0, 0x\-B1, 0x\-E5, 0x00\}}}\label{_com_proxy__ut_8cpp_ae75159a26e67dd655d97a621d3d9b359}
+\hypertarget{_com_proxy__ut_8cpp_a74bf9c311b160ce15e1f568bcb3a115c}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!dummy\-Bl\-Info\-Masked@{dummy\-Bl\-Info\-Masked}}
+\index{dummy\-Bl\-Info\-Masked@{dummy\-Bl\-Info\-Masked}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{dummy\-Bl\-Info\-Masked}]{\setlength{\rightskip}{0pt plus 5cm}const uint8\-\_\-t dummy\-Bl\-Info\-Masked\mbox{[}$\,$\mbox{]} = \{{\bf B\-L\-\_\-\-S\-T\-X}, {\bf B\-L\-\_\-\-S\-T\-X}, 0x\-D\-E, 0x\-A\-D, 0x\-A\-F, 0x\-F\-E, 0x\-F\-F, B\-L\-\_\-\-D\-L\-E, 0x04, 0x\-B0, 0x\-B1, 0x\-E5, 0x00, 0x\-E\-A, 0x35, B\-L\-\_\-\-E\-T\-X\}}}\label{_com_proxy__ut_8cpp_a74bf9c311b160ce15e1f568bcb3a115c}
+\hypertarget{_com_proxy__ut_8cpp_acbe00169765f75ef54ead25f8500d42c}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!example\-Bl\-Flash\-Read@{example\-Bl\-Flash\-Read}}
+\index{example\-Bl\-Flash\-Read@{example\-Bl\-Flash\-Read}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{example\-Bl\-Flash\-Read}]{\setlength{\rightskip}{0pt plus 5cm}const uint8\-\_\-t example\-Bl\-Flash\-Read\mbox{[}$\,$\mbox{]} = \{{\bf B\-L\-\_\-\-S\-T\-X}, 0x01, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0x\-A\-D, 0x\-B5, 0x04\}}}\label{_com_proxy__ut_8cpp_acbe00169765f75ef54ead25f8500d42c}
+\hypertarget{_com_proxy__ut_8cpp_a2faf6e9c5ce44e48bca60ae4b61b81bc}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!g\-\_\-\-Debug\-Zones@{g\-\_\-\-Debug\-Zones}}
+\index{g\-\_\-\-Debug\-Zones@{g\-\_\-\-Debug\-Zones}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Debug\-Zones}]{\setlength{\rightskip}{0pt plus 5cm}const uint32\-\_\-t g\-\_\-\-Debug\-Zones = Z\-O\-N\-E\-\_\-\-E\-R\-R\-O\-R $|$ Z\-O\-N\-E\-\_\-\-W\-A\-R\-N\-I\-N\-G $|$ Z\-O\-N\-E\-\_\-\-I\-N\-F\-O $|$ Z\-O\-N\-E\-\_\-\-V\-E\-R\-B\-O\-S\-E\hspace{0.3cm}{\ttfamily [static]}}}\label{_com_proxy__ut_8cpp_a2faf6e9c5ce44e48bca60ae4b61b81bc}
+\hypertarget{_com_proxy__ut_8cpp_a3ba266179ee5c70e23b690ad48baf85f}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!g\-\_\-\-Test\-Socket\-Recv\-Buffer@{g\-\_\-\-Test\-Socket\-Recv\-Buffer}}
+\index{g\-\_\-\-Test\-Socket\-Recv\-Buffer@{g\-\_\-\-Test\-Socket\-Recv\-Buffer}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Test\-Socket\-Recv\-Buffer}]{\setlength{\rightskip}{0pt plus 5cm}uint8\-\_\-t g\-\_\-\-Test\-Socket\-Recv\-Buffer\mbox{[}10240\mbox{]}}}\label{_com_proxy__ut_8cpp_a3ba266179ee5c70e23b690ad48baf85f}
+\hypertarget{_com_proxy__ut_8cpp_ad6148336eb2fffbe8719c568f9c005a1}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos@{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos}}
+\index{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos@{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos = 0}}\label{_com_proxy__ut_8cpp_ad6148336eb2fffbe8719c568f9c005a1}
+\hypertarget{_com_proxy__ut_8cpp_ac3f491bb63121206a355e857b98de65e}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size@{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size}}
+\index{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size@{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size = 0}}\label{_com_proxy__ut_8cpp_ac3f491bb63121206a355e857b98de65e}
+\hypertarget{_com_proxy__ut_8cpp_a1aa94dcca2ad44ef686d6cd12ed91a16}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!g\-\_\-\-Test\-Socket\-Send\-Buffer@{g\-\_\-\-Test\-Socket\-Send\-Buffer}}
+\index{g\-\_\-\-Test\-Socket\-Send\-Buffer@{g\-\_\-\-Test\-Socket\-Send\-Buffer}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Test\-Socket\-Send\-Buffer}]{\setlength{\rightskip}{0pt plus 5cm}uint8\-\_\-t g\-\_\-\-Test\-Socket\-Send\-Buffer\mbox{[}10240\mbox{]}}}\label{_com_proxy__ut_8cpp_a1aa94dcca2ad44ef686d6cd12ed91a16}
+\hypertarget{_com_proxy__ut_8cpp_a8c154d372aefcedeb3887be5357823ab}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!g\-\_\-\-Test\-Socket\-Send\-Buffer\-Pos@{g\-\_\-\-Test\-Socket\-Send\-Buffer\-Pos}}
+\index{g\-\_\-\-Test\-Socket\-Send\-Buffer\-Pos@{g\-\_\-\-Test\-Socket\-Send\-Buffer\-Pos}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Test\-Socket\-Send\-Buffer\-Pos}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t g\-\_\-\-Test\-Socket\-Send\-Buffer\-Pos = 0}}\label{_com_proxy__ut_8cpp_a8c154d372aefcedeb3887be5357823ab}
+\hypertarget{_com_proxy__ut_8cpp_ae78d597aea33b1b6d28709526f57de1c}{\index{Com\-Proxy\-\_\-ut.\-cpp@{Com\-Proxy\-\_\-ut.\-cpp}!g\-\_\-\-Test\-Socket\-Send\-Delay@{g\-\_\-\-Test\-Socket\-Send\-Delay}}
+\index{g\-\_\-\-Test\-Socket\-Send\-Delay@{g\-\_\-\-Test\-Socket\-Send\-Delay}!ComProxy_ut.cpp@{Com\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Test\-Socket\-Send\-Delay}]{\setlength{\rightskip}{0pt plus 5cm}timespec g\-\_\-\-Test\-Socket\-Send\-Delay}}\label{_com_proxy__ut_8cpp_ae78d597aea33b1b6d28709526f57de1c}

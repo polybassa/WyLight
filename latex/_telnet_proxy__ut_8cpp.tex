@@ -1,0 +1,156 @@
+\hypertarget{_telnet_proxy__ut_8cpp}{\section{library/\-Telnet\-Proxy\-\_\-ut.cpp File Reference}
+\label{_telnet_proxy__ut_8cpp}\index{library/\-Telnet\-Proxy\-\_\-ut.\-cpp@{library/\-Telnet\-Proxy\-\_\-ut.\-cpp}}
+}
+{\ttfamily \#include \char`\"{}unittest.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Telnet\-Proxy.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$algorithm$>$}\\*
+{\ttfamily \#include $<$limits$>$}\\*
+{\ttfamily \#include $<$time.\-h$>$}\\*
+{\ttfamily \#include $<$unistd.\-h$>$}\\*
+{\ttfamily \#include $<$string.\-h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static const std\-::string \hyperlink{_telnet_proxy__ut_8cpp_a3433ac05d65361bc7914078c5c9c6494}{A\-O\-K\-\_\-\-S\-T\-R\-I\-N\-G} (\hyperlink{_telnet_proxy_8h_a2139cfcd9b3c7af8c0246e72ca4ae807}{A\-O\-K})
+\item 
+void \hyperlink{_telnet_proxy__ut_8cpp_a01527be9fb01a0a7a4180c8cf8f74e3f}{Set\-Delay} (timeval \&delay)
+\item 
+size\-\_\-t \hyperlink{_telnet_proxy__ut_8cpp_a237d71b957bd1e16a28e0166db5eb279}{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Close\-And\-Save} (void)
+\item 
+size\-\_\-t \hyperlink{_telnet_proxy__ut_8cpp_a5aea2b7848446b01a155f4bd5aafe35a}{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Close\-Without\-Save} (void)
+\item 
+size\-\_\-t \hyperlink{_telnet_proxy__ut_8cpp_a427bdfe6b7aeb6d3135d9883fab5e054}{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Open} (void)
+\item 
+size\-\_\-t \hyperlink{_telnet_proxy__ut_8cpp_a436d76cf48d888700dddd5dc72c7bc56}{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv} (void)
+\item 
+size\-\_\-t \hyperlink{_telnet_proxy__ut_8cpp_a899fd61cba9dec179f6a058b25c73cb7}{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String} (void)
+\item 
+size\-\_\-t \hyperlink{_telnet_proxy__ut_8cpp_a0689c0676b817804b7f0a6a354d74530}{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Send} (void)
+\item 
+size\-\_\-t \hyperlink{_telnet_proxy__ut_8cpp_a6771b062261cf166f58f1365ee5500e4}{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Send\-String} (void)
+\item 
+int \hyperlink{_telnet_proxy__ut_8cpp_ac0f2228420376f4db7e1274f2b41667c}{main} (int argc, const char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static const uint32\-\_\-t \hyperlink{_telnet_proxy__ut_8cpp_a2faf6e9c5ce44e48bca60ae4b61b81bc}{g\-\_\-\-Debug\-Zones} = Z\-O\-N\-E\-\_\-\-E\-R\-R\-O\-R $|$ Z\-O\-N\-E\-\_\-\-W\-A\-R\-N\-I\-N\-G $|$ Z\-O\-N\-E\-\_\-\-I\-N\-F\-O $|$ Z\-O\-N\-E\-\_\-\-V\-E\-R\-B\-O\-S\-E
+\item 
+uint8\-\_\-t \hyperlink{_telnet_proxy__ut_8cpp_a3ba266179ee5c70e23b690ad48baf85f}{g\-\_\-\-Test\-Socket\-Recv\-Buffer} \mbox{[}10240\mbox{]}
+\item 
+size\-\_\-t \hyperlink{_telnet_proxy__ut_8cpp_ad6148336eb2fffbe8719c568f9c005a1}{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos} = 0
+\item 
+size\-\_\-t \hyperlink{_telnet_proxy__ut_8cpp_ac3f491bb63121206a355e857b98de65e}{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size} = 0
+\item 
+uint8\-\_\-t \hyperlink{_telnet_proxy__ut_8cpp_a1aa94dcca2ad44ef686d6cd12ed91a16}{g\-\_\-\-Test\-Socket\-Send\-Buffer} \mbox{[}10240\mbox{]}
+\item 
+size\-\_\-t \hyperlink{_telnet_proxy__ut_8cpp_a8c154d372aefcedeb3887be5357823ab}{g\-\_\-\-Test\-Socket\-Send\-Buffer\-Pos} = 0
+\item 
+timespec \hyperlink{_telnet_proxy__ut_8cpp_ae78d597aea33b1b6d28709526f57de1c}{g\-\_\-\-Test\-Socket\-Send\-Delay}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{_telnet_proxy__ut_8cpp_a3433ac05d65361bc7914078c5c9c6494}{\index{Telnet\-Proxy\-\_\-ut.\-cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}!A\-O\-K\-\_\-\-S\-T\-R\-I\-N\-G@{A\-O\-K\-\_\-\-S\-T\-R\-I\-N\-G}}
+\index{A\-O\-K\-\_\-\-S\-T\-R\-I\-N\-G@{A\-O\-K\-\_\-\-S\-T\-R\-I\-N\-G}!TelnetProxy_ut.cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{A\-O\-K\-\_\-\-S\-T\-R\-I\-N\-G}]{\setlength{\rightskip}{0pt plus 5cm}static const std\-::string A\-O\-K\-\_\-\-S\-T\-R\-I\-N\-G (
+\begin{DoxyParamCaption}
+\item[{{\bf A\-O\-K}}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{_telnet_proxy__ut_8cpp_a3433ac05d65361bc7914078c5c9c6494}
+\hypertarget{_telnet_proxy__ut_8cpp_ac0f2228420376f4db7e1274f2b41667c}{\index{Telnet\-Proxy\-\_\-ut.\-cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}!main@{main}}
+\index{main@{main}!TelnetProxy_ut.cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{const char $\ast$}]{argv\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}}\label{_telnet_proxy__ut_8cpp_ac0f2228420376f4db7e1274f2b41667c}
+\hypertarget{_telnet_proxy__ut_8cpp_a01527be9fb01a0a7a4180c8cf8f74e3f}{\index{Telnet\-Proxy\-\_\-ut.\-cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}!Set\-Delay@{Set\-Delay}}
+\index{Set\-Delay@{Set\-Delay}!TelnetProxy_ut.cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{Set\-Delay}]{\setlength{\rightskip}{0pt plus 5cm}void Set\-Delay (
+\begin{DoxyParamCaption}
+\item[{timeval \&}]{delay}
+\end{DoxyParamCaption}
+)}}\label{_telnet_proxy__ut_8cpp_a01527be9fb01a0a7a4180c8cf8f74e3f}
+\hypertarget{_telnet_proxy__ut_8cpp_a237d71b957bd1e16a28e0166db5eb279}{\index{Telnet\-Proxy\-\_\-ut.\-cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}!ut\-\_\-\-Telnet\-Proxy\-\_\-\-Close\-And\-Save@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Close\-And\-Save}}
+\index{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Close\-And\-Save@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Close\-And\-Save}!TelnetProxy_ut.cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Close\-And\-Save}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Telnet\-Proxy\-\_\-\-Close\-And\-Save (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_telnet_proxy__ut_8cpp_a237d71b957bd1e16a28e0166db5eb279}
+\hypertarget{_telnet_proxy__ut_8cpp_a5aea2b7848446b01a155f4bd5aafe35a}{\index{Telnet\-Proxy\-\_\-ut.\-cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}!ut\-\_\-\-Telnet\-Proxy\-\_\-\-Close\-Without\-Save@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Close\-Without\-Save}}
+\index{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Close\-Without\-Save@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Close\-Without\-Save}!TelnetProxy_ut.cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Close\-Without\-Save}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Telnet\-Proxy\-\_\-\-Close\-Without\-Save (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_telnet_proxy__ut_8cpp_a5aea2b7848446b01a155f4bd5aafe35a}
+\hypertarget{_telnet_proxy__ut_8cpp_a427bdfe6b7aeb6d3135d9883fab5e054}{\index{Telnet\-Proxy\-\_\-ut.\-cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}!ut\-\_\-\-Telnet\-Proxy\-\_\-\-Open@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Open}}
+\index{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Open@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Open}!TelnetProxy_ut.cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Open}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Telnet\-Proxy\-\_\-\-Open (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_telnet_proxy__ut_8cpp_a427bdfe6b7aeb6d3135d9883fab5e054}
+\hypertarget{_telnet_proxy__ut_8cpp_a436d76cf48d888700dddd5dc72c7bc56}{\index{Telnet\-Proxy\-\_\-ut.\-cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}!ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv}}
+\index{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv}!TelnetProxy_ut.cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_telnet_proxy__ut_8cpp_a436d76cf48d888700dddd5dc72c7bc56}
+\hypertarget{_telnet_proxy__ut_8cpp_a899fd61cba9dec179f6a058b25c73cb7}{\index{Telnet\-Proxy\-\_\-ut.\-cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}!ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String}}
+\index{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String}!TelnetProxy_ut.cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_telnet_proxy__ut_8cpp_a899fd61cba9dec179f6a058b25c73cb7}
+\hypertarget{_telnet_proxy__ut_8cpp_a0689c0676b817804b7f0a6a354d74530}{\index{Telnet\-Proxy\-\_\-ut.\-cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}!ut\-\_\-\-Telnet\-Proxy\-\_\-\-Send@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Send}}
+\index{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Send@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Send}!TelnetProxy_ut.cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Send}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Telnet\-Proxy\-\_\-\-Send (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_telnet_proxy__ut_8cpp_a0689c0676b817804b7f0a6a354d74530}
+\hypertarget{_telnet_proxy__ut_8cpp_a6771b062261cf166f58f1365ee5500e4}{\index{Telnet\-Proxy\-\_\-ut.\-cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}!ut\-\_\-\-Telnet\-Proxy\-\_\-\-Send\-String@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Send\-String}}
+\index{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Send\-String@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Send\-String}!TelnetProxy_ut.cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Send\-String}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Telnet\-Proxy\-\_\-\-Send\-String (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_telnet_proxy__ut_8cpp_a6771b062261cf166f58f1365ee5500e4}
+
+
+\subsection{Variable Documentation}
+\hypertarget{_telnet_proxy__ut_8cpp_a2faf6e9c5ce44e48bca60ae4b61b81bc}{\index{Telnet\-Proxy\-\_\-ut.\-cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}!g\-\_\-\-Debug\-Zones@{g\-\_\-\-Debug\-Zones}}
+\index{g\-\_\-\-Debug\-Zones@{g\-\_\-\-Debug\-Zones}!TelnetProxy_ut.cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Debug\-Zones}]{\setlength{\rightskip}{0pt plus 5cm}const uint32\-\_\-t g\-\_\-\-Debug\-Zones = Z\-O\-N\-E\-\_\-\-E\-R\-R\-O\-R $|$ Z\-O\-N\-E\-\_\-\-W\-A\-R\-N\-I\-N\-G $|$ Z\-O\-N\-E\-\_\-\-I\-N\-F\-O $|$ Z\-O\-N\-E\-\_\-\-V\-E\-R\-B\-O\-S\-E\hspace{0.3cm}{\ttfamily [static]}}}\label{_telnet_proxy__ut_8cpp_a2faf6e9c5ce44e48bca60ae4b61b81bc}
+Copyright (C) 2013 Nils Weiss, Patrick Bruenn.
+
+This file is part of Wifly\-\_\-\-Light.
+
+Wifly\-\_\-\-Light is free software\-: you can redistribute it and/or modify it under the terms of the G\-N\-U General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+Wifly\-\_\-\-Light is distributed in the hope that it will be useful, but W\-I\-T\-H\-O\-U\-T A\-N\-Y W\-A\-R\-R\-A\-N\-T\-Y; without even the implied warranty of M\-E\-R\-C\-H\-A\-N\-T\-A\-B\-I\-L\-I\-T\-Y or F\-I\-T\-N\-E\-S\-S F\-O\-R A P\-A\-R\-T\-I\-C\-U\-L\-A\-R P\-U\-R\-P\-O\-S\-E. See the G\-N\-U General Public License for more details.
+
+You should have received a copy of the G\-N\-U General Public License along with Wifly\-\_\-\-Light. If not, see \href{http://www.gnu.org/licenses/}{\tt http\-://www.\-gnu.\-org/licenses/}. \hypertarget{_telnet_proxy__ut_8cpp_a3ba266179ee5c70e23b690ad48baf85f}{\index{Telnet\-Proxy\-\_\-ut.\-cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}!g\-\_\-\-Test\-Socket\-Recv\-Buffer@{g\-\_\-\-Test\-Socket\-Recv\-Buffer}}
+\index{g\-\_\-\-Test\-Socket\-Recv\-Buffer@{g\-\_\-\-Test\-Socket\-Recv\-Buffer}!TelnetProxy_ut.cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Test\-Socket\-Recv\-Buffer}]{\setlength{\rightskip}{0pt plus 5cm}uint8\-\_\-t g\-\_\-\-Test\-Socket\-Recv\-Buffer\mbox{[}10240\mbox{]}}}\label{_telnet_proxy__ut_8cpp_a3ba266179ee5c70e23b690ad48baf85f}
+\hypertarget{_telnet_proxy__ut_8cpp_ad6148336eb2fffbe8719c568f9c005a1}{\index{Telnet\-Proxy\-\_\-ut.\-cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}!g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos@{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos}}
+\index{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos@{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos}!TelnetProxy_ut.cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos = 0}}\label{_telnet_proxy__ut_8cpp_ad6148336eb2fffbe8719c568f9c005a1}
+\hypertarget{_telnet_proxy__ut_8cpp_ac3f491bb63121206a355e857b98de65e}{\index{Telnet\-Proxy\-\_\-ut.\-cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}!g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size@{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size}}
+\index{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size@{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size}!TelnetProxy_ut.cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size = 0}}\label{_telnet_proxy__ut_8cpp_ac3f491bb63121206a355e857b98de65e}
+\hypertarget{_telnet_proxy__ut_8cpp_a1aa94dcca2ad44ef686d6cd12ed91a16}{\index{Telnet\-Proxy\-\_\-ut.\-cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}!g\-\_\-\-Test\-Socket\-Send\-Buffer@{g\-\_\-\-Test\-Socket\-Send\-Buffer}}
+\index{g\-\_\-\-Test\-Socket\-Send\-Buffer@{g\-\_\-\-Test\-Socket\-Send\-Buffer}!TelnetProxy_ut.cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Test\-Socket\-Send\-Buffer}]{\setlength{\rightskip}{0pt plus 5cm}uint8\-\_\-t g\-\_\-\-Test\-Socket\-Send\-Buffer\mbox{[}10240\mbox{]}}}\label{_telnet_proxy__ut_8cpp_a1aa94dcca2ad44ef686d6cd12ed91a16}
+\hypertarget{_telnet_proxy__ut_8cpp_a8c154d372aefcedeb3887be5357823ab}{\index{Telnet\-Proxy\-\_\-ut.\-cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}!g\-\_\-\-Test\-Socket\-Send\-Buffer\-Pos@{g\-\_\-\-Test\-Socket\-Send\-Buffer\-Pos}}
+\index{g\-\_\-\-Test\-Socket\-Send\-Buffer\-Pos@{g\-\_\-\-Test\-Socket\-Send\-Buffer\-Pos}!TelnetProxy_ut.cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Test\-Socket\-Send\-Buffer\-Pos}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t g\-\_\-\-Test\-Socket\-Send\-Buffer\-Pos = 0}}\label{_telnet_proxy__ut_8cpp_a8c154d372aefcedeb3887be5357823ab}
+\hypertarget{_telnet_proxy__ut_8cpp_ae78d597aea33b1b6d28709526f57de1c}{\index{Telnet\-Proxy\-\_\-ut.\-cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}!g\-\_\-\-Test\-Socket\-Send\-Delay@{g\-\_\-\-Test\-Socket\-Send\-Delay}}
+\index{g\-\_\-\-Test\-Socket\-Send\-Delay@{g\-\_\-\-Test\-Socket\-Send\-Delay}!TelnetProxy_ut.cpp@{Telnet\-Proxy\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Test\-Socket\-Send\-Delay}]{\setlength{\rightskip}{0pt plus 5cm}timespec g\-\_\-\-Test\-Socket\-Send\-Delay}}\label{_telnet_proxy__ut_8cpp_ae78d597aea33b1b6d28709526f57de1c}

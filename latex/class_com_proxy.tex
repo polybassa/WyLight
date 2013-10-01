@@ -1,0 +1,53 @@
+\hypertarget{class_com_proxy}{\section{Com\-Proxy Class Reference}
+\label{class_com_proxy}\index{Com\-Proxy@{Com\-Proxy}}
+}
+
+
+{\ttfamily \#include $<$Com\-Proxy.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_com_proxy_a71069fbcb6901649f75f7b816559e061}{Com\-Proxy} (const \hyperlink{class_tcp_socket}{Tcp\-Socket} \&sock)
+\item 
+size\-\_\-t \hyperlink{class_com_proxy_a2443ea54fcb996802d643468eb5333b9}{Send} (const \hyperlink{struct_bl_request}{Bl\-Request} \&req, uint8\-\_\-t $\ast$p\-Response, size\-\_\-t response\-Size, bool do\-Sync=true) const   throw (\-Connection\-Timeout, Fatal\-Error)
+\item 
+size\-\_\-t \hyperlink{class_com_proxy_a9fd3719cd64459a8966161e8bf5abed8}{Send} (const \hyperlink{class_fw_request}{Fw\-Request} \&request, response\-\_\-frame $\ast$p\-Response, size\-\_\-t response\-Size) const   throw (\-Connection\-Timeout, Fatal\-Error)
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_com_proxy_a71069fbcb6901649f75f7b816559e061}{\index{Com\-Proxy@{Com\-Proxy}!Com\-Proxy@{Com\-Proxy}}
+\index{Com\-Proxy@{Com\-Proxy}!ComProxy@{Com\-Proxy}}
+\subsubsection[{Com\-Proxy}]{\setlength{\rightskip}{0pt plus 5cm}Com\-Proxy\-::\-Com\-Proxy (
+\begin{DoxyParamCaption}
+\item[{const {\bf Tcp\-Socket} \&}]{sock}
+\end{DoxyParamCaption}
+)}}\label{class_com_proxy_a71069fbcb6901649f75f7b816559e061}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_com_proxy_a2443ea54fcb996802d643468eb5333b9}{\index{Com\-Proxy@{Com\-Proxy}!Send@{Send}}
+\index{Send@{Send}!ComProxy@{Com\-Proxy}}
+\subsubsection[{Send}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t Com\-Proxy\-::\-Send (
+\begin{DoxyParamCaption}
+\item[{const {\bf Bl\-Request} \&}]{req, }
+\item[{uint8\-\_\-t $\ast$}]{p\-Response, }
+\item[{size\-\_\-t}]{response\-Size, }
+\item[{bool}]{do\-Sync = {\ttfamily true}}
+\end{DoxyParamCaption}
+) const  throw ({\bf Connection\-Timeout}, {\bf Fatal\-Error})}}\label{class_com_proxy_a2443ea54fcb996802d643468eb5333b9}
+\hypertarget{class_com_proxy_a9fd3719cd64459a8966161e8bf5abed8}{\index{Com\-Proxy@{Com\-Proxy}!Send@{Send}}
+\index{Send@{Send}!ComProxy@{Com\-Proxy}}
+\subsubsection[{Send}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t Com\-Proxy\-::\-Send (
+\begin{DoxyParamCaption}
+\item[{const {\bf Fw\-Request} \&}]{request, }
+\item[{response\-\_\-frame $\ast$}]{p\-Response, }
+\item[{size\-\_\-t}]{response\-Size}
+\end{DoxyParamCaption}
+) const  throw ({\bf Connection\-Timeout}, {\bf Fatal\-Error})}}\label{class_com_proxy_a9fd3719cd64459a8966161e8bf5abed8}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{_com_proxy_8h}{Com\-Proxy.\-h}\end{DoxyCompactItemize}

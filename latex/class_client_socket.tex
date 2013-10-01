@@ -1,0 +1,126 @@
+\hypertarget{class_client_socket}{\section{Client\-Socket Class Reference}
+\label{class_client_socket}\index{Client\-Socket@{Client\-Socket}}
+}
+
+
+{\ttfamily \#include $<$Client\-Socket.\-h$>$}
+
+Inheritance diagram for Client\-Socket\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_client_socket}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_client_socket_a9ef0e9b489c27a59ddcc5b863d70c5c4}{Client\-Socket} (uint32\-\_\-t addr, uint16\-\_\-t port, int style)  throw (\-Fatal\-Error)
+\item 
+virtual \hyperlink{class_client_socket_a9c8af4fc4f56b62ef0ff7d67037f65a3}{$\sim$\-Client\-Socket} ()
+\item 
+bool \hyperlink{class_client_socket_ab024bbccfda7b4983177e318b7ac32a7}{Select} (timeval $\ast$timeout) const   throw (\-Fatal\-Error)
+\item 
+virtual size\-\_\-t \hyperlink{class_client_socket_ad53cfcbf3eebbfb8b8314f58d3354edd}{Send} (const uint8\-\_\-t $\ast$frame, size\-\_\-t length) const =0
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const int \hyperlink{class_client_socket_acb5029d09ef913c0b444e97f2cc98bef}{m\-Sock}
+\item 
+struct sockaddr\-\_\-in \hyperlink{class_client_socket_acbf9ed9f1ebac9348a2d1c77b516acbc}{m\-Sock\-Addr}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
+\end{DoxyVerb}
+
+
+This file is part of Wifly\-\_\-\-Light.
+
+Wifly\-\_\-\-Light is free software\-: you can redistribute it and/or modify it under the terms of the G\-N\-U General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+Wifly\-\_\-\-Light is distributed in the hope that it will be useful, but W\-I\-T\-H\-O\-U\-T A\-N\-Y W\-A\-R\-R\-A\-N\-T\-Y; without even the implied warranty of M\-E\-R\-C\-H\-A\-N\-T\-A\-B\-I\-L\-I\-T\-Y or F\-I\-T\-N\-E\-S\-S F\-O\-R A P\-A\-R\-T\-I\-C\-U\-L\-A\-R P\-U\-R\-P\-O\-S\-E. See the G\-N\-U General Public License for more details.
+
+You should have received a copy of the G\-N\-U General Public License along with Wifly\-\_\-\-Light. If not, see \href{http://www.gnu.org/licenses/}{\tt http\-://www.\-gnu.\-org/licenses/}. Abstract base class controlling the low level socket file descriptor 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_client_socket_a9ef0e9b489c27a59ddcc5b863d70c5c4}{\index{Client\-Socket@{Client\-Socket}!Client\-Socket@{Client\-Socket}}
+\index{Client\-Socket@{Client\-Socket}!ClientSocket@{Client\-Socket}}
+\subsubsection[{Client\-Socket}]{\setlength{\rightskip}{0pt plus 5cm}Client\-Socket\-::\-Client\-Socket (
+\begin{DoxyParamCaption}
+\item[{uint32\-\_\-t}]{addr, }
+\item[{uint16\-\_\-t}]{port, }
+\item[{int}]{style}
+\end{DoxyParamCaption}
+)  throw ({\bf Fatal\-Error})}}\label{class_client_socket_a9ef0e9b489c27a59ddcc5b863d70c5c4}
+Aquire the low level socket file descriptor 
+\begin{DoxyParams}{Parameters}
+{\em addr} & I\-Pv4 address in host byte order \\
+\hline
+{\em port} & I\-Pv4 port number in host byte order \\
+\hline
+{\em style} & either S\-O\-C\-K\-\_\-\-D\-G\-R\-A\-M (udp) or S\-O\-C\-K\-\_\-\-S\-T\-R\-E\-A\-M for tcp socket \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{class_fatal_error}{Fatal\-Error}} & if the creation of the bsd sock descriptor fails \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{class_client_socket_a9c8af4fc4f56b62ef0ff7d67037f65a3}{\index{Client\-Socket@{Client\-Socket}!$\sim$\-Client\-Socket@{$\sim$\-Client\-Socket}}
+\index{$\sim$\-Client\-Socket@{$\sim$\-Client\-Socket}!ClientSocket@{Client\-Socket}}
+\subsubsection[{$\sim$\-Client\-Socket}]{\setlength{\rightskip}{0pt plus 5cm}virtual Client\-Socket\-::$\sim$\-Client\-Socket (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_client_socket_a9c8af4fc4f56b62ef0ff7d67037f65a3}
+Destructor releasing the socket file descriptor 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_client_socket_ab024bbccfda7b4983177e318b7ac32a7}{\index{Client\-Socket@{Client\-Socket}!Select@{Select}}
+\index{Select@{Select}!ClientSocket@{Client\-Socket}}
+\subsubsection[{Select}]{\setlength{\rightskip}{0pt plus 5cm}bool Client\-Socket\-::\-Select (
+\begin{DoxyParamCaption}
+\item[{timeval $\ast$}]{timeout}
+\end{DoxyParamCaption}
+) const  throw ({\bf Fatal\-Error})}}\label{class_client_socket_ab024bbccfda7b4983177e318b7ac32a7}
+wait for data on the low level socket 
+\begin{DoxyParams}{Parameters}
+{\em timeout} & to wait for data, to block indefinitly use N\-U\-L\-L, which is default \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if select() timed out, false if data is ready 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{class_fatal_error}{Fatal\-Error}} & if something very unexpected happens \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{class_client_socket_ad53cfcbf3eebbfb8b8314f58d3354edd}{\index{Client\-Socket@{Client\-Socket}!Send@{Send}}
+\index{Send@{Send}!ClientSocket@{Client\-Socket}}
+\subsubsection[{Send}]{\setlength{\rightskip}{0pt plus 5cm}virtual size\-\_\-t Client\-Socket\-::\-Send (
+\begin{DoxyParamCaption}
+\item[{const uint8\-\_\-t $\ast$}]{frame, }
+\item[{size\-\_\-t}]{length}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_client_socket_ad53cfcbf3eebbfb8b8314f58d3354edd}
+Interface to send a data frame with a given length, you have to implement this function in child classes 
+
+Implemented in \hyperlink{class_udp_socket_a434383e163f13643cff11a2cdf59961a}{Udp\-Socket}, and \hyperlink{class_tcp_socket_add01c46a43a1663da73ec620dd9ad5ef}{Tcp\-Socket}.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_client_socket_acb5029d09ef913c0b444e97f2cc98bef}{\index{Client\-Socket@{Client\-Socket}!m\-Sock@{m\-Sock}}
+\index{m\-Sock@{m\-Sock}!ClientSocket@{Client\-Socket}}
+\subsubsection[{m\-Sock}]{\setlength{\rightskip}{0pt plus 5cm}const int Client\-Socket\-::m\-Sock\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_client_socket_acb5029d09ef913c0b444e97f2cc98bef}
+low level socket file descriptor \hypertarget{class_client_socket_acbf9ed9f1ebac9348a2d1c77b516acbc}{\index{Client\-Socket@{Client\-Socket}!m\-Sock\-Addr@{m\-Sock\-Addr}}
+\index{m\-Sock\-Addr@{m\-Sock\-Addr}!ClientSocket@{Client\-Socket}}
+\subsubsection[{m\-Sock\-Addr}]{\setlength{\rightskip}{0pt plus 5cm}struct sockaddr\-\_\-in Client\-Socket\-::m\-Sock\-Addr\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_client_socket_acbf9ed9f1ebac9348a2d1c77b516acbc}
+I\-Pv4 address of listening or target port 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{_client_socket_8h}{Client\-Socket.\-h}\end{DoxyCompactItemize}
