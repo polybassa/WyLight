@@ -1,0 +1,119 @@
+\hypertarget{class_wy_light_1_1_fw_command}{\section{Wy\-Light\-:\-:Fw\-Command Class Reference}
+\label{class_wy_light_1_1_fw_command}\index{Wy\-Light\-::\-Fw\-Command@{Wy\-Light\-::\-Fw\-Command}}
+}
+
+
+{\ttfamily \#include $<$Fw\-Command.\-h$>$}
+
+Inheritance diagram for Wy\-Light\-:\-:Fw\-Command\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.924623cm]{class_wy_light_1_1_fw_command}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+const uint8\-\_\-t $\ast$ \hyperlink{class_wy_light_1_1_fw_command_ad891fbb6f1a2bed364a77760c574bc68}{Get\-Data} (void) const 
+\item 
+size\-\_\-t \hyperlink{class_wy_light_1_1_fw_command_af45ca242c24c497039ea3063d1d2bf06}{Get\-Size} (void) const 
+\item 
+const bool \hyperlink{class_wy_light_1_1_fw_command_a53887169da07e23ecdeec8739acc26ce}{Is\-Response\-Required} (void) const 
+\item 
+virtual \hyperlink{class_wy_light_1_1_fw_response}{Fw\-Response} \& \hyperlink{class_wy_light_1_1_fw_command_a37ae4cf77fd2787a9802dbb55ef489fe}{Get\-Response} (void)=0
+\item 
+virtual bool \hyperlink{class_wy_light_1_1_fw_command_adad943e35162c4967a7c7f1ff44e9b66}{operator==} (const \hyperlink{class_wy_light_1_1_fw_command}{Fw\-Command} \&ref) const 
+\item 
+virtual bool \hyperlink{class_wy_light_1_1_fw_command_a442a3756b34059192afc65f547d67094}{operator!=} (const \hyperlink{class_wy_light_1_1_fw_command}{Fw\-Command} \&ref) const 
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_wy_light_1_1_fw_command_a19f7445d6240e218881903aff767b2a8}{Fw\-Command} (uint8\-\_\-t cmd, size\-\_\-t size=0, bool with\-Response=true)
+\item 
+virtual \hyperlink{class_wy_light_1_1_fw_command_aa3631efbb779f06a2813cdc4f44a6f48}{$\sim$\-Fw\-Command} (void)=default
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+struct led\-\_\-cmd \hyperlink{class_wy_light_1_1_fw_command_a9c16cbc6d789b240a43b95c74c608353}{m\-Req\-Frame}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_wy_light_1_1_fw_command_a19f7445d6240e218881903aff767b2a8}{\index{Wy\-Light\-::\-Fw\-Command@{Wy\-Light\-::\-Fw\-Command}!Fw\-Command@{Fw\-Command}}
+\index{Fw\-Command@{Fw\-Command}!WyLight::FwCommand@{Wy\-Light\-::\-Fw\-Command}}
+\subsubsection[{Fw\-Command}]{\setlength{\rightskip}{0pt plus 5cm}Wy\-Light\-::\-Fw\-Command\-::\-Fw\-Command (
+\begin{DoxyParamCaption}
+\item[{uint8\-\_\-t}]{cmd, }
+\item[{size\-\_\-t}]{size = {\ttfamily 0}, }
+\item[{bool}]{with\-Response = {\ttfamily true}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}}\label{class_wy_light_1_1_fw_command_a19f7445d6240e218881903aff767b2a8}
+\hypertarget{class_wy_light_1_1_fw_command_aa3631efbb779f06a2813cdc4f44a6f48}{\index{Wy\-Light\-::\-Fw\-Command@{Wy\-Light\-::\-Fw\-Command}!$\sim$\-Fw\-Command@{$\sim$\-Fw\-Command}}
+\index{$\sim$\-Fw\-Command@{$\sim$\-Fw\-Command}!WyLight::FwCommand@{Wy\-Light\-::\-Fw\-Command}}
+\subsubsection[{$\sim$\-Fw\-Command}]{\setlength{\rightskip}{0pt plus 5cm}virtual Wy\-Light\-::\-Fw\-Command\-::$\sim$\-Fw\-Command (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}, {\ttfamily [default]}}}\label{class_wy_light_1_1_fw_command_aa3631efbb779f06a2813cdc4f44a6f48}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_wy_light_1_1_fw_command_ad891fbb6f1a2bed364a77760c574bc68}{\index{Wy\-Light\-::\-Fw\-Command@{Wy\-Light\-::\-Fw\-Command}!Get\-Data@{Get\-Data}}
+\index{Get\-Data@{Get\-Data}!WyLight::FwCommand@{Wy\-Light\-::\-Fw\-Command}}
+\subsubsection[{Get\-Data}]{\setlength{\rightskip}{0pt plus 5cm}const uint8\-\_\-t$\ast$ Wy\-Light\-::\-Fw\-Command\-::\-Get\-Data (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_wy_light_1_1_fw_command_ad891fbb6f1a2bed364a77760c574bc68}
+\hypertarget{class_wy_light_1_1_fw_command_a37ae4cf77fd2787a9802dbb55ef489fe}{\index{Wy\-Light\-::\-Fw\-Command@{Wy\-Light\-::\-Fw\-Command}!Get\-Response@{Get\-Response}}
+\index{Get\-Response@{Get\-Response}!WyLight::FwCommand@{Wy\-Light\-::\-Fw\-Command}}
+\subsubsection[{Get\-Response}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Fw\-Response}\& Wy\-Light\-::\-Fw\-Command\-::\-Get\-Response (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_wy_light_1_1_fw_command_a37ae4cf77fd2787a9802dbb55ef489fe}
+
+
+Implemented in \hyperlink{struct_wy_light_1_1_fw_cmd_get_version_a238467662aa18499177b809d9b1d52d4}{Wy\-Light\-::\-Fw\-Cmd\-Get\-Version}, \hyperlink{struct_wy_light_1_1_fw_cmd_get_tracebuffer_a3c6291a4be3b4451dc1cdf1b21488d39}{Wy\-Light\-::\-Fw\-Cmd\-Get\-Tracebuffer}, \hyperlink{struct_wy_light_1_1_fw_cmd_get_rtc_a75ca8ea9db3216ef36367546f7726951}{Wy\-Light\-::\-Fw\-Cmd\-Get\-Rtc}, \hyperlink{struct_wy_light_1_1_fw_cmd_get_cycletime_aa6b457bdab92b36b2e16f88868e78beb}{Wy\-Light\-::\-Fw\-Cmd\-Get\-Cycletime}, and \hyperlink{class_wy_light_1_1_fw_cmd_simple_a0d924ef07e2c70417d7300c384c9914d}{Wy\-Light\-::\-Fw\-Cmd\-Simple}.
+
+\hypertarget{class_wy_light_1_1_fw_command_af45ca242c24c497039ea3063d1d2bf06}{\index{Wy\-Light\-::\-Fw\-Command@{Wy\-Light\-::\-Fw\-Command}!Get\-Size@{Get\-Size}}
+\index{Get\-Size@{Get\-Size}!WyLight::FwCommand@{Wy\-Light\-::\-Fw\-Command}}
+\subsubsection[{Get\-Size}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t Wy\-Light\-::\-Fw\-Command\-::\-Get\-Size (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_wy_light_1_1_fw_command_af45ca242c24c497039ea3063d1d2bf06}
+\hypertarget{class_wy_light_1_1_fw_command_a53887169da07e23ecdeec8739acc26ce}{\index{Wy\-Light\-::\-Fw\-Command@{Wy\-Light\-::\-Fw\-Command}!Is\-Response\-Required@{Is\-Response\-Required}}
+\index{Is\-Response\-Required@{Is\-Response\-Required}!WyLight::FwCommand@{Wy\-Light\-::\-Fw\-Command}}
+\subsubsection[{Is\-Response\-Required}]{\setlength{\rightskip}{0pt plus 5cm}const bool Wy\-Light\-::\-Fw\-Command\-::\-Is\-Response\-Required (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_wy_light_1_1_fw_command_a53887169da07e23ecdeec8739acc26ce}
+\hypertarget{class_wy_light_1_1_fw_command_a442a3756b34059192afc65f547d67094}{\index{Wy\-Light\-::\-Fw\-Command@{Wy\-Light\-::\-Fw\-Command}!operator!=@{operator!=}}
+\index{operator!=@{operator!=}!WyLight::FwCommand@{Wy\-Light\-::\-Fw\-Command}}
+\subsubsection[{operator!=}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Wy\-Light\-::\-Fw\-Command\-::operator!= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Fw\-Command} \&}]{ref}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{class_wy_light_1_1_fw_command_a442a3756b34059192afc65f547d67094}
+\hypertarget{class_wy_light_1_1_fw_command_adad943e35162c4967a7c7f1ff44e9b66}{\index{Wy\-Light\-::\-Fw\-Command@{Wy\-Light\-::\-Fw\-Command}!operator==@{operator==}}
+\index{operator==@{operator==}!WyLight::FwCommand@{Wy\-Light\-::\-Fw\-Command}}
+\subsubsection[{operator==}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Wy\-Light\-::\-Fw\-Command\-::operator== (
+\begin{DoxyParamCaption}
+\item[{const {\bf Fw\-Command} \&}]{ref}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{class_wy_light_1_1_fw_command_adad943e35162c4967a7c7f1ff44e9b66}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_wy_light_1_1_fw_command_a9c16cbc6d789b240a43b95c74c608353}{\index{Wy\-Light\-::\-Fw\-Command@{Wy\-Light\-::\-Fw\-Command}!m\-Req\-Frame@{m\-Req\-Frame}}
+\index{m\-Req\-Frame@{m\-Req\-Frame}!WyLight::FwCommand@{Wy\-Light\-::\-Fw\-Command}}
+\subsubsection[{m\-Req\-Frame}]{\setlength{\rightskip}{0pt plus 5cm}struct led\-\_\-cmd Wy\-Light\-::\-Fw\-Command\-::m\-Req\-Frame\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_wy_light_1_1_fw_command_a9c16cbc6d789b240a43b95c74c608353}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{_fw_command_8h}{Fw\-Command.\-h}\end{DoxyCompactItemize}

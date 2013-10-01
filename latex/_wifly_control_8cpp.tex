@@ -1,0 +1,55 @@
+\hypertarget{_wifly_control_8cpp}{\section{library/\-Wifly\-Control.cpp File Reference}
+\label{_wifly_control_8cpp}\index{library/\-Wifly\-Control.\-cpp@{library/\-Wifly\-Control.\-cpp}}
+}
+{\ttfamily \#include \char`\"{}Wifly\-Control.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}crc.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}trace.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$algorithm$>$}\\*
+{\ttfamily \#include $<$cctype$>$}\\*
+{\ttfamily \#include $<$stddef.\-h$>$}\\*
+{\ttfamily \#include $<$fstream$>$}\\*
+{\ttfamily \#include $<$iomanip$>$}\\*
+{\ttfamily \#include $<$cstdlib$>$}\\*
+{\ttfamily \#include $<$unistd.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}intelhexclass.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Wifly\-Color.\-h\char`\"{}}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_wifly_control_8cpp_ab920d47c551380540cd2a5f42679c725}{Set\-Addr\-Rgb}(R\-E\-F, A\-D\-D\-R\-E\-S\-S, A\-R\-G\-B)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static const int \hyperlink{_wifly_control_8cpp_a5d2a6eaeb05595ac981331f802f5695e}{g\-\_\-\-Debug\-Zones} = Z\-O\-N\-E\-\_\-\-E\-R\-R\-O\-R $|$ Z\-O\-N\-E\-\_\-\-W\-A\-R\-N\-I\-N\-G $|$ Z\-O\-N\-E\-\_\-\-I\-N\-F\-O $|$ Z\-O\-N\-E\-\_\-\-V\-E\-R\-B\-O\-S\-E
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{_wifly_control_8cpp_ab920d47c551380540cd2a5f42679c725}{\index{Wifly\-Control.\-cpp@{Wifly\-Control.\-cpp}!Set\-Addr\-Rgb@{Set\-Addr\-Rgb}}
+\index{Set\-Addr\-Rgb@{Set\-Addr\-Rgb}!WiflyControl.cpp@{Wifly\-Control.\-cpp}}
+\subsubsection[{Set\-Addr\-Rgb}]{\setlength{\rightskip}{0pt plus 5cm}\#define Set\-Addr\-Rgb(
+\begin{DoxyParamCaption}
+\item[{}]{R\-E\-F, }
+\item[{}]{A\-D\-D\-R\-E\-S\-S, }
+\item[{}]{A\-R\-G\-B}
+\end{DoxyParamCaption}
+)}}\label{_wifly_control_8cpp_ab920d47c551380540cd2a5f42679c725}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\{ \(\backslash\)
+    REF.addr[3] = ((ADDRESS) & 0xff000000) >> 24; \(\backslash\)
+    REF.addr[2] = ((ADDRESS) & 0x00ff0000) >> 16; \(\backslash\)
+    REF.addr[1] = ((ADDRESS) & 0x0000ff00) >> 8; \(\backslash\)
+    REF.addr[0] = ((ADDRESS) & 0x000000ff); \(\backslash\)
+    REF.red = ((ARGB) & 0x00ff0000) >> 16; \(\backslash\)
+    REF.green = ((ARGB) & 0x0000ff00) >> 8; \(\backslash\)
+    REF.blue = (ARGB) & 0x000000ff; \(\backslash\)
+\}
+\end{DoxyCode}
+Macro to reduce code redundancy, while converting two 32 bit values into an address array and red, green, blue values. 
+
+\subsection{Variable Documentation}
+\hypertarget{_wifly_control_8cpp_a5d2a6eaeb05595ac981331f802f5695e}{\index{Wifly\-Control.\-cpp@{Wifly\-Control.\-cpp}!g\-\_\-\-Debug\-Zones@{g\-\_\-\-Debug\-Zones}}
+\index{g\-\_\-\-Debug\-Zones@{g\-\_\-\-Debug\-Zones}!WiflyControl.cpp@{Wifly\-Control.\-cpp}}
+\subsubsection[{g\-\_\-\-Debug\-Zones}]{\setlength{\rightskip}{0pt plus 5cm}const int g\-\_\-\-Debug\-Zones = Z\-O\-N\-E\-\_\-\-E\-R\-R\-O\-R $|$ Z\-O\-N\-E\-\_\-\-W\-A\-R\-N\-I\-N\-G $|$ Z\-O\-N\-E\-\_\-\-I\-N\-F\-O $|$ Z\-O\-N\-E\-\_\-\-V\-E\-R\-B\-O\-S\-E\hspace{0.3cm}{\ttfamily [static]}}}\label{_wifly_control_8cpp_a5d2a6eaeb05595ac981331f802f5695e}

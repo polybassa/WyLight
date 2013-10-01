@@ -1,0 +1,106 @@
+\hypertarget{class_tcp_socket}{\section{Tcp\-Socket Class Reference}
+\label{class_tcp_socket}\index{Tcp\-Socket@{Tcp\-Socket}}
+}
+
+
+{\ttfamily \#include $<$Client\-Socket.\-h$>$}
+
+Inheritance diagram for Tcp\-Socket\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_tcp_socket}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_tcp_socket_ac7d0bc1afd5de6ed718785d35c656bb3}{Tcp\-Socket} (uint32\-\_\-t Addr, uint16\-\_\-t port)  throw (\-Connection\-Lost, Fatal\-Error)
+\item 
+size\-\_\-t \hyperlink{class_tcp_socket_ae11e390e4c9f9de484da2868a25d1623}{Recv} (uint8\-\_\-t $\ast$p\-Buffer, size\-\_\-t length, timeval $\ast$timeout=N\-U\-L\-L) const   throw (\-Fatal\-Error)
+\item 
+virtual size\-\_\-t \hyperlink{class_tcp_socket_add01c46a43a1663da73ec620dd9ad5ef}{Send} (const uint8\-\_\-t $\ast$frame, size\-\_\-t length) const 
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Wrapper to make tcp socket handling more easy 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_tcp_socket_ac7d0bc1afd5de6ed718785d35c656bb3}{\index{Tcp\-Socket@{Tcp\-Socket}!Tcp\-Socket@{Tcp\-Socket}}
+\index{Tcp\-Socket@{Tcp\-Socket}!TcpSocket@{Tcp\-Socket}}
+\subsubsection[{Tcp\-Socket}]{\setlength{\rightskip}{0pt plus 5cm}Tcp\-Socket\-::\-Tcp\-Socket (
+\begin{DoxyParamCaption}
+\item[{uint32\-\_\-t}]{Addr, }
+\item[{uint16\-\_\-t}]{port}
+\end{DoxyParamCaption}
+)  throw ({\bf Connection\-Lost}, {\bf Fatal\-Error})}}\label{class_tcp_socket_ac7d0bc1afd5de6ed718785d35c656bb3}
+
+\begin{DoxyParams}{Parameters}
+{\em Addr} & I\-Pv4 address in host byte order \\
+\hline
+{\em port} & I\-Pv4 port number in host byte order \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{class_fatal_error}{Fatal\-Error}} & if the base class constructor fails\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_client_socket_a9ef0e9b489c27a59ddcc5b863d70c5c4}{Client\-Socket\-::\-Client\-Socket} 
+\end{DoxySeeAlso}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{class_connection_lost}{Connection\-Lost}} & if connect() fails on the internal socket \\
+\hline
+\end{DoxyExceptions}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_tcp_socket_ae11e390e4c9f9de484da2868a25d1623}{\index{Tcp\-Socket@{Tcp\-Socket}!Recv@{Recv}}
+\index{Recv@{Recv}!TcpSocket@{Tcp\-Socket}}
+\subsubsection[{Recv}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t Tcp\-Socket\-::\-Recv (
+\begin{DoxyParamCaption}
+\item[{uint8\-\_\-t $\ast$}]{p\-Buffer, }
+\item[{size\-\_\-t}]{length, }
+\item[{timeval $\ast$}]{timeout = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+) const  throw ({\bf Fatal\-Error})}}\label{class_tcp_socket_ae11e390e4c9f9de484da2868a25d1623}
+Receive data from the remote socket. 
+\begin{DoxyParams}{Parameters}
+{\em p\-Buffer} & to store the read data \\
+\hline
+{\em length} & size of the p\-Buffer \\
+\hline
+{\em timeout} & to wait for data, to block indefinitly use N\-U\-L\-L, which is default \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of bytes read into $<$p\-Buffer$>$ 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{class_fatal_error}{Fatal\-Error}} & if something very unexpected happens \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{class_tcp_socket_add01c46a43a1663da73ec620dd9ad5ef}{\index{Tcp\-Socket@{Tcp\-Socket}!Send@{Send}}
+\index{Send@{Send}!TcpSocket@{Tcp\-Socket}}
+\subsubsection[{Send}]{\setlength{\rightskip}{0pt plus 5cm}virtual size\-\_\-t Tcp\-Socket\-::\-Send (
+\begin{DoxyParamCaption}
+\item[{const uint8\-\_\-t $\ast$}]{frame, }
+\item[{size\-\_\-t}]{length}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_tcp_socket_add01c46a43a1663da73ec620dd9ad5ef}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_client_socket_ad53cfcbf3eebbfb8b8314f58d3354edd}{Client\-Socket\-::\-Send} 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{class_client_socket_ad53cfcbf3eebbfb8b8314f58d3354edd}{Client\-Socket}.
+
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{_client_socket_8h}{Client\-Socket.\-h}\end{DoxyCompactItemize}

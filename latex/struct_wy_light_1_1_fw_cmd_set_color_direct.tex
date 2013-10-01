@@ -1,0 +1,59 @@
+\hypertarget{struct_wy_light_1_1_fw_cmd_set_color_direct}{\section{Wy\-Light\-:\-:Fw\-Cmd\-Set\-Color\-Direct Struct Reference}
+\label{struct_wy_light_1_1_fw_cmd_set_color_direct}\index{Wy\-Light\-::\-Fw\-Cmd\-Set\-Color\-Direct@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Color\-Direct}}
+}
+
+
+{\ttfamily \#include $<$Fw\-Command.\-h$>$}
+
+Inheritance diagram for Wy\-Light\-:\-:Fw\-Cmd\-Set\-Color\-Direct\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{struct_wy_light_1_1_fw_cmd_set_color_direct}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{struct_wy_light_1_1_fw_cmd_set_color_direct_abfae7b223f9692906dbc98e31e53c54b}{Fw\-Cmd\-Set\-Color\-Direct} (uint32\-\_\-t argb, uint32\-\_\-t addr)
+\item 
+\hyperlink{struct_wy_light_1_1_fw_cmd_set_color_direct_a1a82af68025d20cf7905615c4658400e}{Fw\-Cmd\-Set\-Color\-Direct} (const uint8\-\_\-t $\ast$p\-Buffer, size\-\_\-t buffer\-Length)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{struct_wy_light_1_1_fw_cmd_set_color_direct_abfae7b223f9692906dbc98e31e53c54b}{\index{Wy\-Light\-::\-Fw\-Cmd\-Set\-Color\-Direct@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Color\-Direct}!Fw\-Cmd\-Set\-Color\-Direct@{Fw\-Cmd\-Set\-Color\-Direct}}
+\index{Fw\-Cmd\-Set\-Color\-Direct@{Fw\-Cmd\-Set\-Color\-Direct}!WyLight::FwCmdSetColorDirect@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Color\-Direct}}
+\subsubsection[{Fw\-Cmd\-Set\-Color\-Direct}]{\setlength{\rightskip}{0pt plus 5cm}Wy\-Light\-::\-Fw\-Cmd\-Set\-Color\-Direct\-::\-Fw\-Cmd\-Set\-Color\-Direct (
+\begin{DoxyParamCaption}
+\item[{uint32\-\_\-t}]{argb, }
+\item[{uint32\-\_\-t}]{addr}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{struct_wy_light_1_1_fw_cmd_set_color_direct_abfae7b223f9692906dbc98e31e53c54b}
+Sets all leds with same color directly. This doesn't affect the \hyperlink{namespace_wy_light}{Wy\-Light} script controller 
+\begin{DoxyParams}{Parameters}
+{\em argb} & is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff) f.\-e. black(  0,  0,  0) as argb is 0xff000000 green(  0,255,  0) as argb is 0xff00ff00 white(255,255,255) as argb is 0xffffffff \\
+\hline
+{\em addr} & bitmask of leds which should be effected by this command, set bit to 1 to affect the led, default 0xffffffff \\
+\hline
+\end{DoxyParams}
+\hypertarget{struct_wy_light_1_1_fw_cmd_set_color_direct_a1a82af68025d20cf7905615c4658400e}{\index{Wy\-Light\-::\-Fw\-Cmd\-Set\-Color\-Direct@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Color\-Direct}!Fw\-Cmd\-Set\-Color\-Direct@{Fw\-Cmd\-Set\-Color\-Direct}}
+\index{Fw\-Cmd\-Set\-Color\-Direct@{Fw\-Cmd\-Set\-Color\-Direct}!WyLight::FwCmdSetColorDirect@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Color\-Direct}}
+\subsubsection[{Fw\-Cmd\-Set\-Color\-Direct}]{\setlength{\rightskip}{0pt plus 5cm}Wy\-Light\-::\-Fw\-Cmd\-Set\-Color\-Direct\-::\-Fw\-Cmd\-Set\-Color\-Direct (
+\begin{DoxyParamCaption}
+\item[{const uint8\-\_\-t $\ast$}]{p\-Buffer, }
+\item[{size\-\_\-t}]{buffer\-Length}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{struct_wy_light_1_1_fw_cmd_set_color_direct_a1a82af68025d20cf7905615c4658400e}
+Sets all leds with different colors directly. This doesn't affect the \hyperlink{namespace_wy_light}{Wy\-Light} script controller Example\-: to set the first led to yellow and the second to blue and all others to off use a $<$p\-Buffer$>$ like this\-: p\-Buffer\mbox{[}\mbox{]} = \{0xff, 0xff, 0x00, 0x00, 0x00, 0xff\}; buffer\-Length = 6; 
+\begin{DoxyParams}{Parameters}
+{\em p\-Buffer} & containing continouse rgb values r1g1b1r2g2b2...r32g32b32 \\
+\hline
+{\em buffer\-Length} & number of bytes in $<$p\-Buffer$>$ usally 32 $\ast$ 3 bytes \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{_fw_command_8h}{Fw\-Command.\-h}\end{DoxyCompactItemize}

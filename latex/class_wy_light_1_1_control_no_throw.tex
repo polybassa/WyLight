@@ -1,0 +1,642 @@
+\hypertarget{class_wy_light_1_1_control_no_throw}{\section{Wy\-Light\-:\-:Control\-No\-Throw Class Reference}
+\label{class_wy_light_1_1_control_no_throw}\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}}
+}
+
+
+Class to communicate with a Wifly\-\_\-\-Light Hardware.  
+
+
+
+
+{\ttfamily \#include $<$Wifly\-Control\-No\-Throw.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_wy_light_1_1_control_no_throw_a904cf007af9dad72fc9f561e5bf3fcbf}{Control\-No\-Throw} (uint32\-\_\-t addr, uint16\-\_\-t port)
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_a4a84bbb426ef1b98f1f4f01e4c3c69c5}{Bl\-Enable\-Autostart} (void) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_a5fba41a8dff954ad4e2a69507ffb063d}{Bl\-Erase\-Eeprom} (void) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_aff9296834b2cdce95fc151f06042babf}{Bl\-Erase\-Flash} (void) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_a8005c5dd9fff473bb43c59c956c4a772}{Bl\-Program\-Flash} (const std\-::string \&filename) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_a7544aca0b4ca8bbadfea5bb1be728cb2}{Bl\-Read\-Crc\-Flash} (std\-::ostream \&out, uint32\-\_\-t address, size\-\_\-t num\-Blocks) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_a49dee62bcd9806fe3f521793312ba30a}{Bl\-Read\-Eeprom} (std\-::ostream \&out, uint32\-\_\-t address, size\-\_\-t num\-Bytes) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_a20162c1a357bd55488552eca0d5872ca}{Bl\-Read\-Flash} (std\-::ostream \&out, uint32\-\_\-t address, size\-\_\-t num\-Bytes) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_a79cd174ece3a779b605a8e3c3e9f2f82}{Bl\-Read\-Fw\-Version} (std\-::string \&version\-String) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_acf73db9a4da4dfc1330e14cbf47864e3}{Bl\-Read\-Info} (\hyperlink{struct_wy_light_1_1_bl_info}{Bl\-Info} \&info) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_ab5d301c3983548d341890ea4291c9854}{Bl\-Run\-App} (void) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_af3e8e289fa6eb33dce5c7e262be3eecb}{Conf\-Get\-Ssid} (std\-::string \&ssid) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_a91e2d2a39eb4ab9f4780025be68cfe90}{Conf\-Module\-As\-Soft\-A\-P} (const std\-::string \&accesspoint\-Name=\char`\"{}Wifly\-\_\-\-Light\char`\"{}) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_a31690542e9bba1c304235cf099c77365}{Conf\-Module\-For\-Wlan} (const std\-::string \&phrase, const std\-::string \&ssid, const std\-::string \&name=\char`\"{}Wifly\-\_\-\-Light\char`\"{}) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_ab6ae25973e8f7943045ed4710cfba3cf}{Conf\-Reboot\-Wlan\-Module} (void) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_a1aa980bed9ae47bdab43f5987a41681d}{Conf\-Set\-Device\-Id} (const std\-::string \&name) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_a9dd890f20043ddd80ee529999bfcd21f}{Conf\-Change\-Wlan\-Channel} (void) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_affad92c25b64a0206b25af3fc538c4d3}{Fw\-Clear\-Script} (void)
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_af206ee9a6c7333d0ef38168c978c72c7}{Fw\-Get\-Cycletime} (std\-::string \&output)
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_a85eeaa249f73f511890e9d3feb9a3c6f}{Fw\-Get\-Rtc} (tm \&time\-Value)
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_aa725063c85bbe01b94d8fd868119dbab}{Fw\-Get\-Tracebuffer} (std\-::string \&output)
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_a63c2375f32c7c5b2679dac095e1adbd1}{Fw\-Get\-Version} (std\-::string \&output)
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_ace76fa87789fc3b36c709ec5a57f8f3c}{Fw\-Loop\-Off} (const uint8\-\_\-t num\-Loops)
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_abe18abf5c2770714da51da98cc1adb15}{Fw\-Loop\-On} (void)
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_a8277cef363ac4e966dfd0ee5946ef051}{Fw\-Set\-Color\-Direct} (const std\-::vector$<$ uint8\-\_\-t $>$ buffer)
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_a6b852a289a48a450efc3ffd91edb7832}{Fw\-Set\-Fade} (const uint32\-\_\-t argb, const uint16\-\_\-t fade\-Time=0, const uint32\-\_\-t addr=0xffffffff, const bool parallel\-Fade=false)
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_a1d50d589698cd976dec870710d1d628a}{Fw\-Set\-Gradient} (const uint32\-\_\-t argb\-\_\-1, const uint32\-\_\-t argb\-\_\-2, const uint16\-\_\-t fade\-Time=0, const bool parallel\-Fade=false, const uint8\-\_\-t length=N\-U\-M\-\_\-\-O\-F\-\_\-\-L\-E\-D, const uint8\-\_\-t offset=0)
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_a57d493b1081707246bafa7be52f8db49}{Fw\-Set\-Rtc} (const tm \&time\-Value)
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_a124a9c7b09966ce9f717b1058ab0ac54}{Fw\-Set\-Wait} (const uint16\-\_\-t wait\-Time)
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_control_no_throw_ae94183c86828b1a223c46fec3c04c285}{Fw\-Start\-Bl} (void)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class to communicate with a Wifly\-\_\-\-Light Hardware. 
+
+The \hyperlink{class_wy_light_1_1_control_no_throw}{Control\-No\-Throw} class allows the user to control the Wifly\-\_\-\-Light hardware. This is a wrapper class to \hyperlink{class_wy_light_1_1_control}{Wy\-Light\-::\-Control} to catch all exceptions from the lower software layers and convert them into error codes, which is required for example for jni or i\-O\-S clients There are three target's at the Wifly\-\_\-\-Light Hardware.
+\begin{DoxyItemize}
+\item Bootloader\par
+ All methodes with Bl$\ast$ relate to the bootloader part.
+\item Firmware\par
+ All methodes with Fw$\ast$ relate to the firmware part.
+\item R\-N-\/171 Wifi Interface\par
+ All methodes witch Conf$\ast$ relate to the communication module. 
+\end{DoxyItemize}
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_wy_light_1_1_control_no_throw_a904cf007af9dad72fc9f561e5bf3fcbf}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Control\-No\-Throw@{Control\-No\-Throw}}
+\index{Control\-No\-Throw@{Control\-No\-Throw}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Control\-No\-Throw}]{\setlength{\rightskip}{0pt plus 5cm}Wy\-Light\-::\-Control\-No\-Throw\-::\-Control\-No\-Throw (
+\begin{DoxyParamCaption}
+\item[{uint32\-\_\-t}]{addr, }
+\item[{uint16\-\_\-t}]{port}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_control_no_throw_a904cf007af9dad72fc9f561e5bf3fcbf}
+Connect to a wifly device 
+\begin{DoxyParams}{Parameters}
+{\em addr} & ipv4 address as 32 bit value in host byte order \\
+\hline
+{\em port} & number of the wifly device server in host byte order \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_wy_light_1_1_control_no_throw_a4a84bbb426ef1b98f1f4f01e4c3c69c5}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Bl\-Enable\-Autostart@{Bl\-Enable\-Autostart}}
+\index{Bl\-Enable\-Autostart@{Bl\-Enable\-Autostart}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Enable\-Autostart}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Bl\-Enable\-Autostart (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_control_no_throw_a4a84bbb426ef1b98f1f4f01e4c3c69c5}
+Instructs the bootloader to set the autostart flag to true. This ensures the bootloader will be started on the next reboot automatically. \begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_a5fba41a8dff954ad4e2a69507ffb063d}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Bl\-Erase\-Eeprom@{Bl\-Erase\-Eeprom}}
+\index{Bl\-Erase\-Eeprom@{Bl\-Erase\-Eeprom}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Erase\-Eeprom}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Bl\-Erase\-Eeprom (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_control_no_throw_a5fba41a8dff954ad4e2a69507ffb063d}
+Instructs the bootloader to erase the whole eeprom. The wifly device has to be in bootloader mode for this command. \begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_aff9296834b2cdce95fc151f06042babf}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Bl\-Erase\-Flash@{Bl\-Erase\-Flash}}
+\index{Bl\-Erase\-Flash@{Bl\-Erase\-Flash}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Erase\-Flash}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Bl\-Erase\-Flash (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_control_no_throw_aff9296834b2cdce95fc151f06042babf}
+Instructs the bootloader to erase the whole flash which is not occupied by the bootloader itself. The wifly device has to be in bootloader mode for this command. \begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_a8005c5dd9fff473bb43c59c956c4a772}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Bl\-Program\-Flash@{Bl\-Program\-Flash}}
+\index{Bl\-Program\-Flash@{Bl\-Program\-Flash}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Program\-Flash}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Bl\-Program\-Flash (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{filename}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_control_no_throw_a8005c5dd9fff473bb43c59c956c4a772}
+Instructs the bootloader to update the wifly device with new firmware. The wifly device has to be in bootloader mode for this command. 
+\begin{DoxyParams}{Parameters}
+{\em filename} & path to the $\ast$.hex file containing the new firmware \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_a7544aca0b4ca8bbadfea5bb1be728cb2}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Bl\-Read\-Crc\-Flash@{Bl\-Read\-Crc\-Flash}}
+\index{Bl\-Read\-Crc\-Flash@{Bl\-Read\-Crc\-Flash}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Read\-Crc\-Flash}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Bl\-Read\-Crc\-Flash (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{out, }
+\item[{uint32\-\_\-t}]{address, }
+\item[{size\-\_\-t}]{num\-Blocks}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_control_no_throw_a7544aca0b4ca8bbadfea5bb1be728cb2}
+Instructs the bootloader to create crc-\/16 checksums for the content of the specified flash area. T\-O\-D\-O crc values are in little endian byte order The wifly device has to be in bootloader mode for this command. 
+\begin{DoxyParams}{Parameters}
+{\em out} & ostream for the resulting 16bit crc values \\
+\hline
+{\em address} & crc generation starts from this flash address \\
+\hline
+{\em num\-Blocks} & size of the flash area for which the crc are calculated. One block contains 64 bytes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries I\-N\-V\-A\-L\-I\-D\-\_\-\-P\-A\-R\-A\-M\-E\-T\-E\-R} if a parameter is out of bound \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_a49dee62bcd9806fe3f521793312ba30a}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Bl\-Read\-Eeprom@{Bl\-Read\-Eeprom}}
+\index{Bl\-Read\-Eeprom@{Bl\-Read\-Eeprom}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Read\-Eeprom}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Bl\-Read\-Eeprom (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{out, }
+\item[{uint32\-\_\-t}]{address, }
+\item[{size\-\_\-t}]{num\-Bytes}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_control_no_throw_a49dee62bcd9806fe3f521793312ba30a}
+Instructs the bootloader to read the specified memory area of the eeprom. The wifly device has to be in bootloader mode for this command. 
+\begin{DoxyParams}{Parameters}
+{\em out} & ostream where the eeprom content is written \\
+\hline
+{\em address} & start of the eeprom region to read \\
+\hline
+{\em num\-Bytes} & size of the eeprom region to read \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries I\-N\-V\-A\-L\-I\-D\-\_\-\-P\-A\-R\-A\-M\-E\-T\-E\-R} if a parameter is out of bound \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_a20162c1a357bd55488552eca0d5872ca}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Bl\-Read\-Flash@{Bl\-Read\-Flash}}
+\index{Bl\-Read\-Flash@{Bl\-Read\-Flash}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Read\-Flash}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Bl\-Read\-Flash (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{out, }
+\item[{uint32\-\_\-t}]{address, }
+\item[{size\-\_\-t}]{num\-Bytes}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_control_no_throw_a20162c1a357bd55488552eca0d5872ca}
+Instructs the bootloader to read the specified memory area of the flash. The wifly device has to be in bootloader mode for this command. 
+\begin{DoxyParams}{Parameters}
+{\em out} & ostream where the eeprom content is written \\
+\hline
+{\em address} & start of the flash region to read\-Request \\
+\hline
+{\em num\-Bytes} & size of the flash region to read \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries I\-N\-V\-A\-L\-I\-D\-\_\-\-P\-A\-R\-A\-M\-E\-T\-E\-R} if a parameter is out of bound \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_a79cd174ece3a779b605a8e3c3e9f2f82}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Bl\-Read\-Fw\-Version@{Bl\-Read\-Fw\-Version}}
+\index{Bl\-Read\-Fw\-Version@{Bl\-Read\-Fw\-Version}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Read\-Fw\-Version}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Bl\-Read\-Fw\-Version (
+\begin{DoxyParamCaption}
+\item[{std\-::string \&}]{version\-String}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_control_no_throw_a79cd174ece3a779b605a8e3c3e9f2f82}
+Instructs the bootloader to read the version string from the firmware memory. The wifly device has to be in bootloader mode for this command. 
+\begin{DoxyParams}{Parameters}
+{\em version\-String} & is the returnvalue for the firmware version from pic memory \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_acf73db9a4da4dfc1330e14cbf47864e3}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Bl\-Read\-Info@{Bl\-Read\-Info}}
+\index{Bl\-Read\-Info@{Bl\-Read\-Info}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Read\-Info}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Bl\-Read\-Info (
+\begin{DoxyParamCaption}
+\item[{{\bf Bl\-Info} \&}]{info}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_control_no_throw_acf73db9a4da4dfc1330e14cbf47864e3}
+Instructs the bootloader to return a struct of bootloader informations like bootloader version, flash and eeprom size. see \-::\-Bl\-Info for details. The wifly device has to be in bootloader mode for this command. \begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_ab5d301c3983548d341890ea4291c9854}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Bl\-Run\-App@{Bl\-Run\-App}}
+\index{Bl\-Run\-App@{Bl\-Run\-App}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Bl\-Run\-App}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Bl\-Run\-App (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_control_no_throw_ab5d301c3983548d341890ea4291c9854}
+Instructs the bootloader to start the wifly device firmware. The wifly device has to be in bootloader mode for this command. \begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_a9dd890f20043ddd80ee529999bfcd21f}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Conf\-Change\-Wlan\-Channel@{Conf\-Change\-Wlan\-Channel}}
+\index{Conf\-Change\-Wlan\-Channel@{Conf\-Change\-Wlan\-Channel}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Conf\-Change\-Wlan\-Channel}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Conf\-Change\-Wlan\-Channel (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_control_no_throw_a9dd890f20043ddd80ee529999bfcd21f}
+Wlan module performs a wifi scan and changes to the next free channel. This function can take some time. \begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} in case of an error \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_af3e8e289fa6eb33dce5c7e262be3eecb}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Conf\-Get\-Ssid@{Conf\-Get\-Ssid}}
+\index{Conf\-Get\-Ssid@{Conf\-Get\-Ssid}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Conf\-Get\-Ssid}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Conf\-Get\-Ssid (
+\begin{DoxyParamCaption}
+\item[{std\-::string \&}]{ssid}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_control_no_throw_af3e8e289fa6eb33dce5c7e262be3eecb}
+Read the currently configured ssid from \hyperlink{namespace_wy_light}{Wy\-Light} module 
+\begin{DoxyParams}{Parameters}
+{\em ssid} & is the outputstring for the current ssid set in the R\-N-\/171 W\-L\-A\-N modul \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_a91e2d2a39eb4ab9f4780025be68cfe90}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Conf\-Module\-As\-Soft\-A\-P@{Conf\-Module\-As\-Soft\-A\-P}}
+\index{Conf\-Module\-As\-Soft\-A\-P@{Conf\-Module\-As\-Soft\-A\-P}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Conf\-Module\-As\-Soft\-A\-P}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Conf\-Module\-As\-Soft\-A\-P (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{accesspoint\-Name = {\ttfamily \char`\"{}Wifly\-\_\-Light\char`\"{}}}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_control_no_throw_a91e2d2a39eb4ab9f4780025be68cfe90}
+Configurates the \hyperlink{namespace_wy_light}{Wy\-Light} module as stand alone accesspoint. With accesspoint name you can change the ssid for this accesspoint. 
+\begin{DoxyParams}{Parameters}
+{\em accesspoint\-Name} & 1 -\/ 32 characters \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} in case of an error \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_a31690542e9bba1c304235cf099c77365}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Conf\-Module\-For\-Wlan@{Conf\-Module\-For\-Wlan}}
+\index{Conf\-Module\-For\-Wlan@{Conf\-Module\-For\-Wlan}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Conf\-Module\-For\-Wlan}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Conf\-Module\-For\-Wlan (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{phrase, }
+\item[{const std\-::string \&}]{ssid, }
+\item[{const std\-::string \&}]{name = {\ttfamily \char`\"{}Wifly\-\_\-Light\char`\"{}}}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_control_no_throw_a31690542e9bba1c304235cf099c77365}
+Configurates the \hyperlink{namespace_wy_light}{Wy\-Light} module as client for an existing wlan network with W\-P\-A2 protection 
+\begin{DoxyParams}{Parameters}
+{\em phrase} & W\-P\-A2 passphrase 1 -\/ 63 characters \\
+\hline
+{\em ssid} & 1 -\/ 32 characters \\
+\hline
+{\em name} & 1 -\/ 32 characters, unique name which apperas in the broadcast message \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} in case of an error \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_ab6ae25973e8f7943045ed4710cfba3cf}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Conf\-Reboot\-Wlan\-Module@{Conf\-Reboot\-Wlan\-Module}}
+\index{Conf\-Reboot\-Wlan\-Module@{Conf\-Reboot\-Wlan\-Module}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Conf\-Reboot\-Wlan\-Module}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Conf\-Reboot\-Wlan\-Module (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_control_no_throw_ab6ae25973e8f7943045ed4710cfba3cf}
+Reboot the modul. A\-T\-T\-E\-N\-T\-I\-O\-N\-: You have to reconnect after a reboot \begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} in case of an error \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_a1aa980bed9ae47bdab43f5987a41681d}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Conf\-Set\-Device\-Id@{Conf\-Set\-Device\-Id}}
+\index{Conf\-Set\-Device\-Id@{Conf\-Set\-Device\-Id}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Conf\-Set\-Device\-Id}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Conf\-Set\-Device\-Id (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{name}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_control_no_throw_a1aa980bed9ae47bdab43f5987a41681d}
+Allows you to give every Wifly\-\_\-\-Light device an unique name 
+\begin{DoxyParams}{Parameters}
+{\em name} & 1 -\/ 32 characters \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} in case of an error \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_affad92c25b64a0206b25af3fc538c4d3}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Fw\-Clear\-Script@{Fw\-Clear\-Script}}
+\index{Fw\-Clear\-Script@{Fw\-Clear\-Script}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Clear\-Script}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Fw\-Clear\-Script (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_control_no_throw_affad92c25b64a0206b25af3fc538c4d3}
+Wipe all commands from the \hyperlink{namespace_wy_light}{Wy\-Light} script controller \begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_af206ee9a6c7333d0ef38168c978c72c7}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Fw\-Get\-Cycletime@{Fw\-Get\-Cycletime}}
+\index{Fw\-Get\-Cycletime@{Fw\-Get\-Cycletime}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Get\-Cycletime}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Fw\-Get\-Cycletime (
+\begin{DoxyParamCaption}
+\item[{std\-::string \&}]{output}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_control_no_throw_af206ee9a6c7333d0ef38168c978c72c7}
+Reads the cycletimes from wifly device and stores them into the response object 
+\begin{DoxyParams}{Parameters}
+{\em output} & string with all recorded cycletimes from P\-I\-C firmware \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_a85eeaa249f73f511890e9d3feb9a3c6f}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Fw\-Get\-Rtc@{Fw\-Get\-Rtc}}
+\index{Fw\-Get\-Rtc@{Fw\-Get\-Rtc}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Get\-Rtc}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Fw\-Get\-Rtc (
+\begin{DoxyParamCaption}
+\item[{tm \&}]{time\-Value}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_control_no_throw_a85eeaa249f73f511890e9d3feb9a3c6f}
+Reads the current rtc time from the wifly device 
+\begin{DoxyParams}{Parameters}
+{\em time\-Value} & reference to a tm object, where to store the rtc time from P\-I\-C firmware \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_aa725063c85bbe01b94d8fd868119dbab}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Fw\-Get\-Tracebuffer@{Fw\-Get\-Tracebuffer}}
+\index{Fw\-Get\-Tracebuffer@{Fw\-Get\-Tracebuffer}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Get\-Tracebuffer}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Fw\-Get\-Tracebuffer (
+\begin{DoxyParamCaption}
+\item[{std\-::string \&}]{output}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_control_no_throw_aa725063c85bbe01b94d8fd868119dbab}
+Reads the tracebuffer from wifly device and stores the data into the response object 
+\begin{DoxyParams}{Parameters}
+{\em output} & a string with all recorded trace messages from P\-I\-C firmware \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_a63c2375f32c7c5b2679dac095e1adbd1}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Fw\-Get\-Version@{Fw\-Get\-Version}}
+\index{Fw\-Get\-Version@{Fw\-Get\-Version}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Get\-Version}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Fw\-Get\-Version (
+\begin{DoxyParamCaption}
+\item[{std\-::string \&}]{output}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_control_no_throw_a63c2375f32c7c5b2679dac095e1adbd1}
+Reads the firmware version currently running on the wifly device. 
+\begin{DoxyParams}{Parameters}
+{\em output} & a string representing the version number of the P\-I\-C firmware \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_ace76fa87789fc3b36c709ec5a57f8f3c}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Fw\-Loop\-Off@{Fw\-Loop\-Off}}
+\index{Fw\-Loop\-Off@{Fw\-Loop\-Off}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Loop\-Off}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Fw\-Loop\-Off (
+\begin{DoxyParamCaption}
+\item[{const uint8\-\_\-t}]{num\-Loops}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_control_no_throw_ace76fa87789fc3b36c709ec5a57f8f3c}
+Injects a Loop\-Off command into the wifly script controller 
+\begin{DoxyParams}{Parameters}
+{\em num\-Loops} & number of rounds before termination of the loop, use 0 for infinite loops. To terminate an infinite loop you have to call $<$Fw\-Clear\-Script$>$ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_abe18abf5c2770714da51da98cc1adb15}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Fw\-Loop\-On@{Fw\-Loop\-On}}
+\index{Fw\-Loop\-On@{Fw\-Loop\-On}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Loop\-On}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Fw\-Loop\-On (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_control_no_throw_abe18abf5c2770714da51da98cc1adb15}
+Injects a Loop\-On command into the wifly script controller \begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_a8277cef363ac4e966dfd0ee5946ef051}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Fw\-Set\-Color\-Direct@{Fw\-Set\-Color\-Direct}}
+\index{Fw\-Set\-Color\-Direct@{Fw\-Set\-Color\-Direct}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Set\-Color\-Direct}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Fw\-Set\-Color\-Direct (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ uint8\-\_\-t $>$}]{buffer}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_control_no_throw_a8277cef363ac4e966dfd0ee5946ef051}
+Sets all leds with different colors directly. This doesn't affect the \hyperlink{namespace_wy_light}{Wy\-Light} script controller Example\-: to set the first led to yellow and the second to blue and all others to off use a $<$buffer$>$ like this\-: buffer\mbox{[}\mbox{]} = \{0xff, 0xff, 0x00, 0x00, 0x00, 0xff\}; buffer\-Length = 6; 
+\begin{DoxyParams}{Parameters}
+{\em buffer} & containing continouse rgb values r1g1b1r2g2b2...r32g32b32 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_a6b852a289a48a450efc3ffd91edb7832}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Fw\-Set\-Fade@{Fw\-Set\-Fade}}
+\index{Fw\-Set\-Fade@{Fw\-Set\-Fade}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Set\-Fade}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Fw\-Set\-Fade (
+\begin{DoxyParamCaption}
+\item[{const uint32\-\_\-t}]{argb, }
+\item[{const uint16\-\_\-t}]{fade\-Time = {\ttfamily 0}, }
+\item[{const uint32\-\_\-t}]{addr = {\ttfamily 0xffffffff}, }
+\item[{const bool}]{parallel\-Fade = {\ttfamily false}}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_control_no_throw_a6b852a289a48a450efc3ffd91edb7832}
+Injects a fade command into the wifly script controller 
+\begin{DoxyParams}{Parameters}
+{\em argb} & is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff) f.\-e. black(  0,  0,  0) as argb is 0xff000000 green(  0,255,  0) as argb is 0xff00ff00 white(255,255,255) as argb is 0xffffffff \\
+\hline
+{\em fade\-Time} & in hundreths of a second. Use 0 to set color immediately, default = 0 \\
+\hline
+{\em addr} & bitmask of leds which should be effected by this command, set bit to 1 to affect the led, default 0xffffffff \\
+\hline
+{\em parallel\-Fade} & if true other fades are allowed in parallel with this fade \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_a1d50d589698cd976dec870710d1d628a}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Fw\-Set\-Gradient@{Fw\-Set\-Gradient}}
+\index{Fw\-Set\-Gradient@{Fw\-Set\-Gradient}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Set\-Gradient}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Fw\-Set\-Gradient (
+\begin{DoxyParamCaption}
+\item[{const uint32\-\_\-t}]{argb\-\_\-1, }
+\item[{const uint32\-\_\-t}]{argb\-\_\-2, }
+\item[{const uint16\-\_\-t}]{fade\-Time = {\ttfamily 0}, }
+\item[{const bool}]{parallel\-Fade = {\ttfamily false}, }
+\item[{const uint8\-\_\-t}]{length = {\ttfamily NUM\-\_\-OF\-\_\-LED}, }
+\item[{const uint8\-\_\-t}]{offset = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_control_no_throw_a1d50d589698cd976dec870710d1d628a}
+Injects a gradient command into the wifly script controller 
+\begin{DoxyParams}{Parameters}
+{\em argb\-\_\-1} & is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff). This is the start color for the gradient. \\
+\hline
+{\em argb\-\_\-2} & is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff). This is the end color for the gradient. \\
+\hline
+{\em fade\-Time} & in hundreths of a second. Use 0 to set color immediately, default = 0 \\
+\hline
+{\em parallel\-Fade} & if true other fades are allowed in parallel with this fade \\
+\hline
+{\em length} & is the number of led's from startposition to endposition \\
+\hline
+{\em offset} & can be used to move the startposition of the gradient on the ledstrip \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed, or a invalid value for offset \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_a57d493b1081707246bafa7be52f8db49}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Fw\-Set\-Rtc@{Fw\-Set\-Rtc}}
+\index{Fw\-Set\-Rtc@{Fw\-Set\-Rtc}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Set\-Rtc}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Fw\-Set\-Rtc (
+\begin{DoxyParamCaption}
+\item[{const tm \&}]{time\-Value}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_control_no_throw_a57d493b1081707246bafa7be52f8db49}
+Sets the rtc clock of the wifly device to the specified time. The wifly device has to be in firmware mode for this command. 
+\begin{DoxyParams}{Parameters}
+{\em time\-Value} & pointer to a posix tm struct containing the new time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_a124a9c7b09966ce9f717b1058ab0ac54}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Fw\-Set\-Wait@{Fw\-Set\-Wait}}
+\index{Fw\-Set\-Wait@{Fw\-Set\-Wait}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Set\-Wait}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Fw\-Set\-Wait (
+\begin{DoxyParamCaption}
+\item[{const uint16\-\_\-t}]{wait\-Time}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_control_no_throw_a124a9c7b09966ce9f717b1058ab0ac54}
+Injects a wait command into the wifly script controller. This causes the script processing to wait before executing the next command for the specified duration 
+\begin{DoxyParams}{Parameters}
+{\em wait\-Time} & in hundreths of a second \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed $<$ B\-R$>${\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_control_no_throw_ae94183c86828b1a223c46fec3c04c285}{\index{Wy\-Light\-::\-Control\-No\-Throw@{Wy\-Light\-::\-Control\-No\-Throw}!Fw\-Start\-Bl@{Fw\-Start\-Bl}}
+\index{Fw\-Start\-Bl@{Fw\-Start\-Bl}!WyLight::ControlNoThrow@{Wy\-Light\-::\-Control\-No\-Throw}}
+\subsubsection[{Fw\-Start\-Bl}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Control\-No\-Throw\-::\-Fw\-Start\-Bl (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_control_no_throw_ae94183c86828b1a223c46fec3c04c285}
+Stops firmware and script controller execution and start the bootloader of the wifly device \begin{DoxyReturn}{Returns}
+Indexed by \hyperlink{namespace_wy_light_afd625f917b07e9c48f67c4383af5773f}{Wifly\-Error} \par
+{\bfseries C\-O\-N\-N\-E\-C\-T\-I\-O\-N\-\_\-\-T\-I\-M\-E\-O\-U\-T} if response timed out \par
+{\bfseries F\-A\-T\-A\-L\-\_\-\-E\-R\-R\-O\-R} if command code of the response doesn't match the code of the request, or too many retries failed \par
+{\bfseries S\-C\-R\-I\-P\-T\-\_\-\-F\-U\-L\-L} if script buffer in P\-I\-C firmware is full and request couldn't be executed \par
+{\bfseries N\-O\-\_\-\-E\-R\-R\-O\-R} is returned if no error occurred 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{_wifly_control_no_throw_8h}{Wifly\-Control\-No\-Throw.\-h}\end{DoxyCompactItemize}

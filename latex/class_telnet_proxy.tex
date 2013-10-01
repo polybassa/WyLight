@@ -1,0 +1,121 @@
+\hypertarget{class_telnet_proxy}{\section{Telnet\-Proxy Class Reference}
+\label{class_telnet_proxy}\index{Telnet\-Proxy@{Telnet\-Proxy}}
+}
+
+
+{\ttfamily \#include $<$Telnet\-Proxy.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_telnet_proxy_aa7f9a2c3dffc0c3b7a2cb6f8e96a4645}{Telnet\-Proxy} (const \hyperlink{class_tcp_socket}{Tcp\-Socket} \&sock)
+\item 
+void \hyperlink{class_telnet_proxy_a72cd6c477bcfc9a578ae3357f70ac1e5}{Clear\-Response} (void) const 
+\item 
+bool \hyperlink{class_telnet_proxy_ac06a0c97982e5c948f44eb1cabacf5c8}{Close} (bool do\-Save) const 
+\item 
+void \hyperlink{class_telnet_proxy_a9f167bcd354e53ab8fb959472415762b}{Recv\-String} (const std\-::string \&get\-Cmd, const std\-::string \&search\-Key, std\-::string \&result) const 
+\item 
+bool \hyperlink{class_telnet_proxy_a4b7729ca11f4ef533d3015b0a53974e6}{Open} (void) const 
+\item 
+bool \hyperlink{class_telnet_proxy_a3a00f8fc67d35112929ca9e664c3197a}{Send} (const std\-::string \&telnet\-Message, const std\-::string \&expected\-Response=\hyperlink{_telnet_proxy_8h_a2139cfcd9b3c7af8c0246e72ca4ae807}{A\-O\-K}) const 
+\item 
+bool \hyperlink{class_telnet_proxy_aa9ea9a5af4c1f58f2cc8c6edfa1501ae}{Send\-String} (const std\-::string \&command, std\-::string value) const 
+\item 
+bool \hyperlink{class_telnet_proxy_a1739a7efe7777a766a39af07664b7c6b}{Send\-Reboot\-Command} (void) const 
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+size\-\_\-t \hyperlink{class_telnet_proxy_a436d76cf48d888700dddd5dc72c7bc56}{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv} (void)
+\item 
+size\-\_\-t \hyperlink{class_telnet_proxy_a899fd61cba9dec179f6a058b25c73cb7}{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String} (void)
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_telnet_proxy_aa7f9a2c3dffc0c3b7a2cb6f8e96a4645}{\index{Telnet\-Proxy@{Telnet\-Proxy}!Telnet\-Proxy@{Telnet\-Proxy}}
+\index{Telnet\-Proxy@{Telnet\-Proxy}!TelnetProxy@{Telnet\-Proxy}}
+\subsubsection[{Telnet\-Proxy}]{\setlength{\rightskip}{0pt plus 5cm}Telnet\-Proxy\-::\-Telnet\-Proxy (
+\begin{DoxyParamCaption}
+\item[{const {\bf Tcp\-Socket} \&}]{sock}
+\end{DoxyParamCaption}
+)}}\label{class_telnet_proxy_aa7f9a2c3dffc0c3b7a2cb6f8e96a4645}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_telnet_proxy_a72cd6c477bcfc9a578ae3357f70ac1e5}{\index{Telnet\-Proxy@{Telnet\-Proxy}!Clear\-Response@{Clear\-Response}}
+\index{Clear\-Response@{Clear\-Response}!TelnetProxy@{Telnet\-Proxy}}
+\subsubsection[{Clear\-Response}]{\setlength{\rightskip}{0pt plus 5cm}void Telnet\-Proxy\-::\-Clear\-Response (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_telnet_proxy_a72cd6c477bcfc9a578ae3357f70ac1e5}
+\hypertarget{class_telnet_proxy_ac06a0c97982e5c948f44eb1cabacf5c8}{\index{Telnet\-Proxy@{Telnet\-Proxy}!Close@{Close}}
+\index{Close@{Close}!TelnetProxy@{Telnet\-Proxy}}
+\subsubsection[{Close}]{\setlength{\rightskip}{0pt plus 5cm}bool Telnet\-Proxy\-::\-Close (
+\begin{DoxyParamCaption}
+\item[{bool}]{do\-Save}
+\end{DoxyParamCaption}
+) const}}\label{class_telnet_proxy_ac06a0c97982e5c948f44eb1cabacf5c8}
+\hypertarget{class_telnet_proxy_a4b7729ca11f4ef533d3015b0a53974e6}{\index{Telnet\-Proxy@{Telnet\-Proxy}!Open@{Open}}
+\index{Open@{Open}!TelnetProxy@{Telnet\-Proxy}}
+\subsubsection[{Open}]{\setlength{\rightskip}{0pt plus 5cm}bool Telnet\-Proxy\-::\-Open (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_telnet_proxy_a4b7729ca11f4ef533d3015b0a53974e6}
+\hypertarget{class_telnet_proxy_a9f167bcd354e53ab8fb959472415762b}{\index{Telnet\-Proxy@{Telnet\-Proxy}!Recv\-String@{Recv\-String}}
+\index{Recv\-String@{Recv\-String}!TelnetProxy@{Telnet\-Proxy}}
+\subsubsection[{Recv\-String}]{\setlength{\rightskip}{0pt plus 5cm}void Telnet\-Proxy\-::\-Recv\-String (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{get\-Cmd, }
+\item[{const std\-::string \&}]{search\-Key, }
+\item[{std\-::string \&}]{result}
+\end{DoxyParamCaption}
+) const}}\label{class_telnet_proxy_a9f167bcd354e53ab8fb959472415762b}
+\hypertarget{class_telnet_proxy_a3a00f8fc67d35112929ca9e664c3197a}{\index{Telnet\-Proxy@{Telnet\-Proxy}!Send@{Send}}
+\index{Send@{Send}!TelnetProxy@{Telnet\-Proxy}}
+\subsubsection[{Send}]{\setlength{\rightskip}{0pt plus 5cm}bool Telnet\-Proxy\-::\-Send (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{telnet\-Message, }
+\item[{const std\-::string \&}]{expected\-Response = {\ttfamily {\bf A\-O\-K}}}
+\end{DoxyParamCaption}
+) const}}\label{class_telnet_proxy_a3a00f8fc67d35112929ca9e664c3197a}
+\hypertarget{class_telnet_proxy_a1739a7efe7777a766a39af07664b7c6b}{\index{Telnet\-Proxy@{Telnet\-Proxy}!Send\-Reboot\-Command@{Send\-Reboot\-Command}}
+\index{Send\-Reboot\-Command@{Send\-Reboot\-Command}!TelnetProxy@{Telnet\-Proxy}}
+\subsubsection[{Send\-Reboot\-Command}]{\setlength{\rightskip}{0pt plus 5cm}bool Telnet\-Proxy\-::\-Send\-Reboot\-Command (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_telnet_proxy_a1739a7efe7777a766a39af07664b7c6b}
+\hypertarget{class_telnet_proxy_aa9ea9a5af4c1f58f2cc8c6edfa1501ae}{\index{Telnet\-Proxy@{Telnet\-Proxy}!Send\-String@{Send\-String}}
+\index{Send\-String@{Send\-String}!TelnetProxy@{Telnet\-Proxy}}
+\subsubsection[{Send\-String}]{\setlength{\rightskip}{0pt plus 5cm}bool Telnet\-Proxy\-::\-Send\-String (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{command, }
+\item[{std\-::string}]{value}
+\end{DoxyParamCaption}
+) const}}\label{class_telnet_proxy_aa9ea9a5af4c1f58f2cc8c6edfa1501ae}
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{class_telnet_proxy_a436d76cf48d888700dddd5dc72c7bc56}{\index{Telnet\-Proxy@{Telnet\-Proxy}!ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv}}
+\index{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv}!TelnetProxy@{Telnet\-Proxy}}
+\subsubsection[{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{class_telnet_proxy_a436d76cf48d888700dddd5dc72c7bc56}
+\hypertarget{class_telnet_proxy_a899fd61cba9dec179f6a058b25c73cb7}{\index{Telnet\-Proxy@{Telnet\-Proxy}!ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String}}
+\index{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String@{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String}!TelnetProxy@{Telnet\-Proxy}}
+\subsubsection[{ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t ut\-\_\-\-Telnet\-Proxy\-\_\-\-Recv\-String (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{class_telnet_proxy_a899fd61cba9dec179f6a058b25c73cb7}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{_telnet_proxy_8h}{Telnet\-Proxy.\-h}\end{DoxyCompactItemize}

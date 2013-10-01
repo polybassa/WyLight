@@ -1,0 +1,102 @@
+\hypertarget{class_wy_light_1_1_message_queue}{\section{Wy\-Light\-:\-:Message\-Queue$<$ T $>$ Class Template Reference}
+\label{class_wy_light_1_1_message_queue}\index{Wy\-Light\-::\-Message\-Queue$<$ T $>$@{Wy\-Light\-::\-Message\-Queue$<$ T $>$}}
+}
+
+
+{\ttfamily \#include $<$Message\-Queue.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_wy_light_1_1_message_queue_aa116745b3c6a257e7a8149432b1ae612}{Message\-Queue} (void)
+\item 
+\hyperlink{class_wy_light_1_1_message_queue_a92bf2e25bbd0feceabb3bf21368a4696}{Message\-Queue} (\hyperlink{class_wy_light_1_1_message_queue}{Message\-Queue} const \&\&other)
+\item 
+void \hyperlink{class_wy_light_1_1_message_queue_abb19b5612cabae621cffbb85b11acbce}{push\-\_\-back} (const T \&\&message)
+\item 
+void \hyperlink{class_wy_light_1_1_message_queue_a70d00934df73199dafe469dcd2aa750c}{push\-\_\-front} (const T \&\&message)
+\item 
+void \hyperlink{class_wy_light_1_1_message_queue_a07807ffc11826fb293b95f56fa2a6952}{clear} (void)
+\item 
+void \hyperlink{class_wy_light_1_1_message_queue_afa0cc613fbaf294bab1834b97d159de8}{clear\-\_\-and\-\_\-push\-\_\-front} (const T \&\&message)
+\item 
+bool \hyperlink{class_wy_light_1_1_message_queue_a2195f869b08d83342ac21353aa510161}{empty} (void) const 
+\item 
+void \hyperlink{class_wy_light_1_1_message_queue_ad7293e8940ef5c4cb34e62bfd389e5bc}{set\-Message\-Limit} (size\-\_\-t limit)
+\item 
+T \hyperlink{class_wy_light_1_1_message_queue_a8d993b590e708be1c3bdfd30112bdaa6}{receive} (void)
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_wy_light_1_1_message_queue_aa116745b3c6a257e7a8149432b1ae612}{\index{Wy\-Light\-::\-Message\-Queue@{Wy\-Light\-::\-Message\-Queue}!Message\-Queue@{Message\-Queue}}
+\index{Message\-Queue@{Message\-Queue}!WyLight::MessageQueue@{Wy\-Light\-::\-Message\-Queue}}
+\subsubsection[{Message\-Queue}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ {\bf Wy\-Light\-::\-Message\-Queue}$<$ T $>$\-::{\bf Message\-Queue} (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_wy_light_1_1_message_queue_aa116745b3c6a257e7a8149432b1ae612}
+\hypertarget{class_wy_light_1_1_message_queue_a92bf2e25bbd0feceabb3bf21368a4696}{\index{Wy\-Light\-::\-Message\-Queue@{Wy\-Light\-::\-Message\-Queue}!Message\-Queue@{Message\-Queue}}
+\index{Message\-Queue@{Message\-Queue}!WyLight::MessageQueue@{Wy\-Light\-::\-Message\-Queue}}
+\subsubsection[{Message\-Queue}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ {\bf Wy\-Light\-::\-Message\-Queue}$<$ T $>$\-::{\bf Message\-Queue} (
+\begin{DoxyParamCaption}
+\item[{{\bf Message\-Queue}$<$ T $>$ const \&\&}]{other}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_wy_light_1_1_message_queue_a92bf2e25bbd0feceabb3bf21368a4696}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_wy_light_1_1_message_queue_a07807ffc11826fb293b95f56fa2a6952}{\index{Wy\-Light\-::\-Message\-Queue@{Wy\-Light\-::\-Message\-Queue}!clear@{clear}}
+\index{clear@{clear}!WyLight::MessageQueue@{Wy\-Light\-::\-Message\-Queue}}
+\subsubsection[{clear}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Wy\-Light\-::\-Message\-Queue}$<$ T $>$\-::clear (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_message_queue_a07807ffc11826fb293b95f56fa2a6952}
+\hypertarget{class_wy_light_1_1_message_queue_afa0cc613fbaf294bab1834b97d159de8}{\index{Wy\-Light\-::\-Message\-Queue@{Wy\-Light\-::\-Message\-Queue}!clear\-\_\-and\-\_\-push\-\_\-front@{clear\-\_\-and\-\_\-push\-\_\-front}}
+\index{clear\-\_\-and\-\_\-push\-\_\-front@{clear\-\_\-and\-\_\-push\-\_\-front}!WyLight::MessageQueue@{Wy\-Light\-::\-Message\-Queue}}
+\subsubsection[{clear\-\_\-and\-\_\-push\-\_\-front}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Wy\-Light\-::\-Message\-Queue}$<$ T $>$\-::clear\-\_\-and\-\_\-push\-\_\-front (
+\begin{DoxyParamCaption}
+\item[{const T \&\&}]{message}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_message_queue_afa0cc613fbaf294bab1834b97d159de8}
+\hypertarget{class_wy_light_1_1_message_queue_a2195f869b08d83342ac21353aa510161}{\index{Wy\-Light\-::\-Message\-Queue@{Wy\-Light\-::\-Message\-Queue}!empty@{empty}}
+\index{empty@{empty}!WyLight::MessageQueue@{Wy\-Light\-::\-Message\-Queue}}
+\subsubsection[{empty}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ bool {\bf Wy\-Light\-::\-Message\-Queue}$<$ T $>$\-::empty (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_message_queue_a2195f869b08d83342ac21353aa510161}
+\hypertarget{class_wy_light_1_1_message_queue_abb19b5612cabae621cffbb85b11acbce}{\index{Wy\-Light\-::\-Message\-Queue@{Wy\-Light\-::\-Message\-Queue}!push\-\_\-back@{push\-\_\-back}}
+\index{push\-\_\-back@{push\-\_\-back}!WyLight::MessageQueue@{Wy\-Light\-::\-Message\-Queue}}
+\subsubsection[{push\-\_\-back}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Wy\-Light\-::\-Message\-Queue}$<$ T $>$\-::push\-\_\-back (
+\begin{DoxyParamCaption}
+\item[{const T \&\&}]{message}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_message_queue_abb19b5612cabae621cffbb85b11acbce}
+\hypertarget{class_wy_light_1_1_message_queue_a70d00934df73199dafe469dcd2aa750c}{\index{Wy\-Light\-::\-Message\-Queue@{Wy\-Light\-::\-Message\-Queue}!push\-\_\-front@{push\-\_\-front}}
+\index{push\-\_\-front@{push\-\_\-front}!WyLight::MessageQueue@{Wy\-Light\-::\-Message\-Queue}}
+\subsubsection[{push\-\_\-front}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Wy\-Light\-::\-Message\-Queue}$<$ T $>$\-::push\-\_\-front (
+\begin{DoxyParamCaption}
+\item[{const T \&\&}]{message}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_message_queue_a70d00934df73199dafe469dcd2aa750c}
+\hypertarget{class_wy_light_1_1_message_queue_a8d993b590e708be1c3bdfd30112bdaa6}{\index{Wy\-Light\-::\-Message\-Queue@{Wy\-Light\-::\-Message\-Queue}!receive@{receive}}
+\index{receive@{receive}!WyLight::MessageQueue@{Wy\-Light\-::\-Message\-Queue}}
+\subsubsection[{receive}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ T {\bf Wy\-Light\-::\-Message\-Queue}$<$ T $>$\-::receive (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_message_queue_a8d993b590e708be1c3bdfd30112bdaa6}
+\hypertarget{class_wy_light_1_1_message_queue_ad7293e8940ef5c4cb34e62bfd389e5bc}{\index{Wy\-Light\-::\-Message\-Queue@{Wy\-Light\-::\-Message\-Queue}!set\-Message\-Limit@{set\-Message\-Limit}}
+\index{set\-Message\-Limit@{set\-Message\-Limit}!WyLight::MessageQueue@{Wy\-Light\-::\-Message\-Queue}}
+\subsubsection[{set\-Message\-Limit}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Wy\-Light\-::\-Message\-Queue}$<$ T $>$\-::set\-Message\-Limit (
+\begin{DoxyParamCaption}
+\item[{size\-\_\-t}]{limit}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_wy_light_1_1_message_queue_ad7293e8940ef5c4cb34e62bfd389e5bc}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{_message_queue_8h}{Message\-Queue.\-h}\end{DoxyCompactItemize}

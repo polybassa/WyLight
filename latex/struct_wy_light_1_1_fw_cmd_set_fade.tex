@@ -1,0 +1,85 @@
+\hypertarget{struct_wy_light_1_1_fw_cmd_set_fade}{\section{Wy\-Light\-:\-:Fw\-Cmd\-Set\-Fade Struct Reference}
+\label{struct_wy_light_1_1_fw_cmd_set_fade}\index{Wy\-Light\-::\-Fw\-Cmd\-Set\-Fade@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Fade}}
+}
+
+
+{\ttfamily \#include $<$Fw\-Command.\-h$>$}
+
+Inheritance diagram for Wy\-Light\-:\-:Fw\-Cmd\-Set\-Fade\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{struct_wy_light_1_1_fw_cmd_set_fade}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{struct_wy_light_1_1_fw_cmd_set_fade_a2338914407d05d11200e6c823d9575b0}{Fw\-Cmd\-Set\-Fade} (std\-::istream \&is)
+\item 
+\hyperlink{struct_wy_light_1_1_fw_cmd_set_fade_a805da076fa5c6d2aaaf31a6b9ac61f62}{Fw\-Cmd\-Set\-Fade} (uint32\-\_\-t argb, uint16\-\_\-t fade\-Time=0, uint32\-\_\-t addr=0xffffffff, bool parallel\-Fade=false)
+\item 
+std\-::ostream \& \hyperlink{struct_wy_light_1_1_fw_cmd_set_fade_a2e6cf2016152c098c3b9706c43747010}{Write} (std\-::ostream \&out, size\-\_\-t \&indentation) const override
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const std\-::string \hyperlink{struct_wy_light_1_1_fw_cmd_set_fade_a43d478936fa849d3e3ac95775ce287b6}{T\-O\-K\-E\-N}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{struct_wy_light_1_1_fw_cmd_set_fade_a2338914407d05d11200e6c823d9575b0}{\index{Wy\-Light\-::\-Fw\-Cmd\-Set\-Fade@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Fade}!Fw\-Cmd\-Set\-Fade@{Fw\-Cmd\-Set\-Fade}}
+\index{Fw\-Cmd\-Set\-Fade@{Fw\-Cmd\-Set\-Fade}!WyLight::FwCmdSetFade@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Fade}}
+\subsubsection[{Fw\-Cmd\-Set\-Fade}]{\setlength{\rightskip}{0pt plus 5cm}Wy\-Light\-::\-Fw\-Cmd\-Set\-Fade\-::\-Fw\-Cmd\-Set\-Fade (
+\begin{DoxyParamCaption}
+\item[{std\-::istream \&}]{is}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{struct_wy_light_1_1_fw_cmd_set_fade_a2338914407d05d11200e6c823d9575b0}
+\hypertarget{struct_wy_light_1_1_fw_cmd_set_fade_a805da076fa5c6d2aaaf31a6b9ac61f62}{\index{Wy\-Light\-::\-Fw\-Cmd\-Set\-Fade@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Fade}!Fw\-Cmd\-Set\-Fade@{Fw\-Cmd\-Set\-Fade}}
+\index{Fw\-Cmd\-Set\-Fade@{Fw\-Cmd\-Set\-Fade}!WyLight::FwCmdSetFade@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Fade}}
+\subsubsection[{Fw\-Cmd\-Set\-Fade}]{\setlength{\rightskip}{0pt plus 5cm}Wy\-Light\-::\-Fw\-Cmd\-Set\-Fade\-::\-Fw\-Cmd\-Set\-Fade (
+\begin{DoxyParamCaption}
+\item[{uint32\-\_\-t}]{argb, }
+\item[{uint16\-\_\-t}]{fade\-Time = {\ttfamily 0}, }
+\item[{uint32\-\_\-t}]{addr = {\ttfamily 0xffffffff}, }
+\item[{bool}]{parallel\-Fade = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{struct_wy_light_1_1_fw_cmd_set_fade_a805da076fa5c6d2aaaf31a6b9ac61f62}
+Injects a fade command into the wifly script controller 
+\begin{DoxyParams}{Parameters}
+{\em argb} & is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff) f.\-e. black(  0,  0,  0) as argb is 0xff000000 green(  0,255,  0) as argb is 0xff00ff00 white(255,255,255) as argb is 0xffffffff \\
+\hline
+{\em fade\-Time} & in hundreths of a second. Use 0 to set color immediately, default = 0 \\
+\hline
+{\em addr} & bitmask of leds which should be effected by this command, set bit to 1 to affect the led, default 0xffffffff \\
+\hline
+{\em parallel\-Fade} & if true other fades are allowed in parallel with this fade \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{struct_wy_light_1_1_fw_cmd_set_fade_a2e6cf2016152c098c3b9706c43747010}{\index{Wy\-Light\-::\-Fw\-Cmd\-Set\-Fade@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Fade}!Write@{Write}}
+\index{Write@{Write}!WyLight::FwCmdSetFade@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Fade}}
+\subsubsection[{Write}]{\setlength{\rightskip}{0pt plus 5cm}std\-::ostream\& Wy\-Light\-::\-Fw\-Cmd\-Set\-Fade\-::\-Write (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{out, }
+\item[{size\-\_\-t \&}]{indentation}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}}\label{struct_wy_light_1_1_fw_cmd_set_fade_a2e6cf2016152c098c3b9706c43747010}
+
+
+Reimplemented from \hyperlink{class_wy_light_1_1_fw_cmd_script_ad7b0c30c6787466057b109c5a5bba6b6}{Wy\-Light\-::\-Fw\-Cmd\-Script}.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{struct_wy_light_1_1_fw_cmd_set_fade_a43d478936fa849d3e3ac95775ce287b6}{\index{Wy\-Light\-::\-Fw\-Cmd\-Set\-Fade@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Fade}!T\-O\-K\-E\-N@{T\-O\-K\-E\-N}}
+\index{T\-O\-K\-E\-N@{T\-O\-K\-E\-N}!WyLight::FwCmdSetFade@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Fade}}
+\subsubsection[{T\-O\-K\-E\-N}]{\setlength{\rightskip}{0pt plus 5cm}const std\-::string Wy\-Light\-::\-Fw\-Cmd\-Set\-Fade\-::\-T\-O\-K\-E\-N\hspace{0.3cm}{\ttfamily [static]}}}\label{struct_wy_light_1_1_fw_cmd_set_fade_a43d478936fa849d3e3ac95775ce287b6}
+
+
+The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{_fw_command_8h}{Fw\-Command.\-h}\end{DoxyCompactItemize}

@@ -1,0 +1,171 @@
+\hypertarget{class_wy_light_1_1_endpoint}{\section{Wy\-Light\-:\-:Endpoint Class Reference}
+\label{class_wy_light_1_1_endpoint}\index{Wy\-Light\-::\-Endpoint@{Wy\-Light\-::\-Endpoint}}
+}
+
+
+{\ttfamily \#include $<$Endpoint.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_wy_light_1_1_endpoint_ab63ad1030b33a946e6874e9a95242652}{Endpoint} (sockaddr\-\_\-storage \&addr, const size\-\_\-t size, uint16\-\_\-t port, std\-::string dev\-Id=\char`\"{}\char`\"{})
+\item 
+\hyperlink{class_wy_light_1_1_endpoint_ad6953673c9ac61ebbedb32fac5b580ed}{Endpoint} (uint32\-\_\-t ip=0, uint16\-\_\-t port=0, uint8\-\_\-t score=0, std\-::string dev\-Id=\char`\"{}\char`\"{})
+\item 
+bool \hyperlink{class_wy_light_1_1_endpoint_a23413704ae873962f584e8e4bcb3a3b5}{operator$<$} (const \hyperlink{class_wy_light_1_1_endpoint}{Endpoint} \&ref) const 
+\item 
+uint64\-\_\-t \hyperlink{class_wy_light_1_1_endpoint_ae0269aa4b78b40366140a4fe98140e67}{As\-Uint64} (void) const 
+\item 
+std\-::string \hyperlink{class_wy_light_1_1_endpoint_a45f7f0b61014a9732a7c31dec22cfeaf}{Get\-Device\-Id} (void) const 
+\item 
+uint32\-\_\-t \hyperlink{class_wy_light_1_1_endpoint_a65cca33e7eef5794500621333d2246ed}{Get\-Ip} (void) const 
+\item 
+uint16\-\_\-t \hyperlink{class_wy_light_1_1_endpoint_ac59441c4d0b60d941150401c118ac63f}{Get\-Port} (void) const 
+\item 
+uint8\-\_\-t \hyperlink{class_wy_light_1_1_endpoint_a8e19107acfb14d455dde2206b971cc2d}{Get\-Score} (void) const 
+\item 
+void \hyperlink{class_wy_light_1_1_endpoint_aae5d14042f101187ab51b56dcf217318}{Set\-Device\-Id} (const std\-::string \&device\-Id)
+\item 
+void \hyperlink{class_wy_light_1_1_endpoint_acab91ff69fc991948b87121e5667b121}{Set\-Score} (const uint8\-\_\-t \&score)
+\item 
+\hyperlink{class_wy_light_1_1_endpoint}{Endpoint} \& \hyperlink{class_wy_light_1_1_endpoint_a6db37d31aac048566b112e1c25bea7fd}{operator++} (void)
+\item 
+bool \hyperlink{class_wy_light_1_1_endpoint_a4b0ccfbc29c760fb0c34e9365a3f587d}{Is\-Valid} (void) const 
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+std\-::ostream \& \hyperlink{class_wy_light_1_1_endpoint_af3f74b3b812453bb6cc60400dfc0c82c}{operator$<$$<$} (std\-::ostream \&out, const \hyperlink{class_wy_light_1_1_endpoint}{Endpoint} \&ref)
+\item 
+bool \hyperlink{class_wy_light_1_1_endpoint_a156b06fbd5f39ef344d12405b3dd1dd3}{operator==} (const \hyperlink{class_wy_light_1_1_endpoint}{Endpoint} \&lhs, const \hyperlink{class_wy_light_1_1_endpoint}{Endpoint} \&rhs)
+\item 
+bool \hyperlink{class_wy_light_1_1_endpoint_a5ae8d57dccffa8396ec6e4a7177a784c}{operator!=} (const \hyperlink{class_wy_light_1_1_endpoint}{Endpoint} \&lhs, const \hyperlink{class_wy_light_1_1_endpoint}{Endpoint} \&rhs)
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_wy_light_1_1_endpoint_ab63ad1030b33a946e6874e9a95242652}{\index{Wy\-Light\-::\-Endpoint@{Wy\-Light\-::\-Endpoint}!Endpoint@{Endpoint}}
+\index{Endpoint@{Endpoint}!WyLight::Endpoint@{Wy\-Light\-::\-Endpoint}}
+\subsubsection[{Endpoint}]{\setlength{\rightskip}{0pt plus 5cm}Wy\-Light\-::\-Endpoint\-::\-Endpoint (
+\begin{DoxyParamCaption}
+\item[{sockaddr\-\_\-storage \&}]{addr, }
+\item[{const size\-\_\-t}]{size, }
+\item[{uint16\-\_\-t}]{port, }
+\item[{std\-::string}]{dev\-Id = {\ttfamily \char`\"{}\char`\"{}}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_wy_light_1_1_endpoint_ab63ad1030b33a946e6874e9a95242652}
+\hypertarget{class_wy_light_1_1_endpoint_ad6953673c9ac61ebbedb32fac5b580ed}{\index{Wy\-Light\-::\-Endpoint@{Wy\-Light\-::\-Endpoint}!Endpoint@{Endpoint}}
+\index{Endpoint@{Endpoint}!WyLight::Endpoint@{Wy\-Light\-::\-Endpoint}}
+\subsubsection[{Endpoint}]{\setlength{\rightskip}{0pt plus 5cm}Wy\-Light\-::\-Endpoint\-::\-Endpoint (
+\begin{DoxyParamCaption}
+\item[{uint32\-\_\-t}]{ip = {\ttfamily 0}, }
+\item[{uint16\-\_\-t}]{port = {\ttfamily 0}, }
+\item[{uint8\-\_\-t}]{score = {\ttfamily 0}, }
+\item[{std\-::string}]{dev\-Id = {\ttfamily \char`\"{}\char`\"{}}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_wy_light_1_1_endpoint_ad6953673c9ac61ebbedb32fac5b580ed}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_wy_light_1_1_endpoint_ae0269aa4b78b40366140a4fe98140e67}{\index{Wy\-Light\-::\-Endpoint@{Wy\-Light\-::\-Endpoint}!As\-Uint64@{As\-Uint64}}
+\index{As\-Uint64@{As\-Uint64}!WyLight::Endpoint@{Wy\-Light\-::\-Endpoint}}
+\subsubsection[{As\-Uint64}]{\setlength{\rightskip}{0pt plus 5cm}uint64\-\_\-t Wy\-Light\-::\-Endpoint\-::\-As\-Uint64 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_wy_light_1_1_endpoint_ae0269aa4b78b40366140a4fe98140e67}
+\hypertarget{class_wy_light_1_1_endpoint_a45f7f0b61014a9732a7c31dec22cfeaf}{\index{Wy\-Light\-::\-Endpoint@{Wy\-Light\-::\-Endpoint}!Get\-Device\-Id@{Get\-Device\-Id}}
+\index{Get\-Device\-Id@{Get\-Device\-Id}!WyLight::Endpoint@{Wy\-Light\-::\-Endpoint}}
+\subsubsection[{Get\-Device\-Id}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Wy\-Light\-::\-Endpoint\-::\-Get\-Device\-Id (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_wy_light_1_1_endpoint_a45f7f0b61014a9732a7c31dec22cfeaf}
+\hypertarget{class_wy_light_1_1_endpoint_a65cca33e7eef5794500621333d2246ed}{\index{Wy\-Light\-::\-Endpoint@{Wy\-Light\-::\-Endpoint}!Get\-Ip@{Get\-Ip}}
+\index{Get\-Ip@{Get\-Ip}!WyLight::Endpoint@{Wy\-Light\-::\-Endpoint}}
+\subsubsection[{Get\-Ip}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Wy\-Light\-::\-Endpoint\-::\-Get\-Ip (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_wy_light_1_1_endpoint_a65cca33e7eef5794500621333d2246ed}
+\hypertarget{class_wy_light_1_1_endpoint_ac59441c4d0b60d941150401c118ac63f}{\index{Wy\-Light\-::\-Endpoint@{Wy\-Light\-::\-Endpoint}!Get\-Port@{Get\-Port}}
+\index{Get\-Port@{Get\-Port}!WyLight::Endpoint@{Wy\-Light\-::\-Endpoint}}
+\subsubsection[{Get\-Port}]{\setlength{\rightskip}{0pt plus 5cm}uint16\-\_\-t Wy\-Light\-::\-Endpoint\-::\-Get\-Port (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_wy_light_1_1_endpoint_ac59441c4d0b60d941150401c118ac63f}
+\hypertarget{class_wy_light_1_1_endpoint_a8e19107acfb14d455dde2206b971cc2d}{\index{Wy\-Light\-::\-Endpoint@{Wy\-Light\-::\-Endpoint}!Get\-Score@{Get\-Score}}
+\index{Get\-Score@{Get\-Score}!WyLight::Endpoint@{Wy\-Light\-::\-Endpoint}}
+\subsubsection[{Get\-Score}]{\setlength{\rightskip}{0pt plus 5cm}uint8\-\_\-t Wy\-Light\-::\-Endpoint\-::\-Get\-Score (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_wy_light_1_1_endpoint_a8e19107acfb14d455dde2206b971cc2d}
+\hypertarget{class_wy_light_1_1_endpoint_a4b0ccfbc29c760fb0c34e9365a3f587d}{\index{Wy\-Light\-::\-Endpoint@{Wy\-Light\-::\-Endpoint}!Is\-Valid@{Is\-Valid}}
+\index{Is\-Valid@{Is\-Valid}!WyLight::Endpoint@{Wy\-Light\-::\-Endpoint}}
+\subsubsection[{Is\-Valid}]{\setlength{\rightskip}{0pt plus 5cm}bool Wy\-Light\-::\-Endpoint\-::\-Is\-Valid (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_wy_light_1_1_endpoint_a4b0ccfbc29c760fb0c34e9365a3f587d}
+\hypertarget{class_wy_light_1_1_endpoint_a6db37d31aac048566b112e1c25bea7fd}{\index{Wy\-Light\-::\-Endpoint@{Wy\-Light\-::\-Endpoint}!operator++@{operator++}}
+\index{operator++@{operator++}!WyLight::Endpoint@{Wy\-Light\-::\-Endpoint}}
+\subsubsection[{operator++}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Endpoint}\& Wy\-Light\-::\-Endpoint\-::operator++ (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_wy_light_1_1_endpoint_a6db37d31aac048566b112e1c25bea7fd}
+\hypertarget{class_wy_light_1_1_endpoint_a23413704ae873962f584e8e4bcb3a3b5}{\index{Wy\-Light\-::\-Endpoint@{Wy\-Light\-::\-Endpoint}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!WyLight::Endpoint@{Wy\-Light\-::\-Endpoint}}
+\subsubsection[{operator$<$}]{\setlength{\rightskip}{0pt plus 5cm}bool Wy\-Light\-::\-Endpoint\-::operator$<$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Endpoint} \&}]{ref}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_wy_light_1_1_endpoint_a23413704ae873962f584e8e4bcb3a3b5}
+\hypertarget{class_wy_light_1_1_endpoint_aae5d14042f101187ab51b56dcf217318}{\index{Wy\-Light\-::\-Endpoint@{Wy\-Light\-::\-Endpoint}!Set\-Device\-Id@{Set\-Device\-Id}}
+\index{Set\-Device\-Id@{Set\-Device\-Id}!WyLight::Endpoint@{Wy\-Light\-::\-Endpoint}}
+\subsubsection[{Set\-Device\-Id}]{\setlength{\rightskip}{0pt plus 5cm}void Wy\-Light\-::\-Endpoint\-::\-Set\-Device\-Id (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{device\-Id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_wy_light_1_1_endpoint_aae5d14042f101187ab51b56dcf217318}
+\hypertarget{class_wy_light_1_1_endpoint_acab91ff69fc991948b87121e5667b121}{\index{Wy\-Light\-::\-Endpoint@{Wy\-Light\-::\-Endpoint}!Set\-Score@{Set\-Score}}
+\index{Set\-Score@{Set\-Score}!WyLight::Endpoint@{Wy\-Light\-::\-Endpoint}}
+\subsubsection[{Set\-Score}]{\setlength{\rightskip}{0pt plus 5cm}void Wy\-Light\-::\-Endpoint\-::\-Set\-Score (
+\begin{DoxyParamCaption}
+\item[{const uint8\-\_\-t \&}]{score}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_wy_light_1_1_endpoint_acab91ff69fc991948b87121e5667b121}
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{class_wy_light_1_1_endpoint_a5ae8d57dccffa8396ec6e4a7177a784c}{\index{Wy\-Light\-::\-Endpoint@{Wy\-Light\-::\-Endpoint}!operator!=@{operator!=}}
+\index{operator!=@{operator!=}!WyLight::Endpoint@{Wy\-Light\-::\-Endpoint}}
+\subsubsection[{operator!=}]{\setlength{\rightskip}{0pt plus 5cm}bool operator!= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Endpoint} \&}]{lhs, }
+\item[{const {\bf Endpoint} \&}]{rhs}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{class_wy_light_1_1_endpoint_a5ae8d57dccffa8396ec6e4a7177a784c}
+\hypertarget{class_wy_light_1_1_endpoint_af3f74b3b812453bb6cc60400dfc0c82c}{\index{Wy\-Light\-::\-Endpoint@{Wy\-Light\-::\-Endpoint}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!WyLight::Endpoint@{Wy\-Light\-::\-Endpoint}}
+\subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}std\-::ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{out, }
+\item[{const {\bf Endpoint} \&}]{ref}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{class_wy_light_1_1_endpoint_af3f74b3b812453bb6cc60400dfc0c82c}
+\hypertarget{class_wy_light_1_1_endpoint_a156b06fbd5f39ef344d12405b3dd1dd3}{\index{Wy\-Light\-::\-Endpoint@{Wy\-Light\-::\-Endpoint}!operator==@{operator==}}
+\index{operator==@{operator==}!WyLight::Endpoint@{Wy\-Light\-::\-Endpoint}}
+\subsubsection[{operator==}]{\setlength{\rightskip}{0pt plus 5cm}bool operator== (
+\begin{DoxyParamCaption}
+\item[{const {\bf Endpoint} \&}]{lhs, }
+\item[{const {\bf Endpoint} \&}]{rhs}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{class_wy_light_1_1_endpoint_a156b06fbd5f39ef344d12405b3dd1dd3}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{_endpoint_8h}{Endpoint.\-h}\end{DoxyCompactItemize}

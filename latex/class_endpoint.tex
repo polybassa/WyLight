@@ -1,0 +1,126 @@
+\hypertarget{class_endpoint}{\section{Endpoint Class Reference}
+\label{class_endpoint}\index{Endpoint@{Endpoint}}
+}
+
+
+{\ttfamily \#include $<$Endpoint.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_endpoint_ad855b9615cd2a35d122cef1f938f85a6}{Endpoint} (sockaddr\-\_\-storage \&addr, const size\-\_\-t size, uint16\-\_\-t port, std\-::string dev\-Id=\char`\"{}\char`\"{})
+\item 
+\hyperlink{class_endpoint_aea663fa6d602bd9b0ee36a0a20c10515}{Endpoint} (uint32\-\_\-t addr=0, uint16\-\_\-t port=0)
+\item 
+bool \hyperlink{class_endpoint_a1ebaa89afaae9dd7b1305532634c2871}{operator$<$} (const \hyperlink{class_endpoint}{Endpoint} \&ref) const 
+\item 
+uint64\-\_\-t \hyperlink{class_endpoint_a2d0912e7fa4ae54f9402d6833a6d3ae6}{As\-Uint64} (void) const 
+\item 
+uint32\-\_\-t \hyperlink{class_endpoint_a5618578a2aea0258faac2ec166809f61}{Get\-Ip} (void) const 
+\item 
+uint16\-\_\-t \hyperlink{class_endpoint_ab314920c2ea906136bb10db9a8b19d9f}{Get\-Port} (void) const 
+\item 
+std\-::string \hyperlink{class_endpoint_a9fa08af06fd1ffd733fe6e1444cf2fa9}{Get\-Device\-Id} (void) const 
+\item 
+bool \hyperlink{class_endpoint_a514014f7d1ee63a7c5a3ed7c8b129526}{Is\-Valid} (void) const 
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+std\-::ostream \& \hyperlink{class_endpoint_af3f74b3b812453bb6cc60400dfc0c82c}{operator$<$$<$} (std\-::ostream \&out, const \hyperlink{class_endpoint}{Endpoint} \&ref)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}Copyright (C) 2013 Nils Weiss, Patrick Bruenn.
+\end{DoxyVerb}
+
+
+This file is part of Wifly\-\_\-\-Light.
+
+Wifly\-\_\-\-Light is free software\-: you can redistribute it and/or modify it under the terms of the G\-N\-U General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+Wifly\-\_\-\-Light is distributed in the hope that it will be useful, but W\-I\-T\-H\-O\-U\-T A\-N\-Y W\-A\-R\-R\-A\-N\-T\-Y; without even the implied warranty of M\-E\-R\-C\-H\-A\-N\-T\-A\-B\-I\-L\-I\-T\-Y or F\-I\-T\-N\-E\-S\-S F\-O\-R A P\-A\-R\-T\-I\-C\-U\-L\-A\-R P\-U\-R\-P\-O\-S\-E. See the G\-N\-U General Public License for more details.
+
+You should have received a copy of the G\-N\-U General Public License along with Wifly\-\_\-\-Light. If not, see \href{http://www.gnu.org/licenses/}{\tt http\-://www.\-gnu.\-org/licenses/}. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_endpoint_ad855b9615cd2a35d122cef1f938f85a6}{\index{Endpoint@{Endpoint}!Endpoint@{Endpoint}}
+\index{Endpoint@{Endpoint}!Endpoint@{Endpoint}}
+\subsubsection[{Endpoint}]{\setlength{\rightskip}{0pt plus 5cm}Endpoint\-::\-Endpoint (
+\begin{DoxyParamCaption}
+\item[{sockaddr\-\_\-storage \&}]{addr, }
+\item[{const size\-\_\-t}]{size, }
+\item[{uint16\-\_\-t}]{port, }
+\item[{std\-::string}]{dev\-Id = {\ttfamily \char`\"{}\char`\"{}}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_endpoint_ad855b9615cd2a35d122cef1f938f85a6}
+\hypertarget{class_endpoint_aea663fa6d602bd9b0ee36a0a20c10515}{\index{Endpoint@{Endpoint}!Endpoint@{Endpoint}}
+\index{Endpoint@{Endpoint}!Endpoint@{Endpoint}}
+\subsubsection[{Endpoint}]{\setlength{\rightskip}{0pt plus 5cm}Endpoint\-::\-Endpoint (
+\begin{DoxyParamCaption}
+\item[{uint32\-\_\-t}]{addr = {\ttfamily 0}, }
+\item[{uint16\-\_\-t}]{port = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_endpoint_aea663fa6d602bd9b0ee36a0a20c10515}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_endpoint_a2d0912e7fa4ae54f9402d6833a6d3ae6}{\index{Endpoint@{Endpoint}!As\-Uint64@{As\-Uint64}}
+\index{As\-Uint64@{As\-Uint64}!Endpoint@{Endpoint}}
+\subsubsection[{As\-Uint64}]{\setlength{\rightskip}{0pt plus 5cm}uint64\-\_\-t Endpoint\-::\-As\-Uint64 (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_endpoint_a2d0912e7fa4ae54f9402d6833a6d3ae6}
+\hypertarget{class_endpoint_a9fa08af06fd1ffd733fe6e1444cf2fa9}{\index{Endpoint@{Endpoint}!Get\-Device\-Id@{Get\-Device\-Id}}
+\index{Get\-Device\-Id@{Get\-Device\-Id}!Endpoint@{Endpoint}}
+\subsubsection[{Get\-Device\-Id}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Endpoint\-::\-Get\-Device\-Id (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_endpoint_a9fa08af06fd1ffd733fe6e1444cf2fa9}
+\hypertarget{class_endpoint_a5618578a2aea0258faac2ec166809f61}{\index{Endpoint@{Endpoint}!Get\-Ip@{Get\-Ip}}
+\index{Get\-Ip@{Get\-Ip}!Endpoint@{Endpoint}}
+\subsubsection[{Get\-Ip}]{\setlength{\rightskip}{0pt plus 5cm}uint32\-\_\-t Endpoint\-::\-Get\-Ip (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_endpoint_a5618578a2aea0258faac2ec166809f61}
+\hypertarget{class_endpoint_ab314920c2ea906136bb10db9a8b19d9f}{\index{Endpoint@{Endpoint}!Get\-Port@{Get\-Port}}
+\index{Get\-Port@{Get\-Port}!Endpoint@{Endpoint}}
+\subsubsection[{Get\-Port}]{\setlength{\rightskip}{0pt plus 5cm}uint16\-\_\-t Endpoint\-::\-Get\-Port (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_endpoint_ab314920c2ea906136bb10db9a8b19d9f}
+\hypertarget{class_endpoint_a514014f7d1ee63a7c5a3ed7c8b129526}{\index{Endpoint@{Endpoint}!Is\-Valid@{Is\-Valid}}
+\index{Is\-Valid@{Is\-Valid}!Endpoint@{Endpoint}}
+\subsubsection[{Is\-Valid}]{\setlength{\rightskip}{0pt plus 5cm}bool Endpoint\-::\-Is\-Valid (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_endpoint_a514014f7d1ee63a7c5a3ed7c8b129526}
+\hypertarget{class_endpoint_a1ebaa89afaae9dd7b1305532634c2871}{\index{Endpoint@{Endpoint}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!Endpoint@{Endpoint}}
+\subsubsection[{operator$<$}]{\setlength{\rightskip}{0pt plus 5cm}bool Endpoint\-::operator$<$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Endpoint} \&}]{ref}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_endpoint_a1ebaa89afaae9dd7b1305532634c2871}
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{class_endpoint_af3f74b3b812453bb6cc60400dfc0c82c}{\index{Endpoint@{Endpoint}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Endpoint@{Endpoint}}
+\subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}std\-::ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{out, }
+\item[{const {\bf Endpoint} \&}]{ref}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{class_endpoint_af3f74b3b812453bb6cc60400dfc0c82c}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{_endpoint_8h}{Endpoint.\-h}\end{DoxyCompactItemize}

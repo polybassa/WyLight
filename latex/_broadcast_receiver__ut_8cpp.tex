@@ -1,0 +1,185 @@
+\hypertarget{_broadcast_receiver__ut_8cpp}{\section{library/\-Broadcast\-Receiver\-\_\-ut.cpp File Reference}
+\label{_broadcast_receiver__ut_8cpp}\index{library/\-Broadcast\-Receiver\-\_\-ut.\-cpp@{library/\-Broadcast\-Receiver\-\_\-ut.\-cpp}}
+}
+{\ttfamily \#include \char`\"{}unittest.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Broadcast\-Receiver.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}trace.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$thread$>$}\\*
+{\ttfamily \#include $<$sstream$>$}\\*
+{\ttfamily \#include $<$vector$>$}\\*
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$unistd.\-h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{_broadcast_receiver__ut_8cpp_ae39a6e3cc96ebd8cc7d24f4ffae3331b}{init\-Endpoints} (void)
+\item 
+void \hyperlink{_broadcast_receiver__ut_8cpp_ae8aa2e7e1041ce2436c0e8c2d8253282}{Set\-Test\-Socket} (sockaddr\-\_\-in $\ast$addr, size\-\_\-t offset, void $\ast$p\-Data, size\-\_\-t data\-Length)
+\item 
+int32\-\_\-t \hyperlink{_broadcast_receiver__ut_8cpp_a51559ae6d39f52faf703953b492b5d93}{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Empty} (void)
+\item 
+int32\-\_\-t \hyperlink{_broadcast_receiver__ut_8cpp_a31606c21dcede8bd52046e6da6a13685}{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Simple} (void)
+\item 
+int32\-\_\-t \hyperlink{_broadcast_receiver__ut_8cpp_aeed7948dbf4240c6e099da21b592ab08}{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Two\-Same} (void)
+\item 
+int32\-\_\-t \hyperlink{_broadcast_receiver__ut_8cpp_a90a84d2f93cb57e988950bb8da93d8be}{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-No\-Timeout} (void)
+\item 
+int \hyperlink{_broadcast_receiver__ut_8cpp_ac0f2228420376f4db7e1274f2b41667c}{main} (int argc, const char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static const int \hyperlink{_broadcast_receiver__ut_8cpp_a5d2a6eaeb05595ac981331f802f5695e}{g\-\_\-\-Debug\-Zones} = Z\-O\-N\-E\-\_\-\-E\-R\-R\-O\-R $|$ Z\-O\-N\-E\-\_\-\-W\-A\-R\-N\-I\-N\-G $|$ Z\-O\-N\-E\-\_\-\-I\-N\-F\-O $|$ Z\-O\-N\-E\-\_\-\-V\-E\-R\-B\-O\-S\-E
+\item 
+static const timespec \hyperlink{_broadcast_receiver__ut_8cpp_a6e289328c8121a52ad890da4651dec60}{N\-A\-N\-O\-S\-L\-E\-E\-P\-\_\-\-T\-I\-M\-E} = \{0, 5000000\}
+\item 
+uint8\-\_\-t \hyperlink{_broadcast_receiver__ut_8cpp_ad2f66b67216523cae636f55f18114d46}{captured\-Broadcast\-Message} \mbox{[}110\mbox{]}
+\item 
+uint8\-\_\-t \hyperlink{_broadcast_receiver__ut_8cpp_a080ffc40c9e51b57d20b14c5316c05c8}{captured\-Broadcast\-Message\-\_\-2} \mbox{[}110\mbox{]}
+\item 
+sockaddr\-\_\-in \hyperlink{_broadcast_receiver__ut_8cpp_abcbefab2b3462f77856afb07de5d47e6}{g\-\_\-\-First\-Remote}
+\item 
+sockaddr\-\_\-in \hyperlink{_broadcast_receiver__ut_8cpp_a65d7f68cb389b4da25655e8fcff3ace8}{g\-\_\-\-Second\-Remote}
+\item 
+sockaddr\-\_\-in \hyperlink{_broadcast_receiver__ut_8cpp_a92f5695930ca92bb29180b720d55c1a1}{g\-\_\-\-Third\-Remote}
+\item 
+uint8\-\_\-t \hyperlink{_broadcast_receiver__ut_8cpp_a3ba266179ee5c70e23b690ad48baf85f}{g\-\_\-\-Test\-Socket\-Recv\-Buffer} \mbox{[}10240\mbox{]}
+\item 
+uint8\-\_\-t $\ast$ \hyperlink{_broadcast_receiver__ut_8cpp_a58a8afc8f926aa7f2d5d398d49a18066}{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos} = \hyperlink{_telnet_proxy__ut_8cpp_a3ba266179ee5c70e23b690ad48baf85f}{g\-\_\-\-Test\-Socket\-Recv\-Buffer}
+\item 
+size\-\_\-t \hyperlink{_broadcast_receiver__ut_8cpp_ac3f491bb63121206a355e857b98de65e}{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size} = 0
+\item 
+const sockaddr\-\_\-in $\ast$ \hyperlink{_broadcast_receiver__ut_8cpp_a642553eed6ecd00e267d810f03e09ace}{g\-\_\-\-Test\-Socket\-Recv\-Addr}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{_broadcast_receiver__ut_8cpp_ae39a6e3cc96ebd8cc7d24f4ffae3331b}{\index{Broadcast\-Receiver\-\_\-ut.\-cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}!init\-Endpoints@{init\-Endpoints}}
+\index{init\-Endpoints@{init\-Endpoints}!BroadcastReceiver_ut.cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}}
+\subsubsection[{init\-Endpoints}]{\setlength{\rightskip}{0pt plus 5cm}void init\-Endpoints (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_broadcast_receiver__ut_8cpp_ae39a6e3cc96ebd8cc7d24f4ffae3331b}
+\hypertarget{_broadcast_receiver__ut_8cpp_ac0f2228420376f4db7e1274f2b41667c}{\index{Broadcast\-Receiver\-\_\-ut.\-cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}!main@{main}}
+\index{main@{main}!BroadcastReceiver_ut.cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{const char $\ast$}]{argv\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}}\label{_broadcast_receiver__ut_8cpp_ac0f2228420376f4db7e1274f2b41667c}
+\hypertarget{_broadcast_receiver__ut_8cpp_ae8aa2e7e1041ce2436c0e8c2d8253282}{\index{Broadcast\-Receiver\-\_\-ut.\-cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}!Set\-Test\-Socket@{Set\-Test\-Socket}}
+\index{Set\-Test\-Socket@{Set\-Test\-Socket}!BroadcastReceiver_ut.cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}}
+\subsubsection[{Set\-Test\-Socket}]{\setlength{\rightskip}{0pt plus 5cm}void Set\-Test\-Socket (
+\begin{DoxyParamCaption}
+\item[{sockaddr\-\_\-in $\ast$}]{addr, }
+\item[{size\-\_\-t}]{offset, }
+\item[{void $\ast$}]{p\-Data, }
+\item[{size\-\_\-t}]{data\-Length}
+\end{DoxyParamCaption}
+)}}\label{_broadcast_receiver__ut_8cpp_ae8aa2e7e1041ce2436c0e8c2d8253282}
+\hypertarget{_broadcast_receiver__ut_8cpp_a51559ae6d39f52faf703953b492b5d93}{\index{Broadcast\-Receiver\-\_\-ut.\-cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}!ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Empty@{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Empty}}
+\index{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Empty@{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Empty}!BroadcastReceiver_ut.cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Empty}]{\setlength{\rightskip}{0pt plus 5cm}int32\-\_\-t ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Empty (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_broadcast_receiver__ut_8cpp_a51559ae6d39f52faf703953b492b5d93}
+\hypertarget{_broadcast_receiver__ut_8cpp_a90a84d2f93cb57e988950bb8da93d8be}{\index{Broadcast\-Receiver\-\_\-ut.\-cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}!ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-No\-Timeout@{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-No\-Timeout}}
+\index{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-No\-Timeout@{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-No\-Timeout}!BroadcastReceiver_ut.cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-No\-Timeout}]{\setlength{\rightskip}{0pt plus 5cm}int32\-\_\-t ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-No\-Timeout (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_broadcast_receiver__ut_8cpp_a90a84d2f93cb57e988950bb8da93d8be}
+\hypertarget{_broadcast_receiver__ut_8cpp_a31606c21dcede8bd52046e6da6a13685}{\index{Broadcast\-Receiver\-\_\-ut.\-cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}!ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Simple@{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Simple}}
+\index{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Simple@{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Simple}!BroadcastReceiver_ut.cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Simple}]{\setlength{\rightskip}{0pt plus 5cm}int32\-\_\-t ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Simple (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_broadcast_receiver__ut_8cpp_a31606c21dcede8bd52046e6da6a13685}
+\hypertarget{_broadcast_receiver__ut_8cpp_aeed7948dbf4240c6e099da21b592ab08}{\index{Broadcast\-Receiver\-\_\-ut.\-cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}!ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Two\-Same@{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Two\-Same}}
+\index{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Two\-Same@{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Two\-Same}!BroadcastReceiver_ut.cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}}
+\subsubsection[{ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Two\-Same}]{\setlength{\rightskip}{0pt plus 5cm}int32\-\_\-t ut\-\_\-\-Broadcast\-Receiver\-\_\-\-Test\-Two\-Same (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{_broadcast_receiver__ut_8cpp_aeed7948dbf4240c6e099da21b592ab08}
+
+
+\subsection{Variable Documentation}
+\hypertarget{_broadcast_receiver__ut_8cpp_ad2f66b67216523cae636f55f18114d46}{\index{Broadcast\-Receiver\-\_\-ut.\-cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}!captured\-Broadcast\-Message@{captured\-Broadcast\-Message}}
+\index{captured\-Broadcast\-Message@{captured\-Broadcast\-Message}!BroadcastReceiver_ut.cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}}
+\subsubsection[{captured\-Broadcast\-Message}]{\setlength{\rightskip}{0pt plus 5cm}uint8\-\_\-t captured\-Broadcast\-Message\mbox{[}110\mbox{]}}}\label{_broadcast_receiver__ut_8cpp_ad2f66b67216523cae636f55f18114d46}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+= \{
+0x00, 0x0f, 0xb5, 0xb2, 0x57, 0xfa, 
+0x07, 
+0x3f, 
+0x07, 0xd0, 
+0x00, 0x00, 0x24, 0xb1, 
+0x0b, 0xff, 
+0x0d, 0x11, 
+0x54, 0x69, 0x6d, 0x65, 0x20, 0x4e, 0x4f, 0x54, 0x20, 0x53, 0x45, 0x54, 0x00, 0x00, 
+0x57, 0x69, 0x46, 0x6c, 0x79, 0x20, 0x56, 0x65, 0x72, 0x20, 0x32, 0x2e, 0x33, 0x36,
+0x2c, 0x20, 0x30, 0x38, 0x2d, 0x32, 0x32, 0x2d, 0x32, 0x30, 0x31, 0x32, 0x00, 0x00, 
+\textcolor{charliteral}{'W'}, \textcolor{charliteral}{'i'}, \textcolor{charliteral}{'F'}, \textcolor{charliteral}{'l'}, \textcolor{charliteral}{'y'}, \textcolor{charliteral}{'-'}, \textcolor{charliteral}{'E'}, \textcolor{charliteral}{'Z'}, \textcolor{charliteral}{'X'},
+\textcolor{charliteral}{'1'}, \textcolor{charliteral}{'2'}, \textcolor{charliteral}{'3'}, \textcolor{charliteral}{'4'}, \textcolor{charliteral}{'5'}, \textcolor{charliteral}{'6'}, \textcolor{charliteral}{'7'}, \textcolor{charliteral}{'8'}, \textcolor{charliteral}{'9'}, \textcolor{charliteral}{'0'},
+\textcolor{charliteral}{'1'}, \textcolor{charliteral}{'2'}, \textcolor{charliteral}{'3'}, \textcolor{charliteral}{'4'}, \textcolor{charliteral}{'5'}, \textcolor{charliteral}{'6'}, \textcolor{charliteral}{'7'}, \textcolor{charliteral}{'8'}, \textcolor{charliteral}{'9'}, \textcolor{charliteral}{'0'}, \textcolor{charliteral}{'1'}, \textcolor{charliteral}{'2'}, \textcolor{charliteral}{'3'}, 
+0x4e, 0x00, 
+0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 
+\}
+\end{DoxyCode}
+\hypertarget{_broadcast_receiver__ut_8cpp_a080ffc40c9e51b57d20b14c5316c05c8}{\index{Broadcast\-Receiver\-\_\-ut.\-cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}!captured\-Broadcast\-Message\-\_\-2@{captured\-Broadcast\-Message\-\_\-2}}
+\index{captured\-Broadcast\-Message\-\_\-2@{captured\-Broadcast\-Message\-\_\-2}!BroadcastReceiver_ut.cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}}
+\subsubsection[{captured\-Broadcast\-Message\-\_\-2}]{\setlength{\rightskip}{0pt plus 5cm}uint8\-\_\-t captured\-Broadcast\-Message\-\_\-2\mbox{[}110\mbox{]}}}\label{_broadcast_receiver__ut_8cpp_a080ffc40c9e51b57d20b14c5316c05c8}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+= \{
+0xbc, 0x14, 0x01, 0x97, 0xf2, 0xa8, 
+0x07, 
+0x3b, 
+0x07, 0xd0, 
+0x00, 0x00, 0x09, 0x20, 
+0x0b, 0xe7, 
+0x0d, 0x11, 
+0x54, 0x69, 0x6d, 0x65, 0x20, 0x4e,   0x4f, 0x54, 0x20, 0x53, 0x45, 0x54, 0x00, 0x00, 
+0x57, 0x69, 0x46, 0x6c, 0x79, 0x20, 0x56, 0x65, 0x72, 0x20, 0x32, 0x2e, 0x33, 0x36,
+0x2c, 0x20, 0x30, 0x39, 0x2d, 0x32, 0x37, 0x2d, 0x32, 0x30, 0x31, 0x32, 0x00, 0x00, 
+\textcolor{charliteral}{'W'}, \textcolor{charliteral}{'i'}, \textcolor{charliteral}{'F'}, \textcolor{charliteral}{'l'}, \textcolor{charliteral}{'y'}, \textcolor{charliteral}{'\_'}, \textcolor{charliteral}{'L'}, \textcolor{charliteral}{'i'}, \textcolor{charliteral}{'g'},
+\textcolor{charliteral}{'h'}, \textcolor{charliteral}{'t'}, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x02, 
+0x18, 0x00, 
+0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 
+\}
+\end{DoxyCode}
+\hypertarget{_broadcast_receiver__ut_8cpp_a5d2a6eaeb05595ac981331f802f5695e}{\index{Broadcast\-Receiver\-\_\-ut.\-cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}!g\-\_\-\-Debug\-Zones@{g\-\_\-\-Debug\-Zones}}
+\index{g\-\_\-\-Debug\-Zones@{g\-\_\-\-Debug\-Zones}!BroadcastReceiver_ut.cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Debug\-Zones}]{\setlength{\rightskip}{0pt plus 5cm}const int g\-\_\-\-Debug\-Zones = Z\-O\-N\-E\-\_\-\-E\-R\-R\-O\-R $|$ Z\-O\-N\-E\-\_\-\-W\-A\-R\-N\-I\-N\-G $|$ Z\-O\-N\-E\-\_\-\-I\-N\-F\-O $|$ Z\-O\-N\-E\-\_\-\-V\-E\-R\-B\-O\-S\-E\hspace{0.3cm}{\ttfamily [static]}}}\label{_broadcast_receiver__ut_8cpp_a5d2a6eaeb05595ac981331f802f5695e}
+\hypertarget{_broadcast_receiver__ut_8cpp_abcbefab2b3462f77856afb07de5d47e6}{\index{Broadcast\-Receiver\-\_\-ut.\-cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}!g\-\_\-\-First\-Remote@{g\-\_\-\-First\-Remote}}
+\index{g\-\_\-\-First\-Remote@{g\-\_\-\-First\-Remote}!BroadcastReceiver_ut.cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-First\-Remote}]{\setlength{\rightskip}{0pt plus 5cm}sockaddr\-\_\-in g\-\_\-\-First\-Remote}}\label{_broadcast_receiver__ut_8cpp_abcbefab2b3462f77856afb07de5d47e6}
+\hypertarget{_broadcast_receiver__ut_8cpp_a65d7f68cb389b4da25655e8fcff3ace8}{\index{Broadcast\-Receiver\-\_\-ut.\-cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}!g\-\_\-\-Second\-Remote@{g\-\_\-\-Second\-Remote}}
+\index{g\-\_\-\-Second\-Remote@{g\-\_\-\-Second\-Remote}!BroadcastReceiver_ut.cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Second\-Remote}]{\setlength{\rightskip}{0pt plus 5cm}sockaddr\-\_\-in g\-\_\-\-Second\-Remote}}\label{_broadcast_receiver__ut_8cpp_a65d7f68cb389b4da25655e8fcff3ace8}
+\hypertarget{_broadcast_receiver__ut_8cpp_a642553eed6ecd00e267d810f03e09ace}{\index{Broadcast\-Receiver\-\_\-ut.\-cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}!g\-\_\-\-Test\-Socket\-Recv\-Addr@{g\-\_\-\-Test\-Socket\-Recv\-Addr}}
+\index{g\-\_\-\-Test\-Socket\-Recv\-Addr@{g\-\_\-\-Test\-Socket\-Recv\-Addr}!BroadcastReceiver_ut.cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Test\-Socket\-Recv\-Addr}]{\setlength{\rightskip}{0pt plus 5cm}const sockaddr\-\_\-in$\ast$ g\-\_\-\-Test\-Socket\-Recv\-Addr}}\label{_broadcast_receiver__ut_8cpp_a642553eed6ecd00e267d810f03e09ace}
+\hypertarget{_broadcast_receiver__ut_8cpp_a3ba266179ee5c70e23b690ad48baf85f}{\index{Broadcast\-Receiver\-\_\-ut.\-cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}!g\-\_\-\-Test\-Socket\-Recv\-Buffer@{g\-\_\-\-Test\-Socket\-Recv\-Buffer}}
+\index{g\-\_\-\-Test\-Socket\-Recv\-Buffer@{g\-\_\-\-Test\-Socket\-Recv\-Buffer}!BroadcastReceiver_ut.cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Test\-Socket\-Recv\-Buffer}]{\setlength{\rightskip}{0pt plus 5cm}uint8\-\_\-t g\-\_\-\-Test\-Socket\-Recv\-Buffer\mbox{[}10240\mbox{]}}}\label{_broadcast_receiver__ut_8cpp_a3ba266179ee5c70e23b690ad48baf85f}
+\hypertarget{_broadcast_receiver__ut_8cpp_a58a8afc8f926aa7f2d5d398d49a18066}{\index{Broadcast\-Receiver\-\_\-ut.\-cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}!g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos@{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos}}
+\index{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos@{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos}!BroadcastReceiver_ut.cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos}]{\setlength{\rightskip}{0pt plus 5cm}uint8\-\_\-t$\ast$ g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Pos = {\bf g\-\_\-\-Test\-Socket\-Recv\-Buffer}}}\label{_broadcast_receiver__ut_8cpp_a58a8afc8f926aa7f2d5d398d49a18066}
+\hypertarget{_broadcast_receiver__ut_8cpp_ac3f491bb63121206a355e857b98de65e}{\index{Broadcast\-Receiver\-\_\-ut.\-cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}!g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size@{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size}}
+\index{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size@{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size}!BroadcastReceiver_ut.cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t g\-\_\-\-Test\-Socket\-Recv\-Buffer\-Size = 0}}\label{_broadcast_receiver__ut_8cpp_ac3f491bb63121206a355e857b98de65e}
+\hypertarget{_broadcast_receiver__ut_8cpp_a92f5695930ca92bb29180b720d55c1a1}{\index{Broadcast\-Receiver\-\_\-ut.\-cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}!g\-\_\-\-Third\-Remote@{g\-\_\-\-Third\-Remote}}
+\index{g\-\_\-\-Third\-Remote@{g\-\_\-\-Third\-Remote}!BroadcastReceiver_ut.cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}}
+\subsubsection[{g\-\_\-\-Third\-Remote}]{\setlength{\rightskip}{0pt plus 5cm}sockaddr\-\_\-in g\-\_\-\-Third\-Remote}}\label{_broadcast_receiver__ut_8cpp_a92f5695930ca92bb29180b720d55c1a1}
+\hypertarget{_broadcast_receiver__ut_8cpp_a6e289328c8121a52ad890da4651dec60}{\index{Broadcast\-Receiver\-\_\-ut.\-cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}!N\-A\-N\-O\-S\-L\-E\-E\-P\-\_\-\-T\-I\-M\-E@{N\-A\-N\-O\-S\-L\-E\-E\-P\-\_\-\-T\-I\-M\-E}}
+\index{N\-A\-N\-O\-S\-L\-E\-E\-P\-\_\-\-T\-I\-M\-E@{N\-A\-N\-O\-S\-L\-E\-E\-P\-\_\-\-T\-I\-M\-E}!BroadcastReceiver_ut.cpp@{Broadcast\-Receiver\-\_\-ut.\-cpp}}
+\subsubsection[{N\-A\-N\-O\-S\-L\-E\-E\-P\-\_\-\-T\-I\-M\-E}]{\setlength{\rightskip}{0pt plus 5cm}const timespec N\-A\-N\-O\-S\-L\-E\-E\-P\-\_\-\-T\-I\-M\-E = \{0, 5000000\}\hspace{0.3cm}{\ttfamily [static]}}}\label{_broadcast_receiver__ut_8cpp_a6e289328c8121a52ad890da4651dec60}

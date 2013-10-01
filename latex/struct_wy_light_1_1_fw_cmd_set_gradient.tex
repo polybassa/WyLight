@@ -1,0 +1,91 @@
+\hypertarget{struct_wy_light_1_1_fw_cmd_set_gradient}{\section{Wy\-Light\-:\-:Fw\-Cmd\-Set\-Gradient Struct Reference}
+\label{struct_wy_light_1_1_fw_cmd_set_gradient}\index{Wy\-Light\-::\-Fw\-Cmd\-Set\-Gradient@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Gradient}}
+}
+
+
+{\ttfamily \#include $<$Fw\-Command.\-h$>$}
+
+Inheritance diagram for Wy\-Light\-:\-:Fw\-Cmd\-Set\-Gradient\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{struct_wy_light_1_1_fw_cmd_set_gradient}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{struct_wy_light_1_1_fw_cmd_set_gradient_a3b9481cbdee4e362825c302dfb73dd62}{Fw\-Cmd\-Set\-Gradient} (std\-::istream \&is)
+\item 
+\hyperlink{struct_wy_light_1_1_fw_cmd_set_gradient_a1343bc698871f4824bae187943a7fd96}{Fw\-Cmd\-Set\-Gradient} (uint32\-\_\-t argb\-\_\-1, uint32\-\_\-t argb\-\_\-2, uint16\-\_\-t fade\-Time=0, bool parallel\-Fade=false, uint8\-\_\-t length=N\-U\-M\-\_\-\-O\-F\-\_\-\-L\-E\-D, uint8\-\_\-t offset=0)
+\item 
+std\-::ostream \& \hyperlink{struct_wy_light_1_1_fw_cmd_set_gradient_ab29979311cc5a3e8936d634ece99f78b}{Write} (std\-::ostream \&out, size\-\_\-t \&indentation) const override
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const std\-::string \hyperlink{struct_wy_light_1_1_fw_cmd_set_gradient_a2e00c35a708bdd084af9fa486bdbd83e}{T\-O\-K\-E\-N}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{struct_wy_light_1_1_fw_cmd_set_gradient_a3b9481cbdee4e362825c302dfb73dd62}{\index{Wy\-Light\-::\-Fw\-Cmd\-Set\-Gradient@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Gradient}!Fw\-Cmd\-Set\-Gradient@{Fw\-Cmd\-Set\-Gradient}}
+\index{Fw\-Cmd\-Set\-Gradient@{Fw\-Cmd\-Set\-Gradient}!WyLight::FwCmdSetGradient@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Gradient}}
+\subsubsection[{Fw\-Cmd\-Set\-Gradient}]{\setlength{\rightskip}{0pt plus 5cm}Wy\-Light\-::\-Fw\-Cmd\-Set\-Gradient\-::\-Fw\-Cmd\-Set\-Gradient (
+\begin{DoxyParamCaption}
+\item[{std\-::istream \&}]{is}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{struct_wy_light_1_1_fw_cmd_set_gradient_a3b9481cbdee4e362825c302dfb73dd62}
+\hypertarget{struct_wy_light_1_1_fw_cmd_set_gradient_a1343bc698871f4824bae187943a7fd96}{\index{Wy\-Light\-::\-Fw\-Cmd\-Set\-Gradient@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Gradient}!Fw\-Cmd\-Set\-Gradient@{Fw\-Cmd\-Set\-Gradient}}
+\index{Fw\-Cmd\-Set\-Gradient@{Fw\-Cmd\-Set\-Gradient}!WyLight::FwCmdSetGradient@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Gradient}}
+\subsubsection[{Fw\-Cmd\-Set\-Gradient}]{\setlength{\rightskip}{0pt plus 5cm}Wy\-Light\-::\-Fw\-Cmd\-Set\-Gradient\-::\-Fw\-Cmd\-Set\-Gradient (
+\begin{DoxyParamCaption}
+\item[{uint32\-\_\-t}]{argb\-\_\-1, }
+\item[{uint32\-\_\-t}]{argb\-\_\-2, }
+\item[{uint16\-\_\-t}]{fade\-Time = {\ttfamily 0}, }
+\item[{bool}]{parallel\-Fade = {\ttfamily false}, }
+\item[{uint8\-\_\-t}]{length = {\ttfamily NUM\-\_\-OF\-\_\-LED}, }
+\item[{uint8\-\_\-t}]{offset = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{struct_wy_light_1_1_fw_cmd_set_gradient_a1343bc698871f4824bae187943a7fd96}
+Injects a gradient command into the wifly script controller 
+\begin{DoxyParams}{Parameters}
+{\em argb\-\_\-1} & is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff). This is the start color for the gradient. \\
+\hline
+{\em argb\-\_\-2} & is a 32 bit rgb value with unused alpha channel (set alpha always to 0xff). This is the end color for the gradient. \\
+\hline
+{\em fade\-Time} & in hundreths of a second. Use 0 to set color immediately, default = 0 \\
+\hline
+{\em parallel\-Fade} & if true other fades are allowed in parallel with this fade \\
+\hline
+{\em length} & is the number of led's from startposition to endposition \\
+\hline
+{\em offset} & can be used to move the startposition of the gradient on the ledstrip \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{struct_wy_light_1_1_fw_cmd_set_gradient_ab29979311cc5a3e8936d634ece99f78b}{\index{Wy\-Light\-::\-Fw\-Cmd\-Set\-Gradient@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Gradient}!Write@{Write}}
+\index{Write@{Write}!WyLight::FwCmdSetGradient@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Gradient}}
+\subsubsection[{Write}]{\setlength{\rightskip}{0pt plus 5cm}std\-::ostream\& Wy\-Light\-::\-Fw\-Cmd\-Set\-Gradient\-::\-Write (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{out, }
+\item[{size\-\_\-t \&}]{indentation}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}}\label{struct_wy_light_1_1_fw_cmd_set_gradient_ab29979311cc5a3e8936d634ece99f78b}
+
+
+Reimplemented from \hyperlink{class_wy_light_1_1_fw_cmd_script_ad7b0c30c6787466057b109c5a5bba6b6}{Wy\-Light\-::\-Fw\-Cmd\-Script}.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{struct_wy_light_1_1_fw_cmd_set_gradient_a2e00c35a708bdd084af9fa486bdbd83e}{\index{Wy\-Light\-::\-Fw\-Cmd\-Set\-Gradient@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Gradient}!T\-O\-K\-E\-N@{T\-O\-K\-E\-N}}
+\index{T\-O\-K\-E\-N@{T\-O\-K\-E\-N}!WyLight::FwCmdSetGradient@{Wy\-Light\-::\-Fw\-Cmd\-Set\-Gradient}}
+\subsubsection[{T\-O\-K\-E\-N}]{\setlength{\rightskip}{0pt plus 5cm}const std\-::string Wy\-Light\-::\-Fw\-Cmd\-Set\-Gradient\-::\-T\-O\-K\-E\-N\hspace{0.3cm}{\ttfamily [static]}}}\label{struct_wy_light_1_1_fw_cmd_set_gradient_a2e00c35a708bdd084af9fa486bdbd83e}
+
+
+The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{_fw_command_8h}{Fw\-Command.\-h}\end{DoxyCompactItemize}

@@ -1,0 +1,189 @@
+\hypertarget{class_wy_light_1_1_broadcast_receiver}{\section{Wy\-Light\-:\-:Broadcast\-Receiver Class Reference}
+\label{class_wy_light_1_1_broadcast_receiver}\index{Wy\-Light\-::\-Broadcast\-Receiver@{Wy\-Light\-::\-Broadcast\-Receiver}}
+}
+
+
+{\ttfamily \#include $<$Broadcast\-Receiver.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_wy_light_1_1_broadcast_receiver_ac03335f0824e0de7d0dd87d5187aafa3}{Broadcast\-Receiver} (uint16\-\_\-t port=\hyperlink{class_wy_light_1_1_broadcast_receiver_a7cdb8d26a95a50b32317bb8332668f9f}{B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T}, const std\-::string \&recent\-Filename=\char`\"{}\char`\"{}, const std\-::function$<$ void(size\-\_\-t index, const \hyperlink{class_wy_light_1_1_endpoint}{Endpoint} \&new\-Endpoint)$>$ \&on\-New\-Endpoint=N\-U\-L\-L)
+\item 
+\hyperlink{class_wy_light_1_1_broadcast_receiver_a027160f232b143e429d7ff61834c9d04}{$\sim$\-Broadcast\-Receiver} (void)
+\item 
+void \hyperlink{class_wy_light_1_1_broadcast_receiver_a97759f96b2fd9f2e999cc141a81e17b8}{operator()} (timeval $\ast$timeout=N\-U\-L\-L)  throw (\-Fatal\-Error)
+\item 
+\hyperlink{class_wy_light_1_1_endpoint}{Endpoint} \& \hyperlink{class_wy_light_1_1_broadcast_receiver_ab4950ea01d61e47ae91bb085b0135919}{Get\-Endpoint} (size\-\_\-t index)
+\item 
+\hyperlink{class_wy_light_1_1_endpoint}{Endpoint} \& \hyperlink{class_wy_light_1_1_broadcast_receiver_a57116a61823954a3a86e11d86e2975c7}{Get\-Endpoint\-By\-Fingerprint} (const uint64\-\_\-t fingerprint)
+\item 
+\hyperlink{class_wy_light_1_1_endpoint}{Endpoint} \hyperlink{class_wy_light_1_1_broadcast_receiver_a1ed47e38dbc6475905afc528d3bc5420}{Get\-Next\-Remote} (timeval $\ast$timeout)  throw (\-Fatal\-Error)
+\item 
+size\-\_\-t \hyperlink{class_wy_light_1_1_broadcast_receiver_ab8100fdc85265308689ce34147f106bb}{Num\-Remotes} (void) const 
+\item 
+void \hyperlink{class_wy_light_1_1_broadcast_receiver_a33985105c1c905bf01ec5012c825878e}{Read\-Recent\-Endpoints} (const std\-::string \&filename=\char`\"{}\char`\"{})
+\item 
+void \hyperlink{class_wy_light_1_1_broadcast_receiver_a018a961883af11174f0bc36695bb222c}{Stop} (void)
+\item 
+void \hyperlink{class_wy_light_1_1_broadcast_receiver_a54367ab857356899e0c5263b856e2d60}{Write\-Recent\-Endpoints} (const std\-::string \&filename=\char`\"{}\char`\"{}, uint8\-\_\-t threshold=1) const 
+\item 
+void \hyperlink{class_wy_light_1_1_broadcast_receiver_a47dfbc4ae76f027dc8a4c07898eb3bda}{Delete\-Recent\-Endpoint\-File} (const std\-::string \&filename=\char`\"{}\char`\"{})
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const uint16\-\_\-t \hyperlink{class_wy_light_1_1_broadcast_receiver_a7cdb8d26a95a50b32317bb8332668f9f}{B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T} = 55555
+\item 
+static const std\-::string \hyperlink{class_wy_light_1_1_broadcast_receiver_a2beb5ad6ccb439295e8909469ce1d9ff}{D\-E\-V\-I\-C\-E\-\_\-\-I\-D}
+\item 
+static const std\-::string \hyperlink{class_wy_light_1_1_broadcast_receiver_ae6b56fcc57286f0132d6fbe19e59599d}{D\-E\-V\-I\-C\-E\-\_\-\-I\-D\-\_\-\-O\-L\-D}
+\item 
+static const std\-::string \hyperlink{class_wy_light_1_1_broadcast_receiver_a066987115c69911571021470e07b524e}{D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N}
+\item 
+static const std\-::string \hyperlink{class_wy_light_1_1_broadcast_receiver_a2c833aa8d9d1b56b92f1d17c96371be8}{D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N4}
+\item 
+static const std\-::string \hyperlink{class_wy_light_1_1_broadcast_receiver_a7e3c3f4fe453f48d012ecbb15e8cb5e5}{S\-T\-O\-P\-\_\-\-M\-S\-G}
+\item 
+static \hyperlink{class_wy_light_1_1_endpoint}{Endpoint} \hyperlink{class_wy_light_1_1_broadcast_receiver_a3028b6394222f327c1286e9263a126a7}{E\-M\-P\-T\-Y\-\_\-\-E\-N\-D\-P\-O\-I\-N\-T}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_wy_light_1_1_broadcast_receiver_ac03335f0824e0de7d0dd87d5187aafa3}{\index{Wy\-Light\-::\-Broadcast\-Receiver@{Wy\-Light\-::\-Broadcast\-Receiver}!Broadcast\-Receiver@{Broadcast\-Receiver}}
+\index{Broadcast\-Receiver@{Broadcast\-Receiver}!WyLight::BroadcastReceiver@{Wy\-Light\-::\-Broadcast\-Receiver}}
+\subsubsection[{Broadcast\-Receiver}]{\setlength{\rightskip}{0pt plus 5cm}Wy\-Light\-::\-Broadcast\-Receiver\-::\-Broadcast\-Receiver (
+\begin{DoxyParamCaption}
+\item[{uint16\-\_\-t}]{port = {\ttfamily {\bf B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T}}, }
+\item[{const std\-::string \&}]{recent\-Filename = {\ttfamily \char`\"{}\char`\"{}}, }
+\item[{const std\-::function$<$ void(size\-\_\-t index, const {\bf Endpoint} \&new\-Endpoint)$>$ \&}]{on\-New\-Endpoint = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_broadcast_receiver_ac03335f0824e0de7d0dd87d5187aafa3}
+\hypertarget{class_wy_light_1_1_broadcast_receiver_a027160f232b143e429d7ff61834c9d04}{\index{Wy\-Light\-::\-Broadcast\-Receiver@{Wy\-Light\-::\-Broadcast\-Receiver}!$\sim$\-Broadcast\-Receiver@{$\sim$\-Broadcast\-Receiver}}
+\index{$\sim$\-Broadcast\-Receiver@{$\sim$\-Broadcast\-Receiver}!WyLight::BroadcastReceiver@{Wy\-Light\-::\-Broadcast\-Receiver}}
+\subsubsection[{$\sim$\-Broadcast\-Receiver}]{\setlength{\rightskip}{0pt plus 5cm}Wy\-Light\-::\-Broadcast\-Receiver\-::$\sim$\-Broadcast\-Receiver (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_broadcast_receiver_a027160f232b143e429d7ff61834c9d04}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_wy_light_1_1_broadcast_receiver_a47dfbc4ae76f027dc8a4c07898eb3bda}{\index{Wy\-Light\-::\-Broadcast\-Receiver@{Wy\-Light\-::\-Broadcast\-Receiver}!Delete\-Recent\-Endpoint\-File@{Delete\-Recent\-Endpoint\-File}}
+\index{Delete\-Recent\-Endpoint\-File@{Delete\-Recent\-Endpoint\-File}!WyLight::BroadcastReceiver@{Wy\-Light\-::\-Broadcast\-Receiver}}
+\subsubsection[{Delete\-Recent\-Endpoint\-File}]{\setlength{\rightskip}{0pt plus 5cm}void Wy\-Light\-::\-Broadcast\-Receiver\-::\-Delete\-Recent\-Endpoint\-File (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{filename = {\ttfamily \char`\"{}\char`\"{}}}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_broadcast_receiver_a47dfbc4ae76f027dc8a4c07898eb3bda}
+Delete all recent endpoints in file and in the internal Ip\-Tables 
+\begin{DoxyParams}{Parameters}
+{\em filename} & of the file containing the recent endpoints \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_wy_light_1_1_broadcast_receiver_ab4950ea01d61e47ae91bb085b0135919}{\index{Wy\-Light\-::\-Broadcast\-Receiver@{Wy\-Light\-::\-Broadcast\-Receiver}!Get\-Endpoint@{Get\-Endpoint}}
+\index{Get\-Endpoint@{Get\-Endpoint}!WyLight::BroadcastReceiver@{Wy\-Light\-::\-Broadcast\-Receiver}}
+\subsubsection[{Get\-Endpoint}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Endpoint}\& Wy\-Light\-::\-Broadcast\-Receiver\-::\-Get\-Endpoint (
+\begin{DoxyParamCaption}
+\item[{size\-\_\-t}]{index}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_broadcast_receiver_ab4950ea01d61e47ae91bb085b0135919}
+\hypertarget{class_wy_light_1_1_broadcast_receiver_a57116a61823954a3a86e11d86e2975c7}{\index{Wy\-Light\-::\-Broadcast\-Receiver@{Wy\-Light\-::\-Broadcast\-Receiver}!Get\-Endpoint\-By\-Fingerprint@{Get\-Endpoint\-By\-Fingerprint}}
+\index{Get\-Endpoint\-By\-Fingerprint@{Get\-Endpoint\-By\-Fingerprint}!WyLight::BroadcastReceiver@{Wy\-Light\-::\-Broadcast\-Receiver}}
+\subsubsection[{Get\-Endpoint\-By\-Fingerprint}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Endpoint}\& Wy\-Light\-::\-Broadcast\-Receiver\-::\-Get\-Endpoint\-By\-Fingerprint (
+\begin{DoxyParamCaption}
+\item[{const uint64\-\_\-t}]{fingerprint}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_broadcast_receiver_a57116a61823954a3a86e11d86e2975c7}
+\hypertarget{class_wy_light_1_1_broadcast_receiver_a1ed47e38dbc6475905afc528d3bc5420}{\index{Wy\-Light\-::\-Broadcast\-Receiver@{Wy\-Light\-::\-Broadcast\-Receiver}!Get\-Next\-Remote@{Get\-Next\-Remote}}
+\index{Get\-Next\-Remote@{Get\-Next\-Remote}!WyLight::BroadcastReceiver@{Wy\-Light\-::\-Broadcast\-Receiver}}
+\subsubsection[{Get\-Next\-Remote}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Endpoint} Wy\-Light\-::\-Broadcast\-Receiver\-::\-Get\-Next\-Remote (
+\begin{DoxyParamCaption}
+\item[{timeval $\ast$}]{timeout}
+\end{DoxyParamCaption}
+)  throw ({\bf Fatal\-Error})}}\label{class_wy_light_1_1_broadcast_receiver_a1ed47e38dbc6475905afc528d3bc5420}
+\hypertarget{class_wy_light_1_1_broadcast_receiver_ab8100fdc85265308689ce34147f106bb}{\index{Wy\-Light\-::\-Broadcast\-Receiver@{Wy\-Light\-::\-Broadcast\-Receiver}!Num\-Remotes@{Num\-Remotes}}
+\index{Num\-Remotes@{Num\-Remotes}!WyLight::BroadcastReceiver@{Wy\-Light\-::\-Broadcast\-Receiver}}
+\subsubsection[{Num\-Remotes}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t Wy\-Light\-::\-Broadcast\-Receiver\-::\-Num\-Remotes (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_broadcast_receiver_ab8100fdc85265308689ce34147f106bb}
+\begin{DoxyReturn}{Returns}
+number of discovered remotes addresses 
+\end{DoxyReturn}
+\hypertarget{class_wy_light_1_1_broadcast_receiver_a97759f96b2fd9f2e999cc141a81e17b8}{\index{Wy\-Light\-::\-Broadcast\-Receiver@{Wy\-Light\-::\-Broadcast\-Receiver}!operator()@{operator()}}
+\index{operator()@{operator()}!WyLight::BroadcastReceiver@{Wy\-Light\-::\-Broadcast\-Receiver}}
+\subsubsection[{operator()}]{\setlength{\rightskip}{0pt plus 5cm}void Wy\-Light\-::\-Broadcast\-Receiver\-::operator() (
+\begin{DoxyParamCaption}
+\item[{timeval $\ast$}]{timeout = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)  throw ({\bf Fatal\-Error})}}\label{class_wy_light_1_1_broadcast_receiver_a97759f96b2fd9f2e999cc141a81e17b8}
+Listen for broadcasts and print them to a stream 
+\begin{DoxyParams}{Parameters}
+{\em timeout} & in seconds, until execution is terminated, to wait indefinetly use N\-U\-L\-L (default) \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_wy_light_1_1_broadcast_receiver_a33985105c1c905bf01ec5012c825878e}{\index{Wy\-Light\-::\-Broadcast\-Receiver@{Wy\-Light\-::\-Broadcast\-Receiver}!Read\-Recent\-Endpoints@{Read\-Recent\-Endpoints}}
+\index{Read\-Recent\-Endpoints@{Read\-Recent\-Endpoints}!WyLight::BroadcastReceiver@{Wy\-Light\-::\-Broadcast\-Receiver}}
+\subsubsection[{Read\-Recent\-Endpoints}]{\setlength{\rightskip}{0pt plus 5cm}void Wy\-Light\-::\-Broadcast\-Receiver\-::\-Read\-Recent\-Endpoints (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{filename = {\ttfamily \char`\"{}\char`\"{}}}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_broadcast_receiver_a33985105c1c905bf01ec5012c825878e}
+Read recent endpoints from file and add them to m\-Ip\-Table 
+\begin{DoxyParams}{Parameters}
+{\em filename} & of the file containing the recent endpoints \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_wy_light_1_1_broadcast_receiver_a018a961883af11174f0bc36695bb222c}{\index{Wy\-Light\-::\-Broadcast\-Receiver@{Wy\-Light\-::\-Broadcast\-Receiver}!Stop@{Stop}}
+\index{Stop@{Stop}!WyLight::BroadcastReceiver@{Wy\-Light\-::\-Broadcast\-Receiver}}
+\subsubsection[{Stop}]{\setlength{\rightskip}{0pt plus 5cm}void Wy\-Light\-::\-Broadcast\-Receiver\-::\-Stop (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_wy_light_1_1_broadcast_receiver_a018a961883af11174f0bc36695bb222c}
+Sends a stop event to terminate execution of operator() \hypertarget{class_wy_light_1_1_broadcast_receiver_a54367ab857356899e0c5263b856e2d60}{\index{Wy\-Light\-::\-Broadcast\-Receiver@{Wy\-Light\-::\-Broadcast\-Receiver}!Write\-Recent\-Endpoints@{Write\-Recent\-Endpoints}}
+\index{Write\-Recent\-Endpoints@{Write\-Recent\-Endpoints}!WyLight::BroadcastReceiver@{Wy\-Light\-::\-Broadcast\-Receiver}}
+\subsubsection[{Write\-Recent\-Endpoints}]{\setlength{\rightskip}{0pt plus 5cm}void Wy\-Light\-::\-Broadcast\-Receiver\-::\-Write\-Recent\-Endpoints (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{filename = {\ttfamily \char`\"{}\char`\"{}}, }
+\item[{uint8\-\_\-t}]{threshold = {\ttfamily 1}}
+\end{DoxyParamCaption}
+) const}}\label{class_wy_light_1_1_broadcast_receiver_a54367ab857356899e0c5263b856e2d60}
+Write recent endpoints to file 
+\begin{DoxyParams}{Parameters}
+{\em filename} & of the file containing the recent endpoints \\
+\hline
+{\em threshold} & which an endpoints score has to have at least to be written to the file \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_wy_light_1_1_broadcast_receiver_a7cdb8d26a95a50b32317bb8332668f9f}{\index{Wy\-Light\-::\-Broadcast\-Receiver@{Wy\-Light\-::\-Broadcast\-Receiver}!B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T@{B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T}}
+\index{B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T@{B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T}!WyLight::BroadcastReceiver@{Wy\-Light\-::\-Broadcast\-Receiver}}
+\subsubsection[{B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T}]{\setlength{\rightskip}{0pt plus 5cm}const uint16\-\_\-t Wy\-Light\-::\-Broadcast\-Receiver\-::\-B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T = 55555\hspace{0.3cm}{\ttfamily [static]}}}\label{class_wy_light_1_1_broadcast_receiver_a7cdb8d26a95a50b32317bb8332668f9f}
+\hypertarget{class_wy_light_1_1_broadcast_receiver_a2beb5ad6ccb439295e8909469ce1d9ff}{\index{Wy\-Light\-::\-Broadcast\-Receiver@{Wy\-Light\-::\-Broadcast\-Receiver}!D\-E\-V\-I\-C\-E\-\_\-\-I\-D@{D\-E\-V\-I\-C\-E\-\_\-\-I\-D}}
+\index{D\-E\-V\-I\-C\-E\-\_\-\-I\-D@{D\-E\-V\-I\-C\-E\-\_\-\-I\-D}!WyLight::BroadcastReceiver@{Wy\-Light\-::\-Broadcast\-Receiver}}
+\subsubsection[{D\-E\-V\-I\-C\-E\-\_\-\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}const std\-::string Wy\-Light\-::\-Broadcast\-Receiver\-::\-D\-E\-V\-I\-C\-E\-\_\-\-I\-D\hspace{0.3cm}{\ttfamily [static]}}}\label{class_wy_light_1_1_broadcast_receiver_a2beb5ad6ccb439295e8909469ce1d9ff}
+\hypertarget{class_wy_light_1_1_broadcast_receiver_ae6b56fcc57286f0132d6fbe19e59599d}{\index{Wy\-Light\-::\-Broadcast\-Receiver@{Wy\-Light\-::\-Broadcast\-Receiver}!D\-E\-V\-I\-C\-E\-\_\-\-I\-D\-\_\-\-O\-L\-D@{D\-E\-V\-I\-C\-E\-\_\-\-I\-D\-\_\-\-O\-L\-D}}
+\index{D\-E\-V\-I\-C\-E\-\_\-\-I\-D\-\_\-\-O\-L\-D@{D\-E\-V\-I\-C\-E\-\_\-\-I\-D\-\_\-\-O\-L\-D}!WyLight::BroadcastReceiver@{Wy\-Light\-::\-Broadcast\-Receiver}}
+\subsubsection[{D\-E\-V\-I\-C\-E\-\_\-\-I\-D\-\_\-\-O\-L\-D}]{\setlength{\rightskip}{0pt plus 5cm}const std\-::string Wy\-Light\-::\-Broadcast\-Receiver\-::\-D\-E\-V\-I\-C\-E\-\_\-\-I\-D\-\_\-\-O\-L\-D\hspace{0.3cm}{\ttfamily [static]}}}\label{class_wy_light_1_1_broadcast_receiver_ae6b56fcc57286f0132d6fbe19e59599d}
+\hypertarget{class_wy_light_1_1_broadcast_receiver_a066987115c69911571021470e07b524e}{\index{Wy\-Light\-::\-Broadcast\-Receiver@{Wy\-Light\-::\-Broadcast\-Receiver}!D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N@{D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N}}
+\index{D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N@{D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N}!WyLight::BroadcastReceiver@{Wy\-Light\-::\-Broadcast\-Receiver}}
+\subsubsection[{D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N}]{\setlength{\rightskip}{0pt plus 5cm}const std\-::string Wy\-Light\-::\-Broadcast\-Receiver\-::\-D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N\hspace{0.3cm}{\ttfamily [static]}}}\label{class_wy_light_1_1_broadcast_receiver_a066987115c69911571021470e07b524e}
+\hypertarget{class_wy_light_1_1_broadcast_receiver_a2c833aa8d9d1b56b92f1d17c96371be8}{\index{Wy\-Light\-::\-Broadcast\-Receiver@{Wy\-Light\-::\-Broadcast\-Receiver}!D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N4@{D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N4}}
+\index{D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N4@{D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N4}!WyLight::BroadcastReceiver@{Wy\-Light\-::\-Broadcast\-Receiver}}
+\subsubsection[{D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N4}]{\setlength{\rightskip}{0pt plus 5cm}const std\-::string Wy\-Light\-::\-Broadcast\-Receiver\-::\-D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N4\hspace{0.3cm}{\ttfamily [static]}}}\label{class_wy_light_1_1_broadcast_receiver_a2c833aa8d9d1b56b92f1d17c96371be8}
+\hypertarget{class_wy_light_1_1_broadcast_receiver_a3028b6394222f327c1286e9263a126a7}{\index{Wy\-Light\-::\-Broadcast\-Receiver@{Wy\-Light\-::\-Broadcast\-Receiver}!E\-M\-P\-T\-Y\-\_\-\-E\-N\-D\-P\-O\-I\-N\-T@{E\-M\-P\-T\-Y\-\_\-\-E\-N\-D\-P\-O\-I\-N\-T}}
+\index{E\-M\-P\-T\-Y\-\_\-\-E\-N\-D\-P\-O\-I\-N\-T@{E\-M\-P\-T\-Y\-\_\-\-E\-N\-D\-P\-O\-I\-N\-T}!WyLight::BroadcastReceiver@{Wy\-Light\-::\-Broadcast\-Receiver}}
+\subsubsection[{E\-M\-P\-T\-Y\-\_\-\-E\-N\-D\-P\-O\-I\-N\-T}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Endpoint} Wy\-Light\-::\-Broadcast\-Receiver\-::\-E\-M\-P\-T\-Y\-\_\-\-E\-N\-D\-P\-O\-I\-N\-T\hspace{0.3cm}{\ttfamily [static]}}}\label{class_wy_light_1_1_broadcast_receiver_a3028b6394222f327c1286e9263a126a7}
+\hypertarget{class_wy_light_1_1_broadcast_receiver_a7e3c3f4fe453f48d012ecbb15e8cb5e5}{\index{Wy\-Light\-::\-Broadcast\-Receiver@{Wy\-Light\-::\-Broadcast\-Receiver}!S\-T\-O\-P\-\_\-\-M\-S\-G@{S\-T\-O\-P\-\_\-\-M\-S\-G}}
+\index{S\-T\-O\-P\-\_\-\-M\-S\-G@{S\-T\-O\-P\-\_\-\-M\-S\-G}!WyLight::BroadcastReceiver@{Wy\-Light\-::\-Broadcast\-Receiver}}
+\subsubsection[{S\-T\-O\-P\-\_\-\-M\-S\-G}]{\setlength{\rightskip}{0pt plus 5cm}const std\-::string Wy\-Light\-::\-Broadcast\-Receiver\-::\-S\-T\-O\-P\-\_\-\-M\-S\-G\hspace{0.3cm}{\ttfamily [static]}}}\label{class_wy_light_1_1_broadcast_receiver_a7e3c3f4fe453f48d012ecbb15e8cb5e5}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{_broadcast_receiver_8h}{Broadcast\-Receiver.\-h}\end{DoxyCompactItemize}

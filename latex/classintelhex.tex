@@ -1,0 +1,1037 @@
+\hypertarget{classintelhex}{\section{intelhex Class Reference}
+\label{classintelhex}\index{intelhex@{intelhex}}
+}
+
+
+Class to decode, encode and manipulate Intel H\-E\-X format files.  
+
+
+
+
+{\ttfamily \#include $<$intelhexclass.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classintelhex_ae1efd0ed1f56546f8f5f5af87c6cbdd5}{intelhex} ()
+\begin{DoxyCompactList}\small\item\em intelhex Class Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classintelhex_a031ce4582899f5263fdcc2fa92cc3e45}{$\sim$intelhex} ()
+\begin{DoxyCompactList}\small\item\em intelhex Class Deconstructor. \end{DoxyCompactList}\item 
+\hyperlink{classintelhex_a41b4c3b7851461b9240fdef90bc62768}{intelhex} (const \hyperlink{classintelhex}{intelhex} \&ih\-Source)
+\begin{DoxyCompactList}\small\item\em intelhex Class Copy Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classintelhex}{intelhex} \& \hyperlink{classintelhex_a6408cc3141862454e846378abfad8ecc}{operator=} (const \hyperlink{classintelhex}{intelhex} \&ih\-Source)
+\begin{DoxyCompactList}\small\item\em intelhex Class Assignment Operator. \end{DoxyCompactList}\item 
+\hyperlink{classintelhex}{intelhex} \& \hyperlink{classintelhex_a044d6ab5b10a38ffa40a0b1f55b7e808}{operator++} ()
+\begin{DoxyCompactList}\small\item\em Overloaded prefix increment operator. \end{DoxyCompactList}\item 
+const \hyperlink{classintelhex}{intelhex} \hyperlink{classintelhex_ab54337b9681fc0b50e3fdb18ed1714fa}{operator++} (int)
+\begin{DoxyCompactList}\small\item\em Overloaded postfix increment operator. \end{DoxyCompactList}\item 
+\hyperlink{classintelhex}{intelhex} \& \hyperlink{classintelhex_ab85cbeafe9cc6adcec79f1bc709addca}{operator-\/-\/} ()
+\begin{DoxyCompactList}\small\item\em Overloaded prefix decrement operator. \end{DoxyCompactList}\item 
+const \hyperlink{classintelhex}{intelhex} \hyperlink{classintelhex_a90562846d95b5573923f129b82aeceec}{operator-\/-\/} (int)
+\begin{DoxyCompactList}\small\item\em Overloaded postfix decrement operator. \end{DoxyCompactList}\item 
+void \hyperlink{classintelhex_ab2b1119e14a960ea2b356967244aafb3}{begin} ()
+\begin{DoxyCompactList}\small\item\em Moves the address pointer to the first available address. \end{DoxyCompactList}\item 
+void \hyperlink{classintelhex_a7759926596cfcffec94e391fff4298e9}{end} ()
+\begin{DoxyCompactList}\small\item\em Moves the address pointer to the last available address. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{classintelhex_afa757932ec420f977d33bb9a2d5a0a69}{size} ()
+\begin{DoxyCompactList}\small\item\em Checks if we have reached end of available data. \end{DoxyCompactList}\item 
+bool \hyperlink{classintelhex_aff915b320f5a4c2d84340fa57c99499c}{end\-Of\-Data} ()
+\begin{DoxyCompactList}\small\item\em Checks if we have reached end of available data. \end{DoxyCompactList}\item 
+bool \hyperlink{classintelhex_a2bd5b567207303d4d9f4322e6262d6d6}{empty} ()
+\item 
+bool \hyperlink{classintelhex_a83b54457c121b0f35b21b78fa2ecd712}{jump\-To} (unsigned long address)
+\begin{DoxyCompactList}\small\item\em Moves the address pointer to the desired address. \end{DoxyCompactList}\item 
+bool \hyperlink{classintelhex_af9c6e296e5053fe8378e79445cf480cb}{increment\-Address} ()
+\begin{DoxyCompactList}\small\item\em Increments to next piece of data. \end{DoxyCompactList}\item 
+bool \hyperlink{classintelhex_a51f6d93f1ac2bdf5ddad8be4e1827ce9}{decrement\-Address} ()
+\begin{DoxyCompactList}\small\item\em Decrements to next piece of data. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{classintelhex_a631d8930daeaf04bf0d9ad9c25679a0b}{current\-Address} ()
+\begin{DoxyCompactList}\small\item\em Returns the current address being pointed to. \end{DoxyCompactList}\item 
+bool \hyperlink{classintelhex_aa8833665b99f0b6ac64fcef7d2116c42}{start\-Address} (unsigned long $\ast$address)
+\begin{DoxyCompactList}\small\item\em Returns the lowest address currently available. \end{DoxyCompactList}\item 
+bool \hyperlink{classintelhex_a9b159bea81eb832e37f6cf88a57ca659}{end\-Address} (unsigned long $\ast$address)
+\begin{DoxyCompactList}\small\item\em Returns the highest address currently available. \end{DoxyCompactList}\item 
+bool \hyperlink{classintelhex_a01f7799f7a86e45c28b713e9472a8a5a}{get\-Data} (unsigned char $\ast$data)
+\begin{DoxyCompactList}\small\item\em Returns the data to which the iterator is currently pointing. \end{DoxyCompactList}\item 
+bool \hyperlink{classintelhex_a6596b518a9a832ed8e6ba21a0e07861c}{get\-Data} (unsigned char $\ast$data, unsigned long address)
+\begin{DoxyCompactList}\small\item\em Returns the data for desired address. \end{DoxyCompactList}\item 
+bool \hyperlink{classintelhex_a71096983db3c24a5ac9b95663937a4ce}{insert\-Data} (unsigned char data)
+\begin{DoxyCompactList}\small\item\em Inserts desired byte at the current address pointer. \end{DoxyCompactList}\item 
+bool \hyperlink{classintelhex_a00ff4c491fabc5ef207071358e1b9298}{insert\-Data} (unsigned char data, unsigned long address)
+\item 
+void \hyperlink{classintelhex_ab4fc2715f4c63d3f31e8d2b0533583e5}{overwrite\-Data} (unsigned char data)
+\item 
+void \hyperlink{classintelhex_a83edcd2329cb52a4bab6bb46463184d7}{overwrite\-Data} (unsigned char data, unsigned long address)
+\item 
+bool \hyperlink{classintelhex_a5de5cf10103fc307127f9017f3e5cd76}{blank\-Fill} (unsigned char data)
+\item 
+bool \hyperlink{classintelhex_a84bbd449bb55e218b62ea73e2b399196}{blank\-Fill} (unsigned char $\ast$const data, unsigned long size\-Of\-Data)
+\item 
+void \hyperlink{classintelhex_aaf6f77af7a82623ef16471f105ac3fe7}{blank\-Fill} (unsigned char $\ast$const data, unsigned long size\-Of\-Data, unsigned long \hyperlink{classintelhex_a9b159bea81eb832e37f6cf88a57ca659}{end\-Address})
+\item 
+bool \hyperlink{classintelhex_a9c26ba3dc9dd4f3021bb6c7f6983388f}{blank\-Fill\-Random} ()
+\item 
+void \hyperlink{classintelhex_aa1dbcbf3df1aaafd518882c882f43f76}{blank\-Fill\-Random} (unsigned long \hyperlink{classintelhex_a9b159bea81eb832e37f6cf88a57ca659}{end\-Address})
+\item 
+bool \hyperlink{classintelhex_a2e5c67fccc34c78e6dbd28f4b795fb0f}{blank\-Fill\-Address\-Low\-Byte} ()
+\item 
+void \hyperlink{classintelhex_ab7b16f457563da93569b9812fafb9e7d}{blank\-Fill\-Address\-Low\-Byte} (unsigned long \hyperlink{classintelhex_a9b159bea81eb832e37f6cf88a57ca659}{end\-Address})
+\item 
+unsigned long \hyperlink{classintelhex_a05a19e1e9f1eb493a8d0bc29db88683f}{get\-No\-Warnings} ()
+\begin{DoxyCompactList}\small\item\em Returns number of unread warning messages. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{classintelhex_a77cddd46c3f97692b4d89f138bdabb72}{get\-No\-Errors} ()
+\begin{DoxyCompactList}\small\item\em Returns number of unread error messages. \end{DoxyCompactList}\item 
+bool \hyperlink{classintelhex_ab881b8cb0fe665395a29e4375db8f7c4}{pop\-Next\-Warning} (string \&warning)
+\begin{DoxyCompactList}\small\item\em Pop next warning message from the list of warnings. \end{DoxyCompactList}\item 
+bool \hyperlink{classintelhex_a6609fd1c57a650c45a1961f6318d643e}{pop\-Next\-Error} (string \&error)
+\begin{DoxyCompactList}\small\item\em Pop next error message from the list of errors. \end{DoxyCompactList}\item 
+bool \hyperlink{classintelhex_a94d6d17ba22263a4775d80b2a0e6e95f}{get\-Start\-Segment\-Address} (unsigned short $\ast$\hyperlink{classintelhex_acf63100ba6ba58da893f29596560efbd}{ip\-Register}, unsigned short $\ast$\hyperlink{classintelhex_aabbf5689bc667734dca7f23a11d3df68}{cs\-Register})
+\begin{DoxyCompactList}\small\item\em Returns segment start address for the I\-P and E\-S registers. \end{DoxyCompactList}\item 
+bool \hyperlink{classintelhex_a7bc61f72756d37509e768906733ba10b}{get\-Start\-Linear\-Address} (unsigned long $\ast$\hyperlink{classintelhex_abedd6ca388d3cad1d2525abc5939d27e}{eip\-Register})
+\begin{DoxyCompactList}\small\item\em Returns segment linear address for the E\-I\-P register. \end{DoxyCompactList}\item 
+void \hyperlink{classintelhex_a9688f0002be870b05d64b5f9fcdeb86b}{set\-Start\-Segment\-Address} (unsigned short \hyperlink{classintelhex_acf63100ba6ba58da893f29596560efbd}{ip\-Register}, unsigned short \hyperlink{classintelhex_aabbf5689bc667734dca7f23a11d3df68}{cs\-Register})
+\begin{DoxyCompactList}\small\item\em Sets the segment start address for the I\-P and C\-S registers. \end{DoxyCompactList}\item 
+void \hyperlink{classintelhex_a7629ca097b2de02dea37fcaa2dc2709c}{set\-Start\-Linear\-Address} (unsigned long \hyperlink{classintelhex_abedd6ca388d3cad1d2525abc5939d27e}{eip\-Register})
+\begin{DoxyCompactList}\small\item\em Sets the segment start address for the E\-I\-P register. \end{DoxyCompactList}\item 
+void \hyperlink{classintelhex_a489fc3b9c34542def2a5167192b291da}{segment\-Addressing\-On} ()
+\begin{DoxyCompactList}\small\item\em Turns on segment addressing mode during encoding. \end{DoxyCompactList}\item 
+void \hyperlink{classintelhex_a5055edd337d19037ab254a27016267f8}{linear\-Addressing\-On} ()
+\begin{DoxyCompactList}\small\item\em Turns on linear addressing mode during encoding. \end{DoxyCompactList}\item 
+void \hyperlink{classintelhex_ac6a0119a04a2090af3ffe8c33a37cbc9}{verbose\-On} ()
+\begin{DoxyCompactList}\small\item\em Turns on textual output to cout during decoding. \end{DoxyCompactList}\item 
+void \hyperlink{classintelhex_a3958f077a662291bbde3472ea2bcfb4d}{verbose\-Off} ()
+\begin{DoxyCompactList}\small\item\em Turns off textual output to cout during decoding. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+ostream \& \hyperlink{classintelhex_a320e23dab311a6c652aa7ddb9e2f9cc2}{operator$<$$<$} (ostream \&data\-Out, \hyperlink{classintelhex}{intelhex} \&ih\-Local)
+\begin{DoxyCompactList}\small\item\em Output stream overload operator. \end{DoxyCompactList}\item 
+istream \& \hyperlink{classintelhex_a73fb9c5b9d6d069b5eb83340942fd54b}{operator$>$$>$} (istream \&data\-In, \hyperlink{classintelhex}{intelhex} \&ih\-Local)
+\begin{DoxyCompactList}\small\item\em Input stream overload operator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class to decode, encode and manipulate Intel H\-E\-X format files. 
+
+The Intel H\-E\-X class allows the user to stream in the content of an Intel H\-E\-X file so that its content can by analysed more easily than trying to decode the Intel H\-E\-X file in a text editor. In conjunction with a suitable application it is possible to create content, analyse content and even compare the content of files with one another. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classintelhex_ae1efd0ed1f56546f8f5f5af87c6cbdd5}{\index{intelhex@{intelhex}!intelhex@{intelhex}}
+\index{intelhex@{intelhex}!intelhex@{intelhex}}
+\subsubsection[{intelhex}]{\setlength{\rightskip}{0pt plus 5cm}intelhex\-::intelhex (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_ae1efd0ed1f56546f8f5f5af87c6cbdd5}
+
+
+intelhex Class Constructor. 
+
+Important initialisation steps performed here\-:
+\begin{DoxyItemize}
+\item clear segment base address to zero
+\item clear all x86 start address registers to zero
+\item note that there are, as yet, no errors or warnings
+\item note that the E\-O\-F record has not yet been found
+\item set verbode mode to 'false' (default)
+\item initialise class ih\-Iterator 
+\end{DoxyItemize}\hypertarget{classintelhex_a031ce4582899f5263fdcc2fa92cc3e45}{\index{intelhex@{intelhex}!$\sim$intelhex@{$\sim$intelhex}}
+\index{$\sim$intelhex@{$\sim$intelhex}!intelhex@{intelhex}}
+\subsubsection[{$\sim$intelhex}]{\setlength{\rightskip}{0pt plus 5cm}intelhex\-::$\sim$intelhex (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a031ce4582899f5263fdcc2fa92cc3e45}
+
+
+intelhex Class Deconstructor. 
+
+Currently the deconstructor is intentially empty. \hypertarget{classintelhex_a41b4c3b7851461b9240fdef90bc62768}{\index{intelhex@{intelhex}!intelhex@{intelhex}}
+\index{intelhex@{intelhex}!intelhex@{intelhex}}
+\subsubsection[{intelhex}]{\setlength{\rightskip}{0pt plus 5cm}intelhex\-::intelhex (
+\begin{DoxyParamCaption}
+\item[{const {\bf intelhex} \&}]{ih\-Source}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a41b4c3b7851461b9240fdef90bc62768}
+
+
+intelhex Class Copy Constructor. 
+
+Copy constructor copies all essential elements for the class. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classintelhex_ab2b1119e14a960ea2b356967244aafb3}{\index{intelhex@{intelhex}!begin@{begin}}
+\index{begin@{begin}!intelhex@{intelhex}}
+\subsubsection[{begin}]{\setlength{\rightskip}{0pt plus 5cm}void intelhex\-::begin (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_ab2b1119e14a960ea2b356967244aafb3}
+
+
+Moves the address pointer to the first available address. 
+
+\begin{DoxyVerb}     The address pointer will be moved to the first available address in 
+     memory of the decoded file or of the data the user has inserted into
+     memory for the purpose of encoding into the Intel HEX format.
+\end{DoxyVerb}
+
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_a7759926596cfcffec94e391fff4298e9}{end()}
+\end{DoxySeeAlso}
+\begin{DoxyNote}{Note}
+This function has no effect if no file has been as yet decoded and no data has been inserted into memory. 
+\end{DoxyNote}
+\hypertarget{classintelhex_a5de5cf10103fc307127f9017f3e5cd76}{\index{intelhex@{intelhex}!blank\-Fill@{blank\-Fill}}
+\index{blank\-Fill@{blank\-Fill}!intelhex@{intelhex}}
+\subsubsection[{blank\-Fill}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::blank\-Fill (
+\begin{DoxyParamCaption}
+\item[{unsigned char}]{data}
+\end{DoxyParamCaption}
+)}}\label{classintelhex_a5de5cf10103fc307127f9017f3e5cd76}
+\hypertarget{classintelhex_a84bbd449bb55e218b62ea73e2b399196}{\index{intelhex@{intelhex}!blank\-Fill@{blank\-Fill}}
+\index{blank\-Fill@{blank\-Fill}!intelhex@{intelhex}}
+\subsubsection[{blank\-Fill}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::blank\-Fill (
+\begin{DoxyParamCaption}
+\item[{unsigned char $\ast$const}]{data, }
+\item[{unsigned long}]{size\-Of\-Data}
+\end{DoxyParamCaption}
+)}}\label{classintelhex_a84bbd449bb55e218b62ea73e2b399196}
+\hypertarget{classintelhex_aaf6f77af7a82623ef16471f105ac3fe7}{\index{intelhex@{intelhex}!blank\-Fill@{blank\-Fill}}
+\index{blank\-Fill@{blank\-Fill}!intelhex@{intelhex}}
+\subsubsection[{blank\-Fill}]{\setlength{\rightskip}{0pt plus 5cm}void intelhex\-::blank\-Fill (
+\begin{DoxyParamCaption}
+\item[{unsigned char $\ast$const}]{data, }
+\item[{unsigned long}]{size\-Of\-Data, }
+\item[{unsigned long}]{end\-Address}
+\end{DoxyParamCaption}
+)}}\label{classintelhex_aaf6f77af7a82623ef16471f105ac3fe7}
+\hypertarget{classintelhex_a2e5c67fccc34c78e6dbd28f4b795fb0f}{\index{intelhex@{intelhex}!blank\-Fill\-Address\-Low\-Byte@{blank\-Fill\-Address\-Low\-Byte}}
+\index{blank\-Fill\-Address\-Low\-Byte@{blank\-Fill\-Address\-Low\-Byte}!intelhex@{intelhex}}
+\subsubsection[{blank\-Fill\-Address\-Low\-Byte}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::blank\-Fill\-Address\-Low\-Byte (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classintelhex_a2e5c67fccc34c78e6dbd28f4b795fb0f}
+\hypertarget{classintelhex_ab7b16f457563da93569b9812fafb9e7d}{\index{intelhex@{intelhex}!blank\-Fill\-Address\-Low\-Byte@{blank\-Fill\-Address\-Low\-Byte}}
+\index{blank\-Fill\-Address\-Low\-Byte@{blank\-Fill\-Address\-Low\-Byte}!intelhex@{intelhex}}
+\subsubsection[{blank\-Fill\-Address\-Low\-Byte}]{\setlength{\rightskip}{0pt plus 5cm}void intelhex\-::blank\-Fill\-Address\-Low\-Byte (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{end\-Address}
+\end{DoxyParamCaption}
+)}}\label{classintelhex_ab7b16f457563da93569b9812fafb9e7d}
+\hypertarget{classintelhex_a9c26ba3dc9dd4f3021bb6c7f6983388f}{\index{intelhex@{intelhex}!blank\-Fill\-Random@{blank\-Fill\-Random}}
+\index{blank\-Fill\-Random@{blank\-Fill\-Random}!intelhex@{intelhex}}
+\subsubsection[{blank\-Fill\-Random}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::blank\-Fill\-Random (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classintelhex_a9c26ba3dc9dd4f3021bb6c7f6983388f}
+\hypertarget{classintelhex_aa1dbcbf3df1aaafd518882c882f43f76}{\index{intelhex@{intelhex}!blank\-Fill\-Random@{blank\-Fill\-Random}}
+\index{blank\-Fill\-Random@{blank\-Fill\-Random}!intelhex@{intelhex}}
+\subsubsection[{blank\-Fill\-Random}]{\setlength{\rightskip}{0pt plus 5cm}void intelhex\-::blank\-Fill\-Random (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{end\-Address}
+\end{DoxyParamCaption}
+)}}\label{classintelhex_aa1dbcbf3df1aaafd518882c882f43f76}
+\hypertarget{classintelhex_a631d8930daeaf04bf0d9ad9c25679a0b}{\index{intelhex@{intelhex}!current\-Address@{current\-Address}}
+\index{current\-Address@{current\-Address}!intelhex@{intelhex}}
+\subsubsection[{current\-Address}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long intelhex\-::current\-Address (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a631d8930daeaf04bf0d9ad9c25679a0b}
+
+
+Returns the current address being pointed to. 
+
+\begin{DoxyVerb}     Current address will be returned.
+\end{DoxyVerb}
+
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_a83b54457c121b0f35b21b78fa2ecd712}{jump\-To()}
+\end{DoxySeeAlso}
+
+\begin{DoxyRetVals}{Return values}
+{\em Current} & address being pointed to. \\
+\hline
+\end{DoxyRetVals}
+\hypertarget{classintelhex_a51f6d93f1ac2bdf5ddad8be4e1827ce9}{\index{intelhex@{intelhex}!decrement\-Address@{decrement\-Address}}
+\index{decrement\-Address@{decrement\-Address}!intelhex@{intelhex}}
+\subsubsection[{decrement\-Address}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::decrement\-Address (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a51f6d93f1ac2bdf5ddad8be4e1827ce9}
+
+
+Decrements to next piece of data. 
+
+\begin{DoxyVerb}     Address pointer will take on the address of the previous location for 
+     which there is data.
+\end{DoxyVerb}
+
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_af9c6e296e5053fe8378e79445cf480cb}{increment\-Address()}
+\end{DoxySeeAlso}
+
+\begin{DoxyRetVals}{Return values}
+{\em true} & -\/ pointer was decremented; a new data value was found \\
+\hline
+{\em false} & -\/ start of available data reached; pointer is unchanged \\
+\hline
+\end{DoxyRetVals}
+\hypertarget{classintelhex_a2bd5b567207303d4d9f4322e6262d6d6}{\index{intelhex@{intelhex}!empty@{empty}}
+\index{empty@{empty}!intelhex@{intelhex}}
+\subsubsection[{empty}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::empty (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a2bd5b567207303d4d9f4322e6262d6d6}
+\hypertarget{classintelhex_a7759926596cfcffec94e391fff4298e9}{\index{intelhex@{intelhex}!end@{end}}
+\index{end@{end}!intelhex@{intelhex}}
+\subsubsection[{end}]{\setlength{\rightskip}{0pt plus 5cm}void intelhex\-::end (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a7759926596cfcffec94e391fff4298e9}
+
+
+Moves the address pointer to the last available address. 
+
+\begin{DoxyVerb}     The address pointer will be moved to the last available address in 
+     memory of the decoded file or of the data the user has inserted into
+     memory for the purpose of encoding into the Intel HEX format.
+\end{DoxyVerb}
+
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_ab2b1119e14a960ea2b356967244aafb3}{begin()}
+\end{DoxySeeAlso}
+\begin{DoxyNote}{Note}
+This function has no effect if no file has been as yet decoded and no data has been inserted into memory. 
+\end{DoxyNote}
+\hypertarget{classintelhex_a9b159bea81eb832e37f6cf88a57ca659}{\index{intelhex@{intelhex}!end\-Address@{end\-Address}}
+\index{end\-Address@{end\-Address}!intelhex@{intelhex}}
+\subsubsection[{end\-Address}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::end\-Address (
+\begin{DoxyParamCaption}
+\item[{unsigned long $\ast$}]{address}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a9b159bea81eb832e37f6cf88a57ca659}
+
+
+Returns the highest address currently available. 
+
+\begin{DoxyVerb}     Returns the last address that appears in the memory if there is data
+     present. If not, no value will be returned.
+\end{DoxyVerb}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em address} & -\/ variable to hold address requested\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em true} & -\/ address existed and returned value is valid \\
+\hline
+{\em false} & -\/ address did not exist and returned valid is not valid\\
+\hline
+\end{DoxyRetVals}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_aa8833665b99f0b6ac64fcef7d2116c42}{start\-Address()} 
+\end{DoxySeeAlso}
+\hypertarget{classintelhex_aff915b320f5a4c2d84340fa57c99499c}{\index{intelhex@{intelhex}!end\-Of\-Data@{end\-Of\-Data}}
+\index{end\-Of\-Data@{end\-Of\-Data}!intelhex@{intelhex}}
+\subsubsection[{end\-Of\-Data}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::end\-Of\-Data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_aff915b320f5a4c2d84340fa57c99499c}
+
+
+Checks if we have reached end of available data. 
+
+\begin{DoxyVerb}     The internal pointer is checked to see if we have reached the end of 
+     the data held in memory
+\end{DoxyVerb}
+
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_a044d6ab5b10a38ffa40a0b1f55b7e808}{operator++()}, \hyperlink{classintelhex_ab54337b9681fc0b50e3fdb18ed1714fa}{operator++(int)}, operator--(), operator--(int), \hyperlink{classintelhex_a2bd5b567207303d4d9f4322e6262d6d6}{empty()}
+\end{DoxySeeAlso}
+
+\begin{DoxyRetVals}{Return values}
+{\em true} & -\/ reached the end of the Intel H\-E\-X data in memory or no data in memory yet. \\
+\hline
+{\em false} & -\/ end of Intel H\-E\-X data in memory not yet reached.\\
+\hline
+\end{DoxyRetVals}
+\begin{DoxyNote}{Note}
+This function has no effect if no file has been as yet decoded and no data has been inserted into memory. 
+\end{DoxyNote}
+\hypertarget{classintelhex_a01f7799f7a86e45c28b713e9472a8a5a}{\index{intelhex@{intelhex}!get\-Data@{get\-Data}}
+\index{get\-Data@{get\-Data}!intelhex@{intelhex}}
+\subsubsection[{get\-Data}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::get\-Data (
+\begin{DoxyParamCaption}
+\item[{unsigned char $\ast$}]{data}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a01f7799f7a86e45c28b713e9472a8a5a}
+
+
+Returns the data to which the iterator is currently pointing. 
+
+\begin{DoxyVerb}     Returns the data to which the internal iterator (pointer) is currently
+     pointing. If no data is in memory, this function returns false.
+\end{DoxyVerb}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & -\/ variable to hold data requested\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em true} & -\/ data was available and returned value is valid \\
+\hline
+{\em false} & -\/ data was not available and returned valid is not valid\\
+\hline
+\end{DoxyRetVals}
+\begin{DoxySeeAlso}{See Also}
+put\-Data() 
+\end{DoxySeeAlso}
+\hypertarget{classintelhex_a6596b518a9a832ed8e6ba21a0e07861c}{\index{intelhex@{intelhex}!get\-Data@{get\-Data}}
+\index{get\-Data@{get\-Data}!intelhex@{intelhex}}
+\subsubsection[{get\-Data}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::get\-Data (
+\begin{DoxyParamCaption}
+\item[{unsigned char $\ast$}]{data, }
+\item[{unsigned long}]{address}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a6596b518a9a832ed8e6ba21a0e07861c}
+
+
+Returns the data for desired address. 
+
+\begin{DoxyVerb}     Returns the data for the desired address. If the address has no data
+     assigned to it, the function returns false, the pointer to data is not
+     written and the class's address pointer remains unchanged. If the 
+     address has data assigned to it, the pointer to data will be written 
+     with the data found and the class's address pointer will be moved to 
+     this new location.
+\end{DoxyVerb}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & -\/ variable to hold data requested \\
+\hline
+{\em address} & -\/ address to be queried for valid data\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em true} & -\/ data was available and returned value is valid \\
+\hline
+{\em false} & -\/ data was not available and returned valid is not valid\\
+\hline
+\end{DoxyRetVals}
+\begin{DoxySeeAlso}{See Also}
+put\-Data() 
+\end{DoxySeeAlso}
+\hypertarget{classintelhex_a77cddd46c3f97692b4d89f138bdabb72}{\index{intelhex@{intelhex}!get\-No\-Errors@{get\-No\-Errors}}
+\index{get\-No\-Errors@{get\-No\-Errors}!intelhex@{intelhex}}
+\subsubsection[{get\-No\-Errors}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long intelhex\-::get\-No\-Errors (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a77cddd46c3f97692b4d89f138bdabb72}
+
+
+Returns number of unread error messages. 
+
+\begin{DoxyVerb}     Number of unread error messages will be returned.
+\end{DoxyVerb}
+
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_ab881b8cb0fe665395a29e4375db8f7c4}{pop\-Next\-Warning()}, \hyperlink{classintelhex_a05a19e1e9f1eb493a8d0bc29db88683f}{get\-No\-Warnings()}, \hyperlink{classintelhex_a6609fd1c57a650c45a1961f6318d643e}{pop\-Next\-Error()} 
+\end{DoxySeeAlso}
+\hypertarget{classintelhex_a05a19e1e9f1eb493a8d0bc29db88683f}{\index{intelhex@{intelhex}!get\-No\-Warnings@{get\-No\-Warnings}}
+\index{get\-No\-Warnings@{get\-No\-Warnings}!intelhex@{intelhex}}
+\subsubsection[{get\-No\-Warnings}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long intelhex\-::get\-No\-Warnings (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a05a19e1e9f1eb493a8d0bc29db88683f}
+
+
+Returns number of unread warning messages. 
+
+\begin{DoxyVerb}     Number of unread warning messages will be returned.
+\end{DoxyVerb}
+
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_ab881b8cb0fe665395a29e4375db8f7c4}{pop\-Next\-Warning()}, \hyperlink{classintelhex_a77cddd46c3f97692b4d89f138bdabb72}{get\-No\-Errors()}, \hyperlink{classintelhex_a6609fd1c57a650c45a1961f6318d643e}{pop\-Next\-Error()} 
+\end{DoxySeeAlso}
+\hypertarget{classintelhex_a7bc61f72756d37509e768906733ba10b}{\index{intelhex@{intelhex}!get\-Start\-Linear\-Address@{get\-Start\-Linear\-Address}}
+\index{get\-Start\-Linear\-Address@{get\-Start\-Linear\-Address}!intelhex@{intelhex}}
+\subsubsection[{get\-Start\-Linear\-Address}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::get\-Start\-Linear\-Address (
+\begin{DoxyParamCaption}
+\item[{unsigned long $\ast$}]{eip\-Register}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a7bc61f72756d37509e768906733ba10b}
+
+
+Returns segment linear address for the E\-I\-P register. 
+
+\begin{DoxyVerb}     If this value exists, they will be returned. If not, the function
+     returns false.
+\end{DoxyVerb}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em eip\-Register} & -\/ variable to store E\-I\-P register's value\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em true} & -\/ E\-I\-P register has defined value \\
+\hline
+{\em false} & -\/ E\-I\-P register do not contain value\\
+\hline
+\end{DoxyRetVals}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_a94d6d17ba22263a4775d80b2a0e6e95f}{get\-Start\-Segment\-Address()}, \hyperlink{classintelhex_a9688f0002be870b05d64b5f9fcdeb86b}{set\-Start\-Segment\-Address()}, \hyperlink{classintelhex_a7629ca097b2de02dea37fcaa2dc2709c}{set\-Start\-Linear\-Address()} 
+\end{DoxySeeAlso}
+\hypertarget{classintelhex_a94d6d17ba22263a4775d80b2a0e6e95f}{\index{intelhex@{intelhex}!get\-Start\-Segment\-Address@{get\-Start\-Segment\-Address}}
+\index{get\-Start\-Segment\-Address@{get\-Start\-Segment\-Address}!intelhex@{intelhex}}
+\subsubsection[{get\-Start\-Segment\-Address}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::get\-Start\-Segment\-Address (
+\begin{DoxyParamCaption}
+\item[{unsigned short $\ast$}]{ip\-Register, }
+\item[{unsigned short $\ast$}]{cs\-Register}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a94d6d17ba22263a4775d80b2a0e6e95f}
+
+
+Returns segment start address for the I\-P and E\-S registers. 
+
+\begin{DoxyVerb}     If these values exist, they will be returned. If not, the function
+     returns false.
+\end{DoxyVerb}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em ip\-Register} & -\/ variable to store I\-P register's value \\
+\hline
+{\em cs\-Register} & -\/ variable to store C\-S register's value\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em true} & -\/ I\-P and C\-S registers have defined values \\
+\hline
+{\em false} & -\/ I\-P and C\-S registers do not contain values\\
+\hline
+\end{DoxyRetVals}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_a7bc61f72756d37509e768906733ba10b}{get\-Start\-Linear\-Address()}, \hyperlink{classintelhex_a9688f0002be870b05d64b5f9fcdeb86b}{set\-Start\-Segment\-Address()}, \hyperlink{classintelhex_a7629ca097b2de02dea37fcaa2dc2709c}{set\-Start\-Linear\-Address()} 
+\end{DoxySeeAlso}
+\hypertarget{classintelhex_af9c6e296e5053fe8378e79445cf480cb}{\index{intelhex@{intelhex}!increment\-Address@{increment\-Address}}
+\index{increment\-Address@{increment\-Address}!intelhex@{intelhex}}
+\subsubsection[{increment\-Address}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::increment\-Address (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_af9c6e296e5053fe8378e79445cf480cb}
+
+
+Increments to next piece of data. 
+
+\begin{DoxyVerb}     Address pointer will take on the address of the next location for 
+     which there is data.
+\end{DoxyVerb}
+
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_a51f6d93f1ac2bdf5ddad8be4e1827ce9}{decrement\-Address()}
+\end{DoxySeeAlso}
+
+\begin{DoxyRetVals}{Return values}
+{\em true} & -\/ pointer was incremented; a new data value was found \\
+\hline
+{\em false} & -\/ end of available data reached; pointer is unchanged \\
+\hline
+\end{DoxyRetVals}
+\hypertarget{classintelhex_a71096983db3c24a5ac9b95663937a4ce}{\index{intelhex@{intelhex}!insert\-Data@{insert\-Data}}
+\index{insert\-Data@{insert\-Data}!intelhex@{intelhex}}
+\subsubsection[{insert\-Data}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::insert\-Data (
+\begin{DoxyParamCaption}
+\item[{unsigned char}]{data}
+\end{DoxyParamCaption}
+)}}\label{classintelhex_a71096983db3c24a5ac9b95663937a4ce}
+
+
+Inserts desired byte at the current address pointer. 
+
+\begin{DoxyVerb}     Inserts byte of data at the current address pointer
+\end{DoxyVerb}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & -\/ data byte to be inserted\\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_aa8833665b99f0b6ac64fcef7d2116c42}{start\-Address()} 
+\end{DoxySeeAlso}
+\hypertarget{classintelhex_a00ff4c491fabc5ef207071358e1b9298}{\index{intelhex@{intelhex}!insert\-Data@{insert\-Data}}
+\index{insert\-Data@{insert\-Data}!intelhex@{intelhex}}
+\subsubsection[{insert\-Data}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::insert\-Data (
+\begin{DoxyParamCaption}
+\item[{unsigned char}]{data, }
+\item[{unsigned long}]{address}
+\end{DoxyParamCaption}
+)}}\label{classintelhex_a00ff4c491fabc5ef207071358e1b9298}
+\hypertarget{classintelhex_a83b54457c121b0f35b21b78fa2ecd712}{\index{intelhex@{intelhex}!jump\-To@{jump\-To}}
+\index{jump\-To@{jump\-To}!intelhex@{intelhex}}
+\subsubsection[{jump\-To}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::jump\-To (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{address}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a83b54457c121b0f35b21b78fa2ecd712}
+
+
+Moves the address pointer to the desired address. 
+
+\begin{DoxyVerb}     Address pointer will take on the requested address if the address
+     exists in the data stored in memory. If not, the address pointer does
+     not change.
+\end{DoxyVerb}
+
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_a631d8930daeaf04bf0d9ad9c25679a0b}{current\-Address()}
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em address} & -\/ Desired new address for the address pointer\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em true} & -\/ Address exists; pointer moved successfully \\
+\hline
+{\em false} & -\/ Address did not exist; pointer not moved \\
+\hline
+\end{DoxyRetVals}
+\hypertarget{classintelhex_a5055edd337d19037ab254a27016267f8}{\index{intelhex@{intelhex}!linear\-Addressing\-On@{linear\-Addressing\-On}}
+\index{linear\-Addressing\-On@{linear\-Addressing\-On}!intelhex@{intelhex}}
+\subsubsection[{linear\-Addressing\-On}]{\setlength{\rightskip}{0pt plus 5cm}void intelhex\-::linear\-Addressing\-On (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a5055edd337d19037ab254a27016267f8}
+
+
+Turns on linear addressing mode during encoding. 
+
+Uses the Linear Address Record during encoding. \hypertarget{classintelhex_a044d6ab5b10a38ffa40a0b1f55b7e808}{\index{intelhex@{intelhex}!operator++@{operator++}}
+\index{operator++@{operator++}!intelhex@{intelhex}}
+\subsubsection[{operator++}]{\setlength{\rightskip}{0pt plus 5cm}{\bf intelhex}\& intelhex\-::operator++ (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a044d6ab5b10a38ffa40a0b1f55b7e808}
+
+
+Overloaded prefix increment operator. 
+
+Overloads the prefix increment operator to move interal iterator to next entry in the ih\-Content map \hypertarget{classintelhex_ab54337b9681fc0b50e3fdb18ed1714fa}{\index{intelhex@{intelhex}!operator++@{operator++}}
+\index{operator++@{operator++}!intelhex@{intelhex}}
+\subsubsection[{operator++}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf intelhex} intelhex\-::operator++ (
+\begin{DoxyParamCaption}
+\item[{int}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_ab54337b9681fc0b50e3fdb18ed1714fa}
+
+
+Overloaded postfix increment operator. 
+
+Overloads the postfix increment operator to move interal iterator to next entry in the ih\-Content map \hypertarget{classintelhex_ab85cbeafe9cc6adcec79f1bc709addca}{\index{intelhex@{intelhex}!operator-\/-\/@{operator-\/-\/}}
+\index{operator-\/-\/@{operator-\/-\/}!intelhex@{intelhex}}
+\subsubsection[{operator-\/-\/}]{\setlength{\rightskip}{0pt plus 5cm}{\bf intelhex}\& intelhex\-::operator-\/-\/ (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_ab85cbeafe9cc6adcec79f1bc709addca}
+
+
+Overloaded prefix decrement operator. 
+
+Overloads the prefix decrement operator to move interal iterator to previous entry in the ih\-Content map \hypertarget{classintelhex_a90562846d95b5573923f129b82aeceec}{\index{intelhex@{intelhex}!operator-\/-\/@{operator-\/-\/}}
+\index{operator-\/-\/@{operator-\/-\/}!intelhex@{intelhex}}
+\subsubsection[{operator-\/-\/}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf intelhex} intelhex\-::operator-\/-\/ (
+\begin{DoxyParamCaption}
+\item[{int}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a90562846d95b5573923f129b82aeceec}
+
+
+Overloaded postfix decrement operator. 
+
+Overloads the postfix decrement operator to move interal iterator to previous entry in the ih\-Content map \hypertarget{classintelhex_a6408cc3141862454e846378abfad8ecc}{\index{intelhex@{intelhex}!operator=@{operator=}}
+\index{operator=@{operator=}!intelhex@{intelhex}}
+\subsubsection[{operator=}]{\setlength{\rightskip}{0pt plus 5cm}{\bf intelhex}\& intelhex\-::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf intelhex} \&}]{ih\-Source}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a6408cc3141862454e846378abfad8ecc}
+
+
+intelhex Class Assignment Operator. 
+
+\begin{DoxyVerb}     Implements the assignment operator so that the content of the Intel
+     HEX file in memory can be copied to another 'intelhex' variable.
+     You may want to keep a copy of the original data in memory and 
+     only manipulate a copy.
+\end{DoxyVerb}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em ih\-Source} & -\/ intelhex variable to be assigned to new variable\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em pointer} & to variable to which value is to be assigned \\
+\hline
+\end{DoxyRetVals}
+\hypertarget{classintelhex_ab4fc2715f4c63d3f31e8d2b0533583e5}{\index{intelhex@{intelhex}!overwrite\-Data@{overwrite\-Data}}
+\index{overwrite\-Data@{overwrite\-Data}!intelhex@{intelhex}}
+\subsubsection[{overwrite\-Data}]{\setlength{\rightskip}{0pt plus 5cm}void intelhex\-::overwrite\-Data (
+\begin{DoxyParamCaption}
+\item[{unsigned char}]{data}
+\end{DoxyParamCaption}
+)}}\label{classintelhex_ab4fc2715f4c63d3f31e8d2b0533583e5}
+\hypertarget{classintelhex_a83edcd2329cb52a4bab6bb46463184d7}{\index{intelhex@{intelhex}!overwrite\-Data@{overwrite\-Data}}
+\index{overwrite\-Data@{overwrite\-Data}!intelhex@{intelhex}}
+\subsubsection[{overwrite\-Data}]{\setlength{\rightskip}{0pt plus 5cm}void intelhex\-::overwrite\-Data (
+\begin{DoxyParamCaption}
+\item[{unsigned char}]{data, }
+\item[{unsigned long}]{address}
+\end{DoxyParamCaption}
+)}}\label{classintelhex_a83edcd2329cb52a4bab6bb46463184d7}
+\hypertarget{classintelhex_a6609fd1c57a650c45a1961f6318d643e}{\index{intelhex@{intelhex}!pop\-Next\-Error@{pop\-Next\-Error}}
+\index{pop\-Next\-Error@{pop\-Next\-Error}!intelhex@{intelhex}}
+\subsubsection[{pop\-Next\-Error}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::pop\-Next\-Error (
+\begin{DoxyParamCaption}
+\item[{string \&}]{error}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a6609fd1c57a650c45a1961f6318d643e}
+
+
+Pop next error message from the list of errors. 
+
+\begin{DoxyVerb}     Next error message is returned from the list of errors. If there are
+     no more errors in the list, no string will be returned unchanged.
+\end{DoxyVerb}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em error} & -\/ variable to store error string to be returned\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em true} & -\/ more error messages are available \\
+\hline
+{\em false} & -\/ no more error messages are available\\
+\hline
+\end{DoxyRetVals}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_a05a19e1e9f1eb493a8d0bc29db88683f}{get\-No\-Warnings()}, \hyperlink{classintelhex_a77cddd46c3f97692b4d89f138bdabb72}{get\-No\-Errors()}, \hyperlink{classintelhex_a6609fd1c57a650c45a1961f6318d643e}{pop\-Next\-Error()} 
+\end{DoxySeeAlso}
+\hypertarget{classintelhex_ab881b8cb0fe665395a29e4375db8f7c4}{\index{intelhex@{intelhex}!pop\-Next\-Warning@{pop\-Next\-Warning}}
+\index{pop\-Next\-Warning@{pop\-Next\-Warning}!intelhex@{intelhex}}
+\subsubsection[{pop\-Next\-Warning}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::pop\-Next\-Warning (
+\begin{DoxyParamCaption}
+\item[{string \&}]{warning}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_ab881b8cb0fe665395a29e4375db8f7c4}
+
+
+Pop next warning message from the list of warnings. 
+
+\begin{DoxyVerb}     Next warning message is returned from the list of warnings. If there 
+     are no more warning in the list, the string will be unchanged.
+\end{DoxyVerb}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em warning} & -\/ variable to store warning string to be returned\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em true} & -\/ more warning messages are available \\
+\hline
+{\em false} & -\/ no more warning messages are available\\
+\hline
+\end{DoxyRetVals}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_a05a19e1e9f1eb493a8d0bc29db88683f}{get\-No\-Warnings()}, \hyperlink{classintelhex_a77cddd46c3f97692b4d89f138bdabb72}{get\-No\-Errors()}, \hyperlink{classintelhex_a6609fd1c57a650c45a1961f6318d643e}{pop\-Next\-Error()} 
+\end{DoxySeeAlso}
+\hypertarget{classintelhex_a489fc3b9c34542def2a5167192b291da}{\index{intelhex@{intelhex}!segment\-Addressing\-On@{segment\-Addressing\-On}}
+\index{segment\-Addressing\-On@{segment\-Addressing\-On}!intelhex@{intelhex}}
+\subsubsection[{segment\-Addressing\-On}]{\setlength{\rightskip}{0pt plus 5cm}void intelhex\-::segment\-Addressing\-On (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a489fc3b9c34542def2a5167192b291da}
+
+
+Turns on segment addressing mode during encoding. 
+
+Uses the Segment Address Record during encoding. \hypertarget{classintelhex_a7629ca097b2de02dea37fcaa2dc2709c}{\index{intelhex@{intelhex}!set\-Start\-Linear\-Address@{set\-Start\-Linear\-Address}}
+\index{set\-Start\-Linear\-Address@{set\-Start\-Linear\-Address}!intelhex@{intelhex}}
+\subsubsection[{set\-Start\-Linear\-Address}]{\setlength{\rightskip}{0pt plus 5cm}void intelhex\-::set\-Start\-Linear\-Address (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{eip\-Register}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a7629ca097b2de02dea37fcaa2dc2709c}
+
+
+Sets the segment start address for the E\-I\-P register. 
+
+\begin{DoxyVerb}     Allows user to define or redefine the contents of the EIP register
+\end{DoxyVerb}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em eip\-Register} & -\/ desired E\-I\-P register value\\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_a94d6d17ba22263a4775d80b2a0e6e95f}{get\-Start\-Segment\-Address()}, \hyperlink{classintelhex_a9688f0002be870b05d64b5f9fcdeb86b}{set\-Start\-Segment\-Address()}, \hyperlink{classintelhex_a7bc61f72756d37509e768906733ba10b}{get\-Start\-Linear\-Address()} 
+\end{DoxySeeAlso}
+\hypertarget{classintelhex_a9688f0002be870b05d64b5f9fcdeb86b}{\index{intelhex@{intelhex}!set\-Start\-Segment\-Address@{set\-Start\-Segment\-Address}}
+\index{set\-Start\-Segment\-Address@{set\-Start\-Segment\-Address}!intelhex@{intelhex}}
+\subsubsection[{set\-Start\-Segment\-Address}]{\setlength{\rightskip}{0pt plus 5cm}void intelhex\-::set\-Start\-Segment\-Address (
+\begin{DoxyParamCaption}
+\item[{unsigned short}]{ip\-Register, }
+\item[{unsigned short}]{cs\-Register}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a9688f0002be870b05d64b5f9fcdeb86b}
+
+
+Sets the segment start address for the I\-P and C\-S registers. 
+
+\begin{DoxyVerb}     Allows user to define or redefine the contents of the IP and CS 
+     registers
+\end{DoxyVerb}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em ip\-Register} & -\/ desired I\-P register value \\
+\hline
+{\em cs\-Register} & -\/ desired C\-S register value\\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_a7bc61f72756d37509e768906733ba10b}{get\-Start\-Linear\-Address()}, \hyperlink{classintelhex_a94d6d17ba22263a4775d80b2a0e6e95f}{get\-Start\-Segment\-Address()}, \hyperlink{classintelhex_a7629ca097b2de02dea37fcaa2dc2709c}{set\-Start\-Linear\-Address()} 
+\end{DoxySeeAlso}
+\hypertarget{classintelhex_afa757932ec420f977d33bb9a2d5a0a69}{\index{intelhex@{intelhex}!size@{size}}
+\index{size@{size}!intelhex@{intelhex}}
+\subsubsection[{size}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long intelhex\-::size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_afa757932ec420f977d33bb9a2d5a0a69}
+
+
+Checks if we have reached end of available data. 
+
+\begin{DoxyVerb}     The internal pointer is checked to see if we have reached the end of 
+     the data held in memory
+\end{DoxyVerb}
+
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_a044d6ab5b10a38ffa40a0b1f55b7e808}{operator++()}, \hyperlink{classintelhex_ab54337b9681fc0b50e3fdb18ed1714fa}{operator++(int)}, operator--(), operator--(int), \hyperlink{classintelhex_a2bd5b567207303d4d9f4322e6262d6d6}{empty()}
+\end{DoxySeeAlso}
+
+\begin{DoxyRetVals}{Return values}
+{\em true} & -\/ reached the end of the Intel H\-E\-X data in memory or no data in memory yet. \\
+\hline
+{\em false} & -\/ end of Intel H\-E\-X data in memory not yet reached.\\
+\hline
+\end{DoxyRetVals}
+\begin{DoxyNote}{Note}
+This function has no effect if no file has been as yet decoded and no data has been inserted into memory. 
+\end{DoxyNote}
+\hypertarget{classintelhex_aa8833665b99f0b6ac64fcef7d2116c42}{\index{intelhex@{intelhex}!start\-Address@{start\-Address}}
+\index{start\-Address@{start\-Address}!intelhex@{intelhex}}
+\subsubsection[{start\-Address}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::start\-Address (
+\begin{DoxyParamCaption}
+\item[{unsigned long $\ast$}]{address}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_aa8833665b99f0b6ac64fcef7d2116c42}
+
+
+Returns the lowest address currently available. 
+
+\begin{DoxyVerb}     Returns the first address that appears in the memory if there is data
+     present. If not, no value will be returned.
+\end{DoxyVerb}
+
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_a9b159bea81eb832e37f6cf88a57ca659}{end\-Address()}
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em address} & -\/ variable to hold address requested\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em true} & -\/ address existed and returned value is valid \\
+\hline
+{\em false} & -\/ address did not exist and returned valid is not valid \\
+\hline
+\end{DoxyRetVals}
+\hypertarget{classintelhex_a3958f077a662291bbde3472ea2bcfb4d}{\index{intelhex@{intelhex}!verbose\-Off@{verbose\-Off}}
+\index{verbose\-Off@{verbose\-Off}!intelhex@{intelhex}}
+\subsubsection[{verbose\-Off}]{\setlength{\rightskip}{0pt plus 5cm}void intelhex\-::verbose\-Off (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_a3958f077a662291bbde3472ea2bcfb4d}
+
+
+Turns off textual output to cout during decoding. 
+
+No output to cout during decoding of Intel H\-E\-X files. \hypertarget{classintelhex_ac6a0119a04a2090af3ffe8c33a37cbc9}{\index{intelhex@{intelhex}!verbose\-On@{verbose\-On}}
+\index{verbose\-On@{verbose\-On}!intelhex@{intelhex}}
+\subsubsection[{verbose\-On}]{\setlength{\rightskip}{0pt plus 5cm}void intelhex\-::verbose\-On (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classintelhex_ac6a0119a04a2090af3ffe8c33a37cbc9}
+
+
+Turns on textual output to cout during decoding. 
+
+Per record single line output to cout during decoding of Intel H\-E\-X files. 
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classintelhex_a320e23dab311a6c652aa7ddb9e2f9cc2}{\index{intelhex@{intelhex}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!intelhex@{intelhex}}
+\subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{ostream \&}]{data\-Out, }
+\item[{{\bf intelhex} \&}]{ih\-Local}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{classintelhex_a320e23dab311a6c652aa7ddb9e2f9cc2}
+
+
+Output stream overload operator. 
+
+\begin{DoxyVerb}     Operator overloaded to encode any data held in memory into the Intel
+     HEX format for storage on disk                 
+\end{DoxyVerb}
+
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_a73fb9c5b9d6d069b5eb83340942fd54b}{operator$>$$>$()}
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em data\-Out} & -\/ Output stream for to store the decoded file information \\
+\hline
+{\em ih\-Local} & -\/ Points to this class so that friend function has access to private class members\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em -\/} & pointer to output stream \\
+\hline
+\end{DoxyRetVals}
+\hypertarget{classintelhex_a73fb9c5b9d6d069b5eb83340942fd54b}{\index{intelhex@{intelhex}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!intelhex@{intelhex}}
+\subsubsection[{operator$>$$>$}]{\setlength{\rightskip}{0pt plus 5cm}istream\& operator$>$$>$ (
+\begin{DoxyParamCaption}
+\item[{istream \&}]{data\-In, }
+\item[{{\bf intelhex} \&}]{ih\-Local}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{classintelhex_a73fb9c5b9d6d069b5eb83340942fd54b}
+
+
+Input stream overload operator. 
+
+\begin{DoxyVerb}     Operator overloaded to decode data streamed in from a file in the 
+     Intel HEX format into memory                 
+\end{DoxyVerb}
+
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classintelhex_a320e23dab311a6c652aa7ddb9e2f9cc2}{operator$<$$<$()}
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em data\-In} & -\/ Input stream for the encoded file information \\
+\hline
+{\em ih\-Local} & -\/ Points to this class so that friend function has access to private class members\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em -\/} & pointer to input stream \\
+\hline
+\end{DoxyRetVals}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classintelhex_aabbf5689bc667734dca7f23a11d3df68}{\index{intelhex@{intelhex}!cs\-Register@{cs\-Register}}
+\index{cs\-Register@{cs\-Register}!intelhex@{intelhex}}
+\subsubsection[{cs\-Register}]{\setlength{\rightskip}{0pt plus 5cm}unsigned short intelhex\-::cs\-Register}}\label{classintelhex_aabbf5689bc667734dca7f23a11d3df68}
+\hypertarget{classintelhex_abedd6ca388d3cad1d2525abc5939d27e}{\index{intelhex@{intelhex}!eip\-Register@{eip\-Register}}
+\index{eip\-Register@{eip\-Register}!intelhex@{intelhex}}
+\subsubsection[{eip\-Register}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long intelhex\-::eip\-Register}}\label{classintelhex_abedd6ca388d3cad1d2525abc5939d27e}
+\hypertarget{classintelhex_ab58b4357deef8e4f0af9817393fc0b6e}{\index{intelhex@{intelhex}!exists@{exists}}
+\index{exists@{exists}!intelhex@{intelhex}}
+\subsubsection[{exists}]{\setlength{\rightskip}{0pt plus 5cm}bool intelhex\-::exists}}\label{classintelhex_ab58b4357deef8e4f0af9817393fc0b6e}
+\hypertarget{classintelhex_a76fb4550b43dfbb08018cabf34298400}{\index{intelhex@{intelhex}!ih\-Errors@{ih\-Errors}}
+\index{ih\-Errors@{ih\-Errors}!intelhex@{intelhex}}
+\subsubsection[{ih\-Errors}]{\setlength{\rightskip}{0pt plus 5cm}list$<$string$>$ intelhex\-::ih\-Errors}}\label{classintelhex_a76fb4550b43dfbb08018cabf34298400}
+\hypertarget{classintelhex_a0ae0e9a75bdfaa50d6d0266bb3d56ed1}{\index{intelhex@{intelhex}!ih\-Warnings@{ih\-Warnings}}
+\index{ih\-Warnings@{ih\-Warnings}!intelhex@{intelhex}}
+\subsubsection[{ih\-Warnings}]{\setlength{\rightskip}{0pt plus 5cm}list$<$string$>$ intelhex\-::ih\-Warnings}}\label{classintelhex_a0ae0e9a75bdfaa50d6d0266bb3d56ed1}
+\hypertarget{classintelhex_acf63100ba6ba58da893f29596560efbd}{\index{intelhex@{intelhex}!ip\-Register@{ip\-Register}}
+\index{ip\-Register@{ip\-Register}!intelhex@{intelhex}}
+\subsubsection[{ip\-Register}]{\setlength{\rightskip}{0pt plus 5cm}unsigned short intelhex\-::ip\-Register}}\label{classintelhex_acf63100ba6ba58da893f29596560efbd}
+\hypertarget{classintelhex_a451b78972165b898e91a129670fce919}{\index{intelhex@{intelhex}!no\-Of\-Errors@{no\-Of\-Errors}}
+\index{no\-Of\-Errors@{no\-Of\-Errors}!intelhex@{intelhex}}
+\subsubsection[{no\-Of\-Errors}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long intelhex\-::no\-Of\-Errors}}\label{classintelhex_a451b78972165b898e91a129670fce919}
+\hypertarget{classintelhex_a5ea3789cc9ea71c9b35322aabca05158}{\index{intelhex@{intelhex}!no\-Of\-Warnings@{no\-Of\-Warnings}}
+\index{no\-Of\-Warnings@{no\-Of\-Warnings}!intelhex@{intelhex}}
+\subsubsection[{no\-Of\-Warnings}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long intelhex\-::no\-Of\-Warnings}}\label{classintelhex_a5ea3789cc9ea71c9b35322aabca05158}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{intelhexclass_8h}{intelhexclass.\-h}\end{DoxyCompactItemize}

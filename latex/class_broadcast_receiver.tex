@@ -1,0 +1,148 @@
+\hypertarget{class_broadcast_receiver}{\section{Broadcast\-Receiver Class Reference}
+\label{class_broadcast_receiver}\index{Broadcast\-Receiver@{Broadcast\-Receiver}}
+}
+
+
+{\ttfamily \#include $<$Broadcast\-Receiver.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_broadcast_receiver_a9c3f8ebdef813f03edec75f88389a6ee}{Broadcast\-Receiver} (uint16\-\_\-t port=\hyperlink{class_broadcast_receiver_a38d37ce60dc1fb1e0dbc08d80b5d3b47}{B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T})
+\item 
+\hyperlink{class_broadcast_receiver_a1d262088f10ee4a53d2590bc472864b0}{$\sim$\-Broadcast\-Receiver} (void)
+\item 
+void \hyperlink{class_broadcast_receiver_ac2fa6c783d73121c800d3c015621964d}{operator()} (std\-::ostream \&out, timeval $\ast$timeout=N\-U\-L\-L)
+\item 
+const \hyperlink{class_endpoint}{Endpoint} \& \hyperlink{class_broadcast_receiver_a1c487597e1338d5e5fca55f1d89d0eb1}{Get\-Endpoint} (size\-\_\-t index) const 
+\item 
+\hyperlink{class_endpoint}{Endpoint} \hyperlink{class_broadcast_receiver_a4549672ea1b9b008f93b42329c8bea5f}{Get\-Next\-Remote} (timeval $\ast$timeout)  throw (\-Fatal\-Error)
+\item 
+size\-\_\-t \hyperlink{class_broadcast_receiver_a6e403e696a76c5bc8c2b9215c3d5704d}{Num\-Remotes} (void) const 
+\item 
+void \hyperlink{class_broadcast_receiver_ab0f0852ab37655f23bebaca888216502}{Stop} (void)
+\item 
+void \hyperlink{class_broadcast_receiver_a4b8090a05353668151af7e887acfd32f}{Print\-All\-Endpoints} (std\-::ostream \&out)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const uint16\-\_\-t \hyperlink{class_broadcast_receiver_a3e1de2825034cb6e2b15641c490d9381}{m\-Port}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const uint16\-\_\-t \hyperlink{class_broadcast_receiver_a38d37ce60dc1fb1e0dbc08d80b5d3b47}{B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T} = 55555
+\item 
+static const std\-::string \hyperlink{class_broadcast_receiver_a7314a4107fc6e1c3d8dbace2b47c07d1}{D\-E\-V\-I\-C\-E\-\_\-\-I\-D}
+\item 
+static const std\-::string \hyperlink{class_broadcast_receiver_addb5597142e98c3c16afce397082d960}{D\-E\-V\-I\-C\-E\-\_\-\-I\-D\-\_\-\-O\-L\-D}
+\item 
+static const std\-::string \hyperlink{class_broadcast_receiver_ae22c7443414e66b3e50911e91f6d6e35}{D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N}
+\item 
+static const std\-::string \hyperlink{class_broadcast_receiver_a6c365a7403457725e25c3124868fd6d9}{S\-T\-O\-P\-\_\-\-M\-S\-G}
+\item 
+static const \hyperlink{class_endpoint}{Endpoint} \hyperlink{class_broadcast_receiver_a545fbd086416bfa77cd42b531d045a5b}{E\-M\-P\-T\-Y\-\_\-\-E\-N\-D\-P\-O\-I\-N\-T}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_broadcast_receiver_a9c3f8ebdef813f03edec75f88389a6ee}{\index{Broadcast\-Receiver@{Broadcast\-Receiver}!Broadcast\-Receiver@{Broadcast\-Receiver}}
+\index{Broadcast\-Receiver@{Broadcast\-Receiver}!BroadcastReceiver@{Broadcast\-Receiver}}
+\subsubsection[{Broadcast\-Receiver}]{\setlength{\rightskip}{0pt plus 5cm}Broadcast\-Receiver\-::\-Broadcast\-Receiver (
+\begin{DoxyParamCaption}
+\item[{uint16\-\_\-t}]{port = {\ttfamily {\bf B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T}}}
+\end{DoxyParamCaption}
+)}}\label{class_broadcast_receiver_a9c3f8ebdef813f03edec75f88389a6ee}
+\hypertarget{class_broadcast_receiver_a1d262088f10ee4a53d2590bc472864b0}{\index{Broadcast\-Receiver@{Broadcast\-Receiver}!$\sim$\-Broadcast\-Receiver@{$\sim$\-Broadcast\-Receiver}}
+\index{$\sim$\-Broadcast\-Receiver@{$\sim$\-Broadcast\-Receiver}!BroadcastReceiver@{Broadcast\-Receiver}}
+\subsubsection[{$\sim$\-Broadcast\-Receiver}]{\setlength{\rightskip}{0pt plus 5cm}Broadcast\-Receiver\-::$\sim$\-Broadcast\-Receiver (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_broadcast_receiver_a1d262088f10ee4a53d2590bc472864b0}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_broadcast_receiver_a1c487597e1338d5e5fca55f1d89d0eb1}{\index{Broadcast\-Receiver@{Broadcast\-Receiver}!Get\-Endpoint@{Get\-Endpoint}}
+\index{Get\-Endpoint@{Get\-Endpoint}!BroadcastReceiver@{Broadcast\-Receiver}}
+\subsubsection[{Get\-Endpoint}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Endpoint}\& Broadcast\-Receiver\-::\-Get\-Endpoint (
+\begin{DoxyParamCaption}
+\item[{size\-\_\-t}]{index}
+\end{DoxyParamCaption}
+) const}}\label{class_broadcast_receiver_a1c487597e1338d5e5fca55f1d89d0eb1}
+\hypertarget{class_broadcast_receiver_a4549672ea1b9b008f93b42329c8bea5f}{\index{Broadcast\-Receiver@{Broadcast\-Receiver}!Get\-Next\-Remote@{Get\-Next\-Remote}}
+\index{Get\-Next\-Remote@{Get\-Next\-Remote}!BroadcastReceiver@{Broadcast\-Receiver}}
+\subsubsection[{Get\-Next\-Remote}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Endpoint} Broadcast\-Receiver\-::\-Get\-Next\-Remote (
+\begin{DoxyParamCaption}
+\item[{timeval $\ast$}]{timeout}
+\end{DoxyParamCaption}
+)  throw ({\bf Fatal\-Error})}}\label{class_broadcast_receiver_a4549672ea1b9b008f93b42329c8bea5f}
+\hypertarget{class_broadcast_receiver_a6e403e696a76c5bc8c2b9215c3d5704d}{\index{Broadcast\-Receiver@{Broadcast\-Receiver}!Num\-Remotes@{Num\-Remotes}}
+\index{Num\-Remotes@{Num\-Remotes}!BroadcastReceiver@{Broadcast\-Receiver}}
+\subsubsection[{Num\-Remotes}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t Broadcast\-Receiver\-::\-Num\-Remotes (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const}}\label{class_broadcast_receiver_a6e403e696a76c5bc8c2b9215c3d5704d}
+\begin{DoxyReturn}{Returns}
+number of discovered remotes addresses 
+\end{DoxyReturn}
+\hypertarget{class_broadcast_receiver_ac2fa6c783d73121c800d3c015621964d}{\index{Broadcast\-Receiver@{Broadcast\-Receiver}!operator()@{operator()}}
+\index{operator()@{operator()}!BroadcastReceiver@{Broadcast\-Receiver}}
+\subsubsection[{operator()}]{\setlength{\rightskip}{0pt plus 5cm}void Broadcast\-Receiver\-::operator() (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{out, }
+\item[{timeval $\ast$}]{timeout = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)}}\label{class_broadcast_receiver_ac2fa6c783d73121c800d3c015621964d}
+Listen for broadcasts and print them to a stream 
+\begin{DoxyParams}{Parameters}
+{\em out} & stream to print collected remotes on \\
+\hline
+{\em timeout} & in seconds, until execution is terminated, to wait indefinetly use N\-U\-L\-L (default) \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_broadcast_receiver_a4b8090a05353668151af7e887acfd32f}{\index{Broadcast\-Receiver@{Broadcast\-Receiver}!Print\-All\-Endpoints@{Print\-All\-Endpoints}}
+\index{Print\-All\-Endpoints@{Print\-All\-Endpoints}!BroadcastReceiver@{Broadcast\-Receiver}}
+\subsubsection[{Print\-All\-Endpoints}]{\setlength{\rightskip}{0pt plus 5cm}void Broadcast\-Receiver\-::\-Print\-All\-Endpoints (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{out}
+\end{DoxyParamCaption}
+)}}\label{class_broadcast_receiver_a4b8090a05353668151af7e887acfd32f}
+\hypertarget{class_broadcast_receiver_ab0f0852ab37655f23bebaca888216502}{\index{Broadcast\-Receiver@{Broadcast\-Receiver}!Stop@{Stop}}
+\index{Stop@{Stop}!BroadcastReceiver@{Broadcast\-Receiver}}
+\subsubsection[{Stop}]{\setlength{\rightskip}{0pt plus 5cm}void Broadcast\-Receiver\-::\-Stop (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{class_broadcast_receiver_ab0f0852ab37655f23bebaca888216502}
+Sends a stop event to terminate execution of operator() 
+
+\subsection{Member Data Documentation}
+\hypertarget{class_broadcast_receiver_a38d37ce60dc1fb1e0dbc08d80b5d3b47}{\index{Broadcast\-Receiver@{Broadcast\-Receiver}!B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T@{B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T}}
+\index{B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T@{B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T}!BroadcastReceiver@{Broadcast\-Receiver}}
+\subsubsection[{B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T}]{\setlength{\rightskip}{0pt plus 5cm}const uint16\-\_\-t Broadcast\-Receiver\-::\-B\-R\-O\-A\-D\-C\-A\-S\-T\-\_\-\-P\-O\-R\-T = 55555\hspace{0.3cm}{\ttfamily [static]}}}\label{class_broadcast_receiver_a38d37ce60dc1fb1e0dbc08d80b5d3b47}
+\hypertarget{class_broadcast_receiver_a7314a4107fc6e1c3d8dbace2b47c07d1}{\index{Broadcast\-Receiver@{Broadcast\-Receiver}!D\-E\-V\-I\-C\-E\-\_\-\-I\-D@{D\-E\-V\-I\-C\-E\-\_\-\-I\-D}}
+\index{D\-E\-V\-I\-C\-E\-\_\-\-I\-D@{D\-E\-V\-I\-C\-E\-\_\-\-I\-D}!BroadcastReceiver@{Broadcast\-Receiver}}
+\subsubsection[{D\-E\-V\-I\-C\-E\-\_\-\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}const std\-::string Broadcast\-Receiver\-::\-D\-E\-V\-I\-C\-E\-\_\-\-I\-D\hspace{0.3cm}{\ttfamily [static]}}}\label{class_broadcast_receiver_a7314a4107fc6e1c3d8dbace2b47c07d1}
+\hypertarget{class_broadcast_receiver_addb5597142e98c3c16afce397082d960}{\index{Broadcast\-Receiver@{Broadcast\-Receiver}!D\-E\-V\-I\-C\-E\-\_\-\-I\-D\-\_\-\-O\-L\-D@{D\-E\-V\-I\-C\-E\-\_\-\-I\-D\-\_\-\-O\-L\-D}}
+\index{D\-E\-V\-I\-C\-E\-\_\-\-I\-D\-\_\-\-O\-L\-D@{D\-E\-V\-I\-C\-E\-\_\-\-I\-D\-\_\-\-O\-L\-D}!BroadcastReceiver@{Broadcast\-Receiver}}
+\subsubsection[{D\-E\-V\-I\-C\-E\-\_\-\-I\-D\-\_\-\-O\-L\-D}]{\setlength{\rightskip}{0pt plus 5cm}const std\-::string Broadcast\-Receiver\-::\-D\-E\-V\-I\-C\-E\-\_\-\-I\-D\-\_\-\-O\-L\-D\hspace{0.3cm}{\ttfamily [static]}}}\label{class_broadcast_receiver_addb5597142e98c3c16afce397082d960}
+\hypertarget{class_broadcast_receiver_ae22c7443414e66b3e50911e91f6d6e35}{\index{Broadcast\-Receiver@{Broadcast\-Receiver}!D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N@{D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N}}
+\index{D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N@{D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N}!BroadcastReceiver@{Broadcast\-Receiver}}
+\subsubsection[{D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N}]{\setlength{\rightskip}{0pt plus 5cm}const std\-::string Broadcast\-Receiver\-::\-D\-E\-V\-I\-C\-E\-\_\-\-V\-E\-R\-S\-I\-O\-N\hspace{0.3cm}{\ttfamily [static]}}}\label{class_broadcast_receiver_ae22c7443414e66b3e50911e91f6d6e35}
+\hypertarget{class_broadcast_receiver_a545fbd086416bfa77cd42b531d045a5b}{\index{Broadcast\-Receiver@{Broadcast\-Receiver}!E\-M\-P\-T\-Y\-\_\-\-E\-N\-D\-P\-O\-I\-N\-T@{E\-M\-P\-T\-Y\-\_\-\-E\-N\-D\-P\-O\-I\-N\-T}}
+\index{E\-M\-P\-T\-Y\-\_\-\-E\-N\-D\-P\-O\-I\-N\-T@{E\-M\-P\-T\-Y\-\_\-\-E\-N\-D\-P\-O\-I\-N\-T}!BroadcastReceiver@{Broadcast\-Receiver}}
+\subsubsection[{E\-M\-P\-T\-Y\-\_\-\-E\-N\-D\-P\-O\-I\-N\-T}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Endpoint} Broadcast\-Receiver\-::\-E\-M\-P\-T\-Y\-\_\-\-E\-N\-D\-P\-O\-I\-N\-T\hspace{0.3cm}{\ttfamily [static]}}}\label{class_broadcast_receiver_a545fbd086416bfa77cd42b531d045a5b}
+\hypertarget{class_broadcast_receiver_a3e1de2825034cb6e2b15641c490d9381}{\index{Broadcast\-Receiver@{Broadcast\-Receiver}!m\-Port@{m\-Port}}
+\index{m\-Port@{m\-Port}!BroadcastReceiver@{Broadcast\-Receiver}}
+\subsubsection[{m\-Port}]{\setlength{\rightskip}{0pt plus 5cm}const uint16\-\_\-t Broadcast\-Receiver\-::m\-Port}}\label{class_broadcast_receiver_a3e1de2825034cb6e2b15641c490d9381}
+\hypertarget{class_broadcast_receiver_a6c365a7403457725e25c3124868fd6d9}{\index{Broadcast\-Receiver@{Broadcast\-Receiver}!S\-T\-O\-P\-\_\-\-M\-S\-G@{S\-T\-O\-P\-\_\-\-M\-S\-G}}
+\index{S\-T\-O\-P\-\_\-\-M\-S\-G@{S\-T\-O\-P\-\_\-\-M\-S\-G}!BroadcastReceiver@{Broadcast\-Receiver}}
+\subsubsection[{S\-T\-O\-P\-\_\-\-M\-S\-G}]{\setlength{\rightskip}{0pt plus 5cm}const std\-::string Broadcast\-Receiver\-::\-S\-T\-O\-P\-\_\-\-M\-S\-G\hspace{0.3cm}{\ttfamily [static]}}}\label{class_broadcast_receiver_a6c365a7403457725e25c3124868fd6d9}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+library/\hyperlink{_broadcast_receiver_8h}{Broadcast\-Receiver.\-h}\end{DoxyCompactItemize}

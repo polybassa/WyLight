@@ -1,0 +1,115 @@
+\hypertarget{intelhexclass_8cpp}{\section{library/intelhexclass.cpp File Reference}
+\label{intelhexclass_8cpp}\index{library/intelhexclass.\-cpp@{library/intelhexclass.\-cpp}}
+}
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$vector$>$}\\*
+{\ttfamily \#include $<$cstdio$>$}\\*
+{\ttfamily \#include \char`\"{}intelhexclass.\-h\char`\"{}}\\*
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358}{intelhex\-Record\-Type} \{ \\*
+\hyperlink{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358adc44af19f30a0f1d46dac99660f0645f}{D\-A\-T\-A\-\_\-\-R\-E\-C\-O\-R\-D}, 
+\hyperlink{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358aec7c10678e557597ea4a5744a2aa3086}{E\-N\-D\-\_\-\-O\-F\-\_\-\-F\-I\-L\-E\-\_\-\-R\-E\-C\-O\-R\-D}, 
+\hyperlink{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358a36c89961ed29de9f85bd299b2bf67192}{E\-X\-T\-E\-N\-D\-E\-D\-\_\-\-S\-E\-G\-M\-E\-N\-T\-\_\-\-A\-D\-D\-R\-E\-S\-S}, 
+\hyperlink{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358ab726047b1ca4ea2093b558ec4def7ce0}{S\-T\-A\-R\-T\-\_\-\-S\-E\-G\-M\-E\-N\-T\-\_\-\-A\-D\-D\-R\-E\-S\-S}, 
+\\*
+\hyperlink{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358aeebd7b982ae13854a33ec72cb1167d55}{E\-X\-T\-E\-N\-D\-E\-D\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-D\-D\-R\-E\-S\-S}, 
+\hyperlink{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358a631988f0bf5397303686c4fbcc7e8f19}{S\-T\-A\-R\-T\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-D\-D\-R\-E\-S\-S}, 
+\hyperlink{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358a887aa12489dd4926e9f5c0b19da7035e}{N\-O\-\_\-\-O\-F\-\_\-\-R\-E\-C\-O\-R\-D\-\_\-\-T\-Y\-P\-E\-S}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+istream \& \hyperlink{intelhexclass_8cpp_a73fb9c5b9d6d069b5eb83340942fd54b}{operator$>$$>$} (istream \&data\-In, \hyperlink{classintelhex}{intelhex} \&ih\-Local)
+\item 
+ostream \& \hyperlink{intelhexclass_8cpp_a320e23dab311a6c652aa7ddb9e2f9cc2}{operator$<$$<$} (ostream \&data\-Out, \hyperlink{classintelhex}{intelhex} \&ih\-Local)
+\end{DoxyCompactItemize}
+
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358}{\index{intelhexclass.\-cpp@{intelhexclass.\-cpp}!intelhex\-Record\-Type@{intelhex\-Record\-Type}}
+\index{intelhex\-Record\-Type@{intelhex\-Record\-Type}!intelhexclass.cpp@{intelhexclass.\-cpp}}
+\subsubsection[{intelhex\-Record\-Type}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf intelhex\-Record\-Type}}}\label{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358}
+Possible record types for Intel H\-E\-X file.
+
+List of all possible record types that can be found in an Intel H\-E\-X file. \begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{D\-A\-T\-A\-\_\-\-R\-E\-C\-O\-R\-D@{D\-A\-T\-A\-\_\-\-R\-E\-C\-O\-R\-D}!intelhexclass.\-cpp@{intelhexclass.\-cpp}}\index{intelhexclass.\-cpp@{intelhexclass.\-cpp}!D\-A\-T\-A\-\_\-\-R\-E\-C\-O\-R\-D@{D\-A\-T\-A\-\_\-\-R\-E\-C\-O\-R\-D}}\item[{\em 
+\hypertarget{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358adc44af19f30a0f1d46dac99660f0645f}{D\-A\-T\-A\-\_\-\-R\-E\-C\-O\-R\-D}\label{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358adc44af19f30a0f1d46dac99660f0645f}
+}]\index{E\-N\-D\-\_\-\-O\-F\-\_\-\-F\-I\-L\-E\-\_\-\-R\-E\-C\-O\-R\-D@{E\-N\-D\-\_\-\-O\-F\-\_\-\-F\-I\-L\-E\-\_\-\-R\-E\-C\-O\-R\-D}!intelhexclass.\-cpp@{intelhexclass.\-cpp}}\index{intelhexclass.\-cpp@{intelhexclass.\-cpp}!E\-N\-D\-\_\-\-O\-F\-\_\-\-F\-I\-L\-E\-\_\-\-R\-E\-C\-O\-R\-D@{E\-N\-D\-\_\-\-O\-F\-\_\-\-F\-I\-L\-E\-\_\-\-R\-E\-C\-O\-R\-D}}\item[{\em 
+\hypertarget{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358aec7c10678e557597ea4a5744a2aa3086}{E\-N\-D\-\_\-\-O\-F\-\_\-\-F\-I\-L\-E\-\_\-\-R\-E\-C\-O\-R\-D}\label{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358aec7c10678e557597ea4a5744a2aa3086}
+}]\index{E\-X\-T\-E\-N\-D\-E\-D\-\_\-\-S\-E\-G\-M\-E\-N\-T\-\_\-\-A\-D\-D\-R\-E\-S\-S@{E\-X\-T\-E\-N\-D\-E\-D\-\_\-\-S\-E\-G\-M\-E\-N\-T\-\_\-\-A\-D\-D\-R\-E\-S\-S}!intelhexclass.\-cpp@{intelhexclass.\-cpp}}\index{intelhexclass.\-cpp@{intelhexclass.\-cpp}!E\-X\-T\-E\-N\-D\-E\-D\-\_\-\-S\-E\-G\-M\-E\-N\-T\-\_\-\-A\-D\-D\-R\-E\-S\-S@{E\-X\-T\-E\-N\-D\-E\-D\-\_\-\-S\-E\-G\-M\-E\-N\-T\-\_\-\-A\-D\-D\-R\-E\-S\-S}}\item[{\em 
+\hypertarget{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358a36c89961ed29de9f85bd299b2bf67192}{E\-X\-T\-E\-N\-D\-E\-D\-\_\-\-S\-E\-G\-M\-E\-N\-T\-\_\-\-A\-D\-D\-R\-E\-S\-S}\label{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358a36c89961ed29de9f85bd299b2bf67192}
+}]\index{S\-T\-A\-R\-T\-\_\-\-S\-E\-G\-M\-E\-N\-T\-\_\-\-A\-D\-D\-R\-E\-S\-S@{S\-T\-A\-R\-T\-\_\-\-S\-E\-G\-M\-E\-N\-T\-\_\-\-A\-D\-D\-R\-E\-S\-S}!intelhexclass.\-cpp@{intelhexclass.\-cpp}}\index{intelhexclass.\-cpp@{intelhexclass.\-cpp}!S\-T\-A\-R\-T\-\_\-\-S\-E\-G\-M\-E\-N\-T\-\_\-\-A\-D\-D\-R\-E\-S\-S@{S\-T\-A\-R\-T\-\_\-\-S\-E\-G\-M\-E\-N\-T\-\_\-\-A\-D\-D\-R\-E\-S\-S}}\item[{\em 
+\hypertarget{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358ab726047b1ca4ea2093b558ec4def7ce0}{S\-T\-A\-R\-T\-\_\-\-S\-E\-G\-M\-E\-N\-T\-\_\-\-A\-D\-D\-R\-E\-S\-S}\label{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358ab726047b1ca4ea2093b558ec4def7ce0}
+}]\index{E\-X\-T\-E\-N\-D\-E\-D\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-D\-D\-R\-E\-S\-S@{E\-X\-T\-E\-N\-D\-E\-D\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-D\-D\-R\-E\-S\-S}!intelhexclass.\-cpp@{intelhexclass.\-cpp}}\index{intelhexclass.\-cpp@{intelhexclass.\-cpp}!E\-X\-T\-E\-N\-D\-E\-D\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-D\-D\-R\-E\-S\-S@{E\-X\-T\-E\-N\-D\-E\-D\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-D\-D\-R\-E\-S\-S}}\item[{\em 
+\hypertarget{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358aeebd7b982ae13854a33ec72cb1167d55}{E\-X\-T\-E\-N\-D\-E\-D\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-D\-D\-R\-E\-S\-S}\label{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358aeebd7b982ae13854a33ec72cb1167d55}
+}]\index{S\-T\-A\-R\-T\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-D\-D\-R\-E\-S\-S@{S\-T\-A\-R\-T\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-D\-D\-R\-E\-S\-S}!intelhexclass.\-cpp@{intelhexclass.\-cpp}}\index{intelhexclass.\-cpp@{intelhexclass.\-cpp}!S\-T\-A\-R\-T\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-D\-D\-R\-E\-S\-S@{S\-T\-A\-R\-T\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-D\-D\-R\-E\-S\-S}}\item[{\em 
+\hypertarget{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358a631988f0bf5397303686c4fbcc7e8f19}{S\-T\-A\-R\-T\-\_\-\-L\-I\-N\-E\-A\-R\-\_\-\-A\-D\-D\-R\-E\-S\-S}\label{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358a631988f0bf5397303686c4fbcc7e8f19}
+}]\index{N\-O\-\_\-\-O\-F\-\_\-\-R\-E\-C\-O\-R\-D\-\_\-\-T\-Y\-P\-E\-S@{N\-O\-\_\-\-O\-F\-\_\-\-R\-E\-C\-O\-R\-D\-\_\-\-T\-Y\-P\-E\-S}!intelhexclass.\-cpp@{intelhexclass.\-cpp}}\index{intelhexclass.\-cpp@{intelhexclass.\-cpp}!N\-O\-\_\-\-O\-F\-\_\-\-R\-E\-C\-O\-R\-D\-\_\-\-T\-Y\-P\-E\-S@{N\-O\-\_\-\-O\-F\-\_\-\-R\-E\-C\-O\-R\-D\-\_\-\-T\-Y\-P\-E\-S}}\item[{\em 
+\hypertarget{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358a887aa12489dd4926e9f5c0b19da7035e}{N\-O\-\_\-\-O\-F\-\_\-\-R\-E\-C\-O\-R\-D\-\_\-\-T\-Y\-P\-E\-S}\label{intelhexclass_8cpp_a3bb353cb1867130c7b77b1e199c66358a887aa12489dd4926e9f5c0b19da7035e}
+}]\end{description}
+\end{Desc}
+
+
+\subsection{Function Documentation}
+\hypertarget{intelhexclass_8cpp_a320e23dab311a6c652aa7ddb9e2f9cc2}{\index{intelhexclass.\-cpp@{intelhexclass.\-cpp}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!intelhexclass.cpp@{intelhexclass.\-cpp}}
+\subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{ostream \&}]{data\-Out, }
+\item[{{\bf intelhex} \&}]{ih\-Local}
+\end{DoxyParamCaption}
+)}}\label{intelhexclass_8cpp_a320e23dab311a6c652aa7ddb9e2f9cc2}
+\begin{DoxyVerb}     Operator overloaded to encode any data held in memory into the Intel
+     HEX format for storage on disk                 
+\end{DoxyVerb}
+
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{intelhexclass_8cpp_a73fb9c5b9d6d069b5eb83340942fd54b}{operator$>$$>$()}
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em data\-Out} & -\/ Output stream for to store the decoded file information \\
+\hline
+{\em ih\-Local} & -\/ Points to this class so that friend function has access to private class members\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em -\/} & pointer to output stream \\
+\hline
+\end{DoxyRetVals}
+\hypertarget{intelhexclass_8cpp_a73fb9c5b9d6d069b5eb83340942fd54b}{\index{intelhexclass.\-cpp@{intelhexclass.\-cpp}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!intelhexclass.cpp@{intelhexclass.\-cpp}}
+\subsubsection[{operator$>$$>$}]{\setlength{\rightskip}{0pt plus 5cm}istream\& operator$>$$>$ (
+\begin{DoxyParamCaption}
+\item[{istream \&}]{data\-In, }
+\item[{{\bf intelhex} \&}]{ih\-Local}
+\end{DoxyParamCaption}
+)}}\label{intelhexclass_8cpp_a73fb9c5b9d6d069b5eb83340942fd54b}
+\begin{DoxyVerb}     Operator overloaded to decode data streamed in from a file in the 
+     Intel HEX format into memory                 
+\end{DoxyVerb}
+
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{intelhexclass_8cpp_a320e23dab311a6c652aa7ddb9e2f9cc2}{operator$<$$<$()}
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em data\-In} & -\/ Input stream for the encoded file information \\
+\hline
+{\em ih\-Local} & -\/ Points to this class so that friend function has access to private class members\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em -\/} & pointer to input stream \\
+\hline
+\end{DoxyRetVals}

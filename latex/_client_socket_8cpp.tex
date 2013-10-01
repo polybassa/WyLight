@@ -1,0 +1,33 @@
+\hypertarget{_client_socket_8cpp}{\section{library/\-Client\-Socket.cpp File Reference}
+\label{_client_socket_8cpp}\index{library/\-Client\-Socket.\-cpp@{library/\-Client\-Socket.\-cpp}}
+}
+{\ttfamily \#include \char`\"{}Client\-Socket.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}trace.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$arpa/inet.\-h$>$}\\*
+{\ttfamily \#include $<$sys/select.\-h$>$}\\*
+{\ttfamily \#include $<$cstring$>$}\\*
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$unistd.\-h$>$}\\*
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static const int \hyperlink{_client_socket_8cpp_a5d2a6eaeb05595ac981331f802f5695e}{g\-\_\-\-Debug\-Zones} = Z\-O\-N\-E\-\_\-\-E\-R\-R\-O\-R $|$ Z\-O\-N\-E\-\_\-\-W\-A\-R\-N\-I\-N\-G $|$ Z\-O\-N\-E\-\_\-\-I\-N\-F\-O $|$ Z\-O\-N\-E\-\_\-\-V\-E\-R\-B\-O\-S\-E
+\end{DoxyCompactItemize}
+
+
+\subsection{Variable Documentation}
+\hypertarget{_client_socket_8cpp_a5d2a6eaeb05595ac981331f802f5695e}{\index{Client\-Socket.\-cpp@{Client\-Socket.\-cpp}!g\-\_\-\-Debug\-Zones@{g\-\_\-\-Debug\-Zones}}
+\index{g\-\_\-\-Debug\-Zones@{g\-\_\-\-Debug\-Zones}!ClientSocket.cpp@{Client\-Socket.\-cpp}}
+\subsubsection[{g\-\_\-\-Debug\-Zones}]{\setlength{\rightskip}{0pt plus 5cm}const int g\-\_\-\-Debug\-Zones = Z\-O\-N\-E\-\_\-\-E\-R\-R\-O\-R $|$ Z\-O\-N\-E\-\_\-\-W\-A\-R\-N\-I\-N\-G $|$ Z\-O\-N\-E\-\_\-\-I\-N\-F\-O $|$ Z\-O\-N\-E\-\_\-\-V\-E\-R\-B\-O\-S\-E\hspace{0.3cm}{\ttfamily [static]}}}\label{_client_socket_8cpp_a5d2a6eaeb05595ac981331f802f5695e}
+\begin{DoxyVerb}Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
+\end{DoxyVerb}
+
+
+This file is part of Wifly\-\_\-\-Light.
+
+Wifly\-\_\-\-Light is free software\-: you can redistribute it and/or modify it under the terms of the G\-N\-U General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+Wifly\-\_\-\-Light is distributed in the hope that it will be useful, but W\-I\-T\-H\-O\-U\-T A\-N\-Y W\-A\-R\-R\-A\-N\-T\-Y; without even the implied warranty of M\-E\-R\-C\-H\-A\-N\-T\-A\-B\-I\-L\-I\-T\-Y or F\-I\-T\-N\-E\-S\-S F\-O\-R A P\-A\-R\-T\-I\-C\-U\-L\-A\-R P\-U\-R\-P\-O\-S\-E. See the G\-N\-U General Public License for more details.
+
+You should have received a copy of the G\-N\-U General Public License along with Wifly\-\_\-\-Light. If not, see \href{http://www.gnu.org/licenses/}{\tt http\-://www.\-gnu.\-org/licenses/}. 
