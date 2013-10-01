@@ -168,11 +168,15 @@ void CommandIO_GetCommands()
 #else
 						mRetValue = ScriptCtrl_Add(&g_CmdBuf.buffer[0]);
 #endif
+						if (mRetValue == NO_RESPONSE) {
+							break;
+						}
 					}
 					else
 					{
 						mRetValue = CRC_CHECK_FAILED;
 					}
+										
 					CommandIO_CreateResponse(&g_ResponseBuf, g_CmdBuf.buffer[0], mRetValue);
 					CommandIO_SendResponse(&g_ResponseBuf);
 					break;
