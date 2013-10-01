@@ -43,6 +43,8 @@
 		
 		[self.controlHandle setDelegate:self];
 		
+		NSLog(@"Set:%@, Current:%@", [self.controlHandle readCurrentFirmwareVersionFromHexFile], [self.controlHandle readCurrentFirmwareVersionFromFirmware]);
+		
 		for (id obj in self.viewControllers) {
 			if ([obj respondsToSelector:@selector(setControlHandle:)]) {
 				[obj performSelector:@selector(setControlHandle:) withObject:self.controlHandle];

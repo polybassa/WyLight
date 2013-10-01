@@ -834,12 +834,12 @@ std::string Control::ExtractFwVersion(const std::string& pFilename) const
 	{
 	    throw FatalError("can't read endAddress from hexConverter \n");
 	}
-	endAddress -= 7;
+	endAddress -= 11;
 	for(unsigned int i = 0; i < 7; i++)
 	{
 		hexConverter.getData(&buffer[i], endAddress++);
 	}
-	return std::string((const char*)&buffer[0], 7);
+	return std::string((const char*)buffer, strlen((const char*)buffer));
 }
 
 Control& Control::operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)

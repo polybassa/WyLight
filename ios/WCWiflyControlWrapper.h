@@ -46,17 +46,19 @@
 - (void)clearScript;
 - (void)readRtcTime:(NSDate **)date;
 - (void)writeRtcTime;
-- (void)readCurrentFirmwareVersionFromFirmware:(NSString **)currentFirmwareVersionStringPlaceholder;
-
+- (NSString *)readCurrentFirmwareVersionFromFirmware;
 - (void)enterBootloader;
 
 // Bootloader methods
-- (void)readCurrentFirmwareVersionFromBootloder:(NSString **)currentFirmwareVersionStringPlaceholder;
+- (NSString *)readCurrentFirmwareVersionFromBootloder;
 - (void)eraseEepromAsync:(BOOL)async;
 - (void)programFlashAsync:(BOOL)async;
 - (void)leaveBootloader;
 - (int)connect;
 - (void)disconnect;
+
+// Version extract methode
+- (NSString *)readCurrentFirmwareVersionFromHexFile;
 
 @end
 

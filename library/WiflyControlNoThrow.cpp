@@ -170,6 +170,12 @@ uint32_t ControlNoThrow::FwStartBl(void)
 {
 	return Try(FwCmdStartBl{});
 }
+	
+uint32_t ControlNoThrow::ExtractFwVersion(const std::string& pFilename, std::string& extractedFwVersion) const
+{
+	return Try(std::bind(&Control::ExtractFwVersion, std::ref(mControl), pFilename), extractedFwVersion);
+}
+
 
 uint32_t ControlNoThrow::Try(FwCommand&& cmd)
 {

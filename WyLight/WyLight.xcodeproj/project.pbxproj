@@ -17,6 +17,7 @@
 		5C35FEF217EF4F7100E3DE0D /* NWComplexScriptCommandObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C35FEEB17EF4F7100E3DE0D /* NWComplexScriptCommandObject.m */; };
 		5C35FEF617EF541300E3DE0D /* NWScript.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C35FEF517EF541300E3DE0D /* NWScript.m */; };
 		5C4F56EB17EC968E0039ADFF /* NWColorSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4F56EA17EC968E0039ADFF /* NWColorSliderViewController.m */; };
+		5C7488BA17FB188A00DB1B22 /* main.hex in Resources */ = {isa = PBXBuildFile; fileRef = 5C7488B917FB188A00DB1B22 /* main.hex */; };
 		5C83957A17EB6138007EF0C6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C83957917EB6138007EF0C6 /* Foundation.framework */; };
 		5C83957C17EB6138007EF0C6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C83957B17EB6138007EF0C6 /* CoreGraphics.framework */; };
 		5C83957E17EB6138007EF0C6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C83957D17EB6138007EF0C6 /* UIKit.framework */; };
@@ -66,7 +67,6 @@
 		5C83964617EC5E9A007EF0C6 /* NWAddNewTargetGuideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C83964517EC5E9A007EF0C6 /* NWAddNewTargetGuideView.m */; };
 		5C83964917EC5EB7007EF0C6 /* Guide2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83964717EC5EB7007EF0C6 /* Guide2.png */; };
 		5C83964A17EC5EB7007EF0C6 /* Guide1.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83964817EC5EB7007EF0C6 /* Guide1.png */; };
-		5C83964C17EC74C6007EF0C6 /* main.hex in Resources */ = {isa = PBXBuildFile; fileRef = 5C83964B17EC74C6007EF0C6 /* main.hex */; };
 		5C90B39317EF56A000BAC74F /* ALRadialButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B39017EF56A000BAC74F /* ALRadialButton.m */; };
 		5C90B39417EF56A000BAC74F /* ALRadialMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B39217EF56A000BAC74F /* ALRadialMenu.m */; };
 		5C90B39A17EF56F300BAC74F /* NWScriptObjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B39717EF56F300BAC74F /* NWScriptObjectView.m */; };
@@ -118,6 +118,7 @@
 		5C35FEF517EF541300E3DE0D /* NWScript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScript.m; sourceTree = "<group>"; };
 		5C4F56E917EC968E0039ADFF /* NWColorSliderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWColorSliderViewController.h; path = ViewController/NWColorSliderViewController.h; sourceTree = "<group>"; };
 		5C4F56EA17EC968E0039ADFF /* NWColorSliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWColorSliderViewController.m; path = ViewController/NWColorSliderViewController.m; sourceTree = "<group>"; };
+		5C7488B917FB188A00DB1B22 /* main.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.hex; sourceTree = "<group>"; };
 		5C83957617EB6138007EF0C6 /* WyLight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WyLight.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C83957917EB6138007EF0C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5C83957B17EB6138007EF0C6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -212,7 +213,6 @@
 		5C83964517EC5E9A007EF0C6 /* NWAddNewTargetGuideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWAddNewTargetGuideView.m; sourceTree = "<group>"; };
 		5C83964717EC5EB7007EF0C6 /* Guide2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Guide2.png; sourceTree = "<group>"; };
 		5C83964817EC5EB7007EF0C6 /* Guide1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Guide1.png; sourceTree = "<group>"; };
-		5C83964B17EC74C6007EF0C6 /* main.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.hex; sourceTree = "<group>"; };
 		5C90B38F17EF56A000BAC74F /* ALRadialButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ALRadialButton.h; path = RadialMenu/ALRadialButton.h; sourceTree = "<group>"; };
 		5C90B39017EF56A000BAC74F /* ALRadialButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ALRadialButton.m; path = RadialMenu/ALRadialButton.m; sourceTree = "<group>"; };
 		5C90B39117EF56A000BAC74F /* ALRadialMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ALRadialMenu.h; path = RadialMenu/ALRadialMenu.h; sourceTree = "<group>"; };
@@ -349,7 +349,7 @@
 		5C83958017EB6138007EF0C6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				5C83964B17EC74C6007EF0C6 /* main.hex */,
+				5C7488B917FB188A00DB1B22 /* main.hex */,
 				5C83964717EC5EB7007EF0C6 /* Guide2.png */,
 				5C83964817EC5EB7007EF0C6 /* Guide1.png */,
 				5C83958817EB6138007EF0C6 /* NWAppDelegate.h */,
@@ -628,7 +628,7 @@
 				5C83958417EB6138007EF0C6 /* InfoPlist.strings in Resources */,
 				5C83958D17EB6138007EF0C6 /* Main.storyboard in Resources */,
 				5C83962D17EB6C00007EF0C6 /* colorPickerKnob.png in Resources */,
-				5C83964C17EC74C6007EF0C6 /* main.hex in Resources */,
+				5C7488BA17FB188A00DB1B22 /* main.hex in Resources */,
 				5C83962E17EB6C00007EF0C6 /* colorPickerKnob@2x.png in Resources */,
 				5C83964A17EC5EB7007EF0C6 /* Guide1.png in Resources */,
 				5C83964917EC5EB7007EF0C6 /* Guide2.png in Resources */,

@@ -389,7 +389,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 									0));
 }
 
-- (void)readCurrentFirmwareVersionFromFirmware:(NSString **)currentFirmwareVersionStringPlaceholder
+- (NSString *)readCurrentFirmwareVersionFromFirmware
 {
 	if (mControl) {
 		std::string firmwareVersionString;
@@ -400,13 +400,14 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 		if(returnValue != WyLight::NO_ERROR)
 		{
 			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
-			*currentFirmwareVersionStringPlaceholder = nil;
+			return nil;
 		}
 		else
 		{
-			*currentFirmwareVersionStringPlaceholder = [NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding];
+			return [NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding];
 		}
 	}
+	return nil;
 }
 
 - (void)enterBootloader
@@ -418,24 +419,24 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 #pragma mark - Bootloader methods
 
-- (void)readCurrentFirmwareVersionFromBootloder:(NSString **)currentFirmwareVersionStringPlaceholder
+- (NSString *)readCurrentFirmwareVersionFromBootloder
 {
 	if (mControl) {
 		std::string firmwareVersionString;
 		std::lock_guard<std::mutex> lock(*gCtrlMutex);
 		uint32_t returnValue = mControl->BlReadFwVersion(firmwareVersionString);
-		*currentFirmwareVersionStringPlaceholder = [NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding];
 		
 		if(returnValue != WyLight::NO_ERROR)
 		{
 			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
-			*currentFirmwareVersionStringPlaceholder = nil;
+			return nil;
 		}
 		else
 		{
-			*currentFirmwareVersionStringPlaceholder = [NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding];
+			return [NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding];
 		}
 	}
+	return nil;
 }
 
 - (void)eraseEepromAsync:(BOOL)async
@@ -459,7 +460,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)programFlashAsync:(BOOL)async
 {
-	NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"main" ofType:@"hex"]; //Whatever your file - extension is
+	NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"main" ofType:@"hex"];
 	
 	if (async) {
 		mCmdQueue->push_back(std::make_tuple(false,
@@ -502,6 +503,28 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 - (void)callWiflyControlHasDisconnectedDelegate
 {
 	[self.delegate wiflyControlHasDisconnected:self];
+}
+
+#pragma mark - Extract Firmware Version methods
+- (NSString *)readCurrentFirmwareVersionFromHexFile
+{
+	if (mControl) {
+		std::string firmwareVersionString;
+		std::lock_guard<std::mutex> lock(*gCtrlMutex);
+		NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"main" ofType:@"hex"];
+		uint32_t returnValue = mControl->ExtractFwVersion(std::string([filePath cStringUsingEncoding:NSASCIIStringEncoding]), firmwareVersionString);
+		
+		if(returnValue != WyLight::NO_ERROR)
+		{
+			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
+			return nil;
+		}
+		else
+		{
+			return [NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding];
+		}
+	}
+	return nil;
 }
 
 @end

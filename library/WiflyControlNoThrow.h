@@ -385,6 +385,14 @@ class ControlNoThrow
 		 */
 		uint32_t FwStartBl(void);
 	
+		/* ------------------------- VERSION EXTRACT METHODE ------------------------- */
+		/**
+		 * Methode to extract the firmware version from a hex file
+		 * @return the version string from a given hex file
+		 */
+		uint32_t ExtractFwVersion(const std::string& pFilename, std::string& extractedFwVersion) const;
+
+	
 	private:
 		/**
 		 * Converts all exceptions from ::WiflyControl to the relating ::WiflyError
