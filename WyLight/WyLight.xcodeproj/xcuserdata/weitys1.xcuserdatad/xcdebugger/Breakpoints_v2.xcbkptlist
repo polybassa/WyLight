@@ -201,13 +201,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "WyLight/ViewController/NWBrightnessViewController.m"
-            timestampString = "402302241.830795"
+            filePath = "WyLight/ViewController/NWConnectionTBC.m"
+            timestampString = "402408753.728164"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "84"
             endingLineNumber = "84"
-            landmarkName = "-sendCurrentColor"
+            landmarkName = "-checkFirmwareVersion"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -218,12 +218,136 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../ios/WCWiflyControlWrapper.mm"
-            timestampString = "402302303.538039"
+            timestampString = "402406294.303927"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
-            landmarkName = "-connect"
+            startingLineNumber = "417"
+            endingLineNumber = "417"
+            landmarkName = "-enterBootloaderAsync:"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[WCWiflyControlWrapper enterBootloaderAsync:]"
+                  moduleName = "WyLight"
+                  urlString = "file://localhost/Users/weitys1/Dropbox/Wifly_Light/Software/ios/WCWiflyControlWrapper.mm"
+                  timestampString = "402408993.649733"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "417"
+                  endingLineNumber = "417"
+                  offsetFromSymbolStart = "130">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[WCWiflyControlWrapper enterBootloaderAsync:]"
+                  moduleName = "WyLight"
+                  urlString = "file://localhost/Users/weitys1/Dropbox/Wifly_Light/Software/ios/WCWiflyControlWrapper.mm"
+                  timestampString = "402408993.650007"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "417"
+                  endingLineNumber = "417"
+                  offsetFromSymbolStart = "154">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../ios/WCWiflyControlWrapper.mm"
+            timestampString = "402407773.010161"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "516"
+            endingLineNumber = "516"
+            landmarkName = "-leaveBootloader"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[WCWiflyControlWrapper leaveBootloader]"
+                  moduleName = "WyLight"
+                  urlString = "file://localhost/Users/weitys1/Dropbox/Wifly_Light/Software/ios/WCWiflyControlWrapper.mm"
+                  timestampString = "402408993.650329"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "516"
+                  endingLineNumber = "516"
+                  offsetFromSymbolStart = "50">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[WCWiflyControlWrapper leaveBootloader]"
+                  moduleName = "WyLight"
+                  urlString = "file://localhost/Users/weitys1/Dropbox/Wifly_Light/Software/ios/WCWiflyControlWrapper.mm"
+                  timestampString = "402408993.650628"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "516"
+                  endingLineNumber = "516"
+                  offsetFromSymbolStart = "74">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WyLight/ViewController/NWBrightnessViewController.m"
+            timestampString = "402409099.408667"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
+            landmarkName = "-sliderValueChanged:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WyLight/ViewController/NWBrightnessViewController.m"
+            timestampString = "402409100.880979"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "109"
+            endingLineNumber = "109"
+            landmarkName = "-stepperValueChanged:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WyLight/ViewController/NWColorSliderViewController.m"
+            timestampString = "402409130.42552"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
+            landmarkName = "-greenChanged:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

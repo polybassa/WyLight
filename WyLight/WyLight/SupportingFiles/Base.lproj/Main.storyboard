@@ -269,10 +269,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <slider autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yxr-JS-w4L">
+                            <slider opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yxr-JS-w4L">
                                 <rect key="frame" x="38" y="235" width="244" height="34"/>
                                 <connections>
-                                    <action selector="sliderValueChanged:" destination="BHs-hC-79E" eventType="valueChanged" id="EbH-pS-VbG"/>
+                                    <action selector="sliderValueChanged:" destination="BHs-hC-79E" eventType="valueChanged" id="BKd-vY-tlR"/>
                                 </connections>
                             </slider>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="🔅" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="27" translatesAutoresizingMaskIntoConstraints="NO" id="dGg-du-PNe">

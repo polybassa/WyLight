@@ -20,6 +20,7 @@
 #include "crc.h"
 #include "trace.h"
 #include "MaskBuffer.h"
+#include "Version.h"
 
 #include <algorithm>
 #include <sstream>
@@ -233,43 +234,12 @@ namespace WyLight {
 		BlInfo info;
 		BlReadInfo(info);
 		
-		uint8_t buffer[256];
+		uint8_t buffer[16];
 		std::fill_n(buffer, sizeof(buffer), 0xff);
 		
-		/* set first block to half of program memory */
-		uint32_t readblock = info.GetAddress() / 2;
-		uint32_t address = readblock;
-		const uint32_t byteblock = 32;
+		BlReadFlash(buffer, VERSION_STRING_ORIGIN, sizeof(buffer));
 		
-		while(readblock > byteblock)
-		{
-			Trace(ZONE_INFO,"READ@%x", address);
-			size_t bytesRead = BlReadFlash(buffer, address, byteblock);
-			bool flashEmpty = true;
-			
-			/* check if all read data contains no program code */
-			for(size_t i = 0; i < bytesRead; i++)
-				if(buffer[i] != 0xff) flashEmpty = false;
-			
-			readblock /= 2;
-			if(flashEmpty)
-				address -= readblock;
-			else
-				address += readblock;
-		}
-		
-		address -= readblock * 2;
-		size_t bytesRead = BlReadFlash(buffer, address, byteblock * 4);
-		
-		uint8_t *pString = (uint8_t*) &buffer[bytesRead];
-		while(*pString == 0xff)
-			if(pString-- < &buffer[0])
-				throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": version string corrupt1");
-		
-		if(pString - 7 < &buffer[0])
-			throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": version string corrupt2");
-		
-		return std::string((const char*)pString - 8, 7);
+		return std::string((const char*)buffer, strlen((const char*)buffer));
 	}
 
 	void Control::BlReadInfo(BlInfo& blInfo) const throw (ConnectionTimeout, FatalError)
@@ -831,20 +801,14 @@ namespace WyLight {
 		
 		intelhex hexConverter;
 		hexFile >> hexConverter;
-		unsigned long endAddress;
 		unsigned char buffer[16];
 		std::fill_n(buffer, sizeof(buffer), 0x00);
-		
-		if(!hexConverter.endAddress(&endAddress))
+				
+		for(unsigned int i = 0; i < sizeof(buffer); i++)
 		{
-			throw FatalError("can't read endAddress from hexConverter \n");
+			hexConverter.getData(&buffer[i], VERSION_STRING_ORIGIN + i);
 		}
-		endAddress -= 11;
-		for(unsigned int i = 0; i < 7; i++)
-		{
-			hexConverter.getData(&buffer[i], endAddress++);
-		}
-		return std::string((const char*)buffer, strlen((const char*)buffer));
+		return std::string((const char*)buffer, strlen((const char*)buffer)) + "\n";
 	}
 
 	Control& Control::operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)

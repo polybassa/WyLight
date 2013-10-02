@@ -24,8 +24,8 @@
  */
 - (void)configurateWlanModuleAsClientForNetwork:(NSString *)ssid password:(NSString *)password name:(NSString *)name;
 - (void)configurateWlanModuleAsSoftAP:(NSString *)ssid;
-- (void)configurateWlanModuleChannelAsync:(BOOL)async;
 - (void)rebootWlanModul;
+- (void)updateWlanModuleForFwVersion:(NSString *)version;
 
 // Firmware methods
 - (void)setColorDirect:(UIColor *)newColor;
@@ -44,10 +44,12 @@
 - (void)loopOn;
 - (void)loopOffAfterNumberOfRepeats:(uint8_t)repeats;
 - (void)clearScript;
-- (void)readRtcTime:(NSDate **)date;
+- (NSDate *)readRtcTime;
 - (void)writeRtcTime;
 - (NSString *)readCurrentFirmwareVersionFromFirmware;
-- (void)enterBootloader;
+- (void)enterBootloaderAsync:(BOOL)async;
+
+- (void)updateFirmware;
 
 // Bootloader methods
 - (NSString *)readCurrentFirmwareVersionFromBootloder;

@@ -41,19 +41,20 @@
 			return;
 		}
 		
-		[self.controlHandle setDelegate:self];
-		
-		NSLog(@"Set:%@, Current:%@", [self.controlHandle readCurrentFirmwareVersionFromHexFile], [self.controlHandle readCurrentFirmwareVersionFromFirmware]);
-		
-		for (id obj in self.viewControllers) {
-			if ([obj respondsToSelector:@selector(setControlHandle:)]) {
-				[obj performSelector:@selector(setControlHandle:) withObject:self.controlHandle];
-			}
-		}
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[connectingView dismissWithClickedButtonIndex:0 animated:YES];
+			[self checkFirmwareVersion];
 		});
 	});
+}
+
+- (void)finishConnectToEndpoint {
+	[self.controlHandle setDelegate:self];
+	for (id obj in self.viewControllers) {
+		if ([obj respondsToSelector:@selector(setControlHandle:)]) {
+			[obj performSelector:@selector(setControlHandle:) withObject:self.controlHandle];
+		}
+	}
 }
 
 - (void)disconnectFromEndpoint {
@@ -68,6 +69,32 @@
 			}
 		}
 	}
+}
+
+- (void)checkFirmwareVersion {
+	NSString *versionOfMainHex = [self.controlHandle readCurrentFirmwareVersionFromHexFile];
+	NSString *versionOfTarget = [self.controlHandle readCurrentFirmwareVersionFromFirmware];
+	NSLog(@"HexFile:%@, Target:%@", versionOfMainHex, versionOfTarget);
+	
+	if (![versionOfTarget isEqualToString:versionOfMainHex]) {
+		UIAlertView *updateAlertView = [[UIAlertView alloc] initWithTitle:@"Update required!" message:@"Please wait!" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+		[updateAlertView show];
+		
+		dispatch_async(dispatch_queue_create("update Target Firmware", NULL), ^{
+			[self.controlHandle updateFirmware];
+			[self.controlHandle updateWlanModuleForFwVersion:versionOfMainHex];
+			double delayInSeconds = 1.0;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				[updateAlertView dismissWithClickedButtonIndex:0 animated:YES];
+				[self finishConnectToEndpoint];
+			});
+		});
+	} else {
+		[self finishConnectToEndpoint];
+	}
+	
+	
 }
 
 - (void)viewWillAppear:(BOOL)animated {

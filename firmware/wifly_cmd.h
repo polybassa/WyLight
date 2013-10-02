@@ -171,7 +171,7 @@ struct __attribute__((__packed__)) cmd_get_fw_version {
 	friend std::ostream& operator<< (std::ostream& out, const cmd_get_fw_version& ref)
 	{
 		out << std::setfill('0');
-		return out << std::setw(3) << (int) ref.major << '.' << std::setw(3) << (int) ref.minor << std::endl;
+		return out << std::setw(3) << (int) ref.major << '.' << std::setw(3) << (int) ref.minor;
 	};
 #endif
 };

@@ -13,6 +13,7 @@
 #include <functional>
 #include "MessageQueue.h"
 #include <tuple>
+#include <list>
 
 typedef std::function<uint32_t(void)> ControlCommand;
 
@@ -179,25 +180,23 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 											1));
 }
 
-- (void)configurateWlanModuleChannelAsync:(BOOL)async
-{
-	if (async) {
-		mCmdQueue->push_front(std::make_tuple(false,
-										 std::bind(&WyLight::ControlNoThrow::ConfChangeWlanChannel, std::ref(*mControl)),
-										 0));
-	} else {
-		if (mControl) {
-			std::lock_guard<std::mutex> lock(*gCtrlMutex);
-			mControl->ConfChangeWlanChannel();
-		}
-	}
-}
-
 - (void)rebootWlanModul
 {
 	mCmdQueue->push_back(std::make_tuple(false,
 											std::bind(&WyLight::ControlNoThrow::ConfRebootWlanModule, std::ref(*mControl)),
 											1));
+}
+
+- (void)updateWlanModuleForFwVersion:(NSString *)version
+{
+	if ([version isEqualToString:@"000.005"]) {
+		std::list<std::string> commands = {
+			"set i p 11\r\n"
+		};
+		mCmdQueue->push_back(std::make_tuple(false,
+											 std::bind(&WyLight::ControlNoThrow::ConfSetParameters, std::ref(*mControl), commands),
+											 0));
+	}
 }
 
 #pragma mark - Firmware methods
@@ -353,7 +352,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 									0));
 }
 
-- (void)readRtcTime:(NSDate **)date
+- (NSDate *)readRtcTime
 {
 	if (mControl) {
 			
@@ -365,11 +364,13 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 		if(returnValue != WyLight::NO_ERROR)
 		{
 			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
-			*date = nil;
+			return nil;
 		}
-		else
-			*date = [NSDate dateWithTimeIntervalSince1970:mktime(&timeInfo)];
+		else {
+			return [NSDate dateWithTimeIntervalSince1970:mktime(&timeInfo)];
+		}
 	}
+	return nil;
 }
 
 - (void)writeRtcTime
@@ -410,12 +411,25 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 	return nil;
 }
 
-- (void)enterBootloader
+- (void)enterBootloaderAsync:(BOOL)async
 {
-	mCmdQueue->clear_and_push_front(std::make_tuple(false,
+	if (async) {
+		mCmdQueue->clear_and_push_front(std::make_tuple(false,
 										  std::bind(&WyLight::ControlNoThrow::FwStartBl, std::ref(*mControl)),
 										  0));
+	} else {
+		if (mControl) {
+			std::lock_guard<std::mutex> lock(*gCtrlMutex);
+			uint32_t returnValue = mControl->FwStartBl();
+			
+			if(returnValue != WyLight::NO_ERROR)
+			{
+				[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
+			}
+		}
+	}
 }
+
 
 #pragma mark - Bootloader methods
 
@@ -470,6 +484,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 	{
 		if (mControl) {
 			std::lock_guard<std::mutex> lock(*gCtrlMutex);
+			mCmdQueue->clear();
 			uint32_t returnValue = mControl->BlProgramFlash([filePath cStringUsingEncoding:NSASCIIStringEncoding]);
 		
 			if(returnValue != WyLight::NO_ERROR)
@@ -480,9 +495,25 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 	}
 }
 
+- (void)updateFirmware {
+	if (mControl) {
+		NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"main" ofType:@"hex"];
+		std::lock_guard<std::mutex> lock(*gCtrlMutex);
+		
+		uint32_t returnValue1 = mControl->FwStartBl();
+		uint32_t returnValue2 =  mControl->BlProgramFlash([filePath cStringUsingEncoding:NSASCIIStringEncoding]);
+		uint32_t returnValue3 = mControl->BlRunApp();
+		
+		if(returnValue1 != WyLight::NO_ERROR || returnValue2 != WyLight::NO_ERROR || returnValue3 != WyLight::NO_ERROR)
+		{
+			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue1 | returnValue2 | returnValue3]];
+		}
+	}
+}
+
 - (void)leaveBootloader
 {
-	mCmdQueue->push_back(std::make_tuple(false,
+	mCmdQueue->clear_and_push_front(std::make_tuple(false,
 											std::bind(&WyLight::ControlNoThrow::BlRunApp, std::ref(*mControl)),
 											0));
 }
