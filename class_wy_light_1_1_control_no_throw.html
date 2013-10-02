@@ -135,6 +135,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1aa980bed9ae47bdab43f5987a41681d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9dd890f20043ddd80ee529999bfcd21f"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control_no_throw.html#a9dd890f20043ddd80ee529999bfcd21f">ConfChangeWlanChannel</a> (void) const </td></tr>
 <tr class="separator:a9dd890f20043ddd80ee529999bfcd21f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a257c97cc10c466af0b86d930ebb8acb4"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control_no_throw.html#a257c97cc10c466af0b86d930ebb8acb4">ConfSetParameters</a> (std::list&lt; std::string &gt; commands) const </td></tr>
+<tr class="separator:a257c97cc10c466af0b86d930ebb8acb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affad92c25b64a0206b25af3fc538c4d3"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control_no_throw.html#affad92c25b64a0206b25af3fc538c4d3">FwClearScript</a> (void)</td></tr>
 <tr class="separator:affad92c25b64a0206b25af3fc538c4d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af206ee9a6c7333d0ef38168c978c72c7"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control_no_throw.html#af206ee9a6c7333d0ef38168c978c72c7">FwGetCycletime</a> (std::string &amp;output)</td></tr>
@@ -161,6 +163,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a124a9c7b09966ce9f717b1058ab0ac54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae94183c86828b1a223c46fec3c04c285"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control_no_throw.html#ae94183c86828b1a223c46fec3c04c285">FwStartBl</a> (void)</td></tr>
 <tr class="separator:ae94183c86828b1a223c46fec3c04c285"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a166b7620ec6c4f7e9877660eb5ebe97c"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control_no_throw.html#a166b7620ec6c4f7e9877660eb5ebe97c">ExtractFwVersion</a> (const std::string &amp;pFilename, std::string &amp;extractedFwVersion) const </td></tr>
+<tr class="separator:a166b7620ec6c4f7e9877660eb5ebe97c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to communicate with a Wifly_Light Hardware. </p>
@@ -667,6 +671,50 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a257c97cc10c466af0b86d930ebb8acb4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t WyLight::ControlNoThrow::ConfSetParameters </td>
+          <td>(</td>
+          <td class="paramtype">std::list&lt; std::string &gt;&#160;</td>
+          <td class="paramname"><em>commands</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a166b7620ec6c4f7e9877660eb5ebe97c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t WyLight::ControlNoThrow::ExtractFwVersion </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>pFilename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string &amp;&#160;</td>
+          <td class="paramname"><em>extractedFwVersion</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Methode to extract the firmware version from a hex file </p>
+<dl class="section return"><dt>Returns</dt><dd>the version string from a given hex file </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="affad92c25b64a0206b25af3fc538c4d3"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1082,7 +1130,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Oct 1 2013 10:01:02 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Oct 2 2013 13:02:23 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3
 </small></address>

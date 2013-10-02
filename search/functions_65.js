@@ -7,5 +7,5 @@ var searchData=
   ['endaddress',['endAddress',['../classintelhex.html#a9b159bea81eb832e37f6cf88a57ca659',1,'intelhex']]],
   ['endofdata',['endOfData',['../classintelhex.html#aff915b320f5a4c2d84340fa57c99499c',1,'intelhex']]],
   ['endpoint',['Endpoint',['../class_wy_light_1_1_endpoint.html#ab63ad1030b33a946e6874e9a95242652',1,'WyLight::Endpoint::Endpoint(sockaddr_storage &amp;addr, const size_t size, uint16_t port, std::string devId=&quot;&quot;)'],['../class_wy_light_1_1_endpoint.html#ad6953673c9ac61ebbedb32fac5b580ed',1,'WyLight::Endpoint::Endpoint(uint32_t ip=0, uint16_t port=0, uint8_t score=0, std::string devId=&quot;&quot;)']]],
-  ['extractfwversion',['ExtractFwVersion',['../class_wy_light_1_1_control.html#a09d8a865f5557d584032cf088e32ade0',1,'WyLight::Control']]]
+  ['extractfwversion',['ExtractFwVersion',['../class_wy_light_1_1_control.html#a09d8a865f5557d584032cf088e32ade0',1,'WyLight::Control::ExtractFwVersion()'],['../class_wy_light_1_1_control_no_throw.html#a166b7620ec6c4f7e9877660eb5ebe97c',1,'WyLight::ControlNoThrow::ExtractFwVersion()']]]
 ];
