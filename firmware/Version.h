@@ -22,8 +22,10 @@
 #include "wifly_cmd.h"
 #include "VersionFile.h"
 
+#define VERSION_STRING_ORIGIN 0x3000
+#warning "Version String at 0x3000!!! check for overlapping code"
 extern struct cmd_get_fw_version g_Version;
-extern const char verStr[];
+const char verStr[] = VER_STRING;
 
 void Version_Init(void);
 

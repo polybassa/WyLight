@@ -240,6 +240,10 @@ void InitAll()
 #include "trace.c"
 #include "Flash.c"
 #include "Version.c"
-// MUST be at the last position, that the version-string is written on the end of the hexcode
-const char verStr[] = VER_STRING;
+
+// MUST be at the last position to prevent for overlapping code
+#pragma cdata[VERSION_STRING_ORIGIN]
+#pragma cdata.version = VER_STRING
+#pragma cdata.CDATA_END
+#pragma origin CDATA_END
 #endif /* #ifdef __CC8E__ */

@@ -1,6 +1,6 @@
 #ifndef __VERFILE_H__
 #define __VERFILE_H__
 
-#define VER_STRING "000.004"
+#define VER_STRING "000.005"
 
 #endif
