@@ -227,6 +227,12 @@ class Control
 		 * @return false, in case of an error
 		 */
 		bool ConfChangeWlanChannel(void) const;
+	
+		/**
+		 *
+		 */
+		bool ConfSetParameters(std::list<std::string> commands) const;
+
 
 		
 /* -------------------------- FIRMWARE METHODES -------------------------- */		

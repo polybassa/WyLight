@@ -140,6 +140,8 @@ bool Control::ConfModuleAsSoftAP(const std::string& accesspointName) const {retu
 
 bool Control::ConfModuleForWlan(const std::string &phrase, const std::string &ssid, const std::string& name) const {return true; }
 
+bool Control::ConfSetParameters(std::list<std::string> commands) const {return true; }
+
 std::string Control::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
 
 void Control::FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull){throwExceptions(); }
@@ -147,6 +149,8 @@ void Control::FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, Scri
 std::string Control::FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
 
 std::string Control::FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
+
+std::string Control::ExtractFwVersion(const std::string& pFilename) const {throwExceptions(); return ""; }
 
 Control& Control::operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {

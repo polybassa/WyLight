@@ -227,6 +227,13 @@ class ControlNoThrow
 			<BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
 		 uint32_t ConfChangeWlanChannel(void) const;
+	
+	
+		 /**
+		  *
+		  */
+		 uint32_t ConfSetParameters(std::list<std::string> commands) const;
+
 		
 /* -------------------------- FIRMWARE METHODES -------------------------- */
 		/**

@@ -30,6 +30,7 @@
 #include <algorithm>
 #include <ostream>
 #include <stdint.h>
+#include <iomanip>
 #endif
 
 //*********************** ENUMERATIONS *********************************************
@@ -169,7 +170,8 @@ struct __attribute__((__packed__)) cmd_get_fw_version {
 #ifdef __cplusplus
 	friend std::ostream& operator<< (std::ostream& out, const cmd_get_fw_version& ref)
 	{
-		return out << (int) ref.major << '.' << (int) ref.minor << '\n';
+		out << std::setfill('0');
+		return out << std::setw(3) << (int) ref.major << '.' << std::setw(3) << (int) ref.minor << std::endl;
 	};
 #endif
 };
