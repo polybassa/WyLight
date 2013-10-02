@@ -74,7 +74,7 @@
 - (void)checkFirmwareVersion {
 	NSString *versionOfMainHex = [self.controlHandle readCurrentFirmwareVersionFromHexFile];
 	NSString *versionOfTarget = [self.controlHandle readCurrentFirmwareVersionFromFirmware];
-	NSLog(@"HexFile:%@, Target:%@", versionOfMainHex, versionOfTarget);
+	NSLog(@"\nHexFile:%@Target:%@", versionOfMainHex, versionOfTarget);
 	
 	if (![versionOfTarget isEqualToString:versionOfMainHex]) {
 		UIAlertView *updateAlertView = [[UIAlertView alloc] initWithTitle:@"Update required!" message:@"Please wait!" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];

@@ -25,6 +25,7 @@
 - (void) viewDidLoad {
 	[super viewDidLoad];
 	self.brightnessSlider.value = self.brightnessStepper.value;
+	[self.brightnessSlider setContinuous:YES];
 }
 
 #define SELECTED_COLOR_KEY CURRENT_COLOR_KEY
