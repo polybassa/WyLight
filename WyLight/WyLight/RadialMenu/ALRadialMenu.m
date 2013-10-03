@@ -20,7 +20,7 @@
 		return;
 	}
 
-	int itemCount = [self.delegate numberOfItemsInRadialMenu:self];
+	long itemCount = [self.delegate numberOfItemsInRadialMenu:self];
 	if (itemCount == 0) {
 		//without any items to display there's nothing todo
 		return;
@@ -29,19 +29,19 @@
 	NSMutableArray *mutablePopups = [[NSMutableArray alloc] init];
 
 	
-	int arc = [self.delegate arcSizeForRadialMenu:self];
+	long arc = [self.delegate arcSizeForRadialMenu:self];
 	if (arc == 0) {
 		NSLog(@"default arc");
 		arc = 90;
 	}
 	
-	int radius = [self.delegate arcRadiusForRadialMenu:self];
+	long radius = [self.delegate arcRadiusForRadialMenu:self];
 	if (radius < 1) {
 		NSLog(@"default radius");
 		radius = 80;
 	}
 	
-	int start = 0;
+	long start = 0;
 	if ([self.delegate respondsToSelector:@selector(arcStartForRadialMenu:)]) {
 		start = [self.delegate arcStartForRadialMenu:self];
 	}

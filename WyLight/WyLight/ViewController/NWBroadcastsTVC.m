@@ -9,6 +9,7 @@
 #import "NWBroadcastsTVC.h"
 #import "WCEndpoint.h"
 #import "WCBroadcastReceiverWrapper.h"
+#import "NWConnectionTBC.h"
 
 @interface NWBroadcastsTVC ()
 
