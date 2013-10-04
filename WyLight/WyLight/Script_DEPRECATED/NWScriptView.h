@@ -12,8 +12,7 @@
 
 @protocol NWScriptViewDataSource <NSObject>
 
-- (UIView *)scriptView:(NWScriptView *)view objectViewForIndex:(NSUInteger)index;
-- (UIView *)scriptView:(NWScriptView *)view timeInfoViewForIndex:(NSUInteger)index;
+- (UIView *)scriptView:(NWScriptView *)view cellViewForIndex:(NSUInteger)index;
 - (NSUInteger)numberOfObjectsInScriptView:(NWScriptView *)view;
 - (CGFloat)scriptView:(NWScriptView *)view widthOfObjectAtIndex:(NSUInteger)index;
 
@@ -22,10 +21,8 @@
 @interface NWScriptView : UIScrollView
 
 @property (nonatomic, weak) id<NWScriptViewDataSource> dataSource;
-@property (nonatomic) CGFloat timeScaleFactor;
 @property (nonatomic) CGFloat scriptObjectSpacing;
 
 - (void)reloadData;
 - (void)fixLocationsOfSubviews;
-- (void)fixLocationOfTimeInfoView:(NSInteger)tag;
 @end

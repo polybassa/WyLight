@@ -28,7 +28,7 @@
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleHeight;
         self.clipsToBounds = YES;
         self.layer.opacity = 1;
-		self.backgroundColor = [UIColor whiteColor];
+		self.backgroundColor = [UIColor blackColor];
 	}
     return self;
 }

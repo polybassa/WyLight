@@ -81,7 +81,7 @@
 	
 	CGRect textBounds;
 	textBounds.size = [text size];
-	textBounds.origin = CGPointMake(rect.origin.x + rect.size.width / 2 - [text size].width / 2, rect.origin.y);
+	textBounds.origin = CGPointMake(rect.origin.x + rect.size.width / 2 - [text size].width / 2, rect.origin.y + rect.size.height / 6);
 	
 	[text drawInRect:textBounds];
 }

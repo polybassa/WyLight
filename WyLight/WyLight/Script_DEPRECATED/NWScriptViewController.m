@@ -10,13 +10,12 @@
 #import "NWScript.h"
 #import "NWScriptView.h"
 #import "NWComplexScriptCommandObject.h"
-#import "NWScriptObjectControl.h"
 #import "NWEditComplexScriptObjectViewController.h"
-#import "NWTimeInfoView.h"
+#import "NWScriptCellView.h"
 #import "NWAddScriptObjectView.h"
 #import "WCWiflyControlWrapper.h"
 
-@interface NWScriptViewController () <NWScriptViewDataSource, NWScriptObjectControlDelegate, UIScrollViewDelegate>
+@interface NWScriptViewController () <NWScriptViewDataSource, NWScriptCellViewDelegate, UIScrollViewDelegate>
 
 @property (strong, nonatomic) NWScript *script;
 @property (strong, nonatomic) NWScriptView *scriptView;
@@ -41,8 +40,11 @@
 	_isDeletionModeActive = isDeletionModeActive;
 	if (isDeletionModeActive) {
 		for (UIView *control in self.scriptView.subviews) {
-			if ([control isKindOfClass:[NWScriptObjectControl class]]) {
-				((NWScriptObjectControl *)control).quivering = YES;
+			if ([control isKindOfClass:[NWScriptCellView class]]) {
+				NWScriptCellView *cell = (NWScriptCellView *)control;
+				[UIView animateWithDuration:0.4 animations:^{
+					cell.scriptObjectView.quivering = YES;
+				}];
 			}
 			if ([control isKindOfClass:[NWAddScriptObjectView class]]) {
 				((NWAddScriptObjectView *)control).button.enabled = NO;
@@ -50,8 +52,11 @@
 		}
 	} else {
 		for (UIView *control in self.scriptView.subviews) {
-			if ([control isKindOfClass:[NWScriptObjectControl class]]) {
-				((NWScriptObjectControl *)control).quivering = NO;
+			if ([control isKindOfClass:[NWScriptCellView class]]) {
+				NWScriptCellView *cell = (NWScriptCellView *)control;
+				[UIView animateWithDuration:0.4 animations:^{
+					cell.scriptObjectView.quivering = NO;
+				}];
 			}
 			if ([control isKindOfClass:[NWAddScriptObjectView class]]) {
 				((NWAddScriptObjectView *)control).button.enabled = YES;
@@ -158,7 +163,7 @@
 #pragma mark - GESTURE RECOGNIZER CALLBACKS
 - (void)setObjectForEdit:(UITapGestureRecognizer *)gesture {
 	if (self.isDeletionModeActive) {
-		if ([gesture.view isKindOfClass:[NWScriptObjectControl class]]) {
+		if ([gesture.view isKindOfClass:[NWScriptCellView class]]) {
 			self.isDeletionModeActive = NO;
 		}
 	} else {
@@ -170,7 +175,7 @@
 - (void)activateDeletionMode:(UILongPressGestureRecognizer *)gesture {
     if (gesture.state == UIGestureRecognizerStateBegan)
     {
-		if ([gesture.view isKindOfClass:[NWScriptObjectControl class]] && self.script.scriptArray.count > 1) {
+		if ([gesture.view isKindOfClass:[NWScriptCellView class]] && self.script.scriptArray.count > 1) {
 			self.isDeletionModeActive = YES;
 		}
     }
@@ -179,7 +184,12 @@
 - (void)pinchOnScriptView:(UIPinchGestureRecognizer *)gesture {
 	if (gesture.state == UIGestureRecognizerStateChanged) {
 		self.timeScaleFactor *= gesture.scale;
-		self.scriptView.timeScaleFactor = self.timeScaleFactor;
+		for (NWScriptCellView *cell in self.scriptView.subviews) {
+			if ([cell isKindOfClass:[NWScriptCellView class]]) {
+				cell.timeInfoView.timeScaleFactor = self.timeScaleFactor;
+			}
+		}
+		[self.scriptView fixLocationsOfSubviews];
 		gesture.scale = 1;
 	}
 }
@@ -193,40 +203,25 @@
 
 #pragma mark - BUTTON CALLBACKS
 - (void)deleteScriptObject:(UIView *)object {
-	if ([object isKindOfClass:[NWScriptObjectControl class]]) {
+	if ([object isKindOfClass:[NWScriptCellView class]]) {
 		if (self.script.scriptArray.count <= 1) {
 			self.isDeletionModeActive = NO;
 			return;
 		}
-		NWScriptObjectControl *objectToDelete = (NWScriptObjectControl *)object;
+		NWScriptCellView *cellViewToDelete = (NWScriptCellView *)object;
 		
-		NWTimeInfoView *timeViewToDelete;
-		for (UIView *subview in self.scriptView.subviews) {
-			if ((subview.tag == objectToDelete.tag) && [subview isKindOfClass:[NWTimeInfoView class]]) {
-				timeViewToDelete = (NWTimeInfoView *)subview;
-			}
-		}
 		//ausblenden
 		[UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
 			
-			objectToDelete.alpha = 0.0;
-			//objectToDelete.deleteButton.alpha = 0.0;
-			timeViewToDelete.alpha = 0.0;
-			
+			cellViewToDelete.alpha = 0.0;
 		} completion:^(BOOL finished) {
 			
 			//tags anpassen um danach die Positionen richtig zu berechnen
-			[self.script removeObjectAtIndex:objectToDelete.tag];
-			[objectToDelete removeFromSuperview];
-			[timeViewToDelete removeFromSuperview];
+			[self.script removeObjectAtIndex:cellViewToDelete.tag];
+			[cellViewToDelete removeFromSuperview];
 			for (NWScriptObjectControl *ctrl in self.scriptView.subviews) {
-				if ([ctrl isKindOfClass:[NWScriptObjectControl class]]) {
-					if (ctrl.tag > objectToDelete.tag) {
-						ctrl.tag--;
-					}
-				}
-				if ([ctrl isKindOfClass:[NWTimeInfoView class]]) {
-					if (ctrl.tag > objectToDelete.tag) {
+				if ([ctrl isKindOfClass:[NWScriptCellView class]]) {
+					if (ctrl.tag > cellViewToDelete.tag) {
 						ctrl.tag--;
 					}
 				}
@@ -244,6 +239,7 @@
 }
 
 - (void)addScriptCommand:(UIButton *)sender {
+
 	//insert new command in model
 	NWComplexScriptCommandObject *commandToAdd = [[self.script.scriptArray lastObject] copy];
 	[self.script addObject:commandToAdd];
@@ -257,13 +253,16 @@
 	}
 	
 	//get new view for the new command
-	UIView *viewToAdd = [self scriptView:self.scriptView objectViewForIndex:addButtonView.tag];
+	UIView *viewToAdd = [self scriptView:self.scriptView cellViewForIndex:addButtonView.tag];
 	viewToAdd.alpha = 0.0;
+	viewToAdd.frame = CGRectMake(
+								 addButtonView.frame.origin.x,
+								 addButtonView.frame.origin.y,
+								 [self scriptView:self.scriptView widthOfObjectAtIndex:viewToAdd.tag],
+								 addButtonView.frame.size.height);
+
 	[self.scriptView addSubview:viewToAdd];
-	
-	UIView *timeInfoViewToAdd = [self scriptView:self.scriptView timeInfoViewForIndex:addButtonView.tag];
-	[self.scriptView addSubview:timeInfoViewToAdd];
-	
+		
 	//change position of the addButton via tag;
 	CGRect newFrame = CGRectMake(
 								 addButtonView.frame.origin.x + commandToAdd.duration * self.timeScaleFactor + self.scriptView.scriptObjectSpacing,
@@ -280,13 +279,10 @@
 		//Farben nachladen
 		[UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
 			viewToAdd.alpha = 1.0;
-			[self.scriptView fixLocationOfTimeInfoView:viewToAdd.tag];
 		} completion:^(BOOL finished) {
 			[self.scriptView reloadData];
 		}];
 	}];
-
-	
 }
 
 - (void)sendScript {
@@ -304,28 +300,19 @@
 }
 
 #pragma mark - SCRIPT VIEW DATASOURCE
-- (CGFloat)scriptView:(NWScriptView *)view widthOfObjectAtIndex:(NSUInteger)index {
+- (UIView *)scriptView:(NWScriptView *)view cellViewForIndex:(NSUInteger)index {
 	if (view == self.scriptView) {
 		if (index < self.script.scriptArray.count) {
-			return ((NWComplexScriptCommandObject *)self.script.scriptArray[index]).duration * self.timeScaleFactor;
-		}
-	}
-	return 0;
-}
-
-- (UIView *)scriptView:(NWScriptView *)view objectViewForIndex:(NSUInteger)index {
-	if (view == self.scriptView) {
-		if (index < self.script.scriptArray.count) {
-			NWScriptObjectControl *tempView = [[NWScriptObjectControl alloc]initWithFrame:CGRectZero];
-			tempView.endColors = ((NWComplexScriptCommandObject *)self.script.scriptArray[index]).colors;
+			NWScriptCellView *tempView = [[NWScriptCellView alloc]initWithFrame:CGRectZero];
+			tempView.scriptObjectView.endColors = ((NWComplexScriptCommandObject *)self.script.scriptArray[index]).colors;
 			if (((NWComplexScriptCommandObject *)self.script.scriptArray[index]).prev) {
-				tempView.startColors = ((NWComplexScriptCommandObject *)self.script.scriptArray[index]).prev.colors;
+				tempView.scriptObjectView.startColors = ((NWComplexScriptCommandObject *)self.script.scriptArray[index]).prev.colors;
 			}
-			tempView.cornerRadius = 5;
+			tempView.scriptObjectView.cornerRadius = 5;
 			tempView.delegate = self;
 			tempView.tag = index;
-			tempView.quivering = self.isDeletionModeActive;
-			
+			tempView.scriptObjectView.quivering = self.isDeletionModeActive;
+						
 			UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(setObjectForEdit:)];
 			tap.numberOfTapsRequired = 1;
 			[tempView addGestureRecognizer:tap];
@@ -339,9 +326,6 @@
 			UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeUpOnScriptObject:)];
 			swipe.direction = UISwipeGestureRecognizerDirectionUp;
 			[tempView addGestureRecognizer:swipe];
-			
-			//[tempView.deleteButton addTarget:self action:@selector(deleteScriptObject:) forControlEvents:UIControlEventTouchUpInside];
-			
 			return tempView;
 		} else {
 			NWAddScriptObjectView *tempView = [[NWAddScriptObjectView alloc]initWithFrame:CGRectZero];
@@ -350,11 +334,21 @@
 			tempView.scriptObjectView.cornerRadius = 5;
 			tempView.tag = index;
 			tempView.button.enabled = !self.isDeletionModeActive;
-
+			
 			return tempView;
 		}
 	}
 	return nil;
+
+}
+
+- (CGFloat)scriptView:(NWScriptView *)view widthOfObjectAtIndex:(NSUInteger)index {
+	if (view == self.scriptView) {
+		if (index < self.script.scriptArray.count) {
+			return ((NWComplexScriptCommandObject *)self.script.scriptArray[index]).duration * self.timeScaleFactor;
+		}
+	}
+	return 0;
 }
 
 - (NSUInteger)numberOfObjectsInScriptView:(NWScriptView *)view {
@@ -364,21 +358,10 @@
 	return 0;
 }
 
-- (UIView *)scriptView:(NWScriptView *)view timeInfoViewForIndex:(NSUInteger)index {
-	if (view == self.scriptView) {
-		NWTimeInfoView *timeInfoView = [[NWTimeInfoView alloc] initWithFrame:CGRectZero];
-		timeInfoView.timeScaleFactor = self.timeScaleFactor;
-		timeInfoView.tag = index;
-		return timeInfoView;
-	}
-	return nil;
-}
-
 #pragma mark - SCRIPTOBJECTCONTROL DELEGATE
-- (void)scriptObjectView:(NWScriptObjectView *)view changedWidthTo:(CGFloat)width deltaOfChange:(CGFloat)delta {
-	[self.scriptView fixLocationOfTimeInfoView:view.tag];
-	for (NWScriptObjectView *subview in self.scriptView.subviews) {
-		if ([subview isKindOfClass:[NWScriptObjectView class]]) {
+- (void)scriptCellView:(NWScriptCellView *)view changedWidthTo:(CGFloat)width deltaOfChange:(CGFloat)delta {
+	for (NWScriptCellView *subview in self.scriptView.subviews) {
+		if ([subview isKindOfClass:[NWScriptCellView class]]) {
 			if (subview.tag <= view.tag) {
 				continue;
 			}
@@ -388,7 +371,6 @@
 			CGFloat height = subview.frame.size.height;
 			
 			subview.frame = CGRectMake(x, y, width, height);
-			[self.scriptView fixLocationOfTimeInfoView:subview.tag];
 		}
 		if ([subview isKindOfClass:[NWAddScriptObjectView class]]) {
 			if (subview.tag <= view.tag) {
@@ -404,7 +386,7 @@
 	}
 }
 
-- (void)scriptObjectView:(NWScriptObjectView *)view finishedWidthChange:(CGFloat)width {
+- (void)scriptCellView:(NWScriptCellView *)view finishedWidthChange:(CGFloat)width {
 	NSUInteger index = view.tag;
 	uint16_t duration = width / self.timeScaleFactor;
 	((NWComplexScriptCommandObject *)self.script.scriptArray[index]).duration = duration;

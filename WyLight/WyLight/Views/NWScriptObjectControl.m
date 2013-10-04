@@ -9,37 +9,36 @@
 #import "NWScriptObjectControl.h"
 #import <QuartzCore/QuartzCore.h>
 
+@interface NWScriptObjectControl ()
+
+@property (nonatomic) CGRect originalFrame;
+
+@end
+
 @implementation NWScriptObjectControl
 
 - (void)setQuivering:(BOOL)quivering {
 	
 	if (quivering && (quivering != _quivering)) {
 		[self startQuivering];
-		self.layer.frame = CGRectInset(self.frame, self.frame.size.width * 0.2, 20);
 	} else if (!quivering && (quivering != _quivering)) {
 		[self stopQuivering];
-		self.layer.frame = CGRectInset(self.frame, self.frame.size.width * -0.2, -20);
 	}
 	if (quivering != _quivering) {
 		_quivering = quivering;
+		self.frame = self.frame;
+		if (quivering == NO) {
+			self.frame = self.originalFrame;
+		}
 	}
 }
 
-- (void)pinchWidth:(UIPinchGestureRecognizer *)gesture {
-	if (gesture.state == UIGestureRecognizerStateChanged) {
-		CGFloat x = self.frame.origin.x;
-		CGFloat y = self.frame.origin.y;
-		CGFloat oldWidth = self.frame.size.width;
-		CGFloat width = self.frame.size.width * gesture.scale;
-		CGFloat height = self.frame.size.height;
-		
-		[self.delegate scriptObjectView:self changedWidthTo:width deltaOfChange:width - oldWidth];
-		self.frame = CGRectMake(x, y, width, height);
-		gesture.scale = 1;
-	}
-	if (gesture.state == UIGestureRecognizerStateEnded) {
-		gesture.scale = 1;
-		[self.delegate scriptObjectView:self finishedWidthChange:self.frame.size.width];
+- (void)setFrame:(CGRect)frame {
+	if (self.quivering) {
+		self.originalFrame = frame;
+		super.frame = CGRectInset(frame, frame.size.width * 0.1, 10);
+	} else {
+		super.frame = frame;
 	}
 }
 
