@@ -237,6 +237,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="KlN-eM-Wc3">
+                            <color key="tintColor" red="0.0" green="0.47843140363693237" blue="1" alpha="1" colorSpace="deviceRGB"/>
                             <connections>
                                 <action selector="configButtonPressed:" destination="AT6-gJ-Zuo" id="Gfv-Ox-rw6"/>
                             </connections>

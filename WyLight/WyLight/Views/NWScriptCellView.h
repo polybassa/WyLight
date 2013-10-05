@@ -10,7 +10,7 @@
 #import "NWTimeInfoView.h"
 #import "NWScriptObjectControl.h"
 
-#define TIMEINFOVIEW_HEIGTH_FACTOR 5
+#define TIMEINFOVIEW_HEIGTH_FACTOR 6
 
 @protocol NWScriptCellViewDelegate;
 

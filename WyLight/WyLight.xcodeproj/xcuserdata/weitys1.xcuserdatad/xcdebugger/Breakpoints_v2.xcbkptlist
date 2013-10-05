@@ -73,7 +73,7 @@
                   symbolName = "-[WCWiflyControlWrapper enterBootloaderAsync:]"
                   moduleName = "WyLight"
                   urlString = "file://localhost/Users/weitys1/Dropbox/Wifly_Light/Software/ios/WCWiflyControlWrapper.mm"
-                  timestampString = "402596512.451993"
+                  timestampString = "402655474.284125"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "417"
@@ -87,7 +87,7 @@
                   symbolName = "-[WCWiflyControlWrapper enterBootloaderAsync:]"
                   moduleName = "WyLight"
                   urlString = "file://localhost/Users/weitys1/Dropbox/Wifly_Light/Software/ios/WCWiflyControlWrapper.mm"
-                  timestampString = "402596512.45223"
+                  timestampString = "402655474.284407"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "417"
@@ -119,7 +119,7 @@
                   symbolName = "-[WCWiflyControlWrapper leaveBootloader]"
                   moduleName = "WyLight"
                   urlString = "file://localhost/Users/weitys1/Dropbox/Wifly_Light/Software/ios/WCWiflyControlWrapper.mm"
-                  timestampString = "402596512.452495"
+                  timestampString = "402655474.284695"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "516"
@@ -133,7 +133,7 @@
                   symbolName = "-[WCWiflyControlWrapper leaveBootloader]"
                   moduleName = "WyLight"
                   urlString = "file://localhost/Users/weitys1/Dropbox/Wifly_Light/Software/ios/WCWiflyControlWrapper.mm"
-                  timestampString = "402596512.452737"
+                  timestampString = "402655474.284967"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "516"
@@ -213,44 +213,12 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "WyLight/Script_DEPRECATED/NWScriptView.m"
-            timestampString = "402595450.887714"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
-            landmarkName = "-fixLocationsOfSubviews"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WyLight/Script_DEPRECATED/NWScriptView.m"
-            timestampString = "402595450.887714"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
-            landmarkName = "-fixLocationsOfSubviews"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "WyLight/Script_DEPRECATED/NWScriptViewController.m"
-            timestampString = "402598275.032072"
+            timestampString = "402656671.215631"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
             landmarkName = "-setIsDeletionModeActive:"
             landmarkType = "5">
             <Locations>
@@ -261,11 +229,11 @@
                   symbolName = "-[NWScriptViewController setIsDeletionModeActive:]"
                   moduleName = "WyLight"
                   urlString = "file://localhost/Users/weitys1/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script_DEPRECATED/NWScriptViewController.m"
-                  timestampString = "402596512.45456"
+                  timestampString = "402655474.286462"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "54"
-                  endingLineNumber = "54"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
                   offsetFromSymbolStart = "942">
                </Location>
                <Location
@@ -275,11 +243,11 @@
                   symbolName = "-[NWScriptViewController setIsDeletionModeActive:]"
                   moduleName = "WyLight"
                   urlString = "file://localhost/Users/weitys1/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script_DEPRECATED/NWScriptViewController.m"
-                  timestampString = "402596512.454928"
+                  timestampString = "402655474.286738"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "54"
-                  endingLineNumber = "54"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
                   offsetFromSymbolStart = "1760">
                </Location>
             </Locations>
@@ -292,12 +260,108 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WyLight/Script_DEPRECATED/NWScriptViewController.m"
-            timestampString = "402598275.032072"
+            timestampString = "402656986.645361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "256"
-            endingLineNumber = "256"
+            startingLineNumber = "320"
+            endingLineNumber = "320"
             landmarkName = "-addScriptCommand:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WyLight/Script_DEPRECATED/NWScriptViewController.m"
+            timestampString = "402656986.645361"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "259"
+            endingLineNumber = "259"
+            landmarkName = "-zoomInButtonPressed"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WyLight/Script_DEPRECATED/NWScriptViewController.m"
+            timestampString = "402656986.645361"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "265"
+            endingLineNumber = "265"
+            landmarkName = "-zoomOutButtonPressed"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WyLight/Script_DEPRECATED/NWScriptViewController.m"
+            timestampString = "402656830.960757"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "167"
+            endingLineNumber = "167"
+            landmarkName = "-setup"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WyLight/Script_DEPRECATED/NWScriptViewController.m"
+            timestampString = "402656465.304084"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "-setTimeScaleFactor:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WyLight/Script_DEPRECATED/NWScriptViewController.m"
+            timestampString = "402656986.645361"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "413"
+            endingLineNumber = "413"
+            landmarkName = "-scriptView:widthOfObjectAtIndex:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WyLight/Views/NWTimeInfoView.m"
+            timestampString = "402655420.982243"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "-setTimeScaleFactor:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

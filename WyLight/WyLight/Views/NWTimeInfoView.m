@@ -83,6 +83,8 @@
 	textBounds.size = [text size];
 	textBounds.origin = CGPointMake(rect.origin.x + rect.size.width / 2 - [text size].width / 2, rect.origin.y + rect.size.height / 6);
 	
+	[[UIColor whiteColor] setFill];
+	CGContextFillRect(context, CGRectInset(textBounds, -5, 0));
 	[text drawInRect:textBounds];
 }
 
