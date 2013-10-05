@@ -44,7 +44,7 @@
 }
 
 - (void)setColorsAnimatedWithDuration:(NSTimeInterval)duration startColor:(UIColor *)startColor endColor:(UIColor *)endColor {
-	if ( (![startColor isEqual:self.startColor]) && (![endColor isEqual:self.endColor]) ) {
+	if ( !([startColor isEqual:self.startColor] && [endColor isEqual:self.endColor] )) {
 		NWGradientView *tempView = [[NWGradientView alloc] initWithFrame:self.frame];
 		tempView.endColor = self.endColor;
 		tempView.startColor = self.startColor;

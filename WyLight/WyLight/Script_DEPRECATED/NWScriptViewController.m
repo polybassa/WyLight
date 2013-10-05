@@ -281,9 +281,24 @@
 		}
 		NWScriptCellView *cellViewToDelete = (NWScriptCellView *)object;
 		
+		//Farbübergang zu den neuen Farben
+		NWComplexScriptCommandObject *commandToDelete = [self.script.scriptArray objectAtIndex:cellViewToDelete.tag];
+		NSArray *prevEndColors = [commandToDelete.prev.colors copy];
+		NWScriptCellView *nextCell;
+		for (NWScriptCellView *cell in self.scriptView.subviews) {
+			if ([cell isKindOfClass:[NWScriptCellView class]]) {
+				if (cell.tag == cellViewToDelete.tag + 1) {
+					nextCell = cell;
+					break;
+				}
+			}
+		}
+		
+		if (prevEndColors && nextCell) {
+			[nextCell.scriptObjectView setColorsAnimatedWithDuration:1.0 startColors:prevEndColors endColor:nextCell.scriptObjectView.endColors];
+		}
 		//ausblenden
 		[UIView animateWithDuration:0.4 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-			
 			cellViewToDelete.alpha = 0.0;
 		} completion:^(BOOL finished) {
 			
@@ -298,9 +313,8 @@
 				}
 			}
 			//Positionen anpassen
-			[UIView animateWithDuration:0.4 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+			[UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
 				[self.scriptView fixLocationsOfSubviews];
-				
 			} completion:^(BOOL finished) {
 			//Farben nachladen
 				[self.scriptView reloadData];
