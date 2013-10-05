@@ -99,6 +99,7 @@
 #pragma mark - SETUP STUFF
 #define SCRIPT_KEY @"WyLightRemote.NWScriptViewController.script"
 #define TIMESCALE_KEY @"WyLightRemote.NWScriptViewController.timescalefactor"
+#define DELETE_USER_INFO_KEY @"WyLightRemote.NWScriptViewController.showUserInfo"
 
 - (void)fixLocations {
 	if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
@@ -220,6 +221,12 @@
     {
 		if ([gesture.view isKindOfClass:[NWScriptCellView class]] && self.script.scriptArray.count > 1) {
 			self.isDeletionModeActive = YES;
+			BOOL showDeletionModeInfo = ![[NSUserDefaults standardUserDefaults] boolForKey:DELETE_USER_INFO_KEY];
+			if (showDeletionModeInfo) {
+				[[NSUserDefaults standardUserDefaults] setBool:YES forKey:DELETE_USER_INFO_KEY];
+				UIAlertView *infoView = [[UIAlertView alloc]initWithTitle:@"Swipe up" message:@"to delete an object" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+				[infoView show];
+			}
 		}
     }
 }
