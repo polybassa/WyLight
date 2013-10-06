@@ -498,10 +498,10 @@
             </objects>
             <point key="canvasLocation" x="764" y="1445"/>
         </scene>
-        <!--View Controller-->
+        <!--Complex Script Object View Controller-->
         <scene sceneID="I52-6V-MP5">
             <objects>
-                <viewController id="5Xo-in-aay" sceneMemberID="viewController">
+                <viewController id="5Xo-in-aay" customClass="NWComplexScriptObjectViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Bzg-yT-irf"/>
                         <viewControllerLayoutGuide type="bottom" id="rBP-R8-BEJ"/>
@@ -509,13 +509,71 @@
                     <view key="view" contentMode="scaleToFill" id="eal-Dl-oaX">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZUs-Zc-0Ae" customClass="iCarousel">
+                                <rect key="frame" x="0.0" y="20" width="320" height="300"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="5Xo-in-aay" id="ujW-AS-xgN"/>
+                                    <outlet property="delegate" destination="5Xo-in-aay" id="iKe-KJ-JdZ"/>
+                                </connections>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IO0-gi-VCN">
+                                <rect key="frame" x="75" y="328" width="70" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Color 1">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="colorButton1TouchUpInside:" destination="5Xo-in-aay" eventType="touchUpInside" id="uv3-Eu-Yz8"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GsV-AR-IPX">
+                                <rect key="frame" x="188" y="328" width="70" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Color 2">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="colorButton2TouchUpInside:" destination="5Xo-in-aay" eventType="touchUpInside" id="bWm-MU-wTW"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="t2Q-K0-EQl"/>
+                    <connections>
+                        <outlet property="carousel" destination="ZUs-Zc-0Ae" id="ei1-4J-u86"/>
+                        <outlet property="color1Button" destination="IO0-gi-VCN" id="Mg6-bn-yeB"/>
+                        <outlet property="color2Button" destination="GsV-AR-IPX" id="oK2-3h-gMt"/>
+                        <segue destination="e3G-at-fyV" kind="push" identifier="getCustomColor:" id="a5P-fx-cc7"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eAG-ec-n9Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1313" y="1445"/>
+        </scene>
+        <!--Default Color Picker View Controller-->
+        <scene sceneID="IJw-6K-tEt">
+            <objects>
+                <viewController id="e3G-at-fyV" customClass="NWDefaultColorPickerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="m9J-dL-uWm"/>
+                        <viewControllerLayoutGuide type="bottom" id="pJV-oX-CuS"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="H0k-qq-ijT">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="iT4-M0-0uH"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kc9-Gh-Xog" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1802" y="1445"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="YdK-lj-13g">

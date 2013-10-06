@@ -124,7 +124,7 @@
 	
 	for (unsigned int i = 0; i < NUM_OF_LED; i++) {
 		if (i >= endPosition) {
-			[mutableColorArray addObject:[self.backgroundColor copy]];
+			[mutableColorArray addObject:self.backgroundColor];
 		} else if (i == (endPosition - 1 )) {
 			[mutableColorArray addObject:[UIColor colorWithRed:color2Red
 														 green:color2Green
@@ -140,7 +140,7 @@
 			startGreen += deltaGreen / (self.numberOfLeds);
 			startBlue += deltaBlue / (self.numberOfLeds);
 		} else {
-			[mutableColorArray addObject:[self.backgroundColor copy]];
+			[mutableColorArray addObject:self.backgroundColor];
 		}
 	}
 	return mutableColorArray;

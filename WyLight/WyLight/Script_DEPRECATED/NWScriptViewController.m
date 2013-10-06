@@ -10,7 +10,7 @@
 #import "NWScript.h"
 #import "NWScriptView.h"
 #import "NWComplexScriptCommandObject.h"
-#import "NWEditComplexScriptObjectViewController.h"
+#import "NWComplexScriptObjectViewController.h"
 #import "NWScriptCellView.h"
 #import "NWAddScriptObjectView.h"
 #import "WCWiflyControlWrapper.h"
@@ -283,7 +283,6 @@
 		
 		//Farbübergang zu den neuen Farben
 		NWComplexScriptCommandObject *commandToDelete = [self.script.scriptArray objectAtIndex:cellViewToDelete.tag];
-		NSArray *prevEndColors = [commandToDelete.prev.colors copy];
 		NWScriptCellView *nextCell;
 		for (NWScriptCellView *cell in self.scriptView.subviews) {
 			if ([cell isKindOfClass:[NWScriptCellView class]]) {
@@ -293,8 +292,16 @@
 				}
 			}
 		}
+		NSMutableArray *prevEndColors = [commandToDelete.prev.colors mutableCopy];
+		if (!prevEndColors) {
+			prevEndColors = [[NSMutableArray alloc] init];
+			
+			for (unsigned int i = 0; i < nextCell.scriptObjectView.endColors.count; i++) {
+				[prevEndColors addObject:[UIColor blackColor]];
+			}
+		}
 		
-		if (prevEndColors && nextCell) {
+		if (nextCell) {
 			[nextCell.scriptObjectView setColorsAnimatedWithDuration:1.0 startColors:prevEndColors endColor:nextCell.scriptObjectView.endColors];
 		}
 		//ausblenden
@@ -488,8 +495,8 @@
 			[segue.destinationViewController performSelector:@selector(setControlHandle:) withObject:self.controlHandle];
 		}
 		
-		if ([segue.destinationViewController isKindOfClass:[NWEditComplexScriptObjectViewController class]]) {
-			NWEditComplexScriptObjectViewController *ctrl = (NWEditComplexScriptObjectViewController *)segue.destinationViewController;
+		if ([segue.destinationViewController isKindOfClass:[NWComplexScriptObjectViewController class]]) {
+			NWComplexScriptObjectViewController *ctrl = (NWComplexScriptObjectViewController *)segue.destinationViewController;
 			ctrl.command = [self.script.scriptArray objectAtIndex:self.indexForObjectToEdit];
 		}
 	}

@@ -24,11 +24,8 @@
     if (self) {
         // Initialization code
 		self.layer.shouldRasterize = YES;
-		
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleHeight;
         self.clipsToBounds = YES;
-        self.layer.opacity = 1;
-		self.backgroundColor = [UIColor blackColor];
 	}
     return self;
 }
@@ -80,6 +77,7 @@
 		CGFloat nextRectOriginY = floorf((i + 1) * heightFract);
 		CGFloat rectHeight = nextRectOriginY - rectOriginY;
 		NWGradientView *gradientView = [[NWGradientView alloc] initWithFrame: CGRectMake(self.bounds.origin.x, rectOriginY, self.bounds.size.width, rectHeight)];
+		gradientView.opaque = NO;
 		UIColor *startColor;
 		if ((self.startColors) && (i < self.startColors.count)) {
 			startColor = [self.startColors objectAtIndex:i];

@@ -85,6 +85,8 @@
 		5C90B3C417F3714B00BAC74F /* NWCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3B817F3714B00BAC74F /* NWCollectionViewLayout.m */; };
 		5C90B3C517F3714B00BAC74F /* NWCollectionViewLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3BA17F3714B00BAC74F /* NWCollectionViewLayoutAttributes.m */; };
 		5C90B3C617F3714B00BAC74F /* NWEditComplexScriptObjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3BC17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.m */; };
+		5CD991F81800951E003C4F99 /* NWComplexScriptObjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD991F71800951E003C4F99 /* NWComplexScriptObjectViewController.m */; };
+		5CD991FB180095CA003C4F99 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD991FA180095CA003C4F99 /* iCarousel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -251,6 +253,10 @@
 		5C90B3BA17F3714B00BAC74F /* NWCollectionViewLayoutAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWCollectionViewLayoutAttributes.m; sourceTree = "<group>"; };
 		5C90B3BB17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWEditComplexScriptObjectViewController.h; sourceTree = "<group>"; };
 		5C90B3BC17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWEditComplexScriptObjectViewController.m; sourceTree = "<group>"; };
+		5CD991F61800951E003C4F99 /* NWComplexScriptObjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWComplexScriptObjectViewController.h; path = ViewController/NWComplexScriptObjectViewController.h; sourceTree = "<group>"; };
+		5CD991F71800951E003C4F99 /* NWComplexScriptObjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWComplexScriptObjectViewController.m; path = ViewController/NWComplexScriptObjectViewController.m; sourceTree = "<group>"; };
+		5CD991F9180095CA003C4F99 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
+		5CD991FA180095CA003C4F99 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,10 +287,14 @@
 		5C12FAB417FF293F00E4E65D /* Script */ = {
 			isa = PBXGroup;
 			children = (
+				5CD991F9180095CA003C4F99 /* iCarousel.h */,
+				5CD991FA180095CA003C4F99 /* iCarousel.m */,
 				5C90B3B117F3714B00BAC74F /* NWScriptViewController.h */,
 				5C90B3B217F3714B00BAC74F /* NWScriptViewController.m */,
 				5C90B3AD17F3714B00BAC74F /* NWScriptView.h */,
 				5C90B3AE17F3714B00BAC74F /* NWScriptView.m */,
+				5CD991F61800951E003C4F99 /* NWComplexScriptObjectViewController.h */,
+				5CD991F71800951E003C4F99 /* NWComplexScriptObjectViewController.m */,
 			);
 			name = Script;
 			sourceTree = "<group>";
@@ -540,6 +550,8 @@
 		5C90B3A817F36C8A00BAC74F /* Script_DEPRECATED */ = {
 			isa = PBXGroup;
 			children = (
+				5C90B3BB17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.h */,
+				5C90B3BC17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.m */,
 				5C90B3A917F3714B00BAC74F /* NWEditFadeCommandViewController.h */,
 				5C90B3AA17F3714B00BAC74F /* NWEditFadeCommandViewController.m */,
 				5C90B3AB17F3714B00BAC74F /* NWEditGradientCommandViewController.h */,
@@ -552,8 +564,6 @@
 				5C90B3B817F3714B00BAC74F /* NWCollectionViewLayout.m */,
 				5C90B3B917F3714B00BAC74F /* NWCollectionViewLayoutAttributes.h */,
 				5C90B3BA17F3714B00BAC74F /* NWCollectionViewLayoutAttributes.m */,
-				5C90B3BB17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.h */,
-				5C90B3BC17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.m */,
 			);
 			path = Script_DEPRECATED;
 			sourceTree = "<group>";
@@ -680,6 +690,7 @@
 				5C8395E017EB61B4007EF0C6 /* intelhexclass.cpp in Sources */,
 				5C8395B017EB6197007EF0C6 /* NWBroadcastsTVC.m in Sources */,
 				5C83963B17EC542E007EF0C6 /* NWBrightnessViewController.m in Sources */,
+				5CD991FB180095CA003C4F99 /* iCarousel.m in Sources */,
 				5C83964017EC5E3E007EF0C6 /* NWAddNewTargetConfigureViewController.m in Sources */,
 				5C90B3BD17F3714B00BAC74F /* NWEditFadeCommandViewController.m in Sources */,
 				5C8395DA17EB61B4007EF0C6 /* crc.c in Sources */,
@@ -715,6 +726,7 @@
 				5C90B39E17EF572400BAC74F /* NWGradientView.m in Sources */,
 				5C83958A17EB6138007EF0C6 /* NWAppDelegate.m in Sources */,
 				5C8395E317EB61B4007EF0C6 /* WiflyControl.cpp in Sources */,
+				5CD991F81800951E003C4F99 /* NWComplexScriptObjectViewController.m in Sources */,
 				5C35FEED17EF4F7100E3DE0D /* NWLoopOffCommandObject.m in Sources */,
 				5C83963017EB6C00007EF0C6 /* KZColorPicker.m in Sources */,
 				5C8395E117EB61B4007EF0C6 /* MaskBuffer.cpp in Sources */,

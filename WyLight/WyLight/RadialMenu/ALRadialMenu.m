@@ -91,6 +91,7 @@
 		
 		
 		[view insertSubview:popupButton belowSubview:button];
+		[view bringSubviewToFront:popupButton];
 		
 		[mutablePopups addObject:popupButton];
 		
