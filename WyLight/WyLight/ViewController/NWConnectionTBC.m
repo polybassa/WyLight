@@ -26,6 +26,9 @@
 }
 
 - (void)connectToEndpoint {
+	if (self.controlHandle != nil) {
+		return;
+	}
 	UIAlertView *connectingView = [[UIAlertView alloc] initWithTitle:@"Connecting" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
 	[connectingView show];
 	
@@ -50,6 +53,7 @@
 		NSLog(@"\nHexFile:%@Target:%@", versionOfMainHex, versionOfTarget);
 		
 		if (![versionOfTarget isEqualToString:versionOfMainHex]) {
+			[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 			UIAlertView *updateAlertView = [[UIAlertView alloc] initWithTitle:@"Update required!" message:@"Please wait!" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
 			dispatch_async(dispatch_get_main_queue(), ^{ [updateAlertView show]; });
 			[self.controlHandle updateFirmware];
@@ -59,6 +63,7 @@
 			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 				[updateAlertView dismissWithClickedButtonIndex:0 animated:YES];
 			});
+			[[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 		}
 		
 		// Finish connection Block

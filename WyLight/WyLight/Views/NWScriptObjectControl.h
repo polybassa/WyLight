@@ -11,5 +11,6 @@
 @interface NWScriptObjectControl : NWScriptObjectView
 
 @property (nonatomic, getter = isQuivering) BOOL quivering;
+@property (nonatomic, getter = isDownscaled) BOOL downscale;
 
 @end

@@ -19,26 +19,31 @@
 
 - (void)setQuivering:(BOOL)quivering {
 	
-	if (quivering && (quivering != _quivering)) {
-		[self startQuivering];
-	} else if (!quivering && (quivering != _quivering)) {
-		[self stopQuivering];
-	}
-	if (quivering != _quivering) {
+	if (_quivering == quivering) {
+		return;
+	} else {
 		_quivering = quivering;
-		self.frame = self.frame;
-		if (quivering == NO) {
-			self.frame = self.originalFrame;
+		if (quivering) {
+			[self startQuivering];
+		} else {
+			[self stopQuivering];
 		}
 	}
 }
 
-- (void)setFrame:(CGRect)frame {
-	if (self.quivering) {
-		self.originalFrame = frame;
-		super.frame = CGRectInset(frame, frame.size.width * 0.1, 10);
+- (void)setDownscale:(BOOL)downscale {
+	if (_downscale == downscale) {
+		//nothing to do
+		return;
 	} else {
-		super.frame = frame;
+		_downscale = downscale;
+		
+		if (downscale) {
+			self.originalFrame = self.frame;
+			self.frame = CGRectInset(self.frame, self.frame.size.width * 0.1, 10);
+		} else {
+			self.frame = self.originalFrame;
+		}
 	}
 }
 

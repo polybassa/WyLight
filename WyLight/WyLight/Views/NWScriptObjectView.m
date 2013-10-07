@@ -53,7 +53,7 @@
 
 - (void)setFrameOfAllColorViews:(CGRect)frame {
 	
-	const CGFloat heightFract = frame.size.height / self.gradientViews.count;
+	const CGFloat heightFract = self.gradientViews.count ? frame.size.height / self.gradientViews.count : 1;
 	
 	for (unsigned int i = 0; i < self.gradientViews.count; i++) {
 		CGFloat rectOriginY = floorf(i * heightFract);

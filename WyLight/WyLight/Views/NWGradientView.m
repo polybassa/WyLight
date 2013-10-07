@@ -64,7 +64,6 @@
 
 - (void)drawRect:(CGRect)rect
 {
-	
     CGContextRef context = UIGraphicsGetCurrentContext();
 	CGGradientRef currentGradient = [NWGradientView createGradientWithStartColor:self.startColor endColor:self.endColor];
 	CGContextDrawLinearGradient(context, currentGradient,

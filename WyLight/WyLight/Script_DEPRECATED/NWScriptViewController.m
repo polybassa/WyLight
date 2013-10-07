@@ -49,9 +49,7 @@
 			cell.timeInfoView.timeScaleFactor = _timeScaleFactor;
 		}
 	}
-	[UIView animateWithDuration:0.1 animations:^{
-		[self.scriptView fixLocationsOfSubviews];
-	}];
+	[self.scriptView fixLocationsOfSubviews];
 }
 
 - (void)setIsDeletionModeActive:(BOOL)isDeletionModeActive {
@@ -62,6 +60,7 @@
 				NWScriptCellView *cell = (NWScriptCellView *)control;
 				[UIView animateWithDuration:0.4 animations:^{
 					cell.scriptObjectView.quivering = YES;
+					cell.scriptObjectView.downscale = YES;
 				}];
 			}
 			if ([control isKindOfClass:[NWAddScriptObjectView class]]) {
@@ -74,6 +73,7 @@
 				NWScriptCellView *cell = (NWScriptCellView *)control;
 				[UIView animateWithDuration:0.4 animations:^{
 					cell.scriptObjectView.quivering = NO;
+					cell.scriptObjectView.downscale = NO;
 				}];
 			}
 			if ([control isKindOfClass:[NWAddScriptObjectView class]]) {
@@ -105,13 +105,13 @@
 	if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
 		
 		//script view
-		self.scriptView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 60);
+		self.scriptView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 120);
 		
-		self.sendButton.frame = CGRectMake(45, self.view.frame.size.height - 44, self.view.frame.size.width - 88, 44);
+		self.sendButton.frame = CGRectMake(45, self.view.frame.size.height - 100, self.view.frame.size.width - 88, 44);
 		
-		self.zoomOutButton.frame = CGRectMake(0, self.view.frame.size.height - 44, 44, 44);
+		self.zoomOutButton.frame = CGRectMake(0, self.view.frame.size.height - 100, 44, 44);
 		
-		self.zoomInButton.frame = CGRectMake(self.view.frame.size.width - 44, self.view.frame.size.height - 44, 44, 44);
+		self.zoomInButton.frame = CGRectMake(self.view.frame.size.width - 44, self.view.frame.size.height - 100, 44, 44);
 	}
 	else {
 		CGRect biggerFrame = self.tabBarController.view.frame;
@@ -128,7 +128,6 @@
 		self.zoomInButton.frame = CGRectMake(self.view.frame.size.width - 44, self.view.frame.size.height - 44, 44, 44);
 
 	}
-	[self.scriptView fixLocationsOfSubviews];
 }
 
 - (void)setup {
@@ -179,8 +178,7 @@
 	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.script];
 	if (data) {
 		[[NSUserDefaults standardUserDefaults] setObject:data forKey:SCRIPT_KEY];
-	}
-	
+	}	
 	[[NSUserDefaults standardUserDefaults] setFloat:self.timeScaleFactor forKey:TIMESCALE_KEY];
 }
 
@@ -200,8 +198,8 @@
 }
 
 - (void)viewWillLayoutSubviews {
-	[self fixLocations];
 	[super viewWillLayoutSubviews];
+	[self fixLocations];
 }
 
 #pragma mark - GESTURE RECOGNIZER CALLBACKS
@@ -263,13 +261,17 @@
 
 - (void)zoomInButtonPressed {
 	if (self.zoomInButtonTouchDownState) {
-		self.timeScaleFactor *= ZOOM_IN_STEP;
+		[UIView animateWithDuration:0.25 animations:^{
+			self.timeScaleFactor *= ZOOM_IN_STEP;
+	}];
 	}
 }
 
 - (void)zoomOutButtonPressed {
 	if (self.zoomOutButtonTouchDownState) {
-		self.timeScaleFactor *= ZOOM_OUT_STEP;
+		[UIView animateWithDuration:0.25 animations:^{
+			self.timeScaleFactor *= ZOOM_OUT_STEP;
+		}];
 	}
 }
 
