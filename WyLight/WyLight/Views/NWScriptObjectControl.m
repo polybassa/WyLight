@@ -36,14 +36,23 @@
 		//nothing to do
 		return;
 	} else {
-		_downscale = downscale;
-		
 		if (downscale) {
 			self.originalFrame = self.frame;
 			self.frame = CGRectInset(self.frame, self.frame.size.width * 0.1, 10);
+			_downscale = YES;
 		} else {
+			_downscale = NO;
 			self.frame = self.originalFrame;
 		}
+	}
+}
+
+- (void)setFrame:(CGRect)frame {
+	self.originalFrame = frame;
+	if (self.downscale) {
+		super.frame = CGRectInset(frame, frame.size.width * 0.1, 10);
+	} else {
+		super.frame = frame;
 	}
 }
 

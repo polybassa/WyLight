@@ -74,7 +74,7 @@
 					initWithString:[NSString stringWithFormat:@"%2.1f s", (self.frame.size.width / self.timeScaleFactor) / 100]
 					attributes:@{
 					NSParagraphStyleAttributeName : paragraphStyle,
-					NSForegroundColorAttributeName : [UIColor blackColor],
+					NSForegroundColorAttributeName : [UIColor blueColor],
 					NSFontAttributeName : font }];
 		fontSize -= 1.0;		
 	} while ([text size].width > rect.size.width - 10 && fontSize > 1.0);
@@ -83,8 +83,8 @@
 	textBounds.size = [text size];
 	textBounds.origin = CGPointMake(rect.origin.x + rect.size.width / 2 - [text size].width / 2, rect.origin.y + rect.size.height / 6);
 	
-	[[UIColor whiteColor] setFill];
-	CGContextFillRect(context, CGRectInset(textBounds, -5, 0));
+	[[UIColor clearColor] setFill];
+	CGContextFillRect(context, CGRectInset(textBounds, -2, 0));
 	[text drawInRect:textBounds];
 }
 

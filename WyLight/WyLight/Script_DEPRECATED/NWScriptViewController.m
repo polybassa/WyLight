@@ -14,17 +14,14 @@
 #import "NWScriptCellView.h"
 #import "NWAddScriptObjectView.h"
 #import "WCWiflyControlWrapper.h"
+#import "TouchAndHoldButton.h"
 
 @interface NWScriptViewController () <NWScriptViewDataSource, NWScriptCellViewDelegate, UIScrollViewDelegate>
 
 @property (strong, nonatomic) NWScript *script;
 @property (strong, nonatomic) NWScriptView *scriptView;
-@property (strong, nonatomic) UIButton *zoomInButton;
-@property (strong, nonatomic) UIButton *zoomOutButton;
-@property (strong, nonatomic) NSTimer *zoomInButtonHoldTimer;
-@property (strong, nonatomic) NSTimer *zoomOutButtonHoldTimer;
-@property (nonatomic) BOOL zoomInButtonTouchDownState;
-@property (nonatomic) BOOL zoomOutButtonTouchDownState;
+@property (strong, nonatomic) TouchAndHoldButton *zoomInButton;
+@property (strong, nonatomic) TouchAndHoldButton *zoomOutButton;
 @property (nonatomic) BOOL isDeletionModeActive;
 @property (nonatomic) CGFloat timeScaleFactor;
 @property (nonatomic) NSUInteger indexForObjectToEdit;
@@ -154,24 +151,15 @@
 	[self.sendButton addTarget:self action:@selector(sendScript) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:self.sendButton];
 
-	self.zoomInButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	self.zoomInButton = [TouchAndHoldButton buttonWithType:UIButtonTypeRoundedRect];
 	[self.zoomInButton setImage:[UIImage imageNamed:@"Zoom_In_Icon"] forState:UIControlStateNormal];
-	[self.zoomInButton addTarget:self action:@selector(zoomInButtonTouchDown) forControlEvents:UIControlEventTouchDown];
-	[self.zoomInButton addTarget:self action:@selector(zoomInButtonTouchUp) forControlEvents:UIControlEventTouchUpInside];
-	[self.zoomInButton addTarget:self action:@selector(zoomInButtonTouchUp) forControlEvents:UIControlEventTouchUpOutside];
+	[self.zoomInButton addTarget:self action:@selector(zoomInButtonPressed) forTouchAndHoldControlEventWithTimeInterval:0.3];
 	[self.view addSubview:self.zoomInButton];
 	
-	self.zoomOutButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	self.zoomOutButton = [TouchAndHoldButton buttonWithType:UIButtonTypeRoundedRect];
 	[self.zoomOutButton setImage:[UIImage imageNamed:@"Zoom_Out_Icon"] forState:UIControlStateNormal];
-	[self.zoomOutButton addTarget:self action:@selector(zoomOutButtonTouchDown) forControlEvents:UIControlEventTouchDown];
-	[self.zoomOutButton addTarget:self action:@selector(zoomOutButtonTouchUp) forControlEvents:UIControlEventTouchUpInside];
-	[self.zoomOutButton addTarget:self action:@selector(zoomOutButtonTouchUp) forControlEvents:UIControlEventTouchUpOutside];
-
+	[self.zoomOutButton addTarget:self action:@selector(zoomOutButtonPressed) forTouchAndHoldControlEventWithTimeInterval:0.3];
 	[self.view addSubview:self.zoomOutButton];
-	
-	self.zoomInButtonHoldTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(zoomInButtonPressed) userInfo:nil repeats:YES];
-	self.zoomOutButtonHoldTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(zoomOutButtonPressed) userInfo:nil repeats:YES];
-	
 }
 
 - (void)saveUserData {
@@ -241,38 +229,16 @@
 #define ZOOM_IN_STEP 1.1
 #define ZOOM_OUT_STEP 0.9
 
-- (void)zoomInButtonTouchUp {
-	self.zoomInButtonTouchDownState = NO;
-}
-
-- (void)zoomOutButtonTouchUp {
-	self.zoomOutButtonTouchDownState = NO;
-}
-
-- (void)zoomInButtonTouchDown {
-	self.zoomInButtonTouchDownState = YES;
-	[self zoomInButtonPressed];
-}
-
-- (void)zoomOutButtonTouchDown {
-	self.zoomOutButtonTouchDownState = YES;
-	[self zoomOutButtonPressed];
-}
-
 - (void)zoomInButtonPressed {
-	if (self.zoomInButtonTouchDownState) {
-		[UIView animateWithDuration:0.25 animations:^{
-			self.timeScaleFactor *= ZOOM_IN_STEP;
+	[UIView animateWithDuration:0.3 animations:^{
+		self.timeScaleFactor *= ZOOM_IN_STEP;
 	}];
-	}
 }
 
 - (void)zoomOutButtonPressed {
-	if (self.zoomOutButtonTouchDownState) {
-		[UIView animateWithDuration:0.25 animations:^{
-			self.timeScaleFactor *= ZOOM_OUT_STEP;
-		}];
-	}
+	[UIView animateWithDuration:0.3 animations:^{
+		self.timeScaleFactor *= ZOOM_OUT_STEP;
+	}];
 }
 
 - (void)deleteScriptObject:(UIView *)object {
@@ -406,6 +372,7 @@
 			tempView.delegate = self;
 			tempView.tag = index;
 			tempView.scriptObjectView.quivering = self.isDeletionModeActive;
+			tempView.scriptObjectView.downscale = self.isDeletionModeActive;
 			tempView.timeInfoView.timeScaleFactor = self.timeScaleFactor;
 						
 			UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(setObjectForEdit:)];

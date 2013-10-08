@@ -13,6 +13,8 @@
 #import "NWSetFadeScriptCommandObject.h"
 #import "NWSetGradientScriptCommandObject.h"
 #import "NWDefaultColorPickerViewController.h"
+#import "WCWiflyControlWrapper.h"
+#import "TouchAndHoldButton.h"
 
 enum EDITCOLORTARGET {
 	fadeColor = 0,
@@ -30,9 +32,14 @@ enum EDITCOLORTARGET {
 @property (nonatomic, strong) ALRadialMenu *addEffectMenu;
 @property (nonatomic, strong) UIButton *color1Button;
 @property (nonatomic, strong) UIButton *color2Button;
+@property (nonatomic, strong) TouchAndHoldButton *gradientUpButton;
+@property (nonatomic, strong) TouchAndHoldButton *gradientDownButton;
+@property (nonatomic, strong) TouchAndHoldButton *gradientPlusButton;
+@property (nonatomic, strong) TouchAndHoldButton *gradientMinusButton;
 @property (nonatomic, assign) NSUInteger currentItemIndex;
 @property (nonatomic, assign) enum EDITCOLORTARGET customColorTarget;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addBarButton;
+@property (nonatomic) BOOL sendInitialClearScript;
 
 @end
 
@@ -50,6 +57,7 @@ enum EDITCOLORTARGET {
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+	self.sendInitialClearScript = YES;
 	self.currentItemIndex = self.carousel.currentItemView.tag;
 	[self.carousel reloadItemAtIndex:[self.carousel indexOfItemView:self.carousel.currentItemView] animated:YES];
 }
@@ -59,9 +67,18 @@ enum EDITCOLORTARGET {
 		
 		self.carousel.frame = CGRectMake(0, 60, self.view.bounds.size.width, self.view.bounds.size.height / 2);
 		
-		self.color1Button.frame = CGRectMake(self.view.bounds.size.width / 2 - 80, self.view.bounds.size.height / 2 + 120, 60, 40);
+		self.color1Button.frame = CGRectMake(self.view.bounds.size.width / 2 - 80, self.view.bounds.size.height / 2 + 60, 60, 40);
 		
-		self.color2Button.frame = CGRectMake(self.view.bounds.size.width / 2 + 20, self.view.bounds.size.height / 2 + 120, 60, 40);
+		self.color2Button.frame = CGRectMake(self.view.bounds.size.width / 2 + 20, self.view.bounds.size.height / 2 + 60, 60, 40);
+		
+		self.gradientPlusButton.frame = CGRectMake(self.view.bounds.size.width - 80, self.view.bounds.size.height / 2 + 150, 80, 80);
+
+		self.gradientMinusButton.frame = CGRectMake(self.view.bounds.size.width - 160, self.view.bounds.size.height / 2 + 150, 80, 80);
+		
+		self.gradientUpButton.frame = CGRectMake(10, self.view.bounds.size.height / 2 + 150, 80, 80);
+
+		self.gradientDownButton.frame = CGRectMake(90, self.view.bounds.size.height / 2 + 150, 80, 80);
+
 		
 	}
 	else {
@@ -104,6 +121,30 @@ enum EDITCOLORTARGET {
 	[self.color2Button setBackgroundImage:[NWComplexScriptObjectViewController imageWithColors:@[[UIColor lightGrayColor]]] forState:UIControlStateDisabled];
 	[self.view addSubview:self.color2Button];
 	
+	self.gradientDownButton = [TouchAndHoldButton buttonWithType:UIButtonTypeRoundedRect];
+	[self.gradientDownButton setImage:[UIImage imageNamed:@"Down_Icon"] forState:UIControlStateNormal];
+	[self.gradientDownButton addTarget:self action:@selector(downButtonTouchUpInside:) forTouchAndHoldControlEventWithTimeInterval:0.4];
+	[self.gradientDownButton addTarget:self action:@selector(downButtonTouchUpInside:) forControlEvents:UIControlEventTouchDown];
+	[self.view addSubview:self.gradientDownButton];
+	
+	self.gradientUpButton = [TouchAndHoldButton buttonWithType:UIButtonTypeRoundedRect];
+	[self.gradientUpButton setImage:[UIImage imageNamed:@"Up_Icon"] forState:UIControlStateNormal];
+	[self.gradientUpButton addTarget:self action:@selector(upButtonTouchUpInside:) forTouchAndHoldControlEventWithTimeInterval:0.4];
+	[self.gradientUpButton addTarget:self action:@selector(upButtonTouchUpInside:) forControlEvents:UIControlEventTouchDown];
+	[self.view addSubview:self.gradientUpButton];
+	
+	self.gradientMinusButton = [TouchAndHoldButton buttonWithType:UIButtonTypeRoundedRect];
+	[self.gradientMinusButton setImage:[UIImage imageNamed:@"Minus_Icon"] forState:UIControlStateNormal];
+	[self.gradientMinusButton addTarget:self action:@selector(minusButtonTouchUpInside:) forTouchAndHoldControlEventWithTimeInterval:0.4];
+	[self.gradientMinusButton addTarget:self action:@selector(minusButtonTouchUpInside:) forControlEvents:UIControlEventTouchDown];
+	[self.view addSubview:self.gradientMinusButton];
+	
+	self.gradientPlusButton = [TouchAndHoldButton buttonWithType:UIButtonTypeRoundedRect];
+	[self.gradientPlusButton setImage:[UIImage imageNamed:@"Plus_Icon"] forState:UIControlStateNormal];
+	[self.gradientPlusButton addTarget:self action:@selector(plusButtonTouchUpInside:) forTouchAndHoldControlEventWithTimeInterval:0.4];
+	[self.gradientPlusButton addTarget:self action:@selector(plusButtonTouchUpInside:) forControlEvents:UIControlEventTouchDown];
+	[self.view addSubview:self.gradientPlusButton];
+	
 	[self.view bringSubviewToFront:self.carousel];
 }
 
@@ -111,18 +152,38 @@ enum EDITCOLORTARGET {
 	id currentCommand = self.command.scriptObjects[self.currentItemIndex];
 	if ([currentCommand isKindOfClass:[NWSetFadeScriptCommandObject class]]) {
 		NWSetFadeScriptCommandObject *currentFadeCommand = (NWSetFadeScriptCommandObject *)currentCommand;
-		
 		[self.color2Menu itemsWillDisapearIntoButton:self.color2Button];
+		
 		self.color2Button.hidden = YES;
+		self.gradientUpButton.hidden = YES;
+		self.gradientPlusButton.hidden = YES;
+		self.gradientMinusButton.hidden = YES;
+		self.gradientDownButton.hidden = YES;
 		
 		[self.color1Button setBackgroundImage:[NWComplexScriptObjectViewController imageWithColors:@[currentFadeCommand.color]] forState:UIControlStateNormal];
 		
 	} else if ([currentCommand isKindOfClass:[NWSetGradientScriptCommandObject class]]) {
 		NWSetGradientScriptCommandObject *currentGradientCommand = (NWSetGradientScriptCommandObject *)currentCommand;
 		
+		self.gradientDownButton.hidden = NO;
+		self.gradientMinusButton.hidden = NO;
+		self.gradientPlusButton.hidden = NO;
+		self.gradientUpButton.hidden = NO;
+		
 		self.color2Button.hidden = NO;
 		[self.color2Button setBackgroundImage:[NWComplexScriptObjectViewController imageWithColors:@[currentGradientCommand.color2]] forState:UIControlStateNormal];
 		[self.color1Button setBackgroundImage:[NWComplexScriptObjectViewController imageWithColors:@[currentGradientCommand.color1]] forState:UIControlStateNormal];
+	}
+	[self sendPreview];
+}
+
+- (void)sendPreview {
+	if (self.controlHandle) {
+		if (self.sendInitialClearScript) {
+			[self.controlHandle clearScript];
+			self.sendInitialClearScript = NO;
+		}
+		[self.controlHandle setColorDirectWithColors:self.command.colors];
 	}
 }
 
@@ -251,7 +312,7 @@ enum EDITCOLORTARGET {
 	if (radialMenu == self.addEffectMenu) {
 		return 90;
 	} else {
-		return 0;
+		return 180;
 	}
 }
 
@@ -328,7 +389,6 @@ enum EDITCOLORTARGET {
 				}
 			}
 			[self updateView];
-			[self.carousel reloadItemAtIndex:[self.carousel indexOfItemView:self.carousel.currentItemView] animated:YES];
 		}
 	}
 }
@@ -502,7 +562,37 @@ enum EDITCOLORTARGET {
 	[self.addEffectMenu buttonsWillAnimateFromButton:sender withFrame:[self addBarButtonFrame]  inView:self.view];
 }
 
+- (IBAction)upButtonTouchUpInside:(id)sender {
+	NWSetGradientScriptCommandObject *currentCommand = self.command.scriptObjects[self.currentItemIndex];
+	if ([currentCommand isKindOfClass:[NWSetGradientScriptCommandObject class]]) {
+		currentCommand.offset -= 1;
+		[self.carousel reloadItemAtIndex:[self.carousel indexOfItemView:self.carousel.currentItemView] animated:YES];
+	}
+}
 
+- (IBAction)downButtonTouchUpInside:(id)sender {
+	NWSetGradientScriptCommandObject *currentCommand = self.command.scriptObjects[self.currentItemIndex];
+	if ([currentCommand isKindOfClass:[NWSetGradientScriptCommandObject class]]) {
+		currentCommand.offset += 1;
+		[self.carousel reloadItemAtIndex:[self.carousel indexOfItemView:self.carousel.currentItemView] animated:YES];
+	}
+}
+
+- (IBAction)plusButtonTouchUpInside:(id)sender {
+	NWSetGradientScriptCommandObject *currentCommand = self.command.scriptObjects[self.currentItemIndex];
+	if ([currentCommand isKindOfClass:[NWSetGradientScriptCommandObject class]]) {
+		currentCommand.numberOfLeds += 1;
+		[self.carousel reloadItemAtIndex:[self.carousel indexOfItemView:self.carousel.currentItemView] animated:YES];
+	}
+}
+
+- (IBAction)minusButtonTouchUpInside:(id)sender {
+	NWSetGradientScriptCommandObject *currentCommand = self.command.scriptObjects[self.currentItemIndex];
+	if ([currentCommand isKindOfClass:[NWSetGradientScriptCommandObject class]]) {
+		currentCommand.numberOfLeds -= 1;
+		[self.carousel reloadItemAtIndex:[self.carousel indexOfItemView:self.carousel.currentItemView] animated:YES];
+	}
+}
 
 
 
