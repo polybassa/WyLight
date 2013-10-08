@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "NWComplexScriptCommandObject.h"
 #import "NWCollectionViewLayout.h"
 #import "ALRadialMenu.h"
+#import "NWComplexScriptCommandObject.h"
+#import "WCWiflyControlWrapper.h"
 
 @interface NWEditComplexScriptObjectViewController : UIViewController 
 

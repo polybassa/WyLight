@@ -16,4 +16,7 @@
 @property (nonatomic) uint8_t numberOfLeds;
 @property (nonatomic, readonly) uint32_t address;
 
+
++ (NSUInteger)maximalNumberOfLeds;
+
 @end

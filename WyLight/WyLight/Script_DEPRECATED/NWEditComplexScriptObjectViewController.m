@@ -10,8 +10,6 @@
 #import "NWScriptObjectView.h"
 #import "NWSetFadeScriptCommandObject.h"
 #import "NWSetGradientScriptCommandObject.h"
-#import "NWEditFadeCommandViewController.h"
-#import "NWEditGradientCommandViewController.h"
 #import "WCWiflyControlWrapper.h"
 #import "NWCollectionViewLayout.h"
 #import "NWScriptObjectCollectionViewCell.h"
@@ -394,20 +392,6 @@
 		NWScriptCommandObject *cmdObj = (NWScriptCommandObject*)[segue.sourceViewController command];
 		[self.command.scriptObjects replaceObjectAtIndex:self.indexOfObjectToAlter withObject:cmdObj];
 		[self.collectionView reloadData];
-	}
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	if ([segue.identifier isEqualToString:@"editFade:"]) {
-		if ([segue.destinationViewController isKindOfClass:[NWEditFadeCommandViewController class]]) {
-			NWEditFadeCommandViewController *dest = (NWEditFadeCommandViewController*)segue.destinationViewController;
-			dest.command = [[self.command.scriptObjects objectAtIndex:self.indexOfObjectToAlter] copy];
-		}
-	} else if ([segue.identifier isEqualToString:@"editGradient:"]) {
-		if ([segue.destinationViewController isKindOfClass:[NWEditGradientCommandViewController class]]) {
-			NWEditGradientCommandViewController *dest = (NWEditGradientCommandViewController*)segue.destinationViewController;
-			dest.command = [[self.command.scriptObjects objectAtIndex:self.indexOfObjectToAlter] copy];
-		}
 	}
 }
 

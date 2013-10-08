@@ -38,6 +38,11 @@
 }
 
 - (void)setFrame:(CGRect)frame {
+	
+	if (CGRectEqualToRect(frame, super.frame)) {
+		return;
+	}
+	
 	[super setFrame:frame];
 	
 	float dim = MIN(self.bounds.size.width, self.bounds.size.height);
@@ -123,6 +128,24 @@
 
 - (CGFloat)cornerRadius {
 	return self.layer.cornerRadius;
+}
+
+- (void)setOrientation:(CGFloat)orientation {
+	if (_orientation != orientation) {
+		
+		self.transform = CGAffineTransformMakeRotation(orientation - _orientation);
+		_orientation = orientation;
+	}
+}
+
+- (void)setHidden:(BOOL)hidden {
+	if (hidden == super.hidden) {
+		return;
+	}
+	[super setHidden:hidden];
+	if (!hidden) {
+		[self drawAllColorViews];
+	}
 }
 
 @end

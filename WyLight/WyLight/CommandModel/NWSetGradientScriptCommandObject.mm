@@ -83,17 +83,17 @@
 }
 
 - (void)setOffset:(uint8_t)offset {
-	if (offset + self.numberOfLeds <= NUM_OF_LED && offset >= 0) {
+	if (offset + self.numberOfLeds <= [NWSetGradientScriptCommandObject maximalNumberOfLeds] && offset >= 0) {
 		_offset = offset;
 	}
 }
 
 - (void)setNumberOfLeds:(uint8_t)numberOfLeds {
-	if ((self.offset + numberOfLeds) <= NUM_OF_LED) {
+	if ((self.offset + numberOfLeds) <= [NWSetGradientScriptCommandObject maximalNumberOfLeds]) {
 		_numberOfLeds = numberOfLeds;
-	} else if (self.offset > 0 && numberOfLeds <= NUM_OF_LED)
+	} else if (self.offset > 0 && numberOfLeds <= [NWSetGradientScriptCommandObject maximalNumberOfLeds])
 	{
-		_offset = NUM_OF_LED - numberOfLeds;
+		_offset = [NWSetGradientScriptCommandObject maximalNumberOfLeds] - numberOfLeds;
 		_numberOfLeds = numberOfLeds;
 	}
 	if (!_numberOfLeds) {
@@ -122,7 +122,7 @@
 	
 	const uint8_t endPosition = offset + numOfLeds;
 	
-	for (unsigned int i = 0; i < NUM_OF_LED; i++) {
+	for (unsigned int i = 0; i < [NWSetGradientScriptCommandObject maximalNumberOfLeds]; i++) {
 		if (i >= endPosition) {
 			[mutableColorArray addObject:self.backgroundColor];
 		} else if (i == (endPosition - 1 )) {
@@ -154,7 +154,7 @@
 	uint32_t outputBitmask = 0x00;
 	uint32_t compareBitmask = 0x00000001;
 	
-	for (unsigned int i = 0; i < NUM_OF_LED; i++) {
+	for (unsigned int i = 0; i < [NWSetGradientScriptCommandObject maximalNumberOfLeds]; i++) {
 		if (i >= endPosition) {
 			//is empty
 		} else if (i == (endPosition - 1)) {
@@ -166,6 +166,10 @@
 	}
 	return outputBitmask;
 
+}
+
++ (NSUInteger)maximalNumberOfLeds {
+	return NUM_OF_LED;
 }
 
 @end

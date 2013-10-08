@@ -154,11 +154,13 @@
 	self.zoomInButton = [TouchAndHoldButton buttonWithType:UIButtonTypeRoundedRect];
 	[self.zoomInButton setImage:[UIImage imageNamed:@"Zoom_In_Icon"] forState:UIControlStateNormal];
 	[self.zoomInButton addTarget:self action:@selector(zoomInButtonPressed) forTouchAndHoldControlEventWithTimeInterval:0.3];
+	[self.zoomInButton addTarget:self action:@selector(zoomInButtonPressed) forControlEvents:UIControlEventTouchDown];
 	[self.view addSubview:self.zoomInButton];
 	
 	self.zoomOutButton = [TouchAndHoldButton buttonWithType:UIButtonTypeRoundedRect];
 	[self.zoomOutButton setImage:[UIImage imageNamed:@"Zoom_Out_Icon"] forState:UIControlStateNormal];
 	[self.zoomOutButton addTarget:self action:@selector(zoomOutButtonPressed) forTouchAndHoldControlEventWithTimeInterval:0.3];
+	[self.zoomOutButton addTarget:self action:@selector(zoomOutButtonPressed) forControlEvents:UIControlEventTouchDown];
 	[self.view addSubview:self.zoomOutButton];
 }
 
