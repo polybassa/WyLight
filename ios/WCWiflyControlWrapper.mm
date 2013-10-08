@@ -17,7 +17,7 @@
 
 typedef std::function<uint32_t(void)> ControlCommand;
 
-//tupel <1> == true: terminate task; tuple <2>: command to execute; tuple<3> == 0: no notification after execution command, == 1: notification after execution command
+//tupel <1> == true: terminate task; tuple <2>: command to execute; tuple<3> == 0: no notification after execution command, == 1: connection lost after execution command
 typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 @interface WCWiflyControlWrapper () {
@@ -113,30 +113,38 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 			}
 		}
 	});
+	
+	[[NSNotificationCenter defaultCenter] addObserver: self
+											 selector: @selector(handleEnteredBackground:)
+												 name: UIApplicationDidEnterBackgroundNotification
+											   object: nil];
 	return 0;
 }
 
 - (void)disconnect
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self callWiflyControlHasDisconnectedDelegate];
+			
 	dispatch_async(dispatch_queue_create("disconnectQ", NULL), ^{
 		if(mCmdQueue && mCtrlThread) {
 			NSLog(@"Disconnect WCWiflyControlWrapper\n");
-			
 			mCmdQueue->clear_and_push_front(std::make_tuple(true, [=]{return 0xdeadbeef;}, 0));
 			mCtrlThread->join();
+			
 		}
 		
 		mCtrlThread.reset();
 		mCmdQueue.reset();
 		gCtrlMutex.reset();
 		mControl.reset();
-
 	});
 }
 
-- (void)dealloc
-{
-	NSLog(@"Dealloc WCWiflyControlWrapper\n");
+- (void)handleEnteredBackground:(NSNotification *)notification {
+	if ([notification.name isEqualToString:UIApplicationDidEnterBackgroundNotification]) {
+		[self disconnect];
+	}
 }
 
 - (void)setNetworkActivityIndicatorVisible:(BOOL)setVisible {
@@ -533,6 +541,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)callWiflyControlHasDisconnectedDelegate
 {
+	NSLog(@"%@", self.delegate);
 	[self.delegate wiflyControlHasDisconnected:self];
 }
 
