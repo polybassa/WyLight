@@ -52,7 +52,7 @@
 		self.layer.cornerRadius = dim/8;
 	}
 	//find a fix to change the frame of a drawn gradient view
-	[self setFrameOfAllColorViews:frame];
+	[self setFrameOfAllColorViews:self.bounds];
 	//[self drawAllColorViews];
 }
 

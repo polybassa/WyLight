@@ -80,19 +80,6 @@
 	}
 }
 
-#pragma mark - HANDLE ROTATION
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-	
-	if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-		[self.tabBarController.tabBar setHidden:YES];
-	}
-	else {
-		[self.tabBarController.tabBar setHidden:NO];
-	}
-}
-
 #pragma mark - SETUP STUFF
 #define SCRIPT_KEY @"WyLightRemote.NWScriptViewController.script"
 #define TIMESCALE_KEY @"WyLightRemote.NWScriptViewController.timescalefactor"
@@ -100,7 +87,8 @@
 
 - (void)fixLocations {
 	if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
-		
+		[self.tabBarController.tabBar setHidden:NO];
+
 		//script view
 		self.scriptView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 120);
 		
@@ -111,10 +99,8 @@
 		self.zoomInButton.frame = CGRectMake(self.view.frame.size.width - 44, self.view.frame.size.height - 100, 44, 44);
 	}
 	else {
-		CGRect biggerFrame = self.tabBarController.view.frame;
-		biggerFrame.size.height += self.tabBarController.tabBar.frame.size.height;
-		self.tabBarController.view.frame = biggerFrame ;
-		
+		[self.tabBarController.tabBar setHidden:YES];
+
 		//script view
 		self.scriptView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 60);
 		
@@ -127,7 +113,10 @@
 	}
 }
 
-- (void)setup {
+- (void)setup {	
+	self.view.superview.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+
 	//user data
 	self.timeScaleFactor = [[NSUserDefaults standardUserDefaults] floatForKey:TIMESCALE_KEY];
 	if (self.timeScaleFactor == 0.0) {

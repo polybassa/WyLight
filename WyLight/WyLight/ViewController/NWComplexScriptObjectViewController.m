@@ -85,13 +85,9 @@ enum EDITCOLORTARGET {
 
 		self.gradientDownButton.frame = CGRectMake(90, self.view.bounds.size.height / 2 + 150, 80, 80);
 		
-		self.fadeEditViewPortrait.frame = CGRectMake(0, self.view.bounds.size.height / 2 + 130, self.view.bounds.size.width, self.view.bounds.size.height - (self.view.bounds.size.height / 2 + 130) - 10);
+		self.fadeEditViewPortrait.frame = CGRectMake(1, self.view.bounds.size.height / 2 + 130, self.view.bounds.size.width - 2, self.view.bounds.size.height - (self.view.bounds.size.height / 2 + 130) - 10);
 	}
 	else {
-		CGRect biggerFrame = self.tabBarController.view.frame;
-		biggerFrame.size.height += self.tabBarController.tabBar.frame.size.height;
-		self.tabBarController.view.frame = biggerFrame ;
-		
 		self.carousel.frame = CGRectMake(0, 50, self.view.bounds.size.width / 2, self.view.bounds.size.height - 50);
 		
 		self.color1Button.frame = CGRectMake(self.view.bounds.size.width / 2 + 40, self.view.bounds.size.height / 2 - 40, 60, 40);
@@ -106,11 +102,14 @@ enum EDITCOLORTARGET {
 		
 		self.gradientDownButton.frame = CGRectMake(self.view.bounds.size.width / 2 + 150, self.view.bounds.size.height / 2 + 100, 70, 70);
 				
-		self.fadeEditViewLandscape.frame = CGRectMake(self.view.bounds.size.width / 2 + 140, 50, 100, self.view.bounds.size.height - 50);
+		self.fadeEditViewLandscape.frame = CGRectMake(self.view.bounds.size.width / 2 + 140, 53, self.view.bounds.size.width - (self.view.bounds.size.width / 2 + 140) - 1, self.view.bounds.size.height - 54);
 	}
 }
 
 - (void)setup {
+	self.view.superview.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+	
 	self.carousel = [[iCarousel alloc]initWithFrame:CGRectZero];
 	self.carousel.dataSource = self;
 	self.carousel.delegate = self;
@@ -244,6 +243,14 @@ enum EDITCOLORTARGET {
 		[self.color1Button setBackgroundImage:[NWComplexScriptObjectViewController imageWithColors:@[currentGradientCommand.color1]] forState:UIControlStateNormal];
 	}
 	[self sendPreview];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+		self.fadeEditViewLandscape.hidden = NO;
+	} else {
+		self.fadeEditViewPortrait.hidden = NO;
+	}
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {

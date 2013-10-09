@@ -35,6 +35,10 @@
 	self.redTextField.enabled = NO;
 	self.greenTextField.enabled = NO;
 	self.blueTextField.enabled = NO;
+	
+	self.view.superview.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+
 }
 
 - (void)deserializeColor {
@@ -144,7 +148,6 @@
 		biggerFrame.size.height += self.tabBarController.tabBar.frame.size.height;
 		self.tabBarController.view.frame = biggerFrame ;
 	}
-	
 }
 
 @end

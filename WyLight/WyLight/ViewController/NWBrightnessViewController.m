@@ -26,6 +26,9 @@
 	[super viewDidLoad];
 	self.brightnessSlider.value = self.brightnessStepper.value;
 	[self.brightnessSlider setContinuous:YES];
+	
+	self.view.superview.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 }
 
 #define SELECTED_COLOR_KEY CURRENT_COLOR_KEY

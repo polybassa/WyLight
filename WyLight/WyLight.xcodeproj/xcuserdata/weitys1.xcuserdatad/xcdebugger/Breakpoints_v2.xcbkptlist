@@ -134,11 +134,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WyLight/ViewController/NWBrightnessViewController.m"
-            timestampString = "402410333.345602"
+            timestampString = "403024785.559713"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
             landmarkName = "-sliderValueChanged:"
             landmarkType = "5">
          </BreakpointContent>
@@ -150,11 +150,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WyLight/ViewController/NWBrightnessViewController.m"
-            timestampString = "402410333.345602"
+            timestampString = "403024785.559713"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "110"
-            endingLineNumber = "110"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
             landmarkName = "-stepperValueChanged:"
             landmarkType = "5">
          </BreakpointContent>
@@ -166,11 +166,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WyLight/ViewController/NWColorSliderViewController.m"
-            timestampString = "402409130.42552"
+            timestampString = "403024555.366489"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "105"
-            endingLineNumber = "105"
+            startingLineNumber = "109"
+            endingLineNumber = "109"
             landmarkName = "-greenChanged:"
             landmarkType = "5">
          </BreakpointContent>
@@ -182,11 +182,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WyLight/Script_DEPRECATED/NWScriptViewController.m"
-            timestampString = "402945522.290249"
+            timestampString = "403026043.950399"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "272"
-            endingLineNumber = "272"
+            startingLineNumber = "261"
+            endingLineNumber = "261"
             landmarkName = "-deleteScriptObject:"
             landmarkType = "5">
          </BreakpointContent>
@@ -318,11 +318,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WyLight/ViewController/NWComplexScriptObjectViewController.m"
-            timestampString = "402956943.065104"
+            timestampString = "403026650.833976"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "340"
-            endingLineNumber = "340"
+            startingLineNumber = "347"
+            endingLineNumber = "347"
             landmarkName = "-longPressOnScriptObjectControl:"
             landmarkType = "5">
          </BreakpointContent>
