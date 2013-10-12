@@ -10,7 +10,7 @@
 #import "NWScript.h"
 #import "NWScriptView.h"
 #import "NWComplexScriptCommandObject.h"
-#import "NWComplexScriptObjectViewController.h"
+#import "NWComplexScriptCommandEditorViewController.h"
 #import "NWScriptCellView.h"
 #import "NWAddScriptObjectView.h"
 #import "WCWiflyControlWrapper.h"
@@ -455,8 +455,8 @@
 			[segue.destinationViewController performSelector:@selector(setControlHandle:) withObject:self.controlHandle];
 		}
 		
-		if ([segue.destinationViewController isKindOfClass:[NWComplexScriptObjectViewController class]]) {
-			NWComplexScriptObjectViewController *ctrl = (NWComplexScriptObjectViewController *)segue.destinationViewController;
+		if ([segue.destinationViewController isKindOfClass:[NWComplexScriptCommandEditorViewController class]]) {
+			NWComplexScriptCommandEditorViewController *ctrl = (NWComplexScriptCommandEditorViewController *)segue.destinationViewController;
 			ctrl.command = [self.script.scriptArray objectAtIndex:self.indexForObjectToEdit];
 		}
 	}

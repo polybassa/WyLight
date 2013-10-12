@@ -23,9 +23,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-		self.layer.shouldRasterize = YES;
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleHeight;
-        self.clipsToBounds = YES;
+		self.clipsToBounds = YES;
 	}
     return self;
 }

@@ -546,7 +546,7 @@
             <objects>
                 <tabBarController definesPresentationContext="YES" id="ges-5L-40i" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="DU7-qC-bd2"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="bRf-Na-Ymi">
                         <rect key="frame" x="129" y="330" width="163" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -597,10 +597,10 @@
             </objects>
             <point key="canvasLocation" x="2762" y="1445"/>
         </scene>
-        <!--Complex Script Object View Controller-->
+        <!--Complex Script Command Editor View Controller-->
         <scene sceneID="dxg-Mg-F5T">
             <objects>
-                <viewController id="AAq-SD-Zpf" customClass="NWComplexScriptObjectViewController" sceneMemberID="viewController">
+                <viewController id="AAq-SD-Zpf" customClass="NWComplexScriptCommandEditorViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="eNX-vT-brr"/>
                         <viewControllerLayoutGuide type="bottom" id="y6p-Ac-PnT"/>

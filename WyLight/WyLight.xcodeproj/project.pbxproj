@@ -88,6 +88,8 @@
 		5CD991FE1803FDA5003C4F99 /* TouchAndHoldButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD991FD1803FDA5003C4F99 /* TouchAndHoldButton.m */; };
 		5CD992011804A5CD003C4F99 /* NWAppInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD992001804A5CD003C4F99 /* NWAppInfoViewController.m */; };
 		5CDE707A18094BF80032D2F0 /* NWTimeValueEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE707918094BF80032D2F0 /* NWTimeValueEditView.m */; };
+		5CDE707D180987B40032D2F0 /* NWComplexScriptCommandEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE707C180987B40032D2F0 /* NWComplexScriptCommandEditorViewController.m */; };
+		5CDE70801809A7CA0032D2F0 /* NWGradientEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE707F1809A7CA0032D2F0 /* NWGradientEditView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -260,6 +262,10 @@
 		5CD992001804A5CD003C4F99 /* NWAppInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWAppInfoViewController.m; path = ViewController/NWAppInfoViewController.m; sourceTree = "<group>"; };
 		5CDE707818094BF80032D2F0 /* NWTimeValueEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWTimeValueEditView.h; sourceTree = "<group>"; };
 		5CDE707918094BF80032D2F0 /* NWTimeValueEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWTimeValueEditView.m; sourceTree = "<group>"; };
+		5CDE707B180987B40032D2F0 /* NWComplexScriptCommandEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWComplexScriptCommandEditorViewController.h; path = ViewController/NWComplexScriptCommandEditorViewController.h; sourceTree = "<group>"; };
+		5CDE707C180987B40032D2F0 /* NWComplexScriptCommandEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWComplexScriptCommandEditorViewController.m; path = ViewController/NWComplexScriptCommandEditorViewController.m; sourceTree = "<group>"; };
+		5CDE707E1809A7CA0032D2F0 /* NWGradientEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWGradientEditView.h; sourceTree = "<group>"; };
+		5CDE707F1809A7CA0032D2F0 /* NWGradientEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWGradientEditView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -298,6 +304,8 @@
 				5C90B3AE17F3714B00BAC74F /* NWScriptView.m */,
 				5CD991F61800951E003C4F99 /* NWComplexScriptObjectViewController.h */,
 				5CD991F71800951E003C4F99 /* NWComplexScriptObjectViewController.m */,
+				5CDE707B180987B40032D2F0 /* NWComplexScriptCommandEditorViewController.h */,
+				5CDE707C180987B40032D2F0 /* NWComplexScriptCommandEditorViewController.m */,
 			);
 			name = Script;
 			sourceTree = "<group>";
@@ -541,6 +549,8 @@
 				5CD991FD1803FDA5003C4F99 /* TouchAndHoldButton.m */,
 				5CDE707818094BF80032D2F0 /* NWTimeValueEditView.h */,
 				5CDE707918094BF80032D2F0 /* NWTimeValueEditView.m */,
+				5CDE707E1809A7CA0032D2F0 /* NWGradientEditView.h */,
+				5CDE707F1809A7CA0032D2F0 /* NWGradientEditView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -705,6 +715,7 @@
 				5C8395D817EB61B4007EF0C6 /* WCEndpoint.m in Sources */,
 				5C35FEF017EF4F7100E3DE0D /* NWSetGradientScriptCommandObject.mm in Sources */,
 				5C83963317EB6C00007EF0C6 /* KZColorPickerHSWheel.m in Sources */,
+				5CDE70801809A7CA0032D2F0 /* NWGradientEditView.m in Sources */,
 				5C4F56EB17EC968E0039ADFF /* NWColorSliderViewController.m in Sources */,
 				5C12FAB317FF05A000E4E65D /* NWScriptCellView.m in Sources */,
 				5C35FEF117EF4F7100E3DE0D /* NWSetFadeScriptCommandObject.mm in Sources */,
@@ -714,6 +725,7 @@
 				5C90B3C117F3714B00BAC74F /* NWScriptViewController.m in Sources */,
 				5C90B39317EF56A000BAC74F /* ALRadialButton.m in Sources */,
 				5C83963817EB6C00007EF0C6 /* UIColor-Expanded.m in Sources */,
+				5CDE707D180987B40032D2F0 /* NWComplexScriptCommandEditorViewController.m in Sources */,
 				5C90B39A17EF56F300BAC74F /* NWScriptObjectView.m in Sources */,
 				5C90B3A117F1702F00BAC74F /* NWTestViewController.m in Sources */,
 				5C83963217EB6C00007EF0C6 /* KZColorPickerBrightnessSlider.m in Sources */,

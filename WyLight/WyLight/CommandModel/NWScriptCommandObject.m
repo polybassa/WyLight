@@ -19,7 +19,7 @@
 @synthesize backgroundColor = _backgroundColor;
 
 #define DURATION_KEY @"WyLightRemote.NWScriptCommandObject.duration"
-#define DEFAULT_DURATION 100
+#define DEFAULT_DURATION 20
 #define DEFAULT_BACKGROUNDCOLOR [UIColor blackColor]
 
 - (id)initWithCoder:(NSCoder *)aDecoder {

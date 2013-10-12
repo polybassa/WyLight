@@ -21,5 +21,8 @@
 
 @property (nonatomic, weak) NWScriptCommandObject *command;
 @property (nonatomic, weak) id<NWTimeValueEditViewDelegate> delegate;
+@property (nonatomic) CGFloat cornerRadius;
+
+- (void)reloadData;
 
 @end

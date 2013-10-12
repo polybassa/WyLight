@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "NWTimeValueEditView.h"
 #import "NWScriptCommandObject.h"
 #import "NWComplexScriptCommandObject.h"
@@ -24,11 +25,13 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-		
-		
+        self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleHeight;
+		self.clipsToBounds = YES;
+
 		self.timeSlider = [[UISlider alloc] initWithFrame:CGRectZero];
 		self.timeSlider.continuous = YES;
-		self.timeSlider.maximumValue = ~((uint16_t)1);
+		self.timeSlider.maximumValue = @(0xffff).floatValue;
+		self.timeSlider.minimumValue = 0;
 		[self.timeSlider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
 		[self addSubview:self.timeSlider];
 		
@@ -37,7 +40,7 @@
 		[self addSubview:self.timeLabel];
 		
 		self.waitInfoLabel = [[UILabel alloc]initWithFrame:CGRectZero];
-		self.waitInfoLabel.text = @"Effect is a waiting time";
+		self.waitInfoLabel.text = @"Enable Effect:";
 		[self addSubview:self.waitInfoLabel];
 		
 		self.waitSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
@@ -53,11 +56,15 @@
 - (void)setFrame:(CGRect)frame {
 	[super setFrame:frame];
 	{
-		self.waitInfoLabel.frame = CGRectMake(self.bounds.size.width / 10, self.bounds.size.height / 10, self.bounds.size.width / 3, self.bounds.size.height / 4);
-		self.waitSwitch.frame = CGRectMake(self.bounds.size.width / 2, self.bounds.size.height / 10, self.bounds.size.width / 3, self.bounds.size.height / 4);
+		self.waitInfoLabel.frame = CGRectMake(self.bounds.size.width / 10, self.bounds.size.height / 10, self.bounds.size.width / 2, self.bounds.size.height / 4);
+		self.waitSwitch.frame = CGRectMake(self.bounds.size.width * 3 / 4, self.bounds.size.height / 10, self.bounds.size.width / 3, self.bounds.size.height / 4);
 		self.timeSlider.frame =  CGRectMake(self.bounds.size.width / 10, self.bounds.size.height / 2, self.bounds.size.width - self.bounds.size.width / 5 , self.bounds.size.height / 4);
 		self.timeLabel.frame =  CGRectMake(self.bounds.size.width / 10, self.bounds.size.height * 3 / 4,  self.bounds.size.width - self.bounds.size.width / 5 , self.bounds.size.height / 4);
 	}
+}
+
+- (void)setCornerRadius:(CGFloat)cornerRadius {
+	self.layer.cornerRadius = cornerRadius;
 }
 
 - (void)setCommand:(NWScriptCommandObject *)command {
@@ -67,12 +74,12 @@
 
 - (void)reloadData {
 	self.timeSlider.value = self.command.duration;
-	self.timeLabel.text =  [NSString stringWithFormat:@"Duration %2.1f secounds", (self.timeSlider.value / 100)];
+	self.timeLabel.text =  [NSString stringWithFormat:@"Duration: %2.1f s", ((float)self.command.duration / 100)];
 	
 	if ([self.command isKindOfClass:[NWComplexScriptCommandObject class]]) {
 		self.waitInfoLabel.hidden = NO;
 		self.waitSwitch.hidden = NO;
-		self.waitSwitch.on = ((NWComplexScriptCommandObject *)self.command).waitCommand;
+		self.waitSwitch.on = !((NWComplexScriptCommandObject *)self.command).waitCommand;
 	} else {
 		self.waitSwitch.hidden = YES;
 		self.waitInfoLabel.hidden = YES;

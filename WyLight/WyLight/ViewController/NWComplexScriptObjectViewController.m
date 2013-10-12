@@ -42,7 +42,6 @@ enum EDITCOLORTARGET {
 @property (nonatomic, strong) UILabel *waitInfoLabel;
 @property (nonatomic, assign) NSUInteger currentItemIndex;
 @property (nonatomic, assign) enum EDITCOLORTARGET customColorTarget;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *addBarButton;
 @property (nonatomic) BOOL sendInitialClearScript;
 @property (nonatomic, assign) uint32_t addressMaskForFadeEditView;
 
