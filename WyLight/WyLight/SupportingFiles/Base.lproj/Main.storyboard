@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="x4A-Fz-YpF">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Gj3-1f-Jf4">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
@@ -541,6 +541,40 @@
             </objects>
             <point key="canvasLocation" x="169" y="117"/>
         </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="gYw-1s-Dv3">
+            <objects>
+                <tabBarController definesPresentationContext="YES" id="ges-5L-40i" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="DU7-qC-bd2"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="bRf-Na-Ymi">
+                        <rect key="frame" x="129" y="330" width="163" height="49"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="bdh-ac-Ftv" kind="relationship" relationship="viewControllers" id="3wu-EI-Tdk"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OOn-R6-5w1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1916" y="1892"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="59n-NL-Xt8">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="Gj3-1f-Jf4" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="N5X-65-k4J">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="ges-5L-40i" kind="relationship" relationship="rootViewController" id="rDo-xN-2jG"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bXf-H1-eAj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1404" y="1892"/>
+        </scene>
         <!--Script View Controller - Script Editor-->
         <scene sceneID="Str-vd-itS">
             <objects>
@@ -626,5 +660,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="ozS-Lc-m4i"/>
+        <segue reference="3wu-EI-Tdk"/>
     </inferredMetricsTieBreakers>
 </document>

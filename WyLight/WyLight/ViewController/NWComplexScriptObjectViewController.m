@@ -38,6 +38,8 @@ enum EDITCOLORTARGET {
 @property (nonatomic, strong) TouchAndHoldButton *gradientMinusButton;
 @property (nonatomic, strong) NWScriptObjectView *fadeEditViewPortrait;
 @property (nonatomic, strong) NWScriptObjectView *fadeEditViewLandscape;
+@property (nonatomic, strong) UISwitch *waitSwitch;
+@property (nonatomic, strong) UILabel *waitInfoLabel;
 @property (nonatomic, assign) NSUInteger currentItemIndex;
 @property (nonatomic, assign) enum EDITCOLORTARGET customColorTarget;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addBarButton;
@@ -71,11 +73,11 @@ enum EDITCOLORTARGET {
 - (void)fixLocations {
 	if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
 		
-		self.carousel.frame = CGRectMake(0, 60, self.view.bounds.size.width, self.view.bounds.size.height / 2);
+		self.carousel.frame = CGRectMake(0, 100, self.view.bounds.size.width, self.view.bounds.size.height / 2);
 		
-		self.color1Button.frame = CGRectMake(self.view.bounds.size.width / 2 - 80, self.view.bounds.size.height / 2 + 60, 60, 40);
+		self.color1Button.frame = CGRectMake(self.view.bounds.size.width / 2 - 80, self.view.bounds.size.height / 2 + 100, 60, 40);
 		
-		self.color2Button.frame = CGRectMake(self.view.bounds.size.width / 2 + 20, self.view.bounds.size.height / 2 + 60, 60, 40);
+		self.color2Button.frame = CGRectMake(self.view.bounds.size.width / 2 + 20, self.view.bounds.size.height / 2 + 100, 60, 40);
 		
 		self.gradientPlusButton.frame = CGRectMake(self.view.bounds.size.width - 80, self.view.bounds.size.height / 2 + 150, 80, 80);
 
@@ -85,7 +87,11 @@ enum EDITCOLORTARGET {
 
 		self.gradientDownButton.frame = CGRectMake(90, self.view.bounds.size.height / 2 + 150, 80, 80);
 		
-		self.fadeEditViewPortrait.frame = CGRectMake(1, self.view.bounds.size.height / 2 + 130, self.view.bounds.size.width - 2, self.view.bounds.size.height - (self.view.bounds.size.height / 2 + 130) - 10);
+		self.fadeEditViewPortrait.frame = CGRectMake(1, self.view.bounds.size.height / 2 + 160, self.view.bounds.size.width - 2, self.view.bounds.size.height - (self.view.bounds.size.height / 2 + 160) - 1);
+		
+		self.waitInfoLabel.frame = CGRectMake(20, 60, 200, 30);
+		
+		self.waitSwitch.frame = CGRectMake(self.view.bounds.size.width - 80, 60, 60, 30);
 	}
 	else {
 		self.carousel.frame = CGRectMake(0, 50, self.view.bounds.size.width / 2, self.view.bounds.size.height - 50);
@@ -173,83 +179,113 @@ enum EDITCOLORTARGET {
 	[self.fadeEditViewLandscape addGestureRecognizer:tapLandscape];
 	[self.view addSubview:self.fadeEditViewLandscape];
 	
+	self.waitInfoLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+	self.waitInfoLabel.text = @"Effect is a waiting time:";
+	[self.view addSubview:self.waitInfoLabel];
+	
+	self.waitSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+	self.waitSwitch.on = self.command.isWaitCommand;
+	[self.waitSwitch addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
+	[self.view addSubview:self.waitSwitch];
+	
 	[self.view bringSubviewToFront:self.carousel];
+	[self.view bringSubviewToFront:self.color1Button];
+	[self.view bringSubviewToFront:self.color2Button];
 }
 
 - (void)updateView {
-	id currentCommand = self.command.scriptObjects[self.currentItemIndex];
-	if ([currentCommand isKindOfClass:[NWSetFadeScriptCommandObject class]]) {
-		NWSetFadeScriptCommandObject *currentFadeCommand = (NWSetFadeScriptCommandObject *)currentCommand;
-		[self.color2Menu itemsWillDisapearIntoButton:self.color2Button];
-		
-		currentFadeCommand.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-		
+	if (self.command.isWaitCommand) {
+		self.color1Button.hidden = YES;
 		self.color2Button.hidden = YES;
 		self.gradientUpButton.hidden = YES;
 		self.gradientPlusButton.hidden = YES;
 		self.gradientMinusButton.hidden = YES;
 		self.gradientDownButton.hidden = YES;
-		
-		if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
-			self.fadeEditViewPortrait.endColors = self.fadeEditViewPortrait.startColors = currentFadeCommand.colors;
-			self.fadeEditViewLandscape.endColors = self.fadeEditViewLandscape.startColors = currentFadeCommand.colors;
-			self.fadeEditViewPortrait.hidden = NO;
-			self.fadeEditViewLandscape.hidden = YES;
-		} else {
-			self.fadeEditViewPortrait.endColors = self.fadeEditViewPortrait.startColors = currentFadeCommand.colors;
-			self.fadeEditViewLandscape.endColors = self.fadeEditViewLandscape.startColors = currentFadeCommand.colors;
-			self.fadeEditViewLandscape.hidden = NO;
-			self.fadeEditViewPortrait.hidden = YES;
-		}
-		[self.color1Button setBackgroundImage:[NWComplexScriptObjectViewController imageWithColors:@[currentFadeCommand.color]] forState:UIControlStateNormal];
-		
-	} else if ([currentCommand isKindOfClass:[NWSetGradientScriptCommandObject class]]) {
-		NWSetGradientScriptCommandObject *currentGradientCommand = (NWSetGradientScriptCommandObject *)currentCommand;
-		
-		self.fadeEditViewPortrait.hidden = YES;
 		self.fadeEditViewLandscape.hidden = YES;
+		self.fadeEditViewPortrait.hidden = YES;
+		self.carousel.scrollEnabled = NO;
+		[self.carousel reloadItemAtIndex:self.carousel.currentItemIndex animated:YES];
+	} else {
+		self.carousel.scrollEnabled = YES;
 		
-		self.gradientDownButton.hidden = NO;
-		self.gradientMinusButton.hidden = NO;
-		self.gradientPlusButton.hidden = NO;
-		self.gradientUpButton.hidden = NO;
-		
-		if (currentGradientCommand.numberOfLeds <= 1) {
-			self.gradientMinusButton.enabled = NO;
-		} else {
-			self.gradientMinusButton.enabled = YES;
+		id currentCommand = self.command.scriptObjects[self.currentItemIndex];
+		if ([currentCommand isKindOfClass:[NWSetFadeScriptCommandObject class]]) {
+			NWSetFadeScriptCommandObject *currentFadeCommand = (NWSetFadeScriptCommandObject *)currentCommand;
+			[self.color2Menu itemsWillDisapearIntoButton:self.color2Button];
+			
+			currentFadeCommand.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+			
+			self.color2Button.hidden = YES;
+			self.gradientUpButton.hidden = YES;
+			self.gradientPlusButton.hidden = YES;
+			self.gradientMinusButton.hidden = YES;
+			self.gradientDownButton.hidden = YES;
+			
+			if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
+				self.fadeEditViewPortrait.endColors = self.fadeEditViewPortrait.startColors = currentFadeCommand.colors;
+				self.fadeEditViewLandscape.endColors = self.fadeEditViewLandscape.startColors = currentFadeCommand.colors;
+				self.fadeEditViewPortrait.hidden = NO;
+				self.fadeEditViewLandscape.hidden = YES;
+			} else {
+				self.fadeEditViewPortrait.endColors = self.fadeEditViewPortrait.startColors = currentFadeCommand.colors;
+				self.fadeEditViewLandscape.endColors = self.fadeEditViewLandscape.startColors = currentFadeCommand.colors;
+				self.fadeEditViewLandscape.hidden = NO;
+				self.fadeEditViewPortrait.hidden = YES;
+			}
+			[self.color1Button setBackgroundImage:[NWComplexScriptObjectViewController imageWithColors:@[currentFadeCommand.color]] forState:UIControlStateNormal];
+			
+		} else if ([currentCommand isKindOfClass:[NWSetGradientScriptCommandObject class]]) {
+			NWSetGradientScriptCommandObject *currentGradientCommand = (NWSetGradientScriptCommandObject *)currentCommand;
+			
+			self.fadeEditViewPortrait.hidden = YES;
+			self.fadeEditViewLandscape.hidden = YES;
+			
+			self.gradientDownButton.hidden = NO;
+			self.gradientMinusButton.hidden = NO;
+			self.gradientPlusButton.hidden = NO;
+			self.gradientUpButton.hidden = NO;
+			
+			if (currentGradientCommand.numberOfLeds <= 1) {
+				self.gradientMinusButton.enabled = NO;
+			} else {
+				self.gradientMinusButton.enabled = YES;
+			}
+			
+			if (currentGradientCommand.numberOfLeds >= [NWSetGradientScriptCommandObject maximalNumberOfLeds]) {
+				self.gradientPlusButton.enabled = NO;
+			} else {
+				self.gradientPlusButton.enabled = YES;
+			}
+			
+			if (currentGradientCommand.address & 0x80000000) {
+				self.gradientDownButton.enabled = NO;
+			} else {
+				self.gradientDownButton.enabled = YES;
+			}
+			
+			if (currentGradientCommand.address & 0x00000001) {
+				self.gradientUpButton.enabled = NO;
+			} else {
+				self.gradientUpButton.enabled = YES;
+			}
+			
+			self.color2Button.hidden = NO;
+			[self.color2Button setBackgroundImage:[NWComplexScriptObjectViewController imageWithColors:@[currentGradientCommand.color2]] forState:UIControlStateNormal];
+			[self.color1Button setBackgroundImage:[NWComplexScriptObjectViewController imageWithColors:@[currentGradientCommand.color1]] forState:UIControlStateNormal];
 		}
-		
-		if (currentGradientCommand.numberOfLeds >= [NWSetGradientScriptCommandObject maximalNumberOfLeds]) {
-			self.gradientPlusButton.enabled = NO;
-		} else {
-			self.gradientPlusButton.enabled = YES;
-		}
-		
-		if (currentGradientCommand.address & 0x80000000) {
-			self.gradientDownButton.enabled = NO;
-		} else {
-			self.gradientDownButton.enabled = YES;
-		}
-		
-		if (currentGradientCommand.address & 0x00000001) {
-			self.gradientUpButton.enabled = NO;
-		} else {
-			self.gradientUpButton.enabled = YES;
-		}
-		
-		self.color2Button.hidden = NO;
-		[self.color2Button setBackgroundImage:[NWComplexScriptObjectViewController imageWithColors:@[currentGradientCommand.color2]] forState:UIControlStateNormal];
-		[self.color1Button setBackgroundImage:[NWComplexScriptObjectViewController imageWithColors:@[currentGradientCommand.color1]] forState:UIControlStateNormal];
 	}
 	[self sendPreview];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-		self.fadeEditViewLandscape.hidden = NO;
+		if (!self.fadeEditViewPortrait.hidden) {
+			self.fadeEditViewLandscape.hidden = NO;
+		}
 	} else {
-		self.fadeEditViewPortrait.hidden = NO;
+		if (!self.fadeEditViewLandscape.hidden) {
+			self.fadeEditViewPortrait.hidden = NO;
+		}
 	}
 }
 
@@ -286,7 +322,6 @@ enum EDITCOLORTARGET {
     {
         view = [[NWScriptObjectControl alloc] initWithFrame:CGRectMake(0, 0, 200.0f, 200.0f)];
         view.contentMode = UIViewContentModeCenter;
-		view.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.9 alpha:0.2];
     }
     
     view.tag = self.command.scriptObjects.count - 1 - index;
@@ -294,7 +329,13 @@ enum EDITCOLORTARGET {
 		NWScriptObjectControl* scriptView = (NWScriptObjectControl *)view;
 		id<NWDrawableCommand> command = [self.command.scriptObjects objectAtIndex:view.tag];
 		[command setBackgroundColor:[UIColor clearColor]];
-		scriptView.endColors = [command colors];
+		if (self.command.waitCommand) {
+			scriptView.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.9 alpha:0.9];
+			scriptView.endColors = self.command.prev.colors;
+		} else {
+			scriptView.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.9 alpha:0.2];
+			scriptView.endColors = [command colors];
+		}
 		scriptView.cornerRadius = 5.0;
 		scriptView.quivering = NO;
 		scriptView.downscale = NO;
@@ -678,6 +719,12 @@ enum EDITCOLORTARGET {
 		[self.carousel reloadItemAtIndex:[self.carousel indexOfItemView:self.carousel.currentItemView] animated:YES];
 		[self updateView];
 	}
+}
+
+#pragma mark - SWITCH CALLBACK
+- (IBAction)switchValueChanged:(UISwitch *)sender {
+	self.command.waitCommand = sender.on;
+	[self updateView];
 }
 
 #pragma mark - FADE EDIT

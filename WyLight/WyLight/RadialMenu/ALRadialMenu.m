@@ -48,8 +48,8 @@
 	
 	
 	float angle = (arc>=360)?(360/itemCount):((itemCount>1)?(arc/(itemCount-1)):0.0f);
-	int centerX = frame.origin.x + (frame.size.height/2);
-	int centerY = frame.origin.y + (frame.size.width/2);
+	int centerX = frame.origin.x + (frame.size.width/2);
+	int centerY = frame.origin.y + (frame.size.height/2);
 	CGPoint origin = CGPointMake(centerX, centerY);
 	
 	float buttonSize = 25.0f;
