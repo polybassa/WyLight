@@ -65,6 +65,7 @@
 
 - (void)setCornerRadius:(CGFloat)cornerRadius {
 	self.layer.cornerRadius = cornerRadius;
+	[self setNeedsDisplay];
 }
 
 - (void)setCommand:(NWScriptCommandObject *)command {

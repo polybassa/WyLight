@@ -6,9 +6,11 @@
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "NWGradientEditView.h"
 #import "TouchAndHoldButton.h"
 #import "NWSetGradientScriptCommandObject.h"
+
 
 @interface NWGradientEditView ()
 
@@ -71,6 +73,7 @@
 
 - (void)setCornerRadius:(CGFloat)cornerRadius {
 	self.layer.cornerRadius = cornerRadius;
+	[self setNeedsDisplay];
 }
 
 - (void)setCommand:(NWScriptCommandObject *)command {

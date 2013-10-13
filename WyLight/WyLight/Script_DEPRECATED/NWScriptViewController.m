@@ -167,8 +167,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
 	[self.scriptView reloadData];
+	[super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

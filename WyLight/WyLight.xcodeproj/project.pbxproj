@@ -90,6 +90,8 @@
 		5CDE707A18094BF80032D2F0 /* NWTimeValueEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE707918094BF80032D2F0 /* NWTimeValueEditView.m */; };
 		5CDE707D180987B40032D2F0 /* NWComplexScriptCommandEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE707C180987B40032D2F0 /* NWComplexScriptCommandEditorViewController.m */; };
 		5CDE70801809A7CA0032D2F0 /* NWGradientEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE707F1809A7CA0032D2F0 /* NWGradientEditView.m */; };
+		5CDE7083180A82310032D2F0 /* NWFadeEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE7082180A82310032D2F0 /* NWFadeEditView.m */; };
+		5CDE7086180A8F1F0032D2F0 /* NWColorEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE7085180A8F1F0032D2F0 /* NWColorEditView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -266,6 +268,10 @@
 		5CDE707C180987B40032D2F0 /* NWComplexScriptCommandEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWComplexScriptCommandEditorViewController.m; path = ViewController/NWComplexScriptCommandEditorViewController.m; sourceTree = "<group>"; };
 		5CDE707E1809A7CA0032D2F0 /* NWGradientEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWGradientEditView.h; sourceTree = "<group>"; };
 		5CDE707F1809A7CA0032D2F0 /* NWGradientEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWGradientEditView.m; sourceTree = "<group>"; };
+		5CDE7081180A82310032D2F0 /* NWFadeEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWFadeEditView.h; sourceTree = "<group>"; };
+		5CDE7082180A82310032D2F0 /* NWFadeEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWFadeEditView.m; sourceTree = "<group>"; };
+		5CDE7084180A8F1F0032D2F0 /* NWColorEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWColorEditView.h; sourceTree = "<group>"; };
+		5CDE7085180A8F1F0032D2F0 /* NWColorEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWColorEditView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -551,6 +557,10 @@
 				5CDE707918094BF80032D2F0 /* NWTimeValueEditView.m */,
 				5CDE707E1809A7CA0032D2F0 /* NWGradientEditView.h */,
 				5CDE707F1809A7CA0032D2F0 /* NWGradientEditView.m */,
+				5CDE7081180A82310032D2F0 /* NWFadeEditView.h */,
+				5CDE7082180A82310032D2F0 /* NWFadeEditView.m */,
+				5CDE7084180A8F1F0032D2F0 /* NWColorEditView.h */,
+				5CDE7085180A8F1F0032D2F0 /* NWColorEditView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -739,12 +749,14 @@
 				5C90B3C217F3714B00BAC74F /* NWScriptObjectCollectionViewCell.m in Sources */,
 				5C8395DF17EB61B4007EF0C6 /* ComProxy.cpp in Sources */,
 				5C35FEF217EF4F7100E3DE0D /* NWComplexScriptCommandObject.m in Sources */,
+				5CDE7086180A8F1F0032D2F0 /* NWColorEditView.m in Sources */,
 				5C90B39B17EF56F300BAC74F /* NWScriptObjectControl.m in Sources */,
 				5C90B39E17EF572400BAC74F /* NWGradientView.m in Sources */,
 				5C83958A17EB6138007EF0C6 /* NWAppDelegate.m in Sources */,
 				5CDE707A18094BF80032D2F0 /* NWTimeValueEditView.m in Sources */,
 				5C8395E317EB61B4007EF0C6 /* WiflyControl.cpp in Sources */,
 				5CD991F81800951E003C4F99 /* NWComplexScriptObjectViewController.m in Sources */,
+				5CDE7083180A82310032D2F0 /* NWFadeEditView.m in Sources */,
 				5C35FEED17EF4F7100E3DE0D /* NWLoopOffCommandObject.m in Sources */,
 				5C83963017EB6C00007EF0C6 /* KZColorPicker.m in Sources */,
 				5C8395E117EB61B4007EF0C6 /* MaskBuffer.cpp in Sources */,

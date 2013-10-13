@@ -93,8 +93,12 @@
 		}
 		return outPutColors;
 	}
-	
-	NSMutableArray *outPutColors = [[NSMutableArray alloc]init];
+	NSMutableArray *outPutColors;
+	if (self.prev) {
+		outPutColors = [[NSMutableArray alloc]initWithArray:self.prev.colors copyItems:YES];
+	} else {
+		outPutColors = [[NSMutableArray alloc]init];
+	}
 	uint32_t compareMask = 0x00000001;
 	for (unsigned int i = 0; i < NUM_OF_LED; i++) {  //i = 0 - 31
 		NSUInteger j = self.scriptObjects.count;
@@ -103,7 +107,11 @@
 			if ([currentObj respondsToSelector:@selector(address)]) {
 				const uint32_t bitmask = (uint32_t)[currentObj performSelector:@selector(address)];
 				if (bitmask & compareMask) {
-					[outPutColors addObject:currentObj.colors[i]];
+					if (self.prev) {
+						[outPutColors replaceObjectAtIndex:i withObject:currentObj.colors[i]];
+					} else {
+						[outPutColors addObject:currentObj.colors[i]];
+					}
 					break;
 				}
 			}
