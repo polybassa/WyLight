@@ -134,7 +134,7 @@
 		[self.delegate NWColorEditView:self changedColor:[[NWColorEditView allColors] objectAtIndex:sender.tag]];
 	} else {
 		//ColorPicker
-		NSLog(@"ColorPicker");
+		[self.delegate NWColorEditViewNeedsColorPicker:self];
 	}
 }
 

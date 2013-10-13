@@ -83,7 +83,6 @@
 		5C90B3C417F3714B00BAC74F /* NWCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3B817F3714B00BAC74F /* NWCollectionViewLayout.m */; };
 		5C90B3C517F3714B00BAC74F /* NWCollectionViewLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3BA17F3714B00BAC74F /* NWCollectionViewLayoutAttributes.m */; };
 		5C90B3C617F3714B00BAC74F /* NWEditComplexScriptObjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3BC17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.m */; };
-		5CD991F81800951E003C4F99 /* NWComplexScriptObjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD991F71800951E003C4F99 /* NWComplexScriptObjectViewController.m */; };
 		5CD991FB180095CA003C4F99 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD991FA180095CA003C4F99 /* iCarousel.m */; };
 		5CD991FE1803FDA5003C4F99 /* TouchAndHoldButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD991FD1803FDA5003C4F99 /* TouchAndHoldButton.m */; };
 		5CD992011804A5CD003C4F99 /* NWAppInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD992001804A5CD003C4F99 /* NWAppInfoViewController.m */; };
@@ -254,8 +253,6 @@
 		5C90B3BA17F3714B00BAC74F /* NWCollectionViewLayoutAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWCollectionViewLayoutAttributes.m; sourceTree = "<group>"; };
 		5C90B3BB17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWEditComplexScriptObjectViewController.h; sourceTree = "<group>"; };
 		5C90B3BC17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWEditComplexScriptObjectViewController.m; sourceTree = "<group>"; };
-		5CD991F61800951E003C4F99 /* NWComplexScriptObjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWComplexScriptObjectViewController.h; path = ViewController/NWComplexScriptObjectViewController.h; sourceTree = "<group>"; };
-		5CD991F71800951E003C4F99 /* NWComplexScriptObjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWComplexScriptObjectViewController.m; path = ViewController/NWComplexScriptObjectViewController.m; sourceTree = "<group>"; };
 		5CD991F9180095CA003C4F99 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		5CD991FA180095CA003C4F99 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 		5CD991FC1803FDA5003C4F99 /* TouchAndHoldButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchAndHoldButton.h; sourceTree = "<group>"; };
@@ -308,8 +305,6 @@
 				5C90B3B217F3714B00BAC74F /* NWScriptViewController.m */,
 				5C90B3AD17F3714B00BAC74F /* NWScriptView.h */,
 				5C90B3AE17F3714B00BAC74F /* NWScriptView.m */,
-				5CD991F61800951E003C4F99 /* NWComplexScriptObjectViewController.h */,
-				5CD991F71800951E003C4F99 /* NWComplexScriptObjectViewController.m */,
 				5CDE707B180987B40032D2F0 /* NWComplexScriptCommandEditorViewController.h */,
 				5CDE707C180987B40032D2F0 /* NWComplexScriptCommandEditorViewController.m */,
 			);
@@ -755,7 +750,6 @@
 				5C83958A17EB6138007EF0C6 /* NWAppDelegate.m in Sources */,
 				5CDE707A18094BF80032D2F0 /* NWTimeValueEditView.m in Sources */,
 				5C8395E317EB61B4007EF0C6 /* WiflyControl.cpp in Sources */,
-				5CD991F81800951E003C4F99 /* NWComplexScriptObjectViewController.m in Sources */,
 				5CDE7083180A82310032D2F0 /* NWFadeEditView.m in Sources */,
 				5C35FEED17EF4F7100E3DE0D /* NWLoopOffCommandObject.m in Sources */,
 				5C83963017EB6C00007EF0C6 /* KZColorPicker.m in Sources */,

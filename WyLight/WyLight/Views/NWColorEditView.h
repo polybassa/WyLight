@@ -13,6 +13,7 @@
 @protocol NWColorEditViewDelegate <NSObject>
 
 - (void)NWColorEditView:(NWColorEditView *)view changedColor:(UIColor *)color;
+- (void)NWColorEditViewNeedsColorPicker:(NWColorEditView *)view;
 
 @end
 

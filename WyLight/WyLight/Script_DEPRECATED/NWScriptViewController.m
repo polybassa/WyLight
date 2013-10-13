@@ -359,6 +359,9 @@
 			if (((NWComplexScriptCommandObject *)self.script.scriptArray[index]).prev) {
 				tempView.scriptObjectView.startColors = ((NWComplexScriptCommandObject *)self.script.scriptArray[index]).prev.colors;
 			}
+			if (index == 0) {
+				tempView.scriptObjectView.startColors = ((NWComplexScriptCommandObject *)self.script.scriptArray.lastObject).colors;
+			}
 			tempView.scriptObjectView.cornerRadius = 5;
 			tempView.delegate = self;
 			tempView.tag = index;
