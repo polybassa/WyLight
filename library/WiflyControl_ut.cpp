@@ -385,6 +385,7 @@ size_t ut_WiflyControl_ConfSetDefaults(void)
 		"set dns name rn.microchip.com\r\n",	// set dns of updateserver
 		"set ip flags 0x6\r\n",			   // if the module loses the accesspoint connection, the connection is closed
 		"set ip dhcp 1\r\n",               // enable DHCP client
+		"set ip proto 11\r\n",               // enable tcp and udp connectivity
 		//		"set ftp address 169.254.7.57\r\n",// configure localhost as ftp server in ad-hoc connection
 		"set ftp pass Pass123\r\n",        // configure ftp password
 		"set ftp user roving\r\n",         // configure ftp username
