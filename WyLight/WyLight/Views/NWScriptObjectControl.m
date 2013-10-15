@@ -9,12 +9,6 @@
 #import "NWScriptObjectControl.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface NWScriptObjectControl ()
-
-@property (nonatomic) CGRect originalFrame;
-
-@end
-
 @implementation NWScriptObjectControl
 
 - (void)setQuivering:(BOOL)quivering {
@@ -31,28 +25,29 @@
 	}
 }
 
+#define DOWNSCALEFACTOR 0.8
+
 - (void)setDownscale:(BOOL)downscale {
 	if (_downscale == downscale) {
 		//nothing to do
 		return;
 	} else {
 		if (downscale) {
-			self.originalFrame = self.frame;
-			self.frame = CGRectInset(self.frame, self.frame.size.width * 0.1, 10);
-			_downscale = YES;
+			self.layer.transform = CATransform3DMakeScale(DOWNSCALEFACTOR, DOWNSCALEFACTOR, 1.0);
 		} else {
-			_downscale = NO;
-			self.frame = self.originalFrame;
+			self.layer.transform = CATransform3DMakeScale(1.0, 1.0, 1.0);
 		}
+		_downscale = downscale;
 	}
 }
 
 - (void)setFrame:(CGRect)frame {
-	self.originalFrame = frame;
 	if (self.downscale) {
-		super.frame = CGRectInset(frame, frame.size.width * 0.1, 10);
+		self.layer.transform = CATransform3DMakeScale(1.0, 1.0, 1.0);
+		[super setFrame:frame];
+		self.layer.transform = CATransform3DMakeScale(DOWNSCALEFACTOR, DOWNSCALEFACTOR, 1.0);
 	} else {
-		super.frame = frame;
+		[super setFrame:frame];
 	}
 }
 

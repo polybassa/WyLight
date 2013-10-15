@@ -65,4 +65,9 @@ void ScriptCtrl_Run(void);
  */
 void ScriptCtrl_DecrementWaitValue(void);
 
+/**
+ * Decrements the wait if the waitvalue is smaller than 7. This is an performance related functiong
+ */
+void ScriptCtrl_CheckAndDecrementWaitValue(void);
+
 #endif /* #ifndef _SCRIPTCTRL_H_ */

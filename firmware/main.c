@@ -104,6 +104,7 @@ interrupt LowPriorityInterrupt(void)
 	if(TMR1IF)
 	{
 	      g_UpdateLedStrip = g_UpdateLedStrip + 1;
+		  ScriptCtrl_CheckAndDecrementWaitValue();
 	      Timer1Disable();
 	      Timer1Interrupt();
 	}
@@ -168,6 +169,14 @@ int main(void)
 		do_and_measure(Error_Throw);
 	
 		do_and_measure(CommandIO_GetCommands);
+		
+		if(g_UpdateLedStrip > 0)
+		{
+			do_and_measure(Ledstrip_UpdateLed);
+			Timer1Enable();
+			g_UpdateLedStrip = 0;
+		}
+		Timer_StopStopwatch(eMAIN);
 				
 		do_and_measure(ScriptCtrl_Run);
 
@@ -180,13 +189,6 @@ int main(void)
 			Timer5InterruptUnlock();
 			
 		}
-		if(g_UpdateLedStrip > 0)
-		{
-			do_and_measure(Ledstrip_UpdateLed);
-			Timer1Enable();
-			g_UpdateLedStrip = 0;
-		}
-		Timer_StopStopwatch(eMAIN);
 	}
 }
 //*********************** UNTERPROGRAMME **********************************************
