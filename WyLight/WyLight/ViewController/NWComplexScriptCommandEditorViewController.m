@@ -112,16 +112,7 @@ enum EditColorTarget {
 		self.scriptSubCommandsCarousel.frame = CGRectMake(0, 60, self.view.bounds.size.width / 2, self.view.bounds.size.height - 60);
 				
 		self.toolKitCarousel.frame = CGRectMake(self.view.bounds.size.width / 2, 60, self.view.bounds.size.width / 2, self.view.bounds.size.height - 60);
-		if (!self.toolKitCarousel.vertical) {
-			self.fadeColorEditView = nil;
-			self.fadeEditView = nil;
-			self.timeValueEditView = nil;
-			self.gradientColor2EditView = nil;
-			self.gradientColor1EditView = nil;
-			self.gradientEditView = nil;
-		}
 		{
-			
 			CGRect toolKitViewRect = CGRectMake(0, 0, 200, 200);
 			self.fadeColorEditView.frame = toolKitViewRect;
 			self.fadeEditView.frame = toolKitViewRect;
@@ -226,6 +217,17 @@ enum EditColorTarget {
 			self.sendInitialClearScript = NO;
 		}
 		[self.controlHandle setColorDirectWithColors:self.command.colors];
+	}
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+	CGRect testviewOne = [self.timeValueEditView convertRect:self.timeValueEditView.frame toView:self.view];
+	CGRect testviewTwo = [self.gradientColor1EditView convertRect:self.gradientColor1EditView.frame toView:self.view];
+	
+	if (CGRectIntersectsRect(testviewOne, testviewTwo)) {
+		[self fixLocations];
+		[self.toolKitCarousel reloadData];
 	}
 }
 
@@ -427,6 +429,13 @@ enum EditColorTarget {
 			}
 		}
 	}
+}
+
+- (CGFloat)carouselItemWidth:(iCarousel *)carousel {
+	if (carousel == self.toolKitCarousel) {
+		return self.timeValueEditView.frame.size.width;
+	}
+	return 0;
 }
 
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel {
