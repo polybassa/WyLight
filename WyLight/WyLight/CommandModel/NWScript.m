@@ -29,17 +29,20 @@
 }
 
 #define SCRIPTARRAY_KEY @"WyLightRemote.NWScript.scriptarray"
+#define TITLE_KEY @"WyLightRemote.NWScript.title"
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
 	self = [self init];
 	if (self) {
 		_scriptArray = [aDecoder decodeObjectForKey:SCRIPTARRAY_KEY];
+        _title = [aDecoder decodeObjectForKey:TITLE_KEY];
 	}
 	return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
 	[aCoder encodeObject:_scriptArray forKey:SCRIPTARRAY_KEY];
+    [aCoder encodeObject:_title forKey:TITLE_KEY];
 }
 
 - (void)fillWithTestData {

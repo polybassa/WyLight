@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class WCWiflyControlWrapper;
+
 @interface NWScriptFolderViewController : UIViewController
+
+@property (nonatomic, weak) WCWiflyControlWrapper *controlHandle;
 
 @end

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Dae-Jr-UA8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="x4A-Fz-YpF">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
@@ -161,20 +161,20 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="kO5-iB-Syi" kind="relationship" relationship="viewControllers" id="nQT-by-sKg"/>
-                        <segue destination="BHs-hC-79E" kind="relationship" relationship="viewControllers" id="LZM-d5-ywb"/>
                         <segue destination="8aI-nb-yel" kind="unwind" identifier="unwindAtConnectionFatalErrorOccured" unwindAction="unwindAtConnectionFatalErrorOccured:" id="oUG-OO-aVZ"/>
                         <segue destination="8aI-nb-yel" kind="unwind" identifier="unwindAtConnectionHasDisconnected" unwindAction="unwindAtConnectionHasDisconnected:" id="2oK-f7-iXU"/>
                         <segue destination="8aI-nb-yel" kind="unwind" identifier="closeConnection" unwindAction="closeConnection:" id="IHp-II-ogR"/>
+                        <segue destination="kO5-iB-Syi" kind="relationship" relationship="viewControllers" id="nQT-by-sKg"/>
+                        <segue destination="BHs-hC-79E" kind="relationship" relationship="viewControllers" id="LZM-d5-ywb"/>
                         <segue destination="bmC-jS-Lb1" kind="relationship" relationship="viewControllers" id="Hxz-z4-9Sg"/>
-                        <segue destination="bdh-ac-Ftv" kind="relationship" relationship="viewControllers" id="7Po-cu-ted"/>
+                        <segue destination="hsM-b9-5b3" kind="relationship" relationship="viewControllers" id="1iy-lb-Lim"/>
                         <segue destination="TaH-Bq-xeS" kind="relationship" relationship="viewControllers" id="nat-gJ-Zvw"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="owE-Pa-gvU" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="8aI-nb-yel" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2032" y="-47"/>
+            <point key="canvasLocation" x="1918" y="-27"/>
         </scene>
         <!--Add New Target Guide View Controller - Prepare new Target-->
         <scene sceneID="Eb9-UZ-MQu">
@@ -555,18 +555,26 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Script Editor" image="Script_Icon" id="a5d-lN-HI4"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="yvg-RB-zXq">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="CeX-Vt-F8F">
+                            <connections>
+                                <action selector="addBarButtonPressed:" destination="bdh-ac-Ftv" id="fEv-7l-AHQ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <segue destination="AAq-SD-Zpf" kind="push" identifier="edit:" id="5BL-QM-p7W"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="34b-7B-v63" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2762" y="1445"/>
+            <point key="canvasLocation" x="3326" y="1389"/>
         </scene>
         <!--Complex Script Command Editor View Controller-->
         <scene sceneID="dxg-Mg-F5T">
             <objects>
-                <viewController id="AAq-SD-Zpf" customClass="NWComplexScriptCommandEditorViewController" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="AAq-SD-Zpf" customClass="NWComplexScriptCommandEditorViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="eNX-vT-brr"/>
                         <viewControllerLayoutGuide type="bottom" id="y6p-Ac-PnT"/>
@@ -591,22 +599,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sxu-Ql-bsT" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="FSl-nu-pOU" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3331" y="1445"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="con-qq-wIV">
-            <objects>
-                <navigationController definesPresentationContext="YES" id="Dae-Jr-UA8" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="aQ8-6l-5Q8">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="SEF-BJ-oVe" kind="relationship" relationship="rootViewController" id="pZd-qx-Ixd"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Kd9-sa-JhH" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2772" y="2175"/>
+            <point key="canvasLocation" x="3895" y="1389"/>
         </scene>
         <!--Default Color Picker View Controller-->
         <scene sceneID="ETU-9M-663">
@@ -625,28 +618,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jFU-fu-NyO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3820" y="1445"/>
+            <point key="canvasLocation" x="4384" y="1389"/>
         </scene>
-        <!--Tab Bar Controller-->
-        <scene sceneID="UIg-B4-IEC">
-            <objects>
-                <tabBarController definesPresentationContext="YES" id="SEF-BJ-oVe" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="fml-wA-6Lx"/>
-                    <nil key="simulatedBottomBarMetrics"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" id="dqo-UB-tnt">
-                        <rect key="frame" x="129" y="330" width="163" height="49"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </tabBar>
-                    <connections>
-                        <segue destination="hsM-b9-5b3" kind="relationship" relationship="viewControllers" id="lo5-RF-la8"/>
-                    </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="HPm-3X-hOG" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3238" y="2175"/>
-        </scene>
-        <!--Script Folder View Controller - Item-->
+        <!--Script Folder View Controller - Script Editor-->
         <scene sceneID="hMo-6q-bij">
             <objects>
                 <viewController id="hsM-b9-5b3" customClass="NWScriptFolderViewController" sceneMemberID="viewController">
@@ -659,15 +633,22 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="Ues-bv-5hx"/>
+                    <tabBarItem key="tabBarItem" title="Script Editor" image="Script_Icon" id="Ues-bv-5hx"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="bLU-sg-b8R"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue destination="bdh-ac-Ftv" kind="push" identifier="edit:" id="dbq-Vd-Qb9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gu0-N2-ish" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3758" y="2175"/>
+            <point key="canvasLocation" x="2762" y="1389"/>
         </scene>
     </scenes>
     <resources>
         <image name="Paint_TabBarIcon" width="30" height="30"/>
+        <image name="Script_Icon" width="30" height="30"/>
         <image name="Script_Icon" width="30" height="30"/>
         <image name="Slider_TabBarIcon" width="30" height="30"/>
         <image name="Sun_TabBarIcon" width="30" height="30"/>

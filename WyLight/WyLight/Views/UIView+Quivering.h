@@ -10,4 +10,6 @@
 
 @interface UIView (Quivering)
 
+- (void)startQuivering;
+- (void)stopQuivering;
 @end

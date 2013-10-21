@@ -89,6 +89,7 @@
 		C08D5DAA181166BF00A73801 /* NWScriptFolderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08D5DA9181166BF00A73801 /* NWScriptFolderViewController.m */; };
 		C0E10EC418142B240009CF3C /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E10EC318142B240009CF3C /* UIImage+ImageEffects.m */; };
 		C0E10EC71814FC1B0009CF3C /* UIView+blurredSnapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E10EC61814FC1B0009CF3C /* UIView+blurredSnapshot.m */; };
+		C0E10ECA1814FF440009CF3C /* UIView+Quivering.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E10EC91814FF440009CF3C /* UIView+Quivering.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -263,6 +264,8 @@
 		C0E10EC318142B240009CF3C /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		C0E10EC51814FC1B0009CF3C /* UIView+blurredSnapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+blurredSnapshot.h"; sourceTree = "<group>"; };
 		C0E10EC61814FC1B0009CF3C /* UIView+blurredSnapshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+blurredSnapshot.m"; sourceTree = "<group>"; };
+		C0E10EC81814FF440009CF3C /* UIView+Quivering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Quivering.h"; sourceTree = "<group>"; };
+		C0E10EC91814FF440009CF3C /* UIView+Quivering.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Quivering.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -539,6 +542,8 @@
 				5C90B39717EF56F300BAC74F /* NWScriptObjectView.m */,
 				5C90B39817EF56F300BAC74F /* NWScriptObjectControl.h */,
 				5C90B39917EF56F300BAC74F /* NWScriptObjectControl.m */,
+				C0E10EC81814FF440009CF3C /* UIView+Quivering.h */,
+				C0E10EC91814FF440009CF3C /* UIView+Quivering.m */,
 				5C83964417EC5E9A007EF0C6 /* NWAddNewTargetGuideView.h */,
 				5C83964517EC5E9A007EF0C6 /* NWAddNewTargetGuideView.m */,
 				5C12FAB117FF05A000E4E65D /* NWScriptCellView.h */,
@@ -693,6 +698,7 @@
 				5C83963417EB6C00007EF0C6 /* KZColorPickerSwatchView.m in Sources */,
 				5C83962F17EB6C00007EF0C6 /* HSV.c in Sources */,
 				5C8395EE17EB6721007EF0C6 /* NWDefaultColorPickerViewController.m in Sources */,
+				C0E10ECA1814FF440009CF3C /* UIView+Quivering.m in Sources */,
 				5C8395E017EB61B4007EF0C6 /* intelhexclass.cpp in Sources */,
 				5C8395B017EB6197007EF0C6 /* NWBroadcastsTVC.m in Sources */,
 				5C83963B17EC542E007EF0C6 /* NWBrightnessViewController.m in Sources */,

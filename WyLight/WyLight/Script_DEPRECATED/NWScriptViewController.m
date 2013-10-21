@@ -18,7 +18,6 @@
 
 @interface NWScriptViewController () <NWScriptViewDataSource, NWScriptCellViewDelegate, UIScrollViewDelegate>
 
-@property (strong, nonatomic) NWScript *script;
 @property (strong, nonatomic) NWScriptView *scriptView;
 @property (strong, nonatomic) TouchAndHoldButton *zoomInButton;
 @property (strong, nonatomic) TouchAndHoldButton *zoomOutButton;
@@ -32,11 +31,11 @@
 @implementation NWScriptViewController
 
 #pragma mark - GETTER + SETTER
-- (NWScript *)script {
-	if (_script == nil) {
-		_script = [[NWScript alloc]init];
-	}
-	return _script;
+
+- (void)setScript:(NWScript *)script {
+    _script = script;
+    
+    [self.scriptView reloadData];
 }
 
 - (void)setTimeScaleFactor:(CGFloat)timeScaleFactor {
@@ -81,7 +80,6 @@
 }
 
 #pragma mark - SETUP STUFF
-#define SCRIPT_KEY @"WyLightRemote.NWScriptViewController.script"
 #define TIMESCALE_KEY @"WyLightRemote.NWScriptViewController.timescalefactor"
 #define DELETE_USER_INFO_KEY @"WyLightRemote.NWScriptViewController.showUserInfo"
 
@@ -122,12 +120,6 @@
 	if (self.timeScaleFactor == 0.0) {
 		self.timeScaleFactor = 1.0;
 	}
-		
-	NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:SCRIPT_KEY];
-	if (data) {
-		self.script = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-	}
-	
 	//script view
 	self.scriptView = [[NWScriptView alloc] initWithFrame:CGRectZero];
 	self.scriptView.dataSource = self;
@@ -154,10 +146,6 @@
 }
 
 - (void)saveUserData {
-	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.script];
-	if (data) {
-		[[NSUserDefaults standardUserDefaults] setObject:data forKey:SCRIPT_KEY];
-	}	
 	[[NSUserDefaults standardUserDefaults] setFloat:self.timeScaleFactor forKey:TIMESCALE_KEY];
 }
 
@@ -169,11 +157,6 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[self.scriptView reloadData];
 	[super viewWillAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-	[self saveUserData];
-	[super viewWillDisappear:animated];
 }
 
 - (void)viewWillLayoutSubviews {
