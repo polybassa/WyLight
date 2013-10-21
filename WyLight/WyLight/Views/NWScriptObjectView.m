@@ -146,5 +146,4 @@
 		[self drawAllColorViews];
 	}
 }
-
 @end

@@ -13,6 +13,7 @@
 @interface NWScript : NSObject <NSCoding>
 
 @property (nonatomic, readonly, strong) NSMutableArray *scriptArray;
+@property (nonatomic, strong) NSString *title;
 
 - (void)addObject:(NWComplexScriptCommandObject *)anObject;
 - (void)removeObjectAtIndex:(NSUInteger)index;

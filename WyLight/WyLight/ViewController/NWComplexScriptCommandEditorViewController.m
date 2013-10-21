@@ -148,7 +148,7 @@ enum EditColorTarget {
 	self.toolKitCarousel.dataSource = self;
 	self.toolKitCarousel.delegate = self;
 	self.toolKitCarousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	self.toolKitCarousel.type = iCarouselTypeLinear;
+	self.toolKitCarousel.type = iCarouselTypeCoverFlow;
 	self.toolKitCarousel.bounceDistance = 0.3;
 	self.toolKitCarousel.pagingEnabled = YES;
 	[self.view addSubview:self.toolKitCarousel];

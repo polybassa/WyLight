@@ -78,11 +78,6 @@
 		5C90B3A717F2EB7A00BAC74F /* NWAddScriptObjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3A517F2EB7A00BAC74F /* NWAddScriptObjectView.m */; };
 		5C90B3BF17F3714B00BAC74F /* NWScriptView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3AE17F3714B00BAC74F /* NWScriptView.m */; };
 		5C90B3C117F3714B00BAC74F /* NWScriptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3B217F3714B00BAC74F /* NWScriptViewController.m */; };
-		5C90B3C217F3714B00BAC74F /* NWScriptObjectCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3B417F3714B00BAC74F /* NWScriptObjectCollectionViewCell.m */; };
-		5C90B3C317F3714B00BAC74F /* NWAddCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3B617F3714B00BAC74F /* NWAddCollectionViewCell.m */; };
-		5C90B3C417F3714B00BAC74F /* NWCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3B817F3714B00BAC74F /* NWCollectionViewLayout.m */; };
-		5C90B3C517F3714B00BAC74F /* NWCollectionViewLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3BA17F3714B00BAC74F /* NWCollectionViewLayoutAttributes.m */; };
-		5C90B3C617F3714B00BAC74F /* NWEditComplexScriptObjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3BC17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.m */; };
 		5CD991FB180095CA003C4F99 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD991FA180095CA003C4F99 /* iCarousel.m */; };
 		5CD991FE1803FDA5003C4F99 /* TouchAndHoldButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD991FD1803FDA5003C4F99 /* TouchAndHoldButton.m */; };
 		5CD992011804A5CD003C4F99 /* NWAppInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD992001804A5CD003C4F99 /* NWAppInfoViewController.m */; };
@@ -91,6 +86,9 @@
 		5CDE70801809A7CA0032D2F0 /* NWGradientEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE707F1809A7CA0032D2F0 /* NWGradientEditView.m */; };
 		5CDE7083180A82310032D2F0 /* NWFadeEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE7082180A82310032D2F0 /* NWFadeEditView.m */; };
 		5CDE7086180A8F1F0032D2F0 /* NWColorEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE7085180A8F1F0032D2F0 /* NWColorEditView.m */; };
+		C08D5DAA181166BF00A73801 /* NWScriptFolderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08D5DA9181166BF00A73801 /* NWScriptFolderViewController.m */; };
+		C0E10EC418142B240009CF3C /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E10EC318142B240009CF3C /* UIImage+ImageEffects.m */; };
+		C0E10EC71814FC1B0009CF3C /* UIView+blurredSnapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E10EC61814FC1B0009CF3C /* UIView+blurredSnapshot.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -243,16 +241,6 @@
 		5C90B3AE17F3714B00BAC74F /* NWScriptView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWScriptView.m; path = Script_DEPRECATED/NWScriptView.m; sourceTree = "<group>"; };
 		5C90B3B117F3714B00BAC74F /* NWScriptViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWScriptViewController.h; path = Script_DEPRECATED/NWScriptViewController.h; sourceTree = "<group>"; };
 		5C90B3B217F3714B00BAC74F /* NWScriptViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWScriptViewController.m; path = Script_DEPRECATED/NWScriptViewController.m; sourceTree = "<group>"; };
-		5C90B3B317F3714B00BAC74F /* NWScriptObjectCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWScriptObjectCollectionViewCell.h; sourceTree = "<group>"; };
-		5C90B3B417F3714B00BAC74F /* NWScriptObjectCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptObjectCollectionViewCell.m; sourceTree = "<group>"; };
-		5C90B3B517F3714B00BAC74F /* NWAddCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWAddCollectionViewCell.h; sourceTree = "<group>"; };
-		5C90B3B617F3714B00BAC74F /* NWAddCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWAddCollectionViewCell.m; sourceTree = "<group>"; };
-		5C90B3B717F3714B00BAC74F /* NWCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWCollectionViewLayout.h; sourceTree = "<group>"; };
-		5C90B3B817F3714B00BAC74F /* NWCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWCollectionViewLayout.m; sourceTree = "<group>"; };
-		5C90B3B917F3714B00BAC74F /* NWCollectionViewLayoutAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWCollectionViewLayoutAttributes.h; sourceTree = "<group>"; };
-		5C90B3BA17F3714B00BAC74F /* NWCollectionViewLayoutAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWCollectionViewLayoutAttributes.m; sourceTree = "<group>"; };
-		5C90B3BB17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWEditComplexScriptObjectViewController.h; sourceTree = "<group>"; };
-		5C90B3BC17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWEditComplexScriptObjectViewController.m; sourceTree = "<group>"; };
 		5CD991F9180095CA003C4F99 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		5CD991FA180095CA003C4F99 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 		5CD991FC1803FDA5003C4F99 /* TouchAndHoldButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchAndHoldButton.h; sourceTree = "<group>"; };
@@ -269,6 +257,12 @@
 		5CDE7082180A82310032D2F0 /* NWFadeEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWFadeEditView.m; sourceTree = "<group>"; };
 		5CDE7084180A8F1F0032D2F0 /* NWColorEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWColorEditView.h; sourceTree = "<group>"; };
 		5CDE7085180A8F1F0032D2F0 /* NWColorEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWColorEditView.m; sourceTree = "<group>"; };
+		C08D5DA8181166BF00A73801 /* NWScriptFolderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWScriptFolderViewController.h; path = Script_DEPRECATED/NWScriptFolderViewController.h; sourceTree = "<group>"; };
+		C08D5DA9181166BF00A73801 /* NWScriptFolderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWScriptFolderViewController.m; path = Script_DEPRECATED/NWScriptFolderViewController.m; sourceTree = "<group>"; };
+		C0E10EC218142B240009CF3C /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
+		C0E10EC318142B240009CF3C /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
+		C0E10EC51814FC1B0009CF3C /* UIView+blurredSnapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+blurredSnapshot.h"; sourceTree = "<group>"; };
+		C0E10EC61814FC1B0009CF3C /* UIView+blurredSnapshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+blurredSnapshot.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -307,6 +301,8 @@
 				5C90B3AE17F3714B00BAC74F /* NWScriptView.m */,
 				5CDE707B180987B40032D2F0 /* NWComplexScriptCommandEditorViewController.h */,
 				5CDE707C180987B40032D2F0 /* NWComplexScriptCommandEditorViewController.m */,
+				C08D5DA8181166BF00A73801 /* NWScriptFolderViewController.h */,
+				C08D5DA9181166BF00A73801 /* NWScriptFolderViewController.m */,
 			);
 			name = Script;
 			sourceTree = "<group>";
@@ -469,7 +465,6 @@
 			isa = PBXGroup;
 			children = (
 				5C12FAB417FF293F00E4E65D /* Script */,
-				5C90B3A817F36C8A00BAC74F /* Script_DEPRECATED */,
 				5C83964217EC5E49007EF0C6 /* AddNewTargetGuide */,
 				5C83963917EC542E007EF0C6 /* NWBrightnessViewController.h */,
 				5C83963A17EC542E007EF0C6 /* NWBrightnessViewController.m */,
@@ -532,6 +527,8 @@
 		5C83964317EC5E8A007EF0C6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C0E10EC218142B240009CF3C /* UIImage+ImageEffects.h */,
+				C0E10EC318142B240009CF3C /* UIImage+ImageEffects.m */,
 				5C90B3A217F2EB7A00BAC74F /* NWTimeInfoView.h */,
 				5C90B3A317F2EB7A00BAC74F /* NWTimeInfoView.m */,
 				5C90B3A417F2EB7A00BAC74F /* NWAddScriptObjectView.h */,
@@ -556,6 +553,8 @@
 				5CDE7082180A82310032D2F0 /* NWFadeEditView.m */,
 				5CDE7084180A8F1F0032D2F0 /* NWColorEditView.h */,
 				5CDE7085180A8F1F0032D2F0 /* NWColorEditView.m */,
+				C0E10EC51814FC1B0009CF3C /* UIView+blurredSnapshot.h */,
+				C0E10EC61814FC1B0009CF3C /* UIView+blurredSnapshot.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -569,23 +568,6 @@
 				5C90B39217EF56A000BAC74F /* ALRadialMenu.m */,
 			);
 			name = RadialMenu;
-			sourceTree = "<group>";
-		};
-		5C90B3A817F36C8A00BAC74F /* Script_DEPRECATED */ = {
-			isa = PBXGroup;
-			children = (
-				5C90B3BB17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.h */,
-				5C90B3BC17F3714B00BAC74F /* NWEditComplexScriptObjectViewController.m */,
-				5C90B3B317F3714B00BAC74F /* NWScriptObjectCollectionViewCell.h */,
-				5C90B3B417F3714B00BAC74F /* NWScriptObjectCollectionViewCell.m */,
-				5C90B3B517F3714B00BAC74F /* NWAddCollectionViewCell.h */,
-				5C90B3B617F3714B00BAC74F /* NWAddCollectionViewCell.m */,
-				5C90B3B717F3714B00BAC74F /* NWCollectionViewLayout.h */,
-				5C90B3B817F3714B00BAC74F /* NWCollectionViewLayout.m */,
-				5C90B3B917F3714B00BAC74F /* NWCollectionViewLayoutAttributes.h */,
-				5C90B3BA17F3714B00BAC74F /* NWCollectionViewLayoutAttributes.m */,
-			);
-			path = Script_DEPRECATED;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -636,6 +618,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Nils Weiß";
 				TargetAttributes = {
+					5C83957517EB6138007EF0C6 = {
+						DevelopmentTeam = 83JPS232M6;
+					};
 					5C83959617EB6138007EF0C6 = {
 						TestTargetID = 5C83957517EB6138007EF0C6;
 					};
@@ -698,8 +683,8 @@
 				5C90B3A617F2EB7A00BAC74F /* NWTimeInfoView.m in Sources */,
 				5C8395DD17EB61B4007EF0C6 /* BroadcastReceiver.cpp in Sources */,
 				5C90B3A717F2EB7A00BAC74F /* NWAddScriptObjectView.m in Sources */,
-				5C90B3C317F3714B00BAC74F /* NWAddCollectionViewCell.m in Sources */,
 				5C8395E917EB651D007EF0C6 /* NWConnectionTBC.m in Sources */,
+				C0E10EC71814FC1B0009CF3C /* UIView+blurredSnapshot.m in Sources */,
 				5C8395DB17EB61B4007EF0C6 /* WCBroadcastReceiverWrapper.mm in Sources */,
 				5C83963517EB6C00007EF0C6 /* KZUnitSlider.m in Sources */,
 				5CD992011804A5CD003C4F99 /* NWAppInfoViewController.m in Sources */,
@@ -736,12 +721,12 @@
 				5C83963217EB6C00007EF0C6 /* KZColorPickerBrightnessSlider.m in Sources */,
 				5C90B39417EF56A000BAC74F /* ALRadialMenu.m in Sources */,
 				5C8395D917EB61B4007EF0C6 /* Script.cpp in Sources */,
-				5C90B3C417F3714B00BAC74F /* NWCollectionViewLayout.m in Sources */,
 				5CD991FE1803FDA5003C4F99 /* TouchAndHoldButton.m in Sources */,
 				5C83964117EC5E3E007EF0C6 /* NWAddNewTargetGuideViewController.m in Sources */,
 				5C83964617EC5E9A007EF0C6 /* NWAddNewTargetGuideView.m in Sources */,
 				5C8395DE17EB61B4007EF0C6 /* ClientSocket.cpp in Sources */,
-				5C90B3C217F3714B00BAC74F /* NWScriptObjectCollectionViewCell.m in Sources */,
+				C08D5DAA181166BF00A73801 /* NWScriptFolderViewController.m in Sources */,
+				C0E10EC418142B240009CF3C /* UIImage+ImageEffects.m in Sources */,
 				5C8395DF17EB61B4007EF0C6 /* ComProxy.cpp in Sources */,
 				5C35FEF217EF4F7100E3DE0D /* NWComplexScriptCommandObject.m in Sources */,
 				5CDE7086180A8F1F0032D2F0 /* NWColorEditView.m in Sources */,
@@ -754,9 +739,7 @@
 				5C35FEED17EF4F7100E3DE0D /* NWLoopOffCommandObject.m in Sources */,
 				5C83963017EB6C00007EF0C6 /* KZColorPicker.m in Sources */,
 				5C8395E117EB61B4007EF0C6 /* MaskBuffer.cpp in Sources */,
-				5C90B3C617F3714B00BAC74F /* NWEditComplexScriptObjectViewController.m in Sources */,
 				5C90B3BF17F3714B00BAC74F /* NWScriptView.m in Sources */,
-				5C90B3C517F3714B00BAC74F /* NWCollectionViewLayoutAttributes.m in Sources */,
 				5C8395E217EB61B4007EF0C6 /* TelnetProxy.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -885,11 +868,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WyLight/WyLight-Prefix.pch";
 				INFOPLIST_FILE = "WyLight/WyLight-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -900,11 +886,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WyLight/WyLight-Prefix.pch";
 				INFOPLIST_FILE = "WyLight/WyLight-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
