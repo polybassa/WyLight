@@ -23,7 +23,7 @@
 	self = [super init];
 	
 	if (self) {
-		[self fillWithTestData];
+		//[self fillWithDefaultData];
 	}
 	return self;
 }
@@ -45,80 +45,16 @@
     [aCoder encodeObject:_title forKey:TITLE_KEY];
 }
 
-- (void)fillWithTestData {
-	//TESTCODE
+- (void)fillWithDefaultData {
 	NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
-	//self.command.backgroundColor = [UIColor blackColor];
-	
 	{
 		NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
 		obj.address = 0xffffffff;
-		obj.color = [UIColor redColor];
+		obj.color = [UIColor blackColor];
 		
 		[comObj.scriptObjects addObject:obj];
 	}
-	{
-		NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
-		obj.address = 0x000000ff;
-		obj.color = [UIColor yellowColor];
-		
-		[comObj.scriptObjects addObject:obj];
-	}
-	{
-		NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
-		obj.color1 = [UIColor blueColor];
-		obj.color2 = [UIColor greenColor];
-		
-		obj.offset = 10;
-		obj.numberOfLeds = 10;
-		[comObj.scriptObjects addObject: obj];
-	}
-	{
-		NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
-		obj.color1 = [UIColor blueColor];
-		obj.color2 = [UIColor greenColor];
-		
-		obj.offset = 20;
-		obj.numberOfLeds = 5;
-		[comObj.scriptObjects addObject: obj];
-	}
-	comObj.duration = 200;
-	[self addObject:comObj];
-	//TESTCODE
-	comObj = [[NWComplexScriptCommandObject alloc] init];
-	//self.command.backgroundColor = [UIColor blackColor];
-	
-	{
-		NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
-		obj.address = 0xffffffff;
-		obj.color = [UIColor greenColor];
-		
-		[comObj.scriptObjects addObject:obj];
-	}
-	comObj.duration = 50;
-	[self addObject:comObj];
-	//TESTCODE
-	comObj = [[NWComplexScriptCommandObject alloc] init];
-	//self.command.backgroundColor = [UIColor blackColor];
-	{
-		NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
-		obj.color1 = [UIColor blueColor];
-		obj.color2 = [UIColor greenColor];
-		
-		obj.offset = 10;
-		obj.numberOfLeds = 10;
-		[comObj.scriptObjects addObject: obj];
-	}
-	{
-		NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
-		obj.color1 = [UIColor blueColor];
-		obj.color2 = [UIColor greenColor];
-		
-		obj.offset = 0;
-		obj.numberOfLeds = 32;
-		[comObj.scriptObjects addObject: obj];
-	}
-	comObj.duration = 100;
+    comObj.duration = 200;
 	[self addObject:comObj];
 }
 

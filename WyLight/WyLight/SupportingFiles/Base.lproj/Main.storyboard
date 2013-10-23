@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="x4A-Fz-YpF">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Cw4-ac-tfN">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
@@ -211,6 +211,40 @@
                 <exit id="Nqt-s1-isI" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1450" y="710"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="hgc-m1-ViS">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="Cw4-ac-tfN" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Mph-9H-dmT">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="oZN-AR-AQW" kind="relationship" relationship="rootViewController" id="8br-iO-88H"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YSQ-df-LeN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="529" y="2887"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="Ha6-fD-EwW">
+            <objects>
+                <tabBarController definesPresentationContext="YES" id="oZN-AR-AQW" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="aIc-UI-2h1"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="XU6-65-CLL">
+                        <rect key="frame" x="129" y="330" width="163" height="49"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="hsM-b9-5b3" kind="relationship" relationship="viewControllers" id="oI9-Ee-4be"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tby-bU-N14" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1273" y="2855"/>
         </scene>
         <!--Add New Target Configure View Controller - Add new Target-->
         <scene sceneID="see-2n-JYf">
@@ -541,7 +575,7 @@
             </objects>
             <point key="canvasLocation" x="169" y="117"/>
         </scene>
-        <!--Script View Controller - Script Editor-->
+        <!--Script View Controller-->
         <scene sceneID="Str-vd-itS">
             <objects>
                 <viewController id="bdh-ac-Ftv" customClass="NWScriptViewController" sceneMemberID="viewController">
@@ -554,7 +588,6 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Script Editor" image="Script_Icon" id="a5d-lN-HI4"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="yvg-RB-zXq">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="CeX-Vt-F8F">
@@ -649,7 +682,6 @@
     <resources>
         <image name="Paint_TabBarIcon" width="30" height="30"/>
         <image name="Script_Icon" width="30" height="30"/>
-        <image name="Script_Icon" width="30" height="30"/>
         <image name="Slider_TabBarIcon" width="30" height="30"/>
         <image name="Sun_TabBarIcon" width="30" height="30"/>
     </resources>
@@ -660,5 +692,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="ozS-Lc-m4i"/>
+        <segue reference="oI9-Ee-4be"/>
     </inferredMetricsTieBreakers>
 </document>

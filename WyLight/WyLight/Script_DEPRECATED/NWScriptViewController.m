@@ -34,6 +34,12 @@
 
 - (void)setScript:(NWScript *)script {
     _script = script;
+    CGFloat availableWidth = self.view.frame.size.width;
+    CGFloat scriptDuration = script.totalDurationInTmms.floatValue;
+    
+    if (availableWidth != 0 && scriptDuration != 0) {
+        self.timeScaleFactor = availableWidth / scriptDuration;
+    }
     
     [self.scriptView reloadData];
 }
@@ -429,7 +435,7 @@
 	NSUInteger index = view.tag;
 	uint16_t duration = width / self.timeScaleFactor;
 	((NWComplexScriptCommandObject *)self.script.scriptArray[index]).duration = duration;
-	[self.scriptView reloadData];
+	[self.scriptView fixLocationsOfSubviews];
 }
 
 #pragma mark - SEGUE

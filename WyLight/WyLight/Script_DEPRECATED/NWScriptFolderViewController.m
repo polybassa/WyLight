@@ -18,6 +18,7 @@
 #import "UIView+Quivering.h"
 #import "WCWiflyControlWrapper.h"
 #import "NWScriptViewController.h"
+#import "NWScript+defaultScripts.h"
 
 @interface NWScriptFolderViewController () <iCarouselDataSource, iCarouselDelegate>
 
@@ -82,6 +83,16 @@
     NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:SCRIPTARRAY_KEY];
      if (data) {
      self.scriptObjects = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+     } else {
+         self.scriptObjects = [[NSMutableArray alloc] init];
+         [self.scriptObjects addObject:[NWScript defaultScriptFastColorChange]];
+         [self.scriptObjects addObject:[NWScript defaultScriptSlowColorChange]];
+         [self.scriptObjects addObject:[NWScript defaultScriptConzentrationLight]];
+         [self.scriptObjects addObject:[NWScript defaultScriptMovingColors]];
+         [self.scriptObjects addObject:[NWScript defaultScriptRandomColors]];
+         [self.scriptObjects addObject:[NWScript defaultScriptRunLightWithColor:[UIColor greenColor] timeInterval:100]];
+         [self.scriptObjects addObject:[NWScript defaultScriptRunLightWithColor:[UIColor redColor] timeInterval:100]];
+         [self.scriptObjects addObject:[NWScript defaultScriptRunLightWithColor:[UIColor blueColor] timeInterval:100]];
      }
     
     self.background = [[NWScriptObjectView alloc] initWithFrame:CGRectZero];
