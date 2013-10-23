@@ -25,6 +25,7 @@
         // Initialization code
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleHeight;
 		self.clipsToBounds = YES;
+        self.opaque = YES;
 	}
     return self;
 }

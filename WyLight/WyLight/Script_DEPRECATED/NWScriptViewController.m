@@ -94,13 +94,13 @@
 		[self.tabBarController.tabBar setHidden:NO];
 
 		//script view
-		self.scriptView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 120);
+		self.scriptView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64);
 		
-		self.sendButton.frame = CGRectMake(45, self.view.frame.size.height - 100, self.view.frame.size.width - 88, 44);
+		self.sendButton.frame = CGRectMake(45, self.view.frame.size.height - 44, self.view.frame.size.width - 88, 44);
 		
-		self.zoomOutButton.frame = CGRectMake(0, self.view.frame.size.height - 100, 44, 44);
+		self.zoomOutButton.frame = CGRectMake(0, self.view.frame.size.height - 44, 44, 44);
 		
-		self.zoomInButton.frame = CGRectMake(self.view.frame.size.width - 44, self.view.frame.size.height - 100, 44, 44);
+		self.zoomInButton.frame = CGRectMake(self.view.frame.size.width - 44, self.view.frame.size.height - 44, 44, 44);
 	}
 	else {
 		[self.tabBarController.tabBar setHidden:YES];

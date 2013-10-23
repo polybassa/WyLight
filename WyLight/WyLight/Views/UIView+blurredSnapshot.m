@@ -17,7 +17,7 @@
     UIGraphicsBeginImageContextWithOptions(self.bounds.size, self.opaque, 0.0);
     
     // There he is! The new API method
-    //[self drawViewHierarchyInRect:self.frame afterScreenUpdates:YES];
+    //[self drawViewsHierarchyInRect:self.frame afterScreenUpdates:YES];
     [self.layer renderInContext:UIGraphicsGetCurrentContext()];
     // Get the snapshot
     UIImage *snapshotImage = UIGraphicsGetImageFromCurrentImageContext();

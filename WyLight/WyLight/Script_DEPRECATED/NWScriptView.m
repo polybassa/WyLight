@@ -42,9 +42,8 @@
 	for (UIView *subview in self.subviews) {
 		if ([subview isKindOfClass:[NWScriptCellView class]]) {
 			width = [self.dataSource scriptView:self widthOfObjectAtIndex:subview.tag];
-			
 			subview.frame = CGRectMake(xPosition, yPosition, width, height);
-			xPosition += width + self.scriptObjectSpacing;
+			xPosition += floorf(width) + self.scriptObjectSpacing;
 		}
 	}
 	for (UIView *subview in self.subviews) {

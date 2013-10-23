@@ -107,9 +107,10 @@
     [self.view addSubview:self.background];
     
    
-    UIToolbar* milkglassView = [[UIToolbar alloc] initWithFrame:self.view.frame];
-    milkglassView.barStyle = UIBarStyleDefault;
+    UIView* milkglassView = [[UIView alloc] initWithFrame:self.view.frame];
     milkglassView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    milkglassView.opaque = NO;
+    milkglassView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.5];
     [self.view addSubview:milkglassView];
     
     self.sendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
