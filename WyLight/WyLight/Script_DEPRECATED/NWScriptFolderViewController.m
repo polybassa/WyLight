@@ -12,23 +12,21 @@
 #import "iCarousel.h"
 #import "NWScriptObjectControl.h"
 #import "NWComplexScriptCommandObject.h"
-#import "NWSetFadeScriptCommandObject.h"
 #import "UIView+blurredSnapshot.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIView+Quivering.h"
 #import "WCWiflyControlWrapper.h"
 #import "NWScriptViewController.h"
 #import "NWScript+defaultScripts.h"
+#import "NWScript+Snapshot.h"
 
 @interface NWScriptFolderViewController () <iCarouselDataSource, iCarouselDelegate>
 
 @property (nonatomic, assign) BOOL isDeletionModeActive;
 @property (nonatomic, strong) NSMutableArray *scriptObjects;
 @property (nonatomic, strong) iCarousel *carousel;
-@property (nonatomic, strong) NWScriptObjectView *background;
-@property (nonatomic, assign) BOOL playingPreview;
+@property (nonatomic, strong) UIImageView *background;
 @property (nonatomic, strong) UIButton *sendButton;
-@property (nonatomic, strong) UIButton *previewButton;
 @property (nonatomic, strong) UILabel *scriptTitleLabel;
 @end
 
@@ -47,9 +45,15 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.carousel reloadData];
-    NWScript *currentScript = self.scriptObjects[self.carousel.currentItemIndex];
-    NWComplexScriptCommandObject *cmd = currentScript.scriptArray.firstObject;
-    self.background.startColors = self.background.endColors = cmd.colors;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    if ([self.carousel.currentItemView isKindOfClass:[UIImageView class]]) {
+        [UIView animateWithDuration:0.3 animations:^{
+             self.background.image = ((UIImageView *)[self.carousel currentItemView]).image;
+        }];
+    }
+    [super viewDidAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -60,18 +64,14 @@
 - (void)fixLocations {
     if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
         [self.tabBarController.tabBar setHidden:NO];
-        self.sendButton.frame = CGRectMake(0, self.view.frame.size.height - 100, self.view.frame.size.width / 2, 44);
-        self.previewButton.frame = CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height - 100, self.view.frame.size.width / 2, 44);
-
+        self.sendButton.frame = CGRectMake(0, self.view.frame.size.height - 100, self.view.frame.size.width, 44);
     }
 	else {
         [self.tabBarController.tabBar setHidden:YES];
-        self.sendButton.frame = CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width / 2, 44);
-        self.previewButton.frame = CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height - 44, self.view.frame.size.width / 2, 44);
-
+        self.sendButton.frame = CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44);
     }
     self.background.frame = self.view.bounds;
-    self.carousel.frame = CGRectMake(0, 70, self.view.bounds.size.width, self.view.bounds.size.height - 160);
+    self.carousel.frame = CGRectMake(0, 80, self.view.bounds.size.width, self.view.bounds.size.height - 160);
 }
 
 #define SCRIPTARRAY_KEY @"WyLightRemote.NWScript.ScriptArray"
@@ -94,16 +94,12 @@
          [self.scriptObjects addObject:[NWScript defaultScriptRunLightWithColor:[UIColor redColor] timeInterval:100]];
          [self.scriptObjects addObject:[NWScript defaultScriptRunLightWithColor:[UIColor blueColor] timeInterval:100]];
      }
-    
-    self.background = [[NWScriptObjectView alloc] initWithFrame:CGRectZero];
+   
+    self.background = [[UIImageView alloc] initWithFrame:self.view.frame];
     self.background.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    self.background.contentMode = UIViewContentModeScaleToFill;
     self.background.userInteractionEnabled = NO;
     self.background.opaque = YES;
-    
-    NWScript *currentScript = self.scriptObjects[self.carousel.currentItemIndex];
-    NWComplexScriptCommandObject *cmd = currentScript.scriptArray.firstObject;
-    
-    self.background.startColors = self.background.endColors = cmd.colors;
     [self.view addSubview:self.background];
     
    
@@ -117,11 +113,6 @@
 	[self.sendButton setTitle:@"SEND" forState:UIControlStateNormal];
 	[self.sendButton addTarget:self action:@selector(sendScript) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:self.sendButton];
-    
-    self.previewButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.previewButton setTitle:@"PREVIEW" forState:UIControlStateNormal];
-    [self.previewButton addTarget:self action:@selector(playPreview) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.previewButton];
     
     self.carousel = [[iCarousel alloc] initWithFrame:CGRectZero];
     self.carousel.dataSource = self;
@@ -164,50 +155,6 @@
     }
 }
 
-- (void)setPlayingPreview:(BOOL)playingPreview {
-    if (_playingPreview != playingPreview) {
-        _playingPreview = playingPreview;
-        if (playingPreview) {
-            self.carousel.scrollEnabled = NO;
-            NWScript *currentScript = self.scriptObjects[self.carousel.currentItemIndex];
-            UIView *currentView = self.carousel.currentItemView;
-            
-            dispatch_async(dispatch_queue_create("animationQ", NULL), ^{
-                for (NWComplexScriptCommandObject *cmd in currentScript.scriptArray) {
-                    if (cmd == currentScript.scriptArray.firstObject) {
-                        continue;
-                    }
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.background setColorsAnimatedWithDuration:cmd.duration / 100 startColors:cmd.colors endColor:cmd.colors];
-                    });
-                    [NSThread sleepForTimeInterval:cmd.duration / 100];
-                }
-            });
-            
-            [UIView animateWithDuration:0.3 animations:^{
-                currentView.alpha = 0.1;
-            }];
-            double delayInSeconds = (currentScript.totalDurationInTmms.doubleValue - ((NWComplexScriptCommandObject *)currentScript.scriptArray.firstObject).duration) / 100;
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                [UIView animateWithDuration:((NWComplexScriptCommandObject *)currentScript.scriptArray.firstObject).duration / 100 animations:^{
-                    currentView.alpha = 1.0;
-                    self.playingPreview = NO;
-                    [self.background setColorsAnimatedWithDuration:((NWComplexScriptCommandObject *)currentScript.scriptArray.firstObject).duration / 100
-                                                       startColors:((NWComplexScriptCommandObject *)currentScript.scriptArray.firstObject).colors
-                                                          endColor:((NWComplexScriptCommandObject *)currentScript.scriptArray.firstObject).colors];
-                }];
-            });
-        } else {
-            self.carousel.scrollEnabled = YES;
-        }
-    }
-}
-
-- (void)playPreview {
-    self.playingPreview = YES;
-}
-
 - (void)sendScript {
 	dispatch_queue_t sendScriptQueue = dispatch_queue_create("sendScriptQueue", NULL);
 	dispatch_async(sendScriptQueue, ^{
@@ -236,12 +183,8 @@
     }
     
     if ([view isKindOfClass:[UIImageView class]]) {
-        NWScriptObjectControl* scriptView = [[NWScriptObjectControl alloc] initWithFrame:view.frame];;
-        NWScript *script = [self.scriptObjects objectAtIndex:index];
-        id<NWDrawableCommand> command = script.scriptArray.firstObject;
-        [command setBackgroundColor:[UIColor clearColor]];
-        scriptView.startColors = scriptView.endColors = [command colors];
-        scriptView.cornerRadius = 0;
+        ((UIImageView *)view).image = [((NWScript *)self.scriptObjects[index]) snapshotWithRect:view.frame];
+        
         view.layer.cornerRadius = 5.0;
         view.clipsToBounds = YES;
         
@@ -255,7 +198,6 @@
         swipe.direction = UISwipeGestureRecognizerDirectionUp;
         [view addGestureRecognizer:swipe];
         
-        ((UIImageView *)view).image = scriptView.blurredSnapshot;
         return view;
         
     }
@@ -286,9 +228,9 @@
 }
 
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel {
-    NWScript *currentScript = self.scriptObjects[carousel.currentItemIndex];
-    NWComplexScriptCommandObject *cmd = currentScript.scriptArray.firstObject;
-    [self.background setColorsAnimatedWithDuration:0.3 startColors:cmd.colors endColor:cmd.colors];
+    if ([self.carousel.currentItemView isKindOfClass:[UIImageView class]]) {
+        self.background.image = ((UIImageView *)[self.carousel currentItemView]).image;
+    }
 }
 
 - (void)tapOnScriptObjectControl:(UITapGestureRecognizer *)gesture {

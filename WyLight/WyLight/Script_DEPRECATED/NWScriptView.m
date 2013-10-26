@@ -35,12 +35,12 @@
 }
 
 - (void)fixLocationsOfSubviews {
-	CGFloat xPosition = 20;
-	CGFloat yPosition = 90;
-	CGFloat height = self.frame.size.height - yPosition;
+	CGFloat xPosition = self.insets.left;
+	CGFloat yPosition = self.insets.top;
+	CGFloat height = self.frame.size.height - yPosition - self.insets.bottom;
 	CGFloat width = 0;
 	for (UIView *subview in self.subviews) {
-		if ([subview isKindOfClass:[NWScriptCellView class]]) {
+		if ([subview isKindOfClass:[NWScriptCellView class]] || ![subview isKindOfClass:[NWAddScriptObjectView class]]) {
 			width = [self.dataSource scriptView:self widthOfObjectAtIndex:subview.tag];
 			subview.frame = CGRectMake(xPosition, yPosition, width, height);
 			xPosition += floorf(width) + self.scriptObjectSpacing;

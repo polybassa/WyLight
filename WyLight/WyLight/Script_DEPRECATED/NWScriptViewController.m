@@ -128,6 +128,7 @@
 	}
 	//script view
 	self.scriptView = [[NWScriptView alloc] initWithFrame:CGRectZero];
+    self.scriptView.insets = UIEdgeInsetsMake(90, 20, 0, 0);
 	self.scriptView.dataSource = self;
 	self.scriptView.backgroundColor = [UIColor clearColor];
 	self.scriptView.delegate = self;

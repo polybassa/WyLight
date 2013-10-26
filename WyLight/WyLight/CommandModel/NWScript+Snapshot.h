@@ -7,7 +7,10 @@
 //
 
 #import "NWScript.h"
+#import "NWScriptView.h"
 
-@interface NWScript (Snapshot)
+@interface NWScript (Snapshot) //<NWScriptViewDataSource>
+
+- (UIImage *)snapshotWithRect:(CGRect)rect;
 
 @end

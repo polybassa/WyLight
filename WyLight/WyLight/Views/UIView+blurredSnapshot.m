@@ -11,22 +11,27 @@
 
 @implementation UIView (blurredSnapshot)
 
+static BOOL _supportDrawViewHierarchyInRect;
+
++ (void)load {
+    if ([self instancesRespondToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]) {
+        _supportDrawViewHierarchyInRect = YES;
+    } else {
+        _supportDrawViewHierarchyInRect = NO;
+    }
+}
+
 -(UIImage *)blurredSnapshot
 {
-    // Create the image context
-    UIGraphicsBeginImageContextWithOptions(self.bounds.size, self.opaque, 0.0);
+    UIGraphicsBeginImageContextWithOptions(self.bounds.size, YES, 0.0);
     
-    // There he is! The new API method
-    //[self drawViewsHierarchyInRect:self.frame afterScreenUpdates:YES];
     [self.layer renderInContext:UIGraphicsGetCurrentContext()];
-    // Get the snapshot
+   
     UIImage *snapshotImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
     
     UIColor *tintColor = [UIColor colorWithWhite:1.0 alpha:0.3];
     UIImage *blurredSnapshotImage = [snapshotImage applyBlurWithRadius:5 tintColor:tintColor saturationDeltaFactor:1.0 maskImage:nil];
-    
-    // Be nice and clean your mess up
-    UIGraphicsEndImageContext();
     
     return blurredSnapshotImage;
 }

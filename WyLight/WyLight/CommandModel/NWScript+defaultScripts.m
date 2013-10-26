@@ -405,7 +405,7 @@
             {
                 NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
                 obj.address = ~(adr1 | adr2 | adr3 | adr4 | adr5 | adr6);
-                obj.color = [UIColor whiteColor];
+                obj.color = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
                 [comObj.scriptObjects addObject:obj];
             }
             {
