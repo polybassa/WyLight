@@ -227,6 +227,13 @@ class ControlNoThrow
 			<BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
 		 uint32_t ConfChangeWlanChannel(void) const;
+	
+	
+		 /**
+		  *
+		  */
+		 uint32_t ConfSetParameters(std::list<std::string> commands) const;
+
 		
 /* -------------------------- FIRMWARE METHODES -------------------------- */
 		/**
@@ -384,6 +391,14 @@ class ControlNoThrow
 			<BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
 		uint32_t FwStartBl(void);
+	
+		/* ------------------------- VERSION EXTRACT METHODE ------------------------- */
+		/**
+		 * Methode to extract the firmware version from a hex file
+		 * @return the version string from a given hex file
+		 */
+		uint32_t ExtractFwVersion(const std::string& pFilename, std::string& extractedFwVersion) const;
+
 	
 	private:
 		/**

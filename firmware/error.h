@@ -28,7 +28,8 @@ typedef enum __attribute__ ((__packed__)) {
 	SCRIPTBUFFER_FULL,
 	CRC_CHECK_FAILED,
 	BAD_PACKET,					//ringbuffer or commandIo overflow
-	BAD_COMMAND_CODE
+	BAD_COMMAND_CODE,
+	NO_RESPONSE
 } ErrorCode;
 
 void Error_Throw();

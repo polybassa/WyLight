@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="v4T-uT-mOL">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="LVZ-RX-bq4">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <scenes>
@@ -84,7 +83,6 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="bookmarks" id="wc8-9f-Kd2"/>
                     <navigationItem key="navigationItem" id="EdX-6c-79u"/>
                     <connections>
                         <segue destination="gZg-ey-fxC" kind="push" identifier="edit:" id="GH6-kC-0Wi"/>
@@ -92,7 +90,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r49-aV-9K6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2337" y="109"/>
+            <point key="canvasLocation" x="2863" y="109"/>
         </scene>
         <!--Edit Complex Script Object View Controller-->
         <scene sceneID="6Uw-Lg-CXy">
@@ -115,7 +113,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oPB-rF-Cvb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3341" y="109"/>
+            <point key="canvasLocation" x="3867" y="109"/>
         </scene>
         <!--Edit Gradient Command View Controller-->
         <scene sceneID="Cf2-Rt-V5z">
@@ -144,7 +142,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WZZ-gl-6le" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="396-0k-HIn" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4124" y="-229"/>
+            <point key="canvasLocation" x="4650" y="-229"/>
         </scene>
         <!--Edit Fade Command View Controller-->
         <scene sceneID="4iI-n0-q9m">
@@ -173,7 +171,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="log-hv-8op" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="0YB-cc-htO" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4124" y="379"/>
+            <point key="canvasLocation" x="4650" y="379"/>
         </scene>
         <!--Default Color Picker View Controller-->
         <scene sceneID="fXh-yK-5tV">
@@ -204,7 +202,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pcN-wv-ivd" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="tMI-dd-8mx" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5382" y="109"/>
+            <point key="canvasLocation" x="5908" y="109"/>
         </scene>
         <!--Color Picker View Controller-->
         <scene sceneID="lh4-cu-eqA">
@@ -249,7 +247,6 @@
                         <segue destination="Gib-cg-PbH" kind="relationship" relationship="viewControllers" id="yC1-av-Kqg"/>
                         <segue destination="urR-3F-rzf" kind="unwind" identifier="unwindAtConnectionFatalErrorOccured" unwindAction="unwindAtConnectionFatalErrorOccured:" id="rEP-m2-rlI"/>
                         <segue destination="urR-3F-rzf" kind="unwind" identifier="unwindAtConnectionHasDisconnected" unwindAction="unwindAtConnectionHasDisconnected:" id="Cjr-u5-6Ye"/>
-                        <segue destination="hi5-3x-DT2" kind="relationship" relationship="viewControllers" id="ebs-2I-ev0"/>
                         <segue destination="iSk-sy-xGp" kind="relationship" relationship="viewControllers" id="pQv-bR-sIA"/>
                     </connections>
                 </tabBarController>
@@ -530,6 +527,25 @@
             </objects>
             <point key="canvasLocation" x="2337" y="748"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="mMJ-Y6-729">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="LVZ-RX-bq4" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" systemItem="bookmarks" id="wc8-9f-Kd2"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="5Ge-Mh-p5j">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="hi5-3x-DT2" kind="relationship" relationship="rootViewController" id="Izk-57-vyQ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cKc-Pe-bg4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2337" y="109"/>
+        </scene>
     </scenes>
     <resources>
         <image name="SSID:" width="16" height="16"/>
@@ -540,7 +556,7 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="WVG-zL-Tln"/>
         <segue reference="d1a-yx-KFh"/>
+        <segue reference="WVG-zL-Tln"/>
     </inferredMetricsTieBreakers>
 </document>

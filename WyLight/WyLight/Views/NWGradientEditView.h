@@ -1,0 +1,30 @@
+//
+//  NWGradientEditView.h
+//  WyLight
+//
+//  Created by Nils Weiß on 12.10.13.
+//  Copyright (c) 2013 Nils Weiß. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@class NWGradientEditView, NWScriptCommandObject;
+
+@protocol NWGradientEditViewDelegate <NSObject>
+
+- (void)NWGradientEditViewDelegateUpButtonPressed:(NWGradientEditView *)view;
+- (void)NWGradientEditViewDelegateDownButtonPressed:(NWGradientEditView *)view;
+- (void)NWGradientEditViewDelegatePlusButtonPressed:(NWGradientEditView *)view;
+- (void)NWGradientEditViewDelegateMinusButtonPressed:(NWGradientEditView *)view;
+
+@end
+
+@interface NWGradientEditView : UIView
+
+@property (nonatomic, weak) NWScriptCommandObject *command;
+@property (nonatomic, weak) id<NWGradientEditViewDelegate> delegate;
+@property (nonatomic) CGFloat cornerRadius;
+
+- (void)reloadData;
+
+@end

@@ -34,9 +34,14 @@ size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const 
 size_t TcpSocket::Send(const uint8_t* frame, size_t length) const {return 0; }
 ComProxy::ComProxy(const TcpSocket& sock) : mSock (sock) {}
 TelnetProxy::TelnetProxy(const TcpSocket& sock) : mSock (sock) {}
+UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) throw (FatalError)	: ClientSocket(addr, port, SOCK_DGRAM) {}
+size_t UdpSocket::Send(const uint8_t *frame, size_t length) const {
+	return length;
+}
+
 
 Control::Control(uint32_t addr, uint16_t port)
-: mSock(addr, port), mProxy(mSock), mTelnet(mSock)
+: mSock(addr, port), mUdpSock(addr, port, false, 0), mProxy(mSock), mTelnet(mSock)
 {
 }
 
@@ -135,6 +140,8 @@ bool Control::ConfModuleAsSoftAP(const std::string& accesspointName) const {retu
 
 bool Control::ConfModuleForWlan(const std::string &phrase, const std::string &ssid, const std::string& name) const {return true; }
 
+bool Control::ConfSetParameters(std::list<std::string> commands) const {return true; }
+
 std::string Control::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
 
 void Control::FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull){throwExceptions(); }
@@ -142,6 +149,8 @@ void Control::FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, Scri
 std::string Control::FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
 
 std::string Control::FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
+
+std::string Control::ExtractFwVersion(const std::string& pFilename) const {throwExceptions(); return ""; }
 
 Control& Control::operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {

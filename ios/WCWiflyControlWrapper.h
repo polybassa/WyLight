@@ -24,8 +24,8 @@
  */
 - (void)configurateWlanModuleAsClientForNetwork:(NSString *)ssid password:(NSString *)password name:(NSString *)name;
 - (void)configurateWlanModuleAsSoftAP:(NSString *)ssid;
-- (void)configurateWlanModuleChannelAsync:(BOOL)async;
 - (void)rebootWlanModul;
+- (void)updateWlanModuleForFwVersion:(NSString *)version;
 
 // Firmware methods
 - (void)setColorDirect:(UIColor *)newColor;
@@ -44,19 +44,23 @@
 - (void)loopOn;
 - (void)loopOffAfterNumberOfRepeats:(uint8_t)repeats;
 - (void)clearScript;
-- (void)readRtcTime:(NSDate **)date;
+- (NSDate *)readRtcTime;
 - (void)writeRtcTime;
-- (void)readCurrentFirmwareVersionFromFirmware:(NSString **)currentFirmwareVersionStringPlaceholder;
+- (NSString *)readCurrentFirmwareVersionFromFirmware;
+- (void)enterBootloaderAsync:(BOOL)async;
 
-- (void)enterBootloader;
+- (void)updateFirmware;
 
 // Bootloader methods
-- (void)readCurrentFirmwareVersionFromBootloder:(NSString **)currentFirmwareVersionStringPlaceholder;
+- (NSString *)readCurrentFirmwareVersionFromBootloder;
 - (void)eraseEepromAsync:(BOOL)async;
 - (void)programFlashAsync:(BOOL)async;
 - (void)leaveBootloader;
 - (int)connect;
 - (void)disconnect;
+
+// Version extract methode
+- (NSString *)readCurrentFirmwareVersionFromHexFile;
 
 @end
 

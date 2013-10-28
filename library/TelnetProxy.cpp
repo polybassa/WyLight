@@ -18,6 +18,7 @@
 
 #include "../config.h"
 #ifndef HAVE_LIBTHREAD
+#warning "Check for a new c++11 std::thread implementatin, which can handle std::this_thread::sleep_for(std::chrono::nanoseconds(X)) whithout using nanosleep"
 #define _GLIBCXX_USE_NANOSLEEP
 #endif
 
