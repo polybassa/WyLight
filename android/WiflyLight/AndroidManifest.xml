@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="biz.bruenn.WiflyLight"
-    android:versionCode="13"
-    android:versionName="0.13" >
+    android:versionCode="15"
+    android:versionName="0.15" >
 
     <uses-sdk android:minSdkVersion="8" />
 

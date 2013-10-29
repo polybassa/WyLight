@@ -10,9 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 
-public class ScriptAdapter extends ArrayAdapter<ScriptCommand> {
+public class ScriptCommandAdapter extends ArrayAdapter<ScriptCommand> {
 
-	public ScriptAdapter(Context context, int textViewResourceId,
+	public ScriptCommandAdapter(Context context, int textViewResourceId,
 			List<ScriptCommand> objects) {
 		super(context, textViewResourceId, objects);
 	}

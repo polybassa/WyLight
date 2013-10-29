@@ -16,42 +16,28 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef __WyLight__Script__
-#define __WyLight__Script__
+#ifndef __WyLight__ScriptManager__
+#define __WyLight__ScriptManager__
 
-#include "FwCommand.h"
-
-#include <list>
 #include <string>
-#include <memory>
+#include <vector>
 
 namespace WyLight {
 
-class Script : public std::list<std::shared_ptr<FwCmdScript>>
+class ScriptManager
 {
+	static const std::string EXTENSION;
+	std::vector<std::string> m_ScriptFiles;
+
+	static bool hasScriptFileExtension(const std::string& filename);
 
 public:
-	static void deserialize(const std::string& filename, Script& newScript);
-	static void serialize(const std::string& filename, const Script& newScript);
+	ScriptManager();
+	~ScriptManager(void);
 
-	Script();
-	Script(const std::string& filename);
-	~Script(void);
-	bool operator ==(const Script& ref) const;
-	
-	template<typename T>
-	void emplace_back(T&& t)
-	{
-		this->list::emplace_back(std::make_shared<T>(std::forward<T>(t)));
-	}
-
-	template<typename T>
-	void emplace_front(T&& t)
-	{
-		this->list::emplace_front(std::make_shared<T>(std::forward<T>(t)));
-	}	
-
+	const std::string& getScript(size_t index) const;
+	size_t numScripts() const;
 };
 } /* namespace WyLight */
-#endif /* #ifndef __WyLight__Script__ */
+#endif /* #ifndef __WyLight__ScriptManager__ */
 

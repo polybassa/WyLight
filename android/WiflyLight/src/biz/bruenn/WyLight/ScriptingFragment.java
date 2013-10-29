@@ -13,21 +13,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 public class ScriptingFragment extends ControlFragment {
 	public static final String ITEM_POSITION = "ITEM_POSITION";
 
 	private ArrayList<ScriptCommand> mArrayList = new ArrayList<ScriptCommand>();
-	private ScriptAdapter mAdapter;
+	private ScriptCommandAdapter mAdapter;
+	private ArrayAdapter<String> mScriptList;
 	private Random r = new Random();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_scripting, group, false);
 		
-		mAdapter = new ScriptAdapter(this.getActivity(), android.R.layout.simple_list_item_1, mArrayList);
+		mAdapter = new ScriptCommandAdapter(this.getActivity(), android.R.layout.simple_list_item_1, mArrayList);
 		mAdapter.notifyDataSetChanged();
 		ListView list = (ListView)v.findViewById(R.id.scriptList);
 		list.setAdapter(mAdapter);
@@ -58,6 +61,14 @@ public class ScriptingFragment extends ControlFragment {
 			}
 		});
 		
+		Button newScript = (Button)v.findViewById(R.id.new_script);
+		newScript.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				mScriptList.add("Script" + Math.random() * 1000);
+			}
+		});
+		
 		Button send = (Button)v.findViewById(R.id.send);
 		send.setOnClickListener(new View.OnClickListener() {
 			
@@ -65,6 +76,16 @@ public class ScriptingFragment extends ControlFragment {
 				sendScript();				
 			}
 		});
+		
+		ArrayList<String> scripts = new ArrayList<String>();
+		scripts.add("1");
+		scripts.add("2");
+		
+		Spinner savedScripts = (Spinner)v.findViewById(R.id.savedScripts);
+		mScriptList = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, scripts);
+		mScriptList.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		savedScripts.setAdapter(mScriptList);
+		
 		return v;
 	}
 	

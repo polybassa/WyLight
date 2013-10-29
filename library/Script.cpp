@@ -26,6 +26,10 @@ static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZON
 
 Script::Script(const std::string& filename)
 {
+}
+
+Script::Script(const std::string& filename)
+{
 	Script::deserialize(filename, *this);
 }
 
