@@ -119,7 +119,7 @@
 // if a fatal error occures I remove the endpoint from my favorites-list
 - (IBAction)unwindAtConnectionFatalErrorOccured:(UIStoryboardSegue *)segue {
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[[[UIAlertView alloc]initWithTitle:@"Connection lost!" message:@"Please retry!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+		[[[UIAlertView alloc]initWithTitle:NSLocalizedStringFromTable(@"ConnectionLostKey", @"ViewControllerLocalization", @"") message:NSLocalizedStringFromTable(@"ReConnectKey", @"ViewControllerLocalization", @"") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 		
 		if ([segue.sourceViewController respondsToSelector:@selector(endpoint)]) {
 			[self.receiver unsetWCEndpointAsFavorite: [segue.sourceViewController performSelector:@selector(endpoint)]];
@@ -132,8 +132,8 @@
 // show a message
 - (IBAction)unwindAtConnectionHasDisconnected:(UIStoryboardSegue *)segue {
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[[[UIAlertView alloc]initWithTitle:@"Configuration successfull!"
-								   message:@"Please change your WLAN-Network \nin your device settings!"
+		[[[UIAlertView alloc]initWithTitle:NSLocalizedStringFromTable(@"ConfigSuccessfullKey", @"ViewControllerLocalization", @"")
+								   message:NSLocalizedStringFromTable(@"ChangeWifiKey", @"ViewControllerLocalization", @"")
 								  delegate:self
 						 cancelButtonTitle:@"OK"
 						 otherButtonTitles:nil] show];
@@ -147,8 +147,8 @@
 
 - (IBAction)noNewTargetFoundSegue:(UIStoryboardSegue *)segue {
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[[[UIAlertView alloc]initWithTitle:@"No new WyLight found!"
-								   message:@"Please retry!"
+		[[[UIAlertView alloc]initWithTitle:NSLocalizedStringFromTable(@"RetryKey", @"ViewControllerLocalization", @"")
+                                   message:NSLocalizedStringFromTable(@"NoTargetFoundKey", @"ViewControllerLocalization", @"")
 								  delegate:self
 						 cancelButtonTitle:@"OK"
 						 otherButtonTitles:nil] show];

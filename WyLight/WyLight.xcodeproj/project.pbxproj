@@ -73,7 +73,6 @@
 		5C90B39A17EF56F300BAC74F /* NWScriptObjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B39717EF56F300BAC74F /* NWScriptObjectView.m */; };
 		5C90B39B17EF56F300BAC74F /* NWScriptObjectControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B39917EF56F300BAC74F /* NWScriptObjectControl.m */; };
 		5C90B39E17EF572400BAC74F /* NWGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B39D17EF572400BAC74F /* NWGradientView.m */; };
-		5C90B3A117F1702F00BAC74F /* NWTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3A017F1702F00BAC74F /* NWTestViewController.m */; };
 		5C90B3A617F2EB7A00BAC74F /* NWTimeInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3A317F2EB7A00BAC74F /* NWTimeInfoView.m */; };
 		5C90B3BF17F3714B00BAC74F /* NWScriptView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3AE17F3714B00BAC74F /* NWScriptView.m */; };
 		5C90B3C117F3714B00BAC74F /* NWScriptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3B217F3714B00BAC74F /* NWScriptViewController.m */; };
@@ -87,6 +86,9 @@
 		5CDE7086180A8F1F0032D2F0 /* NWColorEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE7085180A8F1F0032D2F0 /* NWColorEditView.m */; };
 		C01EA004181664BB0044B018 /* NWScript+defaultScripts.m in Sources */ = {isa = PBXBuildFile; fileRef = C01EA003181664BB0044B018 /* NWScript+defaultScripts.m */; };
 		C038541F181BEE750058CAC6 /* NWRenderableScript.m in Sources */ = {isa = PBXBuildFile; fileRef = C038541E181BEE750058CAC6 /* NWRenderableScript.m */; };
+		C044BB8A1823AEDA0097151D /* defaultScriptsLocalization.strings in Resources */ = {isa = PBXBuildFile; fileRef = C044BB8C1823AEDA0097151D /* defaultScriptsLocalization.strings */; };
+		C044BB901823B4800097151D /* ScriptObjectEditViewsLocalization.strings in Resources */ = {isa = PBXBuildFile; fileRef = C044BB921823B4800097151D /* ScriptObjectEditViewsLocalization.strings */; };
+		C044BB961823B6750097151D /* ViewControllerLocalization.strings in Resources */ = {isa = PBXBuildFile; fileRef = C044BB981823B6750097151D /* ViewControllerLocalization.strings */; };
 		C08D5DAA181166BF00A73801 /* NWScriptFolderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08D5DA9181166BF00A73801 /* NWScriptFolderViewController.m */; };
 		C0E10EC418142B240009CF3C /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E10EC318142B240009CF3C /* UIImage+ImageEffects.m */; };
 		C0E10EC71814FC1B0009CF3C /* UIView+blurredSnapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E10EC61814FC1B0009CF3C /* UIView+blurredSnapshot.m */; };
@@ -135,7 +137,6 @@
 		5C83957B17EB6138007EF0C6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		5C83957D17EB6138007EF0C6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5C83958117EB6138007EF0C6 /* WyLight-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "WyLight-Info.plist"; path = "../WyLight-Info.plist"; sourceTree = "<group>"; };
-		5C83958317EB6138007EF0C6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5C83958517EB6138007EF0C6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5C83958717EB6138007EF0C6 /* WyLight-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "WyLight-Prefix.pch"; path = "../WyLight-Prefix.pch"; sourceTree = "<group>"; };
 		5C83958817EB6138007EF0C6 /* NWAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NWAppDelegate.h; sourceTree = "<group>"; };
@@ -145,7 +146,6 @@
 		5C83959717EB6138007EF0C6 /* WyLightTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WyLightTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C83959817EB6138007EF0C6 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		5C8395A017EB6138007EF0C6 /* WyLightTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WyLightTests-Info.plist"; sourceTree = "<group>"; };
-		5C8395A217EB6138007EF0C6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5C8395A417EB6138007EF0C6 /* WyLightTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WyLightTests.m; sourceTree = "<group>"; };
 		5C8395AE17EB6182007EF0C6 /* NWBroadcastsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWBroadcastsTVC.h; path = ViewController/NWBroadcastsTVC.h; sourceTree = "<group>"; };
 		5C8395AF17EB6197007EF0C6 /* NWBroadcastsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWBroadcastsTVC.m; path = ViewController/NWBroadcastsTVC.m; sourceTree = "<group>"; };
@@ -234,8 +234,6 @@
 		5C90B39917EF56F300BAC74F /* NWScriptObjectControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWScriptObjectControl.m; sourceTree = "<group>"; };
 		5C90B39C17EF572400BAC74F /* NWGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWGradientView.h; sourceTree = "<group>"; };
 		5C90B39D17EF572400BAC74F /* NWGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWGradientView.m; sourceTree = "<group>"; };
-		5C90B39F17F1702F00BAC74F /* NWTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWTestViewController.h; path = ViewController/NWTestViewController.h; sourceTree = "<group>"; };
-		5C90B3A017F1702F00BAC74F /* NWTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWTestViewController.m; path = ViewController/NWTestViewController.m; sourceTree = "<group>"; };
 		5C90B3A217F2EB7A00BAC74F /* NWTimeInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWTimeInfoView.h; sourceTree = "<group>"; };
 		5C90B3A317F2EB7A00BAC74F /* NWTimeInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWTimeInfoView.m; sourceTree = "<group>"; };
 		5C90B3AD17F3714B00BAC74F /* NWScriptView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWScriptView.h; path = Script_DEPRECATED/NWScriptView.h; sourceTree = "<group>"; };
@@ -262,6 +260,15 @@
 		C01EA003181664BB0044B018 /* NWScript+defaultScripts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NWScript+defaultScripts.m"; sourceTree = "<group>"; };
 		C038541D181BEE750058CAC6 /* NWRenderableScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWRenderableScript.h; sourceTree = "<group>"; };
 		C038541E181BEE750058CAC6 /* NWRenderableScript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWRenderableScript.m; sourceTree = "<group>"; };
+		C044BB7C1823AAC70097151D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
+		C044BB7D1823AAC70097151D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C044BB7E1823AAC70097151D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C044BB8B1823AEDA0097151D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/defaultScriptsLocalization.strings; sourceTree = "<group>"; };
+		C044BB8D1823AEE00097151D /* de */ = {isa = PBXFileReference; lastKnownFileType = file; name = de; path = de.lproj/defaultScriptsLocalization.strings; sourceTree = "<group>"; };
+		C044BB911823B4800097151D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file; name = Base; path = Base.lproj/ScriptObjectEditViewsLocalization.strings; sourceTree = "<group>"; };
+		C044BB931823B4860097151D /* de */ = {isa = PBXFileReference; lastKnownFileType = file; name = de; path = de.lproj/ScriptObjectEditViewsLocalization.strings; sourceTree = "<group>"; };
+		C044BB971823B6750097151D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file; name = Base; path = Base.lproj/ViewControllerLocalization.strings; sourceTree = "<group>"; };
+		C044BB991823B6770097151D /* de */ = {isa = PBXFileReference; lastKnownFileType = file; name = de; path = de.lproj/ViewControllerLocalization.strings; sourceTree = "<group>"; };
 		C08D5DA8181166BF00A73801 /* NWScriptFolderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWScriptFolderViewController.h; path = Script_DEPRECATED/NWScriptFolderViewController.h; sourceTree = "<group>"; };
 		C08D5DA9181166BF00A73801 /* NWScriptFolderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWScriptFolderViewController.m; path = Script_DEPRECATED/NWScriptFolderViewController.m; sourceTree = "<group>"; };
 		C0E10EC218142B240009CF3C /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
@@ -379,6 +386,7 @@
 		5C83957F17EB6138007EF0C6 /* WyLight */ = {
 			isa = PBXGroup;
 			children = (
+				C044BB871823ADCD0097151D /* Localization */,
 				5C90B39517EF56A700BAC74F /* RadialMenu */,
 				5C35FEF317EF4F9400E3DE0D /* CommandModel */,
 				5C83964317EC5E8A007EF0C6 /* Views */,
@@ -491,8 +499,6 @@
 				5C8395ED17EB6721007EF0C6 /* NWColorPickerViewController.m */,
 				5C4F56E917EC968E0039ADFF /* NWColorSliderViewController.h */,
 				5C4F56EA17EC968E0039ADFF /* NWColorSliderViewController.m */,
-				5C90B39F17F1702F00BAC74F /* NWTestViewController.h */,
-				5C90B3A017F1702F00BAC74F /* NWTestViewController.m */,
 				5CD991FF1804A5CD003C4F99 /* NWAppInfoViewController.h */,
 				5CD992001804A5CD003C4F99 /* NWAppInfoViewController.m */,
 			);
@@ -585,6 +591,16 @@
 			name = RadialMenu;
 			sourceTree = "<group>";
 		};
+		C044BB871823ADCD0097151D /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				C044BB8C1823AEDA0097151D /* defaultScriptsLocalization.strings */,
+				C044BB921823B4800097151D /* ScriptObjectEditViewsLocalization.strings */,
+				C044BB981823B6750097151D /* ViewControllerLocalization.strings */,
+			);
+			name = Localization;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -648,6 +664,7 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
 			);
 			mainGroup = 5C83956D17EB6138007EF0C6;
 			productRefGroup = 5C83957717EB6138007EF0C6 /* Products */;
@@ -667,11 +684,14 @@
 			files = (
 				5C83962C17EB6C00007EF0C6 /* checkerboard@2x.png in Resources */,
 				5C83963617EB6C00007EF0C6 /* pickerColorWheel.png in Resources */,
+				C044BB961823B6750097151D /* ViewControllerLocalization.strings in Resources */,
 				5C83962B17EB6C00007EF0C6 /* checkerboard.png in Resources */,
 				5C83963717EB6C00007EF0C6 /* pickerColorWheel@2x.png in Resources */,
 				5C83959217EB6138007EF0C6 /* Images.xcassets in Resources */,
+				C044BB8A1823AEDA0097151D /* defaultScriptsLocalization.strings in Resources */,
 				5C83958417EB6138007EF0C6 /* InfoPlist.strings in Resources */,
 				5C83958D17EB6138007EF0C6 /* Main.storyboard in Resources */,
+				C044BB901823B4800097151D /* ScriptObjectEditViewsLocalization.strings in Resources */,
 				5C83962D17EB6C00007EF0C6 /* colorPickerKnob.png in Resources */,
 				5C7488BD17FC2E0C00DB1B22 /* main.hex in Resources */,
 				5C83962E17EB6C00007EF0C6 /* colorPickerKnob@2x.png in Resources */,
@@ -733,7 +753,6 @@
 				5C83963817EB6C00007EF0C6 /* UIColor-Expanded.m in Sources */,
 				5CDE707D180987B40032D2F0 /* NWComplexScriptCommandEditorViewController.m in Sources */,
 				5C90B39A17EF56F300BAC74F /* NWScriptObjectView.m in Sources */,
-				5C90B3A117F1702F00BAC74F /* NWTestViewController.m in Sources */,
 				5C83963217EB6C00007EF0C6 /* KZColorPickerBrightnessSlider.m in Sources */,
 				5C90B39417EF56A000BAC74F /* ALRadialMenu.m in Sources */,
 				5C8395D917EB61B4007EF0C6 /* Script.cpp in Sources */,
@@ -784,7 +803,7 @@
 		5C83958217EB6138007EF0C6 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				5C83958317EB6138007EF0C6 /* en */,
+				C044BB7D1823AAC70097151D /* de */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -793,6 +812,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				5C83958C17EB6138007EF0C6 /* Base */,
+				C044BB7C1823AAC70097151D /* de */,
 			);
 			name = Main.storyboard;
 			path = SupportingFiles;
@@ -801,9 +821,36 @@
 		5C8395A117EB6138007EF0C6 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				5C8395A217EB6138007EF0C6 /* en */,
+				C044BB7E1823AAC70097151D /* de */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		C044BB8C1823AEDA0097151D /* defaultScriptsLocalization.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C044BB8B1823AEDA0097151D /* Base */,
+				C044BB8D1823AEE00097151D /* de */,
+			);
+			name = defaultScriptsLocalization.strings;
+			sourceTree = "<group>";
+		};
+		C044BB921823B4800097151D /* ScriptObjectEditViewsLocalization.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C044BB911823B4800097151D /* Base */,
+				C044BB931823B4860097151D /* de */,
+			);
+			name = ScriptObjectEditViewsLocalization.strings;
+			sourceTree = "<group>";
+		};
+		C044BB981823B6750097151D /* ViewControllerLocalization.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C044BB971823B6750097151D /* Base */,
+				C044BB991823B6770097151D /* de */,
+			);
+			name = ViewControllerLocalization.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

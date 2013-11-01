@@ -134,7 +134,7 @@
 	[self.view addSubview:self.scriptView];
 
 	self.sendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	[self.sendButton setTitle:@"SEND" forState:UIControlStateNormal];
+	[self.sendButton setTitle:NSLocalizedStringFromTable(@"ScriptVCSendBtnKey", @"ViewControllerLocalization", @"") forState:UIControlStateNormal];
 	[self.sendButton addTarget:self action:@selector(sendScript) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:self.sendButton];
 
@@ -200,7 +200,7 @@
 			BOOL showDeletionModeInfo = ![[NSUserDefaults standardUserDefaults] boolForKey:DELETE_USER_INFO_KEY];
 			if (showDeletionModeInfo) {
 				[[NSUserDefaults standardUserDefaults] setBool:YES forKey:DELETE_USER_INFO_KEY];
-				UIAlertView *infoView = [[UIAlertView alloc]initWithTitle:@"Swipe up" message:@"to delete an object" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+				UIAlertView *infoView = [[UIAlertView alloc]initWithTitle:NSLocalizedStringFromTable(@"ScriptVCDeleteInfoKey1", @"ViewControllerLocalization", @"") message:NSLocalizedStringFromTable(@"ScriptVCDeleteInfoKey2", @"ViewControllerLocalization", @"") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 				[infoView show];
 			}
 		}

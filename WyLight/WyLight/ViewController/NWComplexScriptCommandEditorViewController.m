@@ -287,7 +287,7 @@ enum EditColorTarget {
 		_fadeColorEditView.cornerRadius = 5.0;
 		_fadeColorEditView.contentMode = UIViewContentModeCenter;
 		_fadeColorEditView.delegate = self;
-		_fadeColorEditView.title = @"Fade Color";
+		_fadeColorEditView.title = NSLocalizedStringFromTable(@"CmplxScriptCmdEditorVCFadeInfoKey", @"ViewControllerLocalization", @"");
 	}
 	return _fadeColorEditView;
 }
@@ -299,7 +299,7 @@ enum EditColorTarget {
 		_gradientColor1EditView.cornerRadius = 5.0;
 		_gradientColor1EditView.contentMode = UIViewContentModeCenter;
 		_gradientColor1EditView.delegate = self;
-		_gradientColor1EditView.title = @"Gradient Start Color";
+		_gradientColor1EditView.title = NSLocalizedStringFromTable(@"CmplxScriptCmdEditorVCGradient1InfoKey", @"ViewControllerLocalization", @"");
 	}
 	return _gradientColor1EditView;
 }
@@ -311,7 +311,7 @@ enum EditColorTarget {
 		_gradientColor2EditView.cornerRadius = 5.0;
 		_gradientColor2EditView.contentMode = UIViewContentModeCenter;
 		_gradientColor2EditView.delegate = self;
-		_gradientColor2EditView.title = @"Gradient End Color";
+		_gradientColor2EditView.title = NSLocalizedStringFromTable(@"CmplxScriptCmdEditorVCGradient2InfoKey", @"ViewControllerLocalization", @"");
 	}
 	return _gradientColor2EditView;
 }
@@ -745,12 +745,12 @@ enum EditColorTarget {
 		UIButton *fadeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 		fadeButton.frame = CGRectMake(0, 0, 80, 80);
 		[fadeButton setBackgroundImage:[self addFadeImage] forState:UIControlStateNormal];
-		[fadeButton setTitle:@"Fade" forState:UIControlStateNormal];
+		[fadeButton setTitle:NSLocalizedStringFromTable(@"CmplxScriptCmdEditorVCFadeButtonKey", @"ViewControllerLocalization", @"") forState:UIControlStateNormal];
 		
 		UIButton *gradientButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 		gradientButton.frame = CGRectMake(0, 0, 80, 80);
 		[gradientButton setBackgroundImage:[self addGradientImage] forState:UIControlStateNormal];
-		[gradientButton setTitle:@"Gradient" forState:UIControlStateNormal];
+		[gradientButton setTitle:NSLocalizedStringFromTable(@"CmplxScriptCmdEditorVCGradientButtonKey", @"ViewControllerLocalization", @"") forState:UIControlStateNormal];
 		
 		_addEffectImages = @[[NWComplexScriptCommandEditorViewController imageWithView:fadeButton], [NWComplexScriptCommandEditorViewController imageWithView:gradientButton]];
 	}

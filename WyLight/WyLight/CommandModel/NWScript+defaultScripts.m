@@ -16,7 +16,7 @@
 + (NWRenderableScript *)defaultScriptFastColorChange {
     NWRenderableScript *tempScript = [[NWRenderableScript alloc] init];
     tempScript.repeatWhenFinished = YES;
-    tempScript.title = @"Fast Colors";
+    tempScript.title = NSLocalizedStringFromTable(@"FastColorKey", @"defaultScriptsLocalization", @"");
     {
         NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
         {
@@ -107,7 +107,7 @@
 + (NWRenderableScript *)defaultScriptSlowColorChange {
     NWRenderableScript *tempScript = [[NWRenderableScript alloc] init];
     tempScript.repeatWhenFinished = YES;
-    tempScript.title = @"Slow Colors";
+    tempScript.title = NSLocalizedStringFromTable(@"SlowColorKey", @"defaultScriptsLocalization", @"");
     {
         NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
         {
@@ -198,7 +198,7 @@
 + (NWRenderableScript *)defaultScriptConzentrationLight {
     NWRenderableScript *tempScript = [[NWRenderableScript alloc] init];
     tempScript.repeatWhenFinished = YES;
-    tempScript.title = @"Conzentration Light";
+    tempScript.title = NSLocalizedStringFromTable(@"ConzentrationLightKey", @"defaultScriptsLocalization", @"");
     {
         NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
         {
@@ -277,7 +277,7 @@
 + (NWRenderableScript *)defaultScriptMovingColors {
     NWRenderableScript *tempScript = [[NWRenderableScript alloc] init];
     tempScript.repeatWhenFinished = YES;
-    tempScript.title = @"Moving Colors";
+    tempScript.title = NSLocalizedStringFromTable(@"MovingColorsKey", @"defaultScriptsLocalization", @"");
     {
         NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
         {
@@ -396,7 +396,7 @@
 + (NWRenderableScript *)defaultScriptRandomColors {
     NWRenderableScript *tempScript = [[NWRenderableScript alloc] init];
     tempScript.repeatWhenFinished = YES;
-    tempScript.title = @"Random Colors";
+    tempScript.title = NSLocalizedStringFromTable(@"RandomColorsKey", @"defaultScriptsLocalization", @"");
     for (int i = 0; i < 7; i++)
     {
         NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
@@ -459,7 +459,7 @@
 + (NWRenderableScript *)defaultScriptRunLightWithColor:(UIColor *)color timeInterval:(uint16_t)time {
     NWRenderableScript *tempScript = [[NWRenderableScript alloc] init];
     tempScript.repeatWhenFinished = YES;
-    tempScript.title = @"Run Light";
+    tempScript.title = NSLocalizedStringFromTable(@"RunLightKey", @"defaultScriptsLocalization", @"");
     {
         for (int i = 0; i < 32; i = i + 2) {
             NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
@@ -487,7 +487,7 @@
 + (NWRenderableScript *)defaultScriptColorCrashWithTimeInterval:(uint16_t)time {
     NWRenderableScript *tempScript = [[NWRenderableScript alloc] init];
     tempScript.repeatWhenFinished = YES;
-    tempScript.title = @"Color Crash Light";
+    tempScript.title = NSLocalizedStringFromTable(@"ColorCrashKey", @"defaultScriptsLocalization", @"");
     {
         for (int i = 0; i < 8; i++) {
             NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
@@ -547,7 +547,7 @@
 + (NWRenderableScript *)emptyScript {
     NWRenderableScript *tempScript = [[NWRenderableScript alloc] init];
     tempScript.repeatWhenFinished = YES;
-    tempScript.title = @"New Script";
+    tempScript.title = NSLocalizedStringFromTable(@"NewScriptKey", @"defaultScriptsLocalization", @"");
     {
             NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
             {

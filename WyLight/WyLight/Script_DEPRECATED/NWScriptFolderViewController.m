@@ -131,7 +131,7 @@
     [self.view addSubview:milkglassView];
     
     self.sendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	[self.sendButton setTitle:@"SEND" forState:UIControlStateNormal];
+	[self.sendButton setTitle:NSLocalizedStringFromTable(@"ScriptVCSendBtnKey", @"ViewControllerLocalization", @"") forState:UIControlStateNormal];
 	[self.sendButton addTarget:self action:@selector(sendScript) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:self.sendButton];
     
@@ -278,6 +278,9 @@
     if (self.isDeletionModeActive) {
         self.isDeletionModeActive = NO;
     } else {
+        if (((NWRenderableScript *)self.scriptObjects[self.carousel.currentItemIndex]).isRendering) {
+            return; // to avoid inconsistent data
+        }
         [self showFullScreenAlertView];
         double delayInSeconds = 0.1;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -308,7 +311,7 @@
 }
 
 - (void)showFullScreenAlertView {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Loading data..." message:@"Please Wait!" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"LoadingDataKey", @"ViewControllerLocalization", @"") message:NSLocalizedStringFromTable(@"PleaseWaitKey", @"ViewControllerLocalization", @"") delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
     [alert show];
     
     double delayInSeconds = 2.0;

@@ -28,6 +28,7 @@
 - (void)setWaitCommand:(BOOL)waitCommand {
     if (waitCommand != _waitCommand) {
         self.needsUpdate = YES;
+        _waitCommand = waitCommand;
     }
 }
 

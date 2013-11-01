@@ -37,7 +37,7 @@
 	}
 	{
 		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 25)];
-		label.text = @"PASSWORD: ";
+		label.text = NSLocalizedStringFromTable(@"PasswordKey", @"ViewControllerLocalization", @"");
 		label.backgroundColor = [UIColor clearColor];
 		label.textColor = [UIColor darkGrayColor];
 		
@@ -82,9 +82,9 @@
 	if (self.configureTargetAsSoftAP) {
 		self.passTextField.hidden = YES;
 		self.nameTextField.hidden = YES;
-		self.informationLabel.text = @"Enter SSID for your WyLight";
+		self.informationLabel.text = NSLocalizedStringFromTable(@"SSIDInfoKey", @"ViewControllerLocalization", @"");
 	} else {
-		self.informationLabel.text = @"Enter your AP informations";
+		self.informationLabel.text = NSLocalizedStringFromTable(@"APInfoKey", @"ViewControllerLocalization", @"");
 	}
 	[self.informationLabel sizeToFit];
 	
@@ -110,12 +110,16 @@
 - (BOOL)textFieldInputValid {
 	if (self.configureTargetAsSoftAP) {
 		if (![self.ssidTextField.text length]){
-			[[[UIAlertView alloc] initWithTitle:@"Invalid Input" message:@"Please complete the input field" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
+			[[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"InvalidInputKey", @"ViewControllerLocalization", @"")
+                                        message:NSLocalizedStringFromTable(@"CompleteInputKey", @"ViewControllerLocalization", @"")
+                                       delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
 			return NO;
 		}
 	} else {
 		if (![self.ssidTextField.text length] || ![self.passTextField.text length] || ![self.nameTextField.text length]) {
-			[[[UIAlertView alloc] initWithTitle:@"Invalid Input" message:@"Please complete all input fields" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
+			[[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"InvalidInputKey", @"ViewControllerLocalization", @"")
+                                        message:NSLocalizedStringFromTable(@"CompleteInputsKey", @"ViewControllerLocalization", @"")
+                                       delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
 			return NO;
 		}
 	}
@@ -127,7 +131,9 @@
 	if (![self textFieldInputValid]) return;
 		
 		//**** Alert view ****
-		self.scanningAlertView = [[UIAlertView alloc]initWithTitle:@"Configuration" message:@"Connecting" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+		self.scanningAlertView = [[UIAlertView alloc]initWithTitle:NSLocalizedStringFromTable(@"ConfigurationKey", @"ViewControllerLocalization", @"")
+                                                           message:NSLocalizedStringFromTable(@"ConnectingKey", @"ViewControllerLocalization", @"")
+                                                          delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
 		[self.scanningAlertView show];
 			
 		dispatch_queue_t configurationQ = dispatch_queue_create("Configure new Target", NULL);

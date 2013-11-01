@@ -40,7 +40,7 @@
 		[self addSubview:self.timeLabel];
 		
 		self.waitInfoLabel = [[UILabel alloc]initWithFrame:CGRectZero];
-		self.waitInfoLabel.text = @"Enable Effect:";
+		self.waitInfoLabel.text = NSLocalizedStringFromTable(@"WaitInfoLabelKey", @"ScriptObjectEditViewsLocalization", @"");
 		[self addSubview:self.waitInfoLabel];
 		
 		self.waitSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
@@ -75,7 +75,9 @@
 
 - (void)reloadData {
 	self.timeSlider.value = self.command.duration;
-	self.timeLabel.text =  [NSString stringWithFormat:@"Duration: %2.1f s", ((float)self.command.duration / 100)];
+	self.timeLabel.text =  [NSString stringWithFormat:@"%@ %2.1f s",
+                            NSLocalizedStringFromTable(@"TimeLabelKey", @"ScriptObjectEditViewsLocalization", @""),
+                            ((float)self.command.duration / 100)];
 	
 	if ([self.command isKindOfClass:[NWComplexScriptCommandObject class]]) {
 		self.waitInfoLabel.hidden = NO;
