@@ -44,13 +44,16 @@
 - (void)deserializeColor {
 	NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:SELECTED_COLOR_KEY];
 	if (colorData) {
-		self.currentColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
+		_currentColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
 		
 		CGFloat red, green, blue;
 		[self.currentColor getRed:&red green:&green blue:&blue alpha:NULL];
 		self.redSlider.value = red;
 		self.greenSlider.value = green;
 		self.blueSlider.value = blue;
+        self.redTextField.text = [NSString stringWithFormat:@"%lu %%", (unsigned long)(red * 100)];
+        self.greenTextField.text = [NSString stringWithFormat:@"%lu %%", (unsigned long)(green * 100)];
+        self.blueTextField.text = [NSString stringWithFormat:@"%lu %%", (unsigned long)(blue * 100)];
 	}
 }
 

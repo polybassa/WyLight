@@ -7,27 +7,28 @@
 //
 
 #import "NWScriptFolderViewController.h"
-#import "NWScript.h"
+#import "NWRenderableScript.h"
 #import "NWScriptCommandObject.h"
 #import "iCarousel.h"
 #import "NWScriptObjectControl.h"
 #import "NWComplexScriptCommandObject.h"
 #import "UIView+blurredSnapshot.h"
-#import <QuartzCore/QuartzCore.h>
 #import "UIView+Quivering.h"
 #import "WCWiflyControlWrapper.h"
 #import "NWScriptViewController.h"
 #import "NWScript+defaultScripts.h"
-#import "NWScript+Snapshot.h"
+#import "NWRenderableScriptImageView.h"
 
-@interface NWScriptFolderViewController () <iCarouselDataSource, iCarouselDelegate>
+@interface NWScriptFolderViewController () <iCarouselDataSource, iCarouselDelegate, NWRenderableScriptDelegate>
 
 @property (nonatomic, assign) BOOL isDeletionModeActive;
+@property (nonatomic, strong) UIBarButtonItem *addButton;
 @property (nonatomic, strong) NSMutableArray *scriptObjects;
 @property (nonatomic, strong) iCarousel *carousel;
 @property (nonatomic, strong) UIImageView *background;
 @property (nonatomic, strong) UIButton *sendButton;
 @property (nonatomic, strong) UILabel *scriptTitleLabel;
+
 @end
 
 @implementation NWScriptFolderViewController
@@ -44,37 +45,51 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.tabBarController.navigationItem.rightBarButtonItem = self.addButton;
+    });
     [self.carousel reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    if ([self.carousel.currentItemView isKindOfClass:[UIImageView class]]) {
-        [UIView animateWithDuration:0.3 animations:^{
-             self.background.image = ((UIImageView *)[self.carousel currentItemView]).image;
-        }];
-    }
+    [self updateView];
     [super viewDidAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [self saveUserData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.tabBarController.navigationItem.rightBarButtonItem = nil;
+    });
     [super viewWillDisappear:animated];
+}
+
+- (void)updateView {
+    if ([self.carousel.currentItemView isKindOfClass:[UIImageView class]]) {
+        [UIView animateWithDuration:0.4 animations:^{
+            self.background.image = ((UIImageView *)[self.carousel currentItemView]).image;
+        }];
+    }
+    self.scriptTitleLabel.text = ((NWScript *)[self.scriptObjects objectAtIndex:self.carousel.currentItemIndex]).title;
 }
 
 - (void)fixLocations {
     if (self.view.bounds.size.height > self.view.bounds.size.width) {   //horizontal
         [self.tabBarController.tabBar setHidden:NO];
         self.sendButton.frame = CGRectMake(0, self.view.frame.size.height - 100, self.view.frame.size.width, 44);
+        self.scriptTitleLabel.frame = CGRectMake(20, 60, self.view.bounds.size.width - 40, 40);
+        self.carousel.frame = CGRectMake(0, 80, self.view.bounds.size.width, self.view.bounds.size.height - 160);
     }
 	else {
         [self.tabBarController.tabBar setHidden:YES];
         self.sendButton.frame = CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44);
+        self.scriptTitleLabel.frame = CGRectMake(20, 45, self.view.bounds.size.width - 40, 40);
+        self.carousel.frame = CGRectMake(0, 100, self.view.bounds.size.width, self.view.bounds.size.height - 160);
     }
     self.background.frame = self.view.bounds;
-    self.carousel.frame = CGRectMake(0, 80, self.view.bounds.size.width, self.view.bounds.size.height - 160);
 }
 
-#define SCRIPTARRAY_KEY @"WyLightRemote.NWScript.ScriptArray"
+#define SCRIPTARRAY_KEY @"WyLightRemote.NWFolderScriptViewController.ScriptArray"
 
 - (void)setup {
     self.view.superview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -82,19 +97,25 @@
     
     NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:SCRIPTARRAY_KEY];
      if (data) {
-     self.scriptObjects = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+         self.scriptObjects = [NSKeyedUnarchiver unarchiveObjectWithData:data];
      } else {
          self.scriptObjects = [[NSMutableArray alloc] init];
-         [self.scriptObjects addObject:[NWScript defaultScriptFastColorChange]];
-         [self.scriptObjects addObject:[NWScript defaultScriptSlowColorChange]];
-         [self.scriptObjects addObject:[NWScript defaultScriptConzentrationLight]];
-         [self.scriptObjects addObject:[NWScript defaultScriptMovingColors]];
-         [self.scriptObjects addObject:[NWScript defaultScriptRandomColors]];
-         [self.scriptObjects addObject:[NWScript defaultScriptRunLightWithColor:[UIColor greenColor] timeInterval:100]];
-         [self.scriptObjects addObject:[NWScript defaultScriptRunLightWithColor:[UIColor redColor] timeInterval:100]];
-         [self.scriptObjects addObject:[NWScript defaultScriptRunLightWithColor:[UIColor blueColor] timeInterval:100]];
-     }
-   
+         [self.scriptObjects addObject:[NWRenderableScript defaultScriptFastColorChange]];
+         [self.scriptObjects addObject:[NWRenderableScript defaultScriptSlowColorChange]];
+         [self.scriptObjects addObject:[NWRenderableScript defaultScriptConzentrationLight]];
+         [self.scriptObjects addObject:[NWRenderableScript defaultScriptMovingColors]];
+         [self.scriptObjects addObject:[NWRenderableScript defaultScriptRandomColors]];
+         [self.scriptObjects addObject:[NWRenderableScript defaultScriptRunLightWithColor:[UIColor greenColor] timeInterval:100]];
+         [self.scriptObjects addObject:[NWRenderableScript defaultScriptRunLightWithColor:[UIColor redColor] timeInterval:100]];
+         [self.scriptObjects addObject:[NWRenderableScript defaultScriptRunLightWithColor:[UIColor blueColor] timeInterval:100]];
+         [self.scriptObjects addObject:[NWRenderableScript defaultScriptColorCrashWithTimeInterval:50]];
+         [self.scriptObjects addObject:[NWRenderableScript defaultScriptColorCrashWithTimeInterval:200]];
+    }
+    
+    for (NWRenderableScript *script in self.scriptObjects) {
+        script.delegate = self;
+    }
+    
     self.background = [[UIImageView alloc] initWithFrame:self.view.frame];
     self.background.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.background.contentMode = UIViewContentModeScaleToFill;
@@ -124,6 +145,12 @@
     self.carousel.backgroundColor = [UIColor clearColor];
     self.carousel.opaque = NO;
     [self.view addSubview:self.carousel];
+    
+    self.scriptTitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.scriptTitleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:self.scriptTitleLabel];
+    
+    self.addButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addBarButtonPressed:)];
 }
 
 - (void)saveUserData {
@@ -158,15 +185,9 @@
 - (void)sendScript {
 	dispatch_queue_t sendScriptQueue = dispatch_queue_create("sendScriptQueue", NULL);
 	dispatch_async(sendScriptQueue, ^{
-		[self.controlHandle clearScript];
 		[self.controlHandle setColorDirect:[UIColor blackColor]];
-		[self.controlHandle loopOn];
         NWScript *currentScript = self.scriptObjects[self.carousel.currentItemIndex];
-		for (NWComplexScriptCommandObject* command in currentScript.scriptArray) {
-			[command sendToWCWiflyControl:self.controlHandle];
-			[NSThread sleepForTimeInterval:0.1];
-		}
-		[self.controlHandle loopOffAfterNumberOfRepeats:0];
+		[currentScript sendToWCWiflyControl:self.controlHandle];
 	});
 }
 
@@ -178,12 +199,34 @@
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view {
     if (view == nil || ![view isKindOfClass:[UIImageView class]])
     {
-        view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+        view = [[NWRenderableScriptImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
         view.contentMode = UIViewContentModeCenter;
+        view.backgroundColor = [UIColor grayColor];
+        view.tag = index;
     }
     
     if ([view isKindOfClass:[UIImageView class]]) {
-        ((UIImageView *)view).image = [((NWScript *)self.scriptObjects[index]) snapshotWithRect:view.frame];
+        if ([((NWRenderableScript *)self.scriptObjects[index]) needsRendering]) {
+            
+            if ([((NWRenderableScript *)self.scriptObjects[index]) snapshot]) {
+                ((UIImageView *)view).image = [((NWRenderableScript *)self.scriptObjects[index]) snapshot];
+            }
+            dispatch_async(
+                           dispatch_queue_create([[NSString stringWithFormat:@"renderImageForView #%lu", (unsigned long)index] cStringUsingEncoding:NSASCIIStringEncoding], NULL),
+                           ^{
+                               double delayInSeconds = 0.2;
+                               dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                               dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                                   ((NWRenderableScriptImageView *)view).showActivityIndicator = [((NWRenderableScript *)self.scriptObjects[index]) isRendering];
+                               });
+                               [((NWRenderableScript *)self.scriptObjects[index]) startRenderingWithRect:view.frame];
+                            });
+        } else {
+            if ([((NWRenderableScript *)self.scriptObjects[index]) snapshot]) {
+                ((UIImageView *)view).image = [((NWRenderableScript *)self.scriptObjects[index]) snapshot];
+            }
+        }
+        ((NWRenderableScriptImageView *)view).showActivityIndicator = [((NWRenderableScript *)self.scriptObjects[index]) isRendering];
         
         view.layer.cornerRadius = 5.0;
         view.clipsToBounds = YES;
@@ -228,16 +271,19 @@
 }
 
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel {
-    if ([self.carousel.currentItemView isKindOfClass:[UIImageView class]]) {
-        self.background.image = ((UIImageView *)[self.carousel currentItemView]).image;
-    }
+    [self updateView];
 }
 
 - (void)tapOnScriptObjectControl:(UITapGestureRecognizer *)gesture {
     if (self.isDeletionModeActive) {
         self.isDeletionModeActive = NO;
     } else {
-        [self performSegueWithIdentifier:@"edit:" sender:self];
+        [self showFullScreenAlertView];
+        double delayInSeconds = 0.1;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self performSegueWithIdentifier:@"edit:" sender:self];
+        });
     }
 }
 
@@ -254,6 +300,30 @@
 }
 
 - (IBAction)addBarButtonPressed:(UIBarButtonItem *)sender {
+    NWRenderableScript *script = [NWRenderableScript emptyScript];
+    script.delegate = self;
+    [self.scriptObjects addObject:script];
+    [self.carousel insertItemAtIndex:self.scriptObjects.count - 1 animated:YES];
+    [self.carousel scrollToItemAtIndex:self.scriptObjects.count - 1 animated:YES];
+}
+
+- (void)showFullScreenAlertView {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Loading data..." message:@"Please Wait!" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+    [alert show];
+    
+    double delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [alert dismissWithClickedButtonIndex:0 animated:YES];
+    });
+}
+
+#pragma mark - RenderableScriptDelegate
+
+- (void)NWRenderableScriptFinishedRendering:(NWRenderableScript *)script {
+    NSUInteger index = [self.scriptObjects indexOfObject:script];
+    [self.carousel reloadItemAtIndex:index animated:YES];
+    [self updateView];
 }
 
 #pragma mark - SEGUE
@@ -270,6 +340,7 @@
 			ctrl.script = [self.scriptObjects objectAtIndex:self.carousel.currentItemIndex];
 		}
 	}
+    NSLog(@"prepare");
 }
 
 

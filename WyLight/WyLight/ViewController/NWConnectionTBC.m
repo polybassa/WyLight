@@ -12,10 +12,19 @@
 @interface NWConnectionTBC ()
 
 @property (nonatomic, strong) WCWiflyControlWrapper* controlHandle;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *addBarButton;
 
 @end
 
 @implementation NWConnectionTBC
+
+- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
+    if ([item.title isEqualToString:@"Script Editor"]) { //FIX ME with TAG
+        self.addBarButton.enabled = YES;
+    } else {
+        self.addBarButton.enabled = NO;
+    }
+}
 
 //establishes connection to the endpoint automatically
 - (void)setEndpoint:(WCEndpoint *)endpoint {
@@ -95,6 +104,12 @@
 	if (self.endpoint) {
 		[self connectToEndpoint];
 	}
+
+    if ([self.tabBar.selectedItem.title isEqualToString:@"Script Editor"]) { //FIX ME with TAG
+        self.addBarButton.enabled = YES;
+    } else {
+        self.addBarButton.enabled = NO;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

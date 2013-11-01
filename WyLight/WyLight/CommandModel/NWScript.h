@@ -7,13 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "NWSendableCommand.h"
 
 @class NWComplexScriptCommandObject;
 
-@interface NWScript : NSObject <NSCoding>
+@interface NWScript : NSObject <NSCoding, NWSendableCommand>
 
 @property (nonatomic, readonly, strong) NSMutableArray *scriptArray;
 @property (nonatomic, strong) NSString *title;
+@property (nonatomic, assign) BOOL needsUpdate;
+@property (nonatomic, assign) BOOL repeatWhenFinished;
 
 - (void)addObject:(NWComplexScriptCommandObject *)anObject;
 - (void)removeObjectAtIndex:(NSUInteger)index;

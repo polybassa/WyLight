@@ -1,5 +1,5 @@
 //
-//  NWScript+defaultScripts.m
+//  NWRenderableScript+defaultScripts.m
 //  WyLight
 //
 //  Created by Nils Weiß on 10/22/13.
@@ -11,10 +11,11 @@
 #import "NWSetGradientScriptCommandObject.h"
 #import "NWComplexScriptCommandObject.h"
 
-@implementation NWScript (defaultScripts)
+@implementation NWRenderableScript (defaultScripts)
 
-+ (NWScript *)defaultScriptFastColorChange {
-    NWScript *tempScript = [[NWScript alloc] init];
++ (NWRenderableScript *)defaultScriptFastColorChange {
+    NWRenderableScript *tempScript = [[NWRenderableScript alloc] init];
+    tempScript.repeatWhenFinished = YES;
     tempScript.title = @"Fast Colors";
     {
         NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
@@ -103,8 +104,9 @@
     return tempScript;
 }
 
-+ (NWScript *)defaultScriptSlowColorChange {
-    NWScript *tempScript = [[NWScript alloc] init];
++ (NWRenderableScript *)defaultScriptSlowColorChange {
+    NWRenderableScript *tempScript = [[NWRenderableScript alloc] init];
+    tempScript.repeatWhenFinished = YES;
     tempScript.title = @"Slow Colors";
     {
         NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
@@ -193,8 +195,9 @@
     return tempScript;
 }
 
-+ (NWScript *)defaultScriptConzentrationLight {
-    NWScript *tempScript = [[NWScript alloc] init];
++ (NWRenderableScript *)defaultScriptConzentrationLight {
+    NWRenderableScript *tempScript = [[NWRenderableScript alloc] init];
+    tempScript.repeatWhenFinished = YES;
     tempScript.title = @"Conzentration Light";
     {
         NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
@@ -271,8 +274,9 @@
     return tempScript;
 }
 
-+ (NWScript *)defaultScriptMovingColors {
-    NWScript *tempScript = [[NWScript alloc] init];
++ (NWRenderableScript *)defaultScriptMovingColors {
+    NWRenderableScript *tempScript = [[NWRenderableScript alloc] init];
+    tempScript.repeatWhenFinished = YES;
     tempScript.title = @"Moving Colors";
     {
         NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
@@ -389,8 +393,9 @@
     return tempScript;
 }
 
-+ (NWScript *)defaultScriptRandomColors {
-    NWScript *tempScript = [[NWScript alloc] init];
++ (NWRenderableScript *)defaultScriptRandomColors {
+    NWRenderableScript *tempScript = [[NWRenderableScript alloc] init];
+    tempScript.repeatWhenFinished = YES;
     tempScript.title = @"Random Colors";
     for (int i = 0; i < 7; i++)
     {
@@ -451,8 +456,9 @@
     return tempScript;
 }
 
-+ (NWScript *)defaultScriptRunLightWithColor:(UIColor *)color timeInterval:(uint16_t)time {
-    NWScript *tempScript = [[NWScript alloc] init];
++ (NWRenderableScript *)defaultScriptRunLightWithColor:(UIColor *)color timeInterval:(uint16_t)time {
+    NWRenderableScript *tempScript = [[NWRenderableScript alloc] init];
+    tempScript.repeatWhenFinished = YES;
     tempScript.title = @"Run Light";
     {
         for (int i = 0; i < 32; i = i + 2) {
@@ -461,7 +467,7 @@
                 {
                     NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
                     obj.address = 0xffffffff;
-                    obj.color = [UIColor blackColor];
+                    obj.color = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
                     [comObj.scriptObjects addObject:obj];
                 }
                 {
@@ -474,6 +480,84 @@
             comObj.duration = time;
             [tempScript addObject:comObj];
         }
+    }
+    return tempScript;
+}
+
++ (NWRenderableScript *)defaultScriptColorCrashWithTimeInterval:(uint16_t)time {
+    NWRenderableScript *tempScript = [[NWRenderableScript alloc] init];
+    tempScript.repeatWhenFinished = YES;
+    tempScript.title = @"Color Crash Light";
+    {
+        for (int i = 0; i < 8; i++) {
+            NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
+            {
+                {
+                    NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
+                    obj.address = 0xffffffff;
+                    obj.color = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
+                    [comObj.scriptObjects addObject:obj];
+                }
+                {
+                    NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
+                    obj.address = 0x00000003 << i*2;
+                    obj.color = [UIColor redColor];
+                    [comObj.scriptObjects addObject:obj];
+                }
+                {
+                    NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
+                    obj.address = 0xC0000000 >> i*2;
+                    obj.color = [UIColor greenColor];
+                    [comObj.scriptObjects addObject:obj];
+                }
+            }
+            comObj.duration = time;
+            [tempScript addObject:comObj];
+        }
+        for (int i = 0; i < 8; i++) {
+            NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
+            {
+                {
+                    NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
+                    obj.address = 0xffffffff;
+                    obj.color = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
+                    [comObj.scriptObjects addObject:obj];
+                }
+                {
+                    NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
+                    obj.address = 0x00030000 << i*2;
+                    obj.color = [UIColor blueColor];
+                    [comObj.scriptObjects addObject:obj];
+                }
+                {
+                    NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
+                    obj.address = 0x0000C000 >> i*2;
+                    obj.color = [UIColor yellowColor];
+                    [comObj.scriptObjects addObject:obj];
+                }
+            }
+            comObj.duration = time;
+            [tempScript addObject:comObj];
+        }
+
+    }
+    return tempScript;
+}
+
++ (NWRenderableScript *)emptyScript {
+    NWRenderableScript *tempScript = [[NWRenderableScript alloc] init];
+    tempScript.repeatWhenFinished = YES;
+    tempScript.title = @"New Script";
+    {
+            NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
+            {
+                    NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
+                    obj.address = 0xffffffff;
+                    obj.color = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
+                    [comObj.scriptObjects addObject:obj];
+            }
+            comObj.duration = 1000;
+            [tempScript addObject:comObj];
     }
     return tempScript;
 }

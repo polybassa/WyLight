@@ -8,8 +8,7 @@
 
 #import "NWScript.h"
 #import "NWComplexScriptCommandObject.h"
-#import "NWSetFadeScriptCommandObject.h" //remove when finished
-#import "NWSetGradientScriptCommandObject.h" //remove when finished
+#import "WCWiflyControlWrapper.h"
 
 @interface NWScript()
 
@@ -19,23 +18,16 @@
 
 @implementation NWScript
 
-- (id)init {
-	self = [super init];
-	
-	if (self) {
-		//[self fillWithDefaultData];
-	}
-	return self;
-}
-
 #define SCRIPTARRAY_KEY @"WyLightRemote.NWScript.scriptarray"
 #define TITLE_KEY @"WyLightRemote.NWScript.title"
+#define REPEAT_KEY @"WyLightRemote.NWScript.repeat"
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
 	self = [self init];
 	if (self) {
 		_scriptArray = [aDecoder decodeObjectForKey:SCRIPTARRAY_KEY];
         _title = [aDecoder decodeObjectForKey:TITLE_KEY];
+        _repeatWhenFinished = [aDecoder decodeBoolForKey:REPEAT_KEY];
 	}
 	return self;
 }
@@ -43,19 +35,7 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder {
 	[aCoder encodeObject:_scriptArray forKey:SCRIPTARRAY_KEY];
     [aCoder encodeObject:_title forKey:TITLE_KEY];
-}
-
-- (void)fillWithDefaultData {
-	NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
-	{
-		NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
-		obj.address = 0xffffffff;
-		obj.color = [UIColor blackColor];
-		
-		[comObj.scriptObjects addObject:obj];
-	}
-    comObj.duration = 200;
-	[self addObject:comObj];
+    [aCoder encodeBool:_repeatWhenFinished forKey:REPEAT_KEY];
 }
 
 - (NSMutableArray *)scriptArray {
@@ -82,6 +62,12 @@
 		anObject.prev = lastObj;
 		anObject.next = nil;
 	}
+    self.needsUpdate = YES;
+}
+
+- (void)setRepeatWhenFinished:(BOOL)repeatWhenFinished {
+    _repeatWhenFinished = repeatWhenFinished;
+    self.needsUpdate = YES;
 }
 
 - (void)removeObjectAtIndex:(NSUInteger)index {
@@ -92,8 +78,24 @@
 	if (tempObj.next) {
 		tempObj.next.prev = tempObj.prev;
 	}
-	
 	[self.scriptArray removeObjectAtIndex:index];
+    self.needsUpdate = YES;
+}
+
+- (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control {
+    [control clearScript];
+    [control loopOn];
+    for (NWComplexScriptCommandObject* command in self.scriptArray) {
+        [command sendToWCWiflyControl:control];
+        [NSThread sleepForTimeInterval:0.1];
+    }
+    if (self.repeatWhenFinished) {
+        [control loopOffAfterNumberOfRepeats:0];
+    } else {
+        [control loopOffAfterNumberOfRepeats:1];
+    }
+
+    
 }
 
 @end

@@ -1,24 +1,28 @@
 //
-//  NWScript+defaultScripts.h
+//  NWRenderableScript+defaultScripts.h
 //  WyLight
 //
 //  Created by Nils Weiß on 10/22/13.
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
-#import "NWScript.h"
+#import "NWRenderableScript.h"
 
-@interface NWScript (defaultScripts)
+@interface NWRenderableScript (defaultScripts)
 
-+ (NWScript *)defaultScriptFastColorChange;
++ (NWRenderableScript *)defaultScriptFastColorChange;
 
-+ (NWScript *)defaultScriptSlowColorChange;
++ (NWRenderableScript *)defaultScriptSlowColorChange;
 
-+ (NWScript *)defaultScriptConzentrationLight;
++ (NWRenderableScript *)defaultScriptConzentrationLight;
 
-+ (NWScript *)defaultScriptMovingColors;
++ (NWRenderableScript *)defaultScriptMovingColors;
 
-+ (NWScript *)defaultScriptRandomColors;
++ (NWRenderableScript *)defaultScriptRandomColors;
 
-+ (NWScript *)defaultScriptRunLightWithColor:(UIColor *)color timeInterval:(uint16_t)time;
++ (NWRenderableScript*)defaultScriptRunLightWithColor:(UIColor *)color timeInterval:(uint16_t)time;
+
++ (NWRenderableScript *)defaultScriptColorCrashWithTimeInterval:(uint16_t)time;
+
++ (NWRenderableScript *)emptyScript;
 @end

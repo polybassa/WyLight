@@ -44,9 +44,11 @@
 
 - (void)setFrame:(CGRect)frame {
 	if (self.downscale) {
+        [UIView setAnimationsEnabled:NO];
 		self.layer.transform = CATransform3DMakeScale(1.0, 1.0, 1.0);
 		[super setFrame:frame];
 		self.layer.transform = CATransform3DMakeScale(DOWNSCALEFACTOR, DOWNSCALEFACTOR, 1.0);
+        [UIView setAnimationsEnabled:YES];
 	} else {
 		[super setFrame:frame];
 	}

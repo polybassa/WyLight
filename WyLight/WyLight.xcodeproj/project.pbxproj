@@ -75,7 +75,6 @@
 		5C90B39E17EF572400BAC74F /* NWGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B39D17EF572400BAC74F /* NWGradientView.m */; };
 		5C90B3A117F1702F00BAC74F /* NWTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3A017F1702F00BAC74F /* NWTestViewController.m */; };
 		5C90B3A617F2EB7A00BAC74F /* NWTimeInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3A317F2EB7A00BAC74F /* NWTimeInfoView.m */; };
-		5C90B3A717F2EB7A00BAC74F /* NWAddScriptObjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3A517F2EB7A00BAC74F /* NWAddScriptObjectView.m */; };
 		5C90B3BF17F3714B00BAC74F /* NWScriptView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3AE17F3714B00BAC74F /* NWScriptView.m */; };
 		5C90B3C117F3714B00BAC74F /* NWScriptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C90B3B217F3714B00BAC74F /* NWScriptViewController.m */; };
 		5CD991FB180095CA003C4F99 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD991FA180095CA003C4F99 /* iCarousel.m */; };
@@ -87,11 +86,12 @@
 		5CDE7083180A82310032D2F0 /* NWFadeEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE7082180A82310032D2F0 /* NWFadeEditView.m */; };
 		5CDE7086180A8F1F0032D2F0 /* NWColorEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE7085180A8F1F0032D2F0 /* NWColorEditView.m */; };
 		C01EA004181664BB0044B018 /* NWScript+defaultScripts.m in Sources */ = {isa = PBXBuildFile; fileRef = C01EA003181664BB0044B018 /* NWScript+defaultScripts.m */; };
-		C0385419181A79160058CAC6 /* NWScript+Snapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = C0385418181A79160058CAC6 /* NWScript+Snapshot.m */; };
+		C038541F181BEE750058CAC6 /* NWRenderableScript.m in Sources */ = {isa = PBXBuildFile; fileRef = C038541E181BEE750058CAC6 /* NWRenderableScript.m */; };
 		C08D5DAA181166BF00A73801 /* NWScriptFolderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08D5DA9181166BF00A73801 /* NWScriptFolderViewController.m */; };
 		C0E10EC418142B240009CF3C /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E10EC318142B240009CF3C /* UIImage+ImageEffects.m */; };
 		C0E10EC71814FC1B0009CF3C /* UIView+blurredSnapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E10EC61814FC1B0009CF3C /* UIView+blurredSnapshot.m */; };
 		C0E10ECA1814FF440009CF3C /* UIView+Quivering.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E10EC91814FF440009CF3C /* UIView+Quivering.m */; };
+		C0E6047E18219B250049C7EC /* NWRenderableScriptImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E6047D18219B250049C7EC /* NWRenderableScriptImageView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -238,8 +238,6 @@
 		5C90B3A017F1702F00BAC74F /* NWTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWTestViewController.m; path = ViewController/NWTestViewController.m; sourceTree = "<group>"; };
 		5C90B3A217F2EB7A00BAC74F /* NWTimeInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWTimeInfoView.h; sourceTree = "<group>"; };
 		5C90B3A317F2EB7A00BAC74F /* NWTimeInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWTimeInfoView.m; sourceTree = "<group>"; };
-		5C90B3A417F2EB7A00BAC74F /* NWAddScriptObjectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWAddScriptObjectView.h; sourceTree = "<group>"; };
-		5C90B3A517F2EB7A00BAC74F /* NWAddScriptObjectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWAddScriptObjectView.m; sourceTree = "<group>"; };
 		5C90B3AD17F3714B00BAC74F /* NWScriptView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWScriptView.h; path = Script_DEPRECATED/NWScriptView.h; sourceTree = "<group>"; };
 		5C90B3AE17F3714B00BAC74F /* NWScriptView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWScriptView.m; path = Script_DEPRECATED/NWScriptView.m; sourceTree = "<group>"; };
 		5C90B3B117F3714B00BAC74F /* NWScriptViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWScriptViewController.h; path = Script_DEPRECATED/NWScriptViewController.h; sourceTree = "<group>"; };
@@ -262,8 +260,8 @@
 		5CDE7085180A8F1F0032D2F0 /* NWColorEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWColorEditView.m; sourceTree = "<group>"; };
 		C01EA002181664BB0044B018 /* NWScript+defaultScripts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NWScript+defaultScripts.h"; sourceTree = "<group>"; };
 		C01EA003181664BB0044B018 /* NWScript+defaultScripts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NWScript+defaultScripts.m"; sourceTree = "<group>"; };
-		C0385417181A79160058CAC6 /* NWScript+Snapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NWScript+Snapshot.h"; sourceTree = "<group>"; };
-		C0385418181A79160058CAC6 /* NWScript+Snapshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NWScript+Snapshot.m"; sourceTree = "<group>"; };
+		C038541D181BEE750058CAC6 /* NWRenderableScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWRenderableScript.h; sourceTree = "<group>"; };
+		C038541E181BEE750058CAC6 /* NWRenderableScript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWRenderableScript.m; sourceTree = "<group>"; };
 		C08D5DA8181166BF00A73801 /* NWScriptFolderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWScriptFolderViewController.h; path = Script_DEPRECATED/NWScriptFolderViewController.h; sourceTree = "<group>"; };
 		C08D5DA9181166BF00A73801 /* NWScriptFolderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWScriptFolderViewController.m; path = Script_DEPRECATED/NWScriptFolderViewController.m; sourceTree = "<group>"; };
 		C0E10EC218142B240009CF3C /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
@@ -272,6 +270,8 @@
 		C0E10EC61814FC1B0009CF3C /* UIView+blurredSnapshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+blurredSnapshot.m"; sourceTree = "<group>"; };
 		C0E10EC81814FF440009CF3C /* UIView+Quivering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Quivering.h"; sourceTree = "<group>"; };
 		C0E10EC91814FF440009CF3C /* UIView+Quivering.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Quivering.m"; sourceTree = "<group>"; };
+		C0E6047C18219B250049C7EC /* NWRenderableScriptImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWRenderableScriptImageView.h; sourceTree = "<group>"; };
+		C0E6047D18219B250049C7EC /* NWRenderableScriptImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWRenderableScriptImageView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -319,10 +319,10 @@
 		5C35FEF317EF4F9400E3DE0D /* CommandModel */ = {
 			isa = PBXGroup;
 			children = (
-				C0385417181A79160058CAC6 /* NWScript+Snapshot.h */,
-				C0385418181A79160058CAC6 /* NWScript+Snapshot.m */,
 				5C35FEF417EF541300E3DE0D /* NWScript.h */,
 				5C35FEF517EF541300E3DE0D /* NWScript.m */,
+				C038541D181BEE750058CAC6 /* NWRenderableScript.h */,
+				C038541E181BEE750058CAC6 /* NWRenderableScript.m */,
 				C01EA002181664BB0044B018 /* NWScript+defaultScripts.h */,
 				C01EA003181664BB0044B018 /* NWScript+defaultScripts.m */,
 				5C35FEDC17EF4F7100E3DE0D /* NWSendableCommand.h */,
@@ -544,8 +544,6 @@
 				C0E10EC318142B240009CF3C /* UIImage+ImageEffects.m */,
 				5C90B3A217F2EB7A00BAC74F /* NWTimeInfoView.h */,
 				5C90B3A317F2EB7A00BAC74F /* NWTimeInfoView.m */,
-				5C90B3A417F2EB7A00BAC74F /* NWAddScriptObjectView.h */,
-				5C90B3A517F2EB7A00BAC74F /* NWAddScriptObjectView.m */,
 				5C90B39C17EF572400BAC74F /* NWGradientView.h */,
 				5C90B39D17EF572400BAC74F /* NWGradientView.m */,
 				5C90B39617EF56F300BAC74F /* NWScriptObjectView.h */,
@@ -570,6 +568,8 @@
 				5CDE7085180A8F1F0032D2F0 /* NWColorEditView.m */,
 				C0E10EC51814FC1B0009CF3C /* UIView+blurredSnapshot.h */,
 				C0E10EC61814FC1B0009CF3C /* UIView+blurredSnapshot.m */,
+				C0E6047C18219B250049C7EC /* NWRenderableScriptImageView.h */,
+				C0E6047D18219B250049C7EC /* NWRenderableScriptImageView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -697,8 +697,6 @@
 			files = (
 				5C90B3A617F2EB7A00BAC74F /* NWTimeInfoView.m in Sources */,
 				5C8395DD17EB61B4007EF0C6 /* BroadcastReceiver.cpp in Sources */,
-				5C90B3A717F2EB7A00BAC74F /* NWAddScriptObjectView.m in Sources */,
-				C0385419181A79160058CAC6 /* NWScript+Snapshot.m in Sources */,
 				5C8395E917EB651D007EF0C6 /* NWConnectionTBC.m in Sources */,
 				C01EA004181664BB0044B018 /* NWScript+defaultScripts.m in Sources */,
 				C0E10EC71814FC1B0009CF3C /* UIView+blurredSnapshot.m in Sources */,
@@ -747,8 +745,10 @@
 				C0E10EC418142B240009CF3C /* UIImage+ImageEffects.m in Sources */,
 				5C8395DF17EB61B4007EF0C6 /* ComProxy.cpp in Sources */,
 				5C35FEF217EF4F7100E3DE0D /* NWComplexScriptCommandObject.m in Sources */,
+				C0E6047E18219B250049C7EC /* NWRenderableScriptImageView.m in Sources */,
 				5CDE7086180A8F1F0032D2F0 /* NWColorEditView.m in Sources */,
 				5C90B39B17EF56F300BAC74F /* NWScriptObjectControl.m in Sources */,
+				C038541F181BEE750058CAC6 /* NWRenderableScript.m in Sources */,
 				5C90B39E17EF572400BAC74F /* NWGradientView.m in Sources */,
 				5C83958A17EB6138007EF0C6 /* NWAppDelegate.m in Sources */,
 				5CDE707A18094BF80032D2F0 /* NWTimeValueEditView.m in Sources */,

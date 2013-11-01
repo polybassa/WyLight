@@ -1,25 +1,56 @@
 //
-//  NWScript+Snapshot.m
+//  NWRenderableScript.m
 //  WyLight
 //
-//  Created by Nils Weiß on 25/10/13.
+//  Created by Nils Weiß on 26/10/13.
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
-#import "NWScript+Snapshot.h"
-#import "UIImage+ImageEffects.h"
+#import "NWRenderableScript.h"
 #import "NWComplexScriptCommandObject.h"
-#import <objc/runtime.h>
-#import <QuartzCore/QuartzCore.h>
+#import "UIImage+ImageEffects.h"
 
-static void *snapshot;
+@interface NWRenderableScript ()
 
-@implementation NWScript (Snapshot)
+@property (atomic, assign, readwrite) BOOL rendering;
 
-- (UIImage *)snapshotWithRect:(CGRect)rect
-{
-    BOOL update = NO;
+@end
+
+@implementation NWRenderableScript
+
+#define SNAPSHOT_KEY @"WyLightRemote.NWRenderableScript.snapshot"
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        _snapshot = [aDecoder decodeObjectForKey:SNAPSHOT_KEY];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [super encodeWithCoder:aCoder];
+    [aCoder encodeObject:_snapshot forKey:SNAPSHOT_KEY];
+}
+
+- (UIImage *)snapshot {
+    if (self.rendering) {
+        return nil;
+    }
+    return _snapshot;
+}
+
+- (BOOL)needsRendering {
+    BOOL update = self.needsUpdate;
     for (NWComplexScriptCommandObject *cmplxCmd in self.scriptArray) {
+        if (!update) {
+            if (cmplxCmd.needsUpdate) {
+                update = YES;
+                cmplxCmd.needsUpdate = NO;
+            }
+        } else {
+            cmplxCmd.needsUpdate = NO;
+        }
         for (NWScriptCommandObject *cmd in cmplxCmd.scriptObjects) {
             if (!update) {
                 if (cmd.needsUpdate) {
@@ -31,8 +62,18 @@ static void *snapshot;
             }
         }
     }
-    UIImage *returnImage = objc_getAssociatedObject(self, &snapshot);
-    if (!returnImage || update) {
+    if (self.needsUpdate) {
+        self.needsUpdate = NO;
+    }
+    return update || (_snapshot == nil);
+}
+
+- (void)startRenderingWithRect:(CGRect)rect {
+    if (self.rendering) {
+        return;
+    }
+    {
+        self.rendering = YES;
         @autoreleasepool {
             //Data collecting
             NSMutableArray *lineArray = [[NSMutableArray alloc] init];
@@ -57,7 +98,9 @@ static void *snapshot;
                         if (cmd == self.scriptArray.firstObject) {
                             red = 0; green = 0; blue = 0;
                             NSArray *colors = ((NWComplexScriptCommandObject*)self.scriptArray.lastObject).colors;
-                            [((UIColor *)[colors objectAtIndex:i]) getRed:&red green:&green blue:&blue alpha:NULL];
+                            if (self.repeatWhenFinished) {
+                                [((UIColor *)[colors objectAtIndex:i]) getRed:&red green:&green blue:&blue alpha:NULL];
+                            }
                             [colorComponentsArray addObjectsFromArray:@[@(red), @(green), @(blue), @(1)]];
                             
                             CGFloat rectOriginY = floorf(i * heightFract);
@@ -91,7 +134,7 @@ static void *snapshot;
                 
                 CGContextTranslateCTM(context, 0.0f, rect.size.height);
                 CGContextScaleCTM(context, 1.0f, -1.0f);
-
+                
                 
                 CGFloat yPosition = 0;
                 
@@ -102,9 +145,9 @@ static void *snapshot;
                         NSArray *colors = [lineArray objectAtIndex:i];
                         [colors enumerateObjectsWithOptions:NSEnumerationConcurrent
                                                  usingBlock:^(id obj, NSUInteger idx, BOOL *stop)
-                        {
-                            components[idx] = [(NSNumber *)obj floatValue];
-                        }];
+                         {
+                             components[idx] = [(NSNumber *)obj floatValue];
+                         }];
                         [locationsArray enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                             locations[idx] = [(NSNumber *)obj floatValue];
                         }];
@@ -133,15 +176,21 @@ static void *snapshot;
                 //
                 resultImage = CGBitmapContextCreateImage(context);
                 UIColor *tintColor = [UIColor colorWithWhite:1.0 alpha:0.3];
-                returnImage = [[UIImage imageWithCGImage:resultImage] applyBlurWithRadius:5 tintColor:tintColor saturationDeltaFactor:1.0 maskImage:nil];
-                objc_setAssociatedObject(self, &snapshot, returnImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+                self.snapshot = [[UIImage imageWithCGImage:resultImage] applyBlurWithRadius:5 tintColor:tintColor saturationDeltaFactor:1.0 maskImage:nil];
                 CGImageRelease(resultImage);
                 CGColorSpaceRelease(colorSpace);
                 CGContextRelease(context);
             }
         }
+        self.rendering = NO;
+        self.needsUpdate = NO;
+        if (self.delegate) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.delegate NWRenderableScriptFinishedRendering:self];
+            });
+        }
     }
-    return returnImage;
+    return;
 }
 
 @end

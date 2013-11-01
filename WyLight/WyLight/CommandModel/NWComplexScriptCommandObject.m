@@ -25,6 +25,12 @@
 	return other;
 }
 
+- (void)setWaitCommand:(BOOL)waitCommand {
+    if (waitCommand != _waitCommand) {
+        self.needsUpdate = YES;
+    }
+}
+
 #define NEXT_KEY @"WyLightRemote.NWComplexScriptCommandObject.next"
 #define PREV_KEY @"WyLightRemote.NWComplexScriptCommandObject.prev"
 #define WAIT_KEY @"WyLightRemote.NWComplexScriptCommandObject.wait"

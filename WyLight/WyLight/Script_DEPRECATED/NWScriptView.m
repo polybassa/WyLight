@@ -8,7 +8,6 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "NWScriptView.h"
-#import "NWAddScriptObjectView.h"
 #import "NWScriptCellView.h"
 
 @implementation NWScriptView
@@ -40,21 +39,13 @@
 	CGFloat height = self.frame.size.height - yPosition - self.insets.bottom;
 	CGFloat width = 0;
 	for (UIView *subview in self.subviews) {
-		if ([subview isKindOfClass:[NWScriptCellView class]] || ![subview isKindOfClass:[NWAddScriptObjectView class]]) {
+		if ([subview isKindOfClass:[UIView class]]) {
 			width = [self.dataSource scriptView:self widthOfObjectAtIndex:subview.tag];
 			subview.frame = CGRectMake(xPosition, yPosition, width, height);
 			xPosition += floorf(width) + self.scriptObjectSpacing;
 		}
 	}
-	for (UIView *subview in self.subviews) {
-		if ([subview isKindOfClass:[NWAddScriptObjectView class]]) {
-			width = height / 3;
-			
-			subview.frame = CGRectMake(xPosition, yPosition, width, height - height / TIMEINFOVIEW_HEIGTH_FACTOR);
-			xPosition += width + self.scriptObjectSpacing;
-		}
-	}
-	[self setContentSize:CGSizeMake(xPosition + width, self.bounds.size.height)];
+    [self setContentSize:CGSizeMake(xPosition + width, self.bounds.size.height)];
 }
 
 #pragma mark - SETTER
