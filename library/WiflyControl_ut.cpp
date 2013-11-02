@@ -552,50 +552,6 @@ namespace WyLight {
 		TestCaseEnd();
 	}
 
-    size_t ut_WiflyControl_ConfSetDefaults(void)
-    {
-        TestCaseBegin();
-        static const std::string commands[] = {
-            "set broadcast interval 0x1\r\n",    // to support fast broadcast recognition
-            "set comm close 0\r\n",            // Disable *CLOS* string
-            "set comm open 0\r\n",             // Disable *OPEN* string
-            "set comm remote 0\r\n",           // Disable *Hello* string
-            "set dns name rn.microchip.com\r\n",	// set dns of updateserver
-            "set ip flags 0x6\r\n",			   // if the module loses the accesspoint connection, the connection is closed
-            "set ip dhcp 1\r\n",               // enable DHCP client
-            "set ip proto 11\r\n",               // enable tcp and udp connectivity
-            //		"set ftp address 169.254.7.57\r\n",// configure localhost as ftp server in ad-hoc connection
-            "set ftp pass Pass123\r\n",        // configure ftp password
-            "set ftp user roving\r\n",         // configure ftp username
-            "set opt deviceid Wifly_Light\r\n",// Set deviceid which appears in broadcastmsg to "Wifly_Light"
-            "set uart baud 115200\r\n",        // PIC uart parameter
-            "set uart flow 0\r\n",             // PIC uart parameter
-            "set uart mode 0\r\n",             // PIC uart parameter
-            "set wlan channel 0\r\n",		   // Set the wlan channel to 0 to perform an automatic scan for a free channel
-            "set wlan auth 4\r\n",             // use WPA2 protection
-            "set wlan join 1\r\n",             // scan for ap and auto join
-            "set wlan rate 0\r\n",             // slowest datarate but highest range
-            "set wlan tx 12\r\n",              // Set the Wi-Fi transmit power to maximum
-            //"set sys launch_string wps_app"	   // Choose Wps mode
-        };
-        static const size_t numCommands = sizeof(commands) / sizeof(commands[0]);
-        
-        Control testee(0, 0);
-        
-        g_TestBuffer.clear();
-        CHECK(testee.ConfSetDefaults());
-        CHECK(!g_ProxyConnected);
-        CHECK(g_ProxySaved);
-        CHECK(numCommands == g_TestBuffer.size());
-        for(size_t i = 0; i < numCommands; i++)
-        {
-            CHECK(0 == commands[i].compare(g_TestBuffer.front()));
-            g_TestBuffer.pop_front();
-            
-        }
-        TestCaseEnd();
-    }
-    
 	size_t ut_WiflyControl_FwSetFade_1(void)
 	{
 		led_cmd expectedOutgoingFrame;

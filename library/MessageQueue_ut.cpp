@@ -111,7 +111,7 @@ int32_t ut_MessageQueue_complex(void)
 						   const auto f = messages.receive();
 						   if(f.second) break;
 						   if(f.first) mInt = f.first();
-						   std::this_thread::sleep_for(std::chrono::milliseconds(10));
+						   std::this_thread::sleep_for(std::chrono::milliseconds(50));
 						}
 				   }
 				   );
@@ -119,21 +119,21 @@ int32_t ut_MessageQueue_complex(void)
 	CHECK(0 == mInt);
 	
 	messages.push_back(std::make_pair([=]{return 1;}, false));
-	std::this_thread::sleep_for(std::chrono::milliseconds(20));
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	CHECK(1 == mInt);
 	
 	messages.push_back(std::make_pair([=]{return 2;}, false));
-	std::this_thread::sleep_for(std::chrono::milliseconds(20));
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	CHECK(2 == mInt);
 	
 	messages.push_back(std::make_pair([=]{return 4;}, false));
 	messages.push_back(std::make_pair([=]{return 5;}, false));
 	messages.push_front(std::make_pair([=]{return 3;}, false));
-	std::this_thread::sleep_for(std::chrono::milliseconds(5));
+	std::this_thread::sleep_for(std::chrono::milliseconds(40));
 	CHECK(3 == mInt);
-	std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	CHECK(4 == mInt);
-	std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	CHECK(5 == mInt);
 
 	
@@ -144,9 +144,9 @@ int32_t ut_MessageQueue_complex(void)
 		messages.push_back(std::make_pair([=]{return 4;}, false));
 		messages.clear_and_push_front(std::make_pair([=]{return 6;}, false));
 	}
-	std::this_thread::sleep_for(std::chrono::milliseconds(20));
+	std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	CHECK(6 == mInt);
-	std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	CHECK(6 == mInt);
 	
 	messages.push_front(std::make_pair([=]{return 0xff;}, true));
