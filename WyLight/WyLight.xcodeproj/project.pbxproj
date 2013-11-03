@@ -264,11 +264,11 @@
 		C044BB7D1823AAC70097151D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C044BB7E1823AAC70097151D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C044BB8B1823AEDA0097151D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/defaultScriptsLocalization.strings; sourceTree = "<group>"; };
-		C044BB8D1823AEE00097151D /* de */ = {isa = PBXFileReference; lastKnownFileType = file; name = de; path = de.lproj/defaultScriptsLocalization.strings; sourceTree = "<group>"; };
-		C044BB911823B4800097151D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file; name = Base; path = Base.lproj/ScriptObjectEditViewsLocalization.strings; sourceTree = "<group>"; };
-		C044BB931823B4860097151D /* de */ = {isa = PBXFileReference; lastKnownFileType = file; name = de; path = de.lproj/ScriptObjectEditViewsLocalization.strings; sourceTree = "<group>"; };
-		C044BB971823B6750097151D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file; name = Base; path = Base.lproj/ViewControllerLocalization.strings; sourceTree = "<group>"; };
-		C044BB991823B6770097151D /* de */ = {isa = PBXFileReference; lastKnownFileType = file; name = de; path = de.lproj/ViewControllerLocalization.strings; sourceTree = "<group>"; };
+		C044BB8D1823AEE00097151D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/defaultScriptsLocalization.strings; sourceTree = "<group>"; };
+		C044BB911823B4800097151D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/ScriptObjectEditViewsLocalization.strings; sourceTree = "<group>"; };
+		C044BB931823B4860097151D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ScriptObjectEditViewsLocalization.strings; sourceTree = "<group>"; };
+		C044BB971823B6750097151D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/ViewControllerLocalization.strings; sourceTree = "<group>"; };
+		C044BB991823B6770097151D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ViewControllerLocalization.strings; sourceTree = "<group>"; };
 		C08D5DA8181166BF00A73801 /* NWScriptFolderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWScriptFolderViewController.h; path = Script_DEPRECATED/NWScriptFolderViewController.h; sourceTree = "<group>"; };
 		C08D5DA9181166BF00A73801 /* NWScriptFolderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWScriptFolderViewController.m; path = Script_DEPRECATED/NWScriptFolderViewController.m; sourceTree = "<group>"; };
 		C0E10EC218142B240009CF3C /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
