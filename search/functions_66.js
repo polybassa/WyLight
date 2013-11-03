@@ -27,6 +27,7 @@ var searchData=
   ['fwloopoff',['FwLoopOff',['../class_wy_light_1_1_control_no_throw.html#ace76fa87789fc3b36c709ec5a57f8f3c',1,'WyLight::ControlNoThrow']]],
   ['fwloopon',['FwLoopOn',['../class_wy_light_1_1_control_no_throw.html#abe18abf5c2770714da51da98cc1adb15',1,'WyLight::ControlNoThrow']]],
   ['fwresponse',['FwResponse',['../class_wy_light_1_1_fw_response.html#a679566f345af722387261c8f4724e171',1,'WyLight::FwResponse']]],
+  ['fwsend',['FwSend',['../class_wy_light_1_1_control.html#aed3d2d5d3ad23e90f06dd6c5bec031e9',1,'WyLight::Control']]],
   ['fwsetcolordirect',['FwSetColorDirect',['../class_wy_light_1_1_control_no_throw.html#a8277cef363ac4e966dfd0ee5946ef051',1,'WyLight::ControlNoThrow']]],
   ['fwsetfade',['FwSetFade',['../class_wy_light_1_1_control_no_throw.html#a6b852a289a48a450efc3ffd91edb7832',1,'WyLight::ControlNoThrow']]],
   ['fwsetgradient',['FwSetGradient',['../class_wy_light_1_1_control_no_throw.html#a1d50d589698cd976dec870710d1d628a',1,'WyLight::ControlNoThrow']]],

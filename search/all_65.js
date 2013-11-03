@@ -15,5 +15,6 @@ var searchData=
   ['endpoint',['Endpoint',['../class_wy_light_1_1_endpoint.html',1,'WyLight']]],
   ['endpoint_2eh',['Endpoint.h',['../_endpoint_8h.html',1,'']]],
   ['exists',['exists',['../classintelhex.html#ab58b4357deef8e4f0af9817393fc0b6e',1,'intelhex']]],
-  ['extractfwversion',['ExtractFwVersion',['../class_wy_light_1_1_control.html#a09d8a865f5557d584032cf088e32ade0',1,'WyLight::Control::ExtractFwVersion()'],['../class_wy_light_1_1_control_no_throw.html#a166b7620ec6c4f7e9877660eb5ebe97c',1,'WyLight::ControlNoThrow::ExtractFwVersion()']]]
+  ['extractfwversion',['ExtractFwVersion',['../class_wy_light_1_1_control.html#a09d8a865f5557d584032cf088e32ade0',1,'WyLight::Control::ExtractFwVersion()'],['../class_wy_light_1_1_control_no_throw.html#a166b7620ec6c4f7e9877660eb5ebe97c',1,'WyLight::ControlNoThrow::ExtractFwVersion()']]],
+  ['extractstringofinterest',['ExtractStringOfInterest',['../class_wy_light_1_1_telnet_proxy.html#a0aa011c920138a42e7d0b02da5875852',1,'WyLight::TelnetProxy']]]
 ];

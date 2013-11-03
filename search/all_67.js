@@ -1,12 +1,16 @@
 var searchData=
 [
+  ['g_5fdebugzones',['g_DebugZones',['../_wifly_control_cmd_8h.html#a5d2a6eaeb05595ac981331f802f5695e',1,'WiflyControlCmd.h']]],
   ['getaddress',['GetAddress',['../struct_wy_light_1_1_bl_info.html#a93505c5f081c862b51e1f0dc746b6f0a',1,'WyLight::BlInfo']]],
-  ['getdata',['GetData',['../struct_wy_light_1_1_bl_request.html#a0d956ad98677f0d309c031d00d797f90',1,'WyLight::BlRequest::GetData()'],['../class_wy_light_1_1_fw_command.html#ad891fbb6f1a2bed364a77760c574bc68',1,'WyLight::FwCommand::GetData()'],['../classintelhex.html#a01f7799f7a86e45c28b713e9472a8a5a',1,'intelhex::getData(unsigned char *data)'],['../classintelhex.html#a6596b518a9a832ed8e6ba21a0e07861c',1,'intelhex::getData(unsigned char *data, unsigned long address)']]],
+  ['getcmd',['GetCmd',['../class_wifly_control_cmd_builder.html#a05dd587cd8df002b9cb70ad28672ebbf',1,'WiflyControlCmdBuilder::GetCmd(const string name)'],['../class_wifly_control_cmd_builder.html#a65d092a4de03eb57277d7e972eef5534',1,'WiflyControlCmdBuilder::GetCmd(size_t index)']]],
+  ['getcrc16',['GetCrc16',['../class_wy_light_1_1_unmask_buffer.html#a2a353e3d9a780d2d9b75100a59fe2de0',1,'WyLight::UnmaskBuffer']]],
+  ['getdata',['getData',['../classintelhex.html#a01f7799f7a86e45c28b713e9472a8a5a',1,'intelhex::getData(unsigned char *data)'],['../classintelhex.html#a6596b518a9a832ed8e6ba21a0e07861c',1,'intelhex::getData(unsigned char *data, unsigned long address)'],['../struct_wy_light_1_1_bl_request.html#a0d956ad98677f0d309c031d00d797f90',1,'WyLight::BlRequest::GetData()'],['../class_wy_light_1_1_fw_command.html#ad891fbb6f1a2bed364a77760c574bc68',1,'WyLight::FwCommand::GetData()']]],
   ['getdeviceid',['GetDeviceId',['../class_wy_light_1_1_endpoint.html#a45f7f0b61014a9732a7c31dec22cfeaf',1,'WyLight::Endpoint']]],
   ['getendpoint',['GetEndpoint',['../class_wy_light_1_1_broadcast_receiver.html#ab4950ea01d61e47ae91bb085b0135919',1,'WyLight::BroadcastReceiver']]],
   ['getendpointbyfingerprint',['GetEndpointByFingerprint',['../class_wy_light_1_1_broadcast_receiver.html#a57116a61823954a3a86e11d86e2975c7',1,'WyLight::BroadcastReceiver']]],
   ['getip',['GetIp',['../class_wy_light_1_1_endpoint.html#a65cca33e7eef5794500621333d2246ed',1,'WyLight::Endpoint']]],
   ['getjavaclasstype',['GetJavaClassType',['../class_wy_light_1_1_fatal_error.html#aa74decc09fe8aafc15bfbe31f697987a',1,'WyLight::FatalError::GetJavaClassType()'],['../class_wy_light_1_1_connection_lost.html#a32dbb008e84c419fdb31b7b4b13b6f7f',1,'WyLight::ConnectionLost::GetJavaClassType()'],['../class_wy_light_1_1_connection_timeout.html#a2feb264902a3c11a10f4e9eb1ba08bb1',1,'WyLight::ConnectionTimeout::GetJavaClassType()'],['../class_wy_light_1_1_invalid_parameter.html#a3cfc3b57f7a18e051e72efcfb4a67deb',1,'WyLight::InvalidParameter::GetJavaClassType()'],['../class_wy_light_1_1_script_buffer_full.html#ac228a7696643e89e4a571347bc9dda7d',1,'WyLight::ScriptBufferFull::GetJavaClassType()']]],
+  ['getname',['GetName',['../class_wifly_control_cmd.html#a837e6403845e3d3493b58069d647ec78',1,'WiflyControlCmd']]],
   ['getnextremote',['GetNextRemote',['../class_wy_light_1_1_broadcast_receiver.html#a1ed47e38dbc6475905afc528d3bc5420',1,'WyLight::BroadcastReceiver']]],
   ['getnoerrors',['getNoErrors',['../classintelhex.html#a77cddd46c3f97692b4d89f138bdabb72',1,'intelhex']]],
   ['getnowarnings',['getNoWarnings',['../classintelhex.html#a05a19e1e9f1eb493a8d0bc29db88683f',1,'intelhex']]],
