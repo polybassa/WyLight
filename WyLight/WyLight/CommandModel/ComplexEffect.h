@@ -2,7 +2,7 @@
 //  ComplexEffect.h
 //  WyLight
 //
-//  Created by Nils Weiß on 03/11/13.
+//  Created by Nils Weiß on 04/11/13.
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
@@ -10,26 +10,27 @@
 #import <CoreData/CoreData.h>
 #import "Effect.h"
 
-@class ComplexEffect;
+@class ComplexEffect, Script, SimpelEffect;
 
 @interface ComplexEffect : Effect
 
 @property (nonatomic, retain) NSNumber * waitCommand;
-@property (nonatomic, retain) NSOrderedSet *effects;
 @property (nonatomic, retain) ComplexEffect *next;
 @property (nonatomic, retain) ComplexEffect *prev;
+@property (nonatomic, retain) Script *script;
+@property (nonatomic, retain) NSOrderedSet *effects;
 @end
 
 @interface ComplexEffect (CoreDataGeneratedAccessors)
 
-- (void)insertObject:(NSManagedObject *)value inEffectsAtIndex:(NSUInteger)idx;
+- (void)insertObject:(SimpelEffect *)value inEffectsAtIndex:(NSUInteger)idx;
 - (void)removeObjectFromEffectsAtIndex:(NSUInteger)idx;
 - (void)insertEffects:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
 - (void)removeEffectsAtIndexes:(NSIndexSet *)indexes;
-- (void)replaceObjectInEffectsAtIndex:(NSUInteger)idx withObject:(NSManagedObject *)value;
+- (void)replaceObjectInEffectsAtIndex:(NSUInteger)idx withObject:(SimpelEffect *)value;
 - (void)replaceEffectsAtIndexes:(NSIndexSet *)indexes withEffects:(NSArray *)values;
-- (void)addEffectsObject:(NSManagedObject *)value;
-- (void)removeEffectsObject:(NSManagedObject *)value;
+- (void)addEffectsObject:(SimpelEffect *)value;
+- (void)removeEffectsObject:(SimpelEffect *)value;
 - (void)addEffects:(NSOrderedSet *)values;
 - (void)removeEffects:(NSOrderedSet *)values;
 @end

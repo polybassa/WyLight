@@ -2,22 +2,24 @@
 //  ComplexEffect.m
 //  WyLight
 //
-//  Created by Nils Weiß on 03/11/13.
+//  Created by Nils Weiß on 04/11/13.
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
 #import "ComplexEffect.h"
-#import "WCWiflyControlWrapper.h"
+#import "ComplexEffect.h"
+#import "Script.h"
 #import "SimpelEffect.h"
-#import "Effect.h"
-#include "wifly_cmd.h"
+#import "WCWiflyControlWrapper.h"
+#import "wifly_cmd.h"
 
 @implementation ComplexEffect
 
 @dynamic waitCommand;
-@dynamic effects;
 @dynamic next;
 @dynamic prev;
+@dynamic script;
+@dynamic effects;
 
 - (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control {
     if (self.waitCommand.boolValue) {
@@ -52,8 +54,7 @@
     }
 }
 
-- (NSArray *)colors
-{
+- (NSArray *)colors {
 	if (self.waitCommand.boolValue) {
 		if (self.prev.colors) {
 			return self.prev.colors;
@@ -94,6 +95,5 @@
 	}
 	return [outPutColors copy];
 }
-
 
 @end

@@ -2,7 +2,7 @@
 //  Script.h
 //  WyLight
 //
-//  Created by Nils Weiß on 03/11/13.
+//  Created by Nils Weiß on 04/11/13.
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
@@ -14,12 +14,9 @@
 
 @interface Script : Command
 
-@property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSNumber * repeatsWhenFinished;
+@property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSOrderedSet *effects;
-
-- (NSNumber *)totalDurationInTmms;
-
 @end
 
 @interface Script (CoreDataGeneratedAccessors)
