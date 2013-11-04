@@ -15,6 +15,15 @@
 
 @dynamic color;
 
++ (NSString *)entityName {
+    return @"Fade";
+}
+
++ (instancetype)insertNewObjectIntoContext:(NSManagedObjectContext *)context {
+    return [NSEntityDescription insertNewObjectForEntityForName:[self entityName]
+                                         inManagedObjectContext:context];
+}
+
 - (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control {
 	WyLight::WiflyColor color;
 	

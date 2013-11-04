@@ -21,6 +21,15 @@
 @dynamic script;
 @dynamic effects;
 
++ (NSString *)entityName {
+    return @"ComplexEffect";
+}
+
++ (instancetype)insertNewObjectIntoContext:(NSManagedObjectContext *)context {
+    return [NSEntityDescription insertNewObjectForEntityForName:[self entityName]
+                                         inManagedObjectContext:context];
+}
+
 - (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control {
     if (self.waitCommand.boolValue) {
         [control setWaitTimeInTenMilliSecondsIntervals:self.duration.unsignedIntegerValue];

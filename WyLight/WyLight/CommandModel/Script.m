@@ -16,6 +16,15 @@
 @dynamic repeatsWhenFinished;
 @dynamic effects;
 
++ (NSString *)entityName {
+    return @"Script";
+}
+
++ (instancetype)insertNewObjectIntoContext:(NSManagedObjectContext *)context {
+    return [NSEntityDescription insertNewObjectForEntityForName:[self entityName]
+                                         inManagedObjectContext:context];
+}
+
 - (NSNumber *)totalDurationInTmms {
     NSUInteger totalDuration = 0;
 	for (ComplexEffect *obj in self.effects) {

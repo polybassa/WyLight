@@ -18,6 +18,15 @@
 @dynamic offset;
 @dynamic numberOfLeds;
 
++ (NSString *)entityName {
+    return @"Gradient";
+}
+
++ (instancetype)insertNewObjectIntoContext:(NSManagedObjectContext *)context {
+    return [NSEntityDescription insertNewObjectForEntityForName:[self entityName]
+                                         inManagedObjectContext:context];
+}
+
 - (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control {
     WyLight::WiflyColor mColor1, mColor2;
 	   
