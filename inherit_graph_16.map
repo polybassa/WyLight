@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$class_wy_light_1_1_fw_response.html" title="WyLight::FwResponse" alt="" coords="5,95,160,123"/>
+<area shape="rect" id="node2" href="$class_wy_light_1_1_cycletime_response.html" title="WyLight::CycletimeResponse" alt="" coords="213,5,408,33"/>
+<area shape="rect" id="node3" href="$class_wy_light_1_1_firmware_version_response.html" title="WyLight::FirmwareVersion\lResponse" alt="" coords="222,57,399,101"/>
+<area shape="rect" id="node4" href="$class_wy_light_1_1_rtc_response.html" title="WyLight::RtcResponse" alt="" coords="232,125,389,153"/>
+<area shape="rect" id="node5" href="$class_wy_light_1_1_tracebuffer_response.html" title="WyLight::TracebufferResponse" alt="" coords="209,177,413,205"/>
+</map>

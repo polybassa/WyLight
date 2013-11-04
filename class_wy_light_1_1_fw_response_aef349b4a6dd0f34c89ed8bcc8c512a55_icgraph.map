@@ -1,0 +1,6 @@
+<map id="WyLight::FwResponse::Init" name="WyLight::FwResponse::Init">
+<area shape="rect" id="node2" href="$class_wy_light_1_1_rtc_response.html#ab91706a872df459bba7c6dd8feab5e73" title="WyLight::RtcResponse\l::Init" alt="" coords="232,5,389,49"/>
+<area shape="rect" id="node3" href="$class_wy_light_1_1_cycletime_response.html#a44ddaaf66bed8086ad74f15d0c2d6c2a" title="WyLight::CycletimeResponse\l::Init" alt="" coords="213,73,408,117"/>
+<area shape="rect" id="node4" href="$class_wy_light_1_1_tracebuffer_response.html#a07ea006c8b97ff7b2a6e3b2de6dbd45f" title="WyLight::TracebufferResponse\l::Init" alt="" coords="209,141,413,185"/>
+<area shape="rect" id="node5" href="$class_wy_light_1_1_firmware_version_response.html#ada5e917af8c5f256a11418fe5ba51211" title="WyLight::FirmwareVersion\lResponse::Init" alt="" coords="222,209,399,253"/>
+</map>

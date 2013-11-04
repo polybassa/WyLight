@@ -1,0 +1,4 @@
+<map id="WyLight::FwCmdGetTracebuffer" name="WyLight::FwCmdGetTracebuffer">
+<area shape="rect" id="node2" href="$struct_wy_light_1_1_fw_cmd_get.html" title="{WyLight::FwCmdGet\n||+ FwCmdGet()\l}" alt="" coords="39,281,183,362"/>
+<area shape="rect" id="node3" href="$class_wy_light_1_1_fw_command.html" title="{WyLight::FwCommand\n|# mReqFrame\l&#45; mSize\l&#45; requiresResponse\l|+ GetData()\l+ GetSize()\l+ IsResponseRequired()\l+ GetResponse()\l+ operator==()\l+ operator!=()\l# FwCommand()\l# ~FwCommand()\l}" alt="" coords="28,6,193,231"/>
+</map>

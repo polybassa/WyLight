@@ -1,0 +1,4 @@
+<map id="WyLight::UdpSocket" name="WyLight::UdpSocket">
+<area shape="rect" id="node2" href="$class_wy_light_1_1_client_socket.html" title="{WyLight::ClientSocket\n|# mSock\l|+ ClientSocket()\l+ ~ClientSocket()\l+ Select()\l+ Send()\l}" alt="" coords="4,286,155,415"/>
+<area shape="rect" id="node3" href="$struct_wy_light_1_1_ipv4_addr.html" title="{WyLight::Ipv4Addr\n||+ Ipv4Addr()\l}" alt="" coords="15,139,144,221"/>
+</map>
