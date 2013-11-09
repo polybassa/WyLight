@@ -84,6 +84,9 @@
 		5CDE70801809A7CA0032D2F0 /* NWGradientEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE707F1809A7CA0032D2F0 /* NWGradientEditView.m */; };
 		5CDE7083180A82310032D2F0 /* NWFadeEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE7082180A82310032D2F0 /* NWFadeEditView.m */; };
 		5CDE7086180A8F1F0032D2F0 /* NWColorEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE7085180A8F1F0032D2F0 /* NWColorEditView.m */; };
+		C000EE72182D67AE00019267 /* NWScriptFolderCDVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C000EE71182D67AE00019267 /* NWScriptFolderCDVC.m */; };
+		C000EE74182D6BA000019267 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C000EE73182D6BA000019267 /* CoreData.framework */; };
+		C000EE77182D6C8500019267 /* Script+defaultScripts.m in Sources */ = {isa = PBXBuildFile; fileRef = C000EE76182D6C8500019267 /* Script+defaultScripts.m */; };
 		C00DD4C21826C3EB00D17088 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C00DD4C01826C3EB00D17088 /* Model.xcdatamodeld */; };
 		C01EA004181664BB0044B018 /* NWScript+defaultScripts.m in Sources */ = {isa = PBXBuildFile; fileRef = C01EA003181664BB0044B018 /* NWScript+defaultScripts.m */; };
 		C038541F181BEE750058CAC6 /* NWRenderableScript.m in Sources */ = {isa = PBXBuildFile; fileRef = C038541E181BEE750058CAC6 /* NWRenderableScript.m */; };
@@ -264,6 +267,11 @@
 		5CDE7082180A82310032D2F0 /* NWFadeEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWFadeEditView.m; sourceTree = "<group>"; };
 		5CDE7084180A8F1F0032D2F0 /* NWColorEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWColorEditView.h; sourceTree = "<group>"; };
 		5CDE7085180A8F1F0032D2F0 /* NWColorEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWColorEditView.m; sourceTree = "<group>"; };
+		C000EE70182D67AE00019267 /* NWScriptFolderCDVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWScriptFolderCDVC.h; path = Script_DEPRECATED/NWScriptFolderCDVC.h; sourceTree = "<group>"; };
+		C000EE71182D67AE00019267 /* NWScriptFolderCDVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWScriptFolderCDVC.m; path = Script_DEPRECATED/NWScriptFolderCDVC.m; sourceTree = "<group>"; };
+		C000EE73182D6BA000019267 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		C000EE75182D6C8500019267 /* Script+defaultScripts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Script+defaultScripts.h"; sourceTree = "<group>"; };
+		C000EE76182D6C8500019267 /* Script+defaultScripts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Script+defaultScripts.m"; sourceTree = "<group>"; };
 		C00DD4C11826C3EB00D17088 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		C01EA002181664BB0044B018 /* NWScript+defaultScripts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NWScript+defaultScripts.h"; sourceTree = "<group>"; };
 		C01EA003181664BB0044B018 /* NWScript+defaultScripts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NWScript+defaultScripts.m"; sourceTree = "<group>"; };
@@ -309,6 +317,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C000EE74182D6BA000019267 /* CoreData.framework in Frameworks */,
 				5C20B13B17F442B9001A67C7 /* QuartzCore.framework in Frameworks */,
 				5C83957C17EB6138007EF0C6 /* CoreGraphics.framework in Frameworks */,
 				5C83957E17EB6138007EF0C6 /* UIKit.framework in Frameworks */,
@@ -342,6 +351,8 @@
 				5CDE707C180987B40032D2F0 /* NWComplexScriptCommandEditorViewController.m */,
 				C08D5DA8181166BF00A73801 /* NWScriptFolderViewController.h */,
 				C08D5DA9181166BF00A73801 /* NWScriptFolderViewController.m */,
+				C000EE70182D67AE00019267 /* NWScriptFolderCDVC.h */,
+				C000EE71182D67AE00019267 /* NWScriptFolderCDVC.m */,
 			);
 			name = Script;
 			sourceTree = "<group>";
@@ -378,6 +389,8 @@
 				C0E67BD11826D59B00056E7C /* Fade.mm */,
 				C0E67BE51826EC7700056E7C /* Effect.h */,
 				C0E67BE61826EC7700056E7C /* Effect.m */,
+				C000EE75182D6C8500019267 /* Script+defaultScripts.h */,
+				C000EE76182D6C8500019267 /* Script+defaultScripts.m */,
 				C0E67BDF1826D75300056E7C /* Script.h */,
 				C0E67BE01826D75300056E7C /* Script.m */,
 				C0E67BD91826D75300056E7C /* SimpelEffect.h */,
@@ -412,6 +425,7 @@
 		5C83957817EB6138007EF0C6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C000EE73182D6BA000019267 /* CoreData.framework */,
 				5C20B13A17F442B9001A67C7 /* QuartzCore.framework */,
 				5C83957917EB6138007EF0C6 /* Foundation.framework */,
 				5C83957B17EB6138007EF0C6 /* CoreGraphics.framework */,
@@ -765,6 +779,7 @@
 				5C35FEEC17EF4F7100E3DE0D /* NWLoopOnCommandObject.m in Sources */,
 				5C35FEF617EF541300E3DE0D /* NWScript.m in Sources */,
 				5C83963417EB6C00007EF0C6 /* KZColorPickerSwatchView.m in Sources */,
+				C000EE77182D6C8500019267 /* Script+defaultScripts.m in Sources */,
 				5C83962F17EB6C00007EF0C6 /* HSV.c in Sources */,
 				5C8395EE17EB6721007EF0C6 /* NWDefaultColorPickerViewController.m in Sources */,
 				C0E10ECA1814FF440009CF3C /* UIView+Quivering.m in Sources */,
@@ -782,6 +797,7 @@
 				5C35FEF017EF4F7100E3DE0D /* NWSetGradientScriptCommandObject.mm in Sources */,
 				C0E67BE71826EC7700056E7C /* Effect.m in Sources */,
 				5C83963317EB6C00007EF0C6 /* KZColorPickerHSWheel.m in Sources */,
+				C000EE72182D67AE00019267 /* NWScriptFolderCDVC.m in Sources */,
 				5CDE70801809A7CA0032D2F0 /* NWGradientEditView.m in Sources */,
 				C00DD4C21826C3EB00D17088 /* Model.xcdatamodeld in Sources */,
 				5C4F56EB17EC968E0039ADFF /* NWColorSliderViewController.m in Sources */,

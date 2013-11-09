@@ -125,7 +125,7 @@
 - (void)setOffset:(NSNumber *)offset {
     if (offset.unsignedIntegerValue + self.numberOfLeds.unsignedIntegerValue <= [Gradient maximalNumberOfLeds] && offset >= 0) {
 		[self willChangeValueForKey:@"offset"];
-        [self setOffset:offset];
+        [self setPrimitiveValue:offset forKey:@"offset"];
         [self didChangeValueForKey:@"offset"];
 	}
 }
@@ -133,7 +133,7 @@
 - (void)setNumberOfLeds:(NSNumber *)numberOfLeds {
     if ((self.offset.unsignedIntegerValue + numberOfLeds.unsignedIntegerValue) <= [Gradient maximalNumberOfLeds]) {
         [self willChangeValueForKey:@"numberOfLeds"];
-        [self setNumberOfLeds:numberOfLeds];
+        [self setPrimitiveValue:numberOfLeds forKey:@"numberOfLeds"];
         [self didChangeValueForKey:@"numberOfLeds"];
     }
     else if (self.offset.unsignedIntegerValue > 0 && numberOfLeds.unsignedIntegerValue <= [Gradient maximalNumberOfLeds])
@@ -141,7 +141,7 @@
         self.offset = @([Gradient maximalNumberOfLeds] - numberOfLeds.unsignedIntegerValue);
         
 		[self willChangeValueForKey:@"numberOfLeds"];
-        [self setNumberOfLeds:numberOfLeds];
+        [self setPrimitiveValue:numberOfLeds forKey:@"numberOfLeds"];
         [self didChangeValueForKey:@"numberOfLeds"];
 	}
 }

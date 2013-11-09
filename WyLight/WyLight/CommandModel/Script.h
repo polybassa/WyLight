@@ -14,6 +14,9 @@
 
 @interface Script : Command
 
++ (NSString *)entityName;
++ (instancetype)insertNewObjectIntoContext:(NSManagedObjectContext *)context;
+
 @property (nonatomic, retain) NSNumber * repeatsWhenFinished;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSOrderedSet *effects;

@@ -13,6 +13,8 @@
 
 @interface Gradient : SimpelEffect
 
++ (instancetype)insertNewObjectIntoContext:(NSManagedObjectContext *)context;
+
 @property (nonatomic, retain) UIColor * color1;
 @property (nonatomic, retain) UIColor * color2;
 @property (nonatomic, retain) NSNumber * numberOfLeds;

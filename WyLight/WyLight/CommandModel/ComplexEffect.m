@@ -54,12 +54,13 @@
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
+    
     [self willChangeValueForKey:@"backgroundColor"];
-    [self setBackgroundColor:backgroundColor];
+    [self setPrimitiveValue:backgroundColor forKey:@"backgroundColor"];
     [self didChangeValueForKey:@"backgroundColor"];
     
     for (SimpelEffect *command in self.effects) {
-        command.backgroundColor = self.backgroundColor;
+        command.backgroundColor = backgroundColor;
     }
 }
 

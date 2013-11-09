@@ -25,12 +25,12 @@
                   symbolName = "__72-[NWScriptFolderViewController carousel:viewForItemAtIndex:reusingView:]_block_invoke"
                   moduleName = "WyLight"
                   urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script_DEPRECATED/NWScriptFolderViewController.m"
-                  timestampString = "405619114.110684"
+                  timestampString = "405709963.153711"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "217"
                   endingLineNumber = "217"
-                  offsetFromSymbolStart = "482">
+                  offsetFromSymbolStart = "550">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -39,12 +39,26 @@
                   symbolName = "__copy_helper_block_240"
                   moduleName = "WyLight"
                   urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script_DEPRECATED/NWScriptFolderViewController.m"
-                  timestampString = "405619114.111163"
+                  timestampString = "405709963.154157"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "217"
                   endingLineNumber = "217"
-                  offsetFromSymbolStart = "16">
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__destroy_helper_block_241"
+                  moduleName = "WyLight"
+                  urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script_DEPRECATED/NWScriptFolderViewController.m"
+                  timestampString = "405709963.154608"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "217"
+                  endingLineNumber = "217"
+                  offsetFromSymbolStart = "17">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -135,12 +149,12 @@
                   symbolName = "__45-[NWScriptViewController deleteScriptObject:]_block_invoke236"
                   moduleName = "WyLight"
                   urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script_DEPRECATED/NWScriptViewController.m"
-                  timestampString = "405619114.113305"
+                  timestampString = "405709963.157271"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "284"
                   endingLineNumber = "284"
-                  offsetFromSymbolStart = "868">
+                  offsetFromSymbolStart = "1014">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -149,12 +163,12 @@
                   symbolName = "__45-[NWScriptViewController deleteScriptObject:]_block_invoke_2"
                   moduleName = "WyLight"
                   urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script_DEPRECATED/NWScriptViewController.m"
-                  timestampString = "405619114.113624"
+                  timestampString = "405709963.15766"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "284"
                   endingLineNumber = "284"
-                  offsetFromSymbolStart = "30">
+                  offsetFromSymbolStart = "19">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -172,6 +186,54 @@
             startingLineNumber = "65"
             endingLineNumber = "65"
             landmarkName = "-sendToWCWiflyControl:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WyLight/Script_DEPRECATED/NWScriptFolderCDVC.m"
+            timestampString = "405709773.658037"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "-refresh"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WyLight/Script_DEPRECATED/NWScriptFolderCDVC.m"
+            timestampString = "405685272.449295"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
+            landmarkName = "-useDocument"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WyLight/Script_DEPRECATED/NWScriptFolderCDVC.m"
+            timestampString = "405709773.658037"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
+            landmarkName = "-refresh"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

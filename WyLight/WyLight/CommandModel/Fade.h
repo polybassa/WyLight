@@ -15,4 +15,6 @@
 
 @property (nonatomic, retain) id color;
 
++ (instancetype)insertNewObjectIntoContext:(NSManagedObjectContext *)context;
+
 @end

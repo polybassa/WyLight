@@ -14,6 +14,9 @@
 
 @interface ComplexEffect : Effect
 
++ (NSString *)entityName;
++ (instancetype)insertNewObjectIntoContext:(NSManagedObjectContext *)context;
+
 @property (nonatomic, retain) NSNumber * waitCommand;
 @property (nonatomic, retain) ComplexEffect *next;
 @property (nonatomic, retain) ComplexEffect *prev;
