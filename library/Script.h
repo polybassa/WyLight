@@ -29,9 +29,10 @@ namespace WyLight {
 
 class Script : public std::list<std::shared_ptr<FwCmdScript>>
 {
+	std::string mName;
 
 public:
-	static void deserialize(const std::string& filename, Script& newScript);
+	static void deserialize(const std::string& filename, Script& newScript) throw (FatalError);
 	static void serialize(const std::string& filename, const Script& newScript) throw (FatalError);
 
 	Script();
@@ -49,8 +50,9 @@ public:
 	void emplace_front(T&& t)
 	{
 		this->list::emplace_front(std::make_shared<T>(std::forward<T>(t)));
-	}	
+	}
 
+	const std::string& getName() const;
 };
 } /* namespace WyLight */
 #endif /* #ifndef __WyLight__Script__ */

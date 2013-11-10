@@ -30,6 +30,9 @@ Script::Script()
 
 Script::Script(const std::string& filename)
 {
+	// std::string::npos++ will overflow to 0 just like we want!
+	const size_t indexOfLastSeperator = filename.find_last_of('/') + 1;
+	mName = filename.substr(indexOfLastSeperator);
 	Script::deserialize(filename, *this);
 }
 
@@ -52,12 +55,11 @@ bool Script::operator == (const Script& ref) const
 	return true;
 }
 
-void Script::deserialize(const std::string& filename, Script& newScript)
+void Script::deserialize(const std::string& filename, Script& newScript) throw (FatalError)
 {
 	std::ifstream inFile(filename);
 	if(!inFile.is_open()) {
-		Trace(ZONE_ERROR, "Open file to read script failed\n");
-		return;	
+		throw FatalError("Open '" + filename + "' to read script failed");
 	}
 
 	std::string command;
@@ -73,11 +75,15 @@ void Script::deserialize(const std::string& filename, Script& newScript)
 		} else if (0 == command.compare(FwCmdSetGradient::TOKEN)) {
 			newScript.emplace_back(FwCmdSetGradient(inFile));
 		} else {
-			Trace(ZONE_ERROR, "Unknown command '%s'\n", command.c_str());
-			assert(false);
+			throw FatalError("Unknown command: " + command);
 		}
 	}
 	inFile.close();
+}
+
+const std::string& Script::getName() const
+{
+	return mName;
 }
 
 void Script::serialize(const std::string& filename, const Script& newScript) throw (FatalError)

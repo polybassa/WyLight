@@ -188,6 +188,20 @@ void Java_biz_bruenn_WyLight_WiflyControl_release(JNIEnv* env, jobject ref, jlon
 	}
 }
 
+jstring Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_getScriptName(JNIEnv* env, jobject ref, jstring path, jlong index)
+{
+	jstring result = NULL;
+	const char* const myPath = env->GetStringUTFChars(path, 0);
+	try {
+		ScriptManager manager{myPath};
+		result = env->NewStringUTF(manager.getScript(index).getName().data());
+	} catch (FatalError& e) {
+		ThrowJniException(env, e);
+	}
+	env->ReleaseStringUTFChars(path, myPath);
+	return result;
+}
+
 void Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_newScript(JNIEnv* env, jobject ref, jstring path, jstring scriptName)
 {
 	const char* const myPath = env->GetStringUTFChars(path, 0);

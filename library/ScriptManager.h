@@ -28,6 +28,7 @@ namespace WyLight {
 
 class ScriptManager
 {
+	const std::string m_Path;
 	std::vector<std::string> m_ScriptFiles;
 	static bool hasScriptFileExtension(const std::string& filename);
 

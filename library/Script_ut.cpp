@@ -116,9 +116,10 @@ size_t ut_Script_WriteGood(void)
 {
 	TestCaseBegin();
 	Script refScript("TestInput.txt");
-	Script::serialize("TestOutput.txt", refScript);
-	Script newScript("TestOutput.txt");
+	Script::serialize("./binary/TestOutput.txt", refScript);
+	Script newScript("./binary/TestOutput.txt");
 	CHECK(newScript == refScript);
+	CHECK(0 == newScript.getName().compare("TestOutput.txt"));
 	TestCaseEnd();
 }
 

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 public class ScriptManagerAdapter extends BaseAdapter {
 	
+	private native String getScriptName(String path, long index);
 	private native int numScripts(String path);
 	private native void newScript(String path, String name);
 	private final String path; 
@@ -40,7 +41,7 @@ public class ScriptManagerAdapter extends BaseAdapter {
 		// TODO Auto-generated method stub
 		TextView x = new TextView(parent.getContext());
 		x.setTextColor(Color.BLACK);
-		x.setText("HUHU");
+		x.setText(getScriptName(path, (long)position));
 		return x;
 	}
 }

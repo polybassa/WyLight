@@ -28,6 +28,7 @@ namespace WyLight {
 	const std::string ScriptManager::EXTENSION{".wyscript"};
 
 	ScriptManager::ScriptManager(const std::string& path) throw (FatalError)
+		: m_Path(path + '/')
 	{
 		DIR* const searchDir = opendir(path.c_str());
 		if(NULL == searchDir) {
@@ -49,7 +50,7 @@ namespace WyLight {
 
 	Script ScriptManager::getScript(size_t index) const throw (FatalError)
 	{
-		return Script{getScriptName(index)};
+		return Script{m_Path + getScriptName(index)};
 	}
 
 	const std::string& ScriptManager::getScriptName(size_t index) const throw (FatalError)
