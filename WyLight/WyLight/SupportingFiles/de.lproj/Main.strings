@@ -1,0 +1,57 @@
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "4C8-9C-Dsg"; */
+"4C8-9C-Dsg.text" = "Label";
+
+/* Class = "IBUILabel"; text = "App Version:"; ObjectID = "6KG-Og-ecN"; */
+"6KG-Og-ecN.text" = "App Version:";
+
+/* Class = "IBUILabel"; text = "Firmware Version:"; ObjectID = "DqB-M3-TWr"; */
+"DqB-M3-TWr.text" = "Firmware Version:";
+
+/* Class = "IBUILabel"; text = "🔆"; ObjectID = "F0r-b7-DcP"; */
+"F0r-b7-DcP.text" = "🔆";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Kyd-RP-TCx"; */
+"Kyd-RP-TCx.text" = "Label";
+
+/* Class = "IBUILabel"; text = "Hexfile Version:"; ObjectID = "M4s-Ws-wnE"; */
+"M4s-Ws-wnE.text" = "Hexfile Version:";
+
+/* Class = "IBUITabBarItem"; title = "RGB Slider"; ObjectID = "QwO-Kn-4Pd"; */
+"QwO-Kn-4Pd.title" = "RGB Schieber";
+
+/* Class = "IBUITabBarItem"; title = "Script Editor"; ObjectID = "Ues-bv-5hx"; */
+"Ues-bv-5hx.title" = "Ablaufsteuerung";
+
+/* Class = "IBUITabBarItem"; title = "Color Picker"; ObjectID = "VrI-Vu-uQ4"; */
+"VrI-Vu-uQ4.title" = "Farbrad";
+
+/* Class = "IBUINavigationItem"; title = "Prepare new Target"; ObjectID = "XeK-YM-lXA"; */
+"XeK-YM-lXA.title" = "WyLight vorbereiten";
+
+/* Class = "IBUIBarButtonItem"; title = "Disconnect"; ObjectID = "bxa-xS-8Ml"; */
+"bxa-xS-8Ml.title" = "Zurück";
+
+/* Class = "IBUILabel"; text = "🔅"; ObjectID = "dGg-du-PNe"; */
+"dGg-du-PNe.text" = "🔅";
+
+/* Class = "IBUILabel"; text = "Title"; ObjectID = "i5E-Qx-tFf"; */
+"i5E-Qx-tFf.text" = "Title";
+
+/* Class = "IBUITabBarItem"; title = "Dimmer"; ObjectID = "kud-TW-ohR"; */
+"kud-TW-ohR.title" = "Dimmer";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "qUx-KM-NVc"; */
+"qUx-KM-NVc.text" = "Label";
+
+/* Class = "IBUILabel"; text = "Detail"; ObjectID = "r8f-4L-YBC"; */
+"r8f-4L-YBC.text" = "Detail";
+
+/* Class = "IBUINavigationItem"; title = "WyLight Remote"; ObjectID = "v1C-lo-8bL"; */
+"v1C-lo-8bL.title" = "WyLight Remote";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "zBf-q5-eJC"; */
+"zBf-q5-eJC.text" = "Label";
+
+/* Class = "IBUINavigationItem"; title = "Add new Target"; ObjectID = "zXA-51-wTk"; */
+"zXA-51-wTk.title" = "WyLight einrichten";

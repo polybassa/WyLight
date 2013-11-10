@@ -29,7 +29,7 @@
 	if (self.controlHandle != nil) {
 		return;
 	}
-	UIAlertView *connectingView = [[UIAlertView alloc] initWithTitle:@"Connecting" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+	UIAlertView *connectingView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"ConnectingKey", @"ViewControllerLocalization", @"") message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
 	[connectingView show];
 	
 	dispatch_async(dispatch_queue_create("connecting to target Queue", NULL), ^{
@@ -53,7 +53,7 @@
 		
 		if (![versionOfTarget isEqualToString:versionOfMainHex]) {
 			[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
-			UIAlertView *updateAlertView = [[UIAlertView alloc] initWithTitle:@"Update required!" message:@"Please wait!" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+			UIAlertView *updateAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"UpdateRequiredKey", @"ViewControllerLocalization", @"") message:NSLocalizedStringFromTable(@"PleaseWaitKey", @"ViewControllerLocalization", @"") delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
 			dispatch_async(dispatch_get_main_queue(), ^{ [updateAlertView show]; });
 			[self.controlHandle updateFirmware];
 			[self.controlHandle updateWlanModuleForFwVersion:versionOfMainHex];

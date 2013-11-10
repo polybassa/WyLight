@@ -1,0 +1,37 @@
+/* 
+  ViewControllerLocalization.strings
+  WyLight
+
+  Created by Nils Weiß on 01/11/13.
+  Copyright (c) 2013 Nils Weiß. All rights reserved.
+*/
+
+"ScriptVCSendBtnKey" = "Übertragen";
+"ScriptVCDeleteInfoKey1" = "Nach oben wischen";
+"ScriptVCDeleteInfoKey2" = "um den Effekt zu löschen.";
+"CmplxScriptCmdEditorVCFadeInfoKey" = "Farbe";
+"CmplxScriptCmdEditorVCGradient1InfoKey" = "Anfangsfarbe";
+"CmplxScriptCmdEditorVCGradient2InfoKey" = "Endfarbe";
+"CmplxScriptCmdEditorVCFadeButtonKey" = "Übergang";
+"CmplxScriptCmdEditorVCGradientButtonKey" = "Verlauf";
+"LoadingDataKey" = "Lade Daten ...";
+"PleaseWaitKey" = "Einen Moment Geduld, Bitte!";
+"ConnectingKey" = "Verbindungsaufbau";
+"UpdateRequiredKey" = "Softwareaktualisierung notwendig";
+"ConnectionLostKey" = "Verbindungsabbruch!";
+"ReConnectKey" = "Bitte Verbindung erneut aufbauen.";
+"ConfigSuccessfullKey" = "Einrichtung erfolgreich abgeschlossen!";
+"ChangeWifiKey" = "Bitte zum ursprünglichen WLAN-Netzwerk wechseln!";
+"NoTargetFoundKey" = "Es wurde kein WyLight im Einrichtungsmodus gefunden!";
+"RetryKey" = "Bitte erneut versuchen!";
+"PasswordKey" = "Passwort";
+"SSIDInfoKey" = "SSID die Ihr WyLight tragen soll eingeben";
+"APInfoKey" = "Accesspoint-Informationen \neingeben";
+"InvalidInputKey" = "Ungültige Eingabe";
+"CompleteInputKey" = "Bitte das Eingabefeld ausfüllen";
+"CompleteInputsKey" = "Bitte alle Eingabefelder ausfüllen";
+"ConfigurationKey" = "Konfiguration";
+"ScanningKey" = "Netzwerk durchsuchen";
+"OperationModeKey" = "Betriebsmodus";
+"CancelKey" = "Abbrechen";
+"OperationModeInfoKey" = "Bitte wählen Sie einen Betriebsmodus für Ihr WyLight aus.";

@@ -22,7 +22,7 @@
 
 @property (nonatomic, weak) id<NWScriptViewDataSource> dataSource;
 @property (nonatomic) CGFloat scriptObjectSpacing;
-
+@property (nonatomic) UIEdgeInsets insets;
 - (void)reloadData;
 - (void)fixLocationsOfSubviews;
 @end

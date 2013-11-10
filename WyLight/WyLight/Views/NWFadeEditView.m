@@ -38,7 +38,7 @@
 		[self addSubview:self.fadeEditView];
 		
 		self.titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-		self.titleLabel.text = @"Tap to switch led's on, off";
+		self.titleLabel.text = NSLocalizedStringFromTable(@"FadeInfoLabelKey", @"ScriptObjectEditViewsLocalization", @"");
 		self.titleLabel.textAlignment = NSTextAlignmentCenter;
 		[self addSubview:self.titleLabel];
     

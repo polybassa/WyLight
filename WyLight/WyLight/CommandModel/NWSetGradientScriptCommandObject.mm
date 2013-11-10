@@ -84,7 +84,10 @@
 
 - (void)setOffset:(uint8_t)offset {
 	if (offset + self.numberOfLeds <= [NWSetGradientScriptCommandObject maximalNumberOfLeds] && offset >= 0) {
-		_offset = offset;
+		if (_offset != offset) {
+            _offset = offset;
+            self.needsUpdate = YES;
+        }
 	}
 }
 
@@ -99,6 +102,7 @@
 	if (!_numberOfLeds) {
 		_numberOfLeds = 1;
 	}
+    self.needsUpdate = YES;
 }
 
 - (NSArray *)colors {
@@ -145,6 +149,21 @@
 	}
 	return mutableColorArray;
 }
+
+- (void)setColor1:(UIColor *)color1 {
+    if (![_color1 isEqual:color1]) {
+        _color1 = color1;
+        self.needsUpdate = YES;
+    }
+}
+
+- (void)setColor2:(UIColor *)color2 {
+    if (![_color2 isEqual:color2]) {
+        _color2 = color2;
+        self.needsUpdate = YES;
+    }
+}
+
 
 - (uint32_t)address {
 	const uint8_t offset = self.offset;

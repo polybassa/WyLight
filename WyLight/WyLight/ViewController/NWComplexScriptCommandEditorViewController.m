@@ -112,16 +112,7 @@ enum EditColorTarget {
 		self.scriptSubCommandsCarousel.frame = CGRectMake(0, 60, self.view.bounds.size.width / 2, self.view.bounds.size.height - 60);
 				
 		self.toolKitCarousel.frame = CGRectMake(self.view.bounds.size.width / 2, 60, self.view.bounds.size.width / 2, self.view.bounds.size.height - 60);
-		if (!self.toolKitCarousel.vertical) {
-			self.fadeColorEditView = nil;
-			self.fadeEditView = nil;
-			self.timeValueEditView = nil;
-			self.gradientColor2EditView = nil;
-			self.gradientColor1EditView = nil;
-			self.gradientEditView = nil;
-		}
 		{
-			
 			CGRect toolKitViewRect = CGRectMake(0, 0, 200, 200);
 			self.fadeColorEditView.frame = toolKitViewRect;
 			self.fadeEditView.frame = toolKitViewRect;
@@ -157,7 +148,7 @@ enum EditColorTarget {
 	self.toolKitCarousel.dataSource = self;
 	self.toolKitCarousel.delegate = self;
 	self.toolKitCarousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	self.toolKitCarousel.type = iCarouselTypeLinear;
+	self.toolKitCarousel.type = iCarouselTypeCoverFlow;
 	self.toolKitCarousel.bounceDistance = 0.3;
 	self.toolKitCarousel.pagingEnabled = YES;
 	[self.view addSubview:self.toolKitCarousel];
@@ -229,6 +220,17 @@ enum EditColorTarget {
 	}
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+	CGRect testviewOne = [self.timeValueEditView convertRect:self.timeValueEditView.frame toView:self.view];
+	CGRect testviewTwo = [self.gradientColor1EditView convertRect:self.gradientColor1EditView.frame toView:self.view];
+	
+	if (CGRectIntersectsRect(testviewOne, testviewTwo)) {
+		[self fixLocations];
+		[self.toolKitCarousel reloadData];
+	}
+}
+
 #pragma mark - SETTER
 - (void)setCurrentItemIndex:(NSUInteger)currentItemIndex {
 	_currentItemIndex = currentItemIndex;
@@ -285,7 +287,7 @@ enum EditColorTarget {
 		_fadeColorEditView.cornerRadius = 5.0;
 		_fadeColorEditView.contentMode = UIViewContentModeCenter;
 		_fadeColorEditView.delegate = self;
-		_fadeColorEditView.title = @"Fade Color";
+		_fadeColorEditView.title = NSLocalizedStringFromTable(@"CmplxScriptCmdEditorVCFadeInfoKey", @"ViewControllerLocalization", @"");
 	}
 	return _fadeColorEditView;
 }
@@ -297,7 +299,7 @@ enum EditColorTarget {
 		_gradientColor1EditView.cornerRadius = 5.0;
 		_gradientColor1EditView.contentMode = UIViewContentModeCenter;
 		_gradientColor1EditView.delegate = self;
-		_gradientColor1EditView.title = @"Gradient Start Color";
+		_gradientColor1EditView.title = NSLocalizedStringFromTable(@"CmplxScriptCmdEditorVCGradient1InfoKey", @"ViewControllerLocalization", @"");
 	}
 	return _gradientColor1EditView;
 }
@@ -309,7 +311,7 @@ enum EditColorTarget {
 		_gradientColor2EditView.cornerRadius = 5.0;
 		_gradientColor2EditView.contentMode = UIViewContentModeCenter;
 		_gradientColor2EditView.delegate = self;
-		_gradientColor2EditView.title = @"Gradient End Color";
+		_gradientColor2EditView.title = NSLocalizedStringFromTable(@"CmplxScriptCmdEditorVCGradient2InfoKey", @"ViewControllerLocalization", @"");
 	}
 	return _gradientColor2EditView;
 }
@@ -427,6 +429,13 @@ enum EditColorTarget {
 			}
 		}
 	}
+}
+
+- (CGFloat)carouselItemWidth:(iCarousel *)carousel {
+	if (carousel == self.toolKitCarousel) {
+		return self.timeValueEditView.frame.size.width;
+	}
+	return 0;
 }
 
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel {
@@ -736,12 +745,12 @@ enum EditColorTarget {
 		UIButton *fadeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 		fadeButton.frame = CGRectMake(0, 0, 80, 80);
 		[fadeButton setBackgroundImage:[self addFadeImage] forState:UIControlStateNormal];
-		[fadeButton setTitle:@"Fade" forState:UIControlStateNormal];
+		[fadeButton setTitle:NSLocalizedStringFromTable(@"CmplxScriptCmdEditorVCFadeButtonKey", @"ViewControllerLocalization", @"") forState:UIControlStateNormal];
 		
 		UIButton *gradientButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 		gradientButton.frame = CGRectMake(0, 0, 80, 80);
 		[gradientButton setBackgroundImage:[self addGradientImage] forState:UIControlStateNormal];
-		[gradientButton setTitle:@"Gradient" forState:UIControlStateNormal];
+		[gradientButton setTitle:NSLocalizedStringFromTable(@"CmplxScriptCmdEditorVCGradientButtonKey", @"ViewControllerLocalization", @"") forState:UIControlStateNormal];
 		
 		_addEffectImages = @[[NWComplexScriptCommandEditorViewController imageWithView:fadeButton], [NWComplexScriptCommandEditorViewController imageWithView:gradientButton]];
 	}

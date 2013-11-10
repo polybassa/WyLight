@@ -62,8 +62,8 @@
 #define SCANNING_TIME_S 40
 #define ENDPOINT_IP 16909060 // is equal to 1.2.3.4
 
-#define SCANNING_ALERT_VIEW_TITLE @"Scanning"
-#define SELECTION_ALERT_VIEW_TITLE @"Operation Mode"
+#define SCANNING_ALERT_VIEW_TITLE NSLocalizedStringFromTable(@"ScanningKey", @"ViewControllerLocalization", @"")
+#define SELECTION_ALERT_VIEW_TITLE NSLocalizedStringFromTable(@"OperationModeKey", @"ViewControllerLocalization", @"")
 
 - (void)nextPage {
 	if ((self.guideView.currentPageIndex + 1 ) < [self.guideView.pageImageStrings count]) {
@@ -75,7 +75,7 @@
 	}
 	else {
 		//**** Alert view ****
-		UIAlertView *scanningAlertView = [[UIAlertView alloc]initWithTitle:SCANNING_ALERT_VIEW_TITLE message:@" " delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+		UIAlertView *scanningAlertView = [[UIAlertView alloc]initWithTitle:SCANNING_ALERT_VIEW_TITLE message:@" " delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"CancelKey", @"ViewControllerLocalization", @"") otherButtonTitles:nil];
 		[scanningAlertView setDelegate:self];
 		[scanningAlertView show];
 		
@@ -135,7 +135,7 @@
 }
 
 - (void)showSelectionAlertView {
-	[[[UIAlertView alloc] initWithTitle:SELECTION_ALERT_VIEW_TITLE message:@"Please choose, in which mode you want to operate your WyLight." delegate:self cancelButtonTitle:nil otherButtonTitles:@"SoftAP", @"Client", nil] show];
+	[[[UIAlertView alloc] initWithTitle:SELECTION_ALERT_VIEW_TITLE message:NSLocalizedStringFromTable(@"OperationModeInfoKey", @"ViewControllerLocalization", @"") delegate:self cancelButtonTitle:nil otherButtonTitles:@"SoftAP", @"Client", nil] show];
 }
 
 - (IBAction)doneBarButtonPressed:(id)sender {

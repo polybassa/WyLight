@@ -12,13 +12,11 @@
 #import "NWComplexScriptCommandObject.h"
 #import "NWComplexScriptCommandEditorViewController.h"
 #import "NWScriptCellView.h"
-#import "NWAddScriptObjectView.h"
 #import "WCWiflyControlWrapper.h"
 #import "TouchAndHoldButton.h"
 
-@interface NWScriptViewController () <NWScriptViewDataSource, NWScriptCellViewDelegate, UIScrollViewDelegate>
+@interface NWScriptViewController () <UITextFieldDelegate, NWScriptViewDataSource, NWScriptCellViewDelegate, UIScrollViewDelegate>
 
-@property (strong, nonatomic) NWScript *script;
 @property (strong, nonatomic) NWScriptView *scriptView;
 @property (strong, nonatomic) TouchAndHoldButton *zoomInButton;
 @property (strong, nonatomic) TouchAndHoldButton *zoomOutButton;
@@ -26,17 +24,25 @@
 @property (nonatomic) CGFloat timeScaleFactor;
 @property (nonatomic) NSUInteger indexForObjectToEdit;
 @property (nonatomic, strong) UIButton *sendButton;
+@property (weak, nonatomic) IBOutlet UITextField *titelTextField;
+@property (nonatomic, strong) UIButton *repeatSwitch;
 
 @end
 
 @implementation NWScriptViewController
 
 #pragma mark - GETTER + SETTER
-- (NWScript *)script {
-	if (_script == nil) {
-		_script = [[NWScript alloc]init];
-	}
-	return _script;
+
+- (void)setScript:(NWScript *)script {
+    _script = script;
+    CGFloat availableWidth = self.view.frame.size.width;
+    CGFloat scriptDuration = script.totalDurationInTmms.floatValue;
+    
+    if (availableWidth != 0 && scriptDuration != 0) {
+        self.timeScaleFactor = availableWidth / scriptDuration;
+    }
+    
+    [self.scriptView reloadData];
 }
 
 - (void)setTimeScaleFactor:(CGFloat)timeScaleFactor {
@@ -60,10 +66,7 @@
 					cell.scriptObjectView.downscale = YES;
 				}];
 			}
-			if ([control isKindOfClass:[NWAddScriptObjectView class]]) {
-				((NWAddScriptObjectView *)control).button.enabled = NO;
-			}
-		}
+        }
 	} else {
 		for (UIView *control in self.scriptView.subviews) {
 			if ([control isKindOfClass:[NWScriptCellView class]]) {
@@ -73,15 +76,11 @@
 					cell.scriptObjectView.downscale = NO;
 				}];
 			}
-			if ([control isKindOfClass:[NWAddScriptObjectView class]]) {
-				((NWAddScriptObjectView *)control).button.enabled = YES;
-			}
 		}
 	}
 }
 
 #pragma mark - SETUP STUFF
-#define SCRIPT_KEY @"WyLightRemote.NWScriptViewController.script"
 #define TIMESCALE_KEY @"WyLightRemote.NWScriptViewController.timescalefactor"
 #define DELETE_USER_INFO_KEY @"WyLightRemote.NWScriptViewController.showUserInfo"
 
@@ -90,13 +89,15 @@
 		[self.tabBarController.tabBar setHidden:NO];
 
 		//script view
-		self.scriptView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 120);
+		self.scriptView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64);
 		
-		self.sendButton.frame = CGRectMake(45, self.view.frame.size.height - 100, self.view.frame.size.width - 88, 44);
+		self.sendButton.frame = CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height - 44, self.view.frame.size.width / 2 - 44, 44);
+        
+        self.repeatSwitch.frame = CGRectMake(45, self.view.frame.size.height - 44, self.view.frame.size.width / 2 - 44, 44);
 		
-		self.zoomOutButton.frame = CGRectMake(0, self.view.frame.size.height - 100, 44, 44);
+		self.zoomOutButton.frame = CGRectMake(0, self.view.frame.size.height - 44, 44, 44);
 		
-		self.zoomInButton.frame = CGRectMake(self.view.frame.size.width - 44, self.view.frame.size.height - 100, 44, 44);
+		self.zoomInButton.frame = CGRectMake(self.view.frame.size.width - 44, self.view.frame.size.height - 44, 44, 44);
 	}
 	else {
 		[self.tabBarController.tabBar setHidden:YES];
@@ -104,7 +105,9 @@
 		//script view
 		self.scriptView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 60);
 		
-		self.sendButton.frame = CGRectMake(45, self.view.frame.size.height - 44, self.view.frame.size.width - 88, 44);
+		self.sendButton.frame = CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height - 44, self.view.frame.size.width / 2 - 44, 44);
+        
+         self.repeatSwitch.frame = CGRectMake(45, self.view.frame.size.height - 44, self.view.frame.size.width / 2 - 44, 44);
 		
 		self.zoomOutButton.frame = CGRectMake(0, self.view.frame.size.height - 44, 44, 44);
 		
@@ -122,21 +125,16 @@
 	if (self.timeScaleFactor == 0.0) {
 		self.timeScaleFactor = 1.0;
 	}
-		
-	NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:SCRIPT_KEY];
-	if (data) {
-		self.script = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-	}
-	
 	//script view
 	self.scriptView = [[NWScriptView alloc] initWithFrame:CGRectZero];
+    self.scriptView.insets = UIEdgeInsetsMake(90, 20, 0, 0);
 	self.scriptView.dataSource = self;
 	self.scriptView.backgroundColor = [UIColor clearColor];
 	self.scriptView.delegate = self;
 	[self.view addSubview:self.scriptView];
 
 	self.sendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	[self.sendButton setTitle:@"SEND" forState:UIControlStateNormal];
+	[self.sendButton setTitle:NSLocalizedStringFromTable(@"ScriptVCSendBtnKey", @"ViewControllerLocalization", @"") forState:UIControlStateNormal];
 	[self.sendButton addTarget:self action:@selector(sendScript) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:self.sendButton];
 
@@ -151,13 +149,18 @@
 	[self.zoomOutButton addTarget:self action:@selector(zoomOutButtonPressed) forTouchAndHoldControlEventWithTimeInterval:0.3];
 	[self.zoomOutButton addTarget:self action:@selector(zoomOutButtonPressed) forControlEvents:UIControlEventTouchDown];
 	[self.view addSubview:self.zoomOutButton];
+    
+    self.repeatSwitch = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.repeatSwitch setImage:[UIImage imageNamed:@"Repeat_Icon"] forState:UIControlStateNormal];
+    self.repeatSwitch.selected = self.script.repeatWhenFinished;
+    [self.repeatSwitch addTarget:self action:@selector(repeatSwitchValueChanged) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.repeatSwitch];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnBackground:)];
+    [self.view addGestureRecognizer:tap];
 }
 
 - (void)saveUserData {
-	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.script];
-	if (data) {
-		[[NSUserDefaults standardUserDefaults] setObject:data forKey:SCRIPT_KEY];
-	}	
 	[[NSUserDefaults standardUserDefaults] setFloat:self.timeScaleFactor forKey:TIMESCALE_KEY];
 }
 
@@ -168,12 +171,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[self.scriptView reloadData];
+    self.titelTextField.text = self.script.title;
 	[super viewWillAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-	[self saveUserData];
-	[super viewWillDisappear:animated];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -201,7 +200,7 @@
 			BOOL showDeletionModeInfo = ![[NSUserDefaults standardUserDefaults] boolForKey:DELETE_USER_INFO_KEY];
 			if (showDeletionModeInfo) {
 				[[NSUserDefaults standardUserDefaults] setBool:YES forKey:DELETE_USER_INFO_KEY];
-				UIAlertView *infoView = [[UIAlertView alloc]initWithTitle:@"Swipe up" message:@"to delete an object" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+				UIAlertView *infoView = [[UIAlertView alloc]initWithTitle:NSLocalizedStringFromTable(@"ScriptVCDeleteInfoKey1", @"ViewControllerLocalization", @"") message:NSLocalizedStringFromTable(@"ScriptVCDeleteInfoKey2", @"ViewControllerLocalization", @"") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 				[infoView show];
 			}
 		}
@@ -224,6 +223,9 @@
 	[UIView animateWithDuration:0.3 animations:^{
 		self.timeScaleFactor *= ZOOM_IN_STEP;
 	}];
+}
+- (IBAction)addBarButtonPressed:(UIBarButtonItem *)sender {
+    [self addScriptCommand];
 }
 
 - (void)zoomOutButtonPressed {
@@ -289,65 +291,53 @@
 	}
 }
 
-- (void)addScriptCommand:(UIButton *)sender {
+- (void)addScriptCommand {
+    
+    if (self.isDeletionModeActive) {
+        self.isDeletionModeActive = NO;
+        return;
+    }
 
 	//insert new command in model
 	NWComplexScriptCommandObject *commandToAdd = [[self.script.scriptArray lastObject] copy];
 	[self.script addObject:commandToAdd];
-	
-	//get last scriptviewobject, it's the addButton
-	NWAddScriptObjectView *addButtonView;
-	for (UIView *view in self.scriptView.subviews) {
-		if ([view isKindOfClass:[NWAddScriptObjectView class]]) {
-			addButtonView = (NWAddScriptObjectView *)view;
-		}
-	}
-	
+    
 	//get new view for the new command
-	UIView *viewToAdd = [self scriptView:self.scriptView cellViewForIndex:addButtonView.tag];
+	UIView *viewToAdd = [self scriptView:self.scriptView cellViewForIndex:self.script.scriptArray.count - 1];
 	viewToAdd.alpha = 0.0;
-	viewToAdd.frame = CGRectMake(
-								 addButtonView.frame.origin.x,
-								 addButtonView.frame.origin.y,
-								 [self scriptView:self.scriptView widthOfObjectAtIndex:viewToAdd.tag],
-								 addButtonView.frame.size.height);
 
 	[self.scriptView addSubview:viewToAdd];
-		
-	//change position of the addButton via tag;
-	CGRect newFrame = CGRectMake(
-								 addButtonView.frame.origin.x + commandToAdd.duration * self.timeScaleFactor + self.scriptView.scriptObjectSpacing,
-								 addButtonView.frame.origin.y,
-								 addButtonView.frame.size.width,
-								 addButtonView.frame.size.height);
-	
-	[self.scriptView scrollRectToVisible:newFrame animated:YES];
-	//Positionen anpassen
-	[UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-		addButtonView.frame = newFrame;
+    [self.scriptView fixLocationsOfSubviews];
+    [self.scriptView scrollRectToVisible:((UIView *)self.scriptView.subviews.lastObject).frame animated:YES];
+
+    [UIView animateWithDuration:0.8 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        viewToAdd.alpha = 1.0;
 	} completion:^(BOOL finished) {
-		[self.scriptView fixLocationsOfSubviews];
-		//Farben nachladen
-		[UIView animateWithDuration:0.4 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-			viewToAdd.alpha = 1.0;
-		} completion:^(BOOL finished) {
-			[self.scriptView reloadData];
-		}];
-	}];
+		[self.scriptView reloadData];
+    }];
+
+}
+
+- (void)repeatSwitchValueChanged {
+        self.repeatSwitch.selected = !self.repeatSwitch.selected;
+    self.script.repeatWhenFinished = self.repeatSwitch.selected;
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+        [self.scriptView reloadData];
+    });
 }
 
 - (void)sendScript {
 	dispatch_queue_t sendScriptQueue = dispatch_queue_create("sendScriptQueue", NULL);
 	dispatch_async(sendScriptQueue, ^{
-		[self.controlHandle clearScript];
 		[self.controlHandle setColorDirect:[UIColor blackColor]];
-		[self.controlHandle loopOn];
-		for (NWComplexScriptCommandObject* command in self.script.scriptArray) {
-			[command sendToWCWiflyControl:self.controlHandle];
-			[NSThread sleepForTimeInterval:0.1];
-		}
-		[self.controlHandle loopOffAfterNumberOfRepeats:0];
+		[self.script sendToWCWiflyControl:self.controlHandle];
 	});
+}
+
+- (void)tapOnBackground:(UITapGestureRecognizer *)gesture {
+    if (self.isDeletionModeActive) {
+        self.isDeletionModeActive = NO;
+    }
 }
 
 #pragma mark - SCRIPT VIEW DATASOURCE
@@ -359,7 +349,7 @@
 			if (((NWComplexScriptCommandObject *)self.script.scriptArray[index]).prev) {
 				tempView.scriptObjectView.startColors = ((NWComplexScriptCommandObject *)self.script.scriptArray[index]).prev.colors;
 			}
-			if (index == 0) {
+			if (index == 0 && self.script.repeatWhenFinished) {
 				tempView.scriptObjectView.startColors = ((NWComplexScriptCommandObject *)self.script.scriptArray.lastObject).colors;
 			}
 			tempView.scriptObjectView.cornerRadius = 5;
@@ -382,15 +372,6 @@
 			UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeUpOnScriptObject:)];
 			swipe.direction = UISwipeGestureRecognizerDirectionUp;
 			[tempView addGestureRecognizer:swipe];
-			return tempView;
-		} else {
-			NWAddScriptObjectView *tempView = [[NWAddScriptObjectView alloc]initWithFrame:CGRectZero];
-			[tempView.button addTarget:self action:@selector(addScriptCommand:) forControlEvents:UIControlEventTouchUpInside];
-			
-			tempView.scriptObjectView.cornerRadius = 5;
-			tempView.tag = index;
-			tempView.button.enabled = !self.isDeletionModeActive;
-			
 			return tempView;
 		}
 	}
@@ -428,17 +409,6 @@
 			
 			subview.frame = CGRectMake(x, y, width, height);
 		}
-		if ([subview isKindOfClass:[NWAddScriptObjectView class]]) {
-			if (subview.tag <= view.tag) {
-				continue;
-			}
-			CGFloat x = subview.frame.origin.x + delta;
-			CGFloat y = subview.frame.origin.y;
-			CGFloat width = subview.frame.size.width;
-			CGFloat height = subview.frame.size.height;
-			
-			subview.frame = CGRectMake(x, y, width, height);
-		}
 	}
 }
 
@@ -446,7 +416,15 @@
 	NSUInteger index = view.tag;
 	uint16_t duration = width / self.timeScaleFactor;
 	((NWComplexScriptCommandObject *)self.script.scriptArray[index]).duration = duration;
-	[self.scriptView reloadData];
+	[self.scriptView fixLocationsOfSubviews];
+}
+
+#pragma mark - Textfield Delegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    self.script.title = textField.text;
+    [textField resignFirstResponder];
+    return YES;
 }
 
 #pragma mark - SEGUE

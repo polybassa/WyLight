@@ -8,8 +8,7 @@
 
 #import "NWScript.h"
 #import "NWComplexScriptCommandObject.h"
-#import "NWSetFadeScriptCommandObject.h" //remove when finished
-#import "NWSetGradientScriptCommandObject.h" //remove when finished
+#import "WCWiflyControlWrapper.h"
 
 @interface NWScript()
 
@@ -19,104 +18,24 @@
 
 @implementation NWScript
 
-- (id)init {
-	self = [super init];
-	
-	if (self) {
-		[self fillWithTestData];
-	}
-	return self;
-}
-
 #define SCRIPTARRAY_KEY @"WyLightRemote.NWScript.scriptarray"
+#define TITLE_KEY @"WyLightRemote.NWScript.title"
+#define REPEAT_KEY @"WyLightRemote.NWScript.repeat"
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
 	self = [self init];
 	if (self) {
 		_scriptArray = [aDecoder decodeObjectForKey:SCRIPTARRAY_KEY];
+        _title = [aDecoder decodeObjectForKey:TITLE_KEY];
+        _repeatWhenFinished = [aDecoder decodeBoolForKey:REPEAT_KEY];
 	}
 	return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
 	[aCoder encodeObject:_scriptArray forKey:SCRIPTARRAY_KEY];
-}
-
-- (void)fillWithTestData {
-	//TESTCODE
-	NWComplexScriptCommandObject *comObj = [[NWComplexScriptCommandObject alloc] init];
-	//self.command.backgroundColor = [UIColor blackColor];
-	
-	{
-		NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
-		obj.address = 0xffffffff;
-		obj.color = [UIColor redColor];
-		
-		[comObj.scriptObjects addObject:obj];
-	}
-	{
-		NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
-		obj.address = 0x000000ff;
-		obj.color = [UIColor yellowColor];
-		
-		[comObj.scriptObjects addObject:obj];
-	}
-	{
-		NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
-		obj.color1 = [UIColor blueColor];
-		obj.color2 = [UIColor greenColor];
-		
-		obj.offset = 10;
-		obj.numberOfLeds = 10;
-		[comObj.scriptObjects addObject: obj];
-	}
-	{
-		NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
-		obj.color1 = [UIColor blueColor];
-		obj.color2 = [UIColor greenColor];
-		
-		obj.offset = 20;
-		obj.numberOfLeds = 5;
-		[comObj.scriptObjects addObject: obj];
-	}
-	comObj.duration = 200;
-	[self addObject:comObj];
-	//TESTCODE
-	comObj = [[NWComplexScriptCommandObject alloc] init];
-	//self.command.backgroundColor = [UIColor blackColor];
-	
-	{
-		NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
-		obj.address = 0xffffffff;
-		obj.color = [UIColor greenColor];
-		
-		[comObj.scriptObjects addObject:obj];
-	}
-	comObj.duration = 50;
-	[self addObject:comObj];
-	//TESTCODE
-	comObj = [[NWComplexScriptCommandObject alloc] init];
-	//self.command.backgroundColor = [UIColor blackColor];
-	{
-		NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
-		obj.color1 = [UIColor blueColor];
-		obj.color2 = [UIColor greenColor];
-		
-		obj.offset = 10;
-		obj.numberOfLeds = 10;
-		[comObj.scriptObjects addObject: obj];
-	}
-	{
-		NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
-		obj.color1 = [UIColor blueColor];
-		obj.color2 = [UIColor greenColor];
-		
-		obj.offset = 0;
-		obj.numberOfLeds = 32;
-		[comObj.scriptObjects addObject: obj];
-	}
-	comObj.duration = 100;
-	[self addObject:comObj];
+    [aCoder encodeObject:_title forKey:TITLE_KEY];
+    [aCoder encodeBool:_repeatWhenFinished forKey:REPEAT_KEY];
 }
 
 - (NSMutableArray *)scriptArray {
@@ -143,6 +62,12 @@
 		anObject.prev = lastObj;
 		anObject.next = nil;
 	}
+    self.needsUpdate = YES;
+}
+
+- (void)setRepeatWhenFinished:(BOOL)repeatWhenFinished {
+    _repeatWhenFinished = repeatWhenFinished;
+    self.needsUpdate = YES;
 }
 
 - (void)removeObjectAtIndex:(NSUInteger)index {
@@ -153,8 +78,24 @@
 	if (tempObj.next) {
 		tempObj.next.prev = tempObj.prev;
 	}
-	
 	[self.scriptArray removeObjectAtIndex:index];
+    self.needsUpdate = YES;
+}
+
+- (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control {
+    [control clearScript];
+    [control loopOn];
+    for (NWComplexScriptCommandObject* command in self.scriptArray) {
+        [command sendToWCWiflyControl:control];
+        [NSThread sleepForTimeInterval:0.1];
+    }
+    if (self.repeatWhenFinished) {
+        [control loopOffAfterNumberOfRepeats:0];
+    } else {
+        [control loopOffAfterNumberOfRepeats:1];
+    }
+
+    
 }
 
 @end

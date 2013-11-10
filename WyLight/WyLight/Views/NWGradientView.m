@@ -15,6 +15,14 @@
 
 #define DEFAULT_COLOR [UIColor blackColor]
 
+- (id)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.opaque = YES;
+    }
+    return self;
+}
+
 - (void)setEndColor:(UIColor *)endColor {
 	if (![_endColor isEqual:endColor]) {
 		_endColor = endColor;

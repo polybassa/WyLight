@@ -342,3 +342,12 @@ void ScriptCtrl_DecrementWaitValue(void)
 	}
 }
 
+void ScriptCtrl_CheckAndDecrementWaitValue(void)
+{
+	if(gScriptBuf.waitValue < 8)
+	{
+		gScriptBuf.waitValue = 0;
+	}
+}
+
+

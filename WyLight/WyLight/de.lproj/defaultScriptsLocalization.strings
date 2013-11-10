@@ -1,0 +1,16 @@
+/* 
+  defaultScriptsLocalization.strings
+  WyLight
+
+  Created by Nils Weiß on 01/11/13.
+  Copyright (c) 2013 Nils Weiß. All rights reserved.
+*/
+
+"FastColorKey" = "Schnelle Farbübergänge";
+"SlowColorKey" = "Langsame Farbübergänge";
+"ConzentrationLightKey" = "Konzentrationslicht";
+"MovingColorsKey" = "Bewegte Farbwechsel";
+"RandomColorsKey" = "Zufällige Farben";
+"RunLightKey" = "Lauflicht";
+"ColorCrashKey" = "Farb-Lauflicht";
+"NewScriptKey" = "Neuer Ablauf";

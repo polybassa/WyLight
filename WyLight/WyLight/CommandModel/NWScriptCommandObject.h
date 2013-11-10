@@ -12,5 +12,6 @@
 @interface NWScriptCommandObject : NSObject <NWSendableCommand, NWDrawableCommand, NSCoding>
 
 @property (nonatomic, assign) uint16_t duration;
+@property (nonatomic, assign) BOOL needsUpdate;
 
 @end

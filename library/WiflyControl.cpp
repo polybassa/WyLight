@@ -42,8 +42,7 @@ namespace WyLight {
 
 	static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-	const std::string Control
-	::LEDS_ALL{"ffffffff"};
+	const std::string Control::LEDS_ALL{"ffffffff"};
 
 	const size_t FwCmdScript::INDENTATION_MAX;
 	const char FwCmdScript::INDENTATION_CHARACTER;

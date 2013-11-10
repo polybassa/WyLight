@@ -17,6 +17,7 @@
 @implementation NWScriptCommandObject
 
 @synthesize backgroundColor = _backgroundColor;
+@synthesize duration = _duration;
 
 #define DURATION_KEY @"WyLightRemote.NWScriptCommandObject.duration"
 #define DEFAULT_DURATION 20
@@ -41,6 +42,13 @@
 	return _duration;
 }
 
+- (void)setDuration:(uint16_t)duration {
+    if (_duration != duration) {
+        _duration = duration;
+        self.needsUpdate = YES;
+    }
+}
+
 - (NSArray*)colors {
 	return nil;
 }
@@ -53,7 +61,10 @@
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
-	self.shadowBackgroundColor = backgroundColor;
+    if (![self.shadowBackgroundColor isEqual:backgroundColor]) {
+        self.shadowBackgroundColor = backgroundColor;
+        self.needsUpdate = YES;
+    }
 }
 
 - (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control {

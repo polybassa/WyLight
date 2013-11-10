@@ -43,6 +43,20 @@
 	return NO;
 }
 
+- (void)setColor:(UIColor *)color {
+    if (![_color isEqual:color]) {
+        _color = color;
+        self.needsUpdate = YES;
+    }
+}
+
+- (void)setAddress:(uint32_t)address {
+    if (!_address != address) {
+        _address = address;
+        self.needsUpdate = YES;
+    }
+}
+
 - (id)copyWithZone:(NSZone *)zone {
 	NWSetFadeScriptCommandObject *other = [[NWSetFadeScriptCommandObject alloc]init];
 	other.parallel = self.parallel;

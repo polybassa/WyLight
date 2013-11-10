@@ -1,0 +1,37 @@
+/* 
+  ViewControllerLocalization.strings
+  WyLight
+
+  Created by Nils Weiß on 01/11/13.
+  Copyright (c) 2013 Nils Weiß. All rights reserved.
+*/
+
+"ScriptVCSendBtnKey" = "Send";
+"ScriptVCDeleteInfoKey1" = "Swipe up";
+"ScriptVCDeleteInfoKey1" = "to delete an effect.";
+"CmplxScriptCmdEditorVCFadeInfoKey" = "Fade Color";
+"CmplxScriptCmdEditorVCGradient1InfoKey" = "Gradient Startcolor";
+"CmplxScriptCmdEditorVCGradient2InfoKey" = "Gradient Endcolor";
+"CmplxScriptCmdEditorVCFadeButtonKey" = "Fade";
+"CmplxScriptCmdEditorVCGradientButtonKey" = "Gradient";
+"LoadingDataKey" = "Loading data ... ";
+"PleaseWaitKey" = "Please wait.";
+"ConnectingKey" = "Connecting";
+"UpdateRequiredKey" = "Update required!";
+"ConnectionLostKey" = "Connection lost!";
+"ReConnectKey" = "Please reconnect.";
+"ConfigSuccessfullKey" = "Configuration successfull!";
+"ChangeWifiKey" = "Please change your WLAN-Network\nin your device settings!";
+"NoTargetFoundKey" = "No new WyLight in config mode found!";
+"RetryKey" = "Please retry!";
+"PasswordKey" = "Password";
+"SSIDInfoKey" = "Enter SSID for your WyLight";
+"APInfoKey" = "Enter your AP informations";
+"InvalidInputKey" = "Invalid Input";
+"CompleteInputKey" = "Please complete the input field";
+"CompleteInputsKey" = "Please complete all input fields";
+"ConfigurationKey" = "Configuration";
+"ScanningKey" = "Scanning";
+"OperationModeKey" = "Operation Mode";
+"CancelKey" = "Cancel";
+"OperationModeInfoKey" = "Please choose, in which mode you want to operate your WyLight.";

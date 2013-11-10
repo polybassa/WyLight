@@ -71,7 +71,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 		return -1;
 	}
 	mCmdQueue = std::make_shared<WyLight::MessageQueue<ControlMessage>>();
-	mCmdQueue->setMessageLimit(15);
+	mCmdQueue->setMessageLimit(70);
 	mCtrlThread = std::make_shared<std::thread>
 	([=]{
 		uint32_t retVal;
