@@ -20,6 +20,7 @@
 #include "Version.h"
 
 struct cmd_get_fw_version g_Version;
+const char verStr[] = VER_STRING;
 
 void Version_Init(void)
 {
