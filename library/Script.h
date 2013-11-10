@@ -32,7 +32,7 @@ class Script : public std::list<std::shared_ptr<FwCmdScript>>
 
 public:
 	static void deserialize(const std::string& filename, Script& newScript);
-	static void serialize(const std::string& filename, const Script& newScript);
+	static void serialize(const std::string& filename, const Script& newScript) throw (FatalError);
 
 	Script();
 	Script(const std::string& filename);

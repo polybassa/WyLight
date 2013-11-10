@@ -7,13 +7,13 @@ import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.exception.ConnectionTimeout;
 import biz.bruenn.WyLight.exception.FatalError;
 import biz.bruenn.WyLight.exception.ScriptBufferFull;
+import biz.bruenn.WyLight.library.ScriptManagerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -23,7 +23,7 @@ public class ScriptingFragment extends ControlFragment {
 
 	private ArrayList<ScriptCommand> mArrayList = new ArrayList<ScriptCommand>();
 	private ScriptCommandAdapter mAdapter;
-	private ArrayAdapter<String> mScriptList;
+	private ScriptManagerAdapter mScriptList;
 	private Random r = new Random();
 
 	@Override
@@ -77,13 +77,8 @@ public class ScriptingFragment extends ControlFragment {
 			}
 		});
 		
-		ArrayList<String> scripts = new ArrayList<String>();
-		scripts.add("1");
-		scripts.add("2");
-		
 		Spinner savedScripts = (Spinner)v.findViewById(R.id.savedScripts);
-		mScriptList = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, scripts);
-		mScriptList.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		mScriptList = new ScriptManagerAdapter(getActivity().getApplicationContext());
 		savedScripts.setAdapter(mScriptList);
 		
 		return v;

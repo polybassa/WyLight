@@ -23,51 +23,53 @@
 
 namespace WyLight {
 
-static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
-static const std::string EMPTY_STRING{};
-const std::string ScriptManager::EXTENSION{".txt"};
+	static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+	static const std::string EMPTY_STRING{};
+	const std::string ScriptManager::EXTENSION{".wyscript"};
 
-ScriptManager::ScriptManager()
-{
-	DIR* const searchDir = opendir(".");
-	if(NULL == searchDir) {
-		Trace(ZONE_ERROR, "Open script directory failed\n");
-		return;
-	}
-
-	for(struct dirent* file = readdir(searchDir); NULL != file; file = readdir(searchDir)) {
-		std::string filename(file->d_name);
-		if(hasScriptFileExtension(filename)) {
-			m_ScriptFiles.push_back(filename);
+	ScriptManager::ScriptManager(const std::string& path) throw (FatalError)
+	{
+		DIR* const searchDir = opendir(path.c_str());
+		if(NULL == searchDir) {
+			throw FatalError("Open script directory failed");
 		}
-	}
-	closedir(searchDir);
-}
 
-ScriptManager::~ScriptManager(void)
-{
-}
-
-const std::string& ScriptManager::getScript(size_t index) const
-{
-	if(index < m_ScriptFiles.size()) {
-		return m_ScriptFiles[index];
+		for(struct dirent* file = readdir(searchDir); NULL != file; file = readdir(searchDir)) {
+			std::string filename(file->d_name);
+			if(hasScriptFileExtension(filename)) {
+				m_ScriptFiles.push_back(filename);
+			}
+		}
+		closedir(searchDir);
 	}
 
-	Trace(ZONE_WARNING, "Index %u out of bounds\n", index);
-	return EMPTY_STRING;
-}
-
-bool ScriptManager::hasScriptFileExtension(const std::string& filename)
-{
-	if(EXTENSION.length() > filename.length()) {
-		return false;
+	ScriptManager::~ScriptManager(void)
+	{
 	}
-	return (0 == filename.compare(filename.length() - EXTENSION.length(), EXTENSION.length(), EXTENSION));
-}
 
-size_t ScriptManager::numScripts() const
-{
-	return m_ScriptFiles.size();
-}
+	Script ScriptManager::getScript(size_t index) const throw (FatalError)
+	{
+		return Script{getScriptName(index)};
+	}
+
+	const std::string& ScriptManager::getScriptName(size_t index) const throw (FatalError)
+	{
+		if(index < m_ScriptFiles.size()) {
+			return m_ScriptFiles[index];
+		}
+		throw FatalError("ScriptManager: Index out of bounds");
+	}
+
+	bool ScriptManager::hasScriptFileExtension(const std::string& filename)
+	{
+		if(EXTENSION.length() >= filename.length()) {
+			return false;
+		}
+		return (0 == filename.compare(filename.length() - EXTENSION.length(), EXTENSION.length(), EXTENSION));
+	}
+
+	size_t ScriptManager::numScripts() const
+	{
+		return m_ScriptFiles.size();
+	}
 } /* namespace WyLight */

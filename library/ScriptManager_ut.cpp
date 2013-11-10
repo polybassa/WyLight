@@ -17,28 +17,62 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "unittest.h"
+#include "Script.h"
 #include "ScriptManager.h"
-
-
-/**************** includes, classes and functions for wrapping ****************/
 
 using namespace WyLight;
 
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
+
+const size_t FwCmdScript::INDENTATION_MAX;
+const char FwCmdScript::INDENTATION_CHARACTER;
+
+const std::string FwCmdSetFade::TOKEN("fade");
+const std::string FwCmdSetGradient::TOKEN("gradient");
+const std::string FwCmdLoopOn::TOKEN("loop");
+const std::string FwCmdLoopOff::TOKEN("loop_off");
+const std::string FwCmdWait::TOKEN("wait");
+
+size_t ut_ScriptManager_Empty(void)
+{
+	TestCaseBegin();
+	ScriptManager testee{"."};
+
+	// there shouldn't be any script
+	CHECK(0 == testee.numScripts());
+
+	// we expect an out of bounds exception when no script is available
+	try {
+		testee.getScript(0);
+		CHECK(false);
+	} catch (const FatalError& e) {
+		CHECK(0 == strcmp(e.what(), "ScriptManager: Index out of bounds"));
+	}
+	TestCaseEnd();
+}
+
 size_t ut_ScriptManager_Good(void)
 {
 	TestCaseBegin();
-	ScriptManager testee{};
+	// preparing a temporary scriptfile
+	const Script refScript("TestInput.txt");
+	const std::string tempScript {std::string("TestOutput") + ScriptManager::EXTENSION};
+	Script::serialize(tempScript, refScript);
 
+	ScriptManager testee{"."};
 	CHECK(1 == testee.numScripts());
-	CHECK(std::string("HUHU") == testee.getScript(0));
+	CHECK(refScript == testee.getScript(0));
+
+	// clean up the temp file
+	std::remove(tempScript.c_str());
 	TestCaseEnd();
 }
 
 int main (int argc, const char* argv[])
 {
 	UnitTestMainBegin();
+	RunTest(true, ut_ScriptManager_Empty);
 	RunTest(true, ut_ScriptManager_Good);
 	UnitTestMainEnd();
 }

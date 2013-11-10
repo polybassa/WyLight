@@ -17,6 +17,7 @@
     along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "BroadcastReceiver.h"
+#include "ScriptManager.h"
 #include "WiflyControl.h"
 #include <sstream>
 #include <unistd.h>
@@ -186,6 +187,34 @@ void Java_biz_bruenn_WyLight_WiflyControl_release(JNIEnv* env, jobject ref, jlon
 		g_pControl = NULL;
 	}
 }
+
+void Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_newScript(JNIEnv* env, jobject ref, jstring path, jstring scriptName)
+{
+	const char* const myPath = env->GetStringUTFChars(path, 0);
+	const char* const myScriptName = env->GetStringUTFChars(scriptName, 0);
+	try {
+		Script::serialize(myPath, Script{});
+	} catch (FatalError& e) {
+		ThrowJniException(env, e);
+	}
+	env->ReleaseStringUTFChars(scriptName, myScriptName);
+	env->ReleaseStringUTFChars(path, myPath);
+}
+
+jint Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_numScripts(JNIEnv* env, jobject ref, jstring path)
+{
+	const char* const myPath = env->GetStringUTFChars(path, 0);
+	jint numScripts = 0;
+	try {
+		ScriptManager manager{myPath};
+		numScripts = manager.numScripts();
+	} catch (FatalError& e) {
+		ThrowJniException(env, e);
+	}
+	env->ReleaseStringUTFChars(path, myPath);
+	return numScripts;
+}
+
 } /* extern "C" */
 } /* namespace WyLight */
 

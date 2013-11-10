@@ -24,7 +24,7 @@ namespace WyLight {
 
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-Script::Script(const std::string& filename)
+Script::Script()
 {
 }
 
@@ -80,12 +80,11 @@ void Script::deserialize(const std::string& filename, Script& newScript)
 	inFile.close();
 }
 
-void Script::serialize(const std::string& filename, const Script& newScript)
+void Script::serialize(const std::string& filename, const Script& newScript) throw (FatalError)
 {
 	std::ofstream outFile(filename);
 	if(!outFile.is_open()) {
-		Trace(ZONE_ERROR, "Open file to save script failed\n");
-		return;	
+		throw FatalError("Open '" + filename + "' to save script failed");
 	}
 
 	std::string command;

@@ -19,6 +19,8 @@
 #ifndef __WyLight__ScriptManager__
 #define __WyLight__ScriptManager__
 
+#include "Script.h"
+#include "WiflyControlException.h"
 #include <string>
 #include <vector>
 
@@ -26,16 +28,17 @@ namespace WyLight {
 
 class ScriptManager
 {
-	static const std::string EXTENSION;
 	std::vector<std::string> m_ScriptFiles;
-
 	static bool hasScriptFileExtension(const std::string& filename);
 
 public:
-	ScriptManager();
+	static const std::string EXTENSION;
+
+	ScriptManager(const std::string& path) throw (FatalError);
 	~ScriptManager(void);
 
-	const std::string& getScript(size_t index) const;
+	Script getScript(size_t index) const throw (FatalError);
+	const std::string& getScriptName(size_t index) const throw (FatalError);
 	size_t numScripts() const;
 };
 } /* namespace WyLight */

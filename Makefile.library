@@ -38,7 +38,7 @@ Script_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
 	@./${OUT_DIR}/$@
 
 ScriptManager_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
-	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/ScriptManager_ut.cpp $(LIB_DIR)/ScriptManager.cpp $(LIB_ADDITIONAL_SRC) -o ${OUT_DIR}/$@ -Wall -pedantic -std=c++0x -DDEBUG
+	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/ScriptManager_ut.cpp $(LIB_DIR)/Script.cpp $(LIB_DIR)/ScriptManager.cpp $(LIB_ADDITIONAL_SRC) -o ${OUT_DIR}/$@ -Wall -pedantic -std=c++0x -DDEBUG
 	@./${OUT_DIR}/$@
 
 TelnetProxy_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
