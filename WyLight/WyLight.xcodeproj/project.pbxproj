@@ -84,16 +84,27 @@
 		5CDE70801809A7CA0032D2F0 /* NWGradientEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE707F1809A7CA0032D2F0 /* NWGradientEditView.m */; };
 		5CDE7083180A82310032D2F0 /* NWFadeEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE7082180A82310032D2F0 /* NWFadeEditView.m */; };
 		5CDE7086180A8F1F0032D2F0 /* NWColorEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDE7085180A8F1F0032D2F0 /* NWColorEditView.m */; };
+		C000EE72182D67AE00019267 /* NWScriptFolderCDVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C000EE71182D67AE00019267 /* NWScriptFolderCDVC.m */; };
+		C000EE74182D6BA000019267 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C000EE73182D6BA000019267 /* CoreData.framework */; };
+		C000EE77182D6C8500019267 /* Script+defaultScripts.m in Sources */ = {isa = PBXBuildFile; fileRef = C000EE76182D6C8500019267 /* Script+defaultScripts.m */; };
+		C00DD4C21826C3EB00D17088 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C00DD4C01826C3EB00D17088 /* Model.xcdatamodeld */; };
 		C01EA004181664BB0044B018 /* NWScript+defaultScripts.m in Sources */ = {isa = PBXBuildFile; fileRef = C01EA003181664BB0044B018 /* NWScript+defaultScripts.m */; };
 		C038541F181BEE750058CAC6 /* NWRenderableScript.m in Sources */ = {isa = PBXBuildFile; fileRef = C038541E181BEE750058CAC6 /* NWRenderableScript.m */; };
 		C044BB8A1823AEDA0097151D /* defaultScriptsLocalization.strings in Resources */ = {isa = PBXBuildFile; fileRef = C044BB8C1823AEDA0097151D /* defaultScriptsLocalization.strings */; };
 		C044BB901823B4800097151D /* ScriptObjectEditViewsLocalization.strings in Resources */ = {isa = PBXBuildFile; fileRef = C044BB921823B4800097151D /* ScriptObjectEditViewsLocalization.strings */; };
 		C044BB961823B6750097151D /* ViewControllerLocalization.strings in Resources */ = {isa = PBXBuildFile; fileRef = C044BB981823B6750097151D /* ViewControllerLocalization.strings */; };
+		C04A34771826EDA600745BC3 /* Gradient.mm in Sources */ = {isa = PBXBuildFile; fileRef = C04A34761826EDA600745BC3 /* Gradient.mm */; };
 		C08D5DAA181166BF00A73801 /* NWScriptFolderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08D5DA9181166BF00A73801 /* NWScriptFolderViewController.m */; };
 		C0E10EC418142B240009CF3C /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E10EC318142B240009CF3C /* UIImage+ImageEffects.m */; };
 		C0E10EC71814FC1B0009CF3C /* UIView+blurredSnapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E10EC61814FC1B0009CF3C /* UIView+blurredSnapshot.m */; };
 		C0E10ECA1814FF440009CF3C /* UIView+Quivering.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E10EC91814FF440009CF3C /* UIView+Quivering.m */; };
 		C0E6047E18219B250049C7EC /* NWRenderableScriptImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E6047D18219B250049C7EC /* NWRenderableScriptImageView.m */; };
+		C0E67BCF1826D28600056E7C /* Command.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E67BCE1826D28600056E7C /* Command.m */; };
+		C0E67BD21826D59B00056E7C /* Fade.mm in Sources */ = {isa = PBXBuildFile; fileRef = C0E67BD11826D59B00056E7C /* Fade.mm */; };
+		C0E67BD81826D75200056E7C /* ComplexEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E67BD71826D75200056E7C /* ComplexEffect.m */; };
+		C0E67BDB1826D75300056E7C /* SimpelEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E67BDA1826D75300056E7C /* SimpelEffect.m */; };
+		C0E67BE11826D75300056E7C /* Script.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E67BE01826D75300056E7C /* Script.m */; };
+		C0E67BE71826EC7700056E7C /* Effect.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E67BE61826EC7700056E7C /* Effect.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -256,6 +267,12 @@
 		5CDE7082180A82310032D2F0 /* NWFadeEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWFadeEditView.m; sourceTree = "<group>"; };
 		5CDE7084180A8F1F0032D2F0 /* NWColorEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWColorEditView.h; sourceTree = "<group>"; };
 		5CDE7085180A8F1F0032D2F0 /* NWColorEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWColorEditView.m; sourceTree = "<group>"; };
+		C000EE70182D67AE00019267 /* NWScriptFolderCDVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWScriptFolderCDVC.h; path = Script_DEPRECATED/NWScriptFolderCDVC.h; sourceTree = "<group>"; };
+		C000EE71182D67AE00019267 /* NWScriptFolderCDVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWScriptFolderCDVC.m; path = Script_DEPRECATED/NWScriptFolderCDVC.m; sourceTree = "<group>"; };
+		C000EE73182D6BA000019267 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		C000EE75182D6C8500019267 /* Script+defaultScripts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Script+defaultScripts.h"; sourceTree = "<group>"; };
+		C000EE76182D6C8500019267 /* Script+defaultScripts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Script+defaultScripts.m"; sourceTree = "<group>"; };
+		C00DD4C11826C3EB00D17088 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		C01EA002181664BB0044B018 /* NWScript+defaultScripts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NWScript+defaultScripts.h"; sourceTree = "<group>"; };
 		C01EA003181664BB0044B018 /* NWScript+defaultScripts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NWScript+defaultScripts.m"; sourceTree = "<group>"; };
 		C038541D181BEE750058CAC6 /* NWRenderableScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWRenderableScript.h; sourceTree = "<group>"; };
@@ -269,6 +286,9 @@
 		C044BB931823B4860097151D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ScriptObjectEditViewsLocalization.strings; sourceTree = "<group>"; };
 		C044BB971823B6750097151D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/ViewControllerLocalization.strings; sourceTree = "<group>"; };
 		C044BB991823B6770097151D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ViewControllerLocalization.strings; sourceTree = "<group>"; };
+		C04A34751826EDA600745BC3 /* Gradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gradient.h; sourceTree = "<group>"; };
+		C04A34761826EDA600745BC3 /* Gradient.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Gradient.mm; sourceTree = "<group>"; };
+		C04A34811826F0FD00745BC3 /* Fade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fade.h; sourceTree = "<group>"; };
 		C08D5DA8181166BF00A73801 /* NWScriptFolderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWScriptFolderViewController.h; path = Script_DEPRECATED/NWScriptFolderViewController.h; sourceTree = "<group>"; };
 		C08D5DA9181166BF00A73801 /* NWScriptFolderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWScriptFolderViewController.m; path = Script_DEPRECATED/NWScriptFolderViewController.m; sourceTree = "<group>"; };
 		C0E10EC218142B240009CF3C /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
@@ -279,6 +299,17 @@
 		C0E10EC91814FF440009CF3C /* UIView+Quivering.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Quivering.m"; sourceTree = "<group>"; };
 		C0E6047C18219B250049C7EC /* NWRenderableScriptImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWRenderableScriptImageView.h; sourceTree = "<group>"; };
 		C0E6047D18219B250049C7EC /* NWRenderableScriptImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWRenderableScriptImageView.m; sourceTree = "<group>"; };
+		C0E67BCD1826D28600056E7C /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
+		C0E67BCE1826D28600056E7C /* Command.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Command.m; sourceTree = "<group>"; };
+		C0E67BD11826D59B00056E7C /* Fade.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = Fade.mm; sourceTree = "<group>"; };
+		C0E67BD61826D75200056E7C /* ComplexEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComplexEffect.h; sourceTree = "<group>"; };
+		C0E67BD71826D75200056E7C /* ComplexEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComplexEffect.m; sourceTree = "<group>"; };
+		C0E67BD91826D75300056E7C /* SimpelEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpelEffect.h; sourceTree = "<group>"; };
+		C0E67BDA1826D75300056E7C /* SimpelEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpelEffect.m; sourceTree = "<group>"; };
+		C0E67BDF1826D75300056E7C /* Script.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Script.h; sourceTree = "<group>"; };
+		C0E67BE01826D75300056E7C /* Script.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Script.m; sourceTree = "<group>"; };
+		C0E67BE51826EC7700056E7C /* Effect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Effect.h; sourceTree = "<group>"; };
+		C0E67BE61826EC7700056E7C /* Effect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Effect.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -286,6 +317,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C000EE74182D6BA000019267 /* CoreData.framework in Frameworks */,
 				5C20B13B17F442B9001A67C7 /* QuartzCore.framework in Frameworks */,
 				5C83957C17EB6138007EF0C6 /* CoreGraphics.framework in Frameworks */,
 				5C83957E17EB6138007EF0C6 /* UIKit.framework in Frameworks */,
@@ -319,6 +351,8 @@
 				5CDE707C180987B40032D2F0 /* NWComplexScriptCommandEditorViewController.m */,
 				C08D5DA8181166BF00A73801 /* NWScriptFolderViewController.h */,
 				C08D5DA9181166BF00A73801 /* NWScriptFolderViewController.m */,
+				C000EE70182D67AE00019267 /* NWScriptFolderCDVC.h */,
+				C000EE71182D67AE00019267 /* NWScriptFolderCDVC.m */,
 			);
 			name = Script;
 			sourceTree = "<group>";
@@ -348,6 +382,23 @@
 				5C35FEE917EF4F7100E3DE0D /* NWSetFadeScriptCommandObject.mm */,
 				5C35FEEA17EF4F7100E3DE0D /* NWComplexScriptCommandObject.h */,
 				5C35FEEB17EF4F7100E3DE0D /* NWComplexScriptCommandObject.m */,
+				C04A34751826EDA600745BC3 /* Gradient.h */,
+				C04A34761826EDA600745BC3 /* Gradient.mm */,
+				C00DD4C01826C3EB00D17088 /* Model.xcdatamodeld */,
+				C04A34811826F0FD00745BC3 /* Fade.h */,
+				C0E67BD11826D59B00056E7C /* Fade.mm */,
+				C0E67BE51826EC7700056E7C /* Effect.h */,
+				C0E67BE61826EC7700056E7C /* Effect.m */,
+				C000EE75182D6C8500019267 /* Script+defaultScripts.h */,
+				C000EE76182D6C8500019267 /* Script+defaultScripts.m */,
+				C0E67BDF1826D75300056E7C /* Script.h */,
+				C0E67BE01826D75300056E7C /* Script.m */,
+				C0E67BD91826D75300056E7C /* SimpelEffect.h */,
+				C0E67BDA1826D75300056E7C /* SimpelEffect.m */,
+				C0E67BD61826D75200056E7C /* ComplexEffect.h */,
+				C0E67BD71826D75200056E7C /* ComplexEffect.m */,
+				C0E67BCD1826D28600056E7C /* Command.h */,
+				C0E67BCE1826D28600056E7C /* Command.m */,
 			);
 			path = CommandModel;
 			sourceTree = "<group>";
@@ -374,6 +425,7 @@
 		5C83957817EB6138007EF0C6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C000EE73182D6BA000019267 /* CoreData.framework */,
 				5C20B13A17F442B9001A67C7 /* QuartzCore.framework */,
 				5C83957917EB6138007EF0C6 /* Foundation.framework */,
 				5C83957B17EB6138007EF0C6 /* CoreGraphics.framework */,
@@ -723,9 +775,11 @@
 				5C8395DB17EB61B4007EF0C6 /* WCBroadcastReceiverWrapper.mm in Sources */,
 				5C83963517EB6C00007EF0C6 /* KZUnitSlider.m in Sources */,
 				5CD992011804A5CD003C4F99 /* NWAppInfoViewController.m in Sources */,
+				C0E67BDB1826D75300056E7C /* SimpelEffect.m in Sources */,
 				5C35FEEC17EF4F7100E3DE0D /* NWLoopOnCommandObject.m in Sources */,
 				5C35FEF617EF541300E3DE0D /* NWScript.m in Sources */,
 				5C83963417EB6C00007EF0C6 /* KZColorPickerSwatchView.m in Sources */,
+				C000EE77182D6C8500019267 /* Script+defaultScripts.m in Sources */,
 				5C83962F17EB6C00007EF0C6 /* HSV.c in Sources */,
 				5C8395EE17EB6721007EF0C6 /* NWDefaultColorPickerViewController.m in Sources */,
 				C0E10ECA1814FF440009CF3C /* UIView+Quivering.m in Sources */,
@@ -733,6 +787,7 @@
 				5C8395B017EB6197007EF0C6 /* NWBroadcastsTVC.m in Sources */,
 				5C83963B17EC542E007EF0C6 /* NWBrightnessViewController.m in Sources */,
 				5CD991FB180095CA003C4F99 /* iCarousel.m in Sources */,
+				C04A34771826EDA600745BC3 /* Gradient.mm in Sources */,
 				5C83964017EC5E3E007EF0C6 /* NWAddNewTargetConfigureViewController.m in Sources */,
 				5C8395DA17EB61B4007EF0C6 /* crc.c in Sources */,
 				5C8395DC17EB61B4007EF0C6 /* WCWiflyControlWrapper.mm in Sources */,
@@ -740,9 +795,13 @@
 				5C8395EF17EB6721007EF0C6 /* NWColorPickerViewController.m in Sources */,
 				5C8395D817EB61B4007EF0C6 /* WCEndpoint.m in Sources */,
 				5C35FEF017EF4F7100E3DE0D /* NWSetGradientScriptCommandObject.mm in Sources */,
+				C0E67BE71826EC7700056E7C /* Effect.m in Sources */,
 				5C83963317EB6C00007EF0C6 /* KZColorPickerHSWheel.m in Sources */,
+				C000EE72182D67AE00019267 /* NWScriptFolderCDVC.m in Sources */,
 				5CDE70801809A7CA0032D2F0 /* NWGradientEditView.m in Sources */,
+				C00DD4C21826C3EB00D17088 /* Model.xcdatamodeld in Sources */,
 				5C4F56EB17EC968E0039ADFF /* NWColorSliderViewController.m in Sources */,
+				C0E67BD81826D75200056E7C /* ComplexEffect.m in Sources */,
 				5C12FAB317FF05A000E4E65D /* NWScriptCellView.m in Sources */,
 				5C35FEF117EF4F7100E3DE0D /* NWSetFadeScriptCommandObject.mm in Sources */,
 				5C35FEEF17EF4F7100E3DE0D /* NWScriptEffectCommandObject.m in Sources */,
@@ -768,6 +827,8 @@
 				5CDE7086180A8F1F0032D2F0 /* NWColorEditView.m in Sources */,
 				5C90B39B17EF56F300BAC74F /* NWScriptObjectControl.m in Sources */,
 				C038541F181BEE750058CAC6 /* NWRenderableScript.m in Sources */,
+				C0E67BD21826D59B00056E7C /* Fade.mm in Sources */,
+				C0E67BE11826D75300056E7C /* Script.m in Sources */,
 				5C90B39E17EF572400BAC74F /* NWGradientView.m in Sources */,
 				5C83958A17EB6138007EF0C6 /* NWAppDelegate.m in Sources */,
 				5CDE707A18094BF80032D2F0 /* NWTimeValueEditView.m in Sources */,
@@ -777,6 +838,7 @@
 				5C83963017EB6C00007EF0C6 /* KZColorPicker.m in Sources */,
 				5C8395E117EB61B4007EF0C6 /* MaskBuffer.cpp in Sources */,
 				5C90B3BF17F3714B00BAC74F /* NWScriptView.m in Sources */,
+				C0E67BCF1826D28600056E7C /* Command.m in Sources */,
 				5C8395E217EB61B4007EF0C6 /* TelnetProxy.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1037,6 +1099,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C00DD4C01826C3EB00D17088 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C00DD4C11826C3EB00D17088 /* Model.xcdatamodel */,
+			);
+			currentVersion = C00DD4C11826C3EB00D17088 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 5C83956E17EB6138007EF0C6 /* Project object */;
 }

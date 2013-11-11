@@ -18,6 +18,7 @@
 #import "NWScriptViewController.h"
 #import "NWScript+defaultScripts.h"
 #import "NWRenderableScriptImageView.h"
+#import "UIImage+ImageEffects.h"
 
 @interface NWScriptFolderViewController () <iCarouselDataSource, iCarouselDelegate, NWRenderableScriptDelegate>
 
@@ -67,7 +68,7 @@
 - (void)updateView {
     if ([self.carousel.currentItemView isKindOfClass:[UIImageView class]]) {
         [UIView animateWithDuration:0.4 animations:^{
-            self.background.image = ((UIImageView *)[self.carousel currentItemView]).image;
+            self.background.image = [((UIImageView *)[self.carousel currentItemView]).image applyExtraLightEffect];
         }];
     }
     self.scriptTitleLabel.text = ((NWScript *)[self.scriptObjects objectAtIndex:self.carousel.currentItemIndex]).title;
@@ -122,13 +123,6 @@
     self.background.userInteractionEnabled = NO;
     self.background.opaque = YES;
     [self.view addSubview:self.background];
-    
-   
-    UIView* milkglassView = [[UIView alloc] initWithFrame:self.view.frame];
-    milkglassView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    milkglassView.opaque = NO;
-    milkglassView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.5];
-    [self.view addSubview:milkglassView];
     
     self.sendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	[self.sendButton setTitle:NSLocalizedStringFromTable(@"ScriptVCSendBtnKey", @"ViewControllerLocalization", @"") forState:UIControlStateNormal];
