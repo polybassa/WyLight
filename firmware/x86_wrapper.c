@@ -27,7 +27,7 @@
 
 extern unsigned char do_update_fade;
 
-const char verStr[] = VER_STRING;
+//const char verStr[] = VER_STRING;
 
 bit g_led_off = 1; //X86 replacement for PORTC.0
 pthread_mutex_t g_led_mutex = PTHREAD_MUTEX_INITIALIZER;
