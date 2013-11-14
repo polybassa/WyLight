@@ -8,23 +8,24 @@
 
 #import "NWScriptFolderViewController.h"
 #import "NWRenderableScript.h"
-#import "NWScriptCommandObject.h"
+#import "Command.h"
 #import "iCarousel.h"
 #import "NWScriptObjectControl.h"
-#import "NWComplexScriptCommandObject.h"
+#import "ComplexEffect.h"
 #import "UIView+blurredSnapshot.h"
 #import "UIView+Quivering.h"
 #import "WCWiflyControlWrapper.h"
 #import "NWScriptViewController.h"
-#import "NWScript+defaultScripts.h"
+#import "Script+defaultScripts.h"
 #import "NWRenderableScriptImageView.h"
 #import "UIImage+ImageEffects.h"
 
-@interface NWScriptFolderViewController () <iCarouselDataSource, iCarouselDelegate, NWRenderableScriptDelegate>
+@interface NWScriptFolderViewController () <iCarouselDataSource, iCarouselDelegate>
 
 @property (nonatomic, assign) BOOL isDeletionModeActive;
 @property (nonatomic, strong) UIBarButtonItem *addButton;
-@property (nonatomic, strong) NSMutableArray *scriptObjects;
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong) NSArray *scriptObjects;
 @property (nonatomic, strong) iCarousel *carousel;
 @property (nonatomic, strong) UIImageView *background;
 @property (nonatomic, strong) UIButton *sendButton;
@@ -46,9 +47,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.tabBarController.navigationItem.rightBarButtonItem = self.addButton;
-    });
+    if (!self.managedObjectContext) {
+        [self useDocument];
+    }
+    self.tabBarController.navigationItem.rightBarButtonItem = self.addButton;
     [self.carousel reloadData];
 }
 
@@ -58,10 +60,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [self saveUserData];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.tabBarController.navigationItem.rightBarButtonItem = nil;
-    });
+    self.tabBarController.navigationItem.rightBarButtonItem = nil;
     [super viewWillDisappear:animated];
 }
 
@@ -71,7 +70,7 @@
             self.background.image = [((UIImageView *)[self.carousel currentItemView]).image applyExtraLightEffect];
         }];
     }
-    self.scriptTitleLabel.text = ((NWScript *)[self.scriptObjects objectAtIndex:self.carousel.currentItemIndex]).title;
+    self.scriptTitleLabel.text = ((Script *)[self.scriptObjects objectAtIndex:self.carousel.currentItemIndex]).title;
 }
 
 - (void)fixLocations {
@@ -95,27 +94,6 @@
 - (void)setup {
     self.view.superview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    
-    NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:SCRIPTARRAY_KEY];
-     if (data) {
-         self.scriptObjects = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-     } else {
-         self.scriptObjects = [[NSMutableArray alloc] init];
-         [self.scriptObjects addObject:[NWRenderableScript defaultScriptFastColorChange]];
-         [self.scriptObjects addObject:[NWRenderableScript defaultScriptSlowColorChange]];
-         [self.scriptObjects addObject:[NWRenderableScript defaultScriptConzentrationLight]];
-         [self.scriptObjects addObject:[NWRenderableScript defaultScriptMovingColors]];
-         [self.scriptObjects addObject:[NWRenderableScript defaultScriptRandomColors]];
-         [self.scriptObjects addObject:[NWRenderableScript defaultScriptRunLightWithColor:[UIColor greenColor] timeInterval:100]];
-         [self.scriptObjects addObject:[NWRenderableScript defaultScriptRunLightWithColor:[UIColor redColor] timeInterval:100]];
-         [self.scriptObjects addObject:[NWRenderableScript defaultScriptRunLightWithColor:[UIColor blueColor] timeInterval:100]];
-         [self.scriptObjects addObject:[NWRenderableScript defaultScriptColorCrashWithTimeInterval:50]];
-         [self.scriptObjects addObject:[NWRenderableScript defaultScriptColorCrashWithTimeInterval:200]];
-    }
-    
-    for (NWRenderableScript *script in self.scriptObjects) {
-        script.delegate = self;
-    }
     
     self.background = [[UIImageView alloc] initWithFrame:self.view.frame];
     self.background.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -154,15 +132,60 @@
 	}
 }
 
-#pragma mark - GETTER & SETTER
-- (NSMutableArray *)scriptObjects {
-    if (!_scriptObjects) {
-        _scriptObjects = [[NSMutableArray alloc] init];
-        [_scriptObjects addObject:[[NWScript alloc] init]];
+#pragma mark - CORE DATA STUFF
+
+- (void)useDocument {
+    NSURL *url = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+    url = [url URLByAppendingPathComponent:@"ScriptDocument"];
+    UIManagedDocument *document = [[UIManagedDocument alloc] initWithFileURL:url];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[url path]]) {
+        [document saveToURL:url forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
+            if (success) {
+                self.managedObjectContext = document.managedObjectContext;
+                [Script defaultScriptFastColorChangeInContext:self.managedObjectContext];
+                [Script defaultScriptSlowColorChangeInContext:self.managedObjectContext];
+                [Script defaultScriptRunLightWithColor:[UIColor redColor] timeInterval:100 inContext:self.managedObjectContext];
+                [Script defaultScriptRandomColorsInContext:self.managedObjectContext];
+                [Script defaultScriptMovingColorsInContext:self.managedObjectContext];
+                [Script defaultScriptConzentrationLightInContext:self.managedObjectContext];
+                [Script defaultScriptColorCrashWithTimeInterval:100 inContext:self.managedObjectContext];
+                NSError *error;
+                [self.managedObjectContext save:&error];
+                [self refresh];
+            } else {
+                NSLog(@"saveToURL failed");
+            }
+        }];
+    } else if (document.documentState == UIDocumentStateClosed) {
+        [document openWithCompletionHandler:^(BOOL success) {
+            if (success) {
+                self.managedObjectContext = document.managedObjectContext;
+                [self refresh];
+            }
+        }];
+    } else {
+        self.managedObjectContext = document.managedObjectContext;
     }
-    return _scriptObjects;
 }
 
+- (void)refresh {
+    if (self.managedObjectContext) {
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[Script entityName]];
+        
+        NSError *error;
+        self.scriptObjects = [self.managedObjectContext executeFetchRequest:request error:&error];
+        if (self.scriptObjects == nil) {
+            NSLog(@"ERROR FETCH");
+        }
+        [self updateView];
+        [self.carousel reloadData];
+    }
+    
+}
+
+
+#pragma mark - GETTER & SETTER
 - (void)setIsDeletionModeActive:(BOOL)isDeletionModeActive {
     if (_isDeletionModeActive != isDeletionModeActive) {
         _isDeletionModeActive = isDeletionModeActive;
@@ -180,7 +203,7 @@
 	dispatch_queue_t sendScriptQueue = dispatch_queue_create("sendScriptQueue", NULL);
 	dispatch_async(sendScriptQueue, ^{
 		[self.controlHandle setColorDirect:[UIColor blackColor]];
-        NWScript *currentScript = self.scriptObjects[self.carousel.currentItemIndex];
+        Script *currentScript = self.scriptObjects[self.carousel.currentItemIndex];
 		[currentScript sendToWCWiflyControl:self.controlHandle];
 	});
 }
@@ -200,6 +223,7 @@
     }
     
     if ([view isKindOfClass:[UIImageView class]]) {
+        /*
         if ([((NWRenderableScript *)self.scriptObjects[index]) needsRendering]) {
             
             if ([((NWRenderableScript *)self.scriptObjects[index]) snapshot]) {
@@ -221,7 +245,7 @@
             }
         }
         ((NWRenderableScriptImageView *)view).showActivityIndicator = [((NWRenderableScript *)self.scriptObjects[index]) isRendering];
-        
+        */
         view.layer.cornerRadius = 5.0;
         view.clipsToBounds = YES;
         
@@ -272,9 +296,9 @@
     if (self.isDeletionModeActive) {
         self.isDeletionModeActive = NO;
     } else {
-        if (((NWRenderableScript *)self.scriptObjects[self.carousel.currentItemIndex]).isRendering) {
+        /*if (((NWRenderableScript *)self.scriptObjects[self.carousel.currentItemIndex]).isRendering) {
             return; // to avoid inconsistent data
-        }
+        }*/
         [self showFullScreenAlertView];
         double delayInSeconds = 0.1;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -290,16 +314,17 @@
 
 - (void)swipeUpOnScriptObjectControl:(UISwipeGestureRecognizer *)gesture {
     if (self.isDeletionModeActive && self.scriptObjects.count > 1) {
-        [self.scriptObjects removeObjectAtIndex:self.carousel.currentItemIndex];
+        [self.managedObjectContext deleteObject:[self.scriptObjects objectAtIndex:self.carousel.currentItemIndex]];
+        [self refresh];
         [self.carousel removeItemAtIndex:self.carousel.currentItemIndex animated:YES];
     }
     self.isDeletionModeActive = NO;
 }
 
 - (IBAction)addBarButtonPressed:(UIBarButtonItem *)sender {
-    NWRenderableScript *script = [NWRenderableScript emptyScript];
-    script.delegate = self;
-    [self.scriptObjects addObject:script];
+    Script *script = [Script emptyScriptInContext:self.managedObjectContext];
+    //script.delegate = self;
+    [self refresh];
     [self.carousel insertItemAtIndex:self.scriptObjects.count - 1 animated:YES];
     [self.carousel scrollToItemAtIndex:self.scriptObjects.count - 1 animated:YES];
 }
@@ -316,13 +341,13 @@
 }
 
 #pragma mark - RenderableScriptDelegate
-
+/*
 - (void)NWRenderableScriptFinishedRendering:(NWRenderableScript *)script {
     NSUInteger index = [self.scriptObjects indexOfObject:script];
     [self.carousel reloadItemAtIndex:index animated:YES];
     [self updateView];
 }
-
+*/
 #pragma mark - SEGUE
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"edit:"])
@@ -337,7 +362,6 @@
 			ctrl.script = [self.scriptObjects objectAtIndex:self.carousel.currentItemIndex];
 		}
 	}
-    NSLog(@"prepare");
 }
 
 

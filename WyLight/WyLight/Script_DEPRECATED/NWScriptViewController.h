@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class WCWiflyControlWrapper, NWScript;
+@class WCWiflyControlWrapper, Script;
 
 @interface NWScriptViewController : UIViewController
 
 @property (nonatomic, weak) WCWiflyControlWrapper *controlHandle;
-@property (weak, nonatomic) NWScript *script;
+@property (weak, nonatomic) Script *script;
 
 
 @end

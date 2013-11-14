@@ -7,9 +7,9 @@
 //
 
 #import "NWScriptViewController.h"
-#import "NWScript.h"
+#import "Script.h"
 #import "NWScriptView.h"
-#import "NWComplexScriptCommandObject.h"
+#import "ComplexEffect.h"
 #import "NWComplexScriptCommandEditorViewController.h"
 #import "NWScriptCellView.h"
 #import "WCWiflyControlWrapper.h"
@@ -33,7 +33,7 @@
 
 #pragma mark - GETTER + SETTER
 
-- (void)setScript:(NWScript *)script {
+- (void)setScript:(Script *)script {
     _script = script;
     CGFloat availableWidth = self.view.frame.size.width;
     CGFloat scriptDuration = script.totalDurationInTmms.floatValue;
@@ -152,7 +152,7 @@
     
     self.repeatSwitch = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.repeatSwitch setImage:[UIImage imageNamed:@"Repeat_Icon"] forState:UIControlStateNormal];
-    self.repeatSwitch.selected = self.script.repeatWhenFinished;
+    self.repeatSwitch.selected = self.script.repeatsWhenFinished.boolValue;
     [self.repeatSwitch addTarget:self action:@selector(repeatSwitchValueChanged) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.repeatSwitch];
     
@@ -195,7 +195,7 @@
 - (void)activateDeletionMode:(UILongPressGestureRecognizer *)gesture {
     if (gesture.state == UIGestureRecognizerStateBegan)
     {
-		if ([gesture.view isKindOfClass:[NWScriptCellView class]] && self.script.scriptArray.count > 1) {
+		if ([gesture.view isKindOfClass:[NWScriptCellView class]] && self.script.effects.count > 1) {
 			self.isDeletionModeActive = YES;
 			BOOL showDeletionModeInfo = ![[NSUserDefaults standardUserDefaults] boolForKey:DELETE_USER_INFO_KEY];
 			if (showDeletionModeInfo) {
@@ -236,14 +236,14 @@
 
 - (void)deleteScriptObject:(UIView *)object {
 	if ([object isKindOfClass:[NWScriptCellView class]]) {
-		if (self.script.scriptArray.count <= 1) {
+		if (self.script.effects.count <= 1) {
 			self.isDeletionModeActive = NO;
 			return;
 		}
 		NWScriptCellView *cellViewToDelete = (NWScriptCellView *)object;
 		
 		//Farbübergang zu den neuen Farben
-		NWComplexScriptCommandObject *commandToDelete = [self.script.scriptArray objectAtIndex:cellViewToDelete.tag];
+		ComplexEffect *commandToDelete = [self.script.effects objectAtIndex:cellViewToDelete.tag];
 		NWScriptCellView *nextCell;
 		for (NWScriptCellView *cell in self.scriptView.subviews) {
 			if ([cell isKindOfClass:[NWScriptCellView class]]) {
@@ -253,6 +253,7 @@
 				}
 			}
 		}
+        
 		NSMutableArray *prevEndColors = [commandToDelete.prev.colors mutableCopy];
 		if (!prevEndColors) {
 			prevEndColors = [[NSMutableArray alloc] init];
@@ -271,7 +272,7 @@
 		} completion:^(BOOL finished) {
 			
 			//tags anpassen um danach die Positionen richtig zu berechnen
-			[self.script removeObjectAtIndex:cellViewToDelete.tag];
+            [self.script.managedObjectContext deleteObject:[self.script.effects objectAtIndex:cellViewToDelete.tag]];
 			[cellViewToDelete removeFromSuperview];
 			for (NWScriptObjectControl *ctrl in self.scriptView.subviews) {
 				if ([ctrl isKindOfClass:[NWScriptCellView class]]) {
@@ -299,11 +300,11 @@
     }
 
 	//insert new command in model
-	NWComplexScriptCommandObject *commandToAdd = [[self.script.scriptArray lastObject] copy];
-	[self.script addObject:commandToAdd];
+	//ComplexEffect *commandToAdd = [[self.script.effects lastObject] copy];
+	//[self.script addEffectsObject:commandToAdd];
     
 	//get new view for the new command
-	UIView *viewToAdd = [self scriptView:self.scriptView cellViewForIndex:self.script.scriptArray.count - 1];
+	UIView *viewToAdd = [self scriptView:self.scriptView cellViewForIndex:self.script.effects.count - 1];
 	viewToAdd.alpha = 0.0;
 
 	[self.scriptView addSubview:viewToAdd];
@@ -320,7 +321,7 @@
 
 - (void)repeatSwitchValueChanged {
         self.repeatSwitch.selected = !self.repeatSwitch.selected;
-    self.script.repeatWhenFinished = self.repeatSwitch.selected;
+    self.script.repeatsWhenFinished = @(self.repeatSwitch.selected);
     dispatch_async(dispatch_get_main_queue(), ^(void){
         [self.scriptView reloadData];
     });
@@ -343,14 +344,15 @@
 #pragma mark - SCRIPT VIEW DATASOURCE
 - (UIView *)scriptView:(NWScriptView *)view cellViewForIndex:(NSUInteger)index {
 	if (view == self.scriptView) {
-		if (index < self.script.scriptArray.count) {
+		if (index < self.script.effects.count) {
 			NWScriptCellView *tempView = [[NWScriptCellView alloc]initWithFrame:CGRectZero];
-			tempView.scriptObjectView.endColors = ((NWComplexScriptCommandObject *)self.script.scriptArray[index]).colors;
-			if (((NWComplexScriptCommandObject *)self.script.scriptArray[index]).prev) {
-				tempView.scriptObjectView.startColors = ((NWComplexScriptCommandObject *)self.script.scriptArray[index]).prev.colors;
+            ComplexEffect *currentEffect = self.script.effects[index];
+			tempView.scriptObjectView.endColors = [currentEffect colors];
+			if ([currentEffect prev]) {
+				tempView.scriptObjectView.startColors = [[currentEffect prev] colors];
 			}
-			if (index == 0 && self.script.repeatWhenFinished) {
-				tempView.scriptObjectView.startColors = ((NWComplexScriptCommandObject *)self.script.scriptArray.lastObject).colors;
+			if (index == 0 && self.script.repeatsWhenFinished) {
+				tempView.scriptObjectView.startColors = ((ComplexEffect *)self.script.effects.lastObject).colors;
 			}
 			tempView.scriptObjectView.cornerRadius = 5;
 			tempView.delegate = self;
@@ -381,8 +383,8 @@
 
 - (CGFloat)scriptView:(NWScriptView *)view widthOfObjectAtIndex:(NSUInteger)index {
 	if (view == self.scriptView) {
-		if (index < self.script.scriptArray.count) {
-			return ((NWComplexScriptCommandObject *)self.script.scriptArray[index]).duration * self.timeScaleFactor;
+		if (index < self.script.effects.count) {
+			return ((ComplexEffect *)self.script.effects[index]).duration.floatValue * self.timeScaleFactor;
 		}
 	}
 	return 0;
@@ -390,7 +392,7 @@
 
 - (NSUInteger)numberOfObjectsInScriptView:(NWScriptView *)view {
 	if (view == self.scriptView) {
-		return self.script.scriptArray.count + 1;
+		return self.script.effects.count + 1;
 	}
 	return 0;
 }
@@ -415,7 +417,7 @@
 - (void)scriptCellView:(NWScriptCellView *)view finishedWidthChange:(CGFloat)width {
 	NSUInteger index = view.tag;
 	uint16_t duration = width / self.timeScaleFactor;
-	((NWComplexScriptCommandObject *)self.script.scriptArray[index]).duration = duration;
+	((ComplexEffect *)self.script.effects[index]).duration = @(duration);
 	[self.scriptView fixLocationsOfSubviews];
 }
 
@@ -438,7 +440,7 @@
 		
 		if ([segue.destinationViewController isKindOfClass:[NWComplexScriptCommandEditorViewController class]]) {
 			NWComplexScriptCommandEditorViewController *ctrl = (NWComplexScriptCommandEditorViewController *)segue.destinationViewController;
-			ctrl.command = [self.script.scriptArray objectAtIndex:self.indexForObjectToEdit];
+			ctrl.command = [self.script.effects objectAtIndex:self.indexForObjectToEdit];
 		}
 	}
 }

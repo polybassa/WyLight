@@ -15,8 +15,8 @@
 #import "NWGradientEditView.h"
 #import "NWFadeEditView.h"
 #import "NWColorEditView.h"
-#import "NWSetFadeScriptCommandObject.h"
-#import "NWSetGradientScriptCommandObject.h"
+#import "Fade.h"
+#import "Gradient.h"
 #import "NWDefaultColorPickerViewController.h"
 
 @interface NWComplexScriptCommandEditorViewController () <iCarouselDataSource, iCarouselDelegate, ALRadialMenuDelegate, NWTimeValueEditViewDelegate, NWGradientEditViewDelegate, NWFadeEditViewDelegate, NWColorEditViewDelegate, NWDefaultColorControllerDelegate>
@@ -53,7 +53,6 @@ enum EditColorTarget {
 	gradientColor1,
 	gradientColor2
 };
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -155,7 +154,7 @@ enum EditColorTarget {
 }
 
 - (void)updateView {
-	if (self.command.isWaitCommand) {
+	if (self.command.waitCommand.boolValue) {
 		self.scriptSubCommandsCarousel.scrollEnabled = NO;
 		self.toolKitCarousel.scrollEnabled = NO;
 		[self.toolKitCarousel scrollToItemAtIndex:TimeEditViewIndex animated:YES];
@@ -163,12 +162,12 @@ enum EditColorTarget {
 		self.scriptSubCommandsCarousel.scrollEnabled = YES;
 		self.toolKitCarousel.scrollEnabled = YES;
 		
-		id currentCommand = self.command.scriptObjects[self.currentItemIndex];
-		if ([currentCommand isKindOfClass:[NWSetFadeScriptCommandObject class]]) {
-			NWSetFadeScriptCommandObject *currentFadeCommand = (NWSetFadeScriptCommandObject *)currentCommand;
+		id currentCommand = self.command.effects[self.currentItemIndex];
+		if ([currentCommand isKindOfClass:[Fade class]]) {
+			Fade *currentFadeCommand = (Fade *)currentCommand;
 			self.fadeColorEditView.backgroundColor = [currentFadeCommand.color colorWithAlphaComponent:0.3];
-		} else if ([currentCommand isKindOfClass:[NWSetGradientScriptCommandObject class]]) {
-			NWSetGradientScriptCommandObject *currentGradientCommand = (NWSetGradientScriptCommandObject *)currentCommand;
+		} else if ([currentCommand isKindOfClass:[Gradient class]]) {
+			Gradient *currentGradientCommand = (Gradient *)currentCommand;
 			self.gradientColor1EditView.backgroundColor = [currentGradientCommand.color1 colorWithAlphaComponent:0.3];
 			self.gradientColor2EditView.backgroundColor = [currentGradientCommand.color2 colorWithAlphaComponent:0.3];
 		}
@@ -179,11 +178,11 @@ enum EditColorTarget {
 - (void)checkToolkitViews {
 	UIView *currentToolView = self.toolKitCarousel.currentItemView;
 	
-	id currentCommand = self.command.scriptObjects[self.currentItemIndex];
-	if ([currentCommand isKindOfClass:[NWSetFadeScriptCommandObject class]]) {
-		NWSetFadeScriptCommandObject *currentFadeCommand = (NWSetFadeScriptCommandObject *)currentCommand;
+	id currentCommand = self.command.effects[self.currentItemIndex];
+	if ([currentCommand isKindOfClass:[Fade class]]) {
+		Fade *currentFadeCommand = (Fade *)currentCommand;
 		self.fadeColorEditView.backgroundColor = [currentFadeCommand.color colorWithAlphaComponent:0.3];
-		
+        
 		if (currentToolView == self.gradientColor1EditView || currentToolView == self.gradientColor2EditView) {
 			self.toolKitCarousel.ignorePerpendicularSwipes = YES;
 			[self.toolKitCarousel scrollToItemAtIndex:FadeColorViewIndex animated:YES];
@@ -193,8 +192,8 @@ enum EditColorTarget {
 			[self.toolKitCarousel scrollToItemAtIndex:FadeEditViewIndex animated:YES];
 		}
 	}
-	else if ([currentCommand isKindOfClass:[NWSetGradientScriptCommandObject class]]) {
-		NWSetGradientScriptCommandObject *currentGradientCommand = (NWSetGradientScriptCommandObject *)currentCommand;
+	else if ([currentCommand isKindOfClass:[Gradient class]]) {
+		Gradient *currentGradientCommand = (Gradient *)currentCommand;
 		self.gradientColor1EditView.backgroundColor = [currentGradientCommand.color1 colorWithAlphaComponent:0.3];
 		self.gradientColor2EditView.backgroundColor = [currentGradientCommand.color2 colorWithAlphaComponent:0.3];
 		
@@ -234,8 +233,8 @@ enum EditColorTarget {
 #pragma mark - SETTER
 - (void)setCurrentItemIndex:(NSUInteger)currentItemIndex {
 	_currentItemIndex = currentItemIndex;
-	self.gradientEditView.command = self.command.scriptObjects[currentItemIndex];
-	self.fadeEditView.command = self.command.scriptObjects[currentItemIndex];
+	self.gradientEditView.command = self.command.effects[currentItemIndex];
+	self.fadeEditView.command = self.command.effects[currentItemIndex];
 	[self updateView];
 	[self checkToolkitViews];
 }
@@ -261,7 +260,7 @@ enum EditColorTarget {
 		_fadeEditView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		_fadeEditView.cornerRadius = 5.0;
 		_fadeEditView.contentMode = UIViewContentModeCenter;
-		_fadeEditView.command = self.command.scriptObjects[self.currentItemIndex];
+		_fadeEditView.command = self.command.effects[self.currentItemIndex];
 		_fadeEditView.delegate = self;
 	}
 	return _fadeEditView;
@@ -274,7 +273,7 @@ enum EditColorTarget {
 		_gradientEditView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		_gradientEditView.cornerRadius = 5.0;
 		_gradientEditView.contentMode = UIViewContentModeCenter;
-		_gradientEditView.command = self.command.scriptObjects[self.currentItemIndex];
+		_gradientEditView.command = self.command.effects[self.currentItemIndex];
 		_gradientEditView.delegate = self;
 	}
 	return _gradientEditView;
@@ -319,7 +318,7 @@ enum EditColorTarget {
 #pragma mark - iCarousel methods
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel {
 	if (carousel == self.scriptSubCommandsCarousel) {
-		return self.command.scriptObjects.count;
+		return self.command.effects.count;
 	} else {
 		return 6;
 	}
@@ -334,12 +333,12 @@ enum EditColorTarget {
 			view.contentMode = UIViewContentModeCenter;
 		}
 		
-		view.tag = self.command.scriptObjects.count - 1 - index;
+		view.tag = self.command.effects.count - 1 - index;
 		if ([view isKindOfClass:[NWScriptObjectControl class]]) {
 			NWScriptObjectControl* scriptView = (NWScriptObjectControl *)view;
-			id<NWDrawableCommand> command = [self.command.scriptObjects objectAtIndex:view.tag];
+			Effect *command = [self.command.effects objectAtIndex:view.tag];
 			[command setBackgroundColor:[UIColor clearColor]];
-			if (self.command.waitCommand) {
+			if (self.command.waitCommand.boolValue) {
 				scriptView.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.9 alpha:0.9];
 				scriptView.endColors = self.command.prev.colors;
 			} else {
@@ -473,9 +472,9 @@ enum EditColorTarget {
 		&& gesture.view == self.scriptSubCommandsCarousel.currentItemView &&
 		self.scriptSubCommandsCarousel.scrollEnabled == NO) {
 		
-		if (self.command.scriptObjects.count > 1) {
+		if (self.command.effects.count > 1) {
 			NSUInteger index = gesture.view.tag;
-			[self.command.scriptObjects removeObjectAtIndex:index];
+            [self.command.managedObjectContext deleteObject:[self.command.effects objectAtIndex:index]];
 			[self.scriptSubCommandsCarousel removeItemAtIndex:self.scriptSubCommandsCarousel.currentItemIndex animated:YES];
 		}
 		else {
@@ -544,15 +543,15 @@ enum EditColorTarget {
 #pragma mark TimeEditViewDelegate
 - (void)TimeValueEditView:(NWTimeValueEditView *)view sliderValueChanged:(CGFloat)value {
 	if (view == self.timeValueEditView) {
-		self.command.duration = (uint16_t)(value);
+		self.command.duration = @(value);
 		[view reloadData];
 	}
 }
 
 - (void)TimeValueEditView:(NWTimeValueEditView *)view switchValueChanged:(BOOL)on {
 	if (view == self.timeValueEditView) {
-		self.command.waitCommand = !on;
-		[view reloadData];
+		[self.command setWaitCommand:@(!on)];
+        [view setCommand:self.command];
 		[self.scriptSubCommandsCarousel reloadData];
 	}
 	[self updateView];
@@ -560,9 +559,9 @@ enum EditColorTarget {
 
 #pragma mark GradientEditViewDelegate
 - (void)NWGradientEditViewDelegateDownButtonPressed:(NWGradientEditView *)view {
-	NWSetGradientScriptCommandObject *currentCommand = self.command.scriptObjects[self.currentItemIndex];
-	if ([currentCommand isKindOfClass:[NWSetGradientScriptCommandObject class]]) {
-		currentCommand.offset += 1;
+	Gradient *currentCommand = self.command.effects[self.currentItemIndex];
+	if ([currentCommand isKindOfClass:[Gradient class]]) {
+		currentCommand.offset = @(currentCommand.offset.integerValue + 1);
 		[self.scriptSubCommandsCarousel reloadItemAtIndex:[self.scriptSubCommandsCarousel indexOfItemView:self.scriptSubCommandsCarousel.currentItemView] animated:YES];
 		[view reloadData];
 		[self sendPreview];
@@ -570,9 +569,9 @@ enum EditColorTarget {
 }
 
 - (void)NWGradientEditViewDelegateMinusButtonPressed:(NWGradientEditView *)view {
-	NWSetGradientScriptCommandObject *currentCommand = self.command.scriptObjects[self.currentItemIndex];
-	if ([currentCommand isKindOfClass:[NWSetGradientScriptCommandObject class]]) {
-		currentCommand.numberOfLeds -= 1;
+	Gradient *currentCommand = self.command.effects[self.currentItemIndex];
+	if ([currentCommand isKindOfClass:[Gradient class]]) {
+		currentCommand.numberOfLeds = @(currentCommand.numberOfLeds.integerValue - 1);
 		[self.scriptSubCommandsCarousel reloadItemAtIndex:[self.scriptSubCommandsCarousel indexOfItemView:self.scriptSubCommandsCarousel.currentItemView] animated:YES];
 		[view reloadData];
 		[self sendPreview];
@@ -580,9 +579,9 @@ enum EditColorTarget {
 }
 
 - (void)NWGradientEditViewDelegatePlusButtonPressed:(NWGradientEditView *)view {
-	NWSetGradientScriptCommandObject *currentCommand = self.command.scriptObjects[self.currentItemIndex];
-	if ([currentCommand isKindOfClass:[NWSetGradientScriptCommandObject class]]) {
-		currentCommand.numberOfLeds += 1;
+	Gradient *currentCommand = self.command.effects[self.currentItemIndex];
+	if ([currentCommand isKindOfClass:[Gradient class]]) {
+		currentCommand.numberOfLeds = @(currentCommand.numberOfLeds.integerValue + 1);
 		[self.scriptSubCommandsCarousel reloadItemAtIndex:[self.scriptSubCommandsCarousel indexOfItemView:self.scriptSubCommandsCarousel.currentItemView] animated:YES];
 		[view reloadData];
 		[self sendPreview];
@@ -591,9 +590,9 @@ enum EditColorTarget {
 }
 
 - (void)NWGradientEditViewDelegateUpButtonPressed:(NWGradientEditView *)view {
-	NWSetGradientScriptCommandObject *currentCommand = self.command.scriptObjects[self.currentItemIndex];
-	if ([currentCommand isKindOfClass:[NWSetGradientScriptCommandObject class]]) {
-		currentCommand.offset -= 1;
+	Gradient *currentCommand = self.command.effects[self.currentItemIndex];
+	if ([currentCommand isKindOfClass:[Gradient class]]) {
+		currentCommand.offset = @(currentCommand.offset.integerValue - 1);
 		[self.scriptSubCommandsCarousel reloadItemAtIndex:[self.scriptSubCommandsCarousel indexOfItemView:self.scriptSubCommandsCarousel.currentItemView] animated:YES];
 		[view reloadData];
 		[self sendPreview];
@@ -602,9 +601,9 @@ enum EditColorTarget {
 
 #pragma mark FadeEditViewDelegate
 - (void)NWFadeEditView:(NWFadeEditView *)view bitmaskChanged:(uint32_t)bitmask {
-	NWSetFadeScriptCommandObject *currentCommand = self.command.scriptObjects[self.currentItemIndex];
-	if ([currentCommand isKindOfClass:[NWSetFadeScriptCommandObject class]]) {
-		currentCommand.address = bitmask;
+	Fade *currentCommand = self.command.effects[self.currentItemIndex];
+	if ([currentCommand isKindOfClass:[Fade class]]) {
+		currentCommand.address = @(bitmask);
 		[self.scriptSubCommandsCarousel reloadItemAtIndex:[self.scriptSubCommandsCarousel indexOfItemView:self.scriptSubCommandsCarousel.currentItemView] animated:YES];
 		[view reloadData];
 		[self sendPreview];
@@ -613,13 +612,13 @@ enum EditColorTarget {
 
 #pragma mark ColorEditViewDelegate
 - (void)NWColorEditView:(NWColorEditView *)view changedColor:(UIColor *)color {
-	id currentCommand = self.command.scriptObjects[self.currentItemIndex];
-	if ([currentCommand isKindOfClass:[NWSetFadeScriptCommandObject class]] && view == self.fadeColorEditView) {
-		NWSetFadeScriptCommandObject *currentFadeCommand = (NWSetFadeScriptCommandObject *)currentCommand;
+	id currentCommand = self.command.effects[self.currentItemIndex];
+	if ([currentCommand isKindOfClass:[Fade class]] && view == self.fadeColorEditView) {
+		Fade *currentFadeCommand = (Fade *)currentCommand;
 		currentFadeCommand.color = color;
 	}
-	else if ([currentCommand isKindOfClass:[NWSetGradientScriptCommandObject class]] && (view == self.gradientColor2EditView || view == self.gradientColor1EditView)) {
-		NWSetGradientScriptCommandObject *currentGradientCommand = (NWSetGradientScriptCommandObject *)currentCommand;
+	else if ([currentCommand isKindOfClass:[Gradient class]] && (view == self.gradientColor2EditView || view == self.gradientColor1EditView)) {
+		Gradient *currentGradientCommand = (Gradient *)currentCommand;
 		if (view == self.gradientColor1EditView) {
 			currentGradientCommand.color1 = color;
 		} else if (view == self.gradientColor2EditView) {
@@ -644,8 +643,11 @@ enum EditColorTarget {
 
 #pragma mark - Add Commands
 - (void)addFadeCommand {
-	[self.command.scriptObjects addObject:[NWComplexScriptCommandEditorViewController defaultFadeCommand]];
-	[self.scriptSubCommandsCarousel reloadData];
+    Fade *newFade = [self defaultFadeCommand];
+    [self.command.managedObjectContext insertObject:newFade];
+    newFade.complexEffect = self.command;
+	
+    [self.scriptSubCommandsCarousel reloadData];
 	double delayInSeconds = 0.5;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -654,7 +656,10 @@ enum EditColorTarget {
 }
 
 - (void)addGradientCommand {
-	[self.command.scriptObjects addObject:[NWComplexScriptCommandEditorViewController defaultGradientCommand]];
+    Gradient *newGradient = [self defaultGradientCommand];
+    [self.command.managedObjectContext insertObject:newGradient];
+    newGradient.complexEffect = self.command;
+
 	[self.scriptSubCommandsCarousel reloadData];
 	double delayInSeconds = 0.5;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -704,7 +709,7 @@ enum EditColorTarget {
 	NWScriptObjectView *view = [[NWScriptObjectView alloc]initWithFrame:CGRectMake(0, 0, 80, 80)];
 	//view.borderWidth = 1;
 	view.backgroundColor = [UIColor blackColor];
-	view.endColors = [NWComplexScriptCommandEditorViewController defaultFadeCommand].colors;
+	view.endColors = [self defaultFadeCommand].colors;
 	view.opaque = NO;
 	
 	return [NWComplexScriptCommandEditorViewController imageWithView:view];
@@ -714,29 +719,31 @@ enum EditColorTarget {
 	NWScriptObjectView *view = [[NWScriptObjectView alloc]initWithFrame:CGRectMake(0, 0, 80, 80)];
 	//view.borderWidth = 1;
 	view.backgroundColor = [UIColor blackColor];
-	view.endColors = [NWComplexScriptCommandEditorViewController defaultGradientCommand].colors;
+	view.endColors = [self defaultGradientCommand].colors;
 	view.opaque = NO;
 	
 	return [NWComplexScriptCommandEditorViewController imageWithView:view];
 }
 
-+ (NWSetGradientScriptCommandObject *)defaultGradientCommand {
-	NWSetGradientScriptCommandObject *obj = [[NWSetGradientScriptCommandObject alloc] init];
+- (Gradient *)defaultGradientCommand {
+    NSEntityDescription *entity = [NSEntityDescription entityForName:[Gradient entityName] inManagedObjectContext:self.command.managedObjectContext];
+    Gradient *obj = (Gradient *)[[NSManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:nil];
 	obj.color1 = [UIColor blueColor];
 	obj.color2 = [UIColor redColor];
 	obj.offset = 0;
-	obj.numberOfLeds = 32;
-	obj.duration = 5;
-	obj.parallel = YES;
+	obj.numberOfLeds = @(32);
+	obj.duration = @(5);
+	obj.parallel = @(YES);
 	return obj;
 }
 
-+ (NWSetFadeScriptCommandObject *)defaultFadeCommand {
-	NWSetFadeScriptCommandObject *obj = [[NWSetFadeScriptCommandObject alloc] init];
-	obj.address = 0xffffffff;
+- (Fade *)defaultFadeCommand {
+    NSEntityDescription *entity = [NSEntityDescription entityForName:[Fade entityName] inManagedObjectContext:self.command.managedObjectContext];
+    Fade *obj = (Fade *)[[NSManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:nil];
+    obj.address = @(0xffffffff);
 	obj.color = [UIColor orangeColor];
-	obj.duration = 5;
-	obj.parallel = YES;
+	obj.duration = @(5);
+	obj.parallel = @(YES);
 	return obj;
 }
 
@@ -772,13 +779,13 @@ enum EditColorTarget {
 - (void)defaultColorController:(NWDefaultColorPickerViewController *)controller didChangeColor:(UIColor *)color {
 	switch (self.editColorTarget) {
 		case fadeColor:
-			((NWSetFadeScriptCommandObject *)self.command.scriptObjects[self.currentItemIndex]).color = color;
+			((Fade *)self.command.effects[self.currentItemIndex]).color = color;
 			break;
 		case gradientColor1:
-			((NWSetGradientScriptCommandObject *)self.command.scriptObjects[self.currentItemIndex]).color1 = color;
+			((Gradient *)self.command.effects[self.currentItemIndex]).color1 = color;
 			break;
 		case gradientColor2:
-			((NWSetGradientScriptCommandObject *)self.command.scriptObjects[self.currentItemIndex]).color2 = color;
+			((Gradient *)self.command.effects[self.currentItemIndex]).color2 = color;
 			break;
 		default:
 			break;

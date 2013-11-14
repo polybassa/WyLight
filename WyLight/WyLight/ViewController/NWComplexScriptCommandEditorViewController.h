@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "NWComplexScriptCommandObject.h"
+#import "ComplexEffect.h"
 
 @interface NWComplexScriptCommandEditorViewController : UIViewController
 
-@property (nonatomic, weak) NWComplexScriptCommandObject *command;
+@property (nonatomic, weak) ComplexEffect *command;
 @property (nonatomic, weak) WCWiflyControlWrapper *controlHandle;
 
 @end
