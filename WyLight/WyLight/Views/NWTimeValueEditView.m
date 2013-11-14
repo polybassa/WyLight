@@ -8,8 +8,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "NWTimeValueEditView.h"
-#import "NWScriptCommandObject.h"
-#import "NWComplexScriptCommandObject.h"
+#import "ComplexEffect.h"
 
 @interface NWTimeValueEditView ()
 
@@ -68,25 +67,20 @@
 	[self setNeedsDisplay];
 }
 
-- (void)setCommand:(NWScriptCommandObject *)command {
+- (void)setCommand:(ComplexEffect *)command {
 	_command = command;
 	[self reloadData];
 }
 
 - (void)reloadData {
-	self.timeSlider.value = self.command.duration;
+	self.timeSlider.value = self.command.duration.floatValue;
 	self.timeLabel.text =  [NSString stringWithFormat:@"%@ %2.1f s",
                             NSLocalizedStringFromTable(@"TimeLabelKey", @"ScriptObjectEditViewsLocalization", @""),
-                            ((float)self.command.duration / 100)];
+                            ((float)self.command.duration.floatValue / 100)];
 	
-	if ([self.command isKindOfClass:[NWComplexScriptCommandObject class]]) {
-		self.waitInfoLabel.hidden = NO;
-		self.waitSwitch.hidden = NO;
-		self.waitSwitch.on = !((NWComplexScriptCommandObject *)self.command).waitCommand;
-	} else {
-		self.waitSwitch.hidden = YES;
-		self.waitInfoLabel.hidden = YES;
-	}
+	self.waitInfoLabel.hidden = NO;
+	self.waitSwitch.hidden = NO;
+	self.waitSwitch.on = ![[self.command waitCommand] boolValue];
 }
 
 - (void)sliderValueChanged:(UISlider *)sender {

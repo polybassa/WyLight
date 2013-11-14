@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class NWScriptCommandObject, NWTimeValueEditView;
+@class ComplexEffect, NWTimeValueEditView;
 
 @protocol NWTimeValueEditViewDelegate <NSObject>
 
@@ -19,7 +19,7 @@
 
 @interface NWTimeValueEditView : UIView
 
-@property (nonatomic, weak) NWScriptCommandObject *command;
+@property (nonatomic, weak) ComplexEffect *command;
 @property (nonatomic, weak) id<NWTimeValueEditViewDelegate> delegate;
 @property (nonatomic) CGFloat cornerRadius;
 

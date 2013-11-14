@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class NWGradientEditView, NWScriptCommandObject;
+@class NWGradientEditView, Effect;
 
 @protocol NWGradientEditViewDelegate <NSObject>
 
@@ -21,7 +21,7 @@
 
 @interface NWGradientEditView : UIView
 
-@property (nonatomic, weak) NWScriptCommandObject *command;
+@property (nonatomic, weak) Effect *command;
 @property (nonatomic, weak) id<NWGradientEditViewDelegate> delegate;
 @property (nonatomic) CGFloat cornerRadius;
 

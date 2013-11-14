@@ -9,7 +9,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "NWFadeEditView.h"
 #import "NWScriptObjectView.h"
-#import "NWSetFadeScriptCommandObject.h"
+#import "Fade.h"
 
 @interface NWFadeEditView ()
 
@@ -60,7 +60,7 @@
 	[self setNeedsDisplay];
 }
 
-- (void)setCommand:(NWScriptCommandObject *)command {
+- (void)setCommand:(Effect *)command {
 	_command = command;
 	[self reloadData];
 }
@@ -68,9 +68,9 @@
 - (void)reloadData {
 	id currentCommand = self.command;
 	
-	if ([currentCommand isKindOfClass:[NWSetFadeScriptCommandObject class]]) {
-		NWSetFadeScriptCommandObject *currentFadeCommand = (NWSetFadeScriptCommandObject *)currentCommand;
-		self.addressMaskForFadeEditView = currentFadeCommand.address;
+	if ([currentCommand isKindOfClass:[Fade class]]) {
+		Fade *currentFadeCommand = (Fade *)currentCommand;
+		self.addressMaskForFadeEditView = currentFadeCommand.address.unsignedIntegerValue;
 		self.fadeEditView.startColors = self.fadeEditView.endColors = currentFadeCommand.colors;
 	} else {
 		self.fadeEditView.endColors = self.fadeEditView.startColors = @[[UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:0.2]];
@@ -81,9 +81,9 @@
 	if (sender.state == UIGestureRecognizerStateEnded) {
 		id currentCommand = self.command;
 		
-		if ([currentCommand isKindOfClass:[NWSetFadeScriptCommandObject class]]) {
-			NWSetFadeScriptCommandObject *currentFadeCommand = (NWSetFadeScriptCommandObject *)currentCommand;
-			self.addressMaskForFadeEditView = currentFadeCommand.address;
+		if ([currentCommand isKindOfClass:[Fade class]]) {
+			Fade *currentFadeCommand = (Fade *)currentCommand;
+			self.addressMaskForFadeEditView = currentFadeCommand.address.unsignedIntegerValue;
 		}
 		CGFloat heigthOfOneGradientStrip = self.fadeEditView.bounds.size.height / 8;
 		CGPoint touchLocationInGradientView = [self.fadeEditView.latestTouchBegan locationInView:self.fadeEditView];
@@ -93,13 +93,13 @@
 
 - (void)flipAddressBitsAtIndex:(NSUInteger)index {
 	id currentCommand = self.command;
-	if ([currentCommand isKindOfClass:[NWSetFadeScriptCommandObject class]]) {
-		NWSetFadeScriptCommandObject *currentFadeCommand = (NWSetFadeScriptCommandObject *)currentCommand;
+	if ([currentCommand isKindOfClass:[Fade class]]) {
+		Fade *currentFadeCommand = (Fade *)currentCommand;
 		
 		uint32_t flipBitmask = 0x0000000f << index * 4;
-		uint32_t newAddressMask = currentFadeCommand.address ^ flipBitmask;
+		uint32_t newAddressMask = currentFadeCommand.address.unsignedIntegerValue ^ flipBitmask;
 		
-		if ((flipBitmask & self.addressMaskForFadeEditView & currentFadeCommand.address) || (flipBitmask & ~self.addressMaskForFadeEditView & ~currentFadeCommand.address)) {
+		if ((flipBitmask & self.addressMaskForFadeEditView & currentFadeCommand.address.unsignedIntegerValue) || (flipBitmask & ~self.addressMaskForFadeEditView & ~currentFadeCommand.address.unsignedIntegerValue)) {
 			[self.delegate NWFadeEditView:self bitmaskChanged:newAddressMask];
 		}
 	}

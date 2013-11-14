@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class NWColorEditView, NWScriptCommandObject;
+@class NWColorEditView;
 
 @protocol NWColorEditViewDelegate <NSObject>
 

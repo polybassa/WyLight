@@ -9,7 +9,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "NWGradientEditView.h"
 #import "TouchAndHoldButton.h"
-#import "NWSetGradientScriptCommandObject.h"
+#import "Gradient.h"
 
 
 @interface NWGradientEditView ()
@@ -76,34 +76,34 @@
 	[self setNeedsDisplay];
 }
 
-- (void)setCommand:(NWScriptCommandObject *)command {
+- (void)setCommand:(Effect *)command {
 	_command = command;
 	[self reloadData];
 }
 
 - (void)reloadData {
-	if ([self.command isKindOfClass:[NWSetGradientScriptCommandObject class]]) {
-		NWSetGradientScriptCommandObject *currentGradientCommand = (NWSetGradientScriptCommandObject *)self.command;
+	if ([self.command isKindOfClass:[Gradient class]]) {
+		Gradient *currentGradientCommand = (Gradient *)self.command;
 		
-		if (currentGradientCommand.numberOfLeds <= 1) {
+		if (currentGradientCommand.numberOfLeds.unsignedIntegerValue <= 1) {
 			self.gradientMinusButton.enabled = NO;
 		} else {
 			self.gradientMinusButton.enabled = YES;
 		}
 		
-		if (currentGradientCommand.numberOfLeds >= [NWSetGradientScriptCommandObject maximalNumberOfLeds]) {
+		if (currentGradientCommand.numberOfLeds.unsignedIntegerValue >= [Gradient maximalNumberOfLeds]) {
 			self.gradientPlusButton.enabled = NO;
 		} else {
 			self.gradientPlusButton.enabled = YES;
 		}
 		
-		if (currentGradientCommand.address & 0x80000000) {
+		if (currentGradientCommand.address.unsignedIntegerValue & 0x80000000) {
 			self.gradientDownButton.enabled = NO;
 		} else {
 			self.gradientDownButton.enabled = YES;
 		}
 		
-		if (currentGradientCommand.address & 0x00000001) {
+		if (currentGradientCommand.address.unsignedIntegerValue & 0x00000001) {
 			self.gradientUpButton.enabled = NO;
 		} else {
 			self.gradientUpButton.enabled = YES;

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class NWFadeEditView, NWScriptCommandObject;
+@class NWFadeEditView, Effect;
 
 @protocol NWFadeEditViewDelegate <NSObject>
 
@@ -18,7 +18,7 @@
 
 @interface NWFadeEditView : UIView
 
-@property (nonatomic, weak) NWScriptCommandObject *command;
+@property (nonatomic, weak) Effect *command;
 @property (nonatomic, weak) id<NWFadeEditViewDelegate> delegate;
 @property (nonatomic) CGFloat cornerRadius;
 
