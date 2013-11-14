@@ -54,7 +54,6 @@
         }
         comObj.duration = @(100);
         comObj.script = tempScript;
-        [tempScript addEffectsObject:comObj];
     }
     return tempScript;
 }
@@ -100,7 +99,6 @@
         }
         comObj.duration = @(1000);
         comObj.script = tempScript;
-        [tempScript addEffectsObject:comObj];
     }
     return tempScript;
 }
@@ -142,7 +140,6 @@
         }
         comObj.duration = @(6000);
         comObj.script = tempScript;
-        [tempScript addEffectsObject:comObj];
     }
     return tempScript;
 }
@@ -195,7 +192,6 @@
         }
         comObj.duration = @(1000);
         comObj.script = tempScript;
-        [tempScript addEffectsObject:comObj];
     }
     return tempScript;
 }
@@ -259,7 +255,6 @@
         }
         comObj.duration = @(100);
         comObj.script = tempScript;
-        [tempScript addEffectsObject:comObj];
     }
     return tempScript;
 }
@@ -287,7 +282,6 @@
             }
             comObj.duration = @(time);
             comObj.script = tempScript;
-            [tempScript addEffectsObject:comObj];
         }
     }
     return tempScript;
@@ -322,7 +316,7 @@
             }
             comObj.duration = @(time);
             comObj.script = tempScript;
-            [tempScript addEffectsObject:comObj];
+            //[tempScript addEffectsObject:comObj];
         }
         for (int i = 0; i < 8; i++) {
             ComplexEffect *comObj = [ComplexEffect insertNewObjectIntoContext:context];
@@ -348,7 +342,6 @@
             }
             comObj.duration = @(time);
             comObj.script = tempScript;
-            [tempScript addEffectsObject:comObj];
         }
         
     }
@@ -369,7 +362,6 @@
         }
         comObj.duration = @(1000);
         comObj.script = tempScript;
-        [tempScript addEffectsObject:comObj];
     }
     return tempScript;
 }

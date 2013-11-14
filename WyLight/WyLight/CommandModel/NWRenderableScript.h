@@ -5,7 +5,7 @@
 //  Created by Nils Weiß on 26/10/13.
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
-
+/*
 #import "NWScript.h"
 
 @protocol NWRenderableScriptDelegate;
@@ -26,4 +26,4 @@
 
 - (void)NWRenderableScriptFinishedRendering:(NWRenderableScript *)script;
 
-@end
+@end*/

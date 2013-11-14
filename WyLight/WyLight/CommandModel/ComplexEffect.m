@@ -2,24 +2,23 @@
 //  ComplexEffect.m
 //  WyLight
 //
-//  Created by Nils Weiß on 04/11/13.
+//  Created by Nils Weiß on 14/11/13.
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
-#import "ComplexEffect.h"
 #import "ComplexEffect.h"
 #import "Script.h"
 #import "SimpelEffect.h"
 #import "WCWiflyControlWrapper.h"
 #import "wifly_cmd.h"
 
+
 @implementation ComplexEffect
 
 @dynamic waitCommand;
-@dynamic next;
-@dynamic prev;
-@dynamic script;
 @dynamic effects;
+@dynamic script;
+
 
 + (NSString *)entityName {
     return @"ComplexEffect";
@@ -64,6 +63,25 @@
     }
 }
 
+- (ComplexEffect *)prev {
+    NSUInteger currentIdx = [self.script.effects indexOfObject:self];
+    if (currentIdx == 0) {
+        return nil;
+    }
+    ComplexEffect *prev = [self.script.effects objectAtIndex:currentIdx - 1];
+    return prev != self ? prev : nil;
+}
+
+- (ComplexEffect *)next {
+    NSUInteger currentIdx = [self.script.effects indexOfObject:self];
+    currentIdx++;
+    if (currentIdx >= self.script.effects.count) {
+        return nil;
+    }
+    ComplexEffect *next = [self.script.effects objectAtIndex:currentIdx];
+    return next != self ? next : nil;
+}
+
 - (NSArray *)colors {
 	if (self.waitCommand.boolValue) {
 		if (self.prev.colors) {
@@ -81,21 +99,20 @@
 	} else {
 		outPutColors = [[NSMutableArray alloc]init];
 	}
+    
 	uint32_t compareMask = 0x00000001;
 	for (unsigned int i = 0; i < NUM_OF_LED; i++) {  //i = 0 - 31
 		NSUInteger j = self.effects.count;
 		while (j--) {
-			Effect *currentObj = [self.effects objectAtIndex:j];
-			if ([currentObj respondsToSelector:@selector(address)]) {
-				const uint32_t bitmask = (uint32_t)[currentObj performSelector:@selector(address)];
-				if (bitmask & compareMask) {
-					if (self.prev) {
-						[outPutColors replaceObjectAtIndex:i withObject:currentObj.colors[i]];
-					} else {
-						[outPutColors addObject:currentObj.colors[i]];
-					}
-					break;
+			SimpelEffect *currentObj = [self.effects objectAtIndex:j];
+			const uint32_t bitmask = currentObj.address.unsignedIntegerValue;
+            if (bitmask & compareMask) {
+                if (self.prev) {
+					[outPutColors replaceObjectAtIndex:i withObject:currentObj.colors[i]];
+				} else {
+					[outPutColors addObject:currentObj.colors[i]];
 				}
+                break;
 			}
 		}
 		if (i >= outPutColors.count) {
@@ -105,5 +122,6 @@
 	}
 	return [outPutColors copy];
 }
+
 
 @end

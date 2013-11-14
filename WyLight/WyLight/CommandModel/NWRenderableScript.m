@@ -5,7 +5,7 @@
 //  Created by Nils Weiß on 26/10/13.
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
-
+/*
 #import "NWRenderableScript.h"
 #import "NWComplexScriptCommandObject.h"
 #import "UIImage+ImageEffects.h"
@@ -194,3 +194,4 @@
 }
 
 @end
+*/

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3400" systemVersion="13A603" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13A603" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Command" representedClassName="Command" isAbstract="YES" syncable="YES"/>
     <entity name="ComplexEffect" representedClassName="ComplexEffect" parentEntity="Effect" syncable="YES">
         <attribute name="waitCommand" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <relationship name="effects" optional="YES" toMany="YES" minCount="1" deletionRule="Cascade" ordered="YES" destinationEntity="SimpelEffect" inverseName="complexEffect" inverseEntity="SimpelEffect" syncable="YES"/>
-        <relationship name="next" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComplexEffect" inverseName="prev" inverseEntity="ComplexEffect" syncable="YES"/>
-        <relationship name="prev" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComplexEffect" inverseName="next" inverseEntity="ComplexEffect" syncable="YES"/>
         <relationship name="script" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Script" inverseName="effects" inverseEntity="Script" syncable="YES"/>
     </entity>
     <entity name="Effect" representedClassName="Effect" isAbstract="YES" parentEntity="Command" syncable="YES">
@@ -33,7 +31,7 @@
     </entity>
     <elements>
         <element name="Command" positionX="-1586" positionY="-4453" width="128" height="43"/>
-        <element name="ComplexEffect" positionX="-1548" positionY="-4032" width="128" height="118"/>
+        <element name="ComplexEffect" positionX="-1548" positionY="-4032" width="128" height="88"/>
         <element name="Effect" positionX="-1811" positionY="-4257" width="128" height="73"/>
         <element name="Fade" positionX="-2169" positionY="-3870" width="128" height="58"/>
         <element name="Gradient" positionX="-1872" positionY="-3879" width="128" height="103"/>

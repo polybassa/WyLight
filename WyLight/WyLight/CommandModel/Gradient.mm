@@ -76,6 +76,10 @@
 	return NUM_OF_LED;
 }
 
++ (NSUInteger)minimalNumberOfLeds {
+    return 1;
+}
+
 - (NSArray *)colors {
 	NSMutableArray *mutableColorArray = [[NSMutableArray alloc]init];
 	CGFloat deltaRed, deltaGreen, deltaBlue, color1Red, color2Red, color1Green, color2Green, color1Blue, color2Blue;
@@ -131,12 +135,12 @@
 }
 
 - (void)setNumberOfLeds:(NSNumber *)numberOfLeds {
-    if ((self.offset.unsignedIntegerValue + numberOfLeds.unsignedIntegerValue) <= [Gradient maximalNumberOfLeds]) {
+    if ((self.offset.unsignedIntegerValue + numberOfLeds.unsignedIntegerValue) <= [Gradient maximalNumberOfLeds] && numberOfLeds.unsignedIntegerValue >= [Gradient minimalNumberOfLeds]) {
         [self willChangeValueForKey:@"numberOfLeds"];
         [self setPrimitiveValue:numberOfLeds forKey:@"numberOfLeds"];
         [self didChangeValueForKey:@"numberOfLeds"];
     }
-    else if (self.offset.unsignedIntegerValue > 0 && numberOfLeds.unsignedIntegerValue <= [Gradient maximalNumberOfLeds])
+    else if (self.offset.unsignedIntegerValue > 0 && numberOfLeds.unsignedIntegerValue <= [Gradient maximalNumberOfLeds] && numberOfLeds.unsignedIntegerValue >= [Gradient minimalNumberOfLeds])
 	{
         self.offset = @([Gradient maximalNumberOfLeds] - numberOfLeds.unsignedIntegerValue);
         

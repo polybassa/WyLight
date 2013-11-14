@@ -17,21 +17,9 @@
 + (NSString *)entityName;
 + (instancetype)insertNewObjectIntoContext:(NSManagedObjectContext *)context;
 
+- (NSNumber *)totalDurationInTmms;
+
 @property (nonatomic, retain) NSNumber * repeatsWhenFinished;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSOrderedSet *effects;
-@end
-
-@interface Script (CoreDataGeneratedAccessors)
-
-- (void)insertObject:(ComplexEffect *)value inEffectsAtIndex:(NSUInteger)idx;
-- (void)removeObjectFromEffectsAtIndex:(NSUInteger)idx;
-- (void)insertEffects:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
-- (void)removeEffectsAtIndexes:(NSIndexSet *)indexes;
-- (void)replaceObjectInEffectsAtIndex:(NSUInteger)idx withObject:(ComplexEffect *)value;
-- (void)replaceEffectsAtIndexes:(NSIndexSet *)indexes withEffects:(NSArray *)values;
-- (void)addEffectsObject:(ComplexEffect *)value;
-- (void)removeEffectsObject:(ComplexEffect *)value;
-- (void)addEffects:(NSOrderedSet *)values;
-- (void)removeEffects:(NSOrderedSet *)values;
 @end
