@@ -14,8 +14,10 @@
 #import "NWScriptCellView.h"
 #import "WCWiflyControlWrapper.h"
 #import "TouchAndHoldButton.h"
+#import "NWEffectDrawer.h"
+#import "SimpelEffect.h"
 
-@interface NWScriptViewController () <UITextFieldDelegate, NWScriptViewDataSource, NWScriptCellViewDelegate, UIScrollViewDelegate>
+@interface NWScriptViewController () <UITextFieldDelegate, NWScriptViewDataSource, NWScriptCellViewDelegate, UIScrollViewDelegate, NWEffectDrawerDelegate>
 
 @property (strong, nonatomic) NWScriptView *scriptView;
 @property (strong, nonatomic) TouchAndHoldButton *zoomInButton;
@@ -26,12 +28,22 @@
 @property (nonatomic, strong) UIButton *sendButton;
 @property (weak, nonatomic) IBOutlet UITextField *titelTextField;
 @property (nonatomic, strong) UIButton *repeatSwitch;
+@property (nonatomic, strong) NWEffectDrawer *effectDrawer;
+@property (nonatomic, strong) UIAlertView *alertView;
 
 @end
 
 @implementation NWScriptViewController
 
 #pragma mark - GETTER + SETTER
+
+- (NWEffectDrawer *)effectDrawer {
+    if (_effectDrawer == nil) {
+        _effectDrawer = [[NWEffectDrawer alloc] init];
+        _effectDrawer.delegate = self;
+    }
+    return _effectDrawer;
+}
 
 - (void)setScript:(Script *)script {
     _script = script;
@@ -62,8 +74,8 @@
 			if ([control isKindOfClass:[NWScriptCellView class]]) {
 				NWScriptCellView *cell = (NWScriptCellView *)control;
 				[UIView animateWithDuration:0.4 animations:^{
-					cell.scriptObjectView.quivering = YES;
-					cell.scriptObjectView.downscale = YES;
+					cell.scriptObjectImageView.quivering = YES;
+					cell.scriptObjectImageView.downscale = YES;
 				}];
 			}
         }
@@ -72,8 +84,8 @@
 			if ([control isKindOfClass:[NWScriptCellView class]]) {
 				NWScriptCellView *cell = (NWScriptCellView *)control;
 				[UIView animateWithDuration:0.4 animations:^{
-					cell.scriptObjectView.quivering = NO;
-					cell.scriptObjectView.downscale = NO;
+					cell.scriptObjectImageView.quivering = NO;
+					cell.scriptObjectImageView.downscale = NO;
 				}];
 			}
 		}
@@ -120,6 +132,8 @@
 	self.view.superview.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
+    self.alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"LoadingDataKey", @"ViewControllerLocalization", @"") message:NSLocalizedStringFromTable(@"PleaseWaitKey", @"ViewControllerLocalization", @"") delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+    
 	//user data
 	self.timeScaleFactor = [[NSUserDefaults standardUserDefaults] floatForKey:TIMESCALE_KEY];
 	if (self.timeScaleFactor == 0.0) {
@@ -258,21 +272,35 @@
 		if (!prevEndColors) {
 			prevEndColors = [[NSMutableArray alloc] init];
 			
-			for (unsigned int i = 0; i < nextCell.scriptObjectView.endColors.count; i++) {
+			for (unsigned int i = 0; i < commandToDelete.colors.count; i++) {
 				[prevEndColors addObject:[UIColor blackColor]];
 			}
 		}
 		
-		if (nextCell) {
-			[nextCell.scriptObjectView setColorsAnimatedWithDuration:1.0 startColors:prevEndColors endColor:nextCell.scriptObjectView.endColors];
-		}
-		//ausblenden
+        ComplexEffect *nextEffect;
+        if (nextCell) {
+            nextEffect = commandToDelete.next;
+        } else {
+            nextEffect = self.script.effects.firstObject;
+        }
+        nextEffect.snapshot = nil;
+        for (SimpelEffect *subeffect in nextEffect.effects) {
+            subeffect.colors = nil;
+        }
+        
+        //ausblenden
 		[UIView animateWithDuration:0.4 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
 			cellViewToDelete.alpha = 0.0;
 		} completion:^(BOOL finished) {
 			
-			//tags anpassen um danach die Positionen richtig zu berechnen
-            [self.script.managedObjectContext deleteObject:[self.script.effects objectAtIndex:cellViewToDelete.tag]];
+            //tags anpassen um danach die Positionen richtig zu berechnen
+            [self.script.managedObjectContext deleteObject:commandToDelete];
+            
+            NSError *error;
+            if (self.script.managedObjectContext && [self.script.managedObjectContext save:&error]) {
+                NSLog(@"Save failed");
+            }
+            
 			[cellViewToDelete removeFromSuperview];
 			for (NWScriptObjectControl *ctrl in self.scriptView.subviews) {
 				if ([ctrl isKindOfClass:[NWScriptCellView class]]) {
@@ -281,12 +309,15 @@
 					}
 				}
 			}
+            if (nextEffect) {
+                [self.effectDrawer drawEffect:nextEffect];
+            }
 			//Positionen anpassen
 			[UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
 				[self.scriptView fixLocationsOfSubviews];
-			} completion:^(BOOL finished) {
+            } completion:^(BOOL finished) {
 			//Farben nachladen
-				[self.scriptView reloadData];
+				//[self.scriptView reloadData];
 			}];
 		}];
 	}
@@ -300,8 +331,13 @@
     }
 
 	//insert new command in model
-	//ComplexEffect *commandToAdd = [[self.script.effects lastObject] copy];
-	//[self.script addEffectsObject:commandToAdd];
+	ComplexEffect *commandToAdd = [((ComplexEffect *)self.script.effects.lastObject) copy];
+    commandToAdd.script = self.script;
+    
+    NSError *error;
+    if (self.script.managedObjectContext && [self.script.managedObjectContext save:&error]) {
+        NSLog(@"Save failed: %@", error.helpAnchor);
+    }
     
 	//get new view for the new command
 	UIView *viewToAdd = [self scriptView:self.scriptView cellViewForIndex:self.script.effects.count - 1];
@@ -322,9 +358,8 @@
 - (void)repeatSwitchValueChanged {
         self.repeatSwitch.selected = !self.repeatSwitch.selected;
     self.script.repeatsWhenFinished = @(self.repeatSwitch.selected);
-    dispatch_async(dispatch_get_main_queue(), ^(void){
-        [self.scriptView reloadData];
-    });
+    ((ComplexEffect *)self.script.effects.firstObject).snapshot = nil;
+    [self.effectDrawer drawEffect:self.script.effects.firstObject];
 }
 
 - (void)sendScript {
@@ -347,18 +382,19 @@
 		if (index < self.script.effects.count) {
 			NWScriptCellView *tempView = [[NWScriptCellView alloc]initWithFrame:CGRectZero];
             ComplexEffect *currentEffect = self.script.effects[index];
-			tempView.scriptObjectView.endColors = [currentEffect colors];
-			if ([currentEffect prev]) {
-				tempView.scriptObjectView.startColors = [[currentEffect prev] colors];
-			}
-			if (index == 0 && self.script.repeatsWhenFinished) {
-				tempView.scriptObjectView.startColors = ((ComplexEffect *)self.script.effects.lastObject).colors;
-			}
-			tempView.scriptObjectView.cornerRadius = 5;
+			    
+            //check the first view for update, in relation to the last view.
+            if (index == 0 && ((ComplexEffect *)self.script.effects.lastObject).snapshot == nil && currentEffect.snapshot && self.script.repeatsWhenFinished.boolValue) {
+                currentEffect.snapshot = nil;
+            }
+            
+            tempView.scriptObjectImageView.animateSetImage = YES;
+            tempView.scriptObjectImageView.image = currentEffect.snapshot;
+            tempView.scriptObjectImageView.cornerRadius = 5;
 			tempView.delegate = self;
 			tempView.tag = index;
-			tempView.scriptObjectView.quivering = self.isDeletionModeActive;
-			tempView.scriptObjectView.downscale = self.isDeletionModeActive;
+			tempView.scriptObjectImageView.quivering = self.isDeletionModeActive;
+			tempView.scriptObjectImageView.downscale = self.isDeletionModeActive;
 			tempView.timeInfoView.timeScaleFactor = self.timeScaleFactor;
 						
 			UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(setObjectForEdit:)];
@@ -374,6 +410,11 @@
 			UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeUpOnScriptObject:)];
 			swipe.direction = UISwipeGestureRecognizerDirectionUp;
 			[tempView addGestureRecognizer:swipe];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.effectDrawer drawEffect:currentEffect];
+                [self checkAlertView];
+            });
 			return tempView;
 		}
 	}
@@ -421,12 +462,43 @@
 	[self.scriptView fixLocationsOfSubviews];
 }
 
+#pragma mark - Alertview
+- (void)checkAlertView {
+    if ([self.effectDrawer effectIsDrawing:nil] && !self.alertView.isVisible) {
+        [self.alertView show];
+    } else {
+        if (self.alertView.isVisible) {
+            [self.alertView dismissWithClickedButtonIndex:0 animated:YES];
+        }
+    }
+}
+
+
 #pragma mark - Textfield Delegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     self.script.title = textField.text;
     [textField resignFirstResponder];
     return YES;
+}
+
+#pragma mark - NWEffectDrawerDelegate
+
+- (void)NWEffectDrawer:(NWEffectDrawer *)drawer finishedDrawing:(id)effect {
+    if (drawer == self.effectDrawer) {
+        [self checkAlertView];
+        NSUInteger idx = [self.script.effects indexOfObject:effect];
+        if (self.scriptView.subviews.count > idx && [effect isKindOfClass:[ComplexEffect class]]) {
+            UIView *view = [self.scriptView viewWithTag:idx];
+            
+            if ([view isKindOfClass:[NWScriptCellView class]]) {
+                ComplexEffect* complEffect = (ComplexEffect *)effect;
+                NWScriptCellView *cell = (NWScriptCellView *)view;
+                cell.scriptObjectImageView.image = complEffect.snapshot;
+                cell.scriptObjectImageView.showActivityIndicator = NO;
+            }
+        }
+    }
 }
 
 #pragma mark - SEGUE

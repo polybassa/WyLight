@@ -10,6 +10,13 @@
 
 @interface NWRenderableScriptImageView : UIImageView
 
+
+@property (nonatomic, getter = isQuivering) BOOL quivering;
+@property (nonatomic, getter = isDownscaled) BOOL downscale;
+
+@property (nonatomic) BOOL animateSetImage;
+
 @property (nonatomic, assign) BOOL showActivityIndicator;
+@property (nonatomic) CGFloat cornerRadius;
 
 @end

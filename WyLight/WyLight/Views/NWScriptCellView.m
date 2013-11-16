@@ -22,13 +22,13 @@
 		timeInfoViewFrame = CGRectMake(0, frame.size.height - timeInfoViewHeigth, frame.size.width, timeInfoViewHeigth);
 		
 		
-		self.scriptObjectView = [[NWScriptObjectControl alloc] initWithFrame:scriptObjectViewFrame];
+        self.scriptObjectImageView = [[NWRenderableScriptImageView alloc] initWithFrame:scriptObjectViewFrame];
 		self.timeInfoView = [[NWTimeInfoView alloc] initWithFrame:timeInfoViewFrame];
 		
-		[self addSubview:self.scriptObjectView];
+        self.scriptObjectImageView.contentMode = UIViewContentModeScaleToFill;
+        
+        [self addSubview:self.scriptObjectImageView];
 		[self addSubview:self.timeInfoView];
-		
-        // Initialization code
     }
     return self;
 }
@@ -42,20 +42,20 @@
 	scriptObjectViewFrame = CGRectMake(0, 0, frame.size.width, frame.size.height - timeInfoViewHeigth);
 	timeInfoViewFrame = CGRectMake(0, frame.size.height - timeInfoViewHeigth, frame.size.width, timeInfoViewHeigth);
 	
-	[self.scriptObjectView setFrame:scriptObjectViewFrame];
+    [self.scriptObjectImageView setFrame:scriptObjectViewFrame];
 	[self.timeInfoView setFrame:timeInfoViewFrame];
 }
 
 - (void)setTag:(NSInteger)tag {
 	[super setTag:tag];
-	self.scriptObjectView.tag = tag;
+    self.scriptObjectImageView.tag = tag;
 	self.timeInfoView.tag = tag;
 }
 
 - (void)setAlpha:(CGFloat)alpha {
 	[super setAlpha:alpha];
-	self.scriptObjectView.alpha = alpha;
 	self.timeInfoView.alpha = alpha;
+    self.scriptObjectImageView.alpha = alpha;
 }
 
 - (void)pinchWidth:(UIPinchGestureRecognizer *)gesture {

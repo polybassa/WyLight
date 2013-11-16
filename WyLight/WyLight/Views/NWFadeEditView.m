@@ -72,8 +72,10 @@
 		Fade *currentFadeCommand = (Fade *)currentCommand;
 		self.addressMaskForFadeEditView = currentFadeCommand.address.unsignedIntegerValue;
 		self.fadeEditView.startColors = self.fadeEditView.endColors = currentFadeCommand.colors;
+        [self.fadeEditView setNeedsDisplay];
 	} else {
 		self.fadeEditView.endColors = self.fadeEditView.startColors = @[[UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:0.2]];
+        [self.fadeEditView setNeedsDisplay];
 	}
 }
 

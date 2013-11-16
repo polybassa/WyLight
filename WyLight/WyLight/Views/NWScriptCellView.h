@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "NWTimeInfoView.h"
 #import "NWScriptObjectControl.h"
+#import "NWRenderableScriptImageView.h"
 
 #define TIMEINFOVIEW_HEIGTH_FACTOR 6
 
@@ -17,7 +18,7 @@
 @interface NWScriptCellView : UIView
 
 @property (nonatomic, strong) NWTimeInfoView *timeInfoView;
-@property (nonatomic, strong) NWScriptObjectControl *scriptObjectView;
+@property (nonatomic, strong) NWRenderableScriptImageView *scriptObjectImageView;
 @property (nonatomic, weak) id<NWScriptCellViewDelegate> delegate;
 
 - (void)pinchWidth:(UIPinchGestureRecognizer *)gesture;

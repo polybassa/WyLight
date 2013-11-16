@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
-#import "NWScriptObjectView.h"
+#import <UIKit/UIKit.h>
 
-@interface NWScriptObjectControl : NWScriptObjectView
+@interface NWScriptObjectControl : UIView
 
 @property (nonatomic, getter = isQuivering) BOOL quivering;
 @property (nonatomic, getter = isDownscaled) BOOL downscale;

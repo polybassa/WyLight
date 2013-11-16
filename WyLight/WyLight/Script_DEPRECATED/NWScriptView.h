@@ -25,4 +25,5 @@
 @property (nonatomic) UIEdgeInsets insets;
 - (void)reloadData;
 - (void)fixLocationsOfSubviews;
+- (void)reloadViewAtIndex:(NSUInteger)idx animated:(BOOL)animated;
 @end

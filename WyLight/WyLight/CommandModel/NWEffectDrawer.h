@@ -7,7 +7,27 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import "ComplexEffect.h"
+
+@class NWEffectDrawer;
+
+@protocol NWEffectDrawerDelegate <NSObject>
+
+- (void)NWEffectDrawer:(NWEffectDrawer *)drawer finishedDrawing:(id)effect;
+
+@end
 
 @interface NWEffectDrawer : NSObject
+
+- (void)drawEffect:(ComplexEffect *)effect;
+- (BOOL)effectIsDrawing:(id)effect;
+
+- (void)drawScript:(Script *)script;
+
+- (UIImage *)renderImageForEffect:(ComplexEffect *)effect;
+- (UIImage *)renderImageForScript:(Script *)script;
+
+@property (nonatomic, weak) id<NWEffectDrawerDelegate> delegate;
 
 @end

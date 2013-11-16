@@ -7,20 +7,17 @@
 //
 
 #import "NWScriptFolderViewController.h"
-#import "NWRenderableScript.h"
 #import "Command.h"
 #import "iCarousel.h"
-#import "NWScriptObjectControl.h"
 #import "ComplexEffect.h"
-#import "UIView+blurredSnapshot.h"
 #import "UIView+Quivering.h"
 #import "WCWiflyControlWrapper.h"
 #import "NWScriptViewController.h"
 #import "Script+defaultScripts.h"
 #import "NWRenderableScriptImageView.h"
-#import "UIImage+ImageEffects.h"
+#import "NWEffectDrawer.h"
 
-@interface NWScriptFolderViewController () <iCarouselDataSource, iCarouselDelegate>
+@interface NWScriptFolderViewController () <iCarouselDataSource, iCarouselDelegate, NWEffectDrawerDelegate>
 
 @property (nonatomic, assign) BOOL isDeletionModeActive;
 @property (nonatomic, strong) UIBarButtonItem *addButton;
@@ -30,6 +27,7 @@
 @property (nonatomic, strong) UIImageView *background;
 @property (nonatomic, strong) UIButton *sendButton;
 @property (nonatomic, strong) UILabel *scriptTitleLabel;
+@property (nonatomic, strong) NWEffectDrawer *effectDrawer;
 
 @end
 
@@ -61,15 +59,14 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     self.tabBarController.navigationItem.rightBarButtonItem = nil;
+    NSError *error;
+    if (self.managedObjectContext && [self.managedObjectContext save:&error]) {
+        NSLog(@"Save failed");
+    }
     [super viewWillDisappear:animated];
 }
 
 - (void)updateView {
-    if ([self.carousel.currentItemView isKindOfClass:[UIImageView class]]) {
-        [UIView animateWithDuration:0.4 animations:^{
-            self.background.image = [((UIImageView *)[self.carousel currentItemView]).image applyExtraLightEffect];
-        }];
-    }
     self.scriptTitleLabel.text = ((Script *)[self.scriptObjects objectAtIndex:self.carousel.currentItemIndex]).title;
 }
 
@@ -88,8 +85,6 @@
     }
     self.background.frame = self.view.bounds;
 }
-
-#define SCRIPTARRAY_KEY @"WyLightRemote.NWFolderScriptViewController.ScriptArray"
 
 - (void)setup {
     self.view.superview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -125,13 +120,6 @@
     self.addButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addBarButtonPressed:)];
 }
 
-- (void)saveUserData {
-	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.scriptObjects];
-	if (data) {
-		[[NSUserDefaults standardUserDefaults] setObject:data forKey:SCRIPTARRAY_KEY];
-	}
-}
-
 #pragma mark - CORE DATA STUFF
 
 - (void)useDocument {
@@ -151,7 +139,9 @@
                 [Script defaultScriptConzentrationLightInContext:self.managedObjectContext];
                 [Script defaultScriptColorCrashWithTimeInterval:100 inContext:self.managedObjectContext];
                 NSError *error;
-                [self.managedObjectContext save:&error];
+                if (![self.managedObjectContext save:&error]) {
+                    NSLog(@"save error");
+                }
                 [self refresh];
             } else {
                 NSLog(@"saveToURL failed");
@@ -208,6 +198,14 @@
 	});
 }
 
+- (NWEffectDrawer *)effectDrawer {
+    if (_effectDrawer == nil) {
+        _effectDrawer = [[NWEffectDrawer alloc] init];
+        _effectDrawer.delegate = self;
+    }
+    return _effectDrawer;
+}
+
 #pragma mark - iCarouselDatasource
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel {
     return self.scriptObjects.count;
@@ -219,33 +217,23 @@
         view = [[NWRenderableScriptImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
         view.contentMode = UIViewContentModeCenter;
         view.backgroundColor = [UIColor grayColor];
-        view.tag = index;
+        view.tag = index + 1;
     }
     
     if ([view isKindOfClass:[UIImageView class]]) {
-        /*
-        if ([((NWRenderableScript *)self.scriptObjects[index]) needsRendering]) {
-            
-            if ([((NWRenderableScript *)self.scriptObjects[index]) snapshot]) {
-                ((UIImageView *)view).image = [((NWRenderableScript *)self.scriptObjects[index]) snapshot];
-            }
-            dispatch_async(
-                           dispatch_queue_create([[NSString stringWithFormat:@"renderImageForView #%lu", (unsigned long)index] cStringUsingEncoding:NSASCIIStringEncoding], NULL),
-                           ^{
-                               double delayInSeconds = 0.2;
-                               dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-                               dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                                   ((NWRenderableScriptImageView *)view).showActivityIndicator = [((NWRenderableScript *)self.scriptObjects[index]) isRendering];
-                               });
-                               [((NWRenderableScript *)self.scriptObjects[index]) startRenderingWithRect:view.frame];
-                            });
+        
+        Script *currentScript = [self.scriptObjects objectAtIndex:index];
+        
+        if (currentScript.snapshot) {
+            ((NWRenderableScriptImageView *)view).image = currentScript.snapshot;
         } else {
-            if ([((NWRenderableScript *)self.scriptObjects[index]) snapshot]) {
-                ((UIImageView *)view).image = [((NWRenderableScript *)self.scriptObjects[index]) snapshot];
-            }
+            ((NWRenderableScriptImageView *)view).showActivityIndicator = YES;
+            double delayInSeconds = 0.01;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [self.effectDrawer drawScript:currentScript];
+            });
         }
-        ((NWRenderableScriptImageView *)view).showActivityIndicator = [((NWRenderableScript *)self.scriptObjects[index]) isRendering];
-        */
         view.layer.cornerRadius = 5.0;
         view.clipsToBounds = YES;
         
@@ -258,7 +246,6 @@
         UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeUpOnScriptObjectControl:)];
         swipe.direction = UISwipeGestureRecognizerDirectionUp;
         [view addGestureRecognizer:swipe];
-        
         return view;
         
     }
@@ -299,7 +286,7 @@
         /*if (((NWRenderableScript *)self.scriptObjects[self.carousel.currentItemIndex]).isRendering) {
             return; // to avoid inconsistent data
         }*/
-        [self showFullScreenAlertView];
+        //[self showFullScreenAlertView];
         double delayInSeconds = 0.1;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -322,32 +309,25 @@
 }
 
 - (IBAction)addBarButtonPressed:(UIBarButtonItem *)sender {
-    Script *script = [Script emptyScriptInContext:self.managedObjectContext];
+    //Script *script = [Script emptyScriptInContext:self.managedObjectContext];
     //script.delegate = self;
     [self refresh];
-    [self.carousel insertItemAtIndex:self.scriptObjects.count - 1 animated:YES];
-    [self.carousel scrollToItemAtIndex:self.scriptObjects.count - 1 animated:YES];
+    [self.carousel insertItemAtIndex:(self.scriptObjects.count - 2) animated:YES];
+    [self.carousel scrollToItemAtIndex:(self.scriptObjects.count - 2) animated:YES];
 }
 
-- (void)showFullScreenAlertView {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"LoadingDataKey", @"ViewControllerLocalization", @"") message:NSLocalizedStringFromTable(@"PleaseWaitKey", @"ViewControllerLocalization", @"") delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-    [alert show];
-    
-    double delayInSeconds = 2.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [alert dismissWithClickedButtonIndex:0 animated:YES];
-    });
+#pragma mark - EffectDrawerDelegate 
+- (void)NWEffectDrawer:(NWEffectDrawer *)drawer finishedDrawing:(id)effect {
+    if ([effect isKindOfClass:[Script class]]) {
+        NSUInteger index = [self.scriptObjects indexOfObject:effect];
+        UIView *view = [self.carousel viewWithTag:index + 1];
+        if ([view isKindOfClass:[NWRenderableScriptImageView class]]) {
+            ((NWRenderableScriptImageView *)view).image = ((Script *)effect).snapshot;
+            ((NWRenderableScriptImageView *)view).showActivityIndicator = NO;
+        }
+    }
 }
 
-#pragma mark - RenderableScriptDelegate
-/*
-- (void)NWRenderableScriptFinishedRendering:(NWRenderableScript *)script {
-    NSUInteger index = [self.scriptObjects indexOfObject:script];
-    [self.carousel reloadItemAtIndex:index animated:YES];
-    [self updateView];
-}
-*/
 #pragma mark - SEGUE
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"edit:"])

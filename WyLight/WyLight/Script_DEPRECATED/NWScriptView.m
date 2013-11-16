@@ -19,6 +19,7 @@
     if (self) {
 		[self setup];
 		self.scriptObjectSpacing  = 0.0;
+        self.tag = -1;
 	}
     return self;
 }
@@ -38,8 +39,9 @@
 	CGFloat yPosition = self.insets.top;
 	CGFloat height = self.frame.size.height - yPosition - self.insets.bottom;
 	CGFloat width = 0;
-	for (UIView *subview in self.subviews) {
-		if ([subview isKindOfClass:[UIView class]]) {
+	for (NSUInteger i = 0; i < self.subviews.count; i++) {
+        UIView *subview = [self viewWithTag:i];
+		if (subview && [subview isKindOfClass:[UIView class]]) {
 			width = [self.dataSource scriptView:self widthOfObjectAtIndex:subview.tag];
 			subview.frame = CGRectMake(xPosition, yPosition, width, height);
 			xPosition += floorf(width) + self.scriptObjectSpacing;
@@ -65,6 +67,29 @@
 		[self addSubview:subview];
 	}
 	[self fixLocationsOfSubviews];
+}
+
+- (void)reloadViewAtIndex:(NSUInteger)idx animated:(BOOL)animated {
+    UIView *oldView = [self viewWithTag:idx];
+    if (oldView == nil) {
+        NSLog(@"%d: %s --> FAILED", __LINE__, __FUNCTION__);
+        return;
+    }
+    UIView *newView = [self.dataSource scriptView:self cellViewForIndex:idx];
+    newView.frame = oldView.frame;
+    newView.tag = oldView.tag;
+    
+    if (animated) {
+        newView.alpha = 0;
+    }
+    [self addSubview:newView];
+    if (animated) {
+        [UIView animateWithDuration:0.3 animations:^{
+            newView.alpha = 1;
+            oldView.alpha = 0;
+        }];
+    }
+    [oldView removeFromSuperview];
 }
 
 @end

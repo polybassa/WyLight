@@ -7,7 +7,7 @@
 //
 
 #import "NWComplexScriptCommandEditorViewController.h"
-#import "NWScriptObjectControl.h"
+#import "NWScriptObjectView.h"
 #import "iCarousel.h"
 #import "ALRadialMenu.h"
 #import "WCWiflyControlWrapper.h"
@@ -329,19 +329,20 @@ enum EditColorTarget {
 		//create new view if no view is available for recycling
 		if (view == nil || ![view isKindOfClass:[NWScriptObjectControl class]])
 		{
-			view = [[NWScriptObjectControl alloc] initWithFrame:CGRectMake(0, 0, 200.0f, 200.0f)];
+			view = [[NWScriptObjectView alloc] initWithFrame:CGRectMake(0, 0, 200.0f, 200.0f)];
 			view.contentMode = UIViewContentModeCenter;
 		}
 		
 		view.tag = self.command.effects.count - 1 - index;
-		if ([view isKindOfClass:[NWScriptObjectControl class]]) {
-			NWScriptObjectControl* scriptView = (NWScriptObjectControl *)view;
+		if ([view isKindOfClass:[NWScriptObjectView class]]) {
+			NWScriptObjectView* scriptView = (NWScriptObjectView *)view;
 			Effect *command = [self.command.effects objectAtIndex:view.tag];
 			[command setBackgroundColor:[UIColor clearColor]];
 			if (self.command.waitCommand.boolValue) {
 				scriptView.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.9 alpha:0.9];
 				scriptView.endColors = self.command.prev.colors;
 			} else {
+                UIColor *tempBackgroundColor;
 				scriptView.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.9 alpha:0.2];
 				scriptView.endColors = [command colors];
 			}
@@ -551,7 +552,7 @@ enum EditColorTarget {
 - (void)TimeValueEditView:(NWTimeValueEditView *)view switchValueChanged:(BOOL)on {
 	if (view == self.timeValueEditView) {
 		[self.command setWaitCommand:@(!on)];
-        [view setCommand:self.command];
+        [view reloadData];
 		[self.scriptSubCommandsCarousel reloadData];
 	}
 	[self updateView];
