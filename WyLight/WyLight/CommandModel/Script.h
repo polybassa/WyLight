@@ -22,4 +22,5 @@
 @property (nonatomic, retain) NSNumber * repeatsWhenFinished;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSOrderedSet *effects;
+@property (nonatomic, retain) UIImage * snapshot;
 @end

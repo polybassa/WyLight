@@ -13,7 +13,7 @@
 
 @interface Fade : SimpelEffect
 
-@property (nonatomic, retain) id color;
+@property (nonatomic, retain) UIColor * color;
 
 + (NSString *)entityName;
 + (instancetype)insertNewObjectIntoContext:(NSManagedObjectContext *)context;

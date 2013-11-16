@@ -15,6 +15,7 @@
 @dynamic title;
 @dynamic repeatsWhenFinished;
 @dynamic effects;
+@dynamic snapshot;
 
 + (NSString *)entityName {
     return @"Script";

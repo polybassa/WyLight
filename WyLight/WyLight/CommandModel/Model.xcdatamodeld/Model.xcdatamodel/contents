@@ -8,7 +8,9 @@
     </entity>
     <entity name="Effect" representedClassName="Effect" isAbstract="YES" parentEntity="Command" syncable="YES">
         <attribute name="backgroundColor" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="colors" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="duration" optional="YES" attributeType="Integer 16" minValueString="1" defaultValueString="100" syncable="YES"/>
+        <attribute name="snapshot" optional="YES" attributeType="Transformable" syncable="YES"/>
     </entity>
     <entity name="Fade" representedClassName="Fade" parentEntity="SimpelEffect" syncable="YES">
         <attribute name="color" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -21,6 +23,7 @@
     </entity>
     <entity name="Script" representedClassName="Script" parentEntity="Command" syncable="YES">
         <attribute name="repeatsWhenFinished" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="snapshot" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" defaultValueString="New Script" syncable="YES"/>
         <relationship name="effects" optional="YES" toMany="YES" minCount="1" deletionRule="Cascade" ordered="YES" destinationEntity="ComplexEffect" inverseName="script" inverseEntity="ComplexEffect" syncable="YES"/>
     </entity>
@@ -32,10 +35,10 @@
     <elements>
         <element name="Command" positionX="-1586" positionY="-4453" width="128" height="43"/>
         <element name="ComplexEffect" positionX="-1548" positionY="-4032" width="128" height="88"/>
-        <element name="Effect" positionX="-1811" positionY="-4257" width="128" height="73"/>
+        <element name="Effect" positionX="-1811" positionY="-4257" width="128" height="103"/>
         <element name="Fade" positionX="-2169" positionY="-3870" width="128" height="58"/>
         <element name="Gradient" positionX="-1872" positionY="-3879" width="128" height="103"/>
-        <element name="Script" positionX="-1343" positionY="-4255" width="128" height="88"/>
+        <element name="Script" positionX="-1343" positionY="-4255" width="128" height="103"/>
         <element name="SimpelEffect" positionX="-2007" positionY="-4005" width="128" height="88"/>
     </elements>
 </model>

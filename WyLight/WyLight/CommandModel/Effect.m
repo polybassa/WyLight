@@ -2,7 +2,7 @@
 //  Effect.m
 //  WyLight
 //
-//  Created by Nils Weiß on 03/11/13.
+//  Created by Nils Weiß on 16/11/13.
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
@@ -13,7 +13,8 @@
 
 @dynamic backgroundColor;
 @dynamic duration;
-
+@dynamic colors;
+@dynamic snapshot;
 
 - (void)awakeFromInsert {
     [super awakeFromInsert];
@@ -22,11 +23,6 @@
 
 - (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control {
     [[[NSException alloc] initWithName:@"Function not implemented" reason:@"Abstract Object:" userInfo:nil] raise];
-}
-
-- (NSArray *)colors {
-    [[[NSException alloc] initWithName:@"Function not implemented" reason:@"Abstract Object" userInfo:nil] raise];
-    return nil;
 }
 
 @end
