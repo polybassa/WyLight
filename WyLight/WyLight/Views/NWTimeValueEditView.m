@@ -29,7 +29,7 @@
 
 		self.timeSlider = [[UISlider alloc] initWithFrame:CGRectZero];
 		self.timeSlider.continuous = YES;
-		self.timeSlider.maximumValue = @(0xffff).floatValue;
+		self.timeSlider.maximumValue = 65536;
 		self.timeSlider.minimumValue = 0;
 		[self.timeSlider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
 		[self addSubview:self.timeSlider];
@@ -85,7 +85,9 @@
 
 - (void)sliderValueChanged:(UISlider *)sender {
 	if (self.delegate) {
-		[self.delegate TimeValueEditView:self sliderValueChanged:sender.value];
+        if (sender.value > 0) {
+            [self.delegate TimeValueEditView:self sliderValueChanged:sender.value];
+        };
 	}
 }
 

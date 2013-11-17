@@ -476,7 +476,13 @@ enum EditColorTarget {
 		if (self.command.effects.count > 1) {
 			NSUInteger index = gesture.view.tag;
             [self.command.managedObjectContext deleteObject:[self.command.effects objectAtIndex:index]];
+            self.command.colors = nil;
 			[self.scriptSubCommandsCarousel removeItemAtIndex:self.scriptSubCommandsCarousel.currentItemIndex animated:YES];
+            NSError *error;
+            if (self.command.managedObjectContext && ![self.command.managedObjectContext save:&error]) {
+                NSLog(@"Save failed: %@", error.helpAnchor);
+            }
+           [self.scriptSubCommandsCarousel reloadData];
 		}
 		else {
 			NWScriptObjectControl* scriptView = (NWScriptObjectControl *)gesture.view;
@@ -617,6 +623,7 @@ enum EditColorTarget {
 	if ([currentCommand isKindOfClass:[Fade class]] && view == self.fadeColorEditView) {
 		Fade *currentFadeCommand = (Fade *)currentCommand;
 		currentFadeCommand.color = color;
+        self.fadeEditView.command = currentFadeCommand;
 	}
 	else if ([currentCommand isKindOfClass:[Gradient class]] && (view == self.gradientColor2EditView || view == self.gradientColor1EditView)) {
 		Gradient *currentGradientCommand = (Gradient *)currentCommand;
@@ -647,6 +654,11 @@ enum EditColorTarget {
     Fade *newFade = [self defaultFadeCommand];
     [self.command.managedObjectContext insertObject:newFade];
     newFade.complexEffect = self.command;
+    
+    NSError *error;
+    if (self.command.managedObjectContext && ![self.command.managedObjectContext save:&error]) {
+        NSLog(@"Save failed: %@", error.helpAnchor);
+    }
 	
     [self.scriptSubCommandsCarousel reloadData];
 	double delayInSeconds = 0.5;
@@ -660,6 +672,11 @@ enum EditColorTarget {
     Gradient *newGradient = [self defaultGradientCommand];
     [self.command.managedObjectContext insertObject:newGradient];
     newGradient.complexEffect = self.command;
+    
+    NSError *error;
+    if (self.command.managedObjectContext && ![self.command.managedObjectContext save:&error]) {
+        NSLog(@"Save failed: %@", error.helpAnchor);
+    }
 
 	[self.scriptSubCommandsCarousel reloadData];
 	double delayInSeconds = 0.5;

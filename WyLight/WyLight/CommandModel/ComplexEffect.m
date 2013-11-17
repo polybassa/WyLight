@@ -110,6 +110,13 @@
 }
 
 - (void)prepareForSendToWCWiflyControl {
+    if (self.hasChanges) {
+        NSError *error;
+        if (self.managedObjectContext && ![self.managedObjectContext save:&error]) {
+            NSLog(@"Save failed: %@", error.helpAnchor);
+        }
+    }
+    [self.managedObjectContext refreshObject:self mergeChanges:YES];
     for (SimpelEffect *command in self.effects) {
         if ([command isKindOfClass:[SimpelEffect class]]) {
             [command setParallel:@(YES)];

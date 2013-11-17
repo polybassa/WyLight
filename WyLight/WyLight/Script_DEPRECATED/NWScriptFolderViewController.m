@@ -47,6 +47,8 @@
     [super viewWillAppear:animated];
     if (!self.managedObjectContext) {
         [self useDocument];
+    } else {
+        [self refresh];
     }
     self.tabBarController.navigationItem.rightBarButtonItem = self.addButton;
     [self.carousel reloadData];
@@ -60,7 +62,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     self.tabBarController.navigationItem.rightBarButtonItem = nil;
     NSError *error;
-    if (self.managedObjectContext && [self.managedObjectContext save:&error]) {
+    if (self.managedObjectContext && ![self.managedObjectContext save:&error]) {
         NSLog(@"Save failed");
     }
     [super viewWillDisappear:animated];
@@ -163,6 +165,9 @@
     if (self.managedObjectContext) {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[Script entityName]];
         
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
+        [request setSortDescriptors:@[sortDescriptor]];
+        
         NSError *error;
         self.scriptObjects = [self.managedObjectContext executeFetchRequest:request error:&error];
         if (self.scriptObjects == nil) {
@@ -173,7 +178,6 @@
     }
     
 }
-
 
 #pragma mark - GETTER & SETTER
 - (void)setIsDeletionModeActive:(BOOL)isDeletionModeActive {
@@ -235,7 +239,7 @@
             });
         }
         view.layer.cornerRadius = 5.0;
-        view.clipsToBounds = YES;
+        //view.clipsToBounds = YES;
         
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOnScriptObjectControl:)];
         [view addGestureRecognizer:longPress];
@@ -280,13 +284,12 @@
 }
 
 - (void)tapOnScriptObjectControl:(UITapGestureRecognizer *)gesture {
+    if ([self.effectDrawer effectIsDrawing:nil]) {
+        return;
+    }
     if (self.isDeletionModeActive) {
         self.isDeletionModeActive = NO;
     } else {
-        /*if (((NWRenderableScript *)self.scriptObjects[self.carousel.currentItemIndex]).isRendering) {
-            return; // to avoid inconsistent data
-        }*/
-        //[self showFullScreenAlertView];
         double delayInSeconds = 0.1;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -296,27 +299,52 @@
 }
 
 - (void)longPressOnScriptObjectControl:(UILongPressGestureRecognizer *)gesture {
+    if ([self.effectDrawer effectIsDrawing:nil]) {
+        return;
+    }
     self.isDeletionModeActive = YES;
 }
 
 - (void)swipeUpOnScriptObjectControl:(UISwipeGestureRecognizer *)gesture {
+    if ([self.effectDrawer effectIsDrawing:nil]) {
+        return;
+    }
     if (self.isDeletionModeActive && self.scriptObjects.count > 1) {
-        [self.managedObjectContext deleteObject:[self.scriptObjects objectAtIndex:self.carousel.currentItemIndex]];
-        [self refresh];
-        [self.carousel removeItemAtIndex:self.carousel.currentItemIndex animated:YES];
+        NSUInteger indexOfObjectToRemove = self.carousel.currentItemIndex;
+        [self.carousel removeItemAtIndex:indexOfObjectToRemove animated:YES];
+        [self.managedObjectContext deleteObject:[self.scriptObjects objectAtIndex:indexOfObjectToRemove]];
+        NSError *error;
+        if (self.managedObjectContext && ![self.managedObjectContext save:&error]) {
+            NSLog(@"Save failed: %@", error.helpAnchor);
+        }
+        NSMutableArray *mutScripts = [self.scriptObjects mutableCopy];
+        [mutScripts removeObjectAtIndex:indexOfObjectToRemove];
+        self.scriptObjects = mutScripts;
+        [self updateView];
     }
     self.isDeletionModeActive = NO;
 }
 
 - (IBAction)addBarButtonPressed:(UIBarButtonItem *)sender {
-    //Script *script = [Script emptyScriptInContext:self.managedObjectContext];
-    //script.delegate = self;
-    [self refresh];
-    [self.carousel insertItemAtIndex:(self.scriptObjects.count - 2) animated:YES];
-    [self.carousel scrollToItemAtIndex:(self.scriptObjects.count - 2) animated:YES];
+    Script *script = [Script emptyScriptInContext:self.managedObjectContext];
+    NSError *error;
+    if (self.managedObjectContext && ![self.managedObjectContext save:&error]) {
+        NSLog(@"Save failed: %@", error.helpAnchor);
+    }
+    NSMutableArray *mutScripts = [self.scriptObjects mutableCopy];
+    [mutScripts addObject:script];
+    self.scriptObjects = mutScripts;
+    [self.carousel insertItemAtIndex:(self.scriptObjects.count - 1) animated:YES];
+    [self.carousel scrollToItemAtIndex:(self.scriptObjects.count - 1) animated:YES];
+    [self updateView];
+    double delayInSeconds = 0.8;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self performSegueWithIdentifier:@"edit:" sender:self];
+    });
 }
 
-#pragma mark - EffectDrawerDelegate 
+#pragma mark - EffectDrawerDelegate
 - (void)NWEffectDrawer:(NWEffectDrawer *)drawer finishedDrawing:(id)effect {
     if ([effect isKindOfClass:[Script class]]) {
         NSUInteger index = [self.scriptObjects indexOfObject:effect];

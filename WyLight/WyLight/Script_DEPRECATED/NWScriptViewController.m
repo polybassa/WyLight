@@ -45,15 +45,20 @@
     return _effectDrawer;
 }
 
+- (void)resizeScriptToFit {
+    if (self.script) {
+        CGFloat availableWidth = self.view.frame.size.width - 20;
+        CGFloat scriptDuration = self.script.totalDurationInTmms.floatValue;
+    
+        if (availableWidth != 0 && scriptDuration != 0) {
+            self.timeScaleFactor = availableWidth / scriptDuration;
+        }
+    }
+}
+
 - (void)setScript:(Script *)script {
     _script = script;
-    CGFloat availableWidth = self.view.frame.size.width;
-    CGFloat scriptDuration = script.totalDurationInTmms.floatValue;
-    
-    if (availableWidth != 0 && scriptDuration != 0) {
-        self.timeScaleFactor = availableWidth / scriptDuration;
-    }
-    
+    [self resizeScriptToFit];
     [self.scriptView reloadData];
 }
 
@@ -126,6 +131,7 @@
 		self.zoomInButton.frame = CGRectMake(self.view.frame.size.width - 44, self.view.frame.size.height - 44, 44, 44);
 
 	}
+    [self resizeScriptToFit];
 }
 
 - (void)setup {	
@@ -184,6 +190,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [self resizeScriptToFit];
 	[self.scriptView reloadData];
     self.titelTextField.text = self.script.title;
 	[super viewWillAppear:animated];
@@ -295,9 +302,9 @@
 			
             //tags anpassen um danach die Positionen richtig zu berechnen
             [self.script.managedObjectContext deleteObject:commandToDelete];
-            
+            self.script.snapshot = nil;
             NSError *error;
-            if (self.script.managedObjectContext && [self.script.managedObjectContext save:&error]) {
+            if (self.script.managedObjectContext && ![self.script.managedObjectContext save:&error]) {
                 NSLog(@"Save failed");
             }
             
@@ -335,7 +342,7 @@
     commandToAdd.script = self.script;
     
     NSError *error;
-    if (self.script.managedObjectContext && [self.script.managedObjectContext save:&error]) {
+    if (self.script.managedObjectContext && ![self.script.managedObjectContext save:&error]) {
         NSLog(@"Save failed: %@", error.helpAnchor);
     }
     

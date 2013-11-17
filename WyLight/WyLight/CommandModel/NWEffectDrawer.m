@@ -183,7 +183,7 @@
 - (UIImage *)renderImageForScript:(Script *)script {
     CGSize imageSize = CGSizeMake(200, 200);
     
-    CGFloat widthFract = imageSize.width / script.totalDurationInTmms.floatValue;
+    CGFloat leftDuration = script.totalDurationInTmms.floatValue;
     CGFloat xPos = 0;
     UIGraphicsBeginImageContext(imageSize);
     
@@ -192,10 +192,12 @@
             effect.snapshot = [self renderImageForEffect:effect];
         }
         xPos = floorf(xPos);
-        CGFloat nextXPos = xPos + ceilf(widthFract * effect.duration.floatValue);
+        CGFloat widthFract = (imageSize.width - xPos) / leftDuration;
+        CGFloat nextXPos = xPos + floorf(widthFract * effect.duration.floatValue);
         CGRect drawArea = CGRectMake(xPos, 0, nextXPos - xPos, imageSize.height);
         [effect.snapshot drawInRect:drawArea];
         xPos = nextXPos;
+        leftDuration -= effect.duration.floatValue;
     }
     UIImage *outputImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
