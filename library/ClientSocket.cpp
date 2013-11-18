@@ -33,7 +33,7 @@ namespace WyLight {
 
 static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-#define ESTABLISH_CONNECTION_TIMEOUT 8
+#define ESTABLISH_CONNECTION_TIMEOUT 10
 
 ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) 
 	: mSock(socket(AF_INET, style, 0)), mSockAddr(addr, port)
@@ -77,7 +77,7 @@ TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalE
 	fcntl(mSock, F_SETFL, socketArgs);
 	
 	const int result = connect(mSock, reinterpret_cast<sockaddr*>(&mSockAddr), sizeof(mSockAddr));	
-	if(result >= 0)
+	if(result != 0)
 	{
 		if(errno != EINPROGRESS) {
 			throw ConnectionLost("connect() failed", addr, port);
@@ -102,9 +102,7 @@ TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalE
 		if(0 != errorStatus) {
 			throw ConnectionLost("connect() failed with error", addr, port);
 		}
-	} else {
-        throw ConnectionLost("connect() failed with error", addr, port);
-    }
+	}
 	const int restSockArgs = fcntl(mSock, F_GETFL, NULL) & (~O_NONBLOCK);
 	fcntl(mSock, F_SETFL, restSockArgs);
 }
