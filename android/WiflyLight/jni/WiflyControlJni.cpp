@@ -188,6 +188,54 @@ void Java_biz_bruenn_WyLight_WiflyControl_release(JNIEnv* env, jobject ref, jlon
 	}
 }
 
+jint Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_getFadeColor(JNIEnv* env, jobject ref, jlong pNative)
+{
+	auto fadeCommand = reinterpret_cast<const FwCmdSetFade*>(pNative);
+	return fadeCommand->argb();
+}
+
+void Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_setFadeColor(JNIEnv* env, jobject ref, jlong pNative, jint argb)
+{
+	auto fadeCommand = reinterpret_cast<FwCmdSetFade*>(pNative);
+	fadeCommand->argb(argb);
+}
+
+void Java_biz_bruenn_WyLight_library_ScriptAdapter_addFade(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr, jshort fadeTime)
+{
+	reinterpret_cast<Script*>(pNative)->push_back(new FwCmdSetFade(argb, fadeTime, addr));
+}
+
+void Java_biz_bruenn_WyLight_library_ScriptAdapter_clear(JNIEnv* env, jobject ref, jlong pNative)
+{
+	reinterpret_cast<Script*>(pNative)->clear();
+}
+
+jlong Java_biz_bruenn_WyLight_library_ScriptAdapter_getItem(JNIEnv* env, jobject ref, jlong pNative, jint position)
+{
+	auto fwCmdScript = reinterpret_cast<Script*>(pNative)->begin();
+	std::advance(fwCmdScript, position);
+	return reinterpret_cast<jlong>(*fwCmdScript);
+}
+
+jint Java_biz_bruenn_WyLight_library_ScriptAdapter_numCommands(JNIEnv* env, jobject ref, jlong pNative)
+{
+	return reinterpret_cast<const Script*>(pNative)->size();
+}
+
+jlong Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_getScript(JNIEnv* env, jobject ref, jstring path, jlong index)
+{
+	Script* result = NULL;
+	const char* const myPath = env->GetStringUTFChars(path, 0);
+	try {
+		ScriptManager manager{myPath};
+		result = new Script(std::move(manager.getScript(index)));
+	} catch (FatalError& e) {
+		ThrowJniException(env, e);
+	}
+	env->ReleaseStringUTFChars(path, myPath);
+	return reinterpret_cast<jlong>(result);
+}
+
 jstring Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_getScriptName(JNIEnv* env, jobject ref, jstring path, jlong index)
 {
 	jstring result = NULL;

@@ -858,13 +858,13 @@ namespace WyLight {
 		*this << FwCmdClearScript() << FwCmdSetFade(WiflyColor::BLACK, 2);
 		
 		WyLight::Script testScript("test.script");
-		
+/*		
 		testScript.emplace_front(FwCmdLoopOn());
 		testScript.emplace_back(FwCmdSetFade(WiflyColor::GREEN, 2000));
 		testScript.emplace_back(FwCmdSetFade(WiflyColor::RED, 2000));
 		testScript.emplace_back(FwCmdSetFade(WiflyColor::BLUE, 2000));
 		testScript.emplace_back(FwCmdLoopOff(5));
-		
+	*/	
 		*this << testScript;
 		/*
 		uint32_t bitMask = 0x01;

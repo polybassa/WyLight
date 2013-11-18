@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 public class ScriptManagerAdapter extends BaseAdapter {
 	
+	private native long getScript(String path, long index);
 	private native String getScriptName(String path, long index);
 	private native int numScripts(String path);
 	private native void newScript(String path, String name);
@@ -27,9 +28,9 @@ public class ScriptManagerAdapter extends BaseAdapter {
 		return numScripts(path);
 	}
 
-	public Object getItem(int position) {
+	public ScriptAdapter getItem(int position) {
 		// TODO Auto-generated method stub
-		return String.valueOf(position);
+		return new ScriptAdapter(getScript(path, position));
 	}
 
 	public long getItemId(int position) {

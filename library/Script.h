@@ -27,7 +27,7 @@
 
 namespace WyLight {
 
-class Script : public std::list<std::shared_ptr<FwCmdScript>>
+class Script : public std::list<FwCmdScript*>
 {
 	std::string mName;
 
@@ -39,18 +39,6 @@ public:
 	Script(const std::string& filename);
 	~Script(void);
 	bool operator ==(const Script& ref) const;
-	
-	template<typename T>
-	void emplace_back(T&& t)
-	{
-		this->list::emplace_back(std::make_shared<T>(std::forward<T>(t)));
-	}
-
-	template<typename T>
-	void emplace_front(T&& t)
-	{
-		this->list::emplace_front(std::make_shared<T>(std::forward<T>(t)));
-	}
 
 	const std::string& getName() const;
 };

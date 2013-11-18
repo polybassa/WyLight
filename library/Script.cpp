@@ -65,15 +65,15 @@ void Script::deserialize(const std::string& filename, Script& newScript) throw (
 	std::string command;
 	while(inFile >> command) {
 		if (0 == command.compare(FwCmdLoopOn::TOKEN)) {
-			newScript.emplace_back(FwCmdLoopOn());
+			newScript.push_back(new FwCmdLoopOn());
 		} else if (0 == command.compare(FwCmdLoopOff::TOKEN)) {
-			newScript.emplace_back(FwCmdLoopOff(inFile));
+			newScript.push_back(new FwCmdLoopOff(inFile));
 		} else if (0 == command.compare(FwCmdWait::TOKEN)) {
-			newScript.emplace_back(FwCmdWait(inFile));
+			newScript.push_back(new FwCmdWait(inFile));
 		} else if (0 == command.compare(FwCmdSetFade::TOKEN)) {
-			newScript.emplace_back(FwCmdSetFade(inFile));
+			newScript.push_back(new FwCmdSetFade(inFile));
 		} else if (0 == command.compare(FwCmdSetGradient::TOKEN)) {
-			newScript.emplace_back(FwCmdSetGradient(inFile));
+			newScript.push_back(new FwCmdSetGradient(inFile));
 		} else {
 			throw FatalError("Unknown command: " + command);
 		}

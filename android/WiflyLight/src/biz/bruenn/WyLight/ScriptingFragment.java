@@ -1,14 +1,10 @@
 package biz.bruenn.WyLight;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import biz.bruenn.WiflyLight.R;
-import biz.bruenn.WyLight.exception.ConnectionTimeout;
-import biz.bruenn.WyLight.exception.FatalError;
-import biz.bruenn.WyLight.exception.ScriptBufferFull;
+import biz.bruenn.WyLight.library.ScriptAdapter;
 import biz.bruenn.WyLight.library.ScriptManagerAdapter;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,20 +17,31 @@ import android.widget.Spinner;
 public class ScriptingFragment extends ControlFragment {
 	public static final String ITEM_POSITION = "ITEM_POSITION";
 
-	private ArrayList<ScriptCommand> mArrayList = new ArrayList<ScriptCommand>();
-	private ScriptCommandAdapter mAdapter;
 	private ScriptManagerAdapter mScriptList;
-	private Random r = new Random();
+	private ListView mCommandList;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_scripting, group, false);
+			
+		Spinner savedScripts = (Spinner)v.findViewById(R.id.savedScripts);
+		mScriptList = new ScriptManagerAdapter(getActivity().getApplicationContext());
+		savedScripts.setAdapter(mScriptList);
+		savedScripts.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				mCommandList.setAdapter(mScriptList.getItem(position));				
+			}
+
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+			}
+		});	
 		
-		mAdapter = new ScriptCommandAdapter(this.getActivity(), android.R.layout.simple_list_item_1, mArrayList);
-		mAdapter.notifyDataSetChanged();
-		ListView list = (ListView)v.findViewById(R.id.scriptList);
-		list.setAdapter(mAdapter);
-		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		mCommandList = (ListView)v.findViewById(R.id.scriptList);
+		mCommandList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View v, int position,
 					long id) {
@@ -48,7 +55,7 @@ public class ScriptingFragment extends ControlFragment {
 		Button add = (Button)v.findViewById(R.id.addCommand);
 		add.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				mAdapter.add(new ScriptCommand(String.valueOf(r.nextInt())));
+				scriptAdapter().addFade(Color.GREEN, 0xffffffff, (short)0);
 			}
 		});
 		
@@ -56,7 +63,7 @@ public class ScriptingFragment extends ControlFragment {
 		clear.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				mAdapter.clear();
+				scriptAdapter().clear();
 				mProvider.getControl().fwClearScript();
 			}
 		});
@@ -77,10 +84,6 @@ public class ScriptingFragment extends ControlFragment {
 			}
 		});
 		
-		Spinner savedScripts = (Spinner)v.findViewById(R.id.savedScripts);
-		mScriptList = new ScriptManagerAdapter(getActivity().getApplicationContext());
-		savedScripts.setAdapter(mScriptList);
-		
 		return v;
 	}
 	
@@ -88,28 +91,16 @@ public class ScriptingFragment extends ControlFragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(null != data) {
 			final int position = data.getIntExtra(ITEM_POSITION, 0);
-			mAdapter.getItem(position).setColor(resultCode);
-			mAdapter.notifyDataSetChanged();
+			scriptAdapter().getItem(position).setColor(resultCode);
+			scriptAdapter().notifyDataSetChanged();
 		}
 	}
 	
+	private ScriptAdapter scriptAdapter() {
+		return (ScriptAdapter)mCommandList.getAdapter();
+	}
+	
 	private void sendScript() {
-		try {
-			mProvider.getControl().fwClearScript();
-			mProvider.getControl().fwLoopOn();
-			for(ScriptCommand cmd: mArrayList) {
-				cmd.sendTo(mProvider.getControl());
-			}
-			mProvider.getControl().fwLoopOff((byte)0);
-		} catch (ConnectionTimeout e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ScriptBufferFull e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FatalError e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//TODO implement this
 	}
 }
