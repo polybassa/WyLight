@@ -77,23 +77,26 @@
 	
 	const CGFloat heightFract = self.bounds.size.height / self.endColors.count;
 	
+    UIColor *startColor = [UIColor clearColor];
+    
 	for (unsigned int i = 0; i < self.endColors.count; i++) {
 		CGFloat rectOriginY = floorf(i * heightFract);
 		CGFloat nextRectOriginY = floorf((i + 1) * heightFract);
 		CGFloat rectHeight = nextRectOriginY - rectOriginY;
 		NWGradientView *gradientView = [[NWGradientView alloc] initWithFrame: CGRectMake(self.bounds.origin.x, rectOriginY, self.bounds.size.width, rectHeight)];
 		gradientView.opaque = NO;
-		UIColor *startColor;
+		
 		if ((self.startColors) && (i < self.startColors.count)) {
 			startColor = [self.startColors objectAtIndex:i];
 		} else {
 			startColor = self.backgroundColor;
 		}
-		gradientView.startColor = startColor;
+		gradientView.startColor = [startColor copy];
 		gradientView.endColor = self.endColors[i];
 		[self addSubview:gradientView];
 		[self.gradientViews addObject:gradientView];
 	}
+    [self setNeedsDisplay];
 }
 
 - (void)setColorsAnimatedWithDuration:(NSTimeInterval)duration startColors:(NSArray *)startColors endColor:(NSArray *)endColors {
@@ -115,6 +118,12 @@
 - (void)setStartColors:(NSArray *)startColors {
 	_startColors = startColors;
 	[self drawAllColorViews];
+}
+
+- (void)setStartColors:(NSArray *)startColors withEndcolors:(NSArray *)endColors {
+    _startColors = startColors;
+    _endColors = endColors;
+    [self drawAllColorViews];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {

@@ -239,7 +239,7 @@
             });
         }
         view.layer.cornerRadius = 5.0;
-        //view.clipsToBounds = YES;
+        view.clipsToBounds = YES;
         
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOnScriptObjectControl:)];
         [view addGestureRecognizer:longPress];

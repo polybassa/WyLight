@@ -572,24 +572,6 @@
             </objects>
             <point key="canvasLocation" x="169" y="117"/>
         </scene>
-        <!--Script FolderCDVC-->
-        <scene sceneID="9yO-f4-dfd">
-            <objects>
-                <viewController id="x2c-8U-c7Q" customClass="NWScriptFolderCDVC" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="gvi-x2-Aof"/>
-                        <viewControllerLayoutGuide type="bottom" id="A2K-9z-luE"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="vHa-Ih-VRw">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fNx-Qt-OTR" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="34" y="1373"/>
-        </scene>
         <!--Script View Controller-->
         <scene sceneID="Str-vd-itS">
             <objects>
@@ -679,6 +661,25 @@
             </objects>
             <point key="canvasLocation" x="4384" y="1389"/>
         </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="NKv-9y-khO">
+            <objects>
+                <tabBarController definesPresentationContext="YES" id="3os-hy-7vl" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="4Iv-bS-4tk"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="ghi-eB-yeu">
+                        <rect key="frame" x="129" y="330" width="163" height="49"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="hsM-b9-5b3" kind="relationship" relationship="viewControllers" id="eyP-9j-ZIQ"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Vc-PK-XBo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1934" y="1629"/>
+        </scene>
         <!--Script Folder View Controller - Script Editor-->
         <scene sceneID="hMo-6q-bij">
             <objects>
@@ -704,6 +705,21 @@
             </objects>
             <point key="canvasLocation" x="2762" y="1389"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="jLh-9c-oDJ">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="JaC-K0-GVf" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="IVw-Hc-Wma">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="3os-hy-7vl" kind="relationship" relationship="rootViewController" id="Gub-Ax-lHI"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="274-M5-2wC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1278" y="1629"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Paint_TabBarIcon" width="30" height="30"/>
@@ -717,6 +733,7 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="eyP-9j-ZIQ"/>
         <segue reference="ozS-Lc-m4i"/>
     </inferredMetricsTieBreakers>
 </document>

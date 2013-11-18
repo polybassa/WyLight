@@ -10,12 +10,13 @@
 #import "NWTimeValueEditView.h"
 #import "ComplexEffect.h"
 
-@interface NWTimeValueEditView ()
+@interface NWTimeValueEditView () <UIPickerViewDelegate>
 
-@property (nonatomic, strong) UISlider *timeSlider;
-@property (nonatomic, strong) UILabel *timeLabel;
-@property (nonatomic, strong) UILabel *waitInfoLabel;
-@property (nonatomic, strong) UISwitch *waitSwitch;
+@property (nonatomic, strong) UIDatePicker *timePicker;
+@property (nonatomic, strong) UIPickerView *pickerView;
+@property (nonatomic, strong) NSMutableArray *minsArray;
+@property (nonatomic, strong) NSMutableArray *secsArray;
+@property (nonatomic, strong) NSMutableArray *millisecsArray;
 
 @end
 
@@ -27,39 +28,101 @@
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleHeight;
 		self.clipsToBounds = YES;
 
-		self.timeSlider = [[UISlider alloc] initWithFrame:CGRectZero];
-		self.timeSlider.continuous = YES;
-		self.timeSlider.maximumValue = 65536;
-		self.timeSlider.minimumValue = 0;
-		[self.timeSlider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
-		[self addSubview:self.timeSlider];
-		
-		self.timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-		self.timeLabel.textAlignment = NSTextAlignmentCenter;
-		[self addSubview:self.timeLabel];
-		
-		self.waitInfoLabel = [[UILabel alloc]initWithFrame:CGRectZero];
-		self.waitInfoLabel.text = NSLocalizedStringFromTable(@"WaitInfoLabelKey", @"ScriptObjectEditViewsLocalization", @"");
-		[self addSubview:self.waitInfoLabel];
-		
-		self.waitSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
-		[self.waitSwitch addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
-		[self addSubview:self.waitSwitch];
+        self.pickerView = [[UIPickerView alloc] initWithFrame:CGRectZero];
+        self.pickerView.delegate = self;
+        [self addSubview:self.pickerView];
 		
 		[self setFrame:frame];
         // Initialization code
+        
+        self.minsArray = [[NSMutableArray alloc] init];
+        self.secsArray = [[NSMutableArray alloc] init];
+        self.millisecsArray = [[NSMutableArray alloc] init];
+        
+        for(int i=0; i<60; i++)
+        {
+            NSString *strMin = [NSString stringWithFormat:@"%dm", i];
+            NSString *strSec = [NSString stringWithFormat:@"%ds", i];
+            NSString *strMil = [NSString stringWithFormat:@"%dms", i * 100];
+            
+            if (i < 10)
+            {
+                [self.minsArray addObject:strMin];
+            }
+            [self.secsArray addObject:strSec];
+            
+            if (i < 10) {
+                [self.millisecsArray addObject:strMil];
+            }
+        }
     }
     return self;
 }
 
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    [self calculateTimeFromPicker];
+}
+
+//Method to define how many columns/dials to show
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 3;
+}
+
+// Method to define the numberOfRows in a component using the array.
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent :(NSInteger)component
+{
+    if (component==0)
+    {
+        return [self.minsArray count];
+    }
+    else if (component==1)
+    {
+        return [self.secsArray count];
+    }
+    else
+    {
+        return [self.millisecsArray count];
+    }
+}
+
+
+// Method to show the title of row for a component.
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    switch (component)
+    {
+        case 0:
+            return [self.minsArray objectAtIndex:row];
+            break;
+        case 1:
+            return [self.secsArray objectAtIndex:row];
+            break;
+        case 2:
+            return [self.millisecsArray objectAtIndex:row];
+            break;
+    }
+    return nil;
+}
+
+
+- (void)calculateTimeFromPicker
+{
+    
+    long long minsInt = [self.pickerView selectedRowInComponent:0] * 60 * 1000;
+    long long secsInt = [self.pickerView selectedRowInComponent:1] * 1000;
+    long long millisInt = [self.pickerView selectedRowInComponent:2] * 100;
+    
+    
+    long long interval = (millisInt + secsInt + minsInt) / 10;
+    
+    [self.delegate TimeValueEditView:self timeValueChanged:@(interval)];
+}
+
 - (void)setFrame:(CGRect)frame {
 	[super setFrame:frame];
-	{
-		self.waitInfoLabel.frame = CGRectMake(self.bounds.size.width / 10, self.bounds.size.height / 10, self.bounds.size.width / 2, self.bounds.size.height / 4);
-		self.waitSwitch.frame = CGRectMake(self.bounds.size.width * 3 / 4, self.bounds.size.height / 10, self.bounds.size.width / 3, self.bounds.size.height / 4);
-		self.timeSlider.frame =  CGRectMake(self.bounds.size.width / 10, self.bounds.size.height / 2, self.bounds.size.width - self.bounds.size.width / 5 , self.bounds.size.height / 4);
-		self.timeLabel.frame =  CGRectMake(self.bounds.size.width / 10, self.bounds.size.height * 3 / 4,  self.bounds.size.width - self.bounds.size.width / 5 , self.bounds.size.height / 4);
-	}
+	
+    self.pickerView.frame = CGRectMake(0, (self.bounds.size.height - 162) / 2, self.bounds.size.width, 162);
 }
 
 - (void)setCornerRadius:(CGFloat)cornerRadius {
@@ -73,28 +136,19 @@
 }
 
 - (void)reloadData {
-	self.timeSlider.value = self.command.duration.floatValue;
-	self.timeLabel.text =  [NSString stringWithFormat:@"%@ %2.1f s",
-                            NSLocalizedStringFromTable(@"TimeLabelKey", @"ScriptObjectEditViewsLocalization", @""),
-                            ((float)self.command.duration.floatValue / 100)];
-	
-	self.waitInfoLabel.hidden = NO;
-	self.waitSwitch.hidden = NO;
-	self.waitSwitch.on = ![[self.command waitCommand] boolValue];
-}
-
-- (void)sliderValueChanged:(UISlider *)sender {
-	if (self.delegate) {
-        if (sender.value > 0) {
-            [self.delegate TimeValueEditView:self sliderValueChanged:sender.value];
-        };
-	}
-}
-
-- (void)switchValueChanged:(UISwitch *)sender {
-	if (self.delegate) {
-		[self.delegate TimeValueEditView:self switchValueChanged:sender.on];
-	}
+    unsigned int milli, sec, min;
+    long long total = self.command.duration.longLongValue;
+    
+    total = total / 10;
+    milli = (int)total % 10;
+    total = total / 10;
+    sec = (int)total % 60;
+    total = total / 60;
+    min = (int)total;
+    
+    [self.pickerView selectRow:milli inComponent:2 animated:YES];
+    [self.pickerView selectRow:sec inComponent:1 animated:YES];
+    [self.pickerView selectRow:min inComponent:0 animated:YES];
 }
 
 @end

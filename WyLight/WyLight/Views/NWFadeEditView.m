@@ -32,6 +32,7 @@
 				
 		self.fadeEditView = [[NWScriptObjectView alloc] initWithFrame:CGRectZero];
 		self.fadeEditView.backgroundColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:0.2];
+        self.fadeEditView.opaque = YES;
 		[self.fadeEditView addGestureRecognizer:tap];
 		self.fadeEditView.orientation = 90 * M_PI / 180;
 		self.fadeEditView.cornerRadius = 5.0;
@@ -71,11 +72,10 @@
 	if ([currentCommand isKindOfClass:[Fade class]]) {
 		Fade *currentFadeCommand = (Fade *)currentCommand;
 		self.addressMaskForFadeEditView = currentFadeCommand.address.unsignedIntegerValue;
-		self.fadeEditView.startColors = self.fadeEditView.endColors = currentFadeCommand.colors;
-        [self.fadeEditView setNeedsDisplay];
+        [self.fadeEditView setStartColors:currentFadeCommand.colors withEndcolors:currentFadeCommand.colors];
 	} else {
-		self.fadeEditView.endColors = self.fadeEditView.startColors = @[[UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:0.2]];
-        [self.fadeEditView setNeedsDisplay];
+		self.fadeEditView.endColors = @[[UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:0.2]];
+        self.fadeEditView.startColors = @[[UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:0.2]];
 	}
 }
 

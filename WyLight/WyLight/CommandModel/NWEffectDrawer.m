@@ -128,7 +128,7 @@
             //
             resultImage = CGBitmapContextCreateImage(context);
             UIColor *tintColor = [UIColor clearColor];
-            resultUIImage = [[UIImage imageWithCGImage:resultImage] applyBlurWithRadius:3 tintColor:tintColor saturationDeltaFactor:1.0 maskImage:nil];
+            resultUIImage = [[UIImage imageWithCGImage:resultImage] applyBlurWithRadius:1 tintColor:tintColor saturationDeltaFactor:1.0 maskImage:nil];
             CGImageRelease(resultImage);
             CGColorSpaceRelease(colorSpace);
             CGContextRelease(context);

@@ -18,8 +18,9 @@
 #import "Fade.h"
 #import "Gradient.h"
 #import "NWDefaultColorPickerViewController.h"
+#import "NWEffectEnableEditView.h"
 
-@interface NWComplexScriptCommandEditorViewController () <iCarouselDataSource, iCarouselDelegate, ALRadialMenuDelegate, NWTimeValueEditViewDelegate, NWGradientEditViewDelegate, NWFadeEditViewDelegate, NWColorEditViewDelegate, NWDefaultColorControllerDelegate>
+@interface NWComplexScriptCommandEditorViewController () <iCarouselDataSource, iCarouselDelegate, ALRadialMenuDelegate, NWTimeValueEditViewDelegate, NWGradientEditViewDelegate, NWFadeEditViewDelegate, NWColorEditViewDelegate, NWDefaultColorControllerDelegate, NWEffectEnableEditViewDelegate>
 
 @property (nonatomic, strong) iCarousel *scriptSubCommandsCarousel;
 @property (nonatomic, strong) iCarousel *toolKitCarousel;
@@ -29,6 +30,7 @@
 @property (nonatomic, strong) NWColorEditView *fadeColorEditView;
 @property (nonatomic, strong) NWColorEditView *gradientColor1EditView;
 @property (nonatomic, strong) NWColorEditView *gradientColor2EditView;
+@property (nonatomic, strong) NWEffectEnableEditView *enableEditView;
 @property (nonatomic, strong) NSArray *addEffectImages;
 @property (nonatomic, strong) ALRadialMenu *addEffectMenu;
 @property (nonatomic, assign) NSUInteger currentItemIndex;
@@ -43,6 +45,7 @@ enum ToolKitViewEnum {
 	FadeEditViewIndex = 0,
 	FadeColorViewIndex,
 	TimeEditViewIndex,
+    EndableEditViewIndex,
 	GradientStartColorViewIndex,
 	GradientEndColorViewIndex,
 	GradienEditViewIndex
@@ -69,7 +72,7 @@ enum EditColorTarget {
 	self.sendInitialClearScript = YES;
 	self.currentItemIndex = self.scriptSubCommandsCarousel.currentItemView.tag;
 	[self.scriptSubCommandsCarousel reloadItemAtIndex:self.scriptSubCommandsCarousel.currentItemIndex animated:YES];
-	[self.toolKitCarousel scrollToItemAtIndex:TimeEditViewIndex animated:NO];
+	[self.toolKitCarousel scrollToItemAtIndex:EndableEditViewIndex animated:NO];
 	self.toolKitCarousel.hidden = NO;
 }
 
@@ -91,6 +94,7 @@ enum EditColorTarget {
 			self.gradientColor2EditView = nil;
 			self.gradientColor1EditView = nil;
 			self.gradientEditView = nil;
+            self.enableEditView = nil;
 		}
 		{
 			CGRect toolKitViewRect = CGRectMake(0, 0, 250, 150);
@@ -100,6 +104,7 @@ enum EditColorTarget {
 			self.gradientColor1EditView.frame = toolKitViewRect;
 			self.gradientEditView.frame = toolKitViewRect;
 			self.timeValueEditView.frame = toolKitViewRect;
+            self.enableEditView.frame = toolKitViewRect;
 						
 			self.toolKitCarousel.vertical = NO;
 			
@@ -119,6 +124,7 @@ enum EditColorTarget {
 			self.gradientColor1EditView.frame = toolKitViewRect;
 			self.gradientEditView.frame = toolKitViewRect;
 			self.timeValueEditView.frame = toolKitViewRect;
+            self.enableEditView.frame = toolKitViewRect;
 			
 			self.toolKitCarousel.vertical = YES;
 			
@@ -147,7 +153,7 @@ enum EditColorTarget {
 	self.toolKitCarousel.dataSource = self;
 	self.toolKitCarousel.delegate = self;
 	self.toolKitCarousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	self.toolKitCarousel.type = iCarouselTypeCoverFlow;
+	self.toolKitCarousel.type = iCarouselTypeLinear;
 	self.toolKitCarousel.bounceDistance = 0.3;
 	self.toolKitCarousel.pagingEnabled = YES;
 	[self.view addSubview:self.toolKitCarousel];
@@ -157,7 +163,7 @@ enum EditColorTarget {
 	if (self.command.waitCommand.boolValue) {
 		self.scriptSubCommandsCarousel.scrollEnabled = NO;
 		self.toolKitCarousel.scrollEnabled = NO;
-		[self.toolKitCarousel scrollToItemAtIndex:TimeEditViewIndex animated:YES];
+		[self.toolKitCarousel scrollToItemAtIndex:EndableEditViewIndex animated:YES];
 	} else {
 		self.scriptSubCommandsCarousel.scrollEnabled = YES;
 		self.toolKitCarousel.scrollEnabled = YES;
@@ -240,6 +246,19 @@ enum EditColorTarget {
 }
 
 #pragma mark - ToolKitView Getters
+- (NWEffectEnableEditView *)enableEditView {
+    if (!_enableEditView) {
+        _enableEditView = [[NWEffectEnableEditView alloc] initWithFrame:CGRectZero];
+        _enableEditView.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.9 alpha:0.2];
+		_enableEditView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		_enableEditView.cornerRadius = 5.0;
+		_enableEditView.contentMode = UIViewContentModeCenter;
+		_enableEditView.command = self.command;
+		_enableEditView.delegate = self;
+    }
+    return _enableEditView;
+}
+
 - (NWTimeValueEditView *)timeValueEditView {
 	if (!_timeValueEditView) {
 		_timeValueEditView = [[NWTimeValueEditView alloc] initWithFrame:CGRectZero];
@@ -320,7 +339,7 @@ enum EditColorTarget {
 	if (carousel == self.scriptSubCommandsCarousel) {
 		return self.command.effects.count;
 	} else {
-		return 6;
+		return 7;
 	}
 }
 
@@ -342,7 +361,6 @@ enum EditColorTarget {
 				scriptView.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.9 alpha:0.9];
 				scriptView.endColors = self.command.prev.colors;
 			} else {
-                UIColor *tempBackgroundColor;
 				scriptView.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.9 alpha:0.2];
 				scriptView.endColors = [command colors];
 			}
@@ -363,6 +381,10 @@ enum EditColorTarget {
 		return view;
 	} else {
 		switch (index) {
+            case EndableEditViewIndex: {
+                return self.enableEditView;
+            }
+                
 			case TimeEditViewIndex: {
 				return self.timeValueEditView;
 			}
@@ -548,15 +570,15 @@ enum EditColorTarget {
 #pragma mark - 
 #pragma mark TOOLKIT DELEGATES
 #pragma mark TimeEditViewDelegate
-- (void)TimeValueEditView:(NWTimeValueEditView *)view sliderValueChanged:(CGFloat)value {
+- (void)TimeValueEditView:(NWTimeValueEditView *)view timeValueChanged:(NSNumber *)value {
 	if (view == self.timeValueEditView) {
-		self.command.duration = @(value);
+		self.command.duration = value;
 		[view reloadData];
 	}
 }
 
-- (void)TimeValueEditView:(NWTimeValueEditView *)view switchValueChanged:(BOOL)on {
-	if (view == self.timeValueEditView) {
+- (void)EffectEnableEditView:(NWEffectEnableEditView *)view switchValueChanged:(BOOL)on {
+    if (view == self.enableEditView) {
 		[self.command setWaitCommand:@(!on)];
         [view reloadData];
 		[self.scriptSubCommandsCarousel reloadData];

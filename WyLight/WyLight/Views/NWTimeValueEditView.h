@@ -12,8 +12,7 @@
 
 @protocol NWTimeValueEditViewDelegate <NSObject>
 
-- (void)TimeValueEditView:(NWTimeValueEditView *)view switchValueChanged:(BOOL)on;
-- (void)TimeValueEditView:(NWTimeValueEditView *)view sliderValueChanged:(CGFloat)value;
+- (void)TimeValueEditView:(NWTimeValueEditView *)view timeValueChanged:(NSNumber *)value;
 
 @end
 
