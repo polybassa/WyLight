@@ -84,6 +84,7 @@
 		C044BB901823B4800097151D /* ScriptObjectEditViewsLocalization.strings in Resources */ = {isa = PBXBuildFile; fileRef = C044BB921823B4800097151D /* ScriptObjectEditViewsLocalization.strings */; };
 		C044BB961823B6750097151D /* ViewControllerLocalization.strings in Resources */ = {isa = PBXBuildFile; fileRef = C044BB981823B6750097151D /* ViewControllerLocalization.strings */; };
 		C04A34771826EDA600745BC3 /* Gradient.mm in Sources */ = {isa = PBXBuildFile; fileRef = C04A34761826EDA600745BC3 /* Gradient.mm */; };
+		C0738544183A9C470032FCFE /* NWEffectEnableEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0738543183A9C470032FCFE /* NWEffectEnableEditView.m */; };
 		C0878B4B1834CF460085FF04 /* ComplexEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = C0878B4A1834CF460085FF04 /* ComplexEffect.m */; };
 		C0878B54183630E00085FF04 /* NWEffectDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = C0878B53183630E00085FF04 /* NWEffectDrawer.m */; };
 		C0878B621837A89C0085FF04 /* Effect.m in Sources */ = {isa = PBXBuildFile; fileRef = C0878B611837A89C0085FF04 /* Effect.m */; };
@@ -258,6 +259,8 @@
 		C04A34751826EDA600745BC3 /* Gradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gradient.h; sourceTree = "<group>"; };
 		C04A34761826EDA600745BC3 /* Gradient.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Gradient.mm; sourceTree = "<group>"; };
 		C04A34811826F0FD00745BC3 /* Fade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fade.h; sourceTree = "<group>"; };
+		C0738542183A9C470032FCFE /* NWEffectEnableEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWEffectEnableEditView.h; sourceTree = "<group>"; };
+		C0738543183A9C470032FCFE /* NWEffectEnableEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWEffectEnableEditView.m; sourceTree = "<group>"; };
 		C0878B491834CF460085FF04 /* ComplexEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComplexEffect.h; sourceTree = "<group>"; };
 		C0878B4A1834CF460085FF04 /* ComplexEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComplexEffect.m; sourceTree = "<group>"; };
 		C0878B52183630E00085FF04 /* NWEffectDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWEffectDrawer.h; sourceTree = "<group>"; };
@@ -600,6 +603,8 @@
 				5CDE7082180A82310032D2F0 /* NWFadeEditView.m */,
 				5CDE7084180A8F1F0032D2F0 /* NWColorEditView.h */,
 				5CDE7085180A8F1F0032D2F0 /* NWColorEditView.m */,
+				C0738542183A9C470032FCFE /* NWEffectEnableEditView.h */,
+				C0738543183A9C470032FCFE /* NWEffectEnableEditView.m */,
 			);
 			name = ToolkitViews;
 			sourceTree = "<group>";
@@ -787,6 +792,7 @@
 				5CDE7086180A8F1F0032D2F0 /* NWColorEditView.m in Sources */,
 				5C90B39B17EF56F300BAC74F /* NWScriptObjectControl.m in Sources */,
 				C038541F181BEE750058CAC6 /* NWRenderableScript.m in Sources */,
+				C0738544183A9C470032FCFE /* NWEffectEnableEditView.m in Sources */,
 				C0E67BD21826D59B00056E7C /* Fade.mm in Sources */,
 				C0E67BE11826D75300056E7C /* Script.m in Sources */,
 				5C90B39E17EF572400BAC74F /* NWGradientView.m in Sources */,
@@ -958,8 +964,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WyLight/WyLight-Prefix.pch";
+				GCC_UNROLL_LOOPS = YES;
 				INFOPLIST_FILE = "WyLight/WyLight-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LLVM_VECTORIZE_LOOPS = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -974,10 +982,13 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_OPTIMIZATION_LEVEL = 1;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WyLight/WyLight-Prefix.pch";
+				GCC_UNROLL_LOOPS = YES;
 				INFOPLIST_FILE = "WyLight/WyLight-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LLVM_VECTORIZE_LOOPS = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
