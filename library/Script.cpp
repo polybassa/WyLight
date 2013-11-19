@@ -55,7 +55,7 @@ bool Script::operator == (const Script& ref) const
 	return true;
 }
 
-std::list<FwCmdScript*>::const_iterator Script::begin() const noexcept
+Script::ScriptList::const_iterator Script::begin() const noexcept
 {
 	return mList.begin();
 }
@@ -94,7 +94,7 @@ void Script::deserialize(const std::string& filename, Script& newScript) throw (
 	inFile.close();
 }
 
-std::list<FwCmdScript*>::const_iterator Script::end() const noexcept
+Script::ScriptList::const_iterator Script::end() const noexcept
 {
 	return mList.end();
 }
