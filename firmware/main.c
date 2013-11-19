@@ -205,7 +205,6 @@ void InitAll()
 	CommandIO_Init();
 	Rtc_Init();
 	ScriptCtrl_Init();
-	Version_Init();
 	Trace_Init();
 	
 #ifndef __CC8E__

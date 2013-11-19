@@ -192,15 +192,14 @@ private:
 
 class FirmwareVersionResponse : public FwResponse
 {
-	cmd_get_fw_version mFwVersion;
 public:
 	FirmwareVersionResponse(void) : FwResponse(GET_FW_VERSION) {};
 	bool Init(response_frame& pData, size_t dataLength)
 	{
 		if(FwResponse::Init(pData, dataLength)
-		&& (dataLength >= 4 + sizeof(struct cmd_get_fw_version)))
+		&& (dataLength >= 4 + sizeof(VER_STRING)))
 		{
-			mFwVersion = pData.data.version;
+			mVersionString = std::string((char*)pData.data.version_string, dataLength - 4);
 			return true;
 		}
 		return false;
@@ -217,8 +216,10 @@ public:
 
 	friend std::ostream& operator<< (std::ostream& out, const FirmwareVersionResponse& ref)
 	{
-		return out << std::dec << ref.mFwVersion << std::endl;
+		return out << ref.mVersionString;
 	};
-};			
+private:
+    std::string mVersionString;
+};
 }
 #endif

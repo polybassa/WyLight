@@ -25,6 +25,7 @@
 #include "RingBuf.h"
 #include "timer.h"
 #include "error.h"
+#include "VersionFile.h"
 
 #ifdef __cplusplus
 #include <algorithm>
@@ -164,25 +165,13 @@ struct __attribute__((__packed__)) cmd_set_color_direct {
 #endif
 };
 
-struct __attribute__((__packed__)) cmd_get_fw_version {
-	uns8 major;
-	uns8 minor;
-#ifdef __cplusplus
-	friend std::ostream& operator<< (std::ostream& out, const cmd_get_fw_version& ref)
-	{
-		out << std::setfill('0');
-		return out << std::setw(3) << (int) ref.major << '.' << std::setw(3) << (int) ref.minor;
-	};
-#endif
-};
-
 struct __attribute__((__packed__)) response_frame {
 	uns16 length;		/* only for Firmware, do not use in Client */
 	uns8 cmd;
 	ErrorCode state;
 	union __attribute__((__packed__)) {
 		struct rtc_time time;
-		struct cmd_get_fw_version version;
+        uns8 version_string[sizeof(VER_STRING)];
 		uns8 trace_string[RingBufferSize];
 		uns16 max_cycle_times[CYCLETIME_METHODE_ENUM_SIZE];
 	}data;

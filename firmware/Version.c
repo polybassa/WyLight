@@ -19,31 +19,20 @@
 
 #include "Version.h"
 
-struct cmd_get_fw_version g_Version;
 const char verStr[] = VER_STRING;
 
-void Version_Init(void)
+uns8 Version_Print(uns8 *pArray, const uns8 arraySize)
 {
-	uns8 temp = verStr[0] - '0';
-	temp *= 100;
-	g_Version.major = temp;
-	
-	temp = verStr[1] - '0';
-	temp *= 10;
-	g_Version.major += temp;
-	
-	g_Version.major += verStr[2] - '0';
-	
-	temp = verStr[4] - '0';
-	temp *= 100;
-	g_Version.minor = temp;
-	
-	temp = verStr[5] - '0';
-	temp *= 10;
-	g_Version.minor += temp;
-	
-	g_Version.minor += verStr[6] - '0';
-
+	uns8 i = 0;
+	uns8 tempByte;
+	while(i < sizeof(VER_STRING) && i < arraySize)
+	{
+	    tempByte = verStr[i];
+		*pArray = tempByte;
+		pArray++;
+		i++;
+	}
+	return i;
 }
 
 

@@ -45,7 +45,6 @@ struct CommandBuffer{
     uns8 CrcL;
 };
 extern bank2 struct CommandBuffer g_CmdBuf;
-extern struct cmd_get_fw_version g_Version;
 extern bank5 struct response_frame g_ResponseBuf;
 
 

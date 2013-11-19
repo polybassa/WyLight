@@ -59,6 +59,8 @@
         if (versionOfTarget == nil) {
             return; //Some error occured
         }
+        
+        
 		NSLog(@"\nHexFile:%@Target:%@", versionOfMainHex, versionOfTarget);
 		
 		if (![versionOfTarget isEqualToString:versionOfMainHex]) {

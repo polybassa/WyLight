@@ -1,4 +1,4 @@
-//
+ //
 //  WCWiflyControlWrapper.m
 //
 //  Created by Bastian Kres on 16.04.13.
@@ -397,7 +397,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 - (NSString *)readCurrentFirmwareVersionFromFirmware
 {
 	if (mControl) {
-		std::string firmwareVersionString;
+		std::string firmwareVersionString = "0.0";
 		
 		std::lock_guard<std::mutex> lock(*gCtrlMutex);
 		uint32_t returnValue = mControl->FwGetVersion(firmwareVersionString);
@@ -409,7 +409,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 		}
 		else
 		{
-			return [NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding];
+			return [[NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		}
 	}
 	return nil;
@@ -451,7 +451,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 		}
 		else
 		{
-			return [NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding];
+			return [[NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		}
 	}
 	return nil;

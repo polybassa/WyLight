@@ -24,6 +24,8 @@
 #include "RingBuf.h"
 #include "error.h"
 #include "wifly_cmd.h"
+#include "VersionFile.h"
+#include "Version.c"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
@@ -59,8 +61,6 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 {
 	return 1;
 }
-
-struct cmd_get_fw_version g_Version = {99, 99};
 
 void Rtc_Ctl(enum RTC_request req,struct rtc_time *pRtcTime)
 {
@@ -347,11 +347,13 @@ int ut_CommandIO_CreateResponse_FW_VERSION(void)
 {
 	TestCaseBegin();
 	struct response_frame mFrame;
+    
+    const char g_Version[] = VER_STRING;
 	
 	CommandIO_CreateResponse(&mFrame, GET_FW_VERSION, OK);
-	CHECK(0 == memcmp((void*)&(mFrame.data), (void*)&g_Version, sizeof(struct cmd_get_fw_version)));
+	CHECK(0 == memcmp((void*)&(mFrame.data), (void*)&g_Version, sizeof(VER_STRING)));
 	CHECK(mFrame.cmd == GET_FW_VERSION);
-	CHECK(mFrame.length == 6);
+	CHECK(mFrame.length == 4 + sizeof(VER_STRING));
 	CHECK(mFrame.state == OK);
 	
 	TestCaseEnd();

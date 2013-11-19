@@ -25,6 +25,7 @@
 #include "error.h"
 #include "wifly_cmd.h"
 #include "rtc.h"
+#include "Version.h"
 
 bank2 struct CommandBuffer g_CmdBuf;
 bank5 struct response_frame g_ResponseBuf;
@@ -240,24 +241,20 @@ void CommandIO_CreateResponse(struct response_frame *mFrame, uns8 cmd, ErrorCode
 		};
 		case GET_CYCLETIME:
 		{
-			uns8 bytesPrint = Timer_PrintCycletime(&(mFrame->data.max_cycle_times[0]), sizeof(struct response_frame) - 4);
+			const uns8 bytesPrint = Timer_PrintCycletime(&(mFrame->data.max_cycle_times[0]), sizeof(struct response_frame) - 4);
 			mFrame->length += bytesPrint;
 			break;
 		};
 		case GET_TRACE:
 		{
-			uns8 bytesPrint = Trace_Print(&(mFrame->data.trace_string[0]), sizeof(struct response_frame) - 4);
+			const uns8 bytesPrint = Trace_Print(&(mFrame->data.trace_string[0]), sizeof(struct response_frame) - 4);
 			mFrame->length += bytesPrint;
 			break;
 		};
 		case GET_FW_VERSION:
 		{
-			uns8 temp8;
-			temp8 = g_Version.major;
-			mFrame->data.version.major = temp8;
-			temp8 = g_Version.minor;
-			mFrame->data.version.minor = temp8;
-			mFrame->length += sizeof(struct cmd_get_fw_version);
+            const uns8 bytesPrint = Version_Print(&(mFrame->data.version_string[0]), sizeof(struct response_frame) - 4);
+			mFrame->length += bytesPrint;
 			break;
 		}
 		default:
