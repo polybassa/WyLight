@@ -102,7 +102,7 @@ size_t ut_Script_ReadGood(void)
 	Script newScript("TestInput.txt");
 	auto nextCmd = newScript.begin();
 		
-	CHECK(refLoop == *newScript.front());
+	CHECK(refLoop == **newScript.begin());
 	CHECK(refLoop == **nextCmd++);
 	CHECK(refGradient == **nextCmd++);
 	CHECK(refFade == **nextCmd++);

@@ -822,7 +822,7 @@ namespace WyLight {
 		this->FwSend(cmd);
 		return *this;;
 	}
-		
+/*		
 	Control& Control::operator<<(Script&& script) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 	{
 		for(const auto& cmdPtr : script)
@@ -840,7 +840,7 @@ namespace WyLight {
 		}
 		return *this;
 	}
-
+*/
 	void Control::FwTest(void)
 	{
 	#if 0
@@ -857,16 +857,16 @@ namespace WyLight {
 		
 		*this << FwCmdClearScript() << FwCmdSetFade(WiflyColor::BLACK, 2);
 		
-		WyLight::Script testScript("test.script");
-/*		
+/*		WyLight::Script testScript("test.script");
+		
 		testScript.emplace_front(FwCmdLoopOn());
 		testScript.emplace_back(FwCmdSetFade(WiflyColor::GREEN, 2000));
 		testScript.emplace_back(FwCmdSetFade(WiflyColor::RED, 2000));
 		testScript.emplace_back(FwCmdSetFade(WiflyColor::BLUE, 2000));
 		testScript.emplace_back(FwCmdLoopOff(5));
-	*/	
+		
 		*this << testScript;
-		/*
+*/		/*
 		uint32_t bitMask = 0x01;
 		for(unsigned int i = 0; i < NUM_OF_LED; i++)
 		{

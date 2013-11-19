@@ -27,9 +27,10 @@
 
 namespace WyLight {
 
-class Script : public std::list<FwCmdScript*>
+class Script
 {
 	std::string mName;
+	std::list<FwCmdScript*> mList;
 
 public:
 	static void deserialize(const std::string& filename, Script& newScript) throw (FatalError);
@@ -38,9 +39,15 @@ public:
 	Script();
 	Script(const std::string& filename);
 	~Script(void);
+
 	bool operator ==(const Script& ref) const;
 
+	std::list<FwCmdScript*>::const_iterator begin() const noexcept;
+	void clear();
+	std::list<FwCmdScript*>::const_iterator end() const noexcept;
 	const std::string& getName() const;
+	void push_back(FwCmdScript* pNew);
+	size_t size() const;
 };
 } /* namespace WyLight */
 #endif /* #ifndef __WyLight__Script__ */

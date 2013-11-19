@@ -42,7 +42,7 @@ Script::~Script(void)
 
 bool Script::operator == (const Script& ref) const
 {
-	if(this->list::size() != ref.list::size()) {
+	if(size() != ref.size()) {
 		return false;
 	}
 
@@ -53,6 +53,19 @@ bool Script::operator == (const Script& ref) const
 		}
 	}
 	return true;
+}
+
+std::list<FwCmdScript*>::const_iterator Script::begin() const noexcept
+{
+	return mList.begin();
+}
+
+void Script::clear()
+{
+	for(auto cmd: mList) {
+		delete cmd;
+	}
+	mList.clear();
 }
 
 void Script::deserialize(const std::string& filename, Script& newScript) throw (FatalError)
@@ -81,9 +94,19 @@ void Script::deserialize(const std::string& filename, Script& newScript) throw (
 	inFile.close();
 }
 
+std::list<FwCmdScript*>::const_iterator Script::end() const noexcept
+{
+	return mList.end();
+}
+
 const std::string& Script::getName() const
 {
 	return mName;
+}
+
+void Script::push_back(FwCmdScript* pNew)
+{
+	mList.push_back(pNew);
 }
 
 void Script::serialize(const std::string& filename, const Script& newScript) throw (FatalError)
@@ -99,5 +122,10 @@ void Script::serialize(const std::string& filename, const Script& newScript) thr
 		cmd->Write(outFile, identation) << '\n';
 	}
 	outFile.close();
+}
+
+size_t Script::size() const
+{
+	return mList.size();
 }
 } /* namespace WyLight */
