@@ -22,7 +22,6 @@ var searchData=
   ['messagequeue',['MessageQueue',['../class_wy_light_1_1_message_queue.html',1,'WyLight']]],
   ['messagequeue',['MessageQueue',['../class_wy_light_1_1_message_queue.html#aa116745b3c6a257e7a8149432b1ae612',1,'WyLight::MessageQueue::MessageQueue(void)'],['../class_wy_light_1_1_message_queue.html#a92bf2e25bbd0feceabb3bf21368a4696',1,'WyLight::MessageQueue::MessageQueue(MessageQueue const &amp;&amp;other)']]],
   ['messagequeue_2eh',['MessageQueue.h',['../_message_queue_8h.html',1,'']]],
-  ['mfwversion',['mFwVersion',['../class_wy_light_1_1_firmware_version_response.html#a9d2595627da4fe68560b64c9ed0e94fd',1,'WyLight::FirmwareVersionResponse']]],
   ['mip',['mIp',['../class_wy_light_1_1_endpoint.html#ae500fb016b3c537432de51f3b466e23e',1,'WyLight::Endpoint']]],
   ['miptable',['mIpTable',['../class_wy_light_1_1_broadcast_receiver.html#adc3e821ad2d397ae72b6aa2d348cd09f',1,'WyLight::BroadcastReceiver']]],
   ['miptableshadow',['mIpTableShadow',['../class_wy_light_1_1_broadcast_receiver.html#a2924add2376af0c277d876283f9d231b',1,'WyLight::BroadcastReceiver']]],
@@ -51,5 +50,6 @@ var searchData=
   ['mtelnet',['mTelnet',['../class_wy_light_1_1_control.html#aee17c168b675197edd334cc2fed05111',1,'WyLight::Control']]],
   ['mtimevalue',['mTimeValue',['../class_wy_light_1_1_rtc_response.html#a8afd14ca77c0cce1472c27ae27b677bf',1,'WyLight::RtcResponse']]],
   ['mtracemessage',['mTraceMessage',['../class_wy_light_1_1_tracebuffer_response.html#a217c5059a0446a9d358c02e7c2714a21',1,'WyLight::TracebufferResponse']]],
-  ['mudpsock',['mUdpSock',['../class_wy_light_1_1_control.html#a11dc1d04f1df7d46a75d4d6101ddcea7',1,'WyLight::Control']]]
+  ['mudpsock',['mUdpSock',['../class_wy_light_1_1_control.html#a11dc1d04f1df7d46a75d4d6101ddcea7',1,'WyLight::Control']]],
+  ['mversionstring',['mVersionString',['../class_wy_light_1_1_firmware_version_response.html#a1df2e12c833c9692e6b9609e3572ee60',1,'WyLight::FirmwareVersionResponse']]]
 ];

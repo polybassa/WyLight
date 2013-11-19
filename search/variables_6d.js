@@ -14,7 +14,6 @@ var searchData=
   ['mdescription',['mDescription',['../class_wy_light_1_1_fatal_error.html#aeae1bd38ee1c9b21b260a10ecc89b5f4',1,'WyLight::FatalError']]],
   ['mdeviceid',['mDeviceId',['../class_wy_light_1_1_endpoint.html#a75fd98ec19b20a5470e91a8bf786a368',1,'WyLight::Endpoint']]],
   ['merrorcode',['mErrorCode',['../class_wy_light_1_1_fatal_error.html#a7d6df57841d017b51107a80ac6205c93',1,'WyLight::FatalError']]],
-  ['mfwversion',['mFwVersion',['../class_wy_light_1_1_firmware_version_response.html#a9d2595627da4fe68560b64c9ed0e94fd',1,'WyLight::FirmwareVersionResponse']]],
   ['mip',['mIp',['../class_wy_light_1_1_endpoint.html#ae500fb016b3c537432de51f3b466e23e',1,'WyLight::Endpoint']]],
   ['miptable',['mIpTable',['../class_wy_light_1_1_broadcast_receiver.html#adc3e821ad2d397ae72b6aa2d348cd09f',1,'WyLight::BroadcastReceiver']]],
   ['miptableshadow',['mIpTableShadow',['../class_wy_light_1_1_broadcast_receiver.html#a2924add2376af0c277d876283f9d231b',1,'WyLight::BroadcastReceiver']]],
@@ -43,5 +42,6 @@ var searchData=
   ['mtelnet',['mTelnet',['../class_wy_light_1_1_control.html#aee17c168b675197edd334cc2fed05111',1,'WyLight::Control']]],
   ['mtimevalue',['mTimeValue',['../class_wy_light_1_1_rtc_response.html#a8afd14ca77c0cce1472c27ae27b677bf',1,'WyLight::RtcResponse']]],
   ['mtracemessage',['mTraceMessage',['../class_wy_light_1_1_tracebuffer_response.html#a217c5059a0446a9d358c02e7c2714a21',1,'WyLight::TracebufferResponse']]],
-  ['mudpsock',['mUdpSock',['../class_wy_light_1_1_control.html#a11dc1d04f1df7d46a75d4d6101ddcea7',1,'WyLight::Control']]]
+  ['mudpsock',['mUdpSock',['../class_wy_light_1_1_control.html#a11dc1d04f1df7d46a75d4d6101ddcea7',1,'WyLight::Control']]],
+  ['mversionstring',['mVersionString',['../class_wy_light_1_1_firmware_version_response.html#a1df2e12c833c9692e6b9609e3572ee60',1,'WyLight::FirmwareVersionResponse']]]
 ];
