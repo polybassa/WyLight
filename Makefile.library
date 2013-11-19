@@ -31,7 +31,7 @@ ComProxy_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
 	
 MessageQueue_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
 	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/MessageQueue_ut.cpp -lpthread -D_GLIBCXX_USE_NANOSLEEP -o ${OUT_DIR}/$@ -Wall -pedantic -std=c++0x
-	@./${OUT_DIR}/$@
+	@-./${OUT_DIR}/$@
 
 Script_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
 	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/Script_ut.cpp $(LIB_DIR)/Script.cpp $(LIB_ADDITIONAL_SRC) -o ${OUT_DIR}/$@ -Wall -pedantic -std=c++0x

@@ -107,6 +107,9 @@ TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalE
 	}
 	const int restSockArgs = fcntl(mSock, F_GETFL, NULL) & (~O_NONBLOCK);
 	fcntl(mSock, F_SETFL, restSockArgs);
+    
+    int set = 1;
+    setsockopt(mSock, SOL_SOCKET, SO_NOSIGPIPE, (void *)&set, sizeof(int));
 }
 
 size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const throw(FatalError)
@@ -116,20 +119,10 @@ size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const 
 
 size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 {
-    // check if error pending on socket
-    int errorStatus;
-    socklen_t option_len = sizeof(errorStatus);
-    if(0 != getsockopt(mSock, SOL_SOCKET, SO_ERROR, &errorStatus, &option_len)) {
-        throw FatalError("send failed with error on socket");
-    }
-    if(0 != errorStatus) {
-        throw FatalError("send failed with error " + std::to_string(errorStatus) + " on socket");
-    }
-
-	TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending on socket 0x%04x, %zu bytes: ", mSock, length);
+    TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending on socket 0x%04x, %zu bytes: ", mSock, length);
     const int result = send(mSock, frame, length, 0);
     if (result == -1) {
-        throw FatalError("send failed with returnvalue -1");
+        throw FatalError("send failed with returnvalue -1 and errno:" + std::to_string(errno));
     }
 	return result;
 }
