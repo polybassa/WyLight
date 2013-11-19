@@ -24,10 +24,6 @@ namespace WyLight {
 
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-Script::Script()
-{
-}
-
 Script::Script(const std::string& filename)
 {
 	// std::string::npos++ will overflow to 0 just like we want!
@@ -38,6 +34,7 @@ Script::Script(const std::string& filename)
 
 Script::~Script(void)
 {
+	clear();
 }
 
 bool Script::operator == (const Script& ref) const

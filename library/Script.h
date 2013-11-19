@@ -37,7 +37,7 @@ public:
 	static void deserialize(const std::string& filename, Script& newScript) throw (FatalError);
 	static void serialize(const std::string& filename, const Script& newScript) throw (FatalError);
 
-	Script();
+	Script() = default;
 	Script(const std::string& filename);
 	~Script(void);
 
