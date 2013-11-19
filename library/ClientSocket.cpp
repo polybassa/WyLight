@@ -26,6 +26,8 @@
 #include <fcntl.h>
 #include <iostream>
 #include <unistd.h>
+#include <thread>
+#include <chrono>
 
 #include <stdio.h>
 
@@ -82,8 +84,10 @@ TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalE
 		if(errno != EINPROGRESS) {
 			throw ConnectionLost("connect() failed", addr, port);
 		}
+        
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		
-		const struct timespec timeout{ESTABLISH_CONNECTION_TIMEOUT, 0};
+        const struct timespec timeout{ESTABLISH_CONNECTION_TIMEOUT, 0};
 		fd_set writefds;
 		FD_ZERO(&writefds);
 		FD_SET(mSock, &writefds);
