@@ -85,6 +85,7 @@
 		C044BB961823B6750097151D /* ViewControllerLocalization.strings in Resources */ = {isa = PBXBuildFile; fileRef = C044BB981823B6750097151D /* ViewControllerLocalization.strings */; };
 		C04A34771826EDA600745BC3 /* Gradient.mm in Sources */ = {isa = PBXBuildFile; fileRef = C04A34761826EDA600745BC3 /* Gradient.mm */; };
 		C0738544183A9C470032FCFE /* NWEffectEnableEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0738543183A9C470032FCFE /* NWEffectEnableEditView.m */; };
+		C0738547183BCC160032FCFE /* UIView+setEnable.m in Sources */ = {isa = PBXBuildFile; fileRef = C0738546183BCC160032FCFE /* UIView+setEnable.m */; };
 		C0878B4B1834CF460085FF04 /* ComplexEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = C0878B4A1834CF460085FF04 /* ComplexEffect.m */; };
 		C0878B54183630E00085FF04 /* NWEffectDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = C0878B53183630E00085FF04 /* NWEffectDrawer.m */; };
 		C0878B621837A89C0085FF04 /* Effect.m in Sources */ = {isa = PBXBuildFile; fileRef = C0878B611837A89C0085FF04 /* Effect.m */; };
@@ -261,6 +262,8 @@
 		C04A34811826F0FD00745BC3 /* Fade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fade.h; sourceTree = "<group>"; };
 		C0738542183A9C470032FCFE /* NWEffectEnableEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWEffectEnableEditView.h; sourceTree = "<group>"; };
 		C0738543183A9C470032FCFE /* NWEffectEnableEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWEffectEnableEditView.m; sourceTree = "<group>"; };
+		C0738545183BCC160032FCFE /* UIView+setEnable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+setEnable.h"; sourceTree = "<group>"; };
+		C0738546183BCC160032FCFE /* UIView+setEnable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+setEnable.m"; sourceTree = "<group>"; };
 		C0878B491834CF460085FF04 /* ComplexEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComplexEffect.h; sourceTree = "<group>"; };
 		C0878B4A1834CF460085FF04 /* ComplexEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComplexEffect.m; sourceTree = "<group>"; };
 		C0878B52183630E00085FF04 /* NWEffectDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWEffectDrawer.h; sourceTree = "<group>"; };
@@ -567,6 +570,8 @@
 				C0878B5518375DE40085FF04 /* ToolkitViews */,
 				C0E6047C18219B250049C7EC /* NWRenderableScriptImageView.h */,
 				C0E6047D18219B250049C7EC /* NWRenderableScriptImageView.m */,
+				C0738545183BCC160032FCFE /* UIView+setEnable.h */,
+				C0738546183BCC160032FCFE /* UIView+setEnable.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -766,6 +771,7 @@
 				5C8395EF17EB6721007EF0C6 /* NWColorPickerViewController.m in Sources */,
 				5C8395D817EB61B4007EF0C6 /* WCEndpoint.m in Sources */,
 				5C83963317EB6C00007EF0C6 /* KZColorPickerHSWheel.m in Sources */,
+				C0738547183BCC160032FCFE /* UIView+setEnable.m in Sources */,
 				5CDE70801809A7CA0032D2F0 /* NWGradientEditView.m in Sources */,
 				C00DD4C21826C3EB00D17088 /* Model.xcdatamodeld in Sources */,
 				5C4F56EB17EC968E0039ADFF /* NWColorSliderViewController.m in Sources */,

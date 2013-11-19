@@ -9,7 +9,7 @@
     <entity name="Effect" representedClassName="Effect" isAbstract="YES" parentEntity="Command" syncable="YES">
         <attribute name="backgroundColor" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="colors" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="duration" optional="YES" attributeType="Integer 32" minValueString="1" maxValueString="65536" defaultValueString="100" syncable="YES"/>
+        <attribute name="duration" optional="YES" attributeType="Integer 32" minValueString="10" maxValueString="65536" defaultValueString="100" syncable="YES"/>
         <attribute name="snapshot" optional="YES" attributeType="Transformable" syncable="YES"/>
     </entity>
     <entity name="Fade" representedClassName="Fade" parentEntity="SimpelEffect" syncable="YES">

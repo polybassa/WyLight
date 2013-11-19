@@ -41,6 +41,7 @@
 		self.titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 		self.titleLabel.text = NSLocalizedStringFromTable(@"FadeInfoLabelKey", @"ScriptObjectEditViewsLocalization", @"");
 		self.titleLabel.textAlignment = NSTextAlignmentCenter;
+        [self.titleLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:18]];
 		[self addSubview:self.titleLabel];
     
 		[self setFrame:frame];

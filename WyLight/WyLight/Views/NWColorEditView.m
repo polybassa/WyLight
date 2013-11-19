@@ -13,7 +13,7 @@
 @interface NWColorEditView ()
 
 @property (nonatomic, strong) NSArray *colorImages;
-@property (nonatomic, strong) NSArray *colorButtons;
+@property (nonatomic, strong, readwrite) NSArray *colorButtons;
 @property (nonatomic, strong) UILabel *titleLabel;
 
 @end
@@ -29,6 +29,7 @@
 		
 		self.titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 		self.titleLabel.textAlignment = NSTextAlignmentCenter;
+        [self.titleLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:18]];
 		[self addSubview:self.titleLabel];
 		
 		for (UIButton *button in self.colorButtons) {

@@ -7,5 +7,6 @@
 */
 
 "WaitInfoLabelKey" = "Enable Effect:";
+"SwitchInfoLabelKey" = "If you disable an effect, there are no changes for the complete effect duration. With this you can add a wait time.";
 "TimeLabelKey" = "Duration:";
 "FadeInfoLabelKey" = "Tap to switch led's on, off";

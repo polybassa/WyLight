@@ -22,5 +22,6 @@
 @property (nonatomic, weak) id<NWColorEditViewDelegate> delegate;
 @property (nonatomic) CGFloat cornerRadius;
 @property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong, readonly) NSArray *colorButtons;
 
 @end

@@ -19,6 +19,7 @@
 #import "Gradient.h"
 #import "NWDefaultColorPickerViewController.h"
 #import "NWEffectEnableEditView.h"
+#import "UIView+setEnable.h"
 
 @interface NWComplexScriptCommandEditorViewController () <iCarouselDataSource, iCarouselDelegate, ALRadialMenuDelegate, NWTimeValueEditViewDelegate, NWGradientEditViewDelegate, NWFadeEditViewDelegate, NWColorEditViewDelegate, NWDefaultColorControllerDelegate, NWEffectEnableEditViewDelegate>
 
@@ -76,6 +77,11 @@ enum EditColorTarget {
 	self.toolKitCarousel.hidden = NO;
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self updateView];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
 	self.toolKitCarousel.hidden = YES;
 	[super viewWillDisappear:animated];
@@ -131,6 +137,7 @@ enum EditColorTarget {
 			[self.toolKitCarousel reloadData];
 		}
 	}
+    [self updateView];
 }
 
 - (void)setup {
@@ -155,64 +162,41 @@ enum EditColorTarget {
 	self.toolKitCarousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	self.toolKitCarousel.type = iCarouselTypeLinear;
 	self.toolKitCarousel.bounceDistance = 0.3;
-	self.toolKitCarousel.pagingEnabled = YES;
 	[self.view addSubview:self.toolKitCarousel];
 }
 
 - (void)updateView {
 	if (self.command.waitCommand.boolValue) {
 		self.scriptSubCommandsCarousel.scrollEnabled = NO;
-		self.toolKitCarousel.scrollEnabled = NO;
-		[self.toolKitCarousel scrollToItemAtIndex:EndableEditViewIndex animated:YES];
 	} else {
 		self.scriptSubCommandsCarousel.scrollEnabled = YES;
-		self.toolKitCarousel.scrollEnabled = YES;
-		
-		id currentCommand = self.command.effects[self.currentItemIndex];
-		if ([currentCommand isKindOfClass:[Fade class]]) {
-			Fade *currentFadeCommand = (Fade *)currentCommand;
-			self.fadeColorEditView.backgroundColor = [currentFadeCommand.color colorWithAlphaComponent:0.3];
-		} else if ([currentCommand isKindOfClass:[Gradient class]]) {
-			Gradient *currentGradientCommand = (Gradient *)currentCommand;
-			self.gradientColor1EditView.backgroundColor = [currentGradientCommand.color1 colorWithAlphaComponent:0.3];
-			self.gradientColor2EditView.backgroundColor = [currentGradientCommand.color2 colorWithAlphaComponent:0.3];
-		}
-	}
+    }
+    [self checkToolkitViews];
 	[self sendPreview];
 }
 
 - (void)checkToolkitViews {
-	UIView *currentToolView = self.toolKitCarousel.currentItemView;
-	
+    [self.gradientColor1EditView setEnable:!self.command.waitCommand.boolValue];
+    [self.gradientColor2EditView setEnable:!self.command.waitCommand.boolValue];
+    [self.fadeColorEditView setEnable:!self.command.waitCommand.boolValue];
+    [self.gradientEditView setEnable:!self.command.waitCommand.boolValue];
+    [self.fadeEditView setEnable:!self.command.waitCommand.boolValue];
+
 	id currentCommand = self.command.effects[self.currentItemIndex];
 	if ([currentCommand isKindOfClass:[Fade class]]) {
 		Fade *currentFadeCommand = (Fade *)currentCommand;
 		self.fadeColorEditView.backgroundColor = [currentFadeCommand.color colorWithAlphaComponent:0.3];
-        
-		if (currentToolView == self.gradientColor1EditView || currentToolView == self.gradientColor2EditView) {
-			self.toolKitCarousel.ignorePerpendicularSwipes = YES;
-			[self.toolKitCarousel scrollToItemAtIndex:FadeColorViewIndex animated:YES];
-		}
-		if (currentToolView == self.gradientEditView) {
-			self.toolKitCarousel.ignorePerpendicularSwipes = YES;
-			[self.toolKitCarousel scrollToItemAtIndex:FadeEditViewIndex animated:YES];
-		}
+        [self.gradientColor1EditView setEnable:NO];
+        [self.gradientColor2EditView setEnable:NO];
+        [self.gradientEditView setEnable:NO];
 	}
 	else if ([currentCommand isKindOfClass:[Gradient class]]) {
 		Gradient *currentGradientCommand = (Gradient *)currentCommand;
 		self.gradientColor1EditView.backgroundColor = [currentGradientCommand.color1 colorWithAlphaComponent:0.3];
 		self.gradientColor2EditView.backgroundColor = [currentGradientCommand.color2 colorWithAlphaComponent:0.3];
-		
-		if (currentToolView == self.fadeColorEditView) {
-			self.toolKitCarousel.ignorePerpendicularSwipes = YES;
-			[self.toolKitCarousel scrollToItemAtIndex:GradientStartColorViewIndex animated:YES];
-		}
-		if (currentToolView == self.fadeEditView) {
-			self.toolKitCarousel.ignorePerpendicularSwipes = YES;
-			[self.toolKitCarousel scrollToItemAtIndex:GradienEditViewIndex animated:YES];
-		}
+        [self.fadeColorEditView setEnable:NO];
+        [self.fadeEditView setEnable:NO];
 	}
-
 }
 
 - (void)sendPreview {
@@ -242,7 +226,6 @@ enum EditColorTarget {
 	self.gradientEditView.command = self.command.effects[currentItemIndex];
 	self.fadeEditView.command = self.command.effects[currentItemIndex];
 	[self updateView];
-	[self checkToolkitViews];
 }
 
 #pragma mark - ToolKitView Getters
@@ -441,6 +424,11 @@ enum EditColorTarget {
 		
 		switch (option)
 		{
+            case iCarouselOptionWrap:
+			{
+				//normally you would hard-code this to YES or NO
+				return YES;
+			}
 			case iCarouselOptionSpacing:
 			{
 				return value * 1.05f;
@@ -464,11 +452,6 @@ enum EditColorTarget {
 	if (carousel == self.scriptSubCommandsCarousel) {
 		self.currentItemIndex = carousel.currentItemView.tag;
 	}
-}
-
-- (void)carouselDidEndScrollingAnimation:(iCarousel *)carousel {
-	[self checkToolkitViews];
-	self.toolKitCarousel.ignorePerpendicularSwipes = NO;
 }
 
 #pragma mark - GESTURE RECOGNIZER CALLBACKS
@@ -572,6 +555,9 @@ enum EditColorTarget {
 #pragma mark TimeEditViewDelegate
 - (void)TimeValueEditView:(NWTimeValueEditView *)view timeValueChanged:(NSNumber *)value {
 	if (view == self.timeValueEditView) {
+        if (value.unsignedIntegerValue < 10) {
+            value = @(10);
+        }
 		self.command.duration = value;
 		[view reloadData];
 	}

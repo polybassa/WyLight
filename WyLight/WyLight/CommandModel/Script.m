@@ -40,7 +40,7 @@
     for (ComplexEffect* command in self.effects) {
         [command sendToWCWiflyControl:control];
     }
-    if (self.repeatsWhenFinished) {
+    if (self.repeatsWhenFinished.boolValue) {
         [control loopOffAfterNumberOfRepeats:0];
     } else {
         [control loopOffAfterNumberOfRepeats:1];

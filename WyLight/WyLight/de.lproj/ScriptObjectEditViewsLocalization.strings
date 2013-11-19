@@ -7,5 +7,6 @@
 */
 
 "WaitInfoLabelKey" = "Effekt aktiv:";
+"SwitchInfoLabelKey" = "Ist ein Effekt deaktiviert, treten keine Änderungen auf. So kann eine Wartezeit erstellt werden.";
 "TimeLabelKey" = "Effektdauer:";
 "FadeInfoLabelKey" = "Led's ein/ausschalten";

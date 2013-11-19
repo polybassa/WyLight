@@ -14,10 +14,10 @@
 
 @interface NWGradientEditView ()
 
-@property (nonatomic, strong) TouchAndHoldButton *gradientUpButton;
-@property (nonatomic, strong) TouchAndHoldButton *gradientDownButton;
-@property (nonatomic, strong) TouchAndHoldButton *gradientPlusButton;
-@property (nonatomic, strong) TouchAndHoldButton *gradientMinusButton;
+@property (nonatomic, strong, readwrite) TouchAndHoldButton *gradientUpButton;
+@property (nonatomic, strong, readwrite) TouchAndHoldButton *gradientDownButton;
+@property (nonatomic, strong, readwrite) TouchAndHoldButton *gradientPlusButton;
+@property (nonatomic, strong, readwrite) TouchAndHoldButton *gradientMinusButton;
 
 @end
 
