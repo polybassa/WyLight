@@ -48,13 +48,17 @@
 			});
 			return;
 		}
+        
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[connectingView dismissWithClickedButtonIndex:0 animated:YES];
 		});
-		
+        [self.controlHandle setDelegate:self];
 		// Update Firmware Block
 		NSString *versionOfMainHex = [self.controlHandle readCurrentFirmwareVersionFromHexFile];
 		NSString *versionOfTarget = [self.controlHandle readCurrentFirmwareVersionFromFirmware];
+        if (versionOfTarget == nil) {
+            return; //Some error occured
+        }
 		NSLog(@"\nHexFile:%@Target:%@", versionOfMainHex, versionOfTarget);
 		
 		if (![versionOfTarget isEqualToString:versionOfMainHex]) {
@@ -72,7 +76,6 @@
 		}
 		
 		// Finish connection Block
-		[self.controlHandle setDelegate:self];
 		for (id obj in self.viewControllers) {
 			if ([obj respondsToSelector:@selector(setControlHandle:)]) {
 				[obj performSelector:@selector(setControlHandle:) withObject:self.controlHandle];
@@ -96,8 +99,8 @@
 	}
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 	if (self.endpoint) {
 		[self connectToEndpoint];
 	}

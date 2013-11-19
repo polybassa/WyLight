@@ -101,15 +101,11 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 		
 			if(retVal != WyLight::NO_ERROR)
 			{
-				dispatch_async(dispatch_get_main_queue(), ^{
-					[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:retVal]];
-				});
+				[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:retVal]];
 			}
 			else if(retVal == WyLight::NO_ERROR && std::get<2>(tup) == 1)	//do we have to notify after execution?
 			{
-				dispatch_async(dispatch_get_main_queue(), ^{
-					[self callWiflyControlHasDisconnectedDelegate];
-				});
+                [self callWiflyControlHasDisconnectedDelegate];
 			}
 		}
 	});
@@ -508,13 +504,23 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 		NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"main" ofType:@"hex"];
 		std::lock_guard<std::mutex> lock(*gCtrlMutex);
 		
-		uint32_t returnValue1 = mControl->FwStartBl();
-		uint32_t returnValue2 =  mControl->BlProgramFlash([filePath cStringUsingEncoding:NSASCIIStringEncoding]);
-		uint32_t returnValue3 = mControl->BlRunApp();
-		
-		if(returnValue1 != WyLight::NO_ERROR || returnValue2 != WyLight::NO_ERROR || returnValue3 != WyLight::NO_ERROR)
+		uint32_t returnValue = mControl->FwStartBl();
+        if(returnValue != WyLight::NO_ERROR)
 		{
-			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue1 | returnValue2 | returnValue3]];
+			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
+            return;
+		}
+		returnValue =  mControl->BlProgramFlash([filePath cStringUsingEncoding:NSASCIIStringEncoding]);
+        if(returnValue != WyLight::NO_ERROR)
+		{
+			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
+            return;
+		}
+		returnValue = mControl->BlRunApp();
+		if(returnValue != WyLight::NO_ERROR)
+		{
+			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
+            return;
 		}
 	}
 }
@@ -528,21 +534,25 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)callFatalErrorDelegate:(NSNumber*)errorCode
 {
-	NSLog(@"ErrorCode %@", errorCode);
-	if([errorCode intValue] == WyLight::SCRIPT_FULL)
-	{
-		[self.delegate scriptFullErrorOccured:self errorCode:errorCode];
-	}
-	else
-	{
-		[self.delegate fatalErrorOccured:self errorCode:errorCode];
-	}
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSLog(@"ErrorCode %@", errorCode);
+        if([errorCode intValue] == WyLight::SCRIPT_FULL)
+        {
+            [self.delegate scriptFullErrorOccured:self errorCode:errorCode];
+        }
+        else
+        {
+            [self.delegate fatalErrorOccured:self errorCode:errorCode];
+        }
+    });
 }
 
 - (void)callWiflyControlHasDisconnectedDelegate
 {
-	NSLog(@"%@", self.delegate);
-	[self.delegate wiflyControlHasDisconnected:self];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSLog(@"%@", self.delegate);
+        [self.delegate wiflyControlHasDisconnected:self];
+    });
 }
 
 #pragma mark - Extract Firmware Version methods
