@@ -165,6 +165,19 @@ jboolean Java_biz_bruenn_WyLight_WiflyControl_FwLoopOn(JNIEnv* env, jobject ref,
 	TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdLoopOn{});
 }
 
+jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSendScript(JNIEnv* env, jobject ref, jlong pNative, jlong pNativeScript)
+{
+	try {
+		Control* pControl = reinterpret_cast<Control*>(pNative);
+		Script* pScript = reinterpret_cast<Script*>(pNativeScript);
+		for(auto it = pScript->begin(); it != pScript->end(); ++it) {
+			*pControl << **it;
+		}
+	} catch (FatalError& e) {
+		ThrowJniException(env, e);
+	}		
+}
+
 jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetColor(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr)
 {
 	TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdSetColorDirect{(uint32_t)argb, (uint32_t)addr});

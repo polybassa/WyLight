@@ -40,6 +40,10 @@ public class ScriptAdapter extends BaseAdapter {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	public long getNative() {
+		return mNative;
+	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 		TextView v = new TextView(parent.getContext());

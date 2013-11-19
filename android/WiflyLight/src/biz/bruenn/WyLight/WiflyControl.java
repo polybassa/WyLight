@@ -3,6 +3,7 @@ package biz.bruenn.WyLight;
 import biz.bruenn.WyLight.exception.ConnectionTimeout;
 import biz.bruenn.WyLight.exception.FatalError;
 import biz.bruenn.WyLight.exception.ScriptBufferFull;
+import biz.bruenn.WyLight.library.ScriptAdapter;
 
 public class WiflyControl {
 	
@@ -16,9 +17,10 @@ public class WiflyControl {
 	private native boolean FwClearScript(long pNative);
 	private native boolean FwLoopOff(long pNative, byte numLoops);
 	private native boolean FwLoopOn(long pNative);
-	private native boolean FwSetColor(long pNative, int argb, int addr) throws ConnectionTimeout;
-	private native boolean FwSetFade(long pNative, int argb, int addr, short fadeTime) throws ConnectionTimeout;
-	private native boolean FwSetGradient(long pNative, int argb_1, int argb_2, int length, int offset, short fadeTime) throws ConnectionTimeout;
+	private native boolean FwSendScript(long pNative, long pNativeScript) throws ConnectionTimeout, FatalError, ScriptBufferFull;
+	private native boolean FwSetColor(long pNative, int argb, int addr) throws ConnectionTimeout, FatalError, ScriptBufferFull;
+	private native boolean FwSetFade(long pNative, int argb, int addr, short fadeTime) throws ConnectionTimeout, FatalError, ScriptBufferFull;
+	private native boolean FwSetGradient(long pNative, int argb_1, int argb_2, int length, int offset, short fadeTime) throws ConnectionTimeout, FatalError, ScriptBufferFull;
 	private native void release(long pNative);
 	
 	private long mNative;
@@ -67,6 +69,10 @@ public class WiflyControl {
 	
 	public synchronized boolean fwLoopOn() {
 		return FwLoopOn(mNative);
+	}
+	
+	public synchronized void fwSendScript(ScriptAdapter script) throws ConnectionTimeout, ScriptBufferFull, FatalError {
+		FwSendScript(mNative, script.getNative());
 	}
 	
 	public synchronized boolean fwSetColor(int argb, int addr) throws ConnectionTimeout, FatalError, ScriptBufferFull {

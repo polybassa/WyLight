@@ -28,10 +28,8 @@ public class ScriptingFragment extends ControlFragment {
 		mScriptList = new ScriptManagerAdapter(getActivity().getApplicationContext());
 		savedScripts.setAdapter(mScriptList);
 		savedScripts.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
-				// TODO Auto-generated method stub
 				mCommandList.setAdapter(mScriptList.getItem(position));				
 			}
 
@@ -42,7 +40,6 @@ public class ScriptingFragment extends ControlFragment {
 		
 		mCommandList = (ListView)v.findViewById(R.id.scriptList);
 		mCommandList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
 			public void onItemClick(AdapterView<?> parent, View v, int position,
 					long id) {
 				Intent i = new Intent(v.getContext(), EditCommandActivity.class);
@@ -55,7 +52,7 @@ public class ScriptingFragment extends ControlFragment {
 		Button add = (Button)v.findViewById(R.id.addCommand);
 		add.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				scriptAdapter().addFade(Color.GREEN, 0xffffffff, (short)0);
+				scriptAdapter().addFade(Color.GREEN, 0xffffffff, (short)500);
 			}
 		});
 		
@@ -69,8 +66,7 @@ public class ScriptingFragment extends ControlFragment {
 		});
 		
 		Button newScript = (Button)v.findViewById(R.id.new_script);
-		newScript.setOnClickListener(new View.OnClickListener() {
-			
+		newScript.setOnClickListener(new View.OnClickListener() {	
 			public void onClick(View v) {
 				mScriptList.add("Script" + Math.random() * 1000);
 			}
@@ -78,9 +74,8 @@ public class ScriptingFragment extends ControlFragment {
 		
 		Button send = (Button)v.findViewById(R.id.send);
 		send.setOnClickListener(new View.OnClickListener() {
-			
 			public void onClick(View v) {
-				sendScript();				
+				onSendScript(scriptAdapter());
 			}
 		});
 		
@@ -98,9 +93,5 @@ public class ScriptingFragment extends ControlFragment {
 	
 	private ScriptAdapter scriptAdapter() {
 		return (ScriptAdapter)mCommandList.getAdapter();
-	}
-	
-	private void sendScript() {
-		//TODO implement this
 	}
 }
