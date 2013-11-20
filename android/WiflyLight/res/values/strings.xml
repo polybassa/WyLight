@@ -11,6 +11,7 @@
     <string name="msg_connectionfailed">Connection to the wifly device failed</string>
     <string name="msg_noremote">No remote detected, click scan to find one</string>
     <string name="msg_scriptbufferfull">The script buffer is full, clear it first</string>
+    <string name="new_script">New</string>
     <string name="passphrase_description">WPA2 passphrase:</string>
     <string name="passphrase_hint">1-63 characters</string>
     <string name="passphrase_toggle">Show passphrase</string>

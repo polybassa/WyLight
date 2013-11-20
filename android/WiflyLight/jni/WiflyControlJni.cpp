@@ -17,6 +17,7 @@
     along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "BroadcastReceiver.h"
+#include "ScriptManager.h"
 #include "WiflyControl.h"
 #include <sstream>
 #include <unistd.h>
@@ -164,6 +165,17 @@ jboolean Java_biz_bruenn_WyLight_WiflyControl_FwLoopOn(JNIEnv* env, jobject ref,
 	TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdLoopOn{});
 }
 
+jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSendScript(JNIEnv* env, jobject ref, jlong pNative, jlong pNativeScript)
+{
+	try {
+		Control* pControl = reinterpret_cast<Control*>(pNative);
+		Script* pScript = reinterpret_cast<Script*>(pNativeScript);
+		*pControl << *pScript;
+	} catch (FatalError& e) {
+		ThrowJniException(env, e);
+	}		
+}
+
 jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetColor(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr)
 {
 	TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdSetColorDirect{(uint32_t)argb, (uint32_t)addr});
@@ -186,6 +198,114 @@ void Java_biz_bruenn_WyLight_WiflyControl_release(JNIEnv* env, jobject ref, jlon
 		g_pControl = NULL;
 	}
 }
+
+jint Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_getFadeColor(JNIEnv* env, jobject ref, jlong pNative)
+{
+	auto fadeCommand = reinterpret_cast<const FwCmdSetFade*>(pNative);
+	return fadeCommand->argb();
+}
+
+void Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_setFadeColor(JNIEnv* env, jobject ref, jlong pNative, jint argb)
+{
+	auto fadeCommand = reinterpret_cast<FwCmdSetFade*>(pNative);
+	fadeCommand->argb(argb);
+}
+
+void Java_biz_bruenn_WyLight_library_ScriptAdapter_addFade(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr, jshort fadeTime)
+{
+	reinterpret_cast<Script*>(pNative)->push_back(new FwCmdSetFade(argb, fadeTime, addr));
+}
+
+void Java_biz_bruenn_WyLight_library_ScriptAdapter_clear(JNIEnv* env, jobject ref, jlong pNative)
+{
+	reinterpret_cast<Script*>(pNative)->clear();
+}
+
+jlong Java_biz_bruenn_WyLight_library_ScriptAdapter_getItem(JNIEnv* env, jobject ref, jlong pNative, jint position)
+{
+	auto fwCmdScript = reinterpret_cast<Script*>(pNative)->begin();
+	std::advance(fwCmdScript, position);
+	return reinterpret_cast<jlong>(*fwCmdScript);
+}
+
+jstring Java_biz_bruenn_WyLight_library_ScriptAdapter_name(JNIEnv* env, jobject ref, jlong pNative)
+{
+	const std::string& myName = reinterpret_cast<Script*>(pNative)->getName();
+	return env->NewStringUTF(myName.data());
+}
+
+jint Java_biz_bruenn_WyLight_library_ScriptAdapter_numCommands(JNIEnv* env, jobject ref, jlong pNative)
+{
+	return reinterpret_cast<const Script*>(pNative)->size();
+}
+
+jlong Java_biz_bruenn_WyLight_library_ScriptAdapter_create(JNIEnv* env, jobject ref, jstring path)
+{
+	Script* result = NULL;
+	const char* const myPath = env->GetStringUTFChars(path, 0);
+	try {
+		result = new Script(myPath);
+	} catch (FatalError& e) {
+		ThrowJniException(env, e);
+	}
+	env->ReleaseStringUTFChars(path, myPath);
+	return reinterpret_cast<jlong>(result);
+}
+
+jstring Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_getScriptName(JNIEnv* env, jobject ref, jstring path, jint index)
+{
+	jstring result = NULL;
+	const char* const myPath = env->GetStringUTFChars(path, 0);
+	try {
+		ScriptManager manager{myPath};
+		result = env->NewStringUTF(manager.getScriptName(index).data());
+	} catch (FatalError& e) {
+		ThrowJniException(env, e);
+	}
+	env->ReleaseStringUTFChars(path, myPath);
+	return result;
+}
+
+void jni_serialize_Script(JNIEnv* env, jstring path, const Script& script)
+{
+	const char* const myPath = env->GetStringUTFChars(path, 0);
+	try {
+		Script::serialize(myPath, script);
+	} catch (FatalError& e) {
+		ThrowJniException(env, e);
+	}
+	env->ReleaseStringUTFChars(path, myPath);
+}
+
+void Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_newScript(JNIEnv* env, jobject ref, jstring path, jstring scriptName)
+{
+	// Script constructor can throw, too. So we need an additional try/catch outside of jni_serialize_Script
+	try {
+		jni_serialize_Script(env, path, Script{});
+	} catch (FatalError& e) {
+		ThrowJniException(env, e);
+	}
+}
+
+jint Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_numScripts(JNIEnv* env, jobject ref, jstring path)
+{
+	const char* const myPath = env->GetStringUTFChars(path, 0);
+	jint numScripts = 0;
+	try {
+		ScriptManager manager{myPath};
+		numScripts = manager.numScripts();
+	} catch (FatalError& e) {
+		ThrowJniException(env, e);
+	}
+	env->ReleaseStringUTFChars(path, myPath);
+	return numScripts;
+}
+
+void Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_saveScript(JNIEnv* env, jobject ref, jstring path, jlong pNativeScript)
+{
+	jni_serialize_Script(env, path, *(reinterpret_cast<Script*>(pNativeScript)));
+}
+
 } /* extern "C" */
 } /* namespace WyLight */
 
