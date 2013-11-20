@@ -9,12 +9,18 @@ public class ScriptAdapter extends BaseAdapter {
 	
 	private native void addFade(long pNative, int argb, int addr, short fadeTime);
 	private native void clear(long pNative);
+	private native long create(String filename);
 	private native long getItem(long pNative, int position);
+	private native String name(long pNative);
 	private native int numCommands(long pNative);
 	private final long mNative;
 	
 	ScriptAdapter(long pNative) {
 		mNative = pNative;
+	}
+	
+	ScriptAdapter(String filename) {
+		mNative = create(filename);
 	}
 	
 	public void addFade(int argb, int addr, short fadeTime) {
@@ -39,6 +45,10 @@ public class ScriptAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	public String getName() {
+		return name(mNative);
 	}
 	
 	public long getNative() {

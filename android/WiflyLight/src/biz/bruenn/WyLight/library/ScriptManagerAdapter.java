@@ -9,28 +9,26 @@ import android.widget.TextView;
 
 public class ScriptManagerAdapter extends BaseAdapter {
 	
-	private native long getScript(String path, long index);
-	private native String getScriptName(String path, long index);
+	private native String getScriptName(String path, int index);
 	private native int numScripts(String path);
 	private native void newScript(String path, String name);
-	private final String path; 
+	private native void saveScript(String path, long pNative);
+	private final String mPath; 
 	
 	public ScriptManagerAdapter(Context context) {
-		path = context.getFilesDir().getAbsolutePath();
+		mPath = context.getFilesDir().getAbsolutePath();
 	}
 
 	public void add(String scriptName) {
-		// TODO send only path and scriptname to library
-		newScript(path+'/'+scriptName+".wyscript", scriptName);
+		newScript(mPath+'/'+scriptName+".wyscript", scriptName);
 	}
 
 	public int getCount() {
-		return numScripts(path);
+		return numScripts(mPath);
 	}
 
 	public ScriptAdapter getItem(int position) {
-		// TODO Auto-generated method stub
-		return new ScriptAdapter(getScript(path, position));
+		return new ScriptAdapter(mPath + '/' + getScriptName(mPath, position));
 	}
 
 	public long getItemId(int position) {
@@ -42,7 +40,14 @@ public class ScriptManagerAdapter extends BaseAdapter {
 		// TODO Auto-generated method stub
 		TextView x = new TextView(parent.getContext());
 		x.setTextColor(Color.BLACK);
-		x.setText(getScriptName(path, (long)position));
+		x.setText(getScriptName(mPath, position));
 		return x;
+	}
+	
+	public void save(ScriptAdapter script) {
+		if(null != script) {
+			final String fullPath = mPath+'/'+script.getName();
+			saveScript(fullPath, script.getNative());
+		}
 	}
 }

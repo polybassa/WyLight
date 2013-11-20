@@ -822,25 +822,15 @@ namespace WyLight {
 		this->FwSend(cmd);
 		return *this;;
 	}
-/*		
-	Control& Control::operator<<(Script&& script) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+
+	Control& Control::operator<<(const Script& script) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 	{
-		for(const auto& cmdPtr : script)
-		{
-			this->FwSend(*cmdPtr);
+		for(auto it = script.begin(); it != script.end(); ++it) {
+			*this << **it;
 		}
 		return *this;
 	}
 
-	Control& Control::operator<<(Script& script) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
-	{
-		for(const auto& cmdPtr : script)
-		{
-			this->FwSend(*cmdPtr);
-		}
-		return *this;
-	}
-*/
 	void Control::FwTest(void)
 	{
 	#if 0

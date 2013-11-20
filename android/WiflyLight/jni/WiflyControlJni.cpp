@@ -170,9 +170,7 @@ jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSendScript(JNIEnv* env, jobject 
 	try {
 		Control* pControl = reinterpret_cast<Control*>(pNative);
 		Script* pScript = reinterpret_cast<Script*>(pNativeScript);
-		for(auto it = pScript->begin(); it != pScript->end(); ++it) {
-			*pControl << **it;
-		}
+		*pControl << *pScript;
 	} catch (FatalError& e) {
 		ThrowJniException(env, e);
 	}		
@@ -230,18 +228,23 @@ jlong Java_biz_bruenn_WyLight_library_ScriptAdapter_getItem(JNIEnv* env, jobject
 	return reinterpret_cast<jlong>(*fwCmdScript);
 }
 
+jstring Java_biz_bruenn_WyLight_library_ScriptAdapter_name(JNIEnv* env, jobject ref, jlong pNative)
+{
+	const std::string& myName = reinterpret_cast<Script*>(pNative)->getName();
+	return env->NewStringUTF(myName.data());
+}
+
 jint Java_biz_bruenn_WyLight_library_ScriptAdapter_numCommands(JNIEnv* env, jobject ref, jlong pNative)
 {
 	return reinterpret_cast<const Script*>(pNative)->size();
 }
 
-jlong Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_getScript(JNIEnv* env, jobject ref, jstring path, jlong index)
+jlong Java_biz_bruenn_WyLight_library_ScriptAdapter_create(JNIEnv* env, jobject ref, jstring path)
 {
 	Script* result = NULL;
 	const char* const myPath = env->GetStringUTFChars(path, 0);
 	try {
-		ScriptManager manager{myPath};
-		result = new Script(std::move(manager.getScript(index)));
+		result = new Script(myPath);
 	} catch (FatalError& e) {
 		ThrowJniException(env, e);
 	}
@@ -249,13 +252,13 @@ jlong Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_getScript(JNIEnv* env
 	return reinterpret_cast<jlong>(result);
 }
 
-jstring Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_getScriptName(JNIEnv* env, jobject ref, jstring path, jlong index)
+jstring Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_getScriptName(JNIEnv* env, jobject ref, jstring path, jint index)
 {
 	jstring result = NULL;
 	const char* const myPath = env->GetStringUTFChars(path, 0);
 	try {
 		ScriptManager manager{myPath};
-		result = env->NewStringUTF(manager.getScript(index).getName().data());
+		result = env->NewStringUTF(manager.getScriptName(index).data());
 	} catch (FatalError& e) {
 		ThrowJniException(env, e);
 	}
@@ -263,17 +266,25 @@ jstring Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_getScriptName(JNIEn
 	return result;
 }
 
-void Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_newScript(JNIEnv* env, jobject ref, jstring path, jstring scriptName)
+void jni_serialize_Script(JNIEnv* env, jstring path, const Script& script)
 {
 	const char* const myPath = env->GetStringUTFChars(path, 0);
-	const char* const myScriptName = env->GetStringUTFChars(scriptName, 0);
 	try {
-		Script::serialize(myPath, Script{});
+		Script::serialize(myPath, script);
 	} catch (FatalError& e) {
 		ThrowJniException(env, e);
 	}
-	env->ReleaseStringUTFChars(scriptName, myScriptName);
 	env->ReleaseStringUTFChars(path, myPath);
+}
+
+void Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_newScript(JNIEnv* env, jobject ref, jstring path, jstring scriptName)
+{
+	// Script constructor can throw, too. So we need an additional try/catch outside of jni_serialize_Script
+	try {
+		jni_serialize_Script(env, path, Script{});
+	} catch (FatalError& e) {
+		ThrowJniException(env, e);
+	}
 }
 
 jint Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_numScripts(JNIEnv* env, jobject ref, jstring path)
@@ -288,6 +299,11 @@ jint Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_numScripts(JNIEnv* env
 	}
 	env->ReleaseStringUTFChars(path, myPath);
 	return numScripts;
+}
+
+void Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_saveScript(JNIEnv* env, jobject ref, jstring path, jlong pNativeScript)
+{
+	jni_serialize_Script(env, path, *(reinterpret_cast<Script*>(pNativeScript)));
 }
 
 } /* extern "C" */
