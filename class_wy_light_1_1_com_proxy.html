@@ -102,7 +102,7 @@ Collaboration diagram for WyLight::ComProxy:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_wy_light_1_1_com_proxy__coll__graph.png" border="0" usemap="#_wy_light_1_1_com_proxy_coll__map" alt="Collaboration graph"/></div>
 <map name="_wy_light_1_1_com_proxy_coll__map" id="_wy_light_1_1_com_proxy_coll__map">
-<area shape="rect" id="node2" href="class_wy_light_1_1_tcp_socket.html" title="{WyLight::TcpSocket\n||+ TcpSocket()\l+ Recv()\l+ Send()\l}" alt="" coords="15,467,152,581"/><area shape="rect" id="node3" href="class_wy_light_1_1_client_socket.html" title="{WyLight::ClientSocket\n|# mSock\l|+ ClientSocket()\l+ ~ClientSocket()\l+ Select()\l+ Send()\l}" alt="" coords="8,286,159,415"/><area shape="rect" id="node4" href="struct_wy_light_1_1_ipv4_addr.html" title="{WyLight::Ipv4Addr\n||+ Ipv4Addr()\l}" alt="" coords="19,139,148,221"/></map>
+<area shape="rect" id="node2" href="class_wy_light_1_1_tcp_socket.html" title="{WyLight::TcpSocket\n||+ TcpSocket()\l+ Recv()\l+ Send()\l}" alt="" coords="11,467,148,581"/><area shape="rect" id="node3" href="class_wy_light_1_1_client_socket.html" title="{WyLight::ClientSocket\n|# mSock\l|+ ClientSocket()\l+ ~ClientSocket()\l+ Select()\l+ Send()\l}" alt="" coords="4,286,155,415"/><area shape="rect" id="node4" href="struct_wy_light_1_1_ipv4_addr.html" title="{WyLight::Ipv4Addr\n||+ Ipv4Addr()\l}" alt="" coords="15,139,144,221"/></map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -113,6 +113,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a56167b55c50edd0a64d5c6826ff9db98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf78d82cfc84481cd92651299ccb2963"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_com_proxy.html#aaf78d82cfc84481cd92651299ccb2963">Send</a> (const <a class="el" href="class_wy_light_1_1_fw_command.html">FwCommand</a> &amp;request, response_frame *pResponse, size_t responseSize) const   throw (ConnectionTimeout, FatalError)</td></tr>
 <tr class="separator:aaf78d82cfc84481cd92651299ccb2963"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f2378c03059f174bf060c8b17f7e304"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_com_proxy.html#a6f2378c03059f174bf060c8b17f7e304">SyncWithTarget</a> (void) const   throw (FatalError)</td></tr>
+<tr class="separator:a6f2378c03059f174bf060c8b17f7e304"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -120,8 +122,6 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:a70eba2f668d4579e19ffbae1d5593e62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e5dd46f90d974548b36c11d63f95e41"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_com_proxy.html#a5e5dd46f90d974548b36c11d63f95e41">Send</a> (uint8_t const *pRequest, const size_t requestSize, uint8_t *pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian=true) const   throw (ConnectionTimeout, FatalError)</td></tr>
 <tr class="separator:a5e5dd46f90d974548b36c11d63f95e41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c789df840552cfd810bdbfd7c49c189"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_com_proxy.html#a9c789df840552cfd810bdbfd7c49c189">SyncWithBootloader</a> (void) const   throw (FatalError)</td></tr>
-<tr class="separator:a9c789df840552cfd810bdbfd7c49c189"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -365,15 +365,12 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a9c789df840552cfd810bdbfd7c49c189"></a>
+<a class="anchor" id="a6f2378c03059f174bf060c8b17f7e304"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void WyLight::ComProxy::SyncWithBootloader </td>
+          <td class="memname">size_t WyLight::ComProxy::SyncWithTarget </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -386,11 +383,6 @@ Private Attributes</h2></td></tr>
           <td align="right"></td><td>)</td><td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
@@ -422,7 +414,7 @@ Private Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Nov 19 2013 23:17:54 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Nov 20 2013 19:19:28 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

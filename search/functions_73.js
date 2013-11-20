@@ -20,9 +20,9 @@ var searchData=
   ['setstartsegmentaddress',['setStartSegmentAddress',['../classintelhex.html#a9688f0002be870b05d64b5f9fcdeb86b',1,'intelhex']]],
   ['settime',['SetTime',['../struct_wy_light_1_1_fw_cmd_set_rtc.html#a520ba9a6d007251ffcf4aff24d004498',1,'WyLight::FwCmdSetRtc']]],
   ['showhelp',['ShowHelp',['../class_wifly_control_cli.html#a0e475ce27f3a9c42c3d3c18b4533ed36',1,'WiflyControlCli']]],
-  ['size',['size',['../classintelhex.html#afa757932ec420f977d33bb9a2d5a0a69',1,'intelhex::size()'],['../class_wy_light_1_1_base_buffer.html#a6aa8fcfeaeeb093bce60211a3728337a',1,'WyLight::BaseBuffer::Size()']]],
+  ['size',['Size',['../class_wy_light_1_1_base_buffer.html#a6aa8fcfeaeeb093bce60211a3728337a',1,'WyLight::BaseBuffer::Size()'],['../classintelhex.html#afa757932ec420f977d33bb9a2d5a0a69',1,'intelhex::size()']]],
   ['startaddress',['startAddress',['../classintelhex.html#aa8833665b99f0b6ac64fcef7d2116c42',1,'intelhex']]],
   ['stop',['Stop',['../class_wy_light_1_1_broadcast_receiver.html#a018a961883af11174f0bc36695bb222c',1,'WyLight::BroadcastReceiver']]],
   ['stringtohex',['stringToHex',['../classintelhex.html#a5adb32f7af4a3c75fd0745ef2827da9a',1,'intelhex']]],
-  ['syncwithbootloader',['SyncWithBootloader',['../class_wy_light_1_1_com_proxy.html#a9c789df840552cfd810bdbfd7c49c189',1,'WyLight::ComProxy']]]
+  ['syncwithtarget',['SyncWithTarget',['../class_wy_light_1_1_com_proxy.html#a6f2378c03059f174bf060c8b17f7e304',1,'WyLight::ComProxy']]]
 ];

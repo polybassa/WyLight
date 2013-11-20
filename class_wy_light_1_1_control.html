@@ -107,13 +107,15 @@ Collaboration diagram for WyLight::Control:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_wy_light_1_1_control__coll__graph.png" border="0" usemap="#_wy_light_1_1_control_coll__map" alt="Collaboration graph"/></div>
 <map name="_wy_light_1_1_control_coll__map" id="_wy_light_1_1_control_coll__map">
-<area shape="rect" id="node2" href="class_wy_light_1_1_telnet_proxy.html" title="{WyLight::TelnetProxy\n||+ TelnetProxy()\l+ ClearResponse()\l+ Close()\l+ RecvString()\l+ Open()\l+ Send()\l+ SendString()\l+ SendRebootCommand()\l+ PerformWifiScan()\l+ ComputeFreeChannel()\l+ ChangeWifiChannel()\l&#45; ExtractStringOfInterest()\l&#45; Recv()\l&#45; RecvString()\l&#45; SendAndWaitForEcho()\l&#45; SetReplaceChar()\l}" alt="" coords="104,745,281,1066"/><area shape="rect" id="node3" href="class_wy_light_1_1_tcp_socket.html" title="{WyLight::TcpSocket\n||+ TcpSocket()\l+ Recv()\l+ Send()\l}" alt="" coords="205,467,342,581"/><area shape="rect" id="node7" href="class_wy_light_1_1_com_proxy.html" title="{WyLight::ComProxy\n||+ ComProxy()\l+ Send()\l+ Send()\l&#45; Recv()\l&#45; Send()\l&#45; SyncWithBootloader()\l}" alt="" coords="305,825,463,986"/><area shape="rect" id="node4" href="class_wy_light_1_1_client_socket.html" title="{WyLight::ClientSocket\n|# mSock\l|+ ClientSocket()\l+ ~ClientSocket()\l+ Select()\l+ Send()\l}" alt="" coords="278,286,429,415"/><area shape="rect" id="node8" href="class_wy_light_1_1_udp_socket.html" title="{WyLight::UdpSocket\n||+ UdpSocket()\l+ RecvFrom()\l+ Send()\l}" alt="" coords="427,606,569,719"/><area shape="rect" id="node5" href="struct_wy_light_1_1_ipv4_addr.html" title="{WyLight::Ipv4Addr\n||+ Ipv4Addr()\l}" alt="" coords="289,139,418,221"/></map>
+<area shape="rect" id="node2" href="class_wy_light_1_1_telnet_proxy.html" title="{WyLight::TelnetProxy\n||+ TelnetProxy()\l+ ClearResponse()\l+ Close()\l+ RecvString()\l+ Open()\l+ Send()\l+ SendString()\l+ SendRebootCommand()\l+ PerformWifiScan()\l+ ComputeFreeChannel()\l+ ChangeWifiChannel()\l&#45; ExtractStringOfInterest()\l&#45; Recv()\l&#45; RecvString()\l&#45; SendAndWaitForEcho()\l&#45; SetReplaceChar()\l}" alt="" coords="126,745,303,1066"/><area shape="rect" id="node3" href="class_wy_light_1_1_tcp_socket.html" title="{WyLight::TcpSocket\n||+ TcpSocket()\l+ Recv()\l+ Send()\l}" alt="" coords="218,467,355,581"/><area shape="rect" id="node7" href="class_wy_light_1_1_com_proxy.html" title="{WyLight::ComProxy\n||+ ComProxy()\l+ Send()\l+ Send()\l+ SyncWithTarget()\l&#45; Recv()\l&#45; Send()\l}" alt="" coords="328,825,467,986"/><area shape="rect" id="node4" href="class_wy_light_1_1_client_socket.html" title="{WyLight::ClientSocket\n|# mSock\l|+ ClientSocket()\l+ ~ClientSocket()\l+ Select()\l+ Send()\l}" alt="" coords="291,286,442,415"/><area shape="rect" id="node8" href="class_wy_light_1_1_udp_socket.html" title="{WyLight::UdpSocket\n||+ UdpSocket()\l+ RecvFrom()\l+ Send()\l}" alt="" coords="432,606,574,719"/><area shape="rect" id="node5" href="struct_wy_light_1_1_ipv4_addr.html" title="{WyLight::Ipv4Addr\n||+ Ipv4Addr()\l}" alt="" coords="302,139,431,221"/></map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a2d5efc4402b12961aea578e1aeb91dab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a2d5efc4402b12961aea578e1aeb91dab">Control</a> (uint32_t addr, uint16_t port)</td></tr>
 <tr class="separator:a2d5efc4402b12961aea578e1aeb91dab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a585d3425704ac1cb5bf8666c9fba6b46"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a585d3425704ac1cb5bf8666c9fba6b46">GetTargetMode</a> (void) const   throw (FatalError)</td></tr>
+<tr class="separator:a585d3425704ac1cb5bf8666c9fba6b46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0198560d89e0af7c668ab182d4cd5533"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a0198560d89e0af7c668ab182d4cd5533">BlEnableAutostart</a> (void) const   throw (ConnectionTimeout, FatalError)</td></tr>
 <tr class="separator:a0198560d89e0af7c668ab182d4cd5533"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90019ceb9f607dbb3401cfd393a1fe00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a90019ceb9f607dbb3401cfd393a1fe00">BlEraseEeprom</a> (void) const   throw (ConnectionTimeout, FatalError)</td></tr>
@@ -209,8 +211,8 @@ Private Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a196681d7acf7c7efe0bc33ef664db775"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_wy_light_1_1_tcp_socket.html">TcpSocket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a196681d7acf7c7efe0bc33ef664db775">mSock</a></td></tr>
-<tr class="separator:a196681d7acf7c7efe0bc33ef664db775"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fc21e2f385f69af31fee21849191f29"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_wy_light_1_1_tcp_socket.html">TcpSocket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a5fc21e2f385f69af31fee21849191f29">mTcpSock</a></td></tr>
+<tr class="separator:a5fc21e2f385f69af31fee21849191f29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11dc1d04f1df7d46a75d4d6101ddcea7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_wy_light_1_1_udp_socket.html">UdpSocket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a11dc1d04f1df7d46a75d4d6101ddcea7">mUdpSock</a></td></tr>
 <tr class="separator:a11dc1d04f1df7d46a75d4d6101ddcea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9096a2d760efacbb38e79f465df4fea6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_wy_light_1_1_com_proxy.html">ComProxy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a9096a2d760efacbb38e79f465df4fea6">mProxy</a></td></tr>
@@ -1950,6 +1952,37 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a class="anchor" id="a585d3425704ac1cb5bf8666c9fba6b46"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t WyLight::Control::GetTargetMode </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+        <tr>
+          <td align="right">throw </td><td>(</td><td colspan="2"><a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a></td>
+        </tr>
+        <tr>
+          <td align="right"></td><td>)</td><td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_wy_light_1_1_control_a585d3425704ac1cb5bf8666c9fba6b46_icgraph.png" border="0" usemap="#class_wy_light_1_1_control_a585d3425704ac1cb5bf8666c9fba6b46_icgraph" alt=""/></div>
+<map name="class_wy_light_1_1_control_a585d3425704ac1cb5bf8666c9fba6b46_icgraph" id="class_wy_light_1_1_control_a585d3425704ac1cb5bf8666c9fba6b46_icgraph">
+<area shape="rect" id="node2" href="class_control_cmd_get_target_mode.html#abe42e1c3d70456ed43aa35d0c5bdfc78" title="ControlCmdGetTargetMode::Run" alt="" coords="272,5,488,33"/></map>
+</div>
+</p>
+
+</div>
+</div>
 <a class="anchor" id="a3679510a5c28c97ef9cbbbbc2ffee9e8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2202,7 +2235,7 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a class="anchor" id="a196681d7acf7c7efe0bc33ef664db775"></a>
+<a class="anchor" id="a5fc21e2f385f69af31fee21849191f29"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -2210,7 +2243,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="class_wy_light_1_1_tcp_socket.html">TcpSocket</a> WyLight::Control::mSock</td>
+          <td class="memname">const <a class="el" href="class_wy_light_1_1_tcp_socket.html">TcpSocket</a> WyLight::Control::mTcpSock</td>
         </tr>
       </table>
   </td>
@@ -2271,7 +2304,7 @@ Here is the caller graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Nov 19 2013 23:17:54 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Nov 20 2013 19:19:29 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

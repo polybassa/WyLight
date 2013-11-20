@@ -148,53 +148,53 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">         * @throw FatalError if sending to socket failed</span></div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">         */</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_com_proxy.html#a56167b55c50edd0a64d5c6826ff9db98">Send</a>(<span class="keyword">const</span> <a class="code" href="class_wy_light_1_1_fw_command.html">FwCommand</a>&amp; request, response_frame* pResponse, <span class="keywordtype">size_t</span> responseSize) <span class="keyword">const</span> <span class="keywordflow">throw</span>(<a class="code" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>, <a class="code" href="class_wy_light_1_1_fatal_error.html">FatalError</a>);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="comment">/*</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">         * Reference to a tcp socket with an established connection to a wifly module</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_com_proxy.html#a5877d88abaea85963a0059fe711463c5">   66</a></span>&#160;        <span class="keyword">const</span> <a class="code" href="class_wy_light_1_1_tcp_socket.html">TcpSocket</a>&amp; <a class="code" href="class_wy_light_1_1_com_proxy.html#a5877d88abaea85963a0059fe711463c5">mSock</a>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="comment">/*</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">         * Receive data on the TcpSocket @see mSock, unmask the control characters and write the plain message into pBuffer</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">         * @param pBuffer to store the read data</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">         * @param length of the buffer pBuffer is pointing to</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">         * @param pTimeout maximum time to wait for a response use NULL to wait indefinitely (default)</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">         * @param checkCrc if true the crc of the response will be checked, 0 is returned if crc was wrong</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">         * @param crcInLittleEndian if true the crc is assumed to be in little endian byte order like the bootloader will send it. if false the byte order is assumed to be big endian</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">         * @return the number of bytes received or 0 if the crc check fails</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">         * @throw ConnectionTimeout if response timed out</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_com_proxy.html#a70eba2f668d4579e19ffbae1d5593e62">Recv</a>(uint8_t* pBuffer, <span class="keywordtype">size_t</span> length, timeval* pTimeout = NULL, <span class="keywordtype">bool</span> checkCrc = <span class="keyword">true</span>, <span class="keywordtype">bool</span> crcInLittleEndian = <span class="keyword">true</span>) <span class="keyword">const</span> throw(<a class="code" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="comment">/*</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">         * Send a bootloader or firmware pRequest to the PIC</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">         * @param pRequest buffer containing the request to send</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">         * @param requestSize size of the request buffer</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">         * @param pResponse pointer to a buffer for the response</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">         * @param responseSize size of the response buffer</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">         * @param checkCrc if true the crc of the response will be checked and 0 returned if crc check fails</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">         * @param doSync if true a uart baudrate synchronisation is forced before request is send (only valid for bootloader requests</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">         * @param crcInLittleEndian if true the crc is assumed in little endian byte order</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">         * @return number of bytes read into pResponse or 0 if crc check fails</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">         * @throw ConnectionTimeout if a timeout occurred</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">         * @throw FatalError if synchronisation or sending to socket failed</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_com_proxy.html#a56167b55c50edd0a64d5c6826ff9db98">Send</a>(uint8_t const* pRequest, const <span class="keywordtype">size_t</span> requestSize, uint8_t* pResponse, <span class="keywordtype">size_t</span> responseSize, <span class="keywordtype">bool</span> checkCrc, <span class="keywordtype">bool</span> doSync, <span class="keywordtype">bool</span> crcInLittleEndian = true) const throw(ConnectionTimeout, <a class="code" href="class_wy_light_1_1_fatal_error.html">FatalError</a>);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="comment">/*</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">         * Send a byte sequence to force a uart baud rate synchronisation between WLAN module and PIC</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">         * @throw FatalError if synchronisation fails</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_com_proxy.html#a9c789df840552cfd810bdbfd7c49c189">SyncWithBootloader</a>(<span class="keywordtype">void</span>) const throw (FatalError);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;};</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _COM_PROXY_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">         * Send a byte sequence to force a uart baud rate synchronisation between WLAN module and PIC</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">         * @return mode of target: BL_IDENT for Bootloader mode, FW_IDENT for Firmware mode</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">         * @throw FatalError if synchronisation fails</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">         */</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_com_proxy.html#a6f2378c03059f174bf060c8b17f7e304">SyncWithTarget</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span> <span class="keywordflow">throw</span>(<a class="code" href="class_wy_light_1_1_fatal_error.html">FatalError</a>);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">         * Reference to a tcp socket with an established connection to a wifly module</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">         */</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_com_proxy.html#a5877d88abaea85963a0059fe711463c5">   73</a></span>&#160;        <span class="keyword">const</span> <a class="code" href="class_wy_light_1_1_tcp_socket.html">TcpSocket</a>&amp; <a class="code" href="class_wy_light_1_1_com_proxy.html#a5877d88abaea85963a0059fe711463c5">mSock</a>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">         * Receive data on the TcpSocket @see mSock, unmask the control characters and write the plain message into pBuffer</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">         * @param pBuffer to store the read data</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">         * @param length of the buffer pBuffer is pointing to</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">         * @param pTimeout maximum time to wait for a response use NULL to wait indefinitely (default)</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">         * @param checkCrc if true the crc of the response will be checked, 0 is returned if crc was wrong</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">         * @param crcInLittleEndian if true the crc is assumed to be in little endian byte order like the bootloader will send it. if false the byte order is assumed to be big endian</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">         * @return the number of bytes received or 0 if the crc check fails</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">         * @throw ConnectionTimeout if response timed out</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">         */</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_com_proxy.html#a70eba2f668d4579e19ffbae1d5593e62">Recv</a>(uint8_t* pBuffer, <span class="keywordtype">size_t</span> length, timeval* pTimeout = NULL, <span class="keywordtype">bool</span> checkCrc = <span class="keyword">true</span>, <span class="keywordtype">bool</span> crcInLittleEndian = <span class="keyword">true</span>) <span class="keyword">const</span> throw(<a class="code" href="class_wy_light_1_1_connection_timeout.html">ConnectionTimeout</a>);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">         * Send a bootloader or firmware pRequest to the PIC</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">         * @param pRequest buffer containing the request to send</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">         * @param requestSize size of the request buffer</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">         * @param pResponse pointer to a buffer for the response</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">         * @param responseSize size of the response buffer</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">         * @param checkCrc if true the crc of the response will be checked and 0 returned if crc check fails</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">         * @param doSync if true a uart baudrate synchronisation is forced before request is send (only valid for bootloader requests</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">         * @param crcInLittleEndian if true the crc is assumed in little endian byte order</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">         * @return number of bytes read into pResponse or 0 if crc check fails</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">         * @throw ConnectionTimeout if a timeout occurred</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">         * @throw FatalError if synchronisation or sending to socket failed</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">         */</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_com_proxy.html#a56167b55c50edd0a64d5c6826ff9db98">Send</a>(uint8_t const* pRequest, const <span class="keywordtype">size_t</span> requestSize, uint8_t* pResponse, <span class="keywordtype">size_t</span> responseSize, <span class="keywordtype">bool</span> checkCrc, <span class="keywordtype">bool</span> doSync, <span class="keywordtype">bool</span> crcInLittleEndian = true) const throw(ConnectionTimeout, <a class="code" href="class_wy_light_1_1_fatal_error.html">FatalError</a>);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;};</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* #ifndef _COM_PROXY_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor"></span></div>
 <div class="ttc" id="class_wy_light_1_1_tcp_socket_html"><div class="ttname"><a href="class_wy_light_1_1_tcp_socket.html">WyLight::TcpSocket</a></div><div class="ttdef"><b>Definition:</b> ClientSocket.h:94</div></div>
-<div class="ttc" id="class_wy_light_1_1_com_proxy_html_a9c789df840552cfd810bdbfd7c49c189"><div class="ttname"><a href="class_wy_light_1_1_com_proxy.html#a9c789df840552cfd810bdbfd7c49c189">WyLight::ComProxy::SyncWithBootloader</a></div><div class="ttdeci">void SyncWithBootloader(void) const </div></div>
 <div class="ttc" id="class_wy_light_1_1_connection_timeout_html"><div class="ttname"><a href="class_wy_light_1_1_connection_timeout.html">WyLight::ConnectionTimeout</a></div><div class="ttdef"><b>Definition:</b> WiflyControlException.h:104</div></div>
-<div class="ttc" id="class_wy_light_1_1_com_proxy_html_a5877d88abaea85963a0059fe711463c5"><div class="ttname"><a href="class_wy_light_1_1_com_proxy.html#a5877d88abaea85963a0059fe711463c5">WyLight::ComProxy::mSock</a></div><div class="ttdeci">const TcpSocket &amp; mSock</div><div class="ttdef"><b>Definition:</b> ComProxy.h:66</div></div>
+<div class="ttc" id="class_wy_light_1_1_com_proxy_html_a5877d88abaea85963a0059fe711463c5"><div class="ttname"><a href="class_wy_light_1_1_com_proxy.html#a5877d88abaea85963a0059fe711463c5">WyLight::ComProxy::mSock</a></div><div class="ttdeci">const TcpSocket &amp; mSock</div><div class="ttdef"><b>Definition:</b> ComProxy.h:73</div></div>
 <div class="ttc" id="class_wy_light_1_1_com_proxy_html"><div class="ttname"><a href="class_wy_light_1_1_com_proxy.html">WyLight::ComProxy</a></div><div class="ttdef"><b>Definition:</b> ComProxy.h:30</div></div>
 <div class="ttc" id="class_wy_light_1_1_com_proxy_html_a56167b55c50edd0a64d5c6826ff9db98"><div class="ttname"><a href="class_wy_light_1_1_com_proxy.html#a56167b55c50edd0a64d5c6826ff9db98">WyLight::ComProxy::Send</a></div><div class="ttdeci">size_t Send(const BlRequest &amp;req, uint8_t *pResponse, size_t responseSize, bool doSync=true) const </div></div>
 <div class="ttc" id="class_wy_light_1_1_com_proxy_html_a70eba2f668d4579e19ffbae1d5593e62"><div class="ttname"><a href="class_wy_light_1_1_com_proxy.html#a70eba2f668d4579e19ffbae1d5593e62">WyLight::ComProxy::Recv</a></div><div class="ttdeci">size_t Recv(uint8_t *pBuffer, size_t length, timeval *pTimeout=NULL, bool checkCrc=true, bool crcInLittleEndian=true) const </div></div>
@@ -205,10 +205,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="_fw_command_8h_html"><div class="ttname"><a href="_fw_command_8h.html">FwCommand.h</a></div></div>
 <div class="ttc" id="struct_wy_light_1_1_bl_request_html"><div class="ttname"><a href="struct_wy_light_1_1_bl_request.html">WyLight::BlRequest</a></div><div class="ttdef"><b>Definition:</b> BlRequest.h:54</div></div>
 <div class="ttc" id="class_wy_light_1_1_fatal_error_html"><div class="ttname"><a href="class_wy_light_1_1_fatal_error.html">WyLight::FatalError</a></div><div class="ttdef"><b>Definition:</b> WiflyControlException.h:53</div></div>
+<div class="ttc" id="class_wy_light_1_1_com_proxy_html_a6f2378c03059f174bf060c8b17f7e304"><div class="ttname"><a href="class_wy_light_1_1_com_proxy.html#a6f2378c03059f174bf060c8b17f7e304">WyLight::ComProxy::SyncWithTarget</a></div><div class="ttdeci">size_t SyncWithTarget(void) const </div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Nov 19 2013 23:17:52 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Nov 20 2013 19:19:26 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

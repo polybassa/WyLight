@@ -21,6 +21,7 @@ var searchData=
   ['getsize',['GetSize',['../struct_wy_light_1_1_bl_request.html#a46864fa4524fcdd0f32033e8f51ba1c5',1,'WyLight::BlRequest::GetSize()'],['../class_wy_light_1_1_fw_command.html#af45ca242c24c497039ea3063d1d2bf06',1,'WyLight::FwCommand::GetSize()']]],
   ['getstartlinearaddress',['getStartLinearAddress',['../classintelhex.html#a7bc61f72756d37509e768906733ba10b',1,'intelhex']]],
   ['getstartsegmentaddress',['getStartSegmentAddress',['../classintelhex.html#a94d6d17ba22263a4775d80b2a0e6e95f',1,'intelhex']]],
+  ['gettargetmode',['GetTargetMode',['../class_wy_light_1_1_control.html#a585d3425704ac1cb5bf8666c9fba6b46',1,'WyLight::Control']]],
   ['gpiovalue',['gpioValue',['../struct_wy_light_1_1_broadcast_message.html#a3317f27030e3f644bf4c3f29748d2aa0',1,'WyLight::BroadcastMessage']]],
   ['green',['green',['../class_wy_light_1_1_wifly_color.html#a5d6277a101939c582de9538765e3489e',1,'WyLight::WiflyColor::green() const '],['../class_wy_light_1_1_wifly_color.html#a9bc2caea718573d58d9c1a3951cd5d79',1,'WyLight::WiflyColor::green(uint8_t value)'],['../class_wy_light_1_1_wifly_color.html#af89b913336910c06935b86bbf64a5a97',1,'WyLight::WiflyColor::GREEN()']]]
 ];

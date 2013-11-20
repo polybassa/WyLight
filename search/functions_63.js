@@ -44,6 +44,7 @@ var searchData=
   ['controlcmdconfwlanasclient',['ControlCmdConfWlanAsClient',['../class_control_cmd_conf_wlan_as_client.html#a6ee641e34a1b7845eb0048317798e1f4',1,'ControlCmdConfWlanAsClient']]],
   ['controlcmdconfwlanassoftap',['ControlCmdConfWlanAsSoftAP',['../class_control_cmd_conf_wlan_as_soft_a_p.html#aca3802c8b097c0c44b77c907db677690',1,'ControlCmdConfWlanAsSoftAP']]],
   ['controlcmdgetrtc',['ControlCmdGetRtc',['../class_control_cmd_get_rtc.html#ad037c966b3fd933771508d592f2f7180',1,'ControlCmdGetRtc']]],
+  ['controlcmdgettargetmode',['ControlCmdGetTargetMode',['../class_control_cmd_get_target_mode.html#afecce1b60c24a0bddb42ac782e3f3e08',1,'ControlCmdGetTargetMode']]],
   ['controlcmdloopoff',['ControlCmdLoopOff',['../class_control_cmd_loop_off.html#a197b6b23f5f191e0a43815ea50b4c375',1,'ControlCmdLoopOff']]],
   ['controlcmdloopon',['ControlCmdLoopOn',['../class_control_cmd_loop_on.html#a862b875221c6d82aee40ea2c57058542',1,'ControlCmdLoopOn']]],
   ['controlcmdprintcycletime',['ControlCmdPrintCycletime',['../class_control_cmd_print_cycletime.html#a71041dfd9005cc6e330c15b14c5ab8d9',1,'ControlCmdPrintCycletime']]],

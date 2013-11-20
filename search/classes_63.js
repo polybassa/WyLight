@@ -23,6 +23,7 @@ var searchData=
   ['controlcmdconfwlanasclient',['ControlCmdConfWlanAsClient',['../class_control_cmd_conf_wlan_as_client.html',1,'']]],
   ['controlcmdconfwlanassoftap',['ControlCmdConfWlanAsSoftAP',['../class_control_cmd_conf_wlan_as_soft_a_p.html',1,'']]],
   ['controlcmdgetrtc',['ControlCmdGetRtc',['../class_control_cmd_get_rtc.html',1,'']]],
+  ['controlcmdgettargetmode',['ControlCmdGetTargetMode',['../class_control_cmd_get_target_mode.html',1,'']]],
   ['controlcmdloopoff',['ControlCmdLoopOff',['../class_control_cmd_loop_off.html',1,'']]],
   ['controlcmdloopon',['ControlCmdLoopOn',['../class_control_cmd_loop_on.html',1,'']]],
   ['controlcmdprintcycletime',['ControlCmdPrintCycletime',['../class_control_cmd_print_cycletime.html',1,'']]],
