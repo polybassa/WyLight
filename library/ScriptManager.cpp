@@ -42,6 +42,7 @@ namespace WyLight {
 			}
 		}
 		closedir(searchDir);
+		std::sort(m_ScriptFiles.begin(), m_ScriptFiles.end());
 	}
 
 	ScriptManager::~ScriptManager(void)

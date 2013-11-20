@@ -14,6 +14,7 @@ public class ScriptAdapter extends BaseAdapter {
 	private native String name(long pNative);
 	private native int numCommands(long pNative);
 	private final long mNative;
+	public boolean mDesignatedForDeletion = false;
 	
 	ScriptAdapter(long pNative) {
 		mNative = pNative;

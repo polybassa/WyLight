@@ -1,5 +1,7 @@
 package biz.bruenn.WyLight.library;
 
+import java.io.File;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
@@ -21,6 +23,7 @@ public class ScriptManagerAdapter extends BaseAdapter {
 
 	public void add(String scriptName) {
 		newScript(mPath+'/'+scriptName+".wyscript", scriptName);
+		this.notifyDataSetChanged();
 	}
 
 	public int getCount() {
@@ -44,8 +47,13 @@ public class ScriptManagerAdapter extends BaseAdapter {
 		return x;
 	}
 	
+	public void remove(ScriptAdapter script) {
+		new File(mPath + '/' + script.getName()).delete();
+		notifyDataSetChanged();
+	}
+	
 	public void save(ScriptAdapter script) {
-		if(null != script) {
+		if(null != script && !script.mDesignatedForDeletion) {
 			final String fullPath = mPath+'/'+script.getName();
 			saveScript(fullPath, script.getNative());
 		}

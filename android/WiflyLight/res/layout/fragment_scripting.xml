@@ -16,11 +16,11 @@
         	android:layout_weight="0.5"
     	/>
     	<Button
-	        android:id="@+id/send"
+	        android:id="@+id/new_script"
     	    android:layout_width="fill_parent"
         	android:layout_height="wrap_content"
         	android:layout_weight="1"
-        	android:text="@string/send" />
+        	android:text="@string/new_script" />
     </LinearLayout>
 
 	<LinearLayout
@@ -39,12 +39,6 @@
 		android:layout_height="wrap_content"
     	android:orientation="horizontal" >
     	<Button
-	        android:id="@+id/new_script"
-    	    android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_weight="1"
-        	android:text="@string/new_script" />
-    	<Button
 	        android:id="@+id/clear"
     	    android:layout_width="fill_parent"
         	android:layout_height="wrap_content"
@@ -56,6 +50,12 @@
         	android:layout_height="wrap_content"
         	android:layout_weight="1"        	
         	android:text="@string/add_command" />
+    	<Button
+	        android:id="@+id/send"
+    	    android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_weight="1"
+        	android:text="@string/send" />
     </LinearLayout>
 
 </LinearLayout>

@@ -20,25 +20,34 @@ import android.widget.Spinner;
 public class ScriptingFragment extends ControlFragment {
 	public static final String ITEM_POSITION = "ITEM_POSITION";
 
+	Spinner mScriptListSpinner;
 	private ScriptManagerAdapter mScriptList;
 	private ListView mCommandList;
+	
+	private void addNewScript()
+	{
+		String now = new SimpleDateFormat("yyyyMMdd-HHmmss", java.util.Locale.GERMANY).format(new Date());
+		mScriptList.add(now);
+		mScriptListSpinner.setSelection(mScriptList.getCount() - 1);
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_scripting, group, false);
 			
-		Spinner savedScripts = (Spinner)v.findViewById(R.id.savedScripts);
+		mScriptListSpinner = (Spinner)v.findViewById(R.id.savedScripts);
 		mScriptList = new ScriptManagerAdapter(getActivity().getApplicationContext());
-		savedScripts.setAdapter(mScriptList);
-		savedScripts.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		mScriptListSpinner.setAdapter(mScriptList);
+		mScriptListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
-				mScriptList.save(scriptAdapter());
 				mCommandList.setAdapter(mScriptList.getItem(position));				
 			}
 
 			public void onNothingSelected(AdapterView<?> parent) {
-				// TODO Auto-generated method stub
+				if(mScriptList.getCount() < 1) {
+					addNewScript();
+				}
 			}
 		});	
 		
@@ -56,7 +65,8 @@ public class ScriptingFragment extends ControlFragment {
 		Button add = (Button)v.findViewById(R.id.addCommand);
 		add.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				scriptAdapter().addFade(Color.GREEN, 0xffffffff, (short)500);
+				scriptAdapter().addFade(Color.WHITE, 0xffffffff, (short)500);
+				mScriptList.save(scriptAdapter());
 			}
 		});
 		
@@ -64,16 +74,24 @@ public class ScriptingFragment extends ControlFragment {
 		clear.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				scriptAdapter().clear();
-				mProvider.getControl().fwClearScript();
+				ScriptAdapter oldScript = scriptAdapter();
+				scriptAdapter().mDesignatedForDeletion = true;
+				final int oldPosition = mScriptListSpinner.getSelectedItemPosition();
+				mScriptList.remove(oldScript); 
+				if(mScriptList.getCount() < 1) {
+					mScriptListSpinner.setSelected(false);
+				} else {
+					final int newPosition = Math.min(mScriptList.getCount() - 1, oldPosition);
+					mScriptListSpinner.setSelection(newPosition);
+					mCommandList.setAdapter(mScriptList.getItem(newPosition));
+				}
 			}
 		});
 		
 		Button newScript = (Button)v.findViewById(R.id.new_script);
 		newScript.setOnClickListener(new View.OnClickListener() {	
 			public void onClick(View v) {
-				String now = new SimpleDateFormat("yyyyMMdd-HHmmss", java.util.Locale.GERMANY).format(new Date());
-				mScriptList.add(now);
+				addNewScript();
 			}
 		});
 		
@@ -100,7 +118,6 @@ public class ScriptingFragment extends ControlFragment {
 	@Override
 	public void onPause() {
 		super.onPause();
-		mScriptList.save(scriptAdapter());
 	}
 	
 	private ScriptAdapter scriptAdapter() {
