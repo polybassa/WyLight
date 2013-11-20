@@ -41,7 +41,7 @@ size_t UdpSocket::Send(const uint8_t *frame, size_t length) const {
 
 
 Control::Control(uint32_t addr, uint16_t port)
-: mSock(addr, port), mUdpSock(addr, port, false, 0), mProxy(mSock), mTelnet(mSock)
+: mTcpSock(addr, port), mUdpSock(addr, port, false, 0), mProxy(mTcpSock), mTelnet(mTcpSock)
 {
 }
 

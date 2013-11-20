@@ -33,6 +33,8 @@
 #include <memory>
 #include "intelhexclass.h"
 #include "WiflyColor.h"
+#include <thread>
+#include <chrono>
 
 using std::cout;
 using std::ifstream;
@@ -53,7 +55,12 @@ namespace WyLight {
 	const std::string FwCmdLoopOff::TOKEN("loop_off");
 	const std::string FwCmdWait::TOKEN("wait");
 
-	Control::Control(uint32_t addr, uint16_t port) : mSock(addr, port), mUdpSock(addr, port, false, 0), mProxy(mSock), mTelnet(mSock) {}
+	Control::Control(uint32_t addr, uint16_t port) : mTcpSock(addr, port), mUdpSock(addr, port, false, 0), mProxy(mTcpSock), mTelnet(mTcpSock) {}
+    
+    size_t Control::GetTargetMode(void) const throw(FatalError)
+    {
+        return mProxy.SyncWithTarget();
+    }
 
 	/** ------------------------- BOOTLOADER METHODES ------------------------- **/
 	void Control::BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError)
@@ -785,6 +792,7 @@ namespace WyLight {
 			color++;
 			std::fill_n(ledArr, sizeof(ledArr), color);
 			*this << FwCmdSetColorDirect{ledArr, sizeof(ledArr)};
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		}
 	}
 

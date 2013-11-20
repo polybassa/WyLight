@@ -141,6 +141,10 @@ namespace WyLight {
 		pResponse->state = OK;
 		return pResponse->length;
 	}
+    size_t ComProxy::SyncWithTarget() const throw (FatalError)
+    {
+        return BL_IDENT;
+    }
 
 	// wrapper to test Control
 	static std::list<std::string> g_TestBuffer;
@@ -148,7 +152,7 @@ namespace WyLight {
 	static bool g_ProxyConnected = false;
 
 
-	TelnetProxy::TelnetProxy(const TcpSocket& sock) : mSock (sock) {}
+	TelnetProxy::TelnetProxy(const TcpSocket& sock) : mSock(sock) {}
 	bool TelnetProxy::Close(bool doSave) const
 	{
 		g_ProxySaved = doSave;

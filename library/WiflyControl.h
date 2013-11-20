@@ -66,6 +66,13 @@ class Control
 		 * @param port number of the wifly device server in host byte order
 		 */
 		Control(uint32_t addr, uint16_t port);
+    
+        /*
+         * Send a byte sequence to ident the current software running on PIC
+         * @return mode of target: BL_IDENT for Bootloader mode, FW_IDENT for Firmware mode
+         * @throw FatalError if synchronisation fails
+         */
+        size_t GetTargetMode(void) const throw(FatalError);
 		
 /* ------------------------- BOOTLOADER METHODES ------------------------- */
 		/**
@@ -295,7 +302,7 @@ class Control
 		 * Sockets used for communication with wifly device.
 		 * A reference to the TcpSocket is provided to the aggregated subobjects.
 		 */
-		const TcpSocket mSock;
+		const TcpSocket mTcpSock;
 	
 		/**
 		 * The UdpSocket is used directly in WiflyControl, to send fast connectionless packets.
