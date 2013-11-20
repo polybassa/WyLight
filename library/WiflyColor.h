@@ -46,8 +46,7 @@ class WiflyColor
 		 * use a stringstream to convert hex ascii string into machine bits
 		 */
 		static uint32_t ToARGB(const std::string& s) {
-			if(s.length() > 8) return 0;
-			unsigned long argb;
+			uint32_t argb;
 			std::stringstream converter;
 			converter << std::hex << s;
 			converter >> argb;

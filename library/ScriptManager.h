@@ -16,40 +16,32 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef __WyLight__Script__
-#define __WyLight__Script__
+#ifndef __WyLight__ScriptManager__
+#define __WyLight__ScriptManager__
 
-#include "FwCommand.h"
-
-#include <list>
+#include "Script.h"
+#include "WiflyControlException.h"
 #include <string>
-#include <memory>
+#include <vector>
 
 namespace WyLight {
 
-class Script
+class ScriptManager
 {
-	typedef std::list<FwCmdScript*> ScriptList;
-	std::string mName;
-	ScriptList mList;
+	const std::string m_Path;
+	std::vector<std::string> m_ScriptFiles;
+	static bool hasScriptFileExtension(const std::string& filename);
 
 public:
-	static void deserialize(const std::string& filename, Script& newScript) throw (FatalError);
-	static void serialize(const std::string& filename, const Script& newScript) throw (FatalError);
+	static const std::string EXTENSION;
 
-	Script() = default;
-	Script(const std::string& filename);
-	~Script(void);
+	ScriptManager(const std::string& path) throw (FatalError);
+	~ScriptManager(void);
 
-	bool operator ==(const Script& ref) const;
-
-	ScriptList::const_iterator begin() const noexcept;
-	void clear();
-	ScriptList::const_iterator end() const noexcept;
-	const std::string& getName() const;
-	void push_back(FwCmdScript* pNew);
-	size_t size() const;
+	Script getScript(size_t index) const throw (FatalError);
+	const std::string& getScriptName(size_t index) const throw (FatalError);
+	size_t numScripts() const;
 };
 } /* namespace WyLight */
-#endif /* #ifndef __WyLight__Script__ */
+#endif /* #ifndef __WyLight__ScriptManager__ */
 

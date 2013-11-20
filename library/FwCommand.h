@@ -231,7 +231,17 @@ struct FwCmdSetFade : public FwCmdScript
 	 */
 	FwCmdSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade = false)
 	: FwCmdScript(SET_FADE, sizeof(cmd_set_fade)) {
-		mReqFrame.data.set_fade.Set(addr, argb, (uint8_t)parallelFade, fadeTime);	
+		mReqFrame.data.set_fade.Set(addr, argb, (uint8_t)parallelFade, fadeTime);
+	};
+
+	uint32_t argb(void) const {
+		return 0xff000000 | (uint32_t)mReqFrame.data.set_fade.red << 16| (uint32_t)mReqFrame.data.set_fade.green << 8 | mReqFrame.data.set_fade.blue;
+	};
+
+	void argb(uint32_t argb) {
+		mReqFrame.data.set_fade.red = (uint8_t)(argb >> 16);
+		mReqFrame.data.set_fade.green = (uint8_t)(argb >> 8);
+		mReqFrame.data.set_fade.blue = (uint8_t)argb;
 	};
 	
 	std::ostream& Write(std::ostream& out, size_t& indentation) const override {

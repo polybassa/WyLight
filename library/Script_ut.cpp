@@ -27,6 +27,9 @@ using namespace WyLight;
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 static const FwCmdSetFade refFade(0x112233, 100, 0x1234, true);
+static const FwCmdSetFade refFadeRed(0xFF0000, 100, 0xFFFFFFFF, true);
+static const FwCmdSetFade refFadeGreen(0xFF00, 100, 0x123456, true);
+static const FwCmdSetFade refFadeBlue(0xFF, 100, 0x12, true);
 static const FwCmdSetGradient refGradient(0x112233, 0x445566, 100, false, 2, 1);
 static const FwCmdLoopOff refLoopOff(0);
 static const FwCmdLoopOn refLoop;
@@ -102,10 +105,13 @@ size_t ut_Script_ReadGood(void)
 	Script newScript("TestInput.txt");
 	auto nextCmd = newScript.begin();
 		
-	CHECK(refLoop == *newScript.front());
+	CHECK(refLoop == **newScript.begin());
 	CHECK(refLoop == **nextCmd++);
 	CHECK(refGradient == **nextCmd++);
 	CHECK(refFade == **nextCmd++);
+	CHECK(refFadeRed == **nextCmd++);
+	CHECK(refFadeGreen == **nextCmd++);
+	CHECK(refFadeBlue == **nextCmd++);
 	CHECK(refWait == **nextCmd++);
 	CHECK(refLoopOff == **nextCmd++);
 	CHECK(nextCmd == newScript.end());
@@ -116,9 +122,10 @@ size_t ut_Script_WriteGood(void)
 {
 	TestCaseBegin();
 	Script refScript("TestInput.txt");
-	Script::serialize("TestOutput.txt", refScript);
-	Script newScript("TestOutput.txt");
+	Script::serialize("./binary/TestOutput.txt", refScript);
+	Script newScript("./binary/TestOutput.txt");
 	CHECK(newScript == refScript);
+	CHECK(0 == newScript.getName().compare("TestOutput.txt"));
 	TestCaseEnd();
 }
 
