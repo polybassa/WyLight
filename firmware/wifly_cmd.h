@@ -39,6 +39,9 @@
 #define DLE 0x05
 #define ETX 0x04
 
+#define FW_IDENT 0x0D
+#define BL_IDENT 0x0F
+
 #define WAIT 0xFE
 #define SET_FADE 0xFC
 #define SET_GRADIENT 0xF9

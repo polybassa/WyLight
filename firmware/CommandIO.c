@@ -118,8 +118,10 @@ void CommandIO_GetCommands()
 		{
 			case CS_WaitForSTX:
 			{
-				if(new_byte == STX)
+				if(new_byte == STX) {
+                    UART_Send(FW_IDENT);
 					g_CmdBuf.state = CS_DeleteBuffer;
+                }
 				break;
 			}
 			case CS_DeleteBuffer:
@@ -127,7 +129,7 @@ void CommandIO_GetCommands()
 				DeleteBuffer();
 				switch (new_byte)
 				{
-					case STX: break;
+					case STX: UART_Send(FW_IDENT); break;
 					case ETX: g_CmdBuf.state = CS_WaitForSTX; break;
 					case DLE: g_CmdBuf.state = CS_UnMaskChar; break;
 					default:

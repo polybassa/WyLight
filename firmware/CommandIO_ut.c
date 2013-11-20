@@ -42,7 +42,7 @@ const uns8 dummyFrame_noSTX[] = { 0xff, DLE, ETX, 0x00, 0x14, 0xAF, ETX, 0x05, 0
 const uns8 dummyFrame_completeFrame[] = { DLE, ETX, STX, 0x01, 0x02, 0x03, DLE, 0x04, DLE, 0x05, ETX };
 const uns8 dummyFrame_completeFramePure[] = { 0x01, 0x02, 0x03, 0x04,0x05 };
 const uns8 dummyFrame_twoFrames_1[] = { STX, STX, STX, DLE, DLE, DLE, ETX, DLE, STX, DLE, ETX, ETX, DLE, STX, DLE, DLE, DLE, STX, ETX };
-const uns8 dummyFrame_twoFrames_2[] = { STX, STX, STX, DLE, DLE, DLE, ETX, DLE, STX, DLE, ETX, ETX, STX, DLE, DLE, DLE, STX, ETX };
+const uns8 dummyFrame_twoFrames_2[] = { STX, STX, STX, DLE, DLE, DLE, ETX, DLE, STX, DLE, ETX, ETX, ETX, STX, STX, DLE, DLE, DLE, STX, ETX };
 const uns8 dummyFrame_twoFramesPure_1[] = { DLE, ETX, STX, ETX };
 const uns8 dummyFrame_twoFramesPure_2[] = { DLE, STX };
 
@@ -111,6 +111,40 @@ int ut_CommandIO_Init(void)
 	
 	TestCaseEnd();
 }
+
+int ut_CommandIO_FW_IDENT(void)
+{
+	TestCaseBegin();
+	
+    RingBuf_Init(&g_RingBufResponse);
+    RingBuf_Init(&g_RingBuf);
+	CommandIO_Init();
+	
+	CHECK(0 == g_CmdBuf.counter);
+	CHECK(CS_WaitForSTX == g_CmdBuf.state);
+	CHECK(0 == g_CmdBuf.CrcL);
+	CHECK(0 == g_CmdBuf.CrcH);
+    
+    int i;
+    for(i = 0; i < sizeof(dummyFrame_twoFrames_2); i++)
+	{
+        CommandIO_GetCommands();
+        RingBuf_Put(&g_RingBuf, dummyFrame_twoFrames_2[i]);
+        CommandIO_GetCommands();
+	}
+	
+    uint8_t identCount = 0;
+    while (!RingBuf_IsEmpty(&g_RingBufResponse)) {
+        if (RingBuf_Get(&g_RingBufResponse) == FW_IDENT) {
+            identCount++;
+        }
+    }
+    
+	CHECK(identCount == 5);
+    
+	TestCaseEnd();
+}
+
 
 int ut_CommandIO_WaitForSTX(void)
 {
@@ -423,6 +457,7 @@ int main(int argc, const char* argv[])
 {	
 	UnitTestMainBegin();
 	RunTest(true, ut_CommandIO_Init);
+    RunTest(true, ut_CommandIO_FW_IDENT);
 	RunTest(true, ut_CommandIO_WaitForSTX);
 	RunTest(true, ut_CommandIO_ReadCompleteFrame);
 	RunTest(true, ut_CommandIO_ReadTwoFrames_1);

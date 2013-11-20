@@ -620,6 +620,34 @@ class ControlCmdGetRtc : public WiflyControlCmd
 
 };
 
+class ControlCmdGetTargetMode : public WiflyControlCmd
+{
+public:
+    ControlCmdGetTargetMode(void) : WiflyControlCmd(
+                                                     string("get_mode"),
+                                                     string("' - displays current operation mode of pic")) {};
+    
+    virtual void Run(WyLight::Control& control) const {
+        cout << "Reading target mode... ";
+        try
+        {
+            size_t result = control.GetTargetMode();
+            cout << "done.\n\n";
+            if(result) {
+                result == FW_IDENT ? cout << "Target in FW-Mode \n" : cout << "Target in BL-Mode \n";
+            } else {
+                cout << "No operation mode detected!\n";
+            }
+        }
+        catch(WyLight::FatalError& e)
+        {
+            cout << "failed! because of: " << e << '\n';
+        }
+    };
+};
+
+
+
 class ControlCmdTest : public WiflyControlCmd
 {
 	public:
@@ -677,6 +705,7 @@ static const std::shared_ptr<const WiflyControlCmd> s_Cmds[] = {
 	std::shared_ptr<const WiflyControlCmd>(new ControlCmdLoopOn()),
 	std::shared_ptr<const WiflyControlCmd>(new ControlCmdLoopOff()),
 	std::shared_ptr<const WiflyControlCmd>(new ControlCmdWait()),
+    std::shared_ptr<const WiflyControlCmd>(new ControlCmdGetTargetMode()),
 //TODO implement on demand	ControlCmdBlWriteEeprom writeEeprom;
 //TODO	ControlCmdBlWriteFlash writeFlash;
 };

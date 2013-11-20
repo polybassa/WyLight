@@ -28,7 +28,7 @@ namespace WyLight {
 static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 static const timeval RESPONSE_TIMEOUT = {5, 0}; // three seconds timeout for fragmented responses from pic
-
+static const timeval SYNC_TIMEOUT = {0, 100000};
 
 ComProxy::ComProxy(const TcpSocket& sock)
 	: mSock(sock)
@@ -65,15 +65,14 @@ size_t ComProxy::Send(const FwCommand& cmd, response_frame* pResponse, size_t re
 	return Send(cmd.GetData(), cmd.GetSize(), reinterpret_cast<uint8_t*>(pResponse), responseSize, true, false, false);
 }
 
-
 size_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian) const throw(ConnectionTimeout, FatalError)
-{	
-	/* do baudrate synchronisation with bootloader if requested */
-	if(doSync)
-	{
-		SyncWithBootloader();
-	}
-
+{
+    if (doSync) {
+        if (SyncWithTarget() != BL_IDENT) {
+            throw FatalError("Target in wrong mode");
+        }
+    }
+    
 	/* mask control characters in request and add crc */
 	MaskBuffer maskBuffer{BL_MAX_MESSAGE_LENGTH};
 	maskBuffer.Mask(pRequest, pRequest + requestSize, crcInLittleEndian);
@@ -94,19 +93,22 @@ size_t ComProxy::Send(const uint8_t* pRequest, const size_t requestSize, uint8_t
 	return Recv(pResponse, responseSize, &timeout, checkCrc, crcInLittleEndian);
 }
 
-void ComProxy::SyncWithBootloader(void) const throw (FatalError)
+size_t ComProxy::SyncWithTarget(void) const throw(FatalError)
 {
-	uint8_t recvBuffer[BL_MAX_MESSAGE_LENGTH];
-	timeval timeout;
-	int numRetries = BL_MAX_RETRIES;
-	do
-	{
-		if(0 > --numRetries) {
-			throw FatalError("SyncWithBootloader failed, too many reties");
-		}
-		Trace(ZONE_INFO, "SYNC...\n");
-		mSock.Send(BL_SYNC, sizeof(BL_SYNC));
-		timeout = RESPONSE_TIMEOUT;
-	} while(0 == mSock.Recv(recvBuffer, sizeof(recvBuffer), &timeout));
+    uint8_t recvBuffer[BL_MAX_MESSAGE_LENGTH];
+    std::fill(recvBuffer, recvBuffer + sizeof(recvBuffer), 0);
+    timeval timeout;
+    int numRetries = BL_MAX_RETRIES;
+    do
+    {
+        if(0 > --numRetries) {
+            throw FatalError("SyncWithTarget failed, too many reties");
+        }
+        Trace(ZONE_INFO, "SYNC...\n");
+        mSock.Send(BL_SYNC, sizeof(BL_SYNC));
+        timeout = SYNC_TIMEOUT;
+    } while(0 == mSock.Recv(recvBuffer, sizeof(recvBuffer), &timeout));
+    
+    return recvBuffer[0];
 }
 } /* namespace WyLight */

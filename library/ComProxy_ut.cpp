@@ -259,7 +259,7 @@ size_t ut_ComProxy_BlEepromReadRequest(void)
 
 	BlEepromReadRequest request;
 	request.SetAddressNumBytes(0xDA7A, sizeof(dummyBlFlashReadResponsePure));
-	size_t bytesReceived = testee.Send(request, response, sizeof(response));
+	size_t bytesReceived = testee.Send(request, response, sizeof(response), false);
 	CHECK(sizeof(dummyBlFlashReadResponsePure) == bytesReceived);
 	CHECK(0 == memcmp(dummyBlFlashReadResponsePure, response, sizeof(dummyBlFlashReadResponsePure)));
 	TestCaseEnd();
@@ -280,7 +280,7 @@ size_t ut_ComProxy_BlEepromReadRequestTimeout(void)
 	try {
 		testee.Send(request, response, sizeof(response));
 		CHECK(false);
-	} catch (ConnectionTimeout& e) {
+	} catch (std::exception& e) {
 		CHECK(true);
 	}
 	TestCaseEnd();
@@ -339,6 +339,19 @@ size_t ut_ComProxy_BlFlashReadRequest(void)
 	TestCaseEnd();
 }
 
+size_t ut_ComProxy_SyncWithTarget(void)
+{
+	TestCaseBegin();
+	TcpSocket dummySock(0, 0);
+	ComProxy testee(dummySock);
+    
+    size_t bytesReceived = testee.SyncWithTarget();
+    CHECK(bytesReceived == BL_IDENT);
+    
+	TestCaseEnd();
+}
+
+
 size_t ut_ComProxy_BlFlashWriteRequest(void)
 {
 	NOT_IMPLEMENTED();
@@ -395,6 +408,7 @@ int main (int argc, const char* argv[])
 	RunTest(false, ut_ComProxy_BlFuseWriteRequest);
 	RunTest(true, ut_ComProxy_BlInfoRequest);
 	RunTest(true, ut_ComProxy_BlRunAppRequest);
+    RunTest(true, ut_ComProxy_SyncWithTarget);
 	UnitTestMainEnd();
 }
 

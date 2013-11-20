@@ -58,6 +58,13 @@ class ComProxy
 		 * @throw FatalError if sending to socket failed
 		 */
 		size_t Send(const FwCommand& request, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout, FatalError);
+    
+        /*
+         * Send a byte sequence to force a uart baud rate synchronisation between WLAN module and PIC
+         * @return mode of target: BL_IDENT for Bootloader mode, FW_IDENT for Firmware mode
+         * @throw FatalError if synchronisation fails
+         */
+        size_t SyncWithTarget(void) const throw(FatalError);
 
 	private:
 		/*
@@ -91,12 +98,6 @@ class ComProxy
 		 * @throw FatalError if synchronisation or sending to socket failed
 		 */
 		size_t Send(uint8_t const* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian = true) const throw(ConnectionTimeout, FatalError);
-		
-		/*
-		 * Send a byte sequence to force a uart baud rate synchronisation between WLAN module and PIC
-		 * @throw FatalError if synchronisation fails
-		 */
-		void SyncWithBootloader(void) const throw (FatalError);
 };
 }
 #endif /* #ifndef _COM_PROXY_H_ */
