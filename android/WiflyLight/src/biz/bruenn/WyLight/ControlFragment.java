@@ -4,6 +4,7 @@ import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.exception.ConnectionTimeout;
 import biz.bruenn.WyLight.exception.FatalError;
 import biz.bruenn.WyLight.exception.ScriptBufferFull;
+import biz.bruenn.WyLight.library.ScriptAdapter;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -33,15 +34,35 @@ public class ControlFragment extends Fragment {
 		activity.finish();		
 	}
 	
+	protected void onFatalError(FatalError e) {
+		Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();		
+	}
+	
+	protected void onScriptBufferFull() {
+		Toast.makeText(getActivity(), R.string.msg_scriptbufferfull, Toast.LENGTH_LONG).show();		
+	}
+	
+	protected void onSendScript(ScriptAdapter script) {
+		try {
+			mProvider.getControl().fwSendScript(script);
+		} catch (ConnectionTimeout e) {
+			onConnectionLost();
+		} catch (ScriptBufferFull e) {
+			onScriptBufferFull();
+		} catch (FatalError e) {
+			onFatalError(e);
+		}
+	}
+	
 	protected void onSetColor(int color) {
 		try {
 			mProvider.getControl().fwSetColor(color, WiflyControl.ALL_LEDS);
 		} catch (ConnectionTimeout e) {
 			onConnectionLost();
 		} catch (ScriptBufferFull e) {
-			Toast.makeText(getActivity(), R.string.msg_scriptbufferfull, Toast.LENGTH_LONG).show();
+			onScriptBufferFull();
 		} catch (FatalError e) {
-			Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+			onFatalError(e);
 		}		
 	}
 	
@@ -51,9 +72,9 @@ public class ControlFragment extends Fragment {
 		} catch (ConnectionTimeout e) {
 			onConnectionLost();
 		} catch (ScriptBufferFull e) {
-			Toast.makeText(getActivity(), R.string.msg_scriptbufferfull, Toast.LENGTH_LONG).show();		
+			onScriptBufferFull();		
 		} catch (FatalError e) {
-			Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+			onFatalError(e);
 		}		
 	}
 	
@@ -63,9 +84,9 @@ public class ControlFragment extends Fragment {
 		} catch (ConnectionTimeout e) {
 			onConnectionLost();
 		} catch (ScriptBufferFull e) {
-			Toast.makeText(getActivity(), R.string.msg_scriptbufferfull, Toast.LENGTH_LONG).show();		
+			onScriptBufferFull();		
 		} catch (FatalError e) {
-			Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+			onFatalError(e);
 		}		
 	}
 }

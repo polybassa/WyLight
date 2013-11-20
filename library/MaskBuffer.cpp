@@ -26,8 +26,8 @@ static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_VERBOSE;
 void BaseBuffer::AddPure(uint8_t newByte)
 {
 	if(mLength >= mCapacity) throw FatalError("BaseBuffer overflow");
-		mData[mLength] = newByte;
-		mLength++;
+	mData[mLength] = newByte;
+	mLength++;
 }
 
 void MaskBuffer::Mask(const uint8_t* pInput, const uint8_t* const pInputEnd, const bool crcInLittleEndian)

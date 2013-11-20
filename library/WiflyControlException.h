@@ -87,7 +87,7 @@ public:
 	};
 
 	virtual const char* GetJavaClassType(void) const {
-		return "biz/bruenn/WiflyLight/exception/ConnectionLost";
+		return "biz/bruenn/WyLight/exception/ConnectionLost";
 	};
 
 	friend std::ostream& operator<< (std::ostream& out, const ConnectionLost& ref)
@@ -107,7 +107,7 @@ public:
 	ConnectionTimeout(const std::string& description) : FatalError(description, CONNECTION_TIMEOUT) {};
 
 	virtual const char* GetJavaClassType(void) const {
-		return "biz/bruenn/WiflyLight/exception/ConnectionTimeout";
+		return "biz/bruenn/WyLight/exception/ConnectionTimeout";
 	};
 };
 
@@ -117,7 +117,7 @@ public:
 	InvalidParameter(const std::string& description) : FatalError(description, INVALID_PARAMETER) {};
 
 	virtual const char* GetJavaClassType(void) const {
-		return "biz/bruenn/WiflyLight/exception/InvalidParameter";
+		return "biz/bruenn/WyLight/exception/InvalidParameter";
 	};
 };
 
@@ -127,7 +127,7 @@ public:
 	ScriptBufferFull(void) : FatalError("ScriptBuffer in PIC is full, clear it or wait", SCRIPT_FULL) {};
 
 	virtual const char* GetJavaClassType(void) const {
-		return "biz/bruenn/WiflyLight/exception/ScriptBufferFull";
+		return "biz/bruenn/WyLight/exception/ScriptBufferFull";
 	};
 };
 }

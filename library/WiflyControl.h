@@ -285,8 +285,7 @@ class Control
 	
 		Control& operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 		Control& operator<<(FwCommand& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-		Control& operator<<(Script&& script) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-		Control& operator<<(Script& script) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		Control& operator<<(const Script& script) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 
 /* ------------------------- VERSION EXTRACT METHODE ------------------------- */
 		/**

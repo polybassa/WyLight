@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".WiflyControlActivity" >
     
@@ -9,12 +9,35 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
     	android:orientation="horizontal" >
+    	<Spinner
+	        android:id="@+id/savedScripts"
+    	    android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_weight="0.5"
+    	/>
     	<Button
-        	android:id="@+id/addCommand"
-        	android:layout_width="fill_parent"
+	        android:id="@+id/new_script"
+    	    android:layout_width="fill_parent"
         	android:layout_height="wrap_content"
         	android:layout_weight="1"
-        	android:text="@string/add_command" />
+        	android:text="@string/new_script" />
+    </LinearLayout>
+
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="0.1"
+		>
+    <ListView
+	    android:id="@+id/scriptList"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+    />
+    </LinearLayout>
+    <LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+    	android:orientation="horizontal" >
     	<Button
 	        android:id="@+id/clear"
     	    android:layout_width="fill_parent"
@@ -22,17 +45,17 @@
         	android:layout_weight="1"
         	android:text="@string/clear" />
     	<Button
+        	android:id="@+id/addCommand"
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_weight="1"        	
+        	android:text="@string/add_command" />
+    	<Button
 	        android:id="@+id/send"
     	    android:layout_width="fill_parent"
         	android:layout_height="wrap_content"
         	android:layout_weight="1"
         	android:text="@string/send" />
     </LinearLayout>
-
-    <ListView
-	    android:id="@+id/scriptList"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-    />
 
 </LinearLayout>
