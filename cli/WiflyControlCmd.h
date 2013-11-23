@@ -20,6 +20,7 @@
 #define _WIFLYCONTROLCMD_H_
 #include "FwCommand.h"
 #include "trace.h"
+#include "StartupManager.h"
 #include <iostream>
 #include <string>
 #include <iomanip>
@@ -646,6 +647,23 @@ public:
     };
 };
 
+class ControlCmdDoStartup : public WiflyControlCmd
+{
+public:
+    ControlCmdDoStartup(void) : WiflyControlCmd(
+                                                  string("startup"),
+                                                  string(" <hexFile>' \n ") + string("    <hexFile> path of hexfile to write")) {};
+    
+    virtual void Run(WyLight::Control& control) const
+    {
+        string path;
+        cin >> path;
+        cout << "Startup in progress... ";
+        
+        WyLight::StartupManager manager;
+        TRY_CATCH_COUT(manager.startup(control, path));
+    }
+};
 
 
 class ControlCmdTest : public WiflyControlCmd
@@ -706,6 +724,7 @@ static const std::shared_ptr<const WiflyControlCmd> s_Cmds[] = {
 	std::shared_ptr<const WiflyControlCmd>(new ControlCmdLoopOff()),
 	std::shared_ptr<const WiflyControlCmd>(new ControlCmdWait()),
     std::shared_ptr<const WiflyControlCmd>(new ControlCmdGetTargetMode()),
+    std::shared_ptr<const WiflyControlCmd>(new ControlCmdDoStartup()),
 //TODO implement on demand	ControlCmdBlWriteEeprom writeEeprom;
 //TODO	ControlCmdBlWriteFlash writeFlash;
 };

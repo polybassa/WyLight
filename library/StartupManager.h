@@ -21,17 +21,18 @@
 
 #include <iostream>
 #include <functional>
-#include <unordered_set>
+#include <list>
 #include "WiflyControl.h"
 
 namespace WyLight {
+    
     
     class Version {
     public:
         Version(const std::string& versionString);
         Version(const unsigned int& major, const unsigned int& minor);
-        Version(const Version& other) : mMinor(other.mMinor), mMajor(other.mMajor) {}
-        Version(Version&& other) : mMinor(std::move(other.mMinor)), mMajor(std::move(other.mMajor)) {}
+        Version(const Version& other) : mMajor(other.mMajor), mMinor(other.mMinor) {}
+        Version(Version&& other) : mMajor(std::move(other.mMajor)), mMinor(std::move(other.mMinor)) {}
         Version& operator = (const Version & other) { mMajor = other.mMajor; mMinor = other.mMinor; return *this; }
         
         unsigned int getMajor(void) const;
@@ -57,23 +58,24 @@ namespace WyLight {
         
         UpdateExtension(const updateCheckFunction& updateNecessary = NULL,
                         const updateFunction& updateFunction = NULL);
-        UpdateExtension(const UpdateExtension& other) = delete;
-        UpdateExtension(UpdateExtension&& other) = delete;
+        UpdateExtension(const UpdateExtension& other);
         
         void run(const Version& currentVersionOfTarget,
                  const Version& newVersionOfTarget,
                  const Control& ctrlForUpdate) const;
+        
+        friend struct std::hash<UpdateExtension>;
     private:
         const updateCheckFunction mUpdateNecessary;
         const updateFunction mUpdateFunction;
     };
-    
+
     class StartupManager {
     public:
         static const UpdateExtension eepromClear;
         static const UpdateExtension setUdpInRN171;
         
-        StartupManager(const Control& ctrl, const std::string& hexFilePath = "", const std::function<void(size_t newState)>& onStateChange = NULL) throw (InvalidParameter);
+        StartupManager(const std::function<void(size_t newState)>& onStateChange = NULL);
         StartupManager(const StartupManager& other) = delete;
         StartupManager(StartupManager&& other) = delete;
 
@@ -89,14 +91,14 @@ namespace WyLight {
         };
 
         StartupManager::State getCurrentState(void) const {return mState; }
-        void startup(void);
+        void startup(WyLight::Control& control, const std::string& hexFilePath) throw (InvalidParameter);
         
     private:
-        Control mControl;
         std::function<void(size_t newState)> mOnStateChangeCallback;
         StartupManager::State mState = MODE_CHECK;
         Version mHexFileVersion = Version(0,0);
-        std::unordered_set<UpdateExtension> mUpdateTaskSet = {eepromClear, setUdpInRN171};
+        Version mTargetVersion = Version(0,0);
+        std::list<UpdateExtension> mUpdateTaskSet = {eepromClear, setUdpInRN171};
         
         void setCurrentState(StartupManager::State newState);
     };

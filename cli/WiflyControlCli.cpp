@@ -20,6 +20,7 @@
 #include "WiflyControlCli.h"
 #include "WiflyControlCmd.h"
 #include "WiflyControlException.h"
+#include "StartupManager.h"
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>
@@ -84,6 +85,10 @@ void WiflyControlCli::ShowHelp(void) const
 	return;
 }
 
+WyLight::Control& WiflyControlCli::getControl() {
+    return mControl;
+}
+
 void newRemoteCallback(const size_t index, const WyLight::Endpoint& newEndpoint)
 {
 	std::cout << "New: " << index << ':' << newEndpoint << '\n';
@@ -106,8 +111,9 @@ int main(int argc, const char* argv[])
 	
 	const WyLight::Endpoint& e = receiver.GetEndpoint(selection);
 	WiflyControlCli cli(e.GetIp(), e.GetPort());
-	cli.Run();
-	
+    
+    cli.Run();
+    
 	/*
 	Control cli(e.GetIp(), e.GetPort());
 	

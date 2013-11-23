@@ -53,5 +53,9 @@ WiflyControlNoThrow_ut.bin:  $(LIB_SRC) $(LIB_TEST_SRC)
 	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/WiflyControlNoThrow_ut.cpp $(LIB_DIR)/WiflyControlNoThrow.cpp $(INC) -o ${OUT_DIR}/$@ -Wall -pedantic -std=c++0x
 	@./${OUT_DIR}/$@
 
-library_test: BroadcastReceiver_ut.bin ComProxy_ut.bin MessageQueue_ut.bin Script_ut.bin ScriptManager_ut.bin TelnetProxy_ut.bin WiflyControl_ut.bin WiflyControlNoThrow_ut.bin
+StartupManager_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
+	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/StartupManager_ut.cpp $(LIB_DIR)/StartupManager.cpp $(INC) -o ${OUT_DIR}/$@ -Wall -pedantic -std=c++0x
+	@./${OUT_DIR}/$@
+
+library_test: BroadcastReceiver_ut.bin ComProxy_ut.bin MessageQueue_ut.bin Script_ut.bin ScriptManager_ut.bin TelnetProxy_ut.bin WiflyControl_ut.bin WiflyControlNoThrow_ut.bin StartupManager_ut.bin
 

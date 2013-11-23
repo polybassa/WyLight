@@ -31,6 +31,7 @@ class WiflyControlCli
 
 	public:
 		WiflyControlCli(uint32_t addr, uint16_t port);
-		void Run(void);	
+		void Run(void);
+        WyLight::Control& getControl(void);
 };
 #endif /* #ifndef _WIFLYCONTROLCLI_H_ */
