@@ -153,26 +153,6 @@
 			}
 			[self.controlHandle setDelegate:self];
 						
-			//Erase eeprom
-			dispatch_async(dispatch_get_main_queue(), ^{
-				self.scanningAlertView.message = @"Erase eeprom of target!";
-			});
-			[self.controlHandle eraseEepromAsync:NO];
-			[NSThread sleepForTimeInterval:1];
-			
-			//Firmware update
-			dispatch_async(dispatch_get_main_queue(), ^{
-				self.scanningAlertView.message = @"Updating target firmware!";
-			});
-			[self.controlHandle programFlashAsync:NO];
-							
-			//Start Firmware
-			dispatch_async(dispatch_get_main_queue(), ^{
-				self.scanningAlertView.message = @"Terminate bootloader and start firmware!";
-			});
-			[self.controlHandle leaveBootloader];
-			[NSThread sleepForTimeInterval:0.4];
-			
 			//Configure WLAN Modul
 			dispatch_async(dispatch_get_main_queue(), ^{
 				self.scanningAlertView.message = @"Configure wlan interface!";

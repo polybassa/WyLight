@@ -79,6 +79,7 @@
 		C000EE74182D6BA000019267 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C000EE73182D6BA000019267 /* CoreData.framework */; };
 		C000EE77182D6C8500019267 /* Script+defaultScripts.m in Sources */ = {isa = PBXBuildFile; fileRef = C000EE76182D6C8500019267 /* Script+defaultScripts.m */; };
 		C00DD4C21826C3EB00D17088 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C00DD4C01826C3EB00D17088 /* Model.xcdatamodeld */; };
+		C02501A01840EFE600BB996D /* StartupManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C025019E1840EFE600BB996D /* StartupManager.cpp */; };
 		C038541F181BEE750058CAC6 /* NWRenderableScript.m in Sources */ = {isa = PBXBuildFile; fileRef = C038541E181BEE750058CAC6 /* NWRenderableScript.m */; };
 		C044BB8A1823AEDA0097151D /* defaultScriptsLocalization.strings in Resources */ = {isa = PBXBuildFile; fileRef = C044BB8C1823AEDA0097151D /* defaultScriptsLocalization.strings */; };
 		C044BB901823B4800097151D /* ScriptObjectEditViewsLocalization.strings in Resources */ = {isa = PBXBuildFile; fileRef = C044BB921823B4800097151D /* ScriptObjectEditViewsLocalization.strings */; };
@@ -246,6 +247,8 @@
 		C000EE75182D6C8500019267 /* Script+defaultScripts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Script+defaultScripts.h"; sourceTree = "<group>"; };
 		C000EE76182D6C8500019267 /* Script+defaultScripts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Script+defaultScripts.m"; sourceTree = "<group>"; };
 		C00DD4C11826C3EB00D17088 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		C025019E1840EFE600BB996D /* StartupManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StartupManager.cpp; path = ../../library/StartupManager.cpp; sourceTree = "<group>"; };
+		C025019F1840EFE600BB996D /* StartupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StartupManager.h; path = ../../library/StartupManager.h; sourceTree = "<group>"; };
 		C038541D181BEE750058CAC6 /* NWRenderableScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWRenderableScript.h; sourceTree = "<group>"; };
 		C038541E181BEE750058CAC6 /* NWRenderableScript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWRenderableScript.m; sourceTree = "<group>"; };
 		C044BB7C1823AAC70097151D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
@@ -446,6 +449,8 @@
 		5C8395E517EB61BF007EF0C6 /* WiflyControlModel */ = {
 			isa = PBXGroup;
 			children = (
+				C025019E1840EFE600BB996D /* StartupManager.cpp */,
+				C025019F1840EFE600BB996D /* StartupManager.h */,
 				5C7488BB17FC000300DB1B22 /* Version.h */,
 				5C8395B117EB61B4007EF0C6 /* WCEndpoint.h */,
 				5C8395B217EB61B4007EF0C6 /* WCEndpoint.m */,
@@ -748,6 +753,7 @@
 				5C90B3A617F2EB7A00BAC74F /* NWTimeInfoView.m in Sources */,
 				5C8395DD17EB61B4007EF0C6 /* BroadcastReceiver.cpp in Sources */,
 				5C8395E917EB651D007EF0C6 /* NWConnectionTBC.m in Sources */,
+				C02501A01840EFE600BB996D /* StartupManager.cpp in Sources */,
 				C0E10EC71814FC1B0009CF3C /* UIView+blurredSnapshot.m in Sources */,
 				5C8395DB17EB61B4007EF0C6 /* WCBroadcastReceiverWrapper.mm in Sources */,
 				5C83963517EB6C00007EF0C6 /* KZUnitSlider.m in Sources */,

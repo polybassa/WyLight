@@ -35,48 +35,16 @@
 	dispatch_async(dispatch_queue_create("connecting to target Queue", NULL), ^{
 		
 		self.controlHandle = [[WCWiflyControlWrapper alloc] initWithWCEndpoint:self.endpoint establishConnection:NO];
-		if ([self.controlHandle connect] != 0) {
-            self.controlHandle = nil;
-            dispatch_async(dispatch_get_main_queue(), ^{
-				[connectingView dismissWithClickedButtonIndex:0 animated:YES];
-                double delayInSeconds = 0.5;
-                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                    [self performSegueWithIdentifier:@"unwindAtConnectionFatalErrorOccured" sender:self];
-                });
-                return;
-			});
-			return;
-		}
+        [self.controlHandle setDelegate:self];
         
-		dispatch_async(dispatch_get_main_queue(), ^{
+        NSInteger returnValue = [self.controlHandle connect];
+        dispatch_async(dispatch_get_main_queue(), ^{
 			[connectingView dismissWithClickedButtonIndex:0 animated:YES];
 		});
-        [self.controlHandle setDelegate:self];
-		// Update Firmware Block
-		NSString *versionOfMainHex = [self.controlHandle readCurrentFirmwareVersionFromHexFile];
-		NSString *versionOfTarget = [self.controlHandle readCurrentFirmwareVersionFromFirmware];
-        if (versionOfTarget == nil) {
-            return; //Some error occured
-        }
-        
-        
-		NSLog(@"\nHexFile:%@Target:%@", versionOfMainHex, versionOfTarget);
-		
-		if (![versionOfTarget isEqualToString:versionOfMainHex]) {
-			[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
-			UIAlertView *updateAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"UpdateRequiredKey", @"ViewControllerLocalization", @"") message:NSLocalizedStringFromTable(@"PleaseWaitKey", @"ViewControllerLocalization", @"") delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
-			dispatch_async(dispatch_get_main_queue(), ^{ [updateAlertView show]; });
-			[self.controlHandle updateFirmware];
-			[self.controlHandle updateWlanModuleForFwVersion:versionOfMainHex];
-			double delayInSeconds = 1.0;
-			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-				[updateAlertView dismissWithClickedButtonIndex:0 animated:YES];
-			});
-			[[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+		if (returnValue != 0) {
+            return;
 		}
-		
+        
 		// Finish connection Block
 		for (id obj in self.viewControllers) {
 			if ([obj respondsToSelector:@selector(setControlHandle:)]) {

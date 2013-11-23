@@ -39,12 +39,12 @@
                   symbolName = "__45-[NWScriptViewController deleteScriptObject:]_block_invoke251"
                   moduleName = "WyLight"
                   urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script_DEPRECATED/NWScriptViewController.m"
-                  timestampString = "406592946.211479"
+                  timestampString = "406911855.309367"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "323"
                   endingLineNumber = "323"
-                  offsetFromSymbolStart = "1476">
+                  offsetFromSymbolStart = "1698">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -53,12 +53,12 @@
                   symbolName = "__45-[NWScriptViewController deleteScriptObject:]_block_invoke_2"
                   moduleName = "WyLight"
                   urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script_DEPRECATED/NWScriptViewController.m"
-                  timestampString = "406592946.211823"
+                  timestampString = "406911855.310155"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "323"
                   endingLineNumber = "323"
-                  offsetFromSymbolStart = "30">
+                  offsetFromSymbolStart = "19">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -149,12 +149,12 @@
                   symbolName = "-[NWScriptViewController deleteScriptObject:]"
                   moduleName = "WyLight"
                   urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script_DEPRECATED/NWScriptViewController.m"
-                  timestampString = "406592946.212111"
+                  timestampString = "406911855.310696"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "299"
                   endingLineNumber = "299"
-                  offsetFromSymbolStart = "2244">
+                  offsetFromSymbolStart = "2690">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -163,12 +163,12 @@
                   symbolName = "-[NWScriptViewController deleteScriptObject:]"
                   moduleName = "WyLight"
                   urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script_DEPRECATED/NWScriptViewController.m"
-                  timestampString = "406592946.212322"
+                  timestampString = "406911855.311095"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "299"
                   endingLineNumber = "299"
-                  offsetFromSymbolStart = "2628">
+                  offsetFromSymbolStart = "3384">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -177,12 +177,12 @@
                   symbolName = "__45-[NWScriptViewController deleteScriptObject:]_block_invoke"
                   moduleName = "WyLight"
                   urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script_DEPRECATED/NWScriptViewController.m"
-                  timestampString = "406592946.212535"
+                  timestampString = "406911855.311474"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "299"
                   endingLineNumber = "299"
-                  offsetFromSymbolStart = "40">
+                  offsetFromSymbolStart = "21">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -265,126 +265,6 @@
             endingLineNumber = "79"
             landmarkName = "TcpSocket::TcpSocket(uint32_t addr, uint16_t port)"
             landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../ios/WCWiflyControlWrapper.mm"
-            timestampString = "406587145.205595"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "449"
-            endingLineNumber = "449"
-            landmarkName = "-readCurrentFirmwareVersionFromBootloder"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[WCWiflyControlWrapper readCurrentFirmwareVersionFromBootloder]"
-                  moduleName = "WyLight"
-                  urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/ios/WCWiflyControlWrapper.mm"
-                  timestampString = "406592946.213961"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "449"
-                  endingLineNumber = "449"
-                  offsetFromSymbolStart = "298">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[WCWiflyControlWrapper readCurrentFirmwareVersionFromBootloder]"
-                  moduleName = "WyLight"
-                  urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/ios/WCWiflyControlWrapper.mm"
-                  timestampString = "406592946.214174"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "449"
-                  endingLineNumber = "449"
-                  offsetFromSymbolStart = "714">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../ios/WCWiflyControlWrapper.mm"
-            timestampString = "406592923.485439"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "399"
-            endingLineNumber = "399"
-            landmarkName = "-readCurrentFirmwareVersionFromFirmware"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[WCWiflyControlWrapper readCurrentFirmwareVersionFromFirmware]"
-                  moduleName = "WyLight"
-                  urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/ios/WCWiflyControlWrapper.mm"
-                  timestampString = "406592946.21441"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "399"
-                  endingLineNumber = "399"
-                  offsetFromSymbolStart = "54">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[WCWiflyControlWrapper readCurrentFirmwareVersionFromFirmware]"
-                  moduleName = "WyLight"
-                  urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/ios/WCWiflyControlWrapper.mm"
-                  timestampString = "406592946.214629"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "399"
-                  endingLineNumber = "399"
-                  offsetFromSymbolStart = "70">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[WCWiflyControlWrapper readCurrentFirmwareVersionFromFirmware]"
-                  moduleName = "WyLight"
-                  urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/ios/WCWiflyControlWrapper.mm"
-                  timestampString = "406592946.214846"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "399"
-                  endingLineNumber = "399"
-                  offsetFromSymbolStart = "692">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[WCWiflyControlWrapper readCurrentFirmwareVersionFromFirmware]"
-                  moduleName = "WyLight"
-                  urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/ios/WCWiflyControlWrapper.mm"
-                  timestampString = "406592946.215058"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "399"
-                  endingLineNumber = "399"
-                  offsetFromSymbolStart = "750">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
