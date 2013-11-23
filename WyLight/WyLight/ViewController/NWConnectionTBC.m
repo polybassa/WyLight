@@ -34,10 +34,10 @@
 	
 	dispatch_async(dispatch_queue_create("connecting to target Queue", NULL), ^{
 		
-		self.controlHandle = [[WCWiflyControlWrapper alloc] initWithWCEndpoint:self.endpoint establishConnection:NO];
+		self.controlHandle = [[WCWiflyControlWrapper alloc] initWithWCEndpoint:self.endpoint establishConnection:NO doStartup:NO];
         [self.controlHandle setDelegate:self];
         
-        NSInteger returnValue = [self.controlHandle connect];
+        NSInteger returnValue = [self.controlHandle connectWithStartup:YES];
         dispatch_async(dispatch_get_main_queue(), ^{
 			[connectingView dismissWithClickedButtonIndex:0 animated:YES];
 		});

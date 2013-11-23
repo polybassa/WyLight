@@ -45,14 +45,14 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
     @throw ([NSException exceptionWithName:@"Wrong init-method" reason:@"Use -initWithEndpoint:establishConnection:" userInfo:nil]);
 }
 
-- (id)initWithWCEndpoint:(WCEndpoint *)endpoint establishConnection:(BOOL)connect
+- (id)initWithWCEndpoint:(WCEndpoint *)endpoint establishConnection:(BOOL)connect doStartup:(BOOL)doStartup
 {
     self = [super init];
     if (self)
     {
 		self.endpoint = endpoint;
 		if (connect) {
-			if ([self connect] != 0) {
+			if ([self connectWithStartup:doStartup] != 0) {
 				return nil;
 			}
 		}
@@ -60,7 +60,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
     return self;
 }
 
-- (int)connect
+- (int)connectWithStartup:(BOOL)doStartup
 {
 	gCtrlMutex = std::make_shared<std::mutex>();
 
@@ -73,27 +73,30 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 		return -1;
 	}
     
-    try {
-        [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
-        
-        WyLight::StartupManager starter([&](size_t newState){
-            [self startupManagerStateChanged:@(newState)];
-        });
+    if (doStartup) {
+        try {
+            [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+            
+            WyLight::StartupManager starter([&](size_t newState){
+                [self startupManagerStateChanged:@(newState)];
+            });
 
-        NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"main" ofType:@"hex"];
-        const std::string hexFileString = std::string([filePath cStringUsingEncoding:NSASCIIStringEncoding]);
-        
-        starter.startup(*mControl, hexFileString);
-        
-        [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+            NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"main" ofType:@"hex"];
+            const std::string hexFileString = std::string([filePath cStringUsingEncoding:NSASCIIStringEncoding]);
+            
+            starter.startup(*mControl, hexFileString);
+            
+            [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 
-        if (starter.getCurrentState() != WyLight::StartupManager::STARTUP_SUCCESSFUL) {
+            if (starter.getCurrentState() != WyLight::StartupManager::STARTUP_SUCCESSFUL) {
+                return -1;
+            }
+            
+        } catch (std::exception &e) {
+            NSLog(@"%s", e.what());
+            [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
             return -1;
         }
-        
-    } catch (std::exception &e) {
-        NSLog(@"%s", e.what());
-		return -1;
     }
     
 	mCmdQueue = std::make_shared<WyLight::MessageQueue<ControlMessage>>();

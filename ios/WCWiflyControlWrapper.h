@@ -16,7 +16,7 @@
 @property (nonatomic, weak) id <WCWiflyControlDelegate> delegate;
 
 // Configuration
-- (id)initWithWCEndpoint:(WCEndpoint *)endpoint establishConnection:(BOOL)connect;
+- (id)initWithWCEndpoint:(WCEndpoint *)endpoint establishConnection:(BOOL)connect doStartup:(BOOL)doStartup;
 
 /**
  * ATTENTION: After executing one of the next three command's you have to disconnect your WCWiflyControlWrapper object
@@ -47,7 +47,7 @@
 - (NSDate *)readRtcTime;
 - (void)writeRtcTime;
 
-- (int)connect;
+- (int)connectWithStartup:(BOOL)doStartup;
 - (void)disconnect;
 
 @end

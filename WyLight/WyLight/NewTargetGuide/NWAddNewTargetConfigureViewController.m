@@ -143,7 +143,7 @@
 																													   port:2000
 																													   name:@"newTarget"
 																													  score:0]
-																   establishConnection:YES];
+																   establishConnection:YES doStartup:NO];
 			if (self.controlHandle == nil) {
 				dispatch_async(dispatch_get_main_queue(), ^{
 					[self performSegueWithIdentifier:@"unwindAtConnectionFatalErrorOccured:" sender:self];

@@ -187,6 +187,24 @@
                     <view key="view" contentMode="scaleToFill" id="uAL-T1-UlM">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" usesAttributedText="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AEK-PT-6s4">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <attributedString key="attributedText">
+                                    <fragment>
+                                        <string key="content">Set up your WyLight in 7 Steps:    1. Unplug the power supply from your WyLight  2. Press down and hold the On/Off button on your WyLight  3. Plug in your Power supply while you are holding down the button  4. Open your device settings on your iPhone  5. Connect to the Wifi-Network of your WyLight  6. Switch back to this App  7. Press done  Information: Later you can choose Client or Soft-AP as operation mode of your WyLight.  In Soft-AP mode your WyLight operates as an independent access-point. In Client mode your WyLight is associated to your Home Wifi Network. We recommend this mode.</string>
+                                        <attributes>
+                                            <font key="NSFont" size="12" name=".LucidaGrandeUI"/>
+                                            <font key="NSOriginalFont" size="13" name=".LucidaGrandeUI"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Prepare new Target" id="XeK-YM-lXA">

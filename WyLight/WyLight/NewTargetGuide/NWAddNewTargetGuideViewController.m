@@ -20,7 +20,7 @@
 
 @implementation NWAddNewTargetGuideViewController
 
-- (void)setup {
+/*- (void)setup {
 	
 	NWAddNewTargetGuideView *guideView = [[NWAddNewTargetGuideView alloc] init];
 	guideView.pageImageStrings = @[@"Guide1.png", @"Guide2.png"];
@@ -32,7 +32,7 @@
 	swipe.direction = UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft;
 	[guideView addGestureRecognizer:swipe];
 	self.guideView = guideView;
-	[self.view addSubview:guideView];
+	//[self.view addSubview:guideView];
 }
 
 - (void)fixLocations {
@@ -56,7 +56,7 @@
 - (void)viewWillLayoutSubviews {
 	[super viewWillLayoutSubviews];
 	[self fixLocations];
-}
+}*/
 
 #define SLEEP_TIME_INTERVAL 0.5
 #define SCANNING_TIME_S 40
@@ -66,14 +66,15 @@
 #define SELECTION_ALERT_VIEW_TITLE NSLocalizedStringFromTable(@"OperationModeKey", @"ViewControllerLocalization", @"")
 
 - (void)nextPage {
-	if ((self.guideView.currentPageIndex + 1 ) < [self.guideView.pageImageStrings count]) {
+	/*if ((self.guideView.currentPageIndex + 1 ) < [self.guideView.pageImageStrings count]) {
 		[UIView transitionWithView:self.guideView
 						  duration:0.7
 						   options:UIViewAnimationOptionTransitionCurlUp
 						animations:^{ self.guideView.currentPageIndex++; }
 						completion:NULL];
 	}
-	else {
+	else*/
+    {
 		//**** Alert view ****
 		UIAlertView *scanningAlertView = [[UIAlertView alloc]initWithTitle:SCANNING_ALERT_VIEW_TITLE message:@" " delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"CancelKey", @"ViewControllerLocalization", @"") otherButtonTitles:nil];
 		[scanningAlertView setDelegate:self];

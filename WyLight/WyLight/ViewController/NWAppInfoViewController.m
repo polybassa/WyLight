@@ -19,8 +19,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	self.appVersionLabel.text = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-	self.fwVersionLabel.text = @"0.0";
-	self.hexVersionLabel.text = @"0.0";
 }
 
 
