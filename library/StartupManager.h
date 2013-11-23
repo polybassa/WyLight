@@ -23,6 +23,7 @@
 #include <functional>
 #include <list>
 #include "WiflyControl.h"
+#include "WiflyControlNoThrow.h"
 
 namespace WyLight {
     
@@ -92,6 +93,7 @@ namespace WyLight {
 
         StartupManager::State getCurrentState(void) const {return mState; }
         void startup(WyLight::Control& control, const std::string& hexFilePath) throw (InvalidParameter);
+        void startup(WyLight::ControlNoThrow& control, const std::string& hexFilePath) throw (InvalidParameter);
         
     private:
         std::function<void(size_t newState)> mOnStateChangeCallback;

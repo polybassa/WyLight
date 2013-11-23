@@ -399,7 +399,7 @@ class ControlNoThrow
 		 */
 		uint32_t ExtractFwVersion(const std::string& pFilename, std::string& extractedFwVersion) const;
 
-	
+        friend class StartupManager;
 	private:
 		/**
 		 * Converts all exceptions from ::WiflyControl to the relating ::WiflyError

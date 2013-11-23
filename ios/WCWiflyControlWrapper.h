@@ -19,13 +19,13 @@
 - (id)initWithWCEndpoint:(WCEndpoint *)endpoint establishConnection:(BOOL)connect;
 
 /**
- * Attention: After executing one of the next three command's you have to disconnect your WCWiflyControlWrapper object
+ * ATTENTION: After executing one of the next three command's you have to disconnect your WCWiflyControlWrapper object
  * The CommandExecutedNotification tell's you the succesfull execution of a command
  */
 - (void)configurateWlanModuleAsClientForNetwork:(NSString *)ssid password:(NSString *)password name:(NSString *)name;
 - (void)configurateWlanModuleAsSoftAP:(NSString *)ssid;
 - (void)rebootWlanModul;
-- (void)updateWlanModuleForFwVersion:(NSString *)version;
+
 
 // Firmware methods
 - (void)setColorDirect:(UIColor *)newColor;
@@ -46,21 +46,9 @@
 - (void)clearScript;
 - (NSDate *)readRtcTime;
 - (void)writeRtcTime;
-- (NSString *)readCurrentFirmwareVersionFromFirmware;
-- (void)enterBootloaderAsync:(BOOL)async;
 
-- (void)updateFirmware;
-
-// Bootloader methods
-- (NSString *)readCurrentFirmwareVersionFromBootloder;
-- (void)eraseEepromAsync:(BOOL)async;
-- (void)programFlashAsync:(BOOL)async;
-- (void)leaveBootloader;
 - (int)connect;
 - (void)disconnect;
-
-// Version extract methode
-- (NSString *)readCurrentFirmwareVersionFromHexFile;
 
 @end
 

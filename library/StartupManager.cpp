@@ -112,6 +112,11 @@ namespace WyLight {
         }
     }
     
+    void StartupManager::startup(WyLight::ControlNoThrow &control, const std::string &hexFilePath) throw (InvalidParameter)
+    {
+        this->startup(control.mControl, hexFilePath);
+    }
+    
     void StartupManager::startup(WyLight::Control& control, const std::string& hexFilePath) throw (InvalidParameter)
     {
         try {

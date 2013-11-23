@@ -8,6 +8,7 @@
 #import "WCWiflyControlWrapper.h"
 #import "WCEndpoint.h"
 #include "WiflyControlNoThrow.h"
+#include "StartupManager.h"
 #include <thread>
 #include <mutex>
 #include <functional>
@@ -31,6 +32,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 -(void) callFatalErrorDelegate:(NSNumber *)errorCode;
 -(void) callWiflyControlHasDisconnectedDelegate;
+-(void) startupManagerStateChanged:(NSNumber *)state;
 
 @end
 
@@ -62,14 +64,38 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 {
 	gCtrlMutex = std::make_shared<std::mutex>();
 
-	NSLog(@"Start WCWiflyControlWrapper\n");
 	try {
+        NSLog(@"Start WCWiflyControlWrapper\n");
 		std::lock_guard<std::mutex> ctrlLock(*gCtrlMutex);
 		mControl = std::make_shared<WyLight::ControlNoThrow>(self.endpoint.ipAdress,self.endpoint.port);
 	} catch (std::exception &e) {
 		NSLog(@"%s", e.what());
 		return -1;
 	}
+    
+    try {
+        [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+        
+        WyLight::StartupManager starter([&](size_t newState){
+            [self startupManagerStateChanged:@(newState)];
+        });
+
+        NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"main" ofType:@"hex"];
+        const std::string hexFileString = std::string([filePath cStringUsingEncoding:NSASCIIStringEncoding]);
+        
+        starter.startup(*mControl, hexFileString);
+        
+        [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+
+        if (starter.getCurrentState() != WyLight::StartupManager::STARTUP_SUCCESSFUL) {
+            return -1;
+        }
+        
+    } catch (std::exception &e) {
+        NSLog(@"%s", e.what());
+		return -1;
+    }
+    
 	mCmdQueue = std::make_shared<WyLight::MessageQueue<ControlMessage>>();
 	mCmdQueue->setMessageLimit(70);
 	mCtrlThread = std::make_shared<std::thread>
@@ -101,7 +127,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 		
 			if(retVal != WyLight::NO_ERROR)
 			{
-				[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:retVal]];
+				[self callFatalErrorDelegate:@(retVal)];
 			}
 			else if(retVal == WyLight::NO_ERROR && std::get<2>(tup) == 1)	//do we have to notify after execution?
 			{
@@ -189,18 +215,6 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 	mCmdQueue->push_back(std::make_tuple(false,
 											std::bind(&WyLight::ControlNoThrow::ConfRebootWlanModule, std::ref(*mControl)),
 											1));
-}
-
-- (void)updateWlanModuleForFwVersion:(NSString *)version
-{
-	if ([version isEqualToString:@"000.005"]) {
-		std::list<std::string> commands = {
-			"set i p 11\r\n"
-		};
-		mCmdQueue->push_back(std::make_tuple(false,
-											 std::bind(&WyLight::ControlNoThrow::ConfSetParameters, std::ref(*mControl), commands),
-											 0));
-	}
 }
 
 #pragma mark - Firmware methods
@@ -394,144 +408,6 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 									0));
 }
 
-- (NSString *)readCurrentFirmwareVersionFromFirmware
-{
-	if (mControl) {
-		std::string firmwareVersionString = "0.0";
-		
-		std::lock_guard<std::mutex> lock(*gCtrlMutex);
-		uint32_t returnValue = mControl->FwGetVersion(firmwareVersionString);
-		
-		if(returnValue != WyLight::NO_ERROR)
-		{
-			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
-			return nil;
-		}
-		else
-		{
-			return [[NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-		}
-	}
-	return nil;
-}
-
-- (void)enterBootloaderAsync:(BOOL)async
-{
-	if (async) {
-		mCmdQueue->clear_and_push_front(std::make_tuple(false,
-										  std::bind(&WyLight::ControlNoThrow::FwStartBl, std::ref(*mControl)),
-										  0));
-	} else {
-		if (mControl) {
-			std::lock_guard<std::mutex> lock(*gCtrlMutex);
-			uint32_t returnValue = mControl->FwStartBl();
-			
-			if(returnValue != WyLight::NO_ERROR)
-			{
-				[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
-			}
-		}
-	}
-}
-
-
-#pragma mark - Bootloader methods
-
-- (NSString *)readCurrentFirmwareVersionFromBootloder
-{
-	if (mControl) {
-		std::string firmwareVersionString;
-		std::lock_guard<std::mutex> lock(*gCtrlMutex);
-		uint32_t returnValue = mControl->BlReadFwVersion(firmwareVersionString);
-		
-		if(returnValue != WyLight::NO_ERROR)
-		{
-			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
-			return nil;
-		}
-		else
-		{
-			return [[NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-		}
-	}
-	return nil;
-}
-
-- (void)eraseEepromAsync:(BOOL)async
-{
-	if (async) {
-		mCmdQueue->push_back(std::make_tuple(false,
-											 std::bind(&WyLight::ControlNoThrow::BlEraseEeprom, std::ref(*mControl)),
-											 0));
-	} else {
-		if (mControl) {
-			std::lock_guard<std::mutex> lock(*gCtrlMutex);
-			uint32_t returnValue = mControl->BlEraseEeprom();
-		
-			if(returnValue != WyLight::NO_ERROR)
-			{
-				[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
-			}
-		}
-	}
-}
-
-- (void)programFlashAsync:(BOOL)async
-{
-	NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"main" ofType:@"hex"];
-	
-	if (async) {
-		mCmdQueue->push_back(std::make_tuple(false,
-											 std::bind(&WyLight::ControlNoThrow::BlProgramFlash, std::ref(*mControl), std::string([filePath cStringUsingEncoding:NSASCIIStringEncoding])),
-											 0));
-	} else
-	{
-		if (mControl) {
-			std::lock_guard<std::mutex> lock(*gCtrlMutex);
-			mCmdQueue->clear();
-			uint32_t returnValue = mControl->BlProgramFlash([filePath cStringUsingEncoding:NSASCIIStringEncoding]);
-		
-			if(returnValue != WyLight::NO_ERROR)
-			{
-				[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
-			}
-		}
-	}
-}
-
-- (void)updateFirmware {
-	if (mControl) {
-		NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"main" ofType:@"hex"];
-		std::lock_guard<std::mutex> lock(*gCtrlMutex);
-		
-		uint32_t returnValue = mControl->FwStartBl();
-        if(returnValue != WyLight::NO_ERROR)
-		{
-			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
-            return;
-		}
-		returnValue =  mControl->BlProgramFlash([filePath cStringUsingEncoding:NSASCIIStringEncoding]);
-        if(returnValue != WyLight::NO_ERROR)
-		{
-			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
-            return;
-		}
-		returnValue = mControl->BlRunApp();
-		if(returnValue != WyLight::NO_ERROR)
-		{
-			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
-            return;
-		}
-	}
-}
-
-- (void)leaveBootloader
-{
-	mCmdQueue->clear_and_push_front(std::make_tuple(false,
-											std::bind(&WyLight::ControlNoThrow::BlRunApp, std::ref(*mControl)),
-											0));
-}
-
 - (void)callFatalErrorDelegate:(NSNumber*)errorCode
 {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -555,26 +431,11 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
     });
 }
 
-#pragma mark - Extract Firmware Version methods
-- (NSString *)readCurrentFirmwareVersionFromHexFile
+- (void)startupManagerStateChanged:(NSNumber *)state
 {
-	if (mControl) {
-		std::string firmwareVersionString;
-		std::lock_guard<std::mutex> lock(*gCtrlMutex);
-		NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"main" ofType:@"hex"];
-		uint32_t returnValue = mControl->ExtractFwVersion(std::string([filePath cStringUsingEncoding:NSASCIIStringEncoding]), firmwareVersionString);
-		
-		if(returnValue != WyLight::NO_ERROR)
-		{
-			[self callFatalErrorDelegate:[NSNumber numberWithUnsignedInt:returnValue]];
-			return nil;
-		}
-		else
-		{
-			return [NSString stringWithCString:firmwareVersionString.c_str() encoding:NSASCIIStringEncoding];
-		}
-	}
-	return nil;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSLog(@"StartupManager state changed to:%d", state.unsignedIntegerValue);
+    });
 }
 
 @end
