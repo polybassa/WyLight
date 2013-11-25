@@ -243,6 +243,7 @@ void InitAll()
 #include "Version.c"
 
 // MUST be at the last position to prevent for overlapping code
+#warning "Version String at 0x3000!!! check for overlapping code"
 #pragma cdata[VERSION_STRING_ORIGIN]
 #pragma cdata.version = VER_STRING
 #pragma cdata.CDATA_END

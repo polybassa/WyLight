@@ -40,6 +40,7 @@ jboolean TrySend(JNIEnv* env, Control* pCtrl, FwCommand&& cmd)
 	} catch(FatalError& e) {
 		ThrowJniException(env, e);
 	}
+	return false;
 }
 
 extern "C" {
@@ -96,6 +97,7 @@ jstring Java_biz_bruenn_WyLight_Endpoint_getEndpointName(JNIEnv* env, jobject re
 	} catch (FatalError& e) {
 		ThrowJniException(env, e);
 	}
+	return env->NewStringUTF("");
 }
 
 void Java_biz_bruenn_WyLight_Endpoint_setEndpointName(JNIEnv* env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint, jstring deviceId)
@@ -152,17 +154,17 @@ jboolean Java_biz_bruenn_WyLight_WiflyControl_ConfSetWlan(JNIEnv* env, jobject r
 
 jboolean Java_biz_bruenn_WyLight_WiflyControl_FwClearScript(JNIEnv* env, jobject ref, jlong pNative)
 {
-	TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdClearScript{});
+	return TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdClearScript{});
 }
 
 jboolean Java_biz_bruenn_WyLight_WiflyControl_FwLoopOff(JNIEnv* env, jobject ref, jlong pNative, jbyte numLoops)
 {
-	TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdLoopOff{(uint8_t)numLoops});
+	return TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdLoopOff{(uint8_t)numLoops});
 }
 
 jboolean Java_biz_bruenn_WyLight_WiflyControl_FwLoopOn(JNIEnv* env, jobject ref, jlong pNative)
 {
-	TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdLoopOn{});
+	return TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdLoopOn{});
 }
 
 jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSendScript(JNIEnv* env, jobject ref, jlong pNative, jlong pNativeScript)
@@ -173,12 +175,13 @@ jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSendScript(JNIEnv* env, jobject 
 		*pControl << *pScript;
 	} catch (FatalError& e) {
 		ThrowJniException(env, e);
-	}		
+	}
+	return true;
 }
 
 jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetColor(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr)
 {
-	TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdSetColorDirect{(uint32_t)argb, (uint32_t)addr});
+	return TrySend(env, reinterpret_cast<Control*>(pNative), FwCmdSetColorDirect{(uint32_t)argb, (uint32_t)addr});
 }
 
 jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetFade(JNIEnv* env, jobject ref, jlong pNative, jint argb, jint addr, jshort fadeTime)

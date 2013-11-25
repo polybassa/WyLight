@@ -19,9 +19,9 @@
 
 #ifndef _Version_h
 #define _Version_h
+#include "platform.h"
 
 #define VERSION_STRING_ORIGIN 0x3000
-#warning "Version String at 0x3000!!! check for overlapping code"
 
 uns8 Version_Print(uns8 *pArray, const uns8 arraySize);
 

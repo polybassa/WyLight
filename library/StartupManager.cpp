@@ -45,7 +45,7 @@ namespace WyLight {
         mMinor = std::stoi(subStringMinor);
     }
     
-    Version::Version(const unsigned int& major, const unsigned int& minor) : mMajor(major), mMinor(minor) {};
+    Version::Version(const unsigned int& major, const unsigned int& minor) : mMajor(major), mMinor(minor) {}
     
     unsigned int Version::getMajor() const { return mMajor; }
     
