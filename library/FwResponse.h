@@ -24,29 +24,9 @@
 #include <iomanip>
 #include <string>
 #include <sstream>
+#include "__stl_patches.h"
 #include "wifly_cmd.h"
 #include "WiflyControlException.h"
-
-#ifdef ANDROID
-#warning "Check for a new android-ndk > r9 to avoid using this selfmade implementation"
-namespace std {
-	template <class T>
-	std::string to_string(T value)
-	{
-		std::stringstream converter;
-		converter << value;
-		return converter.str();
-	}
-	inline int stoi(const std::string& str, size_t* idx = 0, int base = 10)
-	{
-		std::stringstream converter;
-		converter << str;
-		int i;
-		converter >> i;
-		return i;
-	}
-}
-#endif /* #ifdef ANDROID */
 
 namespace WyLight {
 
