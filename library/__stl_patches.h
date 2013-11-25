@@ -27,6 +27,7 @@
 #endif
 #ifdef ANDROID
 #warning "Check for a new android-ndk > r9b to avoid using this selfmade implementation"
+#include <sstream>
 namespace std {
 	template <class T>
 	std::string to_string(T value)

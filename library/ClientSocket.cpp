@@ -21,13 +21,15 @@
 
 #include <arpa/inet.h>
 #include <sys/select.h>
-#include <cstring>
+#include <string>
 #include <errno.h>
 #include <fcntl.h>
 #include <iostream>
 #include <unistd.h>
 #include <thread>
 #include <chrono>
+
+#include "__stl_patches.h"
 
 #ifdef SO_NOSIGPIPE
 const int TCP_SEND_FLAGS = 0;
@@ -128,7 +130,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
     TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending on socket 0x%04x, %zu bytes: ", mSock, length);
     const int result = send(mSock, frame, length, TCP_SEND_FLAGS);
     if (result == -1) {
-        throw FatalError("send failed with returnvalue -1 and errno:"/* + std::to_string(errno)*/);
+        throw FatalError("send failed with returnvalue -1 and errno:" + std::to_string(errno));
     }
 	return result;
 }
