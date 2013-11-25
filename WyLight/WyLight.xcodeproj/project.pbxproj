@@ -248,7 +248,7 @@
 		C000EE76182D6C8500019267 /* Script+defaultScripts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Script+defaultScripts.m"; sourceTree = "<group>"; };
 		C00DD4C11826C3EB00D17088 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		C025019E1840EFE600BB996D /* StartupManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StartupManager.cpp; path = ../../library/StartupManager.cpp; sourceTree = "<group>"; };
-		C025019F1840EFE600BB996D /* StartupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StartupManager.h; path = ../../library/StartupManager.h; sourceTree = "<group>"; };
+		C025019F1840EFE600BB996D /* StartupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StartupManager.h; path = ../../library/StartupManager.h; sourceTree = "<group>"; tabWidth = 4; usesTabs = 1; wrapsLines = 1; };
 		C03444B0184263C500B1E91F /* Aller_Std_Rg.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aller_Std_Rg.ttf; sourceTree = "<group>"; };
 		C03444BC18433F0100B1E91F /* Aller_Std_Bd.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aller_Std_Bd.ttf; sourceTree = "<group>"; };
 		C03444BD18433F0100B1E91F /* Aller_Std_BdIt.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aller_Std_BdIt.ttf; sourceTree = "<group>"; };

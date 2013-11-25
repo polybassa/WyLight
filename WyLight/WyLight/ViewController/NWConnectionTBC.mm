@@ -98,17 +98,25 @@
 #pragma mark - DELEGATE METHODES
 
 - (void)wiflyControl:(WCWiflyControlWrapper *)sender connectionStartupStateChanged:(NSNumber *)state {
+    
+    NSString* titel = NSLocalizedStringFromTable(@"ConnectingKey", @"ViewControllerLocalization", @"");
+    NSString* message;
     switch (state.unsignedIntegerValue) {
         case WyLight::StartupManager::STARTUP_FAILURE:
             break;
             
         case WyLight::StartupManager::STARTUP_SUCCESSFUL:
             break;
-
             
+        case WyLight::StartupManager::UPDATING:
+            break;
+
         default:
             break;
     }
+    
+    [self.connectingView setTitle:titel];
+    [self.connectingView setMessage:message];
 }
 
 - (void)wiflyControl:(WCWiflyControlWrapper *)sender fatalErrorOccured:(NSNumber *)errorCode {
