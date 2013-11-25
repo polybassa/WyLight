@@ -200,7 +200,7 @@
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="controlDarkShadowColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" size="13" name="Helvetica"/>
+                                            <font key="NSFont" size="13" name="Aller-Regular"/>
                                             <font key="NSOriginalFont" size="13" name=".LucidaGrandeUI"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>
@@ -210,7 +210,7 @@
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" size="13" name="Helvetica"/>
+                                            <font key="NSFont" size="13" name="Aller-Regular"/>
                                             <font key="NSOriginalFont" size="13" name=".LucidaGrandeUI"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>
@@ -219,7 +219,7 @@
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" size="13" name="Helvetica"/>
+                                            <font key="NSFont" size="13" name="Aller-Regular"/>
                                             <font key="NSOriginalFont" size="13" name=".LucidaGrandeUI"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>
@@ -228,7 +228,7 @@
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" size="13" name="Helvetica"/>
+                                            <font key="NSFont" size="13" name="Aller-Regular"/>
                                             <font key="NSOriginalFont" size="11" name=".LucidaGrandeUI"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>
@@ -237,7 +237,7 @@
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" size="13" name="Helvetica"/>
+                                            <font key="NSFont" size="13" name="Aller-Regular"/>
                                             <font key="NSOriginalFont" size="12" name=".LucidaGrandeUI"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>
@@ -246,7 +246,7 @@
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" size="13" name="Helvetica"/>
+                                            <font key="NSFont" size="13" name="Aller-Regular"/>
                                             <font key="NSOriginalFont" size="11" name=".LucidaGrandeUI"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>
@@ -255,7 +255,7 @@
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" size="13" name="Helvetica"/>
+                                            <font key="NSFont" size="13" name="Aller-Regular"/>
                                             <font key="NSOriginalFont" size="12" name=".LucidaGrandeUI"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>
@@ -264,7 +264,7 @@
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" size="13" name="Helvetica"/>
+                                            <font key="NSFont" size="13" name="Aller-Regular"/>
                                             <font key="NSOriginalFont" size="11" name=".LucidaGrandeUI"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>

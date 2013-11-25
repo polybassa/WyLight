@@ -216,7 +216,7 @@
 
 #pragma mark - WCWiflyControlDelegate
 
-- (void) fatalErrorOccured:(WCWiflyControlWrapper *)sender errorCode:(NSNumber *)errorCode {
+- (void)wiflyControl:(WCWiflyControlWrapper *)sender fatalErrorOccured:(NSNumber *)errorCode {
 	NSLog(@"FatalError: ErrorCode = %d\n", [errorCode unsignedIntValue]);
 	[self performSegueWithIdentifier:@"unwindAtConnectionFatalErrorOccured:" sender:self];
 }

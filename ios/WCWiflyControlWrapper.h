@@ -54,16 +54,18 @@
 
 @protocol WCWiflyControlDelegate
 
-@optional
 // dealloc this object to disconnet, if this error occure
-- (void) fatalErrorOccured:(WCWiflyControlWrapper *)sender errorCode:(NSNumber *)errorCode;
-
-// send clearscript to target to fix this error
-- (void) scriptFullErrorOccured:(WCWiflyControlWrapper *)sender errorCode:(NSNumber*)errorCode;
+- (void) wiflyControl:(WCWiflyControlWrapper *)sender fatalErrorOccured:(NSNumber *)errorCode;
 
 // This delegate tells you that a wlan configuration command finished successfull. !!!! dealloc this object if you receive this message.
 // Internally the control object has to disconnect after a wlan configuration command
 - (void) wiflyControlHasDisconnected:(WCWiflyControlWrapper *)sender;
+
+@optional
+// send clearscript to target to fix this error
+- (void) wiflyControl:(WCWiflyControlWrapper *)sender scriptBufferErrorOccured:(NSNumber *)errorCode;
+
+- (void) wiflyControl:(WCWiflyControlWrapper *)sender connectionStartupStateChanged:(NSNumber *)state;
 @end
 
 

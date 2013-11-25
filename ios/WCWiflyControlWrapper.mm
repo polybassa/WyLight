@@ -417,11 +417,11 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
         NSLog(@"ErrorCode %@", errorCode);
         if([errorCode intValue] == WyLight::SCRIPT_FULL)
         {
-            [self.delegate scriptFullErrorOccured:self errorCode:errorCode];
+            [self.delegate wiflyControl:self scriptBufferErrorOccured:errorCode];
         }
         else
         {
-            [self.delegate fatalErrorOccured:self errorCode:errorCode];
+            [self.delegate wiflyControl:self fatalErrorOccured:errorCode];
         }
     });
 }
@@ -438,6 +438,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         NSLog(@"StartupManager state changed to:%d", state.unsignedIntegerValue);
+        [self.delegate wiflyControl:self connectionStartupStateChanged:state];
     });
 }
 

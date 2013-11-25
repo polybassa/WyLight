@@ -8,10 +8,12 @@
 
 #import "NWConnectionTBC.h"
 #import "WCEndpoint.h"
+#include "StartupManager.h"
 
 @interface NWConnectionTBC ()
 
 @property (nonatomic, strong) WCWiflyControlWrapper* controlHandle;
+@property (nonatomic, strong) UIAlertView* connectingView;
 
 @end
 
@@ -29,8 +31,8 @@
 	if (self.controlHandle != nil) {
 		return;
 	}
-	UIAlertView *connectingView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"ConnectingKey", @"ViewControllerLocalization", @"") message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
-	[connectingView show];
+    self.connectingView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"ConnectingKey", @"ViewControllerLocalization", @"") message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+	[self.connectingView show];
 	
 	dispatch_async(dispatch_queue_create("connecting to target Queue", NULL), ^{
 		
@@ -39,7 +41,7 @@
         
         NSInteger returnValue = [self.controlHandle connectWithStartup:YES];
         dispatch_async(dispatch_get_main_queue(), ^{
-			[connectingView dismissWithClickedButtonIndex:0 animated:YES];
+			[self.connectingView dismissWithClickedButtonIndex:0 animated:YES];
 		});
 		if (returnValue != 0) {
             return;
@@ -95,12 +97,26 @@
 
 #pragma mark - DELEGATE METHODES
 
-- (void) fatalErrorOccured:(WCWiflyControlWrapper *)sender errorCode:(NSNumber *)errorCode {
+- (void)wiflyControl:(WCWiflyControlWrapper *)sender connectionStartupStateChanged:(NSNumber *)state {
+    switch (state.unsignedIntegerValue) {
+        case WyLight::StartupManager::STARTUP_FAILURE:
+            break;
+            
+        case WyLight::StartupManager::STARTUP_SUCCESSFUL:
+            break;
+
+            
+        default:
+            break;
+    }
+}
+
+- (void)wiflyControl:(WCWiflyControlWrapper *)sender fatalErrorOccured:(NSNumber *)errorCode {
 	NSLog(@"FatalError: ErrorCode = %d\n", [errorCode unsignedIntValue]);
 	[self performSegueWithIdentifier:@"unwindAtConnectionFatalErrorOccured" sender:self];
 }
 
-- (void) scriptFullErrorOccured:(WCWiflyControlWrapper *)sender errorCode:(NSNumber*)errorCode {
+- (void)wiflyControl:(WCWiflyControlWrapper *)sender scriptBufferErrorOccured:(NSNumber *)errorCode {
 	NSLog(@"ScriptFullError - Cleared Scriptbuffer automatically!\n");
 	[sender clearScript];
 }

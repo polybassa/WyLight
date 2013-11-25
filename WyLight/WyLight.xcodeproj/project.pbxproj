@@ -38,7 +38,7 @@
 		5C8395E217EB61B4007EF0C6 /* TelnetProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395D017EB61B4007EF0C6 /* TelnetProxy.cpp */; };
 		5C8395E317EB61B4007EF0C6 /* WiflyControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395D317EB61B4007EF0C6 /* WiflyControl.cpp */; };
 		5C8395E417EB61B4007EF0C6 /* WiflyControlNoThrow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395D617EB61B4007EF0C6 /* WiflyControlNoThrow.cpp */; };
-		5C8395E917EB651D007EF0C6 /* NWConnectionTBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395E817EB651D007EF0C6 /* NWConnectionTBC.m */; };
+		5C8395E917EB651D007EF0C6 /* NWConnectionTBC.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395E817EB651D007EF0C6 /* NWConnectionTBC.mm */; };
 		5C8395EE17EB6721007EF0C6 /* NWDefaultColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395EB17EB6721007EF0C6 /* NWDefaultColorPickerViewController.m */; };
 		5C8395EF17EB6721007EF0C6 /* NWColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395ED17EB6721007EF0C6 /* NWColorPickerViewController.m */; };
 		5C83962B17EB6C00007EF0C6 /* checkerboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83961517EB6C00007EF0C6 /* checkerboard.png */; };
@@ -178,7 +178,7 @@
 		5C8395D617EB61B4007EF0C6 /* WiflyControlNoThrow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WiflyControlNoThrow.cpp; path = ../../library/WiflyControlNoThrow.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		5C8395D717EB61B4007EF0C6 /* WiflyControlNoThrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WiflyControlNoThrow.h; path = ../../library/WiflyControlNoThrow.h; sourceTree = "<group>"; };
 		5C8395E717EB651D007EF0C6 /* NWConnectionTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWConnectionTBC.h; path = ViewController/NWConnectionTBC.h; sourceTree = "<group>"; };
-		5C8395E817EB651D007EF0C6 /* NWConnectionTBC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWConnectionTBC.m; path = ViewController/NWConnectionTBC.m; sourceTree = "<group>"; };
+		5C8395E817EB651D007EF0C6 /* NWConnectionTBC.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NWConnectionTBC.mm; path = ViewController/NWConnectionTBC.mm; sourceTree = "<group>"; };
 		5C8395EA17EB6721007EF0C6 /* NWDefaultColorPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWDefaultColorPickerViewController.h; path = ViewController/NWDefaultColorPickerViewController.h; sourceTree = "<group>"; };
 		5C8395EB17EB6721007EF0C6 /* NWDefaultColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWDefaultColorPickerViewController.m; path = ViewController/NWDefaultColorPickerViewController.m; sourceTree = "<group>"; };
 		5C8395EC17EB6721007EF0C6 /* NWColorPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWColorPickerViewController.h; path = ViewController/NWColorPickerViewController.h; sourceTree = "<group>"; };
@@ -502,7 +502,7 @@
 				5C83963917EC542E007EF0C6 /* NWBrightnessViewController.h */,
 				5C83963A17EC542E007EF0C6 /* NWBrightnessViewController.m */,
 				5C8395E717EB651D007EF0C6 /* NWConnectionTBC.h */,
-				5C8395E817EB651D007EF0C6 /* NWConnectionTBC.m */,
+				5C8395E817EB651D007EF0C6 /* NWConnectionTBC.mm */,
 				5C8395AE17EB6182007EF0C6 /* NWBroadcastsTVC.h */,
 				5C8395AF17EB6197007EF0C6 /* NWBroadcastsTVC.m */,
 				5C8395EA17EB6721007EF0C6 /* NWDefaultColorPickerViewController.h */,
@@ -766,7 +766,7 @@
 			files = (
 				5C90B3A617F2EB7A00BAC74F /* NWTimeInfoView.m in Sources */,
 				5C8395DD17EB61B4007EF0C6 /* BroadcastReceiver.cpp in Sources */,
-				5C8395E917EB651D007EF0C6 /* NWConnectionTBC.m in Sources */,
+				5C8395E917EB651D007EF0C6 /* NWConnectionTBC.mm in Sources */,
 				C02501A01840EFE600BB996D /* StartupManager.cpp in Sources */,
 				5C8395DB17EB61B4007EF0C6 /* WCBroadcastReceiverWrapper.mm in Sources */,
 				5C83963517EB6C00007EF0C6 /* KZUnitSlider.m in Sources */,
