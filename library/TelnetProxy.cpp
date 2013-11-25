@@ -16,15 +16,6 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#if 0
-//should be fixed in gcc 4.8. please verify on OSX then remove it
-#include "../config.h"
-#ifndef HAVE_LIBTHREAD
-#warning "Check for a new c++11 std::thread implementatin, which can handle std::this_thread::sleep_for(std::chrono::nanoseconds(X)) whithout using nanosleep"
-#define _GLIBCXX_USE_NANOSLEEP
-#endif
-#endif
-
 #include "TelnetProxy.h"
 #include "timeval.h"
 #include "trace.h"
