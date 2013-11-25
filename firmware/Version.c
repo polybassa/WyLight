@@ -16,8 +16,8 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-
 #include "Version.h"
+#include "VersionFile.h"
 
 const char verStr[] = VER_STRING;
 

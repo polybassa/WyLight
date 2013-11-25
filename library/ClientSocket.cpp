@@ -21,7 +21,7 @@
 
 #include <arpa/inet.h>
 #include <sys/select.h>
-#include <cstring>
+#include <string>
 #include <errno.h>
 #include <fcntl.h>
 #include <iostream>
@@ -29,7 +29,13 @@
 #include <thread>
 #include <chrono>
 
-#include <stdio.h>
+#include "__stl_patches.h"
+
+#ifdef SO_NOSIGPIPE
+const int TCP_SEND_FLAGS = 0;
+#else
+const int TCP_SEND_FLAGS = MSG_NOSIGNAL;
+#endif
 
 namespace WyLight {
 
@@ -107,9 +113,11 @@ TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalE
 	}
 	const int restSockArgs = fcntl(mSock, F_GETFL, NULL) & (~O_NONBLOCK);
 	fcntl(mSock, F_SETFL, restSockArgs);
-    
-    int set = 1;
-    setsockopt(mSock, SOL_SOCKET, SO_NOSIGPIPE, (void *)&set, sizeof(int));
+
+#ifdef SO_NOSIGPIPE
+	int set = 1;
+	setsockopt(mSock, SOL_SOCKET, SO_NOSIGPIPE, (void *)&set, sizeof(int));
+#endif
 }
 
 size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const throw(FatalError)
@@ -120,7 +128,7 @@ size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const 
 size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 {
     TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending on socket 0x%04x, %zu bytes: ", mSock, length);
-    const int result = send(mSock, frame, length, 0);
+    const int result = send(mSock, frame, length, TCP_SEND_FLAGS);
     if (result == -1) {
         throw FatalError("send failed with returnvalue -1 and errno:" + std::to_string(errno));
     }
