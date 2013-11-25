@@ -17,19 +17,19 @@
 /* Class = "IBUILabel"; text = "Hexfile Version:"; ObjectID = "M4s-Ws-wnE"; */
 "M4s-Ws-wnE.text" = "Hexfile Version:";
 
-/* Class = "IBUITabBarItem"; title = "RGB Slider"; ObjectID = "QwO-Kn-4Pd"; */
+/* Class = "IBUITabBarItem"; title = "RGB Schieber"; ObjectID = "QwO-Kn-4Pd"; */
 "QwO-Kn-4Pd.title" = "RGB Schieber";
 
-/* Class = "IBUITabBarItem"; title = "Script Editor"; ObjectID = "Ues-bv-5hx"; */
+/* Class = "IBUITabBarItem"; title = "Ablaufsteuerung"; ObjectID = "Ues-bv-5hx"; */
 "Ues-bv-5hx.title" = "Ablaufsteuerung";
 
-/* Class = "IBUITabBarItem"; title = "Color Picker"; ObjectID = "VrI-Vu-uQ4"; */
+/* Class = "IBUITabBarItem"; title = "Farbrad"; ObjectID = "VrI-Vu-uQ4"; */
 "VrI-Vu-uQ4.title" = "Farbrad";
 
-/* Class = "IBUINavigationItem"; title = "Prepare new Target"; ObjectID = "XeK-YM-lXA"; */
+/* Class = "IBUINavigationItem"; title = "WyLight vorbereiten"; ObjectID = "XeK-YM-lXA"; */
 "XeK-YM-lXA.title" = "WyLight vorbereiten";
 
-/* Class = "IBUIBarButtonItem"; title = "Disconnect"; ObjectID = "bxa-xS-8Ml"; */
+/* Class = "IBUIBarButtonItem"; title = "Zurück"; ObjectID = "bxa-xS-8Ml"; */
 "bxa-xS-8Ml.title" = "Zurück";
 
 /* Class = "IBUILabel"; text = "🔅"; ObjectID = "dGg-du-PNe"; */
@@ -53,5 +53,5 @@
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "zBf-q5-eJC"; */
 "zBf-q5-eJC.text" = "Label";
 
-/* Class = "IBUINavigationItem"; title = "Add new Target"; ObjectID = "zXA-51-wTk"; */
+/* Class = "IBUINavigationItem"; title = "WyLight einrichten"; ObjectID = "zXA-51-wTk"; */
 "zXA-51-wTk.title" = "WyLight einrichten";

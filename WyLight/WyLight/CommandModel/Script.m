@@ -2,7 +2,7 @@
 //  Script.m
 //  WyLight
 //
-//  Created by Nils Weiß on 04/11/13.
+//  Created by Nils Weiß on 25/11/13.
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
@@ -12,10 +12,11 @@
 
 @implementation Script
 
-@dynamic title;
 @dynamic repeatsWhenFinished;
-@dynamic effects;
 @dynamic snapshot;
+@dynamic title;
+@dynamic outdatedSnapshot;
+@dynamic effects;
 
 + (NSString *)entityName {
     return @"Script";
@@ -24,6 +25,20 @@
 + (instancetype)insertNewObjectIntoContext:(NSManagedObjectContext *)context {
     return [NSEntityDescription insertNewObjectForEntityForName:[self entityName]
                                          inManagedObjectContext:context];
+}
+
+- (void)setSnapshot:(UIImage *)snapshot {
+    [self willAccessValueForKey:@"snapshot"];
+    UIImage* snapshotBeforSet = [self primitiveValueForKey:@"snapshot"];
+    [self didAccessValueForKey:@"snapshot"];
+    
+    [self willChangeValueForKey:@"snapshot"];
+    [self setPrimitiveValue:snapshot forKey:@"snapshot"];
+    [self didChangeValueForKey:@"snapshot"];
+    
+    if (snapshotBeforSet) {
+        [self setOutdatedSnapshot:snapshotBeforSet];
+    }
 }
 
 - (NSNumber *)totalDurationInTmms {
@@ -46,5 +61,6 @@
         [control loopOffAfterNumberOfRepeats:1];
     }
 }
+
 
 @end

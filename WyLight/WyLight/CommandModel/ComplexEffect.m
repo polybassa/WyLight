@@ -180,6 +180,20 @@
     }
 }
 
+- (void)setSnapshot:(UIImage *)snapshot {
+    [self willAccessValueForKey:@"snapshot"];
+    UIImage* snapshotBeforSet = [self primitiveValueForKey:@"snapshot"];
+    [self didAccessValueForKey:@"snapshot"];
+    
+    [self willChangeValueForKey:@"snapshot"];
+    [self setPrimitiveValue:snapshot forKey:@"snapshot"];
+    [self didChangeValueForKey:@"snapshot"];
+    
+    if (snapshotBeforSet) {
+        [self setOutdatedSnapshot:snapshotBeforSet];
+    }
+}
+
 - (NSArray *)colors {
     [self willAccessValueForKey:@"colors"];
     NSArray *colors = [self primitiveValueForKey:@"colors"];

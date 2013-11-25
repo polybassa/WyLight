@@ -29,7 +29,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *titelTextField;
 @property (nonatomic, strong) UIButton *repeatSwitch;
 @property (nonatomic, strong) NWEffectDrawer *effectDrawer;
-@property (nonatomic, strong) UIAlertView *alertView;
 
 @end
 
@@ -138,9 +137,7 @@
 	self.view.superview.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
-    self.alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"LoadingDataKey", @"ViewControllerLocalization", @"") message:NSLocalizedStringFromTable(@"PleaseWaitKey", @"ViewControllerLocalization", @"") delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-    
-	//user data
+    //user data
 	self.timeScaleFactor = [[NSUserDefaults standardUserDefaults] floatForKey:TIMESCALE_KEY];
 	if (self.timeScaleFactor == 0.0) {
 		self.timeScaleFactor = 1.0;
@@ -391,12 +388,20 @@
             ComplexEffect *currentEffect = self.script.effects[index];
 			    
             //check the first view for update, in relation to the last view.
-            if (index == 0 && ((ComplexEffect *)self.script.effects.lastObject).snapshot == nil && currentEffect.snapshot && self.script.repeatsWhenFinished.boolValue) {
+            if (index == 0 &&
+                ((ComplexEffect *)self.script.effects.lastObject).snapshot == nil &&
+                currentEffect.snapshot && self.script.repeatsWhenFinished.boolValue)
+            {
                 currentEffect.snapshot = nil;
             }
             
+            if (currentEffect.snapshot == nil) {
+                tempView.scriptObjectImageView.image = currentEffect.outdatedSnapshot;
+            } else {
+                tempView.scriptObjectImageView.image = currentEffect.snapshot;
+            }
+            
             tempView.scriptObjectImageView.animateSetImage = YES;
-            tempView.scriptObjectImageView.image = currentEffect.snapshot;
             tempView.scriptObjectImageView.cornerRadius = 5;
 			tempView.delegate = self;
 			tempView.tag = index;
@@ -420,7 +425,6 @@
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.effectDrawer drawEffect:currentEffect];
-                [self checkAlertView];
             });
 			return tempView;
 		}
@@ -469,18 +473,6 @@
 	[self.scriptView fixLocationsOfSubviews];
 }
 
-#pragma mark - Alertview
-- (void)checkAlertView {
-    if ([self.effectDrawer effectIsDrawing:nil] && !self.alertView.isVisible) {
-        [self.alertView show];
-    } else {
-        if (self.alertView.isVisible) {
-            [self.alertView dismissWithClickedButtonIndex:0 animated:YES];
-        }
-    }
-}
-
-
 #pragma mark - Textfield Delegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -493,7 +485,6 @@
 
 - (void)NWEffectDrawer:(NWEffectDrawer *)drawer finishedDrawing:(id)effect {
     if (drawer == self.effectDrawer) {
-        [self checkAlertView];
         NSUInteger idx = [self.script.effects indexOfObject:effect];
         if (self.scriptView.subviews.count > idx && [effect isKindOfClass:[ComplexEffect class]]) {
             UIView *view = [self.scriptView viewWithTag:idx];

@@ -2,7 +2,7 @@
 //  Script.h
 //  WyLight
 //
-//  Created by Nils Weiß on 04/11/13.
+//  Created by Nils Weiß on 25/11/13.
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
@@ -20,7 +20,8 @@
 - (NSNumber *)totalDurationInTmms;
 
 @property (nonatomic, retain) NSNumber * repeatsWhenFinished;
+@property (nonatomic, retain) UIImage* snapshot;
 @property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) UIImage* outdatedSnapshot;
 @property (nonatomic, retain) NSOrderedSet *effects;
-@property (nonatomic, retain) UIImage * snapshot;
 @end

@@ -17,13 +17,22 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.1.4</string>
+	<string>0.1.5</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>0.1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Aller_Std_Rg.ttf</string>
+		<string>Aller_Std_Bd.ttf</string>
+		<string>Aller_Std_Bdlt.ttf</string>
+		<string>Aller_Std_lt.ttf</string>
+		<string>Aller_Std_Lt.ttf</string>
+		<string>Aller_Std_Ltlt.ttf</string>
+	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>

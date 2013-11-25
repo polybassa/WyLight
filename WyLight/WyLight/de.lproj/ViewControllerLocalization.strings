@@ -28,6 +28,7 @@
 "SSIDInfoKey" = "SSID die Ihr WyLight tragen soll eingeben";
 "APInfoKey" = "Accesspoint-Informationen \neingeben";
 "InvalidInputKey" = "Ungültige Eingabe";
+"InvalidInputKey2" = "Ungültige Zeichen eingegeben. Nur Zeichen von a-z, A-Z und 0-9 sind als SSID erlaubt!";
 "CompleteInputKey" = "Bitte das Eingabefeld ausfüllen";
 "CompleteInputsKey" = "Bitte alle Eingabefelder ausfüllen";
 "ConfigurationKey" = "Konfiguration";

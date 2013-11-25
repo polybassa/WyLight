@@ -108,20 +108,33 @@
 #pragma mark - TextField Stuff
 
 - (BOOL)textFieldInputValid {
+    NSCharacterSet * set = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789"] invertedSet];
 	if (self.configureTargetAsSoftAP) {
 		if (![self.ssidTextField.text length]){
+            [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"InvalidInputKey", @"ViewControllerLocalization", @"")
+                                        message:NSLocalizedStringFromTable(@"CompleteInputKey", @"ViewControllerLocalization", @"")
+                                       delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
+			return NO;
+		}
+        if ([self.ssidTextField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+            [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"InvalidInputKey", @"ViewControllerLocalization", @"")
+                                        message:NSLocalizedStringFromTable(@"InvalidInputKey2", @"ViewControllerLocalization", @"")
+                                       delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
+            return NO;
+        }
+	} else {
+		if (![self.ssidTextField.text length] || ![self.passTextField.text length] || ![self.nameTextField.text length]) {
 			[[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"InvalidInputKey", @"ViewControllerLocalization", @"")
                                         message:NSLocalizedStringFromTable(@"CompleteInputKey", @"ViewControllerLocalization", @"")
                                        delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
 			return NO;
 		}
-	} else {
-		if (![self.ssidTextField.text length] || ![self.passTextField.text length] || ![self.nameTextField.text length]) {
-			[[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"InvalidInputKey", @"ViewControllerLocalization", @"")
-                                        message:NSLocalizedStringFromTable(@"CompleteInputsKey", @"ViewControllerLocalization", @"")
+        if ([self.ssidTextField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+            [[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"InvalidInputKey", @"ViewControllerLocalization", @"")
+                                        message:NSLocalizedStringFromTable(@"InvalidInputKey2", @"ViewControllerLocalization", @"")
                                        delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
-			return NO;
-		}
+            return NO;
+        }
 	}
 	return YES;
 }

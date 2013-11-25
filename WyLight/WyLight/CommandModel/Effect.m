@@ -2,7 +2,7 @@
 //  Effect.m
 //  WyLight
 //
-//  Created by Nils Weiß on 16/11/13.
+//  Created by Nils Weiß on 25/11/13.
 //  Copyright (c) 2013 Nils Weiß. All rights reserved.
 //
 
@@ -12,9 +12,10 @@
 @implementation Effect
 
 @dynamic backgroundColor;
-@dynamic duration;
 @dynamic colors;
+@dynamic duration;
 @dynamic snapshot;
+@dynamic outdatedSnapshot;
 
 - (void)awakeFromInsert {
     [super awakeFromInsert];

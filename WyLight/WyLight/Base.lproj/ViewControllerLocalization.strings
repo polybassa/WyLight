@@ -28,6 +28,7 @@
 "SSIDInfoKey" = "Enter SSID for your WyLight";
 "APInfoKey" = "Enter your AP informations";
 "InvalidInputKey" = "Invalid Input";
+"InvalidInputKey2" = "Invalid characters used. Only characters from a-z, A-Z and 0-9 are allowed.";
 "CompleteInputKey" = "Please complete the input field";
 "CompleteInputsKey" = "Please complete all input fields";
 "ConfigurationKey" = "Configuration";
