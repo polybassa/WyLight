@@ -1,6 +1,6 @@
 #ifndef __VERFILE_H__
 #define __VERFILE_H__
 
-#define VER_STRING "000.007"
+#define VERSION 13
 
 #endif

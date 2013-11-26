@@ -174,7 +174,7 @@ struct __attribute__((__packed__)) response_frame {
 	ErrorCode state;
 	union __attribute__((__packed__)) {
 		struct rtc_time time;
-        uns8 version_string[sizeof(VER_STRING)];
+        uns16 versionData;
 		uns8 trace_string[RingBufferSize];
 		uns16 max_cycle_times[CYCLETIME_METHODE_ENUM_SIZE];
 	}data;

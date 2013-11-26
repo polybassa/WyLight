@@ -21,8 +21,8 @@
 #define _Version_h
 #include "platform.h"
 
-#define VERSION_STRING_ORIGIN 0x3000
+#define VERSION_STRING_ORIGIN 0x00E0
 
-uns8 Version_Print(uns8 *pArray, const uns8 arraySize);
+uns16 Version_Print(void);
 
 #endif

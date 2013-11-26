@@ -141,6 +141,10 @@ void HighPriorityInterruptFunction(void)
 }
 #endif /* #ifndef X86 */
 
+#pragma cdata[VERSION_STRING_ORIGIN]
+#pragma cdata.version = VERSION
+#pragma cdata.CDATA_END
+#pragma origin CDATA_END
 
 //*********************** HAUPTPROGRAMM **********************************************
 #ifdef __CC8E__
@@ -244,8 +248,5 @@ void InitAll()
 
 // MUST be at the last position to prevent for overlapping code
 #warning "Version String at 0x3000!!! check for overlapping code"
-#pragma cdata[VERSION_STRING_ORIGIN]
-#pragma cdata.version = VER_STRING
-#pragma cdata.CDATA_END
-#pragma origin CDATA_END
+
 #endif /* #ifdef __CC8E__ */

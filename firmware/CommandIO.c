@@ -255,8 +255,9 @@ void CommandIO_CreateResponse(struct response_frame *mFrame, uns8 cmd, ErrorCode
 		};
 		case GET_FW_VERSION:
 		{
-            const uns8 bytesPrint = Version_Print(&(mFrame->data.version_string[0]), sizeof(struct response_frame) - 4);
-			mFrame->length += bytesPrint;
+			uns16 tempVersion = Version_Print();
+            mFrame->data.versionData = tempVersion;
+			mFrame->length += sizeof(uns16);
 			break;
 		}
 		default:

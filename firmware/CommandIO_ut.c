@@ -382,12 +382,13 @@ int ut_CommandIO_CreateResponse_FW_VERSION(void)
 	TestCaseBegin();
 	struct response_frame mFrame;
     
-    const char g_Version[] = VER_STRING;
+    const uint16_t g_Version = VERSION;
+	const uint16_t g_RightVersion = ntohs(g_Version);
 	
 	CommandIO_CreateResponse(&mFrame, GET_FW_VERSION, OK);
-	CHECK(0 == memcmp((void*)&(mFrame.data), (void*)&g_Version, sizeof(VER_STRING)));
+	CHECK(0 == memcmp((void*)&(mFrame.data), (void*)&g_RightVersion, sizeof(uns16)));
 	CHECK(mFrame.cmd == GET_FW_VERSION);
-	CHECK(mFrame.length == 4 + sizeof(VER_STRING));
+	CHECK(mFrame.length == 4 + sizeof(uns16));
 	CHECK(mFrame.state == OK);
 	
 	TestCaseEnd();

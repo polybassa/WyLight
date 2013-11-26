@@ -18,21 +18,13 @@
 
 #include "Version.h"
 #include "VersionFile.h"
+#include "platform.h"
 
-const char verStr[] = VER_STRING;
+const uns16 versionInt = VERSION;
 
-uns8 Version_Print(uns8 *pArray, const uns8 arraySize)
+uns16 Version_Print(void)
 {
-	uns8 i = 0;
-	uns8 tempByte;
-	while(i < sizeof(VER_STRING) && i < arraySize)
-	{
-	    tempByte = verStr[i];
-		*pArray = tempByte;
-		pArray++;
-		i++;
-	}
-	return i;
+	return htons(versionInt);
 }
 
 
