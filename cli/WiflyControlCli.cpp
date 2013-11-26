@@ -1,5 +1,5 @@
 /**
-		Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
+                Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
 
@@ -37,7 +37,7 @@ using namespace WyLight;
 void newRemoteCallback(const size_t index, const WyLight::Endpoint& newEndpoint);
 
 WiflyControlCli::WiflyControlCli(uint32_t addr, uint16_t port)
-: mControl(addr, port), mRunning(true)
+	: mControl(addr, port), mRunning(true)
 {
 	cout << "Connecting to " << std::hex << addr << ':' << port << std::endl;
 }
@@ -45,23 +45,18 @@ WiflyControlCli::WiflyControlCli(uint32_t addr, uint16_t port)
 void WiflyControlCli::Run(void)
 {
 	std::shared_ptr<const WiflyControlCmd> pCmd;
-	ShowHelp();
+			ShowHelp();
 	string nextCmd;
 	while(mRunning)
 	{
 		cout << "WiflyControlCli: ";
 		cin >> nextCmd;
 
-		if("exit" == nextCmd)
-		{
+		if("exit" == nextCmd) {
 			return;
-		}
-		else if("?" == nextCmd)
-		{
+		} else if("?" == nextCmd)   {
 			ShowHelp();
-		}
-		else
-		{
+		} else {
 			pCmd = WiflyControlCmdBuilder::GetCmd(nextCmd);
 			if(NULL != pCmd) {
 				pCmd->Run(mControl);
@@ -86,7 +81,7 @@ void WiflyControlCli::ShowHelp(void) const
 }
 
 WyLight::Control& WiflyControlCli::getControl() {
-    return mControl;
+	return mControl;
 }
 
 void newRemoteCallback(const size_t index, const WyLight::Endpoint& newEndpoint)
@@ -94,29 +89,30 @@ void newRemoteCallback(const size_t index, const WyLight::Endpoint& newEndpoint)
 	std::cout << "New: " << index << ':' << newEndpoint << '\n';
 }
 
-int main(int argc, const char* argv[])
+int main(int argc, const char *argv[])
 {
 	WyLight::BroadcastReceiver receiver(55555, "recent.txt", newRemoteCallback);
 	std::thread t(std::ref(receiver));
 
 	// wait for user input
-	size_t selection;	
+	size_t selection;
 	do
 	{
 		std::cin >> selection;
-	} while(selection >= receiver.NumRemotes());
-	
+	}
+	while(selection >= receiver.NumRemotes());
+
 	receiver.Stop();
 	t.join();
-	
+
 	const WyLight::Endpoint& e = receiver.GetEndpoint(selection);
 	WiflyControlCli cli(e.GetIp(), e.GetPort());
-    
-    cli.Run();
-    
+
+	cli.Run();
+
 	/*
 	Control cli(e.GetIp(), e.GetPort());
-	
+
 	WiflyColor::
 	cli << FwCmdClearScript();
 	cli << FwCmdSetGradient(0xffff0000, 0xff00ff00, 1000, false, 5, 0);

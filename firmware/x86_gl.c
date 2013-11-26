@@ -8,7 +8,7 @@
 
 #include "x86_wrapper.h"
 
-void gl_print_text(char* text, GLfloat x, GLfloat y)
+void gl_print_text(char *text, GLfloat x, GLfloat y)
 {
 	glRasterPos3f(0, 0, 0.0);
 	glTranslatef(x, y, 0.0);
@@ -25,7 +25,7 @@ void gl_print_sphere(GLfloat x, GLfloat y, float r, float g, float b)
 	glTranslatef(x, y, -50.0);
 	glutSolidSphere(1.0, 16, 16);
 	glTranslatef(-x, -y, +50.0);
-} 
+}
 
 void gl_display(void)
 {
@@ -36,7 +36,7 @@ void gl_display(void)
 
 	clock_gettime(CLOCK_MONOTONIC, &lastTime);
 
-	for(;;) {
+	for(;; ) {
 #ifndef SHOW_FPS
 		static const struct timespec NANOSLEEP_TIME = {0, 500000000};
 		nanosleep(&NANOSLEEP_TIME, NULL);
@@ -48,26 +48,24 @@ void gl_display(void)
 		clock_gettime(CLOCK_MONOTONIC, &nextTime);
 
 		seconds = nextTime.tv_sec - lastTime.tv_sec;
-		if(seconds > 0)
-		{
+		if(seconds > 0) {
 #ifdef SHOW_FPS
 			long nanos = nextTime.tv_nsec - lastTime.tv_nsec;
-			long millis = seconds*1000 + nanos/1000/1000;
+			long millis = seconds * 1000 + nanos / 1000 / 1000;
 			lastTime = nextTime;
-			printf("%f fps\n", 1000.0f*frames/millis);
+			printf("%f fps\n", 1000.0f * frames / millis);
 #endif
 			frames = 0;
 		}
 
 		unsigned int i;
 		pthread_mutex_lock(&g_led_mutex);
-		for(i = 0; i < NUM_OF_LED; i++)
-		{
+		for(i = 0; i < NUM_OF_LED; i++) {
 			float x = -16.0 + 2.0 * (i % 8);
-			float y = 2.0 * (i / 8);			
-			float r = (float)g_led_status[3*i] / 255.0;
-			float g = (float)g_led_status[3*i+1] / 255.0;
-			float b = (float)g_led_status[3*i+2] / 255.0;
+			float y = 2.0 * (i / 8);
+			float r = (float)g_led_status[3 * i] / 255.0;
+			float g = (float)g_led_status[3 * i + 1] / 255.0;
+			float b = (float)g_led_status[3 * i + 2] / 255.0;
 			gl_print_sphere(x, y, r, g, b);
 		}
 		pthread_mutex_unlock(&g_led_mutex);
@@ -75,7 +73,7 @@ void gl_display(void)
 	}
 }
 
-void* gl_start(void* unused)
+void *gl_start(void *unused)
 {
 	int argc = 1;
 	glutInit(&argc, NULL);

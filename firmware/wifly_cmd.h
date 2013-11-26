@@ -1,19 +1,19 @@
 
 /*
  Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
- 
+
  This file is part of Wifly_Light.
- 
+
  Wifly_Light is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
- 
+
  Wifly_Light is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
@@ -49,7 +49,7 @@
 #define LOOP_ON 0xF7
 #define LOOP_OFF 0xF6
 #define START_BL 0xF5
-#define SET_RTC 0xF4 	
+#define SET_RTC 0xF4
 #define GET_RTC 0xF3
 #define SET_COLOR_DIRECT 0xF1
 #define GET_CYCLETIME 0xF0
@@ -100,16 +100,16 @@ struct __attribute__((__packed__)) cmd_set_gradient {
 	uns8 parallelAndOffset; //most significant bit is the parallel bit, the 7 lower bit's hold the number of the offset
 	uns8 numberOfLeds;
 	uns16 fadeTmms; //fadetime in ten ms
-	
+
 #ifdef __cplusplus
 	void Set(uint32_t argb_1, uint32_t argb_2, uint8_t parallel, uint8_t offset, uint8_t length, uint16_t fadeTime) {
 //		if (offset > 0x7f) throw FatalError("Invalid Parameter, offset is greater than 127");
-		red_1   = (uint8_t)(argb_1 >> 16);
+		red_1 = (uint8_t)(argb_1 >> 16);
 		green_1 = (uint8_t)(argb_1 >> 8);
-		blue_1  = (uint8_t)(argb_1);
-		red_2   = (uint8_t)(argb_2 >> 16);
+		blue_1 = (uint8_t)(argb_1);
+		red_2 = (uint8_t)(argb_2 >> 16);
 		green_2 = (uint8_t)(argb_2 >> 8);
-		blue_2  = (uint8_t)(argb_2);
+		blue_2 = (uint8_t)(argb_2);
 		parallelAndOffset = (parallel ? 0x80 : 0x00) | (offset & 0x7F);
 		numberOfLeds = length;
 		fadeTmms = htons(std::max((uint16_t)1, fadeTime));
@@ -143,10 +143,10 @@ struct __attribute__((__packed__)) cmd_set_color_direct {
 	void Set(const uint8_t red, const uint8_t green, const uint8_t blue, const uint32_t addr)
 	{
 		memset(ptr_led_array, 0, sizeof(ptr_led_array));
-		uint8_t* pCur = ptr_led_array;
+		uint8_t *pCur = ptr_led_array;
 		for(uint32_t mask = 0x1; mask > 0; mask = mask << 1) {
 			static_assert(sizeof(mask) * 8 * 3 == sizeof(ptr_led_array),
-				"This trick only works if the mask field overflows to zero exactly with the last led");
+				      "This trick only works if the mask field overflows to zero exactly with the last led");
 			if(addr & mask) {
 				*pCur = red;
 				*(++pCur) = green;
@@ -158,7 +158,7 @@ struct __attribute__((__packed__)) cmd_set_color_direct {
 		}
 	};
 
-	void Set(const uint8_t* pBuffer, size_t bufferLength)
+	void Set(const uint8_t *pBuffer, size_t bufferLength)
 	{
 		bufferLength = std::min(bufferLength, sizeof(ptr_led_array));
 		memcpy(ptr_led_array, pBuffer, bufferLength);
@@ -169,15 +169,16 @@ struct __attribute__((__packed__)) cmd_set_color_direct {
 };
 
 struct __attribute__((__packed__)) response_frame {
-	uns16 length;		/* only for Firmware, do not use in Client */
+	uns16 length;           /* only for Firmware, do not use in Client */
 	uns8 cmd;
 	ErrorCode state;
 	union __attribute__((__packed__)) {
 		struct rtc_time time;
-        uns16 versionData;
+		uns16 versionData;
 		uns8 trace_string[RingBufferSize];
 		uns16 max_cycle_times[CYCLETIME_METHODE_ENUM_SIZE];
-	}data;
+	}
+	data;
 };
 
 struct __attribute__((__packed__)) led_cmd {
@@ -189,7 +190,8 @@ struct __attribute__((__packed__)) led_cmd {
 		struct rtc_time set_rtc;
 		struct cmd_set_color_direct set_color_direct;
 		struct cmd_set_gradient set_gradient;
-	}data;
+	}
+	data;
 };
 
 #endif /* #ifndef _WIFLY_CMD_H_ */

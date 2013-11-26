@@ -1,5 +1,5 @@
 /*
-		Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
+                Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
 
@@ -42,7 +42,7 @@ namespace WyLight {
  *
  * \brief Class to communicate with a Wifly_Light Hardware.
  *
- * 
+ *
  * The Control class allows the user to control the Wifly_Light Hardware.
  * There are three target's at the Wifly_Light Hardware.
  * - Bootloader<br>
@@ -52,8 +52,8 @@ namespace WyLight {
  * - RN-171 Wifi Interface<br>
  *           All methodes witch Conf* relate to the communication module.
  *******************************************************************************/
-class Control
-{
+	class Control
+	{
 	public:
 		/**
 		 * string constant to address all LEDs. String representation of 0xffffffff
@@ -62,21 +62,21 @@ class Control
 		static const std::list<std::string> RN171_DEFAULT_PARAMETERS;
 		static const std::list<std::string> RN171_BASIC_PARAMETERS;
 		static const std::list<std::string> RN171_SOFT_AP_DEFAULT_PARAMETERS;
-		
+
 		/**
 		 * Connect to a wifly device
 		 * @param addr ipv4 address as 32 bit value in host byte order
 		 * @param port number of the wifly device server in host byte order
 		 */
 		Control(uint32_t addr, uint16_t port);
-    
-        /*
-         * Send a byte sequence to ident the current software running on PIC
-         * @return mode of target: BL_IDENT for Bootloader mode, FW_IDENT for Firmware mode
-         * @throw FatalError if synchronisation fails
-         */
-        size_t GetTargetMode(void) const throw(FatalError);
-		
+
+		/*
+		 * Send a byte sequence to ident the current software running on PIC
+		 * @return mode of target: BL_IDENT for Bootloader mode, FW_IDENT for Firmware mode
+		 * @throw FatalError if synchronisation fails
+		 */
+		size_t GetTargetMode(void) const throw(FatalError);
+
 /* ------------------------- BOOTLOADER METHODES ------------------------- */
 		/**
 		 * Instructs the bootloader to set the autostart flag to true. This ensures
@@ -86,7 +86,7 @@ class Control
 		 * @throw InvalidParameter a parameter is out of bound
 		 */
 		void BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError);
-		
+
 		/**
 		 * Instructs the bootloader to erase the whole eeprom.
 		 * The wifly device has to be in bootloader mode for this command.
@@ -104,7 +104,7 @@ class Control
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 */
 		void BlEraseFlash(void) const throw(ConnectionTimeout, FatalError);
-		
+
 		/**
 		 * Instructs the bootloader to update the wifly device with new firmware.
 		 * The wifly device has to be in bootloader mode for this command.
@@ -202,14 +202,14 @@ class Control
 		 * @return an empty string or the ssid
 		 */
 		std::string ConfGetSsid(void) const;
-	
+
 		/**
 		 * Configurates the WyLight module as stand alone accesspoint. With accesspoint name you can change the ssid for this accesspoint.
 		 * @param accesspointName 1 - 32 characters
 		 * @return false, in case of an error
 		 */
 		bool ConfModuleAsSoftAP(const std::string& accesspointName = "Wifly_Light") const;
-	
+
 		/**
 		 * Configurates the WyLight module as client for an existing wlan network with WPA2 protection
 		 * @param phrase WPA2 passphrase 1 - 63 characters
@@ -224,28 +224,28 @@ class Control
 		 * @return false, in case of an error
 		 */
 		bool ConfRebootWlanModule(void) const;
-		
+
 		/**
 		 * Allows you to give every Wifly_Light device an unique name
 		 * @param name 1 - 32 characters
 		 * @return false, in case of an error
 		 */
 		bool ConfSetDeviceId(const std::string& name) const;
-		
+
 		/**
 		 * Wlan module performs a wifi scan and changes to the next free channel. This function can take some time.
 		 * @return false, in case of an error
 		 */
 		bool ConfChangeWlanChannel(void) const;
-	
+
 		/**
 		 *
 		 */
 		bool ConfSetParameters(std::list<std::string> commands) const;
 
 
-		
-/* -------------------------- FIRMWARE METHODES -------------------------- */		
+
+/* -------------------------- FIRMWARE METHODES -------------------------- */
 		/**
 		 * Reads the cycletimes from wifly device and stores them into the response object
 		 * @return a string with all recorded cycletimes from PIC firmware
@@ -281,11 +281,11 @@ class Control
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
 		uint16_t FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-		
-		//TODO move this test functions to the integration test 
+
+		//TODO move this test functions to the integration test
 		void FwTest(void);
 		void FwStressTest(void);
-	
+
 		Control& operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 		Control& operator<<(FwCommand& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 		Control& operator<<(const Script& script) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
@@ -296,7 +296,7 @@ class Control
 		 * @return the version string from a given hex file
 		 */
 		uint16_t ExtractFwVersion(const std::string& pFilename) const;
-	
+
 
 /* ------------------------- PRIVATE DECLARATIONS ------------------------- */
 	private:
@@ -305,7 +305,7 @@ class Control
 		 * A reference to the TcpSocket is provided to the aggregated subobjects.
 		 */
 		const TcpSocket mTcpSock;
-	
+
 		/**
 		 * The UdpSocket is used directly in WiflyControl, to send fast connectionless packets.
 		 */
@@ -341,7 +341,7 @@ class Control
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 */
-		size_t BlRead(const BlRequest& request, uint8_t* pResponse, const size_t responseSize, bool doSync = true) const throw(ConnectionTimeout, FatalError);
+		size_t BlRead(const BlRequest& request, uint8_t *pResponse, const size_t responseSize, bool doSync = true) const throw(ConnectionTimeout, FatalError);
 
 		/**
 		 * Instructs the bootloader of the wifly device to write data to the eeprom.
@@ -352,7 +352,7 @@ class Control
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw InvalidParameter a parameter is out of bound
 		 */
-		void BlWriteEeprom(uint32_t address, const uint8_t* pBuffer, size_t bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter);
+		void BlWriteEeprom(uint32_t address, const uint8_t *pBuffer, size_t bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter);
 
 		/**
 		 * Instructs the bootloader of the wifly device to write data to the flash.
@@ -363,7 +363,7 @@ class Control
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw InvalidParameter a parameter is out of bound
 		 */
-		void BlWriteFlash(uint32_t address, uint8_t* pBuffer, size_t bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter);
+		void BlWriteFlash(uint32_t address, uint8_t *pBuffer, size_t bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter);
 
 		/**
 		 * Sends a wifly command frame to the wifly device
@@ -371,9 +371,9 @@ class Control
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
-		 */		
+		 */
 		void FwSend(FwCommand& cmd) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-			
+
 		/**
 		 * Instructs the bootloader to create crc-16 checksums for the content of
 		 * the specified flash area. TODO crc values are in little endian byte order
@@ -386,8 +386,8 @@ class Control
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw InvalidParameter a parameter is out of bound
 		 */
-		size_t BlReadCrcFlash(uint8_t* pBuffer, uint32_t address, uint16_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
-		
+		size_t BlReadCrcFlash(uint8_t *pBuffer, uint32_t address, uint16_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
+
 		/**
 		 * Instructs the bootloader to read the specified memory area of the eeprom.
 		 * The wifly device has to be in bootloader mode for this command.
@@ -399,8 +399,8 @@ class Control
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw InvalidParameter a parameter is out of bound
 		 */
-		size_t BlReadEeprom(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
-	
+		size_t BlReadEeprom(uint8_t *pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
+
 		/**
 		 * Instructs the bootloader to read the specified memory area of the flash.
 		 * The wifly device has to be in bootloader mode for this command.
@@ -412,7 +412,7 @@ class Control
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw InvalidParameter a parameter is out of bound
 		 */
-		size_t BlReadFlash(uint8_t* pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
+		size_t BlReadFlash(uint8_t *pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
 
 		/**
 		 * Read the currently configured wlan passphrase from WyLight module
@@ -420,13 +420,13 @@ class Control
 		 * @return an empty string or the value of the specified wlan setting
 		 */
 		std::string ConfGet(const std::string& searchKey, const std::string& getCmd = "get wlan\r\n") const;
-	
+
 		/**
 		 * Set the WyLight module communication parameters to defaults
 		 * @return false, in case of an error
 		 */
 		bool ConfSetDefaults(void) const;
-	
+
 		/**
 		 * Set the WyLight module wlan connection parameters
 		 * @param phrase WPA2 passphrase 1 - 63 characters
@@ -434,12 +434,12 @@ class Control
 		 * @return false, in case of an error
 		 */
 		bool ConfSetWlan(const std::string& phrase, const std::string& ssid) const;
-		
+
 /* ------------------ friendships for unittesting only ------------------- */
 		friend size_t ut_WiflyControl_BlEepromWrite(void);
 		friend size_t ut_WiflyControl_BlFlashWrite(void);
 		friend size_t ut_WiflyControl_ConfSetDefaults(void);
 		friend size_t ut_WiflyControl_ConfSetWlan(void);
-};
+	};
 }
 #endif /* #ifndef _WIFLYCONTROL_H_ */

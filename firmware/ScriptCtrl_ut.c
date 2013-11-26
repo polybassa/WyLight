@@ -1,18 +1,18 @@
 /*
  Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
- 
+
  This file is part of Wifly_Light.
- 
+
  Wifly_Light is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
- 
+
  Wifly_Light is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
@@ -33,12 +33,10 @@ struct ScriptBuf gScriptBuf;
 struct response_frame g_ResponseBuf;
 
 void CommandIO_CreateResponse(struct response_frame *mFrame, uns8 cmd)
-{
-}
+{}
 
 void CommandIO_SendResponse(struct response_frame *mFrame)
-{
-}
+{}
 
 void Ledstrip_SetColorDirect(struct cmd_set_fade *pCmd)
 {
@@ -131,13 +129,12 @@ int ut_ScriptCtrl_SimpleLoop(void)
 	CHECK(gScriptBuf.inLoop);
 
 	int i;
-	for(i = 0; i < NUM_TEST_LOOPS; i++)
-	{
+	for(i = 0; i < NUM_TEST_LOOPS; i++) {
 		/* dummy command should be executed */
 		gSetFadeWasCalled = FALSE;
 		ScriptCtrl_Run();
 		CHECK(gSetFadeWasCalled);
-		
+
 		/* now next loop should be called */
 		gSetFadeWasCalled = FALSE;
 		ScriptCtrl_Run();
@@ -155,8 +152,7 @@ int ut_ScriptCtrl_DoOuterInnerLoop(int loopCount)
 {
 	TestCaseBegin();
 	int i, j;
-	for(i = 0; i < loopCount; i++)
-	{
+	for(i = 0; i < loopCount; i++) {
 		/* outer dummy command should be executed */
 		gSetFadeWasCalled = FALSE;
 		ScriptCtrl_Run();
@@ -167,8 +163,7 @@ int ut_ScriptCtrl_DoOuterInnerLoop(int loopCount)
 		ScriptCtrl_Run();
 		CHECK(gScriptBuf.inLoop);
 
-		for(j = 0; j < loopCount; j++)
-		{
+		for(j = 0; j < loopCount; j++) {
 			/* outer dummy command should be executed */
 			gSetFadeWasCalled = FALSE;
 			ScriptCtrl_Run();
@@ -227,7 +222,7 @@ int ut_ScriptCtrl_InnerLoop(void)
 	ScriptCtrl_Run();
 	CHECK(gScriptBuf.inLoop);
 
-	errors+= ut_ScriptCtrl_DoOuterInnerLoop(NUM_TEST_LOOPS);
+	errors += ut_ScriptCtrl_DoOuterInnerLoop(NUM_TEST_LOOPS);
 
 	/* no more command should be available */
 	gSetFadeWasCalled = FALSE;
@@ -275,9 +270,9 @@ int ut_ScriptCtrl_InfiniteLoop(void)
 	CHECK(gScriptBuf.inLoop);
 
 	/* multiple calls should be no problem since we are in an infinite loop */
-	errors+= ut_ScriptCtrl_DoOuterInnerLoop(NUM_TEST_LOOPS);
-	errors+= ut_ScriptCtrl_DoOuterInnerLoop(NUM_TEST_LOOPS);
-	errors+= ut_ScriptCtrl_DoOuterInnerLoop(NUM_TEST_LOOPS);
+	errors += ut_ScriptCtrl_DoOuterInnerLoop(NUM_TEST_LOOPS);
+	errors += ut_ScriptCtrl_DoOuterInnerLoop(NUM_TEST_LOOPS);
+	errors += ut_ScriptCtrl_DoOuterInnerLoop(NUM_TEST_LOOPS);
 
 	/* now terminate the loop */
 	testCmd.cmd = CLEAR_SCRIPT;
@@ -311,15 +306,14 @@ int ut_ScriptCtrl_FullBuffer(void)
 	ScriptCtrl_Add(&testCmd);
 
 	int i;
-	for(i = 0; i < SCRIPTCTRL_NUM_CMD_MAX-3; i++)
-	{
+	for(i = 0; i < SCRIPTCTRL_NUM_CMD_MAX - 3; i++) {
 		/* add inner dummy command to buffer */
 		testCmd.cmd = SET_FADE;
 		CHECK(ScriptCtrl_Add(&testCmd));
 	}
 
 	/* Buffer full */
-	CHECK(!ScriptCtrl_Add(&testCmd));
+		CHECK(!ScriptCtrl_Add(&testCmd));
 	TestCaseEnd();
 }
 
@@ -329,16 +323,15 @@ int ut_ScriptCtrl_StartBootloader(void)
 	struct led_cmd testCmd;
 	ScriptCtrl_Clear();
 
-	if(0 == softResetJumpDestination())
-	{
+	if(0 == softResetJumpDestination()) {
 		/* send START_BL */
 		testCmd.cmd = START_BL;
 		ScriptCtrl_Add(&testCmd);
-		
+
 		/* shouldn't reach this -> return error */
 		return 1;
 	}
-	
+
 	/* we just jumped to softResetJumpDestination() -> it worked */
 	return 0;
 }
@@ -373,17 +366,17 @@ int ut_ScriptCtrl_RtcCommands(void)
 	NOT_IMPLEMENTED();
 }
 
-int main(int argc, const char* argv[])
+int main(int argc, const char *argv[])
 {
 	UnitTestMainBegin();
-	RunTest(true, ut_ScriptCtrl_SimpleReadWrite);
-	RunTest(true, ut_ScriptCtrl_Clear);
-	RunTest(true, ut_ScriptCtrl_SimpleLoop);
-	RunTest(true, ut_ScriptCtrl_InnerLoop);
-	RunTest(true, ut_ScriptCtrl_InfiniteLoop);
+	RunTest(true,  ut_ScriptCtrl_SimpleReadWrite);
+	RunTest(true,  ut_ScriptCtrl_Clear);
+	RunTest(true,  ut_ScriptCtrl_SimpleLoop);
+	RunTest(true,  ut_ScriptCtrl_InnerLoop);
+	RunTest(true,  ut_ScriptCtrl_InfiniteLoop);
 	RunTest(false, ut_ScriptCtrl_FullBuffer);
-	RunTest(true, ut_ScriptCtrl_StartBootloader);
-	RunTest(true, ut_ScriptCtrl_Wait);
+	RunTest(true,  ut_ScriptCtrl_StartBootloader);
+	RunTest(true,  ut_ScriptCtrl_Wait);
 	RunTest(false, ut_ScriptCtrl_AddColor);
 	RunTest(false, ut_ScriptCtrl_RtcCommands);
 	UnitTestMainEnd();

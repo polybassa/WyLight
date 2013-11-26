@@ -11,9 +11,9 @@
 
 @interface WCBroadcastReceiverWrapper : NSObject
 
-FOUNDATION_EXPORT NSString *const TargetsChangedNotification;
+	FOUNDATION_EXPORT NSString *const TargetsChangedNotification;
 
-@property (nonatomic, strong)NSArray* targets; //of WCEndpoint
+@property (nonatomic, strong) NSArray *targets; //of WCEndpoint
 
 - (void)setWCEndpointAsFavorite:(WCEndpoint *)endpoint;
 

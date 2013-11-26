@@ -1,18 +1,18 @@
 /**
  Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
- 
+
  This file is part of Wifly_Light.
- 
+
  Wifly_Light is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
- 
+
  Wifly_Light is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
@@ -20,25 +20,25 @@
 #define _TIMER_H_
 #include "platform.h"
 
-enum CYCLETIME_METHODE{
-	eMAIN,				//00
-	eLedstrip_DoFade,		//01
-	eSET_FADE,			//02
-	eSET_COLOR,			//03
-	e_EMPTY_METHODE_0,			//04
-	e_EMPTY_METHODE_1,		//05
-	eLedstrip_UpdateLed,		//06
-	eCommandIO_GetCommands,	//07
-	eScriptCtrl_Run,		//08
-	ePlatform_CheckInputs,		//09
-	eError_Throw,			//10
-	eTIMER_WAIT,			//11
+enum CYCLETIME_METHODE {
+	eMAIN,                          //00
+	eLedstrip_DoFade,               //01
+	eSET_FADE,                      //02
+	eSET_COLOR,                     //03
+	e_EMPTY_METHODE_0,                      //04
+	e_EMPTY_METHODE_1,              //05
+	eLedstrip_UpdateLed,            //06
+	eCommandIO_GetCommands, //07
+	eScriptCtrl_Run,                //08
+	ePlatform_CheckInputs,          //09
+	eError_Throw,                   //10
+	eTIMER_WAIT,                    //11
 	CYCLETIME_METHODE_ENUM_SIZE //!!! MUST be the last element of the enum
 };
 
 extern enum CYCLETIME_METHODE enumMethode;
 
-struct CycleTimeBuffer{
+struct CycleTimeBuffer {
 	uns16 maxCycleTime[CYCLETIME_METHODE_ENUM_SIZE];
 	uns16 tempCycleTime[CYCLETIME_METHODE_ENUM_SIZE];
 };
@@ -91,7 +91,7 @@ uns8 Timer_PrintCycletime(uns16 *pArray, const uns16 arraySize);
 #define Timer4Disable(x)
 #define Timer4InterruptLock(x)
 #define Timer4InterruptUnlock(x)
-#define Timer5InterruptLock(x) 
-#define Timer5InterruptUnlock(x) 
+#define Timer5InterruptLock(x)
+#define Timer5InterruptUnlock(x)
 #endif
 #endif

@@ -1,18 +1,18 @@
 /*
  Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
- 
+
  This file is part of Wifly_Light.
- 
+
  Wifly_Light is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
- 
+
  Wifly_Light is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
@@ -25,10 +25,10 @@
 #include "FwCommand.h"
 #include "wifly_cmd.h"
 
-namespace WyLight{
+namespace WyLight {
 
-class ComProxy
-{
+	class ComProxy
+	{
 	public:
 		/*
 		 * Create a new object for communication with PIC bootloader and firmware
@@ -46,7 +46,7 @@ class ComProxy
 		 * @throw ConnectionTimeout if a timeout occurred
 		 * @throw FatalError if synchronisation or sending to socket failed
 		 */
-		size_t Send(const BlRequest& req, uint8_t* pResponse, size_t responseSize, bool doSync = true) const throw(ConnectionTimeout, FatalError);
+		size_t Send(const BlRequest& req, uint8_t *pResponse, size_t responseSize, bool doSync = true) const throw(ConnectionTimeout, FatalError);
 
 		/*
 		 * Send a request to the PIC firmware and wait for a response
@@ -57,14 +57,14 @@ class ComProxy
 		 * @throw ConnectionTimeout if a timeout occurred
 		 * @throw FatalError if sending to socket failed
 		 */
-		size_t Send(const FwCommand& request, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout, FatalError);
-    
-        /*
-         * Send a byte sequence to force a uart baud rate synchronisation between WLAN module and PIC
-         * @return mode of target: BL_IDENT for Bootloader mode, FW_IDENT for Firmware mode
-         * @throw FatalError if synchronisation fails
-         */
-        size_t SyncWithTarget(void) const throw(FatalError);
+		size_t Send(const FwCommand& request, response_frame *pResponse, size_t responseSize) const throw(ConnectionTimeout, FatalError);
+
+		/*
+		 * Send a byte sequence to force a uart baud rate synchronisation between WLAN module and PIC
+		 * @return mode of target: BL_IDENT for Bootloader mode, FW_IDENT for Firmware mode
+		 * @throw FatalError if synchronisation fails
+		 */
+		size_t SyncWithTarget(void) const throw(FatalError);
 
 	private:
 		/*
@@ -82,7 +82,7 @@ class ComProxy
 		 * @return the number of bytes received or 0 if the crc check fails
 		 * @throw ConnectionTimeout if response timed out
 		 */
-		size_t Recv(uint8_t* pBuffer, size_t length, timeval* pTimeout = NULL, bool checkCrc = true, bool crcInLittleEndian = true) const throw(ConnectionTimeout);
+		size_t Recv(uint8_t *pBuffer, size_t length, timeval *pTimeout = NULL, bool checkCrc = true, bool crcInLittleEndian = true) const throw(ConnectionTimeout);
 
 		/*
 		 * Send a bootloader or firmware pRequest to the PIC
@@ -97,8 +97,8 @@ class ComProxy
 		 * @throw ConnectionTimeout if a timeout occurred
 		 * @throw FatalError if synchronisation or sending to socket failed
 		 */
-		size_t Send(uint8_t const* pRequest, const size_t requestSize, uint8_t* pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian = true) const throw(ConnectionTimeout, FatalError);
-};
+		size_t Send(uint8_t const *pRequest, const size_t requestSize, uint8_t *pResponse, size_t responseSize, bool checkCrc, bool doSync, bool crcInLittleEndian = true) const throw(ConnectionTimeout, FatalError);
+	};
 }
 #endif /* #ifndef _COM_PROXY_H_ */
 

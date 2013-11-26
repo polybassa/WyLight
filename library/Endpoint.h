@@ -1,5 +1,5 @@
 /**
-		Copyright (C) 2013 Nils Weiss, Patrick Bruenn.
+                Copyright (C) 2013 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
 
@@ -28,8 +28,8 @@
 
 namespace WyLight {
 
-class Endpoint
-{
+	class Endpoint
+	{
 	public:
 		Endpoint(sockaddr_storage& addr, const size_t size, uint16_t port, std::string devId = "")
 			: mScore(0)
@@ -42,51 +42,50 @@ class Endpoint
 
 		Endpoint(uint32_t ip = 0, uint16_t port = 0, uint8_t score = 0, std::string devId = "")
 			: mIp(ip), mPort(port), mScore(score), mDeviceId(devId)
-		{
-		};
+		{};
 
 		bool operator<(const Endpoint& ref) const {
 			return (mIp < ref.GetIp())
-					|| ((mIp == ref.GetIp()) && (mPort < ref.GetPort()));
+			       || ((mIp == ref.GetIp()) && (mPort < ref.GetPort()));
 		};
 
 		friend std::ostream& operator << (std::ostream& out, const Endpoint& ref)
 		{
 			return out << (int)ref.mScore << ' '
-								 << ((ref.mIp & 0xff000000 ) >> 24) << '.'
-								 << ((ref.mIp & 0x00ff0000 ) >> 16) << '.'
-								 << ((ref.mIp & 0x0000ff00 ) >> 8) << '.'
-								 << (ref.mIp & 0x000000ff )
-								 << ':' << ref.mPort
-								 << "  :  " << ref.mDeviceId;
+				   << ((ref.mIp & 0xff000000) >> 24) << '.'
+				   << ((ref.mIp & 0x00ff0000) >> 16) << '.'
+				   << ((ref.mIp & 0x0000ff00) >> 8) << '.'
+				   << (ref.mIp & 0x000000ff)
+				   << ':' << ref.mPort
+				   << "  :  " << ref.mDeviceId;
 		};
-	
+
 		friend bool operator== (const Endpoint& lhs, const Endpoint& rhs)
 		{
-			if (	(lhs.mDeviceId == rhs.mDeviceId) &&
-					(lhs.mIp == rhs.mIp) &&
-					(lhs.mPort == rhs.mPort) &&
-					(lhs.mScore == rhs.mScore)
-				) {
+			if((lhs.mDeviceId == rhs.mDeviceId) &&
+			   (lhs.mIp == rhs.mIp) &&
+			   (lhs.mPort == rhs.mPort) &&
+			   (lhs.mScore == rhs.mScore)
+			   ) {
 				return true;
 			} else {
 				return false;
 			}
 		}
-	
+
 		friend bool operator!= (const Endpoint& lhs, const Endpoint& rhs)
 		{
 			return !(lhs == rhs);
 		}
 
 
-		/* 
+		/*
 		 * @return ipv4 address(A) and port(P) as a combined 64 bit value 0xAAAAAAAA0000PPPP
 		 */
 		uint64_t AsUint64(void) const {
 			return ((uint64_t)mIp << 32) | mPort;
 		};
-	
+
 		std::string GetDeviceId(void) const {
 			return mDeviceId;
 		};
@@ -106,7 +105,7 @@ class Endpoint
 		void SetDeviceId(const std::string& deviceId) {
 			mDeviceId = deviceId;
 		};
-			
+
 		void SetScore(const uint8_t& score) {
 			mScore = score;
 		};
@@ -129,7 +128,7 @@ class Endpoint
 		uint16_t mPort;
 		uint8_t mScore;
 		std::string mDeviceId;
-};			
+	};
 }
 #endif /* #ifndef _ENDPOINT_H_ */
 

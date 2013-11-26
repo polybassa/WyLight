@@ -1,18 +1,18 @@
 /*
  Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
- 
+
  This file is part of Wifly_Light.
- 
+
  Wifly_Light is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
- 
+
  Wifly_Light is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
@@ -32,10 +32,10 @@
 #include <string>
 #include <functional>
 
-namespace WyLight{
+namespace WyLight {
 
-class BroadcastReceiver
-{
+	class BroadcastReceiver
+	{
 	public:
 		static const uint16_t BROADCAST_PORT = 55555;
 		static const std::string DEVICE_ID;
@@ -62,8 +62,8 @@ class BroadcastReceiver
 		 * Listen for broadcasts and print them to a stream
 		 * @param timeout in seconds, until execution is terminated, to wait indefinetly use NULL (default)
 		 */
-		void operator() (timeval* timeout = NULL) throw (FatalError);
-	
+		void operator() (timeval *timeout = NULL) throw (FatalError);
+
 		/*
 		 * Get a reference to the endpoint at the specified index
 		 * @param index of the endpoint in the internal IpTable, should be lees than NumRemotes()
@@ -84,7 +84,7 @@ class BroadcastReceiver
 		 * @return an empty Endpoint object in case of an error, if a new remote is discovered an Endpoint object with its address and port is returned.
 		 * @throw FatalError if something failed seriously in the underlying socket
 		 */
-		Endpoint GetNextRemote(timeval* timeout) throw (FatalError);
+		Endpoint GetNextRemote(timeval *timeout) throw (FatalError);
 
 		/**
 		 * @return number of discovered remotes addresses
@@ -108,13 +108,13 @@ class BroadcastReceiver
 		 * @param threshold which an endpoints score has to have at least to be written to the file
 		 */
 		void WriteRecentEndpoints(const std::string& filename = "", uint8_t threshold = 1) const;
-	
+
 		/**
 		 * Delete all recent endpoints in file and in the internal IpTables
 		 * @param filename of the file containing the recent endpoints
 		 */
 		void DeleteRecentEndpointFile(const std::string& filename = "");
-		
+
 	private:
 		const uint16_t mPort;
 		std::set<Endpoint> mIpTableShadow;
@@ -131,7 +131,7 @@ class BroadcastReceiver
 		 * @return true if a new endpoint was added, false if it already existed or an error occur
 		 */
 		bool LockedInsert(Endpoint& endpoint);
-};
+	};
 }
 #endif /* #ifndef _BROADCAST_RECEIVER_H_ */
 

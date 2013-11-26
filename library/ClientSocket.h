@@ -1,5 +1,5 @@
 /**
-		Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
+                Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
 
@@ -28,25 +28,25 @@
 #include <sys/socket.h>
 #include <sys/time.h>
 
-namespace WyLight{
+namespace WyLight {
 
 /**
  * Helper class to simplify handling of sockaddr_in
  */
-struct Ipv4Addr : public sockaddr_in {
-	Ipv4Addr(uint32_t addr, uint16_t port) {
-		memset(this, 0, sizeof(*this));
-		sin_family = AF_INET;
-		sin_port = htons(port);
-		sin_addr.s_addr = htonl(addr);
+	struct Ipv4Addr : public sockaddr_in {
+		Ipv4Addr(uint32_t addr, uint16_t port) {
+			memset(this, 0, sizeof(*this));
+			sin_family = AF_INET;
+			sin_port = htons(port);
+			sin_addr.s_addr = htonl(addr);
+		};
 	};
-};
 
 /**
  * Abstract base class controlling the low level socket file descriptor
  */
-class ClientSocket
-{
+	class ClientSocket
+	{
 	public:
 		/**
 		 * Aquire the low level socket file descriptor
@@ -68,13 +68,13 @@ class ClientSocket
 		 * @return true if select() timed out, false if data is ready
 		 * @throw FatalError if something very unexpected happens
 		 */
-		bool Select(timeval* timeout) const throw (FatalError);
+		bool Select(timeval *timeout) const throw (FatalError);
 
 		/**
 		 * Interface to send a data frame with a given length, you have to implement
 		 * this function in child classes
 		 */
-		virtual size_t Send(const uint8_t* frame, size_t length) const = 0;
+		virtual size_t Send(const uint8_t *frame, size_t length) const = 0;
 
 	protected:
 		/**
@@ -86,13 +86,13 @@ class ClientSocket
 		 * IPv4 address of listening or target port
 		 */
 		Ipv4Addr mSockAddr;
-};
+	};
 
 /**
  * Wrapper to make tcp socket handling more easy
  */
-class TcpSocket : public ClientSocket
-{
+	class TcpSocket : public ClientSocket
+	{
 	public:
 		/**
 		 * @param Addr IPv4 address in host byte order
@@ -110,24 +110,24 @@ class TcpSocket : public ClientSocket
 		 * @return number of bytes read into \<pBuffer\>
 		 * @throw FatalError if something very unexpected happens
 		 */
-		size_t Recv(uint8_t* pBuffer, size_t length, timeval* timeout = NULL) const throw (FatalError);
+		size_t Recv(uint8_t *pBuffer, size_t length, timeval *timeout = NULL) const throw (FatalError);
 
 		/**
 		 * @see ClientSocket#Send
 		 */
-		virtual size_t Send(const uint8_t* frame, size_t length) const;
-};
+		virtual size_t Send(const uint8_t *frame, size_t length) const;
+	};
 
 /**
  * Wrapper to make udp socket handling more easy
  */
-class UdpSocket : public ClientSocket
-{
+	class UdpSocket : public ClientSocket
+	{
 	public:
 		/**
 		 * @param addr IPv4 address in host byte order
 		 * @param port IPv4 port number in host byte order
-		 * @param doBind set to true to 
+		 * @param doBind set to true to
 		 * @param enableBroadcast use 1 to enable broadcast else set 0 (default)
 		 * @throw FatalError if the base class constructor fails
 		 */
@@ -143,10 +143,10 @@ class UdpSocket : public ClientSocket
 		 * @return number of bytes read into \<pBuffer\>, 0 in case of a timeout
 		 * @throw FatalError if something very unexpected happens
 		 */
-		size_t RecvFrom(uint8_t* pBuffer, size_t length, timeval* timeout = NULL, struct sockaddr* remoteAddr = NULL, socklen_t* remoteAddrLength = NULL) const throw (FatalError);
+		size_t RecvFrom(uint8_t *pBuffer, size_t length, timeval *timeout = NULL, struct sockaddr *remoteAddr = NULL, socklen_t *remoteAddrLength = NULL) const throw (FatalError);
 
-		virtual size_t Send(const uint8_t* frame, size_t length) const;
-};
+		virtual size_t Send(const uint8_t *frame, size_t length) const;
+	};
 }
 #endif /* #ifndef _CLIENTSOCKET_H_ */
 

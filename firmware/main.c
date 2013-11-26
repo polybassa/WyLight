@@ -1,18 +1,18 @@
 /**
  Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
- 
+
  This file is part of Wifly_Light.
- 
+
  Wifly_Light is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
- 
+
  Wifly_Light is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
@@ -20,16 +20,16 @@
 #define DEBUG
 #pragma optimize 1
 #pragma sharedAllocation
-#endif 
+#endif
 
 //*********************** INCLUDEDATEIEN *********************************************
 #include "Version.h"
 #include "platform.h"
-#include "RingBuf.h"		
-#include "usart.h"			
+#include "RingBuf.h"
+#include "usart.h"
 #include "CommandIO.h"
-#include "ledstrip.h"		
-#include "timer.h"	
+#include "ledstrip.h"
+#include "timer.h"
 #include "rtc.h"
 #include "ScriptCtrl.h"
 #include "trace.h"
@@ -52,15 +52,15 @@ uns8 g_UpdateLedStrip;
 
 //*********************** MACROS *****************************************************
 #ifdef DEBUG
-#define do_and_measure(METHOD) {\
-	Timer_StartStopwatch(e ## METHOD); \
-	METHOD(); \
-	Timer_StopStopwatch(e ## METHOD);}
+#define do_and_measure(METHOD) { \
+		Timer_StartStopwatch(e ## METHOD); \
+		METHOD(); \
+		Timer_StopStopwatch(e ## METHOD); }
 #else
 #define do_and_measure(METHOD) METHOD();
 #endif /*#ifdef DEBUG */
 
-	
+
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void InitAll();
 void HighPriorityInterruptFunction(void);
@@ -70,8 +70,8 @@ void init_x86(void);
 
 #ifndef X86
 //*********************** INTERRUPTSERVICEROUTINE ************************************
-#pragma origin 0x8					
-//Adresse des High Priority Interrupts	
+#pragma origin 0x8
+//Adresse des High Priority Interrupts
 interrupt HighPriorityInterrupt(void)
 {
 	HighPriorityInterruptFunction();
@@ -94,21 +94,19 @@ interrupt LowPriorityInterrupt(void)
 	uns8 sv_TABLAT = TABLAT;
 #endif
 
-	if(TMR5IF)
-	{
-	      g_UpdateLed = g_UpdateLed + 1;
-		  ScriptCtrl_DecrementWaitValue();
-	      Timer5Interrupt();
-	} 
-		
-	if(TMR1IF)
-	{
-	      g_UpdateLedStrip = g_UpdateLedStrip + 1;
-		  ScriptCtrl_CheckAndDecrementWaitValue();
-	      Timer1Disable();
-	      Timer1Interrupt();
+	if(TMR5IF) {
+		g_UpdateLed = g_UpdateLed + 1;
+		ScriptCtrl_DecrementWaitValue();
+		Timer5Interrupt();
 	}
-#if 0	
+
+	if(TMR1IF) {
+		g_UpdateLedStrip = g_UpdateLedStrip + 1;
+		ScriptCtrl_CheckAndDecrementWaitValue();
+		Timer1Disable();
+		Timer1Interrupt();
+	}
+#if 0
 	FSR0 = sv_FSR0;
 	FSR1 = sv_FSR1;
 	FSR2 = sv_FSR2;
@@ -125,14 +123,10 @@ interrupt LowPriorityInterrupt(void)
 void HighPriorityInterruptFunction(void)
 {
 	uns16 sv_FSR0 = FSR0;
-	if(RC1IF)
-	{
-		if(!RingBuf_HasError(&g_RingBuf)) 
-		{
+	if(RC1IF) {
+		if(!RingBuf_HasError(&g_RingBuf)) {
 			RingBuf_Put(&g_RingBuf, RCREG1);
-		}
-		else 
-		{
+		} else {
 			//Register lesen um Schnittstellen Fehler zu vermeiden
 			uns8 temp = RCREG1;
 		}
@@ -165,33 +159,31 @@ int main(void)
 		// give opengl thread a chance to run
 		usleep(10);
 #endif /* #ifndef __CC8E__ */
-		
-		
-		
-		do_and_measure(Platform_CheckInputs);
 
-		do_and_measure(Error_Throw);
-	
-		do_and_measure(CommandIO_GetCommands);
-		
-		if(g_UpdateLedStrip > 0)
-		{
+
+
+			do_and_measure(Platform_CheckInputs);
+
+			do_and_measure(Error_Throw);
+
+			do_and_measure(CommandIO_GetCommands);
+
+		if(g_UpdateLedStrip > 0) {
 			do_and_measure(Ledstrip_UpdateLed);
 			Timer1Enable();
 			g_UpdateLedStrip = 0;
 		}
 		Timer_StopStopwatch(eMAIN);
-				
-		do_and_measure(ScriptCtrl_Run);
 
-		if(g_UpdateLed > 0)
-		{		  
+			do_and_measure(ScriptCtrl_Run);
+
+		if(g_UpdateLed > 0) {
 			do_and_measure(Ledstrip_DoFade);
-			
+
 			Timer5InterruptLock();
 			g_UpdateLed = 0;
 			Timer5InterruptUnlock();
-			
+
 		}
 	}
 }
@@ -210,16 +202,16 @@ void InitAll()
 	Rtc_Init();
 	ScriptCtrl_Init();
 	Trace_Init();
-	
+
 #ifndef __CC8E__
 	init_x86();
 #endif /* #ifndef CC8E */
-	
+
 	Platform_AllowInterrupts();
 	Platform_DisableBootloaderAutostart();
-	
+
 	Trace_String("Startup");
-	
+
 	/* Startup Wait-Time 2s
 	 * to protect Wifly-Modul from errors*/
 	gScriptBuf.waitValue = 20;

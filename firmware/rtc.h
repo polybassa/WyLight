@@ -1,31 +1,31 @@
 /**
  Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
- 
+
  This file is part of Wifly_Light.
- 
+
  Wifly_Light is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
- 
+
  Wifly_Light is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
- 
+
 #ifndef _RTC_H_
 #define _RTC_H_
 
 /** Have a look at: http://linux.die.net/man/4/rtc   **/
 
-#define RTC 0xA2		/* IIC-Address of RTC Clock IC */
+#define RTC 0xA2                /* IIC-Address of RTC Clock IC */
 
-enum RTC_request{ RTC_SET_TIME, RTC_RD_TIME};
+enum RTC_request { RTC_SET_TIME, RTC_RD_TIME};
 
- /** *********************** rtc.h VARIABLES *********************************************/
+/** *********************** rtc.h VARIABLES *********************************************/
 struct  __attribute__((__packed__)) rtc_time {
 	uns8 tm_sec;    /* seconds after the minute (0 to 59) */
 	uns8 tm_min;    /* minutes after the hour (0 to 59) */
@@ -42,7 +42,7 @@ struct  __attribute__((__packed__)) rtc_time {
 /** *********************** FUNCTIONS *********************************************/
 extern struct rtc_time g_RtcTime;
 
-void Rtc_Init(void); 
+void Rtc_Init(void);
 
 void Rtc_Ctl(enum RTC_request req,struct rtc_time *pRtcTime);
 
