@@ -151,7 +151,7 @@ class ControlNoThrow
 			<BR><B>FATAL_ERROR</B> if command code of the response doesn't match the code of the request, or too many retries failed
 			<BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
-		uint32_t BlReadFwVersion(std::string& versionString) const;
+		uint32_t BlReadFwVersion(uint16_t& version) const;
 
 		/**
 		 * Instructs the bootloader to return a struct of bootloader informations
@@ -289,7 +289,7 @@ class ControlNoThrow
 			<BR><B>SCRIPT_FULL</B> if script buffer in PIC firmware is full and request couldn't be executed
 			<BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
-		uint32_t FwGetVersion(std::string& output);
+		uint32_t FwGetVersion(uint16_t& output);
 
 		/**
 		 * Injects a LoopOff command into the wifly script controller
@@ -397,7 +397,7 @@ class ControlNoThrow
 		 * Methode to extract the firmware version from a hex file
 		 * @return the version string from a given hex file
 		 */
-		uint32_t ExtractFwVersion(const std::string& pFilename, std::string& extractedFwVersion) const;
+		uint32_t ExtractFwVersion(const std::string& pFilename, uint16_t& extractedFwVersion) const;
 
         friend class StartupManager;
 	private:
@@ -408,6 +408,8 @@ class ControlNoThrow
 		uint32_t Try(FwCommand&& cmd);
 		uint32_t Try(const std::function<void(void)> call) const;
 		uint32_t Try(const std::function<std::string(void)> call, std::string& returnString) const;
+		uint32_t Try(const std::function<uint16_t(void)> call, uint16_t& returnValue) const;
+
 };
 }
 #endif /* #ifndef _WIFLYCONTROL_NOTHROW_H_ */

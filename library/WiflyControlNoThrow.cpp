@@ -55,9 +55,9 @@ namespace WyLight {
 		return Try(std::bind(static_cast<void(Control::*)(std::ostream&, uint32_t, size_t)const>(&Control::BlReadFlash), std::ref(mControl), std::ref(out), address, numBytes));
 	}
 
-	uint32_t ControlNoThrow::BlReadFwVersion(std::string& versionString) const
+	uint32_t ControlNoThrow::BlReadFwVersion(uint16_t& version) const
 	{
-		return Try(std::bind(&Control::BlReadFwVersion, std::ref(mControl)), versionString);
+		return Try(std::bind(&Control::BlReadFwVersion, std::ref(mControl)), version);
 	}
 
 	uint32_t ControlNoThrow::BlReadInfo(BlInfo& blInfo) const
@@ -131,7 +131,7 @@ namespace WyLight {
 		return Try(std::bind(&Control::FwGetTracebuffer, std::ref(mControl)), output);
 	}
 
-	uint32_t ControlNoThrow::FwGetVersion(std::string& output)
+	uint32_t ControlNoThrow::FwGetVersion(uint16_t& output)
 	{
 		return Try(std::bind(&Control::FwGetVersion, std::ref(mControl)), output);
 	}
@@ -176,7 +176,7 @@ namespace WyLight {
 		return Try(FwCmdStartBl{});
 	}
 		
-	uint32_t ControlNoThrow::ExtractFwVersion(const std::string& pFilename, std::string& extractedFwVersion) const
+	uint32_t ControlNoThrow::ExtractFwVersion(const std::string& pFilename, uint16_t& extractedFwVersion) const
 	{
 		return Try(std::bind(&Control::ExtractFwVersion, std::ref(mControl), pFilename), extractedFwVersion);
 	}
@@ -211,7 +211,21 @@ namespace WyLight {
 			return FATAL_ERROR;
 		}
 	}
-
+	
+	uint32_t ControlNoThrow::Try(const std::function<uint16_t(void)> call, uint16_t& returnValue) const
+	{
+		try {
+			returnValue = call();
+			return NO_ERROR;
+		} catch (FatalError& e) {
+			return e.AsErrorCode();
+		} catch (std::exception) {
+			std::cout << "CATCH std::exception";
+			std::cerr << "CATCH std::exception";
+			//std::terminate();
+			return FATAL_ERROR;
+		}
+	}
 
 	uint32_t ControlNoThrow::Try(const std::function<void(void)> call) const
 	{

@@ -177,9 +177,9 @@ public:
 	bool Init(response_frame& pData, size_t dataLength)
 	{
 		if(FwResponse::Init(pData, dataLength)
-		&& (dataLength >= 4 + sizeof(VER_STRING)))
+		&& (dataLength == 4 + sizeof(uint16_t)))
 		{
-			mVersionString = std::string((char*)pData.data.version_string, dataLength - 4);
+			mVersion = ntohs(pData.data.versionData);
 			return true;
 		}
 		return false;
@@ -193,13 +193,15 @@ public:
 		temp = stream.str();
 		return temp;
 	};
+	
+	uint16_t getVersion(void) { return mVersion; }
 
 	friend std::ostream& operator<< (std::ostream& out, const FirmwareVersionResponse& ref)
 	{
-		return out << ref.mVersionString;
+		return out << ref.mVersion;
 	};
 private:
-    std::string mVersionString;
+    uint16_t mVersion = 0;
 };
 }
 #endif

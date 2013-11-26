@@ -662,6 +662,9 @@ public:
         
         WyLight::StartupManager manager;
         TRY_CATCH_COUT(manager.startup(control, path));
+		if (manager.getCurrentState() == WyLight::StartupManager::STARTUP_FAILURE) {
+			cout << endl << "Startup failure occured" << endl;
+		}
     }
 };
 

@@ -118,7 +118,7 @@ void Control::BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) 
 	}
 }
 
-std::string Control::BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError) {throwExceptions(); return ""; }
+uint16_t Control::BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError) {throwExceptions(); return 0; }
 
 void Control::BlReadInfo(BlInfo& info) const throw (ConnectionTimeout, FatalError){throwExceptions(); }
 
@@ -148,9 +148,9 @@ void Control::FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, Scri
 
 std::string Control::FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
 
-std::string Control::FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return ""; }
+uint16_t Control::FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {throwExceptions(); return 0; }
 
-std::string Control::ExtractFwVersion(const std::string& pFilename) const {throwExceptions(); return ""; }
+uint16_t Control::ExtractFwVersion(const std::string& pFilename) const {throwExceptions(); return 0; }
 
 Control& Control::operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
@@ -167,6 +167,7 @@ size_t ut_WiflyControlNoThrow_FwFunctions(void)
 	ControlNoThrow testee(0, 0);
 	
 	std::string tempStr = "";
+	uint16_t tempValue;
 	tm tempTime;
 	std::vector<uint8_t> buffer;
 	
@@ -178,7 +179,7 @@ size_t ut_WiflyControlNoThrow_FwFunctions(void)
 		CHECK(e == testee.FwGetCycletime(tempStr));
 		CHECK(e == testee.FwGetRtc(tempTime));
 		CHECK(e == testee.FwGetTracebuffer(tempStr));
-		CHECK(e == testee.FwGetVersion(tempStr));
+		CHECK(e == testee.FwGetVersion(tempValue));
 		CHECK(e == testee.FwLoopOff(0));
 		CHECK(e == testee.FwSetRtc(tempTime));
 		CHECK(e == testee.FwSetWait(0));
@@ -217,6 +218,7 @@ size_t ut_WiflyControlNoThrow_BlFunctions(void)
 	
 	std::string tempStr = "";
 	BlInfo info;
+	uint16_t tempValue;
 
 	
 	for( auto e : mError)
@@ -224,7 +226,7 @@ size_t ut_WiflyControlNoThrow_BlFunctions(void)
 		g_ErrorCode = e;
 		CHECK(e == testee.BlRunApp());
 		CHECK(e == testee.BlReadInfo(info));
-		CHECK(e == testee.BlReadFwVersion(tempStr));
+		CHECK(e == testee.BlReadFwVersion(tempValue));
 		CHECK(e == testee.BlProgramFlash(tempStr));
 		CHECK(e == testee.BlEraseFlash());
 		CHECK(e == testee.BlEraseEeprom());

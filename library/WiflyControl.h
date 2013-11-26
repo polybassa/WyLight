@@ -59,7 +59,10 @@ class Control
 		 * string constant to address all LEDs. String representation of 0xffffffff
 		 */
 		static const std::string LEDS_ALL;
-
+		static const std::list<std::string> RN171_DEFAULT_PARAMETERS;
+		static const std::list<std::string> RN171_BASIC_PARAMETERS;
+		static const std::list<std::string> RN171_SOFT_AP_DEFAULT_PARAMETERS;
+		
 		/**
 		 * Connect to a wifly device
 		 * @param addr ipv4 address as 32 bit value in host byte order
@@ -155,7 +158,7 @@ class Control
 		 * @throw ConnectionTimeout if response timed out
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 */
-		std::string BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError);
+		uint16_t BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError);
 
 		/**
 		 * Instructs the bootloader to return a struct of bootloader informations
@@ -277,7 +280,7 @@ class Control
 		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
-		std::string FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		uint16_t FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
 		
 		//TODO move this test functions to the integration test 
 		void FwTest(void);
@@ -292,7 +295,7 @@ class Control
 		 * Methode to extract the firmware version from a hex file
 		 * @return the version string from a given hex file
 		 */
-		std::string ExtractFwVersion(const std::string& pFilename) const;
+		uint16_t ExtractFwVersion(const std::string& pFilename) const;
 	
 
 /* ------------------------- PRIVATE DECLARATIONS ------------------------- */
