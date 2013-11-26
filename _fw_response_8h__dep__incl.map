@@ -1,9 +1,11 @@
 <map id="library/FwResponse.h" name="library/FwResponse.h">
-<area shape="rect" id="node2" href="$_fw_command_8h.html" title="library/FwCommand.h" alt="" coords="168,83,319,111"/>
-<area shape="rect" id="node3" href="$_com_proxy_8h.html" title="library/ComProxy.h" alt="" coords="28,161,161,189"/>
-<area shape="rect" id="node4" href="$_wifly_control_8h.html" title="library/WiflyControl.h" alt="" coords="127,238,271,266"/>
-<area shape="rect" id="node7" href="$_script_8h.html" title="library/Script.h" alt="" coords="236,161,341,189"/>
-<area shape="rect" id="node8" href="$_wifly_control_cmd_8h.html" title="cli/WiflyControlCmd.h" alt="" coords="367,161,515,189"/>
-<area shape="rect" id="node5" href="$_wifly_control_no_throw_8h.html" title="library/WiflyControlNoThrow.h" alt="" coords="5,315,203,343"/>
-<area shape="rect" id="node6" href="$_wifly_control_cli_8h.html" title="cli/WiflyControlCli.h" alt="" coords="227,315,363,343"/>
+<area shape="rect" id="node2" href="$_fw_command_8h.html" title="library/FwCommand.h" alt="" coords="316,83,467,111"/>
+<area shape="rect" id="node3" href="$_com_proxy_8h.html" title="library/ComProxy.h" alt="" coords="176,161,309,189"/>
+<area shape="rect" id="node4" href="$_wifly_control_8h.html" title="library/WiflyControl.h" alt="" coords="189,238,333,266"/>
+<area shape="rect" id="node6" href="$_wifly_control_cmd_8h.html" title="cli/WiflyControlCmd.h" alt="" coords="402,470,549,498"/>
+<area shape="rect" id="node9" href="$_script_8h.html" title="library/Script.h" alt="" coords="384,161,489,189"/>
+<area shape="rect" id="node5" href="$_startup_manager_8h.html" title="library/StartupManager.h" alt="" coords="316,393,483,421"/>
+<area shape="rect" id="node7" href="$_wifly_control_no_throw_8h.html" title="library/WiflyControlNoThrow.h" alt="" coords="5,315,203,343"/>
+<area shape="rect" id="node8" href="$_wifly_control_cli_8h.html" title="cli/WiflyControlCli.h" alt="" coords="227,315,363,343"/>
+<area shape="rect" id="node10" href="$_script_manager_8h.html" title="library/ScriptManager.h" alt="" coords="358,238,516,266"/>
 </map>

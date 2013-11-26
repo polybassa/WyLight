@@ -1,3 +1,4 @@
 <map id="WyLight::FwCmdSetFade::FwCmdSetFade" name="WyLight::FwCmdSetFade::FwCmdSetFade">
-<area shape="rect" id="node2" href="$class_wy_light_1_1_wifly_color.html#ab7e53732ecb04513ddd62cd5ee9baaad" title="WyLight::WiflyColor\l::argb" alt="" coords="227,5,365,49"/>
+<area shape="rect" id="node2" href="$struct_wy_light_1_1_fw_cmd_set_fade.html#a9cb2538cf1c9097f8d4d6f75756aecb4" title="WyLight::FwCmdSetFade\l::argb" alt="" coords="227,5,400,49"/>
+<area shape="rect" id="node3" href="$class_wy_light_1_1_wifly_color.html#ab7e53732ecb04513ddd62cd5ee9baaad" title="WyLight::WiflyColor\l::argb" alt="" coords="245,73,382,117"/>
 </map>

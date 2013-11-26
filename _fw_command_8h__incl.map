@@ -1,6 +1,7 @@
 <map id="library/FwCommand.h" name="library/FwCommand.h">
-<area shape="rect" id="node2" href="$_fw_response_8h.html" title="FwResponse.h" alt="" coords="240,83,349,111"/>
-<area shape="rect" id="node17" href="$_wifly_color_8h.html" title="WiflyColor.h" alt="" coords="594,83,685,111"/>
-<area shape="rect" id="node9" href="$_wifly_control_exception_8h.html" title="WiflyControlException.h" alt="" coords="283,161,445,189"/>
-<area shape="rect" id="node13" href="$_bl_request_8h.html" title="BlRequest.h" alt="" coords="512,238,605,266"/>
+<area shape="rect" id="node2" href="$_fw_response_8h.html" title="FwResponse.h" alt="" coords="329,83,439,111"/>
+<area shape="rect" id="node18" href="$_wifly_color_8h.html" title="WiflyColor.h" alt="" coords="692,83,784,111"/>
+<area shape="rect" id="node8" href="$____stl__patches_8h.html" title="__stl_patches.h" alt="" coords="232,161,347,189"/>
+<area shape="rect" id="node10" href="$_wifly_control_exception_8h.html" title="WiflyControlException.h" alt="" coords="421,161,584,189"/>
+<area shape="rect" id="node14" href="$_bl_request_8h.html" title="BlRequest.h" alt="" coords="676,238,769,266"/>
 </map>

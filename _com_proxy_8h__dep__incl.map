@@ -1,5 +1,7 @@
 <map id="library/ComProxy.h" name="library/ComProxy.h">
-<area shape="rect" id="node2" href="$_wifly_control_8h.html" title="library/WiflyControl.h" alt="" coords="127,83,271,111"/>
-<area shape="rect" id="node3" href="$_wifly_control_no_throw_8h.html" title="library/WiflyControlNoThrow.h" alt="" coords="5,161,203,189"/>
-<area shape="rect" id="node4" href="$_wifly_control_cli_8h.html" title="cli/WiflyControlCli.h" alt="" coords="227,161,363,189"/>
+<area shape="rect" id="node2" href="$_wifly_control_8h.html" title="library/WiflyControl.h" alt="" coords="84,83,228,111"/>
+<area shape="rect" id="node3" href="$_startup_manager_8h.html" title="library/StartupManager.h" alt="" coords="4,238,171,266"/>
+<area shape="rect" id="node5" href="$_wifly_control_no_throw_8h.html" title="library/WiflyControlNoThrow.h" alt="" coords="57,161,255,189"/>
+<area shape="rect" id="node6" href="$_wifly_control_cli_8h.html" title="cli/WiflyControlCli.h" alt="" coords="279,161,415,189"/>
+<area shape="rect" id="node4" href="$_wifly_control_cmd_8h.html" title="cli/WiflyControlCmd.h" alt="" coords="14,315,161,343"/>
 </map>

@@ -7,7 +7,7 @@ var searchData=
   ['addwarning',['addWarning',['../classintelhex.html#a4c0be2c34550af96766e32dcbc7cbf37',1,'intelhex']]],
   ['addwithcrc',['AddWithCrc',['../class_wy_light_1_1_mask_buffer.html#a090e3b0229bcee769e3484f4ea52e876',1,'WyLight::MaskBuffer']]],
   ['appendcrc',['AppendCrc',['../class_wy_light_1_1_mask_buffer.html#a9e174df0410eb6b5cd5cc8f35c832769',1,'WyLight::MaskBuffer']]],
-  ['argb',['argb',['../class_wy_light_1_1_wifly_color.html#ab7e53732ecb04513ddd62cd5ee9baaad',1,'WyLight::WiflyColor::argb() const '],['../class_wy_light_1_1_wifly_color.html#ac5cae0bdf5e5ebf7d5bfe1223d03169a',1,'WyLight::WiflyColor::argb(uint32_t argbValue)']]],
+  ['argb',['argb',['../struct_wy_light_1_1_fw_cmd_set_fade.html#a9cb2538cf1c9097f8d4d6f75756aecb4',1,'WyLight::FwCmdSetFade::argb(void) const '],['../struct_wy_light_1_1_fw_cmd_set_fade.html#a3dff9a0aee6dfe68252824c7d1473e0f',1,'WyLight::FwCmdSetFade::argb(uint32_t argb)'],['../class_wy_light_1_1_wifly_color.html#ab7e53732ecb04513ddd62cd5ee9baaad',1,'WyLight::WiflyColor::argb() const '],['../class_wy_light_1_1_wifly_color.html#ac5cae0bdf5e5ebf7d5bfe1223d03169a',1,'WyLight::WiflyColor::argb(uint32_t argbValue)']]],
   ['aserrorcode',['AsErrorCode',['../class_wy_light_1_1_fatal_error.html#a15ae0113906c71cf34d631767371042c',1,'WyLight::FatalError']]],
   ['asuint64',['AsUint64',['../class_wy_light_1_1_endpoint.html#ae0269aa4b78b40366140a4fe98140e67',1,'WyLight::Endpoint']]]
 ];

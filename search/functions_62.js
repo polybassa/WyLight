@@ -1,7 +1,7 @@
 var searchData=
 [
   ['basebuffer',['BaseBuffer',['../class_wy_light_1_1_base_buffer.html#a3a45cf0d57bbf72a0eb26fbc27b71b6c',1,'WyLight::BaseBuffer']]],
-  ['begin',['begin',['../classintelhex.html#ab2b1119e14a960ea2b356967244aafb3',1,'intelhex']]],
+  ['begin',['begin',['../classintelhex.html#ab2b1119e14a960ea2b356967244aafb3',1,'intelhex::begin()'],['../class_wy_light_1_1_script.html#a05831b8841ecac212b8340ee43b6abb1',1,'WyLight::Script::begin()']]],
   ['bladdressrequest',['BlAddressRequest',['../struct_wy_light_1_1_bl_address_request.html#a0a8d89736463ad09d739bff4bd773a45',1,'WyLight::BlAddressRequest']]],
   ['blankfill',['blankFill',['../classintelhex.html#a5de5cf10103fc307127f9017f3e5cd76',1,'intelhex::blankFill(unsigned char data)'],['../classintelhex.html#a84bbd449bb55e218b62ea73e2b399196',1,'intelhex::blankFill(unsigned char *const data, unsigned long sizeOfData)'],['../classintelhex.html#aaf6f77af7a82623ef16471f105ac3fe7',1,'intelhex::blankFill(unsigned char *const data, unsigned long sizeOfData, unsigned long endAddress)']]],
   ['blankfilladdresslowbyte',['blankFillAddressLowByte',['../classintelhex.html#a2e5c67fccc34c78e6dbd28f4b795fb0f',1,'intelhex::blankFillAddressLowByte()'],['../classintelhex.html#ab7b16f457563da93569b9812fafb9e7d',1,'intelhex::blankFillAddressLowByte(unsigned long endAddress)']]],
@@ -22,7 +22,7 @@ var searchData=
   ['blreadcrcflash',['BlReadCrcFlash',['../class_wy_light_1_1_control.html#aefe6c849859c10b81620e1251a3acbd0',1,'WyLight::Control::BlReadCrcFlash(std::ostream &amp;out, uint32_t address, size_t numBytes) const '],['../class_wy_light_1_1_control.html#abddf63373703372787d2140f002432e2',1,'WyLight::Control::BlReadCrcFlash(uint8_t *pBuffer, uint32_t address, uint16_t numBytes) const '],['../class_wy_light_1_1_control_no_throw.html#a7544aca0b4ca8bbadfea5bb1be728cb2',1,'WyLight::ControlNoThrow::BlReadCrcFlash()']]],
   ['blreadeeprom',['BlReadEeprom',['../class_wy_light_1_1_control.html#aadac9ad0d311360e2999414cb220c78f',1,'WyLight::Control::BlReadEeprom(std::ostream &amp;out, uint32_t address, size_t numBytes) const '],['../class_wy_light_1_1_control.html#a788f58ea643e4d628727d408b8618c75',1,'WyLight::Control::BlReadEeprom(uint8_t *pBuffer, uint32_t address, size_t numBytes) const '],['../class_wy_light_1_1_control_no_throw.html#a49dee62bcd9806fe3f521793312ba30a',1,'WyLight::ControlNoThrow::BlReadEeprom()']]],
   ['blreadflash',['BlReadFlash',['../class_wy_light_1_1_control.html#ab31a3e0c102ced985377314a3056e588',1,'WyLight::Control::BlReadFlash(std::ostream &amp;out, uint32_t address, size_t numBytes) const '],['../class_wy_light_1_1_control.html#aa3525b0fbe108a157518954a97b0305a',1,'WyLight::Control::BlReadFlash(uint8_t *pBuffer, uint32_t address, size_t numBytes) const '],['../class_wy_light_1_1_control_no_throw.html#a20162c1a357bd55488552eca0d5872ca',1,'WyLight::ControlNoThrow::BlReadFlash()']]],
-  ['blreadfwversion',['BlReadFwVersion',['../class_wy_light_1_1_control.html#ac6329ec0b3f87a0a1538d44fb2e06a4d',1,'WyLight::Control::BlReadFwVersion()'],['../class_wy_light_1_1_control_no_throw.html#a79cd174ece3a779b605a8e3c3e9f2f82',1,'WyLight::ControlNoThrow::BlReadFwVersion()']]],
+  ['blreadfwversion',['BlReadFwVersion',['../class_wy_light_1_1_control.html#a185163a55dd0def7ac3eddacb95dac91',1,'WyLight::Control::BlReadFwVersion()'],['../class_wy_light_1_1_control_no_throw.html#a7f2de77f0cd2acd7382bc8682c52ab8b',1,'WyLight::ControlNoThrow::BlReadFwVersion()']]],
   ['blreadinfo',['BlReadInfo',['../class_wy_light_1_1_control.html#a1d5de392ee1bce3176d0840d855eaa1f',1,'WyLight::Control::BlReadInfo()'],['../class_wy_light_1_1_control_no_throw.html#acf73db9a4da4dfc1330e14cbf47864e3',1,'WyLight::ControlNoThrow::BlReadInfo()']]],
   ['blreadrequest',['BlReadRequest',['../struct_wy_light_1_1_bl_read_request.html#ab9f77571421d6f5cde7e54a3396e0f37',1,'WyLight::BlReadRequest']]],
   ['blrequest',['BlRequest',['../struct_wy_light_1_1_bl_request.html#a4a851665f3b0c945c63023f0d30f909c',1,'WyLight::BlRequest']]],
@@ -31,5 +31,6 @@ var searchData=
   ['blue',['blue',['../class_wy_light_1_1_wifly_color.html#a2c95d36931e4904838cc07cbc8e0556a',1,'WyLight::WiflyColor::blue() const '],['../class_wy_light_1_1_wifly_color.html#a921dcca5daed2301aaf98b6e08b3f522',1,'WyLight::WiflyColor::blue(uint8_t value)']]],
   ['blwriteeeprom',['BlWriteEeprom',['../class_wy_light_1_1_control.html#abcd3025967e993c21069069a39501f08',1,'WyLight::Control']]],
   ['blwriteflash',['BlWriteFlash',['../class_wy_light_1_1_control.html#a4ae7b4a7f3735fe6ab7481f43adcc622',1,'WyLight::Control']]],
+  ['bootloaderroutine',['bootloaderRoutine',['../class_wy_light_1_1_startup_manager.html#a1d5768da6413e35f32c3e98a3b262664',1,'WyLight::StartupManager']]],
   ['broadcastreceiver',['BroadcastReceiver',['../class_wy_light_1_1_broadcast_receiver.html#ac03335f0824e0de7d0dd87d5187aafa3',1,'WyLight::BroadcastReceiver']]]
 ];

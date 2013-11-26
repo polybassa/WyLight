@@ -1,9 +1,9 @@
 <map id="WyLight::FwCmdScript" name="WyLight::FwCmdScript">
-<area shape="rect" id="node4" href="$struct_wy_light_1_1_fw_cmd_loop_off.html" title="{WyLight::FwCmdLoopOff\n|+ TOKEN\l|+ FwCmdLoopOff()\l+ FwCmdLoopOff()\l+ Write()\l}" alt="" coords="4,590,173,703"/>
-<area shape="rect" id="node5" href="$struct_wy_light_1_1_fw_cmd_loop_on.html" title="{WyLight::FwCmdLoopOn\n|+ TOKEN\l|+ FwCmdLoopOn()\l+ Write()\l}" alt="" coords="199,598,368,695"/>
-<area shape="rect" id="node6" href="$struct_wy_light_1_1_fw_cmd_set_fade.html" title="{WyLight::FwCmdSetFade\n|+ TOKEN\l|+ FwCmdSetFade()\l+ FwCmdSetFade()\l+ Write()\l}" alt="" coords="393,590,565,703"/>
-<area shape="rect" id="node7" href="$struct_wy_light_1_1_fw_cmd_set_gradient.html" title="{WyLight::FwCmdSetGradient\n|+ TOKEN\l|+ FwCmdSetGradient()\l+ FwCmdSetGradient()\l+ Write()\l}" alt="" coords="591,590,784,703"/>
-<area shape="rect" id="node8" href="$class_wy_light_1_1_fw_cmd_wait.html" title="{WyLight::FwCmdWait\n|+ TOKEN\l|+ FwCmdWait()\l+ FwCmdWait()\l+ Write()\l}" alt="" coords="810,590,957,703"/>
+<area shape="rect" id="node4" href="$struct_wy_light_1_1_fw_cmd_loop_off.html" title="{WyLight::FwCmdLoopOff\n|+ TOKEN\l|+ FwCmdLoopOff()\l+ FwCmdLoopOff()\l+ Write()\l}" alt="" coords="4,606,173,719"/>
+<area shape="rect" id="node5" href="$struct_wy_light_1_1_fw_cmd_loop_on.html" title="{WyLight::FwCmdLoopOn\n|+ TOKEN\l|+ FwCmdLoopOn()\l+ Write()\l}" alt="" coords="199,614,368,711"/>
+<area shape="rect" id="node6" href="$struct_wy_light_1_1_fw_cmd_set_fade.html" title="{WyLight::FwCmdSetFade\n|+ TOKEN\l|+ FwCmdSetFade()\l+ FwCmdSetFade()\l+ argb()\l+ argb()\l+ Write()\l}" alt="" coords="393,590,565,735"/>
+<area shape="rect" id="node7" href="$struct_wy_light_1_1_fw_cmd_set_gradient.html" title="{WyLight::FwCmdSetGradient\n|+ TOKEN\l|+ FwCmdSetGradient()\l+ FwCmdSetGradient()\l+ Write()\l}" alt="" coords="591,606,784,719"/>
+<area shape="rect" id="node8" href="$class_wy_light_1_1_fw_cmd_wait.html" title="{WyLight::FwCmdWait\n|+ TOKEN\l|+ FwCmdWait()\l+ FwCmdWait()\l+ Write()\l}" alt="" coords="810,606,957,719"/>
 <area shape="rect" id="node2" href="$class_wy_light_1_1_fw_cmd_simple.html" title="{WyLight::FwCmdSimple\n|&#45; mResponse\l|+ GetResponse()\l# FwCmdSimple()\l}" alt="" coords="398,281,561,378"/>
 <area shape="rect" id="node3" href="$class_wy_light_1_1_fw_command.html" title="{WyLight::FwCommand\n|# mReqFrame\l&#45; mSize\l&#45; requiresResponse\l|+ GetData()\l+ GetSize()\l+ IsResponseRequired()\l+ GetResponse()\l+ operator==()\l+ operator!=()\l# FwCommand()\l# ~FwCommand()\l}" alt="" coords="397,6,563,231"/>
 </map>

@@ -1,9 +1,11 @@
 <map id="library/ClientSocket.h" name="library/ClientSocket.h">
 <area shape="rect" id="node2" href="$_broadcast_receiver_8h.html" title="library/BroadcastReceiver.h" alt="" coords="5,83,189,111"/>
 <area shape="rect" id="node4" href="$_com_proxy_8h.html" title="library/ComProxy.h" alt="" coords="213,83,347,111"/>
-<area shape="rect" id="node8" href="$_telnet_proxy_8h.html" title="library/TelnetProxy.h" alt="" coords="371,83,511,111"/>
+<area shape="rect" id="node10" href="$_telnet_proxy_8h.html" title="library/TelnetProxy.h" alt="" coords="371,83,511,111"/>
 <area shape="rect" id="node3" href="$_broadcast_message_8h.html" title="library/BroadcastMessage.h" alt="" coords="4,161,189,189"/>
 <area shape="rect" id="node5" href="$_wifly_control_8h.html" title="library/WiflyControl.h" alt="" coords="292,161,436,189"/>
-<area shape="rect" id="node6" href="$_wifly_control_no_throw_8h.html" title="library/WiflyControlNoThrow.h" alt="" coords="169,238,367,266"/>
-<area shape="rect" id="node7" href="$_wifly_control_cli_8h.html" title="cli/WiflyControlCli.h" alt="" coords="391,238,527,266"/>
+<area shape="rect" id="node6" href="$_startup_manager_8h.html" title="library/StartupManager.h" alt="" coords="212,315,379,343"/>
+<area shape="rect" id="node8" href="$_wifly_control_no_throw_8h.html" title="library/WiflyControlNoThrow.h" alt="" coords="265,238,463,266"/>
+<area shape="rect" id="node9" href="$_wifly_control_cli_8h.html" title="cli/WiflyControlCli.h" alt="" coords="487,238,623,266"/>
+<area shape="rect" id="node7" href="$_wifly_control_cmd_8h.html" title="cli/WiflyControlCmd.h" alt="" coords="222,393,369,421"/>
 </map>
