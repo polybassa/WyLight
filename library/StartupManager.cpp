@@ -26,89 +26,6 @@ namespace WyLight {
 	
 	static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 	
-	// trim from start
-	static inline std::string &ltrim(std::string &s) {
-		s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
-		return s;
-	}
-	
-	// trim from end
-	static inline std::string &rtrim(std::string &s) {
-		s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
-		return s;
-	}
-	
-	// trim from both ends
-	static inline std::string &trim(std::string &s) {
-		return ltrim(rtrim(s));
-	}
-	
-	Version::Version(const std::string& versionString) {
-		std::string trimmedString = versionString;
-		trimmedString = trim(trimmedString);
-		std::istringstream stream(trimmedString);
-		std::string subStringMajor, subStringMinor;
-		std::getline(stream, subStringMajor, '.');
-		std::getline(stream, subStringMinor, '.');
-		
-		mMajor = std::stoi(subStringMajor);
-		mMinor = std::stoi(subStringMinor);
-	}
-	
-	Version::Version(const unsigned int& major, const unsigned int& minor) : mMajor(major), mMinor(minor) {}
-	
-	unsigned int Version::getMajor() const { return mMajor; }
-	
-	unsigned int Version::getMinor() const { return mMinor; }
-	
-	bool operator == (const Version& v1, const Version& v2) {
-		return v1.mMinor == v2.mMinor && v1.mMajor == v2.mMajor;
-	}
-	
-	bool operator != (const Version& v1, const Version& v2) {
-		return !(v1 == v2);
-	}
-	
-	bool operator > (const Version& v1, const Version& v2) {
-		return v1.mMajor > v2.mMajor ? true : v1.mMinor > v2.mMinor;
-	}
-	
-	bool operator >= (const Version& v1, const Version& v2) {
-		return v1.mMajor >= v2.mMajor ? true : v1.mMinor >= v2.mMinor;
-	}
-	
-	bool operator < (const Version& v1, const Version& v2) {
-		return v1.mMajor < v2.mMajor ? true : v1.mMinor < v2.mMinor;
-	}
-	
-	bool operator <= (const Version& v1, const Version& v2) {
-		return v1.mMajor <= v2.mMajor ? true : v1.mMinor <= v2.mMinor;
-	}
-	
-	std::ostream& operator << (std::ostream& out, const Version& ref) {
-		return out << ref.mMajor << '.' << ref.mMinor;
-	}
-	
-	UpdateExtension::UpdateExtension(const updateCheckFunction& updateNecessary, const updateFunction& updateFunction) : mUpdateNecessary(updateNecessary), mUpdateFunction(updateFunction) {}
-	
-	UpdateExtension::UpdateExtension(const UpdateExtension& other) : mUpdateNecessary(other.mUpdateNecessary), mUpdateFunction(other.mUpdateFunction) {}
-	
-	void UpdateExtension::run(const WyLight::Version &currentVersionOfTarget, const WyLight::Version &newVersionOfTarget, const WyLight::Control &ctrlForUpdate) const {
-		if (mUpdateNecessary(currentVersionOfTarget, newVersionOfTarget)) {
-			mUpdateFunction(ctrlForUpdate);
-		}
-	}
-	
-	const UpdateExtension StartupManager::eepromClear(
-		[](const Version& currentVersion, const Version& newVersion) -> bool { return true; },
-		[](const Control& ctrl){ ctrl.BlEraseEeprom(); });
-	
-	const UpdateExtension StartupManager::setUdpInRN171(
-		[](const Version& currentVersion, const Version& newVersion) -> bool
-		  {return currentVersion < Version(0,5) && newVersion >= Version(0,5); },
-		[](const Control& ctrl)
-		  { std::list<std::string> commands = {"set i p 11\r\n"}; ctrl.ConfSetParameters(commands); });
-	
 	StartupManager::StartupManager(const std::function<void(size_t newState)>& onStateChange) : mOnStateChangeCallback(onStateChange) {}
 	
 	void StartupManager::setCurrentState(StartupManager::State newState) {
@@ -128,7 +45,7 @@ namespace WyLight {
 	void StartupManager::startup(WyLight::Control& control, const std::string& hexFilePath) throw (InvalidParameter)
 	{
 		try {
-			mHexFileVersion = Version(control.ExtractFwVersion(hexFilePath));
+			mHexFileVersion = control.ExtractFwVersion(hexFilePath);
 		} catch (std::exception &e) {
 			throw InvalidParameter("Can not read version string from hexFile");
 			return;
@@ -140,12 +57,12 @@ namespace WyLight {
 			size_t currentMode = control.GetTargetMode();
 			if (currentMode == BL_IDENT) {
 				setCurrentState(BL_VERSION_CHECK);
-				bootloaderRoutine(control, hexFilePath);
+				bootloaderVersionCheckUpdate(control, hexFilePath);
 				return;
 			} else if (currentMode == FW_IDENT) {
 				setCurrentState(FW_VERSION_CHECK);
-				mTargetVersion = Version(control.FwGetVersion());
-				if (mTargetVersion != Version(0,0) && mTargetVersion >= mHexFileVersion) {
+				mTargetVersion = control.FwGetVersion();
+				if (mTargetVersion != 0 && mTargetVersion >= mHexFileVersion) {
 					setCurrentState(STARTUP_SUCCESSFUL);
 					return;
 				}
@@ -161,7 +78,7 @@ namespace WyLight {
 	void StartupManager::startBootloader(WyLight::Control &control, const std::string& hexFilePath) {
 		try {
 			control << FwCmdStartBl();
-			bootloaderRoutine(control, hexFilePath);
+			bootloaderVersionCheckUpdate(control, hexFilePath);
 			return;
 		} catch (std::exception &e) {
 			Trace(ZONE_ERROR, "StartupManager startup failure in state %d: %s\n", mState, e.what());
@@ -170,19 +87,17 @@ namespace WyLight {
 		}
 	}
 	
-	void StartupManager::bootloaderRoutine(WyLight::Control &control, const std::string &hexFilePath) {
+	void StartupManager::bootloaderVersionCheckUpdate(WyLight::Control &control, const std::string &hexFilePath) {
 		try {
-			mTargetVersion = Version(control.BlReadFwVersion());
-			if (mTargetVersion == Version(0,0) || mTargetVersion <= mHexFileVersion) {
+			mTargetVersion = control.BlReadFwVersion();
+			if (mTargetVersion == 0 || mTargetVersion < mHexFileVersion) {
 				setCurrentState(UPDATING);
+				control.BlEraseEeprom();
 				control.BlProgramFlash(hexFilePath);
-				for (const UpdateExtension& func : mUpdateTaskSet) {
-					func.run(mTargetVersion, mHexFileVersion, control);
-				}
 			}
 			setCurrentState(RUN_APP);
 			control.BlRunApp();
-			setCurrentState(STARTUP_SUCCESSFUL);
+			control.ConfSetParameters(Control::RN171_BASIC_PARAMETERS) ? setCurrentState(STARTUP_SUCCESSFUL) : setCurrentState(STARTUP_FAILURE);
 			return;
 
 		} catch (std::exception &e) {

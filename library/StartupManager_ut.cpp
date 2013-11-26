@@ -37,6 +37,8 @@ namespace WyLight {
 	
 	TestCase g_Testcase;
 	
+	const std::list<std::string> Control::RN171_BASIC_PARAMETERS;
+	
 	/***** Wrappers ****/
 	ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) : mSock(0), mSockAddr(addr, port) {}
 	ClientSocket::~ClientSocket(void) {}
@@ -56,15 +58,15 @@ namespace WyLight {
 	{
 	}
 
-	std::string Control::FwGetVersion() throw (WyLight::ConnectionTimeout, WyLight::FatalError, WyLight::ScriptBufferFull) {
+	uint16_t Control::FwGetVersion() throw (WyLight::ConnectionTimeout, WyLight::FatalError, WyLight::ScriptBufferFull) {
 		switch (g_Testcase) {
 			case TC_START_BL_FAIL:
-				return "0.0";
+				return 0;
 			case TC_FW_VERSION_CHECK_FAIL:
 				throw FatalError("");
 				
 			default:
-				return "0.0";
+				return 0;
 		}
 	}
 	
@@ -89,6 +91,9 @@ namespace WyLight {
 	{
 		
 	}
+	
+	bool Control::ConfSetParameters(std::list<std::string> commands) const { return true; }
+
 	
 	size_t Control::GetTargetMode(void) const throw(FatalError)
 	{
@@ -123,36 +128,31 @@ namespace WyLight {
 		}
 	}
 	
-	std::string Control::BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError)
+	uint16_t Control::BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError)
 	{
 		switch (g_Testcase) {
 			case TC_BL_VERSION_CHECK_FAIL:
 				throw FatalError("");
 			case TC_UPDATE_FAIL:
 			case TC_RUN_APP_FAIL:
-				return "0.0";
+				return 0;
 				
 			default:
-				return "0.0";
+				return 0;
 		}
 	}
 	
-	std::string Control::ExtractFwVersion(const std::string& pFilename) const
+	uint16_t Control::ExtractFwVersion(const std::string& pFilename) const
 	{
 		switch (g_Testcase) {
 			case TC_BL_VERSION_CHECK_FAIL_UPDATE_SUCCESS:
 			case TC_UPDATE_FAIL:
 			case TC_START_BL_FAIL:
-				return "0.1";
+				return 1;
 				
 			default:
-				return "0.0";
+				return 0;
 		}
-	}
-	
-	bool Control::ConfSetParameters(std::list<std::string> commands) const
-	{
-		return false;
 	}
 	
 	void Control::BlRunApp(void) const throw (ConnectionTimeout, FatalError)
