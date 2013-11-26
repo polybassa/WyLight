@@ -89,7 +89,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_wy_light_1_1_startup_manager-members.html">List of all members</a>  </div>
@@ -104,7 +103,7 @@ Collaboration diagram for WyLight::StartupManager:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_wy_light_1_1_startup_manager__coll__graph.png" border="0" usemap="#_wy_light_1_1_startup_manager_coll__map" alt="Collaboration graph"/></div>
 <map name="_wy_light_1_1_startup_manager_coll__map" id="_wy_light_1_1_startup_manager_coll__map">
-<area shape="rect" id="node2" href="class_wy_light_1_1_update_extension.html" title="{WyLight::UpdateExtension\n|&#45; mUpdateNecessary\l&#45; mUpdateFunction\l|+ UpdateExtension()\l+ UpdateExtension()\l+ run()\l}" alt="" coords="9,6,187,135"/></map>
+</map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
@@ -138,19 +137,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a542a4ecad1b887b715d44e543dd5a1d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_startup_manager.html#a542a4ecad1b887b715d44e543dd5a1d0">startup</a> (<a class="el" href="class_wy_light_1_1_control_no_throw.html">WyLight::ControlNoThrow</a> &amp;control, const std::string &amp;hexFilePath)  throw (InvalidParameter)</td></tr>
 <tr class="separator:a542a4ecad1b887b715d44e543dd5a1d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:aef4afcca0c88bbeb9863102c45a2faa4"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="class_wy_light_1_1_update_extension.html">UpdateExtension</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_startup_manager.html#aef4afcca0c88bbeb9863102c45a2faa4">eepromClear</a></td></tr>
-<tr class="separator:aef4afcca0c88bbeb9863102c45a2faa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa29a16a16a4d5b10b9166531b86b92b8"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="class_wy_light_1_1_update_extension.html">UpdateExtension</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_startup_manager.html#aa29a16a16a4d5b10b9166531b86b92b8">setUdpInRN171</a></td></tr>
-<tr class="separator:aa29a16a16a4d5b10b9166531b86b92b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:a04e82755bf7d84843ad391833fe3d258"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_startup_manager.html#a04e82755bf7d84843ad391833fe3d258">setCurrentState</a> (<a class="el" href="class_wy_light_1_1_startup_manager.html#ae591c4ea2b11d5ebae6fdaa90edded33">StartupManager::State</a> newState)</td></tr>
 <tr class="separator:a04e82755bf7d84843ad391833fe3d258"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d5768da6413e35f32c3e98a3b262664"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_startup_manager.html#a1d5768da6413e35f32c3e98a3b262664">bootloaderRoutine</a> (<a class="el" href="class_wy_light_1_1_control.html">WyLight::Control</a> &amp;control, const std::string &amp;hexFilePath)</td></tr>
-<tr class="separator:a1d5768da6413e35f32c3e98a3b262664"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad755c3439645ac4e6e56a1f7a364119d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_startup_manager.html#ad755c3439645ac4e6e56a1f7a364119d">bootloaderVersionCheckUpdate</a> (<a class="el" href="class_wy_light_1_1_control.html">WyLight::Control</a> &amp;control, const std::string &amp;hexFilePath)</td></tr>
+<tr class="separator:ad755c3439645ac4e6e56a1f7a364119d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c44c43044ad505f4f0abc6831f70e1c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_startup_manager.html#a1c44c43044ad505f4f0abc6831f70e1c">startBootloader</a> (<a class="el" href="class_wy_light_1_1_control.html">WyLight::Control</a> &amp;control, const std::string &amp;hexFilePath)</td></tr>
 <tr class="separator:a1c44c43044ad505f4f0abc6831f70e1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -165,8 +157,6 @@ newState)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" h
 <tr class="separator:aeb7c66f9522f33a51a7504284308ed3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e762b82d4627fd0e960899dd5235caf"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_startup_manager.html#a1e762b82d4627fd0e960899dd5235caf">mTargetVersion</a> = 0</td></tr>
 <tr class="separator:a1e762b82d4627fd0e960899dd5235caf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a751031839f8158f87d58d3ec374bc8"><td class="memItemLeft" align="right" valign="top">std::list&lt; <a class="el" href="class_wy_light_1_1_update_extension.html">UpdateExtension</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_startup_manager.html#a5a751031839f8158f87d58d3ec374bc8">mUpdateTaskSet</a> = {<a class="el" href="class_wy_light_1_1_startup_manager.html#aef4afcca0c88bbeb9863102c45a2faa4">eepromClear</a>, <a class="el" href="class_wy_light_1_1_startup_manager.html#aa29a16a16a4d5b10b9166531b86b92b8">setUdpInRN171</a>}</td></tr>
-<tr class="separator:a5a751031839f8158f87d58d3ec374bc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
 <a class="anchor" id="ae591c4ea2b11d5ebae6fdaa90edded33"></a>
@@ -265,7 +255,7 @@ newState)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" h
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a1d5768da6413e35f32c3e98a3b262664"></a>
+<a class="anchor" id="ad755c3439645ac4e6e56a1f7a364119d"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -273,7 +263,7 @@ newState)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" h
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void WyLight::StartupManager::bootloaderRoutine </td>
+          <td class="memname">void WyLight::StartupManager::bootloaderVersionCheckUpdate </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_wy_light_1_1_control.html">WyLight::Control</a> &amp;&#160;</td>
           <td class="paramname"><em>control</em>, </td>
@@ -320,6 +310,15 @@ newState)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" h
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_wy_light_1_1_startup_manager_a473215c5513be318aa87528930cc7f3c_icgraph.png" border="0" usemap="#class_wy_light_1_1_startup_manager_a473215c5513be318aa87528930cc7f3c_icgraph" alt=""/></div>
+<map name="class_wy_light_1_1_startup_manager_a473215c5513be318aa87528930cc7f3c_icgraph" id="class_wy_light_1_1_startup_manager_a473215c5513be318aa87528930cc7f3c_icgraph">
+<area shape="rect" id="node2" href="class_control_cmd_do_startup.html#a1f01eb23d84de1447708fd3583e9b3b0" title="ControlCmdDoStartup::Run" alt="" coords="226,13,411,41"/></map>
+</div>
+</p>
 
 </div>
 </div>
@@ -455,26 +454,6 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="aef4afcca0c88bbeb9863102c45a2faa4"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="class_wy_light_1_1_update_extension.html">UpdateExtension</a> WyLight::StartupManager::eepromClear</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="aeb7c66f9522f33a51a7504284308ed3b"></a>
 <div class="memitem">
 <div class="memproto">
@@ -555,53 +534,13 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a class="anchor" id="a5a751031839f8158f87d58d3ec374bc8"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::list&lt;<a class="el" href="class_wy_light_1_1_update_extension.html">UpdateExtension</a>&gt; WyLight::StartupManager::mUpdateTaskSet = {<a class="el" href="class_wy_light_1_1_startup_manager.html#aef4afcca0c88bbeb9863102c45a2faa4">eepromClear</a>, <a class="el" href="class_wy_light_1_1_startup_manager.html#aa29a16a16a4d5b10b9166531b86b92b8">setUdpInRN171</a>}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="aa29a16a16a4d5b10b9166531b86b92b8"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="class_wy_light_1_1_update_extension.html">UpdateExtension</a> WyLight::StartupManager::setUdpInRN171</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>library/<a class="el" href="_startup_manager_8h_source.html">StartupManager.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Nov 26 2013 19:10:01 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Nov 26 2013 20:26:45 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

@@ -61,8 +61,5 @@ var searchData=
   ['mtimevalue',['mTimeValue',['../class_wy_light_1_1_rtc_response.html#a8afd14ca77c0cce1472c27ae27b677bf',1,'WyLight::RtcResponse']]],
   ['mtracemessage',['mTraceMessage',['../class_wy_light_1_1_tracebuffer_response.html#a217c5059a0446a9d358c02e7c2714a21',1,'WyLight::TracebufferResponse']]],
   ['mudpsock',['mUdpSock',['../class_wy_light_1_1_control.html#a11dc1d04f1df7d46a75d4d6101ddcea7',1,'WyLight::Control']]],
-  ['mupdatefunction',['mUpdateFunction',['../class_wy_light_1_1_update_extension.html#aedf3e02cabe449198c30b18d6f613a4f',1,'WyLight::UpdateExtension']]],
-  ['mupdatenecessary',['mUpdateNecessary',['../class_wy_light_1_1_update_extension.html#a69cee81ce5cac09f16a25837055ff431',1,'WyLight::UpdateExtension']]],
-  ['mupdatetaskset',['mUpdateTaskSet',['../class_wy_light_1_1_startup_manager.html#a5a751031839f8158f87d58d3ec374bc8',1,'WyLight::StartupManager']]],
   ['mversion',['mVersion',['../class_wy_light_1_1_firmware_version_response.html#ac813e3aff7cdbbdf011b16ee7ad3c3b0',1,'WyLight::FirmwareVersionResponse']]]
 ];

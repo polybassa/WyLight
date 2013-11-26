@@ -31,6 +31,6 @@ var searchData=
   ['blue',['blue',['../class_wy_light_1_1_wifly_color.html#a2c95d36931e4904838cc07cbc8e0556a',1,'WyLight::WiflyColor::blue() const '],['../class_wy_light_1_1_wifly_color.html#a921dcca5daed2301aaf98b6e08b3f522',1,'WyLight::WiflyColor::blue(uint8_t value)']]],
   ['blwriteeeprom',['BlWriteEeprom',['../class_wy_light_1_1_control.html#abcd3025967e993c21069069a39501f08',1,'WyLight::Control']]],
   ['blwriteflash',['BlWriteFlash',['../class_wy_light_1_1_control.html#a4ae7b4a7f3735fe6ab7481f43adcc622',1,'WyLight::Control']]],
-  ['bootloaderroutine',['bootloaderRoutine',['../class_wy_light_1_1_startup_manager.html#a1d5768da6413e35f32c3e98a3b262664',1,'WyLight::StartupManager']]],
+  ['bootloaderversioncheckupdate',['bootloaderVersionCheckUpdate',['../class_wy_light_1_1_startup_manager.html#ad755c3439645ac4e6e56a1f7a364119d',1,'WyLight::StartupManager']]],
   ['broadcastreceiver',['BroadcastReceiver',['../class_wy_light_1_1_broadcast_receiver.html#ac03335f0824e0de7d0dd87d5187aafa3',1,'WyLight::BroadcastReceiver']]]
 ];

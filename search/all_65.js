@@ -3,7 +3,6 @@ var searchData=
   ['eeprom_5fread_5fblocksize',['EEPROM_READ_BLOCKSIZE',['../_bl_request_8h.html#a1e01f247da3241e46c71119c79ddf034',1,'BlRequest.h']]],
   ['eeprom_5fsize',['EEPROM_SIZE',['../_bl_request_8h.html#ae3ef7bba113f663df6996f286b632a3f',1,'BlRequest.h']]],
   ['eeprom_5fwrite_5fblocksize',['EEPROM_WRITE_BLOCKSIZE',['../_bl_request_8h.html#a5f45dd63fc17090ece1b40b668195185',1,'BlRequest.h']]],
-  ['eepromclear',['eepromClear',['../class_wy_light_1_1_startup_manager.html#aef4afcca0c88bbeb9863102c45a2faa4',1,'WyLight::StartupManager']]],
   ['eipregister',['eipRegister',['../classintelhex.html#abedd6ca388d3cad1d2525abc5939d27e',1,'intelhex']]],
   ['empty',['empty',['../classintelhex.html#a2bd5b567207303d4d9f4322e6262d6d6',1,'intelhex::empty()'],['../class_wy_light_1_1_message_queue.html#a2195f869b08d83342ac21353aa510161',1,'WyLight::MessageQueue::empty()']]],
   ['empty_5fendpoint',['EMPTY_ENDPOINT',['../class_wy_light_1_1_broadcast_receiver.html#a3028b6394222f327c1286e9263a126a7',1,'WyLight::BroadcastReceiver']]],

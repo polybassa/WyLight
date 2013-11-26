@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['hash_3c_20updateextension_20_3e',['hash&lt; UpdateExtension &gt;',['../class_wy_light_1_1_update_extension.html#aa61ea2563d5ffe208f2d0bb5b985cd9c',1,'WyLight::UpdateExtension']]],
   ['s_5fcmds',['s_Cmds',['../_wifly_control_cmd_8h.html#a8bf5507ec72c2515895843f5c5d0146c',1,'WiflyControlCmd.h']]],
   ['s_5fnumcmds',['s_NumCmds',['../class_wifly_control_cmd_builder.html#a2ed111ec43db6e0237de47c562944caa',1,'WiflyControlCmdBuilder']]],
   ['script',['Script',['../class_wy_light_1_1_script.html',1,'WyLight']]],
@@ -34,7 +33,6 @@ var searchData=
   ['setstartlinearaddress',['setStartLinearAddress',['../classintelhex.html#a7629ca097b2de02dea37fcaa2dc2709c',1,'intelhex']]],
   ['setstartsegmentaddress',['setStartSegmentAddress',['../classintelhex.html#a9688f0002be870b05d64b5f9fcdeb86b',1,'intelhex']]],
   ['settime',['SetTime',['../struct_wy_light_1_1_fw_cmd_set_rtc.html#a520ba9a6d007251ffcf4aff24d004498',1,'WyLight::FwCmdSetRtc']]],
-  ['setudpinrn171',['setUdpInRN171',['../class_wy_light_1_1_startup_manager.html#aa29a16a16a4d5b10b9166531b86b92b8',1,'WyLight::StartupManager']]],
   ['showhelp',['ShowHelp',['../class_wifly_control_cli.html#a0e475ce27f3a9c42c3d3c18b4533ed36',1,'WiflyControlCli']]],
   ['size',['size',['../classintelhex.html#afa757932ec420f977d33bb9a2d5a0a69',1,'intelhex::size()'],['../class_wy_light_1_1_script.html#a64d7a716911f0c45a67a5041be26a9f2',1,'WyLight::Script::size()'],['../class_wy_light_1_1_base_buffer.html#a6aa8fcfeaeeb093bce60211a3728337a',1,'WyLight::BaseBuffer::Size()']]],
   ['sizehigh',['sizeHigh',['../struct_wy_light_1_1_bl_info.html#a95dfd12b33d938d0130d1e3326f9d711',1,'WyLight::BlInfo']]],

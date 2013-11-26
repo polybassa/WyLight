@@ -1,17 +1,13 @@
 var searchData=
 [
   ['uctohexstring',['ucToHexString',['../classintelhex.html#a3185843e9397b26ccd330ead0a9a7bed',1,'intelhex']]],
-  ['udpsocket',['UdpSocket',['../class_wy_light_1_1_udp_socket.html',1,'WyLight']]],
   ['udpsocket',['UdpSocket',['../class_wy_light_1_1_udp_socket.html#adcf1f11b78b2485b475f3b040ff8f2d4',1,'WyLight::UdpSocket']]],
+  ['udpsocket',['UdpSocket',['../class_wy_light_1_1_udp_socket.html',1,'WyLight']]],
   ['ultohexstring',['ulToHexString',['../classintelhex.html#af45f701889bcd7e5d25066a69e0f91bf',1,'intelhex']]],
   ['ultostring',['ulToString',['../classintelhex.html#a15904358dffd75ddded56657675f3c04',1,'intelhex']]],
   ['unmask',['Unmask',['../class_wy_light_1_1_unmask_buffer.html#a8268033300f5f43ad9ccb2e806b84b44',1,'WyLight::UnmaskBuffer']]],
   ['unmaskbuffer',['UnmaskBuffer',['../class_wy_light_1_1_unmask_buffer.html',1,'WyLight']]],
   ['unmaskbuffer',['UnmaskBuffer',['../class_wy_light_1_1_unmask_buffer.html#a664016ab8306b9c72c01a8d57b2404b5',1,'WyLight::UnmaskBuffer']]],
-  ['updatecheckfunction',['updateCheckFunction',['../class_wy_light_1_1_update_extension.html#a609135e927b28e902d65316c534561b6',1,'WyLight::UpdateExtension']]],
-  ['updateextension',['UpdateExtension',['../class_wy_light_1_1_update_extension.html#aeaa441fc1dbf21fe93dbf2e17314578b',1,'WyLight::UpdateExtension::UpdateExtension(const updateCheckFunction &amp;updateNecessary=NULL, const updateFunction &amp;updateFunction=NULL)'],['../class_wy_light_1_1_update_extension.html#acaa15681664f4e1af0898c8be16345eb',1,'WyLight::UpdateExtension::UpdateExtension(const UpdateExtension &amp;other)']]],
-  ['updateextension',['UpdateExtension',['../class_wy_light_1_1_update_extension.html',1,'WyLight']]],
-  ['updatefunction',['updateFunction',['../class_wy_light_1_1_update_extension.html#a00b8e94ab5ec3f006412cb9b078e54d8',1,'WyLight::UpdateExtension']]],
   ['updating',['UPDATING',['../class_wy_light_1_1_startup_manager.html#ae591c4ea2b11d5ebae6fdaa90edded33af8c0c5ad1ab37d8b206db513ee413124',1,'WyLight::StartupManager']]],
   ['ut_5ftelnetproxy_5frecv',['ut_TelnetProxy_Recv',['../class_wy_light_1_1_telnet_proxy.html#a436d76cf48d888700dddd5dc72c7bc56',1,'WyLight::TelnetProxy']]],
   ['ut_5ftelnetproxy_5frecvstring',['ut_TelnetProxy_RecvString',['../class_wy_light_1_1_telnet_proxy.html#a899fd61cba9dec179f6a058b25c73cb7',1,'WyLight::TelnetProxy']]],

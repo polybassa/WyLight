@@ -1,3 +1,2 @@
 <map id="WyLight::StartupManager" name="WyLight::StartupManager">
-<area shape="rect" id="node2" href="$class_wy_light_1_1_update_extension.html" title="{WyLight::UpdateExtension\n|&#45; mUpdateNecessary\l&#45; mUpdateFunction\l|+ UpdateExtension()\l+ UpdateExtension()\l+ run()\l}" alt="" coords="9,6,187,135"/>
 </map>
