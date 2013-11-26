@@ -102,6 +102,8 @@ namespace WyLight {
 		std::list<UpdateExtension> mUpdateTaskSet = {eepromClear, setUdpInRN171};
 		
 		void setCurrentState(StartupManager::State newState);
+		void bootloaderRoutine(WyLight::Control& control, const std::string& hexFilePath);
+		void startBootloader(WyLight::Control& control, const std::string& hexFilePath);
 	};
 	
 }

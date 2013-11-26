@@ -134,96 +134,61 @@ namespace WyLight {
 			return;
 		}
 		
-		setCurrentState(MODE_CHECK);
-		
-		while (mState != STARTUP_FAILURE || mState != STARTUP_SUCCESSFUL) {
-			switch (mState) {
-				case MODE_CHECK: {
-					try {
-						size_t currentMode = control.GetTargetMode();
-						if (currentMode == BL_IDENT) {
-							setCurrentState(BL_VERSION_CHECK);
-						} else if (currentMode == FW_IDENT) {
-							setCurrentState(FW_VERSION_CHECK);
-						} else {
-							setCurrentState(START_BOOTLOADER);
-						}
-					} catch (std::exception &e) {
-						Trace(ZONE_ERROR, "StartupManager startup failure in state %d: %s\n", mState, e.what());
-						setCurrentState(START_BOOTLOADER);
-					}
-				} break;
-				case START_BOOTLOADER: {
-					try {
-						control << FwCmdStartBl();
-						setCurrentState(MODE_CHECK);
-					} catch (std::exception &e) {
-						Trace(ZONE_ERROR, "StartupManager startup failure in state %d: %s\n", mState, e.what());
-						setCurrentState(STARTUP_FAILURE);
-					}
-				} break;
-				case FW_VERSION_CHECK: {
-					try {
-						mTargetVersion = Version(control.FwGetVersion());
-						if (mTargetVersion != Version(0,0) && mTargetVersion == mHexFileVersion) {
-							setCurrentState(STARTUP_SUCCESSFUL);
-						} else {
-							setCurrentState(START_BOOTLOADER);
-						}
-					} catch (std::exception &e) {
-						Trace(ZONE_ERROR, "StartupManager startup failure in state %d: %s\n", mState, e.what());
-						setCurrentState(START_BOOTLOADER);
-					}
-				} break;
-				case BL_VERSION_CHECK: {
-					try {
-						mTargetVersion = Version(control.BlReadFwVersion());
-						if (mTargetVersion != Version(0,0) && mTargetVersion == mHexFileVersion) {
-							setCurrentState(RUN_APP);
-						} else {
-							setCurrentState(UPDATING);
-						}
-					} catch (std::exception &e) {
-						Trace(ZONE_ERROR, "StartupManager startup failure in state %d: %s\n", mState, e.what());
-						setCurrentState(STARTUP_FAILURE);
-					}
-				} break;
-				case UPDATING: {
-					try {
-						control.BlProgramFlash(hexFilePath);
-						for (const UpdateExtension& func : mUpdateTaskSet) {
-							func.run(mTargetVersion, mHexFileVersion, control);
-						}
-						setCurrentState(RUN_APP);
-					} catch (std::exception &e) {
-						Trace(ZONE_ERROR, "StartupManager startup failure in state %d: %s\n", mState, e.what());
-						setCurrentState(STARTUP_FAILURE);
-					}
-				} break;
-				case RUN_APP: {
-					try {
-						control.BlRunApp();
-						setCurrentState(STARTUP_SUCCESSFUL);
-					} catch (std::exception &e) {
-						Trace(ZONE_ERROR, "StartupManager startup failure in state %d: %s\n", mState, e.what());
-						setCurrentState(STARTUP_FAILURE);
-					}
-				} break;
-				case STARTUP_FAILURE: {
+		//--------------------MODE-CHECK----------------
+		try {
+			setCurrentState(MODE_CHECK);
+			size_t currentMode = control.GetTargetMode();
+			if (currentMode == BL_IDENT) {
+				setCurrentState(BL_VERSION_CHECK);
+				bootloaderRoutine(control, hexFilePath);
+				return;
+			} else if (currentMode == FW_IDENT) {
+				setCurrentState(FW_VERSION_CHECK);
+				mTargetVersion = Version(control.FwGetVersion());
+				if (mTargetVersion != Version(0,0) && mTargetVersion >= mHexFileVersion) {
+					setCurrentState(STARTUP_SUCCESSFUL);
 					return;
-				} break;
-				case STARTUP_SUCCESSFUL: {
-					return;
-				} break;
-				default: break;
+				}
 			}
+		} catch (std::exception &e) {
+			Trace(ZONE_ERROR, "StartupManager startup failure in state %d: %s\n", mState, e.what());
 		}
-		
+		setCurrentState(START_BOOTLOADER);
+		startBootloader(control, hexFilePath);
+		return;
 	}
 	
+	void StartupManager::startBootloader(WyLight::Control &control, const std::string& hexFilePath) {
+		try {
+			control << FwCmdStartBl();
+			bootloaderRoutine(control, hexFilePath);
+			return;
+		} catch (std::exception &e) {
+			Trace(ZONE_ERROR, "StartupManager startup failure in state %d: %s\n", mState, e.what());
+			setCurrentState(STARTUP_FAILURE);
+			return;
+		}
+	}
 	
-	
-	
-	
-	
+	void StartupManager::bootloaderRoutine(WyLight::Control &control, const std::string &hexFilePath) {
+		try {
+			mTargetVersion = Version(control.BlReadFwVersion());
+			if (mTargetVersion == Version(0,0) || mTargetVersion <= mHexFileVersion) {
+				setCurrentState(UPDATING);
+				control.BlProgramFlash(hexFilePath);
+				for (const UpdateExtension& func : mUpdateTaskSet) {
+					func.run(mTargetVersion, mHexFileVersion, control);
+				}
+			}
+			setCurrentState(RUN_APP);
+			control.BlRunApp();
+			setCurrentState(STARTUP_SUCCESSFUL);
+			return;
+
+		} catch (std::exception &e) {
+			Trace(ZONE_ERROR, "StartupManager startup failure in state %d: %s\n", mState, e.what());
+			setCurrentState(STARTUP_FAILURE);
+			return;
+		}
+	}
 }
