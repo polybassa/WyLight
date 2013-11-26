@@ -72,7 +72,6 @@ namespace WyLight {
 				std::atomic_fetch_sub(&mNumInstances, 1);
 				throw(e);
 			}
-
 		std::atomic_fetch_sub(&mNumInstances, 1);
 	}
 
