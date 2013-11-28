@@ -89,6 +89,8 @@ public class WiflyControl {
 	}
 
 	public synchronized void startup(Endpoint remote, String path) throws FatalError {
-		Startup(remote.connect(), path);
+		if (connect(remote)) {
+			Startup(mNative, path);
+		}
 	}
 }

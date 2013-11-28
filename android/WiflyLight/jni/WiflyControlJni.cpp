@@ -216,7 +216,6 @@ namespace WyLight {
 			try {
 				manager.startup(myControl, myPath);
 			} catch (FatalError& e) {
-				//env->ReleaseStringUTFChars(path, myPath);
 				ThrowJniException(env, e);
 			}
 			env->ReleaseStringUTFChars(path, myPath);
