@@ -90,19 +90,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 <a href="_message_queue_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> Copyright (C) 2013 Nils Weiss, Patrick Bruenn.</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> </span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"></span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> This file is part of Wifly_Light.</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> </span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"></span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> Wifly_Light is free software: you can redistribute it and/or modify</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> it under the terms of the GNU General Public License as published by</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> the Free Software Foundation, either version 3 of the License, or</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> (at your option) any later version.</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"> </span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"></span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment"> Wifly_Light is distributed in the hope that it will be useful,</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"> but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"> MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment"> GNU General Public License for more details.</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> </span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"></span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment"> You should have received a copy of the GNU General Public License</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> along with Wifly_Light.  If not, see &lt;http://www.gnu.org/licenses/&gt;. */</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
@@ -116,32 +116,32 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>WyLight {</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html">   30</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_wy_light_1_1_message_queue.html">MessageQueue</a> {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html">   30</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_wy_light_1_1_message_queue.html">MessageQueue</a> {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
 <div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#ab374bb88a22858e464e0b384a8d969b7">   32</a></span>&#160;    std::deque&lt;T&gt; <a class="code" href="class_wy_light_1_1_message_queue.html#ab374bb88a22858e464e0b384a8d969b7">mQueue</a>;</div>
 <div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#ae908cfc1f3b4afc0decd44f8e1d4dca9">   33</a></span>&#160;    std::mutex <a class="code" href="class_wy_light_1_1_message_queue.html#ae908cfc1f3b4afc0decd44f8e1d4dca9">mMutex</a>;</div>
 <div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#a2947e44b7d20f094d47cb82cd76c3b15">   34</a></span>&#160;    std::condition_variable <a class="code" href="class_wy_light_1_1_message_queue.html#a2947e44b7d20f094d47cb82cd76c3b15">mCondVar</a>;</div>
 <div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#a2996036efa4f9ea47573155802717035">   35</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="class_wy_light_1_1_message_queue.html#a2996036efa4f9ea47573155802717035">mMessageLimit</a> = 0;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#aa116745b3c6a257e7a8149432b1ae612">   38</a></span>&#160;    <a class="code" href="class_wy_light_1_1_message_queue.html#aa116745b3c6a257e7a8149432b1ae612">MessageQueue</a>(<span class="keywordtype">void</span>) {};</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#a92bf2e25bbd0feceabb3bf21368a4696">   39</a></span>&#160;    <a class="code" href="class_wy_light_1_1_message_queue.html#a92bf2e25bbd0feceabb3bf21368a4696">MessageQueue</a>(<a class="code" href="class_wy_light_1_1_message_queue.html">MessageQueue</a> <span class="keyword">const</span>&amp;&amp; other) : <a class="code" href="class_wy_light_1_1_message_queue.html#ab374bb88a22858e464e0b384a8d969b7">mQueue</a>(std::move(other.<a class="code" href="class_wy_light_1_1_message_queue.html#ab374bb88a22858e464e0b384a8d969b7">mQueue</a>)), <a class="code" href="class_wy_light_1_1_message_queue.html#ae908cfc1f3b4afc0decd44f8e1d4dca9">mMutex</a>(std::move(other.<a class="code" href="class_wy_light_1_1_message_queue.html#ae908cfc1f3b4afc0decd44f8e1d4dca9">mMutex</a>)), <a class="code" href="class_wy_light_1_1_message_queue.html#a2947e44b7d20f094d47cb82cd76c3b15">mCondVar</a>(std::move(other.<a class="code" href="class_wy_light_1_1_message_queue.html#a2947e44b7d20f094d47cb82cd76c3b15">mCondVar</a>)) {};</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_message_queue.html#abb19b5612cabae621cffbb85b11acbce">push_back</a>(<span class="keyword">const</span> T&amp;&amp; message);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_message_queue.html#a70d00934df73199dafe469dcd2aa750c">push_front</a>(<span class="keyword">const</span> T&amp;&amp; message);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_message_queue.html#a07807ffc11826fb293b95f56fa2a6952">clear</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_message_queue.html#afa0cc613fbaf294bab1834b97d159de8">clear_and_push_front</a>(<span class="keyword">const</span> T&amp;&amp; message);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_message_queue.html#a2195f869b08d83342ac21353aa510161">empty</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    </div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#ad7293e8940ef5c4cb34e62bfd389e5bc">   51</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_message_queue.html#ad7293e8940ef5c4cb34e62bfd389e5bc">setMessageLimit</a>(<span class="keywordtype">size_t</span> limit) { (limit &lt; 5) ? <a class="code" href="class_wy_light_1_1_message_queue.html#a2996036efa4f9ea47573155802717035">mMessageLimit</a> = 5 : <a class="code" href="class_wy_light_1_1_message_queue.html#a2996036efa4f9ea47573155802717035">mMessageLimit</a> = limit; };</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    T <a class="code" href="class_wy_light_1_1_message_queue.html#a8d993b590e708be1c3bdfd30112bdaa6">receive</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;};</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#aa116745b3c6a257e7a8149432b1ae612">   38</a></span>&#160;        <a class="code" href="class_wy_light_1_1_message_queue.html#aa116745b3c6a257e7a8149432b1ae612">MessageQueue</a>(<span class="keywordtype">void</span>) {};</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#a92bf2e25bbd0feceabb3bf21368a4696">   39</a></span>&#160;        <a class="code" href="class_wy_light_1_1_message_queue.html#a92bf2e25bbd0feceabb3bf21368a4696">MessageQueue</a>(<a class="code" href="class_wy_light_1_1_message_queue.html">MessageQueue</a> <span class="keyword">const</span>&amp;&amp; other) : <a class="code" href="class_wy_light_1_1_message_queue.html#ab374bb88a22858e464e0b384a8d969b7">mQueue</a>(std::move(other.<a class="code" href="class_wy_light_1_1_message_queue.html#ab374bb88a22858e464e0b384a8d969b7">mQueue</a>)), <a class="code" href="class_wy_light_1_1_message_queue.html#ae908cfc1f3b4afc0decd44f8e1d4dca9">mMutex</a>(std::move(other.<a class="code" href="class_wy_light_1_1_message_queue.html#ae908cfc1f3b4afc0decd44f8e1d4dca9">mMutex</a>)), <a class="code" href="class_wy_light_1_1_message_queue.html#a2947e44b7d20f094d47cb82cd76c3b15">mCondVar</a>(std::move(other.<a class="code" href="class_wy_light_1_1_message_queue.html#a2947e44b7d20f094d47cb82cd76c3b15">mCondVar</a>)) {};</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_message_queue.html#abb19b5612cabae621cffbb85b11acbce">push_back</a>(<span class="keyword">const</span> T&amp;&amp; message);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_message_queue.html#a70d00934df73199dafe469dcd2aa750c">push_front</a>(<span class="keyword">const</span> T&amp;&amp; message);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_message_queue.html#a07807ffc11826fb293b95f56fa2a6952">clear</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_message_queue.html#afa0cc613fbaf294bab1834b97d159de8">clear_and_push_front</a>(<span class="keyword">const</span> T&amp;&amp; message);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_message_queue.html#a2195f869b08d83342ac21353aa510161">empty</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#ad7293e8940ef5c4cb34e62bfd389e5bc">   51</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_message_queue.html#ad7293e8940ef5c4cb34e62bfd389e5bc">setMessageLimit</a>(<span class="keywordtype">size_t</span> limit) { (limit &lt; 5) ? <a class="code" href="class_wy_light_1_1_message_queue.html#a2996036efa4f9ea47573155802717035">mMessageLimit</a> = 5 : <a class="code" href="class_wy_light_1_1_message_queue.html#a2996036efa4f9ea47573155802717035">mMessageLimit</a> = limit; };</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        T <a class="code" href="class_wy_light_1_1_message_queue.html#a8d993b590e708be1c3bdfd30112bdaa6">receive</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    };</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
@@ -149,79 +149,77 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;{</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    {</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        std::lock_guard&lt;std::mutex&gt; lg(this-&gt;mMutex);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordflow">if</span> (mMessageLimit == 0 || (mMessageLimit &gt; this-&gt;mQueue.size()))</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            this-&gt;mQueue.push_back(std::move(message));</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            this-&gt;mQueue.erase(++(this-&gt;mQueue.begin())); <span class="comment">//delete the secound element in the queue</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            this-&gt;mQueue.push_back(std::move(message));</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        }</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    this-&gt;mCondVar.notify_one();</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#a70d00934df73199dafe469dcd2aa750c">   76</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_message_queue.html#a70d00934df73199dafe469dcd2aa750c">WyLight::MessageQueue&lt;T&gt;::push_front</a>(<span class="keyword">const</span> T&amp;&amp; message)</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;{</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        std::lock_guard&lt;std::mutex&gt; lg(this-&gt;mMutex);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        this-&gt;mQueue.push_front(std::move(message));</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    this-&gt;mCondVar.notify_one();</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;}</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#a07807ffc11826fb293b95f56fa2a6952">   86</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_message_queue.html#a07807ffc11826fb293b95f56fa2a6952">WyLight::MessageQueue&lt;T&gt;::clear</a>(<span class="keywordtype">void</span>)</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;{</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    std::lock_guard&lt;std::mutex&gt; lg(this-&gt;mMutex);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    this-&gt;mQueue.clear();</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#afa0cc613fbaf294bab1834b97d159de8">   93</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_message_queue.html#afa0cc613fbaf294bab1834b97d159de8">WyLight::MessageQueue&lt;T&gt;::clear_and_push_front</a>(<span class="keyword">const</span> T&amp;&amp; message)</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;{</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    this-&gt;clear();</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    this-&gt;push_front(std::move(message));</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#a2195f869b08d83342ac21353aa510161">  100</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_message_queue.html#a2195f869b08d83342ac21353aa510161">WyLight::MessageQueue&lt;T&gt;::empty</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    std::lock_guard&lt;std::mutex&gt; lg(this-&gt;mMutex);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordflow">return</span> this-&gt;mQueue.empty();</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;}</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#a8d993b590e708be1c3bdfd30112bdaa6">  107</a></span>&#160;T <a class="code" href="class_wy_light_1_1_message_queue.html#a8d993b590e708be1c3bdfd30112bdaa6">WyLight::MessageQueue&lt;T&gt;::receive</a>(<span class="keywordtype">void</span>)</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;{</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    std::unique_lock&lt;std::mutex&gt; ul(this-&gt;mMutex);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    this-&gt;mCondVar.wait(ul, [<span class="keyword">this</span>]{ <span class="keywordflow">return</span> !this-&gt;mQueue.empty(); });</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    T message = std::move(this-&gt;mQueue.front());</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    this-&gt;mQueue.pop_front();</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordflow">return</span> message;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;}</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* defined(__WyLight__MessageQueue__) */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordflow">if</span>(mMessageLimit == 0 || (mMessageLimit &gt; this-&gt;mQueue.size())) {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            this-&gt;mQueue.push_back(std::move(message));</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            this-&gt;mQueue.erase(++(this-&gt;mQueue.begin())); <span class="comment">//delete the secound element in the queue</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            this-&gt;mQueue.push_back(std::move(message));</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    this-&gt;mCondVar.notify_one();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#a70d00934df73199dafe469dcd2aa750c">   73</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_message_queue.html#a70d00934df73199dafe469dcd2aa750c">WyLight::MessageQueue&lt;T&gt;::push_front</a>(<span class="keyword">const</span> T&amp;&amp; message)</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;{</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        std::lock_guard&lt;std::mutex&gt; lg(this-&gt;mMutex);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        this-&gt;mQueue.push_front(std::move(message));</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    this-&gt;mCondVar.notify_one();</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;}</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#a07807ffc11826fb293b95f56fa2a6952">   83</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_message_queue.html#a07807ffc11826fb293b95f56fa2a6952">WyLight::MessageQueue&lt;T&gt;::clear</a>(<span class="keywordtype">void</span>)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;{</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    std::lock_guard&lt;std::mutex&gt; lg(this-&gt;mMutex);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    this-&gt;mQueue.clear();</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;}</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#afa0cc613fbaf294bab1834b97d159de8">   90</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_wy_light_1_1_message_queue.html#afa0cc613fbaf294bab1834b97d159de8">WyLight::MessageQueue&lt;T&gt;::clear_and_push_front</a>(<span class="keyword">const</span> T&amp;&amp; message)</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;{</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    this-&gt;clear();</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    this-&gt;push_front(std::move(message));</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;}</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#a2195f869b08d83342ac21353aa510161">   97</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_wy_light_1_1_message_queue.html#a2195f869b08d83342ac21353aa510161">WyLight::MessageQueue&lt;T&gt;::empty</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    std::lock_guard&lt;std::mutex&gt; lg(this-&gt;mMutex);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordflow">return</span> this-&gt;mQueue.empty();</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="class_wy_light_1_1_message_queue.html#a8d993b590e708be1c3bdfd30112bdaa6">  104</a></span>&#160;T <a class="code" href="class_wy_light_1_1_message_queue.html#a8d993b590e708be1c3bdfd30112bdaa6">WyLight::MessageQueue&lt;T&gt;::receive</a>(<span class="keywordtype">void</span>)</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;{</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    std::unique_lock&lt;std::mutex&gt; ul(this-&gt;mMutex);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    this-&gt;mCondVar.wait(ul, [<span class="keyword">this</span>] { <span class="keywordflow">return</span> !this-&gt;mQueue.empty(); }</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                );</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    T message = std::move(this-&gt;mQueue.front());</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    this-&gt;mQueue.pop_front();</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordflow">return</span> message;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;}</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* defined(__WyLight__MessageQueue__) */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="class_wy_light_1_1_message_queue_html"><div class="ttname"><a href="class_wy_light_1_1_message_queue.html">WyLight::MessageQueue</a></div><div class="ttdef"><b>Definition:</b> MessageQueue.h:30</div></div>
 <div class="ttc" id="class_wy_light_1_1_message_queue_html_a2947e44b7d20f094d47cb82cd76c3b15"><div class="ttname"><a href="class_wy_light_1_1_message_queue.html#a2947e44b7d20f094d47cb82cd76c3b15">WyLight::MessageQueue::mCondVar</a></div><div class="ttdeci">std::condition_variable mCondVar</div><div class="ttdef"><b>Definition:</b> MessageQueue.h:34</div></div>
-<div class="ttc" id="class_wy_light_1_1_message_queue_html_a8d993b590e708be1c3bdfd30112bdaa6"><div class="ttname"><a href="class_wy_light_1_1_message_queue.html#a8d993b590e708be1c3bdfd30112bdaa6">WyLight::MessageQueue::receive</a></div><div class="ttdeci">T receive(void)</div><div class="ttdef"><b>Definition:</b> MessageQueue.h:107</div></div>
-<div class="ttc" id="class_wy_light_1_1_message_queue_html_a07807ffc11826fb293b95f56fa2a6952"><div class="ttname"><a href="class_wy_light_1_1_message_queue.html#a07807ffc11826fb293b95f56fa2a6952">WyLight::MessageQueue::clear</a></div><div class="ttdeci">void clear(void)</div><div class="ttdef"><b>Definition:</b> MessageQueue.h:86</div></div>
+<div class="ttc" id="class_wy_light_1_1_message_queue_html_a8d993b590e708be1c3bdfd30112bdaa6"><div class="ttname"><a href="class_wy_light_1_1_message_queue.html#a8d993b590e708be1c3bdfd30112bdaa6">WyLight::MessageQueue::receive</a></div><div class="ttdeci">T receive(void)</div><div class="ttdef"><b>Definition:</b> MessageQueue.h:104</div></div>
+<div class="ttc" id="class_wy_light_1_1_message_queue_html_a07807ffc11826fb293b95f56fa2a6952"><div class="ttname"><a href="class_wy_light_1_1_message_queue.html#a07807ffc11826fb293b95f56fa2a6952">WyLight::MessageQueue::clear</a></div><div class="ttdeci">void clear(void)</div><div class="ttdef"><b>Definition:</b> MessageQueue.h:83</div></div>
 <div class="ttc" id="class_wy_light_1_1_message_queue_html_ab374bb88a22858e464e0b384a8d969b7"><div class="ttname"><a href="class_wy_light_1_1_message_queue.html#ab374bb88a22858e464e0b384a8d969b7">WyLight::MessageQueue::mQueue</a></div><div class="ttdeci">std::deque&lt; T &gt; mQueue</div><div class="ttdef"><b>Definition:</b> MessageQueue.h:32</div></div>
-<div class="ttc" id="class_wy_light_1_1_message_queue_html_a2195f869b08d83342ac21353aa510161"><div class="ttname"><a href="class_wy_light_1_1_message_queue.html#a2195f869b08d83342ac21353aa510161">WyLight::MessageQueue::empty</a></div><div class="ttdeci">bool empty(void) const </div><div class="ttdef"><b>Definition:</b> MessageQueue.h:100</div></div>
+<div class="ttc" id="class_wy_light_1_1_message_queue_html_a2195f869b08d83342ac21353aa510161"><div class="ttname"><a href="class_wy_light_1_1_message_queue.html#a2195f869b08d83342ac21353aa510161">WyLight::MessageQueue::empty</a></div><div class="ttdeci">bool empty(void) const </div><div class="ttdef"><b>Definition:</b> MessageQueue.h:97</div></div>
 <div class="ttc" id="class_wy_light_1_1_message_queue_html_abb19b5612cabae621cffbb85b11acbce"><div class="ttname"><a href="class_wy_light_1_1_message_queue.html#abb19b5612cabae621cffbb85b11acbce">WyLight::MessageQueue::push_back</a></div><div class="ttdeci">void push_back(const T &amp;&amp;message)</div><div class="ttdef"><b>Definition:</b> MessageQueue.h:58</div></div>
-<div class="ttc" id="class_wy_light_1_1_message_queue_html_afa0cc613fbaf294bab1834b97d159de8"><div class="ttname"><a href="class_wy_light_1_1_message_queue.html#afa0cc613fbaf294bab1834b97d159de8">WyLight::MessageQueue::clear_and_push_front</a></div><div class="ttdeci">void clear_and_push_front(const T &amp;&amp;message)</div><div class="ttdef"><b>Definition:</b> MessageQueue.h:93</div></div>
+<div class="ttc" id="class_wy_light_1_1_message_queue_html_afa0cc613fbaf294bab1834b97d159de8"><div class="ttname"><a href="class_wy_light_1_1_message_queue.html#afa0cc613fbaf294bab1834b97d159de8">WyLight::MessageQueue::clear_and_push_front</a></div><div class="ttdeci">void clear_and_push_front(const T &amp;&amp;message)</div><div class="ttdef"><b>Definition:</b> MessageQueue.h:90</div></div>
 <div class="ttc" id="class_wy_light_1_1_message_queue_html_a2996036efa4f9ea47573155802717035"><div class="ttname"><a href="class_wy_light_1_1_message_queue.html#a2996036efa4f9ea47573155802717035">WyLight::MessageQueue::mMessageLimit</a></div><div class="ttdeci">size_t mMessageLimit</div><div class="ttdef"><b>Definition:</b> MessageQueue.h:35</div></div>
 <div class="ttc" id="class_wy_light_1_1_message_queue_html_aa116745b3c6a257e7a8149432b1ae612"><div class="ttname"><a href="class_wy_light_1_1_message_queue.html#aa116745b3c6a257e7a8149432b1ae612">WyLight::MessageQueue::MessageQueue</a></div><div class="ttdeci">MessageQueue(void)</div><div class="ttdef"><b>Definition:</b> MessageQueue.h:38</div></div>
 <div class="ttc" id="class_wy_light_1_1_message_queue_html_a92bf2e25bbd0feceabb3bf21368a4696"><div class="ttname"><a href="class_wy_light_1_1_message_queue.html#a92bf2e25bbd0feceabb3bf21368a4696">WyLight::MessageQueue::MessageQueue</a></div><div class="ttdeci">MessageQueue(MessageQueue const &amp;&amp;other)</div><div class="ttdef"><b>Definition:</b> MessageQueue.h:39</div></div>
-<div class="ttc" id="class_wy_light_1_1_message_queue_html_a70d00934df73199dafe469dcd2aa750c"><div class="ttname"><a href="class_wy_light_1_1_message_queue.html#a70d00934df73199dafe469dcd2aa750c">WyLight::MessageQueue::push_front</a></div><div class="ttdeci">void push_front(const T &amp;&amp;message)</div><div class="ttdef"><b>Definition:</b> MessageQueue.h:76</div></div>
+<div class="ttc" id="class_wy_light_1_1_message_queue_html_a70d00934df73199dafe469dcd2aa750c"><div class="ttname"><a href="class_wy_light_1_1_message_queue.html#a70d00934df73199dafe469dcd2aa750c">WyLight::MessageQueue::push_front</a></div><div class="ttdeci">void push_front(const T &amp;&amp;message)</div><div class="ttdef"><b>Definition:</b> MessageQueue.h:73</div></div>
 <div class="ttc" id="class_wy_light_1_1_message_queue_html_ae908cfc1f3b4afc0decd44f8e1d4dca9"><div class="ttname"><a href="class_wy_light_1_1_message_queue.html#ae908cfc1f3b4afc0decd44f8e1d4dca9">WyLight::MessageQueue::mMutex</a></div><div class="ttdeci">std::mutex mMutex</div><div class="ttdef"><b>Definition:</b> MessageQueue.h:33</div></div>
 <div class="ttc" id="class_wy_light_1_1_message_queue_html_ad7293e8940ef5c4cb34e62bfd389e5bc"><div class="ttname"><a href="class_wy_light_1_1_message_queue.html#ad7293e8940ef5c4cb34e62bfd389e5bc">WyLight::MessageQueue::setMessageLimit</a></div><div class="ttdeci">void setMessageLimit(size_t limit)</div><div class="ttdef"><b>Definition:</b> MessageQueue.h:51</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Nov 26 2013 20:43:59 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Nov 28 2013 16:39:16 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

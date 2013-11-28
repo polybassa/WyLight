@@ -8,9 +8,9 @@ var searchData=
   ['sizehigh',['sizeHigh',['../struct_wy_light_1_1_bl_info.html#a95dfd12b33d938d0130d1e3326f9d711',1,'WyLight::BlInfo']]],
   ['sizelow',['sizeLow',['../struct_wy_light_1_1_bl_info.html#a0fdc843fbc878f3570751ef38fa69e0e',1,'WyLight::BlInfo']]],
   ['starthigh',['startHigh',['../struct_wy_light_1_1_bl_info.html#adaaa62eb1ad8fee73cb2503222e7b905',1,'WyLight::BlInfo']]],
-  ['startlinearaddress',['startLinearAddress',['../classintelhex.html#ac0e6c51bedf95a65fd4d79711a254460',1,'intelhex']]],
+  ['startlinearaddress',['startLinearAddress',['../classintelhex.html#a08bee84b2ef4f989a5f15f9eeaf317ac',1,'intelhex']]],
   ['startlow',['startLow',['../struct_wy_light_1_1_bl_info.html#a7a53fd44ef6def50cbffdc519190961d',1,'WyLight::BlInfo']]],
-  ['startsegmentaddress',['startSegmentAddress',['../classintelhex.html#a825c8bbb00069930960d90fe90a1b397',1,'intelhex']]],
+  ['startsegmentaddress',['startSegmentAddress',['../classintelhex.html#ab150a4a21506ce25cf3cb1123478ca0c',1,'intelhex']]],
   ['startu',['startU',['../struct_wy_light_1_1_bl_info.html#a9d435ba3c8d9b530b3fcbf70c358e72c',1,'WyLight::BlInfo']]],
   ['stop_5fmsg',['STOP_MSG',['../class_wy_light_1_1_broadcast_receiver.html#a7e3c3f4fe453f48d012ecbb15e8cb5e5',1,'WyLight::BroadcastReceiver']]]
 ];
