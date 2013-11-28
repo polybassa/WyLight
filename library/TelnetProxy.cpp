@@ -241,8 +241,9 @@ namespace WyLight {
 
 	bool TelnetProxy::SetReplaceChar(const char replace) const
 	{
-		std::string replaceCmd("set opt replace " + std::string(1, replace) + "\r\n");
-		return Send(replaceCmd);
+		std::stringstream replaceCmd;
+		replaceCmd << "set opt replace 0x" << std::hex << static_cast<int>(replace) << "\r\n";
+		return Send(replaceCmd.str());
 	}
 
 	bool TelnetProxy::PerformWifiScan(std::string &result) const
