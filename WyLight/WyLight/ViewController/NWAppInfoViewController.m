@@ -10,8 +10,6 @@
 
 @interface NWAppInfoViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *appVersionLabel;
-@property (weak, nonatomic) IBOutlet UILabel *fwVersionLabel;
-@property (weak, nonatomic) IBOutlet UILabel *hexVersionLabel;
 
 @end
 

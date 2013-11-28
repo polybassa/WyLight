@@ -39,12 +39,12 @@
                   symbolName = "__45-[NWScriptViewController deleteScriptObject:]_block_invoke245"
                   moduleName = "WyLight"
                   urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script/NWScriptViewController.m"
-                  timestampString = "407321164.143791"
+                  timestampString = "407324782.094979"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "320"
                   endingLineNumber = "320"
-                  offsetFromSymbolStart = "1476">
+                  offsetFromSymbolStart = "1698">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -53,12 +53,12 @@
                   symbolName = "__45-[NWScriptViewController deleteScriptObject:]_block_invoke_2"
                   moduleName = "WyLight"
                   urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script/NWScriptViewController.m"
-                  timestampString = "407321164.144268"
+                  timestampString = "407324782.095409"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "320"
                   endingLineNumber = "320"
-                  offsetFromSymbolStart = "30">
+                  offsetFromSymbolStart = "19">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -149,12 +149,12 @@
                   symbolName = "-[NWScriptViewController deleteScriptObject:]"
                   moduleName = "WyLight"
                   urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script/NWScriptViewController.m"
-                  timestampString = "407321164.144769"
+                  timestampString = "407324782.096992"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "296"
                   endingLineNumber = "296"
-                  offsetFromSymbolStart = "2244">
+                  offsetFromSymbolStart = "2690">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -163,12 +163,12 @@
                   symbolName = "-[NWScriptViewController deleteScriptObject:]"
                   moduleName = "WyLight"
                   urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script/NWScriptViewController.m"
-                  timestampString = "407321164.145204"
+                  timestampString = "407324782.097367"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "296"
                   endingLineNumber = "296"
-                  offsetFromSymbolStart = "2628">
+                  offsetFromSymbolStart = "3384">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -177,12 +177,12 @@
                   symbolName = "__45-[NWScriptViewController deleteScriptObject:]_block_invoke"
                   moduleName = "WyLight"
                   urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script/NWScriptViewController.m"
-                  timestampString = "407321164.145647"
+                  timestampString = "407324782.097724"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "296"
                   endingLineNumber = "296"
-                  offsetFromSymbolStart = "40">
+                  offsetFromSymbolStart = "21">
                </Location>
             </Locations>
          </BreakpointContent>
