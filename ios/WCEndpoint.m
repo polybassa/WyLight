@@ -36,11 +36,11 @@
 - (NSString *)adressString
 {
 	return [NSString stringWithFormat:@"%d.%d.%d.%d : %d",
-										(self.ipAdress >> 24) & 0xff,
-										(self.ipAdress >> 16) & 0xff,
-										(self.ipAdress >> 8) & 0xff,
-										(self.ipAdress >> 0) & 0xff,
-										self.port];
+		(self.ipAdress >> 24) & 0xff,
+		(self.ipAdress >> 16) & 0xff,
+		(self.ipAdress >> 8) & 0xff,
+		(self.ipAdress >> 0) & 0xff,
+		self.port];
 }
 
 @end
