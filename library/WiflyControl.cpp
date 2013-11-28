@@ -565,17 +565,17 @@ namespace WyLight {
 	bool Control::ConfModuleForWlan(const std::string& phrase, const std::string& ssid, const std::string& deviceId) const
 	{
 		if(!ConfSetDefaults()) {
-				Trace(ZONE_ERROR, "set defaults failed\n");
+			Trace(ZONE_ERROR, "set defaults failed\n");
 			return false;
 		}
 
 		if(!ConfSetWlan(phrase, ssid)) {
-				Trace(ZONE_ERROR, "set wlan phrase and ssid failed\n");
+			Trace(ZONE_ERROR, "set wlan phrase and ssid failed\n");
 			return false;
 		}
 
 		if(!ConfSetDeviceId(deviceId)) {
-				Trace(ZONE_ERROR, "set device name failed\n");
+			Trace(ZONE_ERROR, "set device name failed\n");
 			return false;
 		}
 
@@ -609,22 +609,22 @@ namespace WyLight {
 		static const size_t SSID_MAX = 32;
 
 		if((phrase.size() < 1) || (phrase.size() > PHRASE_MAX) || 0 != std::count_if(phrase.begin(), phrase.end(), iscntrl)) {
-				Trace(ZONE_WARNING, "Invalid wlan passphrase '%s'\n", phrase.data());
+			Trace(ZONE_WARNING, "Invalid wlan passphrase '%s'\n", phrase.data());
 			return false;
 		}
 
 		if((ssid.size() < 1) || (ssid.size() > SSID_MAX)) {
-				Trace(ZONE_WARNING, "Invalid wlan ssid '%s'\n", ssid.data());
+			Trace(ZONE_WARNING, "Invalid wlan ssid '%s'\n", ssid.data());
 			return false;
 		}
 
 		if(!mTelnet.Open()) {
-				Trace(ZONE_ERROR, "open telnet connection failed\n");
+			Trace(ZONE_ERROR, "open telnet connection failed\n");
 			return false;
 		}
 
 		if(!mTelnet.SendString("set wlan phrase ", phrase)) {
-				Trace(ZONE_ERROR, "set wlan phrase to '%s' failed\n", phrase.data());
+			Trace(ZONE_ERROR, "set wlan phrase to '%s' failed\n", phrase.data());
 			mTelnet.Close(false);
 			return false;
 		}
