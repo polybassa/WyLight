@@ -58,6 +58,8 @@ enum EditColorTarget {
 	gradientColor2
 };
 
+#define SELECTED_TOOLKIT @"WyLightRemote.NWComplexScriptCommandEditorViewController.selectedToolkitKey"
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 	[self setup];
@@ -73,7 +75,8 @@ enum EditColorTarget {
 	self.sendInitialClearScript = YES;
 	self.currentItemIndex = self.scriptSubCommandsCarousel.currentItemView.tag;
 	[self.scriptSubCommandsCarousel reloadItemAtIndex:self.scriptSubCommandsCarousel.currentItemIndex animated:YES];
-	[self.toolKitCarousel scrollToItemAtIndex:EndableEditViewIndex animated:NO];
+	NSInteger selectedToolkit = [[NSUserDefaults standardUserDefaults] integerForKey:SELECTED_TOOLKIT];
+	[self.toolKitCarousel scrollToItemAtIndex:selectedToolkit animated:NO];
 	self.toolKitCarousel.hidden = NO;
 }
 
@@ -83,6 +86,7 @@ enum EditColorTarget {
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+	[[NSUserDefaults standardUserDefaults] setInteger:self.toolKitCarousel.currentItemIndex forKey:SELECTED_TOOLKIT];
 	self.toolKitCarousel.hidden = YES;
 	[super viewWillDisappear:animated];
 }

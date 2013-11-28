@@ -18,13 +18,14 @@
 "PleaseWaitKey" = "Please wait.";
 "ConnectingKey" = "Connecting";
 "UpdateRequiredKey" = "Update required!";
+"UpdateFailedKey" = "Update failed!";
 "ConnectionLostKey" = "Connection lost!";
 "ReConnectKey" = "Please reconnect.";
 "ConfigSuccessfullKey" = "Configuration successfull!";
 "ChangeWifiKey" = "Please change your WLAN-Network\nin your device settings!";
 "NoTargetFoundKey" = "No new WyLight in config mode found!";
 "RetryKey" = "Please retry!";
-"PasswordKey" = "Password";
+"PasswordKey" = "Password:";
 "SSIDInfoKey" = "Enter SSID for your WyLight";
 "APInfoKey" = "Enter your AP informations";
 "InvalidInputKey" = "Invalid Input";

@@ -17,14 +17,15 @@
 "LoadingDataKey" = "Lade Daten ...";
 "PleaseWaitKey" = "Einen Moment Geduld, Bitte!";
 "ConnectingKey" = "Verbindungsaufbau";
-"UpdateRequiredKey" = "Softwareaktualisierung notwendig";
+"UpdateRequiredKey" = "Softwareaktualisierung notwendig!";
+"UpdateFailedKey" = "Softwareaktualisierung fehlgeschlagen!";
 "ConnectionLostKey" = "Verbindungsabbruch!";
 "ReConnectKey" = "Bitte Verbindung erneut aufbauen.";
 "ConfigSuccessfullKey" = "Einrichtung erfolgreich abgeschlossen!";
 "ChangeWifiKey" = "Bitte zum ursprünglichen WLAN-Netzwerk wechseln!";
 "NoTargetFoundKey" = "Es wurde kein WyLight im Einrichtungsmodus gefunden!";
 "RetryKey" = "Bitte erneut versuchen!";
-"PasswordKey" = "Passwort";
+"PasswordKey" = "Passwort:";
 "SSIDInfoKey" = "SSID die Ihr WyLight tragen soll eingeben";
 "APInfoKey" = "Accesspoint-Informationen \neingeben";
 "InvalidInputKey" = "Ungültige Eingabe";

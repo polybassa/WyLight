@@ -10,14 +10,21 @@
 #import "WCEndpoint.h"
 #include "StartupManager.h"
 
-@interface NWConnectionTBC ()
+@interface NWConnectionTBC () <UIAlertViewDelegate>
 
 @property (nonatomic, strong) WCWiflyControlWrapper* controlHandle;
 @property (nonatomic, strong) UIAlertView* connectingView;
+@property (nonatomic) BOOL didUpdate;
 
 @end
 
 @implementation NWConnectionTBC
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	if (buttonIndex == 0 && self.didUpdate) {
+		[self performSegueWithIdentifier:@"closeConnection" sender:self];
+	}
+}
 
 //establishes connection to the endpoint automatically
 - (void)setEndpoint:(WCEndpoint *)endpoint {
@@ -27,24 +34,39 @@
 	}
 }
 
+- (UIAlertView *)connectingView {
+	if (!_connectingView) {
+		self.connectingView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"ConnectingKey", @"ViewControllerLocalization", @"") message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+	}
+	
+	return _connectingView;
+}
+
 - (void)connectToEndpoint {
 	if (self.controlHandle != nil) {
 		return;
 	}
-    self.connectingView = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"ConnectingKey", @"ViewControllerLocalization", @"") message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
-	[self.connectingView show];
-	
+    if (![self.connectingView isVisible]) {
+		[self.connectingView show];
+	}
 	dispatch_async(dispatch_queue_create("connecting to target Queue", NULL), ^{
 		
 		self.controlHandle = [[WCWiflyControlWrapper alloc] initWithWCEndpoint:self.endpoint establishConnection:NO doStartup:NO];
-        [self.controlHandle setDelegate:self];
-        
+		[self.controlHandle setDelegate:self];
+
         NSInteger returnValue = [self.controlHandle connectWithStartup:YES];
         dispatch_async(dispatch_get_main_queue(), ^{
 			[self.connectingView dismissWithClickedButtonIndex:0 animated:YES];
+			if (returnValue != 0) {
+				if (self.didUpdate) {
+					[[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"UpdateFailedKey", @"ViewControllerLocalization", @"") message:NSLocalizedStringFromTable(@"RetryKey", @"ViewControllerLocalization", @"") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
+				} else {
+					[self performSegueWithIdentifier:@"unwindAtConnectionFatalErrorOccured" sender:self];
+				}
+			}
 		});
 		if (returnValue != 0) {
-            return;
+			return;
 		}
         
 		// Finish connection Block
@@ -53,7 +75,6 @@
 				[obj performSelector:@selector(setControlHandle:) withObject:self.controlHandle];
 			}
 		}
-
 	});
 }
 
@@ -75,6 +96,13 @@
     [super viewDidAppear:animated];
 	if (self.endpoint) {
 		[self connectToEndpoint];
+	}
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	if (self.controlHandle == nil) {
+		[self.connectingView show];
 	}
 }
 
@@ -108,8 +136,11 @@
         case WyLight::StartupManager::STARTUP_SUCCESSFUL:
             break;
             
-        case WyLight::StartupManager::UPDATING:
-            break;
+        case WyLight::StartupManager::UPDATING:{
+			[self setDidUpdate:YES];
+			titel = NSLocalizedStringFromTable(@"UpdateRequiredKey", @"ViewControllerLocalization", @"");
+			message = NSLocalizedStringFromTable(@"PleaseWaitKey", @"ViewControllerLocalization", @"");
+		} break;
 
         default:
             break;
