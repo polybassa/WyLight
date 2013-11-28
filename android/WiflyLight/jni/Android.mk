@@ -13,6 +13,7 @@ LOCAL_SRC_FILES += $(LIB_SRC)intelhexclass.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)MaskBuffer.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)Script.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)ScriptManager.cpp
+LOCAL_SRC_FILES += $(LIB_SRC)StartupManager.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)TelnetProxy.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)WiflyControl.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)WiflyControlNoThrow.cpp
