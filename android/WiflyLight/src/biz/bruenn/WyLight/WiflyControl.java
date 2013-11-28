@@ -22,6 +22,7 @@ public class WiflyControl {
 	private native boolean FwSetFade(long pNative, int argb, int addr, short fadeTime) throws ConnectionTimeout, FatalError, ScriptBufferFull;
 	private native boolean FwSetGradient(long pNative, int argb_1, int argb_2, int length, int offset, short fadeTime) throws ConnectionTimeout, FatalError, ScriptBufferFull;
 	private native void release(long pNative);
+	private native void Startup(long pNative, String path);
 	
 	private long mNative;
 	
@@ -85,5 +86,11 @@ public class WiflyControl {
 	
 	public synchronized boolean fwSetGradient(int argb_1, int argb_2, int length, int offset, short fadeTime) throws ConnectionTimeout, FatalError, ScriptBufferFull {
 		return FwSetGradient(mNative, argb_1, argb_2, length, offset, fadeTime);
+	}
+
+	public synchronized void startup(Endpoint remote, String path) throws FatalError {
+		if (connect(remote)) {
+			Startup(mNative, path);
+		}
 	}
 }

@@ -7,5 +7,4 @@ public class InvalidParameter extends FatalError {
 	InvalidParameter(String s) {
 		super("InvalidParameter: " + s);
 	}
-
 }

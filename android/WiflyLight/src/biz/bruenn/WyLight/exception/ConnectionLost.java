@@ -7,5 +7,4 @@ public class ConnectionLost extends FatalError {
 	ConnectionLost(String s) {
 		super("ConnectionLost: " + s);
 	}
-
 }

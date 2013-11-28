@@ -48,7 +48,6 @@ namespace WyLight {
 			mHexFileVersion = control.ExtractFwVersion(hexFilePath);
 		} catch(std::exception &e) {
 			throw InvalidParameter("Can not read version string from hexFile");
-			return;
 		}
 
 		//--------------------MODE-CHECK----------------
@@ -72,18 +71,15 @@ namespace WyLight {
 		}
 		setCurrentState(START_BOOTLOADER);
 		startBootloader(control, hexFilePath);
-		return;
 	}
 
 	void StartupManager::startBootloader(WyLight::Control &control, const std::string& hexFilePath) {
 		try {
 			control << FwCmdStartBl();
 			bootloaderVersionCheckUpdate(control, hexFilePath);
-			return;
 		} catch(std::exception &e) {
 			Trace(ZONE_ERROR, "StartupManager startup failure in state %d: %s\n", mState, e.what());
-				setCurrentState(STARTUP_FAILURE);
-			return;
+			setCurrentState(STARTUP_FAILURE);
 		}
 	}
 
@@ -98,12 +94,9 @@ namespace WyLight {
 				setCurrentState(RUN_APP);
 			control.BlRunApp();
 			control.ConfSetParameters(Control::RN171_BASIC_PARAMETERS) ? setCurrentState(STARTUP_SUCCESSFUL) : setCurrentState(STARTUP_FAILURE);
-			return;
-
 		} catch(std::exception &e) {
 			Trace(ZONE_ERROR, "StartupManager startup failure in state %d: %s\n", mState, e.what());
 			setCurrentState(STARTUP_FAILURE);
-			return;
 		}
 	}
 }

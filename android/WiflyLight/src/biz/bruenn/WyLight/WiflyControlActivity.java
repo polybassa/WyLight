@@ -1,5 +1,10 @@
 package biz.bruenn.WyLight;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.ControlFragment.WiflyControlProvider;
 import biz.bruenn.WyLight.exception.FatalError;
@@ -58,6 +63,21 @@ public class WiflyControlActivity extends FragmentActivity implements WiflyContr
 		}	
 	}
 
+	private String copyAssetToFile(String name) throws IOException {
+		byte[] firmwareBuffer = new byte[1024];
+		String outputFilename = getFilesDir().getAbsolutePath() + '/' + name;
+		FileOutputStream out;
+		out = new FileOutputStream(new File(outputFilename));
+		InputStream firmwareAsset = this.getAssets().open(name);
+		for(int bytesRead = firmwareAsset.read(firmwareBuffer); bytesRead > 0; bytesRead = firmwareAsset.read(firmwareBuffer)) {
+			System.out.print(firmwareBuffer);
+			out.write(firmwareBuffer);
+		}
+		firmwareAsset.close();
+		out.close();
+		return outputFilename;
+	}
+
 	public WiflyControl getControl() {
 		return mCtrl;
 	}
@@ -101,11 +121,12 @@ public class WiflyControlActivity extends FragmentActivity implements WiflyContr
 	protected void onResume() {
 		super.onResume();
 		try {
-			mCtrl.connect(mRemote);
+			final String tempFilename = copyAssetToFile("main.hex");
+			mCtrl.startup(mRemote, tempFilename);
 		} catch (FatalError e) {
 			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (IOException e) {
+			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
 		}
 	}
 }

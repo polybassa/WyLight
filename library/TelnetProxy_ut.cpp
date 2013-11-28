@@ -20,11 +20,12 @@
 #include "TelnetProxy.h"
 #include <algorithm>
 #include <limits>
+#include <sstream>
+#include <string>
 #include <time.h>
 #include <unistd.h>
 
 /**************** includes, classes and functions for wrapping ****************/
-#include <string.h>
 
 using namespace WyLight;
 
@@ -169,9 +170,7 @@ namespace WyLight {
 		CHECK(testee.Recv("Test"));
 		TestCaseEnd();
 	}
-}
 
-namespace WyLight {
 	size_t ut_TelnetProxy_RecvString(void)
 	{
 		static const std::string fullResponse("ssid not this ssid: this is my ssid!\r\nssid: XX" PROMPT);
@@ -244,13 +243,13 @@ size_t ut_TelnetProxy_Send(void)
 	CHECK(0 == memcmp(g_TestSocketSendBuffer, cmd.data(), cmd.size()));
 	TestCaseEnd();
 }
-
+#include <iostream>
 size_t ut_TelnetProxy_SendString(void)
 {
 	TestCaseBegin();
 	static const std::string CRLF("\r\n");
 	static const std::string cmd("HUHU");
-	static const std::string cmdSetOptReplace("set opt replace ");
+	static const std::string cmdSetOptReplace("set opt replace 0x");
 	std::string value;
 	for(char c = std::numeric_limits<char>::max(); c > ' '; c--) {
 		if(isprint(c) && !isalnum(c)) {
@@ -265,15 +264,18 @@ size_t ut_TelnetProxy_SendString(void)
 	g_TestSocketRecvBufferPos = 0;
 	g_TestSocketRecvBufferSize = 0;
 	g_TestSocketSendBufferPos = 0;
-		CHECK(testee.SendString(cmd, value));
-		CHECK(cmd.size() + value.size() + CRLF.size() == g_TestSocketSendBufferPos);
-		CHECK(0 == memcmp(g_TestSocketSendBuffer, cmd.data(), cmd.size()));
-		CHECK(0 == memcmp(g_TestSocketSendBuffer + cmd.size(), value.data(), value.size()));
+	CHECK(testee.SendString(cmd, value));
+	CHECK(cmd.size() + value.size() + CRLF.size() == g_TestSocketSendBufferPos);
+	CHECK(0 == memcmp(g_TestSocketSendBuffer, cmd.data(), cmd.size()));
+	CHECK(0 == memcmp(g_TestSocketSendBuffer + cmd.size(), value.data(), value.size()));
 
 	// test with one replacement available
 	char replacement = ' ';
 	do {
 		std::swap(replacement, value.back());
+		std::stringstream hexStringReplacement;
+		hexStringReplacement << std::hex << (int)replacement;
+		const std::string hexReplacement(hexStringReplacement.str());
 		g_TestSocketRecvBufferPos = 0;
 		g_TestSocketRecvBufferSize = 0;
 		g_TestSocketSendBufferPos = 0;
@@ -281,10 +283,10 @@ size_t ut_TelnetProxy_SendString(void)
 		replacedValue.resize(value.size());
 		std::replace_copy_if(value.begin(), value.end(), replacedValue.begin(), isblank, replacement);
 		CHECK(testee.SendString(cmd, value));
-		CHECK(cmdSetOptReplace.size() + 1 + CRLF.size() + cmd.size() + replacedValue.size() + CRLF.size() + cmdSetOptReplace.size() + 1 + CRLF.size() == g_TestSocketSendBufferPos);
+		CHECK(cmdSetOptReplace.size() + hexReplacement.length() + CRLF.size() + cmd.size() + replacedValue.size() + CRLF.size() + cmdSetOptReplace.size() + hexReplacement.length() + CRLF.size() == g_TestSocketSendBufferPos);
 		const uint8_t *pPos = g_TestSocketSendBuffer;
 		CHECK_MEMCMP(pPos, cmdSetOptReplace.data(), cmdSetOptReplace.size());
-		CHECK_MEMCMP(pPos, &replacement,            sizeof(replacement));
+		CHECK_MEMCMP(pPos, hexReplacement.data(),   hexReplacement.length());
 		CHECK_MEMCMP(pPos, CRLF.data(),             CRLF.size());
 		CHECK_MEMCMP(pPos, cmd.data(),              cmd.size());
 		CHECK_MEMCMP(pPos, replacedValue.data(),    replacedValue.size());
