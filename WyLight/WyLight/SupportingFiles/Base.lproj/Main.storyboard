@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="JaC-K0-GVf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="x4A-Fz-YpF">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -200,13 +200,138 @@
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="controlDarkShadowColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="18" name="Aller-Regular"/>
+                                            <font key="NSOriginalFont" size="13" name=".LucidaGrandeUI"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="  ">
+                                        <attributes>
+                                            <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
                                             <font key="NSFont" size="13" name="Aller-Regular"/>
                                             <font key="NSOriginalFont" size="13" name=".LucidaGrandeUI"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>
                                     </fragment>
-                                    <fragment>
-                                        <string key="content">  1. Unplug the power supply from your WyLight 2. Press and hold the On/Off button on your WyLight 3. Plug in your Power supply while you are holding down the button 4. Open your device settings on your iPhone 5. Connect to the Wifi-Network of your WyLight 6. Switch back to this App 7. Press Done  </string>
+                                    <fragment content="1.">
+                                        <attributes>
+                                            <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="18" name="Aller-Regular"/>
+                                            <font key="NSOriginalFont" size="18" name="Aller-Regular"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content=" Unplug the power supply from your WyLight ">
+                                        <attributes>
+                                            <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="13" name="Aller-Regular"/>
+                                            <font key="NSOriginalFont" size="13" name=".LucidaGrandeUI"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="2.">
+                                        <attributes>
+                                            <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="18" name="Aller-Regular"/>
+                                            <font key="NSOriginalFont" size="18" name="Aller-Regular"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content=" Press and hold the On/Off button on your WyLight ">
+                                        <attributes>
+                                            <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="13" name="Aller-Regular"/>
+                                            <font key="NSOriginalFont" size="13" name=".LucidaGrandeUI"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="3.">
+                                        <attributes>
+                                            <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="18" name="Aller-Regular"/>
+                                            <font key="NSOriginalFont" size="18" name="Aller-Regular"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content=" Plug in your Power supply while you are holding down the button ">
+                                        <attributes>
+                                            <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="13" name="Aller-Regular"/>
+                                            <font key="NSOriginalFont" size="13" name=".LucidaGrandeUI"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="4.">
+                                        <attributes>
+                                            <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="18" name="Aller-Regular"/>
+                                            <font key="NSOriginalFont" size="18" name="Aller-Regular"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content=" Open your device settings on your iPhone ">
+                                        <attributes>
+                                            <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="13" name="Aller-Regular"/>
+                                            <font key="NSOriginalFont" size="13" name=".LucidaGrandeUI"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="5.">
+                                        <attributes>
+                                            <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="18" name="Aller-Regular"/>
+                                            <font key="NSOriginalFont" size="18" name="Aller-Regular"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content=" Connect to the Wifi-Network of your WyLight ">
+                                        <attributes>
+                                            <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="13" name="Aller-Regular"/>
+                                            <font key="NSOriginalFont" size="13" name=".LucidaGrandeUI"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="6.">
+                                        <attributes>
+                                            <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="18" name="Aller-Regular"/>
+                                            <font key="NSOriginalFont" size="18" name="Aller-Regular"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content=" Switch back to this App ">
+                                        <attributes>
+                                            <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="13" name="Aller-Regular"/>
+                                            <font key="NSOriginalFont" size="13" name=".LucidaGrandeUI"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="7.">
+                                        <attributes>
+                                            <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="18" name="Aller-Regular"/>
+                                            <font key="NSOriginalFont" size="18" name="Aller-Regular"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content=" Press Done  ">
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
@@ -237,8 +362,8 @@
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" size="13" name="Aller-Regular"/>
-                                            <font key="NSOriginalFont" size="12" name=".LucidaGrandeUI"/>
+                                            <font key="NSFont" size="18" name="Aller-Regular"/>
+                                            <font key="NSOriginalFont" size="18" name="Aller-Regular"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>
                                     </fragment>
@@ -255,8 +380,8 @@
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" size="13" name="Aller-Regular"/>
-                                            <font key="NSOriginalFont" size="12" name=".LucidaGrandeUI"/>
+                                            <font key="NSFont" size="18" name="Aller-Regular"/>
+                                            <font key="NSOriginalFont" size="18" name="Aller-Regular"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>
                                     </fragment>
@@ -345,31 +470,31 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Kyd-RP-TCx">
-                                        <rect key="frame" x="20" y="49" width="280" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.47843140363693237" blue="1" alpha="1" colorSpace="deviceRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="q89-fK-UG4">
-                                        <rect key="frame" x="20" y="94" width="280" height="30"/>
+                                        <rect key="frame" x="20" y="97" width="280" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VVO-f8-Md4">
-                                        <rect key="frame" x="20" y="132" width="280" height="30"/>
+                                        <rect key="frame" x="20" y="135" width="280" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sMj-4u-evN">
-                                        <rect key="frame" x="20" y="170" width="280" height="30"/>
+                                        <rect key="frame" x="20" y="173" width="280" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Kyd-RP-TCx">
+                                        <rect key="frame" x="20" y="39" width="280" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.47843140363693237" blue="1" alpha="1" colorSpace="deviceRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                             </scrollView>
                         </subviews>
