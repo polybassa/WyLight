@@ -7,5 +7,4 @@ public class ScriptBufferFull extends FatalError {
 	ScriptBufferFull(String s) {
 		super("ScriptBufferFull: " + s);
 	}
-
 }

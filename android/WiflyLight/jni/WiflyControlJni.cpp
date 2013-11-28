@@ -18,6 +18,7 @@
 
 #include "BroadcastReceiver.h"
 #include "ScriptManager.h"
+#include "StartupManager.h"
 #include "WiflyControl.h"
 #include <sstream>
 #include <unistd.h>
@@ -205,6 +206,20 @@ namespace WyLight {
 				delete g_pControl;
 				g_pControl = NULL;
 			}
+		}
+
+		void Java_biz_bruenn_WyLight_WiflyControl_Startup(JNIEnv *env, jobject ref, jlong pNative, jstring path)
+		{
+			const char *const myPath = env->GetStringUTFChars(path, 0);
+			Control& myControl = *reinterpret_cast<Control*>(pNative);
+			StartupManager manager;
+			try {
+				manager.startup(myControl, myPath);
+			} catch (FatalError& e) {
+				//env->ReleaseStringUTFChars(path, myPath);
+				ThrowJniException(env, e);
+			}
+			env->ReleaseStringUTFChars(path, myPath);
 		}
 
 		jint Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_getFadeColor(JNIEnv *env, jobject ref, jlong pNative)
