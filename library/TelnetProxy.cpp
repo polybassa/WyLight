@@ -102,7 +102,7 @@ namespace WyLight {
 	bool TelnetProxy::Recv(const std::string& expectedResponse) const
 	{
 		timeval timeout = {5, 0};
-		uint8_t buffer[64];
+		uint8_t buffer[128];
 		if(sizeof(buffer) < expectedResponse.size()) {
 			Trace(ZONE_ERROR, "expected response to long!\n");
 			return false;
@@ -216,12 +216,7 @@ namespace WyLight {
 	{
 		static const std::string REPLACE("\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2A\x2B\x2C\x2D\x2E\x2F\x3A\x3B\x3C\x3D\x3E\x3F\x40\x5B\x5C\x5D\x5E\x5F\x60\x7B\x7C\x7D\x7E");
 
-		// if value contains no spaces its simple
-		if(std::string::npos == value.find_first_of(' ', 0)) {
-			return Send(value.insert(0, command).append("\r\n"));
-		}
-
-		// value contains spaces so we have to replace them with another character
+		// find a replacement character
 		const size_t pos = REPLACE.find_first_not_of(value, 0);
 		if(std::string::npos == pos) {
 			Trace(ZONE_ERROR, "No replacement character available to replace spaces in string\n");
@@ -229,12 +224,12 @@ namespace WyLight {
 		}
 
 		const char replacement = REPLACE[pos];
-		std::replace_if(value.begin(), value.end(), isblank, replacement);
 		if(!SetReplaceChar(replacement)) {
 			Trace(ZONE_ERROR, "set replacement character failed\n");
 			return false;
 		}
 
+		std::replace_if(value.begin(), value.end(), isblank, replacement);
 		const bool valueWasSet = Send(value.insert(0, command).append("\r\n"));
 		return SetReplaceChar() && valueWasSet;
 	}

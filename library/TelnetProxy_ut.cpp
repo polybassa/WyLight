@@ -260,14 +260,12 @@ size_t ut_TelnetProxy_SendString(void)
 	TcpSocket sock {0, 0};
 	TelnetProxy testee {sock};
 
-	// test without space
+	// test with no replacement char available
 	g_TestSocketRecvBufferPos = 0;
 	g_TestSocketRecvBufferSize = 0;
 	g_TestSocketSendBufferPos = 0;
-	CHECK(testee.SendString(cmd, value));
-	CHECK(cmd.size() + value.size() + CRLF.size() == g_TestSocketSendBufferPos);
-	CHECK(0 == memcmp(g_TestSocketSendBuffer, cmd.data(), cmd.size()));
-	CHECK(0 == memcmp(g_TestSocketSendBuffer + cmd.size(), value.data(), value.size()));
+	CHECK(!testee.SendString(cmd, value));
+	CHECK(0 == g_TestSocketSendBufferPos);
 
 	// test with one replacement available
 	char replacement = ' ';
@@ -293,12 +291,6 @@ size_t ut_TelnetProxy_SendString(void)
 		std::rotate(value.begin(), value.begin() + 1, value.end());
 	}
 	while(value.back() != ' ');
-
-	// test with no replacement char available
-	g_TestSocketSendBufferPos = 0;
-	value.append(1, replacement);
-	CHECK(!testee.SendString(cmd, value));
-	CHECK(0 == g_TestSocketSendBufferPos);
 	TestCaseEnd();
 }
 
