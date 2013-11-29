@@ -68,10 +68,13 @@ namespace WyLight {
 					gettimeofday(&now, NULL);
 				}
 				while(mIsRunning && timeval_sub(&endTime, &now, pTimeout));
-			} catch(FatalError& e)   {
+			} catch(FatalError& e) {
 				std::atomic_fetch_sub(&mNumInstances, 1);
 				throw(e);
 			}
+
+
+
 		std::atomic_fetch_sub(&mNumInstances, 1);
 	}
 
