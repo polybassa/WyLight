@@ -34,6 +34,7 @@ namespace WyLight {
 	ScriptList mList;
 
 	public:
+		static void deserialize(std::istream &inStream, WyLight::Script &newScript);
 		static void deserialize(const std::string& filename, Script& newScript) throw (FatalError);
 		static void serialize(const std::string& filename, const Script& newScript) throw (FatalError);
 

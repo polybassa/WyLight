@@ -72,23 +72,27 @@ namespace WyLight {
 			throw FatalError("Open '" + filename + "' to read script failed");
 		}
 
+		newScript.deserialize(inFile, newScript);
+		inFile.close();
+	}
+	
+	void Script::deserialize(std::istream &inStream, WyLight::Script &newScript) {
 		std::string command;
-		while(inFile >> command) {
+		while(inStream >> command) {
 			if(0 == command.compare(FwCmdLoopOn::TOKEN)) {
 				newScript.push_back(new FwCmdLoopOn());
 			} else if(0 == command.compare(FwCmdLoopOff::TOKEN)) {
-				newScript.push_back(new FwCmdLoopOff(inFile));
+				newScript.push_back(new FwCmdLoopOff(inStream));
 			} else if(0 == command.compare(FwCmdWait::TOKEN)) {
-				newScript.push_back(new FwCmdWait(inFile));
+				newScript.push_back(new FwCmdWait(inStream));
 			} else if(0 == command.compare(FwCmdSetFade::TOKEN)) {
-				newScript.push_back(new FwCmdSetFade(inFile));
+				newScript.push_back(new FwCmdSetFade(inStream));
 			} else if(0 == command.compare(FwCmdSetGradient::TOKEN)) {
-				newScript.push_back(new FwCmdSetGradient(inFile));
+				newScript.push_back(new FwCmdSetGradient(inStream));
 			} else {
 				throw FatalError("Unknown command: " + command);
 			}
 		}
-		inFile.close();
 	}
 
 	Script::ScriptList::const_iterator Script::end() const noexcept

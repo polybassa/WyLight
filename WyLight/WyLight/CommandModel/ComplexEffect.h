@@ -21,6 +21,8 @@
 - (ComplexEffect *)prev;
 - (ComplexEffect *)next;
 
+- (void)prepareForSendToWCWiflyControl;
+
 @property (nonatomic, retain) NSNumber * waitCommand;
 @property (nonatomic, retain) NSOrderedSet *effects;
 @property (nonatomic, retain) Script *script;
