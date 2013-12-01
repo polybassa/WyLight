@@ -52,7 +52,7 @@ namespace WyLight {
 
 		//--------------------MODE-CHECK----------------
 		try {
-				setCurrentState(MODE_CHECK);
+			setCurrentState(MODE_CHECK);
 			size_t currentMode = control.GetTargetMode();
 			if(currentMode == BL_IDENT) {
 				setCurrentState(BL_VERSION_CHECK);
@@ -67,6 +67,8 @@ namespace WyLight {
 				}
 			}
 		} catch(std::exception &e) {
+			// Exception in case of lost connection or old FW-Version without mode check support expected
+			// Try to start bootloader, to get in BL-Mode. In BL-Mode, mode check is always supported.
 			Trace(ZONE_ERROR, "StartupManager startup failure in state %d: %s\n", mState, e.what());
 		}
 		setCurrentState(START_BOOTLOADER);
@@ -78,6 +80,7 @@ namespace WyLight {
 			control << FwCmdStartBl();
 			bootloaderVersionCheckUpdate(control, hexFilePath);
 		} catch(std::exception &e) {
+			// Exception in case of lost connection or wrong mode expected
 			Trace(ZONE_ERROR, "StartupManager startup failure in state %d: %s\n", mState, e.what());
 			setCurrentState(STARTUP_FAILURE);
 		}
@@ -87,6 +90,7 @@ namespace WyLight {
 		try {
 			mTargetVersion = control.BlReadFwVersion();
 			if(mTargetVersion == 0 || mTargetVersion < mHexFileVersion) {
+				//---- UPDATE STUFF ---------
 				setCurrentState(UPDATING);
 				control.BlEraseEeprom();
 				control.BlProgramFlash(hexFilePath);
@@ -95,6 +99,8 @@ namespace WyLight {
 			control.BlRunApp();
 			control.ConfSetParameters(Control::RN171_BASIC_PARAMETERS) ? setCurrentState(STARTUP_SUCCESSFUL) : setCurrentState(STARTUP_FAILURE);
 		} catch(std::exception &e) {
+			// Expection in case of connection lost or error during update, or invalid update expected.
+			// On invalid update, BlRunApp will fail, because firmware is not lanched on target, so no response will be send.
 			Trace(ZONE_ERROR, "StartupManager startup failure in state %d: %s\n", mState, e.what());
 			setCurrentState(STARTUP_FAILURE);
 		}

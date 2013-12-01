@@ -307,7 +307,6 @@
 
 - (void)swipeUpOnScriptObjectControl:(UISwipeGestureRecognizer *)gesture {
     if ([self.effectDrawer effectIsDrawing:nil]) {
-		[self shareScript];
         return;
     }
     if (self.isDeletionModeActive && self.scriptObjects.count > 1) {
@@ -322,7 +321,9 @@
         [mutScripts removeObjectAtIndex:indexOfObjectToRemove];
         self.scriptObjects = mutScripts;
         [self updateView];
-    }
+    } else if (!self.isDeletionModeActive) {
+		[self shareScript];
+	}
     self.isDeletionModeActive = NO;
 }
 
@@ -361,7 +362,7 @@
     [picker addAttachmentData:myData mimeType:@"text/wylightScript" fileName:fileName];
 	
     // Fill out the email body text
-    NSString *emailBody = @"My cool image is attached";
+    NSString *emailBody = @"My cool WyLight script is attached";
     [picker setMessageBody:emailBody isHTML:NO];
     [self presentModalViewController:picker animated:YES];
 }
