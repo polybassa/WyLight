@@ -38,38 +38,37 @@
 	
 	WyLight::Script mScript;
 	
-	mScript.push_back(new WyLight::FwCmdLoopOn);
+	mScript.push_back(std::unique_ptr<WyLight::FwCmdScript>(new WyLight::FwCmdLoopOn));
 	
 	for (ComplexEffect *cmplx in self.effects) {
 		[cmplx prepareForSendToWCWiflyControl];
 		if (cmplx.waitCommand.boolValue) {
-			mScript.push_back(new WyLight::FwCmdWait(cmplx.duration.unsignedIntValue));
+			mScript.push_back(std::unique_ptr<WyLight::FwCmdScript>(new WyLight::FwCmdWait(cmplx.duration.unsignedIntValue)));
 		} else {
 			for (Effect *effect in cmplx.effects) {
 				if ([effect isKindOfClass:[Fade class]]) {
 					Fade* castEffect = (Fade *)effect;
-					WyLight::FwCmdSetFade* tempFade = new WyLight::FwCmdSetFade([castEffect.color getARGB],
+					mScript.push_back(std::unique_ptr<WyLight::FwCmdScript>(new WyLight::FwCmdSetFade([castEffect.color getARGB],
 											  									castEffect.duration.unsignedIntValue,
 											 	 								castEffect.address.unsignedIntValue,
-																				castEffect.parallel.boolValue);
-					mScript.push_back(tempFade);
+																				castEffect.parallel.boolValue)));
 				} else if ([effect isKindOfClass:[Gradient class]]) {
 					Gradient* castEffect = (Gradient *)effect;
-					mScript.push_back(new WyLight::FwCmdSetGradient([castEffect.color1 getARGB],
+					mScript.push_back(std::unique_ptr<WyLight::FwCmdScript>(new WyLight::FwCmdSetGradient([castEffect.color1 getARGB],
 																	[castEffect.color2 getARGB],
 																	castEffect.duration.unsignedIntValue,
 																	castEffect.parallel.boolValue,
 																	castEffect.numberOfLeds.unsignedIntValue,
-																	castEffect.offset.unsignedIntValue));
+																	castEffect.offset.unsignedIntValue)));
 				}
 			}
 		}
 	}
 	
 	if (self.repeatsWhenFinished.boolValue) {
-		mScript.push_back(new WyLight::FwCmdLoopOff(0));
+		mScript.push_back(std::unique_ptr<WyLight::FwCmdScript>(new WyLight::FwCmdLoopOff(0)));
 	} else {
-		mScript.push_back(new WyLight::FwCmdLoopOff(1));
+		mScript.push_back(std::unique_ptr<WyLight::FwCmdScript>(new WyLight::FwCmdLoopOff(1)));
 	}
 	
 	mScript.serialize(std::string([filePath cStringUsingEncoding:NSASCIIStringEncoding]), mScript);
@@ -95,17 +94,18 @@
 	
 	Script *tempScript = [Script insertNewObjectIntoContext:context];
 	
-	for (WyLight::FwCmdScript *cmd : mScript) {
-		if (typeid(*cmd).name() == typeid(WyLight::FwCmdLoopOff).name()) {
-			const led_cmd * const data = (led_cmd *)cmd->GetData();
+	for (const auto& cmd : mScript) {
+		const led_cmd * const data = (led_cmd *)cmd->GetData();
+		if (data->cmd == LOOP_OFF) {
 			tempScript.repeatsWhenFinished = data->data.loopEnd.numLoops == 0 ? @(YES) : @(NO);
+			break;
 		}
 	}
 		
 	{
 		ComplexEffect *comObj = [ComplexEffect insertNewObjectIntoContext:context];
 		comObj.script = tempScript;
-		for (WyLight::FwCmdScript *cmd : mScript) {
+		for (const auto& cmd : mScript) {
 			const led_cmd * const data = (led_cmd *)cmd->GetData();
 			if (data->cmd == SET_FADE) {
 				

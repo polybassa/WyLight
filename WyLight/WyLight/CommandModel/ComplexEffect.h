@@ -16,7 +16,6 @@
 
 + (NSString *)entityName;
 + (instancetype)insertNewObjectIntoContext:(NSManagedObjectContext *)context;
-+ (instancetype)insertNewComplexEffectIntoScript:(Script *)script;
 
 - (ComplexEffect *)prev;
 - (ComplexEffect *)next;

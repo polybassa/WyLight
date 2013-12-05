@@ -57,7 +57,7 @@ namespace WyLight {
 
 	bool TelnetProxy::ExtractStringOfInterest(const std::string& buffer, const std::string& searchKey, std::string& result) const
 	{
-			Trace(ZONE_VERBOSE, buffer.c_str());
+		Trace(ZONE_VERBOSE, "%s", buffer.c_str());
 		std::stringstream stream;
 		stream << buffer;
 		std::string line;
