@@ -8,10 +8,6 @@
 
 #import "NWTimeInfoView.h"
 
-@interface NWTimeInfoView ()
-
-@end
-
 @implementation NWTimeInfoView
 
 - (id)initWithFrame:(CGRect)frame

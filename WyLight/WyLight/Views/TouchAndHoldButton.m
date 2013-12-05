@@ -8,8 +8,6 @@
 
 #import "TouchAndHoldButton.h"
 
-
-
 @interface TouchAndHoldButton ()
 
 @property (nonatomic, strong) NSTimer *holdTimer;

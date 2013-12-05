@@ -16,6 +16,4 @@
 @property (nonatomic) CGFloat cornerRadius;
 @property (nonatomic) CGFloat orientation;
 
-- (void)setColorsAnimatedWithDuration:(NSTimeInterval)duration startColors:(NSArray *)startColors endColor:(NSArray *)endColors;
-- (void)setStartColors:(NSArray *)startColors withEndcolors:(NSArray *)endColors;
 @end

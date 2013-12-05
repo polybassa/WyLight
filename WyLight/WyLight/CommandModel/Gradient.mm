@@ -100,7 +100,7 @@
         address = @(outputBitmask);
         [self willChangeValueForKey:@"address"];
         [self setAddress:address];
-        [self willChangeValueForKey:@"address"];
+        [self didChangeValueForKey:@"address"];
         
         if (self.complexEffect) {
             [self.complexEffect setColors:nil];

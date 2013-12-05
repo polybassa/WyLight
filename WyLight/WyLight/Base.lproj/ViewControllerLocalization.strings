@@ -8,7 +8,7 @@
 
 "ScriptVCSendBtnKey" = "Send";
 "ScriptVCDeleteInfoKey1" = "Swipe up";
-"ScriptVCDeleteInfoKey1" = "to delete an effect.";
+"ScriptVCDeleteInfoKey2" = "to delete an effect.";
 "CmplxScriptCmdEditorVCFadeInfoKey" = "Fade Color";
 "CmplxScriptCmdEditorVCGradient1InfoKey" = "Gradient Startcolor";
 "CmplxScriptCmdEditorVCGradient2InfoKey" = "Gradient Endcolor";

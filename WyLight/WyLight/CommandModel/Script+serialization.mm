@@ -49,7 +49,7 @@
 				if ([effect isKindOfClass:[Fade class]]) {
 					Fade* castEffect = (Fade *)effect;
 					WyLight::FwCmdSetFade* tempFade = new WyLight::FwCmdSetFade([castEffect.color getARGB],
-											  									effect.duration.unsignedIntValue,
+											  									castEffect.duration.unsignedIntValue,
 											 	 								castEffect.address.unsignedIntValue,
 																				castEffect.parallel.boolValue);
 					mScript.push_back(tempFade);
@@ -106,9 +106,8 @@
 		ComplexEffect *comObj = [ComplexEffect insertNewObjectIntoContext:context];
 		comObj.script = tempScript;
 		for (WyLight::FwCmdScript *cmd : mScript) {
-			if (typeid(*cmd).name() == typeid(WyLight::FwCmdSetFade).name()) {
-				
-				const led_cmd * const data = (led_cmd *)cmd->GetData();
+			const led_cmd * const data = (led_cmd *)cmd->GetData();
+			if (data->cmd == SET_FADE) {
 				
 				Fade *obj = [Fade insertNewObjectIntoContext:context];
 				obj.address = @(((uint32_t)data->data.set_fade.addr[0]) |
@@ -126,10 +125,8 @@
 					comObj = [ComplexEffect insertNewObjectIntoContext:context];
 					comObj.script = tempScript;
 				}
-			} else if (typeid(*cmd).name() == typeid(WyLight::FwCmdSetGradient).name()) {
-				
-				const led_cmd * const data = (led_cmd *)cmd->GetData();
-				
+			} else if (data->cmd == SET_GRADIENT) {
+								
 				Gradient *obj = [Gradient insertNewObjectIntoContext:context];
 				obj.numberOfLeds = @(data->data.set_gradient.numberOfLeds);
 				obj.offset = @(data->data.set_gradient.parallelAndOffset & 0x7f);
@@ -148,11 +145,9 @@
 					comObj = [ComplexEffect insertNewObjectIntoContext:context];
 					comObj.script = tempScript;
 				}
-			} else if (typeid(*cmd).name() == typeid(WyLight::FwCmdWait).name()) {
-				
-				const led_cmd * const data = (led_cmd *)cmd->GetData();
-				
-				comObj.duration = @(data->data.set_gradient.fadeTmms);
+			} else if (data->cmd == WAIT) {
+								
+				comObj.duration = @(data->data.wait.waitTmms);
 				comObj = [ComplexEffect insertNewObjectIntoContext:context];
 				comObj.script = tempScript;
 				
