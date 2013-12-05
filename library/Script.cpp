@@ -36,6 +36,8 @@ namespace WyLight {
 	{
 		clear();
 	}
+	
+	Script::Script(Script&& other) : mName(std::move(other.mName)), mList(std::move(other.mList)) {}
 
 	bool Script::operator == (const Script& ref) const
 	{
@@ -59,8 +61,8 @@ namespace WyLight {
 
 	void Script::clear()
 	{
-		for(auto cmd : mList) {
-			delete cmd;
+		for(auto& cmd : mList) {
+			cmd.reset();
 		}
 		mList.clear();
 	}
@@ -80,15 +82,15 @@ namespace WyLight {
 		std::string command;
 		while(inStream >> command) {
 			if(0 == command.compare(FwCmdLoopOn::TOKEN)) {
-				newScript.push_back(new FwCmdLoopOn());
+				newScript.push_back(std::unique_ptr<FwCmdScript>(new FwCmdLoopOn()));
 			} else if(0 == command.compare(FwCmdLoopOff::TOKEN)) {
-				newScript.push_back(new FwCmdLoopOff(inStream));
+				newScript.push_back(std::unique_ptr<FwCmdScript>(new FwCmdLoopOff(inStream)));
 			} else if(0 == command.compare(FwCmdWait::TOKEN)) {
-				newScript.push_back(new FwCmdWait(inStream));
+				newScript.push_back(std::unique_ptr<FwCmdScript>(new FwCmdWait(inStream)));
 			} else if(0 == command.compare(FwCmdSetFade::TOKEN)) {
-				newScript.push_back(new FwCmdSetFade(inStream));
+				newScript.push_back(std::unique_ptr<FwCmdScript>(new FwCmdSetFade(inStream)));
 			} else if(0 == command.compare(FwCmdSetGradient::TOKEN)) {
-				newScript.push_back(new FwCmdSetGradient(inStream));
+				newScript.push_back(std::unique_ptr<FwCmdScript>(new FwCmdSetGradient(inStream)));
 			} else {
 				throw FatalError("Unknown command: " + command);
 			}
@@ -105,9 +107,9 @@ namespace WyLight {
 		return mName;
 	}
 
-	void Script::push_back(FwCmdScript *pNew)
+	void Script::push_back(std::unique_ptr<FwCmdScript>&& pNew)
 	{
-		mList.push_back(pNew);
+		mList.push_back(std::move(pNew));
 	}
 
 	void Script::serialize(const std::string& filename, const Script& newScript) throw (FatalError)

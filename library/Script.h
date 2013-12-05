@@ -29,7 +29,7 @@ namespace WyLight {
 
 	class Script
 	{
-	typedef std::list<FwCmdScript *> ScriptList;
+	typedef std::list<std::unique_ptr<FwCmdScript>> ScriptList;
 	std::string mName;
 	ScriptList mList;
 
@@ -40,7 +40,9 @@ namespace WyLight {
 
 		Script() = default;
 		Script(const std::string& filename);
+		Script(Script&& other);
 		~Script(void);
+		
 
 		bool operator ==(const Script& ref) const;
 
@@ -48,7 +50,7 @@ namespace WyLight {
 		void clear();
 		ScriptList::const_iterator end() const noexcept;
 		const std::string& getName() const;
-		void push_back(FwCmdScript *pNew);
+		void push_back(std::unique_ptr<FwCmdScript>&& pNew);
 		size_t size() const;
 	};
 } /* namespace WyLight */
