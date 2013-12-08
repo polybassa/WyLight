@@ -33,4 +33,5 @@
     <string name="title_activity_wifly_control">Control your WiflyLight</string>
     <string name="title_dialog_string_picker">Set string</string>
     <string name="title_dialog_set_wlan">Configure your WLAN settings</string>
+    <string name="title_dialog_string_picker">Set string</string>
 </resources>
