@@ -16,8 +16,10 @@
 #import "Script+defaultScripts.h"
 #import "NWRenderableScriptImageView.h"
 #import "NWEffectDrawer.h"
+#import "Script+serialization.h"
+#import <MessageUI/MFMailComposeViewController.h>
 
-@interface NWScriptFolderViewController () <iCarouselDataSource, iCarouselDelegate, NWEffectDrawerDelegate>
+@interface NWScriptFolderViewController () <iCarouselDataSource, iCarouselDelegate, NWEffectDrawerDelegate, MFMailComposeViewControllerDelegate>
 
 @property (nonatomic, assign) BOOL isDeletionModeActive;
 @property (nonatomic, strong) UIBarButtonItem *addButton;
@@ -319,7 +321,9 @@
         [mutScripts removeObjectAtIndex:indexOfObjectToRemove];
         self.scriptObjects = mutScripts;
         [self updateView];
-    }
+    } else if (!self.isDeletionModeActive) {
+		[self shareScript];
+	}
     self.isDeletionModeActive = NO;
 }
 
@@ -340,6 +344,51 @@
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [self performSegueWithIdentifier:@"edit:" sender:self];
     });
+}
+
+- (void)shareScript {
+	MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+    picker.mailComposeDelegate = self;
+    [picker setSubject:@"Check out this script!"];
+	
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *basePath = ([paths count] > 0) ?[paths objectAtIndex:0] : nil;
+	Script *script = self.scriptObjects[[self.carousel currentItemIndex]];
+	NSString *filePath = [script serializeToPath:basePath];
+	
+	NSString *fileName = [filePath componentsSeparatedByString:@"/"].lastObject;
+	 
+	NSData *myData = [NSData dataWithContentsOfFile:filePath];
+    [picker addAttachmentData:myData mimeType:@"text/wylightScript" fileName:fileName];
+	
+    // Fill out the email body text
+    NSString *emailBody = @"My cool WyLight script is attached";
+    [picker setMessageBody:emailBody isHTML:NO];
+    [self presentModalViewController:picker animated:YES];
+}
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+    // Notifies users about errors associated with the interface
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            NSLog(@"Result: canceled");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Result: saved");
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Result: sent");
+            break;
+        case MFMailComposeResultFailed:
+            NSLog(@"Result: failed");
+            break;
+        default:
+            NSLog(@"Result: not sent");
+            break;
+    }
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark - EffectDrawerDelegate

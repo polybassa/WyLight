@@ -8,9 +8,9 @@
 
 #import "Fade.h"
 #import "WCWiflyControlWrapper.h"
-#include "WiflyColor.h"
 #import "ComplexEffect.h"
 #include "wifly_cmd.h"
+#import "UIColor+argbValue.h"
 
 @implementation Fade
 
@@ -35,18 +35,7 @@
 }
 
 - (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control {
-	WyLight::WiflyColor color;
-	
-    UIColor *colorData = self.color;
-    
-	CGFloat r, g, b, a;
-	[colorData getRed:&r green:&g blue:&b alpha:&a];
-	
-	color.red((uint8_t)(r * 255));
-	color.green((uint8_t)(g * 255));
-	color.blue((uint8_t)(b * 255));
-	
-	[control setFade:color.argb() time:self.duration.unsignedIntegerValue address:self.address.unsignedIntValue parallelFade:self.parallel.boolValue];
+	[control setFade:[self.color getARGB] time:self.duration.unsignedIntegerValue address:self.address.unsignedIntValue parallelFade:self.parallel.boolValue];
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {

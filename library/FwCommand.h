@@ -156,7 +156,7 @@ namespace WyLight {
 		FwCmdLoopOff(uint8_t numLoops = 0) : FwCmdScript(LOOP_OFF, sizeof(cmd_loop_end)) {
 			mReqFrame.data.loopEnd.numLoops = numLoops;
 		};
-
+		
 		std::ostream& Write(std::ostream& out, size_t& indentation) const override {
 			return FwCmdScript::Write(out, --indentation) << TOKEN << ' ' << std::dec << (int)mReqFrame.data.loopEnd.numLoops;
 		};
