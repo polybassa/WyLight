@@ -39,13 +39,11 @@ public class ScriptAdapter extends BaseAdapter {
 	}
 
 	public FwCmdScriptAdapter getItem(int position) {
-		// TODO Auto-generated method stub
 		return new FwCmdScriptAdapter(getItem(mNative, position));
 	}
 
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getItem(mNative, position);
 	}
 	
 	public String getName() {

@@ -28,6 +28,18 @@
             android:label="@string/title_activity_edit_command" >
         </activity>
         <activity
+            android:name="biz.bruenn.WyLight.ScriptImportActivity"
+            android:label="@string/title_activity_script_import" >
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:mimeType="text/wylightscript" />
+				<data android:pathPattern=".*" />
+				<data android:host="*" />
+			</intent-filter>
+        </activity>
+        <activity
             android:name="biz.bruenn.WyLight.WiflyControlActivity"
             android:label="@string/title_activity_wifly_control" >
         </activity>
