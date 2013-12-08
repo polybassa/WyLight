@@ -73,29 +73,6 @@
                                          inManagedObjectContext:context];
 }
 
-+ (instancetype)insertNewComplexEffectIntoScript:(Script *)script {
-    ComplexEffect *comObj = [ComplexEffect insertNewObjectIntoContext:script.managedObjectContext];
-    {
-        Fade *obj = [Fade insertNewObjectIntoContext:script.managedObjectContext];
-        obj.address = @(0xffff0000);
-        obj.color = [UIColor colorWithRed:0 green:1 blue:0 alpha:1];
-        obj.complexEffect = comObj;
-    }
-    {
-        Gradient *obj = [Gradient insertNewObjectIntoContext:script.managedObjectContext];
-        obj.color1 = [UIColor greenColor];
-        obj.color2 = [UIColor blueColor];
-        
-        obj.offset = @(0);
-        obj.numberOfLeds = @(16);
-        obj.complexEffect = comObj;
-    }
-
-    comObj.duration = @(1000);
-    comObj.script = script;
-    return comObj;
-}
-
 - (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control {
     if (self.waitCommand.boolValue) {
         [control setWaitTimeInTenMilliSecondsIntervals:self.duration.unsignedIntegerValue];

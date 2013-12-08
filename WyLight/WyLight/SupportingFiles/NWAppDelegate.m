@@ -7,6 +7,8 @@
 //
 
 #import "NWAppDelegate.h"
+#import <CoreData/CoreData.h>
+#import "Script+serialization.h"
 
 @implementation NWAppDelegate
 
@@ -41,6 +43,46 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
 	// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+	if (url){
+		NSURL *documentUrl = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+		documentUrl = [documentUrl URLByAppendingPathComponent:@"ScriptDocument"];
+		UIManagedDocument *document = [[UIManagedDocument alloc] initWithFileURL:documentUrl];
+		
+		if (![[NSFileManager defaultManager] fileExistsAtPath:[documentUrl path]]) {
+			[document saveToURL:documentUrl forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
+				if (success) {
+					[Script deserializeScriptFromPath:url inContext:document.managedObjectContext];
+					
+					NSError *error;
+					if (![document.managedObjectContext save:&error]) {
+						NSLog(@"save error");
+					}
+				} else {
+					NSLog(@"saveToURL failed");
+				}
+			}];
+		} else if (document.documentState == UIDocumentStateClosed) {
+			[document openWithCompletionHandler:^(BOOL success) {
+				if (success) {
+					[Script deserializeScriptFromPath:url  inContext:document.managedObjectContext];
+					NSError *error;
+					if (![document.managedObjectContext save:&error]) {
+						NSLog(@"save error");
+					}
+				}
+			}];
+		} else {
+			[Script deserializeScriptFromPath:url  inContext:document.managedObjectContext];
+			NSError *error;
+			if (![document.managedObjectContext save:&error]) {
+				NSLog(@"save error");
+			}
+		}
+	}
+	return YES;
 }
 
 @end

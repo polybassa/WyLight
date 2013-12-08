@@ -8,7 +8,7 @@
 
 #import "Gradient.h"
 #import "WCWiflyControlWrapper.h"
-#include "WiflyColor.h"
+#import	"UIColor+argbValue.h"
 #include "wifly_cmd.h"
 #import "ComplexEffect.h"
 
@@ -49,23 +49,8 @@
 }
 
 - (void)sendToWCWiflyControl:(WCWiflyControlWrapper *)control {
-    WyLight::WiflyColor mColor1, mColor2;
-	   
-	CGFloat r, g, b, a;
-	[self.color1 getRed:&r green:&g blue:&b alpha:&a];
-	
-	mColor1.red((uint8_t)(r * 255));
-	mColor1.green((uint8_t)(g * 255));
-	mColor1.blue((uint8_t)(b * 255));
-    
-	[self.color2 getRed:&r green:&g blue:&b alpha:&a];
-	
-	mColor2.red((uint8_t)(r * 255));
-	mColor2.green((uint8_t)(g * 255));
-	mColor2.blue((uint8_t)(b * 255));
-    
-    [control setGradientWithColor:mColor1.argb()
-                         colorTwo:mColor2.argb()
+    [control setGradientWithColor:[self.color1 getARGB]
+                         colorTwo:[self.color2 getARGB]
                              time:self.duration.unsignedIntegerValue
                      parallelFade:self.parallel.boolValue
                    gradientLength:self.numberOfLeds.unsignedIntegerValue
@@ -115,7 +100,7 @@
         address = @(outputBitmask);
         [self willChangeValueForKey:@"address"];
         [self setAddress:address];
-        [self willChangeValueForKey:@"address"];
+        [self didChangeValueForKey:@"address"];
         
         if (self.complexEffect) {
             [self.complexEffect setColors:nil];

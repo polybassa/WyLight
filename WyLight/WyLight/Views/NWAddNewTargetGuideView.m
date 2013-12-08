@@ -27,7 +27,11 @@
 #define DEFAULT_SCALE_FACTOR 0.90
 - (void)drawRect:(CGRect)rect
 {
-	UIBezierPath *roundedRect = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(self.bounds.origin.x + 20, self.bounds.origin.y + 20, self.bounds.size.width - 40, self.bounds.size.height - 40)
+	UIBezierPath *roundedRect = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(
+																				   self.bounds.origin.x + 20,
+																				   self.bounds.origin.y + 20,
+																				   self.bounds.size.width - 40,
+																				   self.bounds.size.height - 40)
 														   cornerRadius:25];
 	[roundedRect addClip];
 	[[UIColor clearColor] setFill];

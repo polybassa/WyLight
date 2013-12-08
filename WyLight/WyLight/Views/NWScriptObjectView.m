@@ -25,7 +25,6 @@
         // Initialization code
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleHeight;
 		self.clipsToBounds = YES;
-        self.opaque = YES;
 	}
     return self;
 }
@@ -51,13 +50,10 @@
 	} else {
 		self.layer.cornerRadius = dim/8;
 	}
-	//find a fix to change the frame of a drawn gradient view
 	[self setFrameOfAllColorViews:self.bounds];
-	//[self drawAllColorViews];
 }
 
 - (void)setFrameOfAllColorViews:(CGRect)frame {
-	
 	const CGFloat heightFract = self.gradientViews.count ? frame.size.height / self.gradientViews.count : 1;
 	
 	for (unsigned int i = 0; i < self.gradientViews.count; i++) {
@@ -99,17 +95,6 @@
     [self setNeedsDisplay];
 }
 
-- (void)setColorsAnimatedWithDuration:(NSTimeInterval)duration startColors:(NSArray *)startColors endColor:(NSArray *)endColors {
-
-	for (NSUInteger i = 0; i < startColors.count && i < endColors.count && i < self.gradientViews.count; i++) {
-		[((NWGradientView *)self.gradientViews[i]) setColorsAnimatedWithDuration:duration
-																	  startColor:startColors[i]
-																		endColor:endColors[i]];
-	}
-	_startColors = startColors;
-	_endColors = endColors;
-}
-
 - (void)setEndColors:(NSArray *)endColors {
 	_endColors = endColors;
 	[self drawAllColorViews];
@@ -118,12 +103,6 @@
 - (void)setStartColors:(NSArray *)startColors {
 	_startColors = startColors;
 	[self drawAllColorViews];
-}
-
-- (void)setStartColors:(NSArray *)startColors withEndcolors:(NSArray *)endColors {
-    _startColors = startColors;
-    _endColors = endColors;
-    [self drawAllColorViews];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {

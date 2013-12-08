@@ -16,10 +16,11 @@
 
 + (NSString *)entityName;
 + (instancetype)insertNewObjectIntoContext:(NSManagedObjectContext *)context;
-+ (instancetype)insertNewComplexEffectIntoScript:(Script *)script;
 
 - (ComplexEffect *)prev;
 - (ComplexEffect *)next;
+
+- (void)prepareForSendToWCWiflyControl;
 
 @property (nonatomic, retain) NSNumber * waitCommand;
 @property (nonatomic, retain) NSOrderedSet *effects;

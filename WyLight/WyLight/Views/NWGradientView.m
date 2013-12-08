@@ -15,14 +15,6 @@
 
 #define DEFAULT_COLOR [UIColor blackColor]
 
-- (id)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.opaque = YES;
-    }
-    return self;
-}
-
 - (void)setEndColor:(UIColor *)endColor {
 	if (![_endColor isEqual:endColor]) {
 		_endColor = endColor;
@@ -49,25 +41,6 @@
 		_endColor = DEFAULT_COLOR;
 	}
 	return _endColor;
-}
-
-- (void)setColorsAnimatedWithDuration:(NSTimeInterval)duration startColor:(UIColor *)startColor endColor:(UIColor *)endColor {
-	if ( !([startColor isEqual:self.startColor] && [endColor isEqual:self.endColor] )) {
-		NWGradientView *tempView = [[NWGradientView alloc] initWithFrame:self.frame];
-		tempView.endColor = self.endColor;
-		tempView.startColor = self.startColor;
-		[self.superview addSubview:tempView];
-		self.alpha = 0.0;
-		self.endColor = endColor;
-		self.startColor = startColor;
-		
-		[UIView animateWithDuration:duration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-			tempView.alpha = 0.0;
-			self.alpha = 1.0;
-		} completion:^(BOOL finished) {
-			[tempView removeFromSuperview];
-		}];
-	}
 }
 
 - (void)drawRect:(CGRect)rect
