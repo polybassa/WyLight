@@ -12,5 +12,6 @@
 
 - (NSString *) serializeToPath:(NSString *)path;
 + (Script *)deserializeScriptFromPath:(NSURL *)path inContext:(NSManagedObjectContext *)context;
++ (Script *)deserializeScriptFromString:(NSString *)string inContext:(NSManagedObjectContext *)context;
 
 @end

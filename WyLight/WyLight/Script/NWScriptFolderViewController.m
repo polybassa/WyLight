@@ -21,15 +21,14 @@
 
 @interface NWScriptFolderViewController () <iCarouselDataSource, iCarouselDelegate, NWEffectDrawerDelegate, MFMailComposeViewControllerDelegate>
 
-@property (nonatomic, assign) BOOL isDeletionModeActive;
 @property (nonatomic, strong) UIBarButtonItem *addButton;
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSArray *scriptObjects;
 @property (nonatomic, strong) iCarousel *carousel;
-@property (nonatomic, strong) UIImageView *background;
 @property (nonatomic, strong) UIButton *sendButton;
 @property (nonatomic, strong) UILabel *scriptTitleLabel;
 @property (nonatomic, strong) NWEffectDrawer *effectDrawer;
+@property (atomic) BOOL waitingForProgrammaticallySegue;
 
 @end
 
@@ -50,15 +49,11 @@
     if (!self.managedObjectContext) {
         [self useDocument];
     } else {
-        [self refresh];
-    }
+		[self.carousel reloadData];
+	}
     self.tabBarController.navigationItem.rightBarButtonItem = self.addButton;
-    [self.carousel reloadData];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [self updateView];
-    [super viewDidAppear:animated];
+	[self updateTitleLabel];
+	self.waitingForProgrammaticallySegue = FALSE;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -68,10 +63,6 @@
         NSLog(@"Save failed");
     }
     [super viewWillDisappear:animated];
-}
-
-- (void)updateView {
-    self.scriptTitleLabel.text = ((Script *)[self.scriptObjects objectAtIndex:self.carousel.currentItemIndex]).title;
 }
 
 - (void)fixLocations {
@@ -87,19 +78,11 @@
         self.scriptTitleLabel.frame = CGRectMake(20, 45, self.view.bounds.size.width - 40, 40);
         self.carousel.frame = CGRectMake(0, 100, self.view.bounds.size.width, self.view.bounds.size.height - 160);
     }
-    self.background.frame = self.view.bounds;
 }
 
 - (void)setup {
     self.view.superview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    
-    self.background = [[UIImageView alloc] initWithFrame:self.view.frame];
-    self.background.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    self.background.contentMode = UIViewContentModeScaleToFill;
-    self.background.userInteractionEnabled = NO;
-    self.background.opaque = YES;
-    [self.view addSubview:self.background];
     
     self.sendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	[self.sendButton setTitle:NSLocalizedStringFromTable(@"ScriptVCSendBtnKey", @"ViewControllerLocalization", @"") forState:UIControlStateNormal];
@@ -134,20 +117,21 @@
     if (![[NSFileManager defaultManager] fileExistsAtPath:[url path]]) {
         [document saveToURL:url forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
             if (success) {
-                self.managedObjectContext = document.managedObjectContext;
-                [Script defaultScriptFastColorChangeInContext:self.managedObjectContext];
-                [Script defaultScriptSlowColorChangeInContext:self.managedObjectContext];
-                [Script defaultScriptRunLightWithColor:[UIColor redColor] timeInterval:100 inContext:self.managedObjectContext];
-                [Script defaultScriptRandomColorsInContext:self.managedObjectContext];
-                [Script defaultScriptMovingColorsInContext:self.managedObjectContext];
-                [Script defaultScriptConzentrationLightInContext:self.managedObjectContext];
-                [Script defaultScriptColorCrashWithTimeInterval:100 inContext:self.managedObjectContext];
+                [Script defaultScriptFastColorChangeInContext:document.managedObjectContext];
+                [Script defaultScriptSlowColorChangeInContext:document.managedObjectContext];
+                [Script defaultScriptRunLightWithColor:[UIColor redColor] timeInterval:100 inContext:document.managedObjectContext];
+                [Script defaultScriptRandomColorsInContext:document.managedObjectContext];
+                [Script defaultScriptMovingColorsInContext:document.managedObjectContext];
+                [Script defaultScriptConzentrationLightInContext:document.managedObjectContext];
+                [Script defaultScriptColorCrashWithTimeInterval:100 inContext:document.managedObjectContext];
                 NSError *error;
-                if (![self.managedObjectContext save:&error]) {
+                if (![document.managedObjectContext save:&error]) {
                     NSLog(@"save error");
-                }
-                [self refresh];
-            } else {
+                } else {
+					self.managedObjectContext = document.managedObjectContext;
+				}
+            }
+			else {
                 NSLog(@"saveToURL failed");
             }
         }];
@@ -155,7 +139,6 @@
         [document openWithCompletionHandler:^(BOOL success) {
             if (success) {
                 self.managedObjectContext = document.managedObjectContext;
-                [self refresh];
             }
         }];
     } else {
@@ -163,36 +146,29 @@
     }
 }
 
-- (void)refresh {
-    if (self.managedObjectContext) {
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[Script entityName]];
+- (NSArray *)scriptObjects {
+	if (self.managedObjectContext) {
+		if (_scriptObjects == nil || [self.managedObjectContext hasChanges]) {
+			NSError *error;
+			if (![self.managedObjectContext save:&error]) {
+				NSLog(@"save error");
+			}
+        	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[Script entityName]];
         
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
-        [request setSortDescriptors:@[sortDescriptor]];
+        	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
+        	[request setSortDescriptors:@[sortDescriptor]];
         
-        NSError *error;
-        self.scriptObjects = [self.managedObjectContext executeFetchRequest:request error:&error];
-        if (self.scriptObjects == nil) {
-            NSLog(@"ERROR FETCH");
-        }
-        [self updateView];
-        [self.carousel reloadData];
-    }
+        	_scriptObjects = [[NSMutableArray alloc] initWithArray:[self.managedObjectContext executeFetchRequest:request error:&error]];
+        	return _scriptObjects;
+		}
+		return _scriptObjects;
+	}
+	else {
+		return nil;
+	}
 }
 
 #pragma mark - GETTER & SETTER
-- (void)setIsDeletionModeActive:(BOOL)isDeletionModeActive {
-    if (_isDeletionModeActive != isDeletionModeActive) {
-        _isDeletionModeActive = isDeletionModeActive;
-        if (_isDeletionModeActive) {
-            [self.carousel.currentItemView startQuivering];
-            self.carousel.scrollEnabled = NO;
-        } else {
-            [self.carousel.currentItemView stopQuivering];
-            self.carousel.scrollEnabled = YES;
-        }
-    }
-}
 
 - (void)sendScript {
 	dispatch_queue_t sendScriptQueue = dispatch_queue_create("sendScriptQueue", NULL);
@@ -209,6 +185,18 @@
         _effectDrawer.delegate = self;
     }
     return _effectDrawer;
+}
+
+- (void)setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
+	_managedObjectContext = managedObjectContext;
+	[self.carousel reloadData];
+	[self updateTitleLabel];
+}
+
+- (void)updateTitleLabel {
+	if (self.scriptObjects && self.carousel && self.scriptObjects.count > self.carousel.currentItemIndex) {
+		self.scriptTitleLabel.text = ((Script *)[self.scriptObjects objectAtIndex:self.carousel.currentItemIndex]).title;
+	}
 }
 
 #pragma mark - iCarouselDatasource
@@ -249,16 +237,12 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnScriptObjectControl:)];
         [view addGestureRecognizer:tap];
         
-        UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeUpOnScriptObjectControl:)];
-        swipe.direction = UISwipeGestureRecognizerDirectionUp;
-        [view addGestureRecognizer:swipe];
-        return view;
+		return view;
     }
     return nil;
 }
 
 #pragma mark - iCarouselDelegate
-
 - (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value {
 	switch (option)
 	{
@@ -280,70 +264,96 @@
 }
 
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel {
-    [self updateView];
+	[self updateTitleLabel];
 }
 
+#pragma mark - UIMenuController callback
+- (void)delete:(id)sender {
+	NSUInteger indexOfObjectToRemove = self.carousel.currentItemIndex;
+	[self.carousel removeItemAtIndex:indexOfObjectToRemove animated:YES];
+	NSManagedObject *objToRemove = [self.scriptObjects objectAtIndex:indexOfObjectToRemove];
+	[self.managedObjectContext deleteObject:objToRemove];
+	[self updateTitleLabel];
+}
+#define WYLIGHT_UTI @"com.WyLightRemote.customUTIHandler.wyscript"
+- (void)copy:(id)sender {
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *basePath = ([paths count] > 0) ?[paths objectAtIndex:0] : nil;
+	Script *script = self.scriptObjects[[self.carousel currentItemIndex]];
+	NSString *filePath = [script serializeToPath:basePath];
+	NSData *myData = [NSData dataWithContentsOfFile:filePath];
+	
+	UIPasteboard* pasteboard = [UIPasteboard generalPasteboard];
+	[pasteboard setData:myData forPasteboardType:WYLIGHT_UTI];
+}
+
+- (void)cut:(id)sender {
+	[self copy:sender];
+	[self delete:sender];
+}
+
+- (void)paste:(id)sender {
+	NSData *scriptData = [[UIPasteboard generalPasteboard] dataForPasteboardType:WYLIGHT_UTI];
+	Script *script = [Script deserializeScriptFromString:[[NSString alloc] initWithData:scriptData encoding:NSASCIIStringEncoding] inContext:self.managedObjectContext];
+	script.title = @"paste";
+	[self.carousel insertItemAtIndex:[self.scriptObjects indexOfObject:script] animated:YES];
+	[self.carousel scrollToItemAtIndex:[self.scriptObjects indexOfObject:script] animated:YES];
+	[self updateTitleLabel];
+}
+
+#pragma mark - Gesture callbacks
 - (void)tapOnScriptObjectControl:(UITapGestureRecognizer *)gesture {
     if ([self.effectDrawer effectIsDrawing:nil]) {
         return;
     }
-    if (self.isDeletionModeActive) {
-        self.isDeletionModeActive = NO;
-    } else {
-        double delayInSeconds = 0.1;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self performSegueWithIdentifier:@"edit:" sender:self];
-        });
-    }
+	if (!self.waitingForProgrammaticallySegue) {
+		self.waitingForProgrammaticallySegue = TRUE;
+		[self performSegueWithIdentifier:@"edit:" sender:self];
+	}
+}
+
+- (BOOL)canBecomeFirstResponder {
+	return YES;
+}
+
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
+    BOOL retValue = NO;
+    if (action == @selector(paste:))
+        retValue = [[UIPasteboard generalPasteboard] containsPasteboardTypes:@[WYLIGHT_UTI]];
+    else if ( action == @selector(copy:) )
+        retValue = YES;
+    else if (action == @selector(delete:) || action == @selector(cut:))
+		retValue = ![self.effectDrawer effectIsDrawing:nil] && (self.scriptObjects.count > 1);
+	else
+        retValue = [super canPerformAction:action withSender:sender];
+    return retValue;
 }
 
 - (void)longPressOnScriptObjectControl:(UILongPressGestureRecognizer *)gesture {
     if ([self.effectDrawer effectIsDrawing:nil]) {
         return;
     }
-    self.isDeletionModeActive = YES;
-}
-
-- (void)swipeUpOnScriptObjectControl:(UISwipeGestureRecognizer *)gesture {
-    if ([self.effectDrawer effectIsDrawing:nil]) {
-        return;
-    }
-    if (self.isDeletionModeActive && self.scriptObjects.count > 1) {
-        NSUInteger indexOfObjectToRemove = self.carousel.currentItemIndex;
-        [self.carousel removeItemAtIndex:indexOfObjectToRemove animated:YES];
-        [self.managedObjectContext deleteObject:[self.scriptObjects objectAtIndex:indexOfObjectToRemove]];
-        NSError *error;
-        if (self.managedObjectContext && ![self.managedObjectContext save:&error]) {
-            NSLog(@"Save failed: %@", error.helpAnchor);
-        }
-        NSMutableArray *mutScripts = [self.scriptObjects mutableCopy];
-        [mutScripts removeObjectAtIndex:indexOfObjectToRemove];
-        self.scriptObjects = mutScripts;
-        [self updateView];
-    } else if (!self.isDeletionModeActive) {
-		[self shareScript];
+	UIMenuController *menu = [UIMenuController sharedMenuController];
+	if (![menu isMenuVisible]) {
+		[menu setTargetRect:[self.carousel.currentItemView convertRect:self.carousel.currentItemView.frame toView:self.view] inView:self.view];
+		[menu setMenuVisible:YES animated:YES];
 	}
-    self.isDeletionModeActive = NO;
 }
 
 - (IBAction)addBarButtonPressed:(UIBarButtonItem *)sender {
-    Script *script = [Script emptyScriptInContext:self.managedObjectContext];
-    NSError *error;
-    if (self.managedObjectContext && ![self.managedObjectContext save:&error]) {
-        NSLog(@"Save failed: %@", error.helpAnchor);
-    }
-    NSMutableArray *mutScripts = [self.scriptObjects mutableCopy];
-    [mutScripts addObject:script];
-    self.scriptObjects = mutScripts;
-    [self.carousel insertItemAtIndex:(self.scriptObjects.count - 1) animated:YES];
-    [self.carousel scrollToItemAtIndex:(self.scriptObjects.count - 1) animated:YES];
-    [self updateView];
-    double delayInSeconds = 0.8;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self performSegueWithIdentifier:@"edit:" sender:self];
-    });
+	if (!self.waitingForProgrammaticallySegue) {
+		self.waitingForProgrammaticallySegue = TRUE;
+		Script *script = [Script emptyScriptInContext:self.managedObjectContext];
+		[self.carousel insertItemAtIndex:[self.scriptObjects indexOfObject:script] animated:YES];
+		[self.carousel scrollToItemAtIndex:[self.scriptObjects indexOfObject:script] animated:YES];
+		[self updateTitleLabel];
+		double delayInSeconds = 0.5;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[self performSegueWithIdentifier:@"edit:" sender:self];
+			
+		});
+	}
 }
 
 - (void)shareScript {
@@ -358,13 +368,13 @@
 	
 	NSString *fileName = [filePath componentsSeparatedByString:@"/"].lastObject;
 	 
-	NSData *myData = [NSData dataWithContentsOfFile:filePath];
-    [picker addAttachmentData:myData mimeType:@"text/wylightScript" fileName:fileName];
+	NSData *myData = [NSData dataWithContentsOfFile:fileName];
+    [picker addAttachmentData:myData mimeType:@"text/wyscript" fileName:filePath];
 	
     // Fill out the email body text
     NSString *emailBody = @"My cool WyLight script is attached";
     [picker setMessageBody:emailBody isHTML:NO];
-    [self presentModalViewController:picker animated:YES];
+	[self presentViewController:picker animated:YES completion:NULL];
 }
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
@@ -388,14 +398,14 @@
             NSLog(@"Result: not sent");
             break;
     }
-    [self dismissModalViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark - EffectDrawerDelegate
 - (void)NWEffectDrawer:(NWEffectDrawer *)drawer finishedDrawing:(id)effect {
     if ([effect isKindOfClass:[Script class]]) {
         NSUInteger index = [self.scriptObjects indexOfObject:effect];
-        UIView *view = [self.carousel viewWithTag:index + 1];
+        UIView *view = [self.carousel itemViewAtIndex:index];
         if ([view isKindOfClass:[NWRenderableScriptImageView class]]) {
             ((NWRenderableScriptImageView *)view).image = ((Script *)effect).snapshot;
             ((NWRenderableScriptImageView *)view).showActivityIndicator = NO;
