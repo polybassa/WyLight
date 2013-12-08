@@ -26,7 +26,7 @@ namespace WyLight {
 
 	Script::Script(const std::string& filename)
 	{
-		// std::string::npos++ will overflow to 0 just like we want!
+		// std::string::npos+1 will overflow to 0 just like we want!
 		const size_t indexOfLastSeperator = filename.find_last_of('/') + 1;
 		mName = filename.substr(indexOfLastSeperator);
 		Script::deserialize(filename, *this);
