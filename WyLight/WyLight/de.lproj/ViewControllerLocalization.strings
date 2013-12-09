@@ -37,3 +37,4 @@
 "OperationModeKey" = "Betriebsmodus";
 "CancelKey" = "Abbrechen";
 "OperationModeInfoKey" = "Bitte wählen Sie einen Betriebsmodus für Ihr WyLight aus.";
+"ScriptVCShareKey" = "Teilen";

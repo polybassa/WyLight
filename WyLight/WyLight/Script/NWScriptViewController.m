@@ -97,7 +97,6 @@
 }
 
 #pragma mark - SETUP STUFF
-#define TIMESCALE_KEY @"WyLightRemote.NWScriptViewController.timescalefactor"
 #define DELETE_USER_INFO_KEY @"WyLightRemote.NWScriptViewController.showUserInfo"
 
 - (void)fixLocations {
@@ -137,11 +136,6 @@
 	self.view.superview.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
-    //user data
-	self.timeScaleFactor = [[NSUserDefaults standardUserDefaults] floatForKey:TIMESCALE_KEY];
-	if (self.timeScaleFactor == 0.0) {
-		self.timeScaleFactor = 1.0;
-	}
 	//script view
 	self.scriptView = [[NWScriptView alloc] initWithFrame:CGRectZero];
     self.scriptView.insets = UIEdgeInsetsMake(90, 20, 0, 0);
@@ -175,10 +169,6 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnBackground:)];
     [self.view addGestureRecognizer:tap];
-}
-
-- (void)saveUserData {
-	[[NSUserDefaults standardUserDefaults] setFloat:self.timeScaleFactor forKey:TIMESCALE_KEY];
 }
 
 - (void)viewDidLoad {
@@ -242,6 +232,7 @@
 		self.timeScaleFactor *= ZOOM_IN_STEP;
 	}];
 }
+
 - (IBAction)addBarButtonPressed:(UIBarButtonItem *)sender {
     [self addScriptCommand];
 }
@@ -514,6 +505,5 @@
 		}
 	}
 }
-
 
 @end

@@ -335,7 +335,7 @@
     }
 	UIMenuController *menu = [UIMenuController sharedMenuController];
 	if (![menu isMenuVisible]) {
-		UIMenuItem *shareItem = [[UIMenuItem alloc] initWithTitle:@"Share" action:@selector(shareScript)];
+		UIMenuItem *shareItem = [[UIMenuItem alloc] initWithTitle:NSLocalizedStringFromTable(@"ScriptVCShareKey", @"ViewControllerLocalization", @"") action:@selector(shareScript)];
 		[menu setMenuItems:@[shareItem]];
 		[menu setTargetRect:[self.carousel.currentItemView convertRect:self.carousel.currentItemView.frame toView:self.view] inView:self.view];
 		[menu setMenuVisible:YES animated:YES];
@@ -370,7 +370,7 @@
 	
 	NSString *fileName = [filePath componentsSeparatedByString:@"/"].lastObject;
 	 
-	NSData *myData = [NSData dataWithContentsOfFile:fileName];
+	NSData *myData = [NSData dataWithContentsOfFile:filePath];
     [picker addAttachmentData:myData mimeType:@"text/wyscript" fileName:fileName];
 	
     // Fill out the email body text
