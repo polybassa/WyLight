@@ -10,7 +10,6 @@
 #import "Command.h"
 #import "iCarousel.h"
 #import "ComplexEffect.h"
-#import "UIView+Quivering.h"
 #import "WCWiflyControlWrapper.h"
 #import "NWScriptViewController.h"
 #import "Script+defaultScripts.h"
@@ -210,7 +209,6 @@
         view = [[NWRenderableScriptImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
         view.contentMode = UIViewContentModeCenter;
         view.backgroundColor = [UIColor grayColor];
-        view.tag = index + 1;
     }
     
     if ([view isKindOfClass:[UIImageView class]]) {
@@ -324,6 +322,8 @@
         retValue = YES;
     else if (action == @selector(delete:) || action == @selector(cut:))
 		retValue = ![self.effectDrawer effectIsDrawing:nil] && (self.scriptObjects.count > 1);
+	else if (action == @selector(shareScript))
+		retValue = YES;
 	else
         retValue = [super canPerformAction:action withSender:sender];
     return retValue;
@@ -335,6 +335,8 @@
     }
 	UIMenuController *menu = [UIMenuController sharedMenuController];
 	if (![menu isMenuVisible]) {
+		UIMenuItem *shareItem = [[UIMenuItem alloc] initWithTitle:@"Share" action:@selector(shareScript)];
+		[menu setMenuItems:@[shareItem]];
 		[menu setTargetRect:[self.carousel.currentItemView convertRect:self.carousel.currentItemView.frame toView:self.view] inView:self.view];
 		[menu setMenuVisible:YES animated:YES];
 	}
@@ -369,7 +371,7 @@
 	NSString *fileName = [filePath componentsSeparatedByString:@"/"].lastObject;
 	 
 	NSData *myData = [NSData dataWithContentsOfFile:fileName];
-    [picker addAttachmentData:myData mimeType:@"text/wyscript" fileName:filePath];
+    [picker addAttachmentData:myData mimeType:@"text/wyscript" fileName:fileName];
 	
     // Fill out the email body text
     NSString *emailBody = @"My cool WyLight script is attached";
