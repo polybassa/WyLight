@@ -62,7 +62,6 @@ public class WiflyLightActivity extends Activity {
         mBroadcastReceiver = new BroadcastReceiver(this.getFilesDir().getAbsolutePath() + "/recent.txt");
         mRemoteList = (ListView)findViewById(id.remoteList);
         registerForContextMenu(mRemoteList);
-        
         mRemoteArrayAdapter = new EndpointListAdapter(this, android.R.layout.simple_list_item_1, mRemoteArray);
         mRemoteList.setAdapter(mRemoteArrayAdapter);
         mRemoteList.setEmptyView((TextView)findViewById(android.R.id.empty));

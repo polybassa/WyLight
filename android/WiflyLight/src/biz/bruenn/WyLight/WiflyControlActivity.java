@@ -1,7 +1,5 @@
 package biz.bruenn.WyLight;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -64,18 +62,9 @@ public class WiflyControlActivity extends FragmentActivity implements WiflyContr
 	}
 
 	private String copyAssetToFile(String name) throws IOException {
-		byte[] firmwareBuffer = new byte[1024];
-		String outputFilename = getFilesDir().getAbsolutePath() + '/' + name;
-		FileOutputStream out;
-		out = new FileOutputStream(new File(outputFilename));
 		InputStream firmwareAsset = this.getAssets().open(name);
-		for(int bytesRead = firmwareAsset.read(firmwareBuffer); bytesRead > 0; bytesRead = firmwareAsset.read(firmwareBuffer)) {
-			System.out.print(firmwareBuffer);
-			out.write(firmwareBuffer);
-		}
-		firmwareAsset.close();
-		out.close();
-		return outputFilename;
+		CopyHelper copyHelper = new CopyHelper(getFilesDir().getAbsolutePath());
+		return copyHelper.copyStreamToFile(firmwareAsset, name);
 	}
 
 	public WiflyControl getControl() {
