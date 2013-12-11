@@ -44,6 +44,7 @@ public class ControlFragment extends Fragment {
 	
 	protected void onSendScript(ScriptAdapter script) {
 		try {
+			mProvider.getControl().fwClearScript();
 			mProvider.getControl().fwSendScript(script);
 		} catch (ConnectionTimeout e) {
 			onConnectionLost();
