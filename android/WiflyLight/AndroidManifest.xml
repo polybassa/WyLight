@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="biz.bruenn.WiflyLight"
-    android:versionCode="19"
-    android:versionName="0.19" >
+    android:versionCode="20"
+    android:versionName="0.20" >
 
     <uses-sdk android:minSdkVersion="8" />
 
@@ -26,6 +26,18 @@
         <activity
             android:name="biz.bruenn.WyLight.EditCommandActivity"
             android:label="@string/title_activity_edit_command" >
+        </activity>
+        <activity
+            android:name="biz.bruenn.WyLight.ScriptImportActivity"
+            android:label="@string/title_activity_script_import" >
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:mimeType="text/wylightscript" />
+				<data android:pathPattern=".*" />
+				<data android:host="*" />
+			</intent-filter>
         </activity>
         <activity
             android:name="biz.bruenn.WyLight.WiflyControlActivity"
