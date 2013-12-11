@@ -28,9 +28,7 @@
 }
 
 - (void)setSnapshot:(UIImage *)snapshot {
-    [self willAccessValueForKey:@"snapshot"];
-    UIImage* snapshotBeforSet = [self primitiveValueForKey:@"snapshot"];
-    [self didAccessValueForKey:@"snapshot"];
+    UIImage* snapshotBeforSet = self.snapshot;
     
     [self willChangeValueForKey:@"snapshot"];
     [self setPrimitiveValue:snapshot forKey:@"snapshot"];

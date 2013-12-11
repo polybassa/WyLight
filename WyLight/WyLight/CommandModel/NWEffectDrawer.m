@@ -150,9 +150,11 @@
             UIImage *resultUIImage = [self renderImageForEffect:effect];
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                effect.snapshot = resultUIImage;
-                [self.currentJobs removeObject:effect];
-                [self.delegate NWEffectDrawer:self finishedDrawing:effect];
+				if (resultUIImage) {
+                	effect.snapshot = resultUIImage;
+                	[self.currentJobs removeObject:effect];
+                	[self.delegate NWEffectDrawer:self finishedDrawing:effect];
+				}
             });
         });
     }
@@ -171,9 +173,11 @@
             UIImage *resultUIImage = [self renderImageForScript:script];
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                script.snapshot = resultUIImage;
-                [self.currentJobs removeObject:script];
-                [self.delegate NWEffectDrawer:self finishedDrawing:script];
+				if (resultUIImage) {
+                	script.snapshot = resultUIImage;
+                	[self.currentJobs removeObject:script];
+                	[self.delegate NWEffectDrawer:self finishedDrawing:script];
+				}
             });
         });
     }

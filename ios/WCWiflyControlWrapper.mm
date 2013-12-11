@@ -431,7 +431,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 - (void)startupManagerStateChanged:(NSNumber *)state
 {
 	dispatch_async(dispatch_get_main_queue(), ^{
-			       NSLog(@"StartupManager state changed to:%d", state.unsignedIntegerValue);
+			       NSLog(@"StartupManager state changed to:%lu", (unsigned long)state.unsignedIntegerValue);
 			       [self.delegate wiflyControl:self connectionStartupStateChanged:state];
 		       }
 		       );
