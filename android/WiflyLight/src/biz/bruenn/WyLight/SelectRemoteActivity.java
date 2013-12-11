@@ -25,7 +25,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class SelectEndpointActivity extends Activity implements RemoteCollector.OnPostExecuteListener {
+public class SelectRemoteActivity extends Activity implements RemoteCollector.OnPostExecuteListener {
 	private ArrayList<Endpoint> mRemoteArray = new ArrayList<Endpoint>();
 	private EndpointListAdapter mRemoteArrayAdapter;
 	private ListView mRemoteList;
@@ -59,7 +59,7 @@ public class SelectEndpointActivity extends Activity implements RemoteCollector.
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_select_endpoint);
+		setContentView(R.layout.activity_select_remote);
 
 		mProgress = (ProgressBar)findViewById(R.id.progress);
 
@@ -91,7 +91,7 @@ public class SelectEndpointActivity extends Activity implements RemoteCollector.
 				new RemoteCollector(mBroadcastReceiver, (WifiManager)getSystemService(Context.WIFI_SERVICE),
 						mRemoteArray,
 						mRemoteArrayAdapter,
-						SelectEndpointActivity.this).execute(Long.valueOf(3000000000L));
+						SelectRemoteActivity.this).execute(Long.valueOf(3000000000L));
 			}
 		});
 		// add all recent endpoints to our list view
