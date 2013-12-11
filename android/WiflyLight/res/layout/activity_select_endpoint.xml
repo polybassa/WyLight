@@ -9,6 +9,13 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/scan" />
+	<ProgressBar
+	    android:id="@+id/progress"
+	    android:visibility="gone"
+	    style="@android:style/Widget.ProgressBar.Horizontal"
+	    android:indeterminate="true"
+	    android:layout_height="wrap_content"
+	    android:layout_width="fill_parent"/>
     <ListView
         android:id="@+id/remoteList"
         android:layout_width="fill_parent"

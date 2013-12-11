@@ -22,13 +22,16 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class SelectEndpointActivity extends Activity {
+public class SelectEndpointActivity extends Activity implements RemoteCollector.OnPostExecuteListener {
 	private ArrayList<Endpoint> mRemoteArray = new ArrayList<Endpoint>();
 	private EndpointListAdapter mRemoteArrayAdapter;
 	private ListView mRemoteList;
 	private BroadcastReceiver mBroadcastReceiver;
+	private Button mScanBtn;
+	private ProgressBar mProgress;
 
 	static {
 		System.loadLibrary("wifly");
@@ -58,6 +61,8 @@ public class SelectEndpointActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_select_endpoint);
 
+		mProgress = (ProgressBar)findViewById(R.id.progress);
+
 		mBroadcastReceiver = new BroadcastReceiver(this.getFilesDir().getAbsolutePath() + "/recent.txt");
 		mRemoteList = (ListView)findViewById(id.remoteList);
 		registerForContextMenu(mRemoteList);
@@ -75,17 +80,18 @@ public class SelectEndpointActivity extends Activity {
 			}
 		});
 
-		Button scanBtn = (Button)findViewById(id.scan);
+		mScanBtn = (Button)findViewById(id.scan);
 
-		scanBtn.setOnClickListener(new View.OnClickListener() {
+		mScanBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Button btn = (Button)v;
 				btn.setClickable(false);
 				btn.setText(string.scanning);
+				mProgress.setVisibility(View.VISIBLE);
 				new RemoteCollector(mBroadcastReceiver, (WifiManager)getSystemService(Context.WIFI_SERVICE),
 						mRemoteArray,
 						mRemoteArrayAdapter,
-						btn).execute(Long.valueOf(3000000000L));
+						SelectEndpointActivity.this).execute(Long.valueOf(3000000000L));
 			}
 		});
 		// add all recent endpoints to our list view
@@ -122,5 +128,11 @@ public class SelectEndpointActivity extends Activity {
 		mBroadcastReceiver.release();
 		mBroadcastReceiver = null;
 		super.onDestroy();
+	}
+
+	public void onPostExecute() {
+		mScanBtn.setClickable(true);
+		mScanBtn.setText(string.scan);
+		mProgress.setVisibility(View.GONE);
 	}
 }
