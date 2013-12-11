@@ -3,9 +3,10 @@ package biz.bruenn.WyLight.library;
 public class FwCmdScriptAdapter {
 
 	private native int getFadeColor(long pNative);
+	private native String getToken(long pNative);
 	private native int setFadeColor(long pNative, int argb);
 	
-	private long mNative = 0;
+	private final long mNative;
 	
 	public FwCmdScriptAdapter(long pNative) {
 		mNative = pNative;

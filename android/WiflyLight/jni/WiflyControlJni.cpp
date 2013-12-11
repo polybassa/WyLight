@@ -233,9 +233,15 @@ namespace WyLight {
 			fadeCommand->argb(argb);
 		}
 
+		jstring Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_getToken(JNIEnv *env, jobject ref, jlong pNative, jint argb)
+		{
+			auto command = reinterpret_cast<FwCmdSetFade *>(pNative);
+			return env->NewStringUTF(command->TOKEN.data());
+		}
+
 		void Java_biz_bruenn_WyLight_library_ScriptAdapter_addFade(JNIEnv *env, jobject ref, jlong pNative, jint argb, jint addr, jshort fadeTime)
 		{
-			reinterpret_cast<Script *>(pNative)->push_back(new FwCmdSetFade(argb, fadeTime, addr));
+			reinterpret_cast<Script *>(pNative)->push_back(std::unique_ptr<FwCmdScript>(new FwCmdSetFade(argb, fadeTime, addr)));
 		}
 
 		void Java_biz_bruenn_WyLight_library_ScriptAdapter_clear(JNIEnv *env, jobject ref, jlong pNative)
@@ -247,7 +253,7 @@ namespace WyLight {
 		{
 			auto fwCmdScript = reinterpret_cast<Script *>(pNative)->begin();
 			std::advance(fwCmdScript, position);
-			return reinterpret_cast<jlong>(*fwCmdScript);
+			return reinterpret_cast<jlong>((*fwCmdScript).get());
 		}
 
 		jstring Java_biz_bruenn_WyLight_library_ScriptAdapter_name(JNIEnv *env, jobject ref, jlong pNative)

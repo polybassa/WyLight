@@ -18,6 +18,7 @@
     <string name="save">Save</string>
     <string name="scan">Scan</string>
     <string name="scanning">Scanning...</string>
+    <string name="scriptname_description">Script name:</string>
     <string name="send">Send</string>
     <string name="set_clear">Clear</string>
     <string name="set_color">Set color</string>
@@ -29,6 +30,8 @@
     <string name="ssid_description">Network-SSID:</string>
     <string name="ssid_hint">1-32 characters</string>
     <string name="title_activity_edit_command">Edit command</string>
+    <string name="title_activity_script_import">Import script into WyLight</string>
     <string name="title_activity_wifly_control">Control your WiflyLight</string>
     <string name="title_dialog_set_wlan">Configure your WLAN settings</string>
+    <string name="title_dialog_string_picker">Set string</string>
 </resources>
