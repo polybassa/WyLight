@@ -1,27 +1,31 @@
 package biz.bruenn.WyLight;
 
 import java.util.ArrayList;
-import biz.bruenn.WiflyLight.R.string;
+
+import biz.bruenn.WyLight.library.Endpoint;
 
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 
 public class RemoteCollector extends AsyncTask<Long, Void, Void> {
 	
+	public interface OnPostExecuteListener {
+		public void onPostExecute();
+	}
+
 	private ArrayAdapter<Endpoint> mRemoteArrayAdapter;
 	private ArrayList<Endpoint> mRemoteArray;
 	private WifiManager.MulticastLock mMulticastLock;
 	private BroadcastReceiver mBroadcastReceiver;
-	private Button mScanBtn;
+	private OnPostExecuteListener mListener;
 	
-	public RemoteCollector(BroadcastReceiver receiver, WifiManager wifiMgr, ArrayList<Endpoint> remoteArray, ArrayAdapter<Endpoint> remoteArrayAdapter, Button scanBtn) {
+	public RemoteCollector(BroadcastReceiver receiver, WifiManager wifiMgr, ArrayList<Endpoint> remoteArray, ArrayAdapter<Endpoint> remoteArrayAdapter, OnPostExecuteListener listener) {
 		mMulticastLock = wifiMgr.createMulticastLock("WiflyLight_MulticastLock");
 		mBroadcastReceiver = receiver;
 		mRemoteArray = remoteArray;
 		mRemoteArrayAdapter = remoteArrayAdapter;
-		mScanBtn = scanBtn;
+		mListener = listener;
 	}
 
 	public void run() {
@@ -60,7 +64,8 @@ public class RemoteCollector extends AsyncTask<Long, Void, Void> {
 	
 	@Override
 	protected void onPostExecute(Void result) {
-		mScanBtn.setClickable(true);
-		mScanBtn.setText(string.scan);
+		if(null != mListener) {
+			mListener.onPostExecute();
+		}
 	}
 }

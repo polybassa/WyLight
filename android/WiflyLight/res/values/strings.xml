@@ -29,6 +29,8 @@
     <string name="softap_toggle">SoftAP (not recommended)</string>
     <string name="ssid_description">Network-SSID:</string>
     <string name="ssid_hint">1-32 characters</string>
+    <string name="status_bad">Status bad</string>
+    <string name="status_good">Status good</string>
     <string name="title_activity_edit_command">Edit command</string>
     <string name="title_activity_script_import">Import script into WyLight</string>
     <string name="title_activity_wifly_control">Control your WiflyLight</string>
