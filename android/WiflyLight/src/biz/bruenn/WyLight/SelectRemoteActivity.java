@@ -1,25 +1,23 @@
 package biz.bruenn.WyLight;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WiflyLight.R.id;
 import biz.bruenn.WiflyLight.R.string;
+import biz.bruenn.WyLight.library.Endpoint;
+import biz.bruenn.WyLight.library.EndpointAdapter;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -27,7 +25,7 @@ import android.widget.TextView;
 
 public class SelectRemoteActivity extends Activity implements RemoteCollector.OnPostExecuteListener {
 	private ArrayList<Endpoint> mRemoteArray = new ArrayList<Endpoint>();
-	private EndpointListAdapter mRemoteArrayAdapter;
+	private EndpointAdapter mRemoteArrayAdapter;
 	private ListView mRemoteList;
 	private BroadcastReceiver mBroadcastReceiver;
 	private Button mScanBtn;
@@ -35,24 +33,6 @@ public class SelectRemoteActivity extends Activity implements RemoteCollector.On
 
 	static {
 		System.loadLibrary("wifly");
-	}
-
-	protected class EndpointListAdapter extends ArrayAdapter<Endpoint> {
-
-		public EndpointListAdapter(Context context, int textViewResourceId,
-				List<Endpoint> objects) {
-			super(context, textViewResourceId, objects);
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			View v = super.getView(position, convertView, parent);
-			if(getItem(position).isOnline()) {
-				((TextView)v).setTextColor(Color.GREEN);
-			}
-			return v;
-		}
-
 	}
 
 	/** Called when the activity is first created. */
@@ -66,7 +46,7 @@ public class SelectRemoteActivity extends Activity implements RemoteCollector.On
 		mBroadcastReceiver = new BroadcastReceiver(this.getFilesDir().getAbsolutePath() + "/recent.txt");
 		mRemoteList = (ListView)findViewById(id.remoteList);
 		registerForContextMenu(mRemoteList);
-		mRemoteArrayAdapter = new EndpointListAdapter(this, android.R.layout.simple_list_item_1, mRemoteArray);
+		mRemoteArrayAdapter = new EndpointAdapter(this, android.R.layout.simple_list_item_1, mRemoteArray);
 		mRemoteList.setAdapter(mRemoteArrayAdapter);
 		mRemoteList.setEmptyView((TextView)findViewById(android.R.id.empty));
 		mRemoteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

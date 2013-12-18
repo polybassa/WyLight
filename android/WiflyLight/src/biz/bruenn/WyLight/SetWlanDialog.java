@@ -2,6 +2,7 @@ package biz.bruenn.WyLight;
 
 import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.exception.FatalError;
+import biz.bruenn.WyLight.library.Endpoint;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;

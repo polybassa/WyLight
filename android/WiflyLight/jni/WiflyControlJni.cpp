@@ -71,7 +71,7 @@ namespace WyLight {
 			delete (BroadcastReceiver *)pNative;
 		}
 
-		jlong Java_biz_bruenn_WyLight_Endpoint_connect(JNIEnv *env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint)
+		jlong Java_biz_bruenn_WyLight_library_Endpoint_connect(JNIEnv *env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint)
 		{
 			// TODO make this threadsafe
 			if(NULL == g_pControl) {
@@ -88,20 +88,14 @@ namespace WyLight {
 			return static_cast<jlong>(NULL);
 		}
 
-		jstring Java_biz_bruenn_WyLight_Endpoint_getEndpointName(JNIEnv *env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint)
+		jstring Java_biz_bruenn_WyLight_library_Endpoint_getEndpointName(JNIEnv *env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint)
 		{
-			try {
-				const Endpoint& remote = ((BroadcastReceiver *)pBroadcastReceiver)->GetEndpointByFingerprint(fingerprint);
-
-				const std::string myDeviceId = remote.GetDeviceId();
-				return env->NewStringUTF(myDeviceId.data());
-			} catch(FatalError& e) {
-					ThrowJniException(env, e);
-			}
-			return env->NewStringUTF("");
+			const Endpoint& remote = ((BroadcastReceiver *)pBroadcastReceiver)->GetEndpointByFingerprint(fingerprint);
+			const std::string myDeviceId = remote.GetDeviceId();
+			return env->NewStringUTF(myDeviceId.data());
 		}
 
-		void Java_biz_bruenn_WyLight_Endpoint_setEndpointName(JNIEnv *env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint, jstring deviceId)
+		void Java_biz_bruenn_WyLight_library_Endpoint_setEndpointName(JNIEnv *env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint, jstring deviceId)
 		{
 			try {
 				const char *const myDeviceId = env->GetStringUTFChars(deviceId, 0);

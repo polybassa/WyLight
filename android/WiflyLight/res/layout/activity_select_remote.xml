@@ -15,11 +15,12 @@
 	    style="@android:style/Widget.ProgressBar.Horizontal"
 	    android:indeterminate="true"
 	    android:layout_height="wrap_content"
-	    android:layout_width="fill_parent"/>
+	    android:layout_width="fill_parent"
+	    android:layout_marginBottom="4sp"/>
     <ListView
         android:id="@+id/remoteList"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="fill_parent"/>
     <TextView
         android:id="@android:id/empty"
         android:layout_width="fill_parent"

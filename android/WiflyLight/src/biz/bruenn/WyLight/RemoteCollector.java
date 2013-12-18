@@ -2,6 +2,8 @@ package biz.bruenn.WyLight;
 
 import java.util.ArrayList;
 
+import biz.bruenn.WyLight.library.Endpoint;
+
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.widget.ArrayAdapter;
