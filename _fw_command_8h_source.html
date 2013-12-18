@@ -234,7 +234,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00156"></a><span class="lineno"><a class="line" href="struct_wy_light_1_1_fw_cmd_loop_off.html#ad67156bc70cd34d22d3ade15b7bf1a20">  156</a></span>&#160;        <a class="code" href="struct_wy_light_1_1_fw_cmd_loop_off.html#ad67156bc70cd34d22d3ade15b7bf1a20">FwCmdLoopOff</a>(uint8_t numLoops = 0) : <a class="code" href="class_wy_light_1_1_fw_cmd_script.html">FwCmdScript</a>(LOOP_OFF, sizeof(cmd_loop_end)) {</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            <a class="code" href="class_wy_light_1_1_fw_command.html#a9c16cbc6d789b240a43b95c74c608353">mReqFrame</a>.data.loopEnd.numLoops = numLoops;</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        };</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        </div>
 <div class="line"><a name="l00160"></a><span class="lineno"><a class="line" href="struct_wy_light_1_1_fw_cmd_loop_off.html#ac4afc42d823339073264a7e0ba1d7ad9">  160</a></span>&#160;        std::ostream&amp; <a class="code" href="struct_wy_light_1_1_fw_cmd_loop_off.html#ac4afc42d823339073264a7e0ba1d7ad9">Write</a>(std::ostream&amp; out, <span class="keywordtype">size_t</span>&amp; indentation)<span class="keyword"> const override </span>{</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_wy_light_1_1_fw_cmd_script.html#ad7b0c30c6787466057b109c5a5bba6b6">FwCmdScript::Write</a>(out, --indentation) &lt;&lt; <a class="code" href="struct_wy_light_1_1_fw_cmd_loop_off.html#a6f9765373a55b16005a68a8735aa06b8">TOKEN</a> &lt;&lt; <span class="charliteral">&#39; &#39;</span> &lt;&lt; std::dec &lt;&lt; (int)<a class="code" href="class_wy_light_1_1_fw_command.html#a9c16cbc6d789b240a43b95c74c608353">mReqFrame</a>.data.loopEnd.numLoops;</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        };</div>
@@ -446,7 +446,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Nov 29 2013 00:23:08 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Dec 18 2013 19:07:36 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>
