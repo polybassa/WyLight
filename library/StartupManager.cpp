@@ -95,7 +95,7 @@ namespace WyLight {
 				control.BlEraseEeprom();
 				control.BlProgramFlash(hexFilePath);
 			}
-				setCurrentState(RUN_APP);
+			setCurrentState(RUN_APP);
 			control.BlRunApp();
 			control.ConfSetParameters(Control::RN171_BASIC_PARAMETERS) ? setCurrentState(STARTUP_SUCCESSFUL) : setCurrentState(STARTUP_FAILURE);
 		} catch(std::exception &e) {

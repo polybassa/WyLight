@@ -308,9 +308,9 @@ namespace WyLight {
 		}
 		versUnion;
 
-		BlReadFlash(versUnion.bytes, VERSION_STRING_ORIGIN, sizeof(versUnion.bytes));
+		BlReadFlash(versUnion.bytes, VERSION_STRING_ORIGIN, sizeof(versUnion));
 
-		return ntohs(versUnion.version) > 300 ? 0 : ntohs(versUnion.version);
+		return versUnion.version > 300 ? 0 : versUnion.version;
 	}
 
 	void Control::BlReadInfo(BlInfo& blInfo) const throw (ConnectionTimeout, FatalError)
