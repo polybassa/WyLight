@@ -3,6 +3,7 @@ package biz.bruenn.WyLight;
 import biz.bruenn.WyLight.exception.ConnectionTimeout;
 import biz.bruenn.WyLight.exception.FatalError;
 import biz.bruenn.WyLight.exception.ScriptBufferFull;
+import biz.bruenn.WyLight.library.Endpoint;
 import biz.bruenn.WyLight.library.ScriptAdapter;
 
 public class WiflyControl {

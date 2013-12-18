@@ -1,5 +1,7 @@
 package biz.bruenn.WyLight;
 
+import biz.bruenn.WyLight.library.Endpoint;
+
 public class BroadcastReceiver {
 	private native long create(String path);
 	private native long getEndpoint(long pNative, long index);
