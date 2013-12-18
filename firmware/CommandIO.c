@@ -98,7 +98,7 @@ void CommandIO_Error()
 void CommandIO_GetCommands()
 {
 	if(RingBuf_HasError(&g_RingBuf)) {
-		Trace_String("E:03; ERROR: Receivebuffer full");
+		Trace_String(ERROR_RECEIVEBUFFER_FULL);//RingbufferFull
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
 		RingBuf_Init(&g_RingBuf);

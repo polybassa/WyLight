@@ -93,7 +93,9 @@
             NSLog(@"Save failed: %@", error.helpAnchor);
         }
     }
-    [self.managedObjectContext refreshObject:self mergeChanges:YES];
+	if(self.managedObjectContext) {
+    	[self.managedObjectContext refreshObject:self mergeChanges:YES];
+	}
     for (SimpelEffect *command in self.effects) {
         if ([command isKindOfClass:[SimpelEffect class]]) {
             [command setParallel:@(YES)];

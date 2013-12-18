@@ -19,6 +19,9 @@
 #ifndef _ERROR_H_
 #define _ERROR_H_
 
+#define ERROR_TRACEBUFFER_FULL "E:01;"
+#define ERROR_RECEIVEBUFFER_FULL "E:02;"
+
 #ifdef __CC8E__
 typedef enum {
 #else /* For GCC or CLANG on X86, ARM */

@@ -26,7 +26,7 @@ void Error_Throw()
 	if(RingBuf_HasError(&g_TraceBuf)) {
 		// *** Re-init the Ringbuffer
 		RingBuf_Init(&g_TraceBuf);
-		Trace_String("E:05; ERROR: Tracebuffer full");
+		Trace_String(ERROR_TRACEBUFFER_FULL);
 	}
 #endif
 }

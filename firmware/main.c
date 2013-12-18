@@ -216,7 +216,7 @@ void InitAll()
 	Platform_AllowInterrupts();
 	Platform_DisableBootloaderAutostart();
 
-	Trace_String("Startup");
+	Trace_String("Start");
 
 	/* Startup Wait-Time 2s
 	 * to protect Wifly-Modul from errors*/
