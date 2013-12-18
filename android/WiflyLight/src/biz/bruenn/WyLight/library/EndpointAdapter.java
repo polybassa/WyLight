@@ -5,11 +5,11 @@ import java.util.List;
 import biz.bruenn.WiflyLight.R;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class EndpointAdapter extends ArrayAdapter<Endpoint> {
@@ -22,6 +22,7 @@ public class EndpointAdapter extends ArrayAdapter<Endpoint> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		final Endpoint remote = getItem(position);
 		View v = LayoutInflater.from(getContext()).inflate(R.layout.view_remote_row, parent, false);
+		ImageView status = (ImageView) v.findViewById(R.id.status);
 		TextView deviceId = (TextView) v.findViewById(R.id.deviceId);
 		TextView address = (TextView) v.findViewById(R.id.address);
 
@@ -29,9 +30,11 @@ public class EndpointAdapter extends ArrayAdapter<Endpoint> {
 		address.setText(remote.getAddress());
 
 		if(remote.isOnline()) {
-			v.setBackgroundColor(Color.WHITE);
-			deviceId.setTextColor(getContext().getResources().getColor(android.R.color.primary_text_light));
-			address.setTextColor(getContext().getResources().getColor(android.R.color.secondary_text_light));
+			status.setImageResource(R.drawable.ic_status_good);
+			status.setContentDescription(getContext().getResources().getString(R.string.status_good));
+		} else  {
+			status.setImageResource(R.drawable.ic_status_bad);
+			status.setContentDescription(getContext().getResources().getString(R.string.status_bad));
 		}
 		return v;
 	}

@@ -3,11 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/status"
+        android:contentDescription="@string/status_bad"
+        android:layout_height="18sp"
+        android:layout_width="18sp"
+        android:layout_marginRight="5sp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_status_bad"/>
+
     <TextView
         android:id="@+id/deviceId"
         android:layout_height="fill_parent"
         android:layout_width="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@id/status"
         android:textSize="22sp"
         android:textColor="?android:textColorPrimary"/>
     <TextView
