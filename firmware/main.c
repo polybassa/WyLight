@@ -124,8 +124,14 @@ void HighPriorityInterruptFunction(void)
 {
 	uns16 sv_FSR0 = FSR0;
 	if(RC1IF) {
-		if(!RingBuf_HasError(&g_RingBuf)) {
-			RingBuf_Put(&g_RingBuf, RCREG1);
+		//Replace RingBuf_Put to avoid failures when main-cycle call's RingBuf_Put
+		if(!g_RingBuf.error_full) {
+			uns8 writeNext = RingBufInc(g_RingBuf.write);
+			if(writeNext != g_RingBuf.read) {
+				uns8 write = g_RingBuf.write;
+				g_RingBuf.data[write] = RCREG1;
+				g_RingBuf.write = writeNext;
+			} else g_RingBuf.error_full = 1;
 		} else {
 			//Register lesen um Schnittstellen Fehler zu vermeiden
 			uns8 temp = RCREG1;
