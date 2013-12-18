@@ -20,6 +20,7 @@
 #include "trace.h"
 
 #include <arpa/inet.h>
+#include <netinet/tcp.h>
 #include <sys/select.h>
 #include <string>
 #include <errno.h>
@@ -78,6 +79,13 @@ namespace WyLight {
 	TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError)
 		: ClientSocket(addr, port, SOCK_STREAM)
 	{
+		//disable nagle algorithm
+		int flag = 1;
+		const int result_disableNagle = setsockopt(mSock, IPPROTO_TCP, TCP_NODELAY, (char *) &flag,	sizeof(int));
+		if (result_disableNagle < 0) {
+			throw ConnectionLost("connect() failed can't disable nagle algorithm", addr, port);
+		}
+		
 		//set socket options to non-blocking
 		const int socketArgs = fcntl(mSock, F_GETFL, NULL) | O_NONBLOCK;
 		fcntl(mSock, F_SETFL, socketArgs);
