@@ -29,15 +29,23 @@ public class WiflyControl {
 		void setMessage(String message);
 	}
 
+	private StartupListener mListener = null;
 	private long mNative;
-	
+
+	WiflyControl() {
+		this(null);
+	}
+
+	WiflyControl(StartupListener listener) {
+		mListener = listener;
+	}
+
 	public void finalize() throws Throwable {
 		disconnect();
 	}
 	
-	public synchronized boolean connect(Endpoint remote) throws FatalError {
+	public synchronized void connect(Endpoint remote) throws FatalError {
 		mNative = remote.connect();
-		return 0 != mNative;
 	}
 	
 	public synchronized void disconnect() {
@@ -94,18 +102,21 @@ public class WiflyControl {
 	}
 
 	public synchronized void startup(Endpoint remote, String path, StartupListener listener) throws FatalError {
-		if (connect(remote)) {
-			listener.setMessage("Starting...");
+		mListener = listener;
+		try {
+			connect(remote);
 			Startup(mNative, path);
-			listener.setMessage("Startup completed!");
-		} else {
-			listener.setMessage("Startup failed");
+			mListener = null;
+		} catch (FatalError e) {
+			listener.setMessage(e.getLocalizedMessage());
+			mListener = null;
+			throw e;
 		}
 	}
 
-	public void startupCallback() {
-		int i = 0;
-		i++;
-		i = i/2;
+	public void startupCallback(String message) {
+		if(null != mListener) {
+			mListener.setMessage(message);
+		}
 	}
 }

@@ -1,5 +1,6 @@
 package biz.bruenn.WyLight;
 
+import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.exception.FatalError;
 import biz.bruenn.WyLight.library.Endpoint;
 
@@ -20,8 +21,8 @@ public class StartupTask extends AsyncTask<WiflyControl, String, Void> implement
 		mPath = path;
 		mRemote = remote;
 		AlertDialog.Builder builder = new AlertDialog.Builder(parent);
-		builder.setMessage("Connecting...");
-		builder.setTitle("Startup in progress");
+		builder.setTitle(R.string.title_dialog_startup);
+		builder.setMessage(R.string.msg_connecting);
 		mStartupDialog = builder.create();
 		mStartupDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 			public void onCancel(DialogInterface dialog) {
@@ -38,7 +39,7 @@ public class StartupTask extends AsyncTask<WiflyControl, String, Void> implement
 		try {
 			ctrl.startup(mRemote, mPath, this);
 		} catch (FatalError e) {
-			mStartupDialog.setMessage(e.getMessage());
+			mStartupDialog.cancel();
 		}
 		mStartupDialog.dismiss();
 		return null;
@@ -51,11 +52,5 @@ public class StartupTask extends AsyncTask<WiflyControl, String, Void> implement
 
 	public void setMessage(String message) {
 		publishProgress(message);
-		try {
-			Thread.sleep(1000, 0);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }

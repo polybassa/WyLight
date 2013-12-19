@@ -25,8 +25,6 @@
 #include <jni.h>
 
 namespace WyLight {
-	static Control *g_pControl = NULL;
-
 	void ThrowJniException(JNIEnv *env, const FatalError& e) {
 		jclass javaException = env->FindClass(e.GetJavaClassType());
 		env->ThrowNew(javaException, e.what());
@@ -73,19 +71,13 @@ namespace WyLight {
 
 		jlong Java_biz_bruenn_WyLight_library_Endpoint_connect(JNIEnv *env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint)
 		{
-			// TODO make this threadsafe
-			if(NULL == g_pControl) {
-				try {
-					Endpoint& remote = ((BroadcastReceiver *)pBroadcastReceiver)->GetEndpointByFingerprint(fingerprint);
-					++remote;
-					g_pControl = new Control(remote.GetIp(), remote.GetPort());
-					return reinterpret_cast<jlong>(g_pControl);
-				} catch(FatalError& e) {
-					g_pControl = NULL;
-					ThrowJniException(env, e);
-				}
+			try {
+				Endpoint& remote = ((BroadcastReceiver *)pBroadcastReceiver)->GetEndpointByFingerprint(fingerprint);
+				++remote;
+				return reinterpret_cast<jlong>(new Control(remote.GetIp(), remote.GetPort()));
+			} catch(FatalError& e) {
+				ThrowJniException(env, e);
 			}
-			return static_cast<jlong>(NULL);
 		}
 
 		jstring Java_biz_bruenn_WyLight_library_Endpoint_getEndpointName(JNIEnv *env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint)
@@ -196,24 +188,62 @@ namespace WyLight {
 
 		void Java_biz_bruenn_WyLight_WiflyControl_release(JNIEnv *env, jobject ref, jlong pNative)
 		{
-			if((Control *)pNative == g_pControl) {
-				delete g_pControl;
-				g_pControl = NULL;
-			}
+			delete reinterpret_cast<Control*>(pNative);
 		}
 
-		void StartupCallback()
-		{
-		}
+		class StartupCallback {
+			JNIEnv *mEnv;
+			jobject mRef;
+
+			public:
+				StartupCallback(JNIEnv *env, jobject ref) {
+					mEnv = env;
+					mRef = ref;
+				}
+
+				void operator()(size_t state) const {
+					jclass callbackClass = mEnv->FindClass("biz/bruenn/WyLight/WiflyControl");
+					jmethodID callbackMethod = mEnv->GetMethodID(callbackClass, "startupCallback", "(Ljava/lang/String;)V");
+
+					jstring value;
+					switch(state) {
+						case StartupManager::MODE_CHECK:
+							value = mEnv->NewStringUTF("Checking operation mode...");
+							break;
+						case StartupManager::START_BOOTLOADER:
+							value = mEnv->NewStringUTF("Starting bootloader...");
+							break;
+						case StartupManager::BL_VERSION_CHECK:
+							value = mEnv->NewStringUTF("Reading bootloader version...");
+							break;
+						case StartupManager::FW_VERSION_CHECK:
+							value = mEnv->NewStringUTF("Reading firmware version...");
+							break;
+						case StartupManager::UPDATING:
+							value = mEnv->NewStringUTF("Updating firmware...\nDon't disconnect!");
+							break;
+						case StartupManager::RUN_APP:
+							value = mEnv->NewStringUTF("Starting firmware...");
+							break;
+						case StartupManager::STARTUP_FAILURE:
+							value = mEnv->NewStringUTF("Startup failed!");
+							break;
+						case StartupManager::STARTUP_SUCCESSFUL:
+							value = mEnv->NewStringUTF("Startup successfull!");
+							break;
+						default:
+							value = mEnv->NewStringUTF("something strange is going on...");
+					}
+					mEnv->CallVoidMethod(mRef, callbackMethod, value);
+				}
+		};
 
 		void Java_biz_bruenn_WyLight_WiflyControl_Startup(JNIEnv *env, jobject ref, jlong pNative, jstring path)
 		{
-			jclass callbackClass = env->FindClass("biz/bruenn/WyLight/WiflyControl");
-			jmethodID callbackMethod = env->GetMethodID(callbackClass, "startupCallback", "()V");
-			env->CallVoidMethod(ref, callbackMethod);
 			const char *const myPath = env->GetStringUTFChars(path, 0);
 			Control& myControl = *reinterpret_cast<Control*>(pNative);
-			StartupManager manager;
+			StartupCallback callback(env, ref);
+			StartupManager manager(callback);
 			try {
 				manager.startup(myControl, myPath);
 			} catch (FatalError& e) {

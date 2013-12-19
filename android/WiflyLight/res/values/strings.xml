@@ -8,6 +8,7 @@
     <string name="configure">configure</string>
     <string name="deviceid_description">Device name:</string>
     <string name="deviceid_hint">this is optional</string>
+    <string name="msg_connecting">Establishing connection...</string>
     <string name="msg_connectionfailed">Connection to the wifly device failed</string>
     <string name="msg_noremote">No remote detected, click scan to find one</string>
     <string name="msg_scriptbufferfull">The script buffer is full, clear it first</string>
@@ -35,5 +36,6 @@
     <string name="title_activity_script_import">Import script into WyLight</string>
     <string name="title_activity_wifly_control">Control your WiflyLight</string>
     <string name="title_dialog_set_wlan">Configure your WLAN settings</string>
+    <string name="title_dialog_startup">Startup</string>
     <string name="title_dialog_string_picker">Set string</string>
 </resources>
