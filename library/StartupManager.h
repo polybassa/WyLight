@@ -36,7 +36,8 @@ namespace WyLight {
 			UPDATING,
 			RUN_APP,
 			STARTUP_FAILURE,
-			STARTUP_SUCCESSFUL
+			STARTUP_SUCCESSFUL,
+			NUM_STATES
 		};
 
 		StartupManager(const std::function<void(StartupManager::State newState)>& onStateChange = NULL);
@@ -44,11 +45,12 @@ namespace WyLight {
 		StartupManager(StartupManager&& other) = delete;
 
 		StartupManager::State getCurrentState(void) const {return mState; }
-		static std::string getStateDescription(StartupManager::State state);
+		static const std::string& getStateDescription(StartupManager::State state);
 		void startup(WyLight::Control& control, const std::string& hexFilePath) throw (InvalidParameter);
 		void startup(WyLight::ControlNoThrow& control, const std::string& hexFilePath) throw (InvalidParameter);
 
 	private:
+		static const std::string StateDescription[StartupManager::NUM_STATES+1];
 		std::function<void(StartupManager::State newState)> mOnStateChangeCallback;
 		StartupManager::State mState = MODE_CHECK;
 		uint16_t mHexFileVersion = 0;

@@ -205,7 +205,7 @@ namespace WyLight {
 				}
 
 				void operator()(StartupManager::State state) const {
-					std::string stateDescription = StartupManager::getStateDescription(state);
+					const std::string& stateDescription = StartupManager::getStateDescription(state);
 					jstring value = mEnv->NewStringUTF(stateDescription.data());
 					mEnv->CallVoidMethod(mRef, mMethod, value);
 				}
