@@ -202,8 +202,15 @@ namespace WyLight {
 			}
 		}
 
+		void StartupCallback()
+		{
+		}
+
 		void Java_biz_bruenn_WyLight_WiflyControl_Startup(JNIEnv *env, jobject ref, jlong pNative, jstring path)
 		{
+			jclass callbackClass = env->FindClass("biz/bruenn/WyLight/WiflyControl");
+			jmethodID callbackMethod = env->GetMethodID(callbackClass, "startupCallback", "()V");
+			env->CallVoidMethod(ref, callbackMethod);
 			const char *const myPath = env->GetStringUTFChars(path, 0);
 			Control& myControl = *reinterpret_cast<Control*>(pNative);
 			StartupManager manager;

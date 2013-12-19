@@ -25,6 +25,10 @@ public class WiflyControl {
 	private native void release(long pNative);
 	private native void Startup(long pNative, String path);
 	
+	public interface StartupListener {
+		void setMessage(String message);
+	}
+
 	private long mNative;
 	
 	public void finalize() throws Throwable {
@@ -89,9 +93,19 @@ public class WiflyControl {
 		return FwSetGradient(mNative, argb_1, argb_2, length, offset, fadeTime);
 	}
 
-	public synchronized void startup(Endpoint remote, String path) throws FatalError {
+	public synchronized void startup(Endpoint remote, String path, StartupListener listener) throws FatalError {
 		if (connect(remote)) {
+			listener.setMessage("Starting...");
 			Startup(mNative, path);
+			listener.setMessage("Startup completed!");
+		} else {
+			listener.setMessage("Startup failed");
 		}
+	}
+
+	public void startupCallback() {
+		int i = 0;
+		i++;
+		i = i/2;
 	}
 }
