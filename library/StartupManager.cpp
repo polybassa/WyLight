@@ -26,7 +26,26 @@ namespace WyLight {
 
 	static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-	StartupManager::StartupManager(const std::function<void(size_t newState)>& onStateChange) : mOnStateChangeCallback(onStateChange) {}
+	const std::string StartupManager::StateDescription[StartupManager::NUM_STATES+1] = {
+		"Checking operation mode...",
+		"Starting bootloader...",
+		"Reading bootloader version...",
+		"Reading firmware version...",
+		"Updating firmware...\nDon't disconnect!",
+		"Starting firmware...",
+		"Startup failed!",
+		"Startup successful!",
+		"Something strange is going on..."
+	};
+
+	StartupManager::StartupManager(const std::function<void(StartupManager::State newState)>& onStateChange) : mOnStateChangeCallback(onStateChange) {}
+
+	const std::string& StartupManager::getStateDescription(StartupManager::State state) {
+		if((0 <= state) && (state < StartupManager::NUM_STATES)) {
+				return StateDescription[state];
+		}
+		return StateDescription[StartupManager::NUM_STATES];
+	}
 
 	void StartupManager::setCurrentState(StartupManager::State newState) {
 		if(mState != newState) {

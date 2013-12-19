@@ -5,7 +5,6 @@ import java.io.InputStream;
 
 import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.ControlFragment.WiflyControlProvider;
-import biz.bruenn.WyLight.exception.FatalError;
 import biz.bruenn.WyLight.library.Endpoint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -112,9 +111,8 @@ public class WiflyControlActivity extends FragmentActivity implements WiflyContr
 		super.onResume();
 		try {
 			final String tempFilename = copyAssetToFile("main.hex");
-			mCtrl.startup(mRemote, tempFilename);
-		} catch (FatalError e) {
-			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+			StartupTask startup = new StartupTask(this, mRemote, tempFilename);
+			startup.execute(mCtrl);
 		} catch (IOException e) {
 			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
 		}
