@@ -194,47 +194,20 @@ namespace WyLight {
 		class StartupCallback {
 			JNIEnv *mEnv;
 			jobject mRef;
+			jmethodID mMethod;
 
 			public:
 				StartupCallback(JNIEnv *env, jobject ref) {
 					mEnv = env;
 					mRef = ref;
+					jclass callbackClass = mEnv->FindClass("biz/bruenn/WyLight/WiflyControl");
+					mMethod = mEnv->GetMethodID(callbackClass, "startupCallback", "(Ljava/lang/String;)V");
 				}
 
-				void operator()(size_t state) const {
-					jclass callbackClass = mEnv->FindClass("biz/bruenn/WyLight/WiflyControl");
-					jmethodID callbackMethod = mEnv->GetMethodID(callbackClass, "startupCallback", "(Ljava/lang/String;)V");
-
-					jstring value;
-					switch(state) {
-						case StartupManager::MODE_CHECK:
-							value = mEnv->NewStringUTF("Checking operation mode...");
-							break;
-						case StartupManager::START_BOOTLOADER:
-							value = mEnv->NewStringUTF("Starting bootloader...");
-							break;
-						case StartupManager::BL_VERSION_CHECK:
-							value = mEnv->NewStringUTF("Reading bootloader version...");
-							break;
-						case StartupManager::FW_VERSION_CHECK:
-							value = mEnv->NewStringUTF("Reading firmware version...");
-							break;
-						case StartupManager::UPDATING:
-							value = mEnv->NewStringUTF("Updating firmware...\nDon't disconnect!");
-							break;
-						case StartupManager::RUN_APP:
-							value = mEnv->NewStringUTF("Starting firmware...");
-							break;
-						case StartupManager::STARTUP_FAILURE:
-							value = mEnv->NewStringUTF("Startup failed!");
-							break;
-						case StartupManager::STARTUP_SUCCESSFUL:
-							value = mEnv->NewStringUTF("Startup successfull!");
-							break;
-						default:
-							value = mEnv->NewStringUTF("something strange is going on...");
-					}
-					mEnv->CallVoidMethod(mRef, callbackMethod, value);
+				void operator()(StartupManager::State state) const {
+					std::string stateDescription = StartupManager::getStateDescription(state);
+					jstring value = mEnv->NewStringUTF(stateDescription.data());
+					mEnv->CallVoidMethod(mRef, mMethod, value);
 				}
 		};
 

@@ -27,9 +27,6 @@ namespace WyLight {
 
 	class StartupManager {
 	public:
-		StartupManager(const std::function<void(size_t newState)>& onStateChange = NULL);
-		StartupManager(const StartupManager& other) = delete;
-		StartupManager(StartupManager&& other) = delete;
 
 		enum State {
 			MODE_CHECK = 0,
@@ -42,12 +39,17 @@ namespace WyLight {
 			STARTUP_SUCCESSFUL
 		};
 
+		StartupManager(const std::function<void(StartupManager::State newState)>& onStateChange = NULL);
+		StartupManager(const StartupManager& other) = delete;
+		StartupManager(StartupManager&& other) = delete;
+
 		StartupManager::State getCurrentState(void) const {return mState; }
+		static std::string getStateDescription(StartupManager::State state);
 		void startup(WyLight::Control& control, const std::string& hexFilePath) throw (InvalidParameter);
 		void startup(WyLight::ControlNoThrow& control, const std::string& hexFilePath) throw (InvalidParameter);
 
 	private:
-		std::function<void(size_t newState)> mOnStateChangeCallback;
+		std::function<void(StartupManager::State newState)> mOnStateChangeCallback;
 		StartupManager::State mState = MODE_CHECK;
 		uint16_t mHexFileVersion = 0;
 		uint16_t mTargetVersion = 0;
