@@ -52,11 +52,13 @@ public class StartupTask extends AsyncTask<WiflyControl, String, Void> implement
 
 	public void setMessage(String message) {
 		publishProgress(message);
+		/* Enable to delay startup messages
 		try {
 			Thread.sleep(1000, 0);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//*/
 	}
 }
