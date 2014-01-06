@@ -629,7 +629,9 @@ public:
 		cin >> path;
 		cout << "Startup in progress... ";
 
-		WyLight::StartupManager manager;
+		auto callback = [](WyLight::StartupManager::State state) { Trace(ZONE_INFO, "Startup is in state: %d\n", state);};
+
+		WyLight::StartupManager manager(callback);
 		TRY_CATCH_COUT(manager.startup(control, path));
 		if(manager.getCurrentState() == WyLight::StartupManager::STARTUP_FAILURE) {
 			cout << endl << "Startup failure occured" << endl;
