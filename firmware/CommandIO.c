@@ -29,6 +29,15 @@
 
 bank2 struct CommandBuffer g_CmdBuf;
 bank5 struct response_frame g_ResponseBuf;
+static uns8 STX_SYNC_Counter;
+
+#define sendIdentByte(x) {		\
+	STX_SYNC_Counter--; 		\
+	if (STX_SYNC_Counter == 0)  \
+	{							\
+		STX_SYNC_Counter = 2;	\
+		UART_Send(FW_IDENT);	\
+	}}
 
 
 /** PRIVATE METHODE **/
@@ -55,6 +64,8 @@ void CommandIO_Init()
 {
 	g_CmdBuf.state = CS_WaitForSTX;
 	DeleteBuffer();
+	STX_SYNC_Counter = 2;
+
 }
 
 void CommandIO_Error()
@@ -115,14 +126,14 @@ void CommandIO_GetCommands()
 		case CS_WaitForSTX:
 		{
 			if(new_byte == STX) {
-				UART_Send(FW_IDENT);
-				g_CmdBuf.state = CS_DeleteBuffer;
+				sendIdentByte();
+				DeleteBuffer();
+				g_CmdBuf.state = CS_SaveChar;
 			}
 			break;
 		}
-		case CS_DeleteBuffer:
+		/*case CS_DeleteBuffer:
 		{
-			DeleteBuffer();
 			switch(new_byte)
 			{
 			case STX: UART_Send(FW_IDENT); break;
@@ -135,10 +146,10 @@ void CommandIO_GetCommands()
 			}; break;
 			}
 			break;
-		}
+		}*/
 		case CS_UnMaskChar:
 		{
-				writeByte(new_byte);
+			writeByte(new_byte);
 			g_CmdBuf.state = CS_SaveChar;
 			break;
 		}
@@ -149,10 +160,11 @@ void CommandIO_GetCommands()
 				break;
 			}
 			if(new_byte == STX) {
-				g_CmdBuf.state = CS_DeleteBuffer;
+				sendIdentByte();
 				break;
 			}
 			if(new_byte == ETX) {
+				STX_SYNC_Counter = 2;
 				g_CmdBuf.state = CS_WaitForSTX;
 				ErrorCode mRetValue = BAD_PACKET;
 

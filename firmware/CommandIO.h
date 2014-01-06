@@ -33,9 +33,8 @@
 
 /** Statemachine STATES **/
 #define CS_WaitForSTX 0
-#define CS_DeleteBuffer 1
-#define CS_UnMaskChar 2
-#define CS_SaveChar 3
+#define CS_UnMaskChar 1
+#define CS_SaveChar 2
 
 struct CommandBuffer {
 	uns8 buffer[CMDFRAMELENGTH];
@@ -46,7 +45,6 @@ struct CommandBuffer {
 };
 extern bank2 struct CommandBuffer g_CmdBuf;
 extern bank5 struct response_frame g_ResponseBuf;
-
 
 void CommandIO_Init();
 

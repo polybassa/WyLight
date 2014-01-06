@@ -50,6 +50,8 @@ namespace WyLight {
 		"set comm close 0\r\n",            // Disable *CLOS* string
 		"set comm open 0\r\n",             // Disable *OPEN* string
 		"set comm remote 0\r\n",           // Disable *Hello* string
+		"set comm time 5\r\n", 			// Set flush timer to 5 ms
+		"set comm idle 240\r\n",			// Set idle timer to 240 s, to close tcp connections after 240s if there's no traffic
 		"set dns name rn.microchip.com\r\n",    // set dns of updateserver
 		"set ip flags 0x6\r\n",                    // if the module loses the accesspoint connection, the connection is closed
 		"set ip dhcp 1\r\n",               // enable DHCP client
@@ -73,6 +75,8 @@ namespace WyLight {
 		"set comm close 0\r\n",            // Disable *CLOS* string
 		"set comm open 0\r\n",             // Disable *OPEN* string
 		"set comm remote 0\r\n",           // Disable *Hello* string
+		"set comm time 5\r\n", 			// Set flush timer to 5 ms
+		"set comm idle 240\r\n",			// Set idle timer to 240 s, to close tcp connections after 240s if there's no traffic
 		"set dns name rn.microchip.com\r\n",    // set dns of updateserver
 		"set ip flags 0x6\r\n",                    // if the module loses the accesspoint connection, the connection is closed
 		"set ip dhcp 1\r\n",               // enable DHCP client
@@ -94,6 +98,8 @@ namespace WyLight {
 		"set comm close 0\r\n",            // Disable *CLOS* string
 		"set comm open 0\r\n",             // Disable *OPEN* string
 		"set comm remote 0\r\n",           // Disable *Hello* string
+		"set comm time 5\r\n", 			// Set flush timer to 5 ms
+		"set comm idle 240\r\n",			// Set idle timer to 240 s, to close tcp connections after 240s if there's no traffic
 		//		"set dns name rn.microchip.com\r\n",	// set dns of updateserver
 		"set ip dhcp 4\r\n",               // enable DHCP server
 		"set ftp address 169.254.7.57\r\n", // configure localhost as ftp server in ad-hoc connection

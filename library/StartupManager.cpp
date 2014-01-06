@@ -108,7 +108,7 @@ namespace WyLight {
 	void StartupManager::bootloaderVersionCheckUpdate(WyLight::Control &control, const std::string &hexFilePath) {
 		try {
 			mTargetVersion = control.BlReadFwVersion();
-			if(mTargetVersion == 0 || mTargetVersion < mHexFileVersion) {
+			if(mTargetVersion == 0 || mTargetVersion <= mHexFileVersion) {
 				//---- UPDATE STUFF ---------
 				setCurrentState(UPDATING);
 				control.BlEraseEeprom();

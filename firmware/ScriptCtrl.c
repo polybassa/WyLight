@@ -213,7 +213,7 @@ void ScriptCtrl_Run(void)
 	{
 	case LOOP_ON:
 	{
-		Trace_String("LOOP_ON;");
+		//Trace_String("LOOP_ON;");
 		/* move execute pointer to the next command */
 		gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
 		ScriptBufSetInLoop(TRUE);

@@ -131,12 +131,13 @@ int ut_CommandIO_FW_IDENT(void)
 
 	uint8_t identCount = 0;
 	while(!RingBuf_IsEmpty(&g_RingBufResponse)) {
-		if(RingBuf_Get(&g_RingBufResponse) == FW_IDENT) {
+		uns8 temp = RingBuf_Get(&g_RingBufResponse);
+		if(temp == FW_IDENT) {
 			identCount++;
 		}
 	}
 
-	CHECK(identCount == 5);
+	CHECK(identCount == 2);
 
 	TestCaseEnd();
 }
