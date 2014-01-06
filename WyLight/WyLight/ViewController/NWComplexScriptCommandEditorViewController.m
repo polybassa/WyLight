@@ -88,6 +88,13 @@ enum EditColorTarget {
 - (void)viewWillDisappear:(BOOL)animated {
 	[[NSUserDefaults standardUserDefaults] setInteger:self.toolKitCarousel.currentItemIndex forKey:SELECTED_TOOLKIT];
 	self.toolKitCarousel.hidden = YES;
+	NSError *error;
+	if (self.command.managedObjectContext && ![self.command.managedObjectContext save:&error]) {
+        NSLog(@"Save failed");
+    }
+	if (self.command.managedObjectContext.parentContext && ![self.command.managedObjectContext.parentContext save:&error]) {
+		NSLog(@"Parent Save failed");
+	}
 	[super viewWillDisappear:animated];
 }
 

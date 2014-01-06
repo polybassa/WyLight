@@ -57,10 +57,14 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     self.tabBarController.navigationItem.rightBarButtonItem = nil;
+	[self.managedObjectContext processPendingChanges];
     NSError *error;
     if (self.managedObjectContext && ![self.managedObjectContext save:&error]) {
         NSLog(@"Save failed");
     }
+	if (self.managedObjectContext.parentContext && ![self.managedObjectContext.parentContext save:&error]) {
+		NSLog(@"Parent Save failed");
+	}
     [super viewWillDisappear:animated];
 }
 
@@ -188,8 +192,10 @@
 
 - (void)setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
 	_managedObjectContext = managedObjectContext;
-	[self.carousel reloadData];
-	[self updateTitleLabel];
+	dispatch_async(dispatch_get_main_queue(), ^(void){
+		[self.carousel reloadData];
+		[self updateTitleLabel];
+	});
 }
 
 - (void)updateTitleLabel {
@@ -345,7 +351,8 @@
 - (IBAction)addBarButtonPressed:(UIBarButtonItem *)sender {
 	if (!self.waitingForProgrammaticallySegue) {
 		self.waitingForProgrammaticallySegue = TRUE;
-		Script *script = [Script emptyScriptInContext:self.managedObjectContext];
+		NSManagedObjectContext *currentContext = self.managedObjectContext;
+		Script *script = [Script emptyScriptInContext:currentContext];
 		[self.carousel insertItemAtIndex:[self.scriptObjects indexOfObject:script] animated:YES];
 		[self.carousel scrollToItemAtIndex:[self.scriptObjects indexOfObject:script] animated:YES];
 		[self updateTitleLabel];
