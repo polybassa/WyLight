@@ -13,6 +13,11 @@ import android.view.ViewGroup;
 public class SetBrightnessFragment extends ControlFragment {
 
 	@Override
+	public int getIcon() {
+		return R.drawable.ic_action_brightness_high;
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.fragment_set_brightness, group, false);	

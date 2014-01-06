@@ -6,11 +6,10 @@ import biz.bruenn.WyLight.exception.FatalError;
 import biz.bruenn.WyLight.exception.ScriptBufferFull;
 import biz.bruenn.WyLight.library.ScriptAdapter;
 import android.app.Activity;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.app.Fragment;
 import android.widget.Toast;
 
-public class ControlFragment extends Fragment {
+public abstract class ControlFragment extends Fragment {
 
 	protected WiflyControlProvider mProvider;
 	
@@ -18,6 +17,8 @@ public class ControlFragment extends Fragment {
 		public WiflyControl getControl();
 	}
 	
+	public abstract int getIcon();
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -29,7 +30,7 @@ public class ControlFragment extends Fragment {
 	}
 	
 	protected void onConnectionLost() {
-		final FragmentActivity activity = getActivity();
+		final Activity activity = getActivity();
 		Toast.makeText(activity, "Connection lost", Toast.LENGTH_SHORT).show();
 		activity.finish();		
 	}
