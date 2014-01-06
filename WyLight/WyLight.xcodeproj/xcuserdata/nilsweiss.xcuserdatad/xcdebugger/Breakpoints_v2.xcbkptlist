@@ -39,7 +39,7 @@
                   symbolName = "__45-[NWScriptViewController deleteScriptObject:]_block_invoke239"
                   moduleName = "WyLight"
                   urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script/NWScriptViewController.m"
-                  timestampString = "409094196.071338"
+                  timestampString = "410730527.259416"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "311"
@@ -53,7 +53,7 @@
                   symbolName = "__45-[NWScriptViewController deleteScriptObject:]_block_invoke_2"
                   moduleName = "WyLight"
                   urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script/NWScriptViewController.m"
-                  timestampString = "409094196.071892"
+                  timestampString = "410730527.260003"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "311"
@@ -149,7 +149,7 @@
                   symbolName = "-[NWScriptViewController deleteScriptObject:]"
                   moduleName = "WyLight"
                   urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script/NWScriptViewController.m"
-                  timestampString = "409094196.072416"
+                  timestampString = "410730527.26057"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "287"
@@ -163,7 +163,7 @@
                   symbolName = "-[NWScriptViewController deleteScriptObject:]"
                   moduleName = "WyLight"
                   urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script/NWScriptViewController.m"
-                  timestampString = "409094196.072854"
+                  timestampString = "410730527.261068"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "287"
@@ -177,7 +177,7 @@
                   symbolName = "__45-[NWScriptViewController deleteScriptObject:]_block_invoke"
                   moduleName = "WyLight"
                   urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script/NWScriptViewController.m"
-                  timestampString = "409094196.073264"
+                  timestampString = "410730527.261481"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "287"
@@ -210,11 +210,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WyLight/ViewController/NWComplexScriptCommandEditorViewController.m"
-            timestampString = "407275577.573481"
+            timestampString = "409879231.46456"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "487"
-            endingLineNumber = "487"
+            startingLineNumber = "494"
+            endingLineNumber = "494"
             landmarkName = "-swipeUpOnScriptObjectControl:"
             landmarkType = "5">
          </BreakpointContent>
@@ -226,11 +226,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WyLight/ViewController/NWComplexScriptCommandEditorViewController.m"
-            timestampString = "407275577.573481"
+            timestampString = "409879231.46456"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "493"
-            endingLineNumber = "493"
+            startingLineNumber = "500"
+            endingLineNumber = "500"
             landmarkName = "-swipeUpOnScriptObjectControl:"
             landmarkType = "5">
          </BreakpointContent>
@@ -306,41 +306,57 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WyLight/Script/NWScriptFolderViewController.m"
-            timestampString = "408198198.808048"
+            timestampString = "409878930.545376"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "356"
-            endingLineNumber = "356"
-            landmarkName = "-addBarButtonPressed:"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
+            landmarkName = "-useDocument"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../library/ClientSocket.cpp"
+            timestampString = "410463268.030051"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
+            landmarkName = "TcpSocket::Send(const uint8_t *frame, size_t length)"
             landmarkType = "5">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "__52-[NWScriptFolderViewController addBarButtonPressed:]_block_invoke"
+                  symbolName = "WyLight::TcpSocket::Send(unsigned char const*, unsigned long) const"
                   moduleName = "WyLight"
-                  urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script/NWScriptFolderViewController.m"
-                  timestampString = "409094196.075288"
+                  urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/library/ClientSocket.cpp"
+                  timestampString = "410730527.264802"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "357"
-                  endingLineNumber = "357"
-                  offsetFromSymbolStart = "76">
+                  startingLineNumber = "138"
+                  endingLineNumber = "138"
+                  offsetFromSymbolStart = "126">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "__destroy_helper_block_335"
+                  symbolName = "WyLight::TcpSocket::Send(unsigned char const*, unsigned long) const"
                   moduleName = "WyLight"
-                  urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/WyLight/WyLight/Script/NWScriptFolderViewController.m"
-                  timestampString = "409094196.075649"
+                  urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/library/ClientSocket.cpp"
+                  timestampString = "410730527.265211"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "357"
-                  endingLineNumber = "357"
-                  offsetFromSymbolStart = "14">
+                  startingLineNumber = "138"
+                  endingLineNumber = "138"
+                  offsetFromSymbolStart = "300">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -351,14 +367,44 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "WyLight/Script/NWScriptFolderViewController.m"
-            timestampString = "408198198.808048"
+            filePath = "../library/ComProxy.cpp"
+            timestampString = "410463650.089296"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "285"
-            endingLineNumber = "285"
-            landmarkName = "-copy:"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "ComProxy::Recv(uint8_t *pBuffer, const size_t length, timeval *pTimeout, bool checkCrc, bool crcInLittleEndian)"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WyLight::ComProxy::Recv(unsigned char*, unsigned long, timeval*, bool, bool) const"
+                  moduleName = "WyLight"
+                  urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/library/ComProxy.cpp"
+                  timestampString = "410730527.265671"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "53"
+                  endingLineNumber = "53"
+                  offsetFromSymbolStart = "508">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WyLight::ComProxy::Recv(unsigned char*, unsigned long, timeval*, bool, bool) const"
+                  moduleName = "WyLight"
+                  urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/library/ComProxy.cpp"
+                  timestampString = "410730527.26608"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "53"
+                  endingLineNumber = "53"
+                  offsetFromSymbolStart = "598">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -367,14 +413,44 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "WyLight/Script/NWScriptFolderViewController.m"
-            timestampString = "408198198.808048"
+            filePath = "../library/WiflyControl.cpp"
+            timestampString = "410463595.437978"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "410"
-            endingLineNumber = "410"
-            landmarkName = "-NWEffectDrawer:finishedDrawing:"
+            startingLineNumber = "751"
+            endingLineNumber = "751"
+            landmarkName = "Control::FwSend(FwCommand&amp; cmd)"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WyLight::Control::FwSend(WyLight::FwCommand&amp;) const"
+                  moduleName = "WyLight"
+                  urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/library/WiflyControl.cpp"
+                  timestampString = "410730527.266539"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "751"
+                  endingLineNumber = "751"
+                  offsetFromSymbolStart = "1000">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WyLight::Control::FwSend(WyLight::FwCommand&amp;) const"
+                  moduleName = "WyLight"
+                  urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/library/WiflyControl.cpp"
+                  timestampString = "410730527.266961"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "751"
+                  endingLineNumber = "751"
+                  offsetFromSymbolStart = "1094">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -383,14 +459,44 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "WyLight/Script/NWScriptFolderViewController.m"
-            timestampString = "408198198.808048"
+            filePath = "../library/WiflyControl.cpp"
+            timestampString = "410463598.083095"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "412"
-            endingLineNumber = "412"
-            landmarkName = "-NWEffectDrawer:finishedDrawing:"
+            startingLineNumber = "746"
+            endingLineNumber = "746"
+            landmarkName = "Control::FwSend(FwCommand&amp; cmd)"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WyLight::Control::FwSend(WyLight::FwCommand&amp;) const"
+                  moduleName = "WyLight"
+                  urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/library/WiflyControl.cpp"
+                  timestampString = "410730527.267413"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "746"
+                  endingLineNumber = "746"
+                  offsetFromSymbolStart = "264">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WyLight::Control::FwSend(WyLight::FwCommand&amp;) const"
+                  moduleName = "WyLight"
+                  urlString = "file:///Users/nilsweiss/Dropbox/Wifly_Light/Software/library/WiflyControl.cpp"
+                  timestampString = "410730527.267831"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "746"
+                  endingLineNumber = "746"
+                  offsetFromSymbolStart = "744">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
