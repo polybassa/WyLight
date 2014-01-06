@@ -208,6 +208,29 @@ public:
 	}
 };
 
+class ControlCmdExtractVersion : public WiflyControlCmd
+{
+public:
+	ControlCmdExtractVersion(void) : WiflyControlCmd(
+													 string("extract_version"),
+													 string(" <hexFile>' \n ") + string("    <hexFile> path of hexfile to extract version")) {};
+	
+	virtual void Run(WyLight::Control& control) const
+	{
+		string path;
+		cin >> path;
+		cout << "Extracing Version ... ";
+		try {
+			uint16_t version = control.ExtractFwVersion(path);
+			cout << "done.\n\n";
+			printf("Version = %d \n", version);
+		} catch(WyLight::FatalError& e)   {
+			cout << "failed! because of: " << e << '\n';
+		}
+	}
+};
+
+
 class ControlCmdBlRead : public WiflyControlCmd
 {
 public:
@@ -286,7 +309,10 @@ public:
 	virtual void Run(WyLight::Control& control) const {
 		cout << "Reading firmware version... ";
 		try {
-			cout << endl << "Version: " << control.BlReadFwVersion() << endl << endl << "done." << endl;
+			cout << endl << "Version: ";
+			auto version = control.BlReadFwVersion();
+			cout << "done.\n\n";
+			printf("Version = %d \n", version);
 		} catch(WyLight::FatalError& e)   {
 			cout << "failed, because of " << e << endl;
 		}
@@ -436,8 +462,11 @@ public:
 
 	virtual void Run(WyLight::Control& control) const {
 		cout << "Reading firmware version... ";
-		try {
-			cout << "done.\n\n" << control.FwGetVersion() << '\n';
+		try {cout << endl << "Version: ";
+			auto version = control.FwGetVersion();
+			cout << "done.\n\n";
+			printf("Version = %d \n", version);
+
 		} catch(WyLight::FatalError& e)   {
 			cout << "failed! because of: " << e << '\n';
 		}
@@ -699,6 +728,7 @@ static const std::shared_ptr<const WiflyControlCmd> s_Cmds[] = {
 	std::shared_ptr<const WiflyControlCmd>(new ControlCmdWait()),
 	std::shared_ptr<const WiflyControlCmd>(new ControlCmdGetTargetMode()),
 	std::shared_ptr<const WiflyControlCmd>(new ControlCmdDoStartup()),
+	std::shared_ptr<const WiflyControlCmd>(new ControlCmdExtractVersion()),
 //TODO implement on demand	ControlCmdBlWriteEeprom writeEeprom;
 //TODO	ControlCmdBlWriteFlash writeFlash;
 };
