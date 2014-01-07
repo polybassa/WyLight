@@ -34,7 +34,7 @@ var searchData=
   ['setstartsegmentaddress',['setStartSegmentAddress',['../classintelhex.html#a9688f0002be870b05d64b5f9fcdeb86b',1,'intelhex']]],
   ['settime',['SetTime',['../struct_wy_light_1_1_fw_cmd_set_rtc.html#a520ba9a6d007251ffcf4aff24d004498',1,'WyLight::FwCmdSetRtc']]],
   ['showhelp',['ShowHelp',['../class_wifly_control_cli.html#a0e475ce27f3a9c42c3d3c18b4533ed36',1,'WiflyControlCli']]],
-  ['size',['size',['../classintelhex.html#afa757932ec420f977d33bb9a2d5a0a69',1,'intelhex::size()'],['../class_wy_light_1_1_script.html#a64d7a716911f0c45a67a5041be26a9f2',1,'WyLight::Script::size()'],['../class_wy_light_1_1_base_buffer.html#a6aa8fcfeaeeb093bce60211a3728337a',1,'WyLight::BaseBuffer::Size()']]],
+  ['size',['Size',['../class_wy_light_1_1_base_buffer.html#a6aa8fcfeaeeb093bce60211a3728337a',1,'WyLight::BaseBuffer::Size()'],['../classintelhex.html#afa757932ec420f977d33bb9a2d5a0a69',1,'intelhex::size()'],['../class_wy_light_1_1_script.html#a64d7a716911f0c45a67a5041be26a9f2',1,'WyLight::Script::size()']]],
   ['sizehigh',['sizeHigh',['../struct_wy_light_1_1_bl_info.html#a95dfd12b33d938d0130d1e3326f9d711',1,'WyLight::BlInfo']]],
   ['sizelow',['sizeLow',['../struct_wy_light_1_1_bl_info.html#a0fdc843fbc878f3570751ef38fa69e0e',1,'WyLight::BlInfo']]],
   ['start_5fbootloader',['START_BOOTLOADER',['../class_wy_light_1_1_startup_manager.html#ae591c4ea2b11d5ebae6fdaa90edded33a6a40d78bf70746ff1b6c445dbed48439',1,'WyLight::StartupManager']]],
