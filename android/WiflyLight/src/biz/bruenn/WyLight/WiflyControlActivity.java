@@ -43,7 +43,7 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 		}
 
 		public void onTabReselected(Tab tab, FragmentTransaction ft) {
-			// do nothing
+			/* not implemented */
 		}
 
 		public void onTabSelected(Tab tab, FragmentTransaction ft) {
@@ -51,7 +51,7 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 		}
 
 		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-			// do nothing
+			/* not implemented */
 		}
 	}
 
