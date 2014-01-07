@@ -6,25 +6,55 @@ import java.io.InputStream;
 import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.ControlFragment.WiflyControlProvider;
 import biz.bruenn.WyLight.library.Endpoint;
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Toast;
 
-public class WiflyControlActivity extends FragmentActivity implements WiflyControlProvider {
+public class WiflyControlActivity extends Activity implements WiflyControlProvider {
 	public static final String EXTRA_ENDPOINT = "biz.bruenn.WiflyLight.Endpoint";
 	public static final String EXTRA_IP = "IpAddress";
 	public static final String EXTRA_PORT = "Port";
 	public static final short DEFAULT_PORT = 2000;
 	
+	private static final ControlFragment[] mFragments = new ControlFragment[] {
+		new ScriptingFragment(),
+		new SetColorFragment(),
+		new SetBrightnessFragment(),
+		new SetRGBFragment(),
+		new SetGradientFragment()
+	};
+
 	private final WiflyControl mCtrl = new WiflyControl();
 	private Endpoint mRemote;
 	
+	public static class TabListener implements ActionBar.TabListener {
+		private final ViewPager mPager;
+		public TabListener(ViewPager pager) {
+			mPager = pager;
+		}
+
+		public void onTabReselected(Tab tab, FragmentTransaction ft) {
+			// do nothing
+		}
+
+		public void onTabSelected(Tab tab, FragmentTransaction ft) {
+			mPager.setCurrentItem(tab.getPosition());
+		}
+
+		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+			// do nothing
+		}
+	}
+
 	private class WiflyPagerAdapter extends FragmentPagerAdapter {
 
 		public WiflyPagerAdapter(FragmentManager fm) {
@@ -38,27 +68,8 @@ public class WiflyControlActivity extends FragmentActivity implements WiflyContr
 
 		@Override
 		public Fragment getItem(int arg0) {
-			switch(arg0) {
-			case 2:
-				ControlFragment brightness = new SetBrightnessFragment();
-				return brightness;
-			case 3:
-				ControlFragment rgb = new SetRGBFragment();
-				return rgb;
-			case 1:
-				ControlFragment color = new SetColorFragment();
-				return color;
-			case 4:
-				ControlFragment gradient = new SetGradientFragment();
-				return gradient;
-			case 0:
-				ControlFragment scripting = new ScriptingFragment();
-				return scripting;
-			default:
-				ControlFragment setFade = new SetFadeFragment();
-				return setFade;
-			}
-		}	
+			return mFragments[arg0];
+		}
 	}
 
 	private String copyAssetToFile(String name) throws IOException {
@@ -92,9 +103,28 @@ public class WiflyControlActivity extends FragmentActivity implements WiflyContr
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.view_pager);
-		
+
+		ActionBar actionBar = getActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		actionBar.setDisplayShowTitleEnabled(false);
+
 		ViewPager pager = (ViewPager)findViewById(R.id.pager);
-		pager.setAdapter(new WiflyPagerAdapter(getSupportFragmentManager()));
+		pager.setAdapter(new WiflyPagerAdapter(getFragmentManager()));
+		pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+			public void onPageScrolled(int arg0, float arg1, int arg2) { /* not implemented */ }
+			public void onPageScrollStateChanged(int arg0) { /* not implemented */ }
+			public void onPageSelected(int arg0) {
+				getActionBar().setSelectedNavigationItem(arg0);
+			}
+		});
+
+		TabListener listener = new TabListener(pager);
+		for(int i = 0; i < pager.getAdapter().getCount(); ++i) {
+			Tab tab = actionBar.newTab()
+							   .setIcon(mFragments[i].getIcon())
+							   .setTabListener(listener);
+			actionBar.addTab(tab);
+		}
 		
 		Intent i = getIntent();
 		mRemote = (Endpoint) i.getSerializableExtra(EXTRA_ENDPOINT);

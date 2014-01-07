@@ -3,7 +3,6 @@ package biz.bruenn.WyLight.library;
 import java.io.File;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -40,9 +39,7 @@ public class ScriptManagerAdapter extends BaseAdapter {
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
 		TextView x = new TextView(parent.getContext());
-		x.setTextColor(Color.BLACK);
 		x.setText(getScriptName(mPath, position));
 		return x;
 	}

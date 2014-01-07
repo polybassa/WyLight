@@ -162,7 +162,7 @@ namespace WyLight {
 			try {
 				Control *pControl = reinterpret_cast<Control *>(pNative);
 				Script *pScript = reinterpret_cast<Script *>(pNativeScript);
-				*pControl << *pScript;
+				*pControl << FwCmdLoopOn{} << *pScript << FwCmdLoopOff{0};
 			} catch(FatalError& e) {
 					ThrowJniException(env, e);
 			}

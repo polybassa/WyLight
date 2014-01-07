@@ -13,6 +13,11 @@ public class SetRGBFragment extends ControlFragment {
 	AtomicBoolean mChangeIsInProgress = new AtomicBoolean(false);
 
 	@Override
+	public int getIcon() {
+		return R.drawable.ic_action_sort_by_size;
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.fragment_set_rgb, group, false);	

@@ -16,6 +16,11 @@ import android.widget.ImageView;
 public class SetColorFragment extends ControlFragment {
 
 	@Override
+	public int getIcon() {
+		return R.drawable.ic_action_location_searching;
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_set_color, group, false);
 		

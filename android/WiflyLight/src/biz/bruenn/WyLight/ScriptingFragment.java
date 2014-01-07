@@ -32,6 +32,11 @@ public class ScriptingFragment extends ControlFragment {
 	}
 
 	@Override
+	public int getIcon() {
+		return R.drawable.ic_action_settings;
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_scripting, group, false);
 			
