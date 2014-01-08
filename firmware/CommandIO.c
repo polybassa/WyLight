@@ -29,11 +29,11 @@
 
 bank2 struct CommandBuffer g_CmdBuf;
 bank5 struct response_frame g_ResponseBuf;
-static bit g_STX_Received;
+static bit g_Odd_STX_Received;
 
-/** PRIVATE METHODE **/
+/** PRIVATE METHODES **/
 
-void writeByte(uns8 byte)
+static void WriteByte(uns8 byte)
 {
 	if(g_CmdBuf.counter < sizeof(g_CmdBuf.buffer)) {
 		g_CmdBuf.buffer[g_CmdBuf.counter] = byte;
@@ -44,25 +44,27 @@ void writeByte(uns8 byte)
 	}
 }
 
-void DeleteBuffer()
+static void DeleteBuffer()
 {
 	g_CmdBuf.counter = 0;
 	Crc_NewCrc(&g_CmdBuf.CrcH, &g_CmdBuf.CrcL);
 }
 
-void checkForFwIdentMessage()
+static void CheckForFwIdentMessage()
 {
-	g_STX_Received = !g_STX_Received;
-	if (g_STX_Received == FALSE) {
+	g_Odd_STX_Received = !g_Odd_STX_Received;
+	if (g_Odd_STX_Received == FALSE) {
 		UART_Send(FW_IDENT);
 	}
 }
+
+/** PUBLIC METHODES **/
 
 void CommandIO_Init()
 {
 	g_CmdBuf.state = CS_WaitForSTX;
 	DeleteBuffer();
-	g_STX_Received = FALSE;
+	g_Odd_STX_Received = FALSE;
 }
 
 void CommandIO_Error()
@@ -117,7 +119,7 @@ void CommandIO_GetCommands()
 			case CS_WaitForSTX:
 			{
 				if(new_byte == STX) {
-					checkForFwIdentMessage();
+					CheckForFwIdentMessage();
 					DeleteBuffer();
 					g_CmdBuf.state = CS_SaveChar;
 				}
@@ -125,7 +127,7 @@ void CommandIO_GetCommands()
 			}
 			case CS_UnMaskChar:
 			{
-				writeByte(new_byte);
+				WriteByte(new_byte);
 				g_CmdBuf.state = CS_SaveChar;
 				break;
 			}
@@ -136,13 +138,13 @@ void CommandIO_GetCommands()
 					break;
 				}
 				if(new_byte == STX) {
-					checkForFwIdentMessage();
+					CheckForFwIdentMessage();
 					DeleteBuffer();
 					break;
 				}
 				if(new_byte == ETX) {
 					/* Setup statemachine for new state */
-					g_STX_Received = FALSE;
+					g_Odd_STX_Received = FALSE;
 					g_CmdBuf.state = CS_WaitForSTX;
 					
 					/* Set default answer value */
@@ -168,7 +170,7 @@ void CommandIO_GetCommands()
 					CommandIO_SendResponse(&g_ResponseBuf);
 					break;
 				}
-				writeByte(new_byte);
+				WriteByte(new_byte);
 				break;
 			}
 		}
