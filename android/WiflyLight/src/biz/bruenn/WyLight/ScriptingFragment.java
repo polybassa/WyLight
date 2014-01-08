@@ -37,6 +37,20 @@ public class ScriptingFragment extends ControlFragment {
 	}
 
 	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(null != data) {
+			final int position = data.getIntExtra(ITEM_POSITION, 0);
+			scriptAdapter().getItem(position).setColor(resultCode);
+			scriptAdapter().notifyDataSetChanged();
+			mScriptList.save(scriptAdapter());
+		}
+	}
+
+	public void onColorChanged(int color) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_scripting, group, false);
 			
@@ -108,16 +122,6 @@ public class ScriptingFragment extends ControlFragment {
 		});
 		
 		return v;
-	}
-	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(null != data) {
-			final int position = data.getIntExtra(ITEM_POSITION, 0);
-			scriptAdapter().getItem(position).setColor(resultCode);
-			scriptAdapter().notifyDataSetChanged();
-			mScriptList.save(scriptAdapter());
-		}
 	}
 	
 	@Override

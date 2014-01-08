@@ -2,6 +2,7 @@ package biz.bruenn.WyLight;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashSet;
 
 import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.ControlFragment.WiflyControlProvider;
@@ -33,17 +34,20 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 		new SetGradientFragment()
 	};
 
+	private final HashSet<OnColorChangeListener> mColorChangedListenerList = new HashSet<OnColorChangeListener>();
 	private final WiflyControl mCtrl = new WiflyControl();
 	private Endpoint mRemote;
+	private int mColor = 0xff101010;
 	
 	public static class TabListener implements ActionBar.TabListener {
 		private final ViewPager mPager;
+
 		public TabListener(ViewPager pager) {
 			mPager = pager;
 		}
 
 		public void onTabReselected(Tab tab, FragmentTransaction ft) {
-			// do nothing
+			/* not implemented */
 		}
 
 		public void onTabSelected(Tab tab, FragmentTransaction ft) {
@@ -51,7 +55,7 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 		}
 
 		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-			// do nothing
+			/* not implemented */
 		}
 	}
 
@@ -70,6 +74,11 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 		public Fragment getItem(int arg0) {
 			return mFragments[arg0];
 		}
+	}
+
+	public void addOnColorChangedListener(OnColorChangeListener listener) {
+		mColorChangedListenerList.add(listener);
+		listener.onColorChanged(mColor);
 	}
 
 	private String copyAssetToFile(String name) throws IOException {
@@ -108,8 +117,9 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setDisplayShowTitleEnabled(false);
 
-		ViewPager pager = (ViewPager)findViewById(R.id.pager);
-		pager.setAdapter(new WiflyPagerAdapter(getFragmentManager()));
+		final ViewPager pager = (ViewPager)findViewById(R.id.pager);
+		final WiflyPagerAdapter adapter =new WiflyPagerAdapter(getFragmentManager());
+		pager.setAdapter(adapter);
 		pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			public void onPageScrolled(int arg0, float arg1, int arg2) { /* not implemented */ }
 			public void onPageScrollStateChanged(int arg0) { /* not implemented */ }
@@ -145,6 +155,17 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 			startup.execute(mCtrl);
 		} catch (IOException e) {
 			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	public void removeOnColorChangedListener(OnColorChangeListener listener) {
+		mColorChangedListenerList.remove(listener);
+	}
+
+	public void setColor(int color) {
+		mColor = color;
+		for(OnColorChangeListener listener : mColorChangedListenerList) {
+			listener.onColorChanged(color);
 		}
 	}
 }

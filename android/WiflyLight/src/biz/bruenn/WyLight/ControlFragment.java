@@ -14,9 +14,16 @@ public abstract class ControlFragment extends Fragment {
 	protected WiflyControlProvider mProvider;
 	
 	public interface WiflyControlProvider {
+		public void addOnColorChangedListener(OnColorChangeListener listener);
 		public WiflyControl getControl();
+		public void removeOnColorChangedListener(OnColorChangeListener listener);
+		public void setColor(int color);
 	}
 	
+	/**
+	 * This logo can be used for example as a navigation button in the ActionBar
+	 * @return a positive integer used to identify the id of the fragments logo
+	 */
 	public abstract int getIcon();
 
 	@Override
@@ -56,8 +63,9 @@ public abstract class ControlFragment extends Fragment {
 		}
 	}
 	
-	protected void onSetColor(int color) {
+	protected void setColor(int color) {
 		try {
+			mProvider.setColor(color);
 			mProvider.getControl().fwSetColor(color, WiflyControl.ALL_LEDS);
 		} catch (ConnectionTimeout e) {
 			onConnectionLost();
