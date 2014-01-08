@@ -2,6 +2,7 @@ package biz.bruenn.WyLight;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.ControlFragment.WiflyControlProvider;
@@ -33,8 +34,14 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 		new SetGradientFragment()
 	};
 
+	public interface OnColorChangedListener {
+		void onColorChanged(int color);
+	}
+
+	private final ArrayList<OnColorChangedListener> mColorChangedListener = new ArrayList<OnColorChangedListener>();
 	private final WiflyControl mCtrl = new WiflyControl();
 	private Endpoint mRemote;
+	private int mColor = 0xffffffff;
 	
 	public static class TabListener implements ActionBar.TabListener {
 		private final ViewPager mPager;
@@ -72,10 +79,19 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 		}
 	}
 
+	public void addOnColorChangedListener(OnColorChangedListener listener) {
+		mColorChangedListener.add(listener);
+		listener.onColorChanged(mColor);
+	}
+
 	private String copyAssetToFile(String name) throws IOException {
 		InputStream firmwareAsset = this.getAssets().open(name);
 		CopyHelper copyHelper = new CopyHelper(getFilesDir().getAbsolutePath());
 		return copyHelper.copyStreamToFile(firmwareAsset, name);
+	}
+
+	public int getColor() {
+		return mColor ;
 	}
 
 	public WiflyControl getControl() {
@@ -145,6 +161,13 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 			startup.execute(mCtrl);
 		} catch (IOException e) {
 			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	public void setColor(int color) {
+		mColor = color;
+		for(OnColorChangedListener l : mColorChangedListener) {
+			l.onColorChanged(color);
 		}
 	}
 }

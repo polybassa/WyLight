@@ -1,6 +1,7 @@
 package biz.bruenn.WyLight;
 
 import biz.bruenn.WiflyLight.R;
+import biz.bruenn.WyLight.WiflyControlActivity.OnColorChangedListener;
 import biz.bruenn.WyLight.exception.ConnectionTimeout;
 import biz.bruenn.WyLight.exception.FatalError;
 import biz.bruenn.WyLight.exception.ScriptBufferFull;
@@ -9,14 +10,21 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.widget.Toast;
 
-public abstract class ControlFragment extends Fragment {
+public abstract class ControlFragment extends Fragment implements WiflyControlActivity.OnColorChangedListener {
 
 	protected WiflyControlProvider mProvider;
 	
 	public interface WiflyControlProvider {
+		public void addOnColorChangedListener(OnColorChangedListener listener);
+		public int getColor();
 		public WiflyControl getControl();
+		public void setColor(int color);
 	}
 	
+	/**
+	 * This logo can be used for example as a navigation button in the ActionBar
+	 * @return a positive integer used to identify the id of the fragments logo
+	 */
 	public abstract int getIcon();
 
 	@Override
@@ -58,6 +66,7 @@ public abstract class ControlFragment extends Fragment {
 	
 	protected void onSetColor(int color) {
 		try {
+			mProvider.setColor(color);
 			mProvider.getControl().fwSetColor(color, WiflyControl.ALL_LEDS);
 		} catch (ConnectionTimeout e) {
 			onConnectionLost();

@@ -24,6 +24,10 @@ public class SetGradientFragment extends ControlFragment {
 		return R.drawable.ic_action_edit;
 	}
 
+	public void onColorChanged(int color) {
+		// TODO Auto-generated method stub
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_scripting, group, false);

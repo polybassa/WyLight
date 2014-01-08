@@ -17,6 +17,10 @@ public class SetRGBFragment extends ControlFragment {
 		return R.drawable.ic_action_sort_by_size;
 	}
 
+	public void onColorChanged(int color) {
+		// TODO Auto-generated method stub
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
 
