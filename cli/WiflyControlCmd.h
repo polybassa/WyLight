@@ -222,8 +222,7 @@ public:
 		cout << "Extracing Version ... ";
 		try {
 			uint16_t version = control.ExtractFwVersion(path);
-			cout << "done.\n\n";
-			printf("Version = %d \n", version);
+			cout << "done.\n\n" << "Version = " << std::to_string(version) << "\n";
 		} catch(WyLight::FatalError& e)   {
 			cout << "failed! because of: " << e << '\n';
 		}
@@ -309,13 +308,12 @@ public:
 	virtual void Run(WyLight::Control& control) const {
 		cout << "Reading firmware version... ";
 		try {
-			cout << endl << "Version: ";
-			auto version = control.BlReadFwVersion();
-			cout << "done.\n\n";
-			printf("Version = %d \n", version);
+			uint16_t version = control.BlReadFwVersion();
+			cout << "done.\n\n" << "Version = " << std::to_string(version) << "\n";
 		} catch(WyLight::FatalError& e)   {
-			cout << "failed, because of " << e << endl;
+			cout << "failed! because of: " << e << '\n';
 		}
+
 	};
 };
 
@@ -462,14 +460,13 @@ public:
 
 	virtual void Run(WyLight::Control& control) const {
 		cout << "Reading firmware version... ";
-		try {cout << endl << "Version: ";
-			auto version = control.FwGetVersion();
-			cout << "done.\n\n";
-			printf("Version = %d \n", version);
-
+		try {
+			uint16_t version = control.FwGetVersion();
+			cout << "done.\n\n" << "Version = " << std::to_string(version) << "\n";
 		} catch(WyLight::FatalError& e)   {
 			cout << "failed! because of: " << e << '\n';
 		}
+
 	};
 };
 

@@ -29,16 +29,7 @@
 
 bank2 struct CommandBuffer g_CmdBuf;
 bank5 struct response_frame g_ResponseBuf;
-static uns8 STX_SYNC_Counter;
-
-#define sendIdentByte(x) {		\
-	STX_SYNC_Counter--; 		\
-	if (STX_SYNC_Counter == 0)  \
-	{							\
-		STX_SYNC_Counter = 2;	\
-		UART_Send(FW_IDENT);	\
-	}}
-
+static bit g_STX_Received;
 
 /** PRIVATE METHODE **/
 
@@ -59,13 +50,19 @@ void DeleteBuffer()
 	Crc_NewCrc(&g_CmdBuf.CrcH, &g_CmdBuf.CrcL);
 }
 
+void checkForFwIdentMessage()
+{
+	g_STX_Received = !g_STX_Received;
+	if (g_STX_Received == FALSE) {
+		UART_Send(FW_IDENT);
+	}
+}
 
 void CommandIO_Init()
 {
 	g_CmdBuf.state = CS_WaitForSTX;
 	DeleteBuffer();
-	STX_SYNC_Counter = 2;
-
+	g_STX_Received = FALSE;
 }
 
 void CommandIO_Error()
@@ -85,24 +82,18 @@ void CommandIO_Error()
  *      Group4: All Elements of ASCII-Table without STX,ETX,DLE. I will call it CHAR in further description
  *
  * The Statemachine has 4 different states
- *      state 0: Wait for STX           --> representet from CS_WaitForSTX
+ *      state 0: Wait for STX           		--> representet from CS_WaitForSTX
  *              read DLE or ETX or CHAR         --> new state = state 0 (nothing happens)
- *		read STX			--> new state = state 1
+ *				read STX						--> new state = state 1
  *
- *      state 1: Delete commandbuffer   --> representet from CS_DeleteBuffer
- *              read STX			--> new state = state 1 (nothing happens)
- *              read ETX			--> new state = state 0
- *              read DLE			--> new state = state 2
- *              read CHAR			--> new state = state 3, save CHAR to commandbuffer, increment counter
- *
- *      state 2: Read mask character	--> representet from CS_UnMaskChar
+ *      state 1: Read mask character			--> representet from CS_UnMaskChar
  *              read STX or ETX or DLE or CHAR	--> new state = state 3, save byte to commandbuffer, increment counter
  *
- *      state 3: Save Char              --> representet from CS_SaveChar
- *              read CHAR			--> new state = state 3, save CHAR to commandbuffer, increment counter
- *              read DLE			--> new state = state 2
- *              read STX			--> new state = state 1
- *              read ETX			--> new state = state 0, do CRC-check, save dataframe
+ *      state 2: Save Char              		--> representet from CS_SaveChar
+ *              read CHAR						--> new state = state 3, save CHAR to commandbuffer, increment counter
+ *              read DLE						--> new state = state 2
+ *              read STX						--> new state = state 1
+ *              read ETX						--> new state = state 0, do CRC-check, save dataframe
  *
  * **/
 
@@ -123,72 +114,63 @@ void CommandIO_GetCommands()
 		uns8 new_byte = RingBuf_Get(&g_RingBuf);
 		switch(g_CmdBuf.state)
 		{
-		case CS_WaitForSTX:
-		{
-			if(new_byte == STX) {
-				sendIdentByte();
-				DeleteBuffer();
-				g_CmdBuf.state = CS_SaveChar;
-			}
-			break;
-		}
-		/*case CS_DeleteBuffer:
-		{
-			switch(new_byte)
+			case CS_WaitForSTX:
 			{
-			case STX: UART_Send(FW_IDENT); break;
-			case ETX: g_CmdBuf.state = CS_WaitForSTX; break;
-			case DLE: g_CmdBuf.state = CS_UnMaskChar; break;
-			default:
+				if(new_byte == STX) {
+					checkForFwIdentMessage();
+					DeleteBuffer();
+					g_CmdBuf.state = CS_SaveChar;
+				}
+				break;
+			}
+			case CS_UnMaskChar:
 			{
 				writeByte(new_byte);
 				g_CmdBuf.state = CS_SaveChar;
-			}; break;
-			}
-			break;
-		}*/
-		case CS_UnMaskChar:
-		{
-			writeByte(new_byte);
-			g_CmdBuf.state = CS_SaveChar;
-			break;
-		}
-		case CS_SaveChar:
-		{
-			if(new_byte == DLE) {
-				g_CmdBuf.state = CS_UnMaskChar;
 				break;
 			}
-			if(new_byte == STX) {
-				sendIdentByte();
-				break;
-			}
-			if(new_byte == ETX) {
-				STX_SYNC_Counter = 2;
-				g_CmdBuf.state = CS_WaitForSTX;
-				ErrorCode mRetValue = BAD_PACKET;
-
-				if((0 == g_CmdBuf.CrcL) && (0 == g_CmdBuf.CrcH)) {              /* CRC Check */
-					// [0] contains cmd_frame->length so we send [1]
-#ifndef __CC8E__
-					mRetValue = ScriptCtrl_Add((struct led_cmd *)&g_CmdBuf.buffer[0]);
-#else
-					mRetValue = ScriptCtrl_Add(&g_CmdBuf.buffer[0]);
-#endif
-					if(mRetValue == NO_RESPONSE) {
-						break;
-					}
-				} else {
-					mRetValue = CRC_CHECK_FAILED;
+			case CS_SaveChar:
+			{
+				if(new_byte == DLE) {
+					g_CmdBuf.state = CS_UnMaskChar;
+					break;
 				}
-
-				CommandIO_CreateResponse(&g_ResponseBuf, g_CmdBuf.buffer[0], mRetValue);
-				CommandIO_SendResponse(&g_ResponseBuf);
+				if(new_byte == STX) {
+					checkForFwIdentMessage();
+					DeleteBuffer();
+					break;
+				}
+				if(new_byte == ETX) {
+					/* Setup statemachine for new state */
+					g_STX_Received = FALSE;
+					g_CmdBuf.state = CS_WaitForSTX;
+					
+					/* Set default answer value */
+					ErrorCode mRetValue = BAD_PACKET;
+					
+					/* CRC Check */
+					if((0 == g_CmdBuf.CrcL) && (0 == g_CmdBuf.CrcH)) {
+						// [0] contains cmd_frame->cmd. Reply this cmd as response to client
+	#ifndef __CC8E__
+						mRetValue = ScriptCtrl_Add((struct led_cmd *)&g_CmdBuf.buffer[0]);
+	#else
+						mRetValue = ScriptCtrl_Add(&g_CmdBuf.buffer[0]);
+	#endif
+						if(mRetValue == NO_RESPONSE) {
+							/* do not send a response if client does not want an echo */
+							break;
+						}
+					} else {
+						mRetValue = CRC_CHECK_FAILED;
+					}
+					/* send response */
+					CommandIO_CreateResponse(&g_ResponseBuf, g_CmdBuf.buffer[0], mRetValue);
+					CommandIO_SendResponse(&g_ResponseBuf);
+					break;
+				}
+				writeByte(new_byte);
 				break;
 			}
-			writeByte(new_byte);
-			break;
-		}
 		}
 	}
 }
