@@ -3,7 +3,6 @@ package biz.bruenn.WyLight;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import biz.bruenn.WiflyLight.R;
-import biz.bruenn.WyLight.view.VolumeView;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,10 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.SeekBar;
 
 public class SetBrightnessFragment extends ControlFragment implements OnColorChangeListener, ViewTreeObserver.OnGlobalLayoutListener {
 
-	private VolumeView mVolume = null;
+	private SeekBar mVolume = null;
+	private final float[] mHSV = new float[3];
 
 	@Override
 	public int getIcon() {
@@ -22,10 +23,9 @@ public class SetBrightnessFragment extends ControlFragment implements OnColorCha
 	}
 
 	public void onColorChanged(int color) {
+		Color.colorToHSV(color, mHSV);
 		if(null != mVolume) {
-			final float[] hsv = new float[3];
-			Color.colorToHSV(color, hsv);
-			mVolume.setVolume((int) (hsv[2]*100));
+			mVolume.setProgress((int) (mHSV[2]*100));
 		}
 	}
 
@@ -34,16 +34,24 @@ public class SetBrightnessFragment extends ControlFragment implements OnColorCha
 
 		View view = inflater.inflate(R.layout.fragment_set_brightness, group, false);	
 
-		mVolume = (VolumeView)view.findViewById(R.id.brightnessPicker);
+		mVolume = (SeekBar)view.findViewById(R.id.brightnessPicker);
 		mProvider.addOnColorChangedListener(this);
-		mVolume.setOnVolumeChangedListener(new VolumeView.OnVolumeChangedListener() {
-			private AtomicBoolean mChangeIsInProgress = new AtomicBoolean(false);
+		mVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			
-			public void onVolumeChanged(int percent) {
-				if(!mChangeIsInProgress.getAndSet(true)) {		
-					final int intensity = (int)(2.55f * percent);
-					final int c = (((intensity << 8) | intensity) << 8) | intensity;
-					setColor(c);
+			private AtomicBoolean mChangeIsInProgress = new AtomicBoolean(false);
+
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				/* not implemented */
+			}
+
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				/* not implemented */
+			}
+
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				if(fromUser && !mChangeIsInProgress.getAndSet(true)) {
+					mHSV[2] = 0.01f*progress;
+					setColor(Color.HSVToColor(mHSV));
 					mChangeIsInProgress.set(false);
 				}
 			}
