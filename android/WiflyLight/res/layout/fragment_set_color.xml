@@ -4,11 +4,25 @@
     android:layout_height="match_parent"
     android:gravity="top"
     tools:context=".WiflyControlActivity" >
+    <Button
+        android:id="@+id/colorStatus"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_marginLeft="20dip"
+        android:layout_marginTop="20dip" />
 
     <ImageView
         android:id="@+id/colorPicker"
-        android:src="@drawable/select_color"
-        android:layout_width="fill_parent"
+        android:contentDescription="@null"
+        android:src="@drawable/color_picker_wheel"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
+
+    <ImageView
+        android:id="@+id/crosshair"
+        android:contentDescription="@null"
+        android:src="@drawable/color_picker_knob"
+        android:layout_width="40dip"
+        android:layout_height="40dip" />
 </RelativeLayout>

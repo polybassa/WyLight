@@ -6,18 +6,26 @@ import biz.bruenn.WyLight.exception.FatalError;
 import biz.bruenn.WyLight.exception.ScriptBufferFull;
 import biz.bruenn.WyLight.library.ScriptAdapter;
 import android.app.Activity;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.app.Fragment;
 import android.widget.Toast;
 
-public class ControlFragment extends Fragment {
+public abstract class ControlFragment extends Fragment {
 
 	protected WiflyControlProvider mProvider;
 	
 	public interface WiflyControlProvider {
+		public void addOnColorChangedListener(OnColorChangeListener listener);
 		public WiflyControl getControl();
+		public void removeOnColorChangedListener(OnColorChangeListener listener);
+		public void setColor(int color);
 	}
 	
+	/**
+	 * This logo can be used for example as a navigation button in the ActionBar
+	 * @return a positive integer used to identify the id of the fragments logo
+	 */
+	public abstract int getIcon();
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -29,7 +37,7 @@ public class ControlFragment extends Fragment {
 	}
 	
 	protected void onConnectionLost() {
-		final FragmentActivity activity = getActivity();
+		final Activity activity = getActivity();
 		Toast.makeText(activity, "Connection lost", Toast.LENGTH_SHORT).show();
 		activity.finish();		
 	}
@@ -55,8 +63,9 @@ public class ControlFragment extends Fragment {
 		}
 	}
 	
-	protected void onSetColor(int color) {
+	protected void setColor(int color) {
 		try {
+			mProvider.setColor(color);
 			mProvider.getControl().fwSetColor(color, WiflyControl.ALL_LEDS);
 		} catch (ConnectionTimeout e) {
 			onConnectionLost();

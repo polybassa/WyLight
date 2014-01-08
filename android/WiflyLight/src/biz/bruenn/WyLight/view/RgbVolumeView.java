@@ -1,63 +1,70 @@
 package biz.bruenn.WyLight.view;
 
 import biz.bruenn.WiflyLight.R;
+import biz.bruenn.WyLight.OnColorChangeListener;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 
-public class RgbVolumeView extends LinearLayout {
-	
-	public interface OnColorChangedListener {
-		public void onColorChanged(int color);
-	}
+public class RgbVolumeView extends LinearLayout implements OnColorChangeListener {
 
-	private OnColorChangedListener mOnColorChangedListener = null;
-	private int mRed = 0;
-	private int mGreen = 0;
-	private int mBlue = 0;
+	private Button mColorStatus;
+	private OnColorChangeListener mOnColorChangedListener = null;
+	private SeekBar mRed;
+	private SeekBar mGreen;
+	private SeekBar mBlue;
+
+	private SeekBar.OnSeekBarChangeListener mListener = new SeekBar.OnSeekBarChangeListener() {
+
+		public void onStopTrackingTouch(SeekBar seekBar) {
+			/* not implemented */
+		}
+
+		public void onStartTrackingTouch(SeekBar seekBar) {
+			/* not implemented */
+		}
+
+		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+			final int color = getColor();
+			mColorStatus.setBackgroundColor(color);
+			if(fromUser && (null != mOnColorChangedListener)) {
+				mOnColorChangedListener.onColorChanged(color);
+			}
+		}
+	};
 
 	public RgbVolumeView(Context context, AttributeSet attrib) {
 		super(context, attrib);
 		LayoutInflater i = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		i.inflate(R.layout.view_rgb_volume, this, true);
 
-		VolumeView red = (VolumeView)this.findViewById(R.id.redVolume);
-		red.setOnVolumeChangedListener(new VolumeView.OnVolumeChangedListener() {			
-			public void onVolumeChanged(int percent) {
-				final int intensity = (int)(2.55f * percent);
-				mRed = ((0x000000ff & intensity) << 16);
-				updateColor();
-			}
-		});	
+		mColorStatus = (Button)this.findViewById(R.id.colorStatus);
 
-		VolumeView green = (VolumeView)this.findViewById(R.id.greenVolume);
-		green.setOnVolumeChangedListener(new VolumeView.OnVolumeChangedListener() {			
-			public void onVolumeChanged(int percent) {
-				final int intensity = (int)(2.55f * percent);
-				mGreen = ((0x000000ff & intensity) << 8);
-				updateColor();
-			}
-		});	
+		mRed = (SeekBar)this.findViewById(R.id.redVolume);
+		mRed.setOnSeekBarChangeListener(mListener);
 
-		VolumeView blue = (VolumeView)this.findViewById(R.id.blueVolume);
-		blue.setOnVolumeChangedListener(new VolumeView.OnVolumeChangedListener() {			
-			public void onVolumeChanged(int percent) {
-				final int intensity = (int)(2.55f * percent);
-				mBlue = 0x000000ff & intensity;
-				updateColor();
-			}
-		});
+		mGreen = (SeekBar)this.findViewById(R.id.greenVolume);
+		mGreen.setOnSeekBarChangeListener(mListener);
+
+		mBlue = (SeekBar)this.findViewById(R.id.blueVolume);
+		mBlue.setOnSeekBarChangeListener(mListener);
 	}
 	
-	public void setOnColorChangedListener(OnColorChangedListener listener) {
+	private int getColor() {
+		return Color.rgb(mRed.getProgress(), mGreen.getProgress(), mBlue.getProgress());
+	}
+
+	public void onColorChanged(int color) {
+		mRed.setProgress(Color.red(color));
+		mGreen.setProgress(Color.green(color));
+		mBlue.setProgress(Color.blue(color));
+	}
+
+	public void setOnColorChangedListener(OnColorChangeListener listener) {
 		mOnColorChangedListener = listener;
 	}
-	
-	private void updateColor() {
-		if(null != mOnColorChangedListener) {
-			mOnColorChangedListener.onColorChanged(0xff000000 | mRed | mGreen | mBlue);
-		}
-	}
-
 }
