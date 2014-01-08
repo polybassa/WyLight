@@ -1,30 +1,37 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rgb_volume"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".WiflyControlActivity" >
-
-    <SeekBar
-		android:id="@+id/redVolume"
-		android:layout_height="wrap_content"
-		android:layout_width="fill_parent"
-		android:layout_margin="20dp"
-		android:max="255"
-    />
 	<SeekBar
 		android:id="@+id/greenVolume"
+		style="@style/SeekBarGreen"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:layout_centerInParent="true"
+		android:layout_margin="20dp"
+		android:max="255" />
+    <SeekBar
+		android:id="@+id/redVolume"
+		style="@style/SeekBarRed"
 		android:layout_height="wrap_content"
 		android:layout_width="fill_parent"
 		android:layout_margin="20dp"
-		android:max="255"
-	/>
+		android:layout_above="@id/greenVolume"
+		android:max="255" />
     <SeekBar
 		android:id="@+id/blueVolume"
 		android:layout_height="wrap_content"
 		android:layout_width="fill_parent"
 		android:layout_margin="20dp"
-		android:max="255"
-    />
-</LinearLayout>
+		android:layout_below="@id/greenVolume"
+		android:max="255" />
+    <Button
+        android:id="@+id/colorStatus"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:layout_margin="20dp"
+        android:layout_above="@id/redVolume" />
+</RelativeLayout>
