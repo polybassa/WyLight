@@ -30,6 +30,7 @@ public class VolumeView extends View {
 	private boolean mEmbraceTouch = false;
 	private boolean mVertical = false;
 	private int mVolume = 0;
+	private final int mVolumeMax;
 	private final int mColor;
 	private OnVolumeChangedListener mOnVolumeChangedListener = null;
 
@@ -38,6 +39,7 @@ public class VolumeView extends View {
 
 		mVertical = attrib.getAttributeBooleanValue("http://schemas.android.com/apk/res/android", "orientation", false);
 		mColor = attrib.getAttributeIntValue(null, "color", Color.WHITE);
+		mVolumeMax = attrib.getAttributeIntValue(null, "maximum_value", 100);
 		
 		mBar = new ShapeDrawable(new RectShape());
 		mCover = new ShapeDrawable(new RectShape());
@@ -147,10 +149,10 @@ public class VolumeView extends View {
 			mEmbraceTouch = false;
 			if(null != mOnVolumeChangedListener) {
 				if(mVertical) {
-					mVolume = 100 * (coverRight - r.left) / (r.right - r.left);
+					mVolume = mVolumeMax * (coverRight - r.left) / (r.right - r.left);
 					mOnVolumeChangedListener.onVolumeChanged(mVolume);
 				} else {
-					mVolume = 100 - 100 * (coverBottom - r.top) / (r.bottom - r.top);
+					mVolume = mVolumeMax - mVolumeMax * (coverBottom - r.top) / (r.bottom - r.top);
 					mOnVolumeChangedListener.onVolumeChanged(mVolume);
 				}
 			}
@@ -168,5 +170,16 @@ public class VolumeView extends View {
 	
 	public void setOnVolumeChangedListener(OnVolumeChangedListener listener) {
 		mOnVolumeChangedListener  = listener;
+	}
+
+	public void setVolume(int volume) {
+		mVolume = Math.max(0, Math.min(mVolumeMax, volume));
+		final Rect r = mBar.getBounds();
+		if(mVertical) {
+			mCover.setBounds(r.left + mVolume * (r.right - r.left) / mVolumeMax, r.top, r.right, r.bottom);
+		} else {
+			mCover.setBounds(r.left, r.top, r.right, r.top + mVolume * (r.bottom - r.top) / mVolumeMax);
+		}
+		this.invalidate();
 	}
 }

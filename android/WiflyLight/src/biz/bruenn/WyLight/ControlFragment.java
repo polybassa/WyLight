@@ -1,7 +1,6 @@
 package biz.bruenn.WyLight;
 
 import biz.bruenn.WiflyLight.R;
-import biz.bruenn.WyLight.WiflyControlActivity.OnColorChangedListener;
 import biz.bruenn.WyLight.exception.ConnectionTimeout;
 import biz.bruenn.WyLight.exception.FatalError;
 import biz.bruenn.WyLight.exception.ScriptBufferFull;
@@ -10,14 +9,14 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.widget.Toast;
 
-public abstract class ControlFragment extends Fragment implements WiflyControlActivity.OnColorChangedListener {
+public abstract class ControlFragment extends Fragment {
 
 	protected WiflyControlProvider mProvider;
 	
 	public interface WiflyControlProvider {
-		public void addOnColorChangedListener(OnColorChangedListener listener);
-		public int getColor();
+		public void addOnColorChangedListener(OnColorChangeListener listener);
 		public WiflyControl getControl();
+		public void removeOnColorChangedListener(OnColorChangeListener listener);
 		public void setColor(int color);
 	}
 	
@@ -64,7 +63,7 @@ public abstract class ControlFragment extends Fragment implements WiflyControlAc
 		}
 	}
 	
-	protected void onSetColor(int color) {
+	protected void setColor(int color) {
 		try {
 			mProvider.setColor(color);
 			mProvider.getControl().fwSetColor(color, WiflyControl.ALL_LEDS);

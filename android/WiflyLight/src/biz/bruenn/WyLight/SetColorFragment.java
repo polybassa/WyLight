@@ -14,7 +14,7 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 
-public class SetColorFragment extends ControlFragment implements ViewTreeObserver.OnGlobalLayoutListener {
+public class SetColorFragment extends ControlFragment implements OnColorChangeListener, ViewTreeObserver.OnGlobalLayoutListener {
 
 	/**
 	 * Constant to convert angle to radian measure
@@ -73,13 +73,21 @@ public class SetColorFragment extends ControlFragment implements ViewTreeObserve
 		return v;
 	}
 
+	@Override
+	public void onDetach() {
+		super.onDetach();
+	}
+
 	public void onGlobalLayout() {
+		if(this.isDetached()) {
+			mProvider.removeOnColorChangedListener(this);
+			return;
+		}
 		final int shift = (mColorPicker.getWidth() - mCrosshair.getWidth()) / 2;
 		mCenterX = mColorPicker.getX() + shift;
 		mCenterY = mColorPicker.getY() + shift;
 		mDiameter = mColorPicker.getWidth();
 		mRadius = mDiameter / 2;
-		mProvider.addOnColorChangedListener(this);
 		mColorPicker.setOnTouchListener(new View.OnTouchListener() {
 			private AtomicBoolean mChangeIsInProgress = new AtomicBoolean(false);
 			
@@ -89,12 +97,13 @@ public class SetColorFragment extends ControlFragment implements ViewTreeObserve
 					coordinateToHSV(event.getX(), event.getY(), hsv);
 
 					final int color = Color.HSVToColor(hsv);
-					onSetColor(color);
+					setColor(color);
 					mChangeIsInProgress.set(false);
 				}
 				return true;
 			}
 		});
+		mProvider.addOnColorChangedListener(this);
 	}
 
 	private void setCrosshair(int color) {
