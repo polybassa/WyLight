@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SetColorFragment extends ControlFragment {
-
+	private static final double PI_DIVIDED_MINUS_180 = Math.PI / -180;
 	private Button mColorStatus;
 	private ImageView mCrosshair;
 	private TextView mDebug;
@@ -33,7 +33,6 @@ public class SetColorFragment extends ControlFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_set_color, group, false);
-
 		mColorStatus = (Button)v.findViewById(R.id.colorStatus);
 		mColorDebug = (Button)v.findViewById(R.id.colorDebug);
 		mCrosshair = (ImageView)v.findViewById(R.id.crosshair);
@@ -59,7 +58,7 @@ public class SetColorFragment extends ControlFragment {
 					final int color = Color.HSVToColor(hsv);
 					onSetColor(color);
 					mColorStatus.setBackgroundColor(color);
-					setCrosshair(color, bmp);
+					setCrosshair(color, bmp.getWidth());
 					mDebug.setText(Integer.toHexString(color));
 					mDebugAngle.setText(String.valueOf(saturation));
 
@@ -71,28 +70,20 @@ public class SetColorFragment extends ControlFragment {
 		return v;
 	}
 
-	private void setCrosshair(int color, Bitmap bmp) {
+	private void setCrosshair(int color, int width) {
 		float[] hsv = new float[3];
 		Color.colorToHSV(color, hsv);
-		final double hue = hsv[0] * Math.PI / -180d;
-		final double saturation = hsv[1] * (bmp.getWidth() - 0) / 2;
+		final double hue = hsv[0] * PI_DIVIDED_MINUS_180;
+		final double saturation = hsv[1] * width / 2;
 
-		final double shiftCrosshair =  mCrosshair.getWidth() / 2d;
-		final double shift = bmp.getWidth() / 2;
+		final double shift = (width - mCrosshair.getWidth()) / 2d;
+		final double centerX = mColorPicker.getX() + shift;
+		final double centerY = mColorPicker.getY() + shift;
 
-		double x0 = Math.cos(hue) * saturation + shift;
-		double y0 = Math.sin(hue) * saturation + shift;
+		double x0 = Math.cos(hue) * saturation;
+		double y0 = Math.sin(hue) * saturation;
 
-		if(x0 < 0) throw new RuntimeException("x0: " + String.valueOf(x0));
-		if(y0 < 0) throw new RuntimeException("y0: " + String.valueOf(y0));
-		mCrosshair.setX((float) (mColorPicker.getX() + x0 - shiftCrosshair));
-		mCrosshair.setY((float) (mColorPicker.getY() + y0 - shiftCrosshair));
-
-		//mDebugAngle.setText(String.valueOf(hsv[0]));
-		mDebugAngle.setText(String.valueOf(x0));
-		int x = Math.max(0, Math.min(bmp.getWidth()-1, (int)x0));
-		int y = Math.max(0, Math.min(bmp.getWidth()-1, (int)y0));
-		int debugColor = bmp.getPixel(x, y);
-		mColorDebug.setBackgroundColor(debugColor);
+		mCrosshair.setX((float) (centerX + x0));
+		mCrosshair.setY((float) (centerY + y0));
 	}
 }
