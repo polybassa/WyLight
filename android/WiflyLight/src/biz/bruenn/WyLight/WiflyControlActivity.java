@@ -37,7 +37,7 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 	private final HashSet<OnColorChangeListener> mColorChangedListenerList = new HashSet<OnColorChangeListener>();
 	private final WiflyControl mCtrl = new WiflyControl();
 	private Endpoint mRemote;
-	private int mColor = 0xff101010;
+	private int mColor = 0xffffffff;
 	
 	public static class TabListener implements ActionBar.TabListener {
 		private final ViewPager mPager;
