@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Toast;
 
 public class WiflyControlActivity extends Activity implements WiflyControlProvider {
+	private static final String STATE_KEY_COLOR = "mColor";
 	public static final String EXTRA_ENDPOINT = "biz.bruenn.WiflyLight.Endpoint";
 	public static final String EXTRA_IP = "IpAddress";
 	public static final String EXTRA_PORT = "Port";
@@ -37,7 +38,7 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 	private final HashSet<OnColorChangeListener> mColorChangedListenerList = new HashSet<OnColorChangeListener>();
 	private final WiflyControl mCtrl = new WiflyControl();
 	private Endpoint mRemote;
-	private int mColor = 0xffffffff;
+	private int mColor;
 	
 	public static class TabListener implements ActionBar.TabListener {
 		private final ViewPager mPager;
@@ -110,6 +111,9 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if(null != savedInstanceState) {
+			mColor = savedInstanceState.getInt(STATE_KEY_COLOR, 0xffffffff);
+		}
 		
 		setContentView(R.layout.view_pager);
 
@@ -156,6 +160,12 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 		} catch (IOException e) {
 			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
 		}
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt(STATE_KEY_COLOR, mColor);
 	}
 
 	public void removeOnColorChangedListener(OnColorChangeListener listener) {
