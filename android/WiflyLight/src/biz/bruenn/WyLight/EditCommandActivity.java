@@ -27,7 +27,7 @@ public class EditCommandActivity extends Activity {
 		});
 		
 		RgbVolumeView rgb = (RgbVolumeView)this.findViewById(R.id.rgb_volume);
-		rgb.setOnColorChangedListener(new RgbVolumeView.OnColorChangedListener() {
+		rgb.setOnColorChangedListener(new OnColorChangeListener() {
 			public void onColorChanged(int color) {
 				mSave.setBackgroundColor(color);
 				mSave.setTextColor(0xff000000 | ~color);
