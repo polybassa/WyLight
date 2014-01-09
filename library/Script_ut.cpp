@@ -125,7 +125,18 @@ size_t ut_Script_WriteGood(void)
 	Script::serialize("./binary/TestOutput.txt", refScript);
 	Script newScript("./binary/TestOutput.txt");
 	CHECK(newScript == refScript);
-	CHECK(0 == newScript.getName().compare("TestOutput.txt"));
+	CHECK(0 == newScript.getName().compare("TestInput.txt"));
+	TestCaseEnd();
+}
+
+size_t ut_Script_WriteGoodWithVersion(void)
+{
+	TestCaseBegin();
+	Script refScript("TestInput2.txt");
+	Script::serialize("./binary/TestOutput2.txt", refScript);
+	Script newScript("./binary/TestOutput2.txt");
+	CHECK(newScript == refScript);
+	CHECK(0 == newScript.getName().compare("TestInput Version One"));
 	TestCaseEnd();
 }
 
@@ -141,6 +152,7 @@ int main (int argc, const char *argv[])
 	badWait();
 #endif
 	RunTest(true, ut_Script_WriteGood);
+	RunTest(true, ut_Script_WriteGoodWithVersion);
 	UnitTestMainEnd();
 }
 

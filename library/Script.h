@@ -34,6 +34,8 @@ namespace WyLight {
 	ScriptList mList;
 
 	public:
+		static const unsigned int currentVersion;
+		
 		static void deserialize(std::istream &inStream, WyLight::Script &newScript);
 		static void deserialize(const std::string& filename, Script& newScript) throw (FatalError);
 		static void serialize(const std::string& filename, const Script& newScript) throw (FatalError);
@@ -45,11 +47,11 @@ namespace WyLight {
 		
 
 		bool operator ==(const Script& ref) const;
-
-		ScriptList::const_iterator begin() const noexcept;
 		void clear();
+		ScriptList::const_iterator begin() const noexcept;
 		ScriptList::const_iterator end() const noexcept;
 		const std::string& getName() const;
+		void setName(const std::string& name);
 		void push_back(std::unique_ptr<FwCmdScript>&& pNew);
 		size_t size() const;
 	};

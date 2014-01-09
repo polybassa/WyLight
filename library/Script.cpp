@@ -23,12 +23,11 @@
 namespace WyLight {
 
 	static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+	
+	const unsigned int Script::currentVersion = 1;
 
 	Script::Script(const std::string& filename)
 	{
-		// std::string::npos+1 will overflow to 0 just like we want!
-		const size_t indexOfLastSeperator = filename.find_last_of('/') + 1;
-		mName = filename.substr(indexOfLastSeperator);
 		Script::deserialize(filename, *this);
 	}
 
@@ -76,9 +75,30 @@ namespace WyLight {
 
 		newScript.deserialize(inFile, newScript);
 		inFile.close();
+		
+		if (newScript.mName.empty()) {
+			// std::string::npos+1 will overflow to 0 just like we want!
+			const size_t indexOfLastSeperator = filename.find_last_of('/') + 1;
+			newScript.mName = filename.substr(indexOfLastSeperator);
+		}
 	}
 	
-	void Script::deserialize(std::istream &inStream, WyLight::Script &newScript) {
+	void Script::deserialize(std::istream &inStream, WyLight::Script &newScript)
+	{
+		int c = inStream.peek();
+		if (c == EOF) {
+			return;
+		}
+		
+		if (std::isdigit(static_cast<unsigned char>(c))) {
+			int fileVersion;
+			std::string firstLine;
+			std::getline(inStream, firstLine);
+			fileVersion = std::stoi(firstLine);
+			/* do something with different versions here */
+			std::getline(inStream, newScript.mName);
+		}
+		
 		std::string command;
 		while(inStream >> command) {
 			if(0 == command.compare(FwCmdLoopOn::TOKEN)) {
@@ -106,6 +126,10 @@ namespace WyLight {
 	{
 		return mName;
 	}
+	
+	void Script::setName(const std::string &name) {
+		mName = name;
+	}
 
 	void Script::push_back(std::unique_ptr<FwCmdScript>&& pNew)
 	{
@@ -118,6 +142,9 @@ namespace WyLight {
 		if(!outFile.is_open()) {
 			throw FatalError("Open '" + filename + "' to save script failed");
 		}
+		
+		outFile << currentVersion << '\n';
+		outFile << newScript.mName << '\n';
 
 		std::string command;
 		size_t identation = 0;
