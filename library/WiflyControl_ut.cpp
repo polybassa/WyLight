@@ -159,6 +159,10 @@ namespace WyLight {
 	{
 		return g_ProxyConnected = true;
 	}
+	
+	void TelnetProxy::ClearResponse(void) const {
+		
+	}
 
 	void TelnetProxy::RecvString(const std::string& getCmd, const std::string& searchKey, std::string& result) const
 	{}
