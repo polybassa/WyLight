@@ -3,6 +3,7 @@ package biz.bruenn.WyLight;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import biz.bruenn.WiflyLight.R;
+import biz.bruenn.WyLight.view.ColorView;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.ImageView;
 
 public class SetColorFragment extends ControlFragment implements OnColorChangeListener, ViewTreeObserver.OnGlobalLayoutListener {
@@ -32,7 +32,7 @@ public class SetColorFragment extends ControlFragment implements OnColorChangeLi
 	private int mDiameter = 0;
 	private int mRadius = 0;
 
-	private Button mColorStatus;
+	private ColorView mColorStatus;
 	private ImageView mCrosshair;
 	private ImageView mColorPicker;
 
@@ -59,7 +59,7 @@ public class SetColorFragment extends ControlFragment implements OnColorChangeLi
 	}
 
 	public void onColorChanged(int color) {
-		mColorStatus.setBackgroundColor(color);
+		mColorStatus.setColor(color);
 		setCrosshair(color);
 	}
 
@@ -67,7 +67,7 @@ public class SetColorFragment extends ControlFragment implements OnColorChangeLi
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_set_color, group, false);
 		v.getViewTreeObserver().addOnGlobalLayoutListener(this);
-		mColorStatus = (Button)v.findViewById(R.id.colorStatus);
+		mColorStatus = (ColorView)v.findViewById(R.id.colorStatus);
 		mCrosshair = (ImageView)v.findViewById(R.id.crosshair);
 		mColorPicker = (ImageView)v.findViewById(R.id.colorPicker);
 		return v;

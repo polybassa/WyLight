@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:gravity="top"
     tools:context=".WiflyControlActivity" >
-    <Button
+    <biz.bruenn.WyLight.view.ColorView
         android:id="@+id/colorStatus"
         android:layout_width="40dip"
         android:layout_height="40dip"

@@ -3,6 +3,7 @@ package biz.bruenn.WyLight;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import biz.bruenn.WiflyLight.R;
+import biz.bruenn.WyLight.view.ColorView;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ public class SetBrightnessFragment extends ControlFragment implements OnColorCha
 
 	private SeekBar mVolume = null;
 	private final float[] mHSV = new float[3];
+	private ColorView mColorStatus;
 
 	@Override
 	public int getIcon() {
@@ -23,10 +25,9 @@ public class SetBrightnessFragment extends ControlFragment implements OnColorCha
 	}
 
 	public void onColorChanged(int color) {
+		mColorStatus.setColor(color);
 		Color.colorToHSV(color, mHSV);
-		if(null != mVolume) {
-			mVolume.setProgress((int) (mHSV[2]*100));
-		}
+		mVolume.setProgress((int) (mHSV[2]*100));
 	}
 
 	@Override
@@ -34,6 +35,7 @@ public class SetBrightnessFragment extends ControlFragment implements OnColorCha
 
 		View view = inflater.inflate(R.layout.fragment_set_brightness, group, false);	
 
+		mColorStatus = (ColorView)view.findViewById(R.id.colorStatus);
 		mVolume = (SeekBar)view.findViewById(R.id.brightnessPicker);
 		mProvider.addOnColorChangedListener(this);
 		mVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

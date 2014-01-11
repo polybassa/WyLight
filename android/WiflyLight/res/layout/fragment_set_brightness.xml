@@ -21,7 +21,7 @@
         android:layout_marginLeft="10dip"
         android:layout_alignLeft="@id/brightnessPicker" />
     <ImageView
-        android:id="@+id/hight"
+        android:id="@+id/high"
         android:src="@drawable/ic_action_brightness_high"
         android:contentDescription="@null"
         android:layout_width="wrap_content"
@@ -29,4 +29,10 @@
         android:layout_above="@id/brightnessPicker"
         android:layout_marginRight="10dip"
         android:layout_alignRight="@id/brightnessPicker" />
+    <biz.bruenn.WyLight.view.ColorView
+        android:id="@+id/colorStatus"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:layout_margin="20dp"
+        android:layout_above="@id/low" />
 </RelativeLayout>
