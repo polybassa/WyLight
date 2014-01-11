@@ -117,6 +117,10 @@ namespace WyLight {
 		"set ip n 255.255.255.0\r\n",      // Set netmask for accespoint
 		"set ip p 11\r\n",                                 // Enable UDP, TCP_CLIENT and TCP Protocol
 	};
+	
+	const std::list<std::string> Control::RN171_FACTORY_RESET_PARAMETER = {
+		"factory RESET\r\n"
+	};
 
 	const size_t FwCmdScript::INDENTATION_MAX;
 	const char FwCmdScript::INDENTATION_CHARACTER;
@@ -532,6 +536,11 @@ namespace WyLight {
 
 	bool Control::ConfModuleAsSoftAP(const std::string& accesspointName) const
 	{
+		if(!ConfFactoryReset()) {
+			Trace(ZONE_ERROR, "factory RESET failed\n");
+			return false;
+		}
+		
 		if(!ConfSetDeviceId(accesspointName)) {
 				Trace(ZONE_ERROR, "set DeviceId failed\n");
 			return false;
@@ -570,6 +579,11 @@ namespace WyLight {
 
 	bool Control::ConfModuleForWlan(const std::string& phrase, const std::string& ssid, const std::string& deviceId) const
 	{
+		if(!ConfFactoryReset()) {
+			Trace(ZONE_ERROR, "factory RESET failed\n");
+			return false;
+		}
+		
 		if(!ConfSetDefaults()) {
 			Trace(ZONE_ERROR, "set defaults failed\n");
 			return false;
@@ -601,6 +615,22 @@ namespace WyLight {
 				return mTelnet.Close(false);
 			}
 		}
+		return mTelnet.Close(true);
+	}
+	
+	bool Control::ConfFactoryReset(void) const
+	{
+		if(!mTelnet.Open()) {
+			Trace(ZONE_ERROR, "open telnet connection failed\n");
+			return false;
+		}
+		
+		if(!mTelnet.Send(RN171_FACTORY_RESET_PARAMETER.front(), FACTORY_RESET_ACK)) {
+			Trace(ZONE_ERROR, "factory RESET failed\n");
+			return false;
+		}
+
+		mTelnet.ClearResponse();
 		return mTelnet.Close(true);
 	}
 
@@ -694,9 +724,9 @@ namespace WyLight {
 				Trace(ZONE_ERROR, "wifi scan failed\n");
 			return mTelnet.Close(false);
 		}
-		std::cout << result << std::endl;
+
 		unsigned int newChannel = mTelnet.ComputeFreeChannel(result);
-		std::cout << newChannel;
+
 		if(!newChannel) {
 				Trace(ZONE_ERROR, "compute new channel failed\n");
 			return mTelnet.Close(false);

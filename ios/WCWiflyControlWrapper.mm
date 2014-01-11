@@ -198,7 +198,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 	const std::string ssidCString([ssid cStringUsingEncoding:NSASCIIStringEncoding]);
 	const std::string passwordCString([password cStringUsingEncoding:NSASCIIStringEncoding]);
 	const std::string nameCString([nameStr cStringUsingEncoding:NSASCIIStringEncoding]);
-
+	
 	mCmdQueue->push_back(std::make_tuple(false,
 					     std::bind(&WyLight::ControlNoThrow::ConfModuleForWlan, std::ref(*mControl), passwordCString, ssidCString, nameCString),
 					     1));

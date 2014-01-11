@@ -25,6 +25,7 @@
 
 namespace WyLight {
 
+#define FACTORY_RESET_ACK "Set Factory Defaults\r\n<4.00> "
 #define AOK "AOK\r\n<4.00> "
 #define PROMPT "\r\n<4.00> "
 

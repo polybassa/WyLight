@@ -62,7 +62,7 @@ namespace WyLight {
 		static const std::list<std::string> RN171_DEFAULT_PARAMETERS;
 		static const std::list<std::string> RN171_BASIC_PARAMETERS;
 		static const std::list<std::string> RN171_SOFT_AP_DEFAULT_PARAMETERS;
-
+		static const std::list<std::string> RN171_FACTORY_RESET_PARAMETER;
 		/**
 		 * Connect to a wifly device
 		 * @param addr ipv4 address as 32 bit value in host byte order
@@ -242,6 +242,8 @@ namespace WyLight {
 		 *
 		 */
 		bool ConfSetParameters(std::list<std::string> commands) const;
+		
+		bool ConfFactoryReset(void) const;
 
 
 
