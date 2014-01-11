@@ -55,7 +55,8 @@
 			[document saveToURL:documentUrl forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
 				if (success) {
 					[Script deserializeScriptFromPath:url inContext:document.managedObjectContext];
-					
+					[[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"ImportScriptKey", @"ViewControllerLocalization", @"")
+												message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
 					NSError *error;
 					if (![document.managedObjectContext save:&error]) {
 						NSLog(@"save error");
@@ -68,6 +69,8 @@
 			[document openWithCompletionHandler:^(BOOL success) {
 				if (success) {
 					[Script deserializeScriptFromPath:url  inContext:document.managedObjectContext];
+					[[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"ImportScriptKey", @"ViewControllerLocalization", @"")
+												message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
 					NSError *error;
 					if (![document.managedObjectContext save:&error]) {
 						NSLog(@"save error");
@@ -76,6 +79,8 @@
 			}];
 		} else {
 			[Script deserializeScriptFromPath:url  inContext:document.managedObjectContext];
+			[[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"ImportScriptKey", @"ViewControllerLocalization", @"")
+										message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
 			NSError *error;
 			if (![document.managedObjectContext save:&error]) {
 				NSLog(@"save error");

@@ -37,7 +37,7 @@
 	[filePath appendString:[NSString stringWithFormat:@"/%@.wyscript", tempTitel]];
 	
 	WyLight::Script mScript;
-	
+	mScript.setName([self.title cStringUsingEncoding:NSASCIIStringEncoding]);
 	mScript.push_back(std::unique_ptr<WyLight::FwCmdScript>(new WyLight::FwCmdLoopOn));
 	
 	for (ComplexEffect *cmplx in self.effects) {
@@ -82,7 +82,6 @@
 	listOfPathSubstrings = [((NSString *)listOfPathSubstrings.lastObject) componentsSeparatedByString:@"."];
 	
 	Script *tempScript = [Script deserializeScriptFromString:str inContext:context];
-	tempScript.title = listOfPathSubstrings.firstObject;
 	return tempScript;
 }
 
@@ -93,6 +92,7 @@
 	mScript.deserialize(mStream, mScript);
 	
 	Script *tempScript = [Script insertNewObjectIntoContext:context];
+	tempScript.title = [NSString stringWithCString:mScript.getName().c_str() encoding:NSASCIIStringEncoding];
 	
 	for (const auto& cmd : mScript) {
 		const led_cmd * const data = (led_cmd *)cmd->GetData();
@@ -121,7 +121,7 @@
 				obj.duration = @(data->data.set_fade.fadeTmms);
 				obj.complexEffect = comObj;
 				if (data->data.set_fade.parallelFade == 0) {
-					comObj.duration = @(data->data.set_fade.fadeTmms);
+					comObj.duration = @(ntohs(data->data.set_fade.fadeTmms));
 					comObj = [ComplexEffect insertNewObjectIntoContext:context];
 					comObj.script = tempScript;
 				}
@@ -141,13 +141,13 @@
 				obj.duration = @(data->data.set_gradient.fadeTmms);
 				obj.complexEffect = comObj;
 				if ((data->data.set_gradient.parallelAndOffset & 0x80) == 0) {
-					comObj.duration = @(data->data.set_gradient.fadeTmms);
+					comObj.duration = @(ntohs(data->data.set_gradient.fadeTmms));
 					comObj = [ComplexEffect insertNewObjectIntoContext:context];
 					comObj.script = tempScript;
 				}
 			} else if (data->cmd == WAIT) {
 								
-				comObj.duration = @(data->data.wait.waitTmms);
+				comObj.duration = @(ntohs(data->data.wait.waitTmms));
 				comObj = [ComplexEffect insertNewObjectIntoContext:context];
 				comObj.script = tempScript;
 				

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="x4A-Fz-YpF">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="x4A-Fz-YpF">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -563,11 +563,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6qk-gH-p1a">
+                            <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6qk-gH-p1a">
                                 <rect key="frame" x="0.0" y="159" width="320" height="321"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <slider autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="RZo-CP-YR1">
+                                    <slider autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="RZo-CP-YR1">
                                         <rect key="frame" x="18" y="36" width="284" height="34"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -575,44 +575,53 @@
                                             <action selector="redChanged:" destination="bmC-jS-Lb1" eventType="valueChanged" id="aqG-fU-gDV"/>
                                         </connections>
                                     </slider>
-                                    <slider autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Ov3-1s-nu6">
+                                    <slider autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Ov3-1s-nu6">
                                         <rect key="frame" x="18" y="154" width="284" height="34"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <connections>
                                             <action selector="blueChanged:" destination="bmC-jS-Lb1" eventType="valueChanged" id="48A-YT-BGn"/>
                                         </connections>
                                     </slider>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="f0G-eh-PeC">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="f0G-eh-PeC">
                                         <rect key="frame" x="125" y="222" width="71" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="0.29999999999999999" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="71" id="dbR-rf-vMS"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                         <connections>
                                             <outlet property="delegate" destination="bmC-jS-Lb1" id="HHw-FV-Mad"/>
                                         </connections>
                                     </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Dkf-HB-Ftn">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Dkf-HB-Ftn">
                                         <rect key="frame" x="229" y="222" width="71" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="0.29999999999999999" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="71" id="YWY-wm-br5"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                         <connections>
                                             <outlet property="delegate" destination="bmC-jS-Lb1" id="AZC-Rc-fip"/>
                                         </connections>
                                     </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="10z-41-Jvr">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="10z-41-Jvr">
                                         <rect key="frame" x="20" y="222" width="71" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.29999999999999999" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="71" id="8KK-Bj-S5V"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                         <connections>
                                             <outlet property="delegate" destination="bmC-jS-Lb1" id="Uxj-fh-aRK"/>
                                         </connections>
                                     </textField>
-                                    <slider autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="12J-ZJ-Fc9">
+                                    <slider autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="12J-ZJ-Fc9">
                                         <rect key="frame" x="18" y="95" width="284" height="34"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -625,11 +634,36 @@
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
                                 </accessibility>
+                                <constraints>
+                                    <constraint firstItem="RZo-CP-YR1" firstAttribute="top" secondItem="6qk-gH-p1a" secondAttribute="top" constant="36" id="1uE-ab-Q6L"/>
+                                    <constraint firstAttribute="trailing" secondItem="12J-ZJ-Fc9" secondAttribute="trailing" constant="20" id="4HN-dl-znL"/>
+                                    <constraint firstItem="Ov3-1s-nu6" firstAttribute="centerX" secondItem="12J-ZJ-Fc9" secondAttribute="centerX" id="5sA-eQ-zNb"/>
+                                    <constraint firstItem="12J-ZJ-Fc9" firstAttribute="leading" secondItem="6qk-gH-p1a" secondAttribute="leading" constant="20" id="AF1-Be-AAc"/>
+                                    <constraint firstItem="Dkf-HB-Ftn" firstAttribute="top" secondItem="Ov3-1s-nu6" secondAttribute="bottom" constant="35" id="CIF-5k-GXL"/>
+                                    <constraint firstItem="f0G-eh-PeC" firstAttribute="top" secondItem="Ov3-1s-nu6" secondAttribute="bottom" constant="35" id="F5E-Ob-Kud"/>
+                                    <constraint firstItem="Ov3-1s-nu6" firstAttribute="top" secondItem="12J-ZJ-Fc9" secondAttribute="bottom" constant="26" id="FL4-EU-Q8b"/>
+                                    <constraint firstItem="Ov3-1s-nu6" firstAttribute="centerX" secondItem="f0G-eh-PeC" secondAttribute="centerX" id="KzK-u6-i5I"/>
+                                    <constraint firstAttribute="height" constant="321" id="NzH-4J-Rdl"/>
+                                    <constraint firstAttribute="trailing" secondItem="RZo-CP-YR1" secondAttribute="trailing" constant="20" id="UVg-eR-WVH"/>
+                                    <constraint firstItem="Ov3-1s-nu6" firstAttribute="leading" secondItem="6qk-gH-p1a" secondAttribute="leading" constant="20" id="Uxh-5Q-iVO"/>
+                                    <constraint firstItem="RZo-CP-YR1" firstAttribute="leading" secondItem="6qk-gH-p1a" secondAttribute="leading" constant="20" id="bij-dZ-ifn"/>
+                                    <constraint firstAttribute="trailing" secondItem="Dkf-HB-Ftn" secondAttribute="trailing" constant="20" id="do2-fS-5hN"/>
+                                    <constraint firstItem="Ov3-1s-nu6" firstAttribute="centerX" secondItem="RZo-CP-YR1" secondAttribute="centerX" id="g3Q-9c-dbd"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ov3-1s-nu6" secondAttribute="trailing" constant="20" id="hEI-1a-5Fj"/>
+                                    <constraint firstItem="12J-ZJ-Fc9" firstAttribute="top" secondItem="RZo-CP-YR1" secondAttribute="bottom" constant="26" id="mgZ-ee-QQm"/>
+                                    <constraint firstItem="10z-41-Jvr" firstAttribute="leading" secondItem="6qk-gH-p1a" secondAttribute="leading" constant="20" id="t7L-C2-YEO"/>
+                                    <constraint firstItem="10z-41-Jvr" firstAttribute="top" secondItem="Ov3-1s-nu6" secondAttribute="bottom" constant="35" id="y3h-ut-Xkj"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <accessibility key="accessibilityConfiguration">
                             <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
                         </accessibility>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="6qk-gH-p1a" secondAttribute="bottom" id="UXh-Si-LsO"/>
+                            <constraint firstAttribute="trailing" secondItem="6qk-gH-p1a" secondAttribute="trailing" id="aOR-I9-rUB"/>
+                            <constraint firstItem="6qk-gH-p1a" firstAttribute="leading" secondItem="4la-ma-iZI" secondAttribute="leading" id="wnk-Xh-b59"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="RGB Slider" image="Slider_TabBarIcon" id="QwO-Kn-4Pd"/>
                     <connections>

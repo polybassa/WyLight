@@ -299,7 +299,6 @@
 - (void)paste:(id)sender {
 	NSData *scriptData = [[UIPasteboard generalPasteboard] dataForPasteboardType:WYLIGHT_UTI];
 	Script *script = [Script deserializeScriptFromString:[[NSString alloc] initWithData:scriptData encoding:NSASCIIStringEncoding] inContext:self.managedObjectContext];
-	script.title = @"paste";
 	[self.carousel insertItemAtIndex:[self.scriptObjects indexOfObject:script] animated:YES];
 	[self.carousel scrollToItemAtIndex:[self.scriptObjects indexOfObject:script] animated:YES];
 	[self updateTitleLabel];
@@ -339,12 +338,15 @@
     if ([self.effectDrawer effectIsDrawing:nil]) {
         return;
     }
-	UIMenuController *menu = [UIMenuController sharedMenuController];
-	if (![menu isMenuVisible]) {
+	if (gesture.state == UIGestureRecognizerStateBegan) {
+		CGPoint location = [gesture locationInView:[gesture view]];
+        UIMenuController *menuController = [UIMenuController sharedMenuController];
 		UIMenuItem *shareItem = [[UIMenuItem alloc] initWithTitle:NSLocalizedStringFromTable(@"ScriptVCShareKey", @"ViewControllerLocalization", @"") action:@selector(shareScript)];
-		[menu setMenuItems:@[shareItem]];
-		[menu setTargetRect:[self.carousel.currentItemView convertRect:self.carousel.currentItemView.frame toView:self.view] inView:self.view];
-		[menu setMenuVisible:YES animated:YES];
+		
+		NSAssert([self becomeFirstResponder], @"Sorry, UIMenuController will not work with %@ since it cannot become first responder", self);
+        [menuController setMenuItems:[NSArray arrayWithObject:shareItem]];
+        [menuController setTargetRect:[self.carousel.currentItemView convertRect:self.carousel.currentItemView.frame toView:self.view] inView:self.view];
+        [menuController setMenuVisible:YES animated:YES];
 	}
 }
 
