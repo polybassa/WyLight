@@ -11,4 +11,22 @@
 		android:layout_height="wrap_content"
 		android:layout_centerInParent="true"
 		android:layout_margin="20dp" />
+    <ImageView
+        android:id="@+id/low"
+        android:src="@drawable/ic_action_brightness_low"
+        android:contentDescription="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/brightnessPicker"
+        android:layout_marginLeft="10dip"
+        android:layout_alignLeft="@id/brightnessPicker" />
+    <ImageView
+        android:id="@+id/hight"
+        android:src="@drawable/ic_action_brightness_high"
+        android:contentDescription="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/brightnessPicker"
+        android:layout_marginRight="10dip"
+        android:layout_alignRight="@id/brightnessPicker" />
 </RelativeLayout>

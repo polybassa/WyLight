@@ -28,7 +28,7 @@
 		android:layout_margin="20dp"
 		android:layout_below="@id/greenVolume"
 		android:max="255" />
-    <Button
+    <biz.bruenn.WyLight.view.ColorView
         android:id="@+id/colorStatus"
         android:layout_height="fill_parent"
         android:layout_width="fill_parent"
