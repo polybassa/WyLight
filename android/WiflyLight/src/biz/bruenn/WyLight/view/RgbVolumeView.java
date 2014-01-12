@@ -12,6 +12,9 @@ import android.widget.SeekBar;
 public class RgbVolumeView extends LinearLayout implements OnColorChangeListener {
 
 	private ColorView mColorStatus;
+	private ColorView mRedStatus;
+	private ColorView mGreenStatus;
+	private ColorView mBlueStatus;
 	private OnColorChangeListener mOnColorChangedListener = null;
 	private SeekBar mRed;
 	private SeekBar mGreen;
@@ -30,6 +33,12 @@ public class RgbVolumeView extends LinearLayout implements OnColorChangeListener
 		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 			final int color = getColor();
 			mColorStatus.setColor(color);
+			mRedStatus.setColor(0xffff0000 & color);
+			mRedStatus.setText(String.valueOf(Color.red(color) * 100 / 255) + '%');
+			mGreenStatus.setColor(0xff00ff00 & color);
+			mGreenStatus.setText(String.valueOf(Color.green(color) * 100 / 255) + '%');
+			mBlueStatus.setColor(0xff0000ff & color);
+			mBlueStatus.setText(String.valueOf(Color.blue(color) * 100 / 255) + '%');
 			if(fromUser && (null != mOnColorChangedListener)) {
 				mOnColorChangedListener.onColorChanged(color);
 			}
@@ -42,6 +51,9 @@ public class RgbVolumeView extends LinearLayout implements OnColorChangeListener
 		i.inflate(R.layout.view_rgb_volume, this, true);
 
 		mColorStatus = (ColorView)this.findViewById(R.id.colorStatus);
+		mRedStatus = (ColorView)this.findViewById(R.id.redStatus);
+		mGreenStatus = (ColorView)this.findViewById(R.id.greenStatus);
+		mBlueStatus = (ColorView)this.findViewById(R.id.blueStatus);
 
 		mRed = (SeekBar)this.findViewById(R.id.redVolume);
 		mRed.setOnSeekBarChangeListener(mListener);
