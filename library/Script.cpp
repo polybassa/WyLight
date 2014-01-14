@@ -95,7 +95,7 @@ namespace WyLight {
 			std::string firstLine;
 			std::getline(inStream, firstLine);
 			fileVersion = std::stoi(firstLine);
-			/* do something with different versions here */
+			/* TODO do something with different versions here */
 			std::getline(inStream, newScript.mName);
 		}
 		
