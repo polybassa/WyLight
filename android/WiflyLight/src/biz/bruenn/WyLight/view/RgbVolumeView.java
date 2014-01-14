@@ -73,11 +73,10 @@ public class RgbVolumeView extends LinearLayout implements OnColorChangeListener
 		return Color.rgb(mRed.getProgress(), mGreen.getProgress(), mBlue.getProgress());
 	}
 
-	public void onColorChanged(float[] hsv) {
-		final int color = Color.HSVToColor(hsv);
-		mRed.setProgress(Color.red(color));
-		mGreen.setProgress(Color.green(color));
-		mBlue.setProgress(Color.blue(color));
+	public void onColorChanged(float[] hsv, int argb) {
+		mRed.setProgress(Color.red(argb));
+		mGreen.setProgress(Color.green(argb));
+		mBlue.setProgress(Color.blue(argb));
 	}
 
 	public void setOnColorChangedListener(OnColorChangeListener listener) {

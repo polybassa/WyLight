@@ -32,17 +32,18 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 	public static final short DEFAULT_PORT = 2000;
 	
 	private static final ControlFragment[] mFragments = new ControlFragment[] {
-		new ScriptingFragment(),
 		new SetColorFragment(),
 		new SetBrightnessFragment(),
 		new SetRGBFragment(),
+		new ScriptingFragment(),
 		new SetGradientFragment()
 	};
 
 	private final HashSet<OnColorChangeListener> mColorChangedListenerList = new HashSet<OnColorChangeListener>();
 	private final WiflyControl mCtrl = new WiflyControl();
 	private Endpoint mRemote;
-	private float[] mColor = new float[]{360f, 1f, 1f};
+	private int mARGB = 0;
+	private float[] mHSV = new float[]{0f, 0f, 1f};
 	
 	public static class TabListener implements ActionBar.TabListener {
 		private final ViewPager mPager;
@@ -83,7 +84,7 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 
 	public void addOnColorChangedListener(OnColorChangeListener listener) {
 		mColorChangedListenerList.add(listener);
-		listener.onColorChanged(mColor);
+		listener.onColorChanged(mHSV, mARGB);
 	}
 
 	private String copyAssetToFile(String name) throws IOException {
@@ -114,10 +115,10 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 
 	private void onColorChanged() {
 		for(OnColorChangeListener listener : mColorChangedListenerList) {
-			listener.onColorChanged(mColor);
+			listener.onColorChanged(mHSV, mARGB);
 		}
 		try {
-			mCtrl.fwSetColor(Color.HSVToColor(mColor), WiflyControl.ALL_LEDS);
+			mCtrl.fwSetColor(Color.HSVToColor(mHSV), WiflyControl.ALL_LEDS);
 		} catch (ConnectionTimeout e) {
 			onConnectionLost();
 		} catch (ScriptBufferFull e) {
@@ -136,7 +137,8 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if(null != savedInstanceState) {
-			Color.colorToHSV(savedInstanceState.getInt(STATE_KEY_COLOR, 0xffffffff), mColor);
+			mARGB = savedInstanceState.getInt(STATE_KEY_COLOR, 0xffffffff);
+			Color.colorToHSV(mARGB, mHSV);
 		}
 		
 		setContentView(R.layout.view_pager);
@@ -193,7 +195,7 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putInt(STATE_KEY_COLOR, Color.HSVToColor(mColor));
+		outState.putInt(STATE_KEY_COLOR, mARGB);
 	}
 
 	private void onScriptBufferFull() {
@@ -205,18 +207,21 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 	}
 
 	public void setColor(int argb) {
-		Color.colorToHSV(argb, mColor);
+		mARGB = argb;
+		Color.colorToHSV(argb, mHSV);
 		onColorChanged();
 	}
 
 	public void setColorHueSaturation(float hue, float saturation) {
-		mColor[0] = hue;
-		mColor[1] = saturation;
+		mHSV[0] = hue;
+		mHSV[1] = saturation;
+		mARGB = Color.HSVToColor(mHSV);
 		onColorChanged();
 	}
 
 	public void setColorValue(float value) {
-		mColor[2] = value;
+		mHSV[2] = value;
+		mARGB = Color.HSVToColor(mHSV);
 		onColorChanged();
 	}
 }

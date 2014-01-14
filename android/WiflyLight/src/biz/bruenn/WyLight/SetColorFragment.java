@@ -52,19 +52,12 @@ public class SetColorFragment extends ControlFragment implements OnColorChangeLi
 			}
 			if(v.equals(mColorPicker)) {
 				if(!mChangeIsInProgress.getAndSet(true)) {
-					int x = Math.max(0, Math.min(mDiameter-1, (int)event.getX()));
-					int y = Math.max(0, Math.min(mDiameter-1, (int)event.getY()));
-					final int x0 = x - mRadius;
-					final int y0 = y - mRadius;
-					final float saturation = (float)Math.min(1d, Math.hypot(x0, y0) / mRadius);
-
-					final double x1 = x - v.getWidth()/2;
-					final double y1 = y - v.getWidth()/2;
-
-					final double magnitude = Math.hypot(x1, y1);
-					final double alpha = _180_DIVIDED_PI * Math.acos(x1/magnitude);
-					final float hue = (float)((y1 < 0) ? alpha : 360 - alpha);
-
+					final int x0 = (int)event.getX() - mRadius;
+					final int y0 = (int)event.getY() - mRadius;
+					final double magnitude = Math.hypot(x0, y0);
+					final double alpha = _180_DIVIDED_PI * Math.acos(x0/magnitude);
+					final float hue = (float)((y0 < 0) ? alpha : 360 - alpha);
+					final float saturation = (float)Math.min(1d, magnitude / mRadius);
 					mProvider.setColorHueSaturation(hue, saturation);
 					mChangeIsInProgress.set(false);
 				}
@@ -81,29 +74,12 @@ public class SetColorFragment extends ControlFragment implements OnColorChangeLi
 		}
 	};
 
-	/**
-	 * Convert the point in the parent view to a HSV representation. hsv[0] is Hue [0 .. 360) hsv[1] is Saturation [0...1] hsv[2] is Value [0...1] and always 1
-	 * @param x coordinate in the parent view
-	 * @param y coordinate in the parent view
-	 * @param hsv 3 element array which holds the resulting HSV components.
-	 */
-	private void coordinateToHSV(float x, float y, float[] hsv) {
-		// translate center of the parent view to (0/0)
-		final double x0 = x - mCenterX;
-		final double y0 = y - mCenterY;
-		final double magnitude = Math.hypot(x0, y0);
-		final double alpha = _180_DIVIDED_PI * Math.acos(x0/magnitude);
-		hsv[0] = (float)((y0 < 0) ? alpha : 360 - alpha);
-		hsv[1] = (float) Math.min(1d, magnitude/mRadius);
-		hsv[2] = 1f;
-	}
-
 	@Override
 	public int getIcon() {
 		return R.drawable.ic_action_location_searching;
 	}
 
-	public void onColorChanged(float[] hsv) {
+	public void onColorChanged(float[] hsv, int argb) {
 		if(null != mColorStatus) {
 			mColorStatus.setColor(Color.HSVToColor(hsv));
 			setCrosshairs(hsv);

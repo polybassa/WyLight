@@ -23,7 +23,7 @@ public class SetBrightnessFragment extends ControlFragment implements OnColorCha
 		return R.drawable.ic_action_brightness_high;
 	}
 
-	public void onColorChanged(float[] color) {
+	public void onColorChanged(float[] color, int argb) {
 		mColorStatus.setColor(Color.HSVToColor(color));
 		mVolume.setProgress((int) (color[2]*100));
 	}
