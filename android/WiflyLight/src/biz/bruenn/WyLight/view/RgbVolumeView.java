@@ -11,6 +11,10 @@ import android.widget.SeekBar;
 
 public class RgbVolumeView extends LinearLayout implements OnColorChangeListener {
 
+	public interface OnColorChangeListener {
+		void onColorChanged(int argb);
+	}
+
 	private ColorView mColorStatus;
 	private ColorView mRedStatus;
 	private ColorView mGreenStatus;
@@ -69,7 +73,8 @@ public class RgbVolumeView extends LinearLayout implements OnColorChangeListener
 		return Color.rgb(mRed.getProgress(), mGreen.getProgress(), mBlue.getProgress());
 	}
 
-	public void onColorChanged(int color) {
+	public void onColorChanged(float[] hsv) {
+		final int color = Color.HSVToColor(hsv);
 		mRed.setProgress(Color.red(color));
 		mGreen.setProgress(Color.green(color));
 		mBlue.setProgress(Color.blue(color));

@@ -6,6 +6,9 @@ import java.util.HashSet;
 
 import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.ControlFragment.WiflyControlProvider;
+import biz.bruenn.WyLight.exception.ConnectionTimeout;
+import biz.bruenn.WyLight.exception.FatalError;
+import biz.bruenn.WyLight.exception.ScriptBufferFull;
 import biz.bruenn.WyLight.library.Endpoint;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -14,6 +17,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -38,7 +42,7 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 	private final HashSet<OnColorChangeListener> mColorChangedListenerList = new HashSet<OnColorChangeListener>();
 	private final WiflyControl mCtrl = new WiflyControl();
 	private Endpoint mRemote;
-	private int mColor;
+	private float[] mColor = new float[]{360f, 1f, 1f};
 	
 	public static class TabListener implements ActionBar.TabListener {
 		private final ViewPager mPager;
@@ -108,11 +112,31 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 		Toast.makeText(view.getContext(), String.valueOf(done), Toast.LENGTH_SHORT).show();
 	}
 
+	private void onColorChanged() {
+		for(OnColorChangeListener listener : mColorChangedListenerList) {
+			listener.onColorChanged(mColor);
+		}
+		try {
+			mCtrl.fwSetColor(Color.HSVToColor(mColor), WiflyControl.ALL_LEDS);
+		} catch (ConnectionTimeout e) {
+			onConnectionLost();
+		} catch (ScriptBufferFull e) {
+			onScriptBufferFull();
+		} catch (FatalError e) {
+			onFatalError(e);
+		}
+	}
+
+	private void onConnectionLost() {
+		Toast.makeText(this, "Connection lost", Toast.LENGTH_SHORT).show();
+		finish();
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if(null != savedInstanceState) {
-			mColor = savedInstanceState.getInt(STATE_KEY_COLOR, 0xffffffff);
+			Color.colorToHSV(savedInstanceState.getInt(STATE_KEY_COLOR, 0xffffffff), mColor);
 		}
 		
 		setContentView(R.layout.view_pager);
@@ -144,6 +168,10 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 		mRemote = (Endpoint) i.getSerializableExtra(EXTRA_ENDPOINT);
 	}
 	
+	private void onFatalError(FatalError e) {
+		Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+	}
+
 	@Override
 	protected void onPause() {
 		mCtrl.disconnect();
@@ -165,17 +193,30 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putInt(STATE_KEY_COLOR, mColor);
+		outState.putInt(STATE_KEY_COLOR, Color.HSVToColor(mColor));
+	}
+
+	private void onScriptBufferFull() {
+		Toast.makeText(this, R.string.msg_scriptbufferfull, Toast.LENGTH_LONG).show();
 	}
 
 	public void removeOnColorChangedListener(OnColorChangeListener listener) {
 		mColorChangedListenerList.remove(listener);
 	}
 
-	public void setColor(int color) {
-		mColor = color;
-		for(OnColorChangeListener listener : mColorChangedListenerList) {
-			listener.onColorChanged(color);
-		}
+	public void setColor(int argb) {
+		Color.colorToHSV(argb, mColor);
+		onColorChanged();
+	}
+
+	public void setColorHueSaturation(float hue, float saturation) {
+		mColor[0] = hue;
+		mColor[1] = saturation;
+		onColorChanged();
+	}
+
+	public void setColorValue(float value) {
+		mColor[2] = value;
+		onColorChanged();
 	}
 }

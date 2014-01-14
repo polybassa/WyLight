@@ -16,7 +16,6 @@ import android.widget.SeekBar;
 public class SetBrightnessFragment extends ControlFragment implements OnColorChangeListener, ViewTreeObserver.OnGlobalLayoutListener {
 
 	private SeekBar mVolume = null;
-	private final float[] mHSV = new float[3];
 	private ColorView mColorStatus;
 
 	@Override
@@ -24,10 +23,9 @@ public class SetBrightnessFragment extends ControlFragment implements OnColorCha
 		return R.drawable.ic_action_brightness_high;
 	}
 
-	public void onColorChanged(int color) {
-		mColorStatus.setColor(color);
-		Color.colorToHSV(color, mHSV);
-		mVolume.setProgress((int) (mHSV[2]*100));
+	public void onColorChanged(float[] color) {
+		mColorStatus.setColor(Color.HSVToColor(color));
+		mVolume.setProgress((int) (color[2]*100));
 	}
 
 	@Override
@@ -52,8 +50,7 @@ public class SetBrightnessFragment extends ControlFragment implements OnColorCha
 
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				if(fromUser && !mChangeIsInProgress.getAndSet(true)) {
-					mHSV[2] = 0.01f*progress;
-					setColor(Color.HSVToColor(mHSV));
+					mProvider.setColorValue(0.01f*progress);
 					mChangeIsInProgress.set(false);
 				}
 			}
