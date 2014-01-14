@@ -27,7 +27,9 @@
         android:id="@+id/valuePicker"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
-        android:layout_margin="40dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
         android:layout_below="@id/colorPicker"
         android:background="#ffff0000" />
     <ImageView
