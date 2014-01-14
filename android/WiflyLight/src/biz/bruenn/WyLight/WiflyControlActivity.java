@@ -73,7 +73,7 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 
 		@Override
 		public int getCount() {
-			return 5;
+			return mFragments.length;
 		}
 
 		@Override
