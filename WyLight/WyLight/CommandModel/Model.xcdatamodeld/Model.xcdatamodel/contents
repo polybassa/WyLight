@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13A603" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13B42" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Command" representedClassName="Command" isAbstract="YES" syncable="YES"/>
     <entity name="ComplexEffect" representedClassName="ComplexEffect" parentEntity="Effect" syncable="YES">
         <attribute name="waitCommand" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -20,7 +20,7 @@
         <attribute name="color1" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="color2" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="numberOfLeds" optional="YES" attributeType="Integer 16" maxValueString="255" defaultValueString="0" syncable="YES"/>
-        <attribute name="offset" optional="YES" attributeType="Integer 16" maxValueString="1" defaultValueString="0" syncable="YES"/>
+        <attribute name="offset" optional="YES" attributeType="Integer 16" maxValueString="31" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="Script" representedClassName="Script" parentEntity="Command" syncable="YES">
         <attribute name="outdatedSnapshot" optional="YES" attributeType="Transformable" syncable="YES"/>
