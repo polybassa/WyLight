@@ -404,6 +404,7 @@ namespace WyLight {
 			"set wlan join 1\r\n",             // scan for ap and auto join
 			"set wlan rate 0\r\n",             // slowest datarate but highest range
 			"set wlan tx 12\r\n",              // Set the Wi-Fi transmit power to maximum
+			"set sys printlvl 0\r\n",				// Disables Debug Messages to UART
 			"set ip p 11\r\n",                                 // Enable UDP, TCP_CLIENT and TCP Protocol
 			//"set sys launch_string wps_app"	   // Choose Wps mode
 		};
