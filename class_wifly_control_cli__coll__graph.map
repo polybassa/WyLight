@@ -1,9 +1,9 @@
 <map id="WiflyControlCli" name="WiflyControlCli">
-<area shape="rect" id="node2" href="$class_wy_light_1_1_control.html" title="Class to communicate with a Wifly_Light Hardware. " alt="" coords="173,1131,411,1773"/>
+<area shape="rect" id="node2" href="$class_wy_light_1_1_control.html" title="Class to communicate with a Wifly_Light Hardware. " alt="" coords="173,1131,411,1805"/>
 <area shape="rect" id="node3" href="$class_wy_light_1_1_telnet_proxy.html" title="{WyLight::TelnetProxy\n||+ TelnetProxy()\l+ ClearResponse()\l+ Close()\l+ RecvString()\l+ Open()\l+ Send()\l+ SendString()\l+ SendRebootCommand()\l+ PerformWifiScan()\l+ ComputeFreeChannel()\l+ ChangeWifiChannel()\l&#45; ExtractStringOfInterest()\l&#45; Recv()\l&#45; RecvString()\l&#45; SendAndWaitForEcho()\l&#45; SetReplaceChar()\l}" alt="" coords="125,745,302,1066"/>
-<area shape="rect" id="node4" href="$class_wy_light_1_1_tcp_socket.html" title="{WyLight::TcpSocket\n||+ TcpSocket()\l+ Recv()\l+ Send()\l}" alt="" coords="217,467,354,581"/>
+<area shape="rect" id="node4" href="$class_wy_light_1_1_tcp_socket.html" title="{WyLight::TcpSocket\n||+ TcpSocket()\l+ Recv()\l+ Send()\l}" alt="" coords="216,467,354,581"/>
 <area shape="rect" id="node8" href="$class_wy_light_1_1_com_proxy.html" title="{WyLight::ComProxy\n||+ ComProxy()\l+ Send()\l+ Send()\l+ SyncWithTarget()\l&#45; Recv()\l&#45; Send()\l}" alt="" coords="327,825,466,986"/>
-<area shape="rect" id="node5" href="$class_wy_light_1_1_client_socket.html" title="{WyLight::ClientSocket\n|# mSock\l|+ ClientSocket()\l+ ~ClientSocket()\l+ Select()\l+ Send()\l}" alt="" coords="290,286,441,415"/>
-<area shape="rect" id="node9" href="$class_wy_light_1_1_udp_socket.html" title="{WyLight::UdpSocket\n||+ UdpSocket()\l+ RecvFrom()\l+ Send()\l}" alt="" coords="431,606,573,719"/>
+<area shape="rect" id="node5" href="$class_wy_light_1_1_client_socket.html" title="{WyLight::ClientSocket\n|# mSock\l|+ ClientSocket()\l+ ~ClientSocket()\l+ Select()\l+ Send()\l}" alt="" coords="290,286,440,415"/>
+<area shape="rect" id="node9" href="$class_wy_light_1_1_udp_socket.html" title="{WyLight::UdpSocket\n||+ UdpSocket()\l+ RecvFrom()\l+ Send()\l}" alt="" coords="431,606,572,719"/>
 <area shape="rect" id="node6" href="$struct_wy_light_1_1_ipv4_addr.html" title="{WyLight::Ipv4Addr\n||+ Ipv4Addr()\l}" alt="" coords="301,139,430,221"/>
 </map>

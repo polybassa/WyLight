@@ -11,6 +11,7 @@ var searchData=
   ['comproxy',['ComProxy',['../class_wy_light_1_1_com_proxy.html#a1757ec964a2043668fadb2fb6c7486f7',1,'WyLight::ComProxy']]],
   ['computefreechannel',['ComputeFreeChannel',['../class_wy_light_1_1_telnet_proxy.html#a557df99e3968f7a86b0dbef55a6c6c72',1,'WyLight::TelnetProxy']]],
   ['confchangewlanchannel',['ConfChangeWlanChannel',['../class_wy_light_1_1_control.html#a9079d8f3560a5c811bf97b138ad12155',1,'WyLight::Control::ConfChangeWlanChannel()'],['../class_wy_light_1_1_control_no_throw.html#a9dd890f20043ddd80ee529999bfcd21f',1,'WyLight::ControlNoThrow::ConfChangeWlanChannel()']]],
+  ['conffactoryreset',['ConfFactoryReset',['../class_wy_light_1_1_control.html#a43e62bee84f2c8632df9c996fd95f4fa',1,'WyLight::Control']]],
   ['confget',['ConfGet',['../class_wy_light_1_1_control.html#a41783f90e76ff07bbfa97e1b5ea3b7ee',1,'WyLight::Control']]],
   ['confgetdeviceid',['ConfGetDeviceId',['../class_wy_light_1_1_control.html#a32fce52c7c113c90654e6835c0274f73',1,'WyLight::Control']]],
   ['confgetpassphrase',['ConfGetPassphrase',['../class_wy_light_1_1_control.html#adc559100e686136cff2c3bfea53f55a3',1,'WyLight::Control']]],

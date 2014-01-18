@@ -18,6 +18,7 @@ var searchData=
   ['comproxy_2eh',['ComProxy.h',['../_com_proxy_8h.html',1,'']]],
   ['computefreechannel',['ComputeFreeChannel',['../class_wy_light_1_1_telnet_proxy.html#a557df99e3968f7a86b0dbef55a6c6c72',1,'WyLight::TelnetProxy']]],
   ['confchangewlanchannel',['ConfChangeWlanChannel',['../class_wy_light_1_1_control.html#a9079d8f3560a5c811bf97b138ad12155',1,'WyLight::Control::ConfChangeWlanChannel()'],['../class_wy_light_1_1_control_no_throw.html#a9dd890f20043ddd80ee529999bfcd21f',1,'WyLight::ControlNoThrow::ConfChangeWlanChannel()']]],
+  ['conffactoryreset',['ConfFactoryReset',['../class_wy_light_1_1_control.html#a43e62bee84f2c8632df9c996fd95f4fa',1,'WyLight::Control']]],
   ['confget',['ConfGet',['../class_wy_light_1_1_control.html#a41783f90e76ff07bbfa97e1b5ea3b7ee',1,'WyLight::Control']]],
   ['confgetdeviceid',['ConfGetDeviceId',['../class_wy_light_1_1_control.html#a32fce52c7c113c90654e6835c0274f73',1,'WyLight::Control']]],
   ['confgetpassphrase',['ConfGetPassphrase',['../class_wy_light_1_1_control.html#adc559100e686136cff2c3bfea53f55a3',1,'WyLight::Control']]],
@@ -34,8 +35,8 @@ var searchData=
   ['connection_5ftimeout',['CONNECTION_TIMEOUT',['../namespace_wy_light.html#afd625f917b07e9c48f67c4383af5773fa66154513af88023e418086be2c270446',1,'WyLight']]],
   ['connectionlost',['ConnectionLost',['../class_wy_light_1_1_connection_lost.html#a73ee7baed28dc3b7dd34a045a618e259',1,'WyLight::ConnectionLost']]],
   ['connectionlost',['ConnectionLost',['../class_wy_light_1_1_connection_lost.html',1,'WyLight']]],
-  ['connectiontimeout',['ConnectionTimeout',['../class_wy_light_1_1_connection_timeout.html#a462903da2736c79d3015290a8852645c',1,'WyLight::ConnectionTimeout']]],
   ['connectiontimeout',['ConnectionTimeout',['../class_wy_light_1_1_connection_timeout.html',1,'WyLight']]],
+  ['connectiontimeout',['ConnectionTimeout',['../class_wy_light_1_1_connection_timeout.html#a462903da2736c79d3015290a8852645c',1,'WyLight::ConnectionTimeout']]],
   ['control',['Control',['../class_wy_light_1_1_control.html#a2d5efc4402b12961aea578e1aeb91dab',1,'WyLight::Control']]],
   ['control',['Control',['../class_wy_light_1_1_control.html',1,'WyLight']]],
   ['controlcmdblcrcflash',['ControlCmdBlCrcFlash',['../class_control_cmd_bl_crc_flash.html',1,'ControlCmdBlCrcFlash'],['../class_control_cmd_bl_crc_flash.html#ac52d844d7a5c6d253f39fbfe6d65192b',1,'ControlCmdBlCrcFlash::ControlCmdBlCrcFlash()']]],
@@ -75,6 +76,7 @@ var searchData=
   ['controlnothrow',['ControlNoThrow',['../class_wy_light_1_1_control_no_throw.html',1,'WyLight']]],
   ['csregister',['csRegister',['../classintelhex.html#aabbf5689bc667734dca7f23a11d3df68',1,'intelhex']]],
   ['currentaddress',['currentAddress',['../classintelhex.html#a631d8930daeaf04bf0d9ad9c25679a0b',1,'intelhex']]],
-  ['cycletimeresponse',['CycletimeResponse',['../class_wy_light_1_1_cycletime_response.html#a188f5503b6ca936497135b764d1d1000',1,'WyLight::CycletimeResponse']]],
-  ['cycletimeresponse',['CycletimeResponse',['../class_wy_light_1_1_cycletime_response.html',1,'WyLight']]]
+  ['currentversion',['currentVersion',['../class_wy_light_1_1_script.html#ab70b09c7ed2a1bf45add88d9a89af4b9',1,'WyLight::Script']]],
+  ['cycletimeresponse',['CycletimeResponse',['../class_wy_light_1_1_cycletime_response.html',1,'WyLight']]],
+  ['cycletimeresponse',['CycletimeResponse',['../class_wy_light_1_1_cycletime_response.html#a188f5503b6ca936497135b764d1d1000',1,'WyLight::CycletimeResponse']]]
 ];

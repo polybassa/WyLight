@@ -16,6 +16,7 @@ var searchData=
   ['setdata',['SetData',['../struct_wy_light_1_1_bl_eeprom_write_request.html#aefd927d0a951a3922c920eae122577b1',1,'WyLight::BlEepromWriteRequest::SetData()'],['../struct_wy_light_1_1_bl_flash_write_request.html#a7ad0fd6001817041996e9014d12e3334',1,'WyLight::BlFlashWriteRequest::SetData()']]],
   ['setdeviceid',['SetDeviceId',['../class_wy_light_1_1_endpoint.html#aae5d14042f101187ab51b56dcf217318',1,'WyLight::Endpoint']]],
   ['setmessagelimit',['setMessageLimit',['../class_wy_light_1_1_message_queue.html#ad7293e8940ef5c4cb34e62bfd389e5bc',1,'WyLight::MessageQueue']]],
+  ['setname',['setName',['../class_wy_light_1_1_script.html#a4b54ccc292f2467ca1306f18920f61df',1,'WyLight::Script']]],
   ['setreplacechar',['SetReplaceChar',['../class_wy_light_1_1_telnet_proxy.html#ac6ef20dbea4c89489182d0d21a3c1fea',1,'WyLight::TelnetProxy']]],
   ['setscore',['SetScore',['../class_wy_light_1_1_endpoint.html#acab91ff69fc991948b87121e5667b121',1,'WyLight::Endpoint']]],
   ['setstartlinearaddress',['setStartLinearAddress',['../classintelhex.html#a7629ca097b2de02dea37fcaa2dc2709c',1,'intelhex']]],

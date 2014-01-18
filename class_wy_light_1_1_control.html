@@ -107,7 +107,7 @@ Collaboration diagram for WyLight::Control:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_wy_light_1_1_control__coll__graph.png" border="0" usemap="#_wy_light_1_1_control_coll__map" alt="Collaboration graph"/></div>
 <map name="_wy_light_1_1_control_coll__map" id="_wy_light_1_1_control_coll__map">
-<area shape="rect" id="node2" href="class_wy_light_1_1_telnet_proxy.html" title="{WyLight::TelnetProxy\n||+ TelnetProxy()\l+ ClearResponse()\l+ Close()\l+ RecvString()\l+ Open()\l+ Send()\l+ SendString()\l+ SendRebootCommand()\l+ PerformWifiScan()\l+ ComputeFreeChannel()\l+ ChangeWifiChannel()\l&#45; ExtractStringOfInterest()\l&#45; Recv()\l&#45; RecvString()\l&#45; SendAndWaitForEcho()\l&#45; SetReplaceChar()\l}" alt="" coords="125,745,302,1066"/><area shape="rect" id="node3" href="class_wy_light_1_1_tcp_socket.html" title="{WyLight::TcpSocket\n||+ TcpSocket()\l+ Recv()\l+ Send()\l}" alt="" coords="217,467,354,581"/><area shape="rect" id="node7" href="class_wy_light_1_1_com_proxy.html" title="{WyLight::ComProxy\n||+ ComProxy()\l+ Send()\l+ Send()\l+ SyncWithTarget()\l&#45; Recv()\l&#45; Send()\l}" alt="" coords="327,825,466,986"/><area shape="rect" id="node4" href="class_wy_light_1_1_client_socket.html" title="{WyLight::ClientSocket\n|# mSock\l|+ ClientSocket()\l+ ~ClientSocket()\l+ Select()\l+ Send()\l}" alt="" coords="290,286,441,415"/><area shape="rect" id="node8" href="class_wy_light_1_1_udp_socket.html" title="{WyLight::UdpSocket\n||+ UdpSocket()\l+ RecvFrom()\l+ Send()\l}" alt="" coords="431,606,573,719"/><area shape="rect" id="node5" href="struct_wy_light_1_1_ipv4_addr.html" title="{WyLight::Ipv4Addr\n||+ Ipv4Addr()\l}" alt="" coords="301,139,430,221"/></map>
+<area shape="rect" id="node2" href="class_wy_light_1_1_telnet_proxy.html" title="{WyLight::TelnetProxy\n||+ TelnetProxy()\l+ ClearResponse()\l+ Close()\l+ RecvString()\l+ Open()\l+ Send()\l+ SendString()\l+ SendRebootCommand()\l+ PerformWifiScan()\l+ ComputeFreeChannel()\l+ ChangeWifiChannel()\l&#45; ExtractStringOfInterest()\l&#45; Recv()\l&#45; RecvString()\l&#45; SendAndWaitForEcho()\l&#45; SetReplaceChar()\l}" alt="" coords="125,745,302,1066"/><area shape="rect" id="node3" href="class_wy_light_1_1_tcp_socket.html" title="{WyLight::TcpSocket\n||+ TcpSocket()\l+ Recv()\l+ Send()\l}" alt="" coords="216,467,354,581"/><area shape="rect" id="node7" href="class_wy_light_1_1_com_proxy.html" title="{WyLight::ComProxy\n||+ ComProxy()\l+ Send()\l+ Send()\l+ SyncWithTarget()\l&#45; Recv()\l&#45; Send()\l}" alt="" coords="327,825,466,986"/><area shape="rect" id="node4" href="class_wy_light_1_1_client_socket.html" title="{WyLight::ClientSocket\n|# mSock\l|+ ClientSocket()\l+ ~ClientSocket()\l+ Select()\l+ Send()\l}" alt="" coords="290,286,440,415"/><area shape="rect" id="node8" href="class_wy_light_1_1_udp_socket.html" title="{WyLight::UdpSocket\n||+ UdpSocket()\l+ RecvFrom()\l+ Send()\l}" alt="" coords="431,606,572,719"/><area shape="rect" id="node5" href="struct_wy_light_1_1_ipv4_addr.html" title="{WyLight::Ipv4Addr\n||+ Ipv4Addr()\l}" alt="" coords="301,139,430,221"/></map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -156,6 +156,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9079d8f3560a5c811bf97b138ad12155"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a9abfc6b25143d95b52f86f4b6c63fc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a2a9abfc6b25143d95b52f86f4b6c63fc">ConfSetParameters</a> (std::list&lt; std::string &gt; commands) const </td></tr>
 <tr class="separator:a2a9abfc6b25143d95b52f86f4b6c63fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43e62bee84f2c8632df9c996fd95f4fa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a43e62bee84f2c8632df9c996fd95f4fa">ConfFactoryReset</a> (void) const </td></tr>
+<tr class="separator:a43e62bee84f2c8632df9c996fd95f4fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedce9e77a3358f551cc66c4a8a492260"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#aedce9e77a3358f551cc66c4a8a492260">FwGetCycletime</a> (void)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
 <tr class="separator:aedce9e77a3358f551cc66c4a8a492260"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a082452281e1de4160b1fa9f1275a91"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a9a082452281e1de4160b1fa9f1275a91">FwGetRtc</a> (tm &amp;timeValue)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
@@ -190,6 +192,9 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:af32b715d85a460a6218695849437fcfc"><td class="memItemLeft" align="right" valign="top">static const std::list<br class="typebreak"/>
 &lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#af32b715d85a460a6218695849437fcfc">RN171_SOFT_AP_DEFAULT_PARAMETERS</a></td></tr>
 <tr class="separator:af32b715d85a460a6218695849437fcfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c82d7bed97ef6a9b0ee61c357123904"><td class="memItemLeft" align="right" valign="top">static const std::list<br class="typebreak"/>
+&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a6c82d7bed97ef6a9b0ee61c357123904">RN171_FACTORY_RESET_PARAMETER</a></td></tr>
+<tr class="separator:a6c82d7bed97ef6a9b0ee61c357123904"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -1295,6 +1300,22 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a class="anchor" id="a43e62bee84f2c8632df9c996fd95f4fa"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool WyLight::Control::ConfFactoryReset </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a41783f90e76ff07bbfa97e1b5ea3b7ee"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2326,6 +2347,26 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a class="anchor" id="a6c82d7bed97ef6a9b0ee61c357123904"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::list&lt;std::string&gt; WyLight::Control::RN171_FACTORY_RESET_PARAMETER</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="af32b715d85a460a6218695849437fcfc"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2352,7 +2393,7 @@ Here is the caller graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jan 7 2014 17:39:19 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jan 18 2014 09:45:21 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
