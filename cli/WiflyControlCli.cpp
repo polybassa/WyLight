@@ -29,12 +29,15 @@
 #include <vector>
 #include <sstream>
 #include <memory>
+#include <algorithm>
 
 using std::cin;
 using std::cout;
 using namespace WyLight;
 
 void newRemoteCallback(const size_t index, const WyLight::Endpoint& newEndpoint);
+char* getCmdOption(char ** begin, char ** end, const std::string & option);
+bool cmdOptionExists(char** begin, char** end, const std::string& option);
 
 WiflyControlCli::WiflyControlCli(uint32_t addr, uint16_t port)
 	: mControl(addr, port), mRunning(true)
@@ -89,34 +92,60 @@ void newRemoteCallback(const size_t index, const WyLight::Endpoint& newEndpoint)
 	std::cout << "New: " << index << ':' << newEndpoint << '\n';
 }
 
-int main(int argc, const char *argv[])
+// functions to parse argument list
+char* getCmdOption(char ** begin, char ** end, const std::string & option)
 {
-	WyLight::BroadcastReceiver receiver(55555, "recent.txt", newRemoteCallback);
-	std::thread t(std::ref(receiver));
+    char ** itr = std::find(begin, end, option);
+    if (itr != end && ++itr != end)
+    {
+        return *itr;
+    }
+    return 0;
+}
 
-	// wait for user input
-	size_t selection;
-	do
-	{
-		std::cin >> selection;
+bool cmdOptionExists(char** begin, char** end, const std::string& option)
+{
+    return std::find(begin, end, option) != end;
+}
+
+
+int main(int argc, char *argv[])
+{
+	if (cmdOptionExists(argv, argv + argc, "-?") || cmdOptionExists(argv, argv + argc, "-help")) {
+		std::cout << "Usage: \nno parameters: default usage.\n-c \"123.123.123.123\" to connect to a specific IP immediately.\n\n";
+		return 0;
 	}
-	while(selection >= receiver.NumRemotes());
+	
+	WyLight::Endpoint e;
+	
+	if (cmdOptionExists(argv, argv + argc, "-c")) {
+		
+		in_addr_t addr;
+		inet_pton(AF_INET, getCmdOption(argv, argv + argc, "-c"), &(addr));
+		/* Reverse the bytes in the binary address */
+		addr = ((addr & 0xff000000) >> 24) | ((addr & 0x00ff0000) >>  8) | ((addr & 0x0000ff00) <<  8) | ((addr & 0x000000ff) << 24);
+		e = WyLight::Endpoint(addr, 2000);
+	
+	} else {
+	
+		WyLight::BroadcastReceiver receiver(55555, "recent.txt", newRemoteCallback);
+		std::thread t(std::ref(receiver));
 
-	receiver.Stop();
-	t.join();
+		// wait for user input
+		size_t selection;
+		do
+		{
+			std::cin >> selection;
+		}
+		while(selection >= receiver.NumRemotes());
 
-	const WyLight::Endpoint& e = receiver.GetEndpoint(selection);
+		receiver.Stop();
+		t.join();
+		
+		e = receiver.GetEndpoint(selection);
+	}
+
 	WiflyControlCli cli(e.GetIp(), e.GetPort());
 
 	cli.Run();
-
-	/*
-	Control cli(e.GetIp(), e.GetPort());
-
-	WiflyColor::
-	cli << FwCmdClearScript();
-	cli << FwCmdSetGradient(0xffff0000, 0xff00ff00, 1000, false, 5, 0);
-	cli << FwCmdSetGradient(0xffff00ff, 0xffff0000, 1000, true, 5, 5);
-	cli << FwCmdSetGradient(0xff00ff00, 0xff0000ff, 1000, false, 5, 10);
-	cli << FwCmdSetGradient(0xffff0000, 0xff00ff00, 1000);*/
 }
