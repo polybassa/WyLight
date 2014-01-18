@@ -73,7 +73,7 @@
 	
 	const CGFloat heightFract = self.bounds.size.height / self.endColors.count;
 	
-    UIColor *startColor = [UIColor clearColor];
+    UIColor *startColor;
     
 	for (unsigned int i = 0; i < self.endColors.count; i++) {
 		CGFloat rectOriginY = floorf(i * heightFract);

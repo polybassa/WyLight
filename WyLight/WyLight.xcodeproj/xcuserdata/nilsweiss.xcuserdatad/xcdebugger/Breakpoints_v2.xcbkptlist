@@ -432,9 +432,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "582"
-            endingLineNumber = "582"
-            landmarkName = "Control::ConfModuleForWlan(const std::string&amp; phrase, const std::string&amp; ssid, const std::string&amp; deviceId)"
-            landmarkType = "5">
+            endingLineNumber = "582">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

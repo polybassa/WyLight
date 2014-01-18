@@ -91,10 +91,9 @@ namespace WyLight {
 		}
 		
 		if (std::isdigit(static_cast<unsigned char>(c))) {
-			int fileVersion;
 			std::string firstLine;
 			std::getline(inStream, firstLine);
-			fileVersion = std::stoi(firstLine);
+			// const int fileVersion = std::stoi(firstLine);
 			/* do something with different versions here */
 			std::getline(inStream, newScript.mName);
 		}

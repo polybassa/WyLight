@@ -339,7 +339,6 @@
         return;
     }
 	if (gesture.state == UIGestureRecognizerStateBegan) {
-		CGPoint location = [gesture locationInView:[gesture view]];
         UIMenuController *menuController = [UIMenuController sharedMenuController];
 		UIMenuItem *shareItem = [[UIMenuItem alloc] initWithTitle:NSLocalizedStringFromTable(@"ScriptVCShareKey", @"ViewControllerLocalization", @"") action:@selector(shareScript)];
 		

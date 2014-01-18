@@ -204,7 +204,7 @@
                 NSUInteger j = self.effects.count;
                 while (j--) {
                     SimpelEffect *currentObj = [self.effects objectAtIndex:j];
-                    const uint32_t bitmask = currentObj.address.unsignedIntegerValue;
+                    const uint32_t bitmask = (uint32_t)currentObj.address.unsignedIntegerValue;
                     if (bitmask & compareMask) {
                         if (self.prev) {
                             [outPutColors replaceObjectAtIndex:i withObject:currentObj.colors[i]];
