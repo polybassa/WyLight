@@ -46,76 +46,79 @@ namespace WyLight {
 
 	const std::string Control::LEDS_ALL {"ffffffff"};
 	const std::list<std::string> Control::RN171_DEFAULT_PARAMETERS = {
-		"set broadcast interval 0x1\r\n",    // to support fast broadcast recognition
-		"set comm close 0\r\n",            // Disable *CLOS* string
-		"set comm open 0\r\n",             // Disable *OPEN* string
-		"set comm remote 0\r\n",           // Disable *Hello* string
-		"set comm time 5\r\n", 			// Set flush timer to 5 ms
-		"set comm idle 240\r\n",			// Set idle timer to 240 s, to close tcp connections after 240s if there's no traffic
+		"set broadcast interval 0x1\r\n",    	// to support fast broadcast recognition
+		"set comm close 0\r\n",            		// Disable *CLOS* string
+		"set comm open 0\r\n",             		// Disable *OPEN* string
+		"set comm remote 0\r\n",           		// Disable *Hello* string
+		"set comm time 5\r\n", 					// Set flush timer to 5 ms
+		"set comm idle 240\r\n",				// Set idle timer to 240 s, to close tcp connections after 240s if there's no traffic
 		"set dns name rn.microchip.com\r\n",    // set dns of updateserver
-		"set ip flags 0x6\r\n",                    // if the module loses the accesspoint connection, the connection is closed
-		"set ip dhcp 1\r\n",               // enable DHCP client
-		//		"set ftp address 169.254.7.57\r\n",// configure localhost as ftp server in ad-hoc connection
-		"set ftp pass Pass123\r\n",        // configure ftp password
-		"set ftp user roving\r\n",         // configure ftp username
-		"set opt deviceid Wifly_Light\r\n", // Set deviceid which appears in broadcastmsg to "Wifly_Light"
-		"set uart baud 115200\r\n",        // PIC uart parameter
-		"set uart flow 0\r\n",             // PIC uart parameter
-		"set uart mode 0\r\n",             // PIC uart parameter
-		"set wlan channel 0\r\n",                  // Set the wlan channel to 0 to perform an automatic scan for a free channel
-		"set wlan auth 4\r\n",             // use WPA2 protection
-		"set wlan join 1\r\n",             // scan for ap and auto join
-		"set wlan rate 0\r\n",             // slowest datarate but highest range
-		"set wlan tx 12\r\n",              // Set the Wi-Fi transmit power to maximum
-		"set ip p 11\r\n",                                 // Enable UDP, TCP_CLIENT and TCP Protocol
-		//"set sys launch_string wps_app"	   // Choose Wps mode
+		"set ip flags 0x6\r\n",                	// if the module loses the accesspoint connection, the connection is closed
+		"set ip dhcp 1\r\n",               		// enable DHCP client
+		//"set ftp address 169.254.7.57\r\n",	// configure localhost as ftp server in ad-hoc connection
+		"set ftp pass Pass123\r\n",        		// configure ftp password
+		"set ftp user roving\r\n",         		// configure ftp username
+		"set opt deviceid Wifly_Light\r\n", 	// Set deviceid which appears in broadcastmsg to "Wifly_Light"
+		"set uart baud 115200\r\n",        		// PIC uart parameter
+		"set uart flow 0\r\n",             		// PIC uart parameter
+		"set uart mode 0\r\n",             		// PIC uart parameter
+		"set wlan channel 0\r\n",              	// Set the wlan channel to 0 to perform an automatic scan for a free channel
+		"set wlan auth 4\r\n",             		// use WPA2 protection
+		"set wlan join 1\r\n",             		// scan for ap and auto join
+		"set wlan rate 0\r\n",             		// slowest datarate but highest range
+		"set wlan tx 12\r\n",              		// Set the Wi-Fi transmit power to maximum
+		"set sys printlvl 0\r\n",				// Disables Debug Messages to UART
+		"set ip p 11\r\n",                      // Enable UDP, TCP_CLIENT and TCP Protocol
+		//"set sys launch_string wps_app"	   	// Choose Wps mode
 	};
 	const std::list<std::string> Control::RN171_BASIC_PARAMETERS = {
-		"set broadcast interval 0x1\r\n",    // to support fast broadcast recognition
-		"set comm close 0\r\n",            // Disable *CLOS* string
-		"set comm open 0\r\n",             // Disable *OPEN* string
-		"set comm remote 0\r\n",           // Disable *Hello* string
-		"set comm time 5\r\n", 			// Set flush timer to 5 ms
-		"set comm idle 240\r\n",			// Set idle timer to 240 s, to close tcp connections after 240s if there's no traffic
+		"set broadcast interval 0x1\r\n",    	// to support fast broadcast recognition
+		"set comm close 0\r\n",            		// Disable *CLOS* string
+		"set comm open 0\r\n",            	 	// Disable *OPEN* string
+		"set comm remote 0\r\n",           		// Disable *Hello* string
+		"set comm time 5\r\n", 					// Set flush timer to 5 ms
+		"set comm idle 240\r\n",				// Set idle timer to 240 s, to close tcp connections after 240s if there's no traffic
 		"set dns name rn.microchip.com\r\n",    // set dns of updateserver
-		"set ip flags 0x6\r\n",                    // if the module loses the accesspoint connection, the connection is closed
-		"set ip dhcp 1\r\n",               // enable DHCP client
-		"set ftp pass Pass123\r\n",        // configure ftp password
-		"set ftp user roving\r\n",         // configure ftp username
-		"set uart baud 115200\r\n",        // PIC uart parameter
-		"set uart flow 0\r\n",             // PIC uart parameter
-		"set uart mode 0\r\n",             // PIC uart parameter
-		"set wlan channel 0\r\n",                  // Set the wlan channel to 0 to perform an automatic scan for a free channel
-		"set wlan auth 4\r\n",             // use WPA2 protection
-		"set wlan join 1\r\n",             // scan for ap and auto join
-		"set wlan rate 0\r\n",             // slowest datarate but highest range
-		"set wlan tx 12\r\n",              // Set the Wi-Fi transmit power to maximum
-		"set ip p 11\r\n",                                 // Enable UDP, TCP_CLIENT and TCP Protocol
-		//"set sys launch_string wps_app"	   // Choose Wps mode
+		"set ip flags 0x6\r\n",                	// if the module loses the accesspoint connection, the connection is closed
+		"set ip dhcp 1\r\n",               		// enable DHCP client
+		"set ftp pass Pass123\r\n",        		// configure ftp password
+		"set ftp user roving\r\n",         		// configure ftp username
+		"set uart baud 115200\r\n",        		// PIC uart parameter
+		"set uart flow 0\r\n",             		// PIC uart parameter
+		"set uart mode 0\r\n",             		// PIC uart parameter
+		"set wlan channel 0\r\n",               // Set the wlan channel to 0 to perform an automatic scan for a free channel
+		"set wlan auth 4\r\n",             		// use WPA2 protection
+		"set wlan join 1\r\n",             		// scan for ap and auto join
+		"set wlan rate 0\r\n",             		// slowest datarate but highest range
+		"set wlan tx 12\r\n",              		// Set the Wi-Fi transmit power to maximum
+		"set sys printlvl 0\r\n",				// Disables Debug Messages to UART
+		"set ip p 11\r\n",                      // Enable UDP, TCP_CLIENT and TCP Protocol
+		//"set sys launch_string wps_app"	   	// Choose Wps mode
 	};
 	const std::list<std::string> Control::RN171_SOFT_AP_DEFAULT_PARAMETERS = {
-		"set broadcast interval 1\r\n",    // to support fast broadcast recognition
-		"set comm close 0\r\n",            // Disable *CLOS* string
-		"set comm open 0\r\n",             // Disable *OPEN* string
-		"set comm remote 0\r\n",           // Disable *Hello* string
-		"set comm time 5\r\n", 			// Set flush timer to 5 ms
-		"set comm idle 240\r\n",			// Set idle timer to 240 s, to close tcp connections after 240s if there's no traffic
-		//		"set dns name rn.microchip.com\r\n",	// set dns of updateserver
-		"set ip dhcp 4\r\n",               // enable DHCP server
-		"set ftp address 169.254.7.57\r\n", // configure localhost as ftp server in ad-hoc connection
-		"set ftp pass Pass123\r\n",        // configure ftp password
-		"set ftp user roving\r\n",         // configure ftp username
-		"set uart baud 115200\r\n",        // PIC uart parameter
-		"set uart flow 0\r\n",             // PIC uart parameter
-		"set uart mode 0\r\n",             // PIC uart parameter
-		"set wlan join 7\r\n",             // enable AP mode
-		"set wlan rate 0\r\n",             // slowest datarate but highest range
-		"set wlan tx 12\r\n",              // Set the Wi-Fi transmit power to maximum
-		"set wlan channel 1\r\n",                  // Set the wlan channel to 0 to perform an automatic scan for a free channel
-		"set ip a 1.2.3.4\r\n",            // Set ip address for accespoint
-		"set ip g 0.0.0.0\r\n",                    // Set gateway address to zero
-		"set ip n 255.255.255.0\r\n",      // Set netmask for accespoint
-		"set ip p 11\r\n",                                 // Enable UDP, TCP_CLIENT and TCP Protocol
+		"set broadcast interval 1\r\n",    		// to support fast broadcast recognition
+		"set comm close 0\r\n",            		// Disable *CLOS* string
+		"set comm open 0\r\n",             		// Disable *OPEN* string
+		"set comm remote 0\r\n",           		// Disable *Hello* string
+		"set comm time 5\r\n", 					// Set flush timer to 5 ms
+		"set comm idle 240\r\n",				// Set idle timer to 240 s, to close tcp connections after 240s if there's no traffic
+		//"set dns name rn.microchip.com\r\n",	// set dns of updateserver
+		"set ip dhcp 4\r\n",               		// enable DHCP server
+		"set ftp address 169.254.7.57\r\n", 	// configure localhost as ftp server in ad-hoc connection
+		"set ftp pass Pass123\r\n",        		// configure ftp password
+		"set ftp user roving\r\n",         		// configure ftp username
+		"set uart baud 115200\r\n",        		// PIC uart parameter
+		"set uart flow 0\r\n",             		// PIC uart parameter
+		"set uart mode 0\r\n",             		// PIC uart parameter
+		"set wlan join 7\r\n",             		// enable AP mode
+		"set wlan rate 0\r\n",             		// slowest datarate but highest range
+		"set wlan tx 12\r\n",              		// Set the Wi-Fi transmit power to maximum
+		"set wlan channel 1\r\n",              	// Set the wlan channel to 0 to perform an automatic scan for a free channel
+		"set ip a 1.2.3.4\r\n",            		// Set ip address for accespoint
+		"set ip g 0.0.0.0\r\n",                	// Set gateway address to zero
+		"set ip n 255.255.255.0\r\n",      		// Set netmask for accespoint
+		"set sys printlvl 0\r\n",				// Disables Debug Messages to UART
+		"set ip p 11\r\n",                     	// Enable UDP, TCP_CLIENT and TCP Protocol
 	};
 	
 	const std::list<std::string> Control::RN171_FACTORY_RESET_PARAMETER = {
