@@ -52,6 +52,7 @@
 		for (ComplexEffect* effect in self.effects) {
 			effect.colors = [effect computeColors];
 		}
+		((ComplexEffect *)self.effects.firstObject).colors = nil;
 	}
 }
 
