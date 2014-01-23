@@ -39,6 +39,22 @@
     }
 }
 
+- (void)setRepeatsWhenFinished:(NSNumber *)repeatsWhenFinished {
+	[self willAccessValueForKey:@"repeatsWhenFinished"];
+	NSNumber* oldValue = [self primitiveValueForKey:@"repeatsWhenFinished"];
+	[self didAccessValueForKey:@"repeatsWhenFinished"];
+	
+	if (oldValue.unsignedIntegerValue != repeatsWhenFinished.unsignedIntegerValue) {
+		[self willChangeValueForKey:@"repeatsWhenFinished"];
+		[self setPrimitiveValue:repeatsWhenFinished forKey:@"repeatsWhenFinished"];
+		[self didChangeValueForKey:@"repeatsWhenFinished"];
+		
+		for (ComplexEffect* effect in self.effects) {
+			effect.colors = [effect computeColors];
+		}
+	}
+}
+
 - (NSNumber *)totalDurationInTmms {
     NSUInteger totalDuration = 0;
 	for (ComplexEffect *obj in self.effects) {

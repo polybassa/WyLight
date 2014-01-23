@@ -267,6 +267,7 @@
 		C044BB931823B4860097151D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ScriptObjectEditViewsLocalization.strings; sourceTree = "<group>"; };
 		C044BB971823B6750097151D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/ViewControllerLocalization.strings; sourceTree = "<group>"; };
 		C044BB991823B6770097151D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ViewControllerLocalization.strings; sourceTree = "<group>"; };
+		C0451D8818905AAF00331162 /* Version 1.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Version 1.1.xcdatamodel"; sourceTree = "<group>"; };
 		C04A34751826EDA600745BC3 /* Gradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gradient.h; sourceTree = "<group>"; };
 		C04A34761826EDA600745BC3 /* Gradient.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Gradient.mm; sourceTree = "<group>"; };
 		C04A34811826F0FD00745BC3 /* Fade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fade.h; sourceTree = "<group>"; };
@@ -1116,9 +1117,10 @@
 		C00DD4C01826C3EB00D17088 /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				C0451D8818905AAF00331162 /* Version 1.1.xcdatamodel */,
 				C00DD4C11826C3EB00D17088 /* Model.xcdatamodel */,
 			);
-			currentVersion = C00DD4C11826C3EB00D17088 /* Model.xcdatamodel */;
+			currentVersion = C0451D8818905AAF00331162 /* Version 1.1.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

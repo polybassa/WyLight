@@ -21,6 +21,7 @@
 - (ComplexEffect *)next;
 
 - (void)prepareForSendToWCWiflyControl;
+- (NSArray *)computeColors;
 
 @property (nonatomic, retain) NSNumber * waitCommand;
 @property (nonatomic, retain) NSOrderedSet *effects;
