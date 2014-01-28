@@ -30,6 +30,18 @@ public class SetColorFragment extends ControlFragment implements OnColorChangeLi
 	 */
 	private static final double _180_DIVIDED_PI = 180 / Math.PI;
 
+	/**
+	 * Table of color button ids, which is used to easily connect them all with an OnClickListener.
+	 */
+	private static final int COLOR_BUTTONS[] = {
+		R.id.red,
+		R.id.yellow,
+		R.id.green,
+		R.id.cyan,
+		R.id.blue,
+		R.id.magenta
+	};
+
 	// These values only have to be recalculated, if the views layout changes
 	private float mCenterX = 0;
 	private float mCenterY = 0;
@@ -45,7 +57,16 @@ public class SetColorFragment extends ControlFragment implements OnColorChangeLi
 	private ImageView mValueCrosshair;
 	private AtomicBoolean mChangeIsInProgress = new AtomicBoolean(false);
 
-	private View.OnTouchListener mOnTouchListener = new View.OnTouchListener() {
+	private final View.OnClickListener mOnColorClickListener = new View.OnClickListener() {
+		public void onClick(View v) {
+			if(v.getClass().equals(ColorView.class)) {
+				final ColorView cv = (ColorView) v;
+				mProvider.setColor(cv.getColor());
+			}
+		}
+	};
+
+	private final View.OnTouchListener mOnTouchListener = new View.OnTouchListener() {
 		public boolean onTouch(View v, MotionEvent event) {
 			if(event.getAction() != MotionEvent.ACTION_MOVE) {
 				return true;
@@ -96,6 +117,12 @@ public class SetColorFragment extends ControlFragment implements OnColorChangeLi
 		mColorPicker = (ImageView)v.findViewById(R.id.colorPicker);
 		mValuePicker = (View)v.findViewById(R.id.valuePicker);
 		mValueCrosshair = (ImageView)v.findViewById(R.id.valueCrosshair);
+
+		// connect all color buttons with the OnClickListener
+		for(int id: COLOR_BUTTONS) {
+			ColorView colorBtn = (ColorView)v.findViewById(id);
+			colorBtn.setOnClickListener(mOnColorClickListener);
+		}
 		return v;
 	}
 

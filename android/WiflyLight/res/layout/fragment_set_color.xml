@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,7 +17,8 @@
         android:src="@drawable/color_picker_wheel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dip" />
     <ImageView
         android:id="@+id/crosshair"
         android:contentDescription="@null"
@@ -40,4 +42,53 @@
         android:layout_height="40dip"
         android:layout_alignTop="@id/valuePicker"
         android:layout_centerHorizontal="true" />
+    <biz.bruenn.WyLight.view.ColorView
+        android:id="@+id/red"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="10dip"
+        android:layout_below="@id/valuePicker"
+        custom:color="0xffff0000" />
+    <biz.bruenn.WyLight.view.ColorView
+        android:id="@+id/yellow"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_margin="10dip"
+        android:layout_below="@id/valuePicker"
+        android:layout_toRightOf="@id/red"
+        custom:color="0xffffff00" />
+    <biz.bruenn.WyLight.view.ColorView
+        android:id="@+id/green"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_margin="10dip"
+        android:layout_below="@id/valuePicker"
+        android:layout_toRightOf="@id/yellow"
+        custom:color="0xff00ff00" />
+    <biz.bruenn.WyLight.view.ColorView
+        android:id="@+id/cyan"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_margin="10dip"
+        android:layout_below="@id/valuePicker"
+        android:layout_toRightOf="@id/green"
+        custom:color="0xff00ffff" />
+    <biz.bruenn.WyLight.view.ColorView
+        android:id="@+id/blue"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_margin="10dip"
+        android:layout_below="@id/valuePicker"
+        android:layout_toRightOf="@id/cyan"
+        custom:color="0xff0000ff" />
+    <biz.bruenn.WyLight.view.ColorView
+        android:id="@+id/magenta"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_margin="10dip"
+        android:layout_below="@id/valuePicker"
+        android:layout_toRightOf="@id/blue"
+        custom:color="0xffff00ff" />
 </RelativeLayout>
