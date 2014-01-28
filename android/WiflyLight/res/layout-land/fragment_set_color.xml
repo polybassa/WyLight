@@ -1,0 +1,87 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="top"
+    tools:context=".WiflyControlActivity" >
+    <biz.bruenn.WyLight.view.ColorView
+        android:id="@+id/colorStatus"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_marginLeft="20dip"
+        android:layout_marginTop="20dip" />
+    <ImageView
+        android:id="@+id/colorPicker"
+        android:contentDescription="@null"
+        android:src="@drawable/color_picker_wheel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/colorStatus"
+        android:layout_alignLeft="@id/colorStatus" />
+    <ImageView
+        android:id="@+id/crosshair"
+        android:contentDescription="@null"
+        android:src="@drawable/color_picker_knob"
+        android:layout_width="40dip"
+        android:layout_height="40dip" />
+    <View
+        android:id="@+id/valuePicker"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_alignTop="@id/colorStatus"
+        android:layout_toRightOf="@id/colorPicker"
+        android:background="#ffff0000" />
+    <ImageView
+        android:id="@+id/valueCrosshair"
+        android:contentDescription="@null"
+        android:src="@drawable/color_picker_knob"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_alignTop="@id/valuePicker"
+        android:layout_centerHorizontal="true" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="10dip" >
+	    <biz.bruenn.WyLight.view.ColorView
+	        android:id="@+id/red"
+	        android:layout_width="40dip"
+	        android:layout_height="40dip"
+	        android:layout_margin="10dip"
+	        custom:color="0xffff0000" />
+	    <biz.bruenn.WyLight.view.ColorView
+	        android:id="@+id/yellow"
+	        android:layout_width="40dip"
+	        android:layout_height="40dip"
+	        android:layout_margin="10dip"
+	        custom:color="0xffffff00" />
+	    <biz.bruenn.WyLight.view.ColorView
+	        android:id="@+id/green"
+	        android:layout_width="40dip"
+	        android:layout_height="40dip"
+	        android:layout_margin="10dip"
+	        custom:color="0xff00ff00" />
+	    <biz.bruenn.WyLight.view.ColorView
+	        android:id="@+id/cyan"
+	        android:layout_width="40dip"
+	        android:layout_height="40dip"
+	        android:layout_margin="10dip"
+	        custom:color="0xff00ffff" />
+	    <biz.bruenn.WyLight.view.ColorView
+	        android:id="@+id/blue"
+	        android:layout_width="40dip"
+	        android:layout_height="40dip"
+	        android:layout_margin="10dip"
+	        custom:color="0xff0000ff" />
+	    <biz.bruenn.WyLight.view.ColorView
+	        android:id="@+id/magenta"
+	        android:layout_width="40dip"
+	        android:layout_height="40dip"
+	        android:layout_margin="10dip"
+	        custom:color="0xffff00ff" />
+    </LinearLayout>
+</RelativeLayout>
