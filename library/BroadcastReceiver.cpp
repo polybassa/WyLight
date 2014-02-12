@@ -134,6 +134,12 @@ namespace WyLight {
 
 	void BroadcastReceiver::ReadRecentEndpoints(const std::string& filename)
 	{
+		{
+			std::lock_guard<std::mutex> lock(this->mMutex);
+			this->mIpTableShadow.clear();
+			this->mIpTable.clear();
+		}
+		
 		std::ifstream inFile;
 		if(filename.compare("") == 0)
 			inFile.open(mRecentFilename, std::ios::in);

@@ -123,8 +123,7 @@
 		
 		if ([segue.sourceViewController respondsToSelector:@selector(endpoint)]) {
 			[self.receiver unsetWCEndpointAsFavorite: [segue.sourceViewController performSelector:@selector(endpoint)]];
-			[self.receiver saveTargets];
-			[self.receiver clearTargets];
+			[self.tableView reloadData];
 		}
 	});
 }

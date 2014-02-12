@@ -91,19 +91,13 @@ NSString *const TargetsChangedNotification = @"TargetsChangedNotification";
 		receiverThread->join();
 	}
 	receiverThread.reset();
+	receiver->WriteRecentEndpoints();
 }
 
 - (void)dealloc
 {
 	[self stop];
 	receiver.reset();
-#if !__has_feature(objc_arc)
-	//Do manual memory management...
-	[super dealloc];
-#else
-	//Usually do nothing...
-#endif
-
 }
 
 - (NSMutableArray *)arrayOfEndpoints {
@@ -134,6 +128,9 @@ NSString *const TargetsChangedNotification = @"TargetsChangedNotification";
 			receiver->GetEndpoint(index).SetScore(0);
 		}
 	}
+	receiver->WriteRecentEndpoints();
+	self.arrayOfEndpoints = nil;
+	receiver->ReadRecentEndpoints();
 }
 
 - (void)saveTargets
