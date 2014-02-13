@@ -19,7 +19,7 @@
 }
 
 @property (nonatomic, weak) NSThread *threadOfOwner;
-@property (nonatomic, strong) NSMutableArray *arrayOfEndpoints;
+@property (nonatomic, strong) NSMutableOrderedSet *arrayOfEndpoints;
 
 - (void)postNotification;
 
@@ -47,6 +47,19 @@ NSString *const TargetsChangedNotification = @"TargetsChangedNotification";
 				filePath.UTF8String,
 				[ = ](const size_t index, const WyLight::Endpoint& endpoint)
 				{
+					if (self.arrayOfEndpoints.count > index) {
+						for (WCEndpoint *endpointInArray in self.arrayOfEndpoints) {
+							if (endpointInArray.ipAdress == endpoint.GetIp()) {
+								[endpointInArray setScore:1];
+							}
+						}
+						receiver->WriteRecentEndpoints();
+						dispatch_async(dispatch_get_main_queue(), ^{
+							[self postNotification];
+
+						});
+						return;
+					}
 					NSLog(@"New: %zd : %d.%d.%d.%d, %d  %s",
 					      index,
 					      (endpoint.GetIp() >> 24) & 0xFF,
@@ -60,8 +73,8 @@ NSString *const TargetsChangedNotification = @"TargetsChangedNotification";
 								port:endpoint.GetPort()
 								name:[NSString stringWithCString:endpoint.GetDeviceId().c_str() encoding:NSASCIIStringEncoding]
 								score:endpoint.GetScore()];
+					[self.arrayOfEndpoints insertObject:endPoint atIndex:index];
 					dispatch_async(dispatch_get_main_queue(), ^{
-							       [self.arrayOfEndpoints insertObject:endPoint atIndex:index];
 							       [self postNotification];
 						       }
 						       );
@@ -100,23 +113,23 @@ NSString *const TargetsChangedNotification = @"TargetsChangedNotification";
 	receiver.reset();
 }
 
-- (NSMutableArray *)arrayOfEndpoints {
+- (NSMutableOrderedSet *)arrayOfEndpoints {
 	if(_arrayOfEndpoints == nil) {
-		_arrayOfEndpoints = [[NSMutableArray alloc] init];
+		_arrayOfEndpoints = [[NSMutableOrderedSet alloc] init];
 	}
 	return _arrayOfEndpoints;
 }
 
 - (NSArray *)targets
 {
-	return self.arrayOfEndpoints;
+	return self.arrayOfEndpoints.array;
 }
 
 - (void)setWCEndpointAsFavorite:(WCEndpoint *)endpoint
 {
 	for(size_t index = 0; index < receiver->NumRemotes(); index++) {
 		if((receiver->GetEndpoint(index)).GetIp() == endpoint.ipAdress)
-			++(receiver->GetEndpoint(index));
+			receiver->GetEndpoint(index).SetScore(2);
 	}
 	[self postNotification];
 }
@@ -128,9 +141,13 @@ NSString *const TargetsChangedNotification = @"TargetsChangedNotification";
 			receiver->GetEndpoint(index).SetScore(0);
 		}
 	}
+	for (WCEndpoint *endpointInArray in self.arrayOfEndpoints) {
+		if (endpointInArray.ipAdress == endpoint.ipAdress) {
+			[endpointInArray setScore:0];
+		}
+	}
 	receiver->WriteRecentEndpoints();
-	self.arrayOfEndpoints = nil;
-	receiver->ReadRecentEndpoints();
+	[self postNotification];
 }
 
 - (void)saveTargets

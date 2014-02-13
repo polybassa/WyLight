@@ -22,6 +22,9 @@
 - (void)refresh {
 	[self.refreshControl beginRefreshing];
 	[self.receiver clearTargets];
+	[self.receiver stop];
+	self.receiver = nil;
+	[self.receiver start];
 	[self.tableView reloadData];
 	
 	double delayInSeconds = 10.0;
@@ -86,6 +89,16 @@
     
     cell.textLabel.text = [[[self.receiver targets]objectAtIndex:indexPath.row] name];
 	cell.detailTextLabel.text = [[[self.receiver targets]objectAtIndex:indexPath.row] adressString];
+	if ([[[self.receiver targets]objectAtIndex:indexPath.row] score] == 0) {
+		cell.userInteractionEnabled = NO;
+		cell.textLabel.enabled = NO;
+		cell.detailTextLabel.enabled = NO;
+	} else {
+		cell.userInteractionEnabled = YES;
+		cell.textLabel.enabled = YES;
+		cell.detailTextLabel.enabled = YES;
+	}
+	
     return cell;
 }
 
@@ -122,7 +135,8 @@
 		[[[UIAlertView alloc]initWithTitle:NSLocalizedStringFromTable(@"ConnectionLostKey", @"ViewControllerLocalization", @"") message:NSLocalizedStringFromTable(@"ReConnectKey", @"ViewControllerLocalization", @"") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 		
 		if ([segue.sourceViewController respondsToSelector:@selector(endpoint)]) {
-			[self.receiver unsetWCEndpointAsFavorite: [segue.sourceViewController performSelector:@selector(endpoint)]];
+			WCEndpoint* endpoint = [segue.sourceViewController performSelector:@selector(endpoint)];
+			[self.receiver unsetWCEndpointAsFavorite: endpoint];
 			[self.tableView reloadData];
 		}
 	});
