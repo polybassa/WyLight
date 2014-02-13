@@ -106,6 +106,7 @@ namespace WyLight {
 		if(msg.IsWiflyBroadcast(bytesRead)) {
 			Trace(ZONE_INFO, "Broadcast detected\n");
 			Endpoint newRemote(remoteAddr, remoteAddrLength, msg.port, std::string((char *)&msg.deviceId[0]));
+			newRemote.SetScore(1);
 			return LockedInsert(newRemote) ? newRemote : Endpoint();
 		}
 		return Endpoint();
@@ -122,6 +123,8 @@ namespace WyLight {
 			Endpoint& ref = GetEndpointByFingerprint(newEndpoint.AsUint64());
 			if(ref.IsValid()) {
 				ref.SetDeviceId(newEndpoint.GetDeviceId());
+				ref.SetScore(1);
+				mOnNewRemote(0,ref);
 			}
 		}
 		return true;
@@ -134,12 +137,6 @@ namespace WyLight {
 
 	void BroadcastReceiver::ReadRecentEndpoints(const std::string& filename)
 	{
-		{
-			std::lock_guard<std::mutex> lock(this->mMutex);
-			this->mIpTableShadow.clear();
-			this->mIpTable.clear();
-		}
-		
 		std::ifstream inFile;
 		if(filename.compare("") == 0)
 			inFile.open(mRecentFilename, std::ios::in);
@@ -182,9 +179,10 @@ namespace WyLight {
 		}
 		// write to file
 		for(auto it = mIpTable.begin(); it != mIpTable.end(); it++) {
-			if((*it).second.GetScore() >= threshold) {
+			const auto currentEndpoint = it->second;
+			if(currentEndpoint.GetScore() >= threshold) {
 				//TODO refactor this but then we have to change the CLI implementation
-				outFile << (int)((*it).second.GetScore()) << ' ' << std::hex << (*it).second.GetIp() << ' ' << std::dec << (*it).second.GetPort() << ' ' << (*it).second.GetDeviceId() << '\n';
+				outFile << (int)(currentEndpoint.GetScore()) << ' ' << std::hex << currentEndpoint.GetIp() << ' ' << std::dec << currentEndpoint.GetPort() << ' ' << currentEndpoint.GetDeviceId() << '\n';
 			}
 		}
 		outFile.close();
