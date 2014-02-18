@@ -35,3 +35,4 @@ config.status
 autom4te.cache/output.1
 autom4te.cache/traces.1
 config.h
+/wylight.de/WyLightWebpage/nbproject/private/

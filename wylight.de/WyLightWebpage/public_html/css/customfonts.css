@@ -1,0 +1,54 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Dec 24, 2013, 12:28:39 PM
+    Author     : nilsweiss
+*/
+
+@font-face {
+    font-family: 'AllerBold';
+    src: url('../font/aller_std_bd.eot');
+    src: url('../font/aller_std_bd.eot') format('embedded-opentype'),
+         url('../font/aller_std_bd.woff') format('woff'),
+         url('../font/aller_std_bd.ttf') format('truetype'),
+         url('../font/aller_std_bd.svg#AllerBold') format('svg');
+}
+
+@font-face {
+    font-family: 'AllerDisplayRegular';
+    src: url('../font/allerdisplay_std_rg.eot');
+    src: url('../font/allerdisplay_std_rg.eot') format('embedded-opentype'),
+         url('../font/allerdisplay_std_rg.woff') format('woff'),
+         url('../font/allerdisplay_std_rg.ttf') format('truetype'),
+         url('../font/allerdisplay_std_rg.svg#AllerDisplayRegular') format('svg');
+}
+
+@font-face {
+    font-family: 'AllerRegular';
+    src: url('../font/aller_std_rg.eot');
+    src: url('../font/aller_std_rg.eot') format('embedded-opentype'),
+         url('../font/aller_std_rg.woff') format('woff'),
+         url('../font/aller_std_rg.ttf') format('truetype'),
+         url('../font/aller_std_rg.svg#AllerRegular') format('svg');
+}
+
+@font-face {
+    font-family: 'AllerLight';
+    src: url('../font/aller_std_lt.eot');
+    src: url('../font/aller_std_lt.eot') format('embedded-opentype'),
+         url('../font/aller_std_lt.woff') format('woff'),
+         url('../font/aller_std_lt.ttf') format('truetype'),
+         url('../font/aller_std_lt.svg#AllerLight') format('svg');
+}
+
+@font-face {
+    font-family: 'AllerItalic';
+    src: url('../font/aller_std_it.eot');
+    src: url('../font/aller_std_it.eot') format('embedded-opentype'),
+         url('../font/aller_std_it.woff') format('woff'),
+         url('../font/aller_std_it.ttf') format('truetype'),
+         url('../font/aller_std_it.svg#AllerItalic') format('svg');
+}
