@@ -28,11 +28,11 @@ void Timer_Init()
 	/*
 	 * T1 Interrupt every 10 Millisecounds if clock is 64MHz
 	 * Calculation
-	 * 64000000 Hz / 4 / 8 / 65536
-	 * T1 Interrupt occures with a frequency of 30 Hz.
+	 * 64000000 Hz / 4 / 4 / 65536
+	 * T1 Interrupt occures with a frequency of 60 Hz.
 	 * This is used to update the ledstrip with the current colorvalue
 	 */
-	T1CON = 0b00110111;
+	T1CON = 0b00100111;
 	TMR1IE = TRUE;
 
 	/*
