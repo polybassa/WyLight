@@ -61,7 +61,7 @@ void Timer_StopStopwatch(const enum CYCLETIME_METHODE destMethode);
 uns8 Timer_PrintCycletime(uns16 *pArray, const uns16 arraySize);
 
 #ifdef __CC8E__
-#define Timer1Interrupt(x) TMR1IF = 0;
+#define Timer1Interrupt(x) TMR1IF = 0; 
 #define Timer2Interrupt(x) TMR2IF = 0;
 #define Timer3Interrupt(x) TMR3IF = 0;
 #define Timer4Interrupt(x) TMR4IF = 0;
