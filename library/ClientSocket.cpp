@@ -133,7 +133,7 @@ namespace WyLight {
 	size_t TcpSocket::Send(const uint8_t *frame, size_t length) const
 	{
 		TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending on socket 0x%04x, %zu bytes: ", mSock, length);
-		const int result = send(mSock, frame, length, TCP_SEND_FLAGS);
+		const ssize_t result = send(mSock, frame, length, TCP_SEND_FLAGS);
 		if(result == -1) {
 			throw FatalError("send failed with returnvalue -1 and errno:" + std::to_string(errno));
 		}

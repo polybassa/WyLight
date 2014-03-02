@@ -174,8 +174,9 @@
 #pragma mark - GETTER & SETTER
 
 - (void)sendScript {
-	dispatch_queue_t sendScriptQueue = dispatch_queue_create("sendScriptQueue", NULL);
+	dispatch_queue_t sendScriptQueue = dispatch_get_main_queue();//dispatch_queue_create("sendScriptQueue", NULL);
 	dispatch_async(sendScriptQueue, ^{
+		[self.controlHandle clearScript];
 		[self.controlHandle setColorDirect:[UIColor blackColor]];
         Script *currentScript = self.scriptObjects[self.carousel.currentItemIndex];
 		[currentScript sendToWCWiflyControl:self.controlHandle];
@@ -339,7 +340,6 @@
         return;
     }
 	if (gesture.state == UIGestureRecognizerStateBegan) {
-		CGPoint location = [gesture locationInView:[gesture view]];
         UIMenuController *menuController = [UIMenuController sharedMenuController];
 		UIMenuItem *shareItem = [[UIMenuItem alloc] initWithTitle:NSLocalizedStringFromTable(@"ScriptVCShareKey", @"ViewControllerLocalization", @"") action:@selector(shareScript)];
 		

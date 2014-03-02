@@ -351,15 +351,19 @@
 }
 
 - (void)repeatSwitchValueChanged {
-        self.repeatSwitch.selected = !self.repeatSwitch.selected;
+	self.repeatSwitch.selected = !self.repeatSwitch.selected;
     self.script.repeatsWhenFinished = @(self.repeatSwitch.selected);
-    ((ComplexEffect *)self.script.effects.firstObject).snapshot = nil;
-    [self.effectDrawer drawEffect:self.script.effects.firstObject];
+	for (ComplexEffect* effect in self.script.effects) {
+		if (effect.snapshot == nil) {
+			[self.effectDrawer drawEffect:effect];
+		}
+	}
 }
 
 - (void)sendScript {
-	dispatch_queue_t sendScriptQueue = dispatch_queue_create("sendScriptQueue", NULL);
+	dispatch_queue_t sendScriptQueue = dispatch_get_main_queue();//dispatch_queue_create("sendScriptQueue", NULL);
 	dispatch_async(sendScriptQueue, ^{
+		[self.controlHandle clearScript];
 		[self.controlHandle setColorDirect:[UIColor blackColor]];
 		[self.script sendToWCWiflyControl:self.controlHandle];
 	});
