@@ -78,9 +78,6 @@
 + (Script *)deserializeScriptFromPath:(NSURL *)path inContext:(NSManagedObjectContext *)context {
 	NSString *str = [NSString stringWithContentsOfURL:path encoding:NSUTF8StringEncoding error:nil];
 	
-	NSArray *listOfPathSubstrings = [[path absoluteString] componentsSeparatedByString:@"/"];
-	listOfPathSubstrings = [((NSString *)listOfPathSubstrings.lastObject) componentsSeparatedByString:@"."];
-	
 	Script *tempScript = [Script deserializeScriptFromString:str inContext:context];
 	return tempScript;
 }

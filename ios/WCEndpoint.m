@@ -43,4 +43,8 @@
 		self.port];
 }
 
+- (void)setScore:(uint8_t)score {
+	_score = score;
+}
+
 @end

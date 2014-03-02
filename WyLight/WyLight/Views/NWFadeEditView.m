@@ -101,7 +101,7 @@
 		Fade *currentFadeCommand = (Fade *)currentCommand;
 		
 		uint32_t flipBitmask = 0x0000000f << index * 4;
-		uint32_t newAddressMask = currentFadeCommand.address.unsignedIntegerValue ^ flipBitmask;
+		uint32_t newAddressMask = (uint32_t)(currentFadeCommand.address.unsignedIntegerValue ^ flipBitmask);
 		
 		if ((flipBitmask & self.addressMaskForFadeEditView & currentFadeCommand.address.unsignedIntegerValue) || (flipBitmask & ~self.addressMaskForFadeEditView & ~currentFadeCommand.address.unsignedIntegerValue)) {
 			[self.delegate NWFadeEditView:self bitmaskChanged:newAddressMask];

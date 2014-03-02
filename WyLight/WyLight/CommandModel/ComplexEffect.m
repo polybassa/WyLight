@@ -173,59 +173,76 @@
     }
 }
 
+- (NSArray *)computeColors {
+	NSLog(@"Complex Effect calc Colors");
+	if (self.waitCommand.boolValue) {
+		if (self.prev.colors) {
+			return self.prev.colors;
+		} else {
+			NSMutableArray *outPutColors = [[NSMutableArray alloc] init];
+			for (NSUInteger i = 0; i < NUM_OF_LED; i++) {
+				[outPutColors addObject:self.backgroundColor];
+			}
+            return outPutColors;
+		}
+	}
+	else {
+		NSMutableArray *outPutColors;
+		if (self.prev) {
+			outPutColors = [[NSMutableArray alloc]initWithArray:self.prev.colors copyItems:YES];
+		} else if (self.script && self.script.repeatsWhenFinished.boolValue && self.script.effects.firstObject == self && self.script.effects.lastObject != self) {
+
+			ComplexEffect* lastEffect = self.script.effects.lastObject;
+			[lastEffect willAccessValueForKey:@"colors"];
+			NSArray *colors = [lastEffect primitiveValueForKey:@"colors"];
+			[lastEffect didAccessValueForKey:@"colors"];
+
+			if (colors == nil) {
+				outPutColors = [[NSMutableArray alloc]init];
+			} else {
+				outPutColors = [[NSMutableArray alloc]initWithArray:colors copyItems:YES];
+			}
+		} else {
+			outPutColors = [[NSMutableArray alloc]init];
+		}
+
+		uint32_t compareMask = 0x00000001;
+		for (unsigned int i = 0; i < NUM_OF_LED; i++) {  //i = 0 - 31
+			NSUInteger j = self.effects.count;
+			while (j--) {
+				SimpelEffect *currentObj = [self.effects objectAtIndex:j];
+				const uint32_t bitmask = (uint32_t)currentObj.address.unsignedIntegerValue;
+				if (bitmask & compareMask) {
+					if (outPutColors.count == NUM_OF_LED) {
+						[outPutColors replaceObjectAtIndex:i withObject:currentObj.colors[i]];
+					} else {
+						[outPutColors addObject:currentObj.colors[i]];
+					}
+					break;
+				}
+			}
+			if (i >= outPutColors.count) {
+				[outPutColors addObject:self.backgroundColor];
+			}
+			compareMask = compareMask << 1;
+		}
+		return outPutColors;
+	}
+}
+
 - (NSArray *)colors {
     [self willAccessValueForKey:@"colors"];
     NSArray *colors = [self primitiveValueForKey:@"colors"];
     [self didAccessValueForKey:@"colors"];
-    
+
     if (colors == nil) {
-        NSLog(@"Complex Effect calc Colors");
-        if (self.waitCommand.boolValue) {
-            if (self.prev.colors) {
-                colors = self.prev.colors;
-            } else {
-                NSMutableArray *outPutColors = [[NSMutableArray alloc] init];
-                for (NSUInteger i = 0; i < NUM_OF_LED; i++) {
-                    [outPutColors addObject:self.backgroundColor];
-                }
-            colors = outPutColors;
-            }
-        } else {
-        
-            NSMutableArray *outPutColors;
-            if (self.prev) {
-                outPutColors = [[NSMutableArray alloc]initWithArray:self.prev.colors copyItems:YES];
-            } else {
-                outPutColors = [[NSMutableArray alloc]init];
-            }
-            
-            uint32_t compareMask = 0x00000001;
-            for (unsigned int i = 0; i < NUM_OF_LED; i++) {  //i = 0 - 31
-                NSUInteger j = self.effects.count;
-                while (j--) {
-                    SimpelEffect *currentObj = [self.effects objectAtIndex:j];
-                    const uint32_t bitmask = currentObj.address.unsignedIntegerValue;
-                    if (bitmask & compareMask) {
-                        if (self.prev) {
-                            [outPutColors replaceObjectAtIndex:i withObject:currentObj.colors[i]];
-                        } else {
-                            [outPutColors addObject:currentObj.colors[i]];
-                        }
-                        break;
-                    }
-                }
-                if (i >= outPutColors.count) {
-                    [outPutColors addObject:self.backgroundColor];
-                }
-                compareMask = compareMask << 1;
-            }
-            colors = outPutColors;
-        }
-        
+		colors = [self computeColors];
+
+
         [self willChangeValueForKey:@"colors"];
         [self setPrimitiveValue:colors forKey:@"colors"];
         [self didChangeValueForKey:@"colors"];
-        
+
         if ([self next]) {
             self.next.snapshot = nil;
         }

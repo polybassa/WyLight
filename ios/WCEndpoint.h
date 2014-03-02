@@ -20,4 +20,6 @@
 
 - (id) initWithIpAdress:(uint32_t)ip port:(uint16_t)port name:(NSString *)name score:(uint8_t)score;
 
+- (void)setScore:(uint8_t)score;
+
 @end

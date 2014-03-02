@@ -79,6 +79,12 @@ namespace WyLight {
 	TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError)
 		: ClientSocket(addr, port, SOCK_STREAM)
 	{
+		int yes = 1;
+		//optional, steal port if necessary
+		if(0 != setsockopt(mSock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int))) {
+			throw FatalError("setsockopt() failed");
+		}
+		
 		//disable nagle algorithm
 		int flag = 1;
 		const int result_disableNagle = setsockopt(mSock, IPPROTO_TCP, TCP_NODELAY, (char *) &flag,	sizeof(int));
@@ -133,7 +139,7 @@ namespace WyLight {
 	size_t TcpSocket::Send(const uint8_t *frame, size_t length) const
 	{
 		TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending on socket 0x%04x, %zu bytes: ", mSock, length);
-		const int result = send(mSock, frame, length, TCP_SEND_FLAGS);
+		const ssize_t result = send(mSock, frame, length, TCP_SEND_FLAGS);
 		if(result == -1) {
 			throw FatalError("send failed with returnvalue -1 and errno:" + std::to_string(errno));
 		}
@@ -144,6 +150,12 @@ namespace WyLight {
 		: ClientSocket(addr, port, SOCK_DGRAM)
 	{
 		if(0 != setsockopt(mSock, SOL_SOCKET, SO_BROADCAST, &enableBroadcast, sizeof(enableBroadcast))) {
+			throw FatalError("setsockopt() failed");
+		}
+		
+		int yes = 1;
+		//optional, steal port if necessary
+		if(0 != setsockopt(mSock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int))) {
 			throw FatalError("setsockopt() failed");
 		}
 

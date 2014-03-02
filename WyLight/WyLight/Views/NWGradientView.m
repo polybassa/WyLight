@@ -50,6 +50,7 @@
 	CGContextDrawLinearGradient(context, currentGradient,
 									CGPointMake(0, rect.size.height / 2),
 									CGPointMake(rect.size.width, rect.size.height / 2), 0);
+	CGGradientRelease(currentGradient);
 }
 
 + (CGGradientRef)createGradientWithStartColor:(UIColor*)startColor endColor:(UIColor*)endColor {

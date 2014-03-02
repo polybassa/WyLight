@@ -52,14 +52,15 @@
             CGContextRef		context;
             CGColorSpaceRef		colorSpace;
             CGSize				canvasSize;
-            
+			CGGradientRef 		gradient;
+
             //Initialize the canvas size!
             canvasSize = rect.size;
             
             //Create the color space
             colorSpace = CGColorSpaceCreateDeviceRGB();
             
-            context = CGBitmapContextCreate(NULL, canvasSize.width, canvasSize.height, 8, 0, colorSpace, kCGImageAlphaPremultipliedLast);
+            context = CGBitmapContextCreate(NULL, canvasSize.width, canvasSize.height, 8, 0, colorSpace,(CGBitmapInfo)kCGImageAlphaPremultipliedLast);
             
             CGContextTranslateCTM(context, 0.0f, rect.size.height);
             CGContextScaleCTM(context, 1.0f, -1.0f);
@@ -94,7 +95,6 @@
                     startColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
                 }
                 
-                CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
                 CGFloat locations[2] = {0.0f, 1.0f};
                 CGFloat startRed, startGreen, startBlue, startAlpha;
                 CGFloat endRed, endGreen, endBlue, endAlpha;
@@ -107,13 +107,11 @@
                     endRed, endGreen, endBlue, endAlpha
                 };
                 
-                CGGradientRef gradient;
                 gradient = CGGradientCreateWithColorComponents(colorSpace, components, locations, 2);
                 
                 CGFloat currentHeight = (CGFloat)((NSNumber *)lineHeightArray[i]).floatValue;
                 CGPoint startPoint = CGPointMake(rect.origin.x, yPosition + currentHeight / 2 );
                 CGPoint endPoint = CGPointMake(rect.origin.x + rect.size.width, yPosition + currentHeight / 2);
-                
                 
                 CGContextSaveGState(context);
                 CGContextClipToRect(context, CGRectMake(rect.origin.x, yPosition, rect.size.width, currentHeight));

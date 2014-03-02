@@ -767,7 +767,7 @@ enum EditColorTarget {
     Gradient *obj = (Gradient *)[[NSManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:nil];
 	obj.color1 = [UIColor blueColor];
 	obj.color2 = [UIColor redColor];
-	obj.offset = 0;
+	obj.offset = @(0);
 	obj.numberOfLeds = @(32);
 	obj.duration = @(5);
 	obj.parallel = @(YES);
