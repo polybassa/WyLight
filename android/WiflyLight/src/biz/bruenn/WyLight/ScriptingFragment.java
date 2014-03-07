@@ -109,11 +109,10 @@ public class ScriptingFragment extends ControlFragment {
 				addNewScript();
 			}
 		});
-		
 		Button send = (Button)v.findViewById(R.id.send);
 		send.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				onSendScript(scriptAdapter());
+				mProvider.sendScript(scriptAdapter());
 			}
 		});
 		

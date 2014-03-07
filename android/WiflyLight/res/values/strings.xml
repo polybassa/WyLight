@@ -2,6 +2,7 @@
 <resources>
 
     <string name="add_command">Add</string>
+    <string name="action_stop">Stop</string>
     <string name="app_name">WiflyLight</string>
     <string name="cancel">Cancel</string>
     <string name="clear">Clear</string>
