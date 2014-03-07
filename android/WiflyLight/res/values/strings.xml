@@ -2,6 +2,7 @@
 <resources>
 
     <string name="add_command">Add</string>
+    <string name="action_stop">Stop</string>
     <string name="app_name">WiflyLight</string>
     <string name="cancel">Cancel</string>
     <string name="clear">Clear</string>
@@ -33,6 +34,7 @@
     <string name="status_bad">Status bad</string>
     <string name="status_good">Status good</string>
     <string name="title_activity_edit_command">Edit command</string>
+    <string name="title_activity_edit_script">Edit script</string>
     <string name="title_activity_script_import">Import script into WyLight</string>
     <string name="title_activity_wifly_control">Control your WiflyLight</string>
     <string name="title_dialog_set_wlan">Configure your WLAN settings</string>

@@ -11,7 +11,6 @@ public class EditCommandActivity extends Activity {
 	
 	private Button mSave = null;
 	private int mColor;
-	
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,5 +34,4 @@ public class EditCommandActivity extends Activity {
 			}
 		});
     }
-
 }

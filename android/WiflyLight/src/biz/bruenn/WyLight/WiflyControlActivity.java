@@ -10,6 +10,7 @@ import biz.bruenn.WyLight.exception.ConnectionTimeout;
 import biz.bruenn.WyLight.exception.FatalError;
 import biz.bruenn.WyLight.exception.ScriptBufferFull;
 import biz.bruenn.WyLight.library.Endpoint;
+import biz.bruenn.WyLight.library.ScriptAdapter;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -21,6 +22,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -35,8 +39,9 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 		new SetColorFragment(),
 		new SetBrightnessFragment(),
 		new SetRGBFragment(),
-		new ScriptingFragment(),
-		new SetGradientFragment()
+		new SetScriptFragment(),
+		//new ScriptingFragment(),
+		//new SetGradientFragment()
 	};
 
 	private final HashSet<OnColorChangeListener> mColorChangedListenerList = new HashSet<OnColorChangeListener>();
@@ -170,8 +175,26 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 		mRemote = (Endpoint) i.getSerializableExtra(EXTRA_ENDPOINT);
 	}
 	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.control_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
 	private void onFatalError(FatalError e) {
 		Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+			case R.id.action_stop:
+				mCtrl.fwClearScript();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override
@@ -204,6 +227,19 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 
 	public void removeOnColorChangedListener(OnColorChangeListener listener) {
 		mColorChangedListenerList.remove(listener);
+	}
+
+	public void sendScript(ScriptAdapter script) {
+		try {
+			mCtrl.fwClearScript();
+			mCtrl.fwSendScript(script);
+		} catch (ConnectionTimeout e) {
+			onConnectionLost();
+		} catch (ScriptBufferFull e) {
+			onScriptBufferFull();
+		} catch (FatalError e) {
+			onFatalError(e);
+		}
 	}
 
 	public void setColor(int argb) {

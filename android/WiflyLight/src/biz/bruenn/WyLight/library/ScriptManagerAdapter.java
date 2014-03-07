@@ -3,6 +3,7 @@ package biz.bruenn.WyLight.library;
 import java.io.File;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -22,7 +23,7 @@ public class ScriptManagerAdapter extends BaseAdapter {
 
 	public void add(String scriptName) {
 		newScript(mPath+'/'+scriptName+".wyscript", scriptName);
-		this.notifyDataSetChanged();
+		notifyDataSetChanged();
 	}
 
 	public int getCount() {
@@ -41,6 +42,7 @@ public class ScriptManagerAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		TextView x = new TextView(parent.getContext());
 		x.setText(getScriptName(mPath, position));
+		x.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 26);
 		return x;
 	}
 	

@@ -18,6 +18,7 @@ public abstract class ControlFragment extends Fragment {
 		@Deprecated
 		public WiflyControl getControl();
 		public void removeOnColorChangedListener(OnColorChangeListener listener);
+		public void sendScript(ScriptAdapter script);
 		public void setColor(int argb);
 		public void setColorHueSaturation(float hue, float saturation);
 		public void setColorValue(float value);
@@ -54,33 +55,6 @@ public abstract class ControlFragment extends Fragment {
 	@Deprecated
 	protected void onScriptBufferFull() {
 		Toast.makeText(getActivity(), R.string.msg_scriptbufferfull, Toast.LENGTH_LONG).show();		
-	}
-	
-	@Deprecated
-	protected void onSendScript(ScriptAdapter script) {
-		try {
-			mProvider.getControl().fwClearScript();
-			mProvider.getControl().fwSendScript(script);
-		} catch (ConnectionTimeout e) {
-			onConnectionLost();
-		} catch (ScriptBufferFull e) {
-			onScriptBufferFull();
-		} catch (FatalError e) {
-			onFatalError(e);
-		}
-	}
-	
-	@Deprecated
-	protected void onSetFade(int color, short time) {	
-		try {
-			mProvider.getControl().fwSetFade(color, WiflyControl.ALL_LEDS, time);
-		} catch (ConnectionTimeout e) {
-			onConnectionLost();
-		} catch (ScriptBufferFull e) {
-			onScriptBufferFull();		
-		} catch (FatalError e) {
-			onFatalError(e);
-		}		
 	}
 	
 	@Deprecated
