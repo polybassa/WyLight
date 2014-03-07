@@ -4,10 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import biz.bruenn.WiflyLight.R;
-import biz.bruenn.WyLight.library.ScriptAdapter;
 import biz.bruenn.WyLight.library.ScriptManagerAdapter;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,16 +17,8 @@ import android.widget.ListView;
 public class SetScriptFragment extends ControlFragment {
 	public static final String ITEM_POSITION = "ITEM_POSITION";
 
-	private ScriptAdapter mScript= null;
 	private ListView mScriptList;
 	private ScriptManagerAdapter mScriptListAdapter;
-
-	private void addNewScript()
-	{
-		String now = new SimpleDateFormat("yyyyMMdd-HHmmss", java.util.Locale.GERMANY).format(new Date());
-		mScriptListAdapter.add(now);
-		mScriptList.setSelection(mScriptListAdapter.getCount() - 1);
-	}
 
 	@Override
 	public int getIcon() {
@@ -45,37 +35,26 @@ public class SetScriptFragment extends ControlFragment {
 		mScriptList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position,
 					long arg3) {
-				mScript = mScriptListAdapter.getItem(position);
+				mProvider.sendScript(mScriptListAdapter.getItem(position));
+			}
+		});
+		mScriptList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+			public boolean onItemLongClick(AdapterView<?> arg0, View v,
+					int position, long arg3) {
 				Intent i = new Intent(v.getContext(), EditScriptActivity.class);
 				i.putExtra(EditScriptActivity.NATIVE_SCRIPT, mScriptListAdapter.getItem(position).getNative());
 				startActivityForResult(i, 0);
-			}
-		});
-		mScriptList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int position, long id) {
-				mScript = mScriptListAdapter.getItem(position);
-			}
-
-			public void onNothingSelected(AdapterView<?> parent) {
-				if(mScriptListAdapter.getCount() < 1) {
-					addNewScript();
-				}
+				return true;
 			}
 		});
 
 		Button newScript = (Button)v.findViewById(R.id.new_script);
 		newScript.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				addNewScript();
-			}
-		});
-		Button send = (Button)v.findViewById(R.id.send);
-		send.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				if(mScript != null) {
-					mProvider.sendScript(mScript);
-				}
+				String now = new SimpleDateFormat("yyyyMMdd-HHmmss", java.util.Locale.GERMANY).format(new Date());
+				mScriptListAdapter.add(now);
+				mScriptList.setSelection(mScriptListAdapter.getCount() - 1);
 			}
 		});
 		return v;

@@ -16,17 +16,10 @@
 	        style="?android:attr/buttonBarStyle" >
 	        <Button
 	            android:id="@+id/new_script"
-	            android:layout_width="fill_parent"
+	            android:layout_width="0dip"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
 	            android:text="@string/new_script"
-	            style="?android:attr/buttonBarButtonStyle" />
-	        <Button
-	            android:id="@+id/send"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="1"
-	            android:text="@string/send"
 	            style="?android:attr/buttonBarButtonStyle" />
         </LinearLayout>
         <ListView
