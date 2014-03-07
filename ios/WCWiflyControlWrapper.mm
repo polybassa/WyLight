@@ -29,6 +29,8 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 }
 
 @property (nonatomic, strong) WCEndpoint *endpoint;
+@property (atomic, readwrite) bool appOutdated;
+
 
 -(void) callFatalErrorDelegate:(NSNumber *)errorCode;
 -(void) callWiflyControlHasDisconnectedDelegate;
@@ -49,6 +51,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 {
 	self = [super init];
 	if(self) {
+		self.appOutdated = false;
 		self.endpoint = endpoint;
 		if(connect) {
 			if([self connectWithStartup:doStartup] != 0) {
@@ -91,6 +94,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 			if(starter.getCurrentState() != WyLight::StartupManager::STARTUP_SUCCESSFUL) {
 				return -1;
 			}
+			self.appOutdated = starter.isAppOutdated();
 
 		} catch(std::exception &e) {
 						NSLog(@"%s", e.what());

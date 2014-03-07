@@ -63,6 +63,10 @@
 				} else {
 					[self performSegueWithIdentifier:@"unwindAtConnectionFatalErrorOccured" sender:self];
 				}
+			} else {
+				if ([self.controlHandle isAppOutdated]) {
+					[[[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"AppOutdatedKey", @"ViewControllerLocalization", @"") message:NSLocalizedStringFromTable(@"AppOutdatedMessageKey", @"ViewControllerLocalization", @"") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
+				}
 			}
 		});
 		if (returnValue != 0) {

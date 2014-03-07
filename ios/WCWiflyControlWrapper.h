@@ -14,6 +14,7 @@
 @interface WCWiflyControlWrapper : NSObject {}
 
 @property (nonatomic, weak) id <WCWiflyControlDelegate> delegate;
+@property (atomic, readonly, getter = isAppOutdated) bool appOutdated;
 
 // Configuration
 - (id)initWithWCEndpoint:(WCEndpoint *)endpoint establishConnection:(BOOL)connect doStartup:(BOOL)doStartup;
