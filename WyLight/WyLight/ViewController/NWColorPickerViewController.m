@@ -40,6 +40,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	[self setColorPickerDelegate:self];
+	
 }
 
 - (void)deserializeColor {
@@ -47,6 +48,10 @@
 	if (colorData) {
 		self.selectedColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
 		[self setColorPickerSelectedColor:self.selectedColor];
+	} else {
+		UIColor *defaultColor = [UIColor colorWithRed:0.01 green:0.01 blue:0.01 alpha:1];
+		self.selectedColor = defaultColor;
+		[self setColorPickerSelectedColor:defaultColor];
 	}
 }
 
