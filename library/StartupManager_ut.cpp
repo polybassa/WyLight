@@ -32,7 +32,8 @@ namespace WyLight {
 		TC_RUN_APP_FAIL,
 		TC_UPDATE_FAIL,
 		TC_BL_VERSION_CHECK_FAIL_UPDATE_SUCCESS,
-		TC_BL_VERSION_CHECK_SUCCESS
+		TC_BL_VERSION_CHECK_SUCCESS,
+		TC_APP_OUTDATED
 	} TestCase;
 
 	TestCase g_Testcase;
@@ -67,7 +68,8 @@ namespace WyLight {
 			return 0;
 		case TC_FW_VERSION_CHECK_FAIL:
 			throw FatalError("");
-
+		case TC_APP_OUTDATED:
+			return 1;
 		default:
 			return 0;
 		}
@@ -105,6 +107,7 @@ namespace WyLight {
 			return 0;
 		case TC_START_BL_FAIL:
 		case TC_FW_VERSION_CHECK_FAIL:
+		case TC_APP_OUTDATED:
 			return FW_IDENT;
 		case TC_BL_VERSION_CHECK_FAIL_UPDATE_SUCCESS:
 		case TC_RUN_APP_FAIL:
@@ -183,6 +186,21 @@ namespace WyLight {
 
 		TestCaseEnd();
 
+	}
+	
+	size_t ut_StartupManager_AppOutdated(void)
+	{
+		g_Testcase = TC_APP_OUTDATED;
+		StartupManager testee;
+		Control ctrl(0,0);
+		TestCaseBegin();
+		testee.startup(ctrl, "");
+		
+		CHECK(StartupManager::STARTUP_SUCCESSFUL == testee.getCurrentState());
+		CHECK(testee.isAppOutdated() == true);
+		
+		TestCaseEnd();
+		
 	}
 
 	size_t ut_StartupManager_VersionFailUpdateSuccess(void)
@@ -294,5 +312,6 @@ int main (int argc, const char *argv[])
 	RunTest(true, ut_StartupManager_RunAppFail);
 	RunTest(true, ut_StartupManager_UpdateFail);
 	RunTest(true, ut_StartupManager_VersionCheckSuccessUpdateSuccess);
+	RunTest(true, ut_StartupManager_AppOutdated);
 	UnitTestMainEnd();
 }

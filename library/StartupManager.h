@@ -48,6 +48,7 @@ namespace WyLight {
 		static const std::string& getStateDescription(StartupManager::State state);
 		void startup(WyLight::Control& control, const std::string& hexFilePath) throw (InvalidParameter);
 		void startup(WyLight::ControlNoThrow& control, const std::string& hexFilePath) throw (InvalidParameter);
+		const bool isAppOutdated(void);
 
 	private:
 		static const std::string StateDescription[StartupManager::NUM_STATES+1];
