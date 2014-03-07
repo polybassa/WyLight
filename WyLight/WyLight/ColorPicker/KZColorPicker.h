@@ -16,7 +16,6 @@
 {
 	KZColorPickerHSWheel *colorWheel;
 	KZColorPickerBrightnessSlider *brightnessSlider;
-    KZColorPickerSwatchView *currentColorIndicator;
 	
     NSMutableArray *swatches;
     

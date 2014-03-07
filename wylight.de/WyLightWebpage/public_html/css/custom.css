@@ -14,7 +14,6 @@ and open the template in the editor.
     height: auto;  
     margin: 80px auto; 
     width: auto; 
-    /*box-shadow: 0 0 10px rgba(0,0,0,0.8);*/
     padding: 100px 0;
     position: relative; 
 }
@@ -28,16 +27,6 @@ and open the template in the editor.
     position: relative; 
 }
 */
-#section_feature_1 {
-    background: url(../media/Logo.png) 50% 0; 
-    height: auto;  
-    margin: 0 auto; 
-    width: 100%; 
-    /*box-shadow: 0 0 10px rgba(0,0,0,0.8);*/
-    background-repeat: no-repeat;
-    position: relative; 
-    padding: 100px 0;
-}
 
 #section_about { 
     background: url(../media/about.png) 50% 0; 
@@ -45,9 +34,9 @@ and open the template in the editor.
     margin: 0 auto; 
     width: 100%; 
     position: relative; 
-    /*box-shadow: 0 0 10px rgba(0,0,0,0.8);*/
     padding-top: 100px;
-    color: rgb(60,60,60);
+    color: rgb(150,150,150);
+    
 }
 
 #skrollr-body {

@@ -120,7 +120,7 @@ void TestCallback(size_t index, const Endpoint& newEndpoint)
 
 
 /******************************* test functions *******************************/
-int32_t ut_BroadcastReceiver_TestEmpty(void)
+size_t ut_BroadcastReceiver_TestEmpty(void)
 {
 	TestCaseBegin();
 	BroadcastReceiver dummyReceiver;
@@ -129,7 +129,7 @@ int32_t ut_BroadcastReceiver_TestEmpty(void)
 	TestCaseEnd();
 }
 
-int32_t ut_BroadcastReceiver_TestGetEndpoint(void)
+size_t ut_BroadcastReceiver_TestGetEndpoint(void)
 {
 	TestCaseBegin();
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
@@ -150,7 +150,7 @@ int32_t ut_BroadcastReceiver_TestGetEndpoint(void)
 	CHECK(byIndex.GetIp() == 0x7F000001);
 	CHECK(byIndex.GetPort() == 2000);
 	CHECK(0 == byIndex.GetDeviceId().compare("WiFly-EZX12345678901234567890123N"));
-	CHECK(byIndex.GetScore() == 0);
+	CHECK(byIndex.GetScore() == 1);
 
 	const Endpoint& outOfBound = dummyReceiver.GetEndpoint(1);
 	const Endpoint& empty = dummyReceiver.GetEndpointByFingerprint(0);
@@ -163,12 +163,12 @@ int32_t ut_BroadcastReceiver_TestGetEndpoint(void)
 	CHECK(0 == outOfBound.GetDeviceId().compare(""));
 	CHECK(outOfBound.GetScore() == 0);
 
-	CHECK(0 == g_TestOut.str().compare("0:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
+	CHECK(0 == g_TestOut.str().compare("0:1 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
 	CHECK(1 == dummyReceiver.NumRemotes());
 	TestCaseEnd();
 }
 
-int32_t ut_BroadcastReceiver_TestSimple(void)
+size_t ut_BroadcastReceiver_TestSimple(void)
 {
 	TestCaseBegin();
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
@@ -179,14 +179,14 @@ int32_t ut_BroadcastReceiver_TestSimple(void)
 	dummyReceiver.Stop();
 	myThread.join();
 
-	CHECK(0 == g_TestOut.str().compare("0:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
+	CHECK(0 == g_TestOut.str().compare("0:1 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
 	CHECK(1 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
 	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
 	TestCaseEnd();
 }
 
-int32_t ut_BroadcastReceiver_TestTwoSame(void)
+size_t ut_BroadcastReceiver_TestTwoSame(void)
 {
 	TestCaseBegin();
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
@@ -200,14 +200,14 @@ int32_t ut_BroadcastReceiver_TestTwoSame(void)
 	dummyReceiver.Stop();
 	myThread.join();
 
-	CHECK(0 == g_TestOut.str().compare("0:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
+	CHECK(0 == g_TestOut.str().compare("0:1 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n0:1 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n"));
 	CHECK(1 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
 	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
 	TestCaseEnd();
 }
 
-int32_t ut_BroadcastReceiver_TestNoTimeout(void)
+size_t ut_BroadcastReceiver_TestNoTimeout(void)
 {
 	TestCaseBegin();
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
@@ -223,7 +223,7 @@ int32_t ut_BroadcastReceiver_TestNoTimeout(void)
 	dummyReceiver.Stop();
 	myThread.join();
 
-	CHECK(0 == g_TestOut.str().compare("0:0 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n1:0 127.0.0.2:2000  :  WiFly_Light\n2:0 127.0.0.3:2000  :  WiFly_Light\n"));
+	CHECK(0 == g_TestOut.str().compare("0:1 127.0.0.1:2000  :  WiFly-EZX12345678901234567890123N\n1:1 127.0.0.2:2000  :  WiFly_Light\n2:1 127.0.0.3:2000  :  WiFly_Light\n"));
 	CHECK(3 == dummyReceiver.NumRemotes());
 	CHECK(0x7F000001 == dummyReceiver.GetEndpoint(0).GetIp());
 	CHECK(2000 == dummyReceiver.GetEndpoint(0).GetPort());
@@ -234,7 +234,7 @@ int32_t ut_BroadcastReceiver_TestNoTimeout(void)
 	TestCaseEnd();
 }
 
-int32_t ut_BroadcastReceiver_TestRecentEndpoints(void)
+size_t ut_BroadcastReceiver_TestRecentEndpoints(void)
 {
 	static const std::string TEST_FILENAME = "TestRecentEndpoints.txt";
 	TestCaseBegin();
@@ -271,7 +271,7 @@ int32_t ut_BroadcastReceiver_TestRecentEndpoints(void)
 	TestCaseEnd();
 }
 
-int32_t ut_BroadcastReceiver_TestRecentEndpoints2(void)
+size_t ut_BroadcastReceiver_TestRecentEndpoints2(void)
 {
 	g_LastIndex = 0xff;
 	static const std::string TEST_FILENAME = "TestRecentEndpoints2.txt";

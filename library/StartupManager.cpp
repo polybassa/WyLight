@@ -124,4 +124,10 @@ namespace WyLight {
 			setCurrentState(STARTUP_FAILURE);
 		}
 	}
+	
+	const bool StartupManager::isAppOutdated() {
+		if (mState == STARTUP_SUCCESSFUL) {
+			return mHexFileVersion < mTargetVersion ? true : false;
+		} else return false;
+	}
 }

@@ -19,7 +19,6 @@
 @interface KZColorPicker()
 @property (nonatomic, retain) KZColorPickerHSWheel *colorWheel;
 @property (nonatomic, retain) KZColorPickerBrightnessSlider *brightnessSlider;
-@property (nonatomic, retain) KZColorPickerSwatchView *currentColorView;
 @property (nonatomic, retain) NSMutableArray *swatches;
 - (void) fixLocations;
 @end
@@ -30,7 +29,6 @@
 @synthesize brightnessSlider;
 @synthesize selectedColor;
 @synthesize swatches;
-@synthesize currentColorView = _currentColorView;
 
 - (void) setup
 {
@@ -54,12 +52,6 @@
 	[self addSubview:slider];
 	self.brightnessSlider = slider;
 	[slider release];
-    
-    // current color indicator hier.
-    KZColorPickerSwatchView *colorView = [[KZColorPickerSwatchView alloc] initWithFrame:CGRectMake(10, 74, 44, 44)];
-    self.currentColorView = colorView;
-    [self addSubview:colorView];
-    [colorView release];
     
 	// swatches.	    
     NSMutableArray *colors = [NSMutableArray array];    
@@ -100,9 +92,7 @@
 	[selectedColor release];
 	[colorWheel release];
 	[brightnessSlider release];
-    [currentColorIndicator release];
     [swatches release];
-    [_currentColorView release];
     [super dealloc];
 }
 
@@ -171,7 +161,6 @@ RGBType rgbWithUIColor(UIColor *color)
                           brightness:hsv.v
                                alpha:1.0];
 	
-	self.currentColorView.color = c;
     [self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
@@ -210,8 +199,11 @@ RGBType rgbWithUIColor(UIColor *color)
         CGFloat totalWidth = self.bounds.size.width - 40.0;
         CGFloat swatchCellWidth = totalWidth / 6.0;
         
-        int sx = 20;
+		int sx = 20;
         int sy = 384;
+		if (self.bounds.size.height > 500) {
+			sy = 464;
+		}
         for (KZColorPickerSwatchView *swatch in self.swatches)
         {
             swatch.frame = CGRectMake(sx + swatchCellWidth * 0.5 - 18.0,
@@ -219,9 +211,12 @@ RGBType rgbWithUIColor(UIColor *color)
             sx += swatchCellWidth;
         }
         
-        self.brightnessSlider.frame = CGRectMake(24, 341, 272, 38);
+		if (self.bounds.size.height > 500) {
+			self.brightnessSlider.frame = CGRectMake(24, 381, 272, 38);
+		} else {
+        	self.brightnessSlider.frame = CGRectMake(24, 341, 272, 38);
+		}
 		self.colorWheel.frame = CGRectMake(40, 79, self.colorWheel.frame.size.width, self.colorWheel.frame.size.height);
-		self.currentColorView.frame = CGRectMake(10, 74, 44, 44);
 
     }
     else
@@ -231,6 +226,11 @@ RGBType rgbWithUIColor(UIColor *color)
         
         int sx = 302;
         int sy = 204;
+		
+		if (self.bounds.size.width > 500) {
+			sx = 340;
+		}
+		
         int index = 0;
         for (KZColorPickerSwatchView *swatch in self.swatches)
         {
@@ -239,14 +239,20 @@ RGBType rgbWithUIColor(UIColor *color)
             sx += swatchCellWidth;
             if(++index % 3 == 0)
             {
-                sx = 300;
+                sx = 302;
+				if (self.bounds.size.width > 500) {
+					sx = 340;
+				}
                 sy += swatchCellWidth;
             }
         }
-        
-        self.brightnessSlider.frame = CGRectMake(300, self.bounds.size.height * 0.5 - 58, 165, 38);
+        if (self.bounds.size.width > 500) {
+			self.brightnessSlider.frame = CGRectMake(340, self.bounds.size.height * 0.5 - 58, 165, 38);
+		}
+		else {
+        	self.brightnessSlider.frame = CGRectMake(302, self.bounds.size.height * 0.5 - 58, 165, 38);
+		}
 		self.colorWheel.frame = CGRectMake(40, 70, self.colorWheel.frame.size.width, self.colorWheel.frame.size.height);
-		self.currentColorView.frame = CGRectMake(10, 65, 44, 44);
         
     }
 }

@@ -39,3 +39,5 @@
 "OperationModeInfoKey" = "Please choose, in which mode you want to operate your WyLight.";
 "ScriptVCShareKey" = "Share";
 "ImportScriptKey" = "Scriptimport successful";
+"AppOutdatedKey" = "New App-Version available";
+"AppOutdatedMessageKey" = "Please update your WyLight App over the App-Store";
