@@ -106,7 +106,7 @@ namespace WyLight {
 			mDeviceId = deviceId;
 		};
 
-		void SetScore(const uint8_t& score) {
+		void SetScore(const uint8_t score) {
 			mScore = score;
 		};
 
