@@ -15,19 +15,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Spinner;
 
 public class SetScriptFragment extends ControlFragment {
 	public static final String ITEM_POSITION = "ITEM_POSITION";
 
-	Spinner mScriptListSpinner;
-	private ScriptManagerAdapter mScriptList;
+	private ScriptAdapter mScript= null;
+	private ListView mScriptList;
+	private ScriptManagerAdapter mScriptListAdapter;
 
 	private void addNewScript()
 	{
 		String now = new SimpleDateFormat("yyyyMMdd-HHmmss", java.util.Locale.GERMANY).format(new Date());
-		mScriptList.add(now);
-		mScriptListSpinner.setSelection(mScriptList.getCount() - 1);
+		mScriptListAdapter.add(now);
+		mScriptList.setSelection(mScriptListAdapter.getCount() - 1);
 	}
 
 	@Override
@@ -36,56 +36,30 @@ public class SetScriptFragment extends ControlFragment {
 	}
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(null != data) {
-			final int position = data.getIntExtra(ITEM_POSITION, 0);
-			scriptAdapter().getItem(position).setColor(resultCode);
-			scriptAdapter().notifyDataSetChanged();
-			mScriptList.save(scriptAdapter());
-		}
-	}
-
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_set_script, group, false);
 
-		mScriptListSpinner = (Spinner)v.findViewById(R.id.savedScripts);
-		mScriptList = new ScriptManagerAdapter(getActivity().getApplicationContext());
-		mScriptListSpinner.setAdapter(mScriptList);
-		mScriptListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		mScriptList = (ListView)v.findViewById(R.id.savedScripts);
+		mScriptListAdapter = new ScriptManagerAdapter(getActivity().getApplicationContext());
+		mScriptList.setAdapter(mScriptListAdapter);
+		mScriptList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View v, int position,
+					long arg3) {
+				mScript = mScriptListAdapter.getItem(position);
+				Intent i = new Intent(v.getContext(), EditScriptActivity.class);
+				i.putExtra(EditScriptActivity.NATIVE_SCRIPT, mScriptListAdapter.getItem(position).getNative());
+				startActivityForResult(i, 0);
+			}
+		});
+		mScriptList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
-				//TODO mCommandList.setAdapter(mScriptList.getItem(position));
+				mScript = mScriptListAdapter.getItem(position);
 			}
 
 			public void onNothingSelected(AdapterView<?> parent) {
-				if(mScriptList.getCount() < 1) {
+				if(mScriptListAdapter.getCount() < 1) {
 					addNewScript();
-				}
-			}
-		});
-
-		Button add = (Button)v.findViewById(R.id.addCommand);
-		add.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				scriptAdapter().addFade(Color.WHITE, 0xffffffff, (short)500);
-				mScriptList.save(scriptAdapter());
-			}
-		});
-
-		Button clear = (Button)v.findViewById(R.id.clear);
-		clear.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				ScriptAdapter oldScript = scriptAdapter();
-				scriptAdapter().mDesignatedForDeletion = true;
-				final int oldPosition = mScriptListSpinner.getSelectedItemPosition();
-				mScriptList.remove(oldScript);
-				if(mScriptList.getCount() < 1) {
-					mScriptListSpinner.setSelected(false);
-				} else {
-					final int newPosition = Math.min(mScriptList.getCount() - 1, oldPosition);
-					mScriptListSpinner.setSelection(newPosition);
-					//TODO mCommandList.setAdapter(mScriptList.getItem(newPosition));
 				}
 			}
 		});
@@ -99,18 +73,11 @@ public class SetScriptFragment extends ControlFragment {
 		Button send = (Button)v.findViewById(R.id.send);
 		send.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				mProvider.sendScript(scriptAdapter());
+				if(mScript != null) {
+					mProvider.sendScript(mScript);
+				}
 			}
 		});
 		return v;
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-	}
-
-	private ScriptAdapter scriptAdapter() {
-		return null;//TODO (ScriptAdapter)mCommandList.getAdapter();
 	}
 }
