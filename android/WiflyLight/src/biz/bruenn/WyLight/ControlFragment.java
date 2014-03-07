@@ -15,9 +15,13 @@ public abstract class ControlFragment extends Fragment {
 	
 	public interface WiflyControlProvider {
 		public void addOnColorChangedListener(OnColorChangeListener listener);
+		@Deprecated
 		public WiflyControl getControl();
 		public void removeOnColorChangedListener(OnColorChangeListener listener);
-		public void setColor(int color);
+		public void sendScript(ScriptAdapter script);
+		public void setColor(int argb);
+		public void setColorHueSaturation(float hue, float saturation);
+		public void setColorValue(float value);
 	}
 	
 	/**
@@ -36,58 +40,24 @@ public abstract class ControlFragment extends Fragment {
 		}
 	}
 	
+	@Deprecated
 	protected void onConnectionLost() {
 		final Activity activity = getActivity();
 		Toast.makeText(activity, "Connection lost", Toast.LENGTH_SHORT).show();
 		activity.finish();		
 	}
-	
+
+	@Deprecated
 	protected void onFatalError(FatalError e) {
 		Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();		
 	}
-	
+
+	@Deprecated
 	protected void onScriptBufferFull() {
 		Toast.makeText(getActivity(), R.string.msg_scriptbufferfull, Toast.LENGTH_LONG).show();		
 	}
 	
-	protected void onSendScript(ScriptAdapter script) {
-		try {
-			mProvider.getControl().fwClearScript();
-			mProvider.getControl().fwSendScript(script);
-		} catch (ConnectionTimeout e) {
-			onConnectionLost();
-		} catch (ScriptBufferFull e) {
-			onScriptBufferFull();
-		} catch (FatalError e) {
-			onFatalError(e);
-		}
-	}
-	
-	protected void setColor(int color) {
-		try {
-			mProvider.setColor(color);
-			mProvider.getControl().fwSetColor(color, WiflyControl.ALL_LEDS);
-		} catch (ConnectionTimeout e) {
-			onConnectionLost();
-		} catch (ScriptBufferFull e) {
-			onScriptBufferFull();
-		} catch (FatalError e) {
-			onFatalError(e);
-		}		
-	}
-	
-	protected void onSetFade(int color, short time) {	
-		try {
-			mProvider.getControl().fwSetFade(color, WiflyControl.ALL_LEDS, time);
-		} catch (ConnectionTimeout e) {
-			onConnectionLost();
-		} catch (ScriptBufferFull e) {
-			onScriptBufferFull();		
-		} catch (FatalError e) {
-			onFatalError(e);
-		}		
-	}
-	
+	@Deprecated
 	protected void onSetGradient(int color_1, int color_2, int length, int offset, short time) {	
 		try {
 			mProvider.getControl().fwSetGradient(color_1, color_2, length, offset, time);

@@ -11,7 +11,6 @@ public class EditCommandActivity extends Activity {
 	
 	private Button mSave = null;
 	private int mColor;
-	
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,7 +26,7 @@ public class EditCommandActivity extends Activity {
 		});
 		
 		RgbVolumeView rgb = (RgbVolumeView)this.findViewById(R.id.rgb_volume);
-		rgb.setOnColorChangedListener(new OnColorChangeListener() {
+		rgb.setOnColorChangedListener(new RgbVolumeView.OnColorChangeListener() {
 			public void onColorChanged(int color) {
 				mSave.setBackgroundColor(color);
 				mSave.setTextColor(0xff000000 | ~color);
@@ -35,5 +34,4 @@ public class EditCommandActivity extends Activity {
 			}
 		});
     }
-
 }

@@ -26,11 +26,11 @@ public class SetRGBFragment extends ControlFragment implements ViewTreeObserver.
 		view.getViewTreeObserver().addOnGlobalLayoutListener(this);
 
 		mRGB = (RgbVolumeView)view.findViewById(R.id.rgb_volume);
-		mRGB.setOnColorChangedListener(new OnColorChangeListener() {
-			public void onColorChanged(int color) {
+		mRGB.setOnColorChangedListener(new RgbVolumeView.OnColorChangeListener() {
+			public void onColorChanged(int argb) {
 
 				if(!mChangeIsInProgress.getAndSet(true)) {
-					setColor(color);
+					mProvider.setColor(argb);
 					mChangeIsInProgress.set(false);
 				}
 			}

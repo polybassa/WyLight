@@ -3,6 +3,7 @@ package biz.bruenn.WyLight;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import biz.bruenn.WiflyLight.R;
+import biz.bruenn.WyLight.view.ColorView;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,18 +16,16 @@ import android.widget.SeekBar;
 public class SetBrightnessFragment extends ControlFragment implements OnColorChangeListener, ViewTreeObserver.OnGlobalLayoutListener {
 
 	private SeekBar mVolume = null;
-	private final float[] mHSV = new float[3];
+	private ColorView mColorStatus;
 
 	@Override
 	public int getIcon() {
 		return R.drawable.ic_action_brightness_high;
 	}
 
-	public void onColorChanged(int color) {
-		Color.colorToHSV(color, mHSV);
-		if(null != mVolume) {
-			mVolume.setProgress((int) (mHSV[2]*100));
-		}
+	public void onColorChanged(float[] color, int argb) {
+		mColorStatus.setColor(Color.HSVToColor(color));
+		mVolume.setProgress((int) (color[2]*100));
 	}
 
 	@Override
@@ -34,6 +33,7 @@ public class SetBrightnessFragment extends ControlFragment implements OnColorCha
 
 		View view = inflater.inflate(R.layout.fragment_set_brightness, group, false);	
 
+		mColorStatus = (ColorView)view.findViewById(R.id.colorStatus);
 		mVolume = (SeekBar)view.findViewById(R.id.brightnessPicker);
 		mProvider.addOnColorChangedListener(this);
 		mVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -50,8 +50,7 @@ public class SetBrightnessFragment extends ControlFragment implements OnColorCha
 
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				if(fromUser && !mChangeIsInProgress.getAndSet(true)) {
-					mHSV[2] = 0.01f*progress;
-					setColor(Color.HSVToColor(mHSV));
+					mProvider.setColorValue(0.01f*progress);
 					mChangeIsInProgress.set(false);
 				}
 			}

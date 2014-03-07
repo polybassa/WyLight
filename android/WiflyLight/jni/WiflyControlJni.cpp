@@ -32,14 +32,13 @@ namespace WyLight {
 
 	jboolean TrySend(JNIEnv *env, Control *pCtrl, FwCommand&& cmd)
 	{
-		assert(pCtrl);
+		if(!pCtrl) return false;
 		try {
 			*pCtrl << std::move(cmd);
 			return true;
 		} catch(FatalError& e) {
 					ThrowJniException(env, e);
 		}
-		return false;
 	}
 
 	extern "C" {

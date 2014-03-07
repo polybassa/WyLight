@@ -17,8 +17,8 @@
         android:src="@drawable/color_picker_wheel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dip" />
+        android:layout_below="@id/colorStatus"
+        android:layout_alignLeft="@id/colorStatus" />
     <ImageView
         android:id="@+id/crosshair"
         android:contentDescription="@null"
@@ -29,10 +29,8 @@
         android:id="@+id/valuePicker"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:layout_below="@id/colorPicker"
+        android:layout_alignTop="@id/colorStatus"
+        android:layout_toRightOf="@id/colorPicker"
         android:background="#ffff0000" />
     <ImageView
         android:id="@+id/valueCrosshair"
@@ -43,11 +41,12 @@
         android:layout_alignTop="@id/valuePicker"
         android:layout_centerHorizontal="true" />
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/valuePicker"
-        android:layout_marginTop="10dip" >
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="10dip" >
 	    <biz.bruenn.WyLight.view.ColorView
 	        android:id="@+id/red"
 	        android:layout_width="40dip"

@@ -187,17 +187,16 @@
 		}
 	}
 	else {
-        
 		NSMutableArray *outPutColors;
 		if (self.prev) {
 			outPutColors = [[NSMutableArray alloc]initWithArray:self.prev.colors copyItems:YES];
 		} else if (self.script && self.script.repeatsWhenFinished.boolValue && self.script.effects.firstObject == self && self.script.effects.lastObject != self) {
-			
+
 			ComplexEffect* lastEffect = self.script.effects.lastObject;
 			[lastEffect willAccessValueForKey:@"colors"];
 			NSArray *colors = [lastEffect primitiveValueForKey:@"colors"];
 			[lastEffect didAccessValueForKey:@"colors"];
-			
+
 			if (colors == nil) {
 				outPutColors = [[NSMutableArray alloc]init];
 			} else {
@@ -206,7 +205,7 @@
 		} else {
 			outPutColors = [[NSMutableArray alloc]init];
 		}
-		
+
 		uint32_t compareMask = 0x00000001;
 		for (unsigned int i = 0; i < NUM_OF_LED; i++) {  //i = 0 - 31
 			NSUInteger j = self.effects.count;
@@ -235,15 +234,15 @@
     [self willAccessValueForKey:@"colors"];
     NSArray *colors = [self primitiveValueForKey:@"colors"];
     [self didAccessValueForKey:@"colors"];
-    
+
     if (colors == nil) {
 		colors = [self computeColors];
-        
-    
+
+
         [self willChangeValueForKey:@"colors"];
         [self setPrimitiveValue:colors forKey:@"colors"];
         [self didChangeValueForKey:@"colors"];
-    
+
         if ([self next]) {
             self.next.snapshot = nil;
         }
