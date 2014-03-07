@@ -6,6 +6,7 @@ var searchData=
   ['intelhex',['intelhex',['../classintelhex.html#ae1efd0ed1f56546f8f5f5af87c6cbdd5',1,'intelhex::intelhex()'],['../classintelhex.html#a41b4c3b7851461b9240fdef90bc62768',1,'intelhex::intelhex(const intelhex &amp;ihSource)']]],
   ['invalidparameter',['InvalidParameter',['../class_wy_light_1_1_invalid_parameter.html#a52625733bfa36035b8f0d0bb89b6d101',1,'WyLight::InvalidParameter']]],
   ['ipv4addr',['Ipv4Addr',['../struct_wy_light_1_1_ipv4_addr.html#a6ed8e919ab4ca060a98ef38c0b662262',1,'WyLight::Ipv4Addr']]],
+  ['isappoutdated',['isAppOutdated',['../class_wy_light_1_1_startup_manager.html#ad08fcd62c88d9cfe0186d62a82a4c9e9',1,'WyLight::StartupManager']]],
   ['isctrlchar',['IsCtrlChar',['../namespace_wy_light.html#a73355ac8e928398a97bc96a90b29f24a',1,'WyLight']]],
   ['isdevice',['IsDevice',['../struct_wy_light_1_1_broadcast_message.html#a62f82bc8379fe6f76c72e869319b9fea',1,'WyLight::BroadcastMessage']]],
   ['isresponserequired',['IsResponseRequired',['../class_wy_light_1_1_fw_command.html#a53887169da07e23ecdeec8739acc26ce',1,'WyLight::FwCommand']]],
