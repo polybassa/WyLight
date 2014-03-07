@@ -170,7 +170,7 @@
                                     <accessibilityTraits key="traits" none="YES" staticText="YES"/>
                                 </accessibility>
                                 <attributedString key="attributedText">
-                                    <fragment content="Set up your WyLight in 7 Steps:  ">
+                                    <fragment content="WyLight einrichten:">
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="controlDarkShadowColor" catalog="System" colorSpace="catalog"/>
@@ -188,7 +188,7 @@
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>
                                     </fragment>
-                                    <fragment content="1.">
+                                    <fragment content="1. ">
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
@@ -197,7 +197,7 @@
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>
                                     </fragment>
-                                    <fragment content=" Unplug the power supply from your WyLight ">
+                                    <fragment content="WyLight von der Spannungsversorgung trennen  ">
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
@@ -215,7 +215,7 @@
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>
                                     </fragment>
-                                    <fragment content=" Press and hold the On/Off button on your WyLight ">
+                                    <fragment content=" Einrichtungsknopf drücken und gedrückt halten ">
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
@@ -233,7 +233,7 @@
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>
                                     </fragment>
-                                    <fragment content=" Plug in your Power supply while you are holding down the button ">
+                                    <fragment content=" Spannungsversorgung einstecken und danach Einrichtungsknopf loslassen ">
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
@@ -251,7 +251,7 @@
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>
                                     </fragment>
-                                    <fragment content=" Open your device settings on your iPhone ">
+                                    <fragment content=" Systemeinstellungen am iPhone öffnen  ">
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
@@ -269,7 +269,7 @@
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>
                                     </fragment>
-                                    <fragment content=" Connect to the Wifi-Network of your WyLight ">
+                                    <fragment content=" Mit den WLAN-Netzwerk des WyLight verbinden ">
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
@@ -287,7 +287,7 @@
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>
                                     </fragment>
-                                    <fragment content=" Switch back to this App ">
+                                    <fragment content=" Zurück zur WyLight App wechseln ">
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
@@ -305,7 +305,7 @@
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>
                                     </fragment>
-                                    <fragment content=" Press Done  ">
+                                    <fragment content=" Fertig drücken  ">
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
@@ -323,43 +323,8 @@
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                         </attributes>
                                     </fragment>
-                                    <fragment content="You can choose Client or Soft-AP as operation mode of your WyLight.  In ">
-                                        <attributes>
-                                            <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="NSColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" size="13" name="Aller-Regular"/>
-                                            <font key="NSOriginalFont" size="11" name=".LucidaGrandeUI"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content="Soft-AP">
-                                        <attributes>
-                                            <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="NSColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" size="18" name="Aller-Regular"/>
-                                            <font key="NSOriginalFont" size="18" name="Aller-Regular"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content=" mode your WyLight operates as an independent access-point. In ">
-                                        <attributes>
-                                            <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="NSColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" size="13" name="Aller-Regular"/>
-                                            <font key="NSOriginalFont" size="11" name=".LucidaGrandeUI"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content="Client">
-                                        <attributes>
-                                            <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="NSColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" size="18" name="Aller-Regular"/>
-                                            <font key="NSOriginalFont" size="18" name="Aller-Regular"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content=" mode your WyLight is associated to your Home Wifi Network. We recommend this mode.">
+                                    <fragment>
+                                        <string key="content">Im nächsten Fenster kann zwischen Soft-AP und Netzwerk gewählt werden. Im Soft-AP Modus wird vom WyLight ein eigene Access-Point erzeugt. Im Client Modus verbindet sich das WyLight mit einem vorhandenen WLAN Netzwerk.</string>
                                         <attributes>
                                             <color key="NSBackgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="NSColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
@@ -369,7 +334,7 @@
                                         </attributes>
                                     </fragment>
                                 </attributedString>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" keyboardAppearance="light"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
