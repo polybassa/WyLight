@@ -27,51 +27,79 @@
   ================================================== -->
   <body id="top">
     <div id="skrollr-body">
-      <!-- Carousel
+      <section class="section_feature parallax" style="background-color: #DEDFE1; padding-top: 0; margin-top: 0;">
+        <div class="row featurette">
+          <div class="col-md-12">
+            <img class="img-responsive" src="media/Banner.png" alt="Banner" style="height: auto;">
+          </div>
+        </div>
+      </section>
+      <!-- Marketing messaging and featurettes
       ================================================== -->
-      <div id="myCarousel" class="carousel slide parallax" data-ride="carousel">
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-          <li data-target="#myCarousel" data-slide-to="1"></li>
-          <li data-target="#myCarousel" data-slide-to="2"></li>
-        </ol>
-        <div class="carousel-inner">
-          <div class="item active">
-            <img data-src="holder.js/900x500/auto/#227:#7a7a7a/text:First slide" alt="First slide">
-            <div class="container">
-              <div class="carousel-caption">
-                <h1>Einzigartiges Design</h1>
-                <p><a class="btn btn-lg btn-primary" href="#" role="button">Bildergalerie</a></p>
-              </div>
+      <!-- START THE FEATURETTES -->    
+      <section class="section_feature parallax">
+        <div class="container marketing">
+          <div class="row featurette">
+            <div class="col-md-12">
+              <h2 class="featurette-heading">Maßanfertigung. <span class="text-muted">Made in Germany.</span></h2>
+              <p class="lead">Fairness und Qualit&auml;t stehen bei uns an erster Stelle. Wir achten in unserer Wertsch&ouml;pfungskette auf faire L&ouml;hne. Entwicklung, Fertigung und Vertrieb finden komplett in Deutschland statt.</p>
             </div>
           </div>
-          <div class="item">
-            <img data-src="holder.js/900x500/auto/#722:#6a6a6a/text:Second slide" alt="Second slide">
-            <div class="container">
-              <div class="carousel-caption">
-                <h1>Einzigartige Bedienung</h1>
-                <p><a class="btn btn-lg btn-primary" href="#" role="button">Demo</a></p>
-              </div>
-            </div>
+          <div class="row featurette">
+            <div class="col-md-3">
+              <img class="featurette-image img-responsive center-block" id="section_lights_image1" alt="Proto2" src="media/prototypes/n2.png" />
+            </div>  
+            <div class="col-md-offset-1 col-md-4">
+              <img class="featurette-image img-responsive center-block" id="section_lights_image2" alt="Proto1" src="media/prototypes/n1.png" />
+            </div>  
+            <div class="col-md-offset-1 col-md-3">
+              <img class="featurette-image img-responsive center-block" id="section_lights_image3" alt="Proto3" src="media/prototypes/n3.png" />
+            </div>  
           </div>
-          <div class="item">
-            <img data-src="holder.js/900x500/auto/#272:#5a5a5a/text:Third slide" alt="Third slide">
-            <div class="container">
-              <div class="carousel-caption">
-                <h1>Einzigartige Möglichkeiten</h1>
-                <p><a class="btn btn-lg btn-primary" href="mailto:info@wylight.de" role="button">Gleich bestellen!</a></p>
-              </div>
+          <div class="row featurette">
+            <div class="col-md-offset-10 col-md-2">
+              <input type="checkbox" class="lightswitch" id="lightswitch_1" data-animate="false" data-size="large">
             </div>
           </div>
         </div>
-        <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
-        <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
-      </div><!-- /.carousel -->
-      <!-- Marketing messaging and featurettes
-      ================================================== -->
+      </section>
 
-      <!-- START THE FEATURETTES -->
+      <section class="section_feature parallax" id="section_light">
+        <div class="container marketing">
+          <div class="row featurette">
+            <div class="col-md-7">
+              <h2 class="featurette-heading">Individuelle Gestaltung. <span class="text-muted">Sonderw&uuml;nsche willkommen!</span></h2>
+              <p class="lead">Wir produzieren keine Massenware. Jedes Produkt ist ein Einzelst&uuml;ck. Form, Farbe, Material und Verzierung werden genau an die jeweiligen W&uuml;nsche angepasst.</p>
+            </div>
+            <div class="col-md-5">
+              <img class="featurette-image img-responsive" id="section_light_image" src="media/prototypes/n3_side.png" alt="Prototype3">
+            </div>
+          </div>
+          <div class="row featurette">
+            <div class="col-md-offset-10 col-md-2">
+              <input type="checkbox" class="lightswitch" id="lightswitch_2" data-animate="false" data-size="large">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section_feature parallax">
+        <div class="container marketing">
+          <div class="row featurette">
+            <div class="col-md-5">
+              <a id="HolzPopover" data-content="Wenge &middot; Vogelaugenahorn &middot; Ahorn &middot; L&auml;rche &middot; Kiefer &middot; 
+                 Rotbuche &middot; Nussbaum &middot; Zebrano &middot; Teak &middot; Kirsche &middot; Mahagoni &middot; Eiche &middot; Palisander &middot; Esche" rel="popover" data-placement="bottom" data-original-title="Holzsorten" data-trigger="hover">
+                <img class="featurette-image img-responsive" src="media/Holz.png" alt="Holz&uuml;bersicht">
+              </a>
+            </div>
+            <div class="col-md-7">
+              <h2 class="featurette-heading">Nachwachsende Rohstoffe. <span class="text-muted">Edel und umweltfreundlich.</span></h2>
+              <p class="lead">Von Ahorn bis Zebrano stehen 14 H&ouml;lzer aus nachhaltigen Quellen zur Auswahl. Sonderw&uuml;nsche versuchen wir nat&uuml;rlich mit bestem Gewissen zu erf&uuml;llen.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="section_feature parallax">
         <div class="container marketing">
           <div class="row featurette">
@@ -96,7 +124,7 @@
               <p class="lead">Ein Griff zum Smartphone und &uuml;ber das heimische WLAN sind alle Lampen sofort in Reichweite.</p>
             </div>
             <div class="col-md-5">
-              <a id="iOS_ColorPickerPopover" data-content="Für jede Stimmung, immer die passende Beleuchtung" rel="popover" data-placement="bottom" data-original-title="Unendlich viele Farben" data-trigger="hover">
+              <a id="iOS_ColorPickerPopover" data-content="Für jede Stimmung, immer die passende Beleuchtung" rel="popover" data-placement="bottom" data-original-title="Beliebig viele Farben" data-trigger="hover">
                 <img class="featurette-image img-responsive center-block" src="media/iOS_ColorPicker.png" alt="iOS_ColorPicker">
               </a>
             </div>           
@@ -109,7 +137,7 @@
           <div class="row featurette">
             <div class="col-md-12">
               <h2 class="featurette-heading">Sei kreativ. <span class="text-muted">Kombiniere Licht, Farbe und Zeit.</span></h2>
-              <p class="lead">Mit der WyLight-App lassen sich einzigartige Farbabl&auml;fe erstellen. Egal ob du gerade Entspannen, Arbeiten oder in Party machen willst. Du hast immer das passende Licht.</p>
+              <p class="lead">Mit der WyLight-App lassen sich einzigartige Farbabl&auml;ufe erstellen. Egal ob du gerade Entspannen, Arbeiten oder in Party machen willst. Du hast immer das passende Licht.</p>
             </div>
           </div>
           <div class="row featurette">
@@ -158,70 +186,7 @@
             </div>  
           </div>
         </div>
-      </section>
-
-      <section class="section_feature parallax" style="background-color: #000;">
-        <div class="container marketing">
-          <div class="row featurette">
-            <div class="col-md-12">
-              <h2 class="featurette-heading">Maßanfertigung. <span class="text-muted">Made in Germany.</span></h2>
-              <p class="lead">Fairness und Qualit&auml;t stehen bei uns an erster Stelle. Wir achten in unserer kompletten Wertsch&ouml;pfungskette auf faire L&ouml;hne und konfliktfreie Rohstoffe. Entwicklung, Fertigung und Vertrieb finden komplett in Deutschland statt.</p>
-            </div>
-          </div>
-          <div class="row featurette">
-            <div class="col-md-3">
-              <img class="featurette-image img-responsive center-block" id="section_lights_image1" alt="Proto2" src="media/prototypes/n2_green.png" />
-            </div>  
-            <div class="col-md-offset-1 col-md-4">
-              <img class="featurette-image img-responsive center-block" id="section_lights_image2" alt="Proto1" src="media/prototypes/n1_red.png" />
-            </div>  
-            <div class="col-md-offset-1 col-md-3">
-              <img class="featurette-image img-responsive center-block" id="section_lights_image3" alt="Proto3" src="media/prototypes/n3_blue.png" />
-            </div>  
-          </div>
-          <div class="row featurette">
-            <div class="col-md-offset-10 col-md-2">
-              <input type="checkbox" class="lightswitch" id="lightswitch_1" data-animate="false" data-size="large" checked>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section_feature parallax" id="section_light">
-        <div class="container marketing">
-          <div class="row featurette">
-            <div class="col-md-7">
-              <h2 class="featurette-heading">Individuelle Gestaltung. <span class="text-muted">Sonderw&uuml;nsche willkommen!</span></h2>
-              <p class="lead">Wir produzieren keine Massenware. Jedes Produkt ist ein Einzelst&uuml;ck. Form, Farbe, Material und Verzierung werden genau an die jeweiligen W&uuml;nsche angepasst.</p>
-            </div>
-            <div class="col-md-5">
-              <img class="featurette-image img-responsive" id="section_light_image" src="media/prototypes/n3_side.png" alt="Prototype3">
-            </div>
-          </div>
-          <div class="row featurette">
-            <div class="col-md-offset-10 col-md-2">
-              <input type="checkbox" class="lightswitch" id="lightswitch_2" data-animate="false" data-size="large">
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section_feature parallax">
-        <div class="container marketing">
-          <div class="row featurette">
-            <div class="col-md-5">
-              <a id="HolzPopover" data-content="Wenge &middot; Vogelaugenahorn &middot; Ahorn &middot; L&auml;rche &middot; Kiefer &middot; 
-                 Rotbuche &middot; Nussbaum &middot; Zebrano &middot; Teak &middot; Kirsche &middot; Mahagoni &middot; Eiche &middot; Palisander &middot; Esche" rel="popover" data-placement="bottom" data-original-title="Holzsorten" data-trigger="hover">
-                <img class="featurette-image img-responsive" src="media/Holz.png" alt="Holz&uuml;bersicht">
-              </a>
-            </div>
-            <div class="col-md-7">
-              <h2 class="featurette-heading">Nachwachsende Rohstoffe. <span class="text-muted">Edel und umweltfreundlich.</span></h2>
-              <p class="lead">Von Ahorn bis Zebrano stehen 14 H&ouml;lzer aus nachhaltigen Quellen zur Auswahl. Sonderw&uuml;nsche versuchen wir nat&uuml;rlich mit bestem Gewissen zu erf&uuml;llen.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      </section> 
 
       <section class="section_feature parallax">
         <div class="container marketing">
@@ -371,7 +336,6 @@
       ga('create', 'UA-46728796-1', 'wylight.de');
       ga('send', 'pageview');
     </script>  
-    <script src="js/holder.js"></script>
     <!-- Parallax Library & init -->
     <script src="js/skrollr.js"></script>
     <script type="text/javascript">
@@ -444,7 +408,7 @@
       }
       //connect everything
       $(document).ready(function() {
-        var trigger1 = new triggerObject(true);
+        var trigger1 = new triggerObject(false);
         var trigger2 = new triggerObject(false);
 
         document.getElementById("lightswitch_1").onchange = function() {
