@@ -115,19 +115,19 @@ int main(int argc, char *argv[])
 		std::cout << "Usage: \nno parameters: default usage.\n-c \"123.123.123.123\" to connect to a specific IP immediately.\n\n";
 		return 0;
 	}
-	
+
 	WyLight::Endpoint e;
-	
+
 	if (cmdOptionExists(argv, argv + argc, "-c")) {
-		
+
 		in_addr_t addr;
 		inet_pton(AF_INET, getCmdOption(argv, argv + argc, "-c"), &(addr));
 		/* Reverse the bytes in the binary address */
 		addr = ((addr & 0xff000000) >> 24) | ((addr & 0x00ff0000) >>  8) | ((addr & 0x0000ff00) <<  8) | ((addr & 0x000000ff) << 24);
 		e = WyLight::Endpoint(addr, 2000);
-	
+
 	} else {
-	
+
 		WyLight::BroadcastReceiver receiver(55555, "recent.txt", newRemoteCallback);
 		std::thread t(std::ref(receiver));
 
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
 
 		receiver.Stop();
 		t.join();
-		
+
 		e = receiver.GetEndpoint(selection);
 	}
 

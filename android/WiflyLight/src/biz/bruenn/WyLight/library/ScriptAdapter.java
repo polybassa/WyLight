@@ -1,5 +1,6 @@
 package biz.bruenn.WyLight.library;
 
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -16,7 +17,7 @@ public class ScriptAdapter extends BaseAdapter {
 	private final long mNative;
 	public boolean mDesignatedForDeletion = false;
 	
-	ScriptAdapter(long pNative) {
+	public ScriptAdapter(long pNative) {
 		mNative = pNative;
 	}
 	
@@ -56,6 +57,7 @@ public class ScriptAdapter extends BaseAdapter {
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 		TextView v = new TextView(parent.getContext());
+		v.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 26);
 		v.setBackgroundColor(getItem(position).getColor());
 		return v;
 	}

@@ -124,7 +124,7 @@ namespace WyLight {
 			if(ref.IsValid()) {
 				ref.SetDeviceId(newEndpoint.GetDeviceId());
 				ref.SetScore(1);
-				mOnNewRemote(0,ref);
+				if(mOnNewRemote) mOnNewRemote(0,ref);
 			}
 		}
 		return true;

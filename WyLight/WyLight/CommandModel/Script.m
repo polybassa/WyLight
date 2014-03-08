@@ -43,12 +43,12 @@
 	[self willAccessValueForKey:@"repeatsWhenFinished"];
 	NSNumber* oldValue = [self primitiveValueForKey:@"repeatsWhenFinished"];
 	[self didAccessValueForKey:@"repeatsWhenFinished"];
-	
+
 	if (oldValue.unsignedIntegerValue != repeatsWhenFinished.unsignedIntegerValue) {
 		[self willChangeValueForKey:@"repeatsWhenFinished"];
 		[self setPrimitiveValue:repeatsWhenFinished forKey:@"repeatsWhenFinished"];
 		[self didChangeValueForKey:@"repeatsWhenFinished"];
-		
+
 		for (ComplexEffect* effect in self.effects) {
 			effect.colors = [effect computeColors];
 		}

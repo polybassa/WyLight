@@ -46,10 +46,6 @@ public class ScriptingFragment extends ControlFragment {
 		}
 	}
 
-	public void onColorChanged(int color) {
-		// TODO Auto-generated method stub
-	}
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_scripting, group, false);
@@ -113,11 +109,10 @@ public class ScriptingFragment extends ControlFragment {
 				addNewScript();
 			}
 		});
-		
 		Button send = (Button)v.findViewById(R.id.send);
 		send.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				onSendScript(scriptAdapter());
+				mProvider.sendScript(scriptAdapter());
 			}
 		});
 		
