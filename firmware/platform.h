@@ -36,7 +36,7 @@
 
 	#define softResetJumpDestination(x)
 
-	#define Platform_IOInit(x) do { CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); } \
+	#define Platform_IOInit(x) do { CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); CLRF(PORTA); CLRF(LATA); CLRF(ANSELA); CLRF(TRISA); PORTA = 0b00000100; } \
 	while(0)                                                                         //Eingänge am PORTB initialisieren
 	#define Platform_OsciInit(x) do { OSCCON = 0b01110010; PLLEN = 1; } \
 	while(0)                                                                    //OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
