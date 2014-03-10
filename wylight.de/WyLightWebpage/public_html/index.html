@@ -14,20 +14,20 @@
     <!-- Include Aller font-face -->
     <link href="css/customfonts.css" rel="stylesheet">
     <!-- Bootstrap core CSS -->
-    <link href="dist/css/bootstrap.css" rel="stylesheet">
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="dist/css/bootstrap-switch.css" rel="stylesheet">
     <link href="css/carousel.css" rel="stylesheet">
     <!-- Include custom style sheet -->
     <link href="css/custom.css" rel="stylesheet">
     <!-- Include jQuery -->
     <script src="js/jquery-1.10.2.min.js"></script>
-    <script src="js/jquery-ui.js"></script>
+    <script src="js/jquery-ui-1.10.4.custom.min.js"></script>
   </head>
   <!-- NAVBAR
   ================================================== -->
   <body id="top">
     <div id="skrollr-body">
-      <section class="section_feature parallax" style="background-color: #DEDFE1; padding-top: 0; margin-top: 0;">
+      <section class="section_feature parallax" style="padding-top: 0; margin-top: 0;">
         <div class="row featurette">
           <div class="col-md-12">
             <img class="img-responsive" src="media/Banner.png" alt="Banner" style="height: auto;">
@@ -320,24 +320,24 @@
                   $('.lightswitch').bootstrapSwitch();
                 });
     </script>
+    <script src="js/skrollr.min.js"></script>
     <!-- Google Analytics -->
     <script>
-      (function(i, s, o, g, r, a, m) {
-        i['GoogleAnalyticsObject'] = r;
-        i[r] = i[r] || function() {
-          (i[r].q = i[r].q || []).push(arguments)
-        }, i[r].l = 1 * new Date();
-        a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0];
-        a.async = 1;
-        a.src = g;
-        m.parentNode.insertBefore(a, m)
-      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-      ga('create', 'UA-46728796-1', 'wylight.de');
-      ga('send', 'pageview');
+                (function(i, s, o, g, r, a, m) {
+                  i['GoogleAnalyticsObject'] = r;
+                  i[r] = i[r] || function() {
+                    (i[r].q = i[r].q || []).push(arguments)
+                  }, i[r].l = 1 * new Date();
+                  a = s.createElement(o),
+                          m = s.getElementsByTagName(o)[0];
+                  a.async = 1;
+                  a.src = g;
+                  m.parentNode.insertBefore(a, m)
+                })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+                ga('create', 'UA-46728796-1', 'wylight.de');
+                ga('send', 'pageview');
     </script>  
     <!-- Parallax Library & init -->
-    <script src="js/skrollr.js"></script>
     <script type="text/javascript">
       function calculateParallax() {
         var parallaxObjects = new Array();
@@ -395,34 +395,47 @@
           $(value).parent().parent().parent().parent().parent().parent().animate({backgroundColor: "#000"}, 500, "swing", function() {
             for (var i = 0; i < frameId.length; i++) {
               var image = document.getElementById(frameId[i]);
-              image.src = sourceOn[i];
+              image.src = sourceOn[i].src;
             }
           });
         } else {
           for (var i = 0; i < frameId.length; i++) {
             var image = document.getElementById(frameId[i]);
-            image.src = sourceOff[i];
+            image.src = sourceOff[i].src;
           }
           $(value).parent().parent().parent().parent().parent().parent().animate({backgroundColor: "#fff"}, 500, "swing");
         }
       }
+
+      function preloadImages(sourceArray) {
+        var retArray = new Array();
+        for (var i = 0; i < sourceArray.length; i++) {
+          retArray[i] = new Image();
+          retArray[i].src = sourceArray[i];
+        }
+        return retArray;
+      }
+
       //connect everything
       $(document).ready(function() {
         var trigger1 = new triggerObject(false);
         var trigger2 = new triggerObject(false);
+        
+        var images_lightswitch1_on = preloadImages(['media/prototypes/n2_green.png', 'media/prototypes/n1_red.png', 'media/prototypes/n3_blue.png']);
+        var images_lightswitch1_off = preloadImages(['media/prototypes/n2.png', 'media/prototypes/n1.png', 'media/prototypes/n3.png']);
+
+        var images_lightswitch2_on = preloadImages(['media/prototypes/n3_orange.png']);
+        var images_lightswitch2_off = preloadImages(['media/prototypes/n3_side.png']);
 
         document.getElementById("lightswitch_1").onchange = function() {
           if (trigger1.trigger(this.checked))
-            toggleLight(this, ['media/prototypes/n2_green.png', 'media/prototypes/n1_red.png', 'media/prototypes/n3_blue.png'],
-                    ['media/prototypes/n2.png', 'media/prototypes/n1.png', 'media/prototypes/n3.png'],
-                    ['section_lights_image1', 'section_lights_image2', 'section_lights_image3']);
+            toggleLight(this, images_lightswitch1_on, images_lightswitch1_off, ['section_lights_image1', 'section_lights_image2', 'section_lights_image3']);
         };
         document.getElementById("lightswitch_2").onchange = function() {
           if (trigger2.trigger(this.checked))
-            toggleLight(this, ['media/prototypes/n3_orange.png'], ['media/prototypes/n3_side.png'], ['section_light_image']);
+            toggleLight(this, images_lightswitch2_on, images_lightswitch2_off, ['section_light_image']);
         };
       });
-
     </script>
   </body>
 </html>
