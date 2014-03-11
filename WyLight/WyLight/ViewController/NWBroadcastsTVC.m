@@ -13,7 +13,9 @@
 
 @interface NWBroadcastsTVC ()
 
+@property (weak, nonatomic) IBOutlet UIProgressView *searchingProgressView;
 @property (nonatomic, strong) WCBroadcastReceiverWrapper *receiver;
+@property (strong, nonatomic) NSTimer *processTimer;
 
 @end
 
@@ -50,6 +52,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	[self.refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+	self.searchingProgressView.progress = 1;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -80,27 +83,60 @@
 			[self.refreshControl endRefreshing];
 		});
 	}
-    return numberOfTargets;
+	return numberOfTargets > 0 ? numberOfTargets : 1;
 };
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"Target";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    cell.textLabel.text = [[[self.receiver targets]objectAtIndex:indexPath.row] name];
-	cell.detailTextLabel.text = [[[self.receiver targets]objectAtIndex:indexPath.row] adressString];
-	if ([[[self.receiver targets]objectAtIndex:indexPath.row] score] == 0) {
-		cell.userInteractionEnabled = NO;
-		cell.textLabel.enabled = NO;
-		cell.detailTextLabel.enabled = NO;
-	} else {
-		cell.userInteractionEnabled = YES;
-		cell.textLabel.enabled = YES;
-		cell.detailTextLabel.enabled = YES;
+	if (self.receiver.targets.count) {
+		static NSString *CellIdentifier = @"Target";
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+		
+		cell.textLabel.text = [[[self.receiver targets]objectAtIndex:indexPath.row] name];
+		cell.detailTextLabel.text = [[[self.receiver targets]objectAtIndex:indexPath.row] adressString];
+		if ([[[self.receiver targets]objectAtIndex:indexPath.row] score] == 0) {
+			cell.userInteractionEnabled = NO;
+			cell.textLabel.enabled = NO;
+			cell.detailTextLabel.enabled = NO;
+		} else {
+			cell.userInteractionEnabled = YES;
+			cell.textLabel.enabled = YES;
+			cell.detailTextLabel.enabled = YES;
+		}
+		[self stopSearching];
+		return cell;
 	}
-	
-    return cell;
+	else {
+		static NSString *CellIdentifier = @"Tutorial";
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+		
+		cell.textLabel.text = NSLocalizedStringFromTable(@"SearchingKey", @"ViewControllerLocalization", @"");
+		cell.detailTextLabel.text = NSLocalizedStringFromTable(@"SearchingMessageKey", @"ViewControllerLocalization", @"");
+		[self startSearching];
+		return cell;
+	}
+    
 }
+#pragma mark - PROCESSVIEW
+- (void)startSearching {
+	if (self.processTimer == nil) {
+		self.processTimer = [NSTimer scheduledTimerWithTimeInterval:0.02 target:self selector:@selector(updateProgressBar:) userInfo:nil repeats:YES];
+		self.searchingProgressView.hidden = NO;
+	}
+}
+
+- (void)stopSearching {
+	[self.processTimer invalidate];
+	self.processTimer = nil;
+	self.searchingProgressView.hidden = YES;
+}
+
+- (void)updateProgressBar:(NSTimer *)timer {
+	if (self.searchingProgressView.progress >= 1.0) {
+		self.searchingProgressView.progress = 0;
+	}
+	self.searchingProgressView.progress += 0.01;
+}
+
 
 #pragma mark - SEGUE's
 

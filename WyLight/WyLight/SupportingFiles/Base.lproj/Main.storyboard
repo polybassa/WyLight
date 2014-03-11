@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="x4A-Fz-YpF">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="x4A-Fz-YpF">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
         <!--BroadcastsTVC - WyLight Remote-->
@@ -12,9 +12,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <progressView key="tableHeaderView" hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="1" id="xfb-ee-WzW">
+                            <rect key="frame" x="0.0" y="64" width="320" height="2"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </progressView>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Target" textLabel="i5E-Qx-tFf" detailTextLabel="r8f-4L-YBC" style="IBUITableViewCellStyleValue1" id="owr-lK-xbq">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="88" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="owr-lK-xbq" id="znW-72-iF5">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="44"/>
@@ -40,6 +44,30 @@
                                     <segue destination="H87-Z1-teV" kind="push" identifier="setEndpoint:" id="HG0-tO-Ulx"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tutorial" textLabel="xq0-LD-1Y7" detailTextLabel="J9f-I0-wOi" style="IBUITableViewCellStyleSubtitle" id="hBM-eQ-QUv">
+                                <rect key="frame" x="0.0" y="132" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hBM-eQ-QUv" id="Kcq-DI-Ykx">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xq0-LD-1Y7">
+                                            <rect key="frame" x="15" y="4" width="34" height="22"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <color key="textColor" name="keyboardFocusIndicatorColor" catalog="System" colorSpace="catalog"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="J9f-I0-wOi">
+                                            <rect key="frame" x="15" y="26" width="32" height="15"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" name="controlShadowColor" catalog="System" colorSpace="catalog"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="eT0-Zt-6u8" id="p9d-cZ-IKg"/>
@@ -56,6 +84,9 @@
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="PG9-iA-mMq">
                         <autoresizingMask key="autoresizingMask"/>
                     </refreshControl>
+                    <connections>
+                        <outlet property="searchingProgressView" destination="xfb-ee-WzW" id="TS1-fa-ewt"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SrC-zC-Z42" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -96,7 +127,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HMh-1b-7vA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2762" y="-1112"/>
+            <point key="canvasLocation" x="2762" y="-736"/>
         </scene>
         <!--Color Picker View Controller - Color Picker-->
         <scene sceneID="CdG-a7-zLn">
@@ -115,7 +146,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lck-kK-Z4U" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2762" y="-492"/>
+            <point key="canvasLocation" x="2762" y="-27"/>
         </scene>
         <!--ConnectionTBC-->
         <scene sceneID="UMD-eN-YA9">
@@ -141,7 +172,6 @@
                         <segue destination="kO5-iB-Syi" kind="relationship" relationship="viewControllers" id="nQT-by-sKg"/>
                         <segue destination="bmC-jS-Lb1" kind="relationship" relationship="viewControllers" id="Hxz-z4-9Sg"/>
                         <segue destination="hsM-b9-5b3" kind="relationship" relationship="viewControllers" id="h0g-6P-2X6"/>
-                        <segue destination="BHs-hC-79E" kind="relationship" relationship="viewControllers" id="LZM-d5-ywb"/>
                         <segue destination="TaH-Bq-xeS" kind="relationship" relationship="viewControllers" id="nat-gJ-Zvw"/>
                     </connections>
                 </tabBarController>
@@ -362,37 +392,6 @@
             </objects>
             <point key="canvasLocation" x="1450" y="710"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="hgc-m1-ViS">
-            <objects>
-                <navigationController definesPresentationContext="YES" id="Cw4-ac-tfN" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Mph-9H-dmT">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="oZN-AR-AQW" kind="relationship" relationship="rootViewController" id="8br-iO-88H"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="YSQ-df-LeN" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="529" y="2887"/>
-        </scene>
-        <!--Tab Bar Controller-->
-        <scene sceneID="Ha6-fD-EwW">
-            <objects>
-                <tabBarController definesPresentationContext="YES" id="oZN-AR-AQW" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="aIc-UI-2h1"/>
-                    <nil key="simulatedBottomBarMetrics"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" id="XU6-65-CLL">
-                        <rect key="frame" x="129" y="330" width="163" height="49"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </tabBar>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tby-bU-N14" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1273" y="2855"/>
-        </scene>
         <!--Add New Target Configure View Controller - Add new Target-->
         <scene sceneID="see-2n-JYf">
             <objects>
@@ -467,69 +466,6 @@
             </objects>
             <point key="canvasLocation" x="1983" y="710"/>
         </scene>
-        <!--Brightness View Controller - Dimmer-->
-        <scene sceneID="KJJ-Y5-RxH">
-            <objects>
-                <viewController id="BHs-hC-79E" customClass="NWBrightnessViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="PjU-Kg-kXG"/>
-                        <viewControllerLayoutGuide type="bottom" id="EkM-l9-NXD"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="gw3-7y-CL5">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <slider opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yxr-JS-w4L">
-                                <rect key="frame" x="38" y="224" width="244" height="34"/>
-                                <connections>
-                                    <action selector="sliderValueChanged:" destination="BHs-hC-79E" eventType="valueChanged" id="BKd-vY-tlR"/>
-                                </connections>
-                            </slider>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="🔅" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="27" translatesAutoresizingMaskIntoConstraints="NO" id="dGg-du-PNe">
-                                <rect key="frame" x="20" y="143" width="54" height="71"/>
-                                <fontDescription key="fontDescription" name="AppleColorEmoji" family="Apple Color Emoji" pointSize="54"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="🔆" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F0r-b7-DcP">
-                                <rect key="frame" x="246" y="134" width="54" height="89"/>
-                                <fontDescription key="fontDescription" name="AppleColorEmoji" family="Apple Color Emoji" pointSize="54"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="1" stepValue="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="gOD-k3-Vfm">
-                                <rect key="frame" x="113" y="289" width="94" height="29"/>
-                                <connections>
-                                    <action selector="stepperValueChanged:" destination="BHs-hC-79E" eventType="valueChanged" id="c8V-On-J7I"/>
-                                </connections>
-                            </stepper>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="gOD-k3-Vfm" firstAttribute="top" secondItem="Yxr-JS-w4L" secondAttribute="bottom" constant="32" id="78c-4I-mJZ"/>
-                            <constraint firstItem="Yxr-JS-w4L" firstAttribute="top" secondItem="dGg-du-PNe" secondAttribute="bottom" constant="10" id="89c-10-xYb"/>
-                            <constraint firstAttribute="centerX" secondItem="Yxr-JS-w4L" secondAttribute="centerX" id="935-a7-zIr"/>
-                            <constraint firstItem="Yxr-JS-w4L" firstAttribute="leading" secondItem="gw3-7y-CL5" secondAttribute="leading" constant="40" id="9HD-kT-85v"/>
-                            <constraint firstItem="Yxr-JS-w4L" firstAttribute="top" secondItem="F0r-b7-DcP" secondAttribute="bottom" constant="1" id="B0I-ki-OkS"/>
-                            <constraint firstAttribute="trailing" secondItem="Yxr-JS-w4L" secondAttribute="trailing" constant="40" id="DHH-xH-ieJ"/>
-                            <constraint firstItem="dGg-du-PNe" firstAttribute="leading" secondItem="gw3-7y-CL5" secondAttribute="leading" constant="20" id="KIQ-9i-fJP"/>
-                            <constraint firstAttribute="centerY" secondItem="Yxr-JS-w4L" secondAttribute="centerY" id="OMh-9c-S6k"/>
-                            <constraint firstItem="gOD-k3-Vfm" firstAttribute="centerX" secondItem="Yxr-JS-w4L" secondAttribute="centerX" id="cwZ-dM-JZV"/>
-                            <constraint firstAttribute="centerY" secondItem="Yxr-JS-w4L" secondAttribute="centerY" id="nM8-Ua-vyI"/>
-                            <constraint firstAttribute="trailing" secondItem="F0r-b7-DcP" secondAttribute="trailing" constant="20" id="sGT-Ce-op2"/>
-                            <constraint firstItem="F0r-b7-DcP" firstAttribute="centerY" secondItem="dGg-du-PNe" secondAttribute="centerY" id="txJ-So-oqE"/>
-                        </constraints>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Dimmer" image="Sun_TabBarIcon" id="kud-TW-ohR"/>
-                    <connections>
-                        <outlet property="brightnessSlider" destination="Yxr-JS-w4L" id="LD9-dv-F6A"/>
-                        <outlet property="brightnessStepper" destination="gOD-k3-Vfm" id="Qbe-SY-6bi"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7pw-aj-HoO" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2762" y="114"/>
-        </scene>
         <!--Color Slider View Controller - RGB-->
         <scene sceneID="ELE-5M-NJv">
             <objects>
@@ -546,7 +482,7 @@
                                 <rect key="frame" x="0.0" y="159" width="320" height="321"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <slider autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="RZo-CP-YR1">
+                                    <slider autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="RZo-CP-YR1">
                                         <rect key="frame" x="18" y="36" width="284" height="34"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -554,7 +490,7 @@
                                             <action selector="redChanged:" destination="bmC-jS-Lb1" eventType="valueChanged" id="aqG-fU-gDV"/>
                                         </connections>
                                     </slider>
-                                    <slider autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Ov3-1s-nu6">
+                                    <slider autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Ov3-1s-nu6">
                                         <rect key="frame" x="18" y="154" width="284" height="34"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <connections>
@@ -562,7 +498,7 @@
                                         </connections>
                                     </slider>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="f0G-eh-PeC">
-                                        <rect key="frame" x="125" y="222" width="71" height="30"/>
+                                        <rect key="frame" x="125" y="213" width="71" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="0.29999999999999999" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -575,7 +511,7 @@
                                         </connections>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Dkf-HB-Ftn">
-                                        <rect key="frame" x="229" y="222" width="71" height="30"/>
+                                        <rect key="frame" x="229" y="213" width="71" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="0.29999999999999999" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -588,7 +524,7 @@
                                         </connections>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="10z-41-Jvr">
-                                        <rect key="frame" x="20" y="222" width="71" height="30"/>
+                                        <rect key="frame" x="20" y="213" width="71" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.29999999999999999" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -600,7 +536,7 @@
                                             <outlet property="delegate" destination="bmC-jS-Lb1" id="Uxj-fh-aRK"/>
                                         </connections>
                                     </textField>
-                                    <slider autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="12J-ZJ-Fc9">
+                                    <slider autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="12J-ZJ-Fc9">
                                         <rect key="frame" x="18" y="95" width="284" height="34"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -765,25 +701,6 @@
             </objects>
             <point key="canvasLocation" x="4384" y="1389"/>
         </scene>
-        <!--Tab Bar Controller-->
-        <scene sceneID="NKv-9y-khO">
-            <objects>
-                <tabBarController definesPresentationContext="YES" id="3os-hy-7vl" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="4Iv-bS-4tk"/>
-                    <nil key="simulatedBottomBarMetrics"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" id="ghi-eB-yeu">
-                        <rect key="frame" x="129" y="330" width="163" height="49"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </tabBar>
-                    <connections>
-                        <segue destination="hsM-b9-5b3" kind="relationship" relationship="viewControllers" id="eyP-9j-ZIQ"/>
-                    </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7Vc-PK-XBo" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1934" y="1629"/>
-        </scene>
         <!--Script Folder View Controller - Script Editor-->
         <scene sceneID="hMo-6q-bij">
             <objects>
@@ -809,31 +726,11 @@
             </objects>
             <point key="canvasLocation" x="2762" y="1389"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="jLh-9c-oDJ">
-            <objects>
-                <navigationController definesPresentationContext="YES" id="JaC-K0-GVf" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="IVw-Hc-Wma">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="eNV-9B-Lr0">
-                        <rect key="frame" x="0.0" y="436" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </toolbar>
-                    <connections>
-                        <segue destination="3os-hy-7vl" kind="relationship" relationship="rootViewController" id="Gub-Ax-lHI"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="274-M5-2wC" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1278" y="1629"/>
-        </scene>
     </scenes>
     <resources>
         <image name="Paint_TabBarIcon" width="30" height="30"/>
         <image name="Script_Icon" width="30" height="30"/>
         <image name="Slider_TabBarIcon" width="30" height="30"/>
-        <image name="Sun_TabBarIcon" width="30" height="30"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
@@ -842,6 +739,5 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="ozS-Lc-m4i"/>
-        <segue reference="h0g-6P-2X6"/>
     </inferredMetricsTieBreakers>
 </document>

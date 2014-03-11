@@ -264,7 +264,7 @@
     tempScript.repeatsWhenFinished = @(YES);
     tempScript.title = NSLocalizedStringFromTable(@"RunLightKey", @"defaultScriptsLocalization", @"");
     {
-        for (int i = 0; i < 32; i = i + 2) {
+        for (int i = 0; i < 32; i = i + 4) {
             ComplexEffect *comObj = [ComplexEffect insertNewObjectIntoContext:context];
             {
                 {
@@ -275,7 +275,7 @@
                 }
                 {
                     Fade *obj = [Fade insertNewObjectIntoContext:context];
-                    obj.address = @(0x00000003 << i);
+                    obj.address = @(0x0000000f << i);
                     obj.color = color;
                     obj.complexEffect = comObj;
                 }
@@ -292,7 +292,7 @@
     tempScript.repeatsWhenFinished = @(YES);
     tempScript.title = NSLocalizedStringFromTable(@"ColorCrashKey", @"defaultScriptsLocalization", @"");
     {
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 4; i++) {
             ComplexEffect *comObj = [ComplexEffect insertNewObjectIntoContext:context];
             {
                 {
@@ -303,13 +303,13 @@
                 }
                 {
                     Fade *obj = [Fade insertNewObjectIntoContext:context];
-                    obj.address = @(0x00000003 << i*2);
+                    obj.address = @(0x0000000f << i*4);
                     obj.color = [UIColor redColor];
                     obj.complexEffect = comObj;
                 }
                 {
                     Fade *obj = [Fade insertNewObjectIntoContext:context];
-                    obj.address = @(0xC0000000 >> i*2);
+                    obj.address = @(0xf0000000 >> i*4);
                     obj.color = [UIColor greenColor];
                     obj.complexEffect = comObj;
                 }
@@ -318,7 +318,7 @@
             comObj.script = tempScript;
             //[tempScript addEffectsObject:comObj];
         }
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 4; i++) {
             ComplexEffect *comObj = [ComplexEffect insertNewObjectIntoContext:context];
             {
                 {
@@ -329,13 +329,13 @@
                 }
                 {
                     Fade *obj = [Fade insertNewObjectIntoContext:context];
-                    obj.address = @(0x00030000 << i*2);
+                    obj.address = @(0x000f0000 << i*4);
                     obj.color = [UIColor blueColor];
                     obj.complexEffect = comObj;
                 }
                 {
                     Fade *obj = [Fade insertNewObjectIntoContext:context];
-                    obj.address = @(0x0000C000 >> i*2);
+                    obj.address = @(0x0000f000 >> i*4);
                     obj.color = [UIColor yellowColor];
                     obj.complexEffect = comObj;
                 }

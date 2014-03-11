@@ -41,3 +41,5 @@
 "ImportScriptKey" = "Scriptimport successful";
 "AppOutdatedKey" = "New App-Version available";
 "AppOutdatedMessageKey" = "Please update your WyLight App over the App-Store";
+"SearchingKey" = "Searching for WyLights";
+"SearchingMessageKey" = "Press \"+\" to configurate a new WyLight";
