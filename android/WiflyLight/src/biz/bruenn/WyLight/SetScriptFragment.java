@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 
 public class SetScriptFragment extends ControlFragment {
@@ -28,7 +29,6 @@ public class SetScriptFragment extends ControlFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_set_script, group, false);
-
 		mScriptList = (ListView)v.findViewById(R.id.savedScripts);
 		mScriptListAdapter = new ScriptManagerAdapter(getActivity().getApplicationContext());
 		mScriptList.setAdapter(mScriptListAdapter);

@@ -40,7 +40,6 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 		new SetBrightnessFragment(),
 		new SetRGBFragment(),
 		new SetScriptFragment(),
-		//new ScriptingFragment(),
 		//new SetGradientFragment()
 	};
 
