@@ -35,6 +35,14 @@ public class ScriptAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 
+	public int[] getColors() {
+		int[] colors = new int[getCount()];
+		for(int i = 0; i < colors.length; ++i) {
+			colors[i] = getItem(i).getColor();
+		}
+		return colors;
+	}
+
 	public int getCount() {
 		return numCommands(mNative);
 	}
