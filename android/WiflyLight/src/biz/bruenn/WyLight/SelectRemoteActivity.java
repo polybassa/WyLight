@@ -2,9 +2,9 @@ package biz.bruenn.WyLight;
 
 import java.util.ArrayList;
 
-import biz.bruenn.WiflyLight.R;
-import biz.bruenn.WiflyLight.R.id;
-import biz.bruenn.WiflyLight.R.string;
+import biz.bruenn.WyLight.R;
+import biz.bruenn.WyLight.R.id;
+import biz.bruenn.WyLight.R.string;
 import biz.bruenn.WyLight.library.Endpoint;
 import biz.bruenn.WyLight.library.EndpointAdapter;
 import android.app.Activity;
@@ -13,11 +13,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;

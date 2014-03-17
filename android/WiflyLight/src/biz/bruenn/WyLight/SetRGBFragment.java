@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import biz.bruenn.WiflyLight.R;
+import biz.bruenn.WyLight.R;
 import biz.bruenn.WyLight.view.RgbVolumeView;
 
 public class SetRGBFragment extends ControlFragment implements ViewTreeObserver.OnGlobalLayoutListener {

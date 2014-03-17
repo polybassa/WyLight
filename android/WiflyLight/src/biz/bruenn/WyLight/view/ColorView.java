@@ -1,6 +1,6 @@
 package biz.bruenn.WyLight.view;
 
-import biz.bruenn.WiflyLight.R;
+import biz.bruenn.WyLight.R;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
