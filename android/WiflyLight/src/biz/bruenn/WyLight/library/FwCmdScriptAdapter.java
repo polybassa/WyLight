@@ -13,11 +13,15 @@ public class FwCmdScriptAdapter {
 	}
 	
 	public int getColor() {
-		int result = getFadeColor(mNative);
-		return result;
+		if(0 != mNative) {
+			return getFadeColor(mNative);
+		}
+		return 0;
 	}
 	
 	public void setColor(int argb) {
-		setFadeColor(mNative, argb);
+		if(0 != mNative) {
+			setFadeColor(mNative, argb);
+		}
 	}
 }
