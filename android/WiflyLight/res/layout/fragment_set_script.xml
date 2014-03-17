@@ -8,7 +8,7 @@
             android:id="@+id/savedScripts"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:divider="@android:color/transparent"
-            android:dividerHeight="10dp"
-        />
+            android:dividerHeight="10dp" />
 </LinearLayout>

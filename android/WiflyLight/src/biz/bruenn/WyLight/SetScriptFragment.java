@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import biz.bruenn.WiflyLight.R;
+import biz.bruenn.WyLight.library.ScriptAdapter;
 import biz.bruenn.WyLight.library.ScriptManagerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,6 +35,18 @@ public class SetScriptFragment extends ControlFragment {
 	@Override
 	public int getIcon() {
 		return R.drawable.ic_action_settings;
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(null != data) {
+			final long pNative = data.getLongExtra(EditScriptActivity.NATIVE_SCRIPT, 0);
+			final ScriptAdapter script = new ScriptAdapter(pNative);
+			if(EditScriptActivity.DO_DELETE == resultCode) {
+				mScriptListAdapter.remove(script);
+			}
+		}
+		mScriptListAdapter.notifyDataSetChanged();
 	}
 
 	@Override

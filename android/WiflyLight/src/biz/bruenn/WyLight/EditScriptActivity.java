@@ -7,12 +7,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 public class EditScriptActivity extends Activity {
+	public static final int DO_DELETE = -1;
 	public static final String ITEM_POSITION = "ITEM_POSITION";
 	public static final String NATIVE_SCRIPT = "NATIVE_SCRIPT";
 
@@ -46,20 +49,29 @@ public class EditScriptActivity extends Activity {
 				startActivityForResult(i, 0);
 			}
 		});
+	}
 
-		Button add = (Button)findViewById(R.id.addCommand);
-		add.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.edit_script_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+			case R.id.action_add:
 				mScript.addFade(Color.WHITE, 0xffffffff, (short)500);
 				new ScriptManagerAdapter(getBaseContext()).save(mScript);
-			}
-		});
-
-		Button clear = (Button)findViewById(R.id.clear);
-		clear.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				mScript.clear();
-			}
-		});
+				return true;
+			case R.id.action_delete:
+				Activity a = (null == getParent()) ? this : getParent();
+				a.setResult(EditScriptActivity.DO_DELETE, getIntent());
+				finish();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 }
