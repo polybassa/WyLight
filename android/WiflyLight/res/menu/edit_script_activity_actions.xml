@@ -3,10 +3,9 @@
     <item android:id="@+id/action_add"
           android:icon="@drawable/ic_action_add"
           android:title="@string/action_add"
-          android:showAsAction="ifRoom"
-          android:visible="false" />
-    <item android:id="@+id/action_stop"
-          android:icon="@drawable/ic_action_stop"
-          android:title="@string/action_stop"
+          android:showAsAction="ifRoom" />
+    <item android:id="@+id/action_delete"
+          android:icon="@drawable/ic_action_delete"
+          android:title="@string/action_delete"
           android:showAsAction="ifRoom" />
 </menu>

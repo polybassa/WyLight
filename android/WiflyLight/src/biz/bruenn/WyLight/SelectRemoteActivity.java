@@ -50,13 +50,20 @@ public class SelectRemoteActivity extends Activity implements RemoteCollector.On
 		mRemoteList.setAdapter(mRemoteArrayAdapter);
 		mRemoteList.setEmptyView((TextView)findViewById(android.R.id.empty));
 		mRemoteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
 			public void onItemClick(AdapterView<?> arg0, View v, int arg2,
 					long arg3) {
 				Endpoint e = mRemoteArrayAdapter.getItem(arg2);
 				Intent i = new Intent(v.getContext(), WiflyControlActivity.class);
 				i.putExtra(WiflyControlActivity.EXTRA_ENDPOINT, e);
 				startActivityForResult(i, 0);
+			}
+		});
+		mRemoteList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				showDialog(arg2);
+				// TODO Auto-generated method stub
+				return true;
 			}
 		});
 
@@ -83,14 +90,6 @@ public class SelectRemoteActivity extends Activity implements RemoteCollector.On
 			mRemoteArray.add(e);
 		}
 		mRemoteArrayAdapter.notifyDataSetChanged();
-	}
-
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
-
-		AdapterContextMenuInfo info = (AdapterContextMenuInfo)menuInfo;
-		showDialog(info.position);
 	}
 
 	@Override

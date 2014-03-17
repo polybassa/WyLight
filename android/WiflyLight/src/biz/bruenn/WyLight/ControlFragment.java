@@ -1,13 +1,10 @@
 package biz.bruenn.WyLight;
 
 import biz.bruenn.WiflyLight.R;
-import biz.bruenn.WyLight.exception.ConnectionTimeout;
-import biz.bruenn.WyLight.exception.FatalError;
-import biz.bruenn.WyLight.exception.ScriptBufferFull;
 import biz.bruenn.WyLight.library.ScriptAdapter;
 import android.app.Activity;
 import android.app.Fragment;
-import android.widget.Toast;
+import android.view.Menu;
 
 public abstract class ControlFragment extends Fragment {
 
@@ -15,8 +12,6 @@ public abstract class ControlFragment extends Fragment {
 	
 	public interface WiflyControlProvider {
 		public void addOnColorChangedListener(OnColorChangeListener listener);
-		@Deprecated
-		public WiflyControl getControl();
 		public void removeOnColorChangedListener(OnColorChangeListener listener);
 		public void sendScript(ScriptAdapter script);
 		public void setColor(int argb);
@@ -40,33 +35,12 @@ public abstract class ControlFragment extends Fragment {
 		}
 	}
 	
-	@Deprecated
-	protected void onConnectionLost() {
-		final Activity activity = getActivity();
-		Toast.makeText(activity, "Connection lost", Toast.LENGTH_SHORT).show();
-		activity.finish();		
-	}
-
-	@Deprecated
-	protected void onFatalError(FatalError e) {
-		Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();		
-	}
-
-	@Deprecated
-	protected void onScriptBufferFull() {
-		Toast.makeText(getActivity(), R.string.msg_scriptbufferfull, Toast.LENGTH_LONG).show();		
-	}
-	
-	@Deprecated
-	protected void onSetGradient(int color_1, int color_2, int length, int offset, short time) {	
-		try {
-			mProvider.getControl().fwSetGradient(color_1, color_2, length, offset, time);
-		} catch (ConnectionTimeout e) {
-			onConnectionLost();
-		} catch (ScriptBufferFull e) {
-			onScriptBufferFull();		
-		} catch (FatalError e) {
-			onFatalError(e);
-		}		
+	/**
+	 * Should be called when the fragment is shown, to update the menu
+	 * @param menu
+	 */
+	public void onShow(Menu menu) {
+		menu.findItem(R.id.action_add).setVisible(false);
+		menu.findItem(R.id.action_stop).setVisible(true);
 	}
 }

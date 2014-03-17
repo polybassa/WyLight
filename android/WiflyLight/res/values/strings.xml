@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="add_command">Add</string>
+    <string name="action_add">Add</string>
+    <string name="action_delete">Delete</string>
     <string name="action_stop">Stop</string>
     <string name="app_name">WiflyLight</string>
     <string name="cancel">Cancel</string>
@@ -9,17 +10,17 @@
     <string name="configure">configure</string>
     <string name="deviceid_description">Device name:</string>
     <string name="deviceid_hint">this is optional</string>
-    <string name="msg_connecting">Establishing connection...</string>
+    <string name="msg_connecting">Establishing connection&#8230;</string>
     <string name="msg_connectionfailed">Connection to the wifly device failed</string>
     <string name="msg_noremote">No remote detected, click scan to find one</string>
     <string name="msg_scriptbufferfull">The script buffer is full, clear it first</string>
     <string name="new_script">New</string>
     <string name="passphrase_description">WPA2 passphrase:</string>
-    <string name="passphrase_hint">1-63 characters</string>
+    <string name="passphrase_hint">1&#8211;63 characters</string>
     <string name="passphrase_toggle">Show passphrase</string>
     <string name="save">Save</string>
     <string name="scan">Scan</string>
-    <string name="scanning">Scanning...</string>
+    <string name="scanning">Scanning&#8230;</string>
     <string name="scriptname_description">Script name:</string>
     <string name="send">Send</string>
     <string name="set_clear">Clear</string>
