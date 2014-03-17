@@ -8,11 +8,12 @@ import biz.bruenn.WyLight.library.ScriptManagerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 
 public class SetScriptFragment extends ControlFragment {
@@ -20,6 +21,15 @@ public class SetScriptFragment extends ControlFragment {
 
 	private ListView mScriptList;
 	private ScriptManagerAdapter mScriptListAdapter;
+
+	final private OnMenuItemClickListener mAddCallback = new MenuItem.OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				String now = new SimpleDateFormat("yyyyMMdd-HHmmss", java.util.Locale.GERMANY).format(new Date());
+				mScriptListAdapter.add(now);
+				mScriptList.setSelection(mScriptListAdapter.getCount() - 1);
+				return true;
+			}
+		};
 
 	@Override
 	public int getIcon() {
@@ -48,15 +58,13 @@ public class SetScriptFragment extends ControlFragment {
 				return true;
 			}
 		});
-
-		Button newScript = (Button)v.findViewById(R.id.new_script);
-		newScript.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				String now = new SimpleDateFormat("yyyyMMdd-HHmmss", java.util.Locale.GERMANY).format(new Date());
-				mScriptListAdapter.add(now);
-				mScriptList.setSelection(mScriptListAdapter.getCount() - 1);
-			}
-		});
 		return v;
+	}
+
+	@Override
+	public void onShow(Menu menu) {
+		MenuItem add = menu.findItem(R.id.action_add);
+		add.setVisible(true);
+		add.setOnMenuItemClickListener(mAddCallback);
 	}
 }
