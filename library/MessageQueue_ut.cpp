@@ -109,8 +109,6 @@ int32_t ut_MessageQueue_complex(void)
 	std::atomic_int mInt;
 	mInt = 0;
 
-	typedef std::function<int (void)> mFuncType;
-
 	MessageQueue < std::pair < std::function<int(void)>, bool >> messages;
 
 	std::thread t1([&]

@@ -37,7 +37,7 @@ namespace WyLight {
 			*pCtrl << std::move(cmd);
 			return true;
 		} catch(FatalError& e) {
-					ThrowJniException(env, e);
+			ThrowJniException(env, e);
 		}
 	}
 
@@ -254,9 +254,13 @@ namespace WyLight {
 
 		jlong Java_biz_bruenn_WyLight_library_ScriptAdapter_getItem(JNIEnv *env, jobject ref, jlong pNative, jint position)
 		{
-			auto fwCmdScript = reinterpret_cast<Script *>(pNative)->begin();
-			std::advance(fwCmdScript, position);
-			return reinterpret_cast<jlong>((*fwCmdScript).get());
+			const Script *const pScript = reinterpret_cast<Script *>(pNative);
+			if(pScript->size() > position) {
+				auto fwCmdScript = pScript->begin();
+				std::advance(fwCmdScript, position);
+				return reinterpret_cast<jlong>((*fwCmdScript).get());
+			}
+			return 0;
 		}
 
 		jstring Java_biz_bruenn_WyLight_library_ScriptAdapter_name(JNIEnv *env, jobject ref, jlong pNative)

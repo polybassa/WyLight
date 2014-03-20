@@ -25,7 +25,6 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 public class WiflyControlActivity extends Activity implements WiflyControlProvider {
@@ -40,7 +39,6 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 		new SetBrightnessFragment(),
 		new SetRGBFragment(),
 		new SetScriptFragment(),
-		//new ScriptingFragment(),
 		//new SetGradientFragment()
 	};
 
@@ -49,6 +47,7 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 	private Endpoint mRemote;
 	private int mARGB = 0;
 	private float[] mHSV = new float[]{0f, 0f, 1f};
+	private Menu mMenu;
 	
 	public static class TabListener implements ActionBar.TabListener {
 		private final ViewPager mPager;
@@ -101,22 +100,6 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 	public WiflyControl getControl() {
 		return mCtrl;
 	}
-	
-	public void onClickHandler(View view) {
-		boolean done = false;
-		switch(view.getId()) {
-		case R.id.setClear:
-			done = mCtrl.fwClearScript();
-			break;
-		case R.id.setLoopOff:
-			done = mCtrl.fwLoopOff((byte) 0);
-			break;
-		case R.id.setLoopOn:
-			done = mCtrl.fwLoopOn();
-			break;
-		}
-		Toast.makeText(view.getContext(), String.valueOf(done), Toast.LENGTH_SHORT).show();
-	}
 
 	private void onColorChanged() {
 		for(OnColorChangeListener listener : mColorChangedListenerList) {
@@ -160,6 +143,7 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 			public void onPageScrollStateChanged(int arg0) { /* not implemented */ }
 			public void onPageSelected(int arg0) {
 				getActionBar().setSelectedNavigationItem(arg0);
+				mFragments[arg0].onShow(mMenu);
 			}
 		});
 
@@ -177,6 +161,7 @@ public class WiflyControlActivity extends Activity implements WiflyControlProvid
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		mMenu = menu;
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.control_activity_actions, menu);
 		return super.onCreateOptionsMenu(menu);

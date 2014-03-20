@@ -1,8 +1,12 @@
 package biz.bruenn.WyLight.library;
 
-import android.util.TypedValue;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -35,6 +39,14 @@ public class ScriptAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 
+	public int[] getColors() {
+		int[] colors = new int[getCount()];
+		for(int i = 0; i < colors.length; ++i) {
+			colors[i] = getItem(i).getColor();
+		}
+		return colors;
+	}
+
 	public int getCount() {
 		return numCommands(mNative);
 	}
@@ -56,9 +68,19 @@ public class ScriptAdapter extends BaseAdapter {
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
+		WindowManager wm = (WindowManager)parent.getContext().getSystemService(Context.WINDOW_SERVICE);
+		DisplayMetrics metrics = new DisplayMetrics();
+		wm.getDefaultDisplay().getMetrics(metrics);
 		TextView v = new TextView(parent.getContext());
-		v.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 26);
-		v.setBackgroundColor(getItem(position).getColor());
+		v.setHeight((int)(0.5f * metrics.xdpi));
+		v.setWidth(metrics.widthPixels);
+		final int topColor = (0 >= position) ? Color.BLACK : getItem(position-1).getColor();
+		final int bottomColor = getItem(position).getColor();
+		final int colors[] = new int[]{topColor, bottomColor};
+		GradientDrawable d = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, colors);
+		d.setShape(GradientDrawable.RECTANGLE);
+		d.setCornerRadius(30);
+		v.setBackgroundDrawable(d);
 		return v;
 	}
 }
