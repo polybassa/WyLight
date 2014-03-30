@@ -38,7 +38,6 @@ public class RgbVolumeView extends LinearLayout implements OnColorChangeListener
 		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 			final int color = getColor();
 			mColorStatus.setColor(color);
-			//TODO mColorStatus.setTextColor(0xff000000 | ~color);
 			mRedStatus.setColor(0xffff0000 & color);
 			mRedStatus.setText(String.valueOf(Color.red(color) * 100 / 255) + '%');
 			mGreenStatus.setColor(0xff00ff00 & color);

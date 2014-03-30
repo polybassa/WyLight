@@ -36,6 +36,7 @@ public class ColorView extends RelativeLayout {
 	public void setColor(int color) {
 		mColor = color;
 		mColorStatus.setColor(color);
+		mText.setTextColor(0xff000000 | ~color);
 	}
 
 	public void setText(String text) {
