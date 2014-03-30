@@ -53,5 +53,7 @@ public class EditCommandActivity extends Activity {
 				mTimeStatus.setText(Integer.toString(progress));
 			}
 		});
+		final int time = getIntent().getIntExtra(EditScriptActivity.ITEM_TIME, 0);
+		mTime.setProgress(FadeTime.timeToIndex(time));
     }
 }

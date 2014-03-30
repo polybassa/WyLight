@@ -50,9 +50,11 @@ public class EditScriptActivity extends Activity {
 		mCommandList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position,
 					long id) {
+				final FwCmdScriptAdapter cmd = mScript.getItem(position);
 				Intent i = new Intent(v.getContext(), EditCommandActivity.class);
-				i.putExtra(ITEM_COLOR, mScript.getItem(position).getColor());
+				i.putExtra(ITEM_COLOR, cmd.getColor());
 				i.putExtra(ITEM_POSITION, position);
+				i.putExtra(ITEM_TIME, cmd.getTime());
 				startActivityForResult(i, 0);
 			}
 		});
