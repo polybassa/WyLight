@@ -1,5 +1,6 @@
 package biz.bruenn.WyLight.library;
 
+import biz.bruenn.WyLight.FadeTime;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -72,7 +73,8 @@ public class ScriptAdapter extends BaseAdapter {
 		DisplayMetrics metrics = new DisplayMetrics();
 		wm.getDefaultDisplay().getMetrics(metrics);
 		TextView v = new TextView(parent.getContext());
-		v.setHeight((int)(0.5f * metrics.xdpi));
+		final float factor = FadeTime.timeToScaling(getItem(position).getTime());
+		v.setHeight((int)(factor * metrics.xdpi));
 		v.setWidth(metrics.widthPixels);
 		final int topColor = (0 >= position) ? Color.BLACK : getItem(position-1).getColor();
 		final int bottomColor = getItem(position).getColor();

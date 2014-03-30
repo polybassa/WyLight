@@ -56,11 +56,11 @@ public class RgbVolumeView extends LinearLayout implements OnColorChangeListener
 		i.inflate(R.layout.view_rgb_volume, this, true);
 
 		mColorStatus = (ColorView)this.findViewById(R.id.colorStatus);
-		int resId = attrib.getAttributeResourceValue("http://schemas.android.com/apk/res-auto", "text",  0);
+		int resId = attrib.getAttributeResourceValue("http://schemas.android.com/apk/res/android", "text",  0);
 		try {
 			mColorStatus.setText(context.getResources().getString(resId));
 		} catch (Resources.NotFoundException e) {
-			mColorStatus.setText(attrib.getAttributeValue("http://schemas.android.com/apk/res-auto", "text"));
+			mColorStatus.setText(attrib.getAttributeValue("http://schemas.android.com/apk/res/android", "text"));
 		}
 		mRedStatus = (ColorView)this.findViewById(R.id.redStatus);
 		mGreenStatus = (ColorView)this.findViewById(R.id.greenStatus);

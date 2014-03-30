@@ -230,10 +230,22 @@ namespace WyLight {
 			return fadeCommand->argb();
 		}
 
+		jint Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_getFadeTime(JNIEnv *env, jobject ref, jlong pNative)
+		{
+			auto fadeCommand = reinterpret_cast<const FwCmdSetFade *>(pNative);
+			return fadeCommand->fadeTime();
+		}
+
 		void Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_setFadeColor(JNIEnv *env, jobject ref, jlong pNative, jint argb)
 		{
 			auto fadeCommand = reinterpret_cast<FwCmdSetFade *>(pNative);
 			fadeCommand->argb(argb);
+		}
+
+		void Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_setFadeTime(JNIEnv *env, jobject ref, jlong pNative, jshort tmms)
+		{
+			auto fadeCommand = reinterpret_cast<FwCmdSetFade *>(pNative);
+			fadeCommand->fadeTime(tmms);
 		}
 
 		jstring Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_getToken(JNIEnv *env, jobject ref, jlong pNative, jint argb)

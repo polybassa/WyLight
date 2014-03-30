@@ -42,7 +42,7 @@
         android:layout_margin="20dp"
         android:layout_below="@id/blueVolume"
         android:layout_centerHorizontal="true"
-        custom:text="0%"
+        android:text="@string/percent_zero"
         custom:showText="true" />
     <biz.bruenn.WyLight.view.ColorView
         android:id="@+id/redStatus"
@@ -51,7 +51,7 @@
         android:layout_margin="20dp"
         android:layout_below="@id/blueVolume"
         android:layout_toLeftOf="@id/greenStatus"
-        custom:text="0%"
+        android:text="@string/percent_zero"
         custom:showText="true" />
     <biz.bruenn.WyLight.view.ColorView
         android:id="@+id/blueStatus"
@@ -60,6 +60,6 @@
         android:layout_margin="20dp"
         android:layout_below="@id/blueVolume"
         android:layout_toRightOf="@id/greenStatus"
-        custom:text="0%"
+        android:text="@string/percent_zero"
         custom:showText="true" />
 </RelativeLayout>

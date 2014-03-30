@@ -7,10 +7,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SeekBar;
 
 public class EditCommandActivity extends Activity {
 	
 	private int mColor;
+	private Button mTimeStatus;
+	private SeekBar mTime;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,8 @@ public class EditCommandActivity extends Activity {
 		rgb.onColorChanged(null, mColor);
 		rgb.setOnStatusClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				final int fadeTmms = FadeTime.indexToTmms(mTime.getProgress());
+				getIntent().putExtra(EditScriptActivity.ITEM_TIME, fadeTmms);
 				setResult(mColor, getIntent());
 				finish();
 			}
@@ -29,6 +34,23 @@ public class EditCommandActivity extends Activity {
 		rgb.setOnColorChangedListener(new RgbVolumeView.OnColorChangeListener() {
 			public void onColorChanged(int color) {
 				mColor = color;
+			}
+		});
+		mTimeStatus = (Button)findViewById(R.id.timeStatus);
+		mTime = (SeekBar)findViewById(R.id.timeVolume);
+		mTime.setMax(FadeTime.getMaxIndex());
+		mTime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+			}
+
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+			}
+
+			public void onProgressChanged(SeekBar seekBar, int progress,
+					boolean fromUser) {
+				mTimeStatus.setText(Integer.toString(progress));
 			}
 		});
     }

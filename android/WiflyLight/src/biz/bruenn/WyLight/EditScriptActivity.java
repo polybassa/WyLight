@@ -1,6 +1,7 @@
 package biz.bruenn.WyLight;
 
 import biz.bruenn.WyLight.R;
+import biz.bruenn.WyLight.library.FwCmdScriptAdapter;
 import biz.bruenn.WyLight.library.ScriptAdapter;
 import biz.bruenn.WyLight.library.ScriptManagerAdapter;
 import android.app.Activity;
@@ -18,6 +19,7 @@ public class EditScriptActivity extends Activity {
 	public static final int DO_DELETE = -1;
 	public static final String ITEM_COLOR = "ITEM_COLOR";
 	public static final String ITEM_POSITION = "ITEM_POSITION";
+	public static final String ITEM_TIME = "ITEM_TIME";
 	public static final String NATIVE_SCRIPT = "NATIVE_SCRIPT";
 
 	private ListView mCommandList;
@@ -27,7 +29,10 @@ public class EditScriptActivity extends Activity {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(null != data) {
 			final int position = data.getIntExtra(ITEM_POSITION, 0);
-			mScript.getItem(position).setColor(resultCode);
+			final int time = data.getIntExtra(ITEM_TIME, 0);
+			final FwCmdScriptAdapter cmd = mScript.getItem(position);
+			cmd.setColor(resultCode);
+			cmd.setTime((short)time);
 			mScript.notifyDataSetChanged();
 			new ScriptManagerAdapter(getBaseContext()).save(mScript);
 		}

@@ -18,6 +18,7 @@
     <string name="passphrase_description">WPA2 passphrase:</string>
     <string name="passphrase_hint">1&#8211;63 characters</string>
     <string name="passphrase_toggle">Show passphrase</string>
+    <string name="percent_zero">0%</string>
     <string name="save">Save</string>
     <string name="scan">Scan</string>
     <string name="scanning">Scanning&#8230;</string>
@@ -31,7 +32,7 @@
     <string name="set_loopoff">Loop off</string>
     <string name="softap_toggle">SoftAP (not recommended)</string>
     <string name="ssid_description">Network-SSID:</string>
-    <string name="ssid_hint">1-32 characters</string>
+    <string name="ssid_hint">1&#8211;32 characters</string>
     <string name="status_bad">Status bad</string>
     <string name="status_good">Status good</string>
     <string name="title_activity_edit_command">Edit command</string>

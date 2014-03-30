@@ -244,6 +244,14 @@ namespace WyLight {
 			mReqFrame.data.set_fade.blue = (uint8_t)argb;
 		};
 
+		uint16_t fadeTime(void) const {
+			return ntohs(mReqFrame.data.set_fade.fadeTmms);
+		};
+
+		void fadeTime(uint16_t tmms) {
+			mReqFrame.data.set_fade.fadeTmms = htons(tmms);
+		};
+
 		std::ostream& Write(std::ostream& out, size_t& indentation) const override {
 			FwCmdScript::Write(out, indentation) << TOKEN << ' ';
 			return mReqFrame.data.set_fade.Write(out, indentation);
