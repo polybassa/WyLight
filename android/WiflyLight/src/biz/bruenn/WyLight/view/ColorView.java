@@ -24,8 +24,9 @@ public class ColorView extends RelativeLayout {
 		mText = (TextView)v.findViewById(R.id.colorField);
 		mColorStatus = (GradientDrawable) mText.getBackground();
 		mShowText = attrib.getAttributeBooleanValue("http://schemas.android.com/apk/res-auto", "showText", false);
-		final int color = attrib.getAttributeIntValue("http://schemas.android.com/apk/res-auto", "color", Color.WHITE);
+		final int color = attrib.getAttributeIntValue("http://schemas.android.com/apk/res-auto", "color", Color.BLACK);
 		setColor(color);
+		setText(attrib.getAttributeValue("http://schemas.android.com/apk/res-auto", "text"));
 	}
 
 	public int getColor() {

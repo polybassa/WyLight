@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="biz.bruenn.WyLight.view.ColorView">
         <attr name="color" format="integer" />
+        <attr name="text" format="string" />
         <attr name="showText" format="boolean" />
     </declare-styleable>
 </resources>

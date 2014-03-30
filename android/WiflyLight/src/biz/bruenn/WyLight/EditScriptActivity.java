@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 public class EditScriptActivity extends Activity {
 	public static final int DO_DELETE = -1;
+	public static final String ITEM_COLOR = "ITEM_COLOR";
 	public static final String ITEM_POSITION = "ITEM_POSITION";
 	public static final String NATIVE_SCRIPT = "NATIVE_SCRIPT";
 
@@ -45,6 +46,7 @@ public class EditScriptActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View v, int position,
 					long id) {
 				Intent i = new Intent(v.getContext(), EditCommandActivity.class);
+				i.putExtra(ITEM_COLOR, mScript.getItem(position).getColor());
 				i.putExtra(ITEM_POSITION, position);
 				startActivityForResult(i, 0);
 			}
