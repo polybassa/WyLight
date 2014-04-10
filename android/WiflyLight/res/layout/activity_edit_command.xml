@@ -8,22 +8,17 @@
         android:layout_height="0dp"
         android:layout_width="fill_parent"
         android:layout_weight="4"
-        android:text="@string/save"
-    />
-    <LinearLayout
+        android:text="@string/save" />
+    <TextView
+        android:id="@+id/timeStatus"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal" />
+    <SeekBar
+        android:id="@+id/timeVolume"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:orientation="horizontal" >
-        <Button
-            android:id="@+id/timeStatus"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content" />
-        <SeekBar
-            android:id="@+id/timeVolume"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="40dp"
-            android:max="10" />
-    </LinearLayout>
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="20dp"
+        android:max="10" />
 </LinearLayout>

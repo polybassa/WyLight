@@ -6,13 +6,13 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 public class EditCommandActivity extends Activity {
 	
 	private int mColor;
-	private Button mTimeStatus;
+	private TextView mTimeStatus;
 	private SeekBar mTime;
 
     @Override
@@ -36,7 +36,7 @@ public class EditCommandActivity extends Activity {
 				mColor = color;
 			}
 		});
-		mTimeStatus = (Button)findViewById(R.id.timeStatus);
+		mTimeStatus = (TextView)findViewById(R.id.timeStatus);
 		mTime = (SeekBar)findViewById(R.id.timeVolume);
 		mTime.setMax(FadeTime.getMaxIndex());
 		mTime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -50,10 +50,15 @@ public class EditCommandActivity extends Activity {
 
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
-				mTimeStatus.setText(Integer.toString(progress));
+				updateTimeStatus(progress);
 			}
 		});
 		final int time = getIntent().getIntExtra(EditScriptActivity.ITEM_TIME, 0);
 		mTime.setProgress(FadeTime.timeToIndex(time));
+		updateTimeStatus(mTime.getProgress());
+    }
+
+    private void updateTimeStatus(int duration) {
+		mTimeStatus.setText("Duration: " + Integer.toString(duration) + " sec");
     }
 }
