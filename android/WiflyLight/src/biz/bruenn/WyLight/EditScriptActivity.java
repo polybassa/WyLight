@@ -1,6 +1,6 @@
 package biz.bruenn.WyLight;
 
-import biz.bruenn.WyLight.R;
+import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.library.FwCmdScriptAdapter;
 import biz.bruenn.WyLight.library.ScriptAdapter;
 import biz.bruenn.WyLight.library.ScriptManagerAdapter;

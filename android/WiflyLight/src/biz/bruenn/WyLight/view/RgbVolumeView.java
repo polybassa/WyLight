@@ -1,6 +1,6 @@
 package biz.bruenn.WyLight.view;
 
-import biz.bruenn.WyLight.R;
+import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.OnColorChangeListener;
 import android.content.Context;
 import android.content.res.Resources;

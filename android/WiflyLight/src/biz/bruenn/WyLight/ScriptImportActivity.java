@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import biz.bruenn.WyLight.R;
+import biz.bruenn.WiflyLight.R;
 
 import android.database.Cursor;
 import android.net.Uri;

@@ -2,7 +2,7 @@ package biz.bruenn.WyLight.library;
 
 import java.util.List;
 
-import biz.bruenn.WyLight.R;
+import biz.bruenn.WiflyLight.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;

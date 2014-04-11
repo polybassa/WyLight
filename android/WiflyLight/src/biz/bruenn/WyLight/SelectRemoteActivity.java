@@ -2,9 +2,9 @@ package biz.bruenn.WyLight;
 
 import java.util.ArrayList;
 
-import biz.bruenn.WyLight.R;
-import biz.bruenn.WyLight.R.id;
-import biz.bruenn.WyLight.R.string;
+import biz.bruenn.WiflyLight.R;
+import biz.bruenn.WiflyLight.R.id;
+import biz.bruenn.WiflyLight.R.string;
 import biz.bruenn.WyLight.library.Endpoint;
 import biz.bruenn.WyLight.library.EndpointAdapter;
 import android.app.Activity;
