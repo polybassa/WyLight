@@ -74,6 +74,10 @@ public class EditScriptActivity extends Activity {
 				mScript.addFade(Color.WHITE, 0xffffffff, (short)500);
 				new ScriptManagerAdapter(getBaseContext()).save(mScript);
 				return true;
+			case R.id.action_add_gradient:
+				mScript.addGradient(Color.RED, Color.GREEN, (short)500);
+				new ScriptManagerAdapter(getBaseContext()).save(mScript);
+				return true;
 			case R.id.action_delete:
 				Activity a = (null == getParent()) ? this : getParent();
 				a.setResult(EditScriptActivity.DO_DELETE, getIntent());

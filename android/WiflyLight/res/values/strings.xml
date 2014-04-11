@@ -2,6 +2,7 @@
 <resources>
 
     <string name="action_add">Add</string>
+    <string name="action_add_gradient">Add gradient</string>
     <string name="action_delete">Delete</string>
     <string name="action_stop">Stop</string>
     <string name="app_name">WyLight</string>

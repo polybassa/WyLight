@@ -236,6 +236,19 @@ namespace WyLight {
 			return fadeCommand->fadeTime();
 		}
 
+		/**
+		 * Read both gradient colors in a single step. Both 24 bit values
+		 * are encoded into a single 64 jlong. The gradient start color
+		 * is at bits [0..31] and the gradient end color is at [32..63]
+		 * of the return value.
+		 */
+		jlong Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_getGradientColors(JNIEnv *env, jobject ref, jlong pNative)
+		{
+			auto cmd = reinterpret_cast<const FwCmdSetGradient *>(pNative);
+			uint64_t dualColor = ((uint64_t)cmd->EndColor()) << 32 | cmd->StartColor();
+			return dualColor;
+		}
+
 		void Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_setFadeColor(JNIEnv *env, jobject ref, jlong pNative, jint argb)
 		{
 			auto fadeCommand = reinterpret_cast<FwCmdSetFade *>(pNative);
@@ -254,9 +267,20 @@ namespace WyLight {
 			return env->NewStringUTF(command->TOKEN.data());
 		}
 
+		jchar Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_getType(JNIEnv *env, jobject ref, jlong pNative)
+		{
+			auto command = reinterpret_cast<FwCommand*>(pNative);
+			return command->GetType();
+		}
+
 		void Java_biz_bruenn_WyLight_library_ScriptAdapter_addFade(JNIEnv *env, jobject ref, jlong pNative, jint argb, jint addr, jshort fadeTime)
 		{
 			reinterpret_cast<Script *>(pNative)->push_back(std::unique_ptr<FwCmdScript>(new FwCmdSetFade(argb, fadeTime, addr)));
+		}
+
+		void Java_biz_bruenn_WyLight_library_ScriptAdapter_addGradient(JNIEnv *env, jobject ref, jlong pNative, jint argb_1, jint argb_2, jshort fadeTime)
+		{
+			reinterpret_cast<Script *>(pNative)->push_back(std::unique_ptr<FwCmdScript>(new FwCmdSetGradient(argb_1, argb_2, fadeTime)));
 		}
 
 		void Java_biz_bruenn_WyLight_library_ScriptAdapter_clear(JNIEnv *env, jobject ref, jlong pNative)
