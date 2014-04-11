@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
 
-import biz.bruenn.WyLight.R;
+import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.ControlFragment.WiflyControlProvider;
 import biz.bruenn.WyLight.exception.ConnectionTimeout;
 import biz.bruenn.WyLight.exception.FatalError;

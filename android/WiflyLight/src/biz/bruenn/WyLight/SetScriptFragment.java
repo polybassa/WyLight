@@ -3,7 +3,7 @@ package biz.bruenn.WyLight;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import biz.bruenn.WyLight.R;
+import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.library.ScriptAdapter;
 import biz.bruenn.WyLight.library.ScriptManagerAdapter;
 import android.content.Intent;

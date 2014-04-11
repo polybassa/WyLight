@@ -2,7 +2,7 @@ package biz.bruenn.WyLight;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import biz.bruenn.WyLight.R;
+import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.view.ColorView;
 
 import android.graphics.Color;
