@@ -8,6 +8,7 @@ public class FwCmdScriptAdapter {
 	private native String getToken(long pNative);
 	private native char getType(long pNative);
 	private native int setFadeColor(long pNative, int argb);
+	private native int setGradientColors(long pNative, int startArgb, int endArgb);
 	private native int setFadeTime(long pNative, short time);
 	
 	private final long mNative;
@@ -61,6 +62,12 @@ public class FwCmdScriptAdapter {
 	public void setColor(int argb) {
 		if(0 != mNative) {
 			setFadeColor(mNative, argb);
+		}
+	}
+
+	public void setGradientColors(int startArgb, int endArgb) {
+		if(0 != mNative) {
+			setGradientColors(mNative, startArgb, endArgb);
 		}
 	}
 

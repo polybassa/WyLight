@@ -2,6 +2,7 @@ package biz.bruenn.WyLight;
 
 import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.library.FwCmdScriptAdapter;
+import biz.bruenn.WyLight.library.FwCmdScriptAdapter.Type;
 import biz.bruenn.WyLight.library.ScriptAdapter;
 import biz.bruenn.WyLight.library.ScriptManagerAdapter;
 import android.app.Activity;
@@ -18,6 +19,7 @@ import android.widget.ListView;
 public class EditScriptActivity extends Activity {
 	public static final int DO_DELETE = -1;
 	public static final String ITEM_COLOR = "ITEM_COLOR";
+	public static final String ITEM_COLORS = "ITEM_COLORS";
 	public static final String ITEM_POSITION = "ITEM_POSITION";
 	public static final String ITEM_TIME = "ITEM_TIME";
 	public static final String NATIVE_SCRIPT = "NATIVE_SCRIPT";
@@ -31,7 +33,12 @@ public class EditScriptActivity extends Activity {
 			final int position = data.getIntExtra(ITEM_POSITION, 0);
 			final int time = data.getIntExtra(ITEM_TIME, 0);
 			final FwCmdScriptAdapter cmd = mScript.getItem(position);
-			cmd.setColor(resultCode);
+			if(cmd.getType() == Type.GRADIENT) {
+				final int[] colors = data.getIntArrayExtra(ITEM_COLORS);
+				cmd.setGradientColors(colors[0], colors[1]);
+			} else {
+				cmd.setColor(resultCode);
+			}
 			cmd.setTime((short)time);
 			mScript.notifyDataSetChanged();
 			new ScriptManagerAdapter(getBaseContext()).save(mScript);
@@ -51,8 +58,14 @@ public class EditScriptActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View v, int position,
 					long id) {
 				final FwCmdScriptAdapter cmd = mScript.getItem(position);
-				Intent i = new Intent(v.getContext(), EditCommandActivity.class);
-				i.putExtra(ITEM_COLOR, cmd.getColor());
+				Intent i;
+				if(cmd.getType() == Type.GRADIENT) {
+					i = new Intent(v.getContext(), EditGradientActivity.class);
+					i.putExtra(ITEM_COLORS, cmd.getGradientColor());
+				} else {
+					i = new Intent(v.getContext(), EditCommandActivity.class);
+					i.putExtra(ITEM_COLOR, cmd.getColor());
+				}
 				i.putExtra(ITEM_POSITION, position);
 				i.putExtra(ITEM_TIME, cmd.getTime());
 				startActivityForResult(i, 0);

@@ -30,6 +30,10 @@
             android:label="@string/title_activity_edit_command" >
         </activity>
         <activity
+            android:name="biz.bruenn.WyLight.EditGradientActivity"
+            android:label="@string/title_activity_edit_gradient" >
+        </activity>
+        <activity
             android:name="biz.bruenn.WyLight.EditScriptActivity"
             android:label="@string/title_activity_edit_script" >
         </activity>

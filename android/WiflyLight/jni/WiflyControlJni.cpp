@@ -261,6 +261,13 @@ namespace WyLight {
 			fadeCommand->fadeTime(tmms);
 		}
 
+		void Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_setGradientColors(JNIEnv *env, jobject ref, jlong pNative, jint startArgb, jint endArgb)
+		{
+			auto cmd = reinterpret_cast<FwCmdSetGradient *>(pNative);
+			cmd->StartColor(startArgb);
+			cmd->EndColor(endArgb);
+		}
+
 		jstring Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_getToken(JNIEnv *env, jobject ref, jlong pNative, jint argb)
 		{
 			auto command = reinterpret_cast<FwCmdSetFade *>(pNative);

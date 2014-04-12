@@ -39,6 +39,10 @@ public class ColorView extends RelativeLayout {
 		mText.setTextColor(0xff000000 | ~color);
 	}
 
+	public void setGradient(GradientDrawable d) {
+		mText.setBackgroundDrawable(d);
+	}
+
 	public void setText(String text) {
 		if(mShowText) {
 			mText.setText(text);

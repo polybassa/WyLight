@@ -291,8 +291,21 @@ namespace WyLight {
 		uint32_t StartColor(void) const {
 			return FwCommand::argb(mReqFrame.data.set_gradient.red_1, mReqFrame.data.set_gradient.green_1, mReqFrame.data.set_gradient.blue_1);
 		};
+
+		void StartColor(uint32_t argb) {
+			mReqFrame.data.set_gradient.red_1 = (uint8_t)(argb >> 16);
+			mReqFrame.data.set_gradient.green_1 = (uint8_t)(argb >> 8);
+			mReqFrame.data.set_gradient.blue_1 = (uint8_t)argb;
+		};
+
 		uint32_t EndColor(void) const {
 			return FwCommand::argb(mReqFrame.data.set_gradient.red_2, mReqFrame.data.set_gradient.green_2, mReqFrame.data.set_gradient.blue_2);
+		};
+
+		void EndColor(uint32_t argb) {
+			mReqFrame.data.set_gradient.red_2 = (uint8_t)(argb >> 16);
+			mReqFrame.data.set_gradient.green_2 = (uint8_t)(argb >> 8);
+			mReqFrame.data.set_gradient.blue_2 = (uint8_t)argb;
 		};
 
 		std::ostream& Write(std::ostream& out, size_t& indentation) const override {
