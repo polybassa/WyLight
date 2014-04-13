@@ -3,12 +3,16 @@ package biz.bruenn.WyLight.library;
 import biz.bruenn.WyLight.FadeTime;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.CornerPathEffect;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ScriptAdapter extends BaseAdapter {
@@ -100,6 +104,35 @@ public class ScriptAdapter extends BaseAdapter {
 		d.setCornerRadius(30);
 		v.setBackgroundDrawable(d);
 		return v;
+	}
+
+	public View getView(Context context) {
+		WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+		DisplayMetrics metrics = new DisplayMetrics();
+		wm.getDefaultDisplay().getMetrics(metrics);
+		final int count = getCount();
+		final int height = (int)(0.5f * metrics.xdpi);
+		if (count > 0) {
+			final int width = metrics.widthPixels / count;
+			LinearLayout l = new LinearLayout(context);
+			l.setOrientation(LinearLayout.HORIZONTAL);
+			int lastColor = Color.BLACK;
+			for (int i = 0; i < count; ++i) {
+				FwCmdScriptAdapter item = getItem(i);
+				l.addView(item.getView(context, width, height, lastColor));
+				lastColor = item.getColor();
+			}
+			ShapeDrawable background = new ShapeDrawable();
+			background.setShape(new RectShape());
+			background.getPaint().setPathEffect(new CornerPathEffect(100));
+			l.setBackgroundDrawable(background);
+			return l;
+		}
+		TextView empty = new TextView(context);
+		empty.setHeight(height);
+		empty.setWidth(metrics.widthPixels);
+		empty.setBackgroundColor(Color.BLACK);
+		return empty;
 	}
 
 	private GradientDrawable getFadeBackground(FwCmdScriptAdapter item, final int position) {

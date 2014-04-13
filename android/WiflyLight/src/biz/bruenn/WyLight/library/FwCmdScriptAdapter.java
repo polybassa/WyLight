@@ -1,5 +1,11 @@
 package biz.bruenn.WyLight.library;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.view.View;
+import android.widget.TextView;
+
 public class FwCmdScriptAdapter {
 
 	private native int getFadeColor(long pNative);
@@ -25,6 +31,13 @@ public class FwCmdScriptAdapter {
 	
 	public int getColor() {
 		if(0 != mNative) {
+			if(getType() == Type.GRADIENT) {
+				final int[] colors = getGradientColor();
+				final int r = Color.red(colors[0]) + Color.red(colors[1]);
+				final int g = Color.green(colors[0]) + Color.green(colors[1]);
+				final int b = Color.blue(colors[0]) + Color.blue(colors[1]);
+				return Color.rgb(r/2, g/2, b/2);
+			}
 			return getFadeColor(mNative);
 		}
 		return 0;
@@ -57,6 +70,21 @@ public class FwCmdScriptAdapter {
 			}
 		}
 		return Type.UNKOWN;
+	}
+
+	public View getView(Context context, int width, int height, int colorNeighbor) {
+		final TextView v = new TextView(context);
+		final GradientDrawable d;
+		if (getType() == Type.GRADIENT) {
+			d = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, getGradientColor());
+		} else {
+			final int[] colors = new int[] {colorNeighbor, getColor()};
+			d = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
+		}
+		v.setBackgroundDrawable(d);
+		v.setWidth(width);
+		v.setHeight(height);
+		return v;
 	}
 
 	public void setColor(int argb) {

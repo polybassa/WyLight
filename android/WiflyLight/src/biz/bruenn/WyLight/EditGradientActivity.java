@@ -2,7 +2,6 @@ package biz.bruenn.WyLight;
 
 import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.view.RgbGradientView;
-import biz.bruenn.WyLight.view.RgbVolumeView;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
