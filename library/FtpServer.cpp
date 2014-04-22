@@ -331,18 +331,21 @@ namespace WyLight {
 		
 		//blocking accept here !!
 		tempDataSock = accept(mClientDataSock, reinterpret_cast<struct sockaddr *>(&clientAddr), &clientAddrLen);
-
+		
 		if (tempDataSock == -1) {
+			killThread.join();
 			throw FatalError("Invalid Data Socket");
 		}
 		
 		if (ntohl(clientAddr.sin_addr.s_addr) == 2130706433) {
+			killThread.join();
 			throw FatalError("Timeout occured, unblocked accept by killThread!! ");
 		}
 		
 		for (bytesRead = 0; bytesRead < length - sizeof(buffer); bytesRead = bytesRead + sizeof(buffer)) {
 			file.read((char*)buffer, sizeof(buffer));
 			if (!file) {
+				killThread.join();
 				close(tempDataSock);
 				throw FatalError("Error in Filestream occured");
 			}
@@ -351,12 +354,14 @@ namespace WyLight {
 		
 		file.read((char*)buffer, length - bytesRead);
 		if (!file) {
+			killThread.join();
 			close(tempDataSock);
 			throw FatalError("Error in Filestream occured");
 		}
 		
 		Send(buffer, length - bytesRead, tempDataSock);
 
+		killThread.join();
 		close(tempDataSock);
 	}
 	
