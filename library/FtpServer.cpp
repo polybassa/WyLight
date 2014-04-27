@@ -185,7 +185,7 @@ namespace WyLight {
 							
 				//FIXME: static filename only for debugging
 				//fileName = "/Users/nilsweiss/Dropbox/Wifly_Light/FtpUpdateServer/public/wifly7-400.mif";
-				fileName = "/home/gpb/workspace/Wifly_Light/rn171_fw/wifly7-441.mif";
+				fileName = "./rn171_fw/wifly7-441.mif";
 				
 				std::ifstream file(fileName, std::ios::in | std::ios::binary);
 				

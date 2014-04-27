@@ -13,9 +13,10 @@ get $FILENAME
 SCRIPT
 killall $SERVER
 diff $FILENAME ./rn171_fw/$FILENAME
-rm -f $FILENAME
 if [ $? != 0 ] ; then
 	echo "          ./library/FtpServer_ut.bin run  1 Tests ( 0 skipped |  1 errors)"
+	rm -f $FILENAME
 	exit 1
 fi
 echo "          ./library/FtpServer_ut.bin run  1 Tests ( 0 skipped |  0 errors)"
+rm -f $FILENAME
