@@ -79,15 +79,15 @@ namespace WyLight {
 	TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError)
 		: ClientSocket(addr, port, SOCK_STREAM)
 	{
-		int yes = 1;
+		const int yes = 1;
 		//optional, steal port if necessary
-		if(0 != setsockopt(mSock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int))) {
+		if(0 != setsockopt(mSock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes))) {
 			throw FatalError("setsockopt() failed");
 		}
 		
 		//disable nagle algorithm
-		int flag = 1;
-		const int result_disableNagle = setsockopt(mSock, IPPROTO_TCP, TCP_NODELAY, (char *) &flag,	sizeof(int));
+		const int flag = 1;
+		const int result_disableNagle = setsockopt(mSock, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(flag));
 		if (result_disableNagle < 0) {
 			throw ConnectionLost("connect() failed can't disable nagle algorithm", addr, port);
 		}

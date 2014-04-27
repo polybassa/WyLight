@@ -35,7 +35,7 @@ namespace WyLight {
 	
 	static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-	static const timeval RESPONSE_TIMEOUT = {5, 0}; // three seconds timeout for fragmented responses from pic
+	static const timeval RESPONSE_TIMEOUT = {5, 0};
 	
 	FtpServer::FtpServer(void) throw (FatalError) : mServerSock(socket(AF_INET, SOCK_STREAM, 0)), mServerSockAddr(INADDR_ANY, FTP_PORT)
 	{
@@ -263,7 +263,7 @@ namespace WyLight {
 							
 				//FIXME: static filename only for debugging
 				//fileName = "/Users/nilsweiss/Dropbox/Wifly_Light/FtpUpdateServer/public/wifly7-400.mif";
-				fileName = "/home/gpb/workspace/Wifly_Light/wifly7-441.mif";
+				fileName = "/home/gpb/workspace/Wifly_Light/rn171_fw/wifly7-400.mif";
 				
 				std::ifstream file(fileName, std::ios::in | std::ios::binary);
 				
@@ -290,12 +290,17 @@ namespace WyLight {
 				return;
 				
 			} else {
+#define HAVE_MERCY 1
+#if HAVE_MERCY
+				this->Send("150 Command not supported.\r\n", mClientSock);
+#else
 				this->Send("150 Command not supported. Good Bye.\r\n", mClientSock);
 				if (mClientDataSock != -1) {
 					close(mClientDataSock);
 					mClientDataSock = -1;
 				}
 				return;
+#endif
 			}
 		}
 	}
@@ -303,7 +308,7 @@ namespace WyLight {
 	void FtpServer::transferDataPassive(std::ifstream& file) const throw(FatalError) {
 		size_t bytesRead = 0;
 		uint8_t buffer[2048];
-		
+
 		file.seekg(0, file.end);
 		int length = (int)file.tellg();
         file.seekg(0, file.beg);
@@ -338,10 +343,12 @@ namespace WyLight {
 			throw FatalError("Invalid Data Socket");
 		}
 		
+#if 0 //Disabled to allow localhost connections
 		if (ntohl(clientAddr.sin_addr.s_addr) == 2130706433) {
 			killThread.join();
 			throw FatalError("Timeout occured, unblocked accept by killThread!! ");
 		}
+#endif
 		
 		for (bytesRead = 0; bytesRead < length - sizeof(buffer); bytesRead = bytesRead + sizeof(buffer)) {
 			file.read((char*)buffer, sizeof(buffer));

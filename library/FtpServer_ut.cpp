@@ -31,10 +31,7 @@ size_t ut_FtpServer_Test(void)
 	WyLight::FtpServer testee;
 	char test;
 	std::cin >> test;
-		
-	
-	
-	
+
 	CHECK('x' == 1);
 	TestCaseEnd();
 }
@@ -43,8 +40,9 @@ int main (int argc, const char *argv[])
 {
 	
 	WyLight::FtpServer testee;
-	char test;
-	std::cin >> test;
+	while(1){
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+	}
 	
 	/*
 	UnitTestMainBegin();
