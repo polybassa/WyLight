@@ -108,7 +108,7 @@ namespace WyLight {
 		TcpSocket(int listenSocket) throw (ConnectionLost, FatalError);
 
 		//TODO REMOVE THIS HACK!!!! ITS NOT SUPPOSED TO SURVIVE THE FTP REFACTORING!
-		int GetSocket() { return mSock; };
+		int GetSocket() const { return mSock; };
 
 		/**
 		 * Create a new TCP socket with connect()
@@ -133,6 +133,13 @@ namespace WyLight {
 		 * @see ClientSocket#Send
 		 */
 		virtual size_t Send(const uint8_t *frame, size_t length) const;
+
+		/**
+		 * Wrapper to TcpSocket#Send(const uint8_t *frame, size_t length)
+		 */
+		size_t Send(const std::string& msg) const {
+			return Send(reinterpret_cast<const uint8_t*>(msg.data()), msg.length());
+		}
 	};
 
 /**

@@ -44,22 +44,13 @@ namespace WyLight {
 		~FtpServer(void);
 				
 	private:
-		void handleFiletransfer(int socket);
-		void openDataConnection(const int mClientSock) throw(FatalError);
+		void handleFiletransfer(const TcpSocket& telnet);
+		void openDataConnection(const TcpSocket& telnet) throw(FatalError);
 		void transferDataPassive(std::ifstream& file) const throw(FatalError);
 
-		/**
-		 * Receive data from the remote socket.
-		 * @param pBuffer to store the read data
-		 * @param length size of the pBuffer
-		 * @return number of bytes read into \<pBuffer\>
-		 * @throw FatalError if something very unexpected happens
-		 */
-		size_t Recv(uint8_t *pBuffer, size_t length, const int mClientSock) const throw(FatalError);
-				
 		size_t Send(const void *frame, const size_t length, const int& socket) const throw(FatalError);
 		size_t Send(const std::string& message, const int& socket) const throw (FatalError);
-		
+
 		bool Select(timeval *timeout, const int mClientSock) const throw (FatalError);
 		
 		bool mFtpServerRunning = true;
