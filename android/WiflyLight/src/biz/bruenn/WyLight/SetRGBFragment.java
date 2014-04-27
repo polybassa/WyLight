@@ -8,11 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import biz.bruenn.WiflyLight.R;
-import biz.bruenn.WyLight.view.RgbVolumeView;
+import biz.bruenn.WyLight.view.RgbGradientView;
 
 public class SetRGBFragment extends ControlFragment implements ViewTreeObserver.OnGlobalLayoutListener {
 	AtomicBoolean mChangeIsInProgress = new AtomicBoolean(false);
-	private RgbVolumeView mRGB = null;
+	private RgbGradientView mRGB = null;
 
 	@Override
 	public int getIcon() {
@@ -25,12 +25,12 @@ public class SetRGBFragment extends ControlFragment implements ViewTreeObserver.
 		View view = inflater.inflate(R.layout.fragment_set_rgb, group, false);
 		view.getViewTreeObserver().addOnGlobalLayoutListener(this);
 
-		mRGB = (RgbVolumeView)view.findViewById(R.id.rgb_volume);
-		mRGB.setOnColorChangedListener(new RgbVolumeView.OnColorChangeListener() {
-			public void onColorChanged(int argb) {
+		mRGB = (RgbGradientView)view.findViewById(R.id.rgb_volume);
+		mRGB.setOnColorChangedListener(new RgbGradientView.OnColorChangeListener() {
+			public void onColorChanged(int[] argb) {
 
 				if(!mChangeIsInProgress.getAndSet(true)) {
-					mProvider.setColor(argb);
+					mProvider.setColor(argb[0]);
 					mChangeIsInProgress.set(false);
 				}
 			}

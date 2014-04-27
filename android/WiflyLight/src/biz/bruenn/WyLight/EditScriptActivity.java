@@ -37,7 +37,8 @@ public class EditScriptActivity extends Activity {
 				final int[] colors = data.getIntArrayExtra(ITEM_COLORS);
 				cmd.setGradientColors(colors[0], colors[1]);
 			} else {
-				cmd.setColor(resultCode);
+				final int[] colors = data.getIntArrayExtra(ITEM_COLORS);
+				cmd.setColor(colors[0]);
 			}
 			cmd.setTime((short)time);
 			mScript.notifyDataSetChanged();
@@ -58,13 +59,11 @@ public class EditScriptActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View v, int position,
 					long id) {
 				final FwCmdScriptAdapter cmd = mScript.getItem(position);
-				Intent i;
+				final Intent i = new Intent(v.getContext(), EditGradientActivity.class);
 				if(cmd.getType() == Type.GRADIENT) {
-					i = new Intent(v.getContext(), EditGradientActivity.class);
 					i.putExtra(ITEM_COLORS, cmd.getGradientColor());
 				} else {
-					i = new Intent(v.getContext(), EditCommandActivity.class);
-					i.putExtra(ITEM_COLOR, cmd.getColor());
+					i.putExtra(ITEM_COLORS, new int[]{cmd.getColor()});
 				}
 				i.putExtra(ITEM_POSITION, position);
 				i.putExtra(ITEM_TIME, cmd.getTime());
@@ -88,7 +87,7 @@ public class EditScriptActivity extends Activity {
 				new ScriptManagerAdapter(getBaseContext()).save(mScript);
 				return true;
 			case R.id.action_add_gradient:
-				mScript.addGradient(Color.RED, Color.GREEN, (short)500);
+				mScript.addGradient(Color.WHITE, Color.BLACK, (short)500);
 				new ScriptManagerAdapter(getBaseContext()).save(mScript);
 				return true;
 			case R.id.action_delete:

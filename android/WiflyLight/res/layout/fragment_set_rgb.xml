@@ -5,7 +5,7 @@
     android:orientation="vertical"
     tools:context=".WiflyControlActivity" >
     
-    <biz.bruenn.WyLight.view.RgbVolumeView
+    <biz.bruenn.WyLight.view.RgbGradientView
     	android:id="@+id/rgb_volume"
     	android:layout_height="0dp"
     	android:layout_width="fill_parent"

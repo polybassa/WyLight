@@ -5,7 +5,9 @@ import biz.bruenn.WyLight.view.RgbGradientView;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -27,15 +29,6 @@ public class EditGradientActivity extends Activity {
 		RgbGradientView rgb = (RgbGradientView)this.findViewById(R.id.rgb_volume);
 		rgb.setColors(mColor);
 		rgb.onColorChanged(null, mColor[0]);
-		rgb.setOnStatusClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				final int fadeTmms = FadeTime.indexToTmms(mTime.getProgress());
-				getIntent().putExtra(EditScriptActivity.ITEM_TIME, fadeTmms);
-				getIntent().putExtra(EditScriptActivity.ITEM_COLORS, mColor);
-				setResult(mColor[0], getIntent());
-				finish();
-			}
-		});
 		rgb.setOnColorChangedListener(new RgbGradientView.OnColorChangeListener() {
 			public void onColorChanged(int[] color) {
 				mColor = color;
@@ -62,6 +55,32 @@ public class EditGradientActivity extends Activity {
 		mTime.setProgress(FadeTime.timeToIndex(time));
 		updateTimeStatus(mTime.getProgress());
     }
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.edit_gradient_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+			case R.id.action_accept:
+				saveAndFinish();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	private void saveAndFinish() {
+		final int fadeTmms = FadeTime.indexToTmms(mTime.getProgress());
+		getIntent().putExtra(EditScriptActivity.ITEM_TIME, fadeTmms);
+		getIntent().putExtra(EditScriptActivity.ITEM_COLORS, mColor);
+		setResult(mColor[0], getIntent());
+		finish();
+	}
 
     private void updateTimeStatus(int duration) {
 		mTimeStatus.setText("Duration: " + Integer.toString(duration) + " sec");

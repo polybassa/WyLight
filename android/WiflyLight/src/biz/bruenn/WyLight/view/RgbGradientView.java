@@ -3,7 +3,6 @@ package biz.bruenn.WyLight.view;
 import biz.bruenn.WiflyLight.R;
 import biz.bruenn.WyLight.OnColorChangeListener;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
@@ -28,8 +27,7 @@ public class RgbGradientView extends LinearLayout implements OnColorChangeListen
 	private SeekBar mGreen;
 	private SeekBar mBlue;
 	private int mActive = 0;
-	private int[] mColors = new int[2];
-	private OnClickListener mOnSaveListener = null;
+	private int[] mColors = new int[]{Color.WHITE};
 
 	private SeekBar.OnSeekBarChangeListener mListener = new SeekBar.OnSeekBarChangeListener() {
 
@@ -44,8 +42,11 @@ public class RgbGradientView extends LinearLayout implements OnColorChangeListen
 		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 			final int color = getColor();
 			mColors[mActive] = color;
-			mColorStatus.setGradient(new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, mColors));
-			//mColorStatus.setColor(color);
+			if(1 == mColors.length) {
+				mColorStatus.setGradient(new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[] {mColors[0], mColors[0]}));
+			} else {
+				mColorStatus.setGradient(new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, mColors));
+			}
 			mRedStatus.setColor(0xffff0000 & color);
 			mRedStatus.setText(String.valueOf(Color.red(color) * 100 / 255) + '%');
 			mGreenStatus.setColor(0xff00ff00 & color);
@@ -64,12 +65,7 @@ public class RgbGradientView extends LinearLayout implements OnColorChangeListen
 		i.inflate(R.layout.view_rgb_volume, this, true);
 
 		mColorStatus = (ColorView)this.findViewById(R.id.colorStatus);
-		int resId = attrib.getAttributeResourceValue("http://schemas.android.com/apk/res/android", "text",  0);
-		try {
-			mColorStatus.setText(context.getResources().getString(resId));
-		} catch (Resources.NotFoundException e) {
-			mColorStatus.setText(attrib.getAttributeValue("http://schemas.android.com/apk/res/android", "text"));
-		}
+		enableStatusTouchable();
 		mRedStatus = (ColorView)this.findViewById(R.id.redStatus);
 		mGreenStatus = (ColorView)this.findViewById(R.id.greenStatus);
 		mBlueStatus = (ColorView)this.findViewById(R.id.blueStatus);
@@ -98,22 +94,15 @@ public class RgbGradientView extends LinearLayout implements OnColorChangeListen
 		mColors = colors;
 	}
 
-	public void setOnStatusClickListener(OnClickListener listener) {
-		mOnSaveListener = listener;
+	private void enableStatusTouchable() {
 		mColorStatus.setClickable(true);
 		mColorStatus.setOnTouchListener(new View.OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
 				if(event.getAction() == MotionEvent.ACTION_UP) {
-					final float x = event.getX() / (float)v.getWidth();
-					if(x < 0.4f) {
-						mActive = 0;
-						onColorChanged(null, mColors[mActive]);
-					} else if (x > 0.6f){
-						mActive = 1;
-						onColorChanged(null, mColors[mActive]);
-					} else {
-						mOnSaveListener.onClick(v);
-					}
+					final float sectorSize = v.getWidth() / mColors.length;
+					final int raw = (int)(event.getX() / sectorSize);
+					mActive = Math.max(0, Math.min(raw, mColors.length - 1));
+					onColorChanged(null, mColors[mActive]);
 					return true;
 				}
 				return false;
