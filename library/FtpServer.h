@@ -53,16 +53,15 @@ namespace WyLight {
 		 * Receive data from the remote socket.
 		 * @param pBuffer to store the read data
 		 * @param length size of the pBuffer
-		 * @param timeout to wait for data, to block indefinitly use NULL, which is default
 		 * @return number of bytes read into \<pBuffer\>
 		 * @throw FatalError if something very unexpected happens
 		 */
-		size_t Recv(uint8_t *pBuffer, size_t length, const int& socket) const throw(FatalError);
+		size_t Recv(uint8_t *pBuffer, size_t length) const throw(FatalError);
 				
-		size_t Send(const uint8_t *frame, const size_t length, const int& socket) const throw(FatalError);
+		size_t Send(const void *frame, const size_t length, const int& socket) const throw(FatalError);
 		size_t Send(const std::string& message, const int& socket) const throw (FatalError);
 		
-		bool Select(timeval *timeout, const int& socket) const throw (FatalError);
+		bool Select(timeval *timeout) const throw (FatalError);
 		
 		std::mutex mFtpServerRunningLock;
 		bool mFtpServerRunning;

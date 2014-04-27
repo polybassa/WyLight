@@ -36,6 +36,7 @@ namespace WyLight {
 	static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 	static const timeval RESPONSE_TIMEOUT = {5, 0};
+	static const uint32_t LOCALHOST = 2130706433;
 	
 	FtpServer::FtpServer(void) throw (FatalError) : mServerSock(socket(AF_INET, SOCK_STREAM, 0)), mServerSockAddr(INADDR_ANY, FTP_PORT)
 	{
@@ -63,7 +64,6 @@ namespace WyLight {
 			
 			while (mFtpServerRunning) {
 				Trace(ZONE_VERBOSE, "FtpServer running\n");
-				fflush(stdout);
 				sockaddr_in clientAddr;
 				socklen_t clientAddrLen = sizeof(clientAddr);
 				
@@ -71,18 +71,9 @@ namespace WyLight {
 				mClientSock = accept(mServerSock, reinterpret_cast<struct sockaddr *>(&clientAddr), &clientAddrLen);
 				
 				uint16_t port = ntohs(clientAddr.sin_port);
-				uint32_t ip = ntohl(clientAddr.sin_addr.s_addr);
-				
-				std::string message = "Client connected: "
-						   + std::to_string((ip >> 24) & 0xff) + "."
-						   + std::to_string((ip >> 16) & 0xff) + "."
-						   + std::to_string((ip >>  8) & 0xff) + "."
-						   + std::to_string((ip      ) & 0xff) + "::"
-						   + std::to_string(port) + "\r\n";
-				
-				Trace(ZONE_INFO, "%s\n", message.c_str());
-				fflush(stdout);
-				
+				char ip[INET_ADDRSTRLEN];
+				inet_ntop(AF_INET, &clientAddr.sin_addr.s_addr, ip, sizeof(ip));
+				Trace(ZONE_INFO, "Client connected: %s::%u\n", ip, port);
 				{
 					std::lock_guard<std::mutex> lock(mFtpServerRunningLock);
 					if (!mFtpServerRunning) {
@@ -97,7 +88,6 @@ namespace WyLight {
 				}
 				
 				Trace(ZONE_VERBOSE, "Starting client Thread\n");
-				fflush(stdout);
 				
 				try {
 					handleFiletransfer(mClientSock);
@@ -117,7 +107,7 @@ namespace WyLight {
 			mFtpServerRunning = false;
 		}
 
-		TcpSocket shutdownSocket(2130706433, FTP_PORT);
+		TcpSocket shutdownSocket(LOCALHOST, FTP_PORT);
 		mFtpServerThread.join();
 		
 		if (mServerSock != -1) {
@@ -133,9 +123,9 @@ namespace WyLight {
 		}
 	}
 	
-	bool FtpServer::Select(timeval *timeout, const int& socket) const throw (FatalError)
+	bool FtpServer::Select(timeval *timeout) const throw (FatalError)
 	{
-		if (socket == -1) {
+		if (mClientSock == -1) {
 			throw FatalError("Invalid Client Socket");
 			return false;
 		}
@@ -143,17 +133,17 @@ namespace WyLight {
 		/* prepare socket set for select() */
 		fd_set readSockets;
 		FD_ZERO(&readSockets);
-		FD_SET(socket, &readSockets);
+		FD_SET(mClientSock, &readSockets);
 		
 		/* wait for receive data */
-		const int selectState = select(socket + 1, &readSockets, NULL, NULL, timeout);
+		const int selectState = select(mClientSock + 1, &readSockets, NULL, NULL, timeout);
 		if(0 == selectState) {
 			Trace(ZONE_INFO, "Select timed out\n");
 			return true;
 		}
 		
 		/* and check if socket was correct */
-		if((1 != selectState) || (!FD_ISSET(socket, &readSockets))) {
+		if((1 != selectState) || (!FD_ISSET(mClientSock, &readSockets))) {
 			throw FatalError("something strange happen in select() called by TcpSocket::Recv()");
 		}
 		return false;
@@ -169,7 +159,7 @@ namespace WyLight {
 		
 		while (true) {
 			
-			if ( (bytesRead = this->Recv(reinterpret_cast<uint8_t *>(buffer), sizeof(buffer), mClientSock)) == 0) {
+			if ( (bytesRead = this->Recv(reinterpret_cast<uint8_t *>(buffer), sizeof(buffer))) == 0) {
 				throw FatalError("FtpServer: read error: " + std::to_string(errno));
 			}
 			
@@ -330,7 +320,7 @@ namespace WyLight {
 
 				//shutting down if no accept happend
 				if (tempDataSock == -1) {
-					TcpSocket shutdownSocket(2130706433, port);
+					TcpSocket shutdownSocket(LOCALHOST, port);
 				}
 			}
 		});
@@ -344,7 +334,7 @@ namespace WyLight {
 		}
 		
 #if 0 //Disabled to allow localhost connections
-		if (ntohl(clientAddr.sin_addr.s_addr) == 2130706433) {
+		if (ntohl(clientAddr.sin_addr.s_addr) == LOCALHOST) {
 			killThread.join();
 			throw FatalError("Timeout occured, unblocked accept by killThread!! ");
 		}
@@ -413,24 +403,23 @@ namespace WyLight {
 		}
 	}
 	
-	size_t FtpServer::Recv(uint8_t *pBuffer, size_t length, const int& socket) const throw(FatalError)	{
+	size_t FtpServer::Recv(uint8_t *pBuffer, size_t length) const throw(FatalError)	{
 		timeval mTimeout;
 		memcpy(&mTimeout, &RESPONSE_TIMEOUT, sizeof(RESPONSE_TIMEOUT));
 		
-		if (socket != -1) {
-			return FtpServer::Select(&mTimeout, socket) ? 0 : read(socket, pBuffer, length);
+		if (mClientSock != -1) {
+			return FtpServer::Select(&mTimeout) ? 0 : read(mClientSock, pBuffer, length);
 		}
 		else {
 			throw FatalError("Invalid Client Socket");
-			return 0;
 		}
 	}
 	
 	size_t FtpServer::Send(const std::string &message, const int& socket) const throw (FatalError){
-		return this->Send(reinterpret_cast<const uint8_t *>(message.data()), message.length(), socket);
+		return this->Send(message.data(), message.length(), socket);
 	}
 	
-	size_t FtpServer::Send(const uint8_t *frame, const size_t length, const int& socket) const throw(FatalError) {
+	size_t FtpServer::Send(const void *frame, const size_t length, const int& socket) const throw(FatalError) {
 		if (socket != -1) {
 			//TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending on socket 0x%04x, %zu bytes: ", mClientSock, length);
 			const ssize_t result = write(socket, frame, length);
