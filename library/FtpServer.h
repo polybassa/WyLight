@@ -46,7 +46,7 @@ namespace WyLight {
 				
 	private:
 		void handleFiletransfer(int socket);
-		void openDataConnection(void) throw(FatalError);
+		void openDataConnection(const int mClientSock) throw(FatalError);
 		void transferDataPassive(std::ifstream& file) const throw(FatalError);
 
 		/**
@@ -56,18 +56,17 @@ namespace WyLight {
 		 * @return number of bytes read into \<pBuffer\>
 		 * @throw FatalError if something very unexpected happens
 		 */
-		size_t Recv(uint8_t *pBuffer, size_t length) const throw(FatalError);
+		size_t Recv(uint8_t *pBuffer, size_t length, const int mClientSock) const throw(FatalError);
 				
 		size_t Send(const void *frame, const size_t length, const int& socket) const throw(FatalError);
 		size_t Send(const std::string& message, const int& socket) const throw (FatalError);
 		
-		bool Select(timeval *timeout) const throw (FatalError);
+		bool Select(timeval *timeout, const int mClientSock) const throw (FatalError);
 		
 		std::mutex mFtpServerRunningLock;
 		bool mFtpServerRunning;
 		std::thread mFtpServerThread;
 		
-		int mClientSock;
 		int mClientDataSock;
 		int mServerSock;
 		WyLight::Ipv4Addr mServerSockAddr;

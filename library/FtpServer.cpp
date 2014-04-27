@@ -45,7 +45,6 @@ namespace WyLight {
 		}
 		mFtpServerRunning = 1;
 		mClientDataSock = -1;
-		mClientSock = -1;
 		
 		mFtpServerThread = std::thread([&]{
 			int yes = 1;
@@ -64,39 +63,20 @@ namespace WyLight {
 			
 			while (mFtpServerRunning) {
 				Trace(ZONE_VERBOSE, "FtpServer running\n");
-				sockaddr_in clientAddr;
-				socklen_t clientAddrLen = sizeof(clientAddr);
-				
-				//blocking accept here !!
-				mClientSock = accept(mServerSock, reinterpret_cast<struct sockaddr *>(&clientAddr), &clientAddrLen);
-				
-				uint16_t port = ntohs(clientAddr.sin_port);
-				char ip[INET_ADDRSTRLEN];
-				inet_ntop(AF_INET, &clientAddr.sin_addr.s_addr, ip, sizeof(ip));
-				Trace(ZONE_INFO, "Client connected: %s::%u\n", ip, port);
+				TcpSocket telnet(mServerSock);
 				{
 					std::lock_guard<std::mutex> lock(mFtpServerRunningLock);
 					if (!mFtpServerRunning) {
-						close(mClientSock);
-						mClientSock = -1;
 						return;
 					}
 				}
 				
-				if( mClientSock == -1 ) {
-					throw FatalError("FtpServer: accept error: " + std::to_string(errno));
-				}
-				
 				Trace(ZONE_VERBOSE, "Starting client Thread\n");
-				
 				try {
-					handleFiletransfer(mClientSock);
+					handleFiletransfer(telnet.GetSocket());
 				} catch (FatalError &e) {
 					Trace(ZONE_ERROR, "%s\n", e.what());
 				}
-				
-				close(mClientSock);
-				mClientSock = -1;
 			}
 		});
 	}
@@ -114,16 +94,12 @@ namespace WyLight {
 			close(mServerSock);
 		}
 		
-		if (mClientSock != -1) {
-			close(mClientSock);
-		}
-		
 		if (mClientDataSock != -1) {
 			close(mClientDataSock);
 		}
 	}
 	
-	bool FtpServer::Select(timeval *timeout) const throw (FatalError)
+	bool FtpServer::Select(timeval *timeout, const int mClientSock) const throw (FatalError)
 	{
 		if (mClientSock == -1) {
 			throw FatalError("Invalid Client Socket");
@@ -149,7 +125,7 @@ namespace WyLight {
 		return false;
 	}
 	
-	void FtpServer::handleFiletransfer(int socket) {
+	void FtpServer::handleFiletransfer(int mClientSock) {
 		size_t bytesRead = 0;
 		uint8_t buffer[1024];
 		std::stringstream dataInput;
@@ -159,7 +135,7 @@ namespace WyLight {
 		
 		while (true) {
 			
-			if ( (bytesRead = this->Recv(reinterpret_cast<uint8_t *>(buffer), sizeof(buffer))) == 0) {
+			if ( (bytesRead = this->Recv(reinterpret_cast<uint8_t *>(buffer), sizeof(buffer), mClientSock)) == 0) {
 				throw FatalError("FtpServer: read error: " + std::to_string(errno));
 			}
 			
@@ -218,7 +194,7 @@ namespace WyLight {
 				std::string dataType;
 				std::getline(dataInput, dataType);
 				
-				openDataConnection();
+				openDataConnection(mClientSock);
 				
 				if (mClientDataSock != -1) {
 					struct sockaddr_in sin;
@@ -363,7 +339,7 @@ namespace WyLight {
 		close(tempDataSock);
 	}
 	
-	void FtpServer::openDataConnection(void) throw(FatalError) {
+	void FtpServer::openDataConnection(const int mClientSock) throw(FatalError) {
 		
 		struct sockaddr_in sin;
 		socklen_t len = sizeof(sin);
@@ -403,12 +379,12 @@ namespace WyLight {
 		}
 	}
 	
-	size_t FtpServer::Recv(uint8_t *pBuffer, size_t length) const throw(FatalError)	{
+	size_t FtpServer::Recv(uint8_t *pBuffer, size_t length, const int mClientSock) const throw(FatalError)	{
 		timeval mTimeout;
 		memcpy(&mTimeout, &RESPONSE_TIMEOUT, sizeof(RESPONSE_TIMEOUT));
 		
 		if (mClientSock != -1) {
-			return FtpServer::Select(&mTimeout) ? 0 : read(mClientSock, pBuffer, length);
+			return FtpServer::Select(&mTimeout, mClientSock) ? 0 : read(mClientSock, pBuffer, length);
 		}
 		else {
 			throw FatalError("Invalid Client Socket");

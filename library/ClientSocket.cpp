@@ -44,6 +44,11 @@ namespace WyLight {
 
 #define ESTABLISH_CONNECTION_TIMEOUT 5
 
+	ClientSocket::ClientSocket()
+		: mSock(-1), mSockAddr(0, 0)
+	{
+	}
+
 	ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError)
 		: mSock(socket(AF_INET, style, 0)), mSockAddr(addr, port)
 	{
@@ -74,6 +79,21 @@ namespace WyLight {
 			throw FatalError("something strange happen in select() called by TcpSocket::Recv()");
 		}
 		return false;
+	}
+
+	TcpSocket::TcpSocket(int listenSocket) throw (ConnectionLost, FatalError)
+	{
+		socklen_t sockAddrLen = sizeof(mSockAddr);
+		mSock = accept(listenSocket, reinterpret_cast<struct sockaddr *>(&mSockAddr), &sockAddrLen);
+		if(-1 == mSock) {
+			throw FatalError("Accept socket failed with errno: " + std::to_string(errno));
+		}
+#if DEBUG
+		uint16_t port = ntohs(mSockAddr.sin_port);
+		char ip[INET_ADDRSTRLEN];
+		inet_ntop(AF_INET, &mSockAddr.sin_addr.s_addr, ip, sizeof(ip));
+		Trace(ZONE_INFO, "Client connected: %s::%u\n", ip, port);
+#endif
 	}
 
 	TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError)

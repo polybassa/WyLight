@@ -49,6 +49,11 @@ namespace WyLight {
 	{
 	public:
 		/**
+		 * Empty constructor to support "accept()ed" TcpSockets
+		 */
+		ClientSocket();
+
+		/**
 		 * Aquire the low level socket file descriptor
 		 * @param addr IPv4 address in host byte order
 		 * @param port IPv4 port number in host byte order
@@ -80,7 +85,7 @@ namespace WyLight {
 		/**
 		 * low level socket file descriptor
 		 */
-		const int mSock;
+		int mSock;
 
 		/**
 		 * IPv4 address of listening or target port
@@ -95,6 +100,18 @@ namespace WyLight {
 	{
 	public:
 		/**
+		 * Create a new TCP socket with accept()
+		 * @param listenSocket file descriptor for the listening socket
+		 * @throw FatalError if the base class constructor fails @see ClientSocket#ClientSocket
+		 * @throw ConnectionLost if accept() fails on the internal socket
+		 */
+		TcpSocket(int listenSocket) throw (ConnectionLost, FatalError);
+
+		//TODO REMOVE THIS HACK!!!! ITS NOT SUPPOSED TO SURVIVE THE FTP REFACTORING!
+		int GetSocket() { return mSock; };
+
+		/**
+		 * Create a new TCP socket with connect()
 		 * @param Addr IPv4 address in host byte order
 		 * @param port IPv4 port number in host byte order
 		 * @throw FatalError if the base class constructor fails @see ClientSocket#ClientSocket
