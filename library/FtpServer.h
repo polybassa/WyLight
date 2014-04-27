@@ -21,7 +21,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <mutex>
 #include <thread>
 #include "ClientSocket.h"
 #include "WiflyControlException.h"
@@ -63,8 +62,7 @@ namespace WyLight {
 		
 		bool Select(timeval *timeout, const int mClientSock) const throw (FatalError);
 		
-		std::mutex mFtpServerRunningLock;
-		bool mFtpServerRunning;
+		bool mFtpServerRunning = true;
 		std::thread mFtpServerThread;
 		
 		int mClientDataSock;

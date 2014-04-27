@@ -43,7 +43,6 @@ namespace WyLight {
 		if (-1 == mServerSock) {
 			throw FatalError("Create socket failed");
 		}
-		mFtpServerRunning = 1;
 		mClientDataSock = -1;
 		
 		mFtpServerThread = std::thread([&]{
@@ -64,13 +63,10 @@ namespace WyLight {
 			while (mFtpServerRunning) {
 				Trace(ZONE_VERBOSE, "FtpServer running\n");
 				TcpSocket telnet(mServerSock);
-				{
-					std::lock_guard<std::mutex> lock(mFtpServerRunningLock);
-					if (!mFtpServerRunning) {
-						return;
-					}
+				if (!mFtpServerRunning) {
+					return;
 				}
-				
+
 				Trace(ZONE_VERBOSE, "Starting client Thread\n");
 				try {
 					handleFiletransfer(telnet.GetSocket());
@@ -82,10 +78,7 @@ namespace WyLight {
 	}
 	
 	FtpServer::~FtpServer(void) {
-		{
-			std::lock_guard<std::mutex> lock(mFtpServerRunningLock);
-			mFtpServerRunning = false;
-		}
+		mFtpServerRunning = false;
 
 		TcpSocket shutdownSocket(LOCALHOST, FTP_PORT);
 		mFtpServerThread.join();
