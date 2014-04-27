@@ -1,4 +1,4 @@
-apk_name=WiflyLight.apk
+apk_name=WyLight.apk
 key_store=/home/gpb/google_play.keystore
 key_alias=bruenn.biz
 sdk_dir=/home/gpb/android-sdk-linux/tools
