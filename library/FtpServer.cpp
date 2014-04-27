@@ -343,16 +343,12 @@ namespace WyLight {
 
 		if (bind( mClientDataSock, (struct sockaddr *)&sin, sizeof(sin)) == -1){
 			telnet.Send("451 Internal error - No data port available.\r\n");
-			close(mClientDataSock);
-			mClientDataSock = -1;
-			throw FatalError("Unable to bind FTP_Data Socket");
+			closeDataConnectionWithException("Unable to bind FTP_Data Socket");
 		}
 
 		if(listen(mClientDataSock, 1) == -1) {
 			telnet.Send("451 Internal error.\r\n");
-			close(mClientDataSock);
-			mClientDataSock = -1;
-			throw FatalError("Unable to listen FTP_Data Socket");
+			closeDataConnectionWithException("Unable to listen FTP_Data Socket");
 		}
 	}
 	
