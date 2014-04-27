@@ -91,33 +91,7 @@ namespace WyLight {
 			close(mClientDataSock);
 		}
 	}
-	
-	bool FtpServer::Select(timeval *timeout, const int mClientSock) const throw (FatalError)
-	{
-		if (mClientSock == -1) {
-			throw FatalError("Invalid Client Socket");
-			return false;
-		}
-		
-		/* prepare socket set for select() */
-		fd_set readSockets;
-		FD_ZERO(&readSockets);
-		FD_SET(mClientSock, &readSockets);
-		
-		/* wait for receive data */
-		const int selectState = select(mClientSock + 1, &readSockets, NULL, NULL, timeout);
-		if(0 == selectState) {
-			Trace(ZONE_INFO, "Select timed out\n");
-			return true;
-		}
-		
-		/* and check if socket was correct */
-		if((1 != selectState) || (!FD_ISSET(mClientSock, &readSockets))) {
-			throw FatalError("something strange happen in select() called by TcpSocket::Recv()");
-		}
-		return false;
-	}
-	
+
 	void FtpServer::handleFiletransfer(const TcpSocket& telnet) {
 		size_t bytesRead = 0;
 		uint8_t buffer[1024];

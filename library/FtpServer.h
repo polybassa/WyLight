@@ -50,8 +50,6 @@ namespace WyLight {
 
 		size_t Send(const void *frame, const size_t length, const int& socket) const throw(FatalError);
 		size_t Send(const std::string& message, const int& socket) const throw (FatalError);
-
-		bool Select(timeval *timeout, const int mClientSock) const throw (FatalError);
 		
 		bool mFtpServerRunning = true;
 		std::thread mFtpServerThread;
