@@ -81,6 +81,24 @@ namespace WyLight {
 		return false;
 	}
 
+	TcpServerSocket::TcpServerSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError)
+		: ClientSocket(addr, port, SOCK_STREAM)
+	{
+		//optional, steal port if necessary
+		const int yes = 1;
+		if (0 != setsockopt(mSock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes))) {
+			throw FatalError("TcpServerSocket: setsockopt() failed");
+		}
+
+		if (0 != bind(mSock, reinterpret_cast<struct sockaddr *>(&mSockAddr), sizeof(mSockAddr))) {
+			throw FatalError("TcpServerSocket: bind() failed with errno: " + std::to_string(errno));
+		}
+
+		if (0 != listen(mSock, 0)) {
+			throw FatalError("TcpServerSocket: listen failed with errno: " + std::to_string(errno));
+		}
+	}
+
 	TcpSocket::TcpSocket(int listenSocket) throw (ConnectionLost, FatalError)
 	{
 		socklen_t sockAddrLen = sizeof(mSockAddr);
@@ -173,9 +191,9 @@ namespace WyLight {
 			throw FatalError("setsockopt() failed");
 		}
 		
-		int yes = 1;
+		const int yes = 1;
 		//optional, steal port if necessary
-		if(0 != setsockopt(mSock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int))) {
+		if(0 != setsockopt(mSock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes))) {
 			throw FatalError("setsockopt() failed");
 		}
 

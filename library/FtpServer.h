@@ -56,8 +56,8 @@ namespace WyLight {
 		std::thread mFtpServerThread;
 		
 		int mClientDataSock;
-		int mServerSock;
-		WyLight::Ipv4Addr mServerSockAddr;
+		//int mServerSock;
+		//WyLight::Ipv4Addr mServerSockAddr;
 		
 				
 	};

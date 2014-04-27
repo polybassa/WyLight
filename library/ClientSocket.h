@@ -67,6 +67,9 @@ namespace WyLight {
 		 */
 		virtual ~ClientSocket();
 
+		//TODO REMOVE THIS HACK!!!! ITS NOT SUPPOSED TO SURVIVE THE FTP REFACTORING!
+		int GetSocket() const { return mSock; };
+
 		/**
 		 * wait for data on the low level socket
 		 * @param timeout to wait for data, to block indefinitly use NULL, which is default
@@ -79,7 +82,9 @@ namespace WyLight {
 		 * Interface to send a data frame with a given length, you have to implement
 		 * this function in child classes
 		 */
-		virtual size_t Send(const uint8_t *frame, size_t length) const = 0;
+		//virtual size_t Send(const uint8_t *frame, size_t length) const = 0;
+		//TODO refactor this correctly f.e. rename ClientSocket to BaseSocket and
+		//move this function into a new abstract class ClientSocket
 
 	protected:
 		/**
@@ -91,6 +96,23 @@ namespace WyLight {
 		 * IPv4 address of listening or target port
 		 */
 		Ipv4Addr mSockAddr;
+	};
+
+	/**
+	 * Wrapper to handle a TCP server socket more easy
+	 */
+	class TcpServerSocket :public ClientSocket
+	{
+	public:
+
+		/**
+		 * Create a new TCP server socket
+		 * @param Addr IPv4 address in host byte order
+		 * @param port IPv4 port number in host byte order
+		 * @throw FatalError if the base class constructor fails @see ClientSocket#ClientSocket
+		 * @throw ConnectionLost if bind() or listen() fails on the internal socket
+		 */
+		TcpServerSocket(uint32_t Addr, uint16_t port) throw (ConnectionLost, FatalError);
 	};
 
 /**
@@ -106,9 +128,6 @@ namespace WyLight {
 		 * @throw ConnectionLost if accept() fails on the internal socket
 		 */
 		TcpSocket(int listenSocket) throw (ConnectionLost, FatalError);
-
-		//TODO REMOVE THIS HACK!!!! ITS NOT SUPPOSED TO SURVIVE THE FTP REFACTORING!
-		int GetSocket() const { return mSock; };
 
 		/**
 		 * Create a new TCP socket with connect()

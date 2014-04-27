@@ -38,31 +38,15 @@ namespace WyLight {
 	static const timeval RESPONSE_TIMEOUT = {5, 0};
 	static const uint32_t LOCALHOST = 2130706433;
 	
-	FtpServer::FtpServer(void) throw (FatalError) : mServerSock(socket(AF_INET, SOCK_STREAM, 0)), mServerSockAddr(INADDR_ANY, FTP_PORT)
+	FtpServer::FtpServer(void) throw (FatalError)
 	{
-		if (-1 == mServerSock) {
-			throw FatalError("Create socket failed");
-		}
 		mClientDataSock = -1;
 		
 		mFtpServerThread = std::thread([&]{
-			int yes = 1;
-			//optional, steal port if necessary
-			if(0 != setsockopt(mServerSock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes))) {
-				throw FatalError("setsockopt() failed");
-			}
-			
-			if(0 != bind(mServerSock, reinterpret_cast<struct sockaddr *>(&mServerSockAddr), sizeof(sockaddr))) {
-				throw FatalError("Bind FtpServer socket failed with error: " + std::to_string(errno));
-			}
-			
-			if (0 != listen(mServerSock, 0)) {
-				throw FatalError("FtpServer: listen failed with error: " + std::to_string(errno));
-			}
-			
+			TcpServerSocket telnetListener(INADDR_ANY, FTP_PORT);
 			while (mFtpServerRunning) {
 				Trace(ZONE_VERBOSE, "FtpServer running\n");
-				TcpSocket telnet(mServerSock);
+				TcpSocket telnet(telnetListener.GetSocket());
 				if (!mFtpServerRunning) {
 					return;
 				}
@@ -82,10 +66,6 @@ namespace WyLight {
 
 		TcpSocket shutdownSocket(LOCALHOST, FTP_PORT);
 		mFtpServerThread.join();
-		
-		if (mServerSock != -1) {
-			close(mServerSock);
-		}
 		
 		if (mClientDataSock != -1) {
 			close(mClientDataSock);
@@ -205,7 +185,7 @@ namespace WyLight {
 							
 				//FIXME: static filename only for debugging
 				//fileName = "/Users/nilsweiss/Dropbox/Wifly_Light/FtpUpdateServer/public/wifly7-400.mif";
-				fileName = "/home/gpb/workspace/Wifly_Light/rn171_fw/wifly7-400.mif";
+				fileName = "/home/gpb/workspace/Wifly_Light/rn171_fw/wifly7-441.mif";
 				
 				std::ifstream file(fileName, std::ios::in | std::ios::binary);
 				
@@ -323,7 +303,7 @@ namespace WyLight {
 			throw FatalError("Getsockname failed");
 		}
 		
-		mClientDataSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+		mClientDataSock = socket(AF_INET, SOCK_STREAM, 0);
 		if (-1 == mClientDataSock) {
 			telnet.Send("451 Internal error - No data socket available.\r\n");
 			throw FatalError("Unable to get FTP_Data Socket sockert() failed");
