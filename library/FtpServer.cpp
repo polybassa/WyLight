@@ -31,7 +31,7 @@
 
 namespace WyLight {
 
-#define FTP_PORT 21
+#define FTP_PORT 60021
 	
 	static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
@@ -262,7 +262,8 @@ namespace WyLight {
 				getcwd(currentDirectory, FILENAME_MAX);
 							
 				//FIXME: static filename only for debugging
-				fileName = "/Users/nilsweiss/Dropbox/Wifly_Light/FtpUpdateServer/public/wifly7-400.mif";
+				//fileName = "/Users/nilsweiss/Dropbox/Wifly_Light/FtpUpdateServer/public/wifly7-400.mif";
+				fileName = "/home/gpb/workspace/Wifly_Light/wifly7-441.mif";
 				
 				std::ifstream file(fileName, std::ios::in | std::ios::binary);
 				
@@ -377,7 +378,9 @@ namespace WyLight {
 		
 		sin.sin_family = AF_INET;
 		sin.sin_port = 0;
+#ifdef __APPLE__
 		sin.sin_len = sizeof(sin);
+#endif
 		
 		int on = 1;
 		
