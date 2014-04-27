@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
+ Copyright (C) 2014 Nils Weiss, Patrick Bruenn.
  
  This file is part of Wifly_Light.
  
@@ -90,6 +90,15 @@ namespace WyLight {
 		if (mClientDataSock != -1) {
 			close(mClientDataSock);
 		}
+	}
+
+	void FtpServer::closeDataConnectionWithException(const std::string& msg) throw (FatalError)
+	{
+		if (mClientDataSock != -1) {
+			close(mClientDataSock);
+			mClientDataSock = -1;
+		}
+		throw FatalError(msg);
 	}
 
 	void FtpServer::handleFiletransfer(const TcpSocket& telnet) {
@@ -315,6 +324,10 @@ namespace WyLight {
 		}
 		
 		mClientDataSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+		if (-1 == mClientDataSock) {
+			telnet.Send("451 Internal error - No data socket available.\r\n");
+			throw FatalError("Unable to get FTP_Data Socket sockert() failed");
+		}
 		
 		sin.sin_family = AF_INET;
 		sin.sin_port = 0;
@@ -322,27 +335,24 @@ namespace WyLight {
 		sin.sin_len = sizeof(sin);
 #endif
 		
-		int on = 1;
-		
-		if (mClientDataSock != -1 && setsockopt(mClientDataSock, SOL_SOCKET, SO_REUSEADDR, (char *)&on, sizeof(on)) != -1) {
-			if (bind( mClientDataSock, (struct sockaddr *)&sin, sizeof(sin)) == -1){
-				telnet.Send("451 Internal error - No data port available.\r\n");
-				close(mClientDataSock);
-				mClientDataSock = -1;
-				throw FatalError("Unable to bind FTP_Data Socket");
-			}
-			
-			if(listen(mClientDataSock, 1) == -1) {
-				telnet.Send("451 Internal error.\r\n");
-				close(mClientDataSock);
-				mClientDataSock = -1;
-				throw FatalError("Unable to listen FTP_Data Socket");
-			}
-		} else {
+		const int on = 1;
+		if (-1 == setsockopt(mClientDataSock, SOL_SOCKET, SO_REUSEADDR, (char *)&on, sizeof(on))) {
 			telnet.Send("451 Internal error - No data socket available.\r\n");
+			closeDataConnectionWithException("Unable to get FTP_Data Socket");
+		}
+
+		if (bind( mClientDataSock, (struct sockaddr *)&sin, sizeof(sin)) == -1){
+			telnet.Send("451 Internal error - No data port available.\r\n");
 			close(mClientDataSock);
 			mClientDataSock = -1;
-			throw FatalError("Unable to get FTP_Data Socket");
+			throw FatalError("Unable to bind FTP_Data Socket");
+		}
+
+		if(listen(mClientDataSock, 1) == -1) {
+			telnet.Send("451 Internal error.\r\n");
+			close(mClientDataSock);
+			mClientDataSock = -1;
+			throw FatalError("Unable to listen FTP_Data Socket");
 		}
 	}
 	
