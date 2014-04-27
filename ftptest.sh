@@ -1,5 +1,5 @@
 SERVER=$1
-FILENAME=wifly7-400.mif
+FILENAME=wifly7-441.mif
 HOST=localhost
 PORT=60021
 
