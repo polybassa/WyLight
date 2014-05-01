@@ -1,5 +1,5 @@
 /**
-                Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
+                Copyright (C) 2012 - 2014 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
 
@@ -49,6 +49,11 @@ namespace WyLight {
 	{
 	public:
 		/**
+		 * Empty constructor to support "accept()ed" TcpSockets
+		 */
+		ClientSocket();
+
+		/**
 		 * Aquire the low level socket file descriptor
 		 * @param addr IPv4 address in host byte order
 		 * @param port IPv4 port number in host byte order
@@ -62,6 +67,9 @@ namespace WyLight {
 		 */
 		virtual ~ClientSocket();
 
+		//TODO REMOVE THIS HACK!!!! ITS NOT SUPPOSED TO SURVIVE THE FTP REFACTORING!
+		int GetSocket() const { return mSock; };
+
 		/**
 		 * wait for data on the low level socket
 		 * @param timeout to wait for data, to block indefinitly use NULL, which is default
@@ -74,18 +82,37 @@ namespace WyLight {
 		 * Interface to send a data frame with a given length, you have to implement
 		 * this function in child classes
 		 */
-		virtual size_t Send(const uint8_t *frame, size_t length) const = 0;
+		//virtual size_t Send(const uint8_t *frame, size_t length) const = 0;
+		//TODO refactor this correctly f.e. rename ClientSocket to BaseSocket and
+		//move this function into a new abstract class ClientSocket
 
 	protected:
 		/**
 		 * low level socket file descriptor
 		 */
-		const int mSock;
+		int mSock;
 
 		/**
 		 * IPv4 address of listening or target port
 		 */
 		Ipv4Addr mSockAddr;
+	};
+
+	/**
+	 * Wrapper to handle a TCP server socket more easy
+	 */
+	class TcpServerSocket :public ClientSocket
+	{
+	public:
+
+		/**
+		 * Create a new TCP server socket
+		 * @param Addr IPv4 address in host byte order
+		 * @param port IPv4 port number in host byte order
+		 * @throw FatalError if the base class constructor fails @see ClientSocket#ClientSocket
+		 * @throw ConnectionLost if bind() or listen() fails on the internal socket
+		 */
+		TcpServerSocket(uint32_t Addr, uint16_t port) throw (ConnectionLost, FatalError);
 	};
 
 /**
@@ -95,6 +122,15 @@ namespace WyLight {
 	{
 	public:
 		/**
+		 * Create a new TCP socket with accept()
+		 * @param listenSocket file descriptor for the listening socket
+		 * @throw FatalError if the base class constructor fails @see ClientSocket#ClientSocket
+		 * @throw ConnectionLost if accept() fails on the internal socket
+		 */
+		TcpSocket(int listenSocket) throw (ConnectionLost, FatalError);
+
+		/**
+		 * Create a new TCP socket with connect()
 		 * @param Addr IPv4 address in host byte order
 		 * @param port IPv4 port number in host byte order
 		 * @throw FatalError if the base class constructor fails @see ClientSocket#ClientSocket
@@ -116,6 +152,13 @@ namespace WyLight {
 		 * @see ClientSocket#Send
 		 */
 		virtual size_t Send(const uint8_t *frame, size_t length) const;
+
+		/**
+		 * Wrapper to TcpSocket#Send(const uint8_t *frame, size_t length)
+		 */
+		size_t Send(const std::string& msg) const {
+			return Send(reinterpret_cast<const uint8_t*>(msg.data()), msg.length());
+		}
 	};
 
 /**

@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
+ Copyright (C) 2012 - 2014 Nils Weiss, Patrick Bruenn.
 
  This file is part of Wifly_Light.
 
@@ -91,6 +91,7 @@ uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
 		if(g_DebugZones & (ZONE)) { \
 				printf("%s:%u: ", __FILE__, __LINE__); \
 				printf(__VA_ARGS__); \
+				fflush(stdout); \
 		} \
 } \
 	while(0)

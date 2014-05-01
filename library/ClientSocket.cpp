@@ -1,5 +1,5 @@
 /**
-                Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
+                Copyright (C) 2012 - 2014 Nils Weiss, Patrick Bruenn.
 
     This file is part of Wifly_Light.
 
@@ -44,6 +44,11 @@ namespace WyLight {
 
 #define ESTABLISH_CONNECTION_TIMEOUT 5
 
+	ClientSocket::ClientSocket()
+		: mSock(-1), mSockAddr(0, 0)
+	{
+	}
+
 	ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError)
 		: mSock(socket(AF_INET, style, 0)), mSockAddr(addr, port)
 	{
@@ -76,18 +81,51 @@ namespace WyLight {
 		return false;
 	}
 
+	TcpServerSocket::TcpServerSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError)
+		: ClientSocket(addr, port, SOCK_STREAM)
+	{
+		//optional, steal port if necessary
+		const int yes = 1;
+		if (0 != setsockopt(mSock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes))) {
+			throw FatalError("TcpServerSocket: setsockopt() failed");
+		}
+
+		if (0 != bind(mSock, reinterpret_cast<struct sockaddr *>(&mSockAddr), sizeof(mSockAddr))) {
+			throw FatalError("TcpServerSocket: bind() failed with errno: " + std::to_string(errno));
+		}
+
+		if (0 != listen(mSock, 0)) {
+			throw FatalError("TcpServerSocket: listen failed with errno: " + std::to_string(errno));
+		}
+	}
+
+	TcpSocket::TcpSocket(int listenSocket) throw (ConnectionLost, FatalError)
+	{
+		socklen_t sockAddrLen = sizeof(mSockAddr);
+		mSock = accept(listenSocket, reinterpret_cast<struct sockaddr *>(&mSockAddr), &sockAddrLen);
+		if(-1 == mSock) {
+			throw FatalError("Accept socket failed with errno: " + std::to_string(errno));
+		}
+#if DEBUG
+		uint16_t port = ntohs(mSockAddr.sin_port);
+		char ip[INET_ADDRSTRLEN];
+		inet_ntop(AF_INET, &mSockAddr.sin_addr.s_addr, ip, sizeof(ip));
+		Trace(ZONE_INFO, "Client connected: %s::%u\n", ip, port);
+#endif
+	}
+
 	TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError)
 		: ClientSocket(addr, port, SOCK_STREAM)
 	{
-		int yes = 1;
+		const int yes = 1;
 		//optional, steal port if necessary
-		if(0 != setsockopt(mSock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int))) {
+		if(0 != setsockopt(mSock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes))) {
 			throw FatalError("setsockopt() failed");
 		}
 		
 		//disable nagle algorithm
-		int flag = 1;
-		const int result_disableNagle = setsockopt(mSock, IPPROTO_TCP, TCP_NODELAY, (char *) &flag,	sizeof(int));
+		const int flag = 1;
+		const int result_disableNagle = setsockopt(mSock, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(flag));
 		if (result_disableNagle < 0) {
 			throw ConnectionLost("connect() failed can't disable nagle algorithm", addr, port);
 		}
@@ -153,9 +191,9 @@ namespace WyLight {
 			throw FatalError("setsockopt() failed");
 		}
 		
-		int yes = 1;
+		const int yes = 1;
 		//optional, steal port if necessary
-		if(0 != setsockopt(mSock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int))) {
+		if(0 != setsockopt(mSock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes))) {
 			throw FatalError("setsockopt() failed");
 		}
 

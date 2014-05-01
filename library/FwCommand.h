@@ -35,9 +35,14 @@ namespace WyLight {
 		FwCommand(uint8_t cmd, size_t size = 0, bool withResponse = true) : mSize(1 + size), requiresResponse(withResponse) { memset(&mReqFrame, 0, sizeof(mReqFrame)); mReqFrame.cmd = cmd; };
 		virtual ~FwCommand(void) = default;
 
+		static uint32_t argb(uint8_t r, uint8_t g, uint8_t b) {
+			return 0xff000000 | (uint32_t)r << 16 | (uint32_t)g << 8 | b;
+		};
+
 	public:
 		const uint8_t *GetData(void) const { return reinterpret_cast<const uint8_t *>(&mReqFrame);       };
 		size_t GetSize(void) const { return mSize; };
+		uint8_t GetType(void) const { return mReqFrame.cmd; };
 		const bool IsResponseRequired(void) const { return requiresResponse; };
 		virtual FwResponse& GetResponse(void) = 0;
 		virtual bool operator == (const FwCommand& ref) const
@@ -244,6 +249,14 @@ namespace WyLight {
 			mReqFrame.data.set_fade.blue = (uint8_t)argb;
 		};
 
+		uint16_t fadeTime(void) const {
+			return ntohs(mReqFrame.data.set_fade.fadeTmms);
+		};
+
+		void fadeTime(uint16_t tmms) {
+			mReqFrame.data.set_fade.fadeTmms = htons(tmms);
+		};
+
 		std::ostream& Write(std::ostream& out, size_t& indentation) const override {
 			FwCmdScript::Write(out, indentation) << TOKEN << ' ';
 			return mReqFrame.data.set_fade.Write(out, indentation);
@@ -273,6 +286,26 @@ namespace WyLight {
 		FwCmdSetGradient(uint32_t argb_1, uint32_t argb_2, uint16_t fadeTime = 0, bool parallelFade = false, uint8_t length = NUM_OF_LED, uint8_t offset = 0) : FwCmdScript(SET_GRADIENT, sizeof(cmd_set_gradient)) {
 
 			mReqFrame.data.set_gradient.Set(argb_1, argb_2, parallelFade, offset, length, fadeTime);
+		};
+
+		uint32_t StartColor(void) const {
+			return FwCommand::argb(mReqFrame.data.set_gradient.red_1, mReqFrame.data.set_gradient.green_1, mReqFrame.data.set_gradient.blue_1);
+		};
+
+		void StartColor(uint32_t argb) {
+			mReqFrame.data.set_gradient.red_1 = (uint8_t)(argb >> 16);
+			mReqFrame.data.set_gradient.green_1 = (uint8_t)(argb >> 8);
+			mReqFrame.data.set_gradient.blue_1 = (uint8_t)argb;
+		};
+
+		uint32_t EndColor(void) const {
+			return FwCommand::argb(mReqFrame.data.set_gradient.red_2, mReqFrame.data.set_gradient.green_2, mReqFrame.data.set_gradient.blue_2);
+		};
+
+		void EndColor(uint32_t argb) {
+			mReqFrame.data.set_gradient.red_2 = (uint8_t)(argb >> 16);
+			mReqFrame.data.set_gradient.green_2 = (uint8_t)(argb >> 8);
+			mReqFrame.data.set_gradient.blue_2 = (uint8_t)argb;
 		};
 
 		std::ostream& Write(std::ostream& out, size_t& indentation) const override {
