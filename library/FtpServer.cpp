@@ -28,7 +28,6 @@
 #include <sys/time.h>
 #include <sstream>
 
-
 namespace WyLight {
 
 #define FTP_PORT 60021
@@ -100,7 +99,8 @@ namespace WyLight {
 			std::string requestCMD;
 			dataInput >> requestCMD;
 			
-			if (requestCMD == "USER") {
+			if (requestCMD == "USER")
+			{
 				//=============================
 				std::string userName;
 				std::getline(dataInput, userName);
@@ -111,7 +111,8 @@ namespace WyLight {
 					telnet.Send("430 Invalid username or password. Good Bye.\r\n");
 					return;
 				}
-			} else if (requestCMD == "PASS") {
+			} else if (requestCMD == "PASS")
+			{
 				//=============================
 				std::string password;
 				std::getline(dataInput, password);
@@ -123,7 +124,8 @@ namespace WyLight {
 					telnet.Send("430 Invalid username or password. Good Bye.\r\n");
 					return;
 				}
-			} else if (requestCMD == "CWD" && isClientLoggedIn) {
+			} else if (requestCMD == "CWD" && isClientLoggedIn)
+			{
 				//=============================
 				std::string directory;
 				std::getline(dataInput, directory);
@@ -134,7 +136,8 @@ namespace WyLight {
 					telnet.Send("550 Requested action not taken. File unavailable (e.g., file not found, no access). Good Bye.\r\n");
 					return;
 				}
-			} else if (requestCMD == "TYPE" && isClientLoggedIn) {
+			} else if (requestCMD == "TYPE" && isClientLoggedIn)
+			{
 				//=============================
 				std::string dataType;
 				std::getline(dataInput, dataType);
@@ -145,10 +148,11 @@ namespace WyLight {
 					telnet.Send("550 Requested action not taken. File unavailable (e.g., file not found, no access). Good Bye.\r\n");
 					return;
 				}
-			} else if (requestCMD == "PASV" && isClientLoggedIn) {
+			} else if (requestCMD == "PASV" && isClientLoggedIn)
+			{
 				//=============================
-				std::string dataType;
-				std::getline(dataInput, dataType);
+				//clear content of dataInput
+				dataInput.str(std::string());
 				
 				openDataConnection(telnet);
 				
@@ -173,10 +177,10 @@ namespace WyLight {
 				} else {
 					throw FatalError("Invalid Client Data Socket");
 				}
-			} else if (requestCMD == "RETR" && isClientLoggedIn) {
+			} else if (requestCMD == "RETR" && isClientLoggedIn)
+			{
 				std::string fileName;
 				std::getline(dataInput, fileName);
-				
 				
 				//TODO: get the right file !!!!
 				char currentDirectory[FILENAME_MAX];
@@ -184,8 +188,8 @@ namespace WyLight {
 				getcwd(currentDirectory, FILENAME_MAX);
 							
 				//FIXME: static filename only for debugging
-				//fileName = "/Users/nilsweiss/Dropbox/Wifly_Light/FtpUpdateServer/public/wifly7-400.mif";
-				fileName = "./rn171_fw/wifly7-441.mif";
+				fileName = "/Users/nilsweiss/Dropbox/Wifly_Light/FtpUpdateServer/public/wifly7-441.mif";
+				//fileName = "./rn171_fw/wifly7-441.mif";
 				
 				std::ifstream file(fileName, std::ios::in | std::ios::binary);
 				
@@ -214,6 +218,8 @@ namespace WyLight {
 			} else {
 #define HAVE_MERCY 1
 #if HAVE_MERCY
+				//clear content of dataInput
+				dataInput.str(std::string());
 				telnet.Send("150 Command not supported.\r\n");
 #else
 				telnet.Send("150 Command not supported. Good Bye.\r\n");
