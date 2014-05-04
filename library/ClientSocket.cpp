@@ -60,6 +60,26 @@ namespace WyLight {
 		close(mSock);
 	}
 
+	uint32_t ClientSocket::GetIp() const throw (FatalError)
+	{
+		struct sockaddr_in sin;
+		socklen_t len = sizeof(sin);
+		if (-1 == getsockname(mSock, (struct sockaddr *)&sin, &len)) {
+			throw FatalError("Getsockname failed");
+		}
+		return ntohl(sin.sin_addr.s_addr);
+	}
+
+	uint16_t ClientSocket::GetPort() const throw (FatalError)
+	{
+		struct sockaddr_in sin;
+		socklen_t len = sizeof(sin);
+		if (-1 == getsockname(mSock, (struct sockaddr *)&sin, &len)) {
+			throw FatalError("Getsockname failed");
+		}
+		return ntohs(sin.sin_port);
+	}
+
 	bool ClientSocket::Select(timeval *timeout) const throw (FatalError)
 	{
 		/* prepare socket set for select() */

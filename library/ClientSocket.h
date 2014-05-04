@@ -67,6 +67,9 @@ namespace WyLight {
 		 */
 		virtual ~ClientSocket();
 
+		uint32_t GetIp() const throw (FatalError);
+		uint16_t GetPort() const throw (FatalError);
+
 		//TODO REMOVE THIS HACK!!!! ITS NOT SUPPOSED TO SURVIVE THE FTP REFACTORING!
 		int GetSocket() const { return mSock; };
 

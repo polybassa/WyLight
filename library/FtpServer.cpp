@@ -39,8 +39,6 @@ namespace WyLight {
 	
 	FtpServer::FtpServer(void) throw (FatalError)
 	{
-		mClientDataSock = -1;
-		
 		mFtpServerThread = std::thread([&]{
 			TcpServerSocket telnetListener(INADDR_ANY, FTP_PORT);
 			while (mFtpServerRunning) {
@@ -65,10 +63,6 @@ namespace WyLight {
 
 		TcpSocket shutdownSocket(LOCALHOST, FTP_PORT);
 		mFtpServerThread.join();
-		
-		if (mClientDataSock != -1) {
-			close(mClientDataSock);
-		}
 	}
 
 	void FtpServer::handleFiletransfer(const TcpSocket& telnet) {
@@ -152,25 +146,16 @@ namespace WyLight {
 					telnet.Send(std::string("451 Internal error - ") + std::string(e.what()));
 				}
 
-				mClientDataSock = dataSocket->GetSocket();
-				
-					struct sockaddr_in sin;
-					socklen_t len = sizeof(sin);
-					if (getsockname(mClientDataSock, (struct sockaddr *)&sin, &len) != -1) {
-						uint16_t port = ntohs(sin.sin_port);
-						uint32_t ip = ntohl(sin.sin_addr.s_addr);
+				uint16_t port = dataSocket->GetPort();
+				uint32_t ip = dataSocket->GetIp();
 
-						telnet.Send("227 Entering pasive mode ("
-								+ std::to_string((ip >> 24) & 0xff) + ","
-								+ std::to_string((ip >> 16) & 0xff) + ","
-								+ std::to_string((ip >>  8) & 0xff) + ","
-								+ std::to_string((ip      ) & 0xff) + ","
-								+ std::to_string(port / 256) + ","
-								+ std::to_string(port % 256) + ").\r\n");
-					}
-					else {
-						throw FatalError("Getsockname failed");
-					}
+				telnet.Send("227 Entering pasive mode ("
+					+ std::to_string((ip >> 24) & 0xff) + ","
+					+ std::to_string((ip >> 16) & 0xff) + ","
+					+ std::to_string((ip >>  8) & 0xff) + ","
+					+ std::to_string((ip      ) & 0xff) + ","
+					+ std::to_string(port / 256) + ","
+					+ std::to_string(port % 256) + ").\r\n");
 			} else if (requestCMD == "RETR" && isClientLoggedIn)
 			{
 				std::string fileName;
@@ -189,7 +174,7 @@ namespace WyLight {
 				
 				if (file.is_open()) {
 					telnet.Send("125 Data connection already open. Transfer starting.\r\n");
-					transferDataPassive(file);
+					transferDataPassive(file, *dataSocket);
 					file.close();
 					telnet.Send("226 Transfer complete.\r\n");
 				} else {
@@ -218,7 +203,7 @@ namespace WyLight {
 		}
 	}
 	
-	void FtpServer::transferDataPassive(std::ifstream& file) const throw(FatalError) {
+	void FtpServer::transferDataPassive(std::ifstream& file, const TcpServerSocket& dataSocket) const throw(FatalError) {
 		size_t bytesRead = 0;
 		uint8_t buffer[2048];
 
@@ -235,21 +220,16 @@ namespace WyLight {
 		std::thread killThread = std::thread([&]{
 			
 			std::this_thread::sleep_for(std::chrono::seconds(1));
-			
-			struct sockaddr_in sin;
-			socklen_t len = sizeof(sin);
-			if (getsockname(mClientDataSock, (struct sockaddr *)&sin, &len) != -1) {
-				uint16_t port = ntohs(sin.sin_port);
+			uint16_t port = dataSocket.GetPort();
 
-				//shutting down if no accept happend
-				if (tempDataSock == -1) {
-					TcpSocket shutdownSocket(LOCALHOST, port);
-				}
+			//shutting down if no accept happend
+			if (tempDataSock == -1) {
+				TcpSocket shutdownSocket(LOCALHOST, port);
 			}
 		});
 		
 		//blocking accept here !!
-		tempDataSock = accept(mClientDataSock, reinterpret_cast<struct sockaddr *>(&clientAddr), &clientAddrLen);
+		tempDataSock = accept(dataSocket.GetSocket(), reinterpret_cast<struct sockaddr *>(&clientAddr), &clientAddrLen);
 		
 		if (tempDataSock == -1) {
 			killThread.join();

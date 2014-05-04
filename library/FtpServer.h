@@ -46,19 +46,13 @@ namespace WyLight {
 	private:
 		void handleFiletransfer(const TcpSocket& telnet);
 		TcpServerSocket* openDataConnection(const TcpSocket& telnet) throw(FatalError);
-		void transferDataPassive(std::ifstream& file) const throw(FatalError);
+		void transferDataPassive(std::ifstream& file, const TcpServerSocket& dataSocket) const throw(FatalError);
 
 		size_t Send(const void *frame, const size_t length, const int& socket) const throw(FatalError);
 		size_t Send(const std::string& message, const int& socket) const throw(FatalError);
 		
 		bool mFtpServerRunning = true;
 		std::thread mFtpServerThread;
-		
-		int mClientDataSock;
-		//int mServerSock;
-		//WyLight::Ipv4Addr mServerSockAddr;
-		
-				
 	};
 }
 #endif /* #ifndef _CLIENTSOCKET_H_ */
