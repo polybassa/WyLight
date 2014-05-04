@@ -220,7 +220,7 @@ namespace WyLight {
 			telnet.Send("451 Internal error - getsockname() failed");
 			return NULL;
 		}
-		
+
 		TcpServerSocket *dataSocket = new TcpServerSocket(ntohl(sin.sin_addr.s_addr), 0);
 		if(!dataSocket) {
 			telnet.Send("451 Internal error - create TcpServerSocket failed");
