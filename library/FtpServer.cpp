@@ -41,6 +41,10 @@ namespace WyLight {
 			"331 Username ok, send password.\r\n",
 			"430 Invalid username or password. Good Bye.\r\n");
 
+	const FtpCommand FtpCommand::PASS("Pass123",
+			"230 Login successful.\r\n",
+			"430 Invalid username or password. Good Bye.\r\n");
+
 	FtpCommand::FtpCommand(const char* param, const char* successMsg, const char* errorMsg)
 		: mParam(param), mSuccess(successMsg), mError(errorMsg)
 	{
@@ -48,7 +52,8 @@ namespace WyLight {
 
 	bool FtpCommand::Run(const TcpSocket& telnet, std::stringstream& dataInput) const {
 		std::string param;
-		dataInput >> param;
+		std::getline(dataInput, param);
+		Trace(ZONE_INFO, ">%s<\n", param.c_str());
 		//TODO do stronger string compare!
 		if (param.find(mParam) != std::string::npos) {
 			telnet.Send(mSuccess);
@@ -114,17 +119,10 @@ namespace WyLight {
 				}
 			} else if (requestCMD == "PASS")
 			{
-				//=============================
-				std::string password;
-				std::getline(dataInput, password);
-				
-				if (password.find("Pass123") != std::string::npos) {
-					telnet.Send("230 Login successful.\r\n");
-					isClientLoggedIn = true;
-				} else {
-					telnet.Send("430 Invalid username or password. Good Bye.\r\n");
+				if(!FtpCommand::PASS.Run(telnet, dataInput)) {
 					return;
 				}
+				isClientLoggedIn = true;
 			} else if (requestCMD == "CWD" && isClientLoggedIn)
 			{
 				//=============================
@@ -208,6 +206,7 @@ namespace WyLight {
 #if HAVE_MERCY
 				//clear content of dataInput
 				dataInput.str(std::string());
+				Trace(ZONE_INFO, "Unkown command: >%s<\n", requestCMD.c_str());
 				telnet.Send("150 Command not supported.\r\n");
 #else
 				telnet.Send("150 Command not supported. Good Bye.\r\n");
