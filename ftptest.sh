@@ -12,7 +12,7 @@ type binary
 get $FILENAME
 SCRIPT
 killall $SERVER
-diff $FILENAME ./rn171_fw/$FILENAME
+cmp $FILENAME ./rn171_fw/$FILENAME
 if [ $? != 0 ] ; then
 	echo "          ./library/FtpServer_ut.bin run  1 Tests ( 0 skipped |  1 errors)"
 	rm -f $FILENAME

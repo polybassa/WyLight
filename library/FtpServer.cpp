@@ -204,30 +204,16 @@ namespace WyLight {
 	}
 	
 	void FtpServer::transferDataPassive(std::ifstream& file, const TcpServerSocket& dataSocket) const throw(FatalError) {
-		size_t bytesRead = 0;
-		uint8_t buffer[2048];
-
-		file.seekg(0, file.end);
-		const int length = (int)file.tellg();
-        file.seekg(0, file.beg);
-		
-		// accept a socket for data transfer, wait 1 second for remote accept
+		// The remote has 1 second to connect until we terminate the listening data socket
 		const struct timespec timeout {1, 0};
 		TcpSocket transferSocket(dataSocket.GetSocket(), &timeout);
-
-		for (bytesRead = 0; bytesRead < length - sizeof(buffer); bytesRead = bytesRead + sizeof(buffer)) {
-			file.read((char*)buffer, sizeof(buffer));
-			if (!file) {
-				throw FatalError("Error in Filestream occured");
-			}
-			transferSocket.Send(buffer, sizeof(buffer));
-		}
 		
-		file.read((char*)buffer, length - bytesRead);
-		if (!file) {
-			throw FatalError("Error in Filestream occured");
+		// send our file to the new data socket
+		while(file.good()) {
+			uint8_t buffer[2048];
+			file.read((char*)buffer, sizeof(buffer));
+			transferSocket.Send(buffer, file.gcount());
 		}
-		transferSocket.Send(buffer, length - bytesRead);
 	}
 	
 	TcpServerSocket* FtpServer::openDataConnection(const TcpSocket& telnet) throw(FatalError)
