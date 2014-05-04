@@ -52,6 +52,17 @@ namespace WyLight {
 		bool mFtpServerRunning = true;
 		std::thread mFtpServerThread;
 	};
+
+	class FtpCommand
+	{
+		const char* const mParam;
+		const char* const mSuccess;
+		const char* const mError;
+	public:
+		static const FtpCommand USER;
+		FtpCommand(const char* param, const char* successMsg, const char* errorMsg);
+		bool Run(const TcpSocket& telnet, std::stringstream& dataInput) const;
+	};
 }
 #endif /* #ifndef _CLIENTSOCKET_H_ */
 

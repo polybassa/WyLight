@@ -37,6 +37,28 @@ namespace WyLight {
 	static const timeval RESPONSE_TIMEOUT = {5, 0};
 	static const uint32_t LOCALHOST = 2130706433;
 	
+	const FtpCommand FtpCommand::USER("roving",
+			"331 Username ok, send password.\r\n",
+			"430 Invalid username or password. Good Bye.\r\n");
+
+	FtpCommand::FtpCommand(const char* param, const char* successMsg, const char* errorMsg)
+		: mParam(param), mSuccess(successMsg), mError(errorMsg)
+	{
+	}
+
+	bool FtpCommand::Run(const TcpSocket& telnet, std::stringstream& dataInput) const {
+		std::string param;
+		dataInput >> param;
+		//TODO do stronger string compare!
+		if (param.find(mParam) != std::string::npos) {
+			telnet.Send(mSuccess);
+			return true;
+		} else {
+			telnet.Send(mError);
+			return false;
+		}
+	}
+
 	FtpServer::FtpServer(void) throw (FatalError)
 	{
 		mFtpServerThread = std::thread([&]{
@@ -87,14 +109,7 @@ namespace WyLight {
 			
 			if (requestCMD == "USER")
 			{
-				//=============================
-				std::string userName;
-				std::getline(dataInput, userName);
-				
-				if (userName.find("roving") != std::string::npos) {
-					telnet.Send("331 Username ok, send password.\r\n");
-				} else {
-					telnet.Send("430 Invalid username or password. Good Bye.\r\n");
+				if(!FtpCommand::USER.Run(telnet, dataInput)) {
 					return;
 				}
 			} else if (requestCMD == "PASS")
