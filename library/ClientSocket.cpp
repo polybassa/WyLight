@@ -40,7 +40,7 @@ const int TCP_SEND_FLAGS = MSG_NOSIGNAL;
 
 namespace WyLight {
 
-	static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+	static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;// | ZONE_VERBOSE;
 
 #define ESTABLISH_CONNECTION_TIMEOUT 5
 
@@ -119,8 +119,18 @@ namespace WyLight {
 		}
 	}
 
-	TcpSocket::TcpSocket(int listenSocket) throw (ConnectionLost, FatalError)
+	TcpSocket::TcpSocket(int listenSocket, const struct timespec *timeout) throw (ConnectionLost, FatalError)
 	{
+		// wait for remote socket to connect
+		if (timeout) {
+			fd_set readfds;
+			FD_ZERO(&readfds);
+			FD_SET(listenSocket, &readfds);
+			if(pselect(listenSocket + 1, &readfds, NULL, NULL, timeout, NULL) <= 0) {
+				throw FatalError("accept() timed out");
+			}
+		}
+
 		socklen_t sockAddrLen = sizeof(mSockAddr);
 		mSock = accept(listenSocket, reinterpret_cast<struct sockaddr *>(&mSockAddr), &sockAddrLen);
 		if(-1 == mSock) {
@@ -196,7 +206,7 @@ namespace WyLight {
 
 	size_t TcpSocket::Send(const uint8_t *frame, size_t length) const
 	{
-		TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending on socket 0x%04x, %zu bytes: ", mSock, length);
+		TraceBuffer(ZONE_VERBOSE, frame, length, "%02x ", "Sending on socket 0x%04x, %zu bytes: ", mSock, length);
 		const ssize_t result = send(mSock, frame, length, TCP_SEND_FLAGS);
 		if(result == -1) {
 			throw FatalError("send failed with returnvalue -1 and errno:" + std::to_string(errno));

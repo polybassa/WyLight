@@ -130,7 +130,7 @@ namespace WyLight {
 		 * @throw FatalError if the base class constructor fails @see ClientSocket#ClientSocket
 		 * @throw ConnectionLost if accept() fails on the internal socket
 		 */
-		TcpSocket(int listenSocket) throw (ConnectionLost, FatalError);
+		TcpSocket(int listenSocket, const struct timespec *timeout = NULL) throw (ConnectionLost, FatalError);
 
 		/**
 		 * Create a new TCP socket with connect()

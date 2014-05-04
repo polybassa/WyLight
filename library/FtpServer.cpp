@@ -208,62 +208,26 @@ namespace WyLight {
 		uint8_t buffer[2048];
 
 		file.seekg(0, file.end);
-		int length = (int)file.tellg();
+		const int length = (int)file.tellg();
         file.seekg(0, file.beg);
 		
-		sockaddr_in clientAddr;
-		socklen_t clientAddrLen = sizeof(clientAddr);
-		
-		// start a timeout kill thread here!!
-		int tempDataSock = -1;
-		
-		std::thread killThread = std::thread([&]{
-			
-			std::this_thread::sleep_for(std::chrono::seconds(1));
-			uint16_t port = dataSocket.GetPort();
+		// accept a socket for data transfer, wait 1 second for remote accept
+		const struct timespec timeout {1, 0};
+		TcpSocket transferSocket(dataSocket.GetSocket(), &timeout);
 
-			//shutting down if no accept happend
-			if (tempDataSock == -1) {
-				TcpSocket shutdownSocket(LOCALHOST, port);
-			}
-		});
-		
-		//blocking accept here !!
-		tempDataSock = accept(dataSocket.GetSocket(), reinterpret_cast<struct sockaddr *>(&clientAddr), &clientAddrLen);
-		
-		if (tempDataSock == -1) {
-			killThread.join();
-			throw FatalError("Invalid Data Socket");
-		}
-		
-#if 0 //Disabled to allow localhost connections
-		if (ntohl(clientAddr.sin_addr.s_addr) == LOCALHOST) {
-			killThread.join();
-			throw FatalError("Timeout occured, unblocked accept by killThread!! ");
-		}
-#endif
-		
 		for (bytesRead = 0; bytesRead < length - sizeof(buffer); bytesRead = bytesRead + sizeof(buffer)) {
 			file.read((char*)buffer, sizeof(buffer));
 			if (!file) {
-				killThread.join();
-				close(tempDataSock);
 				throw FatalError("Error in Filestream occured");
 			}
-			Send(buffer, sizeof(buffer), tempDataSock);
+			transferSocket.Send(buffer, sizeof(buffer));
 		}
 		
 		file.read((char*)buffer, length - bytesRead);
 		if (!file) {
-			killThread.join();
-			close(tempDataSock);
 			throw FatalError("Error in Filestream occured");
 		}
-		
-		Send(buffer, length - bytesRead, tempDataSock);
-
-		killThread.join();
-		close(tempDataSock);
+		transferSocket.Send(buffer, length - bytesRead);
 	}
 	
 	TcpServerSocket* FtpServer::openDataConnection(const TcpSocket& telnet) throw(FatalError)
