@@ -147,23 +147,11 @@ namespace WyLight {
 				//clear content of dataInput
 				dataInput.str(std::string());
 				
-				try {
-					dataSocket = openDataConnection(telnet);
-				} catch (FatalError& e) {
-					telnet.Send(std::string("451 Internal error - ") + std::string(e.what()));
+				dataSocket = openDataConnection(telnet);
+				if (!dataSocket) {
+					return;
 				}
-
-				uint16_t port = dataSocket->GetPort();
-				uint32_t ip = dataSocket->GetIp();
-
-				telnet.Send("227 Entering pasive mode ("
-					+ std::to_string((ip >> 24) & 0xff) + ","
-					+ std::to_string((ip >> 16) & 0xff) + ","
-					+ std::to_string((ip >>  8) & 0xff) + ","
-					+ std::to_string((ip      ) & 0xff) + ","
-					+ std::to_string(port / 256) + ","
-					+ std::to_string(port % 256) + ").\r\n");
-			} else if (requestCMD == "RETR" && isClientLoggedIn)
+			} else if (requestCMD == "RETR" && dataSocket && isClientLoggedIn)
 			{
 				std::string fileName;
 				std::getline(dataInput, fileName);
@@ -224,19 +212,32 @@ namespace WyLight {
 		}
 	}
 	
-	TcpServerSocket* FtpServer::openDataConnection(const TcpSocket& telnet) throw(FatalError)
+	TcpServerSocket* FtpServer::openDataConnection(const TcpSocket& telnet)
 	{
 		struct sockaddr_in sin;
 		socklen_t len = sizeof(sin);
 		if (getsockname(telnet.GetSocket(), (struct sockaddr *)&sin, &len) == -1) {
-			throw FatalError("Getsockname failed");
+			telnet.Send("451 Internal error - getsockname() failed");
+			return NULL;
 		}
 		
-		TcpServerSocket *result = new TcpServerSocket(ntohl(sin.sin_addr.s_addr), 0);
-		if(!result) {
-			throw FatalError("openDataConnection(): create TcpServerSocket failed");
+		TcpServerSocket *dataSocket = new TcpServerSocket(ntohl(sin.sin_addr.s_addr), 0);
+		if(!dataSocket) {
+			telnet.Send("451 Internal error - create TcpServerSocket failed");
+			return NULL;
 		}
-		return result;
+
+		const uint16_t port = dataSocket->GetPort();
+		const uint32_t ip = dataSocket->GetIp();
+
+		telnet.Send("227 Entering passive mode ("
+			+ std::to_string((ip >> 24) & 0xff) + ","
+			+ std::to_string((ip >> 16) & 0xff) + ","
+			+ std::to_string((ip >>  8) & 0xff) + ","
+			+ std::to_string((ip      ) & 0xff) + ","
+			+ std::to_string(port / 256) + ","
+			+ std::to_string(port % 256) + ").\r\n");
+		return dataSocket;
 	}
 } /* namespace WyLight */
 

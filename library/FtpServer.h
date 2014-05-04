@@ -46,7 +46,7 @@ namespace WyLight {
 	private:
 		static const size_t FILE_BUFFER_SIZE = 2048;
 		void handleFiletransfer(const TcpSocket& telnet);
-		TcpServerSocket* openDataConnection(const TcpSocket& telnet) throw(FatalError);
+		TcpServerSocket* openDataConnection(const TcpSocket& telnet);
 		void transferDataPassive(std::ifstream& file, const TcpServerSocket& dataSocket) const throw(FatalError);
 
 		bool mFtpServerRunning = true;
