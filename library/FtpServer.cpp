@@ -37,13 +37,21 @@ namespace WyLight {
 	static const timeval RESPONSE_TIMEOUT = {5, 0};
 	static const uint32_t LOCALHOST = 2130706433;
 	
-	const FtpCommand FtpCommand::USER("roving",
-			"331 Username ok, send password.\r\n",
-			"430 Invalid username or password. Good Bye.\r\n");
+	const FtpCommand FtpCommand::CWD("public",
+		"250 \"/public\" ist the current directory.\r\n",
+		"550 Requested action not taken. File unavailable (e.g., file not found, no access). Good Bye.\r\n");
 
 	const FtpCommand FtpCommand::PASS("Pass123",
-			"230 Login successful.\r\n",
-			"430 Invalid username or password. Good Bye.\r\n");
+		"230 Login successful.\r\n",
+		"430 Invalid username or password. Good Bye.\r\n");
+
+	const FtpCommand FtpCommand::TYPE("I",
+		"200 Type set to: Binary.\r\n",
+		"550 Requested action not taken. File unavailable (e.g., file not found, no access). Good Bye.\r\n");
+
+	const FtpCommand FtpCommand::USER("roving",
+		"331 Username ok, send password.\r\n",
+		"430 Invalid username or password. Good Bye.\r\n");
 
 	FtpCommand::FtpCommand(const char* param, const char* successMsg, const char* errorMsg)
 		: mParam(param), mSuccess(successMsg), mError(errorMsg)
@@ -125,26 +133,12 @@ namespace WyLight {
 				isClientLoggedIn = true;
 			} else if (requestCMD == "CWD" && isClientLoggedIn)
 			{
-				//=============================
-				std::string directory;
-				std::getline(dataInput, directory);
-				
-				if (directory.find("public") != std::string::npos) {
-					telnet.Send("250 \"/public\" ist the current directory.\r\n");
-				} else {
-					telnet.Send("550 Requested action not taken. File unavailable (e.g., file not found, no access). Good Bye.\r\n");
+				if(!FtpCommand::CWD.Run(telnet, dataInput)) {
 					return;
 				}
 			} else if (requestCMD == "TYPE" && isClientLoggedIn)
 			{
-				//=============================
-				std::string dataType;
-				std::getline(dataInput, dataType);
-				
-				if (dataType.find("I") != std::string::npos) {
-					telnet.Send("200 Type set to: Binary.\r\n");
-				} else {
-					telnet.Send("550 Requested action not taken. File unavailable (e.g., file not found, no access). Good Bye.\r\n");
+				if(!FtpCommand::TYPE.Run(telnet, dataInput)) {
 					return;
 				}
 			} else if (requestCMD == "PASV" && isClientLoggedIn)

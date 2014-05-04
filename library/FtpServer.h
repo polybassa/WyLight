@@ -59,8 +59,10 @@ namespace WyLight {
 		const char* const mSuccess;
 		const char* const mError;
 	public:
-		static const FtpCommand USER;
+		static const FtpCommand CWD;
 		static const FtpCommand PASS;
+		static const FtpCommand TYPE;
+		static const FtpCommand USER;
 		FtpCommand(const char* param, const char* successMsg, const char* errorMsg);
 		bool Run(const TcpSocket& telnet, std::stringstream& dataInput) const;
 	};
