@@ -227,16 +227,8 @@ namespace WyLight {
 			return NULL;
 		}
 
-		const uint16_t port = dataSocket->GetPort();
-		const uint32_t ip = dataSocket->GetIp();
-
-		telnet.Send("227 Entering passive mode ("
-			+ std::to_string((ip >> 24) & 0xff) + ","
-			+ std::to_string((ip >> 16) & 0xff) + ","
-			+ std::to_string((ip >>  8) & 0xff) + ","
-			+ std::to_string((ip      ) & 0xff) + ","
-			+ std::to_string(port / 256) + ","
-			+ std::to_string(port % 256) + ").\r\n");
+		const std::string addr(dataSocket->GetAddrCommaSeparated());
+		telnet.Send("227 Entering Passive Mode (" + addr + ").\r\n");
 		return dataSocket;
 	}
 } /* namespace WyLight */

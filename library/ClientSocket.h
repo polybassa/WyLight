@@ -67,8 +67,12 @@ namespace WyLight {
 		 */
 		virtual ~ClientSocket();
 
-		uint32_t GetIp() const throw (FatalError);
-		uint16_t GetPort() const throw (FatalError);
+		/**
+		 * Read the socket address with getsockaddr() and convert it into
+		 * a comma separated address used by ftp PASV command ("ip1,ip2,ip3,ip4,port1,port2")
+		 * @return a ftp PASV formatted string. "0,0,0,0,0,0" in case of a failure.
+		 */
+		std::string GetAddrCommaSeparated() const;
 
 		//TODO REMOVE THIS HACK!!!! ITS NOT SUPPOSED TO SURVIVE THE FTP REFACTORING!
 		int GetSocket() const { return mSock; };

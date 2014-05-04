@@ -19,6 +19,7 @@
 #include "ClientSocket.h"
 #include "trace.h"
 
+#include <algorithm>
 #include <arpa/inet.h>
 #include <netinet/tcp.h>
 #include <sys/select.h>
@@ -60,24 +61,19 @@ namespace WyLight {
 		close(mSock);
 	}
 
-	uint32_t ClientSocket::GetIp() const throw (FatalError)
+	std::string ClientSocket::GetAddrCommaSeparated() const
 	{
 		struct sockaddr_in sin;
 		socklen_t len = sizeof(sin);
 		if (-1 == getsockname(mSock, (struct sockaddr *)&sin, &len)) {
-			throw FatalError("Getsockname failed");
+			return "0,0,0,0";
 		}
-		return ntohl(sin.sin_addr.s_addr);
-	}
 
-	uint16_t ClientSocket::GetPort() const throw (FatalError)
-	{
-		struct sockaddr_in sin;
-		socklen_t len = sizeof(sin);
-		if (-1 == getsockname(mSock, (struct sockaddr *)&sin, &len)) {
-			throw FatalError("Getsockname failed");
-		}
-		return ntohs(sin.sin_port);
+		std::string ip(inet_ntoa(sin.sin_addr));
+		std::replace(ip.begin(), ip.end(), '.', ',');
+		const uint16_t p = ntohs(sin.sin_port);
+		const std::string port = std::to_string(p / 256) + ',' + std::to_string(p % 256);
+		return ip + ',' + port;
 	}
 
 	bool ClientSocket::Select(timeval *timeout) const throw (FatalError)
