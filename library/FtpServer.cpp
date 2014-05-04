@@ -71,20 +71,12 @@ namespace WyLight {
 		}
 	}
 
-	void FtpServer::closeDataConnectionWithException(const std::string& msg) throw (FatalError)
-	{
-		if (mClientDataSock != -1) {
-			close(mClientDataSock);
-			mClientDataSock = -1;
-		}
-		throw FatalError(msg);
-	}
-
 	void FtpServer::handleFiletransfer(const TcpSocket& telnet) {
 		size_t bytesRead = 0;
 		uint8_t buffer[1024];
 		std::stringstream dataInput;
 		bool isClientLoggedIn = false;
+		TcpServerSocket *dataSocket = NULL;
 		
 		telnet.Send("220 WyLight Ftp Server running.\r\n");
 		
@@ -154,9 +146,14 @@ namespace WyLight {
 				//clear content of dataInput
 				dataInput.str(std::string());
 				
-				openDataConnection(telnet);
+				try {
+					dataSocket = openDataConnection(telnet);
+				} catch (FatalError& e) {
+					telnet.Send(std::string("451 Internal error - ") + std::string(e.what()));
+				}
+
+				mClientDataSock = dataSocket->GetSocket();
 				
-				if (mClientDataSock != -1) {
 					struct sockaddr_in sin;
 					socklen_t len = sizeof(sin);
 					if (getsockname(mClientDataSock, (struct sockaddr *)&sin, &len) != -1) {
@@ -174,9 +171,6 @@ namespace WyLight {
 					else {
 						throw FatalError("Getsockname failed");
 					}
-				} else {
-					throw FatalError("Invalid Client Data Socket");
-				}
 			} else if (requestCMD == "RETR" && isClientLoggedIn)
 			{
 				std::string fileName;
@@ -188,8 +182,8 @@ namespace WyLight {
 				getcwd(currentDirectory, FILENAME_MAX);
 							
 				//FIXME: static filename only for debugging
-				fileName = "/Users/nilsweiss/Dropbox/Wifly_Light/FtpUpdateServer/public/wifly7-441.mif";
-				//fileName = "./rn171_fw/wifly7-441.mif";
+				//fileName = "/Users/nilsweiss/Dropbox/Wifly_Light/FtpUpdateServer/public/wifly7-441.mif";
+				fileName = "./rn171_fw/wifly7-441.mif";
 				
 				std::ifstream file(fileName, std::ios::in | std::ios::binary);
 				
@@ -200,19 +194,13 @@ namespace WyLight {
 					telnet.Send("226 Transfer complete.\r\n");
 				} else {
 					telnet.Send("550 Requested action not taken. File unavailable (e.g., file not found, no access). Good Bye.\r\n");
-					if (mClientDataSock != -1) {
-						close(mClientDataSock);
-						mClientDataSock = -1;
-					}
+					delete dataSocket;
 					return;
 				}
 				
 			} else if (requestCMD == "QUIT" && isClientLoggedIn) {
 				telnet.Send("221 Thank you for updating.\r\n");
-				if (mClientDataSock != -1) {
-					close(mClientDataSock);
-					mClientDataSock = -1;
-				}
+				delete dataSocket;
 				return;
 				
 			} else {
@@ -223,10 +211,7 @@ namespace WyLight {
 				telnet.Send("150 Command not supported.\r\n");
 #else
 				telnet.Send("150 Command not supported. Good Bye.\r\n");
-				if (mClientDataSock != -1) {
-					close(mClientDataSock);
-					mClientDataSock = -1;
-				}
+				delete dataSocket;
 				return;
 #endif
 			}
@@ -301,7 +286,7 @@ namespace WyLight {
 		close(tempDataSock);
 	}
 	
-	void FtpServer::openDataConnection(const TcpSocket& telnet) throw(FatalError)
+	TcpServerSocket* FtpServer::openDataConnection(const TcpSocket& telnet) throw(FatalError)
 	{
 		struct sockaddr_in sin;
 		socklen_t len = sizeof(sin);
@@ -309,33 +294,11 @@ namespace WyLight {
 			throw FatalError("Getsockname failed");
 		}
 		
-		mClientDataSock = socket(AF_INET, SOCK_STREAM, 0);
-		if (-1 == mClientDataSock) {
-			telnet.Send("451 Internal error - No data socket available.\r\n");
-			throw FatalError("Unable to get FTP_Data Socket sockert() failed");
+		TcpServerSocket *result = new TcpServerSocket(ntohl(sin.sin_addr.s_addr), 0);
+		if(!result) {
+			throw FatalError("openDataConnection(): create TcpServerSocket failed");
 		}
-		
-		sin.sin_family = AF_INET;
-		sin.sin_port = 0;
-#ifdef __APPLE__
-		sin.sin_len = sizeof(sin);
-#endif
-		
-		const int on = 1;
-		if (-1 == setsockopt(mClientDataSock, SOL_SOCKET, SO_REUSEADDR, (char *)&on, sizeof(on))) {
-			telnet.Send("451 Internal error - No data socket available.\r\n");
-			closeDataConnectionWithException("Unable to get FTP_Data Socket");
-		}
-
-		if (bind( mClientDataSock, (struct sockaddr *)&sin, sizeof(sin)) == -1){
-			telnet.Send("451 Internal error - No data port available.\r\n");
-			closeDataConnectionWithException("Unable to bind FTP_Data Socket");
-		}
-
-		if(listen(mClientDataSock, 1) == -1) {
-			telnet.Send("451 Internal error.\r\n");
-			closeDataConnectionWithException("Unable to listen FTP_Data Socket");
-		}
+		return result;
 	}
 	
 	size_t FtpServer::Send(const std::string &message, const int& socket) const throw (FatalError){

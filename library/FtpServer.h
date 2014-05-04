@@ -44,9 +44,8 @@ namespace WyLight {
 		~FtpServer(void);
 				
 	private:
-		void closeDataConnectionWithException(const std::string& msg) throw(FatalError);
 		void handleFiletransfer(const TcpSocket& telnet);
-		void openDataConnection(const TcpSocket& telnet) throw(FatalError);
+		TcpServerSocket* openDataConnection(const TcpSocket& telnet) throw(FatalError);
 		void transferDataPassive(std::ifstream& file) const throw(FatalError);
 
 		size_t Send(const void *frame, const size_t length, const int& socket) const throw(FatalError);
