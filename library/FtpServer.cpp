@@ -210,7 +210,7 @@ namespace WyLight {
 		
 		// send our file to the new data socket
 		while(file.good()) {
-			uint8_t buffer[2048];
+			uint8_t buffer[FILE_BUFFER_SIZE];
 			file.read((char*)buffer, sizeof(buffer));
 			transferSocket.Send(buffer, file.gcount());
 		}
@@ -230,24 +230,5 @@ namespace WyLight {
 		}
 		return result;
 	}
-	
-	size_t FtpServer::Send(const std::string &message, const int& socket) const throw (FatalError){
-		return this->Send(message.data(), message.length(), socket);
-	}
-	
-	size_t FtpServer::Send(const void *frame, const size_t length, const int& socket) const throw(FatalError) {
-		if (socket != -1) {
-			//TraceBuffer(ZONE_INFO, frame, length, "%02x ", "Sending on socket 0x%04x, %zu bytes: ", mClientSock, length);
-			const ssize_t result = write(socket, frame, length);
-			if(result == -1) {
-				throw FatalError("send on socket " + std::to_string(socket) + " failed with returnvalue -1 and errno:" + std::to_string(errno));
-			}
-			return result;
-		}
-		else {
-			throw FatalError("Invalid Socket");
-		}
-	}
-
 } /* namespace WyLight */
 
