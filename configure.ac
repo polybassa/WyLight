@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([WiflyLight], [0.1], [weitys1@aol.com])
+AC_INIT([WyLight], [0.1], [nils.weiss@wylight.de])
 AC_CONFIG_SRCDIR([android/WiflyLight/jni/WiflyControlJni.cpp])
 AC_CONFIG_HEADERS([config.h])
 
@@ -13,6 +13,7 @@ AC_PROG_MAKE_SET
 AC_SUBST(AM_CXXFLAGS, [-std=c++0x])
 AC_SUBST(AM_CXXFLAGS, [-pedantic])
 AC_SUBST(AM_CXXFLAGS, [-Wall])
+
 AC_PATH_PROG(WINE, wine,[not_found])
 AC_PATH_PROG(NDK, ndk-build, [not_found])
 AC_PATH_PROG(DOXYGEN, doxygen, [not_found])

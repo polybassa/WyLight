@@ -65,6 +65,19 @@ TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalE
 	g_TestSocketSendDelay.tv_nsec = 0;
 }
 
+TcpSocket::TcpSocket(int listenSocket, const struct timespec *timeout) throw (ConnectionLost, FatalError)
+{
+	g_TestSocketSendDelay.tv_sec = 0;
+	g_TestSocketSendDelay.tv_nsec = 0;
+}
+
+ClientSocket::ClientSocket()
+: mSock(-1), mSockAddr(0, 0)
+{
+	
+}
+
+
 /**
  * For each call to Recv() we only return one byte of data to simulate a very
  * fragmented response from pic.
