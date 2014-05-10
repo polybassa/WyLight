@@ -120,3 +120,31 @@ uns8 I2C_Read(const uns8 slaveaddr, const uns8 readaddr)
 	SSP2IF = 0;
 	return _data;
 }
+
+uns8 I2C_DetectSlave(const uns8 slaveaddr) {
+	//Bus übernehmen
+	SSP2IF = 0;
+	SEN2 = 1;
+	while(!SSP2IF) ;
+	SSP2IF = 0;
+	
+	//Slave ansprechen
+	SSP2BUF = slaveaddr;
+	while(!SSP2IF) ;
+	SSP2IF = 0;
+	
+	//check ACKSTAT
+	uns8 returnValue = SSP2CON2 & 0b01000000;
+	
+	//Bus freigeben
+	PEN2 = 1;
+	while(!SSP2IF) ;
+	SSP2IF = 0;
+	
+	if (returnValue == 0) {
+		return TRUE;
+	} else {
+		return FALSE;
+	}
+}
+
