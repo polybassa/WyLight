@@ -198,6 +198,7 @@ int main(void)
 void InitAll()
 {
 	clearRAM();
+	Trace_Init();
 	Platform_OsciInit();
 	Platform_IOInit();
 	RingBuf_Init(&g_RingBuf);
@@ -207,7 +208,6 @@ void InitAll()
 	CommandIO_Init();
 	Rtc_Init();
 	ScriptCtrl_Init();
-	Trace_Init();
 
 #ifndef __CC8E__
 	init_x86();
@@ -216,7 +216,7 @@ void InitAll()
 	Platform_AllowInterrupts();
 	Platform_DisableBootloaderAutostart();
 
-	Trace_String("Start");
+	Trace_String(" Start");
 
 	/* Startup Wait-Time 2s
 	 * to protect Wifly-Modul from errors*/
