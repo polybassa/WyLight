@@ -21,7 +21,8 @@
 
 /** Have a look at: http://linux.die.net/man/4/rtc   **/
 
-#define RTC 0xA2                /* IIC-Address of RTC Clock IC */
+#define RTC_MCP79410 0xDE                /* IIC-Address of RTC Clock IC */
+#define RTC_8564JE 0xA2                /* IIC-Address of RTC Clock IC */
 
 enum RTC_request { RTC_SET_TIME, RTC_RD_TIME};
 
@@ -41,6 +42,7 @@ struct  __attribute__((__packed__)) rtc_time {
 
 /** *********************** FUNCTIONS *********************************************/
 extern struct rtc_time g_RtcTime;
+extern uns8 g_RtcAdress;
 
 void Rtc_Init(void);
 
