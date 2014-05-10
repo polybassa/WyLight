@@ -55,7 +55,7 @@ var searchData=
   ['blrunapp',['BlRunApp',['../class_wy_light_1_1_control.html#a6a515497781d7ab7ad5fde04b5466c63',1,'WyLight::Control::BlRunApp()'],['../class_wy_light_1_1_control_no_throw.html#ab5d301c3983548d341890ea4291c9854',1,'WyLight::ControlNoThrow::BlRunApp()']]],
   ['blrunapprequest',['BlRunAppRequest',['../struct_wy_light_1_1_bl_run_app_request.html',1,'WyLight']]],
   ['blrunapprequest',['BlRunAppRequest',['../struct_wy_light_1_1_bl_run_app_request.html#aa6a3f48d0ee9b9194f2a8af808d6185f',1,'WyLight::BlRunAppRequest']]],
-  ['blue',['blue',['../class_wy_light_1_1_wifly_color.html#a2c95d36931e4904838cc07cbc8e0556a',1,'WyLight::WiflyColor::blue() const '],['../class_wy_light_1_1_wifly_color.html#a921dcca5daed2301aaf98b6e08b3f522',1,'WyLight::WiflyColor::blue(uint8_t value)'],['../class_wy_light_1_1_wifly_color.html#a9b59f5a5f52beba738ce799799d273b7',1,'WyLight::WiflyColor::BLUE()']]],
+  ['blue',['BLUE',['../class_wy_light_1_1_wifly_color.html#a9b59f5a5f52beba738ce799799d273b7',1,'WyLight::WiflyColor::BLUE()'],['../class_wy_light_1_1_wifly_color.html#a2c95d36931e4904838cc07cbc8e0556a',1,'WyLight::WiflyColor::blue() const '],['../class_wy_light_1_1_wifly_color.html#a921dcca5daed2301aaf98b6e08b3f522',1,'WyLight::WiflyColor::blue(uint8_t value)']]],
   ['blwriteeeprom',['BlWriteEeprom',['../class_wy_light_1_1_control.html#abcd3025967e993c21069069a39501f08',1,'WyLight::Control']]],
   ['blwriteflash',['BlWriteFlash',['../class_wy_light_1_1_control.html#a4ae7b4a7f3735fe6ab7481f43adcc622',1,'WyLight::Control']]],
   ['bootloaderversioncheckupdate',['bootloaderVersionCheckUpdate',['../class_wy_light_1_1_startup_manager.html#ad755c3439645ac4e6e56a1f7a364119d',1,'WyLight::StartupManager']]],

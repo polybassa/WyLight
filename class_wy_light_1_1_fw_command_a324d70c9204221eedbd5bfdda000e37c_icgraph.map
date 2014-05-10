@@ -1,0 +1,4 @@
+<map id="WyLight::FwCommand::argb" name="WyLight::FwCommand::argb">
+<area shape="rect" id="node2" href="$struct_wy_light_1_1_fw_cmd_set_gradient.html#a62819029f4f0d77b87d9b9c5d9239153" title="WyLight::FwCmdSetGradient\l::StartColor" alt="" coords="209,5,403,44"/>
+<area shape="rect" id="node3" href="$struct_wy_light_1_1_fw_cmd_set_gradient.html#a97725ab213c9292073562b2ab6c15934" title="WyLight::FwCmdSetGradient\l::EndColor" alt="" coords="209,68,403,107"/>
+</map>

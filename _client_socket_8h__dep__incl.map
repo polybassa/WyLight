@@ -1,11 +1,12 @@
 <map id="library/ClientSocket.h" name="library/ClientSocket.h">
-<area shape="rect" id="node2" href="$_broadcast_receiver_8h.html" title="library/BroadcastReceiver.h" alt="" coords="5,83,189,111"/>
-<area shape="rect" id="node4" href="$_com_proxy_8h.html" title="library/ComProxy.h" alt="" coords="213,83,347,111"/>
-<area shape="rect" id="node10" href="$_telnet_proxy_8h.html" title="library/TelnetProxy.h" alt="" coords="371,83,511,111"/>
-<area shape="rect" id="node3" href="$_broadcast_message_8h.html" title="library/BroadcastMessage.h" alt="" coords="4,161,189,189"/>
-<area shape="rect" id="node5" href="$_wifly_control_8h.html" title="library/WiflyControl.h" alt="" coords="292,161,436,189"/>
-<area shape="rect" id="node6" href="$_startup_manager_8h.html" title="library/StartupManager.h" alt="" coords="212,315,379,343"/>
-<area shape="rect" id="node8" href="$_wifly_control_no_throw_8h.html" title="library/WiflyControlNoThrow.h" alt="" coords="265,238,463,266"/>
-<area shape="rect" id="node9" href="$_wifly_control_cli_8h.html" title="cli/WiflyControlCli.h" alt="" coords="487,238,623,266"/>
-<area shape="rect" id="node7" href="$_wifly_control_cmd_8h.html" title="cli/WiflyControlCmd.h" alt="" coords="222,393,369,421"/>
+<area shape="rect" id="node2" href="$_broadcast_receiver_8h.html" title="library/BroadcastReceiver.h" alt="" coords="6,79,191,104"/>
+<area shape="rect" id="node4" href="$_com_proxy_8h.html" title="library/ComProxy.h" alt="" coords="214,79,348,104"/>
+<area shape="rect" id="node10" href="$_ftp_server_8h.html" title="library/FtpServer.h" alt="" coords="372,79,502,104"/>
+<area shape="rect" id="node11" href="$_telnet_proxy_8h.html" title="library/TelnetProxy.h" alt="" coords="527,79,668,104"/>
+<area shape="rect" id="node3" href="$_broadcast_message_8h.html" title="library/BroadcastMessage.h" alt="" coords="5,152,192,177"/>
+<area shape="rect" id="node5" href="$_wifly_control_8h.html" title="library/WiflyControl.h" alt="" coords="370,152,515,177"/>
+<area shape="rect" id="node6" href="$_startup_manager_8h.html" title="library/StartupManager.h" alt="" coords="291,299,458,324"/>
+<area shape="rect" id="node8" href="$_wifly_control_no_throw_8h.html" title="library/WiflyControlNoThrow.h" alt="" coords="344,225,541,251"/>
+<area shape="rect" id="node9" href="$_wifly_control_cli_8h.html" title="cli/WiflyControlCli.h" alt="" coords="565,225,701,251"/>
+<area shape="rect" id="node7" href="$_wifly_control_cmd_8h.html" title="cli/WiflyControlCmd.h" alt="" coords="300,372,449,397"/>
 </map>

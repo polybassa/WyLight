@@ -2,6 +2,8 @@ var searchData=
 [
   ['fatalerror',['FatalError',['../class_wy_light_1_1_fatal_error.html',1,'WyLight']]],
   ['firmwareversionresponse',['FirmwareVersionResponse',['../class_wy_light_1_1_firmware_version_response.html',1,'WyLight']]],
+  ['ftpcommand',['FtpCommand',['../class_wy_light_1_1_ftp_command.html',1,'WyLight']]],
+  ['ftpserver',['FtpServer',['../class_wy_light_1_1_ftp_server.html',1,'WyLight']]],
   ['fwcmdclearscript',['FwCmdClearScript',['../struct_wy_light_1_1_fw_cmd_clear_script.html',1,'WyLight']]],
   ['fwcmdget',['FwCmdGet',['../struct_wy_light_1_1_fw_cmd_get.html',1,'WyLight']]],
   ['fwcmdgetcycletime',['FwCmdGetCycletime',['../struct_wy_light_1_1_fw_cmd_get_cycletime.html',1,'WyLight']]],

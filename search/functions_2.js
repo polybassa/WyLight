@@ -6,7 +6,7 @@ var searchData=
   ['clear',['Clear',['../class_wy_light_1_1_base_buffer.html#ad7c6538cc7136f71a96efe6d85c8ff8f',1,'WyLight::BaseBuffer::Clear()'],['../class_wy_light_1_1_unmask_buffer.html#a0d535dd72bf7759dc780e1341f30a75f',1,'WyLight::UnmaskBuffer::Clear()'],['../class_wy_light_1_1_message_queue.html#a07807ffc11826fb293b95f56fa2a6952',1,'WyLight::MessageQueue::clear()'],['../class_wy_light_1_1_script.html#ade996d835eaa1ca545e8e073d7e2cfcd',1,'WyLight::Script::clear()']]],
   ['clear_5fand_5fpush_5ffront',['clear_and_push_front',['../class_wy_light_1_1_message_queue.html#afa0cc613fbaf294bab1834b97d159de8',1,'WyLight::MessageQueue']]],
   ['clearresponse',['ClearResponse',['../class_wy_light_1_1_telnet_proxy.html#ab438600992c7087b8bc8ec4248e4e9c1',1,'WyLight::TelnetProxy']]],
-  ['clientsocket',['ClientSocket',['../class_wy_light_1_1_client_socket.html#afe4f631abfffc996c24a8a55a9d5cea0',1,'WyLight::ClientSocket']]],
+  ['clientsocket',['ClientSocket',['../class_wy_light_1_1_client_socket.html#a0d6906a787d242164ab1c18a2427d62f',1,'WyLight::ClientSocket::ClientSocket()'],['../class_wy_light_1_1_client_socket.html#afe4f631abfffc996c24a8a55a9d5cea0',1,'WyLight::ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style)']]],
   ['close',['Close',['../class_wy_light_1_1_telnet_proxy.html#a21253eaad73040a3c23b4a234a1e4a7c',1,'WyLight::TelnetProxy']]],
   ['comproxy',['ComProxy',['../class_wy_light_1_1_com_proxy.html#a1757ec964a2043668fadb2fb6c7486f7',1,'WyLight::ComProxy']]],
   ['computefreechannel',['ComputeFreeChannel',['../class_wy_light_1_1_telnet_proxy.html#a557df99e3968f7a86b0dbef55a6c6c72',1,'WyLight::TelnetProxy']]],

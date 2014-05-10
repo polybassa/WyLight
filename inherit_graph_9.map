@@ -1,5 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_wy_light_1_1_client_socket.html" title="WyLight::ClientSocket" alt="" coords="6,31,157,59"/>
-<area shape="rect" id="node2" href="$class_wy_light_1_1_tcp_socket.html" title="WyLight::TcpSocket" alt="" coords="208,5,346,33"/>
-<area shape="rect" id="node3" href="$class_wy_light_1_1_udp_socket.html" title="WyLight::UdpSocket" alt="" coords="206,57,348,85"/>
+<area shape="rect" id="node1" href="$class_wy_light_1_1_client_socket.html" title="WyLight::ClientSocket" alt="" coords="5,55,157,80"/>
+<area shape="rect" id="node2" href="$class_wy_light_1_1_tcp_server_socket.html" title="WyLight::TcpServerSocket" alt="" coords="205,5,383,31"/>
+<area shape="rect" id="node3" href="$class_wy_light_1_1_tcp_socket.html" title="WyLight::TcpSocket" alt="" coords="225,55,363,80"/>
+<area shape="rect" id="node4" href="$class_wy_light_1_1_udp_socket.html" title="WyLight::UdpSocket" alt="" coords="223,104,365,129"/>
 </map>

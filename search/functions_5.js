@@ -1,7 +1,10 @@
 var searchData=
 [
+  ['fadetime',['fadeTime',['../struct_wy_light_1_1_fw_cmd_set_fade.html#a20e3838aa3f43f4d841b333fe82a8bda',1,'WyLight::FwCmdSetFade::fadeTime(void) const '],['../struct_wy_light_1_1_fw_cmd_set_fade.html#adbc7eb6e984e3d6bc42aa2f4bcd615a1',1,'WyLight::FwCmdSetFade::fadeTime(uint16_t tmms)']]],
   ['fatalerror',['FatalError',['../class_wy_light_1_1_fatal_error.html#ab9aa2dc0e064e47d56052e0e9084200f',1,'WyLight::FatalError']]],
   ['firmwareversionresponse',['FirmwareVersionResponse',['../class_wy_light_1_1_firmware_version_response.html#ac44161f34f697b6603248eb334e37330',1,'WyLight::FirmwareVersionResponse']]],
+  ['ftpcommand',['FtpCommand',['../class_wy_light_1_1_ftp_command.html#afccf8aba42a60ef14c0c90f774dfc416',1,'WyLight::FtpCommand']]],
+  ['ftpserver',['FtpServer',['../class_wy_light_1_1_ftp_server.html#a58cf8cb81082d922dc0a842f8cda5e52',1,'WyLight::FtpServer']]],
   ['fwclearscript',['FwClearScript',['../class_wy_light_1_1_control_no_throw.html#affad92c25b64a0206b25af3fc538c4d3',1,'WyLight::ControlNoThrow']]],
   ['fwcmdclearscript',['FwCmdClearScript',['../struct_wy_light_1_1_fw_cmd_clear_script.html#a215e609e9fb110bb9f41f015ffb8f87d',1,'WyLight::FwCmdClearScript']]],
   ['fwcmdget',['FwCmdGet',['../struct_wy_light_1_1_fw_cmd_get.html#a1a04aece1d971a7867b0b739dbb61ec2',1,'WyLight::FwCmdGet']]],

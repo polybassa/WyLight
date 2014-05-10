@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['getaddrcommaseparated',['GetAddrCommaSeparated',['../class_wy_light_1_1_client_socket.html#a7bf058448a21f1f8acc709fc812cfdcc',1,'WyLight::ClientSocket']]],
   ['getaddress',['GetAddress',['../struct_wy_light_1_1_bl_info.html#a93505c5f081c862b51e1f0dc746b6f0a',1,'WyLight::BlInfo']]],
   ['getcmd',['GetCmd',['../class_wifly_control_cmd_builder.html#a05dd587cd8df002b9cb70ad28672ebbf',1,'WiflyControlCmdBuilder::GetCmd(const string name)'],['../class_wifly_control_cmd_builder.html#a65d092a4de03eb57277d7e972eef5534',1,'WiflyControlCmdBuilder::GetCmd(size_t index)']]],
   ['getcontrol',['getControl',['../class_wifly_control_cli.html#ab7008190c01a37b869e8b20eba844dd9',1,'WiflyControlCli']]],
@@ -22,10 +23,12 @@ var searchData=
   ['getscript',['getScript',['../class_wy_light_1_1_script_manager.html#a74bb304e56f0496790058b64f847421d',1,'WyLight::ScriptManager']]],
   ['getscriptname',['getScriptName',['../class_wy_light_1_1_script_manager.html#ac976ce5b683e71a50f7352de5050ecc8',1,'WyLight::ScriptManager']]],
   ['getsize',['GetSize',['../struct_wy_light_1_1_bl_request.html#a46864fa4524fcdd0f32033e8f51ba1c5',1,'WyLight::BlRequest::GetSize()'],['../class_wy_light_1_1_fw_command.html#af45ca242c24c497039ea3063d1d2bf06',1,'WyLight::FwCommand::GetSize()']]],
+  ['getsocket',['GetSocket',['../class_wy_light_1_1_client_socket.html#a04800e73e310e10f31dc0879859ad111',1,'WyLight::ClientSocket']]],
   ['getstartlinearaddress',['getStartLinearAddress',['../classintelhex.html#a7bc61f72756d37509e768906733ba10b',1,'intelhex']]],
   ['getstartsegmentaddress',['getStartSegmentAddress',['../classintelhex.html#a94d6d17ba22263a4775d80b2a0e6e95f',1,'intelhex']]],
   ['getstatedescription',['getStateDescription',['../class_wy_light_1_1_startup_manager.html#aa2d34bae30a07b84519a41287193823d',1,'WyLight::StartupManager']]],
   ['gettargetmode',['GetTargetMode',['../class_wy_light_1_1_control.html#a585d3425704ac1cb5bf8666c9fba6b46',1,'WyLight::Control']]],
+  ['gettype',['GetType',['../class_wy_light_1_1_fw_command.html#a817a6f65c96dae568aa42ac43cbb7b8c',1,'WyLight::FwCommand']]],
   ['getversion',['getVersion',['../class_wy_light_1_1_firmware_version_response.html#ae6baf82998b8c5e1a7864e6e85027d2c',1,'WyLight::FirmwareVersionResponse']]],
   ['green',['green',['../class_wy_light_1_1_wifly_color.html#a5d6277a101939c582de9538765e3489e',1,'WyLight::WiflyColor::green() const '],['../class_wy_light_1_1_wifly_color.html#a9bc2caea718573d58d9c1a3951cd5d79',1,'WyLight::WiflyColor::green(uint8_t value)']]]
 ];

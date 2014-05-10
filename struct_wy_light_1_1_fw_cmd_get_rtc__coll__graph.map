@@ -1,6 +1,6 @@
 <map id="WyLight::FwCmdGetRtc" name="WyLight::FwCmdGetRtc">
-<area shape="rect" id="node2" href="$struct_wy_light_1_1_fw_cmd_get.html" title="{WyLight::FwCmdGet\n||+ FwCmdGet()\l}" alt="" coords="19,299,163,381"/>
-<area shape="rect" id="node3" href="$class_wy_light_1_1_fw_command.html" title="{WyLight::FwCommand\n|# mReqFrame\l&#45; mSize\l&#45; requiresResponse\l|+ GetData()\l+ GetSize()\l+ IsResponseRequired()\l+ GetResponse()\l+ operator==()\l+ operator!=()\l# FwCommand()\l# ~FwCommand()\l}" alt="" coords="5,6,171,231"/>
-<area shape="rect" id="node4" href="$class_wy_light_1_1_rtc_response.html" title="{WyLight::RtcResponse\n|&#45; mTimeValue\l|+ RtcResponse()\l+ Init()\l+ GetRealTime()\l}" alt="" coords="191,283,347,397"/>
-<area shape="rect" id="node5" href="$class_wy_light_1_1_fw_response.html" title="{WyLight::FwResponse\n|&#45; mCmd\l|+ FwResponse()\l+ Init()\l}" alt="" coords="195,70,348,167"/>
+<area shape="rect" id="node2" href="$struct_wy_light_1_1_fw_cmd_get.html" title="{WyLight::FwCmdGet\n||+ FwCmdGet()\l}" alt="" coords="19,288,163,361"/>
+<area shape="rect" id="node3" href="$class_wy_light_1_1_fw_command.html" title="{WyLight::FwCommand\n|# mReqFrame\l&#45; mSize\l&#45; requiresResponse\l|+ GetData()\l+ GetSize()\l+ GetType()\l+ IsResponseRequired()\l+ GetResponse()\l+ operator==()\l+ operator!=()\l# FwCommand()\l# ~FwCommand()\l# argb()\l}" alt="" coords="5,5,172,225"/>
+<area shape="rect" id="node4" href="$class_wy_light_1_1_rtc_response.html" title="{WyLight::RtcResponse\n|&#45; mTimeValue\l|+ RtcResponse()\l+ Init()\l+ GetRealTime()\l}" alt="" coords="191,275,348,375"/>
+<area shape="rect" id="node5" href="$class_wy_light_1_1_fw_response.html" title="{WyLight::FwResponse\n|&#45; mCmd\l|+ FwResponse()\l+ Init()\l}" alt="" coords="195,72,350,159"/>
 </map>

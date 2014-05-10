@@ -4,6 +4,7 @@ var searchData=
   ['_7ebroadcastreceiver',['~BroadcastReceiver',['../class_wy_light_1_1_broadcast_receiver.html#a027160f232b143e429d7ff61834c9d04',1,'WyLight::BroadcastReceiver']]],
   ['_7eclientsocket',['~ClientSocket',['../class_wy_light_1_1_client_socket.html#afba3cd05e78cb8f0c46600d3dbba22f4',1,'WyLight::ClientSocket']]],
   ['_7efatalerror',['~FatalError',['../class_wy_light_1_1_fatal_error.html#ae76658416075b597f03bee95f21f7a96',1,'WyLight::FatalError']]],
+  ['_7eftpserver',['~FtpServer',['../class_wy_light_1_1_ftp_server.html#a42a9549443448e63da141c08161aed1d',1,'WyLight::FtpServer']]],
   ['_7efwcommand',['~FwCommand',['../class_wy_light_1_1_fw_command.html#aa3631efbb779f06a2813cdc4f44a6f48',1,'WyLight::FwCommand']]],
   ['_7eintelhex',['~intelhex',['../classintelhex.html#a031ce4582899f5263fdcc2fa92cc3e45',1,'intelhex']]],
   ['_7escript',['~Script',['../class_wy_light_1_1_script.html#a9a6123b341e1b89fadae124f39f3a5c6',1,'WyLight::Script']]],

@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['white',['WHITE',['../class_wy_light_1_1_wifly_color.html#abbc2200bd5bcccb8f3ed8f2c0e1b5d71',1,'WyLight::WiflyColor']]]
+  ['verbose',['verbose',['../classintelhex.html#a65f440d3762d1b9437b7473c4df3bb8f',1,'intelhex']]],
+  ['version',['version',['../struct_wy_light_1_1_broadcast_message.html#a0a8793ce043e90aab098589663d2284c',1,'WyLight::BroadcastMessage']]],
+  ['versionmajor',['versionMajor',['../struct_wy_light_1_1_bl_info.html#a225c43b9cc621dd383ca22695098f2a6',1,'WyLight::BlInfo']]],
+  ['versionminor',['versionMinor',['../struct_wy_light_1_1_bl_info.html#a416fdd8a8cd832aca5f6f6ae851d91ff',1,'WyLight::BlInfo']]]
 ];

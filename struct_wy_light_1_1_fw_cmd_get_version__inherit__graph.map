@@ -1,4 +1,4 @@
 <map id="WyLight::FwCmdGetVersion" name="WyLight::FwCmdGetVersion">
-<area shape="rect" id="node2" href="$struct_wy_light_1_1_fw_cmd_get.html" title="{WyLight::FwCmdGet\n||+ FwCmdGet()\l}" alt="" coords="27,281,171,362"/>
-<area shape="rect" id="node3" href="$class_wy_light_1_1_fw_command.html" title="{WyLight::FwCommand\n|# mReqFrame\l&#45; mSize\l&#45; requiresResponse\l|+ GetData()\l+ GetSize()\l+ IsResponseRequired()\l+ GetResponse()\l+ operator==()\l+ operator!=()\l# FwCommand()\l# ~FwCommand()\l}" alt="" coords="16,6,181,231"/>
+<area shape="rect" id="node2" href="$struct_wy_light_1_1_fw_cmd_get.html" title="{WyLight::FwCmdGet\n||+ FwCmdGet()\l}" alt="" coords="28,273,172,347"/>
+<area shape="rect" id="node3" href="$class_wy_light_1_1_fw_command.html" title="{WyLight::FwCommand\n|# mReqFrame\l&#45; mSize\l&#45; requiresResponse\l|+ GetData()\l+ GetSize()\l+ GetType()\l+ IsResponseRequired()\l+ GetResponse()\l+ operator==()\l+ operator!=()\l# FwCommand()\l# ~FwCommand()\l# argb()\l}" alt="" coords="17,5,183,225"/>
 </map>

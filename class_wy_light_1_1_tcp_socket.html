@@ -100,43 +100,108 @@ Inheritance diagram for WyLight::TcpSocket:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_wy_light_1_1_tcp_socket__inherit__graph.png" border="0" usemap="#_wy_light_1_1_tcp_socket_inherit__map" alt="Inheritance graph"/></div>
 <map name="_wy_light_1_1_tcp_socket_inherit__map" id="_wy_light_1_1_tcp_socket_inherit__map">
-<area shape="rect" id="node2" href="class_wy_light_1_1_client_socket.html" title="{WyLight::ClientSocket\n|# mSock\l# mSockAddr\l|+ ClientSocket()\l+ ~ClientSocket()\l+ Select()\l+ Send()\l}" alt="" coords="4,6,155,151"/></map>
+<area shape="rect" id="node2" href="class_wy_light_1_1_client_socket.html" title="{WyLight::ClientSocket\n|# mSock\l# mSockAddr\l|+ ClientSocket()\l+ ClientSocket()\l+ ~ClientSocket()\l+ GetAddrCommaSeparated()\l+ GetSocket()\l+ Select()\l}" alt="" coords="5,5,205,159"/></map>
 </div>
 <div class="dynheader">
 Collaboration diagram for WyLight::TcpSocket:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_wy_light_1_1_tcp_socket__coll__graph.png" border="0" usemap="#_wy_light_1_1_tcp_socket_coll__map" alt="Collaboration graph"/></div>
 <map name="_wy_light_1_1_tcp_socket_coll__map" id="_wy_light_1_1_tcp_socket_coll__map">
-<area shape="rect" id="node2" href="class_wy_light_1_1_client_socket.html" title="{WyLight::ClientSocket\n|# mSock\l|+ ClientSocket()\l+ ~ClientSocket()\l+ Select()\l+ Send()\l}" alt="" coords="4,286,155,415"/><area shape="rect" id="node3" href="struct_wy_light_1_1_ipv4_addr.html" title="{WyLight::Ipv4Addr\n||+ Ipv4Addr()\l}" alt="" coords="15,139,144,221"/></map>
+<area shape="rect" id="node2" href="class_wy_light_1_1_client_socket.html" title="{WyLight::ClientSocket\n|# mSock\l|+ ClientSocket()\l+ ClientSocket()\l+ ~ClientSocket()\l+ GetAddrCommaSeparated()\l+ GetSocket()\l+ Select()\l}" alt="" coords="5,263,205,403"/><area shape="rect" id="node3" href="struct_wy_light_1_1_ipv4_addr.html" title="{WyLight::Ipv4Addr\n||+ Ipv4Addr()\l}" alt="" coords="40,128,170,201"/></map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:af78ed752add97c09ded93014728b0994"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_tcp_socket.html#af78ed752add97c09ded93014728b0994">TcpSocket</a> (int listenSocket, const struct timespec *timeout=NULL)  throw (ConnectionLost, FatalError)</td></tr>
+<tr class="separator:af78ed752add97c09ded93014728b0994"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69045a3bf0b959b50b2b4d2a18ee06c1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_tcp_socket.html#a69045a3bf0b959b50b2b4d2a18ee06c1">TcpSocket</a> (uint32_t Addr, uint16_t port)  throw (ConnectionLost, FatalError)</td></tr>
 <tr class="separator:a69045a3bf0b959b50b2b4d2a18ee06c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef83b055add4c47c4ab6b3395559ca27"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_tcp_socket.html#aef83b055add4c47c4ab6b3395559ca27">Recv</a> (uint8_t *pBuffer, size_t length, timeval *timeout=NULL) const   throw (FatalError)</td></tr>
 <tr class="separator:aef83b055add4c47c4ab6b3395559ca27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd2ed7e05e7a8efc55b01e422d957857"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_tcp_socket.html#acd2ed7e05e7a8efc55b01e422d957857">Send</a> (const uint8_t *frame, size_t length) const </td></tr>
 <tr class="separator:acd2ed7e05e7a8efc55b01e422d957857"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96f7cedf8ad6b164f4a164600af483fa"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_tcp_socket.html#a96f7cedf8ad6b164f4a164600af483fa">Send</a> (const std::string &amp;msg) const </td></tr>
+<tr class="separator:a96f7cedf8ad6b164f4a164600af483fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_wy_light_1_1_client_socket"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_wy_light_1_1_client_socket')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_wy_light_1_1_client_socket.html">WyLight::ClientSocket</a></td></tr>
+<tr class="memitem:a0d6906a787d242164ab1c18a2427d62f inherit pub_methods_class_wy_light_1_1_client_socket"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_client_socket.html#a0d6906a787d242164ab1c18a2427d62f">ClientSocket</a> ()</td></tr>
+<tr class="separator:a0d6906a787d242164ab1c18a2427d62f inherit pub_methods_class_wy_light_1_1_client_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe4f631abfffc996c24a8a55a9d5cea0 inherit pub_methods_class_wy_light_1_1_client_socket"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_client_socket.html#afe4f631abfffc996c24a8a55a9d5cea0">ClientSocket</a> (uint32_t addr, uint16_t port, int style)  throw (FatalError)</td></tr>
 <tr class="separator:afe4f631abfffc996c24a8a55a9d5cea0 inherit pub_methods_class_wy_light_1_1_client_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afba3cd05e78cb8f0c46600d3dbba22f4 inherit pub_methods_class_wy_light_1_1_client_socket"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_client_socket.html#afba3cd05e78cb8f0c46600d3dbba22f4">~ClientSocket</a> ()</td></tr>
 <tr class="separator:afba3cd05e78cb8f0c46600d3dbba22f4 inherit pub_methods_class_wy_light_1_1_client_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bf058448a21f1f8acc709fc812cfdcc inherit pub_methods_class_wy_light_1_1_client_socket"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_client_socket.html#a7bf058448a21f1f8acc709fc812cfdcc">GetAddrCommaSeparated</a> () const </td></tr>
+<tr class="separator:a7bf058448a21f1f8acc709fc812cfdcc inherit pub_methods_class_wy_light_1_1_client_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04800e73e310e10f31dc0879859ad111 inherit pub_methods_class_wy_light_1_1_client_socket"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_client_socket.html#a04800e73e310e10f31dc0879859ad111">GetSocket</a> () const </td></tr>
+<tr class="separator:a04800e73e310e10f31dc0879859ad111 inherit pub_methods_class_wy_light_1_1_client_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a34f39b3bbd8b4b2901e6c4f6f2d2e9 inherit pub_methods_class_wy_light_1_1_client_socket"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_client_socket.html#a8a34f39b3bbd8b4b2901e6c4f6f2d2e9">Select</a> (timeval *timeout) const   throw (FatalError)</td></tr>
 <tr class="separator:a8a34f39b3bbd8b4b2901e6c4f6f2d2e9 inherit pub_methods_class_wy_light_1_1_client_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_class_wy_light_1_1_client_socket"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_wy_light_1_1_client_socket')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_wy_light_1_1_client_socket.html">WyLight::ClientSocket</a></td></tr>
-<tr class="memitem:a339a7d8dd046156f3d7c148181ac0673 inherit pro_attribs_class_wy_light_1_1_client_socket"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_client_socket.html#a339a7d8dd046156f3d7c148181ac0673">mSock</a></td></tr>
-<tr class="separator:a339a7d8dd046156f3d7c148181ac0673 inherit pro_attribs_class_wy_light_1_1_client_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8aa082946ad7a0aa928c7219a70fdddc inherit pro_attribs_class_wy_light_1_1_client_socket"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_client_socket.html#a8aa082946ad7a0aa928c7219a70fdddc">mSock</a></td></tr>
+<tr class="separator:a8aa082946ad7a0aa928c7219a70fdddc inherit pro_attribs_class_wy_light_1_1_client_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3849426773c4b3e300edc8cd3b37b16a inherit pro_attribs_class_wy_light_1_1_client_socket"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_wy_light_1_1_ipv4_addr.html">Ipv4Addr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_client_socket.html#a3849426773c4b3e300edc8cd3b37b16a">mSockAddr</a></td></tr>
 <tr class="separator:a3849426773c4b3e300edc8cd3b37b16a inherit pro_attribs_class_wy_light_1_1_client_socket"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Wrapper to make tcp socket handling more easy </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="af78ed752add97c09ded93014728b0994"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">WyLight::TcpSocket::TcpSocket </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>listenSocket</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct timespec *&#160;</td>
+          <td class="paramname"><em>timeout</em> = <code>NULL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+        <tr>
+          <td align="right">throw </td><td>(</td><td colspan="2"><a class="el" href="class_wy_light_1_1_connection_lost.html">ConnectionLost</a>,</td>
+        </tr>
+        <tr>
+          <td align="right"></td><td></td><td colspan="2"><a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a></td>
+        </tr>
+        <tr>
+          <td align="right"></td><td>)</td><td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Create a new TCP socket with accept() </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">listenSocket</td><td>file descriptor for the listening socket </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a></td><td>if the base class constructor fails </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_wy_light_1_1_client_socket.html#a0d6906a787d242164ab1c18a2427d62f">ClientSocket::ClientSocket</a> </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_connection_lost.html">ConnectionLost</a></td><td>if accept() fails on the internal socket </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a69045a3bf0b959b50b2b4d2a18ee06c1"></a>
 <div class="memitem">
 <div class="memproto">
@@ -169,6 +234,7 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Create a new TCP socket with connect() </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">Addr</td><td>IPv4 address in host byte order </td></tr>
@@ -182,7 +248,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_wy_light_1_1_client_socket.html#afe4f631abfffc996c24a8a55a9d5cea0">ClientSocket::ClientSocket</a> </dd></dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_wy_light_1_1_client_socket.html#a0d6906a787d242164ab1c18a2427d62f">ClientSocket::ClientSocket</a> </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_connection_lost.html">ConnectionLost</a></td><td>if connect() fails on the internal socket </td></tr>
@@ -278,9 +344,50 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_wy_light_1_1_client_socket.html#ab5ea6d042caa7f624015d514263ab6b5">ClientSocket::Send</a> </dd></dl>
+<dl class="section see"><dt>See Also</dt><dd>ClientSocket::Send </dd></dl>
 
-<p>Implements <a class="el" href="class_wy_light_1_1_client_socket.html#ab5ea6d042caa7f624015d514263ab6b5">WyLight::ClientSocket</a>.</p>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_wy_light_1_1_tcp_socket_acd2ed7e05e7a8efc55b01e422d957857_icgraph.png" border="0" usemap="#class_wy_light_1_1_tcp_socket_acd2ed7e05e7a8efc55b01e422d957857_icgraph" alt=""/></div>
+<map name="class_wy_light_1_1_tcp_socket_acd2ed7e05e7a8efc55b01e422d957857_icgraph" id="class_wy_light_1_1_tcp_socket_acd2ed7e05e7a8efc55b01e422d957857_icgraph">
+<area shape="rect" id="node2" href="class_wy_light_1_1_tcp_socket.html#a96f7cedf8ad6b164f4a164600af483fa" title="WyLight::TcpSocket\l::Send" alt="" coords="192,5,330,44"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a96f7cedf8ad6b164f4a164600af483fa"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t WyLight::TcpSocket::Send </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>msg</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Wrapper to TcpSocket::Send(const uint8_t *frame, size_t length) </p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_wy_light_1_1_tcp_socket_a96f7cedf8ad6b164f4a164600af483fa_cgraph.png" border="0" usemap="#class_wy_light_1_1_tcp_socket_a96f7cedf8ad6b164f4a164600af483fa_cgraph" alt=""/></div>
+<map name="class_wy_light_1_1_tcp_socket_a96f7cedf8ad6b164f4a164600af483fa_cgraph" id="class_wy_light_1_1_tcp_socket_a96f7cedf8ad6b164f4a164600af483fa_cgraph">
+<area shape="rect" id="node2" href="class_wy_light_1_1_tcp_socket.html#acd2ed7e05e7a8efc55b01e422d957857" title="WyLight::TcpSocket\l::Send" alt="" coords="192,5,330,44"/></map>
+</div>
+</p>
 
 </div>
 </div>
@@ -290,7 +397,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 7 2014 19:31:19 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat May 10 2014 13:23:34 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

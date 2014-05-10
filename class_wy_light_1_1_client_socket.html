@@ -91,7 +91,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="class_wy_light_1_1_client_socket-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">WyLight::ClientSocket Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">WyLight::ClientSocket Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -101,37 +101,57 @@ Inheritance diagram for WyLight::ClientSocket:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_wy_light_1_1_client_socket__inherit__graph.png" border="0" usemap="#_wy_light_1_1_client_socket_inherit__map" alt="Inheritance graph"/></div>
 <map name="_wy_light_1_1_client_socket_inherit__map" id="_wy_light_1_1_client_socket_inherit__map">
-<area shape="rect" id="node2" href="class_wy_light_1_1_tcp_socket.html" title="{WyLight::TcpSocket\n||+ TcpSocket()\l+ Recv()\l+ Send()\l}" alt="" coords="4,201,141,314"/><area shape="rect" id="node3" href="class_wy_light_1_1_udp_socket.html" title="{WyLight::UdpSocket\n||+ UdpSocket()\l+ RecvFrom()\l+ Send()\l}" alt="" coords="166,201,308,314"/></map>
+<area shape="rect" id="node2" href="class_wy_light_1_1_tcp_server_socket.html" title="{WyLight::TcpServerSocket\n||+ TcpServerSocket()\l}" alt="" coords="5,233,183,307"/><area shape="rect" id="node3" href="class_wy_light_1_1_tcp_socket.html" title="{WyLight::TcpSocket\n||+ TcpSocket()\l+ TcpSocket()\l+ Recv()\l+ Send()\l+ Send()\l}" alt="" coords="206,207,345,333"/><area shape="rect" id="node4" href="class_wy_light_1_1_udp_socket.html" title="{WyLight::UdpSocket\n||+ UdpSocket()\l+ RecvFrom()\l+ Send()\l}" alt="" coords="368,220,510,320"/></map>
 </div>
 <div class="dynheader">
 Collaboration diagram for WyLight::ClientSocket:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_wy_light_1_1_client_socket__coll__graph.png" border="0" usemap="#_wy_light_1_1_client_socket_coll__map" alt="Collaboration graph"/></div>
 <map name="_wy_light_1_1_client_socket_coll__map" id="_wy_light_1_1_client_socket_coll__map">
-<area shape="rect" id="node2" href="struct_wy_light_1_1_ipv4_addr.html" title="{WyLight::Ipv4Addr\n||+ Ipv4Addr()\l}" alt="" coords="15,139,144,221"/></map>
+<area shape="rect" id="node2" href="struct_wy_light_1_1_ipv4_addr.html" title="{WyLight::Ipv4Addr\n||+ Ipv4Addr()\l}" alt="" coords="40,128,170,201"/></map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a0d6906a787d242164ab1c18a2427d62f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_client_socket.html#a0d6906a787d242164ab1c18a2427d62f">ClientSocket</a> ()</td></tr>
+<tr class="separator:a0d6906a787d242164ab1c18a2427d62f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe4f631abfffc996c24a8a55a9d5cea0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_client_socket.html#afe4f631abfffc996c24a8a55a9d5cea0">ClientSocket</a> (uint32_t addr, uint16_t port, int style)  throw (FatalError)</td></tr>
 <tr class="separator:afe4f631abfffc996c24a8a55a9d5cea0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afba3cd05e78cb8f0c46600d3dbba22f4"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_client_socket.html#afba3cd05e78cb8f0c46600d3dbba22f4">~ClientSocket</a> ()</td></tr>
 <tr class="separator:afba3cd05e78cb8f0c46600d3dbba22f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bf058448a21f1f8acc709fc812cfdcc"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_client_socket.html#a7bf058448a21f1f8acc709fc812cfdcc">GetAddrCommaSeparated</a> () const </td></tr>
+<tr class="separator:a7bf058448a21f1f8acc709fc812cfdcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04800e73e310e10f31dc0879859ad111"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_client_socket.html#a04800e73e310e10f31dc0879859ad111">GetSocket</a> () const </td></tr>
+<tr class="separator:a04800e73e310e10f31dc0879859ad111"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a34f39b3bbd8b4b2901e6c4f6f2d2e9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_client_socket.html#a8a34f39b3bbd8b4b2901e6c4f6f2d2e9">Select</a> (timeval *timeout) const   throw (FatalError)</td></tr>
 <tr class="separator:a8a34f39b3bbd8b4b2901e6c4f6f2d2e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5ea6d042caa7f624015d514263ab6b5"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_client_socket.html#ab5ea6d042caa7f624015d514263ab6b5">Send</a> (const uint8_t *frame, size_t length) const =0</td></tr>
-<tr class="separator:ab5ea6d042caa7f624015d514263ab6b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a339a7d8dd046156f3d7c148181ac0673"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_client_socket.html#a339a7d8dd046156f3d7c148181ac0673">mSock</a></td></tr>
-<tr class="separator:a339a7d8dd046156f3d7c148181ac0673"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8aa082946ad7a0aa928c7219a70fdddc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_client_socket.html#a8aa082946ad7a0aa928c7219a70fdddc">mSock</a></td></tr>
+<tr class="separator:a8aa082946ad7a0aa928c7219a70fdddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3849426773c4b3e300edc8cd3b37b16a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_wy_light_1_1_ipv4_addr.html">Ipv4Addr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_client_socket.html#a3849426773c4b3e300edc8cd3b37b16a">mSockAddr</a></td></tr>
 <tr class="separator:a3849426773c4b3e300edc8cd3b37b16a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Abstract base class controlling the low level socket file descriptor </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a0d6906a787d242164ab1c18a2427d62f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">WyLight::ClientSocket::ClientSocket </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Empty constructor to support "accept()ed" TcpSockets </p>
+
+</div>
+</div>
 <a class="anchor" id="afe4f631abfffc996c24a8a55a9d5cea0"></a>
 <div class="memitem">
 <div class="memproto">
@@ -210,6 +230,46 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a7bf058448a21f1f8acc709fc812cfdcc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string WyLight::ClientSocket::GetAddrCommaSeparated </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Read the socket address with getsockaddr() and convert it into a comma separated address used by ftp PASV command ("ip1,ip2,ip3,ip4,port1,port2") </p>
+<dl class="section return"><dt>Returns</dt><dd>a ftp PASV formatted string. "0,0,0,0,0,0" in case of a failure. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a04800e73e310e10f31dc0879859ad111"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int WyLight::ClientSocket::GetSocket </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a8a34f39b3bbd8b4b2901e6c4f6f2d2e9"></a>
 <div class="memitem">
 <div class="memproto">
@@ -246,45 +306,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab5ea6d042caa7f624015d514263ab6b5"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual size_t WyLight::ClientSocket::Send </td>
-          <td>(</td>
-          <td class="paramtype">const uint8_t *&#160;</td>
-          <td class="paramname"><em>frame</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>length</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Interface to send a data frame with a given length, you have to implement this function in child classes </p>
-
-<p>Implemented in <a class="el" href="class_wy_light_1_1_udp_socket.html#aaba73a044c8aed0ef0c1e44ce46d88ca">WyLight::UdpSocket</a>, and <a class="el" href="class_wy_light_1_1_tcp_socket.html#acd2ed7e05e7a8efc55b01e422d957857">WyLight::TcpSocket</a>.</p>
-
-</div>
-</div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a339a7d8dd046156f3d7c148181ac0673"></a>
+<a class="anchor" id="a8aa082946ad7a0aa928c7219a70fdddc"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -292,7 +315,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const int WyLight::ClientSocket::mSock</td>
+          <td class="memname">int WyLight::ClientSocket::mSock</td>
         </tr>
       </table>
   </td>
@@ -301,7 +324,7 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>low level socket file descriptor </p>
+<p>Interface to send a data frame with a given length, you have to implement this function in child classes low level socket file descriptor </p>
 
 </div>
 </div>
@@ -332,7 +355,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Mar 7 2014 19:31:19 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat May 10 2014 13:23:34 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['zero',['zero',['../struct_wy_light_1_1_bl_address_request.html#a2974213d2ae8d71fb5948e4623d422c9',1,'WyLight::BlAddressRequest::zero()'],['../struct_wy_light_1_1_bl_info.html#a824d4777a879a587bee8c68461226883',1,'WyLight::BlInfo::zero()']]]
+  ['white',['WHITE',['../class_wy_light_1_1_wifly_color.html#abbc2200bd5bcccb8f3ed8f2c0e1b5d71',1,'WyLight::WiflyColor']]]
 ];
