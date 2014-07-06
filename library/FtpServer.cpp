@@ -100,26 +100,56 @@ namespace WyLight {
 		mFtpServerThread.join();
 	}
 
-	void FtpServer::handleFiletransfer(const TcpSocket& telnet) {
-		size_t bytesRead = 0;
+	std::string GetNextCmd(const TcpSocket& telnet, std::stringstream& dataInput)
+	{
 		uint8_t buffer[1024];
+		const size_t bytesRead = telnet.Recv(reinterpret_cast<uint8_t *>(buffer), sizeof(buffer));
+
+		if (bytesRead == 0) {
+			throw FatalError("FtpServer: read error: " + std::to_string(errno));
+		}
+		dataInput.write(reinterpret_cast<const char *>(buffer), bytesRead);
+		std::string requestCMD;
+		dataInput >> requestCMD;
+		return requestCMD;
+	}
+
+	void FtpServer::SendFile(const TcpSocket& telnet, std::stringstream& dataInput, const TcpServerSocket* dataSocket)
+	{
+						std::string fileName;
+				std::getline(dataInput, fileName);
+
+				//TODO: get the right file !!!!
+				char currentDirectory[FILENAME_MAX];
+
+				getcwd(currentDirectory, FILENAME_MAX);
+
+				//FIXME: static filename only for debugging
+				//fileName = "/Users/nilsweiss/Dropbox/Wifly_Light/FtpUpdateServer/public/wifly7-441.mif";
+				fileName = "./rn171_fw/wifly7-441.mif";
+
+				std::ifstream file(fileName, std::ios::in | std::ios::binary);
+
+				if (file.is_open()) {
+					telnet.Send("125 Data connection already open. Transfer starting.\r\n");
+					transferDataPassive(file, *dataSocket);
+					file.close();
+					telnet.Send("226 Transfer complete.\r\n");
+				} else {
+					telnet.Send("550 Requested action not taken. File unavailable (e.g., file not found, no access). Good Bye.\r\n");
+					//delete dataSocket;
+					return;
+				}
+	}
+
+	void FtpServer::handleFiletransfer(const TcpSocket& telnet) {
 		std::stringstream dataInput;
 		bool isClientLoggedIn = false;
-		TcpServerSocket *dataSocket = NULL;
 		
 		telnet.Send("220 WyLight Ftp Server running.\r\n");
 		
 		while (true) {
-			
-			if ( (bytesRead = telnet.Recv(reinterpret_cast<uint8_t *>(buffer), sizeof(buffer))) == 0) {
-				throw FatalError("FtpServer: read error: " + std::to_string(errno));
-			}
-			
-			dataInput.write(reinterpret_cast<const char *>(buffer), bytesRead);
-			
-			std::string requestCMD;
-			dataInput >> requestCMD;
-			
+			std::string requestCMD = GetNextCmd(telnet, dataInput);
 			if (requestCMD == "USER")
 			{
 				if(!FtpCommand::USER.Run(telnet, dataInput)) {
@@ -147,40 +177,12 @@ namespace WyLight {
 				//clear content of dataInput
 				dataInput.str(std::string());
 				
-				dataSocket = openDataConnection(telnet);
-				if (!dataSocket) {
-					return;
-				}
-			} else if (requestCMD == "RETR" && dataSocket && isClientLoggedIn)
-			{
-				std::string fileName;
-				std::getline(dataInput, fileName);
-				
-				//TODO: get the right file !!!!
-				char currentDirectory[FILENAME_MAX];
-				
-				getcwd(currentDirectory, FILENAME_MAX);
-							
-				//FIXME: static filename only for debugging
-				//fileName = "/Users/nilsweiss/Dropbox/Wifly_Light/FtpUpdateServer/public/wifly7-441.mif";
-				fileName = "./rn171_fw/wifly7-441.mif";
-				
-				std::ifstream file(fileName, std::ios::in | std::ios::binary);
-				
-				if (file.is_open()) {
-					telnet.Send("125 Data connection already open. Transfer starting.\r\n");
-					transferDataPassive(file, *dataSocket);
-					file.close();
-					telnet.Send("226 Transfer complete.\r\n");
-				} else {
-					telnet.Send("550 Requested action not taken. File unavailable (e.g., file not found, no access). Good Bye.\r\n");
-					delete dataSocket;
+				if(!openDataConnection(telnet, dataInput)) {
 					return;
 				}
 				
 			} else if (requestCMD == "QUIT" && isClientLoggedIn) {
 				telnet.Send("221 Thank you for updating.\r\n");
-				delete dataSocket;
 				return;
 				
 			} else {
@@ -192,7 +194,6 @@ namespace WyLight {
 				telnet.Send("150 Command not supported.\r\n");
 #else
 				telnet.Send("150 Command not supported. Good Bye.\r\n");
-				delete dataSocket;
 				return;
 #endif
 			}
@@ -212,24 +213,30 @@ namespace WyLight {
 		}
 	}
 	
-	TcpServerSocket* FtpServer::openDataConnection(const TcpSocket& telnet)
+	bool FtpServer::openDataConnection(const TcpSocket& telnet, std::stringstream& dataInput)
 	{
 		struct sockaddr_in sin;
 		socklen_t len = sizeof(sin);
 		if (getsockname(telnet.GetSocket(), (struct sockaddr *)&sin, &len) == -1) {
 			telnet.Send("451 Internal error - getsockname() failed");
-			return NULL;
+			return false;
 		}
 
 		TcpServerSocket *dataSocket = new TcpServerSocket(ntohl(sin.sin_addr.s_addr), 0);
 		if(!dataSocket) {
 			telnet.Send("451 Internal error - create TcpServerSocket failed");
-			return NULL;
+			return false;
 		}
 
 		const std::string addr(dataSocket->GetAddrCommaSeparated());
 		telnet.Send("227 Entering Passive Mode (" + addr + ").\r\n");
-		return dataSocket;
+
+		if (GetNextCmd(telnet, dataInput) == "RETR")
+		{
+			SendFile(telnet, dataInput, dataSocket);
+			delete dataSocket;
+		}
+		return true;
 	}
 } /* namespace WyLight */
 
