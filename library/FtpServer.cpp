@@ -213,19 +213,19 @@ namespace WyLight {
 		}
 	}
 	
-	void FtpServer::openDataConnection(const TcpSocket& telnet, std::stringstream& dataInput)
+	bool FtpServer::openDataConnection(const TcpSocket& telnet, std::stringstream& dataInput)
 	{
 		struct sockaddr_in sin;
 		socklen_t len = sizeof(sin);
 		if (getsockname(telnet.GetSocket(), (struct sockaddr *)&sin, &len) == -1) {
 			telnet.Send("451 Internal error - getsockname() failed");
-			return;
+			return false;
 		}
 
 		TcpServerSocket *dataSocket = new TcpServerSocket(ntohl(sin.sin_addr.s_addr), 0);
 		if(!dataSocket) {
 			telnet.Send("451 Internal error - create TcpServerSocket failed");
-			return;
+			return false;
 		}
 
 		const std::string addr(dataSocket->GetAddrCommaSeparated());
@@ -236,6 +236,7 @@ namespace WyLight {
 			SendFile(telnet, dataInput, dataSocket);
 			delete dataSocket;
 		}
+		return true;
 	}
 } /* namespace WyLight */
 
