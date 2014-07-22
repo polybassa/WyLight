@@ -18,15 +18,8 @@
 
 #ifndef ___stl_patches_h
 #define ___stl_patches_h
-#if 0
-#include "../config.h"
-#ifndef HAVE_LIBTHREAD
-#warning "Check for a new c++11 std::thread implementatin, which can handle std::this_thread::sleep_for(std::chrono::nanoseconds(X)) whithout using nanosleep"
-#define _GLIBCXX_USE_NANOSLEEP
-#endif
-#endif
 #ifdef ANDROID
-#warning "Check for a new android-ndk > r9b to avoid using this selfmade implementation"
+#warning "Check for a new android-ndk > r9d to avoid using this selfmade implementation"
 #include <sstream>
 namespace std {
 	template <class T>
