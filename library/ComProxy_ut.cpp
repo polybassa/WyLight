@@ -59,12 +59,6 @@ void SetDelay(timeval& delay)
 	g_TestSocketSendDelay.tv_nsec = delay.tv_usec * 1000;
 }
 
-TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError) : ClientSocket(addr, port, 0)
-{
-	g_TestSocketSendDelay.tv_sec = 0;
-	g_TestSocketSendDelay.tv_nsec = 0;
-}
-
 TcpSocket::TcpSocket(int listenSocket, const struct timespec *timeout) throw (ConnectionLost, FatalError)
 {
 	g_TestSocketSendDelay.tv_sec = 0;
