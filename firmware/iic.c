@@ -65,6 +65,109 @@ void I2C_Write(const uns8 slaveaddr, const uns8 dataaddr, const uns8 data)
 	SSP2IF = 0;
 }
 
+void I2C_WriteBlock(const uns8 slaveaddr, const uns8* data, const uns8 dataaddr,const uns8 length)
+{
+	//Writebit in Slaveadresse setzen
+	
+	slaveaddr = slaveaddr & 0b11111110;
+	uns8 _length = length;
+	//Bus übernehmen
+	SSP2IF = 0;
+	SEN2 = 1;
+	while(!SSP2IF) ;
+	SSP2IF = 0;
+	
+	//Slave ansprechen
+	SSP2BUF = slaveaddr;
+	while(!SSP2IF) ;
+	SSP2IF = 0;
+	
+	//Datenregisteradresse übertragen
+	SSP2BUF = dataaddr;
+	while(!SSP2IF) ;
+	SSP2IF = 0;
+	
+	while (_length) {
+		_length--;
+		//Daten schreiben
+		SSP2BUF = *data;
+		data++;
+		while(!SSP2IF) ;
+		SSP2IF = 0;
+	}
+	
+	//Bus freigeben
+	PEN2 = 1;
+	while(!SSP2IF) ;
+	SSP2IF = 0;
+}
+
+void I2C_ReadBlock(const uns8 slaveaddr, uns8* buffer, const uns8 readaddr, const uns8 length)
+{
+	//Writebit in Slaveadresse setzen
+	uns8 _slaveaddr;
+	_slaveaddr = slaveaddr & 0b11111110;
+	uns8 _length = length;
+	
+	//Bus übernehmen
+	SSP2IF = 0;
+	SEN2 = 1;
+	while(!SSP2IF) ;
+	SSP2IF = 0;
+	
+	//Slave ansprechen
+	SSP2BUF = _slaveaddr;
+	while(!SSP2IF) ;
+	SSP2IF = 0;
+	
+	//Datenregisteradresse übertragen
+	SSP2BUF = readaddr;
+	while(!SSP2IF) ;
+	SSP2IF = 0;
+	
+	//Bus freigeben
+	PEN2 = 1;
+	while(!SSP2IF) ;
+	SSP2IF = 0;
+	
+	//Bus übernehmen
+	SSP2IF = 0;
+	SEN2 = 1;
+	while(!SSP2IF) ;
+	SSP2IF = 0;
+	
+	//Readbit in Slaveadresse setzen
+	_slaveaddr = slaveaddr | 0b00000001;
+	//Slave ansprechen
+	SSP2BUF = _slaveaddr;
+	while(!SSP2IF) ;
+	SSP2IF = 0;
+	
+	while (_length) {
+		//Pic auf Lesen umschalten
+		SSP2IF = 0;
+		RCEN2 = 1;
+		while(!SSP2IF) ;
+		
+		*buffer = SSP2BUF;
+		buffer++;
+		_length--;
+		
+		//Send ACK if we have some bytes to read
+		if (_length) {
+			SSP2IF = 0;
+			ACKEN2 = 1;
+			ACKDT2 = 0;
+			while(!SSP2IF) ;
+		}
+	}
+	
+	//Bus freigeben
+	PEN2 = 1;
+	while(!SSP2IF) ;
+	SSP2IF = 0;
+}
+
 uns8 I2C_Read(const uns8 slaveaddr, const uns8 readaddr)
 {
 	//Writebit in Slaveadresse setzen
