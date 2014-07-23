@@ -23,8 +23,6 @@
 #include "INLINE.H"
 #endif
 
-#define RTC 00
-
 //*********************** PRIVATE FUNCTIONS *********************************************
 
 uns8 BcdToBin(const uns8 BcdValue)
@@ -80,8 +78,9 @@ void Rtc_Init(void)
 	if (g_RtcAdress == RTC_MCP79410) {
 		uns8 temp;
 		//set ST bit in RTC 0x00
+		//set EXTOSC bit in RTC 0x00
 		temp = I2C_Read(g_RtcAdress, 0x00);
-		I2C_Write(g_RtcAdress, 0x00, temp | 0b10000000);
+		I2C_Write(g_RtcAdress, 0x00, temp | 0b10001000);
 		//set enable Battery bit in RTC 0x03
 		temp = I2C_Read(g_RtcAdress, 0x03);
 		I2C_Write(g_RtcAdress, 0x03, temp | 0b00001000);
