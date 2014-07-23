@@ -160,6 +160,7 @@ void I2C_ReadBlock(const uns8 slaveaddr, uns8* buffer, const uns8 readaddr, cons
 			ACKDT2 = 0;
 			while(!SSP2IF) ;
 		}
+		
 	}
 	
 	//Bus freigeben
