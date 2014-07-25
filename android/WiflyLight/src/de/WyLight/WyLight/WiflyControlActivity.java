@@ -202,8 +202,10 @@ public class WiflyControlActivity extends Activity implements
 			StartupTask startup = new StartupTask(this, mRemote, tempFilename);
 			startup.execute(mCtrl);
 		} catch (IOException e) {
-			Toast.makeText(getApplicationContext(), e.getMessage(),
+			Toast.makeText(getApplicationContext(),
+					"Firmware '" + e.getMessage() + "' is missing",
 					Toast.LENGTH_SHORT).show();
+			finish();
 		}
 	}
 
