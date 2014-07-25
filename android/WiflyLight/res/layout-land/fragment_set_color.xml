@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="top"
     tools:context=".WiflyControlActivity" >
-    <biz.bruenn.WyLight.view.ColorView
+    <de.WyLight.WyLight.view.ColorView
         android:id="@+id/colorStatus"
         android:layout_width="40dip"
         android:layout_height="40dip"
@@ -47,37 +47,37 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="10dip" >
-	    <biz.bruenn.WyLight.view.ColorView
+	    <de.WyLight.WyLight.view.ColorView
 	        android:id="@+id/red"
 	        android:layout_width="40dip"
 	        android:layout_height="40dip"
 	        android:layout_margin="10dip"
 	        custom:color="0xffff0000" />
-	    <biz.bruenn.WyLight.view.ColorView
+	    <de.WyLight.WyLight.view.ColorView
 	        android:id="@+id/yellow"
 	        android:layout_width="40dip"
 	        android:layout_height="40dip"
 	        android:layout_margin="10dip"
 	        custom:color="0xffffff00" />
-	    <biz.bruenn.WyLight.view.ColorView
+	    <de.WyLight.WyLight.view.ColorView
 	        android:id="@+id/green"
 	        android:layout_width="40dip"
 	        android:layout_height="40dip"
 	        android:layout_margin="10dip"
 	        custom:color="0xff00ff00" />
-	    <biz.bruenn.WyLight.view.ColorView
+	    <de.WyLight.WyLight.view.ColorView
 	        android:id="@+id/cyan"
 	        android:layout_width="40dip"
 	        android:layout_height="40dip"
 	        android:layout_margin="10dip"
 	        custom:color="0xff00ffff" />
-	    <biz.bruenn.WyLight.view.ColorView
+	    <de.WyLight.WyLight.view.ColorView
 	        android:id="@+id/blue"
 	        android:layout_width="40dip"
 	        android:layout_height="40dip"
 	        android:layout_margin="10dip"
 	        custom:color="0xff0000ff" />
-	    <biz.bruenn.WyLight.view.ColorView
+	    <de.WyLight.WyLight.view.ColorView
 	        android:id="@+id/magenta"
 	        android:layout_width="40dip"
 	        android:layout_height="40dip"
