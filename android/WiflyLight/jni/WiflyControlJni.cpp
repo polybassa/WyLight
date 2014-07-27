@@ -42,7 +42,7 @@ namespace WyLight {
 	}
 
 	extern "C" {
-		jlong Java_biz_bruenn_WyLight_BroadcastReceiver_create(JNIEnv *env, jobject ref, jstring path)
+		jlong Java_de_WyLight_WyLight_BroadcastReceiver_create(JNIEnv *env, jobject ref, jstring path)
 		{
 			const char *myPath = env->GetStringUTFChars(path, 0);
 			const jlong result = (jlong) new BroadcastReceiver(BroadcastReceiver::BROADCAST_PORT, myPath);
@@ -50,12 +50,12 @@ namespace WyLight {
 			return result;
 		}
 
-		jlong Java_biz_bruenn_WyLight_BroadcastReceiver_getEndpoint(JNIEnv *env, jobject ref, jlong pNative, jlong index)
+		jlong Java_de_WyLight_WyLight_BroadcastReceiver_getEndpoint(JNIEnv *env, jobject ref, jlong pNative, jlong index)
 		{
 			return ((BroadcastReceiver *)pNative)->GetEndpoint(index).AsUint64();
 		}
 
-		jlong Java_biz_bruenn_WyLight_BroadcastReceiver_getNextRemote(JNIEnv *env, jobject ref, jlong pNative, jlong timeoutNanos)
+		jlong Java_de_WyLight_WyLight_BroadcastReceiver_getNextRemote(JNIEnv *env, jobject ref, jlong pNative, jlong timeoutNanos)
 		{
 			timeval timeout;
 			timeout.tv_sec = timeoutNanos / 1000000000L;
@@ -63,12 +63,12 @@ namespace WyLight {
 			return ((BroadcastReceiver *)pNative)->GetNextRemote(&timeout).AsUint64();
 		}
 
-		void Java_biz_bruenn_WyLight_BroadcastReceiver_release(JNIEnv *env, jobject ref, jlong pNative)
+		void Java_de_WyLight_WyLight_BroadcastReceiver_release(JNIEnv *env, jobject ref, jlong pNative)
 		{
 			delete (BroadcastReceiver *)pNative;
 		}
 
-		jlong Java_biz_bruenn_WyLight_library_Endpoint_connect(JNIEnv *env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint)
+		jlong Java_de_WyLight_WyLight_library_Endpoint_connect(JNIEnv *env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint)
 		{
 			try {
 				Endpoint& remote = ((BroadcastReceiver *)pBroadcastReceiver)->GetEndpointByFingerprint(fingerprint);
@@ -79,14 +79,14 @@ namespace WyLight {
 			}
 		}
 
-		jstring Java_biz_bruenn_WyLight_library_Endpoint_getEndpointName(JNIEnv *env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint)
+		jstring Java_de_WyLight_WyLight_library_Endpoint_getEndpointName(JNIEnv *env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint)
 		{
 			const Endpoint& remote = ((BroadcastReceiver *)pBroadcastReceiver)->GetEndpointByFingerprint(fingerprint);
 			const std::string myDeviceId = remote.GetDeviceId();
 			return env->NewStringUTF(myDeviceId.data());
 		}
 
-		void Java_biz_bruenn_WyLight_library_Endpoint_setEndpointName(JNIEnv *env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint, jstring deviceId)
+		void Java_de_WyLight_WyLight_library_Endpoint_setEndpointName(JNIEnv *env, jobject ref, jlong pBroadcastReceiver,  jlong fingerprint, jstring deviceId)
 		{
 			try {
 				const char *const myDeviceId = env->GetStringUTFChars(deviceId, 0);
@@ -98,30 +98,30 @@ namespace WyLight {
 			}
 		}
 
-		jstring Java_biz_bruenn_WyLight_WiflyControl_ConfGetDeviceId(JNIEnv *env, jobject ref, jlong pNative)
+		jstring Java_de_WyLight_WyLight_WiflyControl_ConfGetDeviceId(JNIEnv *env, jobject ref, jlong pNative)
 		{
 			std::string myDeviceId = reinterpret_cast<Control *>(pNative)->ConfGetDeviceId();
 			return env->NewStringUTF(myDeviceId.data());
 		}
 
-		jstring Java_biz_bruenn_WyLight_WiflyControl_ConfGetPassphrase(JNIEnv *env, jobject ref, jlong pNative)
+		jstring Java_de_WyLight_WyLight_WiflyControl_ConfGetPassphrase(JNIEnv *env, jobject ref, jlong pNative)
 		{
 			std::string myPassphrase = reinterpret_cast<Control *>(pNative)->ConfGetPassphrase();
 			return env->NewStringUTF(myPassphrase.data());
 		}
 
-		jboolean Java_biz_bruenn_WyLight_WiflyControl_ConfGetSoftAp(JNIEnv *env, jobject ref, jlong pNative)
+		jboolean Java_de_WyLight_WyLight_WiflyControl_ConfGetSoftAp(JNIEnv *env, jobject ref, jlong pNative)
 		{
 			return reinterpret_cast<Control *>(pNative)->ConfGetSoftAp();
 		}
 
-		jstring Java_biz_bruenn_WyLight_WiflyControl_ConfGetSsid(JNIEnv *env, jobject ref, jlong pNative)
+		jstring Java_de_WyLight_WyLight_WiflyControl_ConfGetSsid(JNIEnv *env, jobject ref, jlong pNative)
 		{
 			std::string mySsid = reinterpret_cast<Control *>(pNative)->ConfGetSsid();
 			return env->NewStringUTF(mySsid.data());
 		}
 
-		jboolean Java_biz_bruenn_WyLight_WiflyControl_ConfSetWlan(JNIEnv *env, jobject ref, jlong pNative, jstring passphrase, jstring ssid, jstring deviceId, jboolean softAp)
+		jboolean Java_de_WyLight_WyLight_WiflyControl_ConfSetWlan(JNIEnv *env, jobject ref, jlong pNative, jstring passphrase, jstring ssid, jstring deviceId, jboolean softAp)
 		{
 			const char *const myDeviceId = env->GetStringUTFChars(deviceId, 0);
 			const char *const myPassphrase = env->GetStringUTFChars(passphrase, 0);
@@ -138,25 +138,25 @@ namespace WyLight {
 			return result;
 		}
 
-		jboolean Java_biz_bruenn_WyLight_WiflyControl_FwClearScript(JNIEnv *env, jobject ref, jlong pNative)
+		jboolean Java_de_WyLight_WyLight_WiflyControl_FwClearScript(JNIEnv *env, jobject ref, jlong pNative)
 		{
 			return TrySend(env, reinterpret_cast<Control *>(pNative), FwCmdClearScript {}
 				       );
 		}
 
-		jboolean Java_biz_bruenn_WyLight_WiflyControl_FwLoopOff(JNIEnv *env, jobject ref, jlong pNative, jbyte numLoops)
+		jboolean Java_de_WyLight_WyLight_WiflyControl_FwLoopOff(JNIEnv *env, jobject ref, jlong pNative, jbyte numLoops)
 		{
 			return TrySend(env, reinterpret_cast<Control *>(pNative), FwCmdLoopOff {(uint8_t)numLoops}
 				       );
 		}
 
-		jboolean Java_biz_bruenn_WyLight_WiflyControl_FwLoopOn(JNIEnv *env, jobject ref, jlong pNative)
+		jboolean Java_de_WyLight_WyLight_WiflyControl_FwLoopOn(JNIEnv *env, jobject ref, jlong pNative)
 		{
 			return TrySend(env, reinterpret_cast<Control *>(pNative), FwCmdLoopOn {}
 				       );
 		}
 
-		jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSendScript(JNIEnv *env, jobject ref, jlong pNative, jlong pNativeScript)
+		jboolean Java_de_WyLight_WyLight_WiflyControl_FwSendScript(JNIEnv *env, jobject ref, jlong pNative, jlong pNativeScript)
 		{
 			try {
 				Control *pControl = reinterpret_cast<Control *>(pNative);
@@ -168,24 +168,24 @@ namespace WyLight {
 			return true;
 		}
 
-		jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetColor(JNIEnv *env, jobject ref, jlong pNative, jint argb, jint addr)
+		jboolean Java_de_WyLight_WyLight_WiflyControl_FwSetColor(JNIEnv *env, jobject ref, jlong pNative, jint argb, jint addr)
 		{
 			return TrySend(env, reinterpret_cast<Control *>(pNative), FwCmdSetColorDirect {(uint32_t)argb, (uint32_t)addr}
 				       );
 		}
 
-		jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetFade(JNIEnv *env, jobject ref, jlong pNative, jint argb, jint addr, jshort fadeTime)
+		jboolean Java_de_WyLight_WyLight_WiflyControl_FwSetFade(JNIEnv *env, jobject ref, jlong pNative, jint argb, jint addr, jshort fadeTime)
 		{
 			return TrySend(env, reinterpret_cast<Control *>(pNative), FwCmdSetFade {(uint32_t)argb, (uint16_t)fadeTime, (uint32_t)addr, false}
 				       );
 		}
 
-		jboolean Java_biz_bruenn_WyLight_WiflyControl_FwSetGradient(JNIEnv *env, jobject ref, jlong pNative, jint argb_1, jint argb_2, jint length, jint offset, jshort fadeTime)
+		jboolean Java_de_WyLight_WyLight_WiflyControl_FwSetGradient(JNIEnv *env, jobject ref, jlong pNative, jint argb_1, jint argb_2, jint length, jint offset, jshort fadeTime)
 		{
 			return TrySend(env, reinterpret_cast<Control *>(pNative), FwCmdSetGradient(argb_1, argb_2, fadeTime, false, length, offset));
 		}
 
-		void Java_biz_bruenn_WyLight_WiflyControl_release(JNIEnv *env, jobject ref, jlong pNative)
+		void Java_de_WyLight_WyLight_WiflyControl_release(JNIEnv *env, jobject ref, jlong pNative)
 		{
 			delete reinterpret_cast<Control*>(pNative);
 		}
@@ -199,7 +199,7 @@ namespace WyLight {
 				StartupCallback(JNIEnv *env, jobject ref) {
 					mEnv = env;
 					mRef = ref;
-					jclass callbackClass = mEnv->FindClass("biz/bruenn/WyLight/WiflyControl");
+					jclass callbackClass = mEnv->FindClass("de/WyLight/WyLight/WiflyControl");
 					mMethod = mEnv->GetMethodID(callbackClass, "startupCallback", "(Ljava/lang/String;)V");
 				}
 
@@ -210,13 +210,13 @@ namespace WyLight {
 				}
 		};
 
-		void Java_biz_bruenn_WyLight_WiflyControl_Startup(JNIEnv *env, jobject ref, jlong pNative, jstring path)
+		void Java_de_WyLight_WyLight_WiflyControl_Startup(JNIEnv *env, jobject ref, jlong pNative, jstring path)
 		{
 			const char *const myPath = env->GetStringUTFChars(path, 0);
 			Control& myControl = *reinterpret_cast<Control*>(pNative);
-			StartupCallback callback(env, ref);
-			StartupManager manager(callback);
 			try {
+				StartupCallback callback(env, ref);
+				StartupManager manager(callback);
 				manager.startup(myControl, myPath);
 			} catch (FatalError& e) {
 				ThrowJniException(env, e);
@@ -224,13 +224,13 @@ namespace WyLight {
 			env->ReleaseStringUTFChars(path, myPath);
 		}
 
-		jint Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_getFadeColor(JNIEnv *env, jobject ref, jlong pNative)
+		jint Java_de_WyLight_WyLight_library_FwCmdScriptAdapter_getFadeColor(JNIEnv *env, jobject ref, jlong pNative)
 		{
 			auto fadeCommand = reinterpret_cast<const FwCmdSetFade *>(pNative);
 			return fadeCommand->argb();
 		}
 
-		jint Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_getFadeTime(JNIEnv *env, jobject ref, jlong pNative)
+		jint Java_de_WyLight_WyLight_library_FwCmdScriptAdapter_getFadeTime(JNIEnv *env, jobject ref, jlong pNative)
 		{
 			auto fadeCommand = reinterpret_cast<const FwCmdSetFade *>(pNative);
 			return fadeCommand->fadeTime();
@@ -242,60 +242,60 @@ namespace WyLight {
 		 * is at bits [0..31] and the gradient end color is at [32..63]
 		 * of the return value.
 		 */
-		jlong Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_getGradientColors(JNIEnv *env, jobject ref, jlong pNative)
+		jlong Java_de_WyLight_WyLight_library_FwCmdScriptAdapter_getGradientColors(JNIEnv *env, jobject ref, jlong pNative)
 		{
 			auto cmd = reinterpret_cast<const FwCmdSetGradient *>(pNative);
 			uint64_t dualColor = ((uint64_t)cmd->EndColor()) << 32 | cmd->StartColor();
 			return dualColor;
 		}
 
-		void Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_setFadeColor(JNIEnv *env, jobject ref, jlong pNative, jint argb)
+		void Java_de_WyLight_WyLight_library_FwCmdScriptAdapter_setFadeColor(JNIEnv *env, jobject ref, jlong pNative, jint argb)
 		{
 			auto fadeCommand = reinterpret_cast<FwCmdSetFade *>(pNative);
 			fadeCommand->argb(argb);
 		}
 
-		void Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_setFadeTime(JNIEnv *env, jobject ref, jlong pNative, jshort tmms)
+		void Java_de_WyLight_WyLight_library_FwCmdScriptAdapter_setFadeTime(JNIEnv *env, jobject ref, jlong pNative, jshort tmms)
 		{
 			auto fadeCommand = reinterpret_cast<FwCmdSetFade *>(pNative);
 			fadeCommand->fadeTime(tmms);
 		}
 
-		void Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_setGradientColors(JNIEnv *env, jobject ref, jlong pNative, jint startArgb, jint endArgb)
+		void Java_de_WyLight_WyLight_library_FwCmdScriptAdapter_setGradientColors(JNIEnv *env, jobject ref, jlong pNative, jint startArgb, jint endArgb)
 		{
 			auto cmd = reinterpret_cast<FwCmdSetGradient *>(pNative);
 			cmd->StartColor(startArgb);
 			cmd->EndColor(endArgb);
 		}
 
-		jstring Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_getToken(JNIEnv *env, jobject ref, jlong pNative, jint argb)
+		jstring Java_de_WyLight_WyLight_library_FwCmdScriptAdapter_getToken(JNIEnv *env, jobject ref, jlong pNative, jint argb)
 		{
 			auto command = reinterpret_cast<FwCmdSetFade *>(pNative);
 			return env->NewStringUTF(command->TOKEN.data());
 		}
 
-		jchar Java_biz_bruenn_WyLight_library_FwCmdScriptAdapter_getType(JNIEnv *env, jobject ref, jlong pNative)
+		jchar Java_de_WyLight_WyLight_library_FwCmdScriptAdapter_getType(JNIEnv *env, jobject ref, jlong pNative)
 		{
 			auto command = reinterpret_cast<FwCommand*>(pNative);
 			return command->GetType();
 		}
 
-		void Java_biz_bruenn_WyLight_library_ScriptAdapter_addFade(JNIEnv *env, jobject ref, jlong pNative, jint argb, jint addr, jshort fadeTime)
+		void Java_de_WyLight_WyLight_library_ScriptAdapter_addFade(JNIEnv *env, jobject ref, jlong pNative, jint argb, jint addr, jshort fadeTime)
 		{
 			reinterpret_cast<Script *>(pNative)->push_back(std::unique_ptr<FwCmdScript>(new FwCmdSetFade(argb, fadeTime, addr)));
 		}
 
-		void Java_biz_bruenn_WyLight_library_ScriptAdapter_addGradient(JNIEnv *env, jobject ref, jlong pNative, jint argb_1, jint argb_2, jshort fadeTime)
+		void Java_de_WyLight_WyLight_library_ScriptAdapter_addGradient(JNIEnv *env, jobject ref, jlong pNative, jint argb_1, jint argb_2, jshort fadeTime)
 		{
 			reinterpret_cast<Script *>(pNative)->push_back(std::unique_ptr<FwCmdScript>(new FwCmdSetGradient(argb_1, argb_2, fadeTime)));
 		}
 
-		void Java_biz_bruenn_WyLight_library_ScriptAdapter_clear(JNIEnv *env, jobject ref, jlong pNative)
+		void Java_de_WyLight_WyLight_library_ScriptAdapter_clear(JNIEnv *env, jobject ref, jlong pNative)
 		{
 			reinterpret_cast<Script *>(pNative)->clear();
 		}
 
-		jlong Java_biz_bruenn_WyLight_library_ScriptAdapter_getItem(JNIEnv *env, jobject ref, jlong pNative, jint position)
+		jlong Java_de_WyLight_WyLight_library_ScriptAdapter_getItem(JNIEnv *env, jobject ref, jlong pNative, jint position)
 		{
 			const Script *const pScript = reinterpret_cast<Script *>(pNative);
 			if(pScript->size() > position) {
@@ -306,18 +306,18 @@ namespace WyLight {
 			return 0;
 		}
 
-		jstring Java_biz_bruenn_WyLight_library_ScriptAdapter_name(JNIEnv *env, jobject ref, jlong pNative)
+		jstring Java_de_WyLight_WyLight_library_ScriptAdapter_name(JNIEnv *env, jobject ref, jlong pNative)
 		{
 			const std::string& myName = reinterpret_cast<Script *>(pNative)->getName();
 			return env->NewStringUTF(myName.data());
 		}
 
-		jint Java_biz_bruenn_WyLight_library_ScriptAdapter_numCommands(JNIEnv *env, jobject ref, jlong pNative)
+		jint Java_de_WyLight_WyLight_library_ScriptAdapter_numCommands(JNIEnv *env, jobject ref, jlong pNative)
 		{
 			return reinterpret_cast<const Script *>(pNative)->size();
 		}
 
-		jlong Java_biz_bruenn_WyLight_library_ScriptAdapter_create(JNIEnv *env, jobject ref, jstring path)
+		jlong Java_de_WyLight_WyLight_library_ScriptAdapter_create(JNIEnv *env, jobject ref, jstring path)
 		{
 			Script *result = NULL;
 			const char *const myPath = env->GetStringUTFChars(path, 0);
@@ -330,7 +330,7 @@ namespace WyLight {
 			return reinterpret_cast<jlong>(result);
 		}
 
-		jstring Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_getScriptName(JNIEnv *env, jobject ref, jstring path, jint index)
+		jstring Java_de_WyLight_WyLight_library_ScriptManagerAdapter_getScriptName(JNIEnv *env, jobject ref, jstring path, jint index)
 		{
 			jstring result = NULL;
 			const char *const myPath = env->GetStringUTFChars(path, 0);
@@ -355,7 +355,7 @@ namespace WyLight {
 			env->ReleaseStringUTFChars(path, myPath);
 		}
 
-		void Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_newScript(JNIEnv *env, jobject ref, jstring path, jstring scriptName)
+		void Java_de_WyLight_WyLight_library_ScriptManagerAdapter_newScript(JNIEnv *env, jobject ref, jstring path, jstring scriptName)
 		{
 			// Script constructor can throw, too. So we need an additional try/catch outside of jni_serialize_Script
 			try {
@@ -366,7 +366,7 @@ namespace WyLight {
 			}
 		}
 
-		jint Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_numScripts(JNIEnv *env, jobject ref, jstring path)
+		jint Java_de_WyLight_WyLight_library_ScriptManagerAdapter_numScripts(JNIEnv *env, jobject ref, jstring path)
 		{
 			const char *const myPath = env->GetStringUTFChars(path, 0);
 			jint numScripts = 0;
@@ -380,7 +380,7 @@ namespace WyLight {
 			return numScripts;
 		}
 
-		void Java_biz_bruenn_WyLight_library_ScriptManagerAdapter_saveScript(JNIEnv *env, jobject ref, jstring path, jlong pNativeScript)
+		void Java_de_WyLight_WyLight_library_ScriptManagerAdapter_saveScript(JNIEnv *env, jobject ref, jstring path, jlong pNativeScript)
 		{
 			jni_serialize_Script(env, path, *(reinterpret_cast<Script *>(pNativeScript)));
 		}

@@ -29,7 +29,7 @@
         android:layout_above="@id/brightnessPicker"
         android:layout_marginRight="10dip"
         android:layout_alignRight="@id/brightnessPicker" />
-    <biz.bruenn.WyLight.view.ColorView
+    <de.WyLight.WyLight.view.ColorView
         android:id="@+id/colorStatus"
         android:layout_height="fill_parent"
         android:layout_width="fill_parent"

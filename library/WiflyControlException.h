@@ -61,7 +61,7 @@ namespace WyLight {
 		};
 
 		virtual const char *GetJavaClassType(void) const {
-			return "biz/bruenn/WyLight/exception/FatalError";
+			return "de/WyLight/WyLight/exception/FatalError";
 		};
 
 		const char *what(void) const throw() {
@@ -86,7 +86,7 @@ namespace WyLight {
 		{};
 
 		virtual const char *GetJavaClassType(void) const {
-			return "biz/bruenn/WyLight/exception/ConnectionLost";
+			return "de/WyLight/WyLight/exception/ConnectionLost";
 		};
 
 		friend std::ostream& operator<< (std::ostream& out, const ConnectionLost& ref)
@@ -106,7 +106,7 @@ namespace WyLight {
 		ConnectionTimeout(const std::string& description) : FatalError(description, CONNECTION_TIMEOUT) {};
 
 		virtual const char *GetJavaClassType(void) const {
-			return "biz/bruenn/WyLight/exception/ConnectionTimeout";
+			return "de/WyLight/WyLight/exception/ConnectionTimeout";
 		};
 	};
 
@@ -116,7 +116,7 @@ namespace WyLight {
 		InvalidParameter(const std::string& description) : FatalError(description, INVALID_PARAMETER) {};
 
 		virtual const char *GetJavaClassType(void) const {
-			return "biz/bruenn/WyLight/exception/InvalidParameter";
+			return "de/WyLight/WyLight/exception/InvalidParameter";
 		};
 	};
 
@@ -126,7 +126,7 @@ namespace WyLight {
 		ScriptBufferFull(void) : FatalError("ScriptBuffer in PIC is full, clear it or wait", SCRIPT_FULL) {};
 
 		virtual const char *GetJavaClassType(void) const {
-			return "biz/bruenn/WyLight/exception/ScriptBufferFull";
+			return "de/WyLight/WyLight/exception/ScriptBufferFull";
 		};
 	};
 }

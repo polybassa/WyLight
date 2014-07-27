@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="biz.bruenn.WyLight.view.ColorView">
+    <declare-styleable name="de.WyLight.WyLight.view.ColorView">
         <attr name="color" format="integer" />
         <attr name="showText" format="boolean" />
     </declare-styleable>
