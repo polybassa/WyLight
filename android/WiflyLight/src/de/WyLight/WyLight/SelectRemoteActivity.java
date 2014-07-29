@@ -1,6 +1,7 @@
 package de.WyLight.WyLight;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 import de.WyLight.WyLight.R;
 import de.WyLight.WyLight.R.id;
@@ -49,21 +50,16 @@ public class SelectRemoteActivity extends Activity implements
 				android.R.layout.simple_list_item_1, mRemoteArray);
 		mRemoteList.setAdapter(mRemoteArrayAdapter);
 		mRemoteList.setEmptyView((TextView) findViewById(android.R.id.empty));
-		mRemoteList
-				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-					public void onItemClick(AdapterView<?> arg0, View v,
-							int arg2, long arg3) {
+		mRemoteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+					public void onItemClick(AdapterView<?> arg0, View v, int arg2, long arg3) {
 						Endpoint e = mRemoteArrayAdapter.getItem(arg2);
-						Intent i = new Intent(v.getContext(),
-								WiflyControlActivity.class);
+						Intent i = new Intent(v.getContext(), WiflyControlActivity.class);
 						i.putExtra(WiflyControlActivity.EXTRA_ENDPOINT, e);
 						startActivityForResult(i, 0);
 					}
 				});
-		mRemoteList
-				.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-					public boolean onItemLongClick(AdapterView<?> arg0,
-							View arg1, int arg2, long arg3) {
+		mRemoteList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+					public boolean onItemLongClick(AdapterView<?> arg0,	View arg1, int arg2, long arg3) {
 						showDialog(arg2);
 						// TODO Auto-generated method stub
 						return true;
@@ -74,15 +70,7 @@ public class SelectRemoteActivity extends Activity implements
 
 		mScanBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Button btn = (Button) v;
-				btn.setClickable(false);
-				btn.setText(string.scanning);
-				mProgress.setVisibility(View.VISIBLE);
-				new RemoteCollector(mBroadcastReceiver,
-						(WifiManager) getSystemService(Context.WIFI_SERVICE),
-						mRemoteArray, mRemoteArrayAdapter,
-						SelectRemoteActivity.this).execute(Long
-						.valueOf(3000000000L));
+				scan();
 			}
 		});
 		// add all recent endpoints to our list view
@@ -99,8 +87,7 @@ public class SelectRemoteActivity extends Activity implements
 	@Override
 	protected Dialog onCreateDialog(int position, Bundle savedInstanceState) {
 		if (0 <= position && position < mRemoteArrayAdapter.getCount()) {
-			return new SetWlanDialog(this,
-					mRemoteArrayAdapter.getItem(position));
+			return new SetWlanDialog(this, mRemoteArrayAdapter.getItem(position));
 		} else {
 			// this is to omit a bug when switching from SoftAP to client mode
 			return null;
@@ -114,9 +101,30 @@ public class SelectRemoteActivity extends Activity implements
 		super.onDestroy();
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		ListIterator<Endpoint>e = mRemoteArray.listIterator();
+		while(e.hasNext()) {
+			e.next().setOnline(false);
+		}
+		mRemoteArrayAdapter.notifyDataSetChanged();
+		scan();
+	}
+
 	public void onPostExecute() {
 		mScanBtn.setClickable(true);
 		mScanBtn.setText(string.scan);
 		mProgress.setVisibility(View.GONE);
+	}
+
+	private void scan() {
+		mScanBtn.setClickable(false);
+		mScanBtn.setText(string.scanning);
+		mProgress.setVisibility(View.VISIBLE);
+		new RemoteCollector(mBroadcastReceiver,
+				(WifiManager) getSystemService(Context.WIFI_SERVICE),
+				mRemoteArray, mRemoteArrayAdapter,
+				SelectRemoteActivity.this).execute(Long.valueOf(3000000000L));
 	}
 }
