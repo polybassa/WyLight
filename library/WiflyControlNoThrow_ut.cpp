@@ -197,6 +197,10 @@ uint16_t Control::ExtractFwVersion(const std::string& pFilename) const {
 	throwExceptions(); return 0;
 }
 
+uint8_t Control::FwGetLedTyp(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull) {
+	throwExceptions(); return 0;
+}
+
 Control& Control::operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
 	throwExceptions();

@@ -299,6 +299,9 @@
 
 - (void)paste:(id)sender {
 	NSData *scriptData = [[UIPasteboard generalPasteboard] dataForPasteboardType:WYLIGHT_UTI];
+	if (scriptData == nil) {
+		return;
+	}
 	Script *script = [Script deserializeScriptFromString:[[NSString alloc] initWithData:scriptData encoding:NSASCIIStringEncoding] inContext:self.managedObjectContext];
 	[self.carousel insertItemAtIndex:[self.scriptObjects indexOfObject:script] animated:YES];
 	[self.carousel scrollToItemAtIndex:[self.scriptObjects indexOfObject:script] animated:YES];
