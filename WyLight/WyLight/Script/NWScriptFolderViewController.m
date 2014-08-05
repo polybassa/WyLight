@@ -122,11 +122,11 @@
             if (success) {
                 [Script defaultScriptFastColorChangeInContext:document.managedObjectContext];
                 [Script defaultScriptSlowColorChangeInContext:document.managedObjectContext];
-                [Script defaultScriptRunLightWithColor:[UIColor redColor] timeInterval:100 inContext:document.managedObjectContext];
-                [Script defaultScriptRandomColorsInContext:document.managedObjectContext];
-                [Script defaultScriptMovingColorsInContext:document.managedObjectContext];
+                //[Script defaultScriptRunLightWithColor:[UIColor redColor] timeInterval:100 inContext:document.managedObjectContext];
+                //[Script defaultScriptRandomColorsInContext:document.managedObjectContext];
+                //[Script defaultScriptMovingColorsInContext:document.managedObjectContext];
                 [Script defaultScriptConzentrationLightInContext:document.managedObjectContext];
-                [Script defaultScriptColorCrashWithTimeInterval:100 inContext:document.managedObjectContext];
+                //[Script defaultScriptColorCrashWithTimeInterval:100 inContext:document.managedObjectContext];
                 NSError *error;
                 if (![document.managedObjectContext save:&error]) {
                     NSLog(@"save error");

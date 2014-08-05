@@ -15,6 +15,7 @@
 
 @property (nonatomic, weak) id <WCWiflyControlDelegate> delegate;
 @property (atomic, readonly, getter = isAppOutdated) bool appOutdated;
+@property (atomic, readonly, getter = hasClientWS2801Leds) bool clientWithWS2801Leds;
 
 // Configuration
 - (id)initWithWCEndpoint:(WCEndpoint *)endpoint establishConnection:(BOOL)connect doStartup:(BOOL)doStartup;
