@@ -765,6 +765,14 @@ namespace WyLight {
 		*this << cmd;
 		return cmd.mResponse.getVersion();
 	}
+	
+	uint8_t Control::FwGetLedTyp(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+	{
+		FwCmdGetLedTyp cmd;
+		*this << cmd;
+		return cmd.mResponse.getLedTyp();
+	}
+
 
 	void Control::FwSend(FwCommand& cmd) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 	{

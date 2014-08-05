@@ -42,6 +42,9 @@
 #define FW_IDENT 0x0D
 #define BL_IDENT 0x0F
 
+#define LED_TYP_RGB 0x00
+#define LED_TYP_WS2801 0x01
+
 #define WAIT 0xFE
 #define SET_FADE 0xFC
 #define SET_GRADIENT 0xF9
@@ -56,6 +59,7 @@
 #define GET_TRACE 0xEE
 #define GET_FW_VERSION 0xED
 #define FW_STARTED 0xEC
+#define GET_LED_TYP 0xEB
 
 #define LOOP_INFINITE 0
 
@@ -177,6 +181,7 @@ struct __attribute__((__packed__)) response_frame {
 		uns16 versionData;
 		uns8 trace_string[RingBufferSize];
 		uns16 max_cycle_times[CYCLETIME_METHODE_ENUM_SIZE];
+		uns8 ledTyp;
 	}
 	data;
 };

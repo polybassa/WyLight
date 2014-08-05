@@ -137,6 +137,13 @@ namespace WyLight {
 		FwCmdGetTracebuffer(void) : FwCmdGet(GET_TRACE) {};
 		FwResponse& GetResponse(void) { return mResponse;       };
 	};
+	
+	struct FwCmdGetLedTyp : public FwCmdGet
+	{
+		LedTypResponse mResponse;
+		FwCmdGetLedTyp(void) : FwCmdGet(GET_LED_TYP) {};
+		FwResponse& GetResponse(void) { return mResponse;       };
+	};
 
 	struct FwCmdGetVersion : public FwCmdGet
 	{
