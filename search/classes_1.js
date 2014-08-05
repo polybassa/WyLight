@@ -24,6 +24,7 @@ var searchData=
   ['controlcmdconfwlanassoftap',['ControlCmdConfWlanAsSoftAP',['../class_control_cmd_conf_wlan_as_soft_a_p.html',1,'']]],
   ['controlcmddostartup',['ControlCmdDoStartup',['../class_control_cmd_do_startup.html',1,'']]],
   ['controlcmdextractversion',['ControlCmdExtractVersion',['../class_control_cmd_extract_version.html',1,'']]],
+  ['controlcmdgetledtyp',['ControlCmdGetLedTyp',['../class_control_cmd_get_led_typ.html',1,'']]],
   ['controlcmdgetrtc',['ControlCmdGetRtc',['../class_control_cmd_get_rtc.html',1,'']]],
   ['controlcmdgettargetmode',['ControlCmdGetTargetMode',['../class_control_cmd_get_target_mode.html',1,'']]],
   ['controlcmdloopoff',['ControlCmdLoopOff',['../class_control_cmd_loop_off.html',1,'']]],

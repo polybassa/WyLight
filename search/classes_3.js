@@ -7,6 +7,7 @@ var searchData=
   ['fwcmdclearscript',['FwCmdClearScript',['../struct_wy_light_1_1_fw_cmd_clear_script.html',1,'WyLight']]],
   ['fwcmdget',['FwCmdGet',['../struct_wy_light_1_1_fw_cmd_get.html',1,'WyLight']]],
   ['fwcmdgetcycletime',['FwCmdGetCycletime',['../struct_wy_light_1_1_fw_cmd_get_cycletime.html',1,'WyLight']]],
+  ['fwcmdgetledtyp',['FwCmdGetLedTyp',['../struct_wy_light_1_1_fw_cmd_get_led_typ.html',1,'WyLight']]],
   ['fwcmdgetrtc',['FwCmdGetRtc',['../struct_wy_light_1_1_fw_cmd_get_rtc.html',1,'WyLight']]],
   ['fwcmdgettracebuffer',['FwCmdGetTracebuffer',['../struct_wy_light_1_1_fw_cmd_get_tracebuffer.html',1,'WyLight']]],
   ['fwcmdgetversion',['FwCmdGetVersion',['../struct_wy_light_1_1_fw_cmd_get_version.html',1,'WyLight']]],

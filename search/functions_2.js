@@ -46,6 +46,7 @@ var searchData=
   ['controlcmdconfwlanassoftap',['ControlCmdConfWlanAsSoftAP',['../class_control_cmd_conf_wlan_as_soft_a_p.html#aca3802c8b097c0c44b77c907db677690',1,'ControlCmdConfWlanAsSoftAP']]],
   ['controlcmddostartup',['ControlCmdDoStartup',['../class_control_cmd_do_startup.html#a9c5f4492940d75afab6dc84e6c687270',1,'ControlCmdDoStartup']]],
   ['controlcmdextractversion',['ControlCmdExtractVersion',['../class_control_cmd_extract_version.html#aad2d4fa0de4aff33acd1ee62c4646a8f',1,'ControlCmdExtractVersion']]],
+  ['controlcmdgetledtyp',['ControlCmdGetLedTyp',['../class_control_cmd_get_led_typ.html#a298b41e5d2a39399f59692f6656d3af6',1,'ControlCmdGetLedTyp']]],
   ['controlcmdgetrtc',['ControlCmdGetRtc',['../class_control_cmd_get_rtc.html#ad037c966b3fd933771508d592f2f7180',1,'ControlCmdGetRtc']]],
   ['controlcmdgettargetmode',['ControlCmdGetTargetMode',['../class_control_cmd_get_target_mode.html#afecce1b60c24a0bddb42ac782e3f3e08',1,'ControlCmdGetTargetMode']]],
   ['controlcmdloopoff',['ControlCmdLoopOff',['../class_control_cmd_loop_off.html#a197b6b23f5f191e0a43815ea50b4c375',1,'ControlCmdLoopOff']]],
