@@ -40,7 +40,7 @@
 	WyLight::Script mScript;
 	const char* cStringScriptTitle = [self.title cStringUsingEncoding:NSASCIIStringEncoding];
 	
-	std::string ScriptTitle = " ";
+	std::string ScriptTitle = "";
 	
 	if (cStringScriptTitle == NULL) {
 		ScriptTitle = std::string([tempTitel cStringUsingEncoding:NSASCIIStringEncoding]);
