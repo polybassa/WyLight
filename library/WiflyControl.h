@@ -283,6 +283,16 @@ namespace WyLight {
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
 		uint16_t FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+		
+		/**
+		 * Reads the led typ on the spi interface. To detect WS2801 Led's, the SPI IN and OUT Pin's has to conntect together, to build a loopback.
+		 * @return a value representing the led typ of the WyLight modul
+		 * @throw ConnectionTimeout if response timed out
+		 * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
+		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
+		 */
+		uint8_t FwGetLedTyp(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+
 
 		//TODO move this test functions to the integration test
 		void FwTest(void);

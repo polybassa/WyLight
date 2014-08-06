@@ -26,6 +26,7 @@
 #include "wifly_cmd.h"
 #include "rtc.h"
 #include "Version.h"
+#include "spi.h"
 
 bank2 struct CommandBuffer g_CmdBuf;
 bank5 struct response_frame g_ResponseBuf;
@@ -212,6 +213,8 @@ void CommandIO_SendResponse(struct response_frame *mFrame)
 			UART_Send(ETX);
 }
 
+#define SPI_LOOPBACK_TESTVALUE 0x54
+
 void CommandIO_CreateResponse(struct response_frame *mFrame, uns8 cmd, ErrorCode mState)
 {
 	mFrame->cmd = cmd;
@@ -241,6 +244,16 @@ void CommandIO_CreateResponse(struct response_frame *mFrame, uns8 cmd, ErrorCode
 		uns16 tempVersion = Version_Print();
 		mFrame->data.versionData = tempVersion;
 		mFrame->length += sizeof(uns16);
+		break;
+	}
+	case GET_LED_TYP:
+	{
+		if (SPI_LOOPBACK_TESTVALUE == SPI_Send(SPI_LOOPBACK_TESTVALUE)) {
+			mFrame->data.ledTyp = LED_TYP_WS2801;
+		} else {
+			mFrame->data.ledTyp = LED_TYP_RGB;
+		}
+		mFrame->length += sizeof(uns8);
 		break;
 	}
 	default:

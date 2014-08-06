@@ -136,6 +136,11 @@ namespace WyLight {
 	{
 		return Try(std::bind(&Control::FwGetVersion, std::ref(mControl)), output);
 	}
+	
+	uint32_t ControlNoThrow::FwGetLedTyp(uint8_t &output)
+	{
+		return Try(std::bind(&Control::FwGetLedTyp, std::ref(mControl)), output);
+	}
 
 	uint32_t ControlNoThrow::FwLoopOff(const uint8_t numLoops)
 	{
@@ -222,6 +227,21 @@ namespace WyLight {
 	}
 
 	uint32_t ControlNoThrow::Try(const std::function<uint16_t(void)> call, uint16_t& returnValue) const
+	{
+		try {
+			returnValue = call();
+			return NO_ERROR;
+		} catch(FatalError& e) {
+			return e.AsErrorCode();
+		} catch(std::exception) {
+			std::cout << "CATCH std::exception";
+			std::cerr << "CATCH std::exception";
+			//std::terminate();
+			return FATAL_ERROR;
+		}
+	}
+	
+	uint32_t ControlNoThrow::Try(const std::function<uint8_t(void)> call, uint8_t& returnValue) const
 	{
 		try {
 			returnValue = call();

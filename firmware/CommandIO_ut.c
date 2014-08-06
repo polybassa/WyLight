@@ -62,6 +62,11 @@ uns8 ScriptCtrl_Add(struct led_cmd *pCmd)
 	return 1;
 }
 
+uns8 SPI_Send(uns8 temp)
+{
+	return temp;
+}
+
 void Rtc_Ctl(enum RTC_request req,struct rtc_time *pRtcTime)
 {
 	int i;

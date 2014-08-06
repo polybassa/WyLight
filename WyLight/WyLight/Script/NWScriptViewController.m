@@ -16,8 +16,10 @@
 #import "TouchAndHoldButton.h"
 #import "NWEffectDrawer.h"
 #import "SimpelEffect.h"
+#import "Fade.h"
+#import "NWDefaultColorPickerViewController.h"
 
-@interface NWScriptViewController () <UITextFieldDelegate, NWScriptViewDataSource, NWScriptCellViewDelegate, UIScrollViewDelegate, NWEffectDrawerDelegate>
+@interface NWScriptViewController () <UITextFieldDelegate, NWScriptViewDataSource, NWScriptCellViewDelegate, UIScrollViewDelegate, NWEffectDrawerDelegate, NWDefaultColorControllerDelegate>
 
 @property (strong, nonatomic) NWScriptView *scriptView;
 @property (strong, nonatomic) TouchAndHoldButton *zoomInButton;
@@ -196,7 +198,11 @@
 		}
 	} else {
 		self.indexForObjectToEdit = gesture.view.tag;
-		[self performSegueWithIdentifier:@"edit:" sender:self];
+		if (!self.controlHandle.hasClientWS2801Leds) {
+			[self performSegueWithIdentifier:@"editFade:" sender:self];
+		} else {
+			[self performSegueWithIdentifier:@"edit:" sender:self];
+		}
 	}
 }
 
@@ -507,7 +513,30 @@
 			NWComplexScriptCommandEditorViewController *ctrl = (NWComplexScriptCommandEditorViewController *)segue.destinationViewController;
 			ctrl.command = [self.script.effects objectAtIndex:self.indexForObjectToEdit];
 		}
+	} else if ([segue.identifier isEqualToString:@"editFade:"]) {
+		if ([segue.destinationViewController respondsToSelector:@selector(setSelectedColor:)]) {
+			
+			ComplexEffect* tempEffect = [self.script.effects objectAtIndex:self.indexForObjectToEdit];
+			Fade* tempFade = [tempEffect.effects objectAtIndex:0];
+			
+			[segue.destinationViewController performSelector:@selector(setSelectedColor:) withObject:tempFade.color];
+		}
+		
+		if ([segue.destinationViewController isKindOfClass:[NWDefaultColorPickerViewController class]]) {
+			((NWDefaultColorPickerViewController *)segue.destinationViewController).colorPickerDelegate = self;
+		}
 	}
 }
+
+#pragma mark - Default Color Picker Delegate
+- (void)defaultColorController:(NWDefaultColorPickerViewController *)controller didChangeColor:(UIColor *)color {
+	ComplexEffect* tempEffect = [self.script.effects objectAtIndex:self.indexForObjectToEdit];
+	Fade* tempFade = [tempEffect.effects objectAtIndex:0];
+		
+	[tempFade setColor:color];
+	[tempEffect setColors:nil];
+	[tempEffect setSnapshot:nil];
+}
+
 
 @end

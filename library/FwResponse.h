@@ -197,5 +197,43 @@ namespace WyLight {
 	private:
 		uint16_t mVersion = 0;
 	};
+	
+	class LedTypResponse : public FwResponse
+	{
+	public:
+		LedTypResponse(void) : FwResponse(GET_LED_TYP) {};
+		bool Init(response_frame& pData, size_t dataLength)
+		{
+			if(FwResponse::Init(pData, dataLength)
+			   && (dataLength == 4 + sizeof(uint8_t))) {
+				mLedTyp = pData.data.ledTyp;
+				return true;
+			}
+			return false;
+		};
+		
+		std::string ToString(void) const
+		{
+			std::stringstream stream;
+			stream << *this;
+			std::string temp;
+			temp = stream.str();
+			return temp;
+		};
+		
+		uint8_t getLedTyp(void) { return mLedTyp; }
+		
+		friend std::ostream& operator<< (std::ostream& out, const LedTypResponse& ref)
+		{
+			if (ref.mLedTyp == LED_TYP_RGB) {
+				return out << " LED_TYP_RGB ";
+			} else {
+				return out << " LED_TYP_WS2801 ";
+			}
+		};
+	private:
+		uint16_t mLedTyp = LED_TYP_RGB;
+	};
+
 }
 #endif

@@ -290,6 +290,17 @@ namespace WyLight {
 		        <BR><B>NO_ERROR</B> is returned if no error occurred
 		 */
 		uint32_t FwGetVersion(uint16_t& output);
+		
+		/**
+		 * Reads the led typ on the spi interface. To detect WS2801 Led's, the SPI IN and OUT Pin's has to conntect together, to build a loopback.
+		 * @param output a string representing the version number of the PIC firmware
+		 * @return Indexed by ::WiflyError
+		 <BR><B>CONNECTION_TIMEOUT</B> if response timed out
+		 <BR><B>FATAL_ERROR</B> if command code of the response doesn't match the code of the request, or too many retries failed
+		 <BR><B>SCRIPT_FULL</B> if script buffer in PIC firmware is full and request couldn't be executed
+		 <BR><B>NO_ERROR</B> is returned if no error occurred
+		 */
+		uint32_t FwGetLedTyp(uint8_t& output);
 
 		/**
 		 * Injects a LoopOff command into the wifly script controller
@@ -409,6 +420,7 @@ namespace WyLight {
 		uint32_t Try(const std::function<void(void)> call) const;
 		uint32_t Try(const std::function<std::string(void)> call, std::string& returnString) const;
 		uint32_t Try(const std::function<uint16_t(void)> call, uint16_t& returnValue) const;
+		uint32_t Try(const std::function<uint8_t(void)> call, uint8_t& returnValue) const;
 
 	};
 }

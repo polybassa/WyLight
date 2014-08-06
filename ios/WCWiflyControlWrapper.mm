@@ -30,6 +30,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 @property (nonatomic, strong) WCEndpoint *endpoint;
 @property (atomic, readwrite) bool appOutdated;
+@property (atomic, readwrite) bool clientWithWS2801Leds;
 
 
 -(void) callFatalErrorDelegate:(NSNumber *)errorCode;
@@ -51,7 +52,8 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 {
 	self = [super init];
 	if(self) {
-		self.appOutdated = false;
+		self.appOutdated = NO;
+		self.clientWithWS2801Leds = NO;
 		self.endpoint = endpoint;
 		if(connect) {
 			if([self connectWithStartup:doStartup] != 0) {
@@ -102,6 +104,15 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 			return -1;
 		}
 	}
+	
+	uint8_t ledTyp;
+	mControl->FwGetLedTyp(ledTyp);
+	
+	if (ledTyp == LED_TYP_WS2801) {
+		self.clientWithWS2801Leds = YES;
+	} else {
+		self.clientWithWS2801Leds = NO;
+	}
 
 	mCmdQueue = std::make_shared < WyLight::MessageQueue < ControlMessage >> ();
 	mCmdQueue->setMessageLimit(70);
@@ -146,6 +157,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 	 selector: @selector(handleEnteredBackground:)
 	 name: UIApplicationDidEnterBackgroundNotification
 	 object: nil];
+	
 	return 0;
 }
 

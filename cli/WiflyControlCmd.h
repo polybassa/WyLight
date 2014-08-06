@@ -642,6 +642,26 @@ public:
 	};
 };
 
+class ControlCmdGetLedTyp : public WiflyControlCmd
+{
+public:
+	ControlCmdGetLedTyp(void) : WiflyControlCmd(
+													string("get_led_typ"),
+													string("' - displays typ of led's of this platform ")) {};
+	
+	virtual void Run(WyLight::Control& control) const {
+		cout << "Reading led typ ... ";
+		try {
+			size_t result = control.FwGetLedTyp();
+			cout << "done.\n\n";
+			result == LED_TYP_RGB ? cout << "Target has RGB Led's \n" : cout << "Target has WS2801 Led's \n";
+		} catch(WyLight::FatalError& e)   {
+			cout << "failed! because of: " << e << '\n';
+		}
+	};
+};
+
+
 class ControlCmdDoStartup : public WiflyControlCmd
 {
 public:
@@ -726,6 +746,7 @@ static const std::shared_ptr<const WiflyControlCmd> s_Cmds[] = {
 	std::shared_ptr<const WiflyControlCmd>(new ControlCmdGetTargetMode()),
 	std::shared_ptr<const WiflyControlCmd>(new ControlCmdDoStartup()),
 	std::shared_ptr<const WiflyControlCmd>(new ControlCmdExtractVersion()),
+	std::shared_ptr<const WiflyControlCmd>(new ControlCmdGetLedTyp()),
 //TODO implement on demand	ControlCmdBlWriteEeprom writeEeprom;
 //TODO	ControlCmdBlWriteFlash writeFlash;
 };

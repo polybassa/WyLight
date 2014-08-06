@@ -13,6 +13,7 @@
 #include "Fade.h"
 #include "Gradient.h"
 #import "UIColor+argbValue.h"
+#import "Script+defaultScripts.h"
 #include "wifly_cmd.h"
 #include <sstream>
 
@@ -37,7 +38,16 @@
 	[filePath appendString:[NSString stringWithFormat:@"/%@.wyscript", tempTitel]];
 	
 	WyLight::Script mScript;
-	mScript.setName([self.title cStringUsingEncoding:NSASCIIStringEncoding]);
+	const char* cStringScriptTitle = [self.title cStringUsingEncoding:NSASCIIStringEncoding];
+	
+	std::string ScriptTitle = "";
+	
+	if (cStringScriptTitle == NULL) {
+		ScriptTitle = std::string([tempTitel cStringUsingEncoding:NSASCIIStringEncoding]);
+	} else {
+		ScriptTitle = std::string(cStringScriptTitle);
+	}
+	mScript.setName(ScriptTitle);
 	mScript.push_back(std::unique_ptr<WyLight::FwCmdScript>(new WyLight::FwCmdLoopOn));
 	
 	for (ComplexEffect *cmplx in self.effects) {
@@ -71,7 +81,9 @@
 		mScript.push_back(std::unique_ptr<WyLight::FwCmdScript>(new WyLight::FwCmdLoopOff(1)));
 	}
 	
-	mScript.serialize(std::string([filePath cStringUsingEncoding:NSASCIIStringEncoding]), mScript);
+	const char* cStringFilePath = [filePath cStringUsingEncoding:NSASCIIStringEncoding];
+	
+	mScript.serialize(std::string(cStringFilePath), mScript);
 	return filePath;
 }
 
@@ -85,7 +97,11 @@
 + (Script *)deserializeScriptFromString:(NSString *)string inContext:(NSManagedObjectContext *)context {
 	
 	WyLight::Script mScript;
-	std::stringstream mStream([string cStringUsingEncoding:NSASCIIStringEncoding]);
+	const char* cStringDataString = [string cStringUsingEncoding:NSASCIIStringEncoding];
+	if (cStringDataString == NULL) {
+		return [Script emptyScriptInContext:context];
+	}
+	std::stringstream mStream(cStringDataString);
 	mScript.deserialize(mStream, mScript);
 	
 	Script *tempScript = [Script insertNewObjectIntoContext:context];

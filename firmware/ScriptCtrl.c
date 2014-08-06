@@ -159,6 +159,10 @@ uns8 ScriptCtrl_Add(struct led_cmd *pCmd)
 	{
 		return ScriptCtrl_Write(pCmd);
 	}
+	case GET_LED_TYP:
+	{
+		return OK;
+	}
 	default:
 	{
 		return BAD_COMMAND_CODE;

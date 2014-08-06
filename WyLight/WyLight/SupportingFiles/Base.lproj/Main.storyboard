@@ -632,11 +632,12 @@
                     <connections>
                         <outlet property="titelTextField" destination="7Ex-oy-A9o" id="TQy-5R-kS6"/>
                         <segue destination="AAq-SD-Zpf" kind="push" identifier="edit:" id="5BL-QM-p7W"/>
+                        <segue destination="jQ8-O0-tIt" kind="push" identifier="editFade:" id="mjx-lJ-NNo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="34b-7B-v63" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3334" y="1389"/>
+            <point key="canvasLocation" x="3362" y="1389"/>
         </scene>
         <!--Complex Script Command Editor View Controller-->
         <scene sceneID="dxg-Mg-F5T">
@@ -666,7 +667,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sxu-Ql-bsT" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="FSl-nu-pOU" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3895" y="1389"/>
+            <point key="canvasLocation" x="3905" y="945"/>
         </scene>
         <!--Default Color Picker View Controller-->
         <scene sceneID="ETU-9M-663">
@@ -728,5 +729,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="ozS-Lc-m4i"/>
+        <segue reference="8pP-j6-fdp"/>
     </inferredMetricsTieBreakers>
 </document>
