@@ -10,6 +10,7 @@ import de.WyLight.WyLight.library.Endpoint;
 import de.WyLight.WyLight.library.EndpointAdapter;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
@@ -59,9 +60,11 @@ public class SelectRemoteActivity extends Activity implements
 					}
 				});
 		mRemoteList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-					public boolean onItemLongClick(AdapterView<?> arg0,	View arg1, int arg2, long arg3) {
-						showDialog(arg2);
-						// TODO Auto-generated method stub
+					public boolean onItemLongClick(AdapterView<?> arg0,	View arg1, int position, long arg3) {
+						FragmentManager fm = getFragmentManager();
+						SetWlanDialog d = new SetWlanDialog();
+						d.setRemote(mRemoteArrayAdapter.getItem(position));
+						d.show(fm, "HUHU");
 						return true;
 					}
 				});
@@ -82,16 +85,6 @@ public class SelectRemoteActivity extends Activity implements
 			mRemoteArray.add(e);
 		}
 		mRemoteArrayAdapter.notifyDataSetChanged();
-	}
-
-	@Override
-	protected Dialog onCreateDialog(int position, Bundle savedInstanceState) {
-		if (0 <= position && position < mRemoteArrayAdapter.getCount()) {
-			return new SetWlanDialog(this, mRemoteArrayAdapter.getItem(position));
-		} else {
-			// this is to omit a bug when switching from SoftAP to client mode
-			return null;
-		}
 	}
 
 	@Override
