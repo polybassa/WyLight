@@ -1,3 +1,21 @@
+/**
+                Copyright (C) 2012 - 2014 Patrick Bruenn.
+
+    This file is part of WyLight.
+
+    Wylight is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    WiflyLight is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with WiflyLight.  If not, see <http://www.gnu.org/licenses/>. */
+
 package de.WyLight.WyLight;
 
 import java.util.ArrayList;
@@ -8,7 +26,7 @@ import de.WyLight.WyLight.R.string;
 import de.WyLight.WyLight.library.Endpoint;
 import de.WyLight.WyLight.library.EndpointAdapter;
 import android.app.Activity;
-import android.app.Dialog;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
@@ -49,23 +67,20 @@ public class SelectRemoteActivity extends Activity implements
 				android.R.layout.simple_list_item_1, mRemoteArray);
 		mRemoteList.setAdapter(mRemoteArrayAdapter);
 		mRemoteList.setEmptyView((TextView) findViewById(android.R.id.empty));
-		mRemoteList
-				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-					public void onItemClick(AdapterView<?> arg0, View v,
-							int arg2, long arg3) {
+		mRemoteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+					public void onItemClick(AdapterView<?> arg0, View v, int arg2, long arg3) {
 						Endpoint e = mRemoteArrayAdapter.getItem(arg2);
-						Intent i = new Intent(v.getContext(),
-								WiflyControlActivity.class);
+						Intent i = new Intent(v.getContext(), WiflyControlActivity.class);
 						i.putExtra(WiflyControlActivity.EXTRA_ENDPOINT, e);
 						startActivityForResult(i, 0);
 					}
 				});
-		mRemoteList
-				.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-					public boolean onItemLongClick(AdapterView<?> arg0,
-							View arg1, int arg2, long arg3) {
-						showDialog(arg2);
-						// TODO Auto-generated method stub
+		mRemoteList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+					public boolean onItemLongClick(AdapterView<?> arg0,	View arg1, int position, long arg3) {
+						FragmentManager fm = getFragmentManager();
+						SetWlanDialog d = new SetWlanDialog();
+						d.setRemote(mRemoteArrayAdapter.getItem(position));
+						d.show(fm, "HUHU");
 						return true;
 					}
 				});
@@ -74,15 +89,7 @@ public class SelectRemoteActivity extends Activity implements
 
 		mScanBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Button btn = (Button) v;
-				btn.setClickable(false);
-				btn.setText(string.scanning);
-				mProgress.setVisibility(View.VISIBLE);
-				new RemoteCollector(mBroadcastReceiver,
-						(WifiManager) getSystemService(Context.WIFI_SERVICE),
-						mRemoteArray, mRemoteArrayAdapter,
-						SelectRemoteActivity.this).execute(Long
-						.valueOf(3000000000L));
+				scan();
 			}
 		});
 		// add all recent endpoints to our list view
@@ -97,26 +104,31 @@ public class SelectRemoteActivity extends Activity implements
 	}
 
 	@Override
-	protected Dialog onCreateDialog(int position, Bundle savedInstanceState) {
-		if (0 <= position && position < mRemoteArrayAdapter.getCount()) {
-			return new SetWlanDialog(this,
-					mRemoteArrayAdapter.getItem(position));
-		} else {
-			// this is to omit a bug when switching from SoftAP to client mode
-			return null;
-		}
-	}
-
-	@Override
 	protected void onDestroy() {
 		mBroadcastReceiver.release();
 		mBroadcastReceiver = null;
 		super.onDestroy();
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		scan();
+	}
+
 	public void onPostExecute() {
 		mScanBtn.setClickable(true);
 		mScanBtn.setText(string.scan);
 		mProgress.setVisibility(View.GONE);
+	}
+
+	private void scan() {
+		mScanBtn.setClickable(false);
+		mScanBtn.setText(string.scanning);
+		mProgress.setVisibility(View.VISIBLE);
+		new RemoteCollector(mBroadcastReceiver,
+				(WifiManager) getSystemService(Context.WIFI_SERVICE),
+				mRemoteArray, mRemoteArrayAdapter,
+				SelectRemoteActivity.this).execute(Long.valueOf(3000000000L));
 	}
 }
