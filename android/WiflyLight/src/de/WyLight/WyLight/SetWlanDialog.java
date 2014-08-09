@@ -1,43 +1,65 @@
+/**
+                Copyright (C) 2012 - 2014 Patrick Bruenn.
+
+    This file is part of WyLight.
+
+    Wylight is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    WiflyLight is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with WiflyLight.  If not, see <http://www.gnu.org/licenses/>. */
+
 package de.WyLight.WyLight;
 
 import de.WyLight.WyLight.R;
 import de.WyLight.WyLight.exception.FatalError;
 import de.WyLight.WyLight.library.Endpoint;
-import android.app.Dialog;
-import android.content.Context;
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class SetWlanDialog extends Dialog {
-	private final Endpoint mRemote;
+public class SetWlanDialog extends DialogFragment {
+	private Endpoint mRemote;
 	private EditText mDeviceId;
 	private EditText mPass;
 	private EditText mSsid;
 	private CheckBox mSoftAp;
 
-	SetWlanDialog(Context context, Endpoint remote) {
-		super(context);
+	public SetWlanDialog() {
+		//empty ...
+	}
+
+	public void setRemote(Endpoint remote) {
 		mRemote = remote;
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.dialog_set_wlan);
-		setTitle(R.string.title_dialog_set_wlan);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		mDeviceId = (EditText) findViewById(R.id.editDeviceId);
-		mPass = (EditText) findViewById(R.id.editPassphrase);
-		mSsid = (EditText) findViewById(R.id.editSsid);
-		mSoftAp = (CheckBox) findViewById(R.id.toggleSoftAp);
+		View v = inflater.inflate(R.layout.dialog_set_wlan, container);
+		getDialog().setTitle(R.string.title_dialog_set_wlan);
 
-		CheckBox toggle = (CheckBox) findViewById(R.id.togglePassphrase);
+		mDeviceId = (EditText) v.findViewById(R.id.editDeviceId);
+		mPass = (EditText) v.findViewById(R.id.editPassphrase);
+		mSsid = (EditText) v.findViewById(R.id.editSsid);
+		mSoftAp = (CheckBox) v.findViewById(R.id.toggleSoftAp);
+
+		CheckBox toggle = (CheckBox) v.findViewById(R.id.togglePassphrase);
 		toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
 			public void onCheckedChanged(CompoundButton buttonView,
@@ -52,7 +74,7 @@ public class SetWlanDialog extends Dialog {
 			}
 		});
 
-		Button save = (Button) findViewById(R.id.save);
+		Button save = (Button) v.findViewById(R.id.save);
 		save.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
@@ -66,19 +88,20 @@ public class SetWlanDialog extends Dialog {
 					control.disconnect();
 					mRemote.setName(mDeviceId.getText().toString());
 				} catch (FatalError e) {
-					Toast.makeText(getContext(), e.getMessage(),
+					Toast.makeText(getDialog().getContext(), e.getMessage(),
 							Toast.LENGTH_SHORT).show();
 				}
 				dismiss();
 			}
 		});
 
-		Button cancel = (Button) findViewById(R.id.cancel);
+		Button cancel = (Button) v.findViewById(R.id.cancel);
 		cancel.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				cancel();
+				getDialog().cancel();
 			}
 		});
+		return v;
 	}
 
 	@Override
@@ -93,7 +116,7 @@ public class SetWlanDialog extends Dialog {
 			mSoftAp.setChecked(control.confGetSoftAp());
 			control.disconnect();
 		} catch (FatalError e) {
-			Toast.makeText(getContext(), R.string.msg_connectionfailed,
+			Toast.makeText(getDialog().getContext(), R.string.msg_connectionfailed,
 					Toast.LENGTH_SHORT).show();
 			dismiss();
 		}
