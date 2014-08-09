@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<workspace>
+  <project>
+    <path>$WS_DIR$\email.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$\..\lib\ewarm\libmail.ewp</path>
+  </project>
+  <batchBuild/>
+</workspace>
+
+

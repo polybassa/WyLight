@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<workspace>
+  <project>
+    <path>$WS_DIR$\..\..\..\driverlib\ewarm\driverlib.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$\..\..\..\oslib\ewarm\oslib.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$\..\..\..\simplelink\ewarm\simplelink.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$\wifi_audio_app.ewp</path>
+  </project>
+  <batchBuild/>
+</workspace>
+
+
