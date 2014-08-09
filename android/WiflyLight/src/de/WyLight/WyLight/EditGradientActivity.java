@@ -44,8 +44,12 @@ public class EditGradientActivity extends Activity {
 		if (null == mColor) {
 			mColor = new int[] { Color.WHITE, Color.BLACK };
 		}
-		RgbGradientView rgb = (RgbGradientView) this
-				.findViewById(R.id.rgb_volume);
+
+		if (mColor.length < 2) {
+			setTitle(R.string.title_activity_edit_fade);
+		}
+
+		RgbGradientView rgb = (RgbGradientView)findViewById(R.id.rgb_volume);
 		rgb.setColors(mColor);
 		rgb.onColorChanged(null, mColor[0]);
 		rgb.setOnColorChangedListener(new RgbGradientView.OnColorChangeListener() {
@@ -70,8 +74,7 @@ public class EditGradientActivity extends Activity {
 				updateTimeStatus(progress);
 			}
 		});
-		final int time = getIntent().getIntExtra(EditScriptActivity.ITEM_TIME,
-				0);
+		final int time = getIntent().getIntExtra(EditScriptActivity.ITEM_TIME, 0);
 		mTime.setProgress(FadeTime.timeToIndex(time));
 		updateTimeStatus(mTime.getProgress());
 	}

@@ -21,16 +21,12 @@ package de.WyLight.WyLight.library;
 import de.WyLight.WyLight.FadeTime;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.CornerPathEffect;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ScriptAdapter extends BaseAdapter {
@@ -76,12 +72,21 @@ public class ScriptAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 
-	public int[] getColors() {
-		int[] colors = new int[getCount()];
-		for (int i = 0; i < colors.length; ++i) {
-			colors[i] = getItem(i).getColor();
+	private int[] getColors() {
+		final int count = getCount();
+		switch (count) {
+		case 0:
+			return new int[] {Color.DKGRAY, Color.BLACK, Color.DKGRAY};
+		case 1:
+			final int c = getItem(0).getColor();
+			return new int[] {c, c};
+		default:
+			int[] colors = new int[count];
+			for (int i = 0; i < colors.length; ++i) {
+				colors[i] = getItem(i).getColor();
+			}
+			return colors;
 		}
-		return colors;
 	}
 
 	public int getCount() {
@@ -137,33 +142,20 @@ public class ScriptAdapter extends BaseAdapter {
 	}
 
 	public View getView(Context context) {
-		WindowManager wm = (WindowManager) context
-				.getSystemService(Context.WINDOW_SERVICE);
-		DisplayMetrics metrics = new DisplayMetrics();
+		final WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+		final DisplayMetrics metrics = new DisplayMetrics();
 		wm.getDefaultDisplay().getMetrics(metrics);
-		final int count = getCount();
 		final int height = (int) (0.5f * metrics.xdpi);
-		if (count > 0) {
-			final int width = metrics.widthPixels / count;
-			LinearLayout l = new LinearLayout(context);
-			l.setOrientation(LinearLayout.HORIZONTAL);
-			int lastColor = Color.BLACK;
-			for (int i = 0; i < count; ++i) {
-				FwCmdScriptAdapter item = getItem(i);
-				l.addView(item.getView(context, width, height, lastColor));
-				lastColor = item.getColor();
-			}
-			ShapeDrawable background = new ShapeDrawable();
-			background.setShape(new RectShape());
-			background.getPaint().setPathEffect(new CornerPathEffect(100));
-			l.setBackgroundDrawable(background);
-			return l;
-		}
-		TextView empty = new TextView(context);
-		empty.setHeight(height);
-		empty.setWidth(metrics.widthPixels);
-		empty.setBackgroundColor(Color.BLACK);
-		return empty;
+
+		final GradientDrawable background = new GradientDrawable(
+				GradientDrawable.Orientation.LEFT_RIGHT, getColors());
+		background.setCornerRadius(15);
+
+		final TextView v = new TextView(context);
+		v.setHeight(height);
+		v.setWidth(metrics.widthPixels);
+		v.setBackgroundDrawable(background);
+		return v;
 	}
 
 	private GradientDrawable getFadeBackground(FwCmdScriptAdapter item,

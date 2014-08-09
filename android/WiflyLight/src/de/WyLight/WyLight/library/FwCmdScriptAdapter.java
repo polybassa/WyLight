@@ -21,6 +21,7 @@ package de.WyLight.WyLight.library;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.view.View;
 import android.widget.TextView;
 
@@ -86,29 +87,28 @@ public class FwCmdScriptAdapter {
 
 	public Type getType() {
 		if (0 != mNative) {
-			final char type = getType(mNative);
-			if (0xF9 == type) {
+			switch (getType(mNative)) {
+			case 0xF9:
 				return Type.GRADIENT;
-			} else if (0xFC == type) {
+			case 0xFC:
 				return Type.FADE;
 			}
 		}
 		return Type.UNKOWN;
 	}
 
-	public View getView(Context context, int width, int height,
-			int colorNeighbor) {
-		final TextView v = new TextView(context);
-		final GradientDrawable d;
+	public View getView(Context context, int width, int height,	int colorNeighbor) {
+		final Orientation orientation;
+		final int[] colors;
 		if (getType() == Type.GRADIENT) {
-			d = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
-					getGradientColor());
+			orientation = GradientDrawable.Orientation.TOP_BOTTOM;
+			colors = getGradientColor();
 		} else {
-			final int[] colors = new int[] { colorNeighbor, getColor() };
-			d = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
-					colors);
+			orientation = GradientDrawable.Orientation.LEFT_RIGHT;
+			colors = new int[] { colorNeighbor, getColor() };
 		}
-		v.setBackgroundDrawable(d);
+		final TextView v = new TextView(context);
+		v.setBackgroundDrawable(new GradientDrawable(orientation, colors));
 		v.setWidth(width);
 		v.setHeight(height);
 		return v;

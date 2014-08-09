@@ -118,7 +118,7 @@ public class SelectRemoteActivity extends Activity implements
 
 	public void onPostExecute() {
 		mScanBtn.setClickable(true);
-		mScanBtn.setText(string.scan);
+		mScanBtn.setText(string.action_scan);
 		mProgress.setVisibility(View.GONE);
 	}
 

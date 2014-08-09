@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class EndpointAdapter extends ArrayAdapter<Endpoint> {
+	private static final boolean SHOW_PORT = false;
 
 	public EndpointAdapter(Context context, int textViewResourceId,
 			List<Endpoint> objects) {
@@ -47,7 +48,11 @@ public class EndpointAdapter extends ArrayAdapter<Endpoint> {
 		TextView address = (TextView) v.findViewById(R.id.address);
 
 		deviceId.setText(remote.getName());
-		address.setText(remote.getAddress());
+		if (SHOW_PORT) {
+			address.setText(remote.getAddressPort());
+		} else {
+			address.setText(remote.getAddress());
+		}
 
 		if (remote.isOnline()) {
 			status.setImageResource(R.drawable.ic_status_good);

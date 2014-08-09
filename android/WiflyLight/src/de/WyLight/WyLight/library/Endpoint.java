@@ -81,8 +81,8 @@ public class Endpoint implements Serializable {
 	}
 
 	/**
-	 * Get ip and port as a combined string
-	 * @return aaa.aaa.aaa.aaa:ppppp
+	 * Get ip address string
+	 * @return aaa.aaa.aaa.aaa
 	 */
 	public String getAddress() {
 		int _4 = mAddr & 0xff;
@@ -90,8 +90,15 @@ public class Endpoint implements Serializable {
 		int _2 = Integer.rotateRight(mAddr, 16) & 0xff;
 		int _1 = Integer.rotateRight(mAddr, 24) & 0xff;
 		return Integer.toString(_1) + '.' + Integer.toString(_2) + '.'
-				+ Integer.toString(_3) + '.' + Integer.toString(_4) + ':'
-				+ String.valueOf(mPort);
+				+ Integer.toString(_3) + '.' + Integer.toString(_4);
+	}
+
+	/**
+	 * Get ip and port as a combined string
+	 * @return aaa.aaa.aaa.aaa:ppppp
+	 */
+	public String getAddressPort() {
+		return getAddress() + ':' + String.valueOf(mPort);
 	}
 
 	public String getName() {

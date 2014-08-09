@@ -8,7 +8,7 @@
         android:layout_height="0dp"
         android:layout_width="fill_parent"
         android:layout_weight="4"
-        android:text="@string/save" />
+        android:text="@string/action_accept" />
     <TextView
         android:id="@+id/timeStatus"
         android:layout_height="wrap_content"

@@ -1,48 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="action_add">Add</string>
     <string name="action_add_gradient">Add gradient</string>
     <string name="action_accept">Save</string>
     <string name="action_delete">Delete</string>
+    <string name="action_scan">Scan</string>
     <string name="action_stop">Stop</string>
     <string name="app_name">WyLight</string>
     <string name="cancel">Cancel</string>
-    <string name="clear">Clear</string>
-    <string name="configure">configure</string>
+    <string name="configure">Configure</string>
     <string name="deviceid_description">Device name:</string>
     <string name="deviceid_hint">this is optional</string>
     <string name="msg_connecting">Establishing connection&#8230;</string>
-    <string name="msg_connectionfailed">Connection to the wifly device failed</string>
-    <string name="msg_noremote">No remote detected, click scan to find one</string>
+    <string name="msg_connectionfailed">Connection to WyLight device failed</string>
+    <string name="msg_noremote">No WyLight detected, click scan to find one</string>
     <string name="msg_scriptbufferfull">The script buffer is full, clear it first</string>
-    <string name="new_script">New</string>
     <string name="passphrase_description">WPA2 passphrase:</string>
     <string name="passphrase_hint">1&#8211;63 characters</string>
     <string name="passphrase_toggle">Show passphrase</string>
     <string name="percent_zero">0%</string>
-    <string name="save">Save</string>
-    <string name="scan">Scan</string>
     <string name="scanning">Scanning&#8230;</string>
     <string name="scriptname_description">Script name:</string>
-    <string name="send">Send</string>
-    <string name="set_clear">Clear</string>
-    <string name="set_color">Set color</string>
-    <string name="set_delayfade">Delay fade by 5 sec.</string>
-    <string name="set_fade">Set fade</string>
-    <string name="set_loopon">Loop on</string>
-    <string name="set_loopoff">Loop off</string>
     <string name="softap_toggle">SoftAP (not recommended)</string>
     <string name="ssid_description">Network-SSID:</string>
     <string name="ssid_hint">1&#8211;32 characters</string>
     <string name="status_bad">Status bad</string>
     <string name="status_good">Status good</string>
-    <string name="title_activity_edit_command">Edit fade</string>
+    <string name="title_activity_edit_fade">Edit fade</string>
     <string name="title_activity_edit_gradient">Edit gradient</string>
     <string name="title_activity_edit_script">Edit script</string>
     <string name="title_activity_script_import">Import script into WyLight</string>
-    <string name="title_activity_wifly_control">Control your WiflyLight</string>
-    <string name="title_dialog_set_wlan">Configure your WLAN settings</string>
+    <string name="title_activity_wifly_control">Control your WyLight</string>
+    <string name="title_dialog_set_wlan">Configure your WiFi settings</string>
     <string name="title_dialog_startup">Startup</string>
-    <string name="title_dialog_string_picker">Set string</string>
 </resources>
