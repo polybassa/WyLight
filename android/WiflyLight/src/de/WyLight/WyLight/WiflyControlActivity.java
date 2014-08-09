@@ -54,9 +54,10 @@ public class WiflyControlActivity extends Activity implements
 	public static final short DEFAULT_PORT = 2000;
 
 	private static final ControlFragment[] mFragments = new ControlFragment[] {
-			new SetColorFragment(), new SetBrightnessFragment(),
-			new SetRGBFragment(), new SetScriptFragment(),
-	// new SetGradientFragment()
+			new SetColorFragment(),
+			new SetBrightnessFragment(),
+			new SetRGBFragment(),
+			new SetScriptFragment(),
 	};
 
 	private final HashSet<OnColorChangeListener> mColorChangedListenerList = new HashSet<OnColorChangeListener>();
@@ -157,13 +158,12 @@ public class WiflyControlActivity extends Activity implements
 				getFragmentManager());
 		pager.setAdapter(adapter);
 		pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-			public void onPageScrolled(int arg0, float arg1, int arg2) { /*
-																		 * not
-																		 * implemented
-																		 */
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				/* not implemented */
 			}
 
-			public void onPageScrollStateChanged(int arg0) { /* not implemented */
+			public void onPageScrollStateChanged(int arg0) {
+				/* not implemented */
 			}
 
 			public void onPageSelected(int arg0) {
