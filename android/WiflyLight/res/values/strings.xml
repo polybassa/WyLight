@@ -37,7 +37,7 @@
     <string name="ssid_hint">1&#8211;32 characters</string>
     <string name="status_bad">Status bad</string>
     <string name="status_good">Status good</string>
-    <string name="title_activity_edit_command">Edit fade</string>
+    <string name="title_activity_edit_fade">Edit fade</string>
     <string name="title_activity_edit_gradient">Edit gradient</string>
     <string name="title_activity_edit_script">Edit script</string>
     <string name="title_activity_script_import">Import script into WyLight</string>
