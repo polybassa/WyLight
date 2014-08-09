@@ -8,7 +8,7 @@
         android:id="@+id/scan"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/scan" />
+        android:text="@string/action_scan" />
 	<ProgressBar
 	    android:id="@+id/progress"
 	    android:visibility="gone"
