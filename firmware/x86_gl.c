@@ -1,4 +1,20 @@
+/*
+ Copyright (C) 2012-2014 Nils Weiss, Patrick Bruenn.
 
+ This file is part of Wifly_Light.
+
+ Wifly_Light is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Wifly_Light is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -12,8 +28,7 @@ void gl_print_text(char *text, GLfloat x, GLfloat y)
 {
 	glRasterPos3f(0, 0, 0.0);
 	glTranslatef(x, y, 0.0);
-	while(*text != 0)
-	{
+	while(*text != 0) {
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, *text++);
 	}
 	glTranslatef(-x, -y, 0.0);
@@ -36,7 +51,7 @@ void gl_display(void)
 
 	clock_gettime(CLOCK_MONOTONIC, &lastTime);
 
-	for(;; ) {
+	for(;;) {
 #ifndef SHOW_FPS
 		static const struct timespec NANOSLEEP_TIME = {0, 500000000};
 		nanosleep(&NANOSLEEP_TIME, NULL);
@@ -79,7 +94,7 @@ void *gl_start(void *unused)
 	glutInit(&argc, NULL);
 	glutInitWindowSize(300, 300);
 	glutInitWindowPosition(0, 0);
-	glutCreateWindow("Wifly_Light LED simulation");
+	glutCreateWindow("WyLight LED simulation");
 	glutDisplayFunc(gl_display);
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glMatrixMode(GL_PROJECTION);
