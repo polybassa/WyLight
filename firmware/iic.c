@@ -32,7 +32,7 @@ void I2C_Init()
 	SSPEN2 = 1;                               //MSSP-Modul einschalten
 }
 
-void I2C_Write(const uns8 slaveaddr, const uns8 dataaddr, const uns8 data)
+void I2C_Write(uns8 slaveaddr, const uns8 dataaddr, const uns8 data)
 {
 	//Writebit in Slaveadresse setzen
 
@@ -65,7 +65,7 @@ void I2C_Write(const uns8 slaveaddr, const uns8 dataaddr, const uns8 data)
 	SSP2IF = 0;
 }
 
-void I2C_WriteBlock(const uns8 slaveaddr, const uns8* data, const uns8 dataaddr,const uns8 length)
+void I2C_WriteBlock(uns8 slaveaddr, const uns8* data, const uns8 dataaddr,const uns8 length)
 {
 	//Writebit in Slaveadresse setzen
 	

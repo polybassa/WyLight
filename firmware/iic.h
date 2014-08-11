@@ -20,11 +20,11 @@
  #define _IIC_H_
 
 void I2C_Init();
-void I2C_Write(const uns8 slaveaddr, const uns8 dataaddr, const uns8 data);
+void I2C_Write(uns8 slaveaddr, const uns8 dataaddr, const uns8 data);
 uns8 I2C_Read(const uns8 slaveaddr, const uns8 readaddr);
 uns8 I2C_DetectSlave(const uns8 slaveaddr);
 
 void I2C_ReadBlock(const uns8 slaveaddr, uns8 *buffer,const uns8 readaddr, const uns8 length);
-void I2C_WriteBlock(const uns8 slaveaddr, const uns8 *data, const uns8 dataaddr,const uns8 length);
+void I2C_WriteBlock(uns8 slaveaddr, const uns8 *data, const uns8 dataaddr,const uns8 length);
 
  #endif /*_IIC_H_*/

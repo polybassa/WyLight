@@ -229,13 +229,13 @@ void CommandIO_CreateResponse(struct response_frame *mFrame, uns8 cmd, ErrorCode
 	};
 	case GET_CYCLETIME:
 	{
-		const uns8 bytesPrint = Timer_PrintCycletime(&(mFrame->data.max_cycle_times[0]), sizeof(struct response_frame) - 4);
+		uns8 bytesPrint = Timer_PrintCycletime(&(mFrame->data.max_cycle_times[0]), sizeof(struct response_frame) - 4);
 		mFrame->length += bytesPrint;
 		break;
 	};
 	case GET_TRACE:
 	{
-		const uns8 bytesPrint = Trace_Print(&(mFrame->data.trace_string[0]), sizeof(struct response_frame) - 4);
+		uns8 bytesPrint = Trace_Print(&(mFrame->data.trace_string[0]), sizeof(struct response_frame) - 4);
 		mFrame->length += bytesPrint;
 		break;
 	};

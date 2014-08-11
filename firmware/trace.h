@@ -35,7 +35,7 @@ void Trace_Init();
 
 void Trace_String(const char *string);
 
-void Trace_Number(const uns8 input);
+void Trace_Number(uns8 input);
 
 void Trace_Hex(const uns8 input);
 

@@ -50,7 +50,7 @@ void Trace_Char(const uns8 input)
 		PutToBuf(input);
 }
 
-void Trace_Number(const uns8 input)
+void Trace_Number(uns8 input)
 {
 	if(RingBuf_HasError(&g_TraceBuf)) return;
 	uns8 temp;
