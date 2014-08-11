@@ -184,7 +184,7 @@ void SPI_SendLedBuffer(uns8 *array) //!!! CHECK if GIE=0 during the sendroutine 
 	pthread_mutex_unlock(&g_led_mutex);
 }
 
-void init_x86(void)
+void init_x86(int start_gl)
 {
 	pthread_t broadcastThread;
 	pthread_t isrThread;
@@ -194,7 +194,8 @@ void init_x86(void)
 
 	pthread_create(&broadcastThread, 0, BroadcastLoop,    0);
 	pthread_create(&isrThread,       0, InterruptRoutine, 0);
-	pthread_create(&glThread,        0, gl_start,         0);
+	if (start_gl)
+		pthread_create(&glThread,        0, gl_start,         0);
 	pthread_create(&timer1Thread,    0, timer1_interrupt, 0);
 	pthread_create(&timer4Thread,    0, timer4_interrupt, 0);
 }
