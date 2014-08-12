@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -l"libc.a" -l"F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/ccs/../../../driverlib/ccs/Release/driverlib.a" -l"F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/ccs/../../../simplelink/ccs/NON_OS/simplelink.a"
+LIBS := -l"libc.a" -ldriverlib.a -lfree_rtos.a -lsimplelink.a
 

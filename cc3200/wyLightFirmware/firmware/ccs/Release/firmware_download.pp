@@ -15,7 +15,8 @@ firmware_download.obj: F:/Wifly_Light/Software/cc3200/simplelink/include/simplel
 firmware_download.obj: F:/Wifly_Light/Software/cc3200/simplelink/include/../user.h
 firmware_download.obj: c:/ti/ccsv6/tools/compiler/arm_5.1.7/include/string.h
 firmware_download.obj: F:/Wifly_Light/Software/cc3200/simplelink/include/../cc_pal.h
-firmware_download.obj: F:/Wifly_Light/Software/cc3200/simplelink/include/../source/nonos.h
+firmware_download.obj: F:/Wifly_Light/Software/cc3200/oslib/osi.h
+firmware_download.obj: F:/Wifly_Light/Software/cc3200/simplelink/include/../source/spawn.h
 firmware_download.obj: F:/Wifly_Light/Software/cc3200/simplelink/include/../source/objInclusion.h
 firmware_download.obj: F:/Wifly_Light/Software/cc3200/simplelink/include/simplelink.h
 firmware_download.obj: F:/Wifly_Light/Software/cc3200/simplelink/include/../source/datatypes.h
@@ -59,7 +60,8 @@ F:/Wifly_Light/Software/cc3200/simplelink/include/simplelink.h:
 F:/Wifly_Light/Software/cc3200/simplelink/include/../user.h: 
 c:/ti/ccsv6/tools/compiler/arm_5.1.7/include/string.h: 
 F:/Wifly_Light/Software/cc3200/simplelink/include/../cc_pal.h: 
-F:/Wifly_Light/Software/cc3200/simplelink/include/../source/nonos.h: 
+F:/Wifly_Light/Software/cc3200/oslib/osi.h: 
+F:/Wifly_Light/Software/cc3200/simplelink/include/../source/spawn.h: 
 F:/Wifly_Light/Software/cc3200/simplelink/include/../source/objInclusion.h: 
 F:/Wifly_Light/Software/cc3200/simplelink/include/simplelink.h: 
 F:/Wifly_Light/Software/cc3200/simplelink/include/../source/datatypes.h: 
