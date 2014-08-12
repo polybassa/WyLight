@@ -47,17 +47,28 @@
 //
 //*****************************************************************************
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
 
+/* Scheduler includes. */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "semphr.h"
+#include "osi.h"
+
 // SimpleLink includes
+#include "datatypes.h"
 #include "simplelink.h"
 
 // driverlib includes
 #include "hw_ints.h"
 #include "hw_types.h"
 #include "hw_memmap.h"
+#include "hw_common_reg.h"
 #include "rom.h"
 #include "rom_map.h"
 #include "prcm.h"
@@ -71,8 +82,10 @@
 // wylight includes
 #include "firmware_download.h"
 
-#define UART_PRINT          Report
-#define APP_NAME            "File Download"
+#define UART_PRINT          	Report
+#define APP_NAME            	"File Download"
+#define OOB_TASK_PRIORITY				(1)
+#define SPAWN_TASK_PRIORITY				(9)
 
 //
 // Values for below macros shall be modified as per access-point(AP) properties
@@ -162,6 +175,75 @@ int g_iSockID;
 
 //*****************************************************************************
 
+/*
+ *
+ */
+#ifdef USE_FREERTOS
+//*****************************************************************************
+//
+//! Application defined hook (or callback) function - the tick hook.
+//! The tick interrupt can optionally call this
+//!
+//! \param  none
+//!
+//! \return none
+//!
+//*****************************************************************************
+void vApplicationTickHook(void) {
+}
+
+//*****************************************************************************
+//
+//! Application defined hook (or callback) function - assert
+//!
+//! \param  none
+//!
+//! \return none
+//!
+//*****************************************************************************
+void vAssertCalled(const char *pcFile, unsigned long ulLine) {
+	while (1) {
+
+	}
+}
+
+//*****************************************************************************
+//
+//! Application defined idle task hook
+//!
+//! \param  none
+//!
+//! \return none
+//!
+//*****************************************************************************
+void vApplicationIdleHook(void) {
+
+}
+
+//*****************************************************************************
+//
+//! Application provided stack overflow hook function.
+//!
+//! \param  handle of the offending task
+//! \param  name  of the offending task
+//!
+//! \return none
+//!
+//*****************************************************************************
+void vApplicationStackOverflowHook(OsiTaskHandle *pxTask, signed char *pcTaskName) {
+	(void) pxTask;
+	(void) pcTaskName;
+
+	for (;;)
+		;
+}
+
+void vApplicationMallocFailedHook() {
+	while (1) {
+		// Infinite loop;
+	}
+}
+#endif
 // SimpleLink Asynchronous Event Handlers -- Start
 //*****************************************************************************
 
@@ -503,7 +585,7 @@ static long WlanConnect() {
 	// Wait for WLAN Event
 	while ((!IS_CONNECTED(g_ulStatus)) || (!IS_IP_ACQUIRED(g_ulStatus))) {
 		// wait till connects to an AP
-		_SlNonOsMainLoopTask();
+		//MAP_UtilsDelay(800000);
 	}
 
 	return SUCCESS;
@@ -704,34 +786,10 @@ static void BoardInit(void) {
 	PRCMCC3200MCUInit();
 }
 
-int main() {
+static void MainTask(void *pvParameters) {
+
 	int retRes = 0;
 	long lRetVal = -1;
-
-	//
-	// Board Initialization
-	//
-	BoardInit();
-
-	//
-	// Configure the pinmux settings for the peripherals exercised
-	//
-	PinMuxConfig();
-
-	//
-	// Configuring UART
-	//
-	InitTerm();
-
-	//
-	// Display banner
-	//
-	DisplayBanner(APP_NAME);
-
-	UART_PRINT("\n\rStarted file download sample Application.");
-	UART_PRINT("\n\r\n\r");
-
-	InitializeAppVariables();
 
 	//
 	// Following function configure the device to default state by cleaning
@@ -776,37 +834,37 @@ int main() {
 	// Create a TCP connection to the Web Server
 	g_iSockID = CreateConnection(GetServerIP());
 
-	if (g_iSockID < 0) return -1;
+	if (g_iSockID < 0) return;
 
 	UART_PRINT("Connection to server created successfully\r\n");
 	// Download the file, verify the file and replace the exiting file
 	if (GetFileFromServer(g_iSockID, "firmware.bin", "/temp/firmware.bin") < 0) {
 		retRes = sl_Close(g_iSockID);
 		UART_PRINT("Error downloading file\r\n");
-		return -1;
+		return;
 	}
 
 	retRes = sl_Close(g_iSockID);
 	if (0 > retRes) {
 		UART_PRINT("Error during closing socket\r\n");
-		return -1;
+		return;
 	}
 
 	g_iSockID = CreateConnection(GetServerIP());
 
-	if (g_iSockID < 0) return -1;
+	if (g_iSockID < 0) return;
 
 	UART_PRINT("Connection to server created successfully\r\n");
 	if (GetFileFromServer(g_iSockID, "firmware.sha", "/temp/firmware.sha") < 0) {
 		retRes = sl_Close(g_iSockID);
 		UART_PRINT("Error downloading file\r\n");
-		return -1;
+		return;
 	}
 
 	retRes = sl_Close(g_iSockID);
 	if (0 > retRes) {
 		UART_PRINT("Error during closing socket\r\n");
-		return -1;
+		return;
 	}
 
 	retRes = VerifyFile("/temp/firmware.bin", "/temp/firmware.sha");
@@ -823,6 +881,42 @@ int main() {
 	sl_Stop(0xFF);
 
 	LOOP_FOREVER(__LINE__);
+}
+
+int main() {
+	//
+	// Board Initialization
+	//
+	BoardInit();
+
+	//
+	// Configure the pinmux settings for the peripherals exercised
+	//
+	PinMuxConfig();
+
+	//
+	// Configuring UART
+	//
+	InitTerm();
+
+	//
+	// Display banner
+	//
+	DisplayBanner(APP_NAME);
+
+	UART_PRINT("\n\rStarted file download sample Application.");
+	UART_PRINT("\n\r\n\r");
+
+	InitializeAppVariables();
+
+	VStartSimpleLinkSpawnTask(SPAWN_TASK_PRIORITY);
+
+	osi_TaskCreate(MainTask, (signed char *) "MainTask", 4096, NULL, OOB_TASK_PRIORITY, NULL);
+
+	osi_start();
+
+	while (true)
+		;
 
 }
 
