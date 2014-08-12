@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+ Copyright (C) 2012-2014 Nils Weiss, Patrick Bruenn.
 
  This file is part of Wifly_Light.
 
@@ -124,6 +124,11 @@ void *InterruptRoutine(void *unused)
 }
 
 void I2C_Init(){}
+void I2C_Write(const uns8 slaveaddr, const uns8 dataaddr, const uns8 data){}
+uns8 I2C_Read(const uns8 slaveaddr, const uns8 readaddr){return 0;}
+uns8 I2C_DetectSlave(const uns8 slaveaddr){return 0;}
+void I2C_ReadBlock(const uns8 slaveaddr, uns8 *buffer,const uns8 readaddr, const uns8 length){}
+void I2C_WriteBlock(const uns8 slaveaddr, const uns8 *data, const uns8 dataaddr,const uns8 length){}
 
 void *timer1_interrupt(void *unused)
 {
@@ -179,7 +184,7 @@ void SPI_SendLedBuffer(uns8 *array) //!!! CHECK if GIE=0 during the sendroutine 
 	pthread_mutex_unlock(&g_led_mutex);
 }
 
-void init_x86(void)
+void init_x86(int start_gl)
 {
 	pthread_t broadcastThread;
 	pthread_t isrThread;
@@ -189,7 +194,8 @@ void init_x86(void)
 
 	pthread_create(&broadcastThread, 0, BroadcastLoop,    0);
 	pthread_create(&isrThread,       0, InterruptRoutine, 0);
-	pthread_create(&glThread,        0, gl_start,         0);
+	if (start_gl)
+		pthread_create(&glThread,        0, gl_start,         0);
 	pthread_create(&timer1Thread,    0, timer1_interrupt, 0);
 	pthread_create(&timer4Thread,    0, timer4_interrupt, 0);
 }

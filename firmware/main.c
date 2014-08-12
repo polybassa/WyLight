@@ -66,7 +66,7 @@ uns8 g_UpdateLedStrip;
 void InitAll();
 void HighPriorityInterruptFunction(void);
 #ifdef X86
-void init_x86(void);
+void init_x86(int start_gl);
 #endif /* #ifdef X86 */
 
 #ifndef X86
@@ -150,10 +150,14 @@ void HighPriorityInterruptFunction(void)
 //*********************** HAUPTPROGRAMM **********************************************
 #ifdef __CC8E__
 void main(void)
-#else
-int main(void)
-#endif
 {
+#else
+int g_start_gl = 1;
+int main(int argc, const char** argv)
+{
+	if ((argc > 1) && (argv[1][0] == 'h'))
+		g_start_gl = 0;
+#endif
 	/* softReset() on x86 will jump here! */
 	softResetJumpDestination();
 
@@ -212,7 +216,7 @@ void InitAll()
 	ExtEeprom_Init();
 	
 #ifndef __CC8E__
-	init_x86();
+	init_x86(g_start_gl);
 #endif /* #ifndef CC8E */
 
 	Platform_AllowInterrupts();
