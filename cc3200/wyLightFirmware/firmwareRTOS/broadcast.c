@@ -62,26 +62,7 @@ struct __attribute__((__packed__)) BroadcastMessage {
 
 };
 
-static struct BroadcastMessage mBroadcastMessage = { 0x00, 0x00, 0x00, 0x00, 0x00,
-		0x00, //MAC
-		0x07, //channel
-		0x3f, //rssi
-		0x00,
-		0x00, //port
-		0x00, 0x00, 0x24,
-		0xb1, //rtc
-		0x00,
-		0x00, //battery
-		0x0d,
-		0x11, //gpio
-		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-		0x00, //time
-		0x57, 0x69, 0x46, 0x6c, 0x79, 0x20, 0x56, 0x65, 0x72, 0x20, 0x32, 0x2e, 0x33, 0x36, 0x2c, 0x20, 0x30, 0x38, 0x2d, 0x32, 0x32, 0x2d, 0x32, 0x30, 0x31, 0x32, 0x00,
-		0x00, //version
-		'W', 'i', 'F', 'l', 'y', '-', 'C', 'C', '3', '2', '0', '0', 0x00, '5', '6', '7', '8', '9', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '1', '2', '3', //deviceid
-		0x00, 0x00, //boottime
-		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 //sensors
-		};
+static struct BroadcastMessage mBroadcastMessage;
 //
 // GLOBAL VARIABLES -- End
 //
@@ -108,11 +89,15 @@ int SendBroadcastMessage(void);
 
 void Broadcast_Task(void *pvParameters) {
 
+	memset(&mBroadcastMessage, 0, sizeof(struct BroadcastMessage));
+
+	// Inital Wait to give the main Task time to establish the wifi connection
 	osi_Sleep(5000);
 
 	while (!IS_CONNECTED(g_ulStatus)) {
 		osi_Sleep(500);
 	}
+
 	// Get MAC-Address for Broadcast Message
 	unsigned char macAddressLen = SL_MAC_ADDR_LEN;
 	sl_NetCfgGet(SL_MAC_ADDRESS_GET, NULL, &macAddressLen, (unsigned char *) &(mBroadcastMessage.MAC));
@@ -120,10 +105,12 @@ void Broadcast_Task(void *pvParameters) {
 	// Set Client Port
 	mBroadcastMessage.port = htons(2000);
 
+	// Set Device ID
 	memset(&(mBroadcastMessage.deviceId), 0, sizeof(mBroadcastMessage.deviceId));
 	const char tempDeviceId[] = "WyLightCC3200";
 	mem_copy(&(mBroadcastMessage.deviceId), (void *) tempDeviceId, sizeof(mBroadcastMessage.deviceId));
 
+	// Set Version
 	const char tempVersion[] = "wifly-EZX Ver 4.00.1, Apr 19";
 	mem_copy(&(mBroadcastMessage.version), (void *) tempVersion, sizeof(mBroadcastMessage.version));
 
@@ -164,6 +151,7 @@ void Broadcast_Task(void *pvParameters) {
 
 			mBroadcastMessage.rssi = (uint8_t) wlanStatistics.AvarageMgMntRssi;
 			mBroadcastMessage.rtc = htonl(wlanStatistics.GetTimeStamp);
+
 			// Send Broadcast Message
 			iStatus = sl_SendTo(iSockID, &mBroadcastMessage, sizeof(struct BroadcastMessage), 0, (SlSockAddr_t *) &sAddr, iAddrSize);
 
@@ -174,6 +162,7 @@ void Broadcast_Task(void *pvParameters) {
 			osi_Sleep(1500);
 		} while (IS_CONNECTED(g_ulStatus) && iStatus > 0);
 
+		// Close socket in case of any error's and try to open a new socket in the next loop
 		sl_Close(iSockID);
 	}
 }

@@ -157,12 +157,9 @@ int main(void) {
 	// Simplelinkspawntask
 	//
 	VStartSimpleLinkSpawnTask(9);
-	//
-	//create an Interpreter task
-	//
+
 	osi_TaskCreate(Main_Task, (signed portCHAR *) "Main", OSI_STACK_SIZE, NULL, 1, NULL);
-	// create a separate thread for reading UART
-	osi_TaskCreate(Broadcast_Task,( signed portCHAR * ) "Broadcast",OSI_STACK_SIZE, NULL, 1, NULL);
+	osi_TaskCreate(Broadcast_Task,(signed portCHAR *) "Broadcast",OSI_STACK_SIZE, NULL, 1, NULL);
 
 	osi_start();
 
