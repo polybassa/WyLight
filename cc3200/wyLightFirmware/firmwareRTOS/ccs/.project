@@ -26,6 +26,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>broadcast.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/broadcast.c</locationURI>
+		</link>
+		<link>
 			<name>main.c</name>
 			<type>1</type>
 			<locationURI>copy_PARENT/main.c</locationURI>

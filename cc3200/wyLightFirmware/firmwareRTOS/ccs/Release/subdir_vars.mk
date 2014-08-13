@@ -7,6 +7,7 @@ CMD_SRCS += \
 ../cc3200v1p32.cmd 
 
 C_SRCS += \
+F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/broadcast.c \
 F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/main.c \
 F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/network_if.c \
 F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/pinmux.c \
@@ -15,6 +16,7 @@ F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/uart_if.c \
 F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/wifi.c 
 
 OBJS += \
+./broadcast.obj \
 ./main.obj \
 ./network_if.obj \
 ./pinmux.obj \
@@ -23,6 +25,7 @@ OBJS += \
 ./wifi.obj 
 
 C_DEPS += \
+./broadcast.pp \
 ./main.pp \
 ./network_if.pp \
 ./pinmux.pp \
@@ -31,6 +34,7 @@ C_DEPS += \
 ./wifi.pp 
 
 C_DEPS__QUOTED += \
+"broadcast.pp" \
 "main.pp" \
 "network_if.pp" \
 "pinmux.pp" \
@@ -39,6 +43,7 @@ C_DEPS__QUOTED += \
 "wifi.pp" 
 
 OBJS__QUOTED += \
+"broadcast.obj" \
 "main.obj" \
 "network_if.obj" \
 "pinmux.obj" \
@@ -47,6 +52,7 @@ OBJS__QUOTED += \
 "wifi.obj" 
 
 C_SRCS__QUOTED += \
+"F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/broadcast.c" \
 "F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/main.c" \
 "F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/network_if.c" \
 "F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/pinmux.c" \

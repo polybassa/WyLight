@@ -48,6 +48,8 @@ main.obj: F:/Wifly_Light/Software/cc3200/third_party/FreeRTOS/source/include/mpu
 main.obj: F:/Wifly_Light/Software/cc3200/third_party/FreeRTOS/source/include/task.h
 main.obj: F:/Wifly_Light/Software/cc3200/third_party/FreeRTOS/source/include/list.h
 main.obj: F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/uart_if.h
+main.obj: F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/broadcast.h
+main.obj: F:/Wifly_Light/Software/cc3200/simplelink/include/simplelink.h
 main.obj: F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/network_if.h
 
 F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/main.c: 
@@ -98,4 +100,6 @@ F:/Wifly_Light/Software/cc3200/third_party/FreeRTOS/source/include/mpu_wrappers.
 F:/Wifly_Light/Software/cc3200/third_party/FreeRTOS/source/include/task.h: 
 F:/Wifly_Light/Software/cc3200/third_party/FreeRTOS/source/include/list.h: 
 F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/uart_if.h: 
+F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/broadcast.h: 
+F:/Wifly_Light/Software/cc3200/simplelink/include/simplelink.h: 
 F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/network_if.h: 

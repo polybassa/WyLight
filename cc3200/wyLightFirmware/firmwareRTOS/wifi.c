@@ -60,13 +60,13 @@ extern void InitializeAppVariables();
 
 //*****************************************************************************
 //
-//! Interpreter_Task
+//! Main_Task
 //!
 //!  \param  pvParameters
 //!
 //!  \return none
 //!
-//!  \brief Task handler function to handle the Serial-WiFi functionality
+//!  \brief Task handler function to handle the WiFi functionality
 //
 //*****************************************************************************
 
@@ -82,10 +82,11 @@ void Main_Task(void *pvParameters) {
 	memset(FilterPrePreparedFiltersMask, 0, sizeof(FilterPrePreparedFiltersMask));
 	FilterPrePreparedFiltersMask[0] = 0x00;
 
-	WlanConnect();
+	lRetVal = WlanConnect();
+	//TODO: make something with this return Value
 
 	while (1) {
-
+		osi_Sleep(500);
 	}
 }
 
@@ -242,13 +243,13 @@ static long InitDevice() {
 
 //*****************************************************************************
 //
-//! ConfigureSimpleLinkForSerialWifi
+//! ConfigureSimpleLink
 //!
 //! @param  uiMode
 //!
 //! @return none
 //!
-//! @brief  Configuring the state of the CC3200 simplelink device for Serial Wifi
+//! @brief  Configuring the state of the CC3200 simplelink device for Wifi
 //
 //*****************************************************************************
 static void ConfigureSimpleLink(unsigned int uiMode) {

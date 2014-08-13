@@ -45,6 +45,7 @@
 
 //Application Includes
 #include "wifi.h"
+#include "broadcast.h"
 
 //Common interface includes
 #include "network_if.h"
@@ -59,7 +60,7 @@
 //                      FUNCTION PROTOTYPES
 //****************************************************************************
 extern void Main_Task(void *pvParameters);
-//extern void basic_Interpreter(void *pvParameters);
+extern void Broadcast_Task(void *pvParameters);
 
 //****************************************************************************
 //                      LOCAL FUNCTION PROTOTYPES
@@ -161,7 +162,7 @@ int main(void) {
 	//
 	osi_TaskCreate(Main_Task, (signed portCHAR *) "Main", OSI_STACK_SIZE, NULL, 1, NULL);
 	// create a separate thread for reading UART
-	// osi_TaskCreate(basic_Interpreter,( signed portCHAR * ) "uart",OSI_STACK_SIZE, NULL, 1, NULL);
+	osi_TaskCreate(Broadcast_Task,( signed portCHAR * ) "Broadcast",OSI_STACK_SIZE, NULL, 1, NULL);
 
 	osi_start();
 
