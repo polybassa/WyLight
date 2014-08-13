@@ -236,7 +236,7 @@ void Ledstrip_UpdateLed(void)
 void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 {
 	// constant for this fade used in CALC_COLOR
-	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
+	uns16 fadeTmms = ntohs(pCmd->fadeTmms);
 
 	uns8 *stepAddress = gLedBuf.step;
 	uns8 stepMask = 0x01;
@@ -283,7 +283,7 @@ void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 
 void Ledstrip_SetGradient(struct cmd_set_gradient *pCmd)
 {
-	const uns16 fadeTmms = ntohs(pCmd->fadeTmms);
+	uns16 fadeTmms = ntohs(pCmd->fadeTmms);
 
 	uns8 offset = pCmd->parallelAndOffset & 0x7f;
 	uns8 numOfLeds = pCmd->numberOfLeds - 1;
