@@ -9,7 +9,7 @@ main.obj: F:/Wifly_Light/Software/cc3200/driverlib/rom.h
 main.obj: F:/Wifly_Light/Software/cc3200/driverlib/rom_map.h
 main.obj: F:/Wifly_Light/Software/cc3200/driverlib/rom_patch.h
 main.obj: F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/pinmux.h
-main.obj: F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/serial_wifi.h
+main.obj: F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/wifi.h
 main.obj: F:/Wifly_Light/Software/cc3200/simplelink/include/simplelink.h
 main.obj: F:/Wifly_Light/Software/cc3200/simplelink/include/../user.h
 main.obj: c:/ti/ccsv6/tools/compiler/arm_5.1.7/include/string.h
@@ -59,7 +59,7 @@ F:/Wifly_Light/Software/cc3200/driverlib/rom.h:
 F:/Wifly_Light/Software/cc3200/driverlib/rom_map.h: 
 F:/Wifly_Light/Software/cc3200/driverlib/rom_patch.h: 
 F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/pinmux.h: 
-F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/serial_wifi.h: 
+F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/wifi.h: 
 F:/Wifly_Light/Software/cc3200/simplelink/include/simplelink.h: 
 F:/Wifly_Light/Software/cc3200/simplelink/include/../user.h: 
 c:/ti/ccsv6/tools/compiler/arm_5.1.7/include/string.h: 

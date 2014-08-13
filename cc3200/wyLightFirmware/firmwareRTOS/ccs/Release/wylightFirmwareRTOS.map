@@ -1,7 +1,7 @@
 ******************************************************************************
                   TI ARM Linker PC v5.1.7                      
 ******************************************************************************
->> Linked Wed Aug 13 12:42:12 2014
+>> Linked Wed Aug 13 12:48:26 2014
 
 OUTPUT FILE NAME:   <wylightFirmwareRTOS.out>
 ENTRY POINT SYMBOL: "_c_int00"  address: 20011685

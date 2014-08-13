@@ -44,7 +44,7 @@
 #include "pinmux.h"
 
 //Application Includes
-#include "serial_wifi.h"
+#include "wifi.h"
 
 //Common interface includes
 #include "network_if.h"

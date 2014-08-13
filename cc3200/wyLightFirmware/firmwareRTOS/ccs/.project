@@ -41,11 +41,6 @@
 			<locationURI>copy_PARENT/pinmux.c</locationURI>
 		</link>
 		<link>
-			<name>serial_wifi.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT/serial_wifi.c</locationURI>
-		</link>
-		<link>
 			<name>startup_ccs.c</name>
 			<type>1</type>
 			<locationURI>copy_PARENT12/common/startup_ccs.c</locationURI>
@@ -54,6 +49,11 @@
 			<name>uart_if.c</name>
 			<type>1</type>
 			<locationURI>copy_PARENT12/common/uart_if.c</locationURI>
+		</link>
+		<link>
+			<name>wifi.c</name>
+			<type>1</type>
+			<locationURI>copy_PARENT/serial_wifi.c</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>

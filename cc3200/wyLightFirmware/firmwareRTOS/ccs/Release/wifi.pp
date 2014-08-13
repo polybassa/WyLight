@@ -38,7 +38,7 @@ serial_wifi.obj: F:/Wifly_Light/Software/cc3200/third_party/FreeRTOS/source/incl
 serial_wifi.obj: F:/Wifly_Light/Software/cc3200/third_party/FreeRTOS/source/include/task.h
 serial_wifi.obj: F:/Wifly_Light/Software/cc3200/third_party/FreeRTOS/source/include/list.h
 serial_wifi.obj: F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/network_if.h
-serial_wifi.obj: F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/serial_wifi.h
+serial_wifi.obj: F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/wifi.h
 serial_wifi.obj: F:/Wifly_Light/Software/cc3200/inc/hw_types.h
 serial_wifi.obj: F:/Wifly_Light/Software/cc3200/inc/hw_ints.h
 serial_wifi.obj: F:/Wifly_Light/Software/cc3200/inc/hw_memmap.h
@@ -88,7 +88,7 @@ F:/Wifly_Light/Software/cc3200/third_party/FreeRTOS/source/include/mpu_wrappers.
 F:/Wifly_Light/Software/cc3200/third_party/FreeRTOS/source/include/task.h: 
 F:/Wifly_Light/Software/cc3200/third_party/FreeRTOS/source/include/list.h: 
 F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/network_if.h: 
-F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/serial_wifi.h: 
+F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/wifi.h: 
 F:/Wifly_Light/Software/cc3200/inc/hw_types.h: 
 F:/Wifly_Light/Software/cc3200/inc/hw_ints.h: 
 F:/Wifly_Light/Software/cc3200/inc/hw_memmap.h: 

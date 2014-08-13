@@ -29,7 +29,7 @@
 
 //Application Includes
 #define extern
-#include "wifi.h"
+#include "serial_wifi.h"
 #undef extern
 
 //*****************************************************************************
@@ -85,8 +85,6 @@ void Main_Task(void *pvParameters) {
 	WlanConnect();
 
 	while (1) {
-
-		osi_Sleep(100);
 
 	}
 }
