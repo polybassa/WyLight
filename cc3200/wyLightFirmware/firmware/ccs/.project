@@ -26,6 +26,16 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>BroadcastTransmitter.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/BroadcastTransmitter.c</locationURI>
+		</link>
+		<link>
+			<name>BroadcastTransmitter.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/BroadcastTransmitter.h</locationURI>
+		</link>
+		<link>
 			<name>firmware_download.c</name>
 			<type>1</type>
 			<locationURI>copy_PARENT/firmware_download.c</locationURI>
@@ -49,6 +59,11 @@
 			<name>startup_ccs.c</name>
 			<type>1</type>
 			<locationURI>copy_PARENT1/common/startup_ccs.c</locationURI>
+		</link>
+		<link>
+			<name>timer_if.h</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/common/timer_if.h</locationURI>
 		</link>
 		<link>
 			<name>uart_if.c</name>

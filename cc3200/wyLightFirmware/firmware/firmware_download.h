@@ -71,5 +71,18 @@ int ComputeSHA(const char *sourceFile, uint8_t *resultHash);
 //****************************************************************************
 int VerifyFile(const char *fileToVerify, const char *fileWithSHAHash);
 
+//****************************************************************************
+//
+//! \brief Replace the existing file with the download file
+//!
+//! This function replaces two Files in the FlashFileSystem
+//!
+//! \param[in]      sourceFile
+//! \param[in]		destinationFile
+//!
+//! \return         0 for success and negative for error
+//
+//****************************************************************************
+int ReplaceFile(const char *sourceFile, const char *destinationFile);
 
 #endif /* FIRMWARE_DOWNLOAD_H_ */

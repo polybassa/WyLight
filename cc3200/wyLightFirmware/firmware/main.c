@@ -50,14 +50,14 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include "hw_types.h"
+#include "hw_ints.h"
+#include "hw_memmap.h"
 
 // SimpleLink includes
 #include "simplelink.h"
 
 // driverlib includes
-#include "hw_ints.h"
-#include "hw_types.h"
-#include "hw_memmap.h"
 #include "rom.h"
 #include "rom_map.h"
 #include "prcm.h"
@@ -70,6 +70,8 @@
 
 // wylight includes
 #include "firmware_download.h"
+#include "BroadcastTransmitter.h"
+
 
 #define UART_PRINT          Report
 #define APP_NAME            "File Download"
@@ -86,9 +88,6 @@
 
 #define SUCCESS             0
 #define SL_STOP_TIMEOUT     30
-
-#define READ_SIZE   1450
-#define MAX_BUFF_SIZE  1460
 
 // File on the serial flash to be replaced
 #define FILE_NAME "/sys/mcuimg.bin"
@@ -552,108 +551,6 @@ int CreateConnection(unsigned long DestinationIP) {
 	return SockID;
 }
 
-//****************************************************************************
-//
-//! \brief Replace the existing file with the download file
-//!
-//! This function replaces the existing file (FILE_NAME) with the downloaded
-//! file (TEMP_FILE_NAME) and deletes the temporary file.
-//!
-//! \param[in]      None
-//!
-//! \return         0 for success and negative for error
-//
-//****************************************************************************
-int ReplaceFile(const char *sourceFile, const char *destinationFile) {
-	long sfileHandle = -1;
-	unsigned long sToken = 0;
-	long dfileHandle = -1;
-	unsigned long dToken = 0;
-	long retVal = 0;
-	unsigned long bytesCopied = 0, bytesReceived = 0;
-	unsigned long readsize = 0;
-	unsigned char buffer[MAX_BUFF_SIZE + 1];
-	SlFsFileInfo_t sFileInfo;
-
-	UART_PRINT("\r\nStarted replacing the existing file\r\n");
-
-	// get file size
-	retVal = sl_FsGetInfo((unsigned char *) sourceFile, sToken, &sFileInfo);
-	if (retVal < 0) {
-		// File Doesn't exit create a new of 45 KB file
-		UART_PRINT("Error during opening the source file\r\n");
-		retVal = sl_FsDel((unsigned char *) sourceFile, sToken);
-		return -1;
-	}
-	bytesReceived = sFileInfo.FileLen;
-
-	// open the source file for writing
-	retVal = sl_FsOpen((unsigned char *) sourceFile, FS_MODE_OPEN_READ, &sToken, &sfileHandle);
-	if (retVal < 0) {
-		// File Doesn't exit create a new of 45 KB file
-		UART_PRINT("Error during opening the source file\r\n");
-		retVal = sl_FsDel((unsigned char *) sourceFile, sToken);
-		return -1;
-	}
-
-	//delete old image
-	sl_FsDel((unsigned char *) destinationFile, 0);
-
-	// open a user file for writing
-	retVal = sl_FsOpen((unsigned char *) destinationFile, FS_MODE_OPEN_WRITE, &dToken, &dfileHandle);
-	if (retVal < 0) {
-		// File Doesn't exit create a new of 45 KB file
-		retVal = sl_FsOpen((unsigned char *) destinationFile,
-				FS_MODE_OPEN_CREATE(bytesReceived, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR), &dToken,
-				&dfileHandle);
-		if (retVal < 0) {
-			retVal = sl_FsClose(sfileHandle, 0, 0, 0);
-			retVal = sl_FsDel((unsigned char *) sourceFile, sToken);
-			UART_PRINT("Error during opening the destination file\r\n");
-			return -1;
-		}
-	}
-
-	// Copy the files from temporary file to original file
-	// If user file has checksum which can be used to verify the temporary
-	// file then file should be verified before copying
-	while (bytesCopied < bytesReceived) {
-		if ((bytesReceived - bytesCopied) > READ_SIZE) readsize = READ_SIZE;
-		else readsize = (bytesReceived - bytesCopied);
-
-		memset(buffer, 0, sizeof(buffer));
-		retVal = sl_FsRead(sfileHandle, bytesCopied, (unsigned char *) buffer, readsize);
-		if (retVal < 0) {
-			// Error close the file and delete the temporary file
-			retVal = sl_FsClose(dfileHandle, 0, 0, 0);
-			retVal = sl_FsClose(sfileHandle, 0, 0, 0);
-			retVal = sl_FsDel((unsigned char *) sourceFile, sToken);
-			UART_PRINT("Error during reading the file\r\n");
-			return -1;
-		}
-
-		retVal = sl_FsWrite(dfileHandle, bytesCopied, (unsigned char *) buffer, readsize);
-		if (retVal < 0) {
-			// Error close the file and delete the temporary file
-			retVal = sl_FsClose(sfileHandle, 0, 0, 0);
-			retVal = sl_FsClose(dfileHandle, 0, 0, 0);
-			retVal = sl_FsDel((unsigned char *) sourceFile, sToken);
-			UART_PRINT("Error during writing the file\r\n");
-			return -1;
-		}
-		bytesCopied += readsize;
-	}
-
-	// Close the opened files
-	retVal = sl_FsClose(sfileHandle, 0, 0, 0);
-	retVal = sl_FsClose(dfileHandle, 0, 0, 0);
-
-	UART_PRINT("File Replaced successfully\r\n");
-	sl_FsDel((unsigned char *) sourceFile, sToken);
-
-	return 0;
-}
-
 //*****************************************************************************
 //
 //! Application startup display on UART
@@ -772,6 +669,8 @@ int main() {
 	WlanConnect();
 
 	UART_PRINT("Connected to the AP: %s\r\n", SSID_NAME);
+
+	//BroadcastTransmitter_init();
 
 	// Create a TCP connection to the Web Server
 	g_iSockID = CreateConnection(GetServerIP());
