@@ -12,6 +12,7 @@ F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/firmware_download.c \
 F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/main.c \
 F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/pinmux.c \
 F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/startup_ccs.c \
+F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/timer_if.c \
 F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/uart_if.c 
 
 OBJS += \
@@ -20,6 +21,7 @@ OBJS += \
 ./main.obj \
 ./pinmux.obj \
 ./startup_ccs.obj \
+./timer_if.obj \
 ./uart_if.obj 
 
 C_DEPS += \
@@ -28,6 +30,7 @@ C_DEPS += \
 ./main.pp \
 ./pinmux.pp \
 ./startup_ccs.pp \
+./timer_if.pp \
 ./uart_if.pp 
 
 C_DEPS__QUOTED += \
@@ -36,6 +39,7 @@ C_DEPS__QUOTED += \
 "main.pp" \
 "pinmux.pp" \
 "startup_ccs.pp" \
+"timer_if.pp" \
 "uart_if.pp" 
 
 OBJS__QUOTED += \
@@ -44,6 +48,7 @@ OBJS__QUOTED += \
 "main.obj" \
 "pinmux.obj" \
 "startup_ccs.obj" \
+"timer_if.obj" \
 "uart_if.obj" 
 
 C_SRCS__QUOTED += \
@@ -52,6 +57,7 @@ C_SRCS__QUOTED += \
 "F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/main.c" \
 "F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/pinmux.c" \
 "F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/startup_ccs.c" \
+"F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/timer_if.c" \
 "F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/uart_if.c" 
 
 

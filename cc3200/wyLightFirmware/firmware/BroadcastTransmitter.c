@@ -30,7 +30,7 @@
 
 #define UART_PRINT 		   Report
 
-uint8_t capturedBroadcastMessage[110] = { 0x00, 0x0f, 0xb5, 0xb2, 0x57,
+const uint8_t capturedBroadcastMessage[110] = { 0x00, 0x0f, 0xb5, 0xb2, 0x57,
 		0xfa, //MAC
 		0x07, //channel
 		0x3f, //rssi
@@ -50,6 +50,8 @@ uint8_t capturedBroadcastMessage[110] = { 0x00, 0x0f, 0xb5, 0xb2, 0x57,
 		0x4e, 0x00, //boottime
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 //sensors
 		};
+
+static volatile unsigned long g_ulBase;
 
 //****************************************************************************
 //
@@ -103,18 +105,19 @@ void TimerBaseIntHandler(void) {
 	//
 	// Clear the timer interrupt.
 	//
-	Timer_IF_InterruptClear(TIMERA0_BASE);
+	Timer_IF_InterruptClear(g_ulBase);
 
-	SendBroadcastMessage();
-
+	g_ulTimerInterrupt++;
 }
 
 void BroadcastTransmitter_init(void) {
 
-	Timer_IF_Init(PRCM_TIMERA0, TIMERA0_BASE, TIMER_CFG_PERIODIC, TIMER_A, 0);
+	g_ulBase = TIMERA0_BASE;
 
-	Timer_IF_IntSetup(PRCM_TIMERA0, TIMERA0_BASE, TimerBaseIntHandler);
+	Timer_IF_Init(PRCM_TIMERA0, g_ulBase, TIMER_CFG_PERIODIC, TIMER_A, 0);
 
-	Timer_IF_Start(TIMERA0_BASE, TIMER_A, PERIODIC_TEST_CYCLES * PERIODIC_TEST_LOOPS / 10);
+	Timer_IF_IntSetup(g_ulBase, TIMER_A, TimerBaseIntHandler);
+
+	Timer_IF_Start(g_ulBase, TIMER_A, PERIODIC_TEST_CYCLES * PERIODIC_TEST_LOOPS / 10);
 
 }

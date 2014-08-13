@@ -670,7 +670,14 @@ int main() {
 
 	UART_PRINT("Connected to the AP: %s\r\n", SSID_NAME);
 
-	//BroadcastTransmitter_init();
+	BroadcastTransmitter_init();
+
+	while(true) {
+		if (g_ulTimerInterrupt > 5) {
+			SendBroadcastMessage();
+			g_ulTimerInterrupt = 0;
+		}
+	}
 
 	// Create a TCP connection to the Web Server
 	g_iSockID = CreateConnection(GetServerIP());

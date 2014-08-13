@@ -61,9 +61,9 @@
 			<locationURI>copy_PARENT1/common/startup_ccs.c</locationURI>
 		</link>
 		<link>
-			<name>timer_if.h</name>
+			<name>timer_if.c</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/common/timer_if.h</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/common/timer_if.c</locationURI>
 		</link>
 		<link>
 			<name>uart_if.c</name>
