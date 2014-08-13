@@ -1,7 +1,7 @@
 ******************************************************************************
                   TI ARM Linker PC v5.1.7                      
 ******************************************************************************
->> Linked Wed Aug 13 12:48:26 2014
+>> Linked Wed Aug 13 12:52:58 2014
 
 OUTPUT FILE NAME:   <wylightFirmwareRTOS.out>
 ENTRY POINT SYMBOL: "_c_int00"  address: 20011685
@@ -58,7 +58,7 @@ section   page    origin      length       input sections
                   2000d274    0000054c                  : device.obj (.text)
                   2000d7c0    000004a4     driverlib.a : udma.obj (.text)
                   2000dc64    0000048c                 : uart.obj (.text)
-                  2000e0f0    00000406     serial_wifi.obj (.text)
+                  2000e0f0    00000406     wifi.obj (.text)
                   2000e4f6    00000002     --HOLE-- [fill = 0]
                   2000e4f8    000003dc     rtsv7M4_T_le_eabi.lib : memory.obj (.text)
                   2000e8d4    00000398     free_rtos.a : osi_freertos.obj (.text)
@@ -147,7 +147,7 @@ section   page    origin      length       input sections
                   20011e2c    00000038                  : driver.obj (.const:_SlActionLookupTable)
                   20011e64    00000034                  : socket.obj (.const)
                   20011e98    0000002c     network_if.obj (.const:$P$T0$1)
-                  20011ec4    0000002c     serial_wifi.obj (.const:$P$T1$2)
+                  20011ec4    0000002c     wifi.obj (.const:$P$T1$2)
                   20011ef0    00000028     simplelink.a : netapp.obj (.const)
                   20011f18    00000024     driverlib.a : spi.obj (.const:g_ppulSPIIntMap)
                   20011f3c    00000018                 : spi.obj (.const)
@@ -155,7 +155,7 @@ section   page    origin      length       input sections
                   20011f68    00000014                  : driver.obj (.const)
                   20011f7c    00000010     driverlib.a : uart.obj (.const)
                   20011f8c    00000010     network_if.obj (.const)
-                  20011f9c    0000000c     serial_wifi.obj (.const)
+                  20011f9c    0000000c     wifi.obj (.const)
                   20011fa8    0000000b     network_if.obj (.const:.string)
                   20011fb3    00000001     --HOLE-- [fill = 0]
                   20011fb4    00000008     simplelink.a : netcfg.obj (.const)

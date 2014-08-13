@@ -53,7 +53,7 @@
 		<link>
 			<name>wifi.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT/serial_wifi.c</locationURI>
+			<locationURI>copy_PARENT/wifi.c</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>

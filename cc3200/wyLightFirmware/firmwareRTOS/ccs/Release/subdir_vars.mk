@@ -12,7 +12,7 @@ F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/network_if.c \
 F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/pinmux.c \
 F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/startup_ccs.c \
 F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/uart_if.c \
-F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/serial_wifi.c 
+F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/wifi.c 
 
 OBJS += \
 ./main.obj \
@@ -20,7 +20,7 @@ OBJS += \
 ./pinmux.obj \
 ./startup_ccs.obj \
 ./uart_if.obj \
-./serial_wifi.obj 
+./wifi.obj 
 
 C_DEPS += \
 ./main.pp \
@@ -44,7 +44,7 @@ OBJS__QUOTED += \
 "pinmux.obj" \
 "startup_ccs.obj" \
 "uart_if.obj" \
-"serial_wifi.obj" 
+"wifi.obj" 
 
 C_SRCS__QUOTED += \
 "F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/main.c" \
@@ -52,6 +52,6 @@ C_SRCS__QUOTED += \
 "F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/pinmux.c" \
 "F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/startup_ccs.c" \
 "F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/uart_if.c" \
-"F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/serial_wifi.c" 
+"F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmwareRTOS/wifi.c" 
 
 

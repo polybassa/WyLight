@@ -29,7 +29,7 @@
 
 //Application Includes
 #define extern
-#include "serial_wifi.h"
+#include "wifi.h"
 #undef extern
 
 //*****************************************************************************
