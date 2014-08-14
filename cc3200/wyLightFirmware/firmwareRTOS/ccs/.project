@@ -46,6 +46,11 @@
 			<locationURI>copy_PARENT/pinmux.c</locationURI>
 		</link>
 		<link>
+			<name>server.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/server.c</locationURI>
+		</link>
+		<link>
 			<name>startup_ccs.c</name>
 			<type>1</type>
 			<locationURI>copy_PARENT12/common/startup_ccs.c</locationURI>

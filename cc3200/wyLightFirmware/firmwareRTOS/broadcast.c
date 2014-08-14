@@ -67,13 +67,10 @@ static struct BroadcastMessage mBroadcastMessage;
 // GLOBAL VARIABLES -- End
 //
 
-#define CLR_STATUS_BIT_ALL(status_variable)  (status_variable = 0)
-
 //****************************************************************************
 //                      LOCAL FUNCTION PROTOTYPES
 //****************************************************************************
 void Broadcast_Task(void *pvParameters);
-int SendBroadcastMessage(void);
 
 //*****************************************************************************
 //
