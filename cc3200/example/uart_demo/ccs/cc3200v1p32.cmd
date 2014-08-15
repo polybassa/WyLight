@@ -52,15 +52,15 @@
 // The starting address of the application.  Normally the interrupt vectors  
 // must be located at the beginning of the application.                      
 //*****************************************************************************
-#define RAM_BASE 0x20004000
+#define RAM_BASE 0x20014000
 
 /* System memory map */
 
 MEMORY
 {
     /* Application uses internal RAM for program and data */
-    SRAM_CODE (RWX) : origin = 0x20004000, length = 0x12FFF
-    SRAM_DATA (RWX) : origin = 0x20017000, length = 0x19000
+    SRAM_CODE (RWX) : origin = 0x20014000, length = 0x12FFF
+    SRAM_DATA (RWX) : origin = 0x20027000, length = 0x19000
 }
 
 /* Section allocation in memory */

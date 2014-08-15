@@ -73,7 +73,6 @@ extern void InitializeAppVariables();
 void Main_Task(void *pvParameters) {
 
 	SlrxFilterPrePreparedFiltersMask_t FilterPrePreparedFiltersMask;
-	long lRetVal = -1;
 
 	//powering on the CC3200 NWP
 	ConfigureSimpleLink(ROLE_STA);

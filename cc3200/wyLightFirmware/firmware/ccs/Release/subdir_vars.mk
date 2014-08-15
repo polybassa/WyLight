@@ -7,57 +7,63 @@ CMD_SRCS += \
 ../cc3200v1p32.cmd 
 
 C_SRCS += \
-F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/BroadcastTransmitter.c \
-F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/firmware_download.c \
+F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/broadcast.c \
 F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/main.c \
+F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/network_if.c \
 F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/pinmux.c \
+F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/server.c \
 F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/startup_ccs.c \
-F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/timer_if.c \
-F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/uart_if.c 
+F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/uart_if.c \
+F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/wifi.c 
 
 OBJS += \
-./BroadcastTransmitter.obj \
-./firmware_download.obj \
+./broadcast.obj \
 ./main.obj \
+./network_if.obj \
 ./pinmux.obj \
+./server.obj \
 ./startup_ccs.obj \
-./timer_if.obj \
-./uart_if.obj 
+./uart_if.obj \
+./wifi.obj 
 
 C_DEPS += \
-./BroadcastTransmitter.pp \
-./firmware_download.pp \
+./broadcast.pp \
 ./main.pp \
+./network_if.pp \
 ./pinmux.pp \
+./server.pp \
 ./startup_ccs.pp \
-./timer_if.pp \
-./uart_if.pp 
+./uart_if.pp \
+./wifi.pp 
 
 C_DEPS__QUOTED += \
-"BroadcastTransmitter.pp" \
-"firmware_download.pp" \
+"broadcast.pp" \
 "main.pp" \
+"network_if.pp" \
 "pinmux.pp" \
+"server.pp" \
 "startup_ccs.pp" \
-"timer_if.pp" \
-"uart_if.pp" 
+"uart_if.pp" \
+"wifi.pp" 
 
 OBJS__QUOTED += \
-"BroadcastTransmitter.obj" \
-"firmware_download.obj" \
+"broadcast.obj" \
 "main.obj" \
+"network_if.obj" \
 "pinmux.obj" \
+"server.obj" \
 "startup_ccs.obj" \
-"timer_if.obj" \
-"uart_if.obj" 
+"uart_if.obj" \
+"wifi.obj" 
 
 C_SRCS__QUOTED += \
-"F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/BroadcastTransmitter.c" \
-"F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/firmware_download.c" \
+"F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/broadcast.c" \
 "F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/main.c" \
+"F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/network_if.c" \
 "F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/pinmux.c" \
+"F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/server.c" \
 "F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/startup_ccs.c" \
-"F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/timer_if.c" \
-"F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/uart_if.c" 
+"F:/Wifly_Light/Software/cc3200/wyLightFirmware/common/uart_if.c" \
+"F:/Wifly_Light/Software/cc3200/wyLightFirmware/firmware/wifi.c" 
 
 

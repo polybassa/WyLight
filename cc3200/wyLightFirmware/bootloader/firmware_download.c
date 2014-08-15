@@ -175,7 +175,7 @@ int GetFileFromServer(const int socket, const char* filename, const char* filena
 	retVal = sl_FsOpen((unsigned char *) filenameInFlash, FS_MODE_OPEN_WRITE, &Token, &fileHandle);
 	if (retVal < 0) {
 		// File Doesn't exit create a new of file_size KB file
-		retVal = sl_FsOpen((unsigned char *) filenameInFlash, FS_MODE_OPEN_CREATE(file_size, _FS_FILE_PUBLIC_WRITE), &Token, &fileHandle);
+		retVal = sl_FsOpen((unsigned char *) filenameInFlash, FS_MODE_OPEN_CREATE(file_size, _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR), &Token, &fileHandle);
 		if (retVal < 0) {
 			UART_PRINT("Error during opening the temporary file\r\n");
 			return -1;
