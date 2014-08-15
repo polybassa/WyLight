@@ -50,11 +50,11 @@
 //Common interface includes
 #include "network_if.h"
 
-#define APPLICATION_NAME        "SERIAL WiFi"
+#define APPLICATION_NAME        "WyLight Firmware"
 #define APPLICATION_VERSION     "1.0.0"
 #define SUCCESS                 0
 
-#define OSI_STACK_SIZE        2048
+#define OSI_STACK_SIZE        1024
 
 //****************************************************************************
 //                      FUNCTION PROTOTYPES
@@ -161,8 +161,9 @@ int main(void) {
 	VStartSimpleLinkSpawnTask(9);
 
 	osi_TaskCreate(Main_Task, (signed portCHAR *) "Main", OSI_STACK_SIZE, NULL, 1, NULL);
-	osi_TaskCreate(Broadcast_Task,(signed portCHAR *) "Broadcast",OSI_STACK_SIZE, NULL, 1, NULL);
-
+	osi_TaskCreate(Broadcast_Task,(signed portCHAR *) "Broadcast",OSI_STACK_SIZE, NULL, 5, NULL);
+	osi_TaskCreate(TcpServer_Task, (signed portCHAR *) "TcpServer", OSI_STACK_SIZE, NULL, 2, NULL);
+	osi_TaskCreate(UdpServer_Task, (signed portCHAR *) "UdpServer", OSI_STACK_SIZE, NULL, 2, NULL);
 
 	osi_start();
 

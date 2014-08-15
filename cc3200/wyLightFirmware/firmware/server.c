@@ -79,24 +79,23 @@ void TcpServer_Task(void *pvParameters) {
 		while (!IS_CONNECTED(g_ulStatus)) {
 			osi_Sleep(500);
 		}
-		SlSockAddr_t LocalAddr, RemoteAddr;
-		SlSocklen_t RemoteAddrLen;
+		SlSockAddrIn_t LocalAddr, RemoteAddr;
+		SlSocklen_t RemoteAddrLen = sizeof(SlSockAddrIn_t);
 		volatile int SocketTcpServer, SocketTcpChild;
 		unsigned char buffer[BUFFERSIZE];
 
-		LocalAddr.sa_family = SL_AF_INET;
-		LocalAddr.sa_data[0] = ((SERVER_PORT >> 8) & 0xFF);
-		LocalAddr.sa_data[1] = (SERVER_PORT & 0xFF);
+		LocalAddr.sin_family = SL_AF_INET;
+		LocalAddr.sin_port = htons(SERVER_PORT);
 
 		//all 0 => Own IP address
-		memset(&LocalAddr.sa_data[2], 0, 4);
+		memset(&(LocalAddr.sin_addr), 0, 4);
 
 		SocketTcpServer = sl_Socket(SL_AF_INET, SL_SOCK_STREAM, SL_IPPROTO_TCP);
 		/*Blocking is default
 		 int nonBlocking = 0;
 		 sl_SetSockOpt(SocketTcpServer, SL_SOL_SOCKET, SL_SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking));
 		 */
-		if (sl_Bind(SocketTcpServer, &LocalAddr, sizeof(LocalAddr)) < 0) {
+		if (sl_Bind(SocketTcpServer, (SlSockAddr_t *) &LocalAddr, sizeof(LocalAddr)) < 0) {
 			UART_PRINT(" Bind Error\n\r");
 			sl_Close(SocketTcpServer);
 			LOOP_FOREVER(__LINE__);
@@ -109,7 +108,7 @@ void TcpServer_Task(void *pvParameters) {
 		}
 
 		while (SocketTcpServer > 0) {
-			SocketTcpChild = sl_Accept(SocketTcpServer, &RemoteAddr, &RemoteAddrLen);
+			SocketTcpChild = sl_Accept(SocketTcpServer, (SlSockAddr_t *) &RemoteAddr, &RemoteAddrLen);
 
 			while (SocketTcpChild > 0) {
 				UART_PRINT(" Connected TCP Client\r\n");
@@ -155,24 +154,23 @@ void UdpServer_Task(void *pvParameters) {
 		while (!IS_CONNECTED(g_ulStatus)) {
 			osi_Sleep(500);
 		}
-		SlSockAddr_t LocalAddr, RemoteAddr;
-		SlSocklen_t RemoteAddrLen;
+		SlSockAddrIn_t LocalAddr, RemoteAddr;
+		SlSocklen_t RemoteAddrLen = sizeof(SlSockAddrIn_t);
 		volatile int SocketUdpServer;
 		unsigned char buffer[BUFFERSIZE];
 
-		LocalAddr.sa_family = SL_AF_INET;
-		LocalAddr.sa_data[0] = ((SERVER_PORT >> 8) & 0xFF);
-		LocalAddr.sa_data[1] = (SERVER_PORT & 0xFF);
+		LocalAddr.sin_family = SL_AF_INET;
+		LocalAddr.sin_port = htons(SERVER_PORT);
 
 		//all 0 => Own IP address
-		memset(&LocalAddr.sa_data[2], 0, 4);
+		memset(&(LocalAddr.sin_addr), 0, 4);
 
 		SocketUdpServer = sl_Socket(SL_AF_INET, SL_SOCK_DGRAM, SL_IPPROTO_UDP);
-		/*Blocking is default
-		 int nonBlocking = 0;
-		 sl_SetSockOpt(SocketTcpServer, SL_SOL_SOCKET, SL_SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking));
-		 */
-		if (sl_Bind(SocketUdpServer, &LocalAddr, sizeof(LocalAddr)) < 0) {
+		//Blocking is default
+		// int nonBlocking = 0;
+		// sl_SetSockOpt(SocketUdpServer, SL_SOL_SOCKET, SL_SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking));
+
+		if (sl_Bind(SocketUdpServer, (SlSockAddr_t *) &LocalAddr, sizeof(LocalAddr)) < 0) {
 			UART_PRINT(" Bind Error\n\r");
 			sl_Close(SocketUdpServer);
 			LOOP_FOREVER(__LINE__);
@@ -181,7 +179,7 @@ void UdpServer_Task(void *pvParameters) {
 		while (SocketUdpServer > 0) {
 			UART_PRINT(" UDP Server started \r\n");
 			memset(buffer, sizeof(buffer), 0);
-			int bytesReceived = sl_RecvFrom(SocketUdpServer, buffer, sizeof(buffer) - 1, 0, &RemoteAddr, &RemoteAddrLen);
+			int bytesReceived = sl_RecvFrom(SocketUdpServer, buffer, sizeof(buffer) - 1, 0, (SlSockAddr_t *) &RemoteAddr, &RemoteAddrLen);
 			if (bytesReceived > 0 && IS_CONNECTED(g_ulStatus)) {
 				// Received some bytes
 				// TODO: Write received Bytes in global Buffer
