@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2012-2014 Nils Weiss, Patrick Bruenn.
+ Copyright (C) 2012 - 2014 Nils Weiss, Patrick Bruenn.
 
  This file is part of Wifly_Light.
 
