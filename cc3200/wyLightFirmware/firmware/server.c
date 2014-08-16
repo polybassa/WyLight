@@ -1,13 +1,26 @@
+/*
+ Copyright (C) 2012 - 2014 Nils Weiss, Patrick Bruenn.
+
+ This file is part of Wifly_Light.
+
+ Wifly_Light is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Wifly_Light is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
+
+
 //*****************************************************************************
-// Copyright (C) 2014 Texas Instruments Incorporated
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//! \addtogroup wylight
+//! @{
 //
 //*****************************************************************************
 
@@ -29,6 +42,9 @@
 //Common interface includes
 #include "network_if.h"
 
+//WyLight adaption includes
+#include "RingBuf.h"
+
 //Application Includes
 #define extern
 #include "server.h"
@@ -45,6 +61,7 @@
 // GLOBAL VARIABLES -- Start
 //
 extern unsigned long g_ulStatus;
+extern struct RingBuffer g_RingBuf;
 //
 // GLOBAL VARIABLES -- End
 //
@@ -54,7 +71,6 @@ extern unsigned long g_ulStatus;
 //****************************************************************************
 void TcpServer_Task(void *pvParameters);
 void UdpServer_Task(void *pvParameters);
-void StartTcpServer();
 
 //*****************************************************************************
 //
@@ -72,6 +88,8 @@ void StartTcpServer();
 
 void TcpServer_Task(void *pvParameters) {
 
+	RingBuf_Init(&g_RingBuf);
+
 	// Inital Wait to give the main Task time to establish the wifi connection
 	osi_Sleep(5000);
 
@@ -82,7 +100,7 @@ void TcpServer_Task(void *pvParameters) {
 		SlSockAddrIn_t LocalAddr, RemoteAddr;
 		SlSocklen_t RemoteAddrLen = sizeof(SlSockAddrIn_t);
 		volatile int SocketTcpServer, SocketTcpChild;
-		unsigned char buffer[BUFFERSIZE];
+		uint8_t buffer[BUFFERSIZE];
 
 		LocalAddr.sin_family = SL_AF_INET;
 		LocalAddr.sin_port = htons(SERVER_PORT);
@@ -116,8 +134,20 @@ void TcpServer_Task(void *pvParameters) {
 				int bytesReceived = sl_Recv(SocketTcpChild, buffer, sizeof(buffer) - 1, 0);
 				if (bytesReceived > 0 && IS_CONNECTED(g_ulStatus)) {
 					// Received some bytes
-					// TODO: Write received Bytes in global Buffer
-					UART_PRINT("Received %d bytes:%s\r\n", bytesReceived, buffer);
+					taskENTER_CRITICAL();
+					// TODO: REMOVE this check if RingBuf run's stabel
+					if (RingBuf_HasError(&g_RingBuf)) {
+						UART_Print("ERROR: Ringbuffer overflow");
+						taskENTER_CRITICAL();
+						LOOP_FOREVER(__LINE__);
+					}
+
+					unsigned int i;
+					for (i = 0; i < bytesReceived; i++) {
+						RingBuf_Put(&g_RingBuf, buffer[i]);
+					}
+					taskEXIT_CRITICAL();
+					UART_PRINT("Tcp: Received %d bytes:%s\r\n", bytesReceived, buffer);
 				} else {
 					// Error occured on child socket
 					sl_Close(SocketTcpChild);

@@ -1,38 +1,20 @@
-//*****************************************************************************
-// Copyright (C) 2014 Texas Instruments Incorporated
-//
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
-//
-//*****************************************************************************
+/*
+ Copyright (C) 2012 - 2014 Nils Weiss, Patrick Bruenn.
 
-//*****************************************************************************
-//
-// Application Name     -   Serial Wi-Fi Interface
-// Application Overview -   This application runs over the UART interface
-//                          and behaves as a command line interpreter.
-//                          This application demonstrates secure and robust end
-//                          to end communcation leveraging the entire network
-//                          stack and UART interface.
-//
-// Application Details  -
-// http://processors.wiki.ti.com/index.php/CC32xx_Serial_Wifi
-// or
-// docs\examples\CC32xx_Serial_Wifi.pdf
-//
-//*****************************************************************************
+ This file is part of Wifly_Light.
 
-//*****************************************************************************
-//
-//! \addtogroup serial_wifi
-//! @{
-//
-//*****************************************************************************
+ Wifly_Light is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Wifly_Light is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 //Driverlib includes
 #include "hw_ints.h"
@@ -46,6 +28,7 @@
 //Application Includes
 #include "wifi.h"
 #include "broadcast.h"
+#include "wylightAdaption.h"
 
 //Common interface includes
 #include "network_if.h"
@@ -63,6 +46,7 @@ extern void Main_Task(void *pvParameters);
 extern void Broadcast_Task(void *pvParameters);
 extern void TcpServer_Task(void *pvParameters);
 extern void UdpServer_Task(void *pvParameters);
+extern void WyLight_Task(void *pvParameters);
 
 //****************************************************************************
 //                      LOCAL FUNCTION PROTOTYPES
@@ -171,10 +155,3 @@ int main(void) {
 		;
 
 }
-
-//*****************************************************************************
-//
-// Close the Doxygen group.
-//! @}
-//
-//*****************************************************************************

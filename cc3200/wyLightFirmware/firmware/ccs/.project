@@ -26,6 +26,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>RingBuf.c</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/firmware/RingBuf.c</locationURI>
+		</link>
+		<link>
 			<name>broadcast.c</name>
 			<type>1</type>
 			<locationURI>copy_PARENT/broadcast.c</locationURI>
@@ -64,6 +69,11 @@
 			<name>wifi.c</name>
 			<type>1</type>
 			<locationURI>copy_PARENT/wifi.c</locationURI>
+		</link>
+		<link>
+			<name>wylightAdaption.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/wylightAdaption.c</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>
