@@ -36,6 +36,8 @@
 // common interface includes
 #include "uart_if.h"
 #include "pinmux.h"
+#include "network_if.h"
+#include "wifi.h"
 
 // wylight includes
 #include "firmware_download.h"
@@ -43,68 +45,8 @@
 #define UART_PRINT          Report
 #define APP_NAME            "WyLight Bootloader"
 
-//
-// Values for below macros shall be modified as per access-point(AP) properties
-// SimpleLink device will connect to following AP when application is executed
-//
-#define SSID_NAME           "InternetBox"    /* AP SSID */
-#define SECURITY_TYPE       SL_SEC_TYPE_WPA/* Security type (OPEN or WEP or WPA) */
-#define SECURITY_KEY        "F!r5tUn!ver5alCybernet!c-K!net!cUltra-M!croProgrammer"              /* Password of the secured AP */
-#define SSID_LEN_MAX        32
-#define BSSID_LEN_MAX       6
-
-#define SUCCESS             0
-#define SL_STOP_TIMEOUT     30
-
 #define FIRMWARE_ORIGIN 	0x20014000
 #define BUFFER_SIZE 		1024
-
-enum {
-	CONNECTED = 0x1, IP_ACQUIRED = 0x2
-} e_Stauts;
-
-// Loop forever, user can change it as per application's requirement
-#define LOOP_FOREVER(line_number) \
-            {\
-                while(1); \
-            }
-
-// check the error code and handle it
-#define ASSERT_ON_ERROR(line_number, error_code) \
-            {\
-                if (error_code < 0) return error_code;\
-            }
-
-//Status bits - These are used to set/reset the corresponding bits in
-// given variable
-typedef enum {
-	STATUS_BIT_CONNECTION = 0, // If this bit is Set SimpleLink device is
-							   // connected to the AP
-
-	STATUS_BIT_IP_AQUIRED        // If this bit is Set SimpleLink device has
-								 // acquired IP
-
-} e_StatusBits;
-
-// Application specific status/error codes
-typedef enum {
-	// Choosing -0x7D0 to avoid overlap w/ host-driver's error codes
-	LAN_CONNECTION_FAILED = -0x7D0,
-	INTERNET_CONNECTION_FAILED = LAN_CONNECTION_FAILED - 1,
-	DEVICE_NOT_IN_STATION_MODE = INTERNET_CONNECTION_FAILED - 1,
-
-	STATUS_CODE_MAX = -0xBB8
-} e_AppStatusCodes;
-
-#define SET_STATUS_BIT(status_variable, bit)  status_variable |= (1<<(bit))
-#define CLR_STATUS_BIT(status_variable, bit)  status_variable &= ~(1<<(bit))
-#define GET_STATUS_BIT(status_variable, bit)  (0 != (status_variable & \
-                                                                (1<<(bit))))
-
-#define IS_CONNECTED(status_variable)         GET_STATUS_BIT(status_variable, \
-                                                       STATUS_BIT_CONNECTION)
-#define IS_IP_ACQUIRED(status_variable)       GET_STATUS_BIT(status_variable, \
-                                                       STATUS_BIT_IP_AQUIRED)
 
 //
 // GLOBAL VARIABLES -- Start
@@ -116,364 +58,10 @@ extern void (* const g_pfnVectors[])(void);
 extern uVectorEntry __vector_table;
 #endif
 
-unsigned long g_ulStatus = 0;                                //SimpleLink Status
-unsigned long g_ulDestinationIP; // IP address of destination server
-unsigned long g_ulGatewayIP = 0; //Network Gateway IP address
-unsigned char g_ucConnectionSSID[SSID_LEN_MAX + 1]; //Connection SSID
-unsigned char g_ucConnectionBSSID[BSSID_LEN_MAX]; //Connection BSSID
 int g_iSockID;
 //
 // GLOBAL VARIABLES -- End
 //
-
-//*****************************************************************************
-
-// SimpleLink Asynchronous Event Handlers -- Start
-//*****************************************************************************
-
-//*****************************************************************************
-//
-//! \brief The Function Handles WLAN Events
-//!
-//! \param[in]  pWlanEvent - Pointer to WLAN Event Info
-//!
-//! \return None
-//!
-//*****************************************************************************
-void SimpleLinkWlanEventHandler(SlWlanEvent_t *pWlanEvent) {
-	switch (pWlanEvent->Event) {
-	case SL_WLAN_CONNECT_EVENT: {
-		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
-
-		//
-		// Information about the connected AP (like name, MAC etc) will be
-		// available in 'sl_protocol_wlanConnectAsyncResponse_t'-Applications
-		// can use it if required
-		//
-		//  sl_protocol_wlanConnectAsyncResponse_t *pEventData = NULL;
-		// pEventData = &pWlanEvent->EventData.STAandP2PModeWlanConnected;
-		//
-
-		// Copy new connection SSID and BSSID to global parameters
-		memcpy(g_ucConnectionSSID, pWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_name, pWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_len);
-		memcpy(g_ucConnectionBSSID, pWlanEvent->EventData.STAandP2PModeWlanConnected.bssid,
-		SL_BSSID_LENGTH);
-
-		UART_PRINT("[WLAN EVENT] STA Connected to the AP: %s ,"
-				" BSSID: %x:%x:%x:%x:%x:%x\n\r", g_ucConnectionSSID, g_ucConnectionBSSID[0], g_ucConnectionBSSID[1], g_ucConnectionBSSID[2], g_ucConnectionBSSID[3],
-				g_ucConnectionBSSID[4], g_ucConnectionBSSID[5]);
-	}
-		break;
-
-	case SL_WLAN_DISCONNECT_EVENT: {
-		sl_protocol_wlanConnectAsyncResponse_t* pEventData = NULL;
-
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
-
-		pEventData = &pWlanEvent->EventData.STAandP2PModeDisconnected;
-
-		// If the user has initiated 'Disconnect' request,
-		//'reason_code' is SL_USER_INITIATED_DISCONNECTION
-		if (SL_USER_INITIATED_DISCONNECTION == pEventData->reason_code) {
-			UART_PRINT("[WLAN EVENT]Device disconnected from the AP: %s,"
-					"BSSID: %x:%x:%x:%x:%x:%x on application's request \n\r", g_ucConnectionSSID, g_ucConnectionBSSID[0], g_ucConnectionBSSID[1], g_ucConnectionBSSID[2],
-					g_ucConnectionBSSID[3], g_ucConnectionBSSID[4], g_ucConnectionBSSID[5]);
-		} else {
-			UART_PRINT("[WLAN ERROR]Device disconnected from the AP AP: %s,"
-					"BSSID: %x:%x:%x:%x:%x:%x on an ERROR..!! \n\r", g_ucConnectionSSID, g_ucConnectionBSSID[0], g_ucConnectionBSSID[1], g_ucConnectionBSSID[2],
-					g_ucConnectionBSSID[3], g_ucConnectionBSSID[4], g_ucConnectionBSSID[5]);
-		}
-		memset(g_ucConnectionSSID, 0, sizeof(g_ucConnectionSSID));
-		memset(g_ucConnectionBSSID, 0, sizeof(g_ucConnectionBSSID));
-	}
-		break;
-
-	default: {
-		UART_PRINT("[WLAN EVENT] Unexpected event [0x%x]\n\r", pWlanEvent->Event);
-	}
-		break;
-	}
-}
-
-//*****************************************************************************
-//
-//! \brief This function handles network events such as IP acquisition, IP
-//!           leased, IP released etc.
-//!
-//! \param[in]  pNetAppEvent - Pointer to NetApp Event Info
-//!
-//! \return None
-//!
-//*****************************************************************************
-void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
-	switch (pNetAppEvent->Event) {
-	case SL_NETAPP_IPV4_ACQUIRED: {
-		SlIpV4AcquiredAsync_t *pEventData = NULL;
-
-		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
-
-		//Ip Acquired Event Data
-		pEventData = &pNetAppEvent->EventData.ipAcquiredV4;
-
-		//Gateway IP address
-		g_ulGatewayIP = pEventData->gateway;
-
-		UART_PRINT("[NETAPP EVENT] IP Acquired: IP=%d.%d.%d.%d , "
-				"Gateway=%d.%d.%d.%d\n\r", SL_IPV4_BYTE(pNetAppEvent->EventData.ipAcquiredV4.ip, 3), SL_IPV4_BYTE(pNetAppEvent->EventData.ipAcquiredV4.ip, 2),
-				SL_IPV4_BYTE(pNetAppEvent->EventData.ipAcquiredV4.ip, 1), SL_IPV4_BYTE(pNetAppEvent->EventData.ipAcquiredV4.ip, 0),
-				SL_IPV4_BYTE(pNetAppEvent->EventData.ipAcquiredV4.gateway, 3), SL_IPV4_BYTE(pNetAppEvent->EventData.ipAcquiredV4.gateway, 2),
-				SL_IPV4_BYTE(pNetAppEvent->EventData.ipAcquiredV4.gateway, 1), SL_IPV4_BYTE(pNetAppEvent->EventData.ipAcquiredV4.gateway, 0));
-	}
-		break;
-
-	default: {
-		UART_PRINT("[NETAPP EVENT] Unexpected event [0x%x] \n\r", pNetAppEvent->Event);
-	}
-		break;
-	}
-}
-
-//*****************************************************************************
-//
-//! \brief This function handles HTTP server events
-//!
-//! \param[in]  pServerEvent - Contains the relevant event information
-//! \param[in]    pServerResponse - Should be filled by the user with the
-//!                                      relevant response information
-//!
-//! \return None
-//!
-//****************************************************************************
-void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pHttpEvent, SlHttpServerResponse_t *pHttpResponse) {
-	UART_PRINT("[SERVER CALLBACK]");
-	// Unused in this application
-}
-
-//*****************************************************************************
-//
-//! \brief This function handles General Events
-//!
-//! \param[in]     pDevEvent - Pointer to General Event Info
-//!
-//! \return None
-//!
-//*****************************************************************************
-void SimpleLinkGeneralEventHandler(SlDeviceEvent_t *pDevEvent) {
-	//
-	// Most of the general errors are not FATAL are are to be handled
-	// appropriately by the application
-	//
-	UART_PRINT("[GENERAL EVENT] - ID=[%d] Sender=[%d]\n\n", pDevEvent->EventData.deviceEvent.status, pDevEvent->EventData.deviceEvent.sender);
-}
-
-//*****************************************************************************
-//
-//! This function handles socket events indication
-//!
-//! \param[in]      pSock - Pointer to Socket Event Info
-//!
-//! \return None
-//!
-//*****************************************************************************
-void SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
-	//
-	// This application doesn't work w/ socket - Events are not expected
-	//
-	switch (pSock->Event) {
-	case SL_NETAPP_SOCKET_TX_FAILED:
-		switch (pSock->EventData.status) {
-		case SL_ECLOSE:
-			UART_PRINT("[SOCK ERROR] - close socket (%d) operation "
-					"failed to transmit all queued packets\n\n", pSock->EventData.sd);
-			break;
-		default:
-			UART_PRINT("[SOCK ERROR] - TX FAILED : socket %d , reason"
-					"(%d) \n\n", pSock->EventData.sd, pSock->EventData.status);
-		}
-		break;
-
-	default:
-		UART_PRINT("[SOCK EVENT] - Unexpected Event [%x0x]\n\n", pSock->Event);
-	}
-}
-
-//*****************************************************************************
-// SimpleLink Asynchronous Event Handlers -- End
-//*****************************************************************************
-
-//*****************************************************************************
-//
-//! \brief This function initializes the application variables
-//!
-//! \param    None
-//!
-//! \return None
-//!
-//*****************************************************************************
-static void InitializeAppVariables() {
-	g_ulStatus = 0;
-	g_ulGatewayIP = 0;
-	memset(g_ucConnectionSSID, 0, sizeof(g_ucConnectionSSID));
-	memset(g_ucConnectionBSSID, 0, sizeof(g_ucConnectionBSSID));
-}
-
-//*****************************************************************************
-//! \brief This function puts the device in its default state. It:
-//!           - Set the mode to STATION
-//!           - Configures connection policy to Auto and AutoSmartConfig
-//!           - Deletes all the stored profiles
-//!           - Enables DHCP
-//!           - Disables Scan policy
-//!           - Sets Tx power to maximum
-//!           - Sets power policy to normal
-//!           - TBD - Unregister mDNS services
-//!
-//! \param   none
-//! \return  On success, zero is returned. On error, negative is returned
-//*****************************************************************************
-static long ConfigureSimpleLinkToDefaultState() {
-	SlVersionFull ver = { 0 };
-
-	unsigned char ucVal = 1;
-	unsigned char ucConfigOpt = 0;
-	unsigned char ucConfigLen = 0;
-	unsigned char ucPower = 0;
-
-	long lRetVal = -1;
-	long lMode = -1;
-
-	lMode = sl_Start(0, 0, 0);
-	ASSERT_ON_ERROR(__LINE__, lMode);
-
-	// Get the device's version-information
-	ucConfigOpt = SL_DEVICE_GENERAL_VERSION;
-	ucConfigLen = sizeof(ver);
-	lRetVal = sl_DevGet(SL_DEVICE_GENERAL_CONFIGURATION, &ucConfigOpt, &ucConfigLen, (unsigned char *) (&ver));
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-	UART_PRINT("Host Driver Version: %s\n\r", SL_DRIVER_VERSION);
-	UART_PRINT("Build Version %d.%d.%d.%d.31.%d.%d.%d.%d.%d.%d.%d.%d\n\r", ver.NwpVersion[0], ver.NwpVersion[1], ver.NwpVersion[2], ver.NwpVersion[3],
-			ver.ChipFwAndPhyVersion.FwVersion[0], ver.ChipFwAndPhyVersion.FwVersion[1], ver.ChipFwAndPhyVersion.FwVersion[2], ver.ChipFwAndPhyVersion.FwVersion[3],
-			ver.ChipFwAndPhyVersion.PhyVersion[0], ver.ChipFwAndPhyVersion.PhyVersion[1], ver.ChipFwAndPhyVersion.PhyVersion[2], ver.ChipFwAndPhyVersion.PhyVersion[3]);
-
-	// Set connection policy to Auto + SmartConfig
-	//      (Device's default connection policy)
-	lRetVal = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1, 0, 0, 0, 1), NULL, 0);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-	// Remove all profiles
-	lRetVal = sl_WlanProfileDel(0xFF);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-	// If the device is not in station-mode, try putting it in staion-mode
-	if (ROLE_STA != lMode) {
-		if (ROLE_AP == lMode) {
-			// If the device is in AP mode, we need to wait for this event
-			// before doing anything
-			while (!IS_IP_ACQUIRED(g_ulStatus)) {
-#ifndef SL_PLATFORM_MULTI_THREADED
-				_SlNonOsMainLoopTask();
-#endif
-			}
-		}
-
-		// Switch to STA role and restart
-		lRetVal = sl_WlanSetMode(ROLE_STA);
-		ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-		lRetVal = sl_Stop(SL_STOP_TIMEOUT);
-		ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-		lRetVal = sl_Start(0, 0, 0);
-		ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-		// Check if the device is in station again
-		if (ROLE_STA != lRetVal) {
-			// We don't want to proceed if the device is not up in STA-mode
-			return DEVICE_NOT_IN_STATION_MODE;
-		}
-	}
-
-	//
-	// Device in station-mode. Disconnect previous connection if any
-	// The function returns 0 if 'Disconnected done', negative number if already
-	// disconnected Wait for 'disconnection' event if 0 is returned, Ignore
-	// other return-codes
-	//
-	lRetVal = sl_WlanDisconnect();
-	if (0 == lRetVal) {
-		// Wait
-		while (IS_CONNECTED(g_ulStatus)) {
-#ifndef SL_PLATFORM_MULTI_THREADED
-			_SlNonOsMainLoopTask();
-#endif
-		}
-	}
-
-	// Enable DHCP client
-	lRetVal = sl_NetCfgSet(SL_IPV4_STA_P2P_CL_DHCP_ENABLE, 1, 1, &ucVal);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-	// Disable scan
-	ucConfigOpt = SL_SCAN_POLICY(0);
-	lRetVal = sl_WlanPolicySet(SL_POLICY_SCAN, ucConfigOpt, NULL, 0);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-	// Set Tx power level for station mode
-	// Number between 0-15, as dB offset from max power - 0 will set max power
-	ucPower = 0;
-	lRetVal = sl_WlanSet(SL_WLAN_CFG_GENERAL_PARAM_ID,
-	WLAN_GENERAL_PARAM_OPT_STA_TX_POWER, 1, (unsigned char *) &ucPower);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-	// Set PM policy to normal
-	lRetVal = sl_WlanPolicySet(SL_POLICY_PM, SL_NORMAL_POLICY, NULL, 0);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-	lRetVal = sl_Stop(SL_STOP_TIMEOUT);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-	InitializeAppVariables();
-
-	return lRetVal; // Success
-}
-
-//****************************************************************************
-//
-//! \brief Connecting to a WLAN Accesspoint
-//!
-//!  This function connects to the required AP (SSID_NAME) with Security
-//!  parameters specified in te form of macros at the top of this file
-//!
-//! \param  Status value
-//!
-//! \return  None
-//!
-//! \warning    If the WLAN connection fails or we don't aquire an IP
-//!            address, It will be stuck in this function forever.
-//
-//****************************************************************************
-static long WlanConnect() {
-	SlSecParams_t secParams = { 0 };
-	long lRetVal = 0;
-
-	secParams.Key = SECURITY_KEY;
-	secParams.KeyLen = strlen(SECURITY_KEY);
-	secParams.Type = SECURITY_TYPE;
-
-	lRetVal = sl_WlanConnect(SSID_NAME, strlen(SSID_NAME), 0, &secParams, 0);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-	// Wait for WLAN Event
-	while ((!IS_CONNECTED(g_ulStatus)) || (!IS_IP_ACQUIRED(g_ulStatus))) {
-		// wait till connects to an AP
-		_SlNonOsMainLoopTask();
-	}
-
-	return SUCCESS;
-
-}
 
 //****************************************************************************
 //
@@ -607,7 +195,7 @@ static int LoadFirmware(unsigned char* sourceFile) {
 			UART_PRINT("Error during reading the file\r\n");
 			return -1;
 		}
-		memcpy((void *)(FIRMWARE_ORIGIN + bytesCopied), buffer, readsize);
+		memcpy((void *) (FIRMWARE_ORIGIN + bytesCopied), buffer, readsize);
 		bytesCopied += readsize;
 	}
 	// Close the opened files
@@ -619,20 +207,19 @@ static void startFirmware(void) {
 
 	// patch Interrupt Vector Table
 	unsigned int *pVectorTableOffset;
-	pVectorTableOffset = (unsigned int *)0xe000ed08;
+	pVectorTableOffset = (unsigned int *) 0xe000ed08;
 	*pVectorTableOffset = FIRMWARE_ORIGIN;
 
 	// call Firmware
 	void (*firmware_origin_entry)(void);
-	unsigned int resetVector = *((unsigned int *)(FIRMWARE_ORIGIN +4));
-	firmware_origin_entry = (void (*)(void))(resetVector);
+	unsigned int resetVector = *((unsigned int *) (FIRMWARE_ORIGIN + 4));
+	firmware_origin_entry = (void (*)(void)) (resetVector);
 
 	firmware_origin_entry();
 }
 
 int main() {
-	int retRes = 0;
-	long lRetVal = -1;
+	int retRes = -1;
 
 	//
 	// Board Initialization
@@ -657,41 +244,7 @@ int main() {
 	UART_PRINT("\n\rStarted file download sample Application.");
 	UART_PRINT("\n\r\n\r");
 
-	InitializeAppVariables();
-
-	//
-	// Following function configure the device to default state by cleaning
-	// the persistent settings stored in NVMEM (viz. connection profiles &
-	// policies, power policy etc)
-	//
-	// Applications may choose to skip this step if the developer is sure
-	// that the device is in its desired state at start of applicaton
-	//
-	// Note that all profiles and persistent settings that were done on the
-	// device will be lost
-	//
-	lRetVal = ConfigureSimpleLinkToDefaultState();
-	if (lRetVal < 0) {
-		if (DEVICE_NOT_IN_STATION_MODE == lRetVal) {
-			UART_PRINT("Failed to configure the device in its default state\n\r");
-		}
-
-		LOOP_FOREVER(__LINE__);
-	}
-
-	UART_PRINT("Device is configured in default state \n\r");
-
-	//
-	// Assumption is that the device is configured in station mode already
-	// and it is in its default state
-	//
-	lRetVal = sl_Start(0, 0, 0);
-	if (lRetVal < 0 || ROLE_STA != lRetVal) {
-		UART_PRINT("Failed to start the device \n\r");
-		LOOP_FOREVER(__LINE__);
-	}
-
-	UART_PRINT("Device started as STATION \n\r");
+	Network_IF_InitDriver(ROLE_STA);
 
 	// Connecting to WLAN AP - Set with static parameters defined at the top
 	// After this call we will be connected and have IP address
@@ -740,14 +293,14 @@ int main() {
 		UART_PRINT("Error verifying files\r\n");
 	}
 	/*retRes = ReplaceFile("/temp/firmware.bin", FILE_NAME);
-	if (retRes < 0) {
-		UART_PRINT("Error during replacing the file\r\n");
-	}*/
+	 if (retRes < 0) {
+	 UART_PRINT("Error during replacing the file\r\n");
+	 }*/
 
 	UART_PRINT("\nThank you\r\n");
 	// Stop the CC3200 device
 
-	LoadFirmware((unsigned char *)"/temp/firmware.bin");
+	LoadFirmware((unsigned char *) "/temp/firmware.bin");
 	startFirmware();
 	sl_Stop(0xFF);
 
