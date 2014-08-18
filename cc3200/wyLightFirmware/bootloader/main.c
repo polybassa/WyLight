@@ -241,9 +241,6 @@ int main() {
 	//
 	DisplayBanner(APP_NAME);
 
-	UART_PRINT("\n\rStarted file download sample Application.");
-	UART_PRINT("\n\r\n\r");
-
 	Network_IF_InitDriver(ROLE_STA);
 
 	// Connecting to WLAN AP - Set with static parameters defined at the top

@@ -41,9 +41,7 @@
 //Common interface includes
 #include "network_if.h"
 
-#define extern
 #include "wifi.h"
-#undef extern
 
 //*****************************************************************************
 //

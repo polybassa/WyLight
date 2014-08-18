@@ -28,7 +28,7 @@
 //Application Includes
 #include "wifi.h"
 #include "broadcast.h"
-#include "wylightAdaption.h"
+//#include "wylightAdaption.h"
 
 //Common interface includes
 #include "network_if.h"
@@ -37,7 +37,7 @@
 #define APPLICATION_VERSION     "1.0.0"
 #define SUCCESS                 0
 
-#define OSI_STACK_SIZE        1024
+#define OSI_STACK_SIZE        2048
 
 //****************************************************************************
 //                      FUNCTION PROTOTYPES
@@ -147,7 +147,7 @@ int main(void) {
 	osi_TaskCreate(Main_Task, (signed portCHAR *) "Main", OSI_STACK_SIZE, NULL, 1, NULL);
 	osi_TaskCreate(Broadcast_Task,(signed portCHAR *) "Broadcast",OSI_STACK_SIZE, NULL, 5, NULL);
 	osi_TaskCreate(TcpServer_Task, (signed portCHAR *) "TcpServer", OSI_STACK_SIZE, NULL, 2, NULL);
-	osi_TaskCreate(UdpServer_Task, (signed portCHAR *) "UdpServer", OSI_STACK_SIZE, NULL, 2, NULL);
+	osi_TaskCreate(UdpServer_Task, (signed portCHAR *) "UdpServer", OSI_STACK_SIZE, NULL, 3, NULL);
 
 	osi_start();
 

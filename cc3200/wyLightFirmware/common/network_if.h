@@ -46,6 +46,8 @@
 //
 //*****************************************************************************
 
+#include "wlan.h"
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -73,12 +75,9 @@ extern "C"
 #define UNUSED(x) ((x) = (x))
 #define SUCCESS         0
 
-//*****************************************************************************
-// State Machine values 
-//*****************************************************************************
-#define NUM_STATES 6
-#define FIRST_STATE_LED_NUM 1
-#define MAX_SSID_LEN        32
+#define SSID_LEN_MAX            (32)
+#define BSSID_LEN_MAX           (6)
+#define SL_STOP_TIMEOUT         30
 
 #ifdef NOTERM
 #define UART_PRINT(x, ...)
@@ -143,6 +142,19 @@ typedef enum{
                                  // the ping operation
 
 }e_StatusBits;
+
+//
+// GLOBAL VARIABLES -- Start
+//
+extern unsigned long g_ulStatus; /* SimpleLink Status */
+extern unsigned long g_ulStaIp; /* Station IP address */
+extern unsigned long g_ulGatewayIP; /* Network Gateway IP address */
+extern unsigned char g_ucConnectionSSID[SSID_LEN_MAX + 1]; /* Connection SSID */
+extern unsigned char g_ucConnectionBSSID[BSSID_LEN_MAX]; /* Connection BSSID */
+extern unsigned short g_usConnectIndex; /* Connection time delay index */
+//
+// GLOBAL VARIABLES -- End
+//
 
 
 //*****************************************************************************

@@ -50,10 +50,14 @@ extern "C" {
 //#define OSI_OK					(0)
   
 #define OSI_FAILURE      			-1
+
+#ifdef OSI_OK
+#undef OSI_OK
+#endif
   
 typedef enum
 {
-  OSI_OK,
+  OSI_OK = 0,
   OSI_OPERATION_FAILED = 1,
   OSI_ABORTED,
   OSI_INVALID_PARAMS,

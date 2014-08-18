@@ -16,14 +16,12 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-
 //*****************************************************************************
 //
 //! \addtogroup wylight
 //! @{
 //
 //*****************************************************************************
-
 #include <stdint.h>
 
 // Simplelink includes
@@ -43,12 +41,11 @@
 #include "network_if.h"
 
 //WyLight adaption includes
-#include "RingBuf.h"
+//#include "RingBuf.h"
 
 //Application Includes
-#define extern
 #include "server.h"
-#undef extern
+
 
 //*****************************************************************************
 //
@@ -88,25 +85,19 @@ void UdpServer_Task(void *pvParameters);
 
 void TcpServer_Task(void *pvParameters) {
 
-	RingBuf_Init(&g_RingBuf);
-
-	// Inital Wait to give the main Task time to establish the wifi connection
-	osi_Sleep(5000);
+	//RingBuf_Init(&g_RingBuf);
 
 	while (1) {
 		while (!IS_CONNECTED(g_ulStatus)) {
 			osi_Sleep(500);
 		}
-		SlSockAddrIn_t LocalAddr, RemoteAddr;
+
+		SlSockAddrIn_t RemoteAddr;
 		SlSocklen_t RemoteAddrLen = sizeof(SlSockAddrIn_t);
 		volatile int SocketTcpServer, SocketTcpChild;
 		uint8_t buffer[BUFFERSIZE];
 
-		LocalAddr.sin_family = SL_AF_INET;
-		LocalAddr.sin_port = htons(SERVER_PORT);
-
-		//all 0 => Own IP address
-		memset(&(LocalAddr.sin_addr), 0, 4);
+		const SlSockAddrIn_t LocalAddr = { .sin_family = SL_AF_INET, .sin_port = htons(SERVER_PORT), .sin_addr.s_addr = 0 };
 
 		SocketTcpServer = sl_Socket(SL_AF_INET, SL_SOCK_STREAM, SL_IPPROTO_TCP);
 		/*Blocking is default
@@ -136,16 +127,16 @@ void TcpServer_Task(void *pvParameters) {
 					// Received some bytes
 					taskENTER_CRITICAL();
 					// TODO: REMOVE this check if RingBuf run's stabel
-					if (RingBuf_HasError(&g_RingBuf)) {
-						UART_Print("ERROR: Ringbuffer overflow");
-						taskENTER_CRITICAL();
-						LOOP_FOREVER(__LINE__);
-					}
+					/*if (RingBuf_HasError(&g_RingBuf)) {
+					 UART_Print("ERROR: Ringbuffer overflow");
+					 taskENTER_CRITICAL();
+					 LOOP_FOREVER(__LINE__);
+					 }
 
-					unsigned int i;
-					for (i = 0; i < bytesReceived; i++) {
-						RingBuf_Put(&g_RingBuf, buffer[i]);
-					}
+					 unsigned int i;
+					 for (i = 0; i < bytesReceived; i++) {
+					 RingBuf_Put(&g_RingBuf, buffer[i]);
+					 }*/
 					taskEXIT_CRITICAL();
 					UART_PRINT("Tcp: Received %d bytes:%s\r\n", bytesReceived, buffer);
 				} else {
@@ -177,23 +168,16 @@ void TcpServer_Task(void *pvParameters) {
 //*****************************************************************************
 void UdpServer_Task(void *pvParameters) {
 
-	// Inital Wait to give the main Task time to establish the wifi connection
-	osi_Sleep(5000);
-
 	while (1) {
 		while (!IS_CONNECTED(g_ulStatus)) {
 			osi_Sleep(500);
 		}
-		SlSockAddrIn_t LocalAddr, RemoteAddr;
+		SlSockAddrIn_t RemoteAddr;
 		SlSocklen_t RemoteAddrLen = sizeof(SlSockAddrIn_t);
 		volatile int SocketUdpServer;
 		unsigned char buffer[BUFFERSIZE];
 
-		LocalAddr.sin_family = SL_AF_INET;
-		LocalAddr.sin_port = htons(SERVER_PORT);
-
-		//all 0 => Own IP address
-		memset(&(LocalAddr.sin_addr), 0, 4);
+		const SlSockAddrIn_t LocalAddr = { .sin_family = SL_AF_INET, .sin_port = htons(SERVER_PORT), .sin_addr.s_addr = 0 };
 
 		SocketUdpServer = sl_Socket(SL_AF_INET, SL_SOCK_DGRAM, SL_IPPROTO_UDP);
 		//Blocking is default

@@ -17,29 +17,8 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 
-
-// Simplelink includes
-#ifndef extern
-#include "simplelink.h"
-#endif
-
-//Driverlib includes
-#include "hw_types.h"
-#include "hw_ints.h"
-#include "hw_memmap.h"
-#include "datatypes.h"
-#include "uart.h"
-#include "prcm.h"
-#include "rom.h"
-#include "rom_map.h"
-#include "interrupt.h"
-
-//Free_rtos/ti-rtos includes
-#ifndef extern
-#include "FreeRTOS.h"
-#include "task.h"
-#include "osi.h"
-#endif
+#ifndef _SERVER_H_
+#define _SERVER_H_
 
 //Common interface includes
 #include "uart_if.h"
@@ -47,5 +26,7 @@
 #define UART_PRINT 		   Report
 
 #define SERVER_PORT			2000
+
+#endif /* _SERVER_H_ */
 
 

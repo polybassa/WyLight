@@ -38,34 +38,6 @@
 #ifndef _WIFI_H_
 #define _WIFI_H_
 
-// Simplelink includes
-#ifndef extern
-#include "simplelink.h"
-#endif
-
-//Driverlib includes
-#include "hw_types.h"
-#include "hw_ints.h"
-#include "hw_memmap.h"
-#include "datatypes.h"
-#include "uart.h"
-#include "prcm.h"
-#include "rom.h"
-#include "rom_map.h"
-#include "interrupt.h"
-
-//Free_rtos/ti-rtos includes
-#ifndef extern
-#ifdef USE_FREERTOS
-#include "FreeRTOS.h"
-#include "task.h"
-#endif
-#include "osi.h"
-#endif
-
-//Common interface includes
-#include "uart_if.h"
-
 #define ATTEMPTING_TO_CONNECT_TO_AP			"Attempting to auto connect to AP"
 #define ATTEMPTING_TO_ACQUIRE_IP			"Attempting to acquire IP"
 #define NOT_CONNECTED_TO_AP					"Not connected to AP"
