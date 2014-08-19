@@ -245,7 +245,7 @@ int main() {
 
 	// Connecting to WLAN AP - Set with static parameters defined at the top
 	// After this call we will be connected and have IP address
-	WlanConnect();
+	//WlanConnect();
 
 	UART_PRINT("Connected to the AP: %s\r\n", SSID_NAME);
 

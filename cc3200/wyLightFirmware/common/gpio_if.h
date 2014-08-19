@@ -50,6 +50,8 @@ extern "C"
 {
 #endif
 
+#define SH_GPIO_3       				(3)  /* P58 - Device Mode */
+
 typedef enum
 {
     NO_LED,

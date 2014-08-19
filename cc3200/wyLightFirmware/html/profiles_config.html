@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<!--[if lte IE 9 ]> <html class="ie"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html> <!--<![endif]-->
+
+<head>
+<link rel="stylesheet" type="text/css" href="simple_link.css">
+<script src="js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+
+	var _count	= 0;
+	var _flag = 0;
+_tmr = setInterval(get_status,5000);
+
+function get_status()
+{
+
+if(_flag == 1)
+{
+
+_flag = 0;
+
+	// helper function for getting token values
+	function getTokenValue(paramPage, tokenId, successFn, failFn) {
+		$.ajax({
+				"type": "GET",
+				"url": paramPage,
+				"cache": false,
+				"dataType": "html"
+			})
+			// define callback for get request success
+			.done(function(getdata, status, xhr) {
+				successFn($(getdata).filter('#'+tokenId).text());
+			})
+			.fail(function(jqxhr, settings, exception) {
+				failFn();
+			});
+			
+	}
+
+
+		getTokenValue('param_status.html', 'Device_Status', 
+					// successFn callback, val is the token value
+					function(val) {
+						if (val == "TRUE") {
+							_flag = 0;
+							alert ("Successfully Connected to AP!!");
+							location.reload();
+							
+							
+						} else {
+							if (val == "FALSE") 
+							{				
+
+								alert ("Connection to AP Failed or Taking too long, Check Security Key and Retry");
+								location.reload();								
+							}
+							else
+							{
+								alert ("Rechecking Status..");
+								if(_count>2)
+								{
+									alert ("AP Connection Status Check Failed - Reconnect and Refresh the page");
+									_flag = 0;
+								}
+								else
+								{
+									_flag = 1;
+								}
+							}
+						}
+					},
+					// failFn callback
+					function() {
+					if(_count<3)
+					{
+						alert ("Oops..It Seems Connection to Device AP is lost, Reconnect and wait for Notification");
+						_flag = 1;
+						
+					}
+					else
+					{
+						//if(_flag == 1)
+						//{
+							alert ("AP Connection Status Check Failed - Reconnect and Refresh the page");
+						//}
+						
+					}
+					});
+	_count++;				
+}
+}
+
+function on_submit()
+{
+	alert ("Checking Status..");
+	_count=0;
+	_flag = 1;
+		
+}
+
+function SwitchAP()
+{
+	alert ("Switching to Station Mode..Connection to the Device AP will be Lost!!");		
+}
+
+
+</script>
+</head>
+
+<body class="in-frame">
+<table border="0"  width="100%" cellpadding="3" cellspacing="0">
+
+<tr>  
+<td class="page-title" >
+	WiFi Connectivity Profiles Settings </td>
+<td class = "page-title alert"> __SL_G_S.I </td>	
+</tr>
+
+<form method="POST" name="SimpleLink Configuration" action = "nothing" onsubmit="on_submit()")>  
+<tr>
+  <td class = "empty-line" colspan=2></td>
+ </tr>
+ 
+<tr>
+  <td class="frame-title" colspan=2 > 
+     Add Profile </td>
+</tr>
+
+<tr>
+  <td class = "empty-l-in-box" colspan=2></td>
+</tr>
+
+<tr>
+	<td class="label" dir=LTR> SSID: </td>
+	<td class="user-input" dir=LTR><input type="radio" name="__SL_P_USD" value ="__SL_G_US1" >   __SL_G_US1 </input><br>
+								   <input type="radio" name="__SL_P_USD" value ="__SL_G_US2" >   __SL_G_US2 </input><br>
+								   <input type="radio" name="__SL_P_USD" value ="__SL_G_US3" >   __SL_G_US3 </input><br>
+								   <input type="radio" name="__SL_P_USD" value ="__SL_G_US4" >   __SL_G_US4 </input><br>
+								   <input type="radio" name="__SL_P_USD" value ="__SL_G_US5" >   __SL_G_US5 </input></td>
+</tr>
+ 
+<tr>
+	<td class="label"> Security Type: </td>
+	<td class="user-input"><input type="radio" name="__SL_P_USE" value="0" checked />Open
+								   <input type="radio" name="__SL_P_USE" value="1" />WEP
+								   <input type="radio" name="__SL_P_USE" value="2" />WPA								  
+</tr>
+<tr>
+	<td class="label"> Security Key: </td>
+	<td class="user-input"><input type="text" maxlength="64" name="__SL_P_USF" />  Hexadecimal digits - any combination of 0-9, a-f and A-F</td>
+</tr>
+<tr>
+	<td class="label"> Profile Priority: </td>
+	<td class="user-input"><input type="text" maxlength="1" name="__SL_P_USG" />  Enter a value 0-7 (0 = highest)</td>
+</tr>
+
+<tr>
+  <td class="empty-l-in-box" colspan=2></td>
+ </tr>
+ 
+<tr>
+	<td class="in-a-box" colspan=2  align=center><input type="submit" name="__SL_P_USC" value="Add" /></td>
+</tr>
+
+<tr>
+  <td class="in-a-box" colspan=2 align=center> Connection with the Access Point will be validated</td>
+ </tr>
+
+<tr>
+  <td class = "empty-l-in-box" colspan=2></td>
+</tr>
+ 
+<tr >
+  <td class = "border-l-top" colspan=2 >
+  </td>
+</tr>
+	 
+</form>
+<form method="POST" name="SimpleLink Configuration" action="P2P_profiles_add">
+<input type="hidden" name="__SL_P_S.R" value="profiles_config.html"> <!-- Redirect -->
+<tr>
+  <td class = "empty-line" colspan=2></td>
+ </tr>
+ 
+<tr>
+  <td class="frame-title" colspan=2 > 
+     Add Peer to Peer Profile </td>
+</tr>
+
+<tr>
+  <td class = "empty-l-in-box" colspan=2></td>
+</tr>
+
+<tr>
+	<td class="label"> Remote device name: </td>
+	<td class="user-input"><input type="text" maxlength="32" name="__SL_P_P.A" />  </td>
+</tr>
+ 
+<tr>
+	<td class="label"> Security Type: </td>
+	<td class="user-input"><input type="radio" name="__SL_P_P.B" value="6" checked />Push Button
+						   <input type="radio" name="__SL_P_P.B" value="7" />PIN Keypad
+						   <input type="radio" name="__SL_P_P.B" value="8" />PIN Display</td>
+</tr>
+<tr>
+	<td class="label"> PIN code: </td>
+	<td class="user-input"><input type="text" maxlength="64" name="__SL_P_P.C" />  Digits only (0-9) </td>
+</tr>
+<tr>
+	<td class="label"> Profile Priority: </td>
+	<td class="user-input"><input type="text" maxlength="1" name="__SL_P_P.D" />  Enter a value 0-7 (0 = highest)</td>
+</tr>
+
+<tr>
+  <td class="empty-l-in-box" colspan=2></td>
+ </tr>
+ 
+<tr>
+	<td class="in-a-box" colspan=2  align=center><input type="submit" value="Add"/></td>
+</tr>
+
+<tr>
+  <td class="in-a-box" colspan=2 align=center> The new Profile will take affect only after reset</td>
+ </tr>
+
+<tr>
+  <td class = "empty-l-in-box" colspan=2></td>
+</tr>
+ 
+<tr >
+  <td class = "border-l-top" colspan=2 >
+  </td>
+</tr>
+	 
+</form>
+
+<form method="POST" name="SimpleLink Configuration" action="EAP_profiles_add">
+<input type="hidden" name="__SL_P_S.R" value="profiles_config.html"> <!-- Redirect -->
+<tr>
+  <td class = "empty-line" colspan=2></td>
+ </tr>
+ 
+<tr>
+  <td class="frame-title" colspan=2 > 
+     Add Enterprise Profile </td>
+</tr>
+
+<tr>
+  <td class = "empty-l-in-box" colspan=2></td>
+</tr>
+
+<tr>
+	<td class="label"> SSID: </td>
+	<td class="user-input"><input type="text" maxlength="32" name="__SL_P_P.H" />  </td>
+</tr>
+ 
+ <tr>
+	<td class="label"> Identity: </td>
+	<td class="user-input"><input type="text" maxlength="32" name="__SL_P_P.I" />  </td>
+</tr>
+
+ <tr>
+	<td class="label"> Anonymous Identity: </td>
+	<td class="user-input"><input type="text" maxlength="32" name="__SL_P_P.J" />  </td>
+</tr>
+
+<tr>
+  <td  class="label"> EAP Method: </td>
+   <td class="user-input"> 	<select name="__SL_P_P.M">
+							<option value="TLS" >TLS</option>
+							<option value="TTLS" >TTLS</option>
+							<option value="PEAP0" >PEAP0</option>
+							<option value="PEAP1" >PEAP1</option>
+							<option value="FAST" >FAST</option>
+							</select>    </td>
+</tr>
+
+<tr>
+  <td  class="label"> Phase 2 Authentication: </td>
+   <td class="user-input"> 	<select name="__SL_P_P.N">
+							<option value="None" >None</option>
+							<option value="TLS" >TLS</option>
+							<option value="MSCHAPV2" >MSCHAPV2</option>
+							<option value="PSK" >PSK</option>
+							</select>    </td>
+</tr>
+
+<tr>
+  <td  class="label"> Provisioning: </td>
+   <td class="user-input"> 	<select name="__SL_P_P.O">
+							<option value="None" selected >None</option>
+							<option value="0" >0</option>
+							<option value="1" >1</option>
+							<option value="2" >2</option>
+							</select>   For 'FAST' method only, for other methods use 'None' </td>
+</tr>
+
+<tr>
+	<td class="label"> Password: </td>
+	<td class="user-input"><input type="text" maxlength="64" name="__SL_P_P.K" />  Hexadecimal digits - any combination of 0-9, a-f and A-F</td>
+</tr>
+<tr>
+	<td class="label"> Profile Priority: </td>
+	<td class="user-input"><input type="text" maxlength="1" name="__SL_P_P.L" />  Enter a value 0-7 (0 = highest)</td>
+</tr>
+
+<tr>
+  <td class="empty-l-in-box" colspan=2></td>
+ </tr>
+ 
+<tr>
+	<td class="in-a-box" colspan=2  align=center><input type="submit" value="Add"/></td>
+</tr>
+
+<tr>
+  <td class="in-a-box" colspan=2 align=center> The new Profile will take affect only after reset</td>
+ </tr>
+
+<tr>
+  <td class = "empty-l-in-box" colspan=2></td>
+</tr>
+ 
+<tr >
+  <td class = "border-l-top" colspan=2 >
+  </td>
+</tr>
+	 
+</form>
+
+
+<form method="POST" name="SimpleLink Configuration" action="remove_all_profiles">
+<input type="hidden" name="__SL_P_S.R" value="profiles_config.html"> <!-- Redirect -->
+<tr>
+  <td class = "empty-line" colspan=2></td>
+ </tr>
+
+<tr>
+  <td class="frame-title" colspan=2 > 
+     Remove Profiles </td>
+</tr>
+<tr>
+  <td class = "empty-l-in-box" colspan=2></td>
+</tr>
+
+<tr>
+	<td class="in-a-box" colspan=2  align=center><input type="submit" value="Remove All Profiles" name="remove_profiles" /></td>
+</tr>
+
+<tr>
+  <td class = "empty-l-in-box" colspan=2></td>
+</tr>
+
+<tr >
+  <td class = "border-l-top" colspan=2 >
+  </td>
+</tr>
+
+</form>		
+
+</table>
+
+<table border="0"  width="100%" cellpadding="3" cellspacing="0">
+
+<form method="POST" name="SimpleLink Configuration" action="remove_selected_profiles">
+<input type="hidden" name="__SL_P_S.R" value="profiles_config.html"> <!-- Redirect -->
+<tr>
+  <td class = "empty-line" colspan=3></td>
+ </tr>
+
+<tr>
+  <td class="frame-title" colspan=3 > 
+     Profiles </td>
+</tr>
+<tr>
+  <td class = "empty-l-in-box" colspan=3></td>
+</tr>
+
+<tr>
+     <td  class="l_first_col" ><input type="checkbox" name="__SL_P_PRR" value="1" /> 1. <b> __SL_G_PN1 </b> </td> <td class = "l_middle_col"> Security: <b>__SL_G_PS1 </b> </td> <td class="l_last_col"> Priority: <b> __SL_G_PP1 </b> </td>
+</tr>
+
+<tr>
+     <td  class="l_first_col" ><input type="checkbox" name="__SL_P_PRR" value="2" /> 2. <b> __SL_G_PN2 </b> </td> <td class = "l_middle_col"> Security: <b>__SL_G_PS2 </b> </td> <td class="l_last_col"> Priority: <b> __SL_G_PP2 </b> </td>
+</tr>
+<tr>
+     <td  class="l_first_col" ><input type="checkbox" name="__SL_P_PRR" value="3" /> 3. <b> __SL_G_PN3 </b> </td> <td class = "l_middle_col"> Security: <b>__SL_G_PS3 </b> </td> <td class="l_last_col"> Priority: <b> __SL_G_PP3 </b> </td>
+</tr>
+<tr>
+     <td  class="l_first_col" ><input type="checkbox" name="__SL_P_PRR" value="4" /> 4. <b> __SL_G_PN4 </b> </td> <td class = "l_middle_col"> Security: <b>__SL_G_PS4 </b> </td> <td class="l_last_col"> Priority: <b> __SL_G_PP4 </b> </td>
+</tr>
+<tr>
+     <td  class="l_first_col" ><input type="checkbox" name="__SL_P_PRR" value="5" /> 5. <b> __SL_G_PN5 </b> </td> <td class = "l_middle_col"> Security: <b>__SL_G_PS5 </b> </td> <td class="l_last_col"> Priority: <b> __SL_G_PP5 </b> </td>
+</tr>
+<tr>
+     <td  class="l_first_col" ><input type="checkbox" name="__SL_P_PRR" value="6" /> 6. <b> __SL_G_PN6 </b> </td> <td class = "l_middle_col"> Security: <b>__SL_G_PS6 </b> </td> <td class="l_last_col"> Priority: <b> __SL_G_PP6 </b> </td>
+</tr>
+<tr>
+     <td  class="l_first_col" ><input type="checkbox" name="__SL_P_PRR" value="7" /> 7. <b> __SL_G_PN7 </b> </td> <td class = "l_middle_col"> Security: <b>__SL_G_PS7 </b> </td> <td class="l_last_col"> Priority: <b> __SL_G_PP7 </b> </td>
+</tr>
+<tr>
+  <td class = "empty-l-in-box" colspan=3></td>
+</tr>
+
+<tr>
+		<td class="in-a-box" colspan=3  align=center><input type="submit" value="Remove Selected Profiles" /></td>
+</tr>
+
+<tr>
+  <td class = "empty-l-in-box" colspan=3></td>
+</tr>
+<tr >
+  <td class = "border-l-top" colspan=3 >
+  </td>
+</tr>
+</form>
+</table>
+	 
+</body>
+</html>

@@ -31,6 +31,11 @@
 			<locationURI>copy_PARENT/broadcast.c</locationURI>
 		</link>
 		<link>
+			<name>gpio_if.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/common/gpio_if.c</locationURI>
+		</link>
+		<link>
 			<name>main.c</name>
 			<type>1</type>
 			<locationURI>copy_PARENT/main.c</locationURI>
