@@ -26,14 +26,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>firmware_download.c</name>
+			<name>firmware_loader.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT/firmware_download.c</locationURI>
-		</link>
-		<link>
-			<name>firmware_download.h</name>
-			<type>1</type>
-			<locationURI>copy_PARENT/firmware_download.h</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/firmware_loader.c</locationURI>
 		</link>
 		<link>
 			<name>gpio_if.c</name>
@@ -44,11 +39,6 @@
 			<name>main.c</name>
 			<type>1</type>
 			<locationURI>copy_PARENT/main.c</locationURI>
-		</link>
-		<link>
-			<name>network_if.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/common/network_if.c</locationURI>
 		</link>
 		<link>
 			<name>pinmux.c</name>
@@ -66,9 +56,9 @@
 			<locationURI>copy_PARENT1/common/uart_if.c</locationURI>
 		</link>
 		<link>
-			<name>wifi.c</name>
+			<name>wy_bl_network_if.c</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/shared/wifi.c</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/wy_bl_network_if.c</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>

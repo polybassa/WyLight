@@ -41,11 +41,6 @@
 			<locationURI>copy_PARENT/main.c</locationURI>
 		</link>
 		<link>
-			<name>network_if.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT1/common/network_if.c</locationURI>
-		</link>
-		<link>
 			<name>pinmux.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/shared/pinmux.c</locationURI>
@@ -69,6 +64,11 @@
 			<name>wifi.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/shared/wifi.c</locationURI>
+		</link>
+		<link>
+			<name>wy_network_if.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/wy_network_if.c</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>

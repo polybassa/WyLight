@@ -24,7 +24,7 @@
 #include "hw_memmap.h"
 
 // SimpleLink includes
-#include "simplelink.h"
+#include "socket.h"
 
 // driverlib includes
 #include "rom.h"
@@ -36,17 +36,15 @@
 // common interface includes
 #include "uart_if.h"
 #include "pinmux.h"
-#include "network_if.h"
-#include "wifi.h"
+#include "wy_bl_network_if.h"
+#include "gpio_if.h"
 
 // wylight includes
-#include "firmware_download.h"
+#include "firmware_loader.h"
 
 #define UART_PRINT          Report
 #define APP_NAME            "WyLight Bootloader"
-
-#define FIRMWARE_ORIGIN 	0x20014000
-#define BUFFER_SIZE 		1024
+#define SERVER_PORT			2000
 
 //
 // GLOBAL VARIABLES -- Start
@@ -62,48 +60,6 @@ int g_iSockID;
 //
 // GLOBAL VARIABLES -- End
 //
-
-//****************************************************************************
-//
-//! Create an endpoint for communication and initiate connection on socket.*/
-//!
-//! \brief Create connection with server
-//!
-//! This function opens a socket and create the endpoint communication with server
-//!
-//! \param[in]      DestinationIP - IP address of the server
-//!
-//! \return         socket id for success and negative for error
-//
-//****************************************************************************
-int CreateConnection(unsigned long DestinationIP) {
-	SlSockAddrIn_t Addr;
-	int Status = 0;
-	int AddrSize = 0;
-	int SockID = 0;
-
-	Addr.sin_family = SL_AF_INET;
-	Addr.sin_port = sl_Htons(80);
-	Addr.sin_addr.s_addr = sl_Htonl(DestinationIP);
-
-	AddrSize = sizeof(SlSockAddrIn_t);
-
-	SockID = sl_Socket(SL_AF_INET, SL_SOCK_STREAM, 0);
-	if (SockID < 0) {
-		/* Error */
-		UART_PRINT("Error while opening the socket\r\n");
-		return -1;
-	}
-
-	Status = sl_Connect(SockID, (SlSockAddr_t *) &Addr, AddrSize);
-	if (Status < 0) {
-		/* Error */
-		UART_PRINT("Error during connection with server\r\n");
-		sl_Close(SockID);
-		return -1;
-	}
-	return SockID;
-}
 
 //*****************************************************************************
 //
@@ -155,153 +111,150 @@ static void BoardInit(void) {
 	PRCMCC3200MCUInit();
 }
 
-static int LoadFirmware(unsigned char* sourceFile) {
+static int ReadJumper() {
+	unsigned int uiGPIOPort;
+	unsigned char pucGPIOPin;
 
-	long sfileHandle = -1;
-	unsigned long sToken = 0;
-	long retVal = 0;
-	unsigned long bytesCopied = 0, bytesReceived = 0;
-	unsigned long readsize = 0;
-	unsigned char buffer[BUFFER_SIZE];
-	SlFsFileInfo_t sFileInfo;
-
-	// get file size
-	retVal = sl_FsGetInfo((unsigned char *) sourceFile, sToken, &sFileInfo);
-	if (retVal < 0) {
-		// File Doesn't exit create a new of 45 KB file
-		UART_PRINT("Error during opening the source file\r\n");
-		return -1;
-	}
-	bytesReceived = sFileInfo.FileLen;
-
-	// open the source file for reading
-	retVal = sl_FsOpen((unsigned char *) sourceFile, FS_MODE_OPEN_READ, &sToken, &sfileHandle);
-	if (retVal < 0) {
-		// File Doesn't exit create a new of 45 KB file
-		UART_PRINT("Error during opening the source file\r\n");
-		return -1;
-	}
-
-	// Copy the files from temporary file to SRAM at FIRMWARE_ORIGIN
-	while (bytesCopied < bytesReceived) {
-		if ((bytesReceived - bytesCopied) > sizeof(buffer)) readsize = sizeof(buffer);
-		else readsize = (bytesReceived - bytesCopied);
-
-		memset(buffer, 0, sizeof(buffer));
-		retVal = sl_FsRead(sfileHandle, bytesCopied, (unsigned char *) buffer, readsize);
-		if (retVal < 0) {
-			// Error close the file and delete the temporary file
-			retVal = sl_FsClose(sfileHandle, 0, 0, 0);
-			UART_PRINT("Error during reading the file\r\n");
-			return -1;
-		}
-		memcpy((void *) (FIRMWARE_ORIGIN + bytesCopied), buffer, readsize);
-		bytesCopied += readsize;
-	}
-	// Close the opened files
-	retVal = sl_FsClose(sfileHandle, 0, 0, 0);
-	return 0;
+//Read GPIO
+	GPIO_IF_GetPortNPin(SH_GPIO_3, &uiGPIOPort, &pucGPIOPin);
+	return GPIO_IF_Get(SH_GPIO_3, uiGPIOPort, pucGPIOPin);
 }
 
-static void startFirmware(void) {
+#define BUFFERSIZE 1024
 
-	// patch Interrupt Vector Table
-	unsigned int *pVectorTableOffset;
-	pVectorTableOffset = (unsigned int *) 0xe000ed08;
-	*pVectorTableOffset = FIRMWARE_ORIGIN;
+void TcpServer(void) {
 
-	// call Firmware
-	void (*firmware_origin_entry)(void);
-	unsigned int resetVector = *((unsigned int *) (FIRMWARE_ORIGIN + 4));
-	firmware_origin_entry = (void (*)(void)) (resetVector);
+	while (1) {
+		while (!IS_CONNECTED(g_ulStatus)) {
+			_SlNonOsMainLoopTask();
+		}
 
-	firmware_origin_entry();
+		sockaddr_in RemoteAddr;
+		socklen_t RemoteAddrLen = sizeof(sockaddr_in);
+		volatile int SocketTcpServer, SocketTcpChild;
+		uint8_t buffer[BUFFERSIZE];
+
+		SlSockAddrIn_t LocalAddr;
+		LocalAddr.sin_family = AF_INET;
+		LocalAddr.sin_port = htons(SERVER_PORT);
+		LocalAddr.sin_addr.s_addr = 0;
+
+		SocketTcpServer = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+		int nonBlocking = 1;
+		if (0 != setsockopt(SocketTcpServer, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking))) {
+			UART_PRINT(" Setsockopt ERROR \r\n");
+		}
+
+		if (bind(SocketTcpServer, (sockaddr *) &LocalAddr, sizeof(LocalAddr)) < 0) {
+			UART_PRINT(" Bind Error\n\r");
+			close(SocketTcpServer);
+			LOOP_FOREVER(__LINE__);
+		}
+		// Backlog = 1 to accept maximal 1 connection
+		if (listen(SocketTcpServer, 1) < 0) {
+			UART_PRINT(" Listen Error\n\r");
+			close(SocketTcpServer);
+			LOOP_FOREVER(__LINE__);
+		}
+
+		while (SocketTcpServer > 0) {
+			SocketTcpChild = accept(SocketTcpServer, (SlSockAddr_t *) &RemoteAddr, &RemoteAddrLen);
+
+			if (SocketTcpChild == EAGAIN) {
+				_SlNonOsMainLoopTask();
+				continue;
+			}
+
+			UART_PRINT(" Connected TCP Client\r\n");
+			unsigned char *pFirmware;
+			pFirmware = (unsigned char *) FIRMWARE_ORIGIN;
+			UART_PRINT(" Start writing Firmware at 0x%x \r\n", FIRMWARE_ORIGIN);
+
+			while (SocketTcpChild > 0  && IS_CONNECTED(g_ulStatus)) {
+				memset(buffer, sizeof(buffer), 0);
+				int bytesReceived = recv(SocketTcpChild, buffer, sizeof(buffer), 0);
+				if (bytesReceived > 0) {
+					// Received some bytes
+					memcpy(pFirmware, buffer, bytesReceived);
+					pFirmware += bytesReceived;
+					UART_PRINT("Tcp: Received %d bytes\r\n", bytesReceived);
+				} else {
+					switch (bytesReceived) {
+					case EAGAIN: {
+						_SlNonOsMainLoopTask();
+						continue;
+					}
+					case 0: {
+						// get return 0 if socket closed
+						if (SUCCESS == SaveSRAMContentAsFirmware((const unsigned char *)FIRMWARE_ORIGIN, (unsigned long)pFirmware - (unsigned long)FIRMWARE_ORIGIN)) {
+							close(SocketTcpChild);
+							StartFirmware();
+						}
+					}
+					default: {
+						// Error occured on child socket
+						close(SocketTcpChild);
+						SocketTcpChild = 0;
+					}
+					}
+				}
+			}
+			if (!IS_CONNECTED(g_ulStatus)) {
+				close(SocketTcpServer);
+				SocketTcpServer = 0;
+				break;
+			}
+		}
+	}
 }
 
 int main() {
-	int retRes = -1;
+	long lRetVal = -1;
 
-	//
 	// Board Initialization
-	//
 	BoardInit();
 
-	//
 	// Configure the pinmux settings for the peripherals exercised
-	//
 	PinMuxConfig();
 
-	//
 	// Configuring UART
-	//
 	InitTerm();
 
-	//
+	GPIO_IF_LedConfigure(LED1 | LED2 | LED3);
+	GPIO_IF_LedOff(MCU_RED_LED_GPIO);
+	GPIO_IF_LedOff(MCU_GREEN_LED_GPIO);
+	GPIO_IF_LedOff(MCU_ORANGE_LED_GPIO);
+
 	// Display banner
-	//
 	DisplayBanner(APP_NAME);
 
-	Network_IF_InitDriver(ROLE_STA);
+	Network_IF_InitDriver(ROLE_AP);
 
-	// Connecting to WLAN AP - Set with static parameters defined at the top
-	// After this call we will be connected and have IP address
-	//WlanConnect();
-
-	UART_PRINT("Connected to the AP: %s\r\n", SSID_NAME);
-
-	// Create a TCP connection to the Web Server
-	g_iSockID = CreateConnection(GetServerIP());
-
-	if (g_iSockID < 0) return -1;
-
-	UART_PRINT("Connection to server created successfully\r\n");
-	// Download the file, verify the file and replace the exiting file
-	if (GetFileFromServer(g_iSockID, "firmware.bin", "/temp/firmware.bin") < 0) {
-		retRes = sl_Close(g_iSockID);
-		UART_PRINT("Error downloading file\r\n");
+	// Starting the CC3200 networking layers
+	lRetVal = sl_Start(NULL, NULL, NULL);
+	if (lRetVal < 0) {
+		GPIO_IF_LedOn(MCU_RED_LED_GPIO);
 		return -1;
 	}
 
-	retRes = sl_Close(g_iSockID);
-	if (0 > retRes) {
-		UART_PRINT("Error during closing socket\r\n");
-		return -1;
+	if (lRetVal == ROLE_AP) {
+		while (!IS_IP_ACQUIRED(g_ulStatus)) {
+			_SlNonOsMainLoopTask();
+		}
 	}
 
-	g_iSockID = CreateConnection(GetServerIP());
+	if (ReadJumper() == 0) {
 
-	if (g_iSockID < 0) return -1;
-
-	UART_PRINT("Connection to server created successfully\r\n");
-	if (GetFileFromServer(g_iSockID, "firmware.sha", "/temp/firmware.sha") < 0) {
-		retRes = sl_Close(g_iSockID);
-		UART_PRINT("Error downloading file\r\n");
-		return -1;
+		lRetVal = LoadAndExecuteFirmware();
+		if (lRetVal == ERROR) {
+			UART_PRINT("Firmware corrupt\r\n");
+			GPIO_IF_LedOn(MCU_RED_LED_GPIO);
+		}
 	}
 
-	retRes = sl_Close(g_iSockID);
-	if (0 > retRes) {
-		UART_PRINT("Error during closing socket\r\n");
-		return -1;
-	}
+	Network_IF_StartSimpleLinkAsAP();
 
-	retRes = VerifyFile("/temp/firmware.bin", "/temp/firmware.sha");
-	if (retRes < 0) {
-		UART_PRINT("Error verifying files\r\n");
-	}
-	/*retRes = ReplaceFile("/temp/firmware.bin", FILE_NAME);
-	 if (retRes < 0) {
-	 UART_PRINT("Error during replacing the file\r\n");
-	 }*/
-
-	UART_PRINT("\nThank you\r\n");
-	// Stop the CC3200 device
-
-	LoadFirmware((unsigned char *) "/temp/firmware.bin");
-	startFirmware();
-	sl_Stop(0xFF);
-
-	LOOP_FOREVER(__LINE__);
-
+	TcpServer();
 }
 

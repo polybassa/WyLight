@@ -36,8 +36,8 @@
 //
 //*****************************************************************************
 
-#ifndef __NETWORK_IF__H__
-#define __NETWORK_IF__H__
+#ifndef __WY_BL_NETWORK_IF__H__
+#define __WY_BL_NETWORK_IF__H__
 
 //*****************************************************************************
 //
@@ -46,9 +46,10 @@
 //
 //*****************************************************************************
 
+#include "wlan.h"
+
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include "osi.h"
@@ -69,81 +70,88 @@ extern "C"
                 if (error_code < 0) return error_code;\
             }
 
+#define UNUSED(x) 				((x) = (x))
+#define SUCCESS         		0
 
-#define UNUSED(x) ((x) = (x))
-#define SUCCESS         0
-
-//*****************************************************************************
-// State Machine values 
-//*****************************************************************************
-#define NUM_STATES 6
-#define FIRST_STATE_LED_NUM 1
-#define MAX_SSID_LEN        32
+#define SSID_LEN_MAX            (32)
+#define BSSID_LEN_MAX           (6)
+#define SL_STOP_TIMEOUT         30
 
 #ifdef NOTERM
-#define UART_PRINT(x, ...)
-#define DBG_PRINT (x, ...)
+#define UART_PRINT				(x, ...)
+#define DBG_PRINT 				(x, ...)
 #else
-#define UART_PRINT Report
-#define DBG_PRINT  Report
+#define UART_PRINT 				Report
+#define DBG_PRINT  				Report
 #endif
 
-#define SET_STATUS_BIT(status_variable, bit) status_variable |= (1<<(bit))
-#define CLR_STATUS_BIT(status_variable, bit) status_variable &= ~(1<<(bit))
-#define CLR_STATUS_BIT_ALL(status_variable)   (status_variable = 0)
-#define GET_STATUS_BIT(status_variable, bit) (0 != (status_variable & (1<<(bit))))
+#define SET_STATUS_BIT(status_variable, bit) 	status_variable |= (1<<(bit))
+#define CLR_STATUS_BIT(status_variable, bit) 	status_variable &= ~(1<<(bit))
+#define CLR_STATUS_BIT_ALL(status_variable)   	(status_variable = 0)
+#define GET_STATUS_BIT(status_variable, bit) 	(0 != (status_variable & (1<<(bit))))
 
-#define IS_NW_PROCSR_ON(status_variable)     GET_STATUS_BIT(status_variable,\
+#define IS_NW_PROCSR_ON(status_variable)     	GET_STATUS_BIT(status_variable,\
                                                             STATUS_BIT_NWP_INIT)
-#define IS_CONNECTED(status_variable)        GET_STATUS_BIT(status_variable,\
+#define IS_CONNECTED(status_variable)        	GET_STATUS_BIT(status_variable,\
                                                          STATUS_BIT_CONNECTION)
-#define IS_IP_LEASED(status_variable)        GET_STATUS_BIT(status_variable,\
+#define IS_IP_LEASED(status_variable)        	GET_STATUS_BIT(status_variable,\
                                                            STATUS_BIT_IP_LEASED)
-#define IS_IP_ACQUIRED(status_variable)       GET_STATUS_BIT(status_variable,\
+#define IS_IP_ACQUIRED(status_variable)       	GET_STATUS_BIT(status_variable,\
                                                           STATUS_BIT_IP_AQUIRED)
-#define IS_SMART_CFG_START(status_variable)  GET_STATUS_BIT(status_variable,\
+#define IS_SMART_CFG_START(status_variable)  	GET_STATUS_BIT(status_variable,\
                                                    STATUS_BIT_SMARTCONFIG_START)
-#define IS_P2P_DEV_FOUND(status_variable)    GET_STATUS_BIT(status_variable,\
+#define IS_P2P_DEV_FOUND(status_variable)    	GET_STATUS_BIT(status_variable,\
                                                        STATUS_BIT_P2P_DEV_FOUND)
-#define IS_P2P_REQ_RCVD(status_variable)     GET_STATUS_BIT(status_variable,\
+#define IS_P2P_REQ_RCVD(status_variable)     	GET_STATUS_BIT(status_variable,\
                                                     STATUS_BIT_P2P_REQ_RECEIVED)
-#define IS_CONNECT_FAILED(status_variable)   GET_STATUS_BIT(status_variable,\
+#define IS_CONNECT_FAILED(status_variable)   	GET_STATUS_BIT(status_variable,\
                                                    STATUS_BIT_CONNECTION_FAILED)
-#define IS_PING_DONE(status_variable)        GET_STATUS_BIT(status_variable,\
+#define IS_PING_DONE(status_variable)        	GET_STATUS_BIT(status_variable,\
                                                            STATUS_BIT_PING_DONE)
 
 // Status bits - These are used to set/reset the corresponding bits in 
 // given variable
 
-typedef enum{
-    STATUS_BIT_NWP_INIT = 0, // If this bit is set: Network Processor is 
-                             // powered up
-                             
-    STATUS_BIT_CONNECTION,   // If this bit is set: the device is connected to 
-                             // the AP or client is connected to device (AP)
-                             
-    STATUS_BIT_IP_LEASED,    // If this bit is set: the device has leased IP to 
-                             // any connected client
+typedef enum {
+	STATUS_BIT_NWP_INIT = 0, // If this bit is set: Network Processor is
+							 // powered up
 
-    STATUS_BIT_IP_AQUIRED,   // If this bit is set: the device has acquired an IP
-    
-    STATUS_BIT_SMARTCONFIG_START, // If this bit is set: the SmartConfiguration 
-                                  // process is started from SmartConfig app
+	STATUS_BIT_CONNECTION,   // If this bit is set: the device is connected to
+							 // the AP or client is connected to device (AP)
 
-    STATUS_BIT_P2P_DEV_FOUND,    // If this bit is set: the device (P2P mode) 
-                                 // found any p2p-device in scan
+	STATUS_BIT_IP_LEASED,    // If this bit is set: the device has leased IP to
+							 // any connected client
 
-    STATUS_BIT_P2P_REQ_RECEIVED, // If this bit is set: the device (P2P mode) 
-                                 // found any p2p-negotiation request
+	STATUS_BIT_IP_AQUIRED,   // If this bit is set: the device has acquired an IP
 
-    STATUS_BIT_CONNECTION_FAILED, // If this bit is set: the device(P2P mode)
-                                  // connection to client(or reverse way) is failed
+	STATUS_BIT_SMARTCONFIG_START, // If this bit is set: the SmartConfiguration
+								  // process is started from SmartConfig app
 
-    STATUS_BIT_PING_DONE         // If this bit is set: the device has completed
-                                 // the ping operation
+	STATUS_BIT_P2P_DEV_FOUND,    // If this bit is set: the device (P2P mode)
+								 // found any p2p-device in scan
 
-}e_StatusBits;
+	STATUS_BIT_P2P_REQ_RECEIVED, // If this bit is set: the device (P2P mode)
+								 // found any p2p-negotiation request
 
+	STATUS_BIT_CONNECTION_FAILED, // If this bit is set: the device(P2P mode)
+								  // connection to client(or reverse way) is failed
+
+	STATUS_BIT_PING_DONE         // If this bit is set: the device has completed
+								 // the ping operation
+
+} e_StatusBits;
+
+//
+// GLOBAL VARIABLES -- Start
+//
+extern unsigned long g_ulStatus; /* SimpleLink Status */
+extern unsigned long g_ulStaIp; /* Station IP address */
+extern unsigned long g_ulGatewayIP; /* Network Gateway IP address */
+extern unsigned char g_ucConnectionSSID[SSID_LEN_MAX + 1]; /* Connection SSID */
+extern unsigned char g_ucConnectionBSSID[BSSID_LEN_MAX]; /* Connection BSSID */
+//
+// GLOBAL VARIABLES -- End
+//
 
 //*****************************************************************************
 //
@@ -152,16 +160,8 @@ typedef enum{
 //*****************************************************************************
 extern void Network_IF_InitDriver(unsigned int uiMode);
 extern void Network_IF_DeInitDriver(void);
-extern int Network_IF_ConnectAP(char * pcSsid, SlSecParams_t SecurityParams);
-extern void Network_IF_DisconnectFromAP();
-extern int Network_IF_IpConfigGet(unsigned long *aucIP, unsigned long *aucSubnetMask,
-                unsigned long *aucDefaultGateway, unsigned long *aucDNSServer);
-extern unsigned long Network_IF_GetHostIP(char* pcHostName);
-extern unsigned long Network_IF_CurrentMCUState();
-extern void Network_IF_UnsetMCUMachineState(char stat);
-extern void Network_IF_SetMCUMachineState(char stat);
-extern void Network_IF_ResetMCUStateMachine();
-extern unsigned short itoa(char cNum, char *cString);
+extern long Network_IF_StartSimpleLinkAsAP();
+
 //*****************************************************************************
 //
 // Mark the end of the C bindings section for C++ compilers.
@@ -171,5 +171,3 @@ extern unsigned short itoa(char cNum, char *cString);
 }
 #endif
 #endif //  __MCU_COMMON_H__
-
-

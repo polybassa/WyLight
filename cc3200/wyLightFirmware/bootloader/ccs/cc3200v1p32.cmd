@@ -60,7 +60,7 @@ MEMORY
 {
     /* Application uses internal RAM for program and data */
     SRAM_CODE (RWX) : origin = 0x20004000, length = 0xBFFF
-    SRAM_DATA (RWX) : origin = 0x20010000, length = 0x7FFF
+    SRAM_DATA (RWX) : origin = 0x20010000, length = 0x3FFF
 }
 
 /* Section allocation in memory */
