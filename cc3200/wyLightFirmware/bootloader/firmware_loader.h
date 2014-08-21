@@ -20,12 +20,13 @@
 #define FIRMWARE_LOADER_H_
 
 #include <stdint.h>
+#include <stdio.h>
 
-#define FIRMWARE_ORIGIN 	0x20014000
+#define FIRMWARE_ORIGIN 	0x20012000
 
 long LoadAndExecuteFirmware(void);
 void StartFirmware(void);
-long SaveSRAMContentAsFirmware(const uint8_t *pSource, const size_t length);
+long SaveSRAMContentAsFirmware(uint8_t *pSource, const size_t length);
 
 
 #endif /* FIRMWARE_DOWNLOAD_H_ */

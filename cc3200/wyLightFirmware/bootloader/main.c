@@ -43,7 +43,6 @@
 #include "firmware_loader.h"
 
 #define UART_PRINT          Report
-#define APP_NAME            "WyLight Bootloader"
 
 //
 // GLOBAL VARIABLES -- Start
@@ -56,7 +55,7 @@ extern uVectorEntry __vector_table;
 #endif
 
 static const unsigned short SERVER_PORT = 2000;
-static const char *APP_NAME = "WyLight Bootloader";
+static const char APP_NAME[] = "WyLight Bootloader";
 //
 // GLOBAL VARIABLES -- End
 //
@@ -70,7 +69,7 @@ static const char *APP_NAME = "WyLight Bootloader";
 //! \return none
 //!
 //*****************************************************************************
-static void DisplayBanner(char * AppName) {
+static void DisplayBanner(const char * AppName) {
 
 	UART_PRINT("\n\n\n\r");
 	UART_PRINT("\t\t *************************************************\n\r");
@@ -161,7 +160,7 @@ void TcpServer(void) {
 
 		while (SocketTcpServer > 0) {
 			SocketTcpChild = accept(SocketTcpServer, (sockaddr *) &RemoteAddr, &RemoteAddrLen);
-			
+
 			if (SocketTcpChild == EAGAIN) {
 				_SlNonOsMainLoopTask();
 				continue;
@@ -173,11 +172,11 @@ void TcpServer(void) {
 			}
 
 			UART_PRINT(" Connected TCP Client\r\n");
-			unsigned char *pFirmware;
+			uint8_t *pFirmware;
 			pFirmware = (unsigned char *) FIRMWARE_ORIGIN;
 			UART_PRINT(" Start writing Firmware at 0x%x \r\n", pFirmware);
 
-			while (SocketTcpChild > 0  && IS_CONNECTED(g_ulStatus)) {
+			while (SocketTcpChild > 0 && IS_CONNECTED(g_ulStatus)) {
 				memset(buffer, sizeof(buffer), 0);
 				int bytesReceived = recv(SocketTcpChild, buffer, sizeof(buffer), 0);
 				if (bytesReceived > 0) {
@@ -193,8 +192,8 @@ void TcpServer(void) {
 					}
 					case 0: {
 						// get return 0 if socket closed
-						size_t length = pFirmware - FIRMWARE_ORIGIN;
-						if (SUCCESS == SaveSRAMContentAsFirmware((const unsigned char *)FIRMWARE_ORIGIN, length)) {
+						size_t length = (size_t) (pFirmware - FIRMWARE_ORIGIN);
+						if (SUCCESS == SaveSRAMContentAsFirmware((uint8_t *) FIRMWARE_ORIGIN, length)) {
 							close(SocketTcpChild);
 							StartFirmware();
 						}
@@ -207,7 +206,7 @@ void TcpServer(void) {
 					}
 				}
 			}
-			
+
 			if (!IS_CONNECTED(g_ulStatus)) {
 				close(SocketTcpServer);
 				SocketTcpServer = 0;
@@ -218,7 +217,7 @@ void TcpServer(void) {
 }
 
 int main() {
-	long retVal
+	long retVal = ERROR;
 	// Board Initialization
 	BoardInit();
 
@@ -236,7 +235,7 @@ int main() {
 	// Display banner
 	DisplayBanner(APP_NAME);
 
-	Network_IF_InitDriver(ROLE_AP);
+	Network_IF_InitDriver();
 
 	// Starting the CC3200 networking layers
 	retVal = sl_Start(NULL, NULL, NULL);

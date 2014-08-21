@@ -51,7 +51,7 @@
 #include "utils.h"
 
 // common interface includes 
-#include "network_if.h"
+#include "wy_network_if.h"
 #include "uart_if.h"
 #include "timer_if.h"
 #include "gpio_if.h"

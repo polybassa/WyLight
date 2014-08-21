@@ -34,7 +34,7 @@
 
 #define BUFFER_SIZE 			1024
 #define BLOCKSIZE		 		64 		/* Write block size for write to MD5SHA module */
-#define SHA1_SIZE				20
+#define CHECKSUM_SIZE			32		/* In Bytes, We use SHA-256 */
 #define SUCCESS					0
 
 #define UART_PRINT          	Report
@@ -43,11 +43,15 @@
 // GLOBAL VARIABLES -- Start
 //
 // Flags to check that interrupts were successfully generated.
-volatile bool g_bContextReadyFlag;
-volatile bool g_bParthashReadyFlag;
-volatile bool g_bInputReadyFlag;
-volatile bool g_bOutputReadyFlag;
-static const unsigned char* FIRMWARE_FILENAME = "/temp/firmware.bin"
+
+volatile struct SHAMD5_StatusFlags {
+	unsigned char ContextReadyFlag :1;
+	unsigned char ParthashReadyFlag :1;
+	unsigned char InputReadyFlag :1;
+	unsigned char OutputReadyFlag :1;
+} g_SHAMD5_StatusFlags;
+
+static unsigned char* FIRMWARE_FILENAME = (unsigned char *) "/temp/firmware.bin";
 //
 // GLOBAL VARIABLES -- End
 //
@@ -70,19 +74,19 @@ static void SHAMD5IntHandler(void) {
 	ui32IntStatus = MAP_SHAMD5IntStatus(SHAMD5_BASE, true);
 	if (ui32IntStatus & SHAMD5_INT_CONTEXT_READY) {
 		MAP_SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_CONTEXT_READY);
-		g_bContextReadyFlag = true;
+		g_SHAMD5_StatusFlags.ContextReadyFlag = 1;
 	}
 	if (ui32IntStatus & SHAMD5_INT_PARTHASH_READY) {
 		MAP_SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_PARTHASH_READY);
-		g_bParthashReadyFlag = true;
+		g_SHAMD5_StatusFlags.ParthashReadyFlag = 1;
 	}
 	if (ui32IntStatus & SHAMD5_INT_INPUT_READY) {
 		MAP_SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_INPUT_READY);
-		g_bInputReadyFlag = true;
+		g_SHAMD5_StatusFlags.InputReadyFlag = 1;
 	}
 	if (ui32IntStatus & SHAMD5_INT_OUTPUT_READY) {
 		MAP_SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_OUTPUT_READY);
-		g_bOutputReadyFlag = true;
+		g_SHAMD5_StatusFlags.OutputReadyFlag = 1;
 	}
 }
 
@@ -90,17 +94,17 @@ static void SHAMD5IntHandler(void) {
 //
 //! \brief ComputeSHAFromSRAM
 //!
-//! This function computes the SHA1 from a given memory block
+//! This function computes the SHA256 from a given memory block
 //!
 //! \param[in]      pSource -- Pointer to startadress of the memory
 //! \param[in]		length -- Length of the memory block
 //! \param[out]		resultHash -- Pointer to a 20 byte array, to store computed hash
 //
 //****************************************************************************
-static void ComputeSHAFromSRAM(const uint8_t *pSource, const size_t length, uint8_t *resultHash) {
+static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *resultHash) {
 
 	UART_PRINT("Start computing hash\r\n");
-	
+
 	//Enable MD5SHA module
 	PRCMPeripheralClkEnable(PRCM_DTHE, PRCM_RUN_MODE_CLK);
 	MAP_SHAMD5IntRegister(SHAMD5_BASE, SHAMD5IntHandler);
@@ -109,18 +113,18 @@ static void ComputeSHAFromSRAM(const uint8_t *pSource, const size_t length, uint
 	PRCMPeripheralReset(PRCM_DTHE);
 
 	//clear flags
-	g_bContextReadyFlag = false;
-	g_bInputReadyFlag = false;
+	g_SHAMD5_StatusFlags.ContextReadyFlag = 0;
+	g_SHAMD5_StatusFlags.InputReadyFlag = 0;
 
 	//Enable Interrupts
 	SHAMD5IntEnable(SHAMD5_BASE, SHAMD5_INT_CONTEXT_READY | SHAMD5_INT_PARTHASH_READY | SHAMD5_INT_INPUT_READY | SHAMD5_INT_OUTPUT_READY);
 
 	//wait for context ready flag.
-	while (!g_bContextReadyFlag)
+	while (!g_SHAMD5_StatusFlags.ContextReadyFlag)
 		;
 
 	//Configure SHA/MD5 module
-	SHAMD5ConfigSet(SHAMD5_BASE, SHAMD5_ALGO_SHA1);
+	SHAMD5ConfigSet(SHAMD5_BASE, SHAMD5_ALGO_SHA256);
 
 	SHAMD5DataLengthSet(SHAMD5_BASE, (uint32_t) length);
 
@@ -143,8 +147,8 @@ static void ComputeSHAFromSRAM(const uint8_t *pSource, const size_t length, uint
 //
 //! \brief VerifySRAM
 //!
-//! This function computes the SHA1 from pSource to pSource + length - SHA1_SIZE
-//! SRAM must contains the binary with it's SHA1 at the end. The last 20 Bytes are SHA1 Checksum
+//! This function computes the SHA256 from pSource to pSource + length - SHA256_SIZE
+//! SRAM must contains the binary with it's SHA256 at the end. The last 20 Bytes are SHA256 Checksum
 //!
 //! \param[in]      pSource -- Pointer to startadress of the binary
 //! \param[in]		length -- Length of the binary plus checksum in bytes
@@ -152,18 +156,18 @@ static void ComputeSHAFromSRAM(const uint8_t *pSource, const size_t length, uint
 //! \return         0 for success and negative for error
 //
 //****************************************************************************
-static long VerifySRAM(const uint8_t *pSource, const size_t length) {
-	uint8_t firstHash[SHA1_SIZE], secoundHash[SHA1_SIZE];
-	
+static long VerifySRAM(uint8_t *pSource, const size_t length) {
+	uint8_t firstHash[CHECKSUM_SIZE], secoundHash[CHECKSUM_SIZE];
+
 	memset(firstHash, 0, sizeof(firstHash));
 	memset(secoundHash, 0, sizeof(secoundHash));
 
 	// get hash of file to verify
-	ComputeSHAFromSRAM(pSource, length - SHA1_SIZE, firstHash);
-	
+	ComputeSHAFromSRAM(pSource, length - CHECKSUM_SIZE, firstHash);
+
 	//get hash from end of SRAM
-	const void *pHash = pSource + length - SHA1_SIZE;
-	memcpy(pHash, secoundHash, SHA1_SIZE);
+	const void *pHash = pSource + length - CHECKSUM_SIZE;
+	memcpy(secoundHash, pHash, CHECKSUM_SIZE);
 
 	if (memcmp(secoundHash, firstHash, sizeof(firstHash)) != 0) {
 		UART_PRINT("\r\nHash-Sums are different\r\n");
@@ -183,7 +187,7 @@ static long VerifySRAM(const uint8_t *pSource, const size_t length) {
 //! \return         0 for success and negative for error
 //
 //****************************************************************************
-static long LoadFirmware(const unsigned char* pSourceFile) {
+static long LoadFirmware(unsigned char* pSourceFile) {
 	long fileHandle = -1;
 	unsigned long token = 0;
 	long retVal = ERROR;
@@ -191,8 +195,8 @@ static long LoadFirmware(const unsigned char* pSourceFile) {
 	size_t readsize = 0;
 	uint8_t buffer[BUFFER_SIZE];
 	SlFsFileInfo_t sFileInfo;
-	
-	memset(sFileInfo, 0, sizeof(SlFsFileInfo_t));
+
+	memset(&sFileInfo, 0, sizeof(SlFsFileInfo_t));
 
 	// get file size
 	if (SUCCESS != sl_FsGetInfo(pSourceFile, token, &sFileInfo)) {
@@ -242,13 +246,13 @@ static long LoadFirmware(const unsigned char* pSourceFile) {
 //! \return         0 for success and negative for error
 //
 //****************************************************************************
-long SaveSRAMContentAsFirmware(const uint8_t *pSource, const size_t length) {
+long SaveSRAMContentAsFirmware(uint8_t *pSource, const size_t length) {
 	long retVal = ERROR;
 	long fileHandle = -1;
 	unsigned long token = 0;
 
 	if (SUCCESS != VerifySRAM(pSource, length)) {
-		UART_PRINT("Invalid SHA1SUM");
+		UART_PRINT("Invalid SHA256SUM");
 		return ERROR;
 	}
 
@@ -269,7 +273,7 @@ long SaveSRAMContentAsFirmware(const uint8_t *pSource, const size_t length) {
 			return ERROR;
 		}
 	}
-	retVal = sl_FsWrite(fileHandle, 0,  pSource, length);
+	retVal = sl_FsWrite(fileHandle, 0, pSource, length);
 	if (retVal < 0) {
 		// Error close the file and delete the temporary file
 		retVal = sl_FsClose(fileHandle, 0, 0, 0);
@@ -322,10 +326,10 @@ long LoadAndExecuteFirmware(void) {
 		return ERROR;
 	}
 
-	if (SUCCESS != VerifySRAM(FIRMWARE_ORIGIN, retVal)) {
+	if (SUCCESS != VerifySRAM((uint8_t *) FIRMWARE_ORIGIN, retVal)) {
 		return ERROR;
 	}
-	
+
 	UART_PRINT("Starting Firmware\r\n");
 	StartFirmware();
 
