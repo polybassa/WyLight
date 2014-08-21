@@ -3,6 +3,8 @@ ANDROID_BIN=android/.metadata ${ANDROID_DIR}/bin/ ${ANDROID_DIR}/gen/ ${ANDROID_
 
 android_client:
 	$(NDK) -C $(ANDROID_DIR)
+	mkdir -p ${ANDROID_DIR}/assets/
+	cp ${OUT_DIR}/main.hex ${ANDROID_DIR}/assets/
 	
 android_clean:
 	@rm -rf $(ANDROID_BIN)
