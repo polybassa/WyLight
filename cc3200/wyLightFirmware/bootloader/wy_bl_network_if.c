@@ -72,15 +72,6 @@ typedef enum {
 	STATUS_CODE_MAX = -0xBB8
 } e_AppStatusCodes;
 
-//
-// LOCAL FUNCTION PROTOTYPES -- Start
-//
-static long ConfigureSimpleLinkToDefaultState();
-static void InitializeAppVariables();
-//
-// LOCAL FUNCTION PROTOTYPES -- End
-//
-
 void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 	UART_PRINT("[WLAN EVENT] Eventtype: %d \r\n", ((SlWlanEvent_t*) pSlWlanEvent)->Event);
 
@@ -424,19 +415,15 @@ static void InitializeAppVariables() {
 //! \return  On success, zero is returned. On error, negative is returned
 //*****************************************************************************
 static long ConfigureSimpleLinkToDefaultState() {
-	unsigned char ucVal = 1;
-	unsigned char ucConfigOpt = 0;
-	unsigned char ucPower = 0;
+	long retVal = ERROR;
+	long mode = ERROR;
 
-	long lRetVal = -1;
-	long lMode = -1;
-
-	lMode = sl_Start(0, 0, 0);
-	ASSERT_ON_ERROR(__LINE__, lMode);
+	mode = sl_Start(NULL, NULL, NULL);
+	ASSERT_ON_ERROR(__LINE__, mode);
 
 // If the device is not in station-mode, try putting it in staion-mode
-	if (ROLE_STA != lMode) {
-		if (ROLE_AP == lMode) {
+	if (ROLE_STA != mode) {
+		if (ROLE_AP == mode) {
 			// If the device is in AP mode, we need to wait for this event
 			// before doing anything
 			while (!IS_IP_ACQUIRED(g_ulStatus)) {
@@ -447,19 +434,19 @@ static long ConfigureSimpleLinkToDefaultState() {
 		}
 
 		// Switch to STA role and restart
-		lRetVal = sl_WlanSetMode(ROLE_STA);
-		ASSERT_ON_ERROR(__LINE__, lRetVal);
+		retVal = sl_WlanSetMode(ROLE_STA);
+		ASSERT_ON_ERROR(__LINE__, retVal);
 
-		lRetVal = sl_Stop(SL_STOP_TIMEOUT);
-		ASSERT_ON_ERROR(__LINE__, lRetVal);
+		retVal = sl_Stop(SL_STOP_TIMEOUT);
+		ASSERT_ON_ERROR(__LINE__, retVal);
 
 		CLR_STATUS_BIT_ALL(g_ulStatus);
 
-		lRetVal = sl_Start(0, 0, 0);
-		ASSERT_ON_ERROR(__LINE__, lRetVal);
+		retVal = sl_Start(NULL, NULL, NULL);
+		ASSERT_ON_ERROR(__LINE__, retVal);
 
 		// Check if the device is in station again
-		if (ROLE_STA != lRetVal) {
+		if (ROLE_STA != retVal) {
 			// We don't want to proceed if the device is not up in STA-mode
 			return DEVICE_NOT_IN_STATION_MODE;
 		}
@@ -471,8 +458,8 @@ static long ConfigureSimpleLinkToDefaultState() {
 // disconnected Wait for 'disconnection' event if 0 is returned, Ignore
 // other return-codes
 //
-	lRetVal = sl_WlanDisconnect();
-	if (0 == lRetVal) {
+	retVal = sl_WlanDisconnect();
+	if (0 == retVal) {
 		// Wait
 		while (IS_CONNECTED(g_ulStatus)) {
 #ifndef SL_PLATFORM_MULTI_THREADED
@@ -483,35 +470,36 @@ static long ConfigureSimpleLinkToDefaultState() {
 
 	// Set connection policy to Auto + SmartConfig
 	//      (Device's default connection policy)
-	lRetVal = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1, 0, 0, 0, 1), NULL, 0);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
+	retVal = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1, 0, 0, 0, 1), NULL, 0);
+	ASSERT_ON_ERROR(__LINE__, retVal);
 
-// Enable DHCP client
-	lRetVal = sl_NetCfgSet(SL_IPV4_STA_P2P_CL_DHCP_ENABLE, 1, 1, &ucVal);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
+	// Enable DHCP client
+	unsigned char enable = 1;
+	retVal = sl_NetCfgSet(SL_IPV4_STA_P2P_CL_DHCP_ENABLE, 1, sizeof(enable), &enable);
+	ASSERT_ON_ERROR(__LINE__, retVal);
 
-// Disable scan
-	ucConfigOpt = SL_SCAN_POLICY(0);
-	lRetVal = sl_WlanPolicySet(SL_POLICY_SCAN, ucConfigOpt, NULL, 0);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
+	// Disable scan
+	unsigned char configOpt = SL_SCAN_POLICY(0);
+	retVal = sl_WlanPolicySet(SL_POLICY_SCAN, configOpt, NULL, 0);
+	ASSERT_ON_ERROR(__LINE__, retVal);
 
-// Set Tx power level for station mode
-// Number between 0-15, as dB offset from max power - 0 will set max power
-	ucPower = 0;
-	lRetVal = sl_WlanSet(SL_WLAN_CFG_GENERAL_PARAM_ID,
-	WLAN_GENERAL_PARAM_OPT_STA_TX_POWER, sizeof(ucPower), (unsigned char *) &ucPower);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
+	// Set Tx power level for station mode
+	// Number between 0ERROR5, as dB offset from max power - 0 will set max power
+	unsigned char power = 0;
+	retVal = sl_WlanSet(SL_WLAN_CFG_GENERAL_PARAM_ID,
+	WLAN_GENERAL_PARAM_OPT_STA_TX_POWER, sizeof(power), (unsigned char *) &power);
+	ASSERT_ON_ERROR(__LINE__, retVal);
 
-// Set PM policy to normal
-	lRetVal = sl_WlanPolicySet(SL_POLICY_PM, SL_NORMAL_POLICY, NULL, 0);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
+	// Set PM policy to normal
+	retVal = sl_WlanPolicySet(SL_POLICY_PM, SL_NORMAL_POLICY, NULL, 0);
+	ASSERT_ON_ERROR(__LINE__, retVal);
 
-	lRetVal = sl_Stop(SL_STOP_TIMEOUT);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
+	retVal = sl_Stop(SL_STOP_TIMEOUT);
+	ASSERT_ON_ERROR(__LINE__, retVal);
 
 	InitializeAppVariables();
 
-	return lRetVal; // Success
+	return retVal; // Success
 }
 
 //****************************************************************************
@@ -521,29 +509,30 @@ static long ConfigureSimpleLinkToDefaultState() {
 //! \param none
 //!
 //! This function
-//!    1. Starts Device in STA Mode
-//!    2. Scans and Stores all the AP
-//!    3. Switch to AP Mode and Wait for AP Configuration from Browser
-//!    4. Switch to STA Mode and Connect to Configured AP
+//!    1. Starts Device
+//!    2. Switch to AP Mode
+//!	   3. Sets SSID and Security Type
+//!    4. Starts AP
 //!
 //! \return None.
 //
 //****************************************************************************
-long Network_IF_StartSimpleLinkAsAP() {
-	long lRetVal = -1;
+long Network_IF_StartSimpleLinkAsAP(void) {
+	long retVal = ERROR;
 
-	lRetVal = sl_Start(NULL, NULL, NULL);
-	if (lRetVal < 0) {
+	retVal = sl_Start(NULL, NULL, NULL);
+	if (retVal < 0) {
 		UART_PRINT("Failed to start the device \n\r");
 		LOOP_FOREVER(__LINE__);
 	}
 
-	if (lRetVal == ROLE_AP) {
+	if (retVal == ROLE_AP) {
 		UART_PRINT("Device started as Bootloader AP \n\r");
 		//Device in AP-Mode, Wait for initialization to complete
 		while (!IS_IP_ACQUIRED(g_ulStatus)) {
+#ifndef SL_PLATFORM_MULTI_THREADED
 			_SlNonOsMainLoopTask();
-			MAP_UtilsDelay(100);
+#endif
 		}
 	}
 
@@ -551,12 +540,12 @@ long Network_IF_StartSimpleLinkAsAP() {
 	sl_WlanSetMode(ROLE_AP);
 
 	unsigned char ssid[] = "WyLightBootloaderAP";
-	lRetVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, 0, strlen((const char *) ssid), ssid);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
+	retVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, 0, strlen((const char *) ssid), ssid);
+	ASSERT_ON_ERROR(__LINE__, retVal);
 
 	unsigned char val = SL_SEC_TYPE_OPEN;
-	lRetVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, WLAN_AP_OPT_SECURITY_TYPE, 1, (unsigned char *) &val);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
+	retVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, WLAN_AP_OPT_SECURITY_TYPE, 1, (unsigned char *) &val);
+	ASSERT_ON_ERROR(__LINE__, retVal);
 
 	sl_Stop(SL_STOP_TIMEOUT);
 	CLR_STATUS_BIT_ALL(g_ulStatus);
@@ -566,8 +555,9 @@ long Network_IF_StartSimpleLinkAsAP() {
 	UART_PRINT("Start Bootloader AP\r\n");
 	//Wait for Ip Acquired Event in AP Mode
 	while (!IS_IP_ACQUIRED(g_ulStatus) && !IS_CONNECTED(g_ulStatus)) {
-		MAP_UtilsDelay(100);
+#ifndef SL_PLATFORM_MULTI_THREADED
 		_SlNonOsMainLoopTask();
+#endif
 	}
 
 	return SUCCESS;
@@ -578,18 +568,16 @@ long Network_IF_StartSimpleLinkAsAP() {
 //! Network_IF_InitDriver
 //! The function initializes a CC3200 device and triggers it to start operation
 //!
-//! \param  uiMode (device mode in which device will be configured)
-//!
 //! \return none
 //
 //*****************************************************************************
-void Network_IF_InitDriver(unsigned int uiMode) {
-	long lRetVal = -1;
+void Network_IF_InitDriver(void) {
+	long retVal = ERROR;
 
 	InitializeAppVariables();
-	lRetVal = ConfigureSimpleLinkToDefaultState();
-	if (lRetVal < 0) {
-		if (DEVICE_NOT_IN_STATION_MODE == lRetVal)
+	retVal = ConfigureSimpleLinkToDefaultState();
+	if (retVal < 0) {
+		if (DEVICE_NOT_IN_STATION_MODE == retVal)
 		UART_PRINT("Failed to configure the device in its default state \n\r");
 
 		LOOP_FOREVER(__LINE__);

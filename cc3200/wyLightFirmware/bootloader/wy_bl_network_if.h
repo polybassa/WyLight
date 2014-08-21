@@ -67,7 +67,10 @@ extern "C" {
 // check the error code and handle it
 #define ASSERT_ON_ERROR(line_number, error_code) \
             {\
-                if (error_code < 0) return error_code;\
+				if (error_code < 0){ \
+					UART_PRINT("%d: Assert Error: %d\r\n", line_number, error_code); \
+					return error_code;\
+				} \
             }
 
 #define UNUSED(x) 				((x) = (x))
@@ -158,9 +161,9 @@ extern unsigned char g_ucConnectionBSSID[BSSID_LEN_MAX]; /* Connection BSSID */
 // API Function prototypes
 //
 //*****************************************************************************
-extern void Network_IF_InitDriver(unsigned int uiMode);
+extern void Network_IF_InitDriver(void);
 extern void Network_IF_DeInitDriver(void);
-extern long Network_IF_StartSimpleLinkAsAP();
+extern long Network_IF_StartSimpleLinkAsAP(void);
 
 //*****************************************************************************
 //

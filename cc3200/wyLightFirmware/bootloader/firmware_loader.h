@@ -22,14 +22,10 @@
 #include <stdint.h>
 
 #define FIRMWARE_ORIGIN 	0x20014000
-#define BUFFER_SIZE 		1024
 
-#define FIRMWARE_FILENAME	"/temp/firmware.bin\0"
-#define SHA1SUM_FILENAME	"/temp/firmware.sha\0"
-
-int LoadAndExecuteFirmware(void);
+long LoadAndExecuteFirmware(void);
 void StartFirmware(void);
-long SaveSRAMContentAsFirmware(const unsigned char *pSource, const unsigned long length);
+long SaveSRAMContentAsFirmware(const uint8_t *pSource, const size_t length);
 
 
 #endif /* FIRMWARE_DOWNLOAD_H_ */

@@ -44,7 +44,6 @@
 
 #define UART_PRINT          Report
 #define APP_NAME            "WyLight Bootloader"
-#define SERVER_PORT			2000
 
 //
 // GLOBAL VARIABLES -- Start
@@ -56,7 +55,8 @@ extern void (* const g_pfnVectors[])(void);
 extern uVectorEntry __vector_table;
 #endif
 
-int g_iSockID;
+static const unsigned short SERVER_PORT = 2000;
+static const char *APP_NAME = "WyLight Bootloader";
 //
 // GLOBAL VARIABLES -- End
 //
@@ -112,12 +112,12 @@ static void BoardInit(void) {
 }
 
 static int ReadJumper() {
-	unsigned int uiGPIOPort;
-	unsigned char pucGPIOPin;
+	unsigned int GPIOPort;
+	unsigned char GPIOPin;
 
 //Read GPIO
-	GPIO_IF_GetPortNPin(SH_GPIO_3, &uiGPIOPort, &pucGPIOPin);
-	return GPIO_IF_Get(SH_GPIO_3, uiGPIOPort, pucGPIOPin);
+	GPIO_IF_GetPortNPin(SH_GPIO_3, &GPIOPort, &GPIOPin);
+	return GPIO_IF_Get(SH_GPIO_3, GPIOPort, GPIOPin);
 }
 
 #define BUFFERSIZE 1024
@@ -134,7 +134,8 @@ void TcpServer(void) {
 		volatile int SocketTcpServer, SocketTcpChild;
 		uint8_t buffer[BUFFERSIZE];
 
-		SlSockAddrIn_t LocalAddr;
+		// TODO: make this const
+		sockaddr_in LocalAddr;
 		LocalAddr.sin_family = AF_INET;
 		LocalAddr.sin_port = htons(SERVER_PORT);
 		LocalAddr.sin_addr.s_addr = 0;
@@ -142,34 +143,39 @@ void TcpServer(void) {
 		SocketTcpServer = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
 		int nonBlocking = 1;
-		if (0 != setsockopt(SocketTcpServer, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking))) {
+		if (SUCCESS != setsockopt(SocketTcpServer, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking))) {
 			UART_PRINT(" Setsockopt ERROR \r\n");
 		}
 
-		if (bind(SocketTcpServer, (sockaddr *) &LocalAddr, sizeof(LocalAddr)) < 0) {
+		if (SUCCESS != bind(SocketTcpServer, (sockaddr *) &LocalAddr, sizeof(LocalAddr))) {
 			UART_PRINT(" Bind Error\n\r");
 			close(SocketTcpServer);
 			LOOP_FOREVER(__LINE__);
 		}
 		// Backlog = 1 to accept maximal 1 connection
-		if (listen(SocketTcpServer, 1) < 0) {
+		if (SUCCESS != listen(SocketTcpServer, 1)) {
 			UART_PRINT(" Listen Error\n\r");
 			close(SocketTcpServer);
 			LOOP_FOREVER(__LINE__);
 		}
 
 		while (SocketTcpServer > 0) {
-			SocketTcpChild = accept(SocketTcpServer, (SlSockAddr_t *) &RemoteAddr, &RemoteAddrLen);
-
+			SocketTcpChild = accept(SocketTcpServer, (sockaddr *) &RemoteAddr, &RemoteAddrLen);
+			
 			if (SocketTcpChild == EAGAIN) {
 				_SlNonOsMainLoopTask();
 				continue;
+			} else if (SocketTcpChild < 0) {
+				UART_PRINT("Error: %d occured on accept", SocketTcpChild);
+				close(SocketTcpServer);
+				SocketTcpServer = 0;
+				break;
 			}
 
 			UART_PRINT(" Connected TCP Client\r\n");
 			unsigned char *pFirmware;
 			pFirmware = (unsigned char *) FIRMWARE_ORIGIN;
-			UART_PRINT(" Start writing Firmware at 0x%x \r\n", FIRMWARE_ORIGIN);
+			UART_PRINT(" Start writing Firmware at 0x%x \r\n", pFirmware);
 
 			while (SocketTcpChild > 0  && IS_CONNECTED(g_ulStatus)) {
 				memset(buffer, sizeof(buffer), 0);
@@ -187,7 +193,8 @@ void TcpServer(void) {
 					}
 					case 0: {
 						// get return 0 if socket closed
-						if (SUCCESS == SaveSRAMContentAsFirmware((const unsigned char *)FIRMWARE_ORIGIN, (unsigned long)pFirmware - (unsigned long)FIRMWARE_ORIGIN)) {
+						size_t length = pFirmware - FIRMWARE_ORIGIN;
+						if (SUCCESS == SaveSRAMContentAsFirmware((const unsigned char *)FIRMWARE_ORIGIN, length)) {
 							close(SocketTcpChild);
 							StartFirmware();
 						}
@@ -200,6 +207,7 @@ void TcpServer(void) {
 					}
 				}
 			}
+			
 			if (!IS_CONNECTED(g_ulStatus)) {
 				close(SocketTcpServer);
 				SocketTcpServer = 0;
@@ -210,8 +218,7 @@ void TcpServer(void) {
 }
 
 int main() {
-	long lRetVal = -1;
-
+	long retVal
 	// Board Initialization
 	BoardInit();
 
@@ -232,13 +239,13 @@ int main() {
 	Network_IF_InitDriver(ROLE_AP);
 
 	// Starting the CC3200 networking layers
-	lRetVal = sl_Start(NULL, NULL, NULL);
-	if (lRetVal < 0) {
+	retVal = sl_Start(NULL, NULL, NULL);
+	if (retVal < 0) {
 		GPIO_IF_LedOn(MCU_RED_LED_GPIO);
-		return -1;
+		LOOP_FOREVER(__LINE__);
 	}
 
-	if (lRetVal == ROLE_AP) {
+	if (retVal == ROLE_AP) {
 		while (!IS_IP_ACQUIRED(g_ulStatus)) {
 			_SlNonOsMainLoopTask();
 		}
@@ -246,13 +253,12 @@ int main() {
 
 	if (ReadJumper() == 0) {
 
-		lRetVal = LoadAndExecuteFirmware();
-		if (lRetVal == ERROR) {
+		if (ERROR == LoadAndExecuteFirmware()) {
 			UART_PRINT("Firmware corrupt\r\n");
 			GPIO_IF_LedOn(MCU_RED_LED_GPIO);
 		}
 	}
-
+	GPIO_IF_LedOn(MCU_ORANGE_LED_GPIO);
 	Network_IF_StartSimpleLinkAsAP();
 
 	TcpServer();
