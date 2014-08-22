@@ -56,6 +56,7 @@ extern uVectorEntry __vector_table;
 
 static const unsigned short SERVER_PORT = 2000;
 static const char APP_NAME[] = "WyLight Bootloader";
+static const unsigned long BOOTLOADER_VERSION = 0;
 //
 // GLOBAL VARIABLES -- End
 //
@@ -123,6 +124,13 @@ static int ReadJumper() {
 
 void TcpServer(void) {
 
+	uint8_t welcomeMessage[30];
+	memset(welcomeMessage, 0, sizeof(welcomeMessage));
+	unsigned long nBootloaderVersion = htonl(BOOTLOADER_VERSION);
+	memcpy(welcomeMessage, &nBootloaderVersion, sizeof(nBootloaderVersion));
+	const char greeting[] = "WyLightBootloader";
+	memcpy((char *)&welcomeMessage[4], greeting, sizeof(greeting));
+
 	while (1) {
 		while (!IS_CONNECTED(g_ulStatus)) {
 			_SlNonOsMainLoopTask();
@@ -175,6 +183,12 @@ void TcpServer(void) {
 			uint8_t *pFirmware;
 			pFirmware = (unsigned char *) FIRMWARE_ORIGIN;
 			UART_PRINT(" Start writing Firmware at 0x%x \r\n", pFirmware);
+
+			int bytesSend = send(SocketTcpChild, welcomeMessage, sizeof(greeting) + sizeof(nBootloaderVersion), 0);
+			if (bytesSend < 0) {
+				close(SocketTcpChild);
+				SocketTcpChild = 0;
+			}
 
 			while (SocketTcpChild > 0 && IS_CONNECTED(g_ulStatus)) {
 				memset(buffer, sizeof(buffer), 0);
