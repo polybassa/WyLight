@@ -175,6 +175,9 @@ static long VerifySRAM(uint8_t *pSource, const size_t length) {
 
 	//get hash from end of SRAM
 	const void *pHash = pSource + length - CHECKSUM_SIZE;
+	if (pHash <= pSource) {
+		return ERROR;
+	}
 	memcpy(secoundHash, pHash, CHECKSUM_SIZE);
 
 	if (memcmp(secoundHash, firstHash, sizeof(firstHash)) != 0) {
