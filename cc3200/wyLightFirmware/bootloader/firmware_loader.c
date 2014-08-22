@@ -103,7 +103,14 @@ static void SHAMD5IntHandler(void) {
 //****************************************************************************
 static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *resultHash) {
 
+	if (length == 0) {
+		return;
+	}
+
 	UART_PRINT("Start computing hash\r\n");
+	//clear flags
+	g_SHAMD5_StatusFlags.ContextReadyFlag = 0;
+	g_SHAMD5_StatusFlags.InputReadyFlag = 0;
 
 	//Enable MD5SHA module
 	PRCMPeripheralClkEnable(PRCM_DTHE, PRCM_RUN_MODE_CLK);
@@ -112,16 +119,13 @@ static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *r
 	//reset modul
 	PRCMPeripheralReset(PRCM_DTHE);
 
-	//clear flags
-	g_SHAMD5_StatusFlags.ContextReadyFlag = 0;
-	g_SHAMD5_StatusFlags.InputReadyFlag = 0;
-
 	//Enable Interrupts
 	SHAMD5IntEnable(SHAMD5_BASE, SHAMD5_INT_CONTEXT_READY | SHAMD5_INT_PARTHASH_READY | SHAMD5_INT_INPUT_READY | SHAMD5_INT_OUTPUT_READY);
 
 	//wait for context ready flag.
 	while (!g_SHAMD5_StatusFlags.ContextReadyFlag)
-		;
+		_SlNonOsMainLoopTask();
+	;
 
 	//Configure SHA/MD5 module
 	SHAMD5ConfigSet(SHAMD5_BASE, SHAMD5_ALGO_SHA256);
@@ -158,6 +162,10 @@ static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *r
 //****************************************************************************
 static long VerifySRAM(uint8_t *pSource, const size_t length) {
 	uint8_t firstHash[CHECKSUM_SIZE], secoundHash[CHECKSUM_SIZE];
+
+	if (length == 0) {
+		return ERROR;
+	}
 
 	memset(firstHash, 0, sizeof(firstHash));
 	memset(secoundHash, 0, sizeof(secoundHash));
@@ -250,6 +258,10 @@ long SaveSRAMContentAsFirmware(uint8_t *pSource, const size_t length) {
 	long retVal = ERROR;
 	long fileHandle = -1;
 	unsigned long token = 0;
+
+	if (length == 0) {
+		return ERROR;
+	}
 
 	if (SUCCESS != VerifySRAM(pSource, length)) {
 		UART_PRINT("Invalid SHA256SUM");
