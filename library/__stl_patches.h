@@ -19,7 +19,7 @@
 #ifndef ___stl_patches_h
 #define ___stl_patches_h
 #ifdef ANDROID
-#warning "Check for a new android-ndk > r9d to avoid using this selfmade implementation"
+#warning "Check for a new android-ndk > r10 to avoid using this selfmade implementation"
 #include <sstream>
 namespace std {
 	template <class T>
