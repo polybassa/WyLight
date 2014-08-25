@@ -256,3 +256,15 @@ cc3200/WiFi-Starter-iOS-App/powerbutton_fullsize.jpg
 cc3200/WiFi-Starter-iOS-App/powerbutton_fullsize.png
 cc3200/WiFi-Starter-iOS-App/powerbutton_fullsize_sm.png
 cc3200/WiFi-Starter-iOS-App/smart_config_app_ENC5.py
+cc3200_gcc/bl/gcc/exe/WyLight_bl.axf
+cc3200_gcc/bl/gcc/obj/cpu.d
+cc3200_gcc/bl/gcc/obj/flash.d
+cc3200_gcc/bl/gcc/obj/interrupt.d
+cc3200_gcc/bl/gcc/obj/main.d
+cc3200_gcc/bl/gcc/obj/pin.d
+cc3200_gcc/bl/gcc/obj/pinmux.d
+cc3200_gcc/bl/gcc/obj/prcm.d
+cc3200_gcc/bl/gcc/obj/startup_gcc.d
+cc3200_gcc/bl/gcc/obj/uart.d
+cc3200_gcc/bl/gcc/obj/uart_if.d
+cc3200_gcc/bl/gcc/obj/utils.d

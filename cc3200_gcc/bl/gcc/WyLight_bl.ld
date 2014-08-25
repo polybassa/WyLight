@@ -1,15 +1,15 @@
 
 MEMORY
 {
-    FLASH (rx) : ORIGIN = 0x20004000, LENGTH = 0xBFFF
-    SRAM (rwx) : ORIGIN = 0x20010000, LENGTH = 0x3FFF
+    FLASH (rwx) : ORIGIN = 0x20004000, LENGTH = 0xBFFF
+    SRAM  (rwx) : ORIGIN = 0x20010000, LENGTH = 0x3FFF
 }
 
 SECTIONS
 {
     .text :
     {
-        KEEP(*(.isr_vector))
+        KEEP(*(.intvecs))
         *(.text*)
         *(.rodata*)
         _etext = .;
