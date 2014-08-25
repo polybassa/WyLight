@@ -7,10 +7,10 @@ CMD_SRCS += \
 ../cc3200v1p32.cmd 
 
 C_SRCS += \
-C:/ti/CC3200SDK/cc3200-sdk/example/common/gpio_if.c \
-C:/ti/CC3200SDK/cc3200-sdk/example/getting_started_with_wlan_station/main.c \
-C:/ti/CC3200SDK/cc3200-sdk/example/getting_started_with_wlan_station/pinmux.c \
-C:/ti/CC3200SDK/cc3200-sdk/example/common/uart_if.c 
+F:/Wifly_Light/Software/cc3200/example/common/gpio_if.c \
+F:/Wifly_Light/Software/cc3200/example/getting_started_with_wlan_station/main.c \
+F:/Wifly_Light/Software/cc3200/example/getting_started_with_wlan_station/pinmux.c \
+F:/Wifly_Light/Software/cc3200/example/common/uart_if.c 
 
 OBJS += \
 ./gpio_if.obj \
@@ -37,9 +37,9 @@ OBJS__QUOTED += \
 "uart_if.obj" 
 
 C_SRCS__QUOTED += \
-"C:/ti/CC3200SDK/cc3200-sdk/example/common/gpio_if.c" \
-"C:/ti/CC3200SDK/cc3200-sdk/example/getting_started_with_wlan_station/main.c" \
-"C:/ti/CC3200SDK/cc3200-sdk/example/getting_started_with_wlan_station/pinmux.c" \
-"C:/ti/CC3200SDK/cc3200-sdk/example/common/uart_if.c" 
+"F:/Wifly_Light/Software/cc3200/example/common/gpio_if.c" \
+"F:/Wifly_Light/Software/cc3200/example/getting_started_with_wlan_station/main.c" \
+"F:/Wifly_Light/Software/cc3200/example/getting_started_with_wlan_station/pinmux.c" \
+"F:/Wifly_Light/Software/cc3200/example/common/uart_if.c" 
 
 
