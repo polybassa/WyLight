@@ -1,8 +1,7 @@
 
 MEMORY
 {
-    FLASH (rwx) : ORIGIN = 0x20004000, LENGTH = 0xBFFF
-    SRAM  (rwx) : ORIGIN = 0x20010000, LENGTH = 0x3FFF
+    SRAM  (rwx) : ORIGIN = 0x20004000, LENGTH = 0x2FFFF
 }
 
 SECTIONS
@@ -12,8 +11,18 @@ SECTIONS
         KEEP(*(.intvecs))
         *(.text*)
         *(.rodata*)
+        *(.ARM.extab* .gnu.linkonce.armextab.*)
+		. = ALIGN(8);
         _etext = .;
-    } > FLASH
+    } > SRAM
+
+	.ARM : {
+    __exidx_start = .;
+      *(.ARM.exidx*)
+      __exidx_end = .;
+    } > SRAM
+
+    __init_data = .;
 
     .data : AT (ADDR(.text) + SIZEOF(.text) + 0x500)
     {
