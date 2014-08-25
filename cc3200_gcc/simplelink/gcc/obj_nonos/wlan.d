@@ -1,6 +1,5 @@
-obj/wlan.o: ../../simplelink/source/wlan.c \
- ../../simplelink/source/datatypes.h \
- ../../simplelink/include/simplelink.h ../../simplelink/include/../user.h \
+obj_nonos/wlan.o: ../source/wlan.c ../source/datatypes.h \
+ ../include/simplelink.h ../include/../user.h \
  /usr/local/gcc-arm-none-eabi-4_8-2014q2/arm-none-eabi/include/string.h \
  /usr/local/gcc-arm-none-eabi-4_8-2014q2/arm-none-eabi/include/_ansi.h \
  /usr/local/gcc-arm-none-eabi-4_8-2014q2/arm-none-eabi/include/newlib.h \
@@ -16,13 +15,9 @@ obj/wlan.o: ../../simplelink/source/wlan.c \
  /usr/local/gcc-arm-none-eabi-4_8-2014q2/arm-none-eabi/include/sys/lock.h \
  /usr/local/gcc-arm-none-eabi-4_8-2014q2/lib/gcc/arm-none-eabi/4.8.4/include-fixed/sys/cdefs.h \
  /usr/local/gcc-arm-none-eabi-4_8-2014q2/arm-none-eabi/include/sys/string.h \
- ../../simplelink/include/../cc_pal.h \
- ../../simplelink/include/../source/nonos.h \
- ../../simplelink/include/../source/objInclusion.h \
- ../../simplelink/include/../source/datatypes.h \
- ../../simplelink/include/trace.h ../../simplelink/include/simplelink.h \
- ../../simplelink/include/fs.h ../../simplelink/include/socket.h \
- ../../simplelink/include/netapp.h ../../simplelink/include/wlan.h \
- ../../simplelink/include/device.h ../../simplelink/include/netcfg.h \
- ../../simplelink/include/wlan_rx_filters.h \
- ../../simplelink/source/protocol.h ../../simplelink/source/driver.h
+ ../include/../cc_pal.h ../include/../source/nonos.h \
+ ../include/../source/objInclusion.h ../include/../source/datatypes.h \
+ ../include/trace.h ../include/simplelink.h ../include/fs.h \
+ ../include/socket.h ../include/netapp.h ../include/wlan.h \
+ ../include/device.h ../include/netcfg.h ../include/wlan_rx_filters.h \
+ ../source/protocol.h ../source/driver.h

@@ -95,29 +95,29 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/startup_${COMPILER}.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart_if.o
 
 #driverLib
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/cpu.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/flash.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/interrupt.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/pin.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/prcm.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/utils.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/shamd5.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/udma.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/spi.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/gpio.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/cpu.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/flash.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/interrupt.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/pin.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/prcm.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/utils.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/shamd5.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/udma.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/spi.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/gpio.o
 
 # simplelink
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/socket.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/nonos.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/fs.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/device.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wlan.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/driver.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/netcfg.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/cc_pal.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/flowcont.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/netapp.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/socket.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/nonos.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/fs.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/device.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wlan.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/driver.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/netcfg.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/cc_pal.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/flowcont.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/netapp.o
 
 #${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/tmp006drv.o
 #${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/bma222drv.o
@@ -127,15 +127,15 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/gpio_if.o
 #${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart_if.o
 #${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/udma_if.o
 #${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wlan.o
-#${BINDIR}/${PRJ_NAME}.axf: ${ROOT}/simplelink/${COMPILER}/${BINDIR}/simplelink.a
-#${BINDIR}/${PRJ_NAME}.axf: ${ROOT}/driverlib/${COMPILER}/${BINDIR}/libdriver.a
+${BINDIR}/${PRJ_NAME}.axf: ${ROOT}/simplelink/${COMPILER}/${BINDIR}/simplelink_nonos.a
+${BINDIR}/${PRJ_NAME}.axf: ${ROOT}/driverlib/${COMPILER}/${BINDIR}/libdriver.a
 #${BINDIR}/${PRJ_NAME}.axf: ${ROOT}/oslib/${COMPILER}/${BINDIR}/FreeRTOS.a
 
 # select linker script
 SCATTERgcc_${PRJ_NAME}=${PRJ_NAME}.ld
 
-#ENTRY_websocket=ResetISR
-#CFLAGSgcc=-DTARGET_IS_BLIZZARD_RB1
+ENTRY_${PRJ_NAME}=ResetISR
+CFLAGSgcc=-DTARGET_IS_BLIZZARD_RB1
 
 #
 # Include the automatically generated dependency files.
