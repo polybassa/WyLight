@@ -31,7 +31,7 @@
 //#include "wylightAdaption.h"
 
 //Common interface includes
-#include "network_if.h"
+#include "wy_network_if.h"
 
 #define APPLICATION_NAME        "WyLight Firmware"
 #define APPLICATION_VERSION     "1.0.0"

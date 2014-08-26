@@ -38,7 +38,7 @@
 #endif
 
 //Common interface includes
-#include "network_if.h"
+#include "wy_network_if.h"
 
 //WyLight adaption includes
 //#include "RingBuf.h"
