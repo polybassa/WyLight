@@ -134,7 +134,7 @@ extern "C" {
 #define ARG_CHECK_PTR(Ptr)
 #endif
 
-#define SL_DBG_TRACE_ENABLE
+//#define SL_DBG_TRACE_ENABLE
 #ifdef SL_DBG_TRACE_ENABLE
 #define SL_TRACE0(level,msg_id,str)                     printf(str)
 #define SL_TRACE1(level,msg_id,str,p1)                  printf(str,(p1))
