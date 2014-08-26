@@ -46,17 +46,12 @@
 //
 //*****************************************************************************
 
-#include "wlan.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "osi.h"
-#ifdef USE_FREERTOS
-#include "FreeRTOS.h"
-#include "task.h"
-#endif
+#include "wlan.h"
 
 // Loop forever, user can change it as per application's requirement
 #define LOOP_FOREVER(line_number) \
