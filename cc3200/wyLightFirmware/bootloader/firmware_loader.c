@@ -16,8 +16,6 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "firmware_loader.h"
-
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -31,6 +29,8 @@
 #include "rom_map.h"
 #include "prcm.h"
 #include "wy_bl_network_if.h"
+#include "firmware_loader.h"
+
 
 #define BUFFER_SIZE 			1024
 #define BLOCKSIZE		 		64 		/* Write block size for write to MD5SHA module */
@@ -175,7 +175,7 @@ static long VerifySRAM(uint8_t *pSource, const size_t length) {
 
 	//get hash from end of SRAM
 	const void *pHash = pSource + length - CHECKSUM_SIZE;
-	if (pHash <= pSource) {
+	if ((uint32_t)pHash <= (uint32_t)pSource) {
 		return ERROR;
 	}
 	memcpy(secoundHash, pHash, CHECKSUM_SIZE);

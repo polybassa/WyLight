@@ -20,7 +20,7 @@
 #define FIRMWARE_LOADER_H_
 
 #include <stdint.h>
-#include <stdio.h>
+#include <stddef.h>
 
 #define FIRMWARE_ORIGIN 	0x20012000
 

@@ -36,10 +36,6 @@
 //
 //*****************************************************************************
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
 // Simplelink includes 
 #include "simplelink.h"
 
