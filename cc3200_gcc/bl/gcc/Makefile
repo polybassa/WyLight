@@ -86,10 +86,10 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/pinmux.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/firmware_loader.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_bl_network_if.o
 
-
 # common
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/startup_${COMPILER}.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart_if.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/gpio_if.o	
 
 #driverLib
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/cpu.o
@@ -120,10 +120,12 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/netapp.o
 #${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/bma222drv.o
 #${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/network_if.o
 #${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/timer_if.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/gpio_if.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart_if.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/gpio_if.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart_if.o
 #${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/udma_if.o
 #${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wlan.o
+#${BINDIR}/${PRJ_NAME}.axf: ${ROOT}/simplelink/${COMPILER}/${BINDIR}/simplelink_nonos.a
+#${BINDIR}/${PRJ_NAME}.axf: ${ROOT}/driverlib/${COMPILER}/${BINDIR}/libdriver.a
 
 # select linker script
 SCATTERgcc_${PRJ_NAME}=${PRJ_NAME}.ld

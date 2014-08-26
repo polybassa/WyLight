@@ -21,7 +21,7 @@
 #include "hw_memmap.h"
 
 // SimpleLink includes
-#include "socket.h"
+#include "simplelink.h"
 
 // driverlib includes
 #include "rom.h"
@@ -44,12 +44,7 @@
 //
 // GLOBAL VARIABLES -- Start
 //
-#if defined(ccs) || defined(gcc)
 extern void (* const g_pfnVectors[])(void);
-#endif
-#if defined(ewarm)
-extern uVectorEntry __vector_table;
-#endif
 
 static const unsigned short SERVER_PORT = 2000;
 static const char APP_NAME[] = "WyLight Bootloader";
@@ -88,17 +83,11 @@ static void DisplayBanner(const char * AppName) {
 //*****************************************************************************
 static void BoardInit(void) {
 	/* In case of TI-RTOS vector table is initialize by OS itself */
-#ifndef USE_TIRTOS
 	//
 	// Set vector table base
 	//
-#if defined(ccs) || defined(gcc)
 	MAP_IntVTableBaseSet((unsigned long) &g_pfnVectors[0]);
-#endif
-#if defined(ewarm)
-	MAP_IntVTableBaseSet((unsigned long)&__vector_table);
-#endif
-#endif
+
 	//
 	// Enable Processor
 	//

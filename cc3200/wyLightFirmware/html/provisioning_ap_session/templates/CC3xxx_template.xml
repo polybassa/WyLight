@@ -98,7 +98,7 @@
       <Type>blob</Type>
       <Storage>SFLASH</Storage>
       <MaxSize>0</MaxSize>
-      <url>F:\Wifly_Light\Software\cc3200\wyLightFirmware\bootloader\ccs\Release\wylightBootloader.bin</url>
+      <url>F:\Wifly_Light\Software\cc3200_gcc\bl\gcc\exe\WyLight_bl.bin</url>
       <mode>
          <ModeEntry name="Rollback" checked="false"/>
          <ModeEntry name="Secured" checked="false"/>
@@ -106,7 +106,7 @@
          <ModeEntry name="StaticToken" checked="false"/>
          <ModeEntry name="VendorToken" checked="false"/>
          <ModeEntry name="PublicWrite" checked="false"/>
-         <ModeEntry name="PublicRead" checked="false"/>
+         <ModeEntry name="PublicRead" checked="true"/>
       </mode>
       <verify>true</verify>
       <Update>true</Update>
