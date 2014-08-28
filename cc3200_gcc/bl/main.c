@@ -236,6 +236,7 @@ int main() {
 	DisplayBanner(APP_NAME);
 
 	Network_IF_InitDriver();
+	
 
 	// Starting the CC3200 networking layers
 	retVal = sl_Start(NULL, NULL, NULL);
@@ -244,11 +245,13 @@ int main() {
 		LOOP_FOREVER(__LINE__);
 	}
 
+	UART_PRINT("Role: 0x%x\n", retVal);
 	if (retVal == ROLE_AP) {
 		while (!IS_IP_ACQUIRED(g_ulStatus)) {
 			_SlNonOsMainLoopTask();
 		}
 	}
+	GPIO_IF_LedOn(MCU_GREEN_LED_GPIO);
 
 	if (ReadJumper() == 0) {
 
