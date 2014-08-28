@@ -57,12 +57,7 @@ static void BoardInit(void);
 //
 // GLOBAL VARIABLES -- Start
 //
-#if defined(ccs)
 extern void (* const g_pfnVectors[])(void);
-#endif
-#if defined(ewarm)
-extern uVectorEntry __vector_table;
-#endif
 //
 // GLOBAL VARIABLES -- End
 //
