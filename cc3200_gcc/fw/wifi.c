@@ -84,7 +84,7 @@ void Main_Task(void *pvParameters) {
 	memset(FilterPrePreparedFiltersMask, 0, sizeof(FilterPrePreparedFiltersMask));
 	FilterPrePreparedFiltersMask[0] = 0x00;
 
-	lRetVal = WlanConnect();
+	//lRetVal = WlanConnect();
 	//TODO: make something with this return Value
 
 	while (1) {

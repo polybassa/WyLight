@@ -984,12 +984,12 @@ static long StartSimpleLinkAsAP() {
 		UART_PRINT("Start AP\r\n");
 		//Wait for Ip Acquired Event in AP Mode
 		while (!IS_IP_ACQUIRED(g_ulStatus)) {
-			MAP_UtilsDelay(100);
+			osi_Sleep(100);
 		}
 
 		// Wait for AP Configuration, Open Browser and Configure AP
 		while (g_ucProfileAdded && !g_ucProvisioningDone) {
-			MAP_UtilsDelay(100);
+			osi_Sleep(100);
 		}
 
 		g_ucProfileAdded = 1;
@@ -1002,7 +1002,7 @@ static long StartSimpleLinkAsAP() {
 
 		CLR_STATUS_BIT_ALL(g_ulStatus);
 
-		//MAP_UtilsDelay(10000000);
+		osi_Sleep(500);
 		sl_Start(NULL, NULL, NULL);
 
 		// Connect to the Configured Access Point
