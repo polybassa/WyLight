@@ -14,7 +14,6 @@ library/BroadcastReceiver.o
 library/ComProxy.o
 library/intelhexclass.o
 *.eps
-
 UserInterfaceState.xcuserstate
 TestRecentEndpoints.txt
 TestRecentEndpoints2.txt
