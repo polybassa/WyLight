@@ -29,6 +29,7 @@
 #include "rom_map.h"
 #include "prcm.h"
 #include "wy_bl_network_if.h"
+#include "hw_nvic.h"
 #include "firmware_loader.h"
 
 
@@ -312,7 +313,7 @@ void StartFirmware(void) {
 
 	// patch Interrupt Vector Table
 	unsigned int *pVectorTableOffset;
-	pVectorTableOffset = (unsigned int *) 0xe000ed08;
+	pVectorTableOffset = (unsigned int *) NVIC_VTABLE;
 	*pVectorTableOffset = FIRMWARE_ORIGIN;
 
 	// call Firmware

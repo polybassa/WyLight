@@ -356,3 +356,11 @@ cc3200_gcc/fw/gcc/obj/udma.d
 cc3200_gcc/fw/gcc/obj/utils.d
 cc3200_gcc/fw/gcc/obj/wlan.d
 cc3200_gcc/fw/gcc/obj/wy_bl_network_if.d
+cc3200/docs
+cc3200/example
+cc3200/wyLightFirmware/bootloader/ccs/Release
+cc3200/wyLightFirmware/firmware/ccs/Release
+cc3200_gcc/fw/ccs/Release
+cc3200_gcc/fw/gcc/exe
+cc3200_gcc/fw/gcc/obj
+*.log
