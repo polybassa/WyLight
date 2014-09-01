@@ -145,7 +145,12 @@ static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *r
 	}
 
 	UART_PRINT("Computing hash successful\r\n");
+	// return result
 	SHAMD5ResultRead(SHAMD5_BASE, resultHash);
+	// disable Interrupts
+	SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_CONTEXT_READY | SHAMD5_INT_PARTHASH_READY | SHAMD5_INT_INPUT_READY | SHAMD5_INT_OUTPUT_READY);
+	// disable MD5SHA module
+	PRCMPeripheralClkDisable(PRCM_DTHE, PRCM_RUN_MODE_CLK);
 }
 
 //****************************************************************************
@@ -310,11 +315,13 @@ long SaveSRAMContentAsFirmware(uint8_t *pSource, const size_t length) {
 //****************************************************************************
 void StartFirmware(void) {
 	Network_IF_DeInitDriver();
-
+	MAP_IntDisable(FAULT_SYSTICK);
+	MAP_IntMasterDisable();
 	// patch Interrupt Vector Table
-	unsigned int *pVectorTableOffset;
+	MAP_IntVTableBaseSet(FIRMWARE_ORIGIN);
+	/*unsigned int *pVectorTableOffset;
 	pVectorTableOffset = (unsigned int *) NVIC_VTABLE;
-	*pVectorTableOffset = FIRMWARE_ORIGIN;
+	*pVectorTableOffset = FIRMWARE_ORIGIN;*/
 
 	// call Firmware
 	void (*firmware_origin_entry)(void);

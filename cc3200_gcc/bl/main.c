@@ -109,7 +109,6 @@ static int ReadJumper() {
 #define BUFFERSIZE 1024
 
 void TcpServer(void) {
-
 	uint8_t welcomeMessage[30];
 	memset(welcomeMessage, 0, sizeof(welcomeMessage));
 	unsigned long nBootloaderVersion = htonl(BOOTLOADER_VERSION);
@@ -169,7 +168,7 @@ void TcpServer(void) {
 			pFirmware = (unsigned char *) FIRMWARE_ORIGIN;
 			UART_PRINT(" Start writing Firmware at 0x%x \r\n", pFirmware);
 
-			int bytesSend = send(SocketTcpChild, welcomeMessage, sizeof(greeting) + sizeof(nBootloaderVersion), 0);
+			int bytesSend = send(SocketTcpChild, welcomeMessage, sizeof(APP_NAME) + sizeof(nBootloaderVersion), 0);
 			if (bytesSend < 0) {
 				close(SocketTcpChild);
 				SocketTcpChild = 0;
