@@ -21,31 +21,27 @@
 #include "hw_types.h"
 #include "interrupt.h"
 #include "prcm.h"
-#include "rom.h"
 #include "rom_map.h"
 #include "pinmux.h"
+#include "osi.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 //Application Includes
-#include "wifi.h"
+//#include "wifi.h"
 //#include "broadcast.h"
 //#include "wylightAdaption.h"
 
 //Common interface includes
-#include "wy_network_if.h"
+//#include "wy_network_if.h"
 #include "uart_if.h"
+#include "gpio_if.h"
+
+#include <string.h>
 
 #define APPLICATION_NAME        "WyLight Firmware"
 #define APPLICATION_VERSION     "1.0.0"
 #define SUCCESS                 0
-
-#define OSI_STACK_SIZE        2048
-
-//****************************************************************************
-//                      LOCAL FUNCTION PROTOTYPES
-//****************************************************************************
-static void DisplayBanner(char * AppName);
-static void BoardInit(void);
-
 //
 // GLOBAL VARIABLES -- Start
 //
@@ -53,6 +49,8 @@ extern void (* const g_pfnVectors[])(void);
 //
 // GLOBAL VARIABLES -- End
 //
+#define UART_PRINT				Report
+#define OSI_STACK_SIZE        	2048
 
 //*****************************************************************************
 //
@@ -82,18 +80,10 @@ static void DisplayBanner(char * AppName) {
 //
 //*****************************************************************************
 static void BoardInit(void) {
-	/* In case of TI-RTOS vector table is initialize by OS itself */
-#ifndef USE_TIRTOS
 	//
 	// Set vector table base
 	//
-#if defined(ccs)
 	MAP_IntVTableBaseSet((unsigned long) &g_pfnVectors[0]);
-#endif
-#if defined(ewarm)
-	MAP_IntVTableBaseSet((unsigned long)&__vector_table);
-#endif
-#endif
 	//
 	// Enable Processor
 	//
@@ -102,6 +92,114 @@ static void BoardInit(void) {
 
 	PRCMCC3200MCUInit();
 }
+
+#define FREE_RTOS_TEST
+#ifdef FREE_RTOS_TEST
+
+#ifdef USE_FREERTOS
+//*****************************************************************************
+// FreeRTOS User Hook Functions enabled in FreeRTOSConfig.h
+//*****************************************************************************
+
+//*****************************************************************************
+//
+//! \brief Application defined hook (or callback) function - assert
+//!
+//! \param[in]  pcFile - Pointer to the File Name
+//! \param[in]  ulLine - Line Number
+//!
+//! \return none
+//!
+//*****************************************************************************
+void vAssertCalled(const char *pcFile, unsigned long ulLine) {
+	//Handle Assert here
+	while (1) {
+	}
+}
+
+//*****************************************************************************
+//
+//! \brief Application defined idle task hook
+//!
+//! \param  none
+//!
+//! \return none
+//!
+//*****************************************************************************
+void vApplicationIdleHook(void) {
+	//Handle Idle Hook for Profiling, Power Management etc
+}
+
+//*****************************************************************************
+//
+//! \brief Application defined malloc failed hook
+//!
+//! \param  none
+//!
+//! \return none
+//!
+//*****************************************************************************
+void vApplicationMallocFailedHook() {
+	//Handle Memory Allocation Errors
+	while (1) {
+	}
+}
+
+//*****************************************************************************
+//
+//! \brief Application defined stack overflow hook
+//!
+//! \param  none
+//!
+//! \return none
+//!
+//*****************************************************************************
+void vApplicationStackOverflowHook(xTaskHandle *pxTask, signed portCHAR *pcTaskName) {
+	//Handle FreeRTOS Stack Overflow
+	while (1) {
+	}
+}
+
+#endif /*USE_FREERTOS */
+
+void First_Task(void *pvParameters) {
+	while (true) {
+		GPIO_IF_LedToggle(MCU_RED_LED_GPIO);
+		osi_Sleep(100);
+		GPIO_IF_LedToggle(MCU_ORANGE_LED_GPIO);
+		osi_Sleep(100);
+		GPIO_IF_LedToggle(MCU_GREEN_LED_GPIO);
+		osi_Sleep(100);
+	}
+}
+
+void Secound_Task(void *pvParameters) {
+	char string[10];
+	memset(string, 0, 10);
+	memcpy(string, pvParameters, 2);
+
+	while (true) {
+		unsigned long key = osi_EnterCritical();
+		UART_PRINT("%s\r\n", string);
+		osi_ExitCritical(key);
+		osi_Sleep(3);
+	}
+}
+
+void Third_Task(void *pvParameters) {
+	char string[10];
+	memset(string, 0, 10);
+	memcpy(string, pvParameters, 2);
+
+	while (true) {
+		unsigned long key = osi_EnterCritical();
+		UART_PRINT("%s\r\n", string);
+		osi_ExitCritical(key);
+		osi_Sleep(2);
+	}
+}
+
+#endif
 
 //*****************************************************************************
 //
@@ -126,12 +224,28 @@ int main(void) {
 	ClearTerm();
 	DisplayBanner(APPLICATION_NAME);
 
+	GPIO_IF_LedConfigure(LED1 | LED2 | LED3);
+	GPIO_IF_LedOff(MCU_RED_LED_GPIO);
+	GPIO_IF_LedOff(MCU_GREEN_LED_GPIO);
+	GPIO_IF_LedOff(MCU_ORANGE_LED_GPIO);
+
 	//
 	// Simplelinkspawntask
 	//
 	VStartSimpleLinkSpawnTask(9);
 
-	osi_TaskCreate(WlanSupport_Task, (signed portCHAR *) "Main", OSI_STACK_SIZE, NULL, 1, NULL);
+#ifdef FREE_RTOS_TEST
+
+	static const char message1[] = "1";
+	static const char message2[] = "2";
+
+	osi_TaskCreate(First_Task, (signed portCHAR *) "LED", OSI_STACK_SIZE, NULL, 5, NULL);
+	osi_TaskCreate(Secound_Task, (signed portCHAR *) "Output1", OSI_STACK_SIZE, (void *) message1, 1, NULL);
+	osi_TaskCreate(Third_Task, (signed portCHAR *) "Output2", OSI_STACK_SIZE, (void *) message2, 4, NULL);
+
+#endif
+
+	//osi_TaskCreate(WlanSupport_Task, (signed portCHAR *) "Main", OSI_STACK_SIZE, NULL, 1, NULL);
 	//osi_TaskCreate(Broadcast_Task,(signed portCHAR *) "Broadcast",OSI_STACK_SIZE, NULL, 5, NULL);
 	//osi_TaskCreate(TcpServer_Task, (signed portCHAR *) "TcpServer", OSI_STACK_SIZE, NULL, 2, NULL);
 	//osi_TaskCreate(UdpServer_Task, (signed portCHAR *) "UdpServer", OSI_STACK_SIZE, NULL, 3, NULL);

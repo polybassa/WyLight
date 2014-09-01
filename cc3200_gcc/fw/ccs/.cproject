@@ -99,7 +99,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="interpreter.cmd|3101.c|3200.c|lm4fs11h5bb_startup_ccs.c|ccs|Interpreter.cmd|lm4fs11h5bb.cmd" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="broadcast.c|wifi.c|wy_network_if.c|server.c|interpreter.cmd|3101.c|3200.c|lm4fs11h5bb_startup_ccs.c|ccs|Interpreter.cmd|lm4fs11h5bb.cmd" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
