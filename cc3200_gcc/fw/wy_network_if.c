@@ -48,7 +48,6 @@
 #include "timer.h"
 #include "rom.h"
 #include "rom_map.h"
-#include "utils.h"
 
 // common interface includes 
 #include "wy_network_if.h"
@@ -56,7 +55,7 @@
 #include "timer_if.h"
 #include "gpio_if.h"
 
-#define CONNECTION_TIMEOUT_COUNT  5000  /* 5sec */
+#define CONNECTION_TIMEOUT_COUNT  10000  /* 5sec */
 #define TOKEN_ARRAY_SIZE          6
 #define STRING_TOKEN_SIZE         10
 #define AP_SSID_LEN_MAX           33
@@ -71,15 +70,14 @@ unsigned char g_ucConnectionSSID[SSID_LEN_MAX + 1]; /* Connection SSID */
 unsigned char g_ucConnectionBSSID[BSSID_LEN_MAX]; /* Connection BSSID */
 unsigned short g_usConnectIndex; /* Connection time delay index */
 unsigned int g_uiDeviceModeConfig; /* ROLE_STA or ROLE_AP, depending on stored profiles and jumper settings */
-const char pcDigits[] = "0123456789"; /* variable used by itoa function */
 
 // used for ap provisioning
-unsigned char g_ucProfileAdded = 1;
+unsigned char g_ucProfileAdded = 0;
 unsigned char g_ucConnectedToConfAP = 0, g_ucProvisioningDone = 0;
 unsigned int g_uiIpAddress = 0;
 unsigned char g_ucPriority, g_ucIpLeased = 0;
 char g_cWlanSSID[AP_SSID_LEN_MAX];
-char g_cWlanSecurityKey[50];
+char g_cWlanSecurityKey[64];
 SlSecParams_t g_SecParams;
 Sl_WlanNetworkEntry_t g_NetEntries[20];
 char g_token_get[TOKEN_ARRAY_SIZE][STRING_TOKEN_SIZE] = { "__SL_G_US0", "__SL_G_US1", "__SL_G_US2", "__SL_G_US3", "__SL_G_US4", "__SL_G_US5" };
@@ -94,17 +92,6 @@ typedef enum {
 
 	STATUS_CODE_MAX = -0xBB8
 } e_AppStatusCodes;
-
-//
-// LOCAL FUNCTION PROTOTYPES -- Start
-//
-static void ReadDeviceConfiguration();
-static void InitializeAppVariables();
-static void WlanConnect();
-static long ConfigureSimpleLinkAsStation();
-static long StartSimpleLinkAsStation();
-static long ConfigureSimpleLinkToDefaultState();
-static long StartSimpleLinkAsAP();
 
 //
 // LOCAL FUNCTION PROTOTYPES -- End
@@ -175,6 +162,33 @@ void vApplicationStackOverflowHook(xTaskHandle *pxTask, signed portCHAR *pcTaskN
 }
 
 #endif /*USE_FREERTOS */
+
+//****************************************************************************
+//
+//!	\brief Read Force AP GPIO and Configure Mode - 1(Access Point Mode)
+//!                                                  - 0 (Station Mode)
+//!
+//! \return	                	None
+//
+//****************************************************************************
+static void ReadDeviceConfiguration(void) {
+	unsigned int uiGPIOPort;
+	unsigned char pucGPIOPin;
+	unsigned char ucPinValue;
+
+//Read GPIO
+	GPIO_IF_GetPortNPin(SH_GPIO_3, &uiGPIOPort, &pucGPIOPin);
+	ucPinValue = GPIO_IF_Get(SH_GPIO_3, uiGPIOPort, pucGPIOPin);
+
+//If Connected to VCC, Mode is AP
+	if (ucPinValue == 1) {
+		//AP Mode
+		g_uiDeviceModeConfig = ROLE_AP;
+	} else {
+		//STA Mode
+		g_uiDeviceModeConfig = ROLE_STA;
+	}
+}
 
 void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 	UART_PRINT("[WLAN EVENT]");
@@ -497,7 +511,6 @@ void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent, SlHtt
 				pSlHttpServerResponse->ResponseData.token_value.len = strlen("FALSE");
 			}
 		}
-
 		if (0 == memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_token_get[1], pSlHttpServerEvent->EventData.httpTokenName.len)) {
 			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
 			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_NetEntries[0].ssid, g_NetEntries[0].ssid_len);
@@ -531,9 +544,12 @@ void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent, SlHtt
 
 	case SL_NETAPP_HTTPPOSTTOKENVALUE: {
 
+		UART_PRINT(" token_name: %s ", pSlHttpServerEvent->EventData.httpPostData.token_name.data);
+		UART_PRINT(" token_data: %s \r\n", pSlHttpServerEvent->EventData.httpPostData.token_value.data);
+
 		if ((0 == memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USC", pSlHttpServerEvent->EventData.httpPostData.token_name.len))
 				&& (0 == memcmp(pSlHttpServerEvent->EventData.httpPostData.token_value.data, "Add", pSlHttpServerEvent->EventData.httpPostData.token_value.len))) {
-			g_ucProfileAdded = 0;
+			g_ucProfileAdded = 1;
 
 		}
 		if (0 == memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USD", pSlHttpServerEvent->EventData.httpPostData.token_name.len)) {
@@ -561,6 +577,7 @@ void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent, SlHtt
 			g_cWlanSecurityKey[pSlHttpServerEvent->EventData.httpPostData.token_value.len] = 0;
 			g_SecParams.Key = g_cWlanSecurityKey;
 			g_SecParams.KeyLen = pSlHttpServerEvent->EventData.httpPostData.token_value.len;
+			UART_PRINT("new key: %s", g_cWlanSecurityKey);
 		}
 		if (0 == memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USG", pSlHttpServerEvent->EventData.httpPostData.token_name.len)) {
 			g_ucPriority = pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] - 48;
@@ -584,7 +601,7 @@ void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent, SlHtt
 //!    \return     0 on success, negative error-code on error
 //
 //****************************************************************************
-static void InitializeAppVariables() {
+static void InitializeAppVariables(void) {
 	g_ulStatus = 0;
 	g_ulStaIp = 0;
 	g_ulGatewayIP = 0;
@@ -596,13 +613,9 @@ static long waitForConnectWithTimeout(unsigned int timeout_ms) {
 	unsigned int connectTimeoutCounter = 0;
 	//waiting for the device to connect to the AP and obtain ip address
 	while ((connectTimeoutCounter < timeout_ms) && ((!IS_CONNECTED(g_ulStatus)) || (!IS_IP_ACQUIRED(g_ulStatus)))) {
-#ifdef USE_FREERTOS
 		// wait till connects to an AP
 		osi_Sleep(1);	//waiting for 0,5 secs
-#else
-				_SlNonOsMainLoopTask();
-				MAP_UtilsDelay(100000);
-#endif
+
 		if (connectTimeoutCounter % 200 == 0) {
 			GPIO_IF_LedToggle(MCU_RED_LED_GPIO);
 		}
@@ -638,154 +651,6 @@ static void WlanConnect() {
 //! \param   none
 //! \return  On success, zero is returned. On error, negative is returned
 //*****************************************************************************
-
-static long ConfigureSimpleLinkAsStation() {
-	SlVersionFull ver = { 0 };
-
-	unsigned char ucVal = 1;
-	unsigned char ucConfigOpt = 0;
-	unsigned char ucConfigLen = 0;
-	unsigned char ucPower = 0;
-
-	long lRetVal = -1;
-	long lMode = -1;
-
-	lMode = sl_Start(0, 0, 0);
-	ASSERT_ON_ERROR(__LINE__, lMode);
-
-// Get the device's version-information
-	ucConfigOpt = SL_DEVICE_GENERAL_VERSION;
-	ucConfigLen = sizeof(ver);
-	lRetVal = sl_DevGet(SL_DEVICE_GENERAL_CONFIGURATION, &ucConfigOpt, &ucConfigLen, (unsigned char *) (&ver));
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-	UART_PRINT("Host Driver Version: %s\n\r", SL_DRIVER_VERSION);
-	UART_PRINT("Build Version %d.%d.%d.%d.31.%d.%d.%d.%d.%d.%d.%d.%d\n\r", ver.NwpVersion[0], ver.NwpVersion[1], ver.NwpVersion[2], ver.NwpVersion[3],
-			ver.ChipFwAndPhyVersion.FwVersion[0], ver.ChipFwAndPhyVersion.FwVersion[1], ver.ChipFwAndPhyVersion.FwVersion[2], ver.ChipFwAndPhyVersion.FwVersion[3],
-			ver.ChipFwAndPhyVersion.PhyVersion[0], ver.ChipFwAndPhyVersion.PhyVersion[1], ver.ChipFwAndPhyVersion.PhyVersion[2], ver.ChipFwAndPhyVersion.PhyVersion[3]);
-
-// If the device is not in station-mode, try putting it in staion-mode
-	if (ROLE_STA != lMode) {
-		if (ROLE_AP == lMode) {
-			// If the device is in AP mode, we need to wait for this event
-			// before doing anything
-			while (!IS_IP_ACQUIRED(g_ulStatus)) {
-#ifndef SL_PLATFORM_MULTI_THREADED
-				_SlNonOsMainLoopTask();
-#endif
-			}
-		}
-
-		// Switch to STA role and restart
-		lRetVal = sl_WlanSetMode(ROLE_STA);
-		ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-		lRetVal = sl_Stop(SL_STOP_TIMEOUT);
-		ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-		// reset the Status bits
-		CLR_STATUS_BIT_ALL(g_ulStatus);
-
-		lRetVal = sl_Start(0, 0, 0);
-		ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-		// Check if the device is in station again
-		if (ROLE_STA != lRetVal) {
-			// We don't want to proceed if the device is not coming up in
-			// station-mode
-			return DEVICE_NOT_IN_STATION_MODE;
-		}
-	}
-
-//
-// Device in station-mode. Disconnect previous connection if any
-// The function returns 0 if 'Disconnected done', negative number if already
-// disconnected Wait for 'disconnection' event if 0 is returned, Ignore
-// other return-codes
-//
-	lRetVal = sl_WlanDisconnect();
-	if (0 == lRetVal) {
-		// Wait
-		while (IS_CONNECTED(g_ulStatus)) {
-#ifndef SL_PLATFORM_MULTI_THREADED
-			_SlNonOsMainLoopTask();
-#endif
-		}
-	}
-
-	// Set connection policy to Auto + SmartConfig
-	//      (Device's default connection policy)
-	lRetVal = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1, 0, 0, 0, 0), NULL, 0);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-// Enable DHCP client
-	lRetVal = sl_NetCfgSet(SL_IPV4_STA_P2P_CL_DHCP_ENABLE, 1, 1, &ucVal);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-// Disable scan
-	ucConfigOpt = SL_SCAN_POLICY(0);
-	unsigned long intervalInSeconds = 10;
-	lRetVal = sl_WlanPolicySet(SL_POLICY_SCAN, ucConfigOpt, (unsigned char *) &intervalInSeconds, sizeof(intervalInSeconds));
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-// Set Tx power level for station mode
-// Number between 0-15, as dB offset from max power - 0 will set max power
-	ucPower = 0;
-	lRetVal = sl_WlanSet(SL_WLAN_CFG_GENERAL_PARAM_ID,
-	WLAN_GENERAL_PARAM_OPT_STA_TX_POWER, 1, (unsigned char *) &ucPower);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-// Set PM policy to normal
-	lRetVal = sl_WlanPolicySet(SL_POLICY_PM, SL_NORMAL_POLICY, NULL, 0);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-	lRetVal = sl_Stop(SL_STOP_TIMEOUT);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-	InitializeAppVariables();
-
-	return lRetVal; // Success
-}
-
-static long StartSimpleLinkAsStation() {
-	long lRetVal = ERROR;
-
-	lRetVal = ConfigureSimpleLinkAsStation();
-	if (lRetVal < 0) {
-		if (DEVICE_NOT_IN_STATION_MODE == lRetVal)
-		UART_PRINT("Failed to configure the device in its default state \n\r");
-		// TODO: Remove endless loop
-		LOOP_FOREVER(__LINE__);
-		return ERROR;
-	}
-
-	lRetVal = sl_Start(NULL, NULL, NULL);
-	if (lRetVal < 0 || lRetVal != ROLE_STA) {
-		UART_PRINT("Failed to start the device \n\r");
-		// TODO: Remove endless loop
-		LOOP_FOREVER(__LINE__);
-		return ERROR;
-	}
-
-	UART_PRINT("Started SimpleLink Device: STA Mode\n\r");
-
-	return waitForConnectWithTimeout(8000);
-}
-
-//*****************************************************************************
-//! \brief This function puts the device in its default state. It:
-//!           - Set the mode to STATION
-//!           - Configures connection policy to Auto and AutoSmartConfig
-//!           - Deletes all the stored profiles
-//!           - Enables DHCP
-//!           - Disables Scan policy
-//!           - Sets Tx power to maximum
-//!           - Sets power policy to normal
-//!           - TBD - Unregister mDNS services
-//!
-//! \param   none
-//! \return  On success, zero is returned. On error, negative is returned
-//*****************************************************************************
 static long ConfigureSimpleLinkToDefaultState() {
 	unsigned char ucVal = 1;
 	unsigned char ucConfigOpt = 0;
@@ -803,9 +668,7 @@ static long ConfigureSimpleLinkToDefaultState() {
 			// If the device is in AP mode, we need to wait for this event
 			// before doing anything
 			while (!IS_IP_ACQUIRED(g_ulStatus)) {
-#ifndef SL_PLATFORM_MULTI_THREADED
-				_SlNonOsMainLoopTask();
-#endif
+				osi_Sleep(50);
 			}
 		}
 
@@ -838,19 +701,13 @@ static long ConfigureSimpleLinkToDefaultState() {
 	if (0 == lRetVal) {
 		// Wait
 		while (IS_CONNECTED(g_ulStatus)) {
-#ifndef SL_PLATFORM_MULTI_THREADED
-			_SlNonOsMainLoopTask();
-#endif
+			osi_Sleep(50);
 		}
 	}
 
 	// Set connection policy to Auto + SmartConfig
 	//      (Device's default connection policy)
 	lRetVal = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1, 0, 0, 0, 1), NULL, 0);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-	// Remove all profiles
-	lRetVal = sl_WlanProfileDel(0xFF);
 	ASSERT_ON_ERROR(__LINE__, lRetVal);
 
 // Enable DHCP client
@@ -879,6 +736,31 @@ static long ConfigureSimpleLinkToDefaultState() {
 	InitializeAppVariables();
 
 	return lRetVal; // Success
+}
+
+static long StartSimpleLinkAsStation() {
+	long lRetVal = ERROR;
+
+	lRetVal = ConfigureSimpleLinkToDefaultState();
+	if (lRetVal < 0) {
+		if (DEVICE_NOT_IN_STATION_MODE == lRetVal)
+		UART_PRINT("Failed to configure the device in its default state \n\r");
+		// TODO: Remove endless loop
+		LOOP_FOREVER(__LINE__);
+		return ERROR;
+	}
+
+	lRetVal = sl_Start(NULL, NULL, NULL);
+	if (lRetVal < 0 || lRetVal != ROLE_STA) {
+		UART_PRINT("Failed to start the device \n\r");
+		// TODO: Remove endless loop
+		LOOP_FOREVER(__LINE__);
+		return ERROR;
+	}
+
+	UART_PRINT("Started SimpleLink Device: STA Mode\n\r");
+
+	return waitForConnectWithTimeout(8000);
 }
 
 //****************************************************************************
@@ -916,18 +798,13 @@ static long StartSimpleLinkAsAP() {
 		LOOP_FOREVER(__LINE__);
 	}
 
-	UART_PRINT("Device started as STATION \n\r");
+	UART_PRINT("Device started \n\r");
 
 	if (lRetVal == ROLE_AP) {
 		//Device in AP-Mode, Wait for initialization to complete
 		while (!IS_IP_ACQUIRED(g_ulStatus)) {
-#ifdef USE_FREERTOS
 			// wait till connects to an AP
 			osi_Sleep(100); //waiting for 0,1 secs
-#else
-					_SlNonOsMainLoopTask();
-					MAP_UtilsDelay(100);
-#endif
 		}
 
 	}
@@ -941,111 +818,74 @@ static long StartSimpleLinkAsAP() {
 	lRetVal = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(0, 0, 0, 0, 0), NULL, 0);
 	ASSERT_ON_ERROR(__LINE__, lRetVal);
 
+	// Remove all profiles
+	lRetVal = sl_WlanProfileDel(0xFF);
+	ASSERT_ON_ERROR(__LINE__, lRetVal);
+
 	sl_Stop(SL_STOP_TIMEOUT);
 	CLR_STATUS_BIT_ALL(g_ulStatus);
 
 	sl_Start(NULL, NULL, NULL);
 
-	while (!g_ucProvisioningDone) {
+	unsigned long intervalInSeconds = 2;
+	unsigned char parameterLen = sizeof(intervalInSeconds);
+	//Scan AP in STA mode
+	lRetVal = sl_WlanPolicySet(SL_POLICY_SCAN, SL_SCAN_POLICY_EN(1), (unsigned char *) &intervalInSeconds, parameterLen);
+	ASSERT_ON_ERROR(__LINE__, lRetVal);
 
-		unsigned long intervalInSeconds = 5;
-		unsigned char parameterLen = sizeof(intervalInSeconds);
-		//Scan AP in STA mode
-		lRetVal = sl_WlanPolicySet(SL_POLICY_SCAN, SL_SCAN_POLICY_EN(1), (unsigned char *) &intervalInSeconds, parameterLen);
-		ASSERT_ON_ERROR(__LINE__, lRetVal);
+	// wait for scan to complete
+	osi_Sleep(5000);
+	//Get Scan Result
+	lRetVal = sl_WlanGetNetworkList(0, 20, &g_NetEntries[0]);
+	ASSERT_ON_ERROR(__LINE__, lRetVal);
 
-		// wait for scan to complete
-		MAP_UtilsDelay(80000000);
-
-		//Get Scan Result
-		lRetVal = sl_WlanGetNetworkList(0, 20, &g_NetEntries[0]);
-		ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-		char message[100];
-		int i;
-		for (i = 0; i < lRetVal; i++) {
-			snprintf(message, 60, "%d) SSID %s\n\r", i, g_NetEntries[i].ssid);
-			UART_PRINT("%d) SSID %s\n\r", i, g_NetEntries[i].ssid);
-		}
-		//Switch to AP Mode
-		sl_WlanSetMode(ROLE_AP);
-
-		unsigned char ssid[] = "WyLightAP";
-
-		lRetVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, 0, strlen((const char *) ssid), ssid);
-		ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-		sl_WlanDisconnect();
-		sl_Stop(SL_STOP_TIMEOUT);
-		CLR_STATUS_BIT_ALL(g_ulStatus);
-
-		//Initialize the SLHost Driver
-		sl_Start(NULL, NULL, NULL);
-		UART_PRINT("Start AP\r\n");
-		//Wait for Ip Acquired Event in AP Mode
-		while (!IS_IP_ACQUIRED(g_ulStatus)) {
-			osi_Sleep(100);
-		}
-
-		// Wait for AP Configuration, Open Browser and Configure AP
-		while (g_ucProfileAdded && !g_ucProvisioningDone) {
-			osi_Sleep(100);
-		}
-
-		g_ucProfileAdded = 1;
-
-		//Switch to STA Mode
-		sl_WlanSetMode(ROLE_STA);
-
-		//AP Configured, Restart in STA Mode
-		sl_Stop(SL_STOP_TIMEOUT);
-
-		CLR_STATUS_BIT_ALL(g_ulStatus);
-
-		osi_Sleep(500);
-		sl_Start(NULL, NULL, NULL);
-
-		// Connect to the Configured Access Point
-		WlanConnect();
-
-		return SUCCESS;
+	char message[100];
+	int i;
+	for (i = 0; i < lRetVal; i++) {
+		snprintf(message, 60, "%d) SSID %s\n\r", i, g_NetEntries[i].ssid);
+		UART_PRINT("%d) SSID %s\n\r", i, g_NetEntries[i].ssid);
 	}
-	return ERROR;
+	//Switch to AP Mode
+	sl_WlanSetMode(ROLE_AP);
 
+	unsigned char ssid[] = "WyLightAP";
+
+	lRetVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, 0, strlen((const char *) ssid), ssid);
+	ASSERT_ON_ERROR(__LINE__, lRetVal);
+
+	sl_WlanDisconnect();
+	sl_Stop(SL_STOP_TIMEOUT);
+	CLR_STATUS_BIT_ALL(g_ulStatus);
+
+	//Initialize the SLHost Driver
+	sl_Start(NULL, NULL, NULL);
+	UART_PRINT("Start AP\r\n");
+	//Wait for Ip Acquired Event in AP Mode
+	while (!IS_IP_ACQUIRED(g_ulStatus)) {
+		osi_Sleep(10);
+	}
+
+	g_ucProfileAdded = 0;
+
+	return SUCCESS;
 }
+
 //*****************************************************************************
 //
-//! Network_IF_InitDriver
-//! The function initializes a CC3200 device and triggers it to start operation
+//! Disconnect  Disconnects from an Access Point
 //!
-//! \param  uiMode (device mode in which device will be configured)
+//! \param  none
 //!
 //! \return none
 //
 //*****************************************************************************
-void Network_IF_InitDriver(unsigned int uiMode) {
-	GPIO_IF_LedConfigure(LED1 | LED2 | LED3);
-	InitializeAppVariables();
-
-	long lRetVal = -1;
-
-// Test if AP-Mode jumper is set
-	ReadDeviceConfiguration();
-
-	if (g_uiDeviceModeConfig == ROLE_STA) {
-		// Reset CC3200 Network State Machine
-		lRetVal = StartSimpleLinkAsStation();
-		if (lRetVal != SUCCESS) {
-			// try again in AP MODE
-			g_uiDeviceModeConfig = ROLE_AP;
-		}
+static void Network_IF_DisconnectFromAP(void) {
+	if (IS_CONNECTED(g_ulStatus)) {
+		sl_WlanDisconnect();
 	}
 
-	if (g_uiDeviceModeConfig == ROLE_AP) {
-		// Reset CC3200 Network State Machine
-		InitializeAppVariables();
-		lRetVal = StartSimpleLinkAsAP();
-	}
+	while (IS_CONNECTED(g_ulStatus))
+		osi_Sleep(10);
 }
 
 //*****************************************************************************
@@ -1074,324 +914,55 @@ void Network_IF_DeInitDriver(void) {
 //
 // Reset the state to uninitialized
 //
-	Network_IF_ResetMCUStateMachine();
+	CLR_STATUS_BIT_ALL(g_ulStatus);
 }
 
 //*****************************************************************************
 //
-//! Network_IF_ConnectAP  Connect to an Access Point using the specified SSID
+//! Network_IF_InitDriver
+//! The function initializes a CC3200 device and triggers it to start operation
 //!
-//! \param  pcSsid is a string of the AP's SSID
+//! \param  uiMode (device mode in which device will be configured)
 //!
 //! \return none
 //
 //*****************************************************************************
-int Network_IF_ConnectAP(char *pcSsid, SlSecParams_t SecurityParams) {
-	char acCmdStore[128];
-	unsigned short usConnTimeout;
-	int iRetVal;
-	unsigned long ulIP = 0;
-	unsigned long ulSubMask = 0;
-	unsigned long ulDefGateway = 0;
-	unsigned long ulDns = 0;
-	unsigned char ucRecvdAPDetails;
+void Network_IF_InitDriver(unsigned int uiMode) {
 
-	Network_IF_DisconnectFromAP();
+	GPIO_IF_LedConfigure(LED1 | LED2 | LED3);
 
-//
-// This triggers the CC3200 to connect to specific AP
-//
-	sl_WlanConnect(pcSsid, strlen(pcSsid), NULL, &SecurityParams, NULL);
+	long lRetVal = -1;
 
-//
-// Wait to check if connection to DIAGNOSTIC_AP succeeds
-//
-	while (g_usConnectIndex < 10) {
-		MAP_UtilsDelay(8000000);
-		g_usConnectIndex++;
-		if (IS_CONNECTED(g_ulStatus)) {
-			break;
+	// Test if AP-Mode jumper is set
+	ReadDeviceConfiguration();
+
+	if (g_uiDeviceModeConfig == ROLE_STA) {
+		// Reset CC3200 Network State Machine
+		lRetVal = StartSimpleLinkAsStation();
+		if (lRetVal != SUCCESS) {
+			// try again in AP MODE
+			g_uiDeviceModeConfig = ROLE_AP;
+			Network_IF_DeInitDriver();
 		}
 	}
 
-//
-// Check and loop until async event from network processor indicating Wlan
-// Connect success was received
-//
-	while (!(IS_CONNECTED(g_ulStatus))) {
-		//
-		// Disconnect the previous attempt
-		//
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
-		UART_PRINT("Device could not connect to %s\n\r", pcSsid);
-
-		do {
-			ucRecvdAPDetails = 0;
-
-			UART_PRINT("\n\r\n\rPlease enter the AP(open) SSID name # ");
-
-			//
-			// Get the AP name to connect over the UART
-			//
-			iRetVal = GetCmd(acCmdStore, sizeof(acCmdStore));
-			if (iRetVal > 0) {
-				//
-				// Parse the AP name
-				//
-				pcSsid = strtok(acCmdStore, ":");
-				if (pcSsid != NULL) {
-
-					ucRecvdAPDetails = 1;
-
-				}
-			}
-		} while (ucRecvdAPDetails == 0);
-
-		UART_PRINT("\n\rTrying to connect to AP: %s ...\n\r", pcSsid);
-		/*UART_PRINT("Key: %s, Len: %d, KeyID: %d, Type: %d\n\r",
-		 SecurityParams.Key, SecurityParams.KeyLen
-		 , SecurityParams.Type);
-		 */
-
-		//
-		// Get the current timer tick and setup the timeout accordingly
-		//
-		usConnTimeout = g_usConnectIndex + 10;
-
-		//
-		// This triggers the CC3200 to connect to specific AP
-		//
-		sl_WlanConnect(pcSsid, strlen(pcSsid), NULL, &SecurityParams, NULL);
-
-		//
-		// Wait to check if connection to specifed AP succeeds
-		//
-		while (!(IS_CONNECTED(g_ulStatus))) {
-			if (g_usConnectIndex >= usConnTimeout) {
-				break;
-			}
-			MAP_UtilsDelay(8000000);
-			g_usConnectIndex++;
+	if (g_uiDeviceModeConfig == ROLE_AP) {
+		// Reset CC3200 Network State Machine
+		lRetVal = StartSimpleLinkAsAP();
+		if (lRetVal != SUCCESS) {
+			LOOP_FOREVER(__LINE__);
 		}
 	}
-
-//
-// Wait until IP is acquired
-//
-	while (!(IS_IP_ACQUIRED(g_ulStatus)))
-		;
-
-//
-// Put message on UART
-//
-	UART_PRINT("\n\rDevice has connected to %s\n\r", pcSsid);
-
-//
-// Get IP address
-//
-	Network_IF_IpConfigGet(&ulIP, &ulSubMask, &ulDefGateway, &ulDns);
-
-//
-// Send the information
-//
-	UART_PRINT("Device IP Address is %d.%d.%d.%d \n\r\n\r", SL_IPV4_BYTE(ulIP, 3), SL_IPV4_BYTE(ulIP, 2), SL_IPV4_BYTE(ulIP, 1), SL_IPV4_BYTE(ulIP, 0));
-	return 0;
 }
 
-//*****************************************************************************
-//
-//! Disconnect  Disconnects from an Access Point
-//!
-//! \param  none
-//!
-//! \return none
-//
-//*****************************************************************************
-void Network_IF_DisconnectFromAP() {
-	if (IS_CONNECTED(g_ulStatus)) sl_WlanDisconnect();
-
-	while (IS_CONNECTED(g_ulStatus))
-		;
-}
-
-//*****************************************************************************
-//
-//! Network_IF_IpConfigGet  Get the IP Address of the device.
-//!
-//! \param  pulIP IP Address of Device
-//! \param  pulSubnetMask Subnetmask of Device
-//! \param  pulDefaultGateway Default Gateway value
-//! \param  pulDNSServer DNS Server
-//!
-//! \return none
-//
-//*****************************************************************************
-int Network_IF_IpConfigGet(unsigned long *pulIP, unsigned long *pulSubnetMask, unsigned long *pulDefaultGateway, unsigned long *pulDNSServer) {
-	unsigned char isDhcp;
-	unsigned char len = sizeof(_NetCfgIpV4Args_t);
-	_NetCfgIpV4Args_t ipV4 = { 0 };
-
-	sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO, &isDhcp, &len, (unsigned char *) &ipV4);
-
-	*pulIP = ipV4.ipV4;
-	*pulSubnetMask = ipV4.ipV4Mask;
-	*pulDefaultGateway = ipV4.ipV4Gateway;
-	*pulDefaultGateway = ipV4.ipV4DnsServer;
-
-	return 1;
-}
-
-//*****************************************************************************
-//
-//! Network_IF_GetHostIP
-//!
-//! \brief  This function obtains the server IP address using a DNS lookup
-//!
-//! \param  The server hostname
-//!
-//! \return IP address: Success or 0: Failure.
-//!
-//
-//*****************************************************************************
-unsigned long Network_IF_GetHostIP(char* pcHostName) {
-	int iStatus = 0;
-	unsigned long ulDestinationIP;
-
-	iStatus = sl_NetAppDnsGetHostByName(pcHostName, strlen(pcHostName), &ulDestinationIP, SL_AF_INET);
-	if (iStatus == 0) {
-		UART_PRINT("Get Host IP succeeded.\n\rHost: %s IP: %d.%d.%d.%d \n\r\n\r", pcHostName, SL_IPV4_BYTE(ulDestinationIP, 3), SL_IPV4_BYTE(ulDestinationIP, 2),
-				SL_IPV4_BYTE(ulDestinationIP, 1), SL_IPV4_BYTE(ulDestinationIP, 0));
-		return ulDestinationIP;
-	} else {
-		return 0;
+void Network_IF_CheckForNewProfile(void) {
+	if (!g_ucProfileAdded) {
+		return;
 	}
-}
-
-//*****************************************************************************
-//
-//!  \brief  Reset state from the state machine
-//!
-//!  \param  None
-//!
-//!  \return none
-//!
-//*****************************************************************************
-void Network_IF_ResetMCUStateMachine() {
-	g_ulStatus = 0;
-}
-
-//*****************************************************************************
-//
-//!  \brief  Return the current state bits
-//!
-//!  \param  None
-//!
-//!  \return none
-//!
-//
-//*****************************************************************************
-unsigned long Network_IF_CurrentMCUState() {
-	return g_ulStatus;
-}
-//*****************************************************************************
-//
-//!  \brief  sets a state from the state machine
-//!
-//!  \param  cStat Status of State Machine defined in e_StatusBits
-//!
-//!  \return none
-//!
-//*****************************************************************************
-void Network_IF_SetMCUMachineState(char cStat) {
-	SET_STATUS_BIT(g_ulStatus, cStat);
-}
-
-//*****************************************************************************
-//
-//!  \brief  Unsets a state from the state machine
-//!
-//!  \param  cStat Status of State Machine defined in e_StatusBits
-//!
-//!  \return none
-//!
-//*****************************************************************************
-void Network_IF_UnsetMCUMachineState(char cStat) {
-	CLR_STATUS_BIT(g_ulStatus, cStat);
-}
-
-//*****************************************************************************
-//
-//! itoa
-//!
-//!    @brief  Convert integer to ASCII in decimal base
-//!
-//!     @param  cNum is input integer number to convert
-//!     @param  cString is output string
-//!
-//!     @return number of ASCII parameters
-//!
-//!
-//
-//*****************************************************************************
-unsigned short itoa(char cNum, char *cString) {
-	char* ptr;
-	char uTemp = cNum;
-	unsigned short length;
-
-// value 0 is a special case
-	if (cNum == 0) {
-		length = 1;
-		*cString = '0';
-
-		return length;
-	}
-
-// Find out the length of the number, in decimal base
-	length = 0;
-	while (uTemp > 0) {
-		uTemp /= 10;
-		length++;
-	}
-
-// Do the actual formatting, right to left
-	uTemp = cNum;
-	ptr = cString + length;
-	while (uTemp > 0) {
-		--ptr;
-		*ptr = pcDigits[uTemp % 10];
-		uTemp /= 10;
-	}
-
-	return length;
-}
-
-//****************************************************************************
-//
-//!	\brief Read Force AP GPIO and Configure Mode - 1(Access Point Mode)
-//!                                                  - 0 (Station Mode)
-//!
-//! \return	                	None
-//
-//****************************************************************************
-
-void ReadDeviceConfiguration() {
-	unsigned int uiGPIOPort;
-	unsigned char pucGPIOPin;
-	unsigned char ucPinValue;
-
-//Read GPIO
-	GPIO_IF_GetPortNPin(SH_GPIO_3, &uiGPIOPort, &pucGPIOPin);
-	ucPinValue = GPIO_IF_Get(SH_GPIO_3, uiGPIOPort, pucGPIOPin);
-
-//If Connected to VCC, Mode is AP
-	if (ucPinValue == 1) {
-		//AP Mode
-		g_uiDeviceModeConfig = ROLE_AP;
-	} else {
-		//STA Mode
-		g_uiDeviceModeConfig = ROLE_STA;
-	}
+	Network_IF_DeInitDriver();
+	StartSimpleLinkAsStation();
+	WlanConnect();
+	g_ucProfileAdded = 0;
 }
 
 //*****************************************************************************

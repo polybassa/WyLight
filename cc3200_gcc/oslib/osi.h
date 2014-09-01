@@ -43,6 +43,8 @@
 extern "C" {
 #endif
 
+#include <stddef.h>
+
 #define OSI_WAIT_FOREVER   			(0xFFFFFFFF)
 
 #define OSI_NO_WAIT        			(0)

@@ -54,10 +54,8 @@ extern "C"
 #endif
 
 #include "osi.h"
-#ifdef USE_FREERTOS
 #include "FreeRTOS.h"
 #include "task.h"
-#endif
 
 // Loop forever, user can change it as per application's requirement
 #define LOOP_FOREVER(line_number) \
@@ -164,16 +162,7 @@ extern unsigned short g_usConnectIndex; /* Connection time delay index */
 //*****************************************************************************
 extern void Network_IF_InitDriver(unsigned int uiMode);
 extern void Network_IF_DeInitDriver(void);
-extern int Network_IF_ConnectAP(char * pcSsid, SlSecParams_t SecurityParams);
-extern void Network_IF_DisconnectFromAP();
-extern int Network_IF_IpConfigGet(unsigned long *aucIP, unsigned long *aucSubnetMask,
-                unsigned long *aucDefaultGateway, unsigned long *aucDNSServer);
-extern unsigned long Network_IF_GetHostIP(char* pcHostName);
-extern unsigned long Network_IF_CurrentMCUState();
-extern void Network_IF_UnsetMCUMachineState(char stat);
-extern void Network_IF_SetMCUMachineState(char stat);
-extern void Network_IF_ResetMCUStateMachine();
-extern unsigned short itoa(char cNum, char *cString);
+extern void Network_IF_CheckForNewProfile(void);
 //*****************************************************************************
 //
 // Mark the end of the C bindings section for C++ compilers.

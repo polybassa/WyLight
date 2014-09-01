@@ -24,43 +24,19 @@
 //
 //*****************************************************************************
 
-// Simplelink includes
-#include "simplelink.h"
-
 //Driverlib includes
-#include "utils.h"
 #include "rom_map.h"
 
 //Free_rtos/ti-rtos includes
 #include "osi.h"
-#ifdef USE_FREERTOS
 #include "FreeRTOS.h"
 #include "task.h"
-#endif
 
 //Common interface includes
 #include "wy_network_if.h"
 
 #include "wifi.h"
 
-//*****************************************************************************
-//
-//! \addtogroup serial_wifi
-//! @{
-//
-//*****************************************************************************
-
-//
-// GLOBAL VARIABLES -- Start
-//
-extern unsigned long g_ulStatus;
-//
-// GLOBAL VARIABLES -- End
-//
-
-#define CLR_STATUS_BIT_ALL(status_variable)  (status_variable = 0)
-
-#ifdef USE_FREERTOS
 //*****************************************************************************
 //
 //! Main_Task
@@ -72,7 +48,7 @@ extern unsigned long g_ulStatus;
 //!  \brief Task handler function to handle the WiFi functionality
 //
 //*****************************************************************************
-void Main_Task(void *pvParameters) {
+void WlanSupport_Task(void *pvParameters) {
 
 	SlrxFilterPrePreparedFiltersMask_t FilterPrePreparedFiltersMask;
 	long lRetVal = -1;
@@ -89,53 +65,6 @@ void Main_Task(void *pvParameters) {
 
 	while (1) {
 		osi_Sleep(500);
+		Network_IF_CheckForNewProfile();
 	}
 }
-#endif
-
-//****************************************************************************
-//
-//! \brief Connecting to a WLAN Accesspoint
-//!
-//!  This function connects to the required AP (SSID_NAME) with Security
-//!  parameters specified in te form of macros at the top of this file
-//!
-//! \param  Status value
-//!
-//! \return  None
-//!
-//! \warning    If the WLAN connection fails or we don't aquire an IP
-//!            address, It will be stuck in this function forever.
-//
-//****************************************************************************
-long WlanConnect() {
-	SlSecParams_t secParams = { 0 };
-	long lRetVal = 0;
-
-	secParams.Key = SECURITY_KEY;
-	secParams.KeyLen = strlen(SECURITY_KEY);
-	secParams.Type = SECURITY_TYPE;
-
-	lRetVal = sl_WlanConnect(SSID_NAME, strlen(SSID_NAME), 0, &secParams, 0);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
-
-	// Wait for WLAN Event
-	while ((!IS_CONNECTED(g_ulStatus)) || (!IS_IP_ACQUIRED(g_ulStatus))) {
-#ifdef USE_FREERTOS
-		// wait till connects to an AP
-		MAP_UtilsDelay(24000000); //waiting for 3 secs
-#else
-		_SlNonOsMainLoopTask();
-#endif
-	}
-
-	return SUCCESS;
-
-}
-
-//*****************************************************************************
-//
-// Close the Doxygen group.
-//! @}
-//
-//*****************************************************************************

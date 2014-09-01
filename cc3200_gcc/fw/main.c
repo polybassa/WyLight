@@ -27,26 +27,18 @@
 
 //Application Includes
 #include "wifi.h"
-#include "broadcast.h"
+//#include "broadcast.h"
 //#include "wylightAdaption.h"
 
 //Common interface includes
 #include "wy_network_if.h"
+#include "uart_if.h"
 
 #define APPLICATION_NAME        "WyLight Firmware"
 #define APPLICATION_VERSION     "1.0.0"
 #define SUCCESS                 0
 
 #define OSI_STACK_SIZE        2048
-
-//****************************************************************************
-//                      FUNCTION PROTOTYPES
-//****************************************************************************
-extern void Main_Task(void *pvParameters);
-extern void Broadcast_Task(void *pvParameters);
-extern void TcpServer_Task(void *pvParameters);
-extern void UdpServer_Task(void *pvParameters);
-extern void WyLight_Task(void *pvParameters);
 
 //****************************************************************************
 //                      LOCAL FUNCTION PROTOTYPES
@@ -139,10 +131,10 @@ int main(void) {
 	//
 	VStartSimpleLinkSpawnTask(9);
 
-	osi_TaskCreate(Main_Task, (signed portCHAR *) "Main", OSI_STACK_SIZE, NULL, 1, NULL);
-	osi_TaskCreate(Broadcast_Task,(signed portCHAR *) "Broadcast",OSI_STACK_SIZE, NULL, 5, NULL);
-	osi_TaskCreate(TcpServer_Task, (signed portCHAR *) "TcpServer", OSI_STACK_SIZE, NULL, 2, NULL);
-	osi_TaskCreate(UdpServer_Task, (signed portCHAR *) "UdpServer", OSI_STACK_SIZE, NULL, 3, NULL);
+	osi_TaskCreate(WlanSupport_Task, (signed portCHAR *) "Main", OSI_STACK_SIZE, NULL, 1, NULL);
+	//osi_TaskCreate(Broadcast_Task,(signed portCHAR *) "Broadcast",OSI_STACK_SIZE, NULL, 5, NULL);
+	//osi_TaskCreate(TcpServer_Task, (signed portCHAR *) "TcpServer", OSI_STACK_SIZE, NULL, 2, NULL);
+	//osi_TaskCreate(UdpServer_Task, (signed portCHAR *) "UdpServer", OSI_STACK_SIZE, NULL, 3, NULL);
 
 	osi_start();
 

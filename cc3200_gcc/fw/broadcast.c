@@ -108,7 +108,7 @@ void Broadcast_Task(void *pvParameters) {
 			osi_Sleep(500);
 		}
 
-		const SlSockAddrIn_t sAddr = { .sin_family = SL_AF_INET, .sin_port = htons(PORT_NUM), .sin_addr.s_addr = 0 };
+		const SlSockAddrIn_t sAddr = { .sin_family = SL_AF_INET, .sin_port = htons(PORT_NUM), .sin_addr.s_addr = IP_ADDR };
 		const int iAddrSize = sizeof(SlSockAddrIn_t);
 		int iSockID;
 		int iStatus;
