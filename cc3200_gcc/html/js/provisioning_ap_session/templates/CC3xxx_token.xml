@@ -11,22 +11,82 @@
       <RW>0x0</RW>
       <RO>0x0</RO>
    </Filename>
-   <Filename name="/www/profiles_config.html">
-      <MAX>0x0</MAX>
-      <RW>0x0</RW>
-      <RO>0x0</RO>
-   </Filename>
    <Filename name="/www/main.html">
       <MAX>0x0</MAX>
       <RW>0x0</RW>
       <RO>0x0</RO>
    </Filename>
-   <Filename name="/www/param_status.html">
+   <Filename name="/www/js/jquery-2.1.1.min.js">
       <MAX>0x0</MAX>
       <RW>0x0</RW>
       <RO>0x0</RO>
    </Filename>
-   <Filename name="/www/js/jquery-2.1.1.min.js">
+   <Filename name="/www/js/bootstrap.min.js">
+      <MAX>0x0</MAX>
+      <RW>0x0</RW>
+      <RO>0x0</RO>
+   </Filename>
+   <Filename name="/www/js/ui/jquery-ui.min.js">
+      <MAX>0x0</MAX>
+      <RW>0x0</RW>
+      <RO>0x0</RO>
+   </Filename>
+   <Filename name="/www/media/favicon.png">
+      <MAX>0x0</MAX>
+      <RW>0x0</RW>
+      <RO>0x0</RO>
+   </Filename>
+   <Filename name="/www/media/about.png">
+      <MAX>0x0</MAX>
+      <RW>0x0</RW>
+      <RO>0x0</RO>
+   </Filename>
+   <Filename name="/www/media/appstore.png">
+      <MAX>0x0</MAX>
+      <RW>0x0</RW>
+      <RO>0x0</RO>
+   </Filename>
+   <Filename name="/www/media/GitHub_Logo.png">
+      <MAX>0x0</MAX>
+      <RW>0x0</RW>
+      <RO>0x0</RO>
+   </Filename>
+   <Filename name="/www/media/Logo.png">
+      <MAX>0x0</MAX>
+      <RW>0x0</RW>
+      <RO>0x0</RO>
+   </Filename>
+   <Filename name="/www/media/playstore.png">
+      <MAX>0x0</MAX>
+      <RW>0x0</RW>
+      <RO>0x0</RO>
+   </Filename>
+   <Filename name="/www/media/Symbol.png">
+      <MAX>0x0</MAX>
+      <RW>0x0</RW>
+      <RO>0x0</RO>
+   </Filename>
+   <Filename name="/www/css/bootstrap.min.css">
+      <MAX>0x0</MAX>
+      <RW>0x0</RW>
+      <RO>0x0</RO>
+   </Filename>
+   <Filename name="/www/css/custom.css">
+      <MAX>0x0</MAX>
+      <RW>0x0</RW>
+      <RO>0x0</RO>
+   </Filename>
+   <Filename name="/www/css/jquery-ui.min.css">
+      <MAX>0x0</MAX>
+      <RW>0x0</RW>
+      <RO>0x0</RO>
+   </Filename>
+   <Filename name="/www/css/jquery-ui.structure.min.css">
+      <MAX>0x0</MAX>
+      <RW>0x0</RW>
+      <RO>0x0</RO>
+   </Filename>
+   <Filename name="/www/css/bootstrap-theme.min.css">
       <MAX>0x0</MAX>
       <RW>0x0</RW>
       <RO>0x0</RO>

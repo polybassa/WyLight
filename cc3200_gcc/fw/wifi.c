@@ -54,7 +54,7 @@ void WlanSupport_Task(void *pvParameters) {
 		retRes = Network_IF_InitDriver(ROLE_AP);
 		ASSERT_ON_ERROR(__LINE__, retRes);
 
-		while (Network_IF_CheckForNewProfile() == ERROR) {
+		while (Network_IF_CheckForNewProfile() != SUCCESS) {
 			osi_Sleep(100);
 		}
 
