@@ -364,3 +364,7 @@ cc3200_gcc/fw/ccs/Release
 cc3200_gcc/fw/gcc/exe
 cc3200_gcc/fw/gcc/obj
 *.log
+/cc3200_gcc/html/WyLightConfiguration/nbproject/private/
+*.d
+*.mk
+cc3200_gcc/bl/ccs/Release__GNU
