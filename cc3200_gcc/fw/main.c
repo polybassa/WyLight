@@ -186,19 +186,6 @@ void Secound_Task(void *pvParameters) {
 	}
 }
 
-void Third_Task(void *pvParameters) {
-	char string[10];
-	memset(string, 0, 10);
-	memcpy(string, pvParameters, 2);
-
-	while (true) {
-		unsigned long key = osi_EnterCritical();
-		UART_PRINT("%s\r\n", string);
-		osi_ExitCritical(key);
-		osi_Sleep(2);
-	}
-}
-
 #endif
 
 //*****************************************************************************
@@ -241,7 +228,7 @@ int main(void) {
 
 	osi_TaskCreate(First_Task, (signed portCHAR *) "LED", OSI_STACK_SIZE, NULL, 5, NULL);
 	osi_TaskCreate(Secound_Task, (signed portCHAR *) "Output1", OSI_STACK_SIZE, (void *) message1, 1, NULL);
-	osi_TaskCreate(Third_Task, (signed portCHAR *) "Output2", OSI_STACK_SIZE, (void *) message2, 4, NULL);
+	osi_TaskCreate(Secound_Task, (signed portCHAR *) "Output2", OSI_STACK_SIZE, (void *) message2, 4, NULL);
 
 #endif
 
