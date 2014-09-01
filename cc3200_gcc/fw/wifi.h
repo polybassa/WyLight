@@ -19,18 +19,8 @@
 #ifndef _WIFI_H_
 #define _WIFI_H_
 
-#define ATTEMPTING_TO_CONNECT_TO_AP			"Attempting to auto connect to AP"
-#define ATTEMPTING_TO_ACQUIRE_IP			"Attempting to acquire IP"
-#define NOT_CONNECTED_TO_AP					"Not connected to AP"
-
-//
-// Values for below macros shall be modified as per access-point(AP) properties
-// SimpleLink device will connect to following AP when application is executed
-//
-
-//#define SSID_NAME           "InternetBox"    /* AP SSID */
-//#define SECURITY_TYPE       SL_SEC_TYPE_WPA/* Security type (OPEN or WEP or WPA) */
-//#define SECURITY_KEY        "F!r5tUn!ver5alCybernet!c-K!net!cUltra-M!croProgrammer"              /* Password of the secured AP */
+#define ATTEMPTING_TO_CONNECT_TO_AP			"Attempting to auto connect to AP\r\n"
+#define NOT_CONNECTED_TO_AP					"Not connected to AP\r\n"
 
 void WlanSupport_Task(void *pvParameters);
 

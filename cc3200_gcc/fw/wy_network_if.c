@@ -55,32 +55,25 @@
 #include "timer_if.h"
 #include "gpio_if.h"
 
-#define CONNECTION_TIMEOUT_COUNT  10000  /* 5sec */
+#define CONNECTION_TIMEOUT  10000  /* 5sec */
 #define TOKEN_ARRAY_SIZE          6
 #define STRING_TOKEN_SIZE         10
-#define AP_SSID_LEN_MAX           33
 
 //
 // GLOBAL VARIABLES -- Start
 //
-unsigned long g_ulStatus = 0; /* SimpleLink Status */
-unsigned long g_ulStaIp = 0; /* Station IP address */
-unsigned long g_ulGatewayIP = 0; /* Network Gateway IP address */
-unsigned char g_ucConnectionSSID[SSID_LEN_MAX + 1]; /* Connection SSID */
-unsigned char g_ucConnectionBSSID[BSSID_LEN_MAX]; /* Connection BSSID */
-unsigned short g_usConnectIndex; /* Connection time delay index */
-unsigned int g_uiDeviceModeConfig; /* ROLE_STA or ROLE_AP, depending on stored profiles and jumper settings */
+struct wifiStatusInformation g_WifiStatusInformation;
 
 // used for ap provisioning
 unsigned char g_ucProfileAdded = 0;
-unsigned char g_ucConnectedToConfAP = 0, g_ucProvisioningDone = 0;
 unsigned int g_uiIpAddress = 0;
-unsigned char g_ucPriority, g_ucIpLeased = 0;
-char g_cWlanSSID[AP_SSID_LEN_MAX];
-char g_cWlanSecurityKey[64];
+unsigned char g_ucPriority = 7;
+char g_cWlanSSID[SSID_LEN_MAX + 1];
+char g_cWlanSecurityKey[SEC_KEY_LEN_MAX];
 SlSecParams_t g_SecParams;
 Sl_WlanNetworkEntry_t g_NetEntries[20];
-char g_token_get[TOKEN_ARRAY_SIZE][STRING_TOKEN_SIZE] = { "__SL_G_US0", "__SL_G_US1", "__SL_G_US2", "__SL_G_US3", "__SL_G_US4", "__SL_G_US5" };
+char g_token_get[TOKEN_ARRAY_SIZE][STRING_TOKEN_SIZE] = { "__SL_G_US0", "__SL_G_US1", "__SL_G_US2", "__SL_G_US3",
+		"__SL_G_US4", "__SL_G_US5" };
 //
 // GLOBAL VARIABLES -- End
 //
@@ -88,114 +81,18 @@ char g_token_get[TOKEN_ARRAY_SIZE][STRING_TOKEN_SIZE] = { "__SL_G_US0", "__SL_G_
 /* Application specific status/error codes */
 typedef enum {
 	/* Choosing this number to avoid overlap w/ host-driver's error codes */
-	LAN_CONNECTION_FAILED = -0x7D0, CLIENT_CONNECTION_FAILED = LAN_CONNECTION_FAILED - 1, DEVICE_NOT_IN_STATION_MODE = CLIENT_CONNECTION_FAILED - 1,
+	LAN_CONNECTION_FAILED = -0x7D0,
+	CLIENT_CONNECTION_FAILED = LAN_CONNECTION_FAILED - 1,
+	DEVICE_NOT_IN_STATION_MODE = CLIENT_CONNECTION_FAILED - 1,
 
 	STATUS_CODE_MAX = -0xBB8
 } e_AppStatusCodes;
 
-//
-// LOCAL FUNCTION PROTOTYPES -- End
-//
-
-#ifdef USE_FREERTOS
-//*****************************************************************************
-// FreeRTOS User Hook Functions enabled in FreeRTOSConfig.h
-//*****************************************************************************
-
-//*****************************************************************************
-//
-//! \brief Application defined hook (or callback) function - assert
-//!
-//! \param[in]  pcFile - Pointer to the File Name
-//! \param[in]  ulLine - Line Number
-//! 
-//! \return none
-//!
-//*****************************************************************************
-void vAssertCalled(const char *pcFile, unsigned long ulLine) {
-	//Handle Assert here
-	while (1) {
-	}
-}
-
-//*****************************************************************************
-//
-//! \brief Application defined idle task hook
-//! 
-//! \param  none
-//! 
-//! \return none
-//!
-//*****************************************************************************
-void vApplicationIdleHook(void) {
-	//Handle Idle Hook for Profiling, Power Management etc
-}
-
-//*****************************************************************************
-//
-//! \brief Application defined malloc failed hook
-//! 
-//! \param  none
-//! 
-//! \return none
-//!
-//*****************************************************************************
-void vApplicationMallocFailedHook() {
-	//Handle Memory Allocation Errors
-	while (1) {
-	}
-}
-
-//*****************************************************************************
-//
-//! \brief Application defined stack overflow hook
-//! 
-//! \param  none
-//! 
-//! \return none
-//!
-//*****************************************************************************
-void vApplicationStackOverflowHook(xTaskHandle *pxTask, signed portCHAR *pcTaskName) {
-	//Handle FreeRTOS Stack Overflow
-	while (1) {
-	}
-}
-
-#endif /*USE_FREERTOS */
-
-//****************************************************************************
-//
-//!	\brief Read Force AP GPIO and Configure Mode - 1(Access Point Mode)
-//!                                                  - 0 (Station Mode)
-//!
-//! \return	                	None
-//
-//****************************************************************************
-static void ReadDeviceConfiguration(void) {
-	unsigned int uiGPIOPort;
-	unsigned char pucGPIOPin;
-	unsigned char ucPinValue;
-
-//Read GPIO
-	GPIO_IF_GetPortNPin(SH_GPIO_3, &uiGPIOPort, &pucGPIOPin);
-	ucPinValue = GPIO_IF_Get(SH_GPIO_3, uiGPIOPort, pucGPIOPin);
-
-//If Connected to VCC, Mode is AP
-	if (ucPinValue == 1) {
-		//AP Mode
-		g_uiDeviceModeConfig = ROLE_AP;
-	} else {
-		//STA Mode
-		g_uiDeviceModeConfig = ROLE_STA;
-	}
-}
-
 void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
-	UART_PRINT("[WLAN EVENT]");
 	switch (((SlWlanEvent_t*) pSlWlanEvent)->Event) {
 	case SL_WLAN_CONNECT_EVENT: {
-		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION_FAILED);
+		SET_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_CONNECTION);
+		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_CONNECTION_FAILED);
 
 		//
 		// Information about the connected AP (like name, MAC etc) will be
@@ -207,76 +104,90 @@ void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 		//
 
 		// Copy new connection SSID and BSSID to global parameters
-		memcpy(g_ucConnectionSSID, pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_name, pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_len);
-		memcpy(g_ucConnectionBSSID, pSlWlanEvent->EventData.STAandP2PModeWlanConnected.bssid,
+		memcpy(g_WifiStatusInformation.ConnectionSSID, pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_name,
+				pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_len);
+		memcpy(g_WifiStatusInformation.ConnectionBSSID, pSlWlanEvent->EventData.STAandP2PModeWlanConnected.bssid,
 		SL_BSSID_LENGTH);
 
-		UART_PRINT("[WLAN EVENT] STA Connected to the AP: %s , BSSID: %x:%x:%x:%x:%x:%x\n\r", g_ucConnectionSSID, g_ucConnectionBSSID[0], g_ucConnectionBSSID[1],
-				g_ucConnectionBSSID[2], g_ucConnectionBSSID[3], g_ucConnectionBSSID[4], g_ucConnectionBSSID[5]);
+		UART_PRINT("[WLAN EVENT] STA Connected to the AP: %s , BSSID: %x:%x:%x:%x:%x:%x\n\r",
+				g_WifiStatusInformation.ConnectionSSID, g_WifiStatusInformation.ConnectionBSSID[0],
+				g_WifiStatusInformation.ConnectionBSSID[1], g_WifiStatusInformation.ConnectionBSSID[2],
+				g_WifiStatusInformation.ConnectionBSSID[3], g_WifiStatusInformation.ConnectionBSSID[4],
+				g_WifiStatusInformation.ConnectionBSSID[5]);
 	}
 		break;
 
 	case SL_WLAN_DISCONNECT_EVENT: {
 		sl_protocol_wlanConnectAsyncResponse_t* pEventData = NULL;
 
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
+		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_CONNECTION);
+		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_IP_AQUIRED);
 
 		pEventData = &pSlWlanEvent->EventData.STAandP2PModeDisconnected;
 
 		// If the user has initiated 'Disconnect' request,
 		//'reason_code' is SL_USER_INITIATED_DISCONNECTION
 		if (SL_USER_INITIATED_DISCONNECTION == pEventData->reason_code) {
-			UART_PRINT("[WLAN EVENT]Device disconnected from the AP: %s, "
-					"BSSID: %x:%x:%x:%x:%x:%x on application's request "
-					"\n\r", g_ucConnectionSSID, g_ucConnectionBSSID[0], g_ucConnectionBSSID[1], g_ucConnectionBSSID[2], g_ucConnectionBSSID[3], g_ucConnectionBSSID[4],
-					g_ucConnectionBSSID[5]);
+			UART_PRINT("[WLAN EVENT] Device disconnected from AP: %s , BSSID: %x:%x:%x:%x:%x:%x\n\r",
+					g_WifiStatusInformation.ConnectionSSID, g_WifiStatusInformation.ConnectionBSSID[0],
+					g_WifiStatusInformation.ConnectionBSSID[1], g_WifiStatusInformation.ConnectionBSSID[2],
+					g_WifiStatusInformation.ConnectionBSSID[3], g_WifiStatusInformation.ConnectionBSSID[4],
+					g_WifiStatusInformation.ConnectionBSSID[5]);
 		} else {
-			UART_PRINT("[WLAN ERROR]Device disconnected from the AP AP: %s,"
-					" BSSID: %x:%x:%x:%x:%x:%x on an ERROR..!! \n\r", g_ucConnectionSSID, g_ucConnectionBSSID[0], g_ucConnectionBSSID[1], g_ucConnectionBSSID[2],
-					g_ucConnectionBSSID[3], g_ucConnectionBSSID[4], g_ucConnectionBSSID[5]);
+			UART_PRINT("[WLAN ERROR] Device disconnected from AP: %s , BSSID: %x:%x:%x:%x:%x:%x\n\r",
+					g_WifiStatusInformation.ConnectionSSID, g_WifiStatusInformation.ConnectionBSSID[0],
+					g_WifiStatusInformation.ConnectionBSSID[1], g_WifiStatusInformation.ConnectionBSSID[2],
+					g_WifiStatusInformation.ConnectionBSSID[3], g_WifiStatusInformation.ConnectionBSSID[4],
+					g_WifiStatusInformation.ConnectionBSSID[5]);
 		}
-		memset(g_ucConnectionSSID, 0, sizeof(g_ucConnectionSSID));
-		memset(g_ucConnectionBSSID, 0, sizeof(g_ucConnectionBSSID));
+		memset(g_WifiStatusInformation.ConnectionSSID, 0, sizeof(g_WifiStatusInformation.ConnectionSSID));
+		memset(g_WifiStatusInformation.ConnectionBSSID, 0, sizeof(g_WifiStatusInformation.ConnectionBSSID));
 	}
 		break;
 
 	case SL_WLAN_STA_CONNECTED_EVENT: {
 		// when device is in AP mode and any client connects to device cc3xxx
-		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION_FAILED);
+		SET_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_CONNECTION);
+		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_CONNECTION_FAILED);
 
 		//
 		// Information about the connected client (like SSID, MAC etc) will
 		// be available in 'slPeerInfoAsyncResponse_t' - Applications
 		// can use it if required
 		//
-		// slPeerInfoAsyncResponse_t *pEventData = NULL;
-		// pEventData = &pSlWlanEvent->EventData.APModeStaConnected;
-		//
-
+		slPeerInfoAsyncResponse_t *pEventData = NULL;
+		pEventData = &pSlWlanEvent->EventData.APModeStaConnected;
+		const unsigned char BUFFERSIZE = 33;
+		unsigned char buffer[BUFFERSIZE];
+		memset(buffer, 0, BUFFERSIZE);
+		memcpy(buffer, pEventData->go_peer_device_name, pEventData->go_peer_device_name_len);
+		UART_PRINT("[WLAN EVENT] Client connected: %s\r\n", buffer);
 	}
 		break;
 
 	case SL_WLAN_STA_DISCONNECTED_EVENT: {
 		// when client disconnects from device (AP)
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_LEASED);
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
+		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_CONNECTION);
+		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_IP_LEASED);
+		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_IP_AQUIRED);
 
 		//
 		// Information about the connected client (like SSID, MAC etc) will
 		// be available in 'slPeerInfoAsyncResponse_t' - Applications
 		// can use it if required
 		//
-		// slPeerInfoAsyncResponse_t *pEventData = NULL;
-		// pEventData = &pSlWlanEvent->EventData.APModestaDisconnected;
-		//
+		slPeerInfoAsyncResponse_t *pEventData = NULL;
+		pEventData = &pSlWlanEvent->EventData.APModestaDisconnected;
+		const unsigned char BUFFERSIZE = 33;
+		unsigned char buffer[BUFFERSIZE];
+		memset(buffer, 0, BUFFERSIZE);
+		memcpy(buffer, pEventData->go_peer_device_name, pEventData->go_peer_device_name_len);
+		UART_PRINT("[WLAN EVENT] Client disconnected: %s\r\n", buffer);
 	}
 		break;
 
 	case SL_WLAN_SMART_CONFIG_START_EVENT: {
-		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_SMARTCONFIG_START);
+		SET_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_SMARTCONFIG_START);
 
 		//
 		// Information about the SmartConfig details (like Status, SSID,
@@ -292,7 +203,7 @@ void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 
 	case SL_WLAN_SMART_CONFIG_STOP_EVENT: {
 		// SmartConfig operation finished
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_SMARTCONFIG_START);
+		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_SMARTCONFIG_START);
 
 		//
 		// Information about the SmartConfig details (like Status, padding
@@ -306,7 +217,7 @@ void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 		break;
 
 	case SL_WLAN_P2P_DEV_FOUND_EVENT: {
-		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_P2P_DEV_FOUND);
+		SET_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_P2P_DEV_FOUND);
 
 		//
 		// Information about P2P config details (like Peer device name, own
@@ -320,7 +231,7 @@ void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 		break;
 
 	case SL_WLAN_P2P_NEG_REQ_RECEIVED_EVENT: {
-		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_P2P_REQ_RECEIVED);
+		SET_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_P2P_REQ_RECEIVED);
 
 		//
 		// Information about P2P Negotiation req details (like Peer device
@@ -335,9 +246,11 @@ void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 
 	case SL_WLAN_CONNECTION_FAILED_EVENT: {
 		// If device gets any connection failed event
-		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION_FAILED);
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
+		SET_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_CONNECTION_FAILED);
+		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_CONNECTION);
+		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_IP_AQUIRED);
+
+		UART_PRINT("[WLAN EVENT] Connection failed\r\n");
 	}
 		break;
 
@@ -360,10 +273,9 @@ void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 //!
 //*****************************************************************************
 void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
-	UART_PRINT("[NETAPP EVENT]");
 	switch (pNetAppEvent->Event) {
 	case SL_NETAPP_IPV4_ACQUIRED: {
-		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
+		SET_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_IP_AQUIRED);
 
 		//
 		// Information about the IPv4 & IPv6 details (like IP, gateway,dns
@@ -373,8 +285,9 @@ void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
 		UART_PRINT("[NETAPP EVENT] IP Acquired\r\n");
 	}
 		break;
+
 	case SL_NETAPP_IPV6_ACQUIRED: {
-		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
+		SET_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_IP_AQUIRED);
 
 		//
 		// Information about the IPv4 & IPv6 details (like IP, gateway,dns
@@ -389,7 +302,7 @@ void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
 		break;
 
 	case SL_NETAPP_IP_LEASED: {
-		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_LEASED);
+		SET_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_IP_LEASED);
 
 		//
 		// Information about the IP-Leased details(like IP-Leased,lease-time,
@@ -402,12 +315,14 @@ void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
 
 		SlIpLeasedAsync_t *pEventData = NULL;
 		pEventData = &pNetAppEvent->EventData.ipLeased;
-		g_ulStaIp = pEventData->ip_address;
+		g_WifiStatusInformation.StationIpAddress = pEventData->ip_address;
+		UART_PRINT("[NETAPP EVENT] IP Leased\r\n");
+
 	}
 		break;
 
 	case SL_NETAPP_IP_RELEASED: {
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_LEASED);
+		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_IP_LEASED);
 
 		//
 		// Information about the IP-Released details (like IP-address, mac
@@ -417,6 +332,9 @@ void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
 		// SlIpReleasedAsync_t *pEventData = NULL;
 		// pEventData = &pNetAppEvent->EventData.ipReleased;
 		//
+		g_WifiStatusInformation.StationIpAddress = 0;
+		UART_PRINT("[NETAPP EVENT] IP Released\r\n");
+
 	}
 		break;
 
@@ -447,7 +365,8 @@ void SimpleLinkGeneralEventHandler(SlDeviceEvent_t *pDevEvent) {
 	// Most of the general errors are not FATAL are are to be handled
 	// appropriately by the application
 	//
-	UART_PRINT("[GENERAL EVENT] - ID=[%d] Sender=[%d]\n\n", pDevEvent->EventData.deviceEvent.status, pDevEvent->EventData.deviceEvent.sender);
+	UART_PRINT("[GENERAL EVENT] - ID=[%d] Sender=[%d]\n\n", pDevEvent->EventData.deviceEvent.status,
+			pDevEvent->EventData.deviceEvent.sender);
 }
 
 //*****************************************************************************
@@ -467,19 +386,23 @@ void SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
 	switch (pSock->Event) {
 	case SL_NETAPP_SOCKET_TX_FAILED:
 		switch (pSock->EventData.status) {
-		case SL_ECLOSE:
+		case SL_ECLOSE: {
 			UART_PRINT("[SOCK ERROR] - close socket (%d) operation "
 					"failed to transmit all queued packets\n\n", pSock->EventData.sd);
+		}
 			break;
-		default:
+
+		default: {
 			UART_PRINT("[SOCK ERROR] - TX FAILED  :  socket %d , reason "
 					"(%d) \n\n", pSock->EventData.sd, pSock->EventData.status);
+		}
 			break;
 		}
 		break;
 
-	default:
+	default: {
 		UART_PRINT("[SOCK EVENT] - Unexpected Event [%x0x]\n\n", pSock->Event);
+	}
 		break;
 	}
 }
@@ -495,45 +418,50 @@ void SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
 //! \return None
 //!
 //*****************************************************************************
-void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent, SlHttpServerResponse_t *pSlHttpServerResponse) {
+void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent,
+		SlHttpServerResponse_t *pSlHttpServerResponse) {
 	UART_PRINT("[HTTP EVENT]");
 	switch (pSlHttpServerEvent->Event) {
 	case SL_NETAPP_HTTPGETTOKENVALUE: {
 
-		if (0 == memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_token_get[0], pSlHttpServerEvent->EventData.httpTokenName.len)) {
-			if (g_ucConnectedToConfAP == 1) {
-				// Important - Connection Status
-				memcpy(pSlHttpServerResponse->ResponseData.token_value.data, "TRUE", strlen("TRUE"));
-				pSlHttpServerResponse->ResponseData.token_value.len = strlen("TRUE");
-			} else {
-				// Important - Connection Status
-				memcpy(pSlHttpServerResponse->ResponseData.token_value.data, "FALSE", strlen("FALSE"));
-				pSlHttpServerResponse->ResponseData.token_value.len = strlen("FALSE");
-			}
-		}
-		if (0 == memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_token_get[1], pSlHttpServerEvent->EventData.httpTokenName.len)) {
+		if (0
+				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_token_get[1],
+						pSlHttpServerEvent->EventData.httpTokenName.len)) {
 			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_NetEntries[0].ssid, g_NetEntries[0].ssid_len);
+			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_NetEntries[0].ssid,
+					g_NetEntries[0].ssid_len);
 			pSlHttpServerResponse->ResponseData.token_value.len = g_NetEntries[0].ssid_len;
 		}
-		if (0 == memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_token_get[2], pSlHttpServerEvent->EventData.httpTokenName.len)) {
+		if (0
+				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_token_get[2],
+						pSlHttpServerEvent->EventData.httpTokenName.len)) {
 			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_NetEntries[1].ssid, g_NetEntries[1].ssid_len);
+			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_NetEntries[1].ssid,
+					g_NetEntries[1].ssid_len);
 			pSlHttpServerResponse->ResponseData.token_value.len = g_NetEntries[1].ssid_len;
 		}
-		if (0 == memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_token_get[3], pSlHttpServerEvent->EventData.httpTokenName.len)) {
+		if (0
+				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_token_get[3],
+						pSlHttpServerEvent->EventData.httpTokenName.len)) {
 			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_NetEntries[2].ssid, g_NetEntries[2].ssid_len);
+			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_NetEntries[2].ssid,
+					g_NetEntries[2].ssid_len);
 			pSlHttpServerResponse->ResponseData.token_value.len = g_NetEntries[2].ssid_len;
 		}
-		if (0 == memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_token_get[4], pSlHttpServerEvent->EventData.httpTokenName.len)) {
+		if (0
+				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_token_get[4],
+						pSlHttpServerEvent->EventData.httpTokenName.len)) {
 			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_NetEntries[3].ssid, g_NetEntries[3].ssid_len);
+			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_NetEntries[3].ssid,
+					g_NetEntries[3].ssid_len);
 			pSlHttpServerResponse->ResponseData.token_value.len = g_NetEntries[3].ssid_len;
 		}
-		if (0 == memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_token_get[5], pSlHttpServerEvent->EventData.httpTokenName.len)) {
+		if (0
+				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_token_get[5],
+						pSlHttpServerEvent->EventData.httpTokenName.len)) {
 			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_NetEntries[4].ssid, g_NetEntries[4].ssid_len);
+			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_NetEntries[4].ssid,
+					g_NetEntries[4].ssid_len);
 			pSlHttpServerResponse->ResponseData.token_value.len = g_NetEntries[4].ssid_len;
 		}
 
@@ -547,17 +475,26 @@ void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent, SlHtt
 		UART_PRINT(" token_name: %s ", pSlHttpServerEvent->EventData.httpPostData.token_name.data);
 		UART_PRINT(" token_data: %s \r\n", pSlHttpServerEvent->EventData.httpPostData.token_value.data);
 
-		if ((0 == memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USC", pSlHttpServerEvent->EventData.httpPostData.token_name.len))
-				&& (0 == memcmp(pSlHttpServerEvent->EventData.httpPostData.token_value.data, "Add", pSlHttpServerEvent->EventData.httpPostData.token_value.len))) {
+		if ((0
+				== memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USC",
+						pSlHttpServerEvent->EventData.httpPostData.token_name.len))
+				&& (0
+						== memcmp(pSlHttpServerEvent->EventData.httpPostData.token_value.data, "Add",
+								pSlHttpServerEvent->EventData.httpPostData.token_value.len))) {
 			g_ucProfileAdded = 1;
 
 		}
-		if (0 == memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USD", pSlHttpServerEvent->EventData.httpPostData.token_name.len)) {
-			memcpy(g_cWlanSSID, pSlHttpServerEvent->EventData.httpPostData.token_value.data, pSlHttpServerEvent->EventData.httpPostData.token_value.len);
+		if (0
+				== memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USD",
+						pSlHttpServerEvent->EventData.httpPostData.token_name.len)) {
+			memcpy(g_cWlanSSID, pSlHttpServerEvent->EventData.httpPostData.token_value.data,
+					pSlHttpServerEvent->EventData.httpPostData.token_value.len);
 			g_cWlanSSID[pSlHttpServerEvent->EventData.httpPostData.token_value.len] = 0;
 		}
 
-		if (0 == memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USE", pSlHttpServerEvent->EventData.httpPostData.token_name.len)) {
+		if (0
+				== memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USE",
+						pSlHttpServerEvent->EventData.httpPostData.token_name.len)) {
 
 			if (pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] == '0') {
 				g_SecParams.Type = SL_SEC_TYPE_OPEN;	//SL_SEC_TYPE_OPEN
@@ -572,18 +509,20 @@ void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent, SlHtt
 				g_SecParams.Type = SL_SEC_TYPE_OPEN;	//SL_SEC_TYPE_OPEN
 			}
 		}
-		if (0 == memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USF", pSlHttpServerEvent->EventData.httpPostData.token_name.len)) {
-			memcpy(g_cWlanSecurityKey, pSlHttpServerEvent->EventData.httpPostData.token_value.data, pSlHttpServerEvent->EventData.httpPostData.token_value.len);
+		if (0
+				== memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USF",
+						pSlHttpServerEvent->EventData.httpPostData.token_name.len)) {
+			memcpy(g_cWlanSecurityKey, pSlHttpServerEvent->EventData.httpPostData.token_value.data,
+					pSlHttpServerEvent->EventData.httpPostData.token_value.len);
 			g_cWlanSecurityKey[pSlHttpServerEvent->EventData.httpPostData.token_value.len] = 0;
 			g_SecParams.Key = g_cWlanSecurityKey;
 			g_SecParams.KeyLen = pSlHttpServerEvent->EventData.httpPostData.token_value.len;
 			UART_PRINT("new key: %s", g_cWlanSecurityKey);
 		}
-		if (0 == memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USG", pSlHttpServerEvent->EventData.httpPostData.token_name.len)) {
+		if (0
+				== memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USG",
+						pSlHttpServerEvent->EventData.httpPostData.token_name.len)) {
 			g_ucPriority = pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] - 48;
-		}
-		if (0 == memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_US0", pSlHttpServerEvent->EventData.httpPostData.token_name.len)) {
-			g_ucProvisioningDone = 1;
 		}
 	}
 		break;
@@ -602,17 +541,19 @@ void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent, SlHtt
 //
 //****************************************************************************
 static void InitializeAppVariables(void) {
-	g_ulStatus = 0;
-	g_ulStaIp = 0;
-	g_ulGatewayIP = 0;
-	memset(g_ucConnectionSSID, 0, sizeof(g_ucConnectionSSID));
-	memset(g_ucConnectionBSSID, 0, sizeof(g_ucConnectionBSSID));
+	g_WifiStatusInformation.SimpleLinkStatus = 0;
+	g_WifiStatusInformation.StationIpAddress = 0;
+	g_WifiStatusInformation.GatewayIpAddress = 0;
+	memset(g_WifiStatusInformation.ConnectionSSID, 0, sizeof(g_WifiStatusInformation.ConnectionSSID));
+	memset(g_WifiStatusInformation.ConnectionBSSID, 0, sizeof(g_WifiStatusInformation.ConnectionBSSID));
 }
 
 static long waitForConnectWithTimeout(unsigned int timeout_ms) {
 	unsigned int connectTimeoutCounter = 0;
 	//waiting for the device to connect to the AP and obtain ip address
-	while ((connectTimeoutCounter < timeout_ms) && ((!IS_CONNECTED(g_ulStatus)) || (!IS_IP_ACQUIRED(g_ulStatus)))) {
+	while ((connectTimeoutCounter < timeout_ms)
+			&& ((!IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus))
+					|| (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)))) {
 		// wait till connects to an AP
 		osi_Sleep(1);	//waiting for 0,5 secs
 
@@ -622,19 +563,9 @@ static long waitForConnectWithTimeout(unsigned int timeout_ms) {
 		connectTimeoutCounter += 1;
 	}
 
-	if ((!IS_CONNECTED(g_ulStatus)) || (!IS_IP_ACQUIRED(g_ulStatus))) return ERROR;
+	if ((!IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus))
+			|| (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus))) return ERROR;
 	else return SUCCESS;
-}
-
-static void WlanConnect() {
-//Add Profile
-	sl_WlanProfileAdd(g_cWlanSSID, strlen((char*) g_cWlanSSID), 0, &g_SecParams, 0, g_ucPriority, 0);
-
-//Connecting to the Access point
-	sl_WlanConnect(g_cWlanSSID, strlen((char*) g_cWlanSSID), 0, &g_SecParams, 0);
-
-	waitForConnectWithTimeout(CONNECTION_TIMEOUT_COUNT);
-
 }
 
 //*****************************************************************************
@@ -652,40 +583,37 @@ static void WlanConnect() {
 //! \return  On success, zero is returned. On error, negative is returned
 //*****************************************************************************
 static long ConfigureSimpleLinkToDefaultState() {
-	unsigned char ucVal = 1;
-	unsigned char ucConfigOpt = 0;
-	unsigned char ucPower = 0;
 
-	long lRetVal = -1;
-	long lMode = -1;
+	long retRes = ERROR;
+	int Mode = ERROR;
 
-	lMode = sl_Start(0, 0, 0);
-	ASSERT_ON_ERROR(__LINE__, lMode);
+	Mode = sl_Start(0, 0, 0);
+	ASSERT_ON_ERROR(__LINE__, Mode);
 
-// If the device is not in station-mode, try putting it in staion-mode
-	if (ROLE_STA != lMode) {
-		if (ROLE_AP == lMode) {
+	// If the device is not in station-mode, try putting it in staion-mode
+	if (ROLE_STA != Mode) {
+		if (ROLE_AP == Mode) {
 			// If the device is in AP mode, we need to wait for this event
 			// before doing anything
-			while (!IS_IP_ACQUIRED(g_ulStatus)) {
-				osi_Sleep(50);
+			while (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)) {
+				osi_Sleep(10);
 			}
 		}
 
 		// Switch to STA role and restart
-		lRetVal = sl_WlanSetMode(ROLE_STA);
-		ASSERT_ON_ERROR(__LINE__, lRetVal);
+		retRes = sl_WlanSetMode(ROLE_STA);
+		ASSERT_ON_ERROR(__LINE__, retRes);
 
-		lRetVal = sl_Stop(SL_STOP_TIMEOUT);
-		ASSERT_ON_ERROR(__LINE__, lRetVal);
+		retRes = sl_Stop(SL_STOP_TIMEOUT);
+		ASSERT_ON_ERROR(__LINE__, retRes);
 
-		CLR_STATUS_BIT_ALL(g_ulStatus);
+		CLR_STATUS_BIT_ALL(g_WifiStatusInformation.SimpleLinkStatus);
 
-		lRetVal = sl_Start(0, 0, 0);
-		ASSERT_ON_ERROR(__LINE__, lRetVal);
+		retRes = sl_Start(0, 0, 0);
+		ASSERT_ON_ERROR(__LINE__, retRes);
 
 		// Check if the device is in station again
-		if (ROLE_STA != lRetVal) {
+		if (ROLE_STA != retRes) {
 			// We don't want to proceed if the device is not up in STA-mode
 			return DEVICE_NOT_IN_STATION_MODE;
 		}
@@ -697,70 +625,63 @@ static long ConfigureSimpleLinkToDefaultState() {
 // disconnected Wait for 'disconnection' event if 0 is returned, Ignore
 // other return-codes
 //
-	lRetVal = sl_WlanDisconnect();
-	if (0 == lRetVal) {
+	retRes = sl_WlanDisconnect();
+	if (0 == retRes) {
 		// Wait
-		while (IS_CONNECTED(g_ulStatus)) {
+		while (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
 			osi_Sleep(50);
 		}
 	}
 
-	// Set connection policy to Auto + SmartConfig
-	//      (Device's default connection policy)
-	lRetVal = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1, 0, 0, 0, 1), NULL, 0);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
+// Set connection policy to Auto + SmartConfig
+//      (Device's default connection policy)
+	retRes = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1, 0, 0, 0, 1), NULL, 0);
+	ASSERT_ON_ERROR(__LINE__, retRes);
 
 // Enable DHCP client
-	lRetVal = sl_NetCfgSet(SL_IPV4_STA_P2P_CL_DHCP_ENABLE, 1, 1, &ucVal);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
+	unsigned char value = 1;
+	retRes = sl_NetCfgSet(SL_IPV4_STA_P2P_CL_DHCP_ENABLE, 1, sizeof(value), &value);
+	ASSERT_ON_ERROR(__LINE__, retRes);
 
 // Disable scan
-	ucConfigOpt = SL_SCAN_POLICY(0);
-	lRetVal = sl_WlanPolicySet(SL_POLICY_SCAN, ucConfigOpt, NULL, 0);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
+	unsigned char configOpt = SL_SCAN_POLICY(0);
+	retRes = sl_WlanPolicySet(SL_POLICY_SCAN, configOpt, NULL, 0);
+	ASSERT_ON_ERROR(__LINE__, retRes);
 
 // Set Tx power level for station mode
 // Number between 0-15, as dB offset from max power - 0 will set max power
-	ucPower = 0;
-	lRetVal = sl_WlanSet(SL_WLAN_CFG_GENERAL_PARAM_ID,
-	WLAN_GENERAL_PARAM_OPT_STA_TX_POWER, sizeof(ucPower), (unsigned char *) &ucPower);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
+	unsigned char power = 0;
+	retRes = sl_WlanSet(SL_WLAN_CFG_GENERAL_PARAM_ID,
+	WLAN_GENERAL_PARAM_OPT_STA_TX_POWER, sizeof(power), (unsigned char *) &power);
+	ASSERT_ON_ERROR(__LINE__, retRes);
 
 // Set PM policy to normal
-	lRetVal = sl_WlanPolicySet(SL_POLICY_PM, SL_NORMAL_POLICY, NULL, 0);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
+	retRes = sl_WlanPolicySet(SL_POLICY_PM, SL_NORMAL_POLICY, NULL, 0);
+	ASSERT_ON_ERROR(__LINE__, retRes);
 
-	lRetVal = sl_Stop(SL_STOP_TIMEOUT);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
+	if (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
+		sl_WlanDisconnect();
+	}
+
+	retRes = sl_Stop(SL_STOP_TIMEOUT);
+	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	InitializeAppVariables();
 
-	return lRetVal; // Success
+	return retRes; // Success
 }
 
 static long StartSimpleLinkAsStation() {
-	long lRetVal = ERROR;
+	long retRes = ERROR;
+	retRes = ConfigureSimpleLinkToDefaultState();
+	ASSERT_ON_ERROR(__LINE__, retRes);
 
-	lRetVal = ConfigureSimpleLinkToDefaultState();
-	if (lRetVal < 0) {
-		if (DEVICE_NOT_IN_STATION_MODE == lRetVal)
-		UART_PRINT("Failed to configure the device in its default state \n\r");
-		// TODO: Remove endless loop
-		LOOP_FOREVER(__LINE__);
-		return ERROR;
-	}
+	retRes = sl_Start(NULL, NULL, NULL);
+	ASSERT_ON_ERROR(__LINE__, retRes);
 
-	lRetVal = sl_Start(NULL, NULL, NULL);
-	if (lRetVal < 0 || lRetVal != ROLE_STA) {
-		UART_PRINT("Failed to start the device \n\r");
-		// TODO: Remove endless loop
-		LOOP_FOREVER(__LINE__);
-		return ERROR;
-	}
+	UART_PRINT("Started SimpleLink Device in STA Mode\n\r");
 
-	UART_PRINT("Started SimpleLink Device: STA Mode\n\r");
-
-	return waitForConnectWithTimeout(8000);
+	return waitForConnectWithTimeout(CONNECTION_TIMEOUT);
 }
 
 //****************************************************************************
@@ -779,92 +700,74 @@ static long StartSimpleLinkAsStation() {
 //
 //****************************************************************************
 static long StartSimpleLinkAsAP() {
-	long lRetVal = -1;
-	InitializeAppVariables();
-	lRetVal = ConfigureSimpleLinkToDefaultState();
-	if (lRetVal < 0) {
-		if (DEVICE_NOT_IN_STATION_MODE == lRetVal)
-		UART_PRINT("Failed to configure the device in its default state \n\r");
+	long retRes = ERROR;
 
-		LOOP_FOREVER(__LINE__);
-		return ERROR;
-	}
+	retRes = ConfigureSimpleLinkToDefaultState();
+	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	UART_PRINT("Device is configured in default state \n\r");
 
-	lRetVal = sl_Start(NULL, NULL, NULL);
-	if (lRetVal < 0) {
-		UART_PRINT("Failed to start the device \n\r");
-		LOOP_FOREVER(__LINE__);
-	}
+	retRes = sl_Start(NULL, NULL, NULL);
+	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	UART_PRINT("Device started \n\r");
 
-	if (lRetVal == ROLE_AP) {
-		//Device in AP-Mode, Wait for initialization to complete
-		while (!IS_IP_ACQUIRED(g_ulStatus)) {
-			// wait till connects to an AP
-			osi_Sleep(100); //waiting for 0,1 secs
-		}
-
-	}
-	if (lRetVal != ROLE_AP) {
-		sl_WlanDisconnect();
-	}
-	sl_WlanSetMode(ROLE_STA);
+	sl_WlanDisconnect();
 
 	// Set connection policy to zero, that no scan in background is performed
 	//      (Device's default connection policy)
-	lRetVal = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(0, 0, 0, 0, 0), NULL, 0);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
+	retRes = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(0, 0, 0, 0, 0), NULL, 0);
+	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	// Remove all profiles
-	lRetVal = sl_WlanProfileDel(0xFF);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
+	retRes = sl_WlanProfileDel(0xFF);
+	ASSERT_ON_ERROR(__LINE__, retRes);
 
+	// Restart Simplelink
 	sl_Stop(SL_STOP_TIMEOUT);
-	CLR_STATUS_BIT_ALL(g_ulStatus);
 
-	sl_Start(NULL, NULL, NULL);
+	CLR_STATUS_BIT_ALL(g_WifiStatusInformation.SimpleLinkStatus);
+
+	retRes = sl_Start(NULL, NULL, NULL);
+	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	unsigned long intervalInSeconds = 2;
 	unsigned char parameterLen = sizeof(intervalInSeconds);
 	//Scan AP in STA mode
-	lRetVal = sl_WlanPolicySet(SL_POLICY_SCAN, SL_SCAN_POLICY_EN(1), (unsigned char *) &intervalInSeconds, parameterLen);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
+	retRes = sl_WlanPolicySet(SL_POLICY_SCAN, SL_SCAN_POLICY_EN(1), (unsigned char *) &intervalInSeconds, parameterLen);
+	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	// wait for scan to complete
 	osi_Sleep(5000);
-	//Get Scan Result
-	lRetVal = sl_WlanGetNetworkList(0, 20, &g_NetEntries[0]);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
 
-	char message[100];
+	//Get Scan Result
+	retRes = sl_WlanGetNetworkList(0, 20, &g_NetEntries[0]);
+	ASSERT_ON_ERROR(__LINE__, retRes);
+
 	int i;
-	for (i = 0; i < lRetVal; i++) {
-		snprintf(message, 60, "%d) SSID %s\n\r", i, g_NetEntries[i].ssid);
+	for (i = 0; i < retRes; i++) {
 		UART_PRINT("%d) SSID %s\n\r", i, g_NetEntries[i].ssid);
 	}
 	//Switch to AP Mode
 	sl_WlanSetMode(ROLE_AP);
 
 	unsigned char ssid[] = "WyLightAP";
-
-	lRetVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, 0, strlen((const char *) ssid), ssid);
-	ASSERT_ON_ERROR(__LINE__, lRetVal);
+	retRes = sl_WlanSet(SL_WLAN_CFG_AP_ID, 0, sizeof(ssid), ssid);
+	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	sl_WlanDisconnect();
 	sl_Stop(SL_STOP_TIMEOUT);
-	CLR_STATUS_BIT_ALL(g_ulStatus);
+	CLR_STATUS_BIT_ALL(g_WifiStatusInformation.SimpleLinkStatus);
 
 	//Initialize the SLHost Driver
-	sl_Start(NULL, NULL, NULL);
+	retRes = sl_Start(NULL, NULL, NULL);
+	ASSERT_ON_ERROR(__LINE__, retRes);
+
 	UART_PRINT("Start AP\r\n");
 	//Wait for Ip Acquired Event in AP Mode
-	while (!IS_IP_ACQUIRED(g_ulStatus)) {
+	while (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)) {
 		osi_Sleep(10);
 	}
-
 	g_ucProfileAdded = 0;
 
 	return SUCCESS;
@@ -880,12 +783,13 @@ static long StartSimpleLinkAsAP() {
 //
 //*****************************************************************************
 static void Network_IF_DisconnectFromAP(void) {
-	if (IS_CONNECTED(g_ulStatus)) {
-		sl_WlanDisconnect();
+	if (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
+		if (sl_WlanDisconnect() == 0) {
+			while (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus))
+				osi_Sleep(10);
+		}
 	}
 
-	while (IS_CONNECTED(g_ulStatus))
-		osi_Sleep(10);
 }
 
 //*****************************************************************************
@@ -914,7 +818,7 @@ void Network_IF_DeInitDriver(void) {
 //
 // Reset the state to uninitialized
 //
-	CLR_STATUS_BIT_ALL(g_ulStatus);
+	CLR_STATUS_BIT_ALL(g_WifiStatusInformation.SimpleLinkStatus);
 }
 
 //*****************************************************************************
@@ -927,42 +831,55 @@ void Network_IF_DeInitDriver(void) {
 //! \return none
 //
 //*****************************************************************************
-void Network_IF_InitDriver(unsigned int uiMode) {
-
-	GPIO_IF_LedConfigure(LED1 | LED2 | LED3);
+long Network_IF_InitDriver(unsigned int uiMode) {
 
 	long lRetVal = -1;
+	unsigned int retry = 1;
 
-	// Test if AP-Mode jumper is set
-	ReadDeviceConfiguration();
-
-	if (g_uiDeviceModeConfig == ROLE_STA) {
-		// Reset CC3200 Network State Machine
-		lRetVal = StartSimpleLinkAsStation();
-		if (lRetVal != SUCCESS) {
-			// try again in AP MODE
-			g_uiDeviceModeConfig = ROLE_AP;
+	if (uiMode == ROLE_STA) {
+		do {
+			lRetVal = StartSimpleLinkAsStation();
+			if (lRetVal == SUCCESS) {
+				return SUCCESS;
+			}
 			Network_IF_DeInitDriver();
-		}
-	}
-
-	if (g_uiDeviceModeConfig == ROLE_AP) {
-		// Reset CC3200 Network State Machine
-		lRetVal = StartSimpleLinkAsAP();
-		if (lRetVal != SUCCESS) {
-			LOOP_FOREVER(__LINE__);
-		}
+		} while (retry--);
+		return ERROR;
+	} else if (uiMode == ROLE_AP) {
+		return StartSimpleLinkAsAP();
+	} else {
+		return ERROR;
 	}
 }
 
-void Network_IF_CheckForNewProfile(void) {
+//****************************************************************************
+//
+//!	\brief Read Force AP GPIO and Configure Mode - 1(Access Point Mode)
+//!                                                  - 0 (Station Mode)
+//!
+//! \return	                	None
+//
+//****************************************************************************
+unsigned char Network_IF_ReadDeviceConfigurationPin(void) {
+	unsigned int uiGPIOPort;
+	unsigned char pucGPIOPin;
+
+//Read GPIO
+	GPIO_IF_GetPortNPin(SH_GPIO_3, &uiGPIOPort, &pucGPIOPin);
+	return GPIO_IF_Get(SH_GPIO_3, uiGPIOPort, pucGPIOPin);
+}
+
+long Network_IF_CheckForNewProfile(void) {
 	if (!g_ucProfileAdded) {
-		return;
+		return ERROR;
 	}
+	long retRes = ERROR;
+	retRes = sl_WlanProfileAdd(g_cWlanSSID, strlen((char*) g_cWlanSSID), 0, &g_SecParams, 0, g_ucPriority, 0);
+	ASSERT_ON_ERROR(__LINE__, retRes);
+
 	Network_IF_DeInitDriver();
-	StartSimpleLinkAsStation();
-	WlanConnect();
 	g_ucProfileAdded = 0;
+	return SUCCESS;
 }
 
 //*****************************************************************************

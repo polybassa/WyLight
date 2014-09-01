@@ -39,23 +39,13 @@
 #ifndef __NETWORK_IF__H__
 #define __NETWORK_IF__H__
 
-//*****************************************************************************
-//
-// If building with a C++ compiler, make all of the definitions in this header
-// have a C binding.
-//
-//*****************************************************************************
-
-#include "wlan.h"
-
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-#include "osi.h"
-#include "FreeRTOS.h"
-#include "task.h"
+#include "wlan.h"
+#include "uart_if.h"
 
 // Loop forever, user can change it as per application's requirement
 #define LOOP_FOREVER(line_number) \
@@ -66,15 +56,17 @@ extern "C"
 // check the error code and handle it
 #define ASSERT_ON_ERROR(line_number, error_code) \
             {\
-                if (error_code < 0) return error_code;\
+				if (error_code < 0){ \
+					UART_PRINT("%d: Assert Error: %d\r\n", line_number, error_code); \
+					return error_code;\
+				} \
             }
 
+#define SUCCESS         		0
 
-#define UNUSED(x) ((x) = (x))
-#define SUCCESS         0
-
-#define SSID_LEN_MAX            (32)
-#define BSSID_LEN_MAX           (6)
+#define SSID_LEN_MAX            32
+#define BSSID_LEN_MAX           6
+#define SEC_KEY_LEN_MAX			64
 #define SL_STOP_TIMEOUT         30
 
 #ifdef NOTERM
@@ -141,33 +133,33 @@ typedef enum{
 
 }e_StatusBits;
 
+struct wifiStatusInformation {
+	unsigned long SimpleLinkStatus;
+	unsigned long StationIpAddress;
+	unsigned long GatewayIpAddress;
+	unsigned char ConnectionSSID[SSID_LEN_MAX + 1];
+	unsigned char ConnectionBSSID[BSSID_LEN_MAX];
+	unsigned short ConnectionTimeDelayIndex;
+};
+
 //
 // GLOBAL VARIABLES -- Start
 //
-extern unsigned long g_ulStatus; /* SimpleLink Status */
-extern unsigned long g_ulStaIp; /* Station IP address */
-extern unsigned long g_ulGatewayIP; /* Network Gateway IP address */
-extern unsigned char g_ucConnectionSSID[SSID_LEN_MAX + 1]; /* Connection SSID */
-extern unsigned char g_ucConnectionBSSID[BSSID_LEN_MAX]; /* Connection BSSID */
-extern unsigned short g_usConnectIndex; /* Connection time delay index */
+extern struct wifiStatusInformation g_WifiStatusInformation;
 //
 // GLOBAL VARIABLES -- End
 //
 
 
-//*****************************************************************************
 //
 // API Function prototypes
 //
-//*****************************************************************************
-extern void Network_IF_InitDriver(unsigned int uiMode);
+extern long Network_IF_InitDriver(unsigned int uiMode);
 extern void Network_IF_DeInitDriver(void);
-extern void Network_IF_CheckForNewProfile(void);
-//*****************************************************************************
-//
-// Mark the end of the C bindings section for C++ compilers.
-//
-//*****************************************************************************
+extern unsigned char Network_IF_ReadDeviceConfigurationPin(void);
+extern long Network_IF_CheckForNewProfile(void);
+
+
 #ifdef __cplusplus
 }
 #endif

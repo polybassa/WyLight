@@ -28,7 +28,7 @@
 #include "task.h"
 
 //Application Includes
-//#include "wifi.h"
+#include "wifi.h"
 //#include "broadcast.h"
 //#include "wylightAdaption.h"
 
@@ -92,9 +92,6 @@ static void BoardInit(void) {
 
 	PRCMCC3200MCUInit();
 }
-
-#define FREE_RTOS_TEST
-#ifdef FREE_RTOS_TEST
 
 #ifdef USE_FREERTOS
 //*****************************************************************************
@@ -162,32 +159,6 @@ void vApplicationStackOverflowHook(xTaskHandle *pxTask, signed portCHAR *pcTaskN
 
 #endif /*USE_FREERTOS */
 
-void First_Task(void *pvParameters) {
-	while (true) {
-		GPIO_IF_LedToggle(MCU_RED_LED_GPIO);
-		osi_Sleep(100);
-		GPIO_IF_LedToggle(MCU_ORANGE_LED_GPIO);
-		osi_Sleep(100);
-		GPIO_IF_LedToggle(MCU_GREEN_LED_GPIO);
-		osi_Sleep(100);
-	}
-}
-
-void Secound_Task(void *pvParameters) {
-	char string[10];
-	memset(string, 0, 10);
-	memcpy(string, pvParameters, 2);
-
-	while (true) {
-		unsigned long key = osi_EnterCritical();
-		UART_PRINT("%s\r\n", string);
-		osi_ExitCritical(key);
-		osi_Sleep(3);
-	}
-}
-
-#endif
-
 //*****************************************************************************
 //
 //! main
@@ -221,18 +192,7 @@ int main(void) {
 	//
 	VStartSimpleLinkSpawnTask(9);
 
-#ifdef FREE_RTOS_TEST
-
-	static const char message1[] = "1";
-	static const char message2[] = "2";
-
-	osi_TaskCreate(First_Task, (signed portCHAR *) "LED", OSI_STACK_SIZE, NULL, 5, NULL);
-	osi_TaskCreate(Secound_Task, (signed portCHAR *) "Output1", OSI_STACK_SIZE, (void *) message1, 1, NULL);
-	osi_TaskCreate(Secound_Task, (signed portCHAR *) "Output2", OSI_STACK_SIZE, (void *) message2, 4, NULL);
-
-#endif
-
-	//osi_TaskCreate(WlanSupport_Task, (signed portCHAR *) "Main", OSI_STACK_SIZE, NULL, 1, NULL);
+	osi_TaskCreate(WlanSupport_Task, (signed portCHAR *) "Main", OSI_STACK_SIZE, NULL, 1, NULL);
 	//osi_TaskCreate(Broadcast_Task,(signed portCHAR *) "Broadcast",OSI_STACK_SIZE, NULL, 5, NULL);
 	//osi_TaskCreate(TcpServer_Task, (signed portCHAR *) "TcpServer", OSI_STACK_SIZE, NULL, 2, NULL);
 	//osi_TaskCreate(UdpServer_Task, (signed portCHAR *) "UdpServer", OSI_STACK_SIZE, NULL, 3, NULL);

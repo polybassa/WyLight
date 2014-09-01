@@ -17,24 +17,12 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 
-//*****************************************************************************
-//
-//! \addtogroup wylight
-//! @{
-//
-//*****************************************************************************
-
-//Driverlib includes
-#include "rom_map.h"
-
+#include "hw_types.h"
 //Free_rtos/ti-rtos includes
 #include "osi.h"
-#include "FreeRTOS.h"
-#include "task.h"
 
 //Common interface includes
 #include "wy_network_if.h"
-
 #include "wifi.h"
 
 //*****************************************************************************
@@ -50,21 +38,26 @@
 //*****************************************************************************
 void WlanSupport_Task(void *pvParameters) {
 
-	SlrxFilterPrePreparedFiltersMask_t FilterPrePreparedFiltersMask;
-	long lRetVal = -1;
+	long retRes = ERROR;
 
-	//powering on the CC3200 NWP
-	Network_IF_InitDriver(ROLE_STA);
+	retRes = (long) Network_IF_ReadDeviceConfigurationPin();
+	while (true) {
+		if (retRes == ROLE_STA) {
+			UART_PRINT(ATTEMPTING_TO_CONNECT_TO_AP);
+			Network_IF_InitDriver(ROLE_STA);
+			while (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
+				osi_Sleep(100);
+			}
+			UART_PRINT(NOT_CONNECTED_TO_AP);
+		}
 
-	//remove all filters
-	memset(FilterPrePreparedFiltersMask, 0, sizeof(FilterPrePreparedFiltersMask));
-	FilterPrePreparedFiltersMask[0] = 0x00;
+		retRes = Network_IF_InitDriver(ROLE_AP);
+		ASSERT_ON_ERROR(__LINE__, retRes);
 
-	//lRetVal = WlanConnect();
-	//TODO: make something with this return Value
+		while (Network_IF_CheckForNewProfile() == ERROR) {
+			osi_Sleep(100);
+		}
 
-	while (1) {
-		osi_Sleep(500);
-		Network_IF_CheckForNewProfile();
+		retRes = ROLE_STA;
 	}
 }
