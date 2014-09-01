@@ -114,8 +114,7 @@ void TcpServer(void) {
 	memset(welcomeMessage, 0, sizeof(welcomeMessage));
 	unsigned long nBootloaderVersion = htonl(BOOTLOADER_VERSION);
 	memcpy(welcomeMessage, &nBootloaderVersion, sizeof(nBootloaderVersion));
-	const char greeting[] = "WyLightBootloader";
-	memcpy((char *)&welcomeMessage[4], greeting, sizeof(greeting));
+	memcpy((char *)&welcomeMessage[4], APP_NAME, sizeof(APP_NAME));
 
 	while (1) {
 		while (!IS_CONNECTED(g_ulStatus)) {
