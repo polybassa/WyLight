@@ -235,7 +235,6 @@ int main() {
 
 	Network_IF_InitDriver();
 	
-
 	// Starting the CC3200 networking layers
 	retVal = sl_Start(NULL, NULL, NULL);
 	if (retVal < 0) {
