@@ -16,7 +16,6 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-
 #include "hw_types.h"
 //Free_rtos/ti-rtos includes
 #include "osi.h"
@@ -24,6 +23,7 @@
 //Common interface includes
 #include "wy_network_if.h"
 #include "wifi.h"
+#include "gpio_if.h"
 
 //*****************************************************************************
 //
@@ -45,18 +45,29 @@ void WlanSupport_Task(void *pvParameters) {
 		if (retRes == ROLE_STA) {
 			UART_PRINT(ATTEMPTING_TO_CONNECT_TO_AP);
 			Network_IF_InitDriver(ROLE_STA);
+
+			GPIO_IF_LedOff(MCU_ALL_LED_IND);
+			GPIO_IF_LedOn(MCU_GREEN_LED_GPIO);
+
 			while (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
 				osi_Sleep(100);
 			}
 			UART_PRINT(NOT_CONNECTED_TO_AP);
+
+			GPIO_IF_LedOff(MCU_ALL_LED_IND);
+			GPIO_IF_LedOn(MCU_RED_LED_GPIO);
 		}
 
 		retRes = Network_IF_InitDriver(ROLE_AP);
 		ASSERT_ON_ERROR(__LINE__, retRes);
 
+		GPIO_IF_LedOff(MCU_ALL_LED_IND);
+
 		while (Network_IF_CheckForNewProfile() != SUCCESS) {
 			osi_Sleep(100);
+			GPIO_IF_LedToggle(MCU_ORANGE_LED_GPIO);
 		}
+		GPIO_IF_LedOff(MCU_ALL_LED_IND);
 
 		retRes = ROLE_STA;
 	}
