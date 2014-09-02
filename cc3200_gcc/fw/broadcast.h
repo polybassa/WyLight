@@ -17,33 +17,16 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 
-// Simplelink includes
-#ifndef extern
-#include "simplelink.h"
-#endif
-
-//Driverlib includes
-#include "hw_types.h"
-#include "hw_ints.h"
-#include "hw_memmap.h"
-#include "datatypes.h"
-#include "uart.h"
-#include "prcm.h"
-#include "rom.h"
-#include "rom_map.h"
-#include "interrupt.h"
-
-//Free_rtos/ti-rtos includes
-#ifndef extern
-#include "FreeRTOS.h"
-#include "task.h"
-#include "osi.h"
-#endif
+#ifndef __BROADCAST_H_
+#define __BROADCAST_H_
 
 //Common interface includes
 #include "uart_if.h"
 
-#define IP_ADDR            0xffffffff /* 255.255.255.255 */
-#define PORT_NUM           55555
+#define IP_ADDR            	0xffffffff /* 255.255.255.255 */
+#define BC_PORT_NUM        	55555
+#define UART_PRINT 		   	Report
 
-#define UART_PRINT 		   Report
+void Broadcast_Task(void *pvParameters);
+
+#endif

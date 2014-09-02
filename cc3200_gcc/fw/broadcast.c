@@ -16,46 +16,25 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-//*****************************************************************************
-//
-//! \addtogroup wylight
-//! @{
-//
-//*****************************************************************************
 #include <stdint.h>
 
 // Simplelink includes
 #include "simplelink.h"
 
-//Driverlib includes
-#include "utils.h"
-
 //Free_rtos/ti-rtos includes
 #include "osi.h"
-#ifdef USE_FREERTOS
 #include "FreeRTOS.h"
 #include "task.h"
-#endif
 
 //Common interface includes
 #include "wy_network_if.h"
-
+#include "server.h"
 //Application Includes
-#define extern
 #include "broadcast.h"
-#undef extern
-
-//*****************************************************************************
-//
-//! \addtogroup serial_wifi
-//! @{
-//
-//*****************************************************************************
 
 //
 // GLOBAL VARIABLES -- Start
 //
-extern unsigned long g_ulStatus;
 
 struct __attribute__((__packed__)) BroadcastMessage {
 	uint8_t MAC[6];
@@ -78,11 +57,28 @@ static struct BroadcastMessage g_BroadcastMessage;
 // GLOBAL VARIABLES -- End
 //
 
-//****************************************************************************
-//                      LOCAL FUNCTION PROTOTYPES
-//****************************************************************************
-void Broadcast_Task(void *pvParameters);
-void BroadcastMessage_Init(struct BroadcastMessage *pMessage);
+static void BroadcastMessage_Init(struct BroadcastMessage *pMessage) {
+	memset(pMessage, 0, sizeof(struct BroadcastMessage));
+
+	// Get MAC-Address for Broadcast Message
+	unsigned char macAddressLen = SL_MAC_ADDR_LEN;
+	sl_NetCfgGet(SL_MAC_ADDRESS_GET, NULL, &macAddressLen, (unsigned char *) &(pMessage->MAC));
+
+	// Set Client Port
+	pMessage->port = htons(SERVER_PORT);
+
+	// Set Device ID
+	memset(&(pMessage->deviceId), 0, sizeof(pMessage->deviceId));
+	const char tempDeviceId[] = "WyLightCC3200";
+	mem_copy(&(pMessage->deviceId), (void *) tempDeviceId, sizeof(pMessage->deviceId));
+
+	// Set Version
+	const char tempVersion[] = "wifly-EZX Ver 4.00.1, Apr 19";
+	mem_copy(&(pMessage->version), (void *) tempVersion, sizeof(pMessage->version));
+
+	pMessage->rssi = 0;
+	pMessage->rtc = 0;
+}
 
 //*****************************************************************************
 //
@@ -97,80 +93,51 @@ void BroadcastMessage_Init(struct BroadcastMessage *pMessage);
 //*****************************************************************************
 void Broadcast_Task(void *pvParameters) {
 
-	while (!IS_CONNECTED(g_ulStatus)) {
+	while (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)) {
 		osi_Sleep(500);
 	}
 	BroadcastMessage_Init(&g_BroadcastMessage);
 
 	while (1) {
 
-		while (!IS_CONNECTED(g_ulStatus)) {
+		while (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)) {
 			osi_Sleep(500);
 		}
 
-		const SlSockAddrIn_t sAddr = { .sin_family = SL_AF_INET, .sin_port = htons(PORT_NUM), .sin_addr.s_addr = IP_ADDR };
-		const int iAddrSize = sizeof(SlSockAddrIn_t);
-		int iSockID;
-		int iStatus;
+		const sockaddr_in sAddr = { .sin_family = AF_INET, .sin_port = htons(BC_PORT_NUM), .sin_addr.s_addr = htonl(
+				IP_ADDR) };
+		const socklen_t addrLen = sizeof(sockaddr_in);
+		int sock;
+		int status;
 
 		// creating a UDP socket
-		iSockID = sl_Socket(SL_AF_INET, SL_SOCK_DGRAM, 0);
-		if (iSockID < 0) {
+		sock = socket(AF_INET, SOCK_DGRAM, 0);
+		if (sock < 0) {
 			// error
 			UART_PRINT("ERROR: Couldn't aquire socket for Broadcast transmit\r\n");
-			LOOP_FOREVER(__LINE__);
+			osi_Sleep(5000);
+			continue;
 		}
+		UART_PRINT("Broadcast Transmitter started \r\n");
 
 		do {
-			SlGetRxStatResponse_t wlanStatistics;
-
-			if (sl_WlanRxStatGet(&wlanStatistics, 0) != 0) {
-				UART_PRINT("ERROR: Couldn't get wlan statistics\r\n");
-				break;
-			}
-
-			g_BroadcastMessage.rssi = (uint8_t) wlanStatistics.AvarageMgMntRssi;
-			g_BroadcastMessage.rtc = htonl(wlanStatistics.GetTimeStamp);
-
 			// Send Broadcast Message
-			iStatus = sl_SendTo(iSockID, &g_BroadcastMessage, sizeof(struct BroadcastMessage), 0, (SlSockAddr_t *) &sAddr, iAddrSize);
+			status = sendto(sock, &g_BroadcastMessage, sizeof(struct BroadcastMessage), 0, (sockaddr *) &sAddr,
+					addrLen);
 
-			if (iStatus <= 0) {
+			if (status <= 0) {
 				UART_PRINT("ERROR: Failure during Broadcast transmit\r\n");
 				break;
 			}
 			osi_Sleep(1500);
-		} while (IS_CONNECTED(g_ulStatus) && iStatus > 0);
+		} while (IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus) && status > 0 && sock >= 0);
 
+		UART_PRINT("Broadcast Transmitter stopped \r\n");
+		while (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)) {
+			osi_Sleep(500);
+		}
 		// Close socket in case of any error's and try to open a new socket in the next loop
-		sl_Close(iSockID);
+		close(sock);
 	}
 }
 
-void BroadcastMessage_Init(struct BroadcastMessage *pMessage) {
-	memset(pMessage, 0, sizeof(struct BroadcastMessage));
-
-	// Get MAC-Address for Broadcast Message
-	unsigned char macAddressLen = SL_MAC_ADDR_LEN;
-	sl_NetCfgGet(SL_MAC_ADDRESS_GET, NULL, &macAddressLen, (unsigned char *) &(pMessage->MAC));
-
-	// Set Client Port
-	pMessage->port = htons(2000);
-
-	// Set Device ID
-	memset(&(pMessage->deviceId), 0, sizeof(pMessage->deviceId));
-	const char tempDeviceId[] = "WyLightCC3200";
-	mem_copy(&(pMessage->deviceId), (void *) tempDeviceId, sizeof(pMessage->deviceId));
-
-	// Set Version
-	const char tempVersion[] = "wifly-EZX Ver 4.00.1, Apr 19";
-	mem_copy(&(pMessage->version), (void *) tempVersion, sizeof(pMessage->version));
-
-}
-
-//*****************************************************************************
-//
-// Close the Doxygen group.
-//! @}
-//
-//*****************************************************************************
