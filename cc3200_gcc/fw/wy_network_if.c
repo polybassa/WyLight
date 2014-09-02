@@ -558,7 +558,7 @@ static long waitForConnectWithTimeout(unsigned int timeout_ms) {
 		osi_Sleep(1);	//waiting for 0,5 secs
 
 		if (connectTimeoutCounter % 200 == 0) {
-			GPIO_IF_LedToggle(MCU_RED_LED_GPIO);
+			GPIO_IF_LedToggle(MCU_GREEN_LED_GPIO);
 		}
 		connectTimeoutCounter += 1;
 	}
@@ -731,14 +731,15 @@ static long StartSimpleLinkAsAP() {
 	retRes = sl_Start(NULL, NULL, NULL);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
-	unsigned long intervalInSeconds = 2;
+	unsigned long intervalInSeconds = 4;
 	unsigned char parameterLen = sizeof(intervalInSeconds);
 	//Scan AP in STA mode
 	retRes = sl_WlanPolicySet(SL_POLICY_SCAN, SL_SCAN_POLICY_EN(1), (unsigned char *) &intervalInSeconds, parameterLen);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
+	UART_PRINT("Scanning for SSID's\r\n----------------------------------------------\r\n");
 	// wait for scan to complete
-	osi_Sleep(5000);
+	osi_Sleep(8000);
 
 	//Get Scan Result
 	retRes = sl_WlanGetNetworkList(0, 20, &g_NetEntries[0]);
@@ -748,11 +749,37 @@ static long StartSimpleLinkAsAP() {
 	for (i = 0; i < retRes; i++) {
 		UART_PRINT("%d) SSID %s\n\r", i, g_NetEntries[i].ssid);
 	}
+	UART_PRINT("----------------------------------------------\r\n");
 	//Switch to AP Mode
 	sl_WlanSetMode(ROLE_AP);
 
+	//Disable ROM WebPages
+	unsigned char disable = 0;
+	retRes = sl_NetAppSet(SL_NET_APP_HTTP_SERVER_ID, NETAPP_SET_GET_HTTP_OPT_ROM_PAGES_ACCESS, 1, &disable);
+	ASSERT_ON_ERROR(__LINE__, retRes);
+
+	// set domain name
+	unsigned char domainName[] = "wylight.net";
+	retRes = sl_NetAppSet(SL_NET_APP_DEVICE_CONFIG_ID, NETAPP_SET_GET_DEV_CONF_OPT_DOMAIN_NAME, sizeof(domainName),
+			domainName);
+	ASSERT_ON_ERROR(__LINE__, retRes);
+
+	// set Accesspoint SSID
 	unsigned char ssid[] = "WyLightAP";
 	retRes = sl_WlanSet(SL_WLAN_CFG_AP_ID, 0, sizeof(ssid), ssid);
+	ASSERT_ON_ERROR(__LINE__, retRes);
+
+	// get current Time
+	SlDateTime_t dateTime;
+	unsigned char option = SL_DEVICE_GENERAL_CONFIGURATION_DATE_TIME, length = sizeof(SlDateTime_t);
+	retRes = sl_DevGet(SL_DEVICE_GENERAL_CONFIGURATION, &option, &length, (unsigned char *) &dateTime);
+	ASSERT_ON_ERROR(__LINE__, retRes);
+
+	// compute random channel from current time
+	unsigned char channel = dateTime.sl_tm_sec % 13;
+	UART_PRINT("Accesspoint channel: %d\r\n", channel);
+
+	retRes = sl_WlanSet(SL_WLAN_CFG_AP_ID, 3, 1, &channel);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	sl_WlanDisconnect();
