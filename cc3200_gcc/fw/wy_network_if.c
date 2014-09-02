@@ -55,7 +55,7 @@
 #include "timer_if.h"
 #include "gpio_if.h"
 
-#define CONNECTION_TIMEOUT  10000  /* 5sec */
+#define CONNECTION_TIMEOUT  15000  /* 5sec */
 #define TOKEN_ARRAY_SIZE          6
 #define STRING_TOKEN_SIZE         10
 
@@ -517,7 +517,6 @@ void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent,
 			g_cWlanSecurityKey[pSlHttpServerEvent->EventData.httpPostData.token_value.len] = 0;
 			g_SecParams.Key = g_cWlanSecurityKey;
 			g_SecParams.KeyLen = pSlHttpServerEvent->EventData.httpPostData.token_value.len;
-			UART_PRINT("new key: %s", g_cWlanSecurityKey);
 		}
 		if (0
 				== memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USG",
@@ -659,6 +658,11 @@ static long ConfigureSimpleLinkToDefaultState() {
 	retRes = sl_WlanPolicySet(SL_POLICY_PM, SL_NORMAL_POLICY, NULL, 0);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
+	// Set URN-Name
+	unsigned char urnName[] = "WyLight";
+	retRes = sl_NetAppSet(SL_NET_APP_DEVICE_CONFIG_ID, NETAPP_SET_GET_DEV_CONF_OPT_DEVICE_URN, sizeof(urnName), urnName);
+	ASSERT_ON_ERROR(__LINE__,retRes);
+
 	if (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
 		sl_WlanDisconnect();
 	}
@@ -719,10 +723,6 @@ static long StartSimpleLinkAsAP() {
 	retRes = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(0, 0, 0, 0, 0), NULL, 0);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
-	// Remove all profiles
-	retRes = sl_WlanProfileDel(0xFF);
-	ASSERT_ON_ERROR(__LINE__, retRes);
-
 	// Restart Simplelink
 	sl_Stop(SL_STOP_TIMEOUT);
 
@@ -776,7 +776,7 @@ static long StartSimpleLinkAsAP() {
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	// compute random channel from current time
-	unsigned char channel = dateTime.sl_tm_sec % 13;
+	unsigned char channel = (dateTime.sl_tm_sec % 13) + 1; // to avoid channel 0
 	UART_PRINT("Accesspoint channel: %d\r\n", channel);
 
 	retRes = sl_WlanSet(SL_WLAN_CFG_AP_ID, 3, 1, &channel);
@@ -900,10 +900,19 @@ long Network_IF_CheckForNewProfile(void) {
 	if (!g_ucProfileAdded) {
 		return ERROR;
 	}
+
 	long retRes = ERROR;
 	retRes = sl_WlanProfileAdd(g_cWlanSSID, strlen((char*) g_cWlanSSID), 0, &g_SecParams, 0, g_ucPriority, 0);
-	ASSERT_ON_ERROR(__LINE__, retRes);
+	if (retRes < 0) {
+		// Remove all profiles
+		retRes = sl_WlanProfileDel(0xFF);
+		ASSERT_ON_ERROR(__LINE__, retRes);
+		// and try again
+		retRes = sl_WlanProfileAdd(g_cWlanSSID, strlen((char*) g_cWlanSSID), 0, &g_SecParams, 0, g_ucPriority, 0);
+		ASSERT_ON_ERROR(__LINE__, retRes);
 
+	}
+	UART_PRINT("Added Profile at index %d \r\n", retRes);
 	Network_IF_DeInitDriver();
 	g_ucProfileAdded = 0;
 	return SUCCESS;
