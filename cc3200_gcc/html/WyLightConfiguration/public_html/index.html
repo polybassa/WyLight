@@ -34,7 +34,7 @@ and open the template in the editor.
           "__SL_G_US4",
           "__SL_G_US5"
         ];
-        ssids = jQuery.grep(ssids, function(value){
+        ssids = jQuery.grep(ssids, function(value) {
           return value !== "Unknown Token";
         });
         $("#ssid_input").autocomplete({
@@ -45,76 +45,81 @@ and open the template in the editor.
 
   </head>
   <body>
-      <div class="container">
+    <div class="container">
       <div class="jumbotron">
+        <div class="media pull-right">
+          <img class="img-responsive" width="280" alt="WyLight-Logo" src="media/Symbol.png">
+        </div>
+
         <h1 class="featurette-heading">WyLight Configurator</h1>
         <p class="lead">Please choose your accesspoint and select your security settings.</p>
+
       </div>
     </div>
-      <div class="container">
-        <form id="SimpleLink_Configuration" action="/" >
-          <div class="col-md-10 col-md-offset-1">
-            <div class="input-group input-group-lg">
-              <span class="input-group-addon">SSID:</span>
-              <input id="ssid_input" type="text" class="form-control" name="__SL_P_USD" value="__SL_G_US1">
-            </div>
-            <p></p>
+    <div class="container">
+      <form id="SimpleLink_Configuration" action="/" >
+        <div class="col-md-10 col-md-offset-1">
+          <div class="input-group input-group-lg">
+            <span class="input-group-addon">SSID:</span>
+            <input id="ssid_input" type="text" class="form-control" name="__SL_P_USD" value="__SL_G_US1">
           </div>
-          <div class="col-md-10 col-md-offset-1">
-            <div class="input-group input-group-lg">
-              <span class="input-group-addon">Security Type:</span>
-              <select name="__SL_P_USE" class="form-control">
-                <option value="0">OPEN</option>
-                <option value="1">WEP</option>
-                <option value="2">WPA</option>
-              </select>
-            </div>
-            <p></p>
+          <p></p>
+        </div>
+        <div class="col-md-10 col-md-offset-1">
+          <div class="input-group input-group-lg">
+            <span class="input-group-addon">Security Type:</span>
+            <select name="__SL_P_USE" class="form-control">
+              <option value="0">OPEN</option>
+              <option value="1">WEP</option>
+              <option value="2">WPA</option>
+            </select>
           </div>
-          <div class="col-md-10 col-md-offset-1">
-            <div class="input-group input-group-lg">
-              <span class="input-group-addon">KEY:</span>
-              <input type="text" class="form-control" maxlength="64" name="__SL_P_USF">
-            </div>
-            <p></p>
+          <p></p>
+        </div>
+        <div class="col-md-10 col-md-offset-1">
+          <div class="input-group input-group-lg">
+            <span class="input-group-addon">KEY:</span>
+            <input type="text" class="form-control" maxlength="64" name="__SL_P_USF">
           </div>
-          <div class="col-md-12 text-center">
-              <input type="submit" class="btn btn-lg btn-success" name="__SL_P_USC" value="Add">
-            
-            <p></p>
-          </div>
-          <input type="hidden" name="__SL_P_USG" value="1">
-        </form>
-      </div>
+          <p></p>
+        </div>
+        <div class="col-md-12 text-center">
+          <input type="submit" class="btn btn-lg btn-success" name="__SL_P_USC" value="Add">
 
-     <section class="section_feature">
-        <div class="container marketing">
-          <div class="row featurette">
-            <div class="col-md-11 col-md-offset-1">
-              <h2 class="featurette-heading">Android, iOS <span class="text-muted">and Open Source.</span></h2>
-              <p class="lead">Get your WyLight App <span class="text-primary">for free</span>. Or fork our source code on GitHub.</p>
-            </div>
-          </div>
-          <div class="row featurette">
-            <div class="col-md-4">
-              <a href="https://play.google.com/store/apps/details?id=de.WyLight.WyLight">
-                <img class="featurette-image img-responsive center-block" alt="Get it on Google Play" src="media/playstore.png" />
-              </a>
-            </div>  
-            <div class="col-md-4">
-              <a href="https://itunes.apple.com/de/app/wylight/id768060884">
-                <img class="featurette-image img-responsive center-block" alt="Get it on App Store" src="media/appstore.png" />
-              </a>
-            </div>  
-            <div class="col-md-4">
-              <a href="https://github.com/polybassa/Wifly_Light">
-                <img class="featurette-image img-responsive center-block" alt="GitHub" src="media/GitHub_Logo.png" />
-              </a>
-            </div>  
+          <p></p>
+        </div>
+        <input type="hidden" name="__SL_P_USG" value="1">
+      </form>
+    </div>
+
+    <section class="section_feature">
+      <div class="container marketing">
+        <div class="row featurette">
+          <div class="col-md-11 col-md-offset-1">
+            <h2 class="featurette-heading">Android, iOS <span class="text-muted">and Open Source.</span></h2>
+            <p class="lead">Get your WyLight App <span class="text-primary">for free</span>. Or fork our source code on GitHub.</p>
           </div>
         </div>
-      </section> 
-    
+        <div class="row featurette">
+          <div class="col-md-4">
+            <a href="https://play.google.com/store/apps/details?id=de.WyLight.WyLight">
+              <img class="featurette-image img-responsive center-block" alt="Get it on Google Play" src="media/playstore.png" />
+            </a>
+          </div>  
+          <div class="col-md-4">
+            <a href="https://itunes.apple.com/de/app/wylight/id768060884">
+              <img class="featurette-image img-responsive center-block" alt="Get it on App Store" src="media/appstore.png" />
+            </a>
+          </div>  
+          <div class="col-md-4">
+            <a href="https://github.com/polybassa/Wifly_Light">
+              <img class="featurette-image img-responsive center-block" alt="GitHub" src="media/GitHub_Logo.png" />
+            </a>
+          </div>  
+        </div>
+      </div>
+    </section> 
+
     <section id="section_about" style="margin-top: 50px; padding-top: 20px;">
       <div class="container marketing">
         <div class="media">
@@ -162,14 +167,14 @@ and open the template in the editor.
         event.preventDefault();
 
         var $form = $(this), url = $form.attr("action");
-		$('input.__SL_P_USF').val(quote($('input.__SL_P_USF').val()));
-		var postData = $form.serializeArray();
-				
-		postData.push({ name: "__SL_P_USC", value: "Add"});
-		
-		
+        $('input.__SL_P_USF').val(quote($('input.__SL_P_USF').val()));
+        var postData = $form.serializeArray();
+
+        postData.push({name: "__SL_P_USC", value: "Add"});
+
+
         $.post(url, postData);
-        
+
         alert("Your configuration has been transferred to your WyLight.");
 
       });
