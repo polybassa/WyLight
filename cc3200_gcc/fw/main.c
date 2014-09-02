@@ -29,7 +29,7 @@
 
 //Application Includes
 #include "wifi.h"
-//#include "broadcast.h"
+#include "broadcast.h"
 //#include "wylightAdaption.h"
 
 //Common interface includes
@@ -193,7 +193,7 @@ int main(void) {
 	VStartSimpleLinkSpawnTask(9);
 
 	osi_TaskCreate(WlanSupport_Task, (signed portCHAR *) "Main", OSI_STACK_SIZE, NULL, 1, NULL);
-	//osi_TaskCreate(Broadcast_Task,(signed portCHAR *) "Broadcast",OSI_STACK_SIZE, NULL, 5, NULL);
+	osi_TaskCreate(Broadcast_Task,(signed portCHAR *) "Broadcast",OSI_STACK_SIZE, NULL, 5, NULL);
 	//osi_TaskCreate(TcpServer_Task, (signed portCHAR *) "TcpServer", OSI_STACK_SIZE, NULL, 2, NULL);
 	//osi_TaskCreate(UdpServer_Task, (signed portCHAR *) "UdpServer", OSI_STACK_SIZE, NULL, 3, NULL);
 
