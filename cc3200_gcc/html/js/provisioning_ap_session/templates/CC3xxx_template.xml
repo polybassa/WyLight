@@ -109,7 +109,7 @@
          <ModeEntry name="PublicRead" checked="true"/>
       </mode>
       <verify>true</verify>
-      <Update>false</Update>
+      <Update>true</Update>
       <Erase>false</Erase>
       <Certificate>&quot;&quot;</Certificate>
       <Signature>&quot;&quot;</Signature>
