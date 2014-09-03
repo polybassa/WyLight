@@ -54,39 +54,26 @@
 #include "uart_if.h"
 #include "timer_if.h"
 #include "gpio_if.h"
+#include "wifi.h"
+
+// oslib include
+#include "osi.h"
+#include "FreeRTOS.h"
+#include "semphr.h"
 
 #define CONNECTION_TIMEOUT  15000  /* 5sec */
-#define TOKEN_ARRAY_SIZE          6
-#define STRING_TOKEN_SIZE         10
 
 //
 // GLOBAL VARIABLES -- Start
 //
 struct wifiStatusInformation g_WifiStatusInformation;
+static struct apProvisioningData g_ApProvisioningData = { .priority = 0, .getToken = { "__SL_G_US0",
+		"__SL_G_US1", "__SL_G_US2", "__SL_G_US3", "__SL_G_US4", "__SL_G_US5" } };
 
-// used for ap provisioning
-unsigned char g_ucProfileAdded = 0;
-unsigned int g_uiIpAddress = 0;
-unsigned char g_ucPriority = 7;
-char g_cWlanSSID[SSID_LEN_MAX + 1];
-char g_cWlanSecurityKey[SEC_KEY_LEN_MAX];
-SlSecParams_t g_SecParams;
-Sl_WlanNetworkEntry_t g_NetEntries[20];
-char g_token_get[TOKEN_ARRAY_SIZE][STRING_TOKEN_SIZE] = { "__SL_G_US0", "__SL_G_US1", "__SL_G_US2", "__SL_G_US3",
-		"__SL_G_US4", "__SL_G_US5" };
+
 //
 // GLOBAL VARIABLES -- End
 //
-
-/* Application specific status/error codes */
-typedef enum {
-	/* Choosing this number to avoid overlap w/ host-driver's error codes */
-	LAN_CONNECTION_FAILED = -0x7D0,
-	CLIENT_CONNECTION_FAILED = LAN_CONNECTION_FAILED - 1,
-	DEVICE_NOT_IN_STATION_MODE = CLIENT_CONNECTION_FAILED - 1,
-
-	STATUS_CODE_MAX = -0xBB8
-} e_AppStatusCodes;
 
 void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 	switch (((SlWlanEvent_t*) pSlWlanEvent)->Event) {
@@ -157,11 +144,8 @@ void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 		//
 		slPeerInfoAsyncResponse_t *pEventData = NULL;
 		pEventData = &pSlWlanEvent->EventData.APModeStaConnected;
-		const unsigned char BUFFERSIZE = 33;
-		unsigned char buffer[BUFFERSIZE];
-		memset(buffer, 0, BUFFERSIZE);
-		memcpy(buffer, pEventData->go_peer_device_name, pEventData->go_peer_device_name_len);
-		UART_PRINT("[WLAN EVENT] Client connected: %s\r\n", buffer);
+		UART_PRINT("[WLAN EVENT] Client connected: %x:%x:%x:%x:%x:%x\r\n", pEventData->mac[0], pEventData->mac[1],
+				pEventData->mac[2], pEventData->mac[3], pEventData->mac[4], pEventData->mac[5]);
 	}
 		break;
 
@@ -178,11 +162,8 @@ void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 		//
 		slPeerInfoAsyncResponse_t *pEventData = NULL;
 		pEventData = &pSlWlanEvent->EventData.APModestaDisconnected;
-		const unsigned char BUFFERSIZE = 33;
-		unsigned char buffer[BUFFERSIZE];
-		memset(buffer, 0, BUFFERSIZE);
-		memcpy(buffer, pEventData->go_peer_device_name, pEventData->go_peer_device_name_len);
-		UART_PRINT("[WLAN EVENT] Client disconnected: %s\r\n", buffer);
+		UART_PRINT("[WLAN EVENT] Client disconnected: %x:%x:%x:%x:%x:%x\r\n", pEventData->mac[0], pEventData->mac[1],
+				pEventData->mac[2], pEventData->mac[3], pEventData->mac[4], pEventData->mac[5]);
 	}
 		break;
 
@@ -425,48 +406,45 @@ void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent,
 	case SL_NETAPP_HTTPGETTOKENVALUE: {
 
 		if (0
-				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_token_get[1],
+				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_ApProvisioningData.getToken[1],
 						pSlHttpServerEvent->EventData.httpTokenName.len)) {
 			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_NetEntries[0].ssid,
-					g_NetEntries[0].ssid_len);
-			pSlHttpServerResponse->ResponseData.token_value.len = g_NetEntries[0].ssid_len;
+			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_ApProvisioningData.networkEntries[0].ssid,
+					g_ApProvisioningData.networkEntries[0].ssid_len);
+			pSlHttpServerResponse->ResponseData.token_value.len = g_ApProvisioningData.networkEntries[0].ssid_len;
 		}
 		if (0
-				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_token_get[2],
+				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_ApProvisioningData.getToken[2],
 						pSlHttpServerEvent->EventData.httpTokenName.len)) {
 			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_NetEntries[1].ssid,
-					g_NetEntries[1].ssid_len);
-			pSlHttpServerResponse->ResponseData.token_value.len = g_NetEntries[1].ssid_len;
+			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_ApProvisioningData.networkEntries[1].ssid,
+					g_ApProvisioningData.networkEntries[1].ssid_len);
+			pSlHttpServerResponse->ResponseData.token_value.len = g_ApProvisioningData.networkEntries[1].ssid_len;
 		}
 		if (0
-				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_token_get[3],
+				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_ApProvisioningData.getToken[3],
 						pSlHttpServerEvent->EventData.httpTokenName.len)) {
 			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_NetEntries[2].ssid,
-					g_NetEntries[2].ssid_len);
-			pSlHttpServerResponse->ResponseData.token_value.len = g_NetEntries[2].ssid_len;
+			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_ApProvisioningData.networkEntries[2].ssid,
+					g_ApProvisioningData.networkEntries[2].ssid_len);
+			pSlHttpServerResponse->ResponseData.token_value.len = g_ApProvisioningData.networkEntries[2].ssid_len;
 		}
 		if (0
-				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_token_get[4],
+				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_ApProvisioningData.getToken[4],
 						pSlHttpServerEvent->EventData.httpTokenName.len)) {
 			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_NetEntries[3].ssid,
-					g_NetEntries[3].ssid_len);
-			pSlHttpServerResponse->ResponseData.token_value.len = g_NetEntries[3].ssid_len;
+			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_ApProvisioningData.networkEntries[3].ssid,
+					g_ApProvisioningData.networkEntries[3].ssid_len);
+			pSlHttpServerResponse->ResponseData.token_value.len = g_ApProvisioningData.networkEntries[3].ssid_len;
 		}
 		if (0
-				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_token_get[5],
+				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_ApProvisioningData.getToken[5],
 						pSlHttpServerEvent->EventData.httpTokenName.len)) {
 			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_NetEntries[4].ssid,
-					g_NetEntries[4].ssid_len);
-			pSlHttpServerResponse->ResponseData.token_value.len = g_NetEntries[4].ssid_len;
-		}
-
-		else break;
-
+			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_ApProvisioningData.networkEntries[4].ssid,
+					g_ApProvisioningData.networkEntries[4].ssid_len);
+			pSlHttpServerResponse->ResponseData.token_value.len = g_ApProvisioningData.networkEntries[4].ssid_len;
+		} else break;
 	}
 		break;
 
@@ -481,15 +459,15 @@ void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent,
 				&& (0
 						== memcmp(pSlHttpServerEvent->EventData.httpPostData.token_value.data, "Add",
 								pSlHttpServerEvent->EventData.httpPostData.token_value.len))) {
-			g_ucProfileAdded = 1;
+			osi_SyncObjSignalFromISR(WlanSupportProvisioningDataAddedSemaphore);
 
 		}
 		if (0
 				== memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USD",
 						pSlHttpServerEvent->EventData.httpPostData.token_name.len)) {
-			memcpy(g_cWlanSSID, pSlHttpServerEvent->EventData.httpPostData.token_value.data,
+			memcpy(g_ApProvisioningData.wlanSSID, pSlHttpServerEvent->EventData.httpPostData.token_value.data,
 					pSlHttpServerEvent->EventData.httpPostData.token_value.len);
-			g_cWlanSSID[pSlHttpServerEvent->EventData.httpPostData.token_value.len] = 0;
+			g_ApProvisioningData.wlanSSID[pSlHttpServerEvent->EventData.httpPostData.token_value.len] = 0;
 		}
 
 		if (0
@@ -497,31 +475,31 @@ void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent,
 						pSlHttpServerEvent->EventData.httpPostData.token_name.len)) {
 
 			if (pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] == '0') {
-				g_SecParams.Type = SL_SEC_TYPE_OPEN;	//SL_SEC_TYPE_OPEN
+				g_ApProvisioningData.secParameters.Type = SL_SEC_TYPE_OPEN;	//SL_SEC_TYPE_OPEN
 
 			} else if (pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] == '1') {
-				g_SecParams.Type = SL_SEC_TYPE_WEP;	//SL_SEC_TYPE_WEP
+				g_ApProvisioningData.secParameters.Type = SL_SEC_TYPE_WEP;	//SL_SEC_TYPE_WEP
 
 			} else if (pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] == '2') {
-				g_SecParams.Type = SL_SEC_TYPE_WPA;	//SL_SEC_TYPE_WPA
+				g_ApProvisioningData.secParameters.Type = SL_SEC_TYPE_WPA;	//SL_SEC_TYPE_WPA
 
 			} else {
-				g_SecParams.Type = SL_SEC_TYPE_OPEN;	//SL_SEC_TYPE_OPEN
+				g_ApProvisioningData.secParameters.Type = SL_SEC_TYPE_OPEN;	//SL_SEC_TYPE_OPEN
 			}
 		}
 		if (0
 				== memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USF",
 						pSlHttpServerEvent->EventData.httpPostData.token_name.len)) {
-			memcpy(g_cWlanSecurityKey, pSlHttpServerEvent->EventData.httpPostData.token_value.data,
+			memcpy(g_ApProvisioningData.wlanSecurityKey, pSlHttpServerEvent->EventData.httpPostData.token_value.data,
 					pSlHttpServerEvent->EventData.httpPostData.token_value.len);
-			g_cWlanSecurityKey[pSlHttpServerEvent->EventData.httpPostData.token_value.len] = 0;
-			g_SecParams.Key = g_cWlanSecurityKey;
-			g_SecParams.KeyLen = pSlHttpServerEvent->EventData.httpPostData.token_value.len;
+			g_ApProvisioningData.wlanSecurityKey[pSlHttpServerEvent->EventData.httpPostData.token_value.len] = 0;
+			g_ApProvisioningData.secParameters.Key = g_ApProvisioningData.wlanSecurityKey;
+			g_ApProvisioningData.secParameters.KeyLen = pSlHttpServerEvent->EventData.httpPostData.token_value.len;
 		}
 		if (0
 				== memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USG",
 						pSlHttpServerEvent->EventData.httpPostData.token_name.len)) {
-			g_ucPriority = pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] - 48;
+			g_ApProvisioningData.priority = pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] - '0';
 		}
 	}
 		break;
@@ -581,9 +559,10 @@ static long waitForConnectWithTimeout(unsigned int timeout_ms) {
 //! \return  On success, zero is returned. On error, negative is returned
 //*****************************************************************************
 static long ConfigureSimpleLinkToDefaultState() {
-
 	long retRes = ERROR;
 	int Mode = ERROR;
+
+	InitializeAppVariables();
 
 	Mode = sl_Start(0, 0, 0);
 	ASSERT_ON_ERROR(__LINE__, Mode);
@@ -613,7 +592,7 @@ static long ConfigureSimpleLinkToDefaultState() {
 		// Check if the device is in station again
 		if (ROLE_STA != retRes) {
 			// We don't want to proceed if the device is not up in STA-mode
-			return DEVICE_NOT_IN_STATION_MODE;
+			return ERROR;
 		}
 	}
 
@@ -659,8 +638,9 @@ static long ConfigureSimpleLinkToDefaultState() {
 
 	// Set URN-Name
 	unsigned char urnName[] = "WyLight";
-	retRes = sl_NetAppSet(SL_NET_APP_DEVICE_CONFIG_ID, NETAPP_SET_GET_DEV_CONF_OPT_DEVICE_URN, sizeof(urnName), urnName);
-	ASSERT_ON_ERROR(__LINE__,retRes);
+	retRes = sl_NetAppSet(SL_NET_APP_DEVICE_CONFIG_ID, NETAPP_SET_GET_DEV_CONF_OPT_DEVICE_URN, sizeof(urnName),
+			urnName);
+	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	if (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
 		sl_WlanDisconnect();
@@ -741,12 +721,12 @@ static long StartSimpleLinkAsAP() {
 	osi_Sleep(8000);
 
 	//Get Scan Result
-	retRes = sl_WlanGetNetworkList(0, 20, &g_NetEntries[0]);
+	retRes = sl_WlanGetNetworkList(0, 20, &g_ApProvisioningData.networkEntries[0]);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	int i;
 	for (i = 0; i < retRes; i++) {
-		UART_PRINT("%d) SSID %s\n\r", i, g_NetEntries[i].ssid);
+		UART_PRINT("%d) SSID %s\n\r", i, g_ApProvisioningData.networkEntries[i].ssid);
 	}
 	UART_PRINT("----------------------------------------------\r\n");
 	//Switch to AP Mode
@@ -794,7 +774,6 @@ static long StartSimpleLinkAsAP() {
 	while (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)) {
 		osi_Sleep(10);
 	}
-	g_ucProfileAdded = 0;
 
 	return SUCCESS;
 }
@@ -815,7 +794,6 @@ static void Network_IF_DisconnectFromAP(void) {
 				osi_Sleep(10);
 		}
 	}
-
 }
 
 //*****************************************************************************
@@ -895,31 +873,20 @@ unsigned char Network_IF_ReadDeviceConfigurationPin(void) {
 	return GPIO_IF_Get(SH_GPIO_3, uiGPIOPort, pucGPIOPin);
 }
 
-long Network_IF_CheckForNewProfile(void) {
-	if (!g_ucProfileAdded) {
-		return ERROR;
-	}
-
+long Network_IF_AddNewProfile(void) {
 	long retRes = ERROR;
-	retRes = sl_WlanProfileAdd(g_cWlanSSID, strlen((char*) g_cWlanSSID), 0, &g_SecParams, 0, g_ucPriority, 0);
+	retRes = sl_WlanProfileAdd(g_ApProvisioningData.wlanSSID, strlen((char*) g_ApProvisioningData.wlanSSID), 0,
+			&g_ApProvisioningData.secParameters, 0, g_ApProvisioningData.priority, 0);
 	if (retRes < 0) {
 		// Remove all profiles
 		retRes = sl_WlanProfileDel(0xFF);
 		ASSERT_ON_ERROR(__LINE__, retRes);
 		// and try again
-		retRes = sl_WlanProfileAdd(g_cWlanSSID, strlen((char*) g_cWlanSSID), 0, &g_SecParams, 0, g_ucPriority, 0);
+		retRes = sl_WlanProfileAdd(g_ApProvisioningData.wlanSSID, strlen((char*) g_ApProvisioningData.wlanSSID), 0,
+				&g_ApProvisioningData.secParameters, 0, g_ApProvisioningData.priority, 0);
 		ASSERT_ON_ERROR(__LINE__, retRes);
 
 	}
 	UART_PRINT("Added Profile at index %d \r\n", retRes);
-	g_ucProfileAdded = 0;
 	return SUCCESS;
 }
-
-//*****************************************************************************
-//
-// Close the Doxygen group.
-//! @}
-//
-//*****************************************************************************
-

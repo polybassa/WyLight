@@ -68,6 +68,8 @@ extern "C"
 #define BSSID_LEN_MAX           6
 #define SEC_KEY_LEN_MAX			64
 #define SL_STOP_TIMEOUT         30
+#define TOKEN_ARRAY_SIZE        6
+#define STRING_TOKEN_SIZE       10
 
 #ifdef NOTERM
 #define UART_PRINT(x, ...)
@@ -137,9 +139,18 @@ struct wifiStatusInformation {
 	unsigned long SimpleLinkStatus;
 	unsigned long StationIpAddress;
 	unsigned long GatewayIpAddress;
-	unsigned char ConnectionSSID[SSID_LEN_MAX + 1];
+	unsigned char ConnectionSSID[SSID_LEN_MAX];
 	unsigned char ConnectionBSSID[BSSID_LEN_MAX];
 	unsigned short ConnectionTimeDelayIndex;
+};
+
+struct apProvisioningData {
+	unsigned char priority;
+	char wlanSSID[SSID_LEN_MAX];
+	char wlanSecurityKey[SEC_KEY_LEN_MAX];
+	SlSecParams_t secParameters;
+	Sl_WlanNetworkEntry_t networkEntries[20];
+	char getToken[TOKEN_ARRAY_SIZE][STRING_TOKEN_SIZE];
 };
 
 //
@@ -157,7 +168,7 @@ extern struct wifiStatusInformation g_WifiStatusInformation;
 extern long Network_IF_InitDriver(unsigned int uiMode);
 extern void Network_IF_DeInitDriver(void);
 extern unsigned char Network_IF_ReadDeviceConfigurationPin(void);
-extern long Network_IF_CheckForNewProfile(void);
+extern long Network_IF_AddNewProfile(void);
 
 
 #ifdef __cplusplus
