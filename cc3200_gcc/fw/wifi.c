@@ -19,11 +19,35 @@
 #include "hw_types.h"
 //Free_rtos/ti-rtos includes
 #include "osi.h"
+#include "FreeRTOS.h"
+#include "semphr.h"
+#include "task.h"
 //Common interface includes
 #include "wy_network_if.h"
 #include "wifi.h"
 #include "gpio_if.h"
 #include "broadcast.h"
+
+//
+// GLOBAL VARIABLES -- Start
+//
+
+static xSemaphoreHandle g_WlanSupportProvisioningDataAddedSemaphore;
+static xTaskHandle g_WlanSupportTaskHandle;
+
+//
+// GLOBAL VARIABLES -- End
+//
+
+void WlanSupport_TaskInit(void) {
+	WlanSupportProvisioningDataAddedSemaphore = &g_WlanSupportProvisioningDataAddedSemaphore;
+	WlanSupportTaskHandle = &g_WlanSupportTaskHandle;
+
+	osi_SyncObjCreate(WlanSupportProvisioningDataAddedSemaphore);
+
+	osi_SyncObjClear(WlanSupportProvisioningDataAddedSemaphore);
+}
+
 //*****************************************************************************
 //
 //! Main_Task
@@ -54,6 +78,8 @@ void WlanSupport_Task(void *pvParameters) {
 					osi_Sleep(100);
 				}
 				Broadcast_TaskQuit();
+
+				Network_IF_DeInitDriver();
 			}
 
 			UART_PRINT(NOT_CONNECTED_TO_AP);
@@ -66,17 +92,17 @@ void WlanSupport_Task(void *pvParameters) {
 			GPIO_IF_LedOn(MCU_GREEN_LED_GPIO);
 			osi_SyncObjSignal(BroadcastStartSemaphore);
 
-			while (Network_IF_CheckForNewProfile() != SUCCESS) {
-				osi_Sleep(100);
-				GPIO_IF_LedToggle(MCU_ORANGE_LED_GPIO);
-			}
+			GPIO_IF_LedOn(MCU_ORANGE_LED_GPIO);
+			do {
+				osi_SyncObjWait(WlanSupportProvisioningDataAddedSemaphore, OSI_WAIT_FOREVER);
+			} while (Network_IF_AddNewProfile() != SUCCESS);
+
 			Broadcast_TaskQuit();
 
 			Network_IF_DeInitDriver();
 		}
 
 		GPIO_IF_LedOff(MCU_ALL_LED_IND);
-		GPIO_IF_LedOn(MCU_RED_LED_GPIO);
 		retRes = ROLE_STA;
 	}
 }

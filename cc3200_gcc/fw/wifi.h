@@ -19,8 +19,15 @@
 #ifndef _WIFI_H_
 #define _WIFI_H_
 
+#include "osi.h"
+
 #define ATTEMPTING_TO_CONNECT_TO_AP			"Attempting to auto connect to AP\r\n"
 #define NOT_CONNECTED_TO_AP					"Not connected to AP\r\n"
+
+OsiSyncObj_t WlanSupportProvisioningDataAddedSemaphore;
+OsiTaskHandle WlanSupportTaskHandle;
+
+void WlanSupport_TaskInit(void);
 
 void WlanSupport_Task(void *pvParameters);
 
