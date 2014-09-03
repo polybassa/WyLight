@@ -68,11 +68,8 @@ extern "C" {
 				} \
             }
 
-#define UNUSED(x) 				((x) = (x))
 #define SUCCESS         		0
 
-#define SSID_LEN_MAX            (32)
-#define BSSID_LEN_MAX           (6)
 #define SL_STOP_TIMEOUT         30
 
 #ifdef NOTERM
@@ -96,17 +93,8 @@ extern "C" {
                                                            STATUS_BIT_IP_LEASED)
 #define IS_IP_ACQUIRED(status_variable)       	GET_STATUS_BIT(status_variable,\
                                                           STATUS_BIT_IP_AQUIRED)
-#define IS_SMART_CFG_START(status_variable)  	GET_STATUS_BIT(status_variable,\
-                                                   STATUS_BIT_SMARTCONFIG_START)
-#define IS_P2P_DEV_FOUND(status_variable)    	GET_STATUS_BIT(status_variable,\
-                                                       STATUS_BIT_P2P_DEV_FOUND)
-#define IS_P2P_REQ_RCVD(status_variable)     	GET_STATUS_BIT(status_variable,\
-                                                    STATUS_BIT_P2P_REQ_RECEIVED)
 #define IS_CONNECT_FAILED(status_variable)   	GET_STATUS_BIT(status_variable,\
                                                    STATUS_BIT_CONNECTION_FAILED)
-#define IS_PING_DONE(status_variable)        	GET_STATUS_BIT(status_variable,\
-                                                           STATUS_BIT_PING_DONE)
-
 // Status bits - These are used to set/reset the corresponding bits in 
 // given variable
 
@@ -143,10 +131,6 @@ typedef enum {
 // GLOBAL VARIABLES -- Start
 //
 extern unsigned long g_ulStatus; /* SimpleLink Status */
-extern unsigned long g_ulStaIp; /* Station IP address */
-extern unsigned long g_ulGatewayIP; /* Network Gateway IP address */
-extern unsigned char g_ucConnectionSSID[SSID_LEN_MAX + 1]; /* Connection SSID */
-extern unsigned char g_ucConnectionBSSID[BSSID_LEN_MAX]; /* Connection BSSID */
 //
 // GLOBAL VARIABLES -- End
 //

@@ -27,11 +27,10 @@
 #include "hw_types.h"
 #include "hw_memmap.h"
 #include "rom_map.h"
+#include "interrupt.h"
 #include "prcm.h"
-#include "wy_bl_network_if.h"
 #include "hw_nvic.h"
 #include "firmware_loader.h"
-
 
 #define BUFFER_SIZE 			1024
 #define BLOCKSIZE		 		64 		/* Write block size for write to MD5SHA module */
@@ -121,7 +120,8 @@ static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *r
 	PRCMPeripheralReset(PRCM_DTHE);
 
 	//Enable Interrupts
-	SHAMD5IntEnable(SHAMD5_BASE, SHAMD5_INT_CONTEXT_READY | SHAMD5_INT_PARTHASH_READY | SHAMD5_INT_INPUT_READY | SHAMD5_INT_OUTPUT_READY);
+	SHAMD5IntEnable(SHAMD5_BASE,
+			SHAMD5_INT_CONTEXT_READY | SHAMD5_INT_PARTHASH_READY | SHAMD5_INT_INPUT_READY | SHAMD5_INT_OUTPUT_READY);
 
 	//wait for context ready flag.
 	while (!g_SHAMD5_StatusFlags.ContextReadyFlag)
@@ -148,7 +148,8 @@ static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *r
 	// return result
 	SHAMD5ResultRead(SHAMD5_BASE, resultHash);
 	// disable Interrupts
-	SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_CONTEXT_READY | SHAMD5_INT_PARTHASH_READY | SHAMD5_INT_INPUT_READY | SHAMD5_INT_OUTPUT_READY);
+	SHAMD5IntDisable(SHAMD5_BASE,
+			SHAMD5_INT_CONTEXT_READY | SHAMD5_INT_PARTHASH_READY | SHAMD5_INT_INPUT_READY | SHAMD5_INT_OUTPUT_READY);
 	// disable MD5SHA module
 	PRCMPeripheralClkDisable(PRCM_DTHE, PRCM_RUN_MODE_CLK);
 }
@@ -181,7 +182,7 @@ static long VerifySRAM(uint8_t *pSource, const size_t length) {
 
 	//get hash from end of SRAM
 	const void *pHash = pSource + length - CHECKSUM_SIZE;
-	if ((uint32_t)pHash <= (uint32_t)pSource) {
+	if ((uint32_t) pHash <= (uint32_t) pSource) {
 		return ERROR;
 	}
 	memcpy(secoundHash, pHash, CHECKSUM_SIZE);
@@ -287,7 +288,9 @@ long SaveSRAMContentAsFirmware(uint8_t *pSource, const size_t length) {
 	if (retVal < 0) {
 		// File Doesn't exit create a new file
 		retVal = sl_FsOpen(FIRMWARE_FILENAME,
-				FS_MODE_OPEN_CREATE(length, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR), &token, &fileHandle);
+				FS_MODE_OPEN_CREATE(length,
+						_FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ
+								| _FS_FILE_OPEN_FLAG_VENDOR), &token, &fileHandle);
 		if (retVal < 0) {
 			retVal = sl_FsDel(FIRMWARE_FILENAME, token);
 			UART_PRINT("Error during opening the destination file\r\n");
@@ -319,9 +322,6 @@ void StartFirmware(void) {
 	MAP_IntMasterDisable();
 	// patch Interrupt Vector Table
 	MAP_IntVTableBaseSet(FIRMWARE_ORIGIN);
-	/*unsigned int *pVectorTableOffset;
-	pVectorTableOffset = (unsigned int *) NVIC_VTABLE;
-	*pVectorTableOffset = FIRMWARE_ORIGIN;*/
 
 	// call Firmware
 	void (*firmware_origin_entry)(void);
@@ -349,13 +349,9 @@ long LoadAndExecuteFirmware(void) {
 		return ERROR;
 	}
 
-	if (SUCCESS != VerifySRAM((uint8_t *) FIRMWARE_ORIGIN, retVal)) {
-		return ERROR;
+	if (SUCCESS == VerifySRAM((uint8_t *) FIRMWARE_ORIGIN, retVal)) {
+		UART_PRINT("Starting Firmware\r\n");
+		StartFirmware();
 	}
-
-	UART_PRINT("Starting Firmware\r\n");
-	StartFirmware();
-
-	//never reached;
 	return ERROR;
 }
