@@ -16,43 +16,28 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include <stdint.h>
-
+#include "hw_types.h"
 // Simplelink includes
 #include "simplelink.h"
 
-//Free_rtos/ti-rtos includes
-#include "osi.h"
-#include "FreeRTOS.h"
-#include "task.h"
-
 //Common interface includes
-#include "wy_network_if.h"
 #include "server.h"
 //Application Includes
 #include "broadcast.h"
+#include "osi.h"
+#include "FreeRTOS.h"
+#include "semphr.h"
+#include "task.h"
 
 //
 // GLOBAL VARIABLES -- Start
 //
 
-struct __attribute__((__packed__)) BroadcastMessage {
-	uint8_t MAC[6];
-	uint8_t channel;
-	uint8_t rssi;
-	uint16_t port;
-	uint32_t rtc;
-	uint16_t battery;
-	uint16_t gpio;
-	uint8_t asciiTime[14];
-	uint8_t version[28];
-	uint8_t deviceId[32];
-	uint16_t boottime;
-	uint8_t sensors[16];
+static xSemaphoreHandle g_BroadcastStoppedSemaphore;
+static xSemaphoreHandle g_BroadcastStartSemaphore;
+static xTaskHandle g_BroadcastTaskHandle;
+static tBoolean g_StopBroadcastTask;
 
-};
-
-static struct BroadcastMessage g_BroadcastMessage;
 //
 // GLOBAL VARIABLES -- End
 //
@@ -80,6 +65,25 @@ static void BroadcastMessage_Init(struct BroadcastMessage *pMessage) {
 	pMessage->rtc = 0;
 }
 
+void Broadcast_TaskInit(void) {
+	BroadcastStoppedSemaphore = &g_BroadcastStoppedSemaphore;
+	BroadcastStartSemaphore = &g_BroadcastStartSemaphore;
+	BroadcastTaskHandle = &g_BroadcastTaskHandle;
+
+	osi_SyncObjCreate(BroadcastStoppedSemaphore);
+	osi_SyncObjCreate(BroadcastStartSemaphore);
+
+	osi_SyncObjClear(BroadcastStoppedSemaphore);
+	osi_SyncObjClear(BroadcastStartSemaphore);
+
+	g_StopBroadcastTask = false;
+}
+
+void Broadcast_TaskQuit(void) {
+	g_StopBroadcastTask = true;
+	osi_SyncObjWait(BroadcastStoppedSemaphore, OSI_WAIT_FOREVER);
+}
+
 //*****************************************************************************
 //
 //! Broadcast_Task
@@ -93,51 +97,43 @@ static void BroadcastMessage_Init(struct BroadcastMessage *pMessage) {
 //*****************************************************************************
 void Broadcast_Task(void *pvParameters) {
 
-	while (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)) {
-		osi_Sleep(500);
-	}
-	BroadcastMessage_Init(&g_BroadcastMessage);
+	const sockaddr_in destaddr = { .sin_family = AF_INET, .sin_port = htons(BC_PORT_NUM), .sin_addr.s_addr = htonl(
+	IP_ADDR) };
+	const socklen_t addrLen = sizeof(sockaddr_in);
+	int status;
+
+	struct BroadcastMessage tempBroadcastMessage;
 
 	while (1) {
+		osi_SyncObjWait(BroadcastStartSemaphore, OSI_WAIT_FOREVER);
 
-		while (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)) {
-			osi_Sleep(500);
-		}
-
-		const sockaddr_in sAddr = { .sin_family = AF_INET, .sin_port = htons(BC_PORT_NUM), .sin_addr.s_addr = htonl(
-				IP_ADDR) };
-		const socklen_t addrLen = sizeof(sockaddr_in);
-		int sock;
-		int status;
+		BroadcastMessage_Init(&tempBroadcastMessage);
 
 		// creating a UDP socket
-		sock = socket(AF_INET, SOCK_DGRAM, 0);
+		const int sock = socket(AF_INET, SOCK_DGRAM, 0);
 		if (sock < 0) {
 			// error
 			UART_PRINT("ERROR: Couldn't aquire socket for Broadcast transmit\r\n");
-			osi_Sleep(5000);
+			osi_SyncObjSignal(BroadcastStoppedSemaphore);
 			continue;
 		}
+
 		UART_PRINT("Broadcast Transmitter started \r\n");
 
 		do {
+			osi_Sleep(1500);
 			// Send Broadcast Message
-			status = sendto(sock, &g_BroadcastMessage, sizeof(struct BroadcastMessage), 0, (sockaddr *) &sAddr,
+			status = sendto(sock, &tempBroadcastMessage, sizeof(struct BroadcastMessage), 0, (sockaddr *) &destaddr,
 					addrLen);
 
-			if (status <= 0) {
-				UART_PRINT("ERROR: Failure during Broadcast transmit\r\n");
-				break;
-			}
-			osi_Sleep(1500);
-		} while (IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus) && status > 0 && sock >= 0);
+		} while (status > 0 && !g_StopBroadcastTask);
+
+		g_StopBroadcastTask = false;
 
 		UART_PRINT("Broadcast Transmitter stopped \r\n");
-		while (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)) {
-			osi_Sleep(500);
-		}
 		// Close socket in case of any error's and try to open a new socket in the next loop
 		close(sock);
+		osi_SyncObjSignal(BroadcastStoppedSemaphore);
 	}
 }
 

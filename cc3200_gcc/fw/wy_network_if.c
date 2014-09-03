@@ -551,8 +551,7 @@ static long waitForConnectWithTimeout(unsigned int timeout_ms) {
 	unsigned int connectTimeoutCounter = 0;
 	//waiting for the device to connect to the AP and obtain ip address
 	while ((connectTimeoutCounter < timeout_ms)
-			&& ((!IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus))
-					|| (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)))) {
+			&& !IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)) {
 		// wait till connects to an AP
 		osi_Sleep(1);	//waiting for 0,5 secs
 
@@ -913,7 +912,6 @@ long Network_IF_CheckForNewProfile(void) {
 
 	}
 	UART_PRINT("Added Profile at index %d \r\n", retRes);
-	Network_IF_DeInitDriver();
 	g_ucProfileAdded = 0;
 	return SUCCESS;
 }

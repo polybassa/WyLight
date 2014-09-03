@@ -20,13 +20,43 @@
 #ifndef __BROADCAST_H_
 #define __BROADCAST_H_
 
+#include <stdint.h>
+
 //Common interface includes
 #include "uart_if.h"
+
+//Free_rtos/ti-rtos includes
+#include "osi.h"
+
+#ifndef SUCCESS
+#define SUCCESS 	0
+#endif
 
 #define IP_ADDR            	0xffffffff /* 255.255.255.255 */
 #define BC_PORT_NUM        	55555
 #define UART_PRINT 		   	Report
 
+struct __attribute__((__packed__)) BroadcastMessage {
+	uint8_t MAC[6];
+	uint8_t channel;
+	uint8_t rssi;
+	uint16_t port;
+	uint32_t rtc;
+	uint16_t battery;
+	uint16_t gpio;
+	uint8_t asciiTime[14];
+	uint8_t version[28];
+	uint8_t deviceId[32];
+	uint16_t boottime;
+	uint8_t sensors[16];
+};
+
+OsiSyncObj_t BroadcastStartSemaphore;
+OsiSyncObj_t BroadcastStoppedSemaphore;
+OsiTaskHandle BroadcastTaskHandle;
+
+void Broadcast_TaskInit(void);
+void Broadcast_TaskQuit(void);
 void Broadcast_Task(void *pvParameters);
 
 #endif
