@@ -70,6 +70,8 @@ extern "C" {
 #define     SL_PF_INET6                        AF_INET6
 
 #define     SL_INADDR_ANY                      (0)                       /*  bind any address  */
+#define 	SL_INADDR_LOOPBACK  			   (0x7F000001)
+#define 	SL_INADDR_BROADCAST 			   (0xFFFFFFFF)
 
 /* error codes */
 #define SL_SOC_ERROR                          (-1)  /* Failure.                                                             */
@@ -288,7 +290,9 @@ extern "C" {
 #define PF_INET                             SL_PF_INET            
 #define PF_INET6                            SL_PF_INET6           
                                                                        
-#define INADDR_ANY                          SL_INADDR_ANY                                                   
+#define INADDR_ANY                          SL_INADDR_ANY
+#define INADDR_LOOPBACK						SL_INADDR_LOOPBACK
+#define INADDR_BROADCAST					SL_INADDR_BROADCAST
 #define ERROR                               SL_SOC_ERROR                                                                                                                
 #define INEXE                               SL_INEXE                 
 #define EBADF                               SL_EBADF                 
