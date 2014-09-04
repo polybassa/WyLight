@@ -17,16 +17,19 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "hw_types.h"
+
 //Free_rtos/ti-rtos includes
 #include "osi.h"
 #include "FreeRTOS.h"
 #include "semphr.h"
 #include "task.h"
+
 //Common interface includes
 #include "wy_network_if.h"
 #include "wifi.h"
 #include "gpio_if.h"
 #include "broadcast.h"
+#include "server.h"
 
 //
 // GLOBAL VARIABLES -- Start
@@ -44,8 +47,6 @@ OsiTaskHandle WlanSupportTaskHandle = &g_WlanSupportTaskHandle;
 
 void WlanSupport_TaskInit(void) {
 	osi_SyncObjCreate(WlanSupportProvisioningDataAddedSemaphore);
-
-	osi_SyncObjClear(WlanSupportProvisioningDataAddedSemaphore);
 }
 
 //*****************************************************************************
@@ -73,11 +74,13 @@ void WlanSupport_Task(void *pvParameters) {
 				GPIO_IF_LedOn(MCU_GREEN_LED_GPIO);
 
 				osi_SyncObjSignal(BroadcastStartSemaphore);
+				osi_SyncObjSignal(TcpServerStartSemaphore);
 
 				while (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
 					osi_Sleep(100);
 				}
 				Broadcast_TaskQuit();
+				TcpServer_TaskQuit();
 
 				Network_IF_DeInitDriver();
 			}
@@ -90,7 +93,9 @@ void WlanSupport_Task(void *pvParameters) {
 		if (SUCCESS == Network_IF_InitDriver(ROLE_AP)) {
 			GPIO_IF_LedOff(MCU_ALL_LED_IND);
 			GPIO_IF_LedOn(MCU_GREEN_LED_GPIO);
+
 			osi_SyncObjSignal(BroadcastStartSemaphore);
+			osi_SyncObjSignal(TcpServerStartSemaphore);
 
 			GPIO_IF_LedOn(MCU_ORANGE_LED_GPIO);
 			do {
@@ -98,6 +103,7 @@ void WlanSupport_Task(void *pvParameters) {
 			} while (Network_IF_AddNewProfile() != SUCCESS);
 
 			Broadcast_TaskQuit();
+			TcpServer_TaskQuit();
 
 			Network_IF_DeInitDriver();
 		}
