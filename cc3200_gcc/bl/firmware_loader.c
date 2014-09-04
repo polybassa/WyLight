@@ -171,7 +171,7 @@ static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *r
 static long VerifySRAM(uint8_t *pSource, const size_t length) {
 	uint8_t firstHash[CHECKSUM_SIZE], secoundHash[CHECKSUM_SIZE];
 
-	if (length == 0) {
+	if (length < CHECKSUM_SIZE) {
 		return ERROR;
 	}
 
