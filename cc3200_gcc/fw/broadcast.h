@@ -32,7 +32,6 @@
 #define SUCCESS 	0
 #endif
 
-#define IP_ADDR            	0xffffffff /* 255.255.255.255 */
 #define BC_PORT_NUM        	55555
 #define UART_PRINT 		   	Report
 
@@ -52,7 +51,6 @@ struct __attribute__((__packed__)) BroadcastMessage {
 };
 
 extern OsiSyncObj_t BroadcastStartSemaphore;
-extern OsiSyncObj_t BroadcastStoppedSemaphore;
 extern OsiTaskHandle BroadcastTaskHandle;
 
 void Broadcast_TaskInit(void);

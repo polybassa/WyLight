@@ -39,7 +39,7 @@ static xTaskHandle g_BroadcastTaskHandle;
 static tBoolean g_StopBroadcastTask;
 
 OsiSyncObj_t BroadcastStartSemaphore = &g_BroadcastStartSemaphore;
-OsiSyncObj_t BroadcastStoppedSemaphore= &g_BroadcastStoppedSemaphore;
+static OsiSyncObj_t BroadcastStoppedSemaphore= &g_BroadcastStoppedSemaphore;
 OsiTaskHandle BroadcastTaskHandle = &g_BroadcastTaskHandle;
 
 //
@@ -73,9 +73,6 @@ void Broadcast_TaskInit(void) {
 	osi_SyncObjCreate(BroadcastStoppedSemaphore);
 	osi_SyncObjCreate(BroadcastStartSemaphore);
 
-	osi_SyncObjClear(BroadcastStoppedSemaphore);
-	osi_SyncObjClear(BroadcastStartSemaphore);
-
 	g_StopBroadcastTask = false;
 }
 
@@ -98,7 +95,7 @@ void Broadcast_TaskQuit(void) {
 void Broadcast_Task(void *pvParameters) {
 
 	const sockaddr_in destaddr = { .sin_family = AF_INET, .sin_port = htons(BC_PORT_NUM), .sin_addr.s_addr = htonl(
-	IP_ADDR) };
+	INADDR_BROADCAST) };
 	const socklen_t addrLen = sizeof(sockaddr_in);
 	int status;
 
