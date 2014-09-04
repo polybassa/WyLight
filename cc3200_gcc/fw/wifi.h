@@ -24,8 +24,8 @@
 #define ATTEMPTING_TO_CONNECT_TO_AP			"Attempting to auto connect to AP\r\n"
 #define NOT_CONNECTED_TO_AP					"Not connected to AP\r\n"
 
-OsiSyncObj_t WlanSupportProvisioningDataAddedSemaphore;
-OsiTaskHandle WlanSupportTaskHandle;
+extern OsiSyncObj_t WlanSupportProvisioningDataAddedSemaphore;
+extern OsiTaskHandle WlanSupportTaskHandle;
 
 void WlanSupport_TaskInit(void);
 

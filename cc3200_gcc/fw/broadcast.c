@@ -38,6 +38,10 @@ static xSemaphoreHandle g_BroadcastStartSemaphore;
 static xTaskHandle g_BroadcastTaskHandle;
 static tBoolean g_StopBroadcastTask;
 
+OsiSyncObj_t BroadcastStartSemaphore = &g_BroadcastStartSemaphore;
+OsiSyncObj_t BroadcastStoppedSemaphore= &g_BroadcastStoppedSemaphore;
+OsiTaskHandle BroadcastTaskHandle = &g_BroadcastTaskHandle;
+
 //
 // GLOBAL VARIABLES -- End
 //
@@ -66,10 +70,6 @@ static void BroadcastMessage_Init(struct BroadcastMessage *pMessage) {
 }
 
 void Broadcast_TaskInit(void) {
-	BroadcastStoppedSemaphore = &g_BroadcastStoppedSemaphore;
-	BroadcastStartSemaphore = &g_BroadcastStartSemaphore;
-	BroadcastTaskHandle = &g_BroadcastTaskHandle;
-
 	osi_SyncObjCreate(BroadcastStoppedSemaphore);
 	osi_SyncObjCreate(BroadcastStartSemaphore);
 

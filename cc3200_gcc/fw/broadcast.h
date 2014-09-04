@@ -51,9 +51,9 @@ struct __attribute__((__packed__)) BroadcastMessage {
 	uint8_t sensors[16];
 };
 
-OsiSyncObj_t BroadcastStartSemaphore;
-OsiSyncObj_t BroadcastStoppedSemaphore;
-OsiTaskHandle BroadcastTaskHandle;
+extern OsiSyncObj_t BroadcastStartSemaphore;
+extern OsiSyncObj_t BroadcastStoppedSemaphore;
+extern OsiTaskHandle BroadcastTaskHandle;
 
 void Broadcast_TaskInit(void);
 void Broadcast_TaskQuit(void);

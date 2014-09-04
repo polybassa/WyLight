@@ -35,14 +35,14 @@
 static xSemaphoreHandle g_WlanSupportProvisioningDataAddedSemaphore;
 static xTaskHandle g_WlanSupportTaskHandle;
 
+OsiSyncObj_t WlanSupportProvisioningDataAddedSemaphore = &g_WlanSupportProvisioningDataAddedSemaphore;
+OsiTaskHandle WlanSupportTaskHandle = &g_WlanSupportTaskHandle;
+
 //
 // GLOBAL VARIABLES -- End
 //
 
 void WlanSupport_TaskInit(void) {
-	WlanSupportProvisioningDataAddedSemaphore = &g_WlanSupportProvisioningDataAddedSemaphore;
-	WlanSupportTaskHandle = &g_WlanSupportTaskHandle;
-
 	osi_SyncObjCreate(WlanSupportProvisioningDataAddedSemaphore);
 
 	osi_SyncObjClear(WlanSupportProvisioningDataAddedSemaphore);
