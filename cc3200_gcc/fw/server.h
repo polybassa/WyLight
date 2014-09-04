@@ -23,9 +23,24 @@
 //Common interface includes
 #include "uart_if.h"
 
-#define UART_PRINT 		   Report
+//Free_rtos/ti-rtos includes
+#include "osi.h"
 
-#define SERVER_PORT			2000
+#define UART_PRINT 		   		Report
+#define SERVER_PORT				2000
+#define QUIT_TCP_SERVER_PORT 	65535
+
+#ifndef SUCCESS
+#define SUCCESS 				0
+#endif
+
+extern OsiSyncObj_t TcpServerStartSemaphore;
+extern OsiTaskHandle TcpServerTaskHandle;
+
+void TcpServer_TaskInit(void);
+void TcpServer_TaskQuit(void);
+void TcpServer_Task(void *pvParameters);
+
 
 #endif /* _SERVER_H_ */
 

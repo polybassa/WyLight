@@ -16,29 +16,17 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-//*****************************************************************************
-//
-//! \addtogroup wylight
-//! @{
-//
-//*****************************************************************************
 #include <stdint.h>
+#include "hw_types.h"
 
 // Simplelink includes
 #include "simplelink.h"
 
-//Driverlib includes
-#include "utils.h"
-
 //Free_rtos/ti-rtos includes
 #include "osi.h"
-#ifdef USE_FREERTOS
 #include "FreeRTOS.h"
 #include "task.h"
-#endif
-
-//Common interface includes
-#include "wy_network_if.h"
+#include "semphr.h"
 
 //WyLight adaption includes
 //#include "RingBuf.h"
@@ -46,28 +34,34 @@
 //Application Includes
 #include "server.h"
 
-
-//*****************************************************************************
-//
-//! \addtogroup serial_wifi
-//! @{
-//
-//*****************************************************************************
-
 //
 // GLOBAL VARIABLES -- Start
 //
-extern unsigned long g_ulStatus;
-extern struct RingBuffer g_RingBuf;
+
+static xTaskHandle g_TcpServerTaskHandle;
+static xSemaphoreHandle g_TcpServerStartSemaphore;
+static xSemaphoreHandle g_TcpServerStoppedSemaphore;
+
+OsiSyncObj_t TcpServerStartSemaphore = &g_TcpServerStartSemaphore;
+static OsiSyncObj_t TcpServerStoppedSemaphore = &g_TcpServerStoppedSemaphore;
+OsiTaskHandle TcpServerTaskHandle = &g_TcpServerTaskHandle;
+
+static tBoolean killTcpServer;
+
 //
 // GLOBAL VARIABLES -- End
 //
 
-//****************************************************************************
-//                      LOCAL FUNCTION PROTOTYPES
-//****************************************************************************
-void TcpServer_Task(void *pvParameters);
-void UdpServer_Task(void *pvParameters);
+void TcpServer_TaskInit(void) {
+	osi_SyncObjCreate(TcpServerStartSemaphore);
+	osi_SyncObjCreate(TcpServerStoppedSemaphore);
+}
+
+void TcpServer_TaskQuit(void) {
+	killTcpServer = true;
+	osi_SyncObjWait(TcpServerStoppedSemaphore, OSI_WAIT_FOREVER);
+	UART_PRINT("TcpServer stopped\r\n");
+}
 
 //*****************************************************************************
 //
@@ -81,75 +75,103 @@ void UdpServer_Task(void *pvParameters);
 //
 //*****************************************************************************
 
-#define BUFFERSIZE 64
+#define BUFFERSIZE 256
 
 void TcpServer_Task(void *pvParameters) {
 
-	//RingBuf_Init(&g_RingBuf);
+	sockaddr_in RemoteAddr;
+	socklen_t RemoteAddrLen = sizeof(sockaddr_in);
+	int SocketTcpServer, SocketTcpChild;
+	uint8_t buffer[BUFFERSIZE];
+	const sockaddr_in LocalAddr =
+			{ .sin_family = AF_INET, .sin_port = htons(SERVER_PORT), .sin_addr.s_addr = INADDR_ANY };
 
 	while (1) {
-		while (!IS_CONNECTED(g_ulStatus)) {
-			osi_Sleep(500);
+		osi_SyncObjWait(TcpServerStartSemaphore, OSI_WAIT_FOREVER);
+		killTcpServer = false;
+		UART_PRINT("TcpServer started\r\n");
+
+		SocketTcpServer = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+		if (SocketTcpServer < 0) {
+			UART_PRINT(" Socket Error: %d", SocketTcpServer);
+			osi_SyncObjSignal(TcpServerStoppedSemaphore);
+			continue;
 		}
 
-		SlSockAddrIn_t RemoteAddr;
-		SlSocklen_t RemoteAddrLen = sizeof(SlSockAddrIn_t);
-		volatile int SocketTcpServer, SocketTcpChild;
-		uint8_t buffer[BUFFERSIZE];
-
-		const SlSockAddrIn_t LocalAddr = { .sin_family = SL_AF_INET, .sin_port = htons(SERVER_PORT), .sin_addr.s_addr = 0 };
-
-		SocketTcpServer = sl_Socket(SL_AF_INET, SL_SOCK_STREAM, SL_IPPROTO_TCP);
-		/*Blocking is default
-		 int nonBlocking = 0;
-		 sl_SetSockOpt(SocketTcpServer, SL_SOL_SOCKET, SL_SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking));
-		 */
-		if (sl_Bind(SocketTcpServer, (SlSockAddr_t *) &LocalAddr, sizeof(LocalAddr)) < 0) {
+		if (SUCCESS != bind(SocketTcpServer, (sockaddr *) &LocalAddr, sizeof(LocalAddr))) {
 			UART_PRINT(" Bind Error\n\r");
-			sl_Close(SocketTcpServer);
-			LOOP_FOREVER(__LINE__);
+			close(SocketTcpServer);
+			osi_SyncObjSignal(TcpServerStoppedSemaphore);
+			continue;
 		}
+
 		// Backlog = 1 to accept maximal 1 connection
-		if (sl_Listen(SocketTcpServer, 1) < 0) {
+		if (SUCCESS != listen(SocketTcpServer, 1)) {
 			UART_PRINT(" Listen Error\n\r");
-			sl_Close(SocketTcpServer);
-			LOOP_FOREVER(__LINE__);
+			close(SocketTcpServer);
+			osi_SyncObjSignal(TcpServerStoppedSemaphore);
+			continue;
 		}
+
+		int nonBlocking = 1;
+		setsockopt(SocketTcpServer, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking));
 
 		while (SocketTcpServer > 0) {
-			SocketTcpChild = sl_Accept(SocketTcpServer, (SlSockAddr_t *) &RemoteAddr, &RemoteAddrLen);
+			// non blocking accept
+			SocketTcpChild = accept(SocketTcpServer, (sockaddr *) &RemoteAddr, &RemoteAddrLen);
+			if (killTcpServer) {
+				if(SocketTcpChild >= 0){
+					close(SocketTcpChild);
+					SocketTcpChild = ERROR;
+				}
+				close(SocketTcpServer);
+				SocketTcpServer = ERROR;
+				osi_SyncObjSignal(TcpServerStoppedSemaphore);
+				break;
+			}
+			if (SocketTcpChild == EAGAIN) {
+				osi_Sleep(100);
+				continue;
+			}
+			if (SocketTcpChild < 0) {
+				UART_PRINT("accept error: %d\n\r", SocketTcpChild);
+				continue;
+			}
 
+			int nonBlocking = 1;
+			setsockopt(SocketTcpChild, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking));
+
+			int bytesReceived = 0;
+			UART_PRINT("TCP Client connected\r\n");
 			while (SocketTcpChild > 0) {
-				UART_PRINT(" Connected TCP Client\r\n");
 				memset(buffer, sizeof(buffer), 0);
-				int bytesReceived = sl_Recv(SocketTcpChild, buffer, sizeof(buffer) - 1, 0);
-				if (bytesReceived > 0 && IS_CONNECTED(g_ulStatus)) {
-					// Received some bytes
-					taskENTER_CRITICAL();
-					// TODO: REMOVE this check if RingBuf run's stabel
-					/*if (RingBuf_HasError(&g_RingBuf)) {
-					 UART_Print("ERROR: Ringbuffer overflow");
-					 taskENTER_CRITICAL();
-					 LOOP_FOREVER(__LINE__);
-					 }
 
-					 unsigned int i;
-					 for (i = 0; i < bytesReceived; i++) {
-					 RingBuf_Put(&g_RingBuf, buffer[i]);
-					 }*/
-					taskEXIT_CRITICAL();
-					UART_PRINT("Tcp: Received %d bytes:%s\r\n", bytesReceived, buffer);
-				} else {
-					// Error occured on child socket
-					sl_Close(SocketTcpChild);
-					SocketTcpChild = 0;
+				bytesReceived = recv(SocketTcpChild, buffer, sizeof(buffer), 0);
+
+				if (killTcpServer) {
+					close(SocketTcpChild);
+					SocketTcpChild = ERROR;
 					break;
 				}
-			}
-			if (!IS_CONNECTED(g_ulStatus)) {
-				sl_Close(SocketTcpServer);
-				SocketTcpServer = 0;
-				break;
+
+				if (bytesReceived == EAGAIN) {
+					// if we don't recveived data, we can sleep a little bit
+					osi_Sleep(100);
+					continue;
+				}
+
+				if (bytesReceived > 0) {
+					// Received some bytes
+					// TODO: Save bytes anywhere for wylight adaption
+					buffer[bytesReceived] = 0;
+					UART_PRINT("Tcp => Received %d bytes:%s\r\n", bytesReceived, buffer);
+				} else {
+					// Error or close occured on child socket
+					close(SocketTcpChild);
+					SocketTcpChild = ERROR;
+					break;
+				}
+				UART_PRINT("TCP Client disconnected\r\n");
 			}
 		}
 	}
@@ -166,6 +188,7 @@ void TcpServer_Task(void *pvParameters) {
 //!  \brief Task handler function to handle the TcpServer Socket
 //
 //*****************************************************************************
+#if 0
 void UdpServer_Task(void *pvParameters) {
 
 	while (1) {
@@ -177,7 +200,8 @@ void UdpServer_Task(void *pvParameters) {
 		volatile int SocketUdpServer;
 		unsigned char buffer[BUFFERSIZE];
 
-		const SlSockAddrIn_t LocalAddr = { .sin_family = SL_AF_INET, .sin_port = htons(SERVER_PORT), .sin_addr.s_addr = 0 };
+		const SlSockAddrIn_t LocalAddr = {.sin_family = SL_AF_INET, .sin_port = htons(SERVER_PORT), .sin_addr.s_addr =
+			0};
 
 		SocketUdpServer = sl_Socket(SL_AF_INET, SL_SOCK_DGRAM, SL_IPPROTO_UDP);
 		//Blocking is default
@@ -193,7 +217,8 @@ void UdpServer_Task(void *pvParameters) {
 		while (SocketUdpServer > 0) {
 			UART_PRINT(" UDP Server started \r\n");
 			memset(buffer, sizeof(buffer), 0);
-			int bytesReceived = sl_RecvFrom(SocketUdpServer, buffer, sizeof(buffer) - 1, 0, (SlSockAddr_t *) &RemoteAddr, &RemoteAddrLen);
+			int bytesReceived = sl_RecvFrom(SocketUdpServer, buffer, sizeof(buffer) - 1, 0,
+					(SlSockAddr_t *) &RemoteAddr, &RemoteAddrLen);
 			if (bytesReceived > 0 && IS_CONNECTED(g_ulStatus)) {
 				// Received some bytes
 				// TODO: Write received Bytes in global Buffer
@@ -208,10 +233,4 @@ void UdpServer_Task(void *pvParameters) {
 		}
 	}
 }
-
-//*****************************************************************************
-//
-// Close the Doxygen group.
-//! @}
-//
-//*****************************************************************************
+#endif
