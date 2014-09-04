@@ -49,21 +49,10 @@ extern void (* const g_pfnVectors[])(void);
 static const unsigned short SERVER_PORT = 2000;
 static const char APP_NAME[] = "WyLight Bootloader";
 static const unsigned long BOOTLOADER_VERSION = 0;
-//
 // GLOBAL VARIABLES -- End
-//
 
-//*****************************************************************************
-//
-//! Application startup display on UART
-//!
-//! \param  none
-//!
-//! \return none
-//!
-//*****************************************************************************
-static void DisplayBanner(const char * AppName) {
-
+static void DisplayBanner(const char *const AppName)
+{
 	UART_PRINT("\n\n\n\r");
 	UART_PRINT("\t\t *************************************************\n\r");
 	UART_PRINT("\t\t	  CC3200 %s Application       \n\r", AppName);
@@ -220,7 +209,6 @@ int main() {
 	GPIO_IF_LedConfigure(LED1 | LED2 | LED3);
 	GPIO_IF_LedOff(MCU_ALL_LED_IND);
 
-	// Display banner
 	DisplayBanner(APP_NAME);
 
 	Network_IF_InitDriver();
