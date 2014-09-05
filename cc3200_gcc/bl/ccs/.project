@@ -51,6 +51,11 @@
 			<locationURI>PARENT-1-copy_PARENT/common/startup_ccs.c</locationURI>
 		</link>
 		<link>
+			<name>tcp_server.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/tcp_server.c</locationURI>
+		</link>
+		<link>
 			<name>uart_if.c</name>
 			<type>1</type>
 			<locationURI>copy_PARENT1/common/uart_if.c</locationURI>
