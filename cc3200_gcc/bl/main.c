@@ -16,6 +16,12 @@
  You should have received a copy of the GNU General Public License
  along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
+#ifdef SIMULATOR
+
+#include "simulator.h"
+
+#else
+
 #include "hw_types.h"
 #include "hw_ints.h"
 #include "hw_memmap.h"
@@ -29,6 +35,8 @@
 #include "prcm.h"
 #include "utils.h"
 #include "interrupt.h"
+
+#endif /*SIMULATOR */
 
 // common interface includes
 #include "uart_if.h"

@@ -19,19 +19,25 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "shamd5.h"
-#include "hw_shamd5.h"
-#include "simplelink.h"
-#include "uart_if.h"
-#include "hw_ints.h"
 #include "hw_types.h"
-#include "hw_memmap.h"
-#include "rom_map.h"
-#include "interrupt.h"
-#include "prcm.h"
-#include "hw_nvic.h"
+#include "shamd5.h"
+#include "uart_if.h"
 #include "firmware_loader.h"
 #include "wy_bl_network_if.h"
+#include "hw_shamd5.h"
+#include "hw_memmap.h"
+#include "prcm.h"
+#include "hw_nvic.h"
+#include "simulator.h"
+#include "hw_ints.h"
+#include "fs.h"
+
+#ifndef SIMULATOR
+#include "simplelink.h"
+#include "rom_map.h"
+#include "interrupt.h"
+
+#endif /* SIMULATOR */
 
 #define BUFFER_SIZE 			1024
 #define BLOCKSIZE		 		64 		/* Write block size for write to MD5SHA module */
