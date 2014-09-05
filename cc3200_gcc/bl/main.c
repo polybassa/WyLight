@@ -129,5 +129,6 @@ int main() {
 	GPIO_IF_LedOn(MCU_ORANGE_LED_GPIO);
 
 	TcpServer();
+	StartFirmware();
 }
 

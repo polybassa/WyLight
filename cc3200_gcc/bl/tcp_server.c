@@ -32,18 +32,51 @@
 
 static const unsigned short SERVER_PORT = 2000;
 
+
+/**
+ * @return 0 on success, if new firmware was saved and validated
+ */
+int ReceiveFw(int SocketTcpChild)
+{
+	uint8_t *pFirmware = (uint8_t *) FIRMWARE_ORIGIN;
+	UART_PRINT(" Start writing Firmware at 0x%x \r\n", pFirmware);
+
+	for(;;) {
+		int bytesReceived = recv(SocketTcpChild, pFirmware, BUFFERSIZE, 0);
+
+		if (bytesReceived > 0) {
+			// Received some bytes
+			pFirmware += bytesReceived;
+			UART_PRINT("Tcp: Received %d bytes\r\n", bytesReceived);
+			continue;
+		}
+
+		if (EAGAIN == bytesReceived) {
+			_SlNonOsMainLoopTask();
+			continue;
+		}
+
+		if (bytesReceived < 0) {
+			return bytesReceived;
+		}
+
+		const size_t length = (size_t) (pFirmware - FIRMWARE_ORIGIN);
+		return SaveSRAMContentAsFirmware((uint8_t *) FIRMWARE_ORIGIN, length);
+	}
+}
+
+/**
+ * @return if new firmware was received and validated
+ */
 extern void TcpServer(void)
 {
-	static const char APP_NAME[] = "WyLight Bootloader";
-	uint8_t welcomeMessage[30];
-	memset(welcomeMessage, 0, sizeof(welcomeMessage));
-	unsigned long nBootloaderVersion = htonl(BOOTLOADER_VERSION);
-	memcpy(welcomeMessage, &nBootloaderVersion, sizeof(nBootloaderVersion));
-	memcpy((char *) &welcomeMessage[4], APP_NAME, sizeof(APP_NAME));
+	char welcome[] = "\0\0\0\0WyLightBootloader";
+	uint32_t nBootloaderVersion = htonl(BOOTLOADER_VERSION);
+
+	memcpy(welcome, &nBootloaderVersion, sizeof(uint32_t));
 
 	sockaddr_in RemoteAddr;
 	socklen_t RemoteAddrLen = sizeof(sockaddr_in);
-	uint8_t buffer[BUFFERSIZE];
 
 	sockaddr_in LocalAddr;
 	LocalAddr.sin_family = AF_INET;
@@ -74,10 +107,8 @@ extern void TcpServer(void)
 		return;
 	}
 
-	int SocketTcpChild = ERROR;
-	;
 	while (1) {
-		SocketTcpChild = accept(SocketTcpServer, (sockaddr *) &RemoteAddr, &RemoteAddrLen);
+		const int SocketTcpChild = accept(SocketTcpServer, (sockaddr *) &RemoteAddr, &RemoteAddrLen);
 
 		if (SocketTcpChild == EAGAIN) {
 			_SlNonOsMainLoopTask();
@@ -88,48 +119,15 @@ extern void TcpServer(void)
 		}
 
 		UART_PRINT(" Connected TCP Client\r\n");
-		uint8_t *pFirmware;
-		pFirmware = (uint8_t *) FIRMWARE_ORIGIN;
-		UART_PRINT(" Start writing Firmware at 0x%x \r\n", pFirmware);
 
-		int bytesSend = send(SocketTcpChild, welcomeMessage, sizeof(APP_NAME) + sizeof(nBootloaderVersion), 0);
-		if (bytesSend < 0) {
+		if (sizeof(welcome) !=  send(SocketTcpChild, welcome, sizeof(welcome), 0)) {
 			close(SocketTcpChild);
 			continue;
 		}
 
-		while (SocketTcpChild >= 0) {
-			memset(buffer, sizeof(buffer), 0);
-			int bytesReceived = recv(SocketTcpChild, buffer, sizeof(buffer), 0);
-			if (bytesReceived > 0) {
-				// Received some bytes
-				memcpy(pFirmware, buffer, bytesReceived);
-				pFirmware += bytesReceived;
-				UART_PRINT("Tcp: Received %d bytes\r\n", bytesReceived);
-			} else {
-				UART_PRINT("Tcp: Received 0x%x\r\n", bytesReceived);
-				switch (bytesReceived) {
-				case EAGAIN: {
-					_SlNonOsMainLoopTask();
-				}
-				
-				case 0: {
-					// get return 0 if socket closed
-					size_t length = (size_t) (pFirmware - FIRMWARE_ORIGIN);
-					if (SUCCESS == SaveSRAMContentAsFirmware((uint8_t *) FIRMWARE_ORIGIN, length)) {
-						close(SocketTcpChild);
-						SocketTcpChild = ERROR;
-						StartFirmware();
-					}
-				}
-				default: {
-					// Error occured on child socket
-					close(SocketTcpChild);
-					SocketTcpChild = ERROR;
-				}
-					break;
-				}
-			}
-		}
+		const int fwStatus = ReceiveFw(SocketTcpChild);
+		close(SocketTcpChild);
+		if (0 == fwStatus)
+			return;
 	}
 }
