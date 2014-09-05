@@ -90,7 +90,7 @@ ${BINDIR}:
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/main.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/pinmux.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/broadcast.o
-#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/server.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/server.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_network_if.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wifi.o
 # common
