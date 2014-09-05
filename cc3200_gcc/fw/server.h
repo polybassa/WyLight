@@ -41,6 +41,13 @@ void TcpServer_TaskInit(void);
 void TcpServer_TaskQuit(void);
 void TcpServer_Task(void *pvParameters);
 
+extern OsiSyncObj_t UdpServerStartSemaphore;
+extern OsiTaskHandle UdpServerTaskHandle;
+
+void UdpServer_TaskInit(void);
+void UdpServer_TaskQuit(void);
+void UdpServer_Task(void *pvParameters);
+
 
 #endif /* _SERVER_H_ */
 

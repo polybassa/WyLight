@@ -207,7 +207,6 @@ void TcpServer_Task(void *pvParameters) {
 //!  \brief Task handler function to handle the TcpServer Socket
 //
 //*****************************************************************************
-#if 0
 void UdpServer_Task(void *pvParameters) {
 	sockaddr_in RemoteAddr;
 	socklen_t RemoteAddrLen = sizeof(sockaddr_in);
@@ -218,11 +217,12 @@ void UdpServer_Task(void *pvParameters) {
 	htonl(INADDR_ANY) };
 
 	while (1) {
-
-		SocketUdpServer = sl_Socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-		if(SocketUdpServe < 0) {
+		osi_SyncObjWait(UdpServerStartSemaphore, OSI_WAIT_FOREVER);
+		SocketUdpServer = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+		if (SocketUdpServer < 0) {
 			UART_PRINT("Udp Socket Error\r\n");
 			osi_Sleep(100);
+			osi_SyncObjSignal(UdpServerStoppedSemaphore);
 			continue;
 		}
 		int nonBlocking = 1;
@@ -231,26 +231,39 @@ void UdpServer_Task(void *pvParameters) {
 		if (SUCCESS != bind(SocketUdpServer, (sockaddr *) &LocalAddr, sizeof(LocalAddr))) {
 			UART_PRINT(" Bind Error\n\r");
 			close(SocketUdpServer);
+			osi_SyncObjSignal(UdpServerStoppedSemaphore);
 			continue;
 		}
 
+		UART_PRINT(" UDP Server started \r\n");
+
 		while (SocketUdpServer > 0) {
-			UART_PRINT(" UDP Server started \r\n");
 			memset(buffer, sizeof(buffer), 0);
-			int bytesReceived = recvfrom(SocketUdpServer, buffer, sizeof(buffer) - 1, 0,
-					(sockaddr *) &RemoteAddr, &RemoteAddrLen);
-			if (bytesReceived > 0 && IS_CONNECTED(g_ulStatus)) {
+			int bytesReceived = recvfrom(SocketUdpServer, buffer, sizeof(buffer), 0, (sockaddr *) &RemoteAddr,
+					&RemoteAddrLen);
+
+			if (killUdpServer == true) {
+				close(SocketUdpServer);
+				SocketUdpServer = ERROR;
+				break;
+			}
+
+			if (bytesReceived == EAGAIN) {
+				osi_Sleep(100);
+				continue;
+			}
+
+			if (bytesReceived > 0) {
 				// Received some bytes
 				// TODO: Write received Bytes in global Buffer
 				UART_PRINT("Received %d bytes:%s\r\n", bytesReceived, buffer);
-			}
-
-			if (!IS_CONNECTED(g_ulStatus)) {
-				sl_Close(SocketUdpServer);
-				SocketUdpServer = 0;
+			} else {
+				close(SocketUdpServer);
+				SocketUdpServer = ERROR;
 				break;
 			}
 		}
+		UART_PRINT("UDP Server stopped \r\n");
+		osi_SyncObjSignal(UdpServerStoppedSemaphore);
 	}
 }
-#endif
