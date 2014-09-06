@@ -73,8 +73,8 @@ void WlanSupport_Task(void *pvParameters) {
 				GPIO_IF_LedOff(MCU_ALL_LED_IND);
 				GPIO_IF_LedOn(MCU_GREEN_LED_GPIO);
 
-				osi_SyncObjSignal(BroadcastStartSemaphore);
-				osi_SyncObjSignal(TcpServerStartSemaphore);
+				Broadcast_TaskRun();
+				TcpServer_TaskRun();
 
 				while (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
 					osi_Sleep(100);
@@ -94,8 +94,8 @@ void WlanSupport_Task(void *pvParameters) {
 			GPIO_IF_LedOff(MCU_ALL_LED_IND);
 			GPIO_IF_LedOn(MCU_GREEN_LED_GPIO);
 
-			osi_SyncObjSignal(BroadcastStartSemaphore);
-			osi_SyncObjSignal(TcpServerStartSemaphore);
+			Broadcast_TaskRun();
+			TcpServer_TaskRun();
 
 			GPIO_IF_LedOn(MCU_ORANGE_LED_GPIO);
 			do {
