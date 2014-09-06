@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2012 - 2014 Nils Weiss, Patrick Bruenn.
+ Copyright (C) 2014 Nils Weiss, Patrick Bruenn.
 
  This file is part of Wifly_Light.
 
@@ -33,7 +33,7 @@
 
 //Application Includes
 #include "server.h"
-
+#include "pwm.h"
 //
 // GLOBAL VARIABLES -- Start
 //
@@ -109,6 +109,11 @@ static void TcpServer_Receive(const int childSock) {
 		}
 		// Received some bytes
 		// TODO: Save bytes anywhere for wylight adaption
+
+		if (bytesReceived == 3) {
+			osi_MsgQWrite(PwmMessageQ, buffer, OSI_NO_WAIT);
+		}
+
 		buffer[bytesReceived] = 0;
 		UART_PRINT("Tcp => Received %d bytes:%s\r\n", bytesReceived, buffer);
 	}
