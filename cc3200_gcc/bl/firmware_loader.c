@@ -52,7 +52,7 @@ volatile struct SHAMD5_StatusFlags {
 	unsigned char OutputReadyFlag :1;
 } g_SHAMD5_StatusFlags;
 
-static unsigned char* FIRMWARE_FILENAME = (unsigned char *) "/temp/firmware.bin";
+static unsigned char* FIRMWARE_FILENAME = (unsigned char *) FW_FILENAME;
 //
 // GLOBAL VARIABLES -- End
 //

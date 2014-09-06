@@ -47,7 +47,6 @@
 //
 extern void (* const g_pfnVectors[])(void);
 
-static const char APP_NAME[] = "WyLight Bootloader";
 const unsigned long BOOTLOADER_VERSION;
 // GLOBAL VARIABLES -- End
 
