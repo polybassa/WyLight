@@ -32,6 +32,7 @@
 #include "hw_nvic.h"
 #include "firmware_loader.h"
 #include "wy_bl_network_if.h"
+#include "bootloader.h"
 
 #define BUFFER_SIZE 			1024
 #define BLOCKSIZE		 		64 		/* Write block size for write to MD5SHA module */

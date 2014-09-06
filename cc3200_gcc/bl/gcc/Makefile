@@ -47,9 +47,6 @@ common: ${BINDIR}/${PRJ_NAME}.axf
 # NOTE: the bootloader is not expected to exceed 56k
 BL_FILE=exe/${PRJ_NAME}.bin
 bl: SCATTERgcc_${PRJ_NAME}=../../bl/gcc/WyLight_bl.ld
-bl: CFLAGS += -DFW_FILENAME='"/temp/firmware.bin"'
-bl: CFLAGS += -DAPP_NAME='"WyLight Bootloader"'
-bl: CFLAGS += -DFIRMWARE_ORIGIN=0x20012000
 bl: common
 	openssl sha256 -binary ${BL_FILE} >> ${BL_FILE}
 
