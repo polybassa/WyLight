@@ -44,7 +44,6 @@ common: clean ${OBJDIR} ${BINDIR}
 common: ${BINDIR}/${PRJ_NAME}.axf
 
 # build the bootloader as normal bootloader
-# NOTE: the bootloader is not expected to exceed 56k
 BL_FILE=exe/${PRJ_NAME}.bin
 bl: SCATTERgcc_${PRJ_NAME}=../../bl/gcc/WyLight_bl.ld
 bl: common
@@ -53,9 +52,7 @@ bl: common
 # build the bootloader as a small firmware which is used to update the bootloader ;-)
 FW_FILE=WyLight_fw.bin
 as_fw: SCATTERgcc_${PRJ_NAME}=../../fw/gcc/WyLight_fw.ld
-as_fw: CFLAGS += -DFW_FILENAME='"/sys/mcuimg.bin"'
-as_fw: CFLAGS += -DAPP_NAME='"WyLight Firmware"'
-as_fw: CFLAGS += -DFIRMWARE_ORIGIN=0x20004000
+as_fw: CFLAGS += -DBUILD_AS_FW
 as_fw: common
 	mv exe/${PRJ_NAME}.bin ${FW_FILE}
 	openssl sha256 -binary ${FW_FILE} >> ${FW_FILE}
