@@ -50,11 +50,11 @@ struct __attribute__((__packed__)) BroadcastMessage {
 	uint8_t sensors[16];
 };
 
-extern OsiSyncObj_t BroadcastStartSemaphore;
 extern OsiTaskHandle BroadcastTaskHandle;
 
 void Broadcast_TaskInit(void);
 void Broadcast_TaskQuit(void);
+void Broadcast_TaskRun(void);
 void Broadcast_Task(void *pvParameters);
 
 #endif

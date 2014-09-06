@@ -43,12 +43,17 @@
 		<link>
 			<name>pinmux.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/pinmux.c</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/common/pinmux.c</locationURI>
 		</link>
 		<link>
 			<name>startup_ccs.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-copy_PARENT/common/startup_ccs.c</locationURI>
+		</link>
+		<link>
+			<name>tcp_server.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/tcp_server.c</locationURI>
 		</link>
 		<link>
 			<name>uart_if.c</name>
