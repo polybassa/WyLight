@@ -368,3 +368,4 @@ cc3200_gcc/fw/gcc/obj
 *.d
 *.mk
 cc3200_gcc/bl/ccs/Release__GNU
+*.pp
