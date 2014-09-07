@@ -31,6 +31,7 @@ extern unsigned char do_update_fade;
 
 bit g_led_off = 1; //X86 replacement for PORTC.0
 pthread_mutex_t g_led_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t g_ring_mutex = PTHREAD_MUTEX_INITIALIZER;
 uns8 g_led_status[NUM_OF_LED * 3];
 extern uns8 g_UpdateLed;
 
@@ -109,12 +110,14 @@ void *InterruptRoutine(void *unused)
 			uns8 buf[1024];
 			bytesRead = recv(g_uartSocket, buf, sizeof(buf), 0);
 			printf("%d bytesRead\n", bytesRead);
+			pthread_mutex_lock(&g_led_mutex);
 			int i;
 			for(i = 0; i < bytesRead; i++) {
 				if(!RingBuf_HasError(&g_RingBuf)) {
 					RingBuf_Put(&g_RingBuf, buf[i]);
 				}
 			}
+			pthread_mutex_unlock(&g_led_mutex);
 		}
 		while(bytesRead > 0);
 		// don't allow immediate reconnection
@@ -148,12 +151,14 @@ void *UdpRoutine(void *unused)
 			uns8 buf[1024];
 			bytesRead = recvfrom(listenSocket, buf, sizeof(buf), 0, NULL, NULL);
 			printf("%d bytesRead\n", bytesRead);
+			pthread_mutex_lock(&g_led_mutex);
 			int i;
 			for(i = 0; i < bytesRead; i++) {
 				if(!RingBuf_HasError(&g_RingBuf)) {
 					RingBuf_Put(&g_RingBuf, buf[i]);
 				}
 			}
+			pthread_mutex_unlock(&g_led_mutex);
 		}
 		while(bytesRead > 0);
 		// don't allow immediate reconnection
