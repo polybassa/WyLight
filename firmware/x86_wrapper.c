@@ -123,6 +123,44 @@ void *InterruptRoutine(void *unused)
 	}
 }
 
+void *UdpRoutine(void *unused)
+{
+	int listenSocket = socket(AF_INET, SOCK_DGRAM, 0);
+	if(-1 == listenSocket) {
+			printf("%s:%d %s: create socket failed\n", __FILE__, __LINE__, __FUNCTION__);
+		return 0;
+	}
+
+	struct sockaddr_in udp_sock_addr;
+	udp_sock_addr.sin_family = AF_INET;
+	udp_sock_addr.sin_port = htons(WIFLY_SERVER_PORT);
+	udp_sock_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+
+	if(0 != bind(listenSocket, (struct sockaddr *)&udp_sock_addr, sizeof(udp_sock_addr))) {
+			printf("%s:%d %s: bind() failed\n", __FILE__, __LINE__, __FUNCTION__);
+		return 0;
+	}
+
+	for(;; ) {
+		int bytesRead;
+		do
+		{
+			uns8 buf[1024];
+			bytesRead = recvfrom(listenSocket, buf, sizeof(buf), 0, NULL, NULL);
+			printf("%d bytesRead\n", bytesRead);
+			int i;
+			for(i = 0; i < bytesRead; i++) {
+				if(!RingBuf_HasError(&g_RingBuf)) {
+					RingBuf_Put(&g_RingBuf, buf[i]);
+				}
+			}
+		}
+		while(bytesRead > 0);
+		// don't allow immediate reconnection
+		sleep(1);
+	}
+}
+
 void I2C_Init(){}
 void I2C_Write(const uns8 slaveaddr, const uns8 dataaddr, const uns8 data){}
 uns8 I2C_Read(const uns8 slaveaddr, const uns8 readaddr){return 0;}
@@ -188,12 +226,14 @@ void init_x86(int start_gl)
 {
 	pthread_t broadcastThread;
 	pthread_t isrThread;
+	pthread_t udpThread;
 	pthread_t glThread;
 	pthread_t timer1Thread;
 	pthread_t timer4Thread;
 
 	pthread_create(&broadcastThread, 0, BroadcastLoop,    0);
 	pthread_create(&isrThread,       0, InterruptRoutine, 0);
+	pthread_create(&udpThread,       0, UdpRoutine, 0);
 	if (start_gl)
 		pthread_create(&glThread,        0, gl_start,         0);
 	pthread_create(&timer1Thread,    0, timer1_interrupt, 0);
