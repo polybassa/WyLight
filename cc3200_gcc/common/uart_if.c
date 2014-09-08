@@ -238,44 +238,19 @@ int Report(char *pcFormat, ...)
 {
  int iRet = 0;
 #ifndef NOTERM
-
-  char *pcBuff, *pcTemp;
-  int iSize = 256;
+  char pcBuff[256];
+  int iSize = sizeof(pcBuff);
  
   va_list list;
-  pcBuff = (char*)malloc(iSize);
-  if(pcBuff == NULL)
-  {
+  va_start(list,pcFormat);
+  iRet = vsnprintf(pcBuff,iSize,pcFormat,list);
+  va_end(list);
+
+  if( iRet < 0 || iRet >= iSize) {
+	  Message("Message to long\r\n");
 	  return -1;
   }
-  while(1)
-  {
-      va_start(list,pcFormat);
-      iRet = vsnprintf(pcBuff,iSize,pcFormat,list);
-      va_end(list);
-      if(iRet > -1 && iRet < iSize)
-      {
-          break;
-      }
-      else
-      {
-          iSize*=2;
-          if((pcTemp=realloc(pcBuff,iSize))==NULL)
-          { 
-              Message("Could not reallocate memory\n\r");
-              iRet = -1;
-              break;
-          }
-          else
-          {
-              pcBuff=pcTemp;
-          }
-          
-      }
-  }
   Message(pcBuff);
-  free(pcBuff);
-  
 #endif
   return iRet;
 }
