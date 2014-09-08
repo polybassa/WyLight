@@ -31,6 +31,7 @@ extern unsigned char do_update_fade;
 
 bit g_led_off = 1; //X86 replacement for PORTC.0
 pthread_mutex_t g_led_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t g_ring_mutex = PTHREAD_MUTEX_INITIALIZER;
 uns8 g_led_status[NUM_OF_LED * 3];
 extern uns8 g_UpdateLed;
 
@@ -109,17 +110,59 @@ void *InterruptRoutine(void *unused)
 			uns8 buf[1024];
 			bytesRead = recv(g_uartSocket, buf, sizeof(buf), 0);
 			printf("%d bytesRead\n", bytesRead);
+			pthread_mutex_lock(&g_led_mutex);
 			int i;
 			for(i = 0; i < bytesRead; i++) {
 				if(!RingBuf_HasError(&g_RingBuf)) {
 					RingBuf_Put(&g_RingBuf, buf[i]);
 				}
 			}
+			pthread_mutex_unlock(&g_led_mutex);
 		}
 		while(bytesRead > 0);
 		// don't allow immediate reconnection
 		sleep(1);
 		g_uartSocket = accept(listenSocket, NULL, NULL);
+	}
+}
+
+void *UdpRoutine(void *unused)
+{
+	int listenSocket = socket(AF_INET, SOCK_DGRAM, 0);
+	if(-1 == listenSocket) {
+			printf("%s:%d %s: create socket failed\n", __FILE__, __LINE__, __FUNCTION__);
+		return 0;
+	}
+
+	struct sockaddr_in udp_sock_addr;
+	udp_sock_addr.sin_family = AF_INET;
+	udp_sock_addr.sin_port = htons(WIFLY_SERVER_PORT);
+	udp_sock_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+
+	if(0 != bind(listenSocket, (struct sockaddr *)&udp_sock_addr, sizeof(udp_sock_addr))) {
+			printf("%s:%d %s: bind() failed\n", __FILE__, __LINE__, __FUNCTION__);
+		return 0;
+	}
+
+	for(;; ) {
+		int bytesRead;
+		do
+		{
+			uns8 buf[1024];
+			bytesRead = recvfrom(listenSocket, buf, sizeof(buf), 0, NULL, NULL);
+			printf("%d bytesRead\n", bytesRead);
+			pthread_mutex_lock(&g_led_mutex);
+			int i;
+			for(i = 0; i < bytesRead; i++) {
+				if(!RingBuf_HasError(&g_RingBuf)) {
+					RingBuf_Put(&g_RingBuf, buf[i]);
+				}
+			}
+			pthread_mutex_unlock(&g_led_mutex);
+		}
+		while(bytesRead > 0);
+		// don't allow immediate reconnection
+		sleep(1);
 	}
 }
 
@@ -188,12 +231,14 @@ void init_x86(int start_gl)
 {
 	pthread_t broadcastThread;
 	pthread_t isrThread;
+	pthread_t udpThread;
 	pthread_t glThread;
 	pthread_t timer1Thread;
 	pthread_t timer4Thread;
 
 	pthread_create(&broadcastThread, 0, BroadcastLoop,    0);
 	pthread_create(&isrThread,       0, InterruptRoutine, 0);
+	pthread_create(&udpThread,       0, UdpRoutine, 0);
 	if (start_gl)
 		pthread_create(&glThread,        0, gl_start,         0);
 	pthread_create(&timer1Thread,    0, timer1_interrupt, 0);

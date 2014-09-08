@@ -1,1 +1,0 @@
-"./firmware_download.obj" "./main.obj" "./pinmux.obj" "./startup_ccs.obj" "./uart_if.obj" "../cc3200v1p32.cmd" -l"libc.a" -ldriverlib.a -lfree_rtos.a -lsimplelink.a 

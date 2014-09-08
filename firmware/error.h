@@ -27,14 +27,13 @@ typedef enum {
 #else /* For GCC or CLANG on X86, ARM */
 typedef enum __attribute__ ((__packed__)) {
 #endif
-	OK = 0x00,
+	OK = 0,
 	SCRIPTBUFFER_FULL,
 	CRC_CHECK_FAILED,
 	BAD_PACKET,                                     //ringbuffer or commandIo overflow
 	BAD_COMMAND_CODE,
 	NO_RESPONSE
-}
-ErrorCode;
+}ErrorCode;
 
 void Error_Throw();
 #endif /* #ifndef _ERROR_H_ */
