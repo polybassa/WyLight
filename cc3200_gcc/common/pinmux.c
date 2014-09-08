@@ -51,7 +51,7 @@
 #include "gpio.h"
 #include "prcm.h"
 
-#define PWM
+//#define PWM
 
 //*****************************************************************************
 void PinMuxConfig(void) {
