@@ -18,19 +18,42 @@
 
 #include "string.h"
 
-#include "simplelink.h"
-
 //common
 #include "uart_if.h"
 
 //WyLight
 #include "bootloader.h"
 #include "firmware_loader.h"
-#include "wy_bl_network_if.h" //TODO UART_PRINT
+
+#ifndef SIMULATOR
+#include "simplelink.h"
+#include "wy_bl_network_if.h"
+#else
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+#define SUCCESS 0
+#define UART_PRINT Report
+#endif /*SIMULATOR */
 
 #define BUFFERSIZE 1024
 
 static const unsigned short SERVER_PORT = 2000;
+
+#ifdef SIMULATOR
+
+static uint8_t memory[0x3FFFF];
+
+#undef FIRMWARE_ORIGIN
+#define FIRMWARE_ORIGIN ((uint8_t*)&memory[0])
+
+#endif
 
 
 /**
@@ -48,6 +71,12 @@ int ReceiveFw(int SocketTcpChild)
 			// Received some bytes
 			pFirmware += bytesReceived;
 			UART_PRINT("Tcp: Received %d bytes\r\n", bytesReceived);
+#ifdef SIMULATOR
+			if (bytesReceived < BUFFERSIZE) {
+    			const size_t length = (size_t) (pFirmware - FIRMWARE_ORIGIN);
+				return SaveSRAMContentAsFirmware((uint8_t *) FIRMWARE_ORIGIN, length);
+			}
+#endif
 			continue;
 		}
 
@@ -75,10 +104,10 @@ extern void TcpServer(void)
 
 	memcpy(welcome, &nBootloaderVersion, sizeof(uint32_t));
 
-	sockaddr_in RemoteAddr;
-	socklen_t RemoteAddrLen = sizeof(sockaddr_in);
+	struct sockaddr_in RemoteAddr;
+	socklen_t RemoteAddrLen = sizeof(struct sockaddr_in);
 
-	sockaddr_in LocalAddr;
+	struct sockaddr_in LocalAddr;
 	LocalAddr.sin_family = AF_INET;
 	LocalAddr.sin_port = htons(SERVER_PORT);
 	LocalAddr.sin_addr.s_addr = htonl(0);
@@ -87,15 +116,15 @@ extern void TcpServer(void)
 		UART_PRINT(" Socket Error: %d \r\n", SocketTcpServer);
 		return;
 	}
-
+#ifndef SIMULATOR
 	int nonBlocking = 1;
 	if (SUCCESS != setsockopt(SocketTcpServer, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking))) {
 		UART_PRINT(" Setsockopt ERROR \r\n");
 		close(SocketTcpServer);
 		return;
 	}
-
-	if (SUCCESS != bind(SocketTcpServer, (sockaddr *) &LocalAddr, sizeof(LocalAddr))) {
+#endif /* SIMULATOR */
+	if (SUCCESS != bind(SocketTcpServer, (struct sockaddr *) &LocalAddr, sizeof(LocalAddr))) {
 		UART_PRINT(" Bind Error\n\r");
 		close(SocketTcpServer);
 		return;
@@ -108,7 +137,7 @@ extern void TcpServer(void)
 	}
 
 	while (1) {
-		const int SocketTcpChild = accept(SocketTcpServer, (sockaddr *) &RemoteAddr, &RemoteAddrLen);
+		const int SocketTcpChild = accept(SocketTcpServer, (struct sockaddr *) &RemoteAddr, &RemoteAddrLen);
 
 		if (SocketTcpChild == EAGAIN) {
 			_SlNonOsMainLoopTask();

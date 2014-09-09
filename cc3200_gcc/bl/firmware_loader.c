@@ -26,6 +26,11 @@
 #include "shamd5.h"
 #include "prcm.h"
 
+#include "uart_if.h"
+#include "firmware_loader.h"
+#include "wy_bl_network_if.h"
+#include "bootloader.h"
+
 #ifdef SIMULATOR
 #include "simulator.h"
 #include "hw_ints.h"
@@ -35,11 +40,6 @@
 #include "rom_map.h"
 #include "interrupt.h"
 #endif /* SIMULATOR */
-
-#include "uart_if.h"
-#include "firmware_loader.h"
-#include "wy_bl_network_if.h"
-#include "bootloader.h"
 
 #define BUFFER_SIZE 			1024
 #define BLOCKSIZE		 		64 		/* Write block size for write to MD5SHA module */
@@ -60,7 +60,22 @@ volatile struct SHAMD5_StatusFlags {
 	unsigned char OutputReadyFlag :1;
 } g_SHAMD5_StatusFlags;
 
+
+#ifdef SIMULATOR
+
+static uint8_t memory[0x3FFFF];
+
+#undef FIRMWARE_ORIGIN
+#define FIRMWARE_ORIGIN (void*)&memory[0]
+
+static unsigned char* FIRMWARE_FILENAME = (unsigned char *) "firmware.bin";
+
+#else
+
 static unsigned char* FIRMWARE_FILENAME = (unsigned char *) FW_FILENAME;
+
+#endif
+
 //
 // GLOBAL VARIABLES -- End
 //
@@ -75,7 +90,7 @@ static unsigned char* FIRMWARE_FILENAME = (unsigned char *) FW_FILENAME;
 //! \return None
 //
 //*****************************************************************************
-static void SHAMD5IntHandler(void) {
+void SHAMD5IntHandler(void) {
 	uint32_t ui32IntStatus;
 	//
 	// Read the SHA/MD5 masked interrupt status.
