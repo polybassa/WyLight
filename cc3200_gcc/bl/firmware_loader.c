@@ -33,11 +33,11 @@
 
 #ifdef SIMULATOR
 #include "simulator.h"
-#include "hw_ints.h"
 #include "fs.h"
 #else
 #include "simplelink.h"
 #include "rom_map.h"
+#include "hw_ints.h"
 #include "interrupt.h"
 #endif /* SIMULATOR */
 
@@ -62,19 +62,13 @@ volatile struct SHAMD5_StatusFlags {
 
 
 #ifdef SIMULATOR
-
 static uint8_t memory[0x3FFFF];
-
 #undef FIRMWARE_ORIGIN
 #define FIRMWARE_ORIGIN (void*)&memory[0]
-
 static unsigned char* FIRMWARE_FILENAME = (unsigned char *) "firmware.bin";
-
-#else
-
+#else /* SIMULATOR */
 static unsigned char* FIRMWARE_FILENAME = (unsigned char *) FW_FILENAME;
-
-#endif
+#endif /* SIMULATOR */
 
 //
 // GLOBAL VARIABLES -- End
