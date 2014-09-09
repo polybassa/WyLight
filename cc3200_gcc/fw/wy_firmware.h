@@ -17,8 +17,8 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 
-#ifndef _SERVER_H_
-#define _SERVER_H_
+#ifndef _WY_FIRMWARE_H_
+#define _WY_FIRMWARE_H_
 
 //Common interface includes
 #include "uart_if.h"
@@ -27,27 +27,16 @@
 #include "osi.h"
 
 #define UART_PRINT 		   		Report
-#define SERVER_PORT				2000
 
 #ifndef SUCCESS
 #define SUCCESS 				0
 #endif
 
-extern OsiTaskHandle TcpServerTaskHandle;
+extern OsiTaskHandle WyLightFirmwareTaskHandle;
 
-void TcpServer_TaskInit(void);
-void TcpServer_TaskQuit(void);
-void TcpServer_TaskRun(void);
-void TcpServer_Task(void *pvParameters);
+void WyLightFirmware_TaskInit(void);
+void WyLightFirmware_Task(void *pvParameters);
 
-extern OsiTaskHandle UdpServerTaskHandle;
-
-void UdpServer_TaskInit(void);
-void UdpServer_TaskQuit(void);
-void UdpServer_TaskRun(void);
-void UdpServer_Task(void *pvParameters);
-
-
-#endif /* _SERVER_H_ */
+#endif /* _WY_FIRMWARE_H_ */
 
 

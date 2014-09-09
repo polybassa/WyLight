@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2012 - 2014 Nils Weiss, Patrick Bruenn.
+ Copyright (C) 2014 Nils Weiss, Patrick Bruenn.
 
  This file is part of Wifly_Light.
 
@@ -16,38 +16,36 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
+#include <stdint.h>
+#include "hw_types.h"
 
-#ifndef _SERVER_H_
-#define _SERVER_H_
-
-//Common interface includes
-#include "uart_if.h"
+// Simplelink includes
+#include "simplelink.h"
 
 //Free_rtos/ti-rtos includes
 #include "osi.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "semphr.h"
 
-#define UART_PRINT 		   		Report
-#define SERVER_PORT				2000
+//Application Includes
+#include "wy_firmware.h"
+//
+// GLOBAL VARIABLES -- Start
+//
 
-#ifndef SUCCESS
-#define SUCCESS 				0
-#endif
+static xTaskHandle g_WyLightFirmwareTaskHandle;
 
-extern OsiTaskHandle TcpServerTaskHandle;
+OsiTaskHandle WyLightFirmwareTaskHandle = &g_WyLightFirmwareTaskHandle;
 
-void TcpServer_TaskInit(void);
-void TcpServer_TaskQuit(void);
-void TcpServer_TaskRun(void);
-void TcpServer_Task(void *pvParameters);
+//
+// GLOBAL VARIABLES -- End
+//
 
-extern OsiTaskHandle UdpServerTaskHandle;
+void WyLightFirmware_TaskInit(void) {
+	
+}
 
-void UdpServer_TaskInit(void);
-void UdpServer_TaskQuit(void);
-void UdpServer_TaskRun(void);
-void UdpServer_Task(void *pvParameters);
-
-
-#endif /* _SERVER_H_ */
-
-
+void WyLightFirmware_Task(void *pvParameters) {
+	
+}
