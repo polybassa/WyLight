@@ -221,6 +221,7 @@ void UdpServer_Task(void *pvParameters) {
 
 	for (;;) {
 		osi_SyncObjWait(&g_UdpServerStartSemaphore, OSI_WAIT_FOREVER);
+		g_KillUdpServer = false;
 		int serverSock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 		if (serverSock < 0) {
 			UART_PRINT("Udp Socket Error\r\n");
@@ -238,7 +239,7 @@ void UdpServer_Task(void *pvParameters) {
 			continue;
 		}
 
-		UART_PRINT(" UDP Server started \r\n");
+		UART_PRINT("UDP Server started \r\n");
 		UdpServer_Receive(serverSock);
 		close(serverSock);
 		UART_PRINT("UDP Server stopped \r\n");

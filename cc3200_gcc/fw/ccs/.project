@@ -56,6 +56,11 @@
 			<locationURI>copy_PARENT/server.c</locationURI>
 		</link>
 		<link>
+			<name>sniffer.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/sniffer.c</locationURI>
+		</link>
+		<link>
 			<name>startup_ccs.c</name>
 			<type>1</type>
 			<locationURI>copy_PARENT1/common/startup_ccs.c</locationURI>

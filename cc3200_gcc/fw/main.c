@@ -31,8 +31,9 @@
 #include "wifi.h"
 #include "broadcast.h"
 #include "server.h"
-#include "pwm.h"
+//#include "pwm.h"
 //#include "wylightAdaption.h"
+#include "sniffer.h"
 
 //Common interface includes
 #include "uart_if.h"
@@ -183,12 +184,10 @@ int main(void) {
 	ClearTerm();
 	DisplayBanner(APPLICATION_NAME);
 
-#ifndef PWM
 	GPIO_IF_LedConfigure(LED1 | LED2 | LED3);
 	GPIO_IF_LedOff(MCU_RED_LED_GPIO);
 	GPIO_IF_LedOff(MCU_GREEN_LED_GPIO);
 	GPIO_IF_LedOff(MCU_ORANGE_LED_GPIO);
-#endif
 
 	WlanSupport_TaskInit();
 	Broadcast_TaskInit();
@@ -204,7 +203,7 @@ int main(void) {
 	osi_TaskCreate(Broadcast_Task, (signed portCHAR *) "Broadcast", OSI_STACK_SIZE, NULL, 1, BroadcastTaskHandle);
 	osi_TaskCreate(TcpServer_Task, (signed portCHAR *) "TcpServer", OSI_STACK_SIZE, NULL, 6, TcpServerTaskHandle);
 	osi_TaskCreate(UdpServer_Task, (signed portCHAR *) "UdpServer", OSI_STACK_SIZE, NULL, 5, UdpServerTaskHandle);
-	osi_TaskCreate(Pwm_Task, (signed portCHAR *) "Pwm", OSI_STACK_SIZE, NULL, 4, PwmTaskHandle);
+	//osi_TaskCreate(Pwm_Task, (signed portCHAR *) "Pwm", OSI_STACK_SIZE, NULL, 4, PwmTaskHandle);
 
 	osi_start();
 
