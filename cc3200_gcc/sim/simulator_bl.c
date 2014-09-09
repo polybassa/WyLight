@@ -25,7 +25,6 @@
 
 extern void SHAMD5IntHandler(void);
 
-static uint8_t memory[0x3FFFF];
 static uint32_t hashLength;
 
 static SHA256_CTX sha256;
@@ -54,6 +53,10 @@ uint32_t MAP_SHAMD5IntStatus(uint32_t base, bool flag) {
 }
 
 void MAP_SHAMD5IntDisable(uint32_t base, uint32_t state) {
+	
+}
+
+void SHAMD5IntDisable(uint32_t base, uint32_t state) {
 	
 }
 

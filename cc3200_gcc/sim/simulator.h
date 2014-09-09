@@ -29,6 +29,7 @@
 #define MAP_IntEnable(x)
 #define PRCMCC3200MCUInit()
 #define PRCMPeripheralClkEnable(x,y)
+#define PRCMPeripheralClkDisable(x,y)
 #define MAP_SHAMD5IntRegister(x,y)
 #define PRCMPeripheralReset(x)
 #define SHAMD5ConfigSet(x,y)
@@ -36,6 +37,8 @@
 #define MAP_IntMasterDisable()
 
 uint32_t MAP_SHAMD5IntStatus(uint32_t base, bool flag);
+
+void SHAMD5IntDisable(uint32_t base, uint32_t state);
 
 void MAP_SHAMD5IntDisable(uint32_t base, uint32_t state);
 
