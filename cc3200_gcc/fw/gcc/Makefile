@@ -93,6 +93,8 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/broadcast.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/server.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_network_if.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wifi.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/pwm.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/sniffer.o
 # common
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/startup_${COMPILER}.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart_if.o
@@ -106,14 +108,13 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/pin.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/prcm.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/utils.o
-#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/shamd5.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/timer.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/udma.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/spi.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/gpio.o
 
 # simplelink
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/socket.o
-#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/nonos.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/fs.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/device.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wlan.o
@@ -126,7 +127,7 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/netapp.o
 #${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/tmp006drv.o
 #${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/bma222drv.o
 
-#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/timer_if.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/timer_if.o
 #${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/gpio_if.o
 #${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart_if.o
 #${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/udma_if.o

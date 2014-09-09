@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2012 - 2014 Nils Weiss, Patrick Bruenn.
+ Copyright (C) 2014 Nils Weiss, Patrick Bruenn.
 
  This file is part of Wifly_Light.
 
@@ -33,7 +33,7 @@
 
 //Application Includes
 #include "server.h"
-
+#include "pwm.h"
 //
 // GLOBAL VARIABLES -- Start
 //
@@ -46,224 +46,203 @@ static xTaskHandle g_UdpServerTaskHandle;
 static xSemaphoreHandle g_UdpServerStartSemaphore;
 static xSemaphoreHandle g_UdpServerStoppedSemaphore;
 
-OsiSyncObj_t TcpServerStartSemaphore = &g_TcpServerStartSemaphore;
-static OsiSyncObj_t TcpServerStoppedSemaphore = &g_TcpServerStoppedSemaphore;
 OsiTaskHandle TcpServerTaskHandle = &g_TcpServerTaskHandle;
 
-OsiSyncObj_t UdpServerStartSemaphore = &g_UdpServerStartSemaphore;
-static OsiSyncObj_t UdpServerStoppedSemaphore = &g_UdpServerStoppedSemaphore;
 OsiTaskHandle UdpServerTaskHandle = &g_UdpServerTaskHandle;
 
-static tBoolean killTcpServer;
-static tBoolean killUdpServer;
+static tBoolean g_KillTcpServer;
+static tBoolean g_KillUdpServer;
 
 //
 // GLOBAL VARIABLES -- End
 //
 
 void TcpServer_TaskInit(void) {
-	osi_SyncObjCreate(TcpServerStartSemaphore);
-	osi_SyncObjCreate(TcpServerStoppedSemaphore);
+	osi_SyncObjCreate(&g_TcpServerStartSemaphore);
+	osi_SyncObjCreate(&g_TcpServerStoppedSemaphore);
+}
+
+inline void TcpServer_TaskRun(void) {
+	osi_SyncObjSignal(&g_TcpServerStartSemaphore);
 }
 
 void TcpServer_TaskQuit(void) {
-	killTcpServer = true;
-	osi_SyncObjWait(TcpServerStoppedSemaphore, OSI_WAIT_FOREVER);
+	g_KillTcpServer = true;
+	osi_SyncObjWait(&g_TcpServerStoppedSemaphore, OSI_WAIT_FOREVER);
 	UART_PRINT("TcpServer stopped\r\n");
 }
 
 void UdpServer_TaskInit(void) {
-	osi_SyncObjCreate(UdpServerStartSemaphore);
-	osi_SyncObjCreate(UdpServerStoppedSemaphore);
+	osi_SyncObjCreate(&g_UdpServerStartSemaphore);
+	osi_SyncObjCreate(&g_UdpServerStoppedSemaphore);
+}
+
+inline void UdpServer_TaskRun(void) {
+	osi_SyncObjSignal(&g_UdpServerStartSemaphore);
 }
 
 void UdpServer_TaskQuit(void) {
-	killUdpServer = true;
-	osi_SyncObjWait(UdpServerStoppedSemaphore, OSI_WAIT_FOREVER);
+	g_KillUdpServer = true;
+	osi_SyncObjWait(&g_UdpServerStoppedSemaphore, OSI_WAIT_FOREVER);
 	UART_PRINT("UdpServer stopped \r\n");
 }
-//*****************************************************************************
-//
-//! TcpServer_Task
-//!
-//!  \param  pvParameters
-//!
-//!  \return none
-//!
-//!  \brief Task handler function to handle the TcpServer Socket
-//
-//*****************************************************************************
 
 #define BUFFERSIZE 256
 
-void TcpServer_Task(void *pvParameters) {
-
-	sockaddr_in RemoteAddr;
-	socklen_t RemoteAddrLen = sizeof(sockaddr_in);
-	int SocketTcpServer, SocketTcpChild;
+static void TcpServer_Receive(const int childSock) {
 	uint8_t buffer[BUFFERSIZE];
-	const sockaddr_in LocalAddr =
-			{ .sin_family = AF_INET, .sin_port = htons(SERVER_PORT), .sin_addr.s_addr = INADDR_ANY };
 
-	while (1) {
-		osi_SyncObjWait(TcpServerStartSemaphore, OSI_WAIT_FOREVER);
-		killTcpServer = false;
-		UART_PRINT("TcpServer started\r\n");
+	while (!g_KillTcpServer) {
+		int bytesReceived = recv(childSock, buffer, sizeof(buffer), 0);
 
-		SocketTcpServer = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-		if (SocketTcpServer < 0) {
-			UART_PRINT(" Socket Error: %d", SocketTcpServer);
-			osi_SyncObjSignal(TcpServerStoppedSemaphore);
+		// TODO: place code to send data to sock here
+
+		if (EAGAIN == bytesReceived) {
+			// if we don't recveived data, we can sleep a little bit
+			osi_Sleep(100);
 			continue;
 		}
 
-		if (SUCCESS != bind(SocketTcpServer, (sockaddr *) &LocalAddr, sizeof(LocalAddr))) {
+		if (bytesReceived <= 0) {
+			// Error or close occured on child socket
+			return;
+		}
+		// Received some bytes
+		// TODO: Save bytes anywhere for wylight adaption
+
+		if (bytesReceived == 3) {
+			osi_MsgQWrite(PwmMessageQ, buffer, OSI_NO_WAIT);
+		}
+
+		buffer[bytesReceived] = 0;
+		UART_PRINT("Tcp => Received %d bytes:%s\r\n", bytesReceived, buffer);
+	}
+}
+
+static void TcpServer_Run(const int serverSock) {
+	sockaddr_in childAddr;
+	socklen_t childAddrLen = sizeof(sockaddr_in);
+
+	for (;;) {
+		// non blocking accept
+		int childSock = accept(serverSock, (sockaddr *) &childAddr, &childAddrLen);
+
+		if (g_KillTcpServer) {
+			if (childSock >= 0) {
+				close(childSock);
+			}
+			return;
+		}
+		if (EAGAIN == childSock) {
+			osi_Sleep(100);
+			continue;
+		}
+		if (childSock < 0) {
+			UART_PRINT("Accept error: %d\n\r", childSock);
+			continue;
+		}
+
+		int nonBlocking = 1;
+		setsockopt(childSock, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking));
+
+		UART_PRINT("TCP Client connected\r\n");
+		TcpServer_Receive(childSock);
+		close(childSock);
+		childSock = ERROR;
+		UART_PRINT("TCP Client disconnected\r\n");
+	}
+}
+
+void TcpServer_Task(void *pvParameters) {
+	const sockaddr_in LocalAddr =
+			{ .sin_family = AF_INET, .sin_port = htons(SERVER_PORT), .sin_addr.s_addr = INADDR_ANY };
+
+	for (;;) {
+		osi_SyncObjWait(&g_TcpServerStartSemaphore, OSI_WAIT_FOREVER);
+		g_KillTcpServer = false;
+
+		int serverSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+		if (serverSock < 0) {
+			UART_PRINT(" Socket Error: %d", serverSock);
+			osi_SyncObjSignal(&g_TcpServerStoppedSemaphore);
+			continue;
+		}
+
+		if (SUCCESS != bind(serverSock, (sockaddr *) &LocalAddr, sizeof(LocalAddr))) {
 			UART_PRINT(" Bind Error\n\r");
-			close(SocketTcpServer);
-			osi_SyncObjSignal(TcpServerStoppedSemaphore);
+			close(serverSock);
+			osi_SyncObjSignal(&g_TcpServerStoppedSemaphore);
 			continue;
 		}
 
 		// Backlog = 1 to accept maximal 1 connection
-		if (SUCCESS != listen(SocketTcpServer, 1)) {
+		if (SUCCESS != listen(serverSock, 1)) {
 			UART_PRINT(" Listen Error\n\r");
-			close(SocketTcpServer);
-			osi_SyncObjSignal(TcpServerStoppedSemaphore);
+			close(serverSock);
+			osi_SyncObjSignal(&g_TcpServerStoppedSemaphore);
 			continue;
 		}
 
 		int nonBlocking = 1;
-		setsockopt(SocketTcpServer, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking));
-
-		while (SocketTcpServer > 0) {
-			// non blocking accept
-			SocketTcpChild = accept(SocketTcpServer, (sockaddr *) &RemoteAddr, &RemoteAddrLen);
-			if (killTcpServer) {
-				if (SocketTcpChild >= 0) {
-					close(SocketTcpChild);
-					SocketTcpChild = ERROR;
-				}
-				close(SocketTcpServer);
-				SocketTcpServer = ERROR;
-				osi_SyncObjSignal(TcpServerStoppedSemaphore);
-				break;
-			}
-			if (SocketTcpChild == EAGAIN) {
-				osi_Sleep(100);
-				continue;
-			}
-			if (SocketTcpChild < 0) {
-				UART_PRINT("accept error: %d\n\r", SocketTcpChild);
-				continue;
-			}
-
-			int nonBlocking = 1;
-			setsockopt(SocketTcpChild, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking));
-
-			int bytesReceived = 0;
-			UART_PRINT("TCP Client connected\r\n");
-			while (SocketTcpChild > 0) {
-				memset(buffer, sizeof(buffer), 0);
-
-				bytesReceived = recv(SocketTcpChild, buffer, sizeof(buffer), 0);
-
-				if (killTcpServer) {
-					close(SocketTcpChild);
-					SocketTcpChild = ERROR;
-					break;
-				}
-
-				if (bytesReceived == EAGAIN) {
-					// if we don't recveived data, we can sleep a little bit
-					osi_Sleep(100);
-					continue;
-				}
-
-				if (bytesReceived > 0) {
-					// Received some bytes
-					// TODO: Save bytes anywhere for wylight adaption
-					buffer[bytesReceived] = 0;
-					UART_PRINT("Tcp => Received %d bytes:%s\r\n", bytesReceived, buffer);
-				} else {
-					// Error or close occured on child socket
-					close(SocketTcpChild);
-					SocketTcpChild = ERROR;
-					break;
-				}
-				UART_PRINT("TCP Client disconnected\r\n");
-			}
-		}
+		setsockopt(serverSock, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking));
+		UART_PRINT("TcpServer started\r\n");
+		TcpServer_Run(serverSock);
+		close(serverSock);
+		osi_SyncObjSignal(&g_TcpServerStoppedSemaphore);
 	}
 }
 
-//*****************************************************************************
-//
-//! UdpServer_Task
-//!
-//!  \param  pvParameters
-//!
-//!  \return none
-//!
-//!  \brief Task handler function to handle the TcpServer Socket
-//
-//*****************************************************************************
-void UdpServer_Task(void *pvParameters) {
-	sockaddr_in RemoteAddr;
+static void UdpServer_Receive(const int serverSock) {
 	socklen_t RemoteAddrLen = sizeof(sockaddr_in);
-	int SocketUdpServer;
-	unsigned char buffer[BUFFERSIZE];
+	uint8_t buffer[BUFFERSIZE];
+	sockaddr_in remoteAddr;
 
+	while (!g_KillUdpServer) {
+		const int bytesReceived = recvfrom(serverSock, buffer, sizeof(buffer), 0, (sockaddr *) &remoteAddr,
+				&RemoteAddrLen);
+
+		if (EAGAIN == bytesReceived) {
+			osi_Sleep(100);
+			continue;
+		}
+
+		if (bytesReceived <= 0) {
+			return;
+		}
+		// Received some bytes
+		// TODO: Write received Bytes in global Buffer
+		UART_PRINT("Received %d bytes:%s\r\n", bytesReceived, buffer);
+	}
+}
+
+void UdpServer_Task(void *pvParameters) {
 	const sockaddr_in LocalAddr = { .sin_family = AF_INET, .sin_port = htons(SERVER_PORT), .sin_addr.s_addr =
 	htonl(INADDR_ANY) };
 
-	while (1) {
-		osi_SyncObjWait(UdpServerStartSemaphore, OSI_WAIT_FOREVER);
-		SocketUdpServer = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-		if (SocketUdpServer < 0) {
+	for (;;) {
+		osi_SyncObjWait(&g_UdpServerStartSemaphore, OSI_WAIT_FOREVER);
+		g_KillUdpServer = false;
+		int serverSock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+		if (serverSock < 0) {
 			UART_PRINT("Udp Socket Error\r\n");
 			osi_Sleep(100);
-			osi_SyncObjSignal(UdpServerStoppedSemaphore);
+			osi_SyncObjSignal(&g_UdpServerStoppedSemaphore);
 			continue;
 		}
 		int nonBlocking = 1;
-		setsockopt(SocketUdpServer, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking));
+		setsockopt(serverSock, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking));
 
-		if (SUCCESS != bind(SocketUdpServer, (sockaddr *) &LocalAddr, sizeof(LocalAddr))) {
+		if (SUCCESS != bind(serverSock, (sockaddr *) &LocalAddr, sizeof(LocalAddr))) {
 			UART_PRINT(" Bind Error\n\r");
-			close(SocketUdpServer);
-			osi_SyncObjSignal(UdpServerStoppedSemaphore);
+			close(serverSock);
+			osi_SyncObjSignal(&g_UdpServerStoppedSemaphore);
 			continue;
 		}
 
-		UART_PRINT(" UDP Server started \r\n");
-
-		while (SocketUdpServer > 0) {
-			memset(buffer, sizeof(buffer), 0);
-			int bytesReceived = recvfrom(SocketUdpServer, buffer, sizeof(buffer), 0, (sockaddr *) &RemoteAddr,
-					&RemoteAddrLen);
-
-			if (killUdpServer == true) {
-				close(SocketUdpServer);
-				SocketUdpServer = ERROR;
-				break;
-			}
-
-			if (bytesReceived == EAGAIN) {
-				osi_Sleep(100);
-				continue;
-			}
-
-			if (bytesReceived > 0) {
-				// Received some bytes
-				// TODO: Write received Bytes in global Buffer
-				UART_PRINT("Received %d bytes:%s\r\n", bytesReceived, buffer);
-			} else {
-				close(SocketUdpServer);
-				SocketUdpServer = ERROR;
-				break;
-			}
-		}
+		UART_PRINT("UDP Server started \r\n");
+		UdpServer_Receive(serverSock);
+		close(serverSock);
 		UART_PRINT("UDP Server stopped \r\n");
-		osi_SyncObjSignal(UdpServerStoppedSemaphore);
+		osi_SyncObjSignal(&g_UdpServerStoppedSemaphore);
 	}
 }

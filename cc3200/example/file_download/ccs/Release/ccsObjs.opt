@@ -1,1 +1,0 @@
-"./main.obj" "./pinmux.obj" "./startup_ccs.obj" "./uart_if.obj" "../cc3200v1p32.cmd" -l"libc.a" -l"C:/ti/CC3200SDK/cc3200-sdk/example/file_download/ccs\..\..\..\driverlib\ccs\Release\driverlib.a" -l"C:/ti/CC3200SDK/cc3200-sdk/example/file_download/ccs\..\..\..\simplelink\ccs\NON_OS\simplelink.a" 

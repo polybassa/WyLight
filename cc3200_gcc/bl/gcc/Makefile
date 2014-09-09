@@ -24,6 +24,7 @@ VPATH+=${ROOT}/simplelink
 # Additional Compiler Flags
 CFLAGS+=-pedantic
 CFLAGS+=-Wall
+CFLAGS+=-O1
 
 # Where to find header files that do not live in the source directory.
 IPATH=${ROOT}
@@ -35,9 +36,32 @@ IPATH+=${ROOT}/simplelink
 IPATH+=${ROOT}/simplelink/source
 IPATH+=${ROOT}/simplelink/include
 
-# The default rule, which causes the driver library to be built.
-all: ${OBJDIR} ${BINDIR}
-all: ${BINDIR}/${PRJ_NAME}.axf
+# The default rule, which causes the bootloader be built as bootloader
+all: bl
+
+# build all the bootloader files. Used by as_bl and as_fw builds
+common: clean ${OBJDIR} ${BINDIR}
+common: ${BINDIR}/${PRJ_NAME}.axf
+
+# build the bootloader as normal bootloader
+BL_FILE=exe/${PRJ_NAME}.bin
+bl: SCATTERgcc_${PRJ_NAME}=../../bl/gcc/WyLight_bl.ld
+bl: common
+	openssl sha256 -binary ${BL_FILE} >> ${BL_FILE}
+
+# build the bootloader as a small firmware which is used to update the bootloader ;-)
+FW_FILE=WyLight_fw.bin
+as_fw: SCATTERgcc_${PRJ_NAME}=../../fw/gcc/WyLight_fw.ld
+as_fw: CFLAGS += -DBUILD_AS_FW
+as_fw: common
+	mv exe/${PRJ_NAME}.bin ${FW_FILE}
+	openssl sha256 -binary ${FW_FILE} >> ${FW_FILE}
+
+install_bl:
+	netcat 192.168.1.1 2000 < ${BL_FILE}
+
+install_fw:
+	netcat 192.168.1.1 2000 < ${FW_FILE}
 
 # The rule to clean out all the build products.
 clean:
@@ -93,7 +117,6 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/flowcont.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/netapp.o
 
 # select linker script
-SCATTERgcc_${PRJ_NAME}=${PRJ_NAME}.ld
 ENTRY_${PRJ_NAME}=ResetISR
 CFLAGSgcc=-DTARGET_IS_BLIZZARD_RB1
 

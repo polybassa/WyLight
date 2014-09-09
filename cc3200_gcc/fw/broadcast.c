@@ -38,8 +38,6 @@ static xSemaphoreHandle g_BroadcastStartSemaphore;
 static xTaskHandle g_BroadcastTaskHandle;
 static tBoolean g_StopBroadcastTask;
 
-OsiSyncObj_t BroadcastStartSemaphore = &g_BroadcastStartSemaphore;
-static OsiSyncObj_t BroadcastStoppedSemaphore= &g_BroadcastStoppedSemaphore;
 OsiTaskHandle BroadcastTaskHandle = &g_BroadcastTaskHandle;
 
 //
@@ -70,15 +68,19 @@ static void BroadcastMessage_Init(struct BroadcastMessage *pMessage) {
 }
 
 void Broadcast_TaskInit(void) {
-	osi_SyncObjCreate(BroadcastStoppedSemaphore);
-	osi_SyncObjCreate(BroadcastStartSemaphore);
+	osi_SyncObjCreate(&g_BroadcastStoppedSemaphore);
+	osi_SyncObjCreate(&g_BroadcastStartSemaphore);
 
 	g_StopBroadcastTask = false;
 }
 
+inline void Broadcast_TaskRun(void) {
+	osi_SyncObjSignal(&g_BroadcastStartSemaphore);
+}
+
 void Broadcast_TaskQuit(void) {
 	g_StopBroadcastTask = true;
-	osi_SyncObjWait(BroadcastStoppedSemaphore, OSI_WAIT_FOREVER);
+	osi_SyncObjWait(&g_BroadcastStoppedSemaphore, OSI_WAIT_FOREVER);
 }
 
 //*****************************************************************************
@@ -101,17 +103,16 @@ void Broadcast_Task(void *pvParameters) {
 
 	struct BroadcastMessage tempBroadcastMessage;
 
-	while (1) {
-		osi_SyncObjWait(BroadcastStartSemaphore, OSI_WAIT_FOREVER);
+	for(;;) {
+		osi_SyncObjWait(&g_BroadcastStartSemaphore, OSI_WAIT_FOREVER);
+		g_StopBroadcastTask = false;
 
 		BroadcastMessage_Init(&tempBroadcastMessage);
 
-		// creating a UDP socket
 		const int sock = socket(AF_INET, SOCK_DGRAM, 0);
 		if (sock < 0) {
-			// error
 			UART_PRINT("ERROR: Couldn't aquire socket for Broadcast transmit\r\n");
-			osi_SyncObjSignal(BroadcastStoppedSemaphore);
+			osi_SyncObjSignal(&g_BroadcastStoppedSemaphore);
 			continue;
 		}
 
@@ -125,12 +126,10 @@ void Broadcast_Task(void *pvParameters) {
 
 		} while (status > 0 && !g_StopBroadcastTask);
 
-		g_StopBroadcastTask = false;
-
 		UART_PRINT("Broadcast Transmitter stopped \r\n");
 		// Close socket in case of any error's and try to open a new socket in the next loop
 		close(sock);
-		osi_SyncObjSignal(BroadcastStoppedSemaphore);
+		osi_SyncObjSignal(&g_BroadcastStoppedSemaphore);
 	}
 }
 

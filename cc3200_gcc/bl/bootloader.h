@@ -19,4 +19,19 @@
 #ifndef _BOOTLOADER_H_
 #define _BOOTLOADER_H_
 extern const unsigned long BOOTLOADER_VERSION;
+
+#ifndef BUILD_AS_FW
+
+#define FW_FILENAME			"/temp/firmware.bin"
+#define APP_NAME			"WyLight Bootloader"
+#define FIRMWARE_ORIGIN 	0x20012000
+
+#else
+
+#define FW_FILENAME			"/sys/mcuimg.bin"
+#define APP_NAME			"WyLight Firmware"
+#define FIRMWARE_ORIGIN 	0x20004000
+
+#endif
+
 #endif /* #ifndef _BOOTLOADER_H_ */

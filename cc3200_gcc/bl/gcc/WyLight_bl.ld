@@ -13,12 +13,16 @@
 *
 ******************************************************************************/
 
-HEAP_SIZE = 0x00010000;
+HEAP_SIZE = 0x00000100;
 
 MEMORY
 {
-    SRAM (rwx) : ORIGIN = 0x20004000, LENGTH = 0x00030000
+    SRAM (rwx) : ORIGIN = 0x20004000, LENGTH = 0x0000DFFF
 }
+
+stack_size = 0x2000;
+_stack_start = ORIGIN(SRAM)+LENGTH(SRAM);
+_stack_end = _stack_start - stack_size;
 
 SECTIONS
 {

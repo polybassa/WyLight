@@ -43,12 +43,22 @@
 		<link>
 			<name>pinmux.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/pinmux.c</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/common/pinmux.c</locationURI>
+		</link>
+		<link>
+			<name>pwm.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pwm.c</locationURI>
 		</link>
 		<link>
 			<name>server.c</name>
 			<type>1</type>
 			<locationURI>copy_PARENT/server.c</locationURI>
+		</link>
+		<link>
+			<name>sniffer.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/sniffer.c</locationURI>
 		</link>
 		<link>
 			<name>startup_ccs.c</name>

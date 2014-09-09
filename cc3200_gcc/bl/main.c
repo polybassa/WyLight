@@ -55,7 +55,6 @@
 //
 extern void (* const g_pfnVectors[])(void);
 
-static const char APP_NAME[] = "WyLight Bootloader";
 const unsigned long BOOTLOADER_VERSION;
 // GLOBAL VARIABLES -- End
 
@@ -137,5 +136,6 @@ int main() {
 	GPIO_IF_LedOn(MCU_ORANGE_LED_GPIO);
 
 	TcpServer();
+	StartFirmware();
 }
 

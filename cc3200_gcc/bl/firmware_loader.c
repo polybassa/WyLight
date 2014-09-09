@@ -20,24 +20,26 @@
 #include <stdbool.h>
 
 #include "hw_types.h"
-#include "shamd5.h"
-#include "uart_if.h"
-#include "firmware_loader.h"
-#include "wy_bl_network_if.h"
 #include "hw_shamd5.h"
 #include "hw_memmap.h"
-#include "prcm.h"
 #include "hw_nvic.h"
+#include "shamd5.h"
+#include "prcm.h"
+
+#ifdef SIMULATOR
 #include "simulator.h"
 #include "hw_ints.h"
 #include "fs.h"
-
-#ifndef SIMULATOR
+#else
 #include "simplelink.h"
 #include "rom_map.h"
 #include "interrupt.h"
-
 #endif /* SIMULATOR */
+
+#include "uart_if.h"
+#include "firmware_loader.h"
+#include "wy_bl_network_if.h"
+#include "bootloader.h"
 
 #define BUFFER_SIZE 			1024
 #define BLOCKSIZE		 		64 		/* Write block size for write to MD5SHA module */
@@ -58,7 +60,7 @@ volatile struct SHAMD5_StatusFlags {
 	unsigned char OutputReadyFlag :1;
 } g_SHAMD5_StatusFlags;
 
-static unsigned char* FIRMWARE_FILENAME = (unsigned char *) "/temp/firmware.bin";
+static unsigned char* FIRMWARE_FILENAME = (unsigned char *) FW_FILENAME;
 //
 // GLOBAL VARIABLES -- End
 //
