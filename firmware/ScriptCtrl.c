@@ -16,9 +16,21 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
+
+#ifdef cc3200
+#include "socket.h"
+
+#ifdef write
+#undef write
+#endif
+#endif
+
+#include "platform.h"
+
+
+#include "ledstrip.h"
 #include "ScriptCtrl.h"
 #include "CommandIO.h"
-#include "ledstrip.h"
 #include "eeprom.h"
 #include "error.h"
 #include "trace.h"
@@ -105,6 +117,7 @@ uns8 ScriptCtrl_Add(struct led_cmd *pCmd)
 	{
 		return ScriptCtrl_Write(pCmd);
 	}
+#ifndef cc3200
 	case START_BL:
 	{
 		CommandIO_CreateResponse(&g_ResponseBuf, START_BL, OK);
@@ -114,6 +127,7 @@ uns8 ScriptCtrl_Add(struct led_cmd *pCmd)
 		/* never reach this */
 		return OK;
 	}
+#endif /* cc3200 */
 #ifdef __CC8E__
 	case GET_RTC:
 	{
@@ -183,6 +197,7 @@ void ScriptCtrl_Clear(void)
 
 void ScriptCtrl_Init(void)
 {
+	Eeprom_Init();
 	gScriptBuf.inLoop = Eeprom_Read(EEPROM_SCRIPTBUF_INLOOP);
 	gScriptBuf.read = Eeprom_Read(EEPROM_SCRIPTBUF_READ);
 	gScriptBuf.write = Eeprom_Read(EEPROM_SCRIPTBUF_WRITE);
