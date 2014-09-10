@@ -48,7 +48,7 @@ CFLAGS+=-Dcc3200
 # Where to find header files that do not live in the source directory.
 #
 IPATH=${ROOT}
-IPATH+=${ROOT}/bl
+IPATH+=${ROOT}/fw
 IPATH+=${ROOT}/common
 IPATH+=${ROOT}/inc
 IPATH+=${ROOT}/driverlib
@@ -110,6 +110,9 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/crc.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/CommandIO.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_firmware.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/Version.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/eeprom.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/ScriptCtrl.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/ledstrip.o
 # common
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/startup_${COMPILER}.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart_if.o

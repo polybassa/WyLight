@@ -36,6 +36,11 @@
 			<locationURI>PARENT-3-PROJECT_LOC/firmware/RingBuf.c</locationURI>
 		</link>
 		<link>
+			<name>ScriptCtrl.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/firmware/ScriptCtrl.c</locationURI>
+		</link>
+		<link>
 			<name>Version.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/firmware/Version.c</locationURI>
@@ -51,9 +56,19 @@
 			<locationURI>PARENT-3-PROJECT_LOC/firmware/crc.c</locationURI>
 		</link>
 		<link>
+			<name>eeprom.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/firmware/eeprom.c</locationURI>
+		</link>
+		<link>
 			<name>gpio_if.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/common/gpio_if.c</locationURI>
+		</link>
+		<link>
+			<name>ledstrip.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/firmware/ledstrip.c</locationURI>
 		</link>
 		<link>
 			<name>main.c</name>
