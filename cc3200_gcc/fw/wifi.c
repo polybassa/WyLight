@@ -30,6 +30,7 @@
 #include "gpio_if.h"
 #include "broadcast.h"
 #include "server.h"
+#include "wy_firmware.h"
 
 //
 // GLOBAL VARIABLES -- Start
@@ -73,6 +74,7 @@ void WlanSupport_Task(void *pvParameters) {
 				GPIO_IF_LedOff(MCU_ALL_LED_IND);
 				GPIO_IF_LedOn(MCU_GREEN_LED_GPIO);
 
+				osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
 				Broadcast_TaskRun();
 				TcpServer_TaskRun();
 				UdpServer_TaskRun();
@@ -80,6 +82,8 @@ void WlanSupport_Task(void *pvParameters) {
 				while (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
 					osi_Sleep(100);
 				}
+
+				osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
 				Broadcast_TaskQuit();
 				TcpServer_TaskQuit();
 				UdpServer_TaskQuit();
@@ -96,6 +100,7 @@ void WlanSupport_Task(void *pvParameters) {
 			GPIO_IF_LedOff(MCU_ALL_LED_IND);
 			GPIO_IF_LedOn(MCU_GREEN_LED_GPIO);
 
+			osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
 			Broadcast_TaskRun();
 			TcpServer_TaskRun();
 			UdpServer_TaskRun();
@@ -105,6 +110,7 @@ void WlanSupport_Task(void *pvParameters) {
 				osi_SyncObjWait(WlanSupportProvisioningDataAddedSemaphore, OSI_WAIT_FOREVER);
 			} while (Network_IF_AddNewProfile() != SUCCESS);
 
+			osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
 			Broadcast_TaskQuit();
 			TcpServer_TaskQuit();
 			UdpServer_TaskQuit();
