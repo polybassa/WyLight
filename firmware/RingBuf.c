@@ -18,50 +18,61 @@
 
 #include "RingBuf.h"
 
+#ifdef cc3200
+#include "osi.h"
+
+struct RingBuffer g_RingBuf_Tx;
+#endif
+
 bank7 struct RingBuffer g_RingBuf;
 
-void RingBuf_Init(struct RingBuffer *pBuf)
-{
+void RingBuf_Init(struct RingBuffer *pBuf) {
 	pBuf->read = 0;
 	pBuf->write = 0;
 	pBuf->error_full = 0;
 }
 
-uns8 RingBuf_Get(struct RingBuffer *pBuf)
-{
-	//Platform_DisableAllInterrupts();
+uns8 RingBuf_Get(struct RingBuffer *pBuf) {
+#ifdef cc3200
+	unsigned long key = osi_EnterCritical();
+#endif
 	uns8 read = pBuf->read;
 	uns8 result = pBuf->data[read];
 	pBuf->read = RingBufInc(read);
-
-	//TODO make this thread safe or remove flag!
 	pBuf->error_full = FALSE;
-	//Platform_EnableAllInterrupts();
+#ifdef cc3200
+	osi_ExitCritical(key);
+#endif
 	return result;
 }
 
-void RingBuf_Put(struct RingBuffer *pBuf,const uns8 value)
-{
-	//Platform_DisableAllInterrupts();
+void RingBuf_Put(struct RingBuffer *pBuf, const uns8 value) {
+#ifdef cc3200
+	unsigned long key = osi_EnterCritical();
+#endif
 	uns8 writeNext = RingBufInc(pBuf->write);
-	if(writeNext != pBuf->read) {
+	if (writeNext != pBuf->read) {
 		uns8 write = pBuf->write;
 		pBuf->data[write] = value;
 		pBuf->write = writeNext;
 	} else pBuf->error_full = 1;
-	//Platform_EnableAllInterrupts();
+#ifdef cc3200
+	osi_ExitCritical(key);
+#endif
 }
 
-bit RingBuf_HasError(struct RingBuffer *pBuf)
-{
+bit RingBuf_HasError(struct RingBuffer *pBuf) {
 	return pBuf->error_full;
 }
 
-bit RingBuf_IsEmpty(const struct RingBuffer *pBuf)
-{
-	//Platform_DisableAllInterrupts();
+bit RingBuf_IsEmpty(const struct RingBuffer *pBuf) {
+#ifdef cc3200
+	unsigned long key = osi_EnterCritical();
+#endif
 	uns8 write = pBuf->write;
 	uns8 read = pBuf->read;
-	//Platform_EnableAllInterrupts();
+#ifdef cc3200
+	osi_ExitCritical(key);
+#endif
 	return write == read;
 }
