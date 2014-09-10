@@ -47,6 +47,7 @@
 									<listOptionValue builtIn="false" value="&quot;${CG_TOOL_ROOT}/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}\..\&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}\..\..\common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}\..\..\..\firmware&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}\..\..\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}\..\..\driverlib&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}\..\..\oslib&quot;"/>

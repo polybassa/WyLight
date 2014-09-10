@@ -21,7 +21,11 @@
 #include "pin.h"
 #include "rom.h"
 #include "rom_map.h"
+#ifdef ccs
+#include "..\..\driverlib\timer.h"
+#else
 #include "timer.h"
+#endif
 #include "prcm.h"
 /*
  #include "hw_apps_rcm.h"

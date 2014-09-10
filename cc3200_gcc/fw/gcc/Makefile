@@ -32,6 +32,10 @@ VPATH+=${RTOS_SOURCE_DIR}/source
 VPATH+=${RTOS_SOURCE_DIR}/source/portable/MemMang
 VPATH+=${RTOS_SOURCE_DIR}/source/portable/GCC/ARM_CM4
 VPATH+=${ROOT}/oslib
+VPATH+=${ROOT}/../firmware
+
+vpath crc.c ${ROOT}/../firmware
+vpath timer.c ${ROOT}/driverlib
 #
 # Additional Compiler Flags
 #
@@ -39,7 +43,7 @@ CFLAGS+=-DSL_PLATFORM_MULTI_THREADED
 CFLAGS+=-DUSE_FREERTOS
 CFLAGS+=-pedantic
 CFLAGS+=-Wall
-
+CFLAGS+=-Dcc3200
 #
 # Where to find header files that do not live in the source directory.
 #
@@ -58,12 +62,14 @@ IPATH+=${RTOS_SOURCE_DIR}/source
 IPATH+=${RTOS_SOURCE_DIR}/source/include
 IPATH+=${RTOS_SOURCE_DIR}/source/portable/MemMang
 IPATH+=${RTOS_SOURCE_DIR}/source/portable/GCC/ARM_CM4
+IPATH+=${ROOT}/../firmware
 
 #
 # The default rule, which causes the driver library to be built.
 #
+
 all: ${OBJDIR} ${BINDIR}
-all: ${BINDIR}/${PRJ_NAME}.axf
+all: ${BINDIR}/${PRJ_NAME}.axf 
 
 #
 # The rule to clean out all the build products.
@@ -75,6 +81,10 @@ clean:
 test:
 	@echo ${LIBC}
 	@echo ${LIBGCC}
+
+checksum:
+	openssl SHA256 -binary ${BINDIR}/${PRJ_NAME}.bin >> ${BINDIR}/${PRJ_NAME}.bin
+
 #
 # The rule to create the target directories.
 #
@@ -94,7 +104,12 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/server.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_network_if.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wifi.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/pwm.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/sniffer.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/sniffer.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/RingBuf.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/crc.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/CommandIO.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_firmware.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/Version.o
 # common
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/startup_${COMPILER}.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart_if.o
