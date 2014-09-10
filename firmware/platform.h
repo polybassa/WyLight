@@ -20,9 +20,12 @@
 #define _PLATFORM_H_
 
 //*********************** ENUMERATIONS *********************************************
+#ifndef TRUE
 #define TRUE  1
+#endif
+#ifndef FALSE
 #define FALSE 0
-
+#endif
 //*********************** CONFIGURATION ********************************************
 #define NUM_OF_LED 32
 

@@ -16,23 +16,40 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "CommandIO.h"
+#ifndef cc3200
+
 #include "ScriptCtrl.h"
+#include "usart.h"
+#include "spi.h"
+
+#else
+#include "uart_if.h"
+
+#define UART_PRINT Report
+#endif
+
+#include "CommandIO.h"
 #include "trace.h"
 #include "RingBuf.h"
-#include "crc.h"
-#include "usart.h"
 #include "error.h"
+#include "crc.h"
+#include "Version.h"
 #include "wifly_cmd.h"
 #include "rtc.h"
-#include "Version.h"
-#include "spi.h"
 
 bank2 struct CommandBuffer g_CmdBuf;
 bank5 struct response_frame g_ResponseBuf;
 static bit g_Odd_STX_Received;
 
 /** PRIVATE METHODES **/
+#ifdef cc3200
+#define UART_Send(x) RingBuf_Put(&g_RingBuf_Tx, x)
+#define ScriptCtrl_Add(x) OK
+#define Rtc_Ctl(x,y)
+#define Timer_PrintCycletime(x,y) 0
+#define Trace_Print(x,y) 0
+#define SPI_Send(x) 0
+#endif
 
 static void WriteByte(uns8 byte)
 {
@@ -104,6 +121,9 @@ void CommandIO_GetCommands()
 {
 	if(RingBuf_HasError(&g_RingBuf)) {
 		Trace_String(ERROR_RECEIVEBUFFER_FULL);//RingbufferFull
+#ifdef cc3200
+		UART_PRINT("[ERROR]g_RingBuf Overflow\r\n");
+#endif
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
 		RingBuf_Init(&g_RingBuf);
