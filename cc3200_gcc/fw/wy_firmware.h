@@ -33,6 +33,7 @@
 #endif
 
 extern OsiTaskHandle WyLightFirmwareTaskHandle;
+extern OsiSyncObj_t FirmwareCanAccessFileSystemSemaphore;
 
 void WyLightFirmware_TaskInit(void);
 void WyLightFirmware_Task(void *pvParameters);

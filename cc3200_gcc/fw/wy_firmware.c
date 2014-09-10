@@ -27,15 +27,19 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "semphr.h"
-#include "queue.h"
 
 //Application Includes
 #include "wy_firmware.h"
 #include "CommandIO.h"
 #include "RingBuf.h"
+#include "ScriptCtrl.h"
+#include "ledstrip.h"
 //
 // GLOBAL VARIABLES -- Start
 //
+
+static xSemaphoreHandle g_FirmwareCanAccessFileSystemSemaphore;
+OsiSyncObj_t FirmwareCanAccessFileSystemSemaphore = &g_FirmwareCanAccessFileSystemSemaphore;
 
 static xTaskHandle g_WyLightFirmwareTaskHandle;
 OsiTaskHandle WyLightFirmwareTaskHandle = &g_WyLightFirmwareTaskHandle;
@@ -45,15 +49,21 @@ OsiTaskHandle WyLightFirmwareTaskHandle = &g_WyLightFirmwareTaskHandle;
 //
 
 void WyLightFirmware_TaskInit(void) {
+	osi_SyncObjCreate(FirmwareCanAccessFileSystemSemaphore);
 	RingBuf_Init(&g_RingBuf_Tx);
 	RingBuf_Init(&g_RingBuf);
-	CommandIO_Init();
+
 }
 
 void WyLightFirmware_Task(void *pvParameters) {
-
+	CommandIO_Init();
+	ScriptCtrl_Init();
 	for (;;) {
 		CommandIO_GetCommands();
+		ScriptCtrl_Run();
+		if(gScriptBuf.waitValue) gScriptBuf.waitValue--;
+		Ledstrip_DoFade();
+		Ledstrip_UpdateLed();
 		osi_Sleep(20);
 	}
 
