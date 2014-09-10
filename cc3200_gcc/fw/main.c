@@ -31,6 +31,7 @@
 #include "wifi.h"
 #include "broadcast.h"
 #include "server.h"
+#include "wy_firmware.h"
 
 //Common interface includes
 #include "uart_if.h"
@@ -190,6 +191,7 @@ int main(void) {
 	Broadcast_TaskInit();
 	TcpServer_TaskInit();
 	UdpServer_TaskInit();
+	WyLightFirmware_TaskInit();
 
 	//
 	// Simplelinkspawntask
@@ -200,6 +202,7 @@ int main(void) {
 	osi_TaskCreate(Broadcast_Task, (signed portCHAR *) "Broadcast", OSI_STACK_SIZE, NULL, 1, BroadcastTaskHandle);
 	osi_TaskCreate(TcpServer_Task, (signed portCHAR *) "TcpServer", OSI_STACK_SIZE, NULL, 6, TcpServerTaskHandle);
 	osi_TaskCreate(UdpServer_Task, (signed portCHAR *) "UdpServer", OSI_STACK_SIZE, NULL, 5, UdpServerTaskHandle);
+	osi_TaskCreate(WyLightFirmware_Task, (signed portCHAR *) "WyLightFirmware", OSI_STACK_SIZE, NULL, 3, WyLightFirmwareTaskHandle);
 
 	osi_start();
 

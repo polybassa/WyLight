@@ -27,15 +27,17 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "semphr.h"
+#include "queue.h"
 
 //Application Includes
 #include "wy_firmware.h"
+#include "CommandIO.h"
+#include "RingBuf.h"
 //
 // GLOBAL VARIABLES -- Start
 //
 
 static xTaskHandle g_WyLightFirmwareTaskHandle;
-
 OsiTaskHandle WyLightFirmwareTaskHandle = &g_WyLightFirmwareTaskHandle;
 
 //
@@ -43,9 +45,22 @@ OsiTaskHandle WyLightFirmwareTaskHandle = &g_WyLightFirmwareTaskHandle;
 //
 
 void WyLightFirmware_TaskInit(void) {
-	
+	RingBuf_Init(&g_RingBuf_Tx);
+	RingBuf_Init(&g_RingBuf);
+	CommandIO_Init();
 }
 
 void WyLightFirmware_Task(void *pvParameters) {
-	
+
+	for (;;) {
+		CommandIO_GetCommands();
+		osi_Sleep(20);
+	}
+
+	//Ledstrip_UpdateLed(); /* every x ms */
+	//ScriptCtrl_Run();
+	//Ledstrip_DoFade(); /* every y ms */
+
+	//WyLightFirmware_SendMessages();
+
 }
