@@ -18,16 +18,15 @@
 
 #ifndef cc3200
 
-#include "ScriptCtrl.h"
 #include "usart.h"
 #include "spi.h"
 
-#else
+#else /* cc3200 */
 #include "uart_if.h"
-
 #define UART_PRINT Report
-#endif
+#endif /* cc3200 */
 
+#include "ScriptCtrl.h"
 #include "CommandIO.h"
 #include "trace.h"
 #include "RingBuf.h"
@@ -42,9 +41,17 @@ bank5 struct response_frame g_ResponseBuf;
 static bit g_Odd_STX_Received;
 
 /** PRIVATE METHODES **/
+
 #ifdef cc3200
-#define UART_Send(x) RingBuf_Put(&g_RingBuf_Tx, x)
-#define ScriptCtrl_Add(x) OK
+
+static void UART_Send(const uns8 data) {
+	if (RingBuf_HasError(&g_RingBuf_Tx)) {
+		UART_PRINT("g_RingBuf_Tx Error \r\n");
+		RingBuf_Init(&g_RingBuf_Tx);
+	}
+	RingBuf_Put(&g_RingBuf_Tx, data);
+}
+
 #define Rtc_Ctl(x,y)
 #define Timer_PrintCycletime(x,y) 0
 #define Trace_Print(x,y) 0
@@ -175,7 +182,7 @@ void CommandIO_GetCommands()
 					if((0 == g_CmdBuf.CrcL) && (0 == g_CmdBuf.CrcH)) {
 						// [0] contains cmd_frame->cmd. Reply this cmd as response to client
 	#ifndef __CC8E__
-						mRetValue = ScriptCtrl_Add((struct led_cmd *)&g_CmdBuf.buffer[0]);
+						mRetValue = (ErrorCode)ScriptCtrl_Add((struct led_cmd *)&g_CmdBuf.buffer[0]);
 	#else
 						mRetValue = ScriptCtrl_Add(&g_CmdBuf.buffer[0]);
 	#endif
