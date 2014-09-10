@@ -31,6 +31,7 @@
 #ifndef SUCCESS
 #define SUCCESS 	0
 #endif
+
 #define PWM
 
 extern OsiMsgQ_t PwmMessageQ;
@@ -38,6 +39,8 @@ extern OsiMsgQ_t PwmMessageQ;
 #define UART_PRINT 		   	Report
 
 extern OsiTaskHandle PwmTaskHandle;
+
+void Pwm_TaskInit(void);
 
 void Pwm_Task(void *pvParameters);
 
