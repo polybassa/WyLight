@@ -32,6 +32,7 @@
 #include "broadcast.h"
 #include "server.h"
 #include "wy_firmware.h"
+#include "pwm.h"
 
 //Common interface includes
 #include "uart_if.h"
@@ -170,6 +171,7 @@ void vApplicationStackOverflowHook(xTaskHandle *pxTask, signed portCHAR *pcTaskN
 //! @brief  Main function
 //
 //*****************************************************************************
+
 int main(void) {
 
 	//board initializations
@@ -182,11 +184,14 @@ int main(void) {
 	ClearTerm();
 	DisplayBanner(APPLICATION_NAME);
 
+#ifndef PWM
 	GPIO_IF_LedConfigure(LED1 | LED2 | LED3);
 	GPIO_IF_LedOff(MCU_RED_LED_GPIO);
 	GPIO_IF_LedOff(MCU_GREEN_LED_GPIO);
 	GPIO_IF_LedOff(MCU_ORANGE_LED_GPIO);
-
+#else
+	Pwm_TaskInit();
+#endif
 	WlanSupport_TaskInit();
 	Broadcast_TaskInit();
 	TcpServer_TaskInit();
@@ -203,6 +208,7 @@ int main(void) {
 	osi_TaskCreate(TcpServer_Task, (signed portCHAR *) "TcpServer", OSI_STACK_SIZE, NULL, 6, TcpServerTaskHandle);
 	osi_TaskCreate(UdpServer_Task, (signed portCHAR *) "UdpServer", OSI_STACK_SIZE, NULL, 5, UdpServerTaskHandle);
 	osi_TaskCreate(WyLightFirmware_Task, (signed portCHAR *) "WyLightFirmware", OSI_STACK_SIZE, NULL, 3, WyLightFirmwareTaskHandle);
+	osi_TaskCreate(Pwm_Task, (signed portCHAR *) "PWM", OSI_STACK_SIZE, NULL,2, PwmTaskHandle);
 
 	osi_start();
 
