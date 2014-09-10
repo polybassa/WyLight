@@ -89,6 +89,7 @@ extern jmp_buf g_ResetEnvironment;
 	#define bank6
 	#define bank7
 	#define bank10
+	#define Platform_EnableBootloaderAutostart(x)
 #ifndef cc3200
 	#define clearRAM(x)
 	#define Platform_AllowInterrupts(x)
@@ -96,7 +97,6 @@ extern jmp_buf g_ResetEnvironment;
 	#define Platform_DisableAllInterrupts()
 	#define Platform_CheckInputs(x)
 	#define Platform_DisableBootloaderAutostart(x)
-	#define Platform_EnableBootloaderAutostart(x)
 	#define InitFactoryRestoreWLAN(x)
 	#define InitFET(x)
 	#define Platform_IOInit(x)
@@ -104,6 +104,8 @@ extern jmp_buf g_ResetEnvironment;
 	#define Platform_ReadPerformanceCounter(x) x = 0; /* TODO implement this on X86 */
 	#define softReset(x) longjmp(g_ResetEnvironment, 1)
 	#define softResetJumpDestination(x) setjmp(g_ResetEnvironment)
+#else /*ifdef cc3200 */
+	#define softReset(x)
 #endif /* #ifndef cc3200 */
 
 #endif
