@@ -36,13 +36,15 @@
 
 //Common interface includes
 #include "uart_if.h"
-#include "gpio_if.h"
 
 #include <string.h>
 
 #define APPLICATION_NAME        "WyLight Firmware"
 #define APPLICATION_VERSION     "1.0.0"
 #define SUCCESS                 0
+#define UART_PRINT				Report
+#define OSI_STACK_SIZE        	2048
+
 //
 // GLOBAL VARIABLES -- Start
 //
@@ -50,8 +52,6 @@ extern void (* const g_pfnVectors[])(void);
 //
 // GLOBAL VARIABLES -- End
 //
-#define UART_PRINT				Report
-#define OSI_STACK_SIZE        	2048
 
 //*****************************************************************************
 //
@@ -94,7 +94,6 @@ static void BoardInit(void) {
 	PRCMCC3200MCUInit();
 }
 
-#ifdef USE_FREERTOS
 //*****************************************************************************
 // FreeRTOS User Hook Functions enabled in FreeRTOSConfig.h
 //*****************************************************************************
@@ -158,8 +157,6 @@ void vApplicationStackOverflowHook(xTaskHandle *pxTask, signed portCHAR *pcTaskN
 	}
 }
 
-#endif /*USE_FREERTOS */
-
 //*****************************************************************************
 //
 //! main
@@ -171,7 +168,6 @@ void vApplicationStackOverflowHook(xTaskHandle *pxTask, signed portCHAR *pcTaskN
 //! @brief  Main function
 //
 //*****************************************************************************
-
 int main(void) {
 
 	//board initializations
@@ -184,14 +180,7 @@ int main(void) {
 	ClearTerm();
 	DisplayBanner(APPLICATION_NAME);
 
-#ifndef PWM
-	GPIO_IF_LedConfigure(LED1 | LED2 | LED3);
-	GPIO_IF_LedOff(MCU_RED_LED_GPIO);
-	GPIO_IF_LedOff(MCU_GREEN_LED_GPIO);
-	GPIO_IF_LedOff(MCU_ORANGE_LED_GPIO);
-#else
 	Pwm_TaskInit();
-#endif
 	WlanSupport_TaskInit();
 	Broadcast_TaskInit();
 	TcpServer_TaskInit();

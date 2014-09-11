@@ -20,11 +20,6 @@
 #ifndef __PWM_H_
 #define __PWM_H_
 
-#include <stdint.h>
-
-//Common interface includes
-#include "uart_if.h"
-
 //Free_rtos/ti-rtos includes
 #include "osi.h"
 
@@ -32,16 +27,10 @@
 #define SUCCESS 	0
 #endif
 
-#define PWM
-
 extern OsiMsgQ_t PwmMessageQ;
-
-#define UART_PRINT 		   	Report
-
 extern OsiTaskHandle PwmTaskHandle;
 
 void Pwm_TaskInit(void);
-
 void Pwm_Task(void *pvParameters);
 
 #endif
