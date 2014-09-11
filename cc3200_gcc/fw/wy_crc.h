@@ -1,7 +1,7 @@
-/*
- Copyright (C) 2012 - 2014 Nils Weiss, Patrick Bruenn.
+/**
+ Copyright (C) 2014 Nils Weiss, Patrick Bruenn.
 
- This file is part of Wifly_Light.
+ This file is part of WyLight.
 
  Wifly_Light is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -16,21 +16,16 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
+#ifndef _WY_Crc_BuildCrc_H_
+#define _WY_Crc_BuildCrc_H_
 
-#ifndef __PWM_H_
-#define __PWM_H_
+#include "platform.h"
 
-//Free_rtos/ti-rtos includes
-#include "osi.h"
+//adds one byte to the given crc checksum
+void Crc_AddCrc(const uns8 byte, uns8 *p_crcH, uns8 *p_crcL);
 
-#ifndef SUCCESS
-#define SUCCESS 	0
-#endif
+//set the crc-Bytes to inital value
+void Crc_NewCrc(uns8 *p_crcH, uns8 *p_crcL);
 
-extern OsiMsgQ_t PwmMessageQ;
-extern OsiTaskHandle PwmTaskHandle;
-
-void Pwm_TaskInit(void);
-void Pwm_Task(void *pvParameters);
-
+void Crc_Init(void);
 #endif
