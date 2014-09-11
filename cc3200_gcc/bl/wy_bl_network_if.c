@@ -49,58 +49,39 @@
 #include "wy_bl_network_if.h"
 #include "uart_if.h"
 
-//
-// GLOBAL VARIABLES -- Start
-//
-unsigned long g_ulStatus = 0; /* SimpleLink Status */
-//
-// GLOBAL VARIABLES -- End
-//
+static unsigned long g_ulStatus = 0; /* SimpleLink Status */
 
-void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
-	switch (((SlWlanEvent_t*) pSlWlanEvent)->Event) {
-	case SL_WLAN_CONNECT_EVENT: {
+void wifi_status_disconnected()
+{
+	CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
+	CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
+}
+
+void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent)
+{
+	switch (pSlWlanEvent->Event) {
+	case SL_WLAN_STA_CONNECTED_EVENT: // when device is in AP mode and any client connects to device cc3xxx
+	case SL_WLAN_CONNECT_EVENT:
 		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
 		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION_FAILED);
-	}
 		break;
 
-	case SL_WLAN_DISCONNECT_EVENT: {
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
-	}
-		break;
-
-	case SL_WLAN_STA_CONNECTED_EVENT: {
-		// when device is in AP mode and any client connects to device cc3xxx
-		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION_FAILED);
-	}
-		break;
-
-	case SL_WLAN_STA_DISCONNECTED_EVENT: {
-		// when client disconnects from device (AP)
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
+	case SL_WLAN_STA_DISCONNECTED_EVENT: // when client disconnects from device (AP)
 		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_LEASED);
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
-
-	}
+		/** fallthru */
+	case SL_WLAN_DISCONNECT_EVENT:
+		wifi_status_disconnected();
 		break;
 
-	case SL_WLAN_CONNECTION_FAILED_EVENT: {
-		// If device gets any connection failed event
+	case SL_WLAN_CONNECTION_FAILED_EVENT: 
 		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION_FAILED);
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
-	}
+		wifi_status_disconnected();
 		break;
 
-	default: {
+	default:
 		UART_PRINT("[WLAN EVENT] Unexpected event \n\r");
-	}
 		break;
 	}
-
 }
 
 //*****************************************************************************
