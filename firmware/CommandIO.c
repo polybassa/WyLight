@@ -20,10 +20,14 @@
 
 #include "usart.h"
 #include "spi.h"
+#include "crc.h"
 
 #else /* cc3200 */
+
+#include "wy_crc.h"
 #include "uart_if.h"
 #define UART_PRINT Report
+
 #endif /* cc3200 */
 
 #include "ScriptCtrl.h"
@@ -31,7 +35,6 @@
 #include "trace.h"
 #include "RingBuf.h"
 #include "error.h"
-#include "crc.h"
 #include "Version.h"
 #include "wifly_cmd.h"
 #include "rtc.h"
@@ -90,6 +93,9 @@ void CommandIO_Init()
 	g_CmdBuf.state = CS_WaitForSTX;
 	DeleteBuffer();
 	g_Odd_STX_Received = FALSE;
+#ifdef cc3200
+	Crc_Init();
+#endif
 }
 
 void CommandIO_Error()
