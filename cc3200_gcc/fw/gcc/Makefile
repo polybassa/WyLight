@@ -30,9 +30,8 @@ VPATH+=${RTOS_SOURCE_DIR}/source/portable/GCC/ARM_CM4
 VPATH+=${ROOT}/oslib
 VPATH+=${ROOT}/../firmware
 
-vpath crc.c ${ROOT}/../firmware
 vpath timer.c ${ROOT}/driverlib
-
+vpath crc.c ${ROOT}/driverlib
 # Additional Compiler Flags
 CFLAGS+=-DSL_PLATFORM_MULTI_THREADED
 CFLAGS+=-DUSE_FREERTOS
@@ -100,6 +99,7 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/Version.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/eeprom.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/ScriptCtrl.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/ledstrip.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_crc.o
 # common
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/startup_${COMPILER}.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart_if.o
@@ -117,6 +117,7 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/timer.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/udma.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/spi.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/gpio.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/crc.o
 
 # simplelink
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/socket.o
