@@ -34,6 +34,7 @@
 //Application Includes
 #include "server.h"
 #include "RingBuf.h"
+#include "wy_firmware.h"
 //
 // GLOBAL VARIABLES -- Start
 //
@@ -109,7 +110,7 @@ static void TcpServer_Receive(const int childSock) {
 
 		if (EAGAIN == bytesReceived) {
 			// if we don't recveived data, we can sleep a little bit
-			osi_Sleep(40);
+			osi_Sleep(20);
 			continue;
 		}
 
@@ -118,12 +119,13 @@ static void TcpServer_Receive(const int childSock) {
 			return;
 		}
 
-		UART_PRINT("Tcp => Received %d bytes\r\n", bytesReceived);
+		UART_PRINT(",");
 		int i = 0;
 		osi_SyncObjWait(&g_WriteDataSemaphore, OSI_WAIT_FOREVER);
 		for (; i < bytesReceived; i++) {
 			RingBuf_Put(&g_RingBuf, buffer[i]);
 		}
+		osi_SyncObjSignal(NewDataAvailableSemaphore);
 		osi_SyncObjSignal(&g_WriteDataSemaphore);
 	}
 }
@@ -211,7 +213,7 @@ static void UdpServer_Receive(const int serverSock) {
 				&RemoteAddrLen);
 
 		if (EAGAIN == bytesReceived) {
-			osi_Sleep(40);
+			osi_Sleep(15);
 			continue;
 		}
 
@@ -219,12 +221,13 @@ static void UdpServer_Receive(const int serverSock) {
 			return;
 		}
 
-		UART_PRINT("Received %d bytes\r\n", bytesReceived);
+		UART_PRINT(".");
 		osi_SyncObjWait(&g_WriteDataSemaphore, OSI_WAIT_FOREVER);
 		int i = 0;
 		for (i = 0; i < bytesReceived; i++) {
 			RingBuf_Put(&g_RingBuf, buffer[i]);
 		}
+		osi_SyncObjSignal(NewDataAvailableSemaphore);
 		osi_SyncObjSignal(&g_WriteDataSemaphore);
 	}
 }

@@ -76,7 +76,7 @@ void WlanSupport_Task(void *pvParameters) {
 				UdpServer_TaskRun();
 
 				while (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
-					osi_Sleep(100);
+					osi_Sleep(200);
 				}
 
 				osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
