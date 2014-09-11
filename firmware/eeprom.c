@@ -19,12 +19,13 @@
 #include "eeprom.h"
 
 #ifdef cc3200
+#include <stdbool.h>
 #include "fs.h"
 #include "osi.h"
 #include "wy_firmware.h"
 
 static unsigned char eepromFileName[] = "/temp/eeprom.bin";
-const static uns16 EEPROM_SAVE_THRESHOLD = 3;
+const static uns16 EEPROM_SAVE_THRESHOLD = 10;
 static uns8 g_Eeprom[EEPROM_SIZE];
 static uns16 g_WritesDoneCounter;
 
@@ -58,8 +59,8 @@ void Eeprom_Init() {
 	osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
 }
 
-static void Eeprom_Save(void) {
-	if (++g_WritesDoneCounter < EEPROM_SAVE_THRESHOLD) return;
+void Eeprom_Save(bool forceSave) {
+	if (!forceSave && ++g_WritesDoneCounter < EEPROM_SAVE_THRESHOLD) return;
 
 	if (osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_NO_WAIT)) {
 		return;
@@ -141,7 +142,7 @@ inline uns8 Eeprom_Read(const uns16 adress) {
 void Eeprom_Write(const uns16 adress, const uns8 data) {
 	g_Eeprom[adress] = data;
 #ifdef cc3200
-	Eeprom_Save();
+	Eeprom_Save(false);
 #endif /*cc3200*/
 }
 
@@ -172,7 +173,7 @@ void Eeprom_WriteBlock(const uns8 *array, uns16 adress, const uns8 length) //Zum
 #ifndef __CC8E__
 	memcpy(&g_Eeprom[adress], array, length);
 #ifdef cc3200
-	Eeprom_Save();
+	Eeprom_Save(false);
 #endif /*cc3200*/
 #else
 	uns8 i;
