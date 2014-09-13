@@ -1385,9 +1385,19 @@ int sl_SendTo(int sd, const void *buf, int Len, int flags, const SlSockAddr_t *t
     \warning   
 */
 #if _SL_INCLUDE_FUNC(sl_Htonl )
-unsigned long sl_Htonl( unsigned long val );
+#if defined(_big_endian__)
+#define sl_Htonl(x) (x)
+#elif defined(_little_endian__)
+#define sl_Htonl(x) ((uint32_t)( \
+	(((uint32_t)(x) & (uint32_t)0x000000ffUL) << 24) | \
+	(((uint32_t)(x) & (uint32_t)0x0000ff00UL) <<  8) | \
+	(((uint32_t)(x) & (uint32_t)0x00ff0000UL) >>  8) | \
+	(((uint32_t)(x) & (uint32_t)0xff000000UL) >> 24)))
+#else
+#error "unsupported byte order"
+#endif /* #if defined(_big_endian) */
 
-#define sl_Ntohl sl_Htonl  /* Reorder the bytes of a 16-bit unsigned value from network order to processor orde. */
+#define sl_Ntohl sl_Htonl  /* Reorder the bytes of a 32-bit unsigned value from network order to processor orde. */
 
 #endif
 

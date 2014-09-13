@@ -124,10 +124,10 @@ int TcpServer_Accept(const int listenSocket)
  */
 extern void TcpServer(void)
 {
-	const uint32_t nBootloaderVersion = htonl(BOOTLOADER_VERSION);
+	static const uint32_t BL_VERSION = htonl(BOOTLOADER_VERSION);
 	char welcome[] = "\0\0\0\0WyLightBootloader";
 
-	memcpy(welcome, &nBootloaderVersion, sizeof(uint32_t));
+	memcpy(welcome, &BL_VERSION, sizeof(uint32_t));
 
 	const int listenSocket = TcpServer_Listen();
 	if (listenSocket < 0) {
