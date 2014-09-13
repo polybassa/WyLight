@@ -1391,7 +1391,19 @@ unsigned long sl_Htonl( unsigned long val );
     \warning   
 */
 #if _SL_INCLUDE_FUNC(sl_Htons )
+#ifndef __BYTE_ORDER__
 unsigned short sl_Htons( unsigned short val );
+#else /* #ifndef __BYTE_ORDER__ */
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#define sl_Htons(x) ((uint16_t)( \
+	(((uint16_t)(x) & (uint16_t)0x00ffU) << 8) | \
+	(((uint16_t)(x) & (uint16_t)0xff00U) >> 8)))
+#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+#define sl_Htons(x) (x)
+#else
+#error "unsupported byte order"
+#endif
+#endif /* #ifndef __BYTE_ORDER__ */
 
 #define sl_Ntohs sl_Htons   /* Reorder the bytes of a 16-bit unsigned value from network order to processor orde. */
 #endif

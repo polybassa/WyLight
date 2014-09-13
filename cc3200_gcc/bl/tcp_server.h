@@ -25,10 +25,6 @@
 #define UART_PRINT	Report
 #define BUFFERSIZE 	1024
 
-#ifndef SUCCESS
-#define SUCCESS 0
-#endif
-
 /**
  * @return if new firmware was received and validated
  */

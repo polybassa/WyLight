@@ -25,7 +25,7 @@
 #include "firmware_loader.h"
 #include "tcp_server.h"
 
-static const unsigned short SERVER_PORT = 2000;
+#define SERVER_PORT htons(2000)
 
 /**
  * @return 0 on success, if new firmware was saved and validated
@@ -65,10 +65,13 @@ static int ReceiveFw(int SocketTcpChild)
  */
 static int TcpServer_Listen()
 {
-	sockaddr_in LocalAddr;
-	LocalAddr.sin_family = AF_INET;
-	LocalAddr.sin_port = htons(SERVER_PORT);
-	LocalAddr.sin_addr.s_addr = htonl(0);
+	static const sockaddr_in localAddr = {
+		.sin_family = AF_INET,
+		.sin_port = SERVER_PORT,
+		.sin_addr = {
+			.s_addr = 0
+		}
+	};
 	int status;
 	
 	const int listenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -80,14 +83,14 @@ static int TcpServer_Listen()
 			goto on_error_close;
 		}
 
-		status = bind(listenSocket, (sockaddr *) &LocalAddr, sizeof(LocalAddr));
+		status = bind(listenSocket, (sockaddr *) &localAddr, sizeof(localAddr));
 		if (status) {
 			UART_PRINT("Bind Error\n\r");
 			goto on_error_close;
 		}
 
-		const int max_connections = 1;
-		status = listen(listenSocket, max_connections);
+		const int maxConnections = 1;
+		status = listen(listenSocket, maxConnections);
 		if (status) {
 			UART_PRINT("Listen Error\n\r");
 			goto on_error_close;
