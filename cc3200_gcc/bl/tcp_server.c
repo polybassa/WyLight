@@ -69,32 +69,35 @@ static int TcpServer_Listen()
 	LocalAddr.sin_family = AF_INET;
 	LocalAddr.sin_port = htons(SERVER_PORT);
 	LocalAddr.sin_addr.s_addr = htonl(0);
+	int status;
 	
-	const int SocketTcpServer = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (SocketTcpServer < 0) {
-		UART_PRINT("Socket Error: %d \r\n", SocketTcpServer);
-		return -1;
-	}
+	const int listenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (listenSocket >= 0) {
+		const int dontBlock = 1;
+		status = setsockopt(listenSocket, SOL_SOCKET, SO_NONBLOCKING, &dontBlock, sizeof(dontBlock));	
+		if (status) {
+			UART_PRINT("Setsockopt ERROR \r\n");
+			goto on_error_close;
+		}
 
-	int nonBlocking = 1;
-	if (SUCCESS != setsockopt(SocketTcpServer, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking))) {
-		UART_PRINT("Setsockopt ERROR \r\n");
-		close(SocketTcpServer);
-		return -1;
-	}
+		status = bind(listenSocket, (sockaddr *) &LocalAddr, sizeof(LocalAddr));
+		if (status) {
+			UART_PRINT("Bind Error\n\r");
+			goto on_error_close;
+		}
 
-	if (SUCCESS != bind(SocketTcpServer, (sockaddr *) &LocalAddr, sizeof(LocalAddr))) {
-		UART_PRINT("Bind Error\n\r");
-		close(SocketTcpServer);
-		return -1;
+		const int max_connections = 1;
+		status = listen(listenSocket, max_connections);
+		if (status) {
+			UART_PRINT("Listen Error\n\r");
+			goto on_error_close;
+		}
 	}
-	// Backlog = 1 to accept maximal 1 connection
-	if (SUCCESS != listen(SocketTcpServer, 1)) {
-		UART_PRINT("Listen Error\n\r");
-		close(SocketTcpServer);
-		return -1;
-	}
-	return SocketTcpServer;
+	return listenSocket;
+
+on_error_close:
+	close(listenSocket);
+	return status;
 }
 
 /**
@@ -110,10 +113,10 @@ extern void TcpServer(void)
 	sockaddr_in RemoteAddr;
 	socklen_t RemoteAddrLen = sizeof(sockaddr_in);
 
-	const int SocketTcpServer = TcpServer_Listen();
+	const int listenSocket = TcpServer_Listen();
 
-	while (SocketTcpServer >= 0) {
-		const int SocketTcpChild = accept(SocketTcpServer, (sockaddr *) &RemoteAddr, &RemoteAddrLen);
+	while (listenSocket >= 0) {
+		const int SocketTcpChild = accept(listenSocket, (sockaddr *) &RemoteAddr, &RemoteAddrLen);
 
 		if (SocketTcpChild == EAGAIN) {
 			_SlNonOsMainLoopTask();
@@ -135,5 +138,5 @@ extern void TcpServer(void)
 		if (0 == fwStatus)
 			return;
 	}
-	UART_PRINT("Socket Error: %d \r\n", SocketTcpServer);
+	UART_PRINT("Socket Error: %d \r\n", listenSocket);
 }
