@@ -60,6 +60,44 @@ static int ReceiveFw(int SocketTcpChild)
 }
 
 /**
+ * Create a new tcp server socket and start listening on it
+ * @return positiv socket descriptor, or negative value on error
+ */
+static int TcpServer_Listen()
+{
+	sockaddr_in LocalAddr;
+	LocalAddr.sin_family = AF_INET;
+	LocalAddr.sin_port = htons(SERVER_PORT);
+	LocalAddr.sin_addr.s_addr = htonl(0);
+	
+	const int SocketTcpServer = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (SocketTcpServer < 0) {
+		UART_PRINT("Socket Error: %d \r\n", SocketTcpServer);
+		return -1;
+	}
+
+	int nonBlocking = 1;
+	if (SUCCESS != setsockopt(SocketTcpServer, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking))) {
+		UART_PRINT("Setsockopt ERROR \r\n");
+		close(SocketTcpServer);
+		return -1;
+	}
+
+	if (SUCCESS != bind(SocketTcpServer, (sockaddr *) &LocalAddr, sizeof(LocalAddr))) {
+		UART_PRINT("Bind Error\n\r");
+		close(SocketTcpServer);
+		return -1;
+	}
+	// Backlog = 1 to accept maximal 1 connection
+	if (SUCCESS != listen(SocketTcpServer, 1)) {
+		UART_PRINT("Listen Error\n\r");
+		close(SocketTcpServer);
+		return -1;
+	}
+	return SocketTcpServer;
+}
+
+/**
  * @return if new firmware was received and validated
  */
 extern void TcpServer(void)
@@ -72,36 +110,9 @@ extern void TcpServer(void)
 	sockaddr_in RemoteAddr;
 	socklen_t RemoteAddrLen = sizeof(sockaddr_in);
 
-	sockaddr_in LocalAddr;
-	LocalAddr.sin_family = AF_INET;
-	LocalAddr.sin_port = htons(SERVER_PORT);
-	LocalAddr.sin_addr.s_addr = htonl(0);
-	int SocketTcpServer = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (SocketTcpServer < 0) {
-		UART_PRINT("Socket Error: %d \r\n", SocketTcpServer);
-		return;
-	}
+	const int SocketTcpServer = TcpServer_Listen();
 
-	int nonBlocking = 1;
-	if (SUCCESS != setsockopt(SocketTcpServer, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking))) {
-		UART_PRINT("Setsockopt ERROR \r\n");
-		close(SocketTcpServer);
-		return;
-	}
-
-	if (SUCCESS != bind(SocketTcpServer, (sockaddr *) &LocalAddr, sizeof(LocalAddr))) {
-		UART_PRINT("Bind Error\n\r");
-		close(SocketTcpServer);
-		return;
-	}
-	// Backlog = 1 to accept maximal 1 connection
-	if (SUCCESS != listen(SocketTcpServer, 1)) {
-		UART_PRINT("Listen Error\n\r");
-		close(SocketTcpServer);
-		return;
-	}
-
-	while (1) {
+	while (SocketTcpServer >= 0) {
 		const int SocketTcpChild = accept(SocketTcpServer, (sockaddr *) &RemoteAddr, &RemoteAddrLen);
 
 		if (SocketTcpChild == EAGAIN) {
@@ -124,4 +135,5 @@ extern void TcpServer(void)
 		if (0 == fwStatus)
 			return;
 	}
+	UART_PRINT("Socket Error: %d \r\n", SocketTcpServer);
 }
