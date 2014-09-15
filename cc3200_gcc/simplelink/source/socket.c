@@ -3,6 +3,8 @@
  *
  * Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/ 
  * 
+ * Modifications by:
+ * Copyright (C) 2014 Nils Weiss, Patrick Bruenn - http://wylight.de/
  * 
  *  Redistribution and use in source and binary forms, with or without 
  *  modification, are permitted provided that the following conditions 
@@ -764,28 +766,6 @@ int sl_Accept(int sd, SlSockAddr_t *addr, SlSocklen_t *addrlen)
     return (int)RetVal;
 }
 #endif
-
-
-/*******************************************************************************/
-/*  sl_Htonl */
-/*******************************************************************************/
-unsigned long sl_Htonl( unsigned long val )
-{
-  unsigned long i = 1; 
-  char *p = (char *)&i;  
-  if (p[0] == 1) /* little endian */
-  {
-    p[0] = ((char*)&val)[3];
-    p[1] = ((char*)&val)[2];
-    p[2] = ((char*)&val)[1];
-    p[3] = ((char*)&val)[0];
-    return i;
-  }
-  else /* big endian */
-  {
-    return val; 
-  }
-}
 
 /*******************************************************************************/
 /*   _sl_HandleAsync_Accept */
