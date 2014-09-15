@@ -68,9 +68,7 @@ static int TcpServer_Listen()
 	static const sockaddr_in localAddr = {
 		.sin_family = AF_INET,
 		.sin_port = SERVER_PORT,
-		.sin_addr = {
-			.s_addr = 0
-		}
+		.sin_addr.s_addr = 0
 	};
 	int status;
 	
@@ -104,42 +102,53 @@ on_error_close:
 }
 
 /**
+ * Wait for client to connect
+ * NOTE: this function blocks until a good socket is accepted, it retries forever!
+ * @return accepted socket descriptor
+ */
+int TcpServer_Accept(const int listenSocket)
+{
+	sockaddr_in clientAddr;
+	socklen_t clientAddrLen = sizeof(clientAddr);
+
+	for(;;) {
+		const int childSocket = accept(listenSocket, (sockaddr *) &clientAddr, &clientAddrLen);
+
+		if (childSocket >= 0) {
+			UART_PRINT("Connected TCP Client\r\n");
+			return childSocket;
+		}
+
+		if (EAGAIN == childSocket) {
+			_SlNonOsMainLoopTask();
+		} else {
+			UART_PRINT("Error: %d occured on accept\r\n", childSocket);
+		}
+	}
+}
+
+/**
  * @return if new firmware was received and validated
  */
 extern void TcpServer(void)
 {
+	static const uint32_t BL_VERSION = htonl(BOOTLOADER_VERSION);
 	char welcome[] = "\0\0\0\0WyLightBootloader";
-	uint32_t nBootloaderVersion = htonl(BOOTLOADER_VERSION);
 
-	memcpy(welcome, &nBootloaderVersion, sizeof(uint32_t));
-
-	sockaddr_in RemoteAddr;
-	socklen_t RemoteAddrLen = sizeof(sockaddr_in);
+	memcpy(welcome, &BL_VERSION, sizeof(uint32_t));
 
 	const int listenSocket = TcpServer_Listen();
-
-	while (listenSocket >= 0) {
-		const int SocketTcpChild = accept(listenSocket, (sockaddr *) &RemoteAddr, &RemoteAddrLen);
-
-		if (SocketTcpChild == EAGAIN) {
-			_SlNonOsMainLoopTask();
-			continue;
-		} else if (SocketTcpChild < 0) {
-			UART_PRINT("Error: %d occured on accept\r\n", SocketTcpChild);
-			continue;
-		}
-
-		UART_PRINT("Connected TCP Client\r\n");
-
-		if (sizeof(welcome) !=  send(SocketTcpChild, welcome, sizeof(welcome), 0)) {
-			close(SocketTcpChild);
-			continue;
-		}
-
-		const int fwStatus = ReceiveFw(SocketTcpChild);
-		close(SocketTcpChild);
-		if (0 == fwStatus)
-			return;
+	if (listenSocket < 0) {
+		UART_PRINT("Socket Error: %d \r\n", listenSocket);
+		return;
 	}
-	UART_PRINT("Socket Error: %d \r\n", listenSocket);
+
+	for(int fwStatus = 0xDEAD; fwStatus;) {
+		const int clientSock = TcpServer_Accept(listenSocket);
+
+		if (sizeof(welcome) ==  send(clientSock, welcome, sizeof(welcome), 0)) {
+			fwStatus = ReceiveFw(clientSock);
+		}
+		close(clientSock);
+	}
 }

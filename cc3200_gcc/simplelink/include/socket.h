@@ -3,6 +3,8 @@
  *
  * Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/ 
  * 
+ * Modifications by:
+ * Copyright (C) 2014 Nils Weiss, Patrick Bruenn - http://wylight.de/
  * 
  *  Redistribution and use in source and binary forms, with or without 
  *  modification, are permitted provided that the following conditions 
@@ -1357,6 +1359,18 @@ int sl_Send(int sd, const void *buf, int Len, int flags);
 int sl_SendTo(int sd, const void *buf, int Len, int flags, const SlSockAddr_t *to, SlSocklen_t tolen);
 #endif
 
+/**
+ * TI CCS uses _big_endian__ and _little_endian
+ * so we make gcc and clang define the same macros
+ */
+#if !defined(_big_endian__) && !defined(_little_endian) && defined(__BYTE_ORDER__)
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+#define _big_endian 1
+#elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#define _little_endian__ 1
+#endif
+#endif /* __BYTE_ORDER__ */
+
 /*!
     \brief Reorder the bytes of a 32-bit unsigned value
     
@@ -1371,9 +1385,19 @@ int sl_SendTo(int sd, const void *buf, int Len, int flags, const SlSockAddr_t *t
     \warning   
 */
 #if _SL_INCLUDE_FUNC(sl_Htonl )
-unsigned long sl_Htonl( unsigned long val );
+#if defined(_big_endian__)
+#define sl_Htonl(x) (x)
+#elif defined(_little_endian__)
+#define sl_Htonl(x) ((uint32_t)( \
+	(((uint32_t)(x) & (uint32_t)0x000000ffUL) << 24) | \
+	(((uint32_t)(x) & (uint32_t)0x0000ff00UL) <<  8) | \
+	(((uint32_t)(x) & (uint32_t)0x00ff0000UL) >>  8) | \
+	(((uint32_t)(x) & (uint32_t)0xff000000UL) >> 24)))
+#else
+#error "unsupported byte order"
+#endif /* #if defined(_big_endian) */
 
-#define sl_Ntohl sl_Htonl  /* Reorder the bytes of a 16-bit unsigned value from network order to processor orde. */
+#define sl_Ntohl sl_Htonl  /* Reorder the bytes of a 32-bit unsigned value from network order to processor orde. */
 
 #endif
 
@@ -1391,19 +1415,15 @@ unsigned long sl_Htonl( unsigned long val );
     \warning   
 */
 #if _SL_INCLUDE_FUNC(sl_Htons )
-#ifndef __BYTE_ORDER__
-unsigned short sl_Htons( unsigned short val );
-#else /* #ifndef __BYTE_ORDER__ */
-#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#if defined(_big_endian__)
+#define sl_Htons(x) (x)
+#elif defined(_little_endian__)
 #define sl_Htons(x) ((uint16_t)( \
 	(((uint16_t)(x) & (uint16_t)0x00ffU) << 8) | \
 	(((uint16_t)(x) & (uint16_t)0xff00U) >> 8)))
-#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-#define sl_Htons(x) (x)
 #else
 #error "unsupported byte order"
-#endif
-#endif /* #ifndef __BYTE_ORDER__ */
+#endif /* #if defined(_big_endian) */
 
 #define sl_Ntohs sl_Htons   /* Reorder the bytes of a 16-bit unsigned value from network order to processor orde. */
 #endif
