@@ -44,8 +44,7 @@
 #endif /*SIMULATOR */
 
 #define BUFFERSIZE 1024
-
-static const unsigned short SERVER_PORT = 2000;
+#define SERVER_PORT htons(2000)
 
 #ifdef SIMULATOR
 
@@ -100,19 +99,14 @@ static int ReceiveFw(int SocketTcpChild)
  */
 static int TcpServer_Listen()
 {
-	char welcome[] = "\0\0\0\0WyLightBootloader";
-	uint32_t nBootloaderVersion = htonl(BOOTLOADER_VERSION);
+	static const struct sockaddr_in localAddr = {
+		.sin_family = AF_INET,
+		.sin_port = SERVER_PORT,
+		.sin_addr = {
+			.s_addr = 0
+		}
+	};
 
-	memcpy(welcome, &nBootloaderVersion, sizeof(uint32_t));
-
-	struct sockaddr_in RemoteAddr;
-	socklen_t RemoteAddrLen = sizeof(struct sockaddr_in);
-
-	struct sockaddr_in LocalAddr;
-
-	LocalAddr.sin_family = AF_INET;
-	LocalAddr.sin_port = htons(SERVER_PORT);
-	LocalAddr.sin_addr.s_addr = htonl(0);
 	int status;
 	
 	const int listenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -125,14 +119,15 @@ static int TcpServer_Listen()
 			goto on_error_close;
 		}
 #endif
-		status = bind(listenSocket, (struct sockaddr *) &LocalAddr, sizeof(LocalAddr));
+		status = bind(listenSocket, (struct sockaddr *) &localAddr, sizeof(localAddr));
+
 		if (status) {
 			UART_PRINT("Bind Error\n\r");
 			goto on_error_close;
 		}
 
-		const int max_connections = 1;
-		status = listen(listenSocket, max_connections);
+		const int maxConnections = 1;
+		status = listen(listenSocket, maxConnections);
 		if (status) {
 			UART_PRINT("Listen Error\n\r");
 			goto on_error_close;
