@@ -102,9 +102,7 @@ static int TcpServer_Listen()
 	static const struct sockaddr_in localAddr = {
 		.sin_family = AF_INET,
 		.sin_port = SERVER_PORT,
-		.sin_addr = {
-			.s_addr = 0
-		}
+		.sin_addr.s_addr = 0
 	};
 
 	int status;
