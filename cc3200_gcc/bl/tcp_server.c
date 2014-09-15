@@ -149,7 +149,7 @@ int TcpServer_Accept(const int listenSocket)
 	socklen_t clientAddrLen = sizeof(clientAddr);
 
 	for(;;) {
-		const int childSocket = accept(listenSocket, (sockaddr *) &clientAddr, &clientAddrLen);
+		const int childSocket = accept(listenSocket, (struct sockaddr *) &clientAddr, &clientAddrLen);
 
 		if (childSocket >= 0) {
 			UART_PRINT("Connected TCP Client\r\n");
