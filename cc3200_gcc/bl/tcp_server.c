@@ -140,20 +140,28 @@ on_error_close:
 
 /**
  * Wait for client to connect
- * NOTE: this is a blocking call
- * @return accepted socket descriptor, or a negative value on error
+ * NOTE: this function blocks until a good socket is accepted, it retries forever!
+ * @return accepted socket descriptor
  */
 int TcpServer_Accept(const int listenSocket)
 {
 	struct sockaddr_in clientAddr;
 	socklen_t clientAddrLen = sizeof(clientAddr);
-	int childSocket = accept(listenSocket, (struct sockaddr *) &clientAddr, &clientAddrLen);
 
-	while (EAGAIN == childSocket) {
-		_SlNonOsMainLoopTask();
-		childSocket = accept(listenSocket, (struct sockaddr *) &clientAddr, &clientAddrLen);
+	for(;;) {
+		const int childSocket = accept(listenSocket, (sockaddr *) &clientAddr, &clientAddrLen);
+
+		if (childSocket >= 0) {
+			UART_PRINT("Connected TCP Client\r\n");
+			return childSocket;
+		}
+
+		if (EAGAIN == childSocket) {
+			_SlNonOsMainLoopTask();
+		} else {
+			UART_PRINT("Error: %d occured on accept\r\n", childSocket);
+		}
 	}
-	return childSocket;
 }
 
 /**
@@ -172,24 +180,12 @@ extern void TcpServer(void)
 		return;
 	}
 
-	for(;;) {
-		const int SocketTcpChild = TcpServer_Accept(listenSocket);
+	for(int fwStatus = 0xDEAD; fwStatus;) {
+		const int clientSock = TcpServer_Accept(listenSocket);
 
-		if (SocketTcpChild < 0) {
-			UART_PRINT("Error: %d occured on accept\r\n", SocketTcpChild);
-			continue;
+		if (sizeof(welcome) ==  send(clientSock, welcome, sizeof(welcome), 0)) {
+			fwStatus = ReceiveFw(clientSock);
 		}
-
-		UART_PRINT("Connected TCP Client\r\n");
-
-		if (sizeof(welcome) !=  send(SocketTcpChild, welcome, sizeof(welcome), 0)) {
-			close(SocketTcpChild);
-			continue;
-		}
-
-		const int fwStatus = ReceiveFw(SocketTcpChild);
-		close(SocketTcpChild);
-		if (0 == fwStatus)
-			return;
+		close(clientSock);
 	}
 }
