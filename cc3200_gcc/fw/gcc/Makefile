@@ -1,6 +1,6 @@
 #*****************************************************************************
 #
-# Makefile - Rules for building the websocket application.
+# Makefile - Rules for building the WyLight firmware.
 #
 #
 #*****************************************************************************
@@ -8,15 +8,11 @@
 # configure target output
 PRJ_NAME=WyLight_fw
 
-#
 # The base directory.
-#
 ROOT=../..
 RTOS_SOURCE_DIR=${ROOT}/third_party/FreeRTOS
 
-#
 # Include the common make definitions.
-#
 include makedefs
 
 #
@@ -32,23 +28,24 @@ VPATH+=${RTOS_SOURCE_DIR}/source
 VPATH+=${RTOS_SOURCE_DIR}/source/portable/MemMang
 VPATH+=${RTOS_SOURCE_DIR}/source/portable/GCC/ARM_CM4
 VPATH+=${ROOT}/oslib
-#
+VPATH+=${ROOT}/../firmware
+
+vpath crc.c ${ROOT}/../firmware
+vpath timer.c ${ROOT}/driverlib
+
 # Additional Compiler Flags
-#
 CFLAGS+=-DSL_PLATFORM_MULTI_THREADED
 CFLAGS+=-DUSE_FREERTOS
 CFLAGS+=-pedantic
 CFLAGS+=-Wall
+CFLAGS+=-Dcc3200
 
-#
 # Where to find header files that do not live in the source directory.
-#
 IPATH=${ROOT}
-IPATH+=${ROOT}/bl
+IPATH+=${ROOT}/fw
 IPATH+=${ROOT}/common
 IPATH+=${ROOT}/inc
 IPATH+=${ROOT}/driverlib
-#IPATH+=../..
 IPATH+=${ROOT}/oslib
 IPATH+=${ROOT}/simplelink
 IPATH+=${ROOT}/simplelink/source
@@ -58,16 +55,13 @@ IPATH+=${RTOS_SOURCE_DIR}/source
 IPATH+=${RTOS_SOURCE_DIR}/source/include
 IPATH+=${RTOS_SOURCE_DIR}/source/portable/MemMang
 IPATH+=${RTOS_SOURCE_DIR}/source/portable/GCC/ARM_CM4
+IPATH+=${ROOT}/../firmware
 
-#
 # The default rule, which causes the driver library to be built.
-#
 all: ${OBJDIR} ${BINDIR}
-all: ${BINDIR}/${PRJ_NAME}.axf
+all: ${BINDIR}/${PRJ_NAME}.axf 
 
-#
 # The rule to clean out all the build products.
-#
 clean:
 	@rm -rf ${OBJDIR} ${wildcard *~}
 	@rm -rf ${BINDIR} ${wildcard *~}
@@ -75,18 +69,21 @@ clean:
 test:
 	@echo ${LIBC}
 	@echo ${LIBGCC}
-#
+
+checksum: all
+	openssl SHA256 -binary ${BINDIR}/${PRJ_NAME}.bin >> ${BINDIR}/${PRJ_NAME}.bin
+
+install: checksum
+	netcat 192.168.1.1 2000 < ${BINDIR}/${PRJ_NAME}.bin
+
 # The rule to create the target directories.
-#
 ${OBJDIR}:
 	@mkdir -p ${OBJDIR}
 
 ${BINDIR}:
 	@mkdir -p ${BINDIR}
 
-#
 # Rules for building this example.
-#
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/main.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/pinmux.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/broadcast.o
@@ -94,7 +91,15 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/server.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_network_if.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wifi.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/pwm.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/sniffer.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/sniffer.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/RingBuf.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/crc.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/CommandIO.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_firmware.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/Version.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/eeprom.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/ScriptCtrl.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/ledstrip.o
 # common
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/startup_${COMPILER}.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart_if.o
@@ -132,9 +137,6 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/timer_if.o
 #${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart_if.o
 #${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/udma_if.o
 
-#${BINDIR}/${PRJ_NAME}.axf: ${ROOT}/simplelink/${COMPILER}/${BINDIR}/simplelink_nonos.a
-#${BINDIR}/${PRJ_NAME}.axf: ${ROOT}/driverlib/${COMPILER}/${BINDIR}/libdriver.a
-
 # freeRTOS
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/croutine.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/list.o
@@ -150,9 +152,7 @@ SCATTERgcc_${PRJ_NAME}=${PRJ_NAME}.ld
 ENTRY_${PRJ_NAME}=ResetISR
 CFLAGSgcc=-DTARGET_IS_BLIZZARD_RB1
 
-#
 # Include the automatically generated dependency files.
-#
 ifneq (${MAKECMDGOALS},clean)
 -include ${wildcard ${COMPILER}/*.d} __dummy__
 endif

@@ -1,5 +1,5 @@
-/**
- Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+/*
+ Copyright (C) 2012 - 2014 Nils Weiss, Patrick Bruenn.
 
  This file is part of Wifly_Light.
 
@@ -16,25 +16,28 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef _EEPROM_H_
-#define _EEPROM_H_
 
-#include "platform.h"
+#ifndef _WY_FIRMWARE_H_
+#define _WY_FIRMWARE_H_
 
-/* globals */
-#ifndef EEPROM_SIZE
-#define EEPROM_SIZE 1024
+//Common interface includes
+#include "uart_if.h"
+
+//Free_rtos/ti-rtos includes
+#include "osi.h"
+
+#define UART_PRINT 		   		Report
+
+#ifndef SUCCESS
+#define SUCCESS 				0
 #endif
 
-#define EEPROM_SCRIPTBUF_BASE 0
-#define EEPROM_SCRIPTBUF_INLOOP 0x3fd
-#define EEPROM_SCRIPTBUF_READ 0x3fb
-#define EEPROM_SCRIPTBUF_WRITE 0x3f9
+extern OsiTaskHandle WyLightFirmwareTaskHandle;
+extern OsiSyncObj_t FirmwareCanAccessFileSystemSemaphore;
 
-/* eeprom access functions */
-void Eeprom_Init(void);
-void Eeprom_Write(const uns16 adress, const uns8 data);
-uns8 Eeprom_Read(const uns16 adress);
-void Eeprom_WriteBlock(const uns8 *array, uns16 adress, const uns8 length);
-void Eeprom_ReadBlock(uns8 *array, uns16 adress, const uns8 length);
-#endif
+void WyLightFirmware_TaskInit(void);
+void WyLightFirmware_Task(void *pvParameters);
+
+#endif /* _WY_FIRMWARE_H_ */
+
+

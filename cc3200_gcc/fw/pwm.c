@@ -21,7 +21,11 @@
 #include "pin.h"
 #include "rom.h"
 #include "rom_map.h"
+#ifdef ccs
+#include "..\..\driverlib\timer.h"
+#else
 #include "timer.h"
+#endif
 #include "prcm.h"
 /*
  #include "hw_apps_rcm.h"
@@ -34,6 +38,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "semphr.h"
+#include "queue.h"
 
 //
 // GLOBAL VARIABLES -- Start
@@ -64,7 +69,7 @@ OsiMsgQ_t PwmMessageQ = &g_PwmMessageQ;
 //      New time period = 0.5004375 ms
 //      Timer match value = (update[0, 255] * duty cycle granularity)
 //
-#define TIMER_INTERVAL_RELOAD   40035 /* =(255*157) */
+#define TIMER_INTERVAL_RELOAD   40036 /* =(255*157) */
 #define DUTYCYCLE_GRANULARITY   157
 
 void UpdateDutyCycle(unsigned long ulBase, unsigned long ulTimer, unsigned char ucLevel) {
@@ -98,7 +103,7 @@ void SetupTimerPWMMode(unsigned long ulBase, unsigned long ulTimer, unsigned lon
 
 }
 
-void InitPWMModules() {
+void Pwm_TaskInit(void) {
 	//
 	// Initialization of timers to generate PWM output
 	//
@@ -121,6 +126,8 @@ void InitPWMModules() {
 	MAP_TimerEnable(TIMERA2_BASE, TIMER_B);
 	MAP_TimerEnable(TIMERA3_BASE, TIMER_A);
 	MAP_TimerEnable(TIMERA3_BASE, TIMER_B);
+
+	osi_MsgQCreate(&g_PwmMessageQ, "PwmMsgQ", 3, 6);
 }
 
 void DeInitPWMModules() {
@@ -135,8 +142,6 @@ void DeInitPWMModules() {
 }
 
 void Pwm_Task(void *pvParameters) {
-	InitPWMModules();
-	osi_MsgQCreate(&g_PwmMessageQ, "PwmMsgQ", 3, 6);
 
 	uint8_t buffer[3];
 
@@ -148,9 +153,9 @@ void Pwm_Task(void *pvParameters) {
 		//
 		osi_MsgQRead(&g_PwmMessageQ, buffer, OSI_WAIT_FOREVER);
 
-		UpdateDutyCycle(TIMERA2_BASE, TIMER_B, buffer[0]);
-		UpdateDutyCycle(TIMERA3_BASE, TIMER_B, buffer[1]);
-		UpdateDutyCycle(TIMERA3_BASE, TIMER_A, buffer[2]);
+		UpdateDutyCycle(TIMERA2_BASE, TIMER_B, buffer[1]);
+		UpdateDutyCycle(TIMERA3_BASE, TIMER_B, buffer[2]);
+		UpdateDutyCycle(TIMERA3_BASE, TIMER_A, buffer[0]);
 	}
 }
 

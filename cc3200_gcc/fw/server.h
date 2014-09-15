@@ -28,7 +28,6 @@
 
 #define UART_PRINT 		   		Report
 #define SERVER_PORT				2000
-#define QUIT_TCP_SERVER_PORT 	65535
 
 #ifndef SUCCESS
 #define SUCCESS 				0

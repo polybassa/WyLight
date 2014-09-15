@@ -54,10 +54,10 @@
 // Flags to check that interrupts were successfully generated.
 
 volatile struct SHAMD5_StatusFlags {
-	unsigned char ContextReadyFlag :1;
-	unsigned char ParthashReadyFlag :1;
-	unsigned char InputReadyFlag :1;
-	unsigned char OutputReadyFlag :1;
+	unsigned int ContextReadyFlag :1;
+	unsigned int ParthashReadyFlag :1;
+	unsigned int InputReadyFlag :1;
+	unsigned int OutputReadyFlag :1;
 } g_SHAMD5_StatusFlags;
 
 

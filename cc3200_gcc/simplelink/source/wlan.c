@@ -73,8 +73,10 @@ typedef union
 #if _SL_INCLUDE_FUNC(sl_WlanConnect)
 int sl_WlanConnect(char* pName, int NameLen, unsigned char *pMacAddr, SlSecParams_t* pSecParams , SlSecParamsExt_t* pSecExtParams)
 {
-    _SlWlanConnectMsg_u    Msg = {0};
+    _SlWlanConnectMsg_u    Msg;
     _SlCmdCtrl_t           CmdCtrl = {0};
+
+    memset(&Msg, 0, sizeof(Msg));
 
     CmdCtrl.TxDescLen = 0;/* init */
     CmdCtrl.RxDescLen = sizeof(_BasicResponse_t);

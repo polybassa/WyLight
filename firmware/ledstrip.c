@@ -17,10 +17,21 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "ledstrip.h"
+#ifndef cc3200
 #include "spi.h"
 #ifdef __CC8E__
 #include "MATH16.H"
 #endif /* #ifdef __CC8E__ */
+#else /* ifdef cc3200 */
+
+#include "socket.h"
+#include "pwm.h"
+#include "osi.h"
+
+#define SPI_Init()
+#define SPI_SendLedBuffer(x)
+
+#endif /* #ifndef cc3200 */
 
 struct LedBuffer gLedBuf;
 struct cmd_set_fade mFade;
@@ -231,6 +242,9 @@ void Ledstrip_DoFade(void)
 void Ledstrip_UpdateLed(void)
 {
 	SPI_SendLedBuffer(gLedBuf.led_array);
+#ifdef cc3200
+	osi_MsgQWrite(PwmMessageQ,gLedBuf.led_array,OSI_NO_WAIT);
+#endif
 }
 
 void Ledstrip_SetFade(struct cmd_set_fade *pCmd)

@@ -20,6 +20,10 @@
 #include "VersionFile.h"
 #include "platform.h"
 
+#ifdef cc3200
+#include "socket.h"
+#endif
+
 const uns16 versionInt = VERSION;
 
 uns16 Version_Print(void)
