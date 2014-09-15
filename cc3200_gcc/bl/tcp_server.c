@@ -139,27 +139,43 @@ on_error_close:
 }
 
 /**
+ * Wait for client to connect
+ * NOTE: this is a blocking call
+ * @return accepted socket descriptor, or a negative value on error
+ */
+int TcpServer_Accept(const int listenSocket)
+{
+	struct sockaddr_in clientAddr;
+	socklen_t clientAddrLen = sizeof(clientAddr);
+	int childSocket = accept(listenSocket, (struct sockaddr *) &clientAddr, &clientAddrLen);
+
+	while (EAGAIN == childSocket) {
+		_SlNonOsMainLoopTask();
+		childSocket = accept(listenSocket, (struct sockaddr *) &clientAddr, &clientAddrLen);
+	}
+	return childSocket;
+}
+
+/**
  * @return if new firmware was received and validated
  */
 extern void TcpServer(void)
 {
+	const uint32_t nBootloaderVersion = htonl(BOOTLOADER_VERSION);
 	char welcome[] = "\0\0\0\0WyLightBootloader";
-	uint32_t nBootloaderVersion = htonl(BOOTLOADER_VERSION);
 
 	memcpy(welcome, &nBootloaderVersion, sizeof(uint32_t));
 
-	struct sockaddr_in RemoteAddr;
-	socklen_t RemoteAddrLen = sizeof(struct sockaddr_in);
-
 	const int listenSocket = TcpServer_Listen();
+	if (listenSocket < 0) {
+		UART_PRINT("Socket Error: %d \r\n", listenSocket);
+		return;
+	}
 
-	while (listenSocket >= 0) {
-		const int SocketTcpChild = accept(listenSocket, (struct sockaddr *) &RemoteAddr, &RemoteAddrLen);
+	for(;;) {
+		const int SocketTcpChild = TcpServer_Accept(listenSocket);
 
-		if (SocketTcpChild == EAGAIN) {
-			_SlNonOsMainLoopTask();
-			continue;
-		} else if (SocketTcpChild < 0) {
+		if (SocketTcpChild < 0) {
 			UART_PRINT("Error: %d occured on accept\r\n", SocketTcpChild);
 			continue;
 		}
@@ -176,5 +192,4 @@ extern void TcpServer(void)
 		if (0 == fwStatus)
 			return;
 	}
-	UART_PRINT("Socket Error: %d \r\n", listenSocket);
 }

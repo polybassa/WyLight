@@ -3,6 +3,8 @@
  *
  * Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/ 
  * 
+ * Modifications by:
+ * Copyright (C) 2014 Nils Weiss, Patrick Bruenn - http://wylight.de/
  * 
  *  Redistribution and use in source and binary forms, with or without 
  *  modification, are permitted provided that the following conditions 
