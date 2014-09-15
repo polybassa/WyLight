@@ -549,12 +549,8 @@ static long waitForConnectWithTimeout(unsigned int timeout_ms) {
 	while ((connectTimeoutCounter < timeout_ms)
 			&& !IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)) {
 		// wait till connects to an AP
-		osi_Sleep(1);	//waiting for 0,5 secs
-
-		if (connectTimeoutCounter % 200 == 0) {
-			GPIO_IF_LedToggle(MCU_GREEN_LED_GPIO);
-		}
-		connectTimeoutCounter += 1;
+		osi_Sleep(5);	//waiting for 0,5 secs
+		connectTimeoutCounter += 5;
 	}
 
 	if ((!IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus))

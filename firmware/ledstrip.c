@@ -17,11 +17,14 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "ledstrip.h"
+
 #ifndef cc3200
+
 #include "spi.h"
 #ifdef __CC8E__
 #include "MATH16.H"
 #endif /* #ifdef __CC8E__ */
+
 #else /* ifdef cc3200 */
 
 #include "socket.h"

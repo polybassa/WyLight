@@ -51,8 +51,6 @@
 #include "gpio.h"
 #include "prcm.h"
 
-#define PWM
-
 //*****************************************************************************
 void PinMuxConfig(void) {
 	//
@@ -78,7 +76,6 @@ void PinMuxConfig(void) {
 	MAP_PinTypeGPIO(PIN_58, PIN_MODE_0, false);
 	MAP_GPIODirModeSet(GPIOA0_BASE, 0x8, GPIO_DIR_MODE_IN);
 
-#ifdef PWM
 	MAP_PRCMPeripheralClkEnable(PRCM_TIMERA2, PRCM_RUN_MODE_CLK);
 	MAP_PRCMPeripheralClkEnable(PRCM_TIMERA3, PRCM_RUN_MODE_CLK);
 
@@ -96,23 +93,4 @@ void PinMuxConfig(void) {
 	// Configure PIN_02 for TIMERPWM7 GT_PWM07
 	//
 	MAP_PinTypeTimer(PIN_02, PIN_MODE_3);
-#else
-	//
-	// Configure PIN_64 for GPIOOutput
-	//
-	MAP_PinTypeGPIO(PIN_64, PIN_MODE_0, false);
-	MAP_GPIODirModeSet(GPIOA1_BASE, 0x2, GPIO_DIR_MODE_OUT);
-
-	//
-	// Configure PIN_01 for GPIOOutput
-	//
-	MAP_PinTypeGPIO(PIN_01, PIN_MODE_0, false);
-	MAP_GPIODirModeSet(GPIOA1_BASE, 0x4, GPIO_DIR_MODE_OUT);
-
-	//
-	// Configure PIN_02 for GPIOOutput
-	//
-	MAP_PinTypeGPIO(PIN_02, PIN_MODE_0, false);
-	MAP_GPIODirModeSet(GPIOA1_BASE, 0x8, GPIO_DIR_MODE_OUT);
-#endif
 }

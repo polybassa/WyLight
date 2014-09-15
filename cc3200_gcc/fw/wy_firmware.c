@@ -41,8 +41,19 @@
 static xSemaphoreHandle g_FirmwareCanAccessFileSystemSemaphore;
 OsiSyncObj_t FirmwareCanAccessFileSystemSemaphore = &g_FirmwareCanAccessFileSystemSemaphore;
 
+static xSemaphoreHandle g_NewDataAvailableSemaphore;
+OsiSyncObj_t NewDataAvailableSemaphore = &g_NewDataAvailableSemaphore;
+
+static xSemaphoreHandle g_AccessScriptBufferMutex;
+static xSemaphoreHandle g_AccessLedBufferMutex;
+OsiLockObj_t AccessLedBufferMutex = &g_AccessLedBufferMutex;
+
 static xTaskHandle g_WyLightFirmwareTaskHandle;
+static xTaskHandle g_WyLightGetCommandsTaskHandle;
+
+OsiTaskHandle WyLightGetCommandsTaskHandle = &g_WyLightGetCommandsTaskHandle;
 OsiTaskHandle WyLightFirmwareTaskHandle = &g_WyLightFirmwareTaskHandle;
+
 
 //
 // GLOBAL VARIABLES -- End
@@ -50,27 +61,35 @@ OsiTaskHandle WyLightFirmwareTaskHandle = &g_WyLightFirmwareTaskHandle;
 
 void WyLightFirmware_TaskInit(void) {
 	osi_SyncObjCreate(FirmwareCanAccessFileSystemSemaphore);
+	osi_SyncObjCreate(NewDataAvailableSemaphore);
+	osi_LockObjCreate(&g_AccessScriptBufferMutex);
+	osi_LockObjCreate(AccessLedBufferMutex);
 	RingBuf_Init(&g_RingBuf_Tx);
 	RingBuf_Init(&g_RingBuf);
-
 }
 
 void WyLightFirmware_Task(void *pvParameters) {
 	CommandIO_Init();
 	ScriptCtrl_Init();
 	for (;;) {
-		CommandIO_GetCommands();
-		ScriptCtrl_Run();
-		if(gScriptBuf.waitValue) gScriptBuf.waitValue--;
+		if (OSI_OK == osi_LockObjLock(&g_AccessScriptBufferMutex,OSI_NO_WAIT)){
+			ScriptCtrl_Run();
+			osi_LockObjUnlock(&g_AccessScriptBufferMutex);
+		}
+		ScriptCtrl_DecrementWaitValue();
+		osi_LockObjLock(AccessLedBufferMutex,OSI_WAIT_FOREVER);
 		Ledstrip_DoFade();
+		osi_LockObjUnlock(AccessLedBufferMutex);
 		Ledstrip_UpdateLed();
-		osi_Sleep(20);
+		osi_Sleep(10);
 	}
+}
 
-	//Ledstrip_UpdateLed(); /* every x ms */
-	//ScriptCtrl_Run();
-	//Ledstrip_DoFade(); /* every y ms */
-
-	//WyLightFirmware_SendMessages();
-
+void WyLightGetCommands_Task(void *pvParameters) {
+	for (;;) {
+		osi_SyncObjWait(NewDataAvailableSemaphore, OSI_WAIT_FOREVER);
+		osi_LockObjLock(&g_AccessScriptBufferMutex, OSI_WAIT_FOREVER);
+		CommandIO_GetCommands();
+		osi_LockObjUnlock(&g_AccessScriptBufferMutex);
+	}
 }
