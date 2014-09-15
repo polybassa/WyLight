@@ -47,6 +47,7 @@
 // wylight includes
 #include "bootloader.h"
 #include "firmware_loader.h"
+#include "tcp_server.h"
 
 #define UART_PRINT          Report
 
@@ -57,8 +58,6 @@ extern void (* const g_pfnVectors[])(void);
 
 const unsigned long BOOTLOADER_VERSION;
 // GLOBAL VARIABLES -- End
-
-extern void TcpServer(void);
 
 static void DisplayBanner(const char *const AppName)
 {

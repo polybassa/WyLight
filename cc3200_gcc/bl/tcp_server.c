@@ -24,6 +24,7 @@
 //WyLight
 #include "bootloader.h"
 #include "firmware_loader.h"
+#include "tcp_server.h"
 
 #ifndef SIMULATOR
 #include "simplelink.h"
@@ -55,14 +56,13 @@ static uint8_t memory[0x3FFFF];
 
 #endif
 
-
 /**
  * @return 0 on success, if new firmware was saved and validated
  */
-int ReceiveFw(int SocketTcpChild)
+static int ReceiveFw(int SocketTcpChild)
 {
 	uint8_t *pFirmware = (uint8_t *) FIRMWARE_ORIGIN;
-	UART_PRINT(" Start writing Firmware at 0x%x \r\n", pFirmware);
+	UART_PRINT("Start writing Firmware at 0x%x \r\n", pFirmware);
 
 	for(;;) {
 		int bytesReceived = recv(SocketTcpChild, pFirmware, BUFFERSIZE, 0);
@@ -113,13 +113,13 @@ extern void TcpServer(void)
 	LocalAddr.sin_addr.s_addr = htonl(0);
 	int SocketTcpServer = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (SocketTcpServer < 0) {
-		UART_PRINT(" Socket Error: %d \r\n", SocketTcpServer);
+		UART_PRINT("Socket Error: %d \r\n", SocketTcpServer);
 		return;
 	}
 #ifndef SIMULATOR
 	int nonBlocking = 1;
 	if (SUCCESS != setsockopt(SocketTcpServer, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking))) {
-		UART_PRINT(" Setsockopt ERROR \r\n");
+		UART_PRINT("Setsockopt ERROR \r\n");
 		close(SocketTcpServer);
 		return;
 	}
@@ -131,7 +131,7 @@ extern void TcpServer(void)
 	}
 	// Backlog = 1 to accept maximal 1 connection
 	if (SUCCESS != listen(SocketTcpServer, 1)) {
-		UART_PRINT(" Listen Error\n\r");
+		UART_PRINT("Listen Error\n\r");
 		close(SocketTcpServer);
 		return;
 	}
@@ -143,11 +143,11 @@ extern void TcpServer(void)
 			_SlNonOsMainLoopTask();
 			continue;
 		} else if (SocketTcpChild < 0) {
-			UART_PRINT("Error: %d occured on accept", SocketTcpChild);
+			UART_PRINT("Error: %d occured on accept\r\n", SocketTcpChild);
 			continue;
 		}
 
-		UART_PRINT(" Connected TCP Client\r\n");
+		UART_PRINT("Connected TCP Client\r\n");
 
 		if (sizeof(welcome) !=  send(SocketTcpChild, welcome, sizeof(welcome), 0)) {
 			close(SocketTcpChild);
