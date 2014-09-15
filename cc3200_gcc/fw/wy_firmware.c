@@ -45,6 +45,7 @@ static xSemaphoreHandle g_NewDataAvailableSemaphore;
 OsiSyncObj_t NewDataAvailableSemaphore = &g_NewDataAvailableSemaphore;
 
 static xSemaphoreHandle g_AccessScriptBufferMutex;
+//TODO move ledBufferMutex in Ledstrip.c
 static xSemaphoreHandle g_AccessLedBufferMutex;
 OsiLockObj_t AccessLedBufferMutex = &g_AccessLedBufferMutex;
 
