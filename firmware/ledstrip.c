@@ -17,15 +17,13 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "ledstrip.h"
-
-#ifndef cc3200
-
 #include "spi.h"
+
 #ifdef __CC8E__
 #include "MATH16.H"
 #endif /* #ifdef __CC8E__ */
 
-#else /* ifdef cc3200 */
+#ifdef cc3200 /* ifdef cc3200 */
 
 #include "socket.h"
 #include "pwm.h"
@@ -33,9 +31,6 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "semphr.h"
-
-#define SPI_Init()
-#define SPI_SendLedBuffer(x)
 
 static xSemaphoreHandle g_AccessLedBufferMutex;
 OsiLockObj_t AccessLedBufferMutex = &g_AccessLedBufferMutex;
