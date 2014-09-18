@@ -22,11 +22,7 @@
 #include "pin.h"
 #include "rom.h"
 #include "rom_map.h"
-#ifdef ccs
-#include "..\..\driverlib\timer.h"
-#else
-#include "timer.h"
-#endif
+#include "../../driverlib/timer.h"
 #include "prcm.h"
 
 //Common interface includes

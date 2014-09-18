@@ -30,8 +30,6 @@ VPATH+=${RTOS_SOURCE_DIR}/source/portable/GCC/ARM_CM4
 VPATH+=${ROOT}/oslib
 VPATH+=${ROOT}/../firmware
 
-vpath timer.c ${ROOT}/driverlib
-vpath crc.c ${ROOT}/driverlib
 # Additional Compiler Flags
 CFLAGS+=-DSL_PLATFORM_MULTI_THREADED
 CFLAGS+=-DUSE_FREERTOS
@@ -90,7 +88,7 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/server.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_network_if.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wifi.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/pwm.o
-#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/sniffer.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_spi.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/RingBuf.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/crc.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/CommandIO.o

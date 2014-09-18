@@ -24,11 +24,7 @@
 #include "hw_types.h"
 #include "rom.h"
 #include "rom_map.h"
-#ifdef ccs
-#include "..\..\driverlib\crc.h"
-#else
-#include "crc.h"
-#endif
+#include "../../driverlib/crc.h"
 #include "prcm.h"
 
 // 16-bit CCIT CRC
