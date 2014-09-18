@@ -51,11 +51,6 @@
 			<locationURI>PARENT-1-PROJECT_LOC/broadcast.c</locationURI>
 		</link>
 		<link>
-			<name>eeprom.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/firmware/eeprom.c</locationURI>
-		</link>
-		<link>
 			<name>gpio_if.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/common/gpio_if.c</locationURI>
@@ -109,6 +104,11 @@
 			<name>wy_crc.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/wy_crc.c</locationURI>
+		</link>
+		<link>
+			<name>wy_eeprom.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/wy_eeprom.c</locationURI>
 		</link>
 		<link>
 			<name>wy_firmware.c</name>

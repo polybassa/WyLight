@@ -94,7 +94,7 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/crc.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/CommandIO.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_firmware.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/Version.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/eeprom.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_eeprom.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/ScriptCtrl.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/ledstrip.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_crc.o
