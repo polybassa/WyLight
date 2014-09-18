@@ -36,7 +36,6 @@ extern OsiTaskHandle WyLightFirmwareTaskHandle;
 extern OsiTaskHandle WyLightGetCommandsTaskHandle;
 extern OsiSyncObj_t FirmwareCanAccessFileSystemSemaphore;
 extern OsiSyncObj_t NewDataAvailableSemaphore;
-extern OsiLockObj_t AccessLedBufferMutex;
 
 void WyLightFirmware_TaskInit(void);
 void WyLightFirmware_Task(void *pvParameters);

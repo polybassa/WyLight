@@ -30,15 +30,20 @@
 #include "socket.h"
 #include "pwm.h"
 #include "osi.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "semphr.h"
 
 #define SPI_Init()
 #define SPI_SendLedBuffer(x)
+
+static xSemaphoreHandle g_AccessLedBufferMutex;
+OsiLockObj_t AccessLedBufferMutex = &g_AccessLedBufferMutex;
 
 #endif /* #ifndef cc3200 */
 
 struct LedBuffer gLedBuf;
 struct cmd_set_fade mFade;
-
 
 /**
  * Since we often work with a rotating bitmask which is greater
@@ -127,9 +132,14 @@ void Ledstrip_FadeOffLeds(void)
 
 void Ledstrip_Init(void)
 {
+#ifdef cc3200
+	osi_LockObjCreate(AccessLedBufferMutex);
+#endif
 	// initialize interface to ledstrip
 	SPI_Init();
-
+#ifdef cc3200
+	osi_LockObjLock(AccessLedBufferMutex, OSI_WAIT_FOREVER);
+#endif
 	// initialize variables
 	uns8 i = sizeof(gLedBuf.led_array);
 	do {
@@ -174,10 +184,16 @@ void Ledstrip_Init(void)
 	while(0 != i);
 
 	gLedBuf.fadeTmms = 0;
+#ifdef cc3200
+	osi_LockObjUnlock(AccessLedBufferMutex);
+#endif
 }
 
 void Ledstrip_SetColorDirect(uns8 *pValues)
 {
+#ifdef cc3200
+	osi_LockObjLock(AccessLedBufferMutex, OSI_WAIT_FOREVER);
+#endif
 	uns8 k, red, green, blue;
 	for(k = 0; k < sizeof(gLedBuf.led_array); ) {
 		red = *pValues;
@@ -199,10 +215,16 @@ void Ledstrip_SetColorDirect(uns8 *pValues)
 		gLedBuf.delta[k] = 0;
 		++k;
 	}
+#ifdef cc3200
+	osi_LockObjUnlock(AccessLedBufferMutex);
+#endif
 }
 
 void Ledstrip_DoFade(void)
 {
+#ifdef cc3200
+	osi_LockObjLock(AccessLedBufferMutex, OSI_WAIT_FOREVER);
+#endif
 	uns8 k, stepmask, stepSize;
 	uns8 *stepaddress = gLedBuf.step;
 	stepmask = 0x01;
@@ -239,19 +261,28 @@ void Ledstrip_DoFade(void)
 		}
 		INC_BIT_COUNTER(stepaddress, stepmask);
 	}
-
+#ifdef cc3200
+	osi_LockObjUnlock(AccessLedBufferMutex);
+#endif
 }
 
 void Ledstrip_UpdateLed(void)
 {
+#ifdef cc3200
+	osi_LockObjLock(AccessLedBufferMutex,OSI_WAIT_FOREVER);
+#endif
 	SPI_SendLedBuffer(gLedBuf.led_array);
 #ifdef cc3200
 	osi_MsgQWrite(PwmMessageQ,gLedBuf.led_array,OSI_NO_WAIT);
+	osi_LockObjUnlock(AccessLedBufferMutex);
 #endif
 }
 
 void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 {
+#ifdef cc3200
+	osi_LockObjLock(AccessLedBufferMutex, OSI_WAIT_FOREVER);
+#endif
 	// constant for this fade used in CALC_COLOR
 	uns16 fadeTmms = ntohs(pCmd->fadeTmms);
 
@@ -280,6 +311,9 @@ void Ledstrip_SetFade(struct cmd_set_fade *pCmd)
 			INC_BIT_COUNTER(stepAddress, stepMask);
 		}
 		);
+#ifdef cc3200
+	osi_LockObjUnlock(AccessLedBufferMutex);
+#endif
 }
 
 #define CALC_DELTA(target,source_1,source_2) { \

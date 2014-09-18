@@ -45,16 +45,12 @@ static xSemaphoreHandle g_NewDataAvailableSemaphore;
 OsiSyncObj_t NewDataAvailableSemaphore = &g_NewDataAvailableSemaphore;
 
 static xSemaphoreHandle g_AccessScriptBufferMutex;
-//TODO move ledBufferMutex in Ledstrip.c
-static xSemaphoreHandle g_AccessLedBufferMutex;
-OsiLockObj_t AccessLedBufferMutex = &g_AccessLedBufferMutex;
 
 static xTaskHandle g_WyLightFirmwareTaskHandle;
 static xTaskHandle g_WyLightGetCommandsTaskHandle;
 
 OsiTaskHandle WyLightGetCommandsTaskHandle = &g_WyLightGetCommandsTaskHandle;
 OsiTaskHandle WyLightFirmwareTaskHandle = &g_WyLightFirmwareTaskHandle;
-
 
 //
 // GLOBAL VARIABLES -- End
@@ -64,7 +60,6 @@ void WyLightFirmware_TaskInit(void) {
 	osi_SyncObjCreate(FirmwareCanAccessFileSystemSemaphore);
 	osi_SyncObjCreate(NewDataAvailableSemaphore);
 	osi_LockObjCreate(&g_AccessScriptBufferMutex);
-	osi_LockObjCreate(AccessLedBufferMutex);
 	RingBuf_Init(&g_RingBuf_Tx);
 	RingBuf_Init(&g_RingBuf);
 }
@@ -78,9 +73,7 @@ void WyLightFirmware_Task(void *pvParameters) {
 			osi_LockObjUnlock(&g_AccessScriptBufferMutex);
 		}
 		ScriptCtrl_DecrementWaitValue();
-		osi_LockObjLock(AccessLedBufferMutex,OSI_WAIT_FOREVER);
 		Ledstrip_DoFade();
-		osi_LockObjUnlock(AccessLedBufferMutex);
 		Ledstrip_UpdateLed();
 		osi_Sleep(10);
 	}

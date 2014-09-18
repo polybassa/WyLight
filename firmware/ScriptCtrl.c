@@ -20,8 +20,6 @@
 #ifdef cc3200
 #include "socket.h"
 #include <stdbool.h>
-#include "wy_firmware.h"
-#include "osi.h"
 
 #ifdef write
 #undef write
@@ -155,13 +153,7 @@ uns8 ScriptCtrl_Add(struct led_cmd *pCmd)
 #endif /* #ifdef __CC8E__ */
 	case SET_COLOR_DIRECT:
 	{
-#ifdef cc3200
-		osi_LockObjLock(AccessLedBufferMutex,OSI_WAIT_FOREVER);
-#endif
 		Ledstrip_SetColorDirect((uns8 *)&pCmd->data.set_color_direct.ptr_led_array);
-#ifdef cc3200
-		osi_LockObjUnlock(AccessLedBufferMutex);
-#endif
 		return NO_RESPONSE;
 	}
 #ifdef __CC8E__
