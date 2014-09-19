@@ -65,6 +65,7 @@ void WyLightFirmware_TaskInit(void) {
 }
 
 void WyLightFirmware_Task(void *pvParameters) {
+	Ledstrip_Init();
 	CommandIO_Init();
 	ScriptCtrl_Init();
 	for (;;) {
