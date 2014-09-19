@@ -62,14 +62,7 @@ public class RgbGradientView extends LinearLayout implements
 				boolean fromUser) {
 			final int color = getColor();
 			mColors[mActive] = color;
-			if (1 == mColors.length) {
-				mColorStatus.setGradient(new GradientDrawable(
-						GradientDrawable.Orientation.LEFT_RIGHT, new int[] {
-								mColors[0], mColors[0] }));
-			} else {
-				mColorStatus.setGradient(new GradientDrawable(
-						GradientDrawable.Orientation.LEFT_RIGHT, mColors));
-			}
+			mColorStatus.setGradient(mColors);
 			mRedStatus.setColor(0xffff0000 & color);
 			mRedStatus
 					.setText(String.valueOf(Color.red(color) * 100 / 255) + '%');

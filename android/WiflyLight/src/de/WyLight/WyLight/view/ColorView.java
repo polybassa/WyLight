@@ -60,7 +60,19 @@ public class ColorView extends RelativeLayout {
 		mText.setTextColor(0xff000000 | ~color);
 	}
 
-	public void setGradient(GradientDrawable d) {
+	public void setGradient(int[] colors) {
+		//TODO switch to API 16: mColorStatus.setColors(colors);
+		final GradientDrawable d;
+		if (1 == colors.length) {
+			d = new GradientDrawable(
+					GradientDrawable.Orientation.LEFT_RIGHT,
+					new int[] {colors[0], colors[0] });
+		} else {
+			d = new GradientDrawable(
+					GradientDrawable.Orientation.LEFT_RIGHT,
+					colors);
+		}
+		d.setCornerRadius(8f);
 		mText.setBackgroundDrawable(d);
 	}
 
