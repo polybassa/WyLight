@@ -29,7 +29,7 @@
 #define SPI_IF_BIT_RATE  100000
 
 void SPI_Init() {
-	MAP_PRCMPeripheralClkEnable(PRCM_GSPI, PRCM_RUN_MODE_CLK);
+	/*MAP_PRCMPeripheralClkEnable(PRCM_GSPI, PRCM_RUN_MODE_CLK);
 	MAP_PRCMPeripheralReset(PRCM_GSPI);
 
 	MAP_SPIReset(GSPI_BASE);
@@ -43,11 +43,11 @@ void SPI_Init() {
 
 	MAP_SPIFIFOEnable(GSPI_BASE, SPI_TX_FIFO);
 
-	MAP_SPIEnable(GSPI_BASE);
+	MAP_SPIEnable(GSPI_BASE);*/
 }
 
 uns8 SPI_Send(const uns8 data) {
-	MAP_SPIDataPutNonBlocking(GSPI_BASE, data);
+	//MAP_SPIDataPutNonBlocking(GSPI_BASE, data);
 	return data;
 }
 
