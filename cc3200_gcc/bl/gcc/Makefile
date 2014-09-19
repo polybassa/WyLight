@@ -47,7 +47,8 @@ common: ${BINDIR}/${PRJ_NAME}.axf
 BL_FILE=exe/${PRJ_NAME}.bin
 bl: SCATTERgcc_${PRJ_NAME}=../../bl/gcc/WyLight_bl.ld
 bl: common
-	openssl sha256 -binary ${BL_FILE} >> ${BL_FILE}
+
+#openssl sha256 -binary ${BL_FILE} >> ${BL_FILE}
 
 # build the bootloader as a small firmware which is used to update the bootloader ;-)
 FW_FILE=WyLight_fw.bin

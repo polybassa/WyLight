@@ -58,8 +58,7 @@ extern void (* const g_pfnVectors[])(void);
 const uint32_t g_BootloaderVersion = htonl(BOOTLOADER_VERSION);
 // GLOBAL VARIABLES -- End
 
-static void DisplayBanner(const char *const AppName)
-{
+static void DisplayBanner(const char * const AppName) {
 	UART_PRINT("\n\n\n\r");
 	UART_PRINT("\t\t *************************************************\n\r");
 	UART_PRINT("\t\t	  CC3200 %s Application       \n\r", AppName);
@@ -133,7 +132,8 @@ int main() {
 	}
 	GPIO_IF_LedOn(MCU_ORANGE_LED_GPIO);
 
-	TcpServer();
-	StartFirmware();
+	do {
+		TcpServer();
+	} while (ERROR == LoadAndExecuteFirmware());
 }
 

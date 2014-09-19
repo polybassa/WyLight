@@ -89,7 +89,7 @@ static int ReceiveFw(int SocketTcpChild)
 		}
 
 		const size_t length = (size_t) (pFirmware - FIRMWARE_ORIGIN);
-		return SaveSRAMContentAsFirmware((uint8_t *) FIRMWARE_ORIGIN, length);
+		return SaveSRAMContent((uint8_t *) FIRMWARE_ORIGIN, length);
 	}
 }
 
@@ -180,7 +180,8 @@ extern void TcpServer(void)
 		return;
 	}
 
-	for(int fwStatus = 0xDEAD; fwStatus;) {
+	int fwStatus = 0xDEAD;
+	for(; fwStatus;) {
 		const int clientSock = TcpServer_Accept(listenSocket);
 
 		if (sizeof(welcome) ==  send(clientSock, welcome, sizeof(welcome), 0)) {

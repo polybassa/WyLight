@@ -18,6 +18,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "hw_types.h"
 #include "hw_shamd5.h"
@@ -45,7 +46,7 @@
 #define BLOCKSIZE		 		64 		/* Write block size for write to MD5SHA module */
 #define CHECKSUM_SIZE			32		/* In Bytes, We use SHA-256 */
 #define SUCCESS					0
-
+#define FILENAME_SIZE			128
 #define UART_PRINT          	Report
 
 //
@@ -224,47 +225,24 @@ static long VerifySRAM(uint8_t *pSource, const size_t length) {
 //
 //****************************************************************************
 static long LoadFirmware(unsigned char* pSourceFile) {
-	long fileHandle = -1;
-	unsigned long token = 0;
-	long retVal = ERROR;
-	size_t bytesCopied = 0;
-	size_t readsize = 0;
-	uint8_t buffer[BUFFER_SIZE];
 	SlFsFileInfo_t sFileInfo;
-
-	memset(&sFileInfo, 0, sizeof(SlFsFileInfo_t));
-
 	// get file size
-	if (SUCCESS != sl_FsGetInfo(pSourceFile, token, &sFileInfo)) {
+	if (sl_FsGetInfo(pSourceFile, 0, &sFileInfo)) {
 		UART_PRINT("Error during opening the source file\r\n");
 		return ERROR;
 	}
-
+	
+	long fileHandle = -1;
+	unsigned long token = 0;
 	// open the source file for reading
-	if (SUCCESS != sl_FsOpen(pSourceFile, FS_MODE_OPEN_READ, &token, &fileHandle)) {
+	if (sl_FsOpen(pSourceFile, FS_MODE_OPEN_READ, &token, &fileHandle)) {
 		// File Doesn't exit
 		UART_PRINT("Error during opening the source file\r\n");
 		return ERROR;
 	}
-	// Copy the files from temporary file to SRAM at FIRMWARE_ORIGIN
-	while (bytesCopied < sFileInfo.FileLen) {
-		if ((sFileInfo.FileLen - bytesCopied) > sizeof(buffer)) readsize = sizeof(buffer);
-		else readsize = (sFileInfo.FileLen - bytesCopied);
-
-		memset(buffer, 0, sizeof(buffer));
-		retVal = sl_FsRead(fileHandle, bytesCopied, buffer, readsize);
-		if (retVal < 0) {
-			// Error close the file and delete the temporary file
-			retVal = sl_FsClose(fileHandle, 0, 0, 0);
-			UART_PRINT("Error during reading the file\r\n");
-			return ERROR;
-		}
-		memcpy((void *) (FIRMWARE_ORIGIN + bytesCopied), buffer, readsize);
-		bytesCopied += readsize;
-	}
+	size_t bytesCopied = sl_FsRead(fileHandle, 0,(unsigned char *)FIRMWARE_ORIGIN, sFileInfo.FileLen);
 	// Close the opened files
-	retVal = sl_FsClose(fileHandle, 0, 0, 0);
-	if (retVal != SUCCESS) {
+	if (sl_FsClose(fileHandle, 0, 0, 0)) {
 		return ERROR;
 	}
 	return bytesCopied;
@@ -282,40 +260,50 @@ static long LoadFirmware(unsigned char* pSourceFile) {
 //! \return         0 for success and negative for error
 //
 //****************************************************************************
-long SaveSRAMContentAsFirmware(uint8_t *pSource, const size_t length) {
+long SaveSRAMContent(uint8_t *pSource,const size_t length) {
 	long retVal = ERROR;
 	long fileHandle = -1;
 	unsigned long token = 0;
 
-	if (length == 0) {
+	if (length < FILENAME_SIZE) {
 		return ERROR;
 	}
 
-	if (SUCCESS != VerifySRAM(pSource, length)) {
-		UART_PRINT("Invalid SHA256SUM");
+	unsigned char filename[FILENAME_SIZE];
+	memcpy(filename, pSource, sizeof(filename));
+
+	// set spaces to NULL
+	unsigned char *pTemp = filename;
+	while (*pTemp != ' ') pTemp++;
+	*pTemp = 0x00;
+
+	pSource += FILENAME_SIZE;
+
+	if (SUCCESS != VerifySRAM(pSource, length - FILENAME_SIZE)) {
+		UART_PRINT("Invalid SHA256SUM\r\n");
 		return ERROR;
 	}
 
 	// Delete old Firmware
-	sl_FsDel(FIRMWARE_FILENAME, token);
+	sl_FsDel(filename, token);
 
 	// Save Firmware
-	UART_PRINT("\r\nStarted saving Firmware\r\n");
+	UART_PRINT("\r\nStarted saving %s\r\n", filename);
 	// open a user file for writing
-	retVal = sl_FsOpen(FIRMWARE_FILENAME, FS_MODE_OPEN_WRITE, &token, &fileHandle);
+	retVal = sl_FsOpen(filename, FS_MODE_OPEN_WRITE, &token, &fileHandle);
 	if (retVal < 0) {
 		// File Doesn't exit create a new file
-		retVal = sl_FsOpen(FIRMWARE_FILENAME,
-				FS_MODE_OPEN_CREATE(length,
+		retVal = sl_FsOpen(filename,
+				FS_MODE_OPEN_CREATE(length - FILENAME_SIZE,
 						_FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ
 								| _FS_FILE_OPEN_FLAG_VENDOR), &token, &fileHandle);
 		if (retVal < 0) {
-			retVal = sl_FsDel(FIRMWARE_FILENAME, token);
+			retVal = sl_FsDel(filename, token);
 			UART_PRINT("Error during opening the destination file\r\n");
 			return ERROR;
 		}
 	}
-	retVal = sl_FsWrite(fileHandle, 0, pSource, length);
+	retVal = sl_FsWrite(fileHandle, 0, pSource, length - FILENAME_SIZE);
 	if (retVal < 0) {
 		// Error close the file and delete the temporary file
 		retVal = sl_FsClose(fileHandle, 0, 0, 0);
@@ -324,7 +312,8 @@ long SaveSRAMContentAsFirmware(uint8_t *pSource, const size_t length) {
 	}
 	// Close the opened files
 	retVal = sl_FsClose(fileHandle, 0, 0, 0);
-	return SUCCESS;
+
+	return (long)strcmp((const char *)filename, (const char *)FIRMWARE_FILENAME);
 }
 
 //****************************************************************************
@@ -334,7 +323,7 @@ long SaveSRAMContentAsFirmware(uint8_t *pSource, const size_t length) {
 //! This function patches the processors vector table and jumps to the new reset vector
 //
 //****************************************************************************
-void StartFirmware(void) {
+static void StartFirmware(void) {
 	Network_IF_DeInitDriver();
 	MAP_IntDisable(FAULT_SYSTICK);
 	MAP_IntMasterDisable();
@@ -359,15 +348,13 @@ void StartFirmware(void) {
 //
 //****************************************************************************
 long LoadAndExecuteFirmware(void) {
-	long retVal = ERROR;
-
 	// retVal contains length of Firmware after load
-	retVal = LoadFirmware(FIRMWARE_FILENAME);
-	if (retVal <= 0) {
+	long fw_length = LoadFirmware(FIRMWARE_FILENAME);
+	if (fw_length <= 0) {
 		return ERROR;
 	}
 
-	if (SUCCESS == VerifySRAM((uint8_t *) FIRMWARE_ORIGIN, retVal)) {
+	if (SUCCESS == VerifySRAM((uint8_t *) FIRMWARE_ORIGIN, fw_length)) {
 		UART_PRINT("Starting Firmware\r\n");
 		StartFirmware();
 	}
