@@ -22,11 +22,6 @@
 #include "platform.h"
 #include "wifly_cmd.h"
 
-#ifdef cc3200
-#include "osi.h"
-extern OsiLockObj_t AccessLedBufferMutex;
-#endif
-
 /**
  * This structure is used for calculations to manipulate the ledstrip state
  *
