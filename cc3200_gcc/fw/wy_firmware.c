@@ -62,10 +62,10 @@ void WyLightFirmware_TaskInit(void) {
 	osi_LockObjCreate(&g_AccessScriptBufferMutex);
 	RingBuf_Init(&g_RingBuf_Tx);
 	RingBuf_Init(&g_RingBuf);
+	Ledstrip_Init();
 }
 
 void WyLightFirmware_Task(void *pvParameters) {
-	Ledstrip_Init();
 	CommandIO_Init();
 	ScriptCtrl_Init();
 	for (;;) {

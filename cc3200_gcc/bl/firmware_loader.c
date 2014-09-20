@@ -61,7 +61,6 @@ volatile struct SHAMD5_StatusFlags {
 	unsigned int OutputReadyFlag :1;
 } g_SHAMD5_StatusFlags;
 
-
 #ifdef SIMULATOR
 static uint8_t memory[0x3FFFF];
 #undef FIRMWARE_ORIGIN
@@ -140,7 +139,7 @@ static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *r
 
 	//Enable Interrupts
 	SHAMD5IntEnable(SHAMD5_BASE,
-			SHAMD5_INT_CONTEXT_READY | SHAMD5_INT_PARTHASH_READY | SHAMD5_INT_INPUT_READY | SHAMD5_INT_OUTPUT_READY);
+	SHAMD5_INT_CONTEXT_READY | SHAMD5_INT_PARTHASH_READY | SHAMD5_INT_INPUT_READY | SHAMD5_INT_OUTPUT_READY);
 
 	//wait for context ready flag.
 	while (!g_SHAMD5_StatusFlags.ContextReadyFlag)
@@ -168,7 +167,7 @@ static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *r
 	SHAMD5ResultRead(SHAMD5_BASE, resultHash);
 	// disable Interrupts
 	SHAMD5IntDisable(SHAMD5_BASE,
-			SHAMD5_INT_CONTEXT_READY | SHAMD5_INT_PARTHASH_READY | SHAMD5_INT_INPUT_READY | SHAMD5_INT_OUTPUT_READY);
+	SHAMD5_INT_CONTEXT_READY | SHAMD5_INT_PARTHASH_READY | SHAMD5_INT_INPUT_READY | SHAMD5_INT_OUTPUT_READY);
 	// disable MD5SHA module
 	PRCMPeripheralClkDisable(PRCM_DTHE, PRCM_RUN_MODE_CLK);
 }
@@ -192,9 +191,6 @@ static long VerifySRAM(uint8_t *pSource, const size_t length) {
 	if (length < CHECKSUM_SIZE) {
 		return ERROR;
 	}
-
-	memset(firstHash, 0, sizeof(firstHash));
-	memset(secoundHash, 0, sizeof(secoundHash));
 
 	// get hash of file to verify
 	ComputeSHAFromSRAM(pSource, length - CHECKSUM_SIZE, firstHash);
@@ -231,7 +227,7 @@ static long LoadFirmware(unsigned char* pSourceFile) {
 		UART_PRINT("Error during opening the source file\r\n");
 		return ERROR;
 	}
-	
+
 	long fileHandle = -1;
 	unsigned long token = 0;
 	// open the source file for reading
@@ -240,7 +236,7 @@ static long LoadFirmware(unsigned char* pSourceFile) {
 		UART_PRINT("Error during opening the source file\r\n");
 		return ERROR;
 	}
-	size_t bytesCopied = sl_FsRead(fileHandle, 0,(unsigned char *)FIRMWARE_ORIGIN, sFileInfo.FileLen);
+	size_t bytesCopied = sl_FsRead(fileHandle, 0, (unsigned char *) FIRMWARE_ORIGIN, sFileInfo.FileLen);
 	// Close the opened files
 	if (sl_FsClose(fileHandle, 0, 0, 0)) {
 		return ERROR;
@@ -260,8 +256,7 @@ static long LoadFirmware(unsigned char* pSourceFile) {
 //! \return         0 for success and negative for error
 //
 //****************************************************************************
-long SaveSRAMContent(uint8_t *pSource,const size_t length) {
-	long retVal = ERROR;
+long SaveSRAMContent(uint8_t *pSource, const size_t length) {
 	long fileHandle = -1;
 	unsigned long token = 0;
 
@@ -274,14 +269,25 @@ long SaveSRAMContent(uint8_t *pSource,const size_t length) {
 
 	// set spaces to NULL
 	unsigned char *pTemp = filename;
-	while (*pTemp != ' ') pTemp++;
+	while (*pTemp != ' ')
+		pTemp++;
 	*pTemp = 0x00;
 
 	pSource += FILENAME_SIZE;
+	size_t filesize = length - FILENAME_SIZE;
 
-	if (SUCCESS != VerifySRAM(pSource, length - FILENAME_SIZE)) {
+	if (VerifySRAM(pSource, filesize)) {
 		UART_PRINT("Invalid SHA256SUM\r\n");
 		return ERROR;
+	}
+
+	// if filename indicates a webdata, remove checksum at the end
+	// checksum at the end should not be delivered to a browser
+	const char webSubdirectory[] = "/www/";
+	// normally we should use strstr here, but this will need a lot more code than memcmp.
+	// the websubdirectory string will always be at the beginning. so we can compare sizeof(webSubdirectory) minus trailing NULL
+	if (0 == memcmp(filename, webSubdirectory, sizeof(webSubdirectory) - 1)) {
+		filesize -= CHECKSUM_SIZE;
 	}
 
 	// Delete old Firmware
@@ -290,30 +296,29 @@ long SaveSRAMContent(uint8_t *pSource,const size_t length) {
 	// Save Firmware
 	UART_PRINT("\r\nStarted saving %s\r\n", filename);
 	// open a user file for writing
-	retVal = sl_FsOpen(filename, FS_MODE_OPEN_WRITE, &token, &fileHandle);
-	if (retVal < 0) {
+	if (sl_FsOpen(filename, FS_MODE_OPEN_WRITE, &token, &fileHandle)) {
 		// File Doesn't exit create a new file
-		retVal = sl_FsOpen(filename,
-				FS_MODE_OPEN_CREATE(length - FILENAME_SIZE,
+		if (sl_FsOpen(filename,
+				FS_MODE_OPEN_CREATE(filesize,
 						_FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ
-								| _FS_FILE_OPEN_FLAG_VENDOR), &token, &fileHandle);
-		if (retVal < 0) {
-			retVal = sl_FsDel(filename, token);
-			UART_PRINT("Error during opening the destination file\r\n");
+								| _FS_FILE_OPEN_FLAG_VENDOR), &token, &fileHandle)) {
+			sl_FsDel(filename, token);
+			UART_PRINT("Error during creating the destination file\r\n");
 			return ERROR;
 		}
+		UART_PRINT("File %s created\r\n", filename);
 	}
-	retVal = sl_FsWrite(fileHandle, 0, pSource, length - FILENAME_SIZE);
-	if (retVal < 0) {
+
+	if (sl_FsWrite(fileHandle, 0, pSource, filesize) < 0) {
 		// Error close the file and delete the temporary file
-		retVal = sl_FsClose(fileHandle, 0, 0, 0);
+		sl_FsClose(fileHandle, 0, 0, 0);
 		UART_PRINT("Error during writing the file\r\n");
 		return ERROR;
 	}
 	// Close the opened files
-	retVal = sl_FsClose(fileHandle, 0, 0, 0);
-
-	return (long)strcmp((const char *)filename, (const char *)FIRMWARE_FILENAME);
+	sl_FsClose(fileHandle, 0, 0, 0);
+	// if we saved a firmware, than return SUCCESS (0) to start this firmware immediately
+	return (long) strcmp((const char *) filename, (const char *) FIRMWARE_FILENAME);
 }
 
 //****************************************************************************
