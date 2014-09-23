@@ -272,3 +272,4 @@ cc3200_gcc/fw/gcc/obj
 *.mk
 cc3200_gcc/bl/ccs/Release__GNU
 *.pp
+cc3200_gcc/bl/gcc/exe
