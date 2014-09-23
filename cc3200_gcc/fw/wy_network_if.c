@@ -624,9 +624,9 @@ static long ConfigureSimpleLinkToDefaultState() {
 		}
 	}
 
-// Set connection policy to Auto + SmartConfig
+// Set connection policy to Auto + Fast Connection
 //      (Device's default connection policy)
-	retRes = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1, 0, 0, 0, 1), NULL, 0);
+	retRes = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1, 1, 0, 0, 0), NULL, 0);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
 // Enable DHCP client
