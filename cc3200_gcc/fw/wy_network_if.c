@@ -79,7 +79,7 @@
 #include "FreeRTOS.h"
 #include "semphr.h"
 
-#define CONNECTION_TIMEOUT  15000  /* 5sec */
+#define CONNECTION_TIMEOUT  20000  /* 20 sec */
 
 //
 // GLOBAL VARIABLES -- Start
