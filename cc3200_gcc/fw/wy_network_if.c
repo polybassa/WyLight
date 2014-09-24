@@ -53,7 +53,6 @@
 //  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -85,9 +84,9 @@
 // GLOBAL VARIABLES -- Start
 //
 struct wifiStatusInformation g_WifiStatusInformation;
-static struct apProvisioningData g_ApProvisioningData = { .priority = 0, .getToken = { "__SL_G_US0",
-		"__SL_G_US1", "__SL_G_US2", "__SL_G_US3", "__SL_G_US4", "__SL_G_US5" } };
-
+const char userGetToken[] = "__SL_G_US";
+static struct apProvisioningData g_ApProvisioningData = { .priority = 0, .getToken = { "__SL_G_US0", "__SL_G_US1",
+		"__SL_G_US2", "__SL_G_US3", "__SL_G_US4", "__SL_G_US5" } };
 
 //
 // GLOBAL VARIABLES -- End
@@ -419,50 +418,22 @@ void SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
 //*****************************************************************************
 void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent,
 		SlHttpServerResponse_t *pSlHttpServerResponse) {
-	UART_PRINT("[HTTP EVENT]");
 	switch (pSlHttpServerEvent->Event) {
 	case SL_NETAPP_HTTPGETTOKENVALUE: {
 
-		if (0
-				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_ApProvisioningData.getToken[1],
-						pSlHttpServerEvent->EventData.httpTokenName.len)) {
-			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_ApProvisioningData.networkEntries[0].ssid,
-					g_ApProvisioningData.networkEntries[0].ssid_len);
-			pSlHttpServerResponse->ResponseData.token_value.len = g_ApProvisioningData.networkEntries[0].ssid_len;
+		if (memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, userGetToken, sizeof(userGetToken) - 1)) {
+			break;
 		}
-		if (0
-				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_ApProvisioningData.getToken[2],
-						pSlHttpServerEvent->EventData.httpTokenName.len)) {
-			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_ApProvisioningData.networkEntries[1].ssid,
-					g_ApProvisioningData.networkEntries[1].ssid_len);
-			pSlHttpServerResponse->ResponseData.token_value.len = g_ApProvisioningData.networkEntries[1].ssid_len;
+		const int getTokenNumber = pSlHttpServerEvent->EventData.httpTokenName.data[sizeof(userGetToken) - 1] - '0';
+		if (getTokenNumber < 0 || getTokenNumber > MAX_NUM_NETWORKENTRIES) {
+			break;
 		}
-		if (0
-				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_ApProvisioningData.getToken[3],
-						pSlHttpServerEvent->EventData.httpTokenName.len)) {
-			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_ApProvisioningData.networkEntries[2].ssid,
-					g_ApProvisioningData.networkEntries[2].ssid_len);
-			pSlHttpServerResponse->ResponseData.token_value.len = g_ApProvisioningData.networkEntries[2].ssid_len;
-		}
-		if (0
-				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_ApProvisioningData.getToken[4],
-						pSlHttpServerEvent->EventData.httpTokenName.len)) {
-			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_ApProvisioningData.networkEntries[3].ssid,
-					g_ApProvisioningData.networkEntries[3].ssid_len);
-			pSlHttpServerResponse->ResponseData.token_value.len = g_ApProvisioningData.networkEntries[3].ssid_len;
-		}
-		if (0
-				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_ApProvisioningData.getToken[5],
-						pSlHttpServerEvent->EventData.httpTokenName.len)) {
-			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_ApProvisioningData.networkEntries[4].ssid,
-					g_ApProvisioningData.networkEntries[4].ssid_len);
-			pSlHttpServerResponse->ResponseData.token_value.len = g_ApProvisioningData.networkEntries[4].ssid_len;
-		} else break;
+		memcpy(pSlHttpServerResponse->ResponseData.token_value.data,
+				g_ApProvisioningData.networkEntries[getTokenNumber].ssid,
+				g_ApProvisioningData.networkEntries[getTokenNumber].ssid_len);
+		pSlHttpServerResponse->ResponseData.token_value.len =
+				g_ApProvisioningData.networkEntries[getTokenNumber].ssid_len;
+
 	}
 		break;
 
@@ -546,8 +517,7 @@ static void InitializeAppVariables(void) {
 static long waitForConnectWithTimeout(unsigned int timeout_ms) {
 	unsigned int connectTimeoutCounter = 0;
 	//waiting for the device to connect to the AP and obtain ip address
-	while ((connectTimeoutCounter < timeout_ms)
-			&& !IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)) {
+	while ((connectTimeoutCounter < timeout_ms) && !IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)) {
 		// wait till connects to an AP
 		osi_Sleep(5);	//waiting for 0,5 secs
 		connectTimeoutCounter += 5;
@@ -656,10 +626,6 @@ static long ConfigureSimpleLinkToDefaultState() {
 			urnName);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
-	if (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
-		sl_WlanDisconnect();
-	}
-
 	retRes = sl_Stop(SL_STOP_TIMEOUT);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
@@ -735,7 +701,7 @@ static long StartSimpleLinkAsAP() {
 	osi_Sleep(8000);
 
 	//Get Scan Result
-	retRes = sl_WlanGetNetworkList(0, 20, &g_ApProvisioningData.networkEntries[0]);
+	retRes = sl_WlanGetNetworkList(0, MAX_NUM_NETWORKENTRIES, &g_ApProvisioningData.networkEntries[0]);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	int i;
@@ -775,7 +741,6 @@ static long StartSimpleLinkAsAP() {
 	retRes = sl_WlanSet(SL_WLAN_CFG_AP_ID, 3, 1, &channel);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
-	sl_WlanDisconnect();
 	sl_Stop(SL_STOP_TIMEOUT);
 	CLR_STATUS_BIT_ALL(g_WifiStatusInformation.SimpleLinkStatus);
 
@@ -850,18 +815,14 @@ void Network_IF_DeInitDriver(void) {
 //
 //*****************************************************************************
 long Network_IF_InitDriver(unsigned int uiMode) {
-
-	long lRetVal = -1;
-	unsigned int retry = 1;
-
 	if (uiMode == ROLE_STA) {
-		do {
-			lRetVal = StartSimpleLinkAsStation();
-			if (lRetVal == SUCCESS) {
+		unsigned int retry = 2;
+		while (retry--) {
+			if (SUCCESS == StartSimpleLinkAsStation()) {
 				return SUCCESS;
 			}
 			Network_IF_DeInitDriver();
-		} while (retry--);
+		}
 		return ERROR;
 	} else if (uiMode == ROLE_AP) {
 		return StartSimpleLinkAsAP();
