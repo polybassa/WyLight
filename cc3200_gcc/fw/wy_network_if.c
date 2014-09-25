@@ -85,8 +85,7 @@
 //
 struct wifiStatusInformation g_WifiStatusInformation;
 const char userGetToken[] = "__SL_G_US";
-static struct apProvisioningData g_ApProvisioningData = { .priority = 0, .getToken = { "__SL_G_US0", "__SL_G_US1",
-		"__SL_G_US2", "__SL_G_US3", "__SL_G_US4", "__SL_G_US5" } };
+static struct apProvisioningData g_ApProvisioningData = { .priority = 0 };
 
 //
 // GLOBAL VARIABLES -- End
@@ -472,6 +471,12 @@ void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent,
 			} else if (pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] == '2') {
 				g_ApProvisioningData.secParameters.Type = SL_SEC_TYPE_WPA;	//SL_SEC_TYPE_WPA
 
+			} else if (pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] == '3') {
+				g_ApProvisioningData.secParameters.Type = SL_SEC_TYPE_WPS_PBC;	//SL_SEC_TYPE_WPA
+
+			} else if (pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] == '4') {
+				g_ApProvisioningData.secParameters.Type = SL_SEC_TYPE_WPS_PIN;	//SL_SEC_TYPE_WPA
+
 			} else {
 				g_ApProvisioningData.secParameters.Type = SL_SEC_TYPE_OPEN;	//SL_SEC_TYPE_OPEN
 			}
@@ -524,7 +529,10 @@ static long waitForConnectWithTimeout(unsigned int timeout_ms) {
 	}
 
 	if ((!IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus))
-			|| (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus))) return ERROR;
+			|| (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus))) {
+		UART_PRINT("Connecting failed \r\n");
+		return ERROR;
+	}
 	else return SUCCESS;
 }
 
@@ -849,19 +857,39 @@ unsigned char Network_IF_ReadDeviceConfigurationPin(void) {
 }
 
 long Network_IF_AddNewProfile(void) {
-	long retRes = ERROR;
-	retRes = sl_WlanProfileAdd(g_ApProvisioningData.wlanSSID, strlen((char*) g_ApProvisioningData.wlanSSID), 0,
-			&g_ApProvisioningData.secParameters, 0, g_ApProvisioningData.priority, 0);
-	if (retRes < 0) {
-		// Remove all profiles
-		retRes = sl_WlanProfileDel(0xFF);
-		ASSERT_ON_ERROR(__LINE__, retRes);
-		// and try again
+	// WPS ?
+	if (g_ApProvisioningData.secParameters.Type == SL_SEC_TYPE_WPS_PBC) {
+		g_ApProvisioningData.secParameters.KeyLen = 0;
+		g_ApProvisioningData.secParameters.Key = "";
+
+		CLR_STATUS_BIT_ALL(g_WifiStatusInformation.SimpleLinkStatus);
+
+		sl_WlanConnect(g_ApProvisioningData.wlanSSID, strlen((char*) g_ApProvisioningData.wlanSSID), 0,
+				&g_ApProvisioningData.secParameters, 0);
+		return waitForConnectWithTimeout(60000);
+
+	} else if (g_ApProvisioningData.secParameters.Type == SL_SEC_TYPE_WPS_PIN) {
+
+		CLR_STATUS_BIT_ALL(g_WifiStatusInformation.SimpleLinkStatus);
+
+		sl_WlanConnect(g_ApProvisioningData.wlanSSID, strlen((char*) g_ApProvisioningData.wlanSSID), 0,
+				&g_ApProvisioningData.secParameters, 0);
+		return waitForConnectWithTimeout(60000);
+
+	} else {
+		long retRes = ERROR;
 		retRes = sl_WlanProfileAdd(g_ApProvisioningData.wlanSSID, strlen((char*) g_ApProvisioningData.wlanSSID), 0,
 				&g_ApProvisioningData.secParameters, 0, g_ApProvisioningData.priority, 0);
-		ASSERT_ON_ERROR(__LINE__, retRes);
-
+		if (retRes < 0) {
+			// Remove all profiles
+			retRes = sl_WlanProfileDel(0xFF);
+			ASSERT_ON_ERROR(__LINE__, retRes);
+			// and try again
+			retRes = sl_WlanProfileAdd(g_ApProvisioningData.wlanSSID, strlen((char*) g_ApProvisioningData.wlanSSID), 0,
+					&g_ApProvisioningData.secParameters, 0, g_ApProvisioningData.priority, 0);
+			ASSERT_ON_ERROR(__LINE__, retRes);
+		}
+		UART_PRINT("Added Profile at index %d \r\n", retRes);
 	}
-	UART_PRINT("Added Profile at index %d \r\n", retRes);
 	return SUCCESS;
 }

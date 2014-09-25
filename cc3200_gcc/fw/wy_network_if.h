@@ -84,8 +84,6 @@ extern "C" {
 #define BSSID_LEN_MAX           	6
 #define SEC_KEY_LEN_MAX				64
 #define SL_STOP_TIMEOUT         	30
-#define TOKEN_ARRAY_SIZE        	6
-#define STRING_TOKEN_SIZE       	10
 #define MAX_NUM_NETWORKENTRIES		10
 
 #ifdef NOTERM
@@ -167,7 +165,6 @@ struct apProvisioningData {
 	char wlanSecurityKey[SEC_KEY_LEN_MAX];
 	SlSecParams_t secParameters;
 	Sl_WlanNetworkEntry_t networkEntries[MAX_NUM_NETWORKENTRIES];
-	char getToken[TOKEN_ARRAY_SIZE][STRING_TOKEN_SIZE];
 };
 
 extern const char userGetToken[];
