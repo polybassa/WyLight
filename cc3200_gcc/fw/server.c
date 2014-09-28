@@ -33,7 +33,8 @@
 
 //Application Includes
 #include "server.h"
-#include "pwm.h"
+#include "RingBuf.h"
+#include "wy_firmware.h"
 //
 // GLOBAL VARIABLES -- Start
 //
@@ -47,11 +48,12 @@ static xSemaphoreHandle g_UdpServerStartSemaphore;
 static xSemaphoreHandle g_UdpServerStoppedSemaphore;
 
 OsiTaskHandle TcpServerTaskHandle = &g_TcpServerTaskHandle;
-
 OsiTaskHandle UdpServerTaskHandle = &g_UdpServerTaskHandle;
 
 static tBoolean g_KillTcpServer;
 static tBoolean g_KillUdpServer;
+
+static xSemaphoreHandle g_WriteDataSemaphore;
 
 //
 // GLOBAL VARIABLES -- End
@@ -60,6 +62,8 @@ static tBoolean g_KillUdpServer;
 void TcpServer_TaskInit(void) {
 	osi_SyncObjCreate(&g_TcpServerStartSemaphore);
 	osi_SyncObjCreate(&g_TcpServerStoppedSemaphore);
+	osi_SyncObjCreate(&g_WriteDataSemaphore);
+	osi_SyncObjSignal(&g_WriteDataSemaphore);
 }
 
 inline void TcpServer_TaskRun(void) {
@@ -93,13 +97,20 @@ static void TcpServer_Receive(const int childSock) {
 	uint8_t buffer[BUFFERSIZE];
 
 	while (!g_KillTcpServer) {
-		int bytesReceived = recv(childSock, buffer, sizeof(buffer), 0);
 
-		// TODO: place code to send data to sock here
+		unsigned int bytesToSend = 0;
+		while(!RingBuf_IsEmpty(&g_RingBuf_Tx)){
+			buffer[bytesToSend++] = RingBuf_Get(&g_RingBuf_Tx);
+		}
+		if (bytesToSend && (bytesToSend != send(childSock, buffer, bytesToSend, 0))) {
+			UART_PRINT("Tcp => Error during transmit\r\n");
+		}
+
+		int bytesReceived = recv(childSock, buffer, sizeof(buffer), 0);
 
 		if (EAGAIN == bytesReceived) {
 			// if we don't recveived data, we can sleep a little bit
-			osi_Sleep(100);
+			osi_Sleep(20);
 			continue;
 		}
 
@@ -107,15 +118,15 @@ static void TcpServer_Receive(const int childSock) {
 			// Error or close occured on child socket
 			return;
 		}
-		// Received some bytes
-		// TODO: Save bytes anywhere for wylight adaption
 
-		if (bytesReceived == 3) {
-			osi_MsgQWrite(PwmMessageQ, buffer, OSI_NO_WAIT);
+		UART_PRINT(",");
+		int i = 0;
+		osi_SyncObjWait(&g_WriteDataSemaphore, OSI_WAIT_FOREVER);
+		for (; i < bytesReceived; i++) {
+			RingBuf_Put(&g_RingBuf, buffer[i]);
 		}
-
-		buffer[bytesReceived] = 0;
-		UART_PRINT("Tcp => Received %d bytes:%s\r\n", bytesReceived, buffer);
+		osi_SyncObjSignal(NewDataAvailableSemaphore);
+		osi_SyncObjSignal(&g_WriteDataSemaphore);
 	}
 }
 
@@ -202,16 +213,22 @@ static void UdpServer_Receive(const int serverSock) {
 				&RemoteAddrLen);
 
 		if (EAGAIN == bytesReceived) {
-			osi_Sleep(100);
+			osi_Sleep(15);
 			continue;
 		}
 
 		if (bytesReceived <= 0) {
 			return;
 		}
-		// Received some bytes
-		// TODO: Write received Bytes in global Buffer
-		UART_PRINT("Received %d bytes:%s\r\n", bytesReceived, buffer);
+
+		UART_PRINT(".");
+		osi_SyncObjWait(&g_WriteDataSemaphore, OSI_WAIT_FOREVER);
+		int i = 0;
+		for (i = 0; i < bytesReceived; i++) {
+			RingBuf_Put(&g_RingBuf, buffer[i]);
+		}
+		osi_SyncObjSignal(NewDataAvailableSemaphore);
+		osi_SyncObjSignal(&g_WriteDataSemaphore);
 	}
 }
 

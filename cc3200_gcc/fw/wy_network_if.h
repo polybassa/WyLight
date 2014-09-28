@@ -53,13 +53,11 @@
 //  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
-
 #ifndef __NETWORK_IF__H__
 #define __NETWORK_IF__H__
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include "wlan.h"
@@ -82,12 +80,11 @@ extern "C"
 
 #define SUCCESS         		0
 
-#define SSID_LEN_MAX            32
-#define BSSID_LEN_MAX           6
-#define SEC_KEY_LEN_MAX			64
-#define SL_STOP_TIMEOUT         30
-#define TOKEN_ARRAY_SIZE        6
-#define STRING_TOKEN_SIZE       10
+#define SSID_LEN_MAX            	32
+#define BSSID_LEN_MAX           	6
+#define SEC_KEY_LEN_MAX				64
+#define SL_STOP_TIMEOUT         	30
+#define MAX_NUM_NETWORKENTRIES		10
 
 #ifdef NOTERM
 #define UART_PRINT(x, ...)
@@ -124,34 +121,34 @@ extern "C"
 // Status bits - These are used to set/reset the corresponding bits in 
 // given variable
 
-typedef enum{
-    STATUS_BIT_NWP_INIT = 0, // If this bit is set: Network Processor is 
-                             // powered up
-                             
-    STATUS_BIT_CONNECTION,   // If this bit is set: the device is connected to 
-                             // the AP or client is connected to device (AP)
-                             
-    STATUS_BIT_IP_LEASED,    // If this bit is set: the device has leased IP to 
-                             // any connected client
+typedef enum {
+	STATUS_BIT_NWP_INIT = 0, // If this bit is set: Network Processor is
+							 // powered up
 
-    STATUS_BIT_IP_AQUIRED,   // If this bit is set: the device has acquired an IP
-    
-    STATUS_BIT_SMARTCONFIG_START, // If this bit is set: the SmartConfiguration 
-                                  // process is started from SmartConfig app
+	STATUS_BIT_CONNECTION,   // If this bit is set: the device is connected to
+							 // the AP or client is connected to device (AP)
 
-    STATUS_BIT_P2P_DEV_FOUND,    // If this bit is set: the device (P2P mode) 
-                                 // found any p2p-device in scan
+	STATUS_BIT_IP_LEASED,    // If this bit is set: the device has leased IP to
+							 // any connected client
 
-    STATUS_BIT_P2P_REQ_RECEIVED, // If this bit is set: the device (P2P mode) 
-                                 // found any p2p-negotiation request
+	STATUS_BIT_IP_AQUIRED,   // If this bit is set: the device has acquired an IP
 
-    STATUS_BIT_CONNECTION_FAILED, // If this bit is set: the device(P2P mode)
-                                  // connection to client(or reverse way) is failed
+	STATUS_BIT_SMARTCONFIG_START, // If this bit is set: the SmartConfiguration
+								  // process is started from SmartConfig app
 
-    STATUS_BIT_PING_DONE         // If this bit is set: the device has completed
-                                 // the ping operation
+	STATUS_BIT_P2P_DEV_FOUND,    // If this bit is set: the device (P2P mode)
+								 // found any p2p-device in scan
 
-}e_StatusBits;
+	STATUS_BIT_P2P_REQ_RECEIVED, // If this bit is set: the device (P2P mode)
+								 // found any p2p-negotiation request
+
+	STATUS_BIT_CONNECTION_FAILED, // If this bit is set: the device(P2P mode)
+								  // connection to client(or reverse way) is failed
+
+	STATUS_BIT_PING_DONE         // If this bit is set: the device has completed
+								 // the ping operation
+
+} e_StatusBits;
 
 struct wifiStatusInformation {
 	unsigned long SimpleLinkStatus;
@@ -167,9 +164,11 @@ struct apProvisioningData {
 	char wlanSSID[SSID_LEN_MAX];
 	char wlanSecurityKey[SEC_KEY_LEN_MAX];
 	SlSecParams_t secParameters;
-	Sl_WlanNetworkEntry_t networkEntries[20];
-	char getToken[TOKEN_ARRAY_SIZE][STRING_TOKEN_SIZE];
+	Sl_WlanNetworkEntry_t networkEntries[MAX_NUM_NETWORKENTRIES];
 };
+
+extern const char userGetToken[];
+
 
 //
 // GLOBAL VARIABLES -- Start
@@ -179,7 +178,6 @@ extern struct wifiStatusInformation g_WifiStatusInformation;
 // GLOBAL VARIABLES -- End
 //
 
-
 //
 // API Function prototypes
 //
@@ -188,10 +186,7 @@ extern void Network_IF_DeInitDriver(void);
 extern unsigned char Network_IF_ReadDeviceConfigurationPin(void);
 extern long Network_IF_AddNewProfile(void);
 
-
 #ifdef __cplusplus
 }
 #endif
 #endif //  __MCU_COMMON_H__
-
-

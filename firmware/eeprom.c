@@ -18,6 +18,8 @@
 
 #include "eeprom.h"
 
+#define Eeprom_Init()
+
 #ifdef __CC8E__
 //*********************** EEPROM BYTE SCHREIBEN  **********************************************
 void Eeprom_Write(const uns16 adress, const uns8 data)
@@ -27,19 +29,19 @@ void Eeprom_Write(const uns16 adress, const uns8 data)
 
 	EEADRH = adress.high8;
 	EEADR = adress.low8;            // Adresse in Adressregister übertragen
-	EEDATA = data;                          // Daten in Datenregister übertragen
+	EEDATA = data;// Daten in Datenregister übertragen
 
 	CFGS = 0;
-	EEPGD = 0;                              // Auswahl: Programmspeicher lesen oder EEPROM
-	WREN = 1;                               // Schreiben ins EEPROM erlauben
-	GIE = 0;                                  // Interrups verbieten
+	EEPGD = 0;// Auswahl: Programmspeicher lesen oder EEPROM
+	WREN = 1;// Schreiben ins EEPROM erlauben
+	GIE = 0;// Interrups verbieten
 
 	EECON2 = 0x55;
 	EECON2 = 0xAA;
-	WR = 1;                                                 // Starten des Schreibens
-	GIE = GIE_status;               // Interrups erlauben
+	WR = 1;// Starten des Schreibens
+	GIE = GIE_status;// Interrups erlauben
 	WREN = 0;
-	while(WR) ;
+	while(WR);
 }
 
 //*********************** EEPROM BYTE LESEN  **********************************************
@@ -50,13 +52,14 @@ uns8 Eeprom_Read(const uns16 adress)
 	EEADRH = adress.high8;        // Adresse in Adressregister übertragen
 	EEADR = adress.low8;
 	CFGS = 0;
-	EEPGD = 0;                                      // Auswahl: Programmspeicher lesen oder EEPROM
-	RD = 1;                                         // Starten des Lesesn
-	data = EEDATA;                                  // Daten aus Datenregister auslesen
+	EEPGD = 0;// Auswahl: Programmspeicher lesen oder EEPROM
+	RD = 1;// Starten des Lesesn
+	data = EEDATA;// Daten aus Datenregister auslesen
 	return data;
 }
 
-#else
+#else /* X86 */
+
 #include "ScriptCtrl.h"
 #include "wifly_cmd.h"
 #include <assert.h>
@@ -73,12 +76,14 @@ void Eeprom_Write(const uns16 adress, const uns8 data)
 	g_Eeprom[adress] = data;
 }
 #endif /* #ifdef X86 */
-
 //*********************** EEPROM BYTEARRAY SCHREIBEN  **************************************
 
-void Eeprom_WriteBlock(const uns8 *array, uns16 adress,const uns8 length)                       //Zum Ausführen eines beliebigen Befehls durch den Programmcode
+void Eeprom_WriteBlock(const uns8 *array, uns16 adress, const uns8 length) //Zum Ausführen eines beliebigen Befehls durch den Programmcode
 {
-	if(!array) return;
+	if (!array) return;
+#ifndef __CC8E__
+	memcpy(&g_Eeprom[adress], array, length);
+#else
 	uns8 i;
 	for(i = 0; i < length; i++) {
 		uns8 *pByte = (uns8 *)array;
@@ -86,17 +91,22 @@ void Eeprom_WriteBlock(const uns8 *array, uns16 adress,const uns8 length)       
 		adress++;
 		array++;
 	}
+#endif
 }
 
 //*********************** EEPROM BYTEARRAY LESEN  **************************************
 
-void Eeprom_ReadBlock(uns8 *array, uns16 adress, const uns8 length)                     //Zum Ausführen eines beliebigen Befehls durch den Programmcode
+void Eeprom_ReadBlock(uns8 *array, uns16 adress, const uns8 length) //Zum Ausführen eines beliebigen Befehls durch den Programmcode
 {
-	if(!array) return;
+	if (!array) return;
+#ifndef __CC8E__
+	memcpy(array, &g_Eeprom[adress], length);
+#else
 	uns8 i, temp;
 	for(i = 0; i < length; i++) {
 		temp = Eeprom_Read(adress);
 		array[i] = temp;
 		adress++;
 	}
+#endif
 }

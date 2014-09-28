@@ -25,6 +25,9 @@
 #ifdef __CC8E__
 typedef enum {
 #else /* For GCC or CLANG on X86, ARM */
+#ifdef OK
+#undef OK
+#endif
 typedef enum __attribute__ ((__packed__)) {
 #endif
 	OK = 0,

@@ -22,14 +22,25 @@
 #include "platform.h"
 
 /* globals */
+#ifndef EEPROM_SIZE
+#define EEPROM_SIZE 1024
+#endif
+
 #define EEPROM_SCRIPTBUF_BASE 0
 #define EEPROM_SCRIPTBUF_INLOOP 0x3fd
 #define EEPROM_SCRIPTBUF_READ 0x3fb
 #define EEPROM_SCRIPTBUF_WRITE 0x3f9
 
 /* eeprom access functions */
+void Eeprom_Init(void);
 void Eeprom_Write(const uns16 adress, const uns8 data);
 uns8 Eeprom_Read(const uns16 adress);
 void Eeprom_WriteBlock(const uns8 *array, uns16 adress, const uns8 length);
 void Eeprom_ReadBlock(uns8 *array, uns16 adress, const uns8 length);
-#endif
+
+#ifdef cc3200
+#include <stdbool.h>
+void Eeprom_Save(bool forceSave);
+#endif /*cc3200*/
+
+#endif/*_EEPROM_H_*/

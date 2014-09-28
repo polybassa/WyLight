@@ -18,7 +18,8 @@
 
 #ifndef _BOOTLOADER_H_
 #define _BOOTLOADER_H_
-extern const unsigned long BOOTLOADER_VERSION;
+
+#define BOOTLOADER_VERSION 1
 
 #ifndef BUILD_AS_FW
 

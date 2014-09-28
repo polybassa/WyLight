@@ -26,14 +26,39 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>CommandIO.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/firmware/CommandIO.c</locationURI>
+		</link>
+		<link>
+			<name>RingBuf.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/firmware/RingBuf.c</locationURI>
+		</link>
+		<link>
+			<name>ScriptCtrl.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/firmware/ScriptCtrl.c</locationURI>
+		</link>
+		<link>
+			<name>Version.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/firmware/Version.c</locationURI>
+		</link>
+		<link>
 			<name>broadcast.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT/broadcast.c</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/broadcast.c</locationURI>
 		</link>
 		<link>
 			<name>gpio_if.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/common/gpio_if.c</locationURI>
+		</link>
+		<link>
+			<name>ledstrip.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/firmware/ledstrip.c</locationURI>
 		</link>
 		<link>
 			<name>main.c</name>
@@ -76,15 +101,35 @@
 			<locationURI>PARENT-1-PROJECT_LOC/wifi.c</locationURI>
 		</link>
 		<link>
+			<name>wy_crc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/wy_crc.c</locationURI>
+		</link>
+		<link>
+			<name>wy_eeprom.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/wy_eeprom.c</locationURI>
+		</link>
+		<link>
+			<name>wy_firmware.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/wy_firmware.c</locationURI>
+		</link>
+		<link>
 			<name>wy_network_if.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/wy_network_if.c</locationURI>
+		</link>
+		<link>
+			<name>wy_spi.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/wy_spi.c</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>
 		<variable>
 			<name>copy_PARENT</name>
-			<value>file:/F:/Wifly_Light/Software/cc3200_gcc/fw</value>
+			<value>file:/E:/Wifly_Light/Software/cc3200_gcc/fw</value>
 		</variable>
 		<variable>
 			<name>copy_PARENT1</name>

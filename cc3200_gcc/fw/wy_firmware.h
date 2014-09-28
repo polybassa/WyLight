@@ -33,9 +33,13 @@
 #endif
 
 extern OsiTaskHandle WyLightFirmwareTaskHandle;
+extern OsiTaskHandle WyLightGetCommandsTaskHandle;
+extern OsiSyncObj_t FirmwareCanAccessFileSystemSemaphore;
+extern OsiSyncObj_t NewDataAvailableSemaphore;
 
 void WyLightFirmware_TaskInit(void);
 void WyLightFirmware_Task(void *pvParameters);
+void WyLightGetCommands_Task(void *pvParameters);
 
 #endif /* _WY_FIRMWARE_H_ */
 
