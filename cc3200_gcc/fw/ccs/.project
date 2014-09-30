@@ -129,7 +129,7 @@
 	<variableList>
 		<variable>
 			<name>copy_PARENT</name>
-			<value>file:/E:/Wifly_Light/Software/cc3200_gcc/fw</value>
+			<value>$%7BPARENT-1-PROJECT_LOC%7D</value>
 		</variable>
 		<variable>
 			<name>copy_PARENT1</name>

@@ -279,3 +279,4 @@ cc3200_gcc/driverlib/ccs/Release
 cc3200_gcc/oslib/ccs/free_rtos/free_rtos.a
 cc3200_gcc/simplelink/ccs/OS/simplelink.a
 >>>>>>> origin/FreeRTOS-gcc
+*.obj
