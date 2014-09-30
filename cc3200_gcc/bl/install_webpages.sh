@@ -2,6 +2,7 @@
 
 WEBDIRECTORY="../html/WyLightConfiguration/public_html/"
 FIRMWAREDIRECTORY="../fw/gcc/exe/"
+BOOTLOADERDIRECTORY=""
 
 FILES[0]=$WEBDIRECTORY"index.html"
 NAMES[0]="/www/main.html"
@@ -35,8 +36,10 @@ FILES[14]=$WEBDIRECTORY"media/favicon.png"
 NAMES[14]="/www/media/favicon.png"
 FILES[15]=$WEBDIRECTORY"media/playstore.png"
 NAMES[15]="/www/media/playstore.png"
-FILES[16]=$FIRMWAREDIRECTORY"WyLight_fw.bin"
-NAMES[16]="/temp/firmware.bin"
+FILES[16]=$BOOTLOADERDIRECTORY"wifi_subsystem_servicepack_1.0.0.1.0.ucf"
+NAMES[16]="/sys/servicepack.ucf"
+FILES[17]=$FIRMWAREDIRECTORY"WyLight_fw.bin"
+NAMES[17]="/temp/firmware.bin"
 
 for ((i = 0 ; i < ${#FILES[@]} ; i++)) do
 	sh ./install.sh ${FILES[i]} ${NAMES[i]}
