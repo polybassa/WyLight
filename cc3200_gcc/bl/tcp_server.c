@@ -66,7 +66,7 @@ static int ReceiveFw(int SocketTcpChild)
 	for(;;) {
 		const int bytesReceived = recv(SocketTcpChild, pFirmware, BUFFERSIZE, 0);
 
-		if (bytesReceived > 0) {
+		if (bytesReceived >= 0) {
 			pFirmware += bytesReceived;
 			UART_PRINT("Tcp: Received %d bytes\r\n", bytesReceived);
 
