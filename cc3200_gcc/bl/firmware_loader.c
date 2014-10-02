@@ -333,7 +333,7 @@ static void StartFirmware(void) {
 	MAP_IntDisable(FAULT_SYSTICK);
 	MAP_IntMasterDisable();
 	// patch Interrupt Vector Table
-	MAP_IntVTableBaseSet(FIRMWARE_ORIGIN);
+	MAP_IntVTableBaseSet((size_t)FIRMWARE_ORIGIN);
 
 	// call Firmware
 	void (*firmware_origin_entry)(void);
@@ -359,7 +359,7 @@ long LoadAndExecuteFirmware(void) {
 		return ERROR;
 	}
 
-	if (SUCCESS == VerifySRAM((uint8_t *) FIRMWARE_ORIGIN, fw_length)) {
+	if (SUCCESS == VerifySRAM(FIRMWARE_ORIGIN, fw_length)) {
 		UART_PRINT("Starting Firmware\r\n");
 		StartFirmware();
 	}
