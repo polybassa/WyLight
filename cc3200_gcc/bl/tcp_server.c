@@ -40,27 +40,17 @@
 #include <unistd.h>
 #include <fcntl.h>
 #define SUCCESS 0
-#define UART_PRINT Report
 #endif /*SIMULATOR */
 
 #define BUFFERSIZE 1024
 #define SERVER_PORT htons(2000)
-
-#ifdef SIMULATOR
-
-static uint8_t memory[0x3FFFF];
-
-#undef FIRMWARE_ORIGIN
-#define FIRMWARE_ORIGIN ((uint8_t*)&memory[0])
-
-#endif
 
 /**
  * @return 0 on success, if new firmware was saved and validated
  */
 static int ReceiveFw(int SocketTcpChild)
 {
-	uint8_t *pFirmware = (uint8_t *) FIRMWARE_ORIGIN;
+	uint8_t *pFirmware = FIRMWARE_ORIGIN;
 	UART_PRINT("Start writing Firmware at 0x%x \r\n", pFirmware);
 
 	for(;;) {
@@ -72,7 +62,7 @@ static int ReceiveFw(int SocketTcpChild)
 
 			if (bytesReceived < BUFFERSIZE) {
     			const size_t length = (size_t) (pFirmware - FIRMWARE_ORIGIN);
-				return SaveSRAMContent((uint8_t *) FIRMWARE_ORIGIN, length);
+				return SaveSRAMContent(FIRMWARE_ORIGIN, length);
 			}
 		} else if (EAGAIN == bytesReceived) {
 			_SlNonOsMainLoopTask();
