@@ -21,17 +21,17 @@
 
 #define BOOTLOADER_VERSION 1
 
-#ifndef BUILD_AS_FW
-
-#define FW_FILENAME			"/temp/firmware.bin"
-#define APP_NAME			"WyLight Bootloader"
-#define FIRMWARE_ORIGIN 	0x20012000
-
-#else
+#ifdef BUILD_AS_FW
 
 #define FW_FILENAME			"/sys/mcuimg.bin"
 #define APP_NAME			"WyLight Firmware"
 #define FIRMWARE_ORIGIN 	0x20004000
+
+#else
+
+#define FW_FILENAME			"/temp/firmware.bin"
+#define APP_NAME			"WyLight Bootloader"
+#define FIRMWARE_ORIGIN 	0x20012000
 
 #endif
 
