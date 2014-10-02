@@ -64,32 +64,21 @@ static int ReceiveFw(int SocketTcpChild)
 	UART_PRINT("Start writing Firmware at 0x%x \r\n", pFirmware);
 
 	for(;;) {
-		int bytesReceived = recv(SocketTcpChild, pFirmware, BUFFERSIZE, 0);
+		const int bytesReceived = recv(SocketTcpChild, pFirmware, BUFFERSIZE, 0);
 
 		if (bytesReceived > 0) {
-			// Received some bytes
 			pFirmware += bytesReceived;
 			UART_PRINT("Tcp: Received %d bytes\r\n", bytesReceived);
-#ifdef SIMULATOR
+
 			if (bytesReceived < BUFFERSIZE) {
     			const size_t length = (size_t) (pFirmware - FIRMWARE_ORIGIN);
-				return SaveSRAMContentAsFirmware((uint8_t *) FIRMWARE_ORIGIN, length);
+				return SaveSRAMContent((uint8_t *) FIRMWARE_ORIGIN, length);
 			}
-#endif
-			continue;
-		}
-
-		if (EAGAIN == bytesReceived) {
+		} else if (EAGAIN == bytesReceived) {
 			_SlNonOsMainLoopTask();
-			continue;
-		}
-
-		if (bytesReceived < 0) {
+		} else {
 			return bytesReceived;
 		}
-
-		const size_t length = (size_t) (pFirmware - FIRMWARE_ORIGIN);
-		return SaveSRAMContent((uint8_t *) FIRMWARE_ORIGIN, length);
 	}
 }
 
