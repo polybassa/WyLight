@@ -23,7 +23,7 @@
 
 #if defined(SIMULATOR)
 static uint8_t memory[0x3FFFF];
-#define FW_FILENAME			"/sys/mcuimg.bin"
+#define FW_FILENAME			"firmware.bin"
 #define APP_NAME			"WyLight Firmware"
 #define FIRMWARE_ORIGIN 	memory
 #elif defined(BUILD_AS_FW)
