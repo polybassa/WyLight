@@ -47,13 +47,9 @@
 #define CHECKSUM_SIZE			32		/* In Bytes, We use SHA-256 */
 #define SUCCESS					0
 #define FILENAME_SIZE			128
-#define UART_PRINT          	Report
 
-//
-// GLOBAL VARIABLES -- Start
-//
+
 // Flags to check that interrupts were successfully generated.
-
 volatile struct SHAMD5_StatusFlags {
 	unsigned int ContextReadyFlag :1;
 	unsigned int ParthashReadyFlag :1;
@@ -61,18 +57,8 @@ volatile struct SHAMD5_StatusFlags {
 	unsigned int OutputReadyFlag :1;
 } g_SHAMD5_StatusFlags;
 
-#ifdef SIMULATOR
-static uint8_t memory[0x3FFFF];
-#undef FIRMWARE_ORIGIN
-#define FIRMWARE_ORIGIN (void*)&memory[0]
-static unsigned char* FIRMWARE_FILENAME = (unsigned char *) "firmware.bin";
-#else /* SIMULATOR */
 static unsigned char* FIRMWARE_FILENAME = (unsigned char *) FW_FILENAME;
-#endif /* SIMULATOR */
 
-//
-// GLOBAL VARIABLES -- End
-//
 
 //*****************************************************************************
 //
