@@ -272,11 +272,8 @@ cc3200_gcc/fw/gcc/obj
 *.mk
 cc3200_gcc/bl/ccs/Release__GNU
 *.pp
-<<<<<<< HEAD
 cc3200_gcc/bl/gcc/exe
-=======
 cc3200_gcc/driverlib/ccs/Release
 cc3200_gcc/oslib/ccs/free_rtos/free_rtos.a
 cc3200_gcc/simplelink/ccs/OS/simplelink.a
->>>>>>> origin/FreeRTOS-gcc
 *.obj
