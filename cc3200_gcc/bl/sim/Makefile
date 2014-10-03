@@ -25,6 +25,7 @@ VPATH+=/usr/local/Cellar/openssl/1.0.1i/lib/
 # Additional Compiler Flags
 CFLAGS+=-pedantic
 CFLAGS+=-Wall
+CFLAGS+=-std=c11
 CFLAGS+=-DSIMULATOR
 
 LDFLAGS+=-lcrypto
@@ -45,7 +46,7 @@ all: ${OBJDIR} ${BINDIR}
 all: ${BINDIR}/${PRJ_NAME}.axf link
 
 link:
-	CC ${LDFLAGS} -o simulator.bin ${OBJDIR}/main.o ${OBJDIR}/pinmux.o ${OBJDIR}/firmware_loader.o ${OBJDIR}/tcp_server.o ${OBJDIR}/simulator_bl.o ${OBJDIR}/fs.o ${OBJDIR}/uart_if.o ${OBJDIR}/gpio_if.o
+	${CC} ${LDFLAGS} -o simulator.bin ${OBJDIR}/main.o ${OBJDIR}/pinmux.o ${OBJDIR}/firmware_loader.o ${OBJDIR}/tcp_server.o ${OBJDIR}/simulator_bl.o ${OBJDIR}/fs.o ${OBJDIR}/uart_if.o ${OBJDIR}/gpio_if.o
 
 # The rule to clean out all the build products.
 clean:
