@@ -43,48 +43,30 @@
 #define FILENAME_SIZE			128
 
 
-// Flags to check that interrupts were successfully generated.
-volatile struct SHAMD5_StatusFlags {
-	unsigned int ContextReadyFlag :1;
-	unsigned int ParthashReadyFlag :1;
-	unsigned int InputReadyFlag :1;
-	unsigned int OutputReadyFlag :1;
-} g_SHAMD5_StatusFlags;
+static int g_ContextReadyFlag = 0;
 
 static unsigned char* FIRMWARE_FILENAME = (unsigned char *) FW_FILENAME;
 
 
-//*****************************************************************************
-//
-//! SHAMD5IntHandler - Interrupt Handler which handles different interrupts from
-//! different sources
-//!
-//! \param None
-//!
-//! \return None
-//
-//*****************************************************************************
+/**
+ * Interrupt handler to handle SHAMD5 engine interrupts
+ */
 void SHAMD5IntHandler(void) {
 	uint32_t ui32IntStatus;
-	//
-	// Read the SHA/MD5 masked interrupt status.
-	//
+	
 	ui32IntStatus = MAP_SHAMD5IntStatus(SHAMD5_BASE, true);
 	if (ui32IntStatus & SHAMD5_INT_CONTEXT_READY) {
 		MAP_SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_CONTEXT_READY);
-		g_SHAMD5_StatusFlags.ContextReadyFlag = 1;
+		g_ContextReadyFlag = 1;
 	}
 	if (ui32IntStatus & SHAMD5_INT_PARTHASH_READY) {
 		MAP_SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_PARTHASH_READY);
-		g_SHAMD5_StatusFlags.ParthashReadyFlag = 1;
 	}
 	if (ui32IntStatus & SHAMD5_INT_INPUT_READY) {
 		MAP_SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_INPUT_READY);
-		g_SHAMD5_StatusFlags.InputReadyFlag = 1;
 	}
 	if (ui32IntStatus & SHAMD5_INT_OUTPUT_READY) {
 		MAP_SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_OUTPUT_READY);
-		g_SHAMD5_StatusFlags.OutputReadyFlag = 1;
 	}
 }
 
@@ -107,8 +89,7 @@ static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *r
 
 	UART_PRINT("Start computing hash\r\n");
 	//clear flags
-	g_SHAMD5_StatusFlags.ContextReadyFlag = 0;
-	g_SHAMD5_StatusFlags.InputReadyFlag = 0;
+	g_ContextReadyFlag = 0;
 
 	//Enable MD5SHA module
 	PRCMPeripheralClkEnable(PRCM_DTHE, PRCM_RUN_MODE_CLK);
@@ -122,29 +103,17 @@ static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *r
 	SHAMD5_INT_CONTEXT_READY | SHAMD5_INT_PARTHASH_READY | SHAMD5_INT_INPUT_READY | SHAMD5_INT_OUTPUT_READY);
 
 	//wait for context ready flag.
-	while (!g_SHAMD5_StatusFlags.ContextReadyFlag)
+	while (!g_ContextReadyFlag) {
 		_SlNonOsMainLoopTask();
-	;
-
-	//Configure SHA/MD5 module
-	SHAMD5ConfigSet(SHAMD5_BASE, SHAMD5_ALGO_SHA256);
-
-	SHAMD5DataLengthSet(SHAMD5_BASE, (uint32_t) length);
-
-	size_t bytesRead = 0, readsize = 0;
-
-	while (bytesRead < length) {
-		if ((length - bytesRead) > BLOCKSIZE) readsize = BLOCKSIZE;
-		else readsize = (length - bytesRead);
-
-		SHAMD5DataWrite(SHAMD5_BASE, pSource);
-		bytesRead += readsize;
-		pSource += readsize;
 	}
 
+	//Configure SHA/MD5 module
+	MAP_SHAMD5ConfigSet(SHAMD5_BASE, SHAMD5_ALGO_SHA256);
+	
+	MAP_SHAMD5DataProcess(SHAMD5_BASE, pSource, length, resultHash);
+
 	UART_PRINT("Computing hash successful\r\n");
-	// return result
-	SHAMD5ResultRead(SHAMD5_BASE, resultHash);
+	
 	// disable Interrupts
 	SHAMD5IntDisable(SHAMD5_BASE,
 	SHAMD5_INT_CONTEXT_READY | SHAMD5_INT_PARTHASH_READY | SHAMD5_INT_INPUT_READY | SHAMD5_INT_OUTPUT_READY);

@@ -800,7 +800,7 @@ SHAMD5DataProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
     // Check the arguments.
     //
     ASSERT(ui32Base == SHAMD5_BASE);
-    ASSERT((ui32DataLength % 64) == 0);
+    //ASSERT((ui32DataLength % 64) == 0);
 
     //
     // Wait for the context to be ready before writing the mode.

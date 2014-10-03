@@ -40,7 +40,7 @@ IPATH+=${ROOT}/simplelink/include
 all: bl
 
 # build all the bootloader files. Used by as_bl and as_fw builds
-common: clean ${OBJDIR} ${BINDIR}
+common: ${OBJDIR} ${BINDIR}
 common: ${BINDIR}/${PRJ_NAME}.axf
 
 # build the bootloader as normal bootloader

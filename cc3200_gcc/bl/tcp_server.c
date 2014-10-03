@@ -145,7 +145,7 @@ extern void TcpServer(void)
 	}
 
 	int fwStatus = 0xDEAD;
-	for(; fwStatus;) {
+	while (fwStatus) {
 		const int clientSock = TcpServer_Accept(listenSocket);
 
 		if (sizeof(welcome) ==  send(clientSock, welcome, sizeof(welcome), 0)) {

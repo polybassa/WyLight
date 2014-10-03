@@ -1,6 +1,6 @@
 #******************************************************************************
 #
-# Makefile - Rules for building the WyLight bootloader.
+# Makefile - Rules for building the simulator of the WyLight bootloader.
 #
 #
 #*****************************************************************************

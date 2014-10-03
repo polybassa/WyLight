@@ -69,6 +69,12 @@ void SHAMD5DataLengthSet(uint32_t base, uint32_t length) {
 	SHA256_Init(&sha256);
 }
 
+bool SHAMD5DataProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
+                  uint32_t ui32DataLength, uint8_t *pui8HashResult)
+{
+	return true;
+}
+
 void SHAMD5DataWrite(uint32_t base, uint8_t *pSource) {
 	if (hashLength > HASHBLOCK) {
 		SHA256_Update(&sha256, pSource, HASHBLOCK);
