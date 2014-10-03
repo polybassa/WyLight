@@ -25,10 +25,6 @@
 
 extern void SHAMD5IntHandler(void);
 
-static uint32_t hashLength;
-
-static SHA256_CTX sha256;
-
 #define HASHBLOCK	64
 
 void _SlNonOsMainLoopTask(void) {
@@ -52,10 +48,6 @@ uint32_t SHAMD5IntStatus(uint32_t base, bool flag) {
 	return SHAMD5_INT_CONTEXT_READY;
 }
 
-void MAP_SHAMD5IntDisable(uint32_t base, uint32_t state) {
-	
-}
-
 void SHAMD5IntDisable(uint32_t base, uint32_t state) {
 	
 }
@@ -64,27 +56,12 @@ void SHAMD5IntEnable(uint32_t base, uint32_t flags) {
 	SHAMD5IntHandler();
 }
 
-void SHAMD5DataLengthSet(uint32_t base, uint32_t length) {
-	hashLength = length;
-	SHA256_Init(&sha256);
-}
-
 bool SHAMD5DataProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
                   uint32_t ui32DataLength, uint8_t *pui8HashResult)
 {
+	SHA256_CTX sha256;
+	SHA256_Init(&sha256);
+	SHA256_Update(&sha256, pui8DataSrc, ui32DataLength);
+	SHA256_Final(pui8HashResult, &sha256);
 	return true;
-}
-
-void SHAMD5DataWrite(uint32_t base, uint8_t *pSource) {
-	if (hashLength > HASHBLOCK) {
-		SHA256_Update(&sha256, pSource, HASHBLOCK);
-		hashLength -= HASHBLOCK;
-	} else {
-		SHA256_Update(&sha256, pSource, hashLength);
-		hashLength = 0;
-	}
-}
-
-void SHAMD5ResultRead(uint32_t base, uint8_t *pDest) {
-	SHA256_Final(pDest, &sha256);
 }
