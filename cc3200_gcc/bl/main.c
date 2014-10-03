@@ -25,9 +25,7 @@
 
 // driverlib includes
 #include "rom.h"
-#ifndef _SIMULATOR
 #include "rom_map.h"
-#endif /*SIMULATOR */
 #include "prcm.h"
 #include "utils.h"
 #include "interrupt.h"

@@ -38,6 +38,4 @@
 #define FIRMWARE_ORIGIN 	(uint8_t*)0x20012000
 #endif
 
-
-
 #endif /* #ifndef _BOOTLOADER_H_ */

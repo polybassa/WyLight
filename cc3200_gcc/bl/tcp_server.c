@@ -73,7 +73,7 @@ static int TcpServer_Listen()
 	
 	const int listenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (listenSocket >= 0) {
-#ifndef SIMULATOR
+#ifdef SO_NONBLOCKING
 		const int dontBlock = 1;
 		status = setsockopt(listenSocket, SOL_SOCKET, SO_NONBLOCKING, &dontBlock, sizeof(dontBlock));	
 		if (status) {
