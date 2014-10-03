@@ -16,24 +16,23 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
+#include <stdint.h>
 #include "hw_types.h"
 #include "hw_memmap.h"
 #include "pin.h"
 #include "rom.h"
 #include "rom_map.h"
-#include "timer.h"
+#include "../../driverlib/timer.h"
 #include "prcm.h"
-/*
- #include "hw_apps_rcm.h"
- #include "hw_common_reg.h"
- */
+
 //Common interface includes
 #include "pwm.h"
+
 //Application Includes
 #include "osi.h"
 #include "FreeRTOS.h"
 #include "task.h"
-#include "semphr.h"
+#include "queue.h"
 
 //
 // GLOBAL VARIABLES -- Start
@@ -64,69 +63,53 @@ OsiMsgQ_t PwmMessageQ = &g_PwmMessageQ;
 //      New time period = 0.5004375 ms
 //      Timer match value = (update[0, 255] * duty cycle granularity)
 //
-#define TIMER_INTERVAL_RELOAD   40035 /* =(255*157) */
+#define TIMER_INTERVAL_RELOAD   40036 /* =(255*157) */
 #define DUTYCYCLE_GRANULARITY   157
 
 void UpdateDutyCycle(unsigned long ulBase, unsigned long ulTimer, unsigned char ucLevel) {
-	//
-	// Match value is updated to reflect the new dutycycle settings
-	//
 	MAP_TimerMatchSet(ulBase, ulTimer, (ucLevel * DUTYCYCLE_GRANULARITY));
 }
 
 void SetupTimerPWMMode(unsigned long ulBase, unsigned long ulTimer, unsigned long ulConfig, unsigned char ucInvert) {
-	//
+
 	// Set GPT - Configured Timer in PWM mode.
-	//
 	MAP_TimerConfigure(ulBase, ulConfig);
 	MAP_TimerPrescaleSet(ulBase, ulTimer, 0);
 
-	//
 	// Inverting the timer output if required
-	//
 	MAP_TimerControlLevel(ulBase, ulTimer, ucInvert);
 
-	//
 	// Load value set to ~0.5 ms time period
-	//
 	MAP_TimerLoadSet(ulBase, ulTimer, TIMER_INTERVAL_RELOAD);
 
-	//
 	// Match value set so as to output level 0
-	//
 	MAP_TimerMatchSet(ulBase, ulTimer, TIMER_INTERVAL_RELOAD);
-
 }
 
-void InitPWMModules() {
-	//
+void Pwm_TaskInit(void) {
+
 	// Initialization of timers to generate PWM output
-	//
 	MAP_PRCMPeripheralClkEnable(PRCM_TIMERA2, PRCM_RUN_MODE_CLK);
 	MAP_PRCMPeripheralClkEnable(PRCM_TIMERA3, PRCM_RUN_MODE_CLK);
 
-	//
 	// TIMERA2 (TIMER B) as RED of RGB light. GPIO 9 --> PWM_5
-	//
 	SetupTimerPWMMode(TIMERA2_BASE, TIMER_B, (TIMER_CFG_SPLIT_PAIR | TIMER_CFG_B_PWM), 1);
-	//
+
 	// TIMERA3 (TIMER B) as YELLOW of RGB light. GPIO 10 --> PWM_6
-	//
 	SetupTimerPWMMode(TIMERA3_BASE, TIMER_A, (TIMER_CFG_SPLIT_PAIR | TIMER_CFG_A_PWM | TIMER_CFG_B_PWM), 1);
 	//
 	// TIMERA3 (TIMER A) as GREEN of RGB light. GPIO 11 --> PWM_7
-	//
 	SetupTimerPWMMode(TIMERA3_BASE, TIMER_B, (TIMER_CFG_SPLIT_PAIR | TIMER_CFG_A_PWM | TIMER_CFG_B_PWM), 1);
 
 	MAP_TimerEnable(TIMERA2_BASE, TIMER_B);
 	MAP_TimerEnable(TIMERA3_BASE, TIMER_A);
 	MAP_TimerEnable(TIMERA3_BASE, TIMER_B);
+
+	osi_MsgQCreate(&g_PwmMessageQ, "PwmMsgQ", 3, 6);
 }
 
 void DeInitPWMModules() {
-	//
 	// Disable the peripherals
-	//
 	MAP_TimerDisable(TIMERA2_BASE, TIMER_B);
 	MAP_TimerDisable(TIMERA3_BASE, TIMER_A);
 	MAP_TimerDisable(TIMERA3_BASE, TIMER_B);
@@ -135,22 +118,14 @@ void DeInitPWMModules() {
 }
 
 void Pwm_Task(void *pvParameters) {
-	InitPWMModules();
-	osi_MsgQCreate(&g_PwmMessageQ, "PwmMsgQ", 3, 6);
-
 	uint8_t buffer[3];
 
-	while (1) {
-		//
-		// RYB - Update the duty cycle of the corresponding timers.
-		// This changes the brightness of the LEDs appropriately.
-		// The timers used are as per LP schematics.
-		//
+	for (;;) {
 		osi_MsgQRead(&g_PwmMessageQ, buffer, OSI_WAIT_FOREVER);
 
-		UpdateDutyCycle(TIMERA2_BASE, TIMER_B, buffer[0]);
-		UpdateDutyCycle(TIMERA3_BASE, TIMER_B, buffer[1]);
-		UpdateDutyCycle(TIMERA3_BASE, TIMER_A, buffer[2]);
+		UpdateDutyCycle(TIMERA2_BASE, TIMER_B, buffer[1]);
+		UpdateDutyCycle(TIMERA3_BASE, TIMER_B, buffer[2]);
+		UpdateDutyCycle(TIMERA3_BASE, TIMER_A, buffer[0]);
 	}
 }
 

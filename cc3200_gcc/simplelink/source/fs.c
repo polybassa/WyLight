@@ -154,7 +154,7 @@ const _SlCmdCtrl_t _SlFsCloseCmdCtrl =
 #if _SL_INCLUDE_FUNC(sl_FsClose)
 int sl_FsClose(long FileHdl, unsigned char* pCeritificateFileName,unsigned char* pSignature ,unsigned long SignatureLen)
 {
-    _SlFsCloseMsg_u Msg = {0};
+    _SlFsCloseMsg_u Msg;
     _SlCmdExt_t         ExtCtrl;
     
     Msg.Cmd.FileHandle             = FileHdl;
@@ -162,6 +162,10 @@ int sl_FsClose(long FileHdl, unsigned char* pCeritificateFileName,unsigned char*
     {
         Msg.Cmd.CertificFileNameLength = (sl_Strlen(pCeritificateFileName)+4) & (~3); /* add 4: 1 for NULL and the 3 for align */
     }
+    else
+    {
+		Msg.Cmd.CertificFileNameLength = 0;
+	}
     Msg.Cmd.SignatureLen           = SignatureLen;
     
     ExtCtrl.TxPayloadLen = ((SignatureLen+3) & (~3)); /* align */

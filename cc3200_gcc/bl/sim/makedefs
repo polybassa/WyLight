@@ -80,18 +80,12 @@ ifeq (${COMPILER}, gcc)
 CC=gcc
 
 #
-# Set the compiler CPU/FPU options.
-#
-#CPU=-mcpu=cortex-m4
-#FPU=-mfpu=fpv4-sp-d16 -mfloat-abi=softfp
-
-#
 # The flags passed to the compiler.
 #
 CFLAGS=-std=c99            \
        -g 		   \
        -O0 		   \
-       -c                  
+       -c                 
 
 #
 # Add the include file paths to AFLAGS and CFLAGS.

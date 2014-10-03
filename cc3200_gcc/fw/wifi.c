@@ -27,9 +27,9 @@
 //Common interface includes
 #include "wy_network_if.h"
 #include "wifi.h"
-#include "gpio_if.h"
 #include "broadcast.h"
 #include "server.h"
+#include "wy_firmware.h"
 
 //
 // GLOBAL VARIABLES -- Start
@@ -61,7 +61,6 @@ void WlanSupport_TaskInit(void) {
 //
 //*****************************************************************************
 void WlanSupport_Task(void *pvParameters) {
-
 	long retRes = ERROR;
 
 	retRes = (long) Network_IF_ReadDeviceConfigurationPin();
@@ -70,49 +69,44 @@ void WlanSupport_Task(void *pvParameters) {
 			UART_PRINT(ATTEMPTING_TO_CONNECT_TO_AP);
 
 			if (SUCCESS == Network_IF_InitDriver(ROLE_STA)) {
-				GPIO_IF_LedOff(MCU_ALL_LED_IND);
-				GPIO_IF_LedOn(MCU_GREEN_LED_GPIO);
 
+				osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
 				Broadcast_TaskRun();
 				TcpServer_TaskRun();
 				UdpServer_TaskRun();
 
 				while (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
-					osi_Sleep(100);
+					osi_Sleep(200);
 				}
+
+				osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
 				Broadcast_TaskQuit();
 				TcpServer_TaskQuit();
 				UdpServer_TaskQuit();
 
 				Network_IF_DeInitDriver();
 			}
-
 			UART_PRINT(NOT_CONNECTED_TO_AP);
-			GPIO_IF_LedOff(MCU_ALL_LED_IND);
-			GPIO_IF_LedOn(MCU_RED_LED_GPIO);
 		}
 
 		if (SUCCESS == Network_IF_InitDriver(ROLE_AP)) {
-			GPIO_IF_LedOff(MCU_ALL_LED_IND);
-			GPIO_IF_LedOn(MCU_GREEN_LED_GPIO);
 
+			osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
 			Broadcast_TaskRun();
 			TcpServer_TaskRun();
 			UdpServer_TaskRun();
 
-			GPIO_IF_LedOn(MCU_ORANGE_LED_GPIO);
 			do {
 				osi_SyncObjWait(WlanSupportProvisioningDataAddedSemaphore, OSI_WAIT_FOREVER);
 			} while (Network_IF_AddNewProfile() != SUCCESS);
 
+			osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
 			Broadcast_TaskQuit();
 			TcpServer_TaskQuit();
 			UdpServer_TaskQuit();
 
 			Network_IF_DeInitDriver();
 		}
-
-		GPIO_IF_LedOff(MCU_ALL_LED_IND);
 		retRes = ROLE_STA;
 	}
 }

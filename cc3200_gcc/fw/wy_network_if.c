@@ -53,7 +53,6 @@
 //  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -79,15 +78,14 @@
 #include "FreeRTOS.h"
 #include "semphr.h"
 
-#define CONNECTION_TIMEOUT  15000  /* 5sec */
+#define CONNECTION_TIMEOUT  20000  /* 20 sec */
 
 //
 // GLOBAL VARIABLES -- Start
 //
 struct wifiStatusInformation g_WifiStatusInformation;
-static struct apProvisioningData g_ApProvisioningData = { .priority = 0, .getToken = { "__SL_G_US0",
-		"__SL_G_US1", "__SL_G_US2", "__SL_G_US3", "__SL_G_US4", "__SL_G_US5" } };
-
+const char userGetToken[] = "__SL_G_US";
+static struct apProvisioningData g_ApProvisioningData = { .priority = 0 };
 
 //
 // GLOBAL VARIABLES -- End
@@ -419,50 +417,22 @@ void SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
 //*****************************************************************************
 void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent,
 		SlHttpServerResponse_t *pSlHttpServerResponse) {
-	UART_PRINT("[HTTP EVENT]");
 	switch (pSlHttpServerEvent->Event) {
 	case SL_NETAPP_HTTPGETTOKENVALUE: {
 
-		if (0
-				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_ApProvisioningData.getToken[1],
-						pSlHttpServerEvent->EventData.httpTokenName.len)) {
-			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_ApProvisioningData.networkEntries[0].ssid,
-					g_ApProvisioningData.networkEntries[0].ssid_len);
-			pSlHttpServerResponse->ResponseData.token_value.len = g_ApProvisioningData.networkEntries[0].ssid_len;
+		if (memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, userGetToken, sizeof(userGetToken) - 1)) {
+			break;
 		}
-		if (0
-				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_ApProvisioningData.getToken[2],
-						pSlHttpServerEvent->EventData.httpTokenName.len)) {
-			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_ApProvisioningData.networkEntries[1].ssid,
-					g_ApProvisioningData.networkEntries[1].ssid_len);
-			pSlHttpServerResponse->ResponseData.token_value.len = g_ApProvisioningData.networkEntries[1].ssid_len;
+		const int getTokenNumber = pSlHttpServerEvent->EventData.httpTokenName.data[sizeof(userGetToken) - 1] - '0';
+		if (getTokenNumber < 0 || getTokenNumber > MAX_NUM_NETWORKENTRIES) {
+			break;
 		}
-		if (0
-				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_ApProvisioningData.getToken[3],
-						pSlHttpServerEvent->EventData.httpTokenName.len)) {
-			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_ApProvisioningData.networkEntries[2].ssid,
-					g_ApProvisioningData.networkEntries[2].ssid_len);
-			pSlHttpServerResponse->ResponseData.token_value.len = g_ApProvisioningData.networkEntries[2].ssid_len;
-		}
-		if (0
-				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_ApProvisioningData.getToken[4],
-						pSlHttpServerEvent->EventData.httpTokenName.len)) {
-			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_ApProvisioningData.networkEntries[3].ssid,
-					g_ApProvisioningData.networkEntries[3].ssid_len);
-			pSlHttpServerResponse->ResponseData.token_value.len = g_ApProvisioningData.networkEntries[3].ssid_len;
-		}
-		if (0
-				== memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, g_ApProvisioningData.getToken[5],
-						pSlHttpServerEvent->EventData.httpTokenName.len)) {
-			// Important - Token value len should be < MAX_TOKEN_VALUE_LEN
-			memcpy(pSlHttpServerResponse->ResponseData.token_value.data, g_ApProvisioningData.networkEntries[4].ssid,
-					g_ApProvisioningData.networkEntries[4].ssid_len);
-			pSlHttpServerResponse->ResponseData.token_value.len = g_ApProvisioningData.networkEntries[4].ssid_len;
-		} else break;
+		memcpy(pSlHttpServerResponse->ResponseData.token_value.data,
+				g_ApProvisioningData.networkEntries[getTokenNumber].ssid,
+				g_ApProvisioningData.networkEntries[getTokenNumber].ssid_len);
+		pSlHttpServerResponse->ResponseData.token_value.len =
+				g_ApProvisioningData.networkEntries[getTokenNumber].ssid_len;
+
 	}
 		break;
 
@@ -500,6 +470,12 @@ void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent,
 
 			} else if (pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] == '2') {
 				g_ApProvisioningData.secParameters.Type = SL_SEC_TYPE_WPA;	//SL_SEC_TYPE_WPA
+
+			} else if (pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] == '3') {
+				g_ApProvisioningData.secParameters.Type = SL_SEC_TYPE_WPS_PBC;	//SL_SEC_TYPE_WPA
+
+			} else if (pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] == '4') {
+				g_ApProvisioningData.secParameters.Type = SL_SEC_TYPE_WPS_PIN;	//SL_SEC_TYPE_WPA
 
 			} else {
 				g_ApProvisioningData.secParameters.Type = SL_SEC_TYPE_OPEN;	//SL_SEC_TYPE_OPEN
@@ -546,19 +522,17 @@ static void InitializeAppVariables(void) {
 static long waitForConnectWithTimeout(unsigned int timeout_ms) {
 	unsigned int connectTimeoutCounter = 0;
 	//waiting for the device to connect to the AP and obtain ip address
-	while ((connectTimeoutCounter < timeout_ms)
-			&& !IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)) {
+	while ((connectTimeoutCounter < timeout_ms) && !IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)) {
 		// wait till connects to an AP
-		osi_Sleep(1);	//waiting for 0,5 secs
-
-		if (connectTimeoutCounter % 200 == 0) {
-			GPIO_IF_LedToggle(MCU_GREEN_LED_GPIO);
-		}
-		connectTimeoutCounter += 1;
+		osi_Sleep(5);	//waiting for 0,5 secs
+		connectTimeoutCounter += 5;
 	}
 
 	if ((!IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus))
-			|| (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus))) return ERROR;
+			|| (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus))) {
+		UART_PRINT("Connecting failed \r\n");
+		return ERROR;
+	}
 	else return SUCCESS;
 }
 
@@ -628,9 +602,9 @@ static long ConfigureSimpleLinkToDefaultState() {
 		}
 	}
 
-// Set connection policy to Auto + SmartConfig
+// Set connection policy to Auto + Fast Connection
 //      (Device's default connection policy)
-	retRes = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1, 0, 0, 0, 1), NULL, 0);
+	retRes = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1, 1, 0, 0, 0), NULL, 0);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
 // Enable DHCP client
@@ -659,10 +633,6 @@ static long ConfigureSimpleLinkToDefaultState() {
 	retRes = sl_NetAppSet(SL_NET_APP_DEVICE_CONFIG_ID, NETAPP_SET_GET_DEV_CONF_OPT_DEVICE_URN, sizeof(urnName),
 			urnName);
 	ASSERT_ON_ERROR(__LINE__, retRes);
-
-	if (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
-		sl_WlanDisconnect();
-	}
 
 	retRes = sl_Stop(SL_STOP_TIMEOUT);
 	ASSERT_ON_ERROR(__LINE__, retRes);
@@ -739,7 +709,7 @@ static long StartSimpleLinkAsAP() {
 	osi_Sleep(8000);
 
 	//Get Scan Result
-	retRes = sl_WlanGetNetworkList(0, 20, &g_ApProvisioningData.networkEntries[0]);
+	retRes = sl_WlanGetNetworkList(0, MAX_NUM_NETWORKENTRIES, &g_ApProvisioningData.networkEntries[0]);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	int i;
@@ -779,7 +749,6 @@ static long StartSimpleLinkAsAP() {
 	retRes = sl_WlanSet(SL_WLAN_CFG_AP_ID, 3, 1, &channel);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
-	sl_WlanDisconnect();
 	sl_Stop(SL_STOP_TIMEOUT);
 	CLR_STATUS_BIT_ALL(g_WifiStatusInformation.SimpleLinkStatus);
 
@@ -854,18 +823,14 @@ void Network_IF_DeInitDriver(void) {
 //
 //*****************************************************************************
 long Network_IF_InitDriver(unsigned int uiMode) {
-
-	long lRetVal = -1;
-	unsigned int retry = 1;
-
 	if (uiMode == ROLE_STA) {
-		do {
-			lRetVal = StartSimpleLinkAsStation();
-			if (lRetVal == SUCCESS) {
+		unsigned int retry = 2;
+		while (retry--) {
+			if (SUCCESS == StartSimpleLinkAsStation()) {
 				return SUCCESS;
 			}
 			Network_IF_DeInitDriver();
-		} while (retry--);
+		}
 		return ERROR;
 	} else if (uiMode == ROLE_AP) {
 		return StartSimpleLinkAsAP();
@@ -892,19 +857,39 @@ unsigned char Network_IF_ReadDeviceConfigurationPin(void) {
 }
 
 long Network_IF_AddNewProfile(void) {
-	long retRes = ERROR;
-	retRes = sl_WlanProfileAdd(g_ApProvisioningData.wlanSSID, strlen((char*) g_ApProvisioningData.wlanSSID), 0,
-			&g_ApProvisioningData.secParameters, 0, g_ApProvisioningData.priority, 0);
-	if (retRes < 0) {
-		// Remove all profiles
-		retRes = sl_WlanProfileDel(0xFF);
-		ASSERT_ON_ERROR(__LINE__, retRes);
-		// and try again
+	// WPS ?
+	if (g_ApProvisioningData.secParameters.Type == SL_SEC_TYPE_WPS_PBC) {
+		g_ApProvisioningData.secParameters.KeyLen = 0;
+		g_ApProvisioningData.secParameters.Key = "";
+
+		CLR_STATUS_BIT_ALL(g_WifiStatusInformation.SimpleLinkStatus);
+
+		sl_WlanConnect(g_ApProvisioningData.wlanSSID, strlen((char*) g_ApProvisioningData.wlanSSID), 0,
+				&g_ApProvisioningData.secParameters, 0);
+		return waitForConnectWithTimeout(60000);
+
+	} else if (g_ApProvisioningData.secParameters.Type == SL_SEC_TYPE_WPS_PIN) {
+
+		CLR_STATUS_BIT_ALL(g_WifiStatusInformation.SimpleLinkStatus);
+
+		sl_WlanConnect(g_ApProvisioningData.wlanSSID, strlen((char*) g_ApProvisioningData.wlanSSID), 0,
+				&g_ApProvisioningData.secParameters, 0);
+		return waitForConnectWithTimeout(60000);
+
+	} else {
+		long retRes = ERROR;
 		retRes = sl_WlanProfileAdd(g_ApProvisioningData.wlanSSID, strlen((char*) g_ApProvisioningData.wlanSSID), 0,
 				&g_ApProvisioningData.secParameters, 0, g_ApProvisioningData.priority, 0);
-		ASSERT_ON_ERROR(__LINE__, retRes);
-
+		if (retRes < 0) {
+			// Remove all profiles
+			retRes = sl_WlanProfileDel(0xFF);
+			ASSERT_ON_ERROR(__LINE__, retRes);
+			// and try again
+			retRes = sl_WlanProfileAdd(g_ApProvisioningData.wlanSSID, strlen((char*) g_ApProvisioningData.wlanSSID), 0,
+					&g_ApProvisioningData.secParameters, 0, g_ApProvisioningData.priority, 0);
+			ASSERT_ON_ERROR(__LINE__, retRes);
+		}
+		UART_PRINT("Added Profile at index %d \r\n", retRes);
 	}
-	UART_PRINT("Added Profile at index %d \r\n", retRes);
 	return SUCCESS;
 }

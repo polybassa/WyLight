@@ -16,23 +16,50 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "CommandIO.h"
+#ifndef cc3200
+
+#include "usart.h"
+#include "spi.h"
+#include "crc.h"
+
+#else /* cc3200 */
+
+#include "wy_crc.h"
+#include "uart_if.h"
+#define UART_PRINT Report
+
+#endif /* cc3200 */
+
 #include "ScriptCtrl.h"
+#include "CommandIO.h"
 #include "trace.h"
 #include "RingBuf.h"
-#include "crc.h"
-#include "usart.h"
 #include "error.h"
+#include "Version.h"
 #include "wifly_cmd.h"
 #include "rtc.h"
-#include "Version.h"
-#include "spi.h"
 
 bank2 struct CommandBuffer g_CmdBuf;
 bank5 struct response_frame g_ResponseBuf;
 static bit g_Odd_STX_Received;
 
 /** PRIVATE METHODES **/
+
+#ifdef cc3200
+
+static void UART_Send(const uns8 data) {
+	if (RingBuf_HasError(&g_RingBuf_Tx)) {
+		UART_PRINT("g_RingBuf_Tx Error \r\n");
+		RingBuf_Init(&g_RingBuf_Tx);
+	}
+	RingBuf_Put(&g_RingBuf_Tx, data);
+}
+
+#define Rtc_Ctl(x,y)
+#define Timer_PrintCycletime(x,y) 0
+#define Trace_Print(x,y) 0
+#define SPI_Send(x) 0
+#endif
 
 static void WriteByte(uns8 byte)
 {
@@ -66,6 +93,9 @@ void CommandIO_Init()
 	g_CmdBuf.state = CS_WaitForSTX;
 	DeleteBuffer();
 	g_Odd_STX_Received = FALSE;
+#ifdef cc3200
+	Crc_Init();
+#endif
 }
 
 void CommandIO_Error()
@@ -104,6 +134,9 @@ void CommandIO_GetCommands()
 {
 	if(RingBuf_HasError(&g_RingBuf)) {
 		Trace_String(ERROR_RECEIVEBUFFER_FULL);//RingbufferFull
+#ifdef cc3200
+		UART_PRINT("[ERROR]g_RingBuf Overflow\r\n");
+#endif
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
 		RingBuf_Init(&g_RingBuf);
@@ -155,7 +188,7 @@ void CommandIO_GetCommands()
 					if((0 == g_CmdBuf.CrcL) && (0 == g_CmdBuf.CrcH)) {
 						// [0] contains cmd_frame->cmd. Reply this cmd as response to client
 	#ifndef __CC8E__
-						mRetValue = ScriptCtrl_Add((struct led_cmd *)&g_CmdBuf.buffer[0]);
+						mRetValue = (ErrorCode)ScriptCtrl_Add((struct led_cmd *)&g_CmdBuf.buffer[0]);
 	#else
 						mRetValue = ScriptCtrl_Add(&g_CmdBuf.buffer[0]);
 	#endif

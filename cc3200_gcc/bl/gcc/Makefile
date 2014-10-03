@@ -47,7 +47,8 @@ common: ${BINDIR}/${PRJ_NAME}.axf
 BL_FILE=exe/${PRJ_NAME}.bin
 bl: SCATTERgcc_${PRJ_NAME}=../../bl/gcc/WyLight_bl.ld
 bl: common
-	openssl sha256 -binary ${BL_FILE} >> ${BL_FILE}
+
+#openssl sha256 -binary ${BL_FILE} >> ${BL_FILE}
 
 # build the bootloader as a small firmware which is used to update the bootloader ;-)
 FW_FILE=WyLight_fw.bin
@@ -55,13 +56,12 @@ as_fw: SCATTERgcc_${PRJ_NAME}=../../fw/gcc/WyLight_fw.ld
 as_fw: CFLAGS += -DBUILD_AS_FW
 as_fw: common
 	mv exe/${PRJ_NAME}.bin ${FW_FILE}
-	openssl sha256 -binary ${FW_FILE} >> ${FW_FILE}
 
 install_bl:
-	netcat 192.168.1.1 2000 < ${BL_FILE}
+	sh ../install.sh ${BL_FILE} "/sys/mcuimg.bin"
 
 install_fw:
-	netcat 192.168.1.1 2000 < ${FW_FILE}
+	sh ../install.sh ${FW_FILE} "/temp/firmware.bin"
 
 # The rule to clean out all the build products.
 clean:

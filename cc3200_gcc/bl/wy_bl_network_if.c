@@ -49,58 +49,42 @@
 #include "wy_bl_network_if.h"
 #include "uart_if.h"
 
-//
-// GLOBAL VARIABLES -- Start
-//
-unsigned long g_ulStatus = 0; /* SimpleLink Status */
-//
-// GLOBAL VARIABLES -- End
-//
+static unsigned long g_ulStatus = 0; /* SimpleLink Status */
 
-void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
-	switch (((SlWlanEvent_t*) pSlWlanEvent)->Event) {
-	case SL_WLAN_CONNECT_EVENT: {
+void wifi_status_disconnected()
+{
+	CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
+	CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
+}
+
+/**
+ * Callback function to handle SimpleLink WLAN events
+ */
+void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent)
+{
+	switch (pSlWlanEvent->Event) {
+	case SL_WLAN_STA_CONNECTED_EVENT: // when device is in AP mode and any client connects to device cc3xxx
+	case SL_WLAN_CONNECT_EVENT:
 		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
 		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION_FAILED);
-	}
 		break;
 
-	case SL_WLAN_DISCONNECT_EVENT: {
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
-	}
-		break;
-
-	case SL_WLAN_STA_CONNECTED_EVENT: {
-		// when device is in AP mode and any client connects to device cc3xxx
-		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION_FAILED);
-	}
-		break;
-
-	case SL_WLAN_STA_DISCONNECTED_EVENT: {
-		// when client disconnects from device (AP)
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
+	case SL_WLAN_STA_DISCONNECTED_EVENT: // when client disconnects from device (AP)
 		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_LEASED);
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
-
-	}
+		/** fallthru */
+	case SL_WLAN_DISCONNECT_EVENT:
+		wifi_status_disconnected();
 		break;
 
-	case SL_WLAN_CONNECTION_FAILED_EVENT: {
-		// If device gets any connection failed event
+	case SL_WLAN_CONNECTION_FAILED_EVENT: 
 		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION_FAILED);
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
-		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
-	}
+		wifi_status_disconnected();
 		break;
 
-	default: {
+	default:
 		UART_PRINT("[WLAN EVENT] Unexpected event \n\r");
-	}
 		break;
 	}
-
 }
 
 //*****************************************************************************
@@ -113,53 +97,42 @@ void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 //! \return None
 //!
 //*****************************************************************************
-void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
+void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent)
+{
 	switch (pNetAppEvent->Event) {
 	case SL_NETAPP_IPV4_ACQUIRED:
-	case SL_NETAPP_IPV6_ACQUIRED: {
+	case SL_NETAPP_IPV6_ACQUIRED:
 		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
 		UART_PRINT("[NETAPP EVENT] IP Acquired\r\n");
-	}
 		break;
 
-	case SL_NETAPP_IP_LEASED: {
+	case SL_NETAPP_IP_LEASED:
 		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_LEASED);
-	}
 		break;
 
-	case SL_NETAPP_IP_RELEASED: {
+	case SL_NETAPP_IP_RELEASED:
 		CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_LEASED);
-	}
 		break;
 
-	case SL_NETAPP_SOCKET_TX_FAILED: {
+	case SL_NETAPP_SOCKET_TX_FAILED:
 		UART_PRINT("[NETAPP EVENT] Socket Error # %d \n\r", pNetAppEvent->EventData.sd);
-	}
 		break;
 
-	default: {
+	default:
 		UART_PRINT("[NETAPP EVENT] Unexpected event \n\r");
-	}
 		break;
 	}
 }
 
-//*****************************************************************************
-//
-//! \brief This function handles General Events
-//!
-//! \param[in]     pDevEvent - Pointer to General Event Info 
-//!
-//! \return None
-//!
-//*****************************************************************************
-void SimpleLinkGeneralEventHandler(SlDeviceEvent_t *pDevEvent) {
-	//
+/**
+ * Callback function to handle general SimpleLink events
+ */
+void SimpleLinkGeneralEventHandler(SlDeviceEvent_t *pDevEvent)
+{
 	// Most of the general errors are not FATAL are are to be handled
 	// appropriately by the application
-	//
-	UART_PRINT("[GENERAL EVENT] - ID=[%d] Sender=[%d]\n\n", pDevEvent->EventData.deviceEvent.status,
-			pDevEvent->EventData.deviceEvent.sender);
+	const sl_DeviceReport report = pDevEvent->EventData.deviceEvent;
+	UART_PRINT("[GENERAL EVENT] - ID=[%d] Sender=[%d]\n\n", report.status, report.sender);
 }
 
 //*****************************************************************************

@@ -127,14 +127,6 @@ typedef enum {
 
 } e_StatusBits;
 
-//
-// GLOBAL VARIABLES -- Start
-//
-extern unsigned long g_ulStatus; /* SimpleLink Status */
-//
-// GLOBAL VARIABLES -- End
-//
-
 //*****************************************************************************
 //
 // API Function prototypes

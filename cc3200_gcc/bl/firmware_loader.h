@@ -23,8 +23,7 @@
 #include <stddef.h>
 
 long LoadAndExecuteFirmware(void);
-void StartFirmware(void);
-long SaveSRAMContentAsFirmware(uint8_t *pSource, const size_t length);
+long SaveSRAMContent(uint8_t *pSource, const size_t length);
 
 
 #endif /* FIRMWARE_DOWNLOAD_H_ */
