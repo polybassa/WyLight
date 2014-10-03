@@ -273,7 +273,6 @@ extern "C" {
 #define SL_IP_LEASE_EXPIRED       2
 
 #ifdef SL_INC_STD_BSD_API_NAMING
-
 #define FD_SETSIZE                          SL_FD_SETSIZE        
                                                                        
 #define SOCK_STREAM                         SL_SOCK_STREAM        

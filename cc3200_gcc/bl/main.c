@@ -51,12 +51,7 @@
 
 #define UART_PRINT          Report
 
-//
-// GLOBAL VARIABLES -- Start
-//
 extern void (* const g_pfnVectors[])(void);
-const uint32_t g_BootloaderVersion = htonl(BOOTLOADER_VERSION);
-// GLOBAL VARIABLES -- End
 
 static void DisplayBanner(const char * const AppName) {
 	UART_PRINT("\n\n\n\r");
