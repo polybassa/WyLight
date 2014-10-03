@@ -131,7 +131,7 @@ static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *r
 //! \param[in]      pSource -- Pointer to startadress of the binary
 //! \param[in]		length -- Length of the binary plus checksum in bytes
 //!
-//! \return         0 for success and negative for error
+//! \return         0 for success
 //
 //****************************************************************************
 static long VerifySRAM(uint8_t *pSource, const size_t length) {
@@ -151,11 +151,7 @@ static long VerifySRAM(uint8_t *pSource, const size_t length) {
 	}
 	memcpy(secoundHash, pHash, CHECKSUM_SIZE);
 
-	if (memcmp(secoundHash, firstHash, sizeof(firstHash)) != 0) {
-		UART_PRINT("\r\nHash-Sums are different\r\n");
-		return ERROR;
-	}
-	return SUCCESS;
+	return memcmp(secoundHash, firstHash, sizeof(firstHash));
 }
 
 //****************************************************************************
@@ -292,15 +288,10 @@ static void StartFirmware(void) {
 	firmware_origin_entry();
 }
 
-//****************************************************************************
-//
-//! \brief LoadAndExecuteFirmware
-//!
-//! This function loads and executes a firmware file from FLASH
-//!
-//! \return         0 for success and negative for error
-//
-//****************************************************************************
+/**
+ * Load, verify and run the firmware file from flash
+ * \return ERROR, if this function was successful it will not return
+ */
 long LoadAndExecuteFirmware(void) {
 	// retVal contains length of Firmware after load
 	long fw_length = LoadFirmware(FIRMWARE_FILENAME);
@@ -308,9 +299,11 @@ long LoadAndExecuteFirmware(void) {
 		return ERROR;
 	}
 
-	if (SUCCESS == VerifySRAM(FIRMWARE_ORIGIN, fw_length)) {
-		UART_PRINT("Starting Firmware\r\n");
-		StartFirmware();
+	if (VerifySRAM(FIRMWARE_ORIGIN, fw_length)) {
+		UART_PRINT("Invalid SHA256SUM\r\n");
+		return ERROR;
 	}
+	UART_PRINT("Starting Firmware\r\n");
+	StartFirmware();
 	return ERROR;
 }
