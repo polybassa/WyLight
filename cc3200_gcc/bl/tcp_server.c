@@ -78,7 +78,7 @@ static int ReceiveFw(int SocketTcpChild)
  */
 static int TcpServer_Listen()
 {
-	static const struct sockaddr_in localAddr = {
+	const struct sockaddr_in localAddr = {
 		.sin_family = AF_INET,
 		.sin_port = SERVER_PORT,
 		.sin_addr.s_addr = 0
@@ -148,7 +148,7 @@ int TcpServer_Accept(const int listenSocket)
  */
 extern void TcpServer(void)
 {
-	static const uint32_t BL_VERSION = htonl(BOOTLOADER_VERSION);
+	const uint32_t BL_VERSION = htonl(BOOTLOADER_VERSION);
 	char welcome[] = "\0\0\0\0WyLightBootloader";
 
 	memcpy(welcome, &BL_VERSION, sizeof(uint32_t));

@@ -19,6 +19,8 @@
 #ifndef _BOOTLOADER_H_
 #define _BOOTLOADER_H_
 
+#include <stdint.h>
+
 #define BOOTLOADER_VERSION 1
 
 #if defined(SIMULATOR)
