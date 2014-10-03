@@ -24,23 +24,17 @@
 #include "hw_shamd5.h"
 #include "hw_memmap.h"
 #include "hw_nvic.h"
-#include "shamd5.h"
+#include "hw_ints.h"
+#include "interrupt.h"
 #include "prcm.h"
+#include "rom_map.h"
+#include "shamd5.h"
 
 #include "uart_if.h"
 #include "firmware_loader.h"
 #include "wy_bl_network_if.h"
 #include "bootloader.h"
 
-#ifdef SIMULATOR
-#include "simulator.h"
-#include "fs.h"
-#else
-#include "simplelink.h"
-#include "rom_map.h"
-#include "hw_ints.h"
-#include "interrupt.h"
-#endif /* SIMULATOR */
 
 #define BUFFER_SIZE 			1024
 #define BLOCKSIZE		 		64 		/* Write block size for write to MD5SHA module */
