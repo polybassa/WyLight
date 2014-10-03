@@ -25,22 +25,7 @@
 #include "bootloader.h"
 #include "firmware_loader.h"
 #include "tcp_server.h"
-
-#ifndef SIMULATOR
-#include "simplelink.h"
 #include "wy_bl_network_if.h"
-#else
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-#define SUCCESS 0
-#endif /*SIMULATOR */
 
 #define BUFFERSIZE 1024
 #define SERVER_PORT htons(2000)

@@ -24,7 +24,7 @@
 #define BOOTLOADER_VERSION 1
 
 #if defined(SIMULATOR)
-static uint8_t memory[0x3FFFF];
+#include "simulator.h"
 #define FW_FILENAME			"firmware.bin"
 #define APP_NAME			"WyLight Firmware"
 #define FIRMWARE_ORIGIN 	memory

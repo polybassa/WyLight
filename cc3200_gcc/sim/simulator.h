@@ -19,9 +19,18 @@
 #ifndef __SIMULATOR_H_
 #define __SIMULATOR_H_
 
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <errno.h>
+#include <unistd.h>
 
+uint8_t memory[0x3FFFF];
+
+#define ERROR -1
 #define SUCCESS 0
 
 #define MAP_IntVTableBaseSet(x)
