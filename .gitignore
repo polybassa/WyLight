@@ -24,7 +24,6 @@ firmware/autoscan.log
 firmware/configure.scan
 library/autoscan.log
 library/configure.scan
-Makefile
 TestOutput.txt
 autom4te.cache/output.0
 autom4te.cache/requests
@@ -254,7 +253,7 @@ cc3200/WiFi-Starter-iOS-App/appicons/98pt@2.png
 cc3200/WiFi-Starter-iOS-App/powerbutton_fullsize.jpg
 cc3200/WiFi-Starter-iOS-App/powerbutton_fullsize.png
 cc3200/WiFi-Starter-iOS-App/powerbutton_fullsize_sm.png
-cc3200/WiFi-Starter-iOS-App/smart_config_app_ENC5.py
+cc3200/WiFi-Starter-iOS-App/*
 cc3200_gcc/bl/gcc/obj
 cc3200/wyLightFirmware/bootloader/gcc/obj
 cc3200_gcc/bl/ccs/Release
@@ -272,11 +271,10 @@ cc3200_gcc/fw/gcc/obj
 *.mk
 cc3200_gcc/bl/ccs/Release__GNU
 *.pp
-<<<<<<< HEAD
-cc3200_gcc/bl/gcc/exe
-=======
-cc3200_gcc/driverlib/ccs/Release
-cc3200_gcc/oslib/ccs/free_rtos/free_rtos.a
-cc3200_gcc/simplelink/ccs/OS/simplelink.a
->>>>>>> origin/FreeRTOS-gcc
 *.obj
+cc3200_gcc/driverlib/ccs/Release/makefile_old
+cc3200_gcc/oslib/ccs/free_rtos/free_rtos.a
+cc3200_gcc/oslib/ccs/free_rtos/makefile_old
+cc3200_gcc/simplelink/ccs/OS/makefile_old
+cc3200_gcc/simplelink/ccs/OS/simplelink.a
+*.a
