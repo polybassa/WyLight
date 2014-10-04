@@ -25,71 +25,35 @@
 #include "bootloader.h"
 #include "firmware_loader.h"
 #include "tcp_server.h"
-
-#ifndef SIMULATOR
-#include "simplelink.h"
 #include "wy_bl_network_if.h"
-#else
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-#define SUCCESS 0
-#define UART_PRINT Report
-#endif /*SIMULATOR */
 
 #define BUFFERSIZE 1024
 #define SERVER_PORT htons(2000)
-
-#ifdef SIMULATOR
-
-static uint8_t memory[0x3FFFF];
-
-#undef FIRMWARE_ORIGIN
-#define FIRMWARE_ORIGIN ((uint8_t*)&memory[0])
-
-#endif
 
 /**
  * @return 0 on success, if new firmware was saved and validated
  */
 static int ReceiveFw(int SocketTcpChild)
 {
-	uint8_t *pFirmware = (uint8_t *) FIRMWARE_ORIGIN;
+	uint8_t *pFirmware = FIRMWARE_ORIGIN;
 	UART_PRINT("Start writing Firmware at 0x%x \r\n", pFirmware);
 
 	for(;;) {
-		int bytesReceived = recv(SocketTcpChild, pFirmware, BUFFERSIZE, 0);
+		const int bytesReceived = recv(SocketTcpChild, pFirmware, BUFFERSIZE, 0);
 
-		if (bytesReceived > 0) {
-			// Received some bytes
+		if (bytesReceived >= 0) {
 			pFirmware += bytesReceived;
 			UART_PRINT("Tcp: Received %d bytes\r\n", bytesReceived);
-#ifdef SIMULATOR
+
 			if (bytesReceived < BUFFERSIZE) {
     			const size_t length = (size_t) (pFirmware - FIRMWARE_ORIGIN);
-				return SaveSRAMContentAsFirmware((uint8_t *) FIRMWARE_ORIGIN, length);
+				return SaveSRAMContent(FIRMWARE_ORIGIN, length);
 			}
-#endif
-			continue;
-		}
-
-		if (EAGAIN == bytesReceived) {
+		} else if (EAGAIN == bytesReceived) {
 			_SlNonOsMainLoopTask();
-			continue;
-		}
-
-		if (bytesReceived < 0) {
+		} else {
 			return bytesReceived;
 		}
-
-		const size_t length = (size_t) (pFirmware - FIRMWARE_ORIGIN);
-		return SaveSRAMContent((uint8_t *) FIRMWARE_ORIGIN, length);
 	}
 }
 
@@ -99,7 +63,7 @@ static int ReceiveFw(int SocketTcpChild)
  */
 static int TcpServer_Listen()
 {
-	static const struct sockaddr_in localAddr = {
+	const struct sockaddr_in localAddr = {
 		.sin_family = AF_INET,
 		.sin_port = SERVER_PORT,
 		.sin_addr.s_addr = 0
@@ -169,7 +133,7 @@ int TcpServer_Accept(const int listenSocket)
  */
 extern void TcpServer(void)
 {
-	static const uint32_t BL_VERSION = htonl(BOOTLOADER_VERSION);
+	const uint32_t BL_VERSION = htonl(BOOTLOADER_VERSION);
 	char welcome[] = "\0\0\0\0WyLightBootloader";
 
 	memcpy(welcome, &BL_VERSION, sizeof(uint32_t));

@@ -19,20 +19,25 @@
 #ifndef _BOOTLOADER_H_
 #define _BOOTLOADER_H_
 
+#include <stdint.h>
+
 #define BOOTLOADER_VERSION 1
 
-#ifndef BUILD_AS_FW
-
-#define FW_FILENAME			"/temp/firmware.bin"
-#define APP_NAME			"WyLight Bootloader"
-#define FIRMWARE_ORIGIN 	0x20012000
-
-#else
-
+#if defined(SIMULATOR)
+#include "simulator.h"
+#define FW_FILENAME			"firmware.bin"
+#define APP_NAME			"WyLight Firmware"
+#define FIRMWARE_ORIGIN 	memory
+#elif defined(BUILD_AS_FW)
 #define FW_FILENAME			"/sys/mcuimg.bin"
 #define APP_NAME			"WyLight Firmware"
-#define FIRMWARE_ORIGIN 	0x20004000
-
+#define FIRMWARE_ORIGIN 	(uint8_t*)0x20004000
+#else
+#define FW_FILENAME			"/temp/firmware.bin"
+#define APP_NAME			"WyLight Bootloader"
+#define FIRMWARE_ORIGIN 	(uint8_t*)0x20012000
 #endif
+
+
 
 #endif /* #ifndef _BOOTLOADER_H_ */

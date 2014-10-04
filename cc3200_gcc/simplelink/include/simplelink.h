@@ -270,6 +270,10 @@ extern "C"
 #define SL_INC_SOCK_SEND_API
 #endif
 
+#ifdef SIMULATOR
+#undef SL_INC_STD_BSD_API_NAMING
+#endif
+
 
 typedef void (*_SlSpawnEntryFunc_t)(void* pValue);
 

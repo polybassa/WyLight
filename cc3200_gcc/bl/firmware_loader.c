@@ -24,36 +24,26 @@
 #include "hw_shamd5.h"
 #include "hw_memmap.h"
 #include "hw_nvic.h"
-#include "shamd5.h"
+#include "hw_ints.h"
+#include "interrupt.h"
 #include "prcm.h"
+#include "rom_map.h"
+#include "shamd5.h"
 
 #include "uart_if.h"
 #include "firmware_loader.h"
 #include "wy_bl_network_if.h"
 #include "bootloader.h"
 
-#ifdef SIMULATOR
-#include "simulator.h"
-#include "fs.h"
-#else
-#include "simplelink.h"
-#include "rom_map.h"
-#include "hw_ints.h"
-#include "interrupt.h"
-#endif /* SIMULATOR */
 
 #define BUFFER_SIZE 			1024
 #define BLOCKSIZE		 		64 		/* Write block size for write to MD5SHA module */
 #define CHECKSUM_SIZE			32		/* In Bytes, We use SHA-256 */
 #define SUCCESS					0
 #define FILENAME_SIZE			128
-#define UART_PRINT          	Report
 
-//
-// GLOBAL VARIABLES -- Start
-//
+
 // Flags to check that interrupts were successfully generated.
-
 volatile struct SHAMD5_StatusFlags {
 	unsigned int ContextReadyFlag :1;
 	unsigned int ParthashReadyFlag :1;
@@ -61,18 +51,8 @@ volatile struct SHAMD5_StatusFlags {
 	unsigned int OutputReadyFlag :1;
 } g_SHAMD5_StatusFlags;
 
-#ifdef SIMULATOR
-static uint8_t memory[0x3FFFF];
-#undef FIRMWARE_ORIGIN
-#define FIRMWARE_ORIGIN (void*)&memory[0]
-static unsigned char* FIRMWARE_FILENAME = (unsigned char *) "firmware.bin";
-#else /* SIMULATOR */
 static unsigned char* FIRMWARE_FILENAME = (unsigned char *) FW_FILENAME;
-#endif /* SIMULATOR */
 
-//
-// GLOBAL VARIABLES -- End
-//
 
 //*****************************************************************************
 //
@@ -345,7 +325,7 @@ static void StartFirmware(void) {
 	MAP_IntDisable(FAULT_SYSTICK);
 	MAP_IntMasterDisable();
 	// patch Interrupt Vector Table
-	MAP_IntVTableBaseSet(FIRMWARE_ORIGIN);
+	MAP_IntVTableBaseSet((size_t)FIRMWARE_ORIGIN);
 
 	// call Firmware
 	void (*firmware_origin_entry)(void);
@@ -371,7 +351,7 @@ long LoadAndExecuteFirmware(void) {
 		return ERROR;
 	}
 
-	if (SUCCESS == VerifySRAM((uint8_t *) FIRMWARE_ORIGIN, fw_length)) {
+	if (SUCCESS == VerifySRAM(FIRMWARE_ORIGIN, fw_length)) {
 		UART_PRINT("Starting Firmware\r\n");
 		StartFirmware();
 	}

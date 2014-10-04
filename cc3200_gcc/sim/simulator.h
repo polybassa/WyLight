@@ -19,24 +19,33 @@
 #ifndef __SIMULATOR_H_
 #define __SIMULATOR_H_
 
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <errno.h>
+#include <unistd.h>
 
+uint8_t memory[0x3FFFF];
+
+#define ERROR -1
 #define SUCCESS 0
 
-#define MAP_IntVTableBaseSet(x)
-#define MAP_IntMasterEnable()
-#define MAP_IntEnable(x)
+#define IntVTableBaseSet(x)
+#define IntMasterEnable()
+#define IntEnable(x)
 #define PRCMCC3200MCUInit()
 #define PRCMPeripheralClkEnable(x,y)
 #define PRCMPeripheralClkDisable(x,y)
-#define MAP_SHAMD5IntRegister(x,y)
+#define SHAMD5IntRegister(x,y)
 #define PRCMPeripheralReset(x)
 #define SHAMD5ConfigSet(x,y)
-#define MAP_IntDisable(x)
-#define MAP_IntMasterDisable()
+#define IntDisable(x)
+#define IntMasterDisable()
 
-uint32_t MAP_SHAMD5IntStatus(uint32_t base, bool flag);
+uint32_t SHAMD5IntStatus(uint32_t base, bool flag);
 
 void SHAMD5IntDisable(uint32_t base, uint32_t state);
 

@@ -39,19 +39,11 @@
 #ifndef __WY_BL_NETWORK_IF__H__
 #define __WY_BL_NETWORK_IF__H__
 
-//*****************************************************************************
-//
-// If building with a C++ compiler, make all of the definitions in this header
-// have a C binding.
-//
-//*****************************************************************************
-
+#include "wlan.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "wlan.h"
 
 // Loop forever, user can change it as per application's requirement
 #define LOOP_FOREVER(line_number) \

@@ -34,4 +34,5 @@ while [ "$1" != "" ]; do
 		shift
 	fi
 done
+rm tmp.bin
 	

@@ -16,12 +16,6 @@
  You should have received a copy of the GNU General Public License
  along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifdef SIMULATOR
-
-#include "simulator.h"
-
-#else
-
 #include "hw_types.h"
 #include "hw_ints.h"
 #include "hw_memmap.h"
@@ -31,12 +25,12 @@
 
 // driverlib includes
 #include "rom.h"
+#ifndef _SIMULATOR
 #include "rom_map.h"
+#endif /*SIMULATOR */
 #include "prcm.h"
 #include "utils.h"
 #include "interrupt.h"
-
-#endif /*SIMULATOR */
 
 // common interface includes
 #include "uart_if.h"
@@ -51,12 +45,7 @@
 
 #define UART_PRINT          Report
 
-//
-// GLOBAL VARIABLES -- Start
-//
 extern void (* const g_pfnVectors[])(void);
-const uint32_t g_BootloaderVersion = htonl(BOOTLOADER_VERSION);
-// GLOBAL VARIABLES -- End
 
 static void DisplayBanner(const char * const AppName) {
 	UART_PRINT("\n\n\n\r");

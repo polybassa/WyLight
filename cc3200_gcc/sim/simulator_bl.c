@@ -48,7 +48,7 @@ void Network_IF_DeInitDriver(void) {
 	printf("SL Disconnect...\n\r");
 }
 
-uint32_t MAP_SHAMD5IntStatus(uint32_t base, bool flag) {
+uint32_t SHAMD5IntStatus(uint32_t base, bool flag) {
 	return SHAMD5_INT_CONTEXT_READY;
 }
 
