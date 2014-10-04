@@ -119,7 +119,8 @@ void SHAMD5IntHandler(void) {
 //! \param[out]		resultHash -- Pointer to a 20 byte array, to store computed hash
 //
 //****************************************************************************
-static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *resultHash) {
+static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length,
+		uint8_t *resultHash) {
 
 	if (length == 0) {
 		return;
@@ -139,7 +140,8 @@ static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *r
 
 	//Enable Interrupts
 	SHAMD5IntEnable(SHAMD5_BASE,
-	SHAMD5_INT_CONTEXT_READY | SHAMD5_INT_PARTHASH_READY | SHAMD5_INT_INPUT_READY | SHAMD5_INT_OUTPUT_READY);
+			SHAMD5_INT_CONTEXT_READY | SHAMD5_INT_PARTHASH_READY
+					| SHAMD5_INT_INPUT_READY | SHAMD5_INT_OUTPUT_READY);
 
 	//wait for context ready flag.
 	while (!g_SHAMD5_StatusFlags.ContextReadyFlag)
@@ -154,8 +156,10 @@ static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *r
 	size_t bytesRead = 0, readsize = 0;
 
 	while (bytesRead < length) {
-		if ((length - bytesRead) > BLOCKSIZE) readsize = BLOCKSIZE;
-		else readsize = (length - bytesRead);
+		if ((length - bytesRead) > BLOCKSIZE)
+			readsize = BLOCKSIZE;
+		else
+			readsize = (length - bytesRead);
 
 		SHAMD5DataWrite(SHAMD5_BASE, pSource);
 		bytesRead += readsize;
@@ -167,7 +171,8 @@ static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *r
 	SHAMD5ResultRead(SHAMD5_BASE, resultHash);
 	// disable Interrupts
 	SHAMD5IntDisable(SHAMD5_BASE,
-	SHAMD5_INT_CONTEXT_READY | SHAMD5_INT_PARTHASH_READY | SHAMD5_INT_INPUT_READY | SHAMD5_INT_OUTPUT_READY);
+			SHAMD5_INT_CONTEXT_READY | SHAMD5_INT_PARTHASH_READY
+					| SHAMD5_INT_INPUT_READY | SHAMD5_INT_OUTPUT_READY);
 	// disable MD5SHA module
 	PRCMPeripheralClkDisable(PRCM_DTHE, PRCM_RUN_MODE_CLK);
 }
@@ -236,7 +241,8 @@ static long LoadFirmware(unsigned char* pSourceFile) {
 		UART_PRINT("Error during opening the source file\r\n");
 		return ERROR;
 	}
-	size_t bytesCopied = sl_FsRead(fileHandle, 0, (unsigned char *) FIRMWARE_ORIGIN, sFileInfo.FileLen);
+	size_t bytesCopied = sl_FsRead(fileHandle, 0,
+			(unsigned char *) FIRMWARE_ORIGIN, sFileInfo.FileLen);
 	// Close the opened files
 	if (sl_FsClose(fileHandle, 0, 0, 0)) {
 		return ERROR;
@@ -284,9 +290,12 @@ long SaveSRAMContent(uint8_t *pSource, const size_t length) {
 	// if filename indicates a webdata, remove checksum at the end
 	// checksum at the end should not be delivered to a browser
 	const char webSubdirectory[] = "/www/";
+	const char servicePackFilename[] = "/sys/servicepack.ucf";
 	// normally we should use strstr here, but this will need a lot more code than memcmp.
 	// the websubdirectory string will always be at the beginning. so we can compare sizeof(webSubdirectory) minus trailing NULL
-	if (0 == memcmp(filename, webSubdirectory, sizeof(webSubdirectory) - 1)) {
+	if ((0 == memcmp(filename, webSubdirectory, sizeof(webSubdirectory) - 1))
+			|| (0 == memcmp(filename, servicePackFilename, sizeof(servicePackFilename) - 1)))
+	{
 		filesize -= CHECKSUM_SIZE;
 	}
 
@@ -300,8 +309,10 @@ long SaveSRAMContent(uint8_t *pSource, const size_t length) {
 		// File Doesn't exit create a new file
 		if (sl_FsOpen(filename,
 				FS_MODE_OPEN_CREATE(filesize,
-						_FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ
-								| _FS_FILE_OPEN_FLAG_VENDOR), &token, &fileHandle)) {
+						_FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE
+								| _FS_FILE_PUBLIC_READ
+								| _FS_FILE_OPEN_FLAG_VENDOR), &token,
+				&fileHandle)) {
 			sl_FsDel(filename, token);
 			UART_PRINT("Error during creating the destination file\r\n");
 			return ERROR;
@@ -318,7 +329,8 @@ long SaveSRAMContent(uint8_t *pSource, const size_t length) {
 	// Close the opened files
 	sl_FsClose(fileHandle, 0, 0, 0);
 	// if we saved a firmware, than return SUCCESS (0) to start this firmware immediately
-	return (long) strcmp((const char *) filename, (const char *) FIRMWARE_FILENAME);
+	return (long) strcmp((const char *) filename,
+			(const char *) FIRMWARE_FILENAME);
 }
 
 //****************************************************************************
