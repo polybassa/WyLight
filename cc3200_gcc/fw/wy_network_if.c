@@ -532,8 +532,7 @@ static long waitForConnectWithTimeout(unsigned int timeout_ms) {
 			|| (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus))) {
 		UART_PRINT("Connecting failed \r\n");
 		return ERROR;
-	}
-	else return SUCCESS;
+	} else return SUCCESS;
 }
 
 //*****************************************************************************
@@ -588,14 +587,11 @@ static long ConfigureSimpleLinkToDefaultState() {
 		}
 	}
 
-//
 // Device in station-mode. Disconnect previous connection if any
 // The function returns 0 if 'Disconnected done', negative number if already
 // disconnected Wait for 'disconnection' event if 0 is returned, Ignore
 // other return-codes
-//
-	retRes = sl_WlanDisconnect();
-	if (0 == retRes) {
+	if (0 == sl_WlanDisconnect()) {
 		// Wait
 		while (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
 			osi_Sleep(50);
@@ -775,11 +771,9 @@ static long StartSimpleLinkAsAP() {
 //
 //*****************************************************************************
 static void Network_IF_DisconnectFromAP(void) {
-	if (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
-		if (sl_WlanDisconnect() == 0) {
-			while (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus))
-				osi_Sleep(10);
-		}
+	if (sl_WlanDisconnect() == 0) {
+		while (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus))
+			osi_Sleep(10);
 	}
 }
 
@@ -866,7 +860,7 @@ long Network_IF_AddNewProfile(void) {
 
 		sl_WlanConnect(g_ApProvisioningData.wlanSSID, strlen((char*) g_ApProvisioningData.wlanSSID), 0,
 				&g_ApProvisioningData.secParameters, 0);
-		return waitForConnectWithTimeout(60000);
+		return waitForConnectWithTimeout(CONNECTION_TIMEOUT * 4);
 
 	} else if (g_ApProvisioningData.secParameters.Type == SL_SEC_TYPE_WPS_PIN) {
 
@@ -874,7 +868,7 @@ long Network_IF_AddNewProfile(void) {
 
 		sl_WlanConnect(g_ApProvisioningData.wlanSSID, strlen((char*) g_ApProvisioningData.wlanSSID), 0,
 				&g_ApProvisioningData.secParameters, 0);
-		return waitForConnectWithTimeout(60000);
+		return waitForConnectWithTimeout(CONNECTION_TIMEOUT * 4);
 
 	} else {
 		long retRes = ERROR;

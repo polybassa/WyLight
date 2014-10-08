@@ -54,3 +54,8 @@ cc3200_gcc/fw/gcc/obj
 *.mk
 cc3200_gcc/bl/ccs/Release__GNU
 *.pp
+cc3200_gcc/bl/ccs/.settings/org.eclipse.core.resources.prefs
+cc3200_gcc/driverlib/ccs/Release/driverlib.a
+cc3200_gcc/fw/ccs/.settings/org.eclipse.core.resources.prefs
+cc3200_gcc/oslib/ccs/free_rtos/free_rtos.a
+cc3200_gcc/simplelink/ccs/OS/simplelink.a
