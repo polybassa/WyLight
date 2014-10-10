@@ -17,56 +17,158 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "wy_fs.h"
+#include "uart_if.h"
+#include "string.h"
+
+#define UART_PRINT 	Report
+#define SUCCESS 	0
 
 typedef enum {
-	EMPTY,
-	INVALID,
-	VALID
-}FileNameStatus;
+	EMPTY, INVALID, VALID
+} FileStatus;
 
 typedef struct {
-	FileNameStatus Status;
+	FileStatus Status;
 	unsigned char Name[MAX_FILENAME_LEN];
 } File;
 
-static const char FILESYSTEM_NAME[] = "filesystem";
-
-unsigned int computeAdress(unsigned char *pFileName) {
+static unsigned int computeAdress(unsigned char *pFileName) {
 	unsigned int sum = 0;
-	while(*pFileName) {
+	while (*pFileName) {
 		sum += *pFileName++;
 	}
 	return sum % MAX_NUM_FILES;
 }
 
-void addFileNameToFilesystem(unsigned int adress) {
+static inline unsigned int incAdress(unsigned int adress) {
+	return ++adress % MAX_NUM_FILES;
+}
+
+static long openFileSystem(void) {
+	const unsigned char FILESYSTEM_NAME[] = "filesystem";
 	//open filesystem
+	long fileHandle;
+	if (sl_FsOpen((unsigned char*) FILESYSTEM_NAME, FS_MODE_OPEN_WRITE, 0,
+			&fileHandle)) {
+		// File Doesn't exit create a new file
+		if (sl_FsOpen((unsigned char*) FILESYSTEM_NAME,
+				FS_MODE_OPEN_CREATE(MAX_NUM_FILES * sizeof(File),
+						_FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE
+								| _FS_FILE_PUBLIC_READ
+								| _FS_FILE_OPEN_FLAG_VENDOR), 0, &fileHandle)) {
+			sl_FsDel((unsigned char*) FILESYSTEM_NAME, 0);
+			UART_PRINT("Error during creating the destination file\r\n");
+			return SL_FS_ERR_ALLOC;
+		}
+		UART_PRINT("File %s created\r\n", FILESYSTEM_NAME);
+	}
+	return fileHandle;
 }
 
-long wy_FsCreate(unsigned char *pFileName, unsigned long maxSize, unsigned long accessFlags, unsigned long *pToken, long *pFileHandle) {
-	return sl_FsOpen(pFileName, FS_MODE_OPEN_CREATE(maxSize, accessFlags), pToken, pFileHandle);
+static long addFileNameToFilesystem(unsigned char *pFileName) {
+	const long hdl = openFileSystem();
+	if (hdl < 0)
+		return hdl;
+
+	unsigned int adress = computeAdress(pFileName);
+	long retVal = ERROR;
+	File tempFile;
+
+	for (;;) {
+		const size_t offset = adress * sizeof(File);
+		if (sl_FsRead(hdl, offset, (unsigned char *) &tempFile, sizeof(File)))
+			goto close_and_return;
+
+		if (tempFile.Status == EMPTY || tempFile.Status == INVALID) {
+			tempFile.Status = VALID;
+
+			size_t fileNameLen = strlen((const char *) pFileName) + 1; // +1 for termination null
+			if (fileNameLen > MAX_FILENAME_LEN)
+				fileNameLen = MAX_FILENAME_LEN;
+
+			memcpy(&tempFile.Name[0], pFileName, fileNameLen);
+			retVal = sl_FsWrite(hdl, offset, (unsigned char *) &tempFile,
+					sizeof(File));
+			goto close_and_return;
+		} else if (0
+				== memcmp(tempFile.Name, pFileName,
+						strlen((const char *) pFileName))) {
+			retVal = SUCCESS; // FileName already exists
+			goto close_and_return;
+		} else {
+			adress = incAdress(adress);
+		}
+	}
+
+	close_and_return: sl_FsClose(hdl, 0, 0, 0);
+	return retVal;
 }
 
-inline long wy_FsOpen(unsigned char *pFileName,unsigned long AccessModeAndMaxSize, unsigned long *pToken,long *pFileHandle) {
+static long removeFileNameFromFilesystem(unsigned char *pFileName) {
+	const long hdl = openFileSystem();
+	if (hdl < 0)
+		return hdl;
+
+	unsigned int adress = computeAdress(pFileName);
+	long retVal = ERROR;
+	File tempFile;
+
+	for (;;) {
+		const size_t offset = adress * sizeof(File);
+		if (sl_FsRead(hdl, offset, (unsigned char *) &tempFile, sizeof(File)))
+			goto close_and_return;
+
+		if (0 == memcmp(tempFile.Name, pFileName,
+						strlen((const char *) pFileName))) {
+			tempFile.Status = INVALID;
+			retVal = sl_FsWrite(hdl, offset, (unsigned char *) &tempFile,
+					sizeof(File));
+			goto close_and_return;
+
+		} else {
+			adress = incAdress(adress);
+		}
+	}
+
+	close_and_return: sl_FsClose(hdl, 0, 0, 0);
+	return retVal;
+}
+
+long wy_FsCreateIfNotExists(unsigned char *pFileName, unsigned long maxSize,
+		unsigned long accessFlags, unsigned long *pToken, long *pFileHandle) {
+	if (addFileNameToFilesystem(pFileName)) {
+		return ERROR;
+	}
+	return sl_FsOpen(pFileName, FS_MODE_OPEN_CREATE(maxSize, accessFlags),
+			pToken, pFileHandle);
+}
+
+inline long wy_FsOpen(unsigned char *pFileName,
+		unsigned long AccessModeAndMaxSize, unsigned long *pToken,
+		long *pFileHandle) {
 	return sl_FsOpen(pFileName, AccessModeAndMaxSize, pToken, pFileHandle);
 }
 
-inline int wy_FsClose(long FileHdl, unsigned char* pCeritificateFileName,unsigned char* pSignature ,unsigned long SignatureLen) {
+inline int wy_FsClose(long FileHdl, unsigned char* pCeritificateFileName,
+		unsigned char* pSignature, unsigned long SignatureLen) {
 	return sl_FsClose(FileHdl, pCeritificateFileName, pSignature, SignatureLen);
 }
 
-inline long wy_FsRead(long FileHdl, unsigned long Offset, unsigned char* pData, unsigned long Len) {
+inline long wy_FsRead(long FileHdl, unsigned long Offset, unsigned char* pData,
+		unsigned long Len) {
 	return sl_FsRead(FileHdl, Offset, pData, Len);
 }
 
-inline long wy_FsWrite(long FileHdl, unsigned long Offset, unsigned char* pData, unsigned long Len) {
+inline long wy_FsWrite(long FileHdl, unsigned long Offset, unsigned char* pData,
+		unsigned long Len) {
 	return sl_FsWrite(FileHdl, Offset, pData, Len);
 }
 
-inline int wy_FsGetInfo(unsigned char *pFileName,unsigned long Token,SlFsFileInfo_t* pFsFileInfo) {
+inline int wy_FsGetInfo(unsigned char *pFileName, unsigned long Token,
+		SlFsFileInfo_t* pFsFileInfo) {
 	return sl_FsGetInfo(pFileName, Token, pFsFileInfo);
 }
 
-int wy_FsDel(unsigned char *pFileName,unsigned long Token) {
+int wy_FsDel(unsigned char *pFileName, unsigned long Token) {
 	return sl_FsDel(pFileName, Token);
 }
