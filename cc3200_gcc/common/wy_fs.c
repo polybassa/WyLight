@@ -23,6 +23,10 @@
 #define UART_PRINT 	Report
 #define SUCCESS 	0
 
+#ifndef ERROR
+#define ERROR -1
+#endif
+
 typedef enum {
 	EMPTY, INVALID, VALID
 } FileStatus;
@@ -59,6 +63,13 @@ static long openFileSystem(void) {
 			return SL_FS_ERR_ALLOC;
 		}
 		UART_PRINT("File %s created\r\n", FILESYSTEM_NAME);
+		unsigned char emptyData[MAX_NUM_FILES * sizeof(File)];
+		memset(emptyData, 0, sizeof(emptyData));
+		if(MAX_NUM_FILES * sizeof(File) != sl_FsWrite(fileHandle, 0, emptyData, MAX_NUM_FILES * sizeof(File))) {
+			sl_FsClose(fileHandle, 0, 0, 0);
+			UART_PRINT("Error setting up filesystem\r\n");
+			return ERROR;
+		}
 	}
 	return fileHandle;
 }
@@ -82,7 +93,10 @@ static long addFileNameToFilesystem(unsigned char *pFileName) {
 			if (fileNameLen > MAX_FILENAME_LEN) fileNameLen = MAX_FILENAME_LEN;
 
 			memcpy(&tempFile.Name[0], pFileName, fileNameLen);
-			retVal = sl_FsWrite(hdl, offset, (unsigned char *) &tempFile, sizeof(File));
+			if(sizeof(File) == sl_FsWrite(hdl, offset, (unsigned char *) &tempFile, sizeof(File)))
+				retVal = SUCCESS;
+			 else
+				 retVal = ERROR;
 			goto close_and_return;
 		} else if (0 == memcmp(tempFile.Name, pFileName, strlen((const char *) pFileName))) {
 			retVal = SUCCESS; // FileName already exists
@@ -113,7 +127,10 @@ static long removeFileNameFromFilesystem(unsigned char *pFileName) {
 			goto close_and_return;
 		} else if (0 == memcmp(tempFile.Name, pFileName, strlen((const char *) pFileName))) {
 			tempFile.Status = INVALID;
-			retVal = sl_FsWrite(hdl, offset, (unsigned char *) &tempFile, sizeof(File));
+			if(sizeof(File) == sl_FsWrite(hdl, offset, (unsigned char *) &tempFile, sizeof(File)))
+				retVal = SUCCESS;
+			else
+				retVal = ERROR;
 			goto close_and_return;
 		} else {
 			adress = incAdress(adress);
