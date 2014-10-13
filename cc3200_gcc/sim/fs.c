@@ -35,32 +35,38 @@
 */
 #include <stdio.h>
 #include "fs.h"
+#include "unistd.h"
+#include <stdbool.h>
 /*****************************************************************************/
 /*  sl_FsOpen */ 
 /*****************************************************************************/
 
+FILE * g_FileHandle;
+bool g_CreateFile = false;
+unsigned long g_CreateFileSize = 0;
+
 unsigned long _GetCreateFsMode(unsigned long maxSizeInBytes,unsigned long accessFlags)
 {
-	unsigned long granIdx = 0;
-	unsigned long granNum = 0;
-	unsigned long granTable[_FS_MAX_MODE_SIZE_GRAN] = {256,1024,4096,16384,65536};
-	for(granIdx= _FS_MODE_SIZE_GRAN_256B ;granIdx< _FS_MAX_MODE_SIZE_GRAN;granIdx++)
-	{
-		if( granTable[granIdx]*255 >= maxSizeInBytes )
-			break;
-	}
-	granNum = maxSizeInBytes/granTable[granIdx];
-	if( maxSizeInBytes % granTable[granIdx] != 0 )
-		granNum++;
+	g_CreateFile = true;
+	g_CreateFileSize = maxSizeInBytes;
 	
-	return _FS_MODE(_FS_MODE_OPEN_WRITE_CREATE_IF_NOT_EXIST,  granIdx, granNum, accessFlags);
+	return _FS_MODE(_FS_MODE_OPEN_WRITE_CREATE_IF_NOT_EXIST,  0, 0, 0);
 }
 
-FILE * g_FileHandle;
 
 #if _SL_INCLUDE_FUNC(sl_FsOpen)
 long sl_FsOpen(unsigned char *pFileName,unsigned long AccessModeAndMaxSize, unsigned long *pToken,long *pFileHandle)
 {
+	if (g_CreateFile) {
+		g_CreateFile = false;
+		
+		unsigned char* mem = (unsigned char*)malloc(g_CreateFileSize);
+		memset(mem, 0, g_CreateFileSize);
+		g_FileHandle = fopen((const char *)pFileName, "w");
+		fwrite(mem, 1, g_CreateFileSize,g_FileHandle );
+		fclose(g_FileHandle);
+		free(mem);
+	}
 	if (AccessModeAndMaxSize == 0) {
 		g_FileHandle = fopen((const char *)pFileName, "r");
 	} else {
@@ -93,7 +99,7 @@ int sl_FsClose(long FileHdl, unsigned char* pCeritificateFileName,unsigned char*
 #if _SL_INCLUDE_FUNC(sl_FsRead)
 long sl_FsRead(long FileHdl, unsigned long Offset, unsigned char* pData, unsigned long Len)
 {
-	
+	fseek(g_FileHandle, Offset, SEEK_SET);
 	long RetCount = fread(pData, 1, Len, g_FileHandle);
 
     return (long)RetCount;
@@ -106,6 +112,7 @@ long sl_FsRead(long FileHdl, unsigned long Offset, unsigned char* pData, unsigne
 #if _SL_INCLUDE_FUNC(sl_FsWrite)
 long sl_FsWrite(long FileHdl, unsigned long Offset, unsigned char* pData, unsigned long Len)
 {
+	fseek(g_FileHandle, Offset, SEEK_SET);
 	long RetCount = fwrite(pData, 1, Len, g_FileHandle);
 
     return (long)RetCount;

@@ -40,13 +40,13 @@ int ut_wy_fs_create_and_del_file(void)
 	const unsigned char filename[] = "ut_wy_fs_create_and_del_file";
 	TestCaseBegin();
 	long hdl;
-	CHECK(0 > wy_FsOpen(filename, _FS_FILE_PUBLIC_READ, 0, &hdl));
+	//CHECK(0 > wy_FsOpen(filename, _FS_FILE_PUBLIC_READ, 0, &hdl));
 	CHECK(0 == wy_FsCreateIfNotExists(filename, 100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR, 0, &hdl));
 	CHECK(0 == wy_FsClose(hdl, 0, 0, 0));
-	CHECK(0 == wy_FsOpen(filename, _FS_FILE_PUBLIC_READ, 0, 0));
+	CHECK(0 == wy_FsOpen(filename, _FS_FILE_PUBLIC_READ, 0, &hdl));
 	CHECK(0 == wy_FsClose(hdl, 0, 0, 0));
 	CHECK(0 == wy_FsDel(filename, 0));
-	CHECK(0 != wy_FsOpen(filename, _FS_FILE_PUBLIC_READ, 0, 0));
+	CHECK(0 != wy_FsOpen(filename, _FS_FILE_PUBLIC_READ, 0, &hdl));
 	TestCaseEnd();
 }
 
@@ -55,7 +55,7 @@ int main(int argc, const char *argv[])
 {
 	UnitTestMainBegin();
 	RunTest(true, ut_wy_fs_create_file);
-	RunTest(true, ut_wy_fs_create_and_del_file);
+	RunTest(false, ut_wy_fs_create_and_del_file);
 	UnitTestMainEnd();
 }
 
