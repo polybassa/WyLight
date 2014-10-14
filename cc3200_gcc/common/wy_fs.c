@@ -81,10 +81,10 @@ static long addFileNameToFilesystem(unsigned char *pFileName) {
 	unsigned int adress = computeAdress(pFileName);
 	long retVal = ERROR;
 	File tempFile;
-
+	printf("Add Filename to Filesystem\r\n");
 	for (;;) {
 		const size_t offset = adress * sizeof(File);
-		if (sl_FsRead(hdl, offset, (unsigned char *) &tempFile, sizeof(File))) goto close_and_return;
+		if (sizeof(File) != sl_FsRead(hdl, offset, (unsigned char *) &tempFile, sizeof(File))) goto close_and_return;
 
 		if (tempFile.Status == EMPTY || tempFile.Status == INVALID) {
 			tempFile.Status = VALID;
@@ -99,6 +99,7 @@ static long addFileNameToFilesystem(unsigned char *pFileName) {
 				 retVal = ERROR;
 			goto close_and_return;
 		} else if (0 == memcmp(tempFile.Name, pFileName, strlen((const char *) pFileName))) {
+			printf("Compare: %s == %s\r\n", &tempFile.Name[0], pFileName);
 			retVal = SUCCESS; // FileName already exists
 			goto close_and_return;
 		} else {
@@ -112,20 +113,21 @@ static long addFileNameToFilesystem(unsigned char *pFileName) {
 
 static long removeFileNameFromFilesystem(unsigned char *pFileName) {
 	const long hdl = openFileSystem();
-	if (hdl < 0) return hdl;
+	if (hdl < 0) return hdl; // contains ERRORCODE
 
 	unsigned int adress = computeAdress(pFileName);
 	long retVal = ERROR;
 	File tempFile;
-
+	printf("Remove Filename from Filesystem\r\n");
 	for (;;) {
 		const size_t offset = adress * sizeof(File);
-		if (sl_FsRead(hdl, offset, (unsigned char *) &tempFile, sizeof(File))) goto close_and_return;
+		if (sizeof(File) != sl_FsRead(hdl, offset, (unsigned char *) &tempFile, sizeof(File))) goto close_and_return;
 
 		if (tempFile.Status == EMPTY) {
 			retVal = SUCCESS;
 			goto close_and_return;
-		} else if (0 == memcmp(tempFile.Name, pFileName, strlen((const char *) pFileName))) {
+		} else if (0 == memcmp(&tempFile.Name[0], pFileName, strlen((const char *) pFileName))) {
+			printf("Compare: %s == %s\r\n", &tempFile.Name[0], pFileName);
 			tempFile.Status = INVALID;
 			if(sizeof(File) == sl_FsWrite(hdl, offset, (unsigned char *) &tempFile, sizeof(File)))
 				retVal = SUCCESS;

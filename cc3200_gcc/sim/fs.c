@@ -44,6 +44,8 @@
 FILE * g_FileHandle;
 bool g_CreateFile = false;
 unsigned long g_CreateFileSize = 0;
+bool g_FileOpenForRead = false;
+unsigned char g_FileName[127];
 
 unsigned long _GetCreateFsMode(unsigned long maxSizeInBytes,unsigned long accessFlags)
 {
@@ -57,20 +59,30 @@ unsigned long _GetCreateFsMode(unsigned long maxSizeInBytes,unsigned long access
 #if _SL_INCLUDE_FUNC(sl_FsOpen)
 long sl_FsOpen(unsigned char *pFileName,unsigned long AccessModeAndMaxSize, unsigned long *pToken,long *pFileHandle)
 {
+	memcpy(g_FileName, pFileName, strlen(pFileName) + 1);
+	printf("sl_FsOpen: %s\r\n", g_FileName);
+
 	if (g_CreateFile) {
 		g_CreateFile = false;
 		
 		unsigned char* mem = (unsigned char*)malloc(g_CreateFileSize);
 		memset(mem, 0, g_CreateFileSize);
-		g_FileHandle = fopen((const char *)pFileName, "w");
+		g_FileHandle = fopen((const char *)pFileName, "wb");
 		fwrite(mem, 1, g_CreateFileSize,g_FileHandle );
 		fclose(g_FileHandle);
 		free(mem);
 	}
+	
+	if (access(pFileName, F_OK)) {
+		return -1;
+	}
+	
 	if (AccessModeAndMaxSize == 0) {
-		g_FileHandle = fopen((const char *)pFileName, "r");
+		g_FileHandle = fopen((const char *)pFileName, "rb");
+		g_FileOpenForRead = true;
 	} else {
-		g_FileHandle = fopen((const char *)pFileName, "w");
+		g_FileHandle = fopen((const char *)pFileName, "wb");
+		g_FileOpenForRead = false;
 	}
 	
 	if (g_FileHandle != NULL) {
@@ -87,6 +99,7 @@ long sl_FsOpen(unsigned char *pFileName,unsigned long AccessModeAndMaxSize, unsi
 #if _SL_INCLUDE_FUNC(sl_FsClose)
 int sl_FsClose(long FileHdl, unsigned char* pCeritificateFileName,unsigned char* pSignature ,unsigned long SignatureLen)
 {
+	printf("sl_FsClose: %s\r\n", g_FileName);
 	fclose(g_FileHandle);
 	return 0;
 }
@@ -99,8 +112,24 @@ int sl_FsClose(long FileHdl, unsigned char* pCeritificateFileName,unsigned char*
 #if _SL_INCLUDE_FUNC(sl_FsRead)
 long sl_FsRead(long FileHdl, unsigned long Offset, unsigned char* pData, unsigned long Len)
 {
+	fflush(g_FileHandle);
+	if (!g_FileOpenForRead) {
+		fclose(g_FileHandle);
+
+		printf("Reopen for read: %s\r\n", g_FileName);
+		
+		g_FileHandle = fopen((const char *)g_FileName, "rb");
+		g_FileOpenForRead = true;
+	}
 	fseek(g_FileHandle, Offset, SEEK_SET);
+	fflush(g_FileHandle);
 	long RetCount = fread(pData, 1, Len, g_FileHandle);
+	
+	printf("READ %d:", RetCount);
+	for (unsigned int i = 0; i < RetCount; i++) {
+		printf("%2x_%c ", pData[i], pData[i]);
+	}
+	printf("\r\n");
 
     return (long)RetCount;
 }
@@ -112,9 +141,25 @@ long sl_FsRead(long FileHdl, unsigned long Offset, unsigned char* pData, unsigne
 #if _SL_INCLUDE_FUNC(sl_FsWrite)
 long sl_FsWrite(long FileHdl, unsigned long Offset, unsigned char* pData, unsigned long Len)
 {
+	fflush(g_FileHandle);
+	if (g_FileOpenForRead) {
+		fclose(g_FileHandle);
+		
+		printf("Reopen for write: %s\r\n", g_FileName);
+		
+		g_FileHandle = fopen((const char *)g_FileName, "wb");
+		g_FileOpenForRead = false;
+	}
 	fseek(g_FileHandle, Offset, SEEK_SET);
+	fflush(g_FileHandle);
 	long RetCount = fwrite(pData, 1, Len, g_FileHandle);
 
+	printf("WRITE:");
+	for (unsigned int i = 0; i < RetCount; i++) {
+		printf("%2x_%c ", pData[i], pData[i]);
+	}
+	printf("\r\n");
+	
     return (long)RetCount;
 }
 #endif
@@ -127,7 +172,7 @@ long sl_FsWrite(long FileHdl, unsigned long Offset, unsigned char* pData, unsign
 int sl_FsGetInfo(unsigned char *pFileName,unsigned long Token,SlFsFileInfo_t* pFsFileInfo)
 {
 	
-	FILE * pHandle = fopen((const char *)pFileName, "r");
+	FILE * pHandle = fopen((const char *)pFileName, "rb");
 	if (pHandle == NULL) {
 		return -1;
 	}

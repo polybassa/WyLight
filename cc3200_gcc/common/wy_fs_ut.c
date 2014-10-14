@@ -55,7 +55,7 @@ int main(int argc, const char *argv[])
 {
 	UnitTestMainBegin();
 	RunTest(true, ut_wy_fs_create_file);
-	RunTest(false, ut_wy_fs_create_and_del_file);
+	RunTest(true, ut_wy_fs_create_and_del_file);
 	UnitTestMainEnd();
 }
 
