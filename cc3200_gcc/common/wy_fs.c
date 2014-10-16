@@ -43,14 +43,14 @@ static inline unsigned int incAdress(unsigned int adress) {
 static long openFileSystem(void) {
 	const unsigned char FS_NAME[] = "filesystem";
 	long hdl;
-	if (sl_FsOpen((unsigned char*) FS_NAME, FS_MODE_OPEN_WRITE, 0, &hdl)) {
+	if (sl_FsOpen(FS_NAME, FS_MODE_OPEN_WRITE, 0, &hdl)) {
 		// File Doesn't exit create a new file
-		if (sl_FsOpen((unsigned char*) FS_NAME,
+		if (sl_FsOpen(FS_NAME,
 				FS_MODE_OPEN_CREATE(MAX_NUM_FILES * sizeof(File),
 						_FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ
 								| _FS_FILE_OPEN_FLAG_VENDOR), 0, &hdl)) {
 			// Something went wrong, clean up
-			sl_FsDel((unsigned char*) FS_NAME, 0);
+			sl_FsDel(FS_NAME, 0);
 			return SL_FS_ERR_ALLOC;
 		}
 		unsigned char emptyData[MAX_NUM_FILES * sizeof(File)] = {0};
