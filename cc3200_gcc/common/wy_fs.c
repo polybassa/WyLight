@@ -17,15 +17,7 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "wy_fs.h"
-#include "uart_if.h"
 #include "string.h"
-
-#define UART_PRINT 	Report
-#define SUCCESS 	0
-
-#ifndef ERROR
-#define ERROR -1
-#endif
 
 typedef enum {
 	EMPTY, INVALID, VALID
@@ -49,42 +41,43 @@ static inline unsigned int incAdress(unsigned int adress) {
 }
 
 static long openFileSystem(void) {
-	const unsigned char FILESYSTEM_NAME[] = "filesystem";
-	//open filesystem
-	long fileHandle;
-	if (sl_FsOpen((unsigned char*) FILESYSTEM_NAME, FS_MODE_OPEN_WRITE, 0, &fileHandle)) {
+	const unsigned char FS_NAME[] = "filesystem";
+	long hdl;
+	if (sl_FsOpen((unsigned char*) FS_NAME, FS_MODE_OPEN_WRITE, 0, &hdl)) {
 		// File Doesn't exit create a new file
-		if (sl_FsOpen((unsigned char*) FILESYSTEM_NAME,
+		if (sl_FsOpen((unsigned char*) FS_NAME,
 				FS_MODE_OPEN_CREATE(MAX_NUM_FILES * sizeof(File),
 						_FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ
-								| _FS_FILE_OPEN_FLAG_VENDOR), 0, &fileHandle)) {
-			sl_FsDel((unsigned char*) FILESYSTEM_NAME, 0);
-			UART_PRINT("Error during creating the destination file\r\n");
+								| _FS_FILE_OPEN_FLAG_VENDOR), 0, &hdl)) {
+			// Something went wrong, clean up
+			sl_FsDel((unsigned char*) FS_NAME, 0);
 			return SL_FS_ERR_ALLOC;
 		}
-		UART_PRINT("File %s created\r\n", FILESYSTEM_NAME);
-		unsigned char emptyData[MAX_NUM_FILES * sizeof(File)];
-		memset(emptyData, 0, sizeof(emptyData));
-		if(MAX_NUM_FILES * sizeof(File) != sl_FsWrite(fileHandle, 0, emptyData, MAX_NUM_FILES * sizeof(File))) {
-			sl_FsClose(fileHandle, 0, 0, 0);
-			UART_PRINT("Error setting up filesystem\r\n");
-			return ERROR;
+		unsigned char emptyData[MAX_NUM_FILES * sizeof(File)] = {0};
+		
+		if(sizeof(emptyData) != sl_FsWrite(hdl, 0, emptyData, sizeof(emptyData))) {
+			sl_FsClose(hdl, 0, 0, 0);
+			return SL_FS_ERROR_FAILED_TO_WRITE;
 		}
 	}
-	return fileHandle;
+	return hdl;
 }
 
 static long addFileNameToFilesystem(unsigned char *pFileName) {
 	const long hdl = openFileSystem();
-	if (hdl < 0) return hdl;
+	if (hdl < 0) return hdl;  // contains ERRORCODE
 
 	unsigned int adress = computeAdress(pFileName);
-	long retVal = ERROR;
-	File tempFile;
-	printf("Add Filename to Filesystem\r\n");
-	for (;;) {
+	long retVal = SL_FS_ERR_ALLOC;
+	
+	for (unsigned int round = 0; round < MAX_NUM_FILES; round++) {
 		const size_t offset = adress * sizeof(File);
-		if (sizeof(File) != sl_FsRead(hdl, offset, (unsigned char *) &tempFile, sizeof(File))) goto close_and_return;
+		File tempFile;
+
+		if (sizeof(File) != sl_FsRead(hdl, offset, (unsigned char *) &tempFile, sizeof(File))) {
+			retVal = SL_FS_ERR_FAILED_TO_READ;
+			goto close_and_return;
+		}
 
 		if (tempFile.Status == EMPTY || tempFile.Status == INVALID) {
 			tempFile.Status = VALID;
@@ -92,15 +85,14 @@ static long addFileNameToFilesystem(unsigned char *pFileName) {
 			size_t fileNameLen = strlen((const char *) pFileName) + 1; // +1 for termination null
 			if (fileNameLen > MAX_FILENAME_LEN) fileNameLen = MAX_FILENAME_LEN;
 
-			memcpy(&tempFile.Name[0], pFileName, fileNameLen);
+			memcpy(tempFile.Name, pFileName, fileNameLen);
 			if(sizeof(File) == sl_FsWrite(hdl, offset, (unsigned char *) &tempFile, sizeof(File)))
-				retVal = SUCCESS;
+				retVal = SL_FS_OK;
 			 else
-				 retVal = ERROR;
+				 retVal = SL_FS_ERROR_FAILED_TO_WRITE;
 			goto close_and_return;
 		} else if (0 == memcmp(tempFile.Name, pFileName, strlen((const char *) pFileName))) {
-			printf("Compare: %s == %s\r\n", &tempFile.Name[0], pFileName);
-			retVal = SUCCESS; // FileName already exists
+				retVal = SL_FS_OK; // FileName already exists
 			goto close_and_return;
 		} else {
 			adress = incAdress(adress);
@@ -116,23 +108,26 @@ static long removeFileNameFromFilesystem(unsigned char *pFileName) {
 	if (hdl < 0) return hdl; // contains ERRORCODE
 
 	unsigned int adress = computeAdress(pFileName);
-	long retVal = ERROR;
-	File tempFile;
-	printf("Remove Filename from Filesystem\r\n");
-	for (;;) {
-		const size_t offset = adress * sizeof(File);
-		if (sizeof(File) != sl_FsRead(hdl, offset, (unsigned char *) &tempFile, sizeof(File))) goto close_and_return;
+	long retVal = SL_FS_ERR_FILE_NOT_EXISTS;
 
-		if (tempFile.Status == EMPTY) {
-			retVal = SUCCESS;
+	for (unsigned int round = 0; round < MAX_NUM_FILES; round++) {
+		const size_t offset = adress * sizeof(File);
+		File tempFile;
+
+		if (sizeof(File) != sl_FsRead(hdl, offset, (unsigned char *) &tempFile, sizeof(File))) {
+			retVal = SL_FS_ERR_FAILED_TO_READ;
 			goto close_and_return;
-		} else if (0 == memcmp(&tempFile.Name[0], pFileName, strlen((const char *) pFileName))) {
-			printf("Compare: %s == %s\r\n", &tempFile.Name[0], pFileName);
+		}
+		
+		if (tempFile.Status == EMPTY) {
+			retVal = SL_FS_OK;
+			goto close_and_return;
+		} else if (0 == memcmp(tempFile.Name, pFileName, strlen((const char *) pFileName))) {
 			tempFile.Status = INVALID;
 			if(sizeof(File) == sl_FsWrite(hdl, offset, (unsigned char *) &tempFile, sizeof(File)))
-				retVal = SUCCESS;
+				retVal = SL_FS_OK;
 			else
-				retVal = ERROR;
+				retVal = SL_FS_ERROR_FAILED_TO_WRITE;
 			goto close_and_return;
 		} else {
 			adress = incAdress(adress);
@@ -145,9 +140,9 @@ static long removeFileNameFromFilesystem(unsigned char *pFileName) {
 
 long wy_FsCreateIfNotExists(unsigned char *pFileName, unsigned long maxSize, unsigned long accessFlags,
 		unsigned long *pToken, long *pFileHandle) {
-	if (addFileNameToFilesystem(pFileName)) {
-		UART_PRINT("Failure in addFileNameToFilesystem\r\n");
-		return ERROR;
+	long retVal = addFileNameToFilesystem(pFileName);
+	if (retVal) {
+		return retVal;
 	}
 	return sl_FsOpen(pFileName, FS_MODE_OPEN_CREATE(maxSize, accessFlags), pToken, pFileHandle);
 }
@@ -175,9 +170,41 @@ inline int wy_FsGetInfo(unsigned char *pFileName, unsigned long Token, SlFsFileI
 }
 
 int wy_FsDel(unsigned char *pFileName, unsigned long Token) {
-	if (removeFileNameFromFilesystem(pFileName)) {
-		UART_PRINT("Failure in removeFileNameFromFilesystem\r\n");
-		return ERROR;
+	long retVal = removeFileNameFromFilesystem(pFileName);
+	if (retVal) {
+		return retVal;
 	}
 	return sl_FsDel(pFileName, Token);
+}
+
+int wy_FsFormat(void) {
+	const long hdl = openFileSystem();
+	if (hdl < 0) return hdl; // contains ERRORCODE
+	
+	long retVal = SL_FS_ERR_FILE_NOT_EXISTS;
+
+	for (unsigned int adress = 0; adress < MAX_NUM_FILES; adress++) {
+		const size_t offset = adress * sizeof(File);
+		File tempFile;
+
+		if (sizeof(File) != sl_FsRead(hdl, offset, (unsigned char *) &tempFile, sizeof(File))) {
+			retVal = SL_FS_ERR_FAILED_TO_READ;
+			goto close_and_return;
+		}
+		
+		if (tempFile.Status == VALID) {
+			retVal = sl_FsDel(tempFile.Name, 0);
+			if (retVal)
+				goto close_and_return;
+	
+			tempFile.Status = INVALID;
+			if(sizeof(File) != sl_FsWrite(hdl, offset, (unsigned char *) &tempFile, sizeof(File))) {
+				retVal = SL_FS_ERROR_FAILED_TO_WRITE;
+				goto close_and_return;
+			}
+		}
+	}
+	retVal = SL_FS_OK;
+close_and_return: sl_FsClose(hdl, 0, 0, 0);
+	return retVal;
 }

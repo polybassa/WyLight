@@ -34,24 +34,21 @@
  *
 */
 #include <stdio.h>
+#include <unistd.h>
+#include <string.h>
 #include "fs.h"
-#include "unistd.h"
-#include <stdbool.h>
+#include <stdlib.h>
+
 /*****************************************************************************/
 /*  sl_FsOpen */ 
 /*****************************************************************************/
 
-FILE * g_FileHandle;
-bool g_CreateFile = false;
 unsigned long g_CreateFileSize = 0;
-bool g_FileOpenForRead = false;
 unsigned char g_FileName[127];
 
 unsigned long _GetCreateFsMode(unsigned long maxSizeInBytes,unsigned long accessFlags)
 {
-	g_CreateFile = true;
 	g_CreateFileSize = maxSizeInBytes;
-	
 	return _FS_MODE(_FS_MODE_OPEN_WRITE_CREATE_IF_NOT_EXIST,  0, 0, 0);
 }
 
@@ -59,37 +56,21 @@ unsigned long _GetCreateFsMode(unsigned long maxSizeInBytes,unsigned long access
 #if _SL_INCLUDE_FUNC(sl_FsOpen)
 long sl_FsOpen(unsigned char *pFileName,unsigned long AccessModeAndMaxSize, unsigned long *pToken,long *pFileHandle)
 {
-	memcpy(g_FileName, pFileName, strlen(pFileName) + 1);
-	printf("sl_FsOpen: %s\r\n", g_FileName);
-
-	if (g_CreateFile) {
-		g_CreateFile = false;
-		
+	strcpy((char *)g_FileName, (const char *)pFileName);
+	if (g_CreateFileSize) {
 		unsigned char* mem = (unsigned char*)malloc(g_CreateFileSize);
 		memset(mem, 0, g_CreateFileSize);
-		g_FileHandle = fopen((const char *)pFileName, "wb");
-		fwrite(mem, 1, g_CreateFileSize,g_FileHandle );
-		fclose(g_FileHandle);
+		FILE *hdl = fopen((const char *)pFileName, "wb");
+		fwrite(mem, 1, g_CreateFileSize, hdl);
+		fclose(hdl);
 		free(mem);
+		g_CreateFileSize = 0;
 	}
 	
-	if (access(pFileName, F_OK)) {
+	if (access((const char *)pFileName, F_OK))
 		return -1;
-	}
-	
-	if (AccessModeAndMaxSize == 0) {
-		g_FileHandle = fopen((const char *)pFileName, "rb");
-		g_FileOpenForRead = true;
-	} else {
-		g_FileHandle = fopen((const char *)pFileName, "wb");
-		g_FileOpenForRead = false;
-	}
-	
-	if (g_FileHandle != NULL) {
+	else
 		return 0;
-	} else {
-		return -1;
-	}
 }
 #endif
 
@@ -99,8 +80,6 @@ long sl_FsOpen(unsigned char *pFileName,unsigned long AccessModeAndMaxSize, unsi
 #if _SL_INCLUDE_FUNC(sl_FsClose)
 int sl_FsClose(long FileHdl, unsigned char* pCeritificateFileName,unsigned char* pSignature ,unsigned long SignatureLen)
 {
-	printf("sl_FsClose: %s\r\n", g_FileName);
-	fclose(g_FileHandle);
 	return 0;
 }
 #endif
@@ -112,26 +91,16 @@ int sl_FsClose(long FileHdl, unsigned char* pCeritificateFileName,unsigned char*
 #if _SL_INCLUDE_FUNC(sl_FsRead)
 long sl_FsRead(long FileHdl, unsigned long Offset, unsigned char* pData, unsigned long Len)
 {
-	fflush(g_FileHandle);
-	if (!g_FileOpenForRead) {
-		fclose(g_FileHandle);
-
-		printf("Reopen for read: %s\r\n", g_FileName);
-		
-		g_FileHandle = fopen((const char *)g_FileName, "rb");
-		g_FileOpenForRead = true;
+	FILE *pHandle = fopen((const char *)g_FileName, "rb");
+	if (pHandle == NULL) {
+		return -1;
 	}
-	fseek(g_FileHandle, Offset, SEEK_SET);
-	fflush(g_FileHandle);
-	long RetCount = fread(pData, 1, Len, g_FileHandle);
 	
-	printf("READ %d:", RetCount);
-	for (unsigned int i = 0; i < RetCount; i++) {
-		printf("%2x_%c ", pData[i], pData[i]);
-	}
-	printf("\r\n");
+	fseek(pHandle, Offset, SEEK_SET);
+	size_t retVal = fread(pData, 1, Len, pHandle);
+	fclose(pHandle);
 
-    return (long)RetCount;
+    return (long)retVal;
 }
 #endif
 
@@ -141,26 +110,28 @@ long sl_FsRead(long FileHdl, unsigned long Offset, unsigned char* pData, unsigne
 #if _SL_INCLUDE_FUNC(sl_FsWrite)
 long sl_FsWrite(long FileHdl, unsigned long Offset, unsigned char* pData, unsigned long Len)
 {
-	fflush(g_FileHandle);
-	if (g_FileOpenForRead) {
-		fclose(g_FileHandle);
-		
-		printf("Reopen for write: %s\r\n", g_FileName);
-		
-		g_FileHandle = fopen((const char *)g_FileName, "wb");
-		g_FileOpenForRead = false;
+	FILE *pHandle = fopen((const char *)g_FileName, "rb");
+	if (pHandle == NULL) {
+		return -1;
 	}
-	fseek(g_FileHandle, Offset, SEEK_SET);
-	fflush(g_FileHandle);
-	long RetCount = fwrite(pData, 1, Len, g_FileHandle);
-
-	printf("WRITE:");
-	for (unsigned int i = 0; i < RetCount; i++) {
-		printf("%2x_%c ", pData[i], pData[i]);
-	}
-	printf("\r\n");
 	
-    return (long)RetCount;
+	fseek(pHandle, 0, SEEK_END);
+	long fsize = ftell(pHandle);
+	fseek(pHandle, 0, SEEK_SET);
+	
+	unsigned char *buffer = malloc(fsize);
+	fread(buffer, fsize, 1, pHandle);
+	
+	memcpy(&buffer[Offset], pData, Len);
+	
+	pHandle = freopen((const char *)g_FileName, "wb", pHandle);
+	long retVal = -1;
+	if(1 == fwrite(buffer, fsize, 1, pHandle)) {
+		retVal = Len;
+	}
+	fclose(pHandle);
+	
+    return retVal;
 }
 #endif
 
@@ -180,14 +151,10 @@ int sl_FsGetInfo(unsigned char *pFileName,unsigned long Token,SlFsFileInfo_t* pF
 	
 	long size = ftell(pHandle);
 	fclose(pHandle);
+	memset(pFsFileInfo, 0, sizeof(SlFsFileInfo_t));
 
-	pFsFileInfo->flags        = 0;
     pFsFileInfo->FileLen      = size;
     pFsFileInfo->AllocatedLen = size;
-    pFsFileInfo->Token[0]     = 0;
-    pFsFileInfo->Token[1]     = 0;
-    pFsFileInfo->Token[2]     = 0;
-    pFsFileInfo->Token[3]     = 0;
 	return 0;
 }
 #endif

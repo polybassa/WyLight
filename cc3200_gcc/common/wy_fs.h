@@ -28,6 +28,27 @@
 
 
 /*!
+ \brief create and open file for read or write from/to storage device
+ 
+ \param[in]      pFileName                  File Name buffer pointer
+ \param[in]      maxSize       				maximal file size
+ \param[in]		 accessFlags				see documentation
+ \param[in]      pToken                     input Token for read, output Token for write
+ \param[out]     pFileHandle      Pointing on the file and used for read and write commands to the file
+ 
+ \return         On success, zero is returned. On error, negative is returned
+ 
+ \sa             sl_FsRead sl_FsWrite sl_FsClose
+ \note           belongs to \ref basic_api
+ \warning        This API is going to be modified on the next release
+	\par            Example:
+	\code
+ wy_FsCreateIfNotExists("FileName.html", 3584, _FS_FILE_OPEN_FLAG_COMMIT|_FS_FILE_PUBLIC_WRITE ,NULL, &FileHandle);
+	\endcode
+ */
+long wy_FsCreateIfNotExists(unsigned char *pFileName, unsigned long maxSize, unsigned long accessFlags,
+							unsigned long *pToken, long *pFileHandle);
+/*!
     \brief open file for read or write from/to storage device
     
     \param[in]      pFileName                  File Name buffer pointer  
@@ -49,9 +70,9 @@
     \warning        This API is going to be modified on the next release
 	\par            Example:
 	\code
-    sl_FsOpen("FileName.html",FS_MODE_OPEN_CREATE(3584,_FS_FILE_OPEN_FLAG_COMMIT|_FS_FILE_PUBLIC_WRITE) ,NULL, &FileHandle);
+    wy_FsOpen("FileName.html",FS_MODE_OPEN_CREATE(3584,_FS_FILE_OPEN_FLAG_COMMIT|_FS_FILE_PUBLIC_WRITE) ,NULL, &FileHandle);
 	
-	sl_FsOpen("FileName.html",FS_MODE_OPEN_READ,NULL, &FileHandle);
+	wy_FsOpen("FileName.html",FS_MODE_OPEN_READ,NULL, &FileHandle);
 	\endcode
 */
 long wy_FsOpen(unsigned char *pFileName,unsigned long AccessModeAndMaxSize, unsigned long *pToken,long *pFileHandle);
@@ -69,7 +90,7 @@ long wy_FsOpen(unsigned char *pFileName,unsigned long AccessModeAndMaxSize, unsi
     \warning
 	\par            Example:
 	\code			
-	sl_FsClose(FileHandle,0,0,0);
+	wy_FsClose(FileHandle,0,0,0);
 	\endcode
 */
 
@@ -91,7 +112,7 @@ int wy_FsClose(long FileHdl, unsigned char* pCeritificateFileName,unsigned char*
     \warning     
 	\par            Example:
 	\code	
-	Status = sl_FsRead(FileHandle, 0, &readBuff[0], readSize);
+	Status = wy_FsRead(FileHandle, 0, &readBuff[0], readSize);
 	\endcode
 */
 
@@ -113,7 +134,7 @@ long wy_FsRead(long FileHdl, unsigned long Offset, unsigned char* pData, unsigne
     \warning     
 	\par            Example:
 	\code	
-	Status = sl_FsWrite(FileHandle, 0, &buff[0], readSize);
+	Status = wy_FsWrite(FileHandle, 0, &buff[0], readSize);
 	\endcode
 */
 
@@ -134,7 +155,7 @@ long wy_FsWrite(long FileHdl, unsigned long Offset, unsigned char* pData, unsign
     \warning        
 	\par            Example:
 	\code	
-	Status = sl_FsGetInfo("FileName.html",Token,&FsFileInfo);
+	Status = wy_FsGetInfo("FileName.html",Token,&FsFileInfo);
 	\endcode
 */
 
@@ -152,10 +173,26 @@ int wy_FsGetInfo(unsigned char *pFileName,unsigned long Token,SlFsFileInfo_t* pF
     \warning     
 	\par            Example:
 	\code	
-	Status = sl_FsDel("FileName.html",Token);
+	Status = wy_FsDel("FileName.html",Token);
 	\endcode
 */
 
 int wy_FsDel(unsigned char *pFileName,unsigned long Token);
+
+/*!
+ \brief delete all files from a storage (format)
+ 
+ \return         On success, zero is returned. On error, negative is returned
+ 
+ \sa
+ \note           belongs to \ref basic_api
+ \warning
+	\par            Example:
+	\code
+	Status = wy_FsFormat();
+	\endcode
+ */
+
+int wy_FsFormat(void);
 
 #endif /*  __FS_H__ */
