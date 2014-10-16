@@ -36,8 +36,6 @@
 #include "bootloader.h"
 
 
-#define BUFFER_SIZE 			1024
-#define BLOCKSIZE		 		64 		/* Write block size for write to MD5SHA module */
 #define CHECKSUM_SIZE			32		/* In Bytes, We use SHA-256 */
 #define SUCCESS					0
 #define FILENAME_SIZE			128
