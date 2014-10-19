@@ -9,7 +9,7 @@
 PRJ_NAME=WyLight_bl
 
 # The base directory.
-ROOT=../..
+ROOT=.
 
 # Include the common make definitions.
 include makedefs
@@ -45,14 +45,14 @@ common: ${BINDIR}/${PRJ_NAME}.axf
 
 # build the bootloader as normal bootloader
 BL_FILE=exe/${PRJ_NAME}.bin
-bl: SCATTERgcc_${PRJ_NAME}=../../bl/gcc/WyLight_bl.ld
+bl: SCATTERgcc_${PRJ_NAME}=${ROOT}/bl/WyLight_bl.ld
 bl: common
 
 #openssl sha256 -binary ${BL_FILE} >> ${BL_FILE}
 
 # build the bootloader as a small firmware which is used to update the bootloader ;-)
 FW_FILE=WyLight_fw.bin
-as_fw: SCATTERgcc_${PRJ_NAME}=../../fw/gcc/WyLight_fw.ld
+as_fw: SCATTERgcc_${PRJ_NAME}=${ROOT}/fw/gcc/WyLight_fw.ld
 as_fw: CFLAGS += -DBUILD_AS_FW
 as_fw: common
 	mv exe/${PRJ_NAME}.bin ${FW_FILE}
@@ -67,6 +67,7 @@ install_fw:
 clean:
 	@rm -rf ${OBJDIR} ${wildcard *~}
 	@rm -rf ${BINDIR} ${wildcard *~}
+	@rm -f ${FW_FILE}
 
 test:
 	@echo ${LIBC}
@@ -89,7 +90,7 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_bl_network_if.o
 # common
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/startup_${COMPILER}.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart_if.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/gpio_if.o	
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/gpio_if.o
 
 #driverLib
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/cpu.o

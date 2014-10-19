@@ -32,6 +32,7 @@ config.log
 config.status
 autom4te.cache/output.1
 autom4te.cache/traces.1
+Makefile
 config.h
 /wylight.de/WyLightWebpage/nbproject/private/
 cc3200/WiFi-Starter-iOS-App/*
