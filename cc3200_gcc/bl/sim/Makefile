@@ -20,7 +20,7 @@ VPATH+=${ROOT}/sim
 #VPATH+=${ROOT}/driverlib
 #VPATH+=${ROOT}/simplelink/source
 #VPATH+=${ROOT}/simplelink
-VPATH+=/usr/local/Cellar/openssl/1.0.1i/lib/
+#VPATH+=/usr/local/Cellar/openssl/1.0.1i/lib/
 
 # Additional Compiler Flags
 CFLAGS+=-pedantic
