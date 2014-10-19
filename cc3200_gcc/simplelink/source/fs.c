@@ -95,7 +95,7 @@ unsigned long _GetCreateFsMode(unsigned long maxSizeInBytes,unsigned long access
 
 
 #if _SL_INCLUDE_FUNC(sl_FsOpen)
-long sl_FsOpen(unsigned char *pFileName,unsigned long AccessModeAndMaxSize, unsigned long *pToken,long *pFileHandle)
+long sl_FsOpen(const unsigned char *pFileName,unsigned long AccessModeAndMaxSize, unsigned long *pToken,long *pFileHandle)
 {
     _SlReturnVal_t        RetVal;
     _SlFsOpenMsg_u        Msg;
