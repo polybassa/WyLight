@@ -41,7 +41,7 @@ static inline unsigned int incAdress(unsigned int adress) {
 }
 
 static long openFileSystem(void) {
-	const unsigned char FS_NAME[] = "filesystem";
+	static const unsigned char FS_NAME[] = "filesystem";
 	long hdl;
 	if (sl_FsOpen(FS_NAME, FS_MODE_OPEN_WRITE, 0, &hdl)) {
 		// File Doesn't exit create a new file
@@ -138,18 +138,19 @@ static long removeFileNameFromFilesystem(unsigned char *pFileName) {
 	return retVal;
 }
 
-long wy_FsCreateIfNotExists(unsigned char *pFileName, unsigned long maxSize, unsigned long accessFlags,
-		unsigned long *pToken, long *pFileHandle) {
-	long retVal = addFileNameToFilesystem(pFileName);
-	if (retVal) {
-		return retVal;
-	}
-	return sl_FsOpen(pFileName, FS_MODE_OPEN_CREATE(maxSize, accessFlags), pToken, pFileHandle);
-}
-
-inline long wy_FsOpen(unsigned char *pFileName, unsigned long AccessModeAndMaxSize, unsigned long *pToken,
+long wy_FsOpen(unsigned char *pFileName, unsigned long AccessModeAndMaxSize, unsigned long *pToken,
 		long *pFileHandle) {
-	return sl_FsOpen(pFileName, AccessModeAndMaxSize, pToken, pFileHandle);
+	
+	long retVal1 = sl_FsOpen(pFileName, AccessModeAndMaxSize, pToken, pFileHandle);
+	
+	const unsigned long mask = _FS_MODE_ACCESS_MASK << _FS_MODE_ACCESS_OFFSET;
+	const unsigned long access = (AccessModeAndMaxSize & mask) >> _FS_MODE_ACCESS_OFFSET;
+
+	if (access == _FS_MODE_OPEN_CREATE || access == _FS_MODE_OPEN_WRITE_CREATE_IF_NOT_EXIST) {
+		long retVal2 = addFileNameToFilesystem(pFileName);
+		return retVal2 ? retVal2 : retVal1;
+	}
+	return retVal1;
 }
 
 inline int wy_FsClose(long FileHdl, unsigned char* pCeritificateFileName, unsigned char* pSignature,

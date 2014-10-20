@@ -32,7 +32,7 @@ int ut_wy_fs_create_file(void)
 	unsigned char *filename = (unsigned char *)__FUNCTION__;
 	TestCaseBegin();
 	long hdl;
-	CHECK(0 == wy_FsCreateIfNotExists(filename, 100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR, 0, &hdl));
+	CHECK(0 == wy_FsOpen(filename,FS_MODE_OPEN_CREATE(100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR), 0, &hdl));
 	CHECK(0 == wy_FsClose(hdl, 0, 0, 0));
 	remove((const char *)filename);
 	TestCaseEnd();
@@ -44,7 +44,7 @@ int ut_wy_fs_create_and_del_file(void)
 	TestCaseBegin();
 	long hdl;
 	CHECK(0 != wy_FsOpen(filename, _FS_FILE_PUBLIC_READ, 0, &hdl));
-	CHECK(0 == wy_FsCreateIfNotExists(filename, 100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR, 0, &hdl));
+	CHECK(0 == wy_FsOpen(filename, FS_MODE_OPEN_CREATE( 100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR), 0, &hdl));
 	CHECK(0 == wy_FsClose(hdl, 0, 0, 0));
 	CHECK(0 == wy_FsOpen(filename, _FS_FILE_PUBLIC_READ, 0, &hdl));
 	CHECK(0 == wy_FsClose(hdl, 0, 0, 0));
@@ -64,7 +64,7 @@ int ut_wy_fs_max_file_creation(void)
 	
 	for (unsigned int i = 0; i < MAX_NUM_FILES; i++) {
 		sprintf((char *)buffer, "%s_%d", filename_pre, i);
-		CHECK(0 == wy_FsCreateIfNotExists(buffer, 100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR, 0, &hdl));
+		CHECK(0 == wy_FsOpen(buffer, FS_MODE_OPEN_CREATE(100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR), 0, &hdl));
 		CHECK(0 == wy_FsClose(hdl, 0, 0, 0));
 	}
 	// Cleanup
@@ -85,12 +85,12 @@ int ut_wy_fs_to_much_file_creation(void)
 	
 	for (unsigned int i = 0; i < MAX_NUM_FILES; i++) {
 		sprintf((char *)buffer, "%s_%d", filename_pre, i);
-		CHECK(0 == wy_FsCreateIfNotExists((unsigned char *)buffer, 100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR, 0, &hdl));
+		CHECK(0 == wy_FsOpen((unsigned char *)buffer, FS_MODE_OPEN_CREATE( 100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR), 0, &hdl));
 		CHECK(0 == wy_FsClose(hdl, 0, 0, 0));
 	}
 	
 	sprintf(buffer, "%s_%d", filename_pre, MAX_NUM_FILES);
-	CHECK(0 != wy_FsCreateIfNotExists((unsigned char *)buffer, 100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR, 0, &hdl));
+	CHECK(0 != wy_FsOpen((unsigned char *)buffer, FS_MODE_OPEN_CREATE( 100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR), 0, &hdl));
 	
 	// Cleanup
 	sprintf((char *)buffer, "rm %s*", filename_pre);
@@ -110,7 +110,7 @@ int ut_wy_fs_complete_delete(void)
 	
 	for (unsigned int i = 0; i < MAX_NUM_FILES; i++) {
 		sprintf((char *)buffer, "%s_%d", filename_pre, i);
-		CHECK(0 == wy_FsCreateIfNotExists(buffer, 100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR, 0, &hdl));
+		CHECK(0 == wy_FsOpen(buffer, FS_MODE_OPEN_CREATE( 100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR), 0, &hdl));
 		CHECK(0 == wy_FsClose(hdl, 0, 0, 0));
 	}
 	
@@ -133,7 +133,7 @@ int ut_wy_fs_format(void)
 	
 	for (unsigned int i = 0; i < MAX_NUM_FILES; i++) {
 		sprintf((char *)buffer, "%s_%d", filename_pre, i);
-		CHECK(0 == wy_FsCreateIfNotExists(buffer, 100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR, 0, &hdl));
+		CHECK(0 == wy_FsOpen(buffer, FS_MODE_OPEN_CREATE( 100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR), 0, &hdl));
 		CHECK(0 == wy_FsClose(hdl, 0, 0, 0));
 	}
 	

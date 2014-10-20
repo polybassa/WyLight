@@ -304,7 +304,7 @@ long sl_FsWrite(long FileHdl, unsigned long Offset, unsigned char* pData, unsign
 	\endcode
 */
 #if _SL_INCLUDE_FUNC(sl_FsGetInfo)
-int sl_FsGetInfo(unsigned char *pFileName,unsigned long Token,SlFsFileInfo_t* pFsFileInfo);
+int sl_FsGetInfo(const unsigned char *pFileName,unsigned long Token,SlFsFileInfo_t* pFsFileInfo);
 #endif
 
 /*!
@@ -323,7 +323,7 @@ int sl_FsGetInfo(unsigned char *pFileName,unsigned long Token,SlFsFileInfo_t* pF
 	\endcode
 */
 #if _SL_INCLUDE_FUNC(sl_FsDel)
-int sl_FsDel(unsigned char *pFileName,unsigned long Token);
+int sl_FsDel(const unsigned char *pFileName,unsigned long Token);
 #endif
 /*!
 

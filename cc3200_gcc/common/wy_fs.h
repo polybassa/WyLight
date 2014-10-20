@@ -26,28 +26,6 @@
 #define FLASHSIZE 0xfffff		// 1MB
 #define MAX_FILENAME_LEN 127
 
-
-/*!
- \brief create and open file for read or write from/to storage device
- 
- \param[in]      pFileName                  File Name buffer pointer
- \param[in]      maxSize       				maximal file size
- \param[in]		 accessFlags				see documentation
- \param[in]      pToken                     input Token for read, output Token for write
- \param[out]     pFileHandle      Pointing on the file and used for read and write commands to the file
- 
- \return         On success, zero is returned. On error, negative is returned
- 
- \sa             sl_FsRead sl_FsWrite sl_FsClose
- \note           belongs to \ref basic_api
- \warning        This API is going to be modified on the next release
-	\par            Example:
-	\code
- wy_FsCreateIfNotExists("FileName.html", 3584, _FS_FILE_OPEN_FLAG_COMMIT|_FS_FILE_PUBLIC_WRITE ,NULL, &FileHandle);
-	\endcode
- */
-long wy_FsCreateIfNotExists(unsigned char *pFileName, unsigned long maxSize, unsigned long accessFlags,
-							unsigned long *pToken, long *pFileHandle);
 /*!
     \brief open file for read or write from/to storage device
     
