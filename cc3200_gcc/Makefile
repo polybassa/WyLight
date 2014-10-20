@@ -12,19 +12,19 @@ PRJ_NAME=WyLight_bl
 ROOT=.
 
 # Include the common make definitions.
+ifeq ($(MAKECMDGOALS),sim)
+include bl/sim/makedefs
+else
 include makedefs
-
-# Where to find source files that do not live in this directory.
-VPATH=${ROOT}/bl
-VPATH+=${ROOT}/common
-VPATH+=${ROOT}/driverlib
-VPATH+=${ROOT}/simplelink/source
-VPATH+=${ROOT}/simplelink
+endif
 
 # Additional Compiler Flags
 CFLAGS+=-pedantic
 CFLAGS+=-Wall
 CFLAGS+=-O1
+sim: CFLAGS+=-DSIMULATOR
+
+sim: LDFLAGS+=-lcrypto
 
 # Where to find header files that do not live in the source directory.
 IPATH=${ROOT}
@@ -35,6 +35,7 @@ IPATH+=${ROOT}/driverlib
 IPATH+=${ROOT}/simplelink
 IPATH+=${ROOT}/simplelink/source
 IPATH+=${ROOT}/simplelink/include
+sim: IPATH+=${ROOT}/sim
 
 # The default rule, which causes the bootloader be built as bootloader
 all: bl
@@ -56,6 +57,12 @@ as_fw: SCATTERgcc_${PRJ_NAME}=${ROOT}/fw/gcc/WyLight_fw.ld
 as_fw: CFLAGS += -DBUILD_AS_FW
 as_fw: common
 	mv exe/${PRJ_NAME}.bin ${FW_FILE}
+
+sim: ${OBJDIR} ${BINDIR}
+sim: ${BINDIR}/${PRJ_NAME}.axf link
+
+link: ${OBJDIR}/main.o ${OBJDIR}/pinmux.o ${OBJDIR}/firmware_loader.o ${OBJDIR}/tcp_server.o ${OBJDIR}/simulator_bl.o ${OBJDIR}/fs.o ${OBJDIR}/uart_if.o ${OBJDIR}/gpio_if.o
+	${CC} ${LDFLAGS} -o simulator.bin ${OBJDIR}/main.o ${OBJDIR}/pinmux.o ${OBJDIR}/firmware_loader.o ${OBJDIR}/tcp_server.o ${OBJDIR}/simulator_bl.o ${OBJDIR}/fs.o ${OBJDIR}/uart_if.o ${OBJDIR}/gpio_if.o
 
 install_bl:
 	sh ../install.sh ${BL_FILE} "/sys/mcuimg.bin"
@@ -80,42 +87,11 @@ ${OBJDIR}:
 ${BINDIR}:
 	@mkdir -p ${BINDIR}
 
-# WyLight bootloader
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/main.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/pinmux.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/firmware_loader.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/tcp_server.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_bl_network_if.o
-
-# common
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/startup_${COMPILER}.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart_if.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/gpio_if.o
-
-#driverLib
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/cpu.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/flash.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/interrupt.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/pin.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/prcm.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/utils.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/shamd5.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/udma.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/spi.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/gpio.o
-
-# simplelink
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/socket.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/nonos.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/fs.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/device.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wlan.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/driver.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/netcfg.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/cc_pal.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/flowcont.o
-${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/netapp.o
+ifeq ($(MAKECMDGOALS),sim)
+include depend.bl_sim
+else
+include depend.bl
+endif
 
 # select linker script
 ENTRY_${PRJ_NAME}=ResetISR
