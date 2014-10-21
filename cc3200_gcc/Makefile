@@ -5,25 +5,25 @@
 #
 #*****************************************************************************
 
-# configure target output
+
 PRJ_NAME=WyLight_bl
 
 # The base directory.
 ROOT=.
 
 # Include the common make definitions.
-ifeq ($(MAKECMDGOALS),sim)
-include bl/sim/makedefs
-else
-include makedefs
+
+ifneq ($(MAKECMDGOALS),sim)
+PREFIX=arm-none-eabi-
 endif
+include makedefs
 
 # Additional Compiler Flags
-CFLAGS+=-pedantic
-CFLAGS+=-Wall
-CFLAGS+=-O1
 sim: CFLAGS+=-DSIMULATOR
+common: CFLAGS+=-mthumb
+common: CFLAGS+=-mcpu=cortex-m4
 
+common: LDFLAGS+=--gc-sections
 sim: LDFLAGS+=-lcrypto
 
 # Where to find header files that do not live in the source directory.
@@ -58,8 +58,7 @@ as_fw: CFLAGS += -DBUILD_AS_FW
 as_fw: common
 	mv exe/${PRJ_NAME}.bin ${FW_FILE}
 
-sim: ${OBJDIR} ${BINDIR}
-sim: ${BINDIR}/${PRJ_NAME}.axf link
+sim: ${OBJDIR} ${BINDIR} link
 
 link: ${OBJDIR}/main.o ${OBJDIR}/pinmux.o ${OBJDIR}/firmware_loader.o ${OBJDIR}/tcp_server.o ${OBJDIR}/simulator_bl.o ${OBJDIR}/fs.o ${OBJDIR}/uart_if.o ${OBJDIR}/gpio_if.o
 	${CC} ${LDFLAGS} -o simulator.bin ${OBJDIR}/main.o ${OBJDIR}/pinmux.o ${OBJDIR}/firmware_loader.o ${OBJDIR}/tcp_server.o ${OBJDIR}/simulator_bl.o ${OBJDIR}/fs.o ${OBJDIR}/uart_if.o ${OBJDIR}/gpio_if.o
@@ -75,10 +74,6 @@ clean:
 	@rm -rf ${OBJDIR} ${wildcard *~}
 	@rm -rf ${BINDIR} ${wildcard *~}
 	@rm -f ${FW_FILE}
-
-test:
-	@echo ${LIBC}
-	@echo ${LIBGCC}
 
 # The rule to create the target directories.
 ${OBJDIR}:
