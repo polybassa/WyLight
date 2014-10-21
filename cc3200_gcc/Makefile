@@ -77,6 +77,6 @@ ${BINDIR}:
 
 # Include the automatically generated dependency files.
 ifneq (${MAKECMDGOALS},clean)
-include depend.${FLAVOUR}
+include ${FLAVOUR}/Makefile.${FLAVOUR}
 -include ${wildcard ${COMPILER}/*.d} __dummy__
 endif
