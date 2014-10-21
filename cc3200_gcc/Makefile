@@ -5,62 +5,47 @@
 #
 #*****************************************************************************
 
-
-PRJ_NAME=WyLight_bl
-
-# The base directory.
-ROOT=.
-
-# Include the common make definitions.
+PRJ_NAME=WyLight_$(MAKECMDGOALS)
+FLAVOUR=$(MAKECMDGOALS)
 
 ifneq ($(MAKECMDGOALS),sim)
 PREFIX=arm-none-eabi-
 endif
+
+# Include the common make definitions.
 include makedefs
 
 # Additional Compiler Flags
 sim: CFLAGS+=-DSIMULATOR
+
 common: CFLAGS+=-mthumb
 common: CFLAGS+=-mcpu=cortex-m4
+common: CFLAGS+=-DTARGET_IS_BLIZZARD_RB1
 
-common: LDFLAGS+=--gc-sections
+# additional linker flags
 sim: LDFLAGS+=-lcrypto
-
-# Where to find header files that do not live in the source directory.
-IPATH=${ROOT}
-IPATH+=${ROOT}/bl
-IPATH+=${ROOT}/common
-IPATH+=${ROOT}/inc
-IPATH+=${ROOT}/driverlib
-IPATH+=${ROOT}/simplelink
-IPATH+=${ROOT}/simplelink/source
-IPATH+=${ROOT}/simplelink/include
-sim: IPATH+=${ROOT}/sim
+common: LDFLAGS+=--gc-sections
 
 # The default rule, which causes the bootloader be built as bootloader
 all: bl
 
-# build all the bootloader files. Used by as_bl and as_fw builds
+# build all the bootloader files. Used by bl and fw builds
 common: ${OBJDIR} ${BINDIR}
 common: ${BINDIR}/${PRJ_NAME}.axf
 
 # build the bootloader as normal bootloader
 BL_FILE=exe/${PRJ_NAME}.bin
-bl: SCATTERgcc_${PRJ_NAME}=${ROOT}/bl/WyLight_bl.ld
 bl: common
 
 #openssl sha256 -binary ${BL_FILE} >> ${BL_FILE}
 
 # build the bootloader as a small firmware which is used to update the bootloader ;-)
 FW_FILE=WyLight_fw.bin
-as_fw: SCATTERgcc_${PRJ_NAME}=${ROOT}/fw/gcc/WyLight_fw.ld
-as_fw: CFLAGS += -DBUILD_AS_FW
-as_fw: common
+fw: CFLAGS += -DBUILD_AS_FW
+fw: common
 	mv exe/${PRJ_NAME}.bin ${FW_FILE}
 
-sim: ${OBJDIR} ${BINDIR} link
-
-link: ${OBJDIR}/main.o ${OBJDIR}/pinmux.o ${OBJDIR}/firmware_loader.o ${OBJDIR}/tcp_server.o ${OBJDIR}/simulator_bl.o ${OBJDIR}/fs.o ${OBJDIR}/uart_if.o ${OBJDIR}/gpio_if.o
+sim: ${OBJDIR} ${BINDIR} ${OBJDIR}/main.o ${OBJDIR}/pinmux.o ${OBJDIR}/firmware_loader.o ${OBJDIR}/tcp_server.o ${OBJDIR}/simulator_bl.o ${OBJDIR}/fs.o ${OBJDIR}/uart_if.o ${OBJDIR}/gpio_if.o
 	${CC} ${LDFLAGS} -o simulator.bin ${OBJDIR}/main.o ${OBJDIR}/pinmux.o ${OBJDIR}/firmware_loader.o ${OBJDIR}/tcp_server.o ${OBJDIR}/simulator_bl.o ${OBJDIR}/fs.o ${OBJDIR}/uart_if.o ${OBJDIR}/gpio_if.o
 
 install_bl:
@@ -87,10 +72,6 @@ include depend.bl_sim
 else
 include depend.bl
 endif
-
-# select linker script
-ENTRY_${PRJ_NAME}=ResetISR
-CFLAGSgcc=-DTARGET_IS_BLIZZARD_RB1
 
 # Include the automatically generated dependency files.
 ifneq (${MAKECMDGOALS},clean)

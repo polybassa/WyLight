@@ -43,6 +43,12 @@
 #******************************************************************************
 os:=${shell uname -s}
 
+# The base directory.
+ROOT=.
+
+# linker script
+SCATTERgcc_${PRJ_NAME}=${ROOT}/${FLAVOUR}/${PRJ_NAME}.ld
+
 #******************************************************************************
 #
 # Object File directory.
@@ -56,7 +62,6 @@ OBJDIR?=obj
 #
 #******************************************************************************
 BINDIR?=exe
-
 
 #******************************************************************************
 #
@@ -112,7 +117,7 @@ LD=${PREFIX}ld
 #
 # Get the location of libgcc.a from the GCC front-end.
 #
-LIBGCC:=${shell ${CC} -mthumb ${CFLAGS} -print-libgcc-file-name}
+LIBGCC:=${shell ${CC} ${CFLAGS} -print-libgcc-file-name}
 
 #
 # Get the location of libc.a from the GCC front-end.
@@ -182,6 +187,8 @@ ${BINDIR}/%.a:
 	     echo ${AR} -cr ${@} ${^}; \
 	 fi
 	@${AR} -cr ${@} ${^}
+
+ENTRY_${PRJ_NAME}=ResetISR
 
 #
 # The rule for linking the application.
