@@ -45,9 +45,7 @@ os:=${shell uname -s}
 
 # The base directory.
 ROOT=.
-
-# linker script
-SCATTERgcc_${PRJ_NAME}=${ROOT}/${FLAVOUR}/${PRJ_NAME}.ld
+RTOS_SOURCE_DIR=${ROOT}/third_party/FreeRTOS
 
 #******************************************************************************
 #
@@ -187,8 +185,6 @@ ${BINDIR}/%.a:
 	     echo ${AR} -cr ${@} ${^}; \
 	 fi
 	@${AR} -cr ${@} ${^}
-
-ENTRY_${PRJ_NAME}=ResetISR
 
 #
 # The rule for linking the application.

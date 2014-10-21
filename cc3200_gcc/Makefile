@@ -8,6 +8,10 @@
 PRJ_NAME=WyLight_$(MAKECMDGOALS)
 FLAVOUR=$(MAKECMDGOALS)
 
+# linker script
+SCATTERgcc_${PRJ_NAME}=${ROOT}/${FLAVOUR}/${PRJ_NAME}.ld
+ENTRY_${PRJ_NAME}=ResetISR
+
 ifneq ($(MAKECMDGOALS),sim)
 PREFIX=arm-none-eabi-
 endif
@@ -21,6 +25,10 @@ sim: CFLAGS+=-DSIMULATOR
 common: CFLAGS+=-mthumb
 common: CFLAGS+=-mcpu=cortex-m4
 common: CFLAGS+=-DTARGET_IS_BLIZZARD_RB1
+
+fw: CFLAGS+=-DSL_PLATFORM_MULTI_THREADED
+fw: CFLAGS+=-DUSE_FREERTOS
+fw: CFLAGS+=-Dcc3200
 
 # additional linker flags
 sim: LDFLAGS+=-lcrypto
@@ -41,7 +49,6 @@ bl: common
 
 # build the bootloader as a small firmware which is used to update the bootloader ;-)
 FW_FILE=WyLight_fw.bin
-fw: CFLAGS += -DBUILD_AS_FW
 fw: common
 	mv exe/${PRJ_NAME}.bin ${FW_FILE}
 
@@ -67,13 +74,9 @@ ${OBJDIR}:
 ${BINDIR}:
 	@mkdir -p ${BINDIR}
 
-ifeq ($(MAKECMDGOALS),sim)
-include depend.bl_sim
-else
-include depend.bl
-endif
 
 # Include the automatically generated dependency files.
 ifneq (${MAKECMDGOALS},clean)
+include depend.${FLAVOUR}
 -include ${wildcard ${COMPILER}/*.d} __dummy__
 endif
