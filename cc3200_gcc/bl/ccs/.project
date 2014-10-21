@@ -65,6 +65,11 @@
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/wy_bl_network_if.c</locationURI>
 		</link>
+		<link>
+			<name>wy_fs.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/common/wy_fs.c</locationURI>
+		</link>
 	</linkedResources>
 	<variableList>
 		<variable>

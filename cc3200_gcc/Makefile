@@ -21,7 +21,7 @@ endif
 # Additional Compiler Flags
 CFLAGS+=-pedantic
 CFLAGS+=-Wall
-CFLAGS+=-O1
+CFLAGS+=-O3
 sim: CFLAGS+=-DSIMULATOR
 
 sim: LDFLAGS+=-lcrypto

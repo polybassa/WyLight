@@ -53,12 +53,6 @@ static long openFileSystem(void) {
 			sl_FsDel(FS_NAME, 0);
 			return SL_FS_ERR_ALLOC;
 		}
-		unsigned char emptyData[MAX_NUM_FILES * sizeof(File)] = {0};
-		
-		if(sizeof(emptyData) != sl_FsWrite(hdl, 0, emptyData, sizeof(emptyData))) {
-			sl_FsClose(hdl, 0, 0, 0);
-			return SL_FS_ERROR_FAILED_TO_WRITE;
-		}
 	}
 	return hdl;
 }
@@ -69,8 +63,8 @@ static long addFileNameToFilesystem(unsigned char *pFileName) {
 
 	unsigned int adress = computeAdress(pFileName);
 	long retVal = SL_FS_ERR_ALLOC;
-	
-	for (unsigned int round = 0; round < MAX_NUM_FILES; round++) {
+	unsigned int round = 0;
+	for (; round < MAX_NUM_FILES; round++) {
 		const size_t offset = adress * sizeof(File);
 		File tempFile;
 
@@ -109,8 +103,8 @@ static long removeFileNameFromFilesystem(unsigned char *pFileName) {
 
 	unsigned int adress = computeAdress(pFileName);
 	long retVal = SL_FS_ERR_FILE_NOT_EXISTS;
-
-	for (unsigned int round = 0; round < MAX_NUM_FILES; round++) {
+	unsigned int round = 0;
+	for (; round < MAX_NUM_FILES; round++) {
 		const size_t offset = adress * sizeof(File);
 		File tempFile;
 
@@ -183,8 +177,8 @@ int wy_FsFormat(void) {
 	if (hdl < 0) return hdl; // contains ERRORCODE
 	
 	long retVal = SL_FS_ERR_FILE_NOT_EXISTS;
-
-	for (unsigned int adress = 0; adress < MAX_NUM_FILES; adress++) {
+	unsigned int adress = 0;
+	for (; adress < MAX_NUM_FILES; adress++) {
 		const size_t offset = adress * sizeof(File);
 		File tempFile;
 
