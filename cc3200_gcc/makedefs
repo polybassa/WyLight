@@ -43,6 +43,10 @@
 #******************************************************************************
 os:=${shell uname -s}
 
+# The base directory.
+ROOT=.
+RTOS_SOURCE_DIR=${ROOT}/third_party/FreeRTOS
+
 #******************************************************************************
 #
 # Object File directory.
@@ -56,7 +60,6 @@ OBJDIR?=obj
 #
 #******************************************************************************
 BINDIR?=exe
-
 
 #******************************************************************************
 #
@@ -75,72 +78,44 @@ endif
 ifeq (${COMPILER}, gcc)
 
 #
-# Get the prefix for the tools to use.  Use arm-stellaris-eabi if it exists,
-# otherwise fall back to arm-none-eabi.
-#
-PREFIX:=${shell type arm-stellaris-eabi-gcc > /dev/null 2>&1 && \
-         echo arm-stellaris-eabi || echo arm-none-eabi}
-
-#
 # The command for calling the compiler.
 #
-CC=${PREFIX}-gcc
-
-#
-# The location of the C compiler
-# ARMGCC_ROOT is used by some makefiles that need to know where the compiler
-# is installed.
-#
-ARMGCC_ROOT:=${shell dirname '${shell sh -c "which ${CC}"}'}/..
-
-#
-# Set the compiler CPU/FPU options.
-#
-CPU=-mcpu=cortex-m4
-#FPU=-mfpu=fpv4-sp-d16 -mfloat-abi=softfp
+CC=${PREFIX}gcc
 
 #
 # The flags passed to the assembler.
 #
 AFLAGS=-mthumb \
-       ${CPU}  \
-       ${FPU}  \
+       -mcpu=cortex-m4  \
        -MD
 
 #
 # The flags passed to the compiler.
 #
-CFLAGS=-mthumb             \
-       ${CPU}              \
-       ${FPU}              \
-       -ffunction-sections \
+CFLAGS=-ffunction-sections \
        -fdata-sections     \
        -MD                 \
        -std=c99            \
+       -pedantic \
+       -Wall \
        -g 		   \
-       -O0 		   \
-       -c                  
+       -O1 		   \
+       -c
 
 #
 # The command for calling the library archiver.
 #
-AR=${PREFIX}-ar
+AR=${PREFIX}ar
 
 #
 # The command for calling the linker.
 #
-LD=${PREFIX}-ld 
-
-#
-# The flags passed to the linker.
-#
-LDFLAGS=--gc-sections
-
+LD=${PREFIX}ld
 
 #
 # Get the location of libgcc.a from the GCC front-end.
 #
-LIBGCC:=${shell ${CC} -mthumb ${CFLAGS} -print-libgcc-file-name}
+LIBGCC:=${shell ${CC} ${CFLAGS} -print-libgcc-file-name}
 
 #
 # Get the location of libc.a from the GCC front-end.
@@ -155,12 +130,7 @@ LIBM:=${shell ${CC} ${CFLAGS} -print-file-name=libm.a}
 #
 # The command for extracting images from the linked executables.
 #
-OBJCOPY=${PREFIX}-objcopy
-
-#
-# Add the tool specific CFLAGS.
-#
-CFLAGS+=${CFLAGSgcc}
+OBJCOPY=${PREFIX}objcopy
 
 #
 # Add the include file paths to AFLAGS and CFLAGS.
