@@ -170,13 +170,13 @@ int spi_Read_CPU(unsigned char *pBuff, int len)
 					the entire buffer write would be completed
     \warning
 */
-int spi_Write_CPU(const unsigned char *pBuff, int len)
+int spi_Write_CPU(unsigned char *pBuff, int len)
 {
 
 
     unsigned long ulCnt;
     unsigned long ulStatusReg;
-    const unsigned long *ulDataOut;
+    unsigned long *ulDataOut;
     unsigned long ulDataIn;
     unsigned long ulTxReg;
     unsigned long ulRxReg;
@@ -267,7 +267,7 @@ void SetupDMAReceive(unsigned char *ucBuff,int len)
 
 }
 
-void SetupDMASend(const unsigned char *ucBuff,int len)
+void SetupDMASend(unsigned char *ucBuff,int len)
 {
 
 	cc_SetupTransfer(UDMA_CH13_LSPI_TX,
@@ -524,7 +524,7 @@ int spi_Read(Fd_t fd, unsigned char *pBuff, int len)
 					the entire buffer write would be completed
     \warning
 */
-int spi_Write(Fd_t fd, const unsigned char *pBuff, int len)
+int spi_Write(Fd_t fd, unsigned char *pBuff, int len)
 {
     int write_size = 0;
 

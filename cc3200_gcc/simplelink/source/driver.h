@@ -49,7 +49,7 @@ typedef struct
     UINT16  TxPayloadLen;
     UINT16  RxPayloadLen;
 	UINT16  ActualRxPayloadLen;
-    const UINT8   *pTxPayload;
+    UINT8   *pTxPayload;
     UINT8   *pRxPayload;
 }_SlCmdExt_t;
 

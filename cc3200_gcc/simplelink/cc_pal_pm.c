@@ -186,7 +186,7 @@ int spi_Read(Fd_t fd, unsigned char *pBuff, int len)
 					the entire buffer write would be completed
     \warning
 */
-int spi_Write(Fd_t fd, const unsigned char *pBuff, int len)
+int spi_Write(Fd_t fd, unsigned char *pBuff, int len)
 {
     int write_size = 0;
 
