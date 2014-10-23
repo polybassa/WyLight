@@ -27,7 +27,7 @@ while [ "$1" != "" ]; do
 	if [ "$1" != "" ]; then
 		printf "%-128s" $1 > tmp.bin
 		cat $file >> tmp.bin
-		${file%.*}.sha >> tmp.bin
+		openssl sha256 -binary $file >> tmp.bin
 		netcat $TARGET_IP $TARGET_PORT < tmp.bin &
 		PID=$!
 		sleep $WAIT_TIME

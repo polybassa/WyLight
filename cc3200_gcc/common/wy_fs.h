@@ -22,9 +22,9 @@
 #include "fs.h"
 
 #define BLOCKSIZE 4096
-#define MAX_NUM_FILES 128
+#define MAX_NUM_FILES 32
 #define FLASHSIZE 0xfffff		// 1MB
-#define MAX_FILENAME_LEN 127
+#define MAX_FILENAME_LEN 63
 
 /*!
     \brief open file for read or write from/to storage device
