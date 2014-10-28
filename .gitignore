@@ -32,6 +32,7 @@ config.log
 config.status
 autom4te.cache/output.1
 autom4te.cache/traces.1
+Makefile
 config.h
 /wylight.de/WyLightWebpage/nbproject/private/
 cc3200/WiFi-Starter-iOS-App/*
@@ -59,3 +60,4 @@ cc3200_gcc/driverlib/ccs/Release/driverlib.a
 cc3200_gcc/fw/ccs/.settings/org.eclipse.core.resources.prefs
 cc3200_gcc/oslib/ccs/free_rtos/free_rtos.a
 cc3200_gcc/simplelink/ccs/OS/simplelink.a
+*.obj

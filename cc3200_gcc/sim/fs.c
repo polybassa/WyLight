@@ -34,44 +34,43 @@
  *
 */
 #include <stdio.h>
+#include <unistd.h>
+#include <string.h>
 #include "fs.h"
+#include <stdlib.h>
+
 /*****************************************************************************/
 /*  sl_FsOpen */ 
 /*****************************************************************************/
 
+unsigned long g_CreateFileSize = 0;
+unsigned char g_FileName[127];
+
 unsigned long _GetCreateFsMode(unsigned long maxSizeInBytes,unsigned long accessFlags)
 {
-	unsigned long granIdx = 0;
-	unsigned long granNum = 0;
-	unsigned long granTable[_FS_MAX_MODE_SIZE_GRAN] = {256,1024,4096,16384,65536};
-	for(granIdx= _FS_MODE_SIZE_GRAN_256B ;granIdx< _FS_MAX_MODE_SIZE_GRAN;granIdx++)
-	{
-		if( granTable[granIdx]*255 >= maxSizeInBytes )
-			break;
-	}
-	granNum = maxSizeInBytes/granTable[granIdx];
-	if( maxSizeInBytes % granTable[granIdx] != 0 )
-		granNum++;
-	
-	return _FS_MODE(_FS_MODE_OPEN_WRITE_CREATE_IF_NOT_EXIST,  granIdx, granNum, accessFlags);
+	g_CreateFileSize = maxSizeInBytes;
+	return _FS_MODE(_FS_MODE_OPEN_WRITE_CREATE_IF_NOT_EXIST,  0, 0, 0);
 }
 
-FILE * g_FileHandle;
 
 #if _SL_INCLUDE_FUNC(sl_FsOpen)
-long sl_FsOpen(unsigned char *pFileName,unsigned long AccessModeAndMaxSize, unsigned long *pToken,long *pFileHandle)
+long sl_FsOpen(const unsigned char *pFileName,unsigned long AccessModeAndMaxSize, unsigned long *pToken,long *pFileHandle)
 {
-	if (AccessModeAndMaxSize == 0) {
-		g_FileHandle = fopen((const char *)pFileName, "r");
-	} else {
-		g_FileHandle = fopen((const char *)pFileName, "w");
+	strcpy((char *)g_FileName, (const char *)pFileName);
+	if (g_CreateFileSize) {
+		unsigned char* mem = (unsigned char*)malloc(g_CreateFileSize);
+		memset(mem, 0, g_CreateFileSize);
+		FILE *hdl = fopen((const char *)pFileName, "wb");
+		fwrite(mem, 1, g_CreateFileSize, hdl);
+		fclose(hdl);
+		free(mem);
+		g_CreateFileSize = 0;
 	}
 	
-	if (g_FileHandle != NULL) {
-		return 0;
-	} else {
+	if (access((const char *)pFileName, F_OK))
 		return -1;
-	}
+	else
+		return 0;
 }
 #endif
 
@@ -81,7 +80,6 @@ long sl_FsOpen(unsigned char *pFileName,unsigned long AccessModeAndMaxSize, unsi
 #if _SL_INCLUDE_FUNC(sl_FsClose)
 int sl_FsClose(long FileHdl, unsigned char* pCeritificateFileName,unsigned char* pSignature ,unsigned long SignatureLen)
 {
-	fclose(g_FileHandle);
 	return 0;
 }
 #endif
@@ -93,10 +91,16 @@ int sl_FsClose(long FileHdl, unsigned char* pCeritificateFileName,unsigned char*
 #if _SL_INCLUDE_FUNC(sl_FsRead)
 long sl_FsRead(long FileHdl, unsigned long Offset, unsigned char* pData, unsigned long Len)
 {
+	FILE *pHandle = fopen((const char *)g_FileName, "rb");
+	if (pHandle == NULL) {
+		return -1;
+	}
 	
-	long RetCount = fread(pData, 1, Len, g_FileHandle);
+	fseek(pHandle, Offset, SEEK_SET);
+	size_t retVal = fread(pData, 1, Len, pHandle);
+	fclose(pHandle);
 
-    return (long)RetCount;
+    return (long)retVal;
 }
 #endif
 
@@ -106,9 +110,28 @@ long sl_FsRead(long FileHdl, unsigned long Offset, unsigned char* pData, unsigne
 #if _SL_INCLUDE_FUNC(sl_FsWrite)
 long sl_FsWrite(long FileHdl, unsigned long Offset, unsigned char* pData, unsigned long Len)
 {
-	long RetCount = fwrite(pData, 1, Len, g_FileHandle);
-
-    return (long)RetCount;
+	FILE *pHandle = fopen((const char *)g_FileName, "rb");
+	if (pHandle == NULL) {
+		return -1;
+	}
+	
+	fseek(pHandle, 0, SEEK_END);
+	long fsize = ftell(pHandle);
+	fseek(pHandle, 0, SEEK_SET);
+	
+	unsigned char *buffer = malloc(fsize);
+	fread(buffer, fsize, 1, pHandle);
+	
+	memcpy(&buffer[Offset], pData, Len);
+	
+	pHandle = freopen((const char *)g_FileName, "wb", pHandle);
+	long retVal = -1;
+	if(1 == fwrite(buffer, fsize, 1, pHandle)) {
+		retVal = Len;
+	}
+	fclose(pHandle);
+	
+    return retVal;
 }
 #endif
 
@@ -117,10 +140,10 @@ long sl_FsWrite(long FileHdl, unsigned long Offset, unsigned char* pData, unsign
 /*****************************************************************************/
 
 #if _SL_INCLUDE_FUNC(sl_FsGetInfo)
-int sl_FsGetInfo(unsigned char *pFileName,unsigned long Token,SlFsFileInfo_t* pFsFileInfo)
+int sl_FsGetInfo(const unsigned char *pFileName,unsigned long Token,SlFsFileInfo_t* pFsFileInfo)
 {
 	
-	FILE * pHandle = fopen((const char *)pFileName, "r");
+	FILE * pHandle = fopen((const char *)pFileName, "rb");
 	if (pHandle == NULL) {
 		return -1;
 	}
@@ -128,14 +151,10 @@ int sl_FsGetInfo(unsigned char *pFileName,unsigned long Token,SlFsFileInfo_t* pF
 	
 	long size = ftell(pHandle);
 	fclose(pHandle);
+	memset(pFsFileInfo, 0, sizeof(SlFsFileInfo_t));
 
-	pFsFileInfo->flags        = 0;
     pFsFileInfo->FileLen      = size;
     pFsFileInfo->AllocatedLen = size;
-    pFsFileInfo->Token[0]     = 0;
-    pFsFileInfo->Token[1]     = 0;
-    pFsFileInfo->Token[2]     = 0;
-    pFsFileInfo->Token[3]     = 0;
 	return 0;
 }
 #endif
@@ -144,7 +163,7 @@ int sl_FsGetInfo(unsigned char *pFileName,unsigned long Token,SlFsFileInfo_t* pF
 /* sl_FsDel */ 
 /*****************************************************************************/
 #if _SL_INCLUDE_FUNC(sl_FsDel)
-int sl_FsDel(unsigned char *pFileName,unsigned long Token)
+int sl_FsDel(const unsigned char *pFileName,unsigned long Token)
 {
 	int status = remove((const char *)pFileName);
 	return  status;

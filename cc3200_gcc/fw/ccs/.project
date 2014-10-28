@@ -116,6 +116,16 @@
 			<locationURI>PARENT-1-PROJECT_LOC/wy_firmware.c</locationURI>
 		</link>
 		<link>
+			<name>wy_fs.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/common/wy_fs.c</locationURI>
+		</link>
+		<link>
+			<name>wy_fs.h</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/common/wy_fs.h</locationURI>
+		</link>
+		<link>
 			<name>wy_network_if.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/wy_network_if.c</locationURI>
