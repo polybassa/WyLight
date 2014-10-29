@@ -26,6 +26,9 @@
 /**************** includes and functions for wrapping ****************/
 #include "wy_fs.h"
 
+#define DELETE_CMD "rm "
+#define DELETE_FILESYSTEM DELETE_CMD FILESYSTEMNAME
+
 /* test RTC commands */
 int ut_wy_fs_create_file(void)
 {
@@ -60,7 +63,7 @@ int ut_wy_fs_max_file_creation(void)
 	unsigned char *filename_pre = (unsigned char *)__FUNCTION__;
 	unsigned char buffer[100];
 	long hdl;
-	system("rm filesystem");
+	system(DELETE_FILESYSTEM);
 	
 	for (unsigned int i = 0; i < MAX_NUM_FILES; i++) {
 		sprintf((char *)buffer, "%s_%d", filename_pre, i);
@@ -81,7 +84,7 @@ int ut_wy_fs_to_much_file_creation(void)
 	unsigned char *filename_pre = (unsigned char *)__FUNCTION__;
 	char buffer[100];
 	long hdl;
-	system("rm filesystem");
+	system(DELETE_FILESYSTEM);
 	
 	for (unsigned int i = 0; i < MAX_NUM_FILES; i++) {
 		sprintf((char *)buffer, "%s_%d", filename_pre, i);
@@ -106,7 +109,7 @@ int ut_wy_fs_complete_delete(void)
 	unsigned char *filename_pre = (unsigned char *)__FUNCTION__;
 	unsigned char buffer[100];
 	long hdl;
-	system("rm filesystem");
+	system(DELETE_FILESYSTEM);
 	
 	for (unsigned int i = 0; i < MAX_NUM_FILES; i++) {
 		sprintf((char *)buffer, "%s_%d", filename_pre, i);
@@ -129,7 +132,7 @@ int ut_wy_fs_format(void)
 	unsigned char *filename_pre = (unsigned char *)__FUNCTION__;
 	unsigned char buffer[100];
 	long hdl;
-	system("rm filesystem");
+	system(DELETE_FILESYSTEM);
 	
 	for (unsigned int i = 0; i < MAX_NUM_FILES; i++) {
 		sprintf((char *)buffer, "%s_%d", filename_pre, i);
@@ -158,7 +161,7 @@ int main(int argc, const char *argv[])
 	RunTest(true, ut_wy_fs_format);
 	
 	// Cleanup
-	system("rm filesystem");
+	system(DELETE_FILESYSTEM);
 	UnitTestMainEnd();
 }
 
