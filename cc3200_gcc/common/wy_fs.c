@@ -40,7 +40,7 @@ static inline unsigned int incAdress(unsigned int adress) {
 }
 
 static long openFileSystem(void) {
-	static const unsigned char FS_NAME[] = "filesystem.bin";
+	static const unsigned char FS_NAME[] = FILESYSTEMNAME;
 	long hdl;
 	if (sl_FsOpen(FS_NAME, FS_MODE_OPEN_WRITE, 0, &hdl)) {
 		// File Doesn't exit create a new file

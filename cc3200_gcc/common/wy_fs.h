@@ -25,6 +25,11 @@
 #define MAX_NUM_FILES 32
 #define FLASHSIZE 0xfffff		// 1MB
 #define MAX_FILENAME_LEN 63
+#ifdef SIMULATOR
+#define FILESYSTEMNAME "filesystem.bin"
+#else
+#define FILESYSTEMNAME "/sys/filesystem.bin"
+#endif /* ifndef SIMULATOR */
 
 /*!
     \brief open file for read or write from/to storage device
