@@ -28,10 +28,6 @@
 #define FW_FILENAME			"firmware.bin"
 #define APP_NAME			"WyLight Firmware"
 #define FIRMWARE_ORIGIN 	memory
-#elif defined(BUILD_AS_FW)
-#define FW_FILENAME			"/sys/mcuimg.bin"
-#define APP_NAME			"WyLight Firmware"
-#define FIRMWARE_ORIGIN 	(uint8_t*)0x20004000
 #else
 #define FW_FILENAME			"/temp/firmware.bin"
 #define APP_NAME			"WyLight Bootloader"
