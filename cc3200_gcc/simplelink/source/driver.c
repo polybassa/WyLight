@@ -1239,7 +1239,7 @@ typedef union
 
 int _SlDrvBasicCmd(_SlOpcode_t Opcode)
 {
-    _SlBasicCmdMsg_u       Msg = {.Rsp = {0}};
+    _SlBasicCmdMsg_u       Msg = {0};
     _SlCmdCtrl_t           CmdCtrl;
     
     CmdCtrl.Opcode = Opcode;

@@ -52,6 +52,15 @@ unsigned long _GetCreateFsMode(unsigned long maxSizeInBytes,unsigned long access
 	return _FS_MODE(_FS_MODE_OPEN_WRITE_CREATE_IF_NOT_EXIST,  0, 0, 0);
 }
 
+unsigned short sl_Strlen(const unsigned char *buffer)
+{
+	unsigned short len = 0;
+	if( buffer != NULL )
+	{
+		while(*buffer++) len++;
+	}
+	return len;
+}
 
 #if _SL_INCLUDE_FUNC(sl_FsOpen)
 long sl_FsOpen(unsigned char *pFileName,unsigned long AccessModeAndMaxSize, unsigned long *pToken,long *pFileHandle)

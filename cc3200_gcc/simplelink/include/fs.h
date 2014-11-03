@@ -182,7 +182,8 @@ unsigned long _GetCreateFsMode(unsigned long maxSizeInBytes,unsigned long access
 /* Open for Creating a new file */
 #define FS_MODE_OPEN_CREATE(maxSizeInBytes,accessModeFlags)      _GetCreateFsMode(maxSizeInBytes,accessModeFlags)                                 
 
-
+#define sl_min(a,b) (((a) < (b)) ? (a) : (b))
+unsigned short sl_Strlen(const unsigned char *buffer);
 
 /*!
 
