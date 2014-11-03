@@ -39,10 +39,10 @@ static inline unsigned int incAdress(unsigned int adress) {
 	return ++adress % MAX_NUM_FILES;
 }
 
-static long openFileSystem(void) {
-	static const unsigned char FS_NAME[] = FILESYSTEMNAME;
+static long openFileSystem(unsigned long access) {
+	static unsigned char FS_NAME[] = FILESYSTEMNAME;
 	long hdl;
-	if (sl_FsOpen(FS_NAME, FS_MODE_OPEN_WRITE, 0, &hdl)) {
+	if (sl_FsOpen(FS_NAME, access, 0, &hdl)) {
 		// File Doesn't exit create a new file
 		if (sl_FsOpen(FS_NAME,
 				FS_MODE_OPEN_CREATE(MAX_NUM_FILES * sizeof(struct File),
@@ -63,7 +63,7 @@ static long openFileSystem(void) {
 }
 
 static long addFileNameToFilesystem(unsigned char *pFileName) {
-	long hdl = openFileSystem();
+	long hdl = openFileSystem(FS_MODE_OPEN_READ);
 	if (hdl < 0) return hdl;  // contains ERRORCODE
 
 	const unsigned char *pFileNameEnd = memchr(pFileName, 0, MAX_FILENAME_LEN);
@@ -88,6 +88,8 @@ static long addFileNameToFilesystem(unsigned char *pFileName) {
 
 		if (tempFile.Status == EMPTY || tempFile.Status == INVALID) {
 			tempFile.Status = VALID;
+			sl_FsClose(hdl, 0, 0, 0);
+			hdl = openFileSystem(FS_MODE_OPEN_WRITE);
 
 			memcpy(tempFile.Name, pFileName, FileNameLen);
 			if (sizeof(struct File) == sl_FsWrite(hdl, offset, (unsigned char *) &tempFile, sizeof(struct File))) retVal =
@@ -107,7 +109,7 @@ static long addFileNameToFilesystem(unsigned char *pFileName) {
 }
 
 static long removeFileNameFromFilesystem(unsigned char *pFileName) {
-	long hdl = openFileSystem();
+	long hdl = openFileSystem(FS_MODE_OPEN_READ);
 	if (hdl < 0) return hdl; // contains ERRORCODE
 
 	const unsigned char *pFileNameEnd = memchr(pFileName, 0, MAX_FILENAME_LEN);
@@ -133,6 +135,8 @@ static long removeFileNameFromFilesystem(unsigned char *pFileName) {
 			goto close_and_return;
 		} else if (0 == memcmp(tempFile.Name, pFileName, FileNameLen)) {
 			tempFile.Status = INVALID;
+			sl_FsClose(hdl, 0, 0, 0);
+			hdl = openFileSystem(FS_MODE_OPEN_WRITE);
 			if (sizeof(struct File) == sl_FsWrite(hdl, offset, (unsigned char *) &tempFile, sizeof(struct File))) retVal =
 			SL_FS_OK;
 			else retVal = SL_FS_ERROR_FAILED_TO_WRITE;
@@ -186,7 +190,7 @@ int wy_FsDel(unsigned char *pFileName, unsigned long Token) {
 }
 
 int wy_FsFormat(void) {
-	const long hdl = openFileSystem();
+	long hdl = openFileSystem(FS_MODE_OPEN_READ);
 	if (hdl < 0) return hdl; // contains ERRORCODE
 
 	long retVal = SL_FS_ERR_FILE_NOT_EXISTS;
@@ -205,10 +209,14 @@ int wy_FsFormat(void) {
 			if (retVal) goto close_and_return;
 
 			tempFile.Status = INVALID;
+			sl_FsClose(hdl, 0, 0, 0);
+			hdl = openFileSystem(FS_MODE_OPEN_WRITE);
 			if (sizeof(struct File) != sl_FsWrite(hdl, offset, (unsigned char *) &tempFile, sizeof(struct File))) {
 				retVal = SL_FS_ERROR_FAILED_TO_WRITE;
 				goto close_and_return;
 			}
+			sl_FsClose(hdl, 0, 0, 0);
+			hdl = openFileSystem(FS_MODE_OPEN_READ);
 		}
 	}
 	retVal = SL_FS_OK;
