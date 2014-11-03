@@ -40,7 +40,7 @@ static inline unsigned int incAdress(unsigned int adress) {
 }
 
 static long openFileSystem(const unsigned long access) {
-	static unsigned char FS_NAME[] = FILESYSTEMNAME;
+	static const unsigned char FS_NAME[] = FILESYSTEMNAME;
 	long hdl;
 	if (sl_FsOpen(FS_NAME, access, 0, &hdl)) {
 		// File Doesn't exit create a new file
