@@ -39,7 +39,7 @@ static inline unsigned int incAdress(unsigned int adress) {
 	return ++adress % MAX_NUM_FILES;
 }
 
-static long openFileSystem(unsigned long access) {
+static long openFileSystem(const unsigned long access) {
 	static unsigned char FS_NAME[] = FILESYSTEMNAME;
 	long hdl;
 	if (sl_FsOpen(FS_NAME, access, 0, &hdl)) {
@@ -66,11 +66,7 @@ static long addFileNameToFilesystem(unsigned char *pFileName) {
 	long hdl = openFileSystem(FS_MODE_OPEN_READ);
 	if (hdl < 0) return hdl;  // contains ERRORCODE
 
-	const unsigned char *pFileNameEnd = memchr(pFileName, 0, MAX_FILENAME_LEN);
-	if (!pFileNameEnd) {
-		return SL_FS_WRONG_FILE_NAME;
-	}
-	const unsigned int FileNameLen = pFileNameEnd - pFileName;
+	const unsigned int FileNameLen = sl_min(MAX_FILENAME_LEN, sl_Strlen(pFileName));
 
 	unsigned int adress = computeAdress(pFileName);
 	long retVal = SL_FS_ERR_ALLOC;
@@ -112,11 +108,7 @@ static long removeFileNameFromFilesystem(unsigned char *pFileName) {
 	long hdl = openFileSystem(FS_MODE_OPEN_READ);
 	if (hdl < 0) return hdl; // contains ERRORCODE
 
-	const unsigned char *pFileNameEnd = memchr(pFileName, 0, MAX_FILENAME_LEN);
-	if (!pFileNameEnd) {
-		return SL_FS_WRONG_FILE_NAME;
-	}
-	const unsigned int FileNameLen = pFileNameEnd - pFileName;
+	const unsigned int FileNameLen = sl_min(MAX_FILENAME_LEN, sl_Strlen(pFileName));
 
 	unsigned int adress = computeAdress(pFileName);
 	long retVal = SL_FS_ERR_FILE_NOT_EXISTS;
