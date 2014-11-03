@@ -126,7 +126,7 @@ LIB_OUTPUTS__QUOTED += \
 all: simplelink.a
 
 # Tool invocations
-simplelink.a: $(OBJS) $(A_SRCS)
+simplelink.a: $(OBJS) $(OBJ_SRCS) $(A_SRCS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Archiver'
 	"c:/ti/ccsv6/tools/compiler/arm_5.1.8/bin/armar" r "simplelink.a" $(ORDERED_OBJS) $(A_SRCS)
