@@ -55,7 +55,7 @@ static long openFileSystem(const unsigned long access) {
 		unsigned char emptyData[sizeof(struct File)] = { 0 };
 		unsigned int i;
 		for (i = 0; i < MAX_NUM_FILES; i++) {
-			int retVal = sl_FsWrite(hdl, i * sizeof(emptyData), emptyData, sizeof(emptyData));
+			sl_FsWrite(hdl, i * sizeof(emptyData), emptyData, sizeof(emptyData));
 		}
 
 	}
