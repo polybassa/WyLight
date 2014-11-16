@@ -245,17 +245,22 @@ long SaveSRAMContent(uint8_t *pSource, const size_t length) {
 	// Delete old Firmware
 	wy_FsDel(filename, token);
 
-	// Save Firmware
-	UART_PRINT("\r\nStarted saving %s\r\n", filename);
+	// Save File
+	UART_PRINT("\r\nStarted saving %s:%d\r\n", filename, filesize);
 	// open a user file for writing
 	if (wy_FsOpen(filename, FS_MODE_OPEN_WRITE, &token, &fileHandle)) {
 		// File Doesn't exit create a new file
-		if (wy_FsOpen(filename,
-				FS_MODE_OPEN_CREATE(filesize,
-						_FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ
-								| _FS_FILE_OPEN_FLAG_VENDOR), &token, &fileHandle)) {
+		int errno = wy_FsOpen(filename, FS_MODE_OPEN_CREATE(filesize, 0), &token, &fileHandle);
+		if (errno) {
 			wy_FsDel(filename, token);
-			UART_PRINT("Error during creating the destination file\r\n");
+			UART_PRINT("Error %d during creating the destination file\r\n", errno);
+			return ERROR;
+		}
+		wy_FsClose(fileHandle, 0, 0, 0);
+		errno = wy_FsOpen(filename, FS_MODE_OPEN_WRITE, &token, &fileHandle);
+		if (errno) {
+			wy_FsDel(filename, token);
+			UART_PRINT("Error %d during creating the destination file\r\n", errno);
 			return ERROR;
 		}
 		UART_PRINT("File %s created\r\n", filename);
