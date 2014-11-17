@@ -36,6 +36,7 @@ fw: CFLAGS+=-Dcc3200
 
 ut: CFLAGS+=-DSIMULATOR
 ut: CFLAGS+=-std=c11
+ut: CFLAGS+=-g
 
 # additional linker flags
 sim: LDFLAGS+=-lcrypto

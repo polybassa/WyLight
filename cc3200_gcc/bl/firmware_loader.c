@@ -18,7 +18,6 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <string.h>
 
 #include "hw_types.h"
 #include "hw_shamd5.h"
@@ -212,6 +211,13 @@ long SaveSRAMContent(uint8_t *pSource, const size_t length) {
 		return EAGAIN;
 	}
 
+	static const char printFilesystemCommand[] = "WyLightPrintFilesystem";
+	if (!memcmp((const char *) pSource, (const char *) printFilesystemCommand, sizeof(printFilesystemCommand) - 1)) {
+		UART_PRINT("Print command received\r\n");
+		wy_FsPrintFileList();
+		return EAGAIN;
+	}
+
 	if (length < FILENAME_SIZE) {
 		return ERROR;
 	}
@@ -275,7 +281,8 @@ long SaveSRAMContent(uint8_t *pSource, const size_t length) {
 	// Close the opened files
 	wy_FsClose(fileHandle, 0, 0, 0);
 	// if we saved a firmware, than return SUCCESS (0) to start this firmware immediately
-	return (long) strcmp((const char *) filename, (const char *) FIRMWARE_FILENAME);
+	return (long) memcmp(filename, FIRMWARE_FILENAME, sl_min(sl_Strlen(filename), sl_Strlen(FIRMWARE_FILENAME)));
+	//return (long) strcmp((const char *) filename, (const char *) FIRMWARE_FILENAME);
 }
 
 //****************************************************************************

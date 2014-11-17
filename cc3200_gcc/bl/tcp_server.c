@@ -150,6 +150,7 @@ extern void TcpServer(void)
 
 		if (sizeof(welcome) ==  send(clientSock, welcome, sizeof(welcome), 0)) {
 			fwStatus = ReceiveFw(clientSock);
+			send(clientSock, &fwStatus, sizeof(fwStatus), 0);
 		}
 		close(clientSock);
 	}
