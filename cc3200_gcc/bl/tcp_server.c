@@ -16,7 +16,7 @@
  You should have received a copy of the GNU General Public License
  along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "string.h"
+#include <stdio.h>
 
 //common
 #include "uart_if.h"
@@ -43,7 +43,6 @@ static int ReceiveFw(int SocketTcpChild)
 
 		if (bytesReceived >= 0) {
 			pFirmware += bytesReceived;
-			UART_PRINT("Tcp: Received %d bytes\r\n", bytesReceived);
 
 			if (bytesReceived < BUFFERSIZE) {
     			const size_t length = (size_t) (pFirmware - FIRMWARE_ORIGIN);
@@ -140,7 +139,7 @@ extern void TcpServer(void)
 
 	const int listenSocket = TcpServer_Listen();
 	if (listenSocket < 0) {
-		UART_PRINT("Socket Error: %d \r\n", listenSocket);
+		UART_PRINT("TcpServer: Socket Error: %d \r\n", listenSocket);
 		return;
 	}
 
@@ -148,9 +147,18 @@ extern void TcpServer(void)
 	while (fwStatus) {
 		const int clientSock = TcpServer_Accept(listenSocket);
 
-		if (sizeof(welcome) ==  send(clientSock, welcome, sizeof(welcome), 0)) {
+		if (sizeof(welcome) == send(clientSock, welcome, sizeof(welcome), 0)) {
 			fwStatus = ReceiveFw(clientSock);
-			send(clientSock, &fwStatus, sizeof(fwStatus), 0);
+			if (fwStatus == EAGAIN || fwStatus == SUCCESS){
+				const char DONE = '1';
+				send(clientSock, &DONE, sizeof(DONE), 0);
+			} else {
+				const char FAILURE = '0';
+				send(clientSock, &FAILURE, sizeof(FAILURE), 0);
+			}
+			const char QUIT_NETCAT = 0x04;
+			// send EOF to quit netcat client
+			send(clientSock, &QUIT_NETCAT, sizeof(QUIT_NETCAT), 0);
 		}
 		close(clientSock);
 	}
