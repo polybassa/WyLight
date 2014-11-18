@@ -21,6 +21,12 @@
 //common
 #include "uart_if.h"
 
+#ifdef NOTERM
+#define UART_PRINT
+#else
+#define UART_PRINT	Report
+#endif
+
 //WyLight
 #include "bootloader.h"
 #include "firmware_loader.h"
@@ -36,7 +42,6 @@
 static int ReceiveFw(int SocketTcpChild)
 {
 	uint8_t *pFirmware = FIRMWARE_ORIGIN;
-	UART_PRINT("Start writing Firmware at 0x%x \r\n", pFirmware);
 
 	for(;;) {
 		const int bytesReceived = recv(SocketTcpChild, pFirmware, BUFFERSIZE, 0);
@@ -115,7 +120,6 @@ int TcpServer_Accept(const int listenSocket)
 		const int childSocket = accept(listenSocket, (struct sockaddr *) &clientAddr, &clientAddrLen);
 
 		if (childSocket >= 0) {
-			UART_PRINT("Connected TCP Client\r\n");
 			return childSocket;
 		}
 
@@ -156,8 +160,8 @@ extern void TcpServer(void)
 				const char FAILURE = '0';
 				send(clientSock, &FAILURE, sizeof(FAILURE), 0);
 			}
-			const char QUIT_NETCAT = 0x04;
 			// send EOF to quit netcat client
+			const char QUIT_NETCAT = 0x04;
 			send(clientSock, &QUIT_NETCAT, sizeof(QUIT_NETCAT), 0);
 		}
 		close(clientSock);

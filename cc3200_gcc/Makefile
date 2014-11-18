@@ -38,6 +38,8 @@ ut: CFLAGS+=-DSIMULATOR
 ut: CFLAGS+=-std=c11
 ut: CFLAGS+=-g
 
+bl: CFLAGS+=-DNOTERM
+
 # additional linker flags
 sim: LDFLAGS+=-lcrypto
 common: LDFLAGS+=--gc-sections

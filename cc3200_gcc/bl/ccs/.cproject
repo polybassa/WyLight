@@ -112,6 +112,7 @@
 							<tool id="com.ti.ccstudio.buildDefinitions.TMS470_5.1.exe.compilerDebug.1226090450" name="ARM Compiler" superClass="com.ti.ccstudio.buildDefinitions.TMS470_5.1.exe.compilerDebug">
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_5.1.compilerID.DEFINE.698917750" name="Pre-define NAME (--define, -D)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_5.1.compilerID.DEFINE" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="cc3200"/>
+									<listOptionValue builtIn="false" value="NOTERM"/>
 									<listOptionValue builtIn="false" value="_little_endian__"/>
 									<listOptionValue builtIn="false" value="ccs"/>
 								</option>

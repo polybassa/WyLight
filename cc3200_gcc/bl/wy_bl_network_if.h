@@ -61,12 +61,11 @@ extern "C" {
             }
 
 #define SUCCESS         		0
-
 #define SL_STOP_TIMEOUT         30
 
 #ifdef NOTERM
-#define UART_PRINT				(x, ...)
-#define DBG_PRINT 				(x, ...)
+#define UART_PRINT
+#define DBG_PRINT
 #else
 #define UART_PRINT 				Report
 #define DBG_PRINT  				Report

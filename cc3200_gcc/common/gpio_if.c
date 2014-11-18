@@ -261,14 +261,10 @@ void GPIO_IF_LedToggle(unsigned char ucLedNum) {
 //
 //****************************************************************************
 void GPIO_IF_GetPortNPin(unsigned char ucPin, unsigned int *puiGPIOPort, unsigned char *pucGPIOPin) {
-	//
 	// Get the GPIO pin from the external Pin number
-	//
 	*pucGPIOPin = 1 << (ucPin % 8);
 
-	//
 	// Get the GPIO port from the external Pin number
-	//
 	*puiGPIOPort = (ucPin / 8);
 	*puiGPIOPort = ulReg[*puiGPIOPort];
 }
@@ -292,19 +288,13 @@ void GPIO_IF_GetPortNPin(unsigned char ucPin, unsigned int *puiGPIOPort, unsigne
 //****************************************************************************
 void GPIO_IF_ConfigureNIntEnable(unsigned int uiGPIOPort, unsigned char ucGPIOPin, unsigned int uiIntType,
 		void (*pfnIntHandler)(void)) {
-	//
 	// Set GPIO interrupt type
-	//
 	MAP_GPIOIntTypeSet(uiGPIOPort, ucGPIOPin, uiIntType);
 
-	//
 	// Register Interrupt handler
-	//
 	MAP_GPIOIntRegister(uiGPIOPort, pfnIntHandler);
 
-	//
 	// Enable Interrupt
-	//
 	MAP_GPIOIntClear(uiGPIOPort, ucGPIOPin);
 	MAP_GPIOIntEnable(uiGPIOPort, ucGPIOPin);
 }
@@ -325,14 +315,10 @@ void GPIO_IF_ConfigureNIntEnable(unsigned int uiGPIOPort, unsigned char ucGPIOPi
 //
 //****************************************************************************
 void GPIO_IF_Set(unsigned char ucPin, unsigned int uiGPIOPort, unsigned char ucGPIOPin, unsigned char ucGPIOValue) {
-	//
 	// Set the corresponding bit in the bitmask
-	//
 	ucGPIOValue = ucGPIOValue << (ucPin % 8);
 
-	//
 	// Invoke the API to set the value
-	//
 	MAP_GPIOPinWrite(uiGPIOPort, ucGPIOPin, ucGPIOValue);
 }
 
@@ -354,22 +340,10 @@ unsigned char GPIO_IF_Get(unsigned char ucPin, unsigned int uiGPIOPort, unsigned
 	unsigned char ucGPIOValue;
 	long lGPIOStatus;
 
-	//
 	// Invoke the API to Get the value
-	//
-
 	lGPIOStatus = MAP_GPIOPinRead(uiGPIOPort, ucGPIOPin);
 
-	//
 	// Set the corresponding bit in the bitmask
-	//
 	ucGPIOValue = lGPIOStatus >> (ucPin % 8);
 	return ucGPIOValue;
 }
-
-//*****************************************************************************
-//
-// Close the Doxygen group.
-//! @}
-//
-//*****************************************************************************

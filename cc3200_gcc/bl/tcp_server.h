@@ -19,12 +19,6 @@
 #ifndef __TCP_SERVER_H_
 #define __TCP_SERVER_H_
 
-//common
-#include "uart_if.h"
-
-#define UART_PRINT	Report
-#define BUFFERSIZE 	1024
-
 /**
  * @return if new firmware was received and validated
  */

@@ -205,13 +205,13 @@ long SaveSRAMContent(uint8_t *pSource, const size_t length) {
 		long errno = wy_FsFormat();
 		return errno ? errno : EAGAIN;
 	}
-
+#ifndef NOTERM
 	static const char printFilesystemCommand[] = LIST_FS_COMMAND;
 	if (!memcmp((const char *) pSource, (const char *) printFilesystemCommand, sizeof(printFilesystemCommand) - 1)) {
 		long errno = wy_FsPrintFileList();
 		return errno ? errno : EAGAIN;
 	}
-
+#endif
 	if (length < FILENAME_SIZE) {
 		return SL_FS_WRONG_FILE_NAME;
 	}

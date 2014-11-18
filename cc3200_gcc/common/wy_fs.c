@@ -17,9 +17,10 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "wy_fs.h"
+#ifndef NOTERM
 #include "uart_if.h"
-
 #define UART_PRINT Report
+#endif
 
 enum FileStatus {
 	EMPTY = 0, INVALID, VALID
@@ -205,6 +206,7 @@ int wy_FsFormat(void) {
 	close_and_return: errno = closeFileSystem();
 	return sl_min(errno, retVal);
 }
+#ifndef NOTERM
 // remove this function in productive code
 int wy_FsPrintFileList(void) {
 	long errno = openFileSystem();
@@ -220,3 +222,4 @@ int wy_FsPrintFileList(void) {
 	}
 	return SL_FS_OK;
 }
+#endif

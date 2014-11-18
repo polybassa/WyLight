@@ -21,7 +21,6 @@
 
 #include "fs.h"
 
-#define BLOCKSIZE 4096
 #define MAX_NUM_FILES 20
 #define FLASHSIZE 0xfffff		// 1MB
 #define MAX_FILENAME_LEN 63
@@ -177,7 +176,7 @@ int wy_FsDel(unsigned char *pFileName,unsigned long Token);
  */
 
 int wy_FsFormat(void);
-
+#ifndef NOTERM
 int wy_FsPrintFileList(void);
-
+#endif
 #endif /*  __FS_H__ */
