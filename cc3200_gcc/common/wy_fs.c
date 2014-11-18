@@ -37,11 +37,11 @@ static unsigned int computeAdress(unsigned char *pFileName) {
 	while (*pFileName) {
 		sum += *pFileName++;
 	}
-	return sum % (MAX_NUM_FILES - 1);
+	return sum % MAX_NUM_FILES;
 }
 
 static inline unsigned int incAdress(unsigned int adress) {
-	return ++adress % (MAX_NUM_FILES - 1);
+	return ++adress % MAX_NUM_FILES;
 }
 
 static long openFileSystem() {
@@ -190,7 +190,7 @@ int wy_FsFormat(void) {
 
 	long retVal = SL_FS_ERR_FILE_NOT_EXISTS;
 	unsigned int address = 0;
-	for (; address < MAX_NUM_FILES - 1; address++) {
+	for (; address < MAX_NUM_FILES; address++) {
 		if (Filesystem[address].Status == VALID) {
 			retVal = sl_FsDel(Filesystem[address].Name, 0);
 			if (retVal) {
@@ -205,13 +205,13 @@ int wy_FsFormat(void) {
 	close_and_return: errno = closeFileSystem();
 	return sl_min(errno, retVal);
 }
-
+// remove this function in productive code
 int wy_FsPrintFileList(void) {
 	long errno = openFileSystem();
 	if (errno) return errno;
 
 	unsigned int address = 0;
-	for (; address < MAX_NUM_FILES - 1; address++) {
+	for (; address < MAX_NUM_FILES; address++) {
 		UART_PRINT("%d: ", address);
 		if (Filesystem[address].Status == VALID) {
 			UART_PRINT("%s", Filesystem[address].Name);

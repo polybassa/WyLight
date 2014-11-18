@@ -65,7 +65,7 @@ int ut_wy_fs_max_file_creation(void)
 	long hdl;
 	system(DELETE_FILESYSTEM);
 	
-	for (unsigned int i = 0; i < MAX_NUM_FILES - 1; i++) {
+	for (unsigned int i = 0; i < MAX_NUM_FILES; i++) {
 		sprintf((char *)buffer, "%s_%d", filename_pre, i);
 		CHECK(0 == wy_FsOpen(buffer, FS_MODE_OPEN_CREATE(100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR), 0, &hdl));
 		CHECK(0 == wy_FsClose(hdl, 0, 0, 0));
@@ -86,13 +86,13 @@ int ut_wy_fs_to_much_file_creation(void)
 	long hdl;
 	system(DELETE_FILESYSTEM);
 	
-	for (unsigned int i = 0; i < MAX_NUM_FILES - 1; i++) {
+	for (unsigned int i = 0; i < MAX_NUM_FILES; i++) {
 		sprintf((char *)buffer, "%s_%d", filename_pre, i);
 		CHECK(0 == wy_FsOpen((unsigned char *)buffer, FS_MODE_OPEN_CREATE( 100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR), 0, &hdl));
 		CHECK(0 == wy_FsClose(hdl, 0, 0, 0));
 	}
 	
-	sprintf(buffer, "%s_%d", filename_pre, MAX_NUM_FILES - 1);
+	sprintf(buffer, "%s_%d", filename_pre, MAX_NUM_FILES);
 	CHECK(0 != wy_FsOpen((unsigned char *)buffer, FS_MODE_OPEN_CREATE( 100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR), 0, &hdl));
 	
 	// Cleanup
@@ -111,13 +111,13 @@ int ut_wy_fs_complete_delete(void)
 	long hdl;
 	system(DELETE_FILESYSTEM);
 	
-	for (unsigned int i = 0; i < MAX_NUM_FILES - 1; i++) {
+	for (unsigned int i = 0; i < MAX_NUM_FILES; i++) {
 		sprintf((char *)buffer, "%s_%d", filename_pre, i);
 		CHECK(0 == wy_FsOpen(buffer, FS_MODE_OPEN_CREATE( 100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR), 0, &hdl));
 		CHECK(0 == wy_FsClose(hdl, 0, 0, 0));
 	}
 	
-	for (unsigned int i = 0; i < MAX_NUM_FILES - 1; i++) {
+	for (unsigned int i = 0; i < MAX_NUM_FILES; i++) {
 		sprintf((char *)buffer, "%s_%d", filename_pre, i);
 		CHECK(0 == wy_FsDel(buffer, 0));
 		CHECK(0 != wy_FsOpen(buffer, _FS_FILE_PUBLIC_READ, 0, &hdl));
@@ -134,7 +134,7 @@ int ut_wy_fs_format(void)
 	long hdl;
 	system(DELETE_FILESYSTEM);
 	
-	for (unsigned int i = 0; i < MAX_NUM_FILES - 1; i++) {
+	for (unsigned int i = 0; i < MAX_NUM_FILES; i++) {
 		sprintf((char *)buffer, "%s_%d", filename_pre, i);
 		CHECK(0 == wy_FsOpen(buffer, FS_MODE_OPEN_CREATE( 100, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ | _FS_FILE_OPEN_FLAG_VENDOR), 0, &hdl));
 		CHECK(0 == wy_FsClose(hdl, 0, 0, 0));
@@ -142,7 +142,7 @@ int ut_wy_fs_format(void)
 	
 	CHECK(0 == wy_FsFormat());
 	
-	for (unsigned int i = 0; i < MAX_NUM_FILES - 1; i++) {
+	for (unsigned int i = 0; i < MAX_NUM_FILES; i++) {
 		sprintf((char *)buffer, "%s_%d", filename_pre, i);
 		CHECK(0 != wy_FsOpen(buffer, _FS_FILE_PUBLIC_READ, 0, &hdl));
 	}
