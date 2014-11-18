@@ -143,12 +143,20 @@ long wy_FsOpen(unsigned char *pFileName, unsigned long AccessModeAndMaxSize, uns
 	const unsigned long mask = _FS_MODE_ACCESS_MASK << _FS_MODE_ACCESS_OFFSET;
 	const unsigned long access = (AccessModeAndMaxSize & mask) >> _FS_MODE_ACCESS_OFFSET;
 
-	long retVal = SL_FS_OK;
+#ifdef SIMULATOR
+	long retVal1 = sl_FsOpen(pFileName, AccessModeAndMaxSize, pToken, pFileHandle);
+#endif
+	
+	long retVal2 = SL_FS_OK;
 
 	if (access == _FS_MODE_OPEN_CREATE || access == _FS_MODE_OPEN_WRITE_CREATE_IF_NOT_EXIST) {
-		retVal = addFileNameToFilesystem(pFileName);
+		retVal2 = addFileNameToFilesystem(pFileName);
 	}
-	return retVal ? retVal : sl_FsOpen(pFileName, AccessModeAndMaxSize, pToken, pFileHandle);
+#ifdef SIMULATOR
+	return retVal2 ? retVal2 : retVal1;
+#else
+	return retVal2 ? retVal2 : sl_FsOpen(pFileName, AccessModeAndMaxSize, pToken, pFileHandle);
+#endif
 }
 
 inline int wy_FsClose(long FileHdl, unsigned char* pCeritificateFileName, unsigned char* pSignature,
