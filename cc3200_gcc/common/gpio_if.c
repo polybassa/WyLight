@@ -49,55 +49,25 @@
 #include "rom_map.h"
 #include "gpio_if.h"
 
-#ifdef USE_TIRTOS
-#include <stdlib.h>
-#include "osi.h"
-#endif
 //****************************************************************************
 //                      GLOBAL VARIABLES                                   
 //****************************************************************************
-static unsigned long ulReg[]=
-{
-    GPIOA0_BASE,
-    GPIOA1_BASE,
-    GPIOA2_BASE,
-    GPIOA3_BASE
-};
+static unsigned long ulReg[] = {
+GPIOA0_BASE,
+GPIOA1_BASE,
+GPIOA2_BASE,
+GPIOA3_BASE };
 
 //*****************************************************************************
 // Variables to store TIMER Port,Pin values
 //*****************************************************************************
-unsigned int g_uiLED1Port = 0,g_uiLED2Port = 0,g_uiLED3Port = 0;
-unsigned char g_ucLED1Pin,g_ucLED2Pin,g_ucLED3Pin;
+unsigned int g_uiLED1Port = 0, g_uiLED2Port = 0, g_uiLED3Port = 0;
+unsigned char g_ucLED1Pin, g_ucLED2Pin, g_ucLED3Pin;
 
 #define PIN_LED1 9
 #define PIN_LED2 10
 #define PIN_LED3 11
 
-//****************************************************************************
-//                      LOCAL FUNCTION DEFINITIONS                          
-//****************************************************************************
-#ifdef USE_TIRTOS
-static unsigned char
-GetPeripheralIntNum(unsigned int uiGPIOPort)
-{
-
-       switch(uiGPIOPort)
-       {
-           case GPIOA0_BASE:
-		   	  return INT_GPIOA0;
-		   case GPIOA1_BASE:
-		   	  return INT_GPIOA1;
-		   case GPIOA2_BASE:
-		   	  return INT_GPIOA2;
-		   case GPIOA3_BASE:
-		   	  return INT_GPIOA3;
-		   default:
-		   	  return INT_GPIOA0;
-       	}
-
-}
-#endif
 //*****************************************************************************
 //
 //! GPIO Enable & Configuration
@@ -108,34 +78,22 @@ GetPeripheralIntNum(unsigned int uiGPIOPort)
 //! \return None
 //
 //*****************************************************************************
-void
-GPIO_IF_LedConfigure(unsigned char ucPins)
-{
+void GPIO_IF_LedConfigure(unsigned char ucPins) {
 
-  if(ucPins & LED1)
-  {
-    GPIO_IF_GetPortNPin(PIN_LED1,
-                        &g_uiLED1Port,
-                        &g_ucLED1Pin);
-  }
+	if (ucPins & LED1) {
+		GPIO_IF_GetPortNPin(PIN_LED1, &g_uiLED1Port, &g_ucLED1Pin);
+	}
 
-  if(ucPins & LED2)
-  {
-    GPIO_IF_GetPortNPin(PIN_LED2,
-                  &g_uiLED2Port,
-          &g_ucLED2Pin);
-  }
+	if (ucPins & LED2) {
+		GPIO_IF_GetPortNPin(PIN_LED2, &g_uiLED2Port, &g_ucLED2Pin);
+	}
 
-  if(ucPins & LED3)
-  {
-    GPIO_IF_GetPortNPin(PIN_LED3,
-                      &g_uiLED3Port,
-                      &g_ucLED3Pin);
+	if (ucPins & LED3) {
+		GPIO_IF_GetPortNPin(PIN_LED3, &g_uiLED3Port, &g_ucLED3Pin);
 
-  }
+	}
 
 }
-
 
 //*****************************************************************************
 //
@@ -148,48 +106,41 @@ GPIO_IF_LedConfigure(unsigned char ucPins)
 //! \brief  Turns a specific LED Off
 //
 //*****************************************************************************
-void
-GPIO_IF_LedOn(char ledNum)
-{
-  switch(ledNum)
-  {
-    case MCU_ON_IND:
-    case MCU_EXECUTE_SUCCESS_IND:
-    case MCU_GREEN_LED_GPIO:
-    {
-      /* Switch ON GREEN LED */
-      GPIO_IF_Set(PIN_LED3, g_uiLED3Port, g_ucLED3Pin, 1);
-      break;
-    }
-    case MCU_SENDING_DATA_IND:
-    case MCU_EXECUTE_FAIL_IND:
-    case MCU_ORANGE_LED_GPIO:
-    {
-      /* Switch ON ORANGE LED */
-      GPIO_IF_Set(PIN_LED2, g_uiLED2Port, g_ucLED2Pin, 1);
-      break;
-    }
-    case MCU_ASSOCIATED_IND:
-    case MCU_IP_ALLOC_IND:
-    case MCU_SERVER_INIT_IND:
-    case MCU_CLIENT_CONNECTED_IND:
-    case MCU_RED_LED_GPIO:
-    {
-      /* Switch ON RED LED */
-      GPIO_IF_Set(PIN_LED1, g_uiLED1Port, g_ucLED1Pin, 1);
-      break;
-    }
-    case MCU_ALL_LED_IND:
-    {
-      /* Switch ON ALL LEDs LED */
-      GPIO_IF_Set(PIN_LED3, g_uiLED3Port, g_ucLED3Pin, 1);
-      GPIO_IF_Set(PIN_LED2, g_uiLED2Port, g_ucLED2Pin, 1);
-      GPIO_IF_Set(PIN_LED1, g_uiLED1Port, g_ucLED1Pin, 1);
-      break;
-    }
-    default:
-      break;
-  }
+void GPIO_IF_LedOn(char ledNum) {
+	switch (ledNum) {
+	case MCU_ON_IND:
+	case MCU_EXECUTE_SUCCESS_IND:
+	case MCU_GREEN_LED_GPIO: {
+		/* Switch ON GREEN LED */
+		GPIO_IF_Set(PIN_LED3, g_uiLED3Port, g_ucLED3Pin, 1);
+		break;
+	}
+	case MCU_SENDING_DATA_IND:
+	case MCU_EXECUTE_FAIL_IND:
+	case MCU_ORANGE_LED_GPIO: {
+		/* Switch ON ORANGE LED */
+		GPIO_IF_Set(PIN_LED2, g_uiLED2Port, g_ucLED2Pin, 1);
+		break;
+	}
+	case MCU_ASSOCIATED_IND:
+	case MCU_IP_ALLOC_IND:
+	case MCU_SERVER_INIT_IND:
+	case MCU_CLIENT_CONNECTED_IND:
+	case MCU_RED_LED_GPIO: {
+		/* Switch ON RED LED */
+		GPIO_IF_Set(PIN_LED1, g_uiLED1Port, g_ucLED1Pin, 1);
+		break;
+	}
+	case MCU_ALL_LED_IND: {
+		/* Switch ON ALL LEDs LED */
+		GPIO_IF_Set(PIN_LED3, g_uiLED3Port, g_ucLED3Pin, 1);
+		GPIO_IF_Set(PIN_LED2, g_uiLED2Port, g_ucLED2Pin, 1);
+		GPIO_IF_Set(PIN_LED1, g_uiLED1Port, g_ucLED1Pin, 1);
+		break;
+	}
+	default:
+		break;
+	}
 
 }
 
@@ -204,48 +155,41 @@ GPIO_IF_LedOn(char ledNum)
 //! \brief  Turns a specific LED Off
 //
 //*****************************************************************************
-void
-GPIO_IF_LedOff(char ledNum)
-{
-  switch(ledNum)
-  {
-    case MCU_ON_IND:
-    case MCU_EXECUTE_SUCCESS_IND:
-    case MCU_GREEN_LED_GPIO:
-    {
-      /* Switch OFF GREEN LED */
-      GPIO_IF_Set(PIN_LED3, g_uiLED3Port, g_ucLED3Pin, 0);
-      break;
-    }
-    case MCU_SENDING_DATA_IND:
-    case MCU_EXECUTE_FAIL_IND:
-    case MCU_ORANGE_LED_GPIO:
-    {
-      /* Switch OFF ORANGE LED */
-      GPIO_IF_Set(PIN_LED2, g_uiLED2Port, g_ucLED2Pin, 0);
-      break;
-    }
-    case MCU_ASSOCIATED_IND:
-    case MCU_IP_ALLOC_IND:
-    case MCU_SERVER_INIT_IND:
-    case MCU_CLIENT_CONNECTED_IND:
-    case MCU_RED_LED_GPIO:
-    {
-      /* Switch OFF RED LED */
-      GPIO_IF_Set(PIN_LED1, g_uiLED1Port, g_ucLED1Pin, 0);
-      break;
-    }
-    case MCU_ALL_LED_IND:
-    {
-      /* Switch OFF ALL LEDs LED */
-      GPIO_IF_Set(PIN_LED3, g_uiLED3Port, g_ucLED3Pin, 0);
-      GPIO_IF_Set(PIN_LED2, g_uiLED2Port, g_ucLED2Pin, 0);
-      GPIO_IF_Set(PIN_LED1, g_uiLED1Port, g_ucLED1Pin, 0);
-      break;
-    }
-    default:
-      break;
-  }
+void GPIO_IF_LedOff(char ledNum) {
+	switch (ledNum) {
+	case MCU_ON_IND:
+	case MCU_EXECUTE_SUCCESS_IND:
+	case MCU_GREEN_LED_GPIO: {
+		/* Switch OFF GREEN LED */
+		GPIO_IF_Set(PIN_LED3, g_uiLED3Port, g_ucLED3Pin, 0);
+		break;
+	}
+	case MCU_SENDING_DATA_IND:
+	case MCU_EXECUTE_FAIL_IND:
+	case MCU_ORANGE_LED_GPIO: {
+		/* Switch OFF ORANGE LED */
+		GPIO_IF_Set(PIN_LED2, g_uiLED2Port, g_ucLED2Pin, 0);
+		break;
+	}
+	case MCU_ASSOCIATED_IND:
+	case MCU_IP_ALLOC_IND:
+	case MCU_SERVER_INIT_IND:
+	case MCU_CLIENT_CONNECTED_IND:
+	case MCU_RED_LED_GPIO: {
+		/* Switch OFF RED LED */
+		GPIO_IF_Set(PIN_LED1, g_uiLED1Port, g_ucLED1Pin, 0);
+		break;
+	}
+	case MCU_ALL_LED_IND: {
+		/* Switch OFF ALL LEDs LED */
+		GPIO_IF_Set(PIN_LED3, g_uiLED3Port, g_ucLED3Pin, 0);
+		GPIO_IF_Set(PIN_LED2, g_uiLED2Port, g_ucLED2Pin, 0);
+		GPIO_IF_Set(PIN_LED1, g_uiLED1Port, g_ucLED1Pin, 0);
+		break;
+	}
+	default:
+		break;
+	}
 }
 
 //*****************************************************************************
@@ -259,31 +203,25 @@ GPIO_IF_LedOff(char ledNum)
 //!  \return 1: LED ON, 0: LED OFF
 //
 //*****************************************************************************
-unsigned char
-GPIO_IF_LedStatus(unsigned char ucGPIONum)
-{
-  unsigned char ucLEDStatus;
-  switch(ucGPIONum)
-  {
-    case MCU_GREEN_LED_GPIO:
-    {
-      ucLEDStatus = GPIO_IF_Get(ucGPIONum, g_uiLED3Port, g_ucLED3Pin);
-      break;
-    }
-    case MCU_ORANGE_LED_GPIO:
-    {
-      ucLEDStatus = GPIO_IF_Get(ucGPIONum, g_uiLED2Port, g_ucLED2Pin);
-      break;
-    }
-    case MCU_RED_LED_GPIO:
-    {
-      ucLEDStatus = GPIO_IF_Get(ucGPIONum, g_uiLED1Port, g_ucLED1Pin);
-      break;
-    }
-    default:
-    	ucLEDStatus = 0;
-  }
-  return ucLEDStatus;
+unsigned char GPIO_IF_LedStatus(unsigned char ucGPIONum) {
+	unsigned char ucLEDStatus;
+	switch (ucGPIONum) {
+	case MCU_GREEN_LED_GPIO: {
+		ucLEDStatus = GPIO_IF_Get(ucGPIONum, g_uiLED3Port, g_ucLED3Pin);
+		break;
+	}
+	case MCU_ORANGE_LED_GPIO: {
+		ucLEDStatus = GPIO_IF_Get(ucGPIONum, g_uiLED2Port, g_ucLED2Pin);
+		break;
+	}
+	case MCU_RED_LED_GPIO: {
+		ucLEDStatus = GPIO_IF_Get(ucGPIONum, g_uiLED1Port, g_ucLED1Pin);
+		break;
+	}
+	default:
+		ucLEDStatus = 0;
+	}
+	return ucLEDStatus;
 
 }
 
@@ -298,18 +236,14 @@ GPIO_IF_LedStatus(unsigned char ucGPIONum)
 //! \brief  Toggles a board LED
 //
 //*****************************************************************************
-void GPIO_IF_LedToggle(unsigned char ucLedNum)
-{
+void GPIO_IF_LedToggle(unsigned char ucLedNum) {
 
-  unsigned char ucLEDStatus = GPIO_IF_LedStatus(ucLedNum);
-  if(ucLEDStatus == 1)
-  {
-          GPIO_IF_LedOff(ucLedNum);
-  }
-  else
-  {
-          GPIO_IF_LedOn(ucLedNum);
-  }
+	unsigned char ucLEDStatus = GPIO_IF_LedStatus(ucLedNum);
+	if (ucLEDStatus == 1) {
+		GPIO_IF_LedOff(ucLedNum);
+	} else {
+		GPIO_IF_LedOn(ucLedNum);
+	}
 }
 
 //****************************************************************************
@@ -326,21 +260,17 @@ void GPIO_IF_LedToggle(unsigned char ucLedNum)
 //! \return None.
 //
 //****************************************************************************
-void
-GPIO_IF_GetPortNPin(unsigned char ucPin,
-				unsigned int *puiGPIOPort,
-					unsigned char *pucGPIOPin)
-{
-  //
-  // Get the GPIO pin from the external Pin number
-  //
-  *pucGPIOPin = 1 << (ucPin % 8);
-  
-  //
-  // Get the GPIO port from the external Pin number
-  //
-  *puiGPIOPort = (ucPin / 8);
-  *puiGPIOPort = ulReg[*puiGPIOPort];
+void GPIO_IF_GetPortNPin(unsigned char ucPin, unsigned int *puiGPIOPort, unsigned char *pucGPIOPin) {
+	//
+	// Get the GPIO pin from the external Pin number
+	//
+	*pucGPIOPin = 1 << (ucPin % 8);
+
+	//
+	// Get the GPIO port from the external Pin number
+	//
+	*puiGPIOPort = (ucPin / 8);
+	*puiGPIOPort = ulReg[*puiGPIOPort];
 }
 
 //****************************************************************************
@@ -360,33 +290,23 @@ GPIO_IF_GetPortNPin(unsigned char ucPin,
 //! \return None
 //
 //****************************************************************************
-void
-GPIO_IF_ConfigureNIntEnable(unsigned int uiGPIOPort,
-                                  unsigned char ucGPIOPin,
-                                  unsigned int uiIntType,
-                                  void (*pfnIntHandler)(void))
-{
-  //
-  // Set GPIO interrupt type
-  //
-  MAP_GPIOIntTypeSet(uiGPIOPort,ucGPIOPin,uiIntType);
+void GPIO_IF_ConfigureNIntEnable(unsigned int uiGPIOPort, unsigned char ucGPIOPin, unsigned int uiIntType,
+		void (*pfnIntHandler)(void)) {
+	//
+	// Set GPIO interrupt type
+	//
+	MAP_GPIOIntTypeSet(uiGPIOPort, ucGPIOPin, uiIntType);
 
-  //
-  // Register Interrupt handler
-  //
-#ifdef USE_TIRTOS
-      osi_InterruptRegister(GetPeripheralIntNum(uiGPIOPort),
-	  						    pfnIntHandler, INT_PRIORITY_LVL_1);
-		
-#else
-	  MAP_GPIOIntRegister(uiGPIOPort,pfnIntHandler);
-#endif
+	//
+	// Register Interrupt handler
+	//
+	MAP_GPIOIntRegister(uiGPIOPort, pfnIntHandler);
 
-  //
-  // Enable Interrupt
-  //
-  MAP_GPIOIntClear(uiGPIOPort,ucGPIOPin);
-  MAP_GPIOIntEnable(uiGPIOPort,ucGPIOPin);
+	//
+	// Enable Interrupt
+	//
+	MAP_GPIOIntClear(uiGPIOPort, ucGPIOPin);
+	MAP_GPIOIntEnable(uiGPIOPort, ucGPIOPin);
 }
 
 //****************************************************************************
@@ -404,21 +324,16 @@ GPIO_IF_ConfigureNIntEnable(unsigned int uiGPIOPort,
 //! \return None.
 //
 //****************************************************************************
-void 
-GPIO_IF_Set(unsigned char ucPin,
-             unsigned int uiGPIOPort,
-             unsigned char ucGPIOPin,
-             unsigned char ucGPIOValue)
-{
-  //
-  // Set the corresponding bit in the bitmask
-  //
-  ucGPIOValue = ucGPIOValue << (ucPin % 8);
-  
-  //
-  // Invoke the API to set the value
-  //
-  MAP_GPIOPinWrite(uiGPIOPort,ucGPIOPin,ucGPIOValue);
+void GPIO_IF_Set(unsigned char ucPin, unsigned int uiGPIOPort, unsigned char ucGPIOPin, unsigned char ucGPIOValue) {
+	//
+	// Set the corresponding bit in the bitmask
+	//
+	ucGPIOValue = ucGPIOValue << (ucPin % 8);
+
+	//
+	// Invoke the API to set the value
+	//
+	MAP_GPIOPinWrite(uiGPIOPort, ucGPIOPin, ucGPIOValue);
 }
 
 //****************************************************************************
@@ -435,25 +350,21 @@ GPIO_IF_Set(unsigned char ucPin,
 //! \return value of the GPIO pin
 //
 //****************************************************************************
-unsigned char
-GPIO_IF_Get(unsigned char ucPin,
-             unsigned int uiGPIOPort,
-             unsigned char ucGPIOPin)
-{
-    unsigned char ucGPIOValue;
-    long lGPIOStatus;
+unsigned char GPIO_IF_Get(unsigned char ucPin, unsigned int uiGPIOPort, unsigned char ucGPIOPin) {
+	unsigned char ucGPIOValue;
+	long lGPIOStatus;
 
-    //
-    // Invoke the API to Get the value
-    //
+	//
+	// Invoke the API to Get the value
+	//
 
-    lGPIOStatus =  MAP_GPIOPinRead(uiGPIOPort,ucGPIOPin);
+	lGPIOStatus = MAP_GPIOPinRead(uiGPIOPort, ucGPIOPin);
 
-    //
-    // Set the corresponding bit in the bitmask
-    //
-    ucGPIOValue = lGPIOStatus >> (ucPin % 8);
-    return ucGPIOValue;
+	//
+	// Set the corresponding bit in the bitmask
+	//
+	ucGPIOValue = lGPIOStatus >> (ucPin % 8);
+	return ucGPIOValue;
 }
 
 //*****************************************************************************
