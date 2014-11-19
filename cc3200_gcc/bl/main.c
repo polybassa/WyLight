@@ -86,7 +86,6 @@ int main() {
 	GPIO_IF_LedOff(MCU_ALL_LED_IND);
 
 	Network_IF_InitDriver();
-
 	// Starting the CC3200 networking layers
 	Network_IF_StartSimpleLinkAsAP();
 

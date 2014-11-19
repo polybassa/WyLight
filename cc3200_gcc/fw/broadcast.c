@@ -29,20 +29,14 @@
 #include "semphr.h"
 #include "task.h"
 
-//
 // GLOBAL VARIABLES -- Start
-//
-
 static xSemaphoreHandle g_BroadcastStoppedSemaphore;
 static xSemaphoreHandle g_BroadcastStartSemaphore;
 static xTaskHandle g_BroadcastTaskHandle;
 static tBoolean g_StopBroadcastTask;
 
 OsiTaskHandle BroadcastTaskHandle = &g_BroadcastTaskHandle;
-
-//
 // GLOBAL VARIABLES -- End
-//
 
 static void BroadcastMessage_Init(struct BroadcastMessage *pMessage) {
 	memset(pMessage, 0, sizeof(struct BroadcastMessage));

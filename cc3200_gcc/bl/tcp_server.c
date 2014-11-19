@@ -16,8 +16,6 @@
  You should have received a copy of the GNU General Public License
  along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include <stdio.h>
-
 //common
 #include "uart_if.h"
 
@@ -70,7 +68,7 @@ static int TcpServer_Listen()
 	const struct sockaddr_in localAddr = {
 		.sin_family = AF_INET,
 		.sin_port = SERVER_PORT,
-		.sin_addr.s_addr = 0
+		.sin_addr ={0}
 	};
 
 	int status;
