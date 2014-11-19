@@ -22,7 +22,8 @@
 #include <stdint.h>
 #include <stddef.h>
 
-long LoadAndExecuteFirmware(void);
+void StartFirmware(void);
+long EmplaceFirmware(void);
 long SaveSRAMContent(uint8_t *pSource, const size_t length);
 
 

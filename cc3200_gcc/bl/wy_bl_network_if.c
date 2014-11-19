@@ -1,3 +1,21 @@
+/*
+ Copyright (C) 2014 Nils Weiss, Patrick Bruenn.
+
+ This file is part of WyLight.
+
+ WyLight is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ WyLight is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
+
 //*****************************************************************************
 // network_if.h
 //
@@ -56,9 +74,8 @@ void wifi_status_disconnected() {
 	CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
 }
 
-/**
- * Callback function to handle SimpleLink WLAN events
- */
+
+// Callback function to handle SimpleLink WLAN events
 void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 	switch (pSlWlanEvent->Event) {
 	case SL_WLAN_STA_CONNECTED_EVENT: // when device is in AP mode and any client connects to device cc3xxx
@@ -112,8 +129,7 @@ void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
 		break;
 
 	case SL_NETAPP_SOCKET_TX_FAILED:
-		UART_PRINT("[NETAPP EVENT] Socket Error # %d \n\r",
-				pNetAppEvent->EventData.sd);
+		UART_PRINT("[NETAPP EVENT] Socket Error # %d \n\r", pNetAppEvent->EventData.sd);
 		break;
 
 	default:
@@ -122,15 +138,14 @@ void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
 	}
 }
 
-/**
- * Callback function to handle general SimpleLink events
- */
+
+// Callback function to handle general SimpleLink events
+
 void SimpleLinkGeneralEventHandler(SlDeviceEvent_t *pDevEvent) {
 	// Most of the general errors are not FATAL are are to be handled
 	// appropriately by the application
 	const sl_DeviceReport report = pDevEvent->EventData.deviceEvent;
-	UART_PRINT("[GENERAL EVENT] - ID=[%d] Sender=[%d]\n\n", report.status,
-			report.sender);
+	UART_PRINT("[GENERAL EVENT] - ID=[%d] Sender=[%d]\n\n", report.status, report.sender);
 }
 
 //*****************************************************************************
@@ -152,8 +167,7 @@ void SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
 		switch (pSock->EventData.status) {
 		case SL_ECLOSE:
 			UART_PRINT("[SOCK ERROR] - close socket (%d) operation "
-					"failed to transmit all queued packets\n\n",
-					pSock->EventData.sd);
+					"failed to transmit all queued packets\n\n", pSock->EventData.sd);
 			break;
 		default:
 			UART_PRINT("[SOCK ERROR] - TX FAILED  :  socket %d , reason "
@@ -241,33 +255,21 @@ static long ConfigureSimpleLink() {
 	}
 
 	// Get the device's version-information
-	SlVersionFull ver = { {0} };
+	SlVersionFull ver = { { 0 } };
 	unsigned char configOpt = SL_DEVICE_GENERAL_VERSION;
 	unsigned char configLen = sizeof(ver);
-	retVal = sl_DevGet(SL_DEVICE_GENERAL_CONFIGURATION, &configOpt,
-			&configLen, (unsigned char *) (&ver));
+	retVal = sl_DevGet(SL_DEVICE_GENERAL_CONFIGURATION, &configOpt, &configLen, (unsigned char *) (&ver));
 	ASSERT_ON_ERROR(__LINE__, retVal);
 
 	UART_PRINT("Host Driver Version: %s\n\r", SL_DRIVER_VERSION);
-	UART_PRINT("Build Version %d.%d.%d.%d.31.%d.%d.%d.%d.%d.%d.%d.%d\n\r",
-			ver.NwpVersion[0], ver.NwpVersion[1], ver.NwpVersion[2],
-			ver.NwpVersion[3], ver.ChipFwAndPhyVersion.FwVersion[0],
-			ver.ChipFwAndPhyVersion.FwVersion[1],
-			ver.ChipFwAndPhyVersion.FwVersion[2],
-			ver.ChipFwAndPhyVersion.FwVersion[3],
-			ver.ChipFwAndPhyVersion.PhyVersion[0],
-			ver.ChipFwAndPhyVersion.PhyVersion[1],
-			ver.ChipFwAndPhyVersion.PhyVersion[2],
-			ver.ChipFwAndPhyVersion.PhyVersion[3]);
+	UART_PRINT("Build Version %d.%d.%d.%d.31.%d.%d.%d.%d.%d.%d.%d.%d\n\r", ver.NwpVersion[0], ver.NwpVersion[1], ver.NwpVersion[2], ver.NwpVersion[3], ver.ChipFwAndPhyVersion.FwVersion[0], ver.ChipFwAndPhyVersion.FwVersion[1], ver.ChipFwAndPhyVersion.FwVersion[2], ver.ChipFwAndPhyVersion.FwVersion[3], ver.ChipFwAndPhyVersion.PhyVersion[0], ver.ChipFwAndPhyVersion.PhyVersion[1], ver.ChipFwAndPhyVersion.PhyVersion[2], ver.ChipFwAndPhyVersion.PhyVersion[3]);
 
 	sl_WlanDisconnect();
 
 	// get current Time
 	SlDateTime_t dateTime;
-	unsigned char option = SL_DEVICE_GENERAL_CONFIGURATION_DATE_TIME, length =
-			sizeof(SlDateTime_t);
-	retVal = sl_DevGet(SL_DEVICE_GENERAL_CONFIGURATION, &option, &length,
-			(unsigned char *) &dateTime);
+	unsigned char option = SL_DEVICE_GENERAL_CONFIGURATION_DATE_TIME, length = sizeof(SlDateTime_t);
+	retVal = sl_DevGet(SL_DEVICE_GENERAL_CONFIGURATION, &option, &length, (unsigned char *) &dateTime);
 	ASSERT_ON_ERROR(__LINE__, retVal);
 
 	// compute random channel from current time
@@ -281,8 +283,7 @@ static long ConfigureSimpleLink() {
 	// Number between 0ERROR5, as dB offset from max power - 0 will set max power
 	unsigned char power = 0;
 	retVal = sl_WlanSet(SL_WLAN_CFG_GENERAL_PARAM_ID,
-	WLAN_GENERAL_PARAM_OPT_AP_TX_POWER, sizeof(power),
-			(unsigned char *) &power);
+	WLAN_GENERAL_PARAM_OPT_AP_TX_POWER, sizeof(power), (unsigned char *) &power);
 	ASSERT_ON_ERROR(__LINE__, retVal);
 
 	// Set PM policy to normal
@@ -290,13 +291,11 @@ static long ConfigureSimpleLink() {
 	ASSERT_ON_ERROR(__LINE__, retVal);
 
 	unsigned char ssid[] = "WyLightBootloaderAP";
-	retVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, 0, strlen((const char *) ssid),
-			ssid);
+	retVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, 0, strlen((const char *) ssid), ssid);
 	ASSERT_ON_ERROR(__LINE__, retVal);
 
 	unsigned char val = SL_SEC_TYPE_OPEN;
-	retVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, WLAN_AP_OPT_SECURITY_TYPE, 1,
-			(unsigned char *) &val);
+	retVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, WLAN_AP_OPT_SECURITY_TYPE, 1, (unsigned char *) &val);
 	ASSERT_ON_ERROR(__LINE__, retVal);
 
 	retVal = sl_Stop(SL_STOP_TIMEOUT);
@@ -375,13 +374,9 @@ void Network_IF_InitDriver(void) {
 void Network_IF_DeInitDriver(void) {
 	UART_PRINT("SL Disconnect...\n\r");
 
-//
-// Stop the simplelink host
-//
+	// Stop the simplelink host
 	sl_Stop(SL_STOP_TIMEOUT);
 
-//
-// Reset the state to uninitialized
-//
+	// Reset the state to uninitialized
 	CLR_STATUS_BIT_ALL(g_ulStatus);
 }

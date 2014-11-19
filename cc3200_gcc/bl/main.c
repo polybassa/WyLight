@@ -93,8 +93,7 @@ int main() {
 	GPIO_IF_LedOn(MCU_GREEN_LED_GPIO);
 
 	if (ReadJumper() == 0) {
-
-		if (ERROR == LoadAndExecuteFirmware()) {
+		if (ERROR == EmplaceFirmware()) {
 			GPIO_IF_LedOn(MCU_RED_LED_GPIO);
 		}
 	}
@@ -102,6 +101,13 @@ int main() {
 
 	do {
 		TcpServer();
-	} while (ERROR == LoadAndExecuteFirmware());
+	} while (EmplaceFirmware());
+
+	Network_IF_DeInitDriver();
+	MAP_IntDisable(FAULT_SYSTICK);
+	MAP_IntMasterDisable();
+	// Point of no return;
+	StartFirmware();
+
 }
 

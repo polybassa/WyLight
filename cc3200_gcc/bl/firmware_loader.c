@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2012 - 2014 Nils Weiss, Patrick Bruenn.
+ Copyright (C) 2014 Nils Weiss, Patrick Bruenn.
 
  This file is part of Wifly_Light.
 
@@ -30,7 +30,6 @@
 #include "shamd5.h"
 
 #include "firmware_loader.h"
-#include "wy_bl_network_if.h"
 #include "bootloader.h"
 #include "wy_fs.h"
 
@@ -39,12 +38,9 @@
 #define FILENAME_SIZE			128
 
 static int g_ContextReadyFlag = 0;
-
 static unsigned char* FIRMWARE_FILENAME = (unsigned char *) FW_FILENAME;
 
-/**
- * Interrupt handler to handle SHAMD5 engine interrupts
- */
+// Interrupt handler to handle SHAMD5 engine interrupts
 void SHAMD5IntHandler(void) {
 	uint32_t ui32IntStatus;
 
@@ -281,10 +277,7 @@ long SaveSRAMContent(uint8_t *pSource, const size_t length) {
 //! This function patches the processors vector table and jumps to the new reset vector
 //
 //****************************************************************************
-static void StartFirmware(void) {
-	Network_IF_DeInitDriver();
-	MAP_IntDisable(FAULT_SYSTICK);
-	MAP_IntMasterDisable();
+void StartFirmware(void) {
 	// patch Interrupt Vector Table
 	MAP_IntVTableBaseSet((size_t) FIRMWARE_ORIGIN);
 
@@ -305,15 +298,15 @@ static void StartFirmware(void) {
 //! \return         0 for success and negative for error
 //
 //****************************************************************************
-long LoadAndExecuteFirmware(void) {
+long EmplaceFirmware(void) {
 	// retVal contains length of Firmware after load
 	long fw_length = LoadFirmware(FIRMWARE_FILENAME);
 	if (fw_length <= 0) {
 		return ERROR;
 	}
 
-	if (SUCCESS == VerifySRAM(FIRMWARE_ORIGIN, fw_length)) {
-		StartFirmware();
+	if (VerifySRAM(FIRMWARE_ORIGIN, fw_length)) {
+		return ERROR;
 	}
-	return ERROR;
+	return SUCCESS;
 }

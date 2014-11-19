@@ -176,7 +176,9 @@ int wy_FsDel(unsigned char *pFileName,unsigned long Token);
  */
 
 int wy_FsFormat(void);
+
 #ifndef NOTERM
 int wy_FsPrintFileList(void);
 #endif
+
 #endif /*  __FS_H__ */
