@@ -132,7 +132,8 @@ CPPFLAGS= -ffunction-sections \
     -g
 
 LDFLAGS= -gc-sections \
- -static
+         -static \
+	 -Map ${BINDIR}/${PRJ_NAME}.map 
 
 # The command for calling the library archiver.
 AR=${PREFIX}ar
