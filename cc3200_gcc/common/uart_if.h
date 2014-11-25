@@ -57,6 +57,10 @@
 #ifndef __uart_if_H__
 #define __uart_if_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+	
 /****************************************************************************/
 /*								MACROS										*/
 /****************************************************************************/
@@ -73,5 +77,8 @@ void ClearTerm(void);
 void Message(const char *format);
 int Report(const char *format, ...);
 
+#ifdef __cplusplus
+}
+#endif
 #endif
 

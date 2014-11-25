@@ -67,9 +67,11 @@ static void BusFaultHandler(void);
 //
 //*****************************************************************************
 extern void _c_int00(void);
+#ifdef USE_FREERTOS
 extern void vPortSVCHandler(void);
 extern void xPortPendSVHandler(void);
 extern void xPortSysTickHandler(void);
+#endif
 
 //*****************************************************************************
 //
@@ -236,11 +238,15 @@ ResetISR(void)
           "        it      lt\n"
           "        strlt   r2, [r0], #4\n"
           "        blt     zero_loop");
+	
+	__asm("	   ldr 	   r12, =main\n"
+		  "    mov	   lr,pc\n"
+		  "    bx	   r12\n");
 
     //
     // Call the application's entry point.
     //
-    main();
+	//(void)main();
 }
 
 //*****************************************************************************

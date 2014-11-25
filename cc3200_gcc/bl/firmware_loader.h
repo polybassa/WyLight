@@ -22,9 +22,16 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void StartFirmware(void);
 long EmplaceFirmware(void);
 long SaveSRAMContent(uint8_t *pSource, const size_t length);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* FIRMWARE_DOWNLOAD_H_ */

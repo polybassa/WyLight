@@ -44,6 +44,15 @@
 #ifndef __PINMUX_H__
 #define __PINMUX_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+	
 extern void PinMuxConfig(void);
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif //  __PINMUX_H__
