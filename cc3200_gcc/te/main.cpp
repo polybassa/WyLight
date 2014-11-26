@@ -42,7 +42,9 @@
 #include "tcp_server.h"
 #include "../te/TestClass.h"
 #include <array>
-
+#include <memory>
+#include <algorithm>    // std::make_heap, std::pop_heap, std::push_heap, std::sort_heap
+#include <vector>       // std::vector
 /*
  * Override C++ new/delete operators to reduce memory footprint
  */
@@ -118,6 +120,19 @@ int main() {
 	}
 
 	Report("%d", x->get());
+	
+	auto t = std::unique_ptr<TestClass>(new TestClass());
+	
+	Report("t->:%d", t->get());
+	
+	auto str = "hallo String";
+	
+	Report("%s", str);
+	
+	int myints[] = {10,20,30,5,15};
+	std::vector<int> v(myints,myints+5);
+	
+	std::make_heap (v.begin(),v.end());
 
 	GPIO_IF_LedConfigure(LED1 | LED2 | LED3);
 	GPIO_IF_LedOff(MCU_ALL_LED_IND);
