@@ -40,6 +40,8 @@
 #include "bootloader.h"
 #include "firmware_loader.h"
 #include "tcp_server.h"
+#include "../te/TestClass.h"
+#include <array>
 
 /*
  * Override C++ new/delete operators to reduce memory footprint
@@ -106,6 +108,16 @@ int main() {
 
 	// Configuring UART
 	InitTerm();
+	
+	auto x = new TestClass();
+	
+	std::array<int, 5> arr = {0,1,2,3,4};
+	
+	for (auto& x : arr) {
+		Report("%d ", x);
+	}
+
+	Report("%d", x->get());
 
 	GPIO_IF_LedConfigure(LED1 | LED2 | LED3);
 	GPIO_IF_LedOff(MCU_ALL_LED_IND);

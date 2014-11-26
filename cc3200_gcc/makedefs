@@ -109,25 +109,33 @@ AFLAGS=-mthumb \
 CFLAGS= -ffunction-sections \
         -fdata-sections     \
         -mcpu=cortex-m4 \
+        -fno-builtin \
         -pedantic \
         -std=c99 \
         -mthumb \
-       -Wall \
-       -O1 \
-       -MD \
-       -g \
-       -c
+	-flto \
+        -Wall \
+        -O1 \
+        -MD \
+        -g \
+        -c
 
-CPPFLAGS= -ffunction-sections \
+CPPFLAGS= \
+    -ffunction-sections \
+    --specs=nano.specs \
     -fdata-sections \
     -fno-exceptions \
     -mcpu=cortex-m4 \
+    -DCUSTOM_NEW \
+    -fno-builtin \
     -std=c++11 \
     -pedantic \
     -fno-rtti \
     -mthumb \
     -Wall \
-    -MD\
+    -flto \
+    -MD \
+    -Os \
     -c \
     -g
 

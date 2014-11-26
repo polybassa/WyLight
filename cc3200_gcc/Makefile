@@ -40,6 +40,10 @@ ifeq ($(MAKECMDGOALS),fw)
 PREFIX=arm-none-eabi-
 endif
 
+ifeq ($(MAKECMDGOALS),te)
+PREFIX=arm-none-eabi-
+endif
+
 # Include the common make definitions.
 include makedefs
 
@@ -77,6 +81,8 @@ common: ${BINDIR}/${PRJ_NAME}.axf
 fw: pre-build common post-build
 
 bl: pre-build common post-build
+
+te: pre-build common post-build
 
 SIM_FILES=${OBJDIR}/main.o ${OBJDIR}/wy_fs.o ${OBJDIR}/pinmux.o ${OBJDIR}/firmware_loader.o ${OBJDIR}/tcp_server.o ${OBJDIR}/simulator_bl.o ${OBJDIR}/fs.o ${OBJDIR}/uart_if.o ${OBJDIR}/gpio_if.o
 sim: pre-build ${OBJDIR} ${BINDIR} ${SIM_FILES}
