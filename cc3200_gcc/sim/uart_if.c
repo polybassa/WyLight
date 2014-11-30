@@ -82,7 +82,7 @@ InitTerm()
 //
 //*****************************************************************************
 void 
-Message(char *str)
+Message(const char *str)
 {
 #ifndef NOTERM
     if(str != NULL)
@@ -136,86 +136,6 @@ Error(char *pcFormat, ...)
 
 //*****************************************************************************
 //
-//! Get the Command string from UART
-//!
-//! \param  pucBuffer is the command store to which command will be populated
-//! \param  ucBufLen is the length of buffer store available
-//!
-//! \return Length of the bytes received. -1 if buffer length exceeded.
-//! 
-//*****************************************************************************
-int
-GetCmd(char *pcBuffer, unsigned int uiBufLen)
-{
-    char cChar;
-    int iLen = 0;
-    
-    //
-    // Wait to receive a character over UART
-    //
-    //cChar = MAP_UARTCharGet(CONSOLE);
-	scanf(" %c", &cChar);
-    
-    //
-    // Echo the received character
-    //
-    //MAP_UARTCharPut(CONSOLE, cChar);
-	printf("%c", cChar);
-    iLen = 0;
-    
-    //
-    // Checking the end of Command
-    //
-    while((cChar != '\r') && (cChar !='\n') )
-    {
-        //
-        // Handling overflow of buffer
-        //
-        if(iLen >= uiBufLen)
-        {
-            return -1;
-        }
-        
-        //
-        // Copying Data from UART into a buffer
-        //
-        if(cChar != '\b')
-        { 
-            *(pcBuffer + iLen) = cChar;
-            iLen++;
-        }
-        else
-        {
-            //
-            // Deleting last character when you hit backspace 
-            //
-            if(iLen)
-            {
-                iLen--;
-            }
-        }
-        //
-        // Wait to receive a character over UART
-        //
-        //cChar = MAP_UARTCharGet(CONSOLE);
-		scanf(" %c", &cChar);
-
-        //
-        // Echo the received character
-        //
-        //MAP_UARTCharPut(CONSOLE, cChar);
-		printf("%c", cChar);
-    }
-
-    *(pcBuffer + iLen) = '\0';
-
-    Report("\n\r");
-
-    return iLen;
-}
-
-//*****************************************************************************
-//
 //!	prints the formatted string on to the console
 //!
 //! \param format is a pointer to the character string specifying the format in
@@ -228,7 +148,7 @@ GetCmd(char *pcBuffer, unsigned int uiBufLen)
 //! \return count of characters printed
 //
 //*****************************************************************************
-int Report(char *pcFormat, ...)
+int Report(const char *pcFormat, ...)
 {
  int iRet = 0;
 #ifndef NOTERM

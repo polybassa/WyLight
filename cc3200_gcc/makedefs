@@ -94,11 +94,7 @@ endif
 # Definitions for using GCC.
 #
 #******************************************************************************
-ifeq (${COMPILER}, gcc)
-
-# The command for calling the compiler.
-CC=${PREFIX}gcc
-CPP=${PREFIX}g++
+ifeq (${PREFIX}, arm-none-eabi-)
 
 # The flags passed to the assembler.
 AFLAGS=-mthumb \
@@ -142,6 +138,30 @@ CPPFLAGS= \
 LDFLAGS= -gc-sections \
          -static \
 	 -Map ${BINDIR}/${PRJ_NAME}.map 
+else 
+# The flags passed to the compiler when we are not using arm-none-eabi tools.
+CFLAGS= -pedantic \
+        -std=c99 \
+        -Wall \
+        -O1 \
+        -g \
+        -c
+
+CPPFLAGS= \
+    -DCUSTOM_NEW \
+    -std=c++11 \
+    -pedantic \
+    -Wall \
+    -MD \
+    -Os \
+    -c \
+    -g
+
+endif
+
+# The command for calling the compiler.
+CC=${PREFIX}${COMPILER}
+CPP=${PREFIX}g++
 
 # The command for calling the library archiver.
 AR=${PREFIX}ar
@@ -230,4 +250,4 @@ ${BINDIR}/%.axf:
 	  ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^})   \
 	 '${LIBM}' '${LIBC}' '${LIBGCC}'
 	 @${OBJCOPY} -O binary ${@} ${@:.axf=.bin}
-endif
+

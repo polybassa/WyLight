@@ -41,8 +41,12 @@ PREFIX=arm-none-eabi-
 endif
 
 ifeq ($(MAKECMDGOALS),te)
+
 PREFIX=arm-none-eabi-
+
 endif
+
+
 
 # Include the common make definitions.
 include makedefs
@@ -63,7 +67,7 @@ ut: CFLAGS+=-g
 bl: CFLAGS+=-DNOTERM
 bl: CFLAGS+=-Dcc3200
 
-# additional linker flags
+# add additional linker flags
 sim: LDFLAGS+=-lcrypto
 
 # The default rule, which causes the bootloader be built as bootloader
@@ -79,16 +83,18 @@ common: ${BINDIR}/${PRJ_NAME}.axf
 
 # build the bootloader as normal bootloader 
 fw: pre-build common post-build
-
 bl: pre-build common post-build
 
 te: pre-build common post-build
 
+
 SIM_FILES=${OBJDIR}/main.o ${OBJDIR}/wy_fs.o ${OBJDIR}/pinmux.o ${OBJDIR}/firmware_loader.o ${OBJDIR}/tcp_server.o ${OBJDIR}/simulator_bl.o ${OBJDIR}/fs.o ${OBJDIR}/uart_if.o ${OBJDIR}/gpio_if.o
+
 sim: pre-build ${OBJDIR} ${BINDIR} ${SIM_FILES}
 	${CC} ${LDFLAGS} -o ${BINDIR}/${PRJ_NAME}.bin ${SIM_FILES} 
 
 UT_FILES=${OBJDIR}/wy_fs_ut.o ${OBJDIR}/fs.o ${OBJDIR}/wy_fs.o ${OBJDIR}/uart_if.o
+
 ut: pre-build ${OBJDIR} ${BINDIR} ${UT_FILES}
 	${CC} ${LDFLAGS} -o ${BINDIR}/${PRJ_NAME}.bin ${UT_FILES}
 

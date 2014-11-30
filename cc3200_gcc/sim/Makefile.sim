@@ -7,11 +7,11 @@ VPATH+=${ROOT}/common
 # Where to find header files that do not live in the source directory.
 IPATH=${ROOT}
 IPATH+=${ROOT}/bl
+IPATH+=${ROOT}/sim
 IPATH+=${ROOT}/common
 IPATH+=${ROOT}/inc
 IPATH+=${ROOT}/driverlib
 IPATH+=${ROOT}/simplelink/include
-IPATH+=${ROOT}/sim
 
 # WyLight bootloader
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/main.o
