@@ -19,15 +19,17 @@
 #ifndef __TCP_SERVER_H_
 #define __TCP_SERVER_H_
 
-//common
-#include "uart_if.h"
-
-#define UART_PRINT	Report
-#define BUFFERSIZE 	1024
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * @return if new firmware was received and validated
  */
 void TcpServer(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __TCP_SERVER_H_ */

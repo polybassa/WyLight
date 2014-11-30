@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2012 - 2014 Nils Weiss, Patrick Bruenn.
+ Copyright (C) 2014 Nils Weiss, Patrick Bruenn.
 
  This file is part of Wifly_Light.
 
@@ -18,7 +18,6 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <string.h>
 
 #include "hw_types.h"
 #include "hw_shamd5.h"
@@ -30,28 +29,21 @@
 #include "rom_map.h"
 #include "shamd5.h"
 
-#include "uart_if.h"
 #include "firmware_loader.h"
-#include "wy_bl_network_if.h"
 #include "bootloader.h"
-
+#include "wy_fs.h"
 
 #define CHECKSUM_SIZE			32		/* In Bytes, We use SHA-256 */
 #define SUCCESS					0
 #define FILENAME_SIZE			128
 
-
 static int g_ContextReadyFlag = 0;
-
 static unsigned char* FIRMWARE_FILENAME = (unsigned char *) FW_FILENAME;
 
-
-/**
- * Interrupt handler to handle SHAMD5 engine interrupts
- */
+// Interrupt handler to handle SHAMD5 engine interrupts
 void SHAMD5IntHandler(void) {
 	uint32_t ui32IntStatus;
-	
+
 	ui32IntStatus = MAP_SHAMD5IntStatus(SHAMD5_BASE, true);
 	if (ui32IntStatus & SHAMD5_INT_CONTEXT_READY) {
 		MAP_SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_CONTEXT_READY);
@@ -85,7 +77,6 @@ static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *r
 		return;
 	}
 
-	UART_PRINT("Start computing hash\r\n");
 	//clear flags
 	g_ContextReadyFlag = 0;
 
@@ -107,11 +98,9 @@ static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *r
 
 	//Configure SHA/MD5 module
 	MAP_SHAMD5ConfigSet(SHAMD5_BASE, SHAMD5_ALGO_SHA256);
-	
+
 	MAP_SHAMD5DataProcess(SHAMD5_BASE, pSource, length, resultHash);
 
-	UART_PRINT("Computing hash successful\r\n");
-	
 	// disable Interrupts
 	SHAMD5IntDisable(SHAMD5_BASE,
 	SHAMD5_INT_CONTEXT_READY | SHAMD5_INT_PARTHASH_READY | SHAMD5_INT_INPUT_READY | SHAMD5_INT_OUTPUT_READY);
@@ -129,7 +118,7 @@ static void ComputeSHAFromSRAM(uint8_t *pSource, const size_t length, uint8_t *r
 //! \param[in]      pSource -- Pointer to startadress of the binary
 //! \param[in]		length -- Length of the binary plus checksum in bytes
 //!
-//! \return         0 for success
+//! \return         0 for success and negative for error
 //
 //****************************************************************************
 static long VerifySRAM(uint8_t *pSource, const size_t length) {
@@ -149,7 +138,10 @@ static long VerifySRAM(uint8_t *pSource, const size_t length) {
 	}
 	memcpy(secoundHash, pHash, CHECKSUM_SIZE);
 
-	return memcmp(secoundHash, firstHash, sizeof(firstHash));
+	if (memcmp(secoundHash, firstHash, sizeof(firstHash)) != 0) {
+		return ERROR;
+	}
+	return SUCCESS;
 }
 
 //****************************************************************************
@@ -166,23 +158,24 @@ static long VerifySRAM(uint8_t *pSource, const size_t length) {
 static long LoadFirmware(unsigned char* pSourceFile) {
 	SlFsFileInfo_t sFileInfo;
 	// get file size
-	if (sl_FsGetInfo(pSourceFile, 0, &sFileInfo)) {
-		UART_PRINT("Error during opening the source file\r\n");
-		return ERROR;
+	long errno = wy_FsGetInfo(pSourceFile, 0, &sFileInfo);
+	if (errno) {
+		return errno;
 	}
 
 	long fileHandle = -1;
 	unsigned long token = 0;
 	// open the source file for reading
-	if (sl_FsOpen(pSourceFile, FS_MODE_OPEN_READ, &token, &fileHandle)) {
+	errno = wy_FsOpen(pSourceFile, FS_MODE_OPEN_READ, &token, &fileHandle);
+	if (errno) {
 		// File Doesn't exit
-		UART_PRINT("Error during opening the source file\r\n");
-		return ERROR;
+		return errno;
 	}
-	size_t bytesCopied = sl_FsRead(fileHandle, 0, (unsigned char *) FIRMWARE_ORIGIN, sFileInfo.FileLen);
+	size_t bytesCopied = wy_FsRead(fileHandle, 0, (unsigned char *) FIRMWARE_ORIGIN, sFileInfo.FileLen);
 	// Close the opened files
-	if (sl_FsClose(fileHandle, 0, 0, 0)) {
-		return ERROR;
+	errno = wy_FsClose(fileHandle, 0, 0, 0);
+	if (errno) {
+		return errno;
 	}
 	return bytesCopied;
 }
@@ -203,65 +196,78 @@ long SaveSRAMContent(uint8_t *pSource, const size_t length) {
 	long fileHandle = -1;
 	unsigned long token = 0;
 
+	static const char formatFilesystemCommand[] = FORMAT_COMMAND;
+	if (!memcmp((const char *) pSource, (const char *) formatFilesystemCommand, sizeof(formatFilesystemCommand) - 1)) {
+		long errno = wy_FsFormat();
+		return errno ? errno : EAGAIN;
+	}
+#ifndef NOTERM
+	static const char printFilesystemCommand[] = LIST_FS_COMMAND;
+	if (!memcmp((const char *) pSource, (const char *) printFilesystemCommand, sizeof(printFilesystemCommand) - 1)) {
+		long errno = wy_FsPrintFileList();
+		return errno ? errno : EAGAIN;
+	}
+#endif
 	if (length < FILENAME_SIZE) {
-		return ERROR;
+		return SL_FS_WRONG_FILE_NAME;
 	}
 
 	unsigned char filename[FILENAME_SIZE];
 	memcpy(filename, pSource, sizeof(filename));
 
-	// set spaces to NULL
+	// set spaces to NULL to indicate end of filename with termination null
 	unsigned char *pTemp = filename;
 	while (*pTemp != ' ')
 		pTemp++;
 	*pTemp = 0x00;
 
+	// move sourcepointer to start of binary file
 	pSource += FILENAME_SIZE;
+	// compute length of binary file
 	size_t filesize = length - FILENAME_SIZE;
 
 	if (VerifySRAM(pSource, filesize)) {
-		UART_PRINT("Invalid SHA256SUM\r\n");
-		return ERROR;
+		return SL_FS_WRONG_SIGNATURE;
 	}
 
 	// if filename indicates a webdata, remove checksum at the end
 	// checksum at the end should not be delivered to a browser
-	const char webSubdirectory[] = "/www/";
+	static const char webSubdirectory[] = "/www/";
 	// normally we should use strstr here, but this will need a lot more code than memcmp.
 	// the websubdirectory string will always be at the beginning. so we can compare sizeof(webSubdirectory) minus trailing NULL
 	if (0 == memcmp(filename, webSubdirectory, sizeof(webSubdirectory) - 1)) {
 		filesize -= CHECKSUM_SIZE;
 	}
 
-	// Delete old Firmware
-	sl_FsDel(filename, token);
+	// Delete old File
+	wy_FsDel(filename, token);
 
-	// Save Firmware
-	UART_PRINT("\r\nStarted saving %s\r\n", filename);
-	// open a user file for writing
-	if (sl_FsOpen(filename, FS_MODE_OPEN_WRITE, &token, &fileHandle)) {
+	// open the file for writing
+	if (wy_FsOpen(filename, FS_MODE_OPEN_WRITE, &token, &fileHandle)) {
 		// File Doesn't exit create a new file
-		if (sl_FsOpen(filename,
-				FS_MODE_OPEN_CREATE(filesize,
-						_FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_PUBLIC_WRITE | _FS_FILE_PUBLIC_READ
-								| _FS_FILE_OPEN_FLAG_VENDOR), &token, &fileHandle)) {
-			sl_FsDel(filename, token);
-			UART_PRINT("Error during creating the destination file\r\n");
-			return ERROR;
+		int errno = wy_FsOpen(filename, FS_MODE_OPEN_CREATE(filesize, 0), &token, &fileHandle);
+		if (errno) {
+			wy_FsDel(filename, token);
+			return SL_FS_ERR_FAILED_TO_CREATE_FILE;
 		}
-		UART_PRINT("File %s created\r\n", filename);
+		wy_FsClose(fileHandle, 0, 0, 0);
+		errno = wy_FsOpen(filename, FS_MODE_OPEN_WRITE, &token, &fileHandle);
+		if (errno) {
+			wy_FsDel(filename, token);
+			return SL_FS_ERROR_FAILED_TO_WRITE;
+		}
 	}
 
-	if (sl_FsWrite(fileHandle, 0, pSource, filesize) < 0) {
+	if (wy_FsWrite(fileHandle, 0, pSource, filesize) < 0) {
 		// Error close the file and delete the temporary file
-		sl_FsClose(fileHandle, 0, 0, 0);
-		UART_PRINT("Error during writing the file\r\n");
-		return ERROR;
+		wy_FsClose(fileHandle, 0, 0, 0);
+		return SL_FS_ERROR_FAILED_TO_WRITE;
 	}
 	// Close the opened files
-	sl_FsClose(fileHandle, 0, 0, 0);
+	wy_FsClose(fileHandle, 0, 0, 0);
 	// if we saved a firmware, than return SUCCESS (0) to start this firmware immediately
-	return (long) strcmp((const char *) filename, (const char *) FIRMWARE_FILENAME);
+	return (long) memcmp(filename, FIRMWARE_FILENAME, sl_min(sl_Strlen(filename), sl_Strlen(FIRMWARE_FILENAME))) ? EAGAIN : SUCCESS;
+	//return (long) strcmp((const char *) filename, (const char *) FIRMWARE_FILENAME);
 }
 
 //****************************************************************************
@@ -271,12 +277,9 @@ long SaveSRAMContent(uint8_t *pSource, const size_t length) {
 //! This function patches the processors vector table and jumps to the new reset vector
 //
 //****************************************************************************
-static void StartFirmware(void) {
-	Network_IF_DeInitDriver();
-	MAP_IntDisable(FAULT_SYSTICK);
-	MAP_IntMasterDisable();
+void StartFirmware(void) {
 	// patch Interrupt Vector Table
-	MAP_IntVTableBaseSet((size_t)FIRMWARE_ORIGIN);
+	MAP_IntVTableBaseSet((size_t) FIRMWARE_ORIGIN);
 
 	// call Firmware
 	void (*firmware_origin_entry)(void);
@@ -286,11 +289,16 @@ static void StartFirmware(void) {
 	firmware_origin_entry();
 }
 
-/**
- * Load, verify and run the firmware file from flash
- * \return ERROR, if this function was successful it will not return
- */
-long LoadAndExecuteFirmware(void) {
+//****************************************************************************
+//
+//! \brief EmplaceFirmware
+//!
+//! This function loads and verifies a firmware file from FLASH
+//!
+//! \return         0 for success and negative for error
+//
+//****************************************************************************
+long EmplaceFirmware(void) {
 	// retVal contains length of Firmware after load
 	long fw_length = LoadFirmware(FIRMWARE_FILENAME);
 	if (fw_length <= 0) {
@@ -298,10 +306,7 @@ long LoadAndExecuteFirmware(void) {
 	}
 
 	if (VerifySRAM(FIRMWARE_ORIGIN, fw_length)) {
-		UART_PRINT("Invalid SHA256SUM\r\n");
 		return ERROR;
 	}
-	UART_PRINT("Starting Firmware\r\n");
-	StartFirmware();
-	return ERROR;
+	return SUCCESS;
 }

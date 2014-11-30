@@ -1,6 +1,8 @@
 # Where to find source files that do not live in this directory.
 VPATH=${ROOT}/bl
 VPATH+=${ROOT}/sim
+VPATH+=${ROOT}/common
+# VPATH common must be at the end, to override existing sources with files from sim
 
 # Where to find header files that do not live in the source directory.
 IPATH=${ROOT}
@@ -22,3 +24,4 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/simulator_bl.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/fs.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart_if.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/gpio_if.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_fs.o

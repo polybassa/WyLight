@@ -1,3 +1,21 @@
+/*
+ Copyright (C) 2014 Nils Weiss, Patrick Bruenn.
+
+ This file is part of WyLight.
+
+ WyLight is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ WyLight is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
+
 //*****************************************************************************
 // cc3200v1p32.cmd
 //
@@ -59,8 +77,8 @@
 MEMORY
 {
     /* Application uses internal RAM for program and data */
-    SRAM_CODE (RWX) : origin = 0x20004000, length = 0xAFFF
-    SRAM_DATA (RWX) : origin = 0x2000F000, length = 0x2FFF
+    SRAM_CODE (RWX) : origin = 0x20004000, length = 0xC000
+    SRAM_DATA (RWX) : origin = 0x20010000, length = 0x1FFF
 }
 
 /* Section allocation in memory */

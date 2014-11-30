@@ -21,7 +21,7 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/pinmux.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/firmware_loader.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/tcp_server.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_bl_network_if.o
-
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_fs.o
 # common
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/startup_${COMPILER}.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart_if.o

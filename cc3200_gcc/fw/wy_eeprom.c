@@ -18,7 +18,7 @@
 
 #include <stdbool.h>
 #include "eeprom.h"
-#include "fs.h"
+#include "wy_fs.h"
 #include "osi.h"
 #include "wy_firmware.h"
 
@@ -33,10 +33,10 @@ void Eeprom_Init() {
 	osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
 
 	long int fileHandle = 0;
-	if (sl_FsOpen(eepromFileName, FS_MODE_OPEN_READ, NULL, &fileHandle)) {
+	if (wy_FsOpen(eepromFileName, FS_MODE_OPEN_READ, NULL, &fileHandle)) {
 		//can not open file, creat one
-		sl_FsDel(eepromFileName, 0);
-		if (sl_FsOpen(eepromFileName, FS_MODE_OPEN_CREATE(EEPROM_SIZE, _FS_FILE_PUBLIC_READ | _FS_FILE_PUBLIC_WRITE),
+		wy_FsDel(eepromFileName, 0);
+		if (wy_FsOpen(eepromFileName, FS_MODE_OPEN_CREATE(EEPROM_SIZE, _FS_FILE_PUBLIC_READ | _FS_FILE_PUBLIC_WRITE),
 				NULL, &fileHandle)) {
 			UART_PRINT("EEPROM Adaption: Error opening script file\r\n");
 			osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
@@ -44,16 +44,16 @@ void Eeprom_Init() {
 		}
 		// file creation successful
 		memset(g_Eeprom, 0, EEPROM_SIZE);
-		sl_FsClose(fileHandle, NULL, NULL, 0);
+		wy_FsClose(fileHandle, NULL, NULL, 0);
 		osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
 		return;
 	}
 	// file exists and is open
-	if (EEPROM_SIZE != sl_FsRead(fileHandle, 0, g_Eeprom, EEPROM_SIZE)) {
+	if (EEPROM_SIZE != wy_FsRead(fileHandle, 0, g_Eeprom, EEPROM_SIZE)) {
 		UART_PRINT("EEPROM Adaption: Error reading script file\r\n");
 		memset(g_Eeprom, 0, EEPROM_SIZE);
 	}
-	sl_FsClose(fileHandle, NULL, NULL, 0);
+	wy_FsClose(fileHandle, NULL, NULL, 0);
 	osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
 }
 
@@ -67,10 +67,10 @@ void Eeprom_Save(bool forceSave) {
 
 	long int fileHandle = 0;
 
-	if (sl_FsOpen(eepromFileName, FS_MODE_OPEN_WRITE, NULL, &fileHandle)) {
+	if (wy_FsOpen(eepromFileName, FS_MODE_OPEN_WRITE, NULL, &fileHandle)) {
 		//can not open file, creat one
-		sl_FsDel(eepromFileName, 0);
-		if (sl_FsOpen(eepromFileName, FS_MODE_OPEN_CREATE(EEPROM_SIZE, _FS_FILE_PUBLIC_READ | _FS_FILE_PUBLIC_WRITE),
+		wy_FsDel(eepromFileName, 0);
+		if (wy_FsOpen(eepromFileName, FS_MODE_OPEN_CREATE(EEPROM_SIZE, _FS_FILE_PUBLIC_READ | _FS_FILE_PUBLIC_WRITE),
 				NULL, &fileHandle)) {
 
 			UART_PRINT("EEPROM Adaption: Error opening script file\r\n");
@@ -80,10 +80,10 @@ void Eeprom_Save(bool forceSave) {
 		// file creation successful
 	}
 	// file exists and is open
-	if (EEPROM_SIZE != sl_FsWrite(fileHandle, 0, g_Eeprom, EEPROM_SIZE)) {
+	if (EEPROM_SIZE != wy_FsWrite(fileHandle, 0, g_Eeprom, EEPROM_SIZE)) {
 		UART_PRINT("EEPROM Adaption: Error writing script file\r\n");
 	}
-	sl_FsClose(fileHandle, NULL, NULL, 0);
+	wy_FsClose(fileHandle, NULL, NULL, 0);
 	osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
 }
 

@@ -50,7 +50,7 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_crc.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/startup_${COMPILER}.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart_if.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/gpio_if.o
-
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_fs.o
 #driverLib
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/cpu.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/flash.o

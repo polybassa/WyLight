@@ -671,7 +671,7 @@ long sl_NetAppDnsGetHostByService(char			*pServiceName,	/* string containing all
 	
     OSI_RET_OK_CHECK(sl_LockObjLock(&g_pCB->ProtectionLockObj, SL_OS_WAIT_FOREVER));
 
-	g_pCB->ObjPool[pObjIdx].pRespArgs =  (void *)&AsyncRsp;
+	g_pCB->ObjPool[pObjIdx].pRespArgs =  (UINT8 *)&AsyncRsp;
 
     OSI_RET_OK_CHECK(sl_LockObjUnlock(&g_pCB->ProtectionLockObj));
 	/* set bit to indicate IPv6 address is expected */

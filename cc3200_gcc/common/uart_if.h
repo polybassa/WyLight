@@ -1,3 +1,21 @@
+/*
+ Copyright (C) 2014 Nils Weiss, Patrick Bruenn.
+
+ This file is part of WyLight.
+
+ WyLight is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ WyLight is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
+
 //*****************************************************************************
 // uart_if.h
 //
@@ -39,17 +57,10 @@
 #ifndef __uart_if_H__
 #define __uart_if_H__
 
-//*****************************************************************************
-//
-// If building with a C++ compiler, make all of the definitions in this header
-// have a C binding.
-//
-//*****************************************************************************
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
-
+	
 /****************************************************************************/
 /*								MACROS										*/
 /****************************************************************************/
@@ -57,37 +68,17 @@ extern "C"
 #define SYSCLK          80000000
 #define CONSOLE         UARTA0_BASE
 #define CONSOLE_PERIPH  PRCM_UARTA0
-//
-// Define the size of UART IF buffer for RX
-//
-#define UART_IF_BUFFER           64
-
-//
-// Define the UART IF buffer
-//
-extern unsigned char g_ucUARTBuffer[];
-
 
 /****************************************************************************/
 /*								FUNCTION PROTOTYPES							*/
 /****************************************************************************/
-extern void DispatcherUARTConfigure(void);
-extern void DispatcherUartSendPacket(unsigned char *inBuff, unsigned short usLength);
-extern int GetCmd(char *pcBuffer, unsigned int uiBufLen);
-extern void InitTerm(void);
-extern void ClearTerm(void);
-extern void Message(char *format);
-extern void Error(char *format,...);
-extern int Report(char *format, ...);
+void InitTerm(void);
+void ClearTerm(void);
+void Message(const char *format);
+int Report(const char *format, ...);
 
-//*****************************************************************************
-//
-// Mark the end of the C bindings section for C++ compilers.
-//
-//*****************************************************************************
 #ifdef __cplusplus
 }
 #endif
-
 #endif
 

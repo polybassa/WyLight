@@ -45,7 +45,6 @@
 #include "driver.h"
 
 
-#define sl_min(a,b) (((a) < (b)) ? (a) : (b))
 #define MAX_NVMEM_CHUNK_SIZE  1460
 
 

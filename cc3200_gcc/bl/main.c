@@ -31,28 +31,44 @@
 #include "interrupt.h"
 
 // common interface includes
-#include "uart_if.h"
 #include "pinmux.h"
 #include "wy_bl_network_if.h"
 #include "gpio_if.h"
+#include "uart_if.h"
 
 // wylight includes
 #include "bootloader.h"
 #include "firmware_loader.h"
 #include "tcp_server.h"
 
-#define UART_PRINT          Report
+#ifdef __cplusplus
+/*
+ * Override C++ new/delete operators to reduce memory footprint
+ */
+#ifdef CUSTOM_NEW
+#include <stdlib.h>
+void *operator new(size_t size) {
+	return malloc(size);
+}
+
+void *operator new[](size_t size) {
+	return malloc(size);
+}
+
+void operator delete(void *p) {
+	free(p);
+}
+
+void operator delete[](void *p) {
+	free(p);
+}
+#else
+#include <new>
+#include <cstddef>
+#endif /* CUSTOM_NEW */
+#endif /* __cplusplus */
 
 extern void (* const g_pfnVectors[])(void);
-
-static void DisplayBanner(const char * const AppName) {
-	UART_PRINT("\n\n\n\r");
-	UART_PRINT("\t\t *************************************************\n\r");
-	UART_PRINT("\t\t	  CC3200 %s Application       \n\r", AppName);
-	UART_PRINT("\t\t	        %s, %s          \n\r", __DATE__, __TIME__);
-	UART_PRINT("\t\t *************************************************\n\r");
-	UART_PRINT("\n\n\n\r");
-}
 
 //*****************************************************************************
 //
@@ -64,15 +80,10 @@ static void DisplayBanner(const char * const AppName) {
 //
 //*****************************************************************************
 static void BoardInit(void) {
-	/* In case of TI-RTOS vector table is initialize by OS itself */
-	//
 	// Set vector table base
-	//
 	MAP_IntVTableBaseSet((unsigned long) &g_pfnVectors[0]);
 
-	//
 	// Enable Processor
-	//
 	MAP_IntMasterEnable();
 	MAP_IntEnable(FAULT_SYSTICK);
 
@@ -83,7 +94,7 @@ static int ReadJumper() {
 	unsigned int GPIOPort;
 	unsigned char GPIOPin;
 
-//Read GPIO
+	//Read GPIO
 	GPIO_IF_GetPortNPin(SH_GPIO_3, &GPIOPort, &GPIOPin);
 	return GPIO_IF_Get(SH_GPIO_3, GPIOPort, GPIOPin);
 }
@@ -101,26 +112,29 @@ int main() {
 	GPIO_IF_LedConfigure(LED1 | LED2 | LED3);
 	GPIO_IF_LedOff(MCU_ALL_LED_IND);
 
-	DisplayBanner(APP_NAME);
-
 	Network_IF_InitDriver();
-
 	// Starting the CC3200 networking layers
 	Network_IF_StartSimpleLinkAsAP();
 
 	GPIO_IF_LedOn(MCU_GREEN_LED_GPIO);
 
 	if (ReadJumper() == 0) {
-
-		if (ERROR == LoadAndExecuteFirmware()) {
-			UART_PRINT("Firmware corrupt\r\n");
-			GPIO_IF_LedOn(MCU_RED_LED_GPIO);
+		if (SUCCESS == EmplaceFirmware()) {
+			StartFirmware();
 		}
+		GPIO_IF_LedOn(MCU_RED_LED_GPIO);
 	}
 	GPIO_IF_LedOn(MCU_ORANGE_LED_GPIO);
 
 	do {
 		TcpServer();
-	} while (ERROR == LoadAndExecuteFirmware());
+	} while (EmplaceFirmware());
+
+	Network_IF_DeInitDriver();
+	MAP_IntDisable(FAULT_SYSTICK);
+	MAP_IntMasterDisable();
+	// Point of no return;
+	StartFirmware();
+
 }
 

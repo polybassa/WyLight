@@ -1,3 +1,21 @@
+/*
+ Copyright (C) 2014 Nils Weiss, Patrick Bruenn.
+
+ This file is part of WyLight.
+
+ WyLight is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ WyLight is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
+
 //*****************************************************************************
 // uart_if.c
 //
@@ -50,16 +68,6 @@
 #include "uart_if.h"
 
 //*****************************************************************************
-// Global variable indicating command is present
-//*****************************************************************************
-static unsigned long __Errorlog;
-
-//*****************************************************************************
-// Global variable indicating input length
-//*****************************************************************************
-unsigned int ilen=1;
-
-//*****************************************************************************
 //
 //! Initialization
 //!
@@ -77,7 +85,6 @@ InitTerm()
                   UART_BAUD_RATE, (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
                    UART_CONFIG_PAR_NONE));
 #endif
-  __Errorlog = 0;
 }
 
 //*****************************************************************************
@@ -93,12 +100,12 @@ InitTerm()
 //
 //*****************************************************************************
 void 
-Message(char *str)
+Message(const char *str)
 {
 #ifndef NOTERM
     if(str != NULL)
     {
-        while(*str!='\0')
+        while(*str)
         {
             MAP_UARTCharPut(CONSOLE,*str++);
         }
@@ -119,105 +126,8 @@ Message(char *str)
 void 
 ClearTerm()
 {
-    Message("\33[2J\r");
-}
-
-//*****************************************************************************
-//
-//! Error Function
-//!
-//! \param 
-//!
-//! \return none
-//! 
-//*****************************************************************************
-void 
-Error(char *pcFormat, ...)
-{
-#ifndef NOTERM
-    char  cBuf[256];
-    va_list list;
-    va_start(list,pcFormat);
-    vsnprintf(cBuf,256,pcFormat,list);
-    Message(cBuf);
-#endif
-    __Errorlog++;
-}
-
-//*****************************************************************************
-//
-//! Get the Command string from UART
-//!
-//! \param  pucBuffer is the command store to which command will be populated
-//! \param  ucBufLen is the length of buffer store available
-//!
-//! \return Length of the bytes received. -1 if buffer length exceeded.
-//! 
-//*****************************************************************************
-int
-GetCmd(char *pcBuffer, unsigned int uiBufLen)
-{
-    char cChar;
-    int iLen = 0;
-    
-    //
-    // Wait to receive a character over UART
-    //
-    cChar = MAP_UARTCharGet(CONSOLE);
-    
-    //
-    // Echo the received character
-    //
-    MAP_UARTCharPut(CONSOLE, cChar);
-    iLen = 0;
-    
-    //
-    // Checking the end of Command
-    //
-    while((cChar != '\r') && (cChar !='\n') )
-    {
-        //
-        // Handling overflow of buffer
-        //
-        if(iLen >= uiBufLen)
-        {
-            return -1;
-        }
-        
-        //
-        // Copying Data from UART into a buffer
-        //
-        if(cChar != '\b')
-        { 
-            *(pcBuffer + iLen) = cChar;
-            iLen++;
-        }
-        else
-        {
-            //
-            // Deleting last character when you hit backspace 
-            //
-            if(iLen)
-            {
-                iLen--;
-            }
-        }
-        //
-        // Wait to receive a character over UART
-        //
-        cChar = MAP_UARTCharGet(CONSOLE);
-        
-        //
-        // Echo the received character
-        //
-        MAP_UARTCharPut(CONSOLE, cChar);
-    }
-
-    *(pcBuffer + iLen) = '\0';
-
-    Report("\n\r");
-
-    return iLen;
+	const char clearMsg[] = "\33[2J\r";
+    Message(clearMsg);
 }
 
 //*****************************************************************************
@@ -234,7 +144,7 @@ GetCmd(char *pcBuffer, unsigned int uiBufLen)
 //! \return count of characters printed
 //
 //*****************************************************************************
-int Report(char *pcFormat, ...)
+int Report(const char *pcFormat, ...)
 {
  int iRet = 0;
 #ifndef NOTERM
