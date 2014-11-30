@@ -53,7 +53,6 @@
 //  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
-
 // Simplelink includes
 #include "simplelink.h"
 
@@ -73,7 +72,6 @@ void wifi_status_disconnected() {
 	CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_CONNECTION);
 	CLR_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
 }
-
 
 // Callback function to handle SimpleLink WLAN events
 void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
@@ -137,7 +135,6 @@ void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
 		break;
 	}
 }
-
 
 // Callback function to handle general SimpleLink events
 

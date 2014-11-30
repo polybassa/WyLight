@@ -41,6 +41,7 @@
 #include "firmware_loader.h"
 #include "tcp_server.h"
 
+#ifdef __cplusplus
 /*
  * Override C++ new/delete operators to reduce memory footprint
  */
@@ -64,7 +65,8 @@ void operator delete[](void *p) {
 #else
 #include <new>
 #include <cstddef>
-#endif
+#endif /* CUSTOM_NEW */
+#endif /* __cplusplus */
 
 extern void (* const g_pfnVectors[])(void);
 
@@ -117,9 +119,10 @@ int main() {
 	GPIO_IF_LedOn(MCU_GREEN_LED_GPIO);
 
 	if (ReadJumper() == 0) {
-		if (ERROR == EmplaceFirmware()) {
-			GPIO_IF_LedOn(MCU_RED_LED_GPIO);
+		if (SUCCESS == EmplaceFirmware()) {
+			StartFirmware();
 		}
+		GPIO_IF_LedOn(MCU_RED_LED_GPIO);
 	}
 	GPIO_IF_LedOn(MCU_ORANGE_LED_GPIO);
 
