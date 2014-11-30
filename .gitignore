@@ -64,3 +64,4 @@ cc3200_gcc/simplelink/ccs/OS/simplelink.a
 simplelink.a
 CC3200.ccxml
 cc3200_gcc/fw/ccs/targetConfigs
+cc3200_gcc/exe
