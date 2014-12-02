@@ -37,7 +37,7 @@ const std::string FwCmdWait::TOKEN("wait");
 size_t ut_ScriptManager_Empty(void)
 {
 	TestCaseBegin();
-	ScriptManager testee {"./binary"};
+	ScriptManager testee {"./exe"};
 
 	// there shouldn't be any script
 		CHECK(0 == testee.numScripts());
@@ -56,11 +56,11 @@ size_t ut_ScriptManager_Good(void)
 {
 	TestCaseBegin();
 	// preparing a temporary scriptfile
-	const Script refScript("TestInput.txt");
-	const std::string tempScript {std::string("./binary/TestOutput") + ScriptManager::EXTENSION};
+	const Script refScript("./ut/TestInput.txt");
+	const std::string tempScript {std::string("./exe/TestOutput") + ScriptManager::EXTENSION};
 	Script::serialize(tempScript, refScript);
 
-	ScriptManager testee {"./binary"};
+	ScriptManager testee {"./exe"};
 	CHECK(        1 == testee.numScripts());
 	CHECK(refScript == testee.getScript(0));
 

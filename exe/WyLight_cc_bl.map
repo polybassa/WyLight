@@ -1,0 +1,3139 @@
+Archive member included because of file (symbol)
+
+/usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-memcmp.o)
+                              obj/firmware_loader.o (memcmp)
+/usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-memcpy.o)
+                              obj/firmware_loader.o (memcpy)
+/usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-memset.o)
+                              obj/wy_fs.o (memset)
+/usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-strlen.o)
+                              obj/wy_bl_network_if.o (strlen)
+/usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_aeabi_uldivmod.o)
+                              obj/prcm.o (__aeabi_uldivmod)
+/usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(bpabi.o)
+                              /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_aeabi_uldivmod.o) (__gnu_uldivmod_helper)
+/usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_dvmd_tls.o)
+                              /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_aeabi_uldivmod.o) (__aeabi_ldiv0)
+/usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_divdi3.o)
+                              /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(bpabi.o) (__divdi3)
+/usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_udivdi3.o)
+                              /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(bpabi.o) (__udivdi3)
+
+Allocating common symbols
+Common symbol       size              file
+
+g_ucLED1Pin         0x1               obj/gpio_if.o
+g_ucLED2Pin         0x1               obj/gpio_if.o
+g__SlNonOsCB        0x28              obj/nonos.o
+__gnu_lto_v1        0x1               obj/main.o
+g_cDummy            0x1               obj/cc_pal.o
+g_ucDinDout         0x50              obj/cc_pal.o
+g_StatMem           0x164             obj/driver.o
+g_ucLED3Pin         0x1               obj/gpio_if.o
+
+Discarded input sections
+
+ .text          0x0000000000000000        0x0 obj/main.o
+ .data          0x0000000000000000        0x0 obj/main.o
+ .bss           0x0000000000000000        0x0 obj/main.o
+ .gnu.lto_.inline.128ecb594eba9dc9
+                0x0000000000000000       0x61 obj/main.o
+ .gnu.lto_.jmpfuncs.128ecb594eba9dc9
+                0x0000000000000000       0x3c obj/main.o
+ .gnu.lto_.pureconst.128ecb594eba9dc9
+                0x0000000000000000       0x16 obj/main.o
+ .gnu.lto_BoardInit.128ecb594eba9dc9
+                0x0000000000000000       0xfc obj/main.o
+ .gnu.lto_ReadJumper.128ecb594eba9dc9
+                0x0000000000000000      0x191 obj/main.o
+ .gnu.lto_main.128ecb594eba9dc9
+                0x0000000000000000      0x20a obj/main.o
+ .gnu.lto_.symbol_nodes.128ecb594eba9dc9
+                0x0000000000000000       0xeb obj/main.o
+ .gnu.lto_.refs.128ecb594eba9dc9
+                0x0000000000000000       0x14 obj/main.o
+ .gnu.lto_.decls.128ecb594eba9dc9
+                0x0000000000000000      0x5a1 obj/main.o
+ .gnu.lto_.symtab.128ecb594eba9dc9
+                0x0000000000000000      0x283 obj/main.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/main.o
+ COMMON         0x0000000000000000        0x1 obj/main.o
+ .text          0x0000000000000000        0x0 obj/pinmux.o
+ .data          0x0000000000000000        0x0 obj/pinmux.o
+ .bss           0x0000000000000000        0x0 obj/pinmux.o
+ .gnu.lto_.inline.c553f2f2a9445c96
+                0x0000000000000000       0x2f obj/pinmux.o
+ .gnu.lto_.jmpfuncs.c553f2f2a9445c96
+                0x0000000000000000       0x58 obj/pinmux.o
+ .gnu.lto_.pureconst.c553f2f2a9445c96
+                0x0000000000000000       0x12 obj/pinmux.o
+ .gnu.lto_PinMuxConfig.c553f2f2a9445c96
+                0x0000000000000000      0x120 obj/pinmux.o
+ .gnu.lto_.symbol_nodes.c553f2f2a9445c96
+                0x0000000000000000       0x67 obj/pinmux.o
+ .gnu.lto_.refs.c553f2f2a9445c96
+                0x0000000000000000        0xf obj/pinmux.o
+ .gnu.lto_.decls.c553f2f2a9445c96
+                0x0000000000000000      0x250 obj/pinmux.o
+ .gnu.lto_.symtab.c553f2f2a9445c96
+                0x0000000000000000       0xb3 obj/pinmux.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/pinmux.o
+ .text          0x0000000000000000        0x0 obj/firmware_loader.o
+ .data          0x0000000000000000        0x0 obj/firmware_loader.o
+ .bss           0x0000000000000000        0x0 obj/firmware_loader.o
+ .gnu.lto_.inline.c29fe39ae33e921a
+                0x0000000000000000      0x141 obj/firmware_loader.o
+ .gnu.lto_.jmpfuncs.c29fe39ae33e921a
+                0x0000000000000000      0x110 obj/firmware_loader.o
+ .gnu.lto_.pureconst.c29fe39ae33e921a
+                0x0000000000000000       0x1e obj/firmware_loader.o
+ .gnu.lto_SHAMD5IntHandler.c29fe39ae33e921a
+                0x0000000000000000      0x1f2 obj/firmware_loader.o
+ .gnu.lto_ComputeSHAFromSRAM.c29fe39ae33e921a
+                0x0000000000000000      0x21d obj/firmware_loader.o
+ .gnu.lto_VerifySRAM.c29fe39ae33e921a
+                0x0000000000000000      0x287 obj/firmware_loader.o
+ .gnu.lto_LoadFirmware.c29fe39ae33e921a
+                0x0000000000000000      0x2fa obj/firmware_loader.o
+ .gnu.lto_SaveSRAMContent.c29fe39ae33e921a
+                0x0000000000000000      0x79f obj/firmware_loader.o
+ .gnu.lto_StartFirmware.c29fe39ae33e921a
+                0x0000000000000000      0x165 obj/firmware_loader.o
+ .gnu.lto_EmplaceFirmware.c29fe39ae33e921a
+                0x0000000000000000      0x1eb obj/firmware_loader.o
+ .gnu.lto_.symbol_nodes.c29fe39ae33e921a
+                0x0000000000000000      0x195 obj/firmware_loader.o
+ .gnu.lto_.refs.c29fe39ae33e921a
+                0x0000000000000000       0x28 obj/firmware_loader.o
+ .gnu.lto_.decls.c29fe39ae33e921a
+                0x0000000000000000      0xcbe obj/firmware_loader.o
+ .gnu.lto_.symtab.c29fe39ae33e921a
+                0x0000000000000000      0x30a obj/firmware_loader.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/firmware_loader.o
+ .text          0x0000000000000000        0x0 obj/tcp_server.o
+ .data          0x0000000000000000        0x0 obj/tcp_server.o
+ .bss           0x0000000000000000        0x0 obj/tcp_server.o
+ .gnu.lto_.inline.31c3bd26d097a04b
+                0x0000000000000000       0xa2 obj/tcp_server.o
+ .gnu.lto_.jmpfuncs.31c3bd26d097a04b
+                0x0000000000000000       0xa2 obj/tcp_server.o
+ .gnu.lto_.pureconst.31c3bd26d097a04b
+                0x0000000000000000       0x18 obj/tcp_server.o
+ .gnu.lto_TcpServer_Listen.31c3bd26d097a04b
+                0x0000000000000000      0x328 obj/tcp_server.o
+ .gnu.lto_ReceiveFw.31c3bd26d097a04b
+                0x0000000000000000      0x2c4 obj/tcp_server.o
+ .gnu.lto_TcpServer_Accept.31c3bd26d097a04b
+                0x0000000000000000      0x1fb obj/tcp_server.o
+ .gnu.lto_TcpServer.31c3bd26d097a04b
+                0x0000000000000000      0x450 obj/tcp_server.o
+ .gnu.lto_.symbol_nodes.31c3bd26d097a04b
+                0x0000000000000000       0xda obj/tcp_server.o
+ .gnu.lto_.refs.31c3bd26d097a04b
+                0x0000000000000000        0xf obj/tcp_server.o
+ .gnu.lto_.decls.31c3bd26d097a04b
+                0x0000000000000000      0x915 obj/tcp_server.o
+ .gnu.lto_.symtab.31c3bd26d097a04b
+                0x0000000000000000      0x157 obj/tcp_server.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/tcp_server.o
+ .text          0x0000000000000000        0x0 obj/wy_bl_network_if.o
+ .data          0x0000000000000000        0x0 obj/wy_bl_network_if.o
+ .bss           0x0000000000000000        0x0 obj/wy_bl_network_if.o
+ .gnu.lto_.inline.68f5a014eba226b1
+                0x0000000000000000       0xfb obj/wy_bl_network_if.o
+ .gnu.lto_.jmpfuncs.68f5a014eba226b1
+                0x0000000000000000       0xa7 obj/wy_bl_network_if.o
+ .gnu.lto_.pureconst.68f5a014eba226b1
+                0x0000000000000000       0x24 obj/wy_bl_network_if.o
+ .gnu.lto_ConfigureSimpleLink.68f5a014eba226b1
+                0x0000000000000000      0x714 obj/wy_bl_network_if.o
+ .gnu.lto_wifi_status_disconnected.68f5a014eba226b1
+                0x0000000000000000      0x159 obj/wy_bl_network_if.o
+ .gnu.lto_SimpleLinkWlanEventHandler.68f5a014eba226b1
+                0x0000000000000000      0x272 obj/wy_bl_network_if.o
+ .gnu.lto_SimpleLinkNetAppEventHandler.68f5a014eba226b1
+                0x0000000000000000      0x221 obj/wy_bl_network_if.o
+ .gnu.lto_SimpleLinkGeneralEventHandler.68f5a014eba226b1
+                0x0000000000000000       0xb9 obj/wy_bl_network_if.o
+ .gnu.lto_SimpleLinkSockEventHandler.68f5a014eba226b1
+                0x0000000000000000       0x87 obj/wy_bl_network_if.o
+ .gnu.lto_SimpleLinkHttpServerCallback.68f5a014eba226b1
+                0x0000000000000000       0x83 obj/wy_bl_network_if.o
+ .gnu.lto_Network_IF_StartSimpleLinkAsAP.68f5a014eba226b1
+                0x0000000000000000      0x214 obj/wy_bl_network_if.o
+ .gnu.lto_Network_IF_InitDriver.68f5a014eba226b1
+                0x0000000000000000      0x136 obj/wy_bl_network_if.o
+ .gnu.lto_Network_IF_DeInitDriver.68f5a014eba226b1
+                0x0000000000000000       0xca obj/wy_bl_network_if.o
+ .gnu.lto_.symbol_nodes.68f5a014eba226b1
+                0x0000000000000000       0xfa obj/wy_bl_network_if.o
+ .gnu.lto_.refs.68f5a014eba226b1
+                0x0000000000000000       0x2c obj/wy_bl_network_if.o
+ .gnu.lto_.decls.68f5a014eba226b1
+                0x0000000000000000     0x1706 obj/wy_bl_network_if.o
+ .gnu.lto_.symtab.68f5a014eba226b1
+                0x0000000000000000      0x276 obj/wy_bl_network_if.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/wy_bl_network_if.o
+ .text.SimpleLinkGeneralEventHandler
+                0x0000000000000000        0x4 obj/wy_bl_network_if.o
+ .text          0x0000000000000000        0x0 obj/wy_fs.o
+ .data          0x0000000000000000        0x0 obj/wy_fs.o
+ .bss           0x0000000000000000        0x0 obj/wy_fs.o
+ .gnu.lto_.inline.43c7ae9d8860e46f
+                0x0000000000000000       0xed obj/wy_fs.o
+ .gnu.lto_.jmpfuncs.43c7ae9d8860e46f
+                0x0000000000000000       0xb8 obj/wy_fs.o
+ .gnu.lto_.pureconst.43c7ae9d8860e46f
+                0x0000000000000000       0x28 obj/wy_fs.o
+ .gnu.lto_computeAdress.43c7ae9d8860e46f
+                0x0000000000000000      0x18a obj/wy_fs.o
+ .gnu.lto_openFileSystem.43c7ae9d8860e46f
+                0x0000000000000000      0x278 obj/wy_fs.o
+ .gnu.lto_closeFileSystem.43c7ae9d8860e46f
+                0x0000000000000000      0x1eb obj/wy_fs.o
+ .gnu.lto_addFileNameToFilesystem.43c7ae9d8860e46f
+                0x0000000000000000      0x49d obj/wy_fs.o
+ .gnu.lto_removeFileNameFromFilesystem.43c7ae9d8860e46f
+                0x0000000000000000      0x247 obj/wy_fs.o
+ .gnu.lto_wy_FsOpen.43c7ae9d8860e46f
+                0x0000000000000000      0x231 obj/wy_fs.o
+ .gnu.lto_wy_FsClose.43c7ae9d8860e46f
+                0x0000000000000000       0xb9 obj/wy_fs.o
+ .gnu.lto_wy_FsRead.43c7ae9d8860e46f
+                0x0000000000000000       0xb9 obj/wy_fs.o
+ .gnu.lto_wy_FsWrite.43c7ae9d8860e46f
+                0x0000000000000000       0xb9 obj/wy_fs.o
+ .gnu.lto_wy_FsGetInfo.43c7ae9d8860e46f
+                0x0000000000000000       0xb3 obj/wy_fs.o
+ .gnu.lto_wy_FsDel.43c7ae9d8860e46f
+                0x0000000000000000      0x140 obj/wy_fs.o
+ .gnu.lto_wy_FsFormat.43c7ae9d8860e46f
+                0x0000000000000000      0x300 obj/wy_fs.o
+ .gnu.lto_.symbol_nodes.43c7ae9d8860e46f
+                0x0000000000000000      0x153 obj/wy_fs.o
+ .gnu.lto_.refs.43c7ae9d8860e46f
+                0x0000000000000000       0x29 obj/wy_fs.o
+ .gnu.lto_.decls.43c7ae9d8860e46f
+                0x0000000000000000      0xbeb obj/wy_fs.o
+ .gnu.lto_.symtab.43c7ae9d8860e46f
+                0x0000000000000000      0x1ca obj/wy_fs.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/wy_fs.o
+ .text          0x0000000000000000        0x0 obj/startup_gcc.o
+ .data          0x0000000000000000        0x0 obj/startup_gcc.o
+ .bss           0x0000000000000000        0x0 obj/startup_gcc.o
+ .gnu.lto_.inline.405b6b41ec2d07e5
+                0x0000000000000000       0x42 obj/startup_gcc.o
+ .gnu.lto_.jmpfuncs.405b6b41ec2d07e5
+                0x0000000000000000       0x1d obj/startup_gcc.o
+ .gnu.lto_.pureconst.405b6b41ec2d07e5
+                0x0000000000000000       0x1c obj/startup_gcc.o
+ .gnu.lto_ResetISR.405b6b41ec2d07e5
+                0x0000000000000000      0x26a obj/startup_gcc.o
+ .gnu.lto_NmiSR.405b6b41ec2d07e5
+                0x0000000000000000       0x86 obj/startup_gcc.o
+ .gnu.lto_FaultISR.405b6b41ec2d07e5
+                0x0000000000000000       0x86 obj/startup_gcc.o
+ .gnu.lto_BusFaultHandler.405b6b41ec2d07e5
+                0x0000000000000000       0x86 obj/startup_gcc.o
+ .gnu.lto_IntDefaultHandler.405b6b41ec2d07e5
+                0x0000000000000000       0x86 obj/startup_gcc.o
+ .gnu.lto__sbrk.405b6b41ec2d07e5
+                0x0000000000000000      0x1df obj/startup_gcc.o
+ .gnu.lto_.symbol_nodes.405b6b41ec2d07e5
+                0x0000000000000000       0x5c obj/startup_gcc.o
+ .gnu.lto_.refs.405b6b41ec2d07e5
+                0x0000000000000000       0x33 obj/startup_gcc.o
+ .gnu.lto_.decls.405b6b41ec2d07e5
+                0x0000000000000000      0x81b obj/startup_gcc.o
+ .gnu.lto_.symtab.405b6b41ec2d07e5
+                0x0000000000000000       0xba obj/startup_gcc.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/startup_gcc.o
+ .text._sbrk    0x0000000000000000       0x30 obj/startup_gcc.o
+ .bss.heap_end  0x0000000000000000        0x4 obj/startup_gcc.o
+ .text          0x0000000000000000        0x0 obj/uart_if.o
+ .data          0x0000000000000000        0x0 obj/uart_if.o
+ .bss           0x0000000000000000        0x0 obj/uart_if.o
+ .gnu.lto_.inline.d62e6ef668925173
+                0x0000000000000000       0x27 obj/uart_if.o
+ .gnu.lto_.jmpfuncs.d62e6ef668925173
+                0x0000000000000000       0x19 obj/uart_if.o
+ .gnu.lto_.pureconst.d62e6ef668925173
+                0x0000000000000000       0x17 obj/uart_if.o
+ .gnu.lto_InitTerm.d62e6ef668925173
+                0x0000000000000000       0x7c obj/uart_if.o
+ .gnu.lto_Message.d62e6ef668925173
+                0x0000000000000000       0x7c obj/uart_if.o
+ .gnu.lto_ClearTerm.d62e6ef668925173
+                0x0000000000000000       0xb0 obj/uart_if.o
+ .gnu.lto_Report.d62e6ef668925173
+                0x0000000000000000       0xba obj/uart_if.o
+ .gnu.lto_.symbol_nodes.d62e6ef668925173
+                0x0000000000000000       0x2e obj/uart_if.o
+ .gnu.lto_.refs.d62e6ef668925173
+                0x0000000000000000        0xf obj/uart_if.o
+ .gnu.lto_.decls.d62e6ef668925173
+                0x0000000000000000      0x22e obj/uart_if.o
+ .gnu.lto_.symtab.d62e6ef668925173
+                0x0000000000000000       0x5e obj/uart_if.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/uart_if.o
+ .text.Message  0x0000000000000000        0x4 obj/uart_if.o
+ .text.ClearTerm
+                0x0000000000000000        0x4 obj/uart_if.o
+ .text.Report   0x0000000000000000        0x8 obj/uart_if.o
+ .text          0x0000000000000000        0x0 obj/gpio_if.o
+ .data          0x0000000000000000        0x0 obj/gpio_if.o
+ .bss           0x0000000000000000        0x0 obj/gpio_if.o
+ .gnu.lto_.inline.f7220bce146b1d16
+                0x0000000000000000      0x12e obj/gpio_if.o
+ .gnu.lto_.jmpfuncs.f7220bce146b1d16
+                0x0000000000000000       0x98 obj/gpio_if.o
+ .gnu.lto_.pureconst.f7220bce146b1d16
+                0x0000000000000000       0x22 obj/gpio_if.o
+ .gnu.lto_GPIO_IF_GetPortNPin.f7220bce146b1d16
+                0x0000000000000000      0x14a obj/gpio_if.o
+ .gnu.lto_GPIO_IF_LedConfigure.f7220bce146b1d16
+                0x0000000000000000      0x15b obj/gpio_if.o
+ .gnu.lto_GPIO_IF_ConfigureNIntEnable.f7220bce146b1d16
+                0x0000000000000000       0xf7 obj/gpio_if.o
+ .gnu.lto_GPIO_IF_Set.f7220bce146b1d16
+                0x0000000000000000      0x10f obj/gpio_if.o
+ .gnu.lto_GPIO_IF_LedOn.f7220bce146b1d16
+                0x0000000000000000      0x2b0 obj/gpio_if.o
+ .gnu.lto_GPIO_IF_LedOff.f7220bce146b1d16
+                0x0000000000000000      0x2b2 obj/gpio_if.o
+ .gnu.lto_GPIO_IF_Get.f7220bce146b1d16
+                0x0000000000000000      0x169 obj/gpio_if.o
+ .gnu.lto_GPIO_IF_LedStatus.f7220bce146b1d16
+                0x0000000000000000      0x290 obj/gpio_if.o
+ .gnu.lto_GPIO_IF_LedToggle.f7220bce146b1d16
+                0x0000000000000000      0x13c obj/gpio_if.o
+ .gnu.lto_.symbol_nodes.f7220bce146b1d16
+                0x0000000000000000       0xf0 obj/gpio_if.o
+ .gnu.lto_.refs.f7220bce146b1d16
+                0x0000000000000000       0x37 obj/gpio_if.o
+ .gnu.lto_.decls.f7220bce146b1d16
+                0x0000000000000000      0x750 obj/gpio_if.o
+ .gnu.lto_.symtab.f7220bce146b1d16
+                0x0000000000000000      0x277 obj/gpio_if.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/gpio_if.o
+ .text.GPIO_IF_ConfigureNIntEnable
+                0x0000000000000000       0x28 obj/gpio_if.o
+ .text.GPIO_IF_Set
+                0x0000000000000000       0x14 obj/gpio_if.o
+ .text.GPIO_IF_LedStatus
+                0x0000000000000000       0x5c obj/gpio_if.o
+ .text.GPIO_IF_LedToggle
+                0x0000000000000000       0x1c obj/gpio_if.o
+ .text          0x0000000000000000        0x0 obj/cpu.o
+ .data          0x0000000000000000        0x0 obj/cpu.o
+ .bss           0x0000000000000000        0x0 obj/cpu.o
+ .gnu.lto_.inline.3a871779eb407f17
+                0x0000000000000000       0x41 obj/cpu.o
+ .gnu.lto_.jmpfuncs.3a871779eb407f17
+                0x0000000000000000       0x1d obj/cpu.o
+ .gnu.lto_.pureconst.3a871779eb407f17
+                0x0000000000000000       0x1b obj/cpu.o
+ .gnu.lto_CPUcpsid.3a871779eb407f17
+                0x0000000000000000      0x117 obj/cpu.o
+ .gnu.lto_CPUprimask.3a871779eb407f17
+                0x0000000000000000      0x109 obj/cpu.o
+ .gnu.lto_CPUcpsie.3a871779eb407f17
+                0x0000000000000000      0x11a obj/cpu.o
+ .gnu.lto_CPUwfi.3a871779eb407f17
+                0x0000000000000000       0xa6 obj/cpu.o
+ .gnu.lto_CPUbasepriSet.3a871779eb407f17
+                0x0000000000000000       0xb4 obj/cpu.o
+ .gnu.lto_CPUbasepriGet.3a871779eb407f17
+                0x0000000000000000      0x109 obj/cpu.o
+ .gnu.lto_.symbol_nodes.3a871779eb407f17
+                0x0000000000000000       0x35 obj/cpu.o
+ .gnu.lto_.refs.3a871779eb407f17
+                0x0000000000000000        0xf obj/cpu.o
+ .gnu.lto_.decls.3a871779eb407f17
+                0x0000000000000000      0x25f obj/cpu.o
+ .gnu.lto_.symtab.3a871779eb407f17
+                0x0000000000000000       0x9a obj/cpu.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/cpu.o
+ .text.CPUprimask
+                0x0000000000000000        0x8 obj/cpu.o
+ .text.CPUwfi   0x0000000000000000        0xc obj/cpu.o
+ .text.CPUbasepriSet
+                0x0000000000000000       0x10 obj/cpu.o
+ .text.CPUbasepriGet
+                0x0000000000000000        0x8 obj/cpu.o
+ .text          0x0000000000000000        0x0 obj/flash.o
+ .data          0x0000000000000000        0x0 obj/flash.o
+ .bss           0x0000000000000000        0x0 obj/flash.o
+ .gnu.lto_.inline.fce671b433455369
+                0x0000000000000000       0xee obj/flash.o
+ .gnu.lto_.jmpfuncs.fce671b433455369
+                0x0000000000000000       0x49 obj/flash.o
+ .gnu.lto_.pureconst.fce671b433455369
+                0x0000000000000000       0x2c obj/flash.o
+ .gnu.lto_FlashDisable.fce671b433455369
+                0x0000000000000000      0x15d obj/flash.o
+ .gnu.lto_FlashErase.fce671b433455369
+                0x0000000000000000      0x196 obj/flash.o
+ .gnu.lto_FlashEraseNonBlocking.fce671b433455369
+                0x0000000000000000       0xcd obj/flash.o
+ .gnu.lto_FlashMassErase.fce671b433455369
+                0x0000000000000000      0x179 obj/flash.o
+ .gnu.lto_FlashMassEraseNonBlocking.fce671b433455369
+                0x0000000000000000       0xbe obj/flash.o
+ .gnu.lto_FlashProgram.fce671b433455369
+                0x0000000000000000      0x349 obj/flash.o
+ .gnu.lto_FlashProgramNonBlocking.fce671b433455369
+                0x0000000000000000      0x325 obj/flash.o
+ .gnu.lto_FlashProtectGet.fce671b433455369
+                0x0000000000000000      0x2b5 obj/flash.o
+ .gnu.lto_FlashIntRegister.fce671b433455369
+                0x0000000000000000       0xc1 obj/flash.o
+ .gnu.lto_FlashIntUnregister.fce671b433455369
+                0x0000000000000000       0xb2 obj/flash.o
+ .gnu.lto_FlashIntEnable.fce671b433455369
+                0x0000000000000000       0xd0 obj/flash.o
+ .gnu.lto_FlashIntDisable.fce671b433455369
+                0x0000000000000000       0xdf obj/flash.o
+ .gnu.lto_FlashIntStatus.fce671b433455369
+                0x0000000000000000      0x10e obj/flash.o
+ .gnu.lto_FlashIntClear.fce671b433455369
+                0x0000000000000000       0xaf obj/flash.o
+ .gnu.lto_.symbol_nodes.fce671b433455369
+                0x0000000000000000       0x96 obj/flash.o
+ .gnu.lto_.refs.fce671b433455369
+                0x0000000000000000       0x16 obj/flash.o
+ .gnu.lto_.decls.fce671b433455369
+                0x0000000000000000      0x7aa obj/flash.o
+ .gnu.lto_.symtab.fce671b433455369
+                0x0000000000000000      0x243 obj/flash.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/flash.o
+ .text.FlashDisable
+                0x0000000000000000       0x48 obj/flash.o
+ .text.FlashErase
+                0x0000000000000000       0x3c obj/flash.o
+ .text.FlashEraseNonBlocking
+                0x0000000000000000       0x1c obj/flash.o
+ .text.FlashMassErase
+                0x0000000000000000       0x38 obj/flash.o
+ .text.FlashMassEraseNonBlocking
+                0x0000000000000000       0x18 obj/flash.o
+ .text.FlashProgram
+                0x0000000000000000       0x94 obj/flash.o
+ .text.FlashProgramNonBlocking
+                0x0000000000000000       0x94 obj/flash.o
+ .text.FlashProtectGet
+                0x0000000000000000       0x48 obj/flash.o
+ .text.FlashIntRegister
+                0x0000000000000000       0x14 obj/flash.o
+ .text.FlashIntUnregister
+                0x0000000000000000       0x10 obj/flash.o
+ .text.FlashIntEnable
+                0x0000000000000000       0x10 obj/flash.o
+ .text.FlashIntDisable
+                0x0000000000000000       0x10 obj/flash.o
+ .text.FlashIntStatus
+                0x0000000000000000       0x18 obj/flash.o
+ .text.FlashIntClear
+                0x0000000000000000        0xc obj/flash.o
+ .rodata.g_pulFMPPERegs
+                0x0000000000000000       0x40 obj/flash.o
+ .rodata.g_pulFMPRERegs
+                0x0000000000000000       0x40 obj/flash.o
+ .debug_info    0x0000000000000000      0x3ef obj/flash.o
+ .debug_abbrev  0x0000000000000000      0x1c1 obj/flash.o
+ .debug_loc     0x0000000000000000      0x2ce obj/flash.o
+ .debug_aranges
+                0x0000000000000000       0x88 obj/flash.o
+ .debug_ranges  0x0000000000000000       0x78 obj/flash.o
+ .debug_line    0x0000000000000000      0x218 obj/flash.o
+ .debug_str     0x0000000000000000      0x2f7 obj/flash.o
+ .comment       0x0000000000000000       0x71 obj/flash.o
+ .ARM.attributes
+                0x0000000000000000       0x33 obj/flash.o
+ .debug_frame   0x0000000000000000      0x128 obj/flash.o
+ .text          0x0000000000000000        0x0 obj/interrupt.o
+ .data          0x0000000000000000        0x0 obj/interrupt.o
+ .bss           0x0000000000000000        0x0 obj/interrupt.o
+ .gnu.lto_.inline.a58fa02c0c51d3f
+                0x0000000000000000      0x150 obj/interrupt.o
+ .gnu.lto_.jmpfuncs.a58fa02c0c51d3f
+                0x0000000000000000       0x39 obj/interrupt.o
+ .gnu.lto_.pureconst.a58fa02c0c51d3f
+                0x0000000000000000       0x30 obj/interrupt.o
+ .gnu.lto_IntDefaultHandler.a58fa02c0c51d3f
+                0x0000000000000000       0x87 obj/interrupt.o
+ .gnu.lto_IntMasterEnable.a58fa02c0c51d3f
+                0x0000000000000000       0xb6 obj/interrupt.o
+ .gnu.lto_IntMasterDisable.a58fa02c0c51d3f
+                0x0000000000000000       0xb6 obj/interrupt.o
+ .gnu.lto_IntVTableBaseSet.a58fa02c0c51d3f
+                0x0000000000000000       0xb0 obj/interrupt.o
+ .gnu.lto_IntRegister.a58fa02c0c51d3f
+                0x0000000000000000      0x172 obj/interrupt.o
+ .gnu.lto_IntUnregister.a58fa02c0c51d3f
+                0x0000000000000000      0x180 obj/interrupt.o
+ .gnu.lto_IntPriorityGroupingSet.a58fa02c0c51d3f
+                0x0000000000000000       0xf9 obj/interrupt.o
+ .gnu.lto_IntPriorityGroupingGet.a58fa02c0c51d3f
+                0x0000000000000000      0x1e0 obj/interrupt.o
+ .gnu.lto_IntPrioritySet.a58fa02c0c51d3f
+                0x0000000000000000      0x1dc obj/interrupt.o
+ .gnu.lto_IntPriorityGet.a58fa02c0c51d3f
+                0x0000000000000000      0x13e obj/interrupt.o
+ .gnu.lto_IntEnable.a58fa02c0c51d3f
+                0x0000000000000000      0x29e obj/interrupt.o
+ .gnu.lto_IntDisable.a58fa02c0c51d3f
+                0x0000000000000000      0x2a5 obj/interrupt.o
+ .gnu.lto_IntPendSet.a58fa02c0c51d3f
+                0x0000000000000000      0x266 obj/interrupt.o
+ .gnu.lto_IntPendClear.a58fa02c0c51d3f
+                0x0000000000000000      0x1fe obj/interrupt.o
+ .gnu.lto_IntPriorityMaskSet.a58fa02c0c51d3f
+                0x0000000000000000       0xa9 obj/interrupt.o
+ .gnu.lto_IntPriorityMaskGet.a58fa02c0c51d3f
+                0x0000000000000000       0xa6 obj/interrupt.o
+ .gnu.lto_.symbol_nodes.a58fa02c0c51d3f
+                0x0000000000000000       0x9a obj/interrupt.o
+ .gnu.lto_.refs.a58fa02c0c51d3f
+                0x0000000000000000       0x30 obj/interrupt.o
+ .gnu.lto_.decls.a58fa02c0c51d3f
+                0x0000000000000000      0x890 obj/interrupt.o
+ .gnu.lto_.symtab.a58fa02c0c51d3f
+                0x0000000000000000      0x236 obj/interrupt.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/interrupt.o
+ .text.IntPriorityGroupingSet
+                0x0000000000000000       0x1c obj/interrupt.o
+ .text.IntPriorityGroupingGet
+                0x0000000000000000       0x30 obj/interrupt.o
+ .text.IntPriorityGet
+                0x0000000000000000       0x1c obj/interrupt.o
+ .text.IntPendSet
+                0x0000000000000000       0x74 obj/interrupt.o
+ .text.IntPriorityMaskSet
+                0x0000000000000000        0x8 obj/interrupt.o
+ .text.IntPriorityMaskGet
+                0x0000000000000000        0x8 obj/interrupt.o
+ .rodata.g_pulPendRegs
+                0x0000000000000000       0x18 obj/interrupt.o
+ .rodata.g_pulPriority
+                0x0000000000000000       0x20 obj/interrupt.o
+ .text          0x0000000000000000        0x0 obj/pin.o
+ .data          0x0000000000000000        0x0 obj/pin.o
+ .bss           0x0000000000000000        0x0 obj/pin.o
+ .gnu.lto_.inline.532304bf10bb3caf
+                0x0000000000000000       0xde obj/pin.o
+ .gnu.lto_.jmpfuncs.532304bf10bb3caf
+                0x0000000000000000       0x69 obj/pin.o
+ .gnu.lto_.pureconst.532304bf10bb3caf
+                0x0000000000000000       0x2d obj/pin.o
+ .gnu.lto_PinModeSet.532304bf10bb3caf
+                0x0000000000000000      0x1b9 obj/pin.o
+ .gnu.lto_PinModeGet.532304bf10bb3caf
+                0x0000000000000000      0x189 obj/pin.o
+ .gnu.lto_PinDirModeSet.532304bf10bb3caf
+                0x0000000000000000      0x1aa obj/pin.o
+ .gnu.lto_PinDirModeGet.532304bf10bb3caf
+                0x0000000000000000      0x18b obj/pin.o
+ .gnu.lto_PinConfigGet.532304bf10bb3caf
+                0x0000000000000000      0x1cd obj/pin.o
+ .gnu.lto_PinConfigSet.532304bf10bb3caf
+                0x0000000000000000      0x300 obj/pin.o
+ .gnu.lto_PinTypeUART.532304bf10bb3caf
+                0x0000000000000000       0xc3 obj/pin.o
+ .gnu.lto_PinTypeI2C.532304bf10bb3caf
+                0x0000000000000000       0xc3 obj/pin.o
+ .gnu.lto_PinTypeSPI.532304bf10bb3caf
+                0x0000000000000000       0xc2 obj/pin.o
+ .gnu.lto_PinTypeI2S.532304bf10bb3caf
+                0x0000000000000000       0xc2 obj/pin.o
+ .gnu.lto_PinTypeTimer.532304bf10bb3caf
+                0x0000000000000000       0xca obj/pin.o
+ .gnu.lto_PinTypeCamera.532304bf10bb3caf
+                0x0000000000000000       0xca obj/pin.o
+ .gnu.lto_PinTypeGPIO.532304bf10bb3caf
+                0x0000000000000000      0x113 obj/pin.o
+ .gnu.lto_PinTypeADC.532304bf10bb3caf
+                0x0000000000000000       0xb0 obj/pin.o
+ .gnu.lto_PinTypeSDHost.532304bf10bb3caf
+                0x0000000000000000       0xc3 obj/pin.o
+ .gnu.lto_.symbol_nodes.532304bf10bb3caf
+                0x0000000000000000       0x94 obj/pin.o
+ .gnu.lto_.refs.532304bf10bb3caf
+                0x0000000000000000       0x20 obj/pin.o
+ .gnu.lto_.decls.532304bf10bb3caf
+                0x0000000000000000      0x6e7 obj/pin.o
+ .gnu.lto_.symtab.532304bf10bb3caf
+                0x0000000000000000      0x19a obj/pin.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/pin.o
+ .text.PinModeGet
+                0x0000000000000000       0x20 obj/pin.o
+ .text.PinDirModeSet
+                0x0000000000000000       0x24 obj/pin.o
+ .text.PinDirModeGet
+                0x0000000000000000       0x20 obj/pin.o
+ .text.PinConfigGet
+                0x0000000000000000       0x30 obj/pin.o
+ .text.PinTypeI2C
+                0x0000000000000000       0x18 obj/pin.o
+ .text.PinTypeSPI
+                0x0000000000000000       0x14 obj/pin.o
+ .text.PinTypeI2S
+                0x0000000000000000       0x14 obj/pin.o
+ .text.PinTypeCamera
+                0x0000000000000000       0x14 obj/pin.o
+ .text.PinTypeADC
+                0x0000000000000000       0x10 obj/pin.o
+ .text.PinTypeSDHost
+                0x0000000000000000       0x14 obj/pin.o
+ .text          0x0000000000000000        0x0 obj/prcm.o
+ .data          0x0000000000000000        0x0 obj/prcm.o
+ .bss           0x0000000000000000        0x0 obj/prcm.o
+ .gnu.lto_.inline.12ade698d1a350ea
+                0x0000000000000000      0x22d obj/prcm.o
+ .gnu.lto_.jmpfuncs.12ade698d1a350ea
+                0x0000000000000000       0x7d obj/prcm.o
+ .gnu.lto_.pureconst.12ade698d1a350ea
+                0x0000000000000000       0x54 obj/prcm.o
+ .gnu.lto_PRCMSOCReset.12ade698d1a350ea
+                0x0000000000000000       0xc6 obj/prcm.o
+ .gnu.lto_PRCMMCUReset.12ade698d1a350ea
+                0x0000000000000000       0xf2 obj/prcm.o
+ .gnu.lto_PRCMSysResetCauseGet.12ade698d1a350ea
+                0x0000000000000000      0x192 obj/prcm.o
+ .gnu.lto_PRCMPeripheralClkEnable.12ade698d1a350ea
+                0x0000000000000000      0x160 obj/prcm.o
+ .gnu.lto_PRCMPeripheralClkDisable.12ade698d1a350ea
+                0x0000000000000000      0x127 obj/prcm.o
+ .gnu.lto_PRCMPeripheralClockGet.12ade698d1a350ea
+                0x0000000000000000      0x2dc obj/prcm.o
+ .gnu.lto_PRCMPeripheralReset.12ade698d1a350ea
+                0x0000000000000000      0x24e obj/prcm.o
+ .gnu.lto_PRCMPeripheralStatusGet.12ade698d1a350ea
+                0x0000000000000000      0x194 obj/prcm.o
+ .gnu.lto_PRCMI2SClockFreqSet.12ade698d1a350ea
+                0x0000000000000000      0x1e1 obj/prcm.o
+ .gnu.lto_PRCMLPDSRestoreInfoSet.12ade698d1a350ea
+                0x0000000000000000       0xc0 obj/prcm.o
+ .gnu.lto_PRCMLPDSEnter.12ade698d1a350ea
+                0x0000000000000000      0x167 obj/prcm.o
+ .gnu.lto_PRCMLPDSWakeupSourceEnable.12ade698d1a350ea
+                0x0000000000000000      0x136 obj/prcm.o
+ .gnu.lto_PRCMLPDSWakeupSourceDisable.12ade698d1a350ea
+                0x0000000000000000       0xde obj/prcm.o
+ .gnu.lto_PRCMLPDSWakeupCauseGet.12ade698d1a350ea
+                0x0000000000000000       0xab obj/prcm.o
+ .gnu.lto_PRCMLPDSIntervalSet.12ade698d1a350ea
+                0x0000000000000000      0x12f obj/prcm.o
+ .gnu.lto_PRCMLPDSWakeUpGPIOSelect.12ade698d1a350ea
+                0x0000000000000000       0xdc obj/prcm.o
+ .gnu.lto_PRCMSleepEnter.12ade698d1a350ea
+                0x0000000000000000       0x9d obj/prcm.o
+ .gnu.lto_PRCMDeepSleepEnter.12ade698d1a350ea
+                0x0000000000000000      0x129 obj/prcm.o
+ .gnu.lto_PRCMSRAMRetentionEnable.12ade698d1a350ea
+                0x0000000000000000      0x141 obj/prcm.o
+ .gnu.lto_PRCMSRAMRetentionDisable.12ade698d1a350ea
+                0x0000000000000000      0x174 obj/prcm.o
+ .gnu.lto_PRCMHibernateWakeupSourceEnable.12ade698d1a350ea
+                0x0000000000000000      0x124 obj/prcm.o
+ .gnu.lto_PRCMHibernateWakeupSourceDisable.12ade698d1a350ea
+                0x0000000000000000      0x136 obj/prcm.o
+ .gnu.lto_PRCMHibernateWakeupCauseGet.12ade698d1a350ea
+                0x0000000000000000       0xcd obj/prcm.o
+ .gnu.lto_PRCMHibernateIntervalSet.12ade698d1a350ea
+                0x0000000000000000      0x1b8 obj/prcm.o
+ .gnu.lto_PRCMHibernateWakeUpGPIOSelect.12ade698d1a350ea
+                0x0000000000000000      0x20c obj/prcm.o
+ .gnu.lto_PRCMHibernateEnter.12ade698d1a350ea
+                0x0000000000000000       0xc1 obj/prcm.o
+ .gnu.lto_PRCMSlowClkCtrGet.12ade698d1a350ea
+                0x0000000000000000      0x15b obj/prcm.o
+ .gnu.lto_PRCMSlowClkCtrMatchSet.12ade698d1a350ea
+                0x0000000000000000       0xf8 obj/prcm.o
+ .gnu.lto_PRCMSlowClkCtrMatchGet.12ade698d1a350ea
+                0x0000000000000000      0x143 obj/prcm.o
+ .gnu.lto_PRCMOCRRegisterWrite.12ade698d1a350ea
+                0x0000000000000000       0xee obj/prcm.o
+ .gnu.lto_PRCMOCRRegisterRead.12ade698d1a350ea
+                0x0000000000000000       0xea obj/prcm.o
+ .gnu.lto_PRCMIntRegister.12ade698d1a350ea
+                0x0000000000000000       0xc0 obj/prcm.o
+ .gnu.lto_PRCMIntUnregister.12ade698d1a350ea
+                0x0000000000000000       0xb2 obj/prcm.o
+ .gnu.lto_PRCMIntEnable.12ade698d1a350ea
+                0x0000000000000000      0x130 obj/prcm.o
+ .gnu.lto_PRCMIntDisable.12ade698d1a350ea
+                0x0000000000000000      0x137 obj/prcm.o
+ .gnu.lto_PRCMIntStatus.12ade698d1a350ea
+                0x0000000000000000       0xab obj/prcm.o
+ .gnu.lto_PRCMRTCInUseSet.12ade698d1a350ea
+                0x0000000000000000       0xc6 obj/prcm.o
+ .gnu.lto_PRCMRTCInUseGet.12ade698d1a350ea
+                0x0000000000000000       0xd3 obj/prcm.o
+ .gnu.lto_PRCMRTCSet.12ade698d1a350ea
+                0x0000000000000000      0x239 obj/prcm.o
+ .gnu.lto_PRCMRTCGet.12ade698d1a350ea
+                0x0000000000000000      0x23c obj/prcm.o
+ .gnu.lto_PRCMRTCMatchSet.12ade698d1a350ea
+                0x0000000000000000      0x210 obj/prcm.o
+ .gnu.lto_PRCMRTCMatchGet.12ade698d1a350ea
+                0x0000000000000000      0x240 obj/prcm.o
+ .gnu.lto_PRCMCC3200MCUInit.12ade698d1a350ea
+                0x0000000000000000      0x390 obj/prcm.o
+ .gnu.lto_.symbol_nodes.12ade698d1a350ea
+                0x0000000000000000      0x125 obj/prcm.o
+ .gnu.lto_.refs.12ade698d1a350ea
+                0x0000000000000000       0x1d obj/prcm.o
+ .gnu.lto_.decls.12ade698d1a350ea
+                0x0000000000000000      0xec0 obj/prcm.o
+ .gnu.lto_.symtab.12ade698d1a350ea
+                0x0000000000000000      0x691 obj/prcm.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/prcm.o
+ .text.PRCMSOCReset
+                0x0000000000000000       0x10 obj/prcm.o
+ .text.PRCMMCUReset
+                0x0000000000000000       0x18 obj/prcm.o
+ .text.PRCMI2SClockFreqSet
+                0x0000000000000000       0x2c obj/prcm.o
+ .text.PRCMLPDSRestoreInfoSet
+                0x0000000000000000       0x10 obj/prcm.o
+ .text.PRCMLPDSEnter
+                0x0000000000000000       0x3c obj/prcm.o
+ .text.PRCMLPDSWakeupSourceEnable
+                0x0000000000000000       0x14 obj/prcm.o
+ .text.PRCMLPDSWakeupSourceDisable
+                0x0000000000000000       0x10 obj/prcm.o
+ .text.PRCMLPDSWakeupCauseGet
+                0x0000000000000000        0xc obj/prcm.o
+ .text.PRCMLPDSIntervalSet
+                0x0000000000000000       0x18 obj/prcm.o
+ .text.PRCMLPDSWakeUpGPIOSelect
+                0x0000000000000000       0x18 obj/prcm.o
+ .text.PRCMSleepEnter
+                0x0000000000000000        0x8 obj/prcm.o
+ .text.PRCMDeepSleepEnter
+                0x0000000000000000       0x28 obj/prcm.o
+ .text.PRCMSRAMRetentionEnable
+                0x0000000000000000       0x28 obj/prcm.o
+ .text.PRCMSRAMRetentionDisable
+                0x0000000000000000       0x38 obj/prcm.o
+ .text.PRCMHibernateWakeupSourceEnable
+                0x0000000000000000       0x20 obj/prcm.o
+ .text.PRCMHibernateWakeupSourceDisable
+                0x0000000000000000       0x24 obj/prcm.o
+ .text.PRCMHibernateWakeupCauseGet
+                0x0000000000000000       0x10 obj/prcm.o
+ .text.PRCMHibernateIntervalSet
+                0x0000000000000000       0x38 obj/prcm.o
+ .text.PRCMHibernateWakeUpGPIOSelect
+                0x0000000000000000       0x2c obj/prcm.o
+ .text.PRCMHibernateEnter
+                0x0000000000000000       0x14 obj/prcm.o
+ .text.PRCMSlowClkCtrGet
+                0x0000000000000000       0x28 obj/prcm.o
+ .text.PRCMSlowClkCtrMatchSet
+                0x0000000000000000       0x14 obj/prcm.o
+ .text.PRCMSlowClkCtrMatchGet
+                0x0000000000000000       0x24 obj/prcm.o
+ .text.PRCMOCRRegisterWrite
+                0x0000000000000000        0xc obj/prcm.o
+ .text.PRCMOCRRegisterRead
+                0x0000000000000000        0xc obj/prcm.o
+ .text.PRCMIntRegister
+                0x0000000000000000       0x14 obj/prcm.o
+ .text.PRCMIntUnregister
+                0x0000000000000000       0x10 obj/prcm.o
+ .text.PRCMIntEnable
+                0x0000000000000000       0x24 obj/prcm.o
+ .text.PRCMIntDisable
+                0x0000000000000000       0x24 obj/prcm.o
+ .text.PRCMIntStatus
+                0x0000000000000000        0xc obj/prcm.o
+ .text.PRCMRTCInUseSet
+                0x0000000000000000       0x14 obj/prcm.o
+ .text.PRCMRTCInUseGet
+                0x0000000000000000        0xc obj/prcm.o
+ .text.PRCMRTCSet
+                0x0000000000000000       0x60 obj/prcm.o
+ .text.PRCMRTCGet
+                0x0000000000000000       0x54 obj/prcm.o
+ .text.PRCMRTCMatchSet
+                0x0000000000000000       0x70 obj/prcm.o
+ .text.PRCMRTCMatchGet
+                0x0000000000000000       0x64 obj/prcm.o
+ .text          0x0000000000000000        0x0 obj/uart.o
+ .data          0x0000000000000000        0x0 obj/uart.o
+ .bss           0x0000000000000000        0x0 obj/uart.o
+ .gnu.lto_.inline.8afd4b22484c1657
+                0x0000000000000000      0x1a5 obj/uart.o
+ .gnu.lto_.jmpfuncs.8afd4b22484c1657
+                0x0000000000000000       0x67 obj/uart.o
+ .gnu.lto_.pureconst.8afd4b22484c1657
+                0x0000000000000000       0x49 obj/uart.o
+ .gnu.lto_UARTIntNumberGet.8afd4b22484c1657
+                0x0000000000000000      0x1d6 obj/uart.o
+ .gnu.lto_UARTParityModeSet.8afd4b22484c1657
+                0x0000000000000000      0x108 obj/uart.o
+ .gnu.lto_UARTParityModeGet.8afd4b22484c1657
+                0x0000000000000000       0xd7 obj/uart.o
+ .gnu.lto_UARTFIFOLevelSet.8afd4b22484c1657
+                0x0000000000000000       0xe5 obj/uart.o
+ .gnu.lto_UARTFIFOLevelGet.8afd4b22484c1657
+                0x0000000000000000      0x150 obj/uart.o
+ .gnu.lto_UARTConfigGetExpClk.8afd4b22484c1657
+                0x0000000000000000      0x262 obj/uart.o
+ .gnu.lto_UARTEnable.8afd4b22484c1657
+                0x0000000000000000      0x116 obj/uart.o
+ .gnu.lto_UARTDisable.8afd4b22484c1657
+                0x0000000000000000      0x17c obj/uart.o
+ .gnu.lto_UARTConfigSetExpClk.8afd4b22484c1657
+                0x0000000000000000      0x2c1 obj/uart.o
+ .gnu.lto_UARTFIFOEnable.8afd4b22484c1657
+                0x0000000000000000       0xe7 obj/uart.o
+ .gnu.lto_UARTFIFODisable.8afd4b22484c1657
+                0x0000000000000000       0xeb obj/uart.o
+ .gnu.lto_UARTModemControlSet.8afd4b22484c1657
+                0x0000000000000000      0x14c obj/uart.o
+ .gnu.lto_UARTModemControlClear.8afd4b22484c1657
+                0x0000000000000000      0x155 obj/uart.o
+ .gnu.lto_UARTModemControlGet.8afd4b22484c1657
+                0x0000000000000000       0xd3 obj/uart.o
+ .gnu.lto_UARTModemStatusGet.8afd4b22484c1657
+                0x0000000000000000       0xcf obj/uart.o
+ .gnu.lto_UARTFlowControlSet.8afd4b22484c1657
+                0x0000000000000000      0x10b obj/uart.o
+ .gnu.lto_UARTFlowControlGet.8afd4b22484c1657
+                0x0000000000000000       0xd4 obj/uart.o
+ .gnu.lto_UARTTxIntModeSet.8afd4b22484c1657
+                0x0000000000000000      0x10b obj/uart.o
+ .gnu.lto_UARTTxIntModeGet.8afd4b22484c1657
+                0x0000000000000000       0xd3 obj/uart.o
+ .gnu.lto_UARTCharsAvail.8afd4b22484c1657
+                0x0000000000000000       0xf6 obj/uart.o
+ .gnu.lto_UARTSpaceAvail.8afd4b22484c1657
+                0x0000000000000000       0xf4 obj/uart.o
+ .gnu.lto_UARTCharGetNonBlocking.8afd4b22484c1657
+                0x0000000000000000      0x171 obj/uart.o
+ .gnu.lto_UARTCharGet.8afd4b22484c1657
+                0x0000000000000000      0x165 obj/uart.o
+ .gnu.lto_UARTCharPutNonBlocking.8afd4b22484c1657
+                0x0000000000000000      0x17a obj/uart.o
+ .gnu.lto_UARTCharPut.8afd4b22484c1657
+                0x0000000000000000      0x171 obj/uart.o
+ .gnu.lto_UARTBreakCtl.8afd4b22484c1657
+                0x0000000000000000      0x1af obj/uart.o
+ .gnu.lto_UARTBusy.8afd4b22484c1657
+                0x0000000000000000       0xf6 obj/uart.o
+ .gnu.lto_UARTIntRegister.8afd4b22484c1657
+                0x0000000000000000      0x125 obj/uart.o
+ .gnu.lto_UARTIntUnregister.8afd4b22484c1657
+                0x0000000000000000      0x11a obj/uart.o
+ .gnu.lto_UARTIntEnable.8afd4b22484c1657
+                0x0000000000000000       0xe8 obj/uart.o
+ .gnu.lto_UARTIntDisable.8afd4b22484c1657
+                0x0000000000000000       0xf6 obj/uart.o
+ .gnu.lto_UARTIntStatus.8afd4b22484c1657
+                0x0000000000000000      0x132 obj/uart.o
+ .gnu.lto_UARTIntClear.8afd4b22484c1657
+                0x0000000000000000       0xd1 obj/uart.o
+ .gnu.lto_UARTDMAEnable.8afd4b22484c1657
+                0x0000000000000000       0xea obj/uart.o
+ .gnu.lto_UARTDMADisable.8afd4b22484c1657
+                0x0000000000000000       0xf6 obj/uart.o
+ .gnu.lto_UARTRxErrorGet.8afd4b22484c1657
+                0x0000000000000000       0xd2 obj/uart.o
+ .gnu.lto_UARTRxErrorClear.8afd4b22484c1657
+                0x0000000000000000       0xcd obj/uart.o
+ .gnu.lto_.symbol_nodes.8afd4b22484c1657
+                0x0000000000000000       0xe0 obj/uart.o
+ .gnu.lto_.refs.8afd4b22484c1657
+                0x0000000000000000       0x15 obj/uart.o
+ .gnu.lto_.decls.8afd4b22484c1657
+                0x0000000000000000      0xb96 obj/uart.o
+ .gnu.lto_.symtab.8afd4b22484c1657
+                0x0000000000000000      0x4d5 obj/uart.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/uart.o
+ .text.UARTParityModeSet
+                0x0000000000000000        0xc obj/uart.o
+ .text.UARTParityModeGet
+                0x0000000000000000        0x8 obj/uart.o
+ .text.UARTFIFOLevelSet
+                0x0000000000000000        0x8 obj/uart.o
+ .text.UARTFIFOLevelGet
+                0x0000000000000000       0x10 obj/uart.o
+ .text.UARTConfigGetExpClk
+                0x0000000000000000       0x2c obj/uart.o
+ .text.UARTEnable
+                0x0000000000000000       0x18 obj/uart.o
+ .text.UARTDisable
+                0x0000000000000000       0x20 obj/uart.o
+ .text.UARTConfigSetExpClk
+                0x0000000000000000       0x48 obj/uart.o
+ .text.UARTFIFOEnable
+                0x0000000000000000        0xc obj/uart.o
+ .text.UARTFIFODisable
+                0x0000000000000000        0xc obj/uart.o
+ .text.UARTModemControlSet
+                0x0000000000000000        0xc obj/uart.o
+ .text.UARTModemControlClear
+                0x0000000000000000       0x10 obj/uart.o
+ .text.UARTModemControlGet
+                0x0000000000000000        0x8 obj/uart.o
+ .text.UARTModemStatusGet
+                0x0000000000000000        0x8 obj/uart.o
+ .text.UARTFlowControlSet
+                0x0000000000000000        0xc obj/uart.o
+ .text.UARTFlowControlGet
+                0x0000000000000000        0x8 obj/uart.o
+ .text.UARTTxIntModeSet
+                0x0000000000000000        0xc obj/uart.o
+ .text.UARTTxIntModeGet
+                0x0000000000000000        0x8 obj/uart.o
+ .text.UARTCharsAvail
+                0x0000000000000000        0xc obj/uart.o
+ .text.UARTSpaceAvail
+                0x0000000000000000        0xc obj/uart.o
+ .text.UARTCharGetNonBlocking
+                0x0000000000000000       0x10 obj/uart.o
+ .text.UARTCharGet
+                0x0000000000000000        0xc obj/uart.o
+ .text.UARTCharPutNonBlocking
+                0x0000000000000000       0x10 obj/uart.o
+ .text.UARTCharPut
+                0x0000000000000000        0xc obj/uart.o
+ .text.UARTBreakCtl
+                0x0000000000000000       0x1c obj/uart.o
+ .text.UARTBusy
+                0x0000000000000000        0x8 obj/uart.o
+ .text.UARTIntRegister
+                0x0000000000000000       0x3c obj/uart.o
+ .text.UARTIntUnregister
+                0x0000000000000000       0x3c obj/uart.o
+ .text.UARTIntEnable
+                0x0000000000000000        0x8 obj/uart.o
+ .text.UARTIntDisable
+                0x0000000000000000        0xc obj/uart.o
+ .text.UARTIntStatus
+                0x0000000000000000        0xc obj/uart.o
+ .text.UARTIntClear
+                0x0000000000000000        0x4 obj/uart.o
+ .text.UARTDMAEnable
+                0x0000000000000000        0x8 obj/uart.o
+ .text.UARTDMADisable
+                0x0000000000000000        0xc obj/uart.o
+ .text.UARTRxErrorGet
+                0x0000000000000000        0x8 obj/uart.o
+ .text.UARTRxErrorClear
+                0x0000000000000000        0x8 obj/uart.o
+ .rodata.g_ppulUARTIntMap
+                0x0000000000000000       0x10 obj/uart.o
+ .debug_info    0x0000000000000000      0x93b obj/uart.o
+ .debug_abbrev  0x0000000000000000      0x1d2 obj/uart.o
+ .debug_loc     0x0000000000000000      0x584 obj/uart.o
+ .debug_aranges
+                0x0000000000000000      0x138 obj/uart.o
+ .debug_ranges  0x0000000000000000      0x128 obj/uart.o
+ .debug_line    0x0000000000000000      0x369 obj/uart.o
+ .debug_str     0x0000000000000000      0x496 obj/uart.o
+ .comment       0x0000000000000000       0x71 obj/uart.o
+ .ARM.attributes
+                0x0000000000000000       0x33 obj/uart.o
+ .debug_frame   0x0000000000000000      0x278 obj/uart.o
+ .text          0x0000000000000000        0x0 obj/utils.o
+ .data          0x0000000000000000        0x0 obj/utils.o
+ .bss           0x0000000000000000        0x0 obj/utils.o
+ .gnu.lto_.inline.3552848aa0a14e0c
+                0x0000000000000000       0x21 obj/utils.o
+ .gnu.lto_.jmpfuncs.3552848aa0a14e0c
+                0x0000000000000000       0x13 obj/utils.o
+ .gnu.lto_.pureconst.3552848aa0a14e0c
+                0x0000000000000000       0x12 obj/utils.o
+ .gnu.lto_UtilsDelay.3552848aa0a14e0c
+                0x0000000000000000       0xb5 obj/utils.o
+ .gnu.lto_.symbol_nodes.3552848aa0a14e0c
+                0x0000000000000000       0x1f obj/utils.o
+ .gnu.lto_.refs.3552848aa0a14e0c
+                0x0000000000000000        0xf obj/utils.o
+ .gnu.lto_.decls.3552848aa0a14e0c
+                0x0000000000000000      0x10b obj/utils.o
+ .gnu.lto_.symtab.3552848aa0a14e0c
+                0x0000000000000000       0x1a obj/utils.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/utils.o
+ .text          0x0000000000000000        0x0 obj/shamd5.o
+ .data          0x0000000000000000        0x0 obj/shamd5.o
+ .bss           0x0000000000000000        0x0 obj/shamd5.o
+ .gnu.lto_.inline.f3a4f65882d05d2
+                0x0000000000000000      0x15f obj/shamd5.o
+ .gnu.lto_.jmpfuncs.f3a4f65882d05d2
+                0x0000000000000000       0x63 obj/shamd5.o
+ .gnu.lto_.pureconst.f3a4f65882d05d2
+                0x0000000000000000       0x32 obj/shamd5.o
+ .gnu.lto_SHAMD5DMAEnable.f3a4f65882d05d2
+                0x0000000000000000       0xdd obj/shamd5.o
+ .gnu.lto_SHAMD5DMADisable.f3a4f65882d05d2
+                0x0000000000000000       0xe8 obj/shamd5.o
+ .gnu.lto_SHAMD5IntStatus.f3a4f65882d05d2
+                0x0000000000000000      0x258 obj/shamd5.o
+ .gnu.lto_SHAMD5IntEnable.f3a4f65882d05d2
+                0x0000000000000000      0x17e obj/shamd5.o
+ .gnu.lto_SHAMD5IntDisable.f3a4f65882d05d2
+                0x0000000000000000      0x1b9 obj/shamd5.o
+ .gnu.lto_SHAMD5IntClear.f3a4f65882d05d2
+                0x0000000000000000       0xd8 obj/shamd5.o
+ .gnu.lto_SHAMD5IntRegister.f3a4f65882d05d2
+                0x0000000000000000       0xbe obj/shamd5.o
+ .gnu.lto_SHAMD5IntUnregister.f3a4f65882d05d2
+                0x0000000000000000       0xb1 obj/shamd5.o
+ .gnu.lto_SHAMD5DataLengthSet.f3a4f65882d05d2
+                0x0000000000000000       0xd0 obj/shamd5.o
+ .gnu.lto_SHAMD5ConfigSet.f3a4f65882d05d2
+                0x0000000000000000       0xd1 obj/shamd5.o
+ .gnu.lto_SHAMD5DataWriteNonBlocking.f3a4f65882d05d2
+                0x0000000000000000      0x215 obj/shamd5.o
+ .gnu.lto_SHAMD5DataWrite.f3a4f65882d05d2
+                0x0000000000000000      0x226 obj/shamd5.o
+ .gnu.lto_SHAMD5DataWriteMultiple.f3a4f65882d05d2
+                0x0000000000000000      0x555 obj/shamd5.o
+ .gnu.lto_SHAMD5ResultRead.f3a4f65882d05d2
+                0x0000000000000000      0x2c2 obj/shamd5.o
+ .gnu.lto_SHAMD5DataProcess.f3a4f65882d05d2
+                0x0000000000000000      0x197 obj/shamd5.o
+ .gnu.lto_SHAMD5HMACProcess.f3a4f65882d05d2
+                0x0000000000000000      0x199 obj/shamd5.o
+ .gnu.lto_SHAMD5HMACPPKeyGenerate.f3a4f65882d05d2
+                0x0000000000000000      0x340 obj/shamd5.o
+ .gnu.lto_SHAMD5HMACKeySet.f3a4f65882d05d2
+                0x0000000000000000      0x1e7 obj/shamd5.o
+ .gnu.lto_SHAMD5HMACPPKeySet.f3a4f65882d05d2
+                0x0000000000000000      0x20f obj/shamd5.o
+ .gnu.lto_.symbol_nodes.f3a4f65882d05d2
+                0x0000000000000000       0xb2 obj/shamd5.o
+ .gnu.lto_.refs.f3a4f65882d05d2
+                0x0000000000000000        0xf obj/shamd5.o
+ .gnu.lto_.decls.f3a4f65882d05d2
+                0x0000000000000000      0x8e8 obj/shamd5.o
+ .gnu.lto_.symtab.f3a4f65882d05d2
+                0x0000000000000000      0x2c0 obj/shamd5.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/shamd5.o
+ .text.SHAMD5DMAEnable
+                0x0000000000000000       0x10 obj/shamd5.o
+ .text.SHAMD5DMADisable
+                0x0000000000000000       0x10 obj/shamd5.o
+ .text.SHAMD5IntClear
+                0x0000000000000000       0x10 obj/shamd5.o
+ .text.SHAMD5IntUnregister
+                0x0000000000000000       0x10 obj/shamd5.o
+ .text.SHAMD5DataLengthSet
+                0x0000000000000000        0x4 obj/shamd5.o
+ .text.SHAMD5DataWriteNonBlocking
+                0x0000000000000000       0x34 obj/shamd5.o
+ .text.SHAMD5HMACProcess
+                0x0000000000000000       0x30 obj/shamd5.o
+ .text.SHAMD5HMACPPKeyGenerate
+                0x0000000000000000       0x40 obj/shamd5.o
+ .text.SHAMD5HMACKeySet
+                0x0000000000000000       0x18 obj/shamd5.o
+ .text.SHAMD5HMACPPKeySet
+                0x0000000000000000       0x1c obj/shamd5.o
+ .text          0x0000000000000000        0x0 obj/udma.o
+ .data          0x0000000000000000        0x0 obj/udma.o
+ .bss           0x0000000000000000        0x0 obj/udma.o
+ .gnu.lto_.inline.3f984992c360bdc6
+                0x0000000000000000      0x148 obj/udma.o
+ .gnu.lto_.jmpfuncs.3f984992c360bdc6
+                0x0000000000000000       0x4a obj/udma.o
+ .gnu.lto_.pureconst.3f984992c360bdc6
+                0x0000000000000000       0x37 obj/udma.o
+ .gnu.lto_uDMAEnable.3f984992c360bdc6
+                0x0000000000000000       0xa9 obj/udma.o
+ .gnu.lto_uDMADisable.3f984992c360bdc6
+                0x0000000000000000       0xa8 obj/udma.o
+ .gnu.lto_uDMAErrorStatusGet.3f984992c360bdc6
+                0x0000000000000000       0xa9 obj/udma.o
+ .gnu.lto_uDMAErrorStatusClear.3f984992c360bdc6
+                0x0000000000000000       0xa9 obj/udma.o
+ .gnu.lto_uDMAChannelEnable.3f984992c360bdc6
+                0x0000000000000000      0x124 obj/udma.o
+ .gnu.lto_uDMAChannelDisable.3f984992c360bdc6
+                0x0000000000000000      0x122 obj/udma.o
+ .gnu.lto_uDMAChannelIsEnabled.3f984992c360bdc6
+                0x0000000000000000      0x14f obj/udma.o
+ .gnu.lto_uDMAControlBaseSet.3f984992c360bdc6
+                0x0000000000000000       0xfc obj/udma.o
+ .gnu.lto_uDMAControlBaseGet.3f984992c360bdc6
+                0x0000000000000000       0xb8 obj/udma.o
+ .gnu.lto_uDMAControlAlternateBaseGet.3f984992c360bdc6
+                0x0000000000000000       0xb8 obj/udma.o
+ .gnu.lto_uDMAChannelRequest.3f984992c360bdc6
+                0x0000000000000000      0x125 obj/udma.o
+ .gnu.lto_uDMAChannelAttributeEnable.3f984992c360bdc6
+                0x0000000000000000      0x245 obj/udma.o
+ .gnu.lto_uDMAChannelAttributeDisable.3f984992c360bdc6
+                0x0000000000000000      0x246 obj/udma.o
+ .gnu.lto_uDMAChannelAttributeGet.3f984992c360bdc6
+                0x0000000000000000      0x2ba obj/udma.o
+ .gnu.lto_uDMAChannelControlSet.3f984992c360bdc6
+                0x0000000000000000      0x199 obj/udma.o
+ .gnu.lto_uDMAChannelTransferSet.3f984992c360bdc6
+                0x0000000000000000      0x538 obj/udma.o
+ .gnu.lto_uDMAChannelScatterGatherSet.3f984992c360bdc6
+                0x0000000000000000      0x2da obj/udma.o
+ .gnu.lto_uDMAChannelSizeGet.3f984992c360bdc6
+                0x0000000000000000      0x1f6 obj/udma.o
+ .gnu.lto_uDMAChannelModeGet.3f984992c360bdc6
+                0x0000000000000000      0x211 obj/udma.o
+ .gnu.lto_uDMAIntRegister.3f984992c360bdc6
+                0x0000000000000000       0xbf obj/udma.o
+ .gnu.lto_uDMAIntUnregister.3f984992c360bdc6
+                0x0000000000000000       0xae obj/udma.o
+ .gnu.lto_uDMAIntStatus.3f984992c360bdc6
+                0x0000000000000000       0xab obj/udma.o
+ .gnu.lto_uDMAIntClear.3f984992c360bdc6
+                0x0000000000000000       0xae obj/udma.o
+ .gnu.lto_uDMAChannelAssign.3f984992c360bdc6
+                0x0000000000000000      0x25a obj/udma.o
+ .gnu.lto_.symbol_nodes.3f984992c360bdc6
+                0x0000000000000000       0x97 obj/udma.o
+ .gnu.lto_.refs.3f984992c360bdc6
+                0x0000000000000000        0xf obj/udma.o
+ .gnu.lto_.decls.3f984992c360bdc6
+                0x0000000000000000      0x938 obj/udma.o
+ .gnu.lto_.symtab.3f984992c360bdc6
+                0x0000000000000000      0x3ae obj/udma.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/udma.o
+ .text.uDMAEnable
+                0x0000000000000000        0xc obj/udma.o
+ .text.uDMADisable
+                0x0000000000000000        0xc obj/udma.o
+ .text.uDMAErrorStatusGet
+                0x0000000000000000        0xc obj/udma.o
+ .text.uDMAErrorStatusClear
+                0x0000000000000000        0xc obj/udma.o
+ .text.uDMAChannelDisable
+                0x0000000000000000       0x14 obj/udma.o
+ .text.uDMAChannelIsEnabled
+                0x0000000000000000       0x1c obj/udma.o
+ .text.uDMAControlBaseSet
+                0x0000000000000000        0xc obj/udma.o
+ .text.uDMAControlBaseGet
+                0x0000000000000000        0xc obj/udma.o
+ .text.uDMAControlAlternateBaseGet
+                0x0000000000000000        0xc obj/udma.o
+ .text.uDMAChannelRequest
+                0x0000000000000000       0x14 obj/udma.o
+ .text.uDMAChannelAttributeGet
+                0x0000000000000000       0x4c obj/udma.o
+ .text.uDMAChannelScatterGatherSet
+                0x0000000000000000       0x44 obj/udma.o
+ .text.uDMAChannelSizeGet
+                0x0000000000000000       0x24 obj/udma.o
+ .text.uDMAChannelModeGet
+                0x0000000000000000       0x24 obj/udma.o
+ .text.uDMAIntRegister
+                0x0000000000000000       0x10 obj/udma.o
+ .text.uDMAIntUnregister
+                0x0000000000000000       0x10 obj/udma.o
+ .text.uDMAIntStatus
+                0x0000000000000000        0xc obj/udma.o
+ .text.uDMAIntClear
+                0x0000000000000000        0xc obj/udma.o
+ .text          0x0000000000000000        0x0 obj/spi.o
+ .data          0x0000000000000000        0x0 obj/spi.o
+ .bss           0x0000000000000000        0x0 obj/spi.o
+ .gnu.lto_.inline.733f3b6a22eff6e1
+                0x0000000000000000      0x22f obj/spi.o
+ .gnu.lto_.jmpfuncs.733f3b6a22eff6e1
+                0x0000000000000000       0x71 obj/spi.o
+ .gnu.lto_.pureconst.733f3b6a22eff6e1
+                0x0000000000000000       0x3f obj/spi.o
+ .gnu.lto_SPITransfer8.733f3b6a22eff6e1
+                0x0000000000000000      0x588 obj/spi.o
+ .gnu.lto_SPITransfer16.733f3b6a22eff6e1
+                0x0000000000000000      0x5ed obj/spi.o
+ .gnu.lto_SPITransfer32.733f3b6a22eff6e1
+                0x0000000000000000      0x5e8 obj/spi.o
+ .gnu.lto_SPIIntNumberGet.733f3b6a22eff6e1
+                0x0000000000000000      0x1d2 obj/spi.o
+ .gnu.lto_SPIDmaMaskGet.733f3b6a22eff6e1
+                0x0000000000000000      0x1df obj/spi.o
+ .gnu.lto_SPIEnable.733f3b6a22eff6e1
+                0x0000000000000000       0xe6 obj/spi.o
+ .gnu.lto_SPIDisable.733f3b6a22eff6e1
+                0x0000000000000000       0xeb obj/spi.o
+ .gnu.lto_SPIDmaEnable.733f3b6a22eff6e1
+                0x0000000000000000       0xe9 obj/spi.o
+ .gnu.lto_SPIDmaDisable.733f3b6a22eff6e1
+                0x0000000000000000       0xe9 obj/spi.o
+ .gnu.lto_SPIReset.733f3b6a22eff6e1
+                0x0000000000000000      0x145 obj/spi.o
+ .gnu.lto_SPIConfigSetExpClk.733f3b6a22eff6e1
+                0x0000000000000000      0x340 obj/spi.o
+ .gnu.lto_SPIDataGetNonBlocking.733f3b6a22eff6e1
+                0x0000000000000000      0x198 obj/spi.o
+ .gnu.lto_SPIDataGet.733f3b6a22eff6e1
+                0x0000000000000000      0x147 obj/spi.o
+ .gnu.lto_SPIDataPutNonBlocking.733f3b6a22eff6e1
+                0x0000000000000000      0x186 obj/spi.o
+ .gnu.lto_SPIDataPut.733f3b6a22eff6e1
+                0x0000000000000000      0x13b obj/spi.o
+ .gnu.lto_SPIFIFOEnable.733f3b6a22eff6e1
+                0x0000000000000000       0xe9 obj/spi.o
+ .gnu.lto_SPIFIFODisable.733f3b6a22eff6e1
+                0x0000000000000000       0xf2 obj/spi.o
+ .gnu.lto_SPIFIFOLevelSet.733f3b6a22eff6e1
+                0x0000000000000000      0x186 obj/spi.o
+ .gnu.lto_SPIFIFOLevelGet.733f3b6a22eff6e1
+                0x0000000000000000      0x165 obj/spi.o
+ .gnu.lto_SPIWordCountSet.733f3b6a22eff6e1
+                0x0000000000000000      0x159 obj/spi.o
+ .gnu.lto_SPIIntRegister.733f3b6a22eff6e1
+                0x0000000000000000      0x123 obj/spi.o
+ .gnu.lto_SPIIntUnregister.733f3b6a22eff6e1
+                0x0000000000000000      0x118 obj/spi.o
+ .gnu.lto_SPIIntEnable.733f3b6a22eff6e1
+                0x0000000000000000      0x216 obj/spi.o
+ .gnu.lto_SPIIntDisable.733f3b6a22eff6e1
+                0x0000000000000000      0x220 obj/spi.o
+ .gnu.lto_SPIIntStatus.733f3b6a22eff6e1
+                0x0000000000000000      0x31d obj/spi.o
+ .gnu.lto_SPIIntClear.733f3b6a22eff6e1
+                0x0000000000000000      0x1fd obj/spi.o
+ .gnu.lto_SPICSEnable.733f3b6a22eff6e1
+                0x0000000000000000       0xe8 obj/spi.o
+ .gnu.lto_SPICSDisable.733f3b6a22eff6e1
+                0x0000000000000000       0xe9 obj/spi.o
+ .gnu.lto_SPITransfer.733f3b6a22eff6e1
+                0x0000000000000000      0x26d obj/spi.o
+ .gnu.lto_.symbol_nodes.733f3b6a22eff6e1
+                0x0000000000000000       0xf7 obj/spi.o
+ .gnu.lto_.refs.733f3b6a22eff6e1
+                0x0000000000000000       0x1b obj/spi.o
+ .gnu.lto_.decls.733f3b6a22eff6e1
+                0x0000000000000000      0xc04 obj/spi.o
+ .gnu.lto_.symtab.733f3b6a22eff6e1
+                0x0000000000000000      0x327 obj/spi.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/spi.o
+ .text.SPIDataGetNonBlocking
+                0x0000000000000000       0x18 obj/spi.o
+ .text.SPIDataGet
+                0x0000000000000000       0x14 obj/spi.o
+ .text.SPIDataPutNonBlocking
+                0x0000000000000000       0x14 obj/spi.o
+ .text.SPIDataPut
+                0x0000000000000000       0x10 obj/spi.o
+ .text.SPIFIFOLevelGet
+                0x0000000000000000       0x10 obj/spi.o
+ .text.SPIIntRegister
+                0x0000000000000000       0x4c obj/spi.o
+ .text.SPIIntDisable
+                0x0000000000000000       0x40 obj/spi.o
+ .text.SPIIntStatus
+                0x0000000000000000       0x48 obj/spi.o
+ .text.SPITransfer
+                0x0000000000000000      0x1dc obj/spi.o
+ .text          0x0000000000000000        0x0 obj/gpio.o
+ .data          0x0000000000000000        0x0 obj/gpio.o
+ .bss           0x0000000000000000        0x0 obj/gpio.o
+ .gnu.lto_.inline.54c0664eba9fa806
+                0x0000000000000000      0x15d obj/gpio.o
+ .gnu.lto_.jmpfuncs.54c0664eba9fa806
+                0x0000000000000000       0x40 obj/gpio.o
+ .gnu.lto_.pureconst.54c0664eba9fa806
+                0x0000000000000000       0x2c obj/gpio.o
+ .gnu.lto_GPIOGetIntNumber.54c0664eba9fa806
+                0x0000000000000000      0x1b6 obj/gpio.o
+ .gnu.lto_GPIODirModeSet.54c0664eba9fa806
+                0x0000000000000000      0x1e5 obj/gpio.o
+ .gnu.lto_GPIODirModeGet.54c0664eba9fa806
+                0x0000000000000000      0x173 obj/gpio.o
+ .gnu.lto_GPIOIntTypeSet.54c0664eba9fa806
+                0x0000000000000000      0x38d obj/gpio.o
+ .gnu.lto_GPIOIntTypeGet.54c0664eba9fa806
+                0x0000000000000000      0x2c8 obj/gpio.o
+ .gnu.lto_GPIOIntEnable.54c0664eba9fa806
+                0x0000000000000000       0xe5 obj/gpio.o
+ .gnu.lto_GPIOIntDisable.54c0664eba9fa806
+                0x0000000000000000       0xf3 obj/gpio.o
+ .gnu.lto_GPIOIntStatus.54c0664eba9fa806
+                0x0000000000000000      0x144 obj/gpio.o
+ .gnu.lto_GPIOIntClear.54c0664eba9fa806
+                0x0000000000000000       0xcb obj/gpio.o
+ .gnu.lto_GPIOIntRegister.54c0664eba9fa806
+                0x0000000000000000       0xf2 obj/gpio.o
+ .gnu.lto_GPIOIntUnregister.54c0664eba9fa806
+                0x0000000000000000       0xe8 obj/gpio.o
+ .gnu.lto_GPIOPinRead.54c0664eba9fa806
+                0x0000000000000000       0xf4 obj/gpio.o
+ .gnu.lto_GPIOPinWrite.54c0664eba9fa806
+                0x0000000000000000       0xff obj/gpio.o
+ .gnu.lto_GPIODMATriggerEnable.54c0664eba9fa806
+                0x0000000000000000      0x1a2 obj/gpio.o
+ .gnu.lto_GPIODMATriggerDisable.54c0664eba9fa806
+                0x0000000000000000      0x1a9 obj/gpio.o
+ .gnu.lto_.symbol_nodes.54c0664eba9fa806
+                0x0000000000000000       0x86 obj/gpio.o
+ .gnu.lto_.refs.54c0664eba9fa806
+                0x0000000000000000        0xf obj/gpio.o
+ .gnu.lto_.decls.54c0664eba9fa806
+                0x0000000000000000      0x6a6 obj/gpio.o
+ .gnu.lto_.symtab.54c0664eba9fa806
+                0x0000000000000000      0x217 obj/gpio.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/gpio.o
+ .text.GPIOGetIntNumber
+                0x0000000000000000       0x40 obj/gpio.o
+ .text.GPIODirModeGet
+                0x0000000000000000       0x18 obj/gpio.o
+ .text.GPIOIntTypeSet
+                0x0000000000000000       0x48 obj/gpio.o
+ .text.GPIOIntTypeGet
+                0x0000000000000000       0x3c obj/gpio.o
+ .text.GPIOIntEnable
+                0x0000000000000000        0xc obj/gpio.o
+ .text.GPIOIntDisable
+                0x0000000000000000       0x10 obj/gpio.o
+ .text.GPIOIntStatus
+                0x0000000000000000       0x10 obj/gpio.o
+ .text.GPIOIntClear
+                0x0000000000000000        0x8 obj/gpio.o
+ .text.GPIOIntRegister
+                0x0000000000000000       0x18 obj/gpio.o
+ .text.GPIOIntUnregister
+                0x0000000000000000       0x14 obj/gpio.o
+ .text.GPIODMATriggerEnable
+                0x0000000000000000       0x64 obj/gpio.o
+ .text.GPIODMATriggerDisable
+                0x0000000000000000       0x64 obj/gpio.o
+ .text          0x0000000000000000        0x0 obj/socket.o
+ .data          0x0000000000000000        0x0 obj/socket.o
+ .bss           0x0000000000000000        0x0 obj/socket.o
+ .gnu.lto_.inline.2f5410b875d7b5bb
+                0x0000000000000000      0x35d obj/socket.o
+ .gnu.lto_.jmpfuncs.2f5410b875d7b5bb
+                0x0000000000000000      0x122 obj/socket.o
+ .gnu.lto_.pureconst.2f5410b875d7b5bb
+                0x0000000000000000       0x3e obj/socket.o
+ .gnu.lto__sl_BuildAddress.2f5410b875d7b5bb
+                0x0000000000000000      0x22e obj/socket.o
+ .gnu.lto__sl_TruncatePayloadByProtocol.2f5410b875d7b5bb
+                0x0000000000000000      0x2aa obj/socket.o
+ .gnu.lto__sl_ParseAddress.2f5410b875d7b5bb
+                0x0000000000000000      0x2a0 obj/socket.o
+ .gnu.lto_sl_Socket.2f5410b875d7b5bb
+                0x0000000000000000      0x264 obj/socket.o
+ .gnu.lto_sl_Close.2f5410b875d7b5bb
+                0x0000000000000000      0x1d2 obj/socket.o
+ .gnu.lto_sl_Bind.2f5410b875d7b5bb
+                0x0000000000000000      0x32b obj/socket.o
+ .gnu.lto_sl_SendTo.2f5410b875d7b5bb
+                0x0000000000000000      0x58a obj/socket.o
+ .gnu.lto_sl_RecvFrom.2f5410b875d7b5bb
+                0x0000000000000000      0x56a obj/socket.o
+ .gnu.lto_sl_Connect.2f5410b875d7b5bb
+                0x0000000000000000      0x6f3 obj/socket.o
+ .gnu.lto__sl_HandleAsync_Connect.2f5410b875d7b5bb
+                0x0000000000000000      0x409 obj/socket.o
+ .gnu.lto_sl_Send.2f5410b875d7b5bb
+                0x0000000000000000      0x591 obj/socket.o
+ .gnu.lto_sl_Listen.2f5410b875d7b5bb
+                0x0000000000000000      0x1ef obj/socket.o
+ .gnu.lto_sl_Accept.2f5410b875d7b5bb
+                0x0000000000000000      0x83b obj/socket.o
+ .gnu.lto__sl_HandleAsync_Accept.2f5410b875d7b5bb
+                0x0000000000000000      0x3cf obj/socket.o
+ .gnu.lto_sl_Recv.2f5410b875d7b5bb
+                0x0000000000000000      0x29d obj/socket.o
+ .gnu.lto_sl_SetSockOpt.2f5410b875d7b5bb
+                0x0000000000000000      0x29e obj/socket.o
+ .gnu.lto_sl_GetSockOpt.2f5410b875d7b5bb
+                0x0000000000000000      0x3a1 obj/socket.o
+ .gnu.lto_sl_Select.2f5410b875d7b5bb
+                0x0000000000000000      0x7bf obj/socket.o
+ .gnu.lto_SL_FD_SET.2f5410b875d7b5bb
+                0x0000000000000000      0x119 obj/socket.o
+ .gnu.lto_SL_FD_CLR.2f5410b875d7b5bb
+                0x0000000000000000      0x122 obj/socket.o
+ .gnu.lto_SL_FD_ISSET.2f5410b875d7b5bb
+                0x0000000000000000      0x141 obj/socket.o
+ .gnu.lto_SL_FD_ZERO.2f5410b875d7b5bb
+                0x0000000000000000       0xc8 obj/socket.o
+ .gnu.lto__sl_HandleAsync_Select.2f5410b875d7b5bb
+                0x0000000000000000      0x35a obj/socket.o
+ .gnu.lto_.symbol_nodes.2f5410b875d7b5bb
+                0x0000000000000000      0x1bb obj/socket.o
+ .gnu.lto_.refs.2f5410b875d7b5bb
+                0x0000000000000000       0x4e obj/socket.o
+ .gnu.lto_.decls.2f5410b875d7b5bb
+                0x0000000000000000     0x2c04 obj/socket.o
+ .gnu.lto_.symtab.2f5410b875d7b5bb
+                0x0000000000000000      0x4e7 obj/socket.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/socket.o
+ .text._sl_ParseAddress
+                0x0000000000000000       0x34 obj/socket.o
+ .text.sl_SendTo
+                0x0000000000000000       0xc0 obj/socket.o
+ .text.sl_RecvFrom
+                0x0000000000000000       0xb8 obj/socket.o
+ .text.sl_Connect
+                0x0000000000000000       0xf4 obj/socket.o
+ .text.sl_GetSockOpt
+                0x0000000000000000       0x6c obj/socket.o
+ .text.sl_Select
+                0x0000000000000000      0x11c obj/socket.o
+ .text.SL_FD_SET
+                0x0000000000000000       0x14 obj/socket.o
+ .text.SL_FD_CLR
+                0x0000000000000000       0x14 obj/socket.o
+ .text.SL_FD_ISSET
+                0x0000000000000000       0x18 obj/socket.o
+ .text.SL_FD_ZERO
+                0x0000000000000000        0x8 obj/socket.o
+ .rodata._SlSelectCmdCtrl
+                0x0000000000000000        0x4 obj/socket.o
+ .rodata._SlGetSockOptCmdCtrl
+                0x0000000000000000        0x4 obj/socket.o
+ .rodata._SlRecvfomCmdCtrl
+                0x0000000000000000        0x4 obj/socket.o
+ .text          0x0000000000000000        0x0 obj/nonos.o
+ .data          0x0000000000000000        0x0 obj/nonos.o
+ .bss           0x0000000000000000        0x0 obj/nonos.o
+ .gnu.lto_.inline.765bdfd290586103
+                0x0000000000000000       0x57 obj/nonos.o
+ .gnu.lto_.jmpfuncs.765bdfd290586103
+                0x0000000000000000       0x26 obj/nonos.o
+ .gnu.lto_.pureconst.765bdfd290586103
+                0x0000000000000000       0x18 obj/nonos.o
+ .gnu.lto__SlNonOsSemSet.765bdfd290586103
+                0x0000000000000000       0xb4 obj/nonos.o
+ .gnu.lto__SlNonOsSpawn.765bdfd290586103
+                0x0000000000000000      0x205 obj/nonos.o
+ .gnu.lto__SlNonOsMainLoopTask.765bdfd290586103
+                0x0000000000000000      0x2c2 obj/nonos.o
+ .gnu.lto__SlNonOsSemGet.765bdfd290586103
+                0x0000000000000000      0x1e5 obj/nonos.o
+ .gnu.lto_.symbol_nodes.765bdfd290586103
+                0x0000000000000000       0x48 obj/nonos.o
+ .gnu.lto_.refs.765bdfd290586103
+                0x0000000000000000       0x1a obj/nonos.o
+ .gnu.lto_.decls.765bdfd290586103
+                0x0000000000000000      0xd58 obj/nonos.o
+ .gnu.lto_.symtab.765bdfd290586103
+                0x0000000000000000       0xae obj/nonos.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/nonos.o
+ .text          0x0000000000000000        0x0 obj/fs.o
+ .data          0x0000000000000000        0x0 obj/fs.o
+ .bss           0x0000000000000000        0x0 obj/fs.o
+ .gnu.lto_.inline.95c35941b61b9b65
+                0x0000000000000000      0x10d obj/fs.o
+ .gnu.lto_.jmpfuncs.95c35941b61b9b65
+                0x0000000000000000       0x62 obj/fs.o
+ .gnu.lto_.pureconst.95c35941b61b9b65
+                0x0000000000000000       0x20 obj/fs.o
+ .gnu.lto_sl_Strlen.95c35941b61b9b65
+                0x0000000000000000      0x1b1 obj/fs.o
+ .gnu.lto__GetCreateFsMode.95c35941b61b9b65
+                0x0000000000000000      0x2d8 obj/fs.o
+ .gnu.lto_sl_FsOpen.95c35941b61b9b65
+                0x0000000000000000      0x32e obj/fs.o
+ .gnu.lto_sl_FsClose.95c35941b61b9b65
+                0x0000000000000000      0x3e2 obj/fs.o
+ .gnu.lto_sl_FsRead.95c35941b61b9b65
+                0x0000000000000000      0x50c obj/fs.o
+ .gnu.lto_sl_FsWrite.95c35941b61b9b65
+                0x0000000000000000      0x501 obj/fs.o
+ .gnu.lto_sl_FsGetInfo.95c35941b61b9b65
+                0x0000000000000000      0x341 obj/fs.o
+ .gnu.lto_sl_FsDel.95c35941b61b9b65
+                0x0000000000000000      0x267 obj/fs.o
+ .gnu.lto_.symbol_nodes.95c35941b61b9b65
+                0x0000000000000000       0x9b obj/fs.o
+ .gnu.lto_.refs.95c35941b61b9b65
+                0x0000000000000000       0x29 obj/fs.o
+ .gnu.lto_.decls.95c35941b61b9b65
+                0x0000000000000000     0x17a6 obj/fs.o
+ .gnu.lto_.symtab.95c35941b61b9b65
+                0x0000000000000000      0x1ca obj/fs.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/fs.o
+ .text          0x0000000000000000        0x0 obj/device.o
+ .data          0x0000000000000000        0x0 obj/device.o
+ .bss           0x0000000000000000        0x0 obj/device.o
+ .gnu.lto_.inline.9491243cf36a4d6a
+                0x0000000000000000      0x1ee obj/device.o
+ .gnu.lto_.jmpfuncs.9491243cf36a4d6a
+                0x0000000000000000       0xdd obj/device.o
+ .gnu.lto_.pureconst.9491243cf36a4d6a
+                0x0000000000000000       0x26 obj/device.o
+ .gnu.lto_sl_Task.9491243cf36a4d6a
+                0x0000000000000000       0xa1 obj/device.o
+ .gnu.lto_GetStartResponseConvert.9491243cf36a4d6a
+                0x0000000000000000      0x197 obj/device.o
+ .gnu.lto_sl_Start.9491243cf36a4d6a
+                0x0000000000000000      0x5ab obj/device.o
+ .gnu.lto__sl_HandleAsync_InitComplete.9491243cf36a4d6a
+                0x0000000000000000      0x43b obj/device.o
+ .gnu.lto__sl_HandleAsync_Stop.9491243cf36a4d6a
+                0x0000000000000000      0x359 obj/device.o
+ .gnu.lto_sl_Stop.9491243cf36a4d6a
+                0x0000000000000000      0x5ee obj/device.o
+ .gnu.lto_sl_EventMaskSet.9491243cf36a4d6a
+                0x0000000000000000      0x1e9 obj/device.o
+ .gnu.lto_sl_EventMaskGet.9491243cf36a4d6a
+                0x0000000000000000      0x1e6 obj/device.o
+ .gnu.lto_sl_DevGet.9491243cf36a4d6a
+                0x0000000000000000      0x3be obj/device.o
+ .gnu.lto_sl_DevSet.9491243cf36a4d6a
+                0x0000000000000000      0x295 obj/device.o
+ .gnu.lto__SlDrvDeviceEventHandler.9491243cf36a4d6a
+                0x0000000000000000      0x1a6 obj/device.o
+ .gnu.lto_.symbol_nodes.9491243cf36a4d6a
+                0x0000000000000000      0x164 obj/device.o
+ .gnu.lto_.refs.9491243cf36a4d6a
+                0x0000000000000000       0x37 obj/device.o
+ .gnu.lto_.decls.9491243cf36a4d6a
+                0x0000000000000000     0x1a3a obj/device.o
+ .gnu.lto_.symtab.9491243cf36a4d6a
+                0x0000000000000000      0x40e obj/device.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/device.o
+ .text.sl_Task  0x0000000000000000        0x8 obj/device.o
+ .text.sl_EventMaskSet
+                0x0000000000000000       0x24 obj/device.o
+ .text.sl_EventMaskGet
+                0x0000000000000000       0x28 obj/device.o
+ .text.sl_DevSet
+                0x0000000000000000       0x40 obj/device.o
+ .rodata._SlEventMaskGetCmdCtrl
+                0x0000000000000000        0x4 obj/device.o
+ .rodata._SlEventMaskSetCmdCtrl
+                0x0000000000000000        0x4 obj/device.o
+ .rodata._SlDeviceSetCmdCtrl
+                0x0000000000000000        0x4 obj/device.o
+ .text          0x0000000000000000        0x0 obj/wlan.o
+ .data          0x0000000000000000        0x0 obj/wlan.o
+ .bss           0x0000000000000000        0x0 obj/wlan.o
+ .gnu.lto_.inline.b46a0ba8d08bfe71
+                0x0000000000000000      0x284 obj/wlan.o
+ .gnu.lto_.jmpfuncs.b46a0ba8d08bfe71
+                0x0000000000000000      0x118 obj/wlan.o
+ .gnu.lto_.pureconst.b46a0ba8d08bfe71
+                0x0000000000000000       0x36 obj/wlan.o
+ .gnu.lto_sl_WlanConnect.b46a0ba8d08bfe71
+                0x0000000000000000      0x905 obj/wlan.o
+ .gnu.lto_sl_WlanDisconnect.b46a0ba8d08bfe71
+                0x0000000000000000       0xb0 obj/wlan.o
+ .gnu.lto_sl_WlanPolicySet.b46a0ba8d08bfe71
+                0x0000000000000000      0x25d obj/wlan.o
+ .gnu.lto_sl_WlanPolicyGet.b46a0ba8d08bfe71
+                0x0000000000000000      0x35b obj/wlan.o
+ .gnu.lto_sl_WlanProfileAdd.b46a0ba8d08bfe71
+                0x0000000000000000      0x99c obj/wlan.o
+ .gnu.lto_sl_WlanProfileGet.b46a0ba8d08bfe71
+                0x0000000000000000      0x4d3 obj/wlan.o
+ .gnu.lto_sl_WlanProfileDel.b46a0ba8d08bfe71
+                0x0000000000000000      0x1d9 obj/wlan.o
+ .gnu.lto_sl_WlanGetNetworkList.b46a0ba8d08bfe71
+                0x0000000000000000      0x2d1 obj/wlan.o
+ .gnu.lto_sl_WlanRxFilterAdd.b46a0ba8d08bfe71
+                0x0000000000000000      0x284 obj/wlan.o
+ .gnu.lto_sl_WlanRxFilterSet.b46a0ba8d08bfe71
+                0x0000000000000000      0x24a obj/wlan.o
+ .gnu.lto_sl_WlanRxFilterGet.b46a0ba8d08bfe71
+                0x0000000000000000      0x2d5 obj/wlan.o
+ .gnu.lto_sl_WlanRxStatStart.b46a0ba8d08bfe71
+                0x0000000000000000       0xb2 obj/wlan.o
+ .gnu.lto_sl_WlanRxStatStop.b46a0ba8d08bfe71
+                0x0000000000000000       0xb2 obj/wlan.o
+ .gnu.lto_sl_WlanRxStatGet.b46a0ba8d08bfe71
+                0x0000000000000000      0x1b3 obj/wlan.o
+ .gnu.lto_sl_WlanSmartConfigStop.b46a0ba8d08bfe71
+                0x0000000000000000       0xb2 obj/wlan.o
+ .gnu.lto_sl_WlanSmartConfigStart.b46a0ba8d08bfe71
+                0x0000000000000000      0x313 obj/wlan.o
+ .gnu.lto_sl_WlanSetMode.b46a0ba8d08bfe71
+                0x0000000000000000      0x1c8 obj/wlan.o
+ .gnu.lto_sl_WlanSet.b46a0ba8d08bfe71
+                0x0000000000000000      0x282 obj/wlan.o
+ .gnu.lto_sl_WlanGet.b46a0ba8d08bfe71
+                0x0000000000000000      0x3a2 obj/wlan.o
+ .gnu.lto_.symbol_nodes.b46a0ba8d08bfe71
+                0x0000000000000000      0x160 obj/wlan.o
+ .gnu.lto_.refs.b46a0ba8d08bfe71
+                0x0000000000000000       0x3a obj/wlan.o
+ .gnu.lto_.decls.b46a0ba8d08bfe71
+                0x0000000000000000     0x2f0c obj/wlan.o
+ .gnu.lto_.symtab.b46a0ba8d08bfe71
+                0x0000000000000000      0x492 obj/wlan.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/wlan.o
+ .text.sl_WlanConnect
+                0x0000000000000000      0x1b8 obj/wlan.o
+ .text.sl_WlanPolicyGet
+                0x0000000000000000       0x70 obj/wlan.o
+ .text.sl_WlanProfileAdd
+                0x0000000000000000      0x1d8 obj/wlan.o
+ .text.sl_WlanProfileGet
+                0x0000000000000000       0xa8 obj/wlan.o
+ .text.sl_WlanProfileDel
+                0x0000000000000000       0x24 obj/wlan.o
+ .text.sl_WlanGetNetworkList
+                0x0000000000000000       0x4c obj/wlan.o
+ .text.sl_WlanRxFilterAdd
+                0x0000000000000000       0x54 obj/wlan.o
+ .text.sl_WlanRxFilterSet
+                0x0000000000000000       0x38 obj/wlan.o
+ .text.sl_WlanRxFilterGet
+                0x0000000000000000       0x54 obj/wlan.o
+ .text.sl_WlanRxStatStart
+                0x0000000000000000        0xc obj/wlan.o
+ .text.sl_WlanRxStatStop
+                0x0000000000000000        0xc obj/wlan.o
+ .text.sl_WlanRxStatGet
+                0x0000000000000000       0x30 obj/wlan.o
+ .text.sl_WlanSmartConfigStop
+                0x0000000000000000        0xc obj/wlan.o
+ .text.sl_WlanSmartConfigStart
+                0x0000000000000000       0x6c obj/wlan.o
+ .text.sl_WlanGet
+                0x0000000000000000       0x80 obj/wlan.o
+ .rodata        0x0000000000000000        0x4 obj/wlan.o
+ .rodata._SlSmartConfigStartCmdCtrl
+                0x0000000000000000        0x4 obj/wlan.o
+ .rodata._SlProfileDelCmdCtrl
+                0x0000000000000000        0x4 obj/wlan.o
+ .rodata._SlRxFilterGetCmdCtrl
+                0x0000000000000000        0x4 obj/wlan.o
+ .rodata._SlWlanGetNetworkListCtrl
+                0x0000000000000000        0x4 obj/wlan.o
+ .rodata._SlRxFilterSetCmdCtrl
+                0x0000000000000000        0x4 obj/wlan.o
+ .rodata._SlRxFilterAddtCmdCtrl
+                0x0000000000000000        0x4 obj/wlan.o
+ .rodata._SlPolicyGetCmdCtrl
+                0x0000000000000000        0x4 obj/wlan.o
+ .rodata._SlProfileGetCmdCtrl
+                0x0000000000000000        0x4 obj/wlan.o
+ .rodata._SlWlanCfgGetCmdCtrl
+                0x0000000000000000        0x4 obj/wlan.o
+ .text          0x0000000000000000        0x0 obj/driver.o
+ .data          0x0000000000000000        0x0 obj/driver.o
+ .bss           0x0000000000000000        0x0 obj/driver.o
+ .gnu.lto_.inline.9dbf61f71c9bc807
+                0x0000000000000000      0x34f obj/driver.o
+ .gnu.lto_.jmpfuncs.9dbf61f71c9bc807
+                0x0000000000000000      0x1ac obj/driver.o
+ .gnu.lto_.pureconst.9dbf61f71c9bc807
+                0x0000000000000000       0x39 obj/driver.o
+ .gnu.lto__SlDrvRxIrqHandler.9dbf61f71c9bc807
+                0x0000000000000000      0x23f obj/driver.o
+ .gnu.lto__SlDrvMsgReadSpawnCtx.9dbf61f71c9bc807
+                0x0000000000000000      0x4b3 obj/driver.o
+ .gnu.lto__SlDrvMsgWrite.9dbf61f71c9bc807
+                0x0000000000000000      0x798 obj/driver.o
+ .gnu.lto__SlDrvCmdSend.9dbf61f71c9bc807
+                0x0000000000000000      0x197 obj/driver.o
+ .gnu.lto__SlDrvDataWriteOp.9dbf61f71c9bc807
+                0x0000000000000000      0x7d2 obj/driver.o
+ .gnu.lto__SlAsyncEventGenericHandler.9dbf61f71c9bc807
+                0x0000000000000000     0x10ab obj/driver.o
+ .gnu.lto__SlDrvClassifyRxMsg.9dbf61f71c9bc807
+                0x0000000000000000      0x336 obj/driver.o
+ .gnu.lto__SlDrvShiftDWord.9dbf61f71c9bc807
+                0x0000000000000000      0x1ba obj/driver.o
+ .gnu.lto__SlDrvRxHdrRead.9dbf61f71c9bc807
+                0x0000000000000000      0x81a obj/driver.o
+ .gnu.lto__SlDrvWaitForPoolObj.9dbf61f71c9bc807
+                0x0000000000000000      0x6da obj/driver.o
+ .gnu.lto__SlDrvObjInit.9dbf61f71c9bc807
+                0x0000000000000000      0x24c obj/driver.o
+ .gnu.lto__SlDrvDriverCBInit.9dbf61f71c9bc807
+                0x0000000000000000      0x41f obj/driver.o
+ .gnu.lto__SlDrvObjDeInit.9dbf61f71c9bc807
+                0x0000000000000000      0x12b obj/driver.o
+ .gnu.lto__SlDrvDriverCBDeinit.9dbf61f71c9bc807
+                0x0000000000000000      0x39b obj/driver.o
+ .gnu.lto__SlRemoveFromList.9dbf61f71c9bc807
+                0x0000000000000000      0x2c4 obj/driver.o
+ .gnu.lto__SlDrvReleasePoolObj.9dbf61f71c9bc807
+                0x0000000000000000      0x653 obj/driver.o
+ .gnu.lto__SlDrvDataReadOp.9dbf61f71c9bc807
+                0x0000000000000000      0x8ea obj/driver.o
+ .gnu.lto__SlFindAndSetActiveObj.9dbf61f71c9bc807
+                0x0000000000000000      0x45e obj/driver.o
+ .gnu.lto__SlDrvMsgRead.9dbf61f71c9bc807
+                0x0000000000000000     0x1897 obj/driver.o
+ .gnu.lto__SlDrvMsgReadCmdCtx.9dbf61f71c9bc807
+                0x0000000000000000      0x4ac obj/driver.o
+ .gnu.lto__SlDrvCmdOp.9dbf61f71c9bc807
+                0x0000000000000000      0x303 obj/driver.o
+ .gnu.lto__SlDrvBasicCmd.9dbf61f71c9bc807
+                0x0000000000000000      0x211 obj/driver.o
+ .gnu.lto_.symbol_nodes.9dbf61f71c9bc807
+                0x0000000000000000      0x368 obj/driver.o
+ .gnu.lto_.refs.9dbf61f71c9bc807
+                0x0000000000000000       0x85 obj/driver.o
+ .gnu.lto_.decls.9dbf61f71c9bc807
+                0x0000000000000000     0x2de1 obj/driver.o
+ .gnu.lto_.symtab.9dbf61f71c9bc807
+                0x0000000000000000      0x6c1 obj/driver.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/driver.o
+ .text          0x0000000000000000        0x0 obj/netcfg.o
+ .data          0x0000000000000000        0x0 obj/netcfg.o
+ .bss           0x0000000000000000        0x0 obj/netcfg.o
+ .gnu.lto_.inline.28c0521b71099cc1
+                0x0000000000000000       0x92 obj/netcfg.o
+ .gnu.lto_.jmpfuncs.28c0521b71099cc1
+                0x0000000000000000       0x38 obj/netcfg.o
+ .gnu.lto_.pureconst.28c0521b71099cc1
+                0x0000000000000000       0x14 obj/netcfg.o
+ .gnu.lto_sl_NetCfgSet.28c0521b71099cc1
+                0x0000000000000000      0x2a1 obj/netcfg.o
+ .gnu.lto_sl_NetCfgGet.28c0521b71099cc1
+                0x0000000000000000      0x3c2 obj/netcfg.o
+ .gnu.lto_.symbol_nodes.28c0521b71099cc1
+                0x0000000000000000       0x46 obj/netcfg.o
+ .gnu.lto_.refs.28c0521b71099cc1
+                0x0000000000000000       0x18 obj/netcfg.o
+ .gnu.lto_.decls.28c0521b71099cc1
+                0x0000000000000000      0x794 obj/netcfg.o
+ .gnu.lto_.symtab.28c0521b71099cc1
+                0x0000000000000000       0x99 obj/netcfg.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/netcfg.o
+ .text.sl_NetCfgSet
+                0x0000000000000000       0x40 obj/netcfg.o
+ .text.sl_NetCfgGet
+                0x0000000000000000       0x78 obj/netcfg.o
+ .rodata._SlNetCfgGetCmdCtrl
+                0x0000000000000000        0x4 obj/netcfg.o
+ .rodata._SlNetCfgSetCmdCtrl
+                0x0000000000000000        0x4 obj/netcfg.o
+ .debug_info    0x0000000000000000      0x405 obj/netcfg.o
+ .debug_abbrev  0x0000000000000000      0x171 obj/netcfg.o
+ .debug_loc     0x0000000000000000      0x1bc obj/netcfg.o
+ .debug_aranges
+                0x0000000000000000       0x28 obj/netcfg.o
+ .debug_ranges  0x0000000000000000       0x30 obj/netcfg.o
+ .debug_line    0x0000000000000000       0xa8 obj/netcfg.o
+ .debug_str     0x0000000000000000      0x337 obj/netcfg.o
+ .comment       0x0000000000000000       0x71 obj/netcfg.o
+ .ARM.attributes
+                0x0000000000000000       0x33 obj/netcfg.o
+ .debug_frame   0x0000000000000000       0x48 obj/netcfg.o
+ .text          0x0000000000000000        0x0 obj/cc_pal.o
+ .data          0x0000000000000000        0x0 obj/cc_pal.o
+ .bss           0x0000000000000000        0x0 obj/cc_pal.o
+ .gnu.lto_.inline.d057b67332b507da
+                0x0000000000000000      0x1be obj/cc_pal.o
+ .gnu.lto_.jmpfuncs.d057b67332b507da
+                0x0000000000000000      0x17f obj/cc_pal.o
+ .gnu.lto_.pureconst.d057b67332b507da
+                0x0000000000000000       0x34 obj/cc_pal.o
+ .gnu.lto_HostIntHanlder.d057b67332b507da
+                0x0000000000000000      0x137 obj/cc_pal.o
+ .gnu.lto_DmaSpiSwIntHandler.d057b67332b507da
+                0x0000000000000000       0xe3 obj/cc_pal.o
+ .gnu.lto_spi_Read_CPU.d057b67332b507da
+                0x0000000000000000      0x316 obj/cc_pal.o
+ .gnu.lto_spi_Write_CPU.d057b67332b507da
+                0x0000000000000000      0x346 obj/cc_pal.o
+ .gnu.lto_spi_Close.d057b67332b507da
+                0x0000000000000000      0x1f6 obj/cc_pal.o
+ .gnu.lto_NwpRegisterInterruptHandler.d057b67332b507da
+                0x0000000000000000      0x172 obj/cc_pal.o
+ .gnu.lto_NwpMaskInterrupt.d057b67332b507da
+                0x0000000000000000       0xae obj/cc_pal.o
+ .gnu.lto_NwpUnMaskInterrupt.d057b67332b507da
+                0x0000000000000000       0xae obj/cc_pal.o
+ .gnu.lto_NwpPowerOn.d057b67332b507da
+                0x0000000000000000      0x11d obj/cc_pal.o
+ .gnu.lto_NwpPowerOff.d057b67332b507da
+                0x0000000000000000      0x13e obj/cc_pal.o
+ .gnu.lto_NwpPowerOnPreamble.d057b67332b507da
+                0x0000000000000000      0x2e7 obj/cc_pal.o
+ .gnu.lto_cc_UDMAChannelSelect.d057b67332b507da
+                0x0000000000000000      0x10b obj/cc_pal.o
+ .gnu.lto_spi_Open.d057b67332b507da
+                0x0000000000000000      0x381 obj/cc_pal.o
+ .gnu.lto_cc_SetupTransfer.d057b67332b507da
+                0x0000000000000000      0x136 obj/cc_pal.o
+ .gnu.lto_SetupDMAReceive.d057b67332b507da
+                0x0000000000000000      0x13d obj/cc_pal.o
+ .gnu.lto_spi_Read.d057b67332b507da
+                0x0000000000000000      0x497 obj/cc_pal.o
+ .gnu.lto_SetupDMASend.d057b67332b507da
+                0x0000000000000000      0x13d obj/cc_pal.o
+ .gnu.lto_spi_Write.d057b67332b507da
+                0x0000000000000000      0x2f3 obj/cc_pal.o
+ .gnu.lto_.symbol_nodes.d057b67332b507da
+                0x0000000000000000      0x242 obj/cc_pal.o
+ .gnu.lto_.refs.d057b67332b507da
+                0x0000000000000000       0x41 obj/cc_pal.o
+ .gnu.lto_.decls.d057b67332b507da
+                0x0000000000000000      0xf1f obj/cc_pal.o
+ .gnu.lto_.symtab.d057b67332b507da
+                0x0000000000000000      0x6b8 obj/cc_pal.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/cc_pal.o
+ .text          0x0000000000000000        0x0 obj/flowcont.o
+ .data          0x0000000000000000        0x0 obj/flowcont.o
+ .bss           0x0000000000000000        0x0 obj/flowcont.o
+ .gnu.lto_.inline.180743c051bd0b4a
+                0x0000000000000000       0x2a obj/flowcont.o
+ .gnu.lto_.jmpfuncs.180743c051bd0b4a
+                0x0000000000000000       0x24 obj/flowcont.o
+ .gnu.lto_.pureconst.180743c051bd0b4a
+                0x0000000000000000       0x14 obj/flowcont.o
+ .gnu.lto__SlDrvFlowContInit.180743c051bd0b4a
+                0x0000000000000000      0x227 obj/flowcont.o
+ .gnu.lto__SlDrvFlowContDeinit.180743c051bd0b4a
+                0x0000000000000000      0x227 obj/flowcont.o
+ .gnu.lto_.symbol_nodes.180743c051bd0b4a
+                0x0000000000000000       0x43 obj/flowcont.o
+ .gnu.lto_.refs.180743c051bd0b4a
+                0x0000000000000000       0x1a obj/flowcont.o
+ .gnu.lto_.decls.180743c051bd0b4a
+                0x0000000000000000      0xb70 obj/flowcont.o
+ .gnu.lto_.symtab.180743c051bd0b4a
+                0x0000000000000000       0x79 obj/flowcont.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/flowcont.o
+ .text          0x0000000000000000        0x0 obj/netapp.o
+ .data          0x0000000000000000        0x0 obj/netapp.o
+ .bss           0x0000000000000000        0x0 obj/netapp.o
+ .gnu.lto_.inline.71a51950d2ad9bda
+                0x0000000000000000      0x2b7 obj/netapp.o
+ .gnu.lto_.jmpfuncs.71a51950d2ad9bda
+                0x0000000000000000      0x15f obj/netapp.o
+ .gnu.lto_.pureconst.71a51950d2ad9bda
+                0x0000000000000000       0x34 obj/netapp.o
+ .gnu.lto_sl_NetAppStart.71a51950d2ad9bda
+                0x0000000000000000      0x1c8 obj/netapp.o
+ .gnu.lto_sl_NetAppStop.71a51950d2ad9bda
+                0x0000000000000000      0x1c7 obj/netapp.o
+ .gnu.lto_sl_NetAppGetServiceList.71a51950d2ad9bda
+                0x0000000000000000      0x40e obj/netapp.o
+ .gnu.lto_sl_NetAppMDNSRegisterUnregisterService.71a51950d2ad9bda
+                0x0000000000000000      0x402 obj/netapp.o
+ .gnu.lto_sl_NetAppMDNSRegisterService.71a51950d2ad9bda
+                0x0000000000000000       0xf8 obj/netapp.o
+ .gnu.lto_sl_NetAppMDNSUnRegisterService.71a51950d2ad9bda
+                0x0000000000000000      0x10b obj/netapp.o
+ .gnu.lto_sl_NetAppDnsGetHostByService.71a51950d2ad9bda
+                0x0000000000000000      0x62f obj/netapp.o
+ .gnu.lto__sl_HandleAsync_DnsGetHostByService.71a51950d2ad9bda
+                0x0000000000000000      0x459 obj/netapp.o
+ .gnu.lto__sl_HandleAsync_DnsGetHostByAddr.71a51950d2ad9bda
+                0x0000000000000000       0x8b obj/netapp.o
+ .gnu.lto_sl_NetAppDnsGetHostByName.71a51950d2ad9bda
+                0x0000000000000000      0x674 obj/netapp.o
+ .gnu.lto__sl_HandleAsync_DnsGetHostByName.71a51950d2ad9bda
+                0x0000000000000000      0x3d1 obj/netapp.o
+ .gnu.lto_CopyPingResultsToReport.71a51950d2ad9bda
+                0x0000000000000000      0x149 obj/netapp.o
+ .gnu.lto__sl_HandleAsync_PingResponse.71a51950d2ad9bda
+                0x0000000000000000      0x453 obj/netapp.o
+ .gnu.lto_sl_NetAppPingStart.71a51950d2ad9bda
+                0x0000000000000000      0x787 obj/netapp.o
+ .gnu.lto_sl_NetAppSet.71a51950d2ad9bda
+                0x0000000000000000      0x2a3 obj/netapp.o
+ .gnu.lto_sl_NetAppSendTokenValue.71a51950d2ad9bda
+                0x0000000000000000      0x2ff obj/netapp.o
+ .gnu.lto_sl_NetAppGet.71a51950d2ad9bda
+                0x0000000000000000      0x34b obj/netapp.o
+ .gnu.lto__SlDrvNetAppEventHandler.71a51950d2ad9bda
+                0x0000000000000000      0x5ce obj/netapp.o
+ .gnu.lto_.symbol_nodes.71a51950d2ad9bda
+                0x0000000000000000      0x1cf obj/netapp.o
+ .gnu.lto_.refs.71a51950d2ad9bda
+                0x0000000000000000       0x4b obj/netapp.o
+ .gnu.lto_.decls.71a51950d2ad9bda
+                0x0000000000000000     0x2d0c obj/netapp.o
+ .gnu.lto_.symtab.71a51950d2ad9bda
+                0x0000000000000000      0x58c obj/netapp.o
+ .gnu.lto_.opts
+                0x0000000000000000       0x57 obj/netapp.o
+ .text.sl_NetAppStart
+                0x0000000000000000       0x24 obj/netapp.o
+ .text.sl_NetAppStop
+                0x0000000000000000       0x24 obj/netapp.o
+ .text.sl_NetAppGetServiceList
+                0x0000000000000000       0x68 obj/netapp.o
+ .text.sl_NetAppMDNSRegisterUnregisterService
+                0x0000000000000000       0x80 obj/netapp.o
+ .text.sl_NetAppMDNSRegisterService
+                0x0000000000000000       0x20 obj/netapp.o
+ .text.sl_NetAppMDNSUnRegisterService
+                0x0000000000000000       0x18 obj/netapp.o
+ .text.sl_NetAppDnsGetHostByService
+                0x0000000000000000       0xdc obj/netapp.o
+ .text._sl_HandleAsync_DnsGetHostByAddr
+                0x0000000000000000        0x4 obj/netapp.o
+ .text.sl_NetAppDnsGetHostByName
+                0x0000000000000000       0xdc obj/netapp.o
+ .text.sl_NetAppPingStart
+                0x0000000000000000      0x124 obj/netapp.o
+ .text.sl_NetAppSet
+                0x0000000000000000       0x40 obj/netapp.o
+ .text.sl_NetAppGet
+                0x0000000000000000       0x5c obj/netapp.o
+ .rodata        0x0000000000000000        0x4 obj/netapp.o
+ .rodata._SlNetAppStopCtrl
+                0x0000000000000000        0x4 obj/netapp.o
+ .rodata._SlGetServiceListeCtrl
+                0x0000000000000000        0x4 obj/netapp.o
+ .rodata._SlGetHostByServiceCtrl
+                0x0000000000000000        0x4 obj/netapp.o
+ .rodata._SlGetHostByNameCtrl
+                0x0000000000000000        0x4 obj/netapp.o
+ .rodata._SlNetAppGetCmdCtrl
+                0x0000000000000000        0x4 obj/netapp.o
+ .rodata._SlNetAppStartCtrl
+                0x0000000000000000        0x4 obj/netapp.o
+ .rodata._SlRegisterServiceCtrl
+                0x0000000000000000        0x4 obj/netapp.o
+ .rodata._SlNetAppSetCmdCtrl
+                0x0000000000000000        0x4 obj/netapp.o
+ .text          0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-memcmp.o)
+ .data          0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-memcmp.o)
+ .bss           0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-memcmp.o)
+ .data          0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-memcpy.o)
+ .bss           0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-memcpy.o)
+ .text          0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-memset.o)
+ .data          0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-memset.o)
+ .bss           0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-memset.o)
+ .text          0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-strlen.o)
+ .data          0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-strlen.o)
+ .bss           0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-strlen.o)
+ .text          0x0000000000000000       0x2c /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_aeabi_uldivmod.o)
+ .data          0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_aeabi_uldivmod.o)
+ .bss           0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_aeabi_uldivmod.o)
+ .ARM.attributes
+                0x0000000000000000       0x1e /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_aeabi_uldivmod.o)
+ .text          0x0000000000000000       0x60 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(bpabi.o)
+ .data          0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(bpabi.o)
+ .bss           0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(bpabi.o)
+ .ARM.attributes
+                0x0000000000000000       0x2e /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(bpabi.o)
+ .debug_frame   0x0000000000000000       0x50 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(bpabi.o)
+ .text          0x0000000000000000        0x4 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_dvmd_tls.o)
+ .data          0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_dvmd_tls.o)
+ .bss           0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_dvmd_tls.o)
+ .ARM.attributes
+                0x0000000000000000       0x1e /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_dvmd_tls.o)
+ .text          0x0000000000000000      0x298 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_divdi3.o)
+ .data          0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_divdi3.o)
+ .bss           0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_divdi3.o)
+ .ARM.extab     0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_divdi3.o)
+ .ARM.exidx     0x0000000000000000        0x8 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_divdi3.o)
+ .ARM.attributes
+                0x0000000000000000       0x2e /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_divdi3.o)
+ .debug_frame   0x0000000000000000       0x34 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_divdi3.o)
+ .text          0x0000000000000000      0x284 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_udivdi3.o)
+ .data          0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_udivdi3.o)
+ .bss           0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_udivdi3.o)
+ .ARM.extab     0x0000000000000000        0x0 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_udivdi3.o)
+ .ARM.exidx     0x0000000000000000        0x8 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_udivdi3.o)
+ .ARM.attributes
+                0x0000000000000000       0x2e /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_udivdi3.o)
+ .debug_frame   0x0000000000000000       0x34 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a(_udivdi3.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+SRAM             0x0000000020004000 0x000000000000dfff xrw
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+                0x0000000000000100                HEAP_SIZE = 0x100
+                0x0000000000002000                stack_size = 0x2000
+                0x0000000020011fff                _stack_start = (ORIGIN (SRAM) + 0xdfff)
+                0x000000002000ffff                _stack_end = (_stack_start - stack_size)
+
+.text           0x0000000020004000     0x4c80
+                0x0000000020004000                _text = .
+ *(.intvecs)
+ .intvecs       0x0000000020004000      0x400 obj/startup_gcc.o
+                0x0000000020004000                g_pfnVectors
+ CREATE_OBJECT_SYMBOLS
+ *(.text .text.* .gnu.linkonce.t.*)
+ .text.main     0x0000000020004400       0x94 obj/main.o
+                0x0000000020004400                main
+ .text.PinMuxConfig
+                0x0000000020004494       0x6c obj/pinmux.o
+                0x0000000020004494                PinMuxConfig
+ .text.SHAMD5IntHandler
+                0x0000000020004500       0x54 obj/firmware_loader.o
+                0x0000000020004500                SHAMD5IntHandler
+ .text.VerifySRAM
+                0x0000000020004554       0xa8 obj/firmware_loader.o
+ .text.SaveSRAMContent
+                0x00000000200045fc      0x160 obj/firmware_loader.o
+                0x00000000200045fc                SaveSRAMContent
+ .text.StartFirmware
+                0x000000002000475c       0x18 obj/firmware_loader.o
+                0x000000002000475c                StartFirmware
+ .text.EmplaceFirmware
+                0x0000000020004774       0x74 obj/firmware_loader.o
+                0x0000000020004774                EmplaceFirmware
+ .text.TcpServer_Accept
+                0x00000000200047e8       0x28 obj/tcp_server.o
+                0x00000000200047e8                TcpServer_Accept
+ .text.TcpServer
+                0x0000000020004810      0x144 obj/tcp_server.o
+                0x0000000020004810                TcpServer
+ .text.wifi_status_disconnected
+                0x0000000020004954       0x10 obj/wy_bl_network_if.o
+                0x0000000020004954                wifi_status_disconnected
+ .text.SimpleLinkWlanEventHandler
+                0x0000000020004964       0x4c obj/wy_bl_network_if.o
+                0x0000000020004964                SimpleLinkWlanEventHandler
+ .text.SimpleLinkNetAppEventHandler
+                0x00000000200049b0       0x3c obj/wy_bl_network_if.o
+                0x00000000200049b0                SimpleLinkNetAppEventHandler
+ .text.SimpleLinkSockEventHandler
+                0x00000000200049ec        0x4 obj/wy_bl_network_if.o
+                0x00000000200049ec                SimpleLinkSockEventHandler
+ .text.SimpleLinkHttpServerCallback
+                0x00000000200049f0        0x4 obj/wy_bl_network_if.o
+                0x00000000200049f0                SimpleLinkHttpServerCallback
+ .text.Network_IF_StartSimpleLinkAsAP
+                0x00000000200049f4       0x48 obj/wy_bl_network_if.o
+                0x00000000200049f4                Network_IF_StartSimpleLinkAsAP
+ .text.Network_IF_InitDriver
+                0x0000000020004a3c      0x180 obj/wy_bl_network_if.o
+                0x0000000020004a3c                Network_IF_InitDriver
+ .text.Network_IF_DeInitDriver
+                0x0000000020004bbc       0x14 obj/wy_bl_network_if.o
+                0x0000000020004bbc                Network_IF_DeInitDriver
+ .text.openFileSystem
+                0x0000000020004bd0       0x98 obj/wy_fs.o
+ .text.closeFileSystem
+                0x0000000020004c68       0x5c obj/wy_fs.o
+ .text.wy_FsOpen
+                0x0000000020004cc4       0xf8 obj/wy_fs.o
+                0x0000000020004cc4                wy_FsOpen
+ .text.wy_FsClose
+                0x0000000020004dbc        0x8 obj/wy_fs.o
+                0x0000000020004dbc                wy_FsClose
+ .text.wy_FsRead
+                0x0000000020004dc4        0x8 obj/wy_fs.o
+                0x0000000020004dc4                wy_FsRead
+ .text.wy_FsWrite
+                0x0000000020004dcc        0x8 obj/wy_fs.o
+                0x0000000020004dcc                wy_FsWrite
+ .text.wy_FsGetInfo
+                0x0000000020004dd4        0x8 obj/wy_fs.o
+                0x0000000020004dd4                wy_FsGetInfo
+ .text.wy_FsDel
+                0x0000000020004ddc       0x40 obj/wy_fs.o
+                0x0000000020004ddc                wy_FsDel
+ .text.wy_FsFormat
+                0x0000000020004e1c       0x60 obj/wy_fs.o
+                0x0000000020004e1c                wy_FsFormat
+ .text.ResetISR
+                0x0000000020004e7c       0x64 obj/startup_gcc.o
+                0x0000000020004e7c                ResetISR
+ .text.NmiSR    0x0000000020004ee0        0x4 obj/startup_gcc.o
+ .text.FaultISR
+                0x0000000020004ee4        0x4 obj/startup_gcc.o
+ .text.BusFaultHandler
+                0x0000000020004ee8        0x4 obj/startup_gcc.o
+ .text.IntDefaultHandler
+                0x0000000020004eec        0x4 obj/startup_gcc.o
+ .text.InitTerm
+                0x0000000020004ef0        0x4 obj/uart_if.o
+                0x0000000020004ef0                InitTerm
+ .text.GPIO_IF_LedConfigure
+                0x0000000020004ef4       0x54 obj/gpio_if.o
+                0x0000000020004ef4                GPIO_IF_LedConfigure
+ .text.GPIO_IF_LedOn
+                0x0000000020004f48       0x8c obj/gpio_if.o
+                0x0000000020004f48                GPIO_IF_LedOn
+ .text.GPIO_IF_LedOff
+                0x0000000020004fd4       0x8c obj/gpio_if.o
+                0x0000000020004fd4                GPIO_IF_LedOff
+ .text.GPIO_IF_GetPortNPin
+                0x0000000020005060       0x24 obj/gpio_if.o
+                0x0000000020005060                GPIO_IF_GetPortNPin
+ .text.GPIO_IF_Get
+                0x0000000020005084       0x18 obj/gpio_if.o
+                0x0000000020005084                GPIO_IF_Get
+ .text.CPUcpsid
+                0x000000002000509c       0x10 obj/cpu.o
+                0x000000002000509c                CPUcpsid
+ .text.CPUcpsie
+                0x00000000200050ac       0x10 obj/cpu.o
+                0x00000000200050ac                CPUcpsie
+ .text.IntDefaultHandler
+                0x00000000200050bc        0x4 obj/interrupt.o
+ .text.IntMasterEnable
+                0x00000000200050c0        0xc obj/interrupt.o
+                0x00000000200050c0                IntMasterEnable
+ .text.IntMasterDisable
+                0x00000000200050cc        0xc obj/interrupt.o
+                0x00000000200050cc                IntMasterDisable
+ .text.IntVTableBaseSet
+                0x00000000200050d8        0xc obj/interrupt.o
+                0x00000000200050d8                IntVTableBaseSet
+ .text.IntRegister
+                0x00000000200050e4       0x10 obj/interrupt.o
+                0x00000000200050e4                IntRegister
+ .text.IntUnregister
+                0x00000000200050f4       0x14 obj/interrupt.o
+                0x00000000200050f4                IntUnregister
+ .text.IntPrioritySet
+                0x0000000020005108       0x2c obj/interrupt.o
+                0x0000000020005108                IntPrioritySet
+ .text.IntEnable
+                0x0000000020005134       0x90 obj/interrupt.o
+                0x0000000020005134                IntEnable
+ .text.IntDisable
+                0x00000000200051c4       0x90 obj/interrupt.o
+                0x00000000200051c4                IntDisable
+ .text.IntPendClear
+                0x0000000020005254       0x44 obj/interrupt.o
+                0x0000000020005254                IntPendClear
+ .text.PinModeSet
+                0x0000000020005298       0x28 obj/pin.o
+                0x0000000020005298                PinModeSet
+ .text.PinConfigSet
+                0x00000000200052c0       0x64 obj/pin.o
+                0x00000000200052c0                PinConfigSet
+ .text.PinTypeUART
+                0x0000000020005324       0x14 obj/pin.o
+                0x0000000020005324                PinTypeUART
+ .text.PinTypeTimer
+                0x0000000020005338       0x14 obj/pin.o
+                0x0000000020005338                PinTypeTimer
+ .text.PinTypeGPIO
+                0x000000002000534c       0x24 obj/pin.o
+                0x000000002000534c                PinTypeGPIO
+ .text.PRCMSysResetCauseGet
+                0x0000000020005370       0x24 obj/prcm.o
+                0x0000000020005370                PRCMSysResetCauseGet
+ .text.PRCMPeripheralClkEnable
+                0x0000000020005394       0x28 obj/prcm.o
+                0x0000000020005394                PRCMPeripheralClkEnable
+ .text.PRCMPeripheralClkDisable
+                0x00000000200053bc       0x1c obj/prcm.o
+                0x00000000200053bc                PRCMPeripheralClkDisable
+ .text.PRCMPeripheralClockGet
+                0x00000000200053d8       0x54 obj/prcm.o
+                0x00000000200053d8                PRCMPeripheralClockGet
+ .text.PRCMPeripheralReset
+                0x000000002000542c       0x44 obj/prcm.o
+                0x000000002000542c                PRCMPeripheralReset
+ .text.PRCMPeripheralStatusGet
+                0x0000000020005470       0x1c obj/prcm.o
+                0x0000000020005470                PRCMPeripheralStatusGet
+ .text.PRCMCC3200MCUInit
+                0x000000002000548c       0xf4 obj/prcm.o
+                0x000000002000548c                PRCMCC3200MCUInit
+ .text.UtilsDelay
+                0x0000000020005580        0x8 obj/utils.o
+                0x0000000020005580                UtilsDelay
+ .text.SHAMD5IntStatus
+                0x0000000020005588       0x34 obj/shamd5.o
+                0x0000000020005588                SHAMD5IntStatus
+ .text.SHAMD5IntEnable
+                0x00000000200055bc       0x34 obj/shamd5.o
+                0x00000000200055bc                SHAMD5IntEnable
+ .text.SHAMD5IntDisable
+                0x00000000200055f0       0x38 obj/shamd5.o
+                0x00000000200055f0                SHAMD5IntDisable
+ .text.SHAMD5IntRegister
+                0x0000000020005628       0x10 obj/shamd5.o
+                0x0000000020005628                SHAMD5IntRegister
+ .text.SHAMD5ConfigSet
+                0x0000000020005638        0x4 obj/shamd5.o
+                0x0000000020005638                SHAMD5ConfigSet
+ .text.SHAMD5DataWrite
+                0x000000002000563c       0x2c obj/shamd5.o
+                0x000000002000563c                SHAMD5DataWrite
+ .text.SHAMD5DataWriteMultiple
+                0x0000000020005668       0x8c obj/shamd5.o
+ .text.SHAMD5ResultRead
+                0x00000000200056f4       0x40 obj/shamd5.o
+                0x00000000200056f4                SHAMD5ResultRead
+ .text.SHAMD5DataProcess
+                0x0000000020005734       0x30 obj/shamd5.o
+                0x0000000020005734                SHAMD5DataProcess
+ .text.uDMAChannelEnable
+                0x0000000020005764       0x14 obj/udma.o
+                0x0000000020005764                uDMAChannelEnable
+ .text.uDMAChannelAttributeEnable
+                0x0000000020005778       0x50 obj/udma.o
+                0x0000000020005778                uDMAChannelAttributeEnable
+ .text.uDMAChannelAttributeDisable
+                0x00000000200057c8       0x50 obj/udma.o
+                0x00000000200057c8                uDMAChannelAttributeDisable
+ .text.uDMAChannelControlSet
+                0x0000000020005818       0x20 obj/udma.o
+                0x0000000020005818                uDMAChannelControlSet
+ .text.uDMAChannelTransferSet
+                0x0000000020005838       0x88 obj/udma.o
+                0x0000000020005838                uDMAChannelTransferSet
+ .text.uDMAChannelAssign
+                0x00000000200058c0       0x30 obj/udma.o
+                0x00000000200058c0                uDMAChannelAssign
+ .text.SPIDmaMaskGet
+                0x00000000200058f0       0x3c obj/spi.o
+ .text.SPIEnable
+                0x000000002000592c       0x10 obj/spi.o
+                0x000000002000592c                SPIEnable
+ .text.SPIDisable
+                0x000000002000593c       0x10 obj/spi.o
+                0x000000002000593c                SPIDisable
+ .text.SPIDmaEnable
+                0x000000002000594c        0xc obj/spi.o
+                0x000000002000594c                SPIDmaEnable
+ .text.SPIDmaDisable
+                0x0000000020005958        0xc obj/spi.o
+                0x0000000020005958                SPIDmaDisable
+ .text.SPIReset
+                0x0000000020005964       0x18 obj/spi.o
+                0x0000000020005964                SPIReset
+ .text.SPIConfigSetExpClk
+                0x000000002000597c       0x5c obj/spi.o
+                0x000000002000597c                SPIConfigSetExpClk
+ .text.SPIFIFOEnable
+                0x00000000200059d8        0xc obj/spi.o
+                0x00000000200059d8                SPIFIFOEnable
+ .text.SPIFIFODisable
+                0x00000000200059e4       0x10 obj/spi.o
+                0x00000000200059e4                SPIFIFODisable
+ .text.SPIFIFOLevelSet
+                0x00000000200059f4       0x18 obj/spi.o
+                0x00000000200059f4                SPIFIFOLevelSet
+ .text.SPIWordCountSet
+                0x0000000020005a0c       0x10 obj/spi.o
+                0x0000000020005a0c                SPIWordCountSet
+ .text.SPIIntUnregister
+                0x0000000020005a1c       0x4c obj/spi.o
+                0x0000000020005a1c                SPIIntUnregister
+ .text.SPIIntEnable
+                0x0000000020005a68       0x40 obj/spi.o
+                0x0000000020005a68                SPIIntEnable
+ .text.SPIIntClear
+                0x0000000020005aa8       0x38 obj/spi.o
+                0x0000000020005aa8                SPIIntClear
+ .text.SPICSEnable
+                0x0000000020005ae0       0x10 obj/spi.o
+                0x0000000020005ae0                SPICSEnable
+ .text.SPICSDisable
+                0x0000000020005af0       0x10 obj/spi.o
+                0x0000000020005af0                SPICSDisable
+ .text.GPIODirModeSet
+                0x0000000020005b00       0x18 obj/gpio.o
+                0x0000000020005b00                GPIODirModeSet
+ .text.GPIOPinRead
+                0x0000000020005b18        0x8 obj/gpio.o
+                0x0000000020005b18                GPIOPinRead
+ .text.GPIOPinWrite
+                0x0000000020005b20        0x8 obj/gpio.o
+                0x0000000020005b20                GPIOPinWrite
+ .text._sl_BuildAddress
+                0x0000000020005b28       0x2c obj/socket.o
+                0x0000000020005b28                _sl_BuildAddress
+ .text._sl_TruncatePayloadByProtocol
+                0x0000000020005b54       0x80 obj/socket.o
+                0x0000000020005b54                _sl_TruncatePayloadByProtocol
+ .text.sl_Socket
+                0x0000000020005bd4       0x38 obj/socket.o
+                0x0000000020005bd4                sl_Socket
+ .text.sl_Close
+                0x0000000020005c0c       0x24 obj/socket.o
+                0x0000000020005c0c                sl_Close
+ .text.sl_Bind  0x0000000020005c30       0x68 obj/socket.o
+                0x0000000020005c30                sl_Bind
+ .text._sl_HandleAsync_Connect
+                0x0000000020005c98       0x7c obj/socket.o
+                0x0000000020005c98                _sl_HandleAsync_Connect
+ .text.sl_Send  0x0000000020005d14       0xb4 obj/socket.o
+                0x0000000020005d14                sl_Send
+ .text.sl_Listen
+                0x0000000020005dc8       0x28 obj/socket.o
+                0x0000000020005dc8                sl_Listen
+ .text.sl_Accept
+                0x0000000020005df0      0x118 obj/socket.o
+                0x0000000020005df0                sl_Accept
+ .text._sl_HandleAsync_Accept
+                0x0000000020005f08       0x70 obj/socket.o
+                0x0000000020005f08                _sl_HandleAsync_Accept
+ .text.sl_Recv  0x0000000020005f78       0x40 obj/socket.o
+                0x0000000020005f78                sl_Recv
+ .text.sl_SetSockOpt
+                0x0000000020005fb8       0x40 obj/socket.o
+                0x0000000020005fb8                sl_SetSockOpt
+ .text._sl_HandleAsync_Select
+                0x0000000020005ff8       0x64 obj/socket.o
+                0x0000000020005ff8                _sl_HandleAsync_Select
+ .text._SlNonOsSemSet
+                0x000000002000605c        0x8 obj/nonos.o
+                0x000000002000605c                _SlNonOsSemSet
+ .text._SlNonOsSpawn
+                0x0000000020006064       0x34 obj/nonos.o
+                0x0000000020006064                _SlNonOsSpawn
+ .text._SlNonOsMainLoopTask
+                0x0000000020006098       0x3c obj/nonos.o
+                0x0000000020006098                _SlNonOsMainLoopTask
+ .text._SlNonOsSemGet
+                0x00000000200060d4       0x40 obj/nonos.o
+                0x00000000200060d4                _SlNonOsSemGet
+ .text.sl_Strlen
+                0x0000000020006114       0x20 obj/fs.o
+                0x0000000020006114                sl_Strlen
+ .text._GetCreateFsMode
+                0x0000000020006134       0x6c obj/fs.o
+                0x0000000020006134                _GetCreateFsMode
+ .text.sl_FsOpen
+                0x00000000200061a0       0x64 obj/fs.o
+                0x00000000200061a0                sl_FsOpen
+ .text.sl_FsClose
+                0x0000000020006204       0x78 obj/fs.o
+                0x0000000020006204                sl_FsClose
+ .text.sl_FsRead
+                0x000000002000627c       0xa8 obj/fs.o
+                0x000000002000627c                sl_FsRead
+ .text.sl_FsWrite
+                0x0000000020006324       0xa8 obj/fs.o
+                0x0000000020006324                sl_FsWrite
+ .text.sl_FsGetInfo
+                0x00000000200063cc       0x60 obj/fs.o
+                0x00000000200063cc                sl_FsGetInfo
+ .text.sl_FsDel
+                0x000000002000642c       0x40 obj/fs.o
+                0x000000002000642c                sl_FsDel
+ .text.GetStartResponseConvert
+                0x000000002000646c       0x48 obj/device.o
+                0x000000002000646c                GetStartResponseConvert
+ .text.sl_Start
+                0x00000000200064b4       0xe0 obj/device.o
+                0x00000000200064b4                sl_Start
+ .text._sl_HandleAsync_InitComplete
+                0x0000000020006594       0x84 obj/device.o
+                0x0000000020006594                _sl_HandleAsync_InitComplete
+ .text._sl_HandleAsync_Stop
+                0x0000000020006618       0x64 obj/device.o
+                0x0000000020006618                _sl_HandleAsync_Stop
+ .text.sl_Stop  0x000000002000667c       0xd4 obj/device.o
+                0x000000002000667c                sl_Stop
+ .text.sl_DevGet
+                0x0000000020006750       0x6c obj/device.o
+                0x0000000020006750                sl_DevGet
+ .text._SlDrvDeviceEventHandler
+                0x00000000200067bc       0x20 obj/device.o
+                0x00000000200067bc                _SlDrvDeviceEventHandler
+ .text.sl_WlanDisconnect
+                0x00000000200067dc        0xc obj/wlan.o
+                0x00000000200067dc                sl_WlanDisconnect
+ .text.sl_WlanPolicySet
+                0x00000000200067e8       0x38 obj/wlan.o
+                0x00000000200067e8                sl_WlanPolicySet
+ .text.sl_WlanSetMode
+                0x0000000020006820       0x24 obj/wlan.o
+                0x0000000020006820                sl_WlanSetMode
+ .text.sl_WlanSet
+                0x0000000020006844       0x40 obj/wlan.o
+                0x0000000020006844                sl_WlanSet
+ .text._SlDrvRxIrqHandler
+                0x0000000020006884       0x40 obj/driver.o
+                0x0000000020006884                _SlDrvRxIrqHandler
+ .text._SlDrvMsgWrite
+                0x00000000200068c4       0xfc obj/driver.o
+                0x00000000200068c4                _SlDrvMsgWrite
+ .text._SlDrvCmdSend
+                0x00000000200069c0       0x24 obj/driver.o
+                0x00000000200069c0                _SlDrvCmdSend
+ .text._SlDrvDataWriteOp
+                0x00000000200069e4      0x13c obj/driver.o
+                0x00000000200069e4                _SlDrvDataWriteOp
+ .text._SlAsyncEventGenericHandler
+                0x0000000020006b20      0x3b0 obj/driver.o
+                0x0000000020006b20                _SlAsyncEventGenericHandler
+ .text._SlDrvClassifyRxMsg
+                0x0000000020006ed0       0xb4 obj/driver.o
+                0x0000000020006ed0                _SlDrvClassifyRxMsg
+ .text._SlDrvShiftDWord
+                0x0000000020006f84       0x18 obj/driver.o
+                0x0000000020006f84                _SlDrvShiftDWord
+ .text._SlDrvRxHdrRead
+                0x0000000020006f9c      0x158 obj/driver.o
+                0x0000000020006f9c                _SlDrvRxHdrRead
+ .text._SlDrvWaitForPoolObj
+                0x00000000200070f4      0x120 obj/driver.o
+                0x00000000200070f4                _SlDrvWaitForPoolObj
+ .text._SlDrvObjInit
+                0x0000000020007214       0x38 obj/driver.o
+                0x0000000020007214                _SlDrvObjInit
+ .text._SlDrvDriverCBInit
+                0x000000002000724c       0x98 obj/driver.o
+                0x000000002000724c                _SlDrvDriverCBInit
+ .text._SlDrvObjDeInit
+                0x00000000200072e4       0x1c obj/driver.o
+                0x00000000200072e4                _SlDrvObjDeInit
+ .text._SlDrvDriverCBDeinit
+                0x0000000020007300       0x68 obj/driver.o
+                0x0000000020007300                _SlDrvDriverCBDeinit
+ .text._SlRemoveFromList
+                0x0000000020007368       0x64 obj/driver.o
+                0x0000000020007368                _SlRemoveFromList
+ .text._SlDrvReleasePoolObj
+                0x00000000200073cc      0x118 obj/driver.o
+                0x00000000200073cc                _SlDrvReleasePoolObj
+ .text._SlDrvDataReadOp
+                0x00000000200074e4      0x164 obj/driver.o
+                0x00000000200074e4                _SlDrvDataReadOp
+ .text._SlFindAndSetActiveObj
+                0x0000000020007648       0xb8 obj/driver.o
+                0x0000000020007648                _SlFindAndSetActiveObj
+ .text._SlDrvMsgRead
+                0x0000000020007700      0x3c4 obj/driver.o
+                0x0000000020007700                _SlDrvMsgRead
+ .text._SlDrvMsgReadCmdCtx
+                0x0000000020007ac4       0xb8 obj/driver.o
+                0x0000000020007ac4                _SlDrvMsgReadCmdCtx
+ .text._SlDrvCmdOp
+                0x0000000020007b7c       0x5c obj/driver.o
+                0x0000000020007b7c                _SlDrvCmdOp
+ .text._SlDrvBasicCmd
+                0x0000000020007bd8       0x30 obj/driver.o
+                0x0000000020007bd8                _SlDrvBasicCmd
+ .text._SlDrvMsgReadSpawnCtx
+                0x0000000020007c08       0x9c obj/driver.o
+                0x0000000020007c08                _SlDrvMsgReadSpawnCtx
+ .text.HostIntHanlder
+                0x0000000020007ca4       0x14 obj/cc_pal.o
+                0x0000000020007ca4                HostIntHanlder
+ .text.DmaSpiSwIntHandler
+                0x0000000020007cb8       0x24 obj/cc_pal.o
+                0x0000000020007cb8                DmaSpiSwIntHandler
+ .text.spi_Read_CPU
+                0x0000000020007cdc       0x58 obj/cc_pal.o
+                0x0000000020007cdc                spi_Read_CPU
+ .text.spi_Write_CPU
+                0x0000000020007d34       0x58 obj/cc_pal.o
+                0x0000000020007d34                spi_Write_CPU
+ .text.spi_Close
+                0x0000000020007d8c       0x78 obj/cc_pal.o
+                0x0000000020007d8c                spi_Close
+ .text.NwpRegisterInterruptHandler
+                0x0000000020007e04       0x4c obj/cc_pal.o
+                0x0000000020007e04                NwpRegisterInterruptHandler
+ .text.NwpMaskInterrupt
+                0x0000000020007e50        0xc obj/cc_pal.o
+                0x0000000020007e50                NwpMaskInterrupt
+ .text.NwpUnMaskInterrupt
+                0x0000000020007e5c        0xc obj/cc_pal.o
+                0x0000000020007e5c                NwpUnMaskInterrupt
+ .text.NwpPowerOn
+                0x0000000020007e68       0x30 obj/cc_pal.o
+                0x0000000020007e68                NwpPowerOn
+ .text.NwpPowerOff
+                0x0000000020007e98       0x3c obj/cc_pal.o
+                0x0000000020007e98                NwpPowerOff
+ .text.NwpPowerOnPreamble
+                0x0000000020007ed4       0x78 obj/cc_pal.o
+                0x0000000020007ed4                NwpPowerOnPreamble
+ .text.cc_UDMAChannelSelect
+                0x0000000020007f4c       0x18 obj/cc_pal.o
+                0x0000000020007f4c                cc_UDMAChannelSelect
+ .text.spi_Open
+                0x0000000020007f64      0x104 obj/cc_pal.o
+                0x0000000020007f64                spi_Open
+ .text.cc_SetupTransfer
+                0x0000000020008068       0x44 obj/cc_pal.o
+                0x0000000020008068                cc_SetupTransfer
+ .text.SetupDMAReceive
+                0x00000000200080ac       0x70 obj/cc_pal.o
+                0x00000000200080ac                SetupDMAReceive
+ .text.spi_Read
+                0x000000002000811c       0xc0 obj/cc_pal.o
+                0x000000002000811c                spi_Read
+ .text.SetupDMASend
+                0x00000000200081dc       0x6c obj/cc_pal.o
+                0x00000000200081dc                SetupDMASend
+ .text.spi_Write
+                0x0000000020008248       0x64 obj/cc_pal.o
+                0x0000000020008248                spi_Write
+ .text._SlDrvFlowContInit
+                0x00000000200082ac       0x30 obj/flowcont.o
+                0x00000000200082ac                _SlDrvFlowContInit
+ .text._SlDrvFlowContDeinit
+                0x00000000200082dc       0x2c obj/flowcont.o
+                0x00000000200082dc                _SlDrvFlowContDeinit
+ .text._sl_HandleAsync_DnsGetHostByService
+                0x0000000020008308       0x70 obj/netapp.o
+                0x0000000020008308                _sl_HandleAsync_DnsGetHostByService
+ .text._sl_HandleAsync_DnsGetHostByName
+                0x0000000020008378       0x78 obj/netapp.o
+                0x0000000020008378                _sl_HandleAsync_DnsGetHostByName
+ .text.CopyPingResultsToReport
+                0x00000000200083f0       0x1c obj/netapp.o
+                0x00000000200083f0                CopyPingResultsToReport
+ .text._sl_HandleAsync_PingResponse
+                0x000000002000840c       0x88 obj/netapp.o
+                0x000000002000840c                _sl_HandleAsync_PingResponse
+ .text.sl_NetAppSendTokenValue
+                0x0000000020008494       0x50 obj/netapp.o
+                0x0000000020008494                sl_NetAppSendTokenValue
+ .text._SlDrvNetAppEventHandler
+                0x00000000200084e4       0xd0 obj/netapp.o
+                0x00000000200084e4                _SlDrvNetAppEventHandler
+ .text.memcmp   0x00000000200085b4       0x68 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-memcmp.o)
+                0x00000000200085b4                memcmp
+ .text          0x000000002000861c      0x134 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-memcpy.o)
+                0x000000002000861c                memcpy
+ .text.memset   0x0000000020008750       0x94 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-memset.o)
+                0x0000000020008750                memset
+ .text.strlen   0x00000000200087e4       0x60 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-strlen.o)
+                0x00000000200087e4                strlen
+ *(.plt)
+ *(.gnu.warning)
+ *(.glue_7t)
+ .glue_7t       0x0000000000000000        0x0 linker stubs
+ *(.glue_7)
+ .glue_7        0x0000000000000000        0x0 linker stubs
+                0x0000000020008844                . = ALIGN (0x4)
+ *crtbegin.o(.ctors)
+ *(EXCLUDE_FILE(*crtend.o) .ctors)
+ *(SORT(.ctors.*))
+ *crtend.o(.ctors)
+ *crtbegin.o(.dtors)
+ *(EXCLUDE_FILE(*crtend.o) .dtors)
+ *(SORT(.dtors.*))
+ *crtend.o(.dtors)
+ *(.text*)
+ *(.rodata .rodata.* .gnu.linkonce.r.*)
+ .rodata.str1.4
+                0x0000000020008844       0x13 obj/firmware_loader.o
+                                         0x14 (size before relaxing)
+ *fill*         0x0000000020008857        0x1 
+ .rodata.formatFilesystemCommand.5044
+                0x0000000020008858       0x18 obj/firmware_loader.o
+ .rodata.webSubdirectory.5052
+                0x0000000020008870        0x8 obj/firmware_loader.o
+ .rodata        0x0000000020008878       0x18 obj/tcp_server.o
+ .rodata.str1.4
+                0x0000000020008890       0x14 obj/wy_bl_network_if.o
+ .rodata.FS_NAME.4795
+                0x00000000200088a4       0x14 obj/wy_fs.o
+ .rodata.FS_NAME.4799
+                0x00000000200088b8       0x14 obj/wy_fs.o
+ .rodata.ulReg  0x00000000200088cc       0x10 obj/gpio_if.o
+ .rodata.g_pulEnRegs
+                0x00000000200088dc       0x18 obj/interrupt.o
+ .rodata.g_pulDisRegs
+                0x00000000200088f4       0x18 obj/interrupt.o
+ .rodata.g_pulUnpendRegs
+                0x000000002000890c       0x18 obj/interrupt.o
+ .rodata.g_pulRegs
+                0x0000000020008924       0xd4 obj/interrupt.o
+ .rodata.g_ulPinToPadMap
+                0x00000000200089f8      0x100 obj/pin.o
+ .rodata.PRCM_PeriphRegsList
+                0x0000000020008af8       0xa0 obj/prcm.o
+ .rodata.g_ppulSPIIntMap
+                0x0000000020008b98       0x24 obj/spi.o
+ .rodata.g_ulSPIDmaMaskMap
+                0x0000000020008bbc       0x18 obj/spi.o
+ .rodata._SlSendCmdCtrl
+                0x0000000020008bd4        0x4 obj/socket.o
+                0x0000000020008bd4                _SlSendCmdCtrl
+ .rodata._SlSockSocketCmdCtrl
+                0x0000000020008bd8        0x4 obj/socket.o
+                0x0000000020008bd8                _SlSockSocketCmdCtrl
+ .rodata._SlListenCmdCtrl
+                0x0000000020008bdc        0x4 obj/socket.o
+                0x0000000020008bdc                _SlListenCmdCtrl
+ .rodata._SlSockCloseCmdCtrl
+                0x0000000020008be0        0x4 obj/socket.o
+                0x0000000020008be0                _SlSockCloseCmdCtrl
+ .rodata._SlRecvCmdCtrl
+                0x0000000020008be4        0x4 obj/socket.o
+                0x0000000020008be4                _SlRecvCmdCtrl
+ .rodata._SlAcceptCmdCtrl
+                0x0000000020008be8        0x4 obj/socket.o
+                0x0000000020008be8                _SlAcceptCmdCtrl
+ .rodata._SlSetSockOptCmdCtrl
+                0x0000000020008bec        0x4 obj/socket.o
+                0x0000000020008bec                _SlSetSockOptCmdCtrl
+ .rodata        0x0000000020008bf0       0x14 obj/fs.o
+ .rodata._SlFsDeleteCmdCtrl
+                0x0000000020008c04        0x4 obj/fs.o
+                0x0000000020008c04                _SlFsDeleteCmdCtrl
+ .rodata._SlFsReadCmdCtrl
+                0x0000000020008c08        0x4 obj/fs.o
+                0x0000000020008c08                _SlFsReadCmdCtrl
+ .rodata._SlFsWriteCmdCtrl
+                0x0000000020008c0c        0x4 obj/fs.o
+                0x0000000020008c0c                _SlFsWriteCmdCtrl
+ .rodata._SlFsCloseCmdCtrl
+                0x0000000020008c10        0x4 obj/fs.o
+                0x0000000020008c10                _SlFsCloseCmdCtrl
+ .rodata._SlFsGetInfoCmdCtrl
+                0x0000000020008c14        0x4 obj/fs.o
+                0x0000000020008c14                _SlFsGetInfoCmdCtrl
+ .rodata._SlFsOpenCmdCtrl
+                0x0000000020008c18        0x4 obj/fs.o
+                0x0000000020008c18                _SlFsOpenCmdCtrl
+ .rodata._SlDeviceGetCmdCtrl
+                0x0000000020008c1c        0x4 obj/device.o
+                0x0000000020008c1c                _SlDeviceGetCmdCtrl
+ .rodata._SlStopCmdCtrl
+                0x0000000020008c20        0x4 obj/device.o
+                0x0000000020008c20                _SlStopCmdCtrl
+ .rodata._SlWlanCfgSetCmdCtrl
+                0x0000000020008c24        0x4 obj/wlan.o
+                0x0000000020008c24                _SlWlanCfgSetCmdCtrl
+ .rodata._SlWlanSetModeCmdCtrl
+                0x0000000020008c28        0x4 obj/wlan.o
+                0x0000000020008c28                _SlWlanSetModeCmdCtrl
+ .rodata._SlPolicySetCmdCtrl
+                0x0000000020008c2c        0x4 obj/wlan.o
+                0x0000000020008c2c                _SlPolicySetCmdCtrl
+ .rodata.g_H2NSyncPattern
+                0x0000000020008c30        0x8 obj/driver.o
+                0x0000000020008c30                g_H2NSyncPattern
+ .rodata.g_H2NCnysPattern
+                0x0000000020008c38        0x8 obj/driver.o
+                0x0000000020008c38                g_H2NCnysPattern
+ .rodata._SlActionLookupTable
+                0x0000000020008c40       0x38 obj/driver.o
+                0x0000000020008c40                _SlActionLookupTable
+ .rodata._SlNetAppSendTokenValueCmdCtrl
+                0x0000000020008c78        0x4 obj/netapp.o
+                0x0000000020008c78                _SlNetAppSendTokenValueCmdCtrl
+ *(.ARM.extab* .gnu.linkonce.armextab.*)
+ *(.init)
+ *(.fini)
+                0x0000000020008c80                . = ALIGN (0x8)
+ *fill*         0x0000000020008c7c        0x4 
+                0x0000000020008c80                _etext = .
+
+.vfp11_veneer   0x0000000020008c80        0x0
+ .vfp11_veneer  0x0000000000000000        0x0 linker stubs
+
+.v4_bx          0x0000000020008c80        0x0
+ .v4_bx         0x0000000000000000        0x0 linker stubs
+
+.iplt           0x0000000020008c80        0x0
+ .iplt          0x0000000000000000        0x0 obj/main.o
+
+.rel.dyn        0x0000000020008c80        0x0
+ .rel.iplt      0x0000000000000000        0x0 obj/main.o
+
+.ARM            0x0000000020008c80        0x0
+                0x0000000020008c80                __exidx_start = .
+ *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+                0x0000000020008c80                __exidx_end = .
+                0x0000000020008c80                __init_data = .
+
+.data           0x0000000020008c80        0x0
+                0x0000000020008c80                _data = .
+ *(.jcr)
+ *(.got.plt)
+ *(.got)
+ *(.shdata)
+ *(.data .data.* .gnu.linkonce.d.*)
+                0x0000000020008c80                . = ALIGN (0x8)
+                0x0000000020008c80                _edata = .
+
+.igot.plt       0x0000000020008c80        0x0
+ .igot.plt      0x0000000000000000        0x0 obj/main.o
+
+.bss            0x0000000020008c80     0x1710
+                0x0000000020008c80                _bss = .
+ *(.shbss)
+ *(.bss .bss.* .gnu.linkonce.b.*)
+ .bss.g_ContextReadyFlag
+                0x0000000020008c80        0x4 obj/firmware_loader.o
+ .bss.g_ulStatus
+                0x0000000020008c84        0x4 obj/wy_bl_network_if.o
+ .bss.Filesystem
+                0x0000000020008c88      0x500 obj/wy_fs.o
+ .bss.pui32Stack
+                0x0000000020009188     0x1000 obj/startup_gcc.o
+ .bss.g_uiLED3Port
+                0x000000002000a188        0x4 obj/gpio_if.o
+                0x000000002000a188                g_uiLED3Port
+ .bss.g_uiLED1Port
+                0x000000002000a18c        0x4 obj/gpio_if.o
+                0x000000002000a18c                g_uiLED1Port
+ .bss.g_uiLED2Port
+                0x000000002000a190        0x4 obj/gpio_if.o
+                0x000000002000a190                g_uiLED2Port
+ .bss.pPingCallBackFunc
+                0x000000002000a194        0x4 obj/driver.o
+                0x000000002000a194                pPingCallBackFunc
+ .bss.g_pCB     0x000000002000a198        0x4 obj/driver.o
+                0x000000002000a198                g_pCB
+ .bss.g_pHostIntHdl
+                0x000000002000a19c        0x4 obj/cc_pal.o
+                0x000000002000a19c                g_pHostIntHdl
+ .bss.g_SpiFd   0x000000002000a1a0        0x4 obj/cc_pal.o
+                0x000000002000a1a0                g_SpiFd
+ .bss.g_ucDMAEnabled
+                0x000000002000a1a4        0x1 obj/cc_pal.o
+                0x000000002000a1a4                g_ucDMAEnabled
+ *fill*         0x000000002000a1a5        0x3 
+ .bss.g_len     0x000000002000a1a8        0x4 obj/cc_pal.o
+                0x000000002000a1a8                g_len
+ *(COMMON)
+ COMMON         0x000000002000a1ac        0x3 obj/gpio_if.o
+                0x000000002000a1ac                g_ucLED1Pin
+                0x000000002000a1ad                g_ucLED2Pin
+                0x000000002000a1ae                g_ucLED3Pin
+ *fill*         0x000000002000a1af        0x1 
+ COMMON         0x000000002000a1b0       0x28 obj/nonos.o
+                0x000000002000a1b0                g__SlNonOsCB
+ COMMON         0x000000002000a1d8      0x164 obj/driver.o
+                0x000000002000a1d8                g_StatMem
+ COMMON         0x000000002000a33c       0x54 obj/cc_pal.o
+                0x000000002000a33c                g_cDummy
+                0x000000002000a340                g_ucDinDout
+                0x000000002000a390                _ebss = .
+
+.heap           0x000000002000a390      0x100
+                0x000000002000a390                _heap = .
+                0x000000002000a490                . = (. + HEAP_SIZE)
+ *fill*         0x000000002000a390      0x100 
+                0x000000002000a490                . = ALIGN (0x8)
+                0x000000002000a490                _eheap = .
+LOAD obj/main.o
+LOAD obj/pinmux.o
+LOAD obj/firmware_loader.o
+LOAD obj/tcp_server.o
+LOAD obj/wy_bl_network_if.o
+LOAD obj/wy_fs.o
+LOAD obj/startup_gcc.o
+LOAD obj/uart_if.o
+LOAD obj/gpio_if.o
+LOAD obj/cpu.o
+LOAD obj/flash.o
+LOAD obj/interrupt.o
+LOAD obj/pin.o
+LOAD obj/prcm.o
+LOAD obj/uart.o
+LOAD obj/utils.o
+LOAD obj/shamd5.o
+LOAD obj/udma.o
+LOAD obj/spi.o
+LOAD obj/gpio.o
+LOAD obj/socket.o
+LOAD obj/nonos.o
+LOAD obj/fs.o
+LOAD obj/device.o
+LOAD obj/wlan.o
+LOAD obj/driver.o
+LOAD obj/netcfg.o
+LOAD obj/cc_pal.o
+LOAD obj/flowcont.o
+LOAD obj/netapp.o
+LOAD /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libm.a
+LOAD /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a
+LOAD /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/libgcc.a
+OUTPUT(exe/WyLight_cc_bl.axf elf32-littlearm)
+
+.debug_info     0x0000000000000000    0x13cc4
+ .debug_info    0x0000000000000000      0x3f2 obj/main.o
+ .debug_info    0x00000000000003f2      0x1f7 obj/pinmux.o
+ .debug_info    0x00000000000005e9      0xb36 obj/firmware_loader.o
+ .debug_info    0x000000000000111f      0x765 obj/tcp_server.o
+ .debug_info    0x0000000000001884      0xe44 obj/wy_bl_network_if.o
+ .debug_info    0x00000000000026c8      0xbb4 obj/wy_fs.o
+ .debug_info    0x000000000000327c      0x1ea obj/startup_gcc.o
+ .debug_info    0x0000000000003466      0x120 obj/uart_if.o
+ .debug_info    0x0000000000003586      0x95c obj/gpio_if.o
+ .debug_info    0x0000000000003ee2       0xf6 obj/cpu.o
+ .debug_info    0x0000000000003fd8      0x3f2 obj/interrupt.o
+ .debug_info    0x00000000000043ca      0x5f4 obj/pin.o
+ .debug_info    0x00000000000049be      0x976 obj/prcm.o
+ .debug_info    0x0000000000005334       0x50 obj/utils.o
+ .debug_info    0x0000000000005384      0x710 obj/shamd5.o
+ .debug_info    0x0000000000005a94      0x5fa obj/udma.o
+ .debug_info    0x000000000000608e      0xc55 obj/spi.o
+ .debug_info    0x0000000000006ce3      0x477 obj/gpio.o
+ .debug_info    0x000000000000715a     0x2203 obj/socket.o
+ .debug_info    0x000000000000935d      0x645 obj/nonos.o
+ .debug_info    0x00000000000099a2      0xe08 obj/fs.o
+ .debug_info    0x000000000000a7aa     0x11a0 obj/device.o
+ .debug_info    0x000000000000b94a     0x2048 obj/wlan.o
+ .debug_info    0x000000000000d992     0x2ca6 obj/driver.o
+ .debug_info    0x0000000000010638     0x102b obj/cc_pal.o
+ .debug_info    0x0000000000011663      0x572 obj/flowcont.o
+ .debug_info    0x0000000000011bd5     0x20ef obj/netapp.o
+
+.debug_abbrev   0x0000000000000000     0x3488
+ .debug_abbrev  0x0000000000000000      0x16f obj/main.o
+ .debug_abbrev  0x000000000000016f       0x95 obj/pinmux.o
+ .debug_abbrev  0x0000000000000204      0x29c obj/firmware_loader.o
+ .debug_abbrev  0x00000000000004a0      0x215 obj/tcp_server.o
+ .debug_abbrev  0x00000000000006b5      0x2d4 obj/wy_bl_network_if.o
+ .debug_abbrev  0x0000000000000989      0x244 obj/wy_fs.o
+ .debug_abbrev  0x0000000000000bcd      0x11a obj/startup_gcc.o
+ .debug_abbrev  0x0000000000000ce7       0xd7 obj/uart_if.o
+ .debug_abbrev  0x0000000000000dbe      0x1f5 obj/gpio_if.o
+ .debug_abbrev  0x0000000000000fb3       0xb0 obj/cpu.o
+ .debug_abbrev  0x0000000000001063      0x180 obj/interrupt.o
+ .debug_abbrev  0x00000000000011e3      0x11c obj/pin.o
+ .debug_abbrev  0x00000000000012ff      0x27e obj/prcm.o
+ .debug_abbrev  0x000000000000157d       0x48 obj/utils.o
+ .debug_abbrev  0x00000000000015c5      0x1e5 obj/shamd5.o
+ .debug_abbrev  0x00000000000017aa      0x1bd obj/udma.o
+ .debug_abbrev  0x0000000000001967      0x1e8 obj/spi.o
+ .debug_abbrev  0x0000000000001b4f      0x17a obj/gpio.o
+ .debug_abbrev  0x0000000000001cc9      0x343 obj/socket.o
+ .debug_abbrev  0x000000000000200c      0x168 obj/nonos.o
+ .debug_abbrev  0x0000000000002174      0x292 obj/fs.o
+ .debug_abbrev  0x0000000000002406      0x329 obj/device.o
+ .debug_abbrev  0x000000000000272f      0x2aa obj/wlan.o
+ .debug_abbrev  0x00000000000029d9      0x374 obj/driver.o
+ .debug_abbrev  0x0000000000002d4d      0x270 obj/cc_pal.o
+ .debug_abbrev  0x0000000000002fbd      0x16a obj/flowcont.o
+ .debug_abbrev  0x0000000000003127      0x361 obj/netapp.o
+
+.debug_aranges  0x0000000000000000      0xd00
+ .debug_aranges
+                0x0000000000000000       0x20 obj/main.o
+ .debug_aranges
+                0x0000000000000020       0x20 obj/pinmux.o
+ .debug_aranges
+                0x0000000000000040       0x40 obj/firmware_loader.o
+ .debug_aranges
+                0x0000000000000080       0x28 obj/tcp_server.o
+ .debug_aranges
+                0x00000000000000a8       0x60 obj/wy_bl_network_if.o
+ .debug_aranges
+                0x0000000000000108       0x60 obj/wy_fs.o
+ .debug_aranges
+                0x0000000000000168       0x48 obj/startup_gcc.o
+ .debug_aranges
+                0x00000000000001b0       0x38 obj/uart_if.o
+ .debug_aranges
+                0x00000000000001e8       0x60 obj/gpio_if.o
+ .debug_aranges
+                0x0000000000000248       0x48 obj/cpu.o
+ .debug_aranges
+                0x0000000000000290       0x98 obj/interrupt.o
+ .debug_aranges
+                0x0000000000000328       0x90 obj/pin.o
+ .debug_aranges
+                0x00000000000003b8      0x170 obj/prcm.o
+ .debug_aranges
+                0x0000000000000528       0x20 obj/utils.o
+ .debug_aranges
+                0x0000000000000548       0xb0 obj/shamd5.o
+ .debug_aranges
+                0x00000000000005f8       0xd8 obj/udma.o
+ .debug_aranges
+                0x00000000000006d0       0xe0 obj/spi.o
+ .debug_aranges
+                0x00000000000007b0       0x90 obj/gpio.o
+ .debug_aranges
+                0x0000000000000840       0xd0 obj/socket.o
+ .debug_aranges
+                0x0000000000000910       0x38 obj/nonos.o
+ .debug_aranges
+                0x0000000000000948       0x58 obj/fs.o
+ .debug_aranges
+                0x00000000000009a0       0x70 obj/device.o
+ .debug_aranges
+                0x0000000000000a10       0xb0 obj/wlan.o
+ .debug_aranges
+                0x0000000000000ac0       0xc8 obj/driver.o
+ .debug_aranges
+                0x0000000000000b88       0xa8 obj/cc_pal.o
+ .debug_aranges
+                0x0000000000000c30       0x28 obj/flowcont.o
+ .debug_aranges
+                0x0000000000000c58       0xa8 obj/netapp.o
+
+.debug_ranges   0x0000000000000000      0xbc8
+ .debug_ranges  0x0000000000000000       0x10 obj/main.o
+ .debug_ranges  0x0000000000000010       0x10 obj/pinmux.o
+ .debug_ranges  0x0000000000000020       0x30 obj/firmware_loader.o
+ .debug_ranges  0x0000000000000050       0x48 obj/tcp_server.o
+ .debug_ranges  0x0000000000000098       0x50 obj/wy_bl_network_if.o
+ .debug_ranges  0x00000000000000e8       0x50 obj/wy_fs.o
+ .debug_ranges  0x0000000000000138       0x38 obj/startup_gcc.o
+ .debug_ranges  0x0000000000000170       0x28 obj/uart_if.o
+ .debug_ranges  0x0000000000000198       0x50 obj/gpio_if.o
+ .debug_ranges  0x00000000000001e8       0x38 obj/cpu.o
+ .debug_ranges  0x0000000000000220       0x88 obj/interrupt.o
+ .debug_ranges  0x00000000000002a8       0x80 obj/pin.o
+ .debug_ranges  0x0000000000000328      0x160 obj/prcm.o
+ .debug_ranges  0x0000000000000488       0x10 obj/utils.o
+ .debug_ranges  0x0000000000000498       0xa0 obj/shamd5.o
+ .debug_ranges  0x0000000000000538       0xc8 obj/udma.o
+ .debug_ranges  0x0000000000000600       0xd0 obj/spi.o
+ .debug_ranges  0x00000000000006d0       0x80 obj/gpio.o
+ .debug_ranges  0x0000000000000750       0xc0 obj/socket.o
+ .debug_ranges  0x0000000000000810       0x28 obj/nonos.o
+ .debug_ranges  0x0000000000000838       0x48 obj/fs.o
+ .debug_ranges  0x0000000000000880       0x60 obj/device.o
+ .debug_ranges  0x00000000000008e0       0xb8 obj/wlan.o
+ .debug_ranges  0x0000000000000998       0xe8 obj/driver.o
+ .debug_ranges  0x0000000000000a80       0x98 obj/cc_pal.o
+ .debug_ranges  0x0000000000000b18       0x18 obj/flowcont.o
+ .debug_ranges  0x0000000000000b30       0x98 obj/netapp.o
+
+.debug_line     0x0000000000000000     0x3db3
+ .debug_line    0x0000000000000000      0x10b obj/main.o
+ .debug_line    0x000000000000010b       0x8a obj/pinmux.o
+ .debug_line    0x0000000000000195      0x289 obj/firmware_loader.o
+ .debug_line    0x000000000000041e      0x223 obj/tcp_server.o
+ .debug_line    0x0000000000000641      0x246 obj/wy_bl_network_if.o
+ .debug_line    0x0000000000000887      0x1f9 obj/wy_fs.o
+ .debug_line    0x0000000000000a80      0x150 obj/startup_gcc.o
+ .debug_line    0x0000000000000bd0       0x77 obj/uart_if.o
+ .debug_line    0x0000000000000c47      0x122 obj/gpio_if.o
+ .debug_line    0x0000000000000d69       0xa5 obj/cpu.o
+ .debug_line    0x0000000000000e0e      0x1c8 obj/interrupt.o
+ .debug_line    0x0000000000000fd6      0x167 obj/pin.o
+ .debug_line    0x000000000000113d      0x3e8 obj/prcm.o
+ .debug_line    0x0000000000001525       0x45 obj/utils.o
+ .debug_line    0x000000000000156a      0x38a obj/shamd5.o
+ .debug_line    0x00000000000018f4      0x28c obj/udma.o
+ .debug_line    0x0000000000001b80      0x331 obj/spi.o
+ .debug_line    0x0000000000001eb1      0x1aa obj/gpio.o
+ .debug_line    0x000000000000205b      0x473 obj/socket.o
+ .debug_line    0x00000000000024ce      0x151 obj/nonos.o
+ .debug_line    0x000000000000261f      0x246 obj/fs.o
+ .debug_line    0x0000000000002865      0x2c3 obj/device.o
+ .debug_line    0x0000000000002b28      0x3b5 obj/wlan.o
+ .debug_line    0x0000000000002edd      0x653 obj/driver.o
+ .debug_line    0x0000000000003530      0x3a4 obj/cc_pal.o
+ .debug_line    0x00000000000038d4      0x10b obj/flowcont.o
+ .debug_line    0x00000000000039df      0x3d4 obj/netapp.o
+
+.debug_str      0x0000000000000000     0x5465
+ .debug_str     0x0000000000000000      0x39e obj/main.o
+                                        0x402 (size before relaxing)
+ .debug_str     0x000000000000039e       0x5e obj/pinmux.o
+                                        0x16a (size before relaxing)
+ .debug_str     0x00000000000003fc      0x347 obj/firmware_loader.o
+                                        0x531 (size before relaxing)
+ .debug_str     0x0000000000000743      0x1d8 obj/tcp_server.o
+                                        0x3d6 (size before relaxing)
+ .debug_str     0x000000000000091b      0x8a7 obj/wy_bl_network_if.o
+                                        0xb0a (size before relaxing)
+ .debug_str     0x00000000000011c2      0x262 obj/wy_fs.o
+                                        0x52a (size before relaxing)
+ .debug_str     0x0000000000001424       0xa8 obj/startup_gcc.o
+                                        0x240 (size before relaxing)
+ .debug_str     0x00000000000014cc       0x3c obj/uart_if.o
+                                        0x1b4 (size before relaxing)
+ .debug_str     0x0000000000001508      0x17d obj/gpio_if.o
+                                        0x453 (size before relaxing)
+ .debug_str     0x0000000000001685       0x65 obj/cpu.o
+                                        0x14d (size before relaxing)
+ .debug_str     0x00000000000016ea      0x156 obj/interrupt.o
+                                        0x308 (size before relaxing)
+ .debug_str     0x0000000000001840       0xf9 obj/pin.o
+                                        0x23e (size before relaxing)
+ .debug_str     0x0000000000001939      0x4f6 obj/prcm.o
+                                        0x6cd (size before relaxing)
+ .debug_str     0x0000000000001e2f       0x27 obj/utils.o
+                                        0x10f (size before relaxing)
+ .debug_str     0x0000000000001e56      0x1f2 obj/shamd5.o
+                                        0x417 (size before relaxing)
+ .debug_str     0x0000000000002048      0x30a obj/udma.o
+                                        0x450 (size before relaxing)
+ .debug_str     0x0000000000002352      0x2dd obj/spi.o
+                                        0x49b (size before relaxing)
+ .debug_str     0x000000000000262f       0xca obj/gpio.o
+                                        0x2ac (size before relaxing)
+ .debug_str     0x00000000000026f9      0xaf8 obj/socket.o
+                                        0xdf7 (size before relaxing)
+ .debug_str     0x00000000000031f1       0x98 obj/nonos.o
+                                        0x5d2 (size before relaxing)
+ .debug_str     0x0000000000003289      0x2a5 obj/fs.o
+                                        0x967 (size before relaxing)
+ .debug_str     0x000000000000352e      0x2f3 obj/device.o
+                                        0xa4a (size before relaxing)
+ .debug_str     0x0000000000003821      0xd1b obj/wlan.o
+                                       0x10ca (size before relaxing)
+ .debug_str     0x000000000000453c      0x420 obj/driver.o
+                                        0xf3a (size before relaxing)
+ .debug_str     0x000000000000495c      0x1d5 obj/cc_pal.o
+                                        0x62e (size before relaxing)
+ .debug_str     0x0000000000004b31       0x1f obj/flowcont.o
+                                        0x551 (size before relaxing)
+ .debug_str     0x0000000000004b50      0x915 obj/netapp.o
+                                       0x12fe (size before relaxing)
+
+.comment        0x0000000000000000       0x70
+ .comment       0x0000000000000000       0x70 obj/main.o
+                                         0x71 (size before relaxing)
+ .comment       0x0000000000000000       0x71 obj/pinmux.o
+ .comment       0x0000000000000000       0x71 obj/firmware_loader.o
+ .comment       0x0000000000000000       0x71 obj/tcp_server.o
+ .comment       0x0000000000000000       0x71 obj/wy_bl_network_if.o
+ .comment       0x0000000000000000       0x71 obj/wy_fs.o
+ .comment       0x0000000000000000       0x71 obj/startup_gcc.o
+ .comment       0x0000000000000000       0x71 obj/uart_if.o
+ .comment       0x0000000000000000       0x71 obj/gpio_if.o
+ .comment       0x0000000000000000       0x71 obj/cpu.o
+ .comment       0x0000000000000000       0x71 obj/interrupt.o
+ .comment       0x0000000000000000       0x71 obj/pin.o
+ .comment       0x0000000000000000       0x71 obj/prcm.o
+ .comment       0x0000000000000000       0x71 obj/utils.o
+ .comment       0x0000000000000000       0x71 obj/shamd5.o
+ .comment       0x0000000000000000       0x71 obj/udma.o
+ .comment       0x0000000000000000       0x71 obj/spi.o
+ .comment       0x0000000000000000       0x71 obj/gpio.o
+ .comment       0x0000000000000000       0x71 obj/socket.o
+ .comment       0x0000000000000000       0x71 obj/nonos.o
+ .comment       0x0000000000000000       0x71 obj/fs.o
+ .comment       0x0000000000000000       0x71 obj/device.o
+ .comment       0x0000000000000000       0x71 obj/wlan.o
+ .comment       0x0000000000000000       0x71 obj/driver.o
+ .comment       0x0000000000000000       0x71 obj/cc_pal.o
+ .comment       0x0000000000000000       0x71 obj/flowcont.o
+ .comment       0x0000000000000000       0x71 obj/netapp.o
+
+.ARM.attributes
+                0x0000000000000000       0x31
+ .ARM.attributes
+                0x0000000000000000       0x33 obj/main.o
+ .ARM.attributes
+                0x0000000000000033       0x33 obj/pinmux.o
+ .ARM.attributes
+                0x0000000000000066       0x33 obj/firmware_loader.o
+ .ARM.attributes
+                0x0000000000000099       0x33 obj/tcp_server.o
+ .ARM.attributes
+                0x00000000000000cc       0x33 obj/wy_bl_network_if.o
+ .ARM.attributes
+                0x00000000000000ff       0x33 obj/wy_fs.o
+ .ARM.attributes
+                0x0000000000000132       0x33 obj/startup_gcc.o
+ .ARM.attributes
+                0x0000000000000165       0x33 obj/uart_if.o
+ .ARM.attributes
+                0x0000000000000198       0x33 obj/gpio_if.o
+ .ARM.attributes
+                0x00000000000001cb       0x33 obj/cpu.o
+ .ARM.attributes
+                0x00000000000001fe       0x33 obj/interrupt.o
+ .ARM.attributes
+                0x0000000000000231       0x33 obj/pin.o
+ .ARM.attributes
+                0x0000000000000264       0x33 obj/prcm.o
+ .ARM.attributes
+                0x0000000000000297       0x33 obj/utils.o
+ .ARM.attributes
+                0x00000000000002ca       0x33 obj/shamd5.o
+ .ARM.attributes
+                0x00000000000002fd       0x33 obj/udma.o
+ .ARM.attributes
+                0x0000000000000330       0x33 obj/spi.o
+ .ARM.attributes
+                0x0000000000000363       0x33 obj/gpio.o
+ .ARM.attributes
+                0x0000000000000396       0x33 obj/socket.o
+ .ARM.attributes
+                0x00000000000003c9       0x33 obj/nonos.o
+ .ARM.attributes
+                0x00000000000003fc       0x33 obj/fs.o
+ .ARM.attributes
+                0x000000000000042f       0x33 obj/device.o
+ .ARM.attributes
+                0x0000000000000462       0x33 obj/wlan.o
+ .ARM.attributes
+                0x0000000000000495       0x33 obj/driver.o
+ .ARM.attributes
+                0x00000000000004c8       0x33 obj/cc_pal.o
+ .ARM.attributes
+                0x00000000000004fb       0x33 obj/flowcont.o
+ .ARM.attributes
+                0x000000000000052e       0x33 obj/netapp.o
+ .ARM.attributes
+                0x0000000000000561       0x2e /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-memcmp.o)
+ .ARM.attributes
+                0x000000000000058f       0x1c /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-memcpy.o)
+ .ARM.attributes
+                0x00000000000005ab       0x2e /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-memset.o)
+ .ARM.attributes
+                0x00000000000005d9       0x2e /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-strlen.o)
+
+.debug_frame    0x0000000000000000     0x2038
+ .debug_frame   0x0000000000000000       0x28 obj/main.o
+ .debug_frame   0x0000000000000028       0x28 obj/pinmux.o
+ .debug_frame   0x0000000000000050       0xa0 obj/firmware_loader.o
+ .debug_frame   0x00000000000000f0       0x54 obj/tcp_server.o
+ .debug_frame   0x0000000000000144       0xc8 obj/wy_bl_network_if.o
+ .debug_frame   0x000000000000020c      0x110 obj/wy_fs.o
+ .debug_frame   0x000000000000031c       0x78 obj/startup_gcc.o
+ .debug_frame   0x0000000000000394       0x5c obj/uart_if.o
+ .debug_frame   0x00000000000003f0       0xe4 obj/gpio_if.o
+ .debug_frame   0x00000000000004d4       0x70 obj/cpu.o
+ .debug_frame   0x0000000000000544      0x138 obj/interrupt.o
+ .debug_frame   0x000000000000067c      0x15c obj/pin.o
+ .debug_frame   0x00000000000007d8      0x368 obj/prcm.o
+ .debug_frame   0x0000000000000b40       0x20 obj/utils.o
+ .debug_frame   0x0000000000000b60      0x1ac obj/shamd5.o
+ .debug_frame   0x0000000000000d0c      0x1c4 obj/udma.o
+ .debug_frame   0x0000000000000ed0      0x1fc obj/spi.o
+ .debug_frame   0x00000000000010cc      0x124 obj/gpio.o
+ .debug_frame   0x00000000000011f0      0x270 obj/socket.o
+ .debug_frame   0x0000000000001460       0x78 obj/nonos.o
+ .debug_frame   0x00000000000014d8      0x10c obj/fs.o
+ .debug_frame   0x00000000000015e4      0x130 obj/device.o
+ .debug_frame   0x0000000000001714      0x224 obj/wlan.o
+ .debug_frame   0x0000000000001938      0x270 obj/driver.o
+ .debug_frame   0x0000000000001ba8      0x1ec obj/cc_pal.o
+ .debug_frame   0x0000000000001d94       0x40 obj/flowcont.o
+ .debug_frame   0x0000000000001dd4      0x1ec obj/netapp.o
+ .debug_frame   0x0000000000001fc0       0x2c /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-memcmp.o)
+ .debug_frame   0x0000000000001fec       0x2c /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-memset.o)
+ .debug_frame   0x0000000000002018       0x20 /usr/local/gcc-arm-none-eabi-4_8-2014q3/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/libc.a(lib_a-strlen.o)
+
+.debug_loc      0x0000000000000000     0x97ab
+ .debug_loc     0x0000000000000000      0x319 obj/firmware_loader.o
+ .debug_loc     0x0000000000000319      0x162 obj/tcp_server.o
+ .debug_loc     0x000000000000047b      0x149 obj/wy_bl_network_if.o
+ .debug_loc     0x00000000000005c4      0x5fe obj/wy_fs.o
+ .debug_loc     0x0000000000000bc2       0x43 obj/startup_gcc.o
+ .debug_loc     0x0000000000000c05      0x7be obj/gpio_if.o
+ .debug_loc     0x00000000000013c3      0x185 obj/interrupt.o
+ .debug_loc     0x0000000000001548      0x5dd obj/pin.o
+ .debug_loc     0x0000000000001b25      0x76a obj/prcm.o
+ .debug_loc     0x000000000000228f      0x612 obj/shamd5.o
+ .debug_loc     0x00000000000028a1      0x671 obj/udma.o
+ .debug_loc     0x0000000000002f12      0xfdd obj/spi.o
+ .debug_loc     0x0000000000003eef      0x2fe obj/gpio.o
+ .debug_loc     0x00000000000041ed     0x108f obj/socket.o
+ .debug_loc     0x000000000000527c      0x1f0 obj/nonos.o
+ .debug_loc     0x000000000000546c      0x688 obj/fs.o
+ .debug_loc     0x0000000000005af4      0x758 obj/device.o
+ .debug_loc     0x000000000000624c      0xcd9 obj/wlan.o
+ .debug_loc     0x0000000000006f25     0x11dd obj/driver.o
+ .debug_loc     0x0000000000008102      0x6c3 obj/cc_pal.o
+ .debug_loc     0x00000000000087c5       0x30 obj/flowcont.o
+ .debug_loc     0x00000000000087f5      0xfb6 obj/netapp.o

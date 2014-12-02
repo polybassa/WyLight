@@ -1,0 +1,34 @@
+CC8E Version 1.3F, Copyright (c) B Knudsen Data, Norway 2001-2012
+ --> FREE edition, 8-16 bit int, 24 bit float, 128k code words, reduced optim.
+./firmware/main.c:
+  1. Dec 2014  23:24
+Warning[1] Z:\Users\nilsweiss\Dropbox\Wifly_Light\Software\firmware\main.c 254 : "Version String at 0x3000!!! check for overlapping code"
+ Chip = 18F26K22
+Warning[2] Z:\Users\nilsweiss\Dropbox\Wifly_Light\Software\firmware\main.c 256 : Local variables and parameters in uncalled functions are not allocated (64)
+ (The application contains non-library functions that are not called. Local
+ variables in these functions (option -wU) are not allocated to save space)
+Warning[3] Z:\Users\nilsweiss\Dropbox\Wifly_Light\Software\firmware\main.c 256 : Not enough space in the access bank
+ (One or more variables could not be located in the access bank, and will be
+ moved to bank 0. Option -cae changes this warning to an error message)
+ RAM : ======== ======== ======== ======== ====.... ........ ........ ........
+  40h: ........ ........ ........ .......7 ........ ........ ........ ........
+  80h: ........ ........ ........ ........ ........ ........ ........ ........
+  C0h: ........ ........ ........ ........ ........ ........ ........ ........
+ Bank  0:0    1:122  2:142  3:256  4:256  5:0    6:253  7:0    bytes free
+ Bank  8:0    9:0   10:79  11:256 12:256 13:256 14:256 15:56   bytes free
+RAM usage: 1708 bytes (36 local), 2188 bytes free
+ File 'exe\main.fcs'
+ Optimizing - removed 568 code words (-12 %)
+ File 'exe\main.var'
+ File 'exe\main.asm'
+ File 'exe\main.lst'
+ File 'exe\main.cod'
+ File 'exe\main.occ'
+ Origin statement skips 36 words (0x9A .. 0xE2)
+ File 'exe\main.hex'
+WARNING: File name limit in COD file exceeded (max 64 characters):
+Z:\Users\nilsweiss\Dropbox\Wifly_Light\Software\firmware\18F26K22.h
+ -> string changed to: ./firmware\18F26K22.h
+  ***** SEE README.TXT: COD FILE NAME LIMIT
+Total of 5135 code words (15 %)
+ * Estimated CODE SIZE of full optimization: 4961 code words (-3 %)
