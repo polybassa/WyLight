@@ -20,6 +20,10 @@
 #ifndef __PWM_H_
 #define __PWM_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 //Free_rtos/ti-rtos includes
 #include "osi.h"
 
@@ -32,5 +36,9 @@ extern OsiTaskHandle PwmTaskHandle;
 
 void Pwm_TaskInit(void);
 void Pwm_Task(void *pvParameters);
+	
+#ifdef __cplusplus
+}
+#endif
 
 #endif

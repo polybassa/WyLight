@@ -42,14 +42,14 @@
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_GNU_4.0.compilerID.STRICT_DWARF.1045583200" name="Don't emit DWARF additions beyond selected version (-gstrict-dwarf)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_GNU_4.0.compilerID.STRICT_DWARF" value="true" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_GNU_4.0.compilerID.INCLUDE_PATH.647104477" name="Include paths (-I)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_GNU_4.0.compilerID.INCLUDE_PATH" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${CG_TOOL_INCLUDE_PATH}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;F:\Wifly_Light\Software\cc3200_gcc\simplelink\source&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;F:\Wifly_Light\Software\cc3200_gcc\common&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;F:\Wifly_Light\Software\cc3200_gcc\bl&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;F:\Wifly_Light\Software\cc3200_gcc\inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;F:\Wifly_Light\Software\cc3200_gcc\driverlib&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;F:\Wifly_Light\Software\cc3200_gcc\oslib&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;F:\Wifly_Light\Software\cc3200_gcc\simplelink&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;F:\Wifly_Light\Software\cc3200_gcc\simplelink\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;F:\Wifly_Light\Software\simplelink\source&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;F:\Wifly_Light\Software\common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;F:\Wifly_Light\Software\cc_bl&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;F:\Wifly_Light\Software\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;F:\Wifly_Light\Software\driverlib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;F:\Wifly_Light\Software\oslib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;F:\Wifly_Light\Software\simplelink&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;F:\Wifly_Light\Software\simplelink\include&quot;"/>
 								</option>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_GNU_4.0.compiler.inputType__C_SRCS.501478623" name="C Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_GNU_4.0.compiler.inputType__C_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_GNU_4.0.compiler.inputType__CPP_SRCS.1773310840" name="C++ Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_GNU_4.0.compiler.inputType__CPP_SRCS"/>

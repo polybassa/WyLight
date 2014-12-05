@@ -20,6 +20,10 @@
 #ifndef __BROADCAST_H_
 #define __BROADCAST_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 
 //Common interface includes
@@ -56,5 +60,9 @@ void Broadcast_TaskInit(void);
 void Broadcast_TaskQuit(void);
 void Broadcast_TaskRun(void);
 void Broadcast_Task(void *pvParameters);
+	
+#ifdef __cplusplus
+}
+#endif
 
 #endif

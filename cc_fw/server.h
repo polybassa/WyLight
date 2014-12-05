@@ -20,6 +20,10 @@
 #ifndef _SERVER_H_
 #define _SERVER_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 //Common interface includes
 #include "uart_if.h"
 
@@ -46,7 +50,10 @@ void UdpServer_TaskInit(void);
 void UdpServer_TaskQuit(void);
 void UdpServer_TaskRun(void);
 void UdpServer_Task(void *pvParameters);
-
+	
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _SERVER_H_ */
 

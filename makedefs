@@ -181,16 +181,6 @@ AFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
 CFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
 CPPFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
 
-# The rule for building the object file from each C source file.
-${OBJDIR}/%.o: %.c
-	@if [ 'x${VERBOSE}' = x ];                            \
-	 then                                                 \
-	     echo "  CC    ${<}";                             \
-	 else                                                 \
-	     echo ${CC} ${CFLAGS} -D${COMPILER} -o ${@} ${<}; \
-	 fi
-	 @${CC} ${CFLAGS} -D${COMPILER} -o ${@} ${<}
-
 # The rule for building the object file from each CPP source file.
 ${OBJDIR}/%.o: %.cpp
 	@if [ 'x${VERBOSE}' = x ];                            \
@@ -200,6 +190,16 @@ ${OBJDIR}/%.o: %.cpp
 	     echo ${CPP} ${CPPFLAGS} -D__cplusplus -o ${@} ${<};\
 	 fi
 	 @${CPP} ${CPPFLAGS} -o ${@} ${<}
+
+# The rule for building the object file from each C source file.
+${OBJDIR}/%.o: %.c
+	@if [ 'x${VERBOSE}' = x ];                            \
+	 then                                                 \
+	     echo "  CC    ${<}";                             \
+	 else                                                 \
+	     echo ${CC} ${CFLAGS} -D${COMPILER} -o ${@} ${<}; \
+	 fi
+	 @${CC} ${CFLAGS} -D${COMPILER} -o ${@} ${<}
 
 # The rule for building the object file from each assembly source file.
 ${OBJDIR}/%.o: %.S

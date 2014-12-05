@@ -1,1 +1,0 @@
-"./firmware_loader.obj" "./gpio_if.obj" "./main.obj" "./pinmux.obj" "./startup_ccs.obj" "./tcp_server.obj" "./uart_if.obj" "./wy_bl_network_if.obj" "./wy_fs.obj" "../cc3200v1p32.cmd" -l"libc.a" -l"E:/Wifly_Light/Software/cc3200_gcc/bl/ccs\..\..\driverlib\ccs\Release\driverlib.a" -l"E:/Wifly_Light/Software/cc3200_gcc/bl/ccs\..\..\simplelink\ccs\NON_OS\simplelink.a" 

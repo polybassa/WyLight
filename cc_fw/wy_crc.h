@@ -19,6 +19,10 @@
 #ifndef _WY_Crc_BuildCrc_H_
 #define _WY_Crc_BuildCrc_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "platform.h"
 
 //adds one byte to the given crc checksum
@@ -28,4 +32,9 @@ void Crc_AddCrc(const uns8 byte, uns8 *p_crcH, uns8 *p_crcL);
 void Crc_NewCrc(uns8 *p_crcH, uns8 *p_crcL);
 
 void Crc_Init(void);
+	
+#ifdef __cplusplus
+}
+#endif
+		
 #endif

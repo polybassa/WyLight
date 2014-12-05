@@ -20,6 +20,10 @@
 #ifndef _WY_FIRMWARE_H_
 #define _WY_FIRMWARE_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 //Common interface includes
 #include "uart_if.h"
 
@@ -40,6 +44,10 @@ extern OsiSyncObj_t NewDataAvailableSemaphore;
 void WyLightFirmware_TaskInit(void);
 void WyLightFirmware_Task(void *pvParameters);
 void WyLightGetCommands_Task(void *pvParameters);
+	
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _WY_FIRMWARE_H_ */
 

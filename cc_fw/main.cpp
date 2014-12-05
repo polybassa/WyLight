@@ -108,7 +108,7 @@ static void BoardInit(void) {
 //! \return none
 //!
 //*****************************************************************************
-void vAssertCalled(const char *pcFile, unsigned long ulLine) {
+extern "C" void vAssertCalled(const char *pcFile, unsigned long ulLine) {
 	//Handle Assert here
 	while (1) {
 	}
@@ -123,7 +123,7 @@ void vAssertCalled(const char *pcFile, unsigned long ulLine) {
 //! \return none
 //!
 //*****************************************************************************
-void vApplicationIdleHook(void) {
+extern "C" void vApplicationIdleHook(void) {
 	//Handle Idle Hook for Profiling, Power Management etc
 }
 
@@ -136,7 +136,7 @@ void vApplicationIdleHook(void) {
 //! \return none
 //!
 //*****************************************************************************
-void vApplicationMallocFailedHook() {
+extern "C" void vApplicationMallocFailedHook() {
 	//Handle Memory Allocation Errors
 	while (1) {
 	}
@@ -151,7 +151,7 @@ void vApplicationMallocFailedHook() {
 //! \return none
 //!
 //*****************************************************************************
-void vApplicationStackOverflowHook(xTaskHandle *pxTask, signed portCHAR *pcTaskName) {
+extern "C" void vApplicationStackOverflowHook(xTaskHandle *pxTask, signed portCHAR *pcTaskName) {
 	//Handle FreeRTOS Stack Overflow
 	while (1) {
 	}
@@ -178,7 +178,7 @@ int main(void) {
 	InitTerm();
 
 	ClearTerm();
-	DisplayBanner(APPLICATION_NAME);
+	DisplayBanner((char *)APPLICATION_NAME);
 
 	Pwm_TaskInit();
 	WlanSupport_TaskInit();
@@ -191,14 +191,14 @@ int main(void) {
 	// Simplelinkspawntask
 	//
 	VStartSimpleLinkSpawnTask(9);
-
-	osi_TaskCreate(WlanSupport_Task, (signed portCHAR *) "WlanSupport", OSI_STACK_SIZE, NULL, 8, WlanSupportTaskHandle);
-	osi_TaskCreate(Broadcast_Task, (signed portCHAR *) "Broadcast", OSI_STACK_SIZE, NULL, 1, BroadcastTaskHandle);
-	osi_TaskCreate(TcpServer_Task, (signed portCHAR *) "TcpServer", OSI_STACK_SIZE, NULL, 5, TcpServerTaskHandle);
-	osi_TaskCreate(UdpServer_Task, (signed portCHAR *) "UdpServer", OSI_STACK_SIZE, NULL, 6, UdpServerTaskHandle);
-	osi_TaskCreate(WyLightFirmware_Task, (signed portCHAR *) "WyLightFirmware", OSI_STACK_SIZE, NULL, 7, WyLightFirmwareTaskHandle);
-	osi_TaskCreate(WyLightGetCommands_Task, (signed portCHAR *) "GetCommands", OSI_STACK_SIZE, NULL, 6, WyLightGetCommandsTaskHandle);
-	osi_TaskCreate(Pwm_Task, (signed portCHAR *) "PWM", OSI_STACK_SIZE, NULL, 2, PwmTaskHandle);
+	
+	osi_TaskCreate(WlanSupport_Task, (signed portCHAR *) "WlanSupport", OSI_STACK_SIZE, NULL, 8, &WlanSupportTaskHandle);
+	osi_TaskCreate(Broadcast_Task, (signed portCHAR *) "Broadcast", OSI_STACK_SIZE, NULL, 1, &BroadcastTaskHandle);
+	osi_TaskCreate(TcpServer_Task, (signed portCHAR *) "TcpServer", OSI_STACK_SIZE, NULL, 5, &TcpServerTaskHandle);
+	osi_TaskCreate(UdpServer_Task, (signed portCHAR *) "UdpServer", OSI_STACK_SIZE, NULL, 6, &UdpServerTaskHandle);
+	osi_TaskCreate(WyLightFirmware_Task, (signed portCHAR *) "WyLightFirmware", OSI_STACK_SIZE, NULL, 7, &WyLightFirmwareTaskHandle);
+	osi_TaskCreate(WyLightGetCommands_Task, (signed portCHAR *) "GetCommands", OSI_STACK_SIZE, NULL, 6, &WyLightGetCommandsTaskHandle);
+	osi_TaskCreate(Pwm_Task, (signed portCHAR *) "PWM", OSI_STACK_SIZE, NULL, 2, &PwmTaskHandle);
 
 	osi_start();
 

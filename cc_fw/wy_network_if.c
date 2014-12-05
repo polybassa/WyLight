@@ -718,7 +718,7 @@ static long StartSimpleLinkAsAP() {
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	// set domain name
-	unsigned char domainName[] = "wylight.net";
+	unsigned char domainName[] = "wylight.config";
 	retRes = sl_NetAppSet(SL_NET_APP_DEVICE_CONFIG_ID, NETAPP_SET_GET_DEV_CONF_OPT_DOMAIN_NAME, sizeof(domainName),
 			domainName);
 	ASSERT_ON_ERROR(__LINE__, retRes);

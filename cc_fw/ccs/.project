@@ -28,22 +28,22 @@
 		<link>
 			<name>CommandIO.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/firmware/CommandIO.c</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/firmware/CommandIO.c</locationURI>
 		</link>
 		<link>
 			<name>RingBuf.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/firmware/RingBuf.c</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/firmware/RingBuf.c</locationURI>
 		</link>
 		<link>
 			<name>ScriptCtrl.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/firmware/ScriptCtrl.c</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/firmware/ScriptCtrl.c</locationURI>
 		</link>
 		<link>
 			<name>Version.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/firmware/Version.c</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/firmware/Version.c</locationURI>
 		</link>
 		<link>
 			<name>broadcast.c</name>
@@ -58,12 +58,12 @@
 		<link>
 			<name>ledstrip.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/firmware/ledstrip.c</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/firmware/ledstrip.c</locationURI>
 		</link>
 		<link>
 			<name>main.c</name>
 			<type>1</type>
-			<locationURI>copy_PARENT/main.c</locationURI>
+			<locationURI>copy_PARENT/main.cpp</locationURI>
 		</link>
 		<link>
 			<name>pinmux.c</name>
