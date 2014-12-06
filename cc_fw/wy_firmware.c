@@ -39,18 +39,18 @@
 //
 
 static xSemaphoreHandle g_FirmwareCanAccessFileSystemSemaphore;
-OsiSyncObj_t FirmwareCanAccessFileSystemSemaphore = &g_FirmwareCanAccessFileSystemSemaphore;
+OsiSyncObj_t *FirmwareCanAccessFileSystemSemaphore = &g_FirmwareCanAccessFileSystemSemaphore;
 
 static xSemaphoreHandle g_NewDataAvailableSemaphore;
-OsiSyncObj_t NewDataAvailableSemaphore = &g_NewDataAvailableSemaphore;
+OsiSyncObj_t *NewDataAvailableSemaphore = &g_NewDataAvailableSemaphore;
 
 static xSemaphoreHandle g_AccessScriptBufferMutex;
 
 static xTaskHandle g_WyLightFirmwareTaskHandle;
 static xTaskHandle g_WyLightGetCommandsTaskHandle;
 
-OsiTaskHandle WyLightGetCommandsTaskHandle = &g_WyLightGetCommandsTaskHandle;
-OsiTaskHandle WyLightFirmwareTaskHandle = &g_WyLightFirmwareTaskHandle;
+OsiTaskHandle *WyLightGetCommandsTaskHandle = &g_WyLightGetCommandsTaskHandle;
+OsiTaskHandle *WyLightFirmwareTaskHandle = &g_WyLightFirmwareTaskHandle;
 
 //
 // GLOBAL VARIABLES -- End

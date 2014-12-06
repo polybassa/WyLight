@@ -36,10 +36,10 @@ extern "C" {
 #define SUCCESS 				0
 #endif
 
-extern OsiTaskHandle WyLightFirmwareTaskHandle;
-extern OsiTaskHandle WyLightGetCommandsTaskHandle;
-extern OsiSyncObj_t FirmwareCanAccessFileSystemSemaphore;
-extern OsiSyncObj_t NewDataAvailableSemaphore;
+extern OsiTaskHandle *WyLightFirmwareTaskHandle;
+extern OsiTaskHandle *WyLightGetCommandsTaskHandle;
+extern OsiSyncObj_t *FirmwareCanAccessFileSystemSemaphore;
+extern OsiSyncObj_t *NewDataAvailableSemaphore;
 
 void WyLightFirmware_TaskInit(void);
 void WyLightFirmware_Task(void *pvParameters);

@@ -54,7 +54,7 @@ struct __attribute__((__packed__)) BroadcastMessage {
 	uint8_t sensors[16];
 };
 
-extern OsiTaskHandle BroadcastTaskHandle;
+extern OsiTaskHandle* BroadcastTaskHandle;
 
 void Broadcast_TaskInit(void);
 void Broadcast_TaskQuit(void);

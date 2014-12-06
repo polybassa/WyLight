@@ -37,14 +37,14 @@ extern "C" {
 #define SUCCESS 				0
 #endif
 
-extern OsiTaskHandle TcpServerTaskHandle;
+extern OsiTaskHandle *TcpServerTaskHandle;
 
 void TcpServer_TaskInit(void);
 void TcpServer_TaskQuit(void);
 void TcpServer_TaskRun(void);
 void TcpServer_Task(void *pvParameters);
 
-extern OsiTaskHandle UdpServerTaskHandle;
+extern OsiTaskHandle *UdpServerTaskHandle;
 
 void UdpServer_TaskInit(void);
 void UdpServer_TaskQuit(void);

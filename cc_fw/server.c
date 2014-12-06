@@ -47,8 +47,8 @@ static xTaskHandle g_UdpServerTaskHandle;
 static xSemaphoreHandle g_UdpServerStartSemaphore;
 static xSemaphoreHandle g_UdpServerStoppedSemaphore;
 
-OsiTaskHandle TcpServerTaskHandle = &g_TcpServerTaskHandle;
-OsiTaskHandle UdpServerTaskHandle = &g_UdpServerTaskHandle;
+OsiTaskHandle *TcpServerTaskHandle = &g_TcpServerTaskHandle;
+OsiTaskHandle *UdpServerTaskHandle = &g_UdpServerTaskHandle;
 
 static tBoolean g_KillTcpServer;
 static tBoolean g_KillUdpServer;

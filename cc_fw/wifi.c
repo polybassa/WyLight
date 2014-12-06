@@ -38,8 +38,8 @@
 static xSemaphoreHandle g_WlanSupportProvisioningDataAddedSemaphore;
 static xTaskHandle g_WlanSupportTaskHandle;
 
-OsiSyncObj_t WlanSupportProvisioningDataAddedSemaphore = &g_WlanSupportProvisioningDataAddedSemaphore;
-OsiTaskHandle WlanSupportTaskHandle = &g_WlanSupportTaskHandle;
+OsiSyncObj_t *WlanSupportProvisioningDataAddedSemaphore = &g_WlanSupportProvisioningDataAddedSemaphore;
+OsiTaskHandle *WlanSupportTaskHandle = &g_WlanSupportTaskHandle;
 
 //
 // GLOBAL VARIABLES -- End
