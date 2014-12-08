@@ -32,6 +32,7 @@ IPATH+=${ROOT}/firmware
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/main.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/pinmux.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/BroadcastTransmitter.o
+#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/broadcast.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/server.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_network_if.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wifi.o
@@ -46,11 +47,13 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_eeprom.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/ScriptCtrl.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/ledstrip.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_crc.o
+
 # common
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/startup_${COMPILER}.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart_if.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/gpio_if.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_fs.o
+
 #driverLib
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/cpu.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/flash.o

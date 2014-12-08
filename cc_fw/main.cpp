@@ -48,56 +48,41 @@
 // GLOBAL VARIABLES -- Start
 //
 extern void (* const g_pfnVectors[])(void);
+
+// Class for CC_Board. To do all init stuff bevor the first "real" constructor is called
+class Board {
+public:
+	Board() {
+		// Set vector table base
+		MAP_IntVTableBaseSet((unsigned long) &g_pfnVectors[0]);
+
+		// Enable Processor
+		MAP_IntMasterEnable();
+		MAP_IntEnable(FAULT_SYSTICK);
+
+		PRCMCC3200MCUInit();
+
+		//UART driver initialisations
+		PinMuxConfig();
+		InitTerm();
+		ClearTerm();
+
+		VStartSimpleLinkSpawnTask(9);
+	}
+	Board& operator=(const Board&) = delete;
+	Board(const Board&) = delete;
+	Board(Board&&) = delete;
+};
+
+Board board;
 BroadcastTransmitter broadcast;
 //
 // GLOBAL VARIABLES -- End
 //
 
 //*****************************************************************************
-//
-//! Application startup display on UART
-//!
-//! \param  none
-//!
-//! \return none
-//!
-//*****************************************************************************
-static void DisplayBanner(char * AppName) {
-
-	UART_PRINT("\n\n\n\r");
-	UART_PRINT("\t\t *************************************************\n\r");
-	UART_PRINT("\t\t       CC3200 %s Application       \n\r", AppName);
-	UART_PRINT("\t\t *************************************************\n\r");
-	UART_PRINT("\n\n\n\r");
-}
-
-//*****************************************************************************
-//
-//! Board Initialization & Configuration
-//!
-//! \param  None
-//!
-//! \return None
-//
-//*****************************************************************************
-static void BoardInit(void) {
-	//
-	// Set vector table base
-	//
-	MAP_IntVTableBaseSet((unsigned long) &g_pfnVectors[0]);
-	//
-	// Enable Processor
-	//
-	MAP_IntMasterEnable();
-	MAP_IntEnable(FAULT_SYSTICK);
-
-	PRCMCC3200MCUInit();
-}
-
-//*****************************************************************************
 // FreeRTOS User Hook Functions enabled in FreeRTOSConfig.h
 //*****************************************************************************
-
 //*****************************************************************************
 //
 //! \brief Application defined hook (or callback) function - assert
@@ -170,53 +155,22 @@ extern "C" void vApplicationStackOverflowHook(xTaskHandle *pxTask, signed portCH
 //*****************************************************************************
 int main(void) {
 
-	//board initializations
-	BoardInit();
-
-	//UART driver initialisations
-	PinMuxConfig();
-	InitTerm();
-
-	ClearTerm();
-	DisplayBanner((char *)APPLICATION_NAME);
-	
-	//
-	// Simplelinkspawntask
-	//
-	VStartSimpleLinkSpawnTask(9);
-	
-	/*__asm("		ldr r10, =__init_array_start\n"
-		  "		ldr r11, =__init_array_end\n"
-		  "globals_init_loop:	\n"
-		  "		cmp     r10,r11\n"
-		  "		bhs		done\n"
-		  "		ldr   r12, [r10], #4\n"
-		  "		blx   r12\n"
-		  "		b     globals_init_loop\n"
-		  "done: nop \n");*/
-
 	Pwm_TaskInit();
 	WlanSupport_TaskInit();
 	TcpServer_TaskInit();
 	UdpServer_TaskInit();
 	WyLightFirmware_TaskInit();
 
-	//
-	// Simplelinkspawntask
-	//
-	VStartSimpleLinkSpawnTask(9);
-	broadcast.init();
-	
 	osi_TaskCreate(WlanSupport_Task, (signed portCHAR *) "WlanSupport", OSI_STACK_SIZE, NULL, 8, WlanSupportTaskHandle);
-	//osi_TaskCreate(Broadcast_Task, (signed portCHAR *) "Broadcast", OSI_STACK_SIZE, NULL, 1, BroadcastTaskHandle);
 	osi_TaskCreate(TcpServer_Task, (signed portCHAR *) "TcpServer", OSI_STACK_SIZE, NULL, 5, TcpServerTaskHandle);
 	osi_TaskCreate(UdpServer_Task, (signed portCHAR *) "UdpServer", OSI_STACK_SIZE, NULL, 6, UdpServerTaskHandle);
-	osi_TaskCreate(WyLightFirmware_Task, (signed portCHAR *) "WyLightFirmware", OSI_STACK_SIZE, NULL, 7, WyLightFirmwareTaskHandle);
-	osi_TaskCreate(WyLightGetCommands_Task, (signed portCHAR *) "GetCommands", OSI_STACK_SIZE, NULL, 6, WyLightGetCommandsTaskHandle);
+	osi_TaskCreate(WyLightFirmware_Task, (signed portCHAR *) "WyLightFirmware", OSI_STACK_SIZE, NULL, 7,
+			WyLightFirmwareTaskHandle);
+	osi_TaskCreate(WyLightGetCommands_Task, (signed portCHAR *) "GetCommands", OSI_STACK_SIZE, NULL, 6,
+			WyLightGetCommandsTaskHandle);
 	osi_TaskCreate(Pwm_Task, (signed portCHAR *) "PWM", OSI_STACK_SIZE, NULL, 2, &PwmTaskHandle);
 
 	osi_start();
-
 	while (1)
 		;
 

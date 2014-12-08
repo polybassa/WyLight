@@ -96,96 +96,96 @@ static uint32_t pui32Stack[1024];
 __attribute__ ((section(".intvecs")))
 void (* const g_pfnVectors[256])(void) =
 {
-    (void (*)(void))((uint32_t)pui32Stack + sizeof(pui32Stack)),
-                                            // The initial stack pointer
-    ResetISR,                               // The reset handler
-    NmiSR,                                  // The NMI handler
-    FaultISR,                               // The hard fault handler
-    IntDefaultHandler,                      // The MPU fault handler
-    BusFaultHandler,                        // The bus fault handler
-    IntDefaultHandler,                      // The usage fault handler
-    0,                                      // Reserved
-    0,                                      // Reserved
-    0,                                      // Reserved
-    0,                                      // Reserved
+	(void (*)(void))((uint32_t)pui32Stack + sizeof(pui32Stack)),
+	// The initial stack pointer
+		ResetISR,// The reset handler
+		NmiSR,// The NMI handler
+		FaultISR,// The hard fault handler
+		IntDefaultHandler,// The MPU fault handler
+		BusFaultHandler,// The bus fault handler
+		IntDefaultHandler,// The usage fault handler
+		0,// Reserved
+		0,// Reserved
+		0,// Reserved
+		0,// Reserved
 #ifdef USE_FREERTOS
-    vPortSVCHandler,                        // SVCall handler
+		vPortSVCHandler,                        // SVCall handler
 #else
-    IntDefaultHandler,                      // SVCall handler
+		IntDefaultHandler,                      // SVCall handler
 #endif
-    IntDefaultHandler,                      // Debug monitor handler
-    0,                                      // Reserved
+		IntDefaultHandler,                      // Debug monitor handler
+		0,// Reserved
 #ifdef USE_FREERTOS
-    xPortPendSVHandler,                     // The PendSV handler
-    xPortSysTickHandler,                    // The SysTick handler
+		xPortPendSVHandler,                     // The PendSV handler
+		xPortSysTickHandler,// The SysTick handler
 #else
-    IntDefaultHandler,                      // The PendSV handler
-    IntDefaultHandler,                      // The SysTick handler
+		IntDefaultHandler,                      // The PendSV handler
+		IntDefaultHandler,// The SysTick handler
 #endif
-    IntDefaultHandler,                      // GPIO Port A
-    IntDefaultHandler,                      // GPIO Port B
-    IntDefaultHandler,                      // GPIO Port C
-    IntDefaultHandler,                      // GPIO Port D
-    0,                                      // Reserved
-    IntDefaultHandler,                      // UART0 Rx and Tx
-    IntDefaultHandler,                      // UART1 Rx and Tx
-    0,                                      // Reserved
-    IntDefaultHandler,                      // I2C0 Master and Slave
-    0,0,0,0,0,                              // Reserved
-    IntDefaultHandler,                      // ADC Channel 0
-    IntDefaultHandler,                      // ADC Channel 1
-    IntDefaultHandler,                      // ADC Channel 2
-    IntDefaultHandler,                      // ADC Channel 3
-    IntDefaultHandler,                      // Watchdog Timer
-    IntDefaultHandler,                      // Timer 0 subtimer A                      
-    IntDefaultHandler,                      // Timer 0 subtimer B
-    IntDefaultHandler,                      // Timer 1 subtimer A
-    IntDefaultHandler,                      // Timer 1 subtimer B
-    IntDefaultHandler,                      // Timer 2 subtimer A
-    IntDefaultHandler,                      // Timer 2 subtimer B 
-    0,0,0,0,                                // Reserved
-    IntDefaultHandler,                      // Flash
-    0,0,0,0,0,                              // Reserved
-    IntDefaultHandler,                      // Timer 3 subtimer A
-    IntDefaultHandler,                      // Timer 3 subtimer B
-    0,0,0,0,0,0,0,0,0,                      // Reserved
-    IntDefaultHandler,                      // uDMA Software Transfer
-    IntDefaultHandler,                      // uDMA Error
-    0,0,0,0,0,0,0,0,0,0,                    // Reserved
-    0,0,0,0,0,0,0,0,0,0,                    // Reserved
-    0,0,0,0,0,0,0,0,0,0,                    // Reserved
-    0,0,0,0,0,0,0,0,0,0,                    // Reserved
-    0,0,0,0,0,0,0,0,0,0,                    // Reserved
-    0,0,0,0,0,0,0,0,0,0,                    // Reserved
-    0,0,0,0,0,0,0,0,0,0,                    // Reserved
-    0,0,0,0,0,0,0,0,0,0,                    // Reserved
-    0,0,0,0,0,0,0,0,0,0,                    // Reserved
-    0,0,0,0,0,0,0,0,0,0,                    // Reserved
-    IntDefaultHandler,                      // SHA
-    0,0,                                    // Reserved
-    IntDefaultHandler,                      // AES
-    0,                                      // Reserved
-    IntDefaultHandler,                      // DES
-    0,0,0,0,0,                              // Reserved
-    IntDefaultHandler,                      // SDHost
-    0,                                      // Reserved
-    IntDefaultHandler,                      // I2S
-    0,                                      // Reserved
-    IntDefaultHandler,                      // Camera
-    0,0,0,0,0,0,0,                          // Reserved
-    IntDefaultHandler,                      // NWP to APPS Interrupt
-    IntDefaultHandler,                      // Power, Reset and Clock module
-    0,0,                                    // Reserved
-    IntDefaultHandler,                      // Shared SPI
-    IntDefaultHandler,                      // Generic SPI
-    IntDefaultHandler,                      // Link SPI
-    0,0,0,0,0,0,0,0,0,0,                    // Reserved
-    0,0,0,0,0,0,0,0,0,0,                    // Reserved
-    0,0,0,0,0,0,0,0,0,0,                    // Reserved
-    0,0,0,0,0,0,0,0,0,0,                    // Reserved
-    0,0,0,0,0,0,0,0,0,0,                    // Reserved
-    0,0,0,0,0,0,0,0,0,0,                    // Reserved
-    0,0                                     // Reserved
+		IntDefaultHandler,                      // GPIO Port A
+		IntDefaultHandler,// GPIO Port B
+		IntDefaultHandler,// GPIO Port C
+		IntDefaultHandler,// GPIO Port D
+		0,// Reserved
+		IntDefaultHandler,// UART0 Rx and Tx
+		IntDefaultHandler,// UART1 Rx and Tx
+		0,// Reserved
+		IntDefaultHandler,// I2C0 Master and Slave
+		0,0,0,0,0,// Reserved
+		IntDefaultHandler,// ADC Channel 0
+		IntDefaultHandler,// ADC Channel 1
+		IntDefaultHandler,// ADC Channel 2
+		IntDefaultHandler,// ADC Channel 3
+		IntDefaultHandler,// Watchdog Timer
+		IntDefaultHandler,// Timer 0 subtimer A
+		IntDefaultHandler,// Timer 0 subtimer B
+		IntDefaultHandler,// Timer 1 subtimer A
+		IntDefaultHandler,// Timer 1 subtimer B
+		IntDefaultHandler,// Timer 2 subtimer A
+		IntDefaultHandler,// Timer 2 subtimer B
+		0,0,0,0,// Reserved
+		IntDefaultHandler,// Flash
+		0,0,0,0,0,// Reserved
+		IntDefaultHandler,// Timer 3 subtimer A
+		IntDefaultHandler,// Timer 3 subtimer B
+		0,0,0,0,0,0,0,0,0,// Reserved
+		IntDefaultHandler,// uDMA Software Transfer
+		IntDefaultHandler,// uDMA Error
+		0,0,0,0,0,0,0,0,0,0,// Reserved
+		0,0,0,0,0,0,0,0,0,0,// Reserved
+		0,0,0,0,0,0,0,0,0,0,// Reserved
+		0,0,0,0,0,0,0,0,0,0,// Reserved
+		0,0,0,0,0,0,0,0,0,0,// Reserved
+		0,0,0,0,0,0,0,0,0,0,// Reserved
+		0,0,0,0,0,0,0,0,0,0,// Reserved
+		0,0,0,0,0,0,0,0,0,0,// Reserved
+		0,0,0,0,0,0,0,0,0,0,// Reserved
+		0,0,0,0,0,0,0,0,0,0,// Reserved
+		IntDefaultHandler,// SHA
+		0,0,// Reserved
+		IntDefaultHandler,// AES
+		0,// Reserved
+		IntDefaultHandler,// DES
+		0,0,0,0,0,// Reserved
+		IntDefaultHandler,// SDHost
+		0,// Reserved
+		IntDefaultHandler,// I2S
+		0,// Reserved
+		IntDefaultHandler,// Camera
+		0,0,0,0,0,0,0,// Reserved
+		IntDefaultHandler,// NWP to APPS Interrupt
+		IntDefaultHandler,// Power, Reset and Clock module
+		0,0,// Reserved
+		IntDefaultHandler,// Shared SPI
+		IntDefaultHandler,// Generic SPI
+		IntDefaultHandler,// Link SPI
+		0,0,0,0,0,0,0,0,0,0,// Reserved
+		0,0,0,0,0,0,0,0,0,0,// Reserved
+		0,0,0,0,0,0,0,0,0,0,// Reserved
+		0,0,0,0,0,0,0,0,0,0,// Reserved
+		0,0,0,0,0,0,0,0,0,0,// Reserved
+		0,0,0,0,0,0,0,0,0,0,// Reserved
+		0,0// Reserved
 };
 
 //*****************************************************************************
@@ -212,40 +212,47 @@ extern uint32_t __init_data;
 // application.
 //
 //*****************************************************************************
-void
-ResetISR(void)
-{
-    uint32_t *pui32Src, *pui32Dest;
+void ResetISR(void) {
+	uint32_t *pui32Src, *pui32Dest;
 
-    //
-    // Copy the data segment initializers
-    //
-    pui32Src = &__init_data;
-    for(pui32Dest = &_data; pui32Dest < &_edata; )
-    {
-        *pui32Dest++ = *pui32Src++;
-    }
+	//
+	// Copy the data segment initializers
+	//
+	pui32Src = &__init_data;
+	for (pui32Dest = &_data; pui32Dest < &_edata;) {
+		*pui32Dest++ = *pui32Src++;
+	}
 
-    //
-    // Zero fill the bss segment.
-    //
-    __asm("    ldr     r0, =_bss\n"
-          "    ldr     r1, =_ebss\n"
-          "    mov     r2, #0\n"
-          "    .thumb_func\n"
-          "zero_loop:\n"
-          "        cmp     r0, r1\n"
-          "        it      lt\n"
-          "        strlt   r2, [r0], #4\n"
-          "        blt     zero_loop");
-	
-	__asm("	   ldr 	   r12, =main\n"
-		  "    mov	   lr,pc\n"
-		  "    bx	   r12\n");
+	//
+	// Zero fill the bss segment.
+	//
+	__asm("			ldr     r0, =_bss\n"
+			"		ldr     r1, =_ebss\n"
+			"    	mov     r2, #0\n"
+			"    	.thumb_func\n"
+			"zero_loop:\n"
+			"     	cmp     r0, r1\n"
+			"      	it      lt\n"
+			"     	strlt   r2, [r0], #4\n"
+			"     	blt     zero_loop");
 
-    //
-    // Call the application's entry point.
-    //
+	__asm("			ldr 	r10, =__init_array_start\n"
+			"		ldr 	r11, =__init_array_end\n"
+			"globals_init_loop:	\n"
+			"		cmp     r10,r11\n"
+			"		bhs		done\n"
+			"		ldr   	r12, [r10], #4\n"
+			"		blx   	r12\n"
+			"		b     	globals_init_loop\n"
+			"done: nop \n");
+
+	__asm("	   	ldr 	r12, =main\n"
+			"  	mov	   	lr,pc\n"
+			"  	bx	   	r12\n");
+
+	//
+	// Call the application's entry point.
+	//
 	//(void)main();
 }
 
@@ -256,15 +263,12 @@ ResetISR(void)
 // by a debugger.
 //
 //*****************************************************************************
-static void
-NmiSR(void)
-{
-    //
-    // Enter an infinite loop.
-    //
-    while(1)
-    {
-    }
+static void NmiSR(void) {
+	//
+	// Enter an infinite loop.
+	//
+	while (1) {
+	}
 }
 
 //*****************************************************************************
@@ -274,15 +278,12 @@ NmiSR(void)
 // for examination by a debugger.
 //
 //*****************************************************************************
-static void
-FaultISR(void)
-{
-    //
-    // Enter an infinite loop.
-    //
-    while(1)
-    {
-    }
+static void FaultISR(void) {
+	//
+	// Enter an infinite loop.
+	//
+	while (1) {
+	}
 }
 
 //*****************************************************************************
@@ -293,15 +294,12 @@ FaultISR(void)
 //
 //*****************************************************************************
 
-static void
-BusFaultHandler(void)
-{
-    //
-    // Go into an infinite loop.
-    //
-    while(1)
-    {
-    }
+static void BusFaultHandler(void) {
+	//
+	// Go into an infinite loop.
+	//
+	while (1) {
+	}
 }
 
 //*****************************************************************************
@@ -311,15 +309,12 @@ BusFaultHandler(void)
 // for examination by a debugger.
 //
 //*****************************************************************************
-static void
-IntDefaultHandler(void)
-{
-    //
-    // Go into an infinite loop.
-    //
-    while(1)
-    {
-    }
+static void IntDefaultHandler(void) {
+	//
+	// Go into an infinite loop.
+	//
+	while (1) {
+	}
 }
 
 //*****************************************************************************
@@ -328,40 +323,37 @@ IntDefaultHandler(void)
 // library
 //
 //*****************************************************************************
-void * _sbrk(unsigned int incr)
-{
+void * _sbrk(unsigned int incr) {
 
-    char *prev_heap_end;
+	char *prev_heap_end;
 
-    //
-    // Check if this function is calld for the
-    // first time and the heap end pointer
-    //
-    if (heap_end == 0)
-    {
-        heap_end = (char *)&_heap; 
-    }
-
-    //
-    // Check if we have enough heap memory available
-    //
-    prev_heap_end = heap_end;
-    if (heap_end + incr > (char *)&_eheap)
-    {
 	//
-	// Return error
+	// Check if this function is calld for the
+	// first time and the heap end pointer
 	//
-        return 0;
-    }
+	if (heap_end == 0) {
+		heap_end = (char *) &_heap;
+	}
 
-    //
-    // Set the new heap end pointer
-    //
-    heap_end += incr;
-    
-    //
-    // Return the pointer to the newly allocated memory
-    //
-    return prev_heap_end;
+	//
+	// Check if we have enough heap memory available
+	//
+	prev_heap_end = heap_end;
+	if (heap_end + incr > (char *) &_eheap) {
+		//
+		// Return error
+		//
+		return 0;
+	}
+
+	//
+	// Set the new heap end pointer
+	//
+	heap_end += incr;
+
+	//
+	// Return the pointer to the newly allocated memory
+	//
+	return prev_heap_end;
 
 }

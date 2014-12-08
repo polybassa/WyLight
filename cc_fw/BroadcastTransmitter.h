@@ -16,7 +16,6 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-
 #ifndef __BROADCAST_TRANSMITTER_H_
 #define __BROADCAST_TRANSMITTER_H_
 
@@ -28,7 +27,7 @@
 #include "hw_types.h"
 
 #define BC_PORT_NUM        	55555
-	
+
 class BroadcastTransmitter {
 	struct __attribute__((__packed__)) BroadcastMessage {
 		uint8_t MAC[6];
@@ -43,22 +42,23 @@ class BroadcastTransmitter {
 		uint8_t deviceId[32];
 		uint16_t boottime;
 		uint8_t sensors[16];
-		void init(void);
+		void refresh(void);
 	};
 	xTaskHandle mHandle;
 	xSemaphoreHandle mStopSemaphore;
 	xSemaphoreHandle mStartSemaphore;
 	tBoolean mStopFlag;
-	
+
 	BroadcastMessage mMsg;
 	static const uint16_t port = BC_PORT_NUM;
 	void taskFunction(void);
 	static void task(void *pvParameters);
 public:
 	BroadcastTransmitter(void);
+	BroadcastTransmitter(const BroadcastTransmitter&) = delete;
 	BroadcastTransmitter& operator=(const BroadcastTransmitter&) = delete;
-	
-	void init(void);
+	BroadcastTransmitter(BroadcastTransmitter&&) = delete;
+
 	void run(void);
 	void stop(void);
 };

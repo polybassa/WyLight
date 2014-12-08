@@ -71,7 +71,6 @@ void WlanSupport_Task(void *pvParameters) {
 			if (SUCCESS == Network_IF_InitDriver(ROLE_STA)) {
 
 				osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
-
 				TcpServer_TaskRun();
 				UdpServer_TaskRun();
 				broadcast.run();
@@ -81,7 +80,6 @@ void WlanSupport_Task(void *pvParameters) {
 				}
 
 				osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
-
 				TcpServer_TaskQuit();
 				UdpServer_TaskQuit();
 				broadcast.stop();
@@ -94,18 +92,18 @@ void WlanSupport_Task(void *pvParameters) {
 		if (SUCCESS == Network_IF_InitDriver(ROLE_AP)) {
 
 			osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
-			broadcast.run();
 			TcpServer_TaskRun();
 			UdpServer_TaskRun();
+			broadcast.run();
 
 			do {
 				osi_SyncObjWait(WlanSupportProvisioningDataAddedSemaphore, OSI_WAIT_FOREVER);
 			} while (Network_IF_AddNewProfile() != SUCCESS);
 
 			osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
-			broadcast.stop();
 			TcpServer_TaskQuit();
 			UdpServer_TaskQuit();
+			broadcast.stop();
 
 			Network_IF_DeInitDriver();
 		}
