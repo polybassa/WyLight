@@ -16,13 +16,8 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-//Driverlib includes
-#include "hw_ints.h"
-#include "hw_types.h"
-#include "interrupt.h"
-#include "prcm.h"
-#include "rom_map.h"
-#include "pinmux.h"
+#include "Board.h"
+
 #include "osi.h"
 #include "FreeRTOS.h"
 #include "task.h"
@@ -34,46 +29,12 @@
 #include "pwm.h"
 #include "BroadcastTransmitter.h"
 
-//Common interface includes
-#include "uart_if.h"
-
-#include <string.h>
-
 #define APPLICATION_NAME        "WyLight Firmware"
 #define APPLICATION_VERSION     "1.0.0"
-#define SUCCESS                 0
-#define UART_PRINT				Report
 
 //
 // GLOBAL VARIABLES -- Start
 //
-extern void (* const g_pfnVectors[])(void);
-
-// Class for CC_Board. To do all init stuff bevor the first "real" constructor is called
-class Board {
-public:
-	Board() {
-		// Set vector table base
-		MAP_IntVTableBaseSet((unsigned long) &g_pfnVectors[0]);
-
-		// Enable Processor
-		MAP_IntMasterEnable();
-		MAP_IntEnable(FAULT_SYSTICK);
-
-		PRCMCC3200MCUInit();
-
-		//UART driver initialisations
-		PinMuxConfig();
-		InitTerm();
-		ClearTerm();
-
-		VStartSimpleLinkSpawnTask(9);
-	}
-	Board& operator=(const Board&) = delete;
-	Board(const Board&) = delete;
-	Board(Board&&) = delete;
-};
-
 Board board;
 BroadcastTransmitter broadcast;
 //
