@@ -50,7 +50,7 @@ const char FwCmdScript::INDENTATION_CHARACTER;
 #if 0
 void badFade(void)
 {
-	Script newScript("TestInput.txt");
+	Script newScript("./ut/TestInput.txt");
 	auto nextCmd = newScript.Begin();
 
 	assert(refLoop.Equals(*(*(nextCmd++))));
@@ -62,7 +62,7 @@ void badFade(void)
 
 void badGradient(void)
 {
-	Script newScript("TestInput.txt");
+	Script newScript("./ut/TestInput.txt");
 	auto nextCmd = newScript.Begin();
 
 	assert(refLoop.Equals(*(*(nextCmd++))));
@@ -73,7 +73,7 @@ void badGradient(void)
 
 void badLoopEnd(void)
 {
-	Script newScript("TestInput.txt");
+	Script newScript("./ut/TestInput.txt");
 	auto nextCmd = newScript.Begin();
 
 	assert(refLoop.Equals(*(*(nextCmd++))));
@@ -87,7 +87,7 @@ void badLoopEnd(void)
 
 void badWait(void)
 {
-	Script newScript("TestInput.txt");
+	Script newScript("./ut/TestInput.txt");
 	auto nextCmd = newScript.begin();
 
 	assert(refLoop.equals(*(nextCmd++)));
@@ -102,7 +102,7 @@ void badWait(void)
 size_t ut_Script_ReadGood(void)
 {
 	TestCaseBegin();
-	Script newScript("TestInput.txt");
+	Script newScript("./ut/TestInput.txt");
 	auto nextCmd = newScript.begin();
 
 	CHECK(refLoop == **newScript.begin());
@@ -121,9 +121,9 @@ size_t ut_Script_ReadGood(void)
 size_t ut_Script_WriteGood(void)
 {
 	TestCaseBegin();
-	Script refScript("TestInput.txt");
-	Script::serialize("./binary/TestOutput.txt", refScript);
-	Script newScript("./binary/TestOutput.txt");
+	Script refScript("./ut/TestInput.txt");
+	Script::serialize("./exe/TestOutput.txt", refScript);
+	Script newScript("./exe/TestOutput.txt");
 	CHECK(newScript == refScript);
 	CHECK(0 == newScript.getName().compare("TestInput.txt"));
 	TestCaseEnd();
@@ -132,9 +132,9 @@ size_t ut_Script_WriteGood(void)
 size_t ut_Script_WriteGoodWithVersion(void)
 {
 	TestCaseBegin();
-	Script refScript("TestInput2.txt");
-	Script::serialize("./binary/TestOutput2.txt", refScript);
-	Script newScript("./binary/TestOutput2.txt");
+	Script refScript("./ut/TestInput2.txt");
+	Script::serialize("./exe/TestOutput2.txt", refScript);
+	Script newScript("./exe/TestOutput2.txt");
 	CHECK(newScript == refScript);
 	CHECK(0 == newScript.getName().compare("TestInput Version One"));
 	TestCaseEnd();

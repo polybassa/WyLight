@@ -1,0 +1,27 @@
+# Where to find source files that do not live in this directory.
+VPATH=${ROOT}/cc_bl
+VPATH+=${ROOT}/sim
+VPATH+=${ROOT}/common
+# VPATH common must be at the end, to override existing sources with files from sim
+
+# Where to find header files that do not live in the source directory.
+IPATH=${ROOT}
+IPATH+=${ROOT}/cc_bl
+IPATH+=${ROOT}/sim
+IPATH+=${ROOT}/common
+IPATH+=${ROOT}/inc
+IPATH+=${ROOT}/driverlib
+IPATH+=${ROOT}/simplelink/include
+
+# WyLight bootloader
+${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/main.o
+${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/pinmux.o
+${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/firmware_loader.o
+${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/tcp_server.o
+${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/simulator_bl.o
+
+# common
+${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/fs.o
+${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/uart_if.o
+${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/gpio_if.o
+${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/wy_fs.o

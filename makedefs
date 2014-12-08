@@ -1,0 +1,267 @@
+#******************************************************************************
+# Copyright (C) 2014 Nils Weiss, Patrick Bruenn.
+#
+# This file is part of WyLight.
+#
+# WyLight is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# WyLight is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with WyLight.  If not, see <http://www.gnu.org/licenses/>.
+#******************************************************************************
+
+#******************************************************************************
+#
+# Makedefs - Common rules for GCC Makefile
+#
+#  Copyright (C) 2014 Texas Instruments Incorporated - http:#www.ti.com/
+#
+#
+#  Redistribution and use in source and binary forms, with or without
+#  modification, are permitted provided that the following conditions
+#  are met:
+#
+#    Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#    Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the
+#    distribution.
+#
+#    Neither the name of Texas Instruments Incorporated nor the names of
+#    its contributors may be used to endorse or promote products derived
+#    from this software without specific prior written permission.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+#  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+#  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+#  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+#  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+#  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+#  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+#  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+#  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+#  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+#*****************************************************************************
+#******************************************************************************
+#
+# Get the operating system name.  If this is Cygwin, the .d files will be
+# munged to convert c: into /cygdrive/c so that "make" will be happy with the
+# auto-generated dependencies.
+#
+#******************************************************************************
+os:=${shell uname -s}
+
+# The base directory.
+ROOT=.
+RTOS_SOURCE_DIR=${ROOT}/third_party/FreeRTOS
+OBJDIR?=obj
+BINDIR?=exe
+CLI_DIR=./cli
+FW_DIR=./firmware
+LIB_DIR=./library
+OUT_DIR=${BINDIR}
+
+OPENGL_LIB=-lGL -lGLU -lglut
+
+#******************************************************************************
+#
+# The compiler to be used.
+#
+#******************************************************************************
+ifndef COMPILER
+COMPILER=gcc
+endif
+
+#******************************************************************************
+#
+# Definitions for using GCC.
+#
+#******************************************************************************
+ifeq (${PREFIX}, arm-none-eabi-)
+
+# The flags passed to the assembler.
+AFLAGS=-mthumb \
+       -mcpu=cortex-m4  \
+       -MD
+
+# The flags passed to the compiler.
+CFLAGS= -ffunction-sections \
+        -fdata-sections     \
+        -mcpu=cortex-m4 \
+        -fno-builtin \
+        -pedantic \
+        -std=c99 \
+        -mthumb \
+	-flto \
+        -Wall \
+        -O1 \
+        -MD \
+        -g \
+        -c
+
+CPPFLAGS= \
+    -ffunction-sections \
+    --specs=nano.specs \
+    -fdata-sections \
+    -fno-exceptions \
+    -mcpu=cortex-m4 \
+    -DCUSTOM_NEW \
+    -fno-builtin \
+    -std=c++0x \
+    -pedantic \
+    -fno-rtti \
+    -mthumb \
+    -Wall \
+    -flto \
+    -MD \
+    -O1 \
+    -c \
+    -g
+
+LDFLAGS= -gc-sections \
+         -static \
+	 -Map ${BINDIR}/${PRJ_NAME}.map 
+
+CPP=${PREFIX}g++
+
+else 
+# The flags passed to the compiler when we are not using arm-none-eabi tools.
+CFLAGS= -pedantic \
+        -std=c99 \
+        -Wall \
+        -O1 \
+        -g \
+        -c
+
+CPPFLAGS= \
+    -DCUSTOM_NEW \
+    -std=c++0x \
+    -pedantic \
+    -Wall \
+    -c 
+
+CPP=$(CXX)
+
+endif
+
+# The command for calling the compiler.
+CC=${PREFIX}${COMPILER}
+
+# The command for calling the library archiver.
+AR=${PREFIX}ar
+
+# The command for calling the linker.
+LD=${PREFIX}ld
+
+# Get the location of libgcc.a from the GCC front-end.
+LIBGCC:=${shell ${CC} ${CFLAGS} -print-libgcc-file-name}
+
+# Get the location of libc.a from the GCC front-end.
+LIBC:=${shell ${CC} ${CFLAGS} -print-file-name=libc.a}
+
+# Get the location of libm.a from the GCC front-end.
+LIBM:=${shell ${CC} ${CFLAGS} -print-file-name=libm.a}
+
+# The command for extracting images from the linked executables.
+OBJCOPY=${PREFIX}objcopy
+
+# Add the include file paths to AFLAGS and CFLAGS.
+AFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
+CFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
+CPPFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
+
+# The rule for building the object file from each CPP source file.
+${OBJDIR}/%.o: %.cpp
+	@if [ 'x${VERBOSE}' = x ];                            \
+	 then                                                  \
+	     echo "  CPP    ${<}";                             \
+	 else                                                  \
+	     echo ${CPP} ${CPPFLAGS} -D__cplusplus -o ${@} ${<};\
+	 fi
+	 @${CPP} ${CPPFLAGS} -o ${@} ${<}
+
+# The rule for building the object file from each C source file.
+${OBJDIR}/%.o: %.c
+	@if [ 'x${VERBOSE}' = x ];                            \
+	 then                                                 \
+	     echo "  CC    ${<}";                             \
+	 else                                                 \
+	     echo ${CC} ${CFLAGS} -D${COMPILER} -o ${@} ${<}; \
+	 fi
+	 @${CC} ${CFLAGS} -D${COMPILER} -o ${@} ${<}
+
+# The rule for building the object file from each assembly source file.
+${OBJDIR}/%.o: %.S
+	@if [ 'x${VERBOSE}' = x ];                               \
+	 then                                                    \
+	     echo "  AS    ${<}";                                \
+	 else                                                    \
+	     echo ${CC} ${AFLAGS} -D${COMPILER} -o ${@} -c ${<}; \
+	 fi
+	@${CC} ${AFLAGS} -D${COMPILER} -o ${@} -c ${<}
+
+# The rule for creating an object library.
+${BINDIR}/%.a:
+	@if [ 'x${VERBOSE}' = x ];     \
+	 then                          \
+	     echo "  AR    ${@}";      \
+	 else                          \
+	     echo ${AR} -cr ${@} ${^}; \
+	 fi
+	 @${AR} -cr ${@} ${^}
+
+# The rule for linking the application.
+${BINDIR}/%.axf:
+	 @if [ 'x${SCATTERgcc_${notdir ${@:.axf=}}}' = x ]; \
+	 then                                 \
+	     ldname="${ROOT}/gcc/standalone.ld";                \
+	 else                                                   \
+	     ldname="${SCATTERgcc_${notdir ${@:.axf=}}}";      \
+	 fi;                                  \
+	 if [ 'x${VERBOSE}' = x ];                     \
+	 then                                                 \
+	     echo "  LD    ${@} ${LNK_SCP}";           \
+	 else                                           \
+	     echo ${LD} -T $${ldname}                         \
+	          --entry ${ENTRY_${notdir ${@:.axf=}}}      \
+	          ${LDFLAGSgcc_${notdir ${@:.axf=}}}         \
+	          ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^})   \
+	         '${LIBM}' '${LIBC}' '${LIBGCC}';    \
+	 fi;             \
+	 ${LD} -T $${ldname}                                 \
+	      --entry ${ENTRY_${notdir ${@:.axf=}}}           \
+	      ${LDFLAGSgcc_${notdir ${@:.axf=}}}             \
+	  ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^})   \
+	 '${LIBM}' '${LIBC}' '${LIBGCC}'
+	 @${OBJCOPY} -O binary ${@} ${@:.axf=.bin}
+
+# The rule for linking the application.
+${BINDIR}/%_ut.bin:
+	@if [ 'x${VERBOSE}' = x ]; \
+	then \
+		echo "  LD    ${@} ${LNK_SCP}"; \
+	else \
+		echo ${CPP} ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^}); \
+	fi; \
+	${CPP} ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^})
+
+# The rule for linking the application.
+${BINDIR}/%.bin:
+	@if [ 'x${VERBOSE}' = x ]; \
+	then \
+		echo "  LD    ${@} ${LNK_SCP}"; \
+	else \
+		echo ${CPP} ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^}); \
+	fi; \
+	${CPP} ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^})

@@ -1,15 +1,15 @@
+# Where to find source files that do not live in this directory.
+VPATH=${ROOT}/library
+VPATH+=${ROOT}/firmware
+
+# Where to find header files that do not live in the source directory.
+IPATH+=${ROOT}/library
+IPATH+=${ROOT}/firmware
+
 LIB_TARGET=$(OUT_DIR)/libWiflyControl.a
 LIB_TEST_SRC=$(wildcard $(LIB_DIR)/*_ut.cpp)
 LIB_SRC=$(filter-out $(LIB_TEST_SRC), $(wildcard $(LIB_DIR)/*.cpp))
-LIB_ADDITIONAL_SRC=./firmware/crc.c
 LIB_OBJ=$(LIB_SRC:%.cpp=%.o)
-TEST_DEPENDENCIES=outdir $(LIB_SRC) $(LIB_TEST_SRC)
-
-%.o: %.cpp
-	$(GPP) $(CFLAGS) $(INC) -c $< -o $@
-
-outdir:
-	@mkdir -p ${OUT_DIR}
 
 $(LIB_TARGET): outdir $(LIB_OBJ)
 	@rm -f $(LIB_TARGET)	
@@ -17,50 +17,35 @@ $(LIB_TARGET): outdir $(LIB_OBJ)
 
 library: $(LIB_TARGET)
 
-library_clean:
-	@rm -f $(LIB_DIR)/*.o
-	@rm -f *_ut.bin
-	@rm -f $(LIB_TARGET)
+${BINDIR}/BroadcastReceiver_ut.bin: clean ${OBJDIR}/BroadcastReceiver.o ${OBJDIR}/BroadcastReceiver_ut.o 
 
-BroadcastReceiver_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
-	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/BroadcastReceiver_ut.cpp $(LIB_DIR)/BroadcastReceiver.cpp -lpthread -o ${OUT_DIR}/$@
-	@./${OUT_DIR}/$@
+${BINDIR}/ComProxy_ut.bin: clean $(OBJDIR)/ComProxy_ut.o $(OBJDIR)/ComProxy.o $(OBJDIR)/MaskBuffer.o $(OBJDIR)/crc.o
 
-ComProxy_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
-	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/ComProxy_ut.cpp $(LIB_DIR)/ComProxy.cpp $(LIB_DIR)/MaskBuffer.cpp $(LIB_ADDITIONAL_SRC) -o ${OUT_DIR}/$@
-	@./${OUT_DIR}/$@
+${BINDIR}/FtpServer_ut.bin: LDFLAGS+=-lpthread
+${BINDIR}/FtpServer_ut.bin: clean $(OBJDIR)/FtpServer_ut.o $(OBJDIR)/FtpServer.o $(OBJDIR)/ClientSocket.o $(OBJDIR)/crc.o
 
-FtpServer_ut.bin: $(TEST_DEPENDENCIES)
-	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/FtpServer_ut.cpp $(LIB_DIR)/FtpServer.cpp $(LIB_DIR)/ClientSocket.cpp $(LIB_ADDITIONAL_SRC) -lpthread -o ${OUT_DIR}/$@
-	@sh ftptest.sh ./${OUT_DIR}/$@
-	
-MessageQueue_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
-	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/MessageQueue_ut.cpp -lpthread -D_GLIBCXX_USE_NANOSLEEP -o ${OUT_DIR}/$@ -Wall -pedantic -std=c++0x
-	@-./${OUT_DIR}/$@
+${BINDIR}/MessageQueue_ut.bin: CFLAGS+=-D_GLIBCXX_USE_NANOSLEEP	
+${BINDIR}/MessageQueue_ut.bin: LDFLAGS+=-lpthread
+${BINDIR}/MessageQueue_ut.bin: clean $(OBJDIR)/MessageQueue_ut.o
 
-Script_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
-	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/Script_ut.cpp $(LIB_DIR)/Script.cpp $(LIB_ADDITIONAL_SRC) -o ${OUT_DIR}/$@ -Wall -pedantic -std=c++0x
-	@./${OUT_DIR}/$@
+${BINDIR}/Script_ut.bin: clean $(OBJDIR)/Script_ut.o $(OBJDIR)/Script.o
 
-ScriptManager_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
-	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/ScriptManager_ut.cpp $(LIB_DIR)/Script.cpp $(LIB_DIR)/ScriptManager.cpp $(LIB_ADDITIONAL_SRC) -o ${OUT_DIR}/$@ -Wall -pedantic -std=c++0x -DDEBUG
-	@./${OUT_DIR}/$@
+${BINDIR}/ScriptManager_ut.bin: clean $(OBJDIR)/ScriptManager_ut.o $(OBJDIR)/Script.o $(OBJDIR)/ScriptManager.o
 
-StartupManager_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
-	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/StartupManager_ut.cpp $(LIB_DIR)/StartupManager.cpp $(INC) -o ${OUT_DIR}/$@ -Wall -pedantic -std=c++0x
-	@./${OUT_DIR}/$@
+${BINDIR}/StartupManager_ut.bin: clean $(OBJDIR)/StartupManager_ut.o $(OBJDIR)/StartupManager.o
 
-TelnetProxy_ut.bin: $(LIB_SRC) $(LIB_TEST_SRC)
-	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/TelnetProxy_ut.cpp $(LIB_DIR)/TelnetProxy.cpp $(FW_FILES) $(INC) -o ${OUT_DIR}/$@ -Wall -pedantic -std=c++0x
-	@./${OUT_DIR}/$@
+${BINDIR}/TelnetProxy_ut.bin: clean $(OBJDIR)/TelnetProxy_ut.o $(OBJDIR)/TelnetProxy.o
 
-WiflyControl_ut.bin:  $(LIB_SRC) $(LIB_TEST_SRC)
-	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/WiflyControl_ut.cpp $(LIB_DIR)/WiflyControl.cpp $(LIB_DIR)/intelhexclass.cpp $(LIB_DIR)/MaskBuffer.cpp $(LIB_ADDITIONAL_SRC)  $(INC) $(LIB_DIR)/Script.cpp -o ${OUT_DIR}/$@ -Wall -pedantic -std=c++0x 
-	@./${OUT_DIR}/$@
-	
-WiflyControlNoThrow_ut.bin:  $(LIB_SRC) $(LIB_TEST_SRC)
-	@$(GPP) $(CFLAGS) $(INC) $(LIB_DIR)/WiflyControlNoThrow_ut.cpp $(LIB_DIR)/WiflyControlNoThrow.cpp $(INC) -o ${OUT_DIR}/$@ -Wall -pedantic -std=c++0x
-	@./${OUT_DIR}/$@
+${BINDIR}/WiflyControl_ut.bin: LDFLAGS+=-lpthread
+${BINDIR}/WiflyControl_ut.bin: clean $(OBJDIR)/WiflyControl_ut.o $(OBJDIR)/WiflyControl.o  $(OBJDIR)/intelhexclass.o $(OBJDIR)/MaskBuffer.o $(OBJDIR)/crc.o $(OBJDIR)/Script.o
 
-library_test: BroadcastReceiver_ut.bin ComProxy_ut.bin FtpServer_ut.bin MessageQueue_ut.bin Script_ut.bin ScriptManager_ut.bin TelnetProxy_ut.bin WiflyControl_ut.bin WiflyControlNoThrow_ut.bin StartupManager_ut.bin
+${BINDIR}/WiflyControlNoThrow_ut.bin: clean $(OBJDIR)/WiflyControlNoThrow_ut.o $(OBJDIR)/WiflyControlNoThrow.o
 
+library_test: library_standart_test library_ftp_test
+
+library_standart_test: ${BINDIR}/BroadcastReceiver_ut.bin ${BINDIR}/ComProxy_ut.bin ${BINDIR}/MessageQueue_ut.bin ${BINDIR}/Script_ut.bin ${BINDIR}/ScriptManager_ut.bin ${BINDIR}/TelnetProxy_ut.bin ${BINDIR}/WiflyControl_ut.bin ${BINDIR}/WiflyControlNoThrow_ut.bin ${BINDIR}/StartupManager_ut.bin
+	$(foreach test,$^,./$(test);)	
+	 
+library_ftp_test: ${BINDIR}/FtpServer_ut.bin
+	$(foreach test,$^,@sh ./ut/ftptest.sh ./$(test);)	
+	 
