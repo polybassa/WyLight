@@ -13,7 +13,7 @@
 *
 ******************************************************************************/
 
-HEAP_SIZE = 0x00008000;
+HEAP_SIZE = 0x0000F000;
 
 MEMORY
 {
@@ -26,21 +26,39 @@ _stack_end = _stack_start - stack_size;
 
 SECTIONS
 {
-    .text :
+   .text :
     {
-        _text = .;
+    	_text = .;
         KEEP(*(.intvecs))
+    	CREATE_OBJECT_SYMBOLS
+		*(.text .text.* .gnu.linkonce.t.*) 
+		*(.plt)
+		*(.gnu.warning)
+		*(.glue_7t) *(.glue_7)
+		
+		. = ALIGN(0x4);
+		/* These are for static constructors and destructors under ELF */
+		KEEP (*crtbegin.o(.ctors))
+		KEEP (*(EXCLUDE_FILE (*crtend.o) .ctors)) KEEP (*(SORT(.ctors.*)))
+		KEEP (*crtend.o(.ctors))
+		KEEP (*crtbegin.o(.dtors))
+		KEEP (*(EXCLUDE_FILE (*crtend.o) .dtors)) KEEP (*(SORT(.dtors.*)))
+		KEEP (*crtend.o(.dtors))
+		
         *(.text*)
-        *(.rodata*)
-	*(.ARM.extab* .gnu.linkonce.armextab.*)
-	. = ALIGN(8);
+        *(.rodata .rodata.* .gnu.linkonce.r.*)
+		*(.ARM.extab* .gnu.linkonce.armextab.*)
+		*(.init) 
+		*(.fini)
+		. = ALIGN(8);
         _etext = .;
     } > SRAM
 
-    .ARM : {
-    __exidx_start = .;
-      *(.ARM.exidx*)
-      __exidx_end = .;
+    .ARM : 
+    {
+    	__exidx_start = .;
+      	*(.ARM.exidx* .gnu.linkonce.armexidx.*)
+      	__exidx_end = .;
     } > SRAM
 
     __init_data = .;
@@ -48,16 +66,28 @@ SECTIONS
     .data : AT(__init_data)
     {
         _data = .;
-        *(.data*)
-	. = ALIGN (8);
+        KEEP(*(.jcr)) 
+        *(.got.plt) *(.got) 
+        *(.shdata)
+		*(.data .data.* .gnu.linkonce.d.*)
+		. = ALIGN (8);
         _edata = .;
     } > SRAM
+
+	. = ALIGN(4);
+	.init_array :
+	{
+		__init_array_start = .;
+		KEEP (*(.init_array*))
+		__init_array_end = .;
+	}
 
     .bss :
     {
         _bss = .;
-        *(.bss*)
-        *(COMMON)
+        *(.shbss)
+		*(.bss .bss.* .gnu.linkonce.b.*)        
+		*(COMMON)
         _ebss = .;
     } > SRAM
 

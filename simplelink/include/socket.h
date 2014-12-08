@@ -376,7 +376,10 @@ extern "C" {
 typedef struct SlInAddr_t
 {
 #ifndef s_addr 
-    unsigned long           s_addr;             /* Internet address (32 bits).                         */        
+    unsigned long           s_addr;             /* Internet address (32 bits).     */
+#ifdef __cplusplus
+	SlInAddr_t(unsigned long addr): s_addr(addr) {};
+#endif
 #else
     union S_un {
        struct { unsigned char s_b1,s_b2,s_b3,s_b4; } S_un_b;
@@ -497,6 +500,9 @@ typedef struct SlSockAddrIn_t
     unsigned short              sin_port;           /* Address port (16 bits).                         */
     SlInAddr_t                  sin_addr;           /* Internet address (32 bits).                     */
     char                        sin_zero[8];        /* Not used.                                       */
+#ifdef __cplusplus
+	SlSockAddrIn_t(const unsigned short family, const unsigned short port, const unsigned long addr) : sin_family(family), sin_port(port), sin_addr(addr) {}
+#endif
 }SlSockAddrIn_t;
 
 typedef struct

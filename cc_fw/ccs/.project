@@ -26,6 +26,16 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>BroadcastTransmitter.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/BroadcastTransmitter.cpp</locationURI>
+		</link>
+		<link>
+			<name>BroadcastTransmitter.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/BroadcastTransmitter.h</locationURI>
+		</link>
+		<link>
 			<name>CommandIO.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/firmware/CommandIO.c</locationURI>
@@ -96,9 +106,9 @@
 			<locationURI>copy_PARENT1/common/uart_if.c</locationURI>
 		</link>
 		<link>
-			<name>wifi.c</name>
+			<name>wifi.cpp</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/wifi.c</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/wifi.cpp</locationURI>
 		</link>
 		<link>
 			<name>wy_crc.c</name>

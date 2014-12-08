@@ -125,7 +125,7 @@ CPPFLAGS= \
     -Wall \
     -flto \
     -MD \
-    -Os \
+    -O1 \
     -c \
     -g
 

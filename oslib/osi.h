@@ -56,6 +56,8 @@ extern "C" {
 #ifdef OSI_OK
 #undef OSI_OK
 #endif
+	
+#define OSI_STACK_SIZE        		2048
   
 typedef enum
 {

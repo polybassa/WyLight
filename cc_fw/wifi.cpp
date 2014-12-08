@@ -27,7 +27,7 @@
 //Common interface includes
 #include "wy_network_if.h"
 #include "wifi.h"
-#include "broadcast.h"
+#include "BroadcastTransmitter.h"
 #include "server.h"
 #include "wy_firmware.h"
 
@@ -71,18 +71,20 @@ void WlanSupport_Task(void *pvParameters) {
 			if (SUCCESS == Network_IF_InitDriver(ROLE_STA)) {
 
 				osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
-				Broadcast_TaskRun();
+
 				TcpServer_TaskRun();
 				UdpServer_TaskRun();
+				broadcast.run();
 
 				while (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
 					osi_Sleep(200);
 				}
 
 				osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
-				Broadcast_TaskQuit();
+
 				TcpServer_TaskQuit();
 				UdpServer_TaskQuit();
+				broadcast.stop();
 
 				Network_IF_DeInitDriver();
 			}
@@ -92,7 +94,7 @@ void WlanSupport_Task(void *pvParameters) {
 		if (SUCCESS == Network_IF_InitDriver(ROLE_AP)) {
 
 			osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
-			Broadcast_TaskRun();
+			broadcast.run();
 			TcpServer_TaskRun();
 			UdpServer_TaskRun();
 
@@ -101,7 +103,7 @@ void WlanSupport_Task(void *pvParameters) {
 			} while (Network_IF_AddNewProfile() != SUCCESS);
 
 			osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
-			Broadcast_TaskQuit();
+			broadcast.stop();
 			TcpServer_TaskQuit();
 			UdpServer_TaskQuit();
 

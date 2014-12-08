@@ -19,10 +19,6 @@
 #ifndef _WIFI_H_
 #define _WIFI_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "osi.h"
 
 #define ATTEMPTING_TO_CONNECT_TO_AP			"Attempting to auto connect to AP\r\n"
@@ -34,10 +30,6 @@ extern OsiTaskHandle *WlanSupportTaskHandle;
 void WlanSupport_TaskInit(void);
 
 void WlanSupport_Task(void *pvParameters);
-	
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* _WIFI_H_ */
 

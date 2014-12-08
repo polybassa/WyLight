@@ -29,10 +29,10 @@
 
 //Application Includes
 #include "wifi.h"
-#include "broadcast.h"
 #include "server.h"
 #include "wy_firmware.h"
 #include "pwm.h"
+#include "BroadcastTransmitter.h"
 
 //Common interface includes
 #include "uart_if.h"
@@ -43,12 +43,12 @@
 #define APPLICATION_VERSION     "1.0.0"
 #define SUCCESS                 0
 #define UART_PRINT				Report
-#define OSI_STACK_SIZE        	2048
 
 //
 // GLOBAL VARIABLES -- Start
 //
 extern void (* const g_pfnVectors[])(void);
+BroadcastTransmitter broadcast;
 //
 // GLOBAL VARIABLES -- End
 //
@@ -179,10 +179,24 @@ int main(void) {
 
 	ClearTerm();
 	DisplayBanner((char *)APPLICATION_NAME);
+	
+	//
+	// Simplelinkspawntask
+	//
+	VStartSimpleLinkSpawnTask(9);
+	
+	/*__asm("		ldr r10, =__init_array_start\n"
+		  "		ldr r11, =__init_array_end\n"
+		  "globals_init_loop:	\n"
+		  "		cmp     r10,r11\n"
+		  "		bhs		done\n"
+		  "		ldr   r12, [r10], #4\n"
+		  "		blx   r12\n"
+		  "		b     globals_init_loop\n"
+		  "done: nop \n");*/
 
 	Pwm_TaskInit();
 	WlanSupport_TaskInit();
-	Broadcast_TaskInit();
 	TcpServer_TaskInit();
 	UdpServer_TaskInit();
 	WyLightFirmware_TaskInit();
@@ -191,9 +205,10 @@ int main(void) {
 	// Simplelinkspawntask
 	//
 	VStartSimpleLinkSpawnTask(9);
+	broadcast.init();
 	
 	osi_TaskCreate(WlanSupport_Task, (signed portCHAR *) "WlanSupport", OSI_STACK_SIZE, NULL, 8, WlanSupportTaskHandle);
-	osi_TaskCreate(Broadcast_Task, (signed portCHAR *) "Broadcast", OSI_STACK_SIZE, NULL, 1, BroadcastTaskHandle);
+	//osi_TaskCreate(Broadcast_Task, (signed portCHAR *) "Broadcast", OSI_STACK_SIZE, NULL, 1, BroadcastTaskHandle);
 	osi_TaskCreate(TcpServer_Task, (signed portCHAR *) "TcpServer", OSI_STACK_SIZE, NULL, 5, TcpServerTaskHandle);
 	osi_TaskCreate(UdpServer_Task, (signed portCHAR *) "UdpServer", OSI_STACK_SIZE, NULL, 6, UdpServerTaskHandle);
 	osi_TaskCreate(WyLightFirmware_Task, (signed portCHAR *) "WyLightFirmware", OSI_STACK_SIZE, NULL, 7, WyLightFirmwareTaskHandle);
