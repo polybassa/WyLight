@@ -26,6 +26,8 @@
 #include "task.h"
 #include "hw_types.h"
 
+#include "WifiConsumer.h"
+
 #define BC_PORT_NUM        	55555
 
 class BroadcastTransmitter {
@@ -63,6 +65,6 @@ public:
 	void stop(void);
 };
 
-extern BroadcastTransmitter broadcast;
+extern BroadcastTransmitter g_broadcast;
 
 #endif

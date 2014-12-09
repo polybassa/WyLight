@@ -16,7 +16,7 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "Board.h"
+#include "CC3200_Platform.h"
 
 //Driverlib includes
 #include "hw_ints.h"
@@ -33,22 +33,22 @@
 
 extern void (* const g_pfnVectors[])(void);
 
-Board::Board() {
-		// Set vector table base
-		MAP_IntVTableBaseSet((unsigned long) &g_pfnVectors[0]);
-		
-		// Enable Processor
-		MAP_IntMasterEnable();
-		MAP_IntEnable(FAULT_SYSTICK);
-		
-		PRCMCC3200MCUInit();
-		
-		//UART driver initialisations
-		PinMuxConfig();
-		InitTerm();
-		ClearTerm();
-		
-		VStartSimpleLinkSpawnTask(9);
+CC3200_Platform::CC3200_Platform() {
+	// Set vector table base
+	MAP_IntVTableBaseSet((unsigned long) &g_pfnVectors[0]);
 	
-		UART_PRINT("\r\n---------------------------\r\n");
-	}
+	// Enable Processor
+	MAP_IntMasterEnable();
+	MAP_IntEnable(FAULT_SYSTICK);
+	
+	PRCMCC3200MCUInit();
+	
+	//UART driver initialisations
+	PinMuxConfig();
+	InitTerm();
+	ClearTerm();
+	
+	VStartSimpleLinkSpawnTask(9);
+
+	UART_PRINT("\r\n---------------------------\r\n");
+}

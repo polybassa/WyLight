@@ -16,15 +16,17 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef __cc_firmware__Board__
-#define __cc_firmware__Board__
+#ifndef __cc_firmware__CC3200_Platform__
+#define __cc_firmware__CC3200_Platform__
 
-class Board {
+class CC3200_Platform {
 public:
-	Board();
-	Board& operator=(const Board&) = delete;
-	Board(const Board&) = delete;
-	Board(Board&&) = delete;
+	CC3200_Platform();
+	CC3200_Platform& operator=(const CC3200_Platform&) = delete;
+	CC3200_Platform(const CC3200_Platform&) = delete;
+	CC3200_Platform(CC3200_Platform&&) = delete;
 };
 
-#endif /* defined(__cc_firmware__Board__) */
+extern CC3200_Platform g_platform;
+
+#endif /* defined(__cc_firmware__CC3200_Platform__) */

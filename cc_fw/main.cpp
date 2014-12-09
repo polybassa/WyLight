@@ -16,7 +16,7 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "Board.h"
+#include "CC3200_Platform.h"
 
 #include "osi.h"
 #include "FreeRTOS.h"
@@ -35,8 +35,8 @@
 //
 // GLOBAL VARIABLES -- Start
 //
-Board board;
-BroadcastTransmitter broadcast;
+CC3200_Platform g_platform;
+BroadcastTransmitter g_broadcast;
 //
 // GLOBAL VARIABLES -- End
 //
