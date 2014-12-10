@@ -52,26 +52,12 @@ void BroadcastTransmitter::BroadcastMessage::refresh() {
 	this->rtc = 0;
 }
 
-BroadcastTransmitter::BroadcastTransmitter(void) {
-	osi_SyncObjCreate(&this->mStartSemaphore);
-	osi_SyncObjCreate(&this->mStopSemaphore);
-
-	this->mStopFlag = false;
-	osi_TaskCreate(BroadcastTransmitter::task, (signed portCHAR *) "Broadcast", OSI_STACK_SIZE, this, 5,
-			&this->mHandle);
-}
-
 void BroadcastTransmitter::run(void) {
-	osi_SyncObjSignal(&this->mStartSemaphore);
+	Task::run();
 }
 
 void BroadcastTransmitter::stop(void) {
-	this->mStopFlag = true;
-	osi_SyncObjWait(&this->mStopSemaphore, OSI_WAIT_FOREVER);
-}
-
-void BroadcastTransmitter::task(void * pvParameters) {
-	static_cast<BroadcastTransmitter*>(pvParameters)->taskFunction();
+	Task::stop();
 }
 
 //*****************************************************************************
@@ -85,40 +71,32 @@ void BroadcastTransmitter::task(void * pvParameters) {
 //!  \brief Task handler function to handle the Broadcast Messages
 //
 //*****************************************************************************
-void BroadcastTransmitter::taskFunction() {
 
+BroadcastTransmitter::BroadcastTransmitter(void) : Task((const char *)"Broadcast", OSI_STACK_SIZE, 5, [&](const tBoolean& stopFlag){
+	
 	const sockaddr_in destaddr(AF_INET, htons(BC_PORT_NUM), htonl(INADDR_BROADCAST));
+	const int sock = socket(AF_INET, SOCK_DGRAM, 0);
 	const socklen_t addrLen = sizeof(sockaddr_in);
 	int status;
-
-	osi_Sleep(200);
-
-	for (;;) {
-		osi_SyncObjWait(&this->mStartSemaphore, OSI_WAIT_FOREVER);
-		this->mStopFlag = false;
-
-		this->mMsg.refresh();
-
-		const int sock = socket(AF_INET, SOCK_DGRAM, 0);
-		if (sock < 0) {
-			UART_PRINT("ERROR: Couldn't aquire socket for Broadcast transmit\r\n");
-			osi_SyncObjSignal(&this->mStopSemaphore);
-			continue;
-		}
-
-		UART_PRINT("Broadcast Transmitter started \r\n");
-		do {
-			osi_Sleep(1500);
-			// Send Broadcast Message
-			status = sendto(sock, &this->mMsg, sizeof(struct BroadcastTransmitter::BroadcastMessage), 0,
-					(sockaddr *) &destaddr, addrLen);
-
-		} while (status > 0 && !this->mStopFlag);
-
-		UART_PRINT("Broadcast Transmitter stopped \r\n");
-		// Close socket in case of any error's and try to open a new socket in the next loop
-		close(sock);
-		osi_SyncObjSignal(&this->mStopSemaphore);
+	
+	this->mMsg.refresh();
+	
+	if (sock < 0) {
+		UART_PRINT("ERROR: Couldn't aquire socket for Broadcast transmit\r\n");
+		return;
 	}
-}
-
+	
+	UART_PRINT("Broadcast Transmitter started \r\n");
+	do {
+		osi_Sleep(1500);
+		// Send Broadcast Message
+		status = sendto(sock, &this->mMsg, sizeof(struct BroadcastTransmitter::BroadcastMessage), 0,
+						(sockaddr *) &destaddr, addrLen);
+		
+	} while (status > 0 && !stopFlag);
+	
+	UART_PRINT("Broadcast Transmitter stopped \r\n");
+	// Close socket in case of any error's and try to open a new socket in the next loop
+	close(sock);
+	
+}) {}

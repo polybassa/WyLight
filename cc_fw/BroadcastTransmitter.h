@@ -20,17 +20,13 @@
 #define __BROADCAST_TRANSMITTER_H_
 
 #include <stdint.h>
-#include "osi.h"
-#include "FreeRTOS.h"
-#include "semphr.h"
-#include "task.h"
-#include "hw_types.h"
 
+#include "CPPTask.h"
 #include "WifiConsumer.h"
 
 #define BC_PORT_NUM        	55555
 
-class BroadcastTransmitter {
+class BroadcastTransmitter final : public Task, WifiConsumer {
 	struct __attribute__((__packed__)) BroadcastMessage {
 		uint8_t MAC[6];
 		uint8_t channel;
@@ -46,25 +42,18 @@ class BroadcastTransmitter {
 		uint8_t sensors[16];
 		void refresh(void);
 	};
-	xTaskHandle mHandle;
-	xSemaphoreHandle mStopSemaphore;
-	xSemaphoreHandle mStartSemaphore;
-	tBoolean mStopFlag;
-
+	
 	BroadcastMessage mMsg;
 	static const uint16_t port = BC_PORT_NUM;
-	void taskFunction(void);
-	static void task(void *pvParameters);
+	
 public:
 	BroadcastTransmitter(void);
 	BroadcastTransmitter(const BroadcastTransmitter&) = delete;
 	BroadcastTransmitter& operator=(const BroadcastTransmitter&) = delete;
 	BroadcastTransmitter(BroadcastTransmitter&&) = delete;
-
-	void run(void);
-	void stop(void);
+	
+	virtual void run(void);
+	virtual void stop(void);
 };
-
-extern BroadcastTransmitter g_broadcast;
 
 #endif
