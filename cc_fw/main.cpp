@@ -28,14 +28,43 @@
 #include "wy_firmware.h"
 #include "pwm.h"
 #include "BroadcastTransmitter.h"
+#include "WifiConsumer.h"
 
 #define APPLICATION_NAME        "WyLight Firmware"
 #define APPLICATION_VERSION     "1.0.0"
+
+#ifdef __cplusplus
+/*
+ * Override C++ new/delete operators to reduce memory footprint
+ */
+#ifdef CUSTOM_NEW
+#include <stdlib.h>
+void *operator new(size_t size) {
+	return malloc(size);
+}
+
+void *operator new[](size_t size) {
+	return malloc(size);
+}
+
+void operator delete(void *p) {
+	free(p);
+}
+
+void operator delete[](void *p) {
+	free(p);
+}
+#else
+#include <new>
+#include <cstddef>
+#endif /* CUSTOM_NEW */
+#endif /* __cplusplus */
 
 //
 // GLOBAL VARIABLES -- Start
 //
 CC3200_Platform g_platform;
+std::vector<WifiConsumer*> WifiConsumer::Consumers;
 BroadcastTransmitter g_broadcast;
 //
 // GLOBAL VARIABLES -- End
