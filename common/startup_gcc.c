@@ -80,6 +80,8 @@ extern void xPortSysTickHandler(void);
 //*****************************************************************************
 extern int main(void);
 
+void *__dso_handle = 0;
+
 //*****************************************************************************
 //
 // Reserve space for the system stack.

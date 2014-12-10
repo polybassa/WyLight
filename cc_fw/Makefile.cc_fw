@@ -32,8 +32,9 @@ IPATH+=${ROOT}/firmware
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/main.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/pinmux.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/CC3200_Platform.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/WifiConsumer.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/BroadcastTransmitter.o
-#${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/broadcast.o
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/CPPTask.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/server.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_network_if.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wifi.o
