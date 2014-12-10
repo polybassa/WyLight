@@ -2466,8 +2466,10 @@ _GLIBCXX_HAS_NESTED_TYPE(result_type)
     function<_Res(_ArgTypes...)>::
     operator()(_ArgTypes... __args) const
     {
+#if 0
       if (_M_empty())
 	__throw_bad_function_call();
+#endif
       return _M_invoker(_M_functor, std::forward<_ArgTypes>(__args)...);
     }
 
