@@ -43,8 +43,8 @@ public:
 	Task& operator=(const Task&) = delete;
 	Task(Task&&) = delete;
 	
-	virtual void run(void);
-	virtual void stop(void);
+	void run(void);
+	void stop(void);
 };
 
 #endif /* defined(__cc_firmware__Task__) */

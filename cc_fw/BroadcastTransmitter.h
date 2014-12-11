@@ -51,9 +51,6 @@ public:
 	BroadcastTransmitter(const BroadcastTransmitter&) = delete;
 	BroadcastTransmitter& operator=(const BroadcastTransmitter&) = delete;
 	BroadcastTransmitter(BroadcastTransmitter&&) = delete;
-	
-	virtual void run(void);
-	virtual void stop(void);
 };
 
 #endif
