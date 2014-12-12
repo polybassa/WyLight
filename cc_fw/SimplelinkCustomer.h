@@ -23,11 +23,16 @@
 
 class SimplelinkCustomer {
 	static std::vector<SimplelinkCustomer*> Customers;
-	
-public:
+protected:
 	SimplelinkCustomer() { Customers.emplace_back(this); }
+	SimplelinkCustomer(const SimplelinkCustomer&) = delete;
+	SimplelinkCustomer& operator=(const SimplelinkCustomer&) = delete;
+	SimplelinkCustomer(SimplelinkCustomer&&) = delete;
+
 	virtual void run(void) { while(1); /* Error */ };
 	virtual void stop(void) { while(1); /* Error */ };
+	
+public:
 	static void provideService(void) { for(SimplelinkCustomer* customer : Customers) customer->run();}
 	static void stopService(void) { for(SimplelinkCustomer* customer : Customers) customer->stop();}
 };
