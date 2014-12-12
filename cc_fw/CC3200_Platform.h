@@ -27,6 +27,4 @@ public:
 	CC3200_Platform(CC3200_Platform&&) = delete;
 };
 
-extern CC3200_Platform g_platform;
-
 #endif /* defined(__cc_firmware__CC3200_Platform__) */

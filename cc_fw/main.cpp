@@ -63,11 +63,11 @@ void operator delete[](void *p) {
 //
 // GLOBAL VARIABLES -- Start
 //
-CC3200_Platform g_platform;
-std::vector<SimplelinkCustomer*> SimplelinkCustomer::Customers;
-BroadcastTransmitter g_broadcast;
-UdpServer g_udpserver;
-TcpServer g_tcpserver;
+const CC3200_Platform g_platform;
+std::vector<SimplelinkCustomer*> SimplelinkCustomer::Customers(5);
+const BroadcastTransmitter g_broadcast;
+const UdpServer g_udpserver;
+const TcpServer g_tcpserver;
 //
 // GLOBAL VARIABLES -- End
 //
