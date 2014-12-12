@@ -21,6 +21,10 @@
 
 #include "platform.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * We will use a 31+1 byte ringbuffer. We need one additional byte to distinguish
  * between an empty and a full buffer.
@@ -85,5 +89,9 @@ uns8 RingBuf_Get(struct RingBuffer *pBuf);
  *
  * If the buffer is already full, <g_error_ringbuff> is set.
  */
-void RingBuf_Put(struct RingBuffer *pBuf, const uns8 value);
+void RingBuf_Put(struct RingBuffer *pBuf, const uns8 value);	
+	
+#ifdef __cplusplus
+}
+#endif
 #endif /* #ifndef _RINGBUF_H_ */
