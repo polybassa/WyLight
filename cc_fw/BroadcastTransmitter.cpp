@@ -17,17 +17,10 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "hw_types.h"
-// Simplelink includes
 #include "simplelink.h"
-
-//Common interface includes
 #include "server.h"
-//Application Includes
 #include "BroadcastTransmitter.h"
 #include "osi.h"
-#include "FreeRTOS.h"
-#include "semphr.h"
-#include "task.h"
 
 void BroadcastTransmitter::BroadcastMessage::refresh() {
 	memset(this, 0, sizeof(*this));
