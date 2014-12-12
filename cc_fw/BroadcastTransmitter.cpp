@@ -52,6 +52,14 @@ void BroadcastTransmitter::BroadcastMessage::refresh() {
 	this->rtc = 0;
 }
 
+void BroadcastTransmitter::run(void) {
+	Task::run();
+}
+
+void BroadcastTransmitter::stop(void) {
+	Task::stop();
+}
+
 //*****************************************************************************
 //
 //! Broadcast_Task

@@ -31,7 +31,7 @@
 #include "server.h"
 #include "wy_firmware.h"
 
-#include "WifiConsumer.h"
+#include "SimplelinkCustomer.h"
 
 //
 // GLOBAL VARIABLES -- Start
@@ -75,7 +75,7 @@ void WlanSupport_Task(void *pvParameters) {
 				osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
 				TcpServer_TaskRun();
 				UdpServer_TaskRun();
-				WifiConsumer::startService();
+				SimplelinkCustomer::provideService();
 
 				while (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
 					osi_Sleep(200);
@@ -84,7 +84,7 @@ void WlanSupport_Task(void *pvParameters) {
 				osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
 				TcpServer_TaskQuit();
 				UdpServer_TaskQuit();
-				WifiConsumer::stopService();
+				SimplelinkCustomer::stopService();
 
 				Network_IF_DeInitDriver();
 			}
@@ -96,7 +96,7 @@ void WlanSupport_Task(void *pvParameters) {
 			osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
 			TcpServer_TaskRun();
 			UdpServer_TaskRun();
-			WifiConsumer::startService();
+			SimplelinkCustomer::provideService();
 
 			do {
 				osi_SyncObjWait(WlanSupportProvisioningDataAddedSemaphore, OSI_WAIT_FOREVER);
@@ -105,7 +105,7 @@ void WlanSupport_Task(void *pvParameters) {
 			osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
 			TcpServer_TaskQuit();
 			UdpServer_TaskQuit();
-			WifiConsumer::stopService();
+			SimplelinkCustomer::stopService();
 
 			Network_IF_DeInitDriver();
 		}

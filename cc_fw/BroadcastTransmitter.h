@@ -22,11 +22,11 @@
 #include <stdint.h>
 
 #include "CPPTask.h"
-#include "WifiConsumer.h"
+#include "SimplelinkCustomer.h"
 
 #define BC_PORT_NUM        	55555
 
-class BroadcastTransmitter final : public Task, WifiConsumer {
+class BroadcastTransmitter final : public Task, SimplelinkCustomer {
 	struct __attribute__((__packed__)) BroadcastMessage {
 		uint8_t MAC[6];
 		uint8_t channel;
@@ -51,6 +51,9 @@ public:
 	BroadcastTransmitter(const BroadcastTransmitter&) = delete;
 	BroadcastTransmitter& operator=(const BroadcastTransmitter&) = delete;
 	BroadcastTransmitter(BroadcastTransmitter&&) = delete;
+	
+	virtual void run(void);
+	virtual void stop(void);
 };
 
 #endif

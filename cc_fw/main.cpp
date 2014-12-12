@@ -28,7 +28,7 @@
 #include "wy_firmware.h"
 #include "pwm.h"
 #include "BroadcastTransmitter.h"
-#include "WifiConsumer.h"
+#include "SimplelinkCustomer.h"
 
 #define APPLICATION_NAME        "WyLight Firmware"
 #define APPLICATION_VERSION     "1.0.0"
@@ -64,7 +64,7 @@ void operator delete[](void *p) {
 // GLOBAL VARIABLES -- Start
 //
 CC3200_Platform g_platform;
-std::vector<WifiConsumer*> WifiConsumer::Consumers;
+std::vector<SimplelinkCustomer*> SimplelinkCustomer::Customers;
 BroadcastTransmitter g_broadcast;
 //
 // GLOBAL VARIABLES -- End

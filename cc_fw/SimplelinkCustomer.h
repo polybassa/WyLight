@@ -16,21 +16,21 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef __cc_firmware__WifiConsumer__
-#define __cc_firmware__WifiConsumer__
+#ifndef __cc_firmware__SimplelinkCustomers__
+#define __cc_firmware__SimplelinkCustomers__
 
 #include <vector>
 
-class WifiConsumer {
-	static std::vector<WifiConsumer*> Consumers;
+class SimplelinkCustomer {
+	static std::vector<SimplelinkCustomer*> Customers;
 	
 public:
-	WifiConsumer() { Consumers.emplace_back(this); }
+	SimplelinkCustomer() { Customers.emplace_back(this); }
 	virtual void run(void) { while(1); /* Error */ };
 	virtual void stop(void) { while(1); /* Error */ };
-	static void startService(void) { for(WifiConsumer* consumer : Consumers) consumer->run();}
-	static void stopService(void) { for(WifiConsumer* consumer : Consumers) consumer->stop();}
+	static void provideService(void) { for(SimplelinkCustomer* customer : Customers) customer->run();}
+	static void stopService(void) { for(SimplelinkCustomer* customer : Customers) customer->stop();}
 };
 
 
-#endif /* defined(__cc_firmware__WifiConsumer__) */
+#endif /* defined(__cc_firmware__SimplelinkCustomers__) */
