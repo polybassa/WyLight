@@ -501,6 +501,7 @@ typedef struct SlSockAddrIn_t
     SlInAddr_t                  sin_addr;           /* Internet address (32 bits).                     */
     char                        sin_zero[8];        /* Not used.                                       */
 #ifdef __cplusplus
+	SlSockAddrIn_t() : sin_family(0), sin_port(0), sin_addr(0) {}
 	SlSockAddrIn_t(const unsigned short family, const unsigned short port, const unsigned long addr) : sin_family(family), sin_port(port), sin_addr(addr) {}
 #endif
 }SlSockAddrIn_t;
