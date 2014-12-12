@@ -28,7 +28,6 @@
 #include "wy_network_if.h"
 #include "wifi.h"
 #include "BroadcastTransmitter.h"
-#include "server.h"
 #include "wy_firmware.h"
 
 #include "SimplelinkCustomer.h"
@@ -73,8 +72,6 @@ void WlanSupport_Task(void *pvParameters) {
 			if (SUCCESS == Network_IF_InitDriver(ROLE_STA)) {
 
 				osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
-				TcpServer_TaskRun();
-				UdpServer_TaskRun();
 				SimplelinkCustomer::provideService();
 
 				while (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
@@ -82,8 +79,6 @@ void WlanSupport_Task(void *pvParameters) {
 				}
 
 				osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
-				TcpServer_TaskQuit();
-				UdpServer_TaskQuit();
 				SimplelinkCustomer::stopService();
 
 				Network_IF_DeInitDriver();
@@ -94,8 +89,6 @@ void WlanSupport_Task(void *pvParameters) {
 		if (SUCCESS == Network_IF_InitDriver(ROLE_AP)) {
 
 			osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
-			TcpServer_TaskRun();
-			UdpServer_TaskRun();
 			SimplelinkCustomer::provideService();
 
 			do {
@@ -103,8 +96,6 @@ void WlanSupport_Task(void *pvParameters) {
 			} while (Network_IF_AddNewProfile() != SUCCESS);
 
 			osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
-			TcpServer_TaskQuit();
-			UdpServer_TaskQuit();
 			SimplelinkCustomer::stopService();
 
 			Network_IF_DeInitDriver();

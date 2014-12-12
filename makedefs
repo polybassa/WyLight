@@ -99,6 +99,7 @@ AFLAGS=-mthumb \
 CFLAGS= -ffunction-sections \
         -fdata-sections     \
         -mcpu=cortex-m4 \
+        -Dcc3200 \
         -fno-builtin \
         -pedantic \
         -std=c99 \
@@ -117,6 +118,7 @@ CPPFLAGS= \
     -fno-exceptions \
     -mcpu=cortex-m4 \
     -DCUSTOM_NEW \
+    -Dcc3200 \
     -fno-builtin \
     -std=c++0x \
     -pedantic \

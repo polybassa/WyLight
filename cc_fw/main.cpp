@@ -24,11 +24,11 @@
 
 //Application Includes
 #include "wifi.h"
-#include "server.h"
 #include "wy_firmware.h"
 #include "pwm.h"
 #include "BroadcastTransmitter.h"
 #include "SimplelinkCustomer.h"
+#include "SimplelinkServers.h"
 
 #define APPLICATION_NAME        "WyLight Firmware"
 #define APPLICATION_VERSION     "1.0.0"
@@ -66,6 +66,8 @@ void operator delete[](void *p) {
 CC3200_Platform g_platform;
 std::vector<SimplelinkCustomer*> SimplelinkCustomer::Customers;
 BroadcastTransmitter g_broadcast;
+UdpServer g_udpserver;
+TcpServer g_tcpserver;
 //
 // GLOBAL VARIABLES -- End
 //
@@ -147,13 +149,9 @@ int main(void) {
 
 	Pwm_TaskInit();
 	WlanSupport_TaskInit();
-	TcpServer_TaskInit();
-	UdpServer_TaskInit();
 	WyLightFirmware_TaskInit();
 
 	osi_TaskCreate(WlanSupport_Task, (signed portCHAR *) "WlanSupport", OSI_STACK_SIZE, NULL, 8, WlanSupportTaskHandle);
-	osi_TaskCreate(TcpServer_Task, (signed portCHAR *) "TcpServer", OSI_STACK_SIZE, NULL, 5, TcpServerTaskHandle);
-	osi_TaskCreate(UdpServer_Task, (signed portCHAR *) "UdpServer", OSI_STACK_SIZE, NULL, 6, UdpServerTaskHandle);
 	osi_TaskCreate(WyLightFirmware_Task, (signed portCHAR *) "WyLightFirmware", OSI_STACK_SIZE, NULL, 7,
 			WyLightFirmwareTaskHandle);
 	osi_TaskCreate(WyLightGetCommands_Task, (signed portCHAR *) "GetCommands", OSI_STACK_SIZE, NULL, 6,
