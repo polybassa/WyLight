@@ -1,9 +1,9 @@
 Wy_Light
 ===========
 
-Documentation: http://polybassa.github.com/Wy_Light/index.html
+Documentation: * [http://polybassa.github.com/Wy_Light/index.html
 
-Toolchain: https://launchpad.net/gcc-arm-embedded/	
+Toolchain: * [https://launchpad.net/gcc-arm-embedded/	
 Version:  (arm-none-eabi-gcc -v)
 gcc version 4.8.4 20140526 (release) [ARM/embedded-4_8-branch revision 211358] (GNU Tools for ARM Embedded Processors) 
 
