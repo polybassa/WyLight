@@ -8,10 +8,10 @@ Version:  (arm-none-eabi-gcc -v)
 gcc version 4.8.4 20140526 (release) [ARM/embedded-4_8-branch revision 211358] (GNU Tools for ARM Embedded Processors) 
 
 Install:
-´´´
+
 ./configure
 make
-´´´
+
 
 Targets:
 
