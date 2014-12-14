@@ -142,6 +142,7 @@ ut: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
 test: clean-all ${OBJDIR} ${BINDIR} 
 	make ut 
+	./exe/WyLight_ut.bin
 	make firmware_test 
 	make library_test
 
