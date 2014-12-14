@@ -1,7 +1,7 @@
 Wy_Light
 ===========
 
- [Documentation](http://polybassa.github.com/Wy_Light/index.html)
+ [Documentation](http://polybassa.github.com/WyLight/index.html)
 
 Toolchain: 
 ----------
