@@ -40,19 +40,19 @@
 #ifdef CUSTOM_NEW
 #include <stdlib.h>
 void *operator new(size_t size) {
-	return malloc(size);
+	return pvPortMalloc(size);
 }
 
 void *operator new[](size_t size) {
-	return malloc(size);
+	return pvPortMalloc(size);
 }
 
 void operator delete(void *p) {
-	free(p);
+	vPortFree(p);
 }
 
 void operator delete[](void *p) {
-	free(p);
+	vPortFree(p);
 }
 #else
 #include <new>
@@ -64,7 +64,7 @@ void operator delete[](void *p) {
 // GLOBAL VARIABLES -- Start
 //
 const CC3200_Platform g_platform;
-std::vector<SimplelinkCustomer*> SimplelinkCustomer::Customers(5);
+std::vector<SimplelinkCustomer*> SimplelinkCustomer::Customers;
 const BroadcastTransmitter g_broadcast;
 const UdpServer g_udpserver;
 const TcpServer g_tcpserver;
