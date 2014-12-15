@@ -33,12 +33,9 @@
 #define APPLICATION_NAME        "WyLight Firmware"
 #define APPLICATION_VERSION     "1.0.0"
 
-#ifdef __cplusplus
 /*
  * Override C++ new/delete operators to reduce memory footprint
  */
-#ifdef CUSTOM_NEW
-#include <stdlib.h>
 void *operator new(size_t size) {
 	return pvPortMalloc(size);
 }
@@ -54,11 +51,6 @@ void operator delete(void *p) {
 void operator delete[](void *p) {
 	vPortFree(p);
 }
-#else
-#include <new>
-#include <cstddef>
-#endif /* CUSTOM_NEW */
-#endif /* __cplusplus */
 
 //
 // GLOBAL VARIABLES -- Start
