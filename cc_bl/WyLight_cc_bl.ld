@@ -16,7 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with WyLight.  If not, see <http://www.gnu.org/licenses/>.
 
-#*******************************************************************************/
+#******************************************************************************
+*/
 
 /******************************************************************************
 *
@@ -112,5 +113,13 @@ SECTIONS
 	_eheap = .;
 
     }
+
+    . = ALIGN(4);
+    .init_array :
+    {
+        __init_array_start = .;
+        KEEP (*(.init_array*))
+        __init_array_end = .;
+    } > SRAM
 }
 
