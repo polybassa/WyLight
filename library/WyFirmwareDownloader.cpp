@@ -47,14 +47,21 @@ namespace WyLight {
         }
     }
     
-    void BootloaderClient::sendData(std::istream& inData) throw (FatalError) {
+    bool BootloaderClient::sendData(std::istream& inData) throw (FatalError) {
         uint8_t buffer[512];
         while (!inData.eof()) {
-            inData.get(buffer, sizeof(buffer));
+            inData.get((char *)buffer, sizeof(buffer));
             if(inData.gcount() != this->Send(buffer, inData.gcount())) {
                 throw FatalError("Error during send! \r\n");
             }
         }
+        timeval timeout = {2, 0};
+        buffer[0] = 0;
+        this->Recv(buffer, sizeof(buffer), &timeout);
+        if (buffer[0] == DONE_RESPONSE) {
+            return true;
+        }
+        return false;
     }
     
     int FirmwareDownloader::loadFirmware(const std::string &path) const {

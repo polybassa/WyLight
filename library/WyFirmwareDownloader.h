@@ -29,7 +29,7 @@ namespace WyLight {
     public:
         BootloaderClient(const uint32_t Addr, const uint16_t port) throw (ConnectionLost, FatalError);
         
-        void sendData(std::istream& inData) throw (FatalError);
+        bool sendData(std::istream& inData) throw (FatalError);
     };
     
     class FirmwareDownloader {
