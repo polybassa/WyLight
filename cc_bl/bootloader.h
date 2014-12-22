@@ -26,13 +26,16 @@
 #if defined(SIMULATOR)
 #include "simulator.h"
 #define FW_FILENAME			"firmware.bin"
+#define BL_FILENAME         "bootloader.bin"
 #define APP_NAME			"WyLight Firmware"
 #define FIRMWARE_ORIGIN 	memory
 #else
 #define FW_FILENAME			"/temp/firmware.bin"
+#define BL_FILENAME         "/sys/mcuimg.bin"
 #define APP_NAME			"WyLight Bootloader"
 #define FIRMWARE_ORIGIN 	(uint8_t*)0x20012000
 #endif
+
 
 #define FORMAT_COMMAND		"WyLightFormatFilesystem"
 #define LIST_FS_COMMAND		"WyLightPrintFilesystem"
