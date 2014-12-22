@@ -45,7 +45,6 @@
 /*
  * Override C++ new/delete operators to reduce memory footprint
  */
-#ifdef CUSTOM_NEW
 #include <stdlib.h>
 void *operator new(size_t size) {
 	return malloc(size);
@@ -62,10 +61,6 @@ void operator delete(void *p) {
 void operator delete[](void *p) {
 	free(p);
 }
-#else
-#include <new>
-#include <cstddef>
-#endif /* CUSTOM_NEW */
 #endif /* __cplusplus */
 
 extern void (* const g_pfnVectors[])(void);

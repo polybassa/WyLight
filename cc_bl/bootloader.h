@@ -33,7 +33,12 @@
 #define APP_NAME			"WyLight Bootloader"
 #define FIRMWARE_ORIGIN 	(uint8_t*)0x20012000
 #endif
+
 #define FORMAT_COMMAND		"WyLightFormatFilesystem"
 #define LIST_FS_COMMAND		"WyLightPrintFilesystem"
+#define QUIT_RESPONSE       0x04
+#define DONE_RESPONSE       '1'
+#define FAILURE_RESPONSE    '0'
+#define WELCOME_RESPONSE    "\0\0\0\0WyLightBootloader"
 
 #endif /* #ifndef _BOOTLOADER_H_ */

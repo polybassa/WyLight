@@ -135,7 +135,7 @@ int TcpServer_Accept(const int listenSocket)
 extern void TcpServer(void)
 {
 	const uint32_t BL_VERSION = htonl(BOOTLOADER_VERSION);
-	char welcome[] = "\0\0\0\0WyLightBootloader";
+	char welcome[] = WELCOME_RESPONSE;
 
 	memcpy(welcome, &BL_VERSION, sizeof(uint32_t));
 
@@ -152,15 +152,15 @@ extern void TcpServer(void)
 		if (sizeof(welcome) == send(clientSock, welcome, sizeof(welcome), 0)) {
 			fwStatus = ReceiveFw(clientSock);
 			if (fwStatus == EAGAIN || fwStatus == SUCCESS){
-				const char DONE = '1';
+				const char DONE = DONE_RESPONSE;
 				send(clientSock, &DONE, sizeof(DONE), 0);
 			} else {
-				const char FAILURE = '0';
+				const char FAILURE = FAILURE_RESPONSE;
 				send(clientSock, &FAILURE, sizeof(FAILURE), 0);
 			}
 			// send EOF to quit netcat client
-			const char QUIT_NETCAT = 0x04;
-			send(clientSock, &QUIT_NETCAT, sizeof(QUIT_NETCAT), 0);
+			const char QUIT = QUIT_RESPONSE;
+			send(clientSock, &QUIT, sizeof(QUIT), 0);
 		}
 		close(clientSock);
 	}
