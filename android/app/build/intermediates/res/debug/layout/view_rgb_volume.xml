@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".WiflyControlActivity" >
+	<SeekBar
+		android:id="@+id/greenVolume"
+		style="@style/SeekBarGreen"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:layout_centerInParent="true"
+		android:layout_margin="20dp"
+		android:max="255" />
+    <SeekBar
+		android:id="@+id/redVolume"
+		style="@style/SeekBarRed"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:layout_margin="20dp"
+		android:layout_above="@id/greenVolume"
+		android:max="255" />
+    <SeekBar
+		android:id="@+id/blueVolume"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:layout_margin="20dp"
+		android:layout_below="@id/greenVolume"
+		android:max="255" />
+    <de.WyLight.WyLight.view.ColorView
+        android:id="@+id/colorStatus"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:layout_margin="20dp"
+        android:layout_above="@id/redVolume"
+        custom:showText="true" />
+    <de.WyLight.WyLight.view.ColorView
+        android:id="@+id/greenStatus"
+        android:layout_height="40dp"
+        android:layout_width="80dp"
+        android:layout_margin="20dp"
+        android:layout_below="@id/blueVolume"
+        android:layout_centerHorizontal="true"
+        android:text="@string/percent_zero"
+        custom:showText="true" />
+    <de.WyLight.WyLight.view.ColorView
+        android:id="@+id/redStatus"
+        android:layout_height="40dp"
+        android:layout_width="80dp"
+        android:layout_margin="20dp"
+        android:layout_below="@id/blueVolume"
+        android:layout_toLeftOf="@id/greenStatus"
+        android:text="@string/percent_zero"
+        custom:showText="true" />
+    <de.WyLight.WyLight.view.ColorView
+        android:id="@+id/blueStatus"
+        android:layout_height="40dp"
+        android:layout_width="80dp"
+        android:layout_margin="20dp"
+        android:layout_below="@id/blueVolume"
+        android:layout_toRightOf="@id/greenStatus"
+        android:text="@string/percent_zero"
+        custom:showText="true" />
+</RelativeLayout><!-- From: file:/home/gpb/workspace/new/WyLight/android/app/src/main/res/layout/view_rgb_volume.xml -->

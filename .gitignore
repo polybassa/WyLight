@@ -22,3 +22,9 @@ UserInterfaceState.xcuserstate
 config.status
 configure.scan
 obj
+android/.gradle
+android/local.properties
+android/.idea/workspace.xml
+android/.idea/libraries
+android/.DS_Store
+android/build

@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".WiflyControlActivity" >
+	<SeekBar
+		android:id="@+id/brightnessPicker"
+		android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:layout_margin="20dp" />
+    <ImageView
+        android:id="@+id/low"
+        android:src="@drawable/ic_action_brightness_low"
+        android:contentDescription="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/brightnessPicker"
+        android:layout_marginLeft="10dip"
+        android:layout_alignLeft="@id/brightnessPicker" />
+    <ImageView
+        android:id="@+id/high"
+        android:src="@drawable/ic_action_brightness_high"
+        android:contentDescription="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/brightnessPicker"
+        android:layout_marginRight="10dip"
+        android:layout_alignRight="@id/brightnessPicker" />
+    <de.WyLight.WyLight.view.ColorView
+        android:id="@+id/colorStatus"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:layout_margin="20dp"
+        android:layout_above="@id/low" />
+</RelativeLayout><!-- From: file:/home/gpb/workspace/new/WyLight/android/app/src/main/res/layout/fragment_set_brightness.xml -->

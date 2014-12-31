@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+<LinearLayout
+	android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/deviceid_description" />    
+    <EditText
+        android:id="@+id/editDeviceId"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/deviceid_hint"
+        android:inputType="text" />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ssid_description" />    
+    <EditText
+        android:id="@+id/editSsid"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/ssid_hint"
+        android:inputType="text" />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/passphrase_description" />    
+    <EditText
+        android:id="@+id/editPassphrase"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/passphrase_hint"
+        android:inputType="textPassword" />
+    <CheckBox
+        android:id="@+id/togglePassphrase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/passphrase_toggle" />
+    <CheckBox
+        android:id="@+id/toggleSoftAp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/softap_toggle" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/save"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/action_accept" />
+    	<Button
+            android:id="@+id/cancel"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cancel" />
+    </LinearLayout>
+</LinearLayout></ScrollView><!-- From: file:/home/gpb/workspace/new/WyLight/android/app/src/main/res/layout/dialog_set_wlan.xml -->

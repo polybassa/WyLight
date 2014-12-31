@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/action_accept"
+          android:icon="@drawable/ic_action_accept"
+          android:title="@string/action_accept"
+          android:showAsAction="ifRoom" />
+</menu>
+<!-- From: file:/home/gpb/workspace/new/WyLight/android/app/src/main/res/menu/edit_gradient_activity_actions.xml -->

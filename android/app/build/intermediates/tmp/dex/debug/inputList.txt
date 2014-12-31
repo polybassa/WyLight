@@ -1,0 +1,2 @@
+/home/gpb/workspace/new/WyLight/android/app/build/intermediates/classes/debug
+/home/gpb/workspace/new/WyLight/android/app/build/intermediates/pre-dexed/debug/android-support-v13-194fd8664c65d4a5e3f40a0cd6294af13de0aa3a.jar

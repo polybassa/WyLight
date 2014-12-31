@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/home/gpb/workspace/new/WyLight/android/app/src/main/assets"><file name="main.hex" path="/home/gpb/workspace/new/WyLight/android/app/src/main/assets/main.hex"/></source></dataSet><dataSet config="debug"><source path="/home/gpb/workspace/new/WyLight/android/app/src/debug/assets"/></dataSet></merger>
