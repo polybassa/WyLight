@@ -585,7 +585,7 @@ PACKAGE_STRING='WyLight 0.1'
 PACKAGE_BUGREPORT='nils.weiss@wylight.de'
 PACKAGE_URL=''
 
-ac_unique_file="android/WiflyLight/jni/WiflyControlJni.cpp"
+ac_unique_file="android/app/src/main/jni/WiflyControlJni.cpp"
 # Factoring default headers for most tests.
 ac_includes_default="\
 #include <stdio.h>

@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.69])
 AC_INIT([WyLight], [0.1], [nils.weiss@wylight.de])
-AC_CONFIG_SRCDIR([android/WiflyLight/jni/WiflyControlJni.cpp])
+AC_CONFIG_SRCDIR([android/app/src/main/jni/WiflyControlJni.cpp])
 AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
@@ -22,8 +22,8 @@ AC_PATH_PROG(GIT, git, [not_found])
 AC_DEFUN(AC_PATH_PROG_CC8E, [
 AC_PATH_PROG(PIC_CC8E, [CC8E.EXE], [not_found],[$PATH:/Users/weitys1/Dropbox/Wifly_Light/CC8E:/home/gpb/cc8efree:/home/weitys1/Dropbox/Wifly_Light/CC8E])
 if test x"${PIC_CC8E}" == x"not_found" ; then
-    AC_MSG_RESULT([Searching for CC8E with find!])   
-	PIC_CC8E=$(find ~ -name 'CC8E.EXE' -print -quit) 
+    AC_MSG_RESULT([Searching for CC8E with find!])
+	PIC_CC8E=$(find ~ -name 'CC8E.EXE' -print -quit)
 else
 	AC_MSG_RESULT([CC8E found!])
 fi ])
