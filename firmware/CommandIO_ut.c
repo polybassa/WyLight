@@ -33,7 +33,7 @@
 
 #define NUM_TEST_LOOPS 255
 
-static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;
 
 struct RingBuffer g_RingBufResponse;
 uns8 g_RandomDataPool[500];

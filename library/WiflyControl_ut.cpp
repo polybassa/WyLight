@@ -27,7 +27,7 @@
 
 namespace WyLight {
 
-	static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+	static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 	// global variables
 	uint8_t g_FlashRndDataPool[FLASH_SIZE];

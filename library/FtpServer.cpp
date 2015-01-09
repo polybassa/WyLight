@@ -32,9 +32,9 @@ namespace WyLight {
 
 #define FTP_PORT 60021
 	
-	static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+	static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-	static const timeval RESPONSE_TIMEOUT = {5, 0};
+	static const timeval __attribute__((unused)) RESPONSE_TIMEOUT = {5, 0};
 	static const uint32_t LOCALHOST = 2130706433;
 	
 	const FtpCommand FtpCommand::CWD("public",

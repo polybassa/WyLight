@@ -20,7 +20,7 @@
 
 namespace WyLight {
 
-	static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+	static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 	ControlNoThrow::ControlNoThrow(uint32_t addr, uint16_t port)
 		: mControl(addr, port) {}

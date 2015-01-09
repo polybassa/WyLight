@@ -42,9 +42,9 @@ using std::hex;
 
 namespace WyLight {
 
-	static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+	static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-	const std::string Control::LEDS_ALL {"ffffffff"};
+    const std::string Control::LEDS_ALL {"ffffffff"};
 	const std::list<std::string> Control::RN171_DEFAULT_PARAMETERS = {
 		"set broadcast interval 0x1\r\n",    	// to support fast broadcast recognition
 		"set comm close 0\r\n",            		// Disable *CLOS* string
