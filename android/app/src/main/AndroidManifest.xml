@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="de.WyLight.WyLight"
+    android:versionCode="38"
+    android:versionName="0.38" >
+
+    <uses-sdk
+        android:minSdkVersion="15"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <application
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:allowBackup="true" >
+        <activity
+            android:name="de.WyLight.WyLight.SelectRemoteActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="de.WyLight.WyLight.EditGradientActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_edit_gradient" >
+        </activity>
+        <activity
+            android:name="de.WyLight.WyLight.EditScriptActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_edit_script" >
+        </activity>
+        <activity
+            android:name="de.WyLight.WyLight.ScriptImportActivity"
+            android:label="@string/title_activity_script_import" >
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:mimeType="text/wylightscript" />
+				<data android:pathPattern=".*" />
+				<data android:host="*" />
+			</intent-filter>
+        </activity>
+        <activity
+            android:name="de.WyLight.WyLight.WiflyControlActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_wifly_control" >
+        </activity>
+    </application>
+</manifest>
