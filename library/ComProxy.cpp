@@ -25,7 +25,7 @@
 
 namespace WyLight {
 
-	static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+	static const uint32_t __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 	static const timeval RESPONSE_TIMEOUT = {5, 0}; // three seconds timeout for fragmented responses from pic
 	static const timeval SYNC_TIMEOUT = {0, 500000};

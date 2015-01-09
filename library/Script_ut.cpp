@@ -24,7 +24,7 @@
 
 using namespace WyLight;
 
-static const uint32_t g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+static const uint32_t __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 static const FwCmdSetFade refFade(0x112233, 100, 0x1234, true);
 static const FwCmdSetFade refFadeRed(0xFF0000, 100, 0xFFFFFFFF, true);

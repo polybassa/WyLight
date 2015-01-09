@@ -27,7 +27,7 @@
 
 using namespace WyLight;
 
-static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 /******************************* test functions *******************************/
 int32_t ut_MessageQueue_simple(void)

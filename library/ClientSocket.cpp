@@ -41,7 +41,7 @@ const int TCP_SEND_FLAGS = MSG_NOSIGNAL;
 
 namespace WyLight {
 
-	static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;// | ZONE_VERBOSE;
+	static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;// | ZONE_VERBOSE;
 
 #define ESTABLISH_CONNECTION_TIMEOUT 5
 

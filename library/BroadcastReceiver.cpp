@@ -28,7 +28,7 @@
 
 namespace WyLight {
 
-	static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING;
+	static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING;
 
 	const std::string BroadcastReceiver::DEVICE_ID("Wifly_Light");
 	const std::string BroadcastReceiver::DEVICE_ID_OLD("WiFly");

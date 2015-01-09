@@ -28,7 +28,7 @@
 using std::vector;
 using namespace WyLight;
 
-static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 static const timespec NANOSLEEP_TIME = {0, 5000000};
 

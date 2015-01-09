@@ -25,8 +25,8 @@
 
 /** Dummies and wrapper functions */
 #include "ScriptCtrl.h"
-void SPI_Init(void) {};
-void SPI_SendLedBuffer(void) {};
+void SPI_Init(void) {}
+void SPI_SendLedBuffer(void) {}
 struct ScriptBuf gScriptBuf;
 
 int ut_Ledstrip_Init(void)
