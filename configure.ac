@@ -15,6 +15,7 @@ AC_SUBST(AM_CXXFLAGS, [-pedantic])
 AC_SUBST(AM_CXXFLAGS, [-Wall])
 
 AC_PATH_PROG(WINE, wine,[not_found])
+AC_PATH_PROG(CPPCHECK, cppcheck, [not_found])
 AC_PATH_PROG(NDK, ndk-build, [not_found])
 AC_PATH_PROG(DOXYGEN, doxygen, [not_found])
 AC_PATH_PROG(GIT, git, [not_found])
