@@ -50,7 +50,7 @@ DOXYGEN=@DOXYGEN@
 NDK=@NDK@
 WINE=@WINE@
 PIC_CC8E=@PIC_CC8E@
-
+CPPCHECK=@CPPCHECK@
 # Include the common make definitions.
 include makedefs
 
@@ -141,6 +141,7 @@ sim: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 ut: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
 test: clean-all ${OBJDIR} ${BINDIR} 
+	CPPCHECK . --force --quiet
 	make ut 
 	./exe/WyLight_ut.bin
 	make firmware_test 
