@@ -73,8 +73,8 @@ extern "C" {
 #define SL_STOP_TIMEOUT         30
 
 #ifdef NOTERM
-#define UART_PRINT
-#define DBG_PRINT
+#define UART_PRINT(...)
+#define DBG_PRINT(...)
 #else
 #define UART_PRINT 				Report
 #define DBG_PRINT  				Report
