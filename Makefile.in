@@ -146,6 +146,34 @@ test: clean-all ${OBJDIR} ${BINDIR}
 	./exe/WyLight_ut.bin
 	make firmware_test 
 	make library_test
+help: 
+	@echo "Targets: "
+	@echo -GENERAL-
+	@echo test
+	@echo clean	
+	@echo clean-all
+	@echo all	
+	@echo install_bl
+	@echo install_fw
+	@echo -CC3200-
+	@echo cc_fw
+	@echo cc_bl
+	@echo sim
+	@echo ut	
+	@echo -PIC-
+	@echo firmware_pic 	
+	@echo firmware_pic_release
+	@echo firmware_simu
+	@echo firmware_test
+	@echo -LIBRARY-
+	@echo library
+	@echo library_test	
+	@echo -ANDROID-
+	@echo android_client
+	@echo android_clean
+	@echo android_test
+	@echo -DOCUMENTATION-
+	@echo docu			
 
 BL_FILE=${OBJDIR}/${PRJ_PREFIX}bl.bin
 FW_FILE=${OBJDIR}/${PRJ_PREFIX}fw.bin
