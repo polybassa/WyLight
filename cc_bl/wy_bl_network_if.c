@@ -141,8 +141,10 @@ void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
 void SimpleLinkGeneralEventHandler(SlDeviceEvent_t *pDevEvent) {
 	// Most of the general errors are not FATAL are are to be handled
 	// appropriately by the application
+#ifdef DEBUG
 	const sl_DeviceReport report = pDevEvent->EventData.deviceEvent;
 	UART_PRINT("[GENERAL EVENT] - ID=[%d] Sender=[%d]\n\n", report.status, report.sender);
+#endif
 }
 
 //*****************************************************************************

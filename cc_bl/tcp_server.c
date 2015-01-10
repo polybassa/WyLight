@@ -20,7 +20,7 @@
 #include "uart_if.h"
 
 #ifdef NOTERM
-#define UART_PRINT
+#define UART_PRINT(...)
 #else
 #define UART_PRINT	Report
 #endif
