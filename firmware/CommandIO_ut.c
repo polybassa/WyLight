@@ -263,9 +263,11 @@ int ut_CommandIO_SendResponse(void)
 	for(i = 0; i < mFrame.length - 2; i++, pPayload++) {
 		*pPayload = (uns8) rand() % 255;
 	}
+    mFrame.state = 0;
 
 #ifdef DEBUG
 	/* to find out which randomData kills the test */
+    
 	const struct response_frame randomData = mFrame;
 #endif
 

@@ -130,6 +130,7 @@ Error(char *pcFormat, ...)
     va_start(list,pcFormat);
     vsnprintf(cBuf,256,pcFormat,list);
     Message(cBuf);
+    va_end(list);
 #endif
     __Errorlog++;
 }

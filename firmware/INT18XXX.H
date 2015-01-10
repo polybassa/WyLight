@@ -20,11 +20,11 @@
 
  CC8E supports CUSTOM save and restore sequences. If you want to use
  your own register save and restore during interrupt, please read
- the following CUSTOM INTERRUPT SAVE AND RESTORE section.
+ the following CUSTOM INTERRUPT SAVE AND RESTORE section. */
 
 
 // DEFAULT INTERRUPT STRUCTURE (RECOMMENDED)
-
+/*
    #include "int18XXX.h"
 
    void _highPriorityInt(void);
@@ -47,12 +47,12 @@
    {
        // W, STATUS and BSR are saved by the next macro.
        int_save_registers
-
+*/
        /* NOTE : shadow registers are updated, but will be
           overwritten in case of a high-priority interrupt.
           Therefore #pragma fastMode should not be used on
           low-priority interrupts. */
-
+/*
        // save remaining registers on demand (error/warning)
        //uns16 sv_FSR0 = FSR0;
        //uns16 sv_FSR1 = FSR1;
@@ -80,7 +80,7 @@
 
        int_restore_registers // W, STATUS and BSR
    }
-
+*/
    /* IMPORTANT : GIEH/GIE or GIEL should normally NOT be
       set or cleared in the interrupt routine. GIEH/GIEL are
       AUTOMATICALLY cleared on interrupt entry by the CPU
@@ -89,7 +89,7 @@
       nested interrupts if an interrupt is pending. Too deep
       nesting may crash the program ! */
 
-
+/*
    void _highPriorityInt(void)
    {
        // save registers on demand
