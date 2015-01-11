@@ -26,9 +26,6 @@
 #include <openssl/sha.h>
 #include <memory>
 
-
-#define DEST_NAME_SIZE 128
-
 namespace WyLight {
     
     BootloaderClient::BootloaderClient(const uint32_t Addr, const uint16_t port) throw (ConnectionLost, FatalError) : TcpSocket(Addr, port){
@@ -84,28 +81,37 @@ namespace WyLight {
     int FirmwareDownloader::loadFile(const std::string &srcPath, const std::string &destPath) const {
         
         std::string tempDestPath(destPath);
-        tempDestPath.resize(DEST_NAME_SIZE, ' ');
+        tempDestPath.resize(FILENAME_SIZE, ' ');
         
         std::stringstream dataStream(std::stringstream::binary | std::stringstream::in | std::stringstream::out);
         dataStream << tempDestPath;
        
-        std::fstream src(srcPath, std::stringstream::binary | std::stringstream::in);
-        if (!src) return -1;
+        std::fstream fsrc(srcPath, std::stringstream::binary | std::stringstream::in);
+        if (!fsrc) return -1;
         
-        src.seekg(0, src.end);
-        const size_t length = src.tellg();
-        src.seekg(0, src.beg);
+        fsrc.seekg(0, fsrc.end);
+        const size_t size = fsrc.tellg();
+        fsrc.seekg(0, fsrc.beg);
         
-        std::unique_ptr<char[]> buffer(new char[length]());
-        src.read((char *)buffer.get(), length);
-        src.close();
-            
+        std::unique_ptr<char[]> buffer(new char[size]());
+        fsrc.read((char *)buffer.get(), size);
+        fsrc.close();
+        
+        dataStream.write(buffer.get(), size);
+
+        std::string hashPath = srcPath.substr(0, srcPath.find_last_of('.')) + ".sha";
+        std::fstream fhash(hashPath, std::stringstream::binary | std::stringstream::in);
+        
         unsigned char hash[SHA256_DIGEST_LENGTH];
-        SHA256((const unsigned char *)buffer.get(), length, hash);
-        
-        dataStream.write(buffer.get(), length);
-        dataStream.write((const char *)hash, SHA256_DIGEST_LENGTH);
-        
+
+        if (fhash) {
+            fhash.read((char *)hash, sizeof(hash));
+            fhash.close();
+        } else {
+            SHA256((const unsigned char *)buffer.get(), size, hash);
+        }
+        dataStream.write((const char *)hash, sizeof(hash));
+
         return BootloaderClient(mAddr, mPort).sendData(dataStream);
     }
     
