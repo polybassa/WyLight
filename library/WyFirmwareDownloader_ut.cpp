@@ -45,34 +45,16 @@ size_t g_TestSocketRecvBufferPos = 0;
 size_t g_TestSocketRecvBufferSize = 0;
 uint8_t g_TestSocketSendBuffer[300000];
 size_t g_TestSocketSendBufferPos = 0;
-timespec g_TestSocketSendDelay;
-
 size_t g_TestFileLength = 0;
 
-void SetDelay(timeval& delay)
-{
-	g_TestSocketSendDelay.tv_sec = delay.tv_sec;
-	g_TestSocketSendDelay.tv_nsec = delay.tv_usec * 1000;
-}
-TcpSocket::TcpSocket(uint32_t Addr, uint16_t port) throw (ConnectionLost, FatalError) {
-    
-}
+TcpSocket::TcpSocket(uint32_t Addr, uint16_t port) throw (ConnectionLost, FatalError) {}
 
-TcpSocket::TcpSocket(int listenSocket, const struct timespec *timeout) throw (ConnectionLost, FatalError)
-{
-	g_TestSocketSendDelay.tv_sec = 0;
-	g_TestSocketSendDelay.tv_nsec = 0;
-}
+TcpSocket::TcpSocket(int listenSocket, const struct timespec *timeout) throw (ConnectionLost, FatalError) {}
 
-ClientSocket::ClientSocket()
-: mSock(-1), mSockAddr(0, 0)
-{
-	
-}
+ClientSocket::ClientSocket() : mSock(-1), mSockAddr(0, 0) {}
 
 size_t TcpSocket::Recv(uint8_t *pBuffer, size_t length, timeval *timeout) const throw (FatalError)
 {
-	nanosleep(&g_TestSocketSendDelay, NULL);
 	//Trace(ZONE_VERBOSE, "%p %zu of %zu wait for %zu\n", pBuffer, g_TestSocketRecvBufferPos, g_TestSocketRecvBufferSize, length);
 	if(g_TestSocketRecvBufferPos < g_TestSocketRecvBufferSize) {
         size_t sendLength = std::min(g_TestSocketRecvBufferSize - g_TestSocketRecvBufferPos, length);
@@ -102,6 +84,13 @@ size_t ut_WyFirmwareDownloader_loadFirmware(void)
 {
 	TestCaseBegin();
     
+    memset(g_TestSocketRecvBuffer, 0, sizeof(g_TestSocketRecvBuffer));
+    memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
+    g_TestSocketRecvBufferPos = 0;
+    g_TestSocketSendBufferPos = 0;
+    g_TestSocketRecvBufferSize = 0;
+    g_TestFileLength = 0;
+    
     const uint32_t BL_VERSION = htonl(BOOTLOADER_VERSION);
     char welcome[] = WELCOME_RESPONSE;
     
@@ -126,15 +115,105 @@ size_t ut_WyFirmwareDownloader_loadFirmware(void)
     g_TestFileLength = length;
 
     CHECK(0 == FirmwareDownloader(0, 0).loadFirmware("/Users/nweiss/WyLight/unit_test_data/firmware_in.bin"));
-    CHECK(0 == memcmp(buffer.get(), g_TestSocketSendBuffer, length-1));
+    CHECK(0 == memcmp(buffer.get(), g_TestSocketSendBuffer, length));
     
     TestCaseEnd();
 }
+
+size_t ut_WyFirmwareDownloader_loadFirmware2(void)
+{
+    TestCaseBegin();
+    
+    memset(g_TestSocketRecvBuffer, 0, sizeof(g_TestSocketRecvBuffer));
+    memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
+    g_TestSocketRecvBufferPos = 0;
+    g_TestSocketSendBufferPos = 0;
+    g_TestSocketRecvBufferSize = 0;
+    g_TestFileLength = 0;
+    
+    const uint32_t BL_VERSION = htonl(BOOTLOADER_VERSION);
+    char welcome[] = WELCOME_RESPONSE;
+    
+    memcpy(welcome, &BL_VERSION, sizeof(uint32_t));
+    memcpy(g_TestSocketRecvBuffer, welcome, sizeof(welcome));
+    g_TestSocketRecvBufferSize += sizeof(welcome);
+    g_TestSocketRecvBufferPos = 0;
+    
+    std::fstream src("/Users/nweiss/WyLight/unit_test_data/firmware_out.bin", std::stringstream::in | std::stringstream::binary);
+    CHECK((bool)src);
+    if (!src) {
+        TestCaseEnd();
+    }
+    src.seekg(0, src.end);
+    const size_t length = src.tellg();
+    src.seekg(0, src.beg);
+    
+    std::unique_ptr<char[]> buffer(new char[length]());
+    src.read((char *)buffer.get(), length);
+    src.close();
+    
+    g_TestFileLength = length;
+    
+    CHECK(0 == FirmwareDownloader(0, 0).loadFile("/Users/nweiss/WyLight/unit_test_data/firmware_in2.bin", FW_FILENAME));
+    CHECK(0 == memcmp(buffer.get(), g_TestSocketSendBuffer, length));
+    
+    for (size_t i = 0; i < length; i++) {
+        if ((uint8_t)(buffer.get()[i]) != g_TestSocketSendBuffer[i]) {
+            printf("\r\n%zu: %02x == %02x", i, (uint8_t)*(buffer.get() + i), g_TestSocketSendBuffer[i]);
+        }
+    }
+    
+    TestCaseEnd();
+}
+
+size_t ut_WyFirmwareDownloader_loadBootloader(void)
+{
+    TestCaseBegin();
+    
+    memset(g_TestSocketRecvBuffer, 0, sizeof(g_TestSocketRecvBuffer));
+    memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
+    g_TestSocketRecvBufferPos = 0;
+    g_TestSocketSendBufferPos = 0;
+    g_TestSocketRecvBufferSize = 0;
+    g_TestFileLength = 0;
+
+    
+    const uint32_t BL_VERSION = htonl(BOOTLOADER_VERSION);
+    char welcome[] = WELCOME_RESPONSE;
+    
+    memcpy(welcome, &BL_VERSION, sizeof(uint32_t));
+    memcpy(g_TestSocketRecvBuffer, welcome, sizeof(welcome));
+    g_TestSocketRecvBufferSize += sizeof(welcome);
+    g_TestSocketRecvBufferPos = 0;
+    
+    std::fstream src("/Users/nweiss/WyLight/unit_test_data/bootloader_out.bin", std::stringstream::in | std::stringstream::binary);
+    CHECK((bool)src);
+    if (!src) {
+        TestCaseEnd();
+    }
+    src.seekg(0, src.end);
+    const size_t length = src.tellg();
+    src.seekg(0, src.beg);
+    
+    std::unique_ptr<char[]> buffer(new char[length]());
+    src.read((char *)buffer.get(), length);
+    src.close();
+    
+    g_TestFileLength = length;
+    
+    CHECK(0 == FirmwareDownloader(0, 0).loadBootloader("/Users/nweiss/WyLight/unit_test_data/bootloader_in.bin"));
+    CHECK(0 == memcmp(buffer.get(), g_TestSocketSendBuffer, length));
+    
+    TestCaseEnd();
+}
+
 
 int main (int argc, const char *argv[])
 {
 	UnitTestMainBegin();
 	RunTest(true,  ut_WyFirmwareDownloader_loadFirmware);
+    RunTest(true,  ut_WyFirmwareDownloader_loadFirmware2);
+    RunTest(true, ut_WyFirmwareDownloader_loadBootloader);
     UnitTestMainEnd();
 }
 
