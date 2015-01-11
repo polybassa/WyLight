@@ -1,12 +1,12 @@
 <map id="library/WiflyControl.h" name="library/WiflyControl.h">
-<area shape="rect" id="node3" href="$_com_proxy_8h.html" title="ComProxy.h" alt="" coords="804,83,897,111"/>
-<area shape="rect" id="node4" href="$_bl_request_8h.html" title="BlRequest.h" alt="" coords="440,393,533,421"/>
-<area shape="rect" id="node11" href="$_wifly_control_exception_8h.html" title="WiflyControlException.h" alt="" coords="667,315,829,343"/>
-<area shape="rect" id="node20" href="$_fw_command_8h.html" title="FwCommand.h" alt="" coords="1059,161,1169,189"/>
-<area shape="rect" id="node28" href="$_telnet_proxy_8h.html" title="TelnetProxy.h" alt="" coords="913,161,1013,189"/>
-<area shape="rect" id="node29" href="$_script_8h.html" title="Script.h" alt="" coords="1433,83,1499,111"/>
-<area shape="rect" id="node10" href="$_client_socket_8h.html" title="ClientSocket.h" alt="" coords="442,238,549,266"/>
-<area shape="rect" id="node21" href="$_fw_response_8h.html" title="FwResponse.h" alt="" coords="1166,238,1276,266"/>
-<area shape="rect" id="node27" href="$_wifly_color_8h.html" title="WiflyColor.h" alt="" coords="999,238,1091,266"/>
-<area shape="rect" id="node26" href="$____stl__patches_8h.html" title="__stl_patches.h" alt="" coords="1245,315,1360,343"/>
+<area shape="rect" id="node3" href="$_com_proxy_8h.html" title="ComProxy.h" alt="" coords="804,79,898,104"/>
+<area shape="rect" id="node4" href="$_bl_request_8h.html" title="BlRequest.h" alt="" coords="440,372,534,397"/>
+<area shape="rect" id="node11" href="$_wifly_control_exception_8h.html" title="WiflyControlException.h" alt="" coords="667,299,829,324"/>
+<area shape="rect" id="node20" href="$_fw_command_8h.html" title="FwCommand.h" alt="" coords="1059,152,1171,177"/>
+<area shape="rect" id="node28" href="$_telnet_proxy_8h.html" title="TelnetProxy.h" alt="" coords="913,152,1015,177"/>
+<area shape="rect" id="node29" href="$_script_8h.html" title="Script.h" alt="" coords="1433,79,1500,104"/>
+<area shape="rect" id="node10" href="$_client_socket_8h.html" title="ClientSocket.h" alt="" coords="442,225,550,251"/>
+<area shape="rect" id="node21" href="$_fw_response_8h.html" title="FwResponse.h" alt="" coords="1166,225,1276,251"/>
+<area shape="rect" id="node27" href="$_wifly_color_8h.html" title="WiflyColor.h" alt="" coords="999,225,1092,251"/>
+<area shape="rect" id="node26" href="$____stl__patches_8h.html" title="__stl_patches.h" alt="" coords="1245,299,1360,324"/>
 </map>

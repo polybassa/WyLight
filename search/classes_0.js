@@ -13,6 +13,7 @@ var searchData=
   ['blreadrequest',['BlReadRequest',['../struct_wy_light_1_1_bl_read_request.html',1,'WyLight']]],
   ['blrequest',['BlRequest',['../struct_wy_light_1_1_bl_request.html',1,'WyLight']]],
   ['blrunapprequest',['BlRunAppRequest',['../struct_wy_light_1_1_bl_run_app_request.html',1,'WyLight']]],
+  ['bootloaderclient',['BootloaderClient',['../class_wy_light_1_1_bootloader_client.html',1,'WyLight']]],
   ['broadcastmessage',['BroadcastMessage',['../struct_wy_light_1_1_broadcast_message.html',1,'WyLight']]],
   ['broadcastreceiver',['BroadcastReceiver',['../class_wy_light_1_1_broadcast_receiver.html',1,'WyLight']]]
 ];

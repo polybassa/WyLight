@@ -1,3 +1,3 @@
 <map id="ControlCmdLoopOff" name="ControlCmdLoopOff">
-<area shape="rect" id="node2" href="$class_wifly_control_cmd.html" title="{WiflyControlCmd\n||+ WiflyControlCmd()\l+ GetName()\l+ Run()\l# Print()\l# PrintCrc()\l}" alt="" coords="14,169,156,314"/>
+<area shape="rect" id="node2" href="$class_wifly_control_cmd.html" title="{WiflyControlCmd\n||+ WiflyControlCmd()\l+ GetName()\l+ Run()\l# Print()\l# PrintCrc()\l}" alt="" coords="14,153,156,280"/>
 </map>

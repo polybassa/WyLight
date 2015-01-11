@@ -1,6 +1,6 @@
 <map id="WyLight::FatalError" name="WyLight::FatalError">
-<area shape="rect" id="node3" href="$class_wy_light_1_1_connection_lost.html" title="{WyLight::ConnectionLost\n|# mAddress\l# mPort\l|+ ConnectionLost()\l+ GetJavaClassType()\l}" alt="" coords="5,347,173,461"/>
-<area shape="rect" id="node4" href="$class_wy_light_1_1_connection_timeout.html" title="{WyLight::ConnectionTimeout\n||+ ConnectionTimeout()\l+ GetJavaClassType()\l}" alt="" coords="199,355,389,453"/>
-<area shape="rect" id="node5" href="$class_wy_light_1_1_invalid_parameter.html" title="{WyLight::InvalidParameter\n||+ InvalidParameter()\l+ GetJavaClassType()\l}" alt="" coords="415,355,592,453"/>
-<area shape="rect" id="node6" href="$class_wy_light_1_1_script_buffer_full.html" title="{WyLight::ScriptBufferFull\n||+ ScriptBufferFull()\l+ GetJavaClassType()\l}" alt="" coords="616,355,783,453"/>
+<area shape="rect" id="node3" href="$class_wy_light_1_1_connection_lost.html" title="{WyLight::ConnectionLost\n|# mAddress\l# mPort\l|+ ConnectionLost()\l+ GetJavaClassType()\l}" alt="" coords="5,315,175,415"/>
+<area shape="rect" id="node4" href="$class_wy_light_1_1_connection_timeout.html" title="{WyLight::ConnectionTimeout\n||+ ConnectionTimeout()\l+ GetJavaClassType()\l}" alt="" coords="199,321,391,408"/>
+<area shape="rect" id="node5" href="$class_wy_light_1_1_invalid_parameter.html" title="{WyLight::InvalidParameter\n||+ InvalidParameter()\l+ GetJavaClassType()\l}" alt="" coords="416,321,594,408"/>
+<area shape="rect" id="node6" href="$class_wy_light_1_1_script_buffer_full.html" title="{WyLight::ScriptBufferFull\n||+ ScriptBufferFull()\l+ GetJavaClassType()\l}" alt="" coords="617,321,785,408"/>
 </map>

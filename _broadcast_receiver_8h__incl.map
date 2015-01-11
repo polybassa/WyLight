@@ -1,6 +1,6 @@
 <map id="library/BroadcastReceiver.h" name="library/BroadcastReceiver.h">
-<area shape="rect" id="node2" href="$_client_socket_8h.html" title="ClientSocket.h" alt="" coords="520,83,627,111"/>
-<area shape="rect" id="node18" href="$_endpoint_8h.html" title="Endpoint.h" alt="" coords="736,83,820,111"/>
-<area shape="rect" id="node3" href="$_wifly_control_exception_8h.html" title="WiflyControlException.h" alt="" coords="139,161,301,189"/>
-<area shape="rect" id="node9" href="$_bl_request_8h.html" title="BlRequest.h" alt="" coords="378,238,472,266"/>
+<area shape="rect" id="node2" href="$_client_socket_8h.html" title="ClientSocket.h" alt="" coords="520,79,627,104"/>
+<area shape="rect" id="node18" href="$_endpoint_8h.html" title="Endpoint.h" alt="" coords="736,79,822,104"/>
+<area shape="rect" id="node3" href="$_wifly_control_exception_8h.html" title="WiflyControlException.h" alt="" coords="139,152,302,177"/>
+<area shape="rect" id="node9" href="$_bl_request_8h.html" title="BlRequest.h" alt="" coords="379,225,473,251"/>
 </map>

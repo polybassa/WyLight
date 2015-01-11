@@ -1,4 +1,4 @@
 <map id="WyLight::BroadcastMessage::IsWiflyBroadcast" name="WyLight::BroadcastMessage::IsWiflyBroadcast">
-<area shape="rect" id="node2" href="$struct_wy_light_1_1_broadcast_message.html#a62f82bc8379fe6f76c72e869319b9fea" title="WyLight::BroadcastMessage\l::IsDevice" alt="" coords="246,5,437,49"/>
-<area shape="rect" id="node3" href="$struct_wy_light_1_1_broadcast_message.html#a40d7f83632a3c75127721e02815ce382" title="WyLight::BroadcastMessage\l::IsVersion" alt="" coords="246,73,437,117"/>
+<area shape="rect" id="node2" href="$struct_wy_light_1_1_broadcast_message.html#a62f82bc8379fe6f76c72e869319b9fea" title="WyLight::BroadcastMessage\l::IsDevice" alt="" coords="244,5,435,44"/>
+<area shape="rect" id="node3" href="$struct_wy_light_1_1_broadcast_message.html#a40d7f83632a3c75127721e02815ce382" title="WyLight::BroadcastMessage\l::IsVersion" alt="" coords="244,68,435,107"/>
 </map>

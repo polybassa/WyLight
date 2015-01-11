@@ -1,9 +1,9 @@
 <map id="library/ComProxy.h" name="library/ComProxy.h">
-<area shape="rect" id="node2" href="$_bl_request_8h.html" title="BlRequest.h" alt="" coords="769,315,863,343"/>
-<area shape="rect" id="node8" href="$_client_socket_8h.html" title="ClientSocket.h" alt="" coords="1078,161,1185,189"/>
-<area shape="rect" id="node19" href="$_fw_command_8h.html" title="FwCommand.h" alt="" coords="496,83,607,111"/>
-<area shape="rect" id="node9" href="$_wifly_control_exception_8h.html" title="WiflyControlException.h" alt="" coords="648,238,811,266"/>
-<area shape="rect" id="node20" href="$_fw_response_8h.html" title="FwResponse.h" alt="" coords="362,161,472,189"/>
-<area shape="rect" id="node26" href="$_wifly_color_8h.html" title="WiflyColor.h" alt="" coords="547,161,639,189"/>
-<area shape="rect" id="node25" href="$____stl__patches_8h.html" title="__stl_patches.h" alt="" coords="269,238,384,266"/>
+<area shape="rect" id="node2" href="$_bl_request_8h.html" title="BlRequest.h" alt="" coords="769,299,863,324"/>
+<area shape="rect" id="node8" href="$_client_socket_8h.html" title="ClientSocket.h" alt="" coords="1078,152,1186,177"/>
+<area shape="rect" id="node19" href="$_fw_command_8h.html" title="FwCommand.h" alt="" coords="496,79,608,104"/>
+<area shape="rect" id="node9" href="$_wifly_control_exception_8h.html" title="WiflyControlException.h" alt="" coords="648,225,811,251"/>
+<area shape="rect" id="node20" href="$_fw_response_8h.html" title="FwResponse.h" alt="" coords="362,152,472,177"/>
+<area shape="rect" id="node26" href="$_wifly_color_8h.html" title="WiflyColor.h" alt="" coords="547,152,640,177"/>
+<area shape="rect" id="node25" href="$____stl__patches_8h.html" title="__stl_patches.h" alt="" coords="269,225,384,251"/>
 </map>

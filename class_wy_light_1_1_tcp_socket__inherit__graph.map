@@ -1,3 +1,4 @@
 <map id="WyLight::TcpSocket" name="WyLight::TcpSocket">
+<area shape="rect" id="node3" href="$class_wy_light_1_1_bootloader_client.html" title="{WyLight::BootloaderClient\n||+ BootloaderClient()\l+ sendData()\l}" alt="" coords="17,381,193,468"/>
 <area shape="rect" id="node2" href="$class_wy_light_1_1_client_socket.html" title="{WyLight::ClientSocket\n|# mSock\l# mSockAddr\l|+ ClientSocket()\l+ ClientSocket()\l+ ~ClientSocket()\l+ GetAddrCommaSeparated()\l+ GetSocket()\l+ Select()\l}" alt="" coords="5,5,205,159"/>
 </map>

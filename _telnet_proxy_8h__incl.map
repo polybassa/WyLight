@@ -1,5 +1,5 @@
 <map id="library/TelnetProxy.h" name="library/TelnetProxy.h">
-<area shape="rect" id="node2" href="$_client_socket_8h.html" title="ClientSocket.h" alt="" coords="262,83,369,111"/>
-<area shape="rect" id="node3" href="$_wifly_control_exception_8h.html" title="WiflyControlException.h" alt="" coords="551,161,713,189"/>
-<area shape="rect" id="node9" href="$_bl_request_8h.html" title="BlRequest.h" alt="" coords="489,238,583,266"/>
+<area shape="rect" id="node2" href="$_client_socket_8h.html" title="ClientSocket.h" alt="" coords="262,79,369,104"/>
+<area shape="rect" id="node3" href="$_wifly_control_exception_8h.html" title="WiflyControlException.h" alt="" coords="550,152,713,177"/>
+<area shape="rect" id="node9" href="$_bl_request_8h.html" title="BlRequest.h" alt="" coords="488,225,582,251"/>
 </map>

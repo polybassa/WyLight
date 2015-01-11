@@ -1,4 +1,4 @@
 <map id="WyLight::BaseBuffer" name="WyLight::BaseBuffer">
-<area shape="rect" id="node2" href="$class_wy_light_1_1_mask_buffer.html" title="{WyLight::MaskBuffer\n||+ MaskBuffer()\l+ Mask()\l&#45; Add()\l&#45; AddWithCrc()\l&#45; AppendCrc()\l}" alt="" coords="4,297,147,442"/>
-<area shape="rect" id="node3" href="$class_wy_light_1_1_unmask_buffer.html" title="{WyLight::UnmaskBuffer\n|&#45; mPrePreCrc\l&#45; mPreCrc\l&#45; mLastWasDLE\l|+ UnmaskBuffer()\l+ Add()\l+ Clear()\l+ CheckAndRemoveCrc()\l+ Unmask()\l&#45; AddToCrc()\l&#45; GetCrc16()\l}" alt="" coords="172,265,345,474"/>
+<area shape="rect" id="node2" href="$class_wy_light_1_1_mask_buffer.html" title="{WyLight::MaskBuffer\n||+ MaskBuffer()\l+ Mask()\l&#45; Add()\l&#45; AddWithCrc()\l&#45; AppendCrc()\l}" alt="" coords="5,260,149,387"/>
+<area shape="rect" id="node3" href="$class_wy_light_1_1_unmask_buffer.html" title="{WyLight::UnmaskBuffer\n|&#45; mPrePreCrc\l&#45; mPreCrc\l&#45; mLastWasDLE\l|+ UnmaskBuffer()\l+ Add()\l+ Clear()\l+ CheckAndRemoveCrc()\l+ Unmask()\l&#45; AddToCrc()\l&#45; GetCrc16()\l}" alt="" coords="173,233,347,413"/>
 </map>

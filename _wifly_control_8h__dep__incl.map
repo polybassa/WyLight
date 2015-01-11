@@ -1,6 +1,6 @@
 <map id="library/WiflyControl.h" name="library/WiflyControl.h">
-<area shape="rect" id="node2" href="$_startup_manager_8h.html" title="library/StartupManager.h" alt="" coords="4,161,171,189"/>
-<area shape="rect" id="node4" href="$_wifly_control_no_throw_8h.html" title="library/WiflyControlNoThrow.h" alt="" coords="57,83,255,111"/>
-<area shape="rect" id="node5" href="$_wifly_control_cli_8h.html" title="cli/WiflyControlCli.h" alt="" coords="279,83,415,111"/>
-<area shape="rect" id="node3" href="$_wifly_control_cmd_8h.html" title="cli/WiflyControlCmd.h" alt="" coords="14,238,161,266"/>
+<area shape="rect" id="node2" href="$_startup_manager_8h.html" title="library/StartupManager.h" alt="" coords="5,152,173,177"/>
+<area shape="rect" id="node4" href="$_wifly_control_no_throw_8h.html" title="library/WiflyControlNoThrow.h" alt="" coords="58,79,256,104"/>
+<area shape="rect" id="node5" href="$_wifly_control_cli_8h.html" title="cli/WiflyControlCli.h" alt="" coords="280,79,416,104"/>
+<area shape="rect" id="node3" href="$_wifly_control_cmd_8h.html" title="cli/WiflyControlCmd.h" alt="" coords="15,225,163,251"/>
 </map>

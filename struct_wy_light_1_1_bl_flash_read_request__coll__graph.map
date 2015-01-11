@@ -1,5 +1,5 @@
 <map id="WyLight::BlFlashReadRequest" name="WyLight::BlFlashReadRequest">
-<area shape="rect" id="node2" href="$struct_wy_light_1_1_bl_read_request.html" title="{WyLight::BlReadRequest\n|+ numBytesLow\l+ numBytesHigh\l|+ BlReadRequest()\l+ SetAddressNumBytes()\l}" alt="" coords="21,395,192,509"/>
-<area shape="rect" id="node3" href="$struct_wy_light_1_1_bl_address_request.html" title="{WyLight::BlAddressRequest\n|+ addressLow\l+ addressHigh\l+ addressU\l+ zero\l|+ BlAddressRequest()\l+ SetAddress()\l}" alt="" coords="13,201,200,346"/>
-<area shape="rect" id="node4" href="$struct_wy_light_1_1_bl_request.html" title="{WyLight::BlRequest\n|+ mSize\l+ mCmd\l|+ BlRequest()\l+ GetData()\l+ GetSize()\l+ CheckCrc()\l}" alt="" coords="38,6,175,151"/>
+<area shape="rect" id="node2" href="$struct_wy_light_1_1_bl_read_request.html" title="{WyLight::BlReadRequest\n|+ numBytesLow\l+ numBytesHigh\l|+ BlReadRequest()\l+ SetAddressNumBytes()\l}" alt="" coords="21,355,193,455"/>
+<area shape="rect" id="node3" href="$struct_wy_light_1_1_bl_address_request.html" title="{WyLight::BlAddressRequest\n|+ addressLow\l+ addressHigh\l+ addressU\l+ zero\l|+ BlAddressRequest()\l+ SetAddress()\l}" alt="" coords="13,180,200,307"/>
+<area shape="rect" id="node4" href="$struct_wy_light_1_1_bl_request.html" title="{WyLight::BlRequest\n|+ mSize\l+ mCmd\l|+ BlRequest()\l+ GetData()\l+ GetSize()\l+ CheckCrc()\l}" alt="" coords="38,5,176,132"/>
 </map>

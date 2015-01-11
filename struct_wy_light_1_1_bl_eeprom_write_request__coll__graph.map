@@ -1,4 +1,4 @@
 <map id="WyLight::BlEepromWriteRequest" name="WyLight::BlEepromWriteRequest">
-<area shape="rect" id="node2" href="$struct_wy_light_1_1_bl_address_request.html" title="{WyLight::BlAddressRequest\n|+ addressLow\l+ addressHigh\l+ addressU\l+ zero\l|+ BlAddressRequest()\l+ SetAddress()\l}" alt="" coords="18,201,205,346"/>
-<area shape="rect" id="node3" href="$struct_wy_light_1_1_bl_request.html" title="{WyLight::BlRequest\n|+ mSize\l+ mCmd\l|+ BlRequest()\l+ GetData()\l+ GetSize()\l+ CheckCrc()\l}" alt="" coords="43,6,180,151"/>
+<area shape="rect" id="node2" href="$struct_wy_light_1_1_bl_address_request.html" title="{WyLight::BlAddressRequest\n|+ addressLow\l+ addressHigh\l+ addressU\l+ zero\l|+ BlAddressRequest()\l+ SetAddress()\l}" alt="" coords="20,180,207,307"/>
+<area shape="rect" id="node3" href="$struct_wy_light_1_1_bl_request.html" title="{WyLight::BlRequest\n|+ mSize\l+ mCmd\l|+ BlRequest()\l+ GetData()\l+ GetSize()\l+ CheckCrc()\l}" alt="" coords="44,5,182,132"/>
 </map>

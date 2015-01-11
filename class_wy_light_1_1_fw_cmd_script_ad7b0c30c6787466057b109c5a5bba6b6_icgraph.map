@@ -1,7 +1,7 @@
 <map id="WyLight::FwCmdScript::Write" name="WyLight::FwCmdScript::Write">
-<area shape="rect" id="node2" href="$class_wy_light_1_1_fw_cmd_wait.html#a8d96368a646e49b02058891417188d86" title="WyLight::FwCmdWait\l::Write" alt="" coords="234,5,382,49"/>
-<area shape="rect" id="node3" href="$struct_wy_light_1_1_fw_cmd_loop_off.html#ac4afc42d823339073264a7e0ba1d7ad9" title="WyLight::FwCmdLoopOff\l::Write" alt="" coords="223,73,393,117"/>
-<area shape="rect" id="node4" href="$struct_wy_light_1_1_fw_cmd_loop_on.html#a07f681b0fff3b0a64017f63d1d8dfc5d" title="WyLight::FwCmdLoopOn\l::Write" alt="" coords="223,141,393,185"/>
-<area shape="rect" id="node5" href="$struct_wy_light_1_1_fw_cmd_set_fade.html#a2e6cf2016152c098c3b9706c43747010" title="WyLight::FwCmdSetFade\l::Write" alt="" coords="221,209,395,253"/>
-<area shape="rect" id="node6" href="$struct_wy_light_1_1_fw_cmd_set_gradient.html#ab29979311cc5a3e8936d634ece99f78b" title="WyLight::FwCmdSetGradient\l::Write" alt="" coords="211,277,405,321"/>
+<area shape="rect" id="node2" href="$class_wy_light_1_1_fw_cmd_wait.html#a8d96368a646e49b02058891417188d86" title="WyLight::FwCmdWait\l::Write" alt="" coords="233,5,382,44"/>
+<area shape="rect" id="node3" href="$struct_wy_light_1_1_fw_cmd_loop_off.html#ac4afc42d823339073264a7e0ba1d7ad9" title="WyLight::FwCmdLoopOff\l::Write" alt="" coords="222,68,392,107"/>
+<area shape="rect" id="node4" href="$struct_wy_light_1_1_fw_cmd_loop_on.html#a07f681b0fff3b0a64017f63d1d8dfc5d" title="WyLight::FwCmdLoopOn\l::Write" alt="" coords="222,131,392,169"/>
+<area shape="rect" id="node5" href="$struct_wy_light_1_1_fw_cmd_set_fade.html#a2e6cf2016152c098c3b9706c43747010" title="WyLight::FwCmdSetFade\l::Write" alt="" coords="221,193,394,232"/>
+<area shape="rect" id="node6" href="$struct_wy_light_1_1_fw_cmd_set_gradient.html#ab29979311cc5a3e8936d634ece99f78b" title="WyLight::FwCmdSetGradient\l::Write" alt="" coords="210,256,404,295"/>
 </map>

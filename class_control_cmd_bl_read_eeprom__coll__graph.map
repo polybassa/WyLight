@@ -1,4 +1,4 @@
 <map id="ControlCmdBlReadEeprom" name="ControlCmdBlReadEeprom">
-<area shape="rect" id="node2" href="$class_control_cmd_bl_read.html" title="{ControlCmdBlRead\n||+ ControlCmdBlRead()\l+ Read()\l+ Run()\l}" alt="" coords="28,366,184,479"/>
-<area shape="rect" id="node3" href="$class_wifly_control_cmd.html" title="{WiflyControlCmd\n||+ WiflyControlCmd()\l+ GetName()\l+ Run()\l# Print()\l# PrintCrc()\l}" alt="" coords="148,169,289,314"/>
+<area shape="rect" id="node2" href="$class_control_cmd_bl_read.html" title="{ControlCmdBlRead\n||+ ControlCmdBlRead()\l+ Read()\l+ Run()\l}" alt="" coords="29,329,185,429"/>
+<area shape="rect" id="node3" href="$class_wifly_control_cmd.html" title="{WiflyControlCmd\n||+ WiflyControlCmd()\l+ GetName()\l+ Run()\l# Print()\l# PrintCrc()\l}" alt="" coords="148,153,290,280"/>
 </map>
