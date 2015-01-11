@@ -20,14 +20,10 @@ package de.WyLight.WyLight;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import de.WyLight.WyLight.R;
 import de.WyLight.WyLight.view.ColorView;
 
 import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.Shader;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -53,16 +49,20 @@ public class SetColorFragment extends ControlFragment implements
 	 * Table of color button ids, which is used to easily connect them all with
 	 * an OnClickListener.
 	 */
-	private static final int COLOR_BUTTONS[] = { R.id.red, R.id.yellow,
-			R.id.green, R.id.cyan, R.id.blue, R.id.magenta };
+	private static final int COLOR_BUTTONS[] = {
+            R.id.red,
+            R.id.yellow,
+            R.id.green,
+            R.id.cyan,
+            R.id.blue,
+            R.id.magenta
+    };
 
 	// These values only have to be recalculated, if the views layout changes
 	private float mCenterX = 0;
 	private float mCenterY = 0;
 	private float mCenterZ = 0;
-	private int mDiameter = 0;
 	private int mRadius = 0;
-	private int mRadiusCrosshair = 0;
 
 	private ColorView mColorStatus;
 	private ImageView mCrosshair;
@@ -133,7 +133,7 @@ public class SetColorFragment extends ControlFragment implements
 		mColorStatus = (ColorView) v.findViewById(R.id.colorStatus);
 		mCrosshair = (ImageView) v.findViewById(R.id.crosshair);
 		mColorPicker = (ImageView) v.findViewById(R.id.colorPicker);
-		mValuePicker = (View) v.findViewById(R.id.valuePicker);
+		mValuePicker = v.findViewById(R.id.valuePicker);
 		mValueCrosshair = (ImageView) v.findViewById(R.id.valueCrosshair);
 
 		// connect all color buttons with the OnClickListener
@@ -154,9 +154,8 @@ public class SetColorFragment extends ControlFragment implements
 			mProvider.removeOnColorChangedListener(this);
 			return;
 		}
-		mDiameter = mColorPicker.getWidth();
-		mRadius = mDiameter / 2;
-		mRadiusCrosshair = mCrosshair.getWidth() / 2;
+		mRadius = mColorPicker.getWidth() / 2;
+		final int mRadiusCrosshair = mCrosshair.getWidth() / 2;
 		final int shift = (mColorPicker.getWidth() - mCrosshair.getWidth()) / 2;
 		mCenterX = mColorPicker.getX() + shift;
 		mCenterY = mColorPicker.getY() + shift;
@@ -179,17 +178,17 @@ public class SetColorFragment extends ControlFragment implements
 
 	/**
 	 * updates the hsv value pickers background gradient
-	 * @param hsv
+	 * @param ref
 	 *            should be an array of three floats: hsv[0] is Hue [0 .. 360)
 	 *            hsv[1] is Saturation [0...1] hsv[2] is Value [0...1]
 	 */
 	private void setValueGradient(float[] ref) {
 		final float[] hsv = new float[] { ref[0], ref[1], 1f };
-		ShapeDrawable background = new ShapeDrawable(new RectShape());
-		LinearGradient gradient = new LinearGradient(0, 0,
-				mValuePicker.getWidth(), 0, Color.BLACK, Color.HSVToColor(hsv),
-				Shader.TileMode.CLAMP);
-		background.getPaint().setShader(gradient);
+		int[] colors = new int[]{Color.BLACK, Color.HSVToColor(hsv)};
+		GradientDrawable background = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
+		background.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+		background.setGradientCenter(0f, 0.5f);
+		background.setCornerRadius(8f);
 		mValuePicker.setBackgroundDrawable(background);
 	}
 }
