@@ -99,7 +99,7 @@ size_t ut_WyFirmwareDownloader_loadFirmware(void)
     g_TestSocketRecvBufferSize += sizeof(welcome);
     g_TestSocketRecvBufferPos = 0;
     
-    std::fstream src("/Users/nweiss/WyLight/unit_test_data/firmware_out.bin", std::stringstream::in | std::stringstream::binary);
+    std::fstream src("./unit_test_data/firmware_out.bin", std::stringstream::in | std::stringstream::binary);
     CHECK((bool)src);
     if (!src) {
         TestCaseEnd();
@@ -114,7 +114,7 @@ size_t ut_WyFirmwareDownloader_loadFirmware(void)
     
     g_TestFileLength = length;
 
-    CHECK(0 == FirmwareDownloader(0, 0).loadFirmware("/Users/nweiss/WyLight/unit_test_data/firmware_in.bin"));
+    CHECK(0 == FirmwareDownloader(0, 0).loadFirmware("./unit_test_data/firmware_in.bin"));
     CHECK(0 == memcmp(buffer.get(), g_TestSocketSendBuffer, length));
     
     TestCaseEnd();
@@ -139,7 +139,7 @@ size_t ut_WyFirmwareDownloader_loadFirmware2(void)
     g_TestSocketRecvBufferSize += sizeof(welcome);
     g_TestSocketRecvBufferPos = 0;
     
-    std::fstream src("/Users/nweiss/WyLight/unit_test_data/firmware_out.bin", std::stringstream::in | std::stringstream::binary);
+    std::fstream src("./unit_test_data/firmware_out.bin", std::stringstream::in | std::stringstream::binary);
     CHECK((bool)src);
     if (!src) {
         TestCaseEnd();
@@ -154,7 +154,7 @@ size_t ut_WyFirmwareDownloader_loadFirmware2(void)
     
     g_TestFileLength = length;
     
-    CHECK(0 == FirmwareDownloader(0, 0).loadFile("/Users/nweiss/WyLight/unit_test_data/firmware_in2.bin", FW_FILENAME));
+    CHECK(0 == FirmwareDownloader(0, 0).loadFile("./unit_test_data/firmware_in2.bin", FW_FILENAME));
     CHECK(0 == memcmp(buffer.get(), g_TestSocketSendBuffer, length));
     
     for (size_t i = 0; i < length; i++) {
@@ -186,7 +186,7 @@ size_t ut_WyFirmwareDownloader_loadBootloader(void)
     g_TestSocketRecvBufferSize += sizeof(welcome);
     g_TestSocketRecvBufferPos = 0;
     
-    std::fstream src("/Users/nweiss/WyLight/unit_test_data/bootloader_out.bin", std::stringstream::in | std::stringstream::binary);
+    std::fstream src("./unit_test_data/bootloader_out.bin", std::stringstream::in | std::stringstream::binary);
     CHECK((bool)src);
     if (!src) {
         TestCaseEnd();
@@ -201,7 +201,7 @@ size_t ut_WyFirmwareDownloader_loadBootloader(void)
     
     g_TestFileLength = length;
     
-    CHECK(0 == FirmwareDownloader(0, 0).loadBootloader("/Users/nweiss/WyLight/unit_test_data/bootloader_in.bin"));
+    CHECK(0 == FirmwareDownloader(0, 0).loadBootloader("./unit_test_data/bootloader_in.bin"));
     CHECK(0 == memcmp(buffer.get(), g_TestSocketSendBuffer, length));
     
     TestCaseEnd();

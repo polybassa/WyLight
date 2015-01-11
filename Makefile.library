@@ -30,6 +30,10 @@ ${BINDIR}/MessageQueue_ut.bin: clean $(OBJDIR)/MessageQueue_ut.o
 
 ${BINDIR}/Script_ut.bin: clean $(OBJDIR)/Script_ut.o $(OBJDIR)/Script.o
 
+${BINDIR}/WyFirmwareDownloader_ut.bin: clean $(OBJDIR)/WyFirmwareDownloader_ut.o $(OBJDIR)/WyFirmwareDownloader.o
+${BINDIR}/WyFirmwareDownloader_ut.bin: LDFLAGS +=-lcrypto
+${BINDIR}/WyFirmwareDownloader_ut.bin: IPATH += ${ROOT}/cc_bl
+
 ${BINDIR}/ScriptManager_ut.bin: clean $(OBJDIR)/ScriptManager_ut.o $(OBJDIR)/Script.o $(OBJDIR)/ScriptManager.o
 
 ${BINDIR}/StartupManager_ut.bin: clean $(OBJDIR)/StartupManager_ut.o $(OBJDIR)/StartupManager.o
@@ -43,7 +47,7 @@ ${BINDIR}/WiflyControlNoThrow_ut.bin: clean $(OBJDIR)/WiflyControlNoThrow_ut.o $
 
 library_test: library_standart_test library_ftp_test
 
-library_standart_test: ${BINDIR}/BroadcastReceiver_ut.bin ${BINDIR}/ComProxy_ut.bin ${BINDIR}/MessageQueue_ut.bin ${BINDIR}/Script_ut.bin ${BINDIR}/ScriptManager_ut.bin ${BINDIR}/TelnetProxy_ut.bin ${BINDIR}/WiflyControl_ut.bin ${BINDIR}/WiflyControlNoThrow_ut.bin ${BINDIR}/StartupManager_ut.bin
+library_standart_test: ${BINDIR}/BroadcastReceiver_ut.bin ${BINDIR}/ComProxy_ut.bin ${BINDIR}/MessageQueue_ut.bin ${BINDIR}/Script_ut.bin ${BINDIR}/ScriptManager_ut.bin ${BINDIR}/TelnetProxy_ut.bin ${BINDIR}/WiflyControl_ut.bin ${BINDIR}/WiflyControlNoThrow_ut.bin ${BINDIR}/StartupManager_ut.bin ${BINDIR}/WyFirmwareDownloader_ut.bin
 	$(foreach test,$^,./$(test);)	
 	 
 library_ftp_test: ${BINDIR}/FtpServer_ut.bin
