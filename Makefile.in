@@ -140,6 +140,8 @@ sim: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
 ut: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
+filedownloader: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
+
 test: clean-all ${OBJDIR} ${BINDIR} 
 	CPPCHECK . --force --quiet
 	make ut 
@@ -155,6 +157,8 @@ help:
 	@echo all	
 	@echo install_bl
 	@echo install_fw
+	@echo cli
+	@echo filedownloader
 	@echo -CC3200-
 	@echo cc_fw
 	@echo cc_bl

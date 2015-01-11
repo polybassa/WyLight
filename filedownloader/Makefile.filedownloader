@@ -1,0 +1,27 @@
+# Where to find source files that do not live in this directory.
+VPATH=${ROOT}/filedownloader
+VPATH+=${ROOT}/firmware
+VPATH+=${ROOT}/library
+
+# Where to find header files that do not live in the source directory.
+IPATH=${ROOT}
+IPATH+=${ROOT}/filedownloader
+IPATH+=${ROOT}/firmware
+IPATH+=${ROOT}/library
+IPATH+=${ROOT}/cc_bl
+
+LDFLAGS+=-lcrypto
+
+# WyLight cli
+${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/WyFileDownloader.o
+${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/ClientSocket.o
+${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/WyFileDownloaderCli.o
+
+
+
+
+
+
+
+
+
