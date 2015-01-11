@@ -21,7 +21,13 @@
 #include "ClientSocket.h"
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include "timeval.h"
+#include <openssl/sha.h>
+#include <memory>
+
+
+#define DEST_NAME_SIZE 128
 
 namespace WyLight {
     
@@ -35,7 +41,7 @@ namespace WyLight {
         
         uint32_t nlBlVersion;
         memcpy(&nlBlVersion, buffer, std::min(sizeof(buffer), sizeof(nlBlVersion)));
-        uint32_t blVersion = ntohl(blVersion);
+        uint32_t blVersion = ntohl(nlBlVersion);
         if (blVersion != BOOTLOADER_VERSION) {
             throw FatalError("Wrong bootloader version on target! \r\n");
         }
@@ -47,10 +53,13 @@ namespace WyLight {
         }
     }
     
-    bool BootloaderClient::sendData(std::istream& inData) throw (FatalError) {
-        uint8_t buffer[512];
-        while (!inData.eof()) {
-            inData.get((char *)buffer, sizeof(buffer));
+    int BootloaderClient::sendData(std::istream& inData) throw (FatalError) {
+        uint8_t buffer[256];
+        inData.seekg(0, std::ios::end);
+        size_t size = inData.tellg();
+        inData.seekg(0, std::ios::beg);
+        while (inData.tellg() < size) {
+            inData.read((char *)buffer, sizeof(buffer));
             if(inData.gcount() != this->Send(buffer, inData.gcount())) {
                 throw FatalError("Error during send! \r\n");
             }
@@ -59,9 +68,9 @@ namespace WyLight {
         buffer[0] = 0;
         this->Recv(buffer, sizeof(buffer), &timeout);
         if (buffer[0] == DONE_RESPONSE) {
-            return true;
+            return 0;
         }
-        return false;
+        return -1;
     }
     
     int FirmwareDownloader::loadFirmware(const std::string &path) const {
@@ -73,7 +82,31 @@ namespace WyLight {
     }
     
     int FirmwareDownloader::loadFile(const std::string &srcPath, const std::string &destPath) const {
-        return 0;
+        
+        std::string tempDestPath(destPath);
+        tempDestPath.resize(DEST_NAME_SIZE, ' ');
+        
+        std::stringstream dataStream(std::stringstream::binary | std::stringstream::in | std::stringstream::out);
+        dataStream << tempDestPath;
+       
+        std::fstream src(srcPath, std::stringstream::binary | std::stringstream::in);
+        if (!src) return -1;
+        
+        src.seekg(0, src.end);
+        const size_t length = src.tellg();
+        src.seekg(0, src.beg);
+        
+        std::unique_ptr<char[]> buffer(new char[length]());
+        src.read((char *)buffer.get(), length);
+        src.close();
+            
+        unsigned char hash[SHA256_DIGEST_LENGTH];
+        SHA256((const unsigned char *)buffer.get(), length, hash);
+        
+        dataStream.write(buffer.get(), length);
+        dataStream.write((const char *)hash, SHA256_DIGEST_LENGTH);
+        
+        return BootloaderClient(mAddr, mPort).sendData(dataStream);
     }
     
     
