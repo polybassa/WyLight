@@ -16,7 +16,7 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "WyFirmwareDownloader.h"
+#include "WyFileDownloader.h"
 #include "bootloader.h"
 #include "ClientSocket.h"
 #include <fstream>
@@ -70,15 +70,15 @@ namespace WyLight {
         return -1;
     }
     
-    int FirmwareDownloader::loadFirmware(const std::string &path) const {
+    int FileDownloader::loadFirmware(const std::string &path) const {
         return loadFile(path, FW_FILENAME);
     }
     
-    int FirmwareDownloader::loadBootloader(const std::string &path) const {
+    int FileDownloader::loadBootloader(const std::string &path) const {
         return loadFile(path, BL_FILENAME);
     }
     
-    int FirmwareDownloader::loadFile(const std::string &srcPath, const std::string &destPath) const {
+    int FileDownloader::loadFile(const std::string &srcPath, const std::string &destPath) const {
         
         std::string tempDestPath(destPath);
         tempDestPath.resize(FILENAME_SIZE, ' ');

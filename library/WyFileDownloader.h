@@ -16,8 +16,8 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef __WyFirmwareDownloader__
-#define __WyFirmwareDownloader__
+#ifndef __WyFileDownloader__
+#define __WyFileDownloader__
 
 #include <stdint.h>
 #include <string>
@@ -32,12 +32,12 @@ namespace WyLight {
         int sendData(std::istream& inData) throw (FatalError);
     };
     
-    class FirmwareDownloader {
+    class FileDownloader {
         const uint32_t mAddr;
         const uint16_t mPort;
     
     public:
-        FirmwareDownloader(const uint32_t Addr, const uint16_t port) : mAddr(Addr), mPort(port) {};
+        FileDownloader(const uint32_t Addr, const uint16_t port) : mAddr(Addr), mPort(port) {};
         
         int loadFile(const std::string &srcPath, const std::string &destPath) const;
         int loadFirmware(const std::string& path) const;
@@ -47,4 +47,4 @@ namespace WyLight {
     
 }
 
-#endif /* defined(__WyFirmwareDownloader__) */
+#endif /* defined(__WyFileDownloader__) */

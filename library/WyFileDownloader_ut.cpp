@@ -17,7 +17,7 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "unittest.h"
-#include "WyFirmwareDownloader.h"
+#include "WyFileDownloader.h"
 #include <algorithm>
 #include <limits>
 #include <time.h>
@@ -80,7 +80,7 @@ size_t TcpSocket::Send(const uint8_t *frame, size_t length) const
 }
 
 /******************************* test functions *******************************/
-size_t ut_WyFirmwareDownloader_loadFirmware(void)
+size_t ut_WyFileDownloader_loadFirmware(void)
 {
 	TestCaseBegin();
     
@@ -114,13 +114,13 @@ size_t ut_WyFirmwareDownloader_loadFirmware(void)
     
     g_TestFileLength = length;
 
-    CHECK(0 == FirmwareDownloader(0, 0).loadFirmware("./unit_test_data/firmware_in.bin"));
+    CHECK(0 == FileDownloader(0, 0).loadFirmware("./unit_test_data/firmware_in.bin"));
     CHECK(0 == memcmp(buffer.get(), g_TestSocketSendBuffer, length));
     
     TestCaseEnd();
 }
 
-size_t ut_WyFirmwareDownloader_loadFirmware2(void)
+size_t ut_WyFileDownloader_loadFirmware2(void)
 {
     TestCaseBegin();
     
@@ -154,7 +154,7 @@ size_t ut_WyFirmwareDownloader_loadFirmware2(void)
     
     g_TestFileLength = length;
     
-    CHECK(0 == FirmwareDownloader(0, 0).loadFile("./unit_test_data/firmware_in2.bin", FW_FILENAME));
+    CHECK(0 == FileDownloader(0, 0).loadFile("./unit_test_data/firmware_in2.bin", FW_FILENAME));
     CHECK(0 == memcmp(buffer.get(), g_TestSocketSendBuffer, length));
     
     for (size_t i = 0; i < length; i++) {
@@ -166,7 +166,7 @@ size_t ut_WyFirmwareDownloader_loadFirmware2(void)
     TestCaseEnd();
 }
 
-size_t ut_WyFirmwareDownloader_loadBootloader(void)
+size_t ut_WyFileDownloader_loadBootloader(void)
 {
     TestCaseBegin();
     
@@ -201,7 +201,7 @@ size_t ut_WyFirmwareDownloader_loadBootloader(void)
     
     g_TestFileLength = length;
     
-    CHECK(0 == FirmwareDownloader(0, 0).loadBootloader("./unit_test_data/bootloader_in.bin"));
+    CHECK(0 == FileDownloader(0, 0).loadBootloader("./unit_test_data/bootloader_in.bin"));
     CHECK(0 == memcmp(buffer.get(), g_TestSocketSendBuffer, length));
     
     TestCaseEnd();
@@ -211,9 +211,9 @@ size_t ut_WyFirmwareDownloader_loadBootloader(void)
 int main (int argc, const char *argv[])
 {
 	UnitTestMainBegin();
-	RunTest(true,  ut_WyFirmwareDownloader_loadFirmware);
-    RunTest(true,  ut_WyFirmwareDownloader_loadFirmware2);
-    RunTest(true, ut_WyFirmwareDownloader_loadBootloader);
+	RunTest(true,  ut_WyFileDownloader_loadFirmware);
+    RunTest(true,  ut_WyFileDownloader_loadFirmware2);
+    RunTest(true, ut_WyFileDownloader_loadBootloader);
     UnitTestMainEnd();
 }
 
