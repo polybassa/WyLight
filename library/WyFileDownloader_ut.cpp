@@ -18,16 +18,16 @@
 
 #include "unittest.h"
 #include "WyFileDownloader.h"
+#include "bootloader.h"
 #include <algorithm>
+#include <fstream>
+#include <iostream>
 #include <limits>
+#include <memory>
+#include <sstream>
+#include <string>
 #include <time.h>
 #include <unistd.h>
-#include "bootloader.h"
-#include <fstream>
-#include <sstream>
-#include <unistd.h>
-#include <iostream>
-#include <string>
 
 
 /**************** includes, classes and functions for wrapping ****************/
@@ -69,13 +69,13 @@ size_t TcpSocket::Send(const uint8_t *frame, size_t length) const
 {
     memcpy(&g_TestSocketSendBuffer[g_TestSocketSendBufferPos], frame, length);
 	g_TestSocketSendBufferPos += length;
-    
+
     if (g_TestSocketSendBufferPos == g_TestFileLength) {
         g_TestSocketRecvBuffer[g_TestSocketRecvBufferPos] = DONE_RESPONSE;
         g_TestSocketRecvBuffer[g_TestSocketRecvBufferPos+1] = EOF;
         g_TestSocketRecvBufferSize += 2;
     }
-    
+
 	return length;
 }
 
@@ -83,22 +83,22 @@ size_t TcpSocket::Send(const uint8_t *frame, size_t length) const
 size_t ut_WyFileDownloader_loadFirmware(void)
 {
 	TestCaseBegin();
-    
+
     memset(g_TestSocketRecvBuffer, 0, sizeof(g_TestSocketRecvBuffer));
     memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
     g_TestSocketRecvBufferPos = 0;
     g_TestSocketSendBufferPos = 0;
     g_TestSocketRecvBufferSize = 0;
     g_TestFileLength = 0;
-    
+
     const uint32_t BL_VERSION = htonl(BOOTLOADER_VERSION);
     char welcome[] = WELCOME_RESPONSE;
-    
+
     memcpy(welcome, &BL_VERSION, sizeof(uint32_t));
     memcpy(g_TestSocketRecvBuffer, welcome, sizeof(welcome));
     g_TestSocketRecvBufferSize += sizeof(welcome);
     g_TestSocketRecvBufferPos = 0;
-    
+
     std::fstream src("./unit_test_data/firmware_out.bin", std::stringstream::in | std::stringstream::binary);
     CHECK((bool)src);
     if (!src) {
@@ -107,38 +107,38 @@ size_t ut_WyFileDownloader_loadFirmware(void)
     src.seekg(0, src.end);
     const size_t length = src.tellg();
     src.seekg(0, src.beg);
-    
+
     std::unique_ptr<char[]> buffer(new char[length]());
     src.read((char *)buffer.get(), length);
     src.close();
-    
+
     g_TestFileLength = length;
 
     CHECK(0 == FileDownloader(0, 0).loadFirmware("./unit_test_data/firmware_in.bin"));
     CHECK(0 == memcmp(buffer.get(), g_TestSocketSendBuffer, length));
-    
+
     TestCaseEnd();
 }
 
 size_t ut_WyFileDownloader_loadFirmware2(void)
 {
     TestCaseBegin();
-    
+
     memset(g_TestSocketRecvBuffer, 0, sizeof(g_TestSocketRecvBuffer));
     memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
     g_TestSocketRecvBufferPos = 0;
     g_TestSocketSendBufferPos = 0;
     g_TestSocketRecvBufferSize = 0;
     g_TestFileLength = 0;
-    
+
     const uint32_t BL_VERSION = htonl(BOOTLOADER_VERSION);
     char welcome[] = WELCOME_RESPONSE;
-    
+
     memcpy(welcome, &BL_VERSION, sizeof(uint32_t));
     memcpy(g_TestSocketRecvBuffer, welcome, sizeof(welcome));
     g_TestSocketRecvBufferSize += sizeof(welcome);
     g_TestSocketRecvBufferPos = 0;
-    
+
     std::fstream src("./unit_test_data/firmware_out.bin", std::stringstream::in | std::stringstream::binary);
     CHECK((bool)src);
     if (!src) {
@@ -147,29 +147,29 @@ size_t ut_WyFileDownloader_loadFirmware2(void)
     src.seekg(0, src.end);
     const size_t length = src.tellg();
     src.seekg(0, src.beg);
-    
+
     std::unique_ptr<char[]> buffer(new char[length]());
     src.read((char *)buffer.get(), length);
     src.close();
-    
+
     g_TestFileLength = length;
-    
+
     CHECK(0 == FileDownloader(0, 0).loadFile("./unit_test_data/firmware_in2.bin", FW_FILENAME));
     CHECK(0 == memcmp(buffer.get(), g_TestSocketSendBuffer, length));
-    
+
     for (size_t i = 0; i < length; i++) {
         if ((uint8_t)(buffer.get()[i]) != g_TestSocketSendBuffer[i]) {
             printf("\r\n%zu: %02x == %02x", i, (uint8_t)*(buffer.get() + i), g_TestSocketSendBuffer[i]);
         }
     }
-    
+
     TestCaseEnd();
 }
 
 size_t ut_WyFileDownloader_loadBootloader(void)
 {
     TestCaseBegin();
-    
+
     memset(g_TestSocketRecvBuffer, 0, sizeof(g_TestSocketRecvBuffer));
     memset(g_TestSocketSendBuffer, 0, sizeof(g_TestSocketSendBuffer));
     g_TestSocketRecvBufferPos = 0;
@@ -177,15 +177,15 @@ size_t ut_WyFileDownloader_loadBootloader(void)
     g_TestSocketRecvBufferSize = 0;
     g_TestFileLength = 0;
 
-    
+
     const uint32_t BL_VERSION = htonl(BOOTLOADER_VERSION);
     char welcome[] = WELCOME_RESPONSE;
-    
+
     memcpy(welcome, &BL_VERSION, sizeof(uint32_t));
     memcpy(g_TestSocketRecvBuffer, welcome, sizeof(welcome));
     g_TestSocketRecvBufferSize += sizeof(welcome);
     g_TestSocketRecvBufferPos = 0;
-    
+
     std::fstream src("./unit_test_data/bootloader_out.bin", std::stringstream::in | std::stringstream::binary);
     CHECK((bool)src);
     if (!src) {
@@ -194,16 +194,16 @@ size_t ut_WyFileDownloader_loadBootloader(void)
     src.seekg(0, src.end);
     const size_t length = src.tellg();
     src.seekg(0, src.beg);
-    
+
     std::unique_ptr<char[]> buffer(new char[length]());
     src.read((char *)buffer.get(), length);
     src.close();
-    
+
     g_TestFileLength = length;
-    
+
     CHECK(0 == FileDownloader(0, 0).loadBootloader("./unit_test_data/bootloader_in.bin"));
     CHECK(0 == memcmp(buffer.get(), g_TestSocketSendBuffer, length));
-    
+
     TestCaseEnd();
 }
 
