@@ -67,7 +67,6 @@ stack_size = 0x2000;
 _stack_start = ORIGIN(SRAM)+LENGTH(SRAM);
 _stack_end = _stack_start - stack_size;
 
-
 __CheckSum = 0;
 
 SECTIONS {
@@ -83,34 +82,22 @@ SECTIONS {
 		. = __text_start__ + 0x400;
 	} > SRAM
 	
-	/* This is where the firmware informaton is stored. Usefull for bootloader */
-	.Version : ALIGN(4)
-	{
-		KEEP(*(.Version))
-		LONG(__CheckSum);
-	} > SRAM
-	
 	/* Code region starts here */
 	.text : ALIGN(4)
 	{	
 		/* Application Entry point starts here.  Normaly is the ResetEntry function */ 
-		KEEP(*(.AppStart))
-		
-		KEEP(*(.init))
-		KEEP(*(.fini))
-		
+		KEEP(*(.ResetISR))
+				
 		/* .ctors */
 		*crtbegin.o(.ctors)
 		*crtbegin?.o(.ctors)
 		*(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors)
-		*(SORT(.ctors.*))
 		*(.ctors)
 
 		/* .dtors */
  		*crtbegin.o(.dtors)
  		*crtbegin?.o(.dtors)
  		*(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors)
- 		*(SORT(.dtors.*))
  		*(.dtors)
 
 		*(.text*)
@@ -129,25 +116,6 @@ SECTIONS {
 		*(.ARM.exidx* .gnu.linkonce.armexidx.*)
 	} > SRAM
 	PROVIDE (__exidx_end = .);
-
-	.eh_frame_hdr : 
-	{ 
-		*(.eh_frame_hdr) 
-	} > SRAM
-	
-	__text_end__ = .;
-	
-	.eh_frame : ONLY_IF_RW 
-	{ 
-		. = ALIGN(4);
-		*(.eh_frame) 
-	} > SRAM
-	
-	.gcc_except_table : ONLY_IF_RW 
-	{ 
-		. = ALIGN(4);
-		*(.gcc_except_table .gcc_except_table.*) 
-	} > SRAM
 	
 	__init_data = .;
 		
@@ -209,5 +177,4 @@ SECTIONS {
         . = ALIGN(8);
         _eheap = .;
     } > SRAM
-
 }

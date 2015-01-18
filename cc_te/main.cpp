@@ -72,7 +72,8 @@ void operator delete[](void *p) {
 
 extern void (* const g_pfnVectors[])(void);
 extern "C" void __cxa_pure_virtual() { while (1); }
-const static uint32_t Version = 0xDEAD;
+
+extern const unsigned int Version = 0xDEADBEEF;
 
 //*****************************************************************************
 //
