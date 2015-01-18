@@ -61,6 +61,7 @@
 #include "rom.h"
 #include "rom_map.h"
 #include "utils.h"
+#include <stdio.h>
 
 // common interface includes
 #include "wy_bl_network_if.h"
@@ -288,9 +289,16 @@ static long ConfigureSimpleLink() {
 	// Set PM policy to normal
 	retVal = sl_WlanPolicySet(SL_POLICY_PM, SL_NORMAL_POLICY, NULL, 0);
 	ASSERT_ON_ERROR(__LINE__, retVal);
+    
+    // MAC Adress
+    char mac[SL_MAC_ADDR_LEN];
+    unsigned char macLen = SL_MAC_ADDR_LEN;
+    sl_NetCfgGet(SL_MAC_ADDRESS_GET, NULL, &macLen, (unsigned char *)mac);
 
-	unsigned char ssid[] = "WyLightBootloaderAP";
-	retVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, 0, strlen((const char *) ssid), ssid);
+	const char ssid[] = "WyLightBootloaderAP-";
+    char ssidMac[sizeof(ssid) + 4];
+    sprintf(ssidMac, "%s%02x%02x", ssid, mac[SL_MAC_ADDR_LEN - 2], mac[SL_MAC_ADDR_LEN - 1]);
+	retVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, 0, strlen((const char *) ssidMac), (unsigned char *)ssidMac);
 	ASSERT_ON_ERROR(__LINE__, retVal);
 
 	unsigned char val = SL_SEC_TYPE_OPEN;
