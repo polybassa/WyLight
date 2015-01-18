@@ -13,8 +13,12 @@ class TestClass {
 public:
 	TestClass();
 	virtual ~TestClass();
-
+	virtual unsigned char methode(void) = 0;
 	unsigned char get(void) { return x; }
+};
+
+class TestSibling : public TestClass {
+	virtual unsigned char methode(void) { return 'h';}
 };
 
 #endif /* TESTCLASS_H_ */

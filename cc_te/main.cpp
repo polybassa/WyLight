@@ -71,6 +71,8 @@ void operator delete[](void *p) {
 #endif
 
 extern void (* const g_pfnVectors[])(void);
+extern "C" void __cxa_pure_virtual() { while (1); }
+const static uint32_t Version = 0xDEAD;
 
 //*****************************************************************************
 //
@@ -111,7 +113,7 @@ int main() {
 	// Configuring UART
 	InitTerm();
 	
-	auto x = new TestClass();
+	auto x = new TestSibling();
 	
 	std::array<int, 5> arr = {0,1,2,3,4};
 	
@@ -121,7 +123,7 @@ int main() {
 
 	Report("%d", x->get());
 	
-	auto t = std::unique_ptr<TestClass>(new TestClass());
+	auto t = std::unique_ptr<TestClass>(new TestSibling());
 	
 	Report("t->:%d", t->get());
 	
