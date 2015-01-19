@@ -14,6 +14,7 @@ ${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/WiflyControlCli.o
 ${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/BroadcastReceiver.o
 ${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/ClientSocket.o
 ${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/ComProxy.o
+${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/ConfigControl.o
 ${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/intelhexclass.o
 ${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/MaskBuffer.o
 ${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/Script.o

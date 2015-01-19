@@ -214,7 +214,7 @@ public:
 	ControlCmdExtractVersion(void) : WiflyControlCmd(
 													 string("extract_version"),
 													 string(" <hexFile>' \n ") + string("    <hexFile> path of hexfile to extract version")) {};
-	
+
 	virtual void Run(WyLight::Control& control) const
 	{
 		string path;
@@ -328,7 +328,7 @@ public:
 
 	virtual void Run(WyLight::Control& control) const {
 		cout << "Reading wifly configuration ssid: ";
-		cout << control.ConfGetSsid() << "\n";
+		cout << control.mConfig.GetSsid() << "\n";
 	};
 };
 
@@ -342,7 +342,7 @@ public:
 
 	virtual void Run(WyLight::Control& control) const {
 		cout << "Rebooting wlan module... ";
-		if(control.ConfRebootWlanModule()) {
+		if(control.mConfig.RebootWlanModule()) {
 			cout << "done.\n";
 			cout << "Terminating WyLight::Control commandline interface now!!!! Please restart." << endl;
 			std::exit(EXIT_SUCCESS);
@@ -369,7 +369,7 @@ public:
 		cin >> name;
 		cout << "Setting passphrase '" << phrase << "' and ssid '" << ssid << "' and name '" << name << "' ... ";
 
-		if(control.ConfModuleForWlan(phrase, ssid, name)) {
+		if(control.mConfig.ModuleForWlan(phrase, ssid, name)) {
 			cout << "done.\n";
 			cout << "Terminating WyLight::Control commandline interface now!!!! Please restart." << endl;
 			std::exit(EXIT_SUCCESS);
@@ -391,7 +391,7 @@ public:
 		string ssid;
 		cin >> ssid;
 		cout << "Setting as soft-AP with ssid '" << ssid << "'... ";
-		if(control.ConfModuleAsSoftAP(ssid)) {
+		if(control.mConfig.ModuleAsSoftAP(ssid)) {
 			cout << "done.\n";
 			cout << "Terminating WyLight::Control commandline interface now!!!! Please restart." << endl;
 			std::exit(EXIT_SUCCESS);
@@ -414,7 +414,7 @@ public:
 		string name;
 		cin >> name;
 		cout << "Setting device name '" << name << "'... ";
-		cout << (control.ConfSetDeviceId(name) ? "done.\n" : "failed!\n");
+		cout << (control.mConfig.SetDeviceId(name) ? "done.\n" : "failed!\n");
 	};
 };
 
@@ -648,7 +648,7 @@ public:
 	ControlCmdGetLedTyp(void) : WiflyControlCmd(
 													string("get_led_typ"),
 													string("' - displays typ of led's of this platform ")) {};
-	
+
 	virtual void Run(WyLight::Control& control) const {
 		cout << "Reading led typ ... ";
 		try {
