@@ -116,7 +116,7 @@ namespace WyLight {
 			}
 			setCurrentState(RUN_APP);
 			control.BlRunApp();
-			control.ConfSetParameters(Control::RN171_BASIC_PARAMETERS) ? setCurrentState(STARTUP_SUCCESSFUL) : setCurrentState(STARTUP_FAILURE);
+			control.mConfig.SetParameters(ConfigControl::RN171_BASIC_PARAMETERS) ? setCurrentState(STARTUP_SUCCESSFUL) : setCurrentState(STARTUP_FAILURE);
 		} catch(std::exception &e) {
 			// Expection in case of connection lost or error during update, or invalid update expected.
 			// On invalid update, BlRunApp will fail, because firmware is not lanched on target, so no response will be send.
@@ -124,7 +124,7 @@ namespace WyLight {
 			setCurrentState(STARTUP_FAILURE);
 		}
 	}
-	
+
 	const bool StartupManager::isAppOutdated() {
 		if (mState == STARTUP_SUCCESSFUL) {
 			return mHexFileVersion < mTargetVersion ? true : false;

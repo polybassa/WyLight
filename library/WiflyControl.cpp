@@ -1,20 +1,20 @@
 /**
-                Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
+                Copyright (C) 2012 - 2014 Nils Weiss, Patrick Bruenn.
 
-    This file is part of Wifly_Light.
+    This file is part of WyLight.
 
-    Wifly_Light is free software: you can redistribute it and/or modify
+    WyLight is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    Wifly_Light is distributed in the hope that it will be useful,
+    WyLight is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
+    along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "WiflyControl.h"
 #include "crc.h"
@@ -45,85 +45,6 @@ namespace WyLight {
 	static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
     const std::string Control::LEDS_ALL {"ffffffff"};
-	const std::list<std::string> Control::RN171_DEFAULT_PARAMETERS = {
-		"set broadcast interval 0x1\r\n",    	// to support fast broadcast recognition
-		"set comm close 0\r\n",            		// Disable *CLOS* string
-		"set comm open 0\r\n",             		// Disable *OPEN* string
-		"set comm remote 0\r\n",           		// Disable *Hello* string
-		"set comm time 5\r\n", 					// Set flush timer to 5 ms
-		"set comm idle 240\r\n",				// Set idle timer to 240 s, to close tcp connections after 240s if there's no traffic
-		"set dns name rn.microchip.com\r\n",    // set dns of updateserver
-		"set ip flags 0x6\r\n",                	// if the module loses the accesspoint connection, the connection is closed
-		"set ip dhcp 1\r\n",               		// enable DHCP client
-		//"set ftp address 169.254.7.57\r\n",	// configure localhost as ftp server in ad-hoc connection
-		"set ftp pass Pass123\r\n",        		// configure ftp password
-		"set ftp user roving\r\n",         		// configure ftp username
-		"set opt deviceid Wifly_Light\r\n", 	// Set deviceid which appears in broadcastmsg to "Wifly_Light"
-		"set uart baud 115200\r\n",        		// PIC uart parameter
-		"set uart flow 0\r\n",             		// PIC uart parameter
-		"set uart mode 0\r\n",             		// PIC uart parameter
-		"set wlan channel 0\r\n",              	// Set the wlan channel to 0 to perform an automatic scan for a free channel
-		"set wlan auth 4\r\n",             		// use WPA2 protection
-		"set wlan join 1\r\n",             		// scan for ap and auto join
-		"set wlan rate 0\r\n",             		// slowest datarate but highest range
-		"set wlan tx 12\r\n",              		// Set the Wi-Fi transmit power to maximum
-		"set sys printlvl 0\r\n",				// Disables Debug Messages to UART
-		"set ip p 11\r\n",                      // Enable UDP, TCP_CLIENT and TCP Protocol
-		//"set sys launch_string wps_app"	   	// Choose Wps mode
-	};
-	const std::list<std::string> Control::RN171_BASIC_PARAMETERS = {
-		"set broadcast interval 0x1\r\n",    	// to support fast broadcast recognition
-		"set comm close 0\r\n",            		// Disable *CLOS* string
-		"set comm open 0\r\n",            	 	// Disable *OPEN* string
-		"set comm remote 0\r\n",           		// Disable *Hello* string
-		"set comm time 5\r\n", 					// Set flush timer to 5 ms
-		"set comm idle 240\r\n",				// Set idle timer to 240 s, to close tcp connections after 240s if there's no traffic
-		"set dns name rn.microchip.com\r\n",    // set dns of updateserver
-		"set ip flags 0x6\r\n",                	// if the module loses the accesspoint connection, the connection is closed
-		"set ip dhcp 1\r\n",               		// enable DHCP client
-		"set ftp pass Pass123\r\n",        		// configure ftp password
-		"set ftp user roving\r\n",         		// configure ftp username
-		"set uart baud 115200\r\n",        		// PIC uart parameter
-		"set uart flow 0\r\n",             		// PIC uart parameter
-		"set uart mode 0\r\n",             		// PIC uart parameter
-		"set wlan channel 0\r\n",               // Set the wlan channel to 0 to perform an automatic scan for a free channel
-		"set wlan auth 4\r\n",             		// use WPA2 protection
-		"set wlan join 1\r\n",             		// scan for ap and auto join
-		"set wlan rate 0\r\n",             		// slowest datarate but highest range
-		"set wlan tx 12\r\n",              		// Set the Wi-Fi transmit power to maximum
-		"set sys printlvl 0\r\n",				// Disables Debug Messages to UART
-		"set ip p 11\r\n",                      // Enable UDP, TCP_CLIENT and TCP Protocol
-		//"set sys launch_string wps_app"	   	// Choose Wps mode
-	};
-	const std::list<std::string> Control::RN171_SOFT_AP_DEFAULT_PARAMETERS = {
-		"set broadcast interval 1\r\n",    		// to support fast broadcast recognition
-		"set comm close 0\r\n",            		// Disable *CLOS* string
-		"set comm open 0\r\n",             		// Disable *OPEN* string
-		"set comm remote 0\r\n",           		// Disable *Hello* string
-		"set comm time 5\r\n", 					// Set flush timer to 5 ms
-		"set comm idle 240\r\n",				// Set idle timer to 240 s, to close tcp connections after 240s if there's no traffic
-		//"set dns name rn.microchip.com\r\n",	// set dns of updateserver
-		"set ip dhcp 4\r\n",               		// enable DHCP server
-		"set ftp address 169.254.7.57\r\n", 	// configure localhost as ftp server in ad-hoc connection
-		"set ftp pass Pass123\r\n",        		// configure ftp password
-		"set ftp user roving\r\n",         		// configure ftp username
-		"set uart baud 115200\r\n",        		// PIC uart parameter
-		"set uart flow 0\r\n",             		// PIC uart parameter
-		"set uart mode 0\r\n",             		// PIC uart parameter
-		"set wlan join 7\r\n",             		// enable AP mode
-		"set wlan rate 0\r\n",             		// slowest datarate but highest range
-		"set wlan tx 12\r\n",              		// Set the Wi-Fi transmit power to maximum
-		"set wlan channel 1\r\n",              	// Set the wlan channel to 0 to perform an automatic scan for a free channel
-		"set ip a 1.2.3.4\r\n",            		// Set ip address for accespoint
-		"set ip g 0.0.0.0\r\n",                	// Set gateway address to zero
-		"set ip n 255.255.255.0\r\n",      		// Set netmask for accespoint
-		"set sys printlvl 0\r\n",				// Disables Debug Messages to UART
-		"set ip p 11\r\n",                     	// Enable UDP, TCP_CLIENT and TCP Protocol
-	};
-	
-	const std::list<std::string> Control::RN171_FACTORY_RESET_PARAMETER = {
-		"factory RESET\r\n"
-	};
 
 	const size_t FwCmdScript::INDENTATION_MAX;
 	const char FwCmdScript::INDENTATION_CHARACTER;
@@ -134,7 +55,14 @@ namespace WyLight {
 	const std::string FwCmdLoopOff::TOKEN("loop_off");
 	const std::string FwCmdWait::TOKEN("wait");
 
-	Control::Control(uint32_t addr, uint16_t port) : mTcpSock(addr, port), mUdpSock(addr, port, false, 0), mProxy(mTcpSock), mTelnet(mTcpSock) {}
+	Control::Control(uint32_t addr, uint16_t port)
+		: mConfig(mTelnet),
+		mTcpSock(addr, port),
+		mUdpSock(addr, port, false, 0),
+		mProxy(mTcpSock),
+		mTelnet(mTcpSock)
+	{
+	}
 
 	size_t Control::GetTargetMode(void) const throw(FatalError)
 	{
@@ -502,242 +430,6 @@ namespace WyLight {
 		throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": response of wrong length");
 	}
 
-	bool Control::ConfGetSoftAp(void) const
-	{
-		std::string result {};
-		if(mTelnet.Open()) {
-			mTelnet.RecvString("get wlan\r\n", "Join=", result);
-			mTelnet.Close(false);
-		}
-		return (0 == result.compare("7"));
-	}
-
-	std::string Control::ConfGet(const std::string& searchKey, const std::string& getCmd) const
-	{
-		std::string result {};
-		if(mTelnet.Open()) {
-			mTelnet.RecvString(getCmd, searchKey, result);
-			mTelnet.Close(false);
-		}
-		return result;
-	}
-
-	std::string Control::ConfGetDeviceId(void) const
-	{
-		return ConfGet("DeviceId=", "get opt\r\n");
-	}
-
-	std::string Control::ConfGetPassphrase(void) const
-	{
-		return ConfGet("Passphrase=");
-	}
-
-	std::string Control::ConfGetSsid(void) const
-	{
-		return ConfGet("SSID=");
-	}
-
-	bool Control::ConfModuleAsSoftAP(const std::string& accesspointName) const
-	{
-		if(!ConfFactoryReset()) {
-			Trace(ZONE_ERROR, "factory RESET failed\n");
-			return false;
-		}
-		
-		if(!ConfSetDeviceId(accesspointName)) {
-				Trace(ZONE_ERROR, "set DeviceId failed\n");
-			return false;
-		}
-
-		static const size_t SSID_MAX = 32;
-
-		if((accesspointName.size() < 1) || (accesspointName.size() > SSID_MAX)) {
-				Trace(ZONE_WARNING, "Invalid wlan ssid '%s'\n", accesspointName.data());
-			return false;
-		}
-
-		if(!mTelnet.Open()) {
-				Trace(ZONE_ERROR, "open telnet connection failed\n");
-			return false;
-		}
-
-		if(!mTelnet.SendString("set wlan ssid ", accesspointName)) {
-				Trace(ZONE_ERROR, "set wlan ssid to '%s' failed\n", accesspointName.data());
-			mTelnet.Close(false);
-			return false;
-		}
-
-		if(!mTelnet.Close(true)) {
-				Trace(ZONE_ERROR, "save changes failed\n");
-			return false;
-		}
-
-		if(!ConfSetParameters(RN171_SOFT_AP_DEFAULT_PARAMETERS)) {
-				Trace(ZONE_ERROR, "set defaults failed\n");
-			return false;
-		}
-
-		return ConfRebootWlanModule();
-	}
-
-	bool Control::ConfModuleForWlan(const std::string& phrase, const std::string& ssid, const std::string& deviceId) const
-	{
-		if(!ConfFactoryReset()) {
-			Trace(ZONE_ERROR, "factory RESET failed\n");
-			return false;
-		}
-		
-		if(!ConfSetDefaults()) {
-			Trace(ZONE_ERROR, "set defaults failed\n");
-			return false;
-		}
-
-		if(!ConfSetWlan(phrase, ssid)) {
-			Trace(ZONE_ERROR, "set wlan phrase and ssid failed\n");
-			return false;
-		}
-
-		if(!ConfSetDeviceId(deviceId)) {
-			Trace(ZONE_ERROR, "set device name failed\n");
-			return false;
-		}
-
-		return ConfRebootWlanModule();
-	}
-
-	bool Control::ConfSetParameters(std::list<std::string> commands) const
-	{
-		if(!mTelnet.Open()) {
-				Trace(ZONE_ERROR, "open telnet connection failed\n");
-			return false;
-		}
-
-		for(auto command : commands) {
-			if(!mTelnet.Send(command)) {
-				Trace(ZONE_ERROR, "command: '%s' failed -> exit without saving\n", command.c_str());
-				return mTelnet.Close(false);
-			}
-		}
-		return mTelnet.Close(true);
-	}
-	
-	bool Control::ConfFactoryReset(void) const
-	{
-		if(!mTelnet.Open()) {
-			Trace(ZONE_ERROR, "open telnet connection failed\n");
-			return false;
-		}
-		
-		if(!mTelnet.Send(RN171_FACTORY_RESET_PARAMETER.front(), FACTORY_RESET_ACK)) {
-			Trace(ZONE_ERROR, "factory RESET failed\n");
-			return false;
-		}
-
-		mTelnet.ClearResponse();
-		return mTelnet.Close(true);
-	}
-
-	bool Control::ConfSetDefaults(void) const
-	{
-		return this->ConfSetParameters(RN171_DEFAULT_PARAMETERS);
-	}
-
-	bool Control::ConfSetWlan(const std::string& phrase, const std::string& ssid) const
-	{
-		static const size_t PHRASE_MAX = 63;
-		static const size_t SSID_MAX = 32;
-
-		if((phrase.size() < 1) || (phrase.size() > PHRASE_MAX) || 0 != std::count_if(phrase.begin(), phrase.end(), iscntrl)) {
-			Trace(ZONE_WARNING, "Invalid wlan passphrase '%s'\n", phrase.data());
-			return false;
-		}
-
-		if((ssid.size() < 1) || (ssid.size() > SSID_MAX)) {
-			Trace(ZONE_WARNING, "Invalid wlan ssid '%s'\n", ssid.data());
-			return false;
-		}
-
-		if(!mTelnet.Open()) {
-			Trace(ZONE_ERROR, "open telnet connection failed\n");
-			return false;
-		}
-
-		if(!mTelnet.SendString("set wlan phrase ", phrase)) {
-			Trace(ZONE_ERROR, "set wlan phrase to '%s' failed\n", phrase.data());
-			mTelnet.Close(false);
-			return false;
-		}
-
-		if(!mTelnet.SendString("set wlan ssid ", ssid)) {
-				Trace(ZONE_ERROR, "set wlan ssid to '%s' failed\n", ssid.data());
-			mTelnet.Close(false);
-			return false;
-		}
-		return mTelnet.Close(true);
-	}
-
-	bool Control::ConfSetDeviceId(const std::string& name) const
-	{
-		static const size_t NAME_MAX_LEN = 32;
-
-		if((name.size() < 1) || (name.size() > NAME_MAX_LEN)) {
-				Trace(ZONE_WARNING, "Invalid device name '%s'\n", name.data());
-			return false;
-		}
-
-		if(!mTelnet.Open()) {
-				Trace(ZONE_ERROR, "open telnet connection failed\n");
-			return false;
-		}
-
-		if(!mTelnet.SendString("set opt deviceid ", name)) {
-				Trace(ZONE_ERROR, "set device name to '%s' failed\n", name.data());
-			mTelnet.Close(false);
-			return false;
-		}
-
-		return mTelnet.Close(true);
-	}
-
-	bool Control::ConfRebootWlanModule(void) const
-	{
-		if(!mTelnet.Open()) {
-				Trace(ZONE_ERROR, "open telnet connection failed\n");
-			return false;
-		}
-
-		static const std::string command = "reboot";
-
-		if(!mTelnet.SendRebootCommand()) {
-				Trace(ZONE_ERROR, "send reboot command failed\n");
-			mTelnet.Close(false);
-			return false;
-		}
-		return true;
-	}
-
-	bool Control::ConfChangeWlanChannel(void) const
-	{
-		if(!mTelnet.Open()) {
-				Trace(ZONE_ERROR, "open telnet connection failed\n");
-			return false;
-		}
-		std::string result;
-		if(!mTelnet.PerformWifiScan(result)) {
-				Trace(ZONE_ERROR, "wifi scan failed\n");
-			return mTelnet.Close(false);
-		}
-
-		unsigned int newChannel = mTelnet.ComputeFreeChannel(result);
-
-		if(!newChannel) {
-				Trace(ZONE_ERROR, "compute new channel failed\n");
-			return mTelnet.Close(false);
-		}
-		mTelnet.ChangeWifiChannel(newChannel);
-		return mTelnet.Close(false);
-	}
-
 	std::string Control::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 	{
 		FwCmdGetCycletime cmd;
@@ -765,7 +457,7 @@ namespace WyLight {
 		*this << cmd;
 		return cmd.mResponse.getVersion();
 	}
-	
+
 	uint8_t Control::FwGetLedTyp(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 	{
 		FwCmdGetLedTyp cmd;

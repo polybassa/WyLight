@@ -28,6 +28,7 @@
 #include "WiflyControlException.h"
 #include "FwCommand.h"
 #include "Script.h"
+#include "ConfigControl.h"
 
 
 namespace WyLight {
@@ -55,14 +56,11 @@ namespace WyLight {
 	class Control
 	{
 	public:
+		ConfigControl mConfig;
 		/**
 		 * string constant to address all LEDs. String representation of 0xffffffff
 		 */
 		static const std::string LEDS_ALL;
-		static const std::list<std::string> RN171_DEFAULT_PARAMETERS;
-		static const std::list<std::string> RN171_BASIC_PARAMETERS;
-		static const std::list<std::string> RN171_SOFT_AP_DEFAULT_PARAMETERS;
-		static const std::list<std::string> RN171_FACTORY_RESET_PARAMETER;
 		/**
 		 * Connect to a wifly device
 		 * @param addr ipv4 address as 32 bit value in host byte order
@@ -177,75 +175,6 @@ namespace WyLight {
 		 */
 		void BlRunApp(void) const throw (ConnectionTimeout, FatalError);
 
-/* --------------------- WLAN CONFIGURATION METHODES --------------------- */
-
-		/**
-		 * Read the device id from WyLight module
-		 * @return an empty string or the device id
-		 */
-		std::string ConfGetDeviceId(void) const;
-
-		/**
-		 * Read the currently configured wlan passphrase from WyLight module
-		 * @return an empty string or the wlan passphrase
-		 */
-		std::string ConfGetPassphrase(void) const;
-
-		/**
-		 * Read the currently configured mode(client/SoftAP) from WyLight module
-		 * @return true if WyLight module is configured for SoftAP mode
-		 */
-		bool ConfGetSoftAp(void) const;
-
-		/**
-		 * Read the currently configured ssid from WyLight module
-		 * @return an empty string or the ssid
-		 */
-		std::string ConfGetSsid(void) const;
-
-		/**
-		 * Configurates the WyLight module as stand alone accesspoint. With accesspoint name you can change the ssid for this accesspoint.
-		 * @param accesspointName 1 - 32 characters
-		 * @return false, in case of an error
-		 */
-		bool ConfModuleAsSoftAP(const std::string& accesspointName = "Wifly_Light") const;
-
-		/**
-		 * Configurates the WyLight module as client for an existing wlan network with WPA2 protection
-		 * @param phrase WPA2 passphrase 1 - 63 characters
-		 * @param ssid 1 - 32 characters
-		 * @param deviceId 1 - 32 characters, unique name which apperas in the broadcast message
-		 * @return false, in case of an error
-		 */
-		bool ConfModuleForWlan(const std::string& phrase, const std::string& ssid, const std::string& deviceId = "Wifly_Light") const;
-
-		/**
-		 * Reboot the modul. ATTENTION: You have to reconnect after a reboot
-		 * @return false, in case of an error
-		 */
-		bool ConfRebootWlanModule(void) const;
-
-		/**
-		 * Allows you to give every Wifly_Light device an unique name
-		 * @param name 1 - 32 characters
-		 * @return false, in case of an error
-		 */
-		bool ConfSetDeviceId(const std::string& name) const;
-
-		/**
-		 * Wlan module performs a wifi scan and changes to the next free channel. This function can take some time.
-		 * @return false, in case of an error
-		 */
-		bool ConfChangeWlanChannel(void) const;
-
-		/**
-		 *
-		 */
-		bool ConfSetParameters(std::list<std::string> commands) const;
-		
-		bool ConfFactoryReset(void) const;
-
-
 
 /* -------------------------- FIRMWARE METHODES -------------------------- */
 		/**
@@ -283,7 +212,7 @@ namespace WyLight {
 		 * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
 		 */
 		uint16_t FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-		
+
 		/**
 		 * Reads the led typ on the spi interface. To detect WS2801 Led's, the SPI IN and OUT Pin's has to conntect together, to build a loopback.
 		 * @return a value representing the led typ of the WyLight modul
@@ -426,26 +355,6 @@ namespace WyLight {
 		 */
 		size_t BlReadFlash(uint8_t *pBuffer, uint32_t address, size_t numBytes) const throw (ConnectionTimeout, FatalError, InvalidParameter);
 
-		/**
-		 * Read the currently configured wlan passphrase from WyLight module
-		 * @param searchKey to search the wlan settings for
-		 * @return an empty string or the value of the specified wlan setting
-		 */
-		std::string ConfGet(const std::string& searchKey, const std::string& getCmd = "get wlan\r\n") const;
-
-		/**
-		 * Set the WyLight module communication parameters to defaults
-		 * @return false, in case of an error
-		 */
-		bool ConfSetDefaults(void) const;
-
-		/**
-		 * Set the WyLight module wlan connection parameters
-		 * @param phrase WPA2 passphrase 1 - 63 characters
-		 * @param ssid 1 - 32 characters
-		 * @return false, in case of an error
-		 */
-		bool ConfSetWlan(const std::string& phrase, const std::string& ssid) const;
 
 /* ------------------ friendships for unittesting only ------------------- */
 		friend size_t ut_WiflyControl_BlEepromWrite(void);

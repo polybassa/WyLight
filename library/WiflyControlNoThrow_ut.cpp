@@ -45,8 +45,10 @@ size_t UdpSocket::Send(const uint8_t *frame, size_t length) const {
 
 
 Control::Control(uint32_t addr, uint16_t port)
-	: mTcpSock(addr, port), mUdpSock(addr, port, false, 0), mProxy(mTcpSock), mTelnet(mTcpSock)
+	: mConfig(mTelnet), mTcpSock(addr, port), mUdpSock(addr, port, false, 0), mProxy(mTcpSock), mTelnet(mTcpSock)
 {}
+
+ConfigControl::ConfigControl(const TelnetProxy &telnet) : mTelnet(telnet) {}
 
 static WiflyError g_ErrorCode;
 
@@ -141,39 +143,39 @@ void Control::BlRunApp(void) const throw (ConnectionTimeout, FatalError) {
 	throwExceptions();
 }
 
-std::string Control::ConfGetSsid(void) const {
+std::string ConfigControl::GetSsid(void) const {
 	return "";
 }
 
-bool Control::ConfSetDefaults(void) const {
+bool ConfigControl::SetDefaults(void) const {
 	return true;
 }
 
-bool Control::ConfSetWlan(const std::string& phrase, const std::string& ssid) const {
+bool ConfigControl::SetWlan(const std::string& phrase, const std::string& ssid) const {
 	return true;
 }
 
-bool Control::ConfChangeWlanChannel(void) const {
+bool ConfigControl::ChangeWlanChannel(void) const {
 	return true;
 }
 
-bool Control::ConfSetDeviceId(const std::string& name) const {
+bool ConfigControl::SetDeviceId(const std::string& name) const {
 	return true;
 }
 
-bool Control::ConfRebootWlanModule() const {
+bool ConfigControl::RebootWlanModule() const {
 	return true;
 }
 
-bool Control::ConfModuleAsSoftAP(const std::string& accesspointName) const {
+bool ConfigControl::ModuleAsSoftAP(const std::string& accesspointName) const {
 	return true;
 }
 
-bool Control::ConfModuleForWlan(const std::string &phrase, const std::string &ssid, const std::string& name) const {
+bool ConfigControl::ModuleForWlan(const std::string &phrase, const std::string &ssid, const std::string& name) const {
 	return true;
 }
 
-bool Control::ConfSetParameters(std::list<std::string> commands) const {
+bool ConfigControl::SetParameters(std::list<std::string> commands) const {
 	return true;
 }
 

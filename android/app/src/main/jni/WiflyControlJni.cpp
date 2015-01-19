@@ -100,24 +100,24 @@ namespace WyLight {
 
 		jstring Java_de_WyLight_WyLight_WiflyControl_ConfGetDeviceId(JNIEnv *env, jobject ref, jlong pNative)
 		{
-			std::string myDeviceId = reinterpret_cast<Control *>(pNative)->ConfGetDeviceId();
+			std::string myDeviceId = reinterpret_cast<Control *>(pNative)->mConfig.GetDeviceId();
 			return env->NewStringUTF(myDeviceId.data());
 		}
 
 		jstring Java_de_WyLight_WyLight_WiflyControl_ConfGetPassphrase(JNIEnv *env, jobject ref, jlong pNative)
 		{
-			std::string myPassphrase = reinterpret_cast<Control *>(pNative)->ConfGetPassphrase();
+			std::string myPassphrase = reinterpret_cast<Control *>(pNative)->mConfig.GetPassphrase();
 			return env->NewStringUTF(myPassphrase.data());
 		}
 
 		jboolean Java_de_WyLight_WyLight_WiflyControl_ConfGetSoftAp(JNIEnv *env, jobject ref, jlong pNative)
 		{
-			return reinterpret_cast<Control *>(pNative)->ConfGetSoftAp();
+			return reinterpret_cast<Control *>(pNative)->mConfig.GetSoftAp();
 		}
 
 		jstring Java_de_WyLight_WyLight_WiflyControl_ConfGetSsid(JNIEnv *env, jobject ref, jlong pNative)
 		{
-			std::string mySsid = reinterpret_cast<Control *>(pNative)->ConfGetSsid();
+			std::string mySsid = reinterpret_cast<Control *>(pNative)->mConfig.GetSsid();
 			return env->NewStringUTF(mySsid.data());
 		}
 
@@ -128,9 +128,9 @@ namespace WyLight {
 			const char *const mySsid = env->GetStringUTFChars(ssid, 0);
 			jboolean result;
 			if(softAp) {
-				result = reinterpret_cast<Control *>(pNative)->ConfModuleAsSoftAP(mySsid);
+				result = reinterpret_cast<Control *>(pNative)->mConfig.ModuleAsSoftAP(mySsid);
 			} else {
-				result = reinterpret_cast<Control *>(pNative)->ConfModuleForWlan(myPassphrase, mySsid, myDeviceId);
+				result = reinterpret_cast<Control *>(pNative)->mConfig.ModuleForWlan(myPassphrase, mySsid, myDeviceId);
 			}
 			env->ReleaseStringUTFChars(deviceId, myDeviceId);
 			env->ReleaseStringUTFChars(passphrase, myPassphrase);

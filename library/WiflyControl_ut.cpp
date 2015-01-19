@@ -159,9 +159,9 @@ namespace WyLight {
 	{
 		return g_ProxyConnected = true;
 	}
-	
+
 	void TelnetProxy::ClearResponse(void) const {
-		
+
 	}
 
 	void TelnetProxy::RecvString(const std::string& getCmd, const std::string& searchKey, std::string& result) const
@@ -413,7 +413,7 @@ namespace WyLight {
 		Control testee(0, 0);
 
 		g_TestBuffer.clear();
-			CHECK(testee.ConfSetDefaults());
+			CHECK(testee.mConfig.SetDefaults());
 			CHECK(!g_ProxyConnected);
 			CHECK(g_ProxySaved);
 			CHECK(numCommands == g_TestBuffer.size());
@@ -437,21 +437,21 @@ namespace WyLight {
 		Control testee(0, 0);
 
 		// passphrase to short
-		CHECK(!testee.ConfSetWlan("", ssid));
+		CHECK(!testee.mConfig.SetWlan("", ssid));
 		// passphrase to long
-		CHECK(!testee.ConfSetWlan(phraseToLong, ssid));
+		CHECK(!testee.mConfig.SetWlan(phraseToLong, ssid));
 
 		// passphrase contains not only alphanumeric characters
-		CHECK(!testee.ConfSetWlan(phraseContainsNonAlNum, ssid));
+		CHECK(!testee.mConfig.SetWlan(phraseContainsNonAlNum, ssid));
 
 		// ssid to short
-		CHECK(!testee.ConfSetWlan(phrase, ""));
+		CHECK(!testee.mConfig.SetWlan(phrase, ""));
 
 		// ssid to long
-		CHECK(!testee.ConfSetWlan(phrase, ssidToLong));
+		CHECK(!testee.mConfig.SetWlan(phrase, ssidToLong));
 
 		// valid passphrase and ssid
-		CHECK(testee.ConfSetWlan(phrase, ssid));
+		CHECK(testee.mConfig.SetWlan(phrase, ssid));
 
 		TestCaseEnd();
 	}

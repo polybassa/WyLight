@@ -12,19 +12,19 @@ LIB_SRC=$(filter-out $(LIB_TEST_SRC), $(wildcard $(LIB_DIR)/*.cpp))
 LIB_OBJ=$(LIB_SRC:%.cpp=%.o)
 
 $(LIB_TARGET): outdir $(LIB_OBJ)
-	@rm -f $(LIB_TARGET)	
+	@rm -f $(LIB_TARGET)
 	@ar cq $(LIB_TARGET) $(LIB_OBJ)
 
 library: $(LIB_TARGET)
 
-${BINDIR}/BroadcastReceiver_ut.bin: clean ${OBJDIR}/BroadcastReceiver.o ${OBJDIR}/BroadcastReceiver_ut.o 
+${BINDIR}/BroadcastReceiver_ut.bin: clean ${OBJDIR}/BroadcastReceiver.o ${OBJDIR}/BroadcastReceiver_ut.o
 
 ${BINDIR}/ComProxy_ut.bin: clean $(OBJDIR)/ComProxy_ut.o $(OBJDIR)/ComProxy.o $(OBJDIR)/MaskBuffer.o $(OBJDIR)/crc.o
 
 ${BINDIR}/FtpServer_ut.bin: LDFLAGS+=-lpthread
 ${BINDIR}/FtpServer_ut.bin: clean $(OBJDIR)/FtpServer_ut.o $(OBJDIR)/FtpServer.o $(OBJDIR)/ClientSocket.o $(OBJDIR)/crc.o
 
-${BINDIR}/MessageQueue_ut.bin: CFLAGS+=-D_GLIBCXX_USE_NANOSLEEP	
+${BINDIR}/MessageQueue_ut.bin: CFLAGS+=-D_GLIBCXX_USE_NANOSLEEP
 ${BINDIR}/MessageQueue_ut.bin: LDFLAGS+=-lpthread
 ${BINDIR}/MessageQueue_ut.bin: clean $(OBJDIR)/MessageQueue_ut.o
 
@@ -41,15 +41,15 @@ ${BINDIR}/StartupManager_ut.bin: clean $(OBJDIR)/StartupManager_ut.o $(OBJDIR)/S
 ${BINDIR}/TelnetProxy_ut.bin: clean $(OBJDIR)/TelnetProxy_ut.o $(OBJDIR)/TelnetProxy.o
 
 ${BINDIR}/WiflyControl_ut.bin: LDFLAGS+=-lpthread
-${BINDIR}/WiflyControl_ut.bin: clean $(OBJDIR)/WiflyControl_ut.o $(OBJDIR)/WiflyControl.o  $(OBJDIR)/intelhexclass.o $(OBJDIR)/MaskBuffer.o $(OBJDIR)/crc.o $(OBJDIR)/Script.o
+${BINDIR}/WiflyControl_ut.bin: clean $(OBJDIR)/WiflyControl_ut.o $(OBJDIR)/WiflyControl.o $(OBJDIR)/ConfigControl.o $(OBJDIR)/intelhexclass.o $(OBJDIR)/MaskBuffer.o $(OBJDIR)/crc.o $(OBJDIR)/Script.o
 
 ${BINDIR}/WiflyControlNoThrow_ut.bin: clean $(OBJDIR)/WiflyControlNoThrow_ut.o $(OBJDIR)/WiflyControlNoThrow.o
 
 library_test: library_standart_test library_ftp_test
 
 library_standart_test: ${BINDIR}/BroadcastReceiver_ut.bin ${BINDIR}/ComProxy_ut.bin ${BINDIR}/MessageQueue_ut.bin ${BINDIR}/Script_ut.bin ${BINDIR}/ScriptManager_ut.bin ${BINDIR}/TelnetProxy_ut.bin ${BINDIR}/WiflyControl_ut.bin ${BINDIR}/WiflyControlNoThrow_ut.bin ${BINDIR}/StartupManager_ut.bin ${BINDIR}/WyFileDownloader_ut.bin
-	$(foreach test,$^,./$(test);)	
-	 
+	$(foreach test,$^,./$(test);)
+
 library_ftp_test: ${BINDIR}/FtpServer_ut.bin
-	$(foreach test,$^,@sh ./ut/ftptest.sh ./$(test);)	
-	 
+	$(foreach test,$^,@sh ./ut/ftptest.sh ./$(test);)
+

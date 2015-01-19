@@ -38,7 +38,7 @@ namespace WyLight {
 
 	TestCase g_Testcase;
 
-	const std::list<std::string> Control::RN171_BASIC_PARAMETERS;
+	const std::list<std::string> ConfigControl::RN171_BASIC_PARAMETERS;
 
 	/***** Wrappers ****/
 	ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) : mSock(0), mSockAddr(addr, port) {}
@@ -57,9 +57,15 @@ namespace WyLight {
 		return length;
 	}
 
+	ConfigControl::ConfigControl(const TelnetProxy &telnet) : mTelnet(telnet){}
+
+	bool ConfigControl::SetParameters(std::list<std::string> commands) const
+	{
+		return true;
+	}
 
 	Control::Control(uint32_t addr, uint16_t port)
-		: mTcpSock(addr, port), mUdpSock(addr, port, false, 0), mProxy(mTcpSock), mTelnet(mTcpSock)
+		: mConfig(mTelnet), mTcpSock(addr, port), mUdpSock(addr, port, false, 0), mProxy(mTcpSock), mTelnet(mTcpSock)
 	{}
 
 	uint16_t Control::FwGetVersion() throw (WyLight::ConnectionTimeout, WyLight::FatalError, WyLight::ScriptBufferFull) {
@@ -94,11 +100,6 @@ namespace WyLight {
 
 	void Control::BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError)
 	{}
-
-	bool Control::ConfSetParameters(std::list<std::string> commands) const {
-		return true;
-	}
-
 
 	size_t Control::GetTargetMode(void) const throw(FatalError)
 	{
@@ -187,7 +188,7 @@ namespace WyLight {
 		TestCaseEnd();
 
 	}
-	
+
 	size_t ut_StartupManager_AppOutdated(void)
 	{
 		g_Testcase = TC_APP_OUTDATED;
@@ -195,12 +196,12 @@ namespace WyLight {
 		Control ctrl(0,0);
 		TestCaseBegin();
 		testee.startup(ctrl, "");
-		
+
 		CHECK(StartupManager::STARTUP_SUCCESSFUL == testee.getCurrentState());
 		CHECK(testee.isAppOutdated() == true);
-		
+
 		TestCaseEnd();
-		
+
 	}
 
 	size_t ut_StartupManager_VersionFailUpdateSuccess(void)

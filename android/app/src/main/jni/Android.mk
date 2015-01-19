@@ -9,6 +9,7 @@ LOCAL_SRC_FILES := $(FW_SRC)crc.c
 LOCAL_SRC_FILES += $(LIB_SRC)BroadcastReceiver.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)ClientSocket.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)ComProxy.cpp
+LOCAL_SRC_FILES += $(LIB_SRC)ConfigControl.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)intelhexclass.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)MaskBuffer.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)Script.cpp

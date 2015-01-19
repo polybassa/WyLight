@@ -77,38 +77,38 @@ namespace WyLight {
 
 	uint32_t ControlNoThrow::ConfGetSsid(std::string& ssid) const
 	{
-		ssid = mControl.ConfGetSsid();
+		ssid = mControl.mConfig.GetSsid();
 		return NO_ERROR;
 	}
 
 	uint32_t ControlNoThrow::ConfModuleForWlan(const std::string &phrase, const std::string &ssid, const std::string &name) const
 	{
-		return mControl.ConfModuleForWlan(phrase, ssid, name) ? NO_ERROR : FATAL_ERROR;
+		return mControl.mConfig.ModuleForWlan(phrase, ssid, name) ? NO_ERROR : FATAL_ERROR;
 	}
 
 	uint32_t ControlNoThrow::ConfModuleAsSoftAP(const std::string &name) const
 	{
-		return mControl.ConfModuleAsSoftAP(name) ? NO_ERROR : FATAL_ERROR;
+		return mControl.mConfig.ModuleAsSoftAP(name) ? NO_ERROR : FATAL_ERROR;
 	}
 
 	uint32_t ControlNoThrow::ConfRebootWlanModule(void) const
 	{
-		return mControl.ConfRebootWlanModule() ? NO_ERROR : FATAL_ERROR;
+		return mControl.mConfig.RebootWlanModule() ? NO_ERROR : FATAL_ERROR;
 	}
 
 	uint32_t ControlNoThrow::ConfSetDeviceId(const std::string &name) const
 	{
-		return mControl.ConfSetDeviceId(name) ? NO_ERROR : FATAL_ERROR;
+		return mControl.mConfig.SetDeviceId(name) ? NO_ERROR : FATAL_ERROR;
 	}
 
 	uint32_t ControlNoThrow::ConfChangeWlanChannel(void) const
 	{
-		return mControl.ConfChangeWlanChannel() ? NO_ERROR : FATAL_ERROR;
+		return mControl.mConfig.ChangeWlanChannel() ? NO_ERROR : FATAL_ERROR;
 	}
 
 	uint32_t ControlNoThrow::ConfSetParameters(std::list<std::string> commands) const
 	{
-		return mControl.ConfSetParameters(commands) ? NO_ERROR : FATAL_ERROR;
+		return mControl.mConfig.SetParameters(commands) ? NO_ERROR : FATAL_ERROR;
 	}
 
 	uint32_t ControlNoThrow::FwClearScript(void)
@@ -136,7 +136,7 @@ namespace WyLight {
 	{
 		return Try(std::bind(&Control::FwGetVersion, std::ref(mControl)), output);
 	}
-	
+
 	uint32_t ControlNoThrow::FwGetLedTyp(uint8_t &output)
 	{
 		return Try(std::bind(&Control::FwGetLedTyp, std::ref(mControl)), output);
@@ -240,7 +240,7 @@ namespace WyLight {
 			return FATAL_ERROR;
 		}
 	}
-	
+
 	uint32_t ControlNoThrow::Try(const std::function<uint8_t(void)> call, uint8_t& returnValue) const
 	{
 		try {
