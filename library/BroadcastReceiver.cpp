@@ -30,10 +30,6 @@ namespace WyLight {
 
 	static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING;
 
-	const std::string BroadcastReceiver::DEVICE_ID("Wifly_Light");
-	const std::string BroadcastReceiver::DEVICE_ID_OLD("WiFly");
-	const std::string BroadcastReceiver::DEVICE_VERSION("WiFly Ver 2.45, 10-09-2012");
-	const std::string BroadcastReceiver::DEVICE_VERSION4("wifly-EZX Ver 4.00.1, Apr 19");
 	const std::string BroadcastReceiver::STOP_MSG {"StopThread"};
 	Endpoint BroadcastReceiver::EMPTY_ENDPOINT {};
 
@@ -100,10 +96,10 @@ namespace WyLight {
 		sockaddr_storage remoteAddr;
 		socklen_t remoteAddrLength = sizeof(remoteAddr);
 
-		BroadcastMessage msg;
+		WiflyBroadcastMessage msg;
 		const size_t bytesRead = udpSock.RecvFrom((uint8_t *)&msg, sizeof(msg), timeout, (sockaddr *)&remoteAddr, &remoteAddrLength);
 		TraceBuffer(ZONE_VERBOSE, msg.deviceId, sizeof(msg.deviceId), "%c", "%zu bytes broadcast message received DeviceId: \n", bytesRead);
-		if(msg.IsWiflyBroadcast(bytesRead)) {
+        if(WiflyBroadcastMessage::IsWiflyBroadcast(msg, bytesRead)) {
 			Trace(ZONE_INFO, "Broadcast detected\n");
 			Endpoint newRemote(remoteAddr, remoteAddrLength, msg.port, std::string((char *)&msg.deviceId[0]));
 			newRemote.SetScore(1);

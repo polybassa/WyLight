@@ -22,12 +22,12 @@
 #include "BroadcastTransmitter.h"
 #include "osi.h"
 
-void BroadcastTransmitter::BroadcastMessage::refresh() {
+void CC3200BroadcastMessage::refresh() {
 	memset(this, 0, sizeof(*this));
 
 	// Get MAC-Address for Broadcast Message
 	unsigned char macAddressLen = SL_MAC_ADDR_LEN;
-	sl_NetCfgGet(SL_MAC_ADDRESS_GET, NULL, &macAddressLen, (unsigned char *) &(this->MAC));
+	sl_NetCfgGet(SL_MAC_ADDRESS_GET, NULL, &macAddressLen, (unsigned char *) &(this->mac));
 
 	// Set Client Port
 	this->port = htons(SERVER_PORT);
@@ -83,7 +83,7 @@ BroadcastTransmitter::BroadcastTransmitter(void) : Task((const char *)"Broadcast
 	do {
 		osi_Sleep(1500);
 		// Send Broadcast Message
-		status = sendto(sock, &this->mMsg, sizeof(struct BroadcastTransmitter::BroadcastMessage), 0,
+		status = sendto(sock, &this->mMsg, sizeof(WyLight::BroadcastMessage), 0,
 						(sockaddr *) &destaddr, addrLen);
 		
 	} while (status > 0 && !stopFlag);

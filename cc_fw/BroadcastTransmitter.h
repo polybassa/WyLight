@@ -23,27 +23,18 @@
 
 #include "CPPTask.h"
 #include "SimplelinkCustomer.h"
+#include "BroadcastMessage.h"
+
 
 #define BC_PORT_NUM        	55555
 
+struct CC3200BroadcastMessage : public WyLight::BroadcastMessage {
+    void refresh(void);
+};
+
 class BroadcastTransmitter final : public Task, SimplelinkCustomer {
-	struct __attribute__((__packed__)) BroadcastMessage {
-		uint8_t MAC[6];
-		uint8_t channel;
-		uint8_t rssi;
-		uint16_t port;
-		uint32_t rtc;
-		uint16_t battery;
-		uint16_t gpio;
-		uint8_t asciiTime[14];
-		uint8_t version[28];
-		uint8_t deviceId[32];
-		uint16_t boottime;
-		uint8_t sensors[16];
-		void refresh(void);
-	};
 	
-	BroadcastMessage mMsg;
+	CC3200BroadcastMessage mMsg;
 	static const uint16_t port = BC_PORT_NUM;
 	
 public:

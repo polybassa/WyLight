@@ -27,6 +27,7 @@ IPATH+=${RTOS_SOURCE_DIR}/source/include
 IPATH+=${RTOS_SOURCE_DIR}/source/portable/MemMang
 IPATH+=${RTOS_SOURCE_DIR}/source/portable/GCC/ARM_CM4
 IPATH+=${ROOT}/firmware
+IPATH+=${ROOT}/library
 
 # WyLight firmware
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/main.o

@@ -21,6 +21,8 @@
 
 namespace WyLight
 {
+    static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING;
+    
 	const std::list<std::string> ConfigControl::RN171_DEFAULT_PARAMETERS = {
 		"set broadcast interval 0x1\r\n",    	// to support fast broadcast recognition
 		"set comm close 0\r\n",            		// Disable *CLOS* string

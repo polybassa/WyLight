@@ -19,7 +19,9 @@
 #ifndef _BROADCAST_MESSAGE_H_
 #define _BROADCAST_MESSAGE_H_
 
-#include "BroadcastReceiver.h"
+#include <stdint.h>
+#include <string>
+
 namespace WyLight {
 
 #pragma pack(push)
@@ -38,25 +40,22 @@ namespace WyLight {
 		int8_t deviceId[32];
 		uint16_t bootTmms;
 		uint16_t sensor[8];
-
-		bool IsWiflyBroadcast(size_t length) const {
-			return ((sizeof(BroadcastMessage) == length)
-				&& (IsDevice(BroadcastReceiver::DEVICE_ID)
-				    || IsDevice(BroadcastReceiver::DEVICE_ID_OLD)
-				    || IsVersion(BroadcastReceiver::DEVICE_VERSION)
-				    || IsVersion(BroadcastReceiver::DEVICE_VERSION4)));
-		};
-
-		private:
-			bool IsVersion(const std::string& deviceVersion) const {
-				return (0 == memcmp(version, deviceVersion.data(), deviceVersion.size()));
-			}
-
-			bool IsDevice(const std::string& deviceType) const {
-				return (0 == memcmp(deviceId,   deviceType.data(), deviceType.size()));
-			};
-	};
+        
+    };
 #pragma pack(pop)
+    
+    struct WiflyBroadcastMessage : public BroadcastMessage
+    {
+        bool IsVersion(const std::string& deviceVersion) const;
+        bool IsDevice(const std::string& deviceType) const;
+        
+        static bool IsWiflyBroadcast(const WiflyBroadcastMessage& msg, const size_t length);
+        
+        static const std::string DEVICE_ID;
+        static const std::string DEVICE_ID_OLD;
+        static const std::string DEVICE_VERSION;
+        static const std::string DEVICE_VERSION4;
 
+    };
 }
 #endif /* #ifndef _BROADCAST_MESSAGE_H_ */
