@@ -23,7 +23,7 @@ ${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/StartupManager.o
 ${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/TelnetProxy.o
 ${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/WiflyControl.o
 ${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/crc.o
-
+${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/BroadcastMessage.o
 
 
 
