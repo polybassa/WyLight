@@ -36,31 +36,26 @@ namespace WyLight {
 		uint16_t bat_mV;
 		uint16_t gpioValue;
 		int8_t asciiTime[13 + 1];
-		int8_t version[26 + 1 + 1]; // this seems a little strange. bug in wifly fw?
+		char version[26 + 1 + 1]; // this seems a little strange. bug in wifly fw?
 		int8_t deviceId[32];
 		uint16_t bootTmms;
 		uint16_t sensor[8];
-        
+
         bool IsVersion(const std::string& deviceVersion) const;
         bool IsDevice(const std::string& deviceType) const;
+        bool IsCC3200Broadcast(size_t length);
+        bool IsRN171Broadcast(size_t length);
+private:
+        static const std::string RN171_DEVICE_ID;
+        static const std::string RN171_DEVICE_ID_OLD;
+        static const std::string RN171_VERSION_2_45;
+        static const std::string RN171_VERSION_4_00;
+        static const std::string CC3200_VERSION;
     };
 #pragma pack(pop)
-    
-    struct RN171BroadcastMessage : public BroadcastMessage
-    {
-        static bool IsRN171Broadcast(const BroadcastMessage& msg, const size_t length);
-        
-        static const std::string DEVICE_ID;
-        static const std::string DEVICE_ID_OLD;
-        static const std::string DEVICE_VERSION;
-        static const std::string DEVICE_VERSION4;
-    };
-    
+
     struct CC3200BroadcastMessage : public BroadcastMessage {
         void refresh(void);
-        
-        static bool IsCC3200Broadcast(const BroadcastMessage& msg, const size_t length);
-        static const std::string DEVICE_VERSION;
     };
 }
 #endif /* #ifndef _BROADCAST_MESSAGE_H_ */
