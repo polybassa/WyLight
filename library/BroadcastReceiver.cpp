@@ -26,8 +26,6 @@
 #include <stdio.h>
 #include <mutex>
 
-#define DEBUG
-
 namespace WyLight {
 
 	static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING;

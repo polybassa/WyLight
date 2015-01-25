@@ -33,7 +33,8 @@ bool RN171BroadcastMessage::IsRN171Broadcast(const BroadcastMessage& msg, const 
 
 bool BroadcastMessage::IsDevice(const std::string& deviceType) const {
 				return (0 == memcmp(deviceId,   deviceType.data(), deviceType.size()));
-};
+}
+
 const std::string CC3200BroadcastMessage::DEVICE_VERSION("WyLight CC3200 Version 0.1");
 
 bool CC3200BroadcastMessage::IsCC3200Broadcast(const WyLight::BroadcastMessage &msg, const size_t length) {
