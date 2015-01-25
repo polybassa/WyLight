@@ -13,6 +13,8 @@ IPATH+=${ROOT}/inc
 IPATH+=${ROOT}/driverlib
 IPATH+=${ROOT}/simplelink/include
 
+CFLAGS+=-DDEBUG
+
 # WyLight bootloader
 ${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/main.o
 ${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/pinmux.o
