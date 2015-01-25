@@ -27,17 +27,16 @@
 
 #define BC_PORT_NUM        	55555
 
-class BroadcastTransmitter final : public Task, SimplelinkCustomer {
-	
-    WyLight::CC3200BroadcastMessage mMsg;
+class BroadcastTransmitter final : public Task, SimplelinkCustomer
+{
 	static const uint16_t port = BC_PORT_NUM;
-	
+
 public:
 	BroadcastTransmitter(void);
 	BroadcastTransmitter(const BroadcastTransmitter&) = delete;
 	BroadcastTransmitter& operator=(const BroadcastTransmitter&) = delete;
 	BroadcastTransmitter(BroadcastTransmitter&&) = delete;
-	
+
 	virtual void run(void);
 	virtual void stop(void);
 };
