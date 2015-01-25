@@ -34,6 +34,7 @@ Targets:
 | `firmware_pic`  | build PIC firmware                  
 | `firmware_simu` | build PIC simulator                 
 | `cli`           | build command line interface       
+| `android_client`| build android ndk library
 
 
 Debug CC3200:
