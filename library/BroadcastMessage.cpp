@@ -26,8 +26,8 @@ const std::string RN171BroadcastMessage::DEVICE_ID_OLD("WiFly");
 bool RN171BroadcastMessage::IsRN171Broadcast(const BroadcastMessage& msg, const size_t length) {
     return ((sizeof(BroadcastMessage) == length)
             &&  (msg.IsVersion(DEVICE_VERSION)
-                || msg.IsVersion(DEVICE_VERSION4))
-            && (msg.IsDevice(DEVICE_ID)
+                || msg.IsVersion(DEVICE_VERSION4)
+                || msg.IsDevice(DEVICE_ID)
                 || msg.IsDevice(DEVICE_ID_OLD)));
 }
 

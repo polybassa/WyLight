@@ -95,16 +95,22 @@ namespace WyLight {
 		UdpSocket udpSock(INADDR_ANY, mPort, true, 1);
 		sockaddr_storage remoteAddr;
 		socklen_t remoteAddrLength = sizeof(remoteAddr);
+        
+        auto SaveEndpoint = [&](Endpoint&& newRemote) -> Endpoint {
+            Trace(ZONE_INFO, "Broadcast detected\n");
+            newRemote.SetScore(1);
+            return LockedInsert(newRemote) ? newRemote : Endpoint();
+        };
 
 		BroadcastMessage msg;
 		const size_t bytesRead = udpSock.RecvFrom((uint8_t *)&msg, sizeof(msg), timeout, (sockaddr *)&remoteAddr, &remoteAddrLength);
 		TraceBuffer(ZONE_VERBOSE, msg.deviceId, sizeof(msg.deviceId), "%c", "%zu bytes broadcast message received DeviceId: \n", bytesRead);
         if(RN171BroadcastMessage::IsRN171Broadcast(msg, bytesRead)) {
-			Trace(ZONE_INFO, "Broadcast detected\n");
-            Endpoint newRemote(remoteAddr, remoteAddrLength, msg.port, std::string((char *)&msg.deviceId[0]), Endpoint::RN171);
-			newRemote.SetScore(1);
-			return LockedInsert(newRemote) ? newRemote : Endpoint();
+			return SaveEndpoint(Endpoint(remoteAddr, remoteAddrLength, msg.port, std::string((char *)&msg.deviceId[0]), Endpoint::RN171));
 		}
+        if(CC3200BroadcastMessage::IsCC3200Broadcast(msg, bytesRead)) {
+            return SaveEndpoint(Endpoint(remoteAddr, remoteAddrLength, msg.port, std::string((char *)&msg.deviceId[0]), Endpoint::CC3200));
+        }
 		return Endpoint();
 	}
 
