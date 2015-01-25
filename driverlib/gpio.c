@@ -421,7 +421,7 @@ GPIOIntDisable(unsigned long ulPort, unsigned long ulIntFlags)
 //
 //*****************************************************************************
 long
-GPIOIntStatus(unsigned long ulPort, tBoolean bMasked)
+GPIOIntStatus(unsigned long ulPort, bool bMasked)
 {
     //
     // Check the arguments.

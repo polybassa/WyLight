@@ -18,7 +18,7 @@
 
 #include "CPPTask.h"
 
-Task::Task(const char *name, unsigned short stackSize,unsigned long priority, std::function<void (const tBoolean&)> function) : mTaskFunction(function) {
+Task::Task(const char *name, unsigned short stackSize,unsigned long priority, std::function<void (const bool&)> function) : mTaskFunction(function) {
 	osi_SyncObjCreate(&this->mStartSemaphore);
 	osi_SyncObjCreate(&this->mStopSemaphore);
 	

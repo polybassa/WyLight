@@ -44,6 +44,7 @@ void Trace_Hex16(const uns16 input);
 void Trace_Char(const uns8 input);
 
 uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
+
 #elif TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
     #define Trace_Init(x)
     #define Trace_String(str)
@@ -60,6 +61,16 @@ uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
 		} \
 } \
 	while(0)
+
+#elif cc3200
+    #include "uart_if.h"
+    #define Trace_Init(x) {InitTerm(); ClearTerm();}
+    #define Trace(ZONE, ...) do { \
+        if(g_DebugZones & (ZONE)) { \
+        Report("%s:%u: ", __FILE__, __LINE__); \
+        Report(__VA_ARGS__); \
+            } \
+        } while(0)
 
 #else
 	#include "stdio.h"

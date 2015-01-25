@@ -50,6 +50,8 @@
 extern "C"
 {
 #endif
+    
+#include <stdbool.h>
 
 //*****************************************************************************
 //
@@ -91,8 +93,8 @@ uVectorEntry;
 // Prototypes for the APIs.
 //
 //*****************************************************************************
-extern tBoolean IntMasterEnable(void);
-extern tBoolean IntMasterDisable(void);
+extern bool IntMasterEnable(void);
+extern bool IntMasterDisable(void);
 extern void IntVTableBaseSet(unsigned long ulVtableBase);
 extern void IntRegister(unsigned long ulInterrupt, void (*pfnHandler)(void));
 extern void IntUnregister(unsigned long ulInterrupt);

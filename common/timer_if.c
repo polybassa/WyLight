@@ -36,64 +36,11 @@
 //
 //*****************************************************************************
 
-#include "hw_types.h"
-#include "hw_memmap.h"
-#include "hw_ints.h"
-#include "debug.h"
-#include "interrupt.h"
 #include "timer.h"
-#include "rom.h"
 #include "rom_map.h"
 #include "prcm.h"
 #include "timer_if.h"
-#ifdef USE_TIRTOS
-#include <stdlib.h>
-#include "osi.h"
-#endif
 
-#ifdef USE_TIRTOS
-static unsigned char
-GetPeripheralIntNum(unsigned long ulBase, unsigned long ulTimer)
-{
-    if(ulTimer == TIMER_A)
-    {
-       switch(ulBase)
-       {
-           case TIMERA0_BASE:
-		   	  return INT_TIMERA0A;
-		   case TIMERA1_BASE:
-		   	  return INT_TIMERA1A;
-		   case TIMERA2_BASE:
-		   	  return INT_TIMERA2A;
-		   case TIMERA3_BASE:
-		   	  return INT_TIMERA3A;
-		   default:
-		   	  return INT_TIMERA0A;
-       	}
-    }
-	else if(ulTimer == TIMER_B)
-	{
-       switch(ulBase)
-       {
-           case TIMERA0_BASE:
-		   	  return INT_TIMERA0B;
-		   case TIMERA1_BASE:
-		   	  return INT_TIMERA1B;
-		   case TIMERA2_BASE:
-		   	  return INT_TIMERA2B;
-		   case TIMERA3_BASE:
-		   	  return INT_TIMERA3B;
-		   default:
-		   	  return INT_TIMERA0B;
-       	}
-    }
-	else
-	{
-		return INT_TIMERA0A;
-	}
-
-}
-#endif
 //*****************************************************************************
 //
 //!	Initializing the Timer
@@ -146,23 +93,7 @@ void Timer_IF_IntSetup(unsigned long ulBase, unsigned long ulTimer,
   //
   // Setup the interrupts for the timer timeouts.
   //
-#ifdef USE_TIRTOS
-	  if(ulTimer == TIMER_BOTH)
-	  {
-	      osi_InterruptRegister(GetPeripheralIntNum(ulBase, TIMER_A),
-	  		     				TimerBaseIntHandler, INT_PRIORITY_LVL_1);
-	      osi_InterruptRegister(GetPeripheralIntNum(ulBase, TIMER_B),
-	  						    TimerBaseIntHandler, INT_PRIORITY_LVL_1);
-	  }
-	  else
-      {
-          osi_InterruptRegister(GetPeripheralIntNum(ulBase, ulTimer),
-	  		     				TimerBaseIntHandler, INT_PRIORITY_LVL_1);
-      }
-		
-#else
-	  MAP_TimerIntRegister(ulBase, ulTimer, TimerBaseIntHandler);
-#endif
+MAP_TimerIntRegister(ulBase, ulTimer, TimerBaseIntHandler);
  
 
   if(ulTimer == TIMER_BOTH)

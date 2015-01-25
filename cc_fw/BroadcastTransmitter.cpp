@@ -16,12 +16,13 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "hw_types.h"
-#include "simplelink.h"
-#include "server.h"
-#include "BroadcastTransmitter.h"
-#include "osi.h"
 #include <string>
+#include "simplelink.h"
+#include "SimplelinkServers.h"
+#include "BroadcastTransmitter.h"
+#include "firmware/trace.h"
+
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 void WyLight::CC3200BroadcastMessage::refresh() {
 	memset(this, 0, sizeof(*this));
@@ -63,7 +64,7 @@ void BroadcastTransmitter::stop(void) {
 //
 //*****************************************************************************
 
-BroadcastTransmitter::BroadcastTransmitter(void) : Task((const char *)"Broadcast", OSI_STACK_SIZE, 5, [&](const tBoolean& stopFlag){
+BroadcastTransmitter::BroadcastTransmitter(void) : Task((const char *)"Broadcast", OSI_STACK_SIZE, 5, [&](const bool& stopFlag){
 	
 	const sockaddr_in destaddr(AF_INET, htons(BC_PORT_NUM), htonl(INADDR_BROADCAST));
 	const int sock = socket(AF_INET, SOCK_DGRAM, 0);
@@ -73,11 +74,11 @@ BroadcastTransmitter::BroadcastTransmitter(void) : Task((const char *)"Broadcast
 	this->mMsg.refresh();
 	
 	if (sock < 0) {
-		UART_PRINT("ERROR: Couldn't aquire socket for Broadcast transmit\r\n");
+		Trace(ZONE_ERROR, "ERROR: Couldn't aquire socket for Broadcast transmit\r\n");
 		return;
 	}
 	
-	UART_PRINT("Broadcast Transmitter started \r\n");
+	Trace(ZONE_INFO, "Broadcast Transmitter started \r\n");
 	do {
 		osi_Sleep(1500);
 		// Send Broadcast Message
@@ -86,7 +87,7 @@ BroadcastTransmitter::BroadcastTransmitter(void) : Task((const char *)"Broadcast
 		
 	} while (status > 0 && !stopFlag);
 	
-	UART_PRINT("Broadcast Transmitter stopped \r\n");
+	Trace(ZONE_INFO, "Broadcast Transmitter stopped \r\n");
 	// Close socket in case of any error's and try to open a new socket in the next loop
 	close(sock);
 	

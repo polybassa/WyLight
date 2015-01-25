@@ -17,7 +17,6 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include <stdint.h>
-#include "hw_types.h"
 
 // Simplelink includes
 #include "simplelink.h"
@@ -34,6 +33,7 @@
 #include "RingBuf.h"
 #include "ScriptCtrl.h"
 #include "ledstrip.h"
+#include "firmware/trace.h"
 //
 // GLOBAL VARIABLES -- Start
 //

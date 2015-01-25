@@ -579,7 +579,7 @@ void PinTypeCamera(unsigned long ulPin,unsigned long ulPinMode)
 //! \return None.
 //
 //*****************************************************************************
-void PinTypeGPIO(unsigned long ulPin,unsigned long ulPinMode,tBoolean bOpenDrain)
+void PinTypeGPIO(unsigned long ulPin,unsigned long ulPinMode,bool bOpenDrain)
 {
 
     //

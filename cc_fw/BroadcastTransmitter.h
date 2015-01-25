@@ -20,7 +20,6 @@
 #define __BROADCAST_TRANSMITTER_H_
 
 #include <stdint.h>
-
 #include "CPPTask.h"
 #include "SimplelinkCustomer.h"
 #include "BroadcastMessage.h"

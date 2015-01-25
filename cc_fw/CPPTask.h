@@ -20,25 +20,25 @@
 #define __cc_firmware__CPPTask__
 
 #include <stdint.h>
+#include <stdbool.h>
 #include "osi.h"
 #include "FreeRTOS.h"
 #include "semphr.h"
 #include "task.h"
-#include "hw_types.h"
 #include "functional"
 
 class Task {
-	std::function<void (const tBoolean&)> mTaskFunction;
+	std::function<void (const bool&)> mTaskFunction;
 	void taskFunction(void);
 	xTaskHandle mHandle;
 	xSemaphoreHandle mStopSemaphore;
 	xSemaphoreHandle mStartSemaphore;
-	tBoolean mStopFlag;
+    bool mStopFlag;
 
 	static void task(void *pvParameters);
 
 public:
-	Task(const char * name, unsigned short stackSize, unsigned long priority, std::function<void (const tBoolean&)> function);
+	Task(const char * name, unsigned short stackSize, unsigned long priority, std::function<void (const bool&)> function);
 	Task(const Task&) = delete;
 	Task& operator=(const Task&) = delete;
 	Task(Task&&) = delete;

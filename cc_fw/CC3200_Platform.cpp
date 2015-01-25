@@ -26,14 +26,10 @@
 #include "rom_map.h"
 #include "pinmux.h"
 #include "osi.h"
-//Common interface includes
-#include "uart_if.h"
 
-#ifdef DEBUG
-#define UART_PRINT	Report
-#else
-#define UART_PRINT(...)
-#endif
+#include "firmware/trace.h"
+
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 extern void (* const g_pfnVectors[])(void);
 
@@ -49,10 +45,9 @@ CC3200_Platform::CC3200_Platform() {
 	
 	//UART driver initialisations
 	PinMuxConfig();
-	InitTerm();
-	ClearTerm();
+    Trace_Init();
 	
 	VStartSimpleLinkSpawnTask(9);
 
-	UART_PRINT("\r\n---------------------------\r\n");
+	Trace(ZONE_VERBOSE, "\r\n---------------------------\r\n");
 }

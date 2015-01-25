@@ -16,22 +16,20 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "hw_types.h"
-#include "simplelink.h"
 #include "SimplelinkServers.h"
-#include "osi.h"
-#include "FreeRTOS.h"
-#include "semphr.h"
-#include "uart_if.h"
+#include "simplelink.h"
 #include "RingBuf.h"
 #include "wy_firmware.h"
+#include "firmware/trace.h"
+
 
 #ifndef SUCCESS
 #define SUCCESS 0
 #endif
 
 #define BUFFERSIZE 256
-#define UART_PRINT Report
+
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 const uint16_t TcpServer::port = SERVER_PORT;
 const uint16_t UdpServer::port = SERVER_PORT;
@@ -65,7 +63,7 @@ void TcpServer::stop(void) {
 	Task::stop();
 }
 
-void TcpServer::receive(const tBoolean& stopFlag, const int childSock) {
+void TcpServer::receive(const bool& stopFlag, const int childSock) {
 	uint8_t buffer[BUFFERSIZE];
 	
 	while (!stopFlag) {
@@ -74,7 +72,7 @@ void TcpServer::receive(const tBoolean& stopFlag, const int childSock) {
 			buffer[bytesToSend++] = RingBuf_Get(&g_RingBuf_Tx);
 		}
 		if (bytesToSend && (bytesToSend != send(childSock, buffer, bytesToSend, 0))) {
-			UART_PRINT("Tcp => Error during transmit\r\n");
+			Trace(ZONE_ERROR,"Tcp => Error during transmit\r\n");
 		}
 		
 		int bytesReceived = recv(childSock, buffer, sizeof(buffer), 0);
@@ -90,12 +88,12 @@ void TcpServer::receive(const tBoolean& stopFlag, const int childSock) {
 			return;
 		}
 		
-		UART_PRINT(",");
+		Trace(ZONE_VERBOSE,",");
 		this->storeData(buffer, bytesReceived);
 	}
 }
 
-void TcpServer::serve(const tBoolean& stopFlag, const int serverSock) {
+void TcpServer::serve(const bool& stopFlag, const int serverSock) {
 	sockaddr_in childAddr;
 	socklen_t childAddrLen = sizeof(sockaddr_in);
 	
@@ -114,49 +112,49 @@ void TcpServer::serve(const tBoolean& stopFlag, const int serverSock) {
 			continue;
 		}
 		if (childSock < 0) {
-			UART_PRINT("Accept error: %d\n\r", childSock);
+			Trace("Accept error: %d\n\r", childSock);
 			continue;
 		}
 		
 		int nonBlocking = 1;
 		setsockopt(childSock, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking));
 		
-		UART_PRINT("TCP Client connected\r\n");
+		Trace(ZONE_INFO,"TCP Client connected\r\n");
 		this->receive(stopFlag, childSock);
 		close(childSock);
 		childSock = ERROR;
-		UART_PRINT("TCP Client disconnected\r\n");
+		Trace(ZONE_INFO,"TCP Client disconnected\r\n");
 	}
 }
 
 
-TcpServer::TcpServer(void) : Task((const char *)"TcpServer", OSI_STACK_SIZE, 5, [&](const tBoolean& stopFlag){
+TcpServer::TcpServer(void) : Task((const char *)"TcpServer", OSI_STACK_SIZE, 5, [&](const bool& stopFlag){
 	const sockaddr_in LocalAddr( AF_INET, htons(TcpServer::port), htonl(INADDR_ANY) );
 	
 	int serverSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (serverSock < 0) {
-		UART_PRINT(" Socket Error: %d", serverSock);
+		Trace(" Socket Error: %d", serverSock);
 		return;
 	}
 	
 	if (SUCCESS != bind(serverSock, (sockaddr *) &LocalAddr, sizeof(LocalAddr))) {
-		UART_PRINT(" Bind Error\n\r");
+		Trace(ZONE_ERROR," Bind Error\n\r");
 		close(serverSock);
 		return;
 	}
 	
 	// Backlog = 1 to accept maximal 1 connection
 	if (SUCCESS != listen(serverSock, 1)) {
-		UART_PRINT(" Listen Error\n\r");
+		Trace(ZONE_ERROR," Listen Error\n\r");
 		close(serverSock);
 		return;
 	}
 	
 	int nonBlocking = 1;
 	setsockopt(serverSock, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking));
-	UART_PRINT("TcpServer started\r\n");
+	Trace(ZONE_INFO,"TcpServer started\r\n");
 	this->serve(stopFlag, serverSock);
-	UART_PRINT("TcpServer stopped\r\n");
+	Trace(ZONE_INFO,"TcpServer stopped\r\n");
 	close(serverSock);
 }) {}
 
@@ -168,7 +166,7 @@ void UdpServer::stop(void) {
 	Task::stop();
 }
 
-void UdpServer::receive(const tBoolean& stopFlag, const int serverSock) {
+void UdpServer::receive(const bool& stopFlag, const int serverSock) {
 	socklen_t RemoteAddrLen = sizeof(sockaddr_in);
 	uint8_t buffer[BUFFERSIZE];
 	sockaddr_in remoteAddr;
@@ -186,17 +184,17 @@ void UdpServer::receive(const tBoolean& stopFlag, const int serverSock) {
 			return;
 		}
 		
-		UART_PRINT(".");
+		Trace(ZONE_VERBOSE,".");
 		this->storeData(buffer, bytesReceived);
 	}
 }
 
-UdpServer::UdpServer(void) : Task((const char *)"UdpServer", OSI_STACK_SIZE, 6, [&](const tBoolean& stopFlag){
+UdpServer::UdpServer(void) : Task((const char *)"UdpServer", OSI_STACK_SIZE, 6, [&](const bool& stopFlag){
 	const sockaddr_in LocalAddr(AF_INET, htons(UdpServer::port), htonl(INADDR_ANY) );
 	
 	int serverSock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	if (serverSock < 0) {
-		UART_PRINT("Udp Socket Error\r\n");
+		Trace(ZONE_ERROR,"Udp Socket Error\r\n");
 		osi_Sleep(100);
 		return;
 	}
@@ -204,13 +202,13 @@ UdpServer::UdpServer(void) : Task((const char *)"UdpServer", OSI_STACK_SIZE, 6, 
 	setsockopt(serverSock, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking));
 	
 	if (SUCCESS != bind(serverSock, (sockaddr *) &LocalAddr, sizeof(LocalAddr))) {
-		UART_PRINT(" Bind Error\n\r");
+		Trace(ZONE_ERROR," Bind Error\n\r");
 		close(serverSock);
 		return;
 	}
 	
-	UART_PRINT("UDP Server started \r\n");
+	Trace(ZONE_INFO,"UDP Server started \r\n");
 	this->receive(stopFlag, serverSock);
 	close(serverSock);
-	UART_PRINT("UDP Server stopped \r\n");
+	Trace(ZONE_INFO,"UDP Server stopped \r\n");
 }) {}

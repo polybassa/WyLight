@@ -176,7 +176,7 @@ IntDefaultHandler(void)
 //! called or \b false if they were initially enabled.
 //
 //*****************************************************************************
-tBoolean
+bool
 IntMasterEnable(void)
 {
     //
@@ -203,7 +203,7 @@ IntMasterEnable(void)
 //! function was called or \b false if they were initially enabled.
 //
 //*****************************************************************************
-tBoolean
+bool
 IntMasterDisable(void)
 {
     //

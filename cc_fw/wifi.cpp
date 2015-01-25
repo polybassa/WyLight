@@ -26,12 +26,10 @@
 
 //Common interface includes
 #include "wy_network_if.h"
-#include "wifi.h"
-#include "BroadcastTransmitter.h"
 #include "wy_firmware.h"
-
 #include "SimplelinkCustomer.h"
 
+#include "wifi.h"
 //
 // GLOBAL VARIABLES -- Start
 //

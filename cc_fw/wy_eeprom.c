@@ -17,10 +17,13 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include <stdbool.h>
-#include "eeprom.h"
 #include "wy_fs.h"
 #include "osi.h"
 #include "wy_firmware.h"
+#include "firmware/trace.h"
+#include "eeprom.h"
+
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 static unsigned char eepromFileName[] = "/temp/eeprom.bin";
 const static uns16 EEPROM_SAVE_THRESHOLD = 10;
@@ -38,7 +41,7 @@ void Eeprom_Init() {
 		wy_FsDel(eepromFileName, 0);
 		if (wy_FsOpen(eepromFileName, FS_MODE_OPEN_CREATE(EEPROM_SIZE, _FS_FILE_PUBLIC_READ | _FS_FILE_PUBLIC_WRITE),
 				NULL, &fileHandle)) {
-			UART_PRINT("EEPROM Adaption: Error opening script file\r\n");
+			Trace(ZONE_ERROR, "EEPROM Adaption: Error opening script file\r\n");
 			osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
 			return;
 		}
@@ -50,7 +53,7 @@ void Eeprom_Init() {
 	}
 	// file exists and is open
 	if (EEPROM_SIZE != wy_FsRead(fileHandle, 0, g_Eeprom, EEPROM_SIZE)) {
-		UART_PRINT("EEPROM Adaption: Error reading script file\r\n");
+		Trace(ZONE_ERROR,"EEPROM Adaption: Error reading script file\r\n");
 		memset(g_Eeprom, 0, EEPROM_SIZE);
 	}
 	wy_FsClose(fileHandle, NULL, NULL, 0);
@@ -73,7 +76,7 @@ void Eeprom_Save(bool forceSave) {
 		if (wy_FsOpen(eepromFileName, FS_MODE_OPEN_CREATE(EEPROM_SIZE, _FS_FILE_PUBLIC_READ | _FS_FILE_PUBLIC_WRITE),
 				NULL, &fileHandle)) {
 
-			UART_PRINT("EEPROM Adaption: Error opening script file\r\n");
+			Trace(ZONE_ERROR,"EEPROM Adaption: Error opening script file\r\n");
 			osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
 			return;
 		}
@@ -81,7 +84,7 @@ void Eeprom_Save(bool forceSave) {
 	}
 	// file exists and is open
 	if (EEPROM_SIZE != wy_FsWrite(fileHandle, 0, g_Eeprom, EEPROM_SIZE)) {
-		UART_PRINT("EEPROM Adaption: Error writing script file\r\n");
+		Trace(ZONE_ERROR,"EEPROM Adaption: Error writing script file\r\n");
 	}
 	wy_FsClose(fileHandle, NULL, NULL, 0);
 	osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);

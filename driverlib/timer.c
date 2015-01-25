@@ -246,7 +246,7 @@ TimerConfigure(unsigned long ulBase, unsigned long ulConfig)
 //*****************************************************************************
 void
 TimerControlLevel(unsigned long ulBase, unsigned long ulTimer,
-                  tBoolean bInvert)
+                  bool bInvert)
 {
     //
     // Check the arguments.
@@ -320,7 +320,7 @@ TimerControlEvent(unsigned long ulBase, unsigned long ulTimer,
 //*****************************************************************************
 void
 TimerControlStall(unsigned long ulBase, unsigned long ulTimer,
-                  tBoolean  bStall)
+                  bool  bStall)
 {
     //
     // Check the arguments.
@@ -918,7 +918,7 @@ TimerIntDisable(unsigned long ulBase, unsigned long ulIntFlags)
 //
 //*****************************************************************************
 unsigned long
-TimerIntStatus(unsigned long ulBase, tBoolean bMasked)
+TimerIntStatus(unsigned long ulBase, bool bMasked)
 {
     //
     // Check the arguments.

@@ -22,12 +22,12 @@ IPATH+=${ROOT}/oslib
 IPATH+=${ROOT}/simplelink
 IPATH+=${ROOT}/simplelink/source
 IPATH+=${ROOT}/simplelink/include
+IPATH+=${ROOT}/firmware
 IPATH+=${RTOS_SOURCE_DIR}
 IPATH+=${RTOS_SOURCE_DIR}/source
 IPATH+=${RTOS_SOURCE_DIR}/source/include
 IPATH+=${RTOS_SOURCE_DIR}/source/portable/MemMang
 IPATH+=${RTOS_SOURCE_DIR}/source/portable/GCC/ARM_CM4
-IPATH+=${ROOT}/firmware
 IPATH+=${ROOT}/library
 
 # WyLight firmware

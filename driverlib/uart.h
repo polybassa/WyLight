@@ -50,6 +50,8 @@
 extern "C"
 {
 #endif
+    
+#include <stdbool.h>
 
 //*****************************************************************************
 //
@@ -192,20 +194,20 @@ extern void UARTEnable(unsigned long ulBase);
 extern void UARTDisable(unsigned long ulBase);
 extern void UARTFIFOEnable(unsigned long ulBase);
 extern void UARTFIFODisable(unsigned long ulBase);
-extern tBoolean UARTCharsAvail(unsigned long ulBase);
-extern tBoolean UARTSpaceAvail(unsigned long ulBase);
+extern bool UARTCharsAvail(unsigned long ulBase);
+extern bool UARTSpaceAvail(unsigned long ulBase);
 extern long UARTCharGetNonBlocking(unsigned long ulBase);
 extern long UARTCharGet(unsigned long ulBase);
-extern tBoolean UARTCharPutNonBlocking(unsigned long ulBase,
+extern bool UARTCharPutNonBlocking(unsigned long ulBase,
                                        unsigned char ucData);
 extern void UARTCharPut(unsigned long ulBase, unsigned char ucData);
-extern void UARTBreakCtl(unsigned long ulBase, tBoolean bBreakState);
-extern tBoolean UARTBusy(unsigned long ulBase);
+extern void UARTBreakCtl(unsigned long ulBase, bool bBreakState);
+extern bool UARTBusy(unsigned long ulBase);
 extern void UARTIntRegister(unsigned long ulBase, void(*pfnHandler)(void));
 extern void UARTIntUnregister(unsigned long ulBase);
 extern void UARTIntEnable(unsigned long ulBase, unsigned long ulIntFlags);
 extern void UARTIntDisable(unsigned long ulBase, unsigned long ulIntFlags);
-extern unsigned long UARTIntStatus(unsigned long ulBase, tBoolean bMasked);
+extern unsigned long UARTIntStatus(unsigned long ulBase, bool bMasked);
 extern void UARTIntClear(unsigned long ulBase, unsigned long ulIntFlags);
 extern void UARTDMAEnable(unsigned long ulBase, unsigned long ulDMAFlags);
 extern void UARTDMADisable(unsigned long ulBase, unsigned long ulDMAFlags);

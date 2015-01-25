@@ -24,17 +24,7 @@
 extern "C" {
 #endif
 
-//Common interface includes
-#include "uart_if.h"
-
-//Free_rtos/ti-rtos includes
 #include "osi.h"
-
-#define UART_PRINT 		   		Report
-
-#ifndef SUCCESS
-#define SUCCESS 				0
-#endif
 
 extern OsiTaskHandle *WyLightFirmwareTaskHandle;
 extern OsiTaskHandle *WyLightGetCommandsTaskHandle;

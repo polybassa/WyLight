@@ -37,15 +37,8 @@
 //*****************************************************************************
 
 #include <stdio.h>
-#include "hw_types.h"
-#include "hw_ints.h"
 #include "hw_memmap.h"
-#include "interrupt.h"
-#include "pin.h"
 #include "gpio.h"
-#include "hw_apps_rcm.h"
-#include "prcm.h"
-#include "rom.h"
 #include "rom_map.h"
 #include "gpio_if.h"
 

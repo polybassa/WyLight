@@ -55,16 +55,8 @@
 //*****************************************************************************
 
 #include <stdarg.h>
-#include <stdlib.h>
-#include <stdio.h>
 
-#include "hw_types.h"
-#include "hw_memmap.h"
-#include "prcm.h"
-#include "pin.h"
 #include "uart.h"
-#include "rom.h"
-#include "rom_map.h"
 #include "uart_if.h"
 
 //*****************************************************************************
@@ -80,7 +72,7 @@
 void 
 InitTerm()
 {
-#ifndef NOTERM
+#ifdef DEBUG
   MAP_UARTConfigSetExpClk(CONSOLE,MAP_PRCMPeripheralClockGet(CONSOLE_PERIPH), 
                   UART_BAUD_RATE, (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
                    UART_CONFIG_PAR_NONE));
@@ -102,7 +94,7 @@ InitTerm()
 void 
 Message(const char *str)
 {
-#ifndef NOTERM
+#ifdef DEBUG
     if(str != NULL)
     {
         while(*str)
@@ -147,7 +139,7 @@ ClearTerm()
 int Report(const char *pcFormat, ...)
 {
  int iRet = 0;
-#ifndef NOTERM
+#ifdef DEBUG
   char pcBuff[256];
   int iSize = sizeof(pcBuff);
  

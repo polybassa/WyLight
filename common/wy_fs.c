@@ -16,13 +16,10 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-
-
 #include "wy_fs.h"
-#ifndef NOTERM
-#include "uart_if.h"
-#define UART_PRINT Report
-#endif
+#include "firmware/trace.h"
+
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 enum FileStatus {
 	EMPTY = 0, INVALID, VALID
@@ -208,7 +205,7 @@ int wy_FsFormat(void) {
 	close_and_return: errno = closeFileSystem();
 	return sl_min(errno, retVal);
 }
-#ifndef NOTERM
+#ifdef DEBUG
 // remove this function in productive code
 int wy_FsPrintFileList(void) {
 	long errno = openFileSystem();
@@ -216,11 +213,11 @@ int wy_FsPrintFileList(void) {
 
 	unsigned int address = 0;
 	for (; address < MAX_NUM_FILES; address++) {
-		UART_PRINT("%d: ", address);
+		Trace(ZONE_VERBOSE, "%d: ", address);
 		if (Filesystem[address].Status == VALID) {
-			UART_PRINT("%s", Filesystem[address].Name);
+			Trace(ZONE_VERBOSE,"%s", Filesystem[address].Name);
 		}
-		UART_PRINT("\r\n");
+		Trace(ZONE_VERBOSE,"\r\n");
 	}
 	return SL_FS_OK;
 }

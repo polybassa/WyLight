@@ -78,7 +78,7 @@ static const unsigned long g_ppulUARTIntMap[][2] =
 //
 //*****************************************************************************
 #ifdef DEBUG
-static tBoolean
+static bool
 UARTBaseValid(unsigned long ulBase)
 {
     return((ulBase == UARTA0_BASE) || (ulBase == UARTA1_BASE));
@@ -869,7 +869,7 @@ UARTTxIntModeGet(unsigned long ulBase)
 //! if there is no data in the receive FIFO.
 //
 //*****************************************************************************
-tBoolean
+bool
 UARTCharsAvail(unsigned long ulBase)
 {
     //
@@ -896,7 +896,7 @@ UARTCharsAvail(unsigned long ulBase)
 //! or \b false if there is no space available in the transmit FIFO.
 //
 //*****************************************************************************
-tBoolean
+bool
 UARTSpaceAvail(unsigned long ulBase)
 {
     //
@@ -1005,7 +1005,7 @@ UARTCharGet(unsigned long ulBase)
 //! FIFO.
 //
 //*****************************************************************************
-tBoolean
+bool
 UARTCharPutNonBlocking(unsigned long ulBase, unsigned char ucData)
 {
     //
@@ -1088,7 +1088,7 @@ UARTCharPut(unsigned long ulBase, unsigned char ucData)
 //
 //*****************************************************************************
 void
-UARTBreakCtl(unsigned long ulBase, tBoolean bBreakState)
+UARTBreakCtl(unsigned long ulBase, bool bBreakState)
 {
     //
     // Check the arguments.
@@ -1119,7 +1119,7 @@ UARTBreakCtl(unsigned long ulBase, tBoolean bBreakState)
 //! transmissions are complete.
 //
 //*****************************************************************************
-tBoolean
+bool
 UARTBusy(unsigned long ulBase)
 {
     //
@@ -1319,7 +1319,7 @@ UARTIntDisable(unsigned long ulBase, unsigned long ulIntFlags)
 //
 //*****************************************************************************
 unsigned long
-UARTIntStatus(unsigned long ulBase, tBoolean bMasked)
+UARTIntStatus(unsigned long ulBase, bool bMasked)
 {
     //
     // Check the arguments.

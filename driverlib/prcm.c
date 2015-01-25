@@ -195,7 +195,7 @@ void PRCMSOCReset()
 //! \return None.
 //
 //*****************************************************************************
-void PRCMMCUReset(tBoolean bIncludeSubsystem)
+void PRCMMCUReset(bool bIncludeSubsystem)
 {
   if(bIncludeSubsystem)
   {
@@ -425,7 +425,7 @@ PRCMPeripheralReset(unsigned long ulPeripheral)
 //! \return Returns \b true if the  peripheral is ready, \b false otherwise.
 //
 //*****************************************************************************
-tBoolean
+bool
 PRCMPeripheralStatusGet(unsigned long ulPeripheral)
 {
   unsigned long ReadyBit;
@@ -1330,7 +1330,7 @@ void PRCMRTCInUseSet()
 //! \return None.
 //
 //*****************************************************************************
-tBoolean PRCMRTCInUseGet()
+bool PRCMRTCInUseGet()
 {
         return IS_RTC_USED()? true : false;
 }

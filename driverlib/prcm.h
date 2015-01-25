@@ -50,6 +50,8 @@
 extern "C"
 {
 #endif
+    
+#include <stdbool.h>
 
 //*****************************************************************************
 //
@@ -194,7 +196,7 @@ unsigned long ulRstReg;
 //
 //*****************************************************************************
 extern void PRCMSOCReset(void);
-extern void PRCMMCUReset(tBoolean bIncludeSubsystem);
+extern void PRCMMCUReset(bool bIncludeSubsystem);
 extern unsigned long PRCMSysResetCauseGet(void);
 
 extern void PRCMPeripheralClkEnable(unsigned long ulPeripheral,
@@ -202,7 +204,7 @@ extern void PRCMPeripheralClkEnable(unsigned long ulPeripheral,
 extern void PRCMPeripheralClkDisable(unsigned long ulPeripheral,
                                      unsigned long ulClkFlags);
 extern void PRCMPeripheralReset(unsigned long ulPeripheral);
-extern tBoolean PRCMPeripheralStatusGet(unsigned long ulPeripheral);
+extern bool PRCMPeripheralStatusGet(unsigned long ulPeripheral);
 
 extern void PRCMI2SClockFreqSet(unsigned long ulI2CClkFreq);
 extern unsigned long PRCMPeripheralClockGet(unsigned long ulPeripheral);
@@ -246,7 +248,7 @@ extern void PRCMIntEnable(unsigned long ulIntFlags);
 extern void PRCMIntDisable(unsigned long ulIntFlags);
 extern unsigned long PRCMIntStatus(void);
 extern void PRCMRTCInUseSet(void);
-extern tBoolean PRCMRTCInUseGet(void);
+extern bool PRCMRTCInUseGet(void);
 extern void PRCMRTCSet(unsigned long ulSecs, unsigned short usMsec);
 extern void PRCMRTCGet(unsigned long *ulSecs, unsigned short *usMsec);
 extern void PRCMRTCMatchSet(unsigned long ulSecs, unsigned short usMsec);

@@ -50,6 +50,8 @@
 extern "C"
 {
 #endif
+    
+#include <stdbool.h>
 
 //*****************************************************************************
 //
@@ -161,11 +163,11 @@ extern void TimerEnable(unsigned long ulBase, unsigned long ulTimer);
 extern void TimerDisable(unsigned long ulBase, unsigned long ulTimer);
 extern void TimerConfigure(unsigned long ulBase, unsigned long ulConfig);
 extern void TimerControlLevel(unsigned long ulBase, unsigned long ulTimer,
-                              tBoolean bInvert);
+                              bool bInvert);
 extern void TimerControlEvent(unsigned long ulBase, unsigned long ulTimer,
                               unsigned long ulEvent);
 extern void TimerControlStall(unsigned long ulBase, unsigned long ulTimer,
-                              tBoolean bStall);
+                              bool bStall);
 extern void TimerPrescaleSet(unsigned long ulBase, unsigned long ulTimer,
                              unsigned long ulValue);
 extern unsigned long TimerPrescaleGet(unsigned long ulBase,
@@ -190,7 +192,7 @@ extern void TimerIntRegister(unsigned long ulBase, unsigned long ulTimer,
 extern void TimerIntUnregister(unsigned long ulBase, unsigned long ulTimer);
 extern void TimerIntEnable(unsigned long ulBase, unsigned long ulIntFlags);
 extern void TimerIntDisable(unsigned long ulBase, unsigned long ulIntFlags);
-extern unsigned long TimerIntStatus(unsigned long ulBase, tBoolean bMasked);
+extern unsigned long TimerIntStatus(unsigned long ulBase, bool bMasked);
 extern void TimerIntClear(unsigned long ulBase, unsigned long ulIntFlags);
 extern void TimerDMAEventSet(unsigned long ulBase, unsigned long ulDMAEvent);
 extern unsigned long TimerDMAEventGet(unsigned long ulBase);

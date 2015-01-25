@@ -17,11 +17,8 @@
  along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "pinmux.h"
-#include "hw_types.h"
 #include "hw_memmap.h"
-#include "hw_gpio.h"
 #include "pin.h"
-#include "rom.h"
 #include "rom_map.h"
 #include "gpio.h"
 #include "prcm.h"

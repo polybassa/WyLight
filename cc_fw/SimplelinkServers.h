@@ -19,10 +19,9 @@
 #ifndef __cc_firmware__SimplelinkServers__
 #define __cc_firmware__SimplelinkServers__
 
+#include <stdint.h>
 #include "CPPTask.h"
 #include "SimpleLinkCustomer.h"
-#include <stdint.h>
-#include "osi.h"
 
 #define SERVER_PORT				2000
 
@@ -38,8 +37,8 @@ protected:
 };
 
 class TcpServer : public Task, SimplelinkCustomer, Server {
-	void receive(const tBoolean& stopFlag, const int childSock);
-	void serve(const tBoolean& stopFlag, const int serverSock);
+	void receive(const bool& stopFlag, const int childSock);
+	void serve(const bool& stopFlag, const int serverSock);
 	
 public:
 	TcpServer(void);
@@ -54,7 +53,7 @@ public:
 };
 
 class UdpServer : public Task, SimplelinkCustomer, Server {
-	void receive(const tBoolean& stopFlag, const int serverSock);
+	void receive(const bool& stopFlag, const int serverSock);
 	
 public:
 	UdpServer(void);
