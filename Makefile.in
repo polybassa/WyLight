@@ -143,7 +143,7 @@ ut: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 filedownloader: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
 test: clean-all ${OBJDIR} ${BINDIR} 
-	CPPCHECKER . --force --quiet
+	${CPPCHECKER} . --force --quiet
 	make ut 
 	./exe/WyLight_ut.bin
 	make firmware_test 
