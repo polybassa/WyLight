@@ -28,13 +28,9 @@
 
 #define BC_PORT_NUM        	55555
 
-struct CC3200BroadcastMessage : public WyLight::BroadcastMessage {
-    void refresh(void);
-};
-
 class BroadcastTransmitter final : public Task, SimplelinkCustomer {
 	
-	CC3200BroadcastMessage mMsg;
+    WyLight::CC3200BroadcastMessage mMsg;
 	static const uint16_t port = BC_PORT_NUM;
 	
 public:

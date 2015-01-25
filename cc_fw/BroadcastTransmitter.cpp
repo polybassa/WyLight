@@ -21,8 +21,9 @@
 #include "server.h"
 #include "BroadcastTransmitter.h"
 #include "osi.h"
+#include <string>
 
-void CC3200BroadcastMessage::refresh() {
+void WyLight::CC3200BroadcastMessage::refresh() {
 	memset(this, 0, sizeof(*this));
 
 	// Get MAC-Address for Broadcast Message
@@ -33,16 +34,13 @@ void CC3200BroadcastMessage::refresh() {
 	this->port = htons(SERVER_PORT);
 
 	// Set Device ID
+    // TODO save DeviceID global
 	memset(&(this->deviceId), 0, sizeof(this->deviceId));
 	const char tempDeviceId[] = "WyLightCC3200";
 	memcpy(&(this->deviceId), (void *) tempDeviceId, sizeof(this->deviceId));
 
 	// Set Version
-	const char tempVersion[] = "wifly-EZX Ver 4.00.1, Apr 19";
-	memcpy(&(this->version), (void *) tempVersion, sizeof(this->version));
-
-	this->rssi = 0;
-	this->rtc = 0;
+	memcpy(&(this->version), (void *)DEVICE_VERSION.data(), sizeof(this->version));
 }
 
 void BroadcastTransmitter::run(void) {
