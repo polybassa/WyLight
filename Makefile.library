@@ -18,6 +18,7 @@ $(LIB_TARGET): outdir $(LIB_OBJ)
 library: $(LIB_TARGET)
 
 ${BINDIR}/BroadcastReceiver_ut.bin: clean ${OBJDIR}/BroadcastMessage.o ${OBJDIR}/BroadcastReceiver.o ${OBJDIR}/BroadcastReceiver_ut.o
+${BINDIR}/BroadcastReceiver_ut.bin: LDFLAGS+=-lpthread
 
 ${BINDIR}/ComProxy_ut.bin: clean $(OBJDIR)/ComProxy_ut.o $(OBJDIR)/ComProxy.o $(OBJDIR)/MaskBuffer.o $(OBJDIR)/crc.o
 
