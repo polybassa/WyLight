@@ -10,6 +10,7 @@ VPATH+=${RTOS_SOURCE_DIR}/source/portable/MemMang
 VPATH+=${RTOS_SOURCE_DIR}/source/portable/GCC/ARM_CM4
 VPATH+=${ROOT}/oslib
 VPATH+=${ROOT}/firmware
+VPATH+=${ROOT}/library
 
 # Where to find header files that do not live in the source directory.
 IPATH=${ROOT}
@@ -49,7 +50,7 @@ ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_eeprom.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/ScriptCtrl.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/ledstrip.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/wy_crc.o
-
+${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/BroadcastMessage.o
 # common
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/startup_${COMPILER}.o
 ${BINDIR}/${PRJ_NAME}.axf: ${OBJDIR}/uart_if.o

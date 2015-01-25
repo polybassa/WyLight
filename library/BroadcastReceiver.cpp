@@ -26,6 +26,8 @@
 #include <stdio.h>
 #include <mutex>
 
+#define DEBUG
+
 namespace WyLight {
 
 	static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING;
@@ -69,8 +71,6 @@ namespace WyLight {
 				throw(e);
 			}
 
-
-
 		std::atomic_fetch_sub(&mNumInstances, 1);
 	}
 
@@ -96,12 +96,12 @@ namespace WyLight {
 		sockaddr_storage remoteAddr;
 		socklen_t remoteAddrLength = sizeof(remoteAddr);
 
-		WiflyBroadcastMessage msg;
+		BroadcastMessage msg;
 		const size_t bytesRead = udpSock.RecvFrom((uint8_t *)&msg, sizeof(msg), timeout, (sockaddr *)&remoteAddr, &remoteAddrLength);
 		TraceBuffer(ZONE_VERBOSE, msg.deviceId, sizeof(msg.deviceId), "%c", "%zu bytes broadcast message received DeviceId: \n", bytesRead);
-        if(WiflyBroadcastMessage::IsWiflyBroadcast(msg, bytesRead)) {
+        if(RN171BroadcastMessage::IsRN171Broadcast(msg, bytesRead)) {
 			Trace(ZONE_INFO, "Broadcast detected\n");
-			Endpoint newRemote(remoteAddr, remoteAddrLength, msg.port, std::string((char *)&msg.deviceId[0]));
+            Endpoint newRemote(remoteAddr, remoteAddrLength, msg.port, std::string((char *)&msg.deviceId[0]), Endpoint::RN171);
 			newRemote.SetScore(1);
 			return LockedInsert(newRemote) ? newRemote : Endpoint();
 		}

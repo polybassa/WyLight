@@ -31,19 +31,22 @@ namespace WyLight {
 	class Endpoint
 	{
 	public:
-		Endpoint(sockaddr_storage& addr, const size_t size, uint16_t port, std::string devId = "")
-			: mScore(0)
+        enum TYPE {
+            RN171,
+            CC3200
+        };
+        
+        Endpoint(sockaddr_storage& addr, const size_t size, uint16_t port, std::string devId = "", enum Endpoint::TYPE type = RN171)
+			: mPort(ntohs(port)), mScore(0), mDeviceId(devId), mType(type)
 		{
 			assert(sizeof(sockaddr_in) == size);
 			mIp = ntohl(((sockaddr_in&)addr).sin_addr.s_addr);
-			mPort = ntohs(port);
-			mDeviceId = devId;
 		};
 
-		Endpoint(uint32_t ip = 0, uint16_t port = 0, uint8_t score = 0, std::string devId = "")
-			: mIp(ip), mPort(port), mScore(score), mDeviceId(devId)
+		Endpoint(uint32_t ip = 0, uint16_t port = 0, uint8_t score = 0, std::string devId = "", enum Endpoint::TYPE type = RN171)
+			: mIp(ip), mPort(port), mScore(score), mDeviceId(devId), mType(type)
 		{};
-
+        
 		bool operator<(const Endpoint& ref) const {
 			return (mIp < ref.GetIp())
 			       || ((mIp == ref.GetIp()) && (mPort < ref.GetPort()));
@@ -101,6 +104,10 @@ namespace WyLight {
 		uint8_t GetScore(void) const {
 			return mScore;
 		};
+        
+        enum TYPE GetType(void) const {
+            return mType;
+        };
 
 		void SetDeviceId(const std::string& deviceId) {
 			mDeviceId = deviceId;
@@ -128,6 +135,7 @@ namespace WyLight {
 		uint16_t mPort;
 		uint8_t mScore;
 		std::string mDeviceId;
+        enum TYPE mType;
 	};
 }
 #endif /* #ifndef _ENDPOINT_H_ */
