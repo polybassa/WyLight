@@ -52,6 +52,11 @@ void operator delete[](void *p) {
 	vPortFree(p);
 }
 
+extern "C" void abort(void)
+{
+    while (1);
+}
+
 //
 // GLOBAL VARIABLES -- Start
 //

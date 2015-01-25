@@ -29,7 +29,11 @@
 //Common interface includes
 #include "uart_if.h"
 
+#ifdef DEBUG
 #define UART_PRINT	Report
+#else
+#define UART_PRINT(...)
+#endif
 
 extern void (* const g_pfnVectors[])(void);
 
