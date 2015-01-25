@@ -17,13 +17,8 @@
  along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "hw_ints.h"
-#include "hw_memmap.h"
-
-// SimpleLink includes
-#include "simplelink.h"
 
 // driverlib includes
-#include "rom.h"
 #include "rom_map.h"
 #include "prcm.h"
 #include "utils.h"
@@ -33,12 +28,11 @@
 #include "pinmux.h"
 #include "wy_bl_network_if.h"
 #include "gpio_if.h"
-#include "uart_if.h"
 
 // wylight includes
-#include "bootloader.h"
 #include "firmware_loader.h"
 #include "tcp_server.h"
+#include "firmware/trace.h"
 
 #ifdef __cplusplus
 /*
@@ -101,7 +95,7 @@ int main() {
 	PinMuxConfig();
 
 	// Configuring UART
-	InitTerm();
+	Trace_Init();
 
 	GPIO_IF_LedConfigure(LED1 | LED2 | LED3);
 	GPIO_IF_LedOff(MCU_ALL_LED_IND);
