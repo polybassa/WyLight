@@ -16,14 +16,9 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include <stdint.h>
 #include <stdbool.h>
 
-#include "hw_types.h"
-#include "hw_shamd5.h"
 #include "hw_memmap.h"
-#include "hw_nvic.h"
-#include "hw_ints.h"
 #include "interrupt.h"
 #include "prcm.h"
 #include "rom_map.h"

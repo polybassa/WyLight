@@ -16,20 +16,13 @@
  You should have received a copy of the GNU General Public License
  along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
-//common
-#include "uart_if.h"
-
-#ifdef NOTERM
-#define UART_PRINT(...)
-#else
-#define UART_PRINT	Report
-#endif
-
-//WyLight
 #include "bootloader.h"
 #include "firmware_loader.h"
-#include "tcp_server.h"
+#include "firmware/trace.h"
 #include "wy_bl_network_if.h"
+#include "tcp_server.h"
+
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 #define BUFFERSIZE 1024
 #define SERVER_PORT htons(2000)
@@ -79,21 +72,21 @@ static int TcpServer_Listen()
 		const int dontBlock = 1;
 		status = setsockopt(listenSocket, SOL_SOCKET, SO_NONBLOCKING, &dontBlock, sizeof(dontBlock));	
 		if (status) {
-			UART_PRINT("Setsockopt ERROR \r\n");
+			Trace(ZONE_ERROR,"Setsockopt ERROR \r\n");
 			goto on_error_close;
 		}
 #endif
 		status = bind(listenSocket, (struct sockaddr *) &localAddr, sizeof(localAddr));
 
 		if (status) {
-			UART_PRINT("Bind Error\n\r");
+			Trace(ZONE_ERROR,"Bind Error\n\r");
 			goto on_error_close;
 		}
 
 		const int maxConnections = 1;
 		status = listen(listenSocket, maxConnections);
 		if (status) {
-			UART_PRINT("Listen Error\n\r");
+			Trace(ZONE_ERROR,"Listen Error\n\r");
 			goto on_error_close;
 		}
 	}
@@ -124,7 +117,7 @@ int TcpServer_Accept(const int listenSocket)
 		if (EAGAIN == childSocket) {
 			_SlNonOsMainLoopTask();
 		} else {
-			UART_PRINT("Error: %d occured on accept\r\n", childSocket);
+			Trace(ZONE_ERROR,"Error: %d occured on accept\r\n", childSocket);
 		}
 	}
 }
@@ -141,7 +134,7 @@ extern void TcpServer(void)
 
 	const int listenSocket = TcpServer_Listen();
 	if (listenSocket < 0) {
-		UART_PRINT("TcpServer: Socket Error: %d \r\n", listenSocket);
+		Trace(ZONE_ERROR,"TcpServer: Socket Error: %d \r\n", listenSocket);
 		return;
 	}
 
