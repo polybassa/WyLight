@@ -57,8 +57,6 @@
 #ifndef __WY_BL_NETWORK_IF__H__
 #define __WY_BL_NETWORK_IF__H__
 
-#include "wlan.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -67,18 +65,10 @@ extern "C" {
 #define LOOP_FOREVER(line_number) {while(1);}
 
 // check the error code and handle it
-#define ASSERT_ON_ERROR(line_number, error_code) {if (error_code < 0){ UART_PRINT("%d: Assert Error: %d\r\n", line_number, error_code); return error_code; }}
+#define ASSERT_ON_ERROR(line_number, error_code) {if (error_code < 0){ Trace(ZONE_ERROR, "%d: Assert Error: %d\r\n", line_number, error_code); return error_code; }}
 
 #define SUCCESS         		0
 #define SL_STOP_TIMEOUT         30
-
-#ifdef NOTERM
-#define UART_PRINT(...)
-#define DBG_PRINT(...)
-#else
-#define UART_PRINT 				Report
-#define DBG_PRINT  				Report
-#endif
 
 #define SET_STATUS_BIT(status_variable, bit) 	status_variable |= (1<<(bit))
 #define CLR_STATUS_BIT(status_variable, bit) 	status_variable &= ~(1<<(bit))
@@ -107,7 +97,7 @@ typedef enum {
 } e_StatusBits;
 
 // API Function prototypes
-extern void Network_IF_InitDriver(void);
+extern long Network_IF_InitDriver(void);
 extern void Network_IF_DeInitDriver(void);
 extern long Network_IF_StartSimpleLinkAsAP(void);
 

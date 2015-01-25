@@ -53,20 +53,17 @@
 //  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
-// Simplelink includes
-#include "simplelink.h"
 
-// driverlib includes
-#include "hw_types.h"
-#include "rom.h"
-#include "rom_map.h"
-#include "utils.h"
+// Simplelink includes
+#include "wlan.h"
+
 #include <stdio.h>
 
 // common interface includes
+#include "firmware/trace.h"
 #include "wy_bl_network_if.h"
-#include "uart_if.h"
 
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 static unsigned long g_ulStatus = 0; /* SimpleLink Status */
 
 void wifi_status_disconnected() {
@@ -96,7 +93,7 @@ void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 		break;
 
 	default:
-		UART_PRINT("[WLAN EVENT] Unexpected event \n\r");
+		Trace(ZONE_ERROR,"[WLAN EVENT] Unexpected event \n\r");
 		break;
 	}
 }
@@ -116,7 +113,7 @@ void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
 	case SL_NETAPP_IPV4_ACQUIRED:
 	case SL_NETAPP_IPV6_ACQUIRED:
 		SET_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
-		UART_PRINT("[NETAPP EVENT] IP Acquired\r\n");
+		Trace(ZONE_VERBOSE,"[NETAPP EVENT] IP Acquired\r\n");
 		break;
 
 	case SL_NETAPP_IP_LEASED:
@@ -128,11 +125,11 @@ void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
 		break;
 
 	case SL_NETAPP_SOCKET_TX_FAILED:
-		UART_PRINT("[NETAPP EVENT] Socket Error # %d \n\r", pNetAppEvent->EventData.sd);
+		Trace(ZONE_ERROR,"[NETAPP EVENT] Socket Error # %d \n\r", pNetAppEvent->EventData.sd);
 		break;
 
 	default:
-		UART_PRINT("[NETAPP EVENT] Unexpected event \n\r");
+		Trace(ZONE_ERROR,"[NETAPP EVENT] Unexpected event \n\r");
 		break;
 	}
 }
@@ -144,7 +141,7 @@ void SimpleLinkGeneralEventHandler(SlDeviceEvent_t *pDevEvent) {
 	// appropriately by the application
 #ifdef DEBUG
 	const sl_DeviceReport report = pDevEvent->EventData.deviceEvent;
-	UART_PRINT("[GENERAL EVENT] - ID=[%d] Sender=[%d]\n\n", report.status, report.sender);
+	Trace(ZONE_INFO,"[GENERAL EVENT] - ID=[%d] Sender=[%d]\n\n", report.status, report.sender);
 #endif
 }
 
@@ -161,23 +158,23 @@ void SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
 	//
 	// This application doesn't work w/ socket - Events are not expected
 	//
-	UART_PRINT("[SOCK EVENT] Eventtype: %d\r\n", pSock->Event);
+	Trace(ZONE_VERBOSE,"[SOCK EVENT] Eventtype: %d\r\n", pSock->Event);
 	switch (pSock->Event) {
 	case SL_NETAPP_SOCKET_TX_FAILED:
 		switch (pSock->EventData.status) {
 		case SL_ECLOSE:
-			UART_PRINT("[SOCK ERROR] - close socket (%d) operation "
+			Trace(ZONE_ERROR,"[SOCK ERROR] - close socket (%d) operation "
 					"failed to transmit all queued packets\n\n", pSock->EventData.sd);
 			break;
 		default:
-			UART_PRINT("[SOCK ERROR] - TX FAILED  :  socket %d , reason "
+			Trace(ZONE_ERROR,"[SOCK ERROR] - TX FAILED  :  socket %d , reason "
 					"(%d) \n\n", pSock->EventData.sd, pSock->EventData.status);
 			break;
 		}
 		break;
 
 	default:
-		UART_PRINT("[SOCK EVENT] - Unexpected Event [%x0x]\n\n", pSock->Event);
+		Trace(ZONE_ERROR,"[SOCK EVENT] - Unexpected Event [%x0x]\n\n", pSock->Event);
 		break;
 	}
 }
@@ -195,7 +192,7 @@ void SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
 //*****************************************************************************
 void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent,
 		SlHttpServerResponse_t *pSlHttpServerResponse) {
-	UART_PRINT("[HTTP EVENT]\r\n");
+	Trace(ZONE_INFO,"[HTTP EVENT]\r\n");
 
 }
 
@@ -261,8 +258,8 @@ static long ConfigureSimpleLink() {
 	retVal = sl_DevGet(SL_DEVICE_GENERAL_CONFIGURATION, &configOpt, &configLen, (unsigned char *) (&ver));
 	ASSERT_ON_ERROR(__LINE__, retVal);
 
-	UART_PRINT("Host Driver Version: %s\n\r", SL_DRIVER_VERSION);
-	UART_PRINT("Build Version %d.%d.%d.%d.31.%d.%d.%d.%d.%d.%d.%d.%d\n\r", ver.NwpVersion[0], ver.NwpVersion[1], ver.NwpVersion[2], ver.NwpVersion[3], ver.ChipFwAndPhyVersion.FwVersion[0], ver.ChipFwAndPhyVersion.FwVersion[1], ver.ChipFwAndPhyVersion.FwVersion[2], ver.ChipFwAndPhyVersion.FwVersion[3], ver.ChipFwAndPhyVersion.PhyVersion[0], ver.ChipFwAndPhyVersion.PhyVersion[1], ver.ChipFwAndPhyVersion.PhyVersion[2], ver.ChipFwAndPhyVersion.PhyVersion[3]);
+	Trace(ZONE_INFO,"Host Driver Version: %s\n\r", SL_DRIVER_VERSION);
+	Trace(ZONE_INFO,"Build Version %d.%d.%d.%d.31.%d.%d.%d.%d.%d.%d.%d.%d\n\r", ver.NwpVersion[0], ver.NwpVersion[1], ver.NwpVersion[2], ver.NwpVersion[3], ver.ChipFwAndPhyVersion.FwVersion[0], ver.ChipFwAndPhyVersion.FwVersion[1], ver.ChipFwAndPhyVersion.FwVersion[2], ver.ChipFwAndPhyVersion.FwVersion[3], ver.ChipFwAndPhyVersion.PhyVersion[0], ver.ChipFwAndPhyVersion.PhyVersion[1], ver.ChipFwAndPhyVersion.PhyVersion[2], ver.ChipFwAndPhyVersion.PhyVersion[3]);
 
 	sl_WlanDisconnect();
 
@@ -274,7 +271,7 @@ static long ConfigureSimpleLink() {
 
 	// compute random channel from current time
 	unsigned char channel = (dateTime.sl_tm_sec % 13) + 1; // to avoid channel 0
-	UART_PRINT("Accesspoint channel: %d\r\n", channel);
+	Trace(ZONE_INFO,"Accesspoint channel: %d\r\n", channel);
 
 	retVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, WLAN_AP_OPT_CHANNEL, 1, &channel);
 	ASSERT_ON_ERROR(__LINE__, retVal);
@@ -328,16 +325,12 @@ static long ConfigureSimpleLink() {
 //
 //****************************************************************************
 long Network_IF_StartSimpleLinkAsAP(void) {
-	long retVal = ERROR;
 	CLR_STATUS_BIT_ALL(g_ulStatus);
-	retVal = sl_Start(NULL, NULL, NULL);
-	if (retVal < 0) {
-		UART_PRINT("Failed to start the device \n\r");
-		LOOP_FOREVER(__LINE__);
-	}
+	long retVal = sl_Start(NULL, NULL, NULL);
+	ASSERT_ON_ERROR(__LINE__, retVal);
 
 	if (retVal == ROLE_AP) {
-		UART_PRINT("Device started as Bootloader AP \n\r");
+		Trace(ZONE_VERBOSE,"Device started as Bootloader AP \n\r");
 		//Device in AP-Mode, Wait for initialization to complete
 		while (!IS_IP_ACQUIRED(g_ulStatus)) {
 			_SlNonOsMainLoopTask();
@@ -357,15 +350,11 @@ long Network_IF_StartSimpleLinkAsAP(void) {
 //! \return none
 //
 //*****************************************************************************
-void Network_IF_InitDriver(void) {
-	long retVal = ERROR;
-
-	retVal = ConfigureSimpleLink();
-	if (retVal < 0) {
-		LOOP_FOREVER(__LINE__);
-		//return;
-	}
-	UART_PRINT("Device is configured in default state \n\r");
+long Network_IF_InitDriver(void) {
+	long retVal = ConfigureSimpleLink();
+	ASSERT_ON_ERROR(__LINE__, retVal);
+	Trace(ZONE_VERBOSE,"Device is configured in default state \n\r");
+    return SUCCESS;
 }
 
 //*****************************************************************************
@@ -379,7 +368,7 @@ void Network_IF_InitDriver(void) {
 //
 //*****************************************************************************
 void Network_IF_DeInitDriver(void) {
-	UART_PRINT("SL Disconnect...\n\r");
+	Trace(ZONE_VERBOSE,"SL Disconnect...\n\r");
 
 	// Stop the simplelink host
 	sl_Stop(SL_STOP_TIMEOUT);

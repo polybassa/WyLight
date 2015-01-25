@@ -19,6 +19,7 @@
 #include "bootloader.h"
 #include "firmware_loader.h"
 #include "firmware/trace.h"
+#include "wlan.h"
 #include "wy_bl_network_if.h"
 #include "tcp_server.h"
 
