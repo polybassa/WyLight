@@ -83,7 +83,7 @@ BroadcastTransmitter::BroadcastTransmitter(void) : Task((const char *)"Broadcast
 	do {
 		osi_Sleep(1500);
 		// Send Broadcast Message
-		status = sendto(sock, &this->mMsg, sizeof(WyLight::BroadcastMessage), 0,
+		status = sendto(sock, &mMsg, sizeof(WyLight::BroadcastMessage), 0,
 						(sockaddr *) &destaddr, addrLen);
 
 	} while (status > 0 && !stopFlag);

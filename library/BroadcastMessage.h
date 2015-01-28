@@ -45,7 +45,7 @@ namespace WyLight {
         bool IsDevice(const std::string& deviceType) const;
         bool IsCC3200Broadcast(size_t length);
         bool IsRN171Broadcast(size_t length);
-private:
+protected:
         static const std::string RN171_DEVICE_ID;
         static const std::string RN171_DEVICE_ID_OLD;
         static const std::string RN171_VERSION_2_45;
