@@ -36,6 +36,7 @@ AC_CHECK_LIB([GLU], gluBeginCurve, [AC_SUBST(GLU,found)],[AC_SUBST(GLU,not_found
 AC_CHECK_LIB([glut], glutBitmapCharacter, [AC_SUBST(glut,found)],[AC_SUBST(glut,not_found)])
 AC_CHECK_LIB([pthread], pthread_create)
 AC_CHECK_LIB([thread], sleep_for)
+AC_CHECK_LIB([crypto], SHA256)
 
 # Checks for header files.
 AC_CHECK_HEADERS([arpa/inet.h netinet/in.h stddef.h stdint.h stdlib.h string.h sys/socket.h sys/time.h unistd.h])
