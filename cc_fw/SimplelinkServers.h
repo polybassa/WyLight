@@ -21,7 +21,7 @@
 
 #include <stdint.h>
 #include "CPPTask.h"
-#include "SimpleLinkCustomer.h"
+#include "SimplelinkCustomer.h"
 
 #define SERVER_PORT				2000
 
