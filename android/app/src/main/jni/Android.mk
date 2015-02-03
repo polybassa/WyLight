@@ -6,6 +6,7 @@ LIB_SRC := ../../../../../library/
 LOCAL_LDLIBS := -llog
 LOCAL_MODULE := wifly
 LOCAL_SRC_FILES := $(FW_SRC)crc.c
+LOCAL_SRC_FILES += $(LIB_SRC)BroadcastMessage.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)BroadcastReceiver.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)ClientSocket.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)ComProxy.cpp
