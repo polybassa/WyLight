@@ -1,3 +1,7 @@
+cc_fw: CFLAGS+=-DSL_PLATFORM_MULTI_THREADED
+cc_fw: CFLAGS+=-DTARGET_IS_BLIZZARD_RB1
+cc_fw: CFLAGS+=-DUSE_FREERTOS
+
 # Where to find source files that do not live in this directory.
 VPATH=${ROOT}/cc_fw
 VPATH+=${ROOT}/common

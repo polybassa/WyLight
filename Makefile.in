@@ -28,10 +28,6 @@ PRJ_PREFIX=WyLight_
 PRJ_NAME=${PRJ_PREFIX}$(MAKECMDGOALS)
 FLAVOUR=$(MAKECMDGOALS)
 
-# linker script
-SCATTERgcc_${PRJ_NAME}=${ROOT}/${FLAVOUR}/${PRJ_NAME}.ld
-ENTRY_${PRJ_NAME}=ResetISR
-
 ifeq ($(MAKECMDGOALS),cc_bl)
 PREFIX=arm-none-eabi-
 endif
@@ -56,24 +52,10 @@ include makedefs
 
 # Additional Compiler Flags
 sim: CFLAGS+=-DSIMULATOR
-
-cc_fw: CFLAGS+=-DSL_PLATFORM_MULTI_THREADED
-cc_fw: CFLAGS+=-DTARGET_IS_BLIZZARD_RB1
-cc_fw: CFLAGS+=-DUSE_FREERTOS
-cc_fw: CFLAGS+=-Dcc3200
-
 ut: CFLAGS+=-DSIMULATOR
-
-cc_bl: CFLAGS+=-DNOTERM
-cc_bl: CFLAGS+=-Dcc3200
-cc_bl: CFLAGS+=-DTARGET_IS_BLIZZARD_RB1
-
-cc_te: CFLAGS+=-DTARGET_IS_BLIZZARD_RB1
-cc_te: CFLAGS+=-Dcc3200
 
 # add additional linker flags
 sim: LDFLAGS+=-lcrypto
-
 cli: LDFLAGS+=-lpthread
 
 TARGETS=test

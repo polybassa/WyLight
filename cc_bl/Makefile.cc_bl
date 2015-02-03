@@ -1,3 +1,6 @@
+cc_bl: CFLAGS+=-DNOTERM
+cc_bl: CFLAGS+=-DTARGET_IS_BLIZZARD_RB1
+
 # Where to find source files that do not live in this directory.
 VPATH=${ROOT}/cc_bl
 VPATH+=${ROOT}/common
