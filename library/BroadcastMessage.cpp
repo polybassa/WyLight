@@ -23,7 +23,7 @@ using WyLight::BroadcastMessage;
 using WyLight::CC3200BroadcastMessage;
 
 bool BroadcastMessage::IsVersion(const std::string& deviceVersion) const {
-	return (0 == memcmp(deviceVersion.data(), version, sizeof(version)));
+    return (0 == deviceVersion.compare(std::string(version, sizeof(version))));
 }
 
 const std::string BroadcastMessage::CC3200_VERSION("WyLight CC3200 Version 0.1");

@@ -214,8 +214,8 @@ ${BINDIR}/%.axf:
 
 # The rule for linking the application.
 ${BINDIR}/%_ut.bin:
-	${CPP} ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^})
+	@${CPP} ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^})
 
 # The rule for linking the application.
 ${BINDIR}/%.bin:
-	${CPP} ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^})
+	@${CPP} ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^})
