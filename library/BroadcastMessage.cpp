@@ -23,24 +23,18 @@ using WyLight::BroadcastMessage;
 using WyLight::CC3200BroadcastMessage;
 
 bool BroadcastMessage::IsVersion(const std::string& deviceVersion) const {
-	return (0 == deviceVersion.compare(version));
+	return (0 == memcmp(deviceVersion.data(), version, sizeof(version)));
 }
 
 const std::string BroadcastMessage::CC3200_VERSION("WyLight CC3200 Version 0.1");
 const std::string BroadcastMessage::RN171_VERSION_2_45("WiFly Ver 2.45, 10-09-2012");
 const std::string BroadcastMessage::RN171_VERSION_4_00("wifly-EZX Ver 4.00.1, Apr 19");
-const std::string BroadcastMessage::RN171_DEVICE_ID("Wifly_Light");
-const std::string BroadcastMessage::RN171_DEVICE_ID_OLD("WiFly");
 
-bool BroadcastMessage::IsRN171Broadcast(const size_t length) {
-    return (IsVersion(RN171_VERSION_2_45) || IsVersion(RN171_VERSION_4_00))
-		&& (IsDevice(RN171_DEVICE_ID) || IsDevice(RN171_DEVICE_ID_OLD));
+bool BroadcastMessage::IsRN171Broadcast(const size_t length) const {
+    return (IsVersion(RN171_VERSION_2_45) || IsVersion(RN171_VERSION_4_00));
 }
 
-bool BroadcastMessage::IsDevice(const std::string& deviceType) const {
-	return (0 == memcmp(deviceId,   deviceType.data(), deviceType.size()));
-}
 
-bool BroadcastMessage::IsCC3200Broadcast(const size_t length) {
+bool BroadcastMessage::IsCC3200Broadcast(const size_t length) const {
     return IsVersion(CC3200_VERSION);
 }

@@ -42,19 +42,16 @@ namespace WyLight {
 		uint16_t sensor[8];
 
         bool IsVersion(const std::string& deviceVersion) const;
-        bool IsDevice(const std::string& deviceType) const;
-        bool IsCC3200Broadcast(size_t length);
-        bool IsRN171Broadcast(size_t length);
+        bool IsCC3200Broadcast(const size_t length) const;
+        bool IsRN171Broadcast(const size_t length) const;
 protected:
-        static const std::string RN171_DEVICE_ID;
-        static const std::string RN171_DEVICE_ID_OLD;
         static const std::string RN171_VERSION_2_45;
         static const std::string RN171_VERSION_4_00;
         static const std::string CC3200_VERSION;
     };
 #pragma pack(pop)
 
-    struct CC3200BroadcastMessage : public BroadcastMessage {
+    struct CC3200BroadcastMessage : protected BroadcastMessage {
         void refresh(void);
     };
 }

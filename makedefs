@@ -130,9 +130,9 @@ CPPFLAGS= \
     -c \
     -g
 
-LDFLAGS= -gc-sections \
-         -static \
-	 -Map ${BINDIR}/${PRJ_NAME}.map 
+LDFLAGS= 	-gc-sections \
+         	-static \
+	 		-Map ${BINDIR}/${PRJ_NAME}.map 
 
 CPP=${PREFIX}g++
 
@@ -190,85 +190,32 @@ CPPFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
 
 # The rule for building the object file from each CPP source file.
 ${OBJDIR}/%.o: %.cpp
-	@if [ 'x${VERBOSE}' = x ];                            \
-	 then                                                  \
-	     echo "  CPP    ${<}";                             \
-	 else                                                  \
-	     echo ${CPP} ${CPPFLAGS} -D__cplusplus -o ${@} ${<};\
-	 fi
 	 @${CPP} ${CPPFLAGS} -o ${@} ${<}
 
 # The rule for building the object file from each C source file.
 ${OBJDIR}/%.o: %.c
-	@if [ 'x${VERBOSE}' = x ];                            \
-	 then                                                 \
-	     echo "  CC    ${<}";                             \
-	 else                                                 \
-	     echo ${CC} ${CFLAGS} -D${COMPILER} -o ${@} ${<}; \
-	 fi
 	 @${CC} ${CFLAGS} -D${COMPILER} -o ${@} ${<}
 
 # The rule for building the object file from each assembly source file.
 ${OBJDIR}/%.o: %.S
-	@if [ 'x${VERBOSE}' = x ];                               \
-	 then                                                    \
-	     echo "  AS    ${<}";                                \
-	 else                                                    \
-	     echo ${CC} ${AFLAGS} -D${COMPILER} -o ${@} -c ${<}; \
-	 fi
 	@${CC} ${AFLAGS} -D${COMPILER} -o ${@} -c ${<}
 
 # The rule for creating an object library.
 ${BINDIR}/%.a:
-	@if [ 'x${VERBOSE}' = x ];     \
-	 then                          \
-	     echo "  AR    ${@}";      \
-	 else                          \
-	     echo ${AR} -cr ${@} ${^}; \
-	 fi
 	 @${AR} -cr ${@} ${^}
 
 # The rule for linking the application.
 ${BINDIR}/%.axf:
-	 @if [ 'x${SCATTERgcc_${notdir ${@:.axf=}}}' = x ]; \
-	 then                                 \
-	     ldname="${ROOT}/gcc/standalone.ld";                \
-	 else                                                   \
-	     ldname="${SCATTERgcc_${notdir ${@:.axf=}}}";      \
-	 fi;                                  \
-	 if [ 'x${VERBOSE}' = x ];                     \
-	 then                                                 \
-	     echo "  LD    ${@} ${LNK_SCP}";           \
-	 else                                           \
-	     echo ${LD} -T $${ldname}                         \
-	          --entry ${ENTRY_${notdir ${@:.axf=}}}      \
-	          ${LDFLAGSgcc_${notdir ${@:.axf=}}}         \
-	          ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^})   \
-	         '${LIBM}' '${LIBC}' '${LIBGCC}' '${LIBSTDCPP}' '${LIBSUPCPP}';    \
-	 fi;             \
-	 ${LD} -T $${ldname}                                 \
-	      --entry ${ENTRY_${notdir ${@:.axf=}}}           \
-	      ${LDFLAGSgcc_${notdir ${@:.axf=}}}             \
-	  ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^})   \
+	 ${LD} -T $${ldname} --entry ${ENTRY_${notdir ${@:.axf=}}} \
+	 ${LDFLAGSgcc_${notdir ${@:.axf=}}}             			\
+	 ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^})   \
 	 '${LIBM}' '${LIBC}' '${LIBGCC}' '${LIBSTDCPP}' '${LIBSUPCPP}'
 	 @${OBJCOPY} -O binary ${@} ${@:.axf=.bin}
 
 # The rule for linking the application.
 ${BINDIR}/%_ut.bin:
-	@if [ 'x${VERBOSE}' = x ]; \
-	then \
-		echo "  LD    ${@} ${LNK_SCP}"; \
-	else \
-		echo ${CPP} ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^}); \
-	fi; \
 	${CPP} ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^})
 
 # The rule for linking the application.
 ${BINDIR}/%.bin:
-	@if [ 'x${VERBOSE}' = x ]; \
-	then \
-		echo "  LD    ${@} ${LNK_SCP}"; \
-	else \
-		echo ${CPP} ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^}); \
-	fi; \
 	${CPP} ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^})

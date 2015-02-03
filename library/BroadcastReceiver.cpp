@@ -28,7 +28,7 @@
 
 namespace WyLight {
 
-	static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING;
+	static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;
 
 	const std::string BroadcastReceiver::STOP_MSG {"StopThread"};
 	Endpoint BroadcastReceiver::EMPTY_ENDPOINT {};
@@ -104,7 +104,7 @@ namespace WyLight {
 		const size_t bytesRead = udpSock.RecvFrom((uint8_t *)&msg, sizeof(msg), timeout, (sockaddr *)&remoteAddr, &remoteAddrLength);
 		TraceBuffer(ZONE_VERBOSE, msg.deviceId, sizeof(msg.deviceId), "%c", "%zu bytes broadcast message received DeviceId: \n", bytesRead);
 		if (bytesRead < sizeof(msg)) {
-			Trace(ZONE_ERROR, "Message to short to be a WyLight broadcast\n");
+			Trace(ZONE_VERBOSE, "Message to short to be a WyLight broadcast\n");
 			return Endpoint{};
 		}
         if(msg.IsRN171Broadcast(bytesRead)) {
