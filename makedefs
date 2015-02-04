@@ -105,8 +105,8 @@ CFLAGS= -ffunction-sections \
         -pedantic \
         -std=c11 \
         -mthumb \
-		-flto \
-        -Wall \
+	-flto \
+	-Wall \
         -O1 \
         -MD \
         -g 
@@ -133,8 +133,8 @@ CPPFLAGS= \
     -c \
     -g
 
-LDFLAGS= 	-Wl,--gc-sections \
-         	-Wl,--static
+LDFLAGS= 	-gc-sections \
+         	-static
 #-Wl,--Map ${BINDIR}/${PRJ_NAME}.map
 
 CPP=${PREFIX}g++
@@ -209,7 +209,7 @@ ${BINDIR}/%.a:
 
 # The rule for linking the application.
 ${BINDIR}/%.axf:
-	 @${CC} -T ${ROOT}/${FLAVOUR}/${PRJ_NAME}.ld ${LDFLAGS} --entry ResetISR -o ${@} $(filter %.o %.a, ${^}) \
+	 @${LD} -T ${ROOT}/${FLAVOUR}/${PRJ_NAME}.ld ${LDFLAGS} --entry ResetISR -o ${@} $(filter %.o %.a, ${^}) \
 	 '${LIBM}' '${LIBC}' '${LIBGCC}' '${LIBSTDCPP}' '${LIBSUPCPP}'
 	 @${OBJCOPY} -O binary ${@} ${@:.axf=.bin}
 

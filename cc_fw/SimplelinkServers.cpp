@@ -112,7 +112,7 @@ void TcpServer::serve(const bool& stopFlag, const int serverSock) {
 			continue;
 		}
 		if (childSock < 0) {
-			Trace("Accept error: %d\n\r", childSock);
+			Trace(ZONE_ERROR, "Accept error: %d\n\r", childSock);
 			continue;
 		}
 		
@@ -133,7 +133,7 @@ TcpServer::TcpServer(void) : Task((const char *)"TcpServer", OSI_STACK_SIZE, 5, 
 	
 	int serverSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (serverSock < 0) {
-		Trace(" Socket Error: %d", serverSock);
+		Trace(ZONE_ERROR, " Socket Error: %d", serverSock);
 		return;
 	}
 	
