@@ -96,23 +96,26 @@ AFLAGS=-mthumb \
 
 # The flags passed to the compiler.
 CFLAGS= -ffunction-sections \
+		-fno-common \
+    	-fmessage-length=0 \
         -fdata-sections     \
         -mcpu=cortex-m4 \
         -Dcc3200 \
         -fno-builtin \
         -pedantic \
-        -std=c99 \
+        -std=c11 \
         -mthumb \
-	-flto \
+		-flto \
         -Wall \
         -O1 \
         -MD \
-        -g \
-        -c
+        -g 
 
 CPPFLAGS= \
     -ffunction-sections \
     --specs=nano.specs \
+    -fno-common \
+    -fmessage-length=0 \
     -fdata-sections \
     -fno-exceptions \
     -mcpu=cortex-m4 \
@@ -130,9 +133,9 @@ CPPFLAGS= \
     -c \
     -g
 
-LDFLAGS= 	-gc-sections \
-         	-static \
-	 		-Map ${BINDIR}/${PRJ_NAME}.map 
+LDFLAGS= 	-Wl,--gc-sections \
+         	-Wl,--static
+#-Wl,--Map ${BINDIR}/${PRJ_NAME}.map
 
 CPP=${PREFIX}g++
 
@@ -194,7 +197,7 @@ ${OBJDIR}/%.o: %.cpp
 
 # The rule for building the object file from each C source file.
 ${OBJDIR}/%.o: %.c
-	 @${CC} ${CFLAGS} -D${COMPILER} -o ${@} ${<}
+	 @${CC} ${CFLAGS} -c -D${COMPILER} -o ${@} ${<}
 
 # The rule for building the object file from each assembly source file.
 ${OBJDIR}/%.o: %.S
@@ -206,9 +209,7 @@ ${BINDIR}/%.a:
 
 # The rule for linking the application.
 ${BINDIR}/%.axf:
-	 ${LD} -T $${ldname} --entry ${ENTRY_${notdir ${@:.axf=}}} \
-	 ${LDFLAGSgcc_${notdir ${@:.axf=}}}             			\
-	 ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^})   \
+	 @${CC} -T ${ROOT}/${FLAVOUR}/${PRJ_NAME}.ld ${LDFLAGS} --entry ResetISR -o ${@} $(filter %.o %.a, ${^}) \
 	 '${LIBM}' '${LIBC}' '${LIBGCC}' '${LIBSTDCPP}' '${LIBSUPCPP}'
 	 @${OBJCOPY} -O binary ${@} ${@:.axf=.bin}
 

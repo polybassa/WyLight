@@ -34,7 +34,8 @@ SECTIONS
 		*(.text .text.* .gnu.linkonce.t.*) 
 		*(.plt)
 		*(.gnu.warning)
-		*(.glue_7t) *(.glue_7)
+		*(.glue_7t)
+        *(.glue_7)
 		
 		. = ALIGN(0x4);
 		/* These are for static constructors and destructors under ELF */

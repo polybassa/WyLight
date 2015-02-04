@@ -25,7 +25,7 @@
 #include "FreeRTOS.h"
 #include "semphr.h"
 #include "task.h"
-#include "functional"
+#include <functional>
 
 class Task {
 	std::function<void (const bool&)> mTaskFunction;

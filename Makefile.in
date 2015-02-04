@@ -173,7 +173,7 @@ install_fw:
 # The rule to clean out all the build products.
 clean:
 	@rm -rf ${OBJDIR} ${wildcard *~}
-	make ${OBJDIR}
+	@make ${OBJDIR}
 
 # The rule to clean out all the build products.
 clean-all:
