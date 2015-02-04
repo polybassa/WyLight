@@ -184,24 +184,4 @@ namespace WyLight {
 		}
 		outFile.close();
 	}
-
-	void BroadcastReceiver::DeleteRecentEndpointFile(const std::string& filename)
-	{
-		std::lock_guard<std::mutex> lock(this->mMutex);
-		this->mIpTableShadow.clear();
-		this->mIpTable.clear();
-
-		int returnCode;
-		if(filename.compare("") == 0)
-			returnCode = remove(mRecentFilename.c_str());
-
-		else
-			returnCode = remove(filename.c_str());
-
-		if(returnCode) {
-			Trace(ZONE_ERROR, "Delete file \"%s\" recent endpoints failed\n", mRecentFilename.c_str());
-			return;
-		}
-	}
-
 } /* namespace WyLight */

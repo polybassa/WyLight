@@ -74,7 +74,7 @@ namespace WyLight {
 		 */
 		Endpoint& GetEndpointByFingerprint(const uint64_t fingerprint);
 
-		/*
+		/**
 		 * Listen for broadcasts until a new remote is discovered.
 		 * @param timeout to wait until give up, use NULL to wait forever
 		 * @return an empty Endpoint object in case of an error, if a new remote is discovered an Endpoint object with its address and port is returned.
@@ -104,12 +104,6 @@ namespace WyLight {
 		 * @param threshold which an endpoints score has to have at least to be written to the file
 		 */
 		void WriteRecentEndpoints(const std::string& filename, uint8_t threshold = 1) const;
-
-		/**
-		 * Delete all recent endpoints in file and in the internal IpTables
-		 * @param filename of the file containing the recent endpoints
-		 */
-		void DeleteRecentEndpointFile(const std::string& filename = "");
 
 	private:
 		const uint16_t mPort;
