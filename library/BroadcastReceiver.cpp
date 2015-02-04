@@ -175,8 +175,8 @@ namespace WyLight {
 			return;
 		}
 		// write to file
-		for(auto it = mIpTable.begin(); it != mIpTable.end(); it++) {
-			const auto currentEndpoint = it->second;
+		for(auto it :mIpTable) {
+			const auto currentEndpoint = it.second;
 			if(currentEndpoint.GetScore() >= threshold) {
 				//TODO refactor this but then we have to change the CLI implementation
 				outFile << (int)(currentEndpoint.GetScore()) << ' ' << std::hex << currentEndpoint.GetIp() << ' ' << std::dec << currentEndpoint.GetPort() << ' ' << currentEndpoint.GetDeviceId() << '\n';
