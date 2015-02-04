@@ -142,11 +142,7 @@ namespace WyLight {
 	void BroadcastReceiver::ReadRecentEndpoints(const std::string& filename)
 	{
 		std::ifstream inFile;
-		if(filename.compare("") == 0)
-			inFile.open(mRecentFilename, std::ios::in);
-		else
-			inFile.open(filename, std::ios::in);
-
+		inFile.open(filename, std::ios::in);
 
 		if(!inFile.is_open()) {
 			Trace(ZONE_ERROR, "Open file to read recent endpoints failed\n");
@@ -172,10 +168,7 @@ namespace WyLight {
 	void BroadcastReceiver::WriteRecentEndpoints(const std::string& filename, uint8_t threshold) const
 	{
 		std::ofstream outFile;
-		if(filename.compare("") == 0)
-			outFile.open(mRecentFilename, std::ios::trunc);
-		else
-			outFile.open(filename, std::ios::trunc);
+		outFile.open(filename, std::ios::trunc);
 
 		if(!outFile.is_open()) {
 			Trace(ZONE_ERROR, "Open file to write recent endpoints failed\n");
