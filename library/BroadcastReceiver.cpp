@@ -137,10 +137,9 @@ static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNIN
 			return;
 		}
 
-		int score, port;
-		std::string ip, deviceId;
-		while(inFile >> score >> ip >> port >> deviceId) {
-			LockedInsert(Endpoint(WiflyColor::ToARGB(ip), port, score, deviceId));
+		Endpoint remote;
+		while(inFile >> remote) {
+			LockedInsert(remote);
 		}
 		inFile.close();
 	}
@@ -163,10 +162,8 @@ static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNIN
 		}
 		// write to file
 		for(auto it :mIpTable) {
-			const auto currentEndpoint = it.second;
-			if(currentEndpoint.GetScore() >= threshold) {
-				//TODO refactor this but then we have to change the CLI implementation
-				outFile << (int)(currentEndpoint.GetScore()) << ' ' << std::hex << currentEndpoint.GetIp() << ' ' << std::dec << currentEndpoint.GetPort() << ' ' << currentEndpoint.GetDeviceId() << '\n';
+			if(it.second.GetScore() >= threshold) {
+				it.second.WriteTo(outFile);
 			}
 		}
 		outFile.close();

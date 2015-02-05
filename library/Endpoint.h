@@ -26,6 +26,7 @@
 #include <sys/socket.h>
 #include <sys/time.h>
 #include "BroadcastMessage.h"
+#include "WiflyColor.h"
 
 namespace WyLight {
 
@@ -55,6 +56,14 @@ namespace WyLight {
 			       || ((mIp == ref.GetIp()) && (mPort < ref.GetPort()));
 		};
 
+		void WriteTo(std::ostream& out) const
+		{
+			out << (int)mScore << ' '
+				<< std::hex << GetIp() << ' '
+				<< std::dec << GetPort() << ' '
+				<< GetDeviceId() << '\n';
+		}
+
 		friend std::ostream& operator << (std::ostream& out, const Endpoint& ref)
 		{
 			return out << (int)ref.mScore << ' '
@@ -65,6 +74,14 @@ namespace WyLight {
 				   << ':' << ref.mPort
 				   << "  :  " << ref.mDeviceId;
 		};
+
+		friend std::istream& operator >> (std::istream &in, Endpoint &ref)
+		{
+			std::string ip;
+			in >> ref.mScore >> ip >> ref.mPort >> ref.mDeviceId;
+			ref.mIp = WiflyColor::ToARGB(ip);
+			return in;
+		}
 
 		friend bool operator== (const Endpoint& lhs, const Endpoint& rhs)
 		{
