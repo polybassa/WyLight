@@ -30,11 +30,11 @@ const std::string BroadcastMessage::CC3200_VERSION("WyLight CC3200 Version 0.1")
 const std::string BroadcastMessage::RN171_VERSION_2_45("WiFly Ver 2.45, 10-09-2012");
 const std::string BroadcastMessage::RN171_VERSION_4_00("wifly-EZX Ver 4.00.1, Apr 19");
 
-bool BroadcastMessage::IsRN171Broadcast(const size_t length) const {
+bool BroadcastMessage::IsRN171Broadcast() const {
     return (IsVersion(RN171_VERSION_2_45) || IsVersion(RN171_VERSION_4_00));
 }
 
 
-bool BroadcastMessage::IsCC3200Broadcast(const size_t length) const {
+bool BroadcastMessage::IsCC3200Broadcast() const {
     return IsVersion(CC3200_VERSION);
 }

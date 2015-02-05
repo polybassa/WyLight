@@ -37,13 +37,13 @@ namespace WyLight {
 		uint16_t gpioValue;
 		int8_t asciiTime[13 + 1];
 		char version[26 + 1 + 1]; // this seems a little strange. bug in wifly fw?
-		int8_t deviceId[32];
+		char deviceId[32];
 		uint16_t bootTmms;
 		uint16_t sensor[8];
 
         bool IsVersion(const std::string& deviceVersion) const;
-        bool IsCC3200Broadcast(const size_t length) const;
-        bool IsRN171Broadcast(const size_t length) const;
+        bool IsCC3200Broadcast() const;
+        bool IsRN171Broadcast() const;
 protected:
         static const std::string RN171_VERSION_2_45;
         static const std::string RN171_VERSION_4_00;

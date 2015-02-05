@@ -25,6 +25,7 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <sys/time.h>
+#include "BroadcastMessage.h"
 
 namespace WyLight {
 
@@ -35,18 +36,20 @@ namespace WyLight {
             RN171,
             CC3200
         };
-        
-        Endpoint(sockaddr_storage& addr, const size_t size, uint16_t port, std::string devId = "", enum Endpoint::TYPE type = RN171)
-			: mPort(ntohs(port)), mScore(0), mDeviceId(devId), mType(type)
+
+        Endpoint(const BroadcastMessage &msg, sockaddr_in *addr)
+			: mIp(ntohl(addr->sin_addr.s_addr)),
+			  mPort(ntohs(msg.port)),
+			  mScore(1),
+			  mDeviceId(&msg.deviceId[0], strnlen(&msg.deviceId[0], sizeof(msg.deviceId))),
+			  mType(msg.IsRN171Broadcast() ? RN171 : CC3200)
 		{
-			assert(sizeof(sockaddr_in) == size);
-			mIp = ntohl(((sockaddr_in&)addr).sin_addr.s_addr);
-		};
+		}
 
 		Endpoint(uint32_t ip = 0, uint16_t port = 0, uint8_t score = 0, std::string devId = "", enum Endpoint::TYPE type = RN171)
 			: mIp(ip), mPort(port), mScore(score), mDeviceId(devId), mType(type)
 		{};
-        
+
 		bool operator<(const Endpoint& ref) const {
 			return (mIp < ref.GetIp())
 			       || ((mIp == ref.GetIp()) && (mPort < ref.GetPort()));
@@ -104,7 +107,7 @@ namespace WyLight {
 		uint8_t GetScore(void) const {
 			return mScore;
 		};
-        
+
         enum TYPE GetType(void) const {
             return mType;
         };

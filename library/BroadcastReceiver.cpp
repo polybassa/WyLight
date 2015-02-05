@@ -1,20 +1,20 @@
 /*
- Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
+ Copyright (C) 2012 - 2015 Nils Weiss, Patrick Bruenn.
 
- This file is part of Wifly_Light.
+ This file is part of WyLight.
 
- Wifly_Light is free software: you can redistribute it and/or modify
+ WyLight is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
- Wifly_Light is distributed in the hope that it will be useful,
+ WyLight is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
+ along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "BroadcastReceiver.h"
 #include "BroadcastMessage.h"
@@ -28,7 +28,7 @@
 
 using namespace WyLight;
 
-	static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;
 
 	const std::string BroadcastReceiver::STOP_MSG {"StopThread"};
 	Endpoint BroadcastReceiver::EMPTY_ENDPOINT {};
@@ -94,12 +94,6 @@ using namespace WyLight;
 		sockaddr_storage remoteAddr;
 		socklen_t remoteAddrLength = sizeof(remoteAddr);
 
-        auto SaveEndpoint = [&](Endpoint&& newRemote) -> Endpoint {
-            Trace(ZONE_INFO, "Broadcast detected\n");
-            newRemote.SetScore(1);
-            return LockedInsert(newRemote) ? newRemote : Endpoint();
-        };
-
 		BroadcastMessage msg;
 		const size_t bytesRead = udpSock.RecvFrom((uint8_t *)&msg, sizeof(msg), timeout, (sockaddr *)&remoteAddr, &remoteAddrLength);
 		TraceBuffer(ZONE_VERBOSE, msg.deviceId, sizeof(msg.deviceId), "%c", "%zu bytes broadcast message received DeviceId: \n", bytesRead);
@@ -107,16 +101,10 @@ using namespace WyLight;
 			Trace(ZONE_VERBOSE, "Message to short to be a WyLight broadcast\n");
 			return Endpoint{};
 		}
-        if(msg.IsRN171Broadcast(bytesRead)) {
-			return SaveEndpoint(Endpoint(remoteAddr, remoteAddrLength, msg.port, std::string((char *)&msg.deviceId[0]), Endpoint::RN171));
-		}
-        if(msg.IsCC3200Broadcast(bytesRead)) {
-            return SaveEndpoint(Endpoint(remoteAddr, remoteAddrLength, msg.port, std::string((char *)&msg.deviceId[0]), Endpoint::CC3200));
-        }
-		return Endpoint();
+		return LockedInsert(Endpoint(msg, (sockaddr_in*)&remoteAddr));
 	}
 
-	bool BroadcastReceiver::LockedInsert(Endpoint newEndpoint)
+	Endpoint BroadcastReceiver::LockedInsert(Endpoint newEndpoint)
 	{
 		std::lock_guard<std::mutex> lock(mMutex);
 		auto addedElement = mIpTableShadow.insert(newEndpoint);
@@ -131,7 +119,7 @@ using namespace WyLight;
 				if(mOnNewRemote) mOnNewRemote(0,ref);
 			}
 		}
-		return true;
+		return newEndpoint;
 	}
 
 	size_t BroadcastReceiver::NumRemotes(void) const
