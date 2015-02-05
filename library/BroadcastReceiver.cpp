@@ -26,7 +26,7 @@
 #include <stdio.h>
 #include <mutex>
 
-namespace WyLight {
+using namespace WyLight;
 
 	static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;
 
@@ -116,9 +116,9 @@ namespace WyLight {
 		return Endpoint();
 	}
 
-	bool BroadcastReceiver::LockedInsert(Endpoint& newEndpoint)
+	bool BroadcastReceiver::LockedInsert(Endpoint newEndpoint)
 	{
-		std::lock_guard<std::mutex> lg(mMutex);
+		std::lock_guard<std::mutex> lock(mMutex);
 		auto addedElement = mIpTableShadow.insert(newEndpoint);
 		if(addedElement.second) {
 			if(mOnNewRemote) mOnNewRemote(mIpTable.size(), newEndpoint);
@@ -152,8 +152,7 @@ namespace WyLight {
 		int score, port;
 		std::string ip, deviceId;
 		while(inFile >> score >> ip >> port >> deviceId) {
-			Endpoint next(WiflyColor::ToARGB(ip), port, score, deviceId);
-			LockedInsert(next);
+			LockedInsert(Endpoint(WiflyColor::ToARGB(ip), port, score, deviceId));
 		}
 		inFile.close();
 	}
@@ -184,4 +183,3 @@ namespace WyLight {
 		}
 		outFile.close();
 	}
-} /* namespace WyLight */

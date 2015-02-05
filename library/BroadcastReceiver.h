@@ -117,10 +117,10 @@ namespace WyLight {
 
 		/**
 		 * Insert threadsafe a new endpoint to the mIpTable
-		 * @param endpoint a copy of this referenced object will be stored to mIpTable
+		 * @param endpoint
 		 * @return true if a new endpoint was added, false if it already existed or an error occur
 		 */
-		bool LockedInsert(Endpoint& endpoint);
+		bool LockedInsert(Endpoint endpoint);
 	};
 }
 #endif /* #ifndef _BROADCAST_RECEIVER_H_ */
