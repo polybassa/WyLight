@@ -213,14 +213,14 @@ ${BINDIR}/%.a:
 
 # The rule for linking the application.
 ${BINDIR}/%.axf:
-	 @${LD} -T ${ROOT}/${FLAVOUR}/${PRJ_NAME}.ld ${LDFLAGS} --entry ResetISR -o ${@} $(filter %.o %.a, ${^}) \
+	 @${LD} -T ${ROOT}/${FLAVOUR}/${PRJ_NAME}.ld ${DEFINES} ${LDFLAGS} --entry ResetISR -o ${@} $(filter %.o %.a, ${^}) \
 	 '${LIBM}' '${LIBC}' '${LIBGCC}' '${LIBSTDCPP}' '${LIBSUPCPP}'
 	 @${OBJCOPY} -O binary ${@} ${@:.axf=.bin}
 
 # The rule for linking the application.
 ${BINDIR}/%_ut.bin:
-	@${CPP} ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^})
+	@${CPP} ${LDFLAGS} ${DEFINES} -o ${@} $(filter %.o %.a, ${^})
 
 # The rule for linking the application.
 ${BINDIR}/%.bin:
-	@${CPP} ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^})
+	@${CPP} ${LDFLAGS} ${DEFINES} -o ${@} $(filter %.o %.a, ${^})
