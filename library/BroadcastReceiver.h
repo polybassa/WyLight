@@ -105,6 +105,12 @@ namespace WyLight {
 		 */
 		void WriteRecentEndpoints(const std::string& filename, uint8_t threshold = 1) const;
 
+		/**
+		 * Delete all recent endpoints in file and in the internal IpTables
+		 * @param filename of the file containing the recent endpoints
+		 */
+		void DeleteRecentEndpointFile(const std::string& filename = "");
+
 	private:
 		const uint16_t mPort;
 		std::set<Endpoint> mIpTableShadow;

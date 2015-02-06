@@ -30,141 +30,161 @@ using namespace WyLight;
 
 static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;
 
-	const std::string BroadcastReceiver::STOP_MSG {"StopThread"};
-	Endpoint BroadcastReceiver::EMPTY_ENDPOINT {};
+const std::string BroadcastReceiver::STOP_MSG {"StopThread"};
+Endpoint BroadcastReceiver::EMPTY_ENDPOINT {};
 
 
-	BroadcastReceiver::BroadcastReceiver(uint16_t port, const std::string& recentFilename, const std::function<void(size_t index, const Endpoint& newRemote)>& onNewRemote)
-		: mPort(port), mIsRunning(true), mNumInstances(0), mRecentFilename(recentFilename), mOnNewRemote(onNewRemote)
-	{
-		ReadRecentEndpoints(mRecentFilename);
-	}
+BroadcastReceiver::BroadcastReceiver(uint16_t port, const std::string& recentFilename, const std::function<void(size_t index, const Endpoint& newRemote)>& onNewRemote)
+	: mPort(port), mIsRunning(true), mNumInstances(0), mRecentFilename(recentFilename), mOnNewRemote(onNewRemote)
+{
+	ReadRecentEndpoints(mRecentFilename);
+}
 
-	BroadcastReceiver::~BroadcastReceiver(void)
-	{
-		Stop();
-		WriteRecentEndpoints(mRecentFilename);
-	}
+BroadcastReceiver::~BroadcastReceiver(void)
+{
+	Stop();
+	WriteRecentEndpoints(mRecentFilename);
+}
 
-	void BroadcastReceiver::operator() (timeval *pTimeout) throw (FatalError)
-	{
-		// only one thread allowed per instance
-		if(0 == std::atomic_fetch_add(&mNumInstances, 1))
-			try {
-				size_t numRemotes = mIpTable.size();
-				timeval endTime, now;
-				gettimeofday(&endTime, NULL);
-				timeval_add(&endTime, pTimeout);
-				do
-				{
-					const Endpoint remote = GetNextRemote(pTimeout);
-					if(remote.IsValid()) {
-						numRemotes++;
-					}
-					gettimeofday(&now, NULL);
+void BroadcastReceiver::operator() (timeval *pTimeout) throw (FatalError)
+{
+	// only one thread allowed per instance
+	if(0 == std::atomic_fetch_add(&mNumInstances, 1))
+		try {
+			size_t numRemotes = mIpTable.size();
+			timeval endTime, now;
+			gettimeofday(&endTime, NULL);
+			timeval_add(&endTime, pTimeout);
+			do
+			{
+				const Endpoint remote = GetNextRemote(pTimeout);
+				if(remote.IsValid()) {
+					numRemotes++;
 				}
-				while(mIsRunning && timeval_sub(&endTime, &now, pTimeout));
-			} catch(FatalError& e) {
-				std::atomic_fetch_sub(&mNumInstances, 1);
-				throw(e);
+				gettimeofday(&now, NULL);
 			}
-
-		std::atomic_fetch_sub(&mNumInstances, 1);
-	}
-
-	Endpoint& BroadcastReceiver::GetEndpoint(size_t index)
-	{
-		auto it = mIpTable.find(index);
-		return (mIpTable.end() == it) ? EMPTY_ENDPOINT : it->second;
-	}
-
-	Endpoint& BroadcastReceiver::GetEndpointByFingerprint(const uint64_t fingerprint)
-	{
-		for(auto it = mIpTable.begin(); it != mIpTable.end(); it++) {
-			if(fingerprint == (*it).second.AsUint64()) {
-				return (*it).second;
-			}
-		}
-		return EMPTY_ENDPOINT;
-	}
-
-	Endpoint BroadcastReceiver::GetNextRemote(timeval *timeout) throw (FatalError)
-	{
-		UdpSocket udpSock(INADDR_ANY, mPort, true, 1);
-		sockaddr_storage remoteAddr;
-		socklen_t remoteAddrLength = sizeof(remoteAddr);
-
-		BroadcastMessage msg;
-		const size_t bytesRead = udpSock.RecvFrom((uint8_t *)&msg, sizeof(msg), timeout, (sockaddr *)&remoteAddr, &remoteAddrLength);
-		TraceBuffer(ZONE_VERBOSE, msg.deviceId, sizeof(msg.deviceId), "%c", "%zu bytes broadcast message received DeviceId: \n", bytesRead);
-		if (bytesRead < sizeof(msg)) {
-			Trace(ZONE_VERBOSE, "Message to short to be a WyLight broadcast\n");
-			return Endpoint{};
-		}
-		return LockedInsert(Endpoint(msg, (sockaddr_in*)&remoteAddr));
-	}
-
-	Endpoint BroadcastReceiver::LockedInsert(Endpoint newEndpoint)
-	{
-		std::lock_guard<std::mutex> lock(mMutex);
-		auto addedElement = mIpTableShadow.insert(newEndpoint);
-		if(addedElement.second) {
-			if(mOnNewRemote) mOnNewRemote(mIpTable.size(), newEndpoint);
-			mIpTable.insert(std::pair<size_t, Endpoint>(mIpTable.size(), newEndpoint));
-		} else {
-			Endpoint& ref = GetEndpointByFingerprint(newEndpoint.AsUint64());
-			if(ref.IsValid()) {
-				ref.SetDeviceId(newEndpoint.GetDeviceId());
-				ref.SetScore(1);
-				if(mOnNewRemote) mOnNewRemote(0,ref);
-			}
-		}
-		return newEndpoint;
-	}
-
-	size_t BroadcastReceiver::NumRemotes(void) const
-	{
-		return mIpTable.size();
-	}
-
-	void BroadcastReceiver::ReadRecentEndpoints(const std::string& filename)
-	{
-		std::ifstream inFile;
-		inFile.open(filename, std::ios::in);
-
-		if(!inFile.is_open()) {
-			Trace(ZONE_ERROR, "Open file to read recent endpoints failed\n");
-			return;
+			while(mIsRunning && timeval_sub(&endTime, &now, pTimeout));
+		} catch(FatalError& e) {
+			std::atomic_fetch_sub(&mNumInstances, 1);
+			throw(e);
 		}
 
-		Endpoint remote;
-		while(inFile >> remote) {
-			LockedInsert(remote);
+	std::atomic_fetch_sub(&mNumInstances, 1);
+}
+
+Endpoint& BroadcastReceiver::GetEndpoint(size_t index)
+{
+	auto it = mIpTable.find(index);
+	return (mIpTable.end() == it) ? EMPTY_ENDPOINT : it->second;
+}
+
+Endpoint& BroadcastReceiver::GetEndpointByFingerprint(const uint64_t fingerprint)
+{
+	for(auto it = mIpTable.begin(); it != mIpTable.end(); it++) {
+		if(fingerprint == (*it).second.AsUint64()) {
+			return (*it).second;
 		}
-		inFile.close();
+	}
+	return EMPTY_ENDPOINT;
+}
+
+Endpoint BroadcastReceiver::GetNextRemote(timeval *timeout) throw (FatalError)
+{
+	UdpSocket udpSock(INADDR_ANY, mPort, true, 1);
+	sockaddr_storage remoteAddr;
+	socklen_t remoteAddrLength = sizeof(remoteAddr);
+
+	BroadcastMessage msg;
+	const size_t bytesRead = udpSock.RecvFrom((uint8_t *)&msg, sizeof(msg), timeout, (sockaddr *)&remoteAddr, &remoteAddrLength);
+	TraceBuffer(ZONE_VERBOSE, msg.deviceId, sizeof(msg.deviceId), "%c", "%zu bytes broadcast message received DeviceId: \n", bytesRead);
+	if (bytesRead < sizeof(msg)) {
+		Trace(ZONE_VERBOSE, "Message to short to be a WyLight broadcast\n");
+		return Endpoint{};
+	}
+	return LockedInsert(Endpoint(msg, (sockaddr_in*)&remoteAddr));
+}
+
+Endpoint BroadcastReceiver::LockedInsert(Endpoint newEndpoint)
+{
+	std::lock_guard<std::mutex> lock(mMutex);
+	auto addedElement = mIpTableShadow.insert(newEndpoint);
+	if(addedElement.second) {
+		if(mOnNewRemote) mOnNewRemote(mIpTable.size(), newEndpoint);
+		mIpTable.insert(std::pair<size_t, Endpoint>(mIpTable.size(), newEndpoint));
+	} else {
+		Endpoint& ref = GetEndpointByFingerprint(newEndpoint.AsUint64());
+		if(ref.IsValid()) {
+			ref.SetDeviceId(newEndpoint.GetDeviceId());
+			ref.SetScore(1);
+			if(mOnNewRemote) mOnNewRemote(0,ref);
+		}
+	}
+	return newEndpoint;
+}
+
+size_t BroadcastReceiver::NumRemotes(void) const
+{
+	return mIpTable.size();
+}
+
+void BroadcastReceiver::ReadRecentEndpoints(const std::string& filename)
+{
+	std::ifstream inFile;
+	inFile.open(filename, std::ios::in);
+
+	if(!inFile.is_open()) {
+		Trace(ZONE_ERROR, "Open file to read recent endpoints failed\n");
+		return;
 	}
 
-	void BroadcastReceiver::Stop(void)
-	{
-		mIsRunning = false;
-		UdpSocket sock(INADDR_LOOPBACK, mPort, false);
-		sock.Send((uint8_t *)STOP_MSG.data(), STOP_MSG.size());
+	Endpoint remote;
+	while(inFile >> remote) {
+		LockedInsert(remote);
 	}
+	inFile.close();
+}
 
-	void BroadcastReceiver::WriteRecentEndpoints(const std::string& filename, uint8_t threshold) const
-	{
-		std::ofstream outFile;
-		outFile.open(filename, std::ios::trunc);
+void BroadcastReceiver::Stop(void)
+{
+	mIsRunning = false;
+	UdpSocket sock(INADDR_LOOPBACK, mPort, false);
+	sock.Send((uint8_t *)STOP_MSG.data(), STOP_MSG.size());
+}
 
-		if(!outFile.is_open()) {
-			Trace(ZONE_ERROR, "Open file to write recent endpoints failed\n");
-			return;
-		}
-		// write to file
-		for(auto it :mIpTable) {
-			if(it.second.GetScore() >= threshold) {
-				it.second.WriteTo(outFile);
-			}
-		}
-		outFile.close();
+void BroadcastReceiver::WriteRecentEndpoints(const std::string& filename, uint8_t threshold) const
+{
+	std::ofstream outFile;
+	outFile.open(filename, std::ios::trunc);
+
+	if(!outFile.is_open()) {
+		Trace(ZONE_ERROR, "Open file to write recent endpoints failed\n");
+		return;
 	}
+	// write to file
+	for(auto it :mIpTable) {
+		if(it.second.GetScore() >= threshold) {
+			it.second.WriteTo(outFile);
+		}
+	}
+	outFile.close();
+}
+
+void BroadcastReceiver::DeleteRecentEndpointFile(const std::string& filename)
+{
+    std::lock_guard<std::mutex> lock(this->mMutex);
+    this->mIpTableShadow.clear();
+    this->mIpTable.clear();
+    
+    int returnCode;
+    if(filename.compare("") == 0)
+        returnCode = remove(mRecentFilename.c_str());
+    
+    else
+        returnCode = remove(filename.c_str());
+    
+    if(returnCode) {
+        Trace(ZONE_ERROR, "Delete file \"%s\" recent endpoints failed\n", mRecentFilename.c_str());
+        return;
+    }
+}
+
