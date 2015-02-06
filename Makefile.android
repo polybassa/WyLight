@@ -2,12 +2,12 @@ ANDROID_DIR=./android/app/src/main
 ANDROID_BIN=android/.metadata ${ANDROID_DIR}/bin/ ${ANDROID_DIR}/gen/ ${ANDROID_DIR}/libs/armeabi/ ${ANDROID_DIR}/obj/ ${ANDROID_DIR}Test/bin/ ${ANDROID_DIR}Test/gen/ ${ANDROID_DIR}Test/libs/ ${ANDROID_DIR}Test/obj/
 
 android_client:
-	make firmware_pic
+	#make firmware_pic
 	$(NDK) -C $(ANDROID_DIR)
 	mkdir -p ${ANDROID_DIR}/assets/
-	rm -f ${ANDROID_DIR}/assets/main.hex
-	cp  ${BINDIR}/main.hex ${ANDROID_DIR}/assets/
-	
+#	rm -f ${ANDROID_DIR}/assets/main.hex
+#	cp  ${BINDIR}/main.hex ${ANDROID_DIR}/assets/
+
 android_clean:
 	@rm -rf $(ANDROID_BIN)
 
