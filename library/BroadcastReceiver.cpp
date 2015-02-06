@@ -74,15 +74,14 @@ void BroadcastReceiver::operator() (timeval *pTimeout) throw (FatalError)
 
 Endpoint& BroadcastReceiver::GetEndpoint(size_t index)
 {
-	auto it = mIpTable.find(index);
-	return (mIpTable.end() == it) ? EMPTY_ENDPOINT : it->second;
+	return (index < mIpTable.size()) ? mIpTable[index] : EMPTY_ENDPOINT;
 }
 
 Endpoint& BroadcastReceiver::GetEndpointByFingerprint(const uint64_t fingerprint)
 {
-	for(auto it = mIpTable.begin(); it != mIpTable.end(); it++) {
-		if(fingerprint == (*it).second.AsUint64()) {
-			return (*it).second;
+	for(auto &endpoint : mIpTable) {
+		if(fingerprint == endpoint.AsUint64()) {
+			return endpoint;
 		}
 	}
 	return EMPTY_ENDPOINT;
@@ -107,18 +106,18 @@ Endpoint BroadcastReceiver::GetNextRemote(timeval *timeout) throw (FatalError)
 Endpoint BroadcastReceiver::LockedInsert(Endpoint newEndpoint)
 {
 	std::lock_guard<std::mutex> lock(mMutex);
-	auto addedElement = mIpTableShadow.insert(newEndpoint);
-	if(addedElement.second) {
-		if(mOnNewRemote) mOnNewRemote(mIpTable.size(), newEndpoint);
-		mIpTable.insert(std::pair<size_t, Endpoint>(mIpTable.size(), newEndpoint));
-	} else {
-		Endpoint& ref = GetEndpointByFingerprint(newEndpoint.AsUint64());
-		if(ref.IsValid()) {
-			ref.SetDeviceId(newEndpoint.GetDeviceId());
-			ref.SetScore(1);
-			if(mOnNewRemote) mOnNewRemote(0,ref);
+	size_t i = 0;
+	for (const auto &e : mIpTable) {
+		if (e == newEndpoint) {
+			break;
 		}
+		++i;
 	}
+
+	if (i == mIpTable.size()) {
+		mIpTable.push_back(newEndpoint);
+	}
+	if(mOnNewRemote) mOnNewRemote(i, mIpTable[i]);
 	return newEndpoint;
 }
 
@@ -161,30 +160,22 @@ void BroadcastReceiver::WriteRecentEndpoints(const std::string& filename, uint8_
 		return;
 	}
 	// write to file
-	for(auto it :mIpTable) {
-		if(it.second.GetScore() >= threshold) {
-			it.second.WriteTo(outFile);
+	for(const auto &endpoint : mIpTable) {
+		if(endpoint.GetScore() >= threshold) {
+			endpoint.WriteTo(outFile);
 		}
 	}
 	outFile.close();
 }
 
-void BroadcastReceiver::DeleteRecentEndpointFile(const std::string& filename)
+void BroadcastReceiver::DeleteRecentEndpointFile()
 {
     std::lock_guard<std::mutex> lock(this->mMutex);
-    this->mIpTableShadow.clear();
-    this->mIpTable.clear();
-    
-    int returnCode;
-    if(filename.compare("") == 0)
-        returnCode = remove(mRecentFilename.c_str());
-    
-    else
-        returnCode = remove(filename.c_str());
-    
+    mIpTable.clear();
+
+    const int returnCode = remove(mRecentFilename.c_str());
     if(returnCode) {
         Trace(ZONE_ERROR, "Delete file \"%s\" recent endpoints failed\n", mRecentFilename.c_str());
-        return;
     }
 }
 
