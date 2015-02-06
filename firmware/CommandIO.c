@@ -133,9 +133,10 @@ void CommandIO_Error()
 void CommandIO_GetCommands()
 {
 	if(RingBuf_HasError(&g_RingBuf)) {
-		Trace_String(ERROR_RECEIVEBUFFER_FULL);//RingbufferFull
 #ifdef cc3200
 		UART_PRINT("[ERROR]g_RingBuf Overflow\r\n");
+#else
+        Trace_String(ERROR_RECEIVEBUFFER_FULL);//RingbufferFull
 #endif
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent

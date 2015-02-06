@@ -28,7 +28,7 @@
 #include "TargetConditionals.h"
 #endif
 
-#ifdef DEBUG
+#ifdef WY_DEBUG
 extern struct RingBuffer g_TraceBuf;
 #ifdef __CC8E__
 void Trace_Init();
