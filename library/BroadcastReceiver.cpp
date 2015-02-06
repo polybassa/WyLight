@@ -51,19 +51,13 @@ void BroadcastReceiver::operator() (timeval *pTimeout) throw (FatalError)
 	// only one thread allowed per instance
 	if(0 == std::atomic_fetch_add(&mNumInstances, 1))
 		try {
-			size_t numRemotes = mIpTable.size();
 			timeval endTime, now;
 			gettimeofday(&endTime, NULL);
 			timeval_add(&endTime, pTimeout);
-			do
-			{
-				const Endpoint remote = GetNextRemote(pTimeout);
-				if(remote.IsValid()) {
-					numRemotes++;
-				}
+			do {
+				GetNextRemote(pTimeout);
 				gettimeofday(&now, NULL);
-			}
-			while(mIsRunning && timeval_sub(&endTime, &now, pTimeout));
+			} while(mIsRunning && timeval_sub(&endTime, &now, pTimeout));
 		} catch(FatalError& e) {
 			std::atomic_fetch_sub(&mNumInstances, 1);
 			throw(e);
