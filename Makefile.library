@@ -5,13 +5,14 @@ VPATH+=${ROOT}/firmware
 # Where to find header files that do not live in the source directory.
 IPATH+=${ROOT}/library
 IPATH+=${ROOT}/firmware
+IPATH+=${ROOT}/cc_bl
 
 LIB_TARGET=$(OUT_DIR)/libWiflyControl.a
 LIB_TEST_SRC=$(wildcard $(LIB_DIR)/*_ut.cpp)
 LIB_SRC=$(filter-out $(LIB_TEST_SRC), $(wildcard $(LIB_DIR)/*.cpp))
 LIB_OBJ=$(LIB_SRC:%.cpp=%.o)
 
-$(LIB_TARGET): outdir $(LIB_OBJ)
+$(LIB_TARGET): $(OUT_DIR) $(LIB_OBJ)
 	@rm -f $(LIB_TARGET)
 	@ar cq $(LIB_TARGET) $(LIB_OBJ)
 

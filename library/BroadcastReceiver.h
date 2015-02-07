@@ -31,6 +31,7 @@
 #include <set>
 #include <string>
 #include <functional>
+#include <vector>
 
 namespace WyLight {
 
