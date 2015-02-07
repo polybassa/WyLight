@@ -34,7 +34,7 @@ const std::string BroadcastReceiver::STOP_MSG {"StopThread"};
 Endpoint BroadcastReceiver::EMPTY_ENDPOINT {};
 
 
-BroadcastReceiver::BroadcastReceiver(uint16_t port, const std::string& recentFilename, const std::function<void(size_t index, const Endpoint& newRemote)>& onNewRemote)
+BroadcastReceiver::BroadcastReceiver(uint16_t port, const std::string& recentFilename, const std::function<void(size_t index, const Endpoint& newRemote)> onNewRemote)
 	: mPort(port), mIsRunning(true), mNumInstances(0), mRecentFilename(recentFilename), mOnNewRemote(onNewRemote)
 {
 	ReadRecentEndpoints(mRecentFilename);
@@ -111,7 +111,7 @@ Endpoint BroadcastReceiver::LockedInsert(Endpoint newEndpoint)
 	if (i == mIpTable.size()) {
 		mIpTable.push_back(newEndpoint);
 	}
-	if(mOnNewRemote) mOnNewRemote(i, mIpTable[i]);
+	mOnNewRemote(i, mIpTable[i]);
 	return newEndpoint;
 }
 

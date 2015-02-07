@@ -48,7 +48,7 @@ namespace WyLight {
 		 * @param port to listen on, deault is @see BROADCAST_PORT
 		 * @param onNewEndpoint callback, which is called if a new endpoint got discovered
 		 */
-		BroadcastReceiver(uint16_t port = BROADCAST_PORT, const std::string& recentFilename = "", const std::function<void(size_t index, const Endpoint& newEndpoint)>& onNewEndpoint = NULL);
+		BroadcastReceiver(uint16_t port = BROADCAST_PORT, const std::string& recentFilename = "", const std::function<void(size_t index, const Endpoint& newEndpoint)> onNewEndpoint = NOP);
 
 		/*
 		 * Stop receiving loop and cleanup
@@ -126,6 +126,8 @@ namespace WyLight {
 		 * @return a copy of the inserted endpoint
 		 */
 		Endpoint LockedInsert(Endpoint endpoint);
+
+		static void NOP(size_t, const Endpoint&) {};
 	};
 }
 #endif /* #ifndef _BROADCAST_RECEIVER_H_ */
