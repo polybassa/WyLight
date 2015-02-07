@@ -48,7 +48,6 @@
 /*
  * Override C++ new/delete operators to reduce memory footprint
  */
-#ifdef CUSTOM_NEW
 #include <stdlib.h>
 void *operator new(size_t size) {
 	return malloc(size);
@@ -65,10 +64,6 @@ void operator delete(void *p) {
 void operator delete[](void *p) {
 	free(p);
 }
-#else
-#include <new>
-#include <cstddef>
-#endif
 
 extern void (* const g_pfnVectors[])(void);
 extern "C" void __cxa_pure_virtual() { while (1); }

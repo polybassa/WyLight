@@ -132,7 +132,6 @@ CPPFLAGS= \
     -g
 
 DEFINES= \
-    -DCUSTOM_NEW \
     -Dcc3200 \
     -DWY_DEBUG
 
@@ -154,7 +153,6 @@ CFLAGS= -pedantic \
         -c
 
 CPPFLAGS= \
-    -DCUSTOM_NEW \
     -std=c++0x \
     -pedantic \
     -Wall \
