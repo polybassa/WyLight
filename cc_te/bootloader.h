@@ -19,21 +19,29 @@
 #ifndef _BOOTLOADER_H_
 #define _BOOTLOADER_H_
 
-#include <stdint.h>
-
 #define BOOTLOADER_VERSION 1
 
 #if defined(SIMULATOR)
 #include "simulator.h"
 #define FW_FILENAME			"firmware.bin"
+#define BL_FILENAME         "bootloader.bin"
 #define APP_NAME			"WyLight Firmware"
 #define FIRMWARE_ORIGIN 	memory
 #else
 #define FW_FILENAME			"/temp/firmware.bin"
+#define BL_FILENAME         "/sys/mcuimg.bin"
 #define APP_NAME			"WyLight Bootloader"
 #define FIRMWARE_ORIGIN 	(uint8_t*)0x20012000
 #endif
+
+
 #define FORMAT_COMMAND		"WyLightFormatFilesystem"
 #define LIST_FS_COMMAND		"WyLightPrintFilesystem"
+#define QUIT_RESPONSE       0x04
+#define DONE_RESPONSE       '1'
+#define FAILURE_RESPONSE    '0'
+#define WELCOME_RESPONSE    "\0\0\0\0WyLightBootloader"
+#define FILENAME_SIZE       128
+
 
 #endif /* #ifndef _BOOTLOADER_H_ */

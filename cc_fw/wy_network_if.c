@@ -64,7 +64,6 @@
 
 // common interface includes 
 #include "wy_network_if.h"
-#include "uart_if.h"
 #include "timer_if.h"
 #include "gpio_if.h"
 #include "wifi.h"
@@ -79,6 +78,8 @@
 //
 // GLOBAL VARIABLES -- Start
 //
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+
 struct wifiStatusInformation g_WifiStatusInformation;
 const char userGetToken[] = "__SL_G_US";
 static struct apProvisioningData g_ApProvisioningData = { .priority = 0 };
@@ -108,7 +109,7 @@ void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 		memcpy(g_WifiStatusInformation.ConnectionBSSID, pSlWlanEvent->EventData.STAandP2PModeWlanConnected.bssid,
 		SL_BSSID_LENGTH);
 
-		UART_PRINT("[WLAN EVENT] STA Connected to the AP: %s , BSSID: %x:%x:%x:%x:%x:%x\n\r",
+		Trace(ZONE_INFO,"[WLAN EVENT] STA Connected to the AP: %s , BSSID: %x:%x:%x:%x:%x:%x\n\r",
 				g_WifiStatusInformation.ConnectionSSID, g_WifiStatusInformation.ConnectionBSSID[0],
 				g_WifiStatusInformation.ConnectionBSSID[1], g_WifiStatusInformation.ConnectionBSSID[2],
 				g_WifiStatusInformation.ConnectionBSSID[3], g_WifiStatusInformation.ConnectionBSSID[4],
@@ -127,13 +128,13 @@ void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 		// If the user has initiated 'Disconnect' request,
 		//'reason_code' is SL_USER_INITIATED_DISCONNECTION
 		if (SL_USER_INITIATED_DISCONNECTION == pEventData->reason_code) {
-			UART_PRINT("[WLAN EVENT] Device disconnected from AP: %s , BSSID: %x:%x:%x:%x:%x:%x\n\r",
+			Trace(ZONE_INFO,"[WLAN EVENT] Device disconnected from AP: %s , BSSID: %x:%x:%x:%x:%x:%x\n\r",
 					g_WifiStatusInformation.ConnectionSSID, g_WifiStatusInformation.ConnectionBSSID[0],
 					g_WifiStatusInformation.ConnectionBSSID[1], g_WifiStatusInformation.ConnectionBSSID[2],
 					g_WifiStatusInformation.ConnectionBSSID[3], g_WifiStatusInformation.ConnectionBSSID[4],
 					g_WifiStatusInformation.ConnectionBSSID[5]);
 		} else {
-			UART_PRINT("[WLAN ERROR] Device disconnected from AP: %s , BSSID: %x:%x:%x:%x:%x:%x\n\r",
+			Trace(ZONE_ERROR,"[WLAN ERROR] Device disconnected from AP: %s , BSSID: %x:%x:%x:%x:%x:%x\n\r",
 					g_WifiStatusInformation.ConnectionSSID, g_WifiStatusInformation.ConnectionBSSID[0],
 					g_WifiStatusInformation.ConnectionBSSID[1], g_WifiStatusInformation.ConnectionBSSID[2],
 					g_WifiStatusInformation.ConnectionBSSID[3], g_WifiStatusInformation.ConnectionBSSID[4],
@@ -156,7 +157,7 @@ void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 		//
 		slPeerInfoAsyncResponse_t *pEventData = NULL;
 		pEventData = &pSlWlanEvent->EventData.APModeStaConnected;
-		UART_PRINT("[WLAN EVENT] Client connected: %x:%x:%x:%x:%x:%x\r\n", pEventData->mac[0], pEventData->mac[1],
+		Trace(ZONE_INFO,"[WLAN EVENT] Client connected: %x:%x:%x:%x:%x:%x\r\n", pEventData->mac[0], pEventData->mac[1],
 				pEventData->mac[2], pEventData->mac[3], pEventData->mac[4], pEventData->mac[5]);
 	}
 		break;
@@ -174,7 +175,7 @@ void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 		//
 		slPeerInfoAsyncResponse_t *pEventData = NULL;
 		pEventData = &pSlWlanEvent->EventData.APModestaDisconnected;
-		UART_PRINT("[WLAN EVENT] Client disconnected: %x:%x:%x:%x:%x:%x\r\n", pEventData->mac[0], pEventData->mac[1],
+		Trace(ZONE_INFO,"[WLAN EVENT] Client disconnected: %x:%x:%x:%x:%x:%x\r\n", pEventData->mac[0], pEventData->mac[1],
 				pEventData->mac[2], pEventData->mac[3], pEventData->mac[4], pEventData->mac[5]);
 	}
 		break;
@@ -243,12 +244,12 @@ void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_CONNECTION);
 		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_IP_AQUIRED);
 
-		UART_PRINT("[WLAN EVENT] Connection failed\r\n");
+		Trace(ZONE_INFO,"[WLAN EVENT] Connection failed\r\n");
 	}
 		break;
 
 	default: {
-		UART_PRINT("[WLAN EVENT] Unexpected event \n\r");
+		Trace(ZONE_INFO,"[WLAN EVENT] Unexpected event \n\r");
 	}
 		break;
 	}
@@ -275,7 +276,7 @@ void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
 		// etc) will be available in 'SlNetAppEventData_u' - Applications
 		// can use it if required
 		//
-		UART_PRINT("[NETAPP EVENT] IP Acquired\r\n");
+		Trace(ZONE_INFO,"[NETAPP EVENT] IP Acquired\r\n");
 	}
 		break;
 
@@ -289,7 +290,7 @@ void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
 		//
 		// SlNetAppEventData_u *pEventData = NULL;
 		// pEventData = &pNetAppEvent->EventData.ipAcquiredV6;
-		UART_PRINT("[NETAPP EVENT] IP Acquired\r\n");
+		Trace(ZONE_INFO,"[NETAPP EVENT] IP Acquired\r\n");
 
 	}
 		break;
@@ -309,7 +310,7 @@ void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
 		SlIpLeasedAsync_t *pEventData = NULL;
 		pEventData = &pNetAppEvent->EventData.ipLeased;
 		g_WifiStatusInformation.StationIpAddress = pEventData->ip_address;
-		UART_PRINT("[NETAPP EVENT] IP Leased\r\n");
+		Trace(ZONE_INFO,"[NETAPP EVENT] IP Leased\r\n");
 
 	}
 		break;
@@ -326,19 +327,19 @@ void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
 		// pEventData = &pNetAppEvent->EventData.ipReleased;
 		//
 		g_WifiStatusInformation.StationIpAddress = 0;
-		UART_PRINT("[NETAPP EVENT] IP Released\r\n");
+		Trace(ZONE_INFO,"[NETAPP EVENT] IP Released\r\n");
 
 	}
 		break;
 
 	case SL_NETAPP_SOCKET_TX_FAILED: {
-		UART_PRINT("[NETAPP EVENT] Socket Error # %d \n\r", pNetAppEvent->EventData.sd);
+		Trace(ZONE_INFO,"[NETAPP EVENT] Socket Error # %d \n\r", pNetAppEvent->EventData.sd);
 
 	}
 		break;
 
 	default: {
-		UART_PRINT("[NETAPP EVENT] Unexpected event \n\r");
+		Trace(ZONE_INFO,"[NETAPP EVENT] Unexpected event \n\r");
 	}
 		break;
 	}
@@ -358,7 +359,7 @@ void SimpleLinkGeneralEventHandler(SlDeviceEvent_t *pDevEvent) {
 	// Most of the general errors are not FATAL are are to be handled
 	// appropriately by the application
 	//
-	UART_PRINT("[GENERAL EVENT] - ID=[%d] Sender=[%d]\n\n", pDevEvent->EventData.deviceEvent.status,
+	Trace(ZONE_INFO,"[GENERAL EVENT] - ID=[%d] Sender=[%d]\n\n", pDevEvent->EventData.deviceEvent.status,
 			pDevEvent->EventData.deviceEvent.sender);
 }
 
@@ -375,18 +376,18 @@ void SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
 	//
 	// This application doesn't work w/ socket - Events are not expected
 	//
-	UART_PRINT("[SOCK EVENT]");
+	Trace(ZONE_INFO,"[SOCK EVENT]");
 	switch (pSock->Event) {
 	case SL_NETAPP_SOCKET_TX_FAILED:
 		switch (pSock->EventData.status) {
 		case SL_ECLOSE: {
-			UART_PRINT("[SOCK ERROR] - close socket (%d) operation "
+			Trace(ZONE_ERROR,"[SOCK ERROR] - close socket (%d) operation "
 					"failed to transmit all queued packets\n\n", pSock->EventData.sd);
 		}
 			break;
 
 		default: {
-			UART_PRINT("[SOCK ERROR] - TX FAILED  :  socket %d , reason "
+			Trace(ZONE_ERROR,"[SOCK ERROR] - TX FAILED  :  socket %d , reason "
 					"(%d) \n\n", pSock->EventData.sd, pSock->EventData.status);
 		}
 			break;
@@ -394,7 +395,7 @@ void SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
 		break;
 
 	default: {
-		UART_PRINT("[SOCK EVENT] - Unexpected Event [%x0x]\n\n", pSock->Event);
+		Trace(ZONE_INFO,"[SOCK EVENT] - Unexpected Event [%x0x]\n\n", pSock->Event);
 	}
 		break;
 	}
@@ -434,8 +435,8 @@ void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent,
 
 	case SL_NETAPP_HTTPPOSTTOKENVALUE: {
 
-		UART_PRINT(" token_name: %s ", pSlHttpServerEvent->EventData.httpPostData.token_name.data);
-		UART_PRINT(" token_data: %s \r\n", pSlHttpServerEvent->EventData.httpPostData.token_value.data);
+		Trace(ZONE_VERBOSE," token_name: %s ", pSlHttpServerEvent->EventData.httpPostData.token_name.data);
+		Trace(ZONE_VERBOSE," token_data: %s \r\n", pSlHttpServerEvent->EventData.httpPostData.token_value.data);
 
 		if ((0
 				== memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USC",
@@ -526,7 +527,7 @@ static long waitForConnectWithTimeout(unsigned int timeout_ms) {
 
 	if ((!IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus))
 			|| (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus))) {
-		UART_PRINT("Connecting failed \r\n");
+		Trace(ZONE_ERROR,"Connecting failed \r\n");
 		return ERROR;
 	} else return SUCCESS;
 }
@@ -642,7 +643,7 @@ static long StartSimpleLinkAsStation() {
 	retRes = sl_Start(NULL, NULL, NULL);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
-	UART_PRINT("Started SimpleLink Device in STA Mode\n\r");
+	Trace(ZONE_VERBOSE,"Started SimpleLink Device in STA Mode\n\r");
 
 	return waitForConnectWithTimeout(CONNECTION_TIMEOUT);
 }
@@ -668,12 +669,12 @@ static long StartSimpleLinkAsAP() {
 	retRes = ConfigureSimpleLinkToDefaultState();
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
-	UART_PRINT("Device is configured in default state \n\r");
+	Trace(ZONE_VERBOSE,"Device is configured in default state \n\r");
 
 	retRes = sl_Start(NULL, NULL, NULL);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
-	UART_PRINT("Device started \n\r");
+	Trace(ZONE_VERBOSE,"Device started \n\r");
 
 	sl_WlanDisconnect();
 
@@ -696,7 +697,7 @@ static long StartSimpleLinkAsAP() {
 	retRes = sl_WlanPolicySet(SL_POLICY_SCAN, SL_SCAN_POLICY_EN(1), (unsigned char *) &intervalInSeconds, parameterLen);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
-	UART_PRINT("Scanning for SSID's\r\n----------------------------------------------\r\n");
+	Trace(ZONE_VERBOSE,"Scanning for SSID's\r\n----------------------------------------------\r\n");
 	// wait for scan to complete
 	osi_Sleep(8000);
 
@@ -706,9 +707,9 @@ static long StartSimpleLinkAsAP() {
 
 	int i;
 	for (i = 0; i < retRes; i++) {
-		UART_PRINT("%d) SSID %s\n\r", i, g_ApProvisioningData.networkEntries[i].ssid);
+		Trace(ZONE_VERBOSE,"%d) SSID %s\n\r", i, g_ApProvisioningData.networkEntries[i].ssid);
 	}
-	UART_PRINT("----------------------------------------------\r\n");
+	Trace(ZONE_VERBOSE,"----------------------------------------------\r\n");
 	//Switch to AP Mode
 	sl_WlanSetMode(ROLE_AP);
 
@@ -736,7 +737,7 @@ static long StartSimpleLinkAsAP() {
 
 	// compute random channel from current time
 	unsigned char channel = (dateTime.sl_tm_sec % 13) + 1; // to avoid channel 0
-	UART_PRINT("Accesspoint channel: %d\r\n", channel);
+	Trace(ZONE_VERBOSE,"Accesspoint channel: %d\r\n", channel);
 
 	retRes = sl_WlanSet(SL_WLAN_CFG_AP_ID, 3, 1, &channel);
 	ASSERT_ON_ERROR(__LINE__, retRes);
@@ -748,7 +749,7 @@ static long StartSimpleLinkAsAP() {
 	retRes = sl_Start(NULL, NULL, NULL);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
-	UART_PRINT("Start AP\r\n");
+	Trace(ZONE_VERBOSE,"Start AP\r\n");
 	//Wait for Ip Acquired Event in AP Mode
 	while (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)) {
 		osi_Sleep(10);
@@ -784,7 +785,7 @@ static void Network_IF_DisconnectFromAP(void) {
 //
 //*****************************************************************************
 void Network_IF_DeInitDriver(void) {
-	UART_PRINT("SL Disconnect...\n\r");
+	Trace(ZONE_VERBOSE,"SL Disconnect...\n\r");
 
 //
 // Disconnect from the AP
@@ -879,7 +880,7 @@ long Network_IF_AddNewProfile(void) {
 					&g_ApProvisioningData.secParameters, 0, g_ApProvisioningData.priority, 0);
 			ASSERT_ON_ERROR(__LINE__, retRes);
 		}
-		UART_PRINT("Added Profile at index %d \r\n", retRes);
+		Trace(ZONE_VERBOSE,"Added Profile at index %d \r\n", retRes);
 	}
 	return SUCCESS;
 }

@@ -61,7 +61,7 @@ extern "C" {
 #endif
 
 #include "wlan.h"
-#include "uart_if.h"
+#include "firmware/trace.h"
 
 // Loop forever, user can change it as per application's requirement
 #define LOOP_FOREVER(line_number) \
@@ -73,7 +73,7 @@ extern "C" {
 #define ASSERT_ON_ERROR(line_number, error_code) \
             {\
 				if (error_code < 0){ \
-					UART_PRINT("%d: Assert Error: %d\r\n", line_number, error_code); \
+					Trace(ZONE_ERROR, "%d: Assert Error: %d\r\n", line_number, error_code); \
 					return error_code;\
 				} \
             }
@@ -85,14 +85,6 @@ extern "C" {
 #define SEC_KEY_LEN_MAX				64
 #define SL_STOP_TIMEOUT         	30
 #define MAX_NUM_NETWORKENTRIES		10
-
-#ifdef NOTERM
-#define UART_PRINT(x, ...)
-#define DBG_PRINT (x, ...)
-#else
-#define UART_PRINT Report
-#define DBG_PRINT  Report
-#endif
 
 #define SET_STATUS_BIT(status_variable, bit) status_variable |= (1<<(bit))
 #define CLR_STATUS_BIT(status_variable, bit) status_variable &= ~(1<<(bit))

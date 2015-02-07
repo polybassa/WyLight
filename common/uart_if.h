@@ -63,7 +63,6 @@ extern "C" {
 	
 #include "hw_memmap.h"
 #include "prcm.h"
-#include "stdio.h"
 	
 /****************************************************************************/
 /*								MACROS										*/

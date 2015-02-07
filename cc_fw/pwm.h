@@ -27,10 +27,6 @@ extern "C" {
 //Free_rtos/ti-rtos includes
 #include "osi.h"
 
-#ifndef SUCCESS
-#define SUCCESS 	0
-#endif
-
 extern OsiMsgQ_t PwmMessageQ;
 extern OsiTaskHandle PwmTaskHandle;
 

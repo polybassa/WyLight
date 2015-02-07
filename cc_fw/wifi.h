@@ -21,14 +21,10 @@
 
 #include "osi.h"
 
-#define ATTEMPTING_TO_CONNECT_TO_AP			"Attempting to auto connect to AP\r\n"
-#define NOT_CONNECTED_TO_AP					"Not connected to AP\r\n"
-
 extern OsiSyncObj_t *WlanSupportProvisioningDataAddedSemaphore;
 extern OsiTaskHandle *WlanSupportTaskHandle;
 
 void WlanSupport_TaskInit(void);
-
 void WlanSupport_Task(void *pvParameters);
 
 #endif /* _WIFI_H_ */

@@ -28,10 +28,6 @@
 #include "TargetConditionals.h"
 #endif
 
-#ifdef cc3200
-#define cc3200 1
-#endif
-
 #ifdef DEBUG
 #ifdef __CC8E__
 extern struct RingBuffer g_TraceBuf;
@@ -66,7 +62,7 @@ uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
 		} \
 } while(0)
 
-#elif cc3200
+#elif defined(cc3200)
     #include "uart_if.h"
     #define Trace_Init(x) {InitTerm(); ClearTerm();}
 	#define Trace_String(str) Report(str)

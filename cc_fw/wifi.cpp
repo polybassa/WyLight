@@ -28,11 +28,12 @@
 #include "wy_network_if.h"
 #include "wy_firmware.h"
 #include "SimplelinkCustomer.h"
-
+#include "firmware/trace.h"
 #include "wifi.h"
 //
 // GLOBAL VARIABLES -- Start
 //
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 static xSemaphoreHandle g_WlanSupportProvisioningDataAddedSemaphore;
 static xTaskHandle g_WlanSupportTaskHandle;
@@ -65,7 +66,7 @@ void WlanSupport_Task(void *pvParameters) {
 	retRes = (long) Network_IF_ReadDeviceConfigurationPin();
 	while (true) {
 		if (retRes == ROLE_STA) {
-			UART_PRINT(ATTEMPTING_TO_CONNECT_TO_AP);
+			Trace(ZONE_INFO, "Attempting to auto connect to AP\r\n");
 
 			if (SUCCESS == Network_IF_InitDriver(ROLE_STA)) {
 
@@ -81,7 +82,7 @@ void WlanSupport_Task(void *pvParameters) {
 
 				Network_IF_DeInitDriver();
 			}
-			UART_PRINT(NOT_CONNECTED_TO_AP);
+			Trace(ZONE_INFO, "Not connected to AP\r\n");
 		}
 
 		if (SUCCESS == Network_IF_InitDriver(ROLE_AP)) {

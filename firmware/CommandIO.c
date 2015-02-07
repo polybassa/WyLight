@@ -26,7 +26,6 @@
 
 #include "wy_crc.h"
 #include "uart_if.h"
-#define UART_PRINT Report
 
 #endif /* cc3200 */
 
