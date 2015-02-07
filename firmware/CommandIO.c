@@ -49,7 +49,7 @@ static bit g_Odd_STX_Received;
 
 static void UART_Send(const uns8 data) {
 	if (RingBuf_HasError(&g_RingBuf_Tx)) {
-		UART_PRINT("g_RingBuf_Tx Error \r\n");
+		Trace_String("g_RingBuf_Tx Error \r\n");
 		RingBuf_Init(&g_RingBuf_Tx);
 	}
 	RingBuf_Put(&g_RingBuf_Tx, data);
@@ -133,11 +133,7 @@ void CommandIO_Error()
 void CommandIO_GetCommands()
 {
 	if(RingBuf_HasError(&g_RingBuf)) {
-#ifdef cc3200
-		UART_PRINT("[ERROR]g_RingBuf Overflow\r\n");
-#else
         Trace_String(ERROR_RECEIVEBUFFER_FULL);//RingbufferFull
-#endif
 		// *** if a RingBufError occure, I have to throw away the current command,
 		// *** because the last byte was not saved. Commandstring is inconsistent
 		RingBuf_Init(&g_RingBuf);

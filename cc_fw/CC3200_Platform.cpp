@@ -49,5 +49,5 @@ CC3200_Platform::CC3200_Platform() {
 	
 	VStartSimpleLinkSpawnTask(9);
 
-	Trace(ZONE_VERBOSE, "\r\n---------------------------\r\n");
+	Trace(ZONE_VERBOSE, "---------------------------\r\n");
 }

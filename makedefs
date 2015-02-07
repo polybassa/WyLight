@@ -96,6 +96,7 @@ AFLAGS=-mthumb \
 
 # The flags passed to the compiler.
 CFLAGS= -ffunction-sections \
+        --specs=nano.specs \
 		-fno-common \
     	-fmessage-length=0 \
         -fdata-sections     \
