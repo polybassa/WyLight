@@ -596,7 +596,7 @@ UARTModemControlSet(unsigned long ulBase, unsigned long ulControl)
     //
 
     ASSERT(ulBase == UARTA1_BASE);
-    ASSERT((ulControl & ~(UART_OUTPUT_RTS | UART_OUTPUT_DTR)) == 0);
+    ASSERT((ulControl & ~(UART_OUTPUT_RTS)) == 0);
 
     //
     // Set the appropriate modem control output bits.
@@ -637,7 +637,7 @@ UARTModemControlClear(unsigned long ulBase, unsigned long ulControl)
     // Check the arguments.
     //
     ASSERT(ulBase == UARTA1_BASE);
-    ASSERT((ulControl & ~(UART_OUTPUT_RTS | UART_OUTPUT_DTR)) == 0);
+    ASSERT((ulControl & ~(UART_OUTPUT_RTS)) == 0);
 
     //
     // Set the appropriate modem control output bits.

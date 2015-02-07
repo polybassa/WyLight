@@ -73,7 +73,7 @@
 void 
 InitTerm()
 {
-#ifdef WY_DEBUG
+#ifdef DEBUG
   MAP_UARTConfigSetExpClk(CONSOLE,MAP_PRCMPeripheralClockGet(CONSOLE_PERIPH), 
                   UART_BAUD_RATE, (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
                    UART_CONFIG_PAR_NONE));
@@ -95,7 +95,7 @@ InitTerm()
 void 
 Message(const char *str)
 {
-#ifdef WY_DEBUG
+#ifdef DEBUG
     if(str != NULL)
     {
         while(*str)
@@ -140,7 +140,7 @@ ClearTerm()
 int Report(const char *pcFormat, ...)
 {
  int iRet = 0;
-#ifdef WY_DEBUG
+#ifdef DEBUG
   char pcBuff[256];
   int iSize = sizeof(pcBuff);
  

@@ -32,7 +32,7 @@
 #define cc3200 1
 #endif
 
-#ifdef WY_DEBUG
+#ifdef DEBUG
 #ifdef __CC8E__
 extern struct RingBuffer g_TraceBuf;
 
@@ -64,8 +64,7 @@ uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
 			printf("%s:%u: ", __FILE__, __LINE__); \
 			printf(__VA_ARGS__); \
 		} \
-} \
-	while(0)
+} while(0)
 
 #elif cc3200
     #include "uart_if.h"
@@ -84,17 +83,12 @@ uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
 #else
 	#include "stdio.h"
 	#define Trace_Init(x)
-	#define Trace_String(str) do { printf("%s", str); } \
-		while(0)
-	#define Trace_Number(input) do { printf("%04x", input); } \
-		while(0)
-	#define Trace_Hex(hex) do { printf("%02x ", hex); } \
-		while(0)
-	#define Trace_Hex16(hex) do { printf("%04x ", hex); } \
-		while(0)
+	#define Trace_String(str) do { printf("%s", str); } while(0)
+	#define Trace_Number(input) do { printf("%04x", input); } while(0)
+	#define Trace_Hex(hex) do { printf("%02x ", hex); } while(0)
+	#define Trace_Hex16(hex) do { printf("%04x ", hex); } while(0)
 	uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
-	#define Trace_Char(input) do { printf("%c", input); } \
-		while(0)
+	#define Trace_Char(input) do { printf("%c", input); } while(0)
 
 	#define TraceBuffer(ZONE, BUFFER, LENGTH, BUFFER_FORMAT, ...) do { \
 		if(g_DebugZones & (ZONE)) { \
@@ -104,8 +98,7 @@ uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
 			} \
 				printf("\n"); \
 		} \
-} \
-	while(0)
+} while(0)
 
 	#define Trace(ZONE, ...) do { \
 		if(g_DebugZones & (ZONE)) { \
@@ -113,8 +106,7 @@ uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
 				printf(__VA_ARGS__); \
 				fflush(stdout); \
 		} \
-} \
-	while(0)
+} while(0)
 #endif
 #else
 	#define Trace_Init(x)
@@ -122,7 +114,7 @@ uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
 	#define Trace_Number(input)
 	#define Trace_Hex(hex)
 	#define Trace_Hex16(hex)
-uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
+    uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
 	#define Trace_Char(x)
 	#define TraceBuffer(ZONE, BUFFER, LENGTH, BUFFER_FORMAT, ...)
 	#define Trace(ZONE, ...)

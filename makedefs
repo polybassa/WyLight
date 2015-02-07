@@ -133,7 +133,7 @@ CPPFLAGS= \
 
 DEFINES= \
     -Dcc3200 \
-    -DWY_DEBUG
+    -DDEBUG
 
 
 
