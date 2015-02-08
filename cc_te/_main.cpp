@@ -16,9 +16,15 @@
  You should have received a copy of the GNU General Public License
  along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
+#include "hw_types.h"
 #include "hw_ints.h"
+#include "hw_memmap.h"
+
+// SimpleLink includes
+#include "simplelink.h"
 
 // driverlib includes
+#include "rom.h"
 #include "rom_map.h"
 #include "prcm.h"
 #include "utils.h"
@@ -28,13 +34,17 @@
 #include "pinmux.h"
 #include "wy_bl_network_if.h"
 #include "gpio_if.h"
+#include "uart_if.h"
 
 // wylight includes
+#include "bootloader.h"
 #include "firmware_loader.h"
 #include "tcp_server.h"
-#include "firmware/trace.h"
-
-#ifdef __cplusplus
+#include "../cc_te/TestClass.h"
+#include <array>
+#include <memory>
+#include <algorithm>    // std::make_heap, std::pop_heap, std::push_heap, std::sort_heap
+#include <vector>       // std::vector
 /*
  * Override C++ new/delete operators to reduce memory footprint
  */
@@ -54,9 +64,10 @@ void operator delete(void *p) {
 void operator delete[](void *p) {
 	free(p);
 }
-#endif /* __cplusplus */
 
 extern void (* const g_pfnVectors[])(void);
+extern "C" void __cxa_pure_virtual() { while (1); }
+const static uint32_t Version = 0xDEAD;
 
 //*****************************************************************************
 //
@@ -95,7 +106,30 @@ int main() {
 	PinMuxConfig();
 
 	// Configuring UART
-	Trace_Init();
+	InitTerm();
+	
+	auto x = new TestSibling();
+	
+	std::array<int, 5> arr = {0,1,2,3,4};
+	
+	for (auto& x : arr) {
+		Report("%d ", x);
+	}
+
+	Report("%d", x->get());
+	
+	auto t = std::unique_ptr<TestClass>(new TestSibling());
+	
+	Report("t->:%d", t->get());
+	
+	auto str = "hallo String";
+	
+	Report("%s", str);
+	
+	int myints[] = {10,20,30,5,15};
+	std::vector<int> v(myints,myints+5);
+	
+	std::make_heap (v.begin(),v.end());
 
 	GPIO_IF_LedConfigure(LED1 | LED2 | LED3);
 	GPIO_IF_LedOff(MCU_ALL_LED_IND);
@@ -107,10 +141,9 @@ int main() {
 	GPIO_IF_LedOn(MCU_GREEN_LED_GPIO);
 
 	if (ReadJumper() == 0) {
-		if (SUCCESS == EmplaceFirmware()) {
-			StartFirmware();
+		if (ERROR == EmplaceFirmware()) {
+			GPIO_IF_LedOn(MCU_RED_LED_GPIO);
 		}
-		GPIO_IF_LedOn(MCU_RED_LED_GPIO);
 	}
 	GPIO_IF_LedOn(MCU_ORANGE_LED_GPIO);
 

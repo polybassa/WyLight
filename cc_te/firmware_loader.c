@@ -16,14 +16,9 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include <stdint.h>
 #include <stdbool.h>
 
-#include "hw_types.h"
-#include "hw_shamd5.h"
 #include "hw_memmap.h"
-#include "hw_nvic.h"
-#include "hw_ints.h"
 #include "interrupt.h"
 #include "prcm.h"
 #include "rom_map.h"
@@ -158,24 +153,24 @@ static long VerifySRAM(uint8_t *pSource, const size_t length) {
 static long LoadFirmware(unsigned char* pSourceFile) {
 	SlFsFileInfo_t sFileInfo;
 	// get file size
-	long errno = wy_FsGetInfo(pSourceFile, 0, &sFileInfo);
-	if (errno) {
-		return errno;
+	long errornum = wy_FsGetInfo(pSourceFile, 0, &sFileInfo);
+	if (errornum) {
+		return errornum;
 	}
 
 	long fileHandle = -1;
 	unsigned long token = 0;
 	// open the source file for reading
-	errno = wy_FsOpen(pSourceFile, FS_MODE_OPEN_READ, &token, &fileHandle);
-	if (errno) {
+	errornum = wy_FsOpen(pSourceFile, FS_MODE_OPEN_READ, &token, &fileHandle);
+	if (errornum) {
 		// File Doesn't exit
-		return errno;
+		return errornum;
 	}
 	size_t bytesCopied = wy_FsRead(fileHandle, 0, (unsigned char *) FIRMWARE_ORIGIN, sFileInfo.FileLen);
 	// Close the opened files
-	errno = wy_FsClose(fileHandle, 0, 0, 0);
-	if (errno) {
-		return errno;
+	errornum = wy_FsClose(fileHandle, 0, 0, 0);
+	if (errornum) {
+		return errornum;
 	}
 	return bytesCopied;
 }
@@ -198,14 +193,14 @@ long SaveSRAMContent(uint8_t *pSource, const size_t length) {
 
 	static const char formatFilesystemCommand[] = FORMAT_COMMAND;
 	if (!memcmp((const char *) pSource, (const char *) formatFilesystemCommand, sizeof(formatFilesystemCommand) - 1)) {
-		long errno = wy_FsFormat();
-		return errno ? errno : EAGAIN;
+		long errornum = wy_FsFormat();
+		return errornum ? errornum : EAGAIN;
 	}
 #ifndef NOTERM
 	static const char printFilesystemCommand[] = LIST_FS_COMMAND;
 	if (!memcmp((const char *) pSource, (const char *) printFilesystemCommand, sizeof(printFilesystemCommand) - 1)) {
-		long errno = wy_FsPrintFileList();
-		return errno ? errno : EAGAIN;
+		long errornum = wy_FsPrintFileList();
+		return errornum ? errornum : EAGAIN;
 	}
 #endif
 	if (length < FILENAME_SIZE) {
@@ -245,14 +240,14 @@ long SaveSRAMContent(uint8_t *pSource, const size_t length) {
 	// open the file for writing
 	if (wy_FsOpen(filename, FS_MODE_OPEN_WRITE, &token, &fileHandle)) {
 		// File Doesn't exit create a new file
-		int errno = wy_FsOpen(filename, FS_MODE_OPEN_CREATE(filesize, 0), &token, &fileHandle);
-		if (errno) {
+		int errornum = wy_FsOpen(filename, FS_MODE_OPEN_CREATE(filesize, 0), &token, &fileHandle);
+		if (errornum) {
 			wy_FsDel(filename, token);
 			return SL_FS_ERR_FAILED_TO_CREATE_FILE;
 		}
 		wy_FsClose(fileHandle, 0, 0, 0);
-		errno = wy_FsOpen(filename, FS_MODE_OPEN_WRITE, &token, &fileHandle);
-		if (errno) {
+		errornum = wy_FsOpen(filename, FS_MODE_OPEN_WRITE, &token, &fileHandle);
+		if (errornum) {
 			wy_FsDel(filename, token);
 			return SL_FS_ERROR_FAILED_TO_WRITE;
 		}
@@ -291,9 +286,9 @@ void StartFirmware(void) {
 
 //****************************************************************************
 //
-//! \brief EmplaceFirmware
+//! \brief LoadAndExecuteFirmware
 //!
-//! This function loads and verifies a firmware file from FLASH
+//! This function loads and executes a firmware file from FLASH
 //!
 //! \return         0 for success and negative for error
 //
