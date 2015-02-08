@@ -53,7 +53,6 @@
 #
 #*****************************************************************************
 
-# The base directory.
 ROOT=.
 RTOS_SOURCE_DIR=${ROOT}/third_party/FreeRTOS
 OBJDIR?=obj
@@ -64,11 +63,6 @@ LIB_DIR=${ROOT}/library
 OUT_DIR=${BINDIR}
 
 OPENGL_LIB=-lGL -lGLU -lglut
-
-# The compiler to be used.
-ifndef COMPILER
-COMPILER=gcc
-endif
 
 ifeq (${PREFIX}, arm-none-eabi-)
 
@@ -112,13 +106,11 @@ CPPFLAGS= \
     -c \
     -g
 
-DEFINES= \
-    -Dcc3200 \
-    -DDEBUG
+DEFINES=	-Dcc3200 \
+    		-DDEBUG
 
 LDFLAGS= 	-gc-sections \
          	-static
-#-Wl,--Map ${BINDIR}/${PRJ_NAME}.map
 
 else 
 # The flags passed to the compiler when we are not using arm-none-eabi tools.
@@ -142,68 +134,39 @@ CPP=$(CXX)
 
 endif
 
-# The command for calling the compiler.
-CC=${PREFIX}${COMPILER}
+CC=${PREFIX}gcc
 CPP=${PREFIX}g++
-
-# The command for calling the library archiver.
 AR=${PREFIX}ar
-
-# The command for calling the linker.
 LD=${PREFIX}ld
-
-# Get the location of libgcc.a from the GCC front-end.
-LIBGCC:=${shell ${CC} ${CFLAGS} -print-libgcc-file-name}
-
-# Get the location of libc.a from the GCC front-end.
-LIBC:=${shell ${CC} ${CFLAGS} -print-file-name=libc.a}
-
-# Get the location of libm.a from the GCC front-end.
-LIBM:=${shell ${CC} ${CFLAGS} -print-file-name=libm.a}
-
-# Get the location of libstdc++.a from the GCC front-end.
-LIBSTDCPP:=${shell ${CPP} ${CPPFLAGS} -print-file-name=libstdc++_s.a}
-
-# Get the location of libsupc++.a from the GCC front-end.
-LIBSUPCPP:=${shell ${CPP} ${CPPFLAGS} -print-file-name=libsupc++_s.a}
-
-# The command for extracting images from the linked executables.
 OBJCOPY=${PREFIX}objcopy
+
+LIBGCC:=${shell ${CC} ${CFLAGS} -print-libgcc-file-name}
+LIBC:=${shell ${CC} ${CFLAGS} -print-file-name=libc.a}
+LIBM:=${shell ${CC} ${CFLAGS} -print-file-name=libm.a}
+LIBSTDCPP:=${shell ${CPP} ${CPPFLAGS} -print-file-name=libstdc++_s.a}
+LIBSUPCPP:=${shell ${CPP} ${CPPFLAGS} -print-file-name=libsupc++_s.a}
 
 # Add the include file paths to AFLAGS and CFLAGS.
 AFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
 CFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
 CPPFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
 
-# The rule for building the object file from each CPP source file.
 ${OBJDIR}/%.o: %.cpp
 	 @${CPP} ${CPPFLAGS} ${DEFINES} -o ${@} ${<}
 
-# The rule for building the object file from each C source file.
 ${OBJDIR}/%.o: %.c
-	 @${CC} ${CFLAGS} ${DEFINES} -c -D${COMPILER} -o ${@} ${<}
+	 @${CC} ${CFLAGS} ${DEFINES} -c -Dgcc -o ${@} ${<}
 
-# The rule for building the object file from each assembly source file.
 ${OBJDIR}/%.o: %.S
-	@${CC} ${AFLAGS} ${DEFINES} -D${COMPILER} -o ${@} -c ${<}
+	@${CC} ${AFLAGS} ${DEFINES} -Dgcc -o ${@} -c ${<}
 
-# The rule for creating an object library.
 ${BINDIR}/%.a:
 	 @${AR} -cr ${@} ${^}
 
-# The rule for linking the application.
-${BINDIR}/%.axf:
-	 @${LD} -T ${ROOT}/${FLAVOUR}/${PRJ_NAME}.ld ${LDFLAGS} --entry ResetISR -o ${@} $(filter %.o %.a, ${^}) \
-	 '${LIBM}' '${LIBC}' '${LIBGCC}' '${LIBSTDCPP}' '${LIBSUPCPP}'
-	 @${OBJCOPY} -O binary ${@} ${@:.axf=.bin}
-
-# The rule for linking the application.
 ${BINDIR}/%.elf:
 	 @${LD} -T ${ROOT}/${FLAVOUR}/${PRJ_NAME}.ld ${LDFLAGS} --entry ResetISR -o ${@} $(filter %.o %.a, ${^}) \
 	 '${LIBM}' '${LIBC}' '${LIBGCC}' '${LIBSTDCPP}' '${LIBSUPCPP}'
 	 @${OBJCOPY} -O binary ${@} ${@:.elf=.bin}
 
-
-# The rule for linking the application.
 ${BINDIR}/%.bin:
 	@${CPP} ${LDFLAGS} ${DEFINES} -o ${@} $(filter %.o %.a, ${^})

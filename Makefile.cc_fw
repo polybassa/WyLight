@@ -1,7 +1,7 @@
 ifeq ($(MAKECMDGOALS),cc_fw)
 
-cc_fw: CFLAGS+=-DSL_PLATFORM_MULTI_THREADED
-cc_fw: CFLAGS+=-DUSE_FREERTOS
+DEFINES+=-DSL_PLATFORM_MULTI_THREADED
+DEFINES+=-DUSE_FREERTOS
 
 # Where to find source files that do not live in this directory.
 VPATH=${ROOT}/cc_fw
@@ -57,7 +57,7 @@ ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/ledstrip.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/wy_crc.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/BroadcastMessage.o
 # common
-${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/startup_${COMPILER}.o
+${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/startup_gcc.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/uart_if.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/gpio_if.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/wy_fs.o

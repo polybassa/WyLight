@@ -1,7 +1,7 @@
 ifeq ($(MAKECMDGOALS),ut)
 
 # Additional Compiler Flags
-ut: CFLAGS+=-DSIMULATOR
+DEFINES+=-DSIMULATOR
 
 # Where to find source files that do not live in this directory.
 VPATH=	${ROOT}/sim \

@@ -1,8 +1,8 @@
 ifeq ($(MAKECMDGOALS),sim)
 
 # Additional Flags
-sim: CFLAGS+=-DSIMULATOR
-sim: CFLAGS+=-DDEBUG
+DEFINES+=-DSIMULATOR
+DEFINES+=-DDEBUG
 
 # Where to find source files that do not live in this directory.
 VPATH=${ROOT}/$(MAKECMDGOALS)

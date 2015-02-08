@@ -1,14 +1,4 @@
-# Where to find source files that do not live in this directory.
-VPATH=${ROOT}/cli
-VPATH+=${ROOT}/firmware
-VPATH+=${ROOT}/library
-
-# Where to find header files that do not live in the source directory.
-IPATH=${ROOT}
-IPATH+=${ROOT}/cli
-IPATH+=${ROOT}/firmware
-IPATH+=${ROOT}/library
-
+ifeq ($(MAKECMDGOALS),cli)
 # WyLight cli
 ${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/WiflyControlCli.o
 ${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/BroadcastReceiver.o
@@ -25,10 +15,4 @@ ${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/WiflyControl.o
 ${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/crc.o
 ${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/BroadcastMessage.o
 
-
-
-
-
-
-
-
+endif
