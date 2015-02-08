@@ -19,6 +19,8 @@
 #include "simulator.h"
 #include "shamd5.h"
 #include "openssl/sha.h"
+#include "rom_map.h"
+#include "prcm.h"
 
 #include <stdio.h>
 #include <stdint.h>
@@ -29,6 +31,13 @@ extern void SHAMD5IntHandler(void);
 
 void _SlNonOsMainLoopTask(void) {
 }
+
+void PRCMCC3200MCUInit(void) {}
+void PRCMPeripheralClkEnable(unsigned long ulPeripheral, unsigned long ulClkFlags) {}
+void PRCMPeripheralClkDisable(unsigned long ulPeripheral, unsigned long ulClkFlags){}
+void PRCMPeripheralReset(unsigned long ulPeripheral) {}
+
+void (* const g_pfnVectors[256])(void);
 
 long Network_IF_StartSimpleLinkAsAP(void) {
 	printf("Start SimpleLink as AP\r\n");
