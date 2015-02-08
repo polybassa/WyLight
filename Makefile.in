@@ -31,11 +31,9 @@ FLAVOUR=$(MAKECMDGOALS)
 ifeq ($(MAKECMDGOALS),cc_bl)
 PREFIX=arm-none-eabi-
 endif
-
 ifeq ($(MAKECMDGOALS),cc_fw) 
 PREFIX=arm-none-eabi-
 endif
-
 ifeq ($(MAKECMDGOALS),cc_te)
 PREFIX=arm-none-eabi-
 endif
@@ -49,14 +47,6 @@ PIC_CC8E=@PIC_CC8E@
 CPPCHECKER=@CPPCHECKER@
 # Include the common make definitions.
 include makedefs
-
-# Additional Compiler Flags
-sim: CFLAGS+=-DSIMULATOR
-ut: CFLAGS+=-DSIMULATOR
-
-# add additional linker flags
-sim: LDFLAGS+=-lcrypto
-cli: LDFLAGS+=-lpthread
 
 TARGETS=test
 TARGETS+=cli
@@ -107,13 +97,13 @@ post-build:
 	openssl sha256 -binary ${BINDIR}/${PRJ_NAME}.bin > ${BINDIR}/${PRJ_NAME}.sha
 
 # build the bootloader as normal bootloader 
-cc_fw: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.axf post-build
+cc_fw: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.elf post-build
 
-cc_bl: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.axf post-build
+cc_bl: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.elf post-build
 
 cli: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
-cc_te: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.axf
+cc_te: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.elf
 
 sim: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
@@ -122,11 +112,12 @@ ut: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 filedownloader: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
 test: clean-all ${OBJDIR} ${BINDIR} 
-	${CPPCHECKER} . --force --quiet
 	make ut 
 	./exe/WyLight_ut.bin
 	make firmware_test 
 	make library_test
+	${CPPCHECKER} . --force --quiet
+
 help: 
 	@echo "Targets: "
 	@echo -GENERAL-
@@ -158,15 +149,6 @@ help:
 	@echo -DOCUMENTATION-
 	@echo docu			
 
-BL_FILE=${OBJDIR}/${PRJ_PREFIX}bl.bin
-FW_FILE=${OBJDIR}/${PRJ_PREFIX}fw.bin
-
-install_bl:
-	sh install.sh ${BL_FILE} "/sys/mcuimg.bin"
-
-install_fw:
-	sh install.sh ${FW_FILE} "/temp/firmware.bin"
-
 # The rule to clean out all the build products.
 clean:
 	@rm -rf ${OBJDIR} ${wildcard *~}
@@ -185,23 +167,21 @@ ${OBJDIR}:
 ${BINDIR}:
 	@mkdir -p ${BINDIR}
 
-# Include the automatically generated dependency files.
-ifneq ($(wildcard ./$(MAKECMDGOALS)/Makefile.$(MAKECMDGOALS)),)
-include $(MAKECMDGOALS)/Makefile.$(MAKECMDGOALS) 
-endif    
+# Where to find source files that do not live in this directory.
+VPATH=${ROOT}/library
+VPATH+=${ROOT}/firmware
 
-ifneq ($(filter firmware_%, $(MAKECMDGOALS)),)
+# Where to find header files that do not live in the source directory.
+IPATH=${ROOT}/library
+IPATH+=${ROOT}/firmware
+IPATH+=${ROOT}/cc_bl
+
+include Makefile.cc_te 
+include Makefile.cc_bl
+include Makefile.cc_fw
+include Makefile.ut
+include Makefile.sim
 include Makefile.firmware
-endif 
-
-ifneq ($(filter android_%, $(MAKECMDGOALS)),)
 include Makefile.android
-endif
-
-ifneq ($(filter docu%, $(MAKECMDGOALS)),)
 include Makefile.docu
-endif
-
-ifneq ($(filter library%, $(MAKECMDGOALS)),)
 include Makefile.library
-endif

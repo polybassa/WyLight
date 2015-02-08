@@ -1,0 +1,51 @@
+ifeq ($(MAKECMDGOALS),cc_bl)
+# Where to find source files that do not live in this directory.
+VPATH=	${ROOT}/$(MAKECMDGOALS) \
+		${ROOT}/common \
+		${ROOT}/driverlib \
+		${ROOT}/simplelink/source \
+		${ROOT}/simplelink
+
+# Where to find header files that do not live in the source directory.
+IPATH=	${ROOT} \
+		${ROOT}/$(MAKECMDGOALS) \
+		${ROOT}/common \
+		${ROOT}/inc \
+		${ROOT}/driverlib \
+		${ROOT}/simplelink \
+		${ROOT}/simplelink/source \
+		${ROOT}/simplelink/include
+
+# WyLight bootloader
+${BINDIR}/${PRJ_NAME}.elf: 	${OBJDIR}/main.o \
+							${OBJDIR}/pinmux.o \
+							${OBJDIR}/firmware_loader.o \
+							${OBJDIR}/tcp_server.o \
+							${OBJDIR}/wy_bl_network_if.o \
+							${OBJDIR}/wy_fs.o \
+							${OBJDIR}/startup_gcc.o \
+							${OBJDIR}/uart_if.o \
+							${OBJDIR}/gpio_if.o \
+							${OBJDIR}/cpu.o \
+							${OBJDIR}/flash.o \
+							${OBJDIR}/interrupt.o \
+							${OBJDIR}/pin.o \
+							${OBJDIR}/prcm.o \
+							${OBJDIR}/uart.o \
+							${OBJDIR}/utils.o \
+							${OBJDIR}/shamd5.o \
+							${OBJDIR}/udma.o \
+							${OBJDIR}/spi.o \
+							${OBJDIR}/gpio.o \
+							${OBJDIR}/socket.o \
+							${OBJDIR}/nonos.o \
+							${OBJDIR}/fs.o \
+							${OBJDIR}/device.o \
+							${OBJDIR}/wlan.o \
+							${OBJDIR}/driver.o \
+							${OBJDIR}/netcfg.o \
+							${OBJDIR}/cc_pal.o \
+							${OBJDIR}/flowcont.o \
+							${OBJDIR}/netapp.o 
+
+endif

@@ -52,49 +52,30 @@
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 #*****************************************************************************
-#******************************************************************************
-#
-# Get the operating system name.  If this is Cygwin, the .d files will be
-# munged to convert c: into /cygdrive/c so that "make" will be happy with the
-# auto-generated dependencies.
-#
-#******************************************************************************
-os:=${shell uname -s}
 
 # The base directory.
 ROOT=.
 RTOS_SOURCE_DIR=${ROOT}/third_party/FreeRTOS
 OBJDIR?=obj
 BINDIR?=exe
-CLI_DIR=./cli
-FW_DIR=./firmware
-LIB_DIR=./library
+CLI_DIR=${ROOT}/cli
+FW_DIR=${ROOT}/firmware
+LIB_DIR=${ROOT}/library
 OUT_DIR=${BINDIR}
 
 OPENGL_LIB=-lGL -lGLU -lglut
 
-#******************************************************************************
-#
 # The compiler to be used.
-#
-#******************************************************************************
 ifndef COMPILER
 COMPILER=gcc
 endif
 
-#******************************************************************************
-#
-# Definitions for using GCC.
-#
-#******************************************************************************
 ifeq (${PREFIX}, arm-none-eabi-)
 
-# The flags passed to the assembler.
 AFLAGS=-mthumb \
        -mcpu=cortex-m4  \
        -MD
 
-# The flags passed to the compiler.
 CFLAGS= -ffunction-sections \
         --specs=nano.specs \
 		-fno-common \
@@ -135,13 +116,9 @@ DEFINES= \
     -Dcc3200 \
     -DDEBUG
 
-
-
 LDFLAGS= 	-gc-sections \
          	-static
 #-Wl,--Map ${BINDIR}/${PRJ_NAME}.map
-
-CPP=${PREFIX}g++
 
 else 
 # The flags passed to the compiler when we are not using arm-none-eabi tools.
@@ -158,12 +135,16 @@ CPPFLAGS= \
     -Wall \
     -c 
 
+LDFLAGS+=	-lpthread \
+			-lcrypto
+
 CPP=$(CXX)
 
 endif
 
 # The command for calling the compiler.
 CC=${PREFIX}${COMPILER}
+CPP=${PREFIX}g++
 
 # The command for calling the library archiver.
 AR=${PREFIX}ar
@@ -217,8 +198,11 @@ ${BINDIR}/%.axf:
 	 @${OBJCOPY} -O binary ${@} ${@:.axf=.bin}
 
 # The rule for linking the application.
-${BINDIR}/%_ut.bin:
-	@${CPP} ${LDFLAGS} ${DEFINES} -o ${@} $(filter %.o %.a, ${^})
+${BINDIR}/%.elf:
+	 @${LD} -T ${ROOT}/${FLAVOUR}/${PRJ_NAME}.ld ${LDFLAGS} --entry ResetISR -o ${@} $(filter %.o %.a, ${^}) \
+	 '${LIBM}' '${LIBC}' '${LIBGCC}' '${LIBSTDCPP}' '${LIBSUPCPP}'
+	 @${OBJCOPY} -O binary ${@} ${@:.elf=.bin}
+
 
 # The rule for linking the application.
 ${BINDIR}/%.bin:

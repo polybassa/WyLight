@@ -1,11 +1,4 @@
-# Where to find source files that do not live in this directory.
-VPATH=${ROOT}/library
-VPATH+=${ROOT}/firmware
-
-# Where to find header files that do not live in the source directory.
-IPATH+=${ROOT}/library
-IPATH+=${ROOT}/firmware
-IPATH+=${ROOT}/cc_bl
+CFLAGS+=-D_GLIBCXX_USE_NANOSLEEP
 
 LIB_TARGET=$(OUT_DIR)/libWiflyControl.a
 LIB_TEST_SRC=$(wildcard $(LIB_DIR)/*_ut.cpp)
@@ -18,40 +11,73 @@ $(LIB_TARGET): $(OUT_DIR) $(LIB_OBJ)
 
 library: $(LIB_TARGET)
 
-${BINDIR}/BroadcastReceiver_ut.bin: clean ${OBJDIR}/BroadcastMessage.o ${OBJDIR}/BroadcastReceiver.o ${OBJDIR}/BroadcastReceiver_ut.o
-${BINDIR}/BroadcastReceiver_ut.bin: LDFLAGS+=-lpthread
+${BINDIR}/BroadcastReceiver_ut.bin: 	clean \
+										${OBJDIR}/BroadcastMessage.o \
+										${OBJDIR}/BroadcastReceiver.o \
+										${OBJDIR}/BroadcastReceiver_ut.o
 
-${BINDIR}/ComProxy_ut.bin: clean $(OBJDIR)/ComProxy_ut.o $(OBJDIR)/ComProxy.o $(OBJDIR)/MaskBuffer.o $(OBJDIR)/crc.o
+${BINDIR}/ComProxy_ut.bin: 	clean \
+							$(OBJDIR)/ComProxy_ut.o \
+							$(OBJDIR)/ComProxy.o \
+							$(OBJDIR)/MaskBuffer.o \
+							$(OBJDIR)/crc.o
 
-${BINDIR}/FtpServer_ut.bin: LDFLAGS+=-lpthread
-${BINDIR}/FtpServer_ut.bin: clean $(OBJDIR)/FtpServer_ut.o $(OBJDIR)/FtpServer.o $(OBJDIR)/ClientSocket.o $(OBJDIR)/crc.o
+${BINDIR}/FtpServer_ut.bin: 	clean \
+								$(OBJDIR)/FtpServer_ut.o \
+								$(OBJDIR)/FtpServer.o \
+								$(OBJDIR)/ClientSocket.o \
+								$(OBJDIR)/crc.o
 
-${BINDIR}/MessageQueue_ut.bin: CFLAGS+=-D_GLIBCXX_USE_NANOSLEEP
-${BINDIR}/MessageQueue_ut.bin: LDFLAGS+=-lpthread
-${BINDIR}/MessageQueue_ut.bin: clean $(OBJDIR)/MessageQueue_ut.o
+${BINDIR}/MessageQueue_ut.bin: 	clean \
+								$(OBJDIR)/MessageQueue_ut.o 
 
-${BINDIR}/Script_ut.bin: clean $(OBJDIR)/Script_ut.o $(OBJDIR)/Script.o
+${BINDIR}/Script_ut.bin:	clean \
+							$(OBJDIR)/Script_ut.o \
+							$(OBJDIR)/Script.o
 
-${BINDIR}/WyFileDownloader_ut.bin: clean $(OBJDIR)/WyFileDownloader_ut.o $(OBJDIR)/WyFileDownloader.o
-${BINDIR}/WyFileDownloader_ut.bin: LDFLAGS +=-lcrypto
-${BINDIR}/WyFileDownloader_ut.bin: IPATH += ${ROOT}/cc_bl
+${BINDIR}/WyFileDownloader_ut.bin: 	clean \
+									$(OBJDIR)/WyFileDownloader_ut.o \
+									$(OBJDIR)/WyFileDownloader.o
 
-${BINDIR}/ScriptManager_ut.bin: clean $(OBJDIR)/ScriptManager_ut.o $(OBJDIR)/Script.o $(OBJDIR)/ScriptManager.o
+${BINDIR}/ScriptManager_ut.bin: 	clean \
+									$(OBJDIR)/ScriptManager_ut.o \
+									$(OBJDIR)/Script.o \
+									$(OBJDIR)/ScriptManager.o
 
-${BINDIR}/StartupManager_ut.bin: clean $(OBJDIR)/StartupManager_ut.o $(OBJDIR)/StartupManager.o
+${BINDIR}/StartupManager_ut.bin: 	clean \
+									$(OBJDIR)/StartupManager_ut.o \
+									$(OBJDIR)/StartupManager.o
 
-${BINDIR}/TelnetProxy_ut.bin: clean $(OBJDIR)/TelnetProxy_ut.o $(OBJDIR)/TelnetProxy.o
+${BINDIR}/TelnetProxy_ut.bin: 	clean \
+								$(OBJDIR)/TelnetProxy_ut.o \
+								$(OBJDIR)/TelnetProxy.o
 
-${BINDIR}/WiflyControl_ut.bin: LDFLAGS+=-lpthread
-${BINDIR}/WiflyControl_ut.bin: clean $(OBJDIR)/WiflyControl_ut.o $(OBJDIR)/WiflyControl.o $(OBJDIR)/ConfigControl.o $(OBJDIR)/intelhexclass.o $(OBJDIR)/MaskBuffer.o $(OBJDIR)/crc.o $(OBJDIR)/Script.o
+${BINDIR}/WiflyControl_ut.bin: 	clean \
+								$(OBJDIR)/WiflyControl_ut.o \
+								$(OBJDIR)/WiflyControl.o \
+								$(OBJDIR)/ConfigControl.o \
+								$(OBJDIR)/intelhexclass.o \
+								$(OBJDIR)/MaskBuffer.o \
+								$(OBJDIR)/crc.o \
+								$(OBJDIR)/Script.o
 
-${BINDIR}/WiflyControlNoThrow_ut.bin: clean $(OBJDIR)/WiflyControlNoThrow_ut.o $(OBJDIR)/WiflyControlNoThrow.o
+${BINDIR}/WiflyControlNoThrow_ut.bin: 	clean \
+										$(OBJDIR)/WiflyControlNoThrow_ut.o \
+										$(OBJDIR)/WiflyControlNoThrow.o
 
 library_test: library_standart_test library_ftp_test
 
-library_standart_test: ${BINDIR}/BroadcastReceiver_ut.bin ${BINDIR}/ComProxy_ut.bin ${BINDIR}/MessageQueue_ut.bin ${BINDIR}/Script_ut.bin ${BINDIR}/ScriptManager_ut.bin ${BINDIR}/TelnetProxy_ut.bin ${BINDIR}/WiflyControl_ut.bin ${BINDIR}/WiflyControlNoThrow_ut.bin ${BINDIR}/StartupManager_ut.bin ${BINDIR}/WyFileDownloader_ut.bin
+library_standart_test: 	${BINDIR}/BroadcastReceiver_ut.bin \
+						${BINDIR}/ComProxy_ut.bin \
+						${BINDIR}/MessageQueue_ut.bin \
+						${BINDIR}/Script_ut.bin \
+						${BINDIR}/ScriptManager_ut.bin \
+						${BINDIR}/TelnetProxy_ut.bin \
+						${BINDIR}/WiflyControl_ut.bin \
+						${BINDIR}/WiflyControlNoThrow_ut.bin \
+						${BINDIR}/StartupManager_ut.bin \
+						${BINDIR}/WyFileDownloader_ut.bin
 	$(foreach test,$^,./$(test);)
 
 library_ftp_test: ${BINDIR}/FtpServer_ut.bin
-	$(foreach test,$^,@sh ./ut/ftptest.sh ./$(test);)
-
+	$(foreach test,$^,@sh ./ut/ftptest.sh ./$(test) | grep "./library/FtpServer_ut.bin*";)

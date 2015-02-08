@@ -3,4 +3,3 @@ documentation:
 
 docu:
 	$(DOXYGEN) docs/Doxyfile
-
