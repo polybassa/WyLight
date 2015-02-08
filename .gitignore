@@ -31,3 +31,4 @@ build
 wylightFirmware.launch
 cc_fw/ccs
 
+wylightBootloader.launch
