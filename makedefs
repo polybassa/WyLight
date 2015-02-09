@@ -16,42 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with WyLight.  If not, see <http://www.gnu.org/licenses/>.
 #******************************************************************************
-#******************************************************************************
-#
-# Makedefs - Common rules for GCC Makefile
-#
-#  Copyright (C) 2014 Texas Instruments Incorporated - http:#www.ti.com/
-#
-#
-#  Redistribution and use in source and binary forms, with or without
-#  modification, are permitted provided that the following conditions
-#  are met:
-#
-#    Redistributions of source code must retain the above copyright
-#    notice, this list of conditions and the following disclaimer.
-#
-#    Redistributions in binary form must reproduce the above copyright
-#    notice, this list of conditions and the following disclaimer in the
-#    documentation and/or other materials provided with the
-#    distribution.
-#
-#    Neither the name of Texas Instruments Incorporated nor the names of
-#    its contributors may be used to endorse or promote products derived
-#    from this software without specific prior written permission.
-#
-#  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-#  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-#  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-#  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-#  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-#  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-#  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-#  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-#  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-#  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-#*****************************************************************************
 
 ROOT=.
 RTOS_SOURCE_DIR=${ROOT}/third_party/FreeRTOS
@@ -80,7 +44,6 @@ CFLAGS= -ffunction-sections \
         -pedantic \
         -std=c11 \
         -mthumb \
-        -flto \
         -Wall \
         -O1 \
         -MD \
@@ -100,7 +63,6 @@ CPPFLAGS= \
     -fno-rtti \
     -mthumb \
     -Wall \
-    -flto \
     -MD \
     -O1 \
     -c \
@@ -156,18 +118,6 @@ AR=${PREFIX}ar
 LD=${PREFIX}ld
 OBJCOPY=${PREFIX}objcopy
 
-#LIBGCC:=${shell ${CC} ${CFLAGS} -print-libgcc-file-name}
-#LIBC:=${shell ${CC} ${CFLAGS} -print-file-name=libc.a}
-#LIBM:=${shell ${CC} ${CFLAGS} -print-file-name=libm.a}
-#LIBSTDCPP:=${shell ${CPP} ${CPPFLAGS} -print-file-name=libstdc++_s.a}
-#LIBSUPCPP:=${shell ${CPP} ${CPPFLAGS} -print-file-name=libsupc++_s.a}
-
-LIBGCC:=-lgcc
-LIBC:=-lc
-LIBM:=-lm
-LIBSTDCPP:=-lstdc++
-LIBSUPCPP:=-lsupc++
-
 # Add the include file paths to AFLAGS and CFLAGS.
 AFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
 CFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
@@ -186,8 +136,8 @@ ${BINDIR}/%.a:
 	 @${AR} -cr ${@} ${^}
 
 ${BINDIR}/%.elf:
-	 @${CC} -T ${ROOT}/${FLAVOUR}/${PRJ_NAME}.ld ${LDFLAGS} --entry ResetISR -o ${@} $(filter %.o %.a, ${^}) \
-	 '${LIBM}' '${LIBC}' '${LIBGCC}' '${LIBSTDCPP}' '${LIBSUPCPP}'
+	 @${CPP} -T ${ROOT}/${FLAVOUR}/${PRJ_NAME}.ld ${LDFLAGS} --entry ResetISR -o ${@} $(filter %.o %.a, ${^}) \
+	 -lgcc -lm -lc -lstdc++ -lsupc++
 	 @${OBJCOPY} -O binary ${@} ${@:.elf=.bin}
 
 ${BINDIR}/%.bin:

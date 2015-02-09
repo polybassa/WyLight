@@ -12,7 +12,7 @@ Version:
 -----------
 ```(arm-none-eabi-gcc -v)```
 
-gcc version 4.8.4 20140526 (release) `[ARM/embedded-4_8-branch revision 211358]` (GNU Tools for ARM Embedded Processors) 
+gcc version 4.9.3 20141119 (release) `[ARM/embedded-4_9-branch revision 218278]` (GNU Tools for ARM Embedded Processors) 
 
 
 Install:
