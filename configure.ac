@@ -60,16 +60,5 @@ AC_FUNC_MALLOC
 AC_CHECK_FUNCS([clock_gettime floor getcwd gettimeofday inet_ntoa localtime_r memset pow select socket sqrt strstr strtoul])
 
 
-AC_CONFIG_FILES([	Makefile 
-					Makefile.android 
-					Makefile.cc_bl 
-					makedefs 
-					Makefile.cc_fw 
-					Makefile.cc_te 
-					Makefile.cli 
-					Makefile.docu 
-					Makefile.firmware 
-					Makefile.library 
-					Makefile.sim 
-					Makefile.ut])
+AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
