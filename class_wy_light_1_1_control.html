@@ -88,6 +88,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
@@ -107,7 +108,7 @@ Collaboration diagram for WyLight::Control:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_wy_light_1_1_control__coll__graph.png" border="0" usemap="#_wy_light_1_1_control_coll__map" alt="Collaboration graph"/></div>
 <map name="_wy_light_1_1_control_coll__map" id="_wy_light_1_1_control_coll__map">
-<area shape="rect" id="node2" href="class_wy_light_1_1_telnet_proxy.html" title="{WyLight::TelnetProxy\n||+ TelnetProxy()\l+ ClearResponse()\l+ Close()\l+ RecvString()\l+ Open()\l+ Send()\l+ SendString()\l+ SendRebootCommand()\l+ PerformWifiScan()\l+ ComputeFreeChannel()\l+ ChangeWifiChannel()\l&#45; ExtractStringOfInterest()\l&#45; Recv()\l&#45; RecvString()\l&#45; SendAndWaitForEcho()\l&#45; SetReplaceChar()\l}" alt="" coords="121,727,298,1000"/><area shape="rect" id="node3" href="class_wy_light_1_1_tcp_socket.html" title="{WyLight::TcpSocket\n||+ TcpSocket()\l+ TcpSocket()\l+ Recv()\l+ Send()\l+ Send()\l}" alt="" coords="213,452,351,579"/><area shape="rect" id="node7" href="class_wy_light_1_1_com_proxy.html" title="{WyLight::ComProxy\n||+ ComProxy()\l+ Send()\l+ Send()\l+ SyncWithTarget()\l&#45; Recv()\l&#45; Send()\l}" alt="" coords="323,793,462,933"/><area shape="rect" id="node4" href="class_wy_light_1_1_client_socket.html" title="{WyLight::ClientSocket\n|# mSock\l|+ ClientSocket()\l+ ClientSocket()\l+ ~ClientSocket()\l+ GetAddrCommaSeparated()\l+ GetSocket()\l+ Select()\l}" alt="" coords="262,263,462,403"/><area shape="rect" id="node8" href="class_wy_light_1_1_udp_socket.html" title="{WyLight::UdpSocket\n||+ UdpSocket()\l+ RecvFrom()\l+ Send()\l}" alt="" coords="427,603,569,703"/><area shape="rect" id="node5" href="struct_wy_light_1_1_ipv4_addr.html" title="{WyLight::Ipv4Addr\n||+ Ipv4Addr()\l}" alt="" coords="297,128,427,201"/></map>
+<area shape="rect" id="node2" href="class_wy_light_1_1_telnet_proxy.html" title="{WyLight::TelnetProxy\n||+ TelnetProxy()\l+ ClearResponse()\l+ Close()\l+ RecvString()\l+ Open()\l+ Send()\l+ SendString()\l+ SendRebootCommand()\l+ PerformWifiScan()\l+ ComputeFreeChannel()\l+ ChangeWifiChannel()\l&#45; ExtractStringOfInterest()\l&#45; Recv()\l&#45; RecvString()\l&#45; SendAndWaitForEcho()\l&#45; SetReplaceChar()\l}" alt="" coords="180,727,357,1000"/><area shape="rect" id="node9" href="struct_wy_light_1_1_config_control.html" title="{WyLight::ConfigControl\n|+ RN171_DEFAULT_PARAMETERS\l+ RN171_BASIC_PARAMETERS\l+ RN171_SOFT_AP_DEFAULT\l_PARAMETERS\l+ RN171_FACTORY_RESET\l_PARAMETER\l|+ ConfigControl()\l+ GetDeviceId()\l+ GetPassphrase()\l+ GetSoftAp()\l+ GetSsid()\l+ ModuleAsSoftAP()\l+ ModuleForWlan()\l+ RebootWlanModule()\l+ SetDeviceId()\l+ ChangeWlanChannel()\l+ SetParameters()\l+ SetDefaults()\l+ SetWlan()\l+ FactoryReset()\l&#45; Get()\l}" alt="" coords="149,1188,388,1515"/><area shape="rect" id="node3" href="class_wy_light_1_1_tcp_socket.html" title="{WyLight::TcpSocket\n||+ TcpSocket()\l+ TcpSocket()\l+ Recv()\l+ Send()\l+ Send()\l}" alt="" coords="248,452,387,579"/><area shape="rect" id="node7" href="class_wy_light_1_1_com_proxy.html" title="{WyLight::ComProxy\n||+ ComProxy()\l+ Send()\l+ Send()\l+ SyncWithTarget()\l&#45; Recv()\l&#45; Send()\l}" alt="" coords="344,1024,483,1164"/><area shape="rect" id="node4" href="class_wy_light_1_1_client_socket.html" title="{WyLight::ClientSocket\n|# mSock\l|+ ClientSocket()\l+ ClientSocket()\l+ ~ClientSocket()\l+ GetAddrCommaSeparated()\l+ GetSocket()\l+ Select()\l}" alt="" coords="298,263,497,403"/><area shape="rect" id="node8" href="class_wy_light_1_1_udp_socket.html" title="{WyLight::UdpSocket\n||+ UdpSocket()\l+ RecvFrom()\l+ Send()\l}" alt="" coords="455,603,597,703"/><area shape="rect" id="node5" href="struct_wy_light_1_1_ipv4_addr.html" title="{WyLight::Ipv4Addr\n||+ Ipv4Addr()\l}" alt="" coords="332,128,463,201"/></map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -136,28 +137,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1d5de392ee1bce3176d0840d855eaa1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a515497781d7ab7ad5fde04b5466c63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a6a515497781d7ab7ad5fde04b5466c63">BlRunApp</a> (void) const   throw (ConnectionTimeout, FatalError)</td></tr>
 <tr class="separator:a6a515497781d7ab7ad5fde04b5466c63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32fce52c7c113c90654e6835c0274f73"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a32fce52c7c113c90654e6835c0274f73">ConfGetDeviceId</a> (void) const </td></tr>
-<tr class="separator:a32fce52c7c113c90654e6835c0274f73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc559100e686136cff2c3bfea53f55a3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#adc559100e686136cff2c3bfea53f55a3">ConfGetPassphrase</a> (void) const </td></tr>
-<tr class="separator:adc559100e686136cff2c3bfea53f55a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08764c74e17d008cf9e03ae6c9a145e0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a08764c74e17d008cf9e03ae6c9a145e0">ConfGetSoftAp</a> (void) const </td></tr>
-<tr class="separator:a08764c74e17d008cf9e03ae6c9a145e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9128e80172dcb8586c9821dc7587f122"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a9128e80172dcb8586c9821dc7587f122">ConfGetSsid</a> (void) const </td></tr>
-<tr class="separator:a9128e80172dcb8586c9821dc7587f122"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16a660f58bf48a006e1709a28ebc2ae8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a16a660f58bf48a006e1709a28ebc2ae8">ConfModuleAsSoftAP</a> (const std::string &amp;accesspointName=&quot;Wifly_Light&quot;) const </td></tr>
-<tr class="separator:a16a660f58bf48a006e1709a28ebc2ae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a801a17d49dc76e80a2a8ea8709e4d6f5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a801a17d49dc76e80a2a8ea8709e4d6f5">ConfModuleForWlan</a> (const std::string &amp;phrase, const std::string &amp;ssid, const std::string &amp;deviceId=&quot;Wifly_Light&quot;) const </td></tr>
-<tr class="separator:a801a17d49dc76e80a2a8ea8709e4d6f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9ac31328f888ff1d90cefe04f7353e6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#aa9ac31328f888ff1d90cefe04f7353e6">ConfRebootWlanModule</a> (void) const </td></tr>
-<tr class="separator:aa9ac31328f888ff1d90cefe04f7353e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa829e0a757758eb960da902803b138d8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#aa829e0a757758eb960da902803b138d8">ConfSetDeviceId</a> (const std::string &amp;name) const </td></tr>
-<tr class="separator:aa829e0a757758eb960da902803b138d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9079d8f3560a5c811bf97b138ad12155"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a9079d8f3560a5c811bf97b138ad12155">ConfChangeWlanChannel</a> (void) const </td></tr>
-<tr class="separator:a9079d8f3560a5c811bf97b138ad12155"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a9abfc6b25143d95b52f86f4b6c63fc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a2a9abfc6b25143d95b52f86f4b6c63fc">ConfSetParameters</a> (std::list&lt; std::string &gt; commands) const </td></tr>
-<tr class="separator:a2a9abfc6b25143d95b52f86f4b6c63fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43e62bee84f2c8632df9c996fd95f4fa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a43e62bee84f2c8632df9c996fd95f4fa">ConfFactoryReset</a> (void) const </td></tr>
-<tr class="separator:a43e62bee84f2c8632df9c996fd95f4fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedce9e77a3358f551cc66c4a8a492260"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#aedce9e77a3358f551cc66c4a8a492260">FwGetCycletime</a> (void)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
 <tr class="separator:aedce9e77a3358f551cc66c4a8a492260"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a082452281e1de4160b1fa9f1275a91"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a9a082452281e1de4160b1fa9f1275a91">FwGetRtc</a> (tm &amp;timeValue)  throw (ConnectionTimeout, FatalError, ScriptBufferFull)</td></tr>
@@ -181,22 +160,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab60eccb9fcdc3e5f4fb1721150c5e31d"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#ab60eccb9fcdc3e5f4fb1721150c5e31d">ExtractFwVersion</a> (const std::string &amp;pFilename) const </td></tr>
 <tr class="separator:ab60eccb9fcdc3e5f4fb1721150c5e31d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:aa02bbcf5672575acd5e4e2f87f11d0b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_wy_light_1_1_config_control.html">ConfigControl</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#aa02bbcf5672575acd5e4e2f87f11d0b1">mConfig</a></td></tr>
+<tr class="separator:aa02bbcf5672575acd5e4e2f87f11d0b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a6d407aadfe5921e4af9bf756cc9d8a28"><td class="memItemLeft" align="right" valign="top">static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a6d407aadfe5921e4af9bf756cc9d8a28">LEDS_ALL</a></td></tr>
 <tr class="separator:a6d407aadfe5921e4af9bf756cc9d8a28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8003f29b47827bc89a5b02f3c6005802"><td class="memItemLeft" align="right" valign="top">static const std::list<br class="typebreak" />
-&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a8003f29b47827bc89a5b02f3c6005802">RN171_DEFAULT_PARAMETERS</a></td></tr>
-<tr class="separator:a8003f29b47827bc89a5b02f3c6005802"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1da8bdbd426d9ec86c9c71412efc9c3e"><td class="memItemLeft" align="right" valign="top">static const std::list<br class="typebreak" />
-&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a1da8bdbd426d9ec86c9c71412efc9c3e">RN171_BASIC_PARAMETERS</a></td></tr>
-<tr class="separator:a1da8bdbd426d9ec86c9c71412efc9c3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af32b715d85a460a6218695849437fcfc"><td class="memItemLeft" align="right" valign="top">static const std::list<br class="typebreak" />
-&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#af32b715d85a460a6218695849437fcfc">RN171_SOFT_AP_DEFAULT_PARAMETERS</a></td></tr>
-<tr class="separator:af32b715d85a460a6218695849437fcfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c82d7bed97ef6a9b0ee61c357123904"><td class="memItemLeft" align="right" valign="top">static const std::list<br class="typebreak" />
-&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a6c82d7bed97ef6a9b0ee61c357123904">RN171_FACTORY_RESET_PARAMETER</a></td></tr>
-<tr class="separator:a6c82d7bed97ef6a9b0ee61c357123904"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -216,12 +188,6 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:a788f58ea643e4d628727d408b8618c75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3525b0fbe108a157518954a97b0305a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#aa3525b0fbe108a157518954a97b0305a">BlReadFlash</a> (uint8_t *pBuffer, uint32_t address, size_t numBytes) const   throw (ConnectionTimeout, FatalError, InvalidParameter)</td></tr>
 <tr class="separator:aa3525b0fbe108a157518954a97b0305a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41783f90e76ff07bbfa97e1b5ea3b7ee"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a41783f90e76ff07bbfa97e1b5ea3b7ee">ConfGet</a> (const std::string &amp;searchKey, const std::string &amp;getCmd=&quot;get wlan\r\n&quot;) const </td></tr>
-<tr class="separator:a41783f90e76ff07bbfa97e1b5ea3b7ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5c8c29c845d42b9e161932be6543ed3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#ad5c8c29c845d42b9e161932be6543ed3">ConfSetDefaults</a> (void) const </td></tr>
-<tr class="separator:ad5c8c29c845d42b9e161932be6543ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e41efb72982d45fd792be624ea5c98b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_control.html#a4e41efb72982d45fd792be624ea5c98b">ConfSetWlan</a> (const std::string &amp;phrase, const std::string &amp;ssid) const </td></tr>
-<tr class="separator:a4e41efb72982d45fd792be624ea5c98b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -1265,380 +1231,6 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a class="anchor" id="a9079d8f3560a5c811bf97b138ad12155"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool WyLight::Control::ConfChangeWlanChannel </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Wlan module performs a wifi scan and changes to the next free channel. This function can take some time. </p><dl class="section return"><dt>Returns</dt><dd>false, in case of an error </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a43e62bee84f2c8632df9c996fd95f4fa"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool WyLight::Control::ConfFactoryReset </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a41783f90e76ff07bbfa97e1b5ea3b7ee"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string WyLight::Control::ConfGet </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>searchKey</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>getCmd</em> = <code>&quot;get&#160;wlan\r\n&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Read the currently configured wlan passphrase from <a class="el" href="namespace_wy_light.html">WyLight</a> module </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">searchKey</td><td>to search the wlan settings for </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>an empty string or the value of the specified wlan setting </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a32fce52c7c113c90654e6835c0274f73"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string WyLight::Control::ConfGetDeviceId </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Read the device id from <a class="el" href="namespace_wy_light.html">WyLight</a> module </p><dl class="section return"><dt>Returns</dt><dd>an empty string or the device id </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="adc559100e686136cff2c3bfea53f55a3"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string WyLight::Control::ConfGetPassphrase </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Read the currently configured wlan passphrase from <a class="el" href="namespace_wy_light.html">WyLight</a> module </p><dl class="section return"><dt>Returns</dt><dd>an empty string or the wlan passphrase </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a08764c74e17d008cf9e03ae6c9a145e0"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool WyLight::Control::ConfGetSoftAp </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Read the currently configured mode(client/SoftAP) from <a class="el" href="namespace_wy_light.html">WyLight</a> module </p><dl class="section return"><dt>Returns</dt><dd>true if <a class="el" href="namespace_wy_light.html">WyLight</a> module is configured for SoftAP mode </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a9128e80172dcb8586c9821dc7587f122"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string WyLight::Control::ConfGetSsid </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Read the currently configured ssid from <a class="el" href="namespace_wy_light.html">WyLight</a> module </p><dl class="section return"><dt>Returns</dt><dd>an empty string or the ssid </dd></dl>
-
-<p><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="class_wy_light_1_1_control_a9128e80172dcb8586c9821dc7587f122_icgraph.png" border="0" usemap="#class_wy_light_1_1_control_a9128e80172dcb8586c9821dc7587f122_icgraph" alt=""/></div>
-<map name="class_wy_light_1_1_control_a9128e80172dcb8586c9821dc7587f122_icgraph" id="class_wy_light_1_1_control_a9128e80172dcb8586c9821dc7587f122_icgraph">
-<area shape="rect" id="node2" href="class_control_cmd_conf_get_ssid.html#af67882cbf27449a5a83c4150a0d3a64d" title="ControlCmdConfGetSsid::Run" alt="" coords="256,5,456,31"/></map>
-</div>
-</p>
-
-</div>
-</div>
-<a class="anchor" id="a16a660f58bf48a006e1709a28ebc2ae8"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool WyLight::Control::ConfModuleAsSoftAP </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>accesspointName</em> = <code>&quot;Wifly_Light&quot;</code></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Configurates the <a class="el" href="namespace_wy_light.html">WyLight</a> module as stand alone accesspoint. With accesspoint name you can change the ssid for this accesspoint. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">accesspointName</td><td>1 - 32 characters </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>false, in case of an error </dd></dl>
-
-<p><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="class_wy_light_1_1_control_a16a660f58bf48a006e1709a28ebc2ae8_icgraph.png" border="0" usemap="#class_wy_light_1_1_control_a16a660f58bf48a006e1709a28ebc2ae8_icgraph" alt=""/></div>
-<map name="class_wy_light_1_1_control_a16a660f58bf48a006e1709a28ebc2ae8_icgraph" id="class_wy_light_1_1_control_a16a660f58bf48a006e1709a28ebc2ae8_icgraph">
-<area shape="rect" id="node2" href="class_control_cmd_conf_wlan_as_soft_a_p.html#a50b4ee61647b601c032eea75c5eee28e" title="ControlCmdConfWlanAsSoft\lAP::Run" alt="" coords="252,5,443,44"/></map>
-</div>
-</p>
-
-</div>
-</div>
-<a class="anchor" id="a801a17d49dc76e80a2a8ea8709e4d6f5"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool WyLight::Control::ConfModuleForWlan </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>phrase</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>ssid</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>deviceId</em> = <code>&quot;Wifly_Light&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Configurates the <a class="el" href="namespace_wy_light.html">WyLight</a> module as client for an existing wlan network with WPA2 protection </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">phrase</td><td>WPA2 passphrase 1 - 63 characters </td></tr>
-    <tr><td class="paramname">ssid</td><td>1 - 32 characters </td></tr>
-    <tr><td class="paramname">deviceId</td><td>1 - 32 characters, unique name which apperas in the broadcast message </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>false, in case of an error </dd></dl>
-
-<p><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="class_wy_light_1_1_control_a801a17d49dc76e80a2a8ea8709e4d6f5_icgraph.png" border="0" usemap="#class_wy_light_1_1_control_a801a17d49dc76e80a2a8ea8709e4d6f5_icgraph" alt=""/></div>
-<map name="class_wy_light_1_1_control_a801a17d49dc76e80a2a8ea8709e4d6f5_icgraph" id="class_wy_light_1_1_control_a801a17d49dc76e80a2a8ea8709e4d6f5_icgraph">
-<area shape="rect" id="node2" href="class_control_cmd_conf_wlan_as_client.html#a704a7b013bdc0731a2f1f0e465a84f67" title="ControlCmdConfWlanAsClient::Run" alt="" coords="252,12,485,37"/></map>
-</div>
-</p>
-
-</div>
-</div>
-<a class="anchor" id="aa9ac31328f888ff1d90cefe04f7353e6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool WyLight::Control::ConfRebootWlanModule </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Reboot the modul. ATTENTION: You have to reconnect after a reboot </p><dl class="section return"><dt>Returns</dt><dd>false, in case of an error </dd></dl>
-
-<p><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="class_wy_light_1_1_control_aa9ac31328f888ff1d90cefe04f7353e6_icgraph.png" border="0" usemap="#class_wy_light_1_1_control_aa9ac31328f888ff1d90cefe04f7353e6_icgraph" alt=""/></div>
-<map name="class_wy_light_1_1_control_aa9ac31328f888ff1d90cefe04f7353e6_icgraph" id="class_wy_light_1_1_control_aa9ac31328f888ff1d90cefe04f7353e6_icgraph">
-<area shape="rect" id="node2" href="class_control_cmd_conf_reboot_wlan_module.html#a52f20ff6a5ef4fda0e9a2ed5926a3190" title="ControlCmdConfRebootWlan\lModule::Run" alt="" coords="252,5,446,44"/></map>
-</div>
-</p>
-
-</div>
-</div>
-<a class="anchor" id="ad5c8c29c845d42b9e161932be6543ed3"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool WyLight::Control::ConfSetDefaults </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Set the <a class="el" href="namespace_wy_light.html">WyLight</a> module communication parameters to defaults </p><dl class="section return"><dt>Returns</dt><dd>false, in case of an error </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="aa829e0a757758eb960da902803b138d8"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool WyLight::Control::ConfSetDeviceId </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Allows you to give every Wifly_Light device an unique name </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">name</td><td>1 - 32 characters </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>false, in case of an error </dd></dl>
-
-<p><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="class_wy_light_1_1_control_aa829e0a757758eb960da902803b138d8_icgraph.png" border="0" usemap="#class_wy_light_1_1_control_aa829e0a757758eb960da902803b138d8_icgraph" alt=""/></div>
-<map name="class_wy_light_1_1_control_aa829e0a757758eb960da902803b138d8_icgraph" id="class_wy_light_1_1_control_aa829e0a757758eb960da902803b138d8_icgraph">
-<area shape="rect" id="node2" href="class_control_cmd_conf_set_device_id.html#a7f090ba7ff28ab67c8386378b18e47e0" title="ControlCmdConfSetDeviceId::Run" alt="" coords="229,12,453,37"/></map>
-</div>
-</p>
-
-</div>
-</div>
-<a class="anchor" id="a2a9abfc6b25143d95b52f86f4b6c63fc"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool WyLight::Control::ConfSetParameters </td>
-          <td>(</td>
-          <td class="paramtype">std::list&lt; std::string &gt;&#160;</td>
-          <td class="paramname"><em>commands</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a4e41efb72982d45fd792be624ea5c98b"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool WyLight::Control::ConfSetWlan </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>phrase</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>ssid</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Set the <a class="el" href="namespace_wy_light.html">WyLight</a> module wlan connection parameters </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">phrase</td><td>WPA2 passphrase 1 - 63 characters </td></tr>
-    <tr><td class="paramname">ssid</td><td>1 - 32 characters </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>false, in case of an error </dd></dl>
-
-</div>
-</div>
 <a class="anchor" id="ab60eccb9fcdc3e5f4fb1721150c5e31d"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2234,6 +1826,18 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a class="anchor" id="aa02bbcf5672575acd5e4e2f87f11d0b1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_wy_light_1_1_config_control.html">ConfigControl</a> WyLight::Control::mConfig</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a9096a2d760efacbb38e79f465df4fea6"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2318,93 +1922,13 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a class="anchor" id="a1da8bdbd426d9ec86c9c71412efc9c3e"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::list&lt;std::string&gt; WyLight::Control::RN171_BASIC_PARAMETERS</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a8003f29b47827bc89a5b02f3c6005802"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::list&lt;std::string&gt; WyLight::Control::RN171_DEFAULT_PARAMETERS</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a6c82d7bed97ef6a9b0ee61c357123904"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::list&lt;std::string&gt; WyLight::Control::RN171_FACTORY_RESET_PARAMETER</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="af32b715d85a460a6218695849437fcfc"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::list&lt;std::string&gt; WyLight::Control::RN171_SOFT_AP_DEFAULT_PARAMETERS</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>library/<a class="el" href="_wifly_control_8h_source.html">WiflyControl.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jan 11 2015 13:27:37 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 9 2015 00:02:30 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

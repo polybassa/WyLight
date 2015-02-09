@@ -10,7 +10,7 @@ var searchData=
   ['endaddress',['endAddress',['../classintelhex.html#a9b159bea81eb832e37f6cf88a57ca659',1,'intelhex']]],
   ['endcolor',['EndColor',['../struct_wy_light_1_1_fw_cmd_set_gradient.html#a97725ab213c9292073562b2ab6c15934',1,'WyLight::FwCmdSetGradient::EndColor(void) const '],['../struct_wy_light_1_1_fw_cmd_set_gradient.html#a2b323070e0644eebf6a9d9e7502059e1',1,'WyLight::FwCmdSetGradient::EndColor(uint32_t argb)']]],
   ['endofdata',['endOfData',['../classintelhex.html#aff915b320f5a4c2d84340fa57c99499c',1,'intelhex']]],
-  ['endpoint',['Endpoint',['../class_wy_light_1_1_endpoint.html#ab63ad1030b33a946e6874e9a95242652',1,'WyLight::Endpoint::Endpoint(sockaddr_storage &amp;addr, const size_t size, uint16_t port, std::string devId=&quot;&quot;)'],['../class_wy_light_1_1_endpoint.html#ad6953673c9ac61ebbedb32fac5b580ed',1,'WyLight::Endpoint::Endpoint(uint32_t ip=0, uint16_t port=0, uint8_t score=0, std::string devId=&quot;&quot;)']]],
+  ['endpoint',['Endpoint',['../class_wy_light_1_1_endpoint.html#aab76d82a9259639349d02bb67ccbe182',1,'WyLight::Endpoint::Endpoint(const BroadcastMessage &amp;msg, sockaddr_in *addr)'],['../class_wy_light_1_1_endpoint.html#a639bc7be82b01dbe4ff9ab4b478368c0',1,'WyLight::Endpoint::Endpoint(uint32_t ip=0, uint16_t port=0, uint8_t score=0, std::string devId=&quot;&quot;, enum Endpoint::TYPE type=RN171)']]],
   ['endpoint',['Endpoint',['../class_wy_light_1_1_endpoint.html',1,'WyLight']]],
   ['endpoint_2eh',['Endpoint.h',['../_endpoint_8h.html',1,'']]],
   ['exists',['exists',['../classintelhex.html#ab58b4357deef8e4f0af9817393fc0b6e',1,'intelhex']]],

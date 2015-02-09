@@ -90,6 +90,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_wy_light_1_1_broadcast_receiver-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -103,13 +104,13 @@ Collaboration diagram for WyLight::BroadcastReceiver:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_wy_light_1_1_broadcast_receiver__coll__graph.png" border="0" usemap="#_wy_light_1_1_broadcast_receiver_coll__map" alt="Collaboration graph"/></div>
 <map name="_wy_light_1_1_broadcast_receiver_coll__map" id="_wy_light_1_1_broadcast_receiver_coll__map">
-<area shape="rect" id="node2" href="class_wy_light_1_1_endpoint.html" title="{WyLight::Endpoint\n|&#45; mIp\l&#45; mPort\l&#45; mScore\l|+ Endpoint()\l+ Endpoint()\l+ operator\&lt;()\l+ AsUint64()\l+ GetDeviceId()\l+ GetIp()\l+ GetPort()\l+ GetScore()\l+ SetDeviceId()\l+ SetScore()\l+ operator++()\l+ IsValid()\l}" alt="" coords="39,140,168,387"/></map>
+<area shape="rect" id="node2" href="class_wy_light_1_1_endpoint.html" title="{WyLight::Endpoint\n|&#45; mIp\l&#45; mPort\l&#45; mScore\l&#45; mType\l|+ Endpoint()\l+ Endpoint()\l+ operator\&lt;()\l+ WriteTo()\l+ AsUint64()\l+ GetDeviceId()\l+ GetIp()\l+ GetPort()\l+ GetScore()\l+ GetType()\l+ SetDeviceId()\l+ SetScore()\l+ operator++()\l+ IsValid()\l}" alt="" coords="39,140,168,427"/></map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac03335f0824e0de7d0dd87d5187aafa3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#ac03335f0824e0de7d0dd87d5187aafa3">BroadcastReceiver</a> (uint16_t port=<a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a7cdb8d26a95a50b32317bb8332668f9f">BROADCAST_PORT</a>, const std::string &amp;recentFilename=&quot;&quot;, const std::function&lt; void(size_t index, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> &amp;newEndpoint)&gt; &amp;onNewEndpoint=NULL)</td></tr>
-<tr class="separator:ac03335f0824e0de7d0dd87d5187aafa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a758ad7b589172a64f0fd212f63560966"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a758ad7b589172a64f0fd212f63560966">BroadcastReceiver</a> (uint16_t port=<a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a7cdb8d26a95a50b32317bb8332668f9f">BROADCAST_PORT</a>, const std::string &amp;recentFilename=&quot;&quot;, const std::function&lt; void(size_t index, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> &amp;newEndpoint)&gt; onNewEndpoint=<a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a0f62e4802a092c972088831f9696a1f3">NOP</a>)</td></tr>
+<tr class="separator:a758ad7b589172a64f0fd212f63560966"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a027160f232b143e429d7ff61834c9d04"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a027160f232b143e429d7ff61834c9d04">~BroadcastReceiver</a> (void)</td></tr>
 <tr class="separator:a027160f232b143e429d7ff61834c9d04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97759f96b2fd9f2e999cc141a81e17b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a97759f96b2fd9f2e999cc141a81e17b8">operator()</a> (timeval *timeout=NULL)  throw (FatalError)</td></tr>
@@ -122,27 +123,19 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1ed47e38dbc6475905afc528d3bc5420"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8100fdc85265308689ce34147f106bb"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#ab8100fdc85265308689ce34147f106bb">NumRemotes</a> (void) const </td></tr>
 <tr class="separator:ab8100fdc85265308689ce34147f106bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33985105c1c905bf01ec5012c825878e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a33985105c1c905bf01ec5012c825878e">ReadRecentEndpoints</a> (const std::string &amp;filename=&quot;&quot;)</td></tr>
-<tr class="separator:a33985105c1c905bf01ec5012c825878e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5eecaae483b2476ad9213ab4617dfbb6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a5eecaae483b2476ad9213ab4617dfbb6">ReadRecentEndpoints</a> (const std::string &amp;filename)</td></tr>
+<tr class="separator:a5eecaae483b2476ad9213ab4617dfbb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a018a961883af11174f0bc36695bb222c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a018a961883af11174f0bc36695bb222c">Stop</a> (void)</td></tr>
 <tr class="separator:a018a961883af11174f0bc36695bb222c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54367ab857356899e0c5263b856e2d60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a54367ab857356899e0c5263b856e2d60">WriteRecentEndpoints</a> (const std::string &amp;filename=&quot;&quot;, uint8_t threshold=1) const </td></tr>
-<tr class="separator:a54367ab857356899e0c5263b856e2d60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47dfbc4ae76f027dc8a4c07898eb3bda"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a47dfbc4ae76f027dc8a4c07898eb3bda">DeleteRecentEndpointFile</a> (const std::string &amp;filename=&quot;&quot;)</td></tr>
-<tr class="separator:a47dfbc4ae76f027dc8a4c07898eb3bda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a813eb6e2a1c901cd5a0451347545207a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a813eb6e2a1c901cd5a0451347545207a">WriteRecentEndpoints</a> (const std::string &amp;filename, uint8_t threshold=1) const </td></tr>
+<tr class="separator:a813eb6e2a1c901cd5a0451347545207a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a626e76ffc3da6ee75dc6b42b96dd3db9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a626e76ffc3da6ee75dc6b42b96dd3db9">DeleteRecentEndpointFile</a> ()</td></tr>
+<tr class="separator:a626e76ffc3da6ee75dc6b42b96dd3db9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a7cdb8d26a95a50b32317bb8332668f9f"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a7cdb8d26a95a50b32317bb8332668f9f">BROADCAST_PORT</a> = 55555</td></tr>
 <tr class="separator:a7cdb8d26a95a50b32317bb8332668f9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2beb5ad6ccb439295e8909469ce1d9ff"><td class="memItemLeft" align="right" valign="top">static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a2beb5ad6ccb439295e8909469ce1d9ff">DEVICE_ID</a></td></tr>
-<tr class="separator:a2beb5ad6ccb439295e8909469ce1d9ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6b56fcc57286f0132d6fbe19e59599d"><td class="memItemLeft" align="right" valign="top">static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#ae6b56fcc57286f0132d6fbe19e59599d">DEVICE_ID_OLD</a></td></tr>
-<tr class="separator:ae6b56fcc57286f0132d6fbe19e59599d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a066987115c69911571021470e07b524e"><td class="memItemLeft" align="right" valign="top">static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a066987115c69911571021470e07b524e">DEVICE_VERSION</a></td></tr>
-<tr class="separator:a066987115c69911571021470e07b524e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c833aa8d9d1b56b92f1d17c96371be8"><td class="memItemLeft" align="right" valign="top">static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a2c833aa8d9d1b56b92f1d17c96371be8">DEVICE_VERSION4</a></td></tr>
-<tr class="separator:a2c833aa8d9d1b56b92f1d17c96371be8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e3c3f4fe453f48d012ecbb15e8cb5e5"><td class="memItemLeft" align="right" valign="top">static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a7e3c3f4fe453f48d012ecbb15e8cb5e5">STOP_MSG</a></td></tr>
 <tr class="separator:a7e3c3f4fe453f48d012ecbb15e8cb5e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3028b6394222f327c1286e9263a126a7"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a3028b6394222f327c1286e9263a126a7">EMPTY_ENDPOINT</a></td></tr>
@@ -150,17 +143,20 @@ Static Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:af5050182c21622f71d452662f6593a21"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#af5050182c21622f71d452662f6593a21">LockedInsert</a> (<a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> &amp;endpoint)</td></tr>
-<tr class="separator:af5050182c21622f71d452662f6593a21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72d5387b5e67cb068abe1738a9216fe2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a72d5387b5e67cb068abe1738a9216fe2">LockedInsert</a> (<a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> endpoint)</td></tr>
+<tr class="separator:a72d5387b5e67cb068abe1738a9216fe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
+Static Private Member Functions</h2></td></tr>
+<tr class="memitem:a0f62e4802a092c972088831f9696a1f3"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a0f62e4802a092c972088831f9696a1f3">NOP</a> (size_t, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> &amp;)</td></tr>
+<tr class="separator:a0f62e4802a092c972088831f9696a1f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a517a1bb1ac188eeda23f94e021e10a83"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a517a1bb1ac188eeda23f94e021e10a83">mPort</a></td></tr>
 <tr class="separator:a517a1bb1ac188eeda23f94e021e10a83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2924add2376af0c277d876283f9d231b"><td class="memItemLeft" align="right" valign="top">std::set&lt; <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a2924add2376af0c277d876283f9d231b">mIpTableShadow</a></td></tr>
-<tr class="separator:a2924add2376af0c277d876283f9d231b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc3e821ad2d397ae72b6aa2d348cd09f"><td class="memItemLeft" align="right" valign="top">std::map&lt; size_t, <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#adc3e821ad2d397ae72b6aa2d348cd09f">mIpTable</a></td></tr>
-<tr class="separator:adc3e821ad2d397ae72b6aa2d348cd09f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2aa32bdbabeefdb372db886b781af0f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#ad2aa32bdbabeefdb372db886b781af0f">mIpTable</a></td></tr>
+<tr class="separator:ad2aa32bdbabeefdb372db886b781af0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a646652847cc465fd198057cd51177f"><td class="memItemLeft" align="right" valign="top">volatile bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a3a646652847cc465fd198057cd51177f">mIsRunning</a></td></tr>
 <tr class="separator:a3a646652847cc465fd198057cd51177f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f876f24110857a04244ce6b4bf9013b"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; int32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a7f876f24110857a04244ce6b4bf9013b">mNumInstances</a></td></tr>
@@ -175,7 +171,7 @@ index, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> 
 <tr class="separator:a2037f00f38401ae70301cb455ffda2ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ac03335f0824e0de7d0dd87d5187aafa3"></a>
+<a class="anchor" id="a758ad7b589172a64f0fd212f63560966"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -194,8 +190,8 @@ index, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> 
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::function&lt; void(size_t index, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> &amp;newEndpoint)&gt; &amp;&#160;</td>
-          <td class="paramname"><em>onNewEndpoint</em> = <code>NULL</code>&#160;</td>
+          <td class="paramtype">const std::function&lt; void(size_t index, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> &amp;newEndpoint)&gt;&#160;</td>
+          <td class="paramname"><em>onNewEndpoint</em> = <code><a class="el" href="class_wy_light_1_1_broadcast_receiver.html#a0f62e4802a092c972088831f9696a1f3">NOP</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -224,25 +220,19 @@ index, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a47dfbc4ae76f027dc8a4c07898eb3bda"></a>
+<a class="anchor" id="a626e76ffc3da6ee75dc6b42b96dd3db9"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void WyLight::BroadcastReceiver::DeleteRecentEndpointFile </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>filename</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Delete all recent endpoints in file and in the internal IpTables </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">filename</td><td>of the file containing the recent endpoints </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Delete all recent endpoints in file and in the internal IpTables </p>
 
 </div>
 </div>
@@ -297,10 +287,23 @@ index, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> 
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Listen for broadcasts until a new remote is discovered. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">timeout</td><td>to wait until give up, use NULL to wait forever </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>an empty <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> object in case of an error, if a new remote is discovered an <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> object with its address and port is returned. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_wy_light_1_1_fatal_error.html">FatalError</a></td><td>if something failed seriously in the underlying socket </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a class="anchor" id="af5050182c21622f71d452662f6593a21"></a>
+<a class="anchor" id="a72d5387b5e67cb068abe1738a9216fe2"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -308,9 +311,9 @@ index, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool WyLight::BroadcastReceiver::LockedInsert </td>
+          <td class="memname"><a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> WyLight::BroadcastReceiver::LockedInsert </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a>&#160;</td>
           <td class="paramname"><em>endpoint</em></td><td>)</td>
           <td></td>
         </tr>
@@ -323,11 +326,45 @@ index, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> 
 </div><div class="memdoc">
 <p>Insert threadsafe a new endpoint to the mIpTable </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">endpoint</td><td>a copy of this referenced object will be stored to mIpTable </td></tr>
+    <tr><td class="paramname">endpoint</td><td></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if a new endpoint was added, false if it already existed or an error occur </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a copy of the inserted endpoint </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a0f62e4802a092c972088831f9696a1f3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void WyLight::BroadcastReceiver::NOP </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> &amp;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -376,7 +413,7 @@ index, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> 
 
 </div>
 </div>
-<a class="anchor" id="a33985105c1c905bf01ec5012c825878e"></a>
+<a class="anchor" id="a5eecaae483b2476ad9213ab4617dfbb6"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -384,7 +421,7 @@ index, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> 
           <td class="memname">void WyLight::BroadcastReceiver::ReadRecentEndpoints </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>filename</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -415,7 +452,7 @@ index, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> 
 
 </div>
 </div>
-<a class="anchor" id="a54367ab857356899e0c5263b856e2d60"></a>
+<a class="anchor" id="a813eb6e2a1c901cd5a0451347545207a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -423,7 +460,7 @@ index, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> 
           <td class="memname">void WyLight::BroadcastReceiver::WriteRecentEndpoints </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>filename</em> = <code>&quot;&quot;</code>, </td>
+          <td class="paramname"><em>filename</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -469,86 +506,6 @@ index, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> 
 
 </div>
 </div>
-<a class="anchor" id="a2beb5ad6ccb439295e8909469ce1d9ff"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::string WyLight::BroadcastReceiver::DEVICE_ID</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ae6b56fcc57286f0132d6fbe19e59599d"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::string WyLight::BroadcastReceiver::DEVICE_ID_OLD</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a066987115c69911571021470e07b524e"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::string WyLight::BroadcastReceiver::DEVICE_VERSION</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a2c833aa8d9d1b56b92f1d17c96371be8"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::string WyLight::BroadcastReceiver::DEVICE_VERSION4</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a3028b6394222f327c1286e9263a126a7"></a>
 <div class="memitem">
 <div class="memproto">
@@ -569,7 +526,7 @@ index, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> 
 
 </div>
 </div>
-<a class="anchor" id="adc3e821ad2d397ae72b6aa2d348cd09f"></a>
+<a class="anchor" id="ad2aa32bdbabeefdb372db886b781af0f"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -577,27 +534,7 @@ index, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::map&lt;size_t, <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a>&gt; WyLight::BroadcastReceiver::mIpTable</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a2924add2376af0c277d876283f9d231b"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::set&lt;<a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a>&gt; WyLight::BroadcastReceiver::mIpTableShadow</td>
+          <td class="memname">std::vector&lt;<a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a>&gt; WyLight::BroadcastReceiver::mIpTable</td>
         </tr>
       </table>
   </td>
@@ -755,7 +692,7 @@ index, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> 
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jan 11 2015 13:27:36 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 9 2015 00:02:29 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

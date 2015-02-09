@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wiflyerror',['WiflyError',['../namespace_wy_light.html#afd625f917b07e9c48f67c4383af5773f',1,'WyLight']]]
+  ['type',['TYPE',['../class_wy_light_1_1_endpoint.html#afbf72d0d0d89260c13285ef33fce9dda',1,'WyLight::Endpoint']]]
 ];

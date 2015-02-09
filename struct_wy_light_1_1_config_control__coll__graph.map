@@ -1,0 +1,6 @@
+<map id="WyLight::ConfigControl" name="WyLight::ConfigControl">
+<area shape="rect" id="node2" href="$class_wy_light_1_1_telnet_proxy.html" title="{WyLight::TelnetProxy\n||+ TelnetProxy()\l+ ClearResponse()\l+ Close()\l+ RecvString()\l+ Open()\l+ Send()\l+ SendString()\l+ SendRebootCommand()\l+ PerformWifiScan()\l+ ComputeFreeChannel()\l+ ChangeWifiChannel()\l&#45; ExtractStringOfInterest()\l&#45; Recv()\l&#45; RecvString()\l&#45; SendAndWaitForEcho()\l&#45; SetReplaceChar()\l}" alt="" coords="36,640,214,913"/>
+<area shape="rect" id="node3" href="$class_wy_light_1_1_tcp_socket.html" title="{WyLight::TcpSocket\n||+ TcpSocket()\l+ TcpSocket()\l+ Recv()\l+ Send()\l+ Send()\l}" alt="" coords="56,452,194,579"/>
+<area shape="rect" id="node4" href="$class_wy_light_1_1_client_socket.html" title="{WyLight::ClientSocket\n|# mSock\l|+ ClientSocket()\l+ ClientSocket()\l+ ~ClientSocket()\l+ GetAddrCommaSeparated()\l+ GetSocket()\l+ Select()\l}" alt="" coords="25,263,225,403"/>
+<area shape="rect" id="node5" href="$struct_wy_light_1_1_ipv4_addr.html" title="{WyLight::Ipv4Addr\n||+ Ipv4Addr()\l}" alt="" coords="60,128,190,201"/>
+</map>

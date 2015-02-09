@@ -7,10 +7,10 @@ var searchData=
   ['invalidparameter',['InvalidParameter',['../class_wy_light_1_1_invalid_parameter.html#a52625733bfa36035b8f0d0bb89b6d101',1,'WyLight::InvalidParameter']]],
   ['ipv4addr',['Ipv4Addr',['../struct_wy_light_1_1_ipv4_addr.html#a6ed8e919ab4ca060a98ef38c0b662262',1,'WyLight::Ipv4Addr']]],
   ['isappoutdated',['isAppOutdated',['../class_wy_light_1_1_startup_manager.html#ad08fcd62c88d9cfe0186d62a82a4c9e9',1,'WyLight::StartupManager']]],
+  ['iscc3200broadcast',['IsCC3200Broadcast',['../struct_wy_light_1_1_broadcast_message.html#aa4d13a1974b01b216fa3fa03ad09cb05',1,'WyLight::BroadcastMessage']]],
   ['isctrlchar',['IsCtrlChar',['../namespace_wy_light.html#a73355ac8e928398a97bc96a90b29f24a',1,'WyLight']]],
-  ['isdevice',['IsDevice',['../struct_wy_light_1_1_broadcast_message.html#a62f82bc8379fe6f76c72e869319b9fea',1,'WyLight::BroadcastMessage']]],
   ['isresponserequired',['IsResponseRequired',['../class_wy_light_1_1_fw_command.html#a53887169da07e23ecdeec8739acc26ce',1,'WyLight::FwCommand']]],
+  ['isrn171broadcast',['IsRN171Broadcast',['../struct_wy_light_1_1_broadcast_message.html#a7f408100d2cae1f1fed25581a4498d80',1,'WyLight::BroadcastMessage']]],
   ['isvalid',['IsValid',['../class_wy_light_1_1_endpoint.html#a4b0ccfbc29c760fb0c34e9365a3f587d',1,'WyLight::Endpoint']]],
-  ['isversion',['IsVersion',['../struct_wy_light_1_1_broadcast_message.html#a40d7f83632a3c75127721e02815ce382',1,'WyLight::BroadcastMessage']]],
-  ['iswiflybroadcast',['IsWiflyBroadcast',['../struct_wy_light_1_1_broadcast_message.html#a1cddfb2dd5da9655d50d7918944d038b',1,'WyLight::BroadcastMessage']]]
+  ['isversion',['IsVersion',['../struct_wy_light_1_1_broadcast_message.html#a40d7f83632a3c75127721e02815ce382',1,'WyLight::BroadcastMessage']]]
 ];

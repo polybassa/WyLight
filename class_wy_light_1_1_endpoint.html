@@ -87,6 +87,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
@@ -103,14 +104,23 @@ Collaboration diagram for WyLight::Endpoint:</div>
 <div class="center"><img src="class_wy_light_1_1_endpoint__coll__graph.png" border="0" usemap="#_wy_light_1_1_endpoint_coll__map" alt="Collaboration graph"/></div>
 </div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:afbf72d0d0d89260c13285ef33fce9dda"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_endpoint.html#afbf72d0d0d89260c13285ef33fce9dda">TYPE</a> { <a class="el" href="class_wy_light_1_1_endpoint.html#afbf72d0d0d89260c13285ef33fce9ddaa92f317b774b0409a2f22bee0041869e9">RN171</a>, 
+<a class="el" href="class_wy_light_1_1_endpoint.html#afbf72d0d0d89260c13285ef33fce9ddaa5bfadd4a12460985e83fd1f1e2f8a698">CC3200</a>
+ }</td></tr>
+<tr class="separator:afbf72d0d0d89260c13285ef33fce9dda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab63ad1030b33a946e6874e9a95242652"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_endpoint.html#ab63ad1030b33a946e6874e9a95242652">Endpoint</a> (sockaddr_storage &amp;addr, const size_t size, uint16_t port, std::string devId=&quot;&quot;)</td></tr>
-<tr class="separator:ab63ad1030b33a946e6874e9a95242652"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6953673c9ac61ebbedb32fac5b580ed"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_endpoint.html#ad6953673c9ac61ebbedb32fac5b580ed">Endpoint</a> (uint32_t ip=0, uint16_t port=0, uint8_t score=0, std::string devId=&quot;&quot;)</td></tr>
-<tr class="separator:ad6953673c9ac61ebbedb32fac5b580ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab76d82a9259639349d02bb67ccbe182"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_endpoint.html#aab76d82a9259639349d02bb67ccbe182">Endpoint</a> (const <a class="el" href="struct_wy_light_1_1_broadcast_message.html">BroadcastMessage</a> &amp;msg, sockaddr_in *addr)</td></tr>
+<tr class="separator:aab76d82a9259639349d02bb67ccbe182"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a639bc7be82b01dbe4ff9ab4b478368c0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_endpoint.html#a639bc7be82b01dbe4ff9ab4b478368c0">Endpoint</a> (uint32_t ip=0, uint16_t port=0, uint8_t score=0, std::string devId=&quot;&quot;, enum <a class="el" href="class_wy_light_1_1_endpoint.html#afbf72d0d0d89260c13285ef33fce9dda">Endpoint::TYPE</a> type=<a class="el" href="class_wy_light_1_1_endpoint.html#afbf72d0d0d89260c13285ef33fce9ddaa92f317b774b0409a2f22bee0041869e9">RN171</a>)</td></tr>
+<tr class="separator:a639bc7be82b01dbe4ff9ab4b478368c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23413704ae873962f584e8e4bcb3a3b5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_endpoint.html#a23413704ae873962f584e8e4bcb3a3b5">operator&lt;</a> (const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> &amp;ref) const </td></tr>
 <tr class="separator:a23413704ae873962f584e8e4bcb3a3b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6d8e89906aefffb56662d1a40e15eb1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_endpoint.html#aa6d8e89906aefffb56662d1a40e15eb1">WriteTo</a> (std::ostream &amp;out) const </td></tr>
+<tr class="separator:aa6d8e89906aefffb56662d1a40e15eb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0269aa4b78b40366140a4fe98140e67"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_endpoint.html#ae0269aa4b78b40366140a4fe98140e67">AsUint64</a> (void) const </td></tr>
 <tr class="separator:ae0269aa4b78b40366140a4fe98140e67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45f7f0b61014a9732a7c31dec22cfeaf"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_endpoint.html#a45f7f0b61014a9732a7c31dec22cfeaf">GetDeviceId</a> (void) const </td></tr>
@@ -121,6 +131,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac59441c4d0b60d941150401c118ac63f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e19107acfb14d455dde2206b971cc2d"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_endpoint.html#a8e19107acfb14d455dde2206b971cc2d">GetScore</a> (void) const </td></tr>
 <tr class="separator:a8e19107acfb14d455dde2206b971cc2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57da3d8772854e7883d06c21574ac9d3"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="class_wy_light_1_1_endpoint.html#afbf72d0d0d89260c13285ef33fce9dda">TYPE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_endpoint.html#a57da3d8772854e7883d06c21574ac9d3">GetType</a> (void) const </td></tr>
+<tr class="separator:a57da3d8772854e7883d06c21574ac9d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae5d14042f101187ab51b56dcf217318"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_endpoint.html#aae5d14042f101187ab51b56dcf217318">SetDeviceId</a> (const std::string &amp;deviceId)</td></tr>
 <tr class="separator:aae5d14042f101187ab51b56dcf217318"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad23f6d586d667be591e4e63e6dbd1716"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_endpoint.html#ad23f6d586d667be591e4e63e6dbd1716">SetScore</a> (const uint8_t score)</td></tr>
@@ -140,18 +152,41 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a77aa6fe804763e90d570cbef817f1f52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75fd98ec19b20a5470e91a8bf786a368"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_endpoint.html#a75fd98ec19b20a5470e91a8bf786a368">mDeviceId</a></td></tr>
 <tr class="separator:a75fd98ec19b20a5470e91a8bf786a368"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dbafe438b1c19f87b0a40bc6a274e62"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="class_wy_light_1_1_endpoint.html#afbf72d0d0d89260c13285ef33fce9dda">TYPE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_endpoint.html#a3dbafe438b1c19f87b0a40bc6a274e62">mType</a></td></tr>
+<tr class="separator:a3dbafe438b1c19f87b0a40bc6a274e62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
 <tr class="memitem:af3f74b3b812453bb6cc60400dfc0c82c"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_endpoint.html#af3f74b3b812453bb6cc60400dfc0c82c">operator&lt;&lt;</a> (std::ostream &amp;out, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> &amp;ref)</td></tr>
 <tr class="separator:af3f74b3b812453bb6cc60400dfc0c82c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89029c49efc51cf0c3fed383126ed87b"><td class="memItemLeft" align="right" valign="top">std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_endpoint.html#a89029c49efc51cf0c3fed383126ed87b">operator&gt;&gt;</a> (std::istream &amp;in, <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> &amp;ref)</td></tr>
+<tr class="separator:a89029c49efc51cf0c3fed383126ed87b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a156b06fbd5f39ef344d12405b3dd1dd3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_endpoint.html#a156b06fbd5f39ef344d12405b3dd1dd3">operator==</a> (const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> &amp;lhs, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> &amp;rhs)</td></tr>
 <tr class="separator:a156b06fbd5f39ef344d12405b3dd1dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ae8d57dccffa8396ec6e4a7177a784c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wy_light_1_1_endpoint.html#a5ae8d57dccffa8396ec6e4a7177a784c">operator!=</a> (const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> &amp;lhs, const <a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> &amp;rhs)</td></tr>
 <tr class="separator:a5ae8d57dccffa8396ec6e4a7177a784c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Enumeration Documentation</h2>
+<a class="anchor" id="afbf72d0d0d89260c13285ef33fce9dda"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="class_wy_light_1_1_endpoint.html#afbf72d0d0d89260c13285ef33fce9dda">WyLight::Endpoint::TYPE</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="afbf72d0d0d89260c13285ef33fce9ddaa92f317b774b0409a2f22bee0041869e9"></a>RN171&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="afbf72d0d0d89260c13285ef33fce9ddaa5bfadd4a12460985e83fd1f1e2f8a698"></a>CC3200&#160;</td><td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ab63ad1030b33a946e6874e9a95242652"></a>
+<a class="anchor" id="aab76d82a9259639349d02bb67ccbe182"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -161,26 +196,14 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">WyLight::Endpoint::Endpoint </td>
           <td>(</td>
-          <td class="paramtype">sockaddr_storage &amp;&#160;</td>
-          <td class="paramname"><em>addr</em>, </td>
+          <td class="paramtype">const <a class="el" href="struct_wy_light_1_1_broadcast_message.html">BroadcastMessage</a> &amp;&#160;</td>
+          <td class="paramname"><em>msg</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>size</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>port</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>devId</em> = <code>&quot;&quot;</code>&#160;</td>
+          <td class="paramtype">sockaddr_in *&#160;</td>
+          <td class="paramname"><em>addr</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -197,7 +220,7 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ad6953673c9ac61ebbedb32fac5b580ed"></a>
+<a class="anchor" id="a639bc7be82b01dbe4ff9ab4b478368c0"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -226,7 +249,13 @@ Friends</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>devId</em> = <code>&quot;&quot;</code>&#160;</td>
+          <td class="paramname"><em>devId</em> = <code>&quot;&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="class_wy_light_1_1_endpoint.html#afbf72d0d0d89260c13285ef33fce9dda">Endpoint::TYPE</a>&#160;</td>
+          <td class="paramname"><em>type</em> = <code><a class="el" href="class_wy_light_1_1_endpoint.html#afbf72d0d0d89260c13285ef33fce9ddaa92f317b774b0409a2f22bee0041869e9">RN171</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -290,6 +319,15 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_wy_light_1_1_endpoint_a45f7f0b61014a9732a7c31dec22cfeaf_icgraph.png" border="0" usemap="#class_wy_light_1_1_endpoint_a45f7f0b61014a9732a7c31dec22cfeaf_icgraph" alt=""/></div>
+<map name="class_wy_light_1_1_endpoint_a45f7f0b61014a9732a7c31dec22cfeaf_icgraph" id="class_wy_light_1_1_endpoint_a45f7f0b61014a9732a7c31dec22cfeaf_icgraph">
+<area shape="rect" id="node2" href="class_wy_light_1_1_endpoint.html#aa6d8e89906aefffb56662d1a40e15eb1" title="WyLight::Endpoint::\lWriteTo" alt="" coords="190,5,327,44"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a65cca33e7eef5794500621333d2246ed"></a>
@@ -319,7 +357,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_wy_light_1_1_endpoint_a65cca33e7eef5794500621333d2246ed_icgraph.png" border="0" usemap="#class_wy_light_1_1_endpoint_a65cca33e7eef5794500621333d2246ed_icgraph" alt=""/></div>
 <map name="class_wy_light_1_1_endpoint_a65cca33e7eef5794500621333d2246ed_icgraph" id="class_wy_light_1_1_endpoint_a65cca33e7eef5794500621333d2246ed_icgraph">
-<area shape="rect" id="node2" href="class_wy_light_1_1_endpoint.html#a23413704ae873962f584e8e4bcb3a3b5" title="WyLight::Endpoint::\loperator\&lt;" alt="" coords="190,5,327,44"/></map>
+<area shape="rect" id="node2" href="class_wy_light_1_1_endpoint.html#a23413704ae873962f584e8e4bcb3a3b5" title="WyLight::Endpoint::\loperator\&lt;" alt="" coords="190,5,327,44"/><area shape="rect" id="node3" href="class_wy_light_1_1_endpoint.html#aa6d8e89906aefffb56662d1a40e15eb1" title="WyLight::Endpoint::\lWriteTo" alt="" coords="190,68,327,107"/></map>
 </div>
 </p>
 
@@ -352,7 +390,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_wy_light_1_1_endpoint_ac59441c4d0b60d941150401c118ac63f_icgraph.png" border="0" usemap="#class_wy_light_1_1_endpoint_ac59441c4d0b60d941150401c118ac63f_icgraph" alt=""/></div>
 <map name="class_wy_light_1_1_endpoint_ac59441c4d0b60d941150401c118ac63f_icgraph" id="class_wy_light_1_1_endpoint_ac59441c4d0b60d941150401c118ac63f_icgraph">
-<area shape="rect" id="node2" href="class_wy_light_1_1_endpoint.html#a23413704ae873962f584e8e4bcb3a3b5" title="WyLight::Endpoint::\loperator\&lt;" alt="" coords="190,5,327,44"/></map>
+<area shape="rect" id="node2" href="class_wy_light_1_1_endpoint.html#a23413704ae873962f584e8e4bcb3a3b5" title="WyLight::Endpoint::\loperator\&lt;" alt="" coords="190,5,327,44"/><area shape="rect" id="node3" href="class_wy_light_1_1_endpoint.html#aa6d8e89906aefffb56662d1a40e15eb1" title="WyLight::Endpoint::\lWriteTo" alt="" coords="190,68,327,107"/></map>
 </div>
 </p>
 
@@ -367,6 +405,30 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">uint8_t WyLight::Endpoint::GetScore </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a57da3d8772854e7883d06c21574ac9d3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="class_wy_light_1_1_endpoint.html#afbf72d0d0d89260c13285ef33fce9dda">TYPE</a> WyLight::Endpoint::GetType </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -511,6 +573,39 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a class="anchor" id="aa6d8e89906aefffb56662d1a40e15eb1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WyLight::Endpoint::WriteTo </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_wy_light_1_1_endpoint_aa6d8e89906aefffb56662d1a40e15eb1_cgraph.png" border="0" usemap="#class_wy_light_1_1_endpoint_aa6d8e89906aefffb56662d1a40e15eb1_cgraph" alt=""/></div>
+<map name="class_wy_light_1_1_endpoint_aa6d8e89906aefffb56662d1a40e15eb1_cgraph" id="class_wy_light_1_1_endpoint_aa6d8e89906aefffb56662d1a40e15eb1_cgraph">
+<area shape="rect" id="node2" href="class_wy_light_1_1_endpoint.html#a65cca33e7eef5794500621333d2246ed" title="WyLight::Endpoint::\lGetIp" alt="" coords="190,5,327,44"/><area shape="rect" id="node3" href="class_wy_light_1_1_endpoint.html#ac59441c4d0b60d941150401c118ac63f" title="WyLight::Endpoint::\lGetPort" alt="" coords="190,68,327,107"/><area shape="rect" id="node4" href="class_wy_light_1_1_endpoint.html#a45f7f0b61014a9732a7c31dec22cfeaf" title="WyLight::Endpoint::\lGetDeviceId" alt="" coords="190,131,327,169"/></map>
+</div>
+</p>
+
+</div>
+</div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
 <a class="anchor" id="a5ae8d57dccffa8396ec6e4a7177a784c"></a>
 <div class="memitem">
@@ -614,6 +709,40 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a class="anchor" id="a89029c49efc51cf0c3fed383126ed87b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::istream&amp; operator&gt;&gt; </td>
+          <td>(</td>
+          <td class="paramtype">std::istream &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_wy_light_1_1_endpoint.html">Endpoint</a> &amp;&#160;</td>
+          <td class="paramname"><em>ref</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="a75fd98ec19b20a5470e91a8bf786a368"></a>
 <div class="memitem">
@@ -695,13 +824,33 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a class="anchor" id="a3dbafe438b1c19f87b0a40bc6a274e62"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="class_wy_light_1_1_endpoint.html#afbf72d0d0d89260c13285ef33fce9dda">TYPE</a> WyLight::Endpoint::mType</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>library/<a class="el" href="_endpoint_8h_source.html">Endpoint.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jan 11 2015 13:27:37 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 9 2015 00:02:30 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

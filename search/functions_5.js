@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['factoryreset',['FactoryReset',['../struct_wy_light_1_1_config_control.html#acf10cf74213e6cf5f0da3cbe85fbaf8e',1,'WyLight::ConfigControl']]],
   ['fadetime',['fadeTime',['../struct_wy_light_1_1_fw_cmd_set_fade.html#a20e3838aa3f43f4d841b333fe82a8bda',1,'WyLight::FwCmdSetFade::fadeTime(void) const '],['../struct_wy_light_1_1_fw_cmd_set_fade.html#adbc7eb6e984e3d6bc42aa2f4bcd615a1',1,'WyLight::FwCmdSetFade::fadeTime(uint16_t tmms)']]],
   ['fatalerror',['FatalError',['../class_wy_light_1_1_fatal_error.html#ab9aa2dc0e064e47d56052e0e9084200f',1,'WyLight::FatalError']]],
   ['filedownloader',['FileDownloader',['../class_wy_light_1_1_file_downloader.html#afc697be2caf5ff552d1d7fde9bcc0185',1,'WyLight::FileDownloader']]],

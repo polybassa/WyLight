@@ -89,7 +89,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="struct_wy_light_1_1_broadcast_message-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">WyLight::BroadcastMessage Struct Reference</div>  </div>
@@ -98,6 +98,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p><code>#include &lt;<a class="el" href="_broadcast_message_8h_source.html">BroadcastMessage.h</a>&gt;</code></p>
 <div class="dynheader">
+Inheritance diagram for WyLight::BroadcastMessage:</div>
+<div class="dyncontent">
+<div class="center"><img src="struct_wy_light_1_1_broadcast_message__inherit__graph.png" border="0" usemap="#_wy_light_1_1_broadcast_message_inherit__map" alt="Inheritance graph"/></div>
+<map name="_wy_light_1_1_broadcast_message_inherit__map" id="_wy_light_1_1_broadcast_message_inherit__map">
+<area shape="rect" id="node2" href="struct_wy_light_1_1_c_c3200_broadcast_message.html" title="{WyLight::CC3200Broadcast\lMessage\n||+ refresh()\l}" alt="" coords="8,340,194,427"/></map>
+</div>
+<div class="dynheader">
 Collaboration diagram for WyLight::BroadcastMessage:</div>
 <div class="dyncontent">
 <div class="center"><img src="struct_wy_light_1_1_broadcast_message__coll__graph.png" border="0" usemap="#_wy_light_1_1_broadcast_message_coll__map" alt="Collaboration graph"/></div>
@@ -105,8 +112,12 @@ Collaboration diagram for WyLight::BroadcastMessage:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1cddfb2dd5da9655d50d7918944d038b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_wy_light_1_1_broadcast_message.html#a1cddfb2dd5da9655d50d7918944d038b">IsWiflyBroadcast</a> (size_t length) const </td></tr>
-<tr class="separator:a1cddfb2dd5da9655d50d7918944d038b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40d7f83632a3c75127721e02815ce382"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_wy_light_1_1_broadcast_message.html#a40d7f83632a3c75127721e02815ce382">IsVersion</a> (const std::string &amp;deviceVersion) const </td></tr>
+<tr class="separator:a40d7f83632a3c75127721e02815ce382"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4d13a1974b01b216fa3fa03ad09cb05"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_wy_light_1_1_broadcast_message.html#aa4d13a1974b01b216fa3fa03ad09cb05">IsCC3200Broadcast</a> () const </td></tr>
+<tr class="separator:aa4d13a1974b01b216fa3fa03ad09cb05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f408100d2cae1f1fed25581a4498d80"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_wy_light_1_1_broadcast_message.html#a7f408100d2cae1f1fed25581a4498d80">IsRN171Broadcast</a> () const </td></tr>
+<tr class="separator:a7f408100d2cae1f1fed25581a4498d80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -126,62 +137,58 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a3317f27030e3f644bf4c3f29748d2aa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1c6e62089826e12d7cacdfc2b349a6a"><td class="memItemLeft" align="right" valign="top">int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_wy_light_1_1_broadcast_message.html#ae1c6e62089826e12d7cacdfc2b349a6a">asciiTime</a> [13+1]</td></tr>
 <tr class="separator:ae1c6e62089826e12d7cacdfc2b349a6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a8793ce043e90aab098589663d2284c"><td class="memItemLeft" align="right" valign="top">int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_wy_light_1_1_broadcast_message.html#a0a8793ce043e90aab098589663d2284c">version</a> [26+1+1]</td></tr>
-<tr class="separator:a0a8793ce043e90aab098589663d2284c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae80dfbcfe5dd61783560861f294e7e90"><td class="memItemLeft" align="right" valign="top">int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_wy_light_1_1_broadcast_message.html#ae80dfbcfe5dd61783560861f294e7e90">deviceId</a> [32]</td></tr>
-<tr class="separator:ae80dfbcfe5dd61783560861f294e7e90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac82eea9cb7fb2fc4ed56e9b00062460a"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_wy_light_1_1_broadcast_message.html#ac82eea9cb7fb2fc4ed56e9b00062460a">version</a> [26+1+1]</td></tr>
+<tr class="separator:ac82eea9cb7fb2fc4ed56e9b00062460a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8855178f411daaf7f5ea2823ac10139a"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_wy_light_1_1_broadcast_message.html#a8855178f411daaf7f5ea2823ac10139a">deviceId</a> [32]</td></tr>
+<tr class="separator:a8855178f411daaf7f5ea2823ac10139a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52b9e5a034569cf7592cd902c292d577"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_wy_light_1_1_broadcast_message.html#a52b9e5a034569cf7592cd902c292d577">bootTmms</a></td></tr>
 <tr class="separator:a52b9e5a034569cf7592cd902c292d577"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac999a8e5814f990c66a07b448d961095"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_wy_light_1_1_broadcast_message.html#ac999a8e5814f990c66a07b448d961095">sensor</a> [8]</td></tr>
 <tr class="separator:ac999a8e5814f990c66a07b448d961095"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a40d7f83632a3c75127721e02815ce382"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_wy_light_1_1_broadcast_message.html#a40d7f83632a3c75127721e02815ce382">IsVersion</a> (const std::string &amp;deviceVersion) const </td></tr>
-<tr class="separator:a40d7f83632a3c75127721e02815ce382"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62f82bc8379fe6f76c72e869319b9fea"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_wy_light_1_1_broadcast_message.html#a62f82bc8379fe6f76c72e869319b9fea">IsDevice</a> (const std::string &amp;deviceType) const </td></tr>
-<tr class="separator:a62f82bc8379fe6f76c72e869319b9fea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
+Static Protected Attributes</h2></td></tr>
+<tr class="memitem:a7fa674e65b4969f6bd953a2f0760a9f4"><td class="memItemLeft" align="right" valign="top">static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_wy_light_1_1_broadcast_message.html#a7fa674e65b4969f6bd953a2f0760a9f4">RN171_VERSION_2_45</a></td></tr>
+<tr class="separator:a7fa674e65b4969f6bd953a2f0760a9f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a912ed920d92701c2a8392ef903ad6aa1"><td class="memItemLeft" align="right" valign="top">static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_wy_light_1_1_broadcast_message.html#a912ed920d92701c2a8392ef903ad6aa1">RN171_VERSION_4_00</a></td></tr>
+<tr class="separator:a912ed920d92701c2a8392ef903ad6aa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a806ce012525df506057141b7e59d9c72"><td class="memItemLeft" align="right" valign="top">static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_wy_light_1_1_broadcast_message.html#a806ce012525df506057141b7e59d9c72">CC3200_VERSION</a></td></tr>
+<tr class="separator:a806ce012525df506057141b7e59d9c72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a62f82bc8379fe6f76c72e869319b9fea"></a>
+<a class="anchor" id="aa4d13a1974b01b216fa3fa03ad09cb05"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool WyLight::BroadcastMessage::IsDevice </td>
+          <td class="memname">bool WyLight::BroadcastMessage::IsCC3200Broadcast </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>deviceType</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="struct_wy_light_1_1_broadcast_message_a62f82bc8379fe6f76c72e869319b9fea_icgraph.png" border="0" usemap="#struct_wy_light_1_1_broadcast_message_a62f82bc8379fe6f76c72e869319b9fea_icgraph" alt=""/></div>
-<map name="struct_wy_light_1_1_broadcast_message_a62f82bc8379fe6f76c72e869319b9fea_icgraph" id="struct_wy_light_1_1_broadcast_message_a62f82bc8379fe6f76c72e869319b9fea_icgraph">
-<area shape="rect" id="node2" href="struct_wy_light_1_1_broadcast_message.html#a1cddfb2dd5da9655d50d7918944d038b" title="WyLight::BroadcastMessage\l::IsWiflyBroadcast" alt="" coords="244,5,435,44"/></map>
 </div>
-</p>
+</div>
+<a class="anchor" id="a7f408100d2cae1f1fed25581a4498d80"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool WyLight::BroadcastMessage::IsRN171Broadcast </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
 <a class="anchor" id="a40d7f83632a3c75127721e02815ce382"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool WyLight::BroadcastMessage::IsVersion </td>
@@ -191,54 +198,7 @@ Here is the caller graph for this function:</div>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
-
-<p><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="struct_wy_light_1_1_broadcast_message_a40d7f83632a3c75127721e02815ce382_icgraph.png" border="0" usemap="#struct_wy_light_1_1_broadcast_message_a40d7f83632a3c75127721e02815ce382_icgraph" alt=""/></div>
-<map name="struct_wy_light_1_1_broadcast_message_a40d7f83632a3c75127721e02815ce382_icgraph" id="struct_wy_light_1_1_broadcast_message_a40d7f83632a3c75127721e02815ce382_icgraph">
-<area shape="rect" id="node2" href="struct_wy_light_1_1_broadcast_message.html#a1cddfb2dd5da9655d50d7918944d038b" title="WyLight::BroadcastMessage\l::IsWiflyBroadcast" alt="" coords="244,5,435,44"/></map>
-</div>
-</p>
-
-</div>
-</div>
-<a class="anchor" id="a1cddfb2dd5da9655d50d7918944d038b"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool WyLight::BroadcastMessage::IsWiflyBroadcast </td>
-          <td>(</td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>length</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p><div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="struct_wy_light_1_1_broadcast_message_a1cddfb2dd5da9655d50d7918944d038b_cgraph.png" border="0" usemap="#struct_wy_light_1_1_broadcast_message_a1cddfb2dd5da9655d50d7918944d038b_cgraph" alt=""/></div>
-<map name="struct_wy_light_1_1_broadcast_message_a1cddfb2dd5da9655d50d7918944d038b_cgraph" id="struct_wy_light_1_1_broadcast_message_a1cddfb2dd5da9655d50d7918944d038b_cgraph">
-<area shape="rect" id="node2" href="struct_wy_light_1_1_broadcast_message.html#a62f82bc8379fe6f76c72e869319b9fea" title="WyLight::BroadcastMessage\l::IsDevice" alt="" coords="244,5,435,44"/><area shape="rect" id="node3" href="struct_wy_light_1_1_broadcast_message.html#a40d7f83632a3c75127721e02815ce382" title="WyLight::BroadcastMessage\l::IsVersion" alt="" coords="244,68,435,107"/></map>
-</div>
-</p>
 
 </div>
 </div>
@@ -279,6 +239,26 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a class="anchor" id="a806ce012525df506057141b7e59d9c72"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string WyLight::BroadcastMessage::CC3200_VERSION</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a849c4547cb6f96e94e105bbbd2e17aa0"></a>
 <div class="memitem">
 <div class="memproto">
@@ -291,12 +271,12 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a class="anchor" id="ae80dfbcfe5dd61783560861f294e7e90"></a>
+<a class="anchor" id="a8855178f411daaf7f5ea2823ac10139a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int8_t WyLight::BroadcastMessage::deviceId[32]</td>
+          <td class="memname">char WyLight::BroadcastMessage::deviceId[32]</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -339,6 +319,46 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a class="anchor" id="a7fa674e65b4969f6bd953a2f0760a9f4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string WyLight::BroadcastMessage::RN171_VERSION_2_45</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a912ed920d92701c2a8392ef903ad6aa1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string WyLight::BroadcastMessage::RN171_VERSION_4_00</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a7284df9957e3fe4d8cc77d5fd64f6ad0"></a>
 <div class="memitem">
 <div class="memproto">
@@ -375,12 +395,12 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a class="anchor" id="a0a8793ce043e90aab098589663d2284c"></a>
+<a class="anchor" id="ac82eea9cb7fb2fc4ed56e9b00062460a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int8_t WyLight::BroadcastMessage::version[26+1+1]</td>
+          <td class="memname">char WyLight::BroadcastMessage::version[26+1+1]</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -393,7 +413,7 @@ Here is the call graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jan 11 2015 13:27:36 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 9 2015 00:02:29 for Wifly_Light by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

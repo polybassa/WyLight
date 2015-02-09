@@ -1,14 +1,15 @@
 <map id="library/StartupManager.h" name="library/StartupManager.h">
-<area shape="rect" id="node3" href="$_wifly_control_8h.html" title="WiflyControl.h" alt="" coords="839,152,943,177"/>
-<area shape="rect" id="node33" href="$_wifly_control_no_throw_8h.html" title="WiflyControlNoThrow.h" alt="" coords="928,79,1086,104"/>
-<area shape="rect" id="node5" href="$_com_proxy_8h.html" title="ComProxy.h" alt="" coords="844,225,938,251"/>
-<area shape="rect" id="node6" href="$_bl_request_8h.html" title="BlRequest.h" alt="" coords="785,519,879,544"/>
-<area shape="rect" id="node13" href="$_wifly_control_exception_8h.html" title="WiflyControlException.h" alt="" coords="961,445,1124,471"/>
-<area shape="rect" id="node22" href="$_fw_command_8h.html" title="FwCommand.h" alt="" coords="681,299,793,324"/>
-<area shape="rect" id="node29" href="$_telnet_proxy_8h.html" title="TelnetProxy.h" alt="" coords="1113,299,1215,324"/>
-<area shape="rect" id="node30" href="$_script_8h.html" title="Script.h" alt="" coords="1224,225,1291,251"/>
-<area shape="rect" id="node12" href="$_client_socket_8h.html" title="ClientSocket.h" alt="" coords="1110,372,1218,397"/>
-<area shape="rect" id="node23" href="$_fw_response_8h.html" title="FwResponse.h" alt="" coords="658,372,768,397"/>
-<area shape="rect" id="node28" href="$_wifly_color_8h.html" title="WiflyColor.h" alt="" coords="330,372,422,397"/>
-<area shape="rect" id="node27" href="$____stl__patches_8h.html" title="__stl_patches.h" alt="" coords="772,445,887,471"/>
+<area shape="rect" id="node3" href="$_wifly_control_8h.html" title="WiflyControl.h" alt="" coords="787,152,891,177"/>
+<area shape="rect" id="node34" href="$_wifly_control_no_throw_8h.html" title="WiflyControlNoThrow.h" alt="" coords="876,79,1034,104"/>
+<area shape="rect" id="node5" href="$_com_proxy_8h.html" title="ComProxy.h" alt="" coords="632,225,726,251"/>
+<area shape="rect" id="node6" href="$_bl_request_8h.html" title="BlRequest.h" alt="" coords="716,519,810,544"/>
+<area shape="rect" id="node13" href="$_wifly_control_exception_8h.html" title="WiflyControlException.h" alt="" coords="911,445,1073,471"/>
+<area shape="rect" id="node22" href="$_fw_command_8h.html" title="FwCommand.h" alt="" coords="469,299,581,324"/>
+<area shape="rect" id="node29" href="$_telnet_proxy_8h.html" title="TelnetProxy.h" alt="" coords="1151,299,1252,324"/>
+<area shape="rect" id="node30" href="$_script_8h.html" title="Script.h" alt="" coords="1541,225,1608,251"/>
+<area shape="rect" id="node33" href="$_config_control_8h.html" title="ConfigControl.h" alt="" coords="1236,225,1350,251"/>
+<area shape="rect" id="node12" href="$_client_socket_8h.html" title="ClientSocket.h" alt="" coords="1148,372,1255,397"/>
+<area shape="rect" id="node23" href="$_fw_response_8h.html" title="FwResponse.h" alt="" coords="446,372,556,397"/>
+<area shape="rect" id="node28" href="$_wifly_color_8h.html" title="WiflyColor.h" alt="" coords="228,372,321,397"/>
+<area shape="rect" id="node27" href="$____stl__patches_8h.html" title="__stl_patches.h" alt="" coords="560,445,675,471"/>
 </map>
