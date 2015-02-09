@@ -4340,7 +4340,7 @@ fi
 done
 
 
-for ac_header in arpa/inet.h netinet/in.h stddef.h stdint.h stdlib.h string.h sys/socket.h sys/time.h unistd.h
+for ac_header in arpa/inet.h fcntl.h limits.h netinet/in.h stddef.h stdint.h stdlib.h string.h sys/socket.h sys/time.h unistd.h
 do :
   as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
 ac_fn_c_check_header_mongrel "$LINENO" "$ac_header" "$as_ac_Header" "$ac_includes_default"
@@ -4673,7 +4673,7 @@ $as_echo "#define malloc rpl_malloc" >>confdefs.h
 fi
 
 
-for ac_func in clock_gettime floor getcwd gettimeofday inet_ntoa localtime_r memset pow select socket sqrt strstr
+for ac_func in clock_gettime floor getcwd gettimeofday inet_ntoa localtime_r memset pow select socket sqrt strstr strtoul
 do :
   as_ac_var=`$as_echo "ac_cv_func_$ac_func" | $as_tr_sh`
 ac_fn_c_check_func "$LINENO" "$ac_func" "$as_ac_var"
@@ -4687,7 +4687,7 @@ done
 
 
 
-ac_config_files="$ac_config_files Makefile"
+ac_config_files="$ac_config_files Makefile Makefile.android Makefile.cc_bl makedefs Makefile.cc_fw Makefile.cc_te Makefile.cli Makefile.docu Makefile.firmware Makefile.library Makefile.sim Makefile.ut"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -5380,6 +5380,17 @@ do
   case $ac_config_target in
     "config.h") CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
+    "Makefile.android") CONFIG_FILES="$CONFIG_FILES Makefile.android" ;;
+    "Makefile.cc_bl") CONFIG_FILES="$CONFIG_FILES Makefile.cc_bl" ;;
+    "makedefs") CONFIG_FILES="$CONFIG_FILES makedefs" ;;
+    "Makefile.cc_fw") CONFIG_FILES="$CONFIG_FILES Makefile.cc_fw" ;;
+    "Makefile.cc_te") CONFIG_FILES="$CONFIG_FILES Makefile.cc_te" ;;
+    "Makefile.cli") CONFIG_FILES="$CONFIG_FILES Makefile.cli" ;;
+    "Makefile.docu") CONFIG_FILES="$CONFIG_FILES Makefile.docu" ;;
+    "Makefile.firmware") CONFIG_FILES="$CONFIG_FILES Makefile.firmware" ;;
+    "Makefile.library") CONFIG_FILES="$CONFIG_FILES Makefile.library" ;;
+    "Makefile.sim") CONFIG_FILES="$CONFIG_FILES Makefile.sim" ;;
+    "Makefile.ut") CONFIG_FILES="$CONFIG_FILES Makefile.ut" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac

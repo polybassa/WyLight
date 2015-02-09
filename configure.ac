@@ -39,7 +39,7 @@ AC_CHECK_LIB([thread], sleep_for)
 AC_CHECK_LIB([crypto], SHA256)
 
 # Checks for header files.
-AC_CHECK_HEADERS([arpa/inet.h netinet/in.h stddef.h stdint.h stdlib.h string.h sys/socket.h sys/time.h unistd.h])
+AC_CHECK_HEADERS([arpa/inet.h fcntl.h limits.h netinet/in.h stddef.h stdint.h stdlib.h string.h sys/socket.h sys/time.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL
@@ -57,8 +57,19 @@ AC_TYPE_UINT8_T
 
 # Checks for library functions.
 AC_FUNC_MALLOC
-AC_CHECK_FUNCS([clock_gettime floor getcwd gettimeofday inet_ntoa localtime_r memset pow select socket sqrt strstr])
+AC_CHECK_FUNCS([clock_gettime floor getcwd gettimeofday inet_ntoa localtime_r memset pow select socket sqrt strstr strtoul])
 
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([	Makefile 
+					Makefile.android 
+					Makefile.cc_bl 
+					makedefs 
+					Makefile.cc_fw 
+					Makefile.cc_te 
+					Makefile.cli 
+					Makefile.docu 
+					Makefile.firmware 
+					Makefile.library 
+					Makefile.sim 
+					Makefile.ut])
 AC_OUTPUT
