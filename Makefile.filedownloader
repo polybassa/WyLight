@@ -1,8 +1,0 @@
-ifeq ($(MAKECMDGOALS),filedownloader)
-
-# WyLight WyFileDownloaderCli
-${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/WyFileDownloader.o
-${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/ClientSocket.o
-${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/WyFileDownloaderCli.o
-
-endif

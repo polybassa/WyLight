@@ -236,7 +236,7 @@ size_t ut_BroadcastReceiver_TestNoTimeout(void)
 
 size_t ut_BroadcastReceiver_TestRecentEndpoints(void)
 {
-	static const std::string TEST_FILENAME = "./ut/TestRecentEndpoints.txt";
+	static const std::string TEST_FILENAME = "./unit_test_data/TestRecentEndpoints.txt";
 	TestCaseBegin();
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	g_TestOut.str("");
@@ -274,7 +274,7 @@ size_t ut_BroadcastReceiver_TestRecentEndpoints(void)
 size_t ut_BroadcastReceiver_TestRecentEndpoints2(void)
 {
 	g_LastIndex = 0xff;
-	static const std::string TEST_FILENAME = "./ut/TestRecentEndpoints2.txt";
+	static const std::string TEST_FILENAME = "./unit_test_data/TestRecentEndpoints2.txt";
 	TestCaseBegin();
 	SetTestSocket(&g_FirstRemote, 0, capturedBroadcastMessage, sizeof(capturedBroadcastMessage));
 	g_TestOut.str("");

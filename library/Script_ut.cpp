@@ -50,7 +50,7 @@ const char FwCmdScript::INDENTATION_CHARACTER;
 #if 0
 void badFade(void)
 {
-	Script newScript("./ut/TestInput.txt");
+	Script newScript("./unit_test_data/TestInput.txt");
 	auto nextCmd = newScript.Begin();
 
 	assert(refLoop.Equals(*(*(nextCmd++))));
@@ -62,7 +62,7 @@ void badFade(void)
 
 void badGradient(void)
 {
-	Script newScript("./ut/TestInput.txt");
+	Script newScript("./unit_test_data/TestInput.txt");
 	auto nextCmd = newScript.Begin();
 
 	assert(refLoop.Equals(*(*(nextCmd++))));
@@ -73,7 +73,7 @@ void badGradient(void)
 
 void badLoopEnd(void)
 {
-	Script newScript("./ut/TestInput.txt");
+	Script newScript("./unit_test_data/TestInput.txt");
 	auto nextCmd = newScript.Begin();
 
 	assert(refLoop.Equals(*(*(nextCmd++))));
@@ -87,7 +87,7 @@ void badLoopEnd(void)
 
 void badWait(void)
 {
-	Script newScript("./ut/TestInput.txt");
+	Script newScript("./unit_test_data/TestInput.txt");
 	auto nextCmd = newScript.begin();
 
 	assert(refLoop.equals(*(nextCmd++)));
@@ -102,7 +102,7 @@ void badWait(void)
 size_t ut_Script_ReadGood(void)
 {
 	TestCaseBegin();
-	Script newScript("./ut/TestInput.txt");
+	Script newScript("./unit_test_data/TestInput.txt");
 	auto nextCmd = newScript.begin();
 
 	CHECK(refLoop == **newScript.begin());
@@ -121,7 +121,7 @@ size_t ut_Script_ReadGood(void)
 size_t ut_Script_WriteGood(void)
 {
 	TestCaseBegin();
-	Script refScript("./ut/TestInput.txt");
+	Script refScript("./unit_test_data/TestInput.txt");
 	Script::serialize("./exe/TestOutput.txt", refScript);
 	Script newScript("./exe/TestOutput.txt");
 	CHECK(newScript == refScript);
@@ -132,7 +132,7 @@ size_t ut_Script_WriteGood(void)
 size_t ut_Script_WriteGoodWithVersion(void)
 {
 	TestCaseBegin();
-	Script refScript("./ut/TestInput2.txt");
+	Script refScript("./unit_test_data/TestInput2.txt");
 	Script::serialize("./exe/TestOutput2.txt", refScript);
 	Script newScript("./exe/TestOutput2.txt");
 	CHECK(newScript == refScript);

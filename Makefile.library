@@ -80,4 +80,4 @@ library_standart_test: 	${BINDIR}/BroadcastReceiver_ut.bin \
 	$(foreach test,$^,./$(test);)
 
 library_ftp_test: ${BINDIR}/FtpServer_ut.bin
-	$(foreach test,$^,@sh ./ut/ftptest.sh ./$(test) | grep "./library/FtpServer_ut.bin*";)
+	$(foreach test,$^,@sh ./unit_test_data/ftptest.sh ./$(test) | grep "./library/FtpServer_ut.bin*";)

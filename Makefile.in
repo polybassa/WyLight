@@ -171,14 +171,12 @@ ${BINDIR}:
 VPATH=${ROOT}/library
 VPATH+=${ROOT}/firmware
 VPATH+=${ROOT}/cli
-VPATH+=${ROOT}/filedownloader
 
 # Where to find header files that do not live in the source directory.
 IPATH=${ROOT}/library
 IPATH+=${ROOT}/firmware
 IPATH+=${ROOT}/cc_bl
 IPATH+=${ROOT}/cli
-IPATH+=${ROOT}/filedownloader
 
 include Makefile.cc_te 
 include Makefile.cc_bl
@@ -189,6 +187,5 @@ include Makefile.firmware
 include Makefile.android
 include Makefile.docu
 include Makefile.library
-include Makefile.filedownloader
 include Makefile.cli
 

@@ -56,7 +56,7 @@ size_t ut_ScriptManager_Good(void)
 {
 	TestCaseBegin();
 	// preparing a temporary scriptfile
-	const Script refScript("./ut/TestInput.txt");
+	const Script refScript("./unit_test_data/TestInput.txt");
 	const std::string tempScript {std::string("./exe/TestOutput") + ScriptManager::EXTENSION};
 	Script::serialize(tempScript, refScript);
 
