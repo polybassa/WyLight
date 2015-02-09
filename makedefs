@@ -109,7 +109,23 @@ CPPFLAGS= \
 DEFINES=	-Dcc3200 \
     		-DDEBUG
 
-LDFLAGS= 	-gc-sections \
+LDFLAGS= 	-ffunction-sections \
+    		--specs=nano.specs \
+    		-fno-common \
+    		-fmessage-length=0 \
+    		-fdata-sections \
+    		-fno-exceptions \
+    		-mcpu=cortex-m4 \
+    		-fno-builtin \
+    		-std=c11 \
+    		-pedantic \
+    		-fno-rtti \
+    		-mthumb \
+    		-Wall \
+    		-MD \
+    		-O1 \
+    		-g \
+			-Wl,--gc-sections \
          	-static
 
 else 
@@ -140,11 +156,17 @@ AR=${PREFIX}ar
 LD=${PREFIX}ld
 OBJCOPY=${PREFIX}objcopy
 
-LIBGCC:=${shell ${CC} ${CFLAGS} -print-libgcc-file-name}
-LIBC:=${shell ${CC} ${CFLAGS} -print-file-name=libc.a}
-LIBM:=${shell ${CC} ${CFLAGS} -print-file-name=libm.a}
-LIBSTDCPP:=${shell ${CPP} ${CPPFLAGS} -print-file-name=libstdc++_s.a}
-LIBSUPCPP:=${shell ${CPP} ${CPPFLAGS} -print-file-name=libsupc++_s.a}
+#LIBGCC:=${shell ${CC} ${CFLAGS} -print-libgcc-file-name}
+#LIBC:=${shell ${CC} ${CFLAGS} -print-file-name=libc.a}
+#LIBM:=${shell ${CC} ${CFLAGS} -print-file-name=libm.a}
+#LIBSTDCPP:=${shell ${CPP} ${CPPFLAGS} -print-file-name=libstdc++_s.a}
+#LIBSUPCPP:=${shell ${CPP} ${CPPFLAGS} -print-file-name=libsupc++_s.a}
+
+LIBGCC:=-lgcc
+LIBC:=-lc
+LIBM:=-lm
+LIBSTDCPP:=-lstdc++
+LIBSUPCPP:=-lsupc++
 
 # Add the include file paths to AFLAGS and CFLAGS.
 AFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
@@ -164,7 +186,7 @@ ${BINDIR}/%.a:
 	 @${AR} -cr ${@} ${^}
 
 ${BINDIR}/%.elf:
-	 @${LD} -T ${ROOT}/${FLAVOUR}/${PRJ_NAME}.ld ${LDFLAGS} --entry ResetISR -o ${@} $(filter %.o %.a, ${^}) \
+	 @${CC} -T ${ROOT}/${FLAVOUR}/${PRJ_NAME}.ld ${LDFLAGS} --entry ResetISR -o ${@} $(filter %.o %.a, ${^}) \
 	 '${LIBM}' '${LIBC}' '${LIBGCC}' '${LIBSTDCPP}' '${LIBSUPCPP}'
 	 @${OBJCOPY} -O binary ${@} ${@:.elf=.bin}
 
