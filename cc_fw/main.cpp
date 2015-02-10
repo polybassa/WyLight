@@ -33,9 +33,7 @@
 #define APPLICATION_NAME        "WyLight Firmware"
 #define APPLICATION_VERSION     "1.0.0"
 
-/*
- * Override C++ new/delete operators to reduce memory footprint
- */
+//Override C++ new/delete operators to reduce memory footprint
 void *operator new(size_t size) {
 	return pvPortMalloc(size);
 }
@@ -57,30 +55,15 @@ extern "C" void abort(void)
     while (1);
 }
 
-//
-// GLOBAL VARIABLES -- Start
-//
+// GLOBAL VARIABLES
 const CC3200_Platform g_platform;
 std::vector<SimplelinkCustomer*> SimplelinkCustomer::Customers;
 const BroadcastTransmitter g_broadcast;
 const UdpServer g_udpserver;
 const TcpServer g_tcpserver;
-//
-// GLOBAL VARIABLES -- End
-//
 
 //*****************************************************************************
 // FreeRTOS User Hook Functions enabled in FreeRTOSConfig.h
-//*****************************************************************************
-//*****************************************************************************
-//
-//! \brief Application defined hook (or callback) function - assert
-//!
-//! \param[in]  pcFile - Pointer to the File Name
-//! \param[in]  ulLine - Line Number
-//!
-//! \return none
-//!
 //*****************************************************************************
 extern "C" void vAssertCalled(const char *pcFile, unsigned long ulLine) {
 	//Handle Assert here
@@ -88,60 +71,22 @@ extern "C" void vAssertCalled(const char *pcFile, unsigned long ulLine) {
 	}
 }
 
-//*****************************************************************************
-//
-//! \brief Application defined idle task hook
-//!
-//! \param  none
-//!
-//! \return none
-//!
-//*****************************************************************************
 extern "C" void vApplicationIdleHook(void) {
 	//Handle Idle Hook for Profiling, Power Management etc
 }
 
-//*****************************************************************************
-//
-//! \brief Application defined malloc failed hook
-//!
-//! \param  none
-//!
-//! \return none
-//!
-//*****************************************************************************
 extern "C" void vApplicationMallocFailedHook() {
 	//Handle Memory Allocation Errors
 	while (1) {
 	}
 }
 
-//*****************************************************************************
-//
-//! \brief Application defined stack overflow hook
-//!
-//! \param  none
-//!
-//! \return none
-//!
-//*****************************************************************************
 extern "C" void vApplicationStackOverflowHook(xTaskHandle *pxTask, signed portCHAR *pcTaskName) {
 	//Handle FreeRTOS Stack Overflow
 	while (1) {
 	}
 }
 
-//*****************************************************************************
-//
-//! main
-//!
-//! @param  none
-//!
-//! @return none
-//!
-//! @brief  Main function
-//
-//*****************************************************************************
 int main(void) {
 
 	Pwm_TaskInit();

@@ -16,43 +16,6 @@
  You should have received a copy of the GNU General Public License
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-//*****************************************************************************
-// network_if.h
-//
-// Networking interface functions for CC3200 device
-//
-// Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/ 
-// 
-// 
-//  Redistribution and use in source and binary forms, with or without 
-//  modification, are permitted provided that the following conditions 
-//  are met:
-//
-//    Redistributions of source code must retain the above copyright 
-//    notice, this list of conditions and the following disclaimer.
-//
-//    Redistributions in binary form must reproduce the above copyright
-//    notice, this list of conditions and the following disclaimer in the 
-//    documentation and/or other materials provided with the   
-//    distribution.
-//
-//    Neither the name of Texas Instruments Incorporated nor the names of
-//    its contributors may be used to endorse or promote products derived
-//    from this software without specific prior written permission.
-//
-//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
-//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
-//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
-//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
-//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
-//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
-//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-//*****************************************************************************
 // Simplelink includes 
 #include "simplelink.h"
 
@@ -63,7 +26,7 @@
 #include "rom_map.h"
 
 // common interface includes 
-#include "wy_network_if.h"
+#include "NetworkDriver.h"
 #include "timer_if.h"
 #include "gpio_if.h"
 #include "wifi.h"
@@ -73,244 +36,160 @@
 #include "FreeRTOS.h"
 #include "semphr.h"
 
-#define CONNECTION_TIMEOUT  20000  /* 20 sec */
-
-//
-// GLOBAL VARIABLES -- Start
-//
 static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-struct wifiStatusInformation g_WifiStatusInformation;
-const char userGetToken[] = "__SL_G_US";
-static struct apProvisioningData g_ApProvisioningData = { .priority = 0 };
+static NetworkDriver* g_CurrentNetworkDriver;
 
-//
-// GLOBAL VARIABLES -- End
-//
+const uint8_t NetworkDriver::SSID_LEN_MAX = 32;
+const uint8_t NetworkDriver::BSSID_LEN_MAX = 6;
+const uint8_t NetworkDriver::SEC_KEY_LEN_MAX = 64;
+const uint8_t NetworkDriver::SL_STOP_TIMEOUT = 30;
+const uint8_t NetworkDriver::MAX_NUM_NETWORKENTRIES = 10;
+const uint16_t NetworkDriver::CONNECT_TIMEOUT = 20000;
+const std::string NetworkDriver::GET_TOKEN = "__SL_G_US";
 
 void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
+    if (g_CurrentNetworkDriver) {
+        g_CurrentNetworkDriver->SimpleLinkWlanEventHandler(pSlWlanEvent);
+    }
+}
+void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
+    if (g_CurrentNetworkDriver) {
+        g_CurrentNetworkDriver->SimpleLinkNetAppEventHandler(pNetAppEvent);
+    }
+}
+void SimpleLinkGeneralEventHandler(SlDeviceEvent_t *pDevEvent) {
+    if (g_CurrentNetworkDriver) {
+        g_CurrentNetworkDriver->SimpleLinkGeneralEventHandler(pDevEvent);
+    }
+}
+void SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
+    if (g_CurrentNetworkDriver) {
+        g_CurrentNetworkDriver->SimpleLinkSockEventHandler(pSock);
+    }
+}
+void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent, SlHttpServerResponse_t *pSlHttpServerResponse) {
+    if (g_CurrentNetworkDriver) {
+        g_CurrentNetworkDriver->SimpleLinkHttpServerCallback(pSlHttpServerEvent, pSlHttpServerResponse);
+    }
+}
+
+void NetworkDriver::SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 	switch (((SlWlanEvent_t*) pSlWlanEvent)->Event) {
-	case SL_WLAN_CONNECT_EVENT: {
-		SET_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_CONNECTION);
-		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_CONNECTION_FAILED);
-
-		// Copy new connection SSID and BSSID to global parameters
-		memcpy(g_WifiStatusInformation.ConnectionSSID, pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_name,
-				pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_len);
-		memcpy(g_WifiStatusInformation.ConnectionBSSID, pSlWlanEvent->EventData.STAandP2PModeWlanConnected.bssid,
-		SL_BSSID_LENGTH);
-
-		Trace(ZONE_INFO,"[WLAN EVENT] STA Connected to the AP: %s , BSSID: %x:%x:%x:%x:%x:%x\n\r",
-				g_WifiStatusInformation.ConnectionSSID, g_WifiStatusInformation.ConnectionBSSID[0],
-				g_WifiStatusInformation.ConnectionBSSID[1], g_WifiStatusInformation.ConnectionBSSID[2],
-				g_WifiStatusInformation.ConnectionBSSID[3], g_WifiStatusInformation.ConnectionBSSID[4],
-				g_WifiStatusInformation.ConnectionBSSID[5]);
-	}
+	case SL_WLAN_CONNECT_EVENT:
+        this->mStatus.connected = true;
+        this->mStatus.connectFailed = false;
+        this->mInfo.ConnectionSSID = std::string(pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_name, pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_len);
+		this->mInfo.ConnectionBSSID = std::string(pSlWlanEvent->EventData.STAandP2PModeWlanConnected.bssid, SL_BSSID_LENGTH);
+		Trace(ZONE_INFO,"[WLAN EVENT] STA Connected to the AP: %s\n\r", this->mInfo.ConnectionSSID.data());
 		break;
 
-	case SL_WLAN_DISCONNECT_EVENT: {
-		sl_protocol_wlanConnectAsyncResponse_t* pEventData = NULL;
-
-		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_CONNECTION);
-		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_IP_AQUIRED);
-
-		pEventData = &pSlWlanEvent->EventData.STAandP2PModeDisconnected;
-
-		// If the user has initiated 'Disconnect' request,
-		//'reason_code' is SL_USER_INITIATED_DISCONNECTION
-		if (SL_USER_INITIATED_DISCONNECTION == pEventData->reason_code) {
-			Trace(ZONE_INFO,"[WLAN EVENT] Device disconnected from AP: %s , BSSID: %x:%x:%x:%x:%x:%x\n\r",
-					g_WifiStatusInformation.ConnectionSSID, g_WifiStatusInformation.ConnectionBSSID[0],
-					g_WifiStatusInformation.ConnectionBSSID[1], g_WifiStatusInformation.ConnectionBSSID[2],
-					g_WifiStatusInformation.ConnectionBSSID[3], g_WifiStatusInformation.ConnectionBSSID[4],
-					g_WifiStatusInformation.ConnectionBSSID[5]);
-		} else {
-			Trace(ZONE_ERROR,"[WLAN ERROR] Device disconnected from AP: %s , BSSID: %x:%x:%x:%x:%x:%x\n\r",
-					g_WifiStatusInformation.ConnectionSSID, g_WifiStatusInformation.ConnectionBSSID[0],
-					g_WifiStatusInformation.ConnectionBSSID[1], g_WifiStatusInformation.ConnectionBSSID[2],
-					g_WifiStatusInformation.ConnectionBSSID[3], g_WifiStatusInformation.ConnectionBSSID[4],
-					g_WifiStatusInformation.ConnectionBSSID[5]);
-		}
-		memset(g_WifiStatusInformation.ConnectionSSID, 0, sizeof(g_WifiStatusInformation.ConnectionSSID));
-		memset(g_WifiStatusInformation.ConnectionBSSID, 0, sizeof(g_WifiStatusInformation.ConnectionBSSID));
-	}
+	case SL_WLAN_DISCONNECT_EVENT:
+        this->mStatus.connected = false;
+        this->mStatus.IPAcquired = false;
+        Trace(ZONE_INFO,"[WLAN EVENT] Device disconnected from AP: %s\n\r", this->mInfo.ConnectionSSID.data());
+        this->mInfo.ConnectionSSID.clear();
+        this->mInfo.ConnectionBSSID.clear();
 		break;
 
-	case SL_WLAN_STA_CONNECTED_EVENT: {
+	case SL_WLAN_STA_CONNECTED_EVENT:
 		// when device is in AP mode and any client connects to device cc3xxx
-		SET_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_CONNECTION);
-		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_CONNECTION_FAILED);
-
-		//
-		// Information about the connected client (like SSID, MAC etc) will
-		// be available in 'slPeerInfoAsyncResponse_t' - Applications
-		// can use it if required
-		//
-		slPeerInfoAsyncResponse_t *pEventData = NULL;
-		pEventData = &pSlWlanEvent->EventData.APModeStaConnected;
+        this->mStatus.connected = true;
+        this->mStatus.connectFailed = false;
+		slPeerInfoAsyncResponse_t *pEventData = &pSlWlanEvent->EventData.APModeStaConnected;
 		Trace(ZONE_INFO,"[WLAN EVENT] Client connected: %x:%x:%x:%x:%x:%x\r\n", pEventData->mac[0], pEventData->mac[1],
 				pEventData->mac[2], pEventData->mac[3], pEventData->mac[4], pEventData->mac[5]);
-	}
 		break;
 
-	case SL_WLAN_STA_DISCONNECTED_EVENT: {
+	case SL_WLAN_STA_DISCONNECTED_EVENT:
 		// when client disconnects from device (AP)
-		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_CONNECTION);
-		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_IP_LEASED);
-		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_IP_AQUIRED);
-
-		slPeerInfoAsyncResponse_t *pEventData = NULL;
-		pEventData = &pSlWlanEvent->EventData.APModestaDisconnected;
+        this->mStatus.connected = false;
+        this->mStatus.IPAcquired = false;
+        this->mStatus.IPLeased = false;
+		slPeerInfoAsyncResponse_t *pEventData = &pSlWlanEvent->EventData.APModestaDisconnected;
 		Trace(ZONE_INFO,"[WLAN EVENT] Client disconnected: %x:%x:%x:%x:%x:%x\r\n", pEventData->mac[0], pEventData->mac[1],
 				pEventData->mac[2], pEventData->mac[3], pEventData->mac[4], pEventData->mac[5]);
-	}
 		break;
 
-	case SL_WLAN_SMART_CONFIG_START_EVENT: {
-		SET_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_SMARTCONFIG_START);
-	}
-		break;
-
-	case SL_WLAN_SMART_CONFIG_STOP_EVENT: {
-		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_SMARTCONFIG_START);
-	}
-		break;
-
-	case SL_WLAN_P2P_DEV_FOUND_EVENT: {
-		SET_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_P2P_DEV_FOUND);
-	}
-		break;
-
-	case SL_WLAN_P2P_NEG_REQ_RECEIVED_EVENT: {
-		SET_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_P2P_REQ_RECEIVED);
-	}
-		break;
-
-	case SL_WLAN_CONNECTION_FAILED_EVENT: {
+	case SL_WLAN_CONNECTION_FAILED_EVENT:
 		// If device gets any connection failed event
-		SET_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_CONNECTION_FAILED);
-		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_CONNECTION);
-		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_IP_AQUIRED);
-
+        this->mStatus.connected = false;
+        this->mStatus.IPAcquired = false;
+        this->mStatus.connectFailed = true;
 		Trace(ZONE_INFO,"[WLAN EVENT] Connection failed\r\n");
-	}
 		break;
 
-	default: {
+	default:
 		Trace(ZONE_INFO,"[WLAN EVENT] Unexpected event \n\r");
-	}
 		break;
 	}
 
 }
 
-void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
+void NetworkDriver::SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
 	switch (pNetAppEvent->Event) {
-	case SL_NETAPP_IPV4_ACQUIRED: {
-		SET_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_IP_AQUIRED);
-
-		Trace(ZONE_INFO,"[NETAPP EVENT] IP Acquired\r\n");
-	}
+	case SL_NETAPP_IPV4_ACQUIRED:
+    case SL_NETAPP_IPV6_ACQUIRED:
+        this->mStatus.IPAcquired = true;
+        Trace(ZONE_INFO,"[NETAPP EVENT] IP Acquired\r\n");
 		break;
 
-	case SL_NETAPP_IPV6_ACQUIRED: {
-		SET_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_IP_AQUIRED);
-
-		Trace(ZONE_INFO,"[NETAPP EVENT] IP Acquired\r\n");
-
-	}
-		break;
-
-	case SL_NETAPP_IP_LEASED: {
-		SET_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_IP_LEASED);
-
-		SlIpLeasedAsync_t *pEventData = NULL;
-		pEventData = &pNetAppEvent->EventData.ipLeased;
-		g_WifiStatusInformation.StationIpAddress = pEventData->ip_address;
+	case SL_NETAPP_IP_LEASED:
+        this->mStatus.IPLeased = true;
+		SlIpLeasedAsync_t *pEventData = &pNetAppEvent->EventData.ipLeased;
+		this->mStatus.StationIpAddress = pEventData->ip_address;
 		Trace(ZONE_INFO,"[NETAPP EVENT] IP Leased\r\n");
-
-	}
 		break;
 
-	case SL_NETAPP_IP_RELEASED: {
-		CLR_STATUS_BIT(g_WifiStatusInformation.SimpleLinkStatus, STATUS_BIT_IP_LEASED);
-
-		g_WifiStatusInformation.StationIpAddress = 0;
+	case SL_NETAPP_IP_RELEASED:
+        this->mStatus.IPLeased = false;
+		this->mStatus.StationIpAddress = 0;
 		Trace(ZONE_INFO,"[NETAPP EVENT] IP Released\r\n");
-
-	}
 		break;
 
-	case SL_NETAPP_SOCKET_TX_FAILED: {
-		Trace(ZONE_INFO,"[NETAPP EVENT] Socket Error # %d \n\r", pNetAppEvent->EventData.sd);
-
-	}
-		break;
-
-	default: {
-		Trace(ZONE_INFO,"[NETAPP EVENT] Unexpected event \n\r");
-	}
-		break;
-	}
-}
-
-void SimpleLinkGeneralEventHandler(SlDeviceEvent_t *pDevEvent) {
-	
-	Trace(ZONE_INFO,"[GENERAL EVENT] - ID=[%d] Sender=[%d]\n\n", pDevEvent->EventData.deviceEvent.status,
-			pDevEvent->EventData.deviceEvent.sender);
-}
-
-void SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
-	//
-	// This application doesn't work w/ socket - Events are not expected
-	//
-	Trace(ZONE_INFO,"[SOCK EVENT]");
-	switch (pSock->Event) {
 	case SL_NETAPP_SOCKET_TX_FAILED:
-		switch (pSock->EventData.status) {
-		case SL_ECLOSE: {
-			Trace(ZONE_ERROR,"[SOCK ERROR] - close socket (%d) operation "
-					"failed to transmit all queued packets\n\n", pSock->EventData.sd);
-		}
-			break;
-
-		default: {
-			Trace(ZONE_ERROR,"[SOCK ERROR] - TX FAILED  :  socket %d , reason "
-					"(%d) \n\n", pSock->EventData.sd, pSock->EventData.status);
-		}
-			break;
-		}
+		Trace(ZONE_INFO,"[NETAPP EVENT] Socket Error # %d \n\r", pNetAppEvent->EventData.sd);
 		break;
 
-	default: {
-		Trace(ZONE_INFO,"[SOCK EVENT] - Unexpected Event [%x0x]\n\n", pSock->Event);
-	}
+	default:
+		Trace(ZONE_INFO,"[NETAPP EVENT] Unexpected event \n\r");
 		break;
 	}
 }
 
-void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent,
-		SlHttpServerResponse_t *pSlHttpServerResponse) {
-	switch (pSlHttpServerEvent->Event) {
-	case SL_NETAPP_HTTPGETTOKENVALUE: {
+void NetworkDriver::SimpleLinkGeneralEventHandler(SlDeviceEvent_t *pDevEvent) {
+	Trace(ZONE_INFO,"[GENERAL EVENT] - ID=[%d] Sender=[%d]\n\n", pDevEvent->EventData.deviceEvent.status, pDevEvent->EventData.deviceEvent.sender);
+}
 
-		if (memcmp(pSlHttpServerEvent->EventData.httpTokenName.data, userGetToken, sizeof(userGetToken) - 1)) {
-			break;
-		}
-		const int getTokenNumber = pSlHttpServerEvent->EventData.httpTokenName.data[sizeof(userGetToken) - 1] - '0';
-		if (getTokenNumber < 0 || getTokenNumber > MAX_NUM_NETWORKENTRIES) {
-			break;
-		}
-		memcpy(pSlHttpServerResponse->ResponseData.token_value.data,
-				g_ApProvisioningData.networkEntries[getTokenNumber].ssid,
-				g_ApProvisioningData.networkEntries[getTokenNumber].ssid_len);
+void NetworkDriver::SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
+    if (pSock->Event == SL_NETAPP_SOCKET_TX_FAILED) {
+        if (pSock->EventData.status == SL_ECLOSE)
+			Trace(ZONE_ERROR,"[SOCK ERROR] - close socket (%d) operation failed to transmit all queued packets\n\n", pSock->EventData.sd);
+		else
+			Trace(ZONE_ERROR,"[SOCK ERROR] - TX FAILED  :  socket (%d) , reason (%d)\n\n", pSock->EventData.sd, pSock->EventData.status);
+    }
+    else
+		Trace(ZONE_INFO,"[SOCK EVENT] - Unexpected Event [%x0x]\n\n", pSock->Event);
+}
+
+void NetworkDriver::SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent, SlHttpServerResponse_t *pSlHttpServerResponse) {
+	if (pSlHttpServerEvent->Event == SL_NETAPP_HTTPGETTOKENVALUE) {
+        std::string serverGetToken(pSlHttpServerEvent->EventData.httpTokenName.data, pSlHttpServerEvent->EventData.httpTokenName.len);
+        
+        if (serverGetToken.find(GET_TOKEN) == std::string::npos)
+            return;
+        
+        const int getTokenNumber = std::stoi(serverGetToken.substr(GET_TOKEN.length()));
+        if (getTokenNumber < 0 || getTokenNumber > MAX_NUM_NETWORKENTRIES)
+            return;
+        
+		memcpy(pSlHttpServerResponse->ResponseData.token_value.data, this->mProvisioningData.networkEntries[getTokenNumber].ssid,
+				this->mProvisioningData.networkEntries[getTokenNumber].ssid_len);
 		pSlHttpServerResponse->ResponseData.token_value.len =
-				g_ApProvisioningData.networkEntries[getTokenNumber].ssid_len;
+				this->mProvisioningData.networkEntries[getTokenNumber].ssid_len;
 
 	}
-		break;
-
-	case SL_NETAPP_HTTPPOSTTOKENVALUE: {
+	else if (pSlHttpServerEvent->Event ==  SL_NETAPP_HTTPPOSTTOKENVALUE) {
 
 		Trace(ZONE_VERBOSE," token_name: %s ", pSlHttpServerEvent->EventData.httpPostData.token_name.data);
 		Trace(ZONE_VERBOSE," token_data: %s \r\n", pSlHttpServerEvent->EventData.httpPostData.token_value.data);
