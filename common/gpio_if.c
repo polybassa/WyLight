@@ -88,6 +88,16 @@ void GPIO_IF_LedConfigure(unsigned char ucPins) {
 
 }
 
+
+unsigned char GPIO_IF_ReadDeviceConfigurationPin(void) {
+    unsigned int uiGPIOPort;
+    unsigned char pucGPIOPin;
+    
+    GPIO_IF_GetPortNPin(SH_GPIO_3, &uiGPIOPort, &pucGPIOPin);
+    return GPIO_IF_Get(SH_GPIO_3, uiGPIOPort, pucGPIOPin);
+}
+
+
 //*****************************************************************************
 //
 //! Turn LED On

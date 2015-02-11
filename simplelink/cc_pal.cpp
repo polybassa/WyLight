@@ -385,7 +385,7 @@ if(g_ucDMAEnabled)
     SPIIntEnable(ulBase,SPI_INT_EOW);
 
 
-    osi_MsgQCreate(&DMAMsgQ,"DMAQueue",sizeof(int),1);
+    osi_MsgQCreate(&DMAMsgQ, (char *)"DMAQueue",sizeof(int),1);
 #else
 
     IntRegister(INT_LSPI,(void(*)(void))DmaSpiSwIntHandler);

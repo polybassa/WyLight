@@ -44,7 +44,7 @@
 #define ASSERT(expr)                                       \
                          if(!(expr))                        \
                          {                                  \
-                             Trace_String("ASSERT ERROR/r/n"); \
+                             Trace_String("Driverlib ASSERT ERROR\r\n"); \
                          }                                  \
 
 #else

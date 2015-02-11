@@ -25,80 +25,54 @@
 #include "task.h"
 
 //Common interface includes
-#include "wy_network_if.h"
+#include "NetworkDriver.h"
 #include "wy_firmware.h"
 #include "SimplelinkCustomer.h"
 #include "firmware/trace.h"
 #include "wifi.h"
-//
-// GLOBAL VARIABLES -- Start
-//
+#include "gpio_if.h"
+
 static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-static xSemaphoreHandle g_WlanSupportProvisioningDataAddedSemaphore;
 static xTaskHandle g_WlanSupportTaskHandle;
-
-OsiSyncObj_t *WlanSupportProvisioningDataAddedSemaphore = &g_WlanSupportProvisioningDataAddedSemaphore;
 OsiTaskHandle *WlanSupportTaskHandle = &g_WlanSupportTaskHandle;
 
-//
-// GLOBAL VARIABLES -- End
-//
-
-void WlanSupport_TaskInit(void) {
-	osi_SyncObjCreate(WlanSupportProvisioningDataAddedSemaphore);
-}
-
-//*****************************************************************************
-//
-//! Main_Task
-//!
-//!  \param  pvParameters
-//!
-//!  \return none
-//!
-//!  \brief Task handler function to handle the WiFi functionality
-//
-//*****************************************************************************
 void WlanSupport_Task(void *pvParameters) {
 	long retRes = ERROR;
 
-	retRes = (long) Network_IF_ReadDeviceConfigurationPin();
+	retRes = (long) GPIO_IF_ReadDeviceConfigurationPin();
 	while (true) {
 		if (retRes == ROLE_STA) {
 			Trace(ZONE_INFO, "Attempting to auto connect to AP\r\n");
 
-			if (SUCCESS == Network_IF_InitDriver(ROLE_STA)) {
-
+            NetworkDriver networkChip(false);
+			if (networkChip) {
 				osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
 				SimplelinkCustomer::provideService();
 
-				while (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
+                //TODO add semaphore
+				while (networkChip.isConnected()) {
 					osi_Sleep(200);
 				}
 
 				osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
 				SimplelinkCustomer::stopService();
-
-				Network_IF_DeInitDriver();
 			}
 			Trace(ZONE_INFO, "Not connected to AP\r\n");
 		}
+        {
+            NetworkDriver networkChip(true);
+            if (networkChip) {
 
-		if (SUCCESS == Network_IF_InitDriver(ROLE_AP)) {
+                osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
+                SimplelinkCustomer::provideService();
+                
+                networkChip.waitForNewProvisioningData();
 
-			osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
-			SimplelinkCustomer::provideService();
-
-			do {
-				osi_SyncObjWait(WlanSupportProvisioningDataAddedSemaphore, OSI_WAIT_FOREVER);
-			} while (Network_IF_AddNewProfile() != SUCCESS);
-
-			osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
-			SimplelinkCustomer::stopService();
-
-			Network_IF_DeInitDriver();
-		}
+                osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
+                SimplelinkCustomer::stopService();
+            }
+        }
 		retRes = ROLE_STA;
 	}
 }

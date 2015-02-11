@@ -90,7 +90,6 @@ extern "C" void vApplicationStackOverflowHook(xTaskHandle *pxTask, signed portCH
 int main(void) {
 
 	Pwm_TaskInit();
-	WlanSupport_TaskInit();
 	WyLightFirmware_TaskInit();
 
 	osi_TaskCreate(WlanSupport_Task, (signed portCHAR *) "WlanSupport", OSI_STACK_SIZE, NULL, 8, WlanSupportTaskHandle);

@@ -21,10 +21,7 @@
 
 #include "osi.h"
 
-extern OsiSyncObj_t *WlanSupportProvisioningDataAddedSemaphore;
 extern OsiTaskHandle *WlanSupportTaskHandle;
-
-void WlanSupport_TaskInit(void);
 void WlanSupport_Task(void *pvParameters);
 
 #endif /* _WIFI_H_ */
