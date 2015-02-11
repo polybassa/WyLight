@@ -18,6 +18,7 @@
 
 // Simplelink includes 
 #include "simplelink.h"
+#include "wlan.h"
 
 // driverlib includes 
 #include "hw_types.h"
@@ -36,41 +37,95 @@
 #include "FreeRTOS.h"
 #include "semphr.h"
 
+#include "firmware/trace.h"
+
 static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-static NetworkDriver* g_CurrentNetworkDriver;
+#define ASSERT_ON_ERROR(line_number, error_code) \
+{ \
+    if (error_code < 0){ \
+        Trace(ZONE_ERROR, "%d: Assert Error: %d\r\n", line_number, error_code); \
+        return error_code; \
+    } \
+}
 
-const uint8_t NetworkDriver::SSID_LEN_MAX = 32;
-const uint8_t NetworkDriver::BSSID_LEN_MAX = 6;
-const uint8_t NetworkDriver::SEC_KEY_LEN_MAX = 64;
-const uint8_t NetworkDriver::SL_STOP_TIMEOUT = 30;
-const uint8_t NetworkDriver::MAX_NUM_NETWORKENTRIES = 10;
-const uint16_t NetworkDriver::CONNECT_TIMEOUT = 20000;
+#define SUCCESS 0
+
 const std::string NetworkDriver::GET_TOKEN = "__SL_G_US";
+const std::string NetworkDriver::POST_TOKEN = "__SL_P_US";
+NetworkDriver* NetworkDriver::g_Instance = nullptr;
 
 void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
-    if (g_CurrentNetworkDriver) {
-        g_CurrentNetworkDriver->SimpleLinkWlanEventHandler(pSlWlanEvent);
+    if (NetworkDriver::g_Instance) {
+        NetworkDriver::g_Instance->SimpleLinkWlanEventHandler(pSlWlanEvent);
     }
 }
+
 void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
-    if (g_CurrentNetworkDriver) {
-        g_CurrentNetworkDriver->SimpleLinkNetAppEventHandler(pNetAppEvent);
+    if (NetworkDriver::g_Instance) {
+        NetworkDriver::g_Instance->SimpleLinkNetAppEventHandler(pNetAppEvent);
     }
 }
+
 void SimpleLinkGeneralEventHandler(SlDeviceEvent_t *pDevEvent) {
-    if (g_CurrentNetworkDriver) {
-        g_CurrentNetworkDriver->SimpleLinkGeneralEventHandler(pDevEvent);
+    if (NetworkDriver::g_Instance) {
+        NetworkDriver::g_Instance->SimpleLinkGeneralEventHandler(pDevEvent);
     }
 }
+
 void SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
-    if (g_CurrentNetworkDriver) {
-        g_CurrentNetworkDriver->SimpleLinkSockEventHandler(pSock);
+    if (NetworkDriver::g_Instance) {
+        NetworkDriver::g_Instance->SimpleLinkSockEventHandler(pSock);
     }
 }
+
 void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent, SlHttpServerResponse_t *pSlHttpServerResponse) {
-    if (g_CurrentNetworkDriver) {
-        g_CurrentNetworkDriver->SimpleLinkHttpServerCallback(pSlHttpServerEvent, pSlHttpServerResponse);
+    if (NetworkDriver::g_Instance) {
+        NetworkDriver::g_Instance->SimpleLinkHttpServerCallback(pSlHttpServerEvent, pSlHttpServerResponse);
+    }
+}
+
+void NetworkDriver::responseNetworkEntries(const unsigned long entryNumber, SlHttpServerResponse_t *response) const {
+    memcpy(response->ResponseData.token_value.data, this->mProvisioningData.networkEntries[entryNumber].ssid, this->mProvisioningData.networkEntries[entryNumber].ssid_len);
+    response->ResponseData.token_value.len = this->mProvisioningData.networkEntries[entryNumber].ssid_len;
+}
+
+long NetworkDriver::extractTokenNumber(SlHttpServerEvent_t const * const event) const {
+    std::string serverGetToken((const char*)event->EventData.httpTokenName.data, (size_t)event->EventData.httpTokenName.len);
+    if (serverGetToken.find(GET_TOKEN) == std::string::npos) return -1;
+    return (*(--serverGetToken.end())) - '0';
+}
+
+char NetworkDriver::extractTokenParameter(SlHttpServerEvent_t const * const event) const {
+    std::string serverPostToken((const char*)event->EventData.httpPostData.token_name.data, event->EventData.httpPostData.token_name.len);
+    if (serverPostToken.find(POST_TOKEN) == std::string::npos) return 0;
+    return *(--serverPostToken.end());
+}
+
+void NetworkDriver::setSecurityKey(SlHttpServerEvent_t const * const event) {
+    this->mProvisioningData.wlanSecurityKey = std::string((const char*)event->EventData.httpPostData.token_value.data,
+                                                          event->EventData.httpPostData.token_value.len);
+    this->mProvisioningData.secParameters.Key = (char *)this->mProvisioningData.wlanSecurityKey.data();
+    this->mProvisioningData.secParameters.KeyLen = this->mProvisioningData.wlanSecurityKey.length();
+}
+
+void NetworkDriver::setSecurityType(SlHttpServerEvent_t const * const event) {
+    switch (event->EventData.httpPostData.token_value.data[0]) {
+        case '1':
+            this->mProvisioningData.secParameters.Type = SL_SEC_TYPE_WEP;
+            break;
+        case '2':
+            this->mProvisioningData.secParameters.Type = SL_SEC_TYPE_WPA;
+            break;
+        case '3':
+            this->mProvisioningData.secParameters.Type = SL_SEC_TYPE_WPS_PBC;
+            break;
+        case '4':
+            this->mProvisioningData.secParameters.Type = SL_SEC_TYPE_WPS_PIN;
+            break;
+        default:
+            this->mProvisioningData.secParameters.Type = SL_SEC_TYPE_OPEN;
+            break;
     }
 }
 
@@ -79,8 +134,8 @@ void NetworkDriver::SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 	case SL_WLAN_CONNECT_EVENT:
         this->mStatus.connected = true;
         this->mStatus.connectFailed = false;
-        this->mInfo.ConnectionSSID = std::string(pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_name, pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_len);
-		this->mInfo.ConnectionBSSID = std::string(pSlWlanEvent->EventData.STAandP2PModeWlanConnected.bssid, SL_BSSID_LENGTH);
+        this->mInfo.ConnectionSSID = std::string((const char*)pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_name, pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_len);
+		this->mInfo.ConnectionBSSID = std::string((const char*)pSlWlanEvent->EventData.STAandP2PModeWlanConnected.bssid, SL_BSSID_LENGTH);
 		Trace(ZONE_INFO,"[WLAN EVENT] STA Connected to the AP: %s\n\r", this->mInfo.ConnectionSSID.data());
 		break;
 
@@ -92,16 +147,17 @@ void NetworkDriver::SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
         this->mInfo.ConnectionBSSID.clear();
 		break;
 
-	case SL_WLAN_STA_CONNECTED_EVENT:
+    case SL_WLAN_STA_CONNECTED_EVENT: {
 		// when device is in AP mode and any client connects to device cc3xxx
         this->mStatus.connected = true;
         this->mStatus.connectFailed = false;
 		slPeerInfoAsyncResponse_t *pEventData = &pSlWlanEvent->EventData.APModeStaConnected;
 		Trace(ZONE_INFO,"[WLAN EVENT] Client connected: %x:%x:%x:%x:%x:%x\r\n", pEventData->mac[0], pEventData->mac[1],
 				pEventData->mac[2], pEventData->mac[3], pEventData->mac[4], pEventData->mac[5]);
-		break;
+        }
+        break;
 
-	case SL_WLAN_STA_DISCONNECTED_EVENT:
+    case SL_WLAN_STA_DISCONNECTED_EVENT: {
 		// when client disconnects from device (AP)
         this->mStatus.connected = false;
         this->mStatus.IPAcquired = false;
@@ -109,6 +165,7 @@ void NetworkDriver::SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 		slPeerInfoAsyncResponse_t *pEventData = &pSlWlanEvent->EventData.APModestaDisconnected;
 		Trace(ZONE_INFO,"[WLAN EVENT] Client disconnected: %x:%x:%x:%x:%x:%x\r\n", pEventData->mac[0], pEventData->mac[1],
 				pEventData->mac[2], pEventData->mac[3], pEventData->mac[4], pEventData->mac[5]);
+    }
 		break;
 
 	case SL_WLAN_CONNECTION_FAILED_EVENT:
@@ -134,22 +191,25 @@ void NetworkDriver::SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) 
         Trace(ZONE_INFO,"[NETAPP EVENT] IP Acquired\r\n");
 		break;
 
-	case SL_NETAPP_IP_LEASED:
+    case SL_NETAPP_IP_LEASED: {
         this->mStatus.IPLeased = true;
 		SlIpLeasedAsync_t *pEventData = &pNetAppEvent->EventData.ipLeased;
-		this->mStatus.StationIpAddress = pEventData->ip_address;
+		this->mInfo.StationIpAddress = pEventData->ip_address;
 		Trace(ZONE_INFO,"[NETAPP EVENT] IP Leased\r\n");
-		break;
+    }
+        break;
 
-	case SL_NETAPP_IP_RELEASED:
+    case SL_NETAPP_IP_RELEASED: {
         this->mStatus.IPLeased = false;
-		this->mStatus.StationIpAddress = 0;
+		this->mInfo.StationIpAddress = 0;
 		Trace(ZONE_INFO,"[NETAPP EVENT] IP Released\r\n");
-		break;
+    }
+        break;
 
-	case SL_NETAPP_SOCKET_TX_FAILED:
+    case SL_NETAPP_SOCKET_TX_FAILED: {
 		Trace(ZONE_INFO,"[NETAPP EVENT] Socket Error # %d \n\r", pNetAppEvent->EventData.sd);
-		break;
+    }
+        break;
 
 	default:
 		Trace(ZONE_INFO,"[NETAPP EVENT] Unexpected event \n\r");
@@ -157,11 +217,11 @@ void NetworkDriver::SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) 
 	}
 }
 
-void NetworkDriver::SimpleLinkGeneralEventHandler(SlDeviceEvent_t *pDevEvent) {
+void NetworkDriver::SimpleLinkGeneralEventHandler(SlDeviceEvent_t *pDevEvent) const {
 	Trace(ZONE_INFO,"[GENERAL EVENT] - ID=[%d] Sender=[%d]\n\n", pDevEvent->EventData.deviceEvent.status, pDevEvent->EventData.deviceEvent.sender);
 }
 
-void NetworkDriver::SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
+void NetworkDriver::SimpleLinkSockEventHandler(SlSockEvent_t *pSock) const {
     if (pSock->Event == SL_NETAPP_SOCKET_TX_FAILED) {
         if (pSock->EventData.status == SL_ECLOSE)
 			Trace(ZONE_ERROR,"[SOCK ERROR] - close socket (%d) operation failed to transmit all queued packets\n\n", pSock->EventData.sd);
@@ -174,140 +234,98 @@ void NetworkDriver::SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
 
 void NetworkDriver::SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent, SlHttpServerResponse_t *pSlHttpServerResponse) {
 	if (pSlHttpServerEvent->Event == SL_NETAPP_HTTPGETTOKENVALUE) {
-        std::string serverGetToken(pSlHttpServerEvent->EventData.httpTokenName.data, pSlHttpServerEvent->EventData.httpTokenName.len);
-        
-        if (serverGetToken.find(GET_TOKEN) == std::string::npos)
-            return;
-        
-        const int getTokenNumber = std::stoi(serverGetToken.substr(GET_TOKEN.length()));
+        const unsigned long getTokenNumber = this->extractTokenNumber(pSlHttpServerEvent);
         if (getTokenNumber < 0 || getTokenNumber > MAX_NUM_NETWORKENTRIES)
             return;
-        
-		memcpy(pSlHttpServerResponse->ResponseData.token_value.data, this->mProvisioningData.networkEntries[getTokenNumber].ssid,
-				this->mProvisioningData.networkEntries[getTokenNumber].ssid_len);
-		pSlHttpServerResponse->ResponseData.token_value.len =
-				this->mProvisioningData.networkEntries[getTokenNumber].ssid_len;
-
+        this->responseNetworkEntries(getTokenNumber, pSlHttpServerResponse);
 	}
 	else if (pSlHttpServerEvent->Event ==  SL_NETAPP_HTTPPOSTTOKENVALUE) {
 
 		Trace(ZONE_VERBOSE," token_name: %s ", pSlHttpServerEvent->EventData.httpPostData.token_name.data);
 		Trace(ZONE_VERBOSE," token_data: %s \r\n", pSlHttpServerEvent->EventData.httpPostData.token_value.data);
-
-		if ((0
-				== memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USC",
-						pSlHttpServerEvent->EventData.httpPostData.token_name.len))
-				&& (0
-						== memcmp(pSlHttpServerEvent->EventData.httpPostData.token_value.data, "Add",
-								pSlHttpServerEvent->EventData.httpPostData.token_value.len))) {
-			osi_SyncObjSignalFromISR(WlanSupportProvisioningDataAddedSemaphore);
-
+        
+        const char postTokenParameter = this->extractTokenParameter(pSlHttpServerEvent);
+        
+        switch (postTokenParameter) {
+            case 'C':
+                if (std::string((const char*)pSlHttpServerEvent->EventData.httpPostData.token_value.data, pSlHttpServerEvent->EventData.httpPostData.token_value.len) == "Add")
+                        osi_SyncObjSignalFromISR(&this->mProvisioningDataSemaphore);
+                break;
+            case 'D':
+                this->mProvisioningData.wlanSSID = std::string((const char*)pSlHttpServerEvent->EventData.httpPostData.token_value.data, pSlHttpServerEvent->EventData.httpPostData.token_value.len);
+                break;
+            case 'E':
+                this->setSecurityType(pSlHttpServerEvent);
+                break;
+            case 'F':
+                this->setSecurityKey(pSlHttpServerEvent);
+                break;
+            case 'G':
+                this->mProvisioningData.priority = pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] - '0';
+                break;
+                
+            default:
+                break;
 		}
-		if (0
-				== memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USD",
-						pSlHttpServerEvent->EventData.httpPostData.token_name.len)) {
-			memcpy(g_ApProvisioningData.wlanSSID, pSlHttpServerEvent->EventData.httpPostData.token_value.data,
-					pSlHttpServerEvent->EventData.httpPostData.token_value.len);
-			g_ApProvisioningData.wlanSSID[pSlHttpServerEvent->EventData.httpPostData.token_value.len] = 0;
-		}
-
-		if (0
-				== memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USE",
-						pSlHttpServerEvent->EventData.httpPostData.token_name.len)) {
-
-			if (pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] == '0') {
-				g_ApProvisioningData.secParameters.Type = SL_SEC_TYPE_OPEN;	//SL_SEC_TYPE_OPEN
-
-			} else if (pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] == '1') {
-				g_ApProvisioningData.secParameters.Type = SL_SEC_TYPE_WEP;	//SL_SEC_TYPE_WEP
-
-			} else if (pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] == '2') {
-				g_ApProvisioningData.secParameters.Type = SL_SEC_TYPE_WPA;	//SL_SEC_TYPE_WPA
-
-			} else if (pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] == '3') {
-				g_ApProvisioningData.secParameters.Type = SL_SEC_TYPE_WPS_PBC;	//SL_SEC_TYPE_WPA
-
-			} else if (pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] == '4') {
-				g_ApProvisioningData.secParameters.Type = SL_SEC_TYPE_WPS_PIN;	//SL_SEC_TYPE_WPA
-
-			} else {
-				g_ApProvisioningData.secParameters.Type = SL_SEC_TYPE_OPEN;	//SL_SEC_TYPE_OPEN
-			}
-		}
-		if (0
-				== memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USF",
-						pSlHttpServerEvent->EventData.httpPostData.token_name.len)) {
-			memcpy(g_ApProvisioningData.wlanSecurityKey, pSlHttpServerEvent->EventData.httpPostData.token_value.data,
-					pSlHttpServerEvent->EventData.httpPostData.token_value.len);
-			g_ApProvisioningData.wlanSecurityKey[pSlHttpServerEvent->EventData.httpPostData.token_value.len] = 0;
-			g_ApProvisioningData.secParameters.Key = g_ApProvisioningData.wlanSecurityKey;
-			g_ApProvisioningData.secParameters.KeyLen = pSlHttpServerEvent->EventData.httpPostData.token_value.len;
-		}
-		if (0
-				== memcmp(pSlHttpServerEvent->EventData.httpPostData.token_name.data, "__SL_P_USG",
-						pSlHttpServerEvent->EventData.httpPostData.token_name.len)) {
-			g_ApProvisioningData.priority = pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] - '0';
-		}
-	}
-		break;
-	default:
-		break;
 	}
 }
 
-static void InitializeAppVariables(void) {
-	g_WifiStatusInformation.SimpleLinkStatus = 0;
-	g_WifiStatusInformation.StationIpAddress = 0;
-	g_WifiStatusInformation.GatewayIpAddress = 0;
-	memset(g_WifiStatusInformation.ConnectionSSID, 0, sizeof(g_WifiStatusInformation.ConnectionSSID));
-	memset(g_WifiStatusInformation.ConnectionBSSID, 0, sizeof(g_WifiStatusInformation.ConnectionBSSID));
+long NetworkDriver::waitForConnectWithTimeout(const unsigned int timeout_ms) const {
+    static const unsigned int INTERVAL = 5;
+    unsigned int timeoutCounter = 0;
+
+    while ((timeoutCounter < timeout_ms) && !this->mStatus.IPAcquired) {
+        osi_Sleep(INTERVAL);
+        timeoutCounter += INTERVAL;
+    }
+    
+    if (!this->mStatus.connected || !this->mStatus.IPAcquired) {
+        Trace(ZONE_ERROR,"Connecting failed \r\n");
+        return ERROR;
+    } else
+        return SUCCESS;
 }
 
-static long waitForConnectWithTimeout(unsigned int timeout_ms) {
-	unsigned int connectTimeoutCounter = 0;
-	//waiting for the device to connect to the AP and obtain ip address
-	while ((connectTimeoutCounter < timeout_ms) && !IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)) {
-		// wait till connects to an AP
-		osi_Sleep(5);	//waiting for 0,5 secs
-		connectTimeoutCounter += 5;
-	}
-
-	if ((!IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus))
-			|| (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus))) {
-		Trace(ZONE_ERROR,"Connecting failed \r\n");
-		return ERROR;
-	} else return SUCCESS;
+void NetworkDriver::driverStatus::reset(void) {
+    memset(this, 0, sizeof(struct NetworkDriver::driverStatus));
 }
 
-static long ConfigureSimpleLinkToDefaultState() {
-	long retRes = ERROR;
-	int Mode = ERROR;
+void NetworkDriver::statusInformation::reset(void) {
+    memset(this, 0, sizeof(struct NetworkDriver::statusInformation));
+}
 
-	InitializeAppVariables();
+void NetworkDriver::provisioningData::reset(void) {
+    memset(this, 0, sizeof(struct NetworkDriver::provisioningData));
+}
 
-	Mode = sl_Start(0, 0, 0);
+long NetworkDriver::configureSimpleLinkToDefaultState(void) {
+    
+    this->mStatus.reset();
+    this->mInfo.reset();
+    this->mProvisioningData.reset();
+
+	int Mode = sl_Start(NULL, NULL, NULL);
 	ASSERT_ON_ERROR(__LINE__, Mode);
 
 	// If the device is not in station-mode, try putting it in staion-mode
 	if (ROLE_STA != Mode) {
 		if (ROLE_AP == Mode) {
-			// If the device is in AP mode, we need to wait for this event
-			// before doing anything
-			while (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)) {
+			// If the device is in AP mode, we need to wait for this event before doing anything
+            while (!this->mStatus.IPAcquired) {
 				osi_Sleep(10);
 			}
 		}
 
 		// Switch to STA role and restart
-		retRes = sl_WlanSetMode(ROLE_STA);
+		long retRes = sl_WlanSetMode(ROLE_STA);
 		ASSERT_ON_ERROR(__LINE__, retRes);
 
 		retRes = sl_Stop(SL_STOP_TIMEOUT);
 		ASSERT_ON_ERROR(__LINE__, retRes);
 
-		CLR_STATUS_BIT_ALL(g_WifiStatusInformation.SimpleLinkStatus);
-
-		retRes = sl_Start(0, 0, 0);
+        this->mStatus.reset();
+        
+		retRes = sl_Start(NULL, NULL, NULL);
 		ASSERT_ON_ERROR(__LINE__, retRes);
 
 		// Check if the device is in station again
@@ -317,40 +335,35 @@ static long ConfigureSimpleLinkToDefaultState() {
 		}
 	}
 
-// Device in station-mode. Disconnect previous connection if any
-// The function returns 0 if 'Disconnected done', negative number if already
-// disconnected Wait for 'disconnection' event if 0 is returned, Ignore
-// other return-codes
-	if (0 == sl_WlanDisconnect()) {
-		// Wait
-		while (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus)) {
-			osi_Sleep(50);
-		}
-	}
+    // Device in station-mode. Disconnect previous connection if any
+    // The function returns 0 if 'Disconnected done', negative number if already
+    // disconnected Wait for 'disconnection' event if 0 is returned, Ignore
+    // other return-codes
+    this->disconnect();
 
-// Set connection policy to Auto + Fast Connection
-//      (Device's default connection policy)
-	retRes = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1, 1, 0, 0, 0), NULL, 0);
+    // Set connection policy to Auto + Fast Connection
+    //      (Device's default connection policy)
+	long retRes = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1, 1, 0, 0, 0), NULL, 0);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
-// Enable DHCP client
+    // Enable DHCP client
 	unsigned char value = 1;
 	retRes = sl_NetCfgSet(SL_IPV4_STA_P2P_CL_DHCP_ENABLE, 1, sizeof(value), &value);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
-// Disable scan
+    // Disable scan
 	unsigned char configOpt = SL_SCAN_POLICY(0);
 	retRes = sl_WlanPolicySet(SL_POLICY_SCAN, configOpt, NULL, 0);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
-// Set Tx power level for station mode
-// Number between 0-15, as dB offset from max power - 0 will set max power
+    // Set Tx power level for station mode
+    // Number between 0-15, as dB offset from max power - 0 will set max power
 	unsigned char power = 0;
 	retRes = sl_WlanSet(SL_WLAN_CFG_GENERAL_PARAM_ID,
 	WLAN_GENERAL_PARAM_OPT_STA_TX_POWER, sizeof(power), (unsigned char *) &power);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
-// Set PM policy to normal
+    // Set PM policy to normal
 	retRes = sl_WlanPolicySet(SL_POLICY_PM, SL_NORMAL_POLICY, NULL, 0);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
@@ -363,14 +376,15 @@ static long ConfigureSimpleLinkToDefaultState() {
 	retRes = sl_Stop(SL_STOP_TIMEOUT);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
-	InitializeAppVariables();
-
-	return retRes; // Success
+    this->mStatus.reset();
+    this->mInfo.reset();
+    this->mProvisioningData.reset();
+    
+	return retRes;
 }
 
-static long StartSimpleLinkAsStation() {
-	long retRes = ERROR;
-	retRes = ConfigureSimpleLinkToDefaultState();
+long NetworkDriver::startAsStation(void) {
+	long retRes = this->configureSimpleLinkToDefaultState();
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	retRes = sl_Start(NULL, NULL, NULL);
@@ -378,13 +392,13 @@ static long StartSimpleLinkAsStation() {
 
 	Trace(ZONE_VERBOSE,"Started SimpleLink Device in STA Mode\n\r");
 
-	return waitForConnectWithTimeout(CONNECTION_TIMEOUT);
+    return this->waitForConnectWithTimeout(CONNECT_TIMEOUT);
 }
 
-static long StartSimpleLinkAsAP() {
+long NetworkDriver::startAsAccesspoint(void) {
 	long retRes = ERROR;
 
-	retRes = ConfigureSimpleLinkToDefaultState();
+    retRes = this->configureSimpleLinkToDefaultState();
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	Trace(ZONE_VERBOSE,"Device is configured in default state \n\r");
@@ -404,7 +418,7 @@ static long StartSimpleLinkAsAP() {
 	// Restart Simplelink
 	sl_Stop(SL_STOP_TIMEOUT);
 
-	CLR_STATUS_BIT_ALL(g_WifiStatusInformation.SimpleLinkStatus);
+    this->mStatus.reset();
 
 	retRes = sl_Start(NULL, NULL, NULL);
 	ASSERT_ON_ERROR(__LINE__, retRes);
@@ -420,12 +434,12 @@ static long StartSimpleLinkAsAP() {
 	osi_Sleep(8000);
 
 	//Get Scan Result
-	retRes = sl_WlanGetNetworkList(0, MAX_NUM_NETWORKENTRIES, &g_ApProvisioningData.networkEntries[0]);
+	retRes = sl_WlanGetNetworkList(0, MAX_NUM_NETWORKENTRIES, &this->mProvisioningData.networkEntries[0]);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	int i;
 	for (i = 0; i < retRes; i++) {
-		Trace(ZONE_VERBOSE,"%d) SSID %s\n\r", i, g_ApProvisioningData.networkEntries[i].ssid);
+		Trace(ZONE_VERBOSE,"%d) SSID %s\n\r", i, this->mProvisioningData.networkEntries[i].ssid);
 	}
 	Trace(ZONE_VERBOSE,"----------------------------------------------\r\n");
 	//Switch to AP Mode
@@ -461,93 +475,98 @@ static long StartSimpleLinkAsAP() {
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	sl_Stop(SL_STOP_TIMEOUT);
-	CLR_STATUS_BIT_ALL(g_WifiStatusInformation.SimpleLinkStatus);
-
+    this->mStatus.reset();
+    
 	//Initialize the SLHost Driver
 	retRes = sl_Start(NULL, NULL, NULL);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	Trace(ZONE_VERBOSE,"Start AP\r\n");
 	//Wait for Ip Acquired Event in AP Mode
-	while (!IS_IP_ACQUIRED(g_WifiStatusInformation.SimpleLinkStatus)) {
+	while (!this->mStatus.IPAcquired) {
 		osi_Sleep(10);
 	}
 
 	return SUCCESS;
 }
 
-static void Network_IF_DisconnectFromAP(void) {
+void NetworkDriver::disconnect(void) const {
+    Trace(ZONE_VERBOSE, "Disconnect...\n\r");
 	if (sl_WlanDisconnect() == 0) {
-		while (IS_CONNECTED(g_WifiStatusInformation.SimpleLinkStatus))
+		while (this->mStatus.connected)
 			osi_Sleep(10);
 	}
 }
 
-void Network_IF_DeInitDriver(void) {
-	Trace(ZONE_VERBOSE,"SL Disconnect...\n\r");
-    
-	Network_IF_DisconnectFromAP();
+NetworkDriver::~NetworkDriver(void) {
+    this->disconnect();
 	sl_Stop(SL_STOP_TIMEOUT);
-	CLR_STATUS_BIT_ALL(g_WifiStatusInformation.SimpleLinkStatus);
+    NetworkDriver::g_Instance = nullptr;
 }
 
-long Network_IF_InitDriver(unsigned int uiMode) {
-	if (uiMode == ROLE_STA) {
-		unsigned int retry = 2;
-		while (retry--) {
-			if (SUCCESS == StartSimpleLinkAsStation()) {
-				return SUCCESS;
-			}
-			Network_IF_DeInitDriver();
-		}
-		return ERROR;
-	} else if (uiMode == ROLE_AP) {
-		return StartSimpleLinkAsAP();
-	} else {
-		return ERROR;
-	}
+NetworkDriver::NetworkDriver(const bool accesspointMode) {
+    osi_SyncObjCreate(&this->mProvisioningDataSemaphore);
+    
+    if (accesspointMode && (SUCCESS == this->startAsAccesspoint())) {
+        NetworkDriver::g_Instance = this;
+    } else {
+        unsigned int RETRY = 2;
+        long retVal = ERROR;
+        while (RETRY-- && (retVal == ERROR)) {
+            retVal = this->startAsStation();
+        }
+        
+        if (retVal == ERROR) {
+            this->disconnect();
+            sl_Stop(SL_STOP_TIMEOUT);
+        } else {
+            NetworkDriver::g_Instance = this;
+        }
+    }
 }
 
-unsigned char Network_IF_ReadDeviceConfigurationPin(void) {
-	unsigned int uiGPIOPort;
-	unsigned char pucGPIOPin;
-
-//Read GPIO
-	GPIO_IF_GetPortNPin(SH_GPIO_3, &uiGPIOPort, &pucGPIOPin);
-	return GPIO_IF_Get(SH_GPIO_3, uiGPIOPort, pucGPIOPin);
+NetworkDriver::operator bool() const
+{
+    return this == NetworkDriver::g_Instance;
 }
 
-long Network_IF_AddNewProfile(void) {
-	// WPS ?
-	if (g_ApProvisioningData.secParameters.Type == SL_SEC_TYPE_WPS_PBC) {
-		g_ApProvisioningData.secParameters.KeyLen = 0;
-		g_ApProvisioningData.secParameters.Key = "";
+bool NetworkDriver::isConnected(void) const {
+    return this->mStatus.connected;
+}
 
-		CLR_STATUS_BIT_ALL(g_WifiStatusInformation.SimpleLinkStatus);
 
-		sl_WlanConnect(g_ApProvisioningData.wlanSSID, strlen((char*) g_ApProvisioningData.wlanSSID), 0,
-				&g_ApProvisioningData.secParameters, 0);
-		return waitForConnectWithTimeout(CONNECTION_TIMEOUT * 4);
+void NetworkDriver::waitForNewProvisioningData(void) {
+    do {
+        osi_SyncObjWait(&this->mProvisioningDataSemaphore, OSI_WAIT_FOREVER);
+    } while (this->addNewProfile() != SUCCESS);
+}
 
-	} else if (g_ApProvisioningData.secParameters.Type == SL_SEC_TYPE_WPS_PIN) {
+long NetworkDriver::addNewProfile(void) {
+	if (this->mProvisioningData.secParameters.Type == SL_SEC_TYPE_WPS_PBC) {
+		this->mProvisioningData.secParameters.KeyLen = 0;
+		this->mProvisioningData.secParameters.Key = nullptr;
 
-		CLR_STATUS_BIT_ALL(g_WifiStatusInformation.SimpleLinkStatus);
+        this->mStatus.reset();
+        
+		sl_WlanConnect((char *)this->mProvisioningData.wlanSSID.data(), this->mProvisioningData.wlanSSID.length(), 0, &this->mProvisioningData.secParameters, 0);
+		return this->waitForConnectWithTimeout(CONNECT_TIMEOUT * 4);
 
-		sl_WlanConnect(g_ApProvisioningData.wlanSSID, strlen((char*) g_ApProvisioningData.wlanSSID), 0,
-				&g_ApProvisioningData.secParameters, 0);
-		return waitForConnectWithTimeout(CONNECTION_TIMEOUT * 4);
+	} else if (this->mProvisioningData.secParameters.Type == SL_SEC_TYPE_WPS_PIN) {
+
+        this->mStatus.reset();
+
+        sl_WlanConnect((char *)this->mProvisioningData.wlanSSID.data(), this->mProvisioningData.wlanSSID.length(), 0, &this->mProvisioningData.secParameters, 0);
+        return this->waitForConnectWithTimeout(CONNECT_TIMEOUT * 4);
 
 	} else {
 		long retRes = ERROR;
-		retRes = sl_WlanProfileAdd(g_ApProvisioningData.wlanSSID, strlen((char*) g_ApProvisioningData.wlanSSID), 0,
-				&g_ApProvisioningData.secParameters, 0, g_ApProvisioningData.priority, 0);
+		retRes = sl_WlanProfileAdd((char *)this->mProvisioningData.wlanSSID.data(), this->mProvisioningData.wlanSSID.length(), 0,	&this->mProvisioningData.secParameters, 0, this->mProvisioningData.priority, 0);
 		if (retRes < 0) {
 			// Remove all profiles
 			retRes = sl_WlanProfileDel(0xFF);
 			ASSERT_ON_ERROR(__LINE__, retRes);
 			// and try again
-			retRes = sl_WlanProfileAdd(g_ApProvisioningData.wlanSSID, strlen((char*) g_ApProvisioningData.wlanSSID), 0,
-					&g_ApProvisioningData.secParameters, 0, g_ApProvisioningData.priority, 0);
+			retRes = sl_WlanProfileAdd((char *)this->mProvisioningData.wlanSSID.data(), this->mProvisioningData.wlanSSID.length(), 0,	&this->mProvisioningData.secParameters, 0, this->mProvisioningData.priority, 0);
 			ASSERT_ON_ERROR(__LINE__, retRes);
 		}
 		Trace(ZONE_VERBOSE,"Added Profile at index %d \r\n", retRes);

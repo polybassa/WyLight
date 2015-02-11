@@ -20,11 +20,24 @@
 
 #include <stdint.h>
 #include <string>
+#include "osi.h"
+#include "FreeRTOS.h"
+#include "semphr.h"
+
+#include "simplelink.h"
 
 class NetworkDriver {
     
-    static std::string GET_TOKEN;
-
+    static const std::string GET_TOKEN;
+    static const std::string POST_TOKEN;
+    
+    static const uint8_t SSID_LEN_MAX = 32;
+    static const uint8_t BSSID_LEN_MAX = 6;
+    static const uint8_t SEC_KEY_LEN_MAX = 64;
+    static const uint8_t SL_STOP_TIMEOUT = 30;
+    static const uint8_t MAX_NUM_NETWORKENTRIES = 10;
+    static const uint16_t CONNECT_TIMEOUT = 20000;
+    
     struct driverStatus {
         bool networkProcessorOn;
         bool connected;
@@ -32,6 +45,7 @@ class NetworkDriver {
         bool IPAcquired;
         bool connectFailed;
         bool pingDone;
+        void reset(void);
     };
     
     struct statusInformation {
@@ -41,39 +55,55 @@ class NetworkDriver {
         std::string ConnectionSSID;
         std::string ConnectionBSSID;
         unsigned short ConnectionTimeDelayIndex;
+        void reset(void);
     };
     
     struct provisioningData {
         unsigned char priority;
-        char wlanSSID[SSID_LEN_MAX];
-        char wlanSecurityKey[SEC_KEY_LEN_MAX];
+        std::string wlanSSID;
+        std::string wlanSecurityKey;
         SlSecParams_t secParameters;
         Sl_WlanNetworkEntry_t networkEntries[MAX_NUM_NETWORKENTRIES];
+        void reset(void);
     };
     
     struct driverStatus mStatus;
     struct statusInformation mInfo;
     struct provisioningData mProvisioningData;
     
+    xSemaphoreHandle mProvisioningDataSemaphore;
+    
+    void responseNetworkEntries(const unsigned long entryNumber, SlHttpServerResponse_t *response) const;
+    long extractTokenNumber(SlHttpServerEvent_t const * const event) const;
+    char extractTokenParameter(SlHttpServerEvent_t const * const event) const;
+    void setSecurityKey(SlHttpServerEvent_t const * const event);
+    void setSecurityType(SlHttpServerEvent_t const * const event);
+    long waitForConnectWithTimeout(const unsigned int timeout_ms) const;
+    long configureSimpleLinkToDefaultState(void);
+    long startAsStation(void);
+    long startAsAccesspoint(void);
+    void disconnect(void) const;
+    long addNewProfile(void);
+
 public:
-    static const uint8_t SSID_LEN_MAX;
-    static const uint8_t BSSID_LEN_MAX;
-    static const uint8_t SEC_KEY_LEN_MAX;
-    static const uint8_t SL_STOP_TIMEOUT;
-    static const uint8_t MAX_NUM_NETWORKENTRIES;
-    static const uint16_t CONNECT_TIMEOUT_MS;
+    static NetworkDriver* g_Instance;
+
     
     NetworkDriver(const bool accesspointMode);
     NetworkDriver(const NetworkDriver&) = delete;
     NetworkDriver& operator=(const NetworkDriver&) = delete;
     NetworkDriver(NetworkDriver&&) = delete;
+    ~NetworkDriver(void);
     
     void waitForNewProvisioningData(void);
+    operator bool() const;
+    bool isConnected(void) const;
+
     
     void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent);
     void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent);
-    void SimpleLinkGeneralEventHandler(SlDeviceEvent_t *pDevEvent);
-    void SimpleLinkSockEventHandler(SlSockEvent_t *pSock);
+    void SimpleLinkGeneralEventHandler(SlDeviceEvent_t *pDevEvent) const;
+    void SimpleLinkSockEventHandler(SlSockEvent_t *pSock) const;
     void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent, SlHttpServerResponse_t *pSlHttpServerResponse);
 };
 
