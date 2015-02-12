@@ -55,76 +55,70 @@ const std::string NetworkDriver::GET_TOKEN = "__SL_G_US";
 const std::string NetworkDriver::POST_TOKEN = "__SL_P_US";
 NetworkDriver* NetworkDriver::g_Instance = nullptr;
 
+struct NetworkDriver::provisioningData NetworkDriver::mProvisioningData;
+struct NetworkDriver::driverStatus NetworkDriver::mStatus;
+struct NetworkDriver::statusInformation NetworkDriver::mInfo;
+xSemaphoreHandle NetworkDriver::mProvisioningDataSemaphore;
+
 void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
-    if (NetworkDriver::g_Instance) {
-        NetworkDriver::g_Instance->SimpleLinkWlanEventHandler(pSlWlanEvent);
-    }
+    NetworkDriver::SimpleLinkWlanEventHandler(pSlWlanEvent);
 }
 
 void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
-    if (NetworkDriver::g_Instance) {
-        NetworkDriver::g_Instance->SimpleLinkNetAppEventHandler(pNetAppEvent);
-    }
+    NetworkDriver::SimpleLinkNetAppEventHandler(pNetAppEvent);
 }
 
 void SimpleLinkGeneralEventHandler(SlDeviceEvent_t *pDevEvent) {
-    if (NetworkDriver::g_Instance) {
-        NetworkDriver::g_Instance->SimpleLinkGeneralEventHandler(pDevEvent);
-    }
+    NetworkDriver::SimpleLinkGeneralEventHandler(pDevEvent);
 }
 
 void SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
-    if (NetworkDriver::g_Instance) {
-        NetworkDriver::g_Instance->SimpleLinkSockEventHandler(pSock);
-    }
+    NetworkDriver::SimpleLinkSockEventHandler(pSock);
 }
 
 void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent, SlHttpServerResponse_t *pSlHttpServerResponse) {
-    if (NetworkDriver::g_Instance) {
-        NetworkDriver::g_Instance->SimpleLinkHttpServerCallback(pSlHttpServerEvent, pSlHttpServerResponse);
-    }
+    NetworkDriver::SimpleLinkHttpServerCallback(pSlHttpServerEvent, pSlHttpServerResponse);
 }
 
-void NetworkDriver::responseNetworkEntries(const unsigned long entryNumber, SlHttpServerResponse_t *response) const {
-    memcpy(response->ResponseData.token_value.data, this->mProvisioningData.networkEntries[entryNumber].ssid, this->mProvisioningData.networkEntries[entryNumber].ssid_len);
-    response->ResponseData.token_value.len = this->mProvisioningData.networkEntries[entryNumber].ssid_len;
+void NetworkDriver::responseNetworkEntries(const unsigned long entryNumber, SlHttpServerResponse_t *response) {
+    memcpy(response->ResponseData.token_value.data, NetworkDriver::mProvisioningData.networkEntries[entryNumber].ssid, NetworkDriver::mProvisioningData.networkEntries[entryNumber].ssid_len);
+    response->ResponseData.token_value.len = NetworkDriver::mProvisioningData.networkEntries[entryNumber].ssid_len;
 }
 
-long NetworkDriver::extractTokenNumber(SlHttpServerEvent_t const * const event) const {
+long NetworkDriver::extractTokenNumber(SlHttpServerEvent_t const * const event) {
     std::string serverGetToken((const char*)event->EventData.httpTokenName.data, (size_t)event->EventData.httpTokenName.len);
     if (serverGetToken.find(GET_TOKEN) == std::string::npos) return -1;
     return (*(--serverGetToken.end())) - '0';
 }
 
-char NetworkDriver::extractTokenParameter(SlHttpServerEvent_t const * const event) const {
+char NetworkDriver::extractTokenParameter(SlHttpServerEvent_t const * const event) {
     std::string serverPostToken((const char*)event->EventData.httpPostData.token_name.data, event->EventData.httpPostData.token_name.len);
     if (serverPostToken.find(POST_TOKEN) == std::string::npos) return 0;
     return *(--serverPostToken.end());
 }
 
 void NetworkDriver::setSecurityKey(SlHttpServerEvent_t const * const event) {
-    this->mProvisioningData.wlanSecurityKey = std::string((const char*)event->EventData.httpPostData.token_value.data,
-                                                          event->EventData.httpPostData.token_value.len);
-    this->mProvisioningData.secParameters.Key = (char *)this->mProvisioningData.wlanSecurityKey.data();
-    this->mProvisioningData.secParameters.KeyLen = this->mProvisioningData.wlanSecurityKey.length();
+    NetworkDriver::mProvisioningData.wlanSecurityKey = std::string((const char*)event->EventData.httpPostData.token_value.data, event->EventData.httpPostData.token_value.len);
+    NetworkDriver::mProvisioningData.secParameters.Key = (char *)NetworkDriver::mProvisioningData.wlanSecurityKey.data();
+    NetworkDriver::mProvisioningData.secParameters.KeyLen = NetworkDriver::mProvisioningData.wlanSecurityKey.length();
 }
 
 void NetworkDriver::setSecurityType(SlHttpServerEvent_t const * const event) {
     switch (event->EventData.httpPostData.token_value.data[0]) {
         case '1':
-            this->mProvisioningData.secParameters.Type = SL_SEC_TYPE_WEP;
+            NetworkDriver::mProvisioningData.secParameters.Type = SL_SEC_TYPE_WEP;
             break;
         case '2':
-            this->mProvisioningData.secParameters.Type = SL_SEC_TYPE_WPA;
+            NetworkDriver::mProvisioningData.secParameters.Type = SL_SEC_TYPE_WPA;
             break;
         case '3':
-            this->mProvisioningData.secParameters.Type = SL_SEC_TYPE_WPS_PBC;
+            NetworkDriver::mProvisioningData.secParameters.Type = SL_SEC_TYPE_WPS_PBC;
             break;
         case '4':
-            this->mProvisioningData.secParameters.Type = SL_SEC_TYPE_WPS_PIN;
+            NetworkDriver::mProvisioningData.secParameters.Type = SL_SEC_TYPE_WPS_PIN;
             break;
         default:
-            this->mProvisioningData.secParameters.Type = SL_SEC_TYPE_OPEN;
+            NetworkDriver::mProvisioningData.secParameters.Type = SL_SEC_TYPE_OPEN;
             break;
     }
 }
@@ -132,25 +126,25 @@ void NetworkDriver::setSecurityType(SlHttpServerEvent_t const * const event) {
 void NetworkDriver::SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 	switch (((SlWlanEvent_t*) pSlWlanEvent)->Event) {
 	case SL_WLAN_CONNECT_EVENT:
-        this->mStatus.connected = true;
-        this->mStatus.connectFailed = false;
-        this->mInfo.ConnectionSSID = std::string((const char*)pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_name, pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_len);
-		this->mInfo.ConnectionBSSID = std::string((const char*)pSlWlanEvent->EventData.STAandP2PModeWlanConnected.bssid, SL_BSSID_LENGTH);
-		Trace(ZONE_INFO,"[WLAN EVENT] STA Connected to the AP: %s\n\r", this->mInfo.ConnectionSSID.data());
+        NetworkDriver::mStatus.connected = true;
+        NetworkDriver::mStatus.connectFailed = false;
+        NetworkDriver::mInfo.ConnectionSSID = std::string((const char*)pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_name, pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_len);
+		NetworkDriver::mInfo.ConnectionBSSID = std::string((const char*)pSlWlanEvent->EventData.STAandP2PModeWlanConnected.bssid, SL_BSSID_LENGTH);
+		Trace(ZONE_INFO,"[WLAN EVENT] STA Connected to the AP: %s\n\r", NetworkDriver::mInfo.ConnectionSSID.data());
 		break;
 
 	case SL_WLAN_DISCONNECT_EVENT:
-        this->mStatus.connected = false;
-        this->mStatus.IPAcquired = false;
-        Trace(ZONE_INFO,"[WLAN EVENT] Device disconnected from AP: %s\n\r", this->mInfo.ConnectionSSID.data());
-        this->mInfo.ConnectionSSID.clear();
-        this->mInfo.ConnectionBSSID.clear();
+        NetworkDriver::mStatus.connected = false;
+        NetworkDriver::mStatus.IPAcquired = false;
+        Trace(ZONE_INFO,"[WLAN EVENT] Device disconnected from AP: %s\n\r", NetworkDriver::mInfo.ConnectionSSID.data());
+        NetworkDriver::mInfo.ConnectionSSID.clear();
+        NetworkDriver::mInfo.ConnectionBSSID.clear();
 		break;
 
     case SL_WLAN_STA_CONNECTED_EVENT: {
 		// when device is in AP mode and any client connects to device cc3xxx
-        this->mStatus.connected = true;
-        this->mStatus.connectFailed = false;
+        NetworkDriver::mStatus.connected = true;
+        NetworkDriver::mStatus.connectFailed = false;
 		slPeerInfoAsyncResponse_t *pEventData = &pSlWlanEvent->EventData.APModeStaConnected;
 		Trace(ZONE_INFO,"[WLAN EVENT] Client connected: %x:%x:%x:%x:%x:%x\r\n", pEventData->mac[0], pEventData->mac[1],
 				pEventData->mac[2], pEventData->mac[3], pEventData->mac[4], pEventData->mac[5]);
@@ -159,9 +153,9 @@ void NetworkDriver::SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 
     case SL_WLAN_STA_DISCONNECTED_EVENT: {
 		// when client disconnects from device (AP)
-        this->mStatus.connected = false;
-        this->mStatus.IPAcquired = false;
-        this->mStatus.IPLeased = false;
+        NetworkDriver::mStatus.connected = false;
+        NetworkDriver::mStatus.IPAcquired = false;
+        NetworkDriver::mStatus.IPLeased = false;
 		slPeerInfoAsyncResponse_t *pEventData = &pSlWlanEvent->EventData.APModestaDisconnected;
 		Trace(ZONE_INFO,"[WLAN EVENT] Client disconnected: %x:%x:%x:%x:%x:%x\r\n", pEventData->mac[0], pEventData->mac[1],
 				pEventData->mac[2], pEventData->mac[3], pEventData->mac[4], pEventData->mac[5]);
@@ -170,9 +164,9 @@ void NetworkDriver::SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent) {
 
 	case SL_WLAN_CONNECTION_FAILED_EVENT:
 		// If device gets any connection failed event
-        this->mStatus.connected = false;
-        this->mStatus.IPAcquired = false;
-        this->mStatus.connectFailed = true;
+        NetworkDriver::mStatus.connected = false;
+        NetworkDriver::mStatus.IPAcquired = false;
+        NetworkDriver::mStatus.connectFailed = true;
 		Trace(ZONE_INFO,"[WLAN EVENT] Connection failed\r\n");
 		break;
 
@@ -187,21 +181,21 @@ void NetworkDriver::SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) 
 	switch (pNetAppEvent->Event) {
 	case SL_NETAPP_IPV4_ACQUIRED:
     case SL_NETAPP_IPV6_ACQUIRED:
-        this->mStatus.IPAcquired = true;
+        NetworkDriver::mStatus.IPAcquired = true;
         Trace(ZONE_INFO,"[NETAPP EVENT] IP Acquired\r\n");
 		break;
 
     case SL_NETAPP_IP_LEASED: {
-        this->mStatus.IPLeased = true;
+        NetworkDriver::mStatus.IPLeased = true;
 		SlIpLeasedAsync_t *pEventData = &pNetAppEvent->EventData.ipLeased;
-		this->mInfo.StationIpAddress = pEventData->ip_address;
+		NetworkDriver::mInfo.StationIpAddress = pEventData->ip_address;
 		Trace(ZONE_INFO,"[NETAPP EVENT] IP Leased\r\n");
     }
         break;
 
     case SL_NETAPP_IP_RELEASED: {
-        this->mStatus.IPLeased = false;
-		this->mInfo.StationIpAddress = 0;
+        NetworkDriver::mStatus.IPLeased = false;
+		NetworkDriver::mInfo.StationIpAddress = 0;
 		Trace(ZONE_INFO,"[NETAPP EVENT] IP Released\r\n");
     }
         break;
@@ -217,11 +211,11 @@ void NetworkDriver::SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) 
 	}
 }
 
-void NetworkDriver::SimpleLinkGeneralEventHandler(SlDeviceEvent_t *pDevEvent) const {
+void NetworkDriver::SimpleLinkGeneralEventHandler(SlDeviceEvent_t *pDevEvent) {
 	Trace(ZONE_INFO,"[GENERAL EVENT] - ID=[%d] Sender=[%d]\n\n", pDevEvent->EventData.deviceEvent.status, pDevEvent->EventData.deviceEvent.sender);
 }
 
-void NetworkDriver::SimpleLinkSockEventHandler(SlSockEvent_t *pSock) const {
+void NetworkDriver::SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
     if (pSock->Event == SL_NETAPP_SOCKET_TX_FAILED) {
         if (pSock->EventData.status == SL_ECLOSE)
 			Trace(ZONE_ERROR,"[SOCK ERROR] - close socket (%d) operation failed to transmit all queued packets\n\n", pSock->EventData.sd);
@@ -234,34 +228,34 @@ void NetworkDriver::SimpleLinkSockEventHandler(SlSockEvent_t *pSock) const {
 
 void NetworkDriver::SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent, SlHttpServerResponse_t *pSlHttpServerResponse) {
 	if (pSlHttpServerEvent->Event == SL_NETAPP_HTTPGETTOKENVALUE) {
-        const unsigned long getTokenNumber = this->extractTokenNumber(pSlHttpServerEvent);
+        const unsigned long getTokenNumber = NetworkDriver::extractTokenNumber(pSlHttpServerEvent);
         if (getTokenNumber < 0 || getTokenNumber > MAX_NUM_NETWORKENTRIES)
             return;
-        this->responseNetworkEntries(getTokenNumber, pSlHttpServerResponse);
+        NetworkDriver::responseNetworkEntries(getTokenNumber, pSlHttpServerResponse);
 	}
 	else if (pSlHttpServerEvent->Event ==  SL_NETAPP_HTTPPOSTTOKENVALUE) {
 
 		Trace(ZONE_VERBOSE," token_name: %s ", pSlHttpServerEvent->EventData.httpPostData.token_name.data);
 		Trace(ZONE_VERBOSE," token_data: %s \r\n", pSlHttpServerEvent->EventData.httpPostData.token_value.data);
         
-        const char postTokenParameter = this->extractTokenParameter(pSlHttpServerEvent);
+        const char postTokenParameter = NetworkDriver::extractTokenParameter(pSlHttpServerEvent);
         
         switch (postTokenParameter) {
             case 'C':
                 if (std::string((const char*)pSlHttpServerEvent->EventData.httpPostData.token_value.data, pSlHttpServerEvent->EventData.httpPostData.token_value.len) == "Add")
-                        osi_SyncObjSignalFromISR(&this->mProvisioningDataSemaphore);
+                        osi_SyncObjSignalFromISR(&NetworkDriver::mProvisioningDataSemaphore);
                 break;
             case 'D':
-                this->mProvisioningData.wlanSSID = std::string((const char*)pSlHttpServerEvent->EventData.httpPostData.token_value.data, pSlHttpServerEvent->EventData.httpPostData.token_value.len);
+                NetworkDriver::mProvisioningData.wlanSSID = std::string((const char*)pSlHttpServerEvent->EventData.httpPostData.token_value.data, pSlHttpServerEvent->EventData.httpPostData.token_value.len);
                 break;
             case 'E':
-                this->setSecurityType(pSlHttpServerEvent);
+                NetworkDriver::setSecurityType(pSlHttpServerEvent);
                 break;
             case 'F':
-                this->setSecurityKey(pSlHttpServerEvent);
+                NetworkDriver::setSecurityKey(pSlHttpServerEvent);
                 break;
             case 'G':
-                this->mProvisioningData.priority = pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] - '0';
+                NetworkDriver::mProvisioningData.priority = pSlHttpServerEvent->EventData.httpPostData.token_value.data[0] - '0';
                 break;
                 
             default:
@@ -270,39 +264,43 @@ void NetworkDriver::SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpSer
 	}
 }
 
-long NetworkDriver::waitForConnectWithTimeout(const unsigned int timeout_ms) const {
+long NetworkDriver::waitForConnectWithTimeout(const unsigned int timeout_ms) {
     static const unsigned int INTERVAL = 5;
     unsigned int timeoutCounter = 0;
 
-    while ((timeoutCounter < timeout_ms) && !this->mStatus.IPAcquired) {
+    while ((timeoutCounter < timeout_ms) && !NetworkDriver::mStatus.IPAcquired) {
         osi_Sleep(INTERVAL);
         timeoutCounter += INTERVAL;
     }
     
-    if (!this->mStatus.connected || !this->mStatus.IPAcquired) {
+    if (!NetworkDriver::mStatus.connected || !NetworkDriver::mStatus.IPAcquired) {
         Trace(ZONE_ERROR,"Connecting failed \r\n");
         return ERROR;
     } else
         return SUCCESS;
 }
 
-void NetworkDriver::driverStatus::reset(void) {
-    memset(this, 0, sizeof(struct NetworkDriver::driverStatus));
+void NetworkDriver::driverStatus::reset(struct NetworkDriver::driverStatus& status) {
+    status.networkProcessorOn = false;
+    status.connected = false;
+    status.IPLeased = false;
+    status.IPAcquired = false;
+    status.connectFailed = false;
+    status.pingDone = false;
 }
 
-void NetworkDriver::statusInformation::reset(void) {
-    memset(this, 0, sizeof(struct NetworkDriver::statusInformation));
+void NetworkDriver::statusInformation::reset(struct NetworkDriver::statusInformation& info) {
+    memset(&info, 0, sizeof(struct NetworkDriver::statusInformation));
 }
 
-void NetworkDriver::provisioningData::reset(void) {
-    memset(this, 0, sizeof(struct NetworkDriver::provisioningData));
+void NetworkDriver::provisioningData::reset(struct NetworkDriver::provisioningData& data) {
+    memset(&data, 0, sizeof(struct NetworkDriver::provisioningData));
 }
 
 long NetworkDriver::configureSimpleLinkToDefaultState(void) {
-    
-    this->mStatus.reset();
-    this->mInfo.reset();
-    this->mProvisioningData.reset();
+    NetworkDriver::statusInformation::reset(NetworkDriver::mInfo);
+    NetworkDriver::driverStatus::reset(NetworkDriver::mStatus);
+    NetworkDriver::provisioningData::reset(NetworkDriver::mProvisioningData);
 
 	int Mode = sl_Start(NULL, NULL, NULL);
 	ASSERT_ON_ERROR(__LINE__, Mode);
@@ -311,7 +309,7 @@ long NetworkDriver::configureSimpleLinkToDefaultState(void) {
 	if (ROLE_STA != Mode) {
 		if (ROLE_AP == Mode) {
 			// If the device is in AP mode, we need to wait for this event before doing anything
-            while (!this->mStatus.IPAcquired) {
+            while (!NetworkDriver::mStatus.IPAcquired) {
 				osi_Sleep(10);
 			}
 		}
@@ -323,7 +321,7 @@ long NetworkDriver::configureSimpleLinkToDefaultState(void) {
 		retRes = sl_Stop(SL_STOP_TIMEOUT);
 		ASSERT_ON_ERROR(__LINE__, retRes);
 
-        this->mStatus.reset();
+        NetworkDriver::driverStatus::reset(NetworkDriver::mStatus);
         
 		retRes = sl_Start(NULL, NULL, NULL);
 		ASSERT_ON_ERROR(__LINE__, retRes);
@@ -339,7 +337,7 @@ long NetworkDriver::configureSimpleLinkToDefaultState(void) {
     // The function returns 0 if 'Disconnected done', negative number if already
     // disconnected Wait for 'disconnection' event if 0 is returned, Ignore
     // other return-codes
-    this->disconnect();
+    NetworkDriver::disconnect();
 
     // Set connection policy to Auto + Fast Connection
     //      (Device's default connection policy)
@@ -376,15 +374,15 @@ long NetworkDriver::configureSimpleLinkToDefaultState(void) {
 	retRes = sl_Stop(SL_STOP_TIMEOUT);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
-    this->mStatus.reset();
-    this->mInfo.reset();
-    this->mProvisioningData.reset();
+    NetworkDriver::statusInformation::reset(NetworkDriver::mInfo);
+    NetworkDriver::driverStatus::reset(NetworkDriver::mStatus);
+    NetworkDriver::provisioningData::reset(NetworkDriver::mProvisioningData);
     
 	return retRes;
 }
 
 long NetworkDriver::startAsStation(void) {
-	long retRes = this->configureSimpleLinkToDefaultState();
+	long retRes = NetworkDriver::configureSimpleLinkToDefaultState();
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	retRes = sl_Start(NULL, NULL, NULL);
@@ -392,13 +390,13 @@ long NetworkDriver::startAsStation(void) {
 
 	Trace(ZONE_VERBOSE,"Started SimpleLink Device in STA Mode\n\r");
 
-    return this->waitForConnectWithTimeout(CONNECT_TIMEOUT);
+    return NetworkDriver::waitForConnectWithTimeout(CONNECT_TIMEOUT);
 }
 
 long NetworkDriver::startAsAccesspoint(void) {
 	long retRes = ERROR;
 
-    retRes = this->configureSimpleLinkToDefaultState();
+    retRes = NetworkDriver::configureSimpleLinkToDefaultState();
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	Trace(ZONE_VERBOSE,"Device is configured in default state \n\r");
@@ -418,7 +416,7 @@ long NetworkDriver::startAsAccesspoint(void) {
 	// Restart Simplelink
 	sl_Stop(SL_STOP_TIMEOUT);
 
-    this->mStatus.reset();
+    NetworkDriver::driverStatus::reset(NetworkDriver::mStatus);
 
 	retRes = sl_Start(NULL, NULL, NULL);
 	ASSERT_ON_ERROR(__LINE__, retRes);
@@ -434,14 +432,14 @@ long NetworkDriver::startAsAccesspoint(void) {
 	osi_Sleep(8000);
 
 	//Get Scan Result
-	retRes = sl_WlanGetNetworkList(0, MAX_NUM_NETWORKENTRIES, &this->mProvisioningData.networkEntries[0]);
+	retRes = sl_WlanGetNetworkList(0, MAX_NUM_NETWORKENTRIES, &NetworkDriver::mProvisioningData.networkEntries[0]);
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	int i;
 	for (i = 0; i < retRes; i++) {
-		Trace(ZONE_VERBOSE,"%d) SSID %s\n\r", i, this->mProvisioningData.networkEntries[i].ssid);
+		Trace(ZONE_VERBOSE,"%d) SSID %s\n\r", i, NetworkDriver::mProvisioningData.networkEntries[i].ssid);
 	}
-	Trace(ZONE_VERBOSE,"----------------------------------------------\r\n");
+	Trace(ZONE_VERBOSE,"\r\n----------------------------------------------\r\n");
 	//Switch to AP Mode
 	sl_WlanSetMode(ROLE_AP);
 
@@ -475,7 +473,7 @@ long NetworkDriver::startAsAccesspoint(void) {
 	ASSERT_ON_ERROR(__LINE__, retRes);
 
 	sl_Stop(SL_STOP_TIMEOUT);
-    this->mStatus.reset();
+    NetworkDriver::driverStatus::reset(NetworkDriver::mStatus);
     
 	//Initialize the SLHost Driver
 	retRes = sl_Start(NULL, NULL, NULL);
@@ -483,45 +481,49 @@ long NetworkDriver::startAsAccesspoint(void) {
 
 	Trace(ZONE_VERBOSE,"Start AP\r\n");
 	//Wait for Ip Acquired Event in AP Mode
-	while (!this->mStatus.IPAcquired) {
+	while (!NetworkDriver::mStatus.IPAcquired) {
 		osi_Sleep(10);
 	}
 
 	return SUCCESS;
 }
 
-void NetworkDriver::disconnect(void) const {
+void NetworkDriver::disconnect(void) {
     Trace(ZONE_VERBOSE, "Disconnect...\n\r");
 	if (sl_WlanDisconnect() == 0) {
-		while (this->mStatus.connected)
+		while (NetworkDriver::mStatus.connected)
 			osi_Sleep(10);
 	}
 }
 
 NetworkDriver::~NetworkDriver(void) {
-    this->disconnect();
-	sl_Stop(SL_STOP_TIMEOUT);
-    NetworkDriver::g_Instance = nullptr;
+    if (this == NetworkDriver::g_Instance) {
+        this->disconnect();
+        sl_Stop(SL_STOP_TIMEOUT);
+        NetworkDriver::g_Instance = nullptr;
+    }
+    Trace(ZONE_VERBOSE, "Destruct Driver...\n\r");
 }
 
 NetworkDriver::NetworkDriver(const bool accesspointMode) {
-    osi_SyncObjCreate(&this->mProvisioningDataSemaphore);
+    Trace(ZONE_VERBOSE, "Construct Driver... \n\r");
+    NetworkDriver::g_Instance = this;
+    osi_SyncObjCreate(&NetworkDriver::mProvisioningDataSemaphore);
     
-    if (accesspointMode && (SUCCESS == this->startAsAccesspoint())) {
-        NetworkDriver::g_Instance = this;
+    long retVal = ERROR;
+    if (accesspointMode) {
+        retVal = this->startAsAccesspoint();
     } else {
         unsigned int RETRY = 2;
-        long retVal = ERROR;
         while (RETRY-- && (retVal == ERROR)) {
             retVal = this->startAsStation();
         }
-        
-        if (retVal == ERROR) {
-            this->disconnect();
-            sl_Stop(SL_STOP_TIMEOUT);
-        } else {
-            NetworkDriver::g_Instance = this;
-        }
+    }
+    if (retVal == ERROR) {
+        this->disconnect();
+        sl_Stop(SL_STOP_TIMEOUT);
+        NetworkDriver::g_Instance = nullptr;
+        Trace(ZONE_VERBOSE, "Construct Driver failed...\n\r");
     }
 }
 
@@ -531,42 +533,42 @@ NetworkDriver::operator bool() const
 }
 
 bool NetworkDriver::isConnected(void) const {
-    return this->mStatus.connected;
+    return NetworkDriver::mStatus.connected;
 }
 
 
-void NetworkDriver::waitForNewProvisioningData(void) {
+void NetworkDriver::waitForNewProvisioningData(void) const {
     do {
         osi_SyncObjWait(&this->mProvisioningDataSemaphore, OSI_WAIT_FOREVER);
     } while (this->addNewProfile() != SUCCESS);
 }
 
 long NetworkDriver::addNewProfile(void) {
-	if (this->mProvisioningData.secParameters.Type == SL_SEC_TYPE_WPS_PBC) {
-		this->mProvisioningData.secParameters.KeyLen = 0;
-		this->mProvisioningData.secParameters.Key = nullptr;
+	if (NetworkDriver::mProvisioningData.secParameters.Type == SL_SEC_TYPE_WPS_PBC) {
+		NetworkDriver::mProvisioningData.secParameters.KeyLen = 0;
+		NetworkDriver::mProvisioningData.secParameters.Key = nullptr;
 
-        this->mStatus.reset();
+        NetworkDriver::driverStatus::reset(NetworkDriver::mStatus);
         
-		sl_WlanConnect((char *)this->mProvisioningData.wlanSSID.data(), this->mProvisioningData.wlanSSID.length(), 0, &this->mProvisioningData.secParameters, 0);
-		return this->waitForConnectWithTimeout(CONNECT_TIMEOUT * 4);
+		sl_WlanConnect((char *)NetworkDriver::mProvisioningData.wlanSSID.data(), NetworkDriver::mProvisioningData.wlanSSID.length(), 0, &NetworkDriver::mProvisioningData.secParameters, 0);
+		return NetworkDriver::waitForConnectWithTimeout(CONNECT_TIMEOUT * 4);
 
-	} else if (this->mProvisioningData.secParameters.Type == SL_SEC_TYPE_WPS_PIN) {
+	} else if (NetworkDriver::mProvisioningData.secParameters.Type == SL_SEC_TYPE_WPS_PIN) {
 
-        this->mStatus.reset();
+        NetworkDriver::driverStatus::reset(NetworkDriver::mStatus);
 
-        sl_WlanConnect((char *)this->mProvisioningData.wlanSSID.data(), this->mProvisioningData.wlanSSID.length(), 0, &this->mProvisioningData.secParameters, 0);
-        return this->waitForConnectWithTimeout(CONNECT_TIMEOUT * 4);
+        sl_WlanConnect((char *)NetworkDriver::mProvisioningData.wlanSSID.data(), NetworkDriver::mProvisioningData.wlanSSID.length(), 0, &NetworkDriver::mProvisioningData.secParameters, 0);
+        return NetworkDriver::waitForConnectWithTimeout(CONNECT_TIMEOUT * 4);
 
 	} else {
 		long retRes = ERROR;
-		retRes = sl_WlanProfileAdd((char *)this->mProvisioningData.wlanSSID.data(), this->mProvisioningData.wlanSSID.length(), 0,	&this->mProvisioningData.secParameters, 0, this->mProvisioningData.priority, 0);
+		retRes = sl_WlanProfileAdd((char *)NetworkDriver::mProvisioningData.wlanSSID.data(), NetworkDriver::mProvisioningData.wlanSSID.length(), 0,	&NetworkDriver::mProvisioningData.secParameters, 0, NetworkDriver::mProvisioningData.priority, 0);
 		if (retRes < 0) {
 			// Remove all profiles
 			retRes = sl_WlanProfileDel(0xFF);
 			ASSERT_ON_ERROR(__LINE__, retRes);
 			// and try again
-			retRes = sl_WlanProfileAdd((char *)this->mProvisioningData.wlanSSID.data(), this->mProvisioningData.wlanSSID.length(), 0,	&this->mProvisioningData.secParameters, 0, this->mProvisioningData.priority, 0);
+			retRes = sl_WlanProfileAdd((char *)NetworkDriver::mProvisioningData.wlanSSID.data(), NetworkDriver::mProvisioningData.wlanSSID.length(), 0,	&NetworkDriver::mProvisioningData.secParameters, 0, NetworkDriver::mProvisioningData.priority, 0);
 			ASSERT_ON_ERROR(__LINE__, retRes);
 		}
 		Trace(ZONE_VERBOSE,"Added Profile at index %d \r\n", retRes);
