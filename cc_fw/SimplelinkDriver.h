@@ -19,14 +19,14 @@
 #define __NETWORK_DRIVER__H__
 
 #include <stdint.h>
-#include <string>
+#include <array>
 #include "osi.h"
 #include "FreeRTOS.h"
 #include "semphr.h"
 
 #include "simplelink.h"
 
-class NetworkDriver {
+class SimplelinkDriver {
     
     static const std::string GET_TOKEN;
     static const std::string POST_TOKEN;
@@ -45,61 +45,66 @@ class NetworkDriver {
         bool IPAcquired;
         bool connectFailed;
         bool pingDone;
-        static void reset(struct driverStatus& status);
+        void reset(void);
     };
     
     struct statusInformation {
         unsigned long SimpleLinkStatus;
         unsigned long StationIpAddress;
         unsigned long GatewayIpAddress;
-        std::string ConnectionSSID;
-        std::string ConnectionBSSID;
+        std::array<char, SSID_LEN_MAX> ConnectionSSID;
+        std::array<char, BSSID_LEN_MAX> ConnectionBSSID;
         unsigned short ConnectionTimeDelayIndex;
-        static void reset(struct statusInformation& info);
+        void reset(void);
     };
     
     struct provisioningData {
         unsigned char priority;
-        std::string wlanSSID;
-        std::string wlanSecurityKey;
+        std::array<char, SSID_LEN_MAX> wlanSSID;
+        uint8_t wlanSSIDLength;
+        std::array<char, SEC_KEY_LEN_MAX> wlanSecurityKey;
         SlSecParams_t secParameters;
         Sl_WlanNetworkEntry_t networkEntries[MAX_NUM_NETWORKENTRIES];
-        static void reset(struct provisioningData& data);
+        void reset(void);
     };
     
-    static struct driverStatus mStatus;
-    static struct statusInformation mInfo;
-    static struct provisioningData mProvisioningData;
+    static struct driverStatus Status;
+    static struct statusInformation Info;
+    static struct provisioningData ProvisioningData;
     
-    static xSemaphoreHandle mProvisioningDataSemaphore;
+    static xSemaphoreHandle ProvisioningDataSemaphore;
+    static xSemaphoreHandle ConnectionLostSemaphore;
     
+    static void reset(void);
+
     static void responseNetworkEntries(const unsigned long entryNumber, SlHttpServerResponse_t *response);
     static long extractTokenNumber(SlHttpServerEvent_t const * const event);
     static char extractTokenParameter(SlHttpServerEvent_t const * const event);
     static void setSecurityKey(SlHttpServerEvent_t const * const event);
     static void setSecurityType(SlHttpServerEvent_t const * const event);
     
+    static long configureAsAccesspoint(void);
+    static long scanForAccesspoints(void);
     static long waitForConnectWithTimeout(const unsigned int timeout_ms);
     static long configureSimpleLinkToDefaultState(void);
     static long startAsStation(void);
     static long startAsAccesspoint(void);
     static void disconnect(void);
     static long addNewProfile(void);
-
-public:
-    static NetworkDriver* g_Instance;
-
     
-    NetworkDriver(const bool accesspointMode);
-    NetworkDriver(const NetworkDriver&) = delete;
-    NetworkDriver& operator=(const NetworkDriver&) = delete;
-    NetworkDriver(NetworkDriver&&) = delete;
-    ~NetworkDriver(void);
+public:
+    
+    SimplelinkDriver(const bool accesspointMode);
+    SimplelinkDriver(const SimplelinkDriver&) = delete;
+    SimplelinkDriver& operator=(const SimplelinkDriver&) = delete;
+    SimplelinkDriver(SimplelinkDriver&&) = delete;
+    ~SimplelinkDriver(void);
     
     void waitForNewProvisioningData(void) const;
+    void waitUntilConnectionLost(void) const;
+    
     operator bool() const;
     bool isConnected(void) const;
-
     
     static void SimpleLinkWlanEventHandler(SlWlanEvent_t *pSlWlanEvent);
     static void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent);

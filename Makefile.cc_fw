@@ -43,7 +43,7 @@ ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/BroadcastTransmitter.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/CPPTask.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/SimplelinkServers.o
 # ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/wy_network_if.o
-${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/NetworkDriver.o
+${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/SimplelinkDriver.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/wifi.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/pwm.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/wy_spi.o

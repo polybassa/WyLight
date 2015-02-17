@@ -25,7 +25,7 @@
 #include "task.h"
 
 //Common interface includes
-#include "NetworkDriver.h"
+#include "SimplelinkDriver.h"
 #include "wy_firmware.h"
 #include "SimplelinkCustomer.h"
 #include "firmware/trace.h"
@@ -45,15 +45,12 @@ void WlanSupport_Task(void *pvParameters) {
 		if (retRes == ROLE_STA) {
 			Trace(ZONE_INFO, "Attempting to auto connect to AP\r\n");
 
-            NetworkDriver networkChip(false);
-			if (networkChip) {
+            SimplelinkDriver simplelinkChip(false);
+			if (simplelinkChip) {
 				osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
 				SimplelinkCustomer::provideService();
 
-                //TODO add semaphore
-				while (networkChip.isConnected()) {
-					osi_Sleep(200);
-				}
+                simplelinkChip.waitUntilConnectionLost();
 
 				osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
 				SimplelinkCustomer::stopService();
@@ -61,13 +58,13 @@ void WlanSupport_Task(void *pvParameters) {
 			Trace(ZONE_INFO, "Not connected to AP\r\n");
 		}
         {
-            NetworkDriver networkChip(true);
-            if (networkChip) {
+            SimplelinkDriver simplelinkChip(true);
+            if (simplelinkChip) {
 
                 osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
                 SimplelinkCustomer::provideService();
                 
-                networkChip.waitForNewProvisioningData();
+                simplelinkChip.waitForNewProvisioningData();
 
                 osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
                 SimplelinkCustomer::stopService();
