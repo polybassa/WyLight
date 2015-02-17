@@ -80,6 +80,240 @@ void SimpleLinkHttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent, SlHtt
     SimplelinkDriver::SimpleLinkHttpServerCallback(pSlHttpServerEvent, pSlHttpServerResponse);
 }
 
+SimplelinkDriver::SimplelinkDriver(const bool accesspointMode) {
+    Trace(ZONE_VERBOSE, "Construct Driver... \n\r");
+    osi_SyncObjCreate(&ProvisioningDataSemaphore);
+    osi_SyncObjCreate(&ConnectionLostSemaphore);
+    
+    long retVal = ERROR;
+    if (accesspointMode) {
+        retVal = this->startAsAccesspoint();
+    } else {
+        unsigned int RETRY = 2;
+        while (RETRY-- && (retVal == ERROR)) {
+            retVal = this->startAsStation();
+        }
+    }
+    if (retVal == ERROR) {
+        this->disconnect();
+        sl_Stop(SL_STOP_TIMEOUT);
+        Trace(ZONE_VERBOSE, "Construct Driver failed...\n\r");
+        reset();
+    }
+}
+
+SimplelinkDriver::~SimplelinkDriver(void) {
+    this->disconnect();
+    sl_Stop(SL_STOP_TIMEOUT);
+    Trace(ZONE_VERBOSE, "Destruct Driver...\n\r");
+}
+
+long SimplelinkDriver::startAsStation(void) {
+    long retRes = configureSimpleLinkToDefaultState();
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    retRes = sl_Start(NULL, NULL, NULL);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    Trace(ZONE_VERBOSE,"Started SimpleLink Device in STA Mode\n\r");
+    
+    return waitForConnectWithTimeout(CONNECT_TIMEOUT);
+}
+
+long SimplelinkDriver::startAsAccesspoint(void) {
+    long retRes = ERROR;
+    
+    retRes = configureSimpleLinkToDefaultState();
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    retRes = scanForAccesspoints();
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    retRes = configureAsAccesspoint();
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    retRes = sl_Start(NULL, NULL, NULL);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    Trace(ZONE_VERBOSE,"Start AP\r\n");
+    //Wait for Ip Acquired Event in AP Mode
+    while (!Status.IPAcquired) {
+        osi_Sleep(10);
+    }
+    
+    return SUCCESS;
+}
+
+long SimplelinkDriver::configureAsAccesspoint(void) {
+    long retRes = sl_Start(NULL, NULL, NULL);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    //Switch to AP Mode
+    sl_WlanSetMode(ROLE_AP);
+    
+    //Disable ROM WebPages
+    unsigned char disable = 0;
+    retRes = sl_NetAppSet(SL_NET_APP_HTTP_SERVER_ID, NETAPP_SET_GET_HTTP_OPT_ROM_PAGES_ACCESS, 1, &disable);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    // set domain name
+    unsigned char domainName[] = "wylight.config";
+    retRes = sl_NetAppSet(SL_NET_APP_DEVICE_CONFIG_ID, NETAPP_SET_GET_DEV_CONF_OPT_DOMAIN_NAME, sizeof(domainName),
+                          domainName);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    // set Accesspoint SSID
+    unsigned char ssid[] = "WyLightAP";
+    retRes = sl_WlanSet(SL_WLAN_CFG_AP_ID, 0, sizeof(ssid), ssid);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    // get current Time
+    SlDateTime_t dateTime;
+    unsigned char option = SL_DEVICE_GENERAL_CONFIGURATION_DATE_TIME, length = sizeof(SlDateTime_t);
+    retRes = sl_DevGet(SL_DEVICE_GENERAL_CONFIGURATION, &option, &length, (unsigned char *) &dateTime);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    // compute random channel from current time
+    unsigned char channel = (dateTime.sl_tm_sec % 13) + 1; // to avoid channel 0
+    retRes = sl_WlanSet(SL_WLAN_CFG_AP_ID, 3, 1, &channel);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    Trace(ZONE_VERBOSE,"Accesspoint channel: %d\r\n", channel);
+    
+    sl_Stop(SL_STOP_TIMEOUT);
+    
+    Status.reset();
+    
+    return SUCCESS;
+}
+
+long SimplelinkDriver::configureSimpleLinkToDefaultState(void) {
+    reset();
+    
+    int Mode = sl_Start(NULL, NULL, NULL);
+    ASSERT_ON_ERROR(__LINE__, Mode);
+    
+    // If the device is not in station-mode, try putting it in staion-mode
+    if (ROLE_STA != Mode) {
+        if (ROLE_AP == Mode) {
+            // If the device is in AP mode, we need to wait for this event before doing anything
+            while (!Status.IPAcquired) {
+                osi_Sleep(10);
+            }
+        }
+        
+        // Switch to STA role and restart
+        long retRes = sl_WlanSetMode(ROLE_STA);
+        ASSERT_ON_ERROR(__LINE__, retRes);
+        
+        retRes = sl_Stop(SL_STOP_TIMEOUT);
+        ASSERT_ON_ERROR(__LINE__, retRes);
+        
+        Status.reset();
+        
+        retRes = sl_Start(NULL, NULL, NULL);
+        ASSERT_ON_ERROR(__LINE__, retRes);
+        
+        // Check if the device is in station again
+        if (ROLE_STA != retRes) {
+            // We don't want to proceed if the device is not up in STA-mode
+            return ERROR;
+        }
+    }
+    
+    // Device in station-mode. Disconnect previous connection if any
+    // The function returns 0 if 'Disconnected done', negative number if already
+    // disconnected Wait for 'disconnection' event if 0 is returned, Ignore
+    // other return-codes
+    SimplelinkDriver::disconnect();
+    
+    // Set connection policy to Auto + Fast Connection
+    //      (Device's default connection policy)
+    long retRes = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1, 1, 0, 0, 0), NULL, 0);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    // Enable DHCP client
+    unsigned char value = 1;
+    retRes = sl_NetCfgSet(SL_IPV4_STA_P2P_CL_DHCP_ENABLE, 1, sizeof(value), &value);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    // Disable scan
+    unsigned char configOpt = SL_SCAN_POLICY(0);
+    retRes = sl_WlanPolicySet(SL_POLICY_SCAN, configOpt, NULL, 0);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    // Set Tx power level for station mode
+    // Number between 0-15, as dB offset from max power - 0 will set max power
+    unsigned char power = 0;
+    retRes = sl_WlanSet(SL_WLAN_CFG_GENERAL_PARAM_ID,
+                        WLAN_GENERAL_PARAM_OPT_STA_TX_POWER, sizeof(power), (unsigned char *) &power);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    // Set PM policy to normal
+    retRes = sl_WlanPolicySet(SL_POLICY_PM, SL_NORMAL_POLICY, NULL, 0);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    // Set URN-Name
+    unsigned char urnName[] = "WyLight";
+    retRes = sl_NetAppSet(SL_NET_APP_DEVICE_CONFIG_ID, NETAPP_SET_GET_DEV_CONF_OPT_DEVICE_URN, sizeof(urnName),
+                          urnName);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    retRes = sl_Stop(SL_STOP_TIMEOUT);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    reset();
+    
+    return retRes;
+}
+
+long SimplelinkDriver::scanForAccesspoints(void) {
+    const unsigned long WAIT_TIME = 8000;
+    const unsigned long SCAN_INTERVAL = 4;
+    
+    long retRes = sl_Start(NULL, NULL, NULL);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    sl_WlanDisconnect();
+    
+    // Set connection policy to zero, that no scan in background is performed
+    //      (Device's default connection policy)
+    retRes = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(0, 0, 0, 0, 0), NULL, 0);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    // Restart Simplelink
+    sl_Stop(SL_STOP_TIMEOUT);
+    
+    Status.reset();
+    
+    retRes = sl_Start(NULL, NULL, NULL);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    const unsigned char parameterLen = sizeof(SCAN_INTERVAL);
+    //Scan AP in STA mode
+    retRes = sl_WlanPolicySet(SL_POLICY_SCAN, SL_SCAN_POLICY_EN(1), (unsigned char *) &SCAN_INTERVAL, parameterLen);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    Trace(ZONE_VERBOSE,"Scanning for SSID's\r\n----------------------------------------------\r\n");
+    // wait for scan to complete
+    osi_Sleep(WAIT_TIME);
+    
+    //Get Scan Result
+    retRes = sl_WlanGetNetworkList(0, MAX_NUM_NETWORKENTRIES, &ProvisioningData.networkEntries[0]);
+    ASSERT_ON_ERROR(__LINE__, retRes);
+    
+    int i;
+    for (i = 0; i < retRes; i++) {
+        Trace(ZONE_VERBOSE,"%d) SSID %s\n\r", i, ProvisioningData.networkEntries[i].ssid);
+    }
+    Trace(ZONE_VERBOSE,"\r\n----------------------------------------------\r\n");
+    
+    sl_Stop(SL_STOP_TIMEOUT);
+    
+    Status.reset();
+    
+    return SUCCESS;
+}
+
 void SimplelinkDriver::responseNetworkEntries(const unsigned long entryNumber, SlHttpServerResponse_t *response) {
     memcpy(response->ResponseData.token_value.data, ProvisioningData.networkEntries[entryNumber].ssid, ProvisioningData.networkEntries[entryNumber].ssid_len);
     response->ResponseData.token_value.len = ProvisioningData.networkEntries[entryNumber].ssid_len;
@@ -320,246 +554,12 @@ void SimplelinkDriver::reset(void) {
     ProvisioningData.reset();
 }
 
-long SimplelinkDriver::configureSimpleLinkToDefaultState(void) {
-    reset();
-
-	int Mode = sl_Start(NULL, NULL, NULL);
-	ASSERT_ON_ERROR(__LINE__, Mode);
-
-	// If the device is not in station-mode, try putting it in staion-mode
-	if (ROLE_STA != Mode) {
-		if (ROLE_AP == Mode) {
-			// If the device is in AP mode, we need to wait for this event before doing anything
-            while (!Status.IPAcquired) {
-				osi_Sleep(10);
-			}
-		}
-
-		// Switch to STA role and restart
-		long retRes = sl_WlanSetMode(ROLE_STA);
-		ASSERT_ON_ERROR(__LINE__, retRes);
-
-		retRes = sl_Stop(SL_STOP_TIMEOUT);
-		ASSERT_ON_ERROR(__LINE__, retRes);
-
-        Status.reset();
-        
-		retRes = sl_Start(NULL, NULL, NULL);
-		ASSERT_ON_ERROR(__LINE__, retRes);
-
-		// Check if the device is in station again
-		if (ROLE_STA != retRes) {
-			// We don't want to proceed if the device is not up in STA-mode
-			return ERROR;
-		}
-	}
-
-    // Device in station-mode. Disconnect previous connection if any
-    // The function returns 0 if 'Disconnected done', negative number if already
-    // disconnected Wait for 'disconnection' event if 0 is returned, Ignore
-    // other return-codes
-    SimplelinkDriver::disconnect();
-
-    // Set connection policy to Auto + Fast Connection
-    //      (Device's default connection policy)
-	long retRes = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1, 1, 0, 0, 0), NULL, 0);
-	ASSERT_ON_ERROR(__LINE__, retRes);
-
-    // Enable DHCP client
-	unsigned char value = 1;
-	retRes = sl_NetCfgSet(SL_IPV4_STA_P2P_CL_DHCP_ENABLE, 1, sizeof(value), &value);
-	ASSERT_ON_ERROR(__LINE__, retRes);
-
-    // Disable scan
-	unsigned char configOpt = SL_SCAN_POLICY(0);
-	retRes = sl_WlanPolicySet(SL_POLICY_SCAN, configOpt, NULL, 0);
-	ASSERT_ON_ERROR(__LINE__, retRes);
-
-    // Set Tx power level for station mode
-    // Number between 0-15, as dB offset from max power - 0 will set max power
-	unsigned char power = 0;
-	retRes = sl_WlanSet(SL_WLAN_CFG_GENERAL_PARAM_ID,
-	WLAN_GENERAL_PARAM_OPT_STA_TX_POWER, sizeof(power), (unsigned char *) &power);
-	ASSERT_ON_ERROR(__LINE__, retRes);
-
-    // Set PM policy to normal
-	retRes = sl_WlanPolicySet(SL_POLICY_PM, SL_NORMAL_POLICY, NULL, 0);
-	ASSERT_ON_ERROR(__LINE__, retRes);
-
-	// Set URN-Name
-	unsigned char urnName[] = "WyLight";
-	retRes = sl_NetAppSet(SL_NET_APP_DEVICE_CONFIG_ID, NETAPP_SET_GET_DEV_CONF_OPT_DEVICE_URN, sizeof(urnName),
-			urnName);
-	ASSERT_ON_ERROR(__LINE__, retRes);
-
-	retRes = sl_Stop(SL_STOP_TIMEOUT);
-	ASSERT_ON_ERROR(__LINE__, retRes);
-
-    reset();
-    
-	return retRes;
-}
-
-long SimplelinkDriver::startAsStation(void) {
-	long retRes = configureSimpleLinkToDefaultState();
-	ASSERT_ON_ERROR(__LINE__, retRes);
-
-	retRes = sl_Start(NULL, NULL, NULL);
-	ASSERT_ON_ERROR(__LINE__, retRes);
-
-	Trace(ZONE_VERBOSE,"Started SimpleLink Device in STA Mode\n\r");
-
-    return waitForConnectWithTimeout(CONNECT_TIMEOUT);
-}
-
-long SimplelinkDriver::configureAsAccesspoint(void) {
-    long retRes = sl_Start(NULL, NULL, NULL);
-    ASSERT_ON_ERROR(__LINE__, retRes);
-    
-    //Switch to AP Mode
-    sl_WlanSetMode(ROLE_AP);
-    
-    //Disable ROM WebPages
-    unsigned char disable = 0;
-    retRes = sl_NetAppSet(SL_NET_APP_HTTP_SERVER_ID, NETAPP_SET_GET_HTTP_OPT_ROM_PAGES_ACCESS, 1, &disable);
-    ASSERT_ON_ERROR(__LINE__, retRes);
-    
-    // set domain name
-    unsigned char domainName[] = "wylight.config";
-    retRes = sl_NetAppSet(SL_NET_APP_DEVICE_CONFIG_ID, NETAPP_SET_GET_DEV_CONF_OPT_DOMAIN_NAME, sizeof(domainName),
-                          domainName);
-    ASSERT_ON_ERROR(__LINE__, retRes);
-    
-    // set Accesspoint SSID
-    unsigned char ssid[] = "WyLightAP";
-    retRes = sl_WlanSet(SL_WLAN_CFG_AP_ID, 0, sizeof(ssid), ssid);
-    ASSERT_ON_ERROR(__LINE__, retRes);
-    
-    // get current Time
-    SlDateTime_t dateTime;
-    unsigned char option = SL_DEVICE_GENERAL_CONFIGURATION_DATE_TIME, length = sizeof(SlDateTime_t);
-    retRes = sl_DevGet(SL_DEVICE_GENERAL_CONFIGURATION, &option, &length, (unsigned char *) &dateTime);
-    ASSERT_ON_ERROR(__LINE__, retRes);
-    
-    // compute random channel from current time
-    unsigned char channel = (dateTime.sl_tm_sec % 13) + 1; // to avoid channel 0
-    retRes = sl_WlanSet(SL_WLAN_CFG_AP_ID, 3, 1, &channel);
-    ASSERT_ON_ERROR(__LINE__, retRes);
-    Trace(ZONE_VERBOSE,"Accesspoint channel: %d\r\n", channel);
-    
-    sl_Stop(SL_STOP_TIMEOUT);
-    
-    Status.reset();
-    
-    return SUCCESS;
-}
-
-long SimplelinkDriver::scanForAccesspoints(void) {
-    const unsigned long WAIT_TIME = 8000;
-    const unsigned long SCAN_INTERVAL = 4;
-    
-    long retRes = sl_Start(NULL, NULL, NULL);
-    ASSERT_ON_ERROR(__LINE__, retRes);
-    
-    sl_WlanDisconnect();
-    
-    // Set connection policy to zero, that no scan in background is performed
-    //      (Device's default connection policy)
-    retRes = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(0, 0, 0, 0, 0), NULL, 0);
-    ASSERT_ON_ERROR(__LINE__, retRes);
-    
-    // Restart Simplelink
-    sl_Stop(SL_STOP_TIMEOUT);
-    
-    Status.reset();
-    
-    retRes = sl_Start(NULL, NULL, NULL);
-    ASSERT_ON_ERROR(__LINE__, retRes);
-    
-    const unsigned char parameterLen = sizeof(SCAN_INTERVAL);
-    //Scan AP in STA mode
-    retRes = sl_WlanPolicySet(SL_POLICY_SCAN, SL_SCAN_POLICY_EN(1), (unsigned char *) &SCAN_INTERVAL, parameterLen);
-    ASSERT_ON_ERROR(__LINE__, retRes);
-    
-    Trace(ZONE_VERBOSE,"Scanning for SSID's\r\n----------------------------------------------\r\n");
-    // wait for scan to complete
-    osi_Sleep(WAIT_TIME);
-    
-    //Get Scan Result
-    retRes = sl_WlanGetNetworkList(0, MAX_NUM_NETWORKENTRIES, &ProvisioningData.networkEntries[0]);
-    ASSERT_ON_ERROR(__LINE__, retRes);
-    
-    int i;
-    for (i = 0; i < retRes; i++) {
-        Trace(ZONE_VERBOSE,"%d) SSID %s\n\r", i, ProvisioningData.networkEntries[i].ssid);
-    }
-    Trace(ZONE_VERBOSE,"\r\n----------------------------------------------\r\n");
-    
-    sl_Stop(SL_STOP_TIMEOUT);
-    
-    Status.reset();
-    
-    return SUCCESS;
-}
-
-long SimplelinkDriver::startAsAccesspoint(void) {
-	long retRes = ERROR;
-
-    retRes = configureSimpleLinkToDefaultState();
-	ASSERT_ON_ERROR(__LINE__, retRes);
-    
-    retRes = scanForAccesspoints();
-    ASSERT_ON_ERROR(__LINE__, retRes);
-
-    retRes = configureAsAccesspoint();
-    ASSERT_ON_ERROR(__LINE__, retRes);
-    
-	retRes = sl_Start(NULL, NULL, NULL);
-	ASSERT_ON_ERROR(__LINE__, retRes);
-
-	Trace(ZONE_VERBOSE,"Start AP\r\n");
-	//Wait for Ip Acquired Event in AP Mode
-	while (!Status.IPAcquired) {
-		osi_Sleep(10);
-	}
-
-	return SUCCESS;
-}
-
 void SimplelinkDriver::disconnect(void) {
     Trace(ZONE_VERBOSE, "Disconnect...\n\r");
 	if (sl_WlanDisconnect() == 0) {
 		while (Status.connected)
 			osi_Sleep(10);
 	}
-}
-
-SimplelinkDriver::~SimplelinkDriver(void) {
-    this->disconnect();
-    sl_Stop(SL_STOP_TIMEOUT);
-    Trace(ZONE_VERBOSE, "Destruct Driver...\n\r");
-}
-
-SimplelinkDriver::SimplelinkDriver(const bool accesspointMode) {
-    Trace(ZONE_VERBOSE, "Construct Driver... \n\r");
-    osi_SyncObjCreate(&ProvisioningDataSemaphore);
-    osi_SyncObjCreate(&ConnectionLostSemaphore);
-    
-    long retVal = ERROR;
-    if (accesspointMode) {
-        retVal = this->startAsAccesspoint();
-    } else {
-        unsigned int RETRY = 2;
-        while (RETRY-- && (retVal == ERROR)) {
-            retVal = this->startAsStation();
-        }
-    }
-    if (retVal == ERROR) {
-        this->disconnect();
-        sl_Stop(SL_STOP_TIMEOUT);
-        Trace(ZONE_VERBOSE, "Construct Driver failed...\n\r");
-        reset();
-    }
 }
 
 SimplelinkDriver::operator bool() const
