@@ -56,8 +56,8 @@ void Ledstrip_SetGradient(struct cmd_set_fade *pCmd)
 	gSetGradientWasCalled = TRUE;
 }
 
-void Eeprom_Init(void) {
-	
+void Eeprom_Init(void)
+{
 }
 
 /******************************* test functions *******************************/
@@ -112,6 +112,8 @@ int ut_ScriptCtrl_SimpleLoop(void)
 {
 	TestCaseBegin();
 	struct led_cmd testCmd;
+
+	memset(&testCmd, 0, sizeof(testCmd));
 	ScriptCtrl_Clear();
 
 	/* add loop begin to buffer */
