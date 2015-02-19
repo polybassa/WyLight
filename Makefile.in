@@ -111,6 +111,17 @@ ut: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
 filedownloader: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
+filelist:
+	@find . -name "*.c" > files.txt
+	@find . -name "*.h" >> files.txt
+	@find . -name "*.cpp" >> files.txt
+	@cat files.txt | grep -v 'ios' > filelist.txt
+	@rm files.txt
+	@echo Created filelist.txt
+
+codeformatter: filelist
+	uncrustify -F filelist.txt --no-backup -c uncrustify.cfg
+
 test: clean-all ${OBJDIR} ${BINDIR} 
 	make ut 
 	./exe/WyLight_ut.bin
