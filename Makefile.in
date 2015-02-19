@@ -45,6 +45,7 @@ NDK=@NDK@
 WINE=@WINE@
 PIC_CC8E=@PIC_CC8E@
 CPPCHECKER=@CPPCHECKER@
+UNCRUSTIFY=@UNCRUSTIFY@
 # Include the common make definitions.
 include makedefs
 
@@ -120,7 +121,7 @@ filelist:
 	@echo Created filelist.txt
 
 codeformatter: filelist
-	uncrustify -F filelist.txt --no-backup -c uncrustify.cfg
+	${UNCRUSTIFY} -F filelist.txt --no-backup -c uncrustify.cfg
 
 test: clean-all ${OBJDIR} ${BINDIR} 
 	make ut 

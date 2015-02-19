@@ -19,6 +19,7 @@ AC_PATH_PROG(CPPCHECKER, cppcheck, [not_found])
 AC_PATH_PROG(NDK, ndk-build, [not_found])
 AC_PATH_PROG(DOXYGEN, doxygen, [not_found])
 AC_PATH_PROG(GIT, git, [not_found])
+AC_PATH_PROG(UNCRUSTIFY, uncrustify, [not_found])
 
 AC_DEFUN(AC_PATH_PROG_CC8E, [
 AC_PATH_PROG(PIC_CC8E, [CC8E.EXE], [not_found],[$PATH:/Users/weitys1/Dropbox/Wifly_Light/CC8E:/home/gpb/cc8efree:/home/weitys1/Dropbox/Wifly_Light/CC8E])
