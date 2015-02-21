@@ -311,7 +311,7 @@ typedef void (*_SlSpawnEntryFunc_t)(void* pValue);
 */
 #include "../source/objInclusion.h"
 #include "../source/datatypes.h"
-#include "trace.h"
+#include "sl_trace.h"
 #include "fs.h"
 #include "socket.h"
 #include "netapp.h"
