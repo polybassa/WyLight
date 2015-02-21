@@ -292,12 +292,6 @@ typedef void (*_SlSpawnEntryFunc_t)(void* pValue);
 #define SL_MAX_SOCKETS      8
 
 
-
-#ifdef	__cplusplus
-}
-#endif /*  __cplusplus */
-
-
 #ifdef SL_PLATFORM_MULTI_THREADED
     #include "../source/spawn.h"
 #else
@@ -346,5 +340,9 @@ extern void sl_SockEvtHdlr(SlSockEvent_t *pSlSockEvent);
 #if (defined(sl_HttpServerCallback))
 extern void sl_HttpServerCallback(SlHttpServerEvent_t *pSlHttpServerEvent, SlHttpServerResponse_t *pSlHttpServerResponse);
 #endif
+    
+#ifdef	__cplusplus
+}
+#endif /*  __cplusplus */
 
 #endif	/*  __SIMPLELINK_H__ */
