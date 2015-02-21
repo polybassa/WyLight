@@ -44,11 +44,11 @@
 //
 //*****************************************************************************
 
-#include "inc/hw_types.h"
-#include "inc/hw_gpio.h"
-#include "inc/hw_ints.h"
-#include "inc/hw_memmap.h"
-#include "inc/hw_common_reg.h"
+#include "hw_types.h"
+#include "hw_gpio.h"
+#include "hw_ints.h"
+#include "hw_memmap.h"
+#include "hw_common_reg.h"
 #include "debug.h"
 #include "gpio.h"
 #include "interrupt.h"

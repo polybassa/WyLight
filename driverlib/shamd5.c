@@ -46,15 +46,15 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "inc/hw_dthe.h"
-#include "inc/hw_ints.h"
-#include "inc/hw_memmap.h"
-#include "inc/hw_nvic.h"
-#include "inc/hw_shamd5.h"
-#include "inc/hw_types.h"
-#include "driverlib/debug.h"
-#include "driverlib/interrupt.h"
-#include "driverlib/shamd5.h"
+#include "hw_dthe.h"
+#include "hw_ints.h"
+#include "hw_memmap.h"
+#include "hw_nvic.h"
+#include "hw_shamd5.h"
+#include "hw_types.h"
+#include "debug.h"
+#include "interrupt.h"
+#include "shamd5.h"
 
 #define SHAMD5_MODE_ALGO_MD5         0x00000000  // MD5
 #define SHAMD5_MODE_ALGO_SHA1        0x00000002  // SHA-1

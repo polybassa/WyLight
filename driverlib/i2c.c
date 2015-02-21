@@ -46,10 +46,10 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "inc/hw_i2c.h"
-#include "inc/hw_ints.h"
-#include "inc/hw_memmap.h"
-#include "inc/hw_types.h"
+#include "hw_i2c.h"
+#include "hw_ints.h"
+#include "hw_memmap.h"
+#include "hw_types.h"
 #include "debug.h"
 #include "i2c.h"
 #include "interrupt.h"

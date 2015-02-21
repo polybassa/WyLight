@@ -45,11 +45,11 @@
 //*****************************************************************************
 
 
-#include "inc/hw_ints.h"
-#include "inc/hw_types.h"
-#include "inc/hw_memmap.h"
-#include "inc/hw_mcspi.h"
-#include "inc/hw_apps_config.h"
+#include "hw_ints.h"
+#include "hw_types.h"
+#include "hw_memmap.h"
+#include "hw_mcspi.h"
+#include "hw_apps_config.h"
 #include "interrupt.h"
 #include "spi.h"
 

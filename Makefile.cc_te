@@ -14,7 +14,8 @@ IPATH=	${ROOT} \
 		${ROOT}/driverlib \
 		${ROOT}/simplelink \
 		${ROOT}/simplelink/source \
-		${ROOT}/simplelink/include
+		${ROOT}/simplelink/include \
+		${ROOT}/firmware
 
 # WyLight bootloader
 ${BINDIR}/${PRJ_NAME}.elf: 	${OBJDIR}/main.o \

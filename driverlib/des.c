@@ -46,11 +46,11 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "inc/hw_des.h"
-#include "inc/hw_dthe.h"
-#include "inc/hw_ints.h"
-#include "inc/hw_memmap.h"
-#include "inc/hw_types.h"
+#include "hw_des.h"
+#include "hw_dthe.h"
+#include "hw_ints.h"
+#include "hw_memmap.h"
+#include "hw_types.h"
 #include "debug.h"
 #include "des.h"
 #include "interrupt.h"

@@ -46,12 +46,12 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "inc/hw_aes.h"
-#include "inc/hw_dthe.h"
-#include "inc/hw_ints.h"
-#include "inc/hw_memmap.h"
-#include "inc/hw_nvic.h"
-#include "inc/hw_types.h"
+#include "hw_aes.h"
+#include "hw_dthe.h"
+#include "hw_ints.h"
+#include "hw_memmap.h"
+#include "hw_nvic.h"
+#include "hw_types.h"
 #include "aes.h"
 #include "debug.h"
 #include "interrupt.h"

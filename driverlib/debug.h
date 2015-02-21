@@ -40,7 +40,7 @@
 #define __DEBUG_H__
 
 #ifdef DEBUG
-#include "firmware/trace.h"
+#include "trace.h"
 #define ASSERT(expr)                                       \
                          if(!(expr))                        \
                          {                                  \
