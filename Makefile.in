@@ -119,7 +119,7 @@ filelist:
 	@$(foreach DIR, ${CODE_DIRS}, find $(DIR) ${CODE_FILES} >> $@.txt;)
 	@echo "Created $@.txt"
 
-codeformatter: filelist
+uncrustify: filelist
 	${UNCRUSTIFY} -F filelist.txt --no-backup -c uncrustify.cfg
 
 test: clean-all ${OBJDIR} ${BINDIR} 
