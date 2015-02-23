@@ -22,9 +22,13 @@ AC_PATH_PROG(GIT, git, [not_found])
 AC_PATH_PROG(UNCRUSTIFY, uncrustify, [not_found])
 AC_PATH_PROG(OPENSSL, openssl, [not_found])
 
- if test -z "$OPENSSL" || test "X$OPENSSL" = "Xnot_found"; then 
-    AC_MSG_ERROR([openssl not found!]) 
-  fi 
+if test -z "$OPENSSL" || test "X$OPENSSL" = "Xnot_found"; then 
+	AC_MSG_ERROR([openssl not found!]) 
+fi 
+
+if test -z "$UNCRUSTIFY" || test "X$UNCRUSTIFY" = "Xnot_found"; then 
+	AC_MSG_ERROR([uncrustify not found!]) 
+fi 
 
 AC_DEFUN(AC_PATH_PROG_CC8E, [
 AC_PATH_PROG(PIC_CC8E, [CC8E.EXE], [not_found],[$PATH:/Users/weitys1/Dropbox/Wifly_Light/CC8E:/home/gpb/cc8efree:/home/weitys1/Dropbox/Wifly_Light/CC8E])
@@ -65,6 +69,7 @@ AC_TYPE_UINT8_T
 AC_FUNC_MALLOC
 AC_CHECK_FUNCS([clock_gettime floor getcwd gettimeofday inet_ntoa localtime_r memset pow select socket sqrt strstr strtoul])
 
+cp tools/pre-commit .git/hooks/pre-commit
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

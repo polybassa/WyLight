@@ -3661,8 +3661,8 @@ $as_echo "no" >&6; }
 fi
 
 
-# Extract the first word of "opensl", so it can be a program name with args.
-set dummy opensl; ac_word=$2
+# Extract the first word of "openssl", so it can be a program name with args.
+set dummy openssl; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
 if ${ac_cv_path_OPENSSL+:} false; then :
@@ -3703,9 +3703,13 @@ fi
 
 
 
- if test -z "$OPENSSL" || test "X$OPENSSL" = "Xnot_found"; then
-    as_fn_error $? "openssl not found!" "$LINENO" 5
-  fi
+if test -z "$OPENSSL" || test "X$OPENSSL" = "Xnot_found"; then
+	as_fn_error $? "openssl not found!" "$LINENO" 5
+fi
+
+if test -z "$UNCRUSTIFY" || test "X$UNCRUSTIFY" = "Xnot_found"; then
+	as_fn_error $? "uncrustify not found!" "$LINENO" 5
+fi
 
 
 
@@ -4774,6 +4778,7 @@ fi
 done
 
 
+cp tools/pre-commit .git/hooks/pre-commit
 
 ac_config_files="$ac_config_files Makefile"
 
