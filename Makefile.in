@@ -112,13 +112,12 @@ ut: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
 filedownloader: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
+CODE_FILES=-type f -regex '.*/.*\.\(c\|cpp\|h\)$$'
+CODE_DIRS=android cc_bl cc_fw cc_te cli common firmware library sim
 filelist:
-	@find . -name "*.c" > files.txt
-	@find . -name "*.h" >> files.txt
-	@find . -name "*.cpp" >> files.txt
-	@cat files.txt | grep -v 'ios' > filelist.txt
-	@rm files.txt
-	@echo Created filelist.txt
+	@rm -f $@.txt
+	@$(foreach DIR, ${CODE_DIRS}, find $(DIR) ${CODE_FILES} >> $@.txt;)
+	@echo "Created $@.txt"
 
 codeformatter: filelist
 	${UNCRUSTIFY} -F filelist.txt --no-backup -c uncrustify.cfg
