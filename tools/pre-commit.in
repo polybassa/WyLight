@@ -1,6 +1,7 @@
 #!/bin/sh
-make filelist
-@UNCRUSTIFY@ -F filelist.txt --no-backup -c uncrustify.cfg
-echo Code formatting done! 
+#make filelist
+#@UNCRUSTIFY@ -F filelist.txt --no-backup -c uncrustify.cfg
+#echo Code formatting done!
+echo Code formatting disabled!
 exit 0
 
