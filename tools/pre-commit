@@ -1,4 +1,0 @@
-#!/bin/sh
-exec make filelist
-exec /usr/local/bin/uncrustify -F filelist.txt --no-backup -c uncrustify.cfg
-
