@@ -1,0 +1,4 @@
+#!/bin/sh
+make filelist
+@UNCRUSTIFY@ -F filelist.txt --no-backup -c uncrustify.cfg
+
