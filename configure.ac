@@ -69,9 +69,11 @@ AC_TYPE_UINT8_T
 AC_FUNC_MALLOC
 AC_CHECK_FUNCS([clock_gettime floor getcwd gettimeofday inet_ntoa localtime_r memset pow select socket sqrt strstr strtoul])
 
-
 AC_CONFIG_FILES([Makefile tools/pre-commit])
 
-cp tools/pre-commit .git/hooks/pre-commit
-
 AC_OUTPUT
+
+rm .git/hooks/pre-commit
+cp tools/pre-commit .git/hooks/pre-commit
+chmod a+x .git/hooks/pre-commit
+echo Added pre-commit hook to this repository
