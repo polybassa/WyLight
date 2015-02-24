@@ -4,6 +4,8 @@
 AC_PREREQ([2.69])
 AC_INIT([WyLight], [0.1], [nils.weiss@wylight.de])
 AC_CONFIG_SRCDIR([android/app/src/main/jni/WiflyControlJni.cpp])
+AC_CONFIG_SRCDIR([uncrustify.cfg])
+
 AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
@@ -69,7 +71,7 @@ AC_TYPE_UINT8_T
 AC_FUNC_MALLOC
 AC_CHECK_FUNCS([clock_gettime floor getcwd gettimeofday inet_ntoa localtime_r memset pow select socket sqrt strstr strtoul])
 
-AC_CONFIG_FILES([Makefile tools/pre-commit])
+AC_CONFIG_FILES([Makefile tools/pre-commit.uncrustify])
 
 AC_OUTPUT
 
