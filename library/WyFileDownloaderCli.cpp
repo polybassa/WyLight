@@ -23,21 +23,19 @@
 #include <unistd.h>
 #include <cstring>
 
+using namespace WyLight;
 using std::cin;
 using std::cout;
-using namespace WyLight;
 
-char* getCmdOption(char ** begin, char ** end, const std::string & option);
+char* getCmdOption(char** begin, char** end, const std::string& option);
 bool cmdOptionExists(char** begin, char** end, const std::string& option);
 
 // functions to parse argument list
-char* getCmdOption(char ** begin, char ** end, const std::string & option)
+char* getCmdOption(char** begin, char** end, const std::string& option)
 {
-    char ** itr = std::find(begin, end, option);
-    if (itr != end && ++itr != end)
-    {
+    char** itr = std::find(begin, end, option);
+    if ((itr != end) && (++itr != end))
         return *itr;
-    }
     return 0;
 }
 
@@ -46,29 +44,28 @@ bool cmdOptionExists(char** begin, char** end, const std::string& option)
     return std::find(begin, end, option) != end;
 }
 
-
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-	if (cmdOptionExists(argv, argv + argc, "-?") || cmdOptionExists(argv, argv + argc, "-help")) {
-		std::cout << "Usage: \nno parameters: default usage.\n-c \"123.123.123.123\" to connect to a specific IP immediately.\n-p \"12345\" to specify a port\n-f \"firmware.bin\" to specify a file to load\n-d \"destination_name.bin\" to specify filename on target\n";
-		return 0;
-	}
-
-	WyLight::Endpoint e;
-
-	if (cmdOptionExists(argv, argv + argc, "-c")) {
-
-		in_addr_t addr;
-		inet_pton(AF_INET, getCmdOption(argv, argv + argc, "-c"), &(addr));
-		/* Reverse the bytes in the binary address */
-		addr = ((addr & 0xff000000) >> 24) | ((addr & 0x00ff0000) >>  8) | ((addr & 0x0000ff00) <<  8) | ((addr & 0x000000ff) << 24);
-		e = WyLight::Endpoint(addr, 2000);
+    if (cmdOptionExists(argv, argv + argc, "-?") || cmdOptionExists(argv, argv + argc, "-help")) {
+        std::cout <<
+            "Usage: \nno parameters: default usage.\n-c \"123.123.123.123\" to connect to a specific IP immediately.\n-p \"12345\" to specify a port\n-f \"firmware.bin\" to specify a file to load\n-d \"destination_name.bin\" to specify filename on target\n";
+        return 0;
     }
-    
-    if (cmdOptionExists(argv, argv + argc, "-p")) {
+
+    WyLight::Endpoint e;
+
+    if (cmdOptionExists(argv, argv + argc, "-c")) {
+        in_addr_t addr;
+        inet_pton(AF_INET, getCmdOption(argv, argv + argc, "-c"), &(addr));
+        /* Reverse the bytes in the binary address */
+        addr = ((addr & 0xff000000) >> 24) | ((addr & 0x00ff0000) >>  8) | ((addr & 0x0000ff00) <<  8) |
+               ((addr & 0x000000ff) << 24);
+        e = WyLight::Endpoint(addr, 2000);
+    }
+
+    if (cmdOptionExists(argv, argv + argc, "-p"))
         e = WyLight::Endpoint(e.GetIp(), std::strtoul(getCmdOption(argv, argv + argc, "-p"), NULL, 0));
-    }
-    
+
     if (!cmdOptionExists(argv, argv + argc, "-f") || !cmdOptionExists(argv, argv + argc, "-d")) {
         std::cout << "No files specified. Use -? for more information\n";
         return 0;

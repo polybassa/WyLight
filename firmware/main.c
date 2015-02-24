@@ -1,20 +1,20 @@
 /**
- Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
+   Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
 
- This file is part of Wifly_Light.
+   This file is part of Wifly_Light.
 
- Wifly_Light is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+   Wifly_Light is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
 
- Wifly_Light is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+   Wifly_Light is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
+   You should have received a copy of the GNU General Public License
+   along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #ifdef __CC8E__
 #define DEBUG
@@ -54,13 +54,12 @@ uns8 g_UpdateLedStrip;
 //*********************** MACROS *****************************************************
 #ifdef DEBUG
 #define do_and_measure(METHOD) { \
-		Timer_StartStopwatch(e ## METHOD); \
-		METHOD(); \
-		Timer_StopStopwatch(e ## METHOD); }
+        Timer_StartStopwatch(e ## METHOD); \
+        METHOD(); \
+        Timer_StopStopwatch(e ## METHOD); }
 #else
 #define do_and_measure(METHOD) METHOD();
 #endif /*#ifdef DEBUG */
-
 
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void InitAll();
@@ -75,70 +74,70 @@ void init_x86(int start_gl);
 //Adresse des High Priority Interrupts
 interrupt HighPriorityInterrupt(void)
 {
-	HighPriorityInterruptFunction();
-	#pragma fastMode
+    HighPriorityInterruptFunction();
+#pragma fastMode
 }
 
 #pragma origin 0x18
 interrupt LowPriorityInterrupt(void)
 {
-	int_save_registers
+    int_save_registers
 #if 0
-	uns16 sv_FSR0 = FSR0;
-	uns16 sv_FSR1 = FSR1;
-	uns16 sv_FSR2 = FSR2;
-	uns8 sv_PCLATH = PCLATH;
-	uns8 sv_PCLATU = PCLATU;
-	uns8 sv_PRODL = PRODL;
-	uns8 sv_PRODH = PRODH;
-	uns24 sv_TBLPTR = TBLPTR;
-	uns8 sv_TABLAT = TABLAT;
+    uns16 sv_FSR0 = FSR0;
+    uns16 sv_FSR1 = FSR1;
+    uns16 sv_FSR2 = FSR2;
+    uns8 sv_PCLATH = PCLATH;
+    uns8 sv_PCLATU = PCLATU;
+    uns8 sv_PRODL = PRODL;
+    uns8 sv_PRODH = PRODH;
+    uns24 sv_TBLPTR = TBLPTR;
+    uns8 sv_TABLAT = TABLAT;
 #endif
 
-	if(TMR5IF) {
-		g_UpdateLed = g_UpdateLed + 1;
-		ScriptCtrl_DecrementWaitValue();
-		Timer5Interrupt();
-	}
+    if (TMR5IF) {
+        g_UpdateLed = g_UpdateLed + 1;
+        ScriptCtrl_DecrementWaitValue();
+        Timer5Interrupt();
+    }
 
-	if(TMR1IF) {
-		g_UpdateLedStrip = g_UpdateLedStrip + 1;
-		ScriptCtrl_CheckAndDecrementWaitValue();
-		Timer1Disable();
-		Timer1Interrupt();
-	}
+    if (TMR1IF) {
+        g_UpdateLedStrip = g_UpdateLedStrip + 1;
+        ScriptCtrl_CheckAndDecrementWaitValue();
+        Timer1Disable();
+        Timer1Interrupt();
+    }
 #if 0
-	FSR0 = sv_FSR0;
-	FSR1 = sv_FSR1;
-	FSR2 = sv_FSR2;
-	PCLATH = sv_PCLATH;
-	PCLATU = sv_PCLATU;
-	PRODL = sv_PRODL;
-	PRODH = sv_PRODH;
-	TBLPTR = sv_TBLPTR;
-	TABLAT = sv_TABLAT;
+    FSR0 = sv_FSR0;
+    FSR1 = sv_FSR1;
+    FSR2 = sv_FSR2;
+    PCLATH = sv_PCLATH;
+    PCLATU = sv_PCLATU;
+    PRODL = sv_PRODL;
+    PRODH = sv_PRODH;
+    TBLPTR = sv_TBLPTR;
+    TABLAT = sv_TABLAT;
 #endif
-	int_restore_registers
+    int_restore_registers
 }
 
 void HighPriorityInterruptFunction(void)
 {
-	uns16 sv_FSR0 = FSR0;
-	if(RC1IF) {
-		//Replace RingBuf_Put to avoid failures when main-cycle call's RingBuf_Put
-		if(!g_RingBuf.error_full) {
-			uns8 writeNext = RingBufInc(g_RingBuf.write);
-			if(writeNext != g_RingBuf.read) {
-				uns8 write = g_RingBuf.write;
-				g_RingBuf.data[write] = RCREG1;
-				g_RingBuf.write = writeNext;
-			} else g_RingBuf.error_full = 1;
-		} else {
-			//Register lesen um Schnittstellen Fehler zu vermeiden
-			uns8 temp = RCREG1;
-		}
-	}
-	FSR0 = sv_FSR0;
+    uns16 sv_FSR0 = FSR0;
+    if (RC1IF) {
+        //Replace RingBuf_Put to avoid failures when main-cycle call's RingBuf_Put
+        if (!g_RingBuf.error_full) {
+            uns8 writeNext = RingBufInc(g_RingBuf.write);
+            if (writeNext != g_RingBuf.read) {
+                uns8 write = g_RingBuf.write;
+                g_RingBuf.data[write] = RCREG1;
+                g_RingBuf.write = writeNext;
+            } else {g_RingBuf.error_full = 1; }
+        } else {
+            //Register lesen um Schnittstellen Fehler zu vermeiden
+            uns8 temp = RCREG1;
+        }
+    }
+    FSR0 = sv_FSR0;
 }
 #endif /* #ifndef X86 */
 
@@ -155,79 +154,75 @@ void main(void)
 int g_start_gl = 1;
 int main(int argc, const char** argv)
 {
-	if ((argc > 1) && (argv[1][0] == 'h'))
-		g_start_gl = 0;
+    if ((argc > 1) && (argv[1][0] == 'h'))
+        g_start_gl = 0;
 #endif
-	/* softReset() on x86 will jump here! */
-	softResetJumpDestination();
+    /* softReset() on x86 will jump here! */
+    softResetJumpDestination();
 
-	InitAll();
+    InitAll();
 
-	while(1)
-	{
-		Timer_StartStopwatch(eMAIN);
+    while (1) {
+        Timer_StartStopwatch(eMAIN);
 #ifndef __CC8E__
-		// give opengl thread a chance to run
-		usleep(10);
+        // give opengl thread a chance to run
+        usleep(10);
 #endif /* #ifndef __CC8E__ */
 
+        do_and_measure(Platform_CheckInputs);
 
+        do_and_measure(Error_Throw);
 
-			do_and_measure(Platform_CheckInputs);
+        do_and_measure(CommandIO_GetCommands);
 
-			do_and_measure(Error_Throw);
+        if (g_UpdateLedStrip > 0) {
+            do_and_measure(Ledstrip_UpdateLed);
+            Timer1Enable();
+            g_UpdateLedStrip = 0;
+        }
+        Timer_StopStopwatch(eMAIN);
 
-			do_and_measure(CommandIO_GetCommands);
+        do_and_measure(ScriptCtrl_Run);
 
-		if(g_UpdateLedStrip > 0) {
-			do_and_measure(Ledstrip_UpdateLed);
-			Timer1Enable();
-			g_UpdateLedStrip = 0;
-		}
-		Timer_StopStopwatch(eMAIN);
+        if (g_UpdateLed > 0) {
+            do_and_measure(Ledstrip_DoFade);
 
-			do_and_measure(ScriptCtrl_Run);
-
-		if(g_UpdateLed > 0) {
-			do_and_measure(Ledstrip_DoFade);
-
-			Timer5InterruptLock();
-			g_UpdateLed = 0;
-			Timer5InterruptUnlock();
-
-		}
-	}
+            Timer5InterruptLock();
+            g_UpdateLed = 0;
+            Timer5InterruptUnlock();
+        }
+    }
 }
 //*********************** UNTERPROGRAMME **********************************************
 
 void InitAll()
 {
-	clearRAM();
-	Trace_Init();
-	Platform_OsciInit();
-	Platform_IOInit();
-	RingBuf_Init(&g_RingBuf);
-	UART_Init();
-	Timer_Init();
-	Ledstrip_Init();
-	CommandIO_Init();
-	Rtc_Init();
-	ScriptCtrl_Init();
-	ExtEeprom_Init();
-	
+    clearRAM();
+    Trace_Init();
+    Platform_OsciInit();
+    Platform_IOInit();
+    RingBuf_Init(&g_RingBuf);
+    UART_Init();
+    Timer_Init();
+    Ledstrip_Init();
+    CommandIO_Init();
+    Rtc_Init();
+    ScriptCtrl_Init();
+    ExtEeprom_Init();
+
 #ifndef __CC8E__
-	init_x86(g_start_gl);
+    init_x86(g_start_gl);
 #endif /* #ifndef CC8E */
 
-	Platform_AllowInterrupts();
+    Platform_AllowInterrupts();
 
-	/* Startup Wait-Time 2s
-	 * to protect Wifly-Modul from errors*/
-	gScriptBuf.waitValue = 20;
-	CommandIO_CreateResponse(&g_ResponseBuf, FW_STARTED, OK);
-	CommandIO_SendResponse(&g_ResponseBuf);
-	Trace_String(" Init Done ");
-	Platform_DisableBootloaderAutostart();
+    /* Startup Wait-Time 2s
+     * to protect Wifly-Modul from errors*/
+    gScriptBuf.waitValue = 20;
+    CommandIO_CreateResponse(&g_ResponseBuf, FW_STARTED, OK);
+    CommandIO_SendResponse(&g_ResponseBuf);
+    Trace_String(" Init Done ");
+    Platform_DisableBootloaderAutostart();
 }
 
 #ifdef __CC8E__

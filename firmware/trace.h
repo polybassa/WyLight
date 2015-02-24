@@ -1,20 +1,20 @@
 /*
- Copyright (C) 2012 - 2014 Nils Weiss, Patrick Bruenn.
+   Copyright (C) 2012 - 2014 Nils Weiss, Patrick Bruenn.
 
- This file is part of Wifly_Light.
+   This file is part of Wifly_Light.
 
- Wifly_Light is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+   Wifly_Light is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
 
- Wifly_Light is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+   Wifly_Light is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
+   You should have received a copy of the GNU General Public License
+   along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #ifndef _TRACE_H_
 #define _TRACE_H_
@@ -34,7 +34,7 @@ extern struct RingBuffer g_TraceBuf;
 
 void Trace_Init();
 
-void Trace_String(const char *string);
+void Trace_String(const char* string);
 
 void Trace_Number(uns8 input);
 
@@ -44,76 +44,75 @@ void Trace_Hex16(const uns16 input);
 
 void Trace_Char(const uns8 input);
 
-uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
+uns8 Trace_Print(uns8* pArray, const uns16 arraySize);
 
 #elif TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-    #define Trace_Init(x)
-    #define Trace_String(str)
-    #define Trace_Number(input)
-    #define Trace_Hex(hex)
-    #define Trace_Hex16(hex)
-    #define Trace_Print(array, arraySize)
-    #define Trace_Char(x)
-    #define TraceBuffer(ZONE, BUFFER, LENGTH, BUFFER_FORMAT, ...)
-	#define Trace(ZONE, ...) do { \
-		if(g_DebugZones & (ZONE)) { \
-			printf("%s:%u: ", __FILE__, __LINE__); \
-			printf(__VA_ARGS__); \
-		} \
-} while(0)
+#define Trace_Init(x)
+#define Trace_String(str)
+#define Trace_Number(input)
+#define Trace_Hex(hex)
+#define Trace_Hex16(hex)
+#define Trace_Print(array, arraySize)
+#define Trace_Char(x)
+#define TraceBuffer(ZONE, BUFFER, LENGTH, BUFFER_FORMAT, ...)
+#define Trace(ZONE, ...) do { \
+        if (g_DebugZones & (ZONE)) { \
+            printf("%s:%u: ", __FILE__, __LINE__); \
+            printf(__VA_ARGS__); \
+        } \
+} while (0)
 
 #elif defined(cc3200)
-    #include "uart_if.h"
-    #define Trace_Init(x) {InitTerm(); ClearTerm();}
-	#define Trace_String(str) Report(str)
-	#define Trace_Number(input) Report("%d",input)
-	#define Trace_Hex(hex) Report("0x%2x", hex)
-	#define Trace_Hex16(hex) Report("0x%4x", hex)
-    #define Trace(ZONE, ...) do { \
-        if(g_DebugZones & (ZONE)) { \
-        Report("%s:%u: ", __FILE__, __LINE__); \
-        Report(__VA_ARGS__); \
-            } \
-        } while(0)
+#include "uart_if.h"
+#define Trace_Init(x) {InitTerm(); ClearTerm(); }
+#define Trace_String(str) Report(str)
+#define Trace_Number(input) Report("%d",input)
+#define Trace_Hex(hex) Report("0x%2x", hex)
+#define Trace_Hex16(hex) Report("0x%4x", hex)
+#define Trace(ZONE, ...) do { \
+        if (g_DebugZones & (ZONE)) { \
+            Report("%s:%u: ", __FILE__, __LINE__); \
+            Report(__VA_ARGS__); \
+        } \
+} while (0)
 
 #else
-	#include "stdio.h"
-	#define Trace_Init(x)
-	#define Trace_String(str) do { printf("%s", str); } while(0)
-	#define Trace_Number(input) do { printf("%04x", input); } while(0)
-	#define Trace_Hex(hex) do { printf("%02x ", hex); } while(0)
-	#define Trace_Hex16(hex) do { printf("%04x ", hex); } while(0)
-	uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
-	#define Trace_Char(input) do { printf("%c", input); } while(0)
+#include "stdio.h"
+#define Trace_Init(x)
+#define Trace_String(str) do { printf("%s", str); } while (0)
+#define Trace_Number(input) do { printf("%04x", input); } while (0)
+#define Trace_Hex(hex) do { printf("%02x ", hex); } while (0)
+#define Trace_Hex16(hex) do { printf("%04x ", hex); } while (0)
+uns8 Trace_Print(uns8* pArray, const uns16 arraySize);
+#define Trace_Char(input) do { printf("%c", input); } while (0)
 
-	#define TraceBuffer(ZONE, BUFFER, LENGTH, BUFFER_FORMAT, ...) do { \
-		if(g_DebugZones & (ZONE)) { \
-			Trace(ZONE, __VA_ARGS__); \
-			for(size_t i = 0; i < (LENGTH); i++) { \
-				printf(BUFFER_FORMAT, ((uint8_t *)(BUFFER))[i]); \
-			} \
-				printf("\n"); \
-		} \
-} while(0)
+#define TraceBuffer(ZONE, BUFFER, LENGTH, BUFFER_FORMAT, ...) do { \
+        if (g_DebugZones & (ZONE)) { \
+            Trace(ZONE, __VA_ARGS__); \
+            for (size_t i = 0; i < (LENGTH); i++) { \
+                printf(BUFFER_FORMAT, ((uint8_t*)(BUFFER))[i]); \
+            } \
+            printf("\n"); \
+        } \
+} while (0)
 
-	#define Trace(ZONE, ...) do { \
-		if(g_DebugZones & (ZONE)) { \
-				printf("%s:%u: ", __FILE__, __LINE__); \
-				printf(__VA_ARGS__); \
-				fflush(stdout); \
-		} \
-} while(0)
+#define Trace(ZONE, ...) do { \
+        if (g_DebugZones & (ZONE)) { \
+            printf("%s:%u: ", __FILE__, __LINE__); \
+            printf(__VA_ARGS__); \
+            fflush(stdout); \
+        } \
+} while (0)
 #endif
 #else
-	#define Trace_Init(x)
-	#define Trace_String(str)
-	#define Trace_Number(input)
-	#define Trace_Hex(hex)
-	#define Trace_Hex16(hex)
-    uns8 Trace_Print(uns8 *pArray, const uns16 arraySize);
-	#define Trace_Char(x)
-	#define TraceBuffer(ZONE, BUFFER, LENGTH, BUFFER_FORMAT, ...)
-	#define Trace(ZONE, ...)
+#define Trace_Init(x)
+#define Trace_String(str)
+#define Trace_Number(input)
+#define Trace_Hex(hex)
+#define Trace_Hex16(hex)
+uns8 Trace_Print(uns8* pArray, const uns16 arraySize);
+#define Trace_Char(x)
+#define TraceBuffer(ZONE, BUFFER, LENGTH, BUFFER_FORMAT, ...)
+#define Trace(ZONE, ...)
 #endif
 #endif /* #ifndef _TRACE_H_ */
-

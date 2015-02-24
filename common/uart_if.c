@@ -1,55 +1,55 @@
 /*
- Copyright (C) 2014 Nils Weiss, Patrick Bruenn.
+   Copyright (C) 2014 Nils Weiss, Patrick Bruenn.
 
- This file is part of WyLight.
+   This file is part of WyLight.
 
- WyLight is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+   WyLight is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
 
- WyLight is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+   WyLight is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
+   You should have received a copy of the GNU General Public License
+   along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
 //*****************************************************************************
 // uart_if.c
 //
 // uart interface file: Prototypes and Macros for UARTLogger
 //
-// Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/ 
-// 
-// 
-//  Redistribution and use in source and binary forms, with or without 
-//  modification, are permitted provided that the following conditions 
+// Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
 //  are met:
 //
-//    Redistributions of source code must retain the above copyright 
+//    Redistributions of source code must retain the above copyright
 //    notice, this list of conditions and the following disclaimer.
 //
 //    Redistributions in binary form must reproduce the above copyright
-//    notice, this list of conditions and the following disclaimer in the 
-//    documentation and/or other materials provided with the   
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
 //    distribution.
 //
 //    Neither the name of Texas Instruments Incorporated nor the names of
 //    its contributors may be used to endorse or promote products derived
 //    from this software without specific prior written permission.
 //
-//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 //  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
-//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
-//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
 //  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
 //  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
-//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
@@ -71,13 +71,13 @@
 //! \return none
 //
 //*****************************************************************************
-void 
+void
 InitTerm()
 {
 #ifdef DEBUG
-  MAP_UARTConfigSetExpClk(CONSOLE,MAP_PRCMPeripheralClockGet(CONSOLE_PERIPH), 
-                  UART_BAUD_RATE, (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
-                   UART_CONFIG_PAR_NONE));
+    MAP_UARTConfigSetExpClk(CONSOLE,MAP_PRCMPeripheralClockGet(CONSOLE_PERIPH),
+                            UART_BAUD_RATE, (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
+                                             UART_CONFIG_PAR_NONE));
 #endif
 }
 
@@ -93,17 +93,15 @@ InitTerm()
 //! \return none
 //
 //*****************************************************************************
-void 
-Message(const char *str)
+void
+Message(const char* str)
 {
 #ifdef DEBUG
-    if(str != NULL)
-    {
-        while(*str)
-        {
+    if (str != NULL)
+        while (*str) {
             MAP_UARTCharPut(CONSOLE,*str++);
         }
-    }
+
 #endif
 }
 
@@ -117,10 +115,10 @@ Message(const char *str)
 //! \return none
 //
 //*****************************************************************************
-void 
+void
 ClearTerm()
 {
-	const char clearMsg[] = "\33[2J\r";
+    const char clearMsg[] = "\33[2J\r";
     Message(clearMsg);
 }
 
@@ -138,23 +136,23 @@ ClearTerm()
 //! \return count of characters printed
 //
 //*****************************************************************************
-int Report(const char *pcFormat, ...)
+int Report(const char* pcFormat, ...)
 {
- int iRet = 0;
+    int iRet = 0;
 #ifdef DEBUG
-  char pcBuff[256];
-  int iSize = sizeof(pcBuff);
- 
-  va_list list;
-  va_start(list,pcFormat);
-  iRet = vsnprintf(pcBuff,iSize,pcFormat,list);
-  va_end(list);
+    char pcBuff[256];
+    int iSize = sizeof(pcBuff);
 
-  if( iRet < 0 || iRet >= iSize) {
-	  Message("Message to long\r\n");
-	  return -1;
-  }
-  Message(pcBuff);
+    va_list list;
+    va_start(list,pcFormat);
+    iRet = vsnprintf(pcBuff,iSize,pcFormat,list);
+    va_end(list);
+
+    if ((iRet < 0) || (iRet >= iSize)) {
+        Message("Message to long\r\n");
+        return -1;
+    }
+    Message(pcBuff);
 #endif
-  return iRet;
+    return iRet;
 }

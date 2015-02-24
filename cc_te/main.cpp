@@ -60,7 +60,7 @@ void operator delete[](void* p)
 }
 #endif /* __cplusplus */
 
-extern void (*const g_pfnVectors[])(void);
+extern void(*const g_pfnVectors[])(void);
 
 //*****************************************************************************
 //
@@ -74,7 +74,7 @@ extern void (*const g_pfnVectors[])(void);
 static void BoardInit(void)
 {
     // Set vector table base
-    MAP_IntVTableBaseSet((unsigned long) &g_pfnVectors[0]);
+    MAP_IntVTableBaseSet((unsigned long)&g_pfnVectors[0]);
 
     // Enable Processor
     MAP_IntMasterEnable();
@@ -113,8 +113,7 @@ int main()
 
     GPIO_IF_LedOn(MCU_GREEN_LED_GPIO);
 
-    if (ReadJumper() == 0)
-    {
+    if (ReadJumper() == 0) {
         if (SUCCESS == EmplaceFirmware()) StartFirmware();
         GPIO_IF_LedOn(MCU_RED_LED_GPIO);
     }
@@ -130,4 +129,3 @@ int main()
     // Point of no return;
     StartFirmware();
 }
-

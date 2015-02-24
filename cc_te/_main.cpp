@@ -1,20 +1,20 @@
 /*
- Copyright (C) 2014 Nils Weiss, Patrick Bruenn.
+   Copyright (C) 2014 Nils Weiss, Patrick Bruenn.
 
- This file is part of WyLight.
+   This file is part of WyLight.
 
- WyLight is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+   WyLight is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
 
- WyLight is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+   WyLight is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
+   You should have received a copy of the GNU General Public License
+   along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "hw_types.h"
 #include "hw_ints.h"
@@ -49,24 +49,31 @@
  * Override C++ new/delete operators to reduce memory footprint
  */
 #include <stdlib.h>
-void *operator new(size_t size) {
-	return malloc(size);
+void* operator new(size_t size)
+{
+    return malloc(size);
 }
 
-void *operator new[](size_t size) {
-	return malloc(size);
+void* operator new[](size_t size)
+{
+    return malloc(size);
 }
 
-void operator delete(void *p) {
-	free(p);
+void operator delete(void* p)
+{
+    free(p);
 }
 
-void operator delete[](void *p) {
-	free(p);
+void operator delete[](void* p)
+{
+    free(p);
 }
 
-extern void (* const g_pfnVectors[])(void);
-extern "C" void __cxa_pure_virtual() { while (1); }
+extern void(*const g_pfnVectors[])(void);
+extern "C" void __cxa_pure_virtual()
+{
+    while (1) {}
+}
 const static uint32_t Version = 0xDEAD;
 
 //*****************************************************************************
@@ -78,84 +85,83 @@ const static uint32_t Version = 0xDEAD;
 //! \return None
 //
 //*****************************************************************************
-static void BoardInit(void) {
-	// Set vector table base
-	MAP_IntVTableBaseSet((unsigned long) &g_pfnVectors[0]);
+static void BoardInit(void)
+{
+    // Set vector table base
+    MAP_IntVTableBaseSet((unsigned long)&g_pfnVectors[0]);
 
-	// Enable Processor
-	MAP_IntMasterEnable();
-	MAP_IntEnable(FAULT_SYSTICK);
+    // Enable Processor
+    MAP_IntMasterEnable();
+    MAP_IntEnable(FAULT_SYSTICK);
 
-	PRCMCC3200MCUInit();
+    PRCMCC3200MCUInit();
 }
 
-static int ReadJumper() {
-	unsigned int GPIOPort;
-	unsigned char GPIOPin;
+static int ReadJumper()
+{
+    unsigned int GPIOPort;
+    unsigned char GPIOPin;
 
-	//Read GPIO
-	GPIO_IF_GetPortNPin(SH_GPIO_3, &GPIOPort, &GPIOPin);
-	return GPIO_IF_Get(SH_GPIO_3, GPIOPort, GPIOPin);
+    //Read GPIO
+    GPIO_IF_GetPortNPin(SH_GPIO_3, &GPIOPort, &GPIOPin);
+    return GPIO_IF_Get(SH_GPIO_3, GPIOPort, GPIOPin);
 }
 
-int main() {
-	// Board Initialization
-	BoardInit();
+int main()
+{
+    // Board Initialization
+    BoardInit();
 
-	// Configure the pinmux settings for the peripherals exercised
-	PinMuxConfig();
+    // Configure the pinmux settings for the peripherals exercised
+    PinMuxConfig();
 
-	// Configuring UART
-	InitTerm();
-	
-	auto x = new TestSibling();
-	
-	std::array<int, 5> arr = {0,1,2,3,4};
-	
-	for (auto& x : arr) {
-		Report("%d ", x);
-	}
+    // Configuring UART
+    InitTerm();
 
-	Report("%d", x->get());
-	
-	auto t = std::unique_ptr<TestClass>(new TestSibling());
-	
-	Report("t->:%d", t->get());
-	
-	auto str = "hallo String";
-	
-	Report("%s", str);
-	
-	int myints[] = {10,20,30,5,15};
-	std::vector<int> v(myints,myints+5);
-	
-	std::make_heap (v.begin(),v.end());
+    auto x = new TestSibling();
 
-	GPIO_IF_LedConfigure(LED1 | LED2 | LED3);
-	GPIO_IF_LedOff(MCU_ALL_LED_IND);
+    std::array<int, 5> arr = {0,1,2,3,4};
 
-	Network_IF_InitDriver();
-	// Starting the CC3200 networking layers
-	Network_IF_StartSimpleLinkAsAP();
+    for (auto& x : arr) {
+        Report("%d ", x);
+    }
 
-	GPIO_IF_LedOn(MCU_GREEN_LED_GPIO);
+    Report("%d", x->get());
 
-	if (ReadJumper() == 0) {
-		if (ERROR == EmplaceFirmware()) {
-			GPIO_IF_LedOn(MCU_RED_LED_GPIO);
-		}
-	}
-	GPIO_IF_LedOn(MCU_ORANGE_LED_GPIO);
+    auto t = std::unique_ptr<TestClass>(new TestSibling());
 
-	do {
-		TcpServer();
-	} while (EmplaceFirmware());
+    Report("t->:%d", t->get());
 
-	Network_IF_DeInitDriver();
-	MAP_IntDisable(FAULT_SYSTICK);
-	MAP_IntMasterDisable();
-	// Point of no return;
-	StartFirmware();
+    auto str = "hallo String";
 
+    Report("%s", str);
+
+    int myints[] = {10,20,30,5,15};
+    std::vector<int> v(myints,myints + 5);
+
+    std::make_heap(v.begin(),v.end());
+
+    GPIO_IF_LedConfigure(LED1 | LED2 | LED3);
+    GPIO_IF_LedOff(MCU_ALL_LED_IND);
+
+    Network_IF_InitDriver();
+    // Starting the CC3200 networking layers
+    Network_IF_StartSimpleLinkAsAP();
+
+    GPIO_IF_LedOn(MCU_GREEN_LED_GPIO);
+
+    if (ReadJumper() == 0)
+        if (ERROR == EmplaceFirmware())
+            GPIO_IF_LedOn(MCU_RED_LED_GPIO);
+    GPIO_IF_LedOn(MCU_ORANGE_LED_GPIO);
+
+    do {
+        TcpServer();
+    } while (EmplaceFirmware());
+
+    Network_IF_DeInitDriver();
+    MAP_IntDisable(FAULT_SYSTICK);
+    MAP_IntMasterDisable();
+    // Point of no return;
+    StartFirmware();
 }
-

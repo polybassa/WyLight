@@ -22,16 +22,15 @@
 #include "WiflyControl.h"
 #include <stdint.h>
 
-class WiflyControlCli
-{
+class WiflyControlCli {
 private:
-	WyLight::Control mControl;
-	bool mRunning;
-	void ShowHelp(void) const;
+    WyLight::Control mControl;
+    bool mRunning;
+    void ShowHelp(void) const;
 
 public:
-	WiflyControlCli(uint32_t addr, uint16_t port);
-	void Run(void);
-	WyLight::Control& getControl(void);
+    WiflyControlCli(uint32_t addr, uint16_t port);
+    void Run(void);
+    WyLight::Control& getControl(void);
 };
 #endif /* #ifndef _WIFLYCONTROLCLI_H_ */

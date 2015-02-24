@@ -8,8 +8,7 @@
 #ifndef TESTCLASS_H_
 #define TESTCLASS_H_
 
-class TestClass
-{
+class TestClass {
     unsigned char x;
 public:
     TestClass();
@@ -18,8 +17,7 @@ public:
     unsigned char get(void) { return x; }
 };
 
-class TestSibling : public TestClass
-{
+class TestSibling : public TestClass {
     virtual unsigned char methode(void) { return 'h'; }
 };
 
