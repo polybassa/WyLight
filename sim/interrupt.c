@@ -117,9 +117,8 @@ IntVTableBaseSet(unsigned long ulVtableBase)
 //
 //*****************************************************************************
 void
-IntRegister(unsigned long ulInterrupt, void (*pfnHandler)(void))
+IntRegister(unsigned long ulInterrupt, void (* pfnHandler)(void))
 {
-   
     printf("Interrupt %lu set to handler 0x%lx", ulInterrupt, (unsigned long)&pfnHandler);
 }
 
@@ -143,7 +142,6 @@ void
 IntUnregister(unsigned long ulInterrupt)
 {
     printf("Interrupt %lu disabled", ulInterrupt);
-
 }
 
 //*****************************************************************************
@@ -204,7 +202,6 @@ void
 IntEnable(unsigned long ulInterrupt)
 {
     printf("Interrupt %lu enabled\r\n", ulInterrupt);
-
 }
 
 //*****************************************************************************
@@ -224,7 +221,6 @@ void
 IntDisable(unsigned long ulInterrupt)
 {
     printf("Interrupt %lu disabled\r\n", ulInterrupt);
-
 }
 
 //*****************************************************************************

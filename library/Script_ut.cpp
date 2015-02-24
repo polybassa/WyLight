@@ -1,24 +1,23 @@
 /*
- Copyright (C) 2013 Nils Weiss, Patrick Bruenn.
+   Copyright (C) 2013 Nils Weiss, Patrick Bruenn.
 
- This file is part of Wifly_Light.
+   This file is part of Wifly_Light.
 
- Wifly_Light is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+   Wifly_Light is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
 
- Wifly_Light is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+   Wifly_Light is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
+   You should have received a copy of the GNU General Public License
+   along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "unittest.h"
 #include "Script.h"
-
 
 /**************** includes, classes and functions for wrapping ****************/
 
@@ -44,115 +43,111 @@ const std::string FwCmdWait::TOKEN("wait");
 const size_t FwCmdScript::INDENTATION_MAX;
 const char FwCmdScript::INDENTATION_CHARACTER;
 
-
-
-
 #if 0
 void badFade(void)
 {
-	Script newScript("./unit_test_data/TestInput.txt");
-	auto nextCmd = newScript.Begin();
+    Script newScript("./unit_test_data/TestInput.txt");
+    auto nextCmd = newScript.Begin();
 
-	assert(refLoop.Equals(*(*(nextCmd++))));
-	assert(refGradient.Equals(*(*(nextCmd++))));
+    assert(refLoop.Equals(*(*(nextCmd++))));
+    assert(refGradient.Equals(*(*(nextCmd++))));
 
-	FadeCmd badFade(1234, 0x0B1621, true, 101);
-	assert(!badFade.Equals(*(*(nextCmd++))));
+    FadeCmd badFade(1234, 0x0B1621, true, 101);
+    assert(!badFade.Equals(*(*(nextCmd++))));
 }
 
 void badGradient(void)
 {
-	Script newScript("./unit_test_data/TestInput.txt");
-	auto nextCmd = newScript.Begin();
+    Script newScript("./unit_test_data/TestInput.txt");
+    auto nextCmd = newScript.Begin();
 
-	assert(refLoop.Equals(*(*(nextCmd++))));
+    assert(refLoop.Equals(*(*(nextCmd++))));
 
-	GradientCmd badGradient(0x0B1621, 0x2C3742, 0, 1, 2, 101);
-	assert(!badGradient.Equals(*(*(nextCmd++))));
+    GradientCmd badGradient(0x0B1621, 0x2C3742, 0, 1, 2, 101);
+    assert(!badGradient.Equals(*(*(nextCmd++))));
 }
 
 void badLoopEnd(void)
 {
-	Script newScript("./unit_test_data/TestInput.txt");
-	auto nextCmd = newScript.Begin();
+    Script newScript("./unit_test_data/TestInput.txt");
+    auto nextCmd = newScript.Begin();
 
-	assert(refLoop.Equals(*(*(nextCmd++))));
-	assert(refGradient.Equals(*(*(nextCmd++))));
-	assert(refFade.Equals(*(*(nextCmd++))));
-	assert(refWait.Equals(*(*(nextCmd++))));
+    assert(refLoop.Equals(*(*(nextCmd++))));
+    assert(refGradient.Equals(*(*(nextCmd++))));
+    assert(refFade.Equals(*(*(nextCmd++))));
+    assert(refWait.Equals(*(*(nextCmd++))));
 
-	LoopEndCmd refLoopOff(1);
-	assert(!refLoopOff.Equals(*(*(nextCmd++))));
+    LoopEndCmd refLoopOff(1);
+    assert(!refLoopOff.Equals(*(*(nextCmd++))));
 }
 
 void badWait(void)
 {
-	Script newScript("./unit_test_data/TestInput.txt");
-	auto nextCmd = newScript.begin();
+    Script newScript("./unit_test_data/TestInput.txt");
+    auto nextCmd = newScript.begin();
 
-	assert(refLoop.equals(*(nextCmd++)));
-	assert(refGradient.equals(*(nextCmd++)));
-	assert(refFade.equals(*(nextCmd++)));
+    assert(refLoop.equals(*(nextCmd++)));
+    assert(refGradient.equals(*(nextCmd++)));
+    assert(refFade.equals(*(nextCmd++)));
 
-	WaitCmd refWait(5001);
-	assert(!refWait.equals(*(*(nextCmd++))));
+    WaitCmd refWait(5001);
+    assert(!refWait.equals(*(*(nextCmd++))));
 }
 #endif
 
 size_t ut_Script_ReadGood(void)
 {
-	TestCaseBegin();
-	Script newScript("./unit_test_data/TestInput.txt");
-	auto nextCmd = newScript.begin();
+    TestCaseBegin();
+    Script newScript("./unit_test_data/TestInput.txt");
+    auto nextCmd = newScript.begin();
 
-	CHECK(refLoop == **newScript.begin());
-	CHECK(refLoop == **nextCmd++);
-	CHECK(refGradient == **nextCmd++);
-	CHECK(refFade == **nextCmd++);
-	CHECK(refFadeRed == **nextCmd++);
-	CHECK(refFadeGreen == **nextCmd++);
-	CHECK(refFadeBlue == **nextCmd++);
-	CHECK(refWait == **nextCmd++);
-	CHECK(refLoopOff == **nextCmd++);
-	CHECK(nextCmd == newScript.end());
-	TestCaseEnd();
+    CHECK(refLoop == **newScript.begin());
+    CHECK(refLoop == **nextCmd++);
+    CHECK(refGradient == **nextCmd++);
+    CHECK(refFade == **nextCmd++);
+    CHECK(refFadeRed == **nextCmd++);
+    CHECK(refFadeGreen == **nextCmd++);
+    CHECK(refFadeBlue == **nextCmd++);
+    CHECK(refWait == **nextCmd++);
+    CHECK(refLoopOff == **nextCmd++);
+    CHECK(nextCmd == newScript.end());
+    TestCaseEnd();
 }
 
 size_t ut_Script_WriteGood(void)
 {
-	TestCaseBegin();
-	Script refScript("./unit_test_data/TestInput.txt");
-	Script::serialize("./exe/TestOutput.txt", refScript);
-	Script newScript("./exe/TestOutput.txt");
-	CHECK(newScript == refScript);
-	CHECK(0 == newScript.getName().compare("TestInput.txt"));
-	TestCaseEnd();
+    TestCaseBegin();
+    Script refScript("./unit_test_data/TestInput.txt");
+    Script::serialize("./exe/TestOutput.txt", refScript);
+    Script newScript("./exe/TestOutput.txt");
+    CHECK(newScript == refScript);
+    CHECK(0 == newScript.getName().compare("TestInput.txt"));
+    TestCaseEnd();
 }
 
 size_t ut_Script_WriteGoodWithVersion(void)
 {
-	TestCaseBegin();
-	Script refScript("./unit_test_data/TestInput2.txt");
-	Script::serialize("./exe/TestOutput2.txt", refScript);
-	Script newScript("./exe/TestOutput2.txt");
-	CHECK(newScript == refScript);
-	CHECK(0 == newScript.getName().compare("TestInput Version One"));
-	TestCaseEnd();
+    TestCaseBegin();
+    Script refScript("./unit_test_data/TestInput2.txt");
+    Script::serialize("./exe/TestOutput2.txt", refScript);
+    Script newScript("./exe/TestOutput2.txt");
+    CHECK(newScript == refScript);
+    CHECK(0 == newScript.getName().compare("TestInput Version One"));
+    TestCaseEnd();
 }
 
-int main (int argc, const char *argv[])
+int main(int argc, const char* argv[])
 {
-	UnitTestMainBegin();
-	RunTest(true, ut_Script_ReadGood);
+    UnitTestMainBegin();
+    RunTest(true, ut_Script_ReadGood);
 #if 0
-	good();
-	badFade();
-	badGradient();
-	badLoopEnd();
-	badWait();
+    good();
+    badFade();
+    badGradient();
+    badLoopEnd();
+    badWait();
 #endif
-	RunTest(true, ut_Script_WriteGood);
-	RunTest(true, ut_Script_WriteGoodWithVersion);
-	UnitTestMainEnd();
+    RunTest(true, ut_Script_WriteGood);
+    RunTest(true, ut_Script_WriteGoodWithVersion);
+    UnitTestMainEnd();
 }
-

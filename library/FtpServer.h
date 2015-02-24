@@ -25,47 +25,44 @@
 #include "ClientSocket.h"
 #include "WiflyControlException.h"
 
-namespace WyLight {
-
+namespace WyLight
+{
 /**
  * Abstract base class controlling the low level socket file descriptor
  */
-	class FtpServer
-	{
-	public:
-		/**
-		 * Aquire a simple ftp server on port 21
-		 * @throw FatalError if the creation of the bsd sock descriptor fails
-		 */
-		
-		//TODO: current working directory path as parameter for constructor
-		FtpServer(void) throw (FatalError);
-		
-		~FtpServer(void);
-				
-	private:
-		static const size_t FILE_BUFFER_SIZE = 2048;
-		void handleFiletransfer(const TcpSocket& telnet);
-		bool openDataConnection(const WyLight::TcpSocket& telnet, std::stringstream& dataInput);
-		void transferDataPassive(std::ifstream& file, const TcpServerSocket& dataSocket) const throw(FatalError);
-		void SendFile(const TcpSocket& telnet, std::stringstream& dataInput, const TcpServerSocket* dataSocket);
-		bool mFtpServerRunning = true;
-		std::thread mFtpServerThread;
-	};
+class FtpServer {
+public:
+    /**
+     * Aquire a simple ftp server on port 21
+     * @throw FatalError if the creation of the bsd sock descriptor fails
+     */
 
-	class FtpCommand
-	{
-		const char* const mParam;
-		const char* const mSuccess;
-		const char* const mError;
-	public:
-		static const FtpCommand CWD;
-		static const FtpCommand PASS;
-		static const FtpCommand TYPE;
-		static const FtpCommand USER;
-		FtpCommand(const char* param, const char* successMsg, const char* errorMsg);
-		bool Run(const TcpSocket& telnet, std::stringstream& dataInput) const;
-	};
+    //TODO: current working directory path as parameter for constructor
+    FtpServer(void) throw (FatalError);
+
+    ~FtpServer(void);
+
+private:
+    static const size_t FILE_BUFFER_SIZE = 2048;
+    void handleFiletransfer(const TcpSocket& telnet);
+    bool openDataConnection(const WyLight::TcpSocket& telnet, std::stringstream& dataInput);
+    void transferDataPassive(std::ifstream& file, const TcpServerSocket& dataSocket) const throw(FatalError);
+    void SendFile(const TcpSocket& telnet, std::stringstream& dataInput, const TcpServerSocket* dataSocket);
+    bool mFtpServerRunning = true;
+    std::thread mFtpServerThread;
+};
+
+class FtpCommand {
+    const char* const mParam;
+    const char* const mSuccess;
+    const char* const mError;
+public:
+    static const FtpCommand CWD;
+    static const FtpCommand PASS;
+    static const FtpCommand TYPE;
+    static const FtpCommand USER;
+    FtpCommand(const char* param, const char* successMsg, const char* errorMsg);
+    bool Run(const TcpSocket& telnet, std::stringstream& dataInput) const;
+};
 }
 #endif /* #ifndef _CLIENTSOCKET_H_ */
-

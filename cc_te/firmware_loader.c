@@ -33,7 +33,7 @@
 #define FILENAME_SIZE           128
 
 static int g_ContextReadyFlag = 0;
-static unsigned char* FIRMWARE_FILENAME = (unsigned char*) FW_FILENAME;
+static unsigned char* FIRMWARE_FILENAME = (unsigned char*)FW_FILENAME;
 
 // Interrupt handler to handle SHAMD5 engine interrupts
 void SHAMD5IntHandler(void)
@@ -41,8 +41,7 @@ void SHAMD5IntHandler(void)
     uint32_t ui32IntStatus;
 
     ui32IntStatus = MAP_SHAMD5IntStatus(SHAMD5_BASE, true);
-    if (ui32IntStatus & SHAMD5_INT_CONTEXT_READY)
-    {
+    if (ui32IntStatus & SHAMD5_INT_CONTEXT_READY) {
         MAP_SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_CONTEXT_READY);
         g_ContextReadyFlag = 1;
     }
@@ -123,7 +122,7 @@ static long VerifySRAM(uint8_t* pSource, const size_t length)
 
     //get hash from end of SRAM
     const void* pHash = pSource + length - CHECKSUM_SIZE;
-    if ((uint32_t) pHash <= (uint32_t) pSource) return ERROR;
+    if ((uint32_t)pHash <= (uint32_t)pSource) return ERROR;
     memcpy(secoundHash, pHash, CHECKSUM_SIZE);
 
     if (memcmp(secoundHash, firstHash, sizeof(firstHash)) != 0) return ERROR;
@@ -155,7 +154,7 @@ static long LoadFirmware(unsigned char* pSourceFile)
     if (errornum)
         // File Doesn't exit
         return errornum;
-    size_t bytesCopied = wy_FsRead(fileHandle, 0, (unsigned char*) FIRMWARE_ORIGIN, sFileInfo.FileLen);
+    size_t bytesCopied = wy_FsRead(fileHandle, 0, (unsigned char*)FIRMWARE_ORIGIN, sFileInfo.FileLen);
     // Close the opened files
     errornum = wy_FsClose(fileHandle, 0, 0, 0);
     if (errornum) return errornum;
@@ -180,15 +179,13 @@ long SaveSRAMContent(uint8_t* pSource, const size_t length)
     unsigned long token = 0;
 
     static const char formatFilesystemCommand[] = FORMAT_COMMAND;
-    if (!memcmp((const char*) pSource, (const char*) formatFilesystemCommand, sizeof(formatFilesystemCommand) - 1))
-    {
+    if (!memcmp((const char*)pSource, (const char*)formatFilesystemCommand, sizeof(formatFilesystemCommand) - 1)) {
         long errornum = wy_FsFormat();
         return errornum ? errornum : EAGAIN;
     }
 #ifndef NOTERM
     static const char printFilesystemCommand[] = LIST_FS_COMMAND;
-    if (!memcmp((const char*) pSource, (const char*) printFilesystemCommand, sizeof(printFilesystemCommand) - 1))
-    {
+    if (!memcmp((const char*)pSource, (const char*)printFilesystemCommand, sizeof(printFilesystemCommand) - 1)) {
         long errornum = wy_FsPrintFileList();
         return errornum ? errornum : EAGAIN;
     }
@@ -223,26 +220,22 @@ long SaveSRAMContent(uint8_t* pSource, const size_t length)
     wy_FsDel(filename, token);
 
     // open the file for writing
-    if (wy_FsOpen(filename, FS_MODE_OPEN_WRITE, &token, &fileHandle))
-    {
+    if (wy_FsOpen(filename, FS_MODE_OPEN_WRITE, &token, &fileHandle)) {
         // File Doesn't exit create a new file
         int errornum = wy_FsOpen(filename, FS_MODE_OPEN_CREATE(filesize, 0), &token, &fileHandle);
-        if (errornum)
-        {
+        if (errornum) {
             wy_FsDel(filename, token);
             return SL_FS_ERR_FAILED_TO_CREATE_FILE;
         }
         wy_FsClose(fileHandle, 0, 0, 0);
         errornum = wy_FsOpen(filename, FS_MODE_OPEN_WRITE, &token, &fileHandle);
-        if (errornum)
-        {
+        if (errornum) {
             wy_FsDel(filename, token);
             return SL_FS_ERROR_FAILED_TO_WRITE;
         }
     }
 
-    if (wy_FsWrite(fileHandle, 0, pSource, filesize) < 0)
-    {
+    if (wy_FsWrite(fileHandle, 0, pSource, filesize) < 0) {
         // Error close the file and delete the temporary file
         wy_FsClose(fileHandle, 0, 0, 0);
         return SL_FS_ERROR_FAILED_TO_WRITE;
@@ -250,8 +243,8 @@ long SaveSRAMContent(uint8_t* pSource, const size_t length)
     // Close the opened files
     wy_FsClose(fileHandle, 0, 0, 0);
     // if we saved a firmware, than return SUCCESS (0) to start this firmware immediately
-    return (long) memcmp(filename, FIRMWARE_FILENAME,
-                         sl_min(sl_Strlen(filename), sl_Strlen(FIRMWARE_FILENAME))) ? EAGAIN : SUCCESS;
+    return (long)memcmp(filename, FIRMWARE_FILENAME,
+                        sl_min(sl_Strlen(filename), sl_Strlen(FIRMWARE_FILENAME))) ? EAGAIN : SUCCESS;
     //return (long) strcmp((const char *) filename, (const char *) FIRMWARE_FILENAME);
 }
 
@@ -265,11 +258,11 @@ long SaveSRAMContent(uint8_t* pSource, const size_t length)
 void StartFirmware(void)
 {
     // patch Interrupt Vector Table
-    MAP_IntVTableBaseSet((size_t) FIRMWARE_ORIGIN);
+    MAP_IntVTableBaseSet((size_t)FIRMWARE_ORIGIN);
 
     // call Firmware
     void (* firmware_origin_entry)(void);
-    unsigned int resetVector = *((unsigned int*) (FIRMWARE_ORIGIN + 4));
+    unsigned int resetVector = *((unsigned int*)(FIRMWARE_ORIGIN + 4));
     firmware_origin_entry = (void (*)(void))(resetVector);
 
     firmware_origin_entry();

@@ -31,75 +31,71 @@
 #include <memory>
 #include <algorithm>
 
+using namespace WyLight;
 using std::cin;
 using std::cout;
-using namespace WyLight;
 
 void newRemoteCallback(const size_t index, const WyLight::Endpoint& newEndpoint);
-char* getCmdOption(char ** begin, char ** end, const std::string & option);
+char* getCmdOption(char** begin, char** end, const std::string& option);
 bool cmdOptionExists(char** begin, char** end, const std::string& option);
 
 WiflyControlCli::WiflyControlCli(uint32_t addr, uint16_t port)
-	: mControl(addr, port), mRunning(true)
+    : mControl(addr, port), mRunning(true)
 {
-	cout << "Connecting to " << std::hex << addr << ':' << port << std::endl;
+    cout << "Connecting to " << std::hex << addr << ':' << port << std::endl;
 }
 
 void WiflyControlCli::Run(void)
 {
-	std::shared_ptr<const WiflyControlCmd> pCmd;
-			ShowHelp();
-	string nextCmd;
-	while(mRunning)
-	{
-		cout << "WiflyControlCli: ";
-		cin >> nextCmd;
+    std::shared_ptr<const WiflyControlCmd> pCmd;
+    ShowHelp();
+    string nextCmd;
+    while (mRunning) {
+        cout << "WiflyControlCli: ";
+        cin >> nextCmd;
 
-		if("exit" == nextCmd) {
-			return;
-		} else if("?" == nextCmd)   {
-			ShowHelp();
-		} else {
-			pCmd = WiflyControlCmdBuilder::GetCmd(nextCmd);
-			if(NULL != pCmd) {
-				pCmd->Run(mControl);
-			}
-		}
-	}
+        if ("exit" == nextCmd) {
+            return;
+        } else if ("?" == nextCmd) {
+            ShowHelp();
+        } else {
+            pCmd = WiflyControlCmdBuilder::GetCmd(nextCmd);
+            if (NULL != pCmd)
+                pCmd->Run(mControl);
+        }
+    }
 }
 
 void WiflyControlCli::ShowHelp(void) const
 {
-	cout << "Command reference:" << endl;
-	cout << "'?' - this help" << endl;
-	cout << "'exit' - terminate cli" << endl;
+    cout << "Command reference:" << endl;
+    cout << "'?' - this help" << endl;
+    cout << "'exit' - terminate cli" << endl;
 
-	size_t i = 0;
-	std::shared_ptr<const WiflyControlCmd> pCmd = WiflyControlCmdBuilder::GetCmd(i++);
-	while(pCmd != NULL) {
-		cout << *pCmd << endl;
-		pCmd = WiflyControlCmdBuilder::GetCmd(i++);
-	}
-	return;
+    size_t i = 0;
+    std::shared_ptr<const WiflyControlCmd> pCmd = WiflyControlCmdBuilder::GetCmd(i++);
+    while (pCmd != NULL) {
+        cout << *pCmd << endl;
+        pCmd = WiflyControlCmdBuilder::GetCmd(i++);
+    }
 }
 
-WyLight::Control& WiflyControlCli::getControl() {
-	return mControl;
+WyLight::Control& WiflyControlCli::getControl()
+{
+    return mControl;
 }
 
 void newRemoteCallback(const size_t index, const WyLight::Endpoint& newEndpoint)
 {
-	std::cout << "New: " << index << ':' << newEndpoint << '\n';
+    std::cout << "New: " << index << ':' << newEndpoint << '\n';
 }
 
 // functions to parse argument list
-char* getCmdOption(char ** begin, char ** end, const std::string & option)
+char* getCmdOption(char** begin, char** end, const std::string& option)
 {
-    char ** itr = std::find(begin, end, option);
-    if (itr != end && ++itr != end)
-    {
+    char** itr = std::find(begin, end, option);
+    if ((itr != end) && (++itr != end))
         return *itr;
-    }
     return 0;
 }
 
@@ -108,44 +104,40 @@ bool cmdOptionExists(char** begin, char** end, const std::string& option)
     return std::find(begin, end, option) != end;
 }
 
-
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-	if (cmdOptionExists(argv, argv + argc, "-?") || cmdOptionExists(argv, argv + argc, "-help")) {
-		std::cout << "Usage: \nno parameters: default usage.\n-c \"123.123.123.123\" to connect to a specific IP immediately.\n\n";
-		return 0;
-	}
+    if (cmdOptionExists(argv, argv + argc, "-?") || cmdOptionExists(argv, argv + argc, "-help")) {
+        std::cout <<
+            "Usage: \nno parameters: default usage.\n-c \"123.123.123.123\" to connect to a specific IP immediately.\n\n";
+        return 0;
+    }
 
-	WyLight::Endpoint e;
+    WyLight::Endpoint e;
 
-	if (cmdOptionExists(argv, argv + argc, "-c")) {
+    if (cmdOptionExists(argv, argv + argc, "-c")) {
+        in_addr_t addr;
+        inet_pton(AF_INET, getCmdOption(argv, argv + argc, "-c"), &(addr));
+        /* Reverse the bytes in the binary address */
+        addr = ((addr & 0xff000000) >> 24) | ((addr & 0x00ff0000) >>  8) | ((addr & 0x0000ff00) <<  8) |
+               ((addr & 0x000000ff) << 24);
+        e = WyLight::Endpoint(addr, 2000);
+    } else {
+        WyLight::BroadcastReceiver receiver(55555, "recent.txt", newRemoteCallback);
+        std::thread t(std::ref(receiver));
 
-		in_addr_t addr;
-		inet_pton(AF_INET, getCmdOption(argv, argv + argc, "-c"), &(addr));
-		/* Reverse the bytes in the binary address */
-		addr = ((addr & 0xff000000) >> 24) | ((addr & 0x00ff0000) >>  8) | ((addr & 0x0000ff00) <<  8) | ((addr & 0x000000ff) << 24);
-		e = WyLight::Endpoint(addr, 2000);
+        // wait for user input
+        size_t selection;
+        do {
+            std::cin >> selection;
+        } while (selection >= receiver.NumRemotes());
 
-	} else {
+        receiver.Stop();
+        t.join();
 
-		WyLight::BroadcastReceiver receiver(55555, "recent.txt", newRemoteCallback);
-		std::thread t(std::ref(receiver));
+        e = receiver.GetEndpoint(selection);
+    }
 
-		// wait for user input
-		size_t selection;
-		do
-		{
-			std::cin >> selection;
-		}
-		while(selection >= receiver.NumRemotes());
+    WiflyControlCli cli(e.GetIp(), e.GetPort());
 
-		receiver.Stop();
-		t.join();
-
-		e = receiver.GetEndpoint(selection);
-	}
-
-	WiflyControlCli cli(e.GetIp(), e.GetPort());
-
-	cli.Run();
+    cli.Run();
 }

@@ -3,35 +3,35 @@
 //
 // timer interface file: contains different interface functions for timer APIs
 //
-// Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/ 
-// 
-// 
-//  Redistribution and use in source and binary forms, with or without 
-//  modification, are permitted provided that the following conditions 
+// Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
 //  are met:
 //
-//    Redistributions of source code must retain the above copyright 
+//    Redistributions of source code must retain the above copyright
 //    notice, this list of conditions and the following disclaimer.
 //
 //    Redistributions in binary form must reproduce the above copyright
-//    notice, this list of conditions and the following disclaimer in the 
-//    documentation and/or other materials provided with the   
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
 //    distribution.
 //
 //    Neither the name of Texas Instruments Incorporated nor the names of
 //    its contributors may be used to endorse or promote products derived
 //    from this software without specific prior written permission.
 //
-//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 //  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
-//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
-//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
 //  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
 //  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
-//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
@@ -53,14 +53,14 @@
 //! 255 (inclusive) for 16/32-bit timers and between 0 and 65535 (inclusive)
 //! for 32/64-bit timers.
 //! This function
-//! 	1. Enables and reset the peripheral for the timer.
-//! 	2. Configures and set the prescale value for the timer.
+//!     1. Enables and reset the peripheral for the timer.
+//!     2. Configures and set the prescale value for the timer.
 //!
 //! \return none
 //
 //*****************************************************************************
-void Timer_IF_Init( unsigned long ePeripheral, unsigned long ulBase, unsigned
-               long ulConfig, unsigned long ulTimer, unsigned long ulValue)
+void Timer_IF_Init(unsigned long ePeripheral, unsigned long ulBase, unsigned
+                   long ulConfig, unsigned long ulTimer, unsigned long ulValue)
 {
     //
     // Initialize GPT A0 (in 32 bit mode) as periodic down counter.
@@ -81,30 +81,25 @@ void Timer_IF_Init( unsigned long ePeripheral, unsigned long ulBase, unsigned
 //!	interrupt for the Timer
 //!
 //! This function
-//! 	1. Register the function handler for the timer interrupt.
-//! 	2. enables the timer interrupt.
+//!     1. Register the function handler for the timer interrupt.
+//!     2. enables the timer interrupt.
 //!
 //! \return none
 //
 //*****************************************************************************
-void Timer_IF_IntSetup(unsigned long ulBase, unsigned long ulTimer, 
-                   void (*TimerBaseIntHandler)(void))
+void Timer_IF_IntSetup(unsigned long ulBase, unsigned long ulTimer,
+                       void (* TimerBaseIntHandler)(void))
 {
-  //
-  // Setup the interrupts for the timer timeouts.
-  //
-MAP_TimerIntRegister(ulBase, ulTimer, TimerBaseIntHandler);
- 
+    //
+    // Setup the interrupts for the timer timeouts.
+    //
+    MAP_TimerIntRegister(ulBase, ulTimer, TimerBaseIntHandler);
 
-  if(ulTimer == TIMER_BOTH)
-  {
-    MAP_TimerIntEnable(ulBase, TIMER_TIMA_TIMEOUT|TIMER_TIMB_TIMEOUT);
-  }
-  else
-  {
-    MAP_TimerIntEnable(ulBase, ((ulTimer == TIMER_A) ? TIMER_TIMA_TIMEOUT : 
-                                   TIMER_TIMB_TIMEOUT));
-  }
+    if (ulTimer == TIMER_BOTH)
+        MAP_TimerIntEnable(ulBase, TIMER_TIMA_TIMEOUT | TIMER_TIMB_TIMEOUT);
+    else
+        MAP_TimerIntEnable(ulBase, ((ulTimer == TIMER_A) ? TIMER_TIMA_TIMEOUT :
+                                    TIMER_TIMB_TIMEOUT));
 }
 
 //*****************************************************************************
@@ -114,7 +109,7 @@ MAP_TimerIntRegister(ulBase, ulTimer, TimerBaseIntHandler);
 //! \param ulBase is the base address for the timer.
 //!
 //! This function
-//! 	1. clears the interrupt with given base.
+//!     1. clears the interrupt with given base.
 //!
 //! \return none
 //
@@ -139,18 +134,18 @@ void Timer_IF_InterruptClear(unsigned long ulBase)
 //! run out and gives the interrupt.
 //!
 //! This function
-//! 	1. Load the Timer with the specified value.
-//! 	2. enables the timer.
+//!     1. Load the Timer with the specified value.
+//!     2. enables the timer.
 //!
 //! \return none
 //
 //*****************************************************************************
-void Timer_IF_Start(unsigned long ulBase, unsigned long ulTimer, 
-                unsigned long ulValue)
+void Timer_IF_Start(unsigned long ulBase, unsigned long ulTimer,
+                    unsigned long ulValue)
 {
     MAP_TimerLoadSet(ulBase,ulTimer,ulValue);
     //
-    // Enable the GPT 
+    // Enable the GPT
     //
     MAP_TimerEnable(ulBase,ulTimer);
 }
@@ -163,7 +158,7 @@ void Timer_IF_Start(unsigned long ulBase, unsigned long ulTimer,
 //! \param ulTimer selects amoung the TIMER_A or TIMER_B or TIMER_BOTH.
 //!
 //! This function
-//! 	1. disables the interupt.
+//!     1. disables the interupt.
 //!
 //! \return none
 //
@@ -171,7 +166,7 @@ void Timer_IF_Start(unsigned long ulBase, unsigned long ulTimer,
 void Timer_IF_Stop(unsigned long ulBase, unsigned long ulTimer)
 {
     //
-    // Disable the GPT 
+    // Disable the GPT
     //
     MAP_TimerDisable(ulBase,ulTimer);
 }
@@ -183,7 +178,7 @@ void Timer_IF_Stop(unsigned long ulBase, unsigned long ulTimer)
 //! \param uiGPTBaseAddr
 //! \param ulTimer
 //!
-//! This function 
+//! This function
 //!		1. disable the timer interrupts
 //!		2. unregister the timer interrupt
 //!
@@ -192,14 +187,14 @@ void Timer_IF_Stop(unsigned long ulBase, unsigned long ulTimer)
 //*****************************************************************************
 void Timer_IF_DeInit(unsigned long ulBase,unsigned long ulTimer)
 {
-  //
-  // Disable the timer interrupt
-  //
-  MAP_TimerIntDisable(ulBase,TIMER_TIMA_TIMEOUT|TIMER_TIMB_TIMEOUT);
-  //
-  // Unregister the timer interrupt
-  //
-  MAP_TimerIntUnregister(ulBase,ulTimer);
+    //
+    // Disable the timer interrupt
+    //
+    MAP_TimerIntDisable(ulBase,TIMER_TIMA_TIMEOUT | TIMER_TIMB_TIMEOUT);
+    //
+    // Unregister the timer interrupt
+    //
+    MAP_TimerIntUnregister(ulBase,ulTimer);
 }
 
 //*****************************************************************************
@@ -212,15 +207,15 @@ void Timer_IF_DeInit(unsigned long ulBase,unsigned long ulTimer)
 //! run out and gives the interrupt.
 //!
 //! This function
-//! 	1. Reload the Timer with the specified value.
+//!     1. Reload the Timer with the specified value.
 //!
 //! \return none
 //
 //*****************************************************************************
-void Timer_IF_ReLoad(unsigned long ulBase, unsigned long ulTimer, 
-                unsigned long ulValue)
+void Timer_IF_ReLoad(unsigned long ulBase, unsigned long ulTimer,
+                     unsigned long ulValue)
 {
-     MAP_TimerLoadSet(ulBase,ulTimer,ulValue);
+    MAP_TimerLoadSet(ulBase,ulTimer,ulValue);
 }
 
 //*****************************************************************************
@@ -231,7 +226,7 @@ void Timer_IF_ReLoad(unsigned long ulBase, unsigned long ulTimer,
 //! \param ulTimer selects amoung the TIMER_A or TIMER_B or TIMER_BOTH.
 //!
 //! This function
-//! 	1. returns the timer value.
+//!     1. returns the timer value.
 //!
 //! \return Timer Value.
 //
@@ -249,4 +244,3 @@ unsigned int Timer_IF_GetCount(unsigned long ulBase, unsigned long ulTimer)
 //! @}
 //
 //*****************************************************************************
-

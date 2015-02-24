@@ -1,20 +1,20 @@
 /**
- Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+   Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
 
- This file is part of Wifly_Light.
+   This file is part of Wifly_Light.
 
- Wifly_Light is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+   Wifly_Light is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
 
- Wifly_Light is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+   Wifly_Light is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
+   You should have received a copy of the GNU General Public License
+   along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #ifndef _LEDSTRIP_H_
 #define _LEDSTRIP_H_
@@ -33,13 +33,13 @@
  * <stepSize> <led_array> is decremented/incremented by this value each periode
  */
 struct LedBuffer {
-	uns8 led_array[NUM_OF_LED * 3];
-	uns8 delta[NUM_OF_LED * 3];
-	uns16 cyclesLeft[NUM_OF_LED * 3];
-	uns16 periodeLength[NUM_OF_LED * 3];
-	uns8 step[NUM_OF_LED / 8 * 3];
-	uns8 stepSize[NUM_OF_LED * 3];
-	uns16 fadeTmms;
+    uns8 led_array[NUM_OF_LED * 3];
+    uns8 delta[NUM_OF_LED * 3];
+    uns16 cyclesLeft[NUM_OF_LED * 3];
+    uns16 periodeLength[NUM_OF_LED * 3];
+    uns8 step[NUM_OF_LED / 8 * 3];
+    uns8 stepSize[NUM_OF_LED * 3];
+    uns16 fadeTmms;
 };
 
 extern struct LedBuffer gLedBuf;
@@ -55,21 +55,21 @@ void Ledstrip_Init(void);
  * *pValues indicates the start of the Value-Array.
  * Length of the Array is always NUM_OF_LED * 3
  */
-void Ledstrip_SetColorDirect(uns8 *pValues);
+void Ledstrip_SetColorDirect(uns8* pValues);
 
 /**
  * Callback if a "set_fade" command is received.
  * fading parameters are calculated and stored to be used in
  * Ledstrip_DoFade() which is called in the main cycle
  */
-void Ledstrip_SetFade(struct cmd_set_fade *pCmd);
+void Ledstrip_SetFade(struct cmd_set_fade* pCmd);
 
 /**
  * Callback if a "set_gradient" command is received.
  * fading parameters are calculated and stored to be used in
  * Ledstrip_DoFade() which is called in the main cycle
  */
-void Ledstrip_SetGradient(struct cmd_set_gradient *pCmd);
+void Ledstrip_SetGradient(struct cmd_set_gradient* pCmd);
 
 /**
  * called by the main cycle
@@ -78,13 +78,12 @@ void Ledstrip_SetGradient(struct cmd_set_gradient *pCmd);
 /**
  * callback for the fadecycle timer
  * updates cyclesLeft part of the global <gLedBuf>
-**/
+ **/
 void Ledstrip_DoFade(void);
 
 void Ledstrip_UpdateLed(void);
 
 void Ledstrip_FadeOffLeds(void);
-
 
 #ifdef DEBUG
 #ifndef __CC8E__
