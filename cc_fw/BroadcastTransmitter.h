@@ -24,12 +24,9 @@
 #include "SimplelinkCustomer.h"
 #include "BroadcastMessage.h"
 
-
-#define BC_PORT_NUM        	55555
-
 class BroadcastTransmitter final : public Task, SimplelinkCustomer
 {
-	static const uint16_t port = BC_PORT_NUM;
+	static const uint16_t port = 55555;
 
 public:
 	BroadcastTransmitter(void);

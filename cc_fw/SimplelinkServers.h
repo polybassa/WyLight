@@ -23,8 +23,6 @@
 #include "CPPTask.h"
 #include "SimplelinkCustomer.h"
 
-#define SERVER_PORT				2000
-
 class Server {
 protected:
 	Server(void);
@@ -46,7 +44,8 @@ public:
 	TcpServer& operator=(const TcpServer&) = delete;
 	TcpServer(TcpServer&&) = delete;
 	
-	static const uint16_t port;
+	static const uint16_t port = 2000;
+    static const uint16_t rxBufferSize = 256;
 	
 	virtual void run(void);
 	virtual void stop(void);
@@ -61,7 +60,8 @@ public:
 	UdpServer& operator=(const UdpServer&) = delete;
 	UdpServer(UdpServer&&) = delete;
 	
-	static const uint16_t port;
+	static const uint16_t port = 2000;
+    static const uint16_t rxBufferSize = 256;
 	
 	virtual void run(void);
 	virtual void stop(void);

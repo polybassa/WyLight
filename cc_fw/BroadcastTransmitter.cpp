@@ -32,7 +32,7 @@ void WyLight::CC3200BroadcastMessage::refresh() {
 	sl_NetCfgGet(SL_MAC_ADDRESS_GET, NULL, &macAddressLen, (unsigned char *) &(this->mac));
 
 	// Set Client Port
-	this->port = htons(SERVER_PORT);
+    this->port = htons(TcpServer::port);
 
 	// Set Device ID
     // TODO save DeviceID global
@@ -52,21 +52,9 @@ void BroadcastTransmitter::stop(void) {
 	Task::stop();
 }
 
-//*****************************************************************************
-//
-//! Broadcast_Task
-//!
-//!  \param  pvParameters
-//!
-//!  \return none
-//!
-//!  \brief Task handler function to handle the Broadcast Messages
-//
-//*****************************************************************************
-
 BroadcastTransmitter::BroadcastTransmitter(void) : Task((const char *)"Broadcast", OSI_STACK_SIZE, 5, [&](const bool& stopFlag){
 
-	const sockaddr_in destaddr(AF_INET, htons(BC_PORT_NUM), htonl(INADDR_BROADCAST));
+	const sockaddr_in destaddr(AF_INET, htons(this->port), htonl(INADDR_BROADCAST));
 	const int sock = socket(AF_INET, SOCK_DGRAM, 0);
 	const socklen_t addrLen = sizeof(sockaddr_in);
 	int status;

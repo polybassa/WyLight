@@ -22,17 +22,7 @@
 #include "wy_firmware.h"
 #include "firmware/trace.h"
 
-
-#ifndef SUCCESS
-#define SUCCESS 0
-#endif
-
-#define BUFFERSIZE 256
-
 static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
-
-const uint16_t TcpServer::port = SERVER_PORT;
-const uint16_t UdpServer::port = SERVER_PORT;
 
 static xSemaphoreHandle g_StoreDataSemaphore;
 
@@ -64,7 +54,7 @@ void TcpServer::stop(void) {
 }
 
 void TcpServer::receive(const bool& stopFlag, const int childSock) {
-	uint8_t buffer[BUFFERSIZE];
+    uint8_t buffer[rxBufferSize];
 	
 	while (!stopFlag) {
 		int bytesToSend = 0;
@@ -137,14 +127,14 @@ TcpServer::TcpServer(void) : Task((const char *)"TcpServer", OSI_STACK_SIZE, 5, 
 		return;
 	}
 	
-	if (SUCCESS != bind(serverSock, (sockaddr *) &LocalAddr, sizeof(LocalAddr))) {
+	if (bind(serverSock, (sockaddr *) &LocalAddr, sizeof(LocalAddr))) {
 		Trace(ZONE_ERROR," Bind Error\n\r");
 		close(serverSock);
 		return;
 	}
 	
 	// Backlog = 1 to accept maximal 1 connection
-	if (SUCCESS != listen(serverSock, 1)) {
+	if (listen(serverSock, 1)) {
 		Trace(ZONE_ERROR," Listen Error\n\r");
 		close(serverSock);
 		return;
@@ -168,7 +158,7 @@ void UdpServer::stop(void) {
 
 void UdpServer::receive(const bool& stopFlag, const int serverSock) {
 	socklen_t RemoteAddrLen = sizeof(sockaddr_in);
-	uint8_t buffer[BUFFERSIZE];
+	uint8_t buffer[rxBufferSize];
 	sockaddr_in remoteAddr;
 	
 	while (!stopFlag) {
@@ -201,7 +191,7 @@ UdpServer::UdpServer(void) : Task((const char *)"UdpServer", OSI_STACK_SIZE, 6, 
 	int nonBlocking = 1;
 	setsockopt(serverSock, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking, sizeof(nonBlocking));
 	
-	if (SUCCESS != bind(serverSock, (sockaddr *) &LocalAddr, sizeof(LocalAddr))) {
+	if (bind(serverSock, (sockaddr *) &LocalAddr, sizeof(LocalAddr))) {
 		Trace(ZONE_ERROR," Bind Error\n\r");
 		close(serverSock);
 		return;

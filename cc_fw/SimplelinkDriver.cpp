@@ -49,8 +49,6 @@ static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNIN
     } \
 }
 
-#define SUCCESS 0
-
 const std::string SimplelinkDriver::GET_TOKEN = "__SL_G_US";
 const std::string SimplelinkDriver::POST_TOKEN = "__SL_P_US";
 
@@ -141,7 +139,7 @@ long SimplelinkDriver::startAsAccesspoint(void) {
         osi_Sleep(10);
     }
     
-    return SUCCESS;
+    return 0;
 }
 
 long SimplelinkDriver::configureAsAccesspoint(void) {
@@ -183,7 +181,7 @@ long SimplelinkDriver::configureAsAccesspoint(void) {
     
     Status.reset();
     
-    return SUCCESS;
+    return 0;
 }
 
 long SimplelinkDriver::configureSimpleLinkToDefaultState(void) {
@@ -311,7 +309,7 @@ long SimplelinkDriver::scanForAccesspoints(void) {
     
     Status.reset();
     
-    return SUCCESS;
+    return 0;
 }
 
 void SimplelinkDriver::responseNetworkEntries(const unsigned long entryNumber, SlHttpServerResponse_t *response) {
@@ -517,7 +515,7 @@ long SimplelinkDriver::waitForConnectWithTimeout(const unsigned int timeout_ms) 
         Trace(ZONE_ERROR,"Connecting failed \r\n");
         return ERROR;
     } else
-        return SUCCESS;
+        return 0;
 }
 
 void SimplelinkDriver::driverStatus::reset(void) {
@@ -580,7 +578,7 @@ void SimplelinkDriver::waitForNewProvisioningData(void) const {
     do {
         Trace(ZONE_VERBOSE, "Wait for provisioning data...\n\r");
         osi_SyncObjWait(&ProvisioningDataSemaphore, OSI_WAIT_FOREVER);
-    } while (this->addNewProfile() != SUCCESS);
+    } while (this->addNewProfile() != 0);
 }
 
 long SimplelinkDriver::addNewProfile(void) {
@@ -607,5 +605,5 @@ long SimplelinkDriver::addNewProfile(void) {
 		}
 		Trace(ZONE_VERBOSE,"Added Profile at index %d \r\n", retRes);
 	}
-	return SUCCESS;
+	return 0;
 }
