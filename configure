@@ -6056,9 +6056,6 @@ $as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 fi
 
 
-rm .git/hooks/pre-commit
-cp tools/pre-commit .git/hooks/pre-commit
-chmod a+x .git/hooks/pre-commit
+cp -af tools/pre-commit.uncrustify .git/hooks/pre-commit
 echo Added pre-commit hook to this repository
-
 

@@ -73,7 +73,5 @@ AC_CONFIG_FILES([Makefile tools/pre-commit])
 
 AC_OUTPUT
 
-rm .git/hooks/pre-commit
-cp tools/pre-commit .git/hooks/pre-commit
-chmod a+x .git/hooks/pre-commit
+cp -af tools/pre-commit.uncrustify .git/hooks/pre-commit
 echo Added pre-commit hook to this repository
