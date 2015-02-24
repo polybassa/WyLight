@@ -4781,7 +4781,7 @@ fi
 done
 
 
-ac_config_files="$ac_config_files Makefile tools/pre-commit.uncrustify"
+ac_config_files="$ac_config_files Makefile tools/pre-commit.settings"
 
 
 cat >confcache <<\_ACEOF
@@ -5475,7 +5475,7 @@ do
   case $ac_config_target in
     "config.h") CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
-    "tools/pre-commit.uncrustify") CONFIG_FILES="$CONFIG_FILES tools/pre-commit.uncrustify" ;;
+    "tools/pre-commit.settings") CONFIG_FILES="$CONFIG_FILES tools/pre-commit.settings" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac
@@ -6058,6 +6058,7 @@ $as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 fi
 
 
-cp -af tools/pre-commit.uncrustify .git/hooks/pre-commit
+rm .git/hooks/pre-commit
+ln -Fv tools/pre-commit.uncrustify .git/hooks/pre-commit
 chmod a+x .git/hooks/pre-commit
 echo Added pre-commit hook to this repository
