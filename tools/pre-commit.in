@@ -1,7 +1,10 @@
 #!/bin/sh
-#make filelist
-#@UNCRUSTIFY@ -F filelist.txt --no-backup -c uncrustify.cfg
-#echo Code formatting done!
-echo Code formatting disabled!
+make filelist
+cat filelist.txt | cut -c 3- > comparelist.txt
+git diff-index --cached --name-only HEAD > commitlist.txt
+sort comparelist.txt commitlist.txt | uniq -d > uncrustifylist.txt
+@UNCRUSTIFY@ -F uncrustifylist.txt --no-backup -c uncrustify.cfg
+echo Code formatting done!
+rm comparelist.txt commitlist.txt uncrustifylist.txt filelist.txt
 exit 0
 

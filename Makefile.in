@@ -112,11 +112,11 @@ ut: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
 filedownloader: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
-CODE_FILES=-type f -regex '.*/.*\.\(c\|cpp\|h\)$$'
+ENDINGS=c h cpp
 CODE_DIRS=android cc_bl cc_fw cc_te cli common firmware library sim
 filelist:
 	@rm -f $@.txt
-	@$(foreach DIR, ${CODE_DIRS}, find $(DIR) ${CODE_FILES} >> $@.txt;)
+	@$(foreach END, ${ENDINGS}, $(foreach DIR, ${CODE_DIRS}, find ./$(DIR) -name "*.$(END)" >> $@.txt;))
 	@echo "Created $@.txt"
 
 uncrustify: filelist

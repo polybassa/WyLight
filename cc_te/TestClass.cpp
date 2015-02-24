@@ -7,12 +7,13 @@
 
 #include <TestClass.h>
 
-TestClass::TestClass() : x(5) {
-	// TODO Auto-generated constructor stub
-
+TestClass::TestClass() : x(5)
+{
+    // TODO Auto-generated constructor stub
 }
 
-TestClass::~TestClass() {
-	// TODO Auto-generated destructor stub
+TestClass::~TestClass()
+{
+    // TODO Auto-generated destructor stub
 }
 
