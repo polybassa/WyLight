@@ -16,6 +16,9 @@
    You should have received a copy of the GNU General Public License
    along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
+#ifndef _UNITTEST_H_
+#define _UNITTEST_H_
+
 #include <stdio.h>
 #include "trace.h"
 
@@ -52,7 +55,8 @@
 #define TestCaseEnd(X) return errors;
 
 #define UnitTestMainBegin(X) int numErrors = 0; int numSkipped = 0; int numTests = 0;
-#define UnitTestMainEnd(X) { \
+#define UnitTestMainEnd(X) do { \
         printf("%36s run %2d Tests (%2d skipped | %2d errors)\n", __FILE__, numTests, numSkipped, numErrors); \
         return numErrors; \
-}
+} while (0)
+#endif /* #ifndef _UNITTEST_H_ */

@@ -46,8 +46,7 @@ struct Ipv4Addr : public sockaddr_in {
 /**
  * Abstract base class controlling the low level socket file descriptor
  */
-class ClientSocket {
-public:
+struct ClientSocket {
     /**
      * Empty constructor to support "accept()ed" TcpSockets
      */
@@ -108,9 +107,7 @@ protected:
 /**
  * Wrapper to handle a TCP server socket more easy
  */
-class TcpServerSocket : public ClientSocket {
-public:
-
+struct TcpServerSocket : ClientSocket {
     /**
      * Create a new TCP server socket
      * @param Addr IPv4 address in host byte order
@@ -124,8 +121,7 @@ public:
 /**
  * Wrapper to make tcp socket handling more easy
  */
-class TcpSocket : public ClientSocket {
-public:
+struct TcpSocket : ClientSocket {
     /**
      * Create a new TCP socket with accept()
      * @param listenSocket file descriptor for the listening socket
@@ -170,8 +166,7 @@ public:
 /**
  * Wrapper to make udp socket handling more easy
  */
-class UdpSocket : public ClientSocket {
-public:
+struct UdpSocket : ClientSocket {
     /**
      * @param addr IPv4 address in host byte order
      * @param port IPv4 port number in host byte order
