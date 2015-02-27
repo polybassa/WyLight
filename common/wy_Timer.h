@@ -20,6 +20,7 @@
 #define __wy__Timer__
 
 #include <stdint.h>
+#include <array>
 
 class Timer {
 public:
@@ -56,7 +57,7 @@ private:
 
     static const uint8_t NUMBER_OF_TIMERS = 4;
     static const uint8_t MAX_USE_COUNT = 2;
-    static uint8_t baseUseCount[NUMBER_OF_TIMERS];
+    static std::array<uint8_t, NUMBER_OF_TIMERS> baseUseCount;
 
     void enablePeripheralClk(const enum base& b) const;
     void disablePeripheralClk(const enum base& b) const;
@@ -65,4 +66,4 @@ private:
     const enum timer mTimer;
 };
 
-#endif /* defined(__cc_fw__Pwm__) */
+#endif /* defined(__wy__Timer__) */

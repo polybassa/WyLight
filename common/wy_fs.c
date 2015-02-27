@@ -226,8 +226,8 @@ int wy_FsPrintFileList(void)
     for ( ; address < MAX_NUM_FILES; address++) {
         Trace(ZONE_VERBOSE, "%d: ", address);
         if (Filesystem[address].Status == VALID)
-            Trace(ZONE_VERBOSE,"%s", Filesystem[address].Name);
-        Trace(ZONE_VERBOSE,"\r\n");
+            Trace(ZONE_VERBOSE, "%s", Filesystem[address].Name);
+        Trace(ZONE_VERBOSE, "\r\n");
     }
     return SL_FS_OK;
 }

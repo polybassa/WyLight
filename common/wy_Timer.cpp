@@ -22,12 +22,20 @@
 #include "rom_map.h"
 #include "timer.h"
 #include "prcm.h"
+#include "trace.h"
+
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+
+std::array<uint8_t, Timer::NUMBER_OF_TIMERS> Timer::baseUseCount = {0};
 
 Timer::Timer(const enum base& b, const enum timer& t) : mBase(b), mTimer(t)
 {
     baseUseCount[b]++;
-    if (baseUseCount[b])
+    if (Timer::baseUseCount[b])
         this->enablePeripheralClk(b);
+
+    if (Timer::baseUseCount[b] > Pwm::MAX_USE_COUNT)
+        Trace(ZONE_ERROR, "Can not create more than two instances!!");
 }
 
 Timer::~Timer(void)

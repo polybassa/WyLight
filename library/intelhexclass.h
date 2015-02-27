@@ -147,7 +147,7 @@ private:
     * can ensure that no address in a file is falsely assigned data more
     * than once.
     ***********************************************************************/
-    pair<map<unsigned long, unsigned char>::iterator,bool> ihReturn;
+    pair<map<unsigned long, unsigned char>::iterator, bool> ihReturn;
 
     /**********************************************************************/
     /*! \brief Stores segment base address of Intel HEX file.

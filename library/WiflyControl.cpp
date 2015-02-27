@@ -363,7 +363,7 @@ void Control::BlProgramFlash(const std::string& pFilename) const throw (Connecti
         throw FatalError("program code does not start at address 0x0000 \n");
 
     for (unsigned int i = 0; i < sizeof(appVector); i++) {
-        if (!hexConverter.getData(&appVector[i],(unsigned long)i))
+        if (!hexConverter.getData(&appVector[i], (unsigned long)i))
 
             throw FatalError("can not read data at address " + std::to_string(hexConverter.currentAddress()));
     }

@@ -67,7 +67,7 @@ extern void Timer_IF_Stop(unsigned long ulBase, unsigned long ulTimer);
 extern void Timer_IF_ReLoad(unsigned long ulBase, unsigned long ulTimer,
                             unsigned long ulValue);
 extern unsigned int Timer_IF_GetCount(unsigned long ulBase, unsigned long ulTimer);
-void Timer_IF_DeInit(unsigned long ulBase,unsigned long ulTimer);
+void Timer_IF_DeInit(unsigned long ulBase, unsigned long ulTimer);
 //*****************************************************************************
 //
 // Mark the end of the C bindings section for C++ compilers.

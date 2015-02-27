@@ -107,7 +107,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 
     /* prepare response for BlInfoRequest */
     if ((frame[1] == 0x00) && (frame[2] == 0) && (frame[3] == 0) && (frame[4] == BL_ETX)) {
-        Trace(ZONE_INFO,"BlInfoRequest\n");
+        Trace(ZONE_INFO, "BlInfoRequest\n");
         memcpy(g_TestSocketRecvBuffer, dummyBlInfoMasked, sizeof(dummyBlInfoMasked));
         g_TestSocketRecvBufferPos = 0;
         g_TestSocketRecvBufferSize = sizeof(dummyBlInfoMasked);
@@ -116,7 +116,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 
     /* prepare response for BlEepromRequest */
     if ((frame[1] == 0x02) && (frame[length - 1] == BL_ETX)) {
-        Trace(ZONE_INFO,"BlEepromRequest\n");
+        Trace(ZONE_INFO, "BlEepromRequest\n");
         memcpy(g_TestSocketRecvBuffer, dummyBlFlashCrc16ResponseMasked, sizeof(dummyBlFlashCrc16ResponseMasked));
         g_TestSocketRecvBufferPos = 0;
         g_TestSocketRecvBufferSize = sizeof(dummyBlFlashCrc16ResponseMasked);
@@ -125,7 +125,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 
     /* prepare response for BlFlashCrc16Request */
     if ((frame[1] == 0x02) && (frame[length - 1] == BL_ETX)) {
-        Trace(ZONE_INFO,"BlFlashCrc16Request\n");
+        Trace(ZONE_INFO, "BlFlashCrc16Request\n");
         memcpy(g_TestSocketRecvBuffer, dummyBlFlashCrc16ResponseMasked, sizeof(dummyBlFlashCrc16ResponseMasked));
         g_TestSocketRecvBufferPos = 0;
         g_TestSocketRecvBufferSize = sizeof(dummyBlFlashCrc16ResponseMasked);
@@ -134,7 +134,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 
     /* prepare response for BlFlashEraseRequest */
     if ((frame[1] == 0x03) && (frame[length - 1] == BL_ETX)) {
-        Trace(ZONE_INFO,"BlFlashEraseRequest\n");
+        Trace(ZONE_INFO, "BlFlashEraseRequest\n");
         memcpy(g_TestSocketRecvBuffer, dummyBlFlashEraseResponseMasked, sizeof(dummyBlFlashEraseResponseMasked));
         g_TestSocketRecvBufferPos = 0;
         g_TestSocketRecvBufferSize = sizeof(dummyBlFlashEraseResponseMasked);
@@ -143,7 +143,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 
     /* prepare response for BlFlashReadRequest */
     if (0 == memcmp(frame, exampleBlFlashRead, sizeof(exampleBlFlashRead))) {
-        Trace(ZONE_INFO,"BlFlashReadRequest\n");
+        Trace(ZONE_INFO, "BlFlashReadRequest\n");
         memcpy(g_TestSocketRecvBuffer, dummyBlFlashReadResponseMasked, sizeof(dummyBlFlashReadResponseMasked));
         g_TestSocketRecvBufferPos = 0;
         g_TestSocketRecvBufferSize = sizeof(dummyBlFlashReadResponseMasked);
@@ -152,7 +152,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 
     /* prepare response for BlEepromReadRequest*/
     if ((frame[1] == 0x05) && (frame[length - 1] == BL_ETX)) {
-        Trace(ZONE_INFO,"BlEepromReadRequest\n");
+        Trace(ZONE_INFO, "BlEepromReadRequest\n");
         memcpy(g_TestSocketRecvBuffer, dummyBlFlashReadResponseMasked, sizeof(dummyBlFlashReadResponseMasked));
         g_TestSocketRecvBufferPos = 0;
         g_TestSocketRecvBufferSize = sizeof(dummyBlFlashReadResponseMasked);
@@ -161,7 +161,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 
     /* there is no response for run app, but we set some marker for verification */
     if ((frame[1] == 0x08) && (frame[length - 1] == BL_ETX)) {
-        Trace(ZONE_INFO,"BlRunAppRequest\n");
+        Trace(ZONE_INFO, "BlRunAppRequest\n");
         g_TestSocketRecvBuffer[0] = 'x';
         g_TestSocketRecvBuffer[1] = 'x';
         g_TestSocketRecvBuffer[2] = 'x';
@@ -396,17 +396,17 @@ size_t ut_ComProxy_BlRunAppRequest(void)
 int main(int argc, const char* argv[])
 {
     UnitTestMainBegin();
-    RunTest(true,  ut_ComProxy_MaskControlCharacters);
-    RunTest(true,  ut_ComProxy_BlEepromReadRequest);
-    RunTest(true,  ut_ComProxy_BlEepromReadRequestTimeout);
+    RunTest(true, ut_ComProxy_MaskControlCharacters);
+    RunTest(true, ut_ComProxy_BlEepromReadRequest);
+    RunTest(true, ut_ComProxy_BlEepromReadRequestTimeout);
     RunTest(false, ut_ComProxy_BlEepromWriteRequest);
-    RunTest(true,  ut_ComProxy_BlFlashCrc16Request);
-    RunTest(true,  ut_ComProxy_BlFlashEraseRequest);
-    RunTest(true,  ut_ComProxy_BlFlashReadRequest);
+    RunTest(true, ut_ComProxy_BlFlashCrc16Request);
+    RunTest(true, ut_ComProxy_BlFlashEraseRequest);
+    RunTest(true, ut_ComProxy_BlFlashReadRequest);
     RunTest(false, ut_ComProxy_BlFlashWriteRequest);
     RunTest(false, ut_ComProxy_BlFuseWriteRequest);
-    RunTest(true,  ut_ComProxy_BlInfoRequest);
-    RunTest(true,  ut_ComProxy_BlRunAppRequest);
-    RunTest(true,  ut_ComProxy_SyncWithTarget);
+    RunTest(true, ut_ComProxy_BlInfoRequest);
+    RunTest(true, ut_ComProxy_BlRunAppRequest);
+    RunTest(true, ut_ComProxy_SyncWithTarget);
     UnitTestMainEnd();
 }

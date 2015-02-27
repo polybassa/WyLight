@@ -122,7 +122,7 @@ long SimplelinkDriver::startAsStation(void)
     retRes = sl_Start(NULL, NULL, NULL);
     ASSERT_ON_ERROR(__LINE__, retRes);
 
-    Trace(ZONE_VERBOSE,"Started SimpleLink Device in STA Mode\n\r");
+    Trace(ZONE_VERBOSE, "Started SimpleLink Device in STA Mode\n\r");
 
     return waitForConnectWithTimeout(CONNECT_TIMEOUT);
 }
@@ -143,7 +143,7 @@ long SimplelinkDriver::startAsAccesspoint(void)
     retRes = sl_Start(NULL, NULL, NULL);
     ASSERT_ON_ERROR(__LINE__, retRes);
 
-    Trace(ZONE_VERBOSE,"Start AP\r\n");
+    Trace(ZONE_VERBOSE, "Start AP\r\n");
     //Wait for Ip Acquired Event in AP Mode
     while (!Status.IPAcquired) {
         osi_Sleep(10);
@@ -186,7 +186,7 @@ long SimplelinkDriver::configureAsAccesspoint(void)
     unsigned char channel = (dateTime.sl_tm_sec % 13) + 1; // to avoid channel 0
     retRes = sl_WlanSet(SL_WLAN_CFG_AP_ID, 3, 1, &channel);
     ASSERT_ON_ERROR(__LINE__, retRes);
-    Trace(ZONE_VERBOSE,"Accesspoint channel: %d\r\n", channel);
+    Trace(ZONE_VERBOSE, "Accesspoint channel: %d\r\n", channel);
 
     sl_Stop(SL_STOP_TIMEOUT);
 
@@ -302,7 +302,7 @@ long SimplelinkDriver::scanForAccesspoints(void)
     retRes = sl_WlanPolicySet(SL_POLICY_SCAN, SL_SCAN_POLICY_EN(1), (unsigned char*)&SCAN_INTERVAL, parameterLen);
     ASSERT_ON_ERROR(__LINE__, retRes);
 
-    Trace(ZONE_VERBOSE,"Scanning for SSID's\r\n----------------------------------------------\r\n");
+    Trace(ZONE_VERBOSE, "Scanning for SSID's\r\n----------------------------------------------\r\n");
     // wait for scan to complete
     osi_Sleep(WAIT_TIME);
 
@@ -312,9 +312,9 @@ long SimplelinkDriver::scanForAccesspoints(void)
 
     int i;
     for (i = 0; i < retRes; i++) {
-        Trace(ZONE_VERBOSE,"%d) SSID %s\n\r", i, ProvisioningData.networkEntries[i].ssid);
+        Trace(ZONE_VERBOSE, "%d) SSID %s\n\r", i, ProvisioningData.networkEntries[i].ssid);
     }
-    Trace(ZONE_VERBOSE,"\r\n----------------------------------------------\r\n");
+    Trace(ZONE_VERBOSE, "\r\n----------------------------------------------\r\n");
 
     sl_Stop(SL_STOP_TIMEOUT);
 
@@ -392,13 +392,13 @@ void SimplelinkDriver::SimpleLinkWlanEventHandler(SlWlanEvent_t* pSlWlanEvent)
             Info.ConnectionSSID.data(), pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_name,
             pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_len);
         memcpy(Info.ConnectionBSSID.data(), pSlWlanEvent->EventData.STAandP2PModeWlanConnected.bssid, SL_BSSID_LENGTH);
-        Trace(ZONE_INFO,"[WLAN EVENT] STA Connected to the AP: %s\n\r", Info.ConnectionSSID.data());
+        Trace(ZONE_INFO, "[WLAN EVENT] STA Connected to the AP: %s\n\r", Info.ConnectionSSID.data());
         break;
 
     case SL_WLAN_DISCONNECT_EVENT:
         Status.connected = false;
         Status.IPAcquired = false;
-        Trace(ZONE_INFO,"[WLAN EVENT] Device disconnected from AP: %s\n\r", Info.ConnectionSSID.data());
+        Trace(ZONE_INFO, "[WLAN EVENT] Device disconnected from AP: %s\n\r", Info.ConnectionSSID.data());
         Info.ConnectionSSID.fill(0);
         Info.ConnectionBSSID.fill(0);
         osi_SyncObjSignalFromISR(&ConnectionLostSemaphore);
@@ -410,7 +410,7 @@ void SimplelinkDriver::SimpleLinkWlanEventHandler(SlWlanEvent_t* pSlWlanEvent)
             Status.connected = true;
             Status.connectFailed = false;
             slPeerInfoAsyncResponse_t* pEventData = &pSlWlanEvent->EventData.APModeStaConnected;
-            Trace(ZONE_INFO,"[WLAN EVENT] Client connected: %x:%x:%x:%x:%x:%x\r\n", pEventData->mac[0],
+            Trace(ZONE_INFO, "[WLAN EVENT] Client connected: %x:%x:%x:%x:%x:%x\r\n", pEventData->mac[0],
                   pEventData->mac[1],
                   pEventData->mac[2], pEventData->mac[3], pEventData->mac[4], pEventData->mac[5]);
         }
@@ -440,12 +440,12 @@ void SimplelinkDriver::SimpleLinkWlanEventHandler(SlWlanEvent_t* pSlWlanEvent)
         Status.connected = false;
         Status.IPAcquired = false;
         Status.connectFailed = true;
-        Trace(ZONE_INFO,"[WLAN EVENT] Connection failed\r\n");
+        Trace(ZONE_INFO, "[WLAN EVENT] Connection failed\r\n");
         osi_SyncObjSignalFromISR(&ConnectionLostSemaphore);
         break;
 
     default:
-        Trace(ZONE_INFO,"[WLAN EVENT] Unexpected event \n\r");
+        Trace(ZONE_INFO, "[WLAN EVENT] Unexpected event \n\r");
         break;
     }
 }
@@ -456,7 +456,7 @@ void SimplelinkDriver::SimpleLinkNetAppEventHandler(SlNetAppEvent_t* pNetAppEven
     case SL_NETAPP_IPV4_ACQUIRED:
     case SL_NETAPP_IPV6_ACQUIRED:
         Status.IPAcquired = true;
-        Trace(ZONE_INFO,"[NETAPP EVENT] IP Acquired\r\n");
+        Trace(ZONE_INFO, "[NETAPP EVENT] IP Acquired\r\n");
         break;
 
     case SL_NETAPP_IP_LEASED:
@@ -464,22 +464,22 @@ void SimplelinkDriver::SimpleLinkNetAppEventHandler(SlNetAppEvent_t* pNetAppEven
             Status.IPLeased = true;
             SlIpLeasedAsync_t* pEventData = &pNetAppEvent->EventData.ipLeased;
             Info.StationIpAddress = pEventData->ip_address;
-            Trace(ZONE_INFO,"[NETAPP EVENT] IP Leased\r\n");
+            Trace(ZONE_INFO, "[NETAPP EVENT] IP Leased\r\n");
         }
         break;
 
     case SL_NETAPP_IP_RELEASED:
         Status.IPLeased = false;
         Info.StationIpAddress = 0;
-        Trace(ZONE_INFO,"[NETAPP EVENT] IP Released\r\n");
+        Trace(ZONE_INFO, "[NETAPP EVENT] IP Released\r\n");
         break;
 
     case SL_NETAPP_SOCKET_TX_FAILED:
-        Trace(ZONE_INFO,"[NETAPP EVENT] Socket Error # %d \n\r", pNetAppEvent->EventData.sd);
+        Trace(ZONE_INFO, "[NETAPP EVENT] Socket Error # %d \n\r", pNetAppEvent->EventData.sd);
         break;
 
     default:
-        Trace(ZONE_INFO,"[NETAPP EVENT] Unexpected event \n\r");
+        Trace(ZONE_INFO, "[NETAPP EVENT] Unexpected event \n\r");
         break;
     }
 }
@@ -505,7 +505,7 @@ void SimplelinkDriver::SimpleLinkSockEventHandler(SlSockEvent_t* pSock)
                   pSock->EventData.sd,
                   pSock->EventData.status);
     } else {
-        Trace(ZONE_INFO,"[SOCK EVENT] - Unexpected Event [%x0x]\n\n", pSock->Event);
+        Trace(ZONE_INFO, "[SOCK EVENT] - Unexpected Event [%x0x]\n\n", pSock->Event);
     }
 }
 
@@ -517,9 +517,9 @@ void SimplelinkDriver::SimpleLinkHttpServerCallback(SlHttpServerEvent_t*    pSlH
         if ((getTokenNumber < 0) || (getTokenNumber > MAX_NUM_NETWORKENTRIES))
             return;
         responseNetworkEntries(getTokenNumber, pSlHttpServerResponse);
-    } else if (pSlHttpServerEvent->Event ==  SL_NETAPP_HTTPPOSTTOKENVALUE) {
-        Trace(ZONE_VERBOSE," token_name: %s ", pSlHttpServerEvent->EventData.httpPostData.token_name.data);
-        Trace(ZONE_VERBOSE," token_data: %s \r\n", pSlHttpServerEvent->EventData.httpPostData.token_value.data);
+    } else if (pSlHttpServerEvent->Event == SL_NETAPP_HTTPPOSTTOKENVALUE) {
+        Trace(ZONE_VERBOSE, " token_name: %s ", pSlHttpServerEvent->EventData.httpPostData.token_name.data);
+        Trace(ZONE_VERBOSE, " token_data: %s \r\n", pSlHttpServerEvent->EventData.httpPostData.token_value.data);
 
         const char postTokenParameter = extractTokenParameter(pSlHttpServerEvent);
 
@@ -564,7 +564,7 @@ long SimplelinkDriver::waitForConnectWithTimeout(const unsigned int timeout_ms)
     }
 
     if (!Status.connected || !Status.IPAcquired) {
-        Trace(ZONE_ERROR,"Connecting failed \r\n");
+        Trace(ZONE_ERROR, "Connecting failed \r\n");
         return ERROR;
     } else {
         return 0;
@@ -671,7 +671,7 @@ long SimplelinkDriver::addNewProfile(void)
                                        0);
             ASSERT_ON_ERROR(__LINE__, retRes);
         }
-        Trace(ZONE_VERBOSE,"Added Profile at index %d \r\n", retRes);
+        Trace(ZONE_VERBOSE, "Added Profile at index %d \r\n", retRes);
     }
     return 0;
 }

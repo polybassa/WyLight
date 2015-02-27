@@ -20,6 +20,12 @@
 #include <algorithm>
 #include "timer.h"
 
+const uint32_t Pwm::CPU_FREQUENCY_HZ = 80000000;
+const uint32_t Pwm::PWM_FREQUENCY_HZ = 2000;
+const uint16_t Pwm::DUTYCYCLE_MAX_VALUE = 1000;
+const uint32_t Pwm::DUTYCYCLE_GRANULARITY = (uint32_t)(CPU_FREQUENCY_HZ / PWM_FREQUENCY_HZ / DUTYCYCLE_MAX_VALUE);
+const uint32_t Pwm::TIMER_INTERVAL_RELOAD = (uint32_t)(DUTYCYCLE_MAX_VALUE * DUTYCYCLE_GRANULARITY);
+
 Pwm::Pwm(const enum channels& channel)
     : Timer(getBase(channel), getTimer(channel))
 {
@@ -84,10 +90,10 @@ void Pwm::setupTimerToPwmMode(void) const
     this->setControlLevel(1);
 
     // Load value set to ~0.5 ms time period
-    this->setLoad(TIMER_INTERVAL_RELOAD);
+    this->setLoad(Pwm::TIMER_INTERVAL_RELOAD);
 
     // Match value set so as to output level 0
-    this->setMatch(TIMER_INTERVAL_RELOAD);
+    this->setMatch(Pwm::TIMER_INTERVAL_RELOAD);
 }
 
 Pwm& Pwm::operator=(const uint16_t& dutyCycle)
@@ -98,8 +104,8 @@ Pwm& Pwm::operator=(const uint16_t& dutyCycle)
 
 void Pwm::setDutyCycle(const uint16_t& dutyCycle)
 {
-    this->mDutyCycle = std::min(DUTYCYCLE_MAX_VALUE, dutyCycle);
-    this->setMatch(this->mDutyCycle * DUTYCYCLE_GRANULARITY);
+    this->mDutyCycle = std::min(Pwm::DUTYCYCLE_MAX_VALUE, dutyCycle);
+    this->setMatch(this->mDutyCycle * Pwm::DUTYCYCLE_GRANULARITY);
 }
 
 uint16_t Pwm::getDutyCycle(void) const

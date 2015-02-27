@@ -191,7 +191,7 @@ size_t ut_StartupManager_VersionCheckSuccessUpdateSuccess(void)
 {
     g_Testcase = TC_BL_VERSION_CHECK_SUCCESS;
     StartupManager testee;
-    Control ctrl(0,0);
+    Control ctrl(0, 0);
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -204,7 +204,7 @@ size_t ut_StartupManager_AppOutdated(void)
 {
     g_Testcase = TC_APP_OUTDATED;
     StartupManager testee;
-    Control ctrl(0,0);
+    Control ctrl(0, 0);
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -218,7 +218,7 @@ size_t ut_StartupManager_VersionFailUpdateSuccess(void)
 {
     g_Testcase = TC_BL_VERSION_CHECK_FAIL_UPDATE_SUCCESS;
     StartupManager testee;
-    Control ctrl(0,0);
+    Control ctrl(0, 0);
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -231,7 +231,7 @@ size_t ut_StartupManager_UpdateFail(void)
 {
     g_Testcase = TC_UPDATE_FAIL;
     StartupManager testee;
-    Control ctrl(0,0);
+    Control ctrl(0, 0);
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -244,7 +244,7 @@ size_t ut_StartupManager_RunAppFail(void)
 {
     g_Testcase = TC_RUN_APP_FAIL;
     StartupManager testee;
-    Control ctrl(0,0);
+    Control ctrl(0, 0);
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -257,7 +257,7 @@ size_t ut_StartupManager_BlVersionCheckFail(void)
 {
     g_Testcase = TC_BL_VERSION_CHECK_FAIL;
     StartupManager testee;
-    Control ctrl(0,0);
+    Control ctrl(0, 0);
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -270,7 +270,7 @@ size_t ut_StartupManager_FwVersionCheckFail(void)
 {
     g_Testcase = TC_FW_VERSION_CHECK_FAIL;
     StartupManager testee;
-    Control ctrl(0,0);
+    Control ctrl(0, 0);
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -283,7 +283,7 @@ size_t ut_StartupManager_StartBlFail(void)
 {
     g_Testcase = TC_START_BL_FAIL;
     StartupManager testee;
-    Control ctrl(0,0);
+    Control ctrl(0, 0);
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -296,7 +296,7 @@ size_t ut_StartupManager_ModeCheckFail(void)
 {
     g_Testcase = TC_MODE_CHECK_FAIL;
     StartupManager testee;
-    Control ctrl(0,0);
+    Control ctrl(0, 0);
     TestCaseBegin();
 
     testee.startup(ctrl, "");

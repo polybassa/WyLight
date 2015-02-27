@@ -55,9 +55,9 @@ static void UART_Send(const uns8 data)
     RingBuf_Put(&g_RingBuf_Tx, data);
 }
 
-#define Rtc_Ctl(x,y)
-#define Timer_PrintCycletime(x,y) 0
-#define Trace_Print(x,y) 0
+#define Rtc_Ctl(x, y)
+#define Timer_PrintCycletime(x, y) 0
+#define Trace_Print(x, y) 0
 #define SPI_Send(x) 0
 #endif
 

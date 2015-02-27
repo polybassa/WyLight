@@ -71,7 +71,7 @@ void WyLightFirmware_Task(void* pvParameters)
     CommandIO_Init();
     ScriptCtrl_Init();
     for ( ; ; ) {
-        if (OSI_OK == osi_LockObjLock(&g_AccessScriptBufferMutex,OSI_NO_WAIT)) {
+        if (OSI_OK == osi_LockObjLock(&g_AccessScriptBufferMutex, OSI_NO_WAIT)) {
             ScriptCtrl_Run();
             osi_LockObjUnlock(&g_AccessScriptBufferMutex);
         }

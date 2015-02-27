@@ -40,7 +40,7 @@ uns8 g_RandomDataPool[500];
 
 const uns8 dummyFrame_noSTX[] = { 0xff, DLE, ETX, 0x00, 0x14, 0xAF, ETX, 0x05, 0x04, 0x00 };
 const uns8 dummyFrame_completeFrame[] = { DLE, ETX, STX, 0x01, 0x02, 0x03, DLE, 0x04, DLE, 0x05, ETX };
-const uns8 dummyFrame_completeFramePure[] = { 0x01, 0x02, 0x03, 0x04,0x05 };
+const uns8 dummyFrame_completeFramePure[] = { 0x01, 0x02, 0x03, 0x04, 0x05 };
 const uns8 dummyFrame_twoFrames_1[] =
 { STX, STX, STX, DLE, DLE, DLE, ETX, DLE, STX, DLE, ETX, ETX, DLE, STX, DLE, DLE, DLE, STX, ETX };
 const uns8 dummyFrame_twoFrames_2[] =
@@ -69,7 +69,7 @@ uns8 SPI_Send(uns8 temp)
     return temp;
 }
 
-void Rtc_Ctl(enum RTC_request req,struct rtc_time* pRtcTime)
+void Rtc_Ctl(enum RTC_request req, struct rtc_time* pRtcTime)
 {
     int i;
     uns8* pData = (uns8*)pRtcTime;

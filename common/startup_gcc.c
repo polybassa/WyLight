@@ -130,7 +130,7 @@ void(*const g_pfnVectors[256])(void) = {
     IntDefaultHandler,    // UART1 Rx and Tx
     0,    // Reserved
     IntDefaultHandler,    // I2C0 Master and Slave
-    0,0,0,0,0,    // Reserved
+    0, 0, 0, 0, 0,    // Reserved
     IntDefaultHandler,    // ADC Channel 0
     IntDefaultHandler,    // ADC Channel 1
     IntDefaultHandler,    // ADC Channel 2
@@ -142,49 +142,49 @@ void(*const g_pfnVectors[256])(void) = {
     IntDefaultHandler,    // Timer 1 subtimer B
     IntDefaultHandler,    // Timer 2 subtimer A
     IntDefaultHandler,    // Timer 2 subtimer B
-    0,0,0,0,    // Reserved
+    0, 0, 0, 0,    // Reserved
     IntDefaultHandler,    // Flash
-    0,0,0,0,0,    // Reserved
+    0, 0, 0, 0, 0,    // Reserved
     IntDefaultHandler,    // Timer 3 subtimer A
     IntDefaultHandler,    // Timer 3 subtimer B
-    0,0,0,0,0,0,0,0,0,    // Reserved
+    0, 0, 0, 0, 0, 0, 0, 0, 0,    // Reserved
     IntDefaultHandler,    // uDMA Software Transfer
     IntDefaultHandler,    // uDMA Error
-    0,0,0,0,0,0,0,0,0,0,    // Reserved
-    0,0,0,0,0,0,0,0,0,0,    // Reserved
-    0,0,0,0,0,0,0,0,0,0,    // Reserved
-    0,0,0,0,0,0,0,0,0,0,    // Reserved
-    0,0,0,0,0,0,0,0,0,0,    // Reserved
-    0,0,0,0,0,0,0,0,0,0,    // Reserved
-    0,0,0,0,0,0,0,0,0,0,    // Reserved
-    0,0,0,0,0,0,0,0,0,0,    // Reserved
-    0,0,0,0,0,0,0,0,0,0,    // Reserved
-    0,0,0,0,0,0,0,0,0,0,    // Reserved
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    // Reserved
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    // Reserved
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    // Reserved
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    // Reserved
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    // Reserved
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    // Reserved
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    // Reserved
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    // Reserved
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    // Reserved
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    // Reserved
     IntDefaultHandler,    // SHA
-    0,0,    // Reserved
+    0, 0,    // Reserved
     IntDefaultHandler,    // AES
     0,    // Reserved
     IntDefaultHandler,    // DES
-    0,0,0,0,0,    // Reserved
+    0, 0, 0, 0, 0,    // Reserved
     IntDefaultHandler,    // SDHost
     0,    // Reserved
     IntDefaultHandler,    // I2S
     0,    // Reserved
     IntDefaultHandler,    // Camera
-    0,0,0,0,0,0,0,    // Reserved
+    0, 0, 0, 0, 0, 0, 0,    // Reserved
     IntDefaultHandler,    // NWP to APPS Interrupt
     IntDefaultHandler,    // Power, Reset and Clock module
-    0,0,    // Reserved
+    0, 0,    // Reserved
     IntDefaultHandler,    // Shared SPI
     IntDefaultHandler,    // Generic SPI
     IntDefaultHandler,    // Link SPI
-    0,0,0,0,0,0,0,0,0,0,    // Reserved
-    0,0,0,0,0,0,0,0,0,0,    // Reserved
-    0,0,0,0,0,0,0,0,0,0,    // Reserved
-    0,0,0,0,0,0,0,0,0,0,    // Reserved
-    0,0,0,0,0,0,0,0,0,0,    // Reserved
-    0,0,0,0,0,0,0,0,0,0,    // Reserved
-    0,0    // Reserved
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    // Reserved
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    // Reserved
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    // Reserved
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    // Reserved
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    // Reserved
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    // Reserved
+    0, 0    // Reserved
 };
 
 //*****************************************************************************

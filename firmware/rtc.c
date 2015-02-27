@@ -88,12 +88,12 @@ void Rtc_Init(void)
         Trace_String(" RTC 03:");
         Trace_Hex(I2C_Read(g_RtcAdress, 0x03));
     } else if (g_RtcAdress == RTC_8564JE) {
-        I2C_Write(g_RtcAdress,0x00,0x00);       //Make sure that the TEST-Bits in the RTC-Device are set to zero
-        I2C_Write(g_RtcAdress,0x01,0x00);       //Disable Interrupts in the RTC-Device
+        I2C_Write(g_RtcAdress, 0x00, 0x00);       //Make sure that the TEST-Bits in the RTC-Device are set to zero
+        I2C_Write(g_RtcAdress, 0x01, 0x00);       //Disable Interrupts in the RTC-Device
     }
 }
 
-void Rtc_Ctl(enum RTC_request req,struct rtc_time* pRtcTime)
+void Rtc_Ctl(enum RTC_request req, struct rtc_time* pRtcTime)
 {
     uns8 temp;
 
@@ -142,35 +142,35 @@ void Rtc_Ctl(enum RTC_request req,struct rtc_time* pRtcTime)
             I2C_Write(g_RtcAdress, 0x00, 0x00);
 
             temp = BinToBcd(pRtcTime->tm_min);
-            I2C_Write(g_RtcAdress,0x01,(temp));
+            I2C_Write(g_RtcAdress, 0x01, (temp));
             temp = BinToBcd(pRtcTime->tm_hour);
-            I2C_Write(g_RtcAdress,0x02,(temp));
+            I2C_Write(g_RtcAdress, 0x02, (temp));
             temp = BinToBcd(pRtcTime->tm_mday);
-            I2C_Write(g_RtcAdress,0x04,(temp));
+            I2C_Write(g_RtcAdress, 0x04, (temp));
             temp = BinToBcd(pRtcTime->tm_wday);
-            I2C_Write(g_RtcAdress,0x03,(temp | 0b00001000));
+            I2C_Write(g_RtcAdress, 0x03, (temp | 0b00001000));
             temp = BinToBcd((pRtcTime->tm_mon + 1));
-            I2C_Write(g_RtcAdress,0x05,(temp));
+            I2C_Write(g_RtcAdress, 0x05, (temp));
             temp = BinToBcd(pRtcTime->tm_year);
-            I2C_Write(g_RtcAdress,0x06,(temp));
+            I2C_Write(g_RtcAdress, 0x06, (temp));
             //set sec and ST bit
             temp = BinToBcd(pRtcTime->tm_sec);
-            I2C_Write(g_RtcAdress,0x00,(temp | 0b10000000));
+            I2C_Write(g_RtcAdress, 0x00, (temp | 0b10000000));
         } else if (g_RtcAdress == RTC_8564JE) {
             temp = BinToBcd(pRtcTime->tm_sec);
-            I2C_Write(g_RtcAdress,0x02,(temp));
+            I2C_Write(g_RtcAdress, 0x02, (temp));
             temp = BinToBcd(pRtcTime->tm_min);
-            I2C_Write(g_RtcAdress,0x03,(temp));
+            I2C_Write(g_RtcAdress, 0x03, (temp));
             temp = BinToBcd(pRtcTime->tm_hour);
-            I2C_Write(g_RtcAdress,0x04,(temp));
+            I2C_Write(g_RtcAdress, 0x04, (temp));
             temp = BinToBcd(pRtcTime->tm_mday);
-            I2C_Write(g_RtcAdress,0x05,(temp));
+            I2C_Write(g_RtcAdress, 0x05, (temp));
             temp = BinToBcd(pRtcTime->tm_wday);
-            I2C_Write(g_RtcAdress,0x06,(temp));
+            I2C_Write(g_RtcAdress, 0x06, (temp));
             temp = BinToBcd((pRtcTime->tm_mon + 1));
-            I2C_Write(g_RtcAdress,0x07,(temp));
+            I2C_Write(g_RtcAdress, 0x07, (temp));
             temp = BinToBcd(pRtcTime->tm_year);
-            I2C_Write(g_RtcAdress,0x08,(temp));
+            I2C_Write(g_RtcAdress, 0x08, (temp));
         } else {
             Trace_String("NO RTC");
         }

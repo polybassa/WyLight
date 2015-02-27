@@ -67,8 +67,8 @@ void Timer_IF_Init(unsigned long ePeripheral, unsigned long ulBase, unsigned
     //
     MAP_PRCMPeripheralClkEnable(ePeripheral, PRCM_RUN_MODE_CLK);
     MAP_PRCMPeripheralReset(ePeripheral);
-    MAP_TimerConfigure(ulBase,ulConfig);
-    MAP_TimerPrescaleSet(ulBase,ulTimer,ulValue);
+    MAP_TimerConfigure(ulBase, ulConfig);
+    MAP_TimerPrescaleSet(ulBase, ulTimer, ulValue);
 }
 
 //*****************************************************************************
@@ -143,11 +143,11 @@ void Timer_IF_InterruptClear(unsigned long ulBase)
 void Timer_IF_Start(unsigned long ulBase, unsigned long ulTimer,
                     unsigned long ulValue)
 {
-    MAP_TimerLoadSet(ulBase,ulTimer,ulValue);
+    MAP_TimerLoadSet(ulBase, ulTimer, ulValue);
     //
     // Enable the GPT
     //
-    MAP_TimerEnable(ulBase,ulTimer);
+    MAP_TimerEnable(ulBase, ulTimer);
 }
 
 //*****************************************************************************
@@ -168,7 +168,7 @@ void Timer_IF_Stop(unsigned long ulBase, unsigned long ulTimer)
     //
     // Disable the GPT
     //
-    MAP_TimerDisable(ulBase,ulTimer);
+    MAP_TimerDisable(ulBase, ulTimer);
 }
 
 //*****************************************************************************
@@ -185,16 +185,16 @@ void Timer_IF_Stop(unsigned long ulBase, unsigned long ulTimer)
 //!	\return None.
 //
 //*****************************************************************************
-void Timer_IF_DeInit(unsigned long ulBase,unsigned long ulTimer)
+void Timer_IF_DeInit(unsigned long ulBase, unsigned long ulTimer)
 {
     //
     // Disable the timer interrupt
     //
-    MAP_TimerIntDisable(ulBase,TIMER_TIMA_TIMEOUT | TIMER_TIMB_TIMEOUT);
+    MAP_TimerIntDisable(ulBase, TIMER_TIMA_TIMEOUT | TIMER_TIMB_TIMEOUT);
     //
     // Unregister the timer interrupt
     //
-    MAP_TimerIntUnregister(ulBase,ulTimer);
+    MAP_TimerIntUnregister(ulBase, ulTimer);
 }
 
 //*****************************************************************************
@@ -215,7 +215,7 @@ void Timer_IF_DeInit(unsigned long ulBase,unsigned long ulTimer)
 void Timer_IF_ReLoad(unsigned long ulBase, unsigned long ulTimer,
                      unsigned long ulValue)
 {
-    MAP_TimerLoadSet(ulBase,ulTimer,ulValue);
+    MAP_TimerLoadSet(ulBase, ulTimer, ulValue);
 }
 
 //*****************************************************************************

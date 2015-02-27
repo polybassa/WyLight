@@ -53,7 +53,7 @@ void Trace_Number(uns8 input)
 {
     if (RingBuf_HasError(&g_TraceBuf)) return;
     uns8 temp;
-    uns8 h,z,e;
+    uns8 h, z, e;
 
     h = 0;
     z = 0;

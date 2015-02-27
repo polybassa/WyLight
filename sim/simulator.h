@@ -33,8 +33,8 @@ uint8_t memory[0x3FFFF];
 #define ERROR -1
 #define SUCCESS 0
 
-#define SHAMD5IntRegister(x,y)
-#define SHAMD5ConfigSet(x,y)
+#define SHAMD5IntRegister(x, y)
+#define SHAMD5ConfigSet(x, y)
 
 uint32_t SHAMD5IntStatus(uint32_t base, bool flag);
 

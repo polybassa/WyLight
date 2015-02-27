@@ -46,10 +46,10 @@
 unsigned long g_CreateFileSize = 0;
 unsigned char g_FileName[127];
 
-unsigned long _GetCreateFsMode(unsigned long maxSizeInBytes,unsigned long accessFlags)
+unsigned long _GetCreateFsMode(unsigned long maxSizeInBytes, unsigned long accessFlags)
 {
     g_CreateFileSize = maxSizeInBytes;
-    return _FS_MODE(_FS_MODE_OPEN_WRITE_CREATE_IF_NOT_EXIST,  0, 0, 0);
+    return _FS_MODE(_FS_MODE_OPEN_WRITE_CREATE_IF_NOT_EXIST, 0, 0, 0);
 }
 
 unsigned short sl_Strlen(const unsigned char* buffer)
@@ -90,7 +90,8 @@ long sl_FsOpen(const unsigned char* pFileName,
 /* sl_FsClose */
 /*****************************************************************************/
 #if _SL_INCLUDE_FUNC(sl_FsClose)
-int sl_FsClose(long FileHdl, unsigned char* pCeritificateFileName,unsigned char* pSignature,unsigned long SignatureLen)
+int sl_FsClose(long FileHdl, unsigned char* pCeritificateFileName, unsigned char* pSignature,
+               unsigned long SignatureLen)
 {
     return 0;
 }
@@ -148,7 +149,7 @@ long sl_FsWrite(long FileHdl, unsigned long Offset, unsigned char* pData, unsign
 /*****************************************************************************/
 
 #if _SL_INCLUDE_FUNC(sl_FsGetInfo)
-int sl_FsGetInfo(const unsigned char* pFileName,unsigned long Token,SlFsFileInfo_t* pFsFileInfo)
+int sl_FsGetInfo(const unsigned char* pFileName, unsigned long Token, SlFsFileInfo_t* pFsFileInfo)
 {
     FILE* pHandle = fopen((const char*)pFileName, "rb");
     if (pHandle == NULL)
@@ -159,7 +160,7 @@ int sl_FsGetInfo(const unsigned char* pFileName,unsigned long Token,SlFsFileInfo
     fclose(pHandle);
     memset(pFsFileInfo, 0, sizeof(SlFsFileInfo_t));
 
-    pFsFileInfo->FileLen      = size;
+    pFsFileInfo->FileLen = size;
     pFsFileInfo->AllocatedLen = size;
     return 0;
 }
@@ -169,7 +170,7 @@ int sl_FsGetInfo(const unsigned char* pFileName,unsigned long Token,SlFsFileInfo
 /* sl_FsDel */
 /*****************************************************************************/
 #if _SL_INCLUDE_FUNC(sl_FsDel)
-int sl_FsDel(const unsigned char* pFileName,unsigned long Token)
+int sl_FsDel(const unsigned char* pFileName, unsigned long Token)
 {
     int status = remove((const char*)pFileName);
     return status;

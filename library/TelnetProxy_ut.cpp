@@ -296,10 +296,10 @@ size_t ut_TelnetProxy_SendString(void)
             g_TestSocketSendBufferPos);
         const uint8_t* pPos = g_TestSocketSendBuffer;
         CHECK_MEMCMP(pPos, cmdSetOptReplace.data(), cmdSetOptReplace.size());
-        CHECK_MEMCMP(pPos, hexReplacement.data(),   hexReplacement.length());
-        CHECK_MEMCMP(pPos, CRLF.data(),             CRLF.size());
-        CHECK_MEMCMP(pPos, cmd.data(),              cmd.size());
-        CHECK_MEMCMP(pPos, replacedValue.data(),    replacedValue.size());
+        CHECK_MEMCMP(pPos, hexReplacement.data(), hexReplacement.length());
+        CHECK_MEMCMP(pPos, CRLF.data(), CRLF.size());
+        CHECK_MEMCMP(pPos, cmd.data(), cmd.size());
+        CHECK_MEMCMP(pPos, replacedValue.data(), replacedValue.size());
         std::rotate(value.begin(), value.begin() + 1, value.end());
     } while (value.back() != ' ');
     TestCaseEnd();

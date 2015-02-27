@@ -121,9 +121,9 @@ bool TelnetProxy::Recv(const std::string& expectedResponse) const
 
     TraceBuffer(ZONE_INFO, expectedResponse.data(),
                 expectedResponse.size(), "%02x ", "%zu bytes expected: ", expectedResponse.size());
-    TraceBuffer(ZONE_INFO, buffer,                  bytesRead,               "%02x ", "%zu bytes received: ",
+    TraceBuffer(ZONE_INFO, buffer, bytesRead, "%02x ", "%zu bytes received: ",
                 bytesRead);
-    TraceBuffer(ZONE_INFO, buffer,                  bytesRead,               "%c",    "%zu bytes received: ",
+    TraceBuffer(ZONE_INFO, buffer, bytesRead, "%c", "%zu bytes received: ",
                 bytesRead);
     return 0 == memcmp(expectedResponse.data(), buffer, expectedResponse.size());
 }

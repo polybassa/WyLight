@@ -47,11 +47,11 @@ public:
     Pwm& operator=(const uint16_t& dutyCycle);
 
 private:
-    static const uint32_t CPU_FREQUENCY_HZ = 80000000;
-    static const uint32_t PWM_FREQUENCY_HZ = 2000;
-    static const uint16_t DUTYCYCLE_MAX_VALUE = 1000;
-    static const uint32_t DUTYCYCLE_GRANULARITY = (uint32_t)(CPU_FREQUENCY_HZ / PWM_FREQUENCY_HZ / DUTYCYCLE_MAX_VALUE);
-    static const uint32_t TIMER_INTERVAL_RELOAD = (uint32_t)(DUTYCYCLE_MAX_VALUE * DUTYCYCLE_GRANULARITY);
+    static const uint32_t CPU_FREQUENCY_HZ;
+    static const uint32_t PWM_FREQUENCY_HZ;
+    static const uint16_t DUTYCYCLE_MAX_VALUE;
+    static const uint32_t DUTYCYCLE_GRANULARITY;
+    static const uint32_t TIMER_INTERVAL_RELOAD;
 
     static enum Timer::timer getTimer(const enum Pwm::channels& channel);
     static enum Timer::base getBase(const enum Pwm::channels& channel);

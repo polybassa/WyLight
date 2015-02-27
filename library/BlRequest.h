@@ -128,13 +128,13 @@ struct BlInfo {
             break;
 
         default:
-            printf("unknown(0x%1x)",                    familyId);
+            printf("unknown(0x%1x)", familyId);
             break;
         }
 
-        printf(" bootloader V%d.%d\n",              versionMajor, versionMinor);
-        printf("Size: %d\n",                        BL_WORD(sizeHigh, sizeLow));
-        printf("Startaddress: 0x%x\n",              GetAddress());
+        printf(" bootloader V%d.%d\n", versionMajor, versionMinor);
+        printf("Size: %d\n", BL_WORD(sizeHigh, sizeLow));
+        printf("Startaddress: 0x%x\n", GetAddress());
         printf("erase flash command %ssupported\n", ((0x02 == familyId) && (0x01 != cmdmaskHigh)) ? "not " : "");
     }
 };

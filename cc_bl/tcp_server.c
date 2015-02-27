@@ -73,21 +73,21 @@ static int TcpServer_Listen()
         const int dontBlock = 1;
         status = setsockopt(listenSocket, SOL_SOCKET, SO_NONBLOCKING, &dontBlock, sizeof(dontBlock));
         if (status) {
-            Trace(ZONE_ERROR,"Setsockopt ERROR \r\n");
+            Trace(ZONE_ERROR, "Setsockopt ERROR \r\n");
             goto on_error_close;
         }
 #endif
         status = bind(listenSocket, (struct sockaddr*)&localAddr, sizeof(localAddr));
 
         if (status) {
-            Trace(ZONE_ERROR,"Bind Error\n\r");
+            Trace(ZONE_ERROR, "Bind Error\n\r");
             goto on_error_close;
         }
 
         const int maxConnections = 1;
         status = listen(listenSocket, maxConnections);
         if (status) {
-            Trace(ZONE_ERROR,"Listen Error\n\r");
+            Trace(ZONE_ERROR, "Listen Error\n\r");
             goto on_error_close;
         }
     }
@@ -117,7 +117,7 @@ int TcpServer_Accept(const int listenSocket)
         if (EAGAIN == childSocket)
             _SlNonOsMainLoopTask();
         else
-            Trace(ZONE_ERROR,"Error: %d occured on accept\r\n", childSocket);
+            Trace(ZONE_ERROR, "Error: %d occured on accept\r\n", childSocket);
     }
 }
 
@@ -133,7 +133,7 @@ extern void TcpServer(void)
 
     const int listenSocket = TcpServer_Listen();
     if (listenSocket < 0) {
-        Trace(ZONE_ERROR,"TcpServer: Socket Error: %d \r\n", listenSocket);
+        Trace(ZONE_ERROR, "TcpServer: Socket Error: %d \r\n", listenSocket);
         return;
     }
 

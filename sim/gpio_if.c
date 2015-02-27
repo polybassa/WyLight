@@ -53,8 +53,8 @@ bool LedRed = 0, LedGreen = 0, LedOrange = 0;
 //*****************************************************************************
 // Variables to store TIMER Port,Pin values
 //*****************************************************************************
-unsigned int g_uiLED1Port = 0,g_uiLED2Port = 0,g_uiLED3Port = 0;
-unsigned char g_ucLED1Pin,g_ucLED2Pin,g_ucLED3Pin;
+unsigned int g_uiLED1Port = 0, g_uiLED2Port = 0, g_uiLED3Port = 0;
+unsigned char g_ucLED1Pin, g_ucLED2Pin, g_ucLED3Pin;
 
 #define PIN_LED1 9
 #define PIN_LED2 10

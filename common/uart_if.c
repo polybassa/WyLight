@@ -75,7 +75,7 @@ void
 InitTerm()
 {
 #ifdef DEBUG
-    MAP_UARTConfigSetExpClk(CONSOLE,MAP_PRCMPeripheralClockGet(CONSOLE_PERIPH),
+    MAP_UARTConfigSetExpClk(CONSOLE, MAP_PRCMPeripheralClockGet(CONSOLE_PERIPH),
                             UART_BAUD_RATE, (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
                                              UART_CONFIG_PAR_NONE));
 #endif
@@ -99,7 +99,7 @@ Message(const char* str)
 #ifdef DEBUG
     if (str != NULL)
         while (*str) {
-            MAP_UARTCharPut(CONSOLE,*str++);
+            MAP_UARTCharPut(CONSOLE, *str++);
         }
 
 #endif
@@ -144,8 +144,8 @@ int Report(const char* pcFormat, ...)
     int iSize = sizeof(pcBuff);
 
     va_list list;
-    va_start(list,pcFormat);
-    iRet = vsnprintf(pcBuff,iSize,pcFormat,list);
+    va_start(list, pcFormat);
+    iRet = vsnprintf(pcBuff, iSize, pcFormat, list);
     va_end(list);
 
     if ((iRet < 0) || (iRet >= iSize)) {

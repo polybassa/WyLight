@@ -86,7 +86,7 @@ void Timer_StartStopwatch(const enum CYCLETIME_METHODE destMethode)
 
 void Timer_StopStopwatch(const enum CYCLETIME_METHODE destMethode)
 {
-    uns16 tempTime,temp16;
+    uns16 tempTime, temp16;
 
     Platform_ReadPerformanceCounter(tempTime);
 

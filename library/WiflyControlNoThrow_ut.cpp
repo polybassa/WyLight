@@ -275,7 +275,7 @@ size_t ut_WiflyControlNoThrow_FwFunctions(void)
         CHECK(e == testee.FwSetFade(0));
         CHECK(e == testee.FwStartBl());
         CHECK(e == testee.FwSetColorDirect(buffer));
-        CHECK(e == testee.FwSetGradient(0,0));
+        CHECK(e == testee.FwSetGradient(0, 0));
     }
 
     TestCaseEnd();
@@ -291,7 +291,7 @@ size_t ut_WiflyControlNoThrow_ConfFunctions(void)
 
     CHECK(NO_ERROR == testee.ConfGetSsid(tempStr));
     CHECK(NO_ERROR == testee.ConfModuleAsSoftAP(tempStr));
-    CHECK(NO_ERROR == testee.ConfModuleForWlan(tempStr,tempStr,tempStr));
+    CHECK(NO_ERROR == testee.ConfModuleForWlan(tempStr, tempStr, tempStr));
     CHECK(NO_ERROR == testee.ConfChangeWlanChannel());
     TestCaseEnd();
 }
@@ -345,7 +345,7 @@ size_t ut_WiflyControlNoThrow_BlReadFlash(void)
     size_t length = 1000;
     size_t counter = 0;
 
-    testee.BlReadFlash(mStream, 0,length);
+    testee.BlReadFlash(mStream, 0, length);
     do {
         uint8_t byte = 0;
         mStream >> byte;
@@ -373,7 +373,7 @@ size_t ut_WiflyControlNoThrow_BlReadCrcFlash(void)
     size_t length = 1000;
     size_t counter = 0;
 
-    testee.BlReadCrcFlash(mStream, 0,length);
+    testee.BlReadCrcFlash(mStream, 0, length);
     do {
         uint8_t byte = 0;
         mStream >> byte;
@@ -401,7 +401,7 @@ size_t ut_WiflyControlNoThrow_BlReadEeprom(void)
     size_t length = 1000;
     size_t counter = 0;
 
-    testee.BlReadEeprom(mStream, 0,length);
+    testee.BlReadEeprom(mStream, 0, length);
     do {
         uint8_t byte = 0;
         mStream >> byte;

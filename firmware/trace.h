@@ -66,7 +66,7 @@ uns8 Trace_Print(uns8* pArray, const uns16 arraySize);
 #include "uart_if.h"
 #define Trace_Init(x) {InitTerm(); ClearTerm(); }
 #define Trace_String(str) Report(str)
-#define Trace_Number(input) Report("%d",input)
+#define Trace_Number(input) Report("%d", input)
 #define Trace_Hex(hex) Report("0x%2x", hex)
 #define Trace_Hex16(hex) Report("0x%4x", hex)
 #define Trace(ZONE, ...) do { \

@@ -125,8 +125,8 @@ Error(char* pcFormat, ...)
 #ifndef NOTERM
     char cBuf[256];
     va_list list;
-    va_start(list,pcFormat);
-    vsnprintf(cBuf,256,pcFormat,list);
+    va_start(list, pcFormat);
+    vsnprintf(cBuf, 256, pcFormat, list);
     Message(cBuf);
     va_end(list);
 #endif
@@ -155,8 +155,8 @@ int Report(const char* pcFormat, ...)
     int iSize = sizeof(pcBuff);
 
     va_list list;
-    va_start(list,pcFormat);
-    iRet = vsnprintf(pcBuff,iSize,pcFormat,list);
+    va_start(list, pcFormat);
+    iRet = vsnprintf(pcBuff, iSize, pcFormat, list);
     va_end(list);
 
     if ((iRet < 0) || (iRet >= iSize)) {

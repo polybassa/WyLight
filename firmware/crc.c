@@ -19,33 +19,33 @@
 #include "crc.h"
 
 // 16-bit CCIT CRC
-void Crc_AddCrc(const uns8 byte,uns8* p_crcH,uns8* p_crcL)
+void Crc_AddCrc(const uns8 byte, uns8* p_crcH, uns8* p_crcL)
 {
     uns8 index, crcH, crcL;
     crcH = *p_crcH;
     crcL = *p_crcL;
 #ifdef __CC8E__
-    MOVF(byte,0);
+    MOVF(byte, 0);
 
-    XORWF(crcH,0);
+    XORWF(crcH, 0);
     MOVWF(index);
     ANDLW(0xf0);
-    SWAPF(index,1);
-    XORWF(index,1);
+    SWAPF(index, 1);
+    XORWF(index, 1);
 
-    MOVF(index,0);
+    MOVF(index, 0);
     ANDLW(0xf0);
-    XORWF(crcL,0);
+    XORWF(crcL, 0);
     MOVWF(crcH);
 
-    RLF(index,0);
-    RLF(index,0);
-    XORWF(crcH,1);
+    RLF(index, 0);
+    RLF(index, 0);
+    XORWF(crcH, 1);
     ANDLW(0xe0);
-    XORWF(crcH,1);
+    XORWF(crcH, 1);
 
-    SWAPF(index,1);
-    XORWF(index,0);
+    SWAPF(index, 1);
+    XORWF(index, 0);
     MOVWF(crcL);
 #else
     uns8 work, temp;
@@ -102,13 +102,13 @@ void Crc_BuildCrc(const uns8* data, const uns8 length, uns8* crcH_out, uns8* crc
     if (!crcH_out) return;
     if (!crcL_out) return;
     if (!data) return;
-    uns8 crcH,crcL,i,byte;
+    uns8 crcH, crcL, i, byte;
     crcH = 0xff;
     crcL = 0xff;
 
     for (i = 0; i < length; i++) {
         byte = data[i];
-        Crc_AddCrc(byte,&crcH,&crcL);
+        Crc_AddCrc(byte, &crcH, &crcL);
     }
 
     *crcH_out = crcH;

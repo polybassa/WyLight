@@ -45,6 +45,6 @@ extern uns8 g_RtcAdress;
 
 void Rtc_Init(void);
 
-void Rtc_Ctl(enum RTC_request req,struct rtc_time* pRtcTime);
+void Rtc_Ctl(enum RTC_request req, struct rtc_time* pRtcTime);
 
 #endif /*_RTC_H_*/

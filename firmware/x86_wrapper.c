@@ -169,8 +169,8 @@ void I2C_Init(){}
 void I2C_Write(const uns8 slaveaddr, const uns8 dataaddr, const uns8 data){}
 uns8 I2C_Read(const uns8 slaveaddr, const uns8 readaddr){return 0; }
 uns8 I2C_DetectSlave(const uns8 slaveaddr){return 0; }
-void I2C_ReadBlock(const uns8 slaveaddr, uns8* buffer,const uns8 readaddr, const uns8 length){}
-void I2C_WriteBlock(const uns8 slaveaddr, const uns8* data, const uns8 dataaddr,const uns8 length){}
+void I2C_ReadBlock(const uns8 slaveaddr, uns8* buffer, const uns8 readaddr, const uns8 length){}
+void I2C_WriteBlock(const uns8 slaveaddr, const uns8* data, const uns8 dataaddr, const uns8 length){}
 
 void* timer1_interrupt(void* unused)
 {
@@ -191,7 +191,7 @@ void* timer4_interrupt(void* unused)
 }
 
 void Rtc_Init() {}
-void Rtc_Ctl(enum RTC_request req,struct rtc_time* pRtcTime) {}
+void Rtc_Ctl(enum RTC_request req, struct rtc_time* pRtcTime) {}
 
 void UART_Init() {}
 void UART_Send(uns8 ch)
@@ -234,11 +234,11 @@ void init_x86(int start_gl)
     pthread_t timer1Thread;
     pthread_t timer4Thread;
 
-    pthread_create(&broadcastThread, 0, BroadcastLoop,    0);
-    pthread_create(&isrThread,       0, InterruptRoutine, 0);
-    pthread_create(&udpThread,       0, UdpRoutine, 0);
+    pthread_create(&broadcastThread, 0, BroadcastLoop, 0);
+    pthread_create(&isrThread, 0, InterruptRoutine, 0);
+    pthread_create(&udpThread, 0, UdpRoutine, 0);
     if (start_gl)
-        pthread_create(&glThread,        0, gl_start,         0);
-    pthread_create(&timer1Thread,    0, timer1_interrupt, 0);
-    pthread_create(&timer4Thread,    0, timer4_interrupt, 0);
+        pthread_create(&glThread, 0, gl_start, 0);
+    pthread_create(&timer1Thread, 0, timer1_interrupt, 0);
+    pthread_create(&timer4Thread, 0, timer4_interrupt, 0);
 }

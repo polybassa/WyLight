@@ -96,7 +96,7 @@ void SimpleLinkWlanEventHandler(SlWlanEvent_t* pSlWlanEvent)
         break;
 
     default:
-        Trace(ZONE_ERROR,"[WLAN EVENT] Unexpected event \n\r");
+        Trace(ZONE_ERROR, "[WLAN EVENT] Unexpected event \n\r");
         break;
     }
 }
@@ -117,7 +117,7 @@ void SimpleLinkNetAppEventHandler(SlNetAppEvent_t* pNetAppEvent)
     case SL_NETAPP_IPV4_ACQUIRED:
     case SL_NETAPP_IPV6_ACQUIRED:
         SET_STATUS_BIT(g_ulStatus, STATUS_BIT_IP_AQUIRED);
-        Trace(ZONE_VERBOSE,"[NETAPP EVENT] IP Acquired\r\n");
+        Trace(ZONE_VERBOSE, "[NETAPP EVENT] IP Acquired\r\n");
         break;
 
     case SL_NETAPP_IP_LEASED:
@@ -129,11 +129,11 @@ void SimpleLinkNetAppEventHandler(SlNetAppEvent_t* pNetAppEvent)
         break;
 
     case SL_NETAPP_SOCKET_TX_FAILED:
-        Trace(ZONE_ERROR,"[NETAPP EVENT] Socket Error # %d \n\r", pNetAppEvent->EventData.sd);
+        Trace(ZONE_ERROR, "[NETAPP EVENT] Socket Error # %d \n\r", pNetAppEvent->EventData.sd);
         break;
 
     default:
-        Trace(ZONE_ERROR,"[NETAPP EVENT] Unexpected event \n\r");
+        Trace(ZONE_ERROR, "[NETAPP EVENT] Unexpected event \n\r");
         break;
     }
 }
@@ -146,7 +146,7 @@ void SimpleLinkGeneralEventHandler(SlDeviceEvent_t* pDevEvent)
     // appropriately by the application
 #ifdef DEBUG
     const sl_DeviceReport report = pDevEvent->EventData.deviceEvent;
-    Trace(ZONE_INFO,"[GENERAL EVENT] - ID=[%d] Sender=[%d]\n\n", report.status, report.sender);
+    Trace(ZONE_INFO, "[GENERAL EVENT] - ID=[%d] Sender=[%d]\n\n", report.status, report.sender);
 #endif
 }
 
@@ -164,19 +164,19 @@ void SimpleLinkSockEventHandler(SlSockEvent_t* pSock)
     //
     // This application doesn't work w/ socket - Events are not expected
     //
-    Trace(ZONE_VERBOSE,"[SOCK EVENT] Eventtype: %d\r\n", pSock->Event);
+    Trace(ZONE_VERBOSE, "[SOCK EVENT] Eventtype: %d\r\n", pSock->Event);
 
     switch (pSock->Event) {
     case SL_NETAPP_SOCKET_TX_FAILED:
 
         switch (pSock->EventData.status) {
         case SL_ECLOSE:
-            Trace(ZONE_ERROR,"[SOCK ERROR] - close socket (%d) operation "
+            Trace(ZONE_ERROR, "[SOCK ERROR] - close socket (%d) operation "
                   "failed to transmit all queued packets\n\n", pSock->EventData.sd);
             break;
 
         default:
-            Trace(ZONE_ERROR,"[SOCK ERROR] - TX FAILED  :  socket %d , reason "
+            Trace(ZONE_ERROR, "[SOCK ERROR] - TX FAILED  :  socket %d , reason "
                   "(%d) \n\n", pSock->EventData.sd, pSock->EventData.status);
             break;
         }
@@ -184,7 +184,7 @@ void SimpleLinkSockEventHandler(SlSockEvent_t* pSock)
         break;
 
     default:
-        Trace(ZONE_ERROR,"[SOCK EVENT] - Unexpected Event [%x0x]\n\n", pSock->Event);
+        Trace(ZONE_ERROR, "[SOCK EVENT] - Unexpected Event [%x0x]\n\n", pSock->Event);
         break;
     }
 }
@@ -203,7 +203,7 @@ void SimpleLinkSockEventHandler(SlSockEvent_t* pSock)
 void SimpleLinkHttpServerCallback(SlHttpServerEvent_t*    pSlHttpServerEvent,
                                   SlHttpServerResponse_t* pSlHttpServerResponse)
 {
-    Trace(ZONE_INFO,"[HTTP EVENT]\r\n");
+    Trace(ZONE_INFO, "[HTTP EVENT]\r\n");
 }
 
 //*****************************************************************************
@@ -267,7 +267,7 @@ static long ConfigureSimpleLink()
     retVal = sl_DevGet(SL_DEVICE_GENERAL_CONFIGURATION, &configOpt, &configLen, (unsigned char*)(&ver));
     ASSERT_ON_ERROR(__LINE__, retVal);
 
-    Trace(ZONE_INFO,"Host Driver Version: %s\n\r", SL_DRIVER_VERSION);
+    Trace(ZONE_INFO, "Host Driver Version: %s\n\r", SL_DRIVER_VERSION);
     Trace(ZONE_INFO,
           "Build Version %d.%d.%d.%d.31.%d.%d.%d.%d.%d.%d.%d.%d\n\r",
           ver.NwpVersion[0],
@@ -293,7 +293,7 @@ static long ConfigureSimpleLink()
 
     // compute random channel from current time
     unsigned char channel = (dateTime.sl_tm_sec % 13) + 1; // to avoid channel 0
-    Trace(ZONE_INFO,"Accesspoint channel: %d\r\n", channel);
+    Trace(ZONE_INFO, "Accesspoint channel: %d\r\n", channel);
 
     retVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, WLAN_AP_OPT_CHANNEL, 1, &channel);
     ASSERT_ON_ERROR(__LINE__, retVal);
@@ -353,7 +353,7 @@ long Network_IF_StartSimpleLinkAsAP(void)
     ASSERT_ON_ERROR(__LINE__, retVal);
 
     if (retVal == ROLE_AP) {
-        Trace(ZONE_VERBOSE,"Device started as Bootloader AP \n\r");
+        Trace(ZONE_VERBOSE, "Device started as Bootloader AP \n\r");
         //Device in AP-Mode, Wait for initialization to complete
         while (!IS_IP_ACQUIRED(g_ulStatus)) {
             _SlNonOsMainLoopTask();
@@ -377,7 +377,7 @@ long Network_IF_InitDriver(void)
 {
     long retVal = ConfigureSimpleLink();
     ASSERT_ON_ERROR(__LINE__, retVal);
-    Trace(ZONE_VERBOSE,"Device is configured in default state \n\r");
+    Trace(ZONE_VERBOSE, "Device is configured in default state \n\r");
     return SUCCESS;
 }
 
@@ -393,7 +393,7 @@ long Network_IF_InitDriver(void)
 //*****************************************************************************
 void Network_IF_DeInitDriver(void)
 {
-    Trace(ZONE_VERBOSE,"SL Disconnect...\n\r");
+    Trace(ZONE_VERBOSE, "SL Disconnect...\n\r");
 
     // Stop the simplelink host
     sl_Stop(SL_STOP_TIMEOUT);

@@ -205,8 +205,8 @@ size_t ut_WyFileDownloader_loadBootloader(void)
 int main(int argc, const char* argv[])
 {
     UnitTestMainBegin();
-    RunTest(true,  ut_WyFileDownloader_loadFirmware);
-    RunTest(true,  ut_WyFileDownloader_loadFirmware2);
+    RunTest(true, ut_WyFileDownloader_loadFirmware);
+    RunTest(true, ut_WyFileDownloader_loadFirmware2);
     RunTest(true, ut_WyFileDownloader_loadBootloader);
     UnitTestMainEnd();
 }

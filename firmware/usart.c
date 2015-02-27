@@ -62,7 +62,7 @@ void UART_SendString(const char* string)
 }
 
 //*******  Sende-Array-Funktion  *************************************************
-void UART_SendArray(const uns8* array,const uns8 length)
+void UART_SendArray(const uns8* array, const uns8 length)
 {
     if (array == 0) return;
     uns8 i;
@@ -103,10 +103,10 @@ void UART_SendHex_16(const uns16 input)
 }
 
 //*******  Sende-Zahl-als-String-Funktion  *************************************************
-void UART_SendNumber(uns8 input,const uns8 sign)
+void UART_SendNumber(uns8 input, const uns8 sign)
 {
     uns8 temp;
-    uns8 h,z,e;
+    uns8 h, z, e;
 
     h = 0;
     z = 0;
@@ -135,10 +135,10 @@ void UART_SendNumber(uns8 input,const uns8 sign)
 }
 
 //SENDE BCD-Zahl als String
-void UART_SendTime(unsigned char input,unsigned char sign)
+void UART_SendTime(unsigned char input, unsigned char sign)
 {
     char temp;
-    char z,e;
+    char z, e;
 
     e = input & 0x0f;
     input = swap(input);

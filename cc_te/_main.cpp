@@ -120,7 +120,7 @@ int main()
 
     auto x = new TestSibling();
 
-    std::array<int, 5> arr = {0,1,2,3,4};
+    std::array<int, 5> arr = {0, 1, 2, 3, 4};
 
     for (auto& x : arr) {
         Report("%d ", x);
@@ -136,10 +136,10 @@ int main()
 
     Report("%s", str);
 
-    int myints[] = {10,20,30,5,15};
-    std::vector<int> v(myints,myints + 5);
+    int myints[] = {10, 20, 30, 5, 15};
+    std::vector<int> v(myints, myints + 5);
 
-    std::make_heap(v.begin(),v.end());
+    std::make_heap(v.begin(), v.end());
 
     GPIO_IF_LedConfigure(LED1 | LED2 | LED3);
     GPIO_IF_LedOff(MCU_ALL_LED_IND);

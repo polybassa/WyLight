@@ -60,7 +60,7 @@ struct cmd_set_fade mFade;
  */
 #define FOR_EACH_MASKED_LED_DO(BLOCK, ELSE) { \
         uns8* address = pCmd->addr; \
-        uns8 k,mask; \
+        uns8 k, mask; \
         mask = 0x01; \
         for (k = 0; k < sizeof(gLedBuf.led_array); k++) {        \
             if (0 != (*address & mask)) { \
@@ -256,11 +256,11 @@ void Ledstrip_DoFade(void)
 void Ledstrip_UpdateLed(void)
 {
 #ifdef cc3200
-    osi_LockObjLock(AccessLedBufferMutex,OSI_WAIT_FOREVER);
+    osi_LockObjLock(AccessLedBufferMutex, OSI_WAIT_FOREVER);
 #endif
     SPI_SendLedBuffer(gLedBuf.led_array);
 #ifdef cc3200
-    osi_MsgQWrite(PwmMessageQ,gLedBuf.led_array,OSI_NO_WAIT);
+    osi_MsgQWrite(PwmMessageQ, gLedBuf.led_array, OSI_NO_WAIT);
     osi_LockObjUnlock(AccessLedBufferMutex);
 #endif
 }
@@ -276,7 +276,7 @@ void Ledstrip_SetFade(struct cmd_set_fade* pCmd)
     uns8* stepAddress = gLedBuf.step;
     uns8 stepMask = 0x01;
     uns16 temp16;
-    uns8 red,green,blue,delta,stepSize,temp8;
+    uns8 red, green, blue, delta, stepSize, temp8;
 
     red = pCmd->red;
     green = pCmd->green;
@@ -304,7 +304,7 @@ void Ledstrip_SetFade(struct cmd_set_fade* pCmd)
 #endif
 }
 
-#define CALC_DELTA(target,source_1,source_2) { \
+#define CALC_DELTA(target, source_1, source_2) { \
         target = source_1; \
         if (target > source_2) \
             target = target - source_2; \
@@ -314,7 +314,7 @@ void Ledstrip_SetFade(struct cmd_set_fade* pCmd)
 
 // To add or sub the diff from color by each loop run to get the right color for
 // every led. If compare is greater then color, this macro add's diff, otherwise it sub's diff
-#define ADJUST_COLOR(color,compare,diff) { \
+#define ADJUST_COLOR(color, compare, diff) { \
         if (color > compare) \
             color -= diff; \
         else \
@@ -331,9 +331,9 @@ void Ledstrip_SetGradient(struct cmd_set_gradient* pCmd)
     if ((numOfLeds == 255) || (numOfLeds == 0))
         numOfLeds = 1;
 
-    CALC_DELTA(deltaRed,   pCmd->red_1,   pCmd->red_2);
+    CALC_DELTA(deltaRed, pCmd->red_1, pCmd->red_2);
     CALC_DELTA(deltaGreen, pCmd->green_1, pCmd->green_2);
-    CALC_DELTA(deltaBlue,  pCmd->blue_1,  pCmd->blue_2);
+    CALC_DELTA(deltaBlue, pCmd->blue_1, pCmd->blue_2);
 
     uns8 red = pCmd->red_1;
     uns8 green = pCmd->green_1;
@@ -341,7 +341,7 @@ void Ledstrip_SetGradient(struct cmd_set_gradient* pCmd)
 
     //define variables for CALC_COLOR macro
     uns16 temp16;
-    uns8 k,delta,stepSize,temp8;
+    uns8 k, delta, stepSize, temp8;
     uns8* stepAddress = gLedBuf.step;
     uns8 stepMask = 0x01;
 
@@ -370,9 +370,9 @@ void Ledstrip_SetGradient(struct cmd_set_gradient* pCmd)
             CALC_COLOR(green);
             k++;
             CALC_COLOR(red);
-            ADJUST_COLOR(red,   pCmd->red_2,   deltaRed);
+            ADJUST_COLOR(red, pCmd->red_2, deltaRed);
             ADJUST_COLOR(green, pCmd->green_2, deltaGreen);
-            ADJUST_COLOR(blue,  pCmd->blue_2,  deltaBlue);
+            ADJUST_COLOR(blue, pCmd->blue_2, deltaBlue);
         } else {
             INC_BIT_COUNTER(stepAddress, stepMask);
         }

@@ -57,7 +57,7 @@
     wy_FsOpen("FileName.html",FS_MODE_OPEN_READ,NULL, &FileHandle);
     \endcode
  */
-long wy_FsOpen(unsigned char* pFileName,unsigned long AccessModeAndMaxSize, unsigned long* pToken,long* pFileHandle);
+long wy_FsOpen(unsigned char* pFileName, unsigned long AccessModeAndMaxSize, unsigned long* pToken, long* pFileHandle);
 /*!
     \brief close file in storage device
 
@@ -76,7 +76,8 @@ long wy_FsOpen(unsigned char* pFileName,unsigned long AccessModeAndMaxSize, unsi
     \endcode
  */
 
-int wy_FsClose(long FileHdl, unsigned char* pCeritificateFileName,unsigned char* pSignature,unsigned long SignatureLen);
+int wy_FsClose(long FileHdl, unsigned char* pCeritificateFileName, unsigned char* pSignature,
+               unsigned long SignatureLen);
 
 /*!
     \brief read block of data from a file in storage device
@@ -138,7 +139,7 @@ long wy_FsWrite(long FileHdl, unsigned long Offset, unsigned char* pData, unsign
     \endcode
  */
 
-int wy_FsGetInfo(unsigned char* pFileName,unsigned long Token,SlFsFileInfo_t* pFsFileInfo);
+int wy_FsGetInfo(unsigned char* pFileName, unsigned long Token, SlFsFileInfo_t* pFsFileInfo);
 
 /*!
     \brief delete specific file from a storage or all files from a storage (format)
@@ -156,7 +157,7 @@ int wy_FsGetInfo(unsigned char* pFileName,unsigned long Token,SlFsFileInfo_t* pF
     \endcode
  */
 
-int wy_FsDel(unsigned char* pFileName,unsigned long Token);
+int wy_FsDel(unsigned char* pFileName, unsigned long Token);
 
 /*!
    \brief delete all files from a storage (format)

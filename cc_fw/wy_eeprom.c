@@ -55,7 +55,7 @@ void Eeprom_Init()
     }
     // file exists and is open
     if (EEPROM_SIZE != wy_FsRead(fileHandle, 0, g_Eeprom, EEPROM_SIZE)) {
-        Trace(ZONE_ERROR,"EEPROM Adaption: Error reading script file\r\n");
+        Trace(ZONE_ERROR, "EEPROM Adaption: Error reading script file\r\n");
         memset(g_Eeprom, 0, EEPROM_SIZE);
     }
     wy_FsClose(fileHandle, NULL, NULL, 0);
@@ -78,7 +78,7 @@ void Eeprom_Save(bool forceSave)
         if (wy_FsOpen(eepromFileName, FS_MODE_OPEN_CREATE(EEPROM_SIZE, _FS_FILE_PUBLIC_READ | _FS_FILE_PUBLIC_WRITE),
                       NULL, &fileHandle))
         {
-            Trace(ZONE_ERROR,"EEPROM Adaption: Error opening script file\r\n");
+            Trace(ZONE_ERROR, "EEPROM Adaption: Error opening script file\r\n");
             osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
             return;
         }
@@ -86,7 +86,7 @@ void Eeprom_Save(bool forceSave)
     }
     // file exists and is open
     if (EEPROM_SIZE != wy_FsWrite(fileHandle, 0, g_Eeprom, EEPROM_SIZE))
-        Trace(ZONE_ERROR,"EEPROM Adaption: Error writing script file\r\n");
+        Trace(ZONE_ERROR, "EEPROM Adaption: Error writing script file\r\n");
     wy_FsClose(fileHandle, NULL, NULL, 0);
     osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
 }

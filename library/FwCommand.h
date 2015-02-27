@@ -41,7 +41,7 @@ protected:
     }
 
 public:
-    const uint8_t* GetData(void) const { return reinterpret_cast<const uint8_t*>(&mReqFrame);       }
+    const uint8_t* GetData(void) const { return reinterpret_cast<const uint8_t*>(&mReqFrame); }
     size_t GetSize(void) const { return mSize; }
     uint8_t GetType(void) const { return mReqFrame.cmd; }
     const bool IsResponseRequired(void) const { return requiresResponse; }
@@ -67,7 +67,7 @@ protected:
     FwCmdSimple(uint8_t cmd, size_t size = 0, bool withResponse = true) : FwCommand(cmd, size, withResponse), mResponse(
             cmd) {}
 public:
-    FwResponse& GetResponse(void) { return mResponse;       }
+    FwResponse& GetResponse(void) { return mResponse; }
 };
 
 class FwCmdScript : public FwCmdSimple {
@@ -121,31 +121,31 @@ struct FwCmdClearScript : public FwCmdSimple {
 struct FwCmdGetCycletime : public FwCmdGet {
     CycletimeResponse mResponse;
     FwCmdGetCycletime(void) : FwCmdGet(GET_CYCLETIME) {}
-    FwResponse& GetResponse(void) { return mResponse;       }
+    FwResponse& GetResponse(void) { return mResponse; }
 };
 
 struct FwCmdGetRtc : public FwCmdGet {
     RtcResponse mResponse;
     FwCmdGetRtc(void) : FwCmdGet(GET_RTC) {}
-    FwResponse& GetResponse(void) { return mResponse;       }
+    FwResponse& GetResponse(void) { return mResponse; }
 };
 
 struct FwCmdGetTracebuffer : public FwCmdGet {
     TracebufferResponse mResponse;
     FwCmdGetTracebuffer(void) : FwCmdGet(GET_TRACE) {}
-    FwResponse& GetResponse(void) { return mResponse;       }
+    FwResponse& GetResponse(void) { return mResponse; }
 };
 
 struct FwCmdGetLedTyp : public FwCmdGet {
     LedTypResponse mResponse;
     FwCmdGetLedTyp(void) : FwCmdGet(GET_LED_TYP) {}
-    FwResponse& GetResponse(void) { return mResponse;       }
+    FwResponse& GetResponse(void) { return mResponse; }
 };
 
 struct FwCmdGetVersion : public FwCmdGet {
     FirmwareVersionResponse mResponse;
     FwCmdGetVersion(void) : FwCmdGet(GET_FW_VERSION) {}
-    FwResponse& GetResponse(void) { return mResponse;       }
+    FwResponse& GetResponse(void) { return mResponse; }
 };
 
 struct FwCmdLoopOff : public FwCmdScript {
