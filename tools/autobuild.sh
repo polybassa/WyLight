@@ -12,7 +12,7 @@ BUILD_TYPE=$1
 BUILD_BRANCH=${BUILD_TYPE}-$(date +%Y%m%d%H%M%S)
 PULL_BRANCH=Master
 BINDIR=exe
-MAIL_HEADER="to : mrbruenn@gmail.com\nfrom : build01.wylight@gmail.com\nsubject : ${BUILD_BRANCH}"
+MAIL_HEADER="to : admin@wylight.de\nfrom : build01.wylight@gmail.com\nsubject : ${BUILD_BRANCH}"
 
 # prepare a fresh branch for build
 cd WyLight && \
