@@ -18,5 +18,5 @@ firmware_simu:
 
 firmware_test: firmware_standart_test
 
-firmware_standart_test: ${BINDIR}/CommandIO_ut.bin ${BINDIR}/crc_ut.bin ${BINDIR}/ledstrip_ut.bin ${BINDIR}/RingBuf_ut.bin ${BINDIR}/ScriptCtrl_ut.bin
+firmware_standart_test: ${BINDIR} ${BINDIR}/CommandIO_ut.bin ${BINDIR}/crc_ut.bin ${BINDIR}/ledstrip_ut.bin ${BINDIR}/RingBuf_ut.bin ${BINDIR}/ScriptCtrl_ut.bin
 	@$(foreach test,$^,./$(test);)	
