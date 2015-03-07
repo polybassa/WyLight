@@ -20,7 +20,7 @@ git checkout -b ${BUILD_BRANCH} && \
 ./configure
 if [ $? -ne 0 ]; then
 	echo "prepare repository and branch for build failed"
-	echo "${MAIL_HEADER}\n prepare repository failed" | sendmail -t
+	echo -e "${MAIL_HEADER}\n prepare repository failed" | sendmail -t
 	exit 1
 fi
 
@@ -32,11 +32,11 @@ make cli
 
 if [ $? -ne 0 ]; then
 	echo "build failed!"
-	echo "${MAIL_HEADER}\n build failed" | sendmail -t
+	echo -e "${MAIL_HEADER}\n failed" | sendmail -t
 	exit $?
 fi
 
-echo "${MAIL_HEADER}\n build was successful" | sendmail -t
+echo -e "${MAIL_HEADER}\n was successful" | sendmail -t
 
 # save nightly build results only
 if [ "${BUILD_TYPE}" == "nightly" ]; then
