@@ -1,4 +1,4 @@
-
+#!/bin/bash
 # check arguments
 if [ $# -eq 0 ] || ( [ "$1" != "nightly" ] && [ "$1" != "build" ] ); then
 	echo -e "Usage:\n\t$0 nightly -> preserve build results"
