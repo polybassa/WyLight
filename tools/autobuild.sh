@@ -6,6 +6,8 @@ if [ $# -eq 0 ] || ( [ "$1" != "nightly" ] && [ "$1" != "build" ] ); then
     exit 1
 fi
 
+SENDMAIL=/usr/sbin/sendmail
+
 BUILD_TYPE=$1
 BUILD_BRANCH=${BUILD_TYPE}-$(date +%Y%m%d%H%M%S)
 PULL_BRANCH=Master
@@ -20,7 +22,7 @@ git checkout -b ${BUILD_BRANCH} && \
 ./configure
 if [ $? -ne 0 ]; then
 	echo "prepare repository and branch for build failed"
-	echo -e "${MAIL_HEADER}\n prepare repository failed" | sendmail -t
+	echo -e "${MAIL_HEADER}\n prepare repository failed" | ${SENDMAIL} -t
 	exit 1
 fi
 
@@ -32,11 +34,11 @@ make cli
 
 if [ $? -ne 0 ]; then
 	echo "build failed!"
-	echo -e "${MAIL_HEADER}\n failed" | sendmail -t
+	echo -e "${MAIL_HEADER}\n failed" | ${SENDMAIL} -t
 	exit $?
 fi
 
-echo -e "${MAIL_HEADER}\n was successful" | sendmail -t
+echo -e "${MAIL_HEADER}\n was successful" | ${SENDMAIL} -t
 
 # save nightly build results only
 if [ "${BUILD_TYPE}" == "nightly" ]; then
