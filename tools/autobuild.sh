@@ -1,6 +1,6 @@
 
 # check arguments
-if [[ ( "$1" != "nightly") && "$1" != "build" ]]; then
+if [ $# -eq 0 ] || ( [ "$1" != "nightly" ] && [ "$1" != "build" ] ); then
 	echo -e "Usage:\n\t$0 nightly -> preserve build results"
 	echo -e "or\n\t$0 build   -> delete build results\n"
     exit 1
