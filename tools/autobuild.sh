@@ -12,7 +12,7 @@ BUILD_TYPE=$1
 BUILD_BRANCH=${BUILD_TYPE}-$(date +%Y%m%d%H%M%S)
 PULL_BRANCH=Master
 BINDIR=exe
-MAIL_HEADER="to : admin@wylight.de\nfrom : build01.wylight@gmail.com\nsubject : ${BUILD_BRANCH}"
+MAIL_HEADER="to: admin@wylight.de\nfrom: build01.wylight@gmail.com\nsubject: ${BUILD_BRANCH}"
 
 # prepare a fresh branch for build
 cd WyLight && \
@@ -22,7 +22,7 @@ git checkout -b ${BUILD_BRANCH} && \
 ./configure
 if [ $? -ne 0 ]; then
 	echo "prepare repository and branch for build failed"
-	echo -e "${MAIL_HEADER}\n prepare repository failed" | ${SENDMAIL} -t
+	echo -e "${MAIL_HEADER} prepare repository failed" | ${SENDMAIL} -t
 	exit 1
 fi
 
@@ -34,11 +34,11 @@ make cli
 
 if [ $? -ne 0 ]; then
 	echo "build failed!"
-	echo -e "${MAIL_HEADER}\n failed" | ${SENDMAIL} -t
+	echo -e "${MAIL_HEADER} failed" | ${SENDMAIL} -t
 	exit $?
 fi
 
-echo -e "${MAIL_HEADER}\n was successful" | ${SENDMAIL} -t
+echo -e "${MAIL_HEADER} was successful" | ${SENDMAIL} -t
 
 # save nightly build results only
 if [ "${BUILD_TYPE}" == "nightly" ]; then
