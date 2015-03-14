@@ -62,6 +62,9 @@ private:
     void enablePeripheralClk(const enum base& b) const;
     void disablePeripheralClk(const enum base& b) const;
 
+    inline uint32_t hwBase(void) const;
+    inline uint32_t hwTimer(void) const;
+
     const enum base mBase;
     const enum timer mTimer;
 };

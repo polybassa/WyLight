@@ -80,39 +80,49 @@ uint32_t Timer::getHwTimer(const enum timer& t)
     return 0;
 }
 
+uint32_t Timer::hwBase(void) const
+{
+    return getHwBase(this->mBase);
+}
+
+uint32_t Timer::hwTimer(void) const
+{
+    return getHwTimer(this->mTimer);
+}
+
 void Timer::setConfiguration(const uint32_t config) const
 {
-    MAP_TimerConfigure(getHwBase(this->mBase), config);
+    MAP_TimerConfigure(this->hwBase(), config);
 }
 
 void Timer::setPrescale(const uint32_t prescale) const
 {
-    MAP_TimerPrescaleSet(getHwBase(this->mBase), getHwTimer(this->mTimer), prescale);
+    MAP_TimerPrescaleSet(this->hwBase(), this->hwTimer(), prescale);
 }
 
 void Timer::setControlLevel(const uint32_t level) const
 {
-    MAP_TimerControlLevel(getHwBase(this->mBase), getHwTimer(this->mTimer), level);
+    MAP_TimerControlLevel(this->hwBase(), this->hwTimer(), level);
 }
 
 void Timer::setLoad(const uint32_t load) const
 {
-    MAP_TimerLoadSet(getHwBase(this->mBase), getHwTimer(this->mTimer), load);
+    MAP_TimerLoadSet(this->hwBase(), this->hwTimer(), load);
 }
 
 void Timer::setMatch(const uint32_t match) const
 {
-    MAP_TimerMatchSet(getHwBase(this->mBase), getHwTimer(this->mTimer), match);
+    MAP_TimerMatchSet(this->hwBase(), this->hwTimer(), match);
 }
 
 void Timer::enable(void) const
 {
-    MAP_TimerEnable(getHwBase(this->mBase), getHwTimer(this->mTimer));
+    MAP_TimerEnable(this->hwBase(), this->hwTimer());
 }
 
 void Timer::disable(void) const
 {
-    MAP_TimerDisable(getHwBase(this->mBase), getHwTimer(this->mTimer));
+    MAP_TimerDisable(this->hwBase(), this->hwTimer());
 }
 
 void Timer::enablePeripheralClk(const enum base& b) const
