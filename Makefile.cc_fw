@@ -40,7 +40,7 @@ ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/main.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/pinmux.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/CC3200_Platform.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/BroadcastTransmitter.o
-${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/CPPTask.o
+${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/wy_Task.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/SimplelinkServers.o
 # ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/wy_network_if.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/SimplelinkDriver.o
@@ -59,6 +59,7 @@ ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/wy_crc.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/BroadcastMessage.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/wy_Timer.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/wy_Pwm.o
+${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/wy_Uart.o
 # common
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/startup_gcc.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/uart_if.o

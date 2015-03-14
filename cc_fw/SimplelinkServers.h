@@ -20,7 +20,7 @@
 #define __cc_firmware__SimplelinkServers__
 
 #include <stdint.h>
-#include "CPPTask.h"
+#include "wy_Task.h"
 #include "SimplelinkCustomer.h"
 
 class Server {

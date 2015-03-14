@@ -16,7 +16,7 @@
    You should have received a copy of the GNU General Public License
    along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "CPPTask.h"
+#include "wy_Task.h"
 
 Task::Task(const char* name, unsigned short stackSize, unsigned long priority,
            std::function<void(const bool&)> function) : mTaskFunction(function)

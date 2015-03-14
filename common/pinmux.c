@@ -52,4 +52,7 @@ void PinMuxConfig(void)
 
     // Configure PIN_02 for TIMERPWM7 GT_PWM07
     MAP_PinTypeTimer(PIN_02, PIN_MODE_3);
+
+    MAP_PRCMPeripheralClkDisable(PRCM_TIMERA2, PRCM_RUN_MODE_CLK);
+    MAP_PRCMPeripheralClkDisable(PRCM_TIMERA3, PRCM_RUN_MODE_CLK);
 }
