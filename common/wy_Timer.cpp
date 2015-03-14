@@ -34,7 +34,7 @@ Timer::Timer(const enum base& b, const enum timer& t) : mBase(b), mTimer(t)
     if (Timer::baseUseCount[b])
         this->enablePeripheralClk(b);
 
-    if (Timer::baseUseCount[b] > Pwm::MAX_USE_COUNT)
+    if (Timer::baseUseCount[b] > Timer::MAX_USE_COUNT)
         Trace(ZONE_ERROR, "Can not create more than two instances!!");
 }
 
