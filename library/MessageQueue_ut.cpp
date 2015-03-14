@@ -44,13 +44,13 @@ int32_t ut_MessageQueue_simple(void)
     MessageQueue<std::function<int(void)> > messages;
 
     std::thread t1([&]
-    {
-        while (running) {
-            const auto f = messages.receive();
-            if (f) mInt = f();
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        }
-    }
+                   {
+                       while (running) {
+                           const auto f = messages.receive();
+                           if (f) mInt = f();
+                           std::this_thread::sleep_for(std::chrono::milliseconds(10));
+                       }
+                   }
                    );
 
     CHECK(0 == mInt);
@@ -119,14 +119,14 @@ int32_t ut_MessageQueue_complex(void)
     MessageQueue<std::pair<std::function<int(void)>, bool> > messages;
 
     std::thread t1([&]
-    {
-        while (true) {
-            const auto f = messages.receive();
-            if (f.second) break;
-            if (f.first) mInt = f.first();
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
-        }
-    }
+                   {
+                       while (true) {
+                           const auto f = messages.receive();
+                           if (f.second) break;
+                           if (f.first) mInt = f.first();
+                           std::this_thread::sleep_for(std::chrono::milliseconds(50));
+                       }
+                   }
                    );
 
     CHECK(0 == mInt);

@@ -39,8 +39,7 @@ void newRemoteCallback(const size_t index, const WyLight::Endpoint& newEndpoint)
 char* getCmdOption(char** begin, char** end, const std::string& option);
 bool cmdOptionExists(char** begin, char** end, const std::string& option);
 
-WiflyControlCli::WiflyControlCli(uint32_t addr, uint16_t port)
-    : mControl(addr, port), mRunning(true)
+WiflyControlCli::WiflyControlCli(uint32_t addr, uint16_t port) : mControl(addr, port), mRunning(true)
 {
     cout << "Connecting to " << std::hex << addr << ':' << port << std::endl;
 }

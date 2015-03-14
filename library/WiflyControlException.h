@@ -53,7 +53,7 @@ enum WiflyError {
 class FatalError : public std::exception {
 public:
     FatalError(const std::string& description, uint32_t errorCode = FATAL_ERROR) throw () : mDescription(description),
-        mErrorCode(errorCode) {}
+                                                                                            mErrorCode(errorCode) {}
     virtual ~FatalError(void) throw (){}
 
     uint32_t AsErrorCode(void) const
@@ -83,8 +83,9 @@ protected:
 
 class ConnectionLost : public FatalError {
 public:
-    ConnectionLost(const std::string& description, uint32_t addr, uint16_t port)
-        : FatalError(description, CONNECTION_LOST), mAddress(addr), mPort(port)
+    ConnectionLost(const std::string& description, uint32_t addr, uint16_t port) : FatalError(description,
+                                                                                              CONNECTION_LOST),
+                                                                                   mAddress(addr), mPort(port)
     {}
 
     virtual const char* GetJavaClassType(void) const

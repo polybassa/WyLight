@@ -36,7 +36,7 @@ void PRCMPeripheralClkEnable(unsigned long ulPeripheral, unsigned long ulClkFlag
 void PRCMPeripheralClkDisable(unsigned long ulPeripheral, unsigned long ulClkFlags){}
 void PRCMPeripheralReset(unsigned long ulPeripheral) {}
 
-void(*const g_pfnVectors[256])(void);
+void(*const g_pfnVectors[256]) (void);
 
 long Network_IF_StartSimpleLinkAsAP(void)
 {

@@ -66,7 +66,7 @@ typedef enum {
     MCU_EXECUTE_SUCCESS_IND, /* Task executed sucessfully */
     MCU_EXECUTE_FAIL_IND, /* Task execution failed */
     MCU_RED_LED_GPIO, /* GP09 for LED RED as per LP 3.0 */
-    MCU_ORANGE_LED_GPIO,/* GP10 for LED ORANGE as per LP 3.0 */
+    MCU_ORANGE_LED_GPIO, /* GP10 for LED ORANGE as per LP 3.0 */
     MCU_GREEN_LED_GPIO, /* GP11 for LED GREEN as per LP 3.0 */
     MCU_ALL_LED_IND
 } ledNames;

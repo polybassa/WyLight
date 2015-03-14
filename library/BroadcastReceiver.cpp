@@ -34,8 +34,14 @@ const std::string BroadcastReceiver::STOP_MSG {"StopThread"};
 Endpoint BroadcastReceiver::EMPTY_ENDPOINT {};
 
 BroadcastReceiver::BroadcastReceiver(uint16_t port, const std::string& recentFilename,
-                                     const std::function<void(size_t index, const Endpoint& newRemote)> onNewRemote)
-    : mPort(port), mIsRunning(true), mNumInstances(0), mRecentFilename(recentFilename), mOnNewRemote(onNewRemote)
+                                     const std::function<void(size_t index,
+                                                              const Endpoint& newRemote)> onNewRemote) : mPort(port),
+                                                                                                         mIsRunning(true),
+                                                                                                         mNumInstances(0),
+mRecentFilename(
+                                                                                                             recentFilename),
+                                                                                                         mOnNewRemote(
+                                                                                                             onNewRemote)
 {
     ReadRecentEndpoints(mRecentFilename);
 }

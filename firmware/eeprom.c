@@ -29,17 +29,17 @@ void Eeprom_Write(const uns16 adress, const uns8 data)
 
     EEADRH = adress.high8;
     EEADR = adress.low8;            // Adresse in Adressregister übertragen
-    EEDATA = data;// Daten in Datenregister übertragen
+    EEDATA = data; // Daten in Datenregister übertragen
 
     CFGS = 0;
-    EEPGD = 0;// Auswahl: Programmspeicher lesen oder EEPROM
-    WREN = 1;// Schreiben ins EEPROM erlauben
-    GIE = 0;// Interrups verbieten
+    EEPGD = 0; // Auswahl: Programmspeicher lesen oder EEPROM
+    WREN = 1; // Schreiben ins EEPROM erlauben
+    GIE = 0; // Interrups verbieten
 
     EECON2 = 0x55;
     EECON2 = 0xAA;
-    WR = 1;// Starten des Schreibens
-    GIE = GIE_status;// Interrups erlauben
+    WR = 1; // Starten des Schreibens
+    GIE = GIE_status; // Interrups erlauben
     WREN = 0;
     while (WR) {}
 }
@@ -52,9 +52,9 @@ uns8 Eeprom_Read(const uns16 adress)
     EEADRH = adress.high8;        // Adresse in Adressregister übertragen
     EEADR = adress.low8;
     CFGS = 0;
-    EEPGD = 0;// Auswahl: Programmspeicher lesen oder EEPROM
-    RD = 1;// Starten des Lesesn
-    data = EEDATA;// Daten aus Datenregister auslesen
+    EEPGD = 0; // Auswahl: Programmspeicher lesen oder EEPROM
+    RD = 1; // Starten des Lesesn
+    data = EEDATA; // Daten aus Datenregister auslesen
     return data;
 }
 

@@ -35,8 +35,7 @@ namespace WyLight
 {
 static const uint32_t __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-TelnetProxy::TelnetProxy(const TcpSocket& sock)
-    : mSock(sock)
+TelnetProxy::TelnetProxy(const TcpSocket& sock) : mSock(sock)
 {}
 
 void TelnetProxy::ClearResponse(void) const

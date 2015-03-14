@@ -69,7 +69,7 @@ void operator delete[](void* p)
     free(p);
 }
 
-extern void(*const g_pfnVectors[])(void);
+extern void(*const g_pfnVectors[]) (void);
 extern "C" void __cxa_pure_virtual()
 {
     while (1) {}

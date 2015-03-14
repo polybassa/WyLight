@@ -94,7 +94,7 @@ static uint32_t pui32Stack[1024];
 //
 //*****************************************************************************
 __attribute__ ((section(".intvecs")))
-void(*const g_pfnVectors[256])(void) = {
+void(*const g_pfnVectors[256]) (void) = {
     (void (*)(void))((uint32_t)pui32Stack + sizeof(pui32Stack)),
     // The initial stack pointer
     ResetISR,    // The reset handler

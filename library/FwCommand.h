@@ -32,7 +32,14 @@ class FwCommand {
 protected:
     struct led_cmd mReqFrame;
     FwCommand(uint8_t cmd, size_t size = 0, bool withResponse = true) : mSize(1 + size),
-        requiresResponse(withResponse) { memset(&mReqFrame, 0, sizeof(mReqFrame)); mReqFrame.cmd = cmd; }
+                                                                        requiresResponse(withResponse)
+    {
+        memset(
+            &mReqFrame,
+            0,
+            sizeof(mReqFrame));
+        mReqFrame.cmd = cmd;
+    }
     virtual ~FwCommand(void) = default;
 
     static uint32_t argb(uint8_t r, uint8_t g, uint8_t b)
@@ -65,7 +72,7 @@ class FwCmdSimple : public FwCommand {
     FwResponse mResponse;
 protected:
     FwCmdSimple(uint8_t cmd, size_t size = 0, bool withResponse = true) : FwCommand(cmd, size, withResponse), mResponse(
-            cmd) {}
+                                                                              cmd) {}
 public:
     FwResponse& GetResponse(void) { return mResponse; }
 };
@@ -242,8 +249,8 @@ struct FwCmdSetFade : public FwCmdScript {
      * @param addr bitmask of leds which should be effected by this command, set bit to 1 to affect the led, default 0xffffffff
      * @param parallelFade if true other fades are allowed in parallel with this fade
      */
-    FwCmdSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade = false)
-        : FwCmdScript(SET_FADE, sizeof(cmd_set_fade))
+    FwCmdSetFade(uint32_t argb, uint16_t fadeTime = 0, uint32_t addr = 0xffffffff, bool parallelFade =
+                     false) : FwCmdScript(SET_FADE, sizeof(cmd_set_fade))
     {
         mReqFrame.data.set_fade.Set(addr, argb, (uint8_t)parallelFade, fadeTime);
     }

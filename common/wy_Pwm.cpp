@@ -26,8 +26,7 @@ const uint16_t Pwm::DUTYCYCLE_MAX_VALUE = 1000;
 const uint32_t Pwm::DUTYCYCLE_GRANULARITY = (uint32_t)(CPU_FREQUENCY_HZ / PWM_FREQUENCY_HZ / DUTYCYCLE_MAX_VALUE);
 const uint32_t Pwm::TIMER_INTERVAL_RELOAD = (uint32_t)(DUTYCYCLE_MAX_VALUE * DUTYCYCLE_GRANULARITY);
 
-Pwm::Pwm(const enum channels& channel)
-    : Timer(getBase(channel), getTimer(channel))
+Pwm::Pwm(const enum channels& channel) : Timer(getBase(channel), getTimer(channel))
 {
     this->setupTimerToPwmMode();
     this->enable();

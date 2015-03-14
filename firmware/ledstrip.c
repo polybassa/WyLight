@@ -283,21 +283,21 @@ void Ledstrip_SetFade(struct cmd_set_fade* pCmd)
     blue = pCmd->blue;
     // calc fade parameters for each led
     FOR_EACH_MASKED_LED_DO(
-    {
-        CALC_COLOR(blue);
-        k++;
-        CALC_COLOR(green);
-        k++;
-        CALC_COLOR(red);
-    },
-    {
-        // if led is not fade, we have to increment our pointers and rotate the mask
-        k++;
-        k++;
-        INC_BIT_COUNTER(stepAddress, stepMask);
-        INC_BIT_COUNTER(stepAddress, stepMask);
-        INC_BIT_COUNTER(stepAddress, stepMask);
-    }
+        {
+            CALC_COLOR(blue);
+            k++;
+            CALC_COLOR(green);
+            k++;
+            CALC_COLOR(red);
+        },
+        {
+            // if led is not fade, we have to increment our pointers and rotate the mask
+            k++;
+            k++;
+            INC_BIT_COUNTER(stepAddress, stepMask);
+            INC_BIT_COUNTER(stepAddress, stepMask);
+            INC_BIT_COUNTER(stepAddress, stepMask);
+        }
         );
 #ifdef cc3200
     osi_LockObjUnlock(AccessLedBufferMutex);

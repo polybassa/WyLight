@@ -37,20 +37,20 @@ public:
         CC3200
     };
 
-    Endpoint(const BroadcastMessage& msg, sockaddr_in* addr)
-        : mIp(ntohl(addr->sin_addr.s_addr)),
-        mPort(ntohs(msg.port)),
-        mScore(1),
-        mDeviceId(&msg.deviceId[0], strnlen(&msg.deviceId[0], sizeof(msg.deviceId))),
-        mType(msg.IsRN171Broadcast() ? RN171 : CC3200)
+    Endpoint(const BroadcastMessage& msg, sockaddr_in* addr) : mIp(ntohl(addr->sin_addr.s_addr)),
+                                                               mPort(ntohs(msg.port)),
+                                                               mScore(1),
+                                                               mDeviceId(&msg.deviceId[0],
+                                                                         strnlen(&msg.deviceId[0],
+                                                                                 sizeof(msg.deviceId))),
+                                                               mType(msg.IsRN171Broadcast() ? RN171 : CC3200)
     {}
 
     Endpoint(uint32_t            ip = 0,
              uint16_t            port = 0,
              uint8_t             score = 0,
              std::string         devId = "",
-             enum Endpoint::TYPE type = RN171)
-        : mIp(ip), mPort(port), mScore(score), mDeviceId(devId), mType(type)
+             enum Endpoint::TYPE type = RN171) : mIp(ip), mPort(port), mScore(score), mDeviceId(devId), mType(type)
     {}
 
     bool operator<(const Endpoint& ref) const

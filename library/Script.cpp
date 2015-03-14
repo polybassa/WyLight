@@ -44,7 +44,7 @@ bool Script::operator==(const Script& ref) const
         return false;
 
     auto refIt = ref.begin();
-    for (const auto& cmd : * this) {
+    for (const auto& cmd :* this) {
         if (*cmd != **refIt++)
             return false;
     }

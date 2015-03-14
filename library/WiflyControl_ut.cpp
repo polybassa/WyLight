@@ -35,7 +35,7 @@ uint8_t g_EepromRndDataPool[EEPROM_SIZE];
 led_cmd g_SendFrame;
 // empty wrappers to satisfy the linker
 ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) : mSock(0),
-    mSockAddr(addr, port) {}
+                                                                                         mSockAddr(addr, port) {}
 ClientSocket::~ClientSocket(void) {}
 TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError) : ClientSocket(addr, port, 0) {}
 size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const throw (FatalError)
@@ -48,9 +48,10 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 }
 ComProxy::ComProxy(const TcpSocket& sock) : mSock(sock) {}
 UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) throw (FatalError) : ClientSocket(
-        addr,
-        port,
-        SOCK_DGRAM) {}
+                                                                                                              addr,
+                                                                                                              port,
+                                                                                                              SOCK_DGRAM)
+{}
 size_t UdpSocket::Send(const uint8_t* frame, size_t length) const
 {
     UnmaskBuffer unMask {512};

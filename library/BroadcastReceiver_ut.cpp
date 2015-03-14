@@ -87,11 +87,14 @@ void SetTestSocket(const sockaddr_in* addr, size_t offset, void* pData, size_t d
 }
 
 ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) : mSock(0),
-    mSockAddr(addr, port) {}
+                                                                                         mSockAddr(addr, port) {}
 ClientSocket::~ClientSocket(void) {}
 
-UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) throw (FatalError)
-    : ClientSocket(addr, port, SOCK_DGRAM) {}
+UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) throw (FatalError) : ClientSocket(
+                                                                                                              addr,
+                                                                                                              port,
+                                                                                                              SOCK_DGRAM)
+{}
 
 size_t UdpSocket::RecvFrom(uint8_t*         pBuffer,
                            size_t           length,

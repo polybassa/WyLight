@@ -57,28 +57,32 @@ void BroadcastTransmitter::stop(void)
 
 BroadcastTransmitter::BroadcastTransmitter(void) : Task((const char*)"Broadcast", OSI_STACK_SIZE, 5,
                                                         [&](const bool& stopFlag){
-    const sockaddr_in destaddr(AF_INET, htons(this->port), htonl(INADDR_BROADCAST));
-    const int sock = socket(AF_INET, SOCK_DGRAM, 0);
-    const socklen_t addrLen = sizeof(sockaddr_in);
-    int status;
+                                                            const sockaddr_in destaddr(AF_INET, htons(this->port),
+                                                                                       htonl(INADDR_BROADCAST));
+                                                            const int sock = socket(AF_INET, SOCK_DGRAM, 0);
+                                                            const socklen_t addrLen = sizeof(sockaddr_in);
+                                                            int status;
 
-    WyLight::CC3200BroadcastMessage mMsg;
-    mMsg.refresh();
+                                                            WyLight::CC3200BroadcastMessage mMsg;
+                                                            mMsg.refresh();
 
-    if (sock < 0) {
-        Trace(ZONE_ERROR, "ERROR: Couldn't aquire socket for Broadcast transmit\r\n");
-        return;
-    }
+                                                            if (sock < 0) {
+                                                                Trace(ZONE_ERROR,
+                                                                      "ERROR: Couldn't aquire socket for Broadcast transmit\r\n");
+                                                                return;
+                                                            }
 
-    Trace(ZONE_INFO, "Broadcast Transmitter started \r\n");
-    do {
-        osi_Sleep(1500);
-        // Send Broadcast Message
-        status = sendto(sock, &mMsg, sizeof(WyLight::BroadcastMessage), 0,
-                        (sockaddr*)&destaddr, addrLen);
-    } while (status > 0 && !stopFlag);
+                                                            Trace(ZONE_INFO, "Broadcast Transmitter started \r\n");
+                                                            do {
+                                                                osi_Sleep(1500);
+                                                                // Send Broadcast Message
+                                                                status =
+                                                                    sendto(sock, &mMsg,
+                                                                           sizeof(WyLight::BroadcastMessage), 0,
+                                                                           (sockaddr*)&destaddr, addrLen);
+                                                            } while (status > 0 && !stopFlag);
 
-    Trace(ZONE_INFO, "Broadcast Transmitter stopped \r\n");
-    // Close socket in case of any error's and try to open a new socket in the next loop
-    close(sock);
-}) {}
+                                                            Trace(ZONE_INFO, "Broadcast Transmitter stopped \r\n");
+                                                            // Close socket in case of any error's and try to open a new socket in the next loop
+                                                            close(sock);
+                                                        }) {}

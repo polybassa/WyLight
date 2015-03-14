@@ -45,12 +45,11 @@ static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNIN
 
 #define ESTABLISH_CONNECTION_TIMEOUT 5
 
-ClientSocket::ClientSocket()
-    : mSock(-1), mSockAddr(0, 0)
+ClientSocket::ClientSocket() : mSock(-1), mSockAddr(0, 0)
 {}
 
-ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError)
-    : mSock(socket(AF_INET, style, 0)), mSockAddr(addr, port)
+ClientSocket::ClientSocket(uint32_t addr, uint16_t port,
+                           int style) throw (FatalError) : mSock(socket(AF_INET, style, 0)), mSockAddr(addr, port)
 {
     if (-1 == mSock) throw FatalError("Create socket failed");
 }
@@ -94,8 +93,9 @@ bool ClientSocket::Select(timeval* timeout) const throw (FatalError)
     return false;
 }
 
-TcpServerSocket::TcpServerSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError)
-    : ClientSocket(addr, port, SOCK_STREAM)
+TcpServerSocket::TcpServerSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError) : ClientSocket(addr,
+                                                                                                                 port,
+                                                                                                                 SOCK_STREAM)
 {
     //optional, steal port if necessary
     const int yes = 1;
@@ -133,8 +133,9 @@ TcpSocket::TcpSocket(int listenSocket, const struct timespec* timeout) throw (Co
 #endif
 }
 
-TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError)
-    : ClientSocket(addr, port, SOCK_STREAM)
+TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError) : ClientSocket(addr,
+                                                                                                     port,
+                                                                                                     SOCK_STREAM)
 {
     const int yes = 1;
     //optional, steal port if necessary
@@ -196,8 +197,10 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
     return result;
 }
 
-UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) throw (FatalError)
-    : ClientSocket(addr, port, SOCK_DGRAM)
+UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) throw (FatalError) : ClientSocket(
+                                                                                                              addr,
+                                                                                                              port,
+                                                                                                              SOCK_DGRAM)
 {
     if (0 != setsockopt(mSock, SOL_SOCKET, SO_BROADCAST, &enableBroadcast, sizeof(enableBroadcast)))
         throw FatalError("setsockopt() failed");

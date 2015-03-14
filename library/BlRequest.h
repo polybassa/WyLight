@@ -164,8 +164,7 @@ struct BlEepromWriteRequest : public BlAddressRequest {
 };
 
 struct BlFlashCrc16Request : public BlAddressRequest {
-    BlFlashCrc16Request(uint32_t address, uint16_t numBlocks)
-        : BlAddressRequest(2, 0x02)
+    BlFlashCrc16Request(uint32_t address, uint16_t numBlocks) : BlAddressRequest(2, 0x02)
     {
         SetAddress(address);
         numBlocksLow = static_cast<uint8_t>(numBlocks & 0x00FF);
@@ -180,8 +179,7 @@ struct BlFlashCrc16Request : public BlAddressRequest {
 };
 
 struct BlFlashEraseRequest : public BlAddressRequest {
-    BlFlashEraseRequest(uint32_t address, uint8_t numFlashPages)
-        : BlAddressRequest(1, 0x03), numPages(numFlashPages)
+    BlFlashEraseRequest(uint32_t address, uint8_t numFlashPages) : BlAddressRequest(1, 0x03), numPages(numFlashPages)
     {
         SetAddress(address);
     }

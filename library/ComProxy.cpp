@@ -30,8 +30,7 @@ static const uint32_t __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_W
 static const timeval RESPONSE_TIMEOUT = {5, 0};     // three seconds timeout for fragmented responses from pic
 static const timeval SYNC_TIMEOUT = {0, 500000};
 
-ComProxy::ComProxy(const TcpSocket& sock)
-    : mSock(sock)
+ComProxy::ComProxy(const TcpSocket& sock) : mSock(sock)
 {}
 
 size_t ComProxy::Recv(uint8_t* pBuffer, const size_t length, timeval* pTimeout, bool checkCrc,

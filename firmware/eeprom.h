@@ -43,4 +43,4 @@ void Eeprom_ReadBlock(uns8* array, uns16 adress, const uns8 length);
 void Eeprom_Save(bool forceSave);
 #endif /*cc3200*/
 
-#endif/*_EEPROM_H_*/
+#endif /*_EEPROM_H_*/

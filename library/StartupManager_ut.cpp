@@ -42,7 +42,7 @@ const std::list<std::string> ConfigControl::RN171_BASIC_PARAMETERS;
 
 /***** Wrappers ****/
 ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) : mSock(0),
-    mSockAddr(addr, port) {}
+                                                                                         mSockAddr(addr, port) {}
 ClientSocket::~ClientSocket(void) {}
 TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError) : ClientSocket(addr, port, 0) {}
 size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const throw (FatalError)
@@ -56,9 +56,10 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 ComProxy::ComProxy(const TcpSocket& sock) : mSock(sock) {}
 TelnetProxy::TelnetProxy(const TcpSocket& sock) : mSock(sock) {}
 UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) throw (FatalError) : ClientSocket(
-        addr,
-        port,
-        SOCK_DGRAM) {}
+                                                                                                              addr,
+                                                                                                              port,
+                                                                                                              SOCK_DGRAM)
+{}
 size_t UdpSocket::Send(const uint8_t* frame, size_t length) const
 {
     return length;
@@ -71,8 +72,10 @@ bool ConfigControl::SetParameters(std::list<std::string> commands) const
     return true;
 }
 
-Control::Control(uint32_t addr, uint16_t port)
-    : mConfig(mTelnet), mTcpSock(addr, port), mUdpSock(addr, port, false, 0), mProxy(mTcpSock), mTelnet(mTcpSock)
+Control::Control(uint32_t addr,
+                 uint16_t port) : mConfig(mTelnet), mTcpSock(addr, port), mUdpSock(addr, port, false, 0), mProxy(
+                                      mTcpSock), mTelnet(
+                                      mTcpSock)
 {}
 
 uint16_t Control::FwGetVersion() throw (WyLight::ConnectionTimeout, WyLight::FatalError, WyLight::ScriptBufferFull)

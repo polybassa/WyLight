@@ -103,8 +103,7 @@ const std::list<std::string> ConfigControl::RN171_FACTORY_RESET_PARAMETER = {
     "factory RESET\r\n"
 };
 
-ConfigControl::ConfigControl(const TelnetProxy& telnet)
-    : mTelnet(telnet)
+ConfigControl::ConfigControl(const TelnetProxy& telnet) : mTelnet(telnet)
 {}
 
 bool ConfigControl::ModuleForWlan(const std::string& phrase, const std::string& ssid, const std::string& deviceId) const

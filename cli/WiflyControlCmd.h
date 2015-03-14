@@ -61,7 +61,7 @@ void TrySend(WyLight::Control& ctrl, WyLight::FwCommand&& cmd)
 class WiflyControlCmd {
 public:
     WiflyControlCmd(string name, string description = "' - missing description") : m_Name(name), m_Description(
-            description) {}
+                                                                                       description) {}
 
     friend ostream& operator<<(ostream& stream, const WiflyControlCmd& ref)
     {
@@ -114,7 +114,7 @@ protected:
 class ControlCmdBlEnableAutostart : public WiflyControlCmd {
 public:
     ControlCmdBlEnableAutostart(void) : WiflyControlCmd(
-            string("bl_enable_autostart")) {}
+                                            string("bl_enable_autostart")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -126,8 +126,8 @@ public:
 class ControlCmdBlInfo : public WiflyControlCmd {
 public:
     ControlCmdBlInfo(void) : WiflyControlCmd(
-            string("bl_info"),
-            string("' - read bootloader information")) {}
+                                 string("bl_info"),
+                                 string("' - read bootloader information")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -169,7 +169,7 @@ public:
 class ControlCmdBlEraseFlash : public WiflyControlCmd {
 public:
     ControlCmdBlEraseFlash(void) : WiflyControlCmd(
-            string("erase_flash")) {}
+                                       string("erase_flash")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -181,7 +181,7 @@ public:
 class ControlCmdBlEraseEeprom : public WiflyControlCmd {
 public:
     ControlCmdBlEraseEeprom(void) : WiflyControlCmd(
-            string("erase_eeprom")) {}
+                                        string("erase_eeprom")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -193,8 +193,9 @@ public:
 class ControlCmdBlProgramFlash : public WiflyControlCmd {
 public:
     ControlCmdBlProgramFlash(void) : WiflyControlCmd(
-            string("program_flash"),
-            string(" <hexFile>' \n ") + string("    <hexFile> path of hexfile to write")) {}
+                                         string("program_flash"),
+                                         string(" <hexFile>' \n ") +
+                                         string("    <hexFile> path of hexfile to write")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -208,8 +209,9 @@ public:
 class ControlCmdExtractVersion : public WiflyControlCmd {
 public:
     ControlCmdExtractVersion(void) : WiflyControlCmd(
-            string("extract_version"),
-            string(" <hexFile>' \n ") + string("    <hexFile> path of hexfile to extract version")) {}
+                                         string("extract_version"),
+                                         string(" <hexFile>' \n ") +
+                                         string("    <hexFile> path of hexfile to extract version")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -228,9 +230,9 @@ public:
 class ControlCmdBlRead : public WiflyControlCmd {
 public:
     ControlCmdBlRead(string name) : WiflyControlCmd(
-            string("read_") + name, string(" <addr> <numBytes>'\n") +
-            string("    <addr> address where to start reading\n") +
-            string("    <numBytes> number of bytes to read")) {}
+                                        string("read_") + name, string(" <addr> <numBytes>'\n") +
+                                        string("    <addr> address where to start reading\n") +
+                                        string("    <numBytes> number of bytes to read")) {}
 
     const string m_Name;
 
@@ -279,8 +281,8 @@ public:
 class ControlCmdBlRunApp : public WiflyControlCmd {
 public:
     ControlCmdBlRunApp(void) : WiflyControlCmd(
-            string("run_app"),
-            string("' - start application and terminate bootloader"))
+                                   string("run_app"),
+                                   string("' - start application and terminate bootloader"))
     {}
 
     virtual void Run(WyLight::Control& control) const
@@ -293,8 +295,8 @@ public:
 class ControlCmdBlReadFwVersion : public WiflyControlCmd {
 public:
     ControlCmdBlReadFwVersion(void) : WiflyControlCmd(
-            string("bl_read_version"),
-            string("' - prints the version of firmware in program memory"))
+                                          string("bl_read_version"),
+                                          string("' - prints the version of firmware in program memory"))
     {}
 
     virtual void Run(WyLight::Control& control) const
@@ -312,8 +314,8 @@ public:
 class ControlCmdConfGetSsid : public WiflyControlCmd {
 public:
     ControlCmdConfGetSsid(void) : WiflyControlCmd(
-            string("conf_ssid"),
-            string("' - get configured ssid from wlan module"))
+                                      string("conf_ssid"),
+                                      string("' - get configured ssid from wlan module"))
     {}
 
     virtual void Run(WyLight::Control& control) const
@@ -326,8 +328,8 @@ public:
 class ControlCmdConfRebootWlanModule : public WiflyControlCmd {
 public:
     ControlCmdConfRebootWlanModule(void) : WiflyControlCmd(
-            string("conf_rebootWlanModule"),
-            string("' - reboots the wlan modul. Cli terminates after this command!"))
+                                               string("conf_rebootWlanModule"),
+                                               string("' - reboots the wlan modul. Cli terminates after this command!"))
     {}
 
     virtual void Run(WyLight::Control& control) const
@@ -346,11 +348,11 @@ public:
 class ControlCmdConfWlanAsClient : public WiflyControlCmd {
 public:
     ControlCmdConfWlanAsClient(void) : WiflyControlCmd(
-            string("conf_wlanAsClient"),
-            string(" <passphrase> <ssid> <name>'\n") +
-            string("    <passphrase> wpa passphrase 1-63 characters\n") +
-            string("    <ssid> wlan ssid 1-32 characters\n") +
-            string("    <name> device name for broadcasts 1-32 characters")) {}
+                                           string("conf_wlanAsClient"),
+                                           string(" <passphrase> <ssid> <name>'\n") +
+                                           string("    <passphrase> wpa passphrase 1-63 characters\n") +
+                                           string("    <ssid> wlan ssid 1-32 characters\n") +
+                                           string("    <name> device name for broadcasts 1-32 characters")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -373,9 +375,9 @@ public:
 class ControlCmdConfWlanAsSoftAP : public WiflyControlCmd {
 public:
     ControlCmdConfWlanAsSoftAP(void) : WiflyControlCmd(
-            string("conf_wlanAsSoftAP"),
-            string(" <ssid>'\n") +
-            string("    <ssid> wlan ssid 1-32 characters")) {}
+                                           string("conf_wlanAsSoftAP"),
+                                           string(" <ssid>'\n") +
+                                           string("    <ssid> wlan ssid 1-32 characters")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -395,9 +397,9 @@ public:
 class ControlCmdConfSetDeviceId : public WiflyControlCmd {
 public:
     ControlCmdConfSetDeviceId(void) : WiflyControlCmd(
-            string("conf_deviceId"),
-            string(" <name>'\n") +
-            string("    <name> device name 1-32 characters")) {}
+                                          string("conf_deviceId"),
+                                          string(" <name>'\n") +
+                                          string("    <name> device name 1-32 characters")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -411,8 +413,8 @@ public:
 class ControlCmdStartBl : public WiflyControlCmd {
 public:
     ControlCmdStartBl(void) : WiflyControlCmd(
-            string("start_bl"),
-            string("' - start bootloader and terminate application")) {}
+                                  string("start_bl"),
+                                  string("' - start bootloader and terminate application")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -425,8 +427,8 @@ public:
 class ControlCmdPrintCycletime : public WiflyControlCmd {
 public:
     ControlCmdPrintCycletime(void) : WiflyControlCmd(
-            string("print_cycletime"),
-            string("' - prints all timevalues of internal methode execution times")) {}
+                                         string("print_cycletime"),
+                                         string("' - prints all timevalues of internal methode execution times")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -442,8 +444,8 @@ public:
 class ControlCmdPrintFwVersion : public WiflyControlCmd {
 public:
     ControlCmdPrintFwVersion(void) : WiflyControlCmd(
-            string("print_fwversion"),
-            string("' - displays current firmware version of pic")) {}
+                                         string("print_fwversion"),
+                                         string("' - displays current firmware version of pic")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -460,8 +462,8 @@ public:
 class ControlCmdPrintTracebuffer : public WiflyControlCmd {
 public:
     ControlCmdPrintTracebuffer(void) : WiflyControlCmd(
-            string("print_tracebuffer"),
-            string("' - displays content in tracebuffer of pic")) {}
+                                           string("print_tracebuffer"),
+                                           string("' - displays content in tracebuffer of pic")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -477,8 +479,8 @@ public:
 class ControlCmdClearScript : public WiflyControlCmd {
 public:
     ControlCmdClearScript(void) : WiflyControlCmd(
-            string("clear"),
-            string("' - clear script buffer")) {}
+                                      string("clear"),
+                                      string("' - clear script buffer")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -491,8 +493,8 @@ public:
 class ControlCmdLoopOn : public WiflyControlCmd {
 public:
     ControlCmdLoopOn(void) : WiflyControlCmd(
-            string("loopon"),
-            string("' - indicates the start of a loop")) {}
+                                 string("loopon"),
+                                 string("' - indicates the start of a loop")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -505,9 +507,10 @@ public:
 class ControlCmdLoopOff : public WiflyControlCmd {
 public:
     ControlCmdLoopOff(void) : WiflyControlCmd(
-            string("loopoff"),
-            string(" <numLoops>'\n") +
-            string("    <numLoops> [0..255] number of executions for the loop. Enter 0 for infinity loop."))
+                                  string("loopoff"),
+                                  string(" <numLoops>'\n") +
+                                  string(
+                                      "    <numLoops> [0..255] number of executions for the loop. Enter 0 for infinity loop."))
     {}
 
     virtual void Run(WyLight::Control& control) const
@@ -521,9 +524,9 @@ public:
 class ControlCmdWait : public WiflyControlCmd {
 public:
     ControlCmdWait(void) : WiflyControlCmd(
-            string("wait"),
-            string(" <time>'\n") +
-            string("    <time> the number of milliseconds the wait should take")) {}
+                               string("wait"),
+                               string(" <time>'\n") +
+                               string("    <time> the number of milliseconds the wait should take")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -536,12 +539,12 @@ public:
 class ControlCmdSetFade : public WiflyControlCmd {
 public:
     ControlCmdSetFade(void) : WiflyControlCmd(
-            string("setfade"),
-            string(" <addr> <rgb> <time> <parallel>'\n") +
-            string("    <addr> hex bitmask, which leds should be set to the new color\n") +
-            string("    <rgb> hex rgb value of the new color f.e. red: ff0000\n") +
-            string("    <time> the number of ten milliseconds the fade should take") +
-            string("    <parallel> 1 to allow parallel fades, 0 to disable")) {}
+                                  string("setfade"),
+                                  string(" <addr> <rgb> <time> <parallel>'\n") +
+                                  string("    <addr> hex bitmask, which leds should be set to the new color\n") +
+                                  string("    <rgb> hex rgb value of the new color f.e. red: ff0000\n") +
+                                  string("    <time> the number of ten milliseconds the fade should take") +
+                                  string("    <parallel> 1 to allow parallel fades, 0 to disable")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -554,14 +557,14 @@ public:
 class ControlCmdSetGradient : public WiflyControlCmd {
 public:
     ControlCmdSetGradient(void) : WiflyControlCmd(
-            string("setgradient"),
-            string(" <rgb_1> <rgb_2> <time> <offset> <num_leds> <parallel>'\n") +
-            string("    <rgb_1> hex rgb value of the start color f.e. green: 00ff00\n") +
-            string("    <rgb_2> hex rgb value of the end color f.e. red: ff0000\n") +
-            string("    <time> the number of ten milliseconds the fade should take") +
-            string("    <offset> position of the first led") +
-            string("    <num_leds> position of the last led - <offset>") +
-            string("    <parallel> 1 to allow parallel fades, 0 to disable")) {}
+                                      string("setgradient"),
+                                      string(" <rgb_1> <rgb_2> <time> <offset> <num_leds> <parallel>'\n") +
+                                      string("    <rgb_1> hex rgb value of the start color f.e. green: 00ff00\n") +
+                                      string("    <rgb_2> hex rgb value of the end color f.e. red: ff0000\n") +
+                                      string("    <time> the number of ten milliseconds the fade should take") +
+                                      string("    <offset> position of the first led") +
+                                      string("    <num_leds> position of the last led - <offset>") +
+                                      string("    <parallel> 1 to allow parallel fades, 0 to disable")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -574,8 +577,8 @@ public:
 class ControlCmdSetRtc : public WiflyControlCmd {
 public:
     ControlCmdSetRtc(void) : WiflyControlCmd(
-            string("setrtc"),
-            string("' - set time of rtc in target to current systemtime")){}
+                                 string("setrtc"),
+                                 string("' - set time of rtc in target to current systemtime")){}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -588,8 +591,8 @@ public:
 class ControlCmdGetRtc : public WiflyControlCmd {
 public:
     ControlCmdGetRtc(void) : WiflyControlCmd(
-            string("getrtc"),
-            string("' - get time of rtc in target")){}
+                                 string("getrtc"),
+                                 string("' - get time of rtc in target")){}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -607,8 +610,8 @@ public:
 class ControlCmdGetTargetMode : public WiflyControlCmd {
 public:
     ControlCmdGetTargetMode(void) : WiflyControlCmd(
-            string("get_mode"),
-            string("' - displays current operation mode of pic")) {}
+                                        string("get_mode"),
+                                        string("' - displays current operation mode of pic")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -629,8 +632,8 @@ public:
 class ControlCmdGetLedTyp : public WiflyControlCmd {
 public:
     ControlCmdGetLedTyp(void) : WiflyControlCmd(
-            string("get_led_typ"),
-            string("' - displays typ of led's of this platform ")) {}
+                                    string("get_led_typ"),
+                                    string("' - displays typ of led's of this platform ")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -648,8 +651,8 @@ public:
 class ControlCmdDoStartup : public WiflyControlCmd {
 public:
     ControlCmdDoStartup(void) : WiflyControlCmd(
-            string("startup"),
-            string(" <hexFile>' \n ") + string("    <hexFile> path of hexfile to write")) {}
+                                    string("startup"),
+                                    string(" <hexFile>' \n ") + string("    <hexFile> path of hexfile to write")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -670,8 +673,8 @@ public:
 class ControlCmdTest : public WiflyControlCmd {
 public:
     ControlCmdTest(void) : WiflyControlCmd(
-            string("test"),
-            string("' - run test loop")) {}
+                               string("test"),
+                               string("' - run test loop")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
@@ -683,8 +686,8 @@ public:
 class ControlCmdStressTest : public WiflyControlCmd {
 public:
     ControlCmdStressTest(void) : WiflyControlCmd(
-            string("stresstest"),
-            string("' - run test loop! Caution: Test run in endless loop")) {}
+                                     string("stresstest"),
+                                     string("' - run test loop! Caution: Test run in endless loop")) {}
 
     virtual void Run(WyLight::Control& control) const
     {

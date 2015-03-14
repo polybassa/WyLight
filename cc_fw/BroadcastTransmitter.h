@@ -29,9 +29,9 @@ class BroadcastTransmitter final : public Task, SimplelinkCustomer {
 
 public:
     BroadcastTransmitter(void);
-    BroadcastTransmitter(const BroadcastTransmitter&) = delete;
+    BroadcastTransmitter(const BroadcastTransmitter &) = delete;
     BroadcastTransmitter& operator=(const BroadcastTransmitter&) = delete;
-    BroadcastTransmitter(BroadcastTransmitter&&) = delete;
+    BroadcastTransmitter(BroadcastTransmitter &&) = delete;
 
     virtual void run(void);
     virtual void stop(void);

@@ -18,6 +18,7 @@ IPATH+=${ROOT}/common
 IPATH+=${ROOT}/inc
 IPATH+=${ROOT}/driverlib
 IPATH+=${ROOT}/simplelink/include
+IPATH+=${ROOT}/firmware
 
 # WyLight bootloader
 ${BINDIR}/${PRJ_NAME}.bin: ${OBJDIR}/simulator_bl.o

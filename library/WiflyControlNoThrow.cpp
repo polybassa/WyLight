@@ -22,8 +22,7 @@ namespace WyLight
 {
 static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-ControlNoThrow::ControlNoThrow(uint32_t addr, uint16_t port)
-    : mControl(addr, port) {}
+ControlNoThrow::ControlNoThrow(uint32_t addr, uint16_t port) : mControl(addr, port) {}
 
 uint32_t ControlNoThrow::BlEnableAutostart(void) const
 {
@@ -42,20 +41,20 @@ uint32_t ControlNoThrow::BlEraseFlash(void) const
 
 uint32_t ControlNoThrow::BlReadCrcFlash(std::ostream& out, uint32_t address, size_t numBlocks) const
 {
-    return Try(std::bind(static_cast<void (Control::*)(std::ostream&, uint32_t,
+    return Try(std::bind(static_cast<void(Control::*) (std::ostream&, uint32_t,
                                                        size_t) const>(&Control::BlReadCrcFlash), std::ref(mControl),
                          std::ref(out), address, numBlocks));
 }
 
 uint32_t ControlNoThrow::BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes) const
 {
-    return Try(std::bind(static_cast<void (Control::*)(std::ostream&, uint32_t, size_t) const>(&Control::BlReadEeprom),
+    return Try(std::bind(static_cast<void(Control::*) (std::ostream&, uint32_t, size_t) const>(&Control::BlReadEeprom),
                          std::ref(mControl), std::ref(out), address, numBytes));
 }
 
 uint32_t ControlNoThrow::BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) const
 {
-    return Try(std::bind(static_cast<void (Control::*)(std::ostream&, uint32_t, size_t) const>(&Control::BlReadFlash),
+    return Try(std::bind(static_cast<void(Control::*) (std::ostream&, uint32_t, size_t) const>(&Control::BlReadFlash),
                          std::ref(mControl), std::ref(out), address, numBytes));
 }
 

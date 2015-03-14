@@ -58,7 +58,7 @@ void operator delete[] (void* p){
 }
 #endif /* __cplusplus */
 
-extern void(*const g_pfnVectors[])(void);
+extern void(*const g_pfnVectors[]) (void);
 
 //*****************************************************************************
 //

@@ -31,7 +31,7 @@
 
 static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-extern void(*const g_pfnVectors[])(void);
+extern void(*const g_pfnVectors[]) (void);
 
 CC3200_Platform::CC3200_Platform()
 {
