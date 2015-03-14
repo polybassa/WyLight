@@ -33,3 +33,4 @@ cc_fw/ccs
 
 wylightBootloader.launch
 pre-commit.settings
+filelist.txt
