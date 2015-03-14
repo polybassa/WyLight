@@ -20,9 +20,9 @@
 #define __wy__Pwm__
 
 #include <stdint.h>
-#include <wy_Timer.h>
+#include "wy_Timer.h"
 
-class Pwm : protected Timer {
+class Pwm : private Timer {
 public:
     enum channels {
         CHANNEL0 = 0,
@@ -37,14 +37,18 @@ public:
 
     Pwm(const enum channels& channel);
     Pwm& operator=(const Pwm&) = delete;
+    Pwm& operator=(Pwm&&);
     Pwm(const Pwm&) = delete;
-    Pwm(Pwm&&) = delete;
+    Pwm(Pwm&&);
     ~Pwm(void);
 
-    void setDutyCycle(const uint16_t& dutyCycle);
+    void setDutyCycle(const uint16_t& dutyCycle) const;
     uint16_t getDutyCycle(void) const;
 
-    Pwm& operator=(const uint16_t& dutyCycle);
+    void enable(void) const;
+    void disable(void) const;
+
+    const Pwm& operator=(const uint16_t& dutyCycle) const;
 
 private:
     static const uint32_t CPU_FREQUENCY_HZ;
@@ -55,8 +59,6 @@ private:
 
     static enum Timer::timer getTimer(const enum Pwm::channels& channel);
     static enum Timer::base getBase(const enum Pwm::channels& channel);
-
-    uint16_t mDutyCycle = 0;
 
     void setupTimerToPwmMode(void) const;
 };

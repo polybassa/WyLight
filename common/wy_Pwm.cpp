@@ -23,14 +23,22 @@
 const uint32_t Pwm::CPU_FREQUENCY_HZ = 80000000;
 const uint32_t Pwm::PWM_FREQUENCY_HZ = 2000;
 const uint16_t Pwm::DUTYCYCLE_MAX_VALUE = 1000;
-const uint32_t Pwm::DUTYCYCLE_GRANULARITY = (uint32_t)(CPU_FREQUENCY_HZ / PWM_FREQUENCY_HZ / DUTYCYCLE_MAX_VALUE);
-const uint32_t Pwm::TIMER_INTERVAL_RELOAD = (uint32_t)(DUTYCYCLE_MAX_VALUE * DUTYCYCLE_GRANULARITY);
+const uint32_t Pwm::DUTYCYCLE_GRANULARITY = (uint32_t)(CPU_FREQUENCY_HZ /
+                                                       PWM_FREQUENCY_HZ / DUTYCYCLE_MAX_VALUE);
+const uint32_t Pwm::TIMER_INTERVAL_RELOAD = (uint32_t)(DUTYCYCLE_MAX_VALUE *
+                                                       DUTYCYCLE_GRANULARITY);
 
 Pwm::Pwm(const enum channels& channel) : Timer(getBase(channel), getTimer(channel))
 {
     this->setupTimerToPwmMode();
-    this->enable();
 }
+
+Pwm& Pwm::operator=(Pwm&& rhs)
+{
+    return static_cast<Pwm&>(Timer::operator=(std::move(rhs)));
+}
+
+Pwm::Pwm(Pwm&& rhs) : Timer(std::move(rhs)) {}
 
 Pwm::~Pwm(void)
 {
@@ -53,7 +61,7 @@ enum Timer::timer Pwm::getTimer(const enum channels& channel)
         return HW_TIMER_B;
     }
 
-    return HW_TIMER_A;
+    return INVALID_HW_TIMER;
 }
 
 enum Timer::base Pwm::getBase(const enum channels& channel)
@@ -76,13 +84,14 @@ enum Timer::base Pwm::getBase(const enum channels& channel)
         return BASE3;
     }
 
-    return BASE0;
+    return INVALID_BASE;
 }
 
 void Pwm::setupTimerToPwmMode(void) const
 {
     // Set GPT - Configured Timer in PWM mode.
-    this->setConfiguration(TIMER_CFG_SPLIT_PAIR | TIMER_CFG_A_PWM | TIMER_CFG_B_PWM);
+    this->setConfiguration(
+        TIMER_CFG_SPLIT_PAIR | TIMER_CFG_A_PWM | TIMER_CFG_B_PWM);
     this->setPrescale(0);
 
     // Inverting the timer output
@@ -95,19 +104,30 @@ void Pwm::setupTimerToPwmMode(void) const
     this->setMatch(Pwm::TIMER_INTERVAL_RELOAD);
 }
 
-Pwm& Pwm::operator=(const uint16_t& dutyCycle)
+const Pwm& Pwm::operator=(const uint16_t& dutyCycle) const
 {
     this->setDutyCycle(dutyCycle);
     return *this;
 }
 
-void Pwm::setDutyCycle(const uint16_t& dutyCycle)
+void Pwm::setDutyCycle(const uint16_t& dutyCycle) const
 {
-    this->mDutyCycle = std::min(Pwm::DUTYCYCLE_MAX_VALUE, dutyCycle);
-    this->setMatch(this->mDutyCycle * Pwm::DUTYCYCLE_GRANULARITY);
+    this->setMatch(
+        std::min(Pwm::DUTYCYCLE_MAX_VALUE, dutyCycle) *
+        Pwm::DUTYCYCLE_GRANULARITY);
 }
 
 uint16_t Pwm::getDutyCycle(void) const
 {
-    return this->mDutyCycle;
+    return this->getMatch() / Pwm::DUTYCYCLE_GRANULARITY;
+}
+
+void Pwm::enable(void) const
+{
+    Timer::enable();
+}
+
+void Pwm::disable(void) const
+{
+    Timer::disable();
 }

@@ -24,22 +24,42 @@
 #include "prcm.h"
 #include "trace.h"
 
-static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR |
+                                                        ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-std::array<uint8_t, Timer::NUMBER_OF_TIMERS> Timer::baseUseCount = {0};
+std::array<uint8_t, Timer::NUMBER_OF_TIMERS> Timer::baseUseCount = { 0 };
 
 Timer::Timer(const enum base& b, const enum timer& t) : mBase(b), mTimer(t)
 {
+    if ((this->mBase == INVALID_BASE) || (this->mTimer == INVALID_HW_TIMER))
+        return;
+
     baseUseCount[b]++;
     if (Timer::baseUseCount[b])
         this->enablePeripheralClk(b);
 
     if (Timer::baseUseCount[b] > Timer::MAX_USE_COUNT)
         Trace(ZONE_ERROR, "Can not create more than two instances!!");
+
+    Trace(ZONE_INFO, "Base: %d UseCount: %d", b, baseUseCount[b]);
+}
+
+Timer& Timer::operator=(Timer&& rhs)
+{
+    return *this;
+}
+
+Timer::Timer(Timer&& rhs) : mBase(rhs.mBase), mTimer(rhs.mTimer)
+{
+    rhs.mBase = INVALID_BASE;
+    rhs.mTimer = INVALID_HW_TIMER;
 }
 
 Timer::~Timer(void)
 {
+    if ((this->mBase == INVALID_BASE) || (this->mTimer == INVALID_HW_TIMER))
+        return;
+
     baseUseCount[mBase]--;
     if (baseUseCount[mBase] == 0)
         this->disablePeripheralClk(mBase);
@@ -59,9 +79,10 @@ uint32_t Timer::getHwBase(const enum base& b)
 
     case BASE3:
         return TIMERA3_BASE;
-    }
 
-    return 0;
+    default:
+        return 0;
+    }
 }
 
 uint32_t Timer::getHwTimer(const enum timer& t)
@@ -75,9 +96,10 @@ uint32_t Timer::getHwTimer(const enum timer& t)
 
     case HW_TIMER_BOTH:
         return TIMER_BOTH;
-    }
 
-    return 0;
+    default:
+        return 0;
+    }
 }
 
 uint32_t Timer::hwBase(void) const
@@ -92,37 +114,52 @@ uint32_t Timer::hwTimer(void) const
 
 void Timer::setConfiguration(const uint32_t config) const
 {
-    MAP_TimerConfigure(this->hwBase(), config);
+    if ((this->mBase != INVALID_BASE) && (this->mTimer != INVALID_HW_TIMER))
+        MAP_TimerConfigure(this->hwBase(), config);
 }
 
 void Timer::setPrescale(const uint32_t prescale) const
 {
-    MAP_TimerPrescaleSet(this->hwBase(), this->hwTimer(), prescale);
+    if ((this->mBase != INVALID_BASE) && (this->mTimer != INVALID_HW_TIMER))
+        MAP_TimerPrescaleSet(this->hwBase(), this->hwTimer(), prescale);
 }
 
 void Timer::setControlLevel(const uint32_t level) const
 {
-    MAP_TimerControlLevel(this->hwBase(), this->hwTimer(), level);
+    if ((this->mBase != INVALID_BASE) && (this->mTimer != INVALID_HW_TIMER))
+        MAP_TimerControlLevel(this->hwBase(), this->hwTimer(), level);
 }
 
 void Timer::setLoad(const uint32_t load) const
 {
-    MAP_TimerLoadSet(this->hwBase(), this->hwTimer(), load);
+    if ((this->mBase != INVALID_BASE) && (this->mTimer != INVALID_HW_TIMER))
+        MAP_TimerLoadSet(this->hwBase(), this->hwTimer(), load);
 }
 
 void Timer::setMatch(const uint32_t match) const
 {
-    MAP_TimerMatchSet(this->hwBase(), this->hwTimer(), match);
+    if ((this->mBase != INVALID_BASE) && (this->mTimer != INVALID_HW_TIMER))
+        MAP_TimerMatchSet(this->hwBase(), this->hwTimer(), match);
+}
+
+uint32_t Timer::getMatch(void) const
+{
+    if ((this->mBase != INVALID_BASE) && (this->mTimer != INVALID_HW_TIMER))
+        return MAP_TimerMatchGet(this->hwBase(), this->hwTimer());
+    else
+        return 0;
 }
 
 void Timer::enable(void) const
 {
-    MAP_TimerEnable(this->hwBase(), this->hwTimer());
+    if ((this->mBase != INVALID_BASE) && (this->mTimer != INVALID_HW_TIMER))
+        MAP_TimerEnable(this->hwBase(), this->hwTimer());
 }
 
 void Timer::disable(void) const
 {
-    MAP_TimerDisable(this->hwBase(), this->hwTimer());
+    if ((this->mBase != INVALID_BASE) && (this->mTimer != INVALID_HW_TIMER))
+        MAP_TimerDisable(this->hwBase(), this->hwTimer());
 }
 
 void Timer::enablePeripheralClk(const enum base& b) const
@@ -142,6 +179,9 @@ void Timer::enablePeripheralClk(const enum base& b) const
 
     case BASE3:
         MAP_PRCMPeripheralClkEnable(PRCM_TIMERA3, PRCM_RUN_MODE_CLK);
+        break;
+
+    case INVALID_BASE:
         break;
     }
 }
@@ -163,6 +203,9 @@ void Timer::disablePeripheralClk(const enum base& b) const
 
     case BASE3:
         MAP_PRCMPeripheralClkDisable(PRCM_TIMERA3, PRCM_RUN_MODE_CLK);
+        break;
+
+    case INVALID_BASE:
         break;
     }
 }

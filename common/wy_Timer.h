@@ -28,19 +28,22 @@ public:
         BASE0 = 0,
         BASE1,
         BASE2,
-        BASE3
+        BASE3,
+        INVALID_BASE
     };
 
     enum timer {
         HW_TIMER_A = 0,
         HW_TIMER_B,
-        HW_TIMER_BOTH
+        HW_TIMER_BOTH,
+        INVALID_HW_TIMER
     };
 
     Timer(const enum base&, const enum timer&);
     Timer& operator=(const Timer&) = delete;
+    Timer& operator=(Timer&&);
     Timer(const Timer&) = delete;
-    Timer(Timer&&) = delete;
+    Timer(Timer&&);
     ~Timer(void);
 
     void setConfiguration(const uint32_t config) const;
@@ -48,6 +51,7 @@ public:
     void setControlLevel(const uint32_t level) const;
     void setLoad(const uint32_t load) const;
     void setMatch(const uint32_t match) const;
+    uint32_t getMatch(void) const;
     void enable(void) const;
     void disable(void) const;
 
@@ -65,8 +69,8 @@ private:
     inline uint32_t hwBase(void) const;
     inline uint32_t hwTimer(void) const;
 
-    const enum base mBase;
-    const enum timer mTimer;
+    enum base mBase;
+    enum timer mTimer;
 };
 
 #endif /* defined(__wy__Timer__) */

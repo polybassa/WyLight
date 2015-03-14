@@ -37,7 +37,7 @@
 #include "FreeRTOS.h"
 #include "semphr.h"
 
-#include "firmware/trace.h"
+#include "trace.h"
 
 static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 

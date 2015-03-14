@@ -38,7 +38,7 @@ BroadcastReceiver::BroadcastReceiver(uint16_t port, const std::string& recentFil
                                                               const Endpoint& newRemote)> onNewRemote) : mPort(port),
                                                                                                          mIsRunning(true),
                                                                                                          mNumInstances(0),
-mRecentFilename(
+                                                                                                         mRecentFilename(
                                                                                                              recentFilename),
                                                                                                          mOnNewRemote(
                                                                                                              onNewRemote)
