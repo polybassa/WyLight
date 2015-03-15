@@ -39,7 +39,6 @@ public:
     Adc(Adc&&);
     ~Adc(void);
 
-    uint16_t operator=(const Adc&) const;
     std::pair<uint16_t, uint32_t> get(void) const;
 
 private:
