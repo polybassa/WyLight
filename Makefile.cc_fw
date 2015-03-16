@@ -59,7 +59,7 @@ ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/wy_crc.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/BroadcastMessage.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/wy_Timer.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/wy_Pwm.o
-${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/wy_Uart.o
+
 # common
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/startup_gcc.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/uart_if.o
