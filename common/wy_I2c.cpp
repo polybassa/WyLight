@@ -17,11 +17,13 @@
  along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "wy_I2c.h"
+#include "wy_LockGuard.h"
 #include "osi.h"
 #include "i2c.h"
 #include "hw_memmap.h"
 #include "prcm.h"
 #include "trace.h"
+#include <mutex>
 
 static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR |
 ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
@@ -32,7 +34,6 @@ const uint32_t I2c::I2C_BASE = I2CA0_BASE;
 const uint32_t I2c::SYS_CLK = 80000000;
 
 I2c::I2c(const enum mode& m) {
-
 	PRCMPeripheralClkEnable(PRCM_I2CA0, PRCM_RUN_MODE_CLK);
 	PRCMPeripheralReset(PRCM_I2CA0);
 
@@ -45,6 +46,7 @@ I2c::I2c(const enum mode& m) {
 		I2CMasterInitExpClk(I2C_BASE, SYS_CLK, true);
 		break;
 	}
+
 	osi_LockObjCreate(&this->accessMutex);
 }
 
@@ -57,57 +59,97 @@ I2c::~I2c(void) {
 	PRCMPeripheralClkDisable(PRCM_I2CA0, PRCM_RUN_MODE_CLK);
 }
 
-int I2c::write(const uint8_t addr, uint8_t const* const data, const size_t len,
+bool I2c::write(const uint8_t addr, uint8_t const* const data, const size_t len,
 		const bool stop) {
-	osi_LockObjLock(&this->accessMutex, OSI_WAIT_FOREVER);
+	const LockGuard lock(&this->accessMutex);
+	size_t index = 0;
 
-	osi_LockObjUnlock(&this->accessMutex);
-	return 0;
+	if ((data == nullptr) || (len == 0))
+		return true;
 
+	I2CMasterSlaveAddrSet(I2C_BASE, addr, false);
+	I2CMasterDataPut(I2C_BASE, data[index++]);
+
+	if (!this->transact(I2C_MASTER_CMD_BURST_SEND_START))
+		return false;
+
+	while (index < len) {
+		I2CMasterDataPut(I2C_BASE, data[index++]);
+		if (!this->transact(I2C_MASTER_CMD_BURST_SEND_CONT))
+			return false;
+	}
+
+	if (stop && !this->transact(I2C_MASTER_CMD_BURST_SEND_STOP))
+		return false;
+
+	return true;
 }
 
-int I2c::read(const uint8_t addr, uint8_t* const data, const size_t len) {
-	osi_LockObjLock(&this->accessMutex, OSI_WAIT_FOREVER);
+bool I2c::read(const uint8_t addr, uint8_t* const data, const size_t len) {
+	const LockGuard lock(&this->accessMutex);
+	size_t index = 0;
 
-	osi_LockObjUnlock(&this->accessMutex);
-	return 0;
+	if ((data == nullptr) || (len == 0))
+		return true;
+
+	I2CMasterSlaveAddrSet(I2C_BASE, addr, true);
+
+	if (len == 1) {
+		if (!this->transact(I2C_MASTER_CMD_SINGLE_RECEIVE))
+			return false;
+	} else {
+		if (!this->transact(I2C_MASTER_CMD_BURST_RECEIVE_START))
+			return false;
+	}
+
+	while (index < len) {
+		data[index++] = I2CMasterDataGet(I2C_BASE);
+
+		if (index < len) {
+			if (!this->transact(I2C_MASTER_CMD_BURST_RECEIVE_CONT))
+				return false;
+		} else {
+			if (!this->transact(I2C_MASTER_CMD_BURST_RECEIVE_FINISH))
+				return false;
+		}
+	}
+
+	data[index++] = I2CMasterDataGet(I2C_BASE);
+
+	return true;
 }
 
-int I2c::transact(const uint32_t cmd)
-{
-
-	I2CMasterIntClearEx(I2C_BASE, I2CMasterIntStatusEx(I2C_BASE,false));
+bool I2c::transact(const uint32_t cmd) {
+	I2CMasterIntClearEx(I2C_BASE, I2CMasterIntStatusEx(I2C_BASE, false));
 
 	I2CMasterTimeoutSet(I2C_BASE, TIMEOUT);
 
 	I2CMasterControl(I2C_BASE, cmd);
 
-	while((I2CMasterIntStatusEx(I2C_BASE, false) & (I2C_INT_MASTER | I2C_MRIS_CLKTOUT)) == 0)
-	{
+	while ((I2CMasterIntStatusEx(I2C_BASE, false)
+			& (I2C_INT_MASTER | I2C_MRIS_CLKTOUT)) == 0) {
 		osi_Sleep(1);
 	}
 
-	if(I2CMasterErr(I2C_BASE) != I2C_MASTER_ERR_NONE)
-	{
-		switch(cmd)
-		{
-			case I2C_MASTER_CMD_BURST_SEND_START:
-			case I2C_MASTER_CMD_BURST_SEND_CONT:
-			case I2C_MASTER_CMD_BURST_SEND_STOP:
+	if (I2CMasterErr(I2C_BASE) != I2C_MASTER_ERR_NONE)
+		switch (cmd) {
+		case I2C_MASTER_CMD_BURST_SEND_START:
+		case I2C_MASTER_CMD_BURST_SEND_CONT:
+		case I2C_MASTER_CMD_BURST_SEND_STOP:
 			I2CMasterControl(I2C_BASE, I2C_MASTER_CMD_BURST_SEND_ERROR_STOP);
 			break;
 
-			case I2C_MASTER_CMD_BURST_RECEIVE_START:
-			case I2C_MASTER_CMD_BURST_RECEIVE_CONT:
-			case I2C_MASTER_CMD_BURST_RECEIVE_FINISH:
-			I2CMasterControl(I2C_BASE,	I2C_MASTER_CMD_BURST_RECEIVE_ERROR_STOP);
+		case I2C_MASTER_CMD_BURST_RECEIVE_START:
+		case I2C_MASTER_CMD_BURST_RECEIVE_CONT:
+		case I2C_MASTER_CMD_BURST_RECEIVE_FINISH:
+			I2CMasterControl(I2C_BASE, I2C_MASTER_CMD_BURST_RECEIVE_ERROR_STOP);
 			break;
 
-			default:
+		default:
 			break;
 		}
-		return -1;
-	}
 
-	return 0;
+	return false;
+
+	return true;
 }

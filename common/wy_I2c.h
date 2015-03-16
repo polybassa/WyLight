@@ -23,7 +23,6 @@
 #include <stddef.h>
 #include "FreeRTOS.h"
 #include "semphr.h"
-#include "task.h"
 
 class I2c {
 public:
@@ -34,12 +33,12 @@ public:
     I2c(const enum mode&);
     I2c& operator=(const I2c&) = delete;
     I2c& operator=(I2c&&);
-    I2c(const I2c &) = delete;
+    I2c(const I2c&) = delete;
     ~I2c(void);
 
-    int write(const uint8_t addr, uint8_t const* const data, const size_t len,
+    bool write(const uint8_t addr, uint8_t const* const data, const size_t len,
               const bool stop);
-    int read(const uint8_t addr, uint8_t* const data, const size_t len);
+    bool read(const uint8_t addr, uint8_t* const data, const size_t len);
 
 private:
     static const uint32_t TIMEOUT;
@@ -49,7 +48,7 @@ private:
 
     xSemaphoreHandle accessMutex;
 
-    int transact(const uint32_t cmd);
+    bool transact(const uint32_t cmd);
 };
 
 #endif /* defined(__wy__I2c__) */
