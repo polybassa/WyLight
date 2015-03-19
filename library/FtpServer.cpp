@@ -54,8 +54,8 @@ const FtpCommand FtpCommand::USER("roving",
                                   "430 Invalid username or password. Good Bye.\r\n");
 
 FtpCommand::FtpCommand(const char* param, const char* successMsg, const char* errorMsg) : mParam(param), mSuccess(
-                                                                                              successMsg), mError(
-                                                                                              errorMsg)
+        successMsg), mError(
+        errorMsg)
 {}
 
 bool FtpCommand::Run(const TcpSocket& telnet, std::stringstream& dataInput) const
@@ -76,21 +76,21 @@ bool FtpCommand::Run(const TcpSocket& telnet, std::stringstream& dataInput) cons
 FtpServer::FtpServer(void) throw (FatalError)
 {
     mFtpServerThread = std::thread([&] {
-                                       TcpServerSocket telnetListener(INADDR_ANY, FTP_PORT);
-                                       while (mFtpServerRunning) {
-                                           Trace(ZONE_VERBOSE, "FtpServer running\n");
-                                           TcpSocket telnet(telnetListener.GetSocket());
-                                           if (!mFtpServerRunning)
-                                               return;
+            TcpServerSocket telnetListener(INADDR_ANY, FTP_PORT);
+            while (mFtpServerRunning) {
+                Trace(ZONE_VERBOSE, "FtpServer running\n");
+                TcpSocket telnet(telnetListener.GetSocket());
+                if (!mFtpServerRunning)
+                    return;
 
-                                           Trace(ZONE_VERBOSE, "Starting client Thread\n");
-                                           try {
-                                               handleFiletransfer(telnet);
-                                           } catch (FatalError& e) {
-                                               Trace(ZONE_ERROR, "%s\n", e.what());
-                                           }
-                                       }
-                                   });
+                Trace(ZONE_VERBOSE, "Starting client Thread\n");
+                try {
+                    handleFiletransfer(telnet);
+                } catch (FatalError& e) {
+                    Trace(ZONE_ERROR, "%s\n", e.what());
+                }
+            }
+        });
 }
 
 FtpServer::~FtpServer(void)

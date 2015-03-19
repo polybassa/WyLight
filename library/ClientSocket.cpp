@@ -198,9 +198,9 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 }
 
 UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) throw (FatalError) : ClientSocket(
-                                                                                                              addr,
-                                                                                                              port,
-                                                                                                              SOCK_DGRAM)
+        addr,
+        port,
+        SOCK_DGRAM)
 {
     if (0 != setsockopt(mSock, SOL_SOCKET, SO_BROADCAST, &enableBroadcast, sizeof(enableBroadcast)))
         throw FatalError("setsockopt() failed");

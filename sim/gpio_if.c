@@ -304,7 +304,7 @@ void
 GPIO_IF_ConfigureNIntEnable(unsigned int  uiGPIOPort,
                             unsigned char ucGPIOPin,
                             unsigned int  uiIntType,
-                            void          (* pfnIntHandler)(void))
+                            void (*       pfnIntHandler)(void))
 {}
 
 //****************************************************************************

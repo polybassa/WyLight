@@ -36,7 +36,7 @@ class MessageQueue {
 public:
     MessageQueue(void) {}
     MessageQueue(MessageQueue const&& other) : mQueue(std::move(other.mQueue)), mMutex(std::move(other.mMutex)),
-                                               mCondVar(std::move(other.mCondVar)) {}
+        mCondVar(std::move(other.mCondVar)) {}
 
     void push_back(const T&& message);
 

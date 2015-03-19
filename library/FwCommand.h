@@ -32,7 +32,7 @@ class FwCommand {
 protected:
     struct led_cmd mReqFrame;
     FwCommand(uint8_t cmd, size_t size = 0, bool withResponse = true) : mSize(1 + size),
-                                                                        requiresResponse(withResponse)
+        requiresResponse(withResponse)
     {
         memset(
             &mReqFrame,
@@ -72,7 +72,7 @@ class FwCmdSimple : public FwCommand {
     FwResponse mResponse;
 protected:
     FwCmdSimple(uint8_t cmd, size_t size = 0, bool withResponse = true) : FwCommand(cmd, size, withResponse), mResponse(
-                                                                              cmd) {}
+            cmd) {}
 public:
     FwResponse& GetResponse(void) { return mResponse; }
 };

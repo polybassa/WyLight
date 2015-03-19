@@ -33,7 +33,7 @@ static const uint32_t __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_W
 static const std::string AOK_STRING(AOK);
 
 ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) : mSock(0),
-                                                                                         mSockAddr(addr, port) {}
+    mSockAddr(addr, port) {}
 ClientSocket::~ClientSocket(void) {}
 
 uint8_t g_TestSocketRecvBuffer[10240];

@@ -37,7 +37,7 @@ public:
     ~I2c(void);
 
     bool write(const uint8_t addr, uint8_t const* const data, const size_t len,
-              const bool stop);
+               const bool stop);
     bool read(const uint8_t addr, uint8_t* const data, const size_t len);
 
 private:

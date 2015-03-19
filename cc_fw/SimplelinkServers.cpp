@@ -121,35 +121,35 @@ void TcpServer::serve(const bool& stopFlag, const int serverSock)
 }
 
 TcpServer::TcpServer(void) : Task((const char*)"TcpServer", OSI_STACK_SIZE, 5, [&](const bool& stopFlag){
-                                      const sockaddr_in LocalAddr(AF_INET, htons(TcpServer::port), htonl(INADDR_ANY));
+    const sockaddr_in LocalAddr(AF_INET, htons(TcpServer::port), htonl(INADDR_ANY));
 
-                                      int serverSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-                                      if (serverSock < 0) {
-                                          Trace(ZONE_ERROR, " Socket Error: %d", serverSock);
-                                          return;
-                                      }
+    int serverSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (serverSock < 0) {
+        Trace(ZONE_ERROR, " Socket Error: %d", serverSock);
+        return;
+    }
 
-                                      if (bind(serverSock, (sockaddr*)&LocalAddr, sizeof(LocalAddr))) {
-                                          Trace(ZONE_ERROR, " Bind Error\n\r");
-                                          close(serverSock);
-                                          return;
-                                      }
+    if (bind(serverSock, (sockaddr*)&LocalAddr, sizeof(LocalAddr))) {
+        Trace(ZONE_ERROR, " Bind Error\n\r");
+        close(serverSock);
+        return;
+    }
 
-                                      // Backlog = 1 to accept maximal 1 connection
-                                      if (listen(serverSock, 1)) {
-                                          Trace(ZONE_ERROR, " Listen Error\n\r");
-                                          close(serverSock);
-                                          return;
-                                      }
+    // Backlog = 1 to accept maximal 1 connection
+    if (listen(serverSock, 1)) {
+        Trace(ZONE_ERROR, " Listen Error\n\r");
+        close(serverSock);
+        return;
+    }
 
-                                      int nonBlocking = 1;
-                                      setsockopt(serverSock, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking,
-                                                 sizeof(nonBlocking));
-                                      Trace(ZONE_INFO, "TcpServer started\r\n");
-                                      this->serve(stopFlag, serverSock);
-                                      Trace(ZONE_INFO, "TcpServer stopped\r\n");
-                                      close(serverSock);
-                                  }) {}
+    int nonBlocking = 1;
+    setsockopt(serverSock, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking,
+               sizeof(nonBlocking));
+    Trace(ZONE_INFO, "TcpServer started\r\n");
+    this->serve(stopFlag, serverSock);
+    Trace(ZONE_INFO, "TcpServer stopped\r\n");
+    close(serverSock);
+}) {}
 
 void UdpServer::run(void)
 {
@@ -185,26 +185,26 @@ void UdpServer::receive(const bool& stopFlag, const int serverSock)
 }
 
 UdpServer::UdpServer(void) : Task((const char*)"UdpServer", OSI_STACK_SIZE, 6, [&](const bool& stopFlag){
-                                      const sockaddr_in LocalAddr(AF_INET, htons(UdpServer::port), htonl(INADDR_ANY));
+    const sockaddr_in LocalAddr(AF_INET, htons(UdpServer::port), htonl(INADDR_ANY));
 
-                                      int serverSock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-                                      if (serverSock < 0) {
-                                          Trace(ZONE_ERROR, "Udp Socket Error\r\n");
-                                          osi_Sleep(100);
-                                          return;
-                                      }
-                                      int nonBlocking = 1;
-                                      setsockopt(serverSock, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking,
-                                                 sizeof(nonBlocking));
+    int serverSock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if (serverSock < 0) {
+        Trace(ZONE_ERROR, "Udp Socket Error\r\n");
+        osi_Sleep(100);
+        return;
+    }
+    int nonBlocking = 1;
+    setsockopt(serverSock, SOL_SOCKET, SO_NONBLOCKING, &nonBlocking,
+               sizeof(nonBlocking));
 
-                                      if (bind(serverSock, (sockaddr*)&LocalAddr, sizeof(LocalAddr))) {
-                                          Trace(ZONE_ERROR, " Bind Error\n\r");
-                                          close(serverSock);
-                                          return;
-                                      }
+    if (bind(serverSock, (sockaddr*)&LocalAddr, sizeof(LocalAddr))) {
+        Trace(ZONE_ERROR, " Bind Error\n\r");
+        close(serverSock);
+        return;
+    }
 
-                                      Trace(ZONE_INFO, "UDP Server started \r\n");
-                                      this->receive(stopFlag, serverSock);
-                                      close(serverSock);
-                                      Trace(ZONE_INFO, "UDP Server stopped \r\n");
-                                  }) {}
+    Trace(ZONE_INFO, "UDP Server started \r\n");
+    this->receive(stopFlag, serverSock);
+    close(serverSock);
+    Trace(ZONE_INFO, "UDP Server stopped \r\n");
+}) {}

@@ -56,10 +56,10 @@ const std::string FwCmdLoopOff::TOKEN("loop_off");
 const std::string FwCmdWait::TOKEN("wait");
 
 Control::Control(uint32_t addr, uint16_t port) : mConfig(mTelnet),
-                                                 mTcpSock(addr, port),
-                                                 mUdpSock(addr, port, false, 0),
-                                                 mProxy(mTcpSock),
-                                                 mTelnet(mTcpSock)
+    mTcpSock(addr, port),
+    mUdpSock(addr, port, false, 0),
+    mProxy(mTcpSock),
+    mTelnet(mTcpSock)
 {}
 
 size_t Control::GetTargetMode(void) const throw(FatalError)

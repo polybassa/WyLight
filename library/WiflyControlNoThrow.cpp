@@ -41,20 +41,20 @@ uint32_t ControlNoThrow::BlEraseFlash(void) const
 
 uint32_t ControlNoThrow::BlReadCrcFlash(std::ostream& out, uint32_t address, size_t numBlocks) const
 {
-    return Try(std::bind(static_cast<void(Control::*) (std::ostream&, uint32_t,
+    return Try(std::bind(static_cast<void (Control::*)(std::ostream&, uint32_t,
                                                        size_t) const>(&Control::BlReadCrcFlash), std::ref(mControl),
                          std::ref(out), address, numBlocks));
 }
 
 uint32_t ControlNoThrow::BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes) const
 {
-    return Try(std::bind(static_cast<void(Control::*) (std::ostream&, uint32_t, size_t) const>(&Control::BlReadEeprom),
+    return Try(std::bind(static_cast<void (Control::*)(std::ostream&, uint32_t, size_t) const>(&Control::BlReadEeprom),
                          std::ref(mControl), std::ref(out), address, numBytes));
 }
 
 uint32_t ControlNoThrow::BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) const
 {
-    return Try(std::bind(static_cast<void(Control::*) (std::ostream&, uint32_t, size_t) const>(&Control::BlReadFlash),
+    return Try(std::bind(static_cast<void (Control::*)(std::ostream&, uint32_t, size_t) const>(&Control::BlReadFlash),
                          std::ref(mControl), std::ref(out), address, numBytes));
 }
 
