@@ -47,9 +47,8 @@ void Pwm_Task(void* pvParameters)
 
     for ( ; ; ) {
         osi_MsgQRead(&g_PwmMessageQ, buffer, OSI_WAIT_FOREVER);
-/*
-        UpdateDutyCycle(TIMERA2_BASE, TIMER_B, buffer[1]);
-        UpdateDutyCycle(TIMERA3_BASE, TIMER_B, buffer[2]);
-        UpdateDutyCycle(TIMERA3_BASE, TIMER_A, buffer[0]);*/
+        p5 = buffer[1];
+        p6 = buffer[2];
+        p7 = buffer[0];
     }
 }
