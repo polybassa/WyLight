@@ -22,8 +22,8 @@
 //Free_rtos/ti-rtos includes
 #include "osi.h"
 
-extern OsiMsgQ_t PwmMessageQ;
-extern OsiTaskHandle PwmTaskHandle;
+extern OsiMsgQ_t* PwmMessageQ;
+extern OsiTaskHandle* PwmTaskHandle;
 
 void Pwm_TaskInit(void);
 void Pwm_Task(void* pvParameters);

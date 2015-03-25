@@ -110,7 +110,7 @@ int main(void)
                    NULL,
                    6,
                    WyLightGetCommandsTaskHandle);
-    osi_TaskCreate(Pwm_Task, (signed portCHAR*)"PWM", OSI_STACK_SIZE, NULL, 2, &PwmTaskHandle);
+    osi_TaskCreate(Pwm_Task, (signed portCHAR*)"PWM", OSI_STACK_SIZE, NULL, 2, PwmTaskHandle);
 
     osi_start();
     while (1) {}

@@ -32,12 +32,12 @@
 static xTaskHandle g_PwmTaskHandle;
 static xQueueHandle g_PwmMessageQ;
 
-OsiTaskHandle PwmTaskHandle = &g_PwmTaskHandle;
-OsiMsgQ_t PwmMessageQ = &g_PwmMessageQ;
+OsiTaskHandle* PwmTaskHandle = &g_PwmTaskHandle;
+OsiMsgQ_t* PwmMessageQ = &g_PwmMessageQ;
 
 void Pwm_TaskInit(void)
 {
-    osi_MsgQCreate(&g_PwmMessageQ, (char*)"PwmMsgQ", 3, 6);
+    osi_MsgQCreate(PwmMessageQ, (char*)"PwmMsgQ", 3, 6);
 }
 
 void Pwm_Task(void* pvParameters)
@@ -46,9 +46,9 @@ void Pwm_Task(void* pvParameters)
     Pwm p5(Pwm::CHANNEL5), p6(Pwm::CHANNEL6), p7(Pwm::CHANNEL7);
 
     for ( ; ; ) {
-        osi_MsgQRead(&g_PwmMessageQ, buffer, OSI_WAIT_FOREVER);
-        p5 = buffer[1];
-        p6 = buffer[2];
-        p7 = buffer[0];
+        osi_MsgQRead(PwmMessageQ, buffer, OSI_WAIT_FOREVER);
+        p5.setDutyCycle(buffer[1]);
+        p6.setDutyCycle(buffer[2]);
+        p7.setDutyCycle(buffer[0]);
     }
 }
