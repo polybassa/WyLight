@@ -18,8 +18,6 @@
 
 #include "wy_Timer.h"
 #include <algorithm>
-#include "hw_memmap.h"
-#include "rom_map.h"
 #include "timer.h"
 #include "prcm.h"
 #include "trace.h"
@@ -115,37 +113,37 @@ uint32_t Timer::hwTimer(void) const
 void Timer::setConfiguration(const uint32_t config) const
 {
     if ((this->mBase != INVALID_BASE) && (this->mTimer != INVALID_HW_TIMER))
-        MAP_TimerConfigure(this->hwBase(), config);
+        TimerConfigure(this->hwBase(), config);
 }
 
 void Timer::setPrescale(const uint32_t prescale) const
 {
     if ((this->mBase != INVALID_BASE) && (this->mTimer != INVALID_HW_TIMER))
-        MAP_TimerPrescaleSet(this->hwBase(), this->hwTimer(), prescale);
+        TimerPrescaleSet(this->hwBase(), this->hwTimer(), prescale);
 }
 
 void Timer::setControlLevel(const uint32_t level) const
 {
     if ((this->mBase != INVALID_BASE) && (this->mTimer != INVALID_HW_TIMER))
-        MAP_TimerControlLevel(this->hwBase(), this->hwTimer(), level);
+        TimerControlLevel(this->hwBase(), this->hwTimer(), level);
 }
 
 void Timer::setLoad(const uint32_t load) const
 {
     if ((this->mBase != INVALID_BASE) && (this->mTimer != INVALID_HW_TIMER))
-        MAP_TimerLoadSet(this->hwBase(), this->hwTimer(), load);
+        TimerLoadSet(this->hwBase(), this->hwTimer(), load);
 }
 
 void Timer::setMatch(const uint32_t match) const
 {
     if ((this->mBase != INVALID_BASE) && (this->mTimer != INVALID_HW_TIMER))
-        MAP_TimerMatchSet(this->hwBase(), this->hwTimer(), match);
+        TimerMatchSet(this->hwBase(), this->hwTimer(), match);
 }
 
 uint32_t Timer::getMatch(void) const
 {
     if ((this->mBase != INVALID_BASE) && (this->mTimer != INVALID_HW_TIMER))
-        return MAP_TimerMatchGet(this->hwBase(), this->hwTimer());
+        return TimerMatchGet(this->hwBase(), this->hwTimer());
     else
         return 0;
 }
@@ -153,32 +151,32 @@ uint32_t Timer::getMatch(void) const
 void Timer::enable(void) const
 {
     if ((this->mBase != INVALID_BASE) && (this->mTimer != INVALID_HW_TIMER))
-        MAP_TimerEnable(this->hwBase(), this->hwTimer());
+        TimerEnable(this->hwBase(), this->hwTimer());
 }
 
 void Timer::disable(void) const
 {
     if ((this->mBase != INVALID_BASE) && (this->mTimer != INVALID_HW_TIMER))
-        MAP_TimerDisable(this->hwBase(), this->hwTimer());
+        TimerDisable(this->hwBase(), this->hwTimer());
 }
 
 void Timer::enablePeripheralClk(const enum base& b) const
 {
     switch (b) {
     case BASE0:
-        MAP_PRCMPeripheralClkEnable(PRCM_TIMERA0, PRCM_RUN_MODE_CLK);
+        PRCMPeripheralClkEnable(PRCM_TIMERA0, PRCM_RUN_MODE_CLK);
         break;
 
     case BASE1:
-        MAP_PRCMPeripheralClkEnable(PRCM_TIMERA1, PRCM_RUN_MODE_CLK);
+        PRCMPeripheralClkEnable(PRCM_TIMERA1, PRCM_RUN_MODE_CLK);
         break;
 
     case BASE2:
-        MAP_PRCMPeripheralClkEnable(PRCM_TIMERA2, PRCM_RUN_MODE_CLK);
+        PRCMPeripheralClkEnable(PRCM_TIMERA2, PRCM_RUN_MODE_CLK);
         break;
 
     case BASE3:
-        MAP_PRCMPeripheralClkEnable(PRCM_TIMERA3, PRCM_RUN_MODE_CLK);
+        PRCMPeripheralClkEnable(PRCM_TIMERA3, PRCM_RUN_MODE_CLK);
         break;
 
     case INVALID_BASE:
@@ -190,19 +188,19 @@ void Timer::disablePeripheralClk(const enum base& b) const
 {
     switch (b) {
     case BASE0:
-        MAP_PRCMPeripheralClkDisable(PRCM_TIMERA0, PRCM_RUN_MODE_CLK);
+        PRCMPeripheralClkDisable(PRCM_TIMERA0, PRCM_RUN_MODE_CLK);
         break;
 
     case BASE1:
-        MAP_PRCMPeripheralClkDisable(PRCM_TIMERA1, PRCM_RUN_MODE_CLK);
+        PRCMPeripheralClkDisable(PRCM_TIMERA1, PRCM_RUN_MODE_CLK);
         break;
 
     case BASE2:
-        MAP_PRCMPeripheralClkDisable(PRCM_TIMERA2, PRCM_RUN_MODE_CLK);
+        PRCMPeripheralClkDisable(PRCM_TIMERA2, PRCM_RUN_MODE_CLK);
         break;
 
     case BASE3:
-        MAP_PRCMPeripheralClkDisable(PRCM_TIMERA3, PRCM_RUN_MODE_CLK);
+        PRCMPeripheralClkDisable(PRCM_TIMERA3, PRCM_RUN_MODE_CLK);
         break;
 
     case INVALID_BASE:
