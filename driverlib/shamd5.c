@@ -56,6 +56,9 @@
 #include "interrupt.h"
 #include "shamd5.h"
 
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR |
+                                                        ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+
 #define SHAMD5_MODE_ALGO_MD5         0x00000000  // MD5
 #define SHAMD5_MODE_ALGO_SHA1        0x00000002  // SHA-1
 #define SHAMD5_MODE_ALGO_SHA224      0x00000004  // SHA-224
