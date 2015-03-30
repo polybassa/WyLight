@@ -1,5 +1,5 @@
 /**
-   Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+   Copyright (C) 2012 Nils Weiss, Patrick Br��nn.
 
    This file is part of Wifly_Light.
 
@@ -21,6 +21,10 @@
 
 #include "platform.h"
 #include "wifly_cmd.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* "+3" is need, because the crc is not in sizeof(cmd_frame) */
 #define CMDFRAMELENGTH (NUM_OF_LED * 3 + sizeof(struct led_cmd) + 3)
@@ -56,4 +60,7 @@ void CommandIO_SendResponse(struct response_frame* mFrame);
 
 void CommandIO_CreateResponse(struct response_frame* mFrame, uns8 cmd, ErrorCode mState);
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* #ifndef _COMMANDSTORAGE_H_ */

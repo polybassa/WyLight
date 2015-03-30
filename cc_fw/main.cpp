@@ -18,7 +18,6 @@
 
 #include "CC3200_Platform.h"
 
-#include "osi.h"
 #include "FreeRTOS.h"
 #include "task.h"
 
@@ -86,7 +85,8 @@ extern "C" void vApplicationMallocFailedHook()
     while (1) {}
 }
 
-extern "C" void vApplicationStackOverflowHook(xTaskHandle* pxTask, signed portCHAR* pcTaskName)
+extern "C" void vApplicationStackOverflowHook(xTaskHandle*     pxTask,
+                                              signed portCHAR* pcTaskName)
 {
     //Handle FreeRTOS Stack Overflow
     while (1) {}
@@ -97,21 +97,17 @@ int main(void)
     Pwm_TaskInit();
     WyLightFirmware_TaskInit();
 
-    osi_TaskCreate(WlanSupport_Task, (signed portCHAR*)"WlanSupport", OSI_STACK_SIZE, NULL, 8, WlanSupportTaskHandle);
-    osi_TaskCreate(WyLightFirmware_Task,
-                   (signed portCHAR*)"WyLightFirmware",
-                   OSI_STACK_SIZE,
-                   NULL,
-                   7,
-                   WyLightFirmwareTaskHandle);
-    osi_TaskCreate(WyLightGetCommands_Task,
-                   (signed portCHAR*)"GetCommands",
-                   OSI_STACK_SIZE,
-                   NULL,
-                   6,
-                   WyLightGetCommandsTaskHandle);
-    osi_TaskCreate(Pwm_Task, (signed portCHAR*)"PWM", OSI_STACK_SIZE, NULL, 2, PwmTaskHandle);
+    xTaskCreate(WlanSupport_Task, (signed portCHAR*)"WlanSupport",
+                Task::STACKSIZE_IN_BYTE(2048), NULL, 8, &g_WlanSupportTaskHandle);
+    xTaskCreate(WyLightFirmware_Task, (signed portCHAR*)"WyLightFirmware",
+                Task::STACKSIZE_IN_BYTE(2048), NULL, 7,
+                &g_WyLightFirmwareTaskHandle);
+    xTaskCreate(WyLightGetCommands_Task, (signed portCHAR*)"GetCommands",
+                Task::STACKSIZE_IN_BYTE(2048), NULL, 6,
+                &g_WyLightGetCommandsTaskHandle);
+    xTaskCreate(Pwm_Task, (signed portCHAR*)"PWM",
+                Task::STACKSIZE_IN_BYTE(2048), NULL, 2, &g_PwmTaskHandle);
 
-    osi_start();
+    vTaskStartScheduler();
     while (1) {}
 }

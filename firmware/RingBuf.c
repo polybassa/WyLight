@@ -19,7 +19,9 @@
 #include "RingBuf.h"
 
 #ifdef cc3200
-#include "osi.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "semphr.h"
 
 struct RingBuffer g_RingBuf_Tx;
 #endif
@@ -36,14 +38,14 @@ void RingBuf_Init(struct RingBuffer* pBuf)
 uns8 RingBuf_Get(struct RingBuffer* pBuf)
 {
 #ifdef cc3200
-    unsigned long key = osi_EnterCritical();
+    vPortEnterCritical();
 #endif
     uns8 read = pBuf->read;
     uns8 result = pBuf->data[read];
     pBuf->read = RingBufInc(read);
     pBuf->error_full = FALSE;
 #ifdef cc3200
-    osi_ExitCritical(key);
+    vPortExitCritical();
 #endif
     return result;
 }
@@ -51,7 +53,7 @@ uns8 RingBuf_Get(struct RingBuffer* pBuf)
 void RingBuf_Put(struct RingBuffer* pBuf, const uns8 value)
 {
 #ifdef cc3200
-    unsigned long key = osi_EnterCritical();
+    vPortEnterCritical();
 #endif
     uns8 writeNext = RingBufInc(pBuf->write);
     if (writeNext != pBuf->read) {
@@ -60,7 +62,7 @@ void RingBuf_Put(struct RingBuffer* pBuf, const uns8 value)
         pBuf->write = writeNext;
     } else {pBuf->error_full = 1; }
 #ifdef cc3200
-    osi_ExitCritical(key);
+    vPortExitCritical();
 #endif
 }
 
@@ -72,12 +74,12 @@ bit RingBuf_HasError(struct RingBuffer* pBuf)
 bit RingBuf_IsEmpty(const struct RingBuffer* pBuf)
 {
 #ifdef cc3200
-    unsigned long key = osi_EnterCritical();
+    vPortEnterCritical();
 #endif
     uns8 write = pBuf->write;
     uns8 read = pBuf->read;
 #ifdef cc3200
-    osi_ExitCritical(key);
+    vPortExitCritical();
 #endif
     return write == read;
 }

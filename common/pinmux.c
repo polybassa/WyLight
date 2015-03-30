@@ -55,8 +55,4 @@ void PinMuxConfig(void)
 
     MAP_PRCMPeripheralClkDisable(PRCM_TIMERA2, PRCM_RUN_MODE_CLK);
     MAP_PRCMPeripheralClkDisable(PRCM_TIMERA3, PRCM_RUN_MODE_CLK);
-
-    MAP_PinTypeADC(PIN_58, 0xFF);
-    MAP_PinTypeADC(PIN_59, 0xFF);
-    MAP_PinTypeADC(PIN_60, 0xFF);
 }

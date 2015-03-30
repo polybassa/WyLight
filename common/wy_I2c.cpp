@@ -18,7 +18,6 @@
 
 #include "wy_I2c.h"
 #include "wy_LockGuard.h"
-#include "osi.h"
 #include "i2c.h"
 #include "hw_memmap.h"
 #include "prcm.h"
@@ -48,7 +47,7 @@ I2c::I2c(const enum mode& m)
         break;
     }
 
-    osi_LockObjCreate(&this->accessMutex);
+    this->accessMutex = xSemaphoreCreateMutex();
 }
 
 I2c& I2c::operator=(I2c&&)
@@ -58,7 +57,7 @@ I2c& I2c::operator=(I2c&&)
 
 I2c::~I2c(void)
 {
-    osi_LockObjDelete(&this->accessMutex);
+    vSemaphoreDelete(this->accessMutex);
     PRCMPeripheralClkDisable(PRCM_I2CA0, PRCM_RUN_MODE_CLK);
 }
 
@@ -141,19 +140,17 @@ bool I2c::transact(const uint32_t cmd)
         case I2C_MASTER_CMD_BURST_SEND_CONT:
         case I2C_MASTER_CMD_BURST_SEND_STOP:
             I2CMasterControl(I2C_BASE, I2C_MASTER_CMD_BURST_SEND_ERROR_STOP);
-            break;
+            return false;
 
         case I2C_MASTER_CMD_BURST_RECEIVE_START:
         case I2C_MASTER_CMD_BURST_RECEIVE_CONT:
         case I2C_MASTER_CMD_BURST_RECEIVE_FINISH:
             I2CMasterControl(I2C_BASE, I2C_MASTER_CMD_BURST_RECEIVE_ERROR_STOP);
-            break;
+            return false;
 
         default:
-            break;
+            return false;
         }
-
-    return false;
 
     return true;
 }

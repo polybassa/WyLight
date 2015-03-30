@@ -22,29 +22,28 @@
 #include "wy_firmware.h"
 #include "trace.h"
 
-static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING;// | ZONE_INFO | ZONE_VERBOSE;
 
 static xSemaphoreHandle g_StoreDataSemaphore;
 
-OsiSyncObj_t* Server::StoreDataSemaphore = nullptr;
+xSemaphoreHandle* Server::StoreDataSemaphore = nullptr;
 
 Server::Server(void)
 {
     if (StoreDataSemaphore == nullptr) {
         StoreDataSemaphore = &g_StoreDataSemaphore;
-        osi_SyncObjCreate(StoreDataSemaphore);
-        osi_SyncObjSignal(StoreDataSemaphore);
+        vSemaphoreCreateBinary(g_StoreDataSemaphore);
     }
 }
 
 void Server::storeData(const uint8_t* data, const size_t length)
 {
-    osi_SyncObjWait(Server::StoreDataSemaphore, OSI_WAIT_FOREVER);
+    xSemaphoreTake(*Server::StoreDataSemaphore, portMAX_DELAY);
     for (size_t i = 0; i < length; i++) {
         RingBuf_Put(&g_RingBuf, *data++);
     }
-    osi_SyncObjSignal(NewDataAvailableSemaphore);
-    osi_SyncObjSignal(Server::StoreDataSemaphore);
+    xSemaphoreGive(g_NewDataAvailableSemaphore);
+    xSemaphoreGive(*Server::StoreDataSemaphore);
 }
 
 void TcpServer::run(void)
@@ -120,7 +119,8 @@ void TcpServer::serve(const bool& stopFlag, const int serverSock)
     }
 }
 
-TcpServer::TcpServer(void) : Task((const char*)"TcpServer", OSI_STACK_SIZE, 5, [&](const bool& stopFlag){
+TcpServer::TcpServer(void) : Task((const char*)"TcpServer", TcpServer::STACK_SIZE, TcpServer::TASK_PRIORITY,
+                                  [&](const bool& stopFlag){
     const sockaddr_in LocalAddr(AF_INET, htons(TcpServer::port), htonl(INADDR_ANY));
 
     int serverSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -184,7 +184,8 @@ void UdpServer::receive(const bool& stopFlag, const int serverSock)
     }
 }
 
-UdpServer::UdpServer(void) : Task((const char*)"UdpServer", OSI_STACK_SIZE, 6, [&](const bool& stopFlag){
+UdpServer::UdpServer(void) : Task((const char*)"UdpServer", UdpServer::STACK_SIZE, UdpServer::TASK_PRIORITY,
+                                  [&](const bool& stopFlag){
     const sockaddr_in LocalAddr(AF_INET, htons(UdpServer::port), htonl(INADDR_ANY));
 
     int serverSock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);

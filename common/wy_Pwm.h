@@ -50,13 +50,13 @@ public:
 
     const Pwm& operator=(const uint16_t& dutyCycle) const;
 
-private:
     static const uint32_t CPU_FREQUENCY_HZ;
     static const uint32_t PWM_FREQUENCY_HZ;
     static const uint16_t DUTYCYCLE_MAX_VALUE;
     static const uint32_t DUTYCYCLE_GRANULARITY;
     static const uint32_t TIMER_INTERVAL_RELOAD;
 
+private:
     static enum Timer::timer getTimer(const enum Pwm::channels& channel);
     static enum Timer::base getBase(const enum Pwm::channels& channel);
 

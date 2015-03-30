@@ -21,22 +21,24 @@
 Task::Task(const char* name, unsigned short stackSize, unsigned long priority,
            std::function<void(const bool&)> function) : mTaskFunction(function)
 {
-    osi_SyncObjCreate(&this->mStartSemaphore);
-    osi_SyncObjCreate(&this->mStopSemaphore);
+    vSemaphoreCreateBinary(this->mStartSemaphore);
+    xSemaphoreTake(this->mStartSemaphore, 0);
+    vSemaphoreCreateBinary(this->mStopSemaphore);
+    xSemaphoreTake(this->mStopSemaphore, 0);
 
     this->mStopFlag = false;
-    osi_TaskCreate(Task::task, (signed portCHAR*)name, stackSize, this, priority, &this->mHandle);
+    xTaskCreate(Task::task, (signed portCHAR*)name, Task::STACKSIZE_IN_BYTE(stackSize), this, priority, &this->mHandle);
 }
 
 void Task::run(void)
 {
-    osi_SyncObjSignal(&this->mStartSemaphore);
+    xSemaphoreGive(this->mStartSemaphore);
 }
 
 void Task::stop(void)
 {
     this->mStopFlag = true;
-    osi_SyncObjWait(&this->mStopSemaphore, OSI_WAIT_FOREVER);
+    xSemaphoreTake(this->mStopSemaphore, portMAX_DELAY);
 }
 
 void Task::task(void* pvParameters)
@@ -46,11 +48,11 @@ void Task::task(void* pvParameters)
 
 void Task::taskFunction(void)
 {
-    osi_Sleep(200);
+    vTaskDelay(200 / portTICK_RATE_MS);
     for ( ; ; ) {
-        osi_SyncObjWait(&this->mStartSemaphore, OSI_WAIT_FOREVER);
+        xSemaphoreTake(this->mStartSemaphore, portMAX_DELAY);
         this->mStopFlag = false;
         mTaskFunction(this->mStopFlag);
-        osi_SyncObjSignal(&this->mStopSemaphore);
+        xSemaphoreGive(this->mStopSemaphore);
     }
 }

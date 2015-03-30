@@ -22,6 +22,10 @@
 #include "platform.h"
 #include "wifly_cmd.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * This structure is used for calculations to manipulate the ledstrip state
  *
@@ -89,5 +93,9 @@ void Ledstrip_FadeOffLeds(void);
 #ifndef __CC8E__
 void Ledstrip_Test(unsigned char address);
 #endif
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 #endif

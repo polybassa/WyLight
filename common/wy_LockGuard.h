@@ -19,28 +19,34 @@
 #ifndef __wy__LockGuard__
 #define __wy__LockGuard__
 
-#include "osi.h"
+#include "FreeRTOS.h"
+#include "semphr.h"
 
 class LockGuard {
 public:
 
-    explicit LockGuard(OsiLockObj_t* lock) : mLock(lock)
+    explicit LockGuard(xSemaphoreHandle* lock, portTickType ticksToWait = portMAX_DELAY) : mLock(lock)
     {
         if (this->mLock)
-            osi_LockObjLock(this->mLock, OSI_WAIT_FOREVER);
+            this->mSemaphoreObtained = (bool)xSemaphoreTake(this->mLock, ticksToWait);
     }
 
     ~LockGuard()
     {
         if (this->mLock)
-            osi_LockObjUnlock(this->mLock);
+            xSemaphoreGive(this->mLock);
     }
 
     LockGuard(const LockGuard&) = delete;
     LockGuard& operator=(const LockGuard&) = delete;
 
+    operator bool(void) const {
+        return mSemaphoreObtained;
+    }
+
 private:
-    OsiLockObj_t* mLock;
+    xSemaphoreHandle* mLock;
+    bool mSemaphoreObtained = false;
 };
 
 #endif /* defined(__wy__LockGuard__) */

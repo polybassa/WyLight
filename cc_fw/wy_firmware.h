@@ -19,23 +19,18 @@
 #ifndef _WY_FIRMWARE_H_
 #define _WY_FIRMWARE_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "FreeRTOS.h"
+#include "task.h"
+#include "semphr.h"
 
-#include "osi.h"
+extern xSemaphoreHandle g_FirmwareCanAccessFileSystemSemaphore;
+extern xSemaphoreHandle g_NewDataAvailableSemaphore;
 
-extern OsiTaskHandle* WyLightFirmwareTaskHandle;
-extern OsiTaskHandle* WyLightGetCommandsTaskHandle;
-extern OsiSyncObj_t* FirmwareCanAccessFileSystemSemaphore;
-extern OsiSyncObj_t* NewDataAvailableSemaphore;
+extern xTaskHandle g_WyLightFirmwareTaskHandle;
+extern xTaskHandle g_WyLightGetCommandsTaskHandle;
 
 void WyLightFirmware_TaskInit(void);
 void WyLightFirmware_Task(void* pvParameters);
 void WyLightGetCommands_Task(void* pvParameters);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* _WY_FIRMWARE_H_ */

@@ -21,6 +21,10 @@
 
 #include "fs.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define MAX_NUM_FILES 20
 #define FLASHSIZE 0xfffff       // 1MB
 #define MAX_FILENAME_LEN 128
@@ -177,6 +181,10 @@ int wy_FsFormat(void);
 
 #ifndef NOTERM
 int wy_FsPrintFileList(void);
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /*  __FS_H__ */

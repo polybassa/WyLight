@@ -19,11 +19,12 @@
 #ifndef __PWM_H_
 #define __PWM_H_
 
-//Free_rtos/ti-rtos includes
-#include "osi.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
 
-extern OsiMsgQ_t* PwmMessageQ;
-extern OsiTaskHandle* PwmTaskHandle;
+extern xTaskHandle g_PwmTaskHandle;
+extern xQueueHandle g_PwmMessageQ;
 
 void Pwm_TaskInit(void);
 void Pwm_Task(void* pvParameters);

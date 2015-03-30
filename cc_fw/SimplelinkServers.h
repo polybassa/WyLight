@@ -30,7 +30,7 @@ protected:
     Server& operator=(const Server&) = delete;
     Server(Server&&) = delete;
 
-    static OsiSyncObj_t* StoreDataSemaphore;
+    static xSemaphoreHandle* StoreDataSemaphore;
     void storeData(const uint8_t* data, const size_t length);
 };
 
@@ -46,6 +46,8 @@ public:
 
     static const uint16_t port = 2000;
     static const uint16_t rxBufferSize = 256;
+    static const size_t STACK_SIZE = 2048;
+    static const size_t TASK_PRIORITY = 5;
 
     virtual void run(void);
     virtual void stop(void);
@@ -62,6 +64,8 @@ public:
 
     static const uint16_t port = 2000;
     static const uint16_t rxBufferSize = 256;
+    static const size_t STACK_SIZE = 2048;
+    static const size_t TASK_PRIORITY = 6;
 
     virtual void run(void);
     virtual void stop(void);

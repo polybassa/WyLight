@@ -72,7 +72,7 @@ BroadcastTransmitter::BroadcastTransmitter(void) : Task((const char*)"Broadcast"
         return;
     }
 
-    Trace(ZONE_INFO, "Broadcast Transmitter started \r\n");
+    Trace(ZONE_INFO, "BC Transmitter started\r\n");
     do {
         osi_Sleep(1500);
         // Send Broadcast Message
@@ -82,7 +82,7 @@ BroadcastTransmitter::BroadcastTransmitter(void) : Task((const char*)"Broadcast"
                    (sockaddr*)&destaddr, addrLen);
     } while (status > 0 && !stopFlag);
 
-    Trace(ZONE_INFO, "Broadcast Transmitter stopped \r\n");
+    Trace(ZONE_INFO, "BC Transmitter stopped\r\n");
     // Close socket in case of any error's and try to open a new socket in the next loop
     close(sock);
 }) {}

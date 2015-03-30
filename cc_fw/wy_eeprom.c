@@ -18,9 +18,11 @@
 
 #include <stdbool.h>
 #include "wy_fs.h"
-#include "osi.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "semphr.h"
 #include "wy_firmware.h"
-#include "firmware/trace.h"
+#include "trace.h"
 #include "eeprom.h"
 
 static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
@@ -34,7 +36,7 @@ void Eeprom_Init()
 {
     g_WritesDoneCounter = 0;
 
-    osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
+    xSemaphoreTake(g_FirmwareCanAccessFileSystemSemaphore, portMAX_DELAY);
 
     long int fileHandle = 0;
     if (wy_FsOpen(eepromFileName, FS_MODE_OPEN_READ, NULL, &fileHandle)) {
@@ -44,13 +46,13 @@ void Eeprom_Init()
                       NULL, &fileHandle))
         {
             Trace(ZONE_ERROR, "EEPROM Adaption: Error opening script file\r\n");
-            osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
+            xSemaphoreGive(g_FirmwareCanAccessFileSystemSemaphore);
             return;
         }
         // file creation successful
         memset(g_Eeprom, 0, EEPROM_SIZE);
         wy_FsClose(fileHandle, NULL, NULL, 0);
-        osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
+        xSemaphoreGive(&g_FirmwareCanAccessFileSystemSemaphore);
         return;
     }
     // file exists and is open
@@ -59,14 +61,14 @@ void Eeprom_Init()
         memset(g_Eeprom, 0, EEPROM_SIZE);
     }
     wy_FsClose(fileHandle, NULL, NULL, 0);
-    osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
+    xSemaphoreGive(g_FirmwareCanAccessFileSystemSemaphore);
 }
 
 void Eeprom_Save(bool forceSave)
 {
     if (!forceSave && (++g_WritesDoneCounter < EEPROM_SAVE_THRESHOLD)) return;
 
-    if (osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_NO_WAIT))
+    if (pdFALSE == xSemaphoreTake(g_FirmwareCanAccessFileSystemSemaphore, 0))
         return;
     g_WritesDoneCounter = 0;
 
@@ -79,7 +81,7 @@ void Eeprom_Save(bool forceSave)
                       NULL, &fileHandle))
         {
             Trace(ZONE_ERROR, "EEPROM Adaption: Error opening script file\r\n");
-            osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
+            xSemaphoreGive(g_FirmwareCanAccessFileSystemSemaphore);
             return;
         }
         // file creation successful
@@ -88,7 +90,7 @@ void Eeprom_Save(bool forceSave)
     if (EEPROM_SIZE != wy_FsWrite(fileHandle, 0, g_Eeprom, EEPROM_SIZE))
         Trace(ZONE_ERROR, "EEPROM Adaption: Error writing script file\r\n");
     wy_FsClose(fileHandle, NULL, NULL, 0);
-    osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
+    xSemaphoreGive(g_FirmwareCanAccessFileSystemSemaphore);
 }
 
 inline uns8 Eeprom_Read(const uns16 adress)
@@ -104,7 +106,7 @@ void Eeprom_Write(const uns16 adress, const uns8 data)
 
 //*********************** EEPROM BYTEARRAY SCHREIBEN  **************************************
 
-void Eeprom_WriteBlock(const uns8* array, uns16 adress, const uns8 length) //Zum Ausführen eines beliebigen Befehls durch den Programmcode
+void Eeprom_WriteBlock(const uns8* array, uns16 adress, const uns8 length)
 {
     if (!array) return;
     memcpy(&g_Eeprom[adress], array, length);
@@ -113,7 +115,7 @@ void Eeprom_WriteBlock(const uns8* array, uns16 adress, const uns8 length) //Zum
 
 //*********************** EEPROM BYTEARRAY LESEN  **************************************
 
-void Eeprom_ReadBlock(uns8* array, uns16 adress, const uns8 length) //Zum Ausführen eines beliebigen Befehls durch den Programmcode
+void Eeprom_ReadBlock(uns8* array, uns16 adress, const uns8 length)
 {
     if (!array) return;
     memcpy(array, &g_Eeprom[adress], length);

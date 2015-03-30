@@ -23,6 +23,10 @@
 #include "wifly_cmd.h"
 #include "error.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define SCRIPTCTRL_NUM_CMD_MAX 63                       /*BITMASK */
 #define SCRIPTCTRL_LOOP_DEPTH_MAX 4
 
@@ -69,5 +73,9 @@ void ScriptCtrl_DecrementWaitValue(void);
  * Decrements the wait if the waitvalue is smaller than 7. This is an performance related functiong
  */
 void ScriptCtrl_CheckAndDecrementWaitValue(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* #ifndef _SCRIPTCTRL_H_ */

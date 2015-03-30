@@ -33,9 +33,9 @@
 #include "wifi.h"
 
 // oslib include
-#include "osi.h"
 #include "FreeRTOS.h"
 #include "semphr.h"
+#include "task.h"
 
 #include "trace.h"
 

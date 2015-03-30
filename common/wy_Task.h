@@ -21,7 +21,6 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "osi.h"
 #include "FreeRTOS.h"
 #include "semphr.h"
 #include "task.h"
@@ -45,6 +44,11 @@ public:
 
     virtual void run(void);
     virtual void stop(void);
+
+    static constexpr size_t STACKSIZE_IN_BYTE(size_t n)
+    {
+        return n / (sizeof(portSTACK_TYPE));
+    }
 };
 
 #endif /* defined(__cc_firmware__Task__) */

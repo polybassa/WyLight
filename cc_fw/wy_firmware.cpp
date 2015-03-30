@@ -21,8 +21,6 @@
 // Simplelink includes
 #include "simplelink.h"
 
-//Free_rtos/ti-rtos includes
-#include "osi.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "semphr.h"
@@ -33,24 +31,17 @@
 #include "RingBuf.h"
 #include "ScriptCtrl.h"
 #include "ledstrip.h"
-#include "firmware/trace.h"
+#include "trace.h"
 //
 // GLOBAL VARIABLES -- Start
 //
 
-static xSemaphoreHandle g_FirmwareCanAccessFileSystemSemaphore;
-OsiSyncObj_t* FirmwareCanAccessFileSystemSemaphore = &g_FirmwareCanAccessFileSystemSemaphore;
+xSemaphoreHandle g_FirmwareCanAccessFileSystemSemaphore;
+xSemaphoreHandle g_NewDataAvailableSemaphore;
+xSemaphoreHandle g_AccessScriptBufferMutex;
 
-static xSemaphoreHandle g_NewDataAvailableSemaphore;
-OsiSyncObj_t* NewDataAvailableSemaphore = &g_NewDataAvailableSemaphore;
-
-static xSemaphoreHandle g_AccessScriptBufferMutex;
-
-static xTaskHandle g_WyLightFirmwareTaskHandle;
-static xTaskHandle g_WyLightGetCommandsTaskHandle;
-
-OsiTaskHandle* WyLightGetCommandsTaskHandle = &g_WyLightGetCommandsTaskHandle;
-OsiTaskHandle* WyLightFirmwareTaskHandle = &g_WyLightFirmwareTaskHandle;
+xTaskHandle g_WyLightFirmwareTaskHandle;
+xTaskHandle g_WyLightGetCommandsTaskHandle;
 
 //
 // GLOBAL VARIABLES -- End
@@ -58,9 +49,14 @@ OsiTaskHandle* WyLightFirmwareTaskHandle = &g_WyLightFirmwareTaskHandle;
 
 void WyLightFirmware_TaskInit(void)
 {
-    osi_SyncObjCreate(FirmwareCanAccessFileSystemSemaphore);
-    osi_SyncObjCreate(NewDataAvailableSemaphore);
-    osi_LockObjCreate(&g_AccessScriptBufferMutex);
+    vSemaphoreCreateBinary(g_FirmwareCanAccessFileSystemSemaphore);
+    xSemaphoreTake(g_FirmwareCanAccessFileSystemSemaphore, 0);
+
+    vSemaphoreCreateBinary(g_NewDataAvailableSemaphore);
+    xSemaphoreTake(g_NewDataAvailableSemaphore, 0);
+
+    g_AccessScriptBufferMutex = xSemaphoreCreateMutex();
+
     RingBuf_Init(&g_RingBuf_Tx);
     RingBuf_Init(&g_RingBuf);
     Ledstrip_Init();
@@ -71,23 +67,23 @@ void WyLightFirmware_Task(void* pvParameters)
     CommandIO_Init();
     ScriptCtrl_Init();
     for ( ; ; ) {
-        if (OSI_OK == osi_LockObjLock(&g_AccessScriptBufferMutex, OSI_NO_WAIT)) {
+        if (xSemaphoreTake(g_AccessScriptBufferMutex, 0)) {
             ScriptCtrl_Run();
-            osi_LockObjUnlock(&g_AccessScriptBufferMutex);
+            xSemaphoreGive(g_AccessScriptBufferMutex);
         }
         ScriptCtrl_DecrementWaitValue();
         Ledstrip_DoFade();
         Ledstrip_UpdateLed();
-        osi_Sleep(10);
+        vTaskDelay(10 / portTICK_RATE_MS);
     }
 }
 
 void WyLightGetCommands_Task(void* pvParameters)
 {
     for ( ; ; ) {
-        osi_SyncObjWait(NewDataAvailableSemaphore, OSI_WAIT_FOREVER);
-        osi_LockObjLock(&g_AccessScriptBufferMutex, OSI_WAIT_FOREVER);
+        xSemaphoreTake(g_NewDataAvailableSemaphore, portMAX_DELAY);
+        xSemaphoreTake(g_AccessScriptBufferMutex, portMAX_DELAY);
         CommandIO_GetCommands();
-        osi_LockObjUnlock(&g_AccessScriptBufferMutex);
+        xSemaphoreGive(g_AccessScriptBufferMutex);
     }
 }

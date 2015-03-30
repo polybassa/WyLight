@@ -18,8 +18,6 @@
 
 #include "hw_types.h"
 
-//Free_rtos/ti-rtos includes
-#include "osi.h"
 #include "FreeRTOS.h"
 #include "semphr.h"
 #include "task.h"
@@ -28,14 +26,13 @@
 #include "SimplelinkDriver.h"
 #include "wy_firmware.h"
 #include "SimplelinkCustomer.h"
-#include "firmware/trace.h"
+#include "trace.h"
 #include "wifi.h"
 #include "gpio_if.h"
 
 static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-static xTaskHandle g_WlanSupportTaskHandle;
-OsiTaskHandle* WlanSupportTaskHandle = &g_WlanSupportTaskHandle;
+xTaskHandle g_WlanSupportTaskHandle;
 
 void WlanSupport_Task(void* pvParameters)
 {
@@ -48,12 +45,12 @@ void WlanSupport_Task(void* pvParameters)
 
             SimplelinkDriver simplelinkChip(false);
             if (simplelinkChip) {
-                osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
+                xSemaphoreGive(g_FirmwareCanAccessFileSystemSemaphore);
                 SimplelinkCustomer::provideService();
 
                 simplelinkChip.waitUntilConnectionLost();
 
-                osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
+                xSemaphoreTake(g_FirmwareCanAccessFileSystemSemaphore, portMAX_DELAY);
                 SimplelinkCustomer::stopService();
             }
             Trace(ZONE_INFO, "Not connected to AP\r\n");
@@ -61,12 +58,12 @@ void WlanSupport_Task(void* pvParameters)
         {
             SimplelinkDriver simplelinkChip(true);
             if (simplelinkChip) {
-                osi_SyncObjSignal(FirmwareCanAccessFileSystemSemaphore);
+                xSemaphoreGive(g_FirmwareCanAccessFileSystemSemaphore);
                 SimplelinkCustomer::provideService();
 
                 simplelinkChip.waitForNewProvisioningData();
 
-                osi_SyncObjWait(FirmwareCanAccessFileSystemSemaphore, OSI_WAIT_FOREVER);
+                xSemaphoreTake(g_FirmwareCanAccessFileSystemSemaphore, portMAX_DELAY);
                 SimplelinkCustomer::stopService();
             }
         }

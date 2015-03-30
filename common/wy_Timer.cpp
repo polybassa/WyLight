@@ -33,7 +33,7 @@ Timer::Timer(const enum base& b, const enum timer& t) : mBase(b), mTimer(t)
         return;
 
     baseUseCount[b]++;
-    if (Timer::baseUseCount[b])
+    if (Timer::baseUseCount[b] == 1)
         this->enablePeripheralClk(b);
 
     if (Timer::baseUseCount[b] > Timer::MAX_USE_COUNT)

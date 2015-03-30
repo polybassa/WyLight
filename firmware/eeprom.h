@@ -1,5 +1,5 @@
 /**
-   Copyright (C) 2012 Nils Weiss, Patrick Brünn.
+   Copyright (C) 2012 Nils Weiss, Patrick Br��nn.
 
    This file is part of Wifly_Light.
 
@@ -20,6 +20,10 @@
 #define _EEPROM_H_
 
 #include "platform.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* globals */
 #ifndef EEPROM_SIZE
@@ -42,5 +46,9 @@ void Eeprom_ReadBlock(uns8* array, uns16 adress, const uns8 length);
 #include <stdbool.h>
 void Eeprom_Save(bool forceSave);
 #endif /*cc3200*/
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /*_EEPROM_H_*/

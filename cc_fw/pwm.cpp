@@ -20,35 +20,37 @@
 
 //Common interface includes
 #include "pwm.h"
-
-//Application Includes
-#include "osi.h"
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
-
 #include "wy_Pwm.h"
+#include <array>
 
-static xTaskHandle g_PwmTaskHandle;
-static xQueueHandle g_PwmMessageQ;
+xTaskHandle g_PwmTaskHandle;
+xQueueHandle g_PwmMessageQ;
 
-OsiTaskHandle* PwmTaskHandle = &g_PwmTaskHandle;
-OsiMsgQ_t* PwmMessageQ = &g_PwmMessageQ;
+static const size_t NUMBER_OF_PWMS = 3;
+static const std::array<const Pwm, NUMBER_OF_PWMS> Pwms = { Pwm(Pwm::CHANNEL5),
+                                                            Pwm(Pwm::CHANNEL6), Pwm(Pwm::CHANNEL7) };
 
 void Pwm_TaskInit(void)
 {
-    osi_MsgQCreate(PwmMessageQ, (char*)"PwmMsgQ", 3, 6);
+    for (const auto& pwm : Pwms) {
+        pwm.enable();
+    }
+    for (const auto& pwm : Pwms) {
+        pwm = 0;
+    }
+
+    g_PwmMessageQ = xQueueCreate(6, NUMBER_OF_PWMS);
 }
 
 void Pwm_Task(void* pvParameters)
 {
-    uint8_t buffer[3];
-    Pwm p5(Pwm::CHANNEL5), p6(Pwm::CHANNEL6), p7(Pwm::CHANNEL7);
+    uint8_t buffer[NUMBER_OF_PWMS];
 
     for ( ; ; ) {
-        osi_MsgQRead(PwmMessageQ, buffer, OSI_WAIT_FOREVER);
-        p5.setDutyCycle(buffer[1]);
-        p6.setDutyCycle(buffer[2]);
-        p7.setDutyCycle(buffer[0]);
+        xQueueReceive(g_PwmMessageQ, buffer, portMAX_DELAY);
+        unsigned int i = 0;
+        for (const auto& pwm : Pwms) {
+            pwm = (buffer[i++] * Pwm::DUTYCYCLE_MAX_VALUE) / UINT8_MAX;
+        }
     }
 }

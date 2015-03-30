@@ -20,7 +20,6 @@
 
 #include <stdint.h>
 #include <array>
-#include "osi.h"
 #include "FreeRTOS.h"
 #include "semphr.h"
 

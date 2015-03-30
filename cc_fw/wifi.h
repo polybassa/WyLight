@@ -19,9 +19,11 @@
 #ifndef _WIFI_H_
 #define _WIFI_H_
 
-#include "osi.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
-extern OsiTaskHandle* WlanSupportTaskHandle;
+extern xTaskHandle g_WlanSupportTaskHandle;
+
 void WlanSupport_Task(void* pvParameters);
 
 #endif /* _WIFI_H_ */

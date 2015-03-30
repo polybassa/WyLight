@@ -27,13 +27,11 @@
 
 #include "socket.h"
 #include "pwm.h"
-#include "osi.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "semphr.h"
 
 static xSemaphoreHandle g_AccessLedBufferMutex;
-OsiLockObj_t AccessLedBufferMutex = &g_AccessLedBufferMutex;
 
 #endif /* #ifndef cc3200 */
 
@@ -128,12 +126,12 @@ void Ledstrip_FadeOffLeds(void)
 void Ledstrip_Init(void)
 {
 #ifdef cc3200
-    osi_LockObjCreate(AccessLedBufferMutex);
+    g_AccessLedBufferMutex = xSemaphoreCreateMutex();
 #endif
     // initialize interface to ledstrip
     SPI_Init();
 #ifdef cc3200
-    osi_LockObjLock(AccessLedBufferMutex, OSI_WAIT_FOREVER);
+    xSemaphoreTake(g_AccessLedBufferMutex, portMAX_DELAY);
 #endif
     // initialize variables
     uns8 i = sizeof(gLedBuf.led_array);
@@ -174,14 +172,14 @@ void Ledstrip_Init(void)
 
     gLedBuf.fadeTmms = 0;
 #ifdef cc3200
-    osi_LockObjUnlock(AccessLedBufferMutex);
+    xSemaphoreGive(g_AccessLedBufferMutex);
 #endif
 }
 
 void Ledstrip_SetColorDirect(uns8* pValues)
 {
 #ifdef cc3200
-    osi_LockObjLock(AccessLedBufferMutex, OSI_WAIT_FOREVER);
+    xSemaphoreTake(g_AccessLedBufferMutex, portMAX_DELAY);
 #endif
     uns8 k, red, green, blue;
     for (k = 0; k < sizeof(gLedBuf.led_array); ) {
@@ -205,14 +203,14 @@ void Ledstrip_SetColorDirect(uns8* pValues)
         ++k;
     }
 #ifdef cc3200
-    osi_LockObjUnlock(AccessLedBufferMutex);
+    xSemaphoreGive(g_AccessLedBufferMutex);
 #endif
 }
 
 void Ledstrip_DoFade(void)
 {
 #ifdef cc3200
-    osi_LockObjLock(AccessLedBufferMutex, OSI_WAIT_FOREVER);
+    xSemaphoreTake(g_AccessLedBufferMutex, portMAX_DELAY);
 #endif
     uns8 k, stepmask, stepSize;
     uns8* stepaddress = gLedBuf.step;
@@ -249,26 +247,26 @@ void Ledstrip_DoFade(void)
         INC_BIT_COUNTER(stepaddress, stepmask);
     }
 #ifdef cc3200
-    osi_LockObjUnlock(AccessLedBufferMutex);
+    xSemaphoreGive(g_AccessLedBufferMutex);
 #endif
 }
 
 void Ledstrip_UpdateLed(void)
 {
 #ifdef cc3200
-    osi_LockObjLock(AccessLedBufferMutex, OSI_WAIT_FOREVER);
+    xSemaphoreTake(g_AccessLedBufferMutex, portMAX_DELAY);
 #endif
     SPI_SendLedBuffer(gLedBuf.led_array);
 #ifdef cc3200
-    osi_MsgQWrite(PwmMessageQ, gLedBuf.led_array, OSI_NO_WAIT);
-    osi_LockObjUnlock(AccessLedBufferMutex);
+    xQueueSend(g_PwmMessageQ, gLedBuf.led_array, 0);
+    xSemaphoreGive(g_AccessLedBufferMutex);
 #endif
 }
 
 void Ledstrip_SetFade(struct cmd_set_fade* pCmd)
 {
 #ifdef cc3200
-    osi_LockObjLock(AccessLedBufferMutex, OSI_WAIT_FOREVER);
+    xSemaphoreTake(g_AccessLedBufferMutex, portMAX_DELAY);
 #endif
     // constant for this fade used in CALC_COLOR
     uns16 fadeTmms = ntohs(pCmd->fadeTmms);
@@ -300,7 +298,7 @@ void Ledstrip_SetFade(struct cmd_set_fade* pCmd)
     }
         );
 #ifdef cc3200
-    osi_LockObjUnlock(AccessLedBufferMutex);
+    xSemaphoreGive(g_AccessLedBufferMutex);
 #endif
 }
 
