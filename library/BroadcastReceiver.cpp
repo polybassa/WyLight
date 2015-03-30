@@ -132,6 +132,11 @@ size_t BroadcastReceiver::NumRemotes(void) const
     return mIpTable.size();
 }
 
+void BroadcastReceiver::ReadRecentEndpoints(void)
+{
+    this->ReadRecentEndpoints(this->mRecentFilename);
+}
+
 void BroadcastReceiver::ReadRecentEndpoints(const std::string& filename)
 {
     std::ifstream inFile;
@@ -154,6 +159,11 @@ void BroadcastReceiver::Stop(void)
     mIsRunning = false;
     UdpSocket sock(INADDR_LOOPBACK, mPort, false);
     sock.Send((uint8_t*)STOP_MSG.data(), STOP_MSG.size());
+}
+
+void BroadcastReceiver::WriteRecentEndpoints(void) const
+{
+    this->WriteRecentEndpoints(this->mRecentFilename);
 }
 
 void BroadcastReceiver::WriteRecentEndpoints(const std::string& filename, uint8_t threshold) const

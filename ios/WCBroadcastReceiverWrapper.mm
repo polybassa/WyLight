@@ -53,7 +53,7 @@ NSString *const TargetsChangedNotification = @"TargetsChangedNotification";
 								[endpointInArray setScore:1];
 							}
 						}
-						receiver->WriteRecentEndpoints();
+						receiver->WriteRecentEndpoints(filePath.UTF8String);
 						dispatch_async(dispatch_get_main_queue(), ^{
 							[self postNotification];
 

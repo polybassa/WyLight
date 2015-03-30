@@ -140,7 +140,12 @@
 
 	//script view
 	self.scriptView = [[NWScriptView alloc] initWithFrame:CGRectZero];
-    self.scriptView.insets = UIEdgeInsetsMake(90, 20, 0, 0);
+	
+	if(self.view.frame.size.height >= 560) {
+		self.scriptView.insets = UIEdgeInsetsMake(20, 20, 60, 0);
+	} else {
+    	self.scriptView.insets = UIEdgeInsetsMake(90, 20, 0, 0);
+	}
 	self.scriptView.dataSource = self;
 	self.scriptView.backgroundColor = [UIColor clearColor];
 	self.scriptView.delegate = self;

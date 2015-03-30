@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="x4A-Fz-YpF">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="x4A-Fz-YpF">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <scenes>
         <!--WyLight Remote-->
@@ -606,7 +606,7 @@
                         <viewControllerLayoutGuide type="top" id="gSL-Ks-jtG"/>
                         <viewControllerLayoutGuide type="bottom" id="Zpr-mT-ncU"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="xqq-Us-dTV">
+                    <view key="view" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="736" id="xqq-Us-dTV">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -726,6 +726,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="ozS-Lc-m4i"/>
-        <segue reference="8pP-j6-fdp"/>
+        <segue reference="mjx-lJ-NNo"/>
     </inferredMetricsTieBreakers>
 </document>

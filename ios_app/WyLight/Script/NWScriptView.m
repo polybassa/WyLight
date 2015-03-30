@@ -39,6 +39,7 @@
 	CGFloat yPosition = self.insets.top;
 	CGFloat height = self.frame.size.height - yPosition - self.insets.bottom;
 	CGFloat width = 0;
+	
 	for (NSUInteger i = 0; i < self.subviews.count; i++) {
         UIView *subview = [self viewWithTag:i];
 		if (subview && [subview isKindOfClass:[UIView class]]) {
@@ -47,7 +48,7 @@
 			xPosition += floorf(width) + self.scriptObjectSpacing;
 		}
 	}
-    [self setContentSize:CGSizeMake(xPosition + width, self.bounds.size.height)];
+   	[self setContentSize:CGSizeMake(xPosition + width, self.frame.size.height / 2)];
 }
 
 #pragma mark - SETTER

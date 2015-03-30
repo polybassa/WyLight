@@ -93,6 +93,7 @@ public:
      * @param filename of the file containing the recent endpoints
      */
     void ReadRecentEndpoints(const std::string& filename);
+    void ReadRecentEndpoints(void);
 
     /**
      * Sends a stop event to terminate execution of operator()
@@ -105,6 +106,7 @@ public:
      * @param threshold which an endpoints score has to have at least to be written to the file
      */
     void WriteRecentEndpoints(const std::string& filename, uint8_t threshold = 1) const;
+    void WriteRecentEndpoints(void) const;
 
     /**
      * Delete all recent endpoints in file and in the internal IpTables

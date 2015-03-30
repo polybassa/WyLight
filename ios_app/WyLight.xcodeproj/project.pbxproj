@@ -10,7 +10,6 @@
 		5C12FAB317FF05A000E4E65D /* NWScriptCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C12FAB217FF05A000E4E65D /* NWScriptCellView.m */; };
 		5C20B13B17F442B9001A67C7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C20B13A17F442B9001A67C7 /* QuartzCore.framework */; };
 		5C4F56EB17EC968E0039ADFF /* NWColorSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4F56EA17EC968E0039ADFF /* NWColorSliderViewController.m */; };
-		5C7488BD17FC2E0C00DB1B22 /* main.hex in Resources */ = {isa = PBXBuildFile; fileRef = 5C7488BC17FC2E0C00DB1B22 /* main.hex */; };
 		5C83957A17EB6138007EF0C6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C83957917EB6138007EF0C6 /* Foundation.framework */; };
 		5C83957C17EB6138007EF0C6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C83957B17EB6138007EF0C6 /* CoreGraphics.framework */; };
 		5C83957E17EB6138007EF0C6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C83957D17EB6138007EF0C6 /* UIKit.framework */; };
@@ -77,6 +76,9 @@
 		C000EE74182D6BA000019267 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C000EE73182D6BA000019267 /* CoreData.framework */; };
 		C000EE77182D6C8500019267 /* Script+defaultScripts.m in Sources */ = {isa = PBXBuildFile; fileRef = C000EE76182D6C8500019267 /* Script+defaultScripts.m */; };
 		C00DD4C21826C3EB00D17088 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C00DD4C01826C3EB00D17088 /* Model.xcdatamodeld */; };
+		C015FD121AC9A353002B7E2B /* BroadcastMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C015FD111AC9A353002B7E2B /* BroadcastMessage.cpp */; };
+		C015FD151AC9A376002B7E2B /* ConfigControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C015FD131AC9A376002B7E2B /* ConfigControl.cpp */; };
+		C015FD171AC9A407002B7E2B /* main.hex in Resources */ = {isa = PBXBuildFile; fileRef = C015FD161AC9A407002B7E2B /* main.hex */; };
 		C02501A01840EFE600BB996D /* StartupManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C025019E1840EFE600BB996D /* StartupManager.cpp */; };
 		C03444B1184263C500B1E91F /* Aller_Std_Rg.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C03444B0184263C500B1E91F /* Aller_Std_Rg.ttf */; };
 		C03444C118433F0100B1E91F /* Aller_Std_Bd.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C03444BC18433F0100B1E91F /* Aller_Std_Bd.ttf */; };
@@ -123,7 +125,6 @@
 		5C4F56E917EC968E0039ADFF /* NWColorSliderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWColorSliderViewController.h; path = ViewController/NWColorSliderViewController.h; sourceTree = "<group>"; };
 		5C4F56EA17EC968E0039ADFF /* NWColorSliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NWColorSliderViewController.m; path = ViewController/NWColorSliderViewController.m; sourceTree = "<group>"; };
 		5C7488BB17FC000300DB1B22 /* Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Version.h; path = ../../firmware/Version.h; sourceTree = "<group>"; };
-		5C7488BC17FC2E0C00DB1B22 /* main.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.hex; path = ../../../binary/main.hex; sourceTree = "<group>"; };
 		5C83957617EB6138007EF0C6 /* WyLight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WyLight.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C83957917EB6138007EF0C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5C83957B17EB6138007EF0C6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -250,6 +251,10 @@
 		C000EE75182D6C8500019267 /* Script+defaultScripts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Script+defaultScripts.h"; sourceTree = "<group>"; };
 		C000EE76182D6C8500019267 /* Script+defaultScripts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Script+defaultScripts.m"; sourceTree = "<group>"; };
 		C00DD4C11826C3EB00D17088 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		C015FD111AC9A353002B7E2B /* BroadcastMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BroadcastMessage.cpp; path = ../../library/BroadcastMessage.cpp; sourceTree = "<group>"; };
+		C015FD131AC9A376002B7E2B /* ConfigControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConfigControl.cpp; path = ../../library/ConfigControl.cpp; sourceTree = "<group>"; };
+		C015FD141AC9A376002B7E2B /* ConfigControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConfigControl.h; path = ../../library/ConfigControl.h; sourceTree = "<group>"; };
+		C015FD161AC9A407002B7E2B /* main.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.hex; path = ../../../exe/main.hex; sourceTree = "<group>"; };
 		C025019E1840EFE600BB996D /* StartupManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StartupManager.cpp; path = ../../library/StartupManager.cpp; sourceTree = "<group>"; };
 		C025019F1840EFE600BB996D /* StartupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StartupManager.h; path = ../../library/StartupManager.h; sourceTree = "<group>"; tabWidth = 4; usesTabs = 1; wrapsLines = 1; };
 		C03444B0184263C500B1E91F /* Aller_Std_Rg.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aller_Std_Rg.ttf; sourceTree = "<group>"; };
@@ -427,8 +432,8 @@
 		5C83958017EB6138007EF0C6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C015FD161AC9A407002B7E2B /* main.hex */,
 				C074FE341848E38F007A1ADC /* WyLight_64.png */,
-				5C7488BC17FC2E0C00DB1B22 /* main.hex */,
 				5C83958817EB6138007EF0C6 /* NWAppDelegate.h */,
 				5C83958917EB6138007EF0C6 /* NWAppDelegate.m */,
 				5C83958117EB6138007EF0C6 /* WyLight-Info.plist */,
@@ -462,6 +467,9 @@
 		5C8395E517EB61BF007EF0C6 /* WiflyControlModel */ = {
 			isa = PBXGroup;
 			children = (
+				C015FD131AC9A376002B7E2B /* ConfigControl.cpp */,
+				C015FD141AC9A376002B7E2B /* ConfigControl.h */,
+				C015FD111AC9A353002B7E2B /* BroadcastMessage.cpp */,
 				C025019E1840EFE600BB996D /* StartupManager.cpp */,
 				C025019F1840EFE600BB996D /* StartupManager.h */,
 				5C7488BB17FC000300DB1B22 /* Version.h */,
@@ -741,6 +749,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C015FD171AC9A407002B7E2B /* main.hex in Resources */,
 				5C83962C17EB6C00007EF0C6 /* checkerboard@2x.png in Resources */,
 				5C83963617EB6C00007EF0C6 /* pickerColorWheel.png in Resources */,
 				C044BB961823B6750097151D /* ViewControllerLocalization.strings in Resources */,
@@ -759,7 +768,6 @@
 				C03444C118433F0100B1E91F /* Aller_Std_Bd.ttf in Resources */,
 				C044BB901823B4800097151D /* ScriptObjectEditViewsLocalization.strings in Resources */,
 				5C83962D17EB6C00007EF0C6 /* colorPickerKnob.png in Resources */,
-				5C7488BD17FC2E0C00DB1B22 /* main.hex in Resources */,
 				5C83962E17EB6C00007EF0C6 /* colorPickerKnob@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -809,6 +817,7 @@
 				5C83963317EB6C00007EF0C6 /* KZColorPickerHSWheel.m in Sources */,
 				C0738547183BCC160032FCFE /* UIView+setEnable.m in Sources */,
 				5CDE70801809A7CA0032D2F0 /* NWGradientEditView.m in Sources */,
+				C015FD121AC9A353002B7E2B /* BroadcastMessage.cpp in Sources */,
 				C00DD4C21826C3EB00D17088 /* Model.xcdatamodeld in Sources */,
 				5C4F56EB17EC968E0039ADFF /* NWColorSliderViewController.m in Sources */,
 				5C12FAB317FF05A000E4E65D /* NWScriptCellView.m in Sources */,
@@ -818,6 +827,7 @@
 				5C90B3C117F3714B00BAC74F /* NWScriptViewController.m in Sources */,
 				5C90B39317EF56A000BAC74F /* ALRadialButton.m in Sources */,
 				5C83963817EB6C00007EF0C6 /* UIColor-Expanded.m in Sources */,
+				C015FD151AC9A376002B7E2B /* ConfigControl.cpp in Sources */,
 				5CDE707D180987B40032D2F0 /* NWComplexScriptCommandEditorViewController.m in Sources */,
 				5C90B39A17EF56F300BAC74F /* NWScriptObjectView.m in Sources */,
 				5C83963217EB6C00007EF0C6 /* KZColorPickerBrightnessSlider.m in Sources */,
