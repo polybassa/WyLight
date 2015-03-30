@@ -113,7 +113,7 @@ ut: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 filedownloader: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
 ENDINGS=c h cpp
-CODE_DIRS=android cc_bl cc_fw cc_te cli common firmware library sim
+CODE_DIRS=android cc_bl cc_fw cc_te cli common driverlib firmware library sim
 filelist:
 	@rm -f $@.txt
 	@$(foreach END, ${ENDINGS}, $(foreach DIR, ${CODE_DIRS}, find ./$(DIR) -name "*.$(END)" >> $@.txt;))

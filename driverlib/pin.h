@@ -50,17 +50,17 @@
 extern "C"
 {
 #endif
-    
+
 #include <stdbool.h>
 
 //*****************************************************************************
 // Macros Defining Pins
 //*****************************************************************************
 
-#define PIN_01 	 0x00000000
-#define PIN_02 	 0x00000001
+#define PIN_01   0x00000000
+#define PIN_02   0x00000001
 #define PIN_03   0x00000002
-#define PIN_04 	 0x00000003
+#define PIN_04   0x00000003
 #define PIN_05   0x00000004
 #define PIN_06   0x00000005
 #define PIN_07   0x00000006
@@ -73,7 +73,7 @@ extern "C"
 #define PIN_16   0x0000000F
 #define PIN_17   0x00000010
 #define PIN_18   0x00000011
-#define PIN_19 	 0x00000012
+#define PIN_19   0x00000012
 #define PIN_20   0x00000013
 #define PIN_21   0x00000014
 #define PIN_45   0x0000002C
@@ -90,33 +90,31 @@ extern "C"
 #define PIN_58   0x00000039
 #define PIN_59   0x0000003A
 #define PIN_60   0x0000003B
-#define PIN_61	 0x0000003C
-#define PIN_62	 0x0000003D
-#define PIN_63	 0x0000003E
-#define PIN_64	 0x0000003F
-
-
+#define PIN_61   0x0000003C
+#define PIN_62   0x0000003D
+#define PIN_63   0x0000003E
+#define PIN_64   0x0000003F
 
 //*****************************************************************************
 // Macros that can be used with PinConfigSet(), PinTypeGet(), PinStrengthGet()
 //*****************************************************************************
 
-#define PIN_MODE_0	 0x00000000
-#define PIN_MODE_1	 0x00000001
-#define PIN_MODE_2	 0x00000002
-#define PIN_MODE_3	 0x00000003
-#define PIN_MODE_4	 0x00000004
-#define PIN_MODE_5	 0x00000005
-#define PIN_MODE_6	 0x00000006
-#define PIN_MODE_7	 0x00000007
-#define PIN_MODE_8	 0x00000008
-#define PIN_MODE_9	 0x00000009
-#define PIN_MODE_10	 0x0000000A
-#define PIN_MODE_11	 0x0000000B
-#define PIN_MODE_12	 0x0000000C
-#define PIN_MODE_13	 0x0000000D
-#define PIN_MODE_14	 0x0000000E
-#define PIN_MODE_15	 0x0000000F
+#define PIN_MODE_0   0x00000000
+#define PIN_MODE_1   0x00000001
+#define PIN_MODE_2   0x00000002
+#define PIN_MODE_3   0x00000003
+#define PIN_MODE_4   0x00000004
+#define PIN_MODE_5   0x00000005
+#define PIN_MODE_6   0x00000006
+#define PIN_MODE_7   0x00000007
+#define PIN_MODE_8   0x00000008
+#define PIN_MODE_9   0x00000009
+#define PIN_MODE_10  0x0000000A
+#define PIN_MODE_11  0x0000000B
+#define PIN_MODE_12  0x0000000C
+#define PIN_MODE_13  0x0000000D
+#define PIN_MODE_14  0x0000000E
+#define PIN_MODE_15  0x0000000F
 
 //*****************************************************************************
 // Macros that can be used with PinDirModeSet() and returned from
@@ -142,7 +140,6 @@ extern "C"
 #define PIN_TYPE_OD_PD    0x00000210
 #define PIN_TYPE_ANALOG   0x10000000
 
-
 //*****************************************************************************
 //
 // API Function prototypes
@@ -152,21 +149,20 @@ extern void PinModeSet(unsigned long ulPin, unsigned long ulPinMode);
 extern void PinDirModeSet(unsigned long ulPin, unsigned long ulPinIO);
 extern unsigned long PinDirModeGet(unsigned long ulPin);
 extern unsigned long PinModeGet(unsigned long ulPin);
-extern void PinConfigGet(unsigned long ulPin,unsigned long  *pulPinStrength,
-	       					unsigned long *pulPinType);
-extern void PinConfigSet(unsigned long ulPin,unsigned long  ulPinStrength,
-						unsigned long ulPinType);
-extern void PinTypeUART(unsigned long ulPin,unsigned long ulPinMode);
-extern void PinTypeI2C(unsigned long ulPin,unsigned long ulPinMode);
-extern void PinTypeSPI(unsigned long ulPin,unsigned long ulPinMode);
-extern void PinTypeI2S(unsigned long ulPin,unsigned long ulPinMode);
-extern void PinTypeTimer(unsigned long ulPin,unsigned long ulPinMode);
-extern void PinTypeCamera(unsigned long ulPin,unsigned long ulPinMode);
-extern void PinTypeGPIO(unsigned long ulPin,unsigned long ulPinMode,
+extern void PinConfigGet(unsigned long ulPin, unsigned long* pulPinStrength,
+                         unsigned long* pulPinType);
+extern void PinConfigSet(unsigned long ulPin, unsigned long ulPinStrength,
+                         unsigned long ulPinType);
+extern void PinTypeUART(unsigned long ulPin, unsigned long ulPinMode);
+extern void PinTypeI2C(unsigned long ulPin, unsigned long ulPinMode);
+extern void PinTypeSPI(unsigned long ulPin, unsigned long ulPinMode);
+extern void PinTypeI2S(unsigned long ulPin, unsigned long ulPinMode);
+extern void PinTypeTimer(unsigned long ulPin, unsigned long ulPinMode);
+extern void PinTypeCamera(unsigned long ulPin, unsigned long ulPinMode);
+extern void PinTypeGPIO(unsigned long ulPin, unsigned long ulPinMode,
                         bool bOpenDrain);
-extern void PinTypeADC(unsigned long ulPin,unsigned long ulPinMode);
-extern void PinTypeSDHost(unsigned long ulPin,unsigned long ulPinMode);
-
+extern void PinTypeADC(unsigned long ulPin, unsigned long ulPinMode);
+extern void PinTypeSDHost(unsigned long ulPin, unsigned long ulPinMode);
 
 #ifdef __cplusplus
 }

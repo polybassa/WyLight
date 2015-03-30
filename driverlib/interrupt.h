@@ -50,7 +50,7 @@
 extern "C"
 {
 #endif
-    
+
 #include <stdbool.h>
 
 //*****************************************************************************
@@ -60,13 +60,11 @@ extern "C"
 // pointers.
 //
 //*****************************************************************************
-typedef union
-{
-    void (*pfnHandler)(void);
+typedef union {
+    void (* pfnHandler)(void);
     unsigned long ulPtr;
 }
 uVectorEntry;
-
 
 //*****************************************************************************
 //
@@ -96,7 +94,7 @@ uVectorEntry;
 extern bool IntMasterEnable(void);
 extern bool IntMasterDisable(void);
 extern void IntVTableBaseSet(unsigned long ulVtableBase);
-extern void IntRegister(unsigned long ulInterrupt, void (*pfnHandler)(void));
+extern void IntRegister(unsigned long ulInterrupt, void (* pfnHandler)(void));
 extern void IntUnregister(unsigned long ulInterrupt);
 extern void IntPriorityGroupingSet(unsigned long ulBits);
 extern unsigned long IntPriorityGroupingGet(void);

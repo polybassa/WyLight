@@ -52,6 +52,9 @@
 #include "crc.h"
 #include "debug.h"
 
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR |
+                                                        ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+
 //*****************************************************************************
 //
 //! Set the configuration of CRC functionality with the EC module.
@@ -210,8 +213,7 @@ CRCResultRead(uint32_t ui32Base)
     //
     // return value.
     //
-    return(HWREG(DTHE_BASE + DTHE_O_CRC_RSLT_PP));
-
+    return HWREG(DTHE_BASE + DTHE_O_CRC_RSLT_PP);
 }
 
 //*****************************************************************************
@@ -241,11 +243,11 @@ CRCResultRead(uint32_t ui32Base)
 //
 //*****************************************************************************
 uint32_t
-CRCDataProcess(uint32_t ui32Base, void *puiDataIn,
+CRCDataProcess(uint32_t ui32Base, void* puiDataIn,
                uint32_t ui32DataLength, uint32_t ui32Config)
 {
-    uint8_t *pui8DataIn;
-    uint32_t *pui32DataIn;
+    uint8_t* pui8DataIn;
+    uint32_t* pui32DataIn;
 
     //
     // Check the arguments.
@@ -255,33 +257,28 @@ CRCDataProcess(uint32_t ui32Base, void *puiDataIn,
     //
     // See if the CRC is operating in 8-bit or 32-bit mode.
     //
-    if(ui32Config & DTHE_CRC_CTRL_SIZE)
-    {
+    if (ui32Config & DTHE_CRC_CTRL_SIZE) {
         //
         // The CRC is operating in 8-bit mode, so create an 8-bit pointer to
         // the data.
         //
-        pui8DataIn = (uint8_t *)puiDataIn;
+        pui8DataIn = (uint8_t*)puiDataIn;
 
         //
         // Loop through the input data.
         //
-        while(ui32DataLength--)
-        {
+        while (ui32DataLength--) {
             //
             // Write the next data byte.
             //
             HWREG(ui32Base + DTHE_O_CRC_DIN) = *pui8DataIn++;
         }
-    }
-    else
-    {
+    } else {
         //
         // The CRC is operating in 32-bit mode, so loop through the input data.
         //
-    	pui32DataIn = (uint32_t *)puiDataIn;
-        while(ui32DataLength--)
-        {
+        pui32DataIn = (uint32_t*)puiDataIn;
+        while (ui32DataLength--) {
             //
             // Write the next data word.
             //
@@ -292,10 +289,8 @@ CRCDataProcess(uint32_t ui32Base, void *puiDataIn,
     //
     // Return the result.
     //
-    return(CRCResultRead(ui32Base));
+    return CRCResultRead(ui32Base);
 }
-
-
 
 //*****************************************************************************
 //

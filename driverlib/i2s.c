@@ -54,17 +54,16 @@
 //*****************************************************************************
 // Macros
 //*****************************************************************************
-#define MCASP_GBL_RCLK		0x00000001
-#define MCASP_GBL_RHCLK		0x00000002
-#define MCASP_GBL_RSER		0x00000004
-#define MCASP_GBL_RSM		0x00000008
-#define MCASP_GBL_RFSYNC	0x00000010
-#define MCASP_GBL_XCLK		0x00000100
-#define MCASP_GBL_XHCLK		0x00000200
-#define MCASP_GBL_XSER		0x00000400
-#define MCASP_GBL_XSM		0x00000800
-#define MCASP_GBL_XFSYNC	0x00001000
-
+#define MCASP_GBL_RCLK      0x00000001
+#define MCASP_GBL_RHCLK     0x00000002
+#define MCASP_GBL_RSER      0x00000004
+#define MCASP_GBL_RSM       0x00000008
+#define MCASP_GBL_RFSYNC    0x00000010
+#define MCASP_GBL_XCLK      0x00000100
+#define MCASP_GBL_XHCLK     0x00000200
+#define MCASP_GBL_XSER      0x00000400
+#define MCASP_GBL_XSM       0x00000800
+#define MCASP_GBL_XFSYNC    0x00001000
 
 //*****************************************************************************
 //
@@ -81,31 +80,27 @@
 //*****************************************************************************
 static void I2SGBLEnable(unsigned long ulBase, unsigned long ulFlag)
 {
-  unsigned long ulReg;
+    unsigned long ulReg;
 
-  //
-  // Read global control register
-  //
-  ulReg = HWREG(ulBase + MCASP_O_GBLCTL);
+    //
+    // Read global control register
+    //
+    ulReg = HWREG(ulBase + MCASP_O_GBLCTL);
 
-  //
-  // Remove the sub modules reset as specified by ulFlag parameter
-  //
-  ulReg |= ulFlag;
+    //
+    // Remove the sub modules reset as specified by ulFlag parameter
+    //
+    ulReg |= ulFlag;
 
-  //
-  // Write the configuration
-  //
-  HWREG(ulBase + MCASP_O_GBLCTL) = ulReg;
+    //
+    // Write the configuration
+    //
+    HWREG(ulBase + MCASP_O_GBLCTL) = ulReg;
 
-  //
-  // Wait for write completeion
-  //
-  while(HWREG(ulBase + MCASP_O_GBLCTL) != ulReg)
-  {
-
-  }
-
+    //
+    // Wait for write completeion
+    //
+    while (HWREG(ulBase + MCASP_O_GBLCTL) != ulReg) {}
 }
 
 //*****************************************************************************
@@ -126,66 +121,64 @@ static void I2SGBLEnable(unsigned long ulBase, unsigned long ulFlag)
 //*****************************************************************************
 void I2SEnable(unsigned long ulBase, unsigned long ulMode)
 {
-  //
-  // Set FSYNC anc BitClk as output
-  //
-  HWREG(ulBase + MCASP_O_PDIR) |= 0x14000000;
+    //
+    // Set FSYNC anc BitClk as output
+    //
+    HWREG(ulBase + MCASP_O_PDIR) |= 0x14000000;
 
-  if(ulMode & 0x2)
-  {
-    //
-    // Remove Rx HCLK reset
-    //
-    I2SGBLEnable(ulBase, MCASP_GBL_RHCLK);
+    if (ulMode & 0x2) {
+        //
+        // Remove Rx HCLK reset
+        //
+        I2SGBLEnable(ulBase, MCASP_GBL_RHCLK);
 
-    //
-    // Remove Rx XCLK reset
-    //
-    I2SGBLEnable(ulBase, MCASP_GBL_RCLK);
+        //
+        // Remove Rx XCLK reset
+        //
+        I2SGBLEnable(ulBase, MCASP_GBL_RCLK);
 
-    //
-    // Enable Rx SERDES(s)
-    //
-    I2SGBLEnable(ulBase, MCASP_GBL_RSER);
+        //
+        // Enable Rx SERDES(s)
+        //
+        I2SGBLEnable(ulBase, MCASP_GBL_RSER);
 
-    //
-    // Enable Rx state machine
-    //
-    I2SGBLEnable(ulBase, MCASP_GBL_RSM);
+        //
+        // Enable Rx state machine
+        //
+        I2SGBLEnable(ulBase, MCASP_GBL_RSM);
 
-    //
-    // Enable FSync generator
-    //
-    I2SGBLEnable(ulBase, MCASP_GBL_RFSYNC);
-  }
+        //
+        // Enable FSync generator
+        //
+        I2SGBLEnable(ulBase, MCASP_GBL_RFSYNC);
+    }
 
-  if(ulMode & 0x1)
-  {
-    //
-    // Remove Tx HCLK reset
-    //
-    I2SGBLEnable(ulBase, MCASP_GBL_XHCLK);
+    if (ulMode & 0x1) {
+        //
+        // Remove Tx HCLK reset
+        //
+        I2SGBLEnable(ulBase, MCASP_GBL_XHCLK);
 
-    //
-    // Remove Tx XCLK reset
-    //
-    I2SGBLEnable(ulBase, MCASP_GBL_XCLK);
+        //
+        // Remove Tx XCLK reset
+        //
+        I2SGBLEnable(ulBase, MCASP_GBL_XCLK);
 
-    //
-    // Enable Tx SERDES(s)
-    //
-    I2SGBLEnable(ulBase, MCASP_GBL_XSER);
+        //
+        // Enable Tx SERDES(s)
+        //
+        I2SGBLEnable(ulBase, MCASP_GBL_XSER);
 
-    //
-    // Enable Tx state machine
-    //
-    I2SGBLEnable(ulBase, MCASP_GBL_XSM);
+        //
+        // Enable Tx state machine
+        //
+        I2SGBLEnable(ulBase, MCASP_GBL_XSM);
 
-    //
-    // Enable FSync generator
-    //
-    I2SGBLEnable(ulBase, MCASP_GBL_XFSYNC);
-  }
+        //
+        // Enable FSync generator
+        //
+        I2SGBLEnable(ulBase, MCASP_GBL_XFSYNC);
+    }
 }
 
 //*****************************************************************************
@@ -201,18 +194,15 @@ void I2SEnable(unsigned long ulBase, unsigned long ulMode)
 //*****************************************************************************
 void I2SDisable(unsigned long ulBase)
 {
-  //
-  // Reset all sub modules
-  //
-  HWREG(ulBase + MCASP_O_GBLCTL) = 0;
+    //
+    // Reset all sub modules
+    //
+    HWREG(ulBase + MCASP_O_GBLCTL) = 0;
 
-  //
-  // Wait for write to complete
-  //
-  while( HWREG(ulBase + MCASP_O_GBLCTL) != 0)
-  {
-
-  }
+    //
+    // Wait for write to complete
+    //
+    while (HWREG(ulBase + MCASP_O_GBLCTL) != 0) {}
 }
 
 //*****************************************************************************
@@ -233,23 +223,20 @@ void I2SDisable(unsigned long ulBase)
 void I2SDataPut(unsigned long ulBase, unsigned long ulDataLine,
                 unsigned long ulData)
 {
-  //
-  // Compute register the offeset
-  //
-  ulDataLine = (ulDataLine-1) << 2;
+    //
+    // Compute register the offeset
+    //
+    ulDataLine = (ulDataLine - 1) << 2;
 
-  //
-  // Wait for free space in fifo
-  //
-  while(!( HWREG(ulBase + MCASP_O_TXSTAT) & MCASP_TXSTAT_XDATA))
-  {
+    //
+    // Wait for free space in fifo
+    //
+    while (!(HWREG(ulBase + MCASP_O_TXSTAT) & MCASP_TXSTAT_XDATA)) {}
 
-  }
-
-  //
-  // Write Data into the FIFO
-  //
-  HWREG(ulBase + MCASP_O_TXBUF0 + ulDataLine) = ulData;
+    //
+    // Write Data into the FIFO
+    //
+    HWREG(ulBase + MCASP_O_TXBUF0 + ulDataLine) = ulData;
 }
 
 //*****************************************************************************
@@ -268,31 +255,29 @@ void I2SDataPut(unsigned long ulBase, unsigned long ulDataLine,
 //! \return Returns 0 on success, -1 otherwise.
 //
 //*****************************************************************************
-long I2SDataPutNonBlocking(unsigned long ulBase,  unsigned long ulDataLine,
+long I2SDataPutNonBlocking(unsigned long ulBase, unsigned long ulDataLine,
                            unsigned long ulData)
 {
-
-  //
-  // Compute register the offeset
-  //
-  ulDataLine = (ulDataLine-1) << 2;
-
-  //
-  // Send Data if fifo has free space
-  //
-  if( HWREG(ulBase + MCASP_O_TXSTAT) & MCASP_TXSTAT_XDATA)
-  {
     //
-    // Write data into the FIFO
+    // Compute register the offeset
     //
-    HWREG(ulBase + MCASP_O_TXBUF0 + ulDataLine) = ulData;
-    return 0;
-  }
+    ulDataLine = (ulDataLine - 1) << 2;
 
-  //
-  // FIFO is full
-  //
-  return(-1);
+    //
+    // Send Data if fifo has free space
+    //
+    if (HWREG(ulBase + MCASP_O_TXSTAT) & MCASP_TXSTAT_XDATA) {
+        //
+        // Write data into the FIFO
+        //
+        HWREG(ulBase + MCASP_O_TXBUF0 + ulDataLine) = ulData;
+        return 0;
+    }
+
+    //
+    // FIFO is full
+    //
+    return -1;
 }
 
 //*****************************************************************************
@@ -311,28 +296,23 @@ long I2SDataPutNonBlocking(unsigned long ulBase,  unsigned long ulDataLine,
 //
 //*****************************************************************************
 void I2SDataGet(unsigned long ulBase, unsigned long ulDataLine,
-                unsigned long *pulData)
+                unsigned long* pulData)
 {
+    //
+    // Compute register the offeset
+    //
+    ulDataLine = (ulDataLine - 1) << 2;
 
-  //
-  // Compute register the offeset
-  //
-  ulDataLine = (ulDataLine-1) << 2;
+    //
+    // Wait for atleat on word in FIFO
+    //
+    while (!(HWREG(ulBase + MCASP_O_RXSTAT) & MCASP_RXSTAT_RDATA)) {}
 
-  //
-  // Wait for atleat on word in FIFO
-  //
-  while(!(HWREG(ulBase + MCASP_O_RXSTAT) & MCASP_RXSTAT_RDATA))
-  {
-
-  }
-
-  //
-  // Read the Data
-  //
-  *pulData = HWREG(ulBase + MCASP_O_RXBUF0 + ulDataLine);
+    //
+    // Read the Data
+    //
+    *pulData = HWREG(ulBase + MCASP_O_RXBUF0 + ulDataLine);
 }
-
 
 //*****************************************************************************
 //
@@ -350,32 +330,29 @@ void I2SDataGet(unsigned long ulBase, unsigned long ulDataLine,
 //
 //*****************************************************************************
 long I2SDataGetNonBlocking(unsigned long ulBase, unsigned long ulDataLine,
-                unsigned long *pulData)
+                           unsigned long* pulData)
 {
-
-  //
-  // Compute register the offeset
-  //
-  ulDataLine = (ulDataLine-1) << 2;
-
-  //
-  // Check if data is available in FIFO
-  //
-  if(HWREG(ulBase + MCASP_O_RXSTAT) & MCASP_RXSTAT_RDATA)
-  {
     //
-    // Read the Data
+    // Compute register the offeset
     //
-    *pulData = HWREG(ulBase + MCASP_O_RXBUF0 + ulDataLine);
-    return 0;
-  }
+    ulDataLine = (ulDataLine - 1) << 2;
 
-  //
-  // FIFO is empty
-  //
-  return -1;
+    //
+    // Check if data is available in FIFO
+    //
+    if (HWREG(ulBase + MCASP_O_RXSTAT) & MCASP_RXSTAT_RDATA) {
+        //
+        // Read the Data
+        //
+        *pulData = HWREG(ulBase + MCASP_O_RXBUF0 + ulDataLine);
+        return 0;
+    }
+
+    //
+    // FIFO is empty
+    //
+    return -1;
 }
-
 
 //*****************************************************************************
 //
@@ -405,73 +382,72 @@ long I2SDataGetNonBlocking(unsigned long ulBase, unsigned long ulDataLine,
 //
 //*****************************************************************************
 void I2SConfigSetExpClk(unsigned long ulBase, unsigned long ulI2SClk,
-                               unsigned long ulBitClk, unsigned long ulConfig)
+                        unsigned long ulBitClk, unsigned long ulConfig)
 {
-  unsigned long ulHClkDiv;
-  unsigned long ulClkDiv;
-
-  //
-  // Calculate clock dividers
-  //
-  ulHClkDiv = ((ulI2SClk/ulBitClk)-1);
-  ulClkDiv  = 0;
-
-  //
-  // Check if HCLK divider is overflowing
-  //
-  if(ulHClkDiv > 0xFFF)
-  {
-    ulHClkDiv = 0xFFF;
+    unsigned long ulHClkDiv;
+    unsigned long ulClkDiv;
 
     //
-    // Calculate clock divider
+    // Calculate clock dividers
     //
-    ulClkDiv = ((ulI2SClk/(ulBitClk * (ulHClkDiv + 1))) & 0x1F);
-  }
+    ulHClkDiv = ((ulI2SClk / ulBitClk) - 1);
+    ulClkDiv = 0;
 
-  HWREG(ulBase + MCASP_O_ACLKXCTL) = (0xA0|ulClkDiv);
+    //
+    // Check if HCLK divider is overflowing
+    //
+    if (ulHClkDiv > 0xFFF) {
+        ulHClkDiv = 0xFFF;
 
-  HWREG(ulBase + MCASP_O_AHCLKXCTL) = (0x8000|ulHClkDiv);
+        //
+        // Calculate clock divider
+        //
+        ulClkDiv = ((ulI2SClk / (ulBitClk * (ulHClkDiv + 1))) & 0x1F);
+    }
 
-  //
-  // Write the Tx format register
-  //
-  HWREG(ulBase + MCASP_O_TXFMT) = (0x18000 | (ulConfig & 0xFFFF));
+    HWREG(ulBase + MCASP_O_ACLKXCTL) = (0xA0 | ulClkDiv);
 
-  //
-  // Write the Rx format register
-  //
-  HWREG(ulBase + MCASP_O_RXFMT) = (0x18000 | ((ulConfig >> 16) &0xFFFF));
+    HWREG(ulBase + MCASP_O_AHCLKXCTL) = (0x8000 | ulHClkDiv);
 
-  //
-  // Configure Tx FSync generator in I2S mode
-  //
-  HWREG(ulBase + MCASP_O_TXFMCTL) = 0x113;
+    //
+    // Write the Tx format register
+    //
+    HWREG(ulBase + MCASP_O_TXFMT) = (0x18000 | (ulConfig & 0xFFFF));
 
-  //
-  // Configure Rx FSync generator in I2S mode
-  //
-  HWREG(ulBase + MCASP_O_RXFMCTL) = 0x113;
+    //
+    // Write the Rx format register
+    //
+    HWREG(ulBase + MCASP_O_RXFMT) = (0x18000 | ((ulConfig >> 16) & 0xFFFF));
 
-  //
-  // Set Tx bit valid mask
-  //
-  HWREG(ulBase + MCASP_O_TXMASK) = 0xFFFFFFFF;
+    //
+    // Configure Tx FSync generator in I2S mode
+    //
+    HWREG(ulBase + MCASP_O_TXFMCTL) = 0x113;
 
-  //
-  // Set Rx bit valid mask
-  //
-  HWREG(ulBase + MCASP_O_RXMASK) = 0xFFFFFFFF;
+    //
+    // Configure Rx FSync generator in I2S mode
+    //
+    HWREG(ulBase + MCASP_O_RXFMCTL) = 0x113;
 
-  //
-  // Set Tx slot valid mask
-  //
-  HWREG(ulBase + MCASP_O_TXTDM) = 0x3;
+    //
+    // Set Tx bit valid mask
+    //
+    HWREG(ulBase + MCASP_O_TXMASK) = 0xFFFFFFFF;
 
-  //
-  // Set Rx slot valid mask
-  //
-  HWREG(ulBase + MCASP_O_RXTDM) = 0x3;
+    //
+    // Set Rx bit valid mask
+    //
+    HWREG(ulBase + MCASP_O_RXMASK) = 0xFFFFFFFF;
+
+    //
+    // Set Tx slot valid mask
+    //
+    HWREG(ulBase + MCASP_O_TXTDM) = 0x3;
+
+    //
+    // Set Rx slot valid mask
+    //
+    HWREG(ulBase + MCASP_O_RXTDM) = 0x3;
 }
 
 //*****************************************************************************
@@ -498,13 +474,12 @@ void I2SConfigSetExpClk(unsigned long ulBase, unsigned long ulI2SClk,
 void I2STxFIFOEnable(unsigned long ulBase, unsigned long ulTxLevel,
                      unsigned long ulWordsPerTransfer)
 {
-  //
-  // Set transmit FIFO configuration and
-  // enable it
-  //
-  HWREG(ulBase + MCASP_0_WFIFOCTL) = ((1 <<16) | ((ulTxLevel & 0xFF) << 8)
-					| (ulWordsPerTransfer & 0x1F));
-
+    //
+    // Set transmit FIFO configuration and
+    // enable it
+    //
+    HWREG(ulBase + MCASP_0_WFIFOCTL) = ((1 << 16) | ((ulTxLevel & 0xFF) << 8) |
+                                        (ulWordsPerTransfer & 0x1F));
 }
 
 //*****************************************************************************
@@ -520,10 +495,10 @@ void I2STxFIFOEnable(unsigned long ulBase, unsigned long ulTxLevel,
 //*****************************************************************************
 void I2STxFIFODisable(unsigned long ulBase)
 {
-  //
-  // Disable transmit FIFO.
-  //
-  HWREG(ulBase + MCASP_0_WFIFOCTL) = 0;
+    //
+    // Disable transmit FIFO.
+    //
+    HWREG(ulBase + MCASP_0_WFIFOCTL) = 0;
 }
 
 //*****************************************************************************
@@ -550,12 +525,11 @@ void I2STxFIFODisable(unsigned long ulBase)
 void I2SRxFIFOEnable(unsigned long ulBase, unsigned long ulRxLevel,
                      unsigned long ulWordsPerTransfer)
 {
-  //
-  // Set FIFO configuration
-  //
-  HWREG(ulBase + MCASP_0_RFIFOCTL) = ( (1 <<16) | ((ulRxLevel & 0xFF) << 8)
-					| (ulWordsPerTransfer & 0x1F));
-
+    //
+    // Set FIFO configuration
+    //
+    HWREG(ulBase + MCASP_0_RFIFOCTL) = ((1 << 16) | ((ulRxLevel & 0xFF) << 8) |
+                                        (ulWordsPerTransfer & 0x1F));
 }
 
 //*****************************************************************************
@@ -571,10 +545,10 @@ void I2SRxFIFOEnable(unsigned long ulBase, unsigned long ulRxLevel,
 //*****************************************************************************
 void I2SRxFIFODisable(unsigned long ulBase)
 {
-  //
-  // Disable receive FIFO.
-  //
-  HWREG(ulBase + MCASP_0_RFIFOCTL) = 0;
+    //
+    // Disable receive FIFO.
+    //
+    HWREG(ulBase + MCASP_0_RFIFOCTL) = 0;
 }
 
 //*****************************************************************************
@@ -591,10 +565,10 @@ void I2SRxFIFODisable(unsigned long ulBase)
 //*****************************************************************************
 unsigned long I2STxFIFOStatusGet(unsigned long ulBase)
 {
-  //
-  // Return transmit FIFO level
-  //
-  return HWREG(ulBase + MCASP_0_WFIFOSTS);
+    //
+    // Return transmit FIFO level
+    //
+    return HWREG(ulBase + MCASP_0_WFIFOSTS);
 }
 
 //*****************************************************************************
@@ -611,10 +585,10 @@ unsigned long I2STxFIFOStatusGet(unsigned long ulBase)
 //*****************************************************************************
 unsigned long I2SRxFIFOStatusGet(unsigned long ulBase)
 {
-  //
-  // Return receive FIFO level
-  //
-  return HWREG(ulBase + MCASP_0_RFIFOSTS);
+    //
+    // Return receive FIFO level
+    //
+    return HWREG(ulBase + MCASP_0_RFIFOSTS);
 }
 
 //*****************************************************************************
@@ -650,26 +624,22 @@ unsigned long I2SRxFIFOStatusGet(unsigned long ulBase)
 void I2SSerializerConfig(unsigned long ulBase, unsigned long ulDataLine,
                          unsigned long ulSerMode, unsigned long ulInActState)
 {
-  if( ulSerMode == I2S_SER_MODE_TX)
-  {
-    //
-    // Set the data line in output mode
-    //
-    HWREG(ulBase + MCASP_O_PDIR) |= ulDataLine;
-  }
-  else
-  {
-    //
-    // Set the data line in input mode
-    //
-    HWREG(ulBase + MCASP_O_PDIR) &= ~ulDataLine;
-  }
+    if (ulSerMode == I2S_SER_MODE_TX)
+        //
+        // Set the data line in output mode
+        //
+        HWREG(ulBase + MCASP_O_PDIR) |= ulDataLine;
+    else
+        //
+        // Set the data line in input mode
+        //
+        HWREG(ulBase + MCASP_O_PDIR) &= ~ulDataLine;
 
-  //
-  // Set the serializer configuration.
-  //
-  HWREG(ulBase + MCASP_O_XRSRCTL0 + ((ulDataLine-1) << 2))
-                                            = (ulSerMode | ulInActState);
+    //
+    // Set the serializer configuration.
+    //
+    HWREG(ulBase + MCASP_O_XRSRCTL0 + ((ulDataLine - 1) << 2)) =
+        (ulSerMode | ulInActState);
 }
 
 //*****************************************************************************
@@ -703,22 +673,21 @@ void I2SSerializerConfig(unsigned long ulBase, unsigned long ulDataLine,
 //*****************************************************************************
 void I2SIntEnable(unsigned long ulBase, unsigned long ulIntFlags)
 {
+    //
+    // Enable DMA done interrupts
+    //
+    HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_MASK_CLR) |=
+        ((ulIntFlags & 0xC0000000) >> 20);
 
-  //
-  // Enable DMA done interrupts
-  //
-  HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_MASK_CLR )
-     |= ((ulIntFlags &0xC0000000) >> 20);
+    //
+    // Enable specific Tx Interrupts
+    //
+    HWREG(ulBase + MCASP_O_EVTCTLX) |= (ulIntFlags & 0xFF);
 
-  //
-  // Enable specific Tx Interrupts
-  //
-  HWREG(ulBase + MCASP_O_EVTCTLX) |= (ulIntFlags & 0xFF);
-
-  //
-  // Enable specific Rx Interrupts
-  //
-  HWREG(ulBase + MCASP_O_EVTCTLR) |= ((ulIntFlags >> 16) & 0xFF);
+    //
+    // Enable specific Rx Interrupts
+    //
+    HWREG(ulBase + MCASP_O_EVTCTLR) |= ((ulIntFlags >> 16) & 0xFF);
 }
 
 //*****************************************************************************
@@ -740,23 +709,22 @@ void I2SIntEnable(unsigned long ulBase, unsigned long ulIntFlags)
 //*****************************************************************************
 void I2SIntDisable(unsigned long ulBase, unsigned long ulIntFlags)
 {
-  //
-  // Disable DMA done interrupts
-  //
-  HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_MASK_SET)
-     |= ((ulIntFlags &0xC0000000) >> 20);
+    //
+    // Disable DMA done interrupts
+    //
+    HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_MASK_SET) |=
+        ((ulIntFlags & 0xC0000000) >> 20);
 
-  //
-  // Disable specific Tx Interrupts
-  //
-  HWREG(ulBase + MCASP_O_EVTCTLX) &= ~(ulIntFlags & 0xFF);
+    //
+    // Disable specific Tx Interrupts
+    //
+    HWREG(ulBase + MCASP_O_EVTCTLX) &= ~(ulIntFlags & 0xFF);
 
-  //
-  // Disable specific Rx Interrupts
-  //
-  HWREG(ulBase + MCASP_O_EVTCTLR) &= ~((ulIntFlags >> 16) & 0xFF);
+    //
+    // Disable specific Rx Interrupts
+    //
+    HWREG(ulBase + MCASP_O_EVTCTLR) &= ~((ulIntFlags >> 16) & 0xFF);
 }
-
 
 //*****************************************************************************
 //
@@ -789,30 +757,30 @@ void I2SIntDisable(unsigned long ulBase, unsigned long ulIntFlags)
 //*****************************************************************************
 unsigned long I2SIntStatus(unsigned long ulBase)
 {
-  unsigned long ulStatus;
+    unsigned long ulStatus;
 
-  //
-  // Get DMA interrupt status
-  //
-  ulStatus =
-    HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_STS_RAW) << 20;
+    //
+    // Get DMA interrupt status
+    //
+    ulStatus =
+        HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_STS_RAW) << 20;
 
-  ulStatus &= 0xC0000000;
+    ulStatus &= 0xC0000000;
 
-  //
-  // Read Tx Interrupt status
-  //
-  ulStatus |= HWREG(ulBase + MCASP_O_TXSTAT);
+    //
+    // Read Tx Interrupt status
+    //
+    ulStatus |= HWREG(ulBase + MCASP_O_TXSTAT);
 
-  //
-  // Read Rx Interrupt status
-  //
-  ulStatus |= HWREG(ulBase + MCASP_O_RXSTAT) << 16;
+    //
+    // Read Rx Interrupt status
+    //
+    ulStatus |= HWREG(ulBase + MCASP_O_RXSTAT) << 16;
 
-  //
-  // Return the status
-  //
-  return ulStatus;
+    //
+    // Return the status
+    //
+    return ulStatus;
 }
 
 //*****************************************************************************
@@ -834,21 +802,21 @@ unsigned long I2SIntStatus(unsigned long ulBase)
 //*****************************************************************************
 void I2SIntClear(unsigned long ulBase, unsigned long ulStatFlags)
 {
-  //
-  // Clear DMA done interrupts
-  //
-  HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_ACK)
-     |= ((ulStatFlags &0xC0000000) >> 20);
+    //
+    // Clear DMA done interrupts
+    //
+    HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_ACK) |=
+        ((ulStatFlags & 0xC0000000) >> 20);
 
-  //
-  // Clear Tx Interrupt
-  //
-  HWREG(ulBase + MCASP_O_TXSTAT) = ulStatFlags & 0x1FF ;
+    //
+    // Clear Tx Interrupt
+    //
+    HWREG(ulBase + MCASP_O_TXSTAT) = ulStatFlags & 0x1FF;
 
-  //
-  // Clear Rx Interrupt
-  //
-  HWREG(ulBase + MCASP_O_RXSTAT) = (ulStatFlags >> 16) & 0x1FF;
+    //
+    // Clear Rx Interrupt
+    //
+    HWREG(ulBase + MCASP_O_RXSTAT) = (ulStatFlags >> 16) & 0x1FF;
 }
 
 //*****************************************************************************
@@ -870,17 +838,17 @@ void I2SIntClear(unsigned long ulBase, unsigned long ulStatFlags)
 //! \return None.
 //
 //*****************************************************************************
-void I2SIntRegister(unsigned long ulBase, void (*pfnHandler)(void))
+void I2SIntRegister(unsigned long ulBase, void (* pfnHandler)(void))
 {
-  //
-  // Register the interrupt handler
-  //
-  IntRegister(INT_I2S,pfnHandler);
+    //
+    // Register the interrupt handler
+    //
+    IntRegister(INT_I2S, pfnHandler);
 
-  //
-  // Enable the interrupt
-  //
-  IntEnable(INT_I2S);
+    //
+    // Enable the interrupt
+    //
+    IntEnable(INT_I2S);
 }
 
 //*****************************************************************************
@@ -902,16 +870,15 @@ void I2SIntRegister(unsigned long ulBase, void (*pfnHandler)(void))
 //*****************************************************************************
 void I2SIntUnregister(unsigned long ulBase)
 {
-  //
-  // Disable interrupt
-  //
-  IntDisable(INT_I2S);
+    //
+    // Disable interrupt
+    //
+    IntDisable(INT_I2S);
 
-  //
-  // Unregister the handler
-  //
-  IntUnregister(INT_I2S);
-
+    //
+    // Unregister the handler
+    //
+    IntUnregister(INT_I2S);
 }
 
 //*****************************************************************************

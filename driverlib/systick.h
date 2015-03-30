@@ -58,7 +58,7 @@ extern "C"
 //*****************************************************************************
 extern void SysTickEnable(void);
 extern void SysTickDisable(void);
-extern void SysTickIntRegister(void (*pfnHandler)(void));
+extern void SysTickIntRegister(void (* pfnHandler)(void));
 extern void SysTickIntUnregister(void);
 extern void SysTickIntEnable(void);
 extern void SysTickIntDisable(void);

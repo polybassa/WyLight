@@ -71,51 +71,51 @@ extern "C"
 //
 //*****************************************************************************
 #define I2C_MASTER_CMD_SINGLE_SEND                                            \
-                                0x00000007
+    0x00000007
 #define I2C_MASTER_CMD_SINGLE_RECEIVE                                         \
-                                0x00000007
+    0x00000007
 #define I2C_MASTER_CMD_BURST_SEND_START                                       \
-                                0x00000003
+    0x00000003
 #define I2C_MASTER_CMD_BURST_SEND_CONT                                        \
-                                0x00000001
+    0x00000001
 #define I2C_MASTER_CMD_BURST_SEND_FINISH                                      \
-                                0x00000005
+    0x00000005
 #define I2C_MASTER_CMD_BURST_SEND_STOP                                        \
-                                0x00000004
+    0x00000004
 #define I2C_MASTER_CMD_BURST_SEND_ERROR_STOP                                  \
-                                0x00000004
+    0x00000004
 #define I2C_MASTER_CMD_BURST_RECEIVE_START                                    \
-                                0x0000000b
+    0x0000000b
 #define I2C_MASTER_CMD_BURST_RECEIVE_CONT                                     \
-                                0x00000009
+    0x00000009
 #define I2C_MASTER_CMD_BURST_RECEIVE_FINISH                                   \
-                                0x00000005
+    0x00000005
 #define I2C_MASTER_CMD_BURST_RECEIVE_ERROR_STOP                               \
-                                0x00000004
+    0x00000004
 #define I2C_MASTER_CMD_QUICK_COMMAND                                          \
-                                0x00000027
+    0x00000027
 #define I2C_MASTER_CMD_HS_MASTER_CODE_SEND                                    \
-                                0x00000013
+    0x00000013
 #define I2C_MASTER_CMD_FIFO_SINGLE_SEND                                       \
-                                0x00000046
+    0x00000046
 #define I2C_MASTER_CMD_FIFO_SINGLE_RECEIVE                                    \
-                                0x00000046
+    0x00000046
 #define I2C_MASTER_CMD_FIFO_BURST_SEND_START                                  \
-                                0x00000042
+    0x00000042
 #define I2C_MASTER_CMD_FIFO_BURST_SEND_CONT                                   \
-                                0x00000040
+    0x00000040
 #define I2C_MASTER_CMD_FIFO_BURST_SEND_FINISH                                 \
-                                0x00000044
+    0x00000044
 #define I2C_MASTER_CMD_FIFO_BURST_SEND_ERROR_STOP                             \
-                                0x00000004
+    0x00000004
 #define I2C_MASTER_CMD_FIFO_BURST_RECEIVE_START                               \
-                                0x0000004a
+    0x0000004a
 #define I2C_MASTER_CMD_FIFO_BURST_RECEIVE_CONT                                \
-                                0x00000048
+    0x00000048
 #define I2C_MASTER_CMD_FIFO_BURST_RECEIVE_FINISH                              \
-                                0x00000044
+    0x00000044
 #define I2C_MASTER_CMD_FIFO_BURST_RECEIVE_ERROR_STOP                          \
-                                0x00000004
+    0x00000004
 
 //*****************************************************************************
 //
@@ -123,21 +123,21 @@ extern "C"
 //
 //*****************************************************************************
 #define I2C_MASTER_GLITCH_FILTER_DISABLED                                     \
-                                0
+    0
 #define I2C_MASTER_GLITCH_FILTER_1                                            \
-                                0x00010000
+    0x00010000
 #define I2C_MASTER_GLITCH_FILTER_2                                            \
-                                0x00020000
+    0x00020000
 #define I2C_MASTER_GLITCH_FILTER_3                                            \
-                                0x00030000
+    0x00030000
 #define I2C_MASTER_GLITCH_FILTER_4                                            \
-                                0x00040000
+    0x00040000
 #define I2C_MASTER_GLITCH_FILTER_8                                            \
-                                0x00050000
+    0x00050000
 #define I2C_MASTER_GLITCH_FILTER_16                                           \
-                                0x00060000
+    0x00060000
 #define I2C_MASTER_GLITCH_FILTER_32                                           \
-                                0x00070000
+    0x00070000
 
 //*****************************************************************************
 //
@@ -176,22 +176,22 @@ extern "C"
 //
 //*****************************************************************************
 #define I2C_MASTER_INT_RX_FIFO_FULL                                           \
-                                0x00000800  // RX FIFO Full Interrupt
+    0x00000800                              // RX FIFO Full Interrupt
 #define I2C_MASTER_INT_TX_FIFO_EMPTY                                          \
-                                0x00000400  // TX FIFO Empty Interrupt
+    0x00000400                              // TX FIFO Empty Interrupt
 #define I2C_MASTER_INT_RX_FIFO_REQ                                            \
-                                0x00000200  // RX FIFO Request Interrupt
+    0x00000200                              // RX FIFO Request Interrupt
 #define I2C_MASTER_INT_TX_FIFO_REQ                                            \
-                                0x00000100  // TX FIFO Request Interrupt
+    0x00000100                              // TX FIFO Request Interrupt
 #define I2C_MASTER_INT_ARB_LOST                                               \
-                                0x00000080  // Arb Lost Interrupt
+    0x00000080                              // Arb Lost Interrupt
 #define I2C_MASTER_INT_STOP     0x00000040  // Stop Condition Interrupt
 #define I2C_MASTER_INT_START    0x00000020  // Start Condition Interrupt
 #define I2C_MASTER_INT_NACK     0x00000010  // Addr/Data NACK Interrupt
 #define I2C_MASTER_INT_TX_DMA_DONE                                            \
-                                0x00000008  // TX DMA Complete Interrupt
+    0x00000008                              // TX DMA Complete Interrupt
 #define I2C_MASTER_INT_RX_DMA_DONE                                            \
-                                0x00000004  // RX DMA Complete Interrupt
+    0x00000004                              // RX DMA Complete Interrupt
 #define I2C_MASTER_INT_TIMEOUT  0x00000002  // Clock Timeout Interrupt
 #define I2C_MASTER_INT_DATA     0x00000001  // Data Interrupt
 
@@ -201,17 +201,17 @@ extern "C"
 //
 //*****************************************************************************
 #define I2C_SLAVE_INT_RX_FIFO_FULL                                            \
-                                0x00000100  // RX FIFO Full Interrupt
+    0x00000100                              // RX FIFO Full Interrupt
 #define I2C_SLAVE_INT_TX_FIFO_EMPTY                                           \
-                                0x00000080  // TX FIFO Empty Interrupt
+    0x00000080                              // TX FIFO Empty Interrupt
 #define I2C_SLAVE_INT_RX_FIFO_REQ                                             \
-                                0x00000040  // RX FIFO Request Interrupt
+    0x00000040                              // RX FIFO Request Interrupt
 #define I2C_SLAVE_INT_TX_FIFO_REQ                                             \
-                                0x00000020  // TX FIFO Request Interrupt
+    0x00000020                              // TX FIFO Request Interrupt
 #define I2C_SLAVE_INT_TX_DMA_DONE                                             \
-                                0x00000010  // TX DMA Complete Interrupt
+    0x00000010                              // TX DMA Complete Interrupt
 #define I2C_SLAVE_INT_RX_DMA_DONE                                             \
-                                0x00000008  // RX DMA Complete Interrupt
+    0x00000008                              // RX DMA Complete Interrupt
 #define I2C_SLAVE_INT_STOP      0x00000004  // Stop Condition Interrupt
 #define I2C_SLAVE_INT_START     0x00000002  // Start Condition Interrupt
 #define I2C_SLAVE_INT_DATA      0x00000001  // Data Interrupt
@@ -222,9 +222,9 @@ extern "C"
 //
 //*****************************************************************************
 #define I2C_SLAVE_TX_FIFO_ENABLE                                              \
-                                0x00000002
+    0x00000002
 #define I2C_SLAVE_RX_FIFO_ENABLE                                              \
-                                0x00000004
+    0x00000004
 
 //*****************************************************************************
 //
@@ -236,13 +236,13 @@ extern "C"
 #define I2C_FIFO_CFG_RX_MASTER  0x00000000
 #define I2C_FIFO_CFG_RX_SLAVE   0x80000000
 #define I2C_FIFO_CFG_TX_MASTER_DMA                                            \
-                                0x00002000
+    0x00002000
 #define I2C_FIFO_CFG_TX_SLAVE_DMA                                             \
-                                0x0000a000
+    0x0000a000
 #define I2C_FIFO_CFG_RX_MASTER_DMA                                            \
-                                0x20000000
+    0x20000000
 #define I2C_FIFO_CFG_RX_SLAVE_DMA                                             \
-                                0xa0000000
+    0xa0000000
 #define I2C_FIFO_CFG_TX_NO_TRIG 0x00000000
 #define I2C_FIFO_CFG_TX_TRIG_1  0x00000001
 #define I2C_FIFO_CFG_TX_TRIG_2  0x00000002
@@ -268,11 +268,11 @@ extern "C"
 //
 //*****************************************************************************
 #define I2C_FIFO_RX_BELOW_TRIG_LEVEL                                          \
-                                0x00040000
+    0x00040000
 #define I2C_FIFO_RX_FULL        0x00020000
 #define I2C_FIFO_RX_EMPTY       0x00010000
 #define I2C_FIFO_TX_BELOW_TRIG_LEVEL                                          \
-                                0x00000004
+    0x00000004
 #define I2C_FIFO_TX_FULL        0x00000002
 #define I2C_FIFO_TX_EMPTY       0x00000001
 
@@ -290,12 +290,12 @@ extern void I2CRxFIFOFlush(uint32_t ui32Base);
 extern uint32_t I2CFIFOStatus(uint32_t ui32Base);
 extern void I2CFIFODataPut(uint32_t ui32Base, uint8_t ui8Data);
 extern uint32_t I2CFIFODataPutNonBlocking(uint32_t ui32Base,
-                                          uint8_t ui8Data);
+                                          uint8_t  ui8Data);
 extern uint32_t I2CFIFODataGet(uint32_t ui32Base);
 extern uint32_t I2CFIFODataGetNonBlocking(uint32_t ui32Base,
-                                          uint8_t *pui8Data);
+                                          uint8_t* pui8Data);
 extern void I2CMasterBurstLengthSet(uint32_t ui32Base,
-                                    uint8_t ui8Length);
+                                    uint8_t  ui8Length);
 extern uint32_t I2CMasterBurstCountGet(uint32_t ui32Base);
 extern void I2CMasterGlitchFilterConfigSet(uint32_t ui32Base,
                                            uint32_t ui32Config);
@@ -320,7 +320,7 @@ extern void I2CMasterIntEnableEx(uint32_t ui32Base,
 extern void I2CMasterIntDisableEx(uint32_t ui32Base,
                                   uint32_t ui32IntFlags);
 extern uint32_t I2CMasterIntStatusEx(uint32_t ui32Base,
-                                       bool bMasked);
+                                     bool     bMasked);
 extern void I2CMasterIntClearEx(uint32_t ui32Base,
                                 uint32_t ui32IntFlags);
 extern void I2CMasterTimeoutSet(uint32_t ui32Base, uint32_t ui32Value);
@@ -328,15 +328,15 @@ extern void I2CSlaveACKOverride(uint32_t ui32Base, bool bEnable);
 extern void I2CSlaveACKValueSet(uint32_t ui32Base, bool bACK);
 extern uint32_t I2CMasterLineStateGet(uint32_t ui32Base);
 extern void I2CMasterSlaveAddrSet(uint32_t ui32Base,
-                                  uint8_t ui8SlaveAddr,
-                                  bool bReceive);
+                                  uint8_t  ui8SlaveAddr,
+                                  bool     bReceive);
 extern uint32_t I2CSlaveDataGet(uint32_t ui32Base);
 extern void I2CSlaveDataPut(uint32_t ui32Base, uint8_t ui8Data);
 extern void I2CSlaveDisable(uint32_t ui32Base);
 extern void I2CSlaveEnable(uint32_t ui32Base);
 extern void I2CSlaveInit(uint32_t ui32Base, uint8_t ui8SlaveAddr);
 extern void I2CSlaveAddressSet(uint32_t ui32Base, uint8_t ui8AddrNum,
-                                 uint8_t ui8SlaveAddr);
+                               uint8_t ui8SlaveAddr);
 extern void I2CSlaveIntClear(uint32_t ui32Base);
 extern void I2CSlaveIntDisable(uint32_t ui32Base);
 extern void I2CSlaveIntEnable(uint32_t ui32Base);
@@ -346,7 +346,7 @@ extern void I2CSlaveIntDisableEx(uint32_t ui32Base,
 extern void I2CSlaveIntEnableEx(uint32_t ui32Base, uint32_t ui32IntFlags);
 extern bool I2CSlaveIntStatus(uint32_t ui32Base, bool bMasked);
 extern uint32_t I2CSlaveIntStatusEx(uint32_t ui32Base,
-                                      bool bMasked);
+                                    bool     bMasked);
 extern uint32_t I2CSlaveStatus(uint32_t ui32Base);
 
 //*****************************************************************************

@@ -52,14 +52,15 @@
 #include "interrupt.h"
 #include "uart.h"
 
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR |
+                                                        ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 //*****************************************************************************
 //
 // A mapping of UART base address to interupt number.
 //
 //*****************************************************************************
-static const unsigned long g_ppulUARTIntMap[][2] =
-{
+static const unsigned long g_ppulUARTIntMap[][2] = {
     { UARTA0_BASE, INT_UARTA0 },
     { UARTA1_BASE, INT_UARTA1 },
 };
@@ -81,7 +82,7 @@ static const unsigned long g_ppulUARTIntMap[][2] =
 static bool
 UARTBaseValid(unsigned long ulBase)
 {
-    return((ulBase == UARTA0_BASE) || (ulBase == UARTA1_BASE));
+    return (ulBase == UARTA0_BASE) || (ulBase == UARTA1_BASE);
 }
 #endif
 
@@ -106,25 +107,23 @@ UARTIntNumberGet(unsigned long ulBase)
     // Loop through the table that maps UART base addresses to interrupt
     // numbers.
     //
-    for(ulIdx = 0; ulIdx < (sizeof(g_ppulUARTIntMap) /
-                            sizeof(g_ppulUARTIntMap[0])); ulIdx++)
+    for (ulIdx = 0; ulIdx < (sizeof(g_ppulUARTIntMap) /
+                             sizeof(g_ppulUARTIntMap[0])); ulIdx++)
     {
         //
         // See if this base address matches.
         //
-        if(g_ppulUARTIntMap[ulIdx][0] == ulBase)
-        {
+        if (g_ppulUARTIntMap[ulIdx][0] == ulBase)
             //
             // Return the corresponding interrupt number.
             //
-            return(g_ppulUARTIntMap[ulIdx][1]);
-        }
+            return g_ppulUARTIntMap[ulIdx][1];
     }
 
     //
     // The base address could not be found, so return an error.
     //
-    return(-1);
+    return -1;
 }
 
 //*****************************************************************************
@@ -190,8 +189,8 @@ UARTParityModeGet(unsigned long ulBase)
     //
     // Return the current parity setting.
     //
-    return(HWREG(ulBase + UART_O_LCRH) &
-           (UART_LCRH_SPS | UART_LCRH_EPS | UART_LCRH_PEN));
+    return HWREG(ulBase + UART_O_LCRH) &
+           (UART_LCRH_SPS | UART_LCRH_EPS | UART_LCRH_PEN);
 }
 
 //*****************************************************************************
@@ -256,8 +255,8 @@ UARTFIFOLevelSet(unsigned long ulBase, unsigned long ulTxLevel,
 //
 //*****************************************************************************
 void
-UARTFIFOLevelGet(unsigned long ulBase, unsigned long *pulTxLevel,
-                 unsigned long *pulRxLevel)
+UARTFIFOLevelGet(unsigned long ulBase, unsigned long* pulTxLevel,
+                 unsigned long* pulRxLevel)
 {
     unsigned long ulTemp;
 
@@ -332,8 +331,7 @@ UARTConfigSetExpClk(unsigned long ulBase, unsigned long ulUARTClk,
     // Is the required baud rate greater than the maximum rate supported
     // without the use of high speed mode?
     //
-    if((ulBaud * 16) > ulUARTClk)
-    {
+    if ((ulBaud * 16) > ulUARTClk) {
         //
         // Enable high speed mode.
         //
@@ -344,9 +342,7 @@ UARTConfigSetExpClk(unsigned long ulBase, unsigned long ulUARTClk,
         // mode.  This allows the following code to be common to both cases.
         //
         ulBaud /= 2;
-    }
-    else
-    {
+    } else {
         //
         // Disable high speed mode.
         //
@@ -407,7 +403,7 @@ UARTConfigSetExpClk(unsigned long ulBase, unsigned long ulUARTClk,
 //*****************************************************************************
 void
 UARTConfigGetExpClk(unsigned long ulBase, unsigned long ulUARTClk,
-                    unsigned long *pulBaud, unsigned long *pulConfig)
+                    unsigned long* pulBaud, unsigned long* pulConfig)
 {
     unsigned long ulInt, ulFrac;
 
@@ -426,14 +422,12 @@ UARTConfigGetExpClk(unsigned long ulBase, unsigned long ulUARTClk,
     //
     // See if high speed mode enabled.
     //
-    if(HWREG(ulBase + UART_O_CTL) & UART_CTL_HSE)
-    {
+    if (HWREG(ulBase + UART_O_CTL) & UART_CTL_HSE)
         //
         // High speed mode is enabled so the actual baud rate is actually
         // double what was just calculated.
         //
         *pulBaud *= 2;
-    }
 
     //
     // Get the parity, data length, and number of stop bits.
@@ -498,9 +492,7 @@ UARTDisable(unsigned long ulBase)
     //
     // Wait for end of TX.
     //
-    while(HWREG(ulBase + UART_O_FR) & UART_FR_BUSY)
-    {
-    }
+    while (HWREG(ulBase + UART_O_FR) & UART_FR_BUSY) {}
 
     //
     // Disable the FIFO.
@@ -671,7 +663,7 @@ UARTModemControlGet(unsigned long ulBase)
     //
     ASSERT(ulBase == UARTA1_BASE);
 
-    return(HWREG(ulBase + UART_O_CTL) & (UART_OUTPUT_RTS));
+    return HWREG(ulBase + UART_O_CTL) & (UART_OUTPUT_RTS);
 }
 
 //*****************************************************************************
@@ -699,7 +691,7 @@ UARTModemStatusGet(unsigned long ulBase)
 
     ASSERT(ulBase == UARTA1_BASE);
 
-    return(HWREG(ulBase + UART_O_FR) & (UART_INPUT_CTS));
+    return HWREG(ulBase + UART_O_FR) & (UART_INPUT_CTS);
 }
 
 //*****************************************************************************
@@ -741,8 +733,8 @@ UARTFlowControlSet(unsigned long ulBase, unsigned long ulMode)
     // Set the flow control mode as requested.
     //
     HWREG(ulBase + UART_O_CTL) = ((HWREG(ulBase + UART_O_CTL) &
-                                 ~(UART_FLOWCONTROL_TX |
-                                   UART_FLOWCONTROL_RX)) | ulMode);
+                                   ~(UART_FLOWCONTROL_TX |
+                                     UART_FLOWCONTROL_RX)) | ulMode);
 }
 
 //*****************************************************************************
@@ -773,8 +765,8 @@ UARTFlowControlGet(unsigned long ulBase)
 
     ASSERT(UARTBaseValid(ulBase));
 
-    return(HWREG(ulBase + UART_O_CTL) & (UART_FLOWCONTROL_TX |
-                                         UART_FLOWCONTROL_RX));
+    return HWREG(ulBase + UART_O_CTL) & (UART_FLOWCONTROL_TX |
+                                         UART_FLOWCONTROL_RX);
 }
 
 //*****************************************************************************
@@ -816,8 +808,8 @@ UARTTxIntModeSet(unsigned long ulBase, unsigned long ulMode)
     // Set or clear the EOT bit of the UART control register as appropriate.
     //
     HWREG(ulBase + UART_O_CTL) = ((HWREG(ulBase + UART_O_CTL) &
-                                 ~(UART_TXINT_MODE_EOT |
-                                   UART_TXINT_MODE_FIFO)) | ulMode);
+                                   ~(UART_TXINT_MODE_EOT |
+                                     UART_TXINT_MODE_FIFO)) | ulMode);
 }
 
 //*****************************************************************************
@@ -852,8 +844,8 @@ UARTTxIntModeGet(unsigned long ulBase)
     //
     // Return the current transmit interrupt mode.
     //
-    return(HWREG(ulBase + UART_O_CTL) & (UART_TXINT_MODE_EOT |
-                                         UART_TXINT_MODE_FIFO));
+    return HWREG(ulBase + UART_O_CTL) & (UART_TXINT_MODE_EOT |
+                                         UART_TXINT_MODE_FIFO);
 }
 
 //*****************************************************************************
@@ -880,7 +872,7 @@ UARTCharsAvail(unsigned long ulBase)
     //
     // Return the availability of characters.
     //
-    return((HWREG(ulBase + UART_O_FR) & UART_FR_RXFE) ? false : true);
+    return (HWREG(ulBase + UART_O_FR) & UART_FR_RXFE) ? false : true;
 }
 
 //*****************************************************************************
@@ -907,7 +899,7 @@ UARTSpaceAvail(unsigned long ulBase)
     //
     // Return the availability of space.
     //
-    return((HWREG(ulBase + UART_O_FR) & UART_FR_TXFF) ? false : true);
+    return (HWREG(ulBase + UART_O_FR) & UART_FR_TXFF) ? false : true;
 }
 
 //*****************************************************************************
@@ -937,20 +929,16 @@ UARTCharGetNonBlocking(unsigned long ulBase)
     //
     // See if there are any characters in the receive FIFO.
     //
-    if(!(HWREG(ulBase + UART_O_FR) & UART_FR_RXFE))
-    {
+    if (!(HWREG(ulBase + UART_O_FR) & UART_FR_RXFE))
         //
         // Read and return the next character.
         //
-        return(HWREG(ulBase + UART_O_DR));
-    }
+        return HWREG(ulBase + UART_O_DR);
     else
-    {
         //
         // There are no characters, so return a failure.
         //
-        return(-1);
-    }
+        return -1;
 }
 
 //*****************************************************************************
@@ -978,14 +966,12 @@ UARTCharGet(unsigned long ulBase)
     //
     // Wait until a char is available.
     //
-    while(HWREG(ulBase + UART_O_FR) & UART_FR_RXFE)
-    {
-    }
+    while (HWREG(ulBase + UART_O_FR) & UART_FR_RXFE) {}
 
     //
     // Now get the char.
     //
-    return(HWREG(ulBase + UART_O_DR));
+    return HWREG(ulBase + UART_O_DR);
 }
 
 //*****************************************************************************
@@ -1016,8 +1002,7 @@ UARTCharPutNonBlocking(unsigned long ulBase, unsigned char ucData)
     //
     // See if there is space in the transmit FIFO.
     //
-    if(!(HWREG(ulBase + UART_O_FR) & UART_FR_TXFF))
-    {
+    if (!(HWREG(ulBase + UART_O_FR) & UART_FR_TXFF)) {
         //
         // Write this character to the transmit FIFO.
         //
@@ -1026,14 +1011,12 @@ UARTCharPutNonBlocking(unsigned long ulBase, unsigned char ucData)
         //
         // Success.
         //
-        return(true);
-    }
-    else
-    {
+        return true;
+    } else {
         //
         // There is no space in the transmit FIFO, so return a failure.
         //
-        return(false);
+        return false;
     }
 }
 
@@ -1062,9 +1045,7 @@ UARTCharPut(unsigned long ulBase, unsigned char ucData)
     //
     // Wait until space is available.
     //
-    while(HWREG(ulBase + UART_O_FR) & UART_FR_TXFF)
-    {
-    }
+    while (HWREG(ulBase + UART_O_FR) & UART_FR_TXFF) {}
 
     //
     // Send the char.
@@ -1130,7 +1111,7 @@ UARTBusy(unsigned long ulBase)
     //
     // Determine if the UART is busy.
     //
-    return((HWREG(ulBase + UART_O_FR) & UART_FR_BUSY) ? true : false);
+    return (HWREG(ulBase + UART_O_FR) & UART_FR_BUSY) ? true : false;
 }
 
 //*****************************************************************************
@@ -1153,7 +1134,7 @@ UARTBusy(unsigned long ulBase)
 //
 //*****************************************************************************
 void
-UARTIntRegister(unsigned long ulBase, void (*pfnHandler)(void))
+UARTIntRegister(unsigned long ulBase, void (* pfnHandler)(void))
 {
     unsigned long ulInt;
 
@@ -1330,14 +1311,10 @@ UARTIntStatus(unsigned long ulBase, bool bMasked)
     // Return either the interrupt status or the raw interrupt status as
     // requested.
     //
-    if(bMasked)
-    {
-        return(HWREG(ulBase + UART_O_MIS));
-    }
+    if (bMasked)
+        return HWREG(ulBase + UART_O_MIS);
     else
-    {
-        return(HWREG(ulBase + UART_O_RIS));
-    }
+        return HWREG(ulBase + UART_O_RIS);
 }
 
 //*****************************************************************************
@@ -1476,7 +1453,7 @@ UARTRxErrorGet(unsigned long ulBase)
     //
     // Return the current value of the receive status register.
     //
-    return(HWREG(ulBase + UART_O_RSR) & 0x0000000F);
+    return HWREG(ulBase + UART_O_RSR) & 0x0000000F;
 }
 
 //*****************************************************************************

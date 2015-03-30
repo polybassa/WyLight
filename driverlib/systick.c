@@ -114,7 +114,7 @@ SysTickDisable(void)
 //
 //*****************************************************************************
 void
-SysTickIntRegister(void (*pfnHandler)(void))
+SysTickIntRegister(void (* pfnHandler)(void))
 {
     //
     // Register the interrupt handler, returning an error if an error occurs.
@@ -245,7 +245,7 @@ SysTickPeriodGet(void)
     //
     // Return the period of the SysTick counter.
     //
-    return(HWREG(NVIC_ST_RELOAD) + 1);
+    return HWREG(NVIC_ST_RELOAD) + 1;
 }
 
 //*****************************************************************************
@@ -264,7 +264,7 @@ SysTickValueGet(void)
     //
     // Return the current value of the SysTick counter.
     //
-    return(HWREG(NVIC_ST_CURRENT));
+    return HWREG(NVIC_ST_CURRENT);
 }
 
 //*****************************************************************************

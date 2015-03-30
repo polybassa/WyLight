@@ -57,7 +57,6 @@
 #include "flash.h"
 #include "utils.h"
 
-
 //*****************************************************************************
 // Macro definition
 //*****************************************************************************
@@ -65,7 +64,6 @@
 #define PRCM_ENABLE_STATUS        0x00000002
 #define SYS_CLK                   80000000
 #define XTAL_CLK                  40000000
-
 
 //*****************************************************************************
 //    CC3200 does not have a true RTC capability. However, API(s) in this file
@@ -92,14 +90,14 @@
 //
 //    Lower half of REG0 is used for TI HW ECO.
 //*****************************************************************************
-#define RTC_U64MSEC_MK(u32Secs, u16Msec) (((unsigned long long)u32Secs << 10)|\
+#define RTC_U64MSEC_MK(u32Secs, u16Msec) (((unsigned long long)u32Secs << 10) | \
                                           (u16Msec & 0x3FF))
 
-#define RTC_SECS_IN_U64MSEC(u64Msec)     ((unsigned long)(u64Msec  >>   10))
+#define RTC_SECS_IN_U64MSEC(u64Msec)     ((unsigned long)(u64Msec >> 10))
 #define RTC_MSEC_IN_U64MSEC(u64Msec)     ((unsigned short)(u64Msec & 0x3FF))
 
 #define RTC_SECS_U32_REG_ADDR            (HIB3P3_BASE + HIB3P3_O_MEM_HIB_REG3)
-#define RTC_MSEC_U16_REG_ADDR            (HIB3P3_BASE + HIB3P3_O_MEM_HIB_REG2+2)
+#define RTC_MSEC_U16_REG_ADDR            (HIB3P3_BASE + HIB3P3_O_MEM_HIB_REG2 + 2)
 
 #define RTC_U32SECS_REG                 (HWREG(RTC_SECS_U32_REG_ADDR))
 #define RTC_U16MSEC_REG                 (*(unsigned short*)RTC_MSEC_U16_REG_ADDR)
@@ -122,13 +120,13 @@
 // Bits: 15 to 0 are being used for HW Changes / ECO
 //
 //*****************************************************************************
-#define IS_RTC_USED()                    ((RTC_U16MSEC_REG  & (1 << 15))? 1 : 0)
+#define IS_RTC_USED()                    ((RTC_U16MSEC_REG & (1 << 15)) ? 1 : 0)
 #define RTC_USE_SET()                    (RTC_U16MSEC_REG |= (1 << 15))
 
 #define RTC_U16MSEC_REG_RD()             (RTC_U16MSEC_REG & 0x3FF)
 #define RTC_U16MSEC_REG_WR(u16Msec)                                           \
-                             (RTC_U16MSEC_REG = ((RTC_U16MSEC_REG & ~0x3FF) | \
-                                                                    u16Msec))
+    (RTC_U16MSEC_REG = ((RTC_U16MSEC_REG & ~0x3FF) | \
+                        u16Msec))
 
 #define RTC_U32SECS_REG_RD()             (RTC_U32SECS_REG)
 #define RTC_U32SECS_REG_WR(u32Secs)      (RTC_U32SECS_REG = u32Secs)
@@ -138,30 +136,27 @@
 //*****************************************************************************
 // Global Peripheral clock and rest Registers
 //*****************************************************************************
-static const PRCM_PeriphRegs_t PRCM_PeriphRegsList[] =
-{
-
-	{APPS_RCM_O_CAMERA_CLK_GATING,   APPS_RCM_O_CAMERA_SOFT_RESET   },
-	{APPS_RCM_O_MCASP_CLK_GATING,    APPS_RCM_O_MCASP_SOFT_RESET    },
-	{APPS_RCM_O_MMCHS_CLK_GATING,    APPS_RCM_O_MMCHS_SOFT_RESET    },
-	{APPS_RCM_O_MCSPI_A1_CLK_GATING, APPS_RCM_O_MCSPI_A1_SOFT_RESET },
-	{APPS_RCM_O_MCSPI_A2_CLK_GATING, APPS_RCM_O_MCSPI_A2_SOFT_RESET },
-	{APPS_RCM_O_UDMA_A_CLK_GATING,   APPS_RCM_O_UDMA_A_SOFT_RESET   },
-	{APPS_RCM_O_GPIO_A_CLK_GATING,   APPS_RCM_O_GPIO_A_SOFT_RESET   },
-	{APPS_RCM_O_GPIO_B_CLK_GATING,   APPS_RCM_O_GPIO_B_SOFT_RESET   },
-	{APPS_RCM_O_GPIO_C_CLK_GATING,   APPS_RCM_O_GPIO_C_SOFT_RESET   },
-	{APPS_RCM_O_GPIO_D_CLK_GATING,   APPS_RCM_O_GPIO_D_SOFT_RESET   },
-	{APPS_RCM_O_WDOG_A_CLK_GATING,   APPS_RCM_O_WDOG_A_SOFT_RESET   },
-	{APPS_RCM_O_UART_A0_CLK_GATING,  APPS_RCM_O_UART_A0_SOFT_RESET  },
-	{APPS_RCM_O_UART_A1_CLK_GATING,  APPS_RCM_O_UART_A1_SOFT_RESET  },
-	{APPS_RCM_O_GPT_A0_CLK_GATING ,  APPS_RCM_O_GPT_A0_SOFT_RESET   },
-	{APPS_RCM_O_GPT_A1_CLK_GATING,   APPS_RCM_O_GPT_A1_SOFT_RESET   },
-	{APPS_RCM_O_GPT_A2_CLK_GATING,   APPS_RCM_O_GPT_A2_SOFT_RESET   },
-	{APPS_RCM_O_GPT_A3_CLK_GATING,   APPS_RCM_O_GPT_A3_SOFT_RESET   },
-	{APPS_RCM_O_CRYPTO_CLK_GATING,   APPS_RCM_O_CRYPTO_SOFT_RESET   },
-	{APPS_RCM_O_MCSPI_S0_CLK_GATING, APPS_RCM_O_MCSPI_S0_SOFT_RESET },
-	{APPS_RCM_O_I2C_CLK_GATING,      APPS_RCM_O_I2C_SOFT_RESET      }
-
+static const PRCM_PeriphRegs_t PRCM_PeriphRegsList[] = {
+    {APPS_RCM_O_CAMERA_CLK_GATING, APPS_RCM_O_CAMERA_SOFT_RESET   },
+    {APPS_RCM_O_MCASP_CLK_GATING, APPS_RCM_O_MCASP_SOFT_RESET    },
+    {APPS_RCM_O_MMCHS_CLK_GATING, APPS_RCM_O_MMCHS_SOFT_RESET    },
+    {APPS_RCM_O_MCSPI_A1_CLK_GATING, APPS_RCM_O_MCSPI_A1_SOFT_RESET },
+    {APPS_RCM_O_MCSPI_A2_CLK_GATING, APPS_RCM_O_MCSPI_A2_SOFT_RESET },
+    {APPS_RCM_O_UDMA_A_CLK_GATING, APPS_RCM_O_UDMA_A_SOFT_RESET   },
+    {APPS_RCM_O_GPIO_A_CLK_GATING, APPS_RCM_O_GPIO_A_SOFT_RESET   },
+    {APPS_RCM_O_GPIO_B_CLK_GATING, APPS_RCM_O_GPIO_B_SOFT_RESET   },
+    {APPS_RCM_O_GPIO_C_CLK_GATING, APPS_RCM_O_GPIO_C_SOFT_RESET   },
+    {APPS_RCM_O_GPIO_D_CLK_GATING, APPS_RCM_O_GPIO_D_SOFT_RESET   },
+    {APPS_RCM_O_WDOG_A_CLK_GATING, APPS_RCM_O_WDOG_A_SOFT_RESET   },
+    {APPS_RCM_O_UART_A0_CLK_GATING, APPS_RCM_O_UART_A0_SOFT_RESET  },
+    {APPS_RCM_O_UART_A1_CLK_GATING, APPS_RCM_O_UART_A1_SOFT_RESET  },
+    {APPS_RCM_O_GPT_A0_CLK_GATING, APPS_RCM_O_GPT_A0_SOFT_RESET   },
+    {APPS_RCM_O_GPT_A1_CLK_GATING, APPS_RCM_O_GPT_A1_SOFT_RESET   },
+    {APPS_RCM_O_GPT_A2_CLK_GATING, APPS_RCM_O_GPT_A2_SOFT_RESET   },
+    {APPS_RCM_O_GPT_A3_CLK_GATING, APPS_RCM_O_GPT_A3_SOFT_RESET   },
+    {APPS_RCM_O_CRYPTO_CLK_GATING, APPS_RCM_O_CRYPTO_SOFT_RESET   },
+    {APPS_RCM_O_MCSPI_S0_CLK_GATING, APPS_RCM_O_MCSPI_S0_SOFT_RESET },
+    {APPS_RCM_O_I2C_CLK_GATING, APPS_RCM_O_I2C_SOFT_RESET      }
 };
 
 //*****************************************************************************
@@ -175,11 +170,10 @@ static const PRCM_PeriphRegs_t PRCM_PeriphRegsList[] =
 //*****************************************************************************
 void PRCMSOCReset()
 {
-  //
-  // Reset MCU
-  //
-  HWREG(GPRCM_BASE+ GPRCM_O_MCU_GLOBAL_SOFT_RESET) |= 0x1;
-
+    //
+    // Reset MCU
+    //
+    HWREG(GPRCM_BASE + GPRCM_O_MCU_GLOBAL_SOFT_RESET) |= 0x1;
 }
 
 //*****************************************************************************
@@ -197,20 +191,16 @@ void PRCMSOCReset()
 //*****************************************************************************
 void PRCMMCUReset(bool bIncludeSubsystem)
 {
-  if(bIncludeSubsystem)
-  {
-    //
-    // Reset Apps processor and associated peripheral
-    //
-    HWREG(GPRCM_BASE+ GPRCM_O_APPS_SOFT_RESET) = 0x2;
-  }
-  else
-  {
-    //
-    // Reset Apps processor only
-    //
-    HWREG(GPRCM_BASE+ GPRCM_O_APPS_SOFT_RESET) = 0x1;
-  }
+    if (bIncludeSubsystem)
+        //
+        // Reset Apps processor and associated peripheral
+        //
+        HWREG(GPRCM_BASE + GPRCM_O_APPS_SOFT_RESET) = 0x2;
+    else
+        //
+        // Reset Apps processor only
+        //
+        HWREG(GPRCM_BASE + GPRCM_O_APPS_SOFT_RESET) = 0x1;
 }
 
 //*****************************************************************************
@@ -231,28 +221,24 @@ void PRCMMCUReset(bool bIncludeSubsystem)
 //*****************************************************************************
 unsigned long PRCMSysResetCauseGet()
 {
-  unsigned long ulWakeupStatus;
+    unsigned long ulWakeupStatus;
 
-  //
-  // Read the Reset status
-  //
-  ulWakeupStatus = (HWREG(GPRCM_BASE+ GPRCM_O_APPS_RESET_CAUSE) & 0xFF);
+    //
+    // Read the Reset status
+    //
+    ulWakeupStatus = (HWREG(GPRCM_BASE + GPRCM_O_APPS_RESET_CAUSE) & 0xFF);
 
-  //
-  // For hibernate do additional chaeck.
-  //
-  if(ulWakeupStatus == PRCM_POWER_ON)
-  {
-    if(HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_WAKE_STATUS) & 0x1)
-    {
-      ulWakeupStatus = PRCM_HIB_EXIT;
-    }
-  }
+    //
+    // For hibernate do additional chaeck.
+    //
+    if (ulWakeupStatus == PRCM_POWER_ON)
+        if (HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_WAKE_STATUS) & 0x1)
+            ulWakeupStatus = PRCM_HIB_EXIT;
 
-  //
-  // Return status.
-  //
-  return ulWakeupStatus;
+    //
+    // Return status.
+    //
+    return ulWakeupStatus;
 }
 
 //*****************************************************************************
@@ -277,18 +263,16 @@ unsigned long PRCMSysResetCauseGet()
 void
 PRCMPeripheralClkEnable(unsigned long ulPeripheral, unsigned long ulClkFlags)
 {
-  //
-  // Enable the specified peripheral clocks
-  //
-  HWREG(ARCM_BASE + PRCM_PeriphRegsList[ulPeripheral].ulClkReg) |= ulClkFlags;
+    //
+    // Enable the specified peripheral clocks
+    //
+    HWREG(ARCM_BASE + PRCM_PeriphRegsList[ulPeripheral].ulClkReg) |= ulClkFlags;
 
-  //
-  // Set the default clock for camera
-  //
-  if(ulPeripheral == PRCM_CAMERA)
-  {
-    HWREG(ARCM_BASE + APPS_RCM_O_CAMERA_CLK_GEN) = 0x0404;
-  }
+    //
+    // Set the default clock for camera
+    //
+    if (ulPeripheral == PRCM_CAMERA)
+        HWREG(ARCM_BASE + APPS_RCM_O_CAMERA_CLK_GEN) = 0x0404;
 }
 
 //*****************************************************************************
@@ -311,10 +295,10 @@ PRCMPeripheralClkEnable(unsigned long ulPeripheral, unsigned long ulClkFlags)
 void
 PRCMPeripheralClkDisable(unsigned long ulPeripheral, unsigned long ulClkFlags)
 {
-  //
-  // Disable the specified peripheral clocks
-  //
-  HWREG(ARCM_BASE + PRCM_PeriphRegsList[ulPeripheral].ulClkReg) &= ~ulClkFlags;
+    //
+    // Disable the specified peripheral clocks
+    //
+    HWREG(ARCM_BASE + PRCM_PeriphRegsList[ulPeripheral].ulClkReg) &= ~ulClkFlags;
 }
 
 //*****************************************************************************
@@ -334,42 +318,36 @@ PRCMPeripheralClkDisable(unsigned long ulPeripheral, unsigned long ulClkFlags)
 unsigned long
 PRCMPeripheralClockGet(unsigned long ulPeripheral)
 {
-  unsigned long ulClockFreq;
-  unsigned long ulHiPulseDiv;
-  unsigned long ulLoPulseDiv;
+    unsigned long ulClockFreq;
+    unsigned long ulHiPulseDiv;
+    unsigned long ulLoPulseDiv;
 
-  //
-  // Get the clock based on specified peripheral.
-  //
-  if(((ulPeripheral == PRCM_SSPI) | (ulPeripheral == PRCM_LSPI)
-            | (ulPeripheral == PRCM_GSPI)))
-  {
-    return XTAL_CLK;
-  }
-  else if(ulPeripheral == PRCM_CAMERA)
-  {
-    ulHiPulseDiv = ((HWREG(ARCM_BASE + APPS_RCM_O_CAMERA_CLK_GEN) >> 8) & 0x07);
-    ulLoPulseDiv = (HWREG(ARCM_BASE + APPS_RCM_O_CAMERA_CLK_GEN)& 0xFF);
-  }
-  else if(ulPeripheral == PRCM_SDHOST)
-  {
-    ulHiPulseDiv = ((HWREG(ARCM_BASE + APPS_RCM_O_MMCHS_CLK_GEN) >> 8) & 0x07);
-    ulLoPulseDiv = (HWREG(ARCM_BASE + APPS_RCM_O_MMCHS_CLK_GEN)& 0xFF);
-  }
-  else
-  {
-    return SYS_CLK;
-  }
+    //
+    // Get the clock based on specified peripheral.
+    //
+    if (((ulPeripheral == PRCM_SSPI) | (ulPeripheral == PRCM_LSPI) |
+         (ulPeripheral == PRCM_GSPI)))
+    {
+        return XTAL_CLK;
+    } else if (ulPeripheral == PRCM_CAMERA) {
+        ulHiPulseDiv = ((HWREG(ARCM_BASE + APPS_RCM_O_CAMERA_CLK_GEN) >> 8) & 0x07);
+        ulLoPulseDiv = (HWREG(ARCM_BASE + APPS_RCM_O_CAMERA_CLK_GEN) & 0xFF);
+    } else if (ulPeripheral == PRCM_SDHOST) {
+        ulHiPulseDiv = ((HWREG(ARCM_BASE + APPS_RCM_O_MMCHS_CLK_GEN) >> 8) & 0x07);
+        ulLoPulseDiv = (HWREG(ARCM_BASE + APPS_RCM_O_MMCHS_CLK_GEN) & 0xFF);
+    } else {
+        return SYS_CLK;
+    }
 
-  //
-  // Compute the clock freq. from the divider value
-  //
-  ulClockFreq = (240000000/((ulHiPulseDiv + 1) + (ulLoPulseDiv + 1)));
+    //
+    // Compute the clock freq. from the divider value
+    //
+    ulClockFreq = (240000000 / ((ulHiPulseDiv + 1) + (ulLoPulseDiv + 1)));
 
-  //
-  // Return the clock rate.
-  //
-  return ulClockFreq;
+    //
+    // Return the clock rate.
+    //
+    return ulClockFreq;
 }
 
 //*****************************************************************************
@@ -387,28 +365,25 @@ PRCMPeripheralClockGet(unsigned long ulPeripheral)
 void
 PRCMPeripheralReset(unsigned long ulPeripheral)
 {
-  volatile unsigned long ulDelay;
+    volatile unsigned long ulDelay;
 
-  if( ulPeripheral != PRCM_DTHE)
-  {
-    //
-    // Assert the reset
-    //
-    HWREG(ARCM_BASE + PRCM_PeriphRegsList[ulPeripheral].ulRstReg)
-                                                         |= PRCM_SOFT_RESET;
-    //
-    // Delay for a little bit.
-    //
-    for(ulDelay = 0; ulDelay < 16; ulDelay++)
-    {
+    if (ulPeripheral != PRCM_DTHE) {
+        //
+        // Assert the reset
+        //
+        HWREG(ARCM_BASE + PRCM_PeriphRegsList[ulPeripheral].ulRstReg) |=
+            PRCM_SOFT_RESET;
+        //
+        // Delay for a little bit.
+        //
+        for (ulDelay = 0; ulDelay < 16; ulDelay++) {}
+
+        //
+        // Deassert the reset
+        //
+        HWREG(ARCM_BASE + PRCM_PeriphRegsList[ulPeripheral].ulRstReg) &=
+            ~PRCM_SOFT_RESET;
     }
-
-    //
-    // Deassert the reset
-    //
-    HWREG(ARCM_BASE+PRCM_PeriphRegsList[ulPeripheral].ulRstReg)
-                                                          &= ~PRCM_SOFT_RESET;
-  }
 }
 
 //*****************************************************************************
@@ -428,28 +403,24 @@ PRCMPeripheralReset(unsigned long ulPeripheral)
 bool
 PRCMPeripheralStatusGet(unsigned long ulPeripheral)
 {
-  unsigned long ReadyBit;
+    unsigned long ReadyBit;
 
-  //
-  // Read the ready bit status
-  //
-  ReadyBit = HWREG(ARCM_BASE + PRCM_PeriphRegsList[ulPeripheral].ulRstReg);
-  ReadyBit = ReadyBit & PRCM_ENABLE_STATUS;
+    //
+    // Read the ready bit status
+    //
+    ReadyBit = HWREG(ARCM_BASE + PRCM_PeriphRegsList[ulPeripheral].ulRstReg);
+    ReadyBit = ReadyBit & PRCM_ENABLE_STATUS;
 
-  if (ReadyBit)
-  {
-    //
-    // Module is ready
-    //
-    return(true);
-  }
-  else
-  {
-    //
-    // Module is not ready
-    //
-    return(false);
-  }
+    if (ReadyBit)
+        //
+        // Module is ready
+        //
+        return true;
+    else
+        //
+        // Module is not ready
+        //
+        return false;
 }
 
 //*****************************************************************************
@@ -471,17 +442,17 @@ PRCMPeripheralStatusGet(unsigned long ulPeripheral)
 void
 PRCMI2SClockFreqSet(unsigned long ulI2CClkFreq)
 {
- unsigned long long ullDiv;
-  unsigned short usInteger;
-  unsigned short usFrac;
+    unsigned long long ullDiv;
+    unsigned short usInteger;
+    unsigned short usFrac;
 
-  ullDiv = (((unsigned long long)240000000 * 65536)/ulI2CClkFreq);
+    ullDiv = (((unsigned long long)240000000 * 65536) / ulI2CClkFreq);
 
-  usInteger = (ullDiv/65536);
-  usFrac    = (ullDiv%65536);
+    usInteger = (ullDiv / 65536);
+    usFrac = (ullDiv % 65536);
 
-  HWREG(ARCM_BASE + APPS_RCM_O_MCASP_FRAC_CLK_CONFIG0) =
-    ((usInteger & 0x3FF) << 16 | usFrac);
+    HWREG(ARCM_BASE + APPS_RCM_O_MCASP_FRAC_CLK_CONFIG0) =
+        ((usInteger & 0x3FF) << 16 | usFrac);
 }
 
 //*****************************************************************************
@@ -502,15 +473,15 @@ PRCMI2SClockFreqSet(unsigned long ulI2CClkFreq)
 void
 PRCMLPDSRestoreInfoSet(unsigned long ulStackPtr, unsigned long ulProgCntr)
 {
-  //
-  // Set The SP Value
-  //
-  HWREG(0x4402E18C) = ulStackPtr;
+    //
+    // Set The SP Value
+    //
+    HWREG(0x4402E18C) = ulStackPtr;
 
-  //
-  // Set The PC Value
-  //
-  HWREG(0x4402E190) = ulProgCntr;
+    //
+    // Set The PC Value
+    //
+    HWREG(0x4402E190) = ulProgCntr;
 }
 
 //*****************************************************************************
@@ -529,43 +500,40 @@ PRCMLPDSEnter()
 {
 //  volatile unsigned long ulDelay;
 
-  //
-  // Check if flash exists
-  //
-  if(HWREG((GPRCM_BASE +
-            GPRCM_O_GPRCM_EFUSE_READ_REG2) & 0x00110000) == 0x00110000)
-  {
+    //
+    // Check if flash exists
+    //
+    if (HWREG((GPRCM_BASE +
+               GPRCM_O_GPRCM_EFUSE_READ_REG2) & 0x00110000) == 0x00110000)
 
-    //
-    // Disable the flash
-    //
-    FlashDisable();
-  }
+        //
+        // Disable the flash
+        //
+        FlashDisable();
 
 #ifndef KEEP_TESTPD_ALIVE
 
-  //
-  // Disable TestPD
-  //
-  HWREG(0x4402E168) |= (1<<9);
+    //
+    // Disable TestPD
+    //
+    HWREG(0x4402E168) |= (1 << 9);
 #endif
 
-  //
-  // Set bandgap duty cycle to 1
-  //
-  HWREG(HIB1P2_BASE + HIB1P2_O_BGAP_DUTY_CYCLING_EXIT_CFG) = 0x1;
+    //
+    // Set bandgap duty cycle to 1
+    //
+    HWREG(HIB1P2_BASE + HIB1P2_O_BGAP_DUTY_CYCLING_EXIT_CFG) = 0x1;
 
-  //
-  // Request LPDS
-  //
-  HWREG(ARCM_BASE + APPS_RCM_O_APPS_LPDS_REQ)
-          = APPS_RCM_APPS_LPDS_REQ_APPS_LPDS_REQ;
+    //
+    // Request LPDS
+    //
+    HWREG(ARCM_BASE + APPS_RCM_O_APPS_LPDS_REQ) =
+        APPS_RCM_APPS_LPDS_REQ_APPS_LPDS_REQ;
 
-  __asm("    nop\n"
-        "    nop\n"
-        "    nop\n"
-        "    nop\n");
-
+    __asm("    nop\n"
+          "    nop\n"
+          "    nop\n"
+          "    nop\n");
 }
 
 //*****************************************************************************
@@ -586,22 +554,22 @@ PRCMLPDSEnter()
 void
 PRCMLPDSWakeupSourceEnable(unsigned long ulLpdsWakeupSrc)
 {
-  unsigned long ulRegVal;
+    unsigned long ulRegVal;
 
-  //
-  // Read the current wakup sources
-  //
-  ulRegVal = HWREG(GPRCM_BASE+ GPRCM_O_APPS_LPDS_WAKEUP_CFG);
+    //
+    // Read the current wakup sources
+    //
+    ulRegVal = HWREG(GPRCM_BASE + GPRCM_O_APPS_LPDS_WAKEUP_CFG);
 
-  //
-  // Enable individual wakeup source
-  //
-  ulRegVal = ((ulRegVal | ulLpdsWakeupSrc) & 0x91);
+    //
+    // Enable individual wakeup source
+    //
+    ulRegVal = ((ulRegVal | ulLpdsWakeupSrc) & 0x91);
 
-  //
-  // Set the configuration in the register
-  //
-  HWREG(GPRCM_BASE+ GPRCM_O_APPS_LPDS_WAKEUP_CFG) = ulRegVal;
+    //
+    // Set the configuration in the register
+    //
+    HWREG(GPRCM_BASE + GPRCM_O_APPS_LPDS_WAKEUP_CFG) = ulRegVal;
 }
 
 //*****************************************************************************
@@ -622,9 +590,8 @@ PRCMLPDSWakeupSourceEnable(unsigned long ulLpdsWakeupSrc)
 void
 PRCMLPDSWakeupSourceDisable(unsigned long ulLpdsWakeupSrc)
 {
-  HWREG(GPRCM_BASE+ GPRCM_O_APPS_LPDS_WAKEUP_CFG) &= ~ulLpdsWakeupSrc;
+    HWREG(GPRCM_BASE + GPRCM_O_APPS_LPDS_WAKEUP_CFG) &= ~ulLpdsWakeupSrc;
 }
-
 
 //*****************************************************************************
 //
@@ -639,7 +606,7 @@ PRCMLPDSWakeupSourceDisable(unsigned long ulLpdsWakeupSrc)
 unsigned long
 PRCMLPDSWakeupCauseGet()
 {
-  return (HWREG(GPRCM_BASE+ GPRCM_O_APPS_LPDS_WAKEUP_SRC));
+    return HWREG(GPRCM_BASE + GPRCM_O_APPS_LPDS_WAKEUP_SRC);
 }
 
 //*****************************************************************************
@@ -658,17 +625,15 @@ PRCMLPDSWakeupCauseGet()
 void
 PRCMLPDSIntervalSet(unsigned long ulTicks)
 {
-  //
-  // Check sleep is atleast for 21 cycles
-  // If not set the sleep time to 21 cycles
-  //
-  if( ulTicks < 21)
-  {
-      ulTicks = 21;
-  }
+    //
+    // Check sleep is atleast for 21 cycles
+    // If not set the sleep time to 21 cycles
+    //
+    if (ulTicks < 21)
+        ulTicks = 21;
 
-  HWREG(GPRCM_BASE + GPRCM_O_APPS_LPDS_WAKETIME_WAKE_CFG) = ulTicks;
-  HWREG(GPRCM_BASE + GPRCM_O_APPS_LPDS_WAKETIME_OPP_CFG) = ulTicks-20;
+    HWREG(GPRCM_BASE + GPRCM_O_APPS_LPDS_WAKETIME_WAKE_CFG) = ulTicks;
+    HWREG(GPRCM_BASE + GPRCM_O_APPS_LPDS_WAKETIME_OPP_CFG) = ulTicks - 20;
 }
 
 //*****************************************************************************
@@ -703,15 +668,15 @@ PRCMLPDSIntervalSet(unsigned long ulTicks)
 void
 PRCMLPDSWakeUpGPIOSelect(unsigned long ulGPIOPin, unsigned long ulType)
 {
-  //
-  // Set the wakeup GPIO
-  //
-  HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_LPDS_GPIO_SEL) = ulGPIOPin;
+    //
+    // Set the wakeup GPIO
+    //
+    HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_LPDS_GPIO_SEL) = ulGPIOPin;
 
-  //
-  // Set the trigger type.
-  //
-  HWREG(GPRCM_BASE + GPRCM_O_APPS_GPIO_WAKE_CONF) = (ulType & 0x3);
+    //
+    // Set the trigger type.
+    //
+    HWREG(GPRCM_BASE + GPRCM_O_APPS_GPIO_WAKE_CONF) = (ulType & 0x3);
 }
 
 //*****************************************************************************
@@ -729,10 +694,10 @@ PRCMLPDSWakeUpGPIOSelect(unsigned long ulGPIOPin, unsigned long ulType)
 void
 PRCMSleepEnter()
 {
-  //
-  // Request Sleep
-  //
-  CPUwfi();
+    //
+    // Request Sleep
+    //
+    CPUwfi();
 }
 
 //*****************************************************************************
@@ -750,27 +715,26 @@ PRCMSleepEnter()
 void
 PRCMDeepSleepEnter()
 {
-  //
-  // Set bandgap duty cycle to 1
-  //
-  HWREG(HIB1P2_BASE + HIB1P2_O_BGAP_DUTY_CYCLING_EXIT_CFG) = 0x1;
+    //
+    // Set bandgap duty cycle to 1
+    //
+    HWREG(HIB1P2_BASE + HIB1P2_O_BGAP_DUTY_CYCLING_EXIT_CFG) = 0x1;
 
-  //
-  // Enable DSLP in cortex
-  //
-  HWREG(0xE000ED10)|=1<<2;
+    //
+    // Enable DSLP in cortex
+    //
+    HWREG(0xE000ED10) |= 1 << 2;
 
-  //
-  // Request Deep Sleep
-  //
-  CPUwfi();
+    //
+    // Request Deep Sleep
+    //
+    CPUwfi();
 
-  //
-  // Disable DSLP in cortex before
-  // returning to the caller
-  //
-  HWREG(0xE000ED10) &= ~(1<<2);
-
+    //
+    // Disable DSLP in cortex before
+    // returning to the caller
+    //
+    HWREG(0xE000ED10) &= ~(1 << 2);
 }
 
 //*****************************************************************************
@@ -801,21 +765,17 @@ PRCMDeepSleepEnter()
 void
 PRCMSRAMRetentionEnable(unsigned long ulSramColSel, unsigned long ulModeFlags)
 {
-  if(ulModeFlags & PRCM_SRAM_DSLP_RET)
-  {
-    //
-    // Configure deep sleep SRAM retention register
-    //
-    HWREG(GPRCM_BASE+ GPRCM_O_APPS_SRAM_DSLP_CFG) = (ulSramColSel & 0xF);
-  }
+    if (ulModeFlags & PRCM_SRAM_DSLP_RET)
+        //
+        // Configure deep sleep SRAM retention register
+        //
+        HWREG(GPRCM_BASE + GPRCM_O_APPS_SRAM_DSLP_CFG) = (ulSramColSel & 0xF);
 
-  if(ulModeFlags & PRCM_SRAM_LPDS_RET)
-  {
-    //
-    // Configure LPDS SRAM retention register
-    //
-    HWREG(GPRCM_BASE+ GPRCM_O_APPS_SRAM_LPDS_CFG) = (ulSramColSel & 0xF);
-  }
+    if (ulModeFlags & PRCM_SRAM_LPDS_RET)
+        //
+        // Configure LPDS SRAM retention register
+        //
+        HWREG(GPRCM_BASE + GPRCM_O_APPS_SRAM_LPDS_CFG) = (ulSramColSel & 0xF);
 }
 
 //*****************************************************************************
@@ -846,23 +806,18 @@ PRCMSRAMRetentionEnable(unsigned long ulSramColSel, unsigned long ulModeFlags)
 void
 PRCMSRAMRetentionDisable(unsigned long ulSramColSel, unsigned long ulFlags)
 {
-  if(ulFlags & PRCM_SRAM_DSLP_RET)
-  {
-    //
-    // Configure deep sleep SRAM retention register
-    //
-    HWREG(GPRCM_BASE+ GPRCM_O_APPS_SRAM_DSLP_CFG) &= ~(ulSramColSel & 0xF);
-  }
+    if (ulFlags & PRCM_SRAM_DSLP_RET)
+        //
+        // Configure deep sleep SRAM retention register
+        //
+        HWREG(GPRCM_BASE + GPRCM_O_APPS_SRAM_DSLP_CFG) &= ~(ulSramColSel & 0xF);
 
-  if(ulFlags & PRCM_SRAM_LPDS_RET)
-  {
-    //
-    // Configure LPDS SRAM retention register
-    //
-    HWREG(GPRCM_BASE+ GPRCM_O_APPS_SRAM_LPDS_CFG) &= ~(ulSramColSel & 0xF);
-  }
+    if (ulFlags & PRCM_SRAM_LPDS_RET)
+        //
+        // Configure LPDS SRAM retention register
+        //
+        HWREG(GPRCM_BASE + GPRCM_O_APPS_SRAM_LPDS_CFG) &= ~(ulSramColSel & 0xF);
 }
-
 
 //*****************************************************************************
 //
@@ -888,11 +843,11 @@ PRCMSRAMRetentionDisable(unsigned long ulSramColSel, unsigned long ulFlags)
 void
 PRCMHibernateWakeupSourceEnable(unsigned long ulHIBWakupSrc)
 {
-  //
-  // Enable HIB wakeup sources
-  //
-  HWREG(HIB3P3_BASE+HIB3P3_O_MEM_HIB_RTC_WAKE_EN) |= (ulHIBWakupSrc & 0x1);
-  HWREG(HIB3P3_BASE+HIB3P3_O_MEM_GPIO_WAKE_EN) |= ((ulHIBWakupSrc>>16)&0xFF);
+    //
+    // Enable HIB wakeup sources
+    //
+    HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_WAKE_EN) |= (ulHIBWakupSrc & 0x1);
+    HWREG(HIB3P3_BASE + HIB3P3_O_MEM_GPIO_WAKE_EN) |= ((ulHIBWakupSrc >> 16) & 0xFF);
 }
 
 //*****************************************************************************
@@ -911,13 +866,12 @@ PRCMHibernateWakeupSourceEnable(unsigned long ulHIBWakupSrc)
 void
 PRCMHibernateWakeupSourceDisable(unsigned long ulHIBWakupSrc)
 {
-  //
-  // Disable HIB wakeup sources
-  //
-  HWREG(HIB3P3_BASE+HIB3P3_O_MEM_HIB_RTC_WAKE_EN) &= ~(ulHIBWakupSrc & 0x1);
-  HWREG(HIB3P3_BASE+HIB3P3_O_MEM_GPIO_WAKE_EN) &= ~((ulHIBWakupSrc>>16)&0xFF);
+    //
+    // Disable HIB wakeup sources
+    //
+    HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_WAKE_EN) &= ~(ulHIBWakupSrc & 0x1);
+    HWREG(HIB3P3_BASE + HIB3P3_O_MEM_GPIO_WAKE_EN) &= ~((ulHIBWakupSrc >> 16) & 0xFF);
 }
-
 
 //*****************************************************************************
 //
@@ -932,7 +886,7 @@ PRCMHibernateWakeupSourceDisable(unsigned long ulHIBWakupSrc)
 unsigned long
 PRCMHibernateWakeupCauseGet()
 {
-  return ((HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_WAKE_STATUS) >> 1) & 0xF);
+    return (HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_WAKE_STATUS) >> 1) & 0xF;
 }
 
 //*****************************************************************************
@@ -949,34 +903,33 @@ PRCMHibernateWakeupCauseGet()
 void
 PRCMHibernateIntervalSet(unsigned long long ullTicks)
 {
-  unsigned long long ullRTCVal;
+    unsigned long long ullRTCVal;
 
-  //
-  // Latch the RTC vlaue
-  //
-  HWREG(HIB3P3_BASE+HIB3P3_O_MEM_HIB_RTC_TIMER_READ) = 0x1;
+    //
+    // Latch the RTC vlaue
+    //
+    HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_TIMER_READ) = 0x1;
 
-  //
-  // Read latched values as 2 32-bit vlaues
-  //
-  ullRTCVal  = HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_TIMER_MSW);
-  ullRTCVal  = ullRTCVal << 32;
-  ullRTCVal |= HWREG(HIB3P3_BASE+HIB3P3_O_MEM_HIB_RTC_TIMER_LSW);
+    //
+    // Read latched values as 2 32-bit vlaues
+    //
+    ullRTCVal = HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_TIMER_MSW);
+    ullRTCVal = ullRTCVal << 32;
+    ullRTCVal |= HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_TIMER_LSW);
 
-  //
-  // Add the interval
-  //
-  ullRTCVal = ullRTCVal + ullTicks;
+    //
+    // Add the interval
+    //
+    ullRTCVal = ullRTCVal + ullTicks;
 
-  //
-  // Set RTC match value
-  //
-  HWREG(HIB3P3_BASE+HIB3P3_O_MEM_HIB_RTC_WAKE_LSW_CONF)
-                                           = (unsigned long)(ullRTCVal);
-  HWREG(HIB3P3_BASE+HIB3P3_O_MEM_HIB_RTC_WAKE_MSW_CONF)
-                                           = (unsigned long)(ullRTCVal>>32);
+    //
+    // Set RTC match value
+    //
+    HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_WAKE_LSW_CONF) =
+        (unsigned long)(ullRTCVal);
+    HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_WAKE_MSW_CONF) =
+        (unsigned long)(ullRTCVal >> 32);
 }
-
 
 //*****************************************************************************
 //
@@ -1011,23 +964,20 @@ PRCMHibernateIntervalSet(unsigned long long ullTicks)
 void
 PRCMHibernateWakeUpGPIOSelect(unsigned long ulGPIOBitMap, unsigned long ulType)
 {
-  unsigned char ucLoop;
+    unsigned char ucLoop;
 
-  //
-  // Shift the bits to extract the GPIO selection
-  //
-  ulGPIOBitMap >>= 16;
+    //
+    // Shift the bits to extract the GPIO selection
+    //
+    ulGPIOBitMap >>= 16;
 
-  //
-  // Set the configuration for each GPIO
-  //
-  for(ucLoop=0; ucLoop < 7; ucLoop++)
-  {
-    if(ulGPIOBitMap & (1<<ucLoop))
-    {
-      HWREG(HIB3P3_BASE+HIB3P3_O_MEM_GPIO_WAKE_CONF) |= (ulType << (ucLoop*2));
+    //
+    // Set the configuration for each GPIO
+    //
+    for (ucLoop = 0; ucLoop < 7; ucLoop++) {
+        if (ulGPIOBitMap & (1 << ucLoop))
+            HWREG(HIB3P3_BASE + HIB3P3_O_MEM_GPIO_WAKE_CONF) |= (ulType << (ucLoop * 2));
     }
-  }
 }
 
 //*****************************************************************************
@@ -1044,16 +994,15 @@ PRCMHibernateWakeUpGPIOSelect(unsigned long ulGPIOBitMap, unsigned long ulType)
 void
 PRCMHibernateEnter()
 {
+    //
+    // Request hibernate.
+    //
+    HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_REQ) = 0x1;
 
-  //
-  // Request hibernate.
-  //
-  HWREG(HIB3P3_BASE+HIB3P3_O_MEM_HIB_REQ) = 0x1;
-
-  __asm("    nop\n"
-        "    nop\n"
-        "    nop\n"
-        "    nop\n");
+    __asm("    nop\n"
+          "    nop\n"
+          "    nop\n"
+          "    nop\n");
 }
 
 //*****************************************************************************
@@ -1068,23 +1017,22 @@ PRCMHibernateEnter()
 unsigned long long
 PRCMSlowClkCtrGet()
 {
-  unsigned long long ullRTCVal;
+    unsigned long long ullRTCVal;
 
-  //
-  // Latch the RTC vlaue
-  //
-  HWREG(HIB3P3_BASE+HIB3P3_O_MEM_HIB_RTC_TIMER_READ) = 0x1;
+    //
+    // Latch the RTC vlaue
+    //
+    HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_TIMER_READ) = 0x1;
 
-  //
-  // Read latched values as 2 32-bit vlaues
-  //
-  ullRTCVal  = HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_TIMER_MSW);
-  ullRTCVal  = ullRTCVal << 32;
-  ullRTCVal |= HWREG(HIB3P3_BASE+HIB3P3_O_MEM_HIB_RTC_TIMER_LSW);
+    //
+    // Read latched values as 2 32-bit vlaues
+    //
+    ullRTCVal = HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_TIMER_MSW);
+    ullRTCVal = ullRTCVal << 32;
+    ullRTCVal |= HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_TIMER_LSW);
 
-  return ullRTCVal;
+    return ullRTCVal;
 }
-
 
 //*****************************************************************************
 //
@@ -1100,13 +1048,13 @@ PRCMSlowClkCtrGet()
 //*****************************************************************************
 void PRCMSlowClkCtrMatchSet(unsigned long long ullValue)
 {
-  //
-  // Set RTC match value
-  //
-  HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_IRQ_LSW_CONF)
-                                           = (unsigned long)(ullValue);
-  HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_IRQ_MSW_CONF)
-                                           = (unsigned long)(ullValue>>32);
+    //
+    // Set RTC match value
+    //
+    HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_IRQ_LSW_CONF) =
+        (unsigned long)(ullValue);
+    HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_IRQ_MSW_CONF) =
+        (unsigned long)(ullValue >> 32);
 }
 
 //*****************************************************************************
@@ -1121,21 +1069,20 @@ void PRCMSlowClkCtrMatchSet(unsigned long long ullValue)
 //*****************************************************************************
 unsigned long long PRCMSlowClkCtrMatchGet()
 {
-  unsigned long long ullValue;
+    unsigned long long ullValue;
 
-  //
-  // Get RTC match value
-  //
-  ullValue = HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_IRQ_MSW_CONF);
-  ullValue = ullValue<<32;
-  ullValue |= HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_IRQ_LSW_CONF);
+    //
+    // Get RTC match value
+    //
+    ullValue = HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_IRQ_MSW_CONF);
+    ullValue = ullValue << 32;
+    ullValue |= HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_IRQ_LSW_CONF);
 
-  //
-  // Return the value
-  //
-  return ullValue;
+    //
+    // Return the value
+    //
+    return ullValue;
 }
-
 
 //*****************************************************************************
 //
@@ -1151,7 +1098,7 @@ unsigned long long PRCMSlowClkCtrMatchGet()
 //*****************************************************************************
 void PRCMOCRRegisterWrite(unsigned char ucIndex, unsigned long ulRegValue)
 {
-  HWREG(HIB3P3_BASE+HIB3P3_O_MEM_HIB_REG2 + (ucIndex << 2)) = ulRegValue;
+    HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_REG2 + (ucIndex << 2)) = ulRegValue;
 }
 
 //*****************************************************************************
@@ -1168,10 +1115,10 @@ void PRCMOCRRegisterWrite(unsigned char ucIndex, unsigned long ulRegValue)
 //*****************************************************************************
 unsigned long PRCMOCRRegisterRead(unsigned char ucIndex)
 {
-  //
-  // Return the read value.
-  //
-  return HWREG(HIB3P3_BASE+HIB3P3_O_MEM_HIB_REG2 + (ucIndex << 2));
+    //
+    // Return the read value.
+    //
+    return HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_REG2 + (ucIndex << 2));
 }
 
 //*****************************************************************************
@@ -1187,17 +1134,17 @@ unsigned long PRCMOCRRegisterRead(unsigned char ucIndex)
 //! \return None.
 //
 //*****************************************************************************
-void PRCMIntRegister(void (*pfnHandler)(void))
+void PRCMIntRegister(void (* pfnHandler)(void))
 {
-  //
-  // Register the interrupt handler.
-  //
-  IntRegister(INT_PRCM, pfnHandler);
+    //
+    // Register the interrupt handler.
+    //
+    IntRegister(INT_PRCM, pfnHandler);
 
-  //
-  // Enable the PRCM interrupt.
-  //
-  IntEnable(INT_PRCM);
+    //
+    // Enable the PRCM interrupt.
+    //
+    IntEnable(INT_PRCM);
 }
 
 //*****************************************************************************
@@ -1214,15 +1161,15 @@ void PRCMIntRegister(void (*pfnHandler)(void))
 //*****************************************************************************
 void PRCMIntUnregister()
 {
-  //
-  // Enable the UART interrupt.
-  //
-  IntDisable(INT_PRCM);
+    //
+    // Enable the UART interrupt.
+    //
+    IntDisable(INT_PRCM);
 
-  //
-  // Register the interrupt handler.
-  //
-  IntUnregister(INT_PRCM);
+    //
+    // Register the interrupt handler.
+    //
+    IntUnregister(INT_PRCM);
 }
 
 //*****************************************************************************
@@ -1242,11 +1189,10 @@ void PRCMIntUnregister()
 //*****************************************************************************
 void PRCMIntEnable(unsigned long ulIntFlags)
 {
-  if(ulIntFlags & PRCM_INT_SLOW_CLK_CTR )
-  {
-    HWREG(ARCM_BASE + APPS_RCM_O_APPS_RCM_INTERRUPT_ENABLE) |= 0x4;
-    HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_IRQ_ENABLE) |= 0x1;
-  }
+    if (ulIntFlags & PRCM_INT_SLOW_CLK_CTR) {
+        HWREG(ARCM_BASE + APPS_RCM_O_APPS_RCM_INTERRUPT_ENABLE) |= 0x4;
+        HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_IRQ_ENABLE) |= 0x1;
+    }
 }
 
 //*****************************************************************************
@@ -1267,11 +1213,10 @@ void PRCMIntEnable(unsigned long ulIntFlags)
 //*****************************************************************************
 void PRCMIntDisable(unsigned long ulIntFlags)
 {
-  if(ulIntFlags & PRCM_INT_SLOW_CLK_CTR )
-  {
-    HWREG(ARCM_BASE + 0x124) &= ~0x4;
-    HWREG(0x4402F854) &= ~0x1;
-  }
+    if (ulIntFlags & PRCM_INT_SLOW_CLK_CTR) {
+        HWREG(ARCM_BASE + 0x124) &= ~0x4;
+        HWREG(0x4402F854) &= ~0x1;
+    }
 }
 
 //*****************************************************************************
@@ -1309,8 +1254,7 @@ unsigned long PRCMIntStatus()
 //*****************************************************************************
 void PRCMRTCInUseSet()
 {
-        RTC_USE_SET();
-        return;
+    RTC_USE_SET();
 }
 
 //*****************************************************************************
@@ -1332,7 +1276,7 @@ void PRCMRTCInUseSet()
 //*****************************************************************************
 bool PRCMRTCInUseGet()
 {
-        return IS_RTC_USED()? true : false;
+    return IS_RTC_USED() ? true : false;
 }
 
 //*****************************************************************************
@@ -1356,16 +1300,14 @@ bool PRCMRTCInUseGet()
 //*****************************************************************************
 void PRCMRTCSet(unsigned long ulSecs, unsigned short usMsec)
 {
-        unsigned long long ullMsec = 0;
+    unsigned long long ullMsec = 0;
 
-        if(IS_RTC_USED()) {
-                ullMsec = RTC_U64MSEC_MK(ulSecs, usMsec) - SCC_U64MSEC_GET();
+    if (IS_RTC_USED()) {
+        ullMsec = RTC_U64MSEC_MK(ulSecs, usMsec) - SCC_U64MSEC_GET();
 
-                 RTC_U32SECS_REG_WR(RTC_SECS_IN_U64MSEC(ullMsec));
-                 RTC_U16MSEC_REG_WR(RTC_MSEC_IN_U64MSEC(ullMsec));
-        }
-
-        return;
+        RTC_U32SECS_REG_WR(RTC_SECS_IN_U64MSEC(ullMsec));
+        RTC_U16MSEC_REG_WR(RTC_MSEC_IN_U64MSEC(ullMsec));
+    }
 }
 
 //*****************************************************************************
@@ -1387,20 +1329,18 @@ void PRCMRTCSet(unsigned long ulSecs, unsigned short usMsec)
 //! \return None.
 //
 //*****************************************************************************
-void PRCMRTCGet(unsigned long *ulSecs, unsigned short *usMsec)
+void PRCMRTCGet(unsigned long* ulSecs, unsigned short* usMsec)
 {
-        unsigned long long ullMsec = 0;
+    unsigned long long ullMsec = 0;
 
-        if(IS_RTC_USED()) {
-                ullMsec  = RTC_U64MSEC_MK(RTC_U32SECS_REG_RD(),
-                                          RTC_U16MSEC_REG_RD());
-                ullMsec += SCC_U64MSEC_GET();
-        }
+    if (IS_RTC_USED()) {
+        ullMsec = RTC_U64MSEC_MK(RTC_U32SECS_REG_RD(),
+                                 RTC_U16MSEC_REG_RD());
+        ullMsec += SCC_U64MSEC_GET();
+    }
 
-        *ulSecs = RTC_SECS_IN_U64MSEC(ullMsec);
-        *usMsec = RTC_MSEC_IN_U64MSEC(ullMsec);
-
-        return;
+    *ulSecs = RTC_SECS_IN_U64MSEC(ullMsec);
+    *usMsec = RTC_MSEC_IN_U64MSEC(ullMsec);
 }
 
 //*****************************************************************************
@@ -1424,16 +1364,14 @@ void PRCMRTCGet(unsigned long *ulSecs, unsigned short *usMsec)
 //*****************************************************************************
 void PRCMRTCMatchSet(unsigned long ulSecs, unsigned short usMsec)
 {
-        unsigned long long ullMsec = 0;
+    unsigned long long ullMsec = 0;
 
-        if(IS_RTC_USED()) {
-                ullMsec  = RTC_U64MSEC_MK(ulSecs, usMsec);
-                ullMsec -= RTC_U64MSEC_MK(RTC_U32SECS_REG_RD(),
-                                          RTC_U16MSEC_REG_RD());
-                SCC_U64MSEC_MATCH_SET(SELECT_SCC_U42BITS(ullMsec));
-        }
-
-        return;
+    if (IS_RTC_USED()) {
+        ullMsec = RTC_U64MSEC_MK(ulSecs, usMsec);
+        ullMsec -= RTC_U64MSEC_MK(RTC_U32SECS_REG_RD(),
+                                  RTC_U16MSEC_REG_RD());
+        SCC_U64MSEC_MATCH_SET(SELECT_SCC_U42BITS(ullMsec));
+    }
 }
 
 //*****************************************************************************
@@ -1455,20 +1393,18 @@ void PRCMRTCMatchSet(unsigned long ulSecs, unsigned short usMsec)
 //! \return None.
 //
 //*****************************************************************************
-void PRCMRTCMatchGet(unsigned long *ulSecs, unsigned short *usMsec)
+void PRCMRTCMatchGet(unsigned long* ulSecs, unsigned short* usMsec)
 {
-        unsigned long long ullMsec = 0;
+    unsigned long long ullMsec = 0;
 
-        if(IS_RTC_USED()) {
-                ullMsec  = SCC_U64MSEC_MATCH_GET();
-                ullMsec += RTC_U64MSEC_MK(RTC_U32SECS_REG_RD(),
-                                          RTC_U16MSEC_REG_RD());
-        }
+    if (IS_RTC_USED()) {
+        ullMsec = SCC_U64MSEC_MATCH_GET();
+        ullMsec += RTC_U64MSEC_MK(RTC_U32SECS_REG_RD(),
+                                  RTC_U16MSEC_REG_RD());
+    }
 
-        *ulSecs = RTC_SECS_IN_U64MSEC(ullMsec);
-        *usMsec = RTC_MSEC_IN_U64MSEC(ullMsec);
-
-        return;
+    *ulSecs = RTC_SECS_IN_U64MSEC(ullMsec);
+    *usMsec = RTC_MSEC_IN_U64MSEC(ullMsec);
 }
 
 //*****************************************************************************
@@ -1482,7 +1418,6 @@ void PRCMRTCMatchGet(unsigned long *ulSecs, unsigned short *usMsec)
 //*****************************************************************************
 void PRCMCC3200MCUInit()
 {
-
 #ifdef CC3200_ES_1_2_1
 
     unsigned long ulRegVal;
@@ -1512,11 +1447,10 @@ void PRCMCC3200MCUInit()
     //
     // TD Flash timing configurations in case of MCU WDT reset
     //
-    if((HWREG(0x4402D00C) & 0xFF) == 0x00000005)
-    {
+    if ((HWREG(0x4402D00C) & 0xFF) == 0x00000005) {
         HWREG(0x400F707C) |= 0x01840082;
-        HWREG(0x400F70C4)= 0x1;
-        HWREG(0x400F70C4)= 0x0;
+        HWREG(0x400F70C4) = 0x1;
+        HWREG(0x400F70C4) = 0x0;
     }
 
     //
@@ -1533,27 +1467,25 @@ void PRCMCC3200MCUInit()
     ulRegVal = (ulRegVal & ~0x3FF) | 0x155;
     HWREG(0x400F703C) = ulRegVal;
 
-   //
-  // Enable 32KHz internal RC oscillator
-  //
-  HWREG(HIB3P3_BASE+HIB3P3_O_MEM_INT_OSC_CONF) = 0x00000101;
+    //
+    // Enable 32KHz internal RC oscillator
+    //
+    HWREG(HIB3P3_BASE + HIB3P3_O_MEM_INT_OSC_CONF) = 0x00000101;
 
-  //
-  // Delay for a little bit.
-  //
-  UtilsDelay(8000);
+    //
+    // Delay for a little bit.
+    //
+    UtilsDelay(8000);
 
-  //
-  // Enable 16MHz clock
-  //
-  HWREG(HIB1P2_BASE+HIB1P2_O_CM_OSC_16M_CONFIG) = 0x00010008;
+    //
+    // Enable 16MHz clock
+    //
+    HWREG(HIB1P2_BASE + HIB1P2_O_CM_OSC_16M_CONFIG) = 0x00010008;
 
-  //
-  // Delay for a little bit.
-  //
-  UtilsDelay(8000);
-
-
+    //
+    // Delay for a little bit.
+    //
+    UtilsDelay(8000);
 
 #else
 
@@ -1567,20 +1499,19 @@ void PRCMCC3200MCUInit()
     // any hibernate wakeup source will be kept maked until the device enters
     // hibernate completely (analog + digital)
     //
-    HWREG(HIB3P3_BASE  + HIB3P3_O_MEM_HIB_REG0) |= (1<<4);
+    HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_REG0) |= (1 << 4);
 
     //
     // Handling the clock switching (for 1.32 only)
     //
     HWREG(0x4402E16C) |= 0x3C;
 
-
 #endif
 
     //
     // Enable uDMA
     //
-    PRCMPeripheralClkEnable(PRCM_UDMA,PRCM_RUN_MODE_CLK);
+    PRCMPeripheralClkEnable(PRCM_UDMA, PRCM_RUN_MODE_CLK);
 
     //
     // Reset uDMA
@@ -1590,21 +1521,18 @@ void PRCMCC3200MCUInit()
     //
     // Disable uDMA
     //
-    PRCMPeripheralClkDisable(PRCM_UDMA,PRCM_RUN_MODE_CLK);
+    PRCMPeripheralClkDisable(PRCM_UDMA, PRCM_RUN_MODE_CLK);
 
     //
     // Enable RTC
     //
-    if(PRCMSysResetCauseGet()== PRCM_POWER_ON)
-    {
+    if (PRCMSysResetCauseGet() == PRCM_POWER_ON)
         HWREG(0x4402F804) = 0x1;
-    }
 
     //
     // SWD mode
     //
-    if(((HWREG(0x4402F0C8) & 0xFF) == 0x2))
-    {
+    if (((HWREG(0x4402F0C8) & 0xFF) == 0x2)) {
         HWREG(0x4402E110) = ((HWREG(0x4402E110) & ~0xC0F) | 0x2);
         HWREG(0x4402E114) = ((HWREG(0x4402E110) & ~0xC0F) | 0x2);
     }
@@ -1617,28 +1545,19 @@ void PRCMCC3200MCUInit()
     //
     // Change UART pins(55,57) mode to PIN_MODE_0 if they are in PIN_MODE_1
     //
-    if( (HWREG(0x4402E0A4) & 0xF) == 0x1)
-    {
+    if ((HWREG(0x4402E0A4) & 0xF) == 0x1)
         HWREG(0x4402E0A4) = ((HWREG(0x4402E0A4) & ~0xF));
-    }
 
-    if( (HWREG(0x4402E0A8) & 0xF) == 0x1)
-    {
+    if ((HWREG(0x4402E0A8) & 0xF) == 0x1)
         HWREG(0x4402E0A8) = ((HWREG(0x4402E0A8) & ~0xF));
-    }
 
     //
     // DIG DCDC VOUT trim settings based on PROCESS INDICATOR
     //
-    if(((HWREG(0x4402DC78) >> 22) & 0xF) == 0xE)
-    {
-        HWREG(0x4402F0B0) = ((HWREG(0x4402F0B0) & ~(0x00FC0000))|(0x32 << 18));
-    }
+    if (((HWREG(0x4402DC78) >> 22) & 0xF) == 0xE)
+        HWREG(0x4402F0B0) = ((HWREG(0x4402F0B0) & ~(0x00FC0000)) | (0x32 << 18));
     else
-    {
-        HWREG(0x4402F0B0) = ((HWREG(0x4402F0B0) & ~(0x00FC0000))|(0x29 << 18));
-    }
-
+        HWREG(0x4402F0B0) = ((HWREG(0x4402F0B0) & ~(0x00FC0000)) | (0x29 << 18));
 }
 
 //*****************************************************************************

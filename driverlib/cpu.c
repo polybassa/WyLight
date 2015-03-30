@@ -67,7 +67,7 @@ CPUcpsid(void)
     // that this does not result in any code being produced because of the
     // naked attribute).
     //
-    return(ulRet);
+    return ulRet;
 }
 #endif
 #if defined(ewarm)
@@ -111,7 +111,7 @@ CPUcpsid(void)
     // return(0) is never executed and the function returns with the value
     // you expect in R0.
     //
-    return(0);
+    return 0;
 }
 #endif
 
@@ -140,7 +140,7 @@ CPUprimask(void)
     // that this does not result in any code being produced because of the
     // naked attribute).
     //
-    return(ulRet);
+    return ulRet;
 }
 #endif
 #if defined(ewarm)
@@ -178,7 +178,7 @@ CPUprimask(void)
     // return(0) is never executed and the function returns with the value
     // you expect in R0.
     //
-    return(0);
+    return 0;
 }
 #endif
 
@@ -210,7 +210,7 @@ CPUcpsie(void)
     // that this does not result in any code being produced because of the
     // naked attribute).
     //
-    return(ulRet);
+    return ulRet;
 }
 #endif
 #if defined(ewarm)
@@ -254,7 +254,7 @@ CPUcpsie(void)
     // return(0) is never executed and the function returns with the value
     // you expect in R0.
     //
-    return(0);
+    return 0;
 }
 #endif
 
@@ -310,7 +310,6 @@ CPUwfi(void)
 void __attribute__((naked))
 CPUbasepriSet(unsigned long ulNewBasepri)
 {
-
     //
     // Set the BASEPRI register
     //
@@ -369,7 +368,7 @@ CPUbasepriGet(void)
     // that this does not result in any code being produced because of the
     // naked attribute).
     //
-    return(ulRet);
+    return ulRet;
 }
 #endif
 #if defined(ewarm)
@@ -407,6 +406,6 @@ CPUbasepriGet(void)
     // return(0) is never executed and the function returns with the value
     // you expect in R0.
     //
-    return(0);
+    return 0;
 }
 #endif

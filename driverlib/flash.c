@@ -60,7 +60,8 @@
 
 #define HAVE_WRITE_BUFFER       1
 
-
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR |
+                                                        ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 //*****************************************************************************
 //
@@ -68,8 +69,7 @@
 // Memory Protection Program Enable (FMPPE) register.
 //
 //*****************************************************************************
-static const unsigned long g_pulFMPPERegs[] =
-{
+static const unsigned long g_pulFMPPERegs[] = {
     FLASH_FMPPE0,
     FLASH_FMPPE1,
     FLASH_FMPPE2,
@@ -86,8 +86,6 @@ static const unsigned long g_pulFMPPERegs[] =
     FLASH_FMPPE13,
     FLASH_FMPPE14,
     FLASH_FMPPE15
-
-
 };
 
 //*****************************************************************************
@@ -96,8 +94,7 @@ static const unsigned long g_pulFMPPERegs[] =
 // Memory Protection Read Enable (FMPRE) register.
 //
 //*****************************************************************************
-static const unsigned long g_pulFMPRERegs[] =
-{
+static const unsigned long g_pulFMPRERegs[] = {
     FLASH_FMPRE0,
     FLASH_FMPRE1,
     FLASH_FMPRE2,
@@ -128,44 +125,40 @@ static const unsigned long g_pulFMPRERegs[] =
 void
 FlashDisable()
 {
+    //
+    // Wait for Flash Busy to get cleared
+    //
+    while ((HWREG(GPRCM_BASE + GPRCM_O_TOP_DIE_ENABLE) &
+            GPRCM_TOP_DIE_ENABLE_FLASH_BUSY))
+    {}
 
-  //
-  // Wait for Flash Busy to get cleared
-  //
-  while((HWREG(GPRCM_BASE + GPRCM_O_TOP_DIE_ENABLE)
-          & GPRCM_TOP_DIE_ENABLE_FLASH_BUSY))
-  {
+    //
+    // Assert reset
+    //
+    HWREG(HIB1P2_BASE + HIB1P2_O_PORPOL_SPARE) = 0xFFFF0000;
 
-  }
+    //
+    // 50 usec Delay Loop
+    //
+    UtilsDelay((50 * 80) / 3);
 
-  //
-  // Assert reset
-  //
-  HWREG(HIB1P2_BASE + HIB1P2_O_PORPOL_SPARE) = 0xFFFF0000;
+    //
+    // Disable TDFlash
+    //
+    HWREG(GPRCM_BASE + GPRCM_O_TOP_DIE_ENABLE) = 0x0;
 
-  //
-  // 50 usec Delay Loop
-  //
-  UtilsDelay((50*80)/3);
+    //
+    // 50 usec Delay Loop
+    //
+    UtilsDelay((50 * 80) / 3);
 
-  //
-  // Disable TDFlash
-  //
-  HWREG(GPRCM_BASE + GPRCM_O_TOP_DIE_ENABLE) = 0x0;
+    HWREG(HIB1P2_BASE + HIB1P2_O_BGAP_DUTY_CYCLING_EXIT_CFG) = 0x1;
 
-  //
-  // 50 usec Delay Loop
-  //
-  UtilsDelay((50*80)/3);
-
-  HWREG(HIB1P2_BASE + HIB1P2_O_BGAP_DUTY_CYCLING_EXIT_CFG) = 0x1;
-
-  //
-  // 50 usec Delay Loop
-  //
-  UtilsDelay((50*80)/3);
+    //
+    // 50 usec Delay Loop
+    //
+    UtilsDelay((50 * 80) / 3);
 }
-
 
 //*****************************************************************************
 //
@@ -194,41 +187,35 @@ FlashErase(unsigned long ulAddress)
     //
     // Clear the flash access and error interrupts.
     //
-    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC)
-      = (FLASH_CTRL_FCMISC_AMISC | FLASH_CTRL_FCMISC_VOLTMISC |
-                           FLASH_CTRL_FCMISC_ERMISC);
+    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC) =
+        (FLASH_CTRL_FCMISC_AMISC | FLASH_CTRL_FCMISC_VOLTMISC |
+         FLASH_CTRL_FCMISC_ERMISC);
 
     // Erase the block.
     //
     HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMA) = ulAddress;
-    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC)
-                                = FLASH_CTRL_FMC_WRKEY | FLASH_CTRL_FMC_ERASE;
+    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC) =
+        FLASH_CTRL_FMC_WRKEY | FLASH_CTRL_FMC_ERASE;
 
     //
     // Wait until the block has been erased.
     //
-    while(HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC) & FLASH_CTRL_FMC_ERASE)
-    {
-    }
+    while (HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC) & FLASH_CTRL_FMC_ERASE) {}
 
     //
     // Return an error if an access violation or erase error occurred.
     //
-    if(HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCRIS)
-       & (FLASH_CTRL_FCRIS_ARIS | FLASH_CTRL_FCRIS_VOLTRIS |
-                             FLASH_CTRL_FCRIS_ERRIS))
+    if (HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCRIS) &
+        (FLASH_CTRL_FCRIS_ARIS | FLASH_CTRL_FCRIS_VOLTRIS |
+         FLASH_CTRL_FCRIS_ERRIS))
 
-
-    {
-        return(-1);
-    }
+        return -1;
 
     //
     // Success.
     //
-    return(0);
+    return 0;
 }
-
 
 //*****************************************************************************
 //
@@ -259,8 +246,8 @@ FlashEraseNonBlocking(unsigned long ulAddress)
     // Clear the flash access and error interrupts.
     //
     HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC) =
-      (FLASH_CTRL_FCMISC_AMISC | FLASH_CTRL_FCMISC_VOLTMISC |
-                           FLASH_CTRL_FCMISC_ERMISC);
+        (FLASH_CTRL_FCMISC_AMISC | FLASH_CTRL_FCMISC_VOLTMISC |
+         FLASH_CTRL_FCMISC_ERMISC);
 
     //
     // Command the flash controller to erase the block.
@@ -268,7 +255,6 @@ FlashEraseNonBlocking(unsigned long ulAddress)
     HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMA) = ulAddress;
     HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC) = FLASH_CTRL_FMC_WRKEY | FLASH_CTRL_FMC_ERASE;
 }
-
 
 //*****************************************************************************
 //
@@ -286,32 +272,27 @@ FlashMassErase()
     // Clear the flash access and error interrupts.
     //
     HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC) =
-      (FLASH_CTRL_FCMISC_AMISC | FLASH_CTRL_FCMISC_VOLTMISC |
-                           FLASH_CTRL_FCMISC_ERMISC);
+        (FLASH_CTRL_FCMISC_AMISC | FLASH_CTRL_FCMISC_VOLTMISC |
+         FLASH_CTRL_FCMISC_ERMISC);
 
     //
     // Command the flash controller for mass erase.
     //
     HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC) =
-      FLASH_CTRL_FMC_WRKEY | FLASH_CTRL_FMC_MERASE1;
+        FLASH_CTRL_FMC_WRKEY | FLASH_CTRL_FMC_MERASE1;
 
     //
     // Wait until mass erase completes.
     //
-    while(HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC) & FLASH_CTRL_FMC_MERASE1)
-    {
-
-    }
+    while (HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC) & FLASH_CTRL_FMC_MERASE1) {}
 
     //
     // Return an error if an access violation or erase error occurred.
     //
-    if(HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCRIS)
-       & (FLASH_CTRL_FCRIS_ARIS | FLASH_CTRL_FCRIS_VOLTRIS |
-                             FLASH_CTRL_FCRIS_ERRIS))
-    {
+    if (HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCRIS) &
+        (FLASH_CTRL_FCRIS_ARIS | FLASH_CTRL_FCRIS_VOLTRIS |
+         FLASH_CTRL_FCRIS_ERRIS))
         return -1;
-    }
 
     //
     // Success.
@@ -336,15 +317,14 @@ FlashMassEraseNonBlocking()
     // Clear the flash access and error interrupts.
     //
     HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC) =
-      (FLASH_CTRL_FCMISC_AMISC | FLASH_CTRL_FCMISC_VOLTMISC |
-                           FLASH_CTRL_FCMISC_ERMISC);
+        (FLASH_CTRL_FCMISC_AMISC | FLASH_CTRL_FCMISC_VOLTMISC |
+         FLASH_CTRL_FCMISC_ERMISC);
 
     //
     // Command the flash controller for mass erase.
     //
     HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC) =
-      FLASH_CTRL_FMC_WRKEY | FLASH_CTRL_FMC_MERASE1;
-
+        FLASH_CTRL_FMC_WRKEY | FLASH_CTRL_FMC_MERASE1;
 }
 
 //*****************************************************************************
@@ -372,7 +352,7 @@ FlashMassEraseNonBlocking()
 //
 //*****************************************************************************
 long
-FlashProgram(unsigned long *pulData, unsigned long ulAddress,
+FlashProgram(unsigned long* pulData, unsigned long ulAddress,
              unsigned long ulCount)
 {
     //
@@ -384,10 +364,9 @@ FlashProgram(unsigned long *pulData, unsigned long ulAddress,
     //
     // Clear the flash access and error interrupts.
     //
-    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC)
-      = (FLASH_CTRL_FCMISC_AMISC | FLASH_CTRL_FCMISC_VOLTMISC |
-                           FLASH_CTRL_FCMISC_INVDMISC | FLASH_CTRL_FCMISC_PROGMISC);
-
+    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC) =
+        (FLASH_CTRL_FCMISC_AMISC | FLASH_CTRL_FCMISC_VOLTMISC |
+         FLASH_CTRL_FCMISC_INVDMISC | FLASH_CTRL_FCMISC_PROGMISC);
 
     //
     // See if this device has a write buffer.
@@ -398,8 +377,7 @@ FlashProgram(unsigned long *pulData, unsigned long ulAddress,
         //
         // Loop over the words to be programmed.
         //
-        while(ulCount)
-        {
+        while (ulCount) {
             //
             // Set the address of this block of words. for 1 MB
             //
@@ -408,15 +386,15 @@ FlashProgram(unsigned long *pulData, unsigned long ulAddress,
             //
             // Loop over the words in this 32-word block.
             //
-            while(((ulAddress & 0x7C) ||
-                   (HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FWBVAL) == 0)) &&
-                  (ulCount != 0))
+            while (((ulAddress & 0x7C) ||
+                    (HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FWBVAL) == 0)) &&
+                   (ulCount != 0))
             {
                 //
                 // Write this word into the write buffer.
                 //
-                HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FWBN
-                      + (ulAddress & 0x7C)) = *pulData++;
+                HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FWBN +
+                      (ulAddress & 0x7C)) = *pulData++;
                 ulAddress += 4;
                 ulCount -= 4;
             }
@@ -424,15 +402,13 @@ FlashProgram(unsigned long *pulData, unsigned long ulAddress,
             //
             // Program the contents of the write buffer into flash.
             //
-            HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC2)
-              = FLASH_CTRL_FMC2_WRKEY | FLASH_CTRL_FMC2_WRBUF;
+            HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC2) =
+                FLASH_CTRL_FMC2_WRKEY | FLASH_CTRL_FMC2_WRBUF;
 
             //
             // Wait until the write buffer has been programmed.
             //
-            while(HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC2) & FLASH_CTRL_FMC2_WRBUF)
-            {
-            }
+            while (HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC2) & FLASH_CTRL_FMC2_WRBUF) {}
         }
     }
 #else
@@ -440,8 +416,7 @@ FlashProgram(unsigned long *pulData, unsigned long ulAddress,
         //
         // Loop over the words to be programmed.
         //
-        while(ulCount)
-        {
+        while (ulCount) {
             //
             // Program the next word.
             //
@@ -452,9 +427,7 @@ FlashProgram(unsigned long *pulData, unsigned long ulAddress,
             //
             // Wait until the word has been programmed.
             //
-            while(HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC) & FLASH_CTRL_FMC_WRITE)
-            {
-            }
+            while (HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC) & FLASH_CTRL_FMC_WRITE) {}
 
             //
             // Increment to the next word.
@@ -469,19 +442,16 @@ FlashProgram(unsigned long *pulData, unsigned long ulAddress,
     // Return an error if an access violation occurred.
     //
 
-    if(HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCRIS) & (FLASH_CTRL_FCRIS_ARIS | FLASH_CTRL_FCRIS_VOLTRIS |
-                             FLASH_CTRL_FCRIS_INVDRIS | FLASH_CTRL_FCRIS_PROGRIS))
+    if (HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCRIS) & (FLASH_CTRL_FCRIS_ARIS | FLASH_CTRL_FCRIS_VOLTRIS |
+                                                          FLASH_CTRL_FCRIS_INVDRIS | FLASH_CTRL_FCRIS_PROGRIS))
 
-    {
-        return(-1);
-    }
+        return -1;
 
     //
     // Success.
     //
-    return(0);
+    return 0;
 }
-
 
 //*****************************************************************************
 //
@@ -517,7 +487,7 @@ FlashProgram(unsigned long *pulData, unsigned long ulAddress,
 //
 //*****************************************************************************
 long
-FlashProgramNonBlocking(unsigned long *pulData, unsigned long ulAddress,
+FlashProgramNonBlocking(unsigned long* pulData, unsigned long ulAddress,
                         unsigned long ulCount)
 {
     //
@@ -529,9 +499,9 @@ FlashProgramNonBlocking(unsigned long *pulData, unsigned long ulAddress,
     //
     // Clear the flash access and error interrupts.
     //
-    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC)
-      = (FLASH_CTRL_FCMISC_AMISC | FLASH_CTRL_FCMISC_VOLTMISC |
-                           FLASH_CTRL_FCMISC_INVDMISC | FLASH_CTRL_FCMISC_PROGMISC);
+    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC) =
+        (FLASH_CTRL_FCMISC_AMISC | FLASH_CTRL_FCMISC_VOLTMISC |
+         FLASH_CTRL_FCMISC_INVDMISC | FLASH_CTRL_FCMISC_PROGMISC);
 
     //
     // See if this device has a write buffer.
@@ -543,16 +513,13 @@ FlashProgramNonBlocking(unsigned long *pulData, unsigned long ulAddress,
         // Make sure the address/count specified doesn't straddle a 32 word
         // boundary.
         //
-        if(((ulAddress + (ulCount - 1)) & ~0x7F) != (ulAddress & ~0x7F))
-        {
-            return(-1);
-        }
+        if (((ulAddress + (ulCount - 1)) & ~0x7F) != (ulAddress & ~0x7F))
+            return -1;
 
         //
         // Loop over the words to be programmed.
         //
-        while(ulCount)
-        {
+        while (ulCount) {
             //
             // Set the address of this block of words.
             //
@@ -561,8 +528,8 @@ FlashProgramNonBlocking(unsigned long *pulData, unsigned long ulAddress,
             //
             // Loop over the words in this 32-word block.
             //
-            while(((ulAddress & 0x7C) || (HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FWBVAL) == 0)) &&
-                  (ulCount != 0))
+            while (((ulAddress & 0x7C) || (HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FWBVAL) == 0)) &&
+                   (ulCount != 0))
             {
                 //
                 // Write this word into the write buffer.
@@ -583,10 +550,8 @@ FlashProgramNonBlocking(unsigned long *pulData, unsigned long ulAddress,
         //
         // We don't have a write buffer so we can only write a single word.
         //
-        if(ulCount > 1)
-        {
-            return(-1);
-        }
+        if (ulCount > 1)
+            return -1;
 
         //
         // Write a single word.
@@ -599,9 +564,8 @@ FlashProgramNonBlocking(unsigned long *pulData, unsigned long ulAddress,
     //
     // Success.
     //
-    return(0);
+    return 0;
 }
-
 
 //*****************************************************************************
 //
@@ -648,38 +612,32 @@ FlashProtectGet(unsigned long ulAddress)
     // Check the appropriate protection bits for the block of memory that
     // is specified by the address.
     //
-    switch((((ulFMPRE >> (ulAddress / FLASH_PROTECT_SIZE)) &
-             FLASH_FMP_BLOCK_0) << 1) |
-           ((ulFMPPE >> (ulAddress / FLASH_PROTECT_SIZE)) & FLASH_FMP_BLOCK_0))
+    switch ((((ulFMPRE >> (ulAddress / FLASH_PROTECT_SIZE)) &
+              FLASH_FMP_BLOCK_0) << 1) |
+            ((ulFMPPE >> (ulAddress / FLASH_PROTECT_SIZE)) & FLASH_FMP_BLOCK_0))
     {
-        //
-        // This block is marked as execute only (that is, it can not be erased
-        // or programmed, and the only reads allowed are via the instruction
-        // fetch interface).
-        //
-        case 0:
-        case 1:
-        {
-            return(FlashExecuteOnly);
-        }
+    //
+    // This block is marked as execute only (that is, it can not be erased
+    // or programmed, and the only reads allowed are via the instruction
+    // fetch interface).
+    //
+    case 0:
+    case 1:
+        return FlashExecuteOnly;
 
-        //
-        // This block is marked as read only (that is, it can not be erased or
-        // programmed).
-        //
-        case 2:
-        {
-            return(FlashReadOnly);
-        }
+    //
+    // This block is marked as read only (that is, it can not be erased or
+    // programmed).
+    //
+    case 2:
+        return FlashReadOnly;
 
-        //
-        // This block is read/write; it can be read, erased, and programmed.
-        //
-        case 3:
-        default:
-        {
-            return(FlashReadWrite);
-        }
+    //
+    // This block is read/write; it can be read, erased, and programmed.
+    //
+    case 3:
+    default:
+        return FlashReadWrite;
     }
 }
 
@@ -704,7 +662,7 @@ FlashProtectGet(unsigned long ulAddress)
 //
 //*****************************************************************************
 void
-FlashIntRegister(void (*pfnHandler)(void))
+FlashIntRegister(void (* pfnHandler)(void))
 {
     //
     // Register the interrupt handler, returning an error if an error occurs.
@@ -813,14 +771,10 @@ FlashIntStatus(tBoolean bMasked)
     // Return either the interrupt status or the raw interrupt status as
     // requested.
     //
-    if(bMasked)
-    {
-        return(HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC));
-    }
+    if (bMasked)
+        return HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC);
     else
-    {
-        return(HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCRIS));
-    }
+        return HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCRIS);
 }
 
 //*****************************************************************************

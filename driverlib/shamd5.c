@@ -147,19 +147,15 @@ SHAMD5IntStatus(uint32_t ui32Base, bool bMasked)
     //
     // Return the value of the IRQSTATUS register.
     //
-    if(bMasked)
-    {
+    if (bMasked) {
         ui32Temp = HWREG(DTHE_BASE + DTHE_O_SHA_MIS);
         ui32IrqEnable = HWREG(ui32Base + SHAMD5_O_IRQENABLE);
-        return((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) &
-                ui32IrqEnable) | (ui32Temp & 0x00000007) << 16);
-    }
-    else
-    {
+        return (HWREG(ui32Base + SHAMD5_O_IRQSTATUS) &
+                ui32IrqEnable) | (ui32Temp & 0x00000007) << 16;
+    } else {
         ui32Temp = HWREG(DTHE_BASE + DTHE_O_SHA_RIS);
-        return(HWREG(ui32Base + SHAMD5_O_IRQSTATUS) |
-               (ui32Temp & 0x00000007) << 16);
-
+        return HWREG(ui32Base + SHAMD5_O_IRQSTATUS) |
+               (ui32Temp & 0x00000007) << 16;
     }
 }
 
@@ -247,10 +243,8 @@ SHAMD5IntDisable(uint32_t ui32Base, uint32_t ui32IntFlags)
     //
     // If there are no interrupts enabled, then disable all interrupts.
     //
-    if(HWREG(ui32Base + SHAMD5_O_IRQENABLE) == 0x0)
-    {
+    if (HWREG(ui32Base + SHAMD5_O_IRQENABLE) == 0x0)
         HWREG(ui32Base + SHAMD5_O_SYSCONFIG) &= ~SHAMD5_SYSCONFIG_PIT_EN;
-    }
 }
 
 //*****************************************************************************
@@ -316,7 +310,7 @@ SHAMD5IntClear(uint32_t ui32Base, uint32_t ui32IntFlags)
 //
 //*****************************************************************************
 void
-SHAMD5IntRegister(uint32_t ui32Base, void(*pfnHandler)(void))
+SHAMD5IntRegister(uint32_t ui32Base, void (* pfnHandler)(void))
 {
     //
     // Check the arguments.
@@ -458,7 +452,7 @@ SHAMD5ConfigSet(uint32_t ui32Base, uint32_t ui32Mode)
 //
 //*****************************************************************************
 bool
-SHAMD5DataWriteNonBlocking(uint32_t ui32Base, uint8_t *pui8Src)
+SHAMD5DataWriteNonBlocking(uint32_t ui32Base, uint8_t* pui8Src)
 {
     uint32_t ui8Counter;
 
@@ -470,23 +464,20 @@ SHAMD5DataWriteNonBlocking(uint32_t ui32Base, uint8_t *pui8Src)
     //
     // Check that the SHA/MD5 module is ready for data.  If not, return false.
     //
-    if((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_INPUT_READY) == 0)
-    {
-        return(false);
-    }
+    if ((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_INPUT_READY) == 0)
+        return false;
 
     //
     // Write the 16 words of data.
     //
-    for(ui8Counter = 0; ui8Counter < 64; ui8Counter += 4)
-    {
-        HWREG(ui32Base + SHAMD5_O_DATA0_IN + ui8Counter) = *((uint32_t *)(pui8Src + ui8Counter));
+    for (ui8Counter = 0; ui8Counter < 64; ui8Counter += 4) {
+        HWREG(ui32Base + SHAMD5_O_DATA0_IN + ui8Counter) = *((uint32_t*)(pui8Src + ui8Counter));
     }
 
     //
     // Return true as a sign of successfully completing the function.
     //
-    return(true);
+    return true;
 }
 
 //*****************************************************************************
@@ -504,7 +495,7 @@ SHAMD5DataWriteNonBlocking(uint32_t ui32Base, uint8_t *pui8Src)
 //
 //*****************************************************************************
 void
-SHAMD5DataWrite(uint32_t ui32Base, uint8_t *pui8Src)
+SHAMD5DataWrite(uint32_t ui32Base, uint8_t* pui8Src)
 {
     uint8_t ui8Counter;
 
@@ -516,20 +507,16 @@ SHAMD5DataWrite(uint32_t ui32Base, uint8_t *pui8Src)
     //
     // Wait for the module to be ready to accept data.
     //
-    while((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_INPUT_READY) == 0)
-    {
-    }
+    while ((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_INPUT_READY) == 0) {}
 
     //
     // Write the 64 bytes of data.
     //
-    for(ui8Counter = 0; ui8Counter < 64; ui8Counter += 4)
-    {
+    for (ui8Counter = 0; ui8Counter < 64; ui8Counter += 4) {
         HWREG(ui32Base + SHAMD5_O_DATA0_IN + ui8Counter) =
-                                        *((uint32_t *) (pui8Src + ui8Counter));
+            *((uint32_t*)(pui8Src + ui8Counter));
     }
 }
-
 
 //*****************************************************************************
 //
@@ -554,7 +541,7 @@ SHAMD5DataWrite(uint32_t ui32Base, uint8_t *pui8Src)
 //
 //*****************************************************************************
 void
-SHAMD5ResultRead(uint32_t ui32Base, uint8_t *pui8Dest)
+SHAMD5ResultRead(uint32_t ui32Base, uint8_t* pui8Dest)
 {
     uint32_t ui32Idx, ui32Count;
 
@@ -566,92 +553,80 @@ SHAMD5ResultRead(uint32_t ui32Base, uint8_t *pui8Dest)
     //
     // Determine the number of bytes in the result, based on the hash type.
     //
-    switch(HWREG(ui32Base + SHAMD5_O_MODE) & SHAMD5_MODE_ALGO_M)
-    {
+    switch (HWREG(ui32Base + SHAMD5_O_MODE) & SHAMD5_MODE_ALGO_M) {
+    //
+    // The MD5 hash is being used.
+    //
+    case SHAMD5_MODE_ALGO_MD5:
         //
-        // The MD5 hash is being used.
+        // There are 16 bytes in the MD5 hash.
         //
-        case SHAMD5_MODE_ALGO_MD5:
-        {
-            //
-            // There are 16 bytes in the MD5 hash.
-            //
-            ui32Count = 16;
-
-            //
-            // Done.
-            //
-            break;
-        }
+        ui32Count = 16;
 
         //
-        // The SHA-1 hash is being used.
+        // Done.
         //
-        case SHAMD5_MODE_ALGO_SHA1:
-        {
-            //
-            // There are 20 bytes in the SHA-1 hash.
-            //
-            ui32Count = 20;
+        break;
 
-            //
-            // Done.
-            //
-            break;
-        }
+    //
+    // The SHA-1 hash is being used.
+    //
+    case SHAMD5_MODE_ALGO_SHA1:
+        //
+        // There are 20 bytes in the SHA-1 hash.
+        //
+        ui32Count = 20;
 
         //
-        // The SHA-224 hash is being used.
+        // Done.
         //
-        case SHAMD5_MODE_ALGO_SHA224:
-        {
-            //
-            // There are 28 bytes in the SHA-224 hash.
-            //
-            ui32Count = 28;
+        break;
 
-            //
-            // Done.
-            //
-            break;
-        }
+    //
+    // The SHA-224 hash is being used.
+    //
+    case SHAMD5_MODE_ALGO_SHA224:
+        //
+        // There are 28 bytes in the SHA-224 hash.
+        //
+        ui32Count = 28;
 
         //
-        // The SHA-256 hash is being used.
+        // Done.
         //
-        case SHAMD5_MODE_ALGO_SHA256:
-        {
-            //
-            // There are 32 bytes in the SHA-256 hash.
-            //
-            ui32Count = 32;
+        break;
 
-            //
-            // Done.
-            //
-            break;
-        }
+    //
+    // The SHA-256 hash is being used.
+    //
+    case SHAMD5_MODE_ALGO_SHA256:
+        //
+        // There are 32 bytes in the SHA-256 hash.
+        //
+        ui32Count = 32;
 
         //
-        // The hash type is not recognized.
+        // Done.
         //
-        default:
-        {
-            //
-            // Return without reading a result since the hardware appears to be
-            // misconfigured.
-            //
-            return;
-        }
+        break;
+
+    //
+    // The hash type is not recognized.
+    //
+    default:
+        //
+        // Return without reading a result since the hardware appears to be
+        // misconfigured.
+        //
+        return;
     }
 
     //
     // Read the hash result.
     //
-    for(ui32Idx = 0; ui32Idx < ui32Count; ui32Idx += 4)
-    {
-    	*((uint32_t *)(pui8Dest+ui32Idx)) =
-                                HWREG(ui32Base + SHAMD5_O_IDIGEST_A + ui32Idx);
+    for (ui32Idx = 0; ui32Idx < ui32Count; ui32Idx += 4) {
+        *((uint32_t*)(pui8Dest + ui32Idx)) =
+            HWREG(ui32Base + SHAMD5_O_IDIGEST_A + ui32Idx);
     }
 }
 
@@ -674,12 +649,11 @@ SHAMD5ResultRead(uint32_t ui32Base, uint8_t *pui8Dest)
 //
 //*****************************************************************************
 static void
-SHAMD5DataWriteMultiple(uint32_t ui32Base, uint8_t *pui8DataSrc,
+SHAMD5DataWriteMultiple(uint32_t ui32Base, uint8_t* pui8DataSrc,
                         uint32_t ui32DataLength)
 {
-    uint32_t ui32Idx, ui32Count, ui32TempData=0, ui32Lastword;
-    uint8_t * ui8TempData;
-
+    uint32_t ui32Idx, ui32Count, ui32TempData = 0, ui32Lastword;
+    uint8_t* ui8TempData;
 
     //
     // Check the arguments.
@@ -696,12 +670,11 @@ SHAMD5DataWriteMultiple(uint32_t ui32Base, uint8_t *pui8DataSrc,
     // making sure to block additional operations until we can write the
     // next 16 words.
     //
-    for(ui32Idx = 0; ui32Idx < ui32Count; ui32Idx++)
-    {
+    for (ui32Idx = 0; ui32Idx < ui32Count; ui32Idx++) {
         //
         // Write the block of data.
         //
-        SHAMD5DataWrite(ui32Base,pui8DataSrc);
+        SHAMD5DataWrite(ui32Base, pui8DataSrc);
         //
         // Increment the pointer to next block of data.
         //
@@ -717,48 +690,39 @@ SHAMD5DataWriteMultiple(uint32_t ui32Base, uint8_t *pui8DataSrc,
     // If there are bytes that do not make up a whole block, then
     // write them separately.
     //
-    if(ui32Count)
-    {
+    if (ui32Count) {
         //
         // Wait until the engine has finished processing the previous block.
         //
-        while((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) &
-               SHAMD5_INT_INPUT_READY) == 0)
-        {
-        }
+        while ((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) &
+                SHAMD5_INT_INPUT_READY) == 0)
+        {}
 
         //
         // Loop through the remaining words.
         //
         ui32Count = ui32Count / 4;
-        for(ui32Idx = 0; ui32Idx < ui32Count; ui32Idx ++)
-        {
+        for (ui32Idx = 0; ui32Idx < ui32Count; ui32Idx++) {
             //
             // Write the word into the data register.
             //
-            HWREG(ui32Base + SHAMD5_O_DATA0_IN + (ui32Idx * 4)) =* ( (uint32_t *) pui8DataSrc);
-            pui8DataSrc +=4;
+            HWREG(ui32Base + SHAMD5_O_DATA0_IN + (ui32Idx * 4)) = *((uint32_t*)pui8DataSrc);
+            pui8DataSrc += 4;
         }
         //
         // Loop through the remaining bytes
         //
         ui32Count = ui32DataLength % 4;
-        ui8TempData = (uint8_t *) &ui32TempData;
-        if(ui32Count)
-        {
-        	ui32Lastword = 0;
-        	if(ui32Idx)
-        	{
-        		ui32Lastword = (ui32Idx-1) *4;
-        	}
-        	for(ui32Idx=0 ; ui32Idx<ui32Count ; ui32Idx++)
-        	{
-        		*(ui8TempData+ui32Idx) = *(pui8DataSrc+ui32Idx);
-        	}
-        	HWREG(ui32Base + SHAMD5_O_DATA0_IN + ui32Lastword) = ui32TempData;
+        ui8TempData = (uint8_t*)&ui32TempData;
+        if (ui32Count) {
+            ui32Lastword = 0;
+            if (ui32Idx)
+                ui32Lastword = (ui32Idx - 1) * 4;
+            for (ui32Idx = 0; ui32Idx < ui32Count; ui32Idx++) {
+                *(ui8TempData + ui32Idx) = *(pui8DataSrc + ui32Idx);
+            }
+            HWREG(ui32Base + SHAMD5_O_DATA0_IN + ui32Lastword) = ui32TempData;
         }
-
-
     }
 }
 
@@ -793,8 +757,8 @@ SHAMD5DataWriteMultiple(uint32_t ui32Base, uint8_t *pui8DataSrc,
 //
 //*****************************************************************************
 bool
-SHAMD5DataProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
-                  uint32_t ui32DataLength, uint8_t *pui8HashResult)
+SHAMD5DataProcess(uint32_t ui32Base, uint8_t* pui8DataSrc,
+                  uint32_t ui32DataLength, uint8_t* pui8HashResult)
 {
     //
     // Check the arguments.
@@ -805,10 +769,9 @@ SHAMD5DataProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
     //
     // Wait for the context to be ready before writing the mode.
     //
-    while((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_CONTEXT_READY) ==
-          0)
-    {
-    }
+    while ((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_CONTEXT_READY) ==
+           0)
+    {}
 
     //
     // Write the length.
@@ -823,10 +786,9 @@ SHAMD5DataProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
     //
     // Wait for the output to be ready.
     //
-    while((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_OUTPUT_READY) ==
-          0)
-    {
-    }
+    while ((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_OUTPUT_READY) ==
+           0)
+    {}
 
     //
     // Read the result.
@@ -836,7 +798,7 @@ SHAMD5DataProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
     //
     // Return true to indicate successful completion of the function.
     //
-    return(true);
+    return true;
 }
 
 //*****************************************************************************
@@ -871,8 +833,8 @@ SHAMD5DataProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
 //
 //*****************************************************************************
 bool
-SHAMD5HMACProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
-                  uint32_t ui32DataLength, uint8_t *pui8HashResult)
+SHAMD5HMACProcess(uint32_t ui32Base, uint8_t* pui8DataSrc,
+                  uint32_t ui32DataLength, uint8_t* pui8HashResult)
 {
     //
     // Check the arguments.
@@ -882,10 +844,9 @@ SHAMD5HMACProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
     //
     // Wait for the context to be ready before writing the mode.
     //
-    while((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_CONTEXT_READY) ==
-          0)
-    {
-    }
+    while ((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_CONTEXT_READY) ==
+           0)
+    {}
 
     //
     // Write the length.
@@ -895,15 +856,14 @@ SHAMD5HMACProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
     //
     // Write the data in the registers.
     //
-    SHAMD5DataWriteMultiple(ui32Base,pui8DataSrc, ui32DataLength);
+    SHAMD5DataWriteMultiple(ui32Base, pui8DataSrc, ui32DataLength);
 
     //
     // Wait for the output to be ready.
     //
-    while((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_OUTPUT_READY) ==
-          0)
-    {
-    }
+    while ((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_OUTPUT_READY) ==
+           0)
+    {}
 
     //
     // Read the result.
@@ -913,8 +873,7 @@ SHAMD5HMACProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
     //
     // Return true to indicate successful completion of the function.
     //
-    return(true);
-
+    return true;
 }
 
 //*****************************************************************************
@@ -939,8 +898,8 @@ SHAMD5HMACProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
 //
 //*****************************************************************************
 void
-SHAMD5HMACPPKeyGenerate(uint32_t ui32Base, uint8_t *pui8Key,
-                        uint8_t *pui8PPKey)
+SHAMD5HMACPPKeyGenerate(uint32_t ui32Base, uint8_t* pui8Key,
+                        uint8_t* pui8PPKey)
 {
     uint32_t ui32Index;
 
@@ -952,18 +911,16 @@ SHAMD5HMACPPKeyGenerate(uint32_t ui32Base, uint8_t *pui8Key,
     //
     // Wait for the context to be ready before writing the mode.
     //
-    while((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_CONTEXT_READY) ==
-          0)
-    {
-    }
+    while ((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_CONTEXT_READY) ==
+           0)
+    {}
 
     //
     // Write the HMAC key.
     //
-    for(ui32Index = 0; ui32Index < 64; ui32Index += 4)
-    {
+    for (ui32Index = 0; ui32Index < 64; ui32Index += 4) {
         HWREG(ui32Base + SHAMD5_O_ODIGEST_A + ui32Index) =
-                                          *((uint32_t *)(pui8Key + ui32Index));
+            *((uint32_t*)(pui8Key + ui32Index));
     }
 
     //
@@ -979,18 +936,16 @@ SHAMD5HMACPPKeyGenerate(uint32_t ui32Base, uint8_t *pui8Key,
     //
     // Wait for key to be processed.
     //
-    while((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_OUTPUT_READY) ==
-          0)
-    {
-    }
+    while ((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_OUTPUT_READY) ==
+           0)
+    {}
 
     //
     // Read the pre-processed key from the SHA/MD5 module.
     //
-    for(ui32Index = 0; ui32Index < 64; ui32Index += 4)
-    {
-    	*((uint32_t *)(pui8PPKey+ui32Index)) =
-                              HWREG(ui32Base + SHAMD5_O_ODIGEST_A + ui32Index);
+    for (ui32Index = 0; ui32Index < 64; ui32Index += 4) {
+        *((uint32_t*)(pui8PPKey + ui32Index)) =
+            HWREG(ui32Base + SHAMD5_O_ODIGEST_A + ui32Index);
     }
 }
 
@@ -1012,7 +967,7 @@ SHAMD5HMACPPKeyGenerate(uint32_t ui32Base, uint8_t *pui8Key,
 //
 //*****************************************************************************
 void
-SHAMD5HMACKeySet(uint32_t ui32Base, uint8_t *pui8Src)
+SHAMD5HMACKeySet(uint32_t ui32Base, uint8_t* pui8Src)
 {
     uint32_t ui32Idx;
 
@@ -1024,10 +979,9 @@ SHAMD5HMACKeySet(uint32_t ui32Base, uint8_t *pui8Src)
     //
     // Write the key to the digest registers.
     //
-    for(ui32Idx = 0; ui32Idx < 64; ui32Idx += 4)
-    {
+    for (ui32Idx = 0; ui32Idx < 64; ui32Idx += 4) {
         HWREG(ui32Base + SHAMD5_O_ODIGEST_A + ui32Idx) =
-                                           * ((uint32_t *)(pui8Src + ui32Idx));
+            *((uint32_t*)(pui8Src + ui32Idx));
     }
 
     //
@@ -1057,7 +1011,7 @@ SHAMD5HMACKeySet(uint32_t ui32Base, uint8_t *pui8Src)
 //
 //*****************************************************************************
 void
-SHAMD5HMACPPKeySet(uint32_t ui32Base, uint8_t *pui8Src)
+SHAMD5HMACPPKeySet(uint32_t ui32Base, uint8_t* pui8Src)
 {
     uint32_t ui32Idx;
 
@@ -1069,10 +1023,9 @@ SHAMD5HMACPPKeySet(uint32_t ui32Base, uint8_t *pui8Src)
     //
     // Write the key to the digest registers.
     //
-    for(ui32Idx = 0; ui32Idx < 64; ui32Idx += 4)
-    {
+    for (ui32Idx = 0; ui32Idx < 64; ui32Idx += 4) {
         HWREG(ui32Base + SHAMD5_O_ODIGEST_A + ui32Idx) =
-                                           *((uint32_t *) (pui8Src + ui32Idx));
+            *((uint32_t*)(pui8Src + ui32Idx));
     }
 
     //

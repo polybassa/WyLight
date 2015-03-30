@@ -50,7 +50,7 @@
 extern "C"
 {
 #endif
-    
+
 #include <stdint.h>
 
 //*****************************************************************************
@@ -89,26 +89,26 @@ extern "C"
 //
 //*****************************************************************************
 void SHAMD5ConfigSet(uint32_t ui32Base, uint32_t ui32Mode);
-bool SHAMD5DataProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
-           uint32_t ui32DataLength, uint8_t *pui8HashResult);
-void SHAMD5DataWrite(uint32_t ui32Base, uint8_t *pui8Src);
-bool SHAMD5DataWriteNonBlocking(uint32_t ui32Base, uint8_t *pui8Src);
+bool SHAMD5DataProcess(uint32_t ui32Base, uint8_t* pui8DataSrc,
+                       uint32_t ui32DataLength, uint8_t* pui8HashResult);
+void SHAMD5DataWrite(uint32_t ui32Base, uint8_t* pui8Src);
+bool SHAMD5DataWriteNonBlocking(uint32_t ui32Base, uint8_t* pui8Src);
 void SHAMD5DMADisable(uint32_t ui32Base);
 void SHAMD5DMAEnable(uint32_t ui32Base);
 void SHAMD5DataLengthSet(uint32_t ui32Base, uint32_t ui32Length);
-void SHAMD5HMACKeySet(uint32_t ui32Base, uint8_t *pui8Src);
-void SHAMD5HMACPPKeyGenerate(uint32_t ui32Base, uint8_t *pui8Key,
-                 uint8_t *pui8PPKey);
-void SHAMD5HMACPPKeySet(uint32_t ui32Base, uint8_t *pui8Src);
-bool SHAMD5HMACProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
-           uint32_t ui32DataLength, uint8_t *pui8HashResult);
+void SHAMD5HMACKeySet(uint32_t ui32Base, uint8_t* pui8Src);
+void SHAMD5HMACPPKeyGenerate(uint32_t ui32Base, uint8_t* pui8Key,
+                             uint8_t* pui8PPKey);
+void SHAMD5HMACPPKeySet(uint32_t ui32Base, uint8_t* pui8Src);
+bool SHAMD5HMACProcess(uint32_t ui32Base, uint8_t* pui8DataSrc,
+                       uint32_t ui32DataLength, uint8_t* pui8HashResult);
 void SHAMD5IntClear(uint32_t ui32Base, uint32_t ui32IntFlags);
 void SHAMD5IntDisable(uint32_t ui32Base, uint32_t ui32IntFlags);
 void SHAMD5IntEnable(uint32_t ui32Base, uint32_t ui32IntFlags);
-void SHAMD5IntRegister(uint32_t ui32Base, void(*pfnHandler)(void));
+void SHAMD5IntRegister(uint32_t ui32Base, void (* pfnHandler)(void));
 uint32_t SHAMD5IntStatus(uint32_t ui32Base, bool bMasked);
 void SHAMD5IntUnregister(uint32_t ui32Base);
-void SHAMD5ResultRead(uint32_t ui32Base, uint8_t *pui8Dest);
+void SHAMD5ResultRead(uint32_t ui32Base, uint8_t* pui8Dest);
 
 //*****************************************************************************
 //

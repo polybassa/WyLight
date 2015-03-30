@@ -50,7 +50,7 @@
 extern "C"
 {
 #endif
-    
+
 #include <stdbool.h>
 
 //*****************************************************************************
@@ -123,7 +123,6 @@ extern "C"
 #define TIMER_B                 0x0000ff00  // Timer B
 #define TIMER_BOTH              0x0000ffff  // Timer Both
 
-
 //*****************************************************************************
 //
 // Values that can be passed to TimerSynchronize as the ulTimers parameter.
@@ -152,7 +151,6 @@ extern "C"
 #define TIMER_DMA_CAPEVENT_A    0x00000004
 #define TIMER_DMA_CAPMATCH_A    0x00000002
 #define TIMER_DMA_TIMEOUT_A     0x00000001
-
 
 //*****************************************************************************
 //
@@ -188,7 +186,7 @@ extern void TimerMatchSet(unsigned long ulBase, unsigned long ulTimer,
 extern unsigned long TimerMatchGet(unsigned long ulBase,
                                    unsigned long ulTimer);
 extern void TimerIntRegister(unsigned long ulBase, unsigned long ulTimer,
-                             void (*pfnHandler)(void));
+                             void (* pfnHandler)(void));
 extern void TimerIntUnregister(unsigned long ulBase, unsigned long ulTimer);
 extern void TimerIntEnable(unsigned long ulBase, unsigned long ulIntFlags);
 extern void TimerIntDisable(unsigned long ulBase, unsigned long ulIntFlags);
@@ -196,7 +194,6 @@ extern unsigned long TimerIntStatus(unsigned long ulBase, bool bMasked);
 extern void TimerIntClear(unsigned long ulBase, unsigned long ulIntFlags);
 extern void TimerDMAEventSet(unsigned long ulBase, unsigned long ulDMAEvent);
 extern unsigned long TimerDMAEventGet(unsigned long ulBase);
-
 
 //*****************************************************************************
 //

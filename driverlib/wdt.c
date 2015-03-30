@@ -52,6 +52,9 @@
 #include "interrupt.h"
 #include "wdt.h"
 
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR |
+                                                        ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+
 //*****************************************************************************
 //
 //! Determines if the watchdog timer is enabled.
@@ -75,7 +78,7 @@ WatchdogRunning(unsigned long ulBase)
     //
     // See if the watchdog timer module is enabled, and return.
     //
-    return(HWREG(ulBase + WDT_O_CTL) & WDT_CTL_INTEN);
+    return HWREG(ulBase + WDT_O_CTL) & WDT_CTL_INTEN;
 }
 
 //*****************************************************************************
@@ -182,7 +185,7 @@ WatchdogLockState(unsigned long ulBase)
     //
     // Get the lock state.
     //
-    return((HWREG(ulBase + WDT_O_LOCK) == WDT_LOCK_LOCKED) ? true : false);
+    return (HWREG(ulBase + WDT_O_LOCK) == WDT_LOCK_LOCKED) ? true : false;
 }
 
 //*****************************************************************************
@@ -245,7 +248,7 @@ WatchdogReloadGet(unsigned long ulBase)
     //
     // Get the load register.
     //
-    return(HWREG(ulBase + WDT_O_LOAD));
+    return HWREG(ulBase + WDT_O_LOAD);
 }
 
 //*****************************************************************************
@@ -270,7 +273,7 @@ WatchdogValueGet(unsigned long ulBase)
     //
     // Get the current watchdog timer register value.
     //
-    return(HWREG(ulBase + WDT_O_VALUE));
+    return HWREG(ulBase + WDT_O_VALUE);
 }
 
 //*****************************************************************************
@@ -298,7 +301,7 @@ WatchdogValueGet(unsigned long ulBase)
 //
 //*****************************************************************************
 void
-WatchdogIntRegister(unsigned long ulBase, void (*pfnHandler)(void))
+WatchdogIntRegister(unsigned long ulBase, void (* pfnHandler)(void))
 {
     //
     // Check the arguments.
@@ -410,14 +413,10 @@ WatchdogIntStatus(unsigned long ulBase, tBoolean bMasked)
     // Return either the interrupt status or the raw interrupt status as
     // requested.
     //
-    if(bMasked)
-    {
-        return(HWREG(ulBase + WDT_O_MIS));
-    }
+    if (bMasked)
+        return HWREG(ulBase + WDT_O_MIS);
     else
-    {
-        return(HWREG(ulBase + WDT_O_RIS));
-    }
+        return HWREG(ulBase + WDT_O_RIS);
 }
 
 //*****************************************************************************

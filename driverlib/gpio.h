@@ -50,7 +50,7 @@
 extern "C"
 {
 #endif
-    
+
 #include <stdbool.h>
 
 //*****************************************************************************
@@ -123,7 +123,7 @@ extern void GPIOIntDisable(unsigned long ulPort, unsigned long ulIntFlags);
 extern long GPIOIntStatus(unsigned long ulPort, bool bMasked);
 extern void GPIOIntClear(unsigned long ulPort, unsigned long ulIntFlags);
 extern void GPIOIntRegister(unsigned long ulPort,
-                                void (*pfnIntHandler)(void));
+                            void (*       pfnIntHandler)(void));
 extern void GPIOIntUnregister(unsigned long ulPort);
 extern long GPIOPinRead(unsigned long ulPort, unsigned char ucPins);
 extern void GPIOPinWrite(unsigned long ulPort, unsigned char ucPins,

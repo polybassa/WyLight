@@ -50,7 +50,7 @@
 extern "C"
 {
 #endif
-    
+
 #include <stdbool.h>
 
 //*****************************************************************************
@@ -58,12 +58,9 @@ extern "C"
 // Peripheral clock and reset control registers
 //
 //*****************************************************************************
-typedef struct _PRCM_PeripheralRegs_
-{
-
-unsigned long ulClkReg;
-unsigned long ulRstReg;
-
+typedef struct _PRCM_PeripheralRegs_ {
+    unsigned long ulClkReg;
+    unsigned long ulRstReg;
 }PRCM_PeriphRegs_t;
 
 //*****************************************************************************
@@ -242,7 +239,7 @@ extern void PRCMOCRRegisterWrite(unsigned char ucIndex,
                                  unsigned long ulRegValue);
 extern unsigned long PRCMOCRRegisterRead(unsigned char ucIndex);
 
-extern void PRCMIntRegister(void (*pfnHandler)(void));
+extern void PRCMIntRegister(void (* pfnHandler)(void));
 extern void PRCMIntUnregister(void);
 extern void PRCMIntEnable(unsigned long ulIntFlags);
 extern void PRCMIntDisable(unsigned long ulIntFlags);
@@ -250,11 +247,10 @@ extern unsigned long PRCMIntStatus(void);
 extern void PRCMRTCInUseSet(void);
 extern bool PRCMRTCInUseGet(void);
 extern void PRCMRTCSet(unsigned long ulSecs, unsigned short usMsec);
-extern void PRCMRTCGet(unsigned long *ulSecs, unsigned short *usMsec);
+extern void PRCMRTCGet(unsigned long* ulSecs, unsigned short* usMsec);
 extern void PRCMRTCMatchSet(unsigned long ulSecs, unsigned short usMsec);
-extern void PRCMRTCMatchGet(unsigned long *ulSecs, unsigned short *usMsec);
+extern void PRCMRTCMatchGet(unsigned long* ulSecs, unsigned short* usMsec);
 extern void PRCMCC3200MCUInit(void);
-
 
 //*****************************************************************************
 //

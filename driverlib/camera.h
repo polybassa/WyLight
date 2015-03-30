@@ -56,14 +56,12 @@ extern "C"
 //*****************************************************************************
 #define CAM_BUFFER_ADDR 0x44018100
 
-
 //*****************************************************************************
 // Value that can be passed to CameraXClkSet().
 //*****************************************************************************
 #define CAM_XCLK_STABLE_LO          0x00
 #define CAM_XCLK_STABLE_HI          0x01
 #define CAM_XCLK_DIV_BYPASS         0x02
-
 
 //*****************************************************************************
 // Value that can be passed to CameraIntEnable(), CameraIntDisable,
@@ -76,7 +74,6 @@ extern "C"
 #define CAM_INT_FIFO_THR      0x00000004
 #define CAM_INT_FIFO_OF       0x00000002
 #define CAN_INT_FIFO_UR       0x00000001
-
 
 //*****************************************************************************
 // Value that can be passed to CameraXClkConfig().
@@ -93,7 +90,6 @@ extern "C"
 #define CAM_NOBT_SYNCHRO    0x00002000
 #define CAM_IF_SYNCHRO      0x00080000
 
-
 //*****************************************************************************
 //
 // API Function prototypes
@@ -108,7 +104,7 @@ extern void CameraXClkSet(unsigned long ulBase, unsigned char bXClkFlags);
 extern void CameraDMAEnable(unsigned long ulBase);
 extern void CameraDMADisable(unsigned long ulBase);
 extern void CameraThresholdSet(unsigned long ulBase, unsigned long ulThreshold);
-extern void CameraIntRegister(unsigned long ulBase, void (*pfnHandler)(void));
+extern void CameraIntRegister(unsigned long ulBase, void (* pfnHandler)(void));
 extern void CameraIntUnregister(unsigned long ulBase);
 extern void CameraIntEnable(unsigned long ulBase, unsigned long ulIntFlags);
 extern void CameraIntDisable(unsigned long ulBase, unsigned long ulIntFlags);
@@ -116,8 +112,8 @@ extern unsigned long CameraIntStatus(unsigned long ulBase);
 extern void CameraIntClear(unsigned long ulBase, unsigned long ulIntFlags);
 extern void CameraCaptureStop(unsigned long ulBase, tBoolean bImmediate);
 extern void CameraCaptureStart(unsigned long ulBase);
-extern void CameraBufferRead(unsigned long ulBase,unsigned long *pBuffer,
-                          unsigned char ucSize);
+extern void CameraBufferRead(unsigned long ulBase, unsigned long* pBuffer,
+                             unsigned char ucSize);
 
 //*****************************************************************************
 //

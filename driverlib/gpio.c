@@ -53,6 +53,8 @@
 #include "gpio.h"
 #include "interrupt.h"
 
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR |
+                                                        ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 //*****************************************************************************
 //
@@ -71,10 +73,10 @@
 static tBoolean
 GPIOBaseValid(unsigned long ulPort)
 {
-    return((ulPort == GPIOA0_BASE) ||
+    return (ulPort == GPIOA0_BASE) ||
            (ulPort == GPIOA1_BASE) ||
            (ulPort == GPIOA2_BASE) ||
-           (ulPort == GPIOA3_BASE));
+           (ulPort == GPIOA3_BASE);
 }
 #endif
 
@@ -98,42 +100,31 @@ GPIOGetIntNumber(unsigned long ulPort)
     //
     // Determine the GPIO interrupt number for the given module.
     //
-    switch(ulPort)
-    {
-        case GPIOA0_BASE:
-        {
-            ulInt = INT_GPIOA0;
-            break;
-        }
+    switch (ulPort) {
+    case GPIOA0_BASE:
+        ulInt = INT_GPIOA0;
+        break;
 
-        case GPIOA1_BASE:
-        {
-            ulInt = INT_GPIOA1;
-            break;
-        }
+    case GPIOA1_BASE:
+        ulInt = INT_GPIOA1;
+        break;
 
-        case GPIOA2_BASE:
-        {
-            ulInt = INT_GPIOA2;
-            break;
-        }
+    case GPIOA2_BASE:
+        ulInt = INT_GPIOA2;
+        break;
 
-        case GPIOA3_BASE:
-        {
-            ulInt = INT_GPIOA3;
-            break;
-        }
+    case GPIOA3_BASE:
+        ulInt = INT_GPIOA3;
+        break;
 
-        default:
-        {
-            return(-1);
-        }
+    default:
+        return -1;
     }
 
     //
     // Return GPIO interrupt number.
     //
-    return(ulInt);
+    return ulInt;
 }
 
 //*****************************************************************************
@@ -182,8 +173,8 @@ GPIODirModeSet(unsigned long ulPort, unsigned char ucPins,
     // Set the pin direction and mode.
     //
     HWREG(ulPort + GPIO_O_GPIO_DIR) = ((ulPinIO & 1) ?
-                                  (HWREG(ulPort + GPIO_O_GPIO_DIR) | ucPins) :
-                                  (HWREG(ulPort + GPIO_O_GPIO_DIR) & ~(ucPins)));
+                                       (HWREG(ulPort + GPIO_O_GPIO_DIR) | ucPins) :
+                                       (HWREG(ulPort + GPIO_O_GPIO_DIR) & ~(ucPins)));
 }
 
 //*****************************************************************************
@@ -222,7 +213,7 @@ GPIODirModeGet(unsigned long ulPort, unsigned char ucPin)
     // Return the pin direction and mode.
     //
     ulDir = HWREG(ulPort + GPIO_O_GPIO_DIR);
-    return(((ulDir & ucPin) ? 1 : 0));
+    return (ulDir & ucPin) ? 1 : 0;
 }
 
 //*****************************************************************************
@@ -272,14 +263,14 @@ GPIOIntTypeSet(unsigned long ulPort, unsigned char ucPins,
     // Set the pin interrupt type.
     //
     HWREG(ulPort + GPIO_O_GPIO_IBE) = ((ulIntType & 1) ?
-                                  (HWREG(ulPort + GPIO_O_GPIO_IBE) | ucPins) :
-                                  (HWREG(ulPort + GPIO_O_GPIO_IBE) & ~(ucPins)));
+                                       (HWREG(ulPort + GPIO_O_GPIO_IBE) | ucPins) :
+                                       (HWREG(ulPort + GPIO_O_GPIO_IBE) & ~(ucPins)));
     HWREG(ulPort + GPIO_O_GPIO_IS) = ((ulIntType & 2) ?
-                                 (HWREG(ulPort + GPIO_O_GPIO_IS) | ucPins) :
-                                 (HWREG(ulPort + GPIO_O_GPIO_IS) & ~(ucPins)));
+                                      (HWREG(ulPort + GPIO_O_GPIO_IS) | ucPins) :
+                                      (HWREG(ulPort + GPIO_O_GPIO_IS) & ~(ucPins)));
     HWREG(ulPort + GPIO_O_GPIO_IEV) = ((ulIntType & 4) ?
-                                  (HWREG(ulPort + GPIO_O_GPIO_IEV) | ucPins) :
-                                  (HWREG(ulPort + GPIO_O_GPIO_IEV) & ~(ucPins)));
+                                       (HWREG(ulPort + GPIO_O_GPIO_IEV) | ucPins) :
+                                       (HWREG(ulPort + GPIO_O_GPIO_IEV) & ~(ucPins)));
 }
 
 //*****************************************************************************
@@ -321,8 +312,8 @@ GPIOIntTypeGet(unsigned long ulPort, unsigned char ucPin)
     ulIBE = HWREG(ulPort + GPIO_O_GPIO_IBE);
     ulIS = HWREG(ulPort + GPIO_O_GPIO_IS);
     ulIEV = HWREG(ulPort + GPIO_O_GPIO_IEV);
-    return(((ulIBE & ucPin) ? 1 : 0) | ((ulIS & ucPin) ? 2 : 0) |
-           ((ulIEV & ucPin) ? 4 : 0));
+    return ((ulIBE & ucPin) ? 1 : 0) | ((ulIS & ucPin) ? 2 : 0) |
+           ((ulIEV & ucPin) ? 4 : 0);
 }
 
 //*****************************************************************************
@@ -431,14 +422,10 @@ GPIOIntStatus(unsigned long ulPort, bool bMasked)
     //
     // Return the interrupt status.
     //
-    if(bMasked)
-    {
-        return(HWREG(ulPort + GPIO_O_GPIO_MIS));
-    }
+    if (bMasked)
+        return HWREG(ulPort + GPIO_O_GPIO_MIS);
     else
-    {
-        return(HWREG(ulPort + GPIO_O_GPIO_RIS));
-    }
+        return HWREG(ulPort + GPIO_O_GPIO_RIS);
 }
 
 //*****************************************************************************
@@ -492,7 +479,7 @@ GPIOIntClear(unsigned long ulPort, unsigned long ulIntFlags)
 //
 //*****************************************************************************
 void
-GPIOIntRegister(unsigned long ulPort, void (*pfnIntHandler)(void))
+GPIOIntRegister(unsigned long ulPort, void (* pfnIntHandler)(void))
 {
     //
     // Check the arguments.
@@ -588,7 +575,7 @@ GPIOPinRead(unsigned long ulPort, unsigned char ucPins)
     //
     // Return the pin value(s).
     //
-    return(HWREG(ulPort + (GPIO_O_GPIO_DATA + (ucPins << 2))));
+    return HWREG(ulPort + (GPIO_O_GPIO_DATA + (ucPins << 2)));
 }
 
 //*****************************************************************************
@@ -647,22 +634,14 @@ GPIODMATriggerEnable(unsigned long ulPort)
     //
     // Set the pin as a DMA trigger.
     //
-    if(ulPort == GPIOA0_BASE)
-    {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x1;
-    }
-    else if(ulPort == GPIOA1_BASE)
-    {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x2;
-    }
-    else if(ulPort == GPIOA2_BASE)
-    {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x4;
-    }
-    else if(ulPort == GPIOA3_BASE)
-    {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x8;
-    }
+    if (ulPort == GPIOA0_BASE)
+        HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x1;
+    else if (ulPort == GPIOA1_BASE)
+        HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x2;
+    else if (ulPort == GPIOA2_BASE)
+        HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x4;
+    else if (ulPort == GPIOA3_BASE)
+        HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x8;
 }
 
 //*****************************************************************************
@@ -689,24 +668,15 @@ GPIODMATriggerDisable(unsigned long ulPort)
     //
     // Set the pin as a DMA trigger.
     //
-    if(ulPort == GPIOA0_BASE)
-    {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x1;
-    }
-    else if(ulPort == GPIOA1_BASE)
-    {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x2;
-    }
-    else if(ulPort == GPIOA2_BASE)
-    {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x4;
-    }
-    else if(ulPort == GPIOA3_BASE)
-    {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x8;
-    }
+    if (ulPort == GPIOA0_BASE)
+        HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x1;
+    else if (ulPort == GPIOA1_BASE)
+        HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x2;
+    else if (ulPort == GPIOA2_BASE)
+        HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x4;
+    else if (ulPort == GPIOA3_BASE)
+        HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x8;
 }
-
 
 //
 // Close the Doxygen group.

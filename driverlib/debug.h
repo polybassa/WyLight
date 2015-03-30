@@ -42,10 +42,10 @@
 #ifdef DEBUG
 #include "trace.h"
 #define ASSERT(expr)                                       \
-                         if(!(expr))                        \
-                         {                                  \
-                             Trace_String("Driverlib ASSERT ERROR\r\n"); \
-                         }                                  \
+    if (!(expr))                        \
+    {                                  \
+        Trace(ZONE_ERROR, "Driverlib ASSERT ERROR\r\n"); \
+    }                                  \
 
 #else
 #define ASSERT(expr)
