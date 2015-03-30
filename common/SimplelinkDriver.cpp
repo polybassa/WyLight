@@ -101,7 +101,6 @@ SimplelinkDriver::SimplelinkDriver(const bool accesspointMode)
     }
     if (retVal == ERROR) {
         this->disconnect();
-        sl_Stop(SL_STOP_TIMEOUT);
         Trace(ZONE_VERBOSE, "Construct Driver failed...\n\r");
         reset();
     }
