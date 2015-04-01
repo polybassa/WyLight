@@ -16,29 +16,37 @@ MAIL_HEADER="to: admin@wylight.de\nfrom: build01.wylight@gmail.com\nsubject: ${B
 
 # prepare a fresh branch for build
 cd WyLight && \
-git checkout ${PULL_BRANCH} && \
-git pull && \
-git checkout -b ${BUILD_BRANCH} && \
-./configure
+git checkout ${PULL_BRANCH} > buildlog.txt && \
+git pull >> buildlog.txt && \
+git checkout -b ${BUILD_BRANCH} >> buildlog.txt && \
+./configure >> buildlog.txt
 if [ $? -ne 0 ]; then
-	echo "prepare repository and branch for build failed"
-	echo -e "${MAIL_HEADER} prepare repository failed" | ${SENDMAIL} -t
+	echo "prepare repository and branch for build failed" >> buildlog.txt
+	echo -e "${MAIL_HEADER} prepare repository failed\n" > buildmsg.txt
+	cat buildlog.txt >> buildmsg.txt
+	cat buildmsg.txt | ${SENDMAIL} -t
 	exit 1
 fi
 
 # run tests
 # TODO replace this with 'make all' when supported on raspi
-make firmware_test && \
-make cli
-#make firmware_pic
+make firmware_test >> buildlog.txt && \
+make cli >>  buildlog.txt && \
+make firmware_pic >> buildlog.txt
 
 if [ $? -ne 0 ]; then
-	echo "build failed!"
-	echo -e "${MAIL_HEADER} failed" | ${SENDMAIL} -t
+	echo "build failed!" >> buildlog.txt
+	echo -e "${MAIL_HEADER} failed\n" > buildmsg.txt
+	cat buildlog.txt >> buildmsg.txt
+	cat buildmsg.txt | ${SENDMAIL} -t
 	exit $?
 fi
 
-echo -e "${MAIL_HEADER} was successful" | ${SENDMAIL} -t
+echo "build was successful!" >> buildlog.txt
+echo -e "${MAIL_HEADER} was successful\n" > buildmsg.txt
+cat buildlog.txt >> buildmsg.txt
+cat buildmsg.txt | ${SENDMAIL} -t
+
 
 # save nightly build results only
 if [ "${BUILD_TYPE}" == "nightly" ]; then
