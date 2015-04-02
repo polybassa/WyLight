@@ -12,16 +12,17 @@ TARGETS=(test cc_fw firmware_pic cli cc_bl sim library)
 
 function make_targets() {
 	# run tests
-	for target in $TARGETS
+	echo -e "\nMaking targets\n" >> $LOGFILE
+	for target in "${TARGETS[@]}"
 	do
 		echo -e "\n\n Start to build $target \n\n---------------------------------------\n\n" >>$LOGFILE
 		make $target >> $LOGFILE
 
 		if [ $? -eq 0 ]; then
-			return 1;
+			return 1
 		fi
 	done
-	return 0;
+	return 0
 }
 
 function report_result() {
@@ -53,7 +54,8 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-if [ make_targets -ne 0 ]; then
+retval = make_targets
+if [ $retval -ne 0 ]; then
 	report_result "build failed!"
 	exit 1
 fi
