@@ -16,7 +16,7 @@ firmware_pic_release:
 firmware_simu: 
 	$(CC) -Wall $(FW_INC) ${FW_SRC} -DDEBUG -DX86 -lpthread ${OPENGL_LIB} -o ${BINDIR}/simu.bin
 
-firmware_test: firmware_standart_test
+firmware_test: ${OBJDIR} ${BINDIR} firmware_standart_test
 
-firmware_standart_test: ${OBJDIR} ${BINDIR} ${BINDIR}/CommandIO_ut.bin ${BINDIR}/crc_ut.bin ${BINDIR}/ledstrip_ut.bin ${BINDIR}/RingBuf_ut.bin ${BINDIR}/ScriptCtrl_ut.bin
+firmware_standart_test: ${BINDIR}/CommandIO_ut.bin ${BINDIR}/crc_ut.bin ${BINDIR}/ledstrip_ut.bin ${BINDIR}/RingBuf_ut.bin ${BINDIR}/ScriptCtrl_ut.bin
 	@$(foreach test,$^,./$(test);)	
