@@ -76,8 +76,7 @@ library_standart_test: 	${BINDIR}/BroadcastReceiver_ut.bin \
 						${BINDIR}/TelnetProxy_ut.bin \
 						${BINDIR}/WiflyControl_ut.bin \
 						${BINDIR}/WiflyControlNoThrow_ut.bin \
-						${BINDIR}/StartupManager_ut.bin \
-						${BINDIR}/WyFileDownloader_ut.bin
+						${BINDIR}/StartupManager_ut.bin 
 	$(foreach test,$^,./$(test);)
 
 library_ftp_test: ${BINDIR}/FtpServer_ut.bin
