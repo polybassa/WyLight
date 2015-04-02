@@ -26,7 +26,7 @@ function make_targets() {
 }
 
 function report_result() {
-	echo $0 >> $LOGFILE
+	echo $1 >> $LOGFILE
 	echo -e "${MAIL_HEADER} $1\n\n" > buildmsg.txt
 	cat $LOGFILE >> buildmsg.txt
 	cat buildmsg.txt | ${SENDMAIL} -t
@@ -54,8 +54,7 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-retval = make_targets
-if [ $retval -ne 0 ]; then
+if [ $(make_targets) -ne 0 ]; then
 	report_result "build failed!"
 	exit 1
 fi
