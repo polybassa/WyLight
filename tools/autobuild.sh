@@ -18,15 +18,15 @@ function make_targets() {
 		make $target >> $LOGFILE
 
 		if [ $? -eq 0 ]; then
-			return 1
+			return 1;
 		fi
 	done
-	return 0
+	return 0;
 }
 
 function report_result() {
 	echo $0 >> $LOGFILE
-	echo -e "${MAIL_HEADER} $0\n\n" > buildmsg.txt
+	echo -e "${MAIL_HEADER} $1\n\n" > buildmsg.txt
 	cat $LOGFILE >> buildmsg.txt
 	cat buildmsg.txt | ${SENDMAIL} -t
 	rm buildmsg.txt
