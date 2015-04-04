@@ -123,6 +123,9 @@ AFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
 CFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
 CPPFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
 
+${OBJDIR}/versionfile.o: $(MAKECMDGOALS)/versionfile.txt
+	 @${OBJCOPY} --input binary --output elf32-littlearm --binary-architecture arm ${<} ${@}
+
 ${OBJDIR}/%.o: %.cpp
 	 @${CPP} ${CPPFLAGS} ${DEFINES} -o ${@} ${<}
 

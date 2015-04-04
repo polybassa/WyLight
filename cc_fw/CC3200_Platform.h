@@ -19,12 +19,19 @@
 #ifndef __cc_firmware__CC3200_Platform__
 #define __cc_firmware__CC3200_Platform__
 
+#include <string>
+
 class CC3200_Platform {
+    const std::string mVersion;
+
 public:
     CC3200_Platform();
     CC3200_Platform& operator=(const CC3200_Platform&) = delete;
     CC3200_Platform(const CC3200_Platform&) = delete;
     CC3200_Platform(CC3200_Platform&&) = delete;
+
+    const std::string& getVersion(void) const;
+    const unsigned long getVersionNumber(void) const;
 };
 
 #endif /* defined(__cc_firmware__CC3200_Platform__) */

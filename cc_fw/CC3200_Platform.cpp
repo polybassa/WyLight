@@ -17,6 +17,7 @@
    along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "CC3200_Platform.h"
+#include <cstdlib>
 
 //Driverlib includes
 #include "hw_ints.h"
@@ -31,9 +32,14 @@
 
 static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
+extern char _binary_cc_fw_versionfile_txt_start;
+extern char _binary_cc_fw_versionfile_txt_end;
+
 extern void(*const g_pfnVectors[]) (void);
 
-CC3200_Platform::CC3200_Platform()
+CC3200_Platform::CC3200_Platform() : mVersion(std::string(&_binary_cc_fw_versionfile_txt_start,
+                                                          (&_binary_cc_fw_versionfile_txt_end -
+                                                           &_binary_cc_fw_versionfile_txt_start)))
 {
     // Set vector table base
     MAP_IntVTableBaseSet((unsigned long)&g_pfnVectors[0]);
@@ -50,5 +56,15 @@ CC3200_Platform::CC3200_Platform()
 
     VStartSimpleLinkSpawnTask(9);
 
-    Trace(ZONE_VERBOSE, "---------------------------\r\n");
+    Trace(ZONE_VERBOSE, "FW_VERSION: %s \r\n---------------------------\r\n", this->mVersion.c_str());
+}
+
+const std::string& CC3200_Platform::getVersion(void) const
+{
+    return this->mVersion;
+}
+
+const unsigned long CC3200_Platform::getVersionNumber(void) const
+{
+    return std::strtoul(this->mVersion.c_str(), nullptr, 10);
 }

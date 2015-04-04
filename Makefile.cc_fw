@@ -37,6 +37,7 @@ IPATH+=${ROOT}/library
 
 # WyLight firmware
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/main.o
+${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/versionfile.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/pinmux.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/CC3200_Platform.o
 ${BINDIR}/${PRJ_NAME}.elf: ${OBJDIR}/BroadcastTransmitter.o
