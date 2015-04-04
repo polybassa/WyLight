@@ -12,14 +12,15 @@ TARGETS=(test cc_fw firmware_pic cli cc_bl sim library)
 
 function make_targets() {
 	# run tests
-	localretvalue = 0
+	local retvalue=0
 	for target in "${TARGETS[@]}"
 	do
-		echo -e "\n\n Start to build $target \n\n---------------------------------------\n\n" >>$LOGFILE
+		echo -e "\n\n Start to build $target \n---------------------------------------\n" >>$LOGFILE
 		make $target >> $LOGFILE
 
-		if [ $? -eq 0 ]; then
-			$localretvalue = 1
+		if [ $? -ne 0 ]; then
+			local retvalue=1
+			echo -e "\nBUILD of $target FAILED with exit code $?!!! \n---------------------------------------" >>$LOGFILE
 		fi
 	done
 	return $localretvalue
