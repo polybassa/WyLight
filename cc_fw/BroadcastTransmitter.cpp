@@ -74,7 +74,7 @@ BroadcastTransmitter::BroadcastTransmitter(void) : Task((const char*)"Broadcast"
 
     Trace(ZONE_INFO, "BC Transmitter started\r\n");
     do {
-        osi_Sleep(1500);
+        vTaskDelay(1500 / portTICK_RATE_MS);
         // Send Broadcast Message
         status =
             sendto(sock, &mMsg,

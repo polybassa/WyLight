@@ -50,7 +50,7 @@ void Pwm_Task(void* pvParameters)
         xQueueReceive(g_PwmMessageQ, buffer, portMAX_DELAY);
         unsigned int i = 0;
         for (const auto& pwm : Pwms) {
-            pwm = (buffer[i++] * Pwm::DUTYCYCLE_MAX_VALUE) / UINT8_MAX;
+            pwm = (buffer[i++] * (Pwm::DUTYCYCLE_MAX_VALUE - 1)) / UINT8_MAX;
         }
     }
 }
