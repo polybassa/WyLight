@@ -26,6 +26,7 @@
 #include <iomanip>
 #include <stdint.h>
 #include <memory>
+#include <functional>
 
 //TODO remove this dependencies!!!
 using std::cin;
@@ -39,14 +40,18 @@ using std::string;
 
 static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-#define TRY_CATCH_COUT(X) \
-    try { \
-        (X); \
-        cout << "done.\n"; \
-    } \
-    catch (std::exception& e) { \
-        cout << "failed! because of: " << e.what() << '\n'; \
+void TRY_CATCH_COUT(std::function<void(void)>&& x);
+void TrySend(WyLight::Control& ctrl, WyLight::FwCommand&& cmd);
+
+void TRY_CATCH_COUT(std::function<void(void)>&& x)
+{
+    try {
+        x();
+        cout << "done.\n";
+    } catch (std::exception& e) {
+        cout << "failed! because of: " << e.what() << "\n";
     }
+}
 
 void TrySend(WyLight::Control& ctrl, WyLight::FwCommand&& cmd)
 {
@@ -119,7 +124,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "\nBL: Enabling autostart... ";
-        TRY_CATCH_COUT(control.BlEnableAutostart());
+        TRY_CATCH_COUT([&](void){control.BlEnableAutostart(); });
     }
 };
 
@@ -174,7 +179,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "\nErasing flash... ";
-        TRY_CATCH_COUT(control.BlEraseFlash());
+        TRY_CATCH_COUT([&] {control.BlEraseFlash(); });
     }
 };
 
@@ -186,7 +191,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "\nErasing eeprom... ";
-        TRY_CATCH_COUT(control.BlEraseEeprom());
+        TRY_CATCH_COUT([&] {control.BlEraseEeprom(); });
     }
 };
 
@@ -202,7 +207,7 @@ public:
         string path;
         cin >> path;
         cout << "Programming device flash... ";
-        TRY_CATCH_COUT(control.BlProgramFlash(path));
+        TRY_CATCH_COUT([&] {control.BlProgramFlash(path); });
     }
 };
 
@@ -288,7 +293,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "Starting application... ";
-        TRY_CATCH_COUT(control.BlRunApp());
+        TRY_CATCH_COUT([&] {control.BlRunApp(); });
     }
 };
 
@@ -664,7 +669,7 @@ public:
             [](WyLight::StartupManager::State state) { Trace(ZONE_INFO, "Startup is in state: %d\n", state); };
 
         WyLight::StartupManager manager(callback);
-        TRY_CATCH_COUT(manager.startup(control, path));
+        TRY_CATCH_COUT([&] {manager.startup(control, path); });
         if (manager.getCurrentState() == WyLight::StartupManager::STARTUP_FAILURE)
             cout << endl << "Startup failure occured" << endl;
     }
@@ -679,7 +684,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "Running fw test loop... ";
-        TRY_CATCH_COUT(control.FwTest());
+        TRY_CATCH_COUT([&] {control.FwTest(); });
     }
 };
 
@@ -692,7 +697,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "Running stresstest... ";
-        TRY_CATCH_COUT(control.FwStressTest());
+        TRY_CATCH_COUT([&] {control.FwStressTest(); });
     }
 };
 
