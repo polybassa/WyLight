@@ -218,7 +218,7 @@ size_t ut_WiflyControl_BlEraseEeprom(void)
 
     Control testctrl(0, 0);
 
-    testctrl.BlEraseEeprom();
+    testctrl.mBootloader.BlEraseEeprom();
 
     for (unsigned int i = 0; i < EEPROM_SIZE; i++) {
         CHECK(0xff == g_EepromRndDataPool[i]);
@@ -241,7 +241,7 @@ size_t ut_WiflyControl_BlEepromRead(void)
 
     std::stringstream mStream;
 
-    testctrl.BlReadEeprom(mStream, 0, EEPROM_SIZE);
+    testctrl.mBootloader.BlReadEeprom(mStream, 0, EEPROM_SIZE);
 
     size_t counter = 0;
     do {
@@ -271,7 +271,7 @@ size_t ut_WiflyControl_BlEepromWrite(void)
 
     Control testctrl(0, 0);
 
-    testctrl.BlWriteEeprom(0, m_EepromRndDataPool, EEPROM_SIZE);
+    testctrl.mBootloader.BlWriteEeprom(0, m_EepromRndDataPool, EEPROM_SIZE);
 
     for (unsigned int i = 0; i < EEPROM_SIZE; i++) {
         CHECK(m_EepromRndDataPool[i] == g_EepromRndDataPool[i]);
@@ -294,8 +294,8 @@ size_t ut_WiflyControl_BlEraseFlash(void)
     BlInfo blInfo;
     Control testctrl(0, 0);
     try {
-        testctrl.BlReadInfo(blInfo);
-        testctrl.BlEraseFlash();
+        testctrl.mBootloader.BlReadInfo(blInfo);
+        testctrl.mBootloader.BlEraseFlash();
     } catch (FatalError& e) {
         CHECK(false);
     }
@@ -321,7 +321,7 @@ size_t ut_WiflyControl_BlFlashRead(void)
 
     std::stringstream mStream;
 
-    testctrl.BlReadFlash(mStream, 0, FLASH_SIZE);
+    testctrl.mBootloader.BlReadFlash(mStream, 0, FLASH_SIZE);
 
     size_t counter = 0;
     do {
@@ -350,7 +350,7 @@ size_t ut_WiflyControl_BlFlashWrite(void)
 
     Control testctrl(0, 0);
 
-    testctrl.BlWriteFlash(0, m_FlashRndDataPool, sizeof(m_FlashRndDataPool));
+    testctrl.mBootloader.BlWriteFlash(0, m_FlashRndDataPool, sizeof(m_FlashRndDataPool));
 
     for (unsigned int i = 0; i < FLASH_SIZE; i++) {
         CHECK(m_FlashRndDataPool[i] == g_FlashRndDataPool[i]);
@@ -364,7 +364,7 @@ size_t ut_WiflyControl_BlReadInfo(void)
     TestCaseBegin();
     Control testctrl(0, 0);
     BlInfo mInfo;
-    testctrl.BlReadInfo(mInfo);
+    testctrl.mBootloader.BlReadInfo(mInfo);
     CHECK(mInfo.familyId == 4);
     CHECK(mInfo.versionMajor == 1);
     CHECK(mInfo.versionMinor == 5);

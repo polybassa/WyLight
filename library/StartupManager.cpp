@@ -110,15 +110,15 @@ void StartupManager::startBootloader(WyLight::Control& control, const std::strin
 void StartupManager::bootloaderVersionCheckUpdate(WyLight::Control& control, const std::string& hexFilePath)
 {
     try {
-        mTargetVersion = control.BlReadFwVersion();
+        mTargetVersion = control.mBootloader.BlReadFwVersion();
         if ((mTargetVersion == 0) || (mTargetVersion <= mHexFileVersion)) {
             //---- UPDATE STUFF ---------
             setCurrentState(UPDATING);
-            control.BlEraseEeprom();
-            control.BlProgramFlash(hexFilePath);
+            control.mBootloader.BlEraseEeprom();
+            control.mBootloader.BlProgramFlash(hexFilePath);
         }
         setCurrentState(RUN_APP);
-        control.BlRunApp();
+        control.mBootloader.BlRunApp();
         control.mConfig.SetParameters(ConfigControl::RN171_BASIC_PARAMETERS) ? setCurrentState(STARTUP_SUCCESSFUL) :
         setCurrentState(STARTUP_FAILURE);
     } catch (std::exception& e) {

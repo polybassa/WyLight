@@ -67,13 +67,18 @@ size_t UdpSocket::Send(const uint8_t* frame, size_t length) const
 
 ConfigControl::ConfigControl(const TelnetProxy& telnet) : mTelnet(telnet){}
 
+BootloaderControl::BootloaderControl(const ComProxy& proxy) : mProxy(proxy) {}
+
 bool ConfigControl::SetParameters(std::list<std::string> commands) const
 {
     return true;
 }
 
 Control::Control(uint32_t addr,
-                 uint16_t port) : mConfig(mTelnet), mTcpSock(addr, port), mUdpSock(addr, port, false, 0), mProxy(
+                 uint16_t port) : mBootloader(mProxy), mConfig(mTelnet), mTcpSock(addr, port), mUdpSock(addr,
+                                                                                                        port,
+                                                                                                        false,
+                                                                                                        0), mProxy(
         mTcpSock), mTelnet(
         mTcpSock)
 {}
@@ -112,7 +117,7 @@ Control& Control::operator<<(WyLight::FwCommand&& cmd) throw (WyLight::Connectio
     return *this;
 }
 
-void Control::BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError)
+void BootloaderControl::BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError)
 {}
 
 size_t Control::GetTargetMode(void) const throw(FatalError)
@@ -140,7 +145,7 @@ size_t Control::GetTargetMode(void) const throw(FatalError)
     return 0;
 }
 
-void Control::BlProgramFlash(const std::string& pFilename) const throw (ConnectionTimeout, FatalError)
+void BootloaderControl::BlProgramFlash(const std::string& pFilename) const throw (ConnectionTimeout, FatalError)
 {
     switch (g_Testcase) {
     case TC_UPDATE_FAIL:
@@ -151,7 +156,7 @@ void Control::BlProgramFlash(const std::string& pFilename) const throw (Connecti
     }
 }
 
-uint16_t Control::BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError)
+uint16_t BootloaderControl::BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError)
 {
     switch (g_Testcase) {
     case TC_BL_VERSION_CHECK_FAIL:
@@ -179,7 +184,7 @@ uint16_t Control::ExtractFwVersion(const std::string& pFilename) const
     }
 }
 
-void Control::BlRunApp(void) const throw (ConnectionTimeout, FatalError)
+void BootloaderControl::BlRunApp(void) const throw (ConnectionTimeout, FatalError)
 {
     switch (g_Testcase) {
     case TC_RUN_APP_FAIL:

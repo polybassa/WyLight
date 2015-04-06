@@ -26,56 +26,59 @@ ControlNoThrow::ControlNoThrow(uint32_t addr, uint16_t port) : mControl(addr, po
 
 uint32_t ControlNoThrow::BlEnableAutostart(void) const
 {
-    return Try(std::bind(&Control::BlEnableAutostart, std::ref(mControl)));
+    return Try(std::bind(&BootloaderControl::BlEnableAutostart, std::ref(mControl.mBootloader)));
 }
 
 uint32_t ControlNoThrow::BlEraseEeprom(void) const
 {
-    return Try(std::bind(&Control::BlEraseEeprom, std::ref(mControl)));
+    return Try(std::bind(&BootloaderControl::BlEraseEeprom, std::ref(mControl.mBootloader)));
 }
 
 uint32_t ControlNoThrow::BlEraseFlash(void) const
 {
-    return Try(std::bind(&Control::BlEraseFlash, std::ref(mControl)));
+    return Try(std::bind(&BootloaderControl::BlEraseFlash, std::ref(mControl.mBootloader)));
 }
 
 uint32_t ControlNoThrow::BlReadCrcFlash(std::ostream& out, uint32_t address, size_t numBlocks) const
 {
-    return Try(std::bind(static_cast<void (Control::*)(std::ostream&, uint32_t,
-                                                       size_t) const>(&Control::BlReadCrcFlash), std::ref(mControl),
+    return Try(std::bind(static_cast<void (BootloaderControl::*)(std::ostream&, uint32_t,
+                                                                 size_t) const>(&BootloaderControl::BlReadCrcFlash),
+                         std::ref(mControl.mBootloader),
                          std::ref(out), address, numBlocks));
 }
 
 uint32_t ControlNoThrow::BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes) const
 {
-    return Try(std::bind(static_cast<void (Control::*)(std::ostream&, uint32_t, size_t) const>(&Control::BlReadEeprom),
-                         std::ref(mControl), std::ref(out), address, numBytes));
+    return Try(std::bind(static_cast<void (BootloaderControl::*)(std::ostream&, uint32_t,
+                                                                 size_t) const>(&BootloaderControl::BlReadEeprom),
+                         std::ref(mControl.mBootloader), std::ref(out), address, numBytes));
 }
 
 uint32_t ControlNoThrow::BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) const
 {
-    return Try(std::bind(static_cast<void (Control::*)(std::ostream&, uint32_t, size_t) const>(&Control::BlReadFlash),
-                         std::ref(mControl), std::ref(out), address, numBytes));
+    return Try(std::bind(static_cast<void (BootloaderControl::*)(std::ostream&, uint32_t,
+                                                                 size_t) const>(&BootloaderControl::BlReadFlash),
+                         std::ref(mControl.mBootloader), std::ref(out), address, numBytes));
 }
 
 uint32_t ControlNoThrow::BlReadFwVersion(uint16_t& version) const
 {
-    return Try(std::bind(&Control::BlReadFwVersion, std::ref(mControl)), version);
+    return Try(std::bind(&BootloaderControl::BlReadFwVersion, std::ref(mControl.mBootloader)), version);
 }
 
 uint32_t ControlNoThrow::BlReadInfo(BlInfo& blInfo) const
 {
-    return Try(std::bind(&Control::BlReadInfo, std::ref(mControl), std::ref(blInfo)));
+    return Try(std::bind(&BootloaderControl::BlReadInfo, std::ref(mControl.mBootloader), std::ref(blInfo)));
 }
 
 uint32_t ControlNoThrow::BlProgramFlash(const std::string& filename) const
 {
-    return Try(std::bind(&Control::BlProgramFlash, std::ref(mControl), filename));
+    return Try(std::bind(&BootloaderControl::BlProgramFlash, std::ref(mControl.mBootloader), filename));
 }
 
 uint32_t ControlNoThrow::BlRunApp(void) const
 {
-    return Try(std::bind(&Control::BlRunApp, std::ref(mControl)));
+    return Try(std::bind(&BootloaderControl::BlRunApp, std::ref(mControl.mBootloader)));
 }
 
 uint32_t ControlNoThrow::ConfGetSsid(std::string& ssid) const

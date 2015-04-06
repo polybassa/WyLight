@@ -51,12 +51,17 @@ size_t UdpSocket::Send(const uint8_t* frame, size_t length) const
 }
 
 Control::Control(uint32_t addr,
-                 uint16_t port) : mConfig(mTelnet), mTcpSock(addr, port), mUdpSock(addr, port, false, 0), mProxy(
+                 uint16_t port) : mBootloader(mProxy), mConfig(mTelnet), mTcpSock(addr, port), mUdpSock(addr,
+                                                                                                        port,
+                                                                                                        false,
+                                                                                                        0), mProxy(
         mTcpSock), mTelnet(
         mTcpSock)
 {}
 
 ConfigControl::ConfigControl(const TelnetProxy& telnet) : mTelnet(telnet) {}
+
+BootloaderControl::BootloaderControl(const ComProxy& proxy) : mProxy(proxy) {}
 
 static WiflyError g_ErrorCode;
 
@@ -92,41 +97,30 @@ const std::string FwCmdLoopOn::TOKEN("loop");
 const std::string FwCmdLoopOff::TOKEN("loop_off");
 const std::string FwCmdWait::TOKEN("wait");
 
-void Control::BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError)
+void BootloaderControl::BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError)
 {
     throwExceptions();
 }
 
-void Control::BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError)
+void BootloaderControl::BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError)
 {
     throwExceptions();
 }
 
-void Control::BlEraseFlash(void) const throw(ConnectionTimeout, FatalError)
+void BootloaderControl::BlEraseFlash(void) const throw(ConnectionTimeout, FatalError)
 {
     throwExceptions();
 }
 
-void Control::BlProgramFlash(const std::string& filename) const throw (ConnectionTimeout, FatalError)
+void BootloaderControl::BlProgramFlash(const std::string& filename) const throw (ConnectionTimeout, FatalError)
 {
     throwExceptions();
 }
 
-void Control::BlReadCrcFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout,
-                                                                                                FatalError,
-                                                                                                InvalidParameter)
-{
-    throwExceptions();
-    out.flags(std::ios::right | std::ios::hex | std::ios::showbase);
-    while (numBytes) {
-        numBytes--;
-        out.put((char)0xff);
-    }
-}
-
-void Control::BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout,
-                                                                                              FatalError,
-                                                                                              InvalidParameter)
+void BootloaderControl::BlReadCrcFlash(std::ostream& out, uint32_t address,
+                                       size_t numBytes) const throw (ConnectionTimeout,
+                                                                     FatalError,
+                                                                     InvalidParameter)
 {
     throwExceptions();
     out.flags(std::ios::right | std::ios::hex | std::ios::showbase);
@@ -136,9 +130,10 @@ void Control::BlReadEeprom(std::ostream& out, uint32_t address, size_t numBytes)
     }
 }
 
-void Control::BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) const throw (ConnectionTimeout,
-                                                                                             FatalError,
-                                                                                             InvalidParameter)
+void BootloaderControl::BlReadEeprom(std::ostream& out, uint32_t address,
+                                     size_t numBytes) const throw (ConnectionTimeout,
+                                                                   FatalError,
+                                                                   InvalidParameter)
 {
     throwExceptions();
     out.flags(std::ios::right | std::ios::hex | std::ios::showbase);
@@ -148,18 +143,31 @@ void Control::BlReadFlash(std::ostream& out, uint32_t address, size_t numBytes) 
     }
 }
 
-uint16_t Control::BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError)
+void BootloaderControl::BlReadFlash(std::ostream& out, uint32_t address,
+                                    size_t numBytes) const throw (ConnectionTimeout,
+                                                                  FatalError,
+                                                                  InvalidParameter)
+{
+    throwExceptions();
+    out.flags(std::ios::right | std::ios::hex | std::ios::showbase);
+    while (numBytes) {
+        numBytes--;
+        out.put((char)0xff);
+    }
+}
+
+uint16_t BootloaderControl::BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError)
 {
     throwExceptions();
     return 0;
 }
 
-void Control::BlReadInfo(BlInfo& info) const throw (ConnectionTimeout, FatalError)
+void BootloaderControl::BlReadInfo(BlInfo& info) const throw (ConnectionTimeout, FatalError)
 {
     throwExceptions();
 }
 
-void Control::BlRunApp(void) const throw (ConnectionTimeout, FatalError)
+void BootloaderControl::BlRunApp(void) const throw (ConnectionTimeout, FatalError)
 {
     throwExceptions();
 }

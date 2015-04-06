@@ -124,7 +124,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "\nBL: Enabling autostart... ";
-        TRY_CATCH_COUT([&](void){control.BlEnableAutostart(); });
+        TRY_CATCH_COUT([&](void){control.mBootloader.BlEnableAutostart(); });
     }
 };
 
@@ -138,7 +138,7 @@ public:
     {
         WyLight::BlInfo info;
         try {
-            control.BlReadInfo(info);
+            control.mBootloader.BlReadInfo(info);
             info.Print();
         } catch (WyLight::FatalError& e) {
             std::cout << "Read bootloader info failed" << endl;
@@ -157,7 +157,7 @@ public:
         cin >> numBlocks;
         try {
             std::stringstream mStream;
-            control.BlReadCrcFlash(mStream, address, numBlocks);
+            control.mBootloader.BlReadCrcFlash(mStream, address, numBlocks);
             mStream.seekp(0, std::ios::end);
             size_t bytesRead = mStream.tellp();
             if (2 * numBlocks != bytesRead) {
@@ -179,7 +179,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "\nErasing flash... ";
-        TRY_CATCH_COUT([&] {control.BlEraseFlash(); });
+        TRY_CATCH_COUT([&] {control.mBootloader.BlEraseFlash(); });
     }
 };
 
@@ -191,7 +191,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "\nErasing eeprom... ";
-        TRY_CATCH_COUT([&] {control.BlEraseEeprom(); });
+        TRY_CATCH_COUT([&] {control.mBootloader.BlEraseEeprom(); });
     }
 };
 
@@ -207,7 +207,7 @@ public:
         string path;
         cin >> path;
         cout << "Programming device flash... ";
-        TRY_CATCH_COUT([&] {control.BlProgramFlash(path); });
+        TRY_CATCH_COUT([&] {control.mBootloader.BlProgramFlash(path); });
     }
 };
 
@@ -270,7 +270,7 @@ public:
     ControlCmdBlReadEeprom(void) : ControlCmdBlRead("eeprom") {}
     void Read(WyLight::Control& control, std::ostream& out, uint32_t address, const size_t numBytes) const
     {
-        control.BlReadEeprom(out, address, numBytes);
+        control.mBootloader.BlReadEeprom(out, address, numBytes);
     }
 };
 
@@ -279,7 +279,7 @@ public:
     ControlCmdBlReadFlash(void) : ControlCmdBlRead("flash") {}
     void Read(WyLight::Control& control, std::ostream& out, uint32_t address, const size_t numBytes) const
     {
-        control.BlReadFlash(out, address, numBytes);
+        control.mBootloader.BlReadFlash(out, address, numBytes);
     }
 };
 
@@ -293,7 +293,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "Starting application... ";
-        TRY_CATCH_COUT([&] {control.BlRunApp(); });
+        TRY_CATCH_COUT([&] {control.mBootloader.BlRunApp(); });
     }
 };
 
@@ -308,7 +308,7 @@ public:
     {
         cout << "Reading firmware version... ";
         try {
-            uint16_t version = control.BlReadFwVersion();
+            uint16_t version = control.mBootloader.BlReadFwVersion();
             cout << "done.\n\n" << "Version = " << std::to_string(version) << "\n";
         } catch (WyLight::FatalError& e) {
             cout << "failed! because of: " << e << '\n';
