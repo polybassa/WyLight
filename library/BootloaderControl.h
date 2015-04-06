@@ -155,7 +155,7 @@ private:
     /**
      * Proxy object handling the low level communication with bootloader and firmware.
      */
-    const ComProxy mProxy;
+    const ComProxy& mProxy;
 
     /**
      * Instructs the bootloader to erase the specified area of the flash.

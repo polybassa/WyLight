@@ -4,6 +4,8 @@ ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/BroadcastReceiver.o
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/ClientSocket.o
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/ComProxy.o
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/ConfigControl.o
+${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/FirmwareControl.o
+${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/BootloaderControl.o
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/intelhexclass.o
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/MaskBuffer.o
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/Script.o

@@ -69,21 +69,27 @@ ConfigControl::ConfigControl(const TelnetProxy& telnet) : mTelnet(telnet){}
 
 BootloaderControl::BootloaderControl(const ComProxy& proxy) : mProxy(proxy) {}
 
+FirmwareControl::FirmwareControl(const UdpSocket& sock, const ComProxy& proxy) : mUdpSock(sock), mProxy(proxy) {}
+
 bool ConfigControl::SetParameters(std::list<std::string> commands) const
 {
     return true;
 }
 
 Control::Control(uint32_t addr,
-                 uint16_t port) : mBootloader(mProxy), mConfig(mTelnet), mTcpSock(addr, port), mUdpSock(addr,
-                                                                                                        port,
-                                                                                                        false,
-                                                                                                        0), mProxy(
+                 uint16_t port) : mBootloader(mProxy), mConfig(mTelnet), mFirmware(mUdpSock, mProxy), mTcpSock(addr,
+                                                                                                               port),
+    mUdpSock(addr,
+             port,
+             false,
+             0),
+    mProxy(
         mTcpSock), mTelnet(
         mTcpSock)
 {}
 
-uint16_t Control::FwGetVersion() throw (WyLight::ConnectionTimeout, WyLight::FatalError, WyLight::ScriptBufferFull)
+uint16_t FirmwareControl::FwGetVersion() throw (WyLight::ConnectionTimeout, WyLight::FatalError,
+                                                WyLight::ScriptBufferFull)
 {
     switch (g_Testcase) {
     case TC_START_BL_FAIL:
@@ -100,8 +106,9 @@ uint16_t Control::FwGetVersion() throw (WyLight::ConnectionTimeout, WyLight::Fat
     }
 }
 
-Control& Control::operator<<(WyLight::FwCommand&& cmd) throw (WyLight::ConnectionTimeout, WyLight::FatalError,
-                                                              WyLight::ScriptBufferFull)
+FirmwareControl& FirmwareControl::operator<<(WyLight::FwCommand&& cmd) throw (WyLight::ConnectionTimeout,
+                                                                              WyLight::FatalError,
+                                                                              WyLight::ScriptBufferFull)
 {
     if (strcmp(typeid(cmd).name(), typeid(FwCmdStartBl()).name()))
         switch (g_Testcase) {

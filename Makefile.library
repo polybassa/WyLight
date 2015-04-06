@@ -57,6 +57,7 @@ ${BINDIR}/WiflyControl_ut.bin: 	clean \
 								$(OBJDIR)/WiflyControl_ut.o \
 								$(OBJDIR)/WiflyControl.o \
 								$(OBJDIR)/ConfigControl.o \
+								$(OBJDIR)/FirmwareControl.o \
 								$(OBJDIR)/BootloaderControl.o \
 								$(OBJDIR)/intelhexclass.o \
 								$(OBJDIR)/MaskBuffer.o \

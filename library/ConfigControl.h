@@ -123,6 +123,10 @@ private:
      * @return an empty string or the value of the specified wlan setting
      */
     std::string Get(const std::string& searchKey, const std::string& getCmd = "get wlan\r\n") const;
+
+    /* ------------------ friendships for unittesting only ------------------- */
+    friend size_t ut_WiflyControl_ConfSetDefaults(void);
+    friend size_t ut_WiflyControl_ConfSetWlan(void);
 };
 }
 #endif /* #ifndef _CONFIGCONTROL_H_ */

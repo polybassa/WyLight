@@ -51,10 +51,13 @@ size_t UdpSocket::Send(const uint8_t* frame, size_t length) const
 }
 
 Control::Control(uint32_t addr,
-                 uint16_t port) : mBootloader(mProxy), mConfig(mTelnet), mTcpSock(addr, port), mUdpSock(addr,
-                                                                                                        port,
-                                                                                                        false,
-                                                                                                        0), mProxy(
+                 uint16_t port) : mBootloader(mProxy), mConfig(mTelnet), mFirmware(mUdpSock, mProxy), mTcpSock(addr,
+                                                                                                               port),
+    mUdpSock(addr,
+             port,
+             false,
+             0),
+    mProxy(
         mTcpSock), mTelnet(
         mTcpSock)
 {}
@@ -62,6 +65,8 @@ Control::Control(uint32_t addr,
 ConfigControl::ConfigControl(const TelnetProxy& telnet) : mTelnet(telnet) {}
 
 BootloaderControl::BootloaderControl(const ComProxy& proxy) : mProxy(proxy) {}
+
+FirmwareControl::FirmwareControl(const UdpSocket& sock, const ComProxy& proxy) : mUdpSock(sock), mProxy(proxy) {}
 
 static WiflyError g_ErrorCode;
 
@@ -217,24 +222,24 @@ bool ConfigControl::SetParameters(std::list<std::string> commands) const
     return true;
 }
 
-std::string Control::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+std::string FirmwareControl::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
     throwExceptions();
     return "";
 }
 
-void Control::FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+void FirmwareControl::FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
     throwExceptions();
 }
 
-std::string Control::FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+std::string FirmwareControl::FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
     throwExceptions();
     return "";
 }
 
-uint16_t Control::FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+uint16_t FirmwareControl::FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
     throwExceptions();
     return 0;
@@ -246,13 +251,13 @@ uint16_t Control::ExtractFwVersion(const std::string& pFilename) const
     return 0;
 }
 
-uint8_t Control::FwGetLedTyp(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+uint8_t FirmwareControl::FwGetLedTyp(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
     throwExceptions();
     return 0;
 }
 
-Control& Control::operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+FirmwareControl& FirmwareControl::operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
 {
     throwExceptions();
     return *this;

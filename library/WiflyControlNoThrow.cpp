@@ -126,27 +126,27 @@ uint32_t ControlNoThrow::FwClearScript(void)
 
 uint32_t ControlNoThrow::FwGetCycletime(std::string& output)
 {
-    return Try(std::bind(&Control::FwGetCycletime, std::ref(mControl)), output);
+    return Try(std::bind(&FirmwareControl::FwGetCycletime, std::ref(mControl.mFirmware)), output);
 }
 
 uint32_t ControlNoThrow::FwGetRtc(tm& timeValue)
 {
-    return Try(std::bind(&Control::FwGetRtc, std::ref(mControl), std::ref(timeValue)));
+    return Try(std::bind(&FirmwareControl::FwGetRtc, std::ref(mControl.mFirmware), std::ref(timeValue)));
 }
 
 uint32_t ControlNoThrow::FwGetTracebuffer(std::string& output)
 {
-    return Try(std::bind(&Control::FwGetTracebuffer, std::ref(mControl)), output);
+    return Try(std::bind(&FirmwareControl::FwGetTracebuffer, std::ref(mControl.mFirmware)), output);
 }
 
 uint32_t ControlNoThrow::FwGetVersion(uint16_t& output)
 {
-    return Try(std::bind(&Control::FwGetVersion, std::ref(mControl)), output);
+    return Try(std::bind(&FirmwareControl::FwGetVersion, std::ref(mControl.mFirmware)), output);
 }
 
 uint32_t ControlNoThrow::FwGetLedTyp(uint8_t& output)
 {
-    return Try(std::bind(&Control::FwGetLedTyp, std::ref(mControl)), output);
+    return Try(std::bind(&FirmwareControl::FwGetLedTyp, std::ref(mControl.mFirmware)), output);
 }
 
 uint32_t ControlNoThrow::FwLoopOff(const uint8_t numLoops)
@@ -213,7 +213,7 @@ uint32_t ControlNoThrow::ExtractFwVersion(const std::string& pFilename, uint16_t
 uint32_t ControlNoThrow::Try(FwCommand&& cmd)
 {
     try {
-        mControl << std::move(cmd);
+        mControl.mFirmware << std::move(cmd);
         return NO_ERROR;
     } catch (FatalError& e) {
         return e.AsErrorCode();

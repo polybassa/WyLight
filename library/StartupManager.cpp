@@ -80,7 +80,7 @@ void StartupManager::startup(WyLight::Control& control, const std::string& hexFi
             return;
         } else if (currentMode == FW_IDENT) {
             setCurrentState(FW_VERSION_CHECK);
-            mTargetVersion = control.FwGetVersion();
+            mTargetVersion = control.mFirmware.FwGetVersion();
             if ((mTargetVersion != 0) && (mTargetVersion >= mHexFileVersion)) {
                 setCurrentState(STARTUP_SUCCESSFUL);
                 return;
@@ -98,7 +98,7 @@ void StartupManager::startup(WyLight::Control& control, const std::string& hexFi
 void StartupManager::startBootloader(WyLight::Control& control, const std::string& hexFilePath)
 {
     try {
-        control << FwCmdStartBl();
+        control.mFirmware << FwCmdStartBl();
         bootloaderVersionCheckUpdate(control, hexFilePath);
     } catch (std::exception& e) {
         // Exception in case of lost connection or wrong mode expected

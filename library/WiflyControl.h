@@ -24,10 +24,9 @@
 #include "wifly_cmd.h"
 #include "TelnetProxy.h"
 #include "WiflyControlException.h"
-#include "FwCommand.h"
-#include "Script.h"
 #include "ConfigControl.h"
 #include "BootloaderControl.h"
+#include "FirmwareControl.h"
 
 namespace WyLight
 {
@@ -55,10 +54,8 @@ class Control {
 public:
     BootloaderControl mBootloader;
     ConfigControl mConfig;
-    /**
-     * string constant to address all LEDs. String representation of 0xffffffff
-     */
-    static const std::string LEDS_ALL;
+    FirmwareControl mFirmware;
+
     /**
      * Connect to a wifly device
      * @param addr ipv4 address as 32 bit value in host byte order
@@ -73,61 +70,7 @@ public:
      */
     size_t GetTargetMode(void) const throw(FatalError);
 
-/* -------------------------- FIRMWARE METHODES -------------------------- */
-    /**
-     * Reads the cycletimes from wifly device and stores them into the response object
-     * @return a string with all recorded cycletimes from PIC firmware
-     * @throw ConnectionTimeout if response timed out
-     * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-     * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
-     */
-    std::string FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-
-    /**
-     * Reads the current rtc time from the wifly device
-     * @param timeValue reference to a tm object, where to store the rtc time from PIC firmware
-     * @throw ConnectionTimeout if response timed out
-     * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-     * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
-     */
-    void FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-
-    /**
-     * Reads the tracebuffer from wifly device and stores the data into the response object
-     * @return a string with all recorded trace messages from PIC firmware
-     * @throw ConnectionTimeout if response timed out
-     * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-     * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
-     */
-    std::string FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-
-    /**
-     * Reads the firmware version currently running on the wifly device.
-     * @return a string representing the version number of the PIC firmware
-     * @throw ConnectionTimeout if response timed out
-     * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-     * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
-     */
-    uint16_t FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-
-    /**
-     * Reads the led typ on the spi interface. To detect WS2801 Led's, the SPI IN and OUT Pin's has to conntect together, to build a loopback.
-     * @return a value representing the led typ of the WyLight modul
-     * @throw ConnectionTimeout if response timed out
-     * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-     * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
-     */
-    uint8_t FwGetLedTyp(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-
-    //TODO move this test functions to the integration test
-    void FwTest(void);
-    void FwStressTest(void);
-
-    Control& operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-    Control& operator<<(FwCommand& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-    Control& operator<<(const Script& script) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-
-/* ------------------------- VERSION EXTRACT METHODE ------------------------- */
+    /* ------------------------- VERSION EXTRACT METHODE ------------------------- */
     /**
      * Methode to extract the firmware version from a hex file
      * @return the version string from a given hex file
@@ -156,19 +99,6 @@ private:
      * Proxy object handling the communication with the wlan module for its configuration
      */
     const TelnetProxy mTelnet;
-
-    /**
-     * Sends a wifly command frame to the wifly device
-     * @param command FwCommand object with the frame, which should be send
-     * @throw ConnectionTimeout if response timed out
-     * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-     * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
-     */
-    void FwSend(FwCommand& cmd) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-
-/* ------------------ friendships for unittesting only ------------------- */
-    friend size_t ut_WiflyControl_ConfSetDefaults(void);
-    friend size_t ut_WiflyControl_ConfSetWlan(void);
 };
 }
 #endif /* #ifndef _WIFLYCONTROL_H_ */
