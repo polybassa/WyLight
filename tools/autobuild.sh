@@ -55,7 +55,7 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-retval = $(make_targets)
+retval=$(make_targets)
 
 if [ $retval -ne 0 ]; then
 	report_result "build failed!"
