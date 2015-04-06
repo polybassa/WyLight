@@ -19,11 +19,11 @@ function make_targets() {
 		make $target >> $LOGFILE
 
 		if [ $? -ne 0 ]; then
+			echo -e "\nBUILD of $target FAILED!!! \n---------------------------------------" >>$LOGFILE
 			local retvalue=1
-			echo -e "\nBUILD of $target FAILED with exit code $?!!! \n---------------------------------------" >>$LOGFILE
 		fi
 	done
-	return $localretvalue
+	return $retvalue
 }
 
 function report_result() {
