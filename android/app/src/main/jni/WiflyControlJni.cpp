@@ -20,6 +20,7 @@
 #include "ScriptManager.h"
 #include "StartupManager.h"
 #include "WiflyControl.h"
+#include "FirmwareControl.h"
 #include <sstream>
 #include <unistd.h>
 #include <jni.h>
@@ -36,7 +37,7 @@ jboolean TrySend(JNIEnv* env, Control* pCtrl, FwCommand&& cmd)
 {
     if (!pCtrl) return false;
     try {
-        *pCtrl << std::move(cmd);
+        pCtrl->mFirmware << std::move(cmd);
         return true;
     } catch (FatalError& e) {
         ThrowJniException(env, e);
@@ -181,7 +182,7 @@ jboolean Java_de_WyLight_WyLight_WiflyControl_FwSendScript(JNIEnv* env, jobject 
     try {
         Control* pControl = reinterpret_cast<Control*>(pNative);
         Script* pScript = reinterpret_cast<Script*>(pNativeScript);
-        *pControl << FwCmdLoopOn {} << *pScript << FwCmdLoopOff {0};
+        pControl->mFirmware << FwCmdLoopOn {} << *pScript << FwCmdLoopOff {0};
     } catch (FatalError& e) {
         ThrowJniException(env, e);
     }
