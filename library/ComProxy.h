@@ -42,11 +42,9 @@ public:
      * @param responseSize size of the response buffer
      * @param doSync if true a uart baudrate synchronisation is forced before request is send
      * @return number of bytes read into pResponse or 0 if crc check fails
-     * @throw ConnectionTimeout if a timeout occurred
-     * @throw FatalError if synchronisation or sending to socket failed
      */
     size_t Send(const BlRequest& req, uint8_t* pResponse, size_t responseSize,
-                bool doSync = true) const throw(ConnectionTimeout, FatalError);
+                bool doSync = true) const;
 
     /*
      * Send a request to the PIC firmware and wait for a response
@@ -54,18 +52,14 @@ public:
      * @param pResponse pointer to buffer for the response frame
      * @param responseSize size of the response buffer
      * @return number of bytes read into pResponse or 0 if crc check fails
-     * @throw ConnectionTimeout if a timeout occurred
-     * @throw FatalError if sending to socket failed
      */
-    size_t Send(const FwCommand& request, response_frame* pResponse, size_t responseSize) const throw(ConnectionTimeout,
-                                                                                                      FatalError);
+    size_t Send(const FwCommand& request, response_frame* pResponse, size_t responseSize) const;
 
     /*
      * Send a byte sequence to force a uart baud rate synchronisation between WLAN module and PIC
      * @return mode of target: BL_IDENT for Bootloader mode, FW_IDENT for Firmware mode
-     * @throw FatalError if synchronisation fails
      */
-    size_t SyncWithTarget(void) const throw(FatalError);
+    size_t SyncWithTarget(void) const;
 
 private:
     /*
@@ -81,13 +75,12 @@ private:
      * @param checkCrc if true the crc of the response will be checked, 0 is returned if crc was wrong
      * @param crcInLittleEndian if true the crc is assumed to be in little endian byte order like the bootloader will send it. if false the byte order is assumed to be big endian
      * @return the number of bytes received or 0 if the crc check fails
-     * @throw ConnectionTimeout if response timed out
      */
     size_t Recv(uint8_t* pBuffer,
                 size_t   length,
                 timeval* pTimeout = NULL,
                 bool     checkCrc = true,
-                bool     crcInLittleEndian = true) const throw(ConnectionTimeout);
+                bool     crcInLittleEndian = true) const;
 
     /*
      * Send a bootloader or firmware pRequest to the PIC
@@ -99,8 +92,6 @@ private:
      * @param doSync if true a uart baudrate synchronisation is forced before request is send (only valid for bootloader requests
      * @param crcInLittleEndian if true the crc is assumed in little endian byte order
      * @return number of bytes read into pResponse or 0 if crc check fails
-     * @throw ConnectionTimeout if a timeout occurred
-     * @throw FatalError if synchronisation or sending to socket failed
      */
     size_t Send(uint8_t const* pRequest,
                 const size_t   requestSize,
@@ -108,7 +99,7 @@ private:
                 size_t         responseSize,
                 bool           checkCrc,
                 bool           doSync,
-                bool           crcInLittleEndian = true) const throw(ConnectionTimeout, FatalError);
+                bool           crcInLittleEndian = true) const;
 };
 }
 #endif /* #ifndef _COM_PROXY_H_ */

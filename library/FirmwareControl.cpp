@@ -51,42 +51,42 @@ FirmwareControl::FirmwareControl(const UdpSocket& udp, const ComProxy& proxy) :
     mProxy(proxy)
 {}
 
-std::string FirmwareControl::FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+std::string FirmwareControl::FwGetCycletime(void)
 {
     FwCmdGetCycletime cmd;
     *this << cmd;
     return cmd.mResponse.ToString();
 }
 
-void FirmwareControl::FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+void FirmwareControl::FwGetRtc(tm& timeValue)
 {
     FwCmdGetRtc cmd;
     *this << cmd;
     timeValue = cmd.mResponse.GetRealTime();
 }
 
-std::string FirmwareControl::FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+std::string FirmwareControl::FwGetTracebuffer(void)
 {
     FwCmdGetTracebuffer cmd;
     *this << cmd;
     return cmd.mResponse.ToString();
 }
 
-uint16_t FirmwareControl::FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+uint16_t FirmwareControl::FwGetVersion(void)
 {
     FwCmdGetVersion cmd;
     *this << cmd;
     return cmd.mResponse.getVersion();
 }
 
-uint8_t FirmwareControl::FwGetLedTyp(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+uint8_t FirmwareControl::FwGetLedTyp(void)
 {
     FwCmdGetLedTyp cmd;
     *this << cmd;
     return cmd.mResponse.getLedTyp();
 }
 
-void FirmwareControl::FwSend(FwCommand& cmd) const throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+void FirmwareControl::FwSend(FwCommand& cmd) const
 {
     if (cmd.IsResponseRequired()) {
         response_frame buffer;
@@ -126,20 +126,19 @@ void FirmwareControl::FwStressTest(void)
     }
 }
 
-FirmwareControl& FirmwareControl::operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+FirmwareControl& FirmwareControl::operator<<(FwCommand&& cmd)
 {
     this->FwSend(cmd);
     return *this;
 }
 
-FirmwareControl& FirmwareControl::operator<<(FwCommand& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull)
+FirmwareControl& FirmwareControl::operator<<(FwCommand& cmd)
 {
     this->FwSend(cmd);
     return *this;
 }
 
-FirmwareControl& FirmwareControl::operator<<(const Script& script) throw (ConnectionTimeout, FatalError,
-                                                                          ScriptBufferFull)
+FirmwareControl& FirmwareControl::operator<<(const Script& script)
 {
     for (auto it = script.begin(); it != script.end(); ++it) {
         *this << **it;

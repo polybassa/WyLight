@@ -45,7 +45,7 @@ static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNIN
 
 BootloaderControl::BootloaderControl(const ComProxy& proxy) : mProxy(proxy) {}
 
-void BootloaderControl::BlEnableAutostart(void) const throw(ConnectionTimeout, FatalError)
+void BootloaderControl::BlEnableAutostart(void) const
 {
     static const uint8_t value = 0xff;
     try {
@@ -57,14 +57,14 @@ void BootloaderControl::BlEnableAutostart(void) const throw(ConnectionTimeout, F
     }
 }
 
-void BootloaderControl::BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError)
+void BootloaderControl::BlEraseEeprom(void) const
 {
     uint8_t buffer[EEPROM_SIZE];
     std::fill_n(buffer, EEPROM_SIZE, 0xff);
     BlWriteEeprom((uint32_t)0, buffer, sizeof(buffer));
 }
 
-void BootloaderControl::BlEraseFlash(void) const throw(ConnectionTimeout, FatalError)
+void BootloaderControl::BlEraseFlash(void) const
 {
     BlInfo info;
     BlReadInfo(info);
@@ -82,8 +82,7 @@ void BootloaderControl::BlEraseFlash(void) const throw(ConnectionTimeout, FatalE
 }
 
 void BootloaderControl::BlEraseFlashArea(const uint32_t endAddress,
-                                         const uint8_t  numPages) const throw(ConnectionTimeout,
-                                                                              FatalError)
+                                         const uint8_t  numPages) const
 {
     unsigned char response;
     BlFlashEraseRequest request(endAddress, numPages);
@@ -97,7 +96,7 @@ void BootloaderControl::BlEraseFlashArea(const uint32_t endAddress,
 }
 
 size_t BootloaderControl::BlRead(const BlRequest& req, unsigned char* pResponse, const size_t responseSize,
-                                 bool doSync) const throw(ConnectionTimeout, FatalError)
+                                 bool doSync) const
 {
     unsigned char buffer[BL_MAX_MESSAGE_LENGTH];
     size_t bytesReceived = mProxy.Send(req, buffer, sizeof(buffer), doSync);
@@ -110,9 +109,7 @@ size_t BootloaderControl::BlRead(const BlRequest& req, unsigned char* pResponse,
 }
 
 void BootloaderControl::BlReadCrcFlash(std::ostream& out, uint32_t address,
-                                       size_t numBytes) const throw (ConnectionTimeout,
-                                                                     FatalError,
-                                                                     InvalidParameter)
+                                       size_t numBytes) const
 {
     out.flags(std::ios::right | std::ios::hex | std::ios::showbase);
     uint8_t buffer[5096];
@@ -123,8 +120,7 @@ void BootloaderControl::BlReadCrcFlash(std::ostream& out, uint32_t address,
 }
 
 size_t BootloaderControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int address,
-                                         uint16_t numBlocks) const throw (ConnectionTimeout, FatalError,
-                                                                          InvalidParameter)
+                                         uint16_t numBlocks) const
 {
     if (numBlocks * FLASH_ERASE_BLOCKSIZE + address > FLASH_SIZE)
         throw InvalidParameter(std::string(__FILE__) + ':' + __FUNCTION__ + ": address or numBlocks out of range");
@@ -147,9 +143,7 @@ size_t BootloaderControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int ad
 }
 
 void BootloaderControl::BlReadEeprom(std::ostream& out, uint32_t address,
-                                     size_t numBytes) const throw (ConnectionTimeout,
-                                                                   FatalError,
-                                                                   InvalidParameter)
+                                     size_t numBytes) const
 {
     uint8_t buffer[EEPROM_SIZE];
     size_t bytesRead = BlReadEeprom(buffer, address, numBytes);
@@ -160,9 +154,7 @@ void BootloaderControl::BlReadEeprom(std::ostream& out, uint32_t address,
 }
 
 size_t BootloaderControl::BlReadEeprom(uint8_t* pBuffer, uint32_t address,
-                                       size_t numBytes) const throw (ConnectionTimeout,
-                                                                     FatalError,
-                                                                     InvalidParameter)
+                                       size_t numBytes) const
 {
     if (numBytes + address > EEPROM_SIZE)
         throw InvalidParameter(std::string(__FILE__) + ':' + __FUNCTION__ + ": address or numBytes out of range");
@@ -185,9 +177,7 @@ size_t BootloaderControl::BlReadEeprom(uint8_t* pBuffer, uint32_t address,
 }
 
 void BootloaderControl::BlReadFlash(std::ostream& out, uint32_t address,
-                                    size_t numBytes) const throw (ConnectionTimeout,
-                                                                  FatalError,
-                                                                  InvalidParameter)
+                                    size_t numBytes) const
 {
     out.flags(std::ios::right | std::ios::hex | std::ios::showbase);
     uint8_t buffer[FLASH_SIZE];
@@ -198,9 +188,7 @@ void BootloaderControl::BlReadFlash(std::ostream& out, uint32_t address,
 }
 
 size_t BootloaderControl::BlReadFlash(uint8_t* pBuffer, uint32_t address,
-                                      size_t numBytes) const throw (ConnectionTimeout,
-                                                                    FatalError,
-                                                                    InvalidParameter)
+                                      size_t numBytes) const
 {
     if (numBytes + address > FLASH_SIZE)
         throw InvalidParameter(std::string(__FILE__) + ':' + __FUNCTION__ + ": address or numBytes out of range");
@@ -223,7 +211,7 @@ size_t BootloaderControl::BlReadFlash(uint8_t* pBuffer, uint32_t address,
     return sumBytesRead;
 }
 
-uint16_t BootloaderControl::BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError)
+uint16_t BootloaderControl::BlReadFwVersion(void) const
 {
     BlInfo info;
     BlReadInfo(info);
@@ -239,14 +227,14 @@ uint16_t BootloaderControl::BlReadFwVersion(void) const throw (ConnectionTimeout
     return versUnion.version > 300 ? 0 : versUnion.version;
 }
 
-void BootloaderControl::BlReadInfo(BlInfo& blInfo) const throw (ConnectionTimeout, FatalError)
+void BootloaderControl::BlReadInfo(BlInfo& blInfo) const
 {
     BlInfoRequest request;
     BlRead(request, reinterpret_cast<unsigned char*>(&blInfo), sizeof(BlInfo));
 }
 
 void BootloaderControl::BlWriteFlash(unsigned int address, unsigned char* pBuffer,
-                                     size_t bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+                                     size_t bufferLength) const
 {
     if (bufferLength + address > FLASH_SIZE)
         throw InvalidParameter("Address + bufferLength out of flash range\n");
@@ -274,7 +262,7 @@ void BootloaderControl::BlWriteFlash(unsigned int address, unsigned char* pBuffe
 }
 
 void BootloaderControl::BlWriteEeprom(unsigned int address, const uint8_t* pBuffer,
-                                      size_t bufferLength) const throw (ConnectionTimeout, FatalError, InvalidParameter)
+                                      size_t bufferLength) const
 {
     if (bufferLength + address > EEPROM_SIZE)
         throw InvalidParameter("Address + bufferLength out of eeprom range\n");
@@ -302,7 +290,7 @@ void BootloaderControl::BlWriteEeprom(unsigned int address, const uint8_t* pBuff
         throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": response of wrong command code");
 }
 
-void BootloaderControl::BlProgramFlash(const std::string& pFilename) const throw (ConnectionTimeout, FatalError)
+void BootloaderControl::BlProgramFlash(const std::string& pFilename) const
 {
     std::ifstream hexFile;
     hexFile.open(const_cast<char*>(pFilename.c_str()), ifstream::in);
@@ -387,7 +375,7 @@ void BootloaderControl::BlProgramFlash(const std::string& pFilename) const throw
     BlWriteFlash(info.GetAddress() - FLASH_WRITE_BLOCKSIZE, &appVecBuf[0], FLASH_WRITE_BLOCKSIZE);
 }
 
-void BootloaderControl::BlRunApp(void) const throw (ConnectionTimeout, FatalError)
+void BootloaderControl::BlRunApp(void) const
 {
     BlRunAppRequest request;
     unsigned char buffer[32];

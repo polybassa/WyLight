@@ -34,7 +34,7 @@ ComProxy::ComProxy(const TcpSocket& sock) : mSock(sock)
 {}
 
 size_t ComProxy::Recv(uint8_t* pBuffer, const size_t length, timeval* pTimeout, bool checkCrc,
-                      bool crcInLittleEndian) const throw (ConnectionTimeout)
+                      bool crcInLittleEndian) const
 {
     timeval endTime, now;
     gettimeofday(&endTime, NULL);
@@ -53,14 +53,14 @@ size_t ComProxy::Recv(uint8_t* pBuffer, const size_t length, timeval* pTimeout, 
 }
 
 size_t ComProxy::Send(const BlRequest& req, uint8_t* pResponse, size_t responseSize,
-                      bool doSync) const throw(ConnectionTimeout, FatalError)
+                      bool doSync) const
 {
     Trace(ZONE_INFO, "%zu pure bytes\n", req.GetSize());
     return Send(req.GetData(), req.GetSize(), pResponse, responseSize, req.CheckCrc(), doSync);
 }
 
 size_t ComProxy::Send(const FwCommand& cmd, response_frame* pResponse,
-                      size_t responseSize) const throw(ConnectionTimeout, FatalError)
+                      size_t responseSize) const
 {
     return Send(cmd.GetData(), cmd.GetSize(), reinterpret_cast<uint8_t*>(pResponse), responseSize, true, false, false);
 }
@@ -71,7 +71,7 @@ size_t ComProxy::Send(const uint8_t* pRequest,
                       size_t         responseSize,
                       bool           checkCrc,
                       bool           doSync,
-                      bool           crcInLittleEndian) const throw(ConnectionTimeout, FatalError)
+                      bool           crcInLittleEndian) const
 {
     if (doSync)
         if (SyncWithTarget() != BL_IDENT)
@@ -94,7 +94,7 @@ size_t ComProxy::Send(const uint8_t* pRequest,
     return Recv(pResponse, responseSize, &timeout, checkCrc, crcInLittleEndian);
 }
 
-size_t ComProxy::SyncWithTarget(void) const throw(FatalError)
+size_t ComProxy::SyncWithTarget(void) const
 {
     uint8_t recvBuffer[BL_MAX_MESSAGE_LENGTH];
     std::fill(recvBuffer, recvBuffer + sizeof(recvBuffer), 0);

@@ -56,55 +56,40 @@ public:
     /**
      * Reads the cycletimes from wifly device and stores them into the response object
      * @return a string with all recorded cycletimes from PIC firmware
-     * @throw ConnectionTimeout if response timed out
-     * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-     * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
      */
-    std::string FwGetCycletime(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+    std::string FwGetCycletime(void);
 
     /**
      * Reads the current rtc time from the wifly device
      * @param timeValue reference to a tm object, where to store the rtc time from PIC firmware
-     * @throw ConnectionTimeout if response timed out
-     * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-     * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
      */
-    void FwGetRtc(tm& timeValue) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+    void FwGetRtc(tm& timeValue);
 
     /**
      * Reads the tracebuffer from wifly device and stores the data into the response object
      * @return a string with all recorded trace messages from PIC firmware
-     * @throw ConnectionTimeout if response timed out
-     * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-     * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
      */
-    std::string FwGetTracebuffer(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+    std::string FwGetTracebuffer(void);
 
     /**
      * Reads the firmware version currently running on the wifly device.
      * @return a string representing the version number of the PIC firmware
-     * @throw ConnectionTimeout if response timed out
-     * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-     * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
      */
-    uint16_t FwGetVersion(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+    uint16_t FwGetVersion(void);
 
     /**
      * Reads the led typ on the spi interface. To detect WS2801 Led's, the SPI IN and OUT Pin's has to conntect together, to build a loopback.
      * @return a value representing the led typ of the WyLight modul
-     * @throw ConnectionTimeout if response timed out
-     * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
-     * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
      */
-    uint8_t FwGetLedTyp(void) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+    uint8_t FwGetLedTyp(void);
 
     //TODO move this test functions to the integration test
     void FwTest(void);
     void FwStressTest(void);
 
-    FirmwareControl& operator<<(FwCommand&& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-    FirmwareControl& operator<<(FwCommand& cmd) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
-    FirmwareControl& operator<<(const Script& script) throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+    FirmwareControl& operator<<(FwCommand&& cmd);
+    FirmwareControl& operator<<(FwCommand& cmd);
+    FirmwareControl& operator<<(const Script& script);
 
 /* ------------------------- PRIVATE DECLARATIONS ------------------------- */
 private:
@@ -125,7 +110,7 @@ private:
      * @throw FatalError if command code of the response doesn't match the code of the request, or too many retries failed
      * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
      */
-    void FwSend(FwCommand& cmd) const throw (ConnectionTimeout, FatalError, ScriptBufferFull);
+    void FwSend(FwCommand& cmd) const;
 };
 }
 #endif /* #ifndef _FIRMWARECONTROL_H_ */
