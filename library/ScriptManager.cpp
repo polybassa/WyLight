@@ -27,7 +27,7 @@ static const uint32_t __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_W
 static const std::string EMPTY_STRING {};
 const std::string ScriptManager::EXTENSION {".wyscript"};
 
-ScriptManager::ScriptManager(const std::string& path) throw (FatalError) : m_Path(path + '/')
+ScriptManager::ScriptManager(const std::string& path) : m_Path(path + '/')
 {
     DIR* const searchDir = opendir(path.c_str());
     if (NULL == searchDir)
@@ -45,12 +45,12 @@ ScriptManager::ScriptManager(const std::string& path) throw (FatalError) : m_Pat
 ScriptManager::~ScriptManager(void)
 {}
 
-Script ScriptManager::getScript(size_t index) const throw (FatalError)
+Script ScriptManager::getScript(size_t index) const
 {
     return Script {m_Path + getScriptName(index)};
 }
 
-const std::string& ScriptManager::getScriptName(size_t index) const throw (FatalError)
+const std::string& ScriptManager::getScriptName(size_t index) const
 {
     if (index < m_ScriptFiles.size())
         return m_ScriptFiles[index];

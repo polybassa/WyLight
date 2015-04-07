@@ -59,7 +59,7 @@ struct ClientSocket {
      * @param style either SOCK_DGRAM (udp) or SOCK_STREAM for tcp socket
      * @throw FatalError if the creation of the bsd sock descriptor fails
      */
-    ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError);
+    ClientSocket(uint32_t addr, uint16_t port, int style);
 
     /**
      * Destructor releasing the socket file descriptor
@@ -82,7 +82,7 @@ struct ClientSocket {
      * @return true if select() timed out, false if data is ready
      * @throw FatalError if something very unexpected happens
      */
-    bool Select(timeval* timeout) const throw (FatalError);
+    bool Select(timeval* timeout) const;
 
     /**
      * Interface to send a data frame with a given length, you have to implement
@@ -115,7 +115,7 @@ struct TcpServerSocket : ClientSocket {
      * @throw FatalError if the base class constructor fails @see ClientSocket#ClientSocket
      * @throw ConnectionLost if bind() or listen() fails on the internal socket
      */
-    TcpServerSocket(uint32_t Addr, uint16_t port) throw (ConnectionLost, FatalError);
+    TcpServerSocket(uint32_t Addr, uint16_t port);
 };
 
 /**
@@ -128,7 +128,7 @@ struct TcpSocket : ClientSocket {
      * @throw FatalError if the base class constructor fails @see ClientSocket#ClientSocket
      * @throw ConnectionLost if accept() fails on the internal socket
      */
-    TcpSocket(int listenSocket, const struct timespec* timeout = NULL) throw (ConnectionLost, FatalError);
+    TcpSocket(int listenSocket, const struct timespec* timeout = NULL);
 
     /**
      * Create a new TCP socket with connect()
@@ -137,7 +137,7 @@ struct TcpSocket : ClientSocket {
      * @throw FatalError if the base class constructor fails @see ClientSocket#ClientSocket
      * @throw ConnectionLost if connect() fails on the internal socket
      */
-    TcpSocket(uint32_t Addr, uint16_t port) throw (ConnectionLost, FatalError);
+    TcpSocket(uint32_t Addr, uint16_t port);
 
     /**
      * Receive data from the remote socket.
@@ -147,7 +147,7 @@ struct TcpSocket : ClientSocket {
      * @return number of bytes read into \<pBuffer\>
      * @throw FatalError if something very unexpected happens
      */
-    size_t Recv(uint8_t* pBuffer, size_t length, timeval* timeout = NULL) const throw (FatalError);
+    size_t Recv(uint8_t* pBuffer, size_t length, timeval* timeout = NULL) const;
 
     /**
      * @see ClientSocket#Send
@@ -174,7 +174,7 @@ struct UdpSocket : ClientSocket {
      * @param enableBroadcast use 1 to enable broadcast else set 0 (default)
      * @throw FatalError if the base class constructor fails
      */
-    UdpSocket(uint32_t addr, uint16_t port, bool doBind = true, int enableBroadcast = 0) throw (FatalError);
+    UdpSocket(uint32_t addr, uint16_t port, bool doBind = true, int enableBroadcast = 0);
 
     /**
      * Receive data from the remote socket.
@@ -190,7 +190,7 @@ struct UdpSocket : ClientSocket {
                     size_t           length,
                     timeval*         timeout = NULL,
                     struct sockaddr* remoteAddr = NULL,
-                    socklen_t*       remoteAddrLength = NULL) const throw (FatalError);
+                    socklen_t*       remoteAddrLength = NULL) const;
 
     virtual size_t Send(const uint8_t* frame, size_t length) const;
 };

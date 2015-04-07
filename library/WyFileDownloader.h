@@ -27,9 +27,9 @@ namespace WyLight
 {
 class BootloaderClient : private TcpSocket {
 public:
-    BootloaderClient(const uint32_t Addr, const uint16_t port) throw (ConnectionLost, FatalError);
+    BootloaderClient(const uint32_t Addr, const uint16_t port);
 
-    int sendData(std::istream& inData) throw (FatalError);
+    int sendData(std::istream& inData);
 };
 
 class FileDownloader {

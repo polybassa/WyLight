@@ -77,7 +77,7 @@ void UnmaskBuffer::Clear(void)
     mLastWasDLE = false;
 }
 
-void UnmaskBuffer::CheckAndRemoveCrc(bool crcInLittleEndian) throw (FatalError)
+void UnmaskBuffer::CheckAndRemoveCrc(bool crcInLittleEndian)
 {
     if (0x0000 == GetCrc16(crcInLittleEndian)) {
         if (2 > mLength) throw FatalError("Buffer underrun in UnmaskBuffer");

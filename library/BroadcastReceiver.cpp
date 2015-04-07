@@ -52,7 +52,7 @@ BroadcastReceiver::~BroadcastReceiver(void)
     WriteRecentEndpoints(mRecentFilename);
 }
 
-void BroadcastReceiver::operator()(timeval* pTimeout) throw (FatalError)
+void BroadcastReceiver::operator()(timeval* pTimeout)
 {
     // only one thread allowed per instance
     if (0 == std::atomic_fetch_add(&mNumInstances, 1))
@@ -86,7 +86,7 @@ Endpoint& BroadcastReceiver::GetEndpointByFingerprint(const uint64_t fingerprint
     return EMPTY_ENDPOINT;
 }
 
-Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout) throw (FatalError)
+Endpoint BroadcastReceiver::GetNextRemote(timeval* timeout)
 {
     UdpSocket udpSock(INADDR_ANY, mPort, true, 1);
     sockaddr_storage remoteAddr;

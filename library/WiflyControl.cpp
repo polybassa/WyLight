@@ -60,7 +60,7 @@ Control::Control(uint32_t addr, uint16_t port) :
     mTelnet(mTcpSock)
 {}
 
-size_t Control::GetTargetMode(void) const throw(FatalError)
+size_t Control::GetTargetMode(void) const
 {
     return mProxy.SyncWithTarget();
 }

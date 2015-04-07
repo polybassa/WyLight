@@ -38,7 +38,7 @@ public:
      */
 
     //TODO: current working directory path as parameter for constructor
-    FtpServer(void) throw (FatalError);
+    FtpServer(void);
 
     ~FtpServer(void);
 
@@ -46,7 +46,7 @@ private:
     static const size_t FILE_BUFFER_SIZE = 2048;
     void handleFiletransfer(const TcpSocket& telnet);
     bool openDataConnection(const WyLight::TcpSocket& telnet, std::stringstream& dataInput);
-    void transferDataPassive(std::ifstream& file, const TcpServerSocket& dataSocket) const throw(FatalError);
+    void transferDataPassive(std::ifstream& file, const TcpServerSocket& dataSocket) const;
     void SendFile(const TcpSocket& telnet, std::stringstream& dataInput, const TcpServerSocket* dataSocket);
     bool mFtpServerRunning = true;
     std::thread mFtpServerThread;

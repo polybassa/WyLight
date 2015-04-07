@@ -57,12 +57,7 @@ void StartupManager::setCurrentState(StartupManager::State newState)
     }
 }
 
-void StartupManager::startup(WyLight::ControlNoThrow& control, const std::string& hexFilePath) throw (InvalidParameter)
-{
-    this->startup(control.mControl, hexFilePath);
-}
-
-void StartupManager::startup(WyLight::Control& control, const std::string& hexFilePath) throw (InvalidParameter)
+void StartupManager::startup(WyLight::Control& control, const std::string& hexFilePath)
 {
     try {
         mHexFileVersion = control.ExtractFwVersion(hexFilePath);

@@ -33,7 +33,7 @@ using namespace WyLight;
 #define CRC_SIZE 2
 static const uint32_t __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) : mSock(0),
+ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) : mSock(0),
     mSockAddr(addr, port) {}
 ClientSocket::~ClientSocket(void) {}
 
@@ -61,7 +61,7 @@ void SetDelay(timeval& delay)
     g_TestSocketSendDelay.tv_nsec = delay.tv_usec * 1000;
 }
 
-TcpSocket::TcpSocket(int listenSocket, const struct timespec* timeout) throw (ConnectionLost, FatalError)
+TcpSocket::TcpSocket(int listenSocket, const struct timespec* timeout)
 {
     g_TestSocketSendDelay.tv_sec = 0;
     g_TestSocketSendDelay.tv_nsec = 0;
@@ -74,7 +74,7 @@ ClientSocket::ClientSocket() : mSock(-1), mSockAddr(0, 0)
  * For each call to Recv() we only return one byte of data to simulate a very
  * fragmented response from pic.
  */
-size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const throw (FatalError)
+size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 {
     nanosleep(&g_TestSocketSendDelay, NULL);
     Trace(ZONE_VERBOSE,

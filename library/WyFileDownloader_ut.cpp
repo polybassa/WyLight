@@ -36,7 +36,7 @@ using namespace WyLight;
 
 static const uint32_t __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) : mSock(0),
+ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) : mSock(0),
     mSockAddr(addr, port) {}
 ClientSocket::~ClientSocket(void) {}
 
@@ -47,13 +47,13 @@ uint8_t g_TestSocketSendBuffer[300000];
 size_t g_TestSocketSendBufferPos = 0;
 size_t g_TestFileLength = 0;
 
-TcpSocket::TcpSocket(uint32_t Addr, uint16_t port) throw (ConnectionLost, FatalError){}
+TcpSocket::TcpSocket(uint32_t Addr, uint16_t port) {}
 
-TcpSocket::TcpSocket(int listenSocket, const struct timespec* timeout) throw (ConnectionLost, FatalError){}
+TcpSocket::TcpSocket(int listenSocket, const struct timespec* timeout) {}
 
 ClientSocket::ClientSocket() : mSock(-1), mSockAddr(0, 0) {}
 
-size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const throw (FatalError)
+size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 {
     //Trace(ZONE_VERBOSE, "%p %zu of %zu wait for %zu\n", pBuffer, g_TestSocketRecvBufferPos, g_TestSocketRecvBufferSize, length);
     if (g_TestSocketRecvBufferPos < g_TestSocketRecvBufferSize) {

@@ -41,11 +41,11 @@ TestCase g_Testcase;
 const std::list<std::string> ConfigControl::RN171_BASIC_PARAMETERS;
 
 /***** Wrappers ****/
-ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) : mSock(0),
+ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) : mSock(0),
     mSockAddr(addr, port) {}
 ClientSocket::~ClientSocket(void) {}
-TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError) : ClientSocket(addr, port, 0) {}
-size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const throw (FatalError)
+TcpSocket::TcpSocket(uint32_t addr, uint16_t port) : ClientSocket(addr, port, 0) {}
+size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 {
     return 0;
 }
@@ -55,7 +55,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 }
 ComProxy::ComProxy(const TcpSocket& sock) : mSock(sock) {}
 TelnetProxy::TelnetProxy(const TcpSocket& sock) : mSock(sock) {}
-UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) throw (FatalError) : ClientSocket(
+UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) : ClientSocket(
         addr,
         port,
         SOCK_DGRAM)
@@ -88,8 +88,7 @@ Control::Control(uint32_t addr,
         mTcpSock)
 {}
 
-uint16_t FirmwareControl::FwGetVersion() throw (WyLight::ConnectionTimeout, WyLight::FatalError,
-                                                WyLight::ScriptBufferFull)
+uint16_t FirmwareControl::FwGetVersion()
 {
     switch (g_Testcase) {
     case TC_START_BL_FAIL:
@@ -106,9 +105,7 @@ uint16_t FirmwareControl::FwGetVersion() throw (WyLight::ConnectionTimeout, WyLi
     }
 }
 
-FirmwareControl& FirmwareControl::operator<<(WyLight::FwCommand&& cmd) throw (WyLight::ConnectionTimeout,
-                                                                              WyLight::FatalError,
-                                                                              WyLight::ScriptBufferFull)
+FirmwareControl& FirmwareControl::operator<<(WyLight::FwCommand&& cmd)
 {
     if (strcmp(typeid(cmd).name(), typeid(FwCmdStartBl()).name()))
         switch (g_Testcase) {
@@ -124,10 +121,10 @@ FirmwareControl& FirmwareControl::operator<<(WyLight::FwCommand&& cmd) throw (Wy
     return *this;
 }
 
-void BootloaderControl::BlEraseEeprom(void) const throw(ConnectionTimeout, FatalError)
+void BootloaderControl::BlEraseEeprom(void) const
 {}
 
-size_t Control::GetTargetMode(void) const throw(FatalError)
+size_t Control::GetTargetMode(void) const
 {
     switch (g_Testcase) {
     case TC_MODE_CHECK_FAIL:
@@ -152,7 +149,7 @@ size_t Control::GetTargetMode(void) const throw(FatalError)
     return 0;
 }
 
-void BootloaderControl::BlProgramFlash(const std::string& pFilename) const throw (ConnectionTimeout, FatalError)
+void BootloaderControl::BlProgramFlash(const std::string& pFilename) const
 {
     switch (g_Testcase) {
     case TC_UPDATE_FAIL:
@@ -163,7 +160,7 @@ void BootloaderControl::BlProgramFlash(const std::string& pFilename) const throw
     }
 }
 
-uint16_t BootloaderControl::BlReadFwVersion(void) const throw (ConnectionTimeout, FatalError)
+uint16_t BootloaderControl::BlReadFwVersion(void) const
 {
     switch (g_Testcase) {
     case TC_BL_VERSION_CHECK_FAIL:
@@ -191,7 +188,7 @@ uint16_t Control::ExtractFwVersion(const std::string& pFilename) const
     }
 }
 
-void BootloaderControl::BlRunApp(void) const throw (ConnectionTimeout, FatalError)
+void BootloaderControl::BlRunApp(void) const
 {
     switch (g_Testcase) {
     case TC_RUN_APP_FAIL:

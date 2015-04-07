@@ -52,9 +52,9 @@ enum WiflyError {
 
 class FatalError : public std::exception {
 public:
-    FatalError(const std::string& description, uint32_t errorCode = FATAL_ERROR) throw () : mDescription(description),
+    FatalError(const std::string& description, uint32_t errorCode = FATAL_ERROR) noexcept : mDescription(description),
         mErrorCode(errorCode) {}
-    virtual ~FatalError(void) throw (){}
+    virtual ~FatalError(void) noexcept {}
 
     uint32_t AsErrorCode(void) const
     {
@@ -66,7 +66,7 @@ public:
         return "de/WyLight/WyLight/exception/FatalError";
     }
 
-    const char* what(void) const throw()
+    const char* what(void) const noexcept
     {
         return mDescription.c_str();
     }

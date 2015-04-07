@@ -64,7 +64,7 @@ void Script::clear()
     mList.clear();
 }
 
-void Script::deserialize(const std::string& filename, Script& newScript) throw (FatalError)
+void Script::deserialize(const std::string& filename, Script& newScript)
 {
     std::ifstream inFile(filename);
     if (!inFile.is_open())
@@ -131,7 +131,7 @@ void Script::push_back(std::unique_ptr<FwCmdScript>&& pNew)
     mList.push_back(std::move(pNew));
 }
 
-void Script::serialize(const std::string& filename, const Script& newScript) throw (FatalError)
+void Script::serialize(const std::string& filename, const Script& newScript)
 {
     std::ofstream outFile(filename);
     if (!outFile.is_open())

@@ -49,7 +49,7 @@ ClientSocket::ClientSocket() : mSock(-1), mSockAddr(0, 0)
 {}
 
 ClientSocket::ClientSocket(uint32_t addr, uint16_t port,
-                           int style) throw (FatalError) : mSock(socket(AF_INET, style, 0)), mSockAddr(addr, port)
+                           int style) : mSock(socket(AF_INET, style, 0)), mSockAddr(addr, port)
 {
     if (-1 == mSock) throw FatalError("Create socket failed");
 }
@@ -73,7 +73,7 @@ std::string ClientSocket::GetAddrCommaSeparated() const
     return ip + ',' + port;
 }
 
-bool ClientSocket::Select(timeval* timeout) const throw (FatalError)
+bool ClientSocket::Select(timeval* timeout) const
 {
     /* prepare socket set for select() */
     fd_set readSockets;
@@ -93,9 +93,9 @@ bool ClientSocket::Select(timeval* timeout) const throw (FatalError)
     return false;
 }
 
-TcpServerSocket::TcpServerSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError) : ClientSocket(addr,
-                                                                                                                 port,
-                                                                                                                 SOCK_STREAM)
+TcpServerSocket::TcpServerSocket(uint32_t addr, uint16_t port) : ClientSocket(addr,
+                                                                              port,
+                                                                              SOCK_STREAM)
 {
     //optional, steal port if necessary
     const int yes = 1;
@@ -109,7 +109,7 @@ TcpServerSocket::TcpServerSocket(uint32_t addr, uint16_t port) throw (Connection
         throw FatalError("TcpServerSocket: listen failed with errno: " + std::to_string(errno));
 }
 
-TcpSocket::TcpSocket(int listenSocket, const struct timespec* timeout) throw (ConnectionLost, FatalError)
+TcpSocket::TcpSocket(int listenSocket, const struct timespec* timeout)
 {
     // wait for remote socket to connect
     if (timeout) {
@@ -133,9 +133,9 @@ TcpSocket::TcpSocket(int listenSocket, const struct timespec* timeout) throw (Co
 #endif
 }
 
-TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError) : ClientSocket(addr,
-                                                                                                     port,
-                                                                                                     SOCK_STREAM)
+TcpSocket::TcpSocket(uint32_t addr, uint16_t port) : ClientSocket(addr,
+                                                                  port,
+                                                                  SOCK_STREAM)
 {
     const int yes = 1;
     //optional, steal port if necessary
@@ -183,7 +183,7 @@ TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalE
 #endif
 }
 
-size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const throw(FatalError)
+size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 {
     return Select(timeout) ? 0 : recv(mSock, pBuffer, length, 0);
 }
@@ -197,7 +197,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
     return result;
 }
 
-UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) throw (FatalError) : ClientSocket(
+UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) : ClientSocket(
         addr,
         port,
         SOCK_DGRAM)
@@ -218,7 +218,7 @@ size_t UdpSocket::RecvFrom(uint8_t*         pBuffer,
                            size_t           length,
                            timeval*         timeout,
                            struct sockaddr* remoteAddr,
-                           socklen_t*       remoteAddrLength) const throw (FatalError)
+                           socklen_t*       remoteAddrLength) const
 {
     return Select(timeout) ? 0 : recvfrom(mSock, pBuffer, length, 0, remoteAddr, remoteAddrLength);
 }

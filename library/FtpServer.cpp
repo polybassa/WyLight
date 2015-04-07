@@ -73,7 +73,7 @@ bool FtpCommand::Run(const TcpSocket& telnet, std::stringstream& dataInput) cons
     }
 }
 
-FtpServer::FtpServer(void) throw (FatalError)
+FtpServer::FtpServer(void)
 {
     mFtpServerThread = std::thread([&] {
             TcpServerSocket telnetListener(INADDR_ANY, FTP_PORT);
@@ -189,7 +189,7 @@ void FtpServer::handleFiletransfer(const TcpSocket& telnet)
     }
 }
 
-void FtpServer::transferDataPassive(std::ifstream& file, const TcpServerSocket& dataSocket) const throw(FatalError)
+void FtpServer::transferDataPassive(std::ifstream& file, const TcpServerSocket& dataSocket) const
 {
     // The remote has 1 second to connect until we terminate the listening data socket
     const struct timespec timeout {1, 0};

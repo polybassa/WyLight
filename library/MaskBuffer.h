@@ -87,7 +87,7 @@ public:
 
     void Add(uint8_t newByte);
     void Clear(void);
-    void CheckAndRemoveCrc(bool crcInLittleEndian) throw (FatalError);
+    void CheckAndRemoveCrc(bool crcInLittleEndian);
 
     /*
      * @return true if end of response reached (marked by an ETX), else false

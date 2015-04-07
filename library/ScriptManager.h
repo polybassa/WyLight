@@ -34,11 +34,11 @@ class ScriptManager {
 public:
     static const std::string EXTENSION;
 
-    ScriptManager(const std::string& path) throw (FatalError);
+    ScriptManager(const std::string& path);
     ~ScriptManager(void);
 
-    Script getScript(size_t index) const throw (FatalError);
-    const std::string& getScriptName(size_t index) const throw (FatalError);
+    Script getScript(size_t index) const;
+    const std::string& getScriptName(size_t index) const;
     size_t numScripts() const;
 };
 } /* namespace WyLight */

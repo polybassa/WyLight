@@ -21,7 +21,6 @@
 
 #include <iostream>
 #include "WiflyControl.h"
-#include "WiflyControlNoThrow.h"
 
 namespace WyLight
 {
@@ -46,8 +45,7 @@ public:
 
     StartupManager::State getCurrentState(void) const {return mState; }
     static const std::string& getStateDescription(StartupManager::State state);
-    void startup(WyLight::Control& control, const std::string& hexFilePath) throw (InvalidParameter);
-    void startup(WyLight::ControlNoThrow& control, const std::string& hexFilePath) throw (InvalidParameter);
+    void startup(WyLight::Control& control, const std::string& hexFilePath);
     const bool isAppOutdated(void);
 
 private:

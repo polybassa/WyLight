@@ -68,7 +68,7 @@ public:
      * @return mode of target: BL_IDENT for Bootloader mode, FW_IDENT for Firmware mode
      * @throw FatalError if synchronisation fails
      */
-    size_t GetTargetMode(void) const throw(FatalError);
+    size_t GetTargetMode(void) const;
 
     /* ------------------------- VERSION EXTRACT METHODE ------------------------- */
     /**

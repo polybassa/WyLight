@@ -28,8 +28,7 @@
 
 namespace WyLight
 {
-BootloaderClient::BootloaderClient(const uint32_t Addr, const uint16_t port) throw (ConnectionLost,
-                                                                                    FatalError) : TcpSocket(Addr, port)
+BootloaderClient::BootloaderClient(const uint32_t Addr, const uint16_t port) : TcpSocket(Addr, port)
 {
     uint8_t buffer[sizeof(WELCOME_RESPONSE) + 16];
     timeval timeout = {0, 500000};
@@ -49,7 +48,7 @@ BootloaderClient::BootloaderClient(const uint32_t Addr, const uint16_t port) thr
         throw FatalError("Wrong welcome message received! \r\n");
 }
 
-int BootloaderClient::sendData(std::istream& inData) throw (FatalError)
+int BootloaderClient::sendData(std::istream& inData)
 {
     uint8_t buffer[256];
     inData.seekg(0, std::ios::end);

@@ -59,7 +59,7 @@ public:
      * Listen for broadcasts and print them to a stream
      * @param timeout in seconds, until execution is terminated, to wait indefinetly use NULL (default)
      */
-    void operator()(timeval* timeout = NULL) throw (FatalError);
+    void operator()(timeval* timeout = NULL);
 
     /*
      * Get a reference to the endpoint at the specified index
@@ -79,9 +79,8 @@ public:
      * Listen for broadcasts until a new remote is discovered.
      * @param timeout to wait until give up, use NULL to wait forever
      * @return an empty Endpoint object in case of an error, if a new remote is discovered an Endpoint object with its address and port is returned.
-     * @throw FatalError if something failed seriously in the underlying socket
      */
-    Endpoint GetNextRemote(timeval* timeout) throw (FatalError);
+    Endpoint GetNextRemote(timeval* timeout);
 
     /**
      * @return number of discovered remotes addresses

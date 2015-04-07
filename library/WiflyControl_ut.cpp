@@ -34,11 +34,11 @@ uint8_t g_FlashRndDataPool[FLASH_SIZE];
 uint8_t g_EepromRndDataPool[EEPROM_SIZE];
 led_cmd g_SendFrame;
 // empty wrappers to satisfy the linker
-ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) throw (FatalError) : mSock(0),
+ClientSocket::ClientSocket(uint32_t addr, uint16_t port, int style) : mSock(0),
     mSockAddr(addr, port) {}
 ClientSocket::~ClientSocket(void) {}
-TcpSocket::TcpSocket(uint32_t addr, uint16_t port) throw (ConnectionLost, FatalError) : ClientSocket(addr, port, 0) {}
-size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const throw (FatalError)
+TcpSocket::TcpSocket(uint32_t addr, uint16_t port) : ClientSocket(addr, port, 0) {}
+size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 {
     return 0;
 }
@@ -47,7 +47,7 @@ size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
     return 0;
 }
 ComProxy::ComProxy(const TcpSocket& sock) : mSock(sock) {}
-UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) throw (FatalError) : ClientSocket(
+UdpSocket::UdpSocket(uint32_t addr, uint16_t port, bool doBind, int enableBroadcast) : ClientSocket(
         addr,
         port,
         SOCK_DGRAM)
@@ -61,7 +61,7 @@ size_t UdpSocket::Send(const uint8_t* frame, size_t length) const
 }
 
 size_t ComProxy::Send(const BlRequest& req, uint8_t* pResponse, size_t responseSize,
-                      bool doSync) const throw(ConnectionTimeout, FatalError)
+                      bool doSync) const
 {
     if (typeid(req) == typeid(BlInfoRequest)) {
         static const uint8_t resp[] = {0x00, 0x03, 0x01, 0x05, 0xff, 0x84, 0x00, 0xfd, 0x00, 0x00};
@@ -136,7 +136,7 @@ size_t ComProxy::Send(const BlRequest& req, uint8_t* pResponse, size_t responseS
 }
 
 size_t ComProxy::Send(const FwCommand& request, response_frame* pResponse,
-                      size_t responseSize) const throw(ConnectionTimeout, FatalError)
+                      size_t responseSize) const
 {
     memcpy(&g_SendFrame, request.GetData(), request.GetSize());
     pResponse->length = sizeof(uns8) + sizeof(uns16) + sizeof(ErrorCode);
@@ -144,7 +144,7 @@ size_t ComProxy::Send(const FwCommand& request, response_frame* pResponse,
     pResponse->state = OK;
     return pResponse->length;
 }
-size_t ComProxy::SyncWithTarget() const throw (FatalError)
+size_t ComProxy::SyncWithTarget() const
 {
     return BL_IDENT;
 }
