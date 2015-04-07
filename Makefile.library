@@ -64,9 +64,6 @@ ${BINDIR}/WiflyControl_ut.bin: 	clean \
 								$(OBJDIR)/crc.o \
 								$(OBJDIR)/Script.o
 
-${BINDIR}/WiflyControlNoThrow_ut.bin: 	clean \
-										$(OBJDIR)/WiflyControlNoThrow_ut.o \
-										$(OBJDIR)/WiflyControlNoThrow.o
 
 library_test: library_standart_test library_ftp_test
 
@@ -77,7 +74,6 @@ library_standart_test: 	${BINDIR}/BroadcastReceiver_ut.bin \
 						${BINDIR}/ScriptManager_ut.bin \
 						${BINDIR}/TelnetProxy_ut.bin \
 						${BINDIR}/WiflyControl_ut.bin \
-						${BINDIR}/WiflyControlNoThrow_ut.bin \
 						${BINDIR}/StartupManager_ut.bin 
 	$(foreach test,$^,./$(test);)
 

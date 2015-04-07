@@ -36,7 +36,6 @@
 		5C8395E117EB61B4007EF0C6 /* MaskBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395CE17EB61B4007EF0C6 /* MaskBuffer.cpp */; };
 		5C8395E217EB61B4007EF0C6 /* TelnetProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395D017EB61B4007EF0C6 /* TelnetProxy.cpp */; };
 		5C8395E317EB61B4007EF0C6 /* WiflyControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395D317EB61B4007EF0C6 /* WiflyControl.cpp */; };
-		5C8395E417EB61B4007EF0C6 /* WiflyControlNoThrow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395D617EB61B4007EF0C6 /* WiflyControlNoThrow.cpp */; };
 		5C8395E917EB651D007EF0C6 /* NWConnectionTBC.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395E817EB651D007EF0C6 /* NWConnectionTBC.mm */; };
 		5C8395EE17EB6721007EF0C6 /* NWDefaultColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395EB17EB6721007EF0C6 /* NWDefaultColorPickerViewController.m */; };
 		5C8395EF17EB6721007EF0C6 /* NWColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8395ED17EB6721007EF0C6 /* NWColorPickerViewController.m */; };
@@ -102,6 +101,8 @@
 		C0A3AD35184381F900007640 /* Script.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A3AD34184381F900007640 /* Script.m */; };
 		C0E10EC418142B240009CF3C /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E10EC318142B240009CF3C /* UIImage+ImageEffects.m */; };
 		C0E10ECA1814FF440009CF3C /* UIView+Quivering.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E10EC91814FF440009CF3C /* UIView+Quivering.m */; };
+		C0E51A281AD3BEDE006926DF /* BootloaderControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0E51A261AD3BEDE006926DF /* BootloaderControl.cpp */; };
+		C0E51A291AD3BEDE006926DF /* FirmwareControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0E51A271AD3BEDE006926DF /* FirmwareControl.cpp */; };
 		C0E6047E18219B250049C7EC /* NWRenderableScriptImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E6047D18219B250049C7EC /* NWRenderableScriptImageView.m */; };
 		C0E67BCF1826D28600056E7C /* Command.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E67BCE1826D28600056E7C /* Command.m */; };
 		C0E67BD21826D59B00056E7C /* Fade.mm in Sources */ = {isa = PBXBuildFile; fileRef = C0E67BD11826D59B00056E7C /* Fade.mm */; };
@@ -179,8 +180,6 @@
 		5C8395D317EB61B4007EF0C6 /* WiflyControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WiflyControl.cpp; path = ../../library/WiflyControl.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		5C8395D417EB61B4007EF0C6 /* WiflyControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WiflyControl.h; path = ../../library/WiflyControl.h; sourceTree = "<group>"; };
 		5C8395D517EB61B4007EF0C6 /* WiflyControlException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WiflyControlException.h; path = ../../library/WiflyControlException.h; sourceTree = "<group>"; };
-		5C8395D617EB61B4007EF0C6 /* WiflyControlNoThrow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WiflyControlNoThrow.cpp; path = ../../library/WiflyControlNoThrow.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		5C8395D717EB61B4007EF0C6 /* WiflyControlNoThrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WiflyControlNoThrow.h; path = ../../library/WiflyControlNoThrow.h; sourceTree = "<group>"; };
 		5C8395E717EB651D007EF0C6 /* NWConnectionTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWConnectionTBC.h; path = ViewController/NWConnectionTBC.h; sourceTree = "<group>"; };
 		5C8395E817EB651D007EF0C6 /* NWConnectionTBC.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NWConnectionTBC.mm; path = ViewController/NWConnectionTBC.mm; sourceTree = "<group>"; };
 		5C8395EA17EB6721007EF0C6 /* NWDefaultColorPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NWDefaultColorPickerViewController.h; path = ViewController/NWDefaultColorPickerViewController.h; sourceTree = "<group>"; };
@@ -299,6 +298,10 @@
 		C0E10EC318142B240009CF3C /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		C0E10EC81814FF440009CF3C /* UIView+Quivering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Quivering.h"; sourceTree = "<group>"; };
 		C0E10EC91814FF440009CF3C /* UIView+Quivering.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Quivering.m"; sourceTree = "<group>"; };
+		C0E51A241AD3BEDE006926DF /* BootloaderControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BootloaderControl.h; path = ../../library/BootloaderControl.h; sourceTree = "<group>"; };
+		C0E51A251AD3BEDE006926DF /* FirmwareControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FirmwareControl.h; path = ../../library/FirmwareControl.h; sourceTree = "<group>"; };
+		C0E51A261AD3BEDE006926DF /* BootloaderControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BootloaderControl.cpp; path = ../../library/BootloaderControl.cpp; sourceTree = "<group>"; };
+		C0E51A271AD3BEDE006926DF /* FirmwareControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FirmwareControl.cpp; path = ../../library/FirmwareControl.cpp; sourceTree = "<group>"; };
 		C0E6047C18219B250049C7EC /* NWRenderableScriptImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWRenderableScriptImageView.h; sourceTree = "<group>"; };
 		C0E6047D18219B250049C7EC /* NWRenderableScriptImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWRenderableScriptImageView.m; sourceTree = "<group>"; };
 		C0E67BCD1826D28600056E7C /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
@@ -467,6 +470,10 @@
 		5C8395E517EB61BF007EF0C6 /* WiflyControlModel */ = {
 			isa = PBXGroup;
 			children = (
+				C0E51A241AD3BEDE006926DF /* BootloaderControl.h */,
+				C0E51A251AD3BEDE006926DF /* FirmwareControl.h */,
+				C0E51A261AD3BEDE006926DF /* BootloaderControl.cpp */,
+				C0E51A271AD3BEDE006926DF /* FirmwareControl.cpp */,
 				C015FD131AC9A376002B7E2B /* ConfigControl.cpp */,
 				C015FD141AC9A376002B7E2B /* ConfigControl.h */,
 				C015FD111AC9A353002B7E2B /* BroadcastMessage.cpp */,
@@ -510,8 +517,6 @@
 				5C8395D317EB61B4007EF0C6 /* WiflyControl.cpp */,
 				5C8395D417EB61B4007EF0C6 /* WiflyControl.h */,
 				5C8395D517EB61B4007EF0C6 /* WiflyControlException.h */,
-				5C8395D617EB61B4007EF0C6 /* WiflyControlNoThrow.cpp */,
-				5C8395D717EB61B4007EF0C6 /* WiflyControlNoThrow.h */,
 			);
 			name = WiflyControlModel;
 			sourceTree = "<group>";
@@ -792,6 +797,7 @@
 				5C8395DD17EB61B4007EF0C6 /* BroadcastReceiver.cpp in Sources */,
 				5C8395E917EB651D007EF0C6 /* NWConnectionTBC.mm in Sources */,
 				C02501A01840EFE600BB996D /* StartupManager.cpp in Sources */,
+				C0E51A291AD3BEDE006926DF /* FirmwareControl.cpp in Sources */,
 				5C8395DB17EB61B4007EF0C6 /* WCBroadcastReceiverWrapper.mm in Sources */,
 				5C83963517EB6C00007EF0C6 /* KZUnitSlider.m in Sources */,
 				5CD992011804A5CD003C4F99 /* NWAppInfoViewController.m in Sources */,
@@ -822,7 +828,6 @@
 				5C4F56EB17EC968E0039ADFF /* NWColorSliderViewController.m in Sources */,
 				5C12FAB317FF05A000E4E65D /* NWScriptCellView.m in Sources */,
 				C074FE331848ABB0007A1ADC /* UIColor+argbValue.mm in Sources */,
-				5C8395E417EB61B4007EF0C6 /* WiflyControlNoThrow.cpp in Sources */,
 				5C83958617EB6138007EF0C6 /* main.m in Sources */,
 				5C90B3C117F3714B00BAC74F /* NWScriptViewController.m in Sources */,
 				5C90B39317EF56A000BAC74F /* ALRadialButton.m in Sources */,
@@ -841,6 +846,7 @@
 				C08D5DAA181166BF00A73801 /* NWScriptFolderViewController.m in Sources */,
 				C0E10EC418142B240009CF3C /* UIImage+ImageEffects.m in Sources */,
 				5C8395DF17EB61B4007EF0C6 /* ComProxy.cpp in Sources */,
+				C0E51A281AD3BEDE006926DF /* BootloaderControl.cpp in Sources */,
 				C0E6047E18219B250049C7EC /* NWRenderableScriptImageView.m in Sources */,
 				5CDE7086180A8F1F0032D2F0 /* NWColorEditView.m in Sources */,
 				5C90B39B17EF56F300BAC74F /* NWScriptObjectControl.m in Sources */,
