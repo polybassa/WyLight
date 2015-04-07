@@ -18,16 +18,47 @@
 
 #include "MaskBuffer.h"
 #include "trace.h"
+#include "crc.h"
+#include "WiflyControlException.h"
 
 namespace WyLight
 {
 static const uint32_t __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_VERBOSE;
+
+BaseBuffer::BaseBuffer(size_t capacity) : mCapacity(capacity)
+{
+    mData = new uint8_t[capacity];
+    Clear();
+}
+BaseBuffer::~BaseBuffer(void)
+{
+    delete mData;
+}
+void BaseBuffer::Clear(void)
+{
+    mLength = 0;
+    mCrc = 0;
+}
+const uint8_t* BaseBuffer::Data(void) const
+{
+    return mData;
+}
+
+size_t BaseBuffer::Size(void) const
+{
+    return mLength;
+}
 
 void BaseBuffer::AddPure(uint8_t newByte)
 {
     if (mLength >= mCapacity) throw FatalError("BaseBuffer overflow");
     mData[mLength] = newByte;
     mLength++;
+}
+
+MaskBuffer::MaskBuffer(size_t capacity) : BaseBuffer(capacity)
+{
+    AddPure(BL_STX);
 }
 
 void MaskBuffer::Mask(const uint8_t* pInput, const uint8_t* const pInputEnd, const bool crcInLittleEndian)
@@ -62,6 +93,11 @@ void MaskBuffer::AppendCrc(bool crcInLittleEndian)
         Add((uint8_t)(mCrc >> 8));
         Add((uint8_t)(mCrc & 0xff));
     }
+}
+
+UnmaskBuffer::UnmaskBuffer(size_t capacity) : BaseBuffer(capacity)
+{
+    Clear();
 }
 
 void UnmaskBuffer::Add(uint8_t newByte)

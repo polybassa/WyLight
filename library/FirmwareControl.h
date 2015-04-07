@@ -21,7 +21,6 @@
 
 #include <string>
 #include "ComProxy.h"
-#include "wifly_cmd.h"
 #include "WiflyControlException.h"
 #include "FwCommand.h"
 #include "Script.h"

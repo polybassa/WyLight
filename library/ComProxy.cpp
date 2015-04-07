@@ -17,7 +17,6 @@
    along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "ComProxy.h"
-#include "crc.h"
 #include "MaskBuffer.h"
 #include "timeval.h"
 #include "trace.h"

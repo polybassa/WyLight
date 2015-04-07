@@ -19,40 +19,19 @@
 #ifndef _MASK_BUFFER_H_
 #define _MASK_BUFFER_H_
 
-#include "BlRequest.h"
-#include "crc.h"
-#include "WiflyControlException.h"
+#include <stdint.h>
+#include <unistd.h>
 
 namespace WyLight
 {
 class BaseBuffer {
 public:
-    BaseBuffer(size_t capacity) : mCapacity(capacity)
-    {
-        mData = new uint8_t[capacity];
-        Clear();
-    }
+    BaseBuffer(size_t capacity);
+    virtual ~BaseBuffer(void);
+    virtual void Clear(void);
 
-    virtual ~BaseBuffer(void)
-    {
-        delete mData;
-    }
-
-    virtual void Clear(void)
-    {
-        mLength = 0;
-        mCrc = 0;
-    }
-
-    const uint8_t* Data(void) const
-    {
-        return mData;
-    }
-
-    size_t Size(void) const
-    {
-        return mLength;
-    }
+    const uint8_t* Data(void) const;
+    size_t Size(void) const;
 
 protected:
     const size_t mCapacity;
@@ -65,11 +44,7 @@ protected:
 
 class MaskBuffer : public BaseBuffer {
 public:
-    MaskBuffer(size_t capacity) : BaseBuffer(capacity)
-    {
-        AddPure(BL_STX);
-    }
-
+    MaskBuffer(size_t capacity);
     void Mask(const uint8_t* pInput, const uint8_t* const pInputEnd, const bool crcInLittleEndian = true);
 
 private:
@@ -80,11 +55,7 @@ private:
 
 class UnmaskBuffer : public BaseBuffer {
 public:
-    UnmaskBuffer(size_t capacity) : BaseBuffer(capacity)
-    {
-        Clear();
-    }
-
+    UnmaskBuffer(size_t capacity);
     void Add(uint8_t newByte);
     void Clear(void);
     void CheckAndRemoveCrc(bool crcInLittleEndian);

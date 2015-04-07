@@ -21,9 +21,7 @@
 
 #include "BlRequest.h"
 #include "ClientSocket.h"
-#include "trace.h"
 #include "FwCommand.h"
-#include "wifly_cmd.h"
 
 namespace WyLight
 {

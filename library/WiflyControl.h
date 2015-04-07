@@ -72,11 +72,6 @@ public:
 
 /* ------------------------- PRIVATE DECLARATIONS ------------------------- */
 protected:
-    /**
-     * Connect to a wifly device
-     * @param addr ipv4 address as 32 bit value in host byte order
-     * @param port number of the wifly device server in host byte order
-     */
     Control(uint32_t                 addr,
             uint16_t                 port,
             const BootloaderControl& bootloader,
