@@ -51,41 +51,6 @@ FirmwareControl::FirmwareControl(const UdpSocket& udp, const ComProxy& proxy) :
     mProxy(proxy)
 {}
 
-std::string FirmwareControl::FwGetCycletime(void)
-{
-    FwCmdGetCycletime cmd;
-    *this << cmd;
-    return cmd.mResponse.ToString();
-}
-
-void FirmwareControl::FwGetRtc(tm& timeValue)
-{
-    FwCmdGetRtc cmd;
-    *this << cmd;
-    timeValue = cmd.mResponse.GetRealTime();
-}
-
-std::string FirmwareControl::FwGetTracebuffer(void)
-{
-    FwCmdGetTracebuffer cmd;
-    *this << cmd;
-    return cmd.mResponse.ToString();
-}
-
-uint16_t FirmwareControl::FwGetVersion(void)
-{
-    FwCmdGetVersion cmd;
-    *this << cmd;
-    return cmd.mResponse.getVersion();
-}
-
-uint8_t FirmwareControl::FwGetLedTyp(void)
-{
-    FwCmdGetLedTyp cmd;
-    *this << cmd;
-    return cmd.mResponse.getLedTyp();
-}
-
 void FirmwareControl::FwSend(FwCommand& cmd) const
 {
     if (cmd.IsResponseRequired()) {
@@ -112,7 +77,7 @@ void FirmwareControl::FwSend(FwCommand& cmd) const
     }
 }
 
-void FirmwareControl::FwStressTest(void)
+void FirmwareControl::FwStressTest(void) const
 {
     *this << FwCmdClearScript {};
 
@@ -126,19 +91,26 @@ void FirmwareControl::FwStressTest(void)
     }
 }
 
-FirmwareControl& FirmwareControl::operator<<(FwCommand&& cmd)
+uint16_t FirmwareControl::FwGetVersion(void) const
+{
+    FwCmdGetVersion cmd;
+    *this << cmd;
+    return cmd.mResponse.getVersion();
+}
+
+const FirmwareControl& FirmwareControl::operator<<(FwCommand&& cmd) const
 {
     this->FwSend(cmd);
     return *this;
 }
 
-FirmwareControl& FirmwareControl::operator<<(FwCommand& cmd)
+const FirmwareControl& FirmwareControl::operator<<(FwCommand& cmd) const
 {
     this->FwSend(cmd);
     return *this;
 }
 
-FirmwareControl& FirmwareControl::operator<<(const Script& script)
+const FirmwareControl& FirmwareControl::operator<<(const Script& script) const
 {
     for (auto it = script.begin(); it != script.end(); ++it) {
         *this << **it;
@@ -146,7 +118,7 @@ FirmwareControl& FirmwareControl::operator<<(const Script& script)
     return *this;
 }
 
-void FirmwareControl::FwTest(void)
+void FirmwareControl::FwTest(void) const
 {
 #if 0
     static const timespec sleepTime {0, 50000000};
@@ -190,5 +162,53 @@ void FirmwareControl::FwTest(void)
                 FwSetFade(setFadeResp, WiflyColor::BLACK,2000, 0xFFFFFFFF, false);
                 FwLoopOff(loopOffResp, 0);*/
 #endif
+}
+
+std::string RN171FirmwareControl::FwGetCycletime(void) const
+{
+    FwCmdGetCycletime cmd;
+    *this << cmd;
+    return cmd.mResponse.ToString();
+}
+
+void RN171FirmwareControl::FwGetRtc(tm& timeValue) const
+{
+    FwCmdGetRtc cmd;
+    *this << cmd;
+    timeValue = cmd.mResponse.GetRealTime();
+}
+
+std::string RN171FirmwareControl::FwGetTracebuffer(void) const
+{
+    FwCmdGetTracebuffer cmd;
+    *this << cmd;
+    return cmd.mResponse.ToString();
+}
+
+uint8_t RN171FirmwareControl::FwGetLedTyp(void) const
+{
+    FwCmdGetLedTyp cmd;
+    *this << cmd;
+    return cmd.mResponse.getLedTyp();
+}
+
+std::string CC3200FirmwareControl::FwGetCycletime(void) const
+{
+    return "";
+}
+
+void CC3200FirmwareControl::FwGetRtc(tm& timeValue) const
+{
+    memset(&timeValue, 0, sizeof(tm));
+}
+
+std::string CC3200FirmwareControl::FwGetTracebuffer(void) const
+{
+    return "";
+}
+
+uint8_t CC3200FirmwareControl::FwGetLedTyp(void) const
+{
+    return LED_TYP_RGB;
 }
 } /* namespace WyLight */

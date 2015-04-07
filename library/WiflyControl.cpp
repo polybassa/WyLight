@@ -50,14 +50,19 @@ const std::string FwCmdLoopOn::TOKEN("loop");
 const std::string FwCmdLoopOff::TOKEN("loop_off");
 const std::string FwCmdWait::TOKEN("wait");
 
-Control::Control(uint32_t addr, uint16_t port) :
-    mBootloader(mProxy),
-    mConfig(mTelnet),
-    mFirmware(mUdpSock, mProxy),
+Control::Control(uint32_t                 addr,
+                 uint16_t                 port,
+                 const BootloaderControl& bootloader,
+                 const ConfigControl&     config,
+                 const FirmwareControl&   firmware) :
+    mBootloader(bootloader),
+    mConfig(config),
+    mFirmware(firmware),
     mTcpSock(addr, port),
     mUdpSock(addr, port, false, 0),
     mProxy(mTcpSock),
     mTelnet(mTcpSock)
+
 {}
 
 size_t Control::GetTargetMode(void) const
@@ -86,4 +91,20 @@ uint16_t Control::ExtractFwVersion(const std::string& pFilename) const
 
     return ntohs(versUnion.version) > 300 ? 0 : ntohs(versUnion.version);
 }
+
+RN171Control::RN171Control(uint32_t addr, uint16_t port) : Control(addr,
+                                                                   port,
+                                                                   mBootloaderInstance,
+                                                                   mConfigInstance,
+                                                                   mFirmwareInstance), mBootloaderInstance(mProxy),
+    mConfigInstance(mTelnet),
+    mFirmwareInstance(mUdpSock, mProxy) {}
+
+CC3200Control::CC3200Control(uint32_t addr, uint16_t port) : Control(addr,
+                                                                     port,
+                                                                     mBootloaderInstance,
+                                                                     mConfigInstance,
+                                                                     mFirmwareInstance), mBootloaderInstance(mProxy),
+    mConfigInstance(mTelnet),
+    mFirmwareInstance(mUdpSock, mProxy) {}
 } /* namespace WyLight */

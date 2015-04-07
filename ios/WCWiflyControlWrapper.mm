@@ -74,7 +74,8 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 	try {
 						NSLog(@"Start WCWiflyControlWrapper\n");
 		std::lock_guard<std::mutex> ctrlLock(*gCtrlMutex);
-		mControl = std::make_shared<WyLight::Control>(self.endpoint.ipAdress,self.endpoint.port);
+		
+		mControl = std::shared_ptr<WyLight::Control>(new WyLight::RN171Control(self.endpoint.ipAdress,self.endpoint.port));
 	} catch(std::exception &e) {
 						NSLog(@"%s", e.what());
 		return -1;

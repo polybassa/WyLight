@@ -82,7 +82,7 @@ jlong Java_de_WyLight_WyLight_library_Endpoint_connect(JNIEnv* env,
     try {
         Endpoint& remote = ((BroadcastReceiver*)pBroadcastReceiver)->GetEndpointByFingerprint(fingerprint);
         ++remote;
-        return reinterpret_cast<jlong>(new Control(remote.GetIp(), remote.GetPort()));
+        return reinterpret_cast<jlong>(new RN171Control(remote.GetIp(), remote.GetPort()));
     } catch (FatalError& e) {
         ThrowJniException(env, e);
     }

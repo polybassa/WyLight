@@ -52,34 +52,38 @@ namespace WyLight
  *******************************************************************************/
 class Control {
 public:
-    BootloaderControl mBootloader;
-    ConfigControl mConfig;
-    FirmwareControl mFirmware;
-
-    /**
-     * Connect to a wifly device
-     * @param addr ipv4 address as 32 bit value in host byte order
-     * @param port number of the wifly device server in host byte order
-     */
-    Control(uint32_t addr, uint16_t port);
-
     /*
      * Send a byte sequence to ident the current software running on PIC
      * @return mode of target: BL_IDENT for Bootloader mode, FW_IDENT for Firmware mode
      * @throw FatalError if synchronisation fails
      */
-    size_t GetTargetMode(void) const;
+    virtual size_t GetTargetMode(void) const;
 
     /* ------------------------- VERSION EXTRACT METHODE ------------------------- */
     /**
      * Methode to extract the firmware version from a hex file
      * @return the version string from a given hex file
      */
-    uint16_t ExtractFwVersion(const std::string& pFilename) const;
+    virtual uint16_t ExtractFwVersion(const std::string& pFilename) const;
+
+    const BootloaderControl& mBootloader;
+    const ConfigControl& mConfig;
+    const FirmwareControl& mFirmware;
 
 /* ------------------------- PRIVATE DECLARATIONS ------------------------- */
-private:
+protected:
     /**
+     * Connect to a wifly device
+     * @param addr ipv4 address as 32 bit value in host byte order
+     * @param port number of the wifly device server in host byte order
+     */
+    Control(uint32_t                 addr,
+            uint16_t                 port,
+            const BootloaderControl& bootloader,
+            const ConfigControl&     config,
+            const FirmwareControl&   firmware);
+
+    /*
      * Sockets used for communication with wifly device.
      * A reference to the TcpSocket is provided to the aggregated subobjects.
      */
@@ -99,6 +103,26 @@ private:
      * Proxy object handling the communication with the wlan module for its configuration
      */
     const TelnetProxy mTelnet;
+};
+
+class RN171Control : public Control {
+public:
+    RN171Control(uint32_t addr, uint16_t port);
+
+private:
+    const BootloaderControl mBootloaderInstance;
+    const ConfigControl mConfigInstance;
+    const RN171FirmwareControl mFirmwareInstance;
+};
+
+class CC3200Control : public Control {
+public:
+    CC3200Control(uint32_t addr, uint16_t port);
+
+private:
+    const BootloaderControl mBootloaderInstance;
+    const ConfigControl mConfigInstance;
+    const CC3200FirmwareControl mFirmwareInstance;
 };
 }
 #endif /* #ifndef _WIFLYCONTROL_H_ */

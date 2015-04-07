@@ -57,39 +57,39 @@ public:
      * Reads the cycletimes from wifly device and stores them into the response object
      * @return a string with all recorded cycletimes from PIC firmware
      */
-    std::string FwGetCycletime(void);
+    virtual std::string FwGetCycletime(void) const = 0;
 
     /**
      * Reads the current rtc time from the wifly device
      * @param timeValue reference to a tm object, where to store the rtc time from PIC firmware
      */
-    void FwGetRtc(tm& timeValue);
+    virtual void FwGetRtc(tm& timeValue) const = 0;
 
     /**
      * Reads the tracebuffer from wifly device and stores the data into the response object
      * @return a string with all recorded trace messages from PIC firmware
      */
-    std::string FwGetTracebuffer(void);
+    virtual std::string FwGetTracebuffer(void) const = 0;
 
     /**
      * Reads the firmware version currently running on the wifly device.
      * @return a string representing the version number of the PIC firmware
      */
-    uint16_t FwGetVersion(void);
+    virtual uint16_t FwGetVersion(void) const;
 
     /**
      * Reads the led typ on the spi interface. To detect WS2801 Led's, the SPI IN and OUT Pin's has to conntect together, to build a loopback.
      * @return a value representing the led typ of the WyLight modul
      */
-    uint8_t FwGetLedTyp(void);
+    virtual uint8_t FwGetLedTyp(void) const = 0;
 
     //TODO move this test functions to the integration test
-    void FwTest(void);
-    void FwStressTest(void);
+    void FwTest(void) const;
+    void FwStressTest(void) const;
 
-    FirmwareControl& operator<<(FwCommand&& cmd);
-    FirmwareControl& operator<<(FwCommand& cmd);
-    FirmwareControl& operator<<(const Script& script);
+    const FirmwareControl& operator<<(FwCommand&& cmd) const;
+    const FirmwareControl& operator<<(FwCommand& cmd) const;
+    const FirmwareControl& operator<<(const Script& script) const;
 
 /* ------------------------- PRIVATE DECLARATIONS ------------------------- */
 private:
@@ -111,6 +111,32 @@ private:
      * @throw ScriptBufferFull if script buffer in PIC firmware is full and request couldn't be executed
      */
     void FwSend(FwCommand& cmd) const;
+};
+
+class CC3200FirmwareControl : public FirmwareControl {
+public:
+    using FirmwareControl::FirmwareControl;
+
+    std::string FwGetCycletime(void) const override;
+
+    void FwGetRtc(tm& timeValue) const override;
+
+    std::string FwGetTracebuffer(void) const override;
+
+    uint8_t FwGetLedTyp(void) const override;
+};
+
+class RN171FirmwareControl : public FirmwareControl {
+public:
+    using FirmwareControl::FirmwareControl;
+
+    std::string FwGetCycletime(void) const override;
+
+    void FwGetRtc(tm& timeValue) const override;
+
+    std::string FwGetTracebuffer(void) const override;
+
+    uint8_t FwGetLedTyp(void) const override;
 };
 }
 #endif /* #ifndef _FIRMWARECONTROL_H_ */

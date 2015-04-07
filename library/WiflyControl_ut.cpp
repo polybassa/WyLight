@@ -216,7 +216,7 @@ size_t ut_WiflyControl_BlEraseEeprom(void)
         g_EepromRndDataPool[i] = (uint8_t)rand() % 255;
     }
 
-    Control testctrl(0, 0);
+    RN171Control testctrl(0, 0);
 
     testctrl.mBootloader.BlEraseEeprom();
 
@@ -237,7 +237,7 @@ size_t ut_WiflyControl_BlEepromRead(void)
         g_EepromRndDataPool[i] = (uint8_t)rand() % 255;
     }
 
-    Control testctrl(0, 0);
+    RN171Control testctrl(0, 0);
 
     std::stringstream mStream;
 
@@ -269,7 +269,7 @@ size_t ut_WiflyControl_BlEepromWrite(void)
         m_EepromRndDataPool[i] = (uint8_t)rand() % 255;
     }
 
-    Control testctrl(0, 0);
+    RN171Control testctrl(0, 0);
 
     testctrl.mBootloader.BlWriteEeprom(0, m_EepromRndDataPool, EEPROM_SIZE);
 
@@ -292,7 +292,7 @@ size_t ut_WiflyControl_BlEraseFlash(void)
     }
 
     BlInfo blInfo;
-    Control testctrl(0, 0);
+    RN171Control testctrl(0, 0);
     try {
         testctrl.mBootloader.BlReadInfo(blInfo);
         testctrl.mBootloader.BlEraseFlash();
@@ -317,7 +317,7 @@ size_t ut_WiflyControl_BlFlashRead(void)
         g_FlashRndDataPool[i] = (uint8_t)rand() % 255;
     }
 
-    Control testctrl(0, 0);
+    RN171Control testctrl(0, 0);
 
     std::stringstream mStream;
 
@@ -348,7 +348,7 @@ size_t ut_WiflyControl_BlFlashWrite(void)
         m_FlashRndDataPool[i] = (uint8_t)rand() % 255;
     }
 
-    Control testctrl(0, 0);
+    RN171Control testctrl(0, 0);
 
     testctrl.mBootloader.BlWriteFlash(0, m_FlashRndDataPool, sizeof(m_FlashRndDataPool));
 
@@ -362,7 +362,7 @@ size_t ut_WiflyControl_BlFlashWrite(void)
 size_t ut_WiflyControl_BlReadInfo(void)
 {
     TestCaseBegin();
-    Control testctrl(0, 0);
+    RN171Control testctrl(0, 0);
     BlInfo mInfo;
     testctrl.mBootloader.BlReadInfo(mInfo);
     CHECK(mInfo.familyId == 4);
@@ -410,7 +410,7 @@ size_t ut_WiflyControl_ConfSetDefaults(void)
     };
     static const size_t numCommands = sizeof(commands) / sizeof(commands[0]);
 
-    Control testee(0, 0);
+    RN171Control testee(0, 0);
 
     g_TestBuffer.clear();
     CHECK(testee.mConfig.SetDefaults());
@@ -433,7 +433,7 @@ size_t ut_WiflyControl_ConfSetWlan(void)
     static const std::string phraseToLong(phrase + " ");
     static const std::string ssid("12345678911234567892123456789312");
     static const std::string ssidToLong(ssid + " ");
-    Control testee(0, 0);
+    RN171Control testee(0, 0);
 
     // passphrase to short
     CHECK(!testee.mConfig.SetWlan("", ssid));
@@ -458,7 +458,7 @@ size_t ut_WiflyControl_ConfSetWlan(void)
 size_t ut_WiflyControl_FwSetColorDirectRedOnly(void)
 {
     TestCaseBegin();
-    Control testee(0, 0);
+    RN171Control testee(0, 0);
 
     // one leds only, first red
     uint8_t shortBuffer[1] {0xff};
@@ -477,7 +477,7 @@ size_t ut_WiflyControl_FwSetColorDirectRedOnly(void)
 size_t ut_WiflyControl_FwSetColorDirectThreeLeds(void)
 {
     TestCaseBegin();
-    Control testee(0, 0);
+    RN171Control testee(0, 0);
 
     // three leds only, first red, second green last blue
     uint8_t shortBuffer[3 * 3];
@@ -500,7 +500,7 @@ size_t ut_WiflyControl_FwSetColorDirectThreeLeds(void)
 size_t ut_WiflyControl_FwSetColorDirectThreeLeds_2(void)
 {
     TestCaseBegin();
-    Control testee(0, 0);
+    RN171Control testee(0, 0);
 
     // three leds only, all set to yellow
     const uint32_t argb = 0xffffff00;
@@ -535,7 +535,7 @@ size_t ut_WiflyControl_FwSetColorDirectThreeLeds_2(void)
 size_t ut_WiflyControl_FwSetColorDirectToMany(void)
 {
     TestCaseBegin();
-    Control testee(0, 0);
+    RN171Control testee(0, 0);
 
     // three leds only, first red, second green last blue
     uint8_t shortBuffer[2 * NUM_OF_LED * 3];
@@ -566,7 +566,7 @@ size_t ut_WiflyControl_FwSetFade_1(void)
     expectedOutgoingFrame.data.set_fade.fadeTmms = htons(0x0001);
 
     TestCaseBegin();
-    Control testee(0, 0);
+    RN171Control testee(0, 0);
 
     // set color
     testee.mFirmware << FwCmdSetFade {0xffff00ff};
@@ -593,7 +593,7 @@ size_t ut_WiflyControl_FwSetFade_2(void)
     expectedOutgoingFrame.data.set_fade.fadeTmms = htons(1000);
 
     TestCaseBegin();
-    Control testee(0, 0);
+    RN171Control testee(0, 0);
 
     // set color
     testee.mFirmware << FwCmdSetFade {0xff112233, 1000, 0x11223344, true};
@@ -619,7 +619,7 @@ size_t ut_WiflyControl_FwSetGradient(void)
     expectedOutgoingFrame.data.set_gradient.fadeTmms = htons(1000);
 
     TestCaseBegin();
-    Control testee(0, 0);
+    RN171Control testee(0, 0);
 
     testee.mFirmware << FwCmdSetGradient {0xff112233, 0xff332211, 1000, true, 10, 127};
     TraceBuffer(ZONE_INFO, &g_SendFrame, sizeof(cmd_set_gradient) + 1, "%02x ", "IS  :");
@@ -636,7 +636,7 @@ size_t ut_WiflyControl_FwSetWait(void)
     expectedOutgoingFrame.data.wait.waitTmms = htons(1000);
 
     TestCaseBegin();
-    Control testee(0, 0);
+    RN171Control testee(0, 0);
 
     testee.mFirmware << FwCmdWait {1000};
     TraceBuffer(ZONE_INFO, &g_SendFrame, sizeof(cmd_wait) + 1, "%02x ", "IS  :");
@@ -664,7 +664,7 @@ size_t ut_WiflyControl_FwSetRtc(void)
     expectedOutgoingFrame.data.set_rtc.tm_wday = (uns8)timeinfo.tm_wday;
 
     TestCaseBegin();
-    Control testee(0, 0);
+    RN171Control testee(0, 0);
 
     testee.mFirmware << FwCmdSetRtc {timeinfo};
     TraceBuffer(ZONE_INFO, &g_SendFrame, sizeof(rtc_time) + 1, "%02x ", "IS  :");
@@ -680,7 +680,7 @@ size_t ut_WiflyControl_FwClearScript(void)
     expectedOutgoingFrame.cmd = CLEAR_SCRIPT;
 
     TestCaseBegin();
-    Control testee(0, 0);
+    RN171Control testee(0, 0);
 
     testee.mFirmware << FwCmdClearScript {};
     TraceBuffer(ZONE_INFO, &g_SendFrame, 1, "%02x ", "IS  :");
@@ -696,7 +696,7 @@ size_t ut_WiflyControl_FwGetTracebuffer(void)
     expectedOutgoingFrame.cmd = GET_TRACE;
 
     TestCaseBegin();
-    Control testee(0, 0);
+    RN171Control testee(0, 0);
 
     try {
         testee.mFirmware.FwGetTracebuffer();
@@ -715,7 +715,7 @@ size_t ut_WiflyControl_FwGetCycletime(void)
     expectedOutgoingFrame.cmd = GET_CYCLETIME;
 
     TestCaseBegin();
-    Control testee(0, 0);
+    RN171Control testee(0, 0);
 
     try {
         testee.mFirmware.FwGetCycletime();
@@ -736,7 +736,7 @@ size_t ut_WiflyControl_FwGetRtc(void)
     expectedOutgoingFrame.cmd = GET_RTC;
 
     TestCaseBegin();
-    Control testee(0, 0);
+    RN171Control testee(0, 0);
 
     try {
         testee.mFirmware.FwGetRtc(timeinfo);
@@ -755,7 +755,7 @@ size_t ut_WiflyControl_FwGetVersion(void)
     expectedOutgoingFrame.cmd = GET_FW_VERSION;
 
     TestCaseBegin();
-    Control testee(0, 0);
+    RN171Control testee(0, 0);
 
     try {
         testee.mFirmware.FwGetVersion();
@@ -778,7 +778,7 @@ size_t ut_WiflyControl_FwLoopOff(void)
     expectedOutgoingFrame.data.loopEnd.startIndex = 0;
 
     TestCaseBegin();
-    Control testee(0, 0);
+    RN171Control testee(0, 0);
 
     testee.mFirmware << FwCmdLoopOff {100};
 
@@ -795,7 +795,7 @@ size_t ut_WiflyControl_FwLoopOn(void)
     expectedOutgoingFrame.cmd = LOOP_ON;
 
     TestCaseBegin();
-    Control testee(0, 0);
+    RN171Control testee(0, 0);
 
     testee.mFirmware << FwCmdLoopOn {};
 

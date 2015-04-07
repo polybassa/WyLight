@@ -44,7 +44,7 @@ using std::string;
 static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 void TRY_CATCH_COUT(std::function<void(void)>&& x);
-void TrySend(WyLight::FirmwareControl& ctrl, WyLight::FwCommand&& cmd);
+void TrySend(const WyLight::FirmwareControl& ctrl, WyLight::FwCommand&& cmd);
 
 void TRY_CATCH_COUT(std::function<void(void)>&& x)
 {
@@ -56,7 +56,7 @@ void TRY_CATCH_COUT(std::function<void(void)>&& x)
     }
 }
 
-void TrySend(WyLight::FirmwareControl& ctrl, WyLight::FwCommand&& cmd)
+void TrySend(const WyLight::FirmwareControl& ctrl, WyLight::FwCommand&& cmd)
 {
     try {
         ctrl << std::move(cmd);

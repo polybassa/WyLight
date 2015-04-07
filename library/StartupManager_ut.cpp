@@ -76,19 +76,29 @@ bool ConfigControl::SetParameters(std::list<std::string> commands) const
     return true;
 }
 
-Control::Control(uint32_t addr,
-                 uint16_t port) : mBootloader(mProxy), mConfig(mTelnet), mFirmware(mUdpSock, mProxy), mTcpSock(addr,
-                                                                                                               port),
-    mUdpSock(addr,
-             port,
-             false,
-             0),
-    mProxy(
-        mTcpSock), mTelnet(
-        mTcpSock)
+Control::Control(uint32_t                 addr,
+                 uint16_t                 port,
+                 const BootloaderControl& bootloader,
+                 const ConfigControl&     config,
+                 const FirmwareControl&   firmware) :
+    mBootloader(bootloader),
+    mConfig(config),
+    mFirmware(firmware),
+    mTcpSock(addr, port),
+    mUdpSock(addr, port, false, 0),
+    mProxy(mTcpSock),
+    mTelnet(mTcpSock)
 {}
 
-uint16_t FirmwareControl::FwGetVersion()
+RN171Control::RN171Control(uint32_t addr, uint16_t port) :  Control(addr,
+                                                                    port,
+                                                                    mBootloaderInstance,
+                                                                    mConfigInstance,
+                                                                    mFirmwareInstance), mBootloaderInstance(mProxy),
+    mConfigInstance(mTelnet),
+    mFirmwareInstance(mUdpSock, mProxy){}
+
+uint16_t FirmwareControl::FwGetVersion() const
 {
     switch (g_Testcase) {
     case TC_START_BL_FAIL:
@@ -105,7 +115,25 @@ uint16_t FirmwareControl::FwGetVersion()
     }
 }
 
-FirmwareControl& FirmwareControl::operator<<(WyLight::FwCommand&& cmd)
+std::string RN171FirmwareControl::FwGetCycletime(void) const
+{
+    return "";
+}
+
+void RN171FirmwareControl::FwGetRtc(tm& timeValue) const
+{}
+
+std::string RN171FirmwareControl::FwGetTracebuffer(void) const
+{
+    return "";
+}
+
+uint8_t RN171FirmwareControl::FwGetLedTyp(void) const
+{
+    return 0;
+}
+
+const FirmwareControl& FirmwareControl::operator<<(WyLight::FwCommand&& cmd) const
 {
     if (strcmp(typeid(cmd).name(), typeid(FwCmdStartBl()).name()))
         switch (g_Testcase) {
@@ -203,7 +231,7 @@ size_t ut_StartupManager_VersionCheckSuccessUpdateSuccess(void)
 {
     g_Testcase = TC_BL_VERSION_CHECK_SUCCESS;
     StartupManager testee;
-    Control ctrl(0, 0);
+    RN171Control ctrl(0, 0);
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -216,7 +244,7 @@ size_t ut_StartupManager_AppOutdated(void)
 {
     g_Testcase = TC_APP_OUTDATED;
     StartupManager testee;
-    Control ctrl(0, 0);
+    RN171Control ctrl(0, 0);
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -230,7 +258,7 @@ size_t ut_StartupManager_VersionFailUpdateSuccess(void)
 {
     g_Testcase = TC_BL_VERSION_CHECK_FAIL_UPDATE_SUCCESS;
     StartupManager testee;
-    Control ctrl(0, 0);
+    RN171Control ctrl(0, 0);
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -243,7 +271,7 @@ size_t ut_StartupManager_UpdateFail(void)
 {
     g_Testcase = TC_UPDATE_FAIL;
     StartupManager testee;
-    Control ctrl(0, 0);
+    RN171Control ctrl(0, 0);
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -256,7 +284,7 @@ size_t ut_StartupManager_RunAppFail(void)
 {
     g_Testcase = TC_RUN_APP_FAIL;
     StartupManager testee;
-    Control ctrl(0, 0);
+    RN171Control ctrl(0, 0);
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -269,7 +297,7 @@ size_t ut_StartupManager_BlVersionCheckFail(void)
 {
     g_Testcase = TC_BL_VERSION_CHECK_FAIL;
     StartupManager testee;
-    Control ctrl(0, 0);
+    RN171Control ctrl(0, 0);
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -282,7 +310,7 @@ size_t ut_StartupManager_FwVersionCheckFail(void)
 {
     g_Testcase = TC_FW_VERSION_CHECK_FAIL;
     StartupManager testee;
-    Control ctrl(0, 0);
+    RN171Control ctrl(0, 0);
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -295,7 +323,7 @@ size_t ut_StartupManager_StartBlFail(void)
 {
     g_Testcase = TC_START_BL_FAIL;
     StartupManager testee;
-    Control ctrl(0, 0);
+    RN171Control ctrl(0, 0);
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -308,7 +336,7 @@ size_t ut_StartupManager_ModeCheckFail(void)
 {
     g_Testcase = TC_MODE_CHECK_FAIL;
     StartupManager testee;
-    Control ctrl(0, 0);
+    RN171Control ctrl(0, 0);
     TestCaseBegin();
 
     testee.startup(ctrl, "");
