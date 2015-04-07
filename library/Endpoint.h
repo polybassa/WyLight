@@ -33,7 +33,7 @@ namespace WyLight
 class Endpoint {
 public:
     enum TYPE {
-        RN171,
+        RN171 = 0,
         CC3200
     };
 

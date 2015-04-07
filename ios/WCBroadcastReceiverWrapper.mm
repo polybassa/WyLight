@@ -72,7 +72,7 @@ NSString *const TargetsChangedNotification = @"TargetsChangedNotification";
 					WCEndpoint *endPoint = [[WCEndpoint alloc] initWithIpAdress:endpoint.GetIp()
 								port:endpoint.GetPort()
 								name:[NSString stringWithCString:endpoint.GetDeviceId().c_str() encoding:NSASCIIStringEncoding]
-								score:endpoint.GetScore()];
+								score:endpoint.GetScore() type:(enum ENDPOINT_TYPE)endpoint.GetType()];
 					[self.arrayOfEndpoints insertObject:endPoint atIndex:index];
 					dispatch_async(dispatch_get_main_queue(), ^{
 							       [self postNotification];

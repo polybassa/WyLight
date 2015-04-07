@@ -142,7 +142,8 @@
 			self.controlHandle = [[WCWiflyControlWrapper alloc] initWithWCEndpoint:[[WCEndpoint alloc] initWithIpAdress:16909060
 																													   port:2000
 																													   name:@"newTarget"
-																													  score:0]
+																													  score:0
+																														type:RN171]
 																   establishConnection:YES doStartup:NO];
 			if (self.controlHandle == nil) {
 				dispatch_async(dispatch_get_main_queue(), ^{
