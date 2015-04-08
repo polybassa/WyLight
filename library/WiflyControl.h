@@ -20,10 +20,9 @@
 #define _WIFLYCONTROL_H_
 
 #include <string>
+#include <memory>
 #include "ComProxy.h"
-#include "wifly_cmd.h"
 #include "TelnetProxy.h"
-#include "WiflyControlException.h"
 #include "ConfigControl.h"
 #include "BootloaderControl.h"
 #include "FirmwareControl.h"
@@ -66,17 +65,17 @@ public:
      */
     virtual uint16_t ExtractFwVersion(const std::string& pFilename) const;
 
-    const BootloaderControl& mBootloader;
-    const ConfigControl& mConfig;
-    const FirmwareControl& mFirmware;
+    const std::unique_ptr<const BootloaderControl> mBootloader;
+    const std::unique_ptr<const ConfigControl> mConfig;
+    const std::unique_ptr<const FirmwareControl> mFirmware;
 
 /* ------------------------- PRIVATE DECLARATIONS ------------------------- */
 protected:
-    Control(uint32_t                 addr,
-            uint16_t                 port,
-            const BootloaderControl& bootloader,
-            const ConfigControl&     config,
-            const FirmwareControl&   firmware);
+    Control(uint32_t                                   addr,
+            uint16_t                                   port,
+            std::unique_ptr<const BootloaderControl>&& bootloader,
+            std::unique_ptr<const ConfigControl>&&     config,
+            std::unique_ptr<const FirmwareControl>&&   firmware);
 
     /*
      * Sockets used for communication with wifly device.
@@ -100,24 +99,12 @@ protected:
     const TelnetProxy mTelnet;
 };
 
-class RN171Control : public Control {
-public:
+struct RN171Control : public Control {
     RN171Control(uint32_t addr, uint16_t port);
-
-private:
-    const BootloaderControl mBootloaderInstance;
-    const ConfigControl mConfigInstance;
-    const RN171FirmwareControl mFirmwareInstance;
 };
 
-class CC3200Control : public Control {
-public:
+struct CC3200Control : public Control {
     CC3200Control(uint32_t addr, uint16_t port);
-
-private:
-    const BootloaderControl mBootloaderInstance;
-    const ConfigControl mConfigInstance;
-    const CC3200FirmwareControl mFirmwareInstance;
 };
 }
 #endif /* #ifndef _WIFLYCONTROL_H_ */

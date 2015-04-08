@@ -75,7 +75,7 @@ void StartupManager::startup(WyLight::Control& control, const std::string& hexFi
             return;
         } else if (currentMode == FW_IDENT) {
             setCurrentState(FW_VERSION_CHECK);
-            mTargetVersion = control.mFirmware.FwGetVersion();
+            mTargetVersion = control.mFirmware->FwGetVersion();
             if ((mTargetVersion != 0) && (mTargetVersion >= mHexFileVersion)) {
                 setCurrentState(STARTUP_SUCCESSFUL);
                 return;
@@ -93,7 +93,7 @@ void StartupManager::startup(WyLight::Control& control, const std::string& hexFi
 void StartupManager::startBootloader(WyLight::Control& control, const std::string& hexFilePath)
 {
     try {
-        control.mFirmware << FwCmdStartBl();
+        *control.mFirmware << FwCmdStartBl();
         bootloaderVersionCheckUpdate(control, hexFilePath);
     } catch (std::exception& e) {
         // Exception in case of lost connection or wrong mode expected
@@ -105,16 +105,16 @@ void StartupManager::startBootloader(WyLight::Control& control, const std::strin
 void StartupManager::bootloaderVersionCheckUpdate(WyLight::Control& control, const std::string& hexFilePath)
 {
     try {
-        mTargetVersion = control.mBootloader.BlReadFwVersion();
+        mTargetVersion = control.mBootloader->BlReadFwVersion();
         if ((mTargetVersion == 0) || (mTargetVersion <= mHexFileVersion)) {
             //---- UPDATE STUFF ---------
             setCurrentState(UPDATING);
-            control.mBootloader.BlEraseEeprom();
-            control.mBootloader.BlProgramFlash(hexFilePath);
+            control.mBootloader->BlEraseEeprom();
+            control.mBootloader->BlProgramFlash(hexFilePath);
         }
         setCurrentState(RUN_APP);
-        control.mBootloader.BlRunApp();
-        control.mConfig.SetParameters(ConfigControl::RN171_BASIC_PARAMETERS) ? setCurrentState(STARTUP_SUCCESSFUL) :
+        control.mBootloader->BlRunApp();
+        control.mConfig->SetParameters(ConfigControl::RN171_BASIC_PARAMETERS) ? setCurrentState(STARTUP_SUCCESSFUL) :
         setCurrentState(STARTUP_FAILURE);
     } catch (std::exception& e) {
         // Expection in case of connection lost or error during update, or invalid update expected.

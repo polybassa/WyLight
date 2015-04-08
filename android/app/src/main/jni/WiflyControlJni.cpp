@@ -37,7 +37,7 @@ jboolean TrySend(JNIEnv* env, Control* pCtrl, FwCommand&& cmd)
 {
     if (!pCtrl) return false;
     try {
-        pCtrl->mFirmware << std::move(cmd);
+        *(pCtrl->mFirmware) << std::move(cmd);
         return true;
     } catch (FatalError& e) {
         ThrowJniException(env, e);
@@ -116,24 +116,24 @@ void Java_de_WyLight_WyLight_library_Endpoint_setEndpointName(JNIEnv* env,
 
 jstring Java_de_WyLight_WyLight_WiflyControl_ConfGetDeviceId(JNIEnv* env, jobject ref, jlong pNative)
 {
-    std::string myDeviceId = reinterpret_cast<Control*>(pNative)->mConfig.GetDeviceId();
+    std::string myDeviceId = reinterpret_cast<Control*>(pNative)->mConfig->GetDeviceId();
     return env->NewStringUTF(myDeviceId.data());
 }
 
 jstring Java_de_WyLight_WyLight_WiflyControl_ConfGetPassphrase(JNIEnv* env, jobject ref, jlong pNative)
 {
-    std::string myPassphrase = reinterpret_cast<Control*>(pNative)->mConfig.GetPassphrase();
+    std::string myPassphrase = reinterpret_cast<Control*>(pNative)->mConfig->GetPassphrase();
     return env->NewStringUTF(myPassphrase.data());
 }
 
 jboolean Java_de_WyLight_WyLight_WiflyControl_ConfGetSoftAp(JNIEnv* env, jobject ref, jlong pNative)
 {
-    return reinterpret_cast<Control*>(pNative)->mConfig.GetSoftAp();
+    return reinterpret_cast<Control*>(pNative)->mConfig->GetSoftAp();
 }
 
 jstring Java_de_WyLight_WyLight_WiflyControl_ConfGetSsid(JNIEnv* env, jobject ref, jlong pNative)
 {
-    std::string mySsid = reinterpret_cast<Control*>(pNative)->mConfig.GetSsid();
+    std::string mySsid = reinterpret_cast<Control*>(pNative)->mConfig->GetSsid();
     return env->NewStringUTF(mySsid.data());
 }
 
@@ -150,9 +150,9 @@ jboolean Java_de_WyLight_WyLight_WiflyControl_ConfSetWlan(JNIEnv*  env,
     const char* const mySsid = env->GetStringUTFChars(ssid, 0);
     jboolean result;
     if (softAp)
-        result = reinterpret_cast<Control*>(pNative)->mConfig.ModuleAsSoftAP(mySsid);
+        result = reinterpret_cast<Control*>(pNative)->mConfig->ModuleAsSoftAP(mySsid);
     else
-        result = reinterpret_cast<Control*>(pNative)->mConfig.ModuleForWlan(myPassphrase, mySsid, myDeviceId);
+        result = reinterpret_cast<Control*>(pNative)->mConfig->ModuleForWlan(myPassphrase, mySsid, myDeviceId);
     env->ReleaseStringUTFChars(deviceId, myDeviceId);
     env->ReleaseStringUTFChars(passphrase, myPassphrase);
     env->ReleaseStringUTFChars(ssid, mySsid);
@@ -182,7 +182,7 @@ jboolean Java_de_WyLight_WyLight_WiflyControl_FwSendScript(JNIEnv* env, jobject 
     try {
         Control* pControl = reinterpret_cast<Control*>(pNative);
         Script* pScript = reinterpret_cast<Script*>(pNativeScript);
-        pControl->mFirmware << FwCmdLoopOn {} << *pScript << FwCmdLoopOff {0};
+        *(pControl->mFirmware) << FwCmdLoopOn {} << *pScript << FwCmdLoopOff {0};
     } catch (FatalError& e) {
         ThrowJniException(env, e);
     }

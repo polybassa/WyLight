@@ -50,19 +50,18 @@ const std::string FwCmdLoopOn::TOKEN("loop");
 const std::string FwCmdLoopOff::TOKEN("loop_off");
 const std::string FwCmdWait::TOKEN("wait");
 
-Control::Control(uint32_t                 addr,
-                 uint16_t                 port,
-                 const BootloaderControl& bootloader,
-                 const ConfigControl&     config,
-                 const FirmwareControl&   firmware) :
-    mBootloader(bootloader),
-    mConfig(config),
-    mFirmware(firmware),
+Control::Control(uint32_t                                   addr,
+                 uint16_t                                   port,
+                 std::unique_ptr<const BootloaderControl>&& bootloader,
+                 std::unique_ptr<const ConfigControl>&&     config,
+                 std::unique_ptr<const FirmwareControl>&&   firmware) :
+    mBootloader(std::move(bootloader)),
+    mConfig(std::move(config)),
+    mFirmware(std::move(firmware)),
     mTcpSock(addr, port),
     mUdpSock(addr, port, false, 0),
     mProxy(mTcpSock),
     mTelnet(mTcpSock)
-
 {}
 
 size_t Control::GetTargetMode(void) const
@@ -94,17 +93,24 @@ uint16_t Control::ExtractFwVersion(const std::string& pFilename) const
 
 RN171Control::RN171Control(uint32_t addr, uint16_t port) : Control(addr,
                                                                    port,
-                                                                   mBootloaderInstance,
-                                                                   mConfigInstance,
-                                                                   mFirmwareInstance), mBootloaderInstance(mProxy),
-    mConfigInstance(mTelnet),
-    mFirmwareInstance(mUdpSock, mProxy) {}
+                                                                   std::unique_ptr<const BootloaderControl>(new
+                                                                                                            BootloaderControl(
+                                                                                                                mProxy)),
+                                                                   std::unique_ptr<const ConfigControl>(new
+                                                                                                        ConfigControl(
+                                                                                                            mTelnet)),
+                                                                   std::unique_ptr<const FirmwareControl>(new
+                                                                                                          RN171FirmwareControl(
+                                                                                                              mUdpSock,
+                                                                                                              mProxy))){}
 
 CC3200Control::CC3200Control(uint32_t addr, uint16_t port) : Control(addr,
                                                                      port,
-                                                                     mBootloaderInstance,
-                                                                     mConfigInstance,
-                                                                     mFirmwareInstance), mBootloaderInstance(mProxy),
-    mConfigInstance(mTelnet),
-    mFirmwareInstance(mUdpSock, mProxy) {}
+                                                                     nullptr,
+                                                                     nullptr,
+                                                                     std::unique_ptr<const FirmwareControl>(new
+                                                                                                            RN171FirmwareControl(
+                                                                                                                mUdpSock,
+                                                                                                                mProxy)))
+{}
 } /* namespace WyLight */

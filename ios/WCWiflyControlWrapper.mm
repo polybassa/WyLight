@@ -109,7 +109,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 		}
 	}
 	try {
-		if (mControl->mFirmware.FwGetLedTyp() == LED_TYP_WS2801) {
+		if (mControl->mFirmware->FwGetLedTyp() == LED_TYP_WS2801) {
 			self.clientWithWS2801Leds = YES;
 		} else {
 			self.clientWithWS2801Leds = NO;
@@ -322,14 +322,14 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 {
 	std::vector<uint8_t> buffer(pointerBuffer, pointerBuffer + length);
 	mCmdQueue->push_back(std::make_tuple(false,
-										 [=](void) -> unsigned int {mControl->mFirmware << WyLight::FwCmdSetColorDirect(buffer.data(), buffer.size());return 0;},
+										 [=](void) -> unsigned int {*mControl->mFirmware << WyLight::FwCmdSetColorDirect(buffer.data(), buffer.size());return 0;},
 					     0));
 }
 
 - (void)setWaitTimeInTenMilliSecondsIntervals:(uint16_t)time
 {
 	mCmdQueue->push_back(std::make_tuple(false,
-					     [=](void) -> unsigned int {mControl->mFirmware << WyLight::FwCmdWait(time);return 0;},
+					     [=](void) -> unsigned int {*mControl->mFirmware << WyLight::FwCmdWait(time);return 0;},
 					     0));
 }
 
@@ -351,7 +351,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 - (void)setFade:(uint32_t)colorInARGB time:(uint16_t)timeValue address:(uint32_t)address parallelFade:(BOOL)parallel
 {
 	mCmdQueue->push_back(std::make_tuple(false,
-						 [=](void) -> unsigned int {mControl->mFirmware << WyLight::FwCmdSetFade(colorInARGB, timeValue, address, parallel);return 0;},
+						 [=](void) -> unsigned int {*mControl->mFirmware << WyLight::FwCmdSetFade(colorInARGB, timeValue, address, parallel);return 0;},
 					     0));
 }
 
@@ -378,28 +378,28 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 - (void)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel gradientLength:(uint8_t)length startPosition:(uint8_t)offset
 {
 	mCmdQueue->push_back(std::make_tuple(false,
-						[=](void) -> unsigned int {mControl->mFirmware << WyLight::FwCmdSetGradient(colorOneInARGB, colorTwoInARGB, timeValue, parallel, length, offset);return 0;},
+						[=](void) -> unsigned int {*mControl->mFirmware << WyLight::FwCmdSetGradient(colorOneInARGB, colorTwoInARGB, timeValue, parallel, length, offset);return 0;},
 					     0));
 }
 
 - (void)loopOn
 {
 	mCmdQueue->push_back(std::make_tuple(false,
-[=](void) -> unsigned int {mControl->mFirmware << WyLight::FwCmdLoopOn();return 0;},
+[=](void) -> unsigned int {*mControl->mFirmware << WyLight::FwCmdLoopOn();return 0;},
 										 0));
 }
 
 - (void)loopOffAfterNumberOfRepeats:(uint8_t)repeats
 {
 	mCmdQueue->push_back(std::make_tuple(false,
-					    [=](void) -> unsigned int {mControl->mFirmware << WyLight::FwCmdLoopOff(repeats);return 0;},
+					    [=](void) -> unsigned int {*mControl->mFirmware << WyLight::FwCmdLoopOff(repeats);return 0;},
 					     0));                            // 0: Endlosschleife / 255: Maximale Anzahl
 }
 
 - (void)clearScript
 {
 	mCmdQueue->push_back(std::make_tuple(false,
-					     [=](void) -> unsigned int {mControl->mFirmware << WyLight::FwCmdClearScript();return 0;},
+					     [=](void) -> unsigned int {*mControl->mFirmware << WyLight::FwCmdClearScript();return 0;},
 					     0));
 }
 
@@ -410,7 +410,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 			struct tm timeInfo;
 			std::lock_guard<std::mutex> lock(*gCtrlMutex);
 			
-			mControl->mFirmware.FwGetRtc(timeInfo);
+			mControl->mFirmware->FwGetRtc(timeInfo);
 			return [NSDate dateWithTimeIntervalSince1970:mktime(&timeInfo)];
 
 		} catch (std::exception &e) {
@@ -431,7 +431,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 	timeInfo = localtime(&rawTime);
 
 	mCmdQueue->push_front(std::make_tuple(false,
-										  [=](void) -> unsigned int {mControl->mFirmware << WyLight::FwCmdSetRtc(*timeInfo);return 0;},
+										  [=](void) -> unsigned int {*mControl->mFirmware << WyLight::FwCmdSetRtc(*timeInfo);return 0;},
 					      0));
 }
 

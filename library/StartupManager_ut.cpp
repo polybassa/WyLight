@@ -76,27 +76,32 @@ bool ConfigControl::SetParameters(std::list<std::string> commands) const
     return true;
 }
 
-Control::Control(uint32_t                 addr,
-                 uint16_t                 port,
-                 const BootloaderControl& bootloader,
-                 const ConfigControl&     config,
-                 const FirmwareControl&   firmware) :
-    mBootloader(bootloader),
-    mConfig(config),
-    mFirmware(firmware),
+Control::Control(uint32_t                                   addr,
+                 uint16_t                                   port,
+                 std::unique_ptr<const BootloaderControl>&& bootloader,
+                 std::unique_ptr<const ConfigControl>&&     config,
+                 std::unique_ptr<const FirmwareControl>&&   firmware) :
+    mBootloader(std::move(bootloader)),
+    mConfig(std::move(config)),
+    mFirmware(std::move(firmware)),
     mTcpSock(addr, port),
     mUdpSock(addr, port, false, 0),
     mProxy(mTcpSock),
     mTelnet(mTcpSock)
 {}
 
-RN171Control::RN171Control(uint32_t addr, uint16_t port) :  Control(addr,
-                                                                    port,
-                                                                    mBootloaderInstance,
-                                                                    mConfigInstance,
-                                                                    mFirmwareInstance), mBootloaderInstance(mProxy),
-    mConfigInstance(mTelnet),
-    mFirmwareInstance(mUdpSock, mProxy){}
+RN171Control::RN171Control(uint32_t addr, uint16_t port) : Control(addr,
+                                                                   port,
+                                                                   std::unique_ptr<const BootloaderControl>(new
+                                                                                                            BootloaderControl(
+                                                                                                                mProxy)),
+                                                                   std::unique_ptr<const ConfigControl>(new
+                                                                                                        ConfigControl(
+                                                                                                            mTelnet)),
+                                                                   std::unique_ptr<const FirmwareControl>(new
+                                                                                                          RN171FirmwareControl(
+                                                                                                              mUdpSock,
+                                                                                                              mProxy))){}
 
 uint16_t FirmwareControl::FwGetVersion() const
 {

@@ -127,7 +127,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "\nBL: Enabling autostart... ";
-        TRY_CATCH_COUT([&](void){control.mBootloader.BlEnableAutostart(); });
+        TRY_CATCH_COUT([&](void){control.mBootloader->BlEnableAutostart(); });
     }
 };
 
@@ -141,7 +141,7 @@ public:
     {
         WyLight::BlInfo info;
         try {
-            control.mBootloader.BlReadInfo(info);
+            control.mBootloader->BlReadInfo(info);
             info.Print();
         } catch (WyLight::FatalError& e) {
             std::cout << "Read bootloader info failed" << endl;
@@ -160,7 +160,7 @@ public:
         cin >> numBlocks;
         try {
             std::stringstream mStream;
-            control.mBootloader.BlReadCrcFlash(mStream, address, numBlocks);
+            control.mBootloader->BlReadCrcFlash(mStream, address, numBlocks);
             mStream.seekp(0, std::ios::end);
             size_t bytesRead = mStream.tellp();
             if (2 * numBlocks != bytesRead) {
@@ -182,7 +182,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "\nErasing flash... ";
-        TRY_CATCH_COUT([&] {control.mBootloader.BlEraseFlash(); });
+        TRY_CATCH_COUT([&] {control.mBootloader->BlEraseFlash(); });
     }
 };
 
@@ -194,7 +194,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "\nErasing eeprom... ";
-        TRY_CATCH_COUT([&] {control.mBootloader.BlEraseEeprom(); });
+        TRY_CATCH_COUT([&] {control.mBootloader->BlEraseEeprom(); });
     }
 };
 
@@ -210,7 +210,7 @@ public:
         string path;
         cin >> path;
         cout << "Programming device flash... ";
-        TRY_CATCH_COUT([&] {control.mBootloader.BlProgramFlash(path); });
+        TRY_CATCH_COUT([&] {control.mBootloader->BlProgramFlash(path); });
     }
 };
 
@@ -273,7 +273,7 @@ public:
     ControlCmdBlReadEeprom(void) : ControlCmdBlRead("eeprom") {}
     void Read(WyLight::Control& control, std::ostream& out, uint32_t address, const size_t numBytes) const
     {
-        control.mBootloader.BlReadEeprom(out, address, numBytes);
+        control.mBootloader->BlReadEeprom(out, address, numBytes);
     }
 };
 
@@ -282,7 +282,7 @@ public:
     ControlCmdBlReadFlash(void) : ControlCmdBlRead("flash") {}
     void Read(WyLight::Control& control, std::ostream& out, uint32_t address, const size_t numBytes) const
     {
-        control.mBootloader.BlReadFlash(out, address, numBytes);
+        control.mBootloader->BlReadFlash(out, address, numBytes);
     }
 };
 
@@ -296,7 +296,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "Starting application... ";
-        TRY_CATCH_COUT([&] {control.mBootloader.BlRunApp(); });
+        TRY_CATCH_COUT([&] {control.mBootloader->BlRunApp(); });
     }
 };
 
@@ -311,7 +311,7 @@ public:
     {
         cout << "Reading firmware version... ";
         try {
-            uint16_t version = control.mBootloader.BlReadFwVersion();
+            uint16_t version = control.mBootloader->BlReadFwVersion();
             cout << "done.\n\n" << "Version = " << std::to_string(version) << "\n";
         } catch (WyLight::FatalError& e) {
             cout << "failed! because of: " << e << '\n';
@@ -329,7 +329,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "Reading wifly configuration ssid: ";
-        cout << control.mConfig.GetSsid() << "\n";
+        cout << control.mConfig->GetSsid() << "\n";
     }
 };
 
@@ -343,7 +343,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "Rebooting wlan module... ";
-        if (control.mConfig.RebootWlanModule()) {
+        if (control.mConfig->RebootWlanModule()) {
             cout << "done.\n";
             cout << "Terminating WyLight::Control commandline interface now!!!! Please restart." << endl;
             std::exit(EXIT_SUCCESS);
@@ -370,7 +370,7 @@ public:
         cin >> name;
         cout << "Setting passphrase '" << phrase << "' and ssid '" << ssid << "' and name '" << name << "' ... ";
 
-        if (control.mConfig.ModuleForWlan(phrase, ssid, name)) {
+        if (control.mConfig->ModuleForWlan(phrase, ssid, name)) {
             cout << "done.\n";
             cout << "Terminating WyLight::Control commandline interface now!!!! Please restart." << endl;
             std::exit(EXIT_SUCCESS);
@@ -392,7 +392,7 @@ public:
         string ssid;
         cin >> ssid;
         cout << "Setting as soft-AP with ssid '" << ssid << "'... ";
-        if (control.mConfig.ModuleAsSoftAP(ssid)) {
+        if (control.mConfig->ModuleAsSoftAP(ssid)) {
             cout << "done.\n";
             cout << "Terminating WyLight::Control commandline interface now!!!! Please restart." << endl;
             std::exit(EXIT_SUCCESS);
@@ -414,7 +414,7 @@ public:
         string name;
         cin >> name;
         cout << "Setting device name '" << name << "'... ";
-        cout << (control.mConfig.SetDeviceId(name) ? "done.\n" : "failed!\n");
+        cout << (control.mConfig->SetDeviceId(name) ? "done.\n" : "failed!\n");
     }
 };
 
@@ -427,7 +427,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "Starting bootloader... ";
-        TrySend(control.mFirmware, WyLight::FwCmdStartBl {}
+        TrySend(*control.mFirmware, WyLight::FwCmdStartBl {}
                 );
     }
 };
@@ -442,7 +442,7 @@ public:
     {
         cout << "Transmitting command print cycletime... ";
         try {
-            cout << "done.\n" << control.mFirmware.FwGetCycletime() << '\n';
+            cout << "done.\n" << control.mFirmware->FwGetCycletime() << '\n';
         } catch (WyLight::FatalError& e) {
             cout << "failed, because of " << e << '\n';
         }
@@ -459,7 +459,7 @@ public:
     {
         cout << "Reading firmware version... ";
         try {
-            uint16_t version = control.mFirmware.FwGetVersion();
+            uint16_t version = control.mFirmware->FwGetVersion();
             cout << "done.\n\n" << "Version = " << std::to_string(version) << "\n";
         } catch (WyLight::FatalError& e) {
             cout << "failed! because of: " << e << '\n';
@@ -477,7 +477,7 @@ public:
     {
         cout << "Reading tracebuffer... ";
         try {
-            cout << "done.\n\n" << control.mFirmware.FwGetTracebuffer() << '\n';
+            cout << "done.\n\n" << control.mFirmware->FwGetTracebuffer() << '\n';
         } catch (WyLight::FatalError& e) {
             cout << "failed! because of: " << e << '\n';
         }
@@ -493,7 +493,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "Clearing script buffer... ";
-        TrySend(control.mFirmware, WyLight::FwCmdClearScript {}
+        TrySend(*control.mFirmware, WyLight::FwCmdClearScript {}
                 );
     }
 };
@@ -507,7 +507,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "Transmitting command loop on... ";
-        TrySend(control.mFirmware, WyLight::FwCmdLoopOn {}
+        TrySend(*control.mFirmware, WyLight::FwCmdLoopOn {}
                 );
     }
 };
@@ -524,7 +524,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "Transmitting command loop off... ";
-        TrySend(control.mFirmware, WyLight::FwCmdLoopOff {cin}
+        TrySend(*control.mFirmware, WyLight::FwCmdLoopOff {cin}
                 );
     }
 };
@@ -539,7 +539,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "Transmitting command wait... ";
-        TrySend(control.mFirmware, WyLight::FwCmdWait {cin}
+        TrySend(*control.mFirmware, WyLight::FwCmdWait {cin}
                 );
     }
 };
@@ -557,7 +557,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "Parsing and transmitting command set fade... ";
-        TrySend(control.mFirmware, WyLight::FwCmdSetFade {cin}
+        TrySend(*control.mFirmware, WyLight::FwCmdSetFade {cin}
                 );
     }
 };
@@ -577,7 +577,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "Parsing and transmitting command set gradient... ";
-        TrySend(control.mFirmware, WyLight::FwCmdSetGradient {cin}
+        TrySend(*control.mFirmware, WyLight::FwCmdSetGradient {cin}
                 );
     }
 };
@@ -591,7 +591,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "Parsing and transmitting current time... ";
-        TrySend(control.mFirmware, WyLight::FwCmdSetRtc {}
+        TrySend(*control.mFirmware, WyLight::FwCmdSetRtc {}
                 );
     }
 };
@@ -607,7 +607,7 @@ public:
         cout << "Getting target time... ";
         try {
             tm timeinfo;
-            control.mFirmware.FwGetRtc(timeinfo);
+            control.mFirmware->FwGetRtc(timeinfo);
             cout << "done.\n\n" << asctime(&timeinfo) << '\n';
         } catch (WyLight::FatalError& e) {
             cout << "failed! because of: " << e << '\n';
@@ -647,7 +647,7 @@ public:
     {
         cout << "Reading led typ ... ";
         try {
-            size_t result = control.mFirmware.FwGetLedTyp();
+            size_t result = control.mFirmware->FwGetLedTyp();
             cout << "done.\n\n";
             result == LED_TYP_RGB ? cout << "Target has RGB Led's \n" : cout << "Target has WS2801 Led's \n";
         } catch (WyLight::FatalError& e) {
@@ -687,7 +687,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "Running fw test loop... ";
-        TRY_CATCH_COUT([&] {control.mFirmware.FwTest(); });
+        TRY_CATCH_COUT([&] {control.mFirmware->FwTest(); });
     }
 };
 
@@ -700,7 +700,7 @@ public:
     virtual void Run(WyLight::Control& control) const
     {
         cout << "Running stresstest... ";
-        TRY_CATCH_COUT([&] {control.mFirmware.FwStressTest(); });
+        TRY_CATCH_COUT([&] {control.mFirmware->FwStressTest(); });
     }
 };
 
