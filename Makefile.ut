@@ -20,8 +20,9 @@ IPATH=	${ROOT} \
 
 # WyLight bootloader
 ${BINDIR}/${PRJ_NAME}.bin: 	${OBJDIR}/wy_fs_ut.o \
-							${OBJDIR}/fs.o \
-							${OBJDIR}/wy_fs.o \
-							${OBJDIR}/uart_if.o
+				${OBJDIR}/fs.o \
+				${OBJDIR}/wy_fs.o \
+				${OBJDIR}/uart_if.o
+	@./${BINDIR}/${PRJ_NAME}.bin
 
 endif

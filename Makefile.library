@@ -75,7 +75,7 @@ library_standart_test: 	${BINDIR}/BroadcastReceiver_ut.bin \
 						${BINDIR}/TelnetProxy_ut.bin \
 						${BINDIR}/WiflyControl_ut.bin \
 						${BINDIR}/StartupManager_ut.bin 
-	$(foreach test,$^,./$(test);)
+	@$(foreach test,$^,./$(test);)
 
 library_ftp_test: ${BINDIR}/FtpServer_ut.bin
-	$(foreach test,$^,@sh ./unit_test_data/ftptest.sh ./$(test) | grep "./library/FtpServer_ut.bin*";)
+	@$(foreach test,$^,@sh ./unit_test_data/ftptest.sh ./$(test) | grep "./library/FtpServer_ut.bin*";)
