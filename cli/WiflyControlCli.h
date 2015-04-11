@@ -20,16 +20,18 @@
 #define _WIFLYCONTROLCLI_H_
 #include <string>
 #include "WiflyControl.h"
+#include "Endpoint.h"
 #include <stdint.h>
+#include <memory>
 
 class WiflyControlCli {
 private:
-    WyLight::RN171Control mControl;
+    std::unique_ptr<WyLight::Control> mControl;
     bool mRunning;
     void ShowHelp(void) const;
 
 public:
-    WiflyControlCli(uint32_t addr, uint16_t port);
+    WiflyControlCli(const WyLight::Endpoint&);
     void Run(void);
     WyLight::Control& getControl(void);
 };

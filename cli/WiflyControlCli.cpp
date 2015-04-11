@@ -39,9 +39,16 @@ void newRemoteCallback(const size_t index, const WyLight::Endpoint& newEndpoint)
 char* getCmdOption(char** begin, char** end, const std::string& option);
 bool cmdOptionExists(char** begin, char** end, const std::string& option);
 
-WiflyControlCli::WiflyControlCli(uint32_t addr, uint16_t port) : mControl(addr, port), mRunning(true)
+WiflyControlCli::WiflyControlCli(const WyLight::Endpoint& endpoint) : mRunning(true)
 {
-    cout << "Connecting to " << std::hex << addr << ':' << port << std::endl;
+    if (endpoint.GetType() == WyLight::Endpoint::RN171)
+        mControl = std::unique_ptr<WyLight::Control>(new WyLight::RN171Control(endpoint.GetIp(), endpoint.GetPort()));
+    else if (endpoint.GetType() == WyLight::Endpoint::CC3200)
+        mControl = std::unique_ptr<WyLight::Control>(new WyLight::CC3200Control(endpoint.GetIp(), endpoint.GetPort()));
+    else
+        throw FatalError("Invalid Endpoint\r\n");
+
+    cout << "Connecting to " << std::hex << endpoint.GetIp() << ':' << endpoint.GetPort() << std::endl;
 }
 
 void WiflyControlCli::Run(void)
@@ -60,7 +67,7 @@ void WiflyControlCli::Run(void)
         } else {
             pCmd = WiflyControlCmdBuilder::GetCmd(nextCmd);
             if (NULL != pCmd)
-                pCmd->Run(mControl);
+                pCmd->Run(*mControl);
         }
     }
 }
@@ -81,7 +88,7 @@ void WiflyControlCli::ShowHelp(void) const
 
 WyLight::Control& WiflyControlCli::getControl()
 {
-    return mControl;
+    return *mControl;
 }
 
 void newRemoteCallback(const size_t index, const WyLight::Endpoint& newEndpoint)
@@ -136,7 +143,7 @@ int main(int argc, char* argv[])
         e = receiver.GetEndpoint(selection);
     }
 
-    WiflyControlCli cli(e.GetIp(), e.GetPort());
+    WiflyControlCli cli(e);
 
     cli.Run();
 }
