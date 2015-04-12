@@ -39,7 +39,8 @@
 
 #include "trace.h"
 
-static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR |
+                                                        ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 #define ASSERT_ON_ERROR(line_number, error_code) \
     { \
@@ -81,7 +82,8 @@ void SimpleLinkSockEventHandler(SlSockEvent_t* pSock)
 void SimpleLinkHttpServerCallback(SlHttpServerEvent_t*    pSlHttpServerEvent,
                                   SlHttpServerResponse_t* pSlHttpServerResponse)
 {
-    SimplelinkDriver::SimpleLinkHttpServerCallback(pSlHttpServerEvent, pSlHttpServerResponse);
+    SimplelinkDriver::SimpleLinkHttpServerCallback(pSlHttpServerEvent,
+                                                   pSlHttpServerResponse);
 }
 
 SimplelinkDriver::SimplelinkDriver(const bool accesspointMode)
@@ -161,12 +163,14 @@ long SimplelinkDriver::configureAsAccesspoint(void)
 
     //Disable ROM WebPages
     unsigned char disable = 0;
-    retRes = sl_NetAppSet(SL_NET_APP_HTTP_SERVER_ID, NETAPP_SET_GET_HTTP_OPT_ROM_PAGES_ACCESS, 1, &disable);
+    retRes = sl_NetAppSet(SL_NET_APP_HTTP_SERVER_ID,
+                          NETAPP_SET_GET_HTTP_OPT_ROM_PAGES_ACCESS, 1, &disable);
     ASSERT_ON_ERROR(__LINE__, retRes);
 
     // set domain name
     unsigned char domainName[] = "wylight.config";
-    retRes = sl_NetAppSet(SL_NET_APP_DEVICE_CONFIG_ID, NETAPP_SET_GET_DEV_CONF_OPT_DOMAIN_NAME, sizeof(domainName),
+    retRes = sl_NetAppSet(SL_NET_APP_DEVICE_CONFIG_ID,
+                          NETAPP_SET_GET_DEV_CONF_OPT_DOMAIN_NAME, sizeof(domainName),
                           domainName);
     ASSERT_ON_ERROR(__LINE__, retRes);
 
@@ -177,8 +181,10 @@ long SimplelinkDriver::configureAsAccesspoint(void)
 
     // get current Time
     SlDateTime_t dateTime;
-    unsigned char option = SL_DEVICE_GENERAL_CONFIGURATION_DATE_TIME, length = sizeof(SlDateTime_t);
-    retRes = sl_DevGet(SL_DEVICE_GENERAL_CONFIGURATION, &option, &length, (unsigned char*)&dateTime);
+    unsigned char option = SL_DEVICE_GENERAL_CONFIGURATION_DATE_TIME, length =
+        sizeof(SlDateTime_t);
+    retRes = sl_DevGet(SL_DEVICE_GENERAL_CONFIGURATION, &option, &length,
+                       (unsigned char*)&dateTime);
     ASSERT_ON_ERROR(__LINE__, retRes);
 
     // compute random channel from current time
@@ -235,12 +241,14 @@ long SimplelinkDriver::configureSimpleLinkToDefaultState(void)
 
     // Set connection policy to Auto + Fast Connection
     //      (Device's default connection policy)
-    long retRes = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1, 1, 0, 0, 0), NULL, 0);
+    long retRes = sl_WlanPolicySet(SL_POLICY_CONNECTION,
+                                   SL_CONNECTION_POLICY(1, 1, 0, 0, 0), NULL, 0);
     ASSERT_ON_ERROR(__LINE__, retRes);
 
     // Enable DHCP client
     unsigned char value = 1;
-    retRes = sl_NetCfgSet(SL_IPV4_STA_P2P_CL_DHCP_ENABLE, 1, sizeof(value), &value);
+    retRes = sl_NetCfgSet(SL_IPV4_STA_P2P_CL_DHCP_ENABLE, 1, sizeof(value),
+                          &value);
     ASSERT_ON_ERROR(__LINE__, retRes);
 
     // Disable scan
@@ -252,7 +260,8 @@ long SimplelinkDriver::configureSimpleLinkToDefaultState(void)
     // Number between 0-15, as dB offset from max power - 0 will set max power
     unsigned char power = 0;
     retRes = sl_WlanSet(SL_WLAN_CFG_GENERAL_PARAM_ID,
-                        WLAN_GENERAL_PARAM_OPT_STA_TX_POWER, sizeof(power), (unsigned char*)&power);
+                        WLAN_GENERAL_PARAM_OPT_STA_TX_POWER, sizeof(power),
+                        (unsigned char*)&power);
     ASSERT_ON_ERROR(__LINE__, retRes);
 
     // Set PM policy to normal
@@ -261,8 +270,8 @@ long SimplelinkDriver::configureSimpleLinkToDefaultState(void)
 
     // Set URN-Name
     unsigned char urnName[] = "WyLight";
-    retRes = sl_NetAppSet(SL_NET_APP_DEVICE_CONFIG_ID, NETAPP_SET_GET_DEV_CONF_OPT_DEVICE_URN, sizeof(urnName),
-                          urnName);
+    retRes = sl_NetAppSet(SL_NET_APP_DEVICE_CONFIG_ID,
+                          NETAPP_SET_GET_DEV_CONF_OPT_DEVICE_URN, sizeof(urnName), urnName);
     ASSERT_ON_ERROR(__LINE__, retRes);
 
     retRes = sl_Stop(SL_STOP_TIMEOUT);
@@ -285,7 +294,8 @@ long SimplelinkDriver::scanForAccesspoints(void)
 
     // Set connection policy to zero, that no scan in background is performed
     //      (Device's default connection policy)
-    retRes = sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(0, 0, 0, 0, 0), NULL, 0);
+    retRes = sl_WlanPolicySet(SL_POLICY_CONNECTION,
+                              SL_CONNECTION_POLICY(0, 0, 0, 0, 0), NULL, 0);
     ASSERT_ON_ERROR(__LINE__, retRes);
 
     // Restart Simplelink
@@ -298,7 +308,8 @@ long SimplelinkDriver::scanForAccesspoints(void)
 
     const unsigned char parameterLen = sizeof(SCAN_INTERVAL);
     //Scan AP in STA mode
-    retRes = sl_WlanPolicySet(SL_POLICY_SCAN, SL_SCAN_POLICY_EN(1), (unsigned char*)&SCAN_INTERVAL, parameterLen);
+    retRes = sl_WlanPolicySet(SL_POLICY_SCAN, SL_SCAN_POLICY_EN(1),
+                              (unsigned char*)&SCAN_INTERVAL, parameterLen);
     ASSERT_ON_ERROR(__LINE__, retRes);
 
     Trace(ZONE_VERBOSE, "Scanning for SSID's\r\n----------------------------------------------\r\n");
@@ -306,7 +317,8 @@ long SimplelinkDriver::scanForAccesspoints(void)
     osi_Sleep(WAIT_TIME);
 
     //Get Scan Result
-    retRes = sl_WlanGetNetworkList(0, MAX_NUM_NETWORKENTRIES, &ProvisioningData.networkEntries[0]);
+    retRes = sl_WlanGetNetworkList(0, MAX_NUM_NETWORKENTRIES,
+                                   &ProvisioningData.networkEntries[0]);
     ASSERT_ON_ERROR(__LINE__, retRes);
 
     int i;
@@ -322,38 +334,48 @@ long SimplelinkDriver::scanForAccesspoints(void)
     return 0;
 }
 
-void SimplelinkDriver::responseNetworkEntries(const unsigned long entryNumber, SlHttpServerResponse_t* response)
+void SimplelinkDriver::responseNetworkEntries(const unsigned long     entryNumber,
+                                              SlHttpServerResponse_t* response)
 {
     memcpy(response->ResponseData.token_value.data,
            ProvisioningData.networkEntries[entryNumber].ssid,
            ProvisioningData.networkEntries[entryNumber].ssid_len);
-    response->ResponseData.token_value.len = ProvisioningData.networkEntries[entryNumber].ssid_len;
+    response->ResponseData.token_value.len =
+        ProvisioningData.networkEntries[entryNumber].ssid_len;
 }
 
-long SimplelinkDriver::extractTokenNumber(SlHttpServerEvent_t const* const event)
+char SimplelinkDriver::extractParameterFromToken(
+    SlHttpServerEvent_t const* const event)
 {
-    std::string serverGetToken((const char*)event->EventData.httpTokenName.data,
-                               (size_t)event->EventData.httpTokenName.len);
-    if (serverGetToken.find(GET_TOKEN) == std::string::npos) return -1;
-    return (*(--serverGetToken.end())) - '0';
-}
-
-char SimplelinkDriver::extractTokenParameter(SlHttpServerEvent_t const* const event)
-{
-    std::string serverPostToken((const char*)event->EventData.httpPostData.token_name.data,
-                                event->EventData.httpPostData.token_name.len);
-    if (serverPostToken.find(POST_TOKEN) == std::string::npos) return 0;
-    return *(--serverPostToken.end());
+    if (event->Event == SL_NETAPP_HTTPGETTOKENVALUE) {
+        std::string serverPostToken(
+            (const char*)event->EventData.httpPostData.token_name.data,
+            event->EventData.httpPostData.token_name.len);
+        if (serverPostToken.find(POST_TOKEN) == std::string::npos)
+            return 0;
+        return *(--serverPostToken.end());
+    } else if (event->Event == SL_NETAPP_HTTPPOSTTOKENVALUE) {
+        std::string serverGetToken(
+            (const char*)event->EventData.httpTokenName.data,
+            (size_t)event->EventData.httpTokenName.len);
+        if (serverGetToken.find(GET_TOKEN) == std::string::npos)
+            return 0;
+        return *(--serverGetToken.end());
+    } else {
+        return 0;
+    }
 }
 
 void SimplelinkDriver::setSecurityKey(SlHttpServerEvent_t const* const event)
 {
-    memcpy(
-        ProvisioningData.wlanSecurityKey.data(), event->EventData.httpPostData.token_value.data,
-        event->EventData.httpPostData.token_value.len);
+    memcpy(ProvisioningData.wlanSecurityKey.data(),
+           event->EventData.httpPostData.token_value.data,
+           event->EventData.httpPostData.token_value.len);
 
-    ProvisioningData.secParameters.Key = ProvisioningData.wlanSecurityKey.data();
-    ProvisioningData.secParameters.KeyLen = event->EventData.httpPostData.token_value.len;
+    ProvisioningData.secParameters.Key =
+        ProvisioningData.wlanSecurityKey.data();
+    ProvisioningData.secParameters.KeyLen =
+        event->EventData.httpPostData.token_value.len;
 }
 
 void SimplelinkDriver::setSecurityType(SlHttpServerEvent_t const* const event)
@@ -387,10 +409,12 @@ void SimplelinkDriver::SimpleLinkWlanEventHandler(SlWlanEvent_t* pSlWlanEvent)
     case SL_WLAN_CONNECT_EVENT:
         Status.connected = true;
         Status.connectFailed = false;
-        memcpy(
-            Info.ConnectionSSID.data(), pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_name,
-            pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_len);
-        memcpy(Info.ConnectionBSSID.data(), pSlWlanEvent->EventData.STAandP2PModeWlanConnected.bssid, SL_BSSID_LENGTH);
+        memcpy(Info.ConnectionSSID.data(),
+               pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_name,
+               pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_len);
+        memcpy(Info.ConnectionBSSID.data(),
+               pSlWlanEvent->EventData.STAandP2PModeWlanConnected.bssid,
+               SL_BSSID_LENGTH);
         Trace(ZONE_INFO, "[WLAN EVENT] STA Connected to the AP: %s\n\r", Info.ConnectionSSID.data());
         break;
 
@@ -408,7 +432,8 @@ void SimplelinkDriver::SimpleLinkWlanEventHandler(SlWlanEvent_t* pSlWlanEvent)
             // when device is in AP mode and any client connects to device cc3xxx
             Status.connected = true;
             Status.connectFailed = false;
-            slPeerInfoAsyncResponse_t* pEventData = &pSlWlanEvent->EventData.APModeStaConnected;
+            slPeerInfoAsyncResponse_t* pEventData =
+                &pSlWlanEvent->EventData.APModeStaConnected;
             Trace(ZONE_INFO, "[WLAN EVENT] Client connected: %x:%x:%x:%x:%x:%x\r\n", pEventData->mac[0],
                   pEventData->mac[1],
                   pEventData->mac[2], pEventData->mac[3], pEventData->mac[4], pEventData->mac[5]);
@@ -421,7 +446,8 @@ void SimplelinkDriver::SimpleLinkWlanEventHandler(SlWlanEvent_t* pSlWlanEvent)
             Status.connected = false;
             Status.IPAcquired = false;
             Status.IPLeased = false;
-            slPeerInfoAsyncResponse_t* pEventData = &pSlWlanEvent->EventData.APModestaDisconnected;
+            slPeerInfoAsyncResponse_t* pEventData =
+                &pSlWlanEvent->EventData.APModestaDisconnected;
             Trace(ZONE_INFO,
                   "[WLAN EVENT] Client disconnected: %x:%x:%x:%x:%x:%x\r\n",
                   pEventData->mac[0],
@@ -449,7 +475,8 @@ void SimplelinkDriver::SimpleLinkWlanEventHandler(SlWlanEvent_t* pSlWlanEvent)
     }
 }
 
-void SimplelinkDriver::SimpleLinkNetAppEventHandler(SlNetAppEvent_t* pNetAppEvent)
+void SimplelinkDriver::SimpleLinkNetAppEventHandler(
+    SlNetAppEvent_t* pNetAppEvent)
 {
     switch (pNetAppEvent->Event) {
     case SL_NETAPP_IPV4_ACQUIRED:
@@ -483,7 +510,8 @@ void SimplelinkDriver::SimpleLinkNetAppEventHandler(SlNetAppEvent_t* pNetAppEven
     }
 }
 
-void SimplelinkDriver::SimpleLinkGeneralEventHandler(SlDeviceEvent_t* pDevEvent)
+void SimplelinkDriver::SimpleLinkGeneralEventHandler(
+    SlDeviceEvent_t* pDevEvent)
 {
     Trace(ZONE_INFO,
           "[GENERAL EVENT] - ID=[%d] Sender=[%d]\n\n",
@@ -508,11 +536,13 @@ void SimplelinkDriver::SimpleLinkSockEventHandler(SlSockEvent_t* pSock)
     }
 }
 
-void SimplelinkDriver::SimpleLinkHttpServerCallback(SlHttpServerEvent_t*    pSlHttpServerEvent,
-                                                    SlHttpServerResponse_t* pSlHttpServerResponse)
+void SimplelinkDriver::SimpleLinkHttpServerCallback(
+    SlHttpServerEvent_t*    pSlHttpServerEvent,
+    SlHttpServerResponse_t* pSlHttpServerResponse)
 {
+    const char tokenParameter = extractParameterFromToken(pSlHttpServerEvent);
     if (pSlHttpServerEvent->Event == SL_NETAPP_HTTPGETTOKENVALUE) {
-        const unsigned long getTokenNumber = extractTokenNumber(pSlHttpServerEvent);
+        const unsigned long getTokenNumber = tokenParameter - '0';
         if ((getTokenNumber < 0) || (getTokenNumber > MAX_NUM_NETWORKENTRIES))
             return;
         responseNetworkEntries(getTokenNumber, pSlHttpServerResponse);
@@ -520,18 +550,19 @@ void SimplelinkDriver::SimpleLinkHttpServerCallback(SlHttpServerEvent_t*    pSlH
         Trace(ZONE_VERBOSE, " token_name: %s ", pSlHttpServerEvent->EventData.httpPostData.token_name.data);
         Trace(ZONE_VERBOSE, " token_data: %s \r\n", pSlHttpServerEvent->EventData.httpPostData.token_value.data);
 
-        const char postTokenParameter = extractTokenParameter(pSlHttpServerEvent);
+        slHttpServerString_t const* const postString =
+            &pSlHttpServerEvent->EventData.httpPostData.token_value;
 
-        slHttpServerString_t const* const postString = &pSlHttpServerEvent->EventData.httpPostData.token_value;
-
-        switch (postTokenParameter) {
+        switch (tokenParameter) {
         case 'C':
-            if (std::string((const char*)postString->data, postString->len) == "Add")
+            if (std::string((const char*)postString->data, postString->len) ==
+                "Add")
                 osi_SyncObjSignalFromISR(&ProvisioningDataSemaphore);
             break;
 
         case 'D':
-            memcpy(ProvisioningData.wlanSSID.data(), postString->data, postString->len);
+            memcpy(ProvisioningData.wlanSSID.data(), postString->data,
+                   postString->len);
             break;
 
         case 'E':
@@ -552,7 +583,8 @@ void SimplelinkDriver::SimpleLinkHttpServerCallback(SlHttpServerEvent_t*    pSlH
     }
 }
 
-long SimplelinkDriver::waitForConnectWithTimeout(const unsigned int timeout_ms)
+long SimplelinkDriver::waitForConnectWithTimeout(
+    const unsigned int timeout_ms)
 {
     static const unsigned int INTERVAL = 5;
     unsigned int timeoutCounter = 0;
@@ -630,21 +662,21 @@ bool SimplelinkDriver::isConnected(void) const
 void SimplelinkDriver::waitUntilConnectionLost(void) const
 {
     Trace(ZONE_VERBOSE, "Wait until connection lost...\n\r");
-    osi_SyncObjWait(&ConnectionLostSemaphore, OSI_WAIT_FOREVER);
+    xSemaphoreTake(ConnectionLostSemaphore, portMAX_DELAY);
 }
 
 void SimplelinkDriver::waitForNewProvisioningData(void) const
 {
     do {
         Trace(ZONE_VERBOSE, "Wait for provisioning data...\n\r");
-        osi_SyncObjWait(&ProvisioningDataSemaphore, OSI_WAIT_FOREVER);
+        xSemaphoreTake(ProvisioningDataSemaphore, portMAX_DELAY);
     } while (this->addNewProfile() != 0);
 }
 
 long SimplelinkDriver::addNewProfile(void)
 {
-    if ((ProvisioningData.secParameters.Type == SL_SEC_TYPE_WPS_PBC) ||
-        (ProvisioningData.secParameters.Type == SL_SEC_TYPE_WPS_PIN))
+    if ((ProvisioningData.secParameters.Type == SL_SEC_TYPE_WPS_PBC)
+        || (ProvisioningData.secParameters.Type == SL_SEC_TYPE_WPS_PIN))
     {
         if (ProvisioningData.secParameters.Type == SL_SEC_TYPE_WPS_PBC) {
             ProvisioningData.secParameters.KeyLen = 0;
@@ -652,22 +684,25 @@ long SimplelinkDriver::addNewProfile(void)
         }
         Status.reset();
 
-        sl_WlanConnect(ProvisioningData.wlanSSID.data(), strlen(
-                           ProvisioningData.wlanSSID.data()), 0, &ProvisioningData.secParameters, 0);
+        sl_WlanConnect(ProvisioningData.wlanSSID.data(),
+                       strlen(ProvisioningData.wlanSSID.data()), 0,
+                       &ProvisioningData.secParameters, 0);
         return SimplelinkDriver::waitForConnectWithTimeout(CONNECT_TIMEOUT * 4);
     } else {
         long retRes = ERROR;
-        retRes = sl_WlanProfileAdd(ProvisioningData.wlanSSID.data(), strlen(
-                                       ProvisioningData.wlanSSID.data()), 0, &ProvisioningData.secParameters, 0, ProvisioningData.priority,
+        retRes = sl_WlanProfileAdd(ProvisioningData.wlanSSID.data(),
+                                   strlen(ProvisioningData.wlanSSID.data()), 0,
+                                   &ProvisioningData.secParameters, 0, ProvisioningData.priority,
                                    0);
         if (retRes < 0) {
             // Remove all profiles
             retRes = sl_WlanProfileDel(0xFF);
             ASSERT_ON_ERROR(__LINE__, retRes);
             // and try again
-            retRes = sl_WlanProfileAdd(ProvisioningData.wlanSSID.data(), strlen(
-                                           ProvisioningData.wlanSSID.data()), 0, &ProvisioningData.secParameters, 0, ProvisioningData.priority,
-                                       0);
+            retRes = sl_WlanProfileAdd(ProvisioningData.wlanSSID.data(),
+                                       strlen(ProvisioningData.wlanSSID.data()), 0,
+                                       &ProvisioningData.secParameters, 0,
+                                       ProvisioningData.priority, 0);
             ASSERT_ON_ERROR(__LINE__, retRes);
         }
         Trace(ZONE_VERBOSE, "Added Profile at index %d \r\n", retRes);

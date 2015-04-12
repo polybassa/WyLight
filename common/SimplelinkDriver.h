@@ -76,8 +76,7 @@ class SimplelinkDriver {
     static void reset(void);
 
     static void responseNetworkEntries(const unsigned long entryNumber, SlHttpServerResponse_t* response);
-    static long extractTokenNumber(SlHttpServerEvent_t const* const event);
-    static char extractTokenParameter(SlHttpServerEvent_t const* const event);
+    static char extractParameterFromToken(SlHttpServerEvent_t const* const event);
     static void setSecurityKey(SlHttpServerEvent_t const* const event);
     static void setSecurityType(SlHttpServerEvent_t const* const event);
 
