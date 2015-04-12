@@ -36,3 +36,5 @@ pre-commit.settings
 filelist.txt
 latex/intelhexclass_8h.tex
 recent.txt
+buildlog.txt
+android/app/src/main/libs/armeabi/libwifly.so
