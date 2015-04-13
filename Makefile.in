@@ -124,6 +124,7 @@ uncrustify: filelist
 
 test: clean-all ${OBJDIR} ${BINDIR} 
 	make ut 
+	@./exe/WyLight_ut.bin
 	make firmware_test 
 	make library_test
 	${CPPCHECKER} . --force --quiet
