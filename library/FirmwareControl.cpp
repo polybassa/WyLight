@@ -164,6 +164,28 @@ void FirmwareControl::FwTest(void) const
 #endif
 }
 
+uint16_t RN171FirmwareControl::ExtractFwVersion(const std::string& pFilename) const
+{
+    std::ifstream hexFile;
+    hexFile.open(const_cast<char*>(pFilename.c_str()), ifstream::in);
+
+    if (!hexFile.good())
+        throw FatalError("opening '" + pFilename + "' failed");
+
+    intelhex hexConverter;
+    hexFile >> hexConverter;
+    union versionUnion {
+        uint16_t version;
+        uint8_t bytes[2];
+    }
+    versUnion;
+
+    hexConverter.getData(&versUnion.bytes[1], VERSION_STRING_ORIGIN);
+    hexConverter.getData(&versUnion.bytes[0], VERSION_STRING_ORIGIN + 1);
+
+    return ntohs(versUnion.version) > 300 ? 0 : ntohs(versUnion.version);
+}
+
 std::string RN171FirmwareControl::FwGetCycletime(void) const
 {
     FwCmdGetCycletime cmd;
@@ -190,6 +212,11 @@ uint8_t RN171FirmwareControl::FwGetLedTyp(void) const
     FwCmdGetLedTyp cmd;
     *this << cmd;
     return cmd.mResponse.getLedTyp();
+}
+
+uint16_t CC3200FirmwareControl::ExtractFwVersion(const std::string& pFilename) const
+{
+    return 0;
 }
 
 std::string CC3200FirmwareControl::FwGetCycletime(void) const

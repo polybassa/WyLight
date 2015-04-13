@@ -82,6 +82,12 @@ public:
      */
     virtual uint8_t FwGetLedTyp(void) const = 0;
 
+    /**
+     * Methode to extract the firmware version from a hex file
+     * @return the version string from a given hex file
+     */
+    virtual uint16_t ExtractFwVersion(const std::string& pFilename) const = 0;
+
     //TODO move this test functions to the integration test
     void FwTest(void) const;
     void FwStressTest(void) const;
@@ -123,6 +129,8 @@ public:
     std::string FwGetTracebuffer(void) const override;
 
     uint8_t FwGetLedTyp(void) const override;
+
+    uint16_t ExtractFwVersion(const std::string& pFilename) const override;
 };
 
 class RN171FirmwareControl : public FirmwareControl {
@@ -136,6 +144,8 @@ public:
     std::string FwGetTracebuffer(void) const override;
 
     uint8_t FwGetLedTyp(void) const override;
+
+    uint16_t ExtractFwVersion(const std::string& pFilename) const override;
 };
 }
 #endif /* #ifndef _FIRMWARECONTROL_H_ */

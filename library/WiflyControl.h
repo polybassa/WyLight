@@ -58,13 +58,6 @@ public:
      */
     virtual size_t GetTargetMode(void) const;
 
-    /* ------------------------- VERSION EXTRACT METHODE ------------------------- */
-    /**
-     * Methode to extract the firmware version from a hex file
-     * @return the version string from a given hex file
-     */
-    virtual uint16_t ExtractFwVersion(const std::string& pFilename) const;
-
     const std::unique_ptr<const BootloaderControl> mBootloader;
     const std::unique_ptr<const ConfigControl> mConfig;
     const std::unique_ptr<const FirmwareControl> mFirmware;
