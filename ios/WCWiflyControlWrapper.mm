@@ -70,14 +70,25 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 - (int)connectWithStartup:(BOOL)doStartup
 {
 	gCtrlMutex = std::make_shared<std::mutex>();
-
 	try {
 						NSLog(@"Start WCWiflyControlWrapper\n");
 		std::lock_guard<std::mutex> ctrlLock(*gCtrlMutex);
 		
-		mControl = std::shared_ptr<WyLight::Control>(new WyLight::RN171Control(self.endpoint.ipAdress,self.endpoint.port));
+		const WyLight::Endpoint endpoint(self.endpoint.ipAdress,
+										 self.endpoint.port,
+										 self.endpoint.score,
+										 [self.endpoint.name cStringUsingEncoding:NSASCIIStringEncoding],
+										 (WyLight::Endpoint::TYPE)self.endpoint.type);
+		
+		if (endpoint.GetType() == WyLight::Endpoint::RN171){
+			mControl = std::shared_ptr<WyLight::Control>(new WyLight::RN171Control(endpoint));
+		} else if (endpoint.GetType() == WyLight::Endpoint::CC3200){
+			mControl = std::shared_ptr<WyLight::Control>(new WyLight::CC3200Control(endpoint));
+		} else {
+			return -1;
+		}
 	} catch(std::exception &e) {
-						NSLog(@"%s", e.what());
+		NSLog(@"%s", e.what());
 		return -1;
 	}
 
@@ -109,7 +120,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 		}
 	}
 	try {
-		if (mControl->mFirmware->FwGetLedTyp() == LED_TYP_WS2801) {
+		if ((mControl->mFirmware) && (mControl->mFirmware->FwGetLedTyp() == LED_TYP_WS2801)) {
 			self.clientWithWS2801Leds = YES;
 		} else {
 			self.clientWithWS2801Leds = NO;
@@ -225,6 +236,9 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)configurateWlanModuleAsClientForNetwork:(NSString *)ssid password:(NSString *)password name:(NSString *)name
 {
+	if (!mControl->mConfig) {
+		return;
+	}
 	NSData *nameData = [name dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
 	NSString *nameStr = [[NSString alloc] initWithData:nameData encoding:NSASCIIStringEncoding];
 
@@ -239,6 +253,9 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)configurateWlanModuleAsSoftAP:(NSString *)ssid
 {
+	if (!mControl->mConfig) {
+		return;
+	}
 	const std::string ssidCString([ssid cStringUsingEncoding:NSASCIIStringEncoding]);
 
 	mCmdQueue->push_back(std::make_tuple(false,
@@ -248,6 +265,9 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)rebootWlanModul
 {
+	if (!mControl->mConfig) {
+		return;
+	}
 	mCmdQueue->push_back(std::make_tuple(false,
 										 std::bind(&WyLight::ConfigControl::RebootWlanModule, std::ref(mControl->mConfig)),
 					     1));
@@ -320,6 +340,9 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)setColorDirect:(const uint8_t *)pointerBuffer bufferLength:(size_t)length
 {
+	if (!mControl->mFirmware) {
+		return;
+	}
 	std::vector<uint8_t> buffer(pointerBuffer, pointerBuffer + length);
 	mCmdQueue->push_back(std::make_tuple(false,
 										 [=](void) -> unsigned int {*mControl->mFirmware << WyLight::FwCmdSetColorDirect(buffer.data(), buffer.size());return 0;},
@@ -328,6 +351,9 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)setWaitTimeInTenMilliSecondsIntervals:(uint16_t)time
 {
+	if (!mControl->mFirmware) {
+		return;
+	}
 	mCmdQueue->push_back(std::make_tuple(false,
 					     [=](void) -> unsigned int {*mControl->mFirmware << WyLight::FwCmdWait(time);return 0;},
 					     0));
@@ -350,6 +376,9 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)setFade:(uint32_t)colorInARGB time:(uint16_t)timeValue address:(uint32_t)address parallelFade:(BOOL)parallel
 {
+	if (!mControl->mFirmware) {
+		return;
+	}
 	mCmdQueue->push_back(std::make_tuple(false,
 						 [=](void) -> unsigned int {*mControl->mFirmware << WyLight::FwCmdSetFade(colorInARGB, timeValue, address, parallel);return 0;},
 					     0));
@@ -377,6 +406,9 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)setGradientWithColor:(uint32_t)colorOneInARGB colorTwo:(uint32_t)colorTwoInARGB time:(uint16_t)timeValue parallelFade:(BOOL)parallel gradientLength:(uint8_t)length startPosition:(uint8_t)offset
 {
+	if (!mControl->mFirmware) {
+		return;
+	}
 	mCmdQueue->push_back(std::make_tuple(false,
 						[=](void) -> unsigned int {*mControl->mFirmware << WyLight::FwCmdSetGradient(colorOneInARGB, colorTwoInARGB, timeValue, parallel, length, offset);return 0;},
 					     0));
@@ -384,6 +416,9 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)loopOn
 {
+	if (!mControl->mFirmware) {
+		return;
+	}
 	mCmdQueue->push_back(std::make_tuple(false,
 [=](void) -> unsigned int {*mControl->mFirmware << WyLight::FwCmdLoopOn();return 0;},
 										 0));
@@ -391,6 +426,9 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)loopOffAfterNumberOfRepeats:(uint8_t)repeats
 {
+	if (!mControl->mFirmware) {
+		return;
+	}
 	mCmdQueue->push_back(std::make_tuple(false,
 					    [=](void) -> unsigned int {*mControl->mFirmware << WyLight::FwCmdLoopOff(repeats);return 0;},
 					     0));                            // 0: Endlosschleife / 255: Maximale Anzahl
@@ -398,6 +436,9 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)clearScript
 {
+	if (!mControl->mFirmware) {
+		return;
+	}
 	mCmdQueue->push_back(std::make_tuple(false,
 					     [=](void) -> unsigned int {*mControl->mFirmware << WyLight::FwCmdClearScript();return 0;},
 					     0));
@@ -405,7 +446,7 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (NSDate *)readRtcTime
 {
-	if(mControl) {
+	if(mControl && mControl->mFirmware) {
 		try {
 			struct tm timeInfo;
 			std::lock_guard<std::mutex> lock(*gCtrlMutex);
@@ -424,6 +465,9 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 
 - (void)writeRtcTime
 {
+	if (!mControl->mFirmware) {
+		return;
+	}
 	NSTimeInterval timeInterval = [[NSDate date] timeIntervalSince1970];
 	struct tm *timeInfo;
 	time_t rawTime = (time_t)timeInterval;

@@ -72,7 +72,7 @@
 	
 	if ([currentCommand isKindOfClass:[Fade class]]) {
 		Fade *currentFadeCommand = (Fade *)currentCommand;
-		self.addressMaskForFadeEditView = currentFadeCommand.address.unsignedLongValue;
+		self.addressMaskForFadeEditView = (uint32_t)currentFadeCommand.address.unsignedLongValue;
 		[self.fadeEditView setStartColors:currentFadeCommand.colors];
 		[self.fadeEditView setEndColors:currentFadeCommand.colors];
 	} else {
@@ -87,7 +87,7 @@
 		
 		if ([currentCommand isKindOfClass:[Fade class]]) {
 			Fade *currentFadeCommand = (Fade *)currentCommand;
-			self.addressMaskForFadeEditView = currentFadeCommand.address.unsignedLongValue;
+			self.addressMaskForFadeEditView = (uint32_t)currentFadeCommand.address.unsignedLongValue;
 		}
 		CGFloat heigthOfOneGradientStrip = self.fadeEditView.bounds.size.height / 8;
 		CGPoint touchLocationInGradientView = [self.fadeEditView.latestTouchBegan locationInView:self.fadeEditView];

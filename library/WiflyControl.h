@@ -26,6 +26,7 @@
 #include "ConfigControl.h"
 #include "BootloaderControl.h"
 #include "FirmwareControl.h"
+#include "Endpoint.h"
 
 namespace WyLight
 {
@@ -61,14 +62,16 @@ public:
     const std::unique_ptr<const BootloaderControl> mBootloader;
     const std::unique_ptr<const ConfigControl> mConfig;
     const std::unique_ptr<const FirmwareControl> mFirmware;
+    const Endpoint& getEndpoint(void) const;
 
 /* ------------------------- PRIVATE DECLARATIONS ------------------------- */
 protected:
-    Control(uint32_t                                   addr,
-            uint16_t                                   port,
+    Control(const Endpoint&                            endpoint,
             std::unique_ptr<const BootloaderControl>&& bootloader,
             std::unique_ptr<const ConfigControl>&&     config,
             std::unique_ptr<const FirmwareControl>&&   firmware);
+
+    const Endpoint mEndpoint;
 
     /*
      * Sockets used for communication with wifly device.
@@ -93,11 +96,13 @@ protected:
 };
 
 struct RN171Control : public Control {
-    RN171Control(uint32_t addr, uint16_t port);
+    RN171Control(const Endpoint& endpoint);
+    RN171Control(Endpoint&& endpoint);
 };
 
 struct CC3200Control : public Control {
-    CC3200Control(uint32_t addr, uint16_t port);
+    CC3200Control(const Endpoint& endpoint);
+    CC3200Control(Endpoint&& endpoint);
 };
 }
 #endif /* #ifndef _WIFLYCONTROL_H_ */

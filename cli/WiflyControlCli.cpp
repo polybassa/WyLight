@@ -42,9 +42,9 @@ bool cmdOptionExists(char** begin, char** end, const std::string& option);
 WiflyControlCli::WiflyControlCli(const WyLight::Endpoint& endpoint) : mRunning(true)
 {
     if (endpoint.GetType() == WyLight::Endpoint::RN171)
-        mControl = std::unique_ptr<WyLight::Control>(new WyLight::RN171Control(endpoint.GetIp(), endpoint.GetPort()));
+        mControl = std::unique_ptr<WyLight::Control>(new WyLight::RN171Control(endpoint));
     else if (endpoint.GetType() == WyLight::Endpoint::CC3200)
-        mControl = std::unique_ptr<WyLight::Control>(new WyLight::CC3200Control(endpoint.GetIp(), endpoint.GetPort()));
+        mControl = std::unique_ptr<WyLight::Control>(new WyLight::CC3200Control(endpoint));
     else
         throw FatalError("Invalid Endpoint\r\n");
 

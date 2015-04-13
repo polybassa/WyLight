@@ -227,7 +227,7 @@ public:
         cin >> path;
         cout << "Extracing Version ... ";
         try {
-            uint16_t version = control.ExtractFwVersion(path);
+            uint16_t version = control.mFirmware->ExtractFwVersion(path);
             cout << "done.\n\n" << "Version = " << std::to_string(version) << "\n";
         } catch (WyLight::FatalError& e) {
             cout << "failed! because of: " << e << '\n';

@@ -82,7 +82,12 @@ jlong Java_de_WyLight_WyLight_library_Endpoint_connect(JNIEnv* env,
     try {
         Endpoint& remote = ((BroadcastReceiver*)pBroadcastReceiver)->GetEndpointByFingerprint(fingerprint);
         ++remote;
-        return reinterpret_cast<jlong>(new RN171Control(remote.GetIp(), remote.GetPort()));
+        if (remote.GetType() == Endpoint::RN171)
+            return reinterpret_cast<jlong>(new RN171Control(remote));
+        else if (remote.GetType() == Endpoint::CC3200)
+            return reinterpret_cast<jlong>(new CC3200Control(remote));
+        else
+            throw FatalError("Invalid endpoint type");
     } catch (FatalError& e) {
         ThrowJniException(env, e);
     }

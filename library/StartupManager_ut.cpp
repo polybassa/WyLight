@@ -76,32 +76,52 @@ bool ConfigControl::SetParameters(std::list<std::string> commands) const
     return true;
 }
 
-Control::Control(uint32_t                                   addr,
-                 uint16_t                                   port,
+Control::Control(const Endpoint&                            endpoint,
                  std::unique_ptr<const BootloaderControl>&& bootloader,
                  std::unique_ptr<const ConfigControl>&&     config,
                  std::unique_ptr<const FirmwareControl>&&   firmware) :
     mBootloader(std::move(bootloader)),
     mConfig(std::move(config)),
     mFirmware(std::move(firmware)),
-    mTcpSock(addr, port),
-    mUdpSock(addr, port, false, 0),
+    mEndpoint(endpoint),
+    mTcpSock(mEndpoint.GetIp()
+             , mEndpoint.GetPort()),
+    mUdpSock(mEndpoint.GetIp()
+             , mEndpoint.GetPort(), false, 0),
     mProxy(mTcpSock),
     mTelnet(mTcpSock)
 {}
 
-RN171Control::RN171Control(uint32_t addr, uint16_t port) : Control(addr,
-                                                                   port,
-                                                                   std::unique_ptr<const BootloaderControl>(new
-                                                                                                            BootloaderControl(
-                                                                                                                mProxy)),
-                                                                   std::unique_ptr<const ConfigControl>(new
-                                                                                                        ConfigControl(
-                                                                                                            mTelnet)),
-                                                                   std::unique_ptr<const FirmwareControl>(new
-                                                                                                          RN171FirmwareControl(
-                                                                                                              mUdpSock,
-                                                                                                              mProxy))){}
+const Endpoint& Control::getEndpoint(void) const
+{
+    return mEndpoint;
+}
+
+RN171Control::RN171Control(const Endpoint& endpoint)
+    : Control(endpoint,
+              std::unique_ptr<const BootloaderControl>(new
+                                                       BootloaderControl(
+                                                           mProxy)),
+              std::unique_ptr<const ConfigControl>(new
+                                                   ConfigControl(
+                                                       mTelnet)),
+              std::unique_ptr<const FirmwareControl>(new
+                                                     RN171FirmwareControl(
+                                                         mUdpSock,
+                                                         mProxy))){}
+
+RN171Control::RN171Control(Endpoint&& endpoint)
+    : Control(std::move(endpoint),
+              std::unique_ptr<const BootloaderControl>(new
+                                                       BootloaderControl(
+                                                           mProxy)),
+              std::unique_ptr<const ConfigControl>(new
+                                                   ConfigControl(
+                                                       mTelnet)),
+              std::unique_ptr<const FirmwareControl>(new
+                                                     RN171FirmwareControl(
+                                                         mUdpSock,
+                                                         mProxy))){}
 
 uint16_t FirmwareControl::FwGetVersion() const
 {
@@ -208,7 +228,7 @@ uint16_t BootloaderControl::BlReadFwVersion(void) const
     }
 }
 
-uint16_t Control::ExtractFwVersion(const std::string& pFilename) const
+uint16_t RN171FirmwareControl::ExtractFwVersion(const std::string& pFilename) const
 {
     switch (g_Testcase) {
     case TC_BL_VERSION_CHECK_FAIL_UPDATE_SUCCESS:
@@ -236,7 +256,7 @@ size_t ut_StartupManager_VersionCheckSuccessUpdateSuccess(void)
 {
     g_Testcase = TC_BL_VERSION_CHECK_SUCCESS;
     StartupManager testee;
-    RN171Control ctrl(0, 0);
+    RN171Control ctrl(std::move(Endpoint()));
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -249,7 +269,7 @@ size_t ut_StartupManager_AppOutdated(void)
 {
     g_Testcase = TC_APP_OUTDATED;
     StartupManager testee;
-    RN171Control ctrl(0, 0);
+    RN171Control ctrl(std::move(Endpoint()));
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -263,7 +283,7 @@ size_t ut_StartupManager_VersionFailUpdateSuccess(void)
 {
     g_Testcase = TC_BL_VERSION_CHECK_FAIL_UPDATE_SUCCESS;
     StartupManager testee;
-    RN171Control ctrl(0, 0);
+    RN171Control ctrl(std::move(Endpoint()));
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -276,7 +296,7 @@ size_t ut_StartupManager_UpdateFail(void)
 {
     g_Testcase = TC_UPDATE_FAIL;
     StartupManager testee;
-    RN171Control ctrl(0, 0);
+    RN171Control ctrl(std::move(Endpoint()));
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -289,7 +309,7 @@ size_t ut_StartupManager_RunAppFail(void)
 {
     g_Testcase = TC_RUN_APP_FAIL;
     StartupManager testee;
-    RN171Control ctrl(0, 0);
+    RN171Control ctrl(std::move(Endpoint()));
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -302,7 +322,7 @@ size_t ut_StartupManager_BlVersionCheckFail(void)
 {
     g_Testcase = TC_BL_VERSION_CHECK_FAIL;
     StartupManager testee;
-    RN171Control ctrl(0, 0);
+    RN171Control ctrl(std::move(Endpoint()));
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -315,7 +335,7 @@ size_t ut_StartupManager_FwVersionCheckFail(void)
 {
     g_Testcase = TC_FW_VERSION_CHECK_FAIL;
     StartupManager testee;
-    RN171Control ctrl(0, 0);
+    RN171Control ctrl(std::move(Endpoint()));
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -328,7 +348,7 @@ size_t ut_StartupManager_StartBlFail(void)
 {
     g_Testcase = TC_START_BL_FAIL;
     StartupManager testee;
-    RN171Control ctrl(0, 0);
+    RN171Control ctrl(std::move(Endpoint()));
     TestCaseBegin();
     testee.startup(ctrl, "");
 
@@ -341,7 +361,7 @@ size_t ut_StartupManager_ModeCheckFail(void)
 {
     g_Testcase = TC_MODE_CHECK_FAIL;
     StartupManager testee;
-    RN171Control ctrl(0, 0);
+    RN171Control ctrl(std::move(Endpoint()));
     TestCaseBegin();
 
     testee.startup(ctrl, "");
