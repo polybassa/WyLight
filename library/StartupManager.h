@@ -45,7 +45,9 @@ public:
 
     StartupManager::State getCurrentState(void) const {return mState; }
     static const std::string& getStateDescription(StartupManager::State state);
-    void startup(WyLight::Control& control, const std::string& hexFilePath);
+    void startup(const WyLight::RN171Control& control, const std::string& hexFilePath);
+    void startup(const WyLight::CC3200Control& control, const std::string& firmwareFilePath);
+    void startup(const WyLight::Control& control, const std::string& firmwareFilePath);
     const bool isAppOutdated(void);
 
 private:
@@ -56,8 +58,8 @@ private:
     uint16_t mTargetVersion = 0;
 
     void setCurrentState(StartupManager::State newState);
-    void bootloaderVersionCheckUpdate(WyLight::Control& control, const std::string& hexFilePath);
-    void startBootloader(WyLight::Control& control, const std::string& hexFilePath);
+    void bootloaderVersionCheckUpdate(const WyLight::RN171Control& control, const std::string& firmwareFilePath);
+    void startBootloader(const WyLight::RN171Control& control, const std::string& firmwareFilePath);
 };
 }
 

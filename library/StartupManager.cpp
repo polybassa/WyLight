@@ -56,11 +56,20 @@ void StartupManager::setCurrentState(StartupManager::State newState)
         mState = newState;
     }
 }
+void StartupManager::startup(const WyLight::Control& control, const std::string& firmwareFilePath)
+{
+    if (control.getEndpoint().GetType() == Endpoint::RN171)
+        this->startup(dynamic_cast<const WyLight::RN171Control&>(control), firmwareFilePath);
+    else if (control.getEndpoint().GetType() == Endpoint::CC3200)
+        this->startup(dynamic_cast<const WyLight::CC3200Control&>(control), firmwareFilePath);
+}
 
-void StartupManager::startup(WyLight::Control& control, const std::string& hexFilePath)
+void StartupManager::startup(const WyLight::CC3200Control& control, const std::string& firmwareFilePath){}
+
+void StartupManager::startup(const WyLight::RN171Control& control, const std::string& firmwareFilePath)
 {
     try {
-        mHexFileVersion = control.ExtractFwVersion(hexFilePath);
+        mHexFileVersion = control.mFirmware->ExtractFwVersion(firmwareFilePath);
     } catch (std::exception& e) {
         throw InvalidParameter("Can not read version string from hexFile");
     }
@@ -71,7 +80,7 @@ void StartupManager::startup(WyLight::Control& control, const std::string& hexFi
         size_t currentMode = control.GetTargetMode();
         if (currentMode == BL_IDENT) {
             setCurrentState(BL_VERSION_CHECK);
-            bootloaderVersionCheckUpdate(control, hexFilePath);
+            bootloaderVersionCheckUpdate(control, firmwareFilePath);
             return;
         } else if (currentMode == FW_IDENT) {
             setCurrentState(FW_VERSION_CHECK);
@@ -87,14 +96,14 @@ void StartupManager::startup(WyLight::Control& control, const std::string& hexFi
         Trace(ZONE_ERROR, "StartupManager startup failure in state %d: %s\n", mState, e.what());
     }
     setCurrentState(START_BOOTLOADER);
-    startBootloader(control, hexFilePath);
+    startBootloader(control, firmwareFilePath);
 }
 
-void StartupManager::startBootloader(WyLight::Control& control, const std::string& hexFilePath)
+void StartupManager::startBootloader(const WyLight::RN171Control& control, const std::string& firmwareFilePath)
 {
     try {
         *control.mFirmware << FwCmdStartBl();
-        bootloaderVersionCheckUpdate(control, hexFilePath);
+        bootloaderVersionCheckUpdate(control, firmwareFilePath);
     } catch (std::exception& e) {
         // Exception in case of lost connection or wrong mode expected
         Trace(ZONE_ERROR, "StartupManager startup failure in state %d: %s\n", mState, e.what());
@@ -102,7 +111,8 @@ void StartupManager::startBootloader(WyLight::Control& control, const std::strin
     }
 }
 
-void StartupManager::bootloaderVersionCheckUpdate(WyLight::Control& control, const std::string& hexFilePath)
+void StartupManager::bootloaderVersionCheckUpdate(const WyLight::RN171Control& control,
+                                                  const std::string&           firmwareFilePath)
 {
     try {
         mTargetVersion = control.mBootloader->BlReadFwVersion();
@@ -110,7 +120,7 @@ void StartupManager::bootloaderVersionCheckUpdate(WyLight::Control& control, con
             //---- UPDATE STUFF ---------
             setCurrentState(UPDATING);
             control.mBootloader->BlEraseEeprom();
-            control.mBootloader->BlProgramFlash(hexFilePath);
+            control.mBootloader->BlProgramFlash(firmwareFilePath);
         }
         setCurrentState(RUN_APP);
         control.mBootloader->BlRunApp();
