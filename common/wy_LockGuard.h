@@ -25,7 +25,7 @@
 class LockGuard {
 public:
 
-    explicit LockGuard(xSemaphoreHandle* lock, portTickType ticksToWait = portMAX_DELAY) : mLock(lock)
+    explicit LockGuard(const xSemaphoreHandle& lock, portTickType ticksToWait = portMAX_DELAY) : mLock(lock)
     {
         if (this->mLock)
             this->mSemaphoreObtained = (bool)xSemaphoreTake(this->mLock, ticksToWait);
@@ -45,7 +45,7 @@ public:
     }
 
 private:
-    xSemaphoreHandle* mLock;
+    const xSemaphoreHandle& mLock;
     bool mSemaphoreObtained = false;
 };
 

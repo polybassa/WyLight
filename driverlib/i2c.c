@@ -54,6 +54,9 @@
 #include "i2c.h"
 #include "interrupt.h"
 
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR |
+                                                        ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+
 //*****************************************************************************
 //
 // A mapping of I2C base address to interrupt number.

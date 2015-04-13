@@ -22,7 +22,8 @@
 #include "hw_memmap.h"
 #include "prcm.h"
 #include "trace.h"
-#include <mutex>
+#include "FreeRTOS.h"
+#include "task.h"
 
 static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR |
                                                         ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
@@ -48,6 +49,7 @@ I2c::I2c(const enum mode& m)
     }
 
     this->accessMutex = xSemaphoreCreateMutex();
+    xSemaphoreGive(this->accessMutex);
 }
 
 I2c& I2c::operator=(I2c&&)
@@ -64,7 +66,7 @@ I2c::~I2c(void)
 bool I2c::write(const uint8_t addr, uint8_t const* const data, const size_t len,
                 const bool stop)
 {
-    const LockGuard lock(&this->accessMutex);
+    const LockGuard lock(this->accessMutex);
     size_t index = 0;
 
     if ((data == nullptr) || (len == 0))
@@ -90,7 +92,7 @@ bool I2c::write(const uint8_t addr, uint8_t const* const data, const size_t len,
 
 bool I2c::read(const uint8_t addr, uint8_t* const data, const size_t len)
 {
-    const LockGuard lock(&this->accessMutex);
+    const LockGuard lock(this->accessMutex);
 
     if ((data == nullptr) || (len == 0))
         return true;
@@ -131,7 +133,7 @@ bool I2c::transact(const uint32_t cmd)
     while ((I2CMasterIntStatusEx(I2C_BASE, false) &
             (I2C_INT_MASTER | I2C_MRIS_CLKTOUT)) == 0)
     {
-        osi_Sleep(1);
+        vTaskDelay(1 / portTICK_RATE_MS);
     }
 
     if (I2CMasterErr(I2C_BASE) != I2C_MASTER_ERR_NONE)
