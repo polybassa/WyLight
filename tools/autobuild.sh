@@ -6,8 +6,8 @@ BUILD_BRANCH=${BUILD_TYPE}-$(date +%Y%m%d%H%M%S)
 PULL_BRANCH=Master
 BINDIR=exe
 MAIL_HEADER="to: admin@wylight.de\nfrom: build01.wylight@gmail.com\nsubject: ${BUILD_BRANCH}"
-LOGFILE=buildlog.txt
-LOGFILERESULTS=buildresults.txt
+LOGFILE=~/buildlog.txt
+LOGFILERESULTS=~/buildresults.txt
 TARGETS=(test cc_fw firmware_pic cli cc_bl sim library)
 
 
