@@ -21,9 +21,10 @@ function make_targets() {
 
 		if [ $? -ne 0 ]; then
 			echo -e "\nBUILD of $target FAILED!!! \n---------------------------------------" >>$LOGFILE
+			echo -e "$target	         BUILD FAILED!!!" >> $LOGFILERESULTS
 			retvalue=0
 		else
-			echo -e "$target	BUILD SUCCESSFUL!!! \n" >> $LOGFILERESULTS
+			echo -e "$target	         BUILD SUCCESSFUL!!!" >> $LOGFILERESULTS
 		fi
 	done
 	return $(retvalue)
