@@ -42,8 +42,10 @@ if [ $# -eq 0 ] || ( [ "$1" != "nightly" ] && [ "$1" != "build" ] ); then
     exit 1
 fi
 
+rm $LOGFILE
+
 # prepare a fresh branch for build
-cd WyLight > $LOGFILE 2>&1 && \
+cd WyLight >> $LOGFILE 2>&1 && \
 git checkout ${PULL_BRANCH} >> $LOGFILE 2>&1 && \
 git pull >> $LOGFILE 2>&1 && \
 git checkout -b ${BUILD_BRANCH} >> $LOGFILE 2>&1 && \
