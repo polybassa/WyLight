@@ -18,19 +18,14 @@
 
 #include <stdbool.h>
 
-#include "hw_memmap.h"
 #include "interrupt.h"
 #include "prcm.h"
-#include "rom_map.h"
+#include "hw_memmap.h"
 #include "shamd5.h"
 
 #include "firmware_loader.h"
 #include "bootloader.h"
 #include "wy_fs.h"
-
-#define CHECKSUM_SIZE           32      /* In Bytes, We use SHA-256 */
-#define SUCCESS                 0
-#define FILENAME_SIZE           128
 
 static int g_ContextReadyFlag = 0;
 static unsigned char* FIRMWARE_FILENAME = (unsigned char*)FW_FILENAME;
@@ -40,17 +35,17 @@ void SHAMD5IntHandler(void)
 {
     uint32_t ui32IntStatus;
 
-    ui32IntStatus = MAP_SHAMD5IntStatus(SHAMD5_BASE, true);
+    ui32IntStatus = SHAMD5IntStatus(SHAMD5_BASE, true);
     if (ui32IntStatus & SHAMD5_INT_CONTEXT_READY) {
-        MAP_SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_CONTEXT_READY);
+        SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_CONTEXT_READY);
         g_ContextReadyFlag = 1;
     }
     if (ui32IntStatus & SHAMD5_INT_PARTHASH_READY)
-        MAP_SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_PARTHASH_READY);
+        SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_PARTHASH_READY);
     if (ui32IntStatus & SHAMD5_INT_INPUT_READY)
-        MAP_SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_INPUT_READY);
+        SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_INPUT_READY);
     if (ui32IntStatus & SHAMD5_INT_OUTPUT_READY)
-        MAP_SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_OUTPUT_READY);
+        SHAMD5IntDisable(SHAMD5_BASE, SHAMD5_INT_OUTPUT_READY);
 }
 
 //****************************************************************************
@@ -74,7 +69,7 @@ static void ComputeSHAFromSRAM(uint8_t* pSource, const size_t length, uint8_t* r
 
     //Enable MD5SHA module
     PRCMPeripheralClkEnable(PRCM_DTHE, PRCM_RUN_MODE_CLK);
-    MAP_SHAMD5IntRegister(SHAMD5_BASE, SHAMD5IntHandler);
+    SHAMD5IntRegister(SHAMD5_BASE, SHAMD5IntHandler);
 
     //reset modul
     PRCMPeripheralReset(PRCM_DTHE);
@@ -90,9 +85,9 @@ static void ComputeSHAFromSRAM(uint8_t* pSource, const size_t length, uint8_t* r
     }
 
     //Configure SHA/MD5 module
-    MAP_SHAMD5ConfigSet(SHAMD5_BASE, SHAMD5_ALGO_SHA256);
+    SHAMD5ConfigSet(SHAMD5_BASE, SHAMD5_ALGO_SHA256);
 
-    MAP_SHAMD5DataProcess(SHAMD5_BASE, pSource, length, resultHash);
+    SHAMD5DataProcess(SHAMD5_BASE, pSource, length, resultHash);
 
     // disable Interrupts
     SHAMD5IntDisable(SHAMD5_BASE,
@@ -270,7 +265,7 @@ long SaveSRAMContent(uint8_t* pSource, const size_t length)
 void StartFirmware(void)
 {
     // patch Interrupt Vector Table
-    MAP_IntVTableBaseSet((size_t)FIRMWARE_ORIGIN);
+    IntVTableBaseSet((size_t)FIRMWARE_ORIGIN);
 
     // call Firmware
     void (* firmware_origin_entry)(void);
