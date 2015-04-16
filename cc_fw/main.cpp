@@ -16,10 +16,12 @@
    You should have received a copy of the GNU General Public License
    along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
+#include "cpp_overrides.h"
 #include "CC3200_Platform.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
+#include "FreeRTOS_Hooks.h"
 
 //Application Includes
 #include "wifi.h"
@@ -29,68 +31,12 @@
 #include "SimplelinkCustomer.h"
 #include "SimplelinkServers.h"
 
-#define APPLICATION_NAME        "WyLight Firmware"
-#define APPLICATION_VERSION     "1.0.0"
-
-//Override C++ new/delete operators to reduce memory footprint
-void* operator new(size_t size)
-{
-    return pvPortMalloc(size);
-}
-
-void* operator new[](size_t size)
-{
-    return pvPortMalloc(size);
-}
-
-void operator delete(void* p)
-{
-    vPortFree(p);
-}
-
-void operator delete[](void* p)
-{
-    vPortFree(p);
-}
-
-extern "C" void abort(void)
-{
-    while (1) {}
-}
-
 // GLOBAL VARIABLES
 const CC3200_Platform g_platform;
 std::vector<SimplelinkCustomer*> SimplelinkCustomer::Customers;
 const BroadcastTransmitter g_broadcast;
 const UdpServer g_udpserver;
 const TcpServer g_tcpserver;
-
-//*****************************************************************************
-// FreeRTOS User Hook Functions enabled in FreeRTOSConfig.h
-//*****************************************************************************
-extern "C" void vAssertCalled(const char* pcFile, unsigned long ulLine)
-{
-    //Handle Assert here
-    while (1) {}
-}
-
-extern "C" void vApplicationIdleHook(void)
-{
-    //Handle Idle Hook for Profiling, Power Management etc
-}
-
-extern "C" void vApplicationMallocFailedHook()
-{
-    //Handle Memory Allocation Errors
-    while (1) {}
-}
-
-extern "C" void vApplicationStackOverflowHook(xTaskHandle*     pxTask,
-                                              signed portCHAR* pcTaskName)
-{
-    //Handle FreeRTOS Stack Overflow
-    while (1) {}
-}
 
 int main(void)
 {
