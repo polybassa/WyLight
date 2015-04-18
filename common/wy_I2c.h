@@ -32,7 +32,7 @@ public:
 
     I2c(const enum mode&);
     I2c& operator=(const I2c&) = delete;
-    I2c& operator=(I2c&&);
+    I2c& operator=(I2c&&) = delete;
     I2c(const I2c&) = delete;
     ~I2c(void);
 
