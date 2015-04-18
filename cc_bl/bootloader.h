@@ -41,5 +41,7 @@
 #define FAILURE_RESPONSE    '0'
 #define WELCOME_RESPONSE    "\0\0\0\0WyLightBootloader"
 #define FILENAME_SIZE       128
+#define CHECKSUM_SIZE           32      /* In Bytes, We use SHA-256 */
+#define SUCCESS                 0
 
 #endif /* #ifndef _BOOTLOADER_H_ */

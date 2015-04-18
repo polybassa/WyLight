@@ -16,13 +16,11 @@
    You should have received a copy of the GNU General Public License
    along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "hw_ints.h"
-
 // driverlib includes
-#include "rom_map.h"
 #include "prcm.h"
 #include "utils.h"
 #include "interrupt.h"
+#include "hw_ints.h"
 
 // common interface includes
 #include "pinmux.h"
@@ -32,31 +30,7 @@
 // wylight includes
 #include "firmware_loader.h"
 #include "tcp_server.h"
-#include "firmware/trace.h"
-
-#ifdef __cplusplus
-/*
- * Override C++ new/delete operators to reduce memory footprint
- */
-#include <stdlib.h>
-void* operator new(size_t size)
-{
-    return malloc(size);
-}
-
-void* operator new[] (size_t size){
-    return malloc(size);
-}
-
-void operator delete(void* p)
-{
-    free(p);
-}
-
-void operator delete[] (void* p){
-    free(p);
-}
-#endif /* __cplusplus */
+#include "trace.h"
 
 extern void(*const g_pfnVectors[]) (void);
 
@@ -72,11 +46,11 @@ extern void(*const g_pfnVectors[]) (void);
 static void BoardInit(void)
 {
     // Set vector table base
-    MAP_IntVTableBaseSet((unsigned long)&g_pfnVectors[0]);
+    IntVTableBaseSet((unsigned long)&g_pfnVectors[0]);
 
     // Enable Processor
-    MAP_IntMasterEnable();
-    MAP_IntEnable(FAULT_SYSTICK);
+    IntMasterEnable();
+    IntEnable(FAULT_SYSTICK);
 
     PRCMCC3200MCUInit();
 }
@@ -123,8 +97,8 @@ int main()
     } while (EmplaceFirmware());
 
     Network_IF_DeInitDriver();
-    MAP_IntDisable(FAULT_SYSTICK);
-    MAP_IntMasterDisable();
+    IntDisable(FAULT_SYSTICK);
+    IntMasterDisable();
     // Point of no return;
     StartFirmware();
 }

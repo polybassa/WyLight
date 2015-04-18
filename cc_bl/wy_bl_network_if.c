@@ -60,7 +60,7 @@
 #include <stdio.h>
 
 // common interface includes
-#include "firmware/trace.h"
+#include "trace.h"
 #include "wy_bl_network_if.h"
 
 static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;

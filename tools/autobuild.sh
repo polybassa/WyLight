@@ -6,7 +6,8 @@ BUILD_BRANCH=${BUILD_TYPE}-$(date +%Y%m%d%H%M%S)
 PULL_BRANCH=Master
 BINDIR=exe
 MAIL_HEADER="to: admin@wylight.de\nfrom: build01.wylight@gmail.com\nsubject: ${BUILD_BRANCH}"
-LOGFILE=buildlog.txt
+LOGFILE=~/buildlog.txt
+LOGFILERESULTS=~/buildresults.txt
 TARGETS=(test cc_fw firmware_pic cli cc_bl sim library)
 
 
@@ -20,7 +21,10 @@ function make_targets() {
 
 		if [ $? -ne 0 ]; then
 			echo -e "\nBUILD of $target FAILED!!! \n---------------------------------------" >>$LOGFILE
+			echo -e "$target	         BUILD FAILED!!!" >> $LOGFILERESULTS
 			retvalue=0
+		else
+			echo -e "$target	         BUILD SUCCESSFUL!!!" >> $LOGFILERESULTS
 		fi
 	done
 	return $(retvalue)
@@ -29,6 +33,7 @@ function make_targets() {
 function report_result() {
 	echo $1 >> $LOGFILE
 	echo -e "${MAIL_HEADER} $1\n\n" > buildmsg.txt
+	cat $LOGFILERESULTS >> buildmsg.txt
 	cat $LOGFILE >> buildmsg.txt
 	cat buildmsg.txt | ${SENDMAIL} -t
 	rm buildmsg.txt
@@ -42,13 +47,16 @@ if [ $# -eq 0 ] || ( [ "$1" != "nightly" ] && [ "$1" != "build" ] ); then
     exit 1
 fi
 
+rm $LOGFILE
+rm $LOGFILERESULTS
+
 # prepare a fresh branch for build
-cd WyLight > $LOGFILE 2>&1 && \
-git checkout ${PULL_BRANCH} >> $LOGFILE 2>&1 && \
-git pull >> $LOGFILE 2>&1 && \
-git checkout -b ${BUILD_BRANCH} >> $LOGFILE 2>&1 && \
+cd WyLight >> $LOGFILE 2>> $LOGFILE && \
+git checkout ${PULL_BRANCH} >> $LOGFILE 2>> $LOGFILE && \
+git pull >> $LOGFILE 2>> $LOGFILE && \
+git checkout -b ${BUILD_BRANCH} >> $LOGFILE 2>> $LOGFILE && \
 echo -e "\n\nSTART CONFIGURATION\n\n--------------------\n\n" >> $LOGFILE &&\
-./configure >> $LOGFILE 2>&1
+./configure >> $LOGFILE 2>> $LOGFILE
 
 if [ $? -ne 0 ]; then
 	report_result "prepare repository and branch for build failed"
