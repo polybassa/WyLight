@@ -19,8 +19,8 @@
 #include "wy_Task.h"
 #include "trace.h"
 
-static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR
-		| ZONE_WARNING  | ZONE_VERBOSE | ZONE_INFO;
+static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR |
+                                                        ZONE_WARNING | ZONE_VERBOSE | ZONE_INFO;
 
 Task::Task(const char* name, unsigned short stackSize, unsigned long priority,
            std::function<void(const bool&)> function) : mTaskFunction(function)
@@ -37,14 +37,14 @@ Task::Task(const char* name, unsigned short stackSize, unsigned long priority,
 void Task::run(void)
 {
     xSemaphoreGive(this->mStartSemaphore);
-	Trace(ZONE_INFO,"%s started \r\n", pcTaskGetTaskName(this->mHandle));
+    Trace(ZONE_INFO, "%s started \r\n", pcTaskGetTaskName(this->mHandle));
 }
 
 void Task::stop(void)
 {
     this->mStopFlag = true;
     xSemaphoreTake(this->mStopSemaphore, portMAX_DELAY);
-	Trace(ZONE_INFO,"%s stopped \r\n", pcTaskGetTaskName(this->mHandle));
+    Trace(ZONE_INFO, "%s stopped \r\n", pcTaskGetTaskName(this->mHandle));
 }
 
 void Task::task(void* pvParameters)
