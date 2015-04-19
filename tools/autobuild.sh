@@ -16,11 +16,11 @@ function make_targets() {
 	local retvalue=1
 	for target in "${TARGETS[@]}"
 	do
-		echo -e "\n\n Start to build $target \n---------------------------------------\n" >>$LOGFILE
+		echo -e "\n\n Start to build $target \n---------------------------------------\n" >> $LOGFILE
 		make $target >> $LOGFILE 2>> $LOGFILE
 
-		if [ $? -ne 0 ]; then
-			echo -e "\nBUILD of $target FAILED!!! \n---------------------------------------" >>$LOGFILE
+	if [[ $? -ne 0 ]]; then
+			echo -e "\nBUILD of $target FAILED!!! \n---------------------------------------" >> $LOGFILE
 			echo -e "$target	         BUILD FAILED!!!" >> $LOGFILERESULTS
 			retvalue=0
 		else
@@ -58,7 +58,7 @@ git checkout -b ${BUILD_BRANCH} >> $LOGFILE 2>> $LOGFILE && \
 echo -e "\n\nSTART CONFIGURATION\n\n--------------------\n\n" >> $LOGFILE &&\
 ./configure >> $LOGFILE 2>> $LOGFILE
 
-if [ $? -ne 0 ]; then
+if [[ $? -ne 0 ]]; then
 	report_result "prepare repository and branch for build failed"
 	exit 1
 fi

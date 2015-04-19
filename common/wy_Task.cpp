@@ -52,7 +52,7 @@ void Task::taskFunction(void)
     for ( ; ; ) {
         xSemaphoreTake(this->mStartSemaphore, portMAX_DELAY);
         this->mStopFlag = false;
-        mTaskFunction(this->mStopFlag);
+        this->mTaskFunction(this->mStopFlag);
         xSemaphoreGive(this->mStopSemaphore);
     }
 }

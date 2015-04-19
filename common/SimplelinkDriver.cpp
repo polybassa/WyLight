@@ -16,27 +16,9 @@
    You should have received a copy of the GNU General Public License
    along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-// Simplelink includes
-#include "simplelink.h"
-#include "wlan.h"
-
-// driverlib includes
-#include "hw_types.h"
-#include "timer.h"
-#include "rom.h"
-#include "rom_map.h"
-
 // common interface includes
 #include "SimplelinkDriver.h"
-#include "timer_if.h"
-#include "gpio_if.h"
-#include "wifi.h"
-
-// oslib include
-#include "FreeRTOS.h"
-#include "semphr.h"
 #include "task.h"
-
 #include "trace.h"
 
 static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR |
@@ -89,8 +71,10 @@ void SimpleLinkHttpServerCallback(SlHttpServerEvent_t*    pSlHttpServerEvent,
 SimplelinkDriver::SimplelinkDriver(const bool accesspointMode)
 {
     Trace(ZONE_VERBOSE, "Construct Driver... \n\r");
-    osi_SyncObjCreate(&ProvisioningDataSemaphore);
-    osi_SyncObjCreate(&ConnectionLostSemaphore);
+    vSemaphoreCreateBinary(ProvisioningDataSemaphore);
+    vSemaphoreCreateBinary(ConnectionLostSemaphore);
+    xSemaphoreTake(ProvisioningDataSemaphore, 0);
+    xSemaphoreTake(ConnectionLostSemaphore, 0);
 
     long retVal = ERROR;
     if (accesspointMode) {
@@ -147,7 +131,7 @@ long SimplelinkDriver::startAsAccesspoint(void)
     Trace(ZONE_VERBOSE, "Start AP\r\n");
     //Wait for Ip Acquired Event in AP Mode
     while (!Status.IPAcquired) {
-        osi_Sleep(10);
+        vTaskDelay(10 / portTICK_RATE_MS);
     }
 
     return 0;
@@ -170,8 +154,7 @@ long SimplelinkDriver::configureAsAccesspoint(void)
     // set domain name
     unsigned char domainName[] = "wylight.config";
     retRes = sl_NetAppSet(SL_NET_APP_DEVICE_CONFIG_ID,
-                          NETAPP_SET_GET_DEV_CONF_OPT_DOMAIN_NAME, sizeof(domainName),
-                          domainName);
+                          NETAPP_SET_GET_DEV_CONF_OPT_DOMAIN_NAME, sizeof(domainName), domainName);
     ASSERT_ON_ERROR(__LINE__, retRes);
 
     // set Accesspoint SSID
@@ -212,7 +195,7 @@ long SimplelinkDriver::configureSimpleLinkToDefaultState(void)
         if (ROLE_AP == Mode)
             // If the device is in AP mode, we need to wait for this event before doing anything
             while (!Status.IPAcquired) {
-                osi_Sleep(10);
+                vTaskDelay(10 / portTICK_RATE_MS);
             }
 
         // Switch to STA role and restart
@@ -314,7 +297,7 @@ long SimplelinkDriver::scanForAccesspoints(void)
 
     Trace(ZONE_VERBOSE, "Scanning for SSID's\r\n----------------------------------------------\r\n");
     // wait for scan to complete
-    osi_Sleep(WAIT_TIME);
+    vTaskDelay(WAIT_TIME / portTICK_RATE_MS);
 
     //Get Scan Result
     retRes = sl_WlanGetNetworkList(0, MAX_NUM_NETWORKENTRIES,
@@ -590,7 +573,7 @@ long SimplelinkDriver::waitForConnectWithTimeout(
     unsigned int timeoutCounter = 0;
 
     while ((timeoutCounter < timeout_ms) && !Status.IPAcquired) {
-        osi_Sleep(INTERVAL);
+        vTaskDelay(INTERVAL / portTICK_RATE_MS);
         timeoutCounter += INTERVAL;
     }
 
@@ -610,7 +593,7 @@ void SimplelinkDriver::driverStatus::reset(void)
     this->IPAcquired = false;
     this->connectFailed = false;
     this->pingDone = false;
-    osi_SyncObjClear(&SimplelinkDriver::ConnectionLostSemaphore);
+    xSemaphoreTake(SimplelinkDriver::ConnectionLostSemaphore, 0);
 }
 
 void SimplelinkDriver::statusInformation::reset()
@@ -630,7 +613,7 @@ void SimplelinkDriver::provisioningData::reset(void)
     this->wlanSecurityKey.fill(0);
     memset(&this->secParameters, 0, sizeof(this->secParameters));
     memset(this->networkEntries, 0, sizeof(this->networkEntries));
-    osi_SyncObjClear(&SimplelinkDriver::ProvisioningDataSemaphore);
+    xSemaphoreTake(SimplelinkDriver::ProvisioningDataSemaphore, 0);
 }
 
 void SimplelinkDriver::reset(void)
@@ -645,7 +628,7 @@ void SimplelinkDriver::disconnect(void)
     Trace(ZONE_VERBOSE, "Disconnect...\n\r");
     if (sl_WlanDisconnect() == 0)
         while (Status.connected) {
-            osi_Sleep(10);
+            vTaskDelay(10 / portTICK_RATE_MS);
         }
 }
 

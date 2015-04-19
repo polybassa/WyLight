@@ -23,7 +23,6 @@
 #include "gpio.h"
 #include "prcm.h"
 
-//*****************************************************************************
 void PinMuxConfig(void)
 {
     // Enable Peripheral Clocks
@@ -55,4 +54,13 @@ void PinMuxConfig(void)
 
     MAP_PRCMPeripheralClkDisable(PRCM_TIMERA2, PRCM_RUN_MODE_CLK);
     MAP_PRCMPeripheralClkDisable(PRCM_TIMERA3, PRCM_RUN_MODE_CLK);
+
+    PRCMPeripheralClkEnable(PRCM_GSPI, PRCM_RUN_MODE_CLK);
+
+    // Configure PIN_05 for SPI0 GSPI_CLK
+    PinTypeSPI(PIN_05, PIN_MODE_7);
+    // Configure PIN_06 for SPI0 GSPI_MISO
+    PinTypeSPI(PIN_06, PIN_MODE_7);
+    // Configure PIN_52 for SPI0 GSPI_MOSI
+    PinTypeSPI(PIN_07, PIN_MODE_7);
 }

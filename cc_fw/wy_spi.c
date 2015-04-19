@@ -1,5 +1,5 @@
 /**
-   Copyright (C) 2014 Nils Weiss, Patrick Brünn.
+   Copyright (C) 2014 Nils Weiss, Patrick Bruenn.
 
    This file is part of WyLight.
 
@@ -30,36 +30,26 @@
 
 void SPI_Init()
 {
-    /*MAP_PRCMPeripheralClkEnable(PRCM_GSPI, PRCM_RUN_MODE_CLK);
-       MAP_PRCMPeripheralReset(PRCM_GSPI);
+    PRCMPeripheralClkEnable(PRCM_GSPI, PRCM_RUN_MODE_CLK);
+    PRCMPeripheralReset(PRCM_GSPI);
 
-       MAP_SPIReset(GSPI_BASE);
+    SPIReset(GSPI_BASE);
 
-       MAP_SPIConfigSetExpClk(GSPI_BASE, MAP_PRCMPeripheralClockGet(PRCM_GSPI), SPI_IF_BIT_RATE, SPI_MODE_MASTER,
-       SPI_SUB_MODE_1, (SPI_SW_CTRL_CS |
-       SPI_3PIN_MODE |
-       SPI_TURBO_OFF |
-       SPI_CS_ACTIVELOW |
-       SPI_WL_8));
+    SPIConfigSetExpClk(GSPI_BASE, PRCMPeripheralClockGet(PRCM_GSPI),
+                       SPI_IF_BIT_RATE, SPI_MODE_MASTER,
+                       SPI_SUB_MODE_1, (SPI_HW_CTRL_CS |
+                                        SPI_3PIN_MODE |
+                                        SPI_TURBO_OFF |
+                                        SPI_CS_ACTIVELOW | SPI_WL_8));
 
-       MAP_SPIFIFOEnable(GSPI_BASE, SPI_TX_FIFO);
-
-       MAP_SPIEnable(GSPI_BASE);*/
-}
-
-uns8 SPI_Send(const uns8 data)
-{
-    //MAP_SPIDataPutNonBlocking(GSPI_BASE, data);
-    return data;
+    SPIEnable(GSPI_BASE);
 }
 
 void SPI_SendLedBuffer(uns8* array)
 {
-    const uns8* end = (uns8*)(array + (NUM_OF_LED * 3));   /* array must be the address of the first byte*/
+    const uns8* end = (uns8*)(array + (NUM_OF_LED * 3));  /* array must be the address of the first byte*/
     /* calculate where the end is */
-    for ( ; array < end; array++) { /* send all data */
-        SPI_Send(*array);
-    }
+    SPITransfer(GSPI_BASE, array, 0, end - array, 0);
 
     /* If we really have to garantee a sleep after data was written to the LEDs, it should be added here.
      * Other locations would be more attractive to avoid a waiting core, but here it is much clearer and easier
