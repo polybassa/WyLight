@@ -32,14 +32,9 @@
 
 static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
-extern char _binary_cc_fw_versionfile_txt_start;
-extern char _binary_cc_fw_versionfile_txt_end;
-
 extern void(*const g_pfnVectors[]) (void);
 
-CC3200_Platform::CC3200_Platform() : mVersion(std::string(&_binary_cc_fw_versionfile_txt_start,
-                                                          (&_binary_cc_fw_versionfile_txt_end -
-                                                           &_binary_cc_fw_versionfile_txt_start)))
+CC3200_Platform::CC3200_Platform(std::string&& versionString) : mVersion(versionString)
 {
     // Set vector table base
     MAP_IntVTableBaseSet((unsigned long)&g_pfnVectors[0]);

@@ -52,11 +52,6 @@ I2c::I2c(const enum mode& m)
     xSemaphoreGive(this->accessMutex);
 }
 
-I2c& I2c::operator=(I2c&&)
-{
-    return *this;
-}
-
 I2c::~I2c(void)
 {
     vSemaphoreDelete(this->accessMutex);
@@ -132,9 +127,7 @@ bool I2c::transact(const uint32_t cmd)
 
     while ((I2CMasterIntStatusEx(I2C_BASE, false) &
             (I2C_INT_MASTER | I2C_MRIS_CLKTOUT)) == 0)
-    {
-        vTaskDelay(1 / portTICK_RATE_MS);
-    }
+    {}
 
     if (I2CMasterErr(I2C_BASE) != I2C_MASTER_ERR_NONE)
         switch (cmd) {
