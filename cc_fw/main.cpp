@@ -31,8 +31,15 @@
 #include "SimplelinkCustomer.h"
 #include "SimplelinkServers.h"
 
+extern char _binary_cc_fw_versionfile_txt_start;
+extern char _binary_cc_fw_versionfile_txt_end;
+
 // GLOBAL VARIABLES
-const CC3200_Platform g_platform;
+const CC3200_Platform g_platform(
+    std::move(
+        std::string(&_binary_cc_fw_versionfile_txt_start,
+                    (&_binary_cc_fw_versionfile_txt_end -
+                     &_binary_cc_fw_versionfile_txt_start))));
 std::vector<SimplelinkCustomer*> SimplelinkCustomer::Customers;
 const BroadcastTransmitter g_broadcast;
 const UdpServer g_udpserver;
