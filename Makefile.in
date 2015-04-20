@@ -37,6 +37,9 @@ endif
 ifeq ($(MAKECMDGOALS),cc_te)
 PREFIX=arm-none-eabi-
 endif
+ifeq ($(MAKECMDGOALS),bist)
+PREFIX=arm-none-eabi-
+endif
 
 # Tools
 GIT=@GIT@
@@ -106,6 +109,8 @@ cli: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
 cc_te: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.elf
 
+bist: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.elf post-build
+
 sim: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
 ut: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
@@ -113,7 +118,7 @@ ut: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 filedownloader: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
 ENDINGS=c h cpp
-CODE_DIRS=android cc_bl cc_fw cc_te cli common driverlib firmware library sim
+CODE_DIRS=android bist cc_bl cc_fw cc_te cli common driverlib firmware library sim
 filelist:
 	@rm -f $@.txt
 	@$(foreach END, ${ENDINGS}, $(foreach DIR, ${CODE_DIRS}, find ./$(DIR) -name "*.$(END)" >> $@.txt;))
@@ -192,6 +197,7 @@ IPATH+=${ROOT}/cli
 include Makefile.cc_te 
 include Makefile.cc_bl
 include Makefile.cc_fw
+include Makefile.bist
 include Makefile.ut
 include Makefile.sim
 include Makefile.firmware

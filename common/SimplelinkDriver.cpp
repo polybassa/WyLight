@@ -70,11 +70,7 @@ void SimpleLinkHttpServerCallback(SlHttpServerEvent_t*    pSlHttpServerEvent,
 
 SimplelinkDriver::SimplelinkDriver(const bool accesspointMode)
 {
-    Trace(ZONE_VERBOSE, "Construct Driver... \n\r");
-    vSemaphoreCreateBinary(ProvisioningDataSemaphore);
-    vSemaphoreCreateBinary(ConnectionLostSemaphore);
-    xSemaphoreTake(ProvisioningDataSemaphore, 0);
-    xSemaphoreTake(ConnectionLostSemaphore, 0);
+    this->init();
 
     long retVal = ERROR;
     if (accesspointMode) {
@@ -90,6 +86,42 @@ SimplelinkDriver::SimplelinkDriver(const bool accesspointMode)
         Trace(ZONE_VERBOSE, "Construct Driver failed...\n\r");
         reset();
     }
+}
+
+SimplelinkDriver::SimplelinkDriver(const std::string& accesspointSSID,
+                                   const std::string& passphrase,
+                                   const uint8_t      securityType)
+{
+    this->init();
+
+    long retRes = configureSimpleLinkToDefaultState();
+
+    retRes = sl_Start(NULL, NULL, NULL);
+
+    Trace(ZONE_VERBOSE, "Started SimpleLink Device in STA Mode\n\r");
+
+    SlSecParams_t secParameters;
+    secParameters.Type = securityType;
+    secParameters.Key = (char*)passphrase.c_str();
+    secParameters.KeyLen = passphrase.length();
+    retRes = sl_WlanConnect((char*)accesspointSSID.c_str(), accesspointSSID.length(), nullptr, &secParameters, nullptr);
+
+    retRes = waitForConnectWithTimeout(CONNECT_TIMEOUT);
+
+    if (retRes == ERROR) {
+        this->disconnect();
+        Trace(ZONE_VERBOSE, "Construct Driver failed...\n\r");
+        reset();
+    }
+}
+
+void SimplelinkDriver::init(void)
+{
+    Trace(ZONE_VERBOSE, "Construct Driver... \n\r");
+    vSemaphoreCreateBinary(ProvisioningDataSemaphore);
+    vSemaphoreCreateBinary(ConnectionLostSemaphore);
+    xSemaphoreTake(ProvisioningDataSemaphore, 0);
+    xSemaphoreTake(ConnectionLostSemaphore, 0);
 }
 
 SimplelinkDriver::~SimplelinkDriver(void)

@@ -89,9 +89,13 @@ class SimplelinkDriver {
     static void disconnect(void);
     static long addNewProfile(void);
 
+    void init(void);
+
 public:
 
     SimplelinkDriver(const bool accesspointMode);
+    SimplelinkDriver(const std::string& accesspointSSID, const std::string& passphrase, const uint8_t securityType);
+
     SimplelinkDriver(const SimplelinkDriver&) = delete;
     SimplelinkDriver& operator=(const SimplelinkDriver&) = delete;
     SimplelinkDriver(SimplelinkDriver&&) = delete;

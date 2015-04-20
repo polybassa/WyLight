@@ -39,6 +39,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Makefile.android</locationURI>
 		</link>
 		<link>
+			<name>Makefile.bist</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Makefile.bist</locationURI>
+		</link>
+		<link>
 			<name>Makefile.cc_bl</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Makefile.cc_bl</locationURI>
@@ -97,6 +102,11 @@
 			<name>android</name>
 			<type>2</type>
 			<locationURI>PARENT-1-PROJECT_LOC/android</locationURI>
+		</link>
+		<link>
+			<name>bist</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/bist</locationURI>
 		</link>
 		<link>
 			<name>cc_bl</name>
