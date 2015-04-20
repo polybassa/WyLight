@@ -90,6 +90,12 @@ LDFLAGS= 	-ffunction-sections \
 			-Wl,--gc-sections \
          	-static
 
+CC=${ARM_GCC}
+CPP=${ARM_GPP}
+AR=${ARM_AR}
+LD=${ARM_LD}
+OBJCOPY=${ARM_OBJCOPY}
+
 else 
 # The flags passed to the compiler when we are not using arm-none-eabi tools.
 CFLAGS= -pedantic \
@@ -109,6 +115,10 @@ LDFLAGS+=	-lpthread \
 			-lcrypto
 
 CPP=$(CXX)
+CC=$(CC)
+AR=ar
+LD=ld
+OBJCOPY=objcopy
 
 endif
 

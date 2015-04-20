@@ -50,13 +50,6 @@ fi
 rm $LOGFILE
 rm $LOGFILERESULTS
 
-if which arm_none_eabi_gcc >/dev/null; then
-    echo arm_none_eabi_gcc exists
-else
-    XCC=$(find ~ -name arm-none-eabi-gcc -exec dirname {} \; | sort -u)
-	export PATH=$XCC:$PATH
-fi
-
 # prepare a fresh branch for build
 cd WyLight >> $LOGFILE 2>> $LOGFILE && \
 git checkout ${PULL_BRANCH} >> $LOGFILE 2>> $LOGFILE && \

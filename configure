@@ -631,6 +631,10 @@ CPP
 glut
 GLU
 GL
+ARM_OBJCOPY
+ARM_LD
+ARM_AR
+ARM_GPP
 ARM_GCC
 PIC_CC8E
 OPENSSL
@@ -3769,9 +3773,9 @@ $as_echo "CC8E found!" >&6; }
 fi
 
 
-#AC_PATH_PROG_ARM_GCC
-# Extract the first word of "arm_none_eabi_gcc", so it can be a program name with args.
-set dummy arm_none_eabi_gcc; ac_word=$2
+
+# Extract the first word of "arm-none-eabi-gcc", so it can be a program name with args.
+set dummy arm-none-eabi-gcc; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
 if ${ac_cv_path_ARM_GCC+:} false; then :
@@ -3783,7 +3787,8 @@ else
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
+as_dummy="$PATH:/usr/local"
+for as_dir in $as_dummy
 do
   IFS=$as_save_IFS
   test -z "$as_dir" && as_dir=.
@@ -3811,9 +3816,226 @@ $as_echo "no" >&6; }
 fi
 
 
+if test x"${ARM_GCC}" == x"not_found" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: Searching for ARM_GCC with find!" >&5
+$as_echo "Searching for ARM_GCC with find!" >&6; }
+	ARM_GCC=$(find ~ -name 'arm-none-eabi-gcc' -print -quit)
+else
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: arm-none-eabi-gcc found!" >&5
+$as_echo "arm-none-eabi-gcc found!" >&6; }
+fi
 
 
-#AC_PATH_PROG_ARM_GPP
+
+# Extract the first word of "arm-none-eabi-g++", so it can be a program name with args.
+set dummy arm-none-eabi-g++; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_ARM_GPP+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $ARM_GPP in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_ARM_GPP="$ARM_GPP" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+as_dummy="$PATH:/usr/local"
+for as_dir in $as_dummy
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_ARM_GPP="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_ARM_GPP" && ac_cv_path_ARM_GPP="not_found"
+  ;;
+esac
+fi
+ARM_GPP=$ac_cv_path_ARM_GPP
+if test -n "$ARM_GPP"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ARM_GPP" >&5
+$as_echo "$ARM_GPP" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+if test x"${ARM_GPP}" == x"not_found" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: Searching for ARM_GPP with find!" >&5
+$as_echo "Searching for ARM_GPP with find!" >&6; }
+	ARM_GPP=$(find ~ -name 'arm-none-eabi-g++' -print -quit)
+else
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: arm-none-eabi-g++ found!" >&5
+$as_echo "arm-none-eabi-g++ found!" >&6; }
+fi
+
+
+
+# Extract the first word of "arm-none-eabi-ar", so it can be a program name with args.
+set dummy arm-none-eabi-ar; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_ARM_AR+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $ARM_AR in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_ARM_AR="$ARM_AR" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+as_dummy="$PATH:/usr/local"
+for as_dir in $as_dummy
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_ARM_AR="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_ARM_AR" && ac_cv_path_ARM_AR="not_found"
+  ;;
+esac
+fi
+ARM_AR=$ac_cv_path_ARM_AR
+if test -n "$ARM_AR"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ARM_AR" >&5
+$as_echo "$ARM_AR" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+if test x"${ARM_AR}" == x"not_found" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: Searching for ARM_AR with find!" >&5
+$as_echo "Searching for ARM_AR with find!" >&6; }
+	ARM_AR=$(find ~ -name 'arm-none-eabi-ar' -print -quit)
+else
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: arm-none-eabi-ar found!" >&5
+$as_echo "arm-none-eabi-ar found!" >&6; }
+fi
+
+
+
+# Extract the first word of "arm-none-eabi-ld", so it can be a program name with args.
+set dummy arm-none-eabi-ld; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_ARM_LD+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $ARM_LD in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_ARM_LD="$ARM_LD" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+as_dummy="$PATH:/usr/local"
+for as_dir in $as_dummy
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_ARM_LD="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_ARM_LD" && ac_cv_path_ARM_LD="not_found"
+  ;;
+esac
+fi
+ARM_LD=$ac_cv_path_ARM_LD
+if test -n "$ARM_LD"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ARM_LD" >&5
+$as_echo "$ARM_LD" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+if test x"${ARM_LD}" == x"not_found" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: Searching for ARM_LD with find!" >&5
+$as_echo "Searching for ARM_LD with find!" >&6; }
+	ARM_LD=$(find ~ -name 'arm-none-eabi-ld' -print -quit)
+else
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: arm-none-eabi-ld found!" >&5
+$as_echo "arm-none-eabi-ld found!" >&6; }
+fi
+
+
+
+# Extract the first word of "arm-none-eabi-objcopy", so it can be a program name with args.
+set dummy arm-none-eabi-objcopy; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_ARM_OBJCOPY+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $ARM_OBJCOPY in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_ARM_OBJCOPY="$ARM_OBJCOPY" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+as_dummy="$PATH:/usr/local"
+for as_dir in $as_dummy
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_ARM_OBJCOPY="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_ARM_OBJCOPY" && ac_cv_path_ARM_OBJCOPY="not_found"
+  ;;
+esac
+fi
+ARM_OBJCOPY=$ac_cv_path_ARM_OBJCOPY
+if test -n "$ARM_OBJCOPY"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ARM_OBJCOPY" >&5
+$as_echo "$ARM_OBJCOPY" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+if test x"${ARM_OBJCOPY}" == x"not_found" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: Searching for ARM_OBJCOPY with find!" >&5
+$as_echo "Searching for ARM_OBJCOPY with find!" >&6; }
+	ARM_OBJCOPY=$(find ~ -name 'arm-none-eabi-objcopy' -print -quit)
+else
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: arm-none-eabi-objcopy found!" >&5
+$as_echo "arm-none-eabi-objcopy found!" >&6; }
+fi
 
 # Checks for libraries.
 

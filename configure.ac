@@ -43,24 +43,54 @@ fi ])
 AC_PATH_PROG_CC8E
 
 AC_DEFUN(AC_PATH_PROG_ARM_GCC, [
-AC_PATH_PROG(ARM_GCC, arm_none_eabi_gcc, [not_found],[$PATH:/usr/local])
+AC_PATH_PROG(ARM_GCC, arm-none-eabi-gcc, [not_found],[$PATH:/usr/local])
 if test x"${ARM_GCC}" == x"not_found" ; then
     AC_MSG_RESULT([Searching for ARM_GCC with find!])
-	ARM_GCC=$(find ~ -name 'arm_none_eabi_gcc' -print -quit)
+	ARM_GCC=$(find ~ -name 'arm-none-eabi-gcc' -print -quit)
 else
-	AC_MSG_RESULT([arm_none_eabi_gcc found!])
+	AC_MSG_RESULT([arm-none-eabi-gcc found!])
 fi ])
-#AC_PATH_PROG_ARM_GCC
+AC_PATH_PROG_ARM_GCC
 
 AC_DEFUN(AC_PATH_PROG_ARM_GPP, [
-AC_PATH_PROG(ARM_GPP, arm_none_eabi_g++, [not_found],[$PATH:/usr/local])
+AC_PATH_PROG(ARM_GPP, arm-none-eabi-g++, [not_found],[$PATH:/usr/local])
 if test x"${ARM_GPP}" == x"not_found" ; then
     AC_MSG_RESULT([Searching for ARM_GPP with find!])
-	ARM_GPP=$(find ~ -name 'arm_none_eabi_g++' -print -quit)
+	ARM_GPP=$(find ~ -name 'arm-none-eabi-g++' -print -quit)
 else
-	AC_MSG_RESULT([arm_none_eabi_g++ found!])
+	AC_MSG_RESULT([arm-none-eabi-g++ found!])
 fi ])
-#AC_PATH_PROG_ARM_GPP
+AC_PATH_PROG_ARM_GPP
+
+AC_DEFUN(AC_PATH_PROG_ARM_AR, [
+AC_PATH_PROG(ARM_AR, arm-none-eabi-ar, [not_found],[$PATH:/usr/local])
+if test x"${ARM_AR}" == x"not_found" ; then
+    AC_MSG_RESULT([Searching for ARM_AR with find!])
+	ARM_AR=$(find ~ -name 'arm-none-eabi-ar' -print -quit)
+else
+	AC_MSG_RESULT([arm-none-eabi-ar found!])
+fi ])
+AC_PATH_PROG_ARM_AR
+
+AC_DEFUN(AC_PATH_PROG_ARM_LD, [
+AC_PATH_PROG(ARM_LD, arm-none-eabi-ld, [not_found],[$PATH:/usr/local])
+if test x"${ARM_LD}" == x"not_found" ; then
+    AC_MSG_RESULT([Searching for ARM_LD with find!])
+	ARM_LD=$(find ~ -name 'arm-none-eabi-ld' -print -quit)
+else
+	AC_MSG_RESULT([arm-none-eabi-ld found!])
+fi ])
+AC_PATH_PROG_ARM_LD
+
+AC_DEFUN(AC_PATH_PROG_ARM_OBJCOPY, [
+AC_PATH_PROG(ARM_OBJCOPY, arm-none-eabi-objcopy, [not_found],[$PATH:/usr/local])
+if test x"${ARM_OBJCOPY}" == x"not_found" ; then
+    AC_MSG_RESULT([Searching for ARM_OBJCOPY with find!])
+	ARM_OBJCOPY=$(find ~ -name 'arm-none-eabi-objcopy' -print -quit)
+else
+	AC_MSG_RESULT([arm-none-eabi-objcopy found!])
+fi ])
+AC_PATH_PROG_ARM_OBJCOPY
 
 # Checks for libraries.
 AC_CHECK_LIB([GL], glAlphaFunc, [AC_SUBST(GL,found)],[AC_SUBST(GL,not_found)])
