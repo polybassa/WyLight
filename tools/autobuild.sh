@@ -8,7 +8,7 @@ BINDIR=exe
 MAIL_HEADER="to: admin@wylight.de\nfrom: build01.wylight@gmail.com\nsubject: ${BUILD_BRANCH}"
 LOGFILE=~/buildlog.txt
 LOGFILERESULTS=~/buildresults.txt
-TARGETS=(test cc_fw firmware_pic cli cc_bl sim library)
+TARGETS=(test cc_fw firmware_pic cli cc_bl bist sim library)
 
 
 function make_targets() {
@@ -49,6 +49,13 @@ fi
 
 rm $LOGFILE
 rm $LOGFILERESULTS
+
+if which arm_none_eabi_gcc >/dev/null; then
+    echo arm_none_eabi_gcc exists
+else
+    XCC=$(find ~ -name arm-none-eabi-gcc -exec dirname {} \; | sort -u)
+	export PATH=$XCC:$PATH
+fi
 
 # prepare a fresh branch for build
 cd WyLight >> $LOGFILE 2>> $LOGFILE && \

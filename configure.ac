@@ -42,6 +42,26 @@ else
 fi ])
 AC_PATH_PROG_CC8E
 
+AC_DEFUN(AC_PATH_PROG_ARM_GCC, [
+AC_PATH_PROG(ARM_GCC, arm_none_eabi_gcc, [not_found],[$PATH:/usr/local])
+if test x"${ARM_GCC}" == x"not_found" ; then
+    AC_MSG_RESULT([Searching for ARM_GCC with find!])
+	ARM_GCC=$(find ~ -name 'arm_none_eabi_gcc' -print -quit)
+else
+	AC_MSG_RESULT([arm_none_eabi_gcc found!])
+fi ])
+#AC_PATH_PROG_ARM_GCC
+
+AC_DEFUN(AC_PATH_PROG_ARM_GPP, [
+AC_PATH_PROG(ARM_GPP, arm_none_eabi_g++, [not_found],[$PATH:/usr/local])
+if test x"${ARM_GPP}" == x"not_found" ; then
+    AC_MSG_RESULT([Searching for ARM_GPP with find!])
+	ARM_GPP=$(find ~ -name 'arm_none_eabi_g++' -print -quit)
+else
+	AC_MSG_RESULT([arm_none_eabi_g++ found!])
+fi ])
+#AC_PATH_PROG_ARM_GPP
+
 # Checks for libraries.
 AC_CHECK_LIB([GL], glAlphaFunc, [AC_SUBST(GL,found)],[AC_SUBST(GL,not_found)])
 AC_CHECK_LIB([GLU], gluBeginCurve, [AC_SUBST(GLU,found)],[AC_SUBST(GLU,not_found)])
