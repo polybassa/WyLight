@@ -29,6 +29,8 @@ void PinMuxConfig(void)
     MAP_PRCMPeripheralClkEnable(PRCM_UARTA0, PRCM_RUN_MODE_CLK);
     MAP_PRCMPeripheralClkEnable(PRCM_GPIOA0, PRCM_RUN_MODE_CLK);
     MAP_PRCMPeripheralClkEnable(PRCM_GPIOA1, PRCM_RUN_MODE_CLK);
+    MAP_PRCMPeripheralClkEnable(PRCM_GPIOA2, PRCM_RUN_MODE_CLK);
+    MAP_PRCMPeripheralClkEnable(PRCM_GPIOA3, PRCM_RUN_MODE_CLK);
 
     // Configure PIN_55 for UART0 UART0_TX
     MAP_PinTypeUART(PIN_55, PIN_MODE_3);
@@ -39,6 +41,10 @@ void PinMuxConfig(void)
     // Configure PIN_58 for GPIOInput
     MAP_PinTypeGPIO(PIN_58, PIN_MODE_0, false);
     MAP_GPIODirModeSet(GPIOA0_BASE, 0x8, GPIO_DIR_MODE_IN);
+
+    MAP_PinTypeGPIO(PIN_06, PIN_MODE_0, false);
+    MAP_PinTypeGPIO(PIN_11, PIN_MODE_0, false);
+    MAP_PinTypeGPIO(PIN_19, PIN_MODE_0, false);
 
     MAP_PRCMPeripheralClkEnable(PRCM_TIMERA2, PRCM_RUN_MODE_CLK);
     MAP_PRCMPeripheralClkEnable(PRCM_TIMERA3, PRCM_RUN_MODE_CLK);
@@ -59,8 +65,6 @@ void PinMuxConfig(void)
 
     // Configure PIN_05 for SPI0 GSPI_CLK
     PinTypeSPI(PIN_05, PIN_MODE_7);
-    // Configure PIN_06 for SPI0 GSPI_MISO
-    PinTypeSPI(PIN_06, PIN_MODE_7);
     // Configure PIN_52 for SPI0 GSPI_MOSI
     PinTypeSPI(PIN_07, PIN_MODE_7);
 }

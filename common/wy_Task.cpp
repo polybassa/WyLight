@@ -23,7 +23,8 @@ static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR |
                                                         ZONE_WARNING | ZONE_VERBOSE | ZONE_INFO;
 
 Task::Task(const char* name, unsigned short stackSize, unsigned long priority,
-           std::function<void(const bool&)> function) : mTaskFunction(function)
+           std::function<void(const bool&)> function) :
+    mTaskFunction(function)
 {
     vSemaphoreCreateBinary(this->mStartSemaphore);
     xSemaphoreTake(this->mStartSemaphore, 0);
@@ -31,7 +32,8 @@ Task::Task(const char* name, unsigned short stackSize, unsigned long priority,
     xSemaphoreTake(this->mStopSemaphore, 0);
 
     this->mStopFlag = false;
-    xTaskCreate(Task::task, (signed portCHAR*)name, Task::STACKSIZE_IN_BYTE(stackSize), this, priority, &this->mHandle);
+    xTaskCreate(Task::task, (signed portCHAR*)name,
+                Task::STACKSIZE_IN_BYTE(stackSize), this, priority, &this->mHandle);
 }
 
 void Task::run(void)
