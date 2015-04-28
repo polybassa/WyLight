@@ -97,7 +97,7 @@ endif
 
 # The default rule, which causes the bootloader be built as bootloader
 all:
-	@$(foreach target,$(TARGETS),make $(target); make clean;)
+	@$(foreach target,$(TARGETS),@make $(target); @make clean;)
 	@echo $(MESSAGES)
 
 pre-build: clean
@@ -133,10 +133,10 @@ uncrustify: filelist
 	${UNCRUSTIFY} -F filelist.txt --no-backup -c uncrustify.cfg
 
 test: clean-all ${OBJDIR} ${BINDIR} 
-	make ut 
+	@make ut 
 	@./exe/WyLight_ut.bin
-	make firmware_test 
-	make library_test
+	@make firmware_test 
+	@make library_test
 	${CPPCHECKER} . --force --quiet
 
 help: 
@@ -173,7 +173,7 @@ help:
 # The rule to clean out all the build products.
 clean:
 	@rm -rf ${OBJDIR} ${wildcard *~}
-	@make ${OBJDIR}
+	@make --no-print-directory ${OBJDIR}
 
 # The rule to clean out all the build products.
 clean-all:
