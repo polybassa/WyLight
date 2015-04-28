@@ -125,10 +125,14 @@ typedef std::tuple<bool, ControlCommand, unsigned int> ControlMessage;
 		} else {
 			self.clientWithWS2801Leds = NO;
 		}
+	
 	} catch(std::exception &e) {
 		NSLog(@"%s", e.what());
 		return -1;
 	}
+	
+	//FIX complex script view is never called
+	self.clientWithWS2801Leds = NO;
 
 	mCmdQueue = std::make_shared < WyLight::MessageQueue < ControlMessage >> ();
 	mCmdQueue->setMessageLimit(70);
