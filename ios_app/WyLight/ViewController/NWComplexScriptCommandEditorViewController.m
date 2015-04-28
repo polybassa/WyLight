@@ -329,7 +329,7 @@ enum EditColorTarget {
 }
 
 #pragma mark - iCarousel methods
-- (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel {
+- (NSInteger)numberOfItemsInCarousel:(iCarousel *)carousel {
 	if (carousel == self.scriptSubCommandsCarousel) {
 		return self.command.effects.count;
 	} else {
@@ -337,7 +337,7 @@ enum EditColorTarget {
 	}
 }
 
-- (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view {
+- (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSInteger)index reusingView:(UIView *)view {
 	if (carousel == self.scriptSubCommandsCarousel) {
 		//create new view if no view is available for recycling
 		if (view == nil || ![view isKindOfClass:[NWScriptObjectControl class]])

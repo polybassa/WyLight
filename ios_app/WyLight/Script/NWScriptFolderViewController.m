@@ -206,11 +206,11 @@
 }
 
 #pragma mark - iCarouselDatasource
-- (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel {
+- (NSInteger)numberOfItemsInCarousel:(iCarousel *)carousel {
     return self.scriptObjects.count;
 }
 
-- (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view {
+- (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSInteger)index reusingView:(UIView *)view {
     if (view == nil || ![view isKindOfClass:[UIImageView class]])
     {
         view = [[NWRenderableScriptImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];

@@ -1,7 +1,7 @@
 //
 //  iCarousel.h
 //
-//  Version 1.8 beta 6
+//  Version 1.8.1
 //
 //  Created by Nick Lockwood on 01/04/2011.
 //  Copyright 2011 Charcoal Design
@@ -29,6 +29,10 @@
 //
 //  3. This notice may not be removed or altered from any source distribution.
 //
+
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wobjc-missing-property-synthesis"
 
 
 #import <Availability.h>
@@ -59,7 +63,7 @@ typedef NSView UIView;
 #endif
 
 
-typedef enum
+typedef NS_ENUM(NSInteger, iCarouselType)
 {
     iCarouselTypeLinear = 0,
     iCarouselTypeRotary,
@@ -73,11 +77,10 @@ typedef enum
     iCarouselTypeTimeMachine,
     iCarouselTypeInvertedTimeMachine,
     iCarouselTypeCustom
-}
-iCarouselType;
+};
 
 
-typedef enum
+typedef NS_ENUM(NSInteger, iCarouselOption)
 {
     iCarouselOptionWrap = 0,
     iCarouselOptionShowBackfaces,
@@ -85,7 +88,7 @@ typedef enum
     iCarouselOptionVisibleItems,
     iCarouselOptionCount,
     iCarouselOptionArc,
-	iCarouselOptionAngle,
+    iCarouselOptionAngle,
     iCarouselOptionRadius,
     iCarouselOptionTilt,
     iCarouselOptionSpacing,
@@ -93,8 +96,7 @@ typedef enum
     iCarouselOptionFadeMax,
     iCarouselOptionFadeRange,
     iCarouselOptionFadeMinAlpha
-}
-iCarouselOption;
+};
 
 
 @protocol iCarouselDataSource, iCarouselDelegate;
@@ -127,6 +129,7 @@ iCarouselOption;
 @property (nonatomic, readonly) CGFloat itemWidth;
 @property (nonatomic, strong, readonly) UIView *contentView;
 @property (nonatomic, readonly) CGFloat toggle;
+@property (nonatomic, assign) CGFloat autoscroll;
 @property (nonatomic, assign) BOOL stopAtItemBoundary;
 @property (nonatomic, assign) BOOL scrollToItemBoundary;
 @property (nonatomic, assign) BOOL ignorePerpendicularSwipes;
@@ -145,6 +148,7 @@ iCarouselOption;
 - (NSInteger)indexOfItemView:(UIView *)view;
 - (NSInteger)indexOfItemViewOrSubview:(UIView *)view;
 - (CGFloat)offsetForItemAtIndex:(NSInteger)index;
+- (UIView *)itemViewAtPoint:(CGPoint)point;
 
 - (void)removeItemAtIndex:(NSInteger)index animated:(BOOL)animated;
 - (void)insertItemAtIndex:(NSInteger)index animated:(BOOL)animated;
@@ -157,13 +161,13 @@ iCarouselOption;
 
 @protocol iCarouselDataSource <NSObject>
 
-- (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel;
-- (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view;
+- (NSInteger)numberOfItemsInCarousel:(iCarousel *)carousel;
+- (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSInteger)index reusingView:(UIView *)view;
 
 @optional
 
-- (NSUInteger)numberOfPlaceholdersInCarousel:(iCarousel *)carousel;
-- (UIView *)carousel:(iCarousel *)carousel placeholderViewAtIndex:(NSUInteger)index reusingView:(UIView *)view;
+- (NSInteger)numberOfPlaceholdersInCarousel:(iCarousel *)carousel;
+- (UIView *)carousel:(iCarousel *)carousel placeholderViewAtIndex:(NSInteger)index reusingView:(UIView *)view;
 
 @end
 
@@ -188,3 +192,6 @@ iCarouselOption;
 - (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value;
 
 @end
+
+#pragma GCC diagnostic pop
+
