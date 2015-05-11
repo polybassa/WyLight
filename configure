@@ -637,12 +637,12 @@ ARM_AR
 ARM_GPP
 ARM_GCC
 PIC_CC8E
-OPENSSL
 UNCRUSTIFY
 GIT
 DOXYGEN
 NDK
 CPPCHECKER
+OPENSSL
 WINE
 AM_CXXFLAGS
 SET_MAKE
@@ -3458,6 +3458,47 @@ WINE=$ac_cv_path_WINE
 if test -n "$WINE"; then
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: $WINE" >&5
 $as_echo "$WINE" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+# Extract the first word of "openssl", so it can be a program name with args.
+set dummy openssl; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_OPENSSL+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $OPENSSL in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_OPENSSL="$OPENSSL" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_OPENSSL="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_OPENSSL" && ac_cv_path_OPENSSL="not_found"
+  ;;
+esac
+fi
+OPENSSL=$ac_cv_path_OPENSSL
+if test -n "$OPENSSL"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $OPENSSL" >&5
+$as_echo "$OPENSSL" >&6; }
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }

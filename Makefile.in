@@ -48,6 +48,7 @@ NDK=@NDK@
 WINE=@WINE@
 PIC_CC8E=@PIC_CC8E@
 CPPCHECKER=@CPPCHECKER@
+OPENSSL=@OPENSSL@
 UNCRUSTIFY=@UNCRUSTIFY@
 ARM_GCC=@ARM_GCC@
 ARM_GPP=@ARM_GPP@
@@ -62,7 +63,6 @@ TARGETS+=cli
 TARGETS+=cc_fw
 TARGETS+=cc_bl
 TARGETS+=cc_te
-TARGETS+=sim
 TARGETS+=docu
 TARGETS+=filedownloader
 MESSAGES="Attention:\n"
@@ -95,6 +95,12 @@ else
 MESSAGES+="install android ndk and run ./configure again to make android_client\n"
 endif
 
+ifneq "not_found" "@OPENSSL@"
+TARGETS+=sim
+else
+MESSAGES+="install openssl and run ./configure again to make sim\n"
+endif
+
 # The default rule, which causes the bootloader be built as bootloader
 all:
 	@$(foreach target,$(TARGETS),@make $(target); @make clean;)
@@ -103,7 +109,7 @@ all:
 pre-build: clean
 
 post-build: 
-	openssl sha256 -binary ${BINDIR}/${PRJ_NAME}.bin > ${BINDIR}/${PRJ_NAME}.sha
+	$(OPENSSL) sha256 -binary ${BINDIR}/${PRJ_NAME}.bin > ${BINDIR}/${PRJ_NAME}.sha
 
 # build the bootloader as normal bootloader 
 cc_fw: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.elf post-build
