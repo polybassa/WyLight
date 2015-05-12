@@ -1,22 +1,23 @@
 FW_INC=-I$(FW_DIR) -I$(LIB_DIR)
+FW_TEST_SRC=$(wildcard $(FW_DIR)/*_ut.c)
 FW_SRC=$(filter-out $(FW_DIR)/iic.c $(FW_DIR)/rtc.c, $(filter-out $(FW_TEST_SRC), $(wildcard $(FW_DIR)/*.c)))
 
 ${BINDIR}/CommandIO_ut.bin: ${OBJDIR}/CommandIO_ut.o ${OBJDIR}/CommandIO.o
-${BINDIR}/crc_ut.bin: ${OBJDIR}/crc_ut.o ${OBJDIR}/crc.o 
+${BINDIR}/crc_ut.bin: ${OBJDIR}/crc_ut.o ${OBJDIR}/crc.o
 ${BINDIR}/ledstrip_ut.bin: ${OBJDIR}/ledstrip_ut.o ${OBJDIR}/ledstrip.o
 ${BINDIR}/RingBuf_ut.bin: ${OBJDIR}/RingBuf_ut.o ${OBJDIR}/RingBuf.o
-${BINDIR}/ScriptCtrl_ut.bin: ${OBJDIR}/ScriptCtrl_ut.o ${OBJDIR}/ScriptCtrl.o ${OBJDIR}/eeprom.o 
+${BINDIR}/ScriptCtrl_ut.bin: ${OBJDIR}/ScriptCtrl_ut.o ${OBJDIR}/ScriptCtrl.o ${OBJDIR}/eeprom.o
 
-firmware_pic: 
+firmware_pic:
 	${WINE} ${PIC_CC8E} $(FW_INC) $(FW_DIR)/main.c -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM -O${BINDIR}
 
-firmware_pic_release: 
+firmware_pic_release:
 	${WINE} ${PIC_CC8E} $(FW_INC) $(FW_DIR)/main.c -ver#VersionFile.h -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM -O${BINDIR}
 
-firmware_simu: 
+firmware_simu:
 	$(CC) -Wall $(FW_INC) ${FW_SRC} -DDEBUG -DX86 -lpthread ${OPENGL_LIB} -o ${BINDIR}/simu.bin
 
 firmware_test: ${OBJDIR} ${BINDIR} firmware_standart_test
 
 firmware_standart_test: ${BINDIR}/CommandIO_ut.bin ${BINDIR}/crc_ut.bin ${BINDIR}/ledstrip_ut.bin ${BINDIR}/RingBuf_ut.bin ${BINDIR}/ScriptCtrl_ut.bin
-	@$(foreach test,$^,./$(test);)	
+	@$(foreach test,$^,./$(test);)

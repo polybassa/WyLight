@@ -78,6 +78,7 @@ uns8 Trace_Print(uns8* pArray, const uns16 arraySize);
 
 #else
 #include "stdio.h"
+extern struct RingBuffer g_TraceBuf;
 #define Trace_Init(x)
 #define Trace_String(str) do { printf("%s", str); } while (0)
 #define Trace_Number(input) do { printf("%04x", input); } while (0)
@@ -88,8 +89,9 @@ uns8 Trace_Print(uns8* pArray, const uns16 arraySize);
 
 #define TraceBuffer(ZONE, BUFFER, LENGTH, BUFFER_FORMAT, ...) do { \
         if (g_DebugZones & (ZONE)) { \
+            size_t i; \
             Trace(ZONE, __VA_ARGS__); \
-            for (size_t i = 0; i < (LENGTH); i++) { \
+            for (i = 0; i < (LENGTH); i++) { \
                 printf(BUFFER_FORMAT, ((uint8_t*)(BUFFER))[i]); \
             } \
             printf("\n"); \

@@ -165,6 +165,8 @@ void* UdpRoutine(void* unused)
     }
 }
 
+void Eeprom_Init(void){}
+
 void I2C_Init(){}
 void I2C_Write(const uns8 slaveaddr, const uns8 dataaddr, const uns8 data){}
 uns8 I2C_Read(const uns8 slaveaddr, const uns8 readaddr){return 0; }
