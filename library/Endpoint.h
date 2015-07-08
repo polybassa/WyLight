@@ -20,6 +20,7 @@
 #define _ENDPOINT_H_
 #include <atomic>
 #include <cassert>
+#include <cstring>
 #include <ostream>
 #include <stddef.h>
 #include <netinet/in.h>
