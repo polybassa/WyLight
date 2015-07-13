@@ -23,17 +23,21 @@ using namespace WyLight;
 
 int main(int argc, char* argv[])
 {
-    //const WyLight::Endpoint endpoint {0x7F000001, 2000};
-    const WyLight::Endpoint endpoint {0xC0A8651E, 2000};
+    if (2 != argc) {
+        std::cout << "Usage " << argv[0] << " <IPv4>\n";
+        return -1;
+    }
 
+    const Endpoint endpoint {argv[1], 2000};
     auto ctrl = std::unique_ptr<Control>(WyLight::Control::Create(endpoint));
     auto& wylight = *(ctrl->mFirmware);
 
+    wylight << FwCmdSetColorDirect {0xFF00FF, 0xffffffff};
+    wylight << FwCmdSetColorDirect {0xFF, 0xffffffff};
+
     std::cout << "Running...\n";
     for ( ; ; ) {
-        std::string line;
         float rgb[3];
-        //std::getline(std::cin, line);
         std::cin >> rgb[0] >> rgb[1] >> rgb[2];
 
         rgb[0] *= 255.0f;
@@ -43,7 +47,5 @@ int main(int argc, char* argv[])
         const uint32_t argb = ((uint32_t)rgb[0]) << 16 | ((uint32_t)rgb[1]) << 8 | ((uint32_t)rgb[2]);
 
         wylight << FwCmdSetColorDirect {argb, 0xffffffff};
-
-        std::cout << (int)rgb[0] << ' ' << (int)rgb[1] << ' ' << (int)rgb[2] << '\n';
     }
 }
