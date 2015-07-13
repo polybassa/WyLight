@@ -12,6 +12,7 @@ LOCAL_SRC_FILES += $(LIB_SRC)BroadcastReceiver.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)ClientSocket.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)ComProxy.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)ConfigControl.cpp
+LOCAL_SRC_FILES += $(LIB_SRC)Endpoint.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)FirmwareControl.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)intelhexclass.cpp
 LOCAL_SRC_FILES += $(LIB_SRC)MaskBuffer.cpp
