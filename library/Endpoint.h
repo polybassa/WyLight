@@ -45,7 +45,6 @@ struct Endpoint {
              std::string         devId = "",
              enum Endpoint::TYPE type = RN171);
 
-    static Endpoint Create(const char* const ipv4, const uint16_t port);
     static uint32_t IPv4FromString(const char* const ipv4)
     {
         in_addr_t addr;

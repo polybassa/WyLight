@@ -42,13 +42,6 @@ Endpoint::Endpoint(uint32_t            ip,
     mType(type)
 {}
 
-Endpoint Endpoint::Create(const char* const ipv4, const uint16_t port)
-{
-    in_addr_t addr;
-    inet_pton(AF_INET, ipv4, &addr);
-    return Endpoint {ntohl(addr), port};
-}
-
 bool Endpoint::operator<(const Endpoint& ref) const
 {
     return (mIp < ref.GetIp())

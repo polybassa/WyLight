@@ -1,9 +1,11 @@
 # WyLight cli
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/WiflyControlCli.o
+${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/BroadcastMessage.o
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/BroadcastReceiver.o
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/ClientSocket.o
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/ComProxy.o
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/ConfigControl.o
+${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/Endpoint.o
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/FirmwareControl.o
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/BootloaderControl.o
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/intelhexclass.o
@@ -14,7 +16,6 @@ ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/StartupManager.o
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/TelnetProxy.o
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/WiflyControl.o
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/crc.o
-${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/BroadcastMessage.o
 
 # WyLight WyFileDownloaderCli
 ${BINDIR}/${PRJ_PREFIX}filedownloader.bin: ${OBJDIR}/WyFileDownloader.o
