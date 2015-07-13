@@ -1,27 +1,32 @@
+/**
+                Copyright (C) 2012 - 2015 Nils Weiss, Patrick Bruenn.
 
-#include <iostream>
+    This file is part of WyLight.
+
+    WyLight is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    WyLight is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
+
 #include "WiflyControl.h"
-
-namespace WyLight
-{
-Control* Control__GetControl(const Endpoint& endpoint)
-{
-    if (endpoint.GetType() == Endpoint::RN171)
-        return new RN171Control(endpoint);
-
-    if (endpoint.GetType() == Endpoint::CC3200)
-        return new CC3200Control(endpoint);
-
-    throw FatalError("Invalid Endpoint\r\n");
-}
-}
+#include <iostream>
 
 using namespace WyLight;
 
 int main(int argc, char* argv[])
 {
-    const WyLight::Endpoint endpoint {0x7F000001, 2000};
-    auto ctrl = std::unique_ptr<Control>(WyLight::Control__GetControl(endpoint));
+    //const WyLight::Endpoint endpoint {0x7F000001, 2000};
+    const WyLight::Endpoint endpoint {0xC0A8651E, 2000};
+
+    auto ctrl = std::unique_ptr<Control>(WyLight::Control::Create(endpoint));
     auto& wylight = *(ctrl->mFirmware);
 
     std::cout << "Running...\n";

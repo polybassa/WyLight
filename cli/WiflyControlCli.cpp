@@ -1,20 +1,20 @@
 /**
-                Copyright (C) 2012, 2013 Nils Weiss, Patrick Bruenn.
+                Copyright (C) 2012 - 2015 Nils Weiss, Patrick Bruenn.
 
-    This file is part of Wifly_Light.
+    This file is part of WyLight.
 
-    Wifly_Light is free software: you can redistribute it and/or modify
+    WyLight is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    Wifly_Light is distributed in the hope that it will be useful,
+    WyLight is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
+    along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "BroadcastReceiver.h"
 #include "WiflyControlCli.h"
@@ -41,13 +41,7 @@ bool cmdOptionExists(char** begin, char** end, const std::string& option);
 
 WiflyControlCli::WiflyControlCli(const WyLight::Endpoint& endpoint) : mRunning(true)
 {
-    if (endpoint.GetType() == WyLight::Endpoint::RN171)
-        mControl = std::unique_ptr<WyLight::Control>(new WyLight::RN171Control(endpoint));
-    else if (endpoint.GetType() == WyLight::Endpoint::CC3200)
-        mControl = std::unique_ptr<WyLight::Control>(new WyLight::CC3200Control(endpoint));
-    else
-        throw FatalError("Invalid Endpoint\r\n");
-
+    mControl = std::unique_ptr<WyLight::Control>(WyLight::Control::Create(endpoint));
     cout << "Connecting to " << std::hex << endpoint.GetIp() << ':' << endpoint.GetPort() << std::endl;
 }
 
