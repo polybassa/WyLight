@@ -14,8 +14,25 @@ firmware_pic:
 firmware_pic_release:
 	${WINE} ${PIC_CC8E} $(FW_INC) $(FW_DIR)/main.c -ver#VersionFile.h -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM -O${BINDIR}
 
+firmware_raspi: firmware/crc.c
+firmware_raspi: firmware/CommandIO.c
+firmware_raspi: firmware/eeprom.c
+firmware_raspi: firmware/error.c
+firmware_raspi: firmware/external_eeprom.c
+firmware_raspi: firmware/ledstrip.c
+firmware_raspi: firmware/main.c
+firmware_raspi: firmware/RingBuf.c
+firmware_raspi: firmware/ScriptCtrl.c
+firmware_raspi: firmware/timer.c
+firmware_raspi: firmware/trace.c
+firmware_raspi: firmware/x86_wrapper.c
+firmware_raspi: firmware/spi_spidev.c
+firmware_raspi: firmware/Version.c
+firmware_raspi:
+	$(CC) $? -DDEBUG -DX86 -lpthread -o ${BINDIR}/raspi.bin
+
 firmware_simu:
-	$(CC) -Wall $(FW_INC) ${FW_SRC} -DDEBUG -DX86 -lpthread ${OPENGL_LIB} -o ${BINDIR}/simu.bin
+	$(CC) -Wall $(FW_INC) ${FW_SRC} -DUSE_OPENGL -DDEBUG -DX86 -lpthread ${OPENGL_LIB} -o ${BINDIR}/simu.bin
 
 firmware_test: ${OBJDIR} ${BINDIR} firmware_standart_test
 

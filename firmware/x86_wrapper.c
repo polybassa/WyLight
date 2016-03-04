@@ -64,7 +64,6 @@ void* BroadcastLoop(void* unused)
     int udpSocket = socket(AF_INET, SOCK_DGRAM, 0);
     if (-1 == udpSocket)
         return NULL;
-
     struct sockaddr_in broadcastAddress;
     broadcastAddress.sin_family = AF_INET;
     broadcastAddress.sin_port = htons(BROADCAST_PORT);
@@ -201,6 +200,7 @@ void UART_Send(uns8 ch)
     printf("0x%02x(%c)\n", ch, ch);
     send(g_uartSocket, &ch, sizeof(ch), 0);
 }
+#ifdef USE_OPENGL
 void SPI_Init() {}
 char SPI_Send(uns8 data)
 {
@@ -226,6 +226,7 @@ void SPI_SendLedBuffer(uns8* array) //!!! CHECK if GIE=0 during the sendroutine 
     }
     pthread_mutex_unlock(&g_led_mutex);
 }
+#endif
 
 void init_x86(int start_gl)
 {
@@ -239,8 +240,12 @@ void init_x86(int start_gl)
     pthread_create(&broadcastThread, 0, BroadcastLoop, 0);
     pthread_create(&isrThread, 0, InterruptRoutine, 0);
     pthread_create(&udpThread, 0, UdpRoutine, 0);
-    if (start_gl)
+#ifdef USE_OPENGL
+    if (start_gl) {
         pthread_create(&glThread, 0, gl_start, 0);
+    }
+
+#endif
     pthread_create(&timer1Thread, 0, timer1_interrupt, 0);
     pthread_create(&timer4Thread, 0, timer4_interrupt, 0);
 }
