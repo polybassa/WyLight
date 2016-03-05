@@ -19,10 +19,11 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
+#include <pthread.h>
 #include <stdio.h>
 #include <time.h>
 
-#include "x86_wrapper.h"
+#include "platform.h"
 
 static pthread_mutex_t g_led_mutex = PTHREAD_MUTEX_INITIALIZER;
 static uns8 g_led_status[NUM_OF_LED * 3];

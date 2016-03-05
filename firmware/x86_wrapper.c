@@ -16,18 +16,17 @@
    You should have received a copy of the GNU General Public License
    along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
+#include <pthread.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include "x86_wrapper.h"
+
+#include "platform.h"
+#include "ledstrip.h"
 #include "RingBuf.h"
 #include "ScriptCtrl.h"
 #include "timer.h"
 #include "Version.h"
-
-extern unsigned char do_update_fade;
-
-//const char verStr[] = VER_STRING;
 
 pthread_mutex_t g_ring_mutex = PTHREAD_MUTEX_INITIALIZER;
 extern uns8 g_UpdateLed;

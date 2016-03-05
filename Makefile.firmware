@@ -35,7 +35,7 @@ firmware_raspi: $(FW_CORE)
 
 firmware_simu: firmware/spi_opengl.c
 firmware_simu: $(FW_CORE)
-	$(CC) -Wall $(FW_INC) $? -DUSE_OPENGL -DDEBUG -DX86 -lpthread ${OPENGL_LIB} -o ${BINDIR}/simu.bin
+	$(CC) -Wall $(FW_INC) $? -DDEBUG -DX86 -lpthread ${OPENGL_LIB} -o ${BINDIR}/simu.bin
 
 firmware_test: ${OBJDIR} ${BINDIR} firmware_standart_test
 
