@@ -24,17 +24,10 @@
 
 #include "x86_wrapper.h"
 
-void gl_print_text(char* text, GLfloat x, GLfloat y)
-{
-    glRasterPos3f(0, 0, 0.0);
-    glTranslatef(x, y, 0.0);
-    while (*text != 0) {
-        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, *text++);
-    }
-    glTranslatef(-x, -y, 0.0);
-}
+static pthread_mutex_t g_led_mutex = PTHREAD_MUTEX_INITIALIZER;
+static uns8 g_led_status[NUM_OF_LED * 3];
 
-void gl_print_sphere(GLfloat x, GLfloat y, float r, float g, float b)
+static void gl_print_sphere(GLfloat x, GLfloat y, float r, float g, float b)
 {
     glColor4f(r, g, b, 1.0);
     glTranslatef(x, y, -50.0);
@@ -42,7 +35,7 @@ void gl_print_sphere(GLfloat x, GLfloat y, float r, float g, float b)
     glTranslatef(-x, -y, +50.0);
 }
 
-void gl_display(void)
+static void gl_display(void)
 {
     static unsigned long frames = 0;
     static struct timespec lastTime;
@@ -105,4 +98,36 @@ void* gl_start(void* unused)
     glViewport(0, 0, 300, 300);
     glutMainLoop();
     return 0;
+}
+
+void SPI_Init()
+{
+    pthread_t glThread;
+
+    pthread_create(&glThread, 0, gl_start, 0);
+}
+
+char SPI_Send(uns8 data)
+{
+    int i;
+    for (i = 3 * NUM_OF_LED - 1; i > 0; i--) {
+        g_led_status[i] = g_led_status[i - 1];
+    }
+    g_led_status[0] = data;
+    return g_led_status[0];
+}
+
+void SPI_SendLedBuffer(uns8* array) //!!! CHECK if GIE=0 during the sendroutine improves the result
+{
+    //array must be the address of the first byte
+    uns8* end;
+    //calculate where the end is
+    end = array + (NUM_OF_LED * 3);
+    //send all
+
+    pthread_mutex_lock(&g_led_mutex);
+    for ( ; array < end; array++) {
+        SPI_Send(*array);
+    }
+    pthread_mutex_unlock(&g_led_mutex);
 }

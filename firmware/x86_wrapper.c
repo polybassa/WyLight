@@ -29,10 +29,7 @@ extern unsigned char do_update_fade;
 
 //const char verStr[] = VER_STRING;
 
-bit g_led_off = 1; //X86 replacement for PORTC.0
-pthread_mutex_t g_led_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t g_ring_mutex = PTHREAD_MUTEX_INITIALIZER;
-uns8 g_led_status[NUM_OF_LED * 3];
 extern uns8 g_UpdateLed;
 
 struct RingBuffer g_TraceBuf;
@@ -113,13 +110,13 @@ void* InterruptRoutine(void* unused)
             uns8 buf[1024];
             bytesRead = recv(g_uartSocket, buf, sizeof(buf), 0);
             printf("%d bytesRead\n", bytesRead);
-            pthread_mutex_lock(&g_led_mutex);
+            pthread_mutex_lock(&g_ring_mutex);
             int i;
             for (i = 0; i < bytesRead; i++) {
                 if (!RingBuf_HasError(&g_RingBuf))
                     RingBuf_Put(&g_RingBuf, buf[i]);
             }
-            pthread_mutex_unlock(&g_led_mutex);
+            pthread_mutex_unlock(&g_ring_mutex);
         } while (bytesRead > 0);
         // don't allow immediate reconnection
         sleep(1);
@@ -151,13 +148,13 @@ void* UdpRoutine(void* unused)
             uns8 buf[1024];
             bytesRead = recvfrom(listenSocket, buf, sizeof(buf), 0, NULL, NULL);
             printf("%d bytesRead\n", bytesRead);
-            pthread_mutex_lock(&g_led_mutex);
+            pthread_mutex_lock(&g_ring_mutex);
             int i;
             for (i = 0; i < bytesRead; i++) {
                 if (!RingBuf_HasError(&g_RingBuf))
                     RingBuf_Put(&g_RingBuf, buf[i]);
             }
-            pthread_mutex_unlock(&g_led_mutex);
+            pthread_mutex_unlock(&g_ring_mutex);
         } while (bytesRead > 0);
         // don't allow immediate reconnection
         sleep(1);
@@ -200,52 +197,19 @@ void UART_Send(uns8 ch)
     printf("0x%02x(%c)\n", ch, ch);
     send(g_uartSocket, &ch, sizeof(ch), 0);
 }
-#ifdef USE_OPENGL
-void SPI_Init() {}
-char SPI_Send(uns8 data)
-{
-    int i;
-    for (i = 3 * NUM_OF_LED - 1; i > 0; i--) {
-        g_led_status[i] = g_led_status[i - 1];
-    }
-    g_led_status[0] = data;
-    return g_led_status[0];
-}
-
-void SPI_SendLedBuffer(uns8* array) //!!! CHECK if GIE=0 during the sendroutine improves the result
-{
-    //array must be the address of the first byte
-    uns8* end;
-    //calculate where the end is
-    end = array + (NUM_OF_LED * 3);
-    //send all
-
-    pthread_mutex_lock(&g_led_mutex);
-    for ( ; array < end; array++) {
-        SPI_Send(*array);
-    }
-    pthread_mutex_unlock(&g_led_mutex);
-}
-#endif
 
 void init_x86(int start_gl)
 {
     pthread_t broadcastThread;
     pthread_t isrThread;
     pthread_t udpThread;
-    pthread_t glThread;
     pthread_t timer1Thread;
     pthread_t timer4Thread;
 
     pthread_create(&broadcastThread, 0, BroadcastLoop, 0);
     pthread_create(&isrThread, 0, InterruptRoutine, 0);
     pthread_create(&udpThread, 0, UdpRoutine, 0);
-#ifdef USE_OPENGL
-    if (start_gl) {
-        pthread_create(&glThread, 0, gl_start, 0);
-    }
 
-#endif
     pthread_create(&timer1Thread, 0, timer1_interrupt, 0);
     pthread_create(&timer4Thread, 0, timer4_interrupt, 0);
 }

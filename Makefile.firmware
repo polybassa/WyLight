@@ -33,7 +33,7 @@ firmware_raspi: firmware/spi_spidev.c
 firmware_raspi: $(FW_CORE)
 	$(CC) $? -DDEBUG -DX86 -lpthread -o ${BINDIR}/raspi.bin
 
-firmware_simu: firmware/x86_gl.c
+firmware_simu: firmware/spi_opengl.c
 firmware_simu: $(FW_CORE)
 	$(CC) -Wall $(FW_INC) $? -DUSE_OPENGL -DDEBUG -DX86 -lpthread ${OPENGL_LIB} -o ${BINDIR}/simu.bin
 

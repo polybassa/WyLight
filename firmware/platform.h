@@ -78,7 +78,6 @@ typedef uint16_t uns16;
 
 #ifndef cc3200
 //global variables
-extern bit g_led_off;
 extern uns8 g_UpdateFade;
 extern jmp_buf g_ResetEnvironment;
 #endif /* #ifndef cc3200 */
