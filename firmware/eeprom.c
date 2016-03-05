@@ -1,5 +1,5 @@
 /**
-   Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+   Copyright (C) 2012 - 2016 Nils Weiss, Patrick Bruenn.
 
    This file is part of Wifly_Light.
 
@@ -20,7 +20,6 @@
 
 #define Eeprom_Init()
 
-#ifdef __CC8E__
 //*********************** EEPROM BYTE SCHREIBEN  **********************************************
 void Eeprom_Write(const uns16 adress, const uns8 data)
 {
@@ -58,32 +57,12 @@ uns8 Eeprom_Read(const uns16 adress)
     return data;
 }
 
-#else /* X86 */
-
-#include "ScriptCtrl.h"
-#include "wifly_cmd.h"
-#include <assert.h>
-static uns8 g_Eeprom[(1 + SCRIPTCTRL_NUM_CMD_MAX) * sizeof(struct led_cmd)];
-
-uns8 Eeprom_Read(const uns16 adress)
-{
-    return g_Eeprom[adress];
-}
-
-void Eeprom_Write(const uns16 adress, const uns8 data)
-{
-    assert(adress < sizeof(g_Eeprom));
-    g_Eeprom[adress] = data;
-}
-#endif /* #ifdef X86 */
 //*********************** EEPROM BYTEARRAY SCHREIBEN  **************************************
 
 void Eeprom_WriteBlock(const uns8* array, uns16 adress, const uns8 length) //Zum Ausführen eines beliebigen Befehls durch den Programmcode
 {
     if (!array) return;
-#ifndef __CC8E__
-    memcpy(&g_Eeprom[adress], array, length);
-#else
+
     uns8 i;
     for (i = 0; i < length; i++) {
         uns8* pByte = (uns8*)array;
@@ -91,7 +70,6 @@ void Eeprom_WriteBlock(const uns8* array, uns16 adress, const uns8 length) //Zum
         adress++;
         array++;
     }
-#endif
 }
 
 //*********************** EEPROM BYTEARRAY LESEN  **************************************
@@ -99,14 +77,11 @@ void Eeprom_WriteBlock(const uns8* array, uns16 adress, const uns8 length) //Zum
 void Eeprom_ReadBlock(uns8* array, uns16 adress, const uns8 length) //Zum Ausführen eines beliebigen Befehls durch den Programmcode
 {
     if (!array) return;
-#ifndef __CC8E__
-    memcpy(array, &g_Eeprom[adress], length);
-#else
+
     uns8 i, temp;
     for (i = 0; i < length; i++) {
         temp = Eeprom_Read(adress);
         array[i] = temp;
         adress++;
     }
-#endif
 }

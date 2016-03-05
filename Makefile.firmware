@@ -3,7 +3,6 @@ FW_TEST_SRC=$(wildcard $(FW_DIR)/*_ut.c)
 
 FW_CORE := firmware/crc.c
 FW_CORE += firmware/CommandIO.c
-FW_CORE += firmware/eeprom.c
 FW_CORE += firmware/error.c
 FW_CORE += firmware/external_eeprom.c
 FW_CORE += firmware/ledstrip.c
@@ -19,7 +18,7 @@ ${BINDIR}/CommandIO_ut.bin: ${OBJDIR}/CommandIO_ut.o ${OBJDIR}/CommandIO.o
 ${BINDIR}/crc_ut.bin: ${OBJDIR}/crc_ut.o ${OBJDIR}/crc.o
 ${BINDIR}/ledstrip_ut.bin: ${OBJDIR}/ledstrip_ut.o ${OBJDIR}/ledstrip.o
 ${BINDIR}/RingBuf_ut.bin: ${OBJDIR}/RingBuf_ut.o ${OBJDIR}/RingBuf.o
-${BINDIR}/ScriptCtrl_ut.bin: ${OBJDIR}/ScriptCtrl_ut.o ${OBJDIR}/ScriptCtrl.o ${OBJDIR}/eeprom.o
+${BINDIR}/ScriptCtrl_ut.bin: ${OBJDIR}/ScriptCtrl_ut.o ${OBJDIR}/ScriptCtrl.o ${OBJDIR}/eeprom_ram.o
 
 PIC_FLAGS := -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM
 
@@ -29,10 +28,12 @@ firmware_pic:
 firmware_pic_release:
 	${WINE} ${PIC_CC8E} $(FW_INC) $(FW_DIR)/main.c -ver#VersionFile.h ${PIC_FLAGS} -O${BINDIR}
 
+firmware_raspi: firmware/eeprom_ram.c
 firmware_raspi: firmware/spi_spidev.c
 firmware_raspi: $(FW_CORE)
 	$(CC) $? -DDEBUG -DX86 -lpthread -o ${BINDIR}/raspi.bin
 
+firmware_simu: firmware/eeprom_ram.c
 firmware_simu: firmware/spi_opengl.c
 firmware_simu: $(FW_CORE)
 	$(CC) -Wall $(FW_INC) $? -DDEBUG -DX86 -lpthread ${OPENGL_LIB} -o ${BINDIR}/simu.bin
