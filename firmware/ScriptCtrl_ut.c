@@ -56,9 +56,6 @@ void Ledstrip_SetGradient(struct cmd_set_fade* pCmd)
     gSetGradientWasCalled = TRUE;
 }
 
-void Eeprom_Init(void)
-{}
-
 /******************************* test functions *******************************/
 /* add simple command and read back */
 int ut_ScriptCtrl_SimpleReadWrite(void)

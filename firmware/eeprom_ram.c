@@ -21,9 +21,10 @@
 #include "ScriptCtrl.h"
 #include "wifly_cmd.h"
 
-#define Eeprom_Init()
-
 static uns8 g_Eeprom[(1 + SCRIPTCTRL_NUM_CMD_MAX) * sizeof(struct led_cmd)];
+
+void Eeprom_Init(void)
+{}
 
 uns8 Eeprom_Read(const uns16 adress)
 {
