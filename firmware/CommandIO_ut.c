@@ -78,16 +78,6 @@ void Rtc_Ctl(enum RTC_request req, struct rtc_time* pRtcTime)
     }
 }
 
-uns8 Timer_PrintCycletime(uns16* pArray, uns16 arraySize)
-{
-    int i;
-    uns8* pData = (uns8*)pArray;
-    for (i = 0; i < arraySize; i++) {
-        *pData++ = g_RandomDataPool[i];
-    }
-    return i;
-}
-
 uns8 Trace_Print(uns8* pArray, uns16 arraySize)
 {
     int i;

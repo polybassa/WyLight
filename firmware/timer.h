@@ -36,17 +36,14 @@ enum CYCLETIME_METHODE {
     CYCLETIME_METHODE_ENUM_SIZE //!!! MUST be the last element of the enum
 };
 
-extern enum CYCLETIME_METHODE enumMethode;
-
 struct CycleTimeBuffer {
     uns16 maxCycleTime[CYCLETIME_METHODE_ENUM_SIZE];
     uns16 tempCycleTime[CYCLETIME_METHODE_ENUM_SIZE];
 };
 
-extern struct CycleTimeBuffer g_CycleTimeBuffer;
-
 void Timer_Init();
 
+#if defined(DEBUG) && defined(__CC8E__)
 /**
 ** Function start the internal Stopwatch. It's realised with the Timer3 Modul.
 ** The Range of the Stopwatch is from 0.5µSec to 32.7mSec
@@ -59,6 +56,11 @@ void Timer_StartStopwatch(const enum CYCLETIME_METHODE destMethode);
 void Timer_StopStopwatch(const enum CYCLETIME_METHODE destMethode);
 
 uns8 Timer_PrintCycletime(uns16* pArray, const uns16 arraySize);
+#else
+#define Timer_StartStopwatch(x)
+#define Timer_StopStopwatch(x)
+#define Timer_PrintCycletime(x, y) 0
+#endif
 
 #ifdef __CC8E__
 #define Timer1Interrupt(x) TMR1IF = 0;

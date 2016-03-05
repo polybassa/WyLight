@@ -44,7 +44,6 @@
     while (0)                                                                         //Eingänge am PORTB initialisieren
 #define Platform_OsciInit(x) do { OSCCON = 0b01110010; PLLEN = 1; } \
     while (0)                                                                    //OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
-#define Platform_ReadPerformanceCounter(x) {x.low8 = TMR3L; x.high8 = TMR3H; }
 
 void Platform_AllowInterrupts();
 void Platform_EnableAllInterrupts();
@@ -101,7 +100,6 @@ extern jmp_buf g_ResetEnvironment;
 #define InitFET(x)
 #define Platform_IOInit(x)
 #define Platform_OsciInit(x)
-#define Platform_ReadPerformanceCounter(x) x = 0;     /* TODO implement this on X86 */
 #define softReset(x) longjmp(g_ResetEnvironment, 1)
 #define softResetJumpDestination(x) setjmp(g_ResetEnvironment)
 #else /*ifdef cc3200 */

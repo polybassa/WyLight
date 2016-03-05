@@ -1,5 +1,5 @@
 /**
-   Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+   Copyright (C) 2012 - 2016 Nils Weiss, Patrick Bruenn.
 
    This file is part of Wifly_Light.
 
@@ -18,9 +18,6 @@
 
 #include "timer.h"
 #include "trace.h"
-
-struct CycleTimeBuffer g_CycleTimeBuffer;
-enum CYCLETIME_METHODE enumMethode;
 
 void Timer_Init()
 {
@@ -74,13 +71,20 @@ void Timer_Init()
 #endif /* #ifdef __CC8E__ */
 }
 
-#ifdef DEBUG
+#if defined(DEBUG) && defined(__CC8E__)
+static struct CycleTimeBuffer g_CycleTimeBuffer;
+static enum CYCLETIME_METHODE enumMethode;
+
+#define Platform_ReadPerformanceCounter(x) do { \
+        x.low8 = TMR3L; \
+        x.high8 = TMR3H; \
+} while (0)
+
 void Timer_StartStopwatch(const enum CYCLETIME_METHODE destMethode)
 {
     uns16 tempTime;
 
     Platform_ReadPerformanceCounter(tempTime);
-
     g_CycleTimeBuffer.tempCycleTime[destMethode] = tempTime;
 }
 
@@ -114,17 +118,4 @@ uns8 Timer_PrintCycletime(uns16* pArray, const uns16 arraySize)
     }
     return i + i;
 }
-#else
-
-void Timer_StartStopwatch(const enum CYCLETIME_METHODE destMethode)
-{}
-
-void Timer_StopStopwatch(const enum CYCLETIME_METHODE destMethode)
-{}
-
-uns8 Timer_PrintCycletime(uns16* pArray, const uns16 arraySize)
-{
-    return 0;
-}
-
-#endif /*DEBUG*/
+#endif /* #if defined(DEBUG) && defined(__CC8E__) */
