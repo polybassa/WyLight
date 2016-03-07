@@ -22,10 +22,12 @@ before_install:
 
 install:
   - export PATH=$PATH:$PWD/gcc-arm-none-eabi-5_2-2015q4/bin
-  - export CXX="g++-5" CC="gcc-5"
+  - export CXX="g++-5"
+  - export CC="gcc-5"
 
 before_script: 
         - arm-none-eabi-gcc --version
+        - ${CC} --version
 
 script: 
         - ./configure
