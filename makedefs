@@ -115,10 +115,6 @@ LDFLAGS+=	-lpthread \
 			-lcrypto
 
 CPP=$(CXX)
-CC=$(CC)
-AR=ar
-LD=ld
-OBJCOPY=objcopy
 
 endif
 
