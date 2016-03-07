@@ -50,6 +50,17 @@ const std::string FwCmdLoopOn::TOKEN("loop");
 const std::string FwCmdLoopOff::TOKEN("loop_off");
 const std::string FwCmdWait::TOKEN("wait");
 
+Control* Control::Create(const Endpoint& endpoint)
+{
+    if (endpoint.GetType() == Endpoint::RN171)
+        return new RN171Control(endpoint);
+
+    if (endpoint.GetType() == Endpoint::CC3200)
+        return new CC3200Control(endpoint);
+
+    throw FatalError("Invalid endpoint\r\n");
+}
+
 Control::Control(const Endpoint&                            endpoint,
                  std::unique_ptr<const BootloaderControl>&& bootloader,
                  std::unique_ptr<const ConfigControl>&&     config,

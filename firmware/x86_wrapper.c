@@ -68,7 +68,7 @@ void* BroadcastLoop(void* unused)
     struct sockaddr_in broadcastAddress;
     broadcastAddress.sin_family = AF_INET;
     broadcastAddress.sin_port = htons(BROADCAST_PORT);
-    broadcastAddress.sin_addr.s_addr = htonl(INADDR_NONE);
+    broadcastAddress.sin_addr.s_addr = htonl(INADDR_ANY);
     int val = 1;
     setsockopt(udpSocket, SOL_SOCKET, SO_BROADCAST, &val, sizeof(val));
 
@@ -164,6 +164,8 @@ void* UdpRoutine(void* unused)
         sleep(1);
     }
 }
+
+void Eeprom_Init(void){}
 
 void I2C_Init(){}
 void I2C_Write(const uns8 slaveaddr, const uns8 dataaddr, const uns8 data){}

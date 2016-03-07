@@ -13,6 +13,7 @@ $(LIB_TARGET): $(OUT_DIR) $(LIB_OBJ)
 library: $(LIB_TARGET)
 
 ${BINDIR}/BroadcastReceiver_ut.bin: 	clean \
+										${OBJDIR}/Endpoint.o \
 										${OBJDIR}/BroadcastMessage.o \
 										${OBJDIR}/BroadcastReceiver.o \
 										${OBJDIR}/BroadcastReceiver_ut.o
@@ -30,7 +31,7 @@ ${BINDIR}/FtpServer_ut.bin: 	clean \
 								$(OBJDIR)/crc.o
 
 ${BINDIR}/MessageQueue_ut.bin: 	clean \
-								$(OBJDIR)/MessageQueue_ut.o 
+								$(OBJDIR)/MessageQueue_ut.o
 
 ${BINDIR}/Script_ut.bin:	clean \
 							$(OBJDIR)/Script_ut.o \
@@ -46,6 +47,8 @@ ${BINDIR}/ScriptManager_ut.bin: 	clean \
 									$(OBJDIR)/ScriptManager.o
 
 ${BINDIR}/StartupManager_ut.bin: 	clean \
+									$(OBJDIR)/BroadcastMessage.o \
+									$(OBJDIR)/Endpoint.o \
 									$(OBJDIR)/StartupManager_ut.o \
 									$(OBJDIR)/StartupManager.o
 
@@ -59,6 +62,8 @@ ${BINDIR}/WiflyControl_ut.bin: 	clean \
 								$(OBJDIR)/ConfigControl.o \
 								$(OBJDIR)/FirmwareControl.o \
 								$(OBJDIR)/BootloaderControl.o \
+								$(OBJDIR)/BroadcastMessage.o \
+								$(OBJDIR)/Endpoint.o \
 								$(OBJDIR)/intelhexclass.o \
 								$(OBJDIR)/MaskBuffer.o \
 								$(OBJDIR)/crc.o \
@@ -74,7 +79,7 @@ library_standart_test: 	${BINDIR}/BroadcastReceiver_ut.bin \
 						${BINDIR}/ScriptManager_ut.bin \
 						${BINDIR}/TelnetProxy_ut.bin \
 						${BINDIR}/WiflyControl_ut.bin \
-						${BINDIR}/StartupManager_ut.bin 
+						${BINDIR}/StartupManager_ut.bin
 	@$(foreach test,$^,./$(test);)
 
 library_ftp_test: ${BINDIR}/FtpServer_ut.bin

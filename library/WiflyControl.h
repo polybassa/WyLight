@@ -64,6 +64,8 @@ public:
     const std::unique_ptr<const FirmwareControl> mFirmware;
     const Endpoint& getEndpoint(void) const;
 
+    static Control* Create(const Endpoint& endpoint);
+
 /* ------------------------- PRIVATE DECLARATIONS ------------------------- */
 protected:
     Control(const Endpoint&                            endpoint,

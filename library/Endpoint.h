@@ -20,8 +20,10 @@
 #define _ENDPOINT_H_
 #include <atomic>
 #include <cassert>
+#include <cstring>
 #include <ostream>
 #include <stddef.h>
+#include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <sys/time.h>
@@ -30,136 +32,53 @@
 
 namespace WyLight
 {
-class Endpoint {
-public:
+struct Endpoint {
     enum TYPE {
         RN171 = 0,
         CC3200
     };
 
-    Endpoint(const BroadcastMessage& msg, sockaddr_in* addr) : mIp(ntohl(addr->sin_addr.s_addr)),
-        mPort(ntohs(msg.port)),
-        mScore(1),
-        mDeviceId(&msg.deviceId[0],
-                  strnlen(&msg.deviceId[0],
-                          sizeof(msg.deviceId))),
-        mType(msg.IsRN171Broadcast() ? RN171 : CC3200)
-    {}
-
+    Endpoint(const BroadcastMessage& msg, sockaddr_in* addr);
     Endpoint(uint32_t            ip = 0,
              uint16_t            port = 0,
              uint8_t             score = 0,
              std::string         devId = "",
-             enum Endpoint::TYPE type = RN171) : mIp(ip), mPort(port), mScore(score), mDeviceId(devId), mType(type)
-    {}
+             enum Endpoint::TYPE type = RN171);
 
-    bool operator<(const Endpoint& ref) const
+    static uint32_t IPv4FromString(const char* const ipv4)
     {
-        return (mIp < ref.GetIp())
-               || ((mIp == ref.GetIp()) && (mPort < ref.GetPort()));
+        in_addr_t addr;
+        inet_pton(AF_INET, ipv4, &addr);
+        return ntohl(addr);
     }
+    Endpoint(const char* const ipv4, uint16_t port)
+        : Endpoint(IPv4FromString(ipv4), port) {}
 
-    void WriteTo(std::ostream& out) const
-    {
-        out << (int)mScore << ' ' <<
-            std::hex << GetIp() << ' ' <<
-            std::dec << GetPort() << ' ' <<
-            GetDeviceId() << '\n';
-    }
+    bool operator<(const Endpoint& ref) const;
+    void WriteTo(std::ostream& out) const;
 
-    friend std::ostream& operator<<(std::ostream& out, const Endpoint& ref)
-    {
-        return out << (int)ref.mScore << ' ' <<
-               ((ref.mIp & 0xff000000) >> 24) << '.' <<
-               ((ref.mIp & 0x00ff0000) >> 16) << '.' <<
-               ((ref.mIp & 0x0000ff00) >> 8) << '.' <<
-               (ref.mIp & 0x000000ff) <<
-               ':' << ref.mPort <<
-               "  :  " << ref.mDeviceId;
-    }
-
-    friend std::istream& operator>>(std::istream& in, Endpoint& ref)
-    {
-        std::string ip;
-        in >> ref.mScore >> ip >> ref.mPort >> ref.mDeviceId;
-        ref.mIp = WiflyColor::ToARGB(ip);
-        return in;
-    }
-
-    friend bool operator==(const Endpoint& lhs, const Endpoint& rhs)
-    {
-        if ((lhs.mDeviceId == rhs.mDeviceId) &&
-            (lhs.mIp == rhs.mIp) &&
-            (lhs.mPort == rhs.mPort) &&
-            (lhs.mScore == rhs.mScore)
-            )
-            return true;
-        else
-            return false;
-    }
-
-    friend bool operator!=(const Endpoint& lhs, const Endpoint& rhs)
-    {
-        return !(lhs == rhs);
-    }
+    friend std::ostream& operator<<(std::ostream& out, const Endpoint& ref);
+    friend std::istream& operator>>(std::istream& in, Endpoint& ref);
+    friend bool operator==(const Endpoint& lhs, const Endpoint& rhs);
+    friend bool operator!=(const Endpoint& lhs, const Endpoint& rhs);
 
     /*
      * @return ipv4 address(A) and port(P) as a combined 64 bit value 0xAAAAAAAA0000PPPP
      */
-    uint64_t AsUint64(void) const
-    {
-        return ((uint64_t)mIp << 32) | mPort;
-    }
-
-    std::string GetDeviceId(void) const
-    {
-        return mDeviceId;
-    }
-
-    uint32_t GetIp(void) const
-    {
-        return mIp;
-    }
-
-    uint16_t GetPort(void) const
-    {
-        return mPort;
-    }
-
-    uint8_t GetScore(void) const
-    {
-        return mScore;
-    }
-
-    enum TYPE GetType(void) const
-    {
-        return mType;
-    }
-
-    void SetDeviceId(const std::string& deviceId)
-    {
-        mDeviceId = deviceId;
-    }
-
-    void SetScore(const uint8_t score)
-    {
-        mScore = score;
-    }
-
+    uint64_t AsUint64(void) const;
+    std::string GetDeviceId(void) const;
+    uint32_t GetIp(void) const;
+    uint16_t GetPort(void) const;
+    uint8_t GetScore(void) const;
+    enum TYPE GetType(void) const;
+    void SetDeviceId(const std::string& deviceId);
+    void SetScore(const uint8_t score);
     /*
      * Increment score
      * @return reference to itself
      */
-    Endpoint& operator++(void)
-    {
-        if (mScore < 255) ++mScore;
-        return *this;
-    }
-
-    bool IsValid(void) const
-    {
-        return (0 != mIp) && (0 != mPort);
-    }
+    Endpoint& operator++(void);
+    bool IsValid(void) const;
 
 private:
     uint32_t mIp;
