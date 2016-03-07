@@ -133,21 +133,27 @@ ${OBJDIR}/versionfile.o: $(MAKECMDGOALS)/versionfile.txt
 	 @${OBJCOPY} --input binary --output elf32-littlearm --binary-architecture arm ${<} ${@}
 
 ${OBJDIR}/%.o: %.cpp
+	 @echo "CPP ${<}"
 	 @${CPP} ${CPPFLAGS} ${DEFINES} -o ${@} ${<}
 
 ${OBJDIR}/%.o: %.c
+	 @echo "CC ${<}"
 	 @${CC} ${CFLAGS} ${DEFINES} -c -Dgcc -o ${@} ${<}
 
 ${OBJDIR}/%.o: %.S
+	@echo "AS ${<}"
 	@${CC} ${AFLAGS} ${DEFINES} -Dgcc -o ${@} -c ${<}
 
 ${BINDIR}/%.a:
+	 @echo "AR ${<}"
 	 @${AR} -cr ${@} ${^}
 
 ${BINDIR}/%.elf:
+	@echo "LD ${@}"
 	 @${CPP} -T ${ROOT}/${FLAVOUR}/${PRJ_NAME}.ld ${LDFLAGS} --entry ResetISR -o ${@} $(filter %.o %.a, ${^}) \
 	 -lgcc -lm -lc -lstdc++ -lsupc++
 	 @${OBJCOPY} -O binary ${@} ${@:.elf=.bin}
 
 ${BINDIR}/%.bin:
+	@echo "LD ${@}"
 	@${CPP} ${LDFLAGS} ${DEFINES} -o ${@} $(filter %.o %.a, ${^})
