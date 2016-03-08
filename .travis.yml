@@ -37,4 +37,7 @@ before_script:
 script: 
         - ./configure
         - make test 
-        - make clean 
+        - make clean
+        - make firmware_pic
+        - make clean
+        - make cli 
