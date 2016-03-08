@@ -13,6 +13,7 @@ addons:
       - gcc-5
       - cppcheck
       - wine
+      - freeglut3-dev
 
 # We use cpp for unit tests, and c for the main project.
 language: cpp
@@ -40,4 +41,6 @@ script:
         - make clean
         - make firmware_pic
         - make clean
-        - make cli 
+        - make cli
+        - make clean
+        - make firmware_simu 
