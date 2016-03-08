@@ -62,9 +62,9 @@ extern "C" {
 *******************************************************************************/
 
 #if defined (SL_DEVICE)
-#define __dev   1
+#define __dev  (1)
 #else
-#define __dev   0
+#define __dev  (0)
 #endif
 
 #if defined (SL_DEVICE) && defined (SL_INC_EXT_API)
