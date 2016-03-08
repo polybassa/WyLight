@@ -1,4 +1,4 @@
-Wy_Light
+Wy_Light ![build status](https://travis-ci.org/polybassa/WyLight.svg?branch=master)
 ===========
 
  [Documentation](http://polybassa.github.com/WyLight/index.html)
