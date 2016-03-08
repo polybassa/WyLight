@@ -64,7 +64,6 @@ extern "C" {
  ******************************************************************************
  */
   
-#include <string.h>  
 #include "cc_pal.h"
 
 /*!
@@ -899,7 +898,6 @@ typedef OsiLockObj_t                            _SlLockObj_t;
 */
 #define sl_Free(pMem)                                   mem_Free(pMem)
 #else
-#include <stdlib.h>
 /*!
     \brief
     \sa

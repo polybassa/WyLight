@@ -16,8 +16,9 @@
    You should have received a copy of the GNU General Public License
    along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include "wy_fs.h"
+
 #include "trace.h"
+#include "wy_fs.h"
 
 static const int __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
