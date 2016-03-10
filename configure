@@ -637,12 +637,13 @@ ARM_AR
 ARM_GPP
 ARM_GCC
 PIC_CC8E
+OPENSSL
 UNCRUSTIFY
 GIT
 DOXYGEN
 NDK
 CPPCHECKER
-OPENSSL
+FTP
 WINE
 AM_CXXFLAGS
 SET_MAKE
@@ -3464,16 +3465,16 @@ $as_echo "no" >&6; }
 fi
 
 
-# Extract the first word of "openssl", so it can be a program name with args.
-set dummy openssl; ac_word=$2
+# Extract the first word of "ftp", so it can be a program name with args.
+set dummy ftp; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
-if ${ac_cv_path_OPENSSL+:} false; then :
+if ${ac_cv_path_FTP+:} false; then :
   $as_echo_n "(cached) " >&6
 else
-  case $OPENSSL in
+  case $FTP in
   [\\/]* | ?:[\\/]*)
-  ac_cv_path_OPENSSL="$OPENSSL" # Let the user override the test with a path.
+  ac_cv_path_FTP="$FTP" # Let the user override the test with a path.
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
@@ -3483,7 +3484,7 @@ do
   test -z "$as_dir" && as_dir=.
     for ac_exec_ext in '' $ac_executable_extensions; do
   if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_path_OPENSSL="$as_dir/$ac_word$ac_exec_ext"
+    ac_cv_path_FTP="$as_dir/$ac_word$ac_exec_ext"
     $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
@@ -3491,14 +3492,14 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_OPENSSL" && ac_cv_path_OPENSSL="not_found"
+  test -z "$ac_cv_path_FTP" && ac_cv_path_FTP="not_found"
   ;;
 esac
 fi
-OPENSSL=$ac_cv_path_OPENSSL
-if test -n "$OPENSSL"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $OPENSSL" >&5
-$as_echo "$OPENSSL" >&6; }
+FTP=$ac_cv_path_FTP
+if test -n "$FTP"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $FTP" >&5
+$as_echo "$FTP" >&6; }
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
@@ -3750,6 +3751,11 @@ else
 $as_echo "no" >&6; }
 fi
 
+
+
+if test -z "$FTP" || test "X$FTP" = "Xnot_found"; then
+	as_fn_error $? "'ftp' not found, but required for unittest!" "$LINENO" 5
+fi
 
 
 if test -z "$OPENSSL" || test "X$OPENSSL" = "Xnot_found"; then

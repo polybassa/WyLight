@@ -17,13 +17,18 @@ AC_SUBST(AM_CXXFLAGS, [-pedantic])
 AC_SUBST(AM_CXXFLAGS, [-Wall])
 
 AC_PATH_PROG(WINE, wine,[not_found])
-AC_PATH_PROG(OPENSSL, openssl,[not_found])
+AC_PATH_PROG(FTP, ftp,[not_found])
 AC_PATH_PROG(CPPCHECKER, cppcheck, [not_found])
 AC_PATH_PROG(NDK, ndk-build, [not_found])
 AC_PATH_PROG(DOXYGEN, doxygen, [not_found])
 AC_PATH_PROG(GIT, git, [not_found])
 AC_PATH_PROG(UNCRUSTIFY, uncrustify, [not_found])
 AC_PATH_PROG(OPENSSL, openssl, [not_found])
+
+if test -z "$FTP" || test "X$FTP" = "Xnot_found"; then
+	AC_MSG_ERROR(['ftp' not found, but required for unittest!])
+fi
+
 
 if test -z "$OPENSSL" || test "X$OPENSSL" = "Xnot_found"; then 
 	AC_MSG_ERROR([openssl not found!]) 
