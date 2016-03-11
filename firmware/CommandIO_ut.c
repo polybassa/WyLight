@@ -88,6 +88,12 @@ uns8 Trace_Print(uns8* pArray, uns16 arraySize)
     return i;
 }
 
+uns8 Timer_PrintCycletime(uns16* pArray, const uns16 arraySize)
+{
+    memcpy(pArray, g_RandomDataPool, arraySize);
+    return arraySize;
+}
+
 /*--------------- TEST FUNCTIONS----------------*/
 
 int ut_CommandIO_Init(void)

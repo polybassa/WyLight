@@ -59,7 +59,6 @@ uns8 Timer_PrintCycletime(uns16* pArray, const uns16 arraySize);
 #else
 #define Timer_StartStopwatch(x)
 #define Timer_StopStopwatch(x)
-#define Timer_PrintCycletime(x, y) 0
 #endif
 
 #ifdef __CC8E__
