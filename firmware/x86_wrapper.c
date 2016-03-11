@@ -193,7 +193,7 @@ void UART_Send(uns8 ch)
     send(g_uartSocket, &ch, sizeof(ch), 0);
 }
 
-uns8 Timer_PrintCycletime(uns16* pArray, const uns16 arraySize)
+uns16 Timer_PrintCycletime(uns16* pArray, const uns16 arraySize)
 {
     return arraySize;
 }

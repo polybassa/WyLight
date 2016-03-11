@@ -106,10 +106,18 @@ void Timer_StopStopwatch(const enum CYCLETIME_METHODE destMethode)
     g_CycleTimeBuffer.tempCycleTime[destMethode] = 0;
 }
 
-uns8 Timer_PrintCycletime(uns16* pArray, const uns16 arraySize)
+uns16 Timer_PrintCycletime(uns16* pArray, uns16 arraySize)
 {
-    uns16 i, temp16;
-    for (i = 0; i < CYCLETIME_METHODE_ENUM_SIZE && i < arraySize; i++) {
+    uns16 i, temp16, limit;
+
+    arraySize /= sizeof(g_CycleTimeBuffer.maxCycleTime[0]);
+
+    if (arraySize < CYCLETIME_METHODE_ENUM_SIZE)
+        limit = arraySize;
+    else
+        limit = CYCLETIME_METHODE_ENUM_SIZE;
+
+    for (i = 0; i < limit; i++) {
         temp16 = g_CycleTimeBuffer.maxCycleTime[i];
         temp16 = htons(temp16);
         *pArray = temp16;

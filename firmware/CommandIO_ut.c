@@ -88,10 +88,12 @@ uns8 Trace_Print(uns8* pArray, uns16 arraySize)
     return i;
 }
 
-uns8 Timer_PrintCycletime(uns16* pArray, const uns16 arraySize)
+uns16 Timer_PrintCycletime(uns16* pArray, const uns16 numMaxArrayElements)
 {
-    memcpy(pArray, g_RandomDataPool, arraySize);
-    return arraySize;
+    static const uns16 bytesToCopy = CYCLETIME_METHODE_ENUM_SIZE * sizeof(pArray[0]);
+
+    memcpy(pArray, g_RandomDataPool, bytesToCopy);
+    return bytesToCopy;
 }
 
 /*--------------- TEST FUNCTIONS----------------*/
@@ -335,12 +337,14 @@ int ut_CommandIO_CreateResponse_CYCLETIME(void)
     }
 
     struct response_frame mFrame;
+    static const size_t expectedLength = sizeof(mFrame.length) + sizeof(mFrame.cmd) + sizeof(mFrame.state) +
+                                         sizeof(mFrame.data.max_cycle_times);
 
     CommandIO_CreateResponse(&mFrame, GET_CYCLETIME, OK);
-    CHECK(0 == memcmp((void*)&(mFrame.data), (void*)&g_RandomDataPool[0], sizeof(struct response_frame) - 4));
-    CHECK(mFrame.cmd == GET_CYCLETIME);
 
-    CHECK(mFrame.length == sizeof(struct response_frame));
+    CHECK(0 == memcmp((void*)&(mFrame.data), (void*)&g_RandomDataPool[0], sizeof(mFrame.data.max_cycle_times)));
+    CHECK(mFrame.cmd == GET_CYCLETIME);
+    CHECK(mFrame.length == expectedLength);
     CHECK(mFrame.state == OK);
 
     TestCaseEnd();

@@ -42,6 +42,7 @@ struct CycleTimeBuffer {
 };
 
 void Timer_Init();
+uns16 Timer_PrintCycletime(uns16* pArray, uns16 arraySize);
 
 #if defined(DEBUG) && defined(__CC8E__)
 /**
@@ -54,8 +55,6 @@ void Timer_StartStopwatch(const enum CYCLETIME_METHODE destMethode);
 ** Function terminates the Stopwatch and print out the measured Time over UART
 **/
 void Timer_StopStopwatch(const enum CYCLETIME_METHODE destMethode);
-
-uns8 Timer_PrintCycletime(uns16* pArray, const uns16 arraySize);
 #else
 #define Timer_StartStopwatch(x)
 #define Timer_StopStopwatch(x)

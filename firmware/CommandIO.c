@@ -247,8 +247,8 @@ void CommandIO_CreateResponse(struct response_frame* mFrame, uns8 cmd, ErrorCode
 
     case GET_CYCLETIME:
         {
-            uns8 bytesPrint =
-                Timer_PrintCycletime(&(mFrame->data.max_cycle_times[0]), sizeof(struct response_frame) - 4);
+            uns16 bytesPrint =
+                Timer_PrintCycletime(mFrame->data.max_cycle_times, sizeof(mFrame->data.max_cycle_times));
             mFrame->length += bytesPrint;
             break;
         };
