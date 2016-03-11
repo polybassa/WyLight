@@ -63,7 +63,7 @@ void* BroadcastLoop(void* unused)
     struct sockaddr_in broadcastAddress;
     broadcastAddress.sin_family = AF_INET;
     broadcastAddress.sin_port = htons(BROADCAST_PORT);
-    broadcastAddress.sin_addr.s_addr = htonl(INADDR_ANY);
+    broadcastAddress.sin_addr.s_addr = htonl(INADDR_BROADCAST);
     int val = 1;
     setsockopt(udpSocket, SOL_SOCKET, SO_BROADCAST, &val, sizeof(val));
 
