@@ -44,3 +44,4 @@ script:
         - make cli
         - make clean
         - make firmware_simu 
+        - make firmware_raspi
