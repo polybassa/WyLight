@@ -99,7 +99,7 @@ OBJCOPY=${ARM_OBJCOPY}
 else 
 # The flags passed to the compiler when we are not using arm-none-eabi tools.
 CFLAGS= -pedantic \
-        -std=gnu11 \
+        -std=c11 \
         -Wall \
         -O1 \
         -g \
