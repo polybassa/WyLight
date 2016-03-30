@@ -37,11 +37,6 @@
 #include "Flash.h"
 #include "external_eeprom.h"
 
-#ifdef __CC8E__
-#include "int18XXX.h"
-#endif /* #ifdef __CC8E__ */
-//#include "MATH16.h"
-
 #ifndef __CC8E__
 #include <unistd.h>
 jmp_buf g_ResetEnvironment;

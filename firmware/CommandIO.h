@@ -30,8 +30,10 @@ extern "C" {
 #define CMDFRAMELENGTH (NUM_OF_LED * 3 + sizeof(struct led_cmd) + 3)
 
 #ifdef __CC8E__
+#ifndef __SDCC_pic16
 #if (CMDFRAMELENGTH > 255)
 #error CMDFRAMELENGTH is greater than 255. Please check CommandBuffer.counter variable.
+#endif
 #endif
 #endif
 

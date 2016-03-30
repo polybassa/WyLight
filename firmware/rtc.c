@@ -19,9 +19,6 @@
 #include "rtc.h"
 #include "iic.h"
 #include "trace.h"
-#ifdef __CC8E__
-#include "INLINE.H"
-#endif
 
 //*********************** PRIVATE FUNCTIONS *********************************************
 

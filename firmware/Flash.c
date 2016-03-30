@@ -37,9 +37,11 @@ void Flash_ReadBlock(const uns8 upperAdress, const uns16 adress, uns8* data, con
     //length is in bytecount, so we have to divide by 2 to get the wordcount of length
     uns16 i;
     for (i = 0; i < length_bytes; i++) {
+#ifndef __SDCC_pic16
 #asm
         tblrd*+
 #endasm
+#endif
         * data++ = TABLAT;
     }
 }

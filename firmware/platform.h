@@ -30,8 +30,39 @@
 #define NUM_OF_LED 32
 
 #ifdef __CC8E__
-#include "inline.h"
-#include "int18XXX.h"
+#ifndef __SDCC_pic16
+#include "INLINE.H"
+#else
+#include <stdint.h>
+#include "/home/gpb/workspace/WyLight/tools/sdcc/device/non-free/include/pic16/pic18f26k22.h"
+typedef int8_t bit;
+typedef uint8_t uns8;
+typedef uint16_t uns16;
+typedef int interrupt;
+#define bank1
+#define bank2
+#define bank3
+#define bank5
+#define bank6
+#define bank7
+#define bank10
+
+#define W _W
+#define WR _WR
+#define CFGS _CFGS
+#define EEPGD _EEPGD
+#define FSR0 _FSR0
+#define GIE _GIE
+#define RC1IF _RC1IF
+#define RD _RD
+#define TMR1IF _TMR1IF
+#define TMR1ON _TMR1ON
+#define TMR5IE _TMR5IE
+#define TMR5IF _TMR5IF
+#define WREN _WREN
+
+#endif
+#include "INT18XXX.H"
 
 #define true TRUE
 #define false FALSE
