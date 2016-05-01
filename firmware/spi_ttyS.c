@@ -98,6 +98,7 @@ uint8_t SPI_Send(uint8_t data)
 
 void SPI_SendLedBuffer(uint8_t* buf)
 {
-    SPI_SendBuffer(buf, 3);
-    //SPI_SendBuffer(buf, 3 * NUM_OF_LED);
+    static size_t counter = 0;
+    if (!(++counter % 96))
+        SPI_SendBuffer(buf, 3 * NUM_OF_LED);
 }
