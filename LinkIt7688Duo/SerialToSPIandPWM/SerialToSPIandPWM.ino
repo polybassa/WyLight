@@ -15,27 +15,22 @@
  */
 #include <SPI.h>
 
-#define NUM_OF_LED 32
 #define ARRAY_SIZE(X) (sizeof(X) / sizeof(X[0]))
+static const uint8_t GREEN_PIN = 11;
+static const uint8_t BLUE_PIN = 13;
+static const uint8_t RED_PIN = 12;
+static const size_t NUM_OF_LED = 32;
 
 byte slaveSelectPin = 13;
 
 int leds[3 * NUM_OF_LED] {};
 
-static const uint8_t GREEN_PIN = 11;
-static const uint8_t BLUE_PIN = 13;
-static const uint8_t RED_PIN = 12;
 
-void go4LED(int r = 0, int g = 0, int b = 0) {
-#if 0
-  analogWrite(RED_PIN,   leds[(curOffset + 0) % sizeof(leds)]);
-  analogWrite(GREEN_PIN, leds[(curOffset + 1) % sizeof(leds)]);
-  analogWrite(BLUE_PIN,  leds[(curOffset + 2) % sizeof(leds)]);
-#else
-  analogWrite(RED_PIN,   r);
-  analogWrite(GREEN_PIN, g);
-  analogWrite(BLUE_PIN,  b);
-#endif
+void go4LED() {
+  analogWrite(RED_PIN,   leds[0]);
+  analogWrite(GREEN_PIN, leds[1]);
+  analogWrite(BLUE_PIN,  leds[2]);
+
 //  digitalWrite(slaveSelectPin, LOW);
   for (int i = 0; i < sizeof(leds); ++i) {
     //SPI.transfer(leds[(curOffset + i) % sizeof(leds)]);
@@ -53,7 +48,6 @@ void setup()
   
 }
 
-int counter = 0;
 void loop()
 {
   static size_t next = 0;
@@ -65,7 +59,7 @@ void loop()
 
     next = next % ARRAY_SIZE(leds);
     if (!next) {
-      go4LED(leds[0], leds[1], leds[2]);
+      go4LED();
     }
   }
 }
