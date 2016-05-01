@@ -49,7 +49,7 @@ void setup()
   SPI.begin();
   
   go4LED();
-  Serial1.begin(57600);
+  Serial1.begin(230400);
   
 }
 

@@ -74,7 +74,7 @@ void SPI_Init(void)
         return;
     }
 
-    if (set_interface_attribs(g_tty_fd, B57600, 0)) {
+    if (set_interface_attribs(g_tty_fd, B230400, 0)) {
         Trace(ZONE_ERROR, "set_interface_attribs() faild\n");
         close(g_tty_fd);
         g_tty_fd = 0;
@@ -98,7 +98,5 @@ uint8_t SPI_Send(uint8_t data)
 
 void SPI_SendLedBuffer(uint8_t* buf)
 {
-    static size_t counter = 0;
-    if (!(++counter % 96))
-        SPI_SendBuffer(buf, 3 * NUM_OF_LED);
+    SPI_SendBuffer(buf, 3 * NUM_OF_LED);
 }
