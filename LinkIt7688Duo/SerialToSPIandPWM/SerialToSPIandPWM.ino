@@ -1,18 +1,21 @@
 /*
- * Firmata is a generic protocol for communicating with microcontrollers
- * from software on a host computer. It is intended to work with
- * any host computer software package.
- *
- * To download a host software package, please clink on the following link
- * to open the download page in your default browser.
- *
- * http://firmata.org/wiki/Download
- */
+   Copyright (C) 2016 Patrick Bruenn.
 
-/* Supports as many digital inputs and outputs as possible.
- *
- * This example code is in the public domain.
- */
+   This file is part of WyLight.
+
+   WyLight is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   WyLight is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
+
 #include <SPI.h>
 
 #define ARRAY_SIZE(X) (sizeof(X) / sizeof(X[0]))
@@ -42,7 +45,7 @@ void setup()
 {
   //pinMode(slaveSelectPin, OUTPUT);
   SPI.begin();
-  
+
   leds_update();
   Serial1.begin(230400);
 }
