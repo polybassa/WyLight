@@ -26,7 +26,7 @@ byte slaveSelectPin = 13;
 int leds[3 * NUM_OF_LED] {};
 
 
-void go4LED() {
+void leds_update() {
   analogWrite(RED_PIN,   leds[0]);
   analogWrite(GREEN_PIN, leds[1]);
   analogWrite(BLUE_PIN,  leds[2]);
@@ -43,14 +43,23 @@ void setup()
   //pinMode(slaveSelectPin, OUTPUT);
   SPI.begin();
   
-  go4LED();
+  leds_update();
   Serial1.begin(230400);
-  
 }
 
 void loop()
 {
+  static const unsigned long timeout = 1000;
+  static auto lastUpdate = millis();
   static size_t next = 0;
+
+  if (millis() - lastUpdate > 1000) {
+    while (Serial1.available()) {
+      Serial1.read();
+    }
+    lastUpdate = millis();
+    next = 0;
+  }
 
   if (Serial1.available() > 2) {
     leds[next++] = Serial1.read();
@@ -59,7 +68,8 @@ void loop()
 
     next = next % ARRAY_SIZE(leds);
     if (!next) {
-      go4LED();
+      leds_update();
+      lastUpdate = millis();
     }
   }
 }
