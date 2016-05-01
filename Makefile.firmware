@@ -28,6 +28,11 @@ firmware_pic:
 firmware_pic_release:
 	${WINE} ${PIC_CC8E} $(FW_INC) $(FW_DIR)/main.c -ver#VersionFile.h ${PIC_FLAGS} -O${BINDIR}
 
+firmware_linkit: firmware/eeprom_ram.c
+firmware_linkit: firmware/spi_ttyS.c
+firmware_linkit: $(FW_CORE)
+	$(CC) $? -DDEBUG -DX86 -lpthread -o ${BINDIR}/linkit.bin
+
 firmware_raspi: firmware/eeprom_ram.c
 firmware_raspi: firmware/spi_spidev.c
 firmware_raspi: $(FW_CORE)
