@@ -128,8 +128,8 @@ ut: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
 filedownloader: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
-ENDINGS=c h cpp
-CODE_DIRS=android bist cc_bl cc_fw cc_te cli common driverlib firmware library sim
+ENDINGS=c h cpp ino
+CODE_DIRS=android bist cc_bl cc_fw cc_te cli common driverlib firmware library LinkIt7688Duo/SerialToSPIandPWM sim
 filelist:
 	@rm -f $@.txt
 	@$(foreach END, ${ENDINGS}, $(foreach DIR, ${CODE_DIRS}, find ./$(DIR) -name "*.$(END)" >> $@.txt;))
