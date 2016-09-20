@@ -38,3 +38,7 @@ latex/intelhexclass_8h.tex
 recent.txt
 buildlog.txt
 android/app/src/main/libs/armeabi/libwifly.so
+tools/CC8E/
+tools/OpenWrt-SDK-ramips-mt7688_gcc-4.8-linaro_uClibc-0.9.33.2.Linux-x86_64/
+tools/sdcc/
+tools/uncrustify/

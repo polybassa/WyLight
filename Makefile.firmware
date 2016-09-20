@@ -28,10 +28,17 @@ firmware_pic:
 firmware_pic_release:
 	${WINE} ${PIC_CC8E} $(FW_INC) $(FW_DIR)/main.c -ver#VersionFile.h ${PIC_FLAGS} -O${BINDIR}
 
+OPENWRT_SDK = $(shell pwd)/tools/OpenWrt-SDK-ramips-mt7688_gcc-4.8-linaro_uClibc-0.9.33.2.Linux-x86_64/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/bin/
+$(OPENWRT_SDK):
+	wget http://download.labs.mediatek.com/MediaTek_LinkIt_Smart_7688_Openwrt_sdk_Linux -O - | tar xj -C tools/
+
+firmware_linkit: CROSS_COMPILE = $(OPENWRT_SDK)/mipsel-openwrt-linux-uclibc-
+firmware_linkit: export STAGING_DIR = $(OPENWRT_SDK)/../
+firmware_linkit: | $(OPENWRT_SDK)
 firmware_linkit: firmware/eeprom_ram.c
 firmware_linkit: firmware/spi_ttyS.c
 firmware_linkit: $(FW_CORE)
-	$(CC) $? -DDEBUG -DX86 -lpthread -o ${BINDIR}/linkit.bin
+	$(CROSS_COMPILE)$(CC) $? -DDEBUG -DX86 -lpthread -o ${BINDIR}/linkit.bin
 
 firmware_raspi: firmware/eeprom_ram.c
 firmware_raspi: firmware/spi_spidev.c
