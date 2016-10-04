@@ -24,6 +24,8 @@
 
 #include "trace.h"
 
+#define ARRAY_SIZE(X) (sizeof(X) / sizeof(X[0]))
+
 static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 
 #define NUM_PWM 4
@@ -50,20 +52,32 @@ static const char* pwm_duty[NUM_PWM] = {
     "/sys/class/pwm/pwmchip0/pwm3/duty_cycle",
 };
 
-int pwm_duty_fd[NUM_PWM];
+static const char* pinmux_cmds[] = {
+    "mt7688_pinmux set uart2 pwm",
+    "mt7688_pinmux set pwm0 pwm",
+    "mt7688_pinmux set pwm1 pwm"
+};
+
+struct pwm {
+    int enable_fd;
+    int duty_fd;
+};
+
+struct pwm g_pwm[NUM_PWM];
 
 static void pwm_write(const size_t value, size_t pwm)
 {
+    const char enable = '0' + (!!value);
     char duty[16];
 
     snprintf(duty, sizeof(duty), "%u\0", 4 * value);
-    write(pwm_duty_fd[pwm], duty, strlen(duty));
+    write(g_pwm[pwm].duty_fd, duty, strlen(duty));
+    write(g_pwm[pwm].enable_fd, &enable, sizeof(enable));
 }
 
 static void init_pwm(size_t pwm, int export_fd)
 {
     const char period[] = "1024";
-    const char enable = '1';
     const char export = '0' + pwm;
 
     write(export_fd, &export, sizeof(export));
@@ -79,25 +93,28 @@ static void init_pwm(size_t pwm, int export_fd)
     write(period_fd, period, sizeof(period));
     close(period_fd);
 
-    pwm_duty_fd[pwm] = open(pwm_duty[pwm], O_WRONLY);
-    if (-1 == pwm_duty_fd[pwm]) {
+    g_pwm[pwm].duty_fd = open(pwm_duty[pwm], O_WRONLY);
+    if (-1 == g_pwm[pwm].duty_fd) {
         Trace(ZONE_ERROR, "open '%s' failed with errno: %d\n", pwm_duty[pwm], errno);
         return;
     }
-    pwm_write(0, pwm);
 
-    const int enable_fd = open(pwm_enable[pwm], O_WRONLY);
-    if (-1 == enable_fd) {
-        Trace(ZONE_ERROR, "open '%s' failed with errno: %d\n", pwm_enable[pwm], errno);
+    g_pwm[pwm].enable_fd = open(pwm_enable[pwm], O_WRONLY);
+    if (-1 == g_pwm[pwm].enable_fd) {
+        Trace(ZONE_ERROR, "open '%s' failed with errno: %d\n", g_pwm[pwm].enable_fd, errno);
         return;
     }
-    write(enable_fd, &enable, sizeof(enable));
-    close(enable_fd);
+    pwm_write(0, pwm);
 }
 
 void SPI_Init(void)
 {
     size_t i;
+
+    for (i = 0; i < ARRAY_SIZE(pinmux_cmds); ++i) {
+        system(pinmux_cmds[i]);
+    }
+
     int export_fd = open(exportdev, O_WRONLY);
     if (-1 == export_fd) {
         Trace(ZONE_ERROR, "open '%s' failed with errno: %d\n", exportdev, errno);
