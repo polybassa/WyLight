@@ -36,9 +36,9 @@ firmware_linkit: CROSS_COMPILE = $(OPENWRT_SDK)/mipsel-openwrt-linux-uclibc-
 firmware_linkit: export STAGING_DIR = $(OPENWRT_SDK)/../
 firmware_linkit: | $(OPENWRT_SDK)
 firmware_linkit: firmware/eeprom_ram.c
-firmware_linkit: firmware/spi_pwmdev.c
+firmware_linkit: firmware/spi_pwmdev.cpp
 firmware_linkit: $(FW_CORE)
-	$(CROSS_COMPILE)$(CC) $? -DDEBUG -DX86 -lpthread -o ${BINDIR}/linkit.bin
+	$(CROSS_COMPILE)$(CXX) $? -std=c++11 -DDEBUG -DX86 -lpthread -o ${BINDIR}/linkit.bin
 
 firmware_raspi: firmware/eeprom_ram.c
 firmware_raspi: firmware/spi_spidev.c
