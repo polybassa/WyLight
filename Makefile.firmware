@@ -16,6 +16,7 @@ FW_CORE += firmware/Version.c
 
 ${BINDIR}/CommandIO_ut.bin: ${OBJDIR}/CommandIO_ut.o ${OBJDIR}/CommandIO.o
 ${BINDIR}/crc_ut.bin: ${OBJDIR}/crc_ut.o ${OBJDIR}/crc.o
+${BINDIR}/eeprom_file_ut.bin: ${OBJDIR}/eeprom_file_ut.o ${OBJDIR}/eeprom_file.o
 ${BINDIR}/ledstrip_ut.bin: ${OBJDIR}/ledstrip_ut.o ${OBJDIR}/ledstrip.o
 ${BINDIR}/RingBuf_ut.bin: ${OBJDIR}/RingBuf_ut.o ${OBJDIR}/RingBuf.o
 ${BINDIR}/ScriptCtrl_ut.bin: ${OBJDIR}/ScriptCtrl_ut.o ${OBJDIR}/ScriptCtrl.o ${OBJDIR}/eeprom_ram.o
@@ -52,5 +53,5 @@ firmware_simu: $(FW_CORE)
 
 firmware_test: ${OBJDIR} ${BINDIR} firmware_standart_test
 
-firmware_standart_test: ${BINDIR}/CommandIO_ut.bin ${BINDIR}/crc_ut.bin ${BINDIR}/ledstrip_ut.bin ${BINDIR}/RingBuf_ut.bin ${BINDIR}/ScriptCtrl_ut.bin
+firmware_standart_test: ${BINDIR}/CommandIO_ut.bin ${BINDIR}/crc_ut.bin ${BINDIR}/eeprom_file_ut.bin ${BINDIR}/ledstrip_ut.bin ${BINDIR}/RingBuf_ut.bin ${BINDIR}/ScriptCtrl_ut.bin
 	@$(foreach test,$^,./$(test);)

@@ -55,12 +55,16 @@ void Eeprom_Write(const uns16 address, const uns8 data)
 
 void Eeprom_WriteBlock(const uns8* array, uns16 address, const uns8 length)
 {
-    g_Eeprom.seekp(address);
-    g_Eeprom.write(reinterpret_cast<const char*>(array), length);
+    if (address + length <= EEPROM_SIZE) {
+        g_Eeprom.seekp(address);
+        g_Eeprom.write(reinterpret_cast<const char*>(array), length);
+    }
 }
 
 void Eeprom_ReadBlock(uns8* array, uns16 address, const uns8 length)
 {
-    g_Eeprom.seekg(address);
-    g_Eeprom.read(reinterpret_cast<char*>(array), length);
+    if (address + length <= EEPROM_SIZE) {
+        g_Eeprom.seekg(address);
+        g_Eeprom.read(reinterpret_cast<char*>(array), length);
+    }
 }
