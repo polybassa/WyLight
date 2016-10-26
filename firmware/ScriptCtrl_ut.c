@@ -310,11 +310,11 @@ int ut_ScriptCtrl_FullBuffer(void)
     for (i = 0; i < SCRIPTCTRL_NUM_CMD_MAX - 3; i++) {
         /* add inner dummy command to buffer */
         testCmd.cmd = SET_FADE;
-        CHECK(ScriptCtrl_Add(&testCmd));
+        CHECK(OK == ScriptCtrl_Add(&testCmd));
     }
 
     /* Buffer full */
-    CHECK(!ScriptCtrl_Add(&testCmd));
+    CHECK(SCRIPTBUFFER_FULL == ScriptCtrl_Add(&testCmd));
     TestCaseEnd();
 }
 
@@ -375,7 +375,7 @@ int main(int argc, const char* argv[])
     RunTest(true, ut_ScriptCtrl_SimpleLoop);
     RunTest(true, ut_ScriptCtrl_InnerLoop);
     RunTest(true, ut_ScriptCtrl_InfiniteLoop);
-    RunTest(false, ut_ScriptCtrl_FullBuffer);
+    RunTest(true, ut_ScriptCtrl_FullBuffer);
     RunTest(true, ut_ScriptCtrl_StartBootloader);
     RunTest(true, ut_ScriptCtrl_Wait);
     RunTest(false, ut_ScriptCtrl_AddColor);
