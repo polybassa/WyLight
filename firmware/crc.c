@@ -22,9 +22,9 @@
 void Crc_AddCrc(const uns8 byte, uns8* p_crcH, uns8* p_crcL)
 {
     uns8 index, crcH, crcL;
+#if defined(__CC8E__) && !defined(__SDCC_pic16)
     crcH = *p_crcH;
     crcL = *p_crcL;
-#ifdef __CC8E__
     MOVF(byte, 0);
 
     XORWF(crcH, 0);
@@ -49,6 +49,8 @@ void Crc_AddCrc(const uns8 byte, uns8* p_crcH, uns8* p_crcL)
     MOVWF(crcL);
 #else
     uns8 work, temp;
+    crcH = *p_crcH;
+    crcL = *p_crcL;
 
     work = byte;                    //MOVF(byte,0);
 
@@ -99,10 +101,10 @@ void Crc_AddCrc16(const uns8 byte, uns16* pCrc)
 
 void Crc_BuildCrc(const uns8* data, const uns8 length, uns8* crcH_out, uns8* crcL_out)
 {
+    uns8 crcH, crcL, i, byte;
     if (!crcH_out) return;
     if (!crcL_out) return;
     if (!data) return;
-    uns8 crcH, crcL, i, byte;
     crcH = 0xff;
     crcL = 0xff;
 
