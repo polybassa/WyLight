@@ -26,7 +26,7 @@ PIC_FLAGS := -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM
 SDCC_DIR=${BINDIR}/../tools/sdcc
 SDCC=${SDCC_DIR}/bin/sdcc
 firmware_sdcc:
-	${SDCC} -D__CC8E__ --use-non-free $(FW_INC) -I${SDCC_DIR}/device/include/pic16/ -mpic16 -p18F26K22  $(FW_DIR)/main.c -o ${BINDIR}/sdcc-out.bin
+	${SDCC} -D__CC8E__ --std-c11 --use-non-free $(FW_INC) -I${SDCC_DIR}/device/include/pic16/ -mpic16 -p18F26K22  $(FW_DIR)/main.c -o ${BINDIR}/sdcc-out.bin
 
 firmware_pic:
 	${WINE} ${PIC_CC8E} $(FW_INC) $(FW_DIR)/main.c ${PIC_FLAGS} -O${BINDIR}

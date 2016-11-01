@@ -223,7 +223,11 @@ void InitAll()
 #ifdef __CC8E__
 //#pragma codepage 1
 #include "crc.c"
+#ifndef __SDCC_pic16
 #include "eeprom.c"
+#else
+#include "eeprom_pic.c"
+#endif
 #include "error.c"
 #include "ledstrip.c"
 #include "spi.c"

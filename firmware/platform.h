@@ -35,6 +35,8 @@
 #else
 #include <stdint.h>
 #include "/home/gpb/workspace/WyLight/tools/sdcc/device/non-free/include/pic16/pic18f26k22.h"
+#define HIGH_BYTE(word) ((uint8_t)(word >> 8))
+#define LOW_BYTE(word) ((uint8_t)(0xff & word))
 typedef int8_t bit;
 typedef uint8_t uns8;
 typedef uint16_t uns16;

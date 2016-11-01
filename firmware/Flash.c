@@ -37,12 +37,10 @@ void Flash_ReadBlock(const uns8 upperAdress, const uns16 adress, uns8* data, con
     //length is in bytecount, so we have to divide by 2 to get the wordcount of length
     uns16 i;
     for (i = 0; i < length_bytes; i++) {
-#ifndef __SDCC_pic16
-#asm
+        __asm
         tblrd*+
-#endasm
-#endif
-        * data++ = TABLAT;
+        __endasm
+            * data++ = TABLAT;
     }
 }
 
@@ -93,15 +91,15 @@ void Flash_WriteBlock(uns16 adress, const uns8* data, const uns16 length_bytes)
         TBLPTRL = pageAdress.low8;
         for (i = 0; i < sizeof(flashBuff); i++) {
             TABLAT = flashBuff[i];
-#asm
+            __asm
             tblwt*+
-#endasm
+            __endasm
         }
         /* write page to program memory */
         TBLPTRU = 0;
         TBLPTRH = pageAdress.high8;
         TBLPTRL = pageAdress.low8;
-#asm
+        __asm
         bsf EECON1, EEPGD
         bcf EECON1, CFGS
         bsf EECON1, WREN
@@ -113,9 +111,9 @@ void Flash_WriteBlock(uns16 adress, const uns8* data, const uns16 length_bytes)
         bsf EECON1, WR
         bsf INTCON, GIE
         bcf EECON1, WREN
-#endasm
+        __endasm
         /* increment adress with the size of a page for the next run */
-        adress = pageAdress + FLASH_BLOCKSIZE_BYTE;
+            adress = pageAdress + FLASH_BLOCKSIZE_BYTE;
     }
 }
 
@@ -127,7 +125,7 @@ void Flash_EraseBlock64(const uns16 adress)
     TBLPTRH = pageAdress.high8;
     TBLPTRL = pageAdress.low8;              // Adresse in Adressregister uebertragen
 
-#asm
+    __asm
     bsf EECON1, EEPGD
     bcf EECON1, CFGS
     bsf EECON1, WREN
@@ -140,7 +138,7 @@ void Flash_EraseBlock64(const uns16 adress)
     bsf EECON1, WR
     bsf INTCON, GIE
         tblrd*-
-#endasm
+    __endasm
 }
 
 void Flash_EraseBlocks64(const uns16 adress, uns8 numBlocks)
