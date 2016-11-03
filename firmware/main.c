@@ -255,15 +255,14 @@ void InitAll()
 #ifdef __CC8E__
 //#pragma codepage 1
 #include "crc.c"
-#ifndef __SDCC_pic16
 #include "eeprom.c"
+#ifndef __SDCC_pic16
 #include "Flash.c"
 #include "iic.c"
 #include "rtc.c"
 #include "spi.c"
 #include "timer.c"
 #else
-#include "eeprom_pic.c"
 #include "spi_pic.c"
 #include "timer_pic.c"
 #endif

@@ -26,8 +26,8 @@ void Eeprom_Write(const uns16 adress, const uns8 data)
     bit GIE_status;
     GIE_status = GIE;
 
-    EEADRH = adress.high8;
-    EEADR = adress.low8;            // Adresse in Adressregister übertragen
+    EEADRH = HIGH_BYTE(adress);
+    EEADR = LOW_BYTE(adress);            // Adresse in Adressregister übertragen
     EEDATA = data; // Daten in Datenregister übertragen
 
     CFGS = 0;
@@ -48,8 +48,8 @@ void Eeprom_Write(const uns16 adress, const uns8 data)
 uns8 Eeprom_Read(const uns16 adress)
 {
     uns8 data;
-    EEADRH = adress.high8;        // Adresse in Adressregister übertragen
-    EEADR = adress.low8;
+    EEADRH = HIGH_BYTE(adress);        // Adresse in Adressregister übertragen
+    EEADR = LOW_BYTE(adress);
     CFGS = 0;
     EEPGD = 0; // Auswahl: Programmspeicher lesen oder EEPROM
     RD = 1; // Starten des Lesesn
@@ -61,9 +61,9 @@ uns8 Eeprom_Read(const uns16 adress)
 
 void Eeprom_WriteBlock(const uns8* array, uns16 adress, const uns8 length) //Zum Ausführen eines beliebigen Befehls durch den Programmcode
 {
+    uns8 i;
     if (!array) return;
 
-    uns8 i;
     for (i = 0; i < length; i++) {
         uns8* pByte = (uns8*)array;
         Eeprom_Write(adress, *pByte);
@@ -76,9 +76,9 @@ void Eeprom_WriteBlock(const uns8* array, uns16 adress, const uns8 length) //Zum
 
 void Eeprom_ReadBlock(uns8* array, uns16 adress, const uns8 length) //Zum Ausführen eines beliebigen Befehls durch den Programmcode
 {
+    uns8 i, temp;
     if (!array) return;
 
-    uns8 i, temp;
     for (i = 0; i < length; i++) {
         temp = Eeprom_Read(adress);
         array[i] = temp;

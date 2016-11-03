@@ -58,26 +58,28 @@ typedef int interrupt;
 #define clearRAM(x)
 #define softReset(x)
 
+#define ADDEN1 RC1STAbits.ADDEN1
 #define BRGH1 TX1STAbits.BRGH1
 #define BRG16 BAUD1CONbits.BRG16
-
-#define SPEN1 RC1STAbits.SPEN1
-#define SYNC1 TX1STAbits.SYNC1
-#define TX9_1 TX1STAbits.TX91
-#define RX9_1 RC1STAbits.RX91
+#define CFGS EECON1bits.CFGS
 #define CREN1 RC1STAbits.CREN1
-#define TXEN1 TX1STAbits.TXEN1
-#define ADDEN1 RC1STAbits.ADDEN1
-#define TX1IF PIR1bits.TX1IF
+#define EEPGD EECON1bits.EEPGD
 
+#define GIE INTCONbits.GIE
 #define GIEL INTCONbits.PEIE_GIEL
 #define GIEH INTCONbits.GIE_GIEH
 #define IPEN RCONbits.IPEN
 
 #define PEIE INTCONbits.PEIE
+
 #define RC1IE PIE1bits.RC1IE
 #define RC1IF PIR1bits.RC1IF
 #define RC1IP IPR1bits.RC1IP
+#define RD EECON1bits.RD
+#define RX9_1 RC1STAbits.RX91
+
+#define SPEN1 RC1STAbits.SPEN1
+#define SYNC1 TX1STAbits.SYNC1
 
 #define TMR1IE PIE1bits.TMR1IE
 #define TMR2IE PIE1bits.TMR2IE
@@ -95,6 +97,13 @@ typedef int interrupt;
 #define TMR3ON T3CONbits.TMR3ON
 
 #define TRISC6 DDRCbits.TRISC6
+
+#define TX1IF PIR1bits.TX1IF
+#define TX9_1 TX1STAbits.TX91
+#define TXEN1 TX1STAbits.TXEN1
+
+#define WR EECON1bits.WR
+#define WREN EECON1bits.WREN
 #endif
 
 #endif
