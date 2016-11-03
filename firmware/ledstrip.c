@@ -19,7 +19,7 @@
 #include "ledstrip.h"
 #include "spi.h"
 
-#ifdef __CC8E__
+#if defined(__CC8E__) && !defined(__SDCC_pic16)
 #include "MATH16.H"
 #endif /* #ifdef __CC8E__ */
 
@@ -125,6 +125,7 @@ void Ledstrip_FadeOffLeds(void)
 
 void Ledstrip_Init(void)
 {
+    uns8 i;
 #ifdef cc3200
     g_AccessLedBufferMutex = xSemaphoreCreateMutex();
 #endif
@@ -134,7 +135,7 @@ void Ledstrip_Init(void)
     xSemaphoreTake(g_AccessLedBufferMutex, portMAX_DELAY);
 #endif
     // initialize variables
-    uns8 i = sizeof(gLedBuf.led_array);
+    i = sizeof(gLedBuf.led_array);
     do {
         i--;
         gLedBuf.led_array[i] = 0;
@@ -212,9 +213,9 @@ void Ledstrip_DoFade(void)
 #ifdef cc3200
     xSemaphoreTake(g_AccessLedBufferMutex, portMAX_DELAY);
 #endif
-    uns8 k, stepmask, stepSize;
+    uns8 k, stepSize;
     uns8* stepaddress = gLedBuf.step;
-    stepmask = 0x01;
+    uns8 stepmask = 0x01;
     uns16 periodeLength;
 
     /* Update cyclesLeft Value for all LED's */
@@ -325,6 +326,15 @@ void Ledstrip_SetGradient(struct cmd_set_gradient* pCmd)
     uns8 offset = pCmd->parallelAndOffset & 0x7f;
     uns8 numOfLeds = pCmd->numberOfLeds - 1;
     uns8 deltaRed, deltaGreen, deltaBlue;
+    uns8 red, green, blue;
+
+    //define variables for CALC_COLOR macro
+    uns16 temp16;
+    uns8 k, delta, stepSize, temp8;
+    uns8* stepAddress = gLedBuf.step;
+    uns8 stepMask;
+
+    uns8 endPosition;
 
     if ((numOfLeds == 255) || (numOfLeds == 0))
         numOfLeds = 1;
@@ -333,20 +343,17 @@ void Ledstrip_SetGradient(struct cmd_set_gradient* pCmd)
     CALC_DELTA(deltaGreen, pCmd->green_1, pCmd->green_2);
     CALC_DELTA(deltaBlue, pCmd->blue_1, pCmd->blue_2);
 
-    uns8 red = pCmd->red_1;
-    uns8 green = pCmd->green_1;
-    uns8 blue = pCmd->blue_1;
+    red = pCmd->red_1;
+    green = pCmd->green_1;
+    blue = pCmd->blue_1;
 
     //define variables for CALC_COLOR macro
-    uns16 temp16;
-    uns8 k, delta, stepSize, temp8;
-    uns8* stepAddress = gLedBuf.step;
-    uns8 stepMask = 0x01;
+    stepMask = 0x01;
 
     offset = offset * 3;
     numOfLeds = numOfLeds * 3;
 
-    const uns8 endPosition = offset + numOfLeds;
+    endPosition = offset + numOfLeds;
 
     for (k = 0; k < NUM_OF_LED * 3; k++) {
         if (k >= endPosition) {

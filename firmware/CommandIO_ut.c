@@ -59,9 +59,9 @@ void UART_SendString(const uns8* string)
 {
     printf("%s", string);
 }
-uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
+ErrorCode ScriptCtrl_Add(struct led_cmd* pCmd)
 {
-    return 1;
+    return SCRIPTBUFFER_FULL;
 }
 
 uns8 SPI_Send(uns8 temp)

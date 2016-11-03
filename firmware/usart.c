@@ -23,7 +23,7 @@
 void UART_Init()
 {
     //USART TX Pin als Ausgang
-    TRISC .6 = 0;
+    TRISC6 = 0;
     BRGH1 = 1;                                        // High Baudrate activated
     BRG16 = 1;
     SPBRG1 = 34;                              // 115200 Bps @ 64 MHz Clock

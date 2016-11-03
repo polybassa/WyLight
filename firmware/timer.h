@@ -61,14 +61,27 @@ void Timer_StopStopwatch(const enum CYCLETIME_METHODE destMethode);
 #endif
 
 #ifdef __CC8E__
+#ifndef __SDCC_pic16
 #define Timer1Interrupt(x) TMR1IF = 0;
+#else
+#define Timer1Interrupt(x) PIR1bits.TMR1IF = 0;
+#endif
 #define Timer2Interrupt(x) TMR2IF = 0;
 #define Timer3Interrupt(x) TMR3IF = 0;
 #define Timer4Interrupt(x) TMR4IF = 0;
+#ifndef __SDCC_pic16
 #define Timer5Interrupt(x) TMR5IF = 0; TMR5H = 0xEC; TMR5L = 0x78;
+#else
+#define Timer5Interrupt(x) PIR5 &= ~_TMR5IF; TMR5H = 0xEC; TMR5L = 0x78;
+#endif
 
+#ifndef __SDCC_pic16
 #define Timer1Enable(x) TMR1ON = 1;
 #define Timer1Disable(x) TMR1ON = 0;
+#else
+#define Timer1Enable(x) TMR1ON = 1;
+#define Timer1Disable(x) TMR1ON = 0;
+#endif
 
 #define Timer4Enable(x) TMR4ON = 1;
 #define Timer4Disable(x) TMR4ON = 0;

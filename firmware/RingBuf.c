@@ -26,8 +26,6 @@
 struct RingBuffer g_RingBuf_Tx;
 #endif
 
-bank7 struct RingBuffer g_RingBuf;
-
 void RingBuf_Init(struct RingBuffer* pBuf)
 {
     pBuf->read = 0;

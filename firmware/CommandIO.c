@@ -39,7 +39,6 @@
 #include "rtc.h"
 
 bank2 struct CommandBuffer g_CmdBuf;
-bank5 struct response_frame g_ResponseBuf;
 static bit g_Odd_STX_Received;
 
 /** PRIVATE METHODES **/
@@ -167,18 +166,18 @@ void CommandIO_GetCommands()
                 break;
             }
             if (new_byte == ETX) {
+                /* Set default answer value */
+                ErrorCode mRetValue = BAD_PACKET;
+
                 /* Setup statemachine for new state */
                 g_Odd_STX_Received = FALSE;
                 g_CmdBuf.state = CS_WaitForSTX;
 
-                /* Set default answer value */
-                ErrorCode mRetValue = BAD_PACKET;
-
                 /* CRC Check */
                 if ((0 == g_CmdBuf.CrcL) && (0 == g_CmdBuf.CrcH)) {
                     // [0] contains cmd_frame->cmd. Reply this cmd as response to client
-#ifndef __CC8E__
-                    mRetValue = (ErrorCode)ScriptCtrl_Add((struct led_cmd*)&g_CmdBuf.buffer[0]);
+#if !defined(__CC8E__) || defined(__SDCC_pic16)
+                    mRetValue = ScriptCtrl_Add((struct led_cmd*)&g_CmdBuf.buffer[0]);
 #else
                     mRetValue = ScriptCtrl_Add(&g_CmdBuf.buffer[0]);
 #endif

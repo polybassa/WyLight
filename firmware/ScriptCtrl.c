@@ -76,10 +76,9 @@
 uns8 ScriptCtrl_Write(const struct led_cmd* pCmd);
 
 /* private globals */
-struct ScriptBuf gScriptBuf;
 struct led_cmd nextCmd;
 
-uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
+ErrorCode ScriptCtrl_Add(struct led_cmd* pCmd)
 {
     /* We have to reject all commands until buffer was cleared completely */
     if (gScriptBuf.isClearing)
@@ -98,11 +97,12 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
 
     case LOOP_OFF:
         {
+            uns8 loopStart, numLoops, retVal;
             gScriptBuf.loopDepth--;
-            uns8 loopStart = gScriptBuf.loopStart[gScriptBuf.loopDepth];
+            loopStart = gScriptBuf.loopStart[gScriptBuf.loopDepth];
             pCmd->data.loopEnd.startIndex = ScriptBufInc(loopStart);
             pCmd->data.loopEnd.depth = gScriptBuf.loopDepth;
-            uns8 numLoops = pCmd->data.loopEnd.numLoops;
+            numLoops = pCmd->data.loopEnd.numLoops;
             pCmd->data.loopEnd.counter = numLoops;
             /*Trace_String("Add LOOP_OFF: ");
                Trace_Hex(gScriptBuf.write);
@@ -110,7 +110,7 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
                Trace_Hex(pCmd->data.loopEnd.depth);
                Trace_Hex(pCmd->data.loopEnd.counter);
                Trace_String(";");*/
-            uns8 retVal = ScriptCtrl_Write(pCmd);
+            retVal = ScriptCtrl_Write(pCmd);
 #ifdef cc3200
             Eeprom_Save(true);
 #endif
@@ -198,6 +198,7 @@ void ScriptCtrl_Init(void)
 
 void ScriptCtrl_Run(void)
 {
+    uns16 tempAddress;
     /* delete command was triggered? */
     if (gScriptBuf.isClearing)
         ScriptCtrl_Clear();
@@ -212,7 +213,7 @@ void ScriptCtrl_Run(void)
         return;
 
     /* read next cmd from buffer */
-    uns16 tempAddress = ScriptBufAddr(gScriptBuf.execute);
+    tempAddress = ScriptBufAddr(gScriptBuf.execute);
     Eeprom_ReadBlock((uns8*)&nextCmd, tempAddress, sizeof(nextCmd));
 
     switch (nextCmd.cmd) {
@@ -249,10 +250,11 @@ void ScriptCtrl_Run(void)
                 ScriptBufSetRead(gScriptBuf.execute);
                 ScriptBufSetInLoop(FALSE);
             } else {
+                uns16 tempAddress;
                 //Trace_String("End of inner loop reached;");
                 /* reinit counter for next iteration */
                 nextCmd.data.loopEnd.counter = nextCmd.data.loopEnd.numLoops;
-                uns16 tempAddress = ScriptBufAddr(gScriptBuf.execute);
+                tempAddress = ScriptBufAddr(gScriptBuf.execute);
                 Eeprom_WriteBlock((uns8*)&nextCmd, tempAddress, sizeof(struct led_cmd));
 
                 /* move execute pointer to the next command */
@@ -296,11 +298,12 @@ void ScriptCtrl_Run(void)
 
 uns8 ScriptCtrl_Write(const struct led_cmd* pCmd)
 {
+    uns8 writeNext;
     /* if we write a new command, we set the scriptCtrl to running
      * ATTENTION Check if this behaviour is acceptable when whe use an alarmCtrl */
     if (!gScriptBuf.isRunning) gScriptBuf.isRunning = TRUE;
 
-    uns8 writeNext = ScriptBufInc(gScriptBuf.write);
+    writeNext = ScriptBufInc(gScriptBuf.write);
     if (writeNext != gScriptBuf.read) {
         uns16 tempAddress = ScriptBufAddr(gScriptBuf.write);
         Eeprom_WriteBlock((const uns8*)pCmd, tempAddress, sizeof(struct led_cmd));

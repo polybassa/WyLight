@@ -23,7 +23,7 @@
 //*********************** EEPROM BYTE SCHREIBEN  **********************************************
 void Eeprom_Write(const uns16 adress, const uns8 data)
 {
-    bit GIE_status = GIE;
+    bit GIE_status = INTCONbits.GIE;
 
     EEADRH = HIGH_BYTE(adress);
     EEADR = LOW_BYTE(adress); // set address register
@@ -35,7 +35,7 @@ void Eeprom_Write(const uns16 adress, const uns8 data)
     EECON2 = 0x55;
     EECON2 = 0xAA;
     EECON1 |= _WR; // enable write
-    INTCON |= GIE_status; // restore interrupt state
+    INTCONbits.GIE = GIE_status; // restore interrupt state
     EECON1 = ~_WREN;
     while (EECON1 & _WR) {}
 }

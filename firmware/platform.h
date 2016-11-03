@@ -32,6 +32,8 @@
 #ifdef __CC8E__
 #ifndef __SDCC_pic16
 #include "INLINE.H"
+#define TRISC6 TRISC .6
+#define BootSwitchState(X) PORTB .5
 #else
 #include <stdint.h>
 #include "/home/gpb/workspace/WyLight/tools/sdcc/device/non-free/include/pic16/pic18f26k22.h"
@@ -49,19 +51,51 @@ typedef int interrupt;
 #define bank7
 #define bank10
 
-#define W _W
-#define WR _WR
-#define CFGS _CFGS
-#define EEPGD _EEPGD
-#define FSR0 _FSR0
-#define GIE _GIE
-#define RC1IF _RC1IF
-#define RD _RD
-#define TMR1IF _TMR1IF
-#define TMR1ON _TMR1ON
-#define TMR5IE _TMR5IE
-#define TMR5IF _TMR5IF
-#define WREN _WREN
+#define CLRF(X) X = 0
+#define BootSwitchState(X) PORTBbits.RB5
+
+#ifdef __SDCC_pic16
+#define clearRAM(x)
+#define softReset(x)
+
+#define BRGH1 TX1STAbits.BRGH1
+#define BRG16 BAUD1CONbits.BRG16
+
+#define SPEN1 RC1STAbits.SPEN1
+#define SYNC1 TX1STAbits.SYNC1
+#define TX9_1 TX1STAbits.TX91
+#define RX9_1 RC1STAbits.RX91
+#define CREN1 RC1STAbits.CREN1
+#define TXEN1 TX1STAbits.TXEN1
+#define ADDEN1 RC1STAbits.ADDEN1
+#define TX1IF PIR1bits.TX1IF
+
+#define GIEL INTCONbits.PEIE_GIEL
+#define GIEH INTCONbits.GIE_GIEH
+#define IPEN RCONbits.IPEN
+
+#define PEIE INTCONbits.PEIE
+#define RC1IE PIE1bits.RC1IE
+#define RC1IF PIR1bits.RC1IF
+#define RC1IP IPR1bits.RC1IP
+
+#define TMR1IE PIE1bits.TMR1IE
+#define TMR2IE PIE1bits.TMR2IE
+#define TMR4IE PIE5bits.TMR4IE
+#define TMR5IE PIE5bits.TMR5IE
+
+#define TMR1IP IPR1bits.TMR1IP
+#define TMR2IP IPR1bits.TMR2IP
+#define TMR3IP IPR2bits.TMR3IP
+#define TMR4IP IPR5bits.TMR4IP
+#define TMR5IP IPR5bits.TMR5IP
+
+#define TMR1ON T1CONbits.TMR1ON
+#define TMR2ON T2CONbits.TMR2ON
+#define TMR3ON T3CONbits.TMR3ON
+
+#define TRISC6 DDRCbits.TRISC6
+#endif
 
 #endif
 #include "INT18XXX.H"
@@ -73,10 +107,12 @@ typedef int interrupt;
 #define softResetJumpDestination(x)
 
 #define Platform_IOInit(x) do { CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); CLRF(PORTA); CLRF(LATA); CLRF(ANSELA); \
-                                CLRF(TRISA); PORTA = 0b00000100; } \
+                                CLRF(TRISA); PORTA = 0x4; } \
     while (0)                                                                         //Eingänge am PORTB initialisieren
-#define Platform_OsciInit(x) do { OSCCON = 0b01110010; PLLEN = 1; } \
-    while (0)                                                                    //OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
+#define Platform_OsciInit(x) do { \
+        OSCCON = 0x72; \
+        OSCTUNEbits.PLLEN = 1; \
+} while (0)                                                                    //OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
 
 void Platform_AllowInterrupts();
 void Platform_EnableAllInterrupts();

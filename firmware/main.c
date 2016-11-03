@@ -18,8 +18,13 @@
 
 #ifdef __CC8E__
 #define DEBUG
+#ifndef __SDCC_pic16
+// we shouldn't enable sharedAllocation on real CC8E too!
 #pragma optimize 1
 #pragma sharedAllocation
+#else
+#pragma config XINST=OFF
+#endif
 #endif
 
 //*********************** INCLUDEDATEIEN *********************************************
@@ -46,6 +51,10 @@ jmp_buf g_ResetEnvironment;
 uns8 g_UpdateLed;
 uns8 g_UpdateLedStrip;
 
+bank5 struct response_frame g_ResponseBuf;
+bank7 struct RingBuffer g_RingBuf;
+struct ScriptBuf gScriptBuf;
+
 //*********************** MACROS *****************************************************
 #ifdef DEBUG
 #define do_and_measure(METHOD) { \
@@ -65,18 +74,29 @@ void init_x86(int start_gl);
 
 #ifndef X86
 //*********************** INTERRUPTSERVICEROUTINE ************************************
+#ifndef __SDCC_pic16
 #pragma origin 0x8
 //Adresse des High Priority Interrupts
 interrupt HighPriorityInterrupt(void)
+#else
+void HighPriorityInterrupt(void) __interrupt 1
+#endif
 {
     HighPriorityInterruptFunction();
+#ifndef __SDCC_pic16
 #pragma fastMode
+#endif
 }
 
+#ifndef __SDCC_pic16
 #pragma origin 0x18
 interrupt LowPriorityInterrupt(void)
 {
     int_save_registers
+#else
+void LowPriorityInterrupt(void) __interrupt 2
+{
+#endif
 #if 0
     uns16 sv_FSR0 = FSR0;
     uns16 sv_FSR1 = FSR1;
@@ -89,13 +109,13 @@ interrupt LowPriorityInterrupt(void)
     uns8 sv_TABLAT = TABLAT;
 #endif
 
-    if (TMR5IF) {
+    if (PIR5bits.TMR5IF) {
         g_UpdateLed = g_UpdateLed + 1;
         ScriptCtrl_DecrementWaitValue();
         Timer5Interrupt();
     }
 
-    if (TMR1IF) {
+    if (PIR1bits.TMR1IF) {
         g_UpdateLedStrip = g_UpdateLedStrip + 1;
         ScriptCtrl_CheckAndDecrementWaitValue();
         Timer1Disable();
@@ -112,12 +132,19 @@ interrupt LowPriorityInterrupt(void)
     TBLPTR = sv_TBLPTR;
     TABLAT = sv_TABLAT;
 #endif
+#ifndef __SDCC_pic16
     int_restore_registers
+#endif
 }
 
 void HighPriorityInterruptFunction(void)
 {
+#ifndef __SDCC_pic16
     uns16 sv_FSR0 = FSR0;
+#else
+    uint8_t sv_FSR0H = FSR0H;
+    uint8_t sv_FSR0L = FSR0L;
+#endif
     if (RC1IF) {
         //Replace RingBuf_Put to avoid failures when main-cycle call's RingBuf_Put
         if (!g_RingBuf.error_full) {
@@ -132,7 +159,12 @@ void HighPriorityInterruptFunction(void)
             uns8 temp = RCREG1;
         }
     }
+#ifndef __SDCC_pic16
     FSR0 = sv_FSR0;
+#else
+    FSR0L = sv_FSR0L;
+    FSR0H = sv_FSR0H;
+#endif
 }
 #endif /* #ifndef X86 */
 
@@ -225,22 +257,24 @@ void InitAll()
 #include "crc.c"
 #ifndef __SDCC_pic16
 #include "eeprom.c"
+#include "Flash.c"
+#include "iic.c"
+#include "rtc.c"
+#include "spi.c"
+#include "timer.c"
 #else
 #include "eeprom_pic.c"
+#include "spi_pic.c"
+#include "timer_pic.c"
 #endif
 #include "error.c"
 #include "ledstrip.c"
-#include "spi.c"
-#include "timer.c"
 #include "RingBuf.c"
 #include "usart.c"
 #include "CommandIO.c"
 #include "platform.c"
-#include "rtc.c"
-#include "iic.c"
 #include "ScriptCtrl.c"
 #include "trace.c"
-#include "Flash.c"
 #include "Version.c"
 #include "external_eeprom.c"
 

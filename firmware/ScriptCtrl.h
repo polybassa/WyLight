@@ -47,7 +47,7 @@ extern struct ScriptBuf gScriptBuf;
 /**
  * Add new command to script
  **/
-uns8 ScriptCtrl_Add(struct led_cmd* pCmd);
+ErrorCode ScriptCtrl_Add(struct led_cmd* pCmd);
 
 /**
  * Clear all command from buffer

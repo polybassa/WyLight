@@ -24,11 +24,11 @@
 void Platform_CheckInputs()
 {
     static uns8 lastSwitchState;
-    if (PORTB .5 == 0) {
+    if (BootSwitchState() == 0) {
         lastSwitchState = 1;
         return;
     }
-    if (PORTB .5 == 1) {
+    if (BootSwitchState() == 1) {
         if (lastSwitchState == 1) {
             if (gScriptBuf.isRunning) {
                 Ledstrip_FadeOffLeds();
@@ -86,18 +86,19 @@ void Platform_EnableBootloaderAutostart()
 
 uns16 htons(uns16 hostShort)
 {
+#ifndef __SDCC_pic16
     uns16 retval;
     retval.low8 = hostShort.high8;
     retval.high8 = hostShort.low8;
     return retval;
+#else
+    return ((0xFF & hostShort) << 8) | hostShort >> 8;
+#endif
 }
 
 uns16 ntohs(uns16 networkShort)
 {
-    uns16 retval;
-    retval.low8 = networkShort.high8;
-    retval.high8 = networkShort.low8;
-    return retval;
+    return htons(networkShort);
 }
 
 #endif /* __CC8E__ */
