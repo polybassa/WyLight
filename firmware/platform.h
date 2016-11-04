@@ -32,7 +32,8 @@
 #ifdef __CC8E__
 #ifndef __SDCC_pic16
 #include "INLINE.H"
-#define SSPM0 SSP1CON1 .0
+#define SSPEN1 SSPEN
+#define SSPM0  SSP1CON1 .0
 #define TRISC3 TRISC .3
 #define TRISC4 TRISC .4
 #define TRISC5 TRISC .5
@@ -63,61 +64,64 @@ typedef int interrupt;
 #define clearRAM(x)
 #define softReset(x)
 
-#define ADDEN1 RC1STAbits.ADDEN1
-#define BRGH1 TX1STAbits.BRGH1
-#define BRG16 BAUD1CONbits.BRG16
-#define CFGS EECON1bits.CFGS
-#define CKE SSP1STATbits.CKE
-#define CKP SSP1CON1bits.CKP
-#define CREN1 RC1STAbits.CREN1
-#define EEPGD EECON1bits.EEPGD
+#define ACKDT2  SSP2CON2bits.ACKDT
+#define ACKEN1  SSP1CON2bits.ACKEN
+#define ACKEN2  SSP2CON2bits.ACKEN
+#define ADDEN1  RC1STAbits.ADDEN1
+#define BRGH1   TX1STAbits.BRGH1
+#define BRG16   BAUD1CONbits.BRG16
+#define CFGS    EECON1bits.CFGS
+#define CKE     SSP1STATbits.CKE
+#define CKP     SSP1CON1bits.CKP
+#define CREN1   RC1STAbits.CREN1
+#define EEPGD   EECON1bits.EEPGD
+#define GIE     INTCONbits.GIE
+#define GIEL    INTCONbits.PEIE_GIEL
+#define GIEH    INTCONbits.GIE_GIEH
+#define IPEN    RCONbits.IPEN
+#define PEIE    INTCONbits.PEIE
+#define PEN2    SSP2CON2bits.PEN
+#define RC1IE   PIE1bits.RC1IE
+#define RC1IF   PIR1bits.RC1IF
+#define RC1IP   IPR1bits.RC1IP
+#define RCEN2   SSP2CON2bits.RCEN
+#define RD      EECON1bits.RD
+#define RSEN2   SSP2CON2bits.RSEN
+#define RX9_1   RC1STAbits.RX91
+#define SEN2    SSP2CON2bits.SEN
+#define SMP     SSP1STATbits.SMP
+#define SPEN1   RC1STAbits.SPEN1
+#define SSP1IF  PIR1bits.SSP1IF
+#define SSP2IF  PIR3bits.SSP2IF
+#define SSPEN1  SSP1CON1bits.SSPEN
+#define SSPEN2  SSP2CON1bits.SSPEN
+#define SSPM0   SSP1CON1bits.SSPM0
+#define SYNC1   TX1STAbits.SYNC1
+#define TMR1IE  PIE1bits.TMR1IE
+#define TMR2IE  PIE1bits.TMR2IE
+#define TMR4IE  PIE5bits.TMR4IE
+#define TMR5IE  PIE5bits.TMR5IE
+#define TMR1IP  IPR1bits.TMR1IP
+#define TMR2IP  IPR1bits.TMR2IP
+#define TMR3IP  IPR2bits.TMR3IP
+#define TMR4IP  IPR5bits.TMR4IP
+#define TMR5IP  IPR5bits.TMR5IP
 
-#define GIE INTCONbits.GIE
-#define GIEL INTCONbits.PEIE_GIEL
-#define GIEH INTCONbits.GIE_GIEH
-#define IPEN RCONbits.IPEN
+#define TMR1ON  T1CONbits.TMR1ON
+#define TMR2ON  T2CONbits.TMR2ON
+#define TMR3ON  T3CONbits.TMR3ON
 
-#define PEIE INTCONbits.PEIE
+#define TRISC3  DDRCbits.TRISC3
+#define TRISC4  DDRCbits.TRISC4
+#define TRISC5  DDRCbits.TRISC5
+#define TRISC6  DDRCbits.TRISC6
 
-#define RC1IE PIE1bits.RC1IE
-#define RC1IF PIR1bits.RC1IF
-#define RC1IP IPR1bits.RC1IP
-#define RD EECON1bits.RD
-#define RX9_1 RC1STAbits.RX91
+#define TX1IF   PIR1bits.TX1IF
+#define TX9_1   TX1STAbits.TX91
+#define TXEN1   TX1STAbits.TXEN1
 
-#define SMP SSP1STATbits.SMP
-#define SPEN1 RC1STAbits.SPEN1
-#define SSP1IF PIR1bits.SSP1IF
-#define SSPEN SSP1CON1bits.SSPEN
-#define SSPM0 SSP1CON1bits.SSPM0
-#define SYNC1 TX1STAbits.SYNC1
-
-#define TMR1IE PIE1bits.TMR1IE
-#define TMR2IE PIE1bits.TMR2IE
-#define TMR4IE PIE5bits.TMR4IE
-#define TMR5IE PIE5bits.TMR5IE
-
-#define TMR1IP IPR1bits.TMR1IP
-#define TMR2IP IPR1bits.TMR2IP
-#define TMR3IP IPR2bits.TMR3IP
-#define TMR4IP IPR5bits.TMR4IP
-#define TMR5IP IPR5bits.TMR5IP
-
-#define TMR1ON T1CONbits.TMR1ON
-#define TMR2ON T2CONbits.TMR2ON
-#define TMR3ON T3CONbits.TMR3ON
-
-#define TRISC3 DDRCbits.TRISC3
-#define TRISC4 DDRCbits.TRISC4
-#define TRISC5 DDRCbits.TRISC5
-#define TRISC6 DDRCbits.TRISC6
-
-#define TX1IF PIR1bits.TX1IF
-#define TX9_1 TX1STAbits.TX91
-#define TXEN1 TX1STAbits.TXEN1
-
-#define WR EECON1bits.WR
-#define WREN EECON1bits.WREN
+#define WR      EECON1bits.WR
+#define WREN    EECON1bits.WREN
 #endif
 
 #endif

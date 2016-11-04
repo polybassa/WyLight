@@ -256,11 +256,9 @@ void InitAll()
 //#pragma codepage 1
 #include "crc.c"
 #include "eeprom.c"
-#ifndef __SDCC_pic16
-#include "iic.c"
-#endif
 #include "error.c"
 #include "Flash.c"
+#include "iic.c"
 #include "ledstrip.c"
 #include "RingBuf.c"
 #include "rtc.c"

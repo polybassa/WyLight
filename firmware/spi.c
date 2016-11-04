@@ -30,7 +30,7 @@ void SPI_Init()
     CKP = FALSE;            /* Idle state for clock is low level */
     CKE = TRUE;             /* Transmit occures on transition from active to Idle clock state */
     SSPM0 = TRUE;      /* SPI MASTER mode, clock = Fosc/16 */
-    SSPEN = TRUE;           /* Enables the serial port and configures SCK, SDO, SDI */
+    SSPEN1 = TRUE;           /* Enables the serial port and configures SCK, SDO, SDI */
 }
 
 uns8 SPI_Send(const uns8 data)

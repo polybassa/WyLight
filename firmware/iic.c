@@ -36,7 +36,7 @@ void I2C_Write(uns8 slaveaddr, const uns8 dataaddr, const uns8 data)
 {
     //Writebit in Slaveadresse setzen
 
-    slaveaddr = slaveaddr & 0b11111110;
+    slaveaddr = slaveaddr & 0xFE;
 
     //Bus übernehmen
     SSP2IF = 0;
@@ -67,10 +67,10 @@ void I2C_Write(uns8 slaveaddr, const uns8 dataaddr, const uns8 data)
 
 void I2C_WriteBlock(uns8 slaveaddr, const uns8* data, const uns8 dataaddr, const uns8 length)
 {
+    uns8 _length = length;
     //Writebit in Slaveadresse setzen
 
-    slaveaddr = slaveaddr & 0b11111110;
-    uns8 _length = length;
+    slaveaddr = slaveaddr & 0xFE;
     //Bus übernehmen
     SSP2IF = 0;
     SEN2 = 1;
@@ -104,10 +104,10 @@ void I2C_WriteBlock(uns8 slaveaddr, const uns8* data, const uns8 dataaddr, const
 
 void I2C_ReadBlock(const uns8 slaveaddr, uns8* buffer, const uns8 readaddr, const uns8 length)
 {
+    uns8 _length = length;
     //Writebit in Slaveadresse setzen
     uns8 _slaveaddr;
-    _slaveaddr = slaveaddr & 0b11111110;
-    uns8 _length = length;
+    _slaveaddr = slaveaddr & 0xFE;
 
     //Bus übernehmen
     SSP2IF = 0;
@@ -137,7 +137,7 @@ void I2C_ReadBlock(const uns8 slaveaddr, uns8* buffer, const uns8 readaddr, cons
     SSP2IF = 0;
 
     //Readbit in Slaveadresse setzen
-    _slaveaddr = slaveaddr | 0b00000001;
+    _slaveaddr = slaveaddr | 0x01;
     //Slave ansprechen
     SSP2BUF = _slaveaddr;
     while (!SSP2IF) {}
@@ -173,7 +173,7 @@ uns8 I2C_Read(const uns8 slaveaddr, const uns8 readaddr)
     //Writebit in Slaveadresse setzen
     uns8 _slaveaddr;
     uns8 _data;
-    _slaveaddr = slaveaddr & 0b11111110;
+    _slaveaddr = slaveaddr & 0xFE;
 
     //Bus übernehmen
     SSP2IF = 0;
@@ -203,7 +203,7 @@ uns8 I2C_Read(const uns8 slaveaddr, const uns8 readaddr)
     SSP2IF = 0;
 
     //Readbit in Slaveadresse setzen
-    _slaveaddr |= 0b00000001;
+    _slaveaddr |= 0x01;
     //Slave ansprechen
     SSP2BUF = _slaveaddr;
     while (!SSP2IF) {}
@@ -225,6 +225,7 @@ uns8 I2C_Read(const uns8 slaveaddr, const uns8 readaddr)
 
 uns8 I2C_DetectSlave(const uns8 slaveaddr)
 {
+    uns8 returnValue;
     //Bus übernehmen
     SSP2IF = 0;
     SEN2 = 1;
@@ -237,7 +238,7 @@ uns8 I2C_DetectSlave(const uns8 slaveaddr)
     SSP2IF = 0;
 
     //check ACKSTAT
-    uns8 returnValue = SSP2CON2 & 0b01000000;
+    returnValue = SSP2CON2 & 0x40;
 
     //Bus freigeben
     PEN2 = 1;
