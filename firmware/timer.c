@@ -29,7 +29,7 @@ void Timer_Init()
      * T1 Interrupt occures with a frequency of 60 Hz.
      * This is used to update the ledstrip with the current colorvalue
      */
-    T1CON = 0b00100111;
+    T1CON = 0x27;
     TMR1IE = TRUE;
 
     /*
@@ -37,7 +37,7 @@ void Timer_Init()
      * Calculation
      * 64000000 Hz / 4 / 8 / 5000
      */
-    T5CON = 0b00110111;
+    T5CON = 0x37;
     TMR5IE = TRUE;
     TMR5H = 0xEC;
     TMR5L = 0x78;
@@ -46,7 +46,7 @@ void Timer_Init()
     ** Calculation
     ** 64000000 Hz / 4 / 16 / 250 / 16
     */
-    T4CON = 0b01111111;
+    T4CON = 0x7F;
     TMR4IE = FALSE;
     PR4 = 250;
 
@@ -55,7 +55,7 @@ void Timer_Init()
     ** Calculation
     ** 64000000 Hz / 4 / 16 / 75 / 10
     */
-    T2CON = 0b01001111;
+    T2CON = 0x4f;
     TMR2ON = 0;
     TMR2IE = 0;
     PR2 = 75;
@@ -66,7 +66,7 @@ void Timer_Init()
     ** Calculation:
     ** 64MHz / 4 / 8
     */
-    T3CON = 0b00110110;
+    T3CON = 0x36;
     TMR3ON = 1;
 #endif /* #ifdef __CC8E__ */
 }
@@ -75,10 +75,16 @@ void Timer_Init()
 static struct CycleTimeBuffer g_CycleTimeBuffer;
 static enum CYCLETIME_METHODE enumMethode;
 
+#ifndef __SDCC_pic16
 #define Platform_ReadPerformanceCounter(x) do { \
         x.low8 = TMR3L; \
         x.high8 = TMR3H; \
 } while (0)
+#else
+#define Platform_ReadPerformanceCounter(x) do { \
+        x = (((uint16_t)TMR3H) << 8) | TMR3L; \
+} while (0)
+#endif
 
 void Timer_StartStopwatch(const enum CYCLETIME_METHODE destMethode)
 {
