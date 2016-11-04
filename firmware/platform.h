@@ -32,6 +32,10 @@
 #ifdef __CC8E__
 #ifndef __SDCC_pic16
 #include "INLINE.H"
+#define SSPM0 SSP1CON1 .0
+#define TRISC3 TRISC .3
+#define TRISC4 TRISC .4
+#define TRISC5 TRISC .5
 #define TRISC6 TRISC .6
 #define BootSwitchState(X) PORTB .5
 #else
@@ -62,6 +66,8 @@ typedef int interrupt;
 #define BRGH1 TX1STAbits.BRGH1
 #define BRG16 BAUD1CONbits.BRG16
 #define CFGS EECON1bits.CFGS
+#define CKE SSP1STATbits.CKE
+#define CKP SSP1CON1bits.CKP
 #define CREN1 RC1STAbits.CREN1
 #define EEPGD EECON1bits.EEPGD
 
@@ -78,7 +84,11 @@ typedef int interrupt;
 #define RD EECON1bits.RD
 #define RX9_1 RC1STAbits.RX91
 
+#define SMP SSP1STATbits.SMP
 #define SPEN1 RC1STAbits.SPEN1
+#define SSP1IF PIR1bits.SSP1IF
+#define SSPEN SSP1CON1bits.SSPEN
+#define SSPM0 SSP1CON1bits.SSPM0
 #define SYNC1 TX1STAbits.SYNC1
 
 #define TMR1IE PIE1bits.TMR1IE
@@ -96,6 +106,9 @@ typedef int interrupt;
 #define TMR2ON T2CONbits.TMR2ON
 #define TMR3ON T3CONbits.TMR3ON
 
+#define TRISC3 DDRCbits.TRISC3
+#define TRISC4 DDRCbits.TRISC4
+#define TRISC5 DDRCbits.TRISC5
 #define TRISC6 DDRCbits.TRISC6
 
 #define TX1IF PIR1bits.TX1IF

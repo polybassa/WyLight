@@ -22,14 +22,14 @@
 void SPI_Init()
 {
     ANSELC = FALSE;         /* Set PORTC to digital IO */
-    TRISC .3 = FALSE;       /* Make port RC3 an output(SPI Clock) */
-    TRISC .4 = TRUE;         /* Make port RC4 an input(SPI Data In) */
-    TRISC .5 = FALSE;       /* Make port RC5 an output(SPI Data Out) */
+    TRISC3 = FALSE;       /* Make port RC3 an output(SPI Clock) */
+    TRISC4 = TRUE;         /* Make port RC4 an input(SPI Data In) */
+    TRISC5 = FALSE;       /* Make port RC5 an output(SPI Data Out) */
 
     SMP = TRUE;             /* Input data sampeld at end of data output time */
     CKP = FALSE;            /* Idle state for clock is low level */
     CKE = TRUE;             /* Transmit occures on transition from active to Idle clock state */
-    SSP1CON1 .0 = TRUE;      /* SPI MASTER mode, clock = Fosc/16 */
+    SSPM0 = TRUE;      /* SPI MASTER mode, clock = Fosc/16 */
     SSPEN = TRUE;           /* Enables the serial port and configures SCK, SDO, SDI */
 }
 

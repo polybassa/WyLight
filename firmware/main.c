@@ -260,10 +260,8 @@ void InitAll()
 #include "Flash.c"
 #include "iic.c"
 #include "rtc.c"
-#include "spi.c"
 #include "timer.c"
 #else
-#include "spi_pic.c"
 #include "timer_pic.c"
 #endif
 #include "error.c"
@@ -273,6 +271,7 @@ void InitAll()
 #include "CommandIO.c"
 #include "platform.c"
 #include "ScriptCtrl.c"
+#include "spi.c"
 #include "trace.c"
 #include "Version.c"
 #include "external_eeprom.c"
