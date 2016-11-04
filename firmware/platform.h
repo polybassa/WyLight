@@ -54,6 +54,7 @@ typedef int interrupt;
 #define bank6
 #define bank7
 #define bank10
+#define bank14
 
 #define CLRF(X) X = 0
 #define BootSwitchState(X) PORTBbits.RB5

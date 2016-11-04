@@ -257,11 +257,11 @@ void InitAll()
 #include "crc.c"
 #include "eeprom.c"
 #ifndef __SDCC_pic16
-#include "Flash.c"
 #include "iic.c"
 #include "rtc.c"
 #endif
 #include "error.c"
+#include "Flash.c"
 #include "ledstrip.c"
 #include "RingBuf.c"
 #include "usart.c"

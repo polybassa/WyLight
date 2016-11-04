@@ -30,17 +30,17 @@ uns8 AdressValid(const uns16 adress)
 
 void Flash_ReadBlock(const uns8 upperAdress, const uns16 adress, uns8* data, const uns16 length_bytes)
 {
+    uns16 i;
     TBLPTRU = upperAdress;
-    TBLPTRH = adress.high8;
-    TBLPTRL = adress.low8;          // Adresse in Adressregister uebertragen
+    TBLPTRH = HIGH_BYTE(adress);
+    TBLPTRL = LOW_BYTE(adress);          // Adresse in Adressregister uebertragen
 
     //length is in bytecount, so we have to divide by 2 to get the wordcount of length
-    uns16 i;
     for (i = 0; i < length_bytes; i++) {
         __asm
         tblrd*+
-        __endasm
-            * data++ = TABLAT;
+        __endasm;
+        *data++ = TABLAT;
     }
 }
 
@@ -61,23 +61,24 @@ void Flash_WriteBlock(uns16 adress, const uns8* data, const uns16 length_bytes)
     if (!AdressValid(adress)) return;
 
     while (endAdress > adress) {
+        bank14 uns8 flashBuff[FLASH_BLOCKSIZE_BYTE];
         /* calculate the page adress for erase and write operation */
         pageAdress = adress & 0xffc0;
         /* calculate offset. Used as empty space befor the data block is written on a page */
         offset = adress - pageAdress;
 
-        bank14 uns8 flashBuff[FLASH_BLOCKSIZE_BYTE];
         /* get old data from current page */
         Flash_ReadBlock(0, pageAdress, flashBuff, sizeof(flashBuff));
         /* erase this page */
         Flash_EraseBlock64(pageAdress);
 
         for (i = 0; i < sizeof(flashBuff); i++) {
+            uns16 tempAdress;
             /* if we are in the offset region, we don't modify the old data */
             if (i < offset) continue;
 
             /* calculate a temp adress that we know, when we reach the endadress */
-            uns16 tempAdress = pageAdress + i;
+            tempAdress = pageAdress + i;
             if (tempAdress < endAdress) {
                 /* insert new data to page in RAM */
                 uns8 temp = *data;
@@ -87,18 +88,18 @@ void Flash_WriteBlock(uns16 adress, const uns8* data, const uns16 length_bytes)
         }
         /* transfer page from RAM to holding registers */
         TBLPTRU = 0;
-        TBLPTRH = pageAdress.high8;
-        TBLPTRL = pageAdress.low8;
+        TBLPTRH = HIGH_BYTE(pageAdress);
+        TBLPTRL = LOW_BYTE(pageAdress);
         for (i = 0; i < sizeof(flashBuff); i++) {
             TABLAT = flashBuff[i];
             __asm
             tblwt*+
-            __endasm
+            __endasm;
         }
         /* write page to program memory */
         TBLPTRU = 0;
-        TBLPTRH = pageAdress.high8;
-        TBLPTRL = pageAdress.low8;
+        TBLPTRH = HIGH_BYTE(pageAdress);
+        TBLPTRL = LOW_BYTE(pageAdress);
         __asm
         bsf EECON1, EEPGD
         bcf EECON1, CFGS
@@ -111,9 +112,9 @@ void Flash_WriteBlock(uns16 adress, const uns8* data, const uns16 length_bytes)
         bsf EECON1, WR
         bsf INTCON, GIE
         bcf EECON1, WREN
-        __endasm
+            __endasm;
         /* increment adress with the size of a page for the next run */
-            adress = pageAdress + FLASH_BLOCKSIZE_BYTE;
+        adress = pageAdress + FLASH_BLOCKSIZE_BYTE;
     }
 }
 
@@ -122,8 +123,8 @@ void Flash_EraseBlock64(const uns16 adress)
     uns16 pageAdress = adress & 0xffc0;
     if (!AdressValid(pageAdress)) return;
     TBLPTRU = 0;
-    TBLPTRH = pageAdress.high8;
-    TBLPTRL = pageAdress.low8;              // Adresse in Adressregister uebertragen
+    TBLPTRH = HIGH_BYTE(pageAdress);
+    TBLPTRL = LOW_BYTE(pageAdress);              // Adresse in Adressregister uebertragen
 
     __asm
     bsf EECON1, EEPGD
@@ -138,7 +139,7 @@ void Flash_EraseBlock64(const uns16 adress)
     bsf EECON1, WR
     bsf INTCON, GIE
         tblrd*-
-    __endasm
+    __endasm;
 }
 
 void Flash_EraseBlocks64(const uns16 adress, uns8 numBlocks)
