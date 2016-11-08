@@ -35,7 +35,6 @@
 #include "trace.h"
 #include "error.h"
 #include "Flash.h"
-#include "external_eeprom.h"
 
 #ifdef __CC8E__
 #include "int18XXX.h"
@@ -208,7 +207,6 @@ void InitAll()
     CommandIO_Init();
     Rtc_Init();
     ScriptCtrl_Init();
-    ExtEeprom_Init();
 
 #ifndef __CC8E__
     init_x86(g_start_gl);
@@ -243,7 +241,6 @@ void InitAll()
 #include "trace.c"
 #include "Flash.c"
 #include "Version.c"
-#include "external_eeprom.c"
 
 // MUST be at the last position to prevent for overlapping code
 #warning "Version String at 0x3000!!! check for overlapping code"
