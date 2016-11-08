@@ -28,15 +28,6 @@ PRJ_PREFIX=WyLight_
 PRJ_NAME=${PRJ_PREFIX}$(MAKECMDGOALS)
 FLAVOUR=$(MAKECMDGOALS)
 
-ifeq ($(MAKECMDGOALS),cc_bl)
-PREFIX=arm-none-eabi-
-endif
-ifeq ($(MAKECMDGOALS),cc_fw) 
-PREFIX=arm-none-eabi-
-endif
-ifeq ($(MAKECMDGOALS),cc_te)
-PREFIX=arm-none-eabi-
-endif
 ifeq ($(MAKECMDGOALS),bist)
 PREFIX=arm-none-eabi-
 endif
@@ -60,9 +51,6 @@ include makedefs
 
 TARGETS=test
 TARGETS+=cli
-TARGETS+=cc_fw
-TARGETS+=cc_bl
-TARGETS+=cc_te
 TARGETS+=docu
 TARGETS+=filedownloader
 MESSAGES="Attention:\n"
@@ -95,12 +83,6 @@ else
 MESSAGES+="install android ndk and run ./configure again to make android_client\n"
 endif
 
-ifneq "not_found" "@OPENSSL@"
-TARGETS+=sim
-else
-MESSAGES+="install openssl and run ./configure again to make sim\n"
-endif
-
 # The default rule, which causes the bootloader be built as bootloader
 all:
 	@$(foreach target,$(TARGETS),@make $(target); @make clean;)
@@ -108,28 +90,12 @@ all:
 
 pre-build: clean
 
-post-build: 
-	$(OPENSSL) sha256 -binary ${BINDIR}/${PRJ_NAME}.bin > ${BINDIR}/${PRJ_NAME}.sha
-
-# build the bootloader as normal bootloader 
-cc_fw: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.elf post-build
-
-cc_bl: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.elf post-build
-
 cli: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
-
-cc_te: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.elf
-
-bist: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.elf post-build
-
-sim: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
-
-ut: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
 filedownloader: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
 ENDINGS=c h cpp ino
-CODE_DIRS=android bist cc_bl cc_fw cc_te cli common driverlib firmware library LinkIt7688Duo/SerialToSPIandPWM sim
+CODE_DIRS=android cli common firmware library LinkIt7688Duo/SerialToSPIandPWM
 filelist:
 	@rm -f $@.txt
 	@$(foreach END, ${ENDINGS}, $(foreach DIR, ${CODE_DIRS}, find ./$(DIR) -name "*.$(END)" >> $@.txt;))
@@ -156,11 +122,6 @@ help:
 	@echo install_fw
 	@echo cli
 	@echo filedownloader
-	@echo -CC3200-
-	@echo cc_fw
-	@echo cc_bl
-	@echo sim
-	@echo ut	
 	@echo -PIC-
 	@echo firmware_pic 	
 	@echo firmware_pic_release
@@ -202,15 +163,8 @@ VPATH+=${ROOT}/cli
 # Where to find header files that do not live in the source directory.
 IPATH=${ROOT}/library
 IPATH+=${ROOT}/firmware
-IPATH+=${ROOT}/cc_bl
 IPATH+=${ROOT}/cli
 
-include Makefile.cc_te 
-include Makefile.cc_bl
-include Makefile.cc_fw
-include Makefile.bist
-include Makefile.ut
-include Makefile.sim
 include Makefile.firmware
 include Makefile.android
 include Makefile.docu

@@ -8,7 +8,7 @@ BINDIR=exe
 MAIL_HEADER="to: admin@wylight.de\nfrom: build01.wylight@gmail.com\nsubject: ${BUILD_BRANCH}"
 LOGFILE=~/buildlog.txt
 LOGFILERESULTS=~/buildresults.txt
-TARGETS=(test cc_fw firmware_pic cli cc_bl bist sim library)
+TARGETS=(test firmware_pic cli library)
 
 
 function make_targets() {

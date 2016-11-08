@@ -11,10 +11,6 @@ config.h
 *.0t
 autom4te.cache
 *.pp
-cc_bl/ccs/Release*
-cc_bl/ccs/Release__GNU*
-cc_fw/ccs/Release*
-driverlib/ccs/Release*
 exe
 *.mk
 UserInterfaceState.xcuserstate
@@ -29,7 +25,6 @@ android/.idea/libraries
 android/.DS_Store
 build
 wylightFirmware.launch
-cc_fw/ccs
 
 wylightBootloader.launch
 pre-commit.settings
