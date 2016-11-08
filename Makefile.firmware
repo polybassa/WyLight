@@ -4,7 +4,6 @@ FW_TEST_SRC=$(wildcard $(FW_DIR)/*_ut.c)
 FW_CORE := firmware/crc.c
 FW_CORE += firmware/CommandIO.c
 FW_CORE += firmware/error.c
-FW_CORE += firmware/external_eeprom.c
 FW_CORE += firmware/ledstrip.c
 FW_CORE += firmware/main.c
 FW_CORE += firmware/RingBuf.c
