@@ -54,21 +54,21 @@ static void i2c_write(const uns8 slave)
     SSP2IF = 0;
 }
 
+#define SET_READ_BIT(slaveaddr) do { \
+        slaveaddr |= 0x01; \
+} while (0)
+
+#define SET_WRITE_BIT(slaveaddr) do { \
+        slaveaddr &= 0xFE; \
+} while (0)
+
 void I2C_Write(uns8 slaveaddr, const uns8 dataaddr, const uns8 data)
 {
     i2c_start();
-
-    //Writebit in Slaveadresse setzen
-    slaveaddr &= 0xFE;
-    //Slave ansprechen
+    SET_WRITE_BIT(slaveaddr);
     i2c_write(slaveaddr);
-
-    //Datenregisteradresse übertragen
     i2c_write(dataaddr);
-
-    //Daten schreiben
     i2c_write(data);
-
     i2c_stop();
 }
 
@@ -77,15 +77,9 @@ uns8 I2C_Read(uns8 slaveaddr, const uns8 readaddr)
     uns8 _data;
 
     i2c_start();
-
-    //Writebit in Slaveadresse setzen
-    slaveaddr &= 0xFE;
-    //Slave ansprechen
+    SET_WRITE_BIT(slaveaddr);
     i2c_write(slaveaddr);
-
-    //Datenregisteradresse übertragen
     i2c_write(readaddr);
-
     i2c_stop();
 
     //Bus übernehmen
@@ -94,8 +88,7 @@ uns8 I2C_Read(uns8 slaveaddr, const uns8 readaddr)
     while (!SSP2IF) {}
     SSP2IF = 0;
 
-    //Readbit in Slaveadresse setzen
-    slaveaddr |= 0x01;
+    SET_READ_BIT(slaveaddr);
     i2c_write(slaveaddr);
 
     //Pic auf Lesen umschalten
