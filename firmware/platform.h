@@ -64,22 +64,18 @@ void Platform_EnableBootloaderAutostart();
 
 #else
 #include <stdint.h>
-#ifndef cc3200
 #include <stdio.h>
 #include <arpa/inet.h>
 #include <setjmp.h>
 #include <string.h>
-#endif /* #ifndef cc3200 */
 
 typedef int8_t bit;
 typedef uint8_t uns8;
 typedef uint16_t uns16;
 
-#ifndef cc3200
 //global variables
 extern uns8 g_UpdateFade;
 extern jmp_buf g_ResetEnvironment;
-#endif /* #ifndef cc3200 */
 
 #define bank1
 #define bank2
@@ -89,7 +85,6 @@ extern jmp_buf g_ResetEnvironment;
 #define bank7
 #define bank10
 #define Platform_EnableBootloaderAutostart(x)
-#ifndef cc3200
 #define clearRAM(x)
 #define Platform_AllowInterrupts(x)
 #define Platform_EnableAllInterrupts()
@@ -102,9 +97,6 @@ extern jmp_buf g_ResetEnvironment;
 #define Platform_OsciInit(x)
 #define softReset(x) longjmp(g_ResetEnvironment, 1)
 #define softResetJumpDestination(x) setjmp(g_ResetEnvironment)
-#else /*ifdef cc3200 */
-#define softReset(x)
-#endif /* #ifndef cc3200 */
 
 #endif
 #endif /* #ifndef _PLATFORM_H_ */

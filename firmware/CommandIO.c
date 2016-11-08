@@ -16,18 +16,9 @@
    You should have received a copy of the GNU General Public License
    along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef cc3200
-
 #include "usart.h"
 #include "spi.h"
 #include "crc.h"
-
-#else /* cc3200 */
-
-#include "wy_crc.h"
-#include "uart_if.h"
-
-#endif /* cc3200 */
 
 #include "ScriptCtrl.h"
 #include "CommandIO.h"
@@ -41,25 +32,6 @@
 bank2 struct CommandBuffer g_CmdBuf;
 bank5 struct response_frame g_ResponseBuf;
 static bit g_Odd_STX_Received;
-
-/** PRIVATE METHODES **/
-
-#ifdef cc3200
-
-static void UART_Send(const uns8 data)
-{
-    if (RingBuf_HasError(&g_RingBuf_Tx)) {
-        Trace_String("g_RingBuf_Tx Error \r\n");
-        RingBuf_Init(&g_RingBuf_Tx);
-    }
-    RingBuf_Put(&g_RingBuf_Tx, data);
-}
-
-#define Rtc_Ctl(x, y)
-#define Timer_PrintCycletime(x, y) 0
-#define Trace_Print(x, y) 0
-#define SPI_Send(x) 0
-#endif
 
 static void WriteByte(uns8 byte)
 {
@@ -92,9 +64,6 @@ void CommandIO_Init()
     g_CmdBuf.state = CS_WaitForSTX;
     DeleteBuffer();
     g_Odd_STX_Received = FALSE;
-#ifdef cc3200
-    Crc_Init();
-#endif
 }
 
 void CommandIO_Error()

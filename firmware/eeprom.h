@@ -42,11 +42,6 @@ uns8 Eeprom_Read(const uns16 adress);
 void Eeprom_WriteBlock(const uns8* array, uns16 adress, const uns8 length);
 void Eeprom_ReadBlock(uns8* array, uns16 adress, const uns8 length);
 
-#ifdef cc3200
-#include <stdbool.h>
-void Eeprom_Save(bool forceSave);
-#endif /*cc3200*/
-
 #ifdef __cplusplus
 }
 #endif

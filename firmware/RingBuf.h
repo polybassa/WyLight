@@ -36,7 +36,6 @@ extern "C" {
  * f.e.: size = 31 -> realsize = 32 -> we want an index of 31++ to overflow to 0:
  * binary: (00011111 + 00000001) & 00011111 = 00100000 & 00011111 = 00000000
  */
-#ifndef cc3200
 #define RingBufferSize 255
 struct RingBuffer {
     uns8 data[RingBufferSize + 1];
@@ -44,19 +43,6 @@ struct RingBuffer {
     uns8 write;
     bit error_full;
 };
-
-#else /*cc3200 */
-#define RingBufferSize 1023
-struct RingBuffer {
-    uns8 data[RingBufferSize + 1];
-    uns16 read;
-    uns16 write;
-    bit error_full;
-};
-
-extern struct RingBuffer g_RingBuf_Tx;
-
-#endif /* cc3200 */
 
 extern bank7 struct RingBuffer g_RingBuf;
 

@@ -18,7 +18,6 @@
 #******************************************************************************
 
 ROOT=.
-RTOS_SOURCE_DIR=${ROOT}/third_party/FreeRTOS
 OBJDIR?=obj
 BINDIR?=exe
 CLI_DIR=${ROOT}/cli
@@ -28,75 +27,6 @@ OUT_DIR=${BINDIR}
 
 OPENGL_LIB=-lGL -lGLU -lglut
 
-ifeq (${PREFIX}, arm-none-eabi-)
-
-AFLAGS=-mthumb \
-       -mcpu=cortex-m4  \
-       -MD
-
-CFLAGS= -ffunction-sections \
-        --specs=nano.specs \
-		-fno-common \
-    	-fmessage-length=0 \
-        -fdata-sections     \
-        -mcpu=cortex-m4 \
-        -fno-builtin \
-        -pedantic \
-        -std=c11 \
-        -mthumb \
-        -Wall \
-        -O1 \
-        -MD \
-        -g 
-
-CPPFLAGS= \
-    -ffunction-sections \
-    --specs=nano.specs \
-    -fno-common \
-    -fmessage-length=0 \
-    -fdata-sections \
-    -fno-exceptions \
-    -mcpu=cortex-m4 \
-    -fno-builtin \
-    -std=c++0x \
-    -pedantic \
-    -fno-rtti \
-    -mthumb \
-    -Wall \
-    -MD \
-    -O1 \
-    -c \
-    -g
-
-DEFINES=	-Dcc3200 \
-    		-DDEBUG
-
-LDFLAGS= 	-ffunction-sections \
-    		--specs=nano.specs \
-    		-fno-common \
-    		-fmessage-length=0 \
-    		-fdata-sections \
-    		-fno-exceptions \
-    		-mcpu=cortex-m4 \
-    		-fno-builtin \
-    		-std=c11 \
-    		-pedantic \
-    		-fno-rtti \
-    		-mthumb \
-    		-Wall \
-    		-MD \
-    		-O1 \
-    		-g \
-			-Wl,--gc-sections \
-         	-static
-
-CC=${ARM_GCC}
-CPP=${ARM_GPP}
-AR=${ARM_AR}
-LD=${ARM_LD}
-OBJCOPY=${ARM_OBJCOPY}
-
-else 
 # The flags passed to the compiler when we are not using arm-none-eabi tools.
 CFLAGS= -pedantic \
         -std=c11 \
@@ -115,8 +45,6 @@ LDFLAGS+=	-lpthread \
 			-lcrypto
 
 CPP=$(CXX)
-
-endif
 
 CC=${PREFIX}gcc
 CPP=${PREFIX}g++
