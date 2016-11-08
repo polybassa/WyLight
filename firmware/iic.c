@@ -1,20 +1,20 @@
 /**
-   Copyright (C) 2012 Nils Weiss, Patrick Bruenn.
+   Copyright (C) 2012 - 2016 Nils Weiss, Patrick Bruenn.
 
-   This file is part of Wifly_Light.
+   This file is part of WyLight.
 
-   Wifly_Light is free software: you can redistribute it and/or modify
+   WyLight is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   Wifly_Light is distributed in the hope that it will be useful,
+   WyLight is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
+   along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
 //Befehle:
 //I2C_Init() zum initialisieren
@@ -68,75 +68,6 @@ void I2C_Write(uns8 slaveaddr, const uns8 dataaddr, const uns8 data)
 
     //Daten schreiben
     i2c_write(data);
-
-    i2c_stop();
-}
-
-void I2C_WriteBlock(uns8 slaveaddr, const uns8* data, const uns8 dataaddr, const uns8 length)
-{
-    uns8 _length = length;
-    i2c_start();
-
-    //Writebit in Slaveadresse setzen
-    slaveaddr &= 0xFE;
-    //Slave ansprechen
-    i2c_write(slaveaddr);
-
-    //Datenregisteradresse übertragen
-    i2c_write(dataaddr);
-
-    while (_length) {
-        _length--;
-        //Daten schreiben
-        SSP2BUF = *data;
-        data++;
-        while (!SSP2IF) {}
-        SSP2IF = 0;
-    }
-
-    i2c_stop();
-}
-
-void I2C_ReadBlock(uns8 slaveaddr, uns8* buffer, const uns8 readaddr, const uns8 length)
-{
-    uns8 _length = length;
-
-    i2c_start();
-
-    //Writebit in Slaveadresse setzen
-    slaveaddr &= 0xFE;
-    //Slave ansprechen
-    i2c_write(slaveaddr);
-
-    //Datenregisteradresse übertragen
-    i2c_write(readaddr);
-
-    i2c_stop();
-
-    i2c_start();
-
-    //Readbit in Slaveadresse setzen
-    slaveaddr |= 0x01;
-    i2c_write(slaveaddr);
-
-    while (_length) {
-        //Pic auf Lesen umschalten
-        SSP2IF = 0;
-        RCEN2 = 1;
-        while (!SSP2IF) {}
-
-        *buffer = SSP2BUF;
-        buffer++;
-        _length--;
-
-        //Send ACK if we have some bytes to read
-        if (_length) {
-            SSP2IF = 0;
-            ACKEN2 = 1;
-            ACKDT2 = 0;
-            while (!SSP2IF) {}
-        }
-    }
 
     i2c_stop();
 }
