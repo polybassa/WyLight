@@ -18,19 +18,9 @@
 
 #******************************************************************************
 
-#******************************************************************************
-#
-# Makefile - Rules for building the WyLight bootloader.
-#
-#
-#*****************************************************************************
 PRJ_PREFIX=WyLight_
 PRJ_NAME=${PRJ_PREFIX}$(MAKECMDGOALS)
 FLAVOUR=$(MAKECMDGOALS)
-
-ifeq ($(MAKECMDGOALS),bist)
-PREFIX=arm-none-eabi-
-endif
 
 # Tools
 GIT=@GIT@
@@ -41,18 +31,13 @@ PIC_CC8E=@PIC_CC8E@
 CPPCHECKER=@CPPCHECKER@
 OPENSSL=@OPENSSL@
 UNCRUSTIFY=@UNCRUSTIFY@
-ARM_GCC=@ARM_GCC@
-ARM_GPP=@ARM_GPP@
-ARM_OBJCOPY=@ARM_OBJCOPY@
-ARM_AR=@ARM_AR@
-ARM_LD=@ARM_LD@
+
 # Include the common make definitions.
 include makedefs
 
 TARGETS=test
 TARGETS+=cli
 TARGETS+=docu
-TARGETS+=filedownloader
 MESSAGES="Attention:\n"
 
 ifneq "not_found" "@PIC_CC8E@"
@@ -83,7 +68,6 @@ else
 MESSAGES+="install android ndk and run ./configure again to make android_client\n"
 endif
 
-# The default rule, which causes the bootloader be built as bootloader
 all:
 	@$(foreach target,$(TARGETS),@make $(target); @make clean;)
 	@echo $(MESSAGES)
@@ -92,8 +76,6 @@ pre-build: clean
 
 cli: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
-filedownloader: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
-
 ENDINGS=c h cpp ino
 CODE_DIRS=android cli common firmware library LinkIt7688Duo/SerialToSPIandPWM
 filelist:
@@ -101,13 +83,13 @@ filelist:
 	@$(foreach END, ${ENDINGS}, $(foreach DIR, ${CODE_DIRS}, find ./$(DIR) -name "*.$(END)" >> $@.txt;))
 	@echo "Created $@.txt"
 
-uncrustify: filelis
+uncrustify: filelist
 	${UNCRUSTIFY} -F filelist.txt --no-backup -c uncrustify.cfg
 
 test: clean-all ${OBJDIR} ${BINDIR} 
 	@make firmware_test 
 	@make library_test
-	${CPPCHECKER} . --force --quiet
+	${CPPCHECKER} ${CODE_DIRS} --force --quiet
 
 help: 
 	@echo "Targets: "
@@ -116,11 +98,9 @@ help:
 	@echo clean	
 	@echo clean-all
 	@echo all	
-	@echo install_bl
-	@echo install_fw
 	@echo cli
-	@echo filedownloader
 	@echo -PIC-
+	@echo firmware_linkit
 	@echo firmware_pic 	
 	@echo firmware_pic_release
 	@echo firmware_simu

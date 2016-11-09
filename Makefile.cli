@@ -16,8 +16,3 @@ ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/StartupManager.o
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/TelnetProxy.o
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/WiflyControl.o
 ${BINDIR}/${PRJ_PREFIX}cli.bin: ${OBJDIR}/crc.o
-
-# WyLight WyFileDownloaderCli
-${BINDIR}/${PRJ_PREFIX}filedownloader.bin: ${OBJDIR}/WyFileDownloader.o
-${BINDIR}/${PRJ_PREFIX}filedownloader.bin: ${OBJDIR}/ClientSocket.o
-${BINDIR}/${PRJ_PREFIX}filedownloader.bin: ${OBJDIR}/WyFileDownloaderCli.o

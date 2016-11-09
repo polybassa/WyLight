@@ -37,10 +37,6 @@ ${BINDIR}/Script_ut.bin:	clean \
 							$(OBJDIR)/Script_ut.o \
 							$(OBJDIR)/Script.o
 
-${BINDIR}/WyFileDownloader_ut.bin: 	clean \
-									$(OBJDIR)/WyFileDownloader_ut.o \
-									$(OBJDIR)/WyFileDownloader.o
-
 ${BINDIR}/ScriptManager_ut.bin: 	clean \
 									$(OBJDIR)/ScriptManager_ut.o \
 									$(OBJDIR)/Script.o \
