@@ -631,11 +631,6 @@ CPP
 glut
 GLU
 GL
-ARM_OBJCOPY
-ARM_LD
-ARM_AR
-ARM_GPP
-ARM_GCC
 PIC_CC8E
 OPENSSL
 UNCRUSTIFY
@@ -3814,6 +3809,8 @@ else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: CC8E found!" >&5
 $as_echo "CC8E found!" >&6; }
 fi
+
+# Checks for libraries.
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for glAlphaFunc in -lGL" >&5
 $as_echo_n "checking for glAlphaFunc in -lGL... " >&6; }
