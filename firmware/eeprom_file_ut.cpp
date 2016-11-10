@@ -19,6 +19,7 @@
 #include <array>
 #include "unittest.h"
 #include "eeprom.h"
+#include <cstdio>
 
 static const std::array<char, EEPROM_SIZE> empty {};
 static const uns8 block_size = 255;
