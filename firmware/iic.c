@@ -97,7 +97,7 @@ void I2C_WriteBlock(uns8 slaveaddr, const uns8* data, const uns8 dataaddr, const
     i2c_stop();
 }
 
-void I2C_ReadBlock(const uns8 slaveaddr, uns8* buffer, const uns8 readaddr, const uns8 length)
+void I2C_ReadBlock(uns8 slaveaddr, uns8* buffer, const uns8 readaddr, const uns8 length)
 {
     uns8 _length = length;
 
