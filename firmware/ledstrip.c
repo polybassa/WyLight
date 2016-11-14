@@ -153,6 +153,7 @@ void Ledstrip_Init(void)
     } while (0 != i);
 
     gLedBuf.fadeTmms = 0;
+    gLedBuf.offset = 0;
 }
 
 void Ledstrip_SetColorDirect(uns8* pValues)
@@ -220,7 +221,12 @@ void Ledstrip_DoFade(void)
 
 void Ledstrip_UpdateLed(void)
 {
-    SPI_SendLedBuffer(gLedBuf.led_array);
+    if (gLedBuf.offset) {
+        SPI_SendLedBuffer(gLedBuf.led_array + gLedBuf.offset, NUM_OF_LED * 3 - gLedBuf.offset);
+        SPI_SendLedBuffer(gLedBuf.led_array, gLedBuf.offset);
+    } else {
+        SPI_SendLedBuffer(gLedBuf.led_array, NUM_OF_LED * 3);
+    }
 }
 
 void Ledstrip_SetFade(struct cmd_set_fade* pCmd)

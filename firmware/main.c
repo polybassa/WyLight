@@ -140,10 +140,12 @@ void HighPriorityInterruptFunction(void)
 }
 #endif /* #ifndef X86 */
 
+#ifdef __CC8E__
 #pragma cdata[VERSION_STRING_ORIGIN]
 #pragma cdata.version = VERSION
 #pragma cdata.CDATA_END
 #pragma origin CDATA_END
+#endif
 
 //*********************** HAUPTPROGRAMM **********************************************
 #ifdef __CC8E__

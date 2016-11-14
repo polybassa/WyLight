@@ -44,6 +44,7 @@ struct LedBuffer {
     uns8 step[NUM_OF_LED / 8 * 3];
     uns8 stepSize[NUM_OF_LED * 3];
     uns16 fadeTmms;
+    uns8 offset;
 };
 
 extern struct LedBuffer gLedBuf;

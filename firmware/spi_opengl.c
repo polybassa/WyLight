@@ -118,16 +118,18 @@ char SPI_Send(uns8 data)
     return g_led_status[0];
 }
 
-void SPI_SendLedBuffer(uns8* array) //!!! CHECK if GIE=0 during the sendroutine improves the result
+void SPI_SendLedBuffer(uns8* array, uns8 length)
 {
     //array must be the address of the first byte
     uns8* end;
     //calculate where the end is
-    end = array + (NUM_OF_LED * 3);
+    end = array + length;
     //send all
 
     pthread_mutex_lock(&g_led_mutex);
     for ( ; array < end; array++) {
+
+   if (*array) printf("length: %u\n", (unsigned)length);
         SPI_Send(*array);
     }
     pthread_mutex_unlock(&g_led_mutex);

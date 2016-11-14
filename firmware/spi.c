@@ -42,9 +42,9 @@ uns8 SPI_Send(const uns8 data)
     return SSP1BUF;
 }
 
-void SPI_SendLedBuffer(uns8* array)
+void SPI_SendLedBuffer(uns8* array, uns8 length)
 {
-    const uns8* end = (uns8*)(array + (NUM_OF_LED * 3));                             /* array must be the address of the first byte*/
+    const uns8* end = (uns8*)(array + length);                             /* array must be the address of the first byte*/
     /* calculate where the end is */
     for ( ; array < end; array++) {           /* send all data */
         SPI_Send(*array);
