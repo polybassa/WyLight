@@ -106,6 +106,8 @@ void Script::deserialize(std::istream& inStream, WyLight::Script& newScript)
             newScript.push_back(std::unique_ptr<FwCmdScript>(new FwCmdSetFade(inStream)));
         else if (0 == command.compare(FwCmdSetGradient::TOKEN))
             newScript.push_back(std::unique_ptr<FwCmdScript>(new FwCmdSetGradient(inStream)));
+        else if (0 == command.compare(FwCmdSetMove::TOKEN))
+            newScript.push_back(std::unique_ptr<FwCmdScript>(new FwCmdSetMove(inStream)));
         else
             throw FatalError("Unknown command: " + command);
     }

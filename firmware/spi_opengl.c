@@ -128,8 +128,6 @@ void SPI_SendLedBuffer(uns8* array, uns8 length)
 
     pthread_mutex_lock(&g_led_mutex);
     for ( ; array < end; array++) {
-
-   if (*array) printf("length: %u\n", (unsigned)length);
         SPI_Send(*array);
     }
     pthread_mutex_unlock(&g_led_mutex);

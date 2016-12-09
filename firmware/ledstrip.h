@@ -77,6 +77,11 @@ void Ledstrip_SetFade(struct cmd_set_fade* pCmd);
 void Ledstrip_SetGradient(struct cmd_set_gradient* pCmd);
 
 /**
+ * Callback if a "set_move" command is received.
+ */
+void Ledstrip_SetMove(struct cmd_set_move* pCmd);
+
+/**
  * called by the main cycle
  * update the ledstrip accourding to the precalculated parameters in <gLedBuf>
  */

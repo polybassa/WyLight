@@ -596,6 +596,22 @@ public:
     }
 };
 
+class ControlCmdSetMove : public WiflyControlCmd {
+public:
+    ControlCmdSetMove(void) : WiflyControlCmd(
+            string("setmove"),
+            string(" <time> <reverse>'\n") +
+            string("    <time> the number of ten milliseconds a move step should take") +
+            string("    <reverse> 1 to move reverse, 0 to move forward")) {}
+
+    virtual void Run(WyLight::Control& control) const
+    {
+        cout << "Parsing and transmitting command set move... ";
+        TrySend(*control.mFirmware, WyLight::FwCmdSetMove {cin}
+                );
+    }
+};
+
 class ControlCmdGetRtc : public WiflyControlCmd {
 public:
     ControlCmdGetRtc(void) : WiflyControlCmd(
@@ -724,6 +740,7 @@ static const std::shared_ptr<const WiflyControlCmd> s_Cmds[] = {
     std::shared_ptr<const WiflyControlCmd>(new ControlCmdClearScript()),
     std::shared_ptr<const WiflyControlCmd>(new ControlCmdSetFade()),
     std::shared_ptr<const WiflyControlCmd>(new ControlCmdSetGradient()),
+    std::shared_ptr<const WiflyControlCmd>(new ControlCmdSetMove()),
     std::shared_ptr<const WiflyControlCmd>(new ControlCmdStartBl()),
     std::shared_ptr<const WiflyControlCmd>(new ControlCmdTest()),
     std::shared_ptr<const WiflyControlCmd>(new ControlCmdStressTest()),

@@ -222,8 +222,9 @@ void Ledstrip_DoFade(void)
 void Ledstrip_UpdateLed(void)
 {
     if (gLedBuf.offset) {
-        SPI_SendLedBuffer(gLedBuf.led_array + gLedBuf.offset, NUM_OF_LED * 3 - gLedBuf.offset);
-        SPI_SendLedBuffer(gLedBuf.led_array, gLedBuf.offset);
+        const uns8 offset = gLedBuf.offset * 3;
+        SPI_SendLedBuffer(gLedBuf.led_array + offset, NUM_OF_LED * 3 - offset);
+        SPI_SendLedBuffer(gLedBuf.led_array, offset);
     } else {
         SPI_SendLedBuffer(gLedBuf.led_array, NUM_OF_LED * 3);
     }
@@ -335,6 +336,11 @@ void Ledstrip_SetGradient(struct cmd_set_gradient* pCmd)
             INC_BIT_COUNTER(stepAddress, stepMask);
         }
     }
+}
+
+void Ledstrip_SetMove(struct cmd_set_move* pCmd)
+{
+    gLedBuf.offset = (gLedBuf.offset + pCmd->stepSize) % NUM_OF_LED;
 }
 
 #ifdef DEBUG

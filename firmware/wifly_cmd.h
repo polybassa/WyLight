@@ -48,6 +48,7 @@
 #define WAIT 0xFE
 #define SET_FADE 0xFC
 #define SET_GRADIENT 0xF9
+#define SET_MOVE 0xFA
 #define CLEAR_SCRIPT 0xF8
 #define LOOP_ON 0xF7
 #define LOOP_OFF 0xF6
@@ -134,6 +135,21 @@ struct __attribute__((__packed__)) cmd_set_gradient {
 #endif
 };
 
+struct __attribute__((__packed__)) cmd_set_move {
+    char stepSize;
+#ifdef __cplusplus
+    void Set(char __stepSize)
+    {
+        stepSize = __stepSize;
+    }
+
+    std::ostream& Write(std::ostream& out, size_t& indentation) const
+    {
+        return out << std::dec << (int)stepSize;
+    }
+#endif /* #ifdef __cplusplus */
+};
+
 struct __attribute__((__packed__)) cmd_loop_end {
     uns8 startIndex; /* pointer to the corresponding cmd_loop_start */
     uns8 counter; /* current loop counter, used due processing */
@@ -202,6 +218,7 @@ struct __attribute__((__packed__)) led_cmd {
         struct rtc_time set_rtc;
         struct cmd_set_color_direct set_color_direct;
         struct cmd_set_gradient set_gradient;
+        struct cmd_set_move set_move;
     }
     data;
 };

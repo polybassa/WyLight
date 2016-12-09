@@ -46,6 +46,7 @@ const char FwCmdScript::INDENTATION_CHARACTER;
 
 const std::string FwCmdSetFade::TOKEN("fade");
 const std::string FwCmdSetGradient::TOKEN("gradient");
+const std::string FwCmdSetMove::TOKEN("move");
 const std::string FwCmdLoopOn::TOKEN("loop");
 const std::string FwCmdLoopOff::TOKEN("loop_off");
 const std::string FwCmdWait::TOKEN("wait");

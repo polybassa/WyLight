@@ -351,6 +351,41 @@ struct FwCmdSetGradient : public FwCmdScript {
     }
 };
 
+struct FwCmdSetMove : public FwCmdScript {
+    static const std::string TOKEN;
+    FwCmdSetMove(std::istream& is) : FwCmdScript(SET_MOVE, sizeof(cmd_set_move))
+    {
+        int stepSize;
+        is >> stepSize;
+        mReqFrame.data.set_move.Set(static_cast<char>(std::min(127, std::max(-127, stepSize))));
+    }
+
+    /**
+     * Injects a move command into the wylight script controller
+     * @param stepSize set direction and stepSize
+     */
+    FwCmdSetMove(int8_t stepSize) : FwCmdScript(SET_MOVE, sizeof(cmd_set_move))
+    {
+        mReqFrame.data.set_move.Set(stepSize);
+    }
+
+    int8_t stepSize(void) const
+    {
+        return ntohs(mReqFrame.data.set_fade.fadeTmms);
+    }
+
+    void stepSize(int8_t stepSize)
+    {
+        mReqFrame.data.set_move.stepSize = stepSize;
+    }
+
+    std::ostream& Write(std::ostream& out, size_t& indentation) const override
+    {
+        FwCmdScript::Write(out, indentation) << TOKEN << ' ';
+        return mReqFrame.data.set_move.Write(out, indentation);
+    }
+};
+
 struct FwCmdSetRtc : public FwCmdSimple {
     /**
      * Sets the rtc clock of the wifly device to the current time.

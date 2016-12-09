@@ -153,6 +153,9 @@ uns8 ScriptCtrl_Add(struct led_cmd* pCmd)
     case SET_GRADIENT:
         return ScriptCtrl_Write(pCmd);
 
+    case SET_MOVE:
+        return ScriptCtrl_Write(pCmd);
+
     case GET_LED_TYP:
         return OK;
 
@@ -262,6 +265,15 @@ void ScriptCtrl_Run(void)
         Ledstrip_SetGradient(&nextCmd.data.set_gradient);
         if ((nextCmd.data.set_gradient.parallelAndOffset & 0x80) == 0)
             gScriptBuf.waitValue = ntohs(nextCmd.data.set_gradient.fadeTmms);
+
+        /* move execute pointer to the next command */
+        gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
+        if (!gScriptBuf.inLoop)
+            ScriptBufSetRead(gScriptBuf.execute);
+        break;
+
+    case SET_MOVE:
+        Ledstrip_SetMove(&nextCmd.data.set_move);
 
         /* move execute pointer to the next command */
         gScriptBuf.execute = ScriptBufInc(gScriptBuf.execute);
