@@ -25,6 +25,8 @@
 #include "error.h"
 #include "trace.h"
 
+static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+
 /**************** private functions/ macros *****************/
 /**
  * Helper to calculate an eeprom address from a command pointer
@@ -191,7 +193,8 @@ void ScriptCtrl_Run(void)
     if (gScriptBuf.isClearing)
         ScriptCtrl_Clear();
 
-    if (!gScriptBuf.isRunning) return;
+    if (!gScriptBuf.isRunning)
+        return;
 
     if (gScriptBuf.waitValue > 0)
         return;

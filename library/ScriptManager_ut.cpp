@@ -27,12 +27,6 @@ static const uint32_t __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_W
 const size_t FwCmdScript::INDENTATION_MAX;
 const char FwCmdScript::INDENTATION_CHARACTER;
 
-const std::string FwCmdSetFade::TOKEN("fade");
-const std::string FwCmdSetGradient::TOKEN("gradient");
-const std::string FwCmdLoopOn::TOKEN("loop");
-const std::string FwCmdLoopOff::TOKEN("loop_off");
-const std::string FwCmdWait::TOKEN("wait");
-
 size_t ut_ScriptManager_Empty(void)
 {
     TestCaseBegin();

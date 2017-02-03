@@ -26,6 +26,13 @@ static const uint32_t __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_W
 
 const unsigned int Script::currentVersion = 1;
 
+const std::string FwCmdSetFade::TOKEN("fade");
+const std::string FwCmdSetGradient::TOKEN("gradient");
+const std::string FwCmdSetMove::TOKEN("move");
+const std::string FwCmdLoopOn::TOKEN("loop");
+const std::string FwCmdLoopOff::TOKEN("loop_off");
+const std::string FwCmdWait::TOKEN("wait");
+
 Script::Script(const std::string& filename)
 {
     Script::deserialize(filename, *this);

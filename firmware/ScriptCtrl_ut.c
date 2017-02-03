@@ -20,11 +20,14 @@
 #include "unittest.h"
 #include <stdbool.h>
 
+static const uint32_t __attribute__((unused)) g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO;// | ZONE_VERBOSE;
+
 #define NUM_TEST_LOOPS 255
 
 int gSetColorDirectWasCalled;
 int gSetFadeWasCalled;
 int gSetGradientWasCalled;
+int gSetMoveWasCalled;
 
 /**************** includes and functions for wrapping ****************/
 #include "ScriptCtrl.h"
@@ -40,20 +43,26 @@ void CommandIO_SendResponse(struct response_frame* mFrame)
 
 void Ledstrip_SetColorDirect(struct cmd_set_fade* pCmd)
 {
-    Trace_String("Ledstrip_SetColorDirect was called\n");
+    Trace(ZONE_VERBOSE, "Ledstrip_SetColorDirect was called\n");
     gSetColorDirectWasCalled = TRUE;
 }
 
 void Ledstrip_SetFade(struct cmd_set_fade* pCmd)
 {
-    Trace_String("Ledstrip_SetFade was called\n");
+    Trace(ZONE_VERBOSE, "Ledstrip_SetFade was called\n");
     gSetFadeWasCalled = TRUE;
 }
 
-void Ledstrip_SetGradient(struct cmd_set_fade* pCmd)
+void Ledstrip_SetGradient(struct cmd_set_gradient* pCmd)
 {
-    Trace_String("Ledstrip_SetGradient was called\n");
+    Trace(ZONE_VERBOSE, "Ledstrip_SetGradient was called\n");
     gSetGradientWasCalled = TRUE;
+}
+
+void Ledstrip_SetMove(struct cmd_set_move* pCmd)
+{
+    Trace(ZONE_VERBOSE, "Ledstrip_SetMove was called\n");
+    gSetMoveWasCalled = TRUE;
 }
 
 /******************************* test functions *******************************/
@@ -62,6 +71,7 @@ int ut_ScriptCtrl_SimpleReadWrite(void)
 {
     TestCaseBegin();
     struct led_cmd testCmd;
+    memset(&testCmd, 0x0, sizeof(testCmd));
     testCmd.cmd = SET_FADE;
     ScriptCtrl_Clear();
 
@@ -70,7 +80,7 @@ int ut_ScriptCtrl_SimpleReadWrite(void)
     ScriptCtrl_Run();
 
     /* add simple command and read back */
-    ScriptCtrl_Add(&testCmd);
+    CHECK(OK == ScriptCtrl_Add(&testCmd));
     gSetFadeWasCalled = FALSE;
     ScriptCtrl_Run();
     CHECK(gSetFadeWasCalled);
@@ -79,6 +89,21 @@ int ut_ScriptCtrl_SimpleReadWrite(void)
     gSetFadeWasCalled = FALSE;
     ScriptCtrl_Run();
     CHECK(!gSetFadeWasCalled);
+
+    /* test other script commands */
+    testCmd.cmd = SET_GRADIENT;
+    CHECK(OK == ScriptCtrl_Add(&testCmd));
+    gSetGradientWasCalled = FALSE;
+
+    ScriptCtrl_Run();
+    CHECK(gSetGradientWasCalled);
+
+    testCmd.cmd = SET_MOVE;
+    CHECK(OK == ScriptCtrl_Add(&testCmd));
+    gSetMoveWasCalled = FALSE;
+
+    ScriptCtrl_Run();
+    CHECK(gSetMoveWasCalled);
     TestCaseEnd();
 }
 

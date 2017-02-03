@@ -41,7 +41,7 @@ static void SPI_SendBuffer(const uint8_t* buf, const size_t buf_len)
 
     memset(xfer, 0, sizeof(xfer));
     xfer[0].len = buf_len;
-    xfer[0].tx_buf = (unsigned int)buf;
+    xfer[0].tx_buf = (__u64)buf;
 
     const int status = ioctl(g_spi_fd, SPI_IOC_MESSAGE(2), xfer);
     if (status != buf_len)
@@ -54,7 +54,7 @@ uint8_t SPI_Send(uint8_t data)
     return 0;
 }
 
-void SPI_SendLedBuffer(uint8_t* buf)
+void SPI_SendLedBuffer(uint8_t* buf, uns8 length)
 {
-    SPI_SendBuffer(buf, 3 * NUM_OF_LED);
+    SPI_SendBuffer(buf, length);
 }

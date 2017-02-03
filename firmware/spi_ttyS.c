@@ -96,7 +96,7 @@ uint8_t SPI_Send(uint8_t data)
     return 0;
 }
 
-void SPI_SendLedBuffer(uint8_t* buf)
+void SPI_SendLedBuffer(uint8_t* buf, uns8 length)
 {
-    SPI_SendBuffer(buf, 3 * NUM_OF_LED);
+    SPI_SendBuffer(buf, length);
 }
