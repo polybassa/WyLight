@@ -551,7 +551,7 @@ public:
             string(" <addr> <rgb> <time> <parallel>'\n") +
             string("    <addr> hex bitmask, which leds should be set to the new color\n") +
             string("    <rgb> hex rgb value of the new color f.e. red: ff0000\n") +
-            string("    <time> the number of ten milliseconds the fade should take") +
+            string("    <time> the number of ten milliseconds the fade should take\n") +
             string("    <parallel> 1 to allow parallel fades, 0 to disable")) {}
 
     virtual void Run(WyLight::Control& control) const
@@ -569,9 +569,9 @@ public:
             string(" <rgb_1> <rgb_2> <time> <offset> <num_leds> <parallel>'\n") +
             string("    <rgb_1> hex rgb value of the start color f.e. green: 00ff00\n") +
             string("    <rgb_2> hex rgb value of the end color f.e. red: ff0000\n") +
-            string("    <time> the number of ten milliseconds the fade should take") +
-            string("    <offset> position of the first led") +
-            string("    <num_leds> position of the last led - <offset>") +
+            string("    <time> the number of ten milliseconds the fade should take\n") +
+            string("    <offset> position of the first led\n") +
+            string("    <num_leds> position of the last led - <offset>\n") +
             string("    <parallel> 1 to allow parallel fades, 0 to disable")) {}
 
     virtual void Run(WyLight::Control& control) const
@@ -601,8 +601,8 @@ public:
     ControlCmdSetMove(void) : WiflyControlCmd(
             string("setmove"),
             string(" <time> <reverse>'\n") +
-            string("    <time> the number of ten milliseconds a move step should take") +
-            string("    <reverse> 1 to move reverse, 0 to move forward")) {}
+            string("    <time> the number of ten milliseconds a move step should take\n") +
+            string("    <reverse> -1 to move reverse, 1 to move forward")) {}
 
     virtual void Run(WyLight::Control& control) const
     {
