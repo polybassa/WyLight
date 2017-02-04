@@ -340,7 +340,7 @@ void Ledstrip_SetGradient(struct cmd_set_gradient* pCmd)
 
 void Ledstrip_SetMove(struct cmd_set_move* pCmd)
 {
-    gLedBuf.offset = (gLedBuf.offset + pCmd->stepSize) % NUM_OF_LED;
+    gLedBuf.offset = (gLedBuf.offset - pCmd->stepSize) % NUM_OF_LED;
 }
 
 #ifdef DEBUG
