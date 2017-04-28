@@ -39,6 +39,7 @@
 
 #define softResetJumpDestination(x)
 
+#define Platform_ExtraInit(x)
 #define Platform_IOInit(x) do { CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); CLRF(PORTA); CLRF(LATA); CLRF(ANSELA); \
                                 CLRF(TRISA); PORTA = 0b00000100; } \
     while (0)                                                                         //Eingänge am PORTB initialisieren
@@ -93,6 +94,7 @@ extern jmp_buf g_ResetEnvironment;
 #define Platform_DisableBootloaderAutostart(x)
 #define InitFactoryRestoreWLAN(x)
 #define InitFET(x)
+void Platform_ExtraInit(void);
 #define Platform_IOInit(x)
 #define Platform_OsciInit(x)
 #define softReset(x) longjmp(g_ResetEnvironment, 1)

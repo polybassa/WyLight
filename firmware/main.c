@@ -63,9 +63,6 @@ uns8 g_UpdateLedStrip;
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void InitAll();
 void HighPriorityInterruptFunction(void);
-#ifdef X86
-void init_x86();
-#endif /* #ifdef X86 */
 
 #ifndef X86
 //*********************** INTERRUPTSERVICEROUTINE ************************************
@@ -206,10 +203,7 @@ void InitAll()
     CommandIO_Init();
     Rtc_Init();
     ScriptCtrl_Init();
-
-#ifndef __CC8E__
-    init_x86();
-#endif /* #ifndef CC8E */
+    Platform_ExtraInit();
 
     Platform_AllowInterrupts();
 

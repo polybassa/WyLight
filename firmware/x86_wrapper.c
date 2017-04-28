@@ -196,7 +196,7 @@ uns16 Timer_PrintCycletime(uns16* pArray, const uns16 arraySize)
     return arraySize;
 }
 
-void init_x86()
+void Platform_ExtraInit()
 {
     pthread_t broadcastThread;
     pthread_t isrThread;
