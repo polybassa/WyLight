@@ -1,4 +1,6 @@
 #include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
+#include <ESP8266httpUpdate.h>
 #include <WiFiUdp.h>
 
 #define ESP8266_LED 5
@@ -6,6 +8,8 @@
 static const char WiFiSSID[] = "Accesspoint";
 static const char WiFiPSK[] = "WyLight1";
 
+//NOTES:
+// http://esp8266.github.io/Arduino/versions/2.0.0/doc/ota_updates/ota_updates.html#web-browser
 void setupWifi()
 {
   byte ledStatus = LOW;
@@ -36,7 +40,7 @@ void setupWifi()
   }
 }
 
-void setup() 
+void setup()
 {
   Serial.begin(9600);
   Serial.println("HUHU");
@@ -71,12 +75,34 @@ static void sendBroadcast()
   Udp.endPacket();
 }
 
-void loop() 
+static void runUpdate()
 {
+  //const auto status = ESPhttpUpdate.update("http://brünn.net/slow_blink.bin");
+  const auto status = ESPhttpUpdate.update("http://192.168.43.1:12345/slow_blink.bin");
+  switch (status) {
+    case HTTP_UPDATE_FAILED:
+        Serial.println("[update] Update failed.");
+        Serial.println(ESPhttpUpdate.getLastErrorString());
+        break;
+    case HTTP_UPDATE_NO_UPDATES:
+        Serial.println("[update] Update no Update.");
+        break;
+    case HTTP_UPDATE_OK:
+        Serial.println("[update] Update ok."); // may not called we reboot the ESP
+        break;
+  }
+}
+
+static int count = 3;
+void loop()
+{
+  if (--count) {
+    runUpdate();
+  }
   Serial.println(WiFi.localIP());
   sendBroadcast();
   digitalWrite(ESP8266_LED, HIGH);
-  delay(1500);
+  delay(3500);
   sendBroadcast();
   digitalWrite(ESP8266_LED, LOW);
   delay(1500);
