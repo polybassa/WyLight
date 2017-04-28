@@ -159,10 +159,8 @@ main(void)
 
     while (1) {
         Timer_StartStopwatch(eMAIN);
-#ifndef __CC8E__
         // give opengl thread a chance to run
-        usleep(10);
-#endif /* #ifndef __CC8E__ */
+        Platform_MainLoopSleep();
 
         do_and_measure(Platform_CheckInputs);
 
