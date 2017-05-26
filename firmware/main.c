@@ -118,12 +118,7 @@ void HighPriorityInterruptFunction(void)
 #endif
 
 //*********************** HAUPTPROGRAMM **********************************************
-#ifdef __CC8E__
-void
-#else
-int
-#endif
-main(void)
+Platform_Main(void)
 {
     /* softReset() on x86 will jump here! */
     softResetJumpDestination();

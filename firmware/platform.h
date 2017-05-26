@@ -39,6 +39,7 @@
 
 #define softResetJumpDestination(x)
 
+#define Platform_Main(x) void main(x)
 #define Platform_MainLoopSleep(x)
 #define Platform_ExtraInit(x)
 #define Platform_IOInit(x) do { CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); CLRF(PORTA); CLRF(LATA); CLRF(ANSELA); \
@@ -93,6 +94,7 @@ extern jmp_buf g_ResetEnvironment;
 #define Platform_DisableAllInterrupts()
 #define Platform_CheckInputs(x)
 #define Platform_DisableBootloaderAutostart(x)
+#define Platform_Main(x) int main(x)
 #define Platform_MainLoopSleep(x) usleep(10)
 #define InitFactoryRestoreWLAN(x)
 #define InitFET(x)
