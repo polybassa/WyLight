@@ -73,17 +73,6 @@ interrupt HighPriorityInterrupt(void)
 interrupt LowPriorityInterrupt(void)
 {
     int_save_registers
-#if 0
-    uns16 sv_FSR0 = FSR0;
-    uns16 sv_FSR1 = FSR1;
-    uns16 sv_FSR2 = FSR2;
-    uns8 sv_PCLATH = PCLATH;
-    uns8 sv_PCLATU = PCLATU;
-    uns8 sv_PRODL = PRODL;
-    uns8 sv_PRODH = PRODH;
-    uns24 sv_TBLPTR = TBLPTR;
-    uns8 sv_TABLAT = TABLAT;
-#endif
 
     if (TMR5IF) {
         g_UpdateLed = g_UpdateLed + 1;
@@ -97,17 +86,6 @@ interrupt LowPriorityInterrupt(void)
         Timer1Disable();
         Timer1Interrupt();
     }
-#if 0
-    FSR0 = sv_FSR0;
-    FSR1 = sv_FSR1;
-    FSR2 = sv_FSR2;
-    PCLATH = sv_PCLATH;
-    PCLATU = sv_PCLATU;
-    PRODL = sv_PRODL;
-    PRODH = sv_PRODH;
-    TBLPTR = sv_TBLPTR;
-    TABLAT = sv_TABLAT;
-#endif
     int_restore_registers
 }
 
