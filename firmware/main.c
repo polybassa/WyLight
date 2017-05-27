@@ -127,7 +127,4 @@ Platform_Main(void)
 #include "Flash.c"
 #include "Version.c"
 
-// MUST be at the last position to prevent for overlapping code
-#warning "Version String at 0x3000!!! check for overlapping code"
-
 #endif /* #ifdef __CC8E__ */
