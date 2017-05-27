@@ -55,9 +55,6 @@ uns8 g_UpdateLedStrip;
 #define do_and_measure(METHOD) METHOD();
 #endif /*#ifdef DEBUG */
 
-//*********************** FUNKTIONSPROTOTYPEN ****************************************
-void InitAll();
-
 #ifdef __CC8E__
 void HighPriorityInterruptFunction(void);
 //*********************** INTERRUPTSERVICEROUTINE ************************************
@@ -115,6 +112,32 @@ void HighPriorityInterruptFunction(void)
 #pragma origin CDATA_END
 #endif /* #ifdef __CC8E__ */
 
+void InitAll()
+{
+    clearRAM();
+    Trace_Init();
+    Platform_OsciInit();
+    Platform_IOInit();
+    RingBuf_Init(&g_RingBuf);
+    UART_Init();
+    Timer_Init();
+    Ledstrip_Init();
+    CommandIO_Init();
+    Rtc_Init();
+    ScriptCtrl_Init();
+    Platform_ExtraInit();
+
+    Platform_AllowInterrupts();
+
+    /* Startup Wait-Time 2s
+     * to protect Wifly-Modul from errors*/
+    gScriptBuf.waitValue = 20;
+    CommandIO_CreateResponse(&g_ResponseBuf, FW_STARTED, OK);
+    CommandIO_SendResponse(&g_ResponseBuf);
+    Trace_String(" Init Done ");
+    Platform_DisableBootloaderAutostart();
+}
+
 //*********************** HAUPTPROGRAMM **********************************************
 Platform_Main(void)
 {
@@ -151,33 +174,6 @@ Platform_Main(void)
             Timer5InterruptUnlock();
         }
     }
-}
-//*********************** UNTERPROGRAMME **********************************************
-
-void InitAll()
-{
-    clearRAM();
-    Trace_Init();
-    Platform_OsciInit();
-    Platform_IOInit();
-    RingBuf_Init(&g_RingBuf);
-    UART_Init();
-    Timer_Init();
-    Ledstrip_Init();
-    CommandIO_Init();
-    Rtc_Init();
-    ScriptCtrl_Init();
-    Platform_ExtraInit();
-
-    Platform_AllowInterrupts();
-
-    /* Startup Wait-Time 2s
-     * to protect Wifly-Modul from errors*/
-    gScriptBuf.waitValue = 20;
-    CommandIO_CreateResponse(&g_ResponseBuf, FW_STARTED, OK);
-    CommandIO_SendResponse(&g_ResponseBuf);
-    Trace_String(" Init Done ");
-    Platform_DisableBootloaderAutostart();
 }
 
 #ifdef __CC8E__
