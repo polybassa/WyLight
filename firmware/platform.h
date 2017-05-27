@@ -71,6 +71,7 @@ void Platform_EnableBootloaderAutostart();
 #include <arpa/inet.h>
 #include <setjmp.h>
 #include <string.h>
+#include <unistd.h>
 
 typedef int8_t bit;
 typedef uint8_t uns8;
@@ -94,7 +95,9 @@ extern jmp_buf g_ResetEnvironment;
 #define Platform_DisableAllInterrupts()
 #define Platform_CheckInputs(x)
 #define Platform_DisableBootloaderAutostart(x)
-#define Platform_Main(x) int main(x)
+#define Platform_Main(x) \
+    jmp_buf g_ResetEnvironment; \
+    int main(x)
 #define Platform_MainLoopSleep(x) usleep(10)
 #define InitFactoryRestoreWLAN(x)
 #define InitFET(x)

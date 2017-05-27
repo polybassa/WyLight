@@ -36,11 +36,6 @@
 #include "error.h"
 #include "Flash.h"
 
-#ifndef __CC8E__
-#include <unistd.h>
-jmp_buf g_ResetEnvironment;
-#endif /* #ifndef CC8E */
-
 //*********************** GLOBAL VARIABLES *******************************************
 uns8 g_UpdateLed;
 uns8 g_UpdateLedStrip;
