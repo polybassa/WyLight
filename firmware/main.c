@@ -41,60 +41,7 @@ uns8 g_UpdateLed;
 uns8 g_UpdateLedStrip;
 
 #ifdef __CC8E__
-void HighPriorityInterruptFunction(void);
-//*********************** INTERRUPTSERVICEROUTINE ************************************
-#pragma origin 0x8
-//Adresse des High Priority Interrupts
-interrupt HighPriorityInterrupt(void)
-{
-    HighPriorityInterruptFunction();
-#pragma fastMode
-}
-
-#pragma origin 0x18
-interrupt LowPriorityInterrupt(void)
-{
-    int_save_registers
-
-    if (TMR5IF) {
-        g_UpdateLed = g_UpdateLed + 1;
-        ScriptCtrl_DecrementWaitValue();
-        Timer5Interrupt();
-    }
-
-    if (TMR1IF) {
-        g_UpdateLedStrip = g_UpdateLedStrip + 1;
-        ScriptCtrl_CheckAndDecrementWaitValue();
-        Timer1Disable();
-        Timer1Interrupt();
-    }
-    int_restore_registers
-}
-
-void HighPriorityInterruptFunction(void)
-{
-    uns16 sv_FSR0 = FSR0;
-    if (RC1IF) {
-        //Replace RingBuf_Put to avoid failures when main-cycle call's RingBuf_Put
-        if (!g_RingBuf.error_full) {
-            uns8 writeNext = RingBufInc(g_RingBuf.write);
-            if (writeNext != g_RingBuf.read) {
-                uns8 write = g_RingBuf.write;
-                g_RingBuf.data[write] = RCREG1;
-                g_RingBuf.write = writeNext;
-            } else {g_RingBuf.error_full = 1; }
-        } else {
-            //Register lesen um Schnittstellen Fehler zu vermeiden
-            uns8 temp = RCREG1;
-        }
-    }
-    FSR0 = sv_FSR0;
-}
-
-#pragma cdata[VERSION_STRING_ORIGIN]
-#pragma cdata.version = VERSION
-#pragma cdata.CDATA_END
-#pragma origin CDATA_END
+#include "isr_pic.c"
 #endif /* #ifdef __CC8E__ */
 
 void InitAll()
