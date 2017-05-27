@@ -57,9 +57,9 @@ uns8 g_UpdateLedStrip;
 
 //*********************** FUNKTIONSPROTOTYPEN ****************************************
 void InitAll();
-void HighPriorityInterruptFunction(void);
 
-#ifndef X86
+#ifdef __CC8E__
+void HighPriorityInterruptFunction(void);
 //*********************** INTERRUPTSERVICEROUTINE ************************************
 #pragma origin 0x8
 //Adresse des High Priority Interrupts
@@ -108,14 +108,12 @@ void HighPriorityInterruptFunction(void)
     }
     FSR0 = sv_FSR0;
 }
-#endif /* #ifndef X86 */
 
-#ifdef __CC8E__
 #pragma cdata[VERSION_STRING_ORIGIN]
 #pragma cdata.version = VERSION
 #pragma cdata.CDATA_END
 #pragma origin CDATA_END
-#endif
+#endif /* #ifdef __CC8E__ */
 
 //*********************** HAUPTPROGRAMM **********************************************
 Platform_Main(void)
