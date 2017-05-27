@@ -55,9 +55,16 @@ void Timer_StartStopwatch(const enum CYCLETIME_METHODE destMethode);
 ** Function terminates the Stopwatch and print out the measured Time over UART
 **/
 void Timer_StopStopwatch(const enum CYCLETIME_METHODE destMethode);
+
+#define do_and_measure(METHOD) do { \
+        Timer_StartStopwatch(e ## METHOD); \
+        METHOD(); \
+        Timer_StopStopwatch(e ## METHOD); \
+} while (false)
 #else
 #define Timer_StartStopwatch(x)
 #define Timer_StopStopwatch(x)
+#define do_and_measure(METHOD) METHOD();
 #endif
 
 #ifdef __CC8E__

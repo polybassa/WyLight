@@ -40,16 +40,6 @@
 uns8 g_UpdateLed;
 uns8 g_UpdateLedStrip;
 
-//*********************** MACROS *****************************************************
-#ifdef DEBUG
-#define do_and_measure(METHOD) { \
-        Timer_StartStopwatch(e ## METHOD); \
-        METHOD(); \
-        Timer_StopStopwatch(e ## METHOD); }
-#else
-#define do_and_measure(METHOD) METHOD();
-#endif /*#ifdef DEBUG */
-
 #ifdef __CC8E__
 void HighPriorityInterruptFunction(void);
 //*********************** INTERRUPTSERVICEROUTINE ************************************
