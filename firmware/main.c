@@ -109,7 +109,6 @@ Platform_Main(void)
 }
 
 #ifdef __CC8E__
-//#pragma codepage 1
 #include "crc.c"
 #include "eeprom.c"
 #include "error.c"
@@ -126,5 +125,4 @@ Platform_Main(void)
 #include "trace.c"
 #include "Flash.c"
 #include "Version.c"
-
 #endif /* #ifdef __CC8E__ */
