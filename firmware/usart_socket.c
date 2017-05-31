@@ -20,7 +20,10 @@
 #include "RingBuf.h"
 #include "trace.h"
 
+//TODO REMOVE THIS HACK BY MAKING A CLEAN MAKEFILE FOR ESP!!!!
+#if !defined(__XTENSA_EL__)
 static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+#endif
 static const uint16_t WIFLY_SERVER_PORT = 2000;
 static const uint16_t BROADCAST_PORT = 55555;
 static int g_uartSocket = -1;

@@ -81,7 +81,7 @@ pre-build: clean
 cli: pre-build ${OBJDIR} ${BINDIR} ${BINDIR}/${PRJ_NAME}.bin
 
 ENDINGS=c h cpp ino
-CODE_DIRS=android cli common firmware library LinkIt7688Duo/SerialToSPIandPWM
+CODE_DIRS=android cli common esp8266 firmware library LinkIt7688Duo/SerialToSPIandPWM
 filelist:
 	@rm -f $@.txt
 	@$(foreach END, ${ENDINGS}, $(foreach DIR, ${CODE_DIRS}, find ./$(DIR) -name "*.$(END)" >> $@.txt;))
@@ -123,6 +123,7 @@ help:
 clean:
 	@rm -rf ${OBJDIR} ${wildcard *~}
 	@make --no-print-directory ${OBJDIR}
+	cd esp8266 && make clean
 
 # The rule to clean out all the build products.
 clean-all:

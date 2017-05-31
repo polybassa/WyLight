@@ -31,6 +31,9 @@ GCC_FLAGS += -DX86
 GCC_FLAGS += -pedantic
 GCC_FLAGS += -Wall
 
+firmware_esp:
+	cd esp8266 && touch wylight.c && make
+
 firmware_pic:
 	${WINE} ${PIC_CC8E} $(FW_INC) $(FW_DIR)/main_pic.c ${PIC_FLAGS} -O${BINDIR}
 

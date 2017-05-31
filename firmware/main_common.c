@@ -42,9 +42,9 @@ void InitAll()
     Platform_OsciInit();
     Platform_IOInit();
     RingBuf_Init(&g_RingBuf);
+    Ledstrip_Init();
     UART_Init();
     Timer_Init();
-    Ledstrip_Init();
     CommandIO_Init();
     Rtc_Init();
     ScriptCtrl_Init();

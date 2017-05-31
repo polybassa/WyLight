@@ -29,8 +29,13 @@
 //*********************** CONFIGURATION ********************************************
 #define NUM_OF_LED 32
 
+//*********************** useful macros ********************************************
+#define ARRAY_SIZE(X) (sizeof(X) / sizeof(X[0]))
+
 #ifdef __CC8E__
 #include "platform_pic.h"
+#elif defined(__XTENSA_EL__)
+#include "platform_esp.h"
 #else
 #include "platform_linux.h"
 #endif

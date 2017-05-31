@@ -1,19 +1,42 @@
 # use new docker environment
+dist: trusty
 sudo: required
+
+cache:
+  directories:
+    - tools
 
 addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
     packages:
+      - autoconf
+      - bison
       - build-essential
       - git
+      - flex
       - libc6-i386
       - g++-5
       - gcc-5
+      - gperf
       - cppcheck
       - wine
       - freeglut3-dev
+      - unrar-free
+      - libtool
+      - texinfo
+      - gawk
+      - ncurses-dev
+      - libexpat-dev
+      - python-dev
+      - python
+      - python-serial
+      - sed
+      - unzip
+      - help2man
+      - wget
+      - bzip2
 
 # We use cpp for unit tests, and c for the main project.
 language: cpp
@@ -30,18 +53,23 @@ before_install:
 install:
     - export PATH=$PATH:$PWD/gcc-arm-none-eabi-5_2-2015q4/bin
     - export PATH=$PATH:$PWD/cc8e
+    - CT_ALLOW_BUILD_AS_ROOT_SURE=y tools/install_esp_toolchain.sh
+# hack to make travis build esp firmware: 'ImportError: No module named serial'
+# serial is used for flashing only, travis shouldn't use it -> disable it here
+    - sed -i "s/^import serial/#import serial/g" tools/esp-open-sdk/xtensa-lx106-elf/bin/esptool.py
 
-before_script: 
+before_script:
         - arm-none-eabi-gcc --version
         - gcc --version
 
-script: 
+script:
         - ./configure
-        - make test 
+        - make test
         - make clean
         - make firmware_pic
         - make clean
         - make cli
         - make clean
-        - make firmware_simu 
+        - make firmware_esp
+        - make firmware_simu
         - make firmware_raspi
