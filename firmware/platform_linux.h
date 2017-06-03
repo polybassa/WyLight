@@ -46,23 +46,33 @@ extern jmp_buf g_ResetEnvironment;
 #define bank6
 #define bank7
 #define bank10
-#define Platform_EnableBootloaderAutostart(x)
 #define clearRAM(x)
-#define Platform_AllowInterrupts(x)
-#define Platform_EnableAllInterrupts()
-#define Platform_DisableAllInterrupts()
-#define Platform_CheckInputs(x)
-#define Platform_DisableBootloaderAutostart(x)
+
+#define InitFactoryRestoreWLAN(x)
+#define InitFET(x)
 #define Platform_Main(x) \
     jmp_buf g_ResetEnvironment; \
     int main(x)
 #define Platform_MainLoopSleep(x) usleep(10)
-#define InitFactoryRestoreWLAN(x)
-#define InitFET(x)
 void Platform_ExtraInit(void);
 #define Platform_IOInit(x)
 #define Platform_OsciInit(x)
+
 #define softReset(x) longjmp(g_ResetEnvironment, 1)
 #define softResetJumpDestination(x) setjmp(g_ResetEnvironment)
+
+#define Platform_AllowInterrupts(x)
+#define Platform_EnableAllInterrupts()
+#define Platform_DisableAllInterrupts()
+
+#define Platform_CheckInputs(x)
+
+/*** This Function will Disable the Autostart to the Bootloader.
+ * At Startup, Bootloader checks the last EEPROM-Cell. If there is
+ * 0x01 in the EEPROM-Cell, the Bootloader will go directly to the
+ * Application otherwise the Bootloader stays in Bootloader-Mode.
+ */
+#define Platform_DisableBootloaderAutostart(x)
+#define Platform_EnableBootloaderAutostart(x)
 
 #endif /* #ifndef _PLATFORM_LINUX_H_ */
