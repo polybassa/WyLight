@@ -31,9 +31,8 @@
 #define false FALSE
 #define __attribute__(X)
 
-#define softResetJumpDestination(x)
-
-#define Platform_Main(x) void main(x)
+#define Platform_Main(x) \
+    void main(x)
 #define Platform_MainLoopSleep(x)
 #define Platform_ExtraInit(x)
 #define Platform_IOInit(x) do { CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); CLRF(PORTA); CLRF(LATA); CLRF(ANSELA); \
@@ -42,6 +41,7 @@
 #define Platform_OsciInit(x) do { OSCCON = 0b01110010; PLLEN = 1; } \
     while (0)                                                                    //OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
 
+#define softResetJumpDestination(x)
 void Platform_AllowInterrupts();
 void Platform_EnableAllInterrupts();
 //void Platform_DisableAllInterrupts();
