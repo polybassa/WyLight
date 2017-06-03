@@ -30,82 +30,8 @@
 #define NUM_OF_LED 32
 
 #ifdef __CC8E__
-#include "inline.h"
-#include "int18XXX.h"
-
-#define true TRUE
-#define false FALSE
-#define __attribute__(X)
-
-#define softResetJumpDestination(x)
-
-#define Platform_Main(x) void main(x)
-#define Platform_MainLoopSleep(x)
-#define Platform_ExtraInit(x)
-#define Platform_IOInit(x) do { CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); CLRF(PORTA); CLRF(LATA); CLRF(ANSELA); \
-                                CLRF(TRISA); PORTA = 0b00000100; } \
-    while (0)                                                                         //Eingänge am PORTB initialisieren
-#define Platform_OsciInit(x) do { OSCCON = 0b01110010; PLLEN = 1; } \
-    while (0)                                                                    //OSZILLATOR initialisieren: 4xPLL deactivated;INTOSC 16MHz
-
-void Platform_AllowInterrupts();
-void Platform_EnableAllInterrupts();
-//void Platform_DisableAllInterrupts();
-
-void Platform_CheckInputs();
-
-uns16 htons(uns16 hostShort);
-uns16 ntohs(uns16 networkShort);
-
-/*** This Function will Disable the Autostart to the Bootloader.
- * At Startup, Bootloader checks the last EEPROM-Cell. If there is
- * 0x01 in the EEPROM-Cell, the Bootloader will go directly to the
- * Application otherwise the Bootloader stays in Bootloader-Mode.
- */
-void Platform_DisableBootloaderAutostart();
-void Platform_EnableBootloaderAutostart();
-
+#include "platform_pic.h"
 #else
-#include <stdint.h>
-#include <stdio.h>
-#include <arpa/inet.h>
-#include <setjmp.h>
-#include <string.h>
-#include <unistd.h>
-
-typedef int8_t bit;
-typedef uint8_t uns8;
-typedef uint16_t uns16;
-
-//global variables
-extern uns8 g_UpdateFade;
-extern jmp_buf g_ResetEnvironment;
-
-#define bank1
-#define bank2
-#define bank3
-#define bank5
-#define bank6
-#define bank7
-#define bank10
-#define Platform_EnableBootloaderAutostart(x)
-#define clearRAM(x)
-#define Platform_AllowInterrupts(x)
-#define Platform_EnableAllInterrupts()
-#define Platform_DisableAllInterrupts()
-#define Platform_CheckInputs(x)
-#define Platform_DisableBootloaderAutostart(x)
-#define Platform_Main(x) \
-    jmp_buf g_ResetEnvironment; \
-    int main(x)
-#define Platform_MainLoopSleep(x) usleep(10)
-#define InitFactoryRestoreWLAN(x)
-#define InitFET(x)
-void Platform_ExtraInit(void);
-#define Platform_IOInit(x)
-#define Platform_OsciInit(x)
-#define softReset(x) longjmp(g_ResetEnvironment, 1)
-#define softResetJumpDestination(x) setjmp(g_ResetEnvironment)
-
+#include "platform_linux.h"
 #endif
 #endif /* #ifndef _PLATFORM_H_ */
