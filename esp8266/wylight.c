@@ -11,6 +11,7 @@
 #include "task.h"
 #include "pwm.h"
 
+#include "../firmware/main_common.c"
 #include "../firmware/crc.c"
 #include "../firmware/eeprom_ram.c"
 #include "../firmware/error.c"
@@ -25,13 +26,21 @@
 #include "../firmware/ScriptCtrl.c"
 #include "../firmware/trace.c"
 //#include "Flash.c"
+#include "../firmware/timer.c"
 #include "../firmware/Version.c"
 
 //TODO refactor this dummy functions with x86_wrapper.c
+void Rtc_Init()
+{}
 void Rtc_Ctl(enum RTC_request req, struct rtc_time* pRtcTime) {}
 uns16 Timer_PrintCycletime(uns16* pArray, const uns16 arraySize)
 {
     return arraySize;
+}
+
+void UART_Init()
+{
+    uart_set_baud(0, 115200);
 }
 void UART_Send(uns8 c)
 {}
@@ -41,6 +50,7 @@ void task1(void* pvParameters)
     printf("Hello from task1!\r\n");
     uint32_t const init_count = 0;
     uint32_t count = init_count;
+    run_main();
     while (1) {
         vTaskDelay(100);
         printf("duty cycle set to %d/UINT16_MAX%%\r\n", count);
@@ -53,23 +63,5 @@ void task1(void* pvParameters)
 
 void user_init(void)
 {
-    uint8_t pins[1];
-    uart_set_baud(0, 115200);
-
-    printf("SDK version:%s\n", sdk_system_get_sdk_version());
-
-    printf("pwm_init(1, [14])\n");
-    pins[0] = 5;
-    pwm_init(1, pins);
-
-    printf("pwm_set_freq(1000)     # 1 kHz\n");
-    pwm_set_freq(1000);
-
-    printf("pwm_set_duty(UINT16_MAX/2)     # 50%%\n");
-    pwm_set_duty(UINT16_MAX / 2);
-
-    printf("pwm_start()\n");
-    pwm_start();
-
     xTaskCreate(task1, "tsk1", 256, NULL, 2, NULL);
 }

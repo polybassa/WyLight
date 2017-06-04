@@ -50,9 +50,11 @@ extern jmp_buf g_ResetEnvironment;
 #define InitFactoryRestoreWLAN(x)
 #define InitFET(x)
 #define Platform_Main(x) \
-    void user_init(x)
-#define Platform_MainLoopSleep(x) usleep(10)
-void Platform_ExtraInit(void);
+    void run_main(x)
+#define Platform_MainLoopSleep(x) \
+    vTaskDelay(10000 / portTICK_PERIOD_MS)
+
+#define Platform_ExtraInit(x)
 #define Platform_IOInit(x)
 #define Platform_OsciInit(x)
 

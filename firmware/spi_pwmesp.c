@@ -21,74 +21,29 @@
 //#include <string>
 #include "platform.h"
 
-#define NUM_PWM 3
+#define NUM_PWM 1
 
-#if 0
-static const char* pinmux_cmds[] = {
-    "mt7688_pinmux set uart2 pwm",
-    "mt7688_pinmux set pwm0 pwm",
-    "mt7688_pinmux set pwm1 pwm"
-};
-
-struct PwmPin {
-    void open(size_t pwm_pin)
-    {
-        static const std::string SYSFS_PWM_EXPORT {"/sys/class/pwm/pwmchip0/export"};
-        static const std::string SYSFS_PWM {"/sys/class/pwm/pwmchip0/pwm"};
-        static const std::string PWM_PERIOD {"1024"};
-        const char export_pin = '0' + pwm_pin;
-
-        std::ofstream export_stream(SYSFS_PWM_EXPORT);
-        export_stream << export_pin << std::flush;
-
-        std::ofstream period_stream;
-        do {
-            period_stream.open(SYSFS_PWM + export_pin + "/period");
-        } while (!period_stream.good());
-        period_stream << PWM_PERIOD << std::flush;
-
-        duty_stream.open(SYSFS_PWM + export_pin + "/duty_cycle");
-        enable_stream.open(SYSFS_PWM + export_pin + "/enable");
-        write(0);
-    }
-
-    void write(const size_t value)
-    {
-        const char enable = '0' + (!!value);
-        char duty[16];
-
-        snprintf(duty, sizeof(duty), "%u\0", 4 * value);
-        duty_stream << duty << std::flush;
-        enable_stream << enable << std::flush;
-    }
-
-private:
-    std::ofstream enable_stream;
-    std::ofstream duty_stream;
-};
-
-struct PwmPin g_pwm[NUM_PWM];
-#endif
 void SPI_Init(void)
 {
-#if 0
-    for (const auto& cmd: pinmux_cmds) {
-        std::system(cmd);
-    }
-
-    for (size_t i = 0; i < NUM_PWM; ++i) {
-        g_pwm[i].open(i);
-    }
-#endif
+    static const uint8_t pins[] = {
+        5,
+        0,
+        0,
+    };
+    static const uint16_t pwm_freq_1kHz = 1000;
+    pwm_init(NUM_PWM, pins);
+    pwm_set_freq(pwm_freq_1kHz);
+    pwm_set_duty(UINT16_MAX / 2);
+    pwm_start();
 }
 
-static void SPI_SendBuffer(const uint8_t* buf, const size_t buf_len)
+static void SPI_SendBuffer(const uint8_t* buf, size_t buf_len)
 {
-#if 0
-    for (size_t i = 0; i < std::min < size_t > (NUM_PWM, buf_len); ++i) {
-        g_pwm[i].write(buf[i]);
+    if (buf_len > NUM_PWM)
+        buf_len = NUM_PWM;
+    for (size_t i = 0; i < buf_len; ++i) {
+        pwm_set_duty(buf[i] << 8);
     }
-#endif
 }
 
 uint8_t SPI_Send(uint8_t data)
