@@ -12,6 +12,7 @@
 #include "pwm.h"
 
 #include "../firmware/main_common.c"
+#include "../firmware/broadcast.c"
 #include "../firmware/crc.c"
 #include "../firmware/eeprom_ram.c"
 #include "../firmware/error.c"
@@ -47,18 +48,12 @@ void UART_Send(uns8 c)
 
 void task1(void* pvParameters)
 {
-    printf("Hello from task1!\r\n");
-    uint32_t const init_count = 0;
-    uint32_t count = init_count;
     run_main();
-    while (1) {
-        vTaskDelay(100);
-        printf("duty cycle set to %d/UINT16_MAX%%\r\n", count);
-        pwm_set_duty(count);
-        count += UINT16_MAX / 17;
-        if (count > UINT16_MAX)
-            count = init_count;
-    }
+}
+
+void Platform_ExtraInit(void)
+{
+    xTaskCreate(&wifi_task, "wifi_task", 256, NULL, 2, NULL);
 }
 
 void user_init(void)

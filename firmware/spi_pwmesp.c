@@ -33,7 +33,7 @@ void SPI_Init(void)
     static const uint16_t pwm_freq_1kHz = 1000;
     pwm_init(NUM_PWM, pins);
     pwm_set_freq(pwm_freq_1kHz);
-    pwm_set_duty(UINT16_MAX / 2);
+//    pwm_set_duty(0);
     pwm_start();
 }
 
@@ -42,7 +42,7 @@ static void SPI_SendBuffer(const uint8_t* buf, size_t buf_len)
     if (buf_len > NUM_PWM)
         buf_len = NUM_PWM;
     for (size_t i = 0; i < buf_len; ++i) {
-        pwm_set_duty(buf[i] << 8);
+//        pwm_set_duty(buf[i] << 8);
     }
 }
 

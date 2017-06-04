@@ -29,6 +29,7 @@
 #include <setjmp.h>
 #include <string.h>
 #include <unistd.h>
+#include "lwip/sockets.h"
 
 typedef int8_t bit;
 typedef uint8_t uns8;
@@ -49,12 +50,15 @@ extern jmp_buf g_ResetEnvironment;
 
 #define InitFactoryRestoreWLAN(x)
 #define InitFET(x)
+#define Platform_sleep_ms(tmms) \
+    vTaskDelay((tmms) / portTICK_PERIOD_MS)
+
 #define Platform_Main(x) \
     void run_main(x)
 #define Platform_MainLoopSleep(x) \
     vTaskDelay(10000 / portTICK_PERIOD_MS)
 
-#define Platform_ExtraInit(x)
+void Platform_ExtraInit(void);
 #define Platform_IOInit(x)
 #define Platform_OsciInit(x)
 
