@@ -16,13 +16,6 @@
    You should have received a copy of the GNU General Public License
    along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifdef __CC8E__
-#define DEBUG
-#pragma optimize 1
-#pragma sharedAllocation
-#endif
-
-//*********************** INCLUDEDATEIEN *********************************************
 #include "Version.h"
 #include "platform.h"
 #include "RingBuf.h"
@@ -36,13 +29,8 @@
 #include "error.h"
 #include "Flash.h"
 
-//*********************** GLOBAL VARIABLES *******************************************
 uns8 g_UpdateLed;
 uns8 g_UpdateLedStrip;
-
-#ifdef __CC8E__
-#include "isr_pic.c"
-#endif /* #ifdef __CC8E__ */
 
 void InitAll()
 {
@@ -107,22 +95,3 @@ Platform_Main(void)
         }
     }
 }
-
-#ifdef __CC8E__
-#include "crc.c"
-#include "eeprom.c"
-#include "error.c"
-#include "ledstrip.c"
-#include "spi.c"
-#include "timer.c"
-#include "RingBuf.c"
-#include "usart.c"
-#include "CommandIO.c"
-#include "platform.c"
-#include "rtc.c"
-#include "iic.c"
-#include "ScriptCtrl.c"
-#include "trace.c"
-#include "Flash.c"
-#include "Version.c"
-#endif /* #ifdef __CC8E__ */
