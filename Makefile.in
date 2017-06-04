@@ -123,6 +123,7 @@ help:
 clean:
 	@rm -rf ${OBJDIR} ${wildcard *~}
 	@make --no-print-directory ${OBJDIR}
+	cd esp8266 && make clean
 
 # The rule to clean out all the build products.
 clean-all:

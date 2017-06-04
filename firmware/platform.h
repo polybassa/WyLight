@@ -31,6 +31,8 @@
 
 #ifdef __CC8E__
 #include "platform_pic.h"
+#elif defined(__XTENSA_EL__)
+#include "platform_esp.h"
 #else
 #include "platform_linux.h"
 #endif

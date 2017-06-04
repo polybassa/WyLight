@@ -11,6 +11,31 @@
 #include "task.h"
 #include "pwm.h"
 
+#include "../firmware/crc.c"
+#include "../firmware/eeprom_ram.c"
+#include "../firmware/error.c"
+#include "../firmware/ledstrip.c"
+#include "../firmware/spi_pwmesp.c"
+#include "../firmware/RingBuf.c"
+//#include "usart.c"
+#include "../firmware/CommandIO.c"
+#include "../firmware/platform.c"
+//#include "rtc.c"
+//#include "iic.c"
+#include "../firmware/ScriptCtrl.c"
+#include "../firmware/trace.c"
+//#include "Flash.c"
+#include "../firmware/Version.c"
+
+//TODO refactor this dummy functions with x86_wrapper.c
+void Rtc_Ctl(enum RTC_request req, struct rtc_time* pRtcTime) {}
+uns16 Timer_PrintCycletime(uns16* pArray, const uns16 arraySize)
+{
+    return arraySize;
+}
+void UART_Send(uns8 c)
+{}
+
 void task1(void* pvParameters)
 {
     printf("Hello from task1!\r\n");

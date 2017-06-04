@@ -22,9 +22,8 @@ ${BINDIR}/ScriptCtrl_ut.bin: ${OBJDIR}/ScriptCtrl_ut.o ${OBJDIR}/ScriptCtrl.o ${
 
 PIC_FLAGS := -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM
 
-ARDUINO=~/workspace/linkit/arduino-1.6.11/arduino
 firmware_esp:
-	${ARDUINO} --verify esp8266/esp8266.ino
+	cd esp8266 && make
 
 firmware_pic:
 	${WINE} ${PIC_CC8E} $(FW_INC) $(FW_DIR)/main.c ${PIC_FLAGS} -O${BINDIR}
