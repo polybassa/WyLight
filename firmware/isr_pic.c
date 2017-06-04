@@ -16,7 +16,14 @@
    You should have received a copy of the GNU General Public License
    along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
+#include "RingBuf.h"
+#include "ScriptCtrl.h"
+#include "timer.h"
+#include "Version.h"
+
 void HighPriorityInterruptFunction(void);
+extern uns8 g_UpdateLed;
+extern uns8 g_UpdateLedStrip;
 
 #pragma origin 0x8
 //Adresse des High Priority Interrupts

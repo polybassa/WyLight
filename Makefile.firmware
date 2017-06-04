@@ -5,7 +5,7 @@ FW_CORE := firmware/crc.c
 FW_CORE += firmware/CommandIO.c
 FW_CORE += firmware/error.c
 FW_CORE += firmware/ledstrip.c
-FW_CORE += firmware/main.c
+FW_CORE += firmware/main_common.c
 FW_CORE += firmware/RingBuf.c
 FW_CORE += firmware/ScriptCtrl.c
 FW_CORE += firmware/timer.c
@@ -26,10 +26,10 @@ firmware_esp:
 	cd esp8266 && make
 
 firmware_pic:
-	${WINE} ${PIC_CC8E} $(FW_INC) $(FW_DIR)/main.c ${PIC_FLAGS} -O${BINDIR}
+	${WINE} ${PIC_CC8E} $(FW_INC) $(FW_DIR)/main_pic.c ${PIC_FLAGS} -O${BINDIR}
 
 firmware_pic_release:
-	${WINE} ${PIC_CC8E} $(FW_INC) $(FW_DIR)/main.c -ver#VersionFile.h ${PIC_FLAGS} -O${BINDIR}
+	${WINE} ${PIC_CC8E} $(FW_INC) $(FW_DIR)/main_pic.c -ver#VersionFile.h ${PIC_FLAGS} -O${BINDIR}
 
 OPENWRT_SDK = $(shell pwd)/tools/OpenWrt-SDK-ramips-mt7688_gcc-4.8-linaro_uClibc-0.9.33.2.Linux-x86_64/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/bin/
 $(OPENWRT_SDK):
