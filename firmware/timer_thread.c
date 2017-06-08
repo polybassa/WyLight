@@ -22,7 +22,7 @@
 static void timer1_interrupt(void* unused)
 {
     for ( ; ; ) {
-        Platform_sleep_ms(10);
+        Platform_sleep_ms(100);
         Ledstrip_UpdateLed();
     }
 }

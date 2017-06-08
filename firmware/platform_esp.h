@@ -58,7 +58,7 @@ extern jmp_buf g_ResetEnvironment;
 #define Platform_Main(x) \
     void run_main(x)
 #define Platform_MainLoopSleep(x) \
-    vTaskDelay(10000 / portTICK_PERIOD_MS)
+    taskYIELD();
 
 void Platform_ExtraInit(void);
 #define Platform_IOInit(x)

@@ -51,5 +51,5 @@ void Platform_ExtraInit(void)
 
 void user_init(void)
 {
-    xTaskCreate(task1, "tsk1", 256, NULL, 3, NULL);
+    xTaskCreate(task1, "tsk1", 1024, NULL, 2, NULL);
 }

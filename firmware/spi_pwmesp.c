@@ -16,9 +16,6 @@
    You should have received a copy of the GNU General Public License
    along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
-//#include <stdlib>
-//#include <fstream>
-//#include <string>
 #include "platform.h"
 
 #define NUM_PWM 0 //1
@@ -55,11 +52,13 @@ static void SPI_SendBuffer(const uint8_t* buf, size_t buf_len)
         pwm_set_duty(buf[i] << 8);
     }
 #else
+#if 0
     if (!--counter) {
         counter = periode;
         toggle = !toggle;
         gpio_write(5, toggle);
     }
+#endif
 #endif
 }
 
