@@ -96,7 +96,6 @@ static void wifi_task(void* pvParameters)
         while ((status = sdk_wifi_station_get_connect_status()) ==
                STATION_GOT_IP)
         {
-            gpio_write(5, 0);
             if (wifi_alive == 0) {
                 printf("WiFi: Connected\n\r");
                 wifi_alive = 1;
@@ -110,7 +109,6 @@ static void wifi_task(void* pvParameters)
                    sizeof(broadcastAddress));
             vTaskDelay(500 / portTICK_PERIOD_MS);
         }
-        gpio_write(5, 1);
 
         wifi_alive = 0;
         printf("WiFi: disconnected\n\r");

@@ -21,10 +21,11 @@
 //#include <string>
 #include "platform.h"
 
-#define NUM_PWM 1
+#define NUM_PWM 0 //1
 
 void SPI_Init(void)
 {
+#if NUM_PWM
     static const uint8_t pins[] = {
         5,
         0,
@@ -33,17 +34,33 @@ void SPI_Init(void)
     static const uint16_t pwm_freq_1kHz = 1000;
     pwm_init(NUM_PWM, pins);
     pwm_set_freq(pwm_freq_1kHz);
-//    pwm_set_duty(0);
+    pwm_set_duty(0);
     pwm_start();
+#else
+    gpio_enable(5, GPIO_OUTPUT);
+    gpio_write(5, 1);
+#endif
 }
 
 static void SPI_SendBuffer(const uint8_t* buf, size_t buf_len)
 {
+    static const size_t periode = 2;
+    static size_t counter = periode;
+    static uint16_t toggle = 1;
+
+#if NUM_PWM
     if (buf_len > NUM_PWM)
         buf_len = NUM_PWM;
     for (size_t i = 0; i < buf_len; ++i) {
-//        pwm_set_duty(buf[i] << 8);
+        pwm_set_duty(buf[i] << 8);
     }
+#else
+    if (!--counter) {
+        counter = periode;
+        toggle = !toggle;
+        gpio_write(5, toggle);
+    }
+#endif
 }
 
 uint8_t SPI_Send(uint8_t data)

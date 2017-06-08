@@ -102,5 +102,13 @@ uns8 Trace_Print(uns8* pArray, const uns16 arraySize);
 #define Trace_Char(x)
 #define TraceBuffer(ZONE, BUFFER, LENGTH, BUFFER_FORMAT, ...)
 #define Trace(ZONE, ...)
+#if defined(__XTENSA_EL__)
+#define Trace_Blink(rate_ms) \
+    for ( ; ; ) { \
+        gpio_write(5, g_blinky); \
+        g_blinky = !g_blinky; \
+        Platform_sleep_ms(rate_ms); \
+    }
+#endif
 #endif
 #endif /* #ifndef _TRACE_H_ */

@@ -50,8 +50,10 @@ extern jmp_buf g_ResetEnvironment;
 
 #define InitFactoryRestoreWLAN(x)
 #define InitFET(x)
-#define Platform_sleep_ms(tmms) \
-    vTaskDelay((tmms) / portTICK_PERIOD_MS)
+#define Platform_sleep_ms(tmms) do { \
+        vTaskDelay((tmms) / portTICK_PERIOD_MS); \
+        taskYIELD(); \
+} while (false)
 
 #define Platform_Main(x) \
     void run_main(x)

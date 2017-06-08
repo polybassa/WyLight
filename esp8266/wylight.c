@@ -19,7 +19,7 @@
 #include "../firmware/ledstrip.c"
 #include "../firmware/spi_pwmesp.c"
 #include "../firmware/RingBuf.c"
-//#include "usart.c"
+#include "../firmware/usart_socket.c"
 #include "../firmware/CommandIO.c"
 #include "../firmware/platform.c"
 //#include "rtc.c"
@@ -27,7 +27,7 @@
 #include "../firmware/ScriptCtrl.c"
 #include "../firmware/trace.c"
 //#include "Flash.c"
-#include "../firmware/timer.c"
+#include "../firmware/timer_thread.c"
 #include "../firmware/Version.c"
 
 //TODO refactor this dummy functions with x86_wrapper.c
@@ -39,13 +39,6 @@ uns16 Timer_PrintCycletime(uns16* pArray, const uns16 arraySize)
     return arraySize;
 }
 
-void UART_Init()
-{
-    uart_set_baud(0, 115200);
-}
-void UART_Send(uns8 c)
-{}
-
 void task1(void* pvParameters)
 {
     run_main();
@@ -53,10 +46,10 @@ void task1(void* pvParameters)
 
 void Platform_ExtraInit(void)
 {
-    xTaskCreate(&wifi_task, "wifi_task", 256, NULL, 2, NULL);
+    xTaskCreate(&wifi_task, "wifi_task", 512, NULL, 3, NULL);
 }
 
 void user_init(void)
 {
-    xTaskCreate(task1, "tsk1", 256, NULL, 2, NULL);
+    xTaskCreate(task1, "tsk1", 256, NULL, 3, NULL);
 }
