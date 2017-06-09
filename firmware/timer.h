@@ -87,17 +87,7 @@ void Timer_StopStopwatch(const enum CYCLETIME_METHODE destMethode);
 #define Timer5InterruptUnlock(x) TMR5IE = 1;
 
 #else
-#define Timer1Interrupt(x)
-#define Timer2Interrupt(x)
-#define Timer3Interrupt(x)
-#define Timer4Interrupt(x)
-#define Timer5Interrupt(x)
 #define Timer1Enable(x)
-#define Timer1Disable(x)
-#define Timer4Enable(x)
-#define Timer4Disable(x)
-#define Timer4InterruptLock(x)
-#define Timer4InterruptUnlock(x)
 #define Timer5InterruptLock(x)
 #define Timer5InterruptUnlock(x)
 #endif
