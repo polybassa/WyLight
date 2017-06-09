@@ -47,7 +47,7 @@ firmware_linkit: $(FW_CORE)
 firmware_raspi: firmware/eeprom_ram.c
 firmware_raspi: firmware/spi_spidev.c
 firmware_raspi: $(FW_CORE)
-	$(CC) $? -DDEBUG -DX86 -lpthread -o ${BINDIR}/raspi.bin
+	$(CXX) $? -std=c++11 -DDEBUG -DX86 -lpthread -o ${BINDIR}/raspi.bin
 
 #firmware_simu: firmware/eeprom_file.cpp
 firmware_simu: firmware/eeprom_ram.c
