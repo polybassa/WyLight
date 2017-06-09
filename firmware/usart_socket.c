@@ -27,12 +27,9 @@ static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VER
 static const uint16_t WIFLY_SERVER_PORT = 2000;
 static int g_uartSocket = -1;
 
-static Platform_Mutex g_ring_mutex;
-
-int i = 0;
-
-static Platform_ThreadFunc UART_TcpRecv(void* unused)
+static Platform_ThreadFunc UART_TcpRecv(void* param)
 {
+    Platform_Mutex* mutex = (Platform_Mutex*)(param);
     const int listenSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (-1 == listenSocket) {
         Trace(ZONE_ERROR, "create listen socket failed\n");
@@ -61,12 +58,12 @@ static Platform_ThreadFunc UART_TcpRecv(void* unused)
             bytesRead = recv(g_uartSocket, buf, sizeof(buf), 0);
             Trace(ZONE_VERBOSE, "%d bytesRead\n", bytesRead);
 
-            Platform_MutexLock(&g_ring_mutex);
+            Platform_MutexLock(mutex);
             for (int i = 0; i < bytesRead; i++) {
                 if (!RingBuf_HasError(&g_RingBuf))
                     RingBuf_Put(&g_RingBuf, buf[i]);
             }
-            Platform_MutexUnlock(&g_ring_mutex);
+            Platform_MutexUnlock(mutex);
         } while (bytesRead > 0);
 
         // don't allow immediate reconnection
@@ -76,6 +73,7 @@ static Platform_ThreadFunc UART_TcpRecv(void* unused)
 
 static Platform_ThreadFunc UART_UdpRecv(void* param)
 {
+    Platform_Mutex* mutex = (Platform_Mutex*)(param);
     const int listenSocket = socket(AF_INET, SOCK_DGRAM, 0);
     if (-1 == listenSocket) {
         Trace(ZONE_ERROR, "create listen socket failed\n");
@@ -99,12 +97,12 @@ static Platform_ThreadFunc UART_UdpRecv(void* param)
             bytesRead = recvfrom(listenSocket, buf, sizeof(buf), 0, NULL, NULL);
             Trace(ZONE_VERBOSE, "%d bytesRead\n", bytesRead);
 
-            Platform_MutexLock(&g_ring_mutex);
+            Platform_MutexLock(mutex);
             for (int i = 0; i < bytesRead; i++) {
                 if (!RingBuf_HasError(&g_RingBuf))
                     RingBuf_Put(&g_RingBuf, buf[i]);
             }
-            Platform_MutexUnlock(&g_ring_mutex);
+            Platform_MutexUnlock(mutex);
         } while (bytesRead > 0);
         // don't allow immediate reconnection
         Platform_sleep_ms(1000);
@@ -113,12 +111,13 @@ static Platform_ThreadFunc UART_UdpRecv(void* param)
 
 void UART_Init()
 {
+    static Platform_Mutex mutex;
     static Platform_Thread tcp;
     static Platform_Thread udp;
 
-    g_ring_mutex = Platform_MutexInit();
-    Platform_CreateThread(&UART_TcpRecv, 256, &g_ring_mutex, 2, &tcp);
-    Platform_CreateThread(&UART_UdpRecv, 256, &g_ring_mutex, 2, &udp);
+    mutex = Platform_MutexInit();
+    Platform_CreateThread(&UART_TcpRecv, 256, &mutex, 2, &tcp);
+    Platform_CreateThread(&UART_UdpRecv, 256, &mutex, 2, &udp);
 }
 
 void UART_Send(uns8 ch)
