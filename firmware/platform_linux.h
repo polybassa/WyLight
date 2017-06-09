@@ -78,10 +78,13 @@ void Platform_ExtraInit(void);
     void*
 
 #define Platform_CreateThread(routine, stack_size, args, prio, handle) \
-    pthread_create(handle, nullptr, routine, args);
+    pthread_create(handle, nullptr, routine, args)
 
-#define Platform_Mutex(x) \
-    pthread_mutex_t x = PTHREAD_MUTEX_INITIALIZER
+#define Platform_Mutex \
+    pthread_mutex_t
+
+#define Platform_MutexInit(x) \
+    PTHREAD_MUTEX_INITIALIZER
 
 #define Platform_MutexLock(x) \
     pthread_mutex_lock(x)

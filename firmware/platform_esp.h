@@ -29,6 +29,7 @@
 #include <setjmp.h>
 #include <string.h>
 #include <unistd.h>
+#include "semphr.h"
 #include "lwip/sockets.h"
 
 typedef int8_t bit;
@@ -70,6 +71,32 @@ void Platform_ExtraInit(void);
 #define Platform_AllowInterrupts(x)
 #define Platform_EnableAllInterrupts()
 #define Platform_DisableAllInterrupts()
+
+#define Platform_Thread \
+    TaskHandle_t
+
+#define Platform_ThreadFunc \
+    void
+
+#define Platform_CreateThread(routine, stack_size, args, prio, handle) \
+    xTaskCreate(routine, #routine, stack_size, args, prio, handle)
+
+#define Platform_Mutex \
+    SemaphoreHandle_t
+
+#define Platform_MutexInit(x) \
+    xSemaphoreCreateMutex()
+
+#define Platform_MutexLock(x) \
+    xSemaphoreTake(*x, 10)
+
+#define Platform_MutexUnlock(x) \
+    xSemaphoreGive(*x)
+
+#define Platform_FatalError(x) do { \
+        printf("%s(): FATAL ERROR -> exiting...\n", __FUNCTION__); \
+        Platform_sleep_ms(10000); \
+} while (true)
 
 #define Platform_CheckInputs(x)
 

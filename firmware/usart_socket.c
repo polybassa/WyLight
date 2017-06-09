@@ -20,11 +20,14 @@
 #include "RingBuf.h"
 #include "trace.h"
 
+//TODO REMOVE THIS HACK BY MAKING A CLEAN MAKEFILE FOR ESP!!!!
+#if !defined(__XTENSA_EL__)
 static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
+#endif
 static const uint16_t WIFLY_SERVER_PORT = 2000;
 static int g_uartSocket = -1;
 
-static Platform_Mutex(g_ring_mutex);
+static Platform_Mutex g_ring_mutex;
 
 int i = 0;
 
@@ -71,7 +74,7 @@ static Platform_ThreadFunc UART_TcpRecv(void* unused)
     }
 }
 
-static Platform_ThreadFunc UART_UdpRecv(void* unused)
+static Platform_ThreadFunc UART_UdpRecv(void* param)
 {
     const int listenSocket = socket(AF_INET, SOCK_DGRAM, 0);
     if (-1 == listenSocket) {
@@ -113,8 +116,9 @@ void UART_Init()
     static Platform_Thread tcp;
     static Platform_Thread udp;
 
-    Platform_CreateThread(&UART_TcpRecv, 256, NULL, 2, &tcp);
-    Platform_CreateThread(&UART_UdpRecv, 256, NULL, 2, &udp);
+    g_ring_mutex = Platform_MutexInit();
+    Platform_CreateThread(&UART_TcpRecv, 256, &g_ring_mutex, 2, &tcp);
+    Platform_CreateThread(&UART_UdpRecv, 256, &g_ring_mutex, 2, &udp);
 }
 
 void UART_Send(uns8 ch)
