@@ -17,22 +17,23 @@
    along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "platform.h"
+#include "RingBuf.h"
 #include "trace.h"
 
+static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 static const uint16_t WIFLY_SERVER_PORT = 2000;
 static int g_uartSocket = -1;
-static int g_blinky = 0;
+
+static Platform_Mutex(g_ring_mutex);
 
 int i = 0;
-static void UART_InterruptRoutine(void* unused)
+
+static Platform_ThreadFunc UART_TcpRecv(void* unused)
 {
-    while (!wifi_alive) {
-        Platform_sleep_ms(1000);
-    }
-    int listenSocket = socket(AF_INET, SOCK_STREAM, 0);
+    const int listenSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (-1 == listenSocket) {
-        printf("%s:%d %s: create socket failed\n", __FILE__, __LINE__, __FUNCTION__);
-        Trace_Blink(100);
+        Trace(ZONE_ERROR, "create listen socket failed\n");
+        Platform_FatalError();
     }
 
     struct sockaddr_in udp_sock_addr;
@@ -40,46 +41,42 @@ static void UART_InterruptRoutine(void* unused)
     udp_sock_addr.sin_port = htons(WIFLY_SERVER_PORT);
     udp_sock_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-    if (0 != bind(listenSocket, (struct sockaddr*)&udp_sock_addr, sizeof(udp_sock_addr))) {
-        printf("%s:%d %s: bind() failed\n", __FILE__, __LINE__, __FUNCTION__);
-        Trace_Blink(100);
-        return;
+    if (0 != bind(listenSocket, (const struct sockaddr*)&udp_sock_addr, sizeof(udp_sock_addr))) {
+        Trace(ZONE_ERROR, "bind() failed\n");
+        Platform_FatalError();
     }
 
     if (0 != listen(listenSocket, 0)) {
-        printf("%s:%d %s: listen() failed\n", __FILE__, __LINE__, __FUNCTION__);
-        Trace_Blink(100);
-        return;
+        Trace(ZONE_ERROR, "listen() failed\n");
+        Platform_FatalError();
     }
 
-    g_uartSocket = accept(listenSocket, NULL, NULL);
-    for ( ; ; ) {
+    for (g_uartSocket = accept(listenSocket, NULL, NULL); ; ) {
         int bytesRead;
         do {
             uns8 buf[16];
             bytesRead = recv(g_uartSocket, buf, sizeof(buf), 0);
-            printf("%d bytesRead\n", bytesRead);
-//            pthread_mutex_lock(&g_ring_mutex);
-            int i;
-            for (i = 0; i < bytesRead; i++) {
+            Trace(ZONE_VERBOSE, "%d bytesRead\n", bytesRead);
+
+            Platform_MutexLock(&g_ring_mutex);
+            for (int i = 0; i < bytesRead; i++) {
                 if (!RingBuf_HasError(&g_RingBuf))
                     RingBuf_Put(&g_RingBuf, buf[i]);
             }
-//            pthread_mutex_unlock(&g_ring_mutex);
+            Platform_MutexUnlock(&g_ring_mutex);
         } while (bytesRead > 0);
+
         // don't allow immediate reconnection
         Platform_sleep_ms(1000);
-        g_uartSocket = accept(listenSocket, NULL, NULL);
     }
 }
 
-void UdpRoutine(void* unused)
+static Platform_ThreadFunc UART_UdpRecv(void* unused)
 {
-    int listenSocket = socket(AF_INET, SOCK_DGRAM, 0);
+    const int listenSocket = socket(AF_INET, SOCK_DGRAM, 0);
     if (-1 == listenSocket) {
-        printf("%s:%d %s: create socket failed\n", __FILE__, __LINE__, __FUNCTION__);
-        Trace_Blink(100);
-        return;
+        Trace(ZONE_ERROR, "create listen socket failed\n");
+        Platform_FatalError();
     }
 
     struct sockaddr_in udp_sock_addr;
@@ -87,25 +84,24 @@ void UdpRoutine(void* unused)
     udp_sock_addr.sin_port = htons(WIFLY_SERVER_PORT);
     udp_sock_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-    if (0 != bind(listenSocket, (struct sockaddr*)&udp_sock_addr, sizeof(udp_sock_addr))) {
-        printf("%s:%d %s: bind() failed\n", __FILE__, __LINE__, __FUNCTION__);
-        Trace_Blink(100);
-        return;
+    if (0 != bind(listenSocket, (const struct sockaddr*)&udp_sock_addr, sizeof(udp_sock_addr))) {
+        Trace(ZONE_ERROR, "bind() failed\n");
+        Platform_FatalError();
     }
 
     for ( ; ; ) {
         int bytesRead;
         do {
-            uns8 buf[16];
+            uns8 buf[128];
             bytesRead = recvfrom(listenSocket, buf, sizeof(buf), 0, NULL, NULL);
-            printf("%d bytesRead\n", bytesRead);
-//            pthread_mutex_lock(&g_ring_mutex);
-            int i;
-            for (i = 0; i < bytesRead; i++) {
+            Trace(ZONE_VERBOSE, "%d bytesRead\n", bytesRead);
+
+            Platform_MutexLock(&g_ring_mutex);
+            for (int i = 0; i < bytesRead; i++) {
                 if (!RingBuf_HasError(&g_RingBuf))
                     RingBuf_Put(&g_RingBuf, buf[i]);
             }
-//    pthread_mutex_unlock(&g_ring_mutex);
+            Platform_MutexUnlock(&g_ring_mutex);
         } while (bytesRead > 0);
         // don't allow immediate reconnection
         Platform_sleep_ms(1000);
@@ -114,11 +110,15 @@ void UdpRoutine(void* unused)
 
 void UART_Init()
 {
-    xTaskCreate(&UdpRoutine, "uart_udp task", 256, NULL, 2, NULL);
-    xTaskCreate(&UART_InterruptRoutine, "uart_socket task", 256, NULL, 2, NULL);
+    static Platform_Thread tcp;
+    static Platform_Thread udp;
+
+    Platform_CreateThread(&UART_TcpRecv, 256, NULL, 2, &tcp);
+    Platform_CreateThread(&UART_UdpRecv, 256, NULL, 2, &udp);
 }
 
 void UART_Send(uns8 ch)
 {
+    Trace(ZONE_VERBOSE, "0x%02x(%c)\n", ch, ch);
     send(g_uartSocket, &ch, sizeof(ch), 0);
 }

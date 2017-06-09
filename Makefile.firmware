@@ -10,6 +10,7 @@ FW_CORE += firmware/RingBuf.c
 FW_CORE += firmware/ScriptCtrl.c
 FW_CORE += firmware/timer.c
 FW_CORE += firmware/trace.c
+FW_CORE += firmware/usart_socket.c
 FW_CORE += firmware/x86_wrapper.c
 FW_CORE += firmware/Version.c
 
