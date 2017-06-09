@@ -73,8 +73,48 @@ static void UART_InterruptRoutine(void* unused)
     }
 }
 
+void UdpRoutine(void* unused)
+{
+    int listenSocket = socket(AF_INET, SOCK_DGRAM, 0);
+    if (-1 == listenSocket) {
+        printf("%s:%d %s: create socket failed\n", __FILE__, __LINE__, __FUNCTION__);
+        Trace_Blink(100);
+        return;
+    }
+
+    struct sockaddr_in udp_sock_addr;
+    udp_sock_addr.sin_family = AF_INET;
+    udp_sock_addr.sin_port = htons(WIFLY_SERVER_PORT);
+    udp_sock_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+
+    if (0 != bind(listenSocket, (struct sockaddr*)&udp_sock_addr, sizeof(udp_sock_addr))) {
+        printf("%s:%d %s: bind() failed\n", __FILE__, __LINE__, __FUNCTION__);
+        Trace_Blink(100);
+        return;
+    }
+
+    for ( ; ; ) {
+        int bytesRead;
+        do {
+            uns8 buf[16];
+            bytesRead = recvfrom(listenSocket, buf, sizeof(buf), 0, NULL, NULL);
+            printf("%d bytesRead\n", bytesRead);
+//            pthread_mutex_lock(&g_ring_mutex);
+            int i;
+            for (i = 0; i < bytesRead; i++) {
+                if (!RingBuf_HasError(&g_RingBuf))
+                    RingBuf_Put(&g_RingBuf, buf[i]);
+            }
+//    pthread_mutex_unlock(&g_ring_mutex);
+        } while (bytesRead > 0);
+        // don't allow immediate reconnection
+        Platform_sleep_ms(1000);
+    }
+}
+
 void UART_Init()
 {
+    xTaskCreate(&UdpRoutine, "uart_udp task", 256, NULL, 2, NULL);
     xTaskCreate(&UART_InterruptRoutine, "uart_socket task", 256, NULL, 2, NULL);
 }
 

@@ -18,48 +18,26 @@
 
 #include "platform.h"
 
-#define NUM_PWM 0 //1
+static uint8_t g_pwm_duty = 0;
+
+void pwm_task(void* unused)
+{
+    for (uint8_t counter = 0; ; ++counter) {
+        gpio_write(5, counter > g_pwm_duty);
+        Platform_sleep_ms(1);
+    }
+}
 
 void SPI_Init(void)
 {
-#if NUM_PWM
-    static const uint8_t pins[] = {
-        5,
-        0,
-        0,
-    };
-    static const uint16_t pwm_freq_1kHz = 1000;
-    pwm_init(NUM_PWM, pins);
-    pwm_set_freq(pwm_freq_1kHz);
-    pwm_set_duty(0);
-    pwm_start();
-#else
     gpio_enable(5, GPIO_OUTPUT);
     gpio_write(5, 1);
-#endif
+    xTaskCreate(pwm_task, "pwm_task", 256, NULL, 2, NULL);
 }
 
 static void SPI_SendBuffer(const uint8_t* buf, size_t buf_len)
 {
-    static const size_t periode = 2;
-    static size_t counter = periode;
-    static uint16_t toggle = 1;
-
-#if NUM_PWM
-    if (buf_len > NUM_PWM)
-        buf_len = NUM_PWM;
-    for (size_t i = 0; i < buf_len; ++i) {
-        pwm_set_duty(buf[i] << 8);
-    }
-#else
-#if 0
-    if (!--counter) {
-        counter = periode;
-        toggle = !toggle;
-        gpio_write(5, toggle);
-    }
-#endif
-#endif
+    g_pwm_duty = *buf;
 }
 
 uint8_t SPI_Send(uint8_t data)
