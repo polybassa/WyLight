@@ -83,22 +83,6 @@ void I2C_Write(const uns8 slaveaddr, const uns8 dataaddr, const uns8 data){}
 uns8 I2C_Read(const uns8 slaveaddr, const uns8 readaddr){return 0; }
 uns8 I2C_DetectSlave(const uns8 slaveaddr){return 0; }
 
-void* timer1_interrupt(void* unused)
-{
-    for ( ; ; ) {
-        usleep(1000);
-        Ledstrip_UpdateLed();
-    }
-}
-void* timer4_interrupt(void* unused)
-{
-    for ( ; ; ) {
-        usleep(1000);
-        g_UpdateLed++;
-        ScriptCtrl_DecrementWaitValue();
-    }
-}
-
 void Rtc_Init() {}
 void Rtc_Ctl(enum RTC_request req, struct rtc_time* pRtcTime) {}
 
@@ -110,11 +94,6 @@ uns16 Timer_PrintCycletime(uns16* pArray, const uns16 arraySize)
 void Platform_ExtraInit()
 {
     pthread_t broadcastThread;
-    pthread_t timer1Thread;
-    pthread_t timer4Thread;
 
     pthread_create(&broadcastThread, 0, BroadcastLoop, 0);
-
-    pthread_create(&timer1Thread, 0, timer1_interrupt, 0);
-    pthread_create(&timer4Thread, 0, timer4_interrupt, 0);
 }

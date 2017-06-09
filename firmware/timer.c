@@ -21,7 +21,6 @@
 
 void Timer_Init()
 {
-#ifdef __CC8E__
     /*
      * T1 Interrupt every 10 Millisecounds if clock is 64MHz
      * Calculation
@@ -68,10 +67,9 @@ void Timer_Init()
     */
     T3CON = 0b00110110;
     TMR3ON = 1;
-#endif /* #ifdef __CC8E__ */
 }
 
-#if defined(DEBUG) && defined(__CC8E__)
+#if defined(DEBUG)
 static struct CycleTimeBuffer g_CycleTimeBuffer;
 static enum CYCLETIME_METHODE enumMethode;
 
@@ -126,4 +124,4 @@ uns16 Timer_PrintCycletime(uns16* pArray, uns16 arraySize)
     }
     return i + i;
 }
-#endif /* #if defined(DEBUG) && defined(__CC8E__) */
+#endif /* #if defined(DEBUG) */

@@ -16,28 +16,36 @@
    You should have received a copy of the GNU General Public License
    along with Wifly_Light.  If not, see <http://www.gnu.org/licenses/>. */
 
+#include "ScriptCtrl.h"
 #include "timer.h"
 #include "trace.h"
 
-static void timer1_interrupt(void* unused)
+extern uns8 g_UpdateLedStrip;
+extern uns8 g_UpdateLed;
+
+static Platform_ThreadFunc timer1_interrupt(void* unused)
 {
     for ( ; ; ) {
-        Platform_sleep_ms(100);
-        Ledstrip_UpdateLed();
+        Platform_sleep_ms(10);
+        ++g_UpdateLedStrip;
+        ScriptCtrl_CheckAndDecrementWaitValue();
     }
 }
 
-static void timer4_interrupt(void* unused)
+static Platform_ThreadFunc timer5_interrupt(void* unused)
 {
     for ( ; ; ) {
-        Platform_sleep_ms(100);
-        g_UpdateLed++;
+        Platform_sleep_ms(5);
+        ++g_UpdateLed;
         ScriptCtrl_DecrementWaitValue();
     }
 }
 
 void Timer_Init()
 {
-    xTaskCreate(&timer1_interrupt, "timer1_interrupt", 256, NULL, 3, NULL);
-    xTaskCreate(&timer4_interrupt, "timer4_interrupt", 256, NULL, 2, NULL);
+    static Platform_Thread timer1_10ms;
+    static Platform_Thread timer5_5ms;
+
+    Platform_CreateThread(&timer1_interrupt, 256, NULL, 2, &timer1_10ms);
+    Platform_CreateThread(&timer5_interrupt, 256, NULL, 2, &timer5_5ms);
 }
