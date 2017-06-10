@@ -19,25 +19,6 @@
 #include "platform.h"
 
 static int wifi_alive = 0;
-static const uint16_t BROADCAST_PORT = 55555;
-
-static const uint8_t capturedBroadcastMessage[110] = {
-    0x00, 0x0f, 0xb5, 0xb2, 0x57, 0xfa, //MAC
-    0x07, //channel
-    0x3f, //rssi
-    0x07, 0xd0, //port
-    0x00, 0x00, 0x24, 0xb1, //rtc
-    0x0b, 0xff, //battery
-    0x0d, 0x11, //gpio
-    0x54, 0x69, 0x6d, 0x65, 0x20, 0x4e, 0x4f, 0x54, 0x20, 0x53, 0x45, 0x54, 0x00, 0x00, //time
-    0x57, 0x69, 0x46, 0x6c, 0x79, 0x20, 0x56, 0x65, 0x72, 0x20, 0x32, 0x2e, 0x33, 0x36,
-    0x2c, 0x20, 0x30, 0x38, 0x2d, 0x32, 0x32, 0x2d, 0x32, 0x30, 0x31, 0x32, 0x00, 0x00, //version
-    'W', 'i', 'F', 'l', 'y', '-', 'E', 'Z', 'X',
-    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '1', '2', '3', //deviceid
-    0x4e, 0x00, //boottime
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 //sensors
-};
 
 static void wifi_task(void* pvParameters)
 {
@@ -47,18 +28,6 @@ static void wifi_task(void* pvParameters)
         .ssid = "Accesspoint",
         .password = "WyLight1",
     };
-
-    int udpSocket;
-    do {
-        udpSocket = socket(AF_INET, SOCK_DGRAM, 0);
-    } while (-1 == udpSocket);
-
-    struct sockaddr_in broadcastAddress;
-    broadcastAddress.sin_family = AF_INET;
-    broadcastAddress.sin_port = htons(BROADCAST_PORT);
-    broadcastAddress.sin_addr.s_addr = htonl(INADDR_BROADCAST);
-    int val = 1;
-    setsockopt(udpSocket, SOL_SOCKET, SO_BROADCAST, &val, sizeof(val));
 
     printf("%s: Connecting to WiFi\n\r", __func__);
     sdk_wifi_set_opmode(STATION_MODE);
@@ -101,12 +70,6 @@ static void wifi_task(void* pvParameters)
                 wifi_alive = 1;
             }
 
-            sendto(udpSocket,
-                   capturedBroadcastMessage,
-                   sizeof(capturedBroadcastMessage),
-                   0,
-                   (struct sockaddr*)&broadcastAddress,
-                   sizeof(broadcastAddress));
             vTaskDelay(500 / portTICK_PERIOD_MS);
         }
 

@@ -25,7 +25,26 @@
 static const int g_DebugZones = ZONE_ERROR | ZONE_WARNING | ZONE_INFO | ZONE_VERBOSE;
 #endif
 static const uint16_t WIFLY_SERVER_PORT = 2000;
+static const uint16_t BROADCAST_PORT = 55555;
 static int g_uartSocket = -1;
+
+static const uint8_t capturedBroadcastMessage[110] = {
+    0x00, 0x0f, 0xb5, 0xb2, 0x57, 0xfa, //MAC
+    0x07, //channel
+    0x3f, //rssi
+    0x07, 0xd0, //port
+    0x00, 0x00, 0x24, 0xb1, //rtc
+    0x0b, 0xff, //battery
+    0x0d, 0x11, //gpio
+    0x54, 0x69, 0x6d, 0x65, 0x20, 0x4e, 0x4f, 0x54, 0x20, 0x53, 0x45, 0x54, 0x00, 0x00, //time
+    0x57, 0x69, 0x46, 0x6c, 0x79, 0x20, 0x56, 0x65, 0x72, 0x20, 0x32, 0x2e, 0x33, 0x36,
+    0x2c, 0x20, 0x30, 0x38, 0x2d, 0x32, 0x32, 0x2d, 0x32, 0x30, 0x31, 0x32, 0x00, 0x00, //version
+    'W', 'i', 'F', 'l', 'y', '-', 'E', 'Z', 'X',
+    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '1', '2', '3', //deviceid
+    0x4e, 0x00, //boottime
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 //sensors
+};
 
 static Platform_ThreadFunc UART_TcpRecv(void* param)
 {
@@ -109,15 +128,42 @@ static Platform_ThreadFunc UART_UdpRecv(void* param)
     }
 }
 
+Platform_ThreadFunc UART_Broadcast(void* unused)
+{
+    int udpSocket;
+    do {
+        udpSocket = socket(AF_INET, SOCK_DGRAM, 0);
+    } while (-1 == udpSocket);
+
+    struct sockaddr_in broadcastAddress;
+    broadcastAddress.sin_family = AF_INET;
+    broadcastAddress.sin_port = htons(BROADCAST_PORT);
+    broadcastAddress.sin_addr.s_addr = htonl(INADDR_BROADCAST);
+    int val = 1;
+    setsockopt(udpSocket, SOL_SOCKET, SO_BROADCAST, &val, sizeof(val));
+
+    for ( ; ; ) {
+        sendto(udpSocket,
+               capturedBroadcastMessage,
+               sizeof(capturedBroadcastMessage),
+               0,
+               (struct sockaddr*)&broadcastAddress,
+               sizeof(broadcastAddress));
+        Platform_sleep_ms(1000);
+    }
+}
+
 void UART_Init()
 {
     static Platform_Mutex mutex;
     static Platform_Thread tcp;
     static Platform_Thread udp;
+    static Platform_Thread broadcast;
 
     mutex = Platform_MutexInit();
     Platform_CreateThread(&UART_TcpRecv, 256, &mutex, 2, &tcp);
     Platform_CreateThread(&UART_UdpRecv, 256, &mutex, 2, &udp);
+    Platform_CreateThread(&UART_Broadcast, 256, NULL, 2, &broadcast);
 }
 
 void UART_Send(uns8 ch)

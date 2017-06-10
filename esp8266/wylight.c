@@ -12,7 +12,6 @@
 #include "pwm.h"
 
 #include "../firmware/main_common.c"
-#include "../firmware/broadcast.c"
 #include "../firmware/crc.c"
 #include "../firmware/eeprom_ram.c"
 #include "../firmware/error.c"
@@ -29,6 +28,7 @@
 //#include "Flash.c"
 #include "../firmware/timer_thread.c"
 #include "../firmware/Version.c"
+#include "../firmware/wifi.c"
 
 //TODO refactor this dummy functions with x86_wrapper.c
 void Rtc_Init()

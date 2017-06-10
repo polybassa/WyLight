@@ -1,6 +1,7 @@
 FW_INC=-I$(FW_DIR) -I$(LIB_DIR)
 FW_TEST_SRC=$(wildcard $(FW_DIR)/*_ut.c)
 
+FW_CORE := firmware/broadcast.c
 FW_CORE := firmware/crc.c
 FW_CORE += firmware/CommandIO.c
 FW_CORE += firmware/error.c
@@ -24,7 +25,7 @@ ${BINDIR}/ScriptCtrl_ut.bin: ${OBJDIR}/ScriptCtrl_ut.o ${OBJDIR}/ScriptCtrl.o ${
 PIC_FLAGS := -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM
 
 firmware_esp:
-	cd esp8266 && make
+	cd esp8266 && touch wylight.c && make
 
 firmware_pic:
 	${WINE} ${PIC_CC8E} $(FW_INC) $(FW_DIR)/main_pic.c ${PIC_FLAGS} -O${BINDIR}
