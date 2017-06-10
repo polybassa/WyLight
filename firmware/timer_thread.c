@@ -41,6 +41,12 @@ static Platform_ThreadFunc timer5_interrupt(void* unused)
     }
 }
 
+uns16 Timer_PrintCycletime(uns16* pArray, const uns16 arraySize)
+{
+    //TODO implemtent
+    return arraySize;
+}
+
 void Timer_Init()
 {
     static Platform_Thread timer1_10ms;

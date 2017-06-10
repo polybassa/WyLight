@@ -1,5 +1,5 @@
-/*
-   Copyright (C) 2012 - 2017 Nils Weiss, Patrick Bruenn.
+/**
+   Copyright (C) 2017 Nils Weiss, Patrick Bruenn.
 
    This file is part of WyLight.
 
@@ -16,32 +16,7 @@
    You should have received a copy of the GNU General Public License
    along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include <pthread.h>
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
-
-#include "platform.h"
-#include "ledstrip.h"
-#include "RingBuf.h"
-#include "ScriptCtrl.h"
-#include "timer.h"
-#include "Version.h"
-
-struct RingBuffer g_TraceBuf;
-
-void I2C_Init(){}
-void I2C_Write(const uns8 slaveaddr, const uns8 dataaddr, const uns8 data){}
-uns8 I2C_Read(const uns8 slaveaddr, const uns8 readaddr){return 0; }
-uns8 I2C_DetectSlave(const uns8 slaveaddr){return 0; }
+#include "rtc.h"
 
 void Rtc_Init() {}
 void Rtc_Ctl(enum RTC_request req, struct rtc_time* pRtcTime) {}
-
-uns16 Timer_PrintCycletime(uns16* pArray, const uns16 arraySize)
-{
-    return arraySize;
-}
-
-void Platform_ExtraInit()
-{}

@@ -57,11 +57,10 @@ extern jmp_buf g_ResetEnvironment;
 } while (false)
 
 #define Platform_Main(x) \
-    void run_main(x)
+    void run_main(void* unused)
 #define Platform_MainLoopSleep(x) \
     taskYIELD();
 
-void Platform_ExtraInit(void);
 #define Platform_IOInit(x)
 #define Platform_OsciInit(x)
 

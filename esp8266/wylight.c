@@ -21,35 +21,15 @@
 #include "../firmware/usart_socket.c"
 #include "../firmware/CommandIO.c"
 #include "../firmware/platform.c"
-//#include "rtc.c"
-//#include "iic.c"
+#include "../firmware/rtc_linux.c"
 #include "../firmware/ScriptCtrl.c"
 #include "../firmware/trace.c"
-//#include "Flash.c"
 #include "../firmware/timer_thread.c"
 #include "../firmware/Version.c"
 #include "../firmware/wifi.c"
 
-//TODO refactor this dummy functions with x86_wrapper.c
-void Rtc_Init()
-{}
-void Rtc_Ctl(enum RTC_request req, struct rtc_time* pRtcTime) {}
-uns16 Timer_PrintCycletime(uns16* pArray, const uns16 arraySize)
-{
-    return arraySize;
-}
-
-void task1(void* pvParameters)
-{
-    run_main();
-}
-
-void Platform_ExtraInit(void)
-{
-    xTaskCreate(&wifi_task, "wifi_task", 512, NULL, 3, NULL);
-}
-
 void user_init(void)
 {
-    xTaskCreate(task1, "tsk1", 1024, NULL, 2, NULL);
+    xTaskCreate(&wifi_task, "wifi_task", 512, NULL, 3, NULL);
+    xTaskCreate(&run_main, "run_main", 1024, NULL, 2, NULL);
 }

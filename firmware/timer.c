@@ -19,6 +19,8 @@
 #include "timer.h"
 #include "trace.h"
 
+static struct CycleTimeBuffer g_CycleTimeBuffer;
+
 void Timer_Init()
 {
     /*
@@ -70,9 +72,6 @@ void Timer_Init()
 }
 
 #if defined(DEBUG)
-static struct CycleTimeBuffer g_CycleTimeBuffer;
-static enum CYCLETIME_METHODE enumMethode;
-
 #define Platform_ReadPerformanceCounter(x) do { \
         x.low8 = TMR3L; \
         x.high8 = TMR3H; \
@@ -103,6 +102,7 @@ void Timer_StopStopwatch(const enum CYCLETIME_METHODE destMethode)
         g_CycleTimeBuffer.maxCycleTime[destMethode] = tempTime;
     g_CycleTimeBuffer.tempCycleTime[destMethode] = 0;
 }
+#endif /* #if defined(DEBUG) */
 
 uns16 Timer_PrintCycletime(uns16* pArray, uns16 arraySize)
 {
@@ -124,4 +124,3 @@ uns16 Timer_PrintCycletime(uns16* pArray, uns16 arraySize)
     }
     return i + i;
 }
-#endif /* #if defined(DEBUG) */
