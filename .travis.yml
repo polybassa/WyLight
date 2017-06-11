@@ -26,6 +26,7 @@ before_install:
     - curl --retry 10 --retry-max-time 120 -L "https://launchpad.net/gcc-arm-embedded/5.0/5-2015-q4-major/+download/gcc-arm-none-eabi-5_2-2015q4-20151219-linux.tar.bz2" | tar xfj -
     - wget -nc -O cc8e.zip http://www.bknd.com/cc8efree.zip
     - unzip -d cc8e cc8e.zip
+    - tools/install_esp_toolchain.sh
 
 install:
     - export PATH=$PATH:$PWD/gcc-arm-none-eabi-5_2-2015q4/bin
