@@ -11,6 +11,7 @@ addons:
       - libc6-i386
       - g++-5
       - gcc-5
+      - gperf
       - cppcheck
       - wine
       - freeglut3-dev
