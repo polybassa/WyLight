@@ -13,6 +13,7 @@ addons:
       - gcc-5
       - gperf
       - cppcheck
+      - makeinfo
       - wine
       - freeglut3-dev
 
