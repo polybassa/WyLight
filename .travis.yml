@@ -13,9 +13,22 @@ addons:
       - gcc-5
       - gperf
       - cppcheck
-      - makeinfo
       - wine
       - freeglut3-dev
+      - unrar-free
+      - libtool
+      - texinfo
+      - gawk
+      - ncurses-dev
+      - libexpat-dev
+      - python-dev
+      - python
+      - python-serial
+      - sed
+      - unzip
+      - help2man
+      - wget
+      - bzip2
 
 # We use cpp for unit tests, and c for the main project.
 language: cpp
@@ -34,17 +47,17 @@ install:
     - export PATH=$PATH:$PWD/gcc-arm-none-eabi-5_2-2015q4/bin
     - export PATH=$PATH:$PWD/cc8e
 
-before_script: 
+before_script:
         - arm-none-eabi-gcc --version
         - gcc --version
 
-script: 
+script:
         - ./configure
-        - make test 
+        - make test
         - make clean
         - make firmware_pic
         - make clean
         - make cli
         - make clean
-        - make firmware_simu 
+        - make firmware_simu
         - make firmware_raspi
