@@ -1,4 +1,5 @@
 # use new docker environment
+dist: trusty
 sudo: required
 
 addons:
