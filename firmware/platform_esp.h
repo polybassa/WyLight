@@ -16,8 +16,8 @@
    You should have received a copy of the GNU General Public License
    along with WyLight.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef _PLATFORM_LINUX_H_
-#define _PLATFORM_LINUX_H_
+#ifndef _PLATFORM_ESP_H_
+#define _PLATFORM_ESP_H_
 
 /*
  * Don't include this file directly. It is included
@@ -51,10 +51,12 @@ extern jmp_buf g_ResetEnvironment;
 
 #define InitFactoryRestoreWLAN(x)
 #define InitFET(x)
-#define Platform_sleep_ms(tmms) do { \
+
+#define Platform_sleep_ms(tmms) \
+    do { \
         vTaskDelay((tmms) / portTICK_PERIOD_MS); \
         taskYIELD(); \
-} while (false)
+    } while (false)
 
 #define Platform_Main(x) \
     void run_main(void* unused)
@@ -107,4 +109,4 @@ extern jmp_buf g_ResetEnvironment;
 #define Platform_DisableBootloaderAutostart(x)
 #define Platform_EnableBootloaderAutostart(x)
 
-#endif /* #ifndef _PLATFORM_LINUX_H_ */
+#endif /* #ifndef _PLATFORM_ESP_H_ */
