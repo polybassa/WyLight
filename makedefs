@@ -81,4 +81,4 @@ ${BINDIR}/%.elf:
 
 ${BINDIR}/%.bin:
 	@echo "LD ${@}"
-	${CPP} ${LDFLAGS} ${DEFINES} -o ${@} $(filter %.o %.a, ${^})
+	${CPP} ${DEFINES} -o ${@} $(filter %.o %.a, ${^}) ${LDFLAGS}
