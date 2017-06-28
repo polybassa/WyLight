@@ -92,7 +92,7 @@ void BootloaderControl::BlEraseFlashArea(const uint32_t endAddress,
 
     // we expect only one byte as response, the command code 0x03
     if (0x03 != response)
-        throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": response of wrong command code");
+        throw FatalError(std::string(__FILE__) + ':' + __func__ + ": response of wrong command code");
 }
 
 size_t BootloaderControl::BlRead(const BlRequest& req, unsigned char* pResponse, const size_t responseSize,
@@ -103,7 +103,7 @@ size_t BootloaderControl::BlRead(const BlRequest& req, unsigned char* pResponse,
     Trace(ZONE_INFO, " %zd:%ld \n", bytesReceived, sizeof(BlInfo));
     TraceBuffer(ZONE_VERBOSE, (uint8_t*)&buffer[0], bytesReceived, "0x%02x, ", "Message: ");
     if (responseSize != bytesReceived)
-        throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": Too many retries");
+        throw FatalError(std::string(__FILE__) + ':' + __func__ + ": Too many retries");
     memcpy(pResponse, buffer, responseSize);
     return responseSize;
 }
@@ -123,7 +123,7 @@ size_t BootloaderControl::BlReadCrcFlash(unsigned char* pBuffer, unsigned int ad
                                          uint16_t numBlocks) const
 {
     if (numBlocks * FLASH_ERASE_BLOCKSIZE + address > FLASH_SIZE)
-        throw InvalidParameter(std::string(__FILE__) + ':' + __FUNCTION__ + ": address or numBlocks out of range");
+        throw InvalidParameter(std::string(__FILE__) + ':' + __func__ + ": address or numBlocks out of range");
 
     size_t bytesRead;
     size_t sumBytesRead = 0;
@@ -157,7 +157,7 @@ size_t BootloaderControl::BlReadEeprom(uint8_t* pBuffer, uint32_t address,
                                        size_t numBytes) const
 {
     if (numBytes + address > EEPROM_SIZE)
-        throw InvalidParameter(std::string(__FILE__) + ':' + __FUNCTION__ + ": address or numBytes out of range");
+        throw InvalidParameter(std::string(__FILE__) + ':' + __func__ + ": address or numBytes out of range");
 
     size_t bytesRead;
     size_t sumBytesRead = 0;
@@ -191,7 +191,7 @@ size_t BootloaderControl::BlReadFlash(uint8_t* pBuffer, uint32_t address,
                                       size_t numBytes) const
 {
     if (numBytes + address > FLASH_SIZE)
-        throw InvalidParameter(std::string(__FILE__) + ':' + __FUNCTION__ + ": address or numBytes out of range");
+        throw InvalidParameter(std::string(__FILE__) + ':' + __func__ + ": address or numBytes out of range");
 
     size_t bytesRead;
     size_t sumBytesRead = 0;
@@ -249,7 +249,7 @@ void BootloaderControl::BlWriteFlash(unsigned int address, unsigned char* pBuffe
         // we expect only the 0x04 command byte as response
         BlRead(request, &response, sizeof(response));
         if (response != 0x04)
-            throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": response of wrong command code");
+            throw FatalError(std::string(__FILE__) + ':' + __func__ + ": response of wrong command code");
         address += FLASH_WRITE_BLOCKSIZE;
         pBuffer += FLASH_WRITE_BLOCKSIZE;
         bytesLeft -= FLASH_WRITE_BLOCKSIZE;
@@ -258,7 +258,7 @@ void BootloaderControl::BlWriteFlash(unsigned int address, unsigned char* pBuffe
     request.SetData(address, pBuffer, bytesLeft);
     BlRead(request, &response, sizeof(response));
     if (response != 0x04)
-        throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": response of wrong command code");
+        throw FatalError(std::string(__FILE__) + ':' + __func__ + ": response of wrong command code");
 }
 
 void BootloaderControl::BlWriteEeprom(unsigned int address, const uint8_t* pBuffer,
@@ -277,7 +277,7 @@ void BootloaderControl::BlWriteEeprom(unsigned int address, const uint8_t* pBuff
         // we expect only the 0x06 command byte as response
         BlRead(request, &response, sizeof(response));
         if (response != 0x06)
-            throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": response of wrong command code");
+            throw FatalError(std::string(__FILE__) + ':' + __func__ + ": response of wrong command code");
 
         address += EEPROM_WRITE_BLOCKSIZE;
         pBuffer += EEPROM_WRITE_BLOCKSIZE;
@@ -287,7 +287,7 @@ void BootloaderControl::BlWriteEeprom(unsigned int address, const uint8_t* pBuff
     request.SetData(address, pBuffer, bytesLeft);
     BlRead(request, &response, sizeof(response));
     if (response != 0x06)
-        throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": response of wrong command code");
+        throw FatalError(std::string(__FILE__) + ':' + __func__ + ": response of wrong command code");
 }
 
 void BootloaderControl::BlProgramFlash(const std::string& pFilename) const
@@ -385,7 +385,7 @@ void BootloaderControl::BlRunApp(void) const
     if (4 <= bytesRead) {
         struct response_frame* pResponse = (response_frame*)&buffer[0];
         if (pResponse->cmd == FW_STARTED) return;
-        throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": response of wrong command code");
+        throw FatalError(std::string(__FILE__) + ':' + __func__ + ": response of wrong command code");
     }
-    throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": response of wrong length");
+    throw FatalError(std::string(__FILE__) + ':' + __func__ + ": response of wrong length");
 }

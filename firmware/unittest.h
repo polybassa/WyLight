@@ -24,7 +24,7 @@
 
 #define CHECK(EXPRESSION) if (!(EXPRESSION)) { \
         errors++; \
-        printf("ERROR %s:%d: %s() CHECK(" # EXPRESSION ") failed\n", __FILE__, __LINE__, __FUNCTION__); \
+        printf("ERROR %s:%d: %s() CHECK(" # EXPRESSION ") failed\n", __FILE__, __LINE__, __func__); \
 }
 
 #define CHECK_MEMCMP(BUFFER, REF_DATA, REF_SIZE) { \
@@ -33,7 +33,7 @@
 }
 
 #define NOT_IMPLEMENTED(X) { \
-        printf("ERROR %s:%d: %s() NOT IMPLEMENTED\n", __FILE__, __LINE__, __FUNCTION__); \
+        printf("ERROR %s:%d: %s() NOT IMPLEMENTED\n", __FILE__, __LINE__, __func__); \
         return 1; \
 }
 

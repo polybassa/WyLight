@@ -93,7 +93,7 @@ size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 
 size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 {
-    TraceBuffer(ZONE_INFO, frame, length, "%02x ", "%s: ", __FUNCTION__);
+    TraceBuffer(ZONE_INFO, frame, length, "%02x ", "%s: ", __func__);
 
     /* Sync */
     if ((sizeof(BL_SYNC) == length) && (0 == memcmp(BL_SYNC, frame, sizeof(BL_SYNC)))) {

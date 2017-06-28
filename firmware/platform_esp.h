@@ -95,7 +95,7 @@ extern jmp_buf g_ResetEnvironment;
     xSemaphoreGive(*x)
 
 #define Platform_FatalError(x) do { \
-        printf("%s(): FATAL ERROR -> exiting...\n", __FUNCTION__); \
+        printf("%s(): FATAL ERROR -> exiting...\n", __func__); \
         Platform_sleep_ms(10000); \
 } while (true)
 

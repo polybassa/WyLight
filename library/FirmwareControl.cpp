@@ -68,7 +68,7 @@ void FirmwareControl::FwSend(FwCommand& cmd) const
             if (cmd.GetResponse().Init(buffer, bytesRead))
                 return;
         } while (0 < --numCrcRetries);
-        throw FatalError(std::string(__FILE__) + ':' + __FUNCTION__ + ": Too many retries");
+        throw FatalError(std::string(__FILE__) + ':' + __func__ + ": Too many retries");
     } else {
         MaskBuffer maskBuffer {BL_MAX_MESSAGE_LENGTH};
         maskBuffer.Mask(cmd.GetData(), cmd.GetData() + cmd.GetSize(), false);

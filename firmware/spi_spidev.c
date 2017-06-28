@@ -45,7 +45,7 @@ static void SPI_SendBuffer(const uint8_t* buf, const size_t buf_len)
 
     const int status = ioctl(g_spi_fd, SPI_IOC_MESSAGE(2), xfer);
     if (status != buf_len)
-        Trace(ZONE_INFO, "%s(): status: %d\n", __FUNCTION__, status);
+        Trace(ZONE_INFO, "%s(): status: %d\n", __func__, status);
 }
 
 uint8_t SPI_Send(uint8_t data)
