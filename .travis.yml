@@ -2,6 +2,10 @@
 dist: trusty
 sudo: required
 
+cache:
+  directories:
+    - tools
+
 addons:
   apt:
     sources:
