@@ -10,4 +10,5 @@ git clone --recursive https://github.com/pfalcon/${esp_sdk}.git
 git clone --recursive https://github.com/Superhouse/${esp_rtos}.git
 
 pushd $esp_sdk
+unset CC
 make
