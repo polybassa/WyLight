@@ -49,7 +49,7 @@ before_install:
 install:
     - export PATH=$PATH:$PWD/gcc-arm-none-eabi-5_2-2015q4/bin
     - export PATH=$PATH:$PWD/cc8e
-    - tools/install_esp_toolchain.sh
+    - CT_ALLOW_BUILD_AS_ROOT_SURE=y tools/install_esp_toolchain.sh
 
 before_script:
         - arm-none-eabi-gcc --version
