@@ -41,8 +41,8 @@ CPPFLAGS= \
     -Wall \
     -c 
 
-LDFLAGS+=	-lpthread \
-			-lcrypto
+LDFLAGS += -lpthread
+LDFLAGS += -lcrypto
 
 CPP=$(CXX)
 
