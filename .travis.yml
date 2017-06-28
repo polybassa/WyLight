@@ -67,5 +67,6 @@ script:
         - make clean
         - make cli
         - make clean
+        - make firmware_esp
         - make firmware_simu
         - make firmware_raspi
