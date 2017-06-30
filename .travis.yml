@@ -54,6 +54,9 @@ install:
     - export PATH=$PATH:$PWD/gcc-arm-none-eabi-5_2-2015q4/bin
     - export PATH=$PATH:$PWD/cc8e
     - CT_ALLOW_BUILD_AS_ROOT_SURE=y tools/install_esp_toolchain.sh
+# hack to make travis build esp firmware: 'ImportError: No module named serial'
+# serial is used for flashing only, travis shouldn't use it -> disable it here
+    - sed -i "s/^import serial/#import serial/g" tools/esp-open-sdk/xtensa-lx106-elf/bin/esptool.py
 
 before_script:
         - arm-none-eabi-gcc --version
