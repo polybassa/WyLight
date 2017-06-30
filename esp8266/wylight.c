@@ -8,6 +8,7 @@
 #include "espressif/esp_common.h"
 #include "esp/uart.h"
 #include "FreeRTOS.h"
+#include "ota-tftp.h"
 #include "task.h"
 #include "pwm.h"
 
@@ -30,6 +31,7 @@
 
 void user_init(void)
 {
+    ota_tftp_init_server(TFTP_PORT);
     xTaskCreate(&wifi_task, "wifi_task", 512, NULL, 3, NULL);
     xTaskCreate(&run_main, "run_main", 1024, NULL, 2, NULL);
 }
