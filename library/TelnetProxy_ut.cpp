@@ -81,7 +81,7 @@ size_t TcpSocket::Recv(uint8_t* pBuffer, size_t length, timeval* timeout) const
 
 size_t TcpSocket::Send(const uint8_t* frame, size_t length) const
 {
-    TraceBuffer(ZONE_INFO, frame, length, "%02x ", "%s:", __FUNCTION__);
+    TraceBuffer(ZONE_INFO, frame, length, "%02x ", "%s:", __func__);
     memcpy(g_TestSocketSendBuffer + g_TestSocketSendBufferPos, frame, length);
     g_TestSocketSendBufferPos += length;
 
