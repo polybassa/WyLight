@@ -22,6 +22,14 @@ ${BINDIR}/ScriptCtrl_ut.bin: ${OBJDIR}/ScriptCtrl_ut.o ${OBJDIR}/ScriptCtrl.o ${
 
 PIC_FLAGS := -CC -fINHX32 -p18F26K22 -a -L -Q -V -FM
 
+# CPPFLAGS is broken by makedef
+GCC_FLAGS += -std=c++11
+GCC_FLAGS += -lpthread
+GCC_FLAGS += -DDEBUG
+GCC_FLAGS += -DX86
+GCC_FLAGS += -pedantic
+GCC_FLAGS += -Wall
+
 firmware_pic:
 	${WINE} ${PIC_CC8E} $(FW_INC) $(FW_DIR)/main.c ${PIC_FLAGS} -O${BINDIR}
 
@@ -38,18 +46,18 @@ firmware_linkit: | $(OPENWRT_SDK)
 firmware_linkit: firmware/eeprom_ram.c
 firmware_linkit: firmware/spi_pwmdev.cpp
 firmware_linkit: $(FW_CORE)
-	$(CROSS_COMPILE)$(CXX) $? -std=c++11 -DDEBUG -DX86 -lpthread -o ${BINDIR}/linkit.bin
+	$(CROSS_COMPILE)$(CXX) $? $(GCC_FLAGS) -o ${BINDIR}/linkit.bin
 
 firmware_raspi: firmware/eeprom_ram.c
 firmware_raspi: firmware/spi_spidev.c
 firmware_raspi: $(FW_CORE)
-	$(CXX) $? -std=c++11 -DDEBUG -DX86 -lpthread -o ${BINDIR}/raspi.bin
+	$(CXX) $? $(GCC_FLAGS) -o ${BINDIR}/raspi.bin
 
 #firmware_simu: firmware/eeprom_file.cpp
 firmware_simu: firmware/eeprom_ram.c
 firmware_simu: firmware/spi_opengl.c
 firmware_simu: $(FW_CORE)
-	$(CXX) -Wall $(FW_INC) $? -std=c++11 -DDEBUG -DX86 -lpthread ${OPENGL_LIB} -o ${BINDIR}/simu.bin
+	$(CXX) $(FW_INC) $? $(GCC_FLAGS) ${OPENGL_LIB} -o ${BINDIR}/simu.bin
 
 firmware_test: ${OBJDIR} ${BINDIR} firmware_standart_test
 
