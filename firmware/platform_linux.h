@@ -60,7 +60,6 @@ extern jmp_buf g_ResetEnvironment;
     jmp_buf g_ResetEnvironment; \
     int main(x)
 #define Platform_MainLoopSleep(x) usleep(10)
-void Platform_ExtraInit(void);
 #define Platform_IOInit(x)
 #define Platform_OsciInit(x)
 

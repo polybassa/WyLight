@@ -19,6 +19,8 @@
 #ifndef _RTC_H_
 #define _RTC_H_
 
+#include "platform.h"
+
 /** Have a look at: http://linux.die.net/man/4/rtc   **/
 
 #define RTC_MCP79410 0xDE                /* IIC-Address of RTC Clock IC */

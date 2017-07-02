@@ -34,7 +34,6 @@
 #define Platform_Main(x) \
     void main(x)
 #define Platform_MainLoopSleep(x)
-#define Platform_ExtraInit(x)
 #define Platform_IOInit(x) do { CLRF(PORTB); CLRF(LATB); CLRF(ANSELB); CLRF(PORTA); CLRF(LATA); CLRF(ANSELA); \
                                 CLRF(TRISA); PORTA = 0b00000100; } \
     while (0)                                                                         //Eingänge am PORTB initialisieren

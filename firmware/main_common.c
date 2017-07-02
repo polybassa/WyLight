@@ -29,8 +29,11 @@
 #include "error.h"
 #include "Flash.h"
 
-uns8 g_UpdateLed;
+#ifdef DEBUG
+struct RingBuffer g_TraceBuf;
+#endif
 uns8 g_UpdateLedStrip;
+uns8 g_UpdateLed;
 
 void InitAll()
 {
@@ -45,7 +48,6 @@ void InitAll()
     CommandIO_Init();
     Rtc_Init();
     ScriptCtrl_Init();
-    Platform_ExtraInit();
 
     Platform_AllowInterrupts();
 

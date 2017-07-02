@@ -7,11 +7,11 @@ FW_CORE += firmware/error.c
 FW_CORE += firmware/ledstrip.c
 FW_CORE += firmware/main_common.c
 FW_CORE += firmware/RingBuf.c
+FW_CORE += firmware/rtc_linux.c
 FW_CORE += firmware/ScriptCtrl.c
 FW_CORE += firmware/timer_thread.c
 FW_CORE += firmware/trace.c
 FW_CORE += firmware/usart_socket.c
-FW_CORE += firmware/x86_wrapper.c
 FW_CORE += firmware/Version.c
 
 ${BINDIR}/CommandIO_ut.bin: ${OBJDIR}/CommandIO_ut.o ${OBJDIR}/CommandIO.o

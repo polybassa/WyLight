@@ -19,7 +19,6 @@
 #include "trace.h"
 
 #if defined(DEBUG) && defined(__CC8E__)
-struct RingBuffer g_TraceBuf;
 
 void Trace_Init(void)
 {
