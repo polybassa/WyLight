@@ -26,7 +26,9 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <arpa/inet.h>
+#include <pthread.h>
 #include <setjmp.h>
 #include <string.h>
 #include <unistd.h>
@@ -50,6 +52,10 @@ extern jmp_buf g_ResetEnvironment;
 
 #define InitFactoryRestoreWLAN(x)
 #define InitFET(x)
+
+#define Platform_sleep_ms(tmms) \
+    usleep(1000 * (tmms))
+
 #define Platform_Main(x) \
     jmp_buf g_ResetEnvironment; \
     int main(x)
@@ -64,6 +70,32 @@ void Platform_ExtraInit(void);
 #define Platform_AllowInterrupts(x)
 #define Platform_EnableAllInterrupts()
 #define Platform_DisableAllInterrupts()
+
+#define Platform_Thread \
+    pthread_t
+
+#define Platform_ThreadFunc \
+    void*
+
+#define Platform_CreateThread(routine, stack_size, args, prio, handle) \
+    pthread_create(handle, nullptr, routine, args)
+
+#define Platform_Mutex \
+    pthread_mutex_t
+
+#define Platform_MutexInit(x) \
+    PTHREAD_MUTEX_INITIALIZER
+
+#define Platform_MutexLock(x) \
+    pthread_mutex_lock(x)
+
+#define Platform_MutexUnlock(x) \
+    pthread_mutex_unlock(x)
+
+#define Platform_FatalError(x) do { \
+        printf("%s(): FATAL ERROR -> exiting...\n", __func__); \
+        exit(-666); \
+} while (false)
 
 #define Platform_CheckInputs(x)
 
