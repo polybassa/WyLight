@@ -29,6 +29,7 @@ Targets:
 | Target	  | Description
 |-----------------|--------------
 | `test`          | build and execute unit tests        
+| `firmware_esp`  | build ESP8266 firmware
 | `firmware_pic`  | build PIC firmware                  
 | `firmware_raspi`| build Raspberry Pi firmware
 | `firmware_simu` | build PIC simulator                 
